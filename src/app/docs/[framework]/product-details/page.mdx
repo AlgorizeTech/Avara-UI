@@ -96,6 +96,7 @@ export default function ColorSyncDemo() {
   return (
     <ProductDetails
       variant="color-sync-gallery"
+      zoomMode="inner" // Options: "inner" (default image frame zoom) | "side" (right side HD portal zoom)
       title={product.title}
       price={product.price}
       originalPrice={product.originalPrice}
@@ -113,11 +114,20 @@ export default function ColorSyncDemo() {
   columns={1}
   examples={[
     {
+      title: "Color Swatch Synced Image Gallery Details",
+      propNotes: [
+        { lead: "Use", prop: "variant", value: '"color-sync-gallery"', effect: "selecting a colorway swatch dynamically updates the main product image without sliders or thumbnails." },
+        { lead: "Use", prop: "zoomMode", value: '"inner" | "side"', effect: "switch between inside-frame image zoom ('inner') or right-side HD portal zoom ('side')." }
+      ],
+      props: { variant: "color-sync-gallery", zoomMode: "inner" },
+      usage: usage4,
+      code: extractCode("src/components/custom/blocks/ProductDetailsBlock.tsx"),
+    },
+    {
       title: "Modern Split Gallery Slider Details",
       propNotes: [{ lead: "Use", prop: "variant", value: '"modern-split-gallery"', effect: "features floating left/right slider arrows over main image, colorways, stock urgency bar, and specs tabs." }],
       props: { variant: "modern-split-gallery" },
       usage: usage1,
-      code: extractCode("src/components/custom/blocks/ProductDetailsBlock.tsx"),
     },
     {
       title: "Floating Glassmorphism Card Details",
@@ -130,12 +140,6 @@ export default function ColorSyncDemo() {
       propNotes: [{ lead: "Use", prop: "variant", value: '"bento-editorial-showcase"', effect: "features a full-bleed dark hero image backdrop with compact buy panel." }],
       props: { variant: "bento-editorial-showcase" },
       usage: usage3,
-    },
-    {
-      title: "Color Swatch Synced Image Gallery Details",
-      propNotes: [{ lead: "Use", prop: "variant", value: '"color-sync-gallery"', effect: "selecting a colorway swatch dynamically updates the main product image without sliders or thumbnails." }],
-      props: { variant: "color-sync-gallery" },
-      usage: usage4,
     },
   ]}
 />
@@ -175,8 +179,14 @@ Discover the key capabilities of the `ProductDetails` component:
       <tr>
         <td><code>variant</code></td>
         <td><code>ProductDetailsVariant</code></td>
-        <td><code>"modern-split-gallery"</code></td>
+        <td><code>"color-sync-gallery"</code></td>
         <td>Selects from the 4 unique footwear product details variants.</td>
+      </tr>
+      <tr>
+        <td><code>zoomMode</code></td>
+        <td><code>"inner" | "side"</code></td>
+        <td><code>"inner"</code></td>
+        <td>Controls image hover zoom style for 1st variant (<code>color-sync-gallery</code>). <code>"inner"</code> magnifies inside image frame; <code>"side"</code> displays a right-side HD lens portal.</td>
       </tr>
       <tr>
         <td><code>title</code></td>

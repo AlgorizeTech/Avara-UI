@@ -20,10 +20,10 @@ import {
 import { cn } from "@/lib/utils";
 
 export type ProductDetailsVariant =
+  | "color-sync-gallery"
   | "modern-split-gallery"
   | "floating-card-glass"
-  | "bento-editorial-showcase"
-  | "color-sync-gallery";
+  | "bento-editorial-showcase";
 
 export interface ProductColor {
   name: string;
@@ -34,6 +34,7 @@ export interface ProductColor {
 
 export interface ProductDetailsProps {
   variant?: ProductDetailsVariant;
+  zoomMode?: "inner" | "side";
   title?: string;
   price?: string;
   originalPrice?: string;
@@ -55,10 +56,10 @@ const DEFAULT_IMAGES = [
 ];
 
 const ITEM_BG_CLASSES = [
-  "bg-card border-border",
-  "bg-card border-border",
-  "bg-card border-border",
-  "bg-card border-border",
+  "bg-primary/10 border-primary/20",
+  "bg-primary/10 border-primary/20",
+  "bg-primary/10 border-primary/20",
+  "bg-primary/10 border-primary/20",
 ];
 
 const DEFAULT_COLORS: ProductColor[] = [
@@ -85,7 +86,8 @@ function Stars({ className, rating }: { className?: string; rating: number }) {
 }
 
 export function ProductDetails({
-  variant = "modern-split-gallery",
+  variant = "color-sync-gallery",
+  zoomMode = "inner",
   title = "Nike Air Max Pulse 2026",
   price = "$189.99",
   originalPrice = "$240.00",
@@ -105,6 +107,18 @@ export function ProductDetails({
   const [selectedImage, setSelectedImage] = useState(0);
   const [activeTab, setActiveTab] = useState<"specs" | "shipping" | "reviews">("specs");
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [zoomPos, setZoomPos] = useState<{ x: number; y: number; visible: boolean }>({ x: 0, y: 0, visible: false });
+
+  const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
+    const { left, top, width, height } = e.currentTarget.getBoundingClientRect();
+    const x = ((e.clientX - left) / width) * 100;
+    const y = ((e.clientY - top) / height) * 100;
+    setZoomPos({ x, y, visible: true });
+  };
+
+  const handleMouseLeave = () => {
+    setZoomPos((prev) => ({ ...prev, visible: false }));
+  };
 
   const currentImageSrc = variant === "color-sync-gallery" ? images[selectedColor] : images[selectedImage];
 
@@ -492,34 +506,71 @@ export function ProductDetails({
       {variant === "color-sync-gallery" && (
         <div className="max-w-7xl mx-auto space-y-12">
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-start">
-            <div className="lg:col-span-7 space-y-4">
+            <div className="lg:col-span-7 space-y-4 relative">
               <div
-                onClick={() => setIsModalOpen(true)}
+                onMouseMove={handleMouseMove}
+                onMouseLeave={handleMouseLeave}
                 className={cn(
-                  "aspect-square w-full rounded-3xl overflow-hidden border border-border relative cursor-pointer flex items-center justify-center p-0 transition-colors",
+                  "aspect-square w-full rounded-3xl overflow-hidden border border-border relative flex items-center justify-center p-0 transition-colors cursor-crosshair group",
                   ITEM_BG_CLASSES[selectedColor % ITEM_BG_CLASSES.length]
                 )}
               >
                 <img
                   src={images[selectedColor]}
                   alt={colors[selectedColor].name}
-                  className={cn("peer w-full h-full object-cover scale-140 p-0 transition-all duration-300 hover:scale-105", sizeScaleClass)}
+                  className={cn(
+                    "w-full h-full object-cover scale-140 p-0 transition-all duration-300",
+                    sizeScaleClass,
+                    zoomMode === "inner" && zoomPos.visible && "opacity-0"
+                  )}
                 />
 
-                <div className="absolute inset-0 bg-black/20 opacity-0 peer-hover:opacity-100 transition-opacity flex items-center justify-center pointer-events-none z-10">
-                  <span className="px-4 py-2 rounded-full bg-black/60 text-white backdrop-blur-md text-xs font-bold flex items-center gap-2">
-                    <ZoomIn className="size-4" /> Click to Expand
-                  </span>
-                </div>
+                {/* 1. Inner Magnifier Zoom View (Inside image frame) */}
+                {zoomMode === "inner" && zoomPos.visible && (
+                  <div
+                    className="absolute inset-0 w-full h-full pointer-events-none transition-all duration-150"
+                    style={{
+                      backgroundImage: `url(${images[selectedColor]})`,
+                      backgroundPosition: `${zoomPos.x}% ${zoomPos.y}%`,
+                      backgroundSize: "260%",
+                      backgroundRepeat: "no-repeat",
+                    }}
+                  />
+                )}
 
-                <span className="absolute top-4 left-4 px-3 py-1 rounded-full bg-primary text-primary-foreground text-xs font-extrabold uppercase tracking-wider z-20">
+                {/* 2. Side Magnifier Lens Box (Lens Glass on top of main image) */}
+                {zoomMode === "side" && zoomPos.visible && (
+                  <div
+                    className="absolute size-32 rounded-2xl border-2 border-primary/60 bg-primary/10 backdrop-blur-[1px] pointer-events-none -translate-x-1/2 -translate-y-1/2 transition-opacity duration-150 shadow-xl hidden sm:block"
+                    style={{ left: `${zoomPos.x}%`, top: `${zoomPos.y}%` }}
+                  />
+                )}
+
+                <span className="absolute top-4 left-4 px-3 py-1 rounded-full bg-primary text-primary-foreground text-xs font-extrabold uppercase tracking-wider z-20 pointer-events-none">
                   20% OFF
                 </span>
 
-                <button onClick={(e) => { e.stopPropagation(); setLiked(!liked); }} className="absolute top-4 right-4 p-3 rounded-full bg-white/80 dark:bg-slate-900/80 backdrop-blur-md border border-border text-foreground hover:text-rose-500 transition-all z-20">
+                <button onClick={() => setLiked(!liked)} className="absolute top-4 right-4 p-3 rounded-full bg-white/80 dark:bg-slate-900/80 backdrop-blur-md border border-border text-foreground hover:text-rose-500 transition-all z-20 cursor-pointer">
                   <Heart className={cn("size-5", liked && "fill-rose-500 text-rose-500")} />
                 </button>
               </div>
+
+              {/* 2. Side Magnified Portal View Window (Appears overlaying the right side on desktop hover) */}
+              {zoomMode === "side" && zoomPos.visible && (
+                <div
+                  className="hidden sm:block absolute top-0 left-[calc(100%+24px)] w-[450px] aspect-square rounded-3xl overflow-hidden border-2 border-primary/40 bg-card shadow-2xl z-50 pointer-events-none"
+                  style={{
+                    backgroundImage: `url(${images[selectedColor]})`,
+                    backgroundPosition: `${zoomPos.x}% ${zoomPos.y}%`,
+                    backgroundSize: "280%",
+                    backgroundRepeat: "no-repeat",
+                  }}
+                >
+                  <div className="absolute bottom-3 left-3 px-3 py-1 rounded-full bg-background/80 backdrop-blur-md border border-border text-[10px] font-bold text-foreground">
+                    2.8x HD Zoom View
+                  </div>
+                </div>
+              )}
             </div>
 
             <div className="lg:col-span-5 space-y-6">
