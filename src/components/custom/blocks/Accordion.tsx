@@ -70,7 +70,7 @@ export function Accordion({
       case "bordered":
         return {
           container: "space-y-3",
-          item: "border border-zinc-200 dark:border-zinc-800/80 rounded-xl overflow-hidden bg-card shadow-sm data-[state=open]:bg-primary/5 data-[state=open]:border-primary/40 transition-colors duration-200",
+          item: "border border-border rounded-xl overflow-hidden bg-card shadow-sm data-[state=open]:bg-primary/5 data-[state=open]:border-primary/40 transition-colors duration-200",
           trigger:
             "px-5 py-4 hover:bg-primary/5 data-[state=open]:text-primary text-foreground transition-colors duration-200 text-left font-semibold",
           content: "px-5 pb-5 pt-1 text-muted-foreground",
