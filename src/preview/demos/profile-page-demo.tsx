@@ -4,6 +4,7 @@ import { useState } from "react";
 import {
   GlassPanel,
   ProfilePage,
+  type SurfaceVariant,
   WorkdayDial,
 } from "@/components/custom/blocks/ProfilePageBlock";
 import { cn } from "@/lib/utils";
@@ -69,14 +70,16 @@ const focusRing =
 
 export default function ProfilePageDemo({
   rounded = true,
+  variant = "glass",
 }: {
   /** Round the page corners — off when it fills the viewport. */
   rounded?: boolean;
+  variant?: SurfaceVariant;
 }) {
   const [following, setFollowing] = useState(false);
 
   return (
-    <ProfilePage className={cn("max-w-6xl", rounded && "rounded-[36px]")}>
+    <ProfilePage variant={variant} className={cn("max-w-6xl", rounded && "rounded-[36px]")}>
       {/* Hero */}
       <GlassPanel shape="slab" className="flex flex-col gap-6 p-6 sm:p-8 md:col-span-6 lg:col-span-8">
         <div className="flex items-center justify-between">
@@ -92,7 +95,7 @@ export default function ProfilePageDemo({
           <button
             type="button"
             className={cn(
-              "inline-flex size-10 items-center justify-center rounded-full border border-white/70 bg-white/50 text-black/70 transition-colors hover:bg-white dark:border-white/10 dark:bg-white/5 dark:text-white/70 dark:hover:bg-white/10",
+              "inline-flex size-10 items-center justify-center rounded-full border border-black/10 bg-black/[0.03] text-black/70 transition-colors hover:bg-black/[0.06] dark:border-white/15 dark:bg-white/5 dark:text-white/70 dark:hover:bg-white/10",
               focusRing,
             )}
             aria-label="Share profile"
@@ -139,7 +142,7 @@ export default function ProfilePageDemo({
             className={cn(
               "inline-flex h-11 items-center gap-2 rounded-full px-5 text-sm font-medium transition-colors",
               following
-                ? "border border-white/70 bg-white/50 text-black hover:bg-white dark:border-white/10 dark:bg-white/5 dark:text-white dark:hover:bg-white/10"
+                ? "border border-black/10 bg-black/[0.03] text-black hover:bg-black/[0.06] dark:border-white/15 dark:bg-white/5 dark:text-white dark:hover:bg-white/10"
                 : "bg-violet-600 text-white hover:bg-violet-500",
               focusRing,
             )}
@@ -150,7 +153,7 @@ export default function ProfilePageDemo({
           <button
             type="button"
             className={cn(
-              "inline-flex h-11 items-center gap-2 rounded-full border border-white/70 bg-white/50 px-5 text-sm font-medium transition-colors hover:bg-white dark:border-white/10 dark:bg-white/5 dark:hover:bg-white/10",
+              "inline-flex h-11 items-center gap-2 rounded-full border border-black/10 bg-black/[0.03] px-5 text-sm font-medium transition-colors hover:bg-black/[0.06] dark:border-white/15 dark:bg-white/5 dark:hover:bg-white/10",
               focusRing,
             )}
           >
@@ -204,7 +207,7 @@ export default function ProfilePageDemo({
           {SKILLS.map((skill) => (
             <li
               key={skill}
-              className="rounded-full border border-white/70 bg-white/50 px-3 py-1 text-xs dark:border-white/10 dark:bg-white/5"
+              className="rounded-full border border-black/10 bg-black/[0.03] px-3 py-1 text-xs dark:border-white/15 dark:bg-white/5"
             >
               {skill}
             </li>
