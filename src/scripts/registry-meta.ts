@@ -76,6 +76,21 @@ export const NAME_OVERRIDES: Record<string, string> = {
 };
 
 export const META: Record<string, ItemMeta> = {
+  globe: {
+    description:
+      "An interactive 3D WebGL globe visualization with location markers, arc curves, and rotation controls. Use it for global presence and location showcases.",
+    categories: ["data-display", "marketing"],
+  },
+  "homepage-hero": {
+    description:
+      "A feature-rich hero section with animated typing text, interactive CLI copy badge, gradient action buttons, and feature list.",
+    categories: ["marketing", "layout"],
+  },
+  "horizontal-rail": {
+    description:
+      "A horizontal sliding rail layout with smooth drag inertia, snapping cards, and navigation controls. Use it for showcasing products, media cards, or horizontal content.",
+    categories: ["layout", "scroll", "media"],
+  },
   // ---- Curated in Phase 3. Verified against source. ----
   button: {
     usageDependencies: ["icons"],

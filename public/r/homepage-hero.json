@@ -3,7 +3,7 @@
   "name": "homepage-hero",
   "title": "Homepage Hero",
   "author": "AlgorizeTech",
-  "description": "TODO: describe homepage-hero. Generated placeholder.",
+  "description": "A feature-rich hero section with animated typing text, interactive CLI copy badge, gradient action buttons, and feature list.",
   "dependencies": [
     "framer-motion",
     "lucide-react"
@@ -19,6 +19,9 @@
       "target": "components/custom/blocks/HomepageHeroBlock.tsx"
     }
   ],
-  "categories": [],
+  "categories": [
+    "marketing",
+    "layout"
+  ],
   "type": "registry:component"
 }

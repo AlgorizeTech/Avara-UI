@@ -1179,8 +1179,11 @@
       "type": "registry:component",
       "title": "Globe",
       "author": "AlgorizeTech",
-      "description": "TODO: describe globe. Generated placeholder.",
-      "categories": [],
+      "description": "An interactive 3D WebGL globe visualization with location markers, arc curves, and rotation controls. Use it for global presence and location showcases.",
+      "categories": [
+        "data-display",
+        "marketing"
+      ],
       "dependencies": [],
       "registryDependencies": [
         "utils"
@@ -1370,8 +1373,11 @@
       "type": "registry:component",
       "title": "Homepage Hero",
       "author": "AlgorizeTech",
-      "description": "TODO: describe homepage-hero. Generated placeholder.",
-      "categories": [],
+      "description": "A feature-rich hero section with animated typing text, interactive CLI copy badge, gradient action buttons, and feature list.",
+      "categories": [
+        "marketing",
+        "layout"
+      ],
       "dependencies": [
         "framer-motion",
         "lucide-react"
@@ -1392,8 +1398,12 @@
       "type": "registry:component",
       "title": "Horizontal Rail",
       "author": "AlgorizeTech",
-      "description": "TODO: describe horizontal-rail. Generated placeholder.",
-      "categories": [],
+      "description": "A horizontal sliding rail layout with smooth drag inertia, snapping cards, and navigation controls. Use it for showcasing products, media cards, or horizontal content.",
+      "categories": [
+        "layout",
+        "scroll",
+        "media"
+      ],
       "dependencies": [
         "framer-motion"
       ],

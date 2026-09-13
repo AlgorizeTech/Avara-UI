@@ -3,7 +3,7 @@
   "name": "globe",
   "title": "Globe",
   "author": "AlgorizeTech",
-  "description": "TODO: describe globe. Generated placeholder.",
+  "description": "An interactive 3D WebGL globe visualization with location markers, arc curves, and rotation controls. Use it for global presence and location showcases.",
   "dependencies": [],
   "registryDependencies": [
     "utils"
@@ -16,6 +16,9 @@
       "target": "components/custom/blocks/GlobeBlock.tsx"
     }
   ],
-  "categories": [],
+  "categories": [
+    "data-display",
+    "marketing"
+  ],
   "type": "registry:component"
 }
