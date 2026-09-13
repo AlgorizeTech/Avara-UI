@@ -7,7 +7,7 @@ A collection of highly-converting, responsive pricing sections. Whether you need
 
 <InjectablePropNote prop="linkComponent" component="PricingCards" />
 
-`Pricing.tsx` exports five independent layouts — `PricingCards`, `PricingBuilder`, `PricingTable`, `PricingSlider` and `PricingTypographic` — that share one color engine. Pick the layout that matches your funnel, then use the theme control above the gallery to see the accent cascade through badges, gradients, glows and buttons.
+`Pricing.tsx` exports six independent layouts — `PricingCards`, `PricingBuilder`, `PricingTable`, `PricingSlider`, `PricingTypographic` and `PricingPlans` — that share one color engine. Pick the layout that matches your funnel, then use the theme control above the gallery to see the accent cascade through badges, gradients, glows and buttons.
 
 export const pricingData = `const data: PricingData = {
   tabs: [
@@ -321,7 +321,7 @@ export default function PricingMenu() {
   return <PricingTypographic packages={packages} color="zinc" counting={true} />;
 }`;
 
-export const usagePlans = `import PricingPlans, { type PricingServiceOption } from "@/components/custom/blocks/PricingPlans";
+export const usagePlans = `import { PricingPlans, type PricingServiceOption } from "@/components/custom/blocks/Pricing";
 
 const services: PricingServiceOption[] = [
   {
@@ -521,7 +521,7 @@ export default function InteractiveChecklistPricing() {
       ],
       props: { layout: "plans", counting: true },
       usage: usagePlans,
-      code: extractCode("src/components/custom/blocks/PricingPlans.tsx"),
+      code: extractCode("src/components/custom/blocks/Pricing.tsx"),
     },
   ]}
 />
@@ -792,6 +792,34 @@ export default function InteractiveChecklistPricing() {
         </td>
         <td>
           Accent for the active row, price and underline treatment.
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <code>PricingPlans</code>
+        </td>
+        <td>
+          <code>services</code>
+        </td>
+        <td>
+          <code>PricingServiceOption[]</code>
+        </td>
+        <td>
+          List of selectable service items with pricing, icons and feature bullet points.
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <code>PricingPlans</code>
+        </td>
+        <td>
+          <code>color</code>
+        </td>
+        <td>
+          <code>PricingColor</code>
+        </td>
+        <td>
+          Accent theme color for selected checkboxes, total calculation and CTA button.
         </td>
       </tr>
     </tbody>
