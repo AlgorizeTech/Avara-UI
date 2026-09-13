@@ -28,6 +28,7 @@ export default function ProgressDemo({
   variant = "glow",
   barSize = "md",
   color = "primary",
+  showValue = true,
   showAll,
   example = "field",
 }: {
@@ -36,6 +37,7 @@ export default function ProgressDemo({
   variant?: ProgressVariant;
   barSize?: ProgressSize;
   color?: string;
+  showValue?: boolean;
   /** Render-all modes: every visual variant, or every bar size, in one frame. */
   showAll?: "variants" | "sizes";
   /** "field" is the classic labelled layout; the others show narrower slices. */
@@ -214,6 +216,7 @@ export default function ProgressDemo({
           color={color}
           barSize={barSize}
           circleSize={140}
+          showValue={showValue}
         />
       </div>
     );
@@ -229,6 +232,7 @@ export default function ProgressDemo({
           color={color}
           barSize={barSize}
           circleSize={160}
+          showValue={showValue}
         >
           <span className="text-3xl font-bold tabular-nums">{value}</span>
           <span className="text-[11px] font-medium uppercase tracking-wide text-muted-foreground">
@@ -269,6 +273,7 @@ export default function ProgressDemo({
           label="Database Synchronization Pipeline"
           value={value}
           max={max}
+          showValue={showValue}
         >
           <Progress
             value={value}
