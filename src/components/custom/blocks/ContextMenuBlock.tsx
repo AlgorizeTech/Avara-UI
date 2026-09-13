@@ -115,9 +115,18 @@ export function ContextMenuTrigger({ className, children, ...props }: ContextMen
 // ==========================================
 // 4. CONTENT (Portal Renderer with Collision)
 // ==========================================
-export type ContextMenuContentProps = React.HTMLAttributes<HTMLDivElement>
+export type ContextMenuVariant = "default" | "minimal" | "glass";
 
-export function ContextMenuContent({ className, children, ...props }: ContextMenuContentProps) {
+export interface ContextMenuContentProps extends React.HTMLAttributes<HTMLDivElement> {
+  variant?: ContextMenuVariant;
+}
+
+export function ContextMenuContent({
+  variant = "default",
+  className,
+  children,
+  ...props
+}: ContextMenuContentProps) {
   const context = useContext(ContextMenuContext);
   if (!context) throw new Error("ContextMenuContent must be used within a ContextMenu");
 
@@ -220,31 +229,40 @@ export function ContextMenuContent({ className, children, ...props }: ContextMen
     };
   }, [open, setOpen]);
 
-  if (!portalTarget || !open) return <span ref={setAnchor} hidden />;
+  const variantClasses: Record<ContextMenuVariant, string> = {
+    default: "border-border bg-white dark:bg-[#050505] shadow-md",
+    minimal: "border-border/50 bg-card/95 shadow-sm backdrop-blur-xs",
+    glass: "border-white/20 dark:border-white/10 bg-white/80 dark:bg-zinc-950/80 backdrop-blur-xl shadow-xl",
+  };
+
+  if (!portalTarget || !open) {
+    return <span ref={setAnchor} className="hidden" style={{ display: "none" }} aria-hidden="true" />;
+  }
 
   return (
     <>
-      <span ref={setAnchor} hidden />
+      <span ref={setAnchor} className="hidden" style={{ display: "none" }} aria-hidden="true" />
       {createPortal(
-    <div
-      ref={contentRef}
-      role="menu"
-      style={{
-        top: adjustedCoords.y,
-        left: adjustedCoords.x,
-        opacity: visible ? 1 : 0,
-      }}
-      className={cn(
-        "fixed z-[9999] w-48 sm:w-64 max-w-[calc(100vw-24px)] max-h-[calc(100vh-24px)] overflow-y-auto rounded-md border border-border bg-white dark:bg-[#050505] p-1 shadow-md transition-opacity duration-150 text-xs sm:text-sm",
-        className
-      )}
-      onClick={(e) => e.stopPropagation()}
-      onContextMenu={(e) => e.preventDefault()} // Prevent nesting native menus
-      {...props}
-    >
-      {children}
-    </div>,
-    portalTarget
+        <div
+          ref={contentRef}
+          role="menu"
+          style={{
+            top: adjustedCoords.y,
+            left: adjustedCoords.x,
+            opacity: visible ? 1 : 0,
+          }}
+          className={cn(
+            "fixed z-[9999] w-48 sm:w-64 max-w-[calc(100vw-24px)] max-h-[calc(100vh-24px)] overflow-y-auto rounded-md border p-1 transition-opacity duration-150 text-xs sm:text-sm",
+            variantClasses[variant],
+            className
+          )}
+          onClick={(e) => e.stopPropagation()}
+          onContextMenu={(e) => e.preventDefault()} // Prevent nesting native menus
+          {...props}
+        >
+          {children}
+        </div>,
+        portalTarget
       )}
     </>
   );
@@ -275,7 +293,7 @@ export function ContextMenuItem({ className, inset, disabled, onClick, children,
       className={cn(
         "relative flex cursor-default select-none items-center rounded-sm px-2 py-1.5 text-sm outline-none transition-colors",
         inset && "pl-8",
-        disabled ? "opacity-50 pointer-events-none cursor-not-allowed" : "hover:bg-indigo-50 dark:hover:bg-indigo-500/10 hover:text-indigo-600 dark:hover:text-indigo-400 text-foreground",
+        disabled ? "opacity-50 pointer-events-none cursor-not-allowed" : "hover:bg-primary/10 hover:text-primary text-foreground",
         className
       )}
       {...props}
