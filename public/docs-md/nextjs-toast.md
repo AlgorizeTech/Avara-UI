@@ -4,7 +4,7 @@ A robust, highly-animated notification system. Popups and alerts are essential f
 
 This headless-style Toast component handles its own global state via Context, uses **GSAP** for elastic entrance/exit animations, automatically handles stacking, and integrates flawlessly with your dynamic theme engine.
 
-Click the trigger buttons in each preview to fire a toast. Toasts auto-dismiss after 5 seconds — hover to keep one open, or click the `X` to dismiss it manually.
+Click the trigger buttons in each preview to fire a toast. Toasts auto-dismiss after 5 seconds — hover to pause the timer, or click the `X` to dismiss it manually. Turn on `stack` to pile them up like a notification centre instead of listing them.
 
 export const usageDefault = `"use client";
 
@@ -195,6 +195,87 @@ export default function GlowToasts() {
   );
 }`;
 
+export const usageGlass = `"use client";
+
+const TRIGGER =
+  "px-6 py-2.5 text-white text-sm font-bold rounded-xl transition-colors shadow-sm";
+
+function Triggers() {
+  const { toast } = useToast();
+
+  const types = [
+    { type: "success", label: "Success", title: "Changes saved", description: "Your profile has been updated.", className: "bg-emerald-600 hover:bg-emerald-700" },
+    { type: "error", label: "Error", title: "Connection failed", description: "Could not connect to the database.", className: "bg-red-600 hover:bg-red-700" },
+    { type: "warning", label: "Warning", title: "Storage almost full", description: "You've used 92% of your quota.", className: "bg-amber-500 hover:bg-amber-600" },
+    { type: "info", label: "Info", title: "Update available", description: "A new version is ready to install.", className: "bg-blue-600 hover:bg-blue-700" },
+    { type: "default", label: "Default", title: "Message sent", description: undefined, className: "bg-zinc-700 hover:bg-zinc-800" },
+  ] as const;
+
+  return (
+    
+      {types.map((t) => (
+        
+            toast({ title: t.title, description: t.description, type: t.type })
+          }
+          className={\`\${TRIGGER} \${t.className}\`}
+        >
+          {t.label}
+        
+      ))}
+    
+  );
+}
+
+// useToast() reads the provider context, so a trigger has to render INSIDE
+//  — calling it outside throws. In a real app the provider
+// wraps your whole tree once, in layout.tsx.
+export default function GlassToasts() {
+  return (
+    // variant lives on the provider, so every toast it renders picks it up.
+
+  );
+}`;
+
+export const usageStack = `"use client";
+
+const TRIGGER =
+  "px-6 py-2.5 text-white text-sm font-bold rounded-xl transition-colors shadow-sm";
+
+function Triggers() {
+  const { toast } = useToast();
+
+  const types = [
+    { type: "success", label: "Success", title: "Changes saved", description: "Your profile has been updated.", className: "bg-emerald-600 hover:bg-emerald-700" },
+    { type: "warning", label: "Warning", title: "Storage almost full", description: "You've used 92% of your quota.", className: "bg-amber-500 hover:bg-amber-600" },
+    { type: "error", label: "Error", title: "Connection failed", description: "Could not connect to the database.", className: "bg-red-600 hover:bg-red-700" },
+    { type: "info", label: "Info", title: "Update available", description: "A new version is ready to install.", className: "bg-blue-600 hover:bg-blue-700" },
+  ] as const;
+
+  return (
+    
+      {types.map((t) => (
+        
+            toast({ title: t.title, description: t.description, type: t.type })
+          }
+          className={\`\${TRIGGER} \${t.className}\`}
+        >
+          {t.label}
+        
+      ))}
+    
+  );
+}
+
+// useToast() reads the provider context, so a trigger has to render INSIDE
+//  — calling it outside throws. In a real app the provider
+// wraps your whole tree once, in layout.tsx.
+export default function StackedToasts() {
+  return (
+    // stack piles toasts behind the newest one; hover the pile to fan it out.
+
+  );
+}`;
+
 export const usageMinimal = `"use client";
 
 const TRIGGER =
@@ -287,8 +368,10 @@ Discover the Toast component's notification features, including auto-dismissal, 
           "default" | "glow" | "glass" | "minimal"
 
           "default"
-        
-        Determines the global visual styling of the toast cards.
+
+          Determines the global visual styling of the toast cards.{" "}
+          glow adds a coloured halo, glass a frosted,
+          type-tinted card, minimal a thin accent bar.
 
           color
 
@@ -298,6 +381,16 @@ Discover the Toast component's notification features, including auto-dismissal, 
 
           Applies the global color theme to the glow shadows and border accents.
           Accepts hex codes.
+
+          stack
+
+          boolean
+
+          false
+
+          Piles toasts on top of each other with the newest in front and older
+          ones peeking out behind it. Hovering the pile fans it out into a list
+          and pauses auto-dismiss until the pointer leaves.
 
 ### `toast(options)` Properties
 
