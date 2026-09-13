@@ -139,6 +139,24 @@ export const META: Record<string, ItemMeta> = {
     categories: ["forms", "authentication"],
     docs: "Pasting a full code into any cell distributes the digits across all cells.",
   },
+  folder: {
+    description:
+      "A tactile folder — skeleton cards or your own photos tuck behind a frosted-glass pocket and fan out into an arc on hover. Use it for file groups, galleries and drag-and-drop upload targets.",
+    categories: ["data-display"],
+    docs: "Named exports: Folder, SkeletonCard (plus FolderFile / FolderProps types). `files` is { thumb?, name?, progress? }[]; without files, `peek` skeleton cards show. `color` tints body, pocket, icon and cards via OKLCH; `icon` is a lucide component. Hover, tap or focus opens the fan; past five files it pages with arrows or by dragging a card. `interactive` adds drag-and-drop + click-to-browse with `onFiles`, `progress` and `onRemoveFile`. Pulls in `tooltip` for file-name hovers.",
+  },
+  "selection-frame": {
+    description:
+      "That box Figma draws around a selected layer — corner handles and a crisp accent stroke — around any text span or block. Use it to spotlight a word, a card or a screenshot region in docs and marketing.",
+    categories: ["typography"],
+    docs: "Named export: SelectionFrame (also exports the FrameHandles and FrameLine types). Wrap any child; it is measured live with a ResizeObserver. `handles` is square | circle, `line` is solid | dashed | long, `dash` overrides the [dash, gap] pair, `animated` marches dashed/long strokes and pops the handles in, `color` is any CSS colour (Figma blue default), `radius` and `padding` are pixels, and `inline={false}` makes it block-level. Respects prefers-reduced-motion.",
+  },
+  "apple-select": {
+    description:
+      "An iOS-style text selection rendered from a fixed character range — translucent highlight with lollipop handles on either end. Use it in docs, tutorials and marketing copy to point at part of a sentence.",
+    categories: ["typography"],
+    docs: "Named export: AppleSelect. `text` is the full string and `selection` is a `[start, end]` character range (end exclusive, like String.slice). The range is fixed by the author, not draggable. `color` takes any CSS colour, `handles={false}` drops the lollipops, and `animate` fades the highlight in on mount. Renders a <p>; other HTML attributes are forwarded to it.",
+  },
   kbd: {
     description:
       "An inline keyboard-key badge for rendering shortcuts. Use it in menus, tooltips, and docs where a keystroke needs to look pressable.",
@@ -453,6 +471,18 @@ export const META: Record<string, ItemMeta> = {
     categories: ["marketing", "navigation", "layout"],
     docs: "Named export: Footer. Accepts `variant` (4 responsive variants: simple-centered, glass-dock, neon-glow-pulse, quantum-particle-beam), `brandName`, `tagline`, `logo`, `className`. All variants adapt across mobile, tablet, and desktop screens.",
   },
+  "book-appointment": {
+    description:
+      "A booking flow in the glass style: a day strip, time slots, a button that reads back the choice, and a confirmation that draws itself in. Use it for clinics, salons, consultations — any page that ends in an appointment.",
+    categories: ["forms", "marketing"],
+    docs: "Named exports: Booker, StarRating. `Booker` is a compound component — put `Booker.Days`, `Booker.Slots`, `Booker.Submit` and `Booker.Confirmation` inside it in any layout; it holds the chosen day and slot and calls `onBook`. Pair with `ProfilePage` and `GlassPanel` from the profile-page item for the frosted panels.",
+  },
+  "profile-page": {
+    description:
+      "A person's profile as a glass bento page: an aurora backdrop, one frosted panel recipe in four shapes, and a 24-hour dial that shows their working window live. Use it for team directories, member pages and public profiles.",
+    categories: ["layout", "marketing"],
+    docs: "Named exports: ProfilePage, GlassPanel, WorkdayDial, useLocalTime. `ProfilePage` is the backdrop and 12-column grid; place `GlassPanel`s inside with `shape` (slab, tile, disc, capsule) and column spans. `WorkdayDial` takes `timeZone`, `start`, `end`, `place`, `name`.",
+  },
   "product-details": {
     description:
       "A collection of 4 production-ready, high-converting, fully responsive E-commerce Product Details components featuring split galleries, floating cards, bento hero showcases, and color-synced image previews.",
@@ -550,7 +580,7 @@ export const META: Record<string, ItemMeta> = {
     description:
       "A provider-based toast system with six screen positions, action buttons and auto-dismiss. Use it for transient confirmations triggered from anywhere in the tree.",
     categories: ["feedback"],
-    docs: "Named exports: ToastProvider, useToast, getThemeStyles. Wrap your app in ToastProvider, then call `toast()` from useToast. Types: success | error | info | warning | default. Set `duration` to 0 to require manual dismissal. `sonner` does the same job with a stacked look and no provider.",
+    docs: "Named exports: ToastProvider, useToast, getThemeStyles. Wrap your app in ToastProvider, then call `toast()` from useToast. Types: success | error | info | warning | default; `variant` is default | glow | glass | minimal. Set `stack` on the provider to pile toasts behind the newest one (hover fans them out). Set `duration` to 0 to require manual dismissal; hovering pauses the timer. `sonner` does the same job with a module-level API and no provider.",
   },
   sonner: {
     description:
