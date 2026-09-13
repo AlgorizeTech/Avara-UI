@@ -187,7 +187,7 @@ function BookerDays({ days: daysProp, unavailable, className }: BookerDaysProps)
                   ? "bg-[#1d1d1f] text-white dark:bg-white dark:text-[#1d1d1f]"
                   : off
                     ? "text-black/30 line-through dark:text-white/30"
-                    : "hover:bg-white/70 dark:hover:bg-white/10",
+                    : "hover:bg-black/[0.05] dark:hover:bg-white/10",
               )}
             >
               <span className={cn("text-[10px] uppercase", selected ? "opacity-70" : "text-black/50 dark:text-white/50")}>
@@ -232,7 +232,7 @@ function BookerSlots({ label, slots, className }: BookerSlotsProps) {
                   ? "border-transparent bg-[#1d1d1f] text-white dark:bg-white dark:text-[#1d1d1f]"
                   : s.taken
                     ? "border-transparent text-black/30 line-through dark:text-white/30"
-                    : "border-white/70 bg-white/50 hover:bg-white disabled:opacity-50 dark:border-white/10 dark:bg-white/5 dark:hover:bg-white/10",
+                    : "border-black/10 bg-black/[0.03] hover:bg-black/[0.06] disabled:opacity-50 dark:border-white/15 dark:bg-white/5 dark:hover:bg-white/10",
               )}
             >
               {s.label}
