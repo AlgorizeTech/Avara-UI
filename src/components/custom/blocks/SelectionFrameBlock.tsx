@@ -1,0 +1,164 @@
+"use client";
+
+import { cn } from "@/lib/utils";
+import { motion, useReducedMotion } from "framer-motion";
+import React, { useLayoutEffect, useRef, useState } from "react";
+
+export type FrameHandles = "square" | "circle";
+export type FrameLine = "solid" | "dashed" | "long";
+
+export interface SelectionFrameProps {
+  /** The content to frame — measured live, so it can change size freely. */
+  children: React.ReactNode;
+  /** Corner handle shape. Default "square". */
+  handles?: FrameHandles;
+  /** Stroke style. Default "solid". "dashed" and "long" both march when animated. */
+  line?: FrameLine;
+  /** Override the [dash, gap] px pair a non-solid `line` resolves to. */
+  dash?: [number, number];
+  /** Marching ants — only applies to "dashed" / "long" lines. Handles always pop in. Default false. */
+  animated?: boolean;
+  /** Accent colour. Default Figma blue. */
+  color?: string;
+  /** Frame corner radius. Default 0. */
+  radius?: number;
+  /** Gap between the content and the frame. Default 4. */
+  padding?: number;
+  /** Render inline (for text spans) instead of block. Default true. */
+  inline?: boolean;
+  className?: string;
+}
+
+const STROKE = 1.5;
+
+const LINE_DASH: Record<FrameLine, [number, number] | undefined> = {
+  solid: undefined,
+  dashed: [4, 4],
+  long: [10, 6],
+};
+
+export function SelectionFrame({
+  children,
+  handles = "square",
+  line = "solid",
+  dash,
+  animated = false,
+  color = "#0d99ff",
+  radius = 0,
+  padding = 4,
+  inline = true,
+  className,
+}: SelectionFrameProps) {
+  const ref = useRef<HTMLSpanElement>(null);
+  const [size, setSize] = useState({ w: 0, h: 0 });
+  const reduceMotion = useReducedMotion();
+
+  useLayoutEffect(() => {
+    const el = ref.current;
+    if (!el) return;
+    const ro = new ResizeObserver(() => setSize({ w: el.offsetWidth, h: el.offsetHeight }));
+    ro.observe(el);
+    setSize({ w: el.offsetWidth, h: el.offsetHeight });
+    return () => ro.disconnect();
+  }, []);
+
+  // The frame box sits `padding` outside the content, stroke centred on its edge.
+  const fw = size.w + padding * 2;
+  const fh = size.h + padding * 2;
+  const resolvedDash = dash ?? LINE_DASH[line];
+  const period = resolvedDash ? resolvedDash[0] + resolvedDash[1] : 0;
+
+  // Marching ants need a dash pattern, so `animated` with a solid stroke is
+  // just a static frame with animated corner handles. Reduced motion disables
+  // it as well, since the march is an indefinite loop.
+  const marching = animated && !!resolvedDash && !reduceMotion;
+  const animateHandles = animated && !reduceMotion;
+
+  // The rect is drawn inset by STROKE/2 so its stroke centres inside the SVG
+  // box — its visible corner tip is at (STROKE/2, STROKE/2), not (0, 0). Place
+  // the handles on those centreline corners; using the box corners instead
+  // leaves every handle 0.75px diagonally outward from the tip it marks.
+  const half = STROKE / 2;
+  const corners: Array<[string, number, number]> = [
+    ["tl", half, half],
+    ["tr", fw - half, half],
+    ["bl", half, fh - half],
+    ["br", fw - half, fh - half],
+  ];
+
+  const handleSize = handles === "circle" ? 8 : 7;
+
+  return (
+    <span
+      className={cn("relative", inline ? "inline-block" : "block", className)}
+      style={{ lineHeight: inline ? undefined : 0 }}
+    >
+      <span ref={ref} className={cn(inline ? "inline-block" : "block")}>
+        {children}
+      </span>
+
+      {fw > 0 && (
+        <>
+          {/* frame */}
+          <svg
+            className="absolute pointer-events-none overflow-visible"
+            width={fw}
+            height={fh}
+            style={{ left: -padding, top: -padding }}
+            aria-hidden
+          >
+            <motion.rect
+              x={STROKE / 2}
+              y={STROKE / 2}
+              width={Math.max(0, fw - STROKE)}
+              height={Math.max(0, fh - STROKE)}
+              rx={radius}
+              fill="none"
+              stroke={color}
+              strokeWidth={STROKE}
+              strokeDasharray={resolvedDash ? `${resolvedDash[0]} ${resolvedDash[1]}` : undefined}
+              {...(marching
+                ? {
+                    animate: { strokeDashoffset: [0, -period] },
+                    transition: { duration: period * 0.075, repeat: Infinity, ease: "linear" },
+                  }
+                : {})}
+            />
+          </svg>
+
+          {/* Corner handles. boxSizing: border-box is what keeps these centred on
+              their corner point: without it the border adds outside the declared
+              width/height, so the -handleSize/2 margin offset undershoots and the
+              handle renders visibly off-centre from the true corner. */}
+          {corners.map(([key, cx, cy], i) => (
+            <motion.span
+              key={key}
+              aria-hidden
+              className="absolute pointer-events-none bg-white dark:bg-zinc-950"
+              initial={animateHandles ? { scale: 0, opacity: 0 } : false}
+              animate={animateHandles ? { scale: 1, opacity: 1 } : undefined}
+              transition={{
+                type: "spring",
+                stiffness: 600,
+                damping: 24,
+                delay: animateHandles ? 0.28 + i * 0.05 : 0,
+              }}
+              style={{
+                left: cx - padding,
+                top: cy - padding,
+                width: handleSize,
+                height: handleSize,
+                marginLeft: -handleSize / 2,
+                marginTop: -handleSize / 2,
+                boxSizing: "border-box",
+                border: `${STROKE}px solid ${color}`,
+                borderRadius: handles === "circle" ? "9999px" : 1,
+                boxShadow: "0 1px 2px rgba(0,0,0,0.12)",
+              }}
+            />
+          ))}
+        </>
+      )}
+    </span>
+  );
+}
