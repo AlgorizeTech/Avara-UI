@@ -74,6 +74,7 @@ const COMPONENT_META: Record<
 	"date-picker": { countText: "Calendar Input", illustrationType: "date-picker" },
 	dialog: { countText: "Modal Dialog", illustrationType: "dialog" },
 	drawer: { countText: "Slideover Sheet", illustrationType: "drawer" },
+	folder: { countText: "Tactile File Folder", illustrationType: "folder" },
 	form: { countText: "Validated Forms", illustrationType: "form" },
 	"half-stars": { countText: "Rating Stars", illustrationType: "half-stars" },
 	"hero-video-player": { countText: "Video & Audio Players", illustrationType: "hero-videoplayer" },
@@ -1904,6 +1905,18 @@ function MiniatureIllustration({
 							<span className="absolute left-1/2 -translate-x-1/2 -bottom-[3px] size-[4px] rounded-full bg-primary" />
 						</span>
 						<span> and drag the handles.</span>
+					</div>
+				)}
+
+				{type === "folder" && (
+					<div className="w-full flex items-center justify-center my-auto">
+						<div className="relative w-16 h-12">
+							<div className="absolute left-0 top-0 w-7 h-3 rounded-t-md bg-sky-200 dark:bg-sky-900" />
+							<div className="absolute inset-x-0 top-2 bottom-0 rounded-md bg-sky-200 dark:bg-sky-900" />
+							<div className="absolute left-1/2 -translate-x-1/2 top-3 w-7 h-8 -rotate-6 rounded-sm bg-white shadow-sm" />
+							<div className="absolute left-1/2 -translate-x-1/2 top-2.5 w-7 h-8 rotate-3 rounded-sm bg-white shadow-sm" />
+							<div className="absolute inset-x-0 bottom-0 h-6 rounded-md bg-sky-300/90 dark:bg-sky-800/90 backdrop-blur-[2px] shadow-inner" />
+						</div>
 					</div>
 				)}
 
