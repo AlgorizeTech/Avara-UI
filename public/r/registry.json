@@ -1143,6 +1143,32 @@
       "docs": "Named exports: Flowchart, FlowCanvas, FlowNode, FlowConnection, useFlowchart. Nodes declare `connectedPaths`; setting the active path highlights every node and connection on it. Positions are authored by you — there is no auto-layout."
     },
     {
+      "name": "folder",
+      "type": "registry:component",
+      "title": "Folder",
+      "author": "AlgorizeTech",
+      "description": "A tactile folder — skeleton cards or your own photos tuck behind a frosted-glass pocket and fan out into an arc on hover. Use it for file groups, galleries and drag-and-drop upload targets.",
+      "categories": [
+        "data-display"
+      ],
+      "dependencies": [
+        "framer-motion",
+        "lucide-react"
+      ],
+      "registryDependencies": [
+        "https://algorize-ui.vercel.app/r/tooltip.json",
+        "utils"
+      ],
+      "files": [
+        {
+          "path": "src/components/custom/blocks/FolderBlock.tsx",
+          "type": "registry:component",
+          "target": "components/custom/blocks/FolderBlock.tsx"
+        }
+      ],
+      "docs": "Named exports: Folder, SkeletonCard (plus FolderFile / FolderProps types). `files` is { thumb?, name?, progress? }[]; without files, `peek` skeleton cards show. `color` tints body, pocket, icon and cards via OKLCH; `icon` is a lucide component. Hover, tap or focus opens the fan; past five files it pages with arrows or by dragging a card. `interactive` adds drag-and-drop + click-to-browse with `onFiles`, `progress` and `onRemoveFile`. Pulls in `tooltip` for file-name hovers."
+    },
+    {
       "name": "footer",
       "type": "registry:component",
       "title": "Footer",
@@ -2269,6 +2295,29 @@
         }
       ],
       "docs": "Named export: ProductDetails. Accepts `variant` (4 variants: modern-split-gallery, floating-card-glass, bento-editorial-showcase, color-sync-gallery), `title`, `price`, `originalPrice`, `description`, `className`. Adaptable across mobile, tablet, and desktop viewports."
+    },
+    {
+      "name": "profile-page",
+      "type": "registry:component",
+      "title": "Profile Page",
+      "author": "AlgorizeTech",
+      "description": "A person's profile as a glass bento page: an aurora backdrop, one frosted panel recipe in four shapes, and a 24-hour dial that shows their working window live. Use it for team directories, member pages and public profiles.",
+      "categories": [
+        "layout",
+        "marketing"
+      ],
+      "dependencies": [],
+      "registryDependencies": [
+        "utils"
+      ],
+      "files": [
+        {
+          "path": "src/components/custom/blocks/ProfilePageBlock.tsx",
+          "type": "registry:component",
+          "target": "components/custom/blocks/ProfilePageBlock.tsx"
+        }
+      ],
+      "docs": "Named exports: ProfilePage, GlassPanel, WorkdayDial, useLocalTime. `ProfilePage` is the backdrop and 12-column grid; place `GlassPanel`s inside with `shape` (slab, tile, disc, capsule) and column spans. `WorkdayDial` takes `timeZone`, `start`, `end`, `place`, `name`."
     },
     {
       "name": "progress",
