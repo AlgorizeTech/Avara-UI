@@ -292,16 +292,16 @@ import { ToastProvider } from "@/components/custom/blocks/ToastBlock";
 import { useToast } from "@/components/custom/blocks/toast-context";
 
 const TRIGGER =
-  "px-5 py-2.5 rounded-full border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 text-zinc-900 dark:text-zinc-100 text-sm font-semibold hover:bg-zinc-100 dark:hover:bg-zinc-800 transition-colors shadow-sm";
+  "px-6 py-2.5 text-white text-sm font-bold rounded-xl transition-colors shadow-sm";
 
 function Triggers() {
   const { toast } = useToast();
 
   const types = [
-    { type: "success", label: "Success", title: "Changes saved", description: "Your profile has been updated." },
-    { type: "warning", label: "Warning", title: "Storage almost full", description: "You've used 92% of your quota." },
-    { type: "error", label: "Error", title: "Connection failed", description: "Could not connect to the database." },
-    { type: "info", label: "Info", title: "Update available", description: "A new version is ready to install." },
+    { type: "success", label: "Success", title: "Changes saved", description: "Your profile has been updated.", className: "bg-emerald-600 hover:bg-emerald-700" },
+    { type: "warning", label: "Warning", title: "Storage almost full", description: "You've used 92% of your quota.", className: "bg-amber-500 hover:bg-amber-600" },
+    { type: "error", label: "Error", title: "Connection failed", description: "Could not connect to the database.", className: "bg-red-600 hover:bg-red-700" },
+    { type: "info", label: "Info", title: "Update available", description: "A new version is ready to install.", className: "bg-blue-600 hover:bg-blue-700" },
   ] as const;
 
   return (
@@ -312,7 +312,7 @@ function Triggers() {
           onClick={() =>
             toast({ title: t.title, description: t.description, type: t.type })
           }
-          className={TRIGGER}
+          className={\`\${TRIGGER} \${t.className}\`}
         >
           {t.label}
         </button>
