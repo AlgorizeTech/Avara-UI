@@ -48,6 +48,10 @@ const MONTH_NAMES = [
 ];
 const DAY_NAMES = ["Su", "Mo", "Tu", "We", "Th", "Fr", "Sa"];
 
+/** Popover widths: calendar only (18rem) and calendar + time columns (30rem). */
+const POPOVER_PX = 288;
+const WIDE_POPOVER_PX = 480;
+
 const startOfDay = (d: Date) => new Date(d.getFullYear(), d.getMonth(), d.getDate());
 const endOfDay = (d: Date) => new Date(d.getFullYear(), d.getMonth(), d.getDate(), 23, 59, 59, 999);
 const isSameDay = (d1: Date, d2: Date) =>
@@ -116,6 +120,13 @@ export const DatePickerBlock = forwardRef<HTMLDivElement, DatePickerBlockProps>(
     // step, and follows the time columns even before a day has been chosen, so
     // choosing a time first and a day second works in either order.
     const [pendingTime, setPendingTime] = useState(() => roundToStep(new Date(), minuteStep));
+    // With time columns the popover can go wide and put them to the right of
+    // the calendar — but only when the viewport has room for that width, so it
+    // never runs off-screen in a narrow column or on a phone. `alignRight`
+    // flips the popover to hang from the trigger's right edge when that is the
+    // side with space.
+    const [sideLayout, setSideLayout] = useState(false);
+    const [alignRight, setAlignRight] = useState(false);
     const containerRef = useRef<HTMLDivElement>(null);
     const { theme, style } = getThemeStyles(color);
 
@@ -147,6 +158,30 @@ export const DatePickerBlock = forwardRef<HTMLDivElement, DatePickerBlockProps>(
         setViewDate(value);
       }
     }, [isOpen, value]);
+
+    // Measure the room on either side of the trigger whenever the popover opens
+    // or the window resizes, and pick the widest layout that fits on-screen.
+    useEffect(() => {
+      if (!isOpen) return;
+      const el = containerRef.current;
+      if (!el) return;
+      const win = el.ownerDocument.defaultView ?? window;
+      const MARGIN = 16;
+      const measure = () => {
+        const rect = el.getBoundingClientRect();
+        const roomRight = win.innerWidth - rect.left - MARGIN;
+        const roomLeft = rect.right - MARGIN;
+        const wide = showTime && (roomRight >= WIDE_POPOVER_PX || roomLeft >= WIDE_POPOVER_PX);
+        const need = wide ? WIDE_POPOVER_PX : POPOVER_PX;
+        setSideLayout(wide);
+        // Hang from the right edge only when the left-anchored popover would
+        // overflow the viewport and the other side actually has the room.
+        setAlignRight(roomRight < need && roomLeft >= need);
+      };
+      measure();
+      win.addEventListener("resize", measure);
+      return () => win.removeEventListener("resize", measure);
+    }, [showTime, isOpen]);
 
     // --- Calendar Generation ---
     const currentMonth = viewDate.getMonth();
@@ -304,6 +339,22 @@ export const DatePickerBlock = forwardRef<HTMLDivElement, DatePickerBlockProps>(
 
     const styles = getVariantStyles();
 
+    const timeHeader = (
+      <div className="flex items-center justify-between mb-2">
+        <span className="flex items-center gap-1.5 text-[10px] font-bold uppercase tracking-wider text-muted-foreground">
+          <Clock className="w-3.5 h-3.5" /> Time
+        </span>
+        <span
+          className={cn(
+            "text-xs font-bold tabular-nums",
+            value ? theme.text : "text-muted-foreground",
+          )}
+        >
+          {formatTime(timeSource, timeFormat)}
+        </span>
+      </div>
+    );
+
     return (
       <div
         ref={containerRef}
@@ -360,7 +411,11 @@ export const DatePickerBlock = forwardRef<HTMLDivElement, DatePickerBlockProps>(
         {/* Calendar Popover */}
         <div
           className={cn(
-            "absolute left-0 z-50 overflow-hidden bg-background border border-border rounded-xl shadow-xl transition-all duration-200 ease-out origin-top w-72",
+            "absolute z-50 overflow-hidden bg-background border border-border rounded-xl shadow-xl transition-all duration-200 ease-out origin-top",
+            alignRight ? "right-0" : "left-0",
+            // Never wider than the viewport minus a margin, so a phone still
+            // sees the whole thing.
+            showTime && sideLayout ? "w-[30rem] max-w-[calc(100vw-2rem)]" : "w-72 max-w-[calc(100vw-2rem)]",
             variant === "underlined" ? "top-[100%]" : "top-[calc(100%+8px)]",
             isOpen
               ? "opacity-100 scale-y-100 translate-y-0 pointer-events-auto"
@@ -368,95 +423,109 @@ export const DatePickerBlock = forwardRef<HTMLDivElement, DatePickerBlockProps>(
           )}
         >
           <div className="p-4">
-            {/* Header */}
-            <div className="flex items-center justify-between mb-4">
-              <button
-                onClick={handlePrevMonth}
-                className="p-1.5 rounded-md text-muted-foreground hover:bg-muted transition-colors"
-              >
-                <ChevronLeft className="w-4 h-4" />
-              </button>
-              <div className="text-sm font-bold text-foreground">
-                {MONTH_NAMES[currentMonth]} {currentYear}
-              </div>
-              <button
-                onClick={handleNextMonth}
-                className="p-1.5 rounded-md text-muted-foreground hover:bg-muted transition-colors"
-              >
-                <ChevronRight className="w-4 h-4" />
-              </button>
-            </div>
-
-            {/* Days Header */}
-            <div className="grid grid-cols-7 mb-2">
-              {DAY_NAMES.map((day) => (
-                <div
-                  key={day}
-                  className="text-center text-[10px] font-bold uppercase tracking-wider text-muted-foreground"
-                >
-                  {day}
-                </div>
-              ))}
-            </div>
-
-            {/* Days Grid */}
-            <div className="grid grid-cols-7 gap-1">
-              {/* Empty slots for start of month */}
-              {Array.from({ length: firstDayIndex }).map((_, i) => (
-                <div key={`empty-${i}`} className="w-8 h-8" />
-              ))}
-
-              {/* Actual Days */}
-              {Array.from({ length: daysInMonth }).map((_, i) => {
-                const day = i + 1;
-                const thisDate = new Date(currentYear, currentMonth, day);
-                const isSelected = value && isSameDay(thisDate, value);
-                const isToday = isSameDay(thisDate, today);
-                const isOff = isDayDisabled(thisDate);
-
-                return (
+            <div className={cn(showTime && sideLayout && "flex items-stretch gap-4")}>
+              <div className="min-w-0 flex-1">
+                {/* Header */}
+                <div className="flex items-center justify-between mb-4">
                   <button
-                    key={day}
-                    type="button"
-                    disabled={isOff}
-                    aria-disabled={isOff}
-                    onClick={(e) => handleSelectDate(day, e)}
-                    className={cn(
-                      "w-8 h-8 flex items-center justify-center rounded-full text-sm transition-all duration-200 cursor-pointer mx-auto",
-                      isSelected
-                        ? cn(theme.bg, "font-bold shadow-sm scale-110")
-                        : isToday
-                          ? cn(
-                              "font-bold bg-muted",
-                              theme.text,
-                            )
-                          : "text-foreground font-medium hover:bg-muted",
-                      isOff &&
-                        "text-muted-foreground/40 line-through cursor-not-allowed hover:bg-transparent font-normal",
-                    )}
+                    onClick={handlePrevMonth}
+                    className="p-1.5 rounded-md text-muted-foreground hover:bg-muted transition-colors"
                   >
-                    {day}
+                    <ChevronLeft className="w-4 h-4" />
                   </button>
-                );
-              })}
+                  <div className="text-sm font-bold text-foreground">
+                    {MONTH_NAMES[currentMonth]} {currentYear}
+                  </div>
+                  <button
+                    onClick={handleNextMonth}
+                    className="p-1.5 rounded-md text-muted-foreground hover:bg-muted transition-colors"
+                  >
+                    <ChevronRight className="w-4 h-4" />
+                  </button>
+                </div>
+
+                {/* Days Header */}
+                <div className="grid grid-cols-7 mb-2">
+                  {DAY_NAMES.map((day) => (
+                    <div
+                      key={day}
+                      className="text-center text-[10px] font-bold uppercase tracking-wider text-muted-foreground"
+                    >
+                      {day}
+                    </div>
+                  ))}
+                </div>
+
+                {/* Days Grid */}
+                <div className="grid grid-cols-7 gap-1">
+                  {/* Empty slots for start of month */}
+                  {Array.from({ length: firstDayIndex }).map((_, i) => (
+                    <div key={`empty-${i}`} className="w-8 h-8" />
+                  ))}
+
+                  {/* Actual Days */}
+                  {Array.from({ length: daysInMonth }).map((_, i) => {
+                    const day = i + 1;
+                    const thisDate = new Date(currentYear, currentMonth, day);
+                    const isSelected = value && isSameDay(thisDate, value);
+                    const isToday = isSameDay(thisDate, today);
+                    const isOff = isDayDisabled(thisDate);
+
+                    return (
+                      <button
+                        key={day}
+                        type="button"
+                        disabled={isOff}
+                        aria-disabled={isOff}
+                        onClick={(e) => handleSelectDate(day, e)}
+                        className={cn(
+                          "w-8 h-8 flex items-center justify-center rounded-full text-sm transition-all duration-200 cursor-pointer mx-auto",
+                          isSelected
+                            ? cn(theme.bg, "font-bold shadow-sm scale-110")
+                            : isToday
+                              ? cn(
+                                  "font-bold bg-muted",
+                                  theme.text,
+                                )
+                              : "text-foreground font-medium hover:bg-muted",
+                          isOff &&
+                            "text-muted-foreground/40 line-through cursor-not-allowed hover:bg-transparent font-normal",
+                        )}
+                      >
+                        {day}
+                      </button>
+                    );
+                  })}
+                </div>
+              </div>
+
+              {/* Time — to the right of the calendar when there is room, under
+                  it otherwise. Fixed width so the columns are never squeezed. */}
+              {showTime && sideLayout && (
+                <div className="flex w-44 shrink-0 flex-col border-l border-border pl-4">
+                  {timeHeader}
+                  {/* The picker fills whatever height the calendar gives the
+                      row — absolutely positioned so its long lists never
+                      stretch the popover themselves. */}
+                  <div className="relative flex-1 min-h-32">
+                    <TimePicker
+                      value={timeSource}
+                      onChange={handleTimeChange}
+                      format={timeFormat}
+                      minuteStep={minuteStep}
+                      minTime={minTime}
+                      maxTime={maxTime}
+                      color={color}
+                      className="absolute inset-0 h-auto"
+                    />
+                  </div>
+                </div>
+              )}
             </div>
 
-            {/* Time */}
-            {showTime && (
+            {showTime && !sideLayout && (
               <div className="mt-4 pt-4 border-t border-border">
-                <div className="flex items-center justify-between mb-2">
-                  <span className="flex items-center gap-1.5 text-[10px] font-bold uppercase tracking-wider text-muted-foreground">
-                    <Clock className="w-3.5 h-3.5" /> Time
-                  </span>
-                  <span
-                    className={cn(
-                      "text-xs font-bold tabular-nums",
-                      value ? theme.text : "text-muted-foreground",
-                    )}
-                  >
-                    {formatTime(timeSource, timeFormat)}
-                  </span>
-                </div>
+                {timeHeader}
                 <TimePicker
                   value={timeSource}
                   onChange={handleTimeChange}
@@ -466,20 +535,23 @@ export const DatePickerBlock = forwardRef<HTMLDivElement, DatePickerBlockProps>(
                   maxTime={maxTime}
                   color={color}
                 />
-                <button
-                  type="button"
-                  onClick={(e) => {
-                    e.stopPropagation();
-                    setIsOpen(false);
-                  }}
-                  className={cn(
-                    "mt-3 w-full h-9 rounded-lg text-sm font-bold transition-colors",
-                    theme.bg,
-                  )}
-                >
-                  Done
-                </button>
               </div>
+            )}
+
+            {showTime && (
+              <button
+                type="button"
+                onClick={(e) => {
+                  e.stopPropagation();
+                  setIsOpen(false);
+                }}
+                className={cn(
+                  "mt-3 w-full h-9 rounded-lg text-sm font-bold transition-colors",
+                  theme.bg,
+                )}
+              >
+                Done
+              </button>
             )}
           </div>
         </div>
