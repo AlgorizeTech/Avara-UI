@@ -61,6 +61,14 @@ Discover the advanced capabilities of the `ColorPicker` component:
         
         Callback function fired when color changes.
 
+          format
+
+          "hex" | "rgb" | "hsl"
+
+          "hex"
+        
+        Initial color format displayed in the input field and copy output.
+
           variant
 
           "standalone" | "gradient"
