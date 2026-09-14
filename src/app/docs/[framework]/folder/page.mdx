@@ -10,7 +10,7 @@ export const metadata = {
 
 A tactile folder — unified skeleton cards (or your own photos) tuck behind a frosted-glass front pocket.
 
-The back panel and its tab are one continuous squircle path, the pocket is frosted glass that tilts open in 3D, and the cards inside lift into a shallow arc on hover, tap or focus. Give it a `color` and the pocket, icon and cards all derive their shades from it in OKLCH. Pass `files` with thumbnails to show real photos, names to get hover tooltips, or switch on `interactive` to make it a drag-and-drop upload target with progress bars.
+The back panel and its tab are one continuous squircle path, the pocket is frosted glass that tilts open in 3D, and the cards inside lift into a shallow arc on hover, tap or focus. Give it a `color` and the pocket, icon and cards all derive their shades from it in OKLCH. Pass `files` with thumbnails to show real photos, names to get hover tooltips, or switch on `interactive` to make it a drag-and-drop upload target with progress bars — that example lives on the <DocLink to="file-upload">File Upload</DocLink> page.
 
 Explore the different variations of the Folder — each example shows a live preview with the exact code to copy. Hover a folder to open it.
 
@@ -102,51 +102,6 @@ export default function SummerTrip() {
   return <Folder files={photos} label="Summer trip" count="6 photos" color="#bfdbfe" icon={Camera} />;
 }`;
 
-export const usageUpload = `"use client";
-
-import { Folder, type FolderFile } from "@/components/custom/blocks/FolderBlock";
-import { Image } from "lucide-react";
-import { useState } from "react";
-
-export default function DropZone() {
-  const [files, setFiles] = useState<FolderFile[]>([]);
-  const [progress, setProgress] = useState<number>();
-
-  // Replace the timer with your real upload — set each file's progress and
-  // the overall figure as bytes go out; the bars vanish once they reach 100.
-  const onFiles = (incoming: File[]) => {
-    setFiles((prev) => [
-      ...prev,
-      ...incoming.map((f) => ({
-        name: f.name,
-        progress: 0,
-        thumb: f.type.startsWith("image/") ? URL.createObjectURL(f) : undefined,
-      })),
-    ]);
-    let p = 0;
-    const id = setInterval(() => {
-      p = Math.min(100, p + 4);
-      setProgress(p);
-      setFiles((prev) => prev.map((f) => (f.progress! < 100 ? { ...f, progress: p } : f)));
-      if (p >= 100) clearInterval(id);
-    }, 80);
-  };
-
-  return (
-    <Folder
-      interactive
-      color="#bfdbfe"
-      icon={Image}
-      label="Drop zone"
-      files={files}
-      progress={progress}
-      onFiles={onFiles}
-      onRemoveFile={(i) => setFiles((prev) => prev.filter((_, idx) => idx !== i))}
-      accept="image/*,.pdf"
-    />
-  );
-}`;
-
 <ExampleShowcase
   name="folder"
   colorControl
@@ -227,25 +182,6 @@ export default function DropZone() {
       ],
       props: { example: "photos" },
       usage: usagePhotos,
-    },
-    {
-      title: "Upload target",
-      subheading: "Drop files on the folder or click it to browse — each card and the pocket show upload progress, and an × removes a file.",
-      propNotes: [
-        {
-          lead: "Set",
-          prop: "interactive",
-          effect:
-            "to enable drag-and-drop and click-to-browse. `onFiles` receives the dropped or picked `File[]`, `accept` and `multiple` pass through to the input.",
-        },
-        {
-          prop: "progress",
-          effect:
-            "drives the bar across the pocket (0–100); a per-file `progress` draws a bar on that card. `onRemoveFile` adds an × to each fanned card.",
-        },
-      ],
-      props: { example: "upload" },
-      usage: usageUpload,
     },
   ]}
 />
