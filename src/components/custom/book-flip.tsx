@@ -3,7 +3,9 @@
 import {
     useState,
     useEffect,
+    useLayoutEffect,
     useCallback,
+    useRef,
     forwardRef,
     useImperativeHandle,
 } from "react";
@@ -151,8 +153,8 @@ const DEFAULT_PAGES: PageFlipLeaf[] = [
     },
     {
         id: 6,
-        frontImage: "https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=1200&q=80",
-        backImage: "https://images.unsplash.com/photo-1476514525535-ce74f458149e?auto=format&fit=crop&w=1200&q=80",
+        frontImage: "https://images.unsplash.com/photo-1476820865390-c52aeebb9891?auto=format&fit=crop&w=1200&q=80",
+        backImage: "https://images.unsplash.com/photo-1454496522488-7a8e488e8606?auto=format&fit=crop&w=1200&q=80",
         frontTitle: "Golden Autumn",
         frontSubtitle: "Amber Woods & Crisp Air",
         frontBadge: "Plate 10",
@@ -234,6 +236,30 @@ export const BookFlip = forwardRef<BookFlipHandle, BookFlipProps>(({
 
     const totalLeaves = pages.length;
     const currentTurned = controlledTurnedIndex !== undefined ? controlledTurnedIndex : internalTurned;
+
+    // Leaves that are mid-turn, kept above every other leaf until the
+    // rotation finishes. Without this, turning BACK flickered: the leaf
+    // lifting off the left stack lost its top z-index on the very first
+    // frame (the stack order re-ranks the leaf beneath it as "last turned"),
+    // so the page under it showed through until the rotation carried it
+    // far enough out of plane for 3D depth sorting to take over. Turning
+    // forward never showed it because the flipping leaf keeps the top slot
+    // in the static ordering. A layout effect runs before paint, so the
+    // z-index and the rotation change land in the same frame.
+    const [flipping, setFlipping] = useState<{ from: number; to: number; forward: boolean } | null>(null);
+    const previousTurnedRef = useRef<number>(currentTurned);
+    useLayoutEffect(() => {
+        const previous = previousTurnedRef.current;
+        if (previous === currentTurned) return;
+        previousTurnedRef.current = currentTurned;
+        setFlipping({
+            from: Math.min(previous, currentTurned),
+            to: Math.max(previous, currentTurned),
+            forward: currentTurned > previous,
+        });
+        const timer = setTimeout(() => setFlipping(null), duration * 1000 + 50);
+        return () => clearTimeout(timer);
+    }, [currentTurned, duration]);
 
     const parsedRadius = typeof radius === "number" ? `${radius}px` : radius;
 
@@ -381,6 +407,14 @@ export const BookFlip = forwardRef<BookFlipHandle, BookFlipProps>(({
                         } else if (index === currentTurned) {
                             // Leaf about to flip from right stays on top of right stack
                             zIndex = totalLeaves + 10;
+                        }
+
+                        // A leaf in motion outranks everything for the duration of the
+                        // turn. When several turn at once (goTo), order them the way the
+                        // stack they are landing on will order them, so nothing reshuffles
+                        // when the flight ends.
+                        if (flipping && index >= flipping.from && index < flipping.to) {
+                            zIndex = totalLeaves + 30 + (flipping.forward ? index - flipping.from : flipping.to - index);
                         }
 
                         let leafRotation = isTurned ? -turnAngle : 0;
