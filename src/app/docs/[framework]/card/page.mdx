@@ -821,9 +821,9 @@ export default function ProfileCards({ interactive }: { interactive: boolean }) 
       subheading: "Complete suite of 4 reusable product cards designed for online stores, shopping platforms, and flash deal showcases.",
       propNotes: [
         {
-          prop: "layout",
-          value: '"ecommerce"',
-          effect: "renders 4 distinct e-commerce product card layouts (Best Seller, Color Swatches, Tech Specs & Flash Deal).",
+          prop: "variant",
+          value: '"standard" | "compact" | "horizontal"',
+          effect: "controls layout orientation and sizing across ProductCard variations.",
         },
       ],
       props: { variant: "bordered", layout: "ecommerce" },
