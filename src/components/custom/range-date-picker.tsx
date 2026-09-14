@@ -255,6 +255,9 @@ export function RangeDatePicker({
 
   const theme = colorThemes[color] || colorThemes.primary;
 
+  // Dual month + times stays stacked — three columns would be far too wide.
+  const sideTimes = showTime && !isDual;
+
   const formatStamp = (date: Date | null) =>
     !date ? "" : showTime ? `${formatDateString(date)}, ${formatTime(date, timeFormat)}` : formatDateString(date);
 
@@ -515,63 +518,82 @@ export function RangeDatePicker({
   return (
     <article
       className={cn(
-        "w-full rounded-2xl bg-card border border-border/80 p-5 flex flex-col gap-4 text-foreground select-none overflow-hidden shadow-none mx-auto my-auto",
-        isDual ? "max-w-2xl" : "max-w-sm",
+        "@container/range w-full rounded-2xl bg-card border border-border/80 p-5 flex flex-col gap-4 text-foreground select-none overflow-hidden shadow-none mx-auto my-auto",
+        // A single month with time columns may grow so the columns can sit
+        // beside the calendar; the container query below decides when.
+        isDual ? "max-w-2xl" : showTime ? "max-w-xl" : "max-w-sm",
         disabled && "opacity-60 pointer-events-none",
         className
       )}
     >
-      {/* Calendars Grid Area */}
-      <div className={cn("w-full flex flex-col gap-6", isDual && "sm:flex-row sm:gap-8")}>
-        {/* Left Calendar (Month 1) */}
-        {renderSingleMonthGrid(year1, month1, days1, true, !isDual)}
+      {/* Calendar + (single-month) time columns: stacked, or side by side with
+          the times on the RIGHT once the card is wide enough. */}
+      <div
+        className={cn(
+          "w-full flex flex-col gap-6",
+          sideTimes && "@min-[32rem]/range:flex-row @min-[32rem]/range:gap-0"
+        )}
+      >
+        {/* Calendars Grid Area */}
+        <div className={cn("w-full flex flex-col gap-6 min-w-0", isDual && "sm:flex-row sm:gap-8")}>
+          {/* Left Calendar (Month 1) */}
+          {renderSingleMonthGrid(year1, month1, days1, true, !isDual)}
 
-        {/* Right Calendar (Month 2 - Dual Variant Only) */}
-        {isDual && (
-          <div className="border-t border-border/60 pt-6 sm:border-t-0 sm:pt-0 sm:border-l sm:pl-8 flex-1">
-            {renderSingleMonthGrid(year2, month2, days2, false, true)}
+          {/* Right Calendar (Month 2 - Dual Variant Only) */}
+          {isDual && (
+            <div className="border-t border-border/60 pt-6 sm:border-t-0 sm:pt-0 sm:border-l sm:pl-8 flex-1">
+              {renderSingleMonthGrid(year2, month2, days2, false, true)}
+            </div>
+          )}
+        </div>
+
+        {/* Start / End time */}
+        {showTime && (
+          <div
+            className={cn(
+              "grid grid-cols-1 sm:grid-cols-2 gap-4 pt-4 border-t border-border/60",
+              // Beside the calendar: one fixed-width column (so the lists are
+              // never squeezed), Start over End, divider on the left.
+              sideTimes &&
+                "@min-[32rem]/range:grid-cols-1 @min-[32rem]/range:w-44 @min-[32rem]/range:shrink-0 @min-[32rem]/range:pt-0 @min-[32rem]/range:border-t-0 @min-[32rem]/range:border-l @min-[32rem]/range:pl-5 @min-[32rem]/range:ml-6"
+            )}
+          >
+            {(
+              [
+                { key: "from", label: "Start", date: selectingFrom, min: fromMinTime, max: null, onChange: handleFromTime },
+                { key: "to", label: "End", date: selectingTo, min: toMinTime, max: null, onChange: handleToTime },
+              ] as const
+            ).map((end) => (
+              <div key={end.key} className="flex flex-col gap-2 min-w-0">
+                <div className="flex items-center justify-between">
+                  <span className="flex items-center gap-1.5 text-[10px] font-bold uppercase tracking-wider text-muted-foreground">
+                    <Clock className="size-3.5" /> {end.label}
+                  </span>
+                  <span
+                    className={cn(
+                      "text-xs font-bold tabular-nums",
+                      end.date ? theme.text : "text-muted-foreground"
+                    )}
+                  >
+                    {end.date ? formatTime(end.date, timeFormat) : "--:--"}
+                  </span>
+                </div>
+                <TimePicker
+                  value={end.date}
+                  onChange={end.onChange}
+                  format={timeFormat}
+                  minuteStep={minuteStep}
+                  minTime={end.min}
+                  maxTime={end.max}
+                  color={color}
+                  disabled={disabled || !end.date}
+                  className="h-28"
+                />
+              </div>
+            ))}
           </div>
         )}
       </div>
-
-      {/* Start / End time */}
-      {showTime && (
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 pt-4 border-t border-border/60">
-          {(
-            [
-              { key: "from", label: "Start", date: selectingFrom, min: fromMinTime, max: null, onChange: handleFromTime },
-              { key: "to", label: "End", date: selectingTo, min: toMinTime, max: null, onChange: handleToTime },
-            ] as const
-          ).map((end) => (
-            <div key={end.key} className="flex flex-col gap-2 min-w-0">
-              <div className="flex items-center justify-between">
-                <span className="flex items-center gap-1.5 text-[10px] font-bold uppercase tracking-wider text-muted-foreground">
-                  <Clock className="size-3.5" /> {end.label}
-                </span>
-                <span
-                  className={cn(
-                    "text-xs font-bold tabular-nums",
-                    end.date ? theme.text : "text-muted-foreground"
-                  )}
-                >
-                  {end.date ? formatTime(end.date, timeFormat) : "--:--"}
-                </span>
-              </div>
-              <TimePicker
-                value={end.date}
-                onChange={end.onChange}
-                format={timeFormat}
-                minuteStep={minuteStep}
-                minTime={end.min}
-                maxTime={end.max}
-                color={color}
-                disabled={disabled || !end.date}
-                className="h-28"
-              />
-            </div>
-          ))}
-        </div>
-      )}
 
       {/* Bottom Footer Status Bar */}
       <footer className="flex items-center justify-between pt-3 mt-1 border-t border-border/60">
