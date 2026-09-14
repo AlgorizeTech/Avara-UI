@@ -251,15 +251,44 @@ export const ApiPlaygroundBlock = forwardRef<
 
       const executeRequest =
         mockHandler ||
-        (async () => {
-          await new Promise((resolve) => setTimeout(resolve, 800));
+        (async (req) => {
+          await new Promise((resolve) => setTimeout(resolve, 600));
+
+          let parsedBody: unknown = null;
+          if (req.method !== "GET" && req.body) {
+            try {
+              parsedBody = JSON.parse(req.body);
+            } catch {
+              parsedBody = req.body;
+            }
+          }
+
+          const activeHeaders = req.headers
+            .filter((h) => h.enabled && h.key)
+            .reduce<Record<string, string>>((acc, h) => {
+              acc[h.key] = h.value;
+              return acc;
+            }, {});
+
+          const activeParams = req.params
+            .filter((p) => p.enabled && p.key)
+            .reduce<Record<string, string>>((acc, p) => {
+              acc[p.key] = p.value;
+              return acc;
+            }, {});
+
           return {
-            status: 200,
-            timeMs: Math.floor(Math.random() * 200) + 50,
+            status: req.method === "POST" ? 201 : 200,
+            timeMs: Math.floor(Math.random() * 150) + 50,
             data: {
               message: "Success",
-              note: "This is a default mock response. Pass a 'mockHandler' prop to customize this output based on the request parameters.",
-              echo: { method, url },
+              echo: {
+                method: req.method,
+                url: req.url,
+                params: Object.keys(activeParams).length > 0 ? activeParams : undefined,
+                headers: Object.keys(activeHeaders).length > 0 ? activeHeaders : undefined,
+                payload: req.method !== "GET" ? (parsedBody ?? "No body provided") : undefined,
+              },
             },
           };
         });
