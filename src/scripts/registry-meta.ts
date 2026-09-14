@@ -160,6 +160,18 @@ export const META: Record<string, ItemMeta> = {
     categories: ["data-display"],
     docs: "Named exports: Folder, SkeletonCard (plus FolderFile / FolderProps types). `files` is { thumb?, name?, progress? }[]; without files, `peek` skeleton cards show. `color` tints body, pocket, icon and cards via OKLCH; `icon` is a lucide component. Hover, tap or focus opens the fan; past five files it pages with arrows or by dragging a card. `interactive` adds drag-and-drop + click-to-browse with `onFiles`, `progress` and `onRemoveFile`. Pulls in `tooltip` for file-name hovers.",
   },
+  "copy-button": {
+    description:
+      "A clipboard button that confirms the copy in place — the icon pops to a check and the label swaps to \"Copied!\" — plus a read-only Copy Field for links, tokens and commands. Use it anywhere a value needs to be copied without a toast.",
+    categories: ["actions", "forms"],
+    docs: "Named exports: CopyButton, CopyField, useCopyToClipboard. `value` is the text copied; `label` / `copiedLabel` / `errorLabel` set the three states, `timeout` how long the confirmation lingers, `iconOnly` drops the label. Variants are solid | soft | outline | ghost, sizes sm | md | lg, `color` a preset or hex. CopyField wraps a read-only input with the button beside it (or `inset` inside it) and forwards `buttonProps`. Falls back to execCommand where the Clipboard API is unavailable.",
+  },
+  "time-picker": {
+    description:
+      "Scrollable hour / minute / AM-PM columns for choosing a time of day, with themed selection and disabled ranges. The building block behind the date pickers' time mode.",
+    categories: ["dates", "forms"],
+    docs: "Named exports: TimePicker plus the setTime, roundToStep and formatTime helpers. `value` is a Date whose day is preserved on change; `format` is 12h | 24h, `minuteStep` sets granularity, and `minTime` / `maxTime` disable times outside a window on that day. Used by `date-picker` and `range-date-picker` when `showTime` is on.",
+  },
   "selection-frame": {
     description:
       "That box Figma draws around a selected layer — corner handles and a crisp accent stroke — around any text span or block. Use it to spotlight a word, a card or a screenshot region in docs and marketing.",
