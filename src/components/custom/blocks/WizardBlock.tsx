@@ -9,9 +9,18 @@ import { WizardContext, useWizard } from "./wizard-context";
 // COMPONENTS
 // ==========================================
 
+export type WizardColor =
+  | "primary"
+  | "indigo"
+  | "blue"
+  | "rose"
+  | "emerald"
+  | "zinc"
+  | (string & {});
+
 export interface WizardProps extends React.HTMLAttributes<HTMLDivElement> {
   initialStep?: number;
-  color?: string;
+  color?: WizardColor;
   onComplete?: () => void;
 }
 

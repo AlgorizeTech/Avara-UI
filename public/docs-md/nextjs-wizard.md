@@ -4,7 +4,7 @@ A "Typeform" style multi-step wizard featuring buttery smooth vertical slide tra
 
 This component relies on the **Compound Component** pattern using React Context. This allows you to place the `WizardProgress` bar independently of the main `WizardContainer`, and nest complex forms inside the `WizardStep` blocks without passing deep props.
 
-Because every piece reads the wizard's state from context, you compose the flow yourself — drop the progress bar wherever you like, or leave it out. Press **Enter** inside any step to advance.
+Because every piece reads the wizard's state from context, you compose the flow yourself — drop the progress bar wherever you like, or leave it out. Press **Enter** inside any step to advance. It includes dynamic theme binding via the `color` prop (`"indigo"`, `"rose"`, `"emerald"`, `"zinc"`, `"blue"`, `"primary"`, or hex) to automatically style the progress bar, input focus rings, and action buttons.
 
 export const wizardSteps = `        
           1. What's your first name?
