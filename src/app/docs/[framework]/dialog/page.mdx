@@ -22,6 +22,9 @@ export const usageDefault = `import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/custom/blocks/DialogBlock";
+// CopyField ships with the copy-button item:
+// npx shadcn@latest add https://algorize-ui.vercel.app/r/copy-button.json
+import { CopyField } from "@/components/custom/blocks/CopyButtonBlock";
 import { UserPlus } from "lucide-react";
 
 export default function ShareDialog() {
@@ -41,12 +44,14 @@ export default function ShareDialog() {
           </DialogDescription>
         </DialogHeader>
 
-        <div className="flex items-center gap-2 my-4">
-          <input className="h-10 w-full rounded-md border bg-transparent px-3 text-sm" value="https://nexus.dev/u/johndoe" readOnly />
-          <button className="px-4 py-2 bg-zinc-900 text-white text-sm font-medium rounded-md shrink-0">
-            Copy Link
-          </button>
-        </div>
+        {/* CopyField = read-only input + CopyButton. It confirms with an
+            animated "Copied!" and leaves the dialog open so you can see it. */}
+        <CopyField
+          className="my-4"
+          value="https://nexus.dev/u/johndoe"
+          color="zinc"
+          buttonProps={{ label: "Copy Link", copiedLabel: "Copied!" }}
+        />
 
         <DialogFooter>
           <p className="text-xs text-zinc-500">Your profile is currently public.</p>
