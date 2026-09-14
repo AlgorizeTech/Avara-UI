@@ -84,7 +84,7 @@ const fleetVariants: Record<FleetVariant, Record<string, string>> = {
     sidebar:
       "w-full md:w-[320px] lg:w-[360px] shrink-0 flex flex-col h-full z-20 overflow-hidden rounded-[24px] border border-white/70 bg-white/55 backdrop-blur-2xl shadow-[inset_0_1px_0_rgba(255,255,255,0.75),0_24px_48px_-28px_rgba(15,23,42,0.35)] dark:border-white/10 dark:bg-white/[0.06] dark:shadow-[inset_0_1px_0_rgba(255,255,255,0.08),0_24px_48px_-28px_rgba(0,0,0,0.9)]",
     mapContainer:
-      "flex-1 w-full h-full relative z-10 min-w-0 rounded-[24px] overflow-hidden border border-white/70 dark:border-white/10 shadow-[0_24px_48px_-28px_rgba(15,23,42,0.35)] dark:shadow-[0_24px_48px_-28px_rgba(0,0,0,0.9)]",
+      "flex-1 w-full h-full relative z-10 min-w-0 rounded-[24px] overflow-hidden bg-[#e9e9ee] dark:bg-[#121216] border border-white/70 dark:border-white/10 shadow-[0_24px_48px_-28px_rgba(15,23,42,0.35)] dark:shadow-[0_24px_48px_-28px_rgba(0,0,0,0.9)]",
     itemActive: "bg-white/70 dark:bg-white/10 rounded-2xl mx-3 my-1 shadow-sm",
     itemInactive:
       "hover:bg-white/50 dark:hover:bg-white/[0.06] rounded-2xl mx-3 my-1 border border-transparent transition-colors",
