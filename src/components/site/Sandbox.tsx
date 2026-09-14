@@ -1011,9 +1011,9 @@ export function ExampleShowcase({
             controls={controls}
             values={controlValues}
             onChange={handleControlChange}
-            // Takes the rest of the row beside the picker; drops to its own
-            // row once it cannot get at least this much.
-            className="lg:flex-1 lg:min-w-[320px]"
+            // One or two sliders fit the right half; more than that need the
+            // full width, so they take their own row under the picker.
+            className={cn(controls.length > 2 && "lg:col-span-2")}
           />
         )}
       </ShowcaseControlCard>
