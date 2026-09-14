@@ -77,7 +77,7 @@ export default function ReleaseProgress() {
       valueFormat={(value, max) => \`\${value} / \${max} tasks\`}
     >
       {/* gap pulls the segments apart so each level reads on its own. */}
-      <MultiProgress max={100} gap={3}>
+      <MultiProgress max={100} variant="default" barSize="lg" gap={3}>
         {phases.map((phase) => (
           <ProgressSegment
             key={phase.label}
@@ -126,7 +126,7 @@ export default function StorageBreakdown() {
       max={100}
       valueFormat={(value, max) => \`\${value} GB / \${max} GB\`}
     >
-      <MultiProgress max={100}>
+      <MultiProgress max={100} variant="default" barSize="lg">
         {segments.map((segment) => (
           <ProgressSegment
             key={segment.label}
