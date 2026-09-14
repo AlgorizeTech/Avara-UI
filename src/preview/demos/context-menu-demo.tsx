@@ -2,6 +2,7 @@
 
 import {
   ContextMenu,
+  ContextMenuColor,
   ContextMenuContent,
   ContextMenuItem,
   ContextMenuLabel,
@@ -21,7 +22,7 @@ import {
 } from "lucide-react";
 
 const TRIGGER_CLASS =
-  "w-full max-w-[280px] sm:max-w-lg min-h-[160px] sm:min-h-[220px] border-2 border-dashed border-zinc-300 dark:border-zinc-700 bg-white dark:bg-zinc-950 rounded-2xl flex flex-col items-center justify-center p-5 sm:p-8 text-center transition-colors hover:border-primary/50 cursor-pointer";
+  "w-full max-w-[280px] sm:max-w-lg min-h-[160px] sm:min-h-[220px] border-2 border-dashed border-zinc-300 dark:border-zinc-700 bg-white dark:bg-zinc-950 rounded-2xl flex flex-col items-center justify-center p-5 sm:p-8 text-center cursor-pointer";
 
 const TriggerBox = () => (
   <div className="flex flex-col items-center justify-center w-full px-4">
@@ -37,9 +38,11 @@ const TriggerBox = () => (
 
 export default function ContextMenuDemo({
   example = "full",
+  color = "primary",
 }: {
   /** "full" is the classic menu; the others isolate one part of the API. */
   example?: "full" | "basic" | "inset";
+  color?: ContextMenuColor;
 }) {
   const handleAction = (action: string) => {
     toast("Action triggered", { description: "You clicked on " + action });
@@ -50,7 +53,7 @@ export default function ContextMenuDemo({
       <>
         <Toaster position="bottom-right" />
         <div className="w-full flex items-center justify-center min-h-[260px] sm:min-h-[400px] relative z-10 overflow-hidden">
-          <ContextMenu>
+          <ContextMenu color={color}>
             <ContextMenuTrigger className={TRIGGER_CLASS}>
               <TriggerBox />
             </ContextMenuTrigger>
@@ -93,7 +96,7 @@ export default function ContextMenuDemo({
     <>
       <Toaster position="bottom-right" />
       <div className="w-full flex items-center justify-center min-h-[260px] sm:min-h-[400px] relative z-10 overflow-hidden">
-        <ContextMenu>
+        <ContextMenu color={color}>
           <ContextMenuTrigger className={TRIGGER_CLASS}>
             <TriggerBox />
           </ContextMenuTrigger>

@@ -12,6 +12,70 @@ import { createPortal } from "react-dom";
 import { cn } from "@/lib/utils";
 
 // ==========================================
+// 0. COLOR THEMES
+// ==========================================
+export type ContextMenuColor =
+  | "primary"
+  | "indigo"
+  | "rose"
+  | "emerald"
+  | "blue"
+  | "zinc"
+  | (string & {});
+
+const colorThemes: Record<string, { itemHover: string; triggerHover: string }> = {
+  primary: {
+    itemHover: "hover:bg-primary/10 hover:text-primary text-foreground",
+    triggerHover: "hover:border-primary/50",
+  },
+  indigo: {
+    itemHover: "hover:bg-indigo-500/15 hover:text-indigo-600 dark:hover:text-indigo-400 text-foreground",
+    triggerHover: "hover:border-indigo-500/50",
+  },
+  rose: {
+    itemHover: "hover:bg-rose-500/15 hover:text-rose-600 dark:hover:text-rose-400 text-foreground",
+    triggerHover: "hover:border-rose-500/50",
+  },
+  emerald: {
+    itemHover: "hover:bg-emerald-500/15 hover:text-emerald-600 dark:hover:text-emerald-400 text-foreground",
+    triggerHover: "hover:border-emerald-500/50",
+  },
+  blue: {
+    itemHover: "hover:bg-blue-500/15 hover:text-blue-600 dark:hover:text-blue-400 text-foreground",
+    triggerHover: "hover:border-blue-500/50",
+  },
+  zinc: {
+    itemHover: "hover:bg-zinc-500/15 hover:text-zinc-900 dark:hover:text-zinc-100 text-foreground",
+    triggerHover: "hover:border-zinc-500/50",
+  },
+};
+
+export function getContextMenuTheme(color?: ContextMenuColor) {
+  const c = color || "primary";
+  const isCustomHex = c.startsWith("#") || c.startsWith("rgb") || c.startsWith("hsl");
+
+  if (isCustomHex) {
+    return {
+      isCustomHex: true,
+      customVars: {
+        "--ctx-color": c,
+        "--ctx-color-15": c.startsWith("#") && c.length === 7 ? `${c}26` : c,
+      } as React.CSSProperties,
+      itemHover: "hover:bg-[var(--ctx-color-15)] hover:text-[var(--ctx-color)] text-foreground",
+      triggerHover: "hover:border-[var(--ctx-color)]",
+    };
+  }
+
+  const preset = colorThemes[c] || colorThemes.primary;
+  return {
+    isCustomHex: false,
+    customVars: {} as React.CSSProperties,
+    itemHover: preset.itemHover,
+    triggerHover: preset.triggerHover,
+  };
+}
+
+// ==========================================
 // 1. CONTEXT
 // ==========================================
 interface ContextMenuContextType {
@@ -19,6 +83,7 @@ interface ContextMenuContextType {
   setOpen: React.Dispatch<React.SetStateAction<boolean>>;
   coords: { x: number; y: number };
   setCoords: React.Dispatch<React.SetStateAction<{ x: number; y: number }>>;
+  color: ContextMenuColor;
 }
 
 const ContextMenuContext = createContext<ContextMenuContextType | undefined>(undefined);
@@ -28,14 +93,15 @@ const ContextMenuContext = createContext<ContextMenuContextType | undefined>(und
 // ==========================================
 export interface ContextMenuProps {
   children: React.ReactNode;
+  color?: ContextMenuColor;
 }
 
-export function ContextMenu({ children }: ContextMenuProps) {
+export function ContextMenu({ children, color = "primary" }: ContextMenuProps) {
   const [open, setOpen] = useState(false);
   const [coords, setCoords] = useState({ x: 0, y: 0 });
 
   return (
-    <ContextMenuContext.Provider value={{ open, setOpen, coords, setCoords }}>
+    <ContextMenuContext.Provider value={{ open, setOpen, coords, setCoords, color }}>
       {children}
     </ContextMenuContext.Provider>
   );
@@ -52,7 +118,8 @@ export function ContextMenuTrigger({ className, children, ...props }: ContextMen
   const context = useContext(ContextMenuContext);
   if (!context) throw new Error("ContextMenuTrigger must be used within a ContextMenu");
 
-  const { setOpen, setCoords } = context;
+  const { setOpen, setCoords, color } = context;
+  const theme = getContextMenuTheme(color);
   const timerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   const openMenuAt = (x: number, y: number) => {
@@ -104,7 +171,8 @@ export function ContextMenuTrigger({ className, children, ...props }: ContextMen
       onTouchStart={handleTouchStart}
       onTouchEnd={handleTouchEnd}
       onTouchMove={handleTouchMove}
-      className={cn("w-full h-full select-none cursor-pointer", className)}
+      style={{ ...theme.customVars, ...props.style }}
+      className={cn("w-full h-full select-none cursor-pointer transition-colors", theme.triggerHover, className)}
       {...props}
     >
       {children}
@@ -130,7 +198,8 @@ export function ContextMenuContent({
   const context = useContext(ContextMenuContext);
   if (!context) throw new Error("ContextMenuContent must be used within a ContextMenu");
 
-  const { open, setOpen, coords } = context;
+  const { open, setOpen, coords, color } = context;
+  const theme = getContextMenuTheme(color);
   const contentRef = useRef<HTMLDivElement>(null);
   const [portalTarget, setPortalTarget] = useState<HTMLElement | null>(null);
   const [adjustedCoords, setAdjustedCoords] = useState({ x: -9999, y: -9999 });
@@ -250,6 +319,8 @@ export function ContextMenuContent({
             top: adjustedCoords.y,
             left: adjustedCoords.x,
             opacity: visible ? 1 : 0,
+            ...theme.customVars,
+            ...props.style,
           }}
           className={cn(
             "fixed z-[9999] w-48 sm:w-64 max-w-[calc(100vw-24px)] max-h-[calc(100vh-24px)] overflow-y-auto rounded-md border p-1 transition-opacity duration-150 text-xs sm:text-sm",
@@ -278,6 +349,7 @@ export interface ContextMenuItemProps extends React.HTMLAttributes<HTMLDivElemen
 
 export function ContextMenuItem({ className, inset, disabled, onClick, children, ...props }: ContextMenuItemProps) {
   const context = useContext(ContextMenuContext);
+  const theme = getContextMenuTheme(context?.color);
   
   const handleClick = (e: React.MouseEvent<HTMLDivElement>) => {
     if (disabled) return;
@@ -293,7 +365,7 @@ export function ContextMenuItem({ className, inset, disabled, onClick, children,
       className={cn(
         "relative flex cursor-default select-none items-center rounded-sm px-2 py-1.5 text-sm outline-none transition-colors",
         inset && "pl-8",
-        disabled ? "opacity-50 pointer-events-none cursor-not-allowed" : "hover:bg-primary/10 hover:text-primary text-foreground",
+        disabled ? "opacity-50 pointer-events-none cursor-not-allowed" : theme.itemHover,
         className
       )}
       {...props}
