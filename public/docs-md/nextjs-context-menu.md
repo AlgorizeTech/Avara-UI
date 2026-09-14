@@ -89,6 +89,16 @@ Explore the ContextMenu's right-click features, including nested submenus, disab
         Default
         Description
 
+          ContextMenu
+
+          color
+
+          "primary" | "indigo" | "rose" | "emerald" | "blue" | "zinc" | string
+
+          "primary"
+
+          Applies theme accent color to item hover states and trigger container focus/hover borders. Accepts preset named themes or valid hex strings.
+
           ContextMenuTrigger
 
           className
