@@ -11,7 +11,7 @@ The `DialogBlock` component handles the complex DOM logic required for true acce
 
 Open each dialog from its trigger — the background scrollbar vanishes while it's open and returns exactly as it was on close.
 
-`DialogContent` sizes itself from a `size` prop: `sm` through `xl` for panels that sit on the page, and `full` for a surface that takes the whole viewport. Dialogs also nest — render one inside another's content and the inner window portals above its parent, with `Escape` and backdrop clicks reaching only whichever one is on top.
+`DialogContent` sizes itself from a `size` prop: `sm` through `xl` for panels that sit on the page, and `full` for a surface that takes the whole viewport with its content centred in the middle of it. Dialogs also nest — render one inside another's content and the inner window portals above its parent, with `Escape` and backdrop clicks reaching only whichever one is on top.
 
 export const usageDefault = `import {
   Dialog,
@@ -128,14 +128,14 @@ export default function DeleteAccountDialog() {
   return (
     <Dialog>
       <DialogTrigger>
-        <button className="flex items-center gap-2 px-4 py-2 bg-red-50 text-red-600 border border-red-200 text-sm font-semibold rounded-md">
+        <button className="flex items-center gap-2 px-4 py-2 bg-rose-50 text-rose-600 border border-rose-200 text-sm font-semibold rounded-md">
           <Trash2 className="w-4 h-4" /> Delete Account
         </button>
       </DialogTrigger>
 
       <DialogContent>
         <DialogHeader>
-          <DialogTitle className="text-red-600 flex items-center gap-2">
+          <DialogTitle className="text-rose-600 flex items-center gap-2">
             <Trash2 className="w-5 h-5" /> Are you absolutely sure?
           </DialogTitle>
           <DialogDescription>
@@ -147,7 +147,7 @@ export default function DeleteAccountDialog() {
         <DialogFooter>
           <div className="flex gap-2">
             <button className="px-4 py-2 border text-sm font-medium rounded-md">Cancel</button>
-            <button className="px-4 py-2 bg-red-600 text-white text-sm font-medium rounded-md">
+            <button className="px-4 py-2 bg-rose-600 text-white text-sm font-medium rounded-md">
               Yes, delete account
             </button>
           </div>
@@ -273,7 +273,7 @@ export default function DialogSizes() {
             </button>
           </DialogTrigger>
 
-          {/* sm 24rem · md 32rem (default) · lg 42rem · xl 56rem · full viewport */}
+          {/* sm 24rem · md 32rem (default) · lg 42rem · xl 56rem · full viewport, content centred */}
           <DialogContent size={size}>
             <DialogHeader>
               <DialogTitle>Size {size}</DialogTitle>
@@ -367,7 +367,7 @@ export default function ProjectList({
               <button
                 onClick={confirmDelete}
                 disabled={deleting}
-                className="px-4 py-2 bg-red-600 text-white text-sm font-medium rounded-md disabled:opacity-60"
+                className="px-4 py-2 bg-rose-600 text-white text-sm font-medium rounded-md disabled:opacity-60"
               >
                 {deleting ? "Deleting…" : "Delete project"}
               </button>
@@ -522,7 +522,7 @@ export default function NestedDialog() {
           prop: "size",
           value: '"full"',
           effect:
-            "also drops the rounding, border and height cap, so the panel really does reach every edge.",
+            "also drops the rounding, border and height cap, so the panel really does reach every edge — and centres its content in the middle of the screen, in a column the width of `md`.",
         },
         {
           prop: "className",
@@ -760,8 +760,10 @@ Discover the Dialog component's accessible modal features, including focus trapp
         <td>
           Panel width: <code>sm</code> ~24rem, <code>md</code> ~32rem,{" "}
           <code>lg</code> ~42rem, <code>xl</code> ~56rem. <code>full</code>{" "}
-          fills the viewport and drops the rounding, border and{" "}
-          <code>max-height</code> cap the inset sizes use.
+          fills the viewport, drops the rounding, border and{" "}
+          <code>max-height</code> cap the inset sizes use, and centres its
+          content in an <code>md</code>-wide column in the middle of the screen
+          (override with <code>className</code> for an edge-to-edge layout).
         </td>
       </tr>
       <tr>
