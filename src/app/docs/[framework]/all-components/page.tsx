@@ -66,6 +66,7 @@ const COMPONENT_META: Record<
 	piano: { countText: "Acoustic Synthesizer", illustrationType: "piano" },
 	command: { countText: "Cmd+K Palette", illustrationType: "command" },
 	"context-menu": { countText: "Right Click Menu", illustrationType: "context-menu" },
+	"copy-button": { countText: "Clipboard Confirm", illustrationType: "copy-button" },
 	counter: { countText: "Animated Numbers", illustrationType: "counter" },
 	"custom-code-block": { countText: "Code Highlighter", illustrationType: "code-block" },
 	"data-grid": { countText: "Advanced Grid", illustrationType: "data-grid" },
@@ -1928,6 +1929,17 @@ function MiniatureIllustration({
 								<span key={pos} className={`absolute ${pos} size-[5px] bg-background border-[1.5px] border-sky-500`} />
 							))}
 							Selected
+						</span>
+					</div>
+				)}
+
+				{type === "copy-button" && (
+					<div className="w-full flex items-center justify-center gap-1.5 my-auto px-2">
+						<span className="flex-1 h-5 rounded-md border border-border bg-background px-1.5 text-[6px] font-mono leading-5 text-muted-foreground truncate">
+							nexus.dev/u/johndoe
+						</span>
+						<span className="flex h-5 items-center gap-1 rounded-md bg-primary px-1.5 text-[6px] font-bold text-primary-foreground">
+							<span className="text-[7px]">✓</span> Copied!
 						</span>
 					</div>
 				)}
