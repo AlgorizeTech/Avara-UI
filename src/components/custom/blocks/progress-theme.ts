@@ -33,6 +33,22 @@ const colorThemes: Record<string, Record<string, string>> = {
     stroke: "text-emerald-600",
     ringGlow: "drop-shadow-[0_0_6px_rgba(16,185,129,0.7)]",
   },
+  // Semantic colours used by `status`. Deliberately the conventional hues —
+  // a failed upload should look failed on any brand.
+  amber: {
+    bg: "bg-amber-500",
+    bgSoft: "bg-amber-500/20",
+    glow: "shadow-[0_0_15px_rgba(245,158,11,0.5)]",
+    stroke: "text-amber-500",
+    ringGlow: "drop-shadow-[0_0_6px_rgba(245,158,11,0.7)]",
+  },
+  red: {
+    bg: "bg-red-500",
+    bgSoft: "bg-red-500/20",
+    glow: "shadow-[0_0_15px_rgba(239,68,68,0.5)]",
+    stroke: "text-red-500",
+    ringGlow: "drop-shadow-[0_0_6px_rgba(239,68,68,0.7)]",
+  },
   zinc: {
     bg: "bg-zinc-900 dark:bg-zinc-100",
     bgSoft: "bg-zinc-500/20",
