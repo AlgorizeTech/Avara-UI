@@ -1,6 +1,6 @@
 {
-  "generatedAt": "2026-09-14T07:54:44.805Z",
-  "totalFiles": 253,
+  "generatedAt": "2026-09-14T15:19:23.761Z",
+  "totalFiles": 255,
   "files": [
     {
       "name": "nextjs/3d-carousel",
@@ -157,6 +157,12 @@
       "path": "/docs/nextjs-context-menu.md",
       "url": "/docs/nextjs/context-menu",
       "originalMdx": "[framework]\\context-menu\\page.mdx"
+    },
+    {
+      "name": "nextjs/copy-button",
+      "path": "/docs/nextjs-copy-button.md",
+      "url": "/docs/nextjs/copy-button",
+      "originalMdx": "[framework]\\copy-button\\page.mdx"
     },
     {
       "name": "nextjs/counter",
@@ -919,6 +925,12 @@
       "path": "/docs/reactjs-context-menu.md",
       "url": "/docs/reactjs/context-menu",
       "originalMdx": "[framework]\\context-menu\\page.mdx"
+    },
+    {
+      "name": "reactjs/copy-button",
+      "path": "/docs/reactjs-copy-button.md",
+      "url": "/docs/reactjs/copy-button",
+      "originalMdx": "[framework]\\copy-button\\page.mdx"
     },
     {
       "name": "reactjs/counter",

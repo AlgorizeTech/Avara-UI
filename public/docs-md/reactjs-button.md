@@ -41,19 +41,23 @@ export default function MotionButtonDemo() {
       }>
         Keep Reading
 
-      {/* 4. Horizontal Left to Right Background Wipe */}
+      {/* 4. Raised 3D face over a darker edge - sinks on hover, presses on click */}
+      }>
+        Get Started
+
+      {/* 5. Horizontal Left to Right Background Wipe */}
       }>
         Download Assets
 
-      {/* 5. Spring Bounce Roll (Hero cubic-bezier spring bounce) */}
+      {/* 6. Spring Bounce Roll (Hero cubic-bezier spring bounce) */}
       
         Spring Bounce
 
-      {/* 6. Upward Text Roll */}
+      {/* 7. Upward Text Roll */}
       }>
         Upward Roll
 
-      {/* 7. Downward Text Roll */}
+      {/* 8. Downward Text Roll */}
       }>
         Downward Roll
 
@@ -119,6 +123,7 @@ export default function SocialButtonDemo() {
 - **4-Side Animated Glowing Border**: Conic-gradient spinning line that continuously sweeps around the 4 edges of the button matching Form Engine submitting buttons.
 - **Interactive Sliding Icon Physics**: `variant="slide-icon"` provides a rounded background icon on the right that slides out to the right on hover, while a new rounded icon slides in smoothly from the left.
 - **Looping Icon Motion**: `variant="slide-icon-loop"` keeps the same rounded icon on the right, but the arrow continuously exits to the right and re-enters from the left inside the circle, without any hover.
+- **3D Press**: `variant="3d"` stacks a raised primary face over a darkened edge and a soft ground shadow. Hover lowers the face a step; pressing seats it on the edge, so the click reads as a real push.
 - **Vertical Text Roll Animation**: `variant="slide-text"` moves the button text smoothly upwards on hover while another text label rolls up smoothly into position from below.
 - **Ripple Click Physics**: Interactive radial ripple expansion on mouse click.
 - **Loading Spinners**: Built-in async state handling with interactive disabled states.
@@ -133,11 +138,11 @@ export default function SocialButtonDemo() {
 
           variant
 
-          "outline" | "slide-icon" | "slide-icon-loop" | "slide-text"
+          "outline" | "slide-icon" | "slide-icon-loop" | "slide-text" | "3d"
 
           "outline"
         
-        Choose between 4-side border glow, sliding rounded icon, looping rounded icon, or vertical text roll variant.
+        Choose between 4-side border glow, sliding rounded icon, looping rounded icon, vertical text roll, or raised 3D press variant.
 
           size
 

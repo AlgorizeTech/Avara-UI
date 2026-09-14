@@ -4,22 +4,55 @@ A flexible, smoothly animated progress indicator built to handle loading states,
 
 This block is split into composable pieces: the core `` bar for the visual fill, the optional `` wrapper which handles the layout for labels and percentage text, `` with `` children for several values sharing one track, and `` for the same value drawn as a ring.
 
+Colour carries state. `stages` changes the fill as thresholds are crossed — neutral while an operation starts, your brand colour once it is under way, green at 100 — and `status` overrides everything with the conventional success, warning and error hues so a failed job never looks like it is still running. The field's readout follows: a check on success, an alert on error, and an optional `hint` line that says what happened.
+
 Each example shows a live preview with the exact code to copy.
+
+export const usageStages = `// Each stage takes over from its \`from\` percent until the next.
+const STAGES = [
+  { from: 0, color: "zinc" },      // starting up
+  { from: 10, color: "indigo" },   // under way
+  { from: 100, color: "emerald" }, // done
+];
+
+export default function UploadProgress({
+  value,
+  failed,
+}: {
+  value: number;
+  failed: boolean;
+}) {
+  // status wins over stages, so a failure is red no matter how far it got.
+  const status = failed ? "error" : value >= 100 ? "success" : "active";
+
+  // The ring and the bar share the value, stages and status, so they agree.
+  return (
+
+  );
+}`;
+
+export const usageStatuses = `import { Progress, ProgressField } from "@/components/custom/blocks/ProgressBlock";
+
+export default function SyncStatus() {
+  return (
+
+  );
+}`;
+
+export const usageIndeterminate = `import { Progress, ProgressField } from "@/components/custom/blocks/ProgressBlock";
+
+export default function ScanningLibrary() {
+  // No value: the bar slides along the track until you know how far along you are.
+  return (
+
+  );
+}`;
 
 export const usageDefault = `import { Progress } from "@/components/custom/blocks/ProgressBlock";
 
 export default function ProgressDemo() {
+  // tooltip shows the percentage on hover; pass a function to format it.
   return ;
-}`;
-
-export const usageFormatted = `export default function StorageWidget() {
-  const [usedSpace] = useState(72); // 72 GB of 100 GB
-
-  return (
-     \`\${value} GB / \${max} GB\`}
-    >
-
-  );
 }`;
 
 export const usageSteps = `import { Progress, ProgressField } from "@/components/custom/blocks/ProgressBlock";
@@ -30,75 +63,6 @@ export default function WizardProgress() {
 
   return (
     // showValue={false} hides the percentage when the label already says it.
-
-  );
-}`;
-
-export const usageMulti = `import {
-  MultiProgress,
-  ProgressField,
-  ProgressSegment,
-} from "@/components/custom/blocks/ProgressBlock";
-
-const phases = [
-  { label: "Merged", value: 30 },
-  { label: "In review", value: 18 },
-  { label: "Drafted", value: 11 },
-];
-
-export default function ReleaseProgress() {
-  const shipped = phases.reduce((sum, phase) => sum + phase.value, 0);
-
-  return (
-     \`\${value} / \${max} tasks\`}
-    >
-      {/* gap pulls the segments apart so each level reads on its own. */}
-      
-        {phases.map((phase) => (
-          
-        ))}
-
-  );
-}`;
-
-export const usageMultiColors = `import {
-  MultiProgress,
-  ProgressField,
-  ProgressSegment,
-} from "@/components/custom/blocks/ProgressBlock";
-
-const segments = [
-  { label: "Documents", value: 18, color: "indigo" },
-  { label: "Photos", value: 34, color: "emerald" },
-  { label: "Videos", value: 21, color: "rose" },
-  { label: "System", value: 9, color: "#f59e0b" },
-];
-
-// The legend reuses the block's theme table, so a dot and its segment
-// can never drift apart.
-function LegendDot({ color }: { color: string }) {
-  const { theme, style } = getThemeStyles(color);
-  return (
-    
-  );
-}
-
-export default function StorageBreakdown() {
-  const used = segments.reduce((sum, segment) => sum + segment.value, 0);
-
-  return (
-     \`\${value} GB / \${max} GB\`}
-    >
-      
-        {segments.map((segment) => (
-          
-        ))}
-
-        {segments.map((segment) => (
-
-            {segment.label}
-          
-        ))}
 
   );
 }`;
@@ -217,6 +181,76 @@ Explore the Progress bar's features, including smooth value interpolation, indet
           undefined
         
         Optional Tailwind classes to append directly to the moving inner fill element.
+
+          Progress
+
+          stages
+
+          {`{ from: number; color: ProgressColor }[]`}
+
+          undefined
+
+          Colour by threshold. from is a percentage; each stage's
+          colour applies from that point until the next stage. Also on{" "}
+          CircularProgress.
+
+          Progress
+
+          status
+
+          "active" | "success" | "warning" | "error"
+
+          "active"
+
+          Semantic override: emerald, amber or red replace the theme colour and
+          any stage. Exposed as data-status on the element. Also
+          on CircularProgress, where it colours the centre readout.
+
+          Progress
+
+          indeterminate
+
+          boolean
+
+          false
+
+          Unknown duration: a short bar slides along the track and{" "}
+          aria-busy is set. Honours{" "}
+          prefers-reduced-motion.
+
+          Progress
+
+          tooltip
+
+          {`boolean | (value, max) => ReactNode`}
+
+          false
+
+          Hover readout in a bubble — at the fill's leading edge on the bar,
+          above the ring on CircularProgress. true{" "}
+          shows the percentage; a function formats it. Not shown while{" "}
+          indeterminate.
+
+          ProgressField
+
+          status
+
+          "active" | "success" | "warning" | "error"
+
+          "active"
+
+          Colours the readout and adds a glyph — a check on success, an alert
+          on warning or error.
+
+          ProgressField
+
+          hint
+
+          ReactNode
+
+          undefined
+
+          One line under the bar, in the status colour when a status is set.
 
           ProgressField
 

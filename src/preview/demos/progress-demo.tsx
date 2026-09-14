@@ -21,11 +21,9 @@ import { useEffect, useRef, useState } from "react";
  */
 function StagedOperation({
   variant,
-  barSize,
   color,
 }: {
   variant: ProgressVariant;
-  barSize: ProgressSize;
   color: string;
 }) {
   const [value, setValue] = useState(0);
@@ -247,7 +245,7 @@ export default function ProgressDemo({
   if (example === "stages") {
     return (
       <div className="w-full flex flex-col items-center justify-center min-h-[360px] py-8 relative z-10 overflow-hidden">
-        <StagedOperation variant={variant} barSize={barSize} color={color} />
+        <StagedOperation variant={variant} color={color} />
       </div>
     );
   }

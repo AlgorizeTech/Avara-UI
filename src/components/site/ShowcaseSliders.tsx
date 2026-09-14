@@ -53,7 +53,7 @@ export function ShowcaseControlCard({
 
 /** Tailwind needs the full class name, so the column count is a lookup. */
 const COLUMN_CLASS: Record<number, string> = {
-  1: "sm:grid-cols-2",
+  1: "grid-cols-1",
   2: "sm:grid-cols-2",
   3: "sm:grid-cols-2 lg:grid-cols-3",
   4: "sm:grid-cols-2 lg:grid-cols-4",

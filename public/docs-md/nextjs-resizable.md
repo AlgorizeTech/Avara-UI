@@ -15,6 +15,16 @@ function Pane({ label }: { label: string }) {
   );
 }`;
 
+export const splitPanes = `${paneHelper}
+
+const PanelOne = () => ;
+const PanelTwo = () => ;`;
+
+export const sidebarPanes = `${paneHelper}
+
+const Sidebar = () => ;
+const Editor = () => ;`;
+
 export const studioPanes = `function Explorer() {
   return (
 

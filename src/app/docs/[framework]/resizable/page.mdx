@@ -18,6 +18,16 @@ function Pane({ label }: { label: string }) {
   );
 }`;
 
+export const splitPanes = `${paneHelper}
+
+const PanelOne = () => <Pane label="Panel one" />;
+const PanelTwo = () => <Pane label="Panel two" />;`;
+
+export const sidebarPanes = `${paneHelper}
+
+const Sidebar = () => <Pane label="min 15% · max 40%" />;
+const Editor = () => <Pane label="fills the rest" />;`;
+
 export const studioPanes = `function Explorer() {
   return (
     <div className="p-4 flex flex-col h-full bg-muted/30">

@@ -1,7 +1,7 @@
 "use client";
 
 import { cn } from "@/lib/utils";
-import React, { useEffect, useRef } from "react";
+import { useEffect, useRef } from "react";
 import { getThemeStyles } from "./date-picker-theme";
 
 export type TimeFormat = "12h" | "24h";

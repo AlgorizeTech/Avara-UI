@@ -54,9 +54,9 @@ export default function GeneratorExample() {
 export const usageGallery = `import { QrCodeGenerator } from "@/components/custom/blocks/QrCodeGeneratorBlock";
 
 const swatches = [
-  { size: 96, level: "L" as const, fgColor: "currentColor" },
-  { size: 140, level: "M" as const, fgColor: "#3b82f6" },
-  { size: 200, level: "H" as const, fgColor: "#10b981" },
+  { size: 96, level: "L" as const },
+  { size: 140, level: "M" as const },
+  { size: 200, level: "H" as const },
 ];
 
 export default function QrGallery() {

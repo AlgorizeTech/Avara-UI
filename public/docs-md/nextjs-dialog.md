@@ -8,9 +8,12 @@ The `DialogBlock` component handles the complex DOM logic required for true acce
 
 Open each dialog from its trigger — the background scrollbar vanishes while it's open and returns exactly as it was on close.
 
-`DialogContent` sizes itself from a `size` prop: `sm` through `xl` for panels that sit on the page, and `full` for a surface that takes the whole viewport. Dialogs also nest — render one inside another's content and the inner window portals above its parent, with `Escape` and backdrop clicks reaching only whichever one is on top.
+`DialogContent` sizes itself from a `size` prop: `sm` through `xl` for panels that sit on the page, and `full` for a surface that takes the whole viewport with its content centred in the middle of it. Dialogs also nest — render one inside another's content and the inner window portals above its parent, with `Escape` and backdrop clicks reaching only whichever one is on top.
 
 export const usageDefault = `"use client";
+
+// CopyField ships with the copy-button item:
+// npx shadcn@latest add https://algorize-ui.vercel.app/r/copy-button.json
 
 export default function ShareDialog() {
   return (
@@ -21,7 +24,8 @@ export default function ShareDialog() {
           
             Anyone who has this link will be able to view this.
 
-            Copy Link
+        {/* CopyField = read-only input + CopyButton. It confirms with an
+            animated "Copied!" and leaves the dialog open so you can see it. */}
 
           Your profile is currently public.
 
@@ -158,7 +162,7 @@ export default function DialogSizes() {
 
               {size}
 
-          {/* sm 24rem · md 32rem (default) · lg 42rem · xl 56rem · full viewport */}
+          {/* sm 24rem · md 32rem (default) · lg 42rem · xl 56rem · full viewport, content centred */}
 
               Size {size}
               
@@ -357,8 +361,10 @@ Discover the Dialog component's accessible modal features, including focus trapp
 
           Panel width: sm ~24rem, md ~32rem,{" "}
           lg ~42rem, xl ~56rem. full{" "}
-          fills the viewport and drops the rounding, border and{" "}
-          max-height cap the inset sizes use.
+          fills the viewport, drops the rounding, border and{" "}
+          max-height cap the inset sizes use, and centres its
+          content in an md-wide column in the middle of the screen
+          (override with className for an edge-to-edge layout).
 
           All Components
 
