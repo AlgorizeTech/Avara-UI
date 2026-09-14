@@ -1,6 +1,7 @@
 "use client";
 
 import { cn } from "@/lib/utils";
+import { AlertCircle, AlertTriangle, CheckCircle2 } from "lucide-react";
 import React, { forwardRef } from "react";
 import { getThemeStyles } from "./progress-theme";
 
@@ -13,8 +14,96 @@ export type ProgressColor =
   | "indigo"
   | "rose"
   | "emerald"
+  | "amber"
+  | "red"
   | "zinc"
   | (string & {});
+
+/**
+ * How the operation is going. `active` is the default and draws the theme
+ * colour (or the current stage); the other three override every colour with
+ * the conventional semantic hue so state is never ambiguous.
+ */
+export type ProgressStatus = "active" | "success" | "warning" | "error";
+
+/** A colour that takes over once the bar reaches `from` percent. */
+export interface ProgressStage {
+  /** Threshold in percent (0–100), inclusive. */
+  from: number;
+  color: ProgressColor;
+}
+
+const STATUS_COLOR: Record<Exclude<ProgressStatus, "active">, ProgressColor> = {
+  success: "emerald",
+  warning: "amber",
+  error: "red",
+};
+
+/**
+ * The colour to draw right now. `status` wins outright; otherwise the last
+ * stage whose threshold has been crossed; otherwise the base colour.
+ */
+const resolveProgressColor = (
+  percentage: number,
+  color: ProgressColor,
+  stages?: ProgressStage[],
+  status: ProgressStatus = "active",
+): ProgressColor => {
+  if (status !== "active") return STATUS_COLOR[status];
+  if (!stages?.length) return color;
+  let picked = color;
+  for (const stage of [...stages].sort((a, b) => a.from - b.from)) {
+    if (percentage >= stage.from) picked = stage.color;
+  }
+  return picked;
+};
+
+/** The readout's colour and glyph per status, shared by field and ring. */
+const STATUS_READOUT: Record<
+  Exclude<ProgressStatus, "active">,
+  { text: string; Icon: React.ElementType }
+> = {
+  success: { text: "text-emerald-600 dark:text-emerald-400", Icon: CheckCircle2 },
+  warning: { text: "text-amber-600 dark:text-amber-400", Icon: AlertTriangle },
+  error: { text: "text-red-600 dark:text-red-400", Icon: AlertCircle },
+};
+
+/** The hover bubble shared by the bar and the ring. Positioned by the caller. */
+function ProgressTooltip({
+  children,
+  className,
+  style,
+}: {
+  children: React.ReactNode;
+  className?: string;
+  style?: React.CSSProperties;
+}) {
+  return (
+    <div
+      role="tooltip"
+      className={cn(
+        "pointer-events-none absolute bottom-full mb-2 -translate-x-1/2 whitespace-nowrap",
+        "rounded-md bg-foreground px-2 py-1 text-[11px] font-semibold tabular-nums text-background shadow-md",
+        "opacity-0 translate-y-1 transition-[opacity,transform,left] duration-200 ease-out",
+        "group-hover/progress:opacity-100 group-hover/progress:translate-y-0",
+        // Caret, pointing down at the element.
+        "after:absolute after:left-1/2 after:top-full after:-translate-x-1/2 after:border-4 after:border-transparent after:border-t-foreground",
+        className,
+      )}
+      style={style}
+    >
+      {children}
+    </div>
+  );
+}
+
+// Keyframes for the indeterminate bar, injected once alongside the first bar
+// that needs them so the block stays self-contained when installed.
+const INDETERMINATE_KEYFRAMES = `
+@keyframes progress-block-indeterminate {
+  0% { transform: translateX(-100%); }
+  100% { transform: translateX(260%); }
+}`;
 
 // ==========================================
 // SHARED TRACK GEOMETRY
@@ -65,6 +154,10 @@ export interface ProgressFieldProps
   max?: number;
   showValue?: boolean;
   valueFormat?: (value: number, max: number) => React.ReactNode;
+  /** Colours the readout and adds a glyph: a check on success, an alert on error. */
+  status?: ProgressStatus;
+  /** One line under the bar — what happened, or what to do next. */
+  hint?: React.ReactNode;
 }
 
 export const ProgressField = forwardRef<HTMLDivElement, ProgressFieldProps>(
@@ -75,6 +168,8 @@ export const ProgressField = forwardRef<HTMLDivElement, ProgressFieldProps>(
       max = 100,
       showValue = true,
       valueFormat,
+      status = "active",
+      hint,
       className,
       children,
       ...props
@@ -82,6 +177,7 @@ export const ProgressField = forwardRef<HTMLDivElement, ProgressFieldProps>(
     ref,
   ) => {
     const percentage = Math.min(Math.max((value / max) * 100, 0), 100);
+    const readout = status !== "active" ? STATUS_READOUT[status] : null;
 
     return (
       <div
@@ -90,14 +186,20 @@ export const ProgressField = forwardRef<HTMLDivElement, ProgressFieldProps>(
         {...props}
       >
         {(label || showValue) && (
-          <div className="flex justify-between items-end w-full">
+          <div className="flex justify-between items-end gap-3 w-full">
             {label && (
-              <label className="text-sm font-bold text-foreground">
+              <label className="text-sm font-semibold text-foreground">
                 {label}
               </label>
             )}
             {showValue && (
-              <span className="text-sm font-bold text-foreground">
+              <span
+                className={cn(
+                  "inline-flex items-center gap-1.5 text-sm font-semibold tabular-nums transition-colors",
+                  readout ? readout.text : "text-foreground",
+                )}
+              >
+                {readout && <readout.Icon aria-hidden className="w-4 h-4" />}
                 {valueFormat
                   ? valueFormat(value, max)
                   : `${Math.round(percentage)}%`}
@@ -106,6 +208,16 @@ export const ProgressField = forwardRef<HTMLDivElement, ProgressFieldProps>(
           </div>
         )}
         {children}
+        {hint && (
+          <p
+            className={cn(
+              "text-xs transition-colors",
+              readout ? readout.text : "text-muted-foreground",
+            )}
+          >
+            {hint}
+          </p>
+        )}
       </div>
     );
   },
@@ -122,6 +234,21 @@ export interface ProgressProps extends React.HTMLAttributes<HTMLDivElement> {
   color?: ProgressColor;
   barSize?: ProgressSize;
   indicatorClassName?: string;
+  /**
+   * Colour by threshold. Each stage takes over from its `from` percent until
+   * the next one, e.g. neutral to start, the brand colour once under way,
+   * green at 100. Overridden by `status`.
+   */
+  stages?: ProgressStage[];
+  /** Semantic override: success, warning or error colour the whole bar. */
+  status?: ProgressStatus;
+  /** Unknown duration — a bar slides along the track instead of filling it. */
+  indeterminate?: boolean;
+  /**
+   * Hover readout at the fill's leading edge. `true` shows the percentage;
+   * a function formats it, e.g. `(v, m) => v + " of " + m + " GB"`.
+   */
+  tooltip?: boolean | ((value: number, max: number) => React.ReactNode);
 }
 
 export const Progress = forwardRef<HTMLDivElement, ProgressProps>(
@@ -132,14 +259,25 @@ export const Progress = forwardRef<HTMLDivElement, ProgressProps>(
       variant = "default",
       color = "primary",
       barSize = "md",
+      stages,
+      status = "active",
+      indeterminate = false,
+      tooltip = false,
       className,
       indicatorClassName,
       ...props
     },
     ref,
   ) => {
-    const { theme, style } = getThemeStyles(color as string);
     const percentage = Math.min(Math.max((value / max) * 100, 0), 100);
+    const activeColor = resolveProgressColor(percentage, color, stages, status);
+    const { theme, style } = getThemeStyles(activeColor as string);
+    const tooltipContent =
+      tooltip && !indeterminate
+        ? typeof tooltip === "function"
+          ? tooltip(value, max)
+          : `${Math.round(percentage)}%`
+        : null;
 
     const indicatorStyles: Record<ProgressVariant, string> = {
       default: theme.bg,
@@ -154,9 +292,21 @@ export const Progress = forwardRef<HTMLDivElement, ProgressProps>(
         role="progressbar"
         aria-valuemin={0}
         aria-valuemax={max}
-        aria-valuenow={value}
+        aria-valuenow={indeterminate ? undefined : value}
+        aria-valuetext={
+          indeterminate
+            ? "In progress"
+            : status !== "active"
+              ? `${Math.round(percentage)}%, ${status}`
+              : undefined
+        }
+        aria-busy={indeterminate || undefined}
+        data-status={status}
         className={cn(
-          "relative w-full overflow-hidden rounded-full",
+          // The track itself does not clip: the fill is width-driven and
+          // rounded on its own, and the hover tooltip has to hang above the
+          // bar. The inner layer clips the sliding indeterminate bar instead.
+          "group/progress relative w-full rounded-full",
           barSizeClasses[barSize],
           trackStyles[variant],
           className,
@@ -164,14 +314,33 @@ export const Progress = forwardRef<HTMLDivElement, ProgressProps>(
         style={style}
         {...props}
       >
-        <div
-          className={cn(
-            "h-full w-full flex-1 transition-all duration-500 ease-out rounded-full",
-            indicatorStyles[variant],
-            indicatorClassName,
-          )}
-          style={{ transform: `translateX(-${100 - percentage}%)` }}
-        />
+        {indeterminate && <style>{INDETERMINATE_KEYFRAMES}</style>}
+        <div className="absolute inset-0 overflow-hidden rounded-full">
+          <div
+            className={cn(
+              // Width-driven so the fill's rounded end is real, and colour
+              // transitions alongside width so a stage change cross-fades. The
+              // inset highlight is a hairline of light along the top edge —
+              // depth without a gradient wash.
+              "h-full rounded-full transition-[width,background-color,box-shadow] duration-500 ease-out",
+              "shadow-[inset_0_1px_0_rgba(255,255,255,0.25)]",
+              indicatorStyles[variant],
+              indeterminate &&
+                "w-2/5 motion-safe:animate-[progress-block-indeterminate_1.4s_cubic-bezier(0.4,0,0.2,1)_infinite] motion-reduce:w-full",
+              indicatorClassName,
+            )}
+            style={indeterminate ? undefined : { width: `${percentage}%` }}
+          />
+        </div>
+        {tooltipContent !== null && (
+          // Follows the fill's edge, held just inside the track at both ends
+          // so the bubble never hangs off the bar.
+          <ProgressTooltip
+            style={{ left: `clamp(1.25rem, ${percentage}%, calc(100% - 1.25rem))` }}
+          >
+            {tooltipContent}
+          </ProgressTooltip>
+        )}
       </div>
     );
   },
@@ -309,6 +478,12 @@ export interface CircularProgressProps
   trackClassName?: string;
   /** Classes for the filled arc. */
   indicatorClassName?: string;
+  /** Colour by threshold — see `Progress`. */
+  stages?: ProgressStage[];
+  /** Semantic override; also colours the centred readout. */
+  status?: ProgressStatus;
+  /** Hover bubble above the ring — same options as on `Progress`. */
+  tooltip?: boolean | ((value: number, max: number) => React.ReactNode);
 }
 
 /**
@@ -332,14 +507,24 @@ export const CircularProgress = forwardRef<
       className,
       trackClassName,
       indicatorClassName,
+      stages,
+      status = "active",
+      tooltip = false,
       style,
       children,
       ...props
     },
     ref,
   ) => {
-    const { theme, style: themeStyle } = getThemeStyles(color as string);
     const percentage = Math.min(Math.max((value / max) * 100, 0), 100);
+    const activeColor = resolveProgressColor(percentage, color, stages, status);
+    const { theme, style: themeStyle } = getThemeStyles(activeColor as string);
+    const readoutTone = status !== "active" ? STATUS_READOUT[status] : null;
+    const tooltipContent = tooltip
+      ? typeof tooltip === "function"
+        ? tooltip(value, max)
+        : `${Math.round(percentage)}%`
+      : null;
 
     // Geometry: inset the radius by half the stroke so the ring's outer edge
     // lands exactly on the box, then walk the dash offset from a full
@@ -372,8 +557,9 @@ export const CircularProgress = forwardRef<
         aria-valuemin={0}
         aria-valuemax={max}
         aria-valuenow={value}
+        data-status={status}
         className={cn(
-          "relative inline-flex shrink-0 items-center justify-center",
+          "group/progress relative inline-flex shrink-0 items-center justify-center",
           variant === "glass" && "rounded-full backdrop-blur-md",
           className,
         )}
@@ -414,7 +600,7 @@ export const CircularProgress = forwardRef<
             strokeDasharray={circumference}
             strokeDashoffset={circumference * (1 - percentage / 100)}
             className={cn(
-              "transition-[stroke-dashoffset] duration-500 ease-out",
+              "transition-[stroke-dashoffset,color] duration-500 ease-out",
               theme.stroke,
               variant === "glow" && theme.ringGlow,
               indicatorClassName,
@@ -423,11 +609,17 @@ export const CircularProgress = forwardRef<
         </svg>
         {readout !== null && readout !== false && (
           <div
-            className="absolute inset-0 flex flex-col items-center justify-center text-center font-bold leading-tight text-foreground"
+            className={cn(
+              "absolute inset-0 flex flex-col items-center justify-center text-center font-bold leading-tight tabular-nums transition-colors",
+              readoutTone ? readoutTone.text : "text-foreground",
+            )}
             style={{ fontSize: Math.max(12, Math.round(circleSize * 0.18)) }}
           >
             {readout}
           </div>
+        )}
+        {tooltipContent !== null && (
+          <ProgressTooltip className="left-1/2">{tooltipContent}</ProgressTooltip>
         )}
       </div>
     );
