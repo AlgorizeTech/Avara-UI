@@ -33,7 +33,7 @@ export interface FolderProps {
   color?: string;
   /** A lucide icon shown on the front pocket. */
   icon?: LucideIcon;
-  /** Frosted-glass blur on the front pocket, px. Default 6. */
+  /** Frosted-glass blur on the front pocket, px. Default 10. */
   blur?: number;
   /** Folder width in px. Height derives from it. Default 260. */
   size?: number;
@@ -230,7 +230,7 @@ export function Folder({
   count,
   color,
   icon: Icon,
-  blur = 6,
+  blur = 10,
   size = 260,
   files,
   peek = 3,
@@ -736,9 +736,13 @@ export function Folder({
         {/* front pocket — frosted glass, tilts open, sits ABOVE the files */}
         <motion.div
           className="absolute inset-x-0 bottom-0 origin-bottom"
+          // No `transformStyle: preserve-3d` here: inside a 3D rendering
+          // context Chrome samples a backdrop-filter's backdrop per composited
+          // layer, clipped to that layer's bounds, so the frosted glass showed
+          // each card as a hard-edged blurred rectangle instead of a soft
+          // spread. The tilt only needs the outer wrapper's `perspective`.
           style={{
             height: pocketH,
-            transformStyle: "preserve-3d",
             zIndex: 5,
             borderRadius: r,
             boxShadow: "0 -2px 10px rgba(0,0,0,0.05)",
@@ -753,6 +757,14 @@ export function Folder({
               width: w,
               height: pocketH,
               clipPath: `path("${pocketPath}")`,
+              // Chrome clips a backdrop-filter to the element's border-radius
+              // but, on some GPU paths, not to a `path()` clip - the blurred
+              // backdrop then paints the full box and shows as dark blocks at
+              // the four corners outside the squircle. A rounded rect at
+              // 1.25r hugs this squircle to within 0.003r without ever cutting
+              // it, so the compositor clips the blur and the path only trims
+              // the last sub-pixel.
+              borderRadius: r * 1.25,
               // Relative OKLCH lightness (not a color-mix toward white) so the
               // bump is perceptually consistent for every base colour — mixing
               // a fixed % of white lightens a near-black colour far more than
