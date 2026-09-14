@@ -58,6 +58,7 @@ type ButtonVariant =
   | "floating-shadow"
   | "magnetic-pull"
   | "glitch-cyber"
+  | "3d"
   | "3d-press"
   | "liquid-fill"
   | "border-chase"
@@ -289,13 +290,22 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
           ref={ref}
           {...props}
         >
-          <span className="inline-flex items-center justify-center gap-2 transition-transform duration-300 ease-out group-hover:-translate-y-[150%]">
+          {/* Invisible copy holds the width; both visible labels are absolute
+              and travel the button's full height, so the outgoing one clears
+              the top edge completely and both land on the same centre. */}
+          <span aria-hidden className="invisible inline-flex items-center gap-2">
             {loading && <Loader2 className="h-4 w-4" />}
             {!loading && iconLeft && <span>{iconLeft}</span>}
             {children}
             {!loading && iconRight && <span>{iconRight}</span>}
           </span>
-          <span className="absolute inset-0 inline-flex items-center justify-center gap-2 translate-y-[150%] transition-transform duration-300 ease-out group-hover:translate-y-0">
+          <span className="absolute inset-0 inline-flex items-center justify-center gap-2 transition-transform duration-300 ease-out group-hover:-translate-y-full">
+            {loading && <Loader2 className="h-4 w-4" />}
+            {!loading && iconLeft && <span>{iconLeft}</span>}
+            {children}
+            {!loading && iconRight && <span>{iconRight}</span>}
+          </span>
+          <span aria-hidden className="absolute inset-0 inline-flex items-center justify-center gap-2 translate-y-full transition-transform duration-300 ease-out group-hover:translate-y-0">
             {loading && <Loader2 className="h-4 w-4" />}
             {!loading && iconLeft && <span>{iconLeft}</span>}
             {children}
@@ -340,13 +350,20 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
           ref={ref}
           {...props}
         >
-          <span className="inline-flex items-center justify-center gap-2 transition-transform duration-300 ease-out group-hover:translate-y-[150%]">
+          {/* Same construction as slide-text, mirrored - see the note there. */}
+          <span aria-hidden className="invisible inline-flex items-center gap-2">
             {loading && <Loader2 className="h-4 w-4" />}
             {!loading && iconLeft && <span>{iconLeft}</span>}
             {children}
             {!loading && iconRight && <span>{iconRight}</span>}
           </span>
-          <span className="absolute inset-0 inline-flex items-center justify-center gap-2 -translate-y-[150%] transition-transform duration-300 ease-out group-hover:translate-y-0">
+          <span className="absolute inset-0 inline-flex items-center justify-center gap-2 transition-transform duration-300 ease-out group-hover:translate-y-full">
+            {loading && <Loader2 className="h-4 w-4" />}
+            {!loading && iconLeft && <span>{iconLeft}</span>}
+            {children}
+            {!loading && iconRight && <span>{iconRight}</span>}
+          </span>
+          <span aria-hidden className="absolute inset-0 inline-flex items-center justify-center gap-2 -translate-y-full transition-transform duration-300 ease-out group-hover:translate-y-0">
             {loading && <Loader2 className="h-4 w-4" />}
             {!loading && iconLeft && <span>{iconLeft}</span>}
             {children}
@@ -1302,6 +1319,46 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
     }
 
     // Variant: 3D Press (Neumorphic 3D depth press)
+    // Variant: 3D (a raised face over a darker edge and a ground shadow; the
+    // face sinks toward the edge on hover and all the way down on press)
+    if (variant === "3d") {
+      return (
+        <button
+          className={cn(
+            "relative inline-flex w-max cursor-pointer rounded-xl border-0 bg-transparent p-0 text-sm font-semibold text-primary-foreground group focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 focus-visible:ring-offset-background disabled:opacity-50 disabled:pointer-events-none",
+            size === "sm" ? "h-10 rounded-lg text-xs" : size === "lg" ? "h-14 text-base" : "h-12",
+            className,
+          )}
+          disabled={loading}
+          ref={ref}
+          {...props}
+        >
+          {/* Ground shadow - spreads as the face lifts, tightens as it presses */}
+          <span
+            aria-hidden
+            className="absolute inset-0 translate-y-1.5 rounded-[inherit] bg-black/30 blur-[2px] transition-transform duration-200 ease-out group-hover:translate-y-1 group-active:translate-y-0.5"
+          />
+          {/* Edge - the same primary, darkened, sitting where the face rests */}
+          <span
+            aria-hidden
+            className="absolute inset-0 rounded-[inherit] bg-primary brightness-[.55]"
+          />
+          {/* Face */}
+          <span
+            className={cn(
+              "relative flex h-full items-center justify-center gap-2 rounded-[inherit] bg-primary shadow-[inset_0_1px_0_rgba(255,255,255,0.25)] transition-transform duration-200 ease-out -translate-y-1.5 group-hover:-translate-y-1 group-active:-translate-y-px",
+              size === "sm" ? "px-4" : size === "lg" ? "px-8" : "px-6",
+            )}
+          >
+            {loading && <Loader2 className="h-4 w-4" />}
+            {!loading && iconLeft && <span>{iconLeft}</span>}
+            {children}
+            {!loading && iconRight && <span>{iconRight}</span>}
+          </span>
+        </button>
+      );
+    }
+
     if (variant === "3d-press") {
       return (
         <button
