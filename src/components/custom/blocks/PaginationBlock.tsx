@@ -1,8 +1,8 @@
 "use client";
 
 import { cn } from "@/lib/utils";
-import { ChevronLeft, ChevronRight, MoreHorizontal } from "lucide-react";
-import React, { useMemo } from "react";
+import { ChevronDown, ChevronLeft, ChevronRight, MoreHorizontal } from "lucide-react";
+import React, { useEffect, useMemo, useState } from "react";
 
 // ==========================================
 // 1. ROOT CONTEXT & LOGIC
@@ -13,6 +13,15 @@ export interface PaginationProps extends React.ComponentProps<"nav"> {
   onPageChange?: (page: number) => void;
   siblingCount?: number;
   showEdges?: boolean;
+  /** Renders a "Go to page" control next to the page numbers. */
+  showPageJump?: boolean;
+  /** `input` is a free-typed page number, `select` lists every page. */
+  pageJumpVariant?: "input" | "select";
+  /** Renders a "Rows per page" selector. Pair it with `pageSize` and `onPageSizeChange`. */
+  showPageSize?: boolean;
+  pageSize?: number;
+  pageSizeOptions?: number[];
+  onPageSizeChange?: (pageSize: number) => void;
 }
 
 export function Pagination({
@@ -22,6 +31,12 @@ export function Pagination({
   onPageChange,
   siblingCount = 2,
   showEdges = true,
+  showPageJump = false,
+  pageJumpVariant = "input",
+  showPageSize = false,
+  pageSize = 10,
+  pageSizeOptions = [10, 20, 50, 100],
+  onPageSizeChange,
   ...props
 }: PaginationProps) {
   // Advanced pagination logic to calculate ellipses
@@ -116,13 +131,13 @@ export function Pagination({
       role="navigation"
       aria-label="pagination"
       className={cn(
-        "mx-auto flex w-full max-w-full flex-col items-center gap-3 px-2 sm:px-4 md:flex-row md:justify-center md:gap-0 md:px-0",
+        "mx-auto flex w-full max-w-full flex-col items-center gap-3 px-2 sm:px-4 md:flex-row md:justify-center md:gap-4 md:px-0",
         className
       )}
       {...props}
     >
       {/* Desktop / Tablet List (md:flex) */}
-      <ul className="hidden flex-wrap items-center justify-center gap-1.5 md:flex md:gap-2 p-0 m-0 w-full">
+      <ul className="hidden flex-wrap items-center justify-center gap-1.5 md:flex md:gap-2 p-0 m-0 w-full md:w-auto">
         {showEdges && (
           <PaginationPrevious
             onClick={() => onPageChange?.(currentPage - 1)}
@@ -184,6 +199,30 @@ export function Pagination({
             onClick={() => onPageChange?.(currentPage + 1)}
             disabled={currentPage >= totalPages}
           />
+        </div>
+      )}
+
+      {/* Optional controls. One wrapping row on mobile; on md+ the wrapper
+          dissolves (`contents`) so page size sits first and jump sits last. */}
+      {(showPageSize || showPageJump) && (
+        <div className="flex flex-wrap items-center justify-center gap-3 md:contents">
+          {showPageSize && (
+            <PaginationPageSize
+              className="md:order-first"
+              pageSize={pageSize}
+              pageSizeOptions={pageSizeOptions}
+              onPageSizeChange={onPageSizeChange}
+            />
+          )}
+          {showPageJump && (
+            <PaginationPageJump
+              className="md:order-last"
+              variant={pageJumpVariant}
+              currentPage={currentPage}
+              totalPages={totalPages}
+              onPageChange={onPageChange}
+            />
+          )}
         </div>
       )}
     </nav>
@@ -298,5 +337,163 @@ export function PaginationEllipsis({
         <span className="sr-only">More pages</span>
       </span>
     </li>
+  );
+}
+
+// ==========================================
+// 3. OPTIONAL CONTROLS
+// ==========================================
+
+const controlLabel =
+  "flex items-center gap-2 text-xs font-medium text-muted-foreground whitespace-nowrap";
+const controlField =
+  "h-8 text-xs font-semibold bg-background text-foreground border border-border rounded-md outline-none transition-colors focus:border-[var(--theme-color,var(--primary))] focus:ring-2 focus:ring-[var(--theme-color,var(--primary))]/25";
+
+function PaginationSelect({
+  className,
+  children,
+  ...props
+}: React.SelectHTMLAttributes<HTMLSelectElement>) {
+  return (
+    <span className="relative inline-flex items-center">
+      <select
+        className={cn(controlField, "pl-2.5 pr-7 appearance-none cursor-pointer", className)}
+        {...props}
+      >
+        {children}
+      </select>
+      <ChevronDown className="pointer-events-none absolute right-2 h-3.5 w-3.5 text-muted-foreground" />
+    </span>
+  );
+}
+
+export interface PaginationPageSizeProps
+  extends Omit<React.ComponentProps<"label">, "onChange"> {
+  pageSize: number;
+  pageSizeOptions?: number[];
+  onPageSizeChange?: (pageSize: number) => void;
+}
+
+export function PaginationPageSize({
+  className,
+  pageSize,
+  pageSizeOptions = [10, 20, 50, 100],
+  onPageSizeChange,
+  ...props
+}: PaginationPageSizeProps) {
+  // Keep the current size selectable even when it isn't one of the presets.
+  const options = pageSizeOptions.includes(pageSize)
+    ? pageSizeOptions
+    : [...pageSizeOptions, pageSize].sort((a, b) => a - b);
+
+  return (
+    <label className={cn(controlLabel, className)} {...props}>
+      Rows per page
+      <PaginationSelect
+        value={pageSize}
+        onChange={(e) => onPageSizeChange?.(Number(e.target.value))}
+      >
+        {options.map((size) => (
+          <option key={size} value={size} className="bg-background text-foreground">
+            {size}
+          </option>
+        ))}
+      </PaginationSelect>
+    </label>
+  );
+}
+
+export interface PaginationPageJumpProps
+  extends Omit<React.ComponentProps<"form">, "onChange"> {
+  currentPage: number;
+  totalPages: number;
+  onPageChange?: (page: number) => void;
+  variant?: "input" | "select";
+}
+
+export function PaginationPageJump({
+  className,
+  currentPage,
+  totalPages,
+  onPageChange,
+  variant = "input",
+  ...props
+}: PaginationPageJumpProps) {
+  const [draft, setDraft] = useState(String(currentPage));
+
+  // A page change from elsewhere (number click, prev/next) resets the draft.
+  useEffect(() => {
+    setDraft(String(currentPage));
+  }, [currentPage]);
+
+  const commit = () => {
+    const parsed = parseInt(draft, 10);
+    if (Number.isNaN(parsed)) {
+      setDraft(String(currentPage));
+      return;
+    }
+    const page = Math.min(Math.max(parsed, 1), totalPages);
+    setDraft(String(page));
+    if (page !== currentPage) onPageChange?.(page);
+  };
+
+  if (variant === "select") {
+    return (
+      <form
+        className={cn(controlLabel, className)}
+        onSubmit={(e) => e.preventDefault()}
+        {...props}
+      >
+        <label className="flex items-center gap-2">
+          Page
+          <PaginationSelect
+            aria-label="Go to page"
+            value={currentPage}
+            onChange={(e) => onPageChange?.(Number(e.target.value))}
+          >
+            {Array.from({ length: totalPages }, (_, i) => i + 1).map((page) => (
+              <option key={page} value={page} className="bg-background text-foreground">
+                {page}
+              </option>
+            ))}
+          </PaginationSelect>
+        </label>
+        <span>of {totalPages}</span>
+      </form>
+    );
+  }
+
+  return (
+    <form
+      className={cn(controlLabel, className)}
+      onSubmit={(e) => {
+        e.preventDefault();
+        commit();
+      }}
+      {...props}
+    >
+      <label className="flex items-center gap-2">
+        Go to page
+        <input
+          type="number"
+          inputMode="numeric"
+          min={1}
+          max={totalPages}
+          value={draft}
+          onChange={(e) => setDraft(e.target.value)}
+          onBlur={commit}
+          className={cn(
+            controlField,
+            "w-14 px-2 text-center [appearance:textfield] [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:appearance-none",
+          )}
+        />
+      </label>
+      <button
+        type="submit"
+        className="h-8 rounded-md border border-border px-2.5 text-xs font-semibold text-foreground transition-colors hover:bg-muted outline-none focus-visible:ring-2 focus-visible:ring-[var(--theme-color,var(--primary))] cursor-pointer"
+      >
+        Go
+      </button>
+    </form>
   );
 }

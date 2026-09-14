@@ -23,6 +23,11 @@ export default function PaginationDemo({
   totalPages = 10,
   showEdges = true,
   siblingCount = 2,
+  showPageJump = false,
+  pageJumpVariant = "input",
+  showPageSize = false,
+  pageSize: initialPageSize = 5,
+  pageSizeOptions = [5, 10, 20, 50],
   example = "table",
 }: {
   color?: string;
@@ -30,19 +35,47 @@ export default function PaginationDemo({
   totalPages?: number;
   showEdges?: boolean;
   siblingCount?: number;
+  showPageJump?: boolean;
+  pageJumpVariant?: "input" | "select";
+  showPageSize?: boolean;
+  pageSize?: number;
+  pageSizeOptions?: number[];
   /** "table" is the classic data-table frame; "bare" is the control on its own. */
   example?: "table" | "bare";
 }) {
   const [currentPage, setCurrentPage] = useState(initialPage);
+  const [pageSize, setPageSize] = useState(initialPageSize);
 
-  // Mock table data for the visual preview
-  const itemsPerPage = 5;
-  const mockTotalItems = totalPages * itemsPerPage;
-  const safePage = Math.min(currentPage, totalPages);
-  const currentStart = (safePage - 1) * itemsPerPage + 1;
-  const currentEnd = Math.min(safePage * itemsPerPage, mockTotalItems);
+  // Mock table data for the visual preview. The item count is fixed, so
+  // changing the page size re-derives how many pages there are.
+  const mockTotalItems = totalPages * initialPageSize;
+  const derivedTotalPages = Math.max(1, Math.ceil(mockTotalItems / pageSize));
+  const safePage = Math.min(currentPage, derivedTotalPages);
+  const currentStart = (safePage - 1) * pageSize + 1;
+  const currentEnd = Math.min(safePage * pageSize, mockTotalItems);
+
+  const handlePageSizeChange = (size: number) => {
+    setPageSize(size);
+    setCurrentPage(1);
+  };
 
   const activeHex = getThemeColorHex(color);
+
+  const pagination = (
+    <Pagination
+      currentPage={safePage}
+      totalPages={derivedTotalPages}
+      onPageChange={setCurrentPage}
+      siblingCount={siblingCount}
+      showEdges={showEdges}
+      showPageJump={showPageJump}
+      pageJumpVariant={pageJumpVariant}
+      showPageSize={showPageSize}
+      pageSize={pageSize}
+      pageSizeOptions={pageSizeOptions}
+      onPageSizeChange={handlePageSizeChange}
+    />
+  );
 
   if (example === "bare") {
     return (
@@ -50,13 +83,7 @@ export default function PaginationDemo({
         className="w-full flex items-center justify-center min-h-[300px] relative z-10 overflow-hidden"
         style={{ "--theme-color": activeHex } as React.CSSProperties}
       >
-        <Pagination
-          currentPage={safePage}
-          totalPages={totalPages}
-          onPageChange={setCurrentPage}
-          siblingCount={siblingCount}
-          showEdges={showEdges}
-        />
+        {pagination}
       </div>
     );
   }
@@ -91,13 +118,7 @@ export default function PaginationDemo({
         </div>
 
         {/* Pagination Component */}
-        <Pagination
-          currentPage={safePage}
-          totalPages={totalPages}
-          onPageChange={setCurrentPage}
-          siblingCount={siblingCount}
-          showEdges={showEdges}
-        />
+        {pagination}
       </div>
     </div>
   );

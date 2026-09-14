@@ -58,6 +58,8 @@ const fleetVariants: Record<FleetVariant, Record<string, string>> = {
     itemActive: "bg-card border-l-[3px] shadow-sm",
     itemInactive:
       "hover:bg-muted border-l-[3px] border-transparent",
+    header: "border-border",
+    search: "shadow-sm bg-card border border-border",
   },
   minimal: {
     wrapper:
@@ -70,19 +72,29 @@ const fleetVariants: Record<FleetVariant, Record<string, string>> = {
     itemActive: "bg-muted rounded-lg mx-3 my-1",
     itemInactive:
       "hover:bg-muted rounded-lg mx-3 my-1 border border-transparent",
+    header: "border-border",
+    search: "shadow-sm bg-card border border-border",
   },
+  // The same frosted recipe as GlassPanel in ProfilePageBlock: translucent
+  // white, hairline border, inset top highlight, over an aurora the wrapper
+  // draws. Kept inline so this block installs on its own.
   modern: {
     wrapper:
-      "flex flex-col md:flex-row bg-muted border border-border/80 shadow-xl rounded-2xl p-3 gap-3 relative overflow-hidden [&_.leaflet-control-attribution]:hidden",
+      "flex flex-col md:flex-row relative isolate overflow-hidden rounded-[28px] p-3 gap-3 bg-[#f5f5f7] dark:bg-[#0b0b0f] border border-black/[0.06] dark:border-white/10 shadow-xl [&_.leaflet-control-attribution]:hidden",
     sidebar:
-      "w-full md:w-[320px] lg:w-[360px] bg-white dark:bg-[#09090b] rounded-xl shadow-sm border border-border/80 shrink-0 flex flex-col h-full z-20 overflow-hidden",
+      "w-full md:w-[320px] lg:w-[360px] shrink-0 flex flex-col h-full z-20 overflow-hidden rounded-[24px] border border-white/70 bg-white/55 backdrop-blur-2xl shadow-[inset_0_1px_0_rgba(255,255,255,0.75),0_24px_48px_-28px_rgba(15,23,42,0.35)] dark:border-white/10 dark:bg-white/[0.06] dark:shadow-[inset_0_1px_0_rgba(255,255,255,0.08),0_24px_48px_-28px_rgba(0,0,0,0.9)]",
     mapContainer:
-      "flex-1 w-full h-full relative z-10 min-w-0 rounded-xl overflow-hidden border border-border/80 shadow-sm",
-    itemActive: "bg-muted border-l-[3px]",
+      "flex-1 w-full h-full relative z-10 min-w-0 rounded-[24px] overflow-hidden bg-[#e9e9ee] dark:bg-[#121216] border border-white/70 dark:border-white/10 shadow-[0_24px_48px_-28px_rgba(15,23,42,0.35)] dark:shadow-[0_24px_48px_-28px_rgba(0,0,0,0.9)]",
+    itemActive: "bg-white/70 dark:bg-white/10 rounded-2xl mx-3 my-1 shadow-sm",
     itemInactive:
-      "hover:bg-muted/50 border-l-[3px] border-transparent transition-colors",
+      "hover:bg-white/50 dark:hover:bg-white/[0.06] rounded-2xl mx-3 my-1 border border-transparent transition-colors",
+    header: "border-white/60 dark:border-white/10",
+    search: "border border-white/70 bg-white/50 dark:border-white/10 dark:bg-white/5",
   },
 };
+
+/** Colours washed behind the modern variant's glass, top-left / top-right / bottom. */
+const AURORA = ["#a78bfa", "#7dd3fc", "#fdba74"];
 
 const colorThemes: Record<string, Record<string, string>> = {
   primary: {
@@ -479,6 +491,23 @@ export default function FleetTracker({
     >
       <style>{MAP_STYLES}</style>
 
+      {variant === "modern" && (
+        <div aria-hidden className="pointer-events-none absolute inset-0 -z-10">
+          <span
+            style={{ background: AURORA[0] }}
+            className="absolute -left-32 -top-32 size-[32rem] rounded-full opacity-80 blur-3xl dark:opacity-35"
+          />
+          <span
+            style={{ background: AURORA[1] }}
+            className="absolute -right-24 top-16 size-[28rem] rounded-full opacity-80 blur-3xl dark:opacity-35"
+          />
+          <span
+            style={{ background: AURORA[2] }}
+            className="absolute -bottom-40 left-1/3 size-[32rem] rounded-full opacity-70 blur-3xl dark:opacity-30"
+          />
+        </div>
+      )}
+
       {/* Mobile: jump back to the vehicle list while the map is showing */}
       {!isMobileSidebarOpen && (
         <button
@@ -501,7 +530,7 @@ export default function FleetTracker({
           isMobileSidebarOpen ? "flex" : "hidden md:flex",
         )}
       >
-        <div className="p-5 shrink-0 border-b border-border">
+        <div className={cn("p-5 shrink-0 border-b", styles.header)}>
           <div className="flex items-center justify-between mb-5">
             <div className="flex items-center gap-3">
               <div
@@ -534,7 +563,8 @@ export default function FleetTracker({
 
           <div
             className={cn(
-              "relative w-full rounded-xl flex items-center px-3 py-2.5 transition-all shadow-sm bg-card border border-border",
+              "relative w-full rounded-xl flex items-center px-3 py-2.5 transition-all",
+              styles.search,
               theme.focusRing,
             )}
           >
@@ -576,7 +606,9 @@ export default function FleetTracker({
                     "p-2.5 rounded-lg shrink-0 transition-colors shadow-sm",
                     isActive
                       ? theme.bg
-                      : "bg-card border border-border",
+                      : variant === "modern"
+                        ? "bg-white/60 border border-white/70 dark:bg-white/5 dark:border-white/10"
+                        : "bg-card border border-border",
                   )}
                 >
                   <Truck

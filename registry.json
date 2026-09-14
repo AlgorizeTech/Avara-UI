@@ -690,6 +690,31 @@
       "docs": "Named exports: ContextMenu, ContextMenuTrigger, ContextMenuContent, ContextMenuItem, ContextMenuSeparator, ContextMenuShortcut. The trigger suppresses the native browser menu inside its bounds. Positioned from pointer coordinates, so it opens where the user clicked rather than anchored to an element."
     },
     {
+      "name": "copy-button",
+      "type": "registry:component",
+      "title": "Copy Button",
+      "author": "AlgorizeTech",
+      "description": "A clipboard button that confirms the copy in place — the icon pops to a check and the label swaps to \"Copied!\" — plus a read-only Copy Field for links, tokens and commands. Use it anywhere a value needs to be copied without a toast.",
+      "categories": [
+        "actions",
+        "forms"
+      ],
+      "dependencies": [
+        "lucide-react"
+      ],
+      "registryDependencies": [
+        "utils"
+      ],
+      "files": [
+        {
+          "path": "src/components/custom/blocks/CopyButtonBlock.tsx",
+          "type": "registry:component",
+          "target": "components/custom/blocks/CopyButtonBlock.tsx"
+        }
+      ],
+      "docs": "Named exports: CopyButton, CopyField, useCopyToClipboard. `value` is the text copied; `label` / `copiedLabel` / `errorLabel` set the three states, `timeout` how long the confirmation lingers, `iconOnly` drops the label. Variants are solid | soft | outline | ghost, sizes sm | md | lg, `color` a preset or hex. CopyField wraps a read-only input with the button beside it (or `inset` inside it) and forwards `buttonProps`. Falls back to execCommand where the Clipboard API is unavailable."
+    },
+    {
       "name": "counter",
       "type": "registry:component",
       "title": "Counter",
@@ -864,6 +889,7 @@
         "lucide-react"
       ],
       "registryDependencies": [
+        "https://algorize-ui.vercel.app/r/time-picker.json",
         "utils"
       ],
       "files": [
@@ -2445,6 +2471,7 @@
         "lucide-react"
       ],
       "registryDependencies": [
+        "https://algorize-ui.vercel.app/r/time-picker.json",
         "utils"
       ],
       "files": [
@@ -3161,6 +3188,34 @@
         }
       ],
       "docs": "Named export: TiltedCard. Wraps arbitrary children; tune `tiltIntensity`, `glareOpacity` and `scaleOnHover`. Pointer-driven, so it is inert on touch — keep the content readable without the effect."
+    },
+    {
+      "name": "time-picker",
+      "type": "registry:component",
+      "title": "Time Picker",
+      "author": "AlgorizeTech",
+      "description": "Scrollable hour / minute / AM-PM columns for choosing a time of day, with themed selection and disabled ranges. The building block behind the date pickers' time mode.",
+      "categories": [
+        "dates",
+        "forms"
+      ],
+      "dependencies": [],
+      "registryDependencies": [
+        "utils"
+      ],
+      "files": [
+        {
+          "path": "src/components/custom/blocks/TimePickerBlock.tsx",
+          "type": "registry:component",
+          "target": "components/custom/blocks/TimePickerBlock.tsx"
+        },
+        {
+          "path": "src/components/custom/blocks/date-picker-theme.ts",
+          "type": "registry:component",
+          "target": "components/custom/blocks/date-picker-theme.ts"
+        }
+      ],
+      "docs": "Named exports: TimePicker plus the setTime, roundToStep and formatTime helpers. `value` is a Date whose day is preserved on change; `format` is 12h | 24h, `minuteStep` sets granularity, and `minTime` / `maxTime` disable times outside a window on that day. Used by `date-picker` and `range-date-picker` when `showTime` is on."
     },
     {
       "name": "timeline",

@@ -90,6 +90,7 @@ export const navigation: NavigationItem[] = [
       { label: "Playable Piano", slug: "piano" },
       { label: "Command", slug: "command" },
       { label: "ContextMenu", slug: "context-menu" },
+      { label: "Copy Button", slug: "copy-button", badge: "New" },
       { label: "Counter", slug: "counter" },
       { label: "Custom Code Block", slug: "custom-code-block" },
       { label: "Data Grid", slug: "data-grid" },

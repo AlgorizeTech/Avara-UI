@@ -10,7 +10,7 @@ import {
   Palette,
   Video,
 } from "lucide-react";
-import { useEffect, useRef, useState } from "react";
+import { useState } from "react";
 
 // "Default" on the page's colour picker means the folder's showcase blue, so
 // the hero matches the original out of the box.
@@ -88,53 +88,11 @@ function IconPicker({ color }: { color: string }) {
   );
 }
 
-function Uploader({ color }: { color: string }) {
-  const [files, setFiles] = useState<FolderFile[]>([]);
-  const [progress, setProgress] = useState<number | undefined>(undefined);
-  const timer = useRef<ReturnType<typeof setInterval> | null>(null);
-
-  useEffect(() => () => { if (timer.current) clearInterval(timer.current); }, []);
-
-  // Fake the upload: every file ticks up together, the pocket bar tracks the
-  // overall figure, and both settle at 100 so the bars disappear.
-  const onFiles = (incoming: File[]) => {
-    const next = incoming.map((f) => ({
-      name: f.name,
-      progress: 0,
-      thumb: f.type.startsWith("image/") ? URL.createObjectURL(f) : undefined,
-    }));
-    setFiles((prev) => [...prev, ...next]);
-    setProgress(0);
-    if (timer.current) clearInterval(timer.current);
-    let p = 0;
-    timer.current = setInterval(() => {
-      p = Math.min(100, p + 4);
-      setProgress(p);
-      setFiles((prev) => prev.map((f) => (f.progress !== undefined && f.progress < 100 ? { ...f, progress: p } : f)));
-      if (p >= 100 && timer.current) clearInterval(timer.current);
-    }, 80);
-  };
-
-  return (
-    <Folder
-      interactive
-      color={color}
-      icon={ImageIcon}
-      label="Drop zone"
-      files={files}
-      progress={progress}
-      onFiles={onFiles}
-      onRemoveFile={(i) => setFiles((prev) => prev.filter((_, idx) => idx !== i))}
-      accept="image/*,.pdf"
-    />
-  );
-}
-
 export default function FolderDemo({
   color = "primary",
   peek = 3,
   size = 260,
-  blur = 6,
+  blur = 10,
   example = "showcase",
 }: {
   color?: string;
@@ -142,7 +100,7 @@ export default function FolderDemo({
   size?: number;
   blur?: number;
   /** Which preview to render. */
-  example?: "showcase" | "fan" | "icon" | "photos" | "upload";
+  example?: "showcase" | "fan" | "icon" | "photos";
 }) {
   const accent = getThemeColorHex(color);
   const frame = "w-full flex items-center justify-center min-h-[420px] px-6 py-16 relative z-10";
@@ -167,14 +125,6 @@ export default function FolderDemo({
     return (
       <div className={frame}>
         <Folder files={PHOTOS} label="Summer trip" count="6 photos" color={accent} icon={Camera} size={size} blur={blur} />
-      </div>
-    );
-  }
-
-  if (example === "upload") {
-    return (
-      <div className={frame}>
-        <Uploader color={accent} />
       </div>
     );
   }

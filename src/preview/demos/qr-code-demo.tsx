@@ -6,6 +6,47 @@ import jsPDF from "jspdf";
 import { FileText, Image as ImageIcon } from "lucide-react";
 import { useEffect, useState } from "react";
 
+// The docs color picker emits "primary", one of the named swatches below, or
+// a hex string. The QR pattern is drawn with `fill="currentColor"`, so the
+// theme colour is applied as the wrapper's text colour and every QR on the
+// page follows it.
+const namedThemes: Record<string, { text: string; button: string }> = {
+  primary: {
+    text: "text-primary",
+    button: "bg-primary hover:bg-primary/90 text-primary-foreground",
+  },
+  indigo: {
+    text: "text-indigo-600 dark:text-indigo-400",
+    button: "bg-indigo-600 hover:bg-indigo-700 text-white",
+  },
+  rose: {
+    text: "text-rose-600 dark:text-rose-400",
+    button: "bg-rose-600 hover:bg-rose-700 text-white",
+  },
+  emerald: {
+    text: "text-emerald-600 dark:text-emerald-400",
+    button: "bg-emerald-600 hover:bg-emerald-700 text-white",
+  },
+  zinc: {
+    text: "text-zinc-900 dark:text-zinc-100",
+    button:
+      "bg-zinc-900 hover:bg-zinc-800 text-white dark:bg-zinc-100 dark:hover:bg-zinc-200 dark:text-zinc-900",
+  },
+};
+
+const getTheme = (themeColor: string) => {
+  if (themeColor.startsWith("#")) {
+    return {
+      text: "",
+      button: "text-white hover:opacity-90",
+      textStyle: { color: themeColor } as React.CSSProperties,
+      buttonStyle: { backgroundColor: themeColor } as React.CSSProperties,
+    };
+  }
+  const named = namedThemes[themeColor] ?? namedThemes.primary;
+  return { ...named, textStyle: undefined, buttonStyle: undefined };
+};
+
 export default function QrCodeDemo({
   activeTab = "generator",
   themeColor = "primary",
@@ -22,6 +63,7 @@ export default function QrCodeDemo({
 }) {
   const [value, setValue] = useState(valueProp);
   const [level, setLevel] = useState<"L" | "M" | "Q" | "H">(levelProp);
+  const theme = getTheme(themeColor);
 
   useEffect(() => {
     if (valueProp !== undefined) setValue(valueProp);
@@ -41,7 +83,14 @@ export default function QrCodeDemo({
         return;
       }
 
-      const svgData = new XMLSerializer().serializeToString(svgElement);
+      // `currentColor` has nothing to inherit from once the SVG is serialised
+      // on its own, so bake the rendered colour into the copy we export.
+      const clone = svgElement.cloneNode(true) as SVGSVGElement;
+      const resolvedColor = getComputedStyle(svgElement).color;
+      clone
+        .querySelectorAll('[fill="currentColor"]')
+        .forEach((el) => el.setAttribute("fill", resolvedColor));
+      const svgData = new XMLSerializer().serializeToString(clone);
       const canvas = document.createElement("canvas");
       const ctx = canvas.getContext("2d");
       const img = new Image();
@@ -101,35 +150,11 @@ export default function QrCodeDemo({
     }
   };
 
-  const getButtonColorClass = () => {
-    if (themeColor.startsWith("#")) return "text-white";
-    switch (themeColor) {
-      case "primary": return "bg-primary hover:bg-primary/90 text-primary-foreground";
-      case "blue": return "bg-blue-600 hover:bg-blue-700 text-white";
-      case "emerald": return "bg-emerald-600 hover:bg-emerald-700 text-white";
-      case "rose": return "bg-rose-600 hover:bg-rose-700 text-white";
-      case "violet": return "bg-violet-600 hover:bg-violet-700 text-white";
-      default: return "bg-primary hover:bg-primary/90 text-primary-foreground";
-    }
-  };
-
-  const getTextColorClass = () => {
-    if (themeColor.startsWith("#")) return "";
-    switch (themeColor) {
-      case "primary": return "text-primary";
-      case "blue": return "text-blue-600 dark:text-blue-500";
-      case "emerald": return "text-emerald-600 dark:text-emerald-500";
-      case "rose": return "text-rose-600 dark:text-rose-500";
-      case "violet": return "text-violet-600 dark:text-violet-500";
-      default: return "text-primary";
-    }
-  };
-
   if (example === "gallery") {
     const swatches = [
-      { size: 96, level: "L" as const, fgColor: "currentColor" },
-      { size: 140, level: "M" as const, fgColor: "#3b82f6" },
-      { size: 200, level: "H" as const, fgColor: "#10b981" },
+      { size: 96, level: "L" as const },
+      { size: 140, level: "M" as const },
+      { size: 200, level: "H" as const },
     ];
     return (
       <div className="w-full flex flex-wrap items-end justify-center gap-10 min-h-[400px] bg-white dark:bg-black p-8 md:p-12 border border-zinc-200 dark:border-zinc-800 rounded-2xl">
@@ -140,8 +165,9 @@ export default function QrCodeDemo({
               size={s.size}
               level={s.level}
               bgColor="transparent"
-              fgColor={s.fgColor}
-              className="text-zinc-900 dark:text-white"
+              fgColor="currentColor"
+              style={theme.textStyle}
+              className={theme.text}
             />
             <span className="text-xs font-semibold text-zinc-500">
               size={s.size} · level=&quot;{s.level}&quot;
@@ -186,10 +212,10 @@ export default function QrCodeDemo({
                 key={lvl}
                 type="button"
                 onClick={() => setLevel(lvl)}
-                style={{ color: level === lvl && themeColor.startsWith("#") ? themeColor : undefined }}
+                style={level === lvl ? theme.textStyle : undefined}
                 className={`flex-1 cursor-pointer px-3 sm:px-4 py-2 text-sm font-medium transition-colors border-r border-slate-200 dark:border-slate-800 last:border-r-0 text-center flex items-center justify-center ${
                   level === lvl
-                    ? `bg-slate-50 dark:bg-slate-900 ${getTextColorClass()}`
+                    ? `bg-slate-50 dark:bg-slate-900 ${theme.text}`
                     : "text-slate-500 hover:text-slate-700 hover:bg-slate-50 dark:hover:bg-slate-800 dark:text-slate-400"
                 }`}>
                 {lvl}
@@ -208,16 +234,16 @@ export default function QrCodeDemo({
             size={220}
             level={level}
             bgColor="transparent"
-            fgColor={themeColor.startsWith("#") ? themeColor : "currentColor"}
-            style={{ color: themeColor.startsWith("#") ? themeColor : undefined }}
-            className="text-zinc-900 dark:text-white"
+            fgColor="currentColor"
+            style={theme.textStyle}
+            className={theme.text}
           />
         </div>
         <div className="flex flex-col sm:flex-row gap-3 w-full">
           <button
             onClick={handleDownloadPNG}
-            style={{ backgroundColor: themeColor.startsWith("#") ? themeColor : undefined }}
-            className={`flex-1 cursor-pointer flex items-center justify-center gap-2 px-4 py-2.5 text-sm font-medium rounded-xl transition-colors ${getButtonColorClass()}`}>
+            style={theme.buttonStyle}
+            className={`flex-1 cursor-pointer flex items-center justify-center gap-2 px-4 py-2.5 text-sm font-medium rounded-xl transition-colors ${theme.button}`}>
             <ImageIcon className="w-4 h-4" />
             Save as PNG
           </button>

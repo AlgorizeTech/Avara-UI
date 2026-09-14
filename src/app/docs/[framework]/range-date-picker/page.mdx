@@ -87,6 +87,52 @@ export default function PricedDualRangeDatePickerDemo() {
   );
 }`;
 
+export const usageDisablePast = `import { RangeDatePicker, type DateRange } from "@/components/custom/range-date-picker";
+import { useState } from "react";
+
+export default function UpcomingStay() {
+  const [range, setRange] = useState<DateRange>(() => {
+    const from = new Date();
+    const to = new Date();
+    to.setDate(to.getDate() + 5);
+    return { from, to };
+  });
+
+  // Every day before today is greyed out and cannot start or end a range.
+  // minDate / maxDate bound the calendar to any window instead.
+  return <RangeDatePicker variant="single" value={range} onChange={setRange} disablePast />;
+}`;
+
+export const usageTime = `import { RangeDatePicker, type DateRange } from "@/components/custom/range-date-picker";
+import { useState } from "react";
+
+export default function BookingWindow() {
+  const [range, setRange] = useState<DateRange>(() => {
+    const from = new Date();
+    from.setDate(from.getDate() + 1);
+    from.setHours(9, 0, 0, 0);
+    const to = new Date();
+    to.setDate(to.getDate() + 5);
+    to.setHours(17, 0, 0, 0);
+    return { from, to };
+  });
+
+  // showTime adds Start / End time columns — to the right of the calendar
+  // when the card is wide enough, under it otherwise. Both dates carry a time, and on
+  // a same-day range the end can never be earlier than the start.
+  return (
+    <RangeDatePicker
+      variant="single"
+      value={range}
+      onChange={setRange}
+      showTime
+      minuteStep={15}
+      timeFormat="12h"
+      disablePast
+    />
+  );
+}`;
+
 <ExampleShowcase
   name="range-date-picker"
   columns={1}
@@ -116,6 +162,33 @@ export default function PricedDualRangeDatePickerDemo() {
       title: "Dual Month Priced Range Date Picker",
       subheading: "Side-by-side dual calendars displaying dynamic rate prices ($100, $120) below date numbers.",
       props: { variant: "priced-dual" },
+    },
+    {
+      title: "Disable past dates",
+      propNotes: [
+        {
+          lead: "Set",
+          prop: "disablePast",
+          effect:
+            "to grey out every day before today so it can neither start nor end a range. `minDate` and `maxDate` bound the calendar to any window.",
+        },
+      ],
+      usage: usageDisablePast,
+      props: { variant: "single", disablePast: true },
+    },
+    {
+      title: "Range with times",
+      subheading: "Start and End columns sit to the right of the calendar when the card has room, and stack under it when it doesn't. The end can't precede the start on the same day.",
+      propNotes: [
+        {
+          lead: "Set",
+          prop: "showTime",
+          effect:
+            "to add Start / End time columns; both `from` and `to` carry a time and the footer shows it. `timeFormat` switches to 24-hour and `minuteStep` sets the granularity.",
+        },
+      ],
+      usage: usageTime,
+      props: { variant: "single", showTime: true, disablePast: true },
       usage: usagePricedDual,
       code: extractCode("src/components/custom/range-date-picker.tsx"),
     },
@@ -197,6 +270,42 @@ Discover the interactive capabilities of the `RangeDatePicker` component:
         <td><code>"primary" | "indigo" | "rose" | "emerald" | "zinc"</code></td>
         <td><code>"primary"</code></td>
         <td>Theme color variant for highlights and buttons.</td>
+      </tr>
+      <tr>
+        <td><code>disablePast</code></td>
+        <td><code>boolean</code></td>
+        <td><code>false</code></td>
+        <td>Greys out every day before today so it cannot start or end a range. With <code>showTime</code>, times already passed today are disabled too.</td>
+      </tr>
+      <tr>
+        <td><code>minDate</code></td>
+        <td><code>Date</code></td>
+        <td><code>undefined</code></td>
+        <td>Earliest selectable day (inclusive). Combined with <code>disablePast</code>, the later bound wins.</td>
+      </tr>
+      <tr>
+        <td><code>maxDate</code></td>
+        <td><code>Date</code></td>
+        <td><code>undefined</code></td>
+        <td>Latest selectable day (inclusive).</td>
+      </tr>
+      <tr>
+        <td><code>showTime</code></td>
+        <td><code>boolean</code></td>
+        <td><code>false</code></td>
+        <td>Adds Start / End time columns — to the right of a single-month calendar when the card is at least 32rem wide, under it otherwise (dual-month always stacks). Both <code>from</code> and <code>to</code> carry a time; on a same-day range the end can never precede the start.</td>
+      </tr>
+      <tr>
+        <td><code>timeFormat</code></td>
+        <td><code>"12h" | "24h"</code></td>
+        <td><code>"12h"</code></td>
+        <td>12-hour clock with an AM / PM column, or a 24-hour one.</td>
+      </tr>
+      <tr>
+        <td><code>minuteStep</code></td>
+        <td><code>number</code></td>
+        <td><code>5</code></td>
+        <td>Minute granularity of the time columns.</td>
       </tr>
     </tbody>
   </table>

@@ -28,6 +28,7 @@ export const sandboxNames = [
   "color-picker",
   "command",
   "context-menu",
+  "copy-button",
   "counter",
   "cursor-animation",
   "curved-carousel",

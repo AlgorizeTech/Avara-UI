@@ -241,29 +241,29 @@ export default function Invoice({
           {/* Top Corporate Banner */}
           <div className={cn("p-6 sm:p-8 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-6", theme.bg)}>
             <div className="flex items-center gap-3.5 sm:gap-4">
-              <div className={cn("w-11 h-11 sm:w-13 sm:h-13 rounded-2xl bg-white shadow-xl flex items-center justify-center shrink-0 border border-white/20", theme.text)}>
-                <Building2 className={cn("w-6 h-6", theme.text)} />
+              <div className={cn("w-11 h-11 sm:w-13 sm:h-13 rounded-2xl shadow-xl flex items-center justify-center shrink-0", theme.inverse)}>
+                <Building2 className="w-6 h-6" />
               </div>
               <div className="min-w-0 flex-1">
                 <div className="flex items-center gap-2">
-                  <h1 className="text-xl sm:text-2xl font-black text-white tracking-tight">ALGORIZE_UI</h1>
-                  <CheckCircle2 className="w-4 h-4 sm:hidden text-white shrink-0" />
+                  <h1 className={cn("text-xl sm:text-2xl font-black tracking-tight", theme.fg)}>ALGORIZE_UI</h1>
+                  <CheckCircle2 className={cn("w-4 h-4 sm:hidden shrink-0", theme.fg)} />
                 </div>
-                <p className="text-[11px] sm:text-xs text-white/80 mt-0.5 break-words">450 South Brand Brooklyn, CA 91905</p>
+                <p className={cn("text-[11px] sm:text-xs mt-0.5 break-words", theme.fgMuted)}>450 South Brand Brooklyn, CA 91905</p>
               </div>
             </div>
 
-            <div className="text-left sm:text-right w-full sm:w-auto pt-2 sm:pt-0 border-t sm:border-none border-white/15">
-              <span className="hidden sm:inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-[11px] font-bold bg-white text-zinc-900 shadow-md mb-1.5">
-                <CheckCircle2 className={cn("w-3.5 h-3.5", theme.text)} /> VERIFIED STATEMENT
+            <div className={cn("text-left sm:text-right w-full sm:w-auto pt-2 sm:pt-0 border-t sm:border-none", theme.fgBorder)}>
+              <span className={cn("hidden sm:inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-[11px] font-bold shadow-md mb-1.5", theme.inverse)}>
+                <CheckCircle2 className="w-3.5 h-3.5" /> VERIFIED STATEMENT
               </span>
               <EditableInput
                 isEditing={isEditing}
                 value={data.invoiceNumber}
                 onChange={(e) => handleMainChange("invoiceNumber", e.target.value)}
                 align="right"
-                inputBg="bg-white/20 text-white border border-white/30 font-mono font-black"
-                className="text-2xl sm:text-3xl font-black text-white font-mono break-all tracking-tight"
+                inputBg={cn("border font-mono font-black", theme.fgSoft, theme.fg)}
+                className={cn("text-2xl sm:text-3xl font-black font-mono break-all tracking-tight", theme.fg)}
               />
             </div>
           </div>
@@ -300,7 +300,7 @@ export default function Invoice({
                   className="p-4 rounded-2xl bg-zinc-50 dark:bg-zinc-900/60 border border-zinc-200 dark:border-zinc-800 space-y-3 shadow-sm"
                 >
                   <div className="flex items-center justify-between gap-2">
-                    <span className={cn("text-[10px] font-mono font-bold tracking-wider uppercase px-2.5 py-1 rounded-md text-white shadow-sm", theme.bg)}>
+                    <span className={cn("text-[10px] font-mono font-bold tracking-wider uppercase px-2.5 py-1 rounded-md shadow-sm", theme.bg)}>
                       SERVICE #{idx + 1}
                     </span>
                     {isEditing && (
@@ -441,7 +441,7 @@ export default function Invoice({
         <div className="space-y-6 font-mono w-full">
           {/* Action Bar */}
           <div className={cn("p-4 border-4 border-black dark:border-white shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] sm:shadow-[6px_6px_0px_0px_rgba(0,0,0,1)] flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 print:hidden", theme.bg)}>
-            <span className="font-black text-white uppercase text-xs sm:text-sm">[ACTION_PANEL // NEO_BRUTAL]</span>
+            <span className={cn("font-black uppercase text-xs sm:text-sm", theme.fg)}>[ACTION_PANEL // NEO_BRUTAL]</span>
             <div className="flex flex-wrap items-center gap-2.5 w-full sm:w-auto">
               <button onClick={() => setIsEditing(!isEditing)} className="flex-1 sm:flex-initial px-3.5 py-2 bg-black text-white font-black text-xs uppercase border-2 border-black shadow-[2px_2px_0px_0px_rgba(255,255,255,1)] hover:bg-zinc-800 cursor-pointer">
                 {isEditing ? "SAVE_DATA" : "EDIT_INVOICE"}
@@ -520,14 +520,14 @@ export default function Invoice({
 
             <div className="flex justify-end pt-4">
               <div className={cn("p-4 sm:p-6 border-4 border-black dark:border-white shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] sm:shadow-[6px_6px_0px_0px_rgba(0,0,0,1)] text-right space-y-1 w-full sm:w-auto", theme.bg)}>
-                <span className="font-black text-xs uppercase block text-white">AMOUNT DUE NOW</span>
+                <span className={cn("font-black text-xs uppercase block", theme.fg)}>AMOUNT DUE NOW</span>
                 <EditableInput
                   isEditing={isEditing}
                   value={data.grandTotal}
                   onChange={(e) => handleMainChange("grandTotal", e.target.value)}
                   align="right"
-                  inputBg="bg-black text-white border-2 border-white font-mono font-black"
-                  className="text-2xl sm:text-4xl font-black tracking-tight text-white"
+                  inputBg={cn("border-2 font-mono font-black", theme.fgSoft, theme.fg)}
+                  className={cn("text-2xl sm:text-4xl font-black tracking-tight", theme.fg)}
                 />
               </div>
             </div>

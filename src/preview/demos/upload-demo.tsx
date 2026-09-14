@@ -5,8 +5,10 @@ import {
   FileUploadState,
   UploadItem,
 } from "@/components/custom/blocks/UploadBlock";
+import { Folder, type FolderFile } from "@/components/custom/blocks/FolderBlock";
 import { AnimatePresence, motion } from "framer-motion";
-import { useCallback, useRef, useState } from "react";
+import { Image as ImageIcon } from "lucide-react";
+import { useCallback, useEffect, useRef, useState } from "react";
 
 /** Static queue used by the `showAll: "states"` preview — one row per status. */
 const STATIC_STATES: FileUploadState[] = [
@@ -45,8 +47,9 @@ export default function UploadDemo({
   showAll,
 }: {
   variant?: "slide-right" | "slide-up" | "pop" | "flip";
-  /** "dropzone" renders the Dropzone on its own. Omitted = previous behavior. */
-  layout?: "dropzone";
+  /** "dropzone" renders the Dropzone on its own; "folder" the Folder drop
+   *  target. Omitted = previous behavior. */
+  layout?: "dropzone" | "folder";
   /** Render-all mode for the docs gallery. Omitted = previous behavior. */
   showAll?: "states";
 }) {
@@ -201,6 +204,17 @@ export default function UploadDemo({
   const doneCount = files.filter((f) => f.status === "success").length;
   const totalCount = files.length;
 
+  if (layout === "folder") {
+    // Extra room above: the cards fan up out of the folder on hover, so the
+    // folder sits low in the frame instead of centred.
+    return (
+      <div className="w-full flex items-center justify-center min-h-[460px] px-6 pt-32 pb-12 relative z-10">
+        <FolderUploader />
+      </div>
+    );
+  }
+
+
   if (layout === "dropzone") {
     return (
       <div className="w-full flex justify-center bg-[#fafafa] dark:bg-[#050505] rounded-2xl border border-zinc-200 dark:border-zinc-800 overflow-hidden py-16 relative min-h-[450px]">
@@ -316,5 +330,54 @@ export default function UploadDemo({
         )}
       </div>
     </div>
+  );
+}
+
+/* ========================================================================== */
+/*  Folder drop target - the Folder block as an upload surface                */
+/* ========================================================================== */
+
+/** `peek={0}` keeps the folder empty until something is dropped on it; the
+ *  default would show three placeholder cards peeking out. */
+function FolderUploader() {
+  const [files, setFiles] = useState<FolderFile[]>([]);
+  const [progress, setProgress] = useState<number | undefined>(undefined);
+  const timer = useRef<ReturnType<typeof setInterval> | null>(null);
+
+  useEffect(() => () => { if (timer.current) clearInterval(timer.current); }, []);
+
+  // Fake the upload: every file ticks up together, the pocket bar tracks the
+  // overall figure, and both settle at 100 so the bars disappear.
+  const onFiles = (incoming: File[]) => {
+    const next = incoming.map((f) => ({
+      name: f.name,
+      progress: 0,
+      thumb: f.type.startsWith("image/") ? URL.createObjectURL(f) : undefined,
+    }));
+    setFiles((prev) => [...prev, ...next]);
+    setProgress(0);
+    if (timer.current) clearInterval(timer.current);
+    let p = 0;
+    timer.current = setInterval(() => {
+      p = Math.min(100, p + 4);
+      setProgress(p);
+      setFiles((prev) => prev.map((f) => (f.progress !== undefined && f.progress < 100 ? { ...f, progress: p } : f)));
+      if (p >= 100 && timer.current) clearInterval(timer.current);
+    }, 80);
+  };
+
+  return (
+    <Folder
+      interactive
+      peek={0}
+      color="#bfdbfe"
+      icon={ImageIcon}
+      label="Drop zone"
+      files={files}
+      progress={progress}
+      onFiles={onFiles}
+      onRemoveFile={(i) => setFiles((prev) => prev.filter((_, idx) => idx !== i))}
+      accept="image/*,.pdf"
+    />
   );
 }

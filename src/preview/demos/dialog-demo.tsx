@@ -10,6 +10,7 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/custom/blocks/DialogBlock";
+import { CopyField } from "@/components/custom/blocks/CopyButtonBlock";
 import {
   ArrowLeft,
   Check,
@@ -51,16 +52,13 @@ export default function DialogDemo({
                 Anyone who has this link will be able to view this.
               </DialogDescription>
             </DialogHeader>
-            <div className="flex items-center gap-2 my-4">
-              <input
-                className="flex h-10 w-full rounded-md border border-zinc-200 dark:border-zinc-800 bg-transparent px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500"
-                value="https://nexus.dev/u/johndoe"
-                readOnly
-              />
-              <DialogClose className="px-4 py-2 bg-zinc-900 dark:bg-white text-white dark:text-zinc-900 text-sm font-medium rounded-md shadow-sm shrink-0">
-                Copy Link
-              </DialogClose>
-            </div>
+            {/* The dialog stays open so the "Copied!" confirmation can play. */}
+            <CopyField
+              className="my-4"
+              value="https://nexus.dev/u/johndoe"
+              color="zinc"
+              buttonProps={{ label: "Copy Link", copiedLabel: "Copied!" }}
+            />
             <DialogFooter>
               <p className="text-xs text-zinc-500 text-left w-full sm:text-right mt-2 sm:mt-0 pt-2 border-t dark:border-zinc-800">
                 Your profile is currently public.
@@ -130,13 +128,13 @@ export default function DialogDemo({
       {layout === "destructive" && (
         <Dialog>
           <DialogTrigger>
-            <button className="flex items-center gap-2 px-4 py-2 bg-red-50 hover:bg-red-100 dark:bg-red-500/10 dark:hover:bg-red-500/20 text-red-600 dark:text-red-400 border border-red-200 dark:border-red-500/30 text-sm font-semibold rounded-md shadow-sm transition-colors">
+            <button className="flex items-center gap-2 px-4 py-2 bg-rose-50 hover:bg-rose-100 dark:bg-rose-500/10 dark:hover:bg-rose-500/20 text-rose-600 dark:text-rose-400 border border-rose-200 dark:border-rose-500/30 text-sm font-semibold rounded-md shadow-sm transition-colors">
               <Trash2 className="w-4 h-4" /> Delete Account
             </button>
           </DialogTrigger>
           <DialogContent>
             <DialogHeader>
-              <DialogTitle className="text-red-600 flex items-center gap-2">
+              <DialogTitle className="text-rose-600 flex items-center gap-2">
                 <Trash2 className="w-5 h-5" /> Are you absolutely sure?
               </DialogTitle>
               <DialogDescription>
@@ -149,7 +147,7 @@ export default function DialogDemo({
                 <DialogClose className="flex-1 sm:flex-none px-4 py-2 bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 hover:bg-zinc-50 dark:hover:bg-zinc-800 text-zinc-900 dark:text-white text-sm font-medium rounded-md shadow-sm">
                   Cancel
                 </DialogClose>
-                <DialogClose className="flex-1 sm:flex-none px-4 py-2 bg-red-600 hover:bg-red-700 text-white text-sm font-medium rounded-md shadow-sm">
+                <DialogClose className="flex-1 sm:flex-none px-4 py-2 bg-rose-600 hover:bg-rose-700 text-white text-sm font-medium rounded-md shadow-sm">
                   Yes, delete account
                 </DialogClose>
               </div>
@@ -388,7 +386,7 @@ function DeleteConfirmationDialog() {
                 type="button"
                 aria-label={"Delete " + project.name}
                 onClick={() => setPending(project)}
-                className="shrink-0 p-2 rounded-md text-zinc-400 hover:text-red-600 hover:bg-red-50 dark:hover:bg-red-500/10 transition-colors"
+                className="shrink-0 p-2 rounded-md text-zinc-400 hover:text-rose-600 hover:bg-rose-50 dark:hover:bg-rose-500/10 transition-colors"
               >
                 <Trash2 className="w-4 h-4" />
               </button>
@@ -408,8 +406,8 @@ function DeleteConfirmationDialog() {
       >
         <DialogContent size="sm" hideCloseButton>
           <DialogHeader>
-            <div className="mx-auto sm:mx-0 mb-1 w-10 h-10 rounded-full bg-red-50 dark:bg-red-500/10 flex items-center justify-center">
-              <Trash2 className="w-5 h-5 text-red-600 dark:text-red-400" />
+            <div className="mx-auto sm:mx-0 mb-1 w-10 h-10 rounded-full bg-rose-50 dark:bg-rose-500/10 flex items-center justify-center">
+              <Trash2 className="w-5 h-5 text-rose-600 dark:text-rose-400" />
             </div>
             <DialogTitle>Delete “{pending?.name}”?</DialogTitle>
             <DialogDescription>
@@ -431,7 +429,7 @@ function DeleteConfirmationDialog() {
                 type="button"
                 onClick={confirmDelete}
                 disabled={deleting}
-                className="flex-1 sm:flex-none px-4 py-2 bg-red-600 hover:bg-red-700 text-white text-sm font-medium rounded-md shadow-sm disabled:opacity-60"
+                className="flex-1 sm:flex-none px-4 py-2 bg-rose-600 hover:bg-rose-700 text-white text-sm font-medium rounded-md shadow-sm disabled:opacity-60"
               >
                 {deleting ? "Deleting…" : "Delete project"}
               </button>

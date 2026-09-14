@@ -49,6 +49,56 @@ export default function ValidatedDatePicker() {
   );
 }`;
 
+export const usageDisablePast = `"use client";
+
+import { useState } from "react";
+import { DatePickerBlock } from "@/components/custom/blocks/DatePickerBlock";
+
+export default function FutureOnlyPicker() {
+  const [date, setDate] = useState<Date | null>(null);
+
+  // Every day before today is greyed out and cannot be clicked.
+  // Use minDate / maxDate for an arbitrary window instead.
+  return (
+    <DatePickerBlock
+      value={date}
+      onChange={setDate}
+      disablePast
+      label="Launch Date"
+      placeholder="Select a date"
+      helperText="Only today and future dates can be picked."
+    />
+  );
+}`;
+
+export const usageTime = `"use client";
+
+import { useState } from "react";
+import { DatePickerBlock } from "@/components/custom/blocks/DatePickerBlock";
+
+export default function DateTimePicker() {
+  const [date, setDate] = useState<Date | null>(null);
+
+  // showTime adds hour / minute / AM-PM columns — to the right of the
+  // calendar when the viewport has room, under it otherwise. Picking a
+  // day keeps the popover open until Done, and the Date you receive carries
+  // the time. Pair it with disablePast to also block times that have passed
+  // today.
+  return (
+    <DatePickerBlock
+      value={date}
+      onChange={setDate}
+      showTime
+      minuteStep={5}
+      timeFormat="12h"
+      disablePast
+      label="Launch Date"
+      placeholder="Select date & time"
+      helperText="Pick a day, then set the time and hit Done."
+    />
+  );
+}`;
+
 <ExampleShowcase
   name="date-picker"
   colorControl
@@ -106,6 +156,40 @@ export default function ValidatedDatePicker() {
       ],
       props: { showError: true },
       usage: usageError,
+    },
+    {
+      title: "Disable past dates",
+      propNotes: [
+        {
+          lead: "Set",
+          prop: "disablePast",
+          effect:
+            "to grey out every day before today. `minDate` and `maxDate` bound the calendar to any window; when both a lower bound and `disablePast` are given, the later one wins.",
+        },
+      ],
+      props: { disablePast: true },
+      usage: usageDisablePast,
+    },
+    {
+      title: "Date & time",
+      subheading: "Pick a day, then scroll the columns — Done closes the popover. The columns sit to the right of the calendar when the viewport has room, and under it otherwise.",
+      propNotes: [
+        {
+          lead: "Set",
+          prop: "showTime",
+          effect:
+            "to add hour / minute / AM-PM columns under the calendar; the selected `Date` carries the time and the trigger shows it. `timeFormat` switches to a 24-hour clock and `minuteStep` sets the granularity.",
+        },
+        {
+          lead: "With",
+          prop: "disablePast",
+          effect:
+            "as well, times that have already passed today are disabled too, and landing on today snaps the time forward to now.",
+        },
+      ],
+      minHeight: 680,
+      props: { showTime: true, disablePast: true },
+      usage: usageTime,
     },
   ]}
 />
@@ -289,6 +373,42 @@ Discover the Date Picker's flexible input formatting, popover calendar selection
           <code>false</code>
         </td>
         <td>Disables interactions and applies a faded, read-only style.</td>
+      </tr>
+      <tr>
+        <td><code>disablePast</code></td>
+        <td><code>boolean</code></td>
+        <td><code>false</code></td>
+        <td>Greys out every day before today so it cannot be picked. With <code>showTime</code>, times already passed today are disabled as well.</td>
+      </tr>
+      <tr>
+        <td><code>minDate</code></td>
+        <td><code>Date</code></td>
+        <td><code>undefined</code></td>
+        <td>Earliest selectable day (inclusive). Combined with <code>disablePast</code>, the later bound wins.</td>
+      </tr>
+      <tr>
+        <td><code>maxDate</code></td>
+        <td><code>Date</code></td>
+        <td><code>undefined</code></td>
+        <td>Latest selectable day (inclusive).</td>
+      </tr>
+      <tr>
+        <td><code>showTime</code></td>
+        <td><code>boolean</code></td>
+        <td><code>false</code></td>
+        <td>Adds hour / minute (and AM-PM) columns — to the right of the calendar when the viewport has room (the popover widens to 30rem), under it otherwise. The popover also flips to hang from the trigger's right edge when that is the side with space. Picking a day keeps the popover open until <strong>Done</strong>, and <code>value</code> carries the chosen time.</td>
+      </tr>
+      <tr>
+        <td><code>timeFormat</code></td>
+        <td><code>"12h" | "24h"</code></td>
+        <td><code>"12h"</code></td>
+        <td>12-hour clock with an AM / PM column, or a 24-hour one.</td>
+      </tr>
+      <tr>
+        <td><code>minuteStep</code></td>
+        <td><code>number</code></td>
+        <td><code>5</code></td>
+        <td>Minute granularity of the time columns.</td>
       </tr>
     </tbody>
   </table>

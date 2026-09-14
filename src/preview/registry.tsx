@@ -33,6 +33,7 @@ export const sandboxRegistry: Record<string, LazyExoticComponent<ComponentType<a
   "color-picker": lazyRetry(() => import("./demos/color-picker-demo")),
   "command": lazyRetry(() => import("./demos/command-demo")),
   "context-menu": lazyRetry(() => import("./demos/context-menu-demo")),
+  "copy-button": lazyRetry(() => import("./demos/copy-button-demo")),
   "counter": lazyRetry(() => import("./demos/counter-demo")),
   "cursor-animation": lazyRetry(() => import("./demos/cursor-animation-demo")),
   "curved-carousel": lazyRetry(() => import("./demos/curved-carousel-demo")),

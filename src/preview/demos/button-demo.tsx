@@ -85,6 +85,11 @@ export default function ButtonDemo({
             Looping Icon
           </Button>
 
+          {/* 2c. Raised 3D face that presses down */}
+          <Button variant="3d" iconRight={<ArrowRightIcon />}>
+            3D Press
+          </Button>
+
           {/* 3. Horizontal Background Slide */}
           <Button variant="slide-bg" iconRight={<DownloadIcon />}>
             Background Wipe
