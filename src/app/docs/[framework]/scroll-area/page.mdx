@@ -529,6 +529,12 @@ export default function AutoHideScroller() {
           effect:
             "to apply the matching overflow utilities and move the bar to the bottom edge. The inner row needs `w-max` to overflow.",
         },
+        {
+          prop: "wheelToHorizontal",
+          value: "{true}",
+          effect:
+            "is on by default here: a mouse wheel pans the row left and right. Once the row hits either end the wheel scrolls the page again.",
+        },
       ],
       props: { variant: "default", orientation: "horizontal" },
       usage: usageHorizontal,
@@ -729,6 +735,25 @@ Explore the Scroll Area's custom scrollbar features, providing a unified, styliz
         <td>
           If true, the scrollbar thumb fades to transparent when the container
           is not being actively hovered.
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <code>ScrollAreaBlock</code>
+        </td>
+        <td>
+          <code>wheelToHorizontal</code>
+        </td>
+        <td>
+          <code>boolean</code>
+        </td>
+        <td>
+          <code>true</code>
+        </td>
+        <td>
+          <code>orientation="horizontal"</code> only. A mouse wheel pans the
+          content sideways; trackpad swipes and shift+wheel keep their native
+          behaviour, and the wheel is handed back to the page at either end.
         </td>
       </tr>
     </tbody>
