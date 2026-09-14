@@ -145,15 +145,13 @@ Explore the Chat component's robust features, including message grouping, timest
 
           color
 
-          "primary" | "indigo" | "rose" | "emerald" | "zinc" | string
+          "indigo" | "rose" | "emerald" | "zinc" | string
 
-          "primary"
+          "indigo"
 
           Applies global color themes to the send button, typing indicators,
-          active contacts, and focus rings. "primary" follows your
-          theme tokens; a hex string (e.g. "#00FF00") is injected
-          as CSS variables. Unrecognised names fall back to{" "}
-          "primary".
+          active contacts, and focus rings. Accepts preset theme names or valid custom hex codes (e.g.{" "}
+          "#00FF00").
 
 ---
 
