@@ -1011,6 +1011,9 @@ export function ExampleShowcase({
             controls={controls}
             values={controlValues}
             onChange={handleControlChange}
+            // Takes the rest of the row beside the picker; drops to its own
+            // row once it cannot get at least this much.
+            className="lg:flex-1 lg:min-w-[320px]"
           />
         )}
       </ShowcaseControlCard>
