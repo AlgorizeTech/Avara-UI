@@ -126,14 +126,18 @@ export function DialogClose({
  *
  * `full` also drops the rounding, border and viewport-height cap that the
  * inset sizes rely on, so the panel really does fill the screen rather than
- * sitting as a very wide card inside it.
+ * sitting as a very wide card inside it. Its rows are centred in that screen
+ * (`content-center` overrides the panel's `content-start`) and kept to the
+ * `md` column width, so the content reads as a dialog floating in the middle
+ * of the page rather than a strip pinned to the top-left. Pass `className`
+ * (it merges after the size) to lay the surface out edge to edge instead.
  */
 const DIALOG_SIZES = {
   sm: "max-w-sm",
   md: "max-w-lg",
   lg: "max-w-2xl",
   xl: "max-w-4xl",
-  full: "max-w-none h-full max-h-none rounded-none border-0",
+  full: "max-w-none h-full max-h-none rounded-none border-0 content-center justify-center grid-cols-[minmax(0,32rem)]",
 } as const;
 
 export type DialogSize = keyof typeof DIALOG_SIZES;
