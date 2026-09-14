@@ -144,7 +144,7 @@ export default function InfiniteMarqueeDemo() {
           <code>variant</code>
         </td>
         <td>
-          <code>"arc-sweep" | "perspective-fan" | "floating-deck" | "glowing-orbit"</code>
+          <code>"arc-sweep" | "infinite-marquee"</code>
         </td>
         <td>
           <code>"arc-sweep"</code>
@@ -156,12 +156,12 @@ export default function InfiniteMarqueeDemo() {
           <code>items</code>
         </td>
         <td>
-          <code>CurvedCarouselItem[]</code>
+          <code>CurvedCarouselCard[]</code>
         </td>
         <td>
           <code>Preset Array</code>
         </td>
-        <td>Array of objects containing <code>id</code>, <code>title</code>, <code>image</code>, <code>subtitle</code>, and optional <code>tag</code>.</td>
+        <td>Array of objects containing <code>id</code>, <code>title</code>, <code>code</code>, and <code>image</code>.</td>
       </tr>
       <tr>
         <td>
@@ -183,16 +183,16 @@ export default function InfiniteMarqueeDemo() {
           <code>number</code>
         </td>
         <td>
-          <code>4</code>
+          <code>1</code>
         </td>
-        <td>Oscillation sway step speed interval in seconds.</td>
+        <td>Oscillation sway step speed multiplier.</td>
       </tr>
       <tr>
         <td>
           <code>color</code>
         </td>
         <td>
-          <code>CurvedCarouselColor | string</code>
+          <code>"primary" | "indigo" | "rose" | "emerald" | "zinc" | string</code>
         </td>
         <td>
           <code>"primary"</code>
