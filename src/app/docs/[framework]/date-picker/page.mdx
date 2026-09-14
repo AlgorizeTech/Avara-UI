@@ -79,7 +79,8 @@ import { DatePickerBlock } from "@/components/custom/blocks/DatePickerBlock";
 export default function DateTimePicker() {
   const [date, setDate] = useState<Date | null>(null);
 
-  // showTime adds hour / minute / AM-PM columns under the calendar. Picking a
+  // showTime adds hour / minute / AM-PM columns — to the right of the
+  // calendar when the viewport has room, under it otherwise. Picking a
   // day keeps the popover open until Done, and the Date you receive carries
   // the time. Pair it with disablePast to also block times that have passed
   // today.
@@ -171,7 +172,7 @@ export default function DateTimePicker() {
     },
     {
       title: "Date & time",
-      subheading: "Pick a day, then scroll the columns — Done closes the popover.",
+      subheading: "Pick a day, then scroll the columns — Done closes the popover. The columns sit to the right of the calendar when the viewport has room, and under it otherwise.",
       propNotes: [
         {
           lead: "Set",
@@ -395,7 +396,7 @@ Discover the Date Picker's flexible input formatting, popover calendar selection
         <td><code>showTime</code></td>
         <td><code>boolean</code></td>
         <td><code>false</code></td>
-        <td>Adds hour / minute (and AM-PM) columns under the calendar. Picking a day keeps the popover open until <strong>Done</strong>, and <code>value</code> carries the chosen time.</td>
+        <td>Adds hour / minute (and AM-PM) columns — to the right of the calendar when the viewport has room (the popover widens to 30rem), under it otherwise. The popover also flips to hang from the trigger's right edge when that is the side with space. Picking a day keeps the popover open until <strong>Done</strong>, and <code>value</code> carries the chosen time.</td>
       </tr>
       <tr>
         <td><code>timeFormat</code></td>
