@@ -18,8 +18,16 @@ import { cn } from "@/lib/utils";
 import {
   ChevronLeft,
   ChevronRight,
+  Clock,
   RotateCcw,
 } from "lucide-react";
+import {
+  formatTime,
+  roundToStep,
+  setTime,
+  type TimeFormat,
+  TimePicker,
+} from "./blocks/TimePickerBlock";
 
 export type RangeDatePickerColor =
   | "primary"
@@ -45,6 +53,21 @@ export interface RangeDatePickerProps {
   color?: RangeDatePickerColor;
   disabled?: boolean;
   getPrice?: (date: Date) => string | number | null;
+  /** Greys out every day before today so it cannot be picked. */
+  disablePast?: boolean;
+  /** Earliest selectable day (inclusive). Combine with `disablePast` freely — the later bound wins. */
+  minDate?: Date;
+  /** Latest selectable day (inclusive). */
+  maxDate?: Date;
+  /**
+   * Adds Start / End time columns under the calendar. Both dates in the range
+   * then carry a time, and the end can never precede the start on the same day.
+   */
+  showTime?: boolean;
+  /** 12-hour clock with AM / PM, or 24-hour. Default "12h". */
+  timeFormat?: TimeFormat;
+  /** Minute granularity of the time columns. Default 5. */
+  minuteStep?: number;
 }
 
 const colorThemes: Record<string, Record<string, string>> = {
@@ -149,6 +172,10 @@ const formatDateString = (date: Date | null): string => {
   return `${month} ${date.getDate()}, ${date.getFullYear()}`;
 };
 
+const startOfDay = (d: Date) => new Date(d.getFullYear(), d.getMonth(), d.getDate());
+const endOfDay = (d: Date) =>
+  new Date(d.getFullYear(), d.getMonth(), d.getDate(), 23, 59, 59, 999);
+
 const generateMonthDays = (year: number, month: number) => {
   const firstDayOfWeek = new Date(year, month, 1).getDay();
   const daysInMonth = new Date(year, month + 1, 0).getDate();
@@ -192,6 +219,12 @@ export function RangeDatePicker({
   color = "primary",
   disabled = false,
   getPrice,
+  disablePast = false,
+  minDate,
+  maxDate,
+  showTime = false,
+  timeFormat = "12h",
+  minuteStep = 5,
 }: RangeDatePickerProps) {
   const mounted = useIsMounted();
 
@@ -222,6 +255,9 @@ export function RangeDatePicker({
 
   const theme = colorThemes[color] || colorThemes.primary;
 
+  const formatStamp = (date: Date | null) =>
+    !date ? "" : showTime ? `${formatDateString(date)}, ${formatTime(date, timeFormat)}` : formatDateString(date);
+
   // Adopt a new controlled range as it arrives. Handled during render so
   // the previous range is never painted first.
   const [seededRange, setSeededRange] = useState({ fromDate, toDate });
@@ -231,28 +267,48 @@ export function RangeDatePicker({
     setSelectingTo(toDate);
   }
 
-  const handleDateClick = (clickedDate: Date) => {
-    if (disabled) return;
+  // --- Bounds ---
+  // `disablePast` is sugar for minDate = today; whichever lower bound is later
+  // wins, so both can be passed together without surprises.
+  const today = new Date();
+  const lowerCandidates = [
+    disablePast ? startOfDay(today) : null,
+    minDate ? startOfDay(minDate) : null,
+  ].filter(Boolean) as Date[];
+  const lower = lowerCandidates.length
+    ? new Date(Math.max(...lowerCandidates.map((d) => d.getTime())))
+    : null;
+  const upper = maxDate ? endOfDay(maxDate) : null;
+  const isDayDisabled = (date: Date) =>
+    (lower !== null && endOfDay(date) < lower) ||
+    (upper !== null && startOfDay(date) > upper);
 
-    let newFrom: Date | null = null;
-    let newTo: Date | null = null;
+  // Times are compared with each other only when both ends fall on one day,
+  // and with "now" only on today when the past is disabled.
+  const sameDay = (a: Date | null, b: Date | null) => !!a && !!b && isSameDay(a, b);
+  // The start moves freely (an end that would fall behind it is pushed
+  // forward by `handleFromTime`); only the end is fenced by the start.
+  const fromMinTime =
+    disablePast && selectingFrom && isSameDay(selectingFrom, today) ? today : null;
+  const toMinTime = sameDay(selectingFrom, selectingTo)
+    ? selectingFrom
+    : disablePast && selectingTo && isSameDay(selectingTo, today)
+      ? today
+      : null;
 
-    if (!selectingFrom || (selectingFrom && selectingTo)) {
-      newFrom = clickedDate;
-      newTo = null;
-    } else if (selectingFrom && !selectingTo) {
-      if (clickedDate.getTime() < selectingFrom.getTime()) {
-        newFrom = clickedDate;
-        newTo = selectingFrom;
-      } else {
-        newFrom = selectingFrom;
-        newTo = clickedDate;
-      }
-    }
+  // A clicked day inherits the time already chosen for that end of the range
+  // (or "now" rounded to the step), so re-picking a day never resets the clock.
+  const withTime = (day: Date, previous: Date | null) => {
+    if (!showTime) return day;
+    const src = previous ?? roundToStep(today, minuteStep);
+    let next = setTime(day, src.getHours(), src.getMinutes());
+    if (disablePast && isSameDay(next, today) && next < today) next = roundToStep(today, minuteStep);
+    return next;
+  };
 
+  const commitRange = (newFrom: Date | null, newTo: Date | null) => {
     setSelectingFrom(newFrom);
     setSelectingTo(newTo);
-
     if (value === undefined) {
       setInternalFrom(newFrom);
       setInternalTo(newTo);
@@ -260,29 +316,44 @@ export function RangeDatePicker({
     onChange?.({ from: newFrom, to: newTo });
   };
 
-  const resetRange = () => {
-    const today = new Date();
-    if (isDual) {
-      const from = new Date(today);
-      const to = addDays(today, 28);
-      setSelectingFrom(from);
-      setSelectingTo(to);
-      if (value === undefined) {
-        setInternalFrom(from);
-        setInternalTo(to);
+  const handleDateClick = (clickedDate: Date) => {
+    if (disabled || isDayDisabled(clickedDate)) return;
+
+    let newFrom: Date | null = null;
+    let newTo: Date | null = null;
+
+    if (!selectingFrom || (selectingFrom && selectingTo)) {
+      newFrom = withTime(clickedDate, selectingFrom);
+      newTo = null;
+    } else if (selectingFrom && !selectingTo) {
+      if (startOfDay(clickedDate).getTime() < startOfDay(selectingFrom).getTime()) {
+        newFrom = withTime(clickedDate, selectingFrom);
+        newTo = selectingFrom;
+      } else {
+        newFrom = selectingFrom;
+        newTo = withTime(clickedDate, selectingTo);
+        // Same day, end earlier than start: pull the end up to the start.
+        if (isSameDay(newFrom, newTo) && newTo < newFrom) newTo = new Date(newFrom);
       }
-      onChange?.({ from, to });
-      setViewDate(new Date(from));
-    } else {
-      setSelectingFrom(today);
-      setSelectingTo(today);
-      if (value === undefined) {
-        setInternalFrom(today);
-        setInternalTo(today);
-      }
-      onChange?.({ from: today, to: today });
-      setViewDate(new Date(today));
     }
+
+    commitRange(newFrom, newTo);
+  };
+
+  const handleFromTime = (next: Date) => {
+    let to = selectingTo;
+    if (to && isSameDay(next, to) && to < next) to = new Date(next);
+    commitRange(next, to);
+  };
+  const handleToTime = (next: Date) => commitRange(selectingFrom, next);
+
+  const resetRange = () => {
+    // Reset keeps whatever times were chosen; with the past disabled, today's
+    // start is clamped to now by `withTime`.
+    const from = withTime(startOfDay(today), selectingFrom);
+    const to = isDual ? withTime(addDays(startOfDay(today), 28), selectingTo) : withTime(startOfDay(today), selectingTo);
+    commitRange(from, isSameDay(from, to) && to < from ? new Date(from) : to);
+    setViewDate(new Date(from));
   };
 
   // Month Math
@@ -372,6 +443,7 @@ export function RangeDatePicker({
           const isStart = isSameDay(date, effectiveFrom);
           const isEnd = isSameDay(date, effectiveEnd);
           const isInRange = isBetween(date, effectiveFrom, effectiveEnd);
+          const isOff = isDayDisabled(date);
 
           const price = isCurrentMonth
             ? getPrice
@@ -386,7 +458,9 @@ export function RangeDatePicker({
           return (
             <div
               key={idx}
-              onMouseEnter={() => setHoverDate(date)}
+              onMouseEnter={() => {
+                if (!isOff) setHoverDate(date);
+              }}
               className={cn(
                 "relative flex items-center justify-center my-0.5",
                 isPriced ? "h-12" : "h-8",
@@ -397,19 +471,23 @@ export function RangeDatePicker({
             >
               <button
                 type="button"
+                disabled={isOff}
+                aria-disabled={isOff}
                 onClick={() => handleDateClick(date)}
                 className={cn(
                   "w-full rounded-xl transition-all duration-100 flex flex-col items-center justify-center z-10 px-1 py-1",
                   isPriced ? "h-11" : "size-8 rounded-lg",
                   !isCurrentMonth && "text-muted-foreground/30",
                   isCurrentMonth && !isStart && !isEnd && "hover:bg-muted text-foreground",
-                  (isStart || isEnd) && cn(theme.bg, theme.bgHover, "font-extrabold scale-105 shadow-xs")
+                  (isStart || isEnd) && cn(theme.bg, theme.bgHover, "font-extrabold scale-105 shadow-xs"),
+                  isOff && "text-muted-foreground/40 cursor-not-allowed hover:bg-transparent"
                 )}
               >
                 <span
                   className={cn(
                     "text-xs font-bold leading-tight",
-                    (isStart || isEnd) && "text-primary-foreground"
+                    (isStart || isEnd) && "text-primary-foreground",
+                    isOff && "line-through font-normal"
                   )}
                 >
                   {date.getDate()}
@@ -456,19 +534,58 @@ export function RangeDatePicker({
         )}
       </div>
 
+      {/* Start / End time */}
+      {showTime && (
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 pt-4 border-t border-border/60">
+          {(
+            [
+              { key: "from", label: "Start", date: selectingFrom, min: fromMinTime, max: null, onChange: handleFromTime },
+              { key: "to", label: "End", date: selectingTo, min: toMinTime, max: null, onChange: handleToTime },
+            ] as const
+          ).map((end) => (
+            <div key={end.key} className="flex flex-col gap-2 min-w-0">
+              <div className="flex items-center justify-between">
+                <span className="flex items-center gap-1.5 text-[10px] font-bold uppercase tracking-wider text-muted-foreground">
+                  <Clock className="size-3.5" /> {end.label}
+                </span>
+                <span
+                  className={cn(
+                    "text-xs font-bold tabular-nums",
+                    end.date ? theme.text : "text-muted-foreground"
+                  )}
+                >
+                  {end.date ? formatTime(end.date, timeFormat) : "--:--"}
+                </span>
+              </div>
+              <TimePicker
+                value={end.date}
+                onChange={end.onChange}
+                format={timeFormat}
+                minuteStep={minuteStep}
+                minTime={end.min}
+                maxTime={end.max}
+                color={color}
+                disabled={disabled || !end.date}
+                className="h-28"
+              />
+            </div>
+          ))}
+        </div>
+      )}
+
       {/* Bottom Footer Status Bar */}
       <footer className="flex items-center justify-between pt-3 mt-1 border-t border-border/60">
         <div className="text-[11px] font-medium text-muted-foreground truncate max-w-[280px]">
-          {selectingFrom && selectingTo && !isSameDay(selectingFrom, selectingTo) ? (
+          {selectingFrom && selectingTo && (showTime || !isSameDay(selectingFrom, selectingTo)) ? (
             <span className="flex items-center gap-1.5">
               <span className={cn("size-2 rounded-full", theme.bg)} />
-              <strong className="text-foreground">{formatDateString(selectingFrom)}</strong> –{" "}
-              <strong className="text-foreground">{formatDateString(selectingTo)}</strong>
+              <strong className="text-foreground">{formatStamp(selectingFrom)}</strong> –{" "}
+              <strong className="text-foreground">{formatStamp(selectingTo)}</strong>
             </span>
           ) : selectingFrom ? (
             <span className="flex items-center gap-1.5">
               <span className={cn("size-2 rounded-full", theme.bg)} />
-              <strong className="text-foreground">{formatDateString(selectingFrom)}</strong>
+              <strong className="text-foreground">{formatStamp(selectingFrom)}</strong>
             </span>
           ) : (
             <span>Select date range</span>
