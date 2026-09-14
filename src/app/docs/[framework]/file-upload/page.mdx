@@ -13,6 +13,8 @@ A highly-orchestrated, premium file upload component suite based on modern UX en
 
 The suite is two pieces you compose yourself: a `Dropzone` that hands you `File[]`, and an `UploadItem` that renders one entry of your own queue state. Drop real files into the first preview — its simulator randomly fails some at 89% so you can watch the inline retry resume.
 
+Three upload surfaces live on this page, and each installs separately: the `Dropzone` + `UploadItem` suite, the `Input` block's built-in file mode for simple forms, and the `Folder` block as a playful drop target.
+
 export const usageDropzone = `"use client";
 
 import { Dropzone } from "@/components/custom/blocks/UploadBlock";
@@ -114,6 +116,12 @@ export default function UploadStates() {
 
 <Installation name="upload" />
 
+### Optional — simple file input
+
+The form-field example below is the `Input` block in file mode. It installs on its own and has no dependency on the upload suite.
+
+<Installation name="input" />
+
 ### Optional — folder drop target
 
 The folder example is built on the `Folder` block, which installs separately.
@@ -172,7 +180,62 @@ export default function DropZone() {
   );
 }`;
 
+export const usageFileInput = `"use client";
+
+import { InputBlock } from "@/components/custom/blocks/InputBlock";
+
+export default function FileUploadInput() {
+  // type="file" turns the Input block into a drag-and-drop zone with
+  // previews, sizes and remove buttons — no queue state to manage.
+  return (
+    <InputBlock
+      type="file"
+      multiple
+      accept="image/*"
+      label="Upload Portfolio"
+      helperText="Attach your files here."
+      onFilesChange={(files) => console.log("Uploaded files:", files)}
+    />
+  );
+}`;
+
 ## Examples
+
+<ExampleShowcase
+  name="input"
+  colorControl
+  colorLabel="Active Color"
+  columns={1}
+  examples={[
+    {
+      title: "Simple file input",
+      subheading: "For a form that just needs files attached: the `Input` block in file mode, with previews and removal built in.",
+      propNotes: [
+        {
+          lead: "Set",
+          prop: "type",
+          value: '"file"',
+          effect:
+            "on `InputBlock` to turn the field into a drag-and-drop zone with previews.",
+        },
+        {
+          prop: "onFilesChange",
+          effect:
+            "returns native `File[]` on drop, selection and removal.",
+        },
+        {
+          prop: "multiple",
+          effect:
+            "and `accept` pass through; `accept` takes the standard HTML string such as `\"image/*\"`.",
+        },
+      ],
+      props: { inputType: "file", isMultiple: true, isImageOnly: true },
+      usage: usageFileInput,
+      code: extractCode("src/components/custom/blocks/InputBlock.tsx"),
+      minHeight: 460,
+    },
+  ]}
+/>
 
 <ExampleShowcase
   name="upload"
@@ -397,6 +460,60 @@ Discover the key capabilities that make this component an excellent choice for m
         <td>
           The core state machine parameter that drives the UI colors, icons, and
           messaging for the specific upload item.
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <code>InputBlock</code>
+        </td>
+        <td>
+          <code>type</code>
+        </td>
+        <td>
+          <code>"file"</code>
+        </td>
+        <td>
+          <code>"text"</code>
+        </td>
+        <td>
+          Switches the Input block into the drag-and-drop zone shown in the
+          simple file input example.
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <code>InputBlock</code>
+        </td>
+        <td>
+          <code>onFilesChange</code>
+        </td>
+        <td>
+          <code>(files: File[]) =&gt; void</code>
+        </td>
+        <td>
+          <code>undefined</code>
+        </td>
+        <td>
+          Fired when files are dropped, selected, or removed, with the current
+          native <code>File[]</code>.
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <code>InputBlock</code>
+        </td>
+        <td>
+          <code>multiple</code> / <code>accept</code>
+        </td>
+        <td>
+          <code>boolean</code> / <code>string</code>
+        </td>
+        <td>
+          <code>false</code> / <code>undefined</code>
+        </td>
+        <td>
+          Allow several files, and restrict types with the standard HTML accept
+          string (e.g. <code>"image/*"</code>).
         </td>
       </tr>
       <tr>
