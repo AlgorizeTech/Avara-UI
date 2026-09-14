@@ -10,17 +10,7 @@ Open each dialog from its trigger — the background scrollbar vanishes while it
 
 `DialogContent` sizes itself from a `size` prop: `sm` through `xl` for panels that sit on the page, and `full` for a surface that takes the whole viewport. Dialogs also nest — render one inside another's content and the inner window portals above its parent, with `Escape` and backdrop clicks reaching only whichever one is on top.
 
-export const usageDefault = `import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogFooter,
-  DialogHeader,
-  DialogTitle,
-  DialogTrigger,
-} from "@/components/custom/blocks/DialogBlock";
-
-export default function ShareDialog() {
+export const usageDefault = `export default function ShareDialog() {
   return (
 
            Share Profile
@@ -71,17 +61,7 @@ export default function EditProfileDialog() {
   );
 }`;
 
-export const usageDestructive = `import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogFooter,
-  DialogHeader,
-  DialogTitle,
-  DialogTrigger,
-} from "@/components/custom/blocks/DialogBlock";
-
-export default function DeleteAccountDialog() {
+export const usageDestructive = `export default function DeleteAccountDialog() {
   return (
 
            Delete Account
