@@ -93,20 +93,21 @@ function StagedOperation({
   ];
 
   return (
-    <div className="w-full max-w-md mx-auto flex flex-col gap-5">
-      <div className="flex items-center gap-6">
+    <div className="w-full max-w-2xl mx-auto flex flex-col gap-8">
+      <div className="flex flex-col sm:flex-row items-center gap-8 sm:gap-10">
         <CircularProgress
           value={value}
           max={100}
           variant={variant}
-          barSize={barSize}
+          barSize="lg"
           color={color}
           status={status}
           stages={stages}
-          circleSize={88}
+          circleSize={160}
+          tooltip
         />
         <ProgressField
-          className="min-w-0 flex-1"
+          className="min-w-0 flex-1 w-full [&_label]:text-base [&_label+span]:text-base"
           label="brand-guidelines.pdf"
           value={value}
           max={100}
@@ -117,37 +118,38 @@ function StagedOperation({
             value={value}
             max={100}
             variant={variant}
-            barSize={barSize}
+            barSize="lg"
             color={color}
             status={status}
             stages={stages}
+            tooltip
           />
         </ProgressField>
       </div>
 
-      <div className="flex flex-wrap items-center gap-2">
+      <div className="flex flex-wrap items-center justify-center sm:justify-start gap-2.5">
         <button
           type="button"
           onClick={start}
           disabled={running}
-          className="inline-flex items-center gap-1.5 h-8 px-3 rounded-lg bg-foreground text-background text-xs font-semibold disabled:opacity-40 disabled:cursor-not-allowed transition-opacity cursor-pointer"
+          className="inline-flex items-center gap-2 h-10 px-4 rounded-xl bg-foreground text-background text-sm font-semibold disabled:opacity-40 disabled:cursor-not-allowed transition-opacity cursor-pointer"
         >
-          <Play className="w-3.5 h-3.5" /> Run
+          <Play className="w-4 h-4" /> Run
         </button>
         <button
           type="button"
           onClick={fail}
           disabled={status !== "active"}
-          className="inline-flex items-center gap-1.5 h-8 px-3 rounded-lg border border-border text-xs font-semibold text-foreground hover:bg-muted disabled:opacity-40 disabled:cursor-not-allowed transition-colors cursor-pointer"
+          className="inline-flex items-center gap-2 h-10 px-4 rounded-xl border border-border text-sm font-semibold text-foreground hover:bg-muted disabled:opacity-40 disabled:cursor-not-allowed transition-colors cursor-pointer"
         >
-          <XOctagon className="w-3.5 h-3.5" /> Fail at 60%
+          <XOctagon className="w-4 h-4" /> Fail at 60%
         </button>
         <button
           type="button"
           onClick={reset}
-          className="inline-flex items-center gap-1.5 h-8 px-3 rounded-lg text-xs font-semibold text-muted-foreground hover:text-foreground hover:bg-muted transition-colors cursor-pointer"
+          className="inline-flex items-center gap-2 h-10 px-4 rounded-xl text-sm font-semibold text-muted-foreground hover:text-foreground hover:bg-muted transition-colors cursor-pointer"
         >
-          <RotateCcw className="w-3.5 h-3.5" /> Reset
+          <RotateCcw className="w-4 h-4" /> Reset
         </button>
       </div>
     </div>
@@ -244,7 +246,7 @@ export default function ProgressDemo({
 
   if (example === "stages") {
     return (
-      <div className="w-full flex flex-col items-center justify-center min-h-[220px] relative z-10 overflow-hidden">
+      <div className="w-full flex flex-col items-center justify-center min-h-[360px] py-8 relative z-10 overflow-hidden">
         <StagedOperation variant={variant} barSize={barSize} color={color} />
       </div>
     );
