@@ -864,6 +864,7 @@
         "lucide-react"
       ],
       "registryDependencies": [
+        "https://algorize-ui.vercel.app/r/time-picker.json",
         "utils"
       ],
       "files": [
@@ -2445,6 +2446,7 @@
         "lucide-react"
       ],
       "registryDependencies": [
+        "https://algorize-ui.vercel.app/r/time-picker.json",
         "utils"
       ],
       "files": [
@@ -3161,6 +3163,34 @@
         }
       ],
       "docs": "Named export: TiltedCard. Wraps arbitrary children; tune `tiltIntensity`, `glareOpacity` and `scaleOnHover`. Pointer-driven, so it is inert on touch — keep the content readable without the effect."
+    },
+    {
+      "name": "time-picker",
+      "type": "registry:component",
+      "title": "Time Picker",
+      "author": "AlgorizeTech",
+      "description": "Scrollable hour / minute / AM-PM columns for choosing a time of day, with themed selection and disabled ranges. The building block behind the date pickers' time mode.",
+      "categories": [
+        "dates",
+        "forms"
+      ],
+      "dependencies": [],
+      "registryDependencies": [
+        "utils"
+      ],
+      "files": [
+        {
+          "path": "src/components/custom/blocks/TimePickerBlock.tsx",
+          "type": "registry:component",
+          "target": "components/custom/blocks/TimePickerBlock.tsx"
+        },
+        {
+          "path": "src/components/custom/blocks/date-picker-theme.ts",
+          "type": "registry:component",
+          "target": "components/custom/blocks/date-picker-theme.ts"
+        }
+      ],
+      "docs": "Named exports: TimePicker plus the setTime, roundToStep and formatTime helpers. `value` is a Date whose day is preserved on change; `format` is 12h | 24h, `minuteStep` sets granularity, and `minTime` / `maxTime` disable times outside a window on that day. Used by `date-picker` and `range-date-picker` when `showTime` is on."
     },
     {
       "name": "timeline",
