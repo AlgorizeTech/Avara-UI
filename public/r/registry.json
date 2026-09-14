@@ -3066,14 +3066,8 @@
         "navigation",
         "scroll"
       ],
-      "dependencies": [
-        "framer-motion",
-        "lucide-react"
-      ],
-      "registryDependencies": [
-        "https://algorize-ui.vercel.app/r/ui-codeblocks.json",
-        "utils"
-      ],
+      "dependencies": [],
+      "registryDependencies": [],
       "files": [
         {
           "path": "src/components/custom/blocks/TableOfContentsBlock.tsx",

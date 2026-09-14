@@ -5,6 +5,7 @@ import React, {
   createContext,
   useContext,
   useEffect,
+  useLayoutEffect,
   useRef,
   useState,
 } from "react";
@@ -120,6 +121,21 @@ const OPPOSITE_SIDE = {
 const clamp = (value: number, min: number, max: number) =>
   Math.max(min, Math.min(value, Math.max(min, max)));
 
+type Side = NonNullable<PopoverContentProps["side"]>;
+
+// Where the panel ended up, in document coordinates. `null` while unmeasured:
+// the panel is mounted invisibly, measured, then shown in the same frame.
+type Placement = { top: number; left: number; side: Side };
+
+// The entrance grows out of the trigger's edge: a panel below the button
+// scales from its own top edge and slides down a touch, and so on.
+const ENTER_FROM_SIDE: Record<Side, string> = {
+  bottom: "origin-top slide-in-from-top-2",
+  top: "origin-bottom slide-in-from-bottom-2",
+  left: "origin-right slide-in-from-right-2",
+  right: "origin-left slide-in-from-left-2",
+};
+
 export function PopoverContent({
   side = "bottom",
   align = "center",
@@ -134,11 +150,21 @@ export function PopoverContent({
   if (!context) throw new Error("PopoverContent must be used within a Popover");
 
   const { open, setOpen, trigger: triggerEl } = context;
-  const [coords, setCoords] = useState({ top: -9999, left: -9999 });
+  const [placement, setPlacement] = useState<Placement | null>(null);
   const contentRef = useRef<HTMLDivElement>(null);
 
-  // Handle Position Updates
+  // Forget the last position on close. This component stays mounted while
+  // closed, so without this a reopen would paint one frame at the stale
+  // coordinates (from before a scroll, or from a different `side`) and then
+  // jump next to the trigger.
   useEffect(() => {
+    if (!open) setPlacement(null);
+  }, [open]);
+
+  // Handle Position Updates. A layout effect runs before the browser paints,
+  // so the first visible frame is already in the right place — a plain effect
+  // would paint first and reposition afterwards, which reads as a jump.
+  useLayoutEffect(() => {
     if (!open || !triggerEl || !contentRef.current) return;
 
     // Resolve the document/window the trigger actually lives in, so the
@@ -250,10 +276,13 @@ export function PopoverContent({
 
       const nextTop = top + win.scrollY;
       const nextLeft = left + win.scrollX;
-      setCoords((prev) =>
-        prev.top === nextTop && prev.left === nextLeft
+      setPlacement((prev) =>
+        prev &&
+        prev.top === nextTop &&
+        prev.left === nextLeft &&
+        prev.side === resolvedSide
           ? prev
-          : { top: nextTop, left: nextLeft },
+          : { top: nextTop, left: nextLeft, side: resolvedSide },
       );
     };
 
@@ -339,10 +368,26 @@ export function PopoverContent({
         // padding buy back the height that would otherwise have to be scrolled.
         // Width stays a single class so an overriding `className="w-48"` wins at
         // every breakpoint instead of only below lg.
-        "absolute z-[9999] w-72 max-w-[calc(100vw-1rem)] p-3 lg:p-4 text-sm lg:text-base outline-none text-foreground bg-white dark:bg-[#050505] border border-border rounded-xl shadow-lg animate-in fade-in zoom-in-95 duration-200",
+        "absolute z-[9999] w-72 max-w-[calc(100vw-1rem)] p-3 lg:p-4 text-sm lg:text-base outline-none text-foreground bg-white dark:bg-[#050505] border border-border rounded-xl shadow-lg",
+        // `duration-200` sets transition-duration as well as the animation
+        // length, and the browser's default transition-property is `all` — so
+        // without `transition-none` the panel would tween its top/left from
+        // wherever it last was, sliding across the screen instead of opening in
+        // place. Radix/shadcn avoid this the same way: the positioned wrapper
+        // never transitions; only the entrance keyframes animate.
+        "transition-none animate-in fade-in zoom-in-95 duration-200",
+        // Animate from whichever side the panel actually landed on; until it
+        // is measured, fall back to the requested side so the classes are stable.
+        ENTER_FROM_SIDE[placement?.side ?? side],
         className,
       )}
-      style={{ top: coords.top, left: coords.left }}
+      style={{
+        top: placement?.top ?? 0,
+        left: placement?.left ?? 0,
+        // Mounted but not yet measured — keep it out of sight rather than
+        // flashing it at 0,0. Cleared in the same frame the layout effect runs.
+        visibility: placement ? undefined : "hidden",
+      }}
       // Stop clicks inside the popover from bubbling up to the document
       onClick={(e) => e.stopPropagation()}
       {...props}
