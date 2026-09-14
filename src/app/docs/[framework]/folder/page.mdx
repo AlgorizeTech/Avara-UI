@@ -154,7 +154,7 @@ export default function DropZone() {
   controls={[
     { name: "peek", label: "Peek (cards)", min: 0, max: 5, step: 1, defaultValue: 3 },
     { name: "size", label: "Size", min: 160, max: 360, step: 10, defaultValue: 260, unit: "px" },
-    { name: "blur", label: "Pocket blur", min: 0, max: 16, step: 1, defaultValue: 6, unit: "px" },
+    { name: "blur", label: "Pocket blur", min: 0, max: 24, step: 1, defaultValue: 10, unit: "px" },
   ]}
   examples={[
     {
@@ -345,7 +345,7 @@ Discover the Folder's capabilities for presenting a group of files as one tactil
       <tr>
         <td><code>blur</code></td>
         <td><code>number</code></td>
-        <td><code>6</code></td>
+        <td><code>10</code></td>
         <td>Frosted-glass blur on the pocket, in px.</td>
       </tr>
       <tr>
