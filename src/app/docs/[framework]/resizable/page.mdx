@@ -18,9 +18,20 @@ function Pane({ label }: { label: string }) {
   );
 }`;
 
-export const studioPanes = `${paneHelper}
-
-const Explorer = () => <Pane label="Explorer" />;
+export const studioPanes = `function Explorer() {
+  return (
+    <div className="p-4 flex flex-col h-full bg-muted/30">
+      <div className="text-xs font-extrabold uppercase tracking-wider text-primary mb-4">
+        Explorer
+      </div>
+      <div className="space-y-2 flex-1">
+        <div className="w-full h-4 bg-muted rounded" />
+        <div className="w-3/4 h-4 bg-muted rounded" />
+        <div className="w-5/6 h-4 bg-muted rounded" />
+      </div>
+    </div>
+  );
+}
 
 function Editor() {
   return (
@@ -32,19 +43,30 @@ function Editor() {
         </span>
       </div>
       <div className="space-y-2 font-mono text-xs flex-1">
-        <div>export default function Page() {"{"}</div>
-        <div className="pl-4">return (</div>
+        <div>
+          <span className="text-[#d73a49] dark:text-[#f97583] font-semibold">export default function</span>{" "}
+          <span className="text-[#6f42c1] dark:text-[#b392f0] font-bold">Page</span>() {"{"}
+        </div>
+        <div className="pl-4 font-semibold text-[#d73a49] dark:text-[#f97583]">return (</div>
         <div className="pl-8">
-          {'<div className="flex h-full w-full flex-col p-4">'}
+          <span className="text-[#22863a] dark:text-[#85e89d]">&lt;div</span>{" "}
+          <span className="text-[#6f42c1] dark:text-[#b392f0]">className</span>=
+          <span className="text-[#032f62] dark:text-[#9ecbfc]">&quot;flex h-full w-full flex-col p-4&quot;</span>
+          <span className="text-[#22863a] dark:text-[#85e89d]">&gt;</span>
         </div>
         <div className="pl-12">
-          {'<h2 className="text-2xl font-bold">John Doe</h2>'}
+          <span className="text-[#22863a] dark:text-[#85e89d]">&lt;h2</span>{" "}
+          <span className="text-[#6f42c1] dark:text-[#b392f0]">className</span>=
+          <span className="text-[#032f62] dark:text-[#9ecbfc]">&quot;text-2xl font-bold&quot;</span>
+          <span className="text-[#22863a] dark:text-[#85e89d]">&gt;</span>
+          <span className="text-foreground font-bold">John Doe</span>
+          <span className="text-[#22863a] dark:text-[#85e89d]">&lt;/h2&gt;</span>
         </div>
-        <div className="pl-12 italic text-zinc-500">
+        <div className="pl-12 text-[#6a737d] dark:text-[#6a737d] italic">
           {"{/* Drag handle bars to resize panels live */}"}
         </div>
-        <div className="pl-8">{"</div>"}</div>
-        <div className="pl-4">);</div>
+        <div className="pl-8 text-[#22863a] dark:text-[#85e89d]">&lt;/div&gt;</div>
+        <div className="pl-4 font-semibold text-[#d73a49] dark:text-[#f97583]">);</div>
         <div>{"}"}</div>
       </div>
     </div>
@@ -68,16 +90,6 @@ function TerminalPane() {
   );
 }`;
 
-export const splitPanes = `${paneHelper}
-
-const PanelOne = () => <Pane label="Panel one" />;
-const PanelTwo = () => <Pane label="Panel two" />;`;
-
-export const sidebarPanes = `${paneHelper}
-
-const Sidebar = () => <Pane label="Sidebar" />;
-const Editor = () => <Pane label="Editor" />;`;
-
 export const usageDefault = `import {
   ResizableHandle,
   ResizablePanel,
@@ -88,29 +100,47 @@ ${studioPanes}
 
 export default function StudioLayout() {
   return (
-    // A panel group is height:100%, so it collapses to nothing unless an
-    // ancestor is sized. Use h-screen here to fill the viewport instead.
-    <div className="w-full h-[400px] sm:h-[460px] border rounded-xl overflow-hidden">
-      <ResizablePanelGroup direction="horizontal">
-        <ResizablePanel defaultSize={22} minSize={15} maxSize={40}>
-          <Explorer />
-        </ResizablePanel>
+    // Simulated Studio Window
+    <div className="w-full h-[400px] sm:h-[460px] border border-border rounded-xl overflow-hidden shadow-xs bg-background flex flex-col">
+      {/* Fake Header Bar */}
+      <div className="h-9 sm:h-10 border-b border-border/80 bg-muted/50 px-3 sm:px-4 flex items-center justify-between shrink-0">
+        <div className="flex items-center gap-2">
+          <div className="flex gap-1.5">
+            <div className="w-2.5 h-2.5 rounded-full bg-rose-500/80" />
+            <div className="w-2.5 h-2.5 rounded-full bg-amber-500/80" />
+            <div className="w-2.5 h-2.5 rounded-full bg-emerald-500/80" />
+          </div>
+          <span className="text-[11px] sm:text-xs font-bold text-foreground ml-2">
+            Nexus Studio
+          </span>
+        </div>
+        <span className="text-[10px] font-mono font-semibold px-2 py-0.5 rounded bg-primary/10 text-primary border border-primary/20">
+          Resizable Layout
+        </span>
+      </div>
 
-        <ResizableHandle withHandle />
+      {/* Main Resizable Workspace */}
+      <div className="flex-1 overflow-hidden">
+        <ResizablePanelGroup direction="horizontal">
+          <ResizablePanel defaultSize={22} minSize={15} maxSize={40}>
+            <Explorer />
+          </ResizablePanel>
 
-        <ResizablePanel defaultSize={78}>
-          {/* Groups nest freely — this one splits the main area vertically. */}
-          <ResizablePanelGroup direction="vertical">
-            <ResizablePanel defaultSize={70} minSize={30}>
-              <Editor />
-            </ResizablePanel>
-            <ResizableHandle withHandle />
-            <ResizablePanel defaultSize={30} minSize={15}>
-              <TerminalPane />
-            </ResizablePanel>
-          </ResizablePanelGroup>
-        </ResizablePanel>
-      </ResizablePanelGroup>
+          <ResizableHandle withHandle />
+
+          <ResizablePanel defaultSize={78}>
+            <ResizablePanelGroup direction="vertical">
+              <ResizablePanel defaultSize={70} minSize={30}>
+                <Editor />
+              </ResizablePanel>
+              <ResizableHandle withHandle />
+              <ResizablePanel defaultSize={30} minSize={15}>
+                <TerminalPane />
+              </ResizablePanel>
+            </ResizablePanelGroup>
+          </ResizablePanel>
+        </ResizablePanelGroup>
+      </div>
     </div>
   );
 }`;

@@ -15,9 +15,13 @@ function Pane({ label }: { label: string }) {
   );
 }`;
 
-export const studioPanes = `${paneHelper}
+export const studioPanes = `function Explorer() {
+  return (
 
-const Explorer = () => ;
+        Explorer
+
+  );
+}
 
 function Editor() {
   return (
@@ -26,16 +30,26 @@ function Editor() {
         
           Active
 
-        export default function Page() {"{"}
+          export default function{" "}
+          Page() {"{"}
+        
         return (
         
-          {''}
+          &lt;div{" "}
+          className=
+          &quot;flex h-full w-full flex-col p-4&quot;
+          &gt;
 
-          {'John Doe'}
+          &lt;h2{" "}
+          className=
+          &quot;text-2xl font-bold&quot;
+          &gt;
+          John Doe
+          &lt;/h2&gt;
 
           {"{/* Drag handle bars to resize panels live */}"}
         
-        {""}
+        &lt;/div&gt;
         );
         {"}"}
 
@@ -56,16 +70,6 @@ function TerminalPane() {
   );
 }`;
 
-export const splitPanes = `${paneHelper}
-
-const PanelOne = () => ;
-const PanelTwo = () => ;`;
-
-export const sidebarPanes = `${paneHelper}
-
-const Sidebar = () => ;
-const Editor = () => ;`;
-
 export const usageDefault = `import {
   ResizableHandle,
   ResizablePanel,
@@ -76,10 +80,15 @@ ${studioPanes}
 
 export default function StudioLayout() {
   return (
-    // A panel group is height:100%, so it collapses to nothing unless an
-    // ancestor is sized. Use h-screen here to fill the viewport instead.
+    // Simulated Studio Window
+    
+      {/* Fake Header Bar */}
 
-          {/* Groups nest freely — this one splits the main area vertically. */}
+            Nexus Studio
+
+          Resizable Layout
+
+      {/* Main Resizable Workspace */}
 
   );
 }`;
