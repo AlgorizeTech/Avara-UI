@@ -39,9 +39,9 @@ export function ShowcaseControlCard({
   return (
     <div
       className={cn(
-        // Stacked on small screens; from lg the picker and the sliders share a
-        // row and wrap back to two rows only when the sliders need the width.
-        "flex flex-col gap-4 sm:gap-5 p-4 sm:p-5 lg:flex-row lg:flex-wrap lg:items-end lg:gap-x-8",
+        // Stacked on small screens; from lg a two-column grid — the picker in
+        // the left half, the sliders starting at the right half.
+        "flex flex-col gap-4 sm:gap-5 p-4 sm:p-5 lg:grid lg:grid-cols-2 lg:items-end lg:gap-x-8",
         "bg-zinc-50 dark:bg-zinc-900/50 border border-zinc-200 dark:border-zinc-800 rounded-2xl",
         className,
       )}
