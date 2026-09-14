@@ -114,11 +114,63 @@ export default function UploadStates() {
 
 <Installation name="upload" />
 
+### Optional — folder drop target
+
+The folder example is built on the `Folder` block, which installs separately.
+
+<Installation name="folder" />
+
 ### Optional — animated queue
 
 The animated-queue example additionally uses `framer-motion`. It is optional; `UploadItem` renders fine without it.
 
 <Cli command={`install framer-motion`} />
+
+export const usageFolder = `"use client";
+
+import { Folder, type FolderFile } from "@/components/custom/blocks/FolderBlock";
+import { Image } from "lucide-react";
+import { useState } from "react";
+
+export default function DropZone() {
+  const [files, setFiles] = useState<FolderFile[]>([]);
+  const [progress, setProgress] = useState<number>();
+
+  // Replace the timer with your real upload — set each file's progress and
+  // the overall figure as bytes go out; the bars vanish once they reach 100.
+  const onFiles = (incoming: File[]) => {
+    setFiles((prev) => [
+      ...prev,
+      ...incoming.map((f) => ({
+        name: f.name,
+        progress: 0,
+        thumb: f.type.startsWith("image/") ? URL.createObjectURL(f) : undefined,
+      })),
+    ]);
+    let p = 0;
+    const id = setInterval(() => {
+      p = Math.min(100, p + 4);
+      setProgress(p);
+      setFiles((prev) => prev.map((f) => (f.progress! < 100 ? { ...f, progress: p } : f)));
+      if (p >= 100) clearInterval(id);
+    }, 80);
+  };
+
+  return (
+    <Folder
+      interactive
+      peek={0}
+      color="#bfdbfe"
+      icon={Image}
+      label="Drop zone"
+      files={files}
+      progress={progress}
+      onFiles={onFiles}
+      onRemoveFile={(i) => setFiles((prev) => prev.filter((_, idx) => idx !== i))}
+      accept="image/*,.pdf"
+    />
+  );
+}`;
 
 ## Examples
 
@@ -142,6 +194,32 @@ The animated-queue example additionally uses `framer-motion`. It is optional; `U
       ],
       props: { showAll: "states" },
       usage: usageStates,
+    },
+    {
+      title: "Folder drop target",
+      subheading: "The `Folder` block as an upload surface: drop files on it or click to browse. It starts empty, each dropped file becomes a card with its own progress bar, the pocket tracks the overall figure, and an × removes a file.",
+      propNotes: [
+        {
+          lead: "Set",
+          prop: "interactive",
+          effect:
+            "to enable drag-and-drop and click-to-browse. `onFiles` receives the dropped or picked `File[]`; `accept` and `multiple` pass through to the input.",
+        },
+        {
+          prop: "peek",
+          value: "{0}",
+          effect:
+            "keeps the folder empty until the first drop — without it the folder shows three placeholder cards peeking out.",
+        },
+        {
+          prop: "progress",
+          effect:
+            "drives the bar across the pocket (0–100); a per-file `progress` draws a bar on that card. `onRemoveFile` adds an × to each fanned card.",
+        },
+      ],
+      props: { layout: "folder" },
+      usage: usageFolder,
+      code: extractCode("src/components/custom/blocks/FolderBlock.tsx"),
     },
   ]}
 />
