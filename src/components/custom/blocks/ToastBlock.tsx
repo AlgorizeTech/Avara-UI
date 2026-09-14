@@ -9,7 +9,13 @@ import { ToastContext, type ToastProps, type ToastType, getThemeStyles } from ".
 // ==========================================
 // DYNAMIC THEME ENGINE
 // ==========================================
-export type ToastColor = "indigo" | "rose" | "emerald" | "zinc" | string;
+export type ToastColor =
+  | "primary"
+  | "indigo"
+  | "rose"
+  | "emerald"
+  | "zinc"
+  | (string & {});
 export type ToastVariant = "default" | "glow" | "glass" | "minimal";
 export type ToastPosition = "top-right" | "top-left" | "top-center" | "bottom-right" | "bottom-left" | "bottom-center";
 
