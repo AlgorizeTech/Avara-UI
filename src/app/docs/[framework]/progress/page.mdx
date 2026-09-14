@@ -7,32 +7,89 @@ A flexible, smoothly animated progress indicator built to handle loading states,
 
 This block is split into composable pieces: the core `<Progress />` bar for the visual fill, the optional `<ProgressField />` wrapper which handles the layout for labels and percentage text, `<MultiProgress />` with `<ProgressSegment />` children for several values sharing one track, and `<CircularProgress />` for the same value drawn as a ring.
 
+Colour carries state. `stages` changes the fill as thresholds are crossed — neutral while an operation starts, your brand colour once it is under way, green at 100 — and `status` overrides everything with the conventional success, warning and error hues so a failed job never looks like it is still running. The field's readout follows: a check on success, an alert on error, and an optional `hint` line that says what happened.
+
 Each example shows a live preview with the exact code to copy.
+
+export const usageStages = `"use client";
+
+import {
+  CircularProgress,
+  Progress,
+  ProgressField,
+} from "@/components/custom/blocks/ProgressBlock";
+
+// Each stage takes over from its \`from\` percent until the next.
+const STAGES = [
+  { from: 0, color: "zinc" },      // starting up
+  { from: 10, color: "indigo" },   // under way
+  { from: 100, color: "emerald" }, // done
+];
+
+export default function UploadProgress({
+  value,
+  failed,
+}: {
+  value: number;
+  failed: boolean;
+}) {
+  // status wins over stages, so a failure is red no matter how far it got.
+  const status = failed ? "error" : value >= 100 ? "success" : "active";
+
+  // The ring and the bar share the value, stages and status, so they agree.
+  return (
+    <div className="flex items-center gap-6">
+      <CircularProgress value={value} status={status} stages={STAGES} circleSize={88} />
+
+      <ProgressField
+        className="flex-1"
+        label="brand-guidelines.pdf"
+        value={value}
+        status={status}
+        hint={failed ? "Connection lost — the file was not uploaded." : undefined}
+      >
+        <Progress value={value} status={status} stages={STAGES} />
+      </ProgressField>
+    </div>
+  );
+}`;
+
+export const usageStatuses = `import { Progress, ProgressField } from "@/components/custom/blocks/ProgressBlock";
+
+export default function SyncStatus() {
+  return (
+    <div className="flex flex-col gap-6">
+      <ProgressField label="Syncing videos" value={71} status="warning" hint="Slow connection — still going.">
+        <Progress value={71} status="warning" />
+      </ProgressField>
+
+      <ProgressField label="Syncing documents" value={58} status="error" hint="Connection lost. Retry to resume.">
+        <Progress value={58} status="error" />
+      </ProgressField>
+
+      <ProgressField label="Syncing contacts" value={100} status="success" hint="Everything is up to date.">
+        <Progress value={100} status="success" />
+      </ProgressField>
+    </div>
+  );
+}`;
+
+export const usageIndeterminate = `import { Progress, ProgressField } from "@/components/custom/blocks/ProgressBlock";
+
+export default function ScanningLibrary() {
+  // No value: the bar slides along the track until you know how far along you are.
+  return (
+    <ProgressField label="Scanning library" showValue={false} hint="This can take a while for large libraries.">
+      <Progress indeterminate />
+    </ProgressField>
+  );
+}`;
 
 export const usageDefault = `import { Progress } from "@/components/custom/blocks/ProgressBlock";
 
 export default function ProgressDemo() {
-  return <Progress value={45} max={100} />;
-}`;
-
-export const usageFormatted = `"use client";
-
-import { useState } from "react";
-import { Progress, ProgressField } from "@/components/custom/blocks/ProgressBlock";
-
-export default function StorageWidget() {
-  const [usedSpace] = useState(72); // 72 GB of 100 GB
-
-  return (
-    <ProgressField
-      label="Storage Usage"
-      value={usedSpace}
-      max={100}
-      valueFormat={(value, max) => \`\${value} GB / \${max} GB\`}
-    >
-      <Progress value={usedSpace} max={100} variant="glow" barSize="md" />
-    </ProgressField>
-  );
+  // tooltip shows the percentage on hover; pass a function to format it.
+  return <Progress value={45} max={100} tooltip />;
 }`;
 
 export const usageSteps = `import { Progress, ProgressField } from "@/components/custom/blocks/ProgressBlock";
@@ -50,104 +107,6 @@ export default function WizardProgress() {
       showValue={false}
     >
       <Progress value={step} max={totalSteps} variant="default" barSize="sm" />
-    </ProgressField>
-  );
-}`;
-
-export const usageMulti = `import {
-  MultiProgress,
-  ProgressField,
-  ProgressSegment,
-} from "@/components/custom/blocks/ProgressBlock";
-
-const phases = [
-  { label: "Merged", value: 30 },
-  { label: "In review", value: 18 },
-  { label: "Drafted", value: 11 },
-];
-
-export default function ReleaseProgress() {
-  const shipped = phases.reduce((sum, phase) => sum + phase.value, 0);
-
-  return (
-    <ProgressField
-      label="Release 2.4 progress"
-      value={shipped}
-      max={100}
-      valueFormat={(value, max) => \`\${value} / \${max} tasks\`}
-    >
-      {/* gap pulls the segments apart so each level reads on its own. */}
-      <MultiProgress max={100} variant="default" barSize="lg" gap={3}>
-        {phases.map((phase) => (
-          <ProgressSegment
-            key={phase.label}
-            value={phase.value}
-            label={\`\${phase.label}: \${phase.value}\`}
-          />
-        ))}
-      </MultiProgress>
-    </ProgressField>
-  );
-}`;
-
-export const usageMultiColors = `import {
-  MultiProgress,
-  ProgressField,
-  ProgressSegment,
-} from "@/components/custom/blocks/ProgressBlock";
-import { getThemeStyles } from "@/components/custom/blocks/progress-theme";
-
-const segments = [
-  { label: "Documents", value: 18, color: "indigo" },
-  { label: "Photos", value: 34, color: "emerald" },
-  { label: "Videos", value: 21, color: "rose" },
-  { label: "System", value: 9, color: "#f59e0b" },
-];
-
-// The legend reuses the block's theme table, so a dot and its segment
-// can never drift apart.
-function LegendDot({ color }: { color: string }) {
-  const { theme, style } = getThemeStyles(color);
-  return (
-    <span
-      className={\`inline-block size-2.5 rounded-full \${theme.bg}\`}
-      style={style}
-    />
-  );
-}
-
-export default function StorageBreakdown() {
-  const used = segments.reduce((sum, segment) => sum + segment.value, 0);
-
-  return (
-    <ProgressField
-      label="Storage breakdown"
-      value={used}
-      max={100}
-      valueFormat={(value, max) => \`\${value} GB / \${max} GB\`}
-    >
-      <MultiProgress max={100} variant="default" barSize="lg">
-        {segments.map((segment) => (
-          <ProgressSegment
-            key={segment.label}
-            value={segment.value}
-            color={segment.color}
-            label={\`\${segment.label}: \${segment.value} GB\`}
-          />
-        ))}
-      </MultiProgress>
-
-      <div className="flex flex-wrap gap-x-4 gap-y-1.5 pt-1">
-        {segments.map((segment) => (
-          <span
-            key={segment.label}
-            className="flex items-center gap-2 text-xs text-muted-foreground"
-          >
-            <LegendDot color={segment.color} />
-            {segment.label}
-          </span>
-        ))}
-      </div>
     </ProgressField>
   );
 }`;
@@ -187,103 +146,29 @@ export default function CreditsRing() {
   name="progress"
   colorControl
   colorLabel="Accent Brand Theme"
+  controls={[
+    { name: "value", label: "Percentage", min: 0, max: 100, step: 1, defaultValue: 45, unit: "%" },
+  ]}
   columns={1}
   examples={[
     {
       title: "Progress",
-      subheading: "The bare bar.",
+      subheading: "The bare bar. Drag the slider above to move it; hover the bar for the readout.",
       propNotes: [
         {
           prop: "value",
           effect:
             "and `max` are all it needs — the percentage is derived from the two.",
         },
+        {
+          prop: "tooltip",
+          effect:
+            "shows the percentage in a bubble at the fill's edge on hover; pass a function to format it.",
+        },
       ],
-      props: { example: "bare", variant: "default", value: 45 },
+      props: { example: "bare", variant: "default", value: 45, tooltip: true },
       usage: usageDefault,
       code: extractCode("src/components/custom/blocks/ProgressBlock.tsx"),
-    },
-  ]}
-/>
-
-## Installation
-
-<Installation name="progress" />
-
-## Examples
-
-<ExampleShowcase
-  name="progress"
-  colorControl
-  colorLabel="Accent Brand Theme"
-  controls={[
-    { name: "showValue", label: "Show Percentage / Readout", defaultValue: true },
-  ]}
-  columns={1}
-  examples={[
-    {
-      title: "Custom value format",
-      propNotes: [
-        {
-          prop: "valueFormat",
-          effect:
-            "receives `(value, max)` and returns whatever should sit where the percentage normally does.",
-        },
-      ],
-      props: { example: "formatted", variant: "glow", value: 72 },
-      usage: usageFormatted,
-    },
-    {
-      title: "Step indicator",
-      propNotes: [
-        {
-          lead: "Set",
-          prop: "showValue",
-          value: '{false}',
-          effect:
-            "and give `max` a small number for wizard-style step progress.",
-        },
-      ],
-      props: { example: "steps", variant: "default", barSize: "sm", value: 2, max: 4 },
-      usage: usageSteps,
-    },
-    {
-      title: "Multi progress",
-      subheading: "Several values sharing one track.",
-      propNotes: [
-        {
-          lead: "Nest",
-          prop: "ProgressSegment",
-          effect:
-            "children inside `MultiProgress` — each one takes its own `value`, measured against the parent's `max`.",
-        },
-        {
-          prop: "gap",
-          value: "{3}",
-          effect:
-            "puts breathing room between segments and rounds their ends. Leave it at `0` for one continuous bar.",
-        },
-      ],
-      props: { example: "multi", variant: "default", barSize: "lg", max: 100 },
-      usage: usageMulti,
-    },
-    {
-      title: "Multi progress with per-segment colors",
-      subheading: "A breakdown where every slice is its own color.",
-      propNotes: [
-        {
-          prop: "color",
-          effect:
-            "is set per segment, not on the track — pass a named theme or any hex code.",
-        },
-        {
-          prop: "label",
-          effect:
-            "names the slice for screen readers and shows as its hover tooltip.",
-        },
-      ],
-      props: { example: "multi-colors", variant: "default", barSize: "lg", max: 100 },
-      usage: usageMultiColors,
     },
     {
       title: "Circular progress",
@@ -302,7 +187,7 @@ export default function CreditsRing() {
             "lights the filled arc with the theme color instead of leaving it flat.",
         },
       ],
-      props: { example: "circular", variant: "glow", barSize: "md", value: 68 },
+      props: { example: "circular", variant: "glow", barSize: "md", value: 45, tooltip: true },
       usage: usageCircular,
     },
     {
@@ -315,8 +200,89 @@ export default function CreditsRing() {
             "to replace the centred percentage with anything — a count, an icon, a caption.",
         },
       ],
-      props: { example: "circular-custom", variant: "default", barSize: "lg", value: 68 },
+      props: { example: "circular-custom", variant: "default", barSize: "lg", value: 45, tooltip: true },
       usage: usageCircularCustom,
+    },
+  ]}
+/>
+
+## Installation
+
+<Installation name="progress" />
+
+## Examples
+
+<ExampleShowcase
+  name="progress"
+  colorControl
+  colorLabel="Accent Brand Theme"
+  columns={1}
+  examples={[
+    {
+      title: "Statuses",
+      subheading: "The four states side by side.",
+      propNotes: [
+        {
+          prop: "status",
+          value: '"active"',
+          effect:
+            "is the default and draws the theme colour; the other three use the conventional semantic hues on every brand.",
+        },
+      ],
+      props: { example: "statuses", variant: "default" },
+      usage: usageStatuses,
+      minHeight: 360,
+    },
+    {
+      title: "Indeterminate",
+      propNotes: [
+        {
+          lead: "Set",
+          prop: "indeterminate",
+          effect:
+            "when the duration is unknown. A short bar slides along the track; `value` is ignored and reduced-motion users get a still, full bar.",
+        },
+      ],
+      props: { example: "indeterminate", variant: "default" },
+      usage: usageIndeterminate,
+    },
+    {
+      title: "Step indicator",
+      propNotes: [
+        {
+          lead: "Set",
+          prop: "showValue",
+          value: '{false}',
+          effect:
+            "and give `max` a small number for wizard-style step progress.",
+        },
+      ],
+      props: { example: "steps", variant: "default", barSize: "sm", value: 2, max: 4 },
+      usage: usageSteps,
+    },
+    {
+      title: "Stage colours",
+      subheading: "Run it: neutral while starting, the brand colour from 10%, green at 100 — or red the moment it fails. The ring and the bar share one value, so they always agree.",
+      propNotes: [
+        {
+          prop: "stages",
+          effect:
+            "is a list of `{ from, color }` — each colour takes over from its `from` percent until the next threshold. Works on `Progress` and `CircularProgress` alike.",
+        },
+        {
+          prop: "status",
+          effect:
+            "on both `Progress` and `ProgressField`: `\"success\"`, `\"warning\"` or `\"error\"` override every colour and turn the readout green, amber or red with a glyph.",
+        },
+        {
+          prop: "hint",
+          effect:
+            "is one line under the bar — what happened, or what to do next — in the status colour.",
+        },
+      ],
+      props: { example: "stages", variant: "default" },
+      usage: usageStages,
+      minHeight: 420,
     },
   ]}
 />
@@ -455,6 +421,118 @@ Explore the Progress bar's features, including smooth value interpolation, indet
           <code>undefined</code>
         </td>
         <td>Optional Tailwind classes to append directly to the moving inner fill element.</td>
+      </tr>
+      <tr>
+        <td>
+          <code>Progress</code>
+        </td>
+        <td>
+          <code>stages</code>
+        </td>
+        <td>
+          <code>{`{ from: number; color: ProgressColor }[]`}</code>
+        </td>
+        <td>
+          <code>undefined</code>
+        </td>
+        <td>
+          Colour by threshold. <code>from</code> is a percentage; each stage's
+          colour applies from that point until the next stage. Also on{" "}
+          <code>CircularProgress</code>.
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <code>Progress</code>
+        </td>
+        <td>
+          <code>status</code>
+        </td>
+        <td>
+          <code>"active" | "success" | "warning" | "error"</code>
+        </td>
+        <td>
+          <code>"active"</code>
+        </td>
+        <td>
+          Semantic override: emerald, amber or red replace the theme colour and
+          any stage. Exposed as <code>data-status</code> on the element. Also
+          on <code>CircularProgress</code>, where it colours the centre readout.
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <code>Progress</code>
+        </td>
+        <td>
+          <code>indeterminate</code>
+        </td>
+        <td>
+          <code>boolean</code>
+        </td>
+        <td>
+          <code>false</code>
+        </td>
+        <td>
+          Unknown duration: a short bar slides along the track and{" "}
+          <code>aria-busy</code> is set. Honours{" "}
+          <code>prefers-reduced-motion</code>.
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <code>Progress</code>
+        </td>
+        <td>
+          <code>tooltip</code>
+        </td>
+        <td>
+          <code>{`boolean | (value, max) => ReactNode`}</code>
+        </td>
+        <td>
+          <code>false</code>
+        </td>
+        <td>
+          Hover readout in a bubble — at the fill's leading edge on the bar,
+          above the ring on <code>CircularProgress</code>. <code>true</code>{" "}
+          shows the percentage; a function formats it. Not shown while{" "}
+          <code>indeterminate</code>.
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <code>ProgressField</code>
+        </td>
+        <td>
+          <code>status</code>
+        </td>
+        <td>
+          <code>"active" | "success" | "warning" | "error"</code>
+        </td>
+        <td>
+          <code>"active"</code>
+        </td>
+        <td>
+          Colours the readout and adds a glyph — a check on success, an alert
+          on warning or error.
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <code>ProgressField</code>
+        </td>
+        <td>
+          <code>hint</code>
+        </td>
+        <td>
+          <code>ReactNode</code>
+        </td>
+        <td>
+          <code>undefined</code>
+        </td>
+        <td>
+          One line under the bar, in the status colour when a status is set.
+        </td>
       </tr>
 
       <tr>

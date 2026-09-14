@@ -1011,6 +1011,9 @@ export function ExampleShowcase({
             controls={controls}
             values={controlValues}
             onChange={handleControlChange}
+            // One or two sliders fit the right half; more than that need the
+            // full width, so they take their own row under the picker.
+            className={cn(controls.length > 2 && "lg:col-span-2")}
           />
         )}
       </ShowcaseControlCard>

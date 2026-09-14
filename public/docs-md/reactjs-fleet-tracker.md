@@ -123,8 +123,9 @@ Explore the Fleet Tracker map features, including live marker positioning, custo
 
           "default"
 
-          Applies overarching structural layouts, including floating sidebars
-          versus split-views.
+          default is a split view, minimal floats
+          the list over the map, modern is the glass treatment
+          from Profile Page: an aurora behind, a frosted list, a glass-edged map.
 
           color
 

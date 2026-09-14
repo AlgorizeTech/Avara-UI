@@ -477,6 +477,18 @@ Explore the Scroll Area's custom scrollbar features, providing a unified, styliz
           If true, the scrollbar thumb fades to transparent when the container
           is not being actively hovered.
 
+          ScrollAreaBlock
+
+          wheelToHorizontal
+
+          boolean
+
+          true
+
+          orientation="horizontal" only. A mouse wheel pans the
+          content sideways; trackpad swipes and shift+wheel keep their native
+          behaviour, and the wheel is handed back to the page at either end.
+
 ---
 
 **Component Path:** `[framework]\scroll-area\page.mdx`

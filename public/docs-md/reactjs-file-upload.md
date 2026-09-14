@@ -10,6 +10,8 @@ A highly-orchestrated, premium file upload component suite based on modern UX en
 
 The suite is two pieces you compose yourself: a `Dropzone` that hands you `File[]`, and an `UploadItem` that renders one entry of your own queue state. Drop real files into the first preview — its simulator randomly fails some at 89% so you can watch the inline retry resume.
 
+Three upload surfaces live on this page, and each installs separately: the `Dropzone` + `UploadItem` suite, the `Input` block's built-in file mode for simple forms, and the `Folder` block as a playful drop target.
+
 export const usageDropzone = `export default function AvatarDropzone() {
   // accept is the native input string; maxSize is in MB and is echoed
   // in the helper text under the icon.
@@ -67,6 +69,14 @@ export default function UploadStates() {
 
 ## Installation
 
+### Optional — simple file input
+
+The form-field example below is the `Input` block in file mode. It installs on its own and has no dependency on the upload suite.
+
+### Optional — folder drop target
+
+The folder example is built on the `Folder` block, which installs separately.
+
 ### Optional — animated queue
 
 The animated-queue example additionally uses `framer-motion`. It is optional; `UploadItem` renders fine without it.
@@ -74,6 +84,45 @@ The animated-queue example additionally uses `framer-motion`. It is optional; `U
 ```bash
 npx shadcn@latest install framer-motion
 ```
+
+export const usageFolder = `export default function DropZone() {
+  const [files, setFiles] = useState([]);
+  const [progress, setProgress] = useState();
+
+  // Replace the timer with your real upload — set each file's progress and
+  // the overall figure as bytes go out; the bars vanish once they reach 100.
+  const onFiles = (incoming: File[]) => {
+    setFiles((prev) => [
+      ...prev,
+      ...incoming.map((f) => ({
+        name: f.name,
+        progress: 0,
+        thumb: f.type.startsWith("image/") ? URL.createObjectURL(f) : undefined,
+      })),
+    ]);
+    let p = 0;
+    const id = setInterval(() => {
+      p = Math.min(100, p + 4);
+      setProgress(p);
+      setFiles((prev) => prev.map((f) => (f.progress! = 100) clearInterval(id);
+    }, 80);
+  };
+
+  return (
+     setFiles((prev) => prev.filter((_, idx) => idx !== i))}
+      accept="image/*,.pdf"
+    />
+  );
+}`;
+
+export const usageFileInput = `export default function FileUploadInput() {
+  // type="file" turns the Input block into a drag-and-drop zone with
+  // previews, sizes and remove buttons — no queue state to manage.
+  return (
+     console.log("Uploaded files:", files)}
+    />
+  );
+}`;
 
 ## Examples
 
@@ -184,6 +233,39 @@ Discover the key capabilities that make this component an excellent choice for m
 
           The core state machine parameter that drives the UI colors, icons, and
           messaging for the specific upload item.
+
+          InputBlock
+
+          type
+
+          "file"
+
+          "text"
+
+          Switches the Input block into the drag-and-drop zone shown in the
+          simple file input example.
+
+          InputBlock
+
+          onFilesChange
+
+          (files: File[]) =&gt; void
+
+          undefined
+
+          Fired when files are dropped, selected, or removed, with the current
+          native File[].
+
+          InputBlock
+
+          multiple / accept
+
+          boolean / string
+
+          false / undefined
+
+          Allow several files, and restrict types with the standard HTML accept
+          string (e.g. "image/*").
 
           FileUploadState
 

@@ -39,7 +39,10 @@ export function ShowcaseControlCard({
   return (
     <div
       className={cn(
-        "flex flex-col gap-4 sm:gap-5 p-4 sm:p-5 bg-zinc-50 dark:bg-zinc-900/50 border border-zinc-200 dark:border-zinc-800 rounded-2xl",
+        // Stacked on small screens; from lg a two-column grid — the picker in
+        // the left half, the sliders starting at the right half.
+        "flex flex-col gap-4 sm:gap-5 p-4 sm:p-5 lg:grid lg:grid-cols-2 lg:items-end lg:gap-x-8",
+        "bg-zinc-50 dark:bg-zinc-900/50 border border-zinc-200 dark:border-zinc-800 rounded-2xl",
         className,
       )}
     >
@@ -50,7 +53,7 @@ export function ShowcaseControlCard({
 
 /** Tailwind needs the full class name, so the column count is a lookup. */
 const COLUMN_CLASS: Record<number, string> = {
-  1: "sm:grid-cols-2",
+  1: "grid-cols-1",
   2: "sm:grid-cols-2",
   3: "sm:grid-cols-2 lg:grid-cols-3",
   4: "sm:grid-cols-2 lg:grid-cols-4",

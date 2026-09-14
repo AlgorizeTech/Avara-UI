@@ -2,7 +2,7 @@
 
 A tactile folder — unified skeleton cards (or your own photos) tuck behind a frosted-glass front pocket.
 
-The back panel and its tab are one continuous squircle path, the pocket is frosted glass that tilts open in 3D, and the cards inside lift into a shallow arc on hover, tap or focus. Give it a `color` and the pocket, icon and cards all derive their shades from it in OKLCH. Pass `files` with thumbnails to show real photos, names to get hover tooltips, or switch on `interactive` to make it a drag-and-drop upload target with progress bars.
+The back panel and its tab are one continuous squircle path, the pocket is frosted glass that tilts open in 3D, and the cards inside lift into a shallow arc on hover, tap or focus. Give it a `color` and the pocket, icon and cards all derive their shades from it in OKLCH. Pass `files` with thumbnails to show real photos, names to get hover tooltips, or switch on `interactive` to make it a drag-and-drop upload target with progress bars — that example lives on the File Upload page.
 
 Explore the different variations of the Folder — each example shows a live preview with the exact code to copy. Hover a folder to open it.
 
@@ -75,36 +75,6 @@ const photos = [
 
 export default function SummerTrip() {
   return ;
-}`;
-
-export const usageUpload = `export default function DropZone() {
-  const [files, setFiles] = useState([]);
-  const [progress, setProgress] = useState();
-
-  // Replace the timer with your real upload — set each file's progress and
-  // the overall figure as bytes go out; the bars vanish once they reach 100.
-  const onFiles = (incoming: File[]) => {
-    setFiles((prev) => [
-      ...prev,
-      ...incoming.map((f) => ({
-        name: f.name,
-        progress: 0,
-        thumb: f.type.startsWith("image/") ? URL.createObjectURL(f) : undefined,
-      })),
-    ]);
-    let p = 0;
-    const id = setInterval(() => {
-      p = Math.min(100, p + 4);
-      setProgress(p);
-      setFiles((prev) => prev.map((f) => (f.progress! = 100) clearInterval(id);
-    }, 80);
-  };
-
-  return (
-     setFiles((prev) => prev.filter((_, idx) => idx !== i))}
-      accept="image/*,.pdf"
-    />
-  );
 }`;
 
 ## Installation
@@ -180,7 +150,7 @@ Discover the Folder's capabilities for presenting a group of files as one tactil
 
         blur
         number
-        6
+        10
         Frosted-glass blur on the pocket, in px.
 
         size

@@ -60,6 +60,42 @@ export default function PricedDualRangeDatePickerDemo() {
   );
 }`;
 
+export const usageDisablePast = `import { RangeDatePicker, type DateRange } from "@/components/custom/range-date-picker";
+
+export default function UpcomingStay() {
+  const [range, setRange] = useState(() => {
+    const from = new Date();
+    const to = new Date();
+    to.setDate(to.getDate() + 5);
+    return { from, to };
+  });
+
+  // Every day before today is greyed out and cannot start or end a range.
+  // minDate / maxDate bound the calendar to any window instead.
+  return ;
+}`;
+
+export const usageTime = `import { RangeDatePicker, type DateRange } from "@/components/custom/range-date-picker";
+
+export default function BookingWindow() {
+  const [range, setRange] = useState(() => {
+    const from = new Date();
+    from.setDate(from.getDate() + 1);
+    from.setHours(9, 0, 0, 0);
+    const to = new Date();
+    to.setDate(to.getDate() + 5);
+    to.setHours(17, 0, 0, 0);
+    return { from, to };
+  });
+
+  // showTime adds Start / End time columns — to the right of the calendar
+  // when the card is wide enough, under it otherwise. Both dates carry a time, and on
+  // a same-day range the end can never be earlier than the start.
+  return (
+    
+  );
+}`;
+
 ## Installation
 
 ## Features
@@ -119,6 +155,36 @@ Discover the interactive capabilities of the `RangeDatePicker` component:
         "primary" | "indigo" | "rose" | "emerald" | "zinc"
         "primary"
         Theme color variant for highlights and buttons.
+
+        disablePast
+        boolean
+        false
+        Greys out every day before today so it cannot start or end a range. With showTime, times already passed today are disabled too.
+
+        minDate
+        Date
+        undefined
+        Earliest selectable day (inclusive). Combined with disablePast, the later bound wins.
+
+        maxDate
+        Date
+        undefined
+        Latest selectable day (inclusive).
+
+        showTime
+        boolean
+        false
+        Adds Start / End time columns — to the right of a single-month calendar when the card is at least 32rem wide, under it otherwise (dual-month always stacks). Both from and to carry a time; on a same-day range the end can never precede the start.
+
+        timeFormat
+        "12h" | "24h"
+        "12h"
+        12-hour clock with an AM / PM column, or a 24-hour one.
+
+        minuteStep
+        number
+        5
+        Minute granularity of the time columns.
 
 ---
 
