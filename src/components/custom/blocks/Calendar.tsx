@@ -389,7 +389,16 @@ const formatDateForInput = (dateKey: string) => {
   return `${y}-${String(m).padStart(2, "0")}-${String(d).padStart(2, "0")}`;
 };
 
-const DEFAULT_MOCK_EVENTS: Record<string, string[]> = {};
+const now = new Date();
+const currentYear = now.getFullYear();
+const currentMonth = now.getMonth() + 1;
+
+const DEFAULT_MOCK_EVENTS: Record<string, string[]> = {
+  [`${currentYear}-${currentMonth}-2`]: ["pentest", "kickoff"],
+  [`${currentYear}-${currentMonth}-10`]: ["pentest", "kickoff"],
+  [`${currentYear}-${currentMonth}-15`]: ["pentest", "kickoff"],
+  [`${currentYear}-${currentMonth}-24`]: ["kickoff", "pentest"],
+};
 
 type CalendarEvent = {
   id: string;
@@ -509,8 +518,6 @@ function CalendarDashboard({
     if (view === "week") setCurrentDate(new Date(year, month, date - 7));
     if (view === "day") setCurrentDate(new Date(year, month, date - 1));
   };
-
-  const goToToday = () => setCurrentDate(new Date());
 
   const generateCalendarDays = () => {
     const days = [];
@@ -1023,12 +1030,6 @@ function CalendarDashboard({
             <div className="flex items-center w-full lg:w-auto gap-2 sm:gap-4 justify-between lg:justify-end">
               <div className="flex bg-muted/60 p-1 rounded-lg text-xs sm:text-sm font-medium shrink-0 justify-start">
                 <button
-                  onClick={goToToday}
-                  className="px-3 sm:px-4 py-1.5 cursor-pointer hover:text-foreground text-muted-foreground transition-colors"
-                >
-                  Today
-                </button>
-                <button
                   onClick={() => setView("day")}
                   className={cn(
                     "px-3 sm:px-4 py-1.5 cursor-pointer rounded-md shadow-sm transition-colors",
@@ -1037,7 +1038,7 @@ function CalendarDashboard({
                       : "hover:text-foreground text-muted-foreground",
                   )}
                 >
-                  Day
+                  Today
                 </button>
                 <button
                   onClick={() => setView("week")}
