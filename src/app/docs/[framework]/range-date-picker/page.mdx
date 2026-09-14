@@ -109,6 +109,7 @@ import { useState } from "react";
 export default function BookingWindow() {
   const [range, setRange] = useState<DateRange>(() => {
     const from = new Date();
+    from.setDate(from.getDate() + 1);
     from.setHours(9, 0, 0, 0);
     const to = new Date();
     to.setDate(to.getDate() + 5);
@@ -116,9 +117,9 @@ export default function BookingWindow() {
     return { from, to };
   });
 
-  // showTime adds Start / End time columns under the calendar. Both dates in
-  // the range carry a time, and on a same-day range the end can never be
-  // earlier than the start.
+  // showTime adds Start / End time columns — to the right of the calendar
+  // when the card is wide enough, under it otherwise. Both dates carry a time, and on
+  // a same-day range the end can never be earlier than the start.
   return (
     <RangeDatePicker
       variant="single"
@@ -177,7 +178,7 @@ export default function BookingWindow() {
     },
     {
       title: "Range with times",
-      subheading: "Scroll the Start and End columns — the end can't precede the start on the same day.",
+      subheading: "Start and End columns sit to the right of the calendar when the card has room, and stack under it when it doesn't. The end can't precede the start on the same day.",
       propNotes: [
         {
           lead: "Set",
@@ -292,7 +293,7 @@ Discover the interactive capabilities of the `RangeDatePicker` component:
         <td><code>showTime</code></td>
         <td><code>boolean</code></td>
         <td><code>false</code></td>
-        <td>Adds Start / End time columns under the calendar. Both <code>from</code> and <code>to</code> carry a time; on a same-day range the end can never precede the start.</td>
+        <td>Adds Start / End time columns — to the right of a single-month calendar when the card is at least 32rem wide, under it otherwise (dual-month always stacks). Both <code>from</code> and <code>to</code> carry a time; on a same-day range the end can never precede the start.</td>
       </tr>
       <tr>
         <td><code>timeFormat</code></td>
