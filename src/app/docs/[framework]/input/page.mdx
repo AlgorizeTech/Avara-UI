@@ -3,9 +3,9 @@ import { extractCode } from "@/lib/code";
 
 # Input
 
-A powerful, multi-purpose Input component that natively supports advanced File Uploading, Password toggles, and complex layout variants.
+A multi-purpose Input component with password toggles, autocomplete suggestions, and four layout variants.
 
-By passing `type="file"`, this component transforms from a standard text input into a full-featured Drag & Drop zone that automatically generates image previews, formats file sizes, and allows users to remove selections.
+Pass `suggestions` and the field lists them the way a select menu would — typing narrows the list, and choosing one writes the text straight into the field. The drag-and-drop file mode lives on its own page: see [File upload](/docs/nextjs/file-upload).
 
 Explore the different variations of the Input component — each example shows a live preview with the exact code to copy.
 
@@ -61,19 +61,32 @@ export default function PasswordInput() {
   );
 }`;
 
-export const usageFile = `"use client";
+export const usageAutocomplete = `"use client";
 
+import { useState } from "react";
 import { InputBlock } from "@/components/custom/blocks/InputBlock";
+import { MapPin } from "lucide-react";
 
-export default function FileUploadInput() {
+const CITIES = [
+  "Amsterdam", "Berlin", "Dhaka", "London", "New York",
+  "San Francisco", "Santiago", "Singapore", "Tokyo",
+];
+
+export default function DestinationInput() {
+  const [city, setCity] = useState("");
+
+  // Focus lists every suggestion; typing narrows it. Choosing one writes
+  // the text into the field, so onChange fires exactly as if it were typed.
   return (
     <InputBlock
-      type="file"
-      multiple
-      accept="image/*"
-      label="Upload Portfolio"
-      helperText="Attach your files here."
-      onFilesChange={(files) => console.log("Uploaded files:", files)}
+      label="Destination"
+      placeholder="Type a city…"
+      leftIcon={<MapPin className="w-4 h-4" />}
+      value={city}
+      onChange={(e) => setCity(e.target.value)}
+      suggestions={CITIES}
+      onSuggestionSelect={(value) => console.log("Picked", value)}
+      helperText="Pick a suggestion or type your own."
     />
   );
 }`;
@@ -162,28 +175,29 @@ export default function FileUploadInput() {
       usage: usagePassword,
     },
     {
-      title: "File upload",
+      title: "Autocomplete",
+      subheading: "Suggestions appear like a select menu, but the field stays free text — pick one or keep typing.",
       propNotes: [
         {
-          lead: "Set",
-          prop: "type",
-          value: '"file"',
+          lead: "Pass",
+          prop: "suggestions",
           effect:
-            "to turn the field into a drag-and-drop zone with previews.",
+            "as a `string[]`. Focus shows the list, typing filters it (the matched letters are highlighted), and ↑ ↓ Enter pick from the keyboard.",
         },
         {
-          prop: "onFilesChange",
+          prop: "onSuggestionSelect",
           effect:
-            "is file mode only — it returns native `File[]` on drop, selection and removal.",
+            "fires after a pick. Your normal `onChange` fires too, so controlled and uncontrolled inputs both just work.",
         },
         {
-          prop: "multiple",
+          prop: "maxSuggestions",
+          value: "{8}",
           effect:
-            "and `accept` are also file-mode only; `accept` takes the standard HTML string such as `\"image/*\"`.",
+            "caps how many rows show at once; the rest scroll.",
         },
       ],
-      props: { inputType: "file", isMultiple: true, isImageOnly: true },
-      usage: usageFile,
+      props: { example: "autocomplete", inputType: "text" },
+      usage: usageAutocomplete,
       minHeight: 460,
     },
   ]}
@@ -247,55 +261,54 @@ This component extends `React.InputHTMLAttributes<HTMLInputElement>`, meaning yo
         </td>
         <td>
           Determines the behavior. <code>"password"</code> adds a visibility
-          toggle. <code>"file"</code> transforms the component into a
-          drag-and-drop zone.
+          toggle. <code>"file"</code> turns the field into a drag-and-drop
+          zone — documented on the{" "}
+          <DocLink to="file-upload">File upload</DocLink> page.
         </td>
       </tr>
       <tr>
         <td>
-          <code>onFilesChange</code>
+          <code>suggestions</code>
         </td>
         <td>
-          <code>(files: File[]) =&gt; void</code>
+          <code>string[]</code>
         </td>
         <td>
           <code>undefined</code>
         </td>
         <td>
-          <strong>File Mode Only:</strong> Callback fired when files are
-          dropped, selected, or removed. Returns an array of native File
-          objects.
+          Autocomplete list. Focus shows it, typing filters it
+          (case-insensitive, matched letters highlighted), and a click or
+          Enter writes the suggestion into the field. Ignored for{" "}
+          <code>"password"</code> and <code>"file"</code>.
         </td>
       </tr>
       <tr>
         <td>
-          <code>multiple</code>
+          <code>onSuggestionSelect</code>
         </td>
         <td>
-          <code>boolean</code>
-        </td>
-        <td>
-          <code>false</code>
-        </td>
-        <td>
-          <strong>File Mode Only:</strong> If true, allows dropping or selecting
-          multiple files at once.
-        </td>
-      </tr>
-      <tr>
-        <td>
-          <code>accept</code>
-        </td>
-        <td>
-          <code>string</code>
+          <code>(value: string) =&gt; void</code>
         </td>
         <td>
           <code>undefined</code>
         </td>
         <td>
-          <strong>File Mode Only:</strong> Standard HTML accept attribute (e.g.,{" "}
-          <code>"image/*"</code> or <code>".pdf"</code>).
+          Fired after a suggestion is written into the field. The regular{" "}
+          <code>onChange</code> fires as well.
         </td>
+      </tr>
+      <tr>
+        <td>
+          <code>maxSuggestions</code>
+        </td>
+        <td>
+          <code>number</code>
+        </td>
+        <td>
+          <code>8</code>
+        </td>
+        <td>Maximum rows shown at once; further matches scroll.</td>
       </tr>
       <tr>
         <td>
