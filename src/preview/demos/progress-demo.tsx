@@ -1,7 +1,158 @@
 "use client";
 
-import { CircularProgress, MultiProgress, Progress, ProgressField, ProgressSegment, ProgressSize, ProgressVariant } from "@/components/custom/blocks/ProgressBlock";
+import {
+  CircularProgress,
+  MultiProgress,
+  Progress,
+  ProgressField,
+  ProgressSegment,
+  ProgressSize,
+  ProgressStatus,
+  ProgressVariant,
+} from "@/components/custom/blocks/ProgressBlock";
 import { getThemeStyles } from "@/components/custom/blocks/animated-timeline-theme";
+import { Play, RotateCcw, XOctagon } from "lucide-react";
+import { useEffect, useRef, useState } from "react";
+
+/**
+ * A simulated upload the reader can run, fail and reset, so the stage
+ * colours are seen changing rather than described: neutral while it starts,
+ * the brand colour once under way, green when done, red on failure.
+ */
+function StagedOperation({
+  variant,
+  barSize,
+  color,
+}: {
+  variant: ProgressVariant;
+  barSize: ProgressSize;
+  color: string;
+}) {
+  const [value, setValue] = useState(0);
+  const [status, setStatus] = useState<ProgressStatus>("active");
+  const [running, setRunning] = useState(false);
+  const failAtRef = useRef<number | null>(null);
+
+  useEffect(() => {
+    if (!running) return;
+    const timer = setInterval(() => {
+      setValue((v) => {
+        const next = Math.min(100, v + 1);
+        if (failAtRef.current !== null && next >= failAtRef.current) {
+          setStatus("error");
+          setRunning(false);
+          return failAtRef.current;
+        }
+        if (next >= 100) {
+          setStatus("success");
+          setRunning(false);
+        }
+        return next;
+      });
+    }, 45);
+    return () => clearInterval(timer);
+  }, [running]);
+
+  const start = () => {
+    failAtRef.current = null;
+    setValue(0);
+    setStatus("active");
+    setRunning(true);
+  };
+  const fail = () => {
+    failAtRef.current = Math.max(value + 1, 60);
+    if (!running) {
+      setStatus("active");
+      setRunning(true);
+    }
+  };
+  const reset = () => {
+    failAtRef.current = null;
+    setRunning(false);
+    setValue(0);
+    setStatus("active");
+  };
+
+  const hint =
+    status === "error"
+      ? "Connection lost — the file was not uploaded."
+      : status === "success"
+        ? "Uploaded and verified."
+        : running
+          ? value < 10
+            ? "Preparing…"
+            : "Uploading…"
+          : "Press Run to start.";
+
+  // One value, one set of stages, drawn twice: the ring and the bar share
+  // everything, so they always agree about how the upload is going.
+  const stages = [
+    { from: 0, color: "zinc" },
+    { from: 10, color },
+    { from: 100, color: "emerald" },
+  ];
+
+  return (
+    <div className="w-full max-w-md mx-auto flex flex-col gap-5">
+      <div className="flex items-center gap-6">
+        <CircularProgress
+          value={value}
+          max={100}
+          variant={variant}
+          barSize={barSize}
+          color={color}
+          status={status}
+          stages={stages}
+          circleSize={88}
+        />
+        <ProgressField
+          className="min-w-0 flex-1"
+          label="brand-guidelines.pdf"
+          value={value}
+          max={100}
+          status={status}
+          hint={hint}
+        >
+          <Progress
+            value={value}
+            max={100}
+            variant={variant}
+            barSize={barSize}
+            color={color}
+            status={status}
+            stages={stages}
+          />
+        </ProgressField>
+      </div>
+
+      <div className="flex flex-wrap items-center gap-2">
+        <button
+          type="button"
+          onClick={start}
+          disabled={running}
+          className="inline-flex items-center gap-1.5 h-8 px-3 rounded-lg bg-foreground text-background text-xs font-semibold disabled:opacity-40 disabled:cursor-not-allowed transition-opacity cursor-pointer"
+        >
+          <Play className="w-3.5 h-3.5" /> Run
+        </button>
+        <button
+          type="button"
+          onClick={fail}
+          disabled={status !== "active"}
+          className="inline-flex items-center gap-1.5 h-8 px-3 rounded-lg border border-border text-xs font-semibold text-foreground hover:bg-muted disabled:opacity-40 disabled:cursor-not-allowed transition-colors cursor-pointer"
+        >
+          <XOctagon className="w-3.5 h-3.5" /> Fail at 60%
+        </button>
+        <button
+          type="button"
+          onClick={reset}
+          className="inline-flex items-center gap-1.5 h-8 px-3 rounded-lg text-xs font-semibold text-muted-foreground hover:text-foreground hover:bg-muted transition-colors cursor-pointer"
+        >
+          <RotateCcw className="w-3.5 h-3.5" /> Reset
+        </button>
+      </div>
+    </div>
+  );
+}
 
 /** Legend swatch — reuses the block's own theme table so a dot and its
  *  segment can never drift apart. */
@@ -29,6 +180,7 @@ export default function ProgressDemo({
   barSize = "md",
   color = "primary",
   showValue = true,
+  tooltip = false,
   showAll,
   example = "field",
 }: {
@@ -38,11 +190,15 @@ export default function ProgressDemo({
   barSize?: ProgressSize;
   color?: string;
   showValue?: boolean;
+  tooltip?: boolean;
   /** Render-all modes: every visual variant, or every bar size, in one frame. */
   showAll?: "variants" | "sizes";
   /** "field" is the classic labelled layout; the others show narrower slices. */
   example?:
     | "field"
+    | "stages"
+    | "statuses"
+    | "indeterminate"
     | "bare"
     | "formatted"
     | "steps"
@@ -86,6 +242,60 @@ export default function ProgressDemo({
     );
   }
 
+  if (example === "stages") {
+    return (
+      <div className="w-full flex flex-col items-center justify-center min-h-[220px] relative z-10 overflow-hidden">
+        <StagedOperation variant={variant} barSize={barSize} color={color} />
+      </div>
+    );
+  }
+
+  if (example === "statuses") {
+    const rows: { status: ProgressStatus; label: string; value: number; hint: string }[] = [
+      { status: "active", label: "Syncing photos", value: 42, hint: "About 2 minutes left." },
+      { status: "warning", label: "Syncing videos", value: 71, hint: "Slow connection — still going." },
+      { status: "error", label: "Syncing documents", value: 58, hint: "Connection lost. Retry to resume." },
+      { status: "success", label: "Syncing contacts", value: 100, hint: "Everything is up to date." },
+    ];
+    return (
+      <div className="w-full flex flex-col items-center justify-center min-h-[220px] relative z-10 overflow-hidden">
+        <div className="w-full max-w-md mx-auto flex flex-col gap-6">
+          {rows.map((row) => (
+            <ProgressField
+              key={row.status}
+              label={row.label}
+              value={row.value}
+              max={max}
+              status={row.status}
+              hint={row.hint}
+            >
+              <Progress
+                value={row.value}
+                max={max}
+                variant={variant}
+                barSize={barSize}
+                color={color}
+                status={row.status}
+              />
+            </ProgressField>
+          ))}
+        </div>
+      </div>
+    );
+  }
+
+  if (example === "indeterminate") {
+    return (
+      <div className="w-full flex flex-col items-center justify-center min-h-[220px] relative z-10 overflow-hidden">
+        <div className="w-full max-w-md mx-auto">
+          <ProgressField label="Scanning library" showValue={false} hint="This can take a while for large libraries.">
+            <Progress indeterminate variant={variant} barSize={barSize} color={color} />
+          </ProgressField>
+        </div>
+      </div>
+    );
+  }
+
   if (example === "bare") {
     return (
       <div className="w-full flex flex-col items-center justify-center min-h-[220px] relative z-10 overflow-hidden">
@@ -96,6 +306,7 @@ export default function ProgressDemo({
             variant={variant}
             color={color}
             barSize={barSize}
+            tooltip={tooltip}
           />
         </div>
       </div>
@@ -217,6 +428,7 @@ export default function ProgressDemo({
           barSize={barSize}
           circleSize={140}
           showValue={showValue}
+          tooltip={tooltip}
         />
       </div>
     );
@@ -233,6 +445,7 @@ export default function ProgressDemo({
           barSize={barSize}
           circleSize={160}
           showValue={showValue}
+          tooltip={tooltip}
         >
           <span className="text-3xl font-bold tabular-nums">{value}</span>
           <span className="text-[11px] font-medium uppercase tracking-wide text-muted-foreground">
