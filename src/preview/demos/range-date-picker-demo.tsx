@@ -5,13 +5,26 @@ import { useState } from "react";
 
 export default function RangeDatePickerDemo({
   variant = "single",
+  disablePast = false,
+  showTime = false,
+  timeFormat = "12h",
+  color = "primary",
 }: {
   variant?: "single" | "dual" | "priced-single" | "priced-dual" | "priced";
+  disablePast?: boolean;
+  showTime?: boolean;
+  timeFormat?: "12h" | "24h";
+  color?: string;
 }) {
   const [range, setRange] = useState<{ from: Date | null; to: Date | null }>(() => {
     const to = new Date();
     const from = new Date();
-    if (variant === "priced" || variant === "priced-single") {
+    if (disablePast) {
+      // A past range would be un-selectable, so seed one that starts tomorrow
+      // — today's morning hours would already be behind us by the afternoon.
+      from.setDate(from.getDate() + 1);
+      to.setDate(to.getDate() + 5);
+    } else if (variant === "priced" || variant === "priced-single") {
       from.setDate(8);
       to.setDate(18);
     } else if (variant === "priced-dual") {
@@ -22,6 +35,10 @@ export default function RangeDatePickerDemo({
     } else {
       from.setDate(to.getDate() - 7);
     }
+    if (showTime) {
+      from.setHours(9, 0, 0, 0);
+      to.setHours(17, 0, 0, 0);
+    }
     return { from, to };
   });
 
@@ -30,10 +47,14 @@ export default function RangeDatePickerDemo({
   return (
     <div className="w-full min-h-[440px] py-10 px-4 my-auto flex items-center justify-center">
       <RangeDatePicker
+        key={`${variant}-${disablePast}-${showTime}-${timeFormat}`}
         variant={variant}
         value={range}
         onChange={setRange}
-        color="primary"
+        color={color.startsWith("#") ? "primary" : color}
+        disablePast={disablePast}
+        showTime={showTime}
+        timeFormat={timeFormat}
         showPrices={isPricedVariant}
         getPrice={
           isPricedVariant
