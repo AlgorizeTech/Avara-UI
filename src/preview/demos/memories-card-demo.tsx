@@ -93,7 +93,7 @@ export default function MemoriesCardDemo({
 
       {showIndex && (
         <p className="relative z-10 mt-6 text-sm font-semibold text-zinc-500 dark:text-zinc-400 tabular-nums">
-          onCardChange → index {activeIndex}
+          onCardChange → index {activeIndex+1}
         </p>
       )}
     </div>
