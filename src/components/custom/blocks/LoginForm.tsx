@@ -9,7 +9,13 @@ import { getThemeStyles } from "./login-form-theme";
 // ==========================================
 // DYNAMIC THEME ENGINE
 // ==========================================
-export type LoginColor = "indigo" | "rose" | "emerald" | "zinc" | string;
+export type LoginColor =
+  | "primary"
+  | "indigo"
+  | "rose"
+  | "emerald"
+  | "zinc"
+  | (string & {});
 export type LoginVariant = "default" | "split" | "glass" | "minimal";
 export type LoginProvider = "github" | "google";
 
@@ -18,6 +24,21 @@ export type LoginFormValues = {
   password: string;
   remember: boolean;
 };
+
+export interface LoginFormProps {
+  variant?: LoginVariant;
+  color?: LoginColor;
+  /** Where "Sign up" sends someone who does not have an account yet. */
+  signupHref?: string;
+  forgotPasswordHref?: string;
+  /**
+   * Called with the validated credentials. Without it the form simulates a
+   * round trip so the block stays demonstrable on its own — wire this up to
+   * your auth provider before shipping.
+   */
+  onSubmit?: (values: LoginFormValues) => void | Promise<void>;
+  onSocialSignIn?: (provider: LoginProvider) => void;
+}
 
 // --- INLINE UI COMPONENTS ---
 interface FieldInputProps extends React.InputHTMLAttributes<HTMLInputElement> {
@@ -177,20 +198,7 @@ export default function LoginForm({
   forgotPasswordHref = "#",
   onSubmit,
   onSocialSignIn,
-}: {
-  variant?: LoginVariant;
-  color?: LoginColor;
-  /** Where "Sign up" sends someone who does not have an account yet. */
-  signupHref?: string;
-  forgotPasswordHref?: string;
-  /**
-   * Called with the validated credentials. Without it the form simulates a
-   * round trip so the block stays demonstrable on its own — wire this up to
-   * your auth provider before shipping.
-   */
-  onSubmit?: (values: LoginFormValues) => void | Promise<void>;
-  onSocialSignIn?: (provider: LoginProvider) => void;
-}) {
+}: LoginFormProps) {
   const { theme, style } = getThemeStyles(color);
 
   const [formData, setFormData] = useState<LoginFormValues>({

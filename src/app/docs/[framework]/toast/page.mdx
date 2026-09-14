@@ -39,7 +39,7 @@ function Triggers() {
 // wraps your whole tree once, in layout.tsx.
 export default function SendMessage() {
   return (
-    <ToastProvider position="bottom-right">
+    <ToastProvider position="bottom-right" color="indigo">
       <Triggers />
     </ToastProvider>
   );
@@ -86,7 +86,7 @@ function Triggers() {
 // wraps your whole tree once, in layout.tsx.
 export default function ToastTypes() {
   return (
-    <ToastProvider position="bottom-right">
+    <ToastProvider position="bottom-right" color="indigo">
       <Triggers />
     </ToastProvider>
   );
@@ -130,7 +130,7 @@ function Triggers() {
 // wraps your whole tree once, in layout.tsx.
 export default function ToastWithAction() {
   return (
-    <ToastProvider position="bottom-right">
+    <ToastProvider position="bottom-right" color="indigo">
       <Triggers />
     </ToastProvider>
   );
@@ -184,7 +184,7 @@ function Triggers() {
 // wraps your whole tree once, in layout.tsx.
 export default function ToastDuration() {
   return (
-    <ToastProvider position="bottom-right">
+    <ToastProvider position="bottom-right" color="indigo">
       <Triggers />
     </ToastProvider>
   );
@@ -231,8 +231,8 @@ function Triggers() {
 // wraps your whole tree once, in layout.tsx.
 export default function GlowToasts() {
   return (
-    // variant lives on the provider, so every toast it renders picks it up.
-    <ToastProvider variant="glow" position="bottom-right">
+    // variant and color live on the provider, so every toast it renders picks it up.
+    <ToastProvider variant="glow" color="rose" position="bottom-right">
       <Triggers />
     </ToastProvider>
   );
@@ -279,8 +279,8 @@ function Triggers() {
 // wraps your whole tree once, in layout.tsx.
 export default function GlassToasts() {
   return (
-    // variant lives on the provider, so every toast it renders picks it up.
-    <ToastProvider variant="glass" position="bottom-right">
+    // variant and color live on the provider, so every toast it renders picks it up.
+    <ToastProvider variant="glass" color="emerald" position="bottom-right">
       <Triggers />
     </ToastProvider>
   );
@@ -327,7 +327,7 @@ function Triggers() {
 export default function StackedToasts() {
   return (
     // stack piles toasts behind the newest one; hover the pile to fan it out.
-    <ToastProvider variant="glass" stack position="bottom-right">
+    <ToastProvider variant="glass" color="indigo" stack position="bottom-right">
       <Triggers />
     </ToastProvider>
   );
@@ -375,7 +375,7 @@ function Triggers() {
 export default function MinimalToasts() {
   return (
     // variant lives on the provider, so every toast it renders picks it up.
-    <ToastProvider variant="minimal" position="bottom-right">
+    <ToastProvider variant="minimal" color="zinc" position="bottom-right">
       <Triggers />
     </ToastProvider>
   );
@@ -391,12 +391,19 @@ export default function MinimalToasts() {
       subheading: "Wrap the app in `ToastProvider`, then call `toast()` from the `useToast` hook.",
       propNotes: [
         {
+          lead: "Set",
+          prop: "color",
+          value: '"indigo" | "rose" | "emerald" | "zinc" | "primary" | "#hex"',
+          effect:
+            "on the provider themes the glow halos, borders, and accent highlights.",
+        },
+        {
           prop: "position",
           effect:
             "on the provider is global — individual toasts cannot override it.",
         },
       ],
-      props: { example: "basic" },
+      props: { example: "basic", color: "indigo" },
       usage: usageDefault,
       code: extractCode("src/components/custom/blocks/ToastBlock.tsx"),
     },
@@ -596,14 +603,14 @@ Discover the Toast component's notification features, including auto-dismissal, 
           <code>color</code>
         </td>
         <td>
-          <code>"indigo" | "rose" | "emerald" | "zinc" | string</code>
+          <code>"primary" | "indigo" | "rose" | "emerald" | "zinc" | string</code>
         </td>
         <td>
-          <code>"indigo"</code>
+          <code>"primary"</code>
         </td>
         <td>
           Applies the global color theme to the glow shadows and border accents.
-          Accepts hex codes.
+          Accepts valid hex codes (e.g. <code>"#8b5cf6"</code>).
         </td>
       </tr>
       <tr>

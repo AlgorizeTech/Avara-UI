@@ -9,7 +9,13 @@ import { getThemeStyles } from "./register-form-theme";
 // ==========================================
 // DYNAMIC THEME ENGINE
 // ==========================================
-export type RegisterColor = "indigo" | "rose" | "emerald" | "zinc" | string;
+export type RegisterColor =
+  | "primary"
+  | "indigo"
+  | "rose"
+  | "emerald"
+  | "zinc"
+  | (string & {});
 export type RegisterVariant = "default" | "split" | "glass" | "minimal";
 export type RegisterProvider = "github" | "google";
 
@@ -21,6 +27,22 @@ export type RegisterFormValues = {
   confirmPassword: string;
   agreeToTerms: boolean;
 };
+
+export interface RegisterFormProps {
+  variant?: RegisterVariant;
+  color?: RegisterColor;
+  /** Where "Sign in" sends someone who already has an account. */
+  loginHref?: string;
+  termsHref?: string;
+  privacyHref?: string;
+  /**
+   * Client-side minimum only — it stops an obviously-too-short password before
+   * a round trip. Your server still has to enforce the real policy.
+   */
+  minPasswordLength?: number;
+  onSubmit?: (values: RegisterFormValues) => void | Promise<void>;
+  onSocialSignUp?: (provider: RegisterProvider) => void;
+}
 
 // --- INLINE UI COMPONENTS ---
 interface FieldInputProps extends React.InputHTMLAttributes<HTMLInputElement> {
@@ -182,26 +204,7 @@ export default function RegisterForm({
   minPasswordLength = 8,
   onSubmit,
   onSocialSignUp,
-}: {
-  variant?: RegisterVariant;
-  color?: RegisterColor;
-  /** Where "Sign in" sends someone who already has an account. */
-  loginHref?: string;
-  termsHref?: string;
-  privacyHref?: string;
-  /**
-   * Client-side minimum only — it stops an obviously-too-short password before
-   * a round trip. Your server still has to enforce the real policy.
-   */
-  minPasswordLength?: number;
-  /**
-   * Called with the validated fields. Without it the form simulates a round
-   * trip so the block stays demonstrable on its own — wire this up to your auth
-   * provider before shipping.
-   */
-  onSubmit?: (values: RegisterFormValues) => void | Promise<void>;
-  onSocialSignUp?: (provider: RegisterProvider) => void;
-}) {
+}: RegisterFormProps) {
   const { theme, style } = getThemeStyles(color);
 
   const [formData, setFormData] = useState<RegisterFormValues>({

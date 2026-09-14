@@ -68,7 +68,7 @@ export default function InfiniteMarqueeDemo() {
 
           variant
 
-          "arc-sweep" | "perspective-fan" | "floating-deck" | "glowing-orbit"
+          "arc-sweep" | "infinite-marquee"
 
           "arc-sweep"
         
@@ -76,11 +76,11 @@ export default function InfiniteMarqueeDemo() {
 
           items
 
-          CurvedCarouselItem[]
+          CurvedCarouselCard[]
 
           Preset Array
         
-        Array of objects containing id, title, image, subtitle, and optional tag.
+        Array of objects containing id, title, code, and image.
 
           autoPlay
 
@@ -94,13 +94,13 @@ export default function InfiniteMarqueeDemo() {
 
           number
 
-          4
+          1
         
-        Oscillation sway step speed interval in seconds.
+        Oscillation sway step speed multiplier.
 
           color
 
-          CurvedCarouselColor | string
+          "primary" | "indigo" | "rose" | "emerald" | "zinc" | string
 
           "primary"
         

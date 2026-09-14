@@ -121,13 +121,13 @@ Every example below is the same `RegisterForm` you just installed — only the p
 
           color
 
-          "indigo" | "rose" | "emerald" | "zinc" | string
+          "primary" | "indigo" | "rose" | "emerald" | "zinc" | string
 
-          "indigo"
+          "primary"
 
           Applies global color themes to the primary button, focus rings and the
           remember-me checkbox. Accepts valid hex codes (e.g.{" "}
-          "#00FF00").
+          "#8b5cf6").
 
           signupHref
 
@@ -183,12 +183,13 @@ Every example below is the same `RegisterForm` you just installed — only the p
 
           color
 
-          "indigo" | "rose" | "emerald" | "zinc" | string
+          "primary" | "indigo" | "rose" | "emerald" | "zinc" | string
 
-          "indigo"
+          "primary"
 
           Applies global color themes to the primary button, focus rings, the
-          terms checkbox and the policy links. Accepts valid hex codes.
+          terms checkbox and the policy links. Accepts valid hex codes (e.g.{" "}
+          "#8b5cf6").
 
           loginHref
 

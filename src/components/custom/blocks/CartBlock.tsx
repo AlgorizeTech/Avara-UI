@@ -175,6 +175,7 @@ function TriggerButton({
   const ringRef = useRef<HTMLSpanElement>(null);
   const badgeRef = useRef<HTMLSpanElement>(null);
   const nudgeRef = useRef<gsap.core.Timeline | null>(null);
+  const pressTlRef = useRef<gsap.core.Timeline | null>(null);
   const prevTotal = useRef(totalItems);
 
   const shouldNudge = !isOpen && totalItems > 0;
@@ -183,7 +184,13 @@ function TriggerButton({
   useIsomorphicLayoutEffect(() => {
     const icon = iconRef.current;
     const ring = ringRef.current;
-    if (!icon || !ring || !shouldNudge || prefersReducedMotion()) return;
+    const button = buttonRef.current;
+    if (!icon || !ring || !button || !shouldNudge || prefersReducedMotion()) return;
+
+    gsap.killTweensOf([button, icon, ring]);
+    gsap.set(icon, { rotate: 0, y: 0, scale: 1 });
+    gsap.set(button, { scale: 1 });
+    gsap.set(ring, { scale: 1, opacity: 0 });
 
     const tl = gsap.timeline({ delay: 1.2, repeat: -1, repeatDelay: 2.8 });
     tl.fromTo(
@@ -201,7 +208,8 @@ function TriggerButton({
     return () => {
       nudgeRef.current = null;
       tl.kill();
-      gsap.set(icon, { rotate: 0 });
+      gsap.set(icon, { rotate: 0, y: 0, scale: 1 });
+      gsap.set(button, { scale: 1 });
       gsap.set(ring, { clearProps: "transform,opacity" });
     };
   }, [shouldNudge]);
@@ -211,10 +219,14 @@ function TriggerButton({
   const pauseNudge = () => {
     if (!nudgeRef.current) return;
     nudgeRef.current.pause();
-    gsap.to(iconRef.current, { rotate: 0, duration: 0.25, ease: "power2.out" });
-    gsap.to(ringRef.current, { opacity: 0, duration: 0.2 });
+    if (iconRef.current) gsap.to(iconRef.current, { rotate: 0, duration: 0.25, ease: "power2.out" });
+    if (ringRef.current) gsap.to(ringRef.current, { opacity: 0, duration: 0.2 });
   };
-  const resumeNudge = () => nudgeRef.current?.restart(true);
+  const resumeNudge = () => {
+    if (shouldNudge && nudgeRef.current) {
+      nudgeRef.current.restart(true);
+    }
+  };
 
   // --- the press itself: squash, spring back, and throw a ring outwards so the
   // click reads as the thing that pushed the panel into view.
@@ -224,10 +236,18 @@ function TriggerButton({
     const ring = ringRef.current;
     if (!button || !icon || prefersReducedMotion()) return;
 
-    nudgeRef.current?.pause();
-    gsap.killTweensOf([button, icon]);
+    if (nudgeRef.current) nudgeRef.current.pause();
+    if (pressTlRef.current) pressTlRef.current.kill();
+    gsap.killTweensOf([button, icon, ring]);
 
-    const tl = gsap.timeline();
+    const tl = gsap.timeline({
+      onComplete: () => {
+        gsap.set(button, { scale: 1 });
+        gsap.set(icon, { rotate: 0, y: 0, scale: 1 });
+        if (ring) gsap.set(ring, { opacity: 0, scale: 1 });
+      },
+    });
+
     tl.to(button, { scale: 0.86, duration: 0.1, ease: "power2.in" })
       .to(button, { scale: 1, duration: 0.55, ease: "elastic.out(1, 0.45)" })
       .to(
@@ -248,6 +268,8 @@ function TriggerButton({
         { scale: 1.9, opacity: 0, duration: 0.6, ease: "power3.out" },
         0.04,
       );
+
+    pressTlRef.current = tl;
   };
 
   // --- something landed in the bag: pop the count and bounce the icon, so a

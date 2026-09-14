@@ -19,6 +19,7 @@ export default function ColorWheelStudioDemo() {
     <ColorPicker
       value={color}
       onChange={setColor}
+      format="hex"
       variant="standalone"
       showShades={true}
     />
@@ -53,6 +54,11 @@ export default function GradientStudioDemo() {
           prop: "variant",
           value: '"standalone"',
           effect: "renders the 360° spectrum wheel with shades, color harmonies, format selector, and preset swatches.",
+        },
+        {
+          prop: "format",
+          value: '"hex" | "rgb" | "hsl"',
+          effect: "controls the starting active color format displayed in the input field and clipboard output.",
         },
       ],
       props: { variant: "standalone" },
@@ -129,6 +135,18 @@ Discover the advanced capabilities of the `ColorPicker` component:
           <code>undefined</code>
         </td>
         <td>Callback function fired when color changes.</td>
+      </tr>
+      <tr>
+        <td>
+          <code>format</code>
+        </td>
+        <td>
+          <code>"hex" | "rgb" | "hsl"</code>
+        </td>
+        <td>
+          <code>"hex"</code>
+        </td>
+        <td>Initial color format displayed in the input field and copy output.</td>
       </tr>
       <tr>
         <td>

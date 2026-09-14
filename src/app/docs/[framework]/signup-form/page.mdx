@@ -18,6 +18,8 @@ export const usageLogin = `import LoginForm from "@/components/custom/blocks/Log
 export default function LoginPage() {
   return (
     <LoginForm
+      variant="default"
+      color="indigo"
       signupHref="/register"
       forgotPasswordHref="/forgot-password"
       onSubmit={async ({ email, password, remember }) => {
@@ -34,7 +36,7 @@ export const usageLoginSplit = `import LoginForm from "@/components/custom/block
 
 export default function SplitLoginPage() {
   // "split" pairs the form with a full-height marketing panel on large screens.
-  return <LoginForm variant="split" signupHref="/register" />;
+  return <LoginForm variant="split" color="rose" signupHref="/register" />;
 }`;
 
 export const usageLoginGlass = `import LoginForm from "@/components/custom/blocks/LoginForm";
@@ -52,7 +54,7 @@ export default function GlassLoginPage() {
         <div className="absolute inset-0 bg-black/45 backdrop-blur-[1px]" />
       </div>
       <div className="relative z-10 w-full flex justify-center">
-        <LoginForm variant="glass" />
+        <LoginForm variant="glass" color="emerald" />
       </div>
     </div>
   );
@@ -62,7 +64,7 @@ export const usageLoginMinimal = `import LoginForm from "@/components/custom/blo
 
 export default function MinimalLoginPage() {
   // "minimal" strips the card, leaving just the fields on your own background.
-  return <LoginForm variant="minimal" />;
+  return <LoginForm variant="minimal" color="zinc" />;
 }`;
 
 <ExampleShowcase
@@ -76,12 +78,19 @@ export default function MinimalLoginPage() {
         "Email and password with a remember-me checkbox and a forgot-password link, all validated on submit.",
       propNotes: [
         {
+          lead: "Set",
+          prop: "color",
+          value: '"indigo" | "rose" | "emerald" | "zinc" | "primary" | "#hex"',
+          effect:
+            "themes the primary submit button, input focus rings, and remember-me checkbox.",
+        },
+        {
           prop: "onSubmit",
           effect:
             "receives the validated credentials. Leave it off and the block simulates a round trip, so the preview works before any auth provider exists.",
         },
       ],
-      props: { variant: "default" },
+      props: { variant: "default", color: "indigo" },
       usage: usageLogin,
       code: extractCode("src/components/custom/blocks/LoginForm.tsx"),
     },
@@ -158,6 +167,8 @@ export const usageRegister = `import RegisterForm from "@/components/custom/bloc
 export default function RegisterPage() {
   return (
     <RegisterForm
+      variant="default"
+      color="indigo"
       loginHref="/login"
       termsHref="/legal/terms"
       privacyHref="/legal/privacy"
@@ -175,7 +186,7 @@ export const usageRegisterSplit = `import RegisterForm from "@/components/custom
 
 export default function SplitRegisterPage() {
   // "split" pairs the form with a full-height marketing panel on large screens.
-  return <RegisterForm variant="split" loginHref="/login" />;
+  return <RegisterForm variant="split" color="rose" loginHref="/login" />;
 }`;
 
 export const usageRegisterGlass = `import RegisterForm from "@/components/custom/blocks/RegisterForm";
@@ -193,7 +204,7 @@ export default function GlassRegisterPage() {
         <div className="absolute inset-0 bg-black/45 backdrop-blur-[1px]" />
       </div>
       <div className="relative z-10 w-full flex justify-center">
-        <RegisterForm variant="glass" />
+        <RegisterForm variant="glass" color="emerald" />
       </div>
     </div>
   );
@@ -203,7 +214,7 @@ export const usageRegisterMinimal = `import RegisterForm from "@/components/cust
 
 export default function MinimalRegisterPage() {
   // "minimal" strips the card, leaving just the fields on your own background.
-  return <RegisterForm variant="minimal" />;
+  return <RegisterForm variant="minimal" color="zinc" />;
 }`;
 
 <ExampleShowcase
@@ -217,12 +228,19 @@ export default function MinimalRegisterPage() {
         "Name fields, a confirm-password field and a terms checkbox, all validated on submit.",
       propNotes: [
         {
+          lead: "Set",
+          prop: "color",
+          value: '"indigo" | "rose" | "emerald" | "zinc" | "primary" | "#hex"',
+          effect:
+            "themes the primary submit button, input focus rings, terms checkbox, and policy links.",
+        },
+        {
           prop: "minPasswordLength",
           effect:
             "sets the client-side minimum (8 by default). It stops an obviously-too-short password before a round trip — your server still enforces the real policy.",
         },
       ],
-      props: { variant: "default" },
+      props: { variant: "default", color: "indigo" },
       usage: usageRegister,
       code: extractCode("src/components/custom/blocks/RegisterForm.tsx"),
     },
@@ -326,15 +344,15 @@ Every example below is the same `RegisterForm` you just installed — only the p
           <code>color</code>
         </td>
         <td>
-          <code>"indigo" | "rose" | "emerald" | "zinc" | string</code>
+          <code>"primary" | "indigo" | "rose" | "emerald" | "zinc" | string</code>
         </td>
         <td>
-          <code>"indigo"</code>
+          <code>"primary"</code>
         </td>
         <td>
           Applies global color themes to the primary button, focus rings and the
           remember-me checkbox. Accepts valid hex codes (e.g.{" "}
-          <code>"#00FF00"</code>).
+          <code>"#8b5cf6"</code>).
         </td>
       </tr>
       <tr>
@@ -434,14 +452,15 @@ Every example below is the same `RegisterForm` you just installed — only the p
           <code>color</code>
         </td>
         <td>
-          <code>"indigo" | "rose" | "emerald" | "zinc" | string</code>
+          <code>"primary" | "indigo" | "rose" | "emerald" | "zinc" | string</code>
         </td>
         <td>
-          <code>"indigo"</code>
+          <code>"primary"</code>
         </td>
         <td>
           Applies global color themes to the primary button, focus rings, the
-          terms checkbox and the policy links. Accepts valid hex codes.
+          terms checkbox and the policy links. Accepts valid hex codes (e.g.{" "}
+          <code>"#8b5cf6"</code>).
         </td>
       </tr>
       <tr>

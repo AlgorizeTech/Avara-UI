@@ -17,16 +17,34 @@ export const usageDefault = `import {
 } from "@/components/custom/blocks/ApiPlaygroundBlock";
 
 export default function UsersEndpointDocs() {
-  // Decide how the playground responds to whatever the reader types. Typing the
-  // handler checks both the request it receives and the response it returns.
+  // Decide how the playground responds to whatever the reader types.
+  // This handler receives method, url, headers, params and body.
   const handleApiMock: ApiMockHandler = async (req) => {
-    await new Promise((resolve) => setTimeout(resolve, 500)); // latency
+    await new Promise((resolve) => setTimeout(resolve, 500)); // Latency
 
-    if (req.method === "POST") {
-      return { status: 201, timeMs: 120, data: { id: "cus_123", created: true } };
+    let parsedBody = null;
+    if (req.method !== "GET" && req.body) {
+      try {
+        parsedBody = JSON.parse(req.body);
+      } catch {
+        return {
+          status: 400,
+          timeMs: 15,
+          data: { error: "bad_request", message: "Invalid JSON in request body." },
+        };
+      }
     }
 
-    return { status: 200, timeMs: 80, data: { list: [], has_more: false } };
+    return {
+      status: req.method === "POST" ? 201 : 200,
+      timeMs: 120,
+      data: {
+        success: true,
+        resource: req.url.split("/").pop() || "unknown",
+        received_headers: req.headers.filter((h) => h.enabled).length,
+        payload: parsedBody || "No body provided",
+      },
+    };
   };
 
   return (

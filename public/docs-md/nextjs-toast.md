@@ -190,7 +190,7 @@ function Triggers() {
 // wraps your whole tree once, in layout.tsx.
 export default function GlowToasts() {
   return (
-    // variant lives on the provider, so every toast it renders picks it up.
+    // variant and color live on the provider, so every toast it renders picks it up.
 
   );
 }`;
@@ -231,7 +231,7 @@ function Triggers() {
 // wraps your whole tree once, in layout.tsx.
 export default function GlassToasts() {
   return (
-    // variant lives on the provider, so every toast it renders picks it up.
+    // variant and color live on the provider, so every toast it renders picks it up.
 
   );
 }`;
@@ -375,12 +375,12 @@ Discover the Toast component's notification features, including auto-dismissal, 
 
           color
 
-          "indigo" | "rose" | "emerald" | "zinc" | string
+          "primary" | "indigo" | "rose" | "emerald" | "zinc" | string
 
-          "indigo"
+          "primary"
 
           Applies the global color theme to the glow shadows and border accents.
-          Accepts hex codes.
+          Accepts valid hex codes (e.g. "#8b5cf6").
 
           stack
 
