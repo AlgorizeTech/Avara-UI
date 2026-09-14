@@ -25,6 +25,12 @@ export interface ScrollAreaBlockProps
   orientation?: "vertical" | "horizontal" | "both";
   hideTrack?: boolean;
   autoHide?: boolean;
+  /**
+   * Horizontal areas only: a mouse wheel moves the content sideways, so
+   * scrolling up/down pans left/right. The wheel is handed back to the page
+   * once the area reaches either end. Default true.
+   */
+  wheelToHorizontal?: boolean;
 }
 
 export const ScrollAreaBlock = forwardRef<HTMLDivElement, ScrollAreaBlockProps>(
@@ -36,6 +42,7 @@ export const ScrollAreaBlock = forwardRef<HTMLDivElement, ScrollAreaBlockProps>(
       orientation = "vertical",
       hideTrack = false,
       autoHide = false,
+      wheelToHorizontal = true,
       className,
       onScroll,
       ...props
@@ -45,6 +52,38 @@ export const ScrollAreaBlock = forwardRef<HTMLDivElement, ScrollAreaBlockProps>(
     const { style } = getThemeStyles(color as string);
     const [isScrolling, setIsScrolling] = React.useState(false);
     const scrollTimeoutRef = React.useRef<ReturnType<typeof setTimeout> | null>(null);
+    const nodeRef = React.useRef<HTMLDivElement | null>(null);
+
+    const assignRef = (node: HTMLDivElement | null) => {
+      nodeRef.current = node;
+      if (typeof ref === "function") ref(node);
+      else if (ref) ref.current = node;
+    };
+
+    // Wheel → sideways pan. Registered natively with passive:false because
+    // React's onWheel is passive and could not preventDefault the page scroll.
+    React.useEffect(() => {
+      const node = nodeRef.current;
+      if (!node || orientation !== "horizontal" || !wheelToHorizontal) return;
+
+      const onWheel = (e: WheelEvent) => {
+        // A trackpad swipe or shift+wheel already scrolls sideways natively.
+        if (e.shiftKey || Math.abs(e.deltaX) >= Math.abs(e.deltaY)) return;
+        // deltaMode 1 = lines (Firefox); ~16px per line reads like Chrome.
+        const delta = e.deltaMode === 1 ? e.deltaY * 16 : e.deltaY;
+        const max = node.scrollWidth - node.clientWidth;
+        if (max <= 0) return;
+        const atStart = node.scrollLeft <= 0 && delta < 0;
+        const atEnd = node.scrollLeft >= max - 1 && delta > 0;
+        // At an edge, leave the wheel to the page so the user is never trapped.
+        if (atStart || atEnd) return;
+        e.preventDefault();
+        node.scrollLeft += delta;
+      };
+
+      node.addEventListener("wheel", onWheel, { passive: false });
+      return () => node.removeEventListener("wheel", onWheel);
+    }, [orientation, wheelToHorizontal]);
 
     const instanceId = React.useId().replace(/:/g, "");
     const uniqueClass = `custom-scroll-${instanceId}`;
@@ -94,7 +133,7 @@ export const ScrollAreaBlock = forwardRef<HTMLDivElement, ScrollAreaBlockProps>(
 
     return (
       <div
-        ref={ref}
+        ref={assignRef}
         onScroll={handleScroll}
         className={cn(
           "relative",
