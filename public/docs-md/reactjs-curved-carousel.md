@@ -6,13 +6,19 @@ An interactive, 100% full-width 3D curved arc carousel featuring left-to-right o
 
 export const usageArcSweep = `import { CurvedCarousel, type CurvedCarouselCard } from "@/components/custom/blocks/CurvedCarouselBlock";
 
-const customItems: CurvedCarouselCard[] = [
-  { id: "1", title: "Misty Pine Forest", code: "001", image: "https://images.unsplash.com/photo-1448375240586-882707db888b?w=800&auto=format&fit=crop&q=80" },
-  { id: "2", title: "Alpine Mountain Reflection", code: "002", image: "https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?w=800&auto=format&fit=crop&q=80" },
-  { id: "3", title: "Glacier Lake Wilderness", code: "003", image: "https://images.unsplash.com/photo-1506744038136-46273834b3fb?w=800&auto=format&fit=crop&q=80" },
-  { id: "4", title: "Autumn Woodland River", code: "004", image: "https://images.unsplash.com/photo-1470071459604-3b5ec3a7fe05?w=800&auto=format&fit=crop&q=80" },
-  { id: "5", title: "Golden Hour Valley", code: "005", image: "https://images.unsplash.com/photo-1507272931001-fc06c17e4f43?w=800&auto=format&fit=crop&q=80" },
-  { id: "6", title: "Mountain Ridge Sunset", code: "006", image: "https://images.unsplash.com/photo-1472214103451-9374bd1c798e?w=800&auto=format&fit=crop&q=80" },
+const items: CurvedCarouselCard[] = [
+  { id: "card-1", title: "Misty Pine Forest", code: "001", image: "https://images.unsplash.com/photo-1448375240586-882707db888b?w=800&auto=format&fit=crop&q=80" },
+  { id: "card-2", title: "Alpine Mountain Reflection", code: "002", image: "https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?w=800&auto=format&fit=crop&q=80" },
+  { id: "card-3", title: "Glacier Lake Wilderness", code: "003", image: "https://images.unsplash.com/photo-1506744038136-46273834b3fb?w=800&auto=format&fit=crop&q=80" },
+  { id: "card-4", title: "Autumn Woodland River", code: "004", image: "https://images.unsplash.com/photo-1470071459604-3b5ec3a7fe05?w=800&auto=format&fit=crop&q=80" },
+  { id: "card-5", title: "Golden Hour Valley", code: "005", image: "https://images.unsplash.com/photo-1507272931001-fc06c17e4f43?w=800&auto=format&fit=crop&q=80" },
+  { id: "card-6", title: "Mountain Ridge Sunset", code: "006", image: "https://images.unsplash.com/photo-1472214103451-9374bd1c798e?w=800&auto=format&fit=crop&q=80" },
+  { id: "card-7", title: "Cascading Forest Waterfall", code: "007", image: "https://images.unsplash.com/photo-1426604966848-d7adac402bff?w=800&auto=format&fit=crop&q=80" },
+  { id: "card-8", title: "Deep Wilderness Forest", code: "008", image: "https://images.unsplash.com/photo-1441974231531-c6227db76b6e?w=800&auto=format&fit=crop&q=80" },
+  { id: "card-9", title: "Emerald Mountain Meadow", code: "009", image: "https://images.unsplash.com/photo-1469474968028-56623f02e42e?w=800&auto=format&fit=crop&q=80" },
+  { id: "card-10", title: "Serene Desert Canyon", code: "010", image: "https://images.unsplash.com/photo-1509316975850-ff9c5deb0cd9?w=800&auto=format&fit=crop&q=80" },
+  { id: "card-11", title: "Sunlit Pine Woods", code: "011", image: "https://images.unsplash.com/photo-1473448912268-2022ce9509d8?w=800&auto=format&fit=crop&q=80" },
+  { id: "card-12", title: "Mystic Fog Peak", code: "012", image: "https://images.unsplash.com/photo-1519681393784-d120267933ba?w=800&auto=format&fit=crop&q=80" },
 ];
 
 export default function CurvedCarouselDemo() {
@@ -23,13 +29,19 @@ export default function CurvedCarouselDemo() {
 
 export const usageInfiniteMarquee = `import { CurvedCarousel, type CurvedCarouselCard } from "@/components/custom/blocks/CurvedCarouselBlock";
 
-const customItems: CurvedCarouselCard[] = [
-  { id: "1", title: "Misty Pine Forest", code: "001", image: "https://images.unsplash.com/photo-1448375240586-882707db888b?w=800&auto=format&fit=crop&q=80" },
-  { id: "2", title: "Alpine Mountain Reflection", code: "002", image: "https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?w=800&auto=format&fit=crop&q=80" },
-  { id: "3", title: "Glacier Lake Wilderness", code: "003", image: "https://images.unsplash.com/photo-1506744038136-46273834b3fb?w=800&auto=format&fit=crop&q=80" },
-  { id: "4", title: "Autumn Woodland River", code: "004", image: "https://images.unsplash.com/photo-1470071459604-3b5ec3a7fe05?w=800&auto=format&fit=crop&q=80" },
-  { id: "5", title: "Golden Hour Valley", code: "005", image: "https://images.unsplash.com/photo-1507272931001-fc06c17e4f43?w=800&auto=format&fit=crop&q=80" },
-  { id: "6", title: "Mountain Ridge Sunset", code: "006", image: "https://images.unsplash.com/photo-1472214103451-9374bd1c798e?w=800&auto=format&fit=crop&q=80" },
+const items: CurvedCarouselCard[] = [
+  { id: "card-1", title: "Misty Pine Forest", code: "001", image: "https://images.unsplash.com/photo-1448375240586-882707db888b?w=800&auto=format&fit=crop&q=80" },
+  { id: "card-2", title: "Alpine Mountain Reflection", code: "002", image: "https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?w=800&auto=format&fit=crop&q=80" },
+  { id: "card-3", title: "Glacier Lake Wilderness", code: "003", image: "https://images.unsplash.com/photo-1506744038136-46273834b3fb?w=800&auto=format&fit=crop&q=80" },
+  { id: "card-4", title: "Autumn Woodland River", code: "004", image: "https://images.unsplash.com/photo-1470071459604-3b5ec3a7fe05?w=800&auto=format&fit=crop&q=80" },
+  { id: "card-5", title: "Golden Hour Valley", code: "005", image: "https://images.unsplash.com/photo-1507272931001-fc06c17e4f43?w=800&auto=format&fit=crop&q=80" },
+  { id: "card-6", title: "Mountain Ridge Sunset", code: "006", image: "https://images.unsplash.com/photo-1472214103451-9374bd1c798e?w=800&auto=format&fit=crop&q=80" },
+  { id: "card-7", title: "Cascading Forest Waterfall", code: "007", image: "https://images.unsplash.com/photo-1426604966848-d7adac402bff?w=800&auto=format&fit=crop&q=80" },
+  { id: "card-8", title: "Deep Wilderness Forest", code: "008", image: "https://images.unsplash.com/photo-1441974231531-c6227db76b6e?w=800&auto=format&fit=crop&q=80" },
+  { id: "card-9", title: "Emerald Mountain Meadow", code: "009", image: "https://images.unsplash.com/photo-1469474968028-56623f02e42e?w=800&auto=format&fit=crop&q=80" },
+  { id: "card-10", title: "Serene Desert Canyon", code: "010", image: "https://images.unsplash.com/photo-1509316975850-ff9c5deb0cd9?w=800&auto=format&fit=crop&q=80" },
+  { id: "card-11", title: "Sunlit Pine Woods", code: "011", image: "https://images.unsplash.com/photo-1473448912268-2022ce9509d8?w=800&auto=format&fit=crop&q=80" },
+  { id: "card-12", title: "Mystic Fog Peak", code: "012", image: "https://images.unsplash.com/photo-1519681393784-d120267933ba?w=800&auto=format&fit=crop&q=80" },
 ];
 
 export default function InfiniteMarqueeDemo() {
