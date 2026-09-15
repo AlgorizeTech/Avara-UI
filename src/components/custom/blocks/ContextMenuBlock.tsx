@@ -299,8 +299,8 @@ export function ContextMenuContent({
   }, [open, setOpen]);
 
   const variantClasses: Record<ContextMenuVariant, string> = {
-    default: "border-border bg-white dark:bg-[#050505] shadow-md",
-    minimal: "border-border/50 bg-card/95 shadow-sm backdrop-blur-xs",
+    default: "border-border bg-popover text-popover-foreground shadow-md",
+    minimal: "border-border/50 bg-popover/95 text-popover-foreground shadow-sm backdrop-blur-xs",
     glass: "border-white/20 dark:border-white/10 bg-white/80 dark:bg-zinc-950/80 backdrop-blur-xl shadow-xl",
   };
 
@@ -363,7 +363,7 @@ export function ContextMenuItem({ className, inset, disabled, onClick, children,
       onClick={handleClick}
       data-disabled={disabled ? "true" : undefined}
       className={cn(
-        "relative flex cursor-default select-none items-center rounded-sm px-2 py-1.5 text-sm outline-none transition-colors",
+        "group relative flex cursor-default select-none items-center rounded-sm px-2 py-1.5 text-sm outline-none transition-colors",
         inset && "pl-8",
         disabled ? "opacity-50 pointer-events-none cursor-not-allowed" : theme.itemHover,
         className
@@ -376,11 +376,11 @@ export function ContextMenuItem({ className, inset, disabled, onClick, children,
 }
 
 export function ContextMenuSeparator({ className, ...props }: React.HTMLAttributes<HTMLDivElement>) {
-  return <div className={cn("-mx-1 my-1 h-px bg-muted", className)} {...props} />;
+  return <div className={cn("-mx-1 my-1 h-px bg-border/60 dark:bg-border", className)} {...props} />;
 }
 
 export function ContextMenuShortcut({ className, ...props }: React.HTMLAttributes<HTMLSpanElement>) {
-  return <span className={cn("ml-auto text-xs tracking-widest text-muted-foreground", className)} {...props} />;
+  return <span className={cn("ml-auto text-xs tracking-widest text-muted-foreground group-hover:text-primary/80 transition-colors", className)} {...props} />;
 }
 
 export function ContextMenuLabel({ className, inset, ...props }: React.HTMLAttributes<HTMLDivElement> & { inset?: boolean }) {

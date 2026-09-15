@@ -23,8 +23,23 @@ import {
 } from "lucide-react";
 import { useState } from "react";
 
+const colorMap: Record<string, string> = {
+  indigo: "#4f46e5",
+  rose: "#e11d48",
+  emerald: "#10b981",
+  zinc: "#3f3f46",
+  amber: "#f59e0b",
+  blue: "#3b82f6",
+};
+
+const getThemeColor = (color: string) => {
+  if (color.startsWith("#")) return color;
+  return colorMap[color] || "var(--primary)";
+};
+
 export default function DialogDemo({
   layout = "standard",
+  color = "primary",
 }: {
   layout?:
     | "standard"
@@ -35,13 +50,23 @@ export default function DialogDemo({
     | "no-close"
     | "controlled"
     | "nested";
+  color?: string;
 }) {
+  const themeColor = getThemeColor(color);
+  const containerStyle =
+    color && color !== "primary" && color !== "default"
+      ? ({ "--primary": themeColor } as React.CSSProperties)
+      : undefined;
+
   return (
-    <div className="w-full flex items-center justify-center min-h-[520px] sm:min-h-[560px] relative z-10 overflow-hidden">
+    <div
+      style={containerStyle}
+      className="w-full flex items-center justify-center min-h-[520px] sm:min-h-[560px] relative z-10 overflow-hidden"
+    >
       {layout === "standard" && (
         <Dialog>
           <DialogTrigger>
-            <button className="flex items-center gap-2 px-4 py-2 bg-zinc-900 hover:bg-zinc-800 dark:bg-white dark:hover:bg-zinc-200 text-white dark:text-zinc-900 text-sm font-semibold rounded-md shadow-sm transition-colors">
+            <button className="flex items-center gap-2 px-4 py-2 bg-primary text-primary-foreground hover:bg-primary/90 text-sm font-semibold rounded-md shadow-sm transition-colors cursor-pointer">
               <UserPlus className="w-4 h-4" /> Share Profile
             </button>
           </DialogTrigger>
@@ -56,7 +81,7 @@ export default function DialogDemo({
             <CopyField
               className="my-4"
               value="https://nexus.dev/u/johndoe"
-              color="zinc"
+              color={color}
               buttonProps={{ label: "Copy Link", copiedLabel: "Copied!" }}
             />
             <DialogFooter>
@@ -71,7 +96,7 @@ export default function DialogDemo({
       {layout === "form" && (
         <Dialog>
           <DialogTrigger>
-            <button className="flex items-center gap-2 px-4 py-2 bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 hover:bg-zinc-50 dark:hover:bg-zinc-800 text-zinc-900 dark:text-white text-sm font-semibold rounded-md shadow-sm transition-colors">
+            <button className="flex items-center gap-2 px-4 py-2 bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 hover:bg-primary/5 hover:border-primary/40 text-zinc-900 dark:text-white hover:text-primary text-sm font-semibold rounded-md shadow-sm transition-colors cursor-pointer">
               <Settings className="w-4 h-4 text-zinc-500" /> Edit Profile
             </button>
           </DialogTrigger>
@@ -94,7 +119,7 @@ export default function DialogDemo({
                 <input
                   id="name"
                   defaultValue="John Doe"
-                  className="col-span-3 h-10 rounded-md border border-zinc-200 dark:border-zinc-800 bg-transparent px-3 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                  className="col-span-3 h-10 rounded-md border border-zinc-200 dark:border-zinc-800 bg-transparent px-3 text-sm focus:outline-none focus:ring-2 focus:ring-primary"
                 />
               </div>
               <div className="grid grid-cols-4 items-center gap-4">
@@ -107,16 +132,16 @@ export default function DialogDemo({
                 <input
                   id="username"
                   defaultValue="@johndoe"
-                  className="col-span-3 h-10 rounded-md border border-zinc-200 dark:border-zinc-800 bg-transparent px-3 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                  className="col-span-3 h-10 rounded-md border border-zinc-200 dark:border-zinc-800 bg-transparent px-3 text-sm focus:outline-none focus:ring-2 focus:ring-primary"
                 />
               </div>
             </div>
             <DialogFooter>
               <div className="flex w-full sm:w-auto gap-2">
-                <DialogClose className="flex-1 sm:flex-none px-4 py-2 bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 hover:bg-zinc-50 dark:hover:bg-zinc-800 text-zinc-900 dark:text-white text-sm font-medium rounded-md shadow-sm">
+                <DialogClose className="flex-1 sm:flex-none px-4 py-2 bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 hover:bg-zinc-50 dark:hover:bg-zinc-800 text-zinc-900 dark:text-white text-sm font-medium rounded-md shadow-sm cursor-pointer">
                   Cancel
                 </DialogClose>
-                <DialogClose className="flex-1 sm:flex-none px-4 py-2 bg-zinc-900 dark:bg-white text-white dark:text-zinc-900 text-sm font-medium rounded-md shadow-sm">
+                <DialogClose className="flex-1 sm:flex-none px-4 py-2 bg-primary text-primary-foreground hover:bg-primary/90 text-sm font-medium rounded-md shadow-sm cursor-pointer">
                   Save changes
                 </DialogClose>
               </div>
@@ -128,7 +153,7 @@ export default function DialogDemo({
       {layout === "destructive" && (
         <Dialog>
           <DialogTrigger>
-            <button className="flex items-center gap-2 px-4 py-2 bg-rose-50 hover:bg-rose-100 dark:bg-rose-500/10 dark:hover:bg-rose-500/20 text-rose-600 dark:text-rose-400 border border-rose-200 dark:border-rose-500/30 text-sm font-semibold rounded-md shadow-sm transition-colors">
+            <button className="flex items-center gap-2 px-4 py-2 bg-rose-50 hover:bg-rose-100 dark:bg-rose-500/10 dark:hover:bg-rose-500/20 text-rose-600 dark:text-rose-400 border border-rose-200 dark:border-rose-500/30 text-sm font-semibold rounded-md shadow-sm transition-colors cursor-pointer">
               <Trash2 className="w-4 h-4" /> Delete Account
             </button>
           </DialogTrigger>
@@ -144,10 +169,10 @@ export default function DialogDemo({
             </DialogHeader>
             <DialogFooter>
               <div className="flex w-full sm:w-auto gap-2">
-                <DialogClose className="flex-1 sm:flex-none px-4 py-2 bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 hover:bg-zinc-50 dark:hover:bg-zinc-800 text-zinc-900 dark:text-white text-sm font-medium rounded-md shadow-sm">
+                <DialogClose className="flex-1 sm:flex-none px-4 py-2 bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 hover:bg-zinc-50 dark:hover:bg-zinc-800 text-zinc-900 dark:text-white text-sm font-medium rounded-md shadow-sm cursor-pointer">
                   Cancel
                 </DialogClose>
-                <DialogClose className="flex-1 sm:flex-none px-4 py-2 bg-rose-600 hover:bg-rose-700 text-white text-sm font-medium rounded-md shadow-sm">
+                <DialogClose className="flex-1 sm:flex-none px-4 py-2 bg-rose-600 hover:bg-rose-700 text-white text-sm font-medium rounded-md shadow-sm cursor-pointer">
                   Yes, delete account
                 </DialogClose>
               </div>
@@ -159,7 +184,7 @@ export default function DialogDemo({
       {layout === "no-close" && (
         <Dialog>
           <DialogTrigger>
-            <button className="flex items-center gap-2 px-4 py-2 bg-zinc-900 hover:bg-zinc-800 dark:bg-white dark:hover:bg-zinc-200 text-white dark:text-zinc-900 text-sm font-semibold rounded-md shadow-sm transition-colors">
+            <button className="flex items-center gap-2 px-4 py-2 bg-primary text-primary-foreground hover:bg-primary/90 text-sm font-semibold rounded-md shadow-sm transition-colors cursor-pointer">
               <Settings className="w-4 h-4" /> Accept terms
             </button>
           </DialogTrigger>
@@ -173,10 +198,10 @@ export default function DialogDemo({
             </DialogHeader>
             <DialogFooter>
               <div className="flex w-full sm:w-auto gap-2">
-                <DialogClose className="flex-1 sm:flex-none px-4 py-2 bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 hover:bg-zinc-50 dark:hover:bg-zinc-800 text-zinc-900 dark:text-white text-sm font-medium rounded-md shadow-sm">
+                <DialogClose className="flex-1 sm:flex-none px-4 py-2 bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 hover:bg-zinc-50 dark:hover:bg-zinc-800 text-zinc-900 dark:text-white text-sm font-medium rounded-md shadow-sm cursor-pointer">
                   Decline
                 </DialogClose>
-                <DialogClose className="flex-1 sm:flex-none px-4 py-2 bg-zinc-900 dark:bg-white text-white dark:text-zinc-900 text-sm font-medium rounded-md shadow-sm">
+                <DialogClose className="flex-1 sm:flex-none px-4 py-2 bg-primary text-primary-foreground hover:bg-primary/90 text-sm font-medium rounded-md shadow-sm cursor-pointer">
                   Accept
                 </DialogClose>
               </div>
@@ -213,7 +238,7 @@ function ControlledDialog() {
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger>
-        <button className="flex items-center gap-2 px-4 py-2 bg-zinc-900 hover:bg-zinc-800 dark:bg-white dark:hover:bg-zinc-200 text-white dark:text-zinc-900 text-sm font-semibold rounded-md shadow-sm transition-colors">
+        <button className="flex items-center gap-2 px-4 py-2 bg-primary text-primary-foreground hover:bg-primary/90 text-sm font-semibold rounded-md shadow-sm transition-colors cursor-pointer">
           <Settings className="w-4 h-4" /> Save settings
         </button>
       </DialogTrigger>
@@ -230,14 +255,14 @@ function ControlledDialog() {
               type="button"
               onClick={() => setOpen(false)}
               disabled={saving}
-              className="flex-1 sm:flex-none px-4 py-2 bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 hover:bg-zinc-50 dark:hover:bg-zinc-800 text-zinc-900 dark:text-white text-sm font-medium rounded-md shadow-sm disabled:opacity-60"
+              className="flex-1 sm:flex-none px-4 py-2 bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 hover:bg-zinc-50 dark:hover:bg-zinc-800 text-zinc-900 dark:text-white text-sm font-medium rounded-md shadow-sm disabled:opacity-60 cursor-pointer"
             >
               Cancel
             </button>
             <button
               onClick={handleSave}
               disabled={saving}
-              className="flex-1 sm:flex-none px-4 py-2 bg-zinc-900 dark:bg-white text-white dark:text-zinc-900 text-sm font-medium rounded-md shadow-sm disabled:opacity-60"
+              className="flex-1 sm:flex-none px-4 py-2 bg-primary text-primary-foreground hover:bg-primary/90 text-sm font-medium rounded-md shadow-sm disabled:opacity-60 cursor-pointer"
             >
               {saving ? "Saving…" : "Save changes"}
             </button>
@@ -292,7 +317,7 @@ function SizeScaleDialogs() {
         {DIALOG_SIZES.map(({ size, label, title, body }) => (
           <Dialog key={size}>
             <DialogTrigger>
-              <button className="px-3 py-1.5 bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 hover:bg-zinc-50 dark:hover:bg-zinc-800 text-zinc-900 dark:text-white text-sm font-mono font-medium rounded-md shadow-sm transition-colors">
+              <button className="px-3 py-1.5 bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 hover:bg-primary/10 hover:border-primary/40 hover:text-primary text-zinc-900 dark:text-white text-sm font-mono font-medium rounded-md shadow-sm transition-colors cursor-pointer">
                 {label}
               </button>
             </DialogTrigger>
@@ -307,7 +332,7 @@ function SizeScaleDialogs() {
                 </span>
               </div>
               <DialogFooter>
-                <DialogClose className="w-full sm:w-auto px-4 py-2 bg-zinc-900 dark:bg-white text-white dark:text-zinc-900 text-sm font-medium rounded-md shadow-sm">
+                <DialogClose className="w-full sm:w-auto px-4 py-2 bg-primary text-primary-foreground hover:bg-primary/90 text-sm font-medium rounded-md shadow-sm cursor-pointer">
                   Close
                 </DialogClose>
               </DialogFooter>
@@ -359,7 +384,7 @@ function DeleteConfirmationDialog() {
             <button
               type="button"
               onClick={() => setProjects(INITIAL_PROJECTS)}
-              className="flex items-center gap-1.5 text-xs font-medium text-zinc-500 hover:text-zinc-900 dark:hover:text-white transition-colors"
+              className="flex items-center gap-1.5 text-xs font-medium text-zinc-500 hover:text-primary transition-colors cursor-pointer"
             >
               <Undo2 className="w-3.5 h-3.5" /> Restore
             </button>
@@ -386,7 +411,7 @@ function DeleteConfirmationDialog() {
                 type="button"
                 aria-label={"Delete " + project.name}
                 onClick={() => setPending(project)}
-                className="shrink-0 p-2 rounded-md text-zinc-400 hover:text-rose-600 hover:bg-rose-50 dark:hover:bg-rose-500/10 transition-colors"
+                className="shrink-0 p-2 rounded-md text-zinc-400 hover:text-rose-600 hover:bg-rose-50 dark:hover:bg-rose-500/10 transition-colors cursor-pointer"
               >
                 <Trash2 className="w-4 h-4" />
               </button>
@@ -421,7 +446,7 @@ function DeleteConfirmationDialog() {
                 type="button"
                 onClick={() => setPending(null)}
                 disabled={deleting}
-                className="flex-1 sm:flex-none px-4 py-2 bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 hover:bg-zinc-50 dark:hover:bg-zinc-800 text-zinc-900 dark:text-white text-sm font-medium rounded-md shadow-sm disabled:opacity-60"
+                className="flex-1 sm:flex-none px-4 py-2 bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 hover:bg-zinc-50 dark:hover:bg-zinc-800 text-zinc-900 dark:text-white text-sm font-medium rounded-md shadow-sm disabled:opacity-60 cursor-pointer"
               >
                 Cancel
               </button>
@@ -429,7 +454,7 @@ function DeleteConfirmationDialog() {
                 type="button"
                 onClick={confirmDelete}
                 disabled={deleting}
-                className="flex-1 sm:flex-none px-4 py-2 bg-rose-600 hover:bg-rose-700 text-white text-sm font-medium rounded-md shadow-sm disabled:opacity-60"
+                className="flex-1 sm:flex-none px-4 py-2 bg-rose-600 hover:bg-rose-700 text-white text-sm font-medium rounded-md shadow-sm disabled:opacity-60 cursor-pointer"
               >
                 {deleting ? "Deleting…" : "Delete project"}
               </button>
@@ -462,7 +487,7 @@ function NestedDialogs() {
   return (
     <Dialog>
       <DialogTrigger>
-        <button className="flex items-center gap-2 px-4 py-2 bg-zinc-900 hover:bg-zinc-800 dark:bg-white dark:hover:bg-zinc-200 text-white dark:text-zinc-900 text-sm font-semibold rounded-md shadow-sm transition-colors">
+        <button className="flex items-center gap-2 px-4 py-2 bg-primary text-primary-foreground hover:bg-primary/90 text-sm font-semibold rounded-md shadow-sm transition-colors cursor-pointer">
           <Receipt className="w-4 h-4" /> New invoice
         </button>
       </DialogTrigger>
@@ -493,7 +518,7 @@ function NestedDialogs() {
               {/* The nested dialog. Its own root, rendered inside the outer content. */}
               <Dialog open={pickerOpen} onOpenChange={setPickerOpen}>
                 <DialogTrigger>
-                  <button className="h-10 px-3 shrink-0 flex items-center gap-1.5 bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 hover:bg-zinc-50 dark:hover:bg-zinc-800 text-sm font-medium rounded-md shadow-sm transition-colors">
+                  <button className="h-10 px-3 shrink-0 flex items-center gap-1.5 bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 hover:bg-primary/5 hover:border-primary/40 hover:text-primary text-sm font-medium rounded-md shadow-sm transition-colors cursor-pointer">
                     <Search className="w-3.5 h-3.5" /> Choose
                   </button>
                 </DialogTrigger>
@@ -517,7 +542,7 @@ function NestedDialogs() {
                           setCustomer(option);
                           setPickerOpen(false);
                         }}
-                        className="w-full flex items-center justify-between gap-2 px-2 py-2 rounded-md text-left hover:bg-zinc-100 dark:hover:bg-zinc-800 transition-colors"
+                        className="w-full flex items-center justify-between gap-2 px-2 py-2 rounded-md text-left hover:bg-primary/10 dark:hover:bg-primary/15 transition-colors cursor-pointer"
                       >
                         <span className="min-w-0">
                           <span className="block text-sm font-medium truncate">
@@ -528,14 +553,14 @@ function NestedDialogs() {
                           </span>
                         </span>
                         {customer?.id === option.id && (
-                          <Check className="w-4 h-4 shrink-0 text-emerald-600" />
+                          <Check className="w-4 h-4 shrink-0 text-primary" />
                         )}
                       </button>
                     ))}
                   </div>
 
                   <DialogFooter>
-                    <DialogClose className="w-full sm:w-auto flex items-center justify-center gap-1.5 px-4 py-2 bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 hover:bg-zinc-50 dark:hover:bg-zinc-800 text-zinc-900 dark:text-white text-sm font-medium rounded-md shadow-sm">
+                    <DialogClose className="w-full sm:w-auto flex items-center justify-center gap-1.5 px-4 py-2 bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 hover:bg-zinc-50 dark:hover:bg-zinc-800 text-zinc-900 dark:text-white text-sm font-medium rounded-md shadow-sm cursor-pointer">
                       <ArrowLeft className="w-3.5 h-3.5" /> Back to invoice
                     </DialogClose>
                   </DialogFooter>
@@ -551,19 +576,19 @@ function NestedDialogs() {
             <input
               id="amount"
               defaultValue="1,250.00"
-              className="h-10 rounded-md border border-zinc-200 dark:border-zinc-800 bg-transparent px-3 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500"
+              className="h-10 rounded-md border border-zinc-200 dark:border-zinc-800 bg-transparent px-3 text-sm focus:outline-none focus:ring-2 focus:ring-primary"
             />
           </div>
         </div>
 
         <DialogFooter>
           <div className="flex w-full sm:w-auto gap-2">
-            <DialogClose className="flex-1 sm:flex-none px-4 py-2 bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 hover:bg-zinc-50 dark:hover:bg-zinc-800 text-zinc-900 dark:text-white text-sm font-medium rounded-md shadow-sm">
+            <DialogClose className="flex-1 sm:flex-none px-4 py-2 bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 hover:bg-zinc-50 dark:hover:bg-zinc-800 text-zinc-900 dark:text-white text-sm font-medium rounded-md shadow-sm cursor-pointer">
               Cancel
             </DialogClose>
             <DialogClose
               disabled={!customer}
-              className="flex-1 sm:flex-none px-4 py-2 bg-zinc-900 dark:bg-white text-white dark:text-zinc-900 text-sm font-medium rounded-md shadow-sm disabled:opacity-60"
+              className="flex-1 sm:flex-none px-4 py-2 bg-primary text-primary-foreground hover:bg-primary/90 text-sm font-medium rounded-md shadow-sm disabled:opacity-60 cursor-pointer"
             >
               Create invoice
             </DialogClose>
