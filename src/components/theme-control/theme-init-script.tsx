@@ -1,5 +1,6 @@
 import {
   COLOR_TOKENS,
+  DEFAULT_PRESET,
   FONT_FAMILY_STORAGE_KEY,
   THEME_CUSTOMIZER_STORAGE_KEY,
 } from "@/lib/theme-presets";
@@ -20,8 +21,13 @@ import {
  * pixels exist. Inline styles beat both `:root` and `.dark`, so it does not
  * matter that next-themes' own script runs later.
  *
- * The font override is handled here too: the site default is Cooper, and a
- * reader who picked a Google font would otherwise see Cooper flash into their
+ * Stored colours are skipped when the active preset is the default one: the
+ * stylesheet already carries that palette, and the stored copy may predate a
+ * change to it (the provider re-resolves named presets on mount for the same
+ * reason). Injecting it would paint the stale palette first.
+ *
+ * The font override is handled here too: the site default is DM Sans, and a
+ * reader who picked a Google font would otherwise see DM Sans flash into their
  * choice on every reload. Setting --font-sans and starting the stylesheet
  * download this early means the swap happens before (or at) first paint. The
  * <link> id and URL shape must match loadGoogleFont in use-google-fonts.ts,
@@ -41,7 +47,7 @@ if(m==="dark")d.classList.add("dark");else d.classList.remove("dark");
 s.colorScheme=m;
 var raw=localStorage.getItem(${JSON.stringify(THEME_CUSTOMIZER_STORAGE_KEY)});
 if(raw){var v=JSON.parse(raw)||{},c=(v.colors||{})[m];
-if(c){var k=${JSON.stringify(COLOR_TOKENS)};for(var i=0;i<k.length;i++){if(c[k[i]])s.setProperty("--"+k[i],c[k[i]]);}}
+if(c&&v.activePreset!==${JSON.stringify(DEFAULT_PRESET)}){var k=${JSON.stringify(COLOR_TOKENS)};for(var i=0;i<k.length;i++){if(c[k[i]])s.setProperty("--"+k[i],c[k[i]]);}}
 if(typeof v.radius==="number")s.setProperty("--radius",v.radius+"rem");}
 var fs=localStorage.getItem("fontSize");if(fs)s.fontSize=fs+"%";
 var ff=localStorage.getItem(${JSON.stringify(FONT_FAMILY_STORAGE_KEY)});

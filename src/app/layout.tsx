@@ -1,6 +1,6 @@
 import './globals.css';
 import { ThemeProvider } from 'next-themes';
-import { cooper, geistMono } from '@/assets/fonts';
+import { cooper, dmSans, geistMono } from '@/assets/fonts';
 import { PackageManagerProvider } from '@/contexts/package-manager-context';
 import { ThemeContextProvider } from '@/contexts/theme-context';
 import { ThemeCustomizerProvider } from '@/contexts/theme-customizer-context';
@@ -25,7 +25,11 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" className={cooper.variable} suppressHydrationWarning>
+    <html
+      lang="en"
+      className={`${dmSans.variable} ${cooper.variable}`}
+      suppressHydrationWarning
+    >
       <head>
         {/* Must run before anything paints — keep it first in <head>. */}
         <ThemeInitScript />
@@ -34,7 +38,7 @@ export default function RootLayout({
         <ResourcePreloader fonts={[]} images={['/logo.svg', '/og-image.png']} />
       </head>
       <body
-        className={`${geistMono.variable} antialiased min-h-screen bg-zinc-50 dark:bg-zinc-950 text-zinc-900 dark:text-zinc-100`}
+        className={`${geistMono.variable} antialiased min-h-screen bg-background text-foreground`}
       >
         <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
           <ThemeContextProvider>

@@ -25,7 +25,11 @@ export function useMDXComponents(components: MDXComponents): MDXComponents {
     h1: ({ children, ...props }: React.ComponentProps<'h1'>) => {
       const id = createSlug(children?.toString() || '');
       return (
-        <h1 id={id} className="text-4xl font-bold mb-6 mt-8 first:mt-0" {...props}>
+        <h1
+          id={id}
+          className="font-serif text-[clamp(34px,9vw,52px)] font-normal leading-[1.2] tracking-[-0.01em] text-foreground mb-4 mt-8 first:mt-0"
+          {...props}
+        >
           {children}
         </h1>
       );
@@ -36,7 +40,7 @@ export function useMDXComponents(components: MDXComponents): MDXComponents {
       return (
         <h2
           id={id}
-          className="text-3xl font-semibold mb-4 mt-8 first:mt-0 border-b pb-2"
+          className="font-serif text-2xl font-bold text-foreground mb-3 mt-10 first:mt-0"
           {...props}
         >
           {children}
@@ -47,7 +51,7 @@ export function useMDXComponents(components: MDXComponents): MDXComponents {
     h3: ({ children, ...props }: React.ComponentProps<'h3'>) => {
       const id = createSlug(children?.toString() || '');
       return (
-        <h3 id={id} className="text-2xl font-semibold mb-3 mt-6 first:mt-0" {...props}>
+        <h3 id={id} className="font-serif text-lg font-semibold text-foreground mb-2 mt-6 first:mt-0" {...props}>
           {children}
         </h3>
       );
@@ -56,7 +60,11 @@ export function useMDXComponents(components: MDXComponents): MDXComponents {
     h4: ({ children, ...props }: React.ComponentProps<'h4'>) => {
       const id = createSlug(children?.toString() || '');
       return (
-        <h4 id={id} className="text-xl font-semibold mb-2 mt-4 first:mt-0" {...props}>
+        <h4
+          id={id}
+          className="font-serif text-[15px] font-semibold leading-[1.25] tracking-[-0.01em] text-foreground mb-2 mt-4 first:mt-0"
+          {...props}
+        >
           {children}
         </h4>
       );
@@ -64,7 +72,7 @@ export function useMDXComponents(components: MDXComponents): MDXComponents {
 
     p: ({ children, ...props }: React.ComponentProps<'p'>) => {
       return (
-        <p className="mb-4 leading-7 text-gray-700 dark:text-gray-300" {...props}>
+        <p className="mb-4 text-sm leading-relaxed text-muted-foreground" {...props}>
           {children}
         </p>
       );
@@ -72,7 +80,7 @@ export function useMDXComponents(components: MDXComponents): MDXComponents {
 
     ul: ({ children, ...props }: React.ComponentProps<'ul'>) => {
       return (
-        <ul className="list-disc list-inside mb-6 ml-6 space-y-2" {...props}>
+        <ul className="list-disc list-inside mb-6 ml-6 space-y-2 text-sm leading-relaxed" {...props}>
           {children}
         </ul>
       );
@@ -80,7 +88,7 @@ export function useMDXComponents(components: MDXComponents): MDXComponents {
 
     ol: ({ children, ...props }: React.ComponentProps<'ol'>) => {
       return (
-        <ol className="list-decimal list-inside mb-6 ml-6 space-y-2" {...props}>
+        <ol className="list-decimal list-inside mb-6 ml-6 space-y-2 text-sm leading-relaxed" {...props}>
           {children}
         </ol>
       );
@@ -88,7 +96,7 @@ export function useMDXComponents(components: MDXComponents): MDXComponents {
 
     li: ({ children, ...props }: React.ComponentProps<'li'>) => {
       return (
-        <li className="text-gray-700 dark:text-gray-300" {...props}>
+        <li className="text-muted-foreground" {...props}>
           {children}
         </li>
       );
@@ -97,7 +105,7 @@ export function useMDXComponents(components: MDXComponents): MDXComponents {
     blockquote: ({ children, ...props }: React.ComponentProps<'blockquote'>) => {
       return (
         <blockquote
-          className="border-l-4 border-blue-500 pl-6 italic my-6 text-gray-600 dark:text-gray-400"
+          className="border-l-4 border-border pl-6 italic my-6 text-sm leading-relaxed text-muted-foreground"
           {...props}
         >
           {children}

@@ -7,73 +7,73 @@
 /* CSS Variables for theming */
 :root {
   --card: oklch(1 0 0);
-  --card-foreground: oklch(0.145 0 0);
+  --card-foreground: oklch(0.178 0 0);
   --popover: oklch(1 0 0);
-  --popover-foreground: oklch(0.145 0 0);
-  --primary: oklch(0.205 0 0);
-  --primary-foreground: oklch(0.985 0 0);
-  --secondary: oklch(0.97 0 0);
-  --secondary-foreground: oklch(0.205 0 0);
-  --muted: oklch(0.97 0 0);
-  --muted-foreground: oklch(0.556 0 0);
-  --accent: oklch(0.97 0 0);
-  --accent-foreground: oklch(0.205 0 0);
+  --popover-foreground: oklch(0.178 0 0);
+  --primary: oklch(0.178 0 0);
+  --primary-foreground: oklch(1 0 0);
+  --secondary: oklch(0 0 0 / 5%);
+  --secondary-foreground: oklch(0.178 0 0);
+  --muted: oklch(0 0 0 / 4%);
+  --muted-foreground: oklch(0.178 0 0 / 70%);
+  --accent: oklch(0 0 0 / 7%);
+  --accent-foreground: oklch(0.178 0 0);
   --destructive: oklch(0.577 0.245 27.325);
-  --destructive-foreground: 210 40% 98%;
-  --border: oklch(0.922 0 0);
-  --input: oklch(0.922 0 0);
-  --ring: oklch(0.708 0 0);
+  --destructive-foreground: oklch(0.985 0 0);
+  --border: oklch(0 0 0 / 8%);
+  --input: oklch(0 0 0 / 8%);
+  --ring: oklch(0.178 0 0 / 30%);
   --radius: 0.625rem;
-  --background: oklch(1 0 0);
-  --foreground: oklch(0.145 0 0);
+  --background: oklch(0.969 0.007 106.5);
+  --foreground: oklch(0.178 0 0);
   --chart-1: oklch(0.646 0.222 41.116);
   --chart-2: oklch(0.6 0.118 184.704);
   --chart-3: oklch(0.398 0.07 227.392);
   --chart-4: oklch(0.828 0.189 84.429);
   --chart-5: oklch(0.769 0.188 70.08);
-  --sidebar: oklch(0.985 0 0);
-  --sidebar-foreground: oklch(0.145 0 0);
-  --sidebar-primary: oklch(0.205 0 0);
-  --sidebar-primary-foreground: oklch(0.985 0 0);
-  --sidebar-accent: oklch(0.97 0 0);
-  --sidebar-accent-foreground: oklch(0.205 0 0);
-  --sidebar-border: oklch(0.922 0 0);
-  --sidebar-ring: oklch(0.708 0 0);
+  --sidebar: oklch(1 0 0);
+  --sidebar-foreground: oklch(0.178 0 0);
+  --sidebar-primary: oklch(0.178 0 0);
+  --sidebar-primary-foreground: oklch(1 0 0);
+  --sidebar-accent: oklch(0 0 0 / 7%);
+  --sidebar-accent-foreground: oklch(0.178 0 0);
+  --sidebar-border: oklch(0 0 0 / 8%);
+  --sidebar-ring: oklch(0.178 0 0 / 30%);
 }
 
 .dark {
-  --background: oklch(0.145 0 0);
-  --foreground: oklch(0.985 0 0);
-  --card: oklch(0.205 0 0);
-  --card-foreground: oklch(0.985 0 0);
-  --popover: oklch(0.205 0 0);
-  --popover-foreground: oklch(0.985 0 0);
-  --primary: oklch(0.922 0 0);
-  --primary-foreground: oklch(0.205 0 0);
-  --secondary: oklch(0.269 0 0);
-  --secondary-foreground: oklch(0.985 0 0);
-  --muted: oklch(0.269 0 0);
-  --muted-foreground: oklch(0.708 0 0);
-  --accent: oklch(0.269 0 0);
-  --accent-foreground: oklch(0.985 0 0);
+  --background: oklch(0.141 0.004 285.8);
+  --foreground: oklch(1 0 0);
+  --card: oklch(0.183 0.004 286);
+  --card-foreground: oklch(1 0 0);
+  --popover: oklch(0.183 0.004 286);
+  --popover-foreground: oklch(1 0 0);
+  --primary: oklch(1 0 0);
+  --primary-foreground: oklch(0.178 0 0);
+  --secondary: oklch(1 0 0 / 12%);
+  --secondary-foreground: oklch(1 0 0);
+  --muted: oklch(1 0 0 / 5%);
+  --muted-foreground: oklch(1 0 0 / 70%);
+  --accent: oklch(1 0 0 / 8%);
+  --accent-foreground: oklch(1 0 0);
   --destructive: oklch(0.704 0.191 22.216);
-  --destructive-foreground: 210 40% 98%;
-  --border: oklch(1 0 0 / 10%);
-  --input: oklch(1 0 0 / 15%);
-  --ring: oklch(0.556 0 0);
+  --destructive-foreground: oklch(0.985 0 0);
+  --border: oklch(1 0 0 / 8%);
+  --input: oklch(1 0 0 / 8%);
+  --ring: oklch(1 0 0 / 30%);
   --chart-1: oklch(0.488 0.243 264.376);
   --chart-2: oklch(0.696 0.17 162.48);
   --chart-3: oklch(0.769 0.188 70.08);
   --chart-4: oklch(0.627 0.265 303.9);
   --chart-5: oklch(0.645 0.246 16.439);
-  --sidebar: oklch(0.205 0 0);
-  --sidebar-foreground: oklch(0.985 0 0);
-  --sidebar-primary: oklch(0.488 0.243 264.376);
-  --sidebar-primary-foreground: oklch(0.985 0 0);
-  --sidebar-accent: oklch(0.269 0 0);
-  --sidebar-accent-foreground: oklch(0.985 0 0);
-  --sidebar-border: oklch(1 0 0 / 10%);
-  --sidebar-ring: oklch(0.556 0 0);
+  --sidebar: oklch(0.183 0.004 286);
+  --sidebar-foreground: oklch(1 0 0);
+  --sidebar-primary: oklch(1 0 0);
+  --sidebar-primary-foreground: oklch(0.178 0 0);
+  --sidebar-accent: oklch(1 0 0 / 8%);
+  --sidebar-accent-foreground: oklch(1 0 0);
+  --sidebar-border: oklch(1 0 0 / 8%);
+  --sidebar-ring: oklch(1 0 0 / 30%);
 }
 
 /* Circular Reveal View Transition for Theme Switcher */
@@ -731,11 +731,13 @@ html body[data-scroll-locked] {
 }
 
 @theme {
-  /* Cooper (self-hosted, see src/assets/fonts) is the site default. Tailwind's
-     preflight puts var(--font-sans) on <html>, so the theme customizer swaps
-     the family site-wide by setting --font-sans inline on <html>. */
-  --font-sans: var(--font-cooper), ui-sans-serif, system-ui, sans-serif,
+  /* DM Sans for body/UI text, Cooper (self-hosted, see src/assets/fonts) for
+     headings — see the h1–h4 rule in @layer base. Tailwind's preflight puts
+     var(--font-sans) on <html>, so the theme customizer swaps the body family
+     site-wide by setting --font-sans inline on <html>; headings keep Cooper. */
+  --font-sans: var(--font-dm-sans), ui-sans-serif, system-ui, sans-serif,
     "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+  --font-serif: var(--font-cooper), ui-serif, Georgia, serif;
   --default-mono-font-family: "Geist Mono", ui-monospace, SFMono-Regular,
     Roboto Mono, Menlo, Monaco, Liberation Mono, DejaVu Sans Mono, Courier New,
     monospace;
@@ -806,6 +808,17 @@ html body[data-scroll-locked] {
   }
   body {
     @apply bg-background text-foreground;
+  }
+  /* Headings set in Cooper site-wide, body copy stays in the sans. In the base
+     layer so a `font-sans`/`font-mono` utility on a heading still wins. Cooper
+     is a heavy display face, so headings default to the regular weight and
+     let `font-semibold`/`font-bold` opt up. */
+  h1,
+  h2,
+  h3,
+  h4 {
+    font-family: var(--font-serif);
+    font-weight: 400;
   }
 }
 

@@ -15,8 +15,12 @@ import {
 
 export const DEFAULT_PRIMARY_COLOR = "#6356d1";
 export const DEFAULT_FONT_SIZE = "100";
-/** The self-hosted site font (see src/assets/fonts); not a Google font. */
-export const DEFAULT_FONT_FAMILY = "Cooper";
+/**
+ * The body font (see src/assets/fonts). Also a Google font, but the default is
+ * bundled via next/font, so picking it in the customizer clears the override
+ * rather than loading it again. Headings stay in Cooper regardless.
+ */
+export const DEFAULT_FONT_FAMILY = "DM Sans";
 
 type ThemeContextValue = {
   primaryColor: string;

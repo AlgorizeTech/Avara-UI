@@ -13,9 +13,9 @@ import {
   useGoogleFonts,
 } from "@/hooks/use-google-fonts";
 
-// Cooper is self-hosted, so it never appears in the Google Fonts list. Pin it
-// to the top so the reader can get back to the site default without a full
-// theme reset.
+// Pinned to the top so the reader can get back to the site default without a
+// full theme reset (it is also somewhere in the Google list, but not findable
+// without scrolling).
 const DEFAULT_OPTION: MultiSelectOption = {
   value: DEFAULT_FONT_FAMILY,
   label: `${DEFAULT_FONT_FAMILY} (Default)`,
@@ -31,7 +31,7 @@ export function FontFamilyControl() {
     if (Array.isArray(selected)) return;
     const selectedFont = selected ? selected.value || selected.label : null;
 
-    // Clearing the field or picking the pinned option both mean "back to Cooper".
+    // Clearing the field or picking the pinned option both mean "back to default".
     if (!selectedFont || selectedFont === DEFAULT_FONT_FAMILY) {
       setFontFamily(DEFAULT_FONT_FAMILY);
       clearFontFamily();

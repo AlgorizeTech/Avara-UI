@@ -935,15 +935,15 @@ function WhyChooseUsSection() {
 								<div className="absolute inset-0 -translate-x-full bg-gradient-to-r from-transparent via-black/5 dark:via-white/5 to-transparent group-hover:animate-[shimmer_2s_infinite] z-0" />
 
 								{/* Skeletons with proper light/dark contrast */}
-								<div className="h-3 w-1/3 rounded-md bg-zinc-200 dark:bg-muted/60 relative z-10" />
-								<div className="h-16 sm:h-20 w-full rounded-xl bg-zinc-100 dark:bg-muted/40 relative z-10" />
+								<div className="h-3 w-1/3 rounded-md bg-muted relative z-10" />
+								<div className="h-16 sm:h-20 w-full rounded-xl bg-muted/60 relative z-10" />
 								<div className="flex gap-3 relative z-10">
-									<div className="h-20 sm:h-24 flex-1 rounded-xl bg-zinc-100 dark:bg-muted/40" />
-									<div className="h-20 sm:h-24 flex-1 rounded-xl bg-zinc-100 dark:bg-muted/40" />
+									<div className="h-20 sm:h-24 flex-1 rounded-xl bg-muted/60" />
+									<div className="h-20 sm:h-24 flex-1 rounded-xl bg-muted/60" />
 								</div>
 
 								<div className="absolute inset-0 bg-background/20 backdrop-blur-[2px] opacity-0 group-hover:opacity-100 transition-opacity duration-700 flex items-center justify-center z-20">
-									<div className="translate-y-6 group-hover:translate-y-0 transition-transform duration-700 delay-100 ease-[0.16,1,0.3,1] px-4 py-2 sm:px-5 sm:py-2.5 rounded-xl bg-zinc-900 dark:bg-zinc-100 text-white dark:text-zinc-900 font-bold text-[13px] sm:text-sm shadow-xl flex items-center gap-2.5 border border-zinc-700 dark:border-zinc-300">
+									<div className="translate-y-6 group-hover:translate-y-0 transition-transform duration-700 delay-100 ease-[0.16,1,0.3,1] px-4 py-2 sm:px-5 sm:py-2.5 rounded-xl bg-primary text-primary-foreground font-bold text-[13px] sm:text-sm shadow-xl flex items-center gap-2.5 border border-primary/80">
 										<Zap className="size-3.5 sm:size-4 text-amber-400 fill-amber-400 drop-shadow-[0_0_6px_rgba(251,191,36,0.5)]" />
 										Ship at lightspeed
 									</div>
@@ -3104,7 +3104,7 @@ function CTASection() {
 				initial={{ opacity: 0, y: 40, scale: 0.98 }}
 				animate={isInView ? { opacity: 1, y: 0, scale: 1 } : {}}
 				transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
-				className="max-w-[1320px] mx-auto relative rounded-3xl overflow-hidden border border-primary/20 bg-gradient-to-b from-primary/5 via-background to-primary/10 dark:from-zinc-950 dark:via-zinc-900/90 dark:to-zinc-950 p-8 sm:p-12 md:p-16 text-foreground dark:text-white shadow-[0_20px_60px_-15px_rgba(var(--primary-rgb),0.12)] dark:border-zinc-800">
+				className="max-w-[1320px] mx-auto relative rounded-3xl overflow-hidden border border-primary/20 bg-gradient-to-b from-primary/5 via-background to-primary/10 dark:from-background dark:via-card/90 dark:to-background p-8 sm:p-12 md:p-16 text-foreground shadow-[0_20px_60px_-15px_rgba(var(--primary-rgb),0.12)]">
 				{/* Glowing Radial Mesh Accents */}
 				<div className="absolute top-0 right-0 size-96 rounded-full bg-primary/20 blur-[120px] pointer-events-none" />
 				<div className="absolute bottom-0 left-0 size-96 rounded-full bg-primary/15 blur-[120px] pointer-events-none" />
@@ -3124,7 +3124,7 @@ function CTASection() {
 						<span className="text-primary">React Interfaces Today.</span>
 					</h2>
 
-					<p className="text-muted-foreground dark:text-zinc-300 text-sm sm:text-base md:text-lg leading-relaxed font-semibold max-w-xl">
+					<p className="text-muted-foreground text-sm sm:text-base md:text-lg leading-relaxed font-semibold max-w-xl">
 						Designed for the shadcn/ui &amp; Tailwind CSS ecosystem. Install
 						fully responsive, accessible, and animated UI components.
 					</p>

@@ -1,12 +1,24 @@
-import { Geist, Geist_Mono } from "next/font/google";
+import { DM_Sans, Geist, Geist_Mono } from "next/font/google";
 import localFont from "next/font/local";
 
 /**
- * Cooper* — the site's default body font, self-hosted from /public/fonts.
- * Both files are variable fonts spanning wght 400–900, so one face per style
- * covers every weight the site uses. Exposed only as a CSS variable (no
- * `.className`) so the theme customizer can swap the family by overriding
- * `--font-sans` on <html> without fighting a class selector on <body>.
+ * Site typography follows the sans-body / serif-heading pairing: DM Sans for
+ * body and UI text, Cooper for headings. Both are exposed only as CSS
+ * variables (no `.className`) and wired to Tailwind's `--font-sans` /
+ * `--font-serif` in globals.css, so the theme customizer can swap the body
+ * family by overriding `--font-sans` on <html> without fighting a class
+ * selector on <body>.
+ */
+export const dmSans = DM_Sans({
+  subsets: ["latin"],
+  variable: "--font-dm-sans",
+  display: "swap",
+});
+
+/**
+ * Cooper* — the heading font, self-hosted from /public/fonts. Both files are
+ * variable fonts spanning wght 400–900, so one face per style covers every
+ * weight the site uses.
  */
 export const cooper = localFont({
   src: [

@@ -129,7 +129,8 @@ export function loadGoogleFont(fontFamily: string | null | undefined) {
 }
 
 /**
- * Override the site default font (Cooper) with a Google font, site-wide.
+ * Override the site default body font (DM Sans) with a Google font, site-wide.
+ * Headings are on `--font-serif` (Cooper) and are left alone.
  * Tailwind's preflight puts `var(--font-sans)` on <html>, so an inline
  * `--font-sans` on <html> outranks the @theme default and every `font-sans`
  * utility follows along too.
@@ -142,7 +143,7 @@ export function applyFontFamily(fontFamily: string) {
   );
 }
 
-/** Drop the override so the site falls back to Cooper. */
+/** Drop the override so the site falls back to the default body font. */
 export function clearFontFamily() {
   document.documentElement.style.removeProperty("--font-sans");
   document.getElementById(DYNAMIC_FONT_LINK_ID)?.remove();
