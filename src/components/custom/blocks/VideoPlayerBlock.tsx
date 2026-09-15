@@ -6,7 +6,7 @@ import { Play, Sparkles, X } from "lucide-react";
 import React, { useCallback, useEffect, useRef, useState } from "react";
 
 /** Which player renders `videoUrl`. */
-export type HeroVideoSource = "youtube" | "video";
+export type VideoSource = "youtube" | "video";
 
 /**
  * How the player is revealed.
@@ -18,9 +18,9 @@ export type HeroVideoSource = "youtube" | "video";
  *   player is introduced by a title at the foot of the frame that moves to a
  *   hover-only top bar once played; an embed is left to its own title chrome.
  */
-export type HeroVideoPlaybackMode = "modal" | "inline" | "direct";
+export type VideoPlaybackMode = "modal" | "inline" | "direct";
 
-export interface HeroVideoPlayerProps
+export interface VideoPlayerProps
   extends Omit<React.HTMLAttributes<HTMLDivElement>, "onPlay"> {
   /**
    * The media URL. For `source="youtube"` this is an embed URL
@@ -38,9 +38,9 @@ export interface HeroVideoPlayerProps
   modalSize?: "md" | "lg" | "xl" | "full";
   enableGlow?: boolean;
   /** Reveal strategy. Defaults to the modal hero. */
-  playbackMode?: HeroVideoPlaybackMode;
+  playbackMode?: VideoPlaybackMode;
   /** Player implementation. Defaults to a YouTube (or any embed) iframe. */
-  source?: HeroVideoSource;
+  source?: VideoSource;
   /** MIME type for `source="video"`, e.g. `video/mp4`. */
   videoType?: string;
   /**
@@ -118,7 +118,7 @@ function PlayerFrame({
   controls,
   onFirstPlay,
 }: {
-  source: HeroVideoSource;
+  source: VideoSource;
   videoUrl: string;
   videoType?: string;
   title?: string;
@@ -248,9 +248,9 @@ function CloseButton({
   );
 }
 
-export const HeroVideoPlayer = React.forwardRef<
+export const VideoPlayer = React.forwardRef<
   HTMLDivElement,
-  HeroVideoPlayerProps
+  VideoPlayerProps
 >(
   (
     {
@@ -545,4 +545,4 @@ export const HeroVideoPlayer = React.forwardRef<
   },
 );
 
-HeroVideoPlayer.displayName = "HeroVideoPlayer";
+VideoPlayer.displayName = "VideoPlayer";

@@ -1,8 +1,8 @@
 "use client";
 
-import { HeroAudioPlayer } from "@/components/custom/blocks/HeroAudioPlayerBlock";
+import { AudioPlayer } from "@/components/custom/blocks/AudioPlayerBlock";
 
-export default function HeroAudioPlayerDemo({
+export default function AudioPlayerDemo({
   variant = "hero",
   enableGlow = true,
   skipSeconds = 10,
@@ -23,7 +23,7 @@ export default function HeroAudioPlayerDemo({
       <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(0,0,0,0.05)_1px,transparent_1px)] dark:bg-[radial-gradient(circle_at_center,rgba(255,255,255,0.05)_1px,transparent_1px)] bg-[size:24px_24px] pointer-events-none" />
 
       <div className="relative z-10 w-full max-w-5xl">
-        <HeroAudioPlayer
+        <AudioPlayer
           variant={variant}
           enableGlow={enableGlow}
           skipSeconds={skipSeconds}

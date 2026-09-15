@@ -1,6 +1,6 @@
 "use client";
 
-import { HeroVideoPlayer } from "@/components/custom/blocks/HeroVideoPlayerBlock";
+import { VideoPlayer } from "@/components/custom/blocks/VideoPlayerBlock";
 
 /** Per-source media, so switching `source` in a showcase gives a playable demo. */
 const MEDIA = {
@@ -25,7 +25,7 @@ const MEDIA = {
   },
 } as const;
 
-export default function HeroVideoPlayerDemo({
+export default function VideoPlayerDemo({
   enableGlow = true,
   aspectRatio = "16/9",
   modalSize = "lg",
@@ -56,7 +56,7 @@ export default function HeroVideoPlayerDemo({
       <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(0,0,0,0.05)_1px,transparent_1px)] dark:bg-[radial-gradient(circle_at_center,rgba(255,255,255,0.05)_1px,transparent_1px)] bg-[size:24px_24px] pointer-events-none" />
 
       <div className="relative z-10 w-full max-w-7xl">
-        <HeroVideoPlayer
+        <VideoPlayer
           enableGlow={enableGlow}
           aspectRatio={aspectRatio}
           modalSize={modalSize}

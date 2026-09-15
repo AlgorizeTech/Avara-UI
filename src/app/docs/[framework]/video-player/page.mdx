@@ -1,28 +1,27 @@
 import { ExampleShowcase } from "@/components/site/Sandbox";
 import { extractCode } from "@/lib/code";
 
-# Hero Video Player
+# Video Player
 
-An embeddable, hardware-accelerated media hero for landing pages and high-conversion sections. Features a glassmorphism CTA, automatic dark/light mode responsiveness, and full keyboard accessibility.
+An embeddable, hardware-accelerated video hero for landing pages and high-conversion sections. Features a glassmorphism CTA, automatic dark/light mode responsiveness, and full keyboard accessibility.
 
-Four independent components live on this page, and each installs on its own:
+Three independent components live on this page, and each installs on its own:
 
-- **`HeroVideoPlayer`** — the poster hero. `playbackMode` opens the video in a **modal**, swaps it **inline** into the card, or renders it **directly** on load; `source` puts either a YouTube embed or a native HTML5 `<video>` behind it. No player library.
-- **`HeroAudioPlayer`** — the same hero language for audio, with artwork, transport, scrubber and volume. No player library.
-- **`HeroPlyrPlayer`** — [Plyr](https://plyr.io) driving HTML5 files, YouTube and Vimeo behind one skinnable control bar.
-- **`HeroJwPlayer`** — [JW Player](https://jwplayer.com) with colour skin presets, for teams already on JW's platform.
+- **`VideoPlayer`** — the poster hero. `playbackMode` opens the video in a **modal**, swaps it **inline** into the card, or renders it **directly** on load; `source` puts either a YouTube embed or a native HTML5 `<video>` behind it. No player library.
+- **`PlyrPlayer`** — [Plyr](https://plyr.io) driving HTML5 files, YouTube and Vimeo behind one skinnable control bar.
+- **`JwPlayer`** — [JW Player](https://jwplayer.com) with colour skin presets, for teams already on JW's platform.
 
-Reach for the first two unless you need adaptive streaming, DRM or a shared control bar across providers — they add no player dependency at all.
+Reach for the first unless you need adaptive streaming, DRM or a shared control bar across providers — it adds no player dependency at all. Looking for audio? The <DocLink to="audio-player">Audio Player</DocLink> has its own page.
 
 ## YouTube & native video
 
 Click the CTA in any preview to start playback. In `modal` mode `Esc` closes the dialog and focus returns to the play button.
 
-export const usageDefault = `import { HeroVideoPlayer } from "@/components/custom/blocks/HeroVideoPlayerBlock";
+export const usageDefault = `import { VideoPlayer } from "@/components/custom/blocks/VideoPlayerBlock";
 
 export default function HeroSection() {
   return (
-    <HeroVideoPlayer
+    <VideoPlayer
       badge="Nature 4K"
       title="Wilderness Unbound"
       subtitle="A cinematic journey through serene mountain vistas and ancient forests."
@@ -33,11 +32,11 @@ export default function HeroSection() {
   );
 }`;
 
-export const usageInline = `import { HeroVideoPlayer } from "@/components/custom/blocks/HeroVideoPlayerBlock";
+export const usageInline = `import { VideoPlayer } from "@/components/custom/blocks/VideoPlayerBlock";
 
 export default function InlineHero() {
   return (
-    <HeroVideoPlayer
+    <VideoPlayer
       playbackMode="inline"
       badge="Nature 4K"
       title="Wilderness Unbound"
@@ -49,11 +48,11 @@ export default function InlineHero() {
   );
 }`;
 
-export const usageDirect = `import { HeroVideoPlayer } from "@/components/custom/blocks/HeroVideoPlayerBlock";
+export const usageDirect = `import { VideoPlayer } from "@/components/custom/blocks/VideoPlayerBlock";
 
 export default function DirectEmbedHero() {
   return (
-    <HeroVideoPlayer
+    <VideoPlayer
       playbackMode="direct"
       title="Wilderness Unbound"
       videoUrl="https://www.youtube.com/embed/LXb3EKWsInQ"
@@ -61,11 +60,11 @@ export default function DirectEmbedHero() {
   );
 }`;
 
-export const usageNative = `import { HeroVideoPlayer } from "@/components/custom/blocks/HeroVideoPlayerBlock";
+export const usageNative = `import { VideoPlayer } from "@/components/custom/blocks/VideoPlayerBlock";
 
 export default function NativeVideoHero() {
   return (
-    <HeroVideoPlayer
+    <VideoPlayer
       source="video"
       videoType="video/mp4"
       playbackMode="direct"
@@ -77,13 +76,13 @@ export default function NativeVideoHero() {
   );
 }`;
 
-export const usageNativeModal = `import { HeroVideoPlayer } from "@/components/custom/blocks/HeroVideoPlayerBlock";
+export const usageNativeModal = `import { VideoPlayer } from "@/components/custom/blocks/VideoPlayerBlock";
 
 const track = (event: string) => console.log(event);
 
 export default function NativeModalHero() {
   return (
-    <HeroVideoPlayer
+    <VideoPlayer
       source="video"
       videoType="video/mp4"
       modalSize="full"
@@ -101,7 +100,7 @@ export default function NativeModalHero() {
 }`;
 
 <ExampleShowcase
-  name="hero-video-player"
+  name="video-player"
   columns={1}
   examples={[
     {
@@ -128,7 +127,7 @@ export default function NativeModalHero() {
       ],
       props: { playbackMode: "modal" },
       usage: usageDefault,
-      code: extractCode("src/components/custom/blocks/HeroVideoPlayerBlock.tsx"),
+      code: extractCode("src/components/custom/blocks/VideoPlayerBlock.tsx"),
     },
     {
       title: "Inline player",
@@ -234,130 +233,17 @@ export default function NativeModalHero() {
 
 ### Install the video player
 
-<Installation name="hero-video-player" />
-
-## Audio player
-
-`HeroAudioPlayer` is a separate component with the same visual language. It wraps a plain `<audio>` element and mirrors that element's events, so the UI stays correct when a media key, the OS, or the native controls change playback.
-
-export const usageAudioHero = `import { HeroAudioPlayer } from "@/components/custom/blocks/HeroAudioPlayerBlock";
-
-export default function PodcastHero() {
-  return (
-    <HeroAudioPlayer
-      badge="Now Playing"
-      title="It All Began With a Burst"
-      subtitle="Kishi Bashi — 151a"
-      audioUrl="https://cdn.plyr.io/static/demo/Kishi_Bashi_-_It_All_Began_With_a_Burst.mp3"
-      artworkUrl="https://images.unsplash.com/photo-1511671782779-c97d3d27a1d4?auto=format&fit=crop&w=1200&q=80"
-    />
-  );
-}`;
-
-export const usageAudioBar = `import { HeroAudioPlayer } from "@/components/custom/blocks/HeroAudioPlayerBlock";
-
-export default function EpisodeRow() {
-  return (
-    <HeroAudioPlayer
-      variant="bar"
-      enableGlow={false}
-      badge="Episode 12"
-      title="It All Began With a Burst"
-      subtitle="Kishi Bashi — 151a"
-      audioUrl="https://cdn.plyr.io/static/demo/Kishi_Bashi_-_It_All_Began_With_a_Burst.mp3"
-      artworkUrl="https://images.unsplash.com/photo-1511671782779-c97d3d27a1d4?auto=format&fit=crop&w=1200&q=80"
-    />
-  );
-}`;
-
-export const usageAudioNative = `import { HeroAudioPlayer } from "@/components/custom/blocks/HeroAudioPlayerBlock";
-
-export default function NativeAudioHero() {
-  return (
-    <HeroAudioPlayer
-      variant="native"
-      badge="Now Playing"
-      title="It All Began With a Burst"
-      subtitle="Kishi Bashi — 151a"
-      audioUrl="https://cdn.plyr.io/static/demo/Kishi_Bashi_-_It_All_Began_With_a_Burst.mp3"
-      artworkUrl="https://images.unsplash.com/photo-1511671782779-c97d3d27a1d4?auto=format&fit=crop&w=1200&q=80"
-    />
-  );
-}`;
-
-<ExampleShowcase
-  name="hero-audio-player"
-  columns={1}
-  minHeight={420}
-  examples={[
-    {
-      title: "Audio hero",
-      subheading:
-        "Artwork, transport, scrubber and volume in a full hero card. Built on a plain `<audio>` element.",
-      propNotes: [
-        {
-          prop: "variant",
-          value: '"hero"',
-          effect:
-            "is the default — artwork beside its own transport. `audioUrl` and `artworkUrl` are the only two props it really needs.",
-        },
-        {
-          prop: "skipSeconds",
-          value: "{10}",
-          effect:
-            "sizes the rewind and forward jumps. Set it to `0` to drop both buttons.",
-        },
-      ],
-      props: { variant: "hero" },
-      usage: usageAudioHero,
-      code: extractCode("src/components/custom/blocks/HeroAudioPlayerBlock.tsx"),
-    },
-    {
-      title: "Compact bar",
-      subheading:
-        "The same player as one row — for a sidebar, an episode list, or a sticky footer.",
-      propNotes: [
-        {
-          prop: "variant",
-          value: '"bar"',
-          effect:
-            "collapses artwork, copy and transport into a single row. The volume slider hides below `sm` where there is no room for it.",
-        },
-      ],
-      props: { variant: "bar", enableGlow: false },
-      usage: usageAudioBar,
-    },
-    {
-      title: "Native controls",
-      subheading:
-        "The browser's own audio controls under the artwork — nothing custom to keep in sync.",
-      propNotes: [
-        {
-          prop: "variant",
-          value: '"native"',
-          effect:
-            "renders `<audio controls>` instead of the custom transport. The most accessible option by default, and the one that inherits platform features like playback speed for free.",
-        },
-      ],
-      props: { variant: "native" },
-      usage: usageAudioNative,
-    },
-  ]}
-/>
-
-### Install the audio player
-
-<Installation name="hero-audio-player" showSetupPath={false} />
+<Installation name="video-player" />
 
 ## Plyr player
 
 [Plyr](https://plyr.io) puts one accessible control bar in front of HTML5 files, YouTube and Vimeo, so all three look and behave identically. It installs the `plyr` package and is imported dynamically inside an effect, which keeps the component server-renderable.
 
-export const usagePlyrHtml5 = `import { HeroPlyrPlayer } from "@/components/custom/blocks/HeroVideoPlayerPlyrBlock";
+export const usagePlyrHtml5 = `import { PlyrPlayer } from "@/components/custom/blocks/VideoPlayerPlyrBlock";
 
 export default function PlyrHero() {
   return (
-    <HeroPlyrPlayer
+    <PlyrPlayer
       provider="html5"
       src="https://cdn.plyr.io/static/demo/View_From_A_Blue_Moon_Trailer-576p.mp4"
       srcType="video/mp4"
@@ -369,11 +255,11 @@ export default function PlyrHero() {
   );
 }`;
 
-export const usagePlyrYouTube = `import { HeroPlyrPlayer } from "@/components/custom/blocks/HeroVideoPlayerPlyrBlock";
+export const usagePlyrYouTube = `import { PlyrPlayer } from "@/components/custom/blocks/VideoPlayerPlyrBlock";
 
 export default function PlyrYouTubeHero() {
   return (
-    <HeroPlyrPlayer
+    <PlyrPlayer
       provider="youtube"
       src="LXb3EKWsInQ"
       accentColor="#22d3ee"
@@ -384,23 +270,8 @@ export default function PlyrYouTubeHero() {
   );
 }`;
 
-export const usagePlyrAudio = `import { HeroPlyrPlayer } from "@/components/custom/blocks/HeroVideoPlayerPlyrBlock";
-
-export default function PlyrAudioHero() {
-  return (
-    <HeroPlyrPlayer
-      mediaType="audio"
-      src="https://cdn.plyr.io/static/demo/Kishi_Bashi_-_It_All_Began_With_a_Burst.mp3"
-      srcType="audio/mpeg"
-      accentColor="#fb923c"
-      title="It All Began With a Burst"
-      subtitle="Kishi Bashi — 151a. The same player in its audio layout."
-    />
-  );
-}`;
-
 <ExampleShowcase
-  name="hero-video-player-plyr"
+  name="video-player-plyr"
   columns={1}
   examples={[
     {
@@ -423,7 +294,7 @@ export default function PlyrAudioHero() {
       props: { provider: "html5", mediaType: "video" },
       usage: usagePlyrHtml5,
       code: extractCode(
-        "src/components/custom/blocks/HeroVideoPlayerPlyrBlock.tsx",
+        "src/components/custom/blocks/VideoPlayerPlyrBlock.tsx",
       ),
     },
     {
@@ -446,37 +317,22 @@ export default function PlyrAudioHero() {
       props: { provider: "youtube", mediaType: "video" },
       usage: usagePlyrYouTube,
     },
-    {
-      title: "Plyr — Audio",
-      subheading: "The same component in its audio layout, with no video frame.",
-      propNotes: [
-        {
-          prop: "mediaType",
-          value: '"audio"',
-          effect:
-            "renders an `<audio>` element, so the card drops the aspect ratio and sizes to the control bar.",
-        },
-      ],
-      props: { mediaType: "audio" },
-      minHeight: 320,
-      usage: usagePlyrAudio,
-    },
   ]}
 />
 
 ### Install the Plyr player
 
-<Installation name="hero-video-player-plyr" showSetupPath={false} />
+<Installation name="video-player-plyr" showSetupPath={false} />
 
 ## JW Player
 
-[JW Player](https://jwplayer.com) is a licensed, remotely hosted library rather than an npm package, so `HeroJwPlayer` loads it from a `libraryUrl` you supply and falls back to a native `<video>` if it is unavailable. The previews below run on JW's public documentation library — see the setup note under Installation before shipping.
+[JW Player](https://jwplayer.com) is a licensed, remotely hosted library rather than an npm package, so `JwPlayer` loads it from a `libraryUrl` you supply and falls back to a native `<video>` if it is unavailable. The previews below run on JW's public documentation library — see the setup note under Installation before shipping.
 
-export const usageJwDefault = `import { HeroJwPlayer } from "@/components/custom/blocks/HeroVideoPlayerJwBlock";
+export const usageJwDefault = `import { JwPlayer } from "@/components/custom/blocks/VideoPlayerJwBlock";
 
 export default function JwHero() {
   return (
-    <HeroJwPlayer
+    <JwPlayer
       libraryUrl="https://cdn.jwplayer.com/libraries/YOUR_PLAYER_ID.js"
       playlistUrl="https://cdn.jwplayer.com/v2/media/hWF9vG66"
       posterUrl="https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=1920&q=80"
@@ -486,11 +342,11 @@ export default function JwHero() {
   );
 }`;
 
-export const usageJwSkin = `import { HeroJwPlayer } from "@/components/custom/blocks/HeroVideoPlayerJwBlock";
+export const usageJwSkin = `import { JwPlayer } from "@/components/custom/blocks/VideoPlayerJwBlock";
 
 export default function SkinnedJwHero() {
   return (
-    <HeroJwPlayer
+    <JwPlayer
       libraryUrl="https://cdn.jwplayer.com/libraries/YOUR_PLAYER_ID.js"
       skin="midnight"
       playlistUrl="https://cdn.jwplayer.com/v2/media/hWF9vG66"
@@ -501,11 +357,11 @@ export default function SkinnedJwHero() {
   );
 }`;
 
-export const usageJwCustom = `import { HeroJwPlayer } from "@/components/custom/blocks/HeroVideoPlayerJwBlock";
+export const usageJwCustom = `import { JwPlayer } from "@/components/custom/blocks/VideoPlayerJwBlock";
 
 export default function BrandedJwHero() {
   return (
-    <HeroJwPlayer
+    <JwPlayer
       libraryUrl="https://cdn.jwplayer.com/libraries/YOUR_PLAYER_ID.js"
       file="https://cdn.example.com/media/launch-film.m3u8"
       posterUrl="https://cdn.example.com/media/launch-film.jpg"
@@ -521,7 +377,7 @@ export default function BrandedJwHero() {
 }`;
 
 <ExampleShowcase
-  name="hero-video-player-jw"
+  name="video-player-jw"
   columns={1}
   examples={[
     {
@@ -542,7 +398,7 @@ export default function BrandedJwHero() {
       ],
       props: { skin: "default" },
       usage: usageJwDefault,
-      code: extractCode("src/components/custom/blocks/HeroVideoPlayerJwBlock.tsx"),
+      code: extractCode("src/components/custom/blocks/VideoPlayerJwBlock.tsx"),
     },
     {
       title: "JW Player — skinned",
@@ -589,11 +445,11 @@ export default function BrandedJwHero() {
 
 ### Install the JW player
 
-<Installation name="hero-video-player-jw" showSetupPath={false} />
+<Installation name="video-player-jw" showSetupPath={false} />
 
 ### JW Player setup
 
-`HeroJwPlayer` has no npm dependency: JW ships a licensed library from its own CDN, and the component loads it at runtime.
+`JwPlayer` has no npm dependency: JW ships a licensed library from its own CDN, and the component loads it at runtime.
 
 1. Create a player in the [JW Dashboard](https://dashboard.jwplayer.com) and copy its cloud-hosted library URL — `https://cdn.jwplayer.com/libraries/<PLAYER_ID>.js`.
 2. Pass it as `libraryUrl`. For a self-hosted build, also pass the `licenseKey` from your player settings.
@@ -609,8 +465,8 @@ If the library fails to load, the component renders a native `<video>` with the 
     <p className="text-zinc-600 dark:text-zinc-400 text-sm">Open in a dialog, swap the player into the card in place, or render it directly on load — one prop, no layout rewrite.</p>
   </div>
   <div className="p-6 rounded-2xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900">
-    <h3 className="text-lg font-semibold text-zinc-900 dark:text-zinc-50 mb-2">Five Player Backends</h3>
-    <p className="text-zinc-600 dark:text-zinc-400 text-sm">YouTube embeds, native HTML5 video, native audio, Plyr and JW Player — sharing one hero card, one title treatment and one glow treatment.</p>
+    <h3 className="text-lg font-semibold text-zinc-900 dark:text-zinc-50 mb-2">Four Player Backends</h3>
+    <p className="text-zinc-600 dark:text-zinc-400 text-sm">YouTube embeds, native HTML5 video, Plyr and JW Player — sharing one hero card, one title treatment and one glow treatment.</p>
   </div>
   <div className="p-6 rounded-2xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900">
     <h3 className="text-lg font-semibold text-zinc-900 dark:text-zinc-50 mb-2">Deferred Media Weight</h3>
@@ -651,13 +507,13 @@ If the library fails to load, the component renders a native `<video>` with the 
   </div>
   <div className="p-5 rounded-xl border border-purple-200 dark:border-purple-900/50 bg-purple-50/50 dark:bg-purple-950/20">
     <h4 className="text-base font-semibold text-purple-900 dark:text-purple-300 mb-1">Choosing a backend</h4>
-    <p className="text-purple-800 dark:text-purple-400/80 text-sm">Start with <code>HeroVideoPlayer</code> — it ships no player library. Move to Plyr when you need one consistent, skinnable control bar across YouTube, Vimeo and self-hosted files. Move to JW Player when you are already on JW's platform for adaptive streaming, DRM or analytics.</p>
+    <p className="text-purple-800 dark:text-purple-400/80 text-sm">Start with <code>VideoPlayer</code> — it ships no player library. Move to Plyr when you need one consistent, skinnable control bar across YouTube, Vimeo and self-hosted files. Move to JW Player when you are already on JW's platform for adaptive streaming, DRM or analytics.</p>
   </div>
 </div>
 
 ## Props Reference
 
-### HeroVideoPlayer
+### VideoPlayer
 
 <div className="overflow-x-auto mb-8">
   <table>
@@ -782,84 +638,7 @@ If the library fails to load, the component renders a native `<video>` with the 
   </table>
 </div>
 
-### HeroAudioPlayer
-
-<div className="overflow-x-auto mb-8">
-  <table>
-    <thead>
-      <tr>
-        <th>Prop</th>
-        <th>Type</th>
-        <th>Default</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><code>audioUrl</code></td>
-        <td><code>string</code></td>
-        <td><code>"https://cdn.plyr.io/..."</code></td>
-        <td>Audio file the browser plays natively — mp3, ogg, wav, m4a.</td>
-      </tr>
-      <tr>
-        <td><code>audioType</code></td>
-        <td><code>string</code></td>
-        <td><code>"audio/mpeg"</code></td>
-        <td>MIME type on the <code>&lt;source&gt;</code>, so the browser can skip a format it cannot play.</td>
-      </tr>
-      <tr>
-        <td><code>variant</code></td>
-        <td><code>"hero" | "bar" | "native"</code></td>
-        <td><code>"hero"</code></td>
-        <td>Full artwork card, single compact row, or the browser's own <code>&lt;audio controls&gt;</code> under the artwork.</td>
-      </tr>
-      <tr>
-        <td><code>artworkUrl</code> / <code>artworkAlt</code></td>
-        <td><code>string</code></td>
-        <td><code>"https://images.unsplash..."</code></td>
-        <td>Cover image and its alt text.</td>
-      </tr>
-      <tr>
-        <td><code>badge</code> / <code>title</code> / <code>subtitle</code></td>
-        <td><code>string</code></td>
-        <td><code>"Now Playing"</code> / …</td>
-        <td>Track copy. <code>subtitle</code> is the natural place for the artist or show name.</td>
-      </tr>
-      <tr>
-        <td><code>skipSeconds</code></td>
-        <td><code>number</code></td>
-        <td><code>10</code></td>
-        <td>Seconds the rewind and forward buttons jump. <code>0</code> hides both.</td>
-      </tr>
-      <tr>
-        <td><code>autoPlay</code> / <code>loop</code></td>
-        <td><code>boolean</code></td>
-        <td><code>false</code></td>
-        <td>Passed to the <code>&lt;audio&gt;</code> element. Autoplay is blocked without a prior interaction on most browsers.</td>
-      </tr>
-      <tr>
-        <td><code>preload</code></td>
-        <td><code>"none" | "metadata" | "auto"</code></td>
-        <td><code>"metadata"</code></td>
-        <td>How much the browser fetches up front. <code>metadata</code> is enough to show the duration.</td>
-      </tr>
-      <tr>
-        <td><code>enableGlow</code></td>
-        <td><code>boolean</code></td>
-        <td><code>true</code></td>
-        <td>Ambient blur gradient behind the card.</td>
-      </tr>
-      <tr>
-        <td><code>onPlay</code> / <code>onPause</code> / <code>onEnded</code></td>
-        <td><code>() =&gt; void</code></td>
-        <td><code>undefined</code></td>
-        <td>Playback callbacks for analytics.</td>
-      </tr>
-    </tbody>
-  </table>
-</div>
-
-### HeroPlyrPlayer
+### PlyrPlayer
 
 <div className="overflow-x-auto mb-8">
   <table>
@@ -954,7 +733,7 @@ If the library fails to load, the component renders a native `<video>` with the 
   </table>
 </div>
 
-### HeroJwPlayer
+### JwPlayer
 
 <div className="overflow-x-auto mb-8">
   <table>
