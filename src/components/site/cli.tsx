@@ -2,9 +2,8 @@
 
 import React, { useState } from "react";
 import { cn } from "@/lib/utils";
-import { FaYarn } from "react-icons/fa";
-import { SiNpm, SiPnpm, SiBun } from "react-icons/si";
 import { Copy, Check } from "lucide-react";
+import { PACKAGE_MANAGER_ICONS } from "./package-manager-icons";
 import {
   usePackageManager,
   type PackageManager,
@@ -114,6 +113,7 @@ export const Cli = ({ command }: CliProps) => {
         >
           {(Object.keys(PM_COMMANDS) as PackageManager[]).map((name) => {
             const isActive = name === pm;
+            const PmIcon = PACKAGE_MANAGER_ICONS[name].Icon;
             return (
               <button
                 key={name}
@@ -129,21 +129,10 @@ export const Cli = ({ command }: CliProps) => {
                 role="tab"
                 tabIndex={isActive ? 0 : -1}
               >
-                {/* Sized by class, not react-icons' `size` prop: that prop only
-                    emits fixed width/height attributes, which can't respond to a
-                    breakpoint. The CSS class overrides them. */}
-                {name === "npm" && (
-                  <SiNpm className="size-3.5 shrink-0 sm:size-[18px]" color={isActive ? "#CB3837" : "#666"} />
-                )}
-                {name === "pnpm" && (
-                  <SiPnpm className="size-3.5 shrink-0 sm:size-[18px]" color={isActive ? "#F9DC3E" : "#666"} />
-                )}
-                {name === "yarn" && (
-                  <FaYarn className="size-3.5 shrink-0 sm:size-[18px]" color={isActive ? "#2C8EBB" : "#666"} />
-                )}
-                {name === "bun" && (
-                  <SiBun className="size-3.5 shrink-0 sm:size-[18px]" color={isActive ? "#FBF0DF" : "#666"} />
-                )}
+                <PmIcon
+                  className="size-3.5 shrink-0 sm:size-[18px]"
+                  color={isActive ? PACKAGE_MANAGER_ICONS[name].color : "#666"}
+                />
                 {name}
               </button>
             );

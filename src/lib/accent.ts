@@ -63,6 +63,17 @@ export function accentForeground(color: string): string {
   return luminance > 0.45 ? "#09090b" : "#ffffff";
 }
 
+/** The theme tokens a picked accent repoints, as `--name` → value. */
+export function accentTokens(color?: string): Record<string, string> {
+  const resolved = resolveAccent(color);
+  if (!resolved) return {};
+  return {
+    "--primary": resolved,
+    "--primary-foreground": accentForeground(resolved),
+    "--ring": resolved,
+  };
+}
+
 /**
  * Inline style repointing `--primary` at the picked accent for one subtree.
  * `--primary-foreground` is derived alongside it, otherwise a light pick leaves
@@ -70,10 +81,5 @@ export function accentForeground(color: string): string {
  * "Default" so the page theme still wins.
  */
 export function accentStyle(color?: string): CSSProperties {
-  const resolved = resolveAccent(color);
-  if (!resolved) return {};
-  return {
-    "--primary": resolved,
-    "--primary-foreground": accentForeground(resolved),
-  } as CSSProperties;
+  return accentTokens(color) as CSSProperties;
 }

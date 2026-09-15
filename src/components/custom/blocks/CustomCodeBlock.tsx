@@ -2,9 +2,7 @@
 
 import React, { useState, useMemo } from "react";
 import { cn } from "@/lib/utils";
-import { Check, Copy } from "lucide-react";
-import { SiJavascript, SiTypescript, SiHtml5, SiCss, SiReact } from "react-icons/si";
-import { FaTerminal } from "react-icons/fa";
+import { Atom, Braces, Check, CodeXml, Copy, FileCode, Palette, Terminal } from "lucide-react";
 
 export interface CodeTab {
   code: string;
@@ -22,13 +20,15 @@ export interface CustomCodeBlockProps extends Omit<React.HTMLAttributes<HTMLDivE
 const LanguageIcon = ({ language }: { language: string }) => {
   const lang = language.toLowerCase();
   const iconClass = "w-4 h-4";
-  if (lang === "javascript" || lang === "js" || lang === "jsx") return <SiJavascript className={cn(iconClass, "text-yellow-400")} />;
-  if (lang === "typescript" || lang === "ts" || lang === "tsx") return <SiTypescript className={cn(iconClass, "text-blue-500")} />;
-  if (lang === "react") return <SiReact className={cn(iconClass, "text-sky-400")} />;
-  if (lang === "html" || lang === "xml") return <SiHtml5 className={cn(iconClass, "text-orange-500")} />;
-  if (lang === "css") return <SiCss className={cn(iconClass, "text-blue-400")} />;
-  if (lang === "bash" || lang === "sh") return <FaTerminal className={cn(iconClass, "text-slate-400")} />;
-  return <SiReact className={cn(iconClass, "text-slate-400")} />;
+  // lucide has no language logos; the brand colour on a generic glyph does the
+  // identifying instead.
+  if (lang === "javascript" || lang === "js" || lang === "jsx") return <Braces className={cn(iconClass, "text-yellow-400")} />;
+  if (lang === "typescript" || lang === "ts" || lang === "tsx") return <FileCode className={cn(iconClass, "text-blue-500")} />;
+  if (lang === "react") return <Atom className={cn(iconClass, "text-sky-400")} />;
+  if (lang === "html" || lang === "xml") return <CodeXml className={cn(iconClass, "text-orange-500")} />;
+  if (lang === "css") return <Palette className={cn(iconClass, "text-blue-400")} />;
+  if (lang === "bash" || lang === "sh") return <Terminal className={cn(iconClass, "text-slate-400")} />;
+  return <FileCode className={cn(iconClass, "text-slate-400")} />;
 };
 
 const formatLanguageName = (language: string) => {

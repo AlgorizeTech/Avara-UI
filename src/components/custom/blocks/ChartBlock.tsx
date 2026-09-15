@@ -158,8 +158,11 @@ function BarChart({
           >
             {/* Tooltip */}
             <div className="absolute -top-12 opacity-0 scale-95 group-hover:opacity-100 group-hover:scale-100 transition-all duration-200 pointer-events-none z-50 flex flex-col items-center">
-              <div className="bg-primary text-primary-foreground px-3 py-1.5 rounded-lg shadow-xl text-xs font-bold whitespace-nowrap text-center">
-                <div className="text-[10px] text-primary-foreground/80 uppercase tracking-wider font-semibold">
+              <div
+                className="text-white px-3 py-1.5 rounded-lg shadow-xl text-xs font-bold whitespace-nowrap text-center"
+                style={{ backgroundColor: color }}
+              >
+                <div className="text-[10px] text-white/80 uppercase tracking-wider font-semibold">
                   {d.label}
                 </div>
                 <div>
@@ -168,7 +171,7 @@ function BarChart({
                   {suffix}
                 </div>
               </div>
-              <div className="w-2 h-2 bg-primary rotate-45 -mt-1" />
+              <div className="w-2 h-2 rotate-45 -mt-1" style={{ backgroundColor: color }} />
             </div>
 
             {/* Flat-Bottom Bar */}
@@ -337,8 +340,11 @@ function SmoothLineChart({
                     : "opacity-0 scale-95",
                 )}
               >
-                <div className="bg-primary text-primary-foreground px-3 py-1.5 rounded-lg shadow-xl text-xs font-bold whitespace-nowrap text-center">
-                  <div className="text-[10px] text-primary-foreground/80 uppercase tracking-wider font-semibold">
+                <div
+                  className="text-white px-3 py-1.5 rounded-lg shadow-xl text-xs font-bold whitespace-nowrap text-center"
+                  style={{ backgroundColor: color }}
+                >
+                  <div className="text-[10px] text-white/80 uppercase tracking-wider font-semibold">
                     {data[i].label}
                   </div>
                   <div>
@@ -347,7 +353,7 @@ function SmoothLineChart({
                     {suffix}
                   </div>
                 </div>
-                <div className="w-2 h-2 bg-primary rotate-45 -mt-1" />
+                <div className="w-2 h-2 rotate-45 -mt-1" style={{ backgroundColor: color }} />
               </div>
             </div>
 
@@ -484,8 +490,11 @@ function CircularChart({
               transform: "translate(-50%, -50%)",
             }}
           >
-            <div className="bg-primary text-primary-foreground px-3 py-1.5 rounded-lg shadow-xl text-xs font-bold whitespace-nowrap text-center">
-              <div className="text-[10px] text-primary-foreground/80 uppercase tracking-wider font-semibold">
+            <div
+              className="text-white px-3 py-1.5 rounded-lg shadow-xl text-xs font-bold whitespace-nowrap text-center"
+              style={{ backgroundColor: color }}
+            >
+              <div className="text-[10px] text-white/80 uppercase tracking-wider font-semibold">
                 {slices[hoveredIndex].label}
               </div>
               <div>

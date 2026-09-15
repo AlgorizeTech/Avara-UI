@@ -643,7 +643,7 @@ export const META: Record<string, ItemMeta> = {
     description:
       "A tabbed code viewer with filenames, language badges and per-tab copy. Use it in documentation to show the same example across several files.",
     categories: ["code"],
-    docs: "Named exports: CustomCodeBlock, CodeTab. `tabs` take { code, language, fileName }; a single tab renders without the tab strip. Pulls in `react-icons` as well as `lucide-react` for file-type icons. Highlighting is a built-in regex tokenizer, not Shiki or Prism — good for snippets, not a full editor.",
+    docs: "Named exports: CustomCodeBlock, CodeTab. `tabs` take { code, language, fileName }; a single tab renders without the tab strip. Uses `lucide-react` for file-type icons. Highlighting is a built-in regex tokenizer, not Shiki or Prism — good for snippets, not a full editor.",
   },
   terminal: {
     description:

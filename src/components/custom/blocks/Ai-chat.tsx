@@ -417,7 +417,11 @@ export default function AIChat({
           </div>
           <button
             onClick={handleNewChat}
-            className="w-full flex items-center justify-center gap-2 py-3 bg-primary hover:bg-primary text-primary-foreground rounded-xl font-bold transition-all shadow-md active:scale-95 cursor-pointer"
+            className={cn(
+              "w-full flex items-center justify-center gap-2 py-3 rounded-xl font-bold transition-all shadow-md active:scale-95 cursor-pointer",
+              theme.primaryBg,
+              theme.shadow,
+            )}
           >
             <Plus className="w-4 h-4" /> New Chat
           </button>
@@ -690,7 +694,7 @@ export default function AIChat({
                           {msg.time}
                         </span>
                         {msg.role !== "user" && (
-                          <div className="flex items-center gap-1.5 text-primary-foreground">
+                          <div className="flex items-center gap-1.5 text-muted-foreground">
                             <button className="p-1 hover:text-foreground hover:bg-muted rounded transition-colors">
                               <Copy className="w-3.5 h-3.5" />
                             </button>
