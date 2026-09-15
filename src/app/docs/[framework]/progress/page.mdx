@@ -3,7 +3,7 @@ import { extractCode } from "@/lib/code";
 
 # Progress
 
-A flexible, smoothly animated progress indicator built to handle loading states, storage meters, or step-by-step wizards.
+A flexible, smoothly animated progress indicator built to handle loading states, storage meters, or step-by-step wizards. Every form fills from zero when it first appears, and any number it shows counts up alongside the fill.
 
 This block is split into composable pieces: the core `<Progress />` bar for the visual fill, the optional `<ProgressField />` wrapper which handles the layout for labels and percentage text, `<MultiProgress />` with `<ProgressSegment />` children for several values sharing one track, and `<CircularProgress />` for the same value drawn as a ring.
 
@@ -132,12 +132,17 @@ export default function CreditsRing() {
   const used = 68;
 
   return (
-    // Children replace the centred percentage entirely.
+    // Children replace the centred percentage entirely. As a function they
+    // receive the value while it counts up, so the number animates with the arc.
     <CircularProgress value={used} max={100} circleSize={160} barSize="lg">
-      <span className="text-3xl font-bold tabular-nums">{used}</span>
-      <span className="text-[11px] font-medium uppercase tracking-wide text-muted-foreground">
-        of 100 credits
-      </span>
+      {(shown) => (
+        <>
+          <span className="text-3xl font-bold tabular-nums">{shown}</span>
+          <span className="text-[11px] font-medium uppercase tracking-wide text-muted-foreground">
+            of 100 credits
+          </span>
+        </>
+      )}
     </CircularProgress>
   );
 }`;
@@ -164,6 +169,11 @@ export default function CreditsRing() {
           prop: "tooltip",
           effect:
             "shows the percentage in a bubble at the fill's edge on hover; pass a function to format it.",
+        },
+        {
+          prop: "animate",
+          effect:
+            "is on by default: the fill sweeps in from zero when the bar first appears and every later change tweens instead of jumping. `duration` sets the mount run in milliseconds.",
         },
       ],
       props: { example: "bare", variant: "default", value: 45, tooltip: true },
@@ -197,7 +207,7 @@ export default function CreditsRing() {
           lead: "Pass",
           prop: "children",
           effect:
-            "to replace the centred percentage with anything — a count, an icon, a caption.",
+            "to replace the centred percentage with anything — a count, an icon, a caption. As a function, `(value, max) => node`, it receives the value while it counts up so the centre animates with the arc.",
         },
       ],
       props: { example: "circular-custom", variant: "default", barSize: "lg", value: 45, tooltip: true },
@@ -304,8 +314,8 @@ Explore the Progress bar's features, including smooth value interpolation, indet
     <p className="text-zinc-600 dark:text-zinc-400 text-sm">Fully responsive design that looks and works great across desktop, tablet, and mobile devices.</p>
   </div>
   <div className="p-6 rounded-2xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900">
-    <h3 className="text-lg font-semibold text-zinc-900 dark:text-zinc-50 mb-2">Performant</h3>
-    <p className="text-zinc-600 dark:text-zinc-400 text-sm">Optimized for maximum performance with minimal re-renders and efficient state management.</p>
+    <h3 className="text-lg font-semibold text-zinc-900 dark:text-zinc-50 mb-2">Counts up</h3>
+    <p className="text-zinc-600 dark:text-zinc-400 text-sm">Bars, segments and rings fill from zero on first paint and every readout counts up in step, on one shared easing. Respects <code>prefers-reduced-motion</code>; turn it off with <code>animate={false}</code>.</p>
   </div>
 </div>
 
@@ -497,6 +507,48 @@ Explore the Progress bar's features, including smooth value interpolation, indet
           above the ring on <code>CircularProgress</code>. <code>true</code>{" "}
           shows the percentage; a function formats it. Not shown while{" "}
           <code>indeterminate</code>.
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <code>Progress</code>
+        </td>
+        <td>
+          <code>animate</code>
+        </td>
+        <td>
+          <code>boolean</code>
+        </td>
+        <td>
+          <code>true</code>
+        </td>
+        <td>
+          Fill from zero on mount and tween every later change of{" "}
+          <code>value</code>; stage colours are crossed on the way. Also on{" "}
+          <code>ProgressField</code>, <code>MultiProgress</code> and{" "}
+          <code>CircularProgress</code>. Off under{" "}
+          <code>prefers-reduced-motion</code>.
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <code>Progress</code>
+        </td>
+        <td>
+          <code>duration</code>
+        </td>
+        <td>
+          <code>number</code>
+        </td>
+        <td>
+          <code>1200</code>
+        </td>
+        <td>
+          Length of the mount fill in milliseconds. Later changes take a slice
+          proportional to how far they travel, so a 1% tick stays snappy. Set
+          the same value on a <code>ProgressField</code> and its bar so the
+          readout keeps step. Also on <code>MultiProgress</code> and{" "}
+          <code>CircularProgress</code>.
         </td>
       </tr>
       <tr>
@@ -786,12 +838,12 @@ Explore the Progress bar's features, including smooth value interpolation, indet
           <code>children</code>
         </td>
         <td>
-          <code>ReactNode</code>
+          <code>{`ReactNode | (value, max) => ReactNode`}</code>
         </td>
         <td>
           <code>undefined</code>
         </td>
-        <td>Replaces the centred readout entirely — use it for a count, an icon, or a caption.</td>
+        <td>Replaces the centred readout entirely — use it for a count, an icon, or a caption. As a function it receives <code>(value, max)</code> with the value counting up, so a custom centre animates with the arc.</td>
       </tr>
       <tr>
         <td>
