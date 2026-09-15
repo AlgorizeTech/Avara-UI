@@ -156,12 +156,14 @@ export default function BookAppointment() {
       </div>
 
       {/* Booking */}
-      <GlassPanel shape="slab" className="flex flex-col self-start p-6 md:col-span-6 lg:col-span-4">
-        <h2 className="text-lg font-semibold tracking-tight">Book an appointment</h2>
+      {/* The Booker is the panel's whole inside, so its confirmation covers
+          the panel edge to edge instead of stopping at the padding. */}
+      <GlassPanel shape="slab" className="self-start md:col-span-6 lg:col-span-4">
         <Booker
-          className="mt-5 flex flex-1 flex-col gap-6"
+          className="flex h-full flex-col gap-5 p-6"
           onBook={() => new Promise((resolve) => setTimeout(resolve, 900))}
         >
+          <h2 className="text-lg font-semibold tracking-tight">Book an appointment</h2>
           <Booker.Days unavailable={(d) => d.getDay() === 0} />
           <div className="space-y-4">
             <p className="text-sm font-semibold">Time</p>
@@ -418,12 +420,14 @@ export default function BookAppointment() {
       </div>
 
       {/* Booking */}
-      <GlassPanel shape="slab" className="flex flex-col self-start p-6 md:col-span-6 lg:col-span-4">
-        <h2 className="text-lg font-semibold tracking-tight">Book an appointment</h2>
+      {/* The Booker is the panel's whole inside, so its confirmation covers
+          the panel edge to edge instead of stopping at the padding. */}
+      <GlassPanel shape="slab" className="self-start md:col-span-6 lg:col-span-4">
         <Booker
-          className="mt-5 flex flex-1 flex-col gap-6"
+          className="flex h-full flex-col gap-5 p-6"
           onBook={() => new Promise((resolve) => setTimeout(resolve, 900))}
         >
+          <h2 className="text-lg font-semibold tracking-tight">Book an appointment</h2>
           <Booker.Days unavailable={(d) => d.getDay() === 0} />
           <div className="space-y-4">
             <p className="text-sm font-semibold">Time</p>
@@ -542,7 +546,7 @@ function ActivityBar() {
         {
           prop: "Booker",
           effect:
-            "holds the chosen day and slot. Put `Booker.Days`, `Booker.Slots`, `Booker.Submit` and `Booker.Confirmation` inside it in any layout; the confirmation covers the `Booker` it sits in.",
+            "holds the chosen day and slot. Put `Booker.Days`, `Booker.Slots`, `Booker.Submit` and `Booker.Confirmation` inside it in any layout; the confirmation covers the `Booker` it sits in — so give the `Booker` the panel's padding (heading included) and the cover reaches the panel's edges and corners.",
         },
         {
           lead: "Return a promise from",
@@ -555,6 +559,12 @@ function ActivityBar() {
           value: "(day) => day.getDay() === 0",
           effect:
             "on `Booker.Days` strikes out days with nothing free. Sundays here; feed it your real availability.",
+        },
+        {
+          lead: "The arrows page",
+          prop: "Booker.Days",
+          effect:
+            "a week at a time, up to `horizon` days out (90 by default). Days start today, so the previous arrow is disabled on the first page — nobody can book into the past.",
         },
       ],
       props: { rounded: true },
@@ -599,14 +609,14 @@ const AFTERNOON = [{ label: "1:00 PM" }, { label: "2:00 PM" }, { label: "3:00 PM
 export default function Booking() {
   return (
     <ProfilePage className="rounded-[36px]">
-      <GlassPanel shape="slab" className="flex flex-col p-6 lg:col-span-4">
-        <h2 className="text-lg font-semibold tracking-tight">Book an appointment</h2>
+      <GlassPanel shape="slab" className="lg:col-span-4">
         <Booker
-          className="mt-5 flex flex-1 flex-col gap-6"
+          className="flex h-full flex-col gap-5 p-6"
           onBook={async ({ day, slot }) => {
             await fetch("/api/book", { method: "POST", body: JSON.stringify({ day, slot }) });
           }}
         >
+          <h2 className="text-lg font-semibold tracking-tight">Book an appointment</h2>
           <Booker.Days unavailable={(d) => d.getDay() === 0} />
           <div className="space-y-4">
             <p className="text-sm font-semibold">Time</p>
@@ -641,7 +651,7 @@ Choosing a new day clears the slot, since availability changes with the day. The
   </div>
   <div className="p-6 rounded-2xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900">
     <h3 className="text-lg font-semibold text-zinc-900 dark:text-zinc-50 mb-2">Honest about today</h3>
-    <p className="text-zinc-600 dark:text-zinc-400 text-sm">The default seven days are built on the client, so a server render never guesses the visitor's date. Pass your own days array to offer a different range.</p>
+    <p className="text-zinc-600 dark:text-zinc-400 text-sm">The default days are built on the client, so a server render never guesses the visitor's date. They start today and page forward a week at a time — the previous arrow never reaches into the past. Pass your own days array to offer a different range.</p>
   </div>
 </div>
 
@@ -692,8 +702,20 @@ Choosing a new day clears the slot, since availability changes with the day. The
       <tr>
         <td><code>days</code></td>
         <td><code>Date[]</code></td>
-        <td>next 7 days</td>
-        <td>Days on offer, in order. The default is built on the client so the server never guesses today.</td>
+        <td>today → <code>horizon</code></td>
+        <td>Days on offer, in order, paged <code>count</code> at a time with the previous/next arrows. The default is built on the client so the server never guesses today, and it starts today — there is no paging back into the past.</td>
+      </tr>
+      <tr>
+        <td><code>count</code></td>
+        <td><code>number</code></td>
+        <td><code>7</code></td>
+        <td>Days shown per page.</td>
+      </tr>
+      <tr>
+        <td><code>horizon</code></td>
+        <td><code>number</code></td>
+        <td><code>90</code></td>
+        <td>How far ahead the default days run, in days from today. Ignored when <code>days</code> is given.</td>
       </tr>
       <tr>
         <td><code>unavailable</code></td>

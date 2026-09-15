@@ -270,7 +270,8 @@
         "marketing"
       ],
       "dependencies": [
-        "framer-motion"
+        "framer-motion",
+        "lucide-react"
       ],
       "registryDependencies": [
         "utils"
