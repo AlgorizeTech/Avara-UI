@@ -25,7 +25,8 @@ export function SetupPath() {
       >
         installation guide
       </DocLink>{" "}
-      to set up Tailwind CSS and shadcn first, then copy your styles from the{" "}
+      to set up Tailwind CSS, shadcn, the <code>cn</code> helper and{" "}
+      <code>lucide-react</code> first, then copy your styles from the{" "}
       <DocLink
         href="/themes"
         className="font-medium text-blue-600 hover:underline dark:text-blue-400"

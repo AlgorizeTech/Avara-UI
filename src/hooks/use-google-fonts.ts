@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { FONT_FAMILY_STORAGE_KEY } from "@/lib/theme-presets";
 
 export const FALLBACK_FONTS = [
   "Inter",
@@ -107,18 +108,42 @@ export function useGoogleFonts(): { fonts: FontOption[]; isLoading: boolean } {
   return { fonts, isLoading };
 }
 
+export { FONT_FAMILY_STORAGE_KEY };
+
+const DYNAMIC_FONT_LINK_ID = "dynamic-google-font";
+
 export function loadGoogleFont(fontFamily: string | null | undefined) {
-  // "Inter" is the docs project's optimized font via next/font — skip dynamic load
-  if (!fontFamily || fontFamily === "Inter") return;
+  if (!fontFamily) return;
   if (typeof document === "undefined") return;
-  const linkId = "dynamic-google-font";
-  let link = document.getElementById(linkId) as HTMLLinkElement | null;
+  let link = document.getElementById(DYNAMIC_FONT_LINK_ID) as HTMLLinkElement | null;
   if (!link) {
     link = document.createElement("link");
-    link.id = linkId;
+    link.id = DYNAMIC_FONT_LINK_ID;
     link.rel = "stylesheet";
     document.head.appendChild(link);
   }
+  // Keep this URL shape in sync with ThemeInitScript, which builds the same
+  // link before first paint so the stylesheet is already in flight by now.
   const fontParam = fontFamily.replace(/ /g, "+");
   link.href = `https://fonts.googleapis.com/css2?family=${fontParam}:wght@400;500;600;700&display=swap`;
+}
+
+/**
+ * Override the site default font (Cooper) with a Google font, site-wide.
+ * Tailwind's preflight puts `var(--font-sans)` on <html>, so an inline
+ * `--font-sans` on <html> outranks the @theme default and every `font-sans`
+ * utility follows along too.
+ */
+export function applyFontFamily(fontFamily: string) {
+  loadGoogleFont(fontFamily);
+  document.documentElement.style.setProperty(
+    "--font-sans",
+    `"${fontFamily}", sans-serif`,
+  );
+}
+
+/** Drop the override so the site falls back to Cooper. */
+export function clearFontFamily() {
+  document.documentElement.style.removeProperty("--font-sans");
+  document.getElementById(DYNAMIC_FONT_LINK_ID)?.remove();
 }

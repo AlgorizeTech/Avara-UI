@@ -731,6 +731,11 @@ html body[data-scroll-locked] {
 }
 
 @theme {
+  /* Cooper (self-hosted, see src/assets/fonts) is the site default. Tailwind's
+     preflight puts var(--font-sans) on <html>, so the theme customizer swaps
+     the family site-wide by setting --font-sans inline on <html>. */
+  --font-sans: var(--font-cooper), ui-sans-serif, system-ui, sans-serif,
+    "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
   --default-mono-font-family: "Geist Mono", ui-monospace, SFMono-Regular,
     Roboto Mono, Menlo, Monaco, Liberation Mono, DejaVu Sans Mono, Courier New,
     monospace;

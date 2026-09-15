@@ -19,6 +19,10 @@ import {
   DEFAULT_FONT_SIZE,
   useThemeContext,
 } from "@/contexts/theme-context";
+import {
+  clearFontFamily,
+  FONT_FAMILY_STORAGE_KEY,
+} from "@/hooks/use-google-fonts";
 
 import { DarkModeControl } from "./darkmode-control";
 import { FontFamilyControl } from "./font-family-control";
@@ -40,14 +44,11 @@ export function ThemeControl() {
   function resetThemeCustomization() {
     localStorage.removeItem("primaryColor");
     localStorage.removeItem("fontSize");
-    localStorage.removeItem("fontFamily");
+    localStorage.removeItem(FONT_FAMILY_STORAGE_KEY);
 
     const root = window.document.documentElement;
     root.style.fontSize = DEFAULT_FONT_SIZE + "%";
-    document.body.style.fontFamily = "";
-
-    const dynamicFontLink = document.getElementById("dynamic-google-font");
-    if (dynamicFontLink) dynamicFontLink.remove();
+    clearFontFamily();
 
     resetToDefaults();
     setFontSize(DEFAULT_FONT_SIZE);

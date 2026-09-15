@@ -76,6 +76,13 @@ export interface ThemePreset {
  */
 export const THEME_CUSTOMIZER_STORAGE_KEY = "theme-customizer-state";
 
+/**
+ * localStorage key holding the reader's Google font override, if any. Absent
+ * means the self-hosted site default (Cooper). Lives here rather than in the
+ * fonts hook so the server-rendered ThemeInitScript can import it.
+ */
+export const FONT_FAMILY_STORAGE_KEY = "fontFamily";
+
 // ─── All Color Tokens ────────────────────────────────────────────
 
 export const CORE_COLOR_TOKENS: CoreColorToken[] = [
