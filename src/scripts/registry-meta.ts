@@ -777,12 +777,6 @@ export const META: Record<string, ItemMeta> = {
     categories: ["media", "scroll"],
     docs: "Renders animated lists with smooth insertion and deletion transitions.",
   },
-  "animated-marquee": {
-    description:
-      "Horizontal and diagonal 3D cascading gallery marquee with continuous auto-flow motion, drag inertia physics, and 4 directional stream angles.",
-    categories: ["media", "scroll"],
-    docs: "Named export: AnimatedMarquee. Interactive drag with grab cursor, continuous auto-flow, 4 direction stream angles, and Next Themes adaptation.",
-  },
   "animated-typography": {
     description:
       "Headings and paragraphs that animate in with typewriter, glitch, blur and reveal effects. Use it for section titles that should draw the eye once.",

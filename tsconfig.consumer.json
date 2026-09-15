@@ -30,7 +30,6 @@
     "noFallthroughCasesInSwitch": true
   },
   "files": [
-    "src/components/custom/animated-marquee.tsx",
     "src/components/custom/blocks/Accordion.tsx",
     "src/components/custom/blocks/AdvancedTableBlock.tsx",
     "src/components/custom/blocks/Ai-chat.tsx",

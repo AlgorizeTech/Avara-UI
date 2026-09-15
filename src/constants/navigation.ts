@@ -148,7 +148,6 @@ export const navigation: NavigationItem[] = [
     children: [
       { label: "3D Carousel", slug: "3d-carousel" },
       { label: "Animated List", slug: "animated-list" },
-      { label: "Animated Marquee", slug: "animated-marquee" },
       { label: "Animated Timeline", slug: "animated-timeline" },
       { label: "Animated Typography", slug: "animated-typography" },
       { label: "Book Flip", slug: "book-flip" },
