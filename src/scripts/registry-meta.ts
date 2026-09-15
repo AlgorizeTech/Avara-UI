@@ -122,7 +122,7 @@ export const META: Record<string, ItemMeta> = {
     description:
       "A themeable progress bar in three forms — a single bar, a multi-segment track, and a ring — with an optional labelled field wrapper. Use it for determinate operations where percentage complete is known.",
     categories: ["feedback"],
-    docs: "Named exports: Progress, ProgressField, MultiProgress, ProgressSegment, CircularProgress, getThemeStyles. Use ProgressField when you need a label and value readout; use Progress bare inside your own layout. MultiProgress holds ProgressSegment children that share its `max`, each with its own `color`, for breakdowns across one track. CircularProgress draws the same value as a ring — `circleSize` is the diameter, `barSize` the stroke, and children replace the centred percentage.",
+    docs: "Named exports: Progress, ProgressField, MultiProgress, ProgressSegment, CircularProgress, getThemeStyles. Use ProgressField when you need a label and value readout; use Progress bare inside your own layout. MultiProgress holds ProgressSegment children that share its `max`, each with its own `color`, for breakdowns across one track. CircularProgress draws the same value as a ring — `circleSize` is the diameter, `barSize` the stroke, and children replace the centred percentage (a function child receives the counting value). Everything fills from zero on mount and tweens later changes via the exported useCountUp hook; `animate={false}` opts out and `duration` sets the mount run.",
   },
   toggle: {
     description:
@@ -643,7 +643,7 @@ export const META: Record<string, ItemMeta> = {
     description:
       "A tabbed code viewer with filenames, language badges and per-tab copy. Use it in documentation to show the same example across several files.",
     categories: ["code"],
-    docs: "Named exports: CustomCodeBlock, CodeTab. `tabs` take { code, language, fileName }; a single tab renders without the tab strip. Pulls in `react-icons` as well as `lucide-react` for file-type icons. Highlighting is a built-in regex tokenizer, not Shiki or Prism — good for snippets, not a full editor.",
+    docs: "Named exports: CustomCodeBlock, CodeTab. `tabs` take { code, language, fileName }; a single tab renders without the tab strip. Uses `lucide-react` for file-type icons. Highlighting is a built-in regex tokenizer, not Shiki or Prism — good for snippets, not a full editor.",
   },
   terminal: {
     description:

@@ -731,6 +731,13 @@ html body[data-scroll-locked] {
 }
 
 @theme {
+  /* DM Sans for body/UI text, Cooper (self-hosted, see src/assets/fonts) for
+     headings — see the h1–h4 rule in @layer base. Tailwind's preflight puts
+     var(--font-sans) on <html>, so the theme customizer swaps the body family
+     site-wide by setting --font-sans inline on <html>; headings keep Cooper. */
+  --font-sans: var(--font-dm-sans), ui-sans-serif, system-ui, sans-serif,
+    "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+  --font-serif: var(--font-cooper), ui-serif, Georgia, serif;
   --default-mono-font-family: "Geist Mono", ui-monospace, SFMono-Regular,
     Roboto Mono, Menlo, Monaco, Liberation Mono, DejaVu Sans Mono, Courier New,
     monospace;
@@ -801,6 +808,17 @@ html body[data-scroll-locked] {
   }
   body {
     @apply bg-background text-foreground;
+  }
+  /* Headings set in Cooper site-wide, body copy stays in the sans. In the base
+     layer so a `font-sans`/`font-mono` utility on a heading still wins. Cooper
+     is a heavy display face, so headings default to the regular weight and
+     let `font-semibold`/`font-bold` opt up. */
+  h1,
+  h2,
+  h3,
+  h4 {
+    font-family: var(--font-serif);
+    font-weight: 400;
   }
 }
 

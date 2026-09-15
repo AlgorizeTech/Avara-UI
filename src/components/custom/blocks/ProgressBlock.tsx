@@ -2,7 +2,7 @@
 
 import { cn } from "@/lib/utils";
 import { AlertCircle, AlertTriangle, CheckCircle2 } from "lucide-react";
-import React, { forwardRef } from "react";
+import React, { forwardRef, useEffect, useRef, useState } from "react";
 import { getThemeStyles } from "./progress-theme";
 
 // ==========================================
@@ -67,6 +67,92 @@ const STATUS_READOUT: Record<
   warning: { text: "text-amber-600 dark:text-amber-400", Icon: AlertTriangle },
   error: { text: "text-red-600 dark:text-red-400", Icon: AlertCircle },
 };
+
+// ==========================================
+// COUNT-UP ANIMATION
+// ==========================================
+
+/** One easing for the fill and the readout, so they can never drift apart. */
+const easeOutCubic = (t: number) => 1 - Math.pow(1 - t, 3);
+
+const prefersReducedMotion = () =>
+  typeof window !== "undefined" &&
+  window.matchMedia?.("(prefers-reduced-motion: reduce)").matches === true;
+
+/** Decimal places in `n`, so a tweened value can be shown at the caller's precision. */
+const decimalsOf = (n: number) => {
+  if (!Number.isFinite(n) || Number.isInteger(n)) return 0;
+  const text = String(n);
+  const dot = text.indexOf(".");
+  return dot < 0 ? 0 : Math.min(text.length - dot - 1, 6);
+};
+
+const roundTo = (n: number, decimals: number) => {
+  const factor = 10 ** decimals;
+  return Math.round(n * factor) / factor;
+};
+
+export interface CountUpOptions {
+  /** Length of the first run, from zero, in ms. Default 1200. */
+  duration?: number;
+  /** `false` returns `target` untouched. */
+  enabled?: boolean;
+  /**
+   * The scale later changes are measured against (the bar's `max`). A change
+   * across the whole range takes `duration`; a 1% tick takes a sliver of it.
+   */
+  range?: number;
+}
+
+/**
+ * Tweens a number towards `target`. It starts at 0 on mount — so the bar
+ * fills and the readout counts up when it first appears — then follows every
+ * later change from wherever it currently is, so a stream of small updates
+ * never jumps. The mount run always takes the full `duration`; later runs
+ * take a slice proportional to how far they travel, floored so a tiny nudge
+ * still visibly moves. Under `prefers-reduced-motion` it returns `target`.
+ */
+export function useCountUp(
+  target: number,
+  { duration = 1200, enabled = true, range }: CountUpOptions = {},
+): number {
+  const [current, setCurrent] = useState(enabled ? 0 : target);
+  const currentRef = useRef(current);
+  // Flipped by the first frame that actually moves, not by the effect — a
+  // run that is cancelled before it paints (strict mode) is not a mount run.
+  const movedRef = useRef(false);
+
+  useEffect(() => {
+    if (!enabled || prefersReducedMotion()) {
+      currentRef.current = target;
+      setCurrent(target);
+      return;
+    }
+    const from = currentRef.current;
+    const delta = target - from;
+    if (delta === 0) return;
+
+    const scale = Math.max(Math.abs(range ?? target), Math.abs(from), 1);
+    const ms = movedRef.current
+      ? Math.max(160, duration * Math.min(1, Math.abs(delta) / scale))
+      : duration;
+
+    let raf = 0;
+    const start = performance.now();
+    const tick = (now: number) => {
+      const t = Math.min(1, (now - start) / ms);
+      const next = t >= 1 ? target : from + delta * easeOutCubic(t);
+      currentRef.current = next;
+      movedRef.current = true;
+      setCurrent(next);
+      if (t < 1) raf = requestAnimationFrame(tick);
+    };
+    raf = requestAnimationFrame(tick);
+    return () => cancelAnimationFrame(raf);
+  }, [target, duration, enabled, range]);
+
+  return enabled ? current : target;
+}
 
 /** The hover bubble shared by the bar and the ring. Positioned by the caller. */
 function ProgressTooltip({
@@ -158,6 +244,10 @@ export interface ProgressFieldProps
   status?: ProgressStatus;
   /** One line under the bar — what happened, or what to do next. */
   hint?: React.ReactNode;
+  /** Count the readout up from zero on mount and tween every later change. */
+  animate?: boolean;
+  /** Length of the mount count-up in ms. Match the bar's `duration`. */
+  duration?: number;
 }
 
 export const ProgressField = forwardRef<HTMLDivElement, ProgressFieldProps>(
@@ -170,13 +260,19 @@ export const ProgressField = forwardRef<HTMLDivElement, ProgressFieldProps>(
       valueFormat,
       status = "active",
       hint,
+      animate = true,
+      duration = 1200,
       className,
       children,
       ...props
     },
     ref,
   ) => {
-    const percentage = Math.min(Math.max((value / max) * 100, 0), 100);
+    // The readout follows the same tween as the bar underneath, rounded back
+    // to the precision the caller passed so "12 GB" never becomes "11.7 GB".
+    const shown = useCountUp(value, { duration, enabled: animate, range: max });
+    const shownValue = roundTo(shown, decimalsOf(value));
+    const percentage = Math.min(Math.max((shown / max) * 100, 0), 100);
     const readout = status !== "active" ? STATUS_READOUT[status] : null;
 
     return (
@@ -201,7 +297,7 @@ export const ProgressField = forwardRef<HTMLDivElement, ProgressFieldProps>(
               >
                 {readout && <readout.Icon aria-hidden className="w-4 h-4" />}
                 {valueFormat
-                  ? valueFormat(value, max)
+                  ? valueFormat(shownValue, max)
                   : `${Math.round(percentage)}%`}
               </span>
             )}
@@ -249,6 +345,13 @@ export interface ProgressProps extends React.HTMLAttributes<HTMLDivElement> {
    * a function formats it, e.g. `(v, m) => v + " of " + m + " GB"`.
    */
   tooltip?: boolean | ((value: number, max: number) => React.ReactNode);
+  /**
+   * Fill from zero on mount and tween every later change of `value`, so the
+   * bar is never seen jumping. Stage colours are crossed on the way up.
+   */
+  animate?: boolean;
+  /** Length of the mount fill in ms; later changes take a proportional slice. */
+  duration?: number;
 }
 
 export const Progress = forwardRef<HTMLDivElement, ProgressProps>(
@@ -263,19 +366,28 @@ export const Progress = forwardRef<HTMLDivElement, ProgressProps>(
       status = "active",
       indeterminate = false,
       tooltip = false,
+      animate = true,
+      duration = 1200,
       className,
       indicatorClassName,
       ...props
     },
     ref,
   ) => {
-    const percentage = Math.min(Math.max((value / max) * 100, 0), 100);
+    // Everything visual — width, stage colour, the tooltip — reads the tweened
+    // value; the ARIA attributes below report the real one.
+    const shown = useCountUp(value, {
+      duration,
+      enabled: animate && !indeterminate,
+      range: max,
+    });
+    const percentage = Math.min(Math.max((shown / max) * 100, 0), 100);
     const activeColor = resolveProgressColor(percentage, color, stages, status);
     const { theme, style } = getThemeStyles(activeColor as string);
     const tooltipContent =
       tooltip && !indeterminate
         ? typeof tooltip === "function"
-          ? tooltip(value, max)
+          ? tooltip(roundTo(shown, decimalsOf(value)), max)
           : `${Math.round(percentage)}%`
         : null;
 
@@ -319,10 +431,15 @@ export const Progress = forwardRef<HTMLDivElement, ProgressProps>(
           <div
             className={cn(
               // Width-driven so the fill's rounded end is real, and colour
-              // transitions alongside width so a stage change cross-fades. The
-              // inset highlight is a hairline of light along the top edge —
-              // depth without a gradient wash.
-              "h-full rounded-full transition-[width,background-color,box-shadow] duration-500 ease-out",
+              // transitions alongside so a stage change cross-fades. When the
+              // tween drives the width there is nothing for CSS to smooth —
+              // and a transition on top would only lag behind it. The inset
+              // highlight is a hairline of light along the top edge — depth
+              // without a gradient wash.
+              "h-full rounded-full duration-500 ease-out",
+              animate
+                ? "transition-[background-color,box-shadow]"
+                : "transition-[width,background-color,box-shadow]",
               "shadow-[inset_0_1px_0_rgba(255,255,255,0.25)]",
               indicatorStyles[variant],
               indeterminate &&
@@ -354,6 +471,8 @@ Progress.displayName = "Progress";
 interface MultiProgressContextValue {
   max: number;
   gap: number;
+  animate: boolean;
+  duration: number;
 }
 
 const MultiProgressContext =
@@ -375,6 +494,10 @@ export interface MultiProgressProps extends React.HTMLAttributes<HTMLDivElement>
   barSize?: ProgressSize;
   /** Pixels between segments. 0 fuses them into one continuous bar. */
   gap?: number;
+  /** Grow every segment from zero on mount and tween later changes. */
+  animate?: boolean;
+  /** Length of the mount fill in ms, shared by all segments. */
+  duration?: number;
 }
 
 /**
@@ -391,6 +514,8 @@ export const MultiProgress = forwardRef<HTMLDivElement, MultiProgressProps>(
       variant = "default",
       barSize = "md",
       gap = 0,
+      animate = true,
+      duration = 1200,
       className,
       style,
       children,
@@ -398,7 +523,7 @@ export const MultiProgress = forwardRef<HTMLDivElement, MultiProgressProps>(
     },
     ref,
   ) => (
-    <MultiProgressContext.Provider value={{ max, gap }}>
+    <MultiProgressContext.Provider value={{ max, gap, animate, duration }}>
       <div
         ref={ref}
         role="group"
@@ -429,9 +554,12 @@ export interface ProgressSegmentProps
 
 export const ProgressSegment = forwardRef<HTMLDivElement, ProgressSegmentProps>(
   ({ value = 0, color = "primary", label, className, style, ...props }, ref) => {
-    const { max, gap } = useMultiProgress();
+    const { max, gap, animate, duration } = useMultiProgress();
     const { theme, style: themeStyle } = getThemeStyles(color as string);
-    const percentage = Math.min(Math.max((value / max) * 100, 0), 100);
+    // Every segment runs the same tween on the same clock, so the whole
+    // breakdown grows in proportion rather than slice by slice.
+    const shown = useCountUp(value, { duration, enabled: animate, range: max });
+    const percentage = Math.min(Math.max((shown / max) * 100, 0), 100);
 
     return (
       <div
@@ -443,7 +571,8 @@ export const ProgressSegment = forwardRef<HTMLDivElement, ProgressSegmentProps>(
         aria-label={label}
         title={label}
         className={cn(
-          "h-full transition-all duration-500 ease-out",
+          "h-full duration-500 ease-out",
+          animate ? "transition-colors" : "transition-all",
           // Rounded ends only make sense once the segments are pulled apart.
           gap > 0 && "rounded-full",
           theme.bg,
@@ -462,7 +591,7 @@ ProgressSegment.displayName = "ProgressSegment";
 // ==========================================
 
 export interface CircularProgressProps
-  extends React.HTMLAttributes<HTMLDivElement> {
+  extends Omit<React.HTMLAttributes<HTMLDivElement>, "children"> {
   value?: number;
   max?: number;
   variant?: ProgressVariant;
@@ -484,11 +613,23 @@ export interface CircularProgressProps
   status?: ProgressStatus;
   /** Hover bubble above the ring — same options as on `Progress`. */
   tooltip?: boolean | ((value: number, max: number) => React.ReactNode);
+  /** Sweep the arc from zero on mount and tween every later change. */
+  animate?: boolean;
+  /** Length of the mount sweep in ms; later changes take a proportional slice. */
+  duration?: number;
+  /**
+   * Replaces the centred readout. Pass a function to receive the value as it
+   * counts up, so a custom centre animates in step with the arc.
+   */
+  children?:
+    | React.ReactNode
+    | ((value: number, max: number) => React.ReactNode);
 }
 
 /**
  * The same value, drawn as a ring. Children replace the centred readout, so
- * the middle can hold an icon, a count, or a label instead of a percentage.
+ * the middle can hold an icon, a count, or a label instead of a percentage —
+ * as a render function, they get the counting value to draw themselves.
  */
 export const CircularProgress = forwardRef<
   HTMLDivElement,
@@ -510,19 +651,24 @@ export const CircularProgress = forwardRef<
       stages,
       status = "active",
       tooltip = false,
+      animate = true,
+      duration = 1200,
       style,
       children,
       ...props
     },
     ref,
   ) => {
-    const percentage = Math.min(Math.max((value / max) * 100, 0), 100);
+    // Arc, readout and tooltip all read the tweened value; ARIA the real one.
+    const shown = useCountUp(value, { duration, enabled: animate, range: max });
+    const shownValue = roundTo(shown, decimalsOf(value));
+    const percentage = Math.min(Math.max((shown / max) * 100, 0), 100);
     const activeColor = resolveProgressColor(percentage, color, stages, status);
     const { theme, style: themeStyle } = getThemeStyles(activeColor as string);
     const readoutTone = status !== "active" ? STATUS_READOUT[status] : null;
     const tooltipContent = tooltip
       ? typeof tooltip === "function"
-        ? tooltip(value, max)
+        ? tooltip(shownValue, max)
         : `${Math.round(percentage)}%`
       : null;
 
@@ -544,11 +690,15 @@ export const CircularProgress = forwardRef<
       minimal: "text-border",
     };
 
-    const readout = children ?? (showValue
-      ? valueFormat
-        ? valueFormat(value, max)
-        : `${Math.round(percentage)}%`
-      : null);
+    const readout =
+      typeof children === "function"
+        ? children(shownValue, max)
+        : (children ??
+          (showValue
+            ? valueFormat
+              ? valueFormat(shownValue, max)
+              : `${Math.round(percentage)}%`
+            : null));
 
     return (
       <div
@@ -600,7 +750,8 @@ export const CircularProgress = forwardRef<
             strokeDasharray={circumference}
             strokeDashoffset={circumference * (1 - percentage / 100)}
             className={cn(
-              "transition-[stroke-dashoffset,color] duration-500 ease-out",
+              "duration-500 ease-out",
+              animate ? "transition-colors" : "transition-[stroke-dashoffset,color]",
               theme.stroke,
               variant === "glow" && theme.ringGlow,
               indicatorClassName,

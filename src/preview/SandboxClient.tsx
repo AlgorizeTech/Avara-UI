@@ -1,6 +1,7 @@
 "use client";
 
 import { Suspense, useEffect, useState } from "react";
+import { accentTokens } from "@/lib/accent";
 import { SandboxErrorBoundary } from "./SandboxErrorBoundary";
 import { sandboxRegistry } from "./registry";
 
@@ -51,6 +52,33 @@ export function SandboxClient({ name }: { name: string }) {
   // rather than in the URL precisely so entering fullscreen never reloads the
   // demo that is already running.
   const [fill, setFill] = useState(false);
+
+  // The docs page's colour picker. Applied as theme tokens on <body> (below),
+  // not handed to the demo: this is what makes `bg-primary` buttons, rings and
+  // the like follow the picker even in demos that never read a `color` prop.
+  const [accent, setAccent] = useState<string | null>(null);
+
+  useEffect(() => {
+    try {
+      const raw = new URLSearchParams(window.location.search).get("accent");
+      if (raw) setAccent(raw);
+    } catch {
+      // Malformed URL — the live sandbox:accent message will set it anyway.
+    }
+  }, []);
+
+  // <body>, not <html>: the theme customizer injects the site palette on <html>
+  // (and re-injects it on every storage event), so a body-level override both
+  // wins the cascade and never gets clobbered — while portals mounted on body
+  // still inherit it. "Default" removes the override so the site theme shows.
+  useEffect(() => {
+    const tokens = accentTokens(accent ?? undefined);
+    const body = document.body;
+    for (const name of ["--primary", "--primary-foreground", "--ring"]) {
+      if (tokens[name]) body.style.setProperty(name, tokens[name]);
+      else body.style.removeProperty(name);
+    }
+  }, [accent]);
 
   useEffect(() => {
     setDemoProps((current) => {
@@ -110,6 +138,9 @@ export function SandboxClient({ name }: { name: string }) {
       const data = event.data;
       if (data && data.type === "sandbox:props" && typeof data.props === "object") {
         setDemoProps(data.props ?? {});
+      }
+      if (data && data.type === "sandbox:accent") {
+        setAccent(typeof data.accent === "string" ? data.accent : null);
       }
       if (data && data.type === "sandbox:fill") {
         setFill(Boolean(data.fill));

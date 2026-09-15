@@ -158,12 +158,14 @@ export default function BookAppointmentDemo({
       </div>
 
       {/* Booking */}
-      <GlassPanel shape="slab" className="flex flex-col self-start p-6 md:col-span-6 lg:col-span-4">
-        <h2 className="text-lg font-semibold tracking-tight">Book an appointment</h2>
+      {/* The Booker is the panel's whole inside, so its confirmation covers
+          the panel edge to edge instead of stopping at the padding. */}
+      <GlassPanel shape="slab" className="self-start md:col-span-6 lg:col-span-4">
         <Booker
-          className="mt-5 flex flex-1 flex-col gap-6"
+          className="flex h-full flex-col gap-5 p-6"
           onBook={() => new Promise((resolve) => setTimeout(resolve, 900))}
         >
+          <h2 className="text-lg font-semibold tracking-tight">Book an appointment</h2>
           <Booker.Days unavailable={(d) => d.getDay() === 0} />
           <div className="space-y-4">
             <p className="text-sm font-semibold">Time</p>

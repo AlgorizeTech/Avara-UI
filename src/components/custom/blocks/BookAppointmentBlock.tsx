@@ -2,6 +2,7 @@
 
 import { cn } from "@/lib/utils";
 import { AnimatePresence, motion } from "framer-motion";
+import { ChevronLeft, ChevronRight } from "lucide-react";
 import React, { createContext, useContext, useEffect, useState } from "react";
 
 // ==========================================
@@ -94,6 +95,10 @@ export interface BookerProps {
  * Holds the chosen day and slot and runs the confirm. Put `Booker.Days`,
  * `Booker.Slots`, `Booker.Submit` and `Booker.Confirmation` inside it in any
  * layout you like.
+ *
+ * The confirmation covers exactly this element, so make the Booker the padded
+ * panel itself (heading included) rather than a child of it — otherwise the
+ * cover stops short of the panel's edges. Its corners follow the panel's.
  */
 export function Booker({ onBook, children, className }: BookerProps) {
   const [day, setDayState] = useState<Date | null>(null);
@@ -124,7 +129,7 @@ export function Booker({ onBook, children, className }: BookerProps) {
 
   return (
     <BookerContext.Provider value={{ day, slot, status, setDay, setSlot, submit, reset }}>
-      <div className={cn("relative", className)}>{children}</div>
+      <div className={cn("relative rounded-[inherit]", className)}>{children}</div>
     </BookerContext.Provider>
   );
 }
@@ -137,38 +142,84 @@ const MONTH = new Intl.DateTimeFormat("en-US", { month: "long" });
 const LONG_DATE = new Intl.DateTimeFormat("en-US", { weekday: "long", month: "long", day: "numeric" });
 
 export interface BookerDaysProps {
-  /** Days on offer, in order. Defaults to the next seven days from today. */
+  /**
+   * Days on offer, in order, paged `count` at a time. Defaults to every day
+   * from today up to `horizon` days out.
+   */
   days?: Date[];
+  /** Days shown per page. */
+  count?: number;
+  /** How far ahead the default days run, in days from today. */
+  horizon?: number;
   /** Days with nothing free — shown, not selectable. */
   unavailable?: (day: Date) => boolean;
   className?: string;
 }
 
-const nextSevenDays = () => {
+const daysFromToday = (length: number) => {
   const today = new Date();
   today.setHours(0, 0, 0, 0);
-  return Array.from({ length: 7 }, (_, i) => {
+  return Array.from({ length }, (_, i) => {
     const d = new Date(today);
     d.setDate(today.getDate() + i);
     return d;
   });
 };
 
-function BookerDays({ days: daysProp, unavailable, className }: BookerDaysProps) {
+/** "September", or "September – October" when the page straddles a month. */
+const monthRange = (first?: Date, last?: Date) => {
+  if (!first) return "";
+  const a = MONTH.format(first);
+  const b = last ? MONTH.format(last) : a;
+  return a === b ? a : `${a} – ${b}`;
+};
+
+function BookerDays({ days: daysProp, count = 7, horizon = 90, unavailable, className }: BookerDaysProps) {
   const { day, setDay } = useBooker("Days");
   // Built on the client only — a server render has no idea what "today" is.
   const [days, setDays] = useState<Date[]>(daysProp ?? []);
   useEffect(() => {
-    if (!daysProp) setDays(nextSevenDays());
-  }, [daysProp]);
+    if (!daysProp) setDays(daysFromToday(horizon));
+  }, [daysProp, horizon]);
 
-  const month = days[0] ? MONTH.format(days[0]) : "";
+  // The list starts today (or at the first day handed in), so page 0 is the
+  // earliest anyone can go — there is no way to page back into the past.
+  const [page, setPage] = useState(0);
+  const pageCount = Math.max(1, Math.ceil(days.length / count));
+  const visible = days.slice(page * count, page * count + count);
+  const atStart = page === 0;
+  const atEnd = page >= pageCount - 1;
 
   return (
     <div className={className}>
-      <p className="text-sm font-semibold">{month}</p>
+      <div className="flex items-center justify-between gap-2">
+        <p className="text-sm font-semibold">{monthRange(visible[0], visible[visible.length - 1])}</p>
+        <div className="flex gap-1">
+          {[
+            { label: "Previous days", Icon: ChevronLeft, disabled: atStart, step: -1 },
+            { label: "Next days", Icon: ChevronRight, disabled: atEnd, step: 1 },
+          ].map(({ label, Icon, disabled, step }) => (
+            <button
+              key={label}
+              type="button"
+              aria-label={label}
+              disabled={disabled}
+              // Clamped, not just disabled: rapid clicks queue up before the
+              // disabled state re-renders and would otherwise run off the end.
+              onClick={() => setPage((p) => Math.min(Math.max(p + step, 0), pageCount - 1))}
+              className={cn(
+                "grid size-7 place-items-center rounded-full transition-colors",
+                "hover:bg-black/[0.05] disabled:cursor-not-allowed disabled:opacity-30 disabled:hover:bg-transparent dark:hover:bg-white/10",
+                "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-violet-500",
+              )}
+            >
+              <Icon className="size-4" aria-hidden />
+            </button>
+          ))}
+        </div>
+      </div>
       <div role="radiogroup" aria-label="Day" className="mt-3 grid grid-cols-7 gap-1.5">
-        {days.map((d) => {
+        {visible.map((d) => {
           const selected = day !== null && sameDay(d, day);
           const off = unavailable?.(d) ?? false;
           return (
