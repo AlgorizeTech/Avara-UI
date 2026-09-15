@@ -2,7 +2,7 @@
 
 import { cn } from "@/lib/utils";
 import { useReducedMotion } from "framer-motion";
-import React, { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 
 const TRANSITION_MS = 300;
 const MARK_WIDTH = 28;

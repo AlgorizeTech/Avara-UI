@@ -53,6 +53,7 @@
     "src/components/custom/blocks/CommandBlock.tsx",
     "src/components/custom/blocks/ComputeBlock.tsx",
     "src/components/custom/blocks/ContextMenuBlock.tsx",
+    "src/components/custom/blocks/ConversationTimelineBlock.tsx",
     "src/components/custom/blocks/CopyButtonBlock.tsx",
     "src/components/custom/blocks/CounterBlock.tsx",
     "src/components/custom/blocks/CursorAnimationBlock.tsx",

@@ -1,6 +1,6 @@
 # Progress
 
-A flexible, smoothly animated progress indicator built to handle loading states, storage meters, or step-by-step wizards.
+A flexible, smoothly animated progress indicator built to handle loading states, storage meters, or step-by-step wizards. Every form fills from zero when it first appears, and any number it shows counts up alongside the fill.
 
 This block is split into composable pieces: the core `` bar for the visual fill, the optional `` wrapper which handles the layout for labels and percentage text, `` with `` children for several values sharing one track, and `` for the same value drawn as a ring.
 
@@ -81,14 +81,28 @@ export default function CreditsRing() {
   const used = 68;
 
   return (
-    // Children replace the centred percentage entirely.
+    // Children replace the centred percentage entirely. As a function they
+    // receive the value while it counts up, so the number animates with the arc.
     
-      {used}
-      
-        of 100 credits
+      {(shown) => (
+        <>
+          {shown}
+          
+            of 100 credits
 
+      )}
+    
   );
 }`;
+
+ node`, it receives the value while it counts up so the centre animates with the arc.",
+        },
+      ],
+      props: { example: "circular-custom", variant: "default", barSize: "lg", value: 45, tooltip: true },
+      usage: usageCircularCustom,
+    },
+  ]}
+/>
 
 ## Installation
 
@@ -106,8 +120,8 @@ Explore the Progress bar's features, including smooth value interpolation, indet
     Responsive
     Fully responsive design that looks and works great across desktop, tablet, and mobile devices.
 
-    Performant
-    Optimized for maximum performance with minimal re-renders and efficient state management.
+    Counts up
+    Bars, segments and rings fill from zero on first paint and every readout counts up in step, on one shared easing. Respects prefers-reduced-motion; turn it off with animate={false}.
 
 ## Best Practices & Guidelines
 
@@ -230,6 +244,34 @@ Explore the Progress bar's features, including smooth value interpolation, indet
           above the ring on CircularProgress. true{" "}
           shows the percentage; a function formats it. Not shown while{" "}
           indeterminate.
+
+          Progress
+
+          animate
+
+          boolean
+
+          true
+
+          Fill from zero on mount and tween every later change of{" "}
+          value; stage colours are crossed on the way. Also on{" "}
+          ProgressField, MultiProgress and{" "}
+          CircularProgress. Off under{" "}
+          prefers-reduced-motion.
+
+          Progress
+
+          duration
+
+          number
+
+          1200
+
+          Length of the mount fill in milliseconds. Later changes take a slice
+          proportional to how far they travel, so a 1% tick stays snappy. Set
+          the same value on a ProgressField and its bar so the
+          readout keeps step. Also on MultiProgress and{" "}
+          CircularProgress.
 
           ProgressField
 
@@ -416,11 +458,11 @@ Explore the Progress bar's features, including smooth value interpolation, indet
 
           children
 
-          ReactNode
+          {`ReactNode | (value, max) => ReactNode`}
 
           undefined
         
-        Replaces the centred readout entirely — use it for a count, an icon, or a caption.
+        Replaces the centred readout entirely — use it for a count, an icon, or a caption. As a function it receives (value, max) with the value counting up, so a custom centre animates with the arc.
 
           CircularProgress
 

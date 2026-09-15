@@ -10,7 +10,7 @@ A highly-orchestrated, premium file upload component suite based on modern UX en
 
 The suite is two pieces you compose yourself: a `Dropzone` that hands you `File[]`, and an `UploadItem` that renders one entry of your own queue state. Drop real files into the first preview — its simulator randomly fails some at 89% so you can watch the inline retry resume.
 
-Three upload surfaces live on this page, and each installs separately: the `Dropzone` + `UploadItem` suite, the `Input` block's built-in file mode for simple forms, and the `Folder` block as a playful drop target.
+Three upload surfaces live on this page, and each installs separately: the `Dropzone` + `UploadItem` suite, the `Input` block's built-in file mode for simple forms, and the `Folder` block as a playful drop target. Each section below ends with its own install.
 
 export const usageDropzone = `export default function FileUploader() {
   const [files, setFiles] = useState([]);
@@ -91,23 +91,32 @@ export default function UploadStates() {
   );
 }`;
 
-## Installation
+## Dropzone and upload queue
 
-### Optional — simple file input
+The full suite: a `Dropzone` that hands you `File[]`, and an `UploadItem` for each row of your own queue state.
 
-The form-field example below is the `Input` block in file mode. It installs on its own and has no dependency on the upload suite.
+### Install the upload suite
 
-### Optional — folder drop target
-
-The folder example is built on the `Folder` block, which installs separately.
-
-### Optional — animated queue
-
-The animated-queue example additionally uses `framer-motion`. It is optional; `UploadItem` renders fine without it.
+The dropzone example animates its queue with `framer-motion`. It is optional — `UploadItem` renders fine without it.
 
 ```bash
 npx shadcn@latest install framer-motion
 ```
+
+export const usageFileInput = `export default function FileUploadInput() {
+  // type="file" turns the Input block into a drag-and-drop zone with
+  // previews, sizes and remove buttons — no queue state to manage.
+  return (
+     console.log("Uploaded files:", files)}
+    />
+  );
+}`;
+
+## Simple file input
+
+For a form that just needs files attached, the `Input` block has a file mode with previews and removal built in. It has no dependency on the upload suite.
+
+### Install the input block
 
 export const usageFolder = `export default function DropZone() {
   const [files, setFiles] = useState([]);
@@ -139,16 +148,11 @@ export const usageFolder = `export default function DropZone() {
   );
 }`;
 
-export const usageFileInput = `export default function FileUploadInput() {
-  // type="file" turns the Input block into a drag-and-drop zone with
-  // previews, sizes and remove buttons — no queue state to manage.
-  return (
-     console.log("Uploaded files:", files)}
-    />
-  );
-}`;
+## Folder drop target
 
-## Examples
+The `Folder` block as an upload surface — a playful alternative to a dropzone for a handful of files.
+
+### Install the folder block
 
 ## Features
 Discover the key capabilities that make this component an excellent choice for modern, animated user interfaces.
