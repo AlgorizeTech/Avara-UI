@@ -158,10 +158,15 @@ function BarChart({
           >
             {/* Tooltip */}
             <div className="absolute -top-12 opacity-0 scale-95 group-hover:opacity-100 group-hover:scale-100 transition-all duration-200 pointer-events-none z-50 flex flex-col items-center">
-              <div className="bg-primary text-primary-foreground px-3 py-1.5 rounded-lg shadow-xl text-xs font-bold whitespace-nowrap">
-                {d.label}: {prefix}
-                {d.value}
-                {suffix}
+              <div className="bg-primary text-primary-foreground px-3 py-1.5 rounded-lg shadow-xl text-xs font-bold whitespace-nowrap text-center">
+                <div className="text-[10px] text-primary-foreground/80 uppercase tracking-wider font-semibold">
+                  {d.label}
+                </div>
+                <div>
+                  {prefix}
+                  {d.value}
+                  {suffix}
+                </div>
               </div>
               <div className="w-2 h-2 bg-primary rotate-45 -mt-1" />
             </div>
@@ -179,7 +184,7 @@ function BarChart({
             </div>
 
             {/* X-Axis Label */}
-            <span className="absolute -bottom-6 text-[10px] font-medium text-muted-foreground whitespace-nowrap overflow-hidden text-ellipsis max-w-full">
+            <span className="absolute -bottom-6 text-[10px] font-medium text-muted-foreground group-hover:text-foreground transition-colors whitespace-nowrap overflow-hidden text-ellipsis max-w-full">
               {d.label}
             </span>
           </div>
@@ -332,17 +337,29 @@ function SmoothLineChart({
                     : "opacity-0 scale-95",
                 )}
               >
-                <div className="bg-primary text-primary-foreground px-3 py-1.5 rounded-lg shadow-xl text-xs font-bold whitespace-nowrap">
-                  {data[i].label}: {prefix}
-                  {data[i].value}
-                  {suffix}
+                <div className="bg-primary text-primary-foreground px-3 py-1.5 rounded-lg shadow-xl text-xs font-bold whitespace-nowrap text-center">
+                  <div className="text-[10px] text-primary-foreground/80 uppercase tracking-wider font-semibold">
+                    {data[i].label}
+                  </div>
+                  <div>
+                    {prefix}
+                    {data[i].value}
+                    {suffix}
+                  </div>
                 </div>
                 <div className="w-2 h-2 bg-primary rotate-45 -mt-1" />
               </div>
             </div>
 
             {/* X-Axis Label */}
-            <span className="absolute -bottom-6 left-1/2 -translate-x-1/2 text-[10px] font-medium text-muted-foreground whitespace-nowrap">
+            <span
+              className={cn(
+                "absolute -bottom-6 left-1/2 -translate-x-1/2 text-[10px] font-medium whitespace-nowrap transition-colors",
+                hoveredIndex === i
+                  ? "text-foreground font-semibold"
+                  : "text-muted-foreground",
+              )}
+            >
               {data[i].label}
             </span>
           </div>
@@ -468,7 +485,7 @@ function CircularChart({
             }}
           >
             <div className="bg-primary text-primary-foreground px-3 py-1.5 rounded-lg shadow-xl text-xs font-bold whitespace-nowrap text-center">
-              <div className="text-[10px] text-muted-foreground uppercase tracking-wider">
+              <div className="text-[10px] text-primary-foreground/80 uppercase tracking-wider font-semibold">
                 {slices[hoveredIndex].label}
               </div>
               <div>
