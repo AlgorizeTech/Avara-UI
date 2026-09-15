@@ -160,6 +160,12 @@ export const META: Record<string, ItemMeta> = {
     categories: ["data-display"],
     docs: "Named exports: Folder, SkeletonCard (plus FolderFile / FolderProps types). `files` is { thumb?, name?, progress? }[]; without files, `peek` skeleton cards show. `color` tints body, pocket, icon and cards via OKLCH; `icon` is a lucide component. Hover, tap or focus opens the fan; past five files it pages with arrows or by dragging a card. `interactive` adds drag-and-drop + click-to-browse with `onFiles`, `progress` and `onRemoveFile`. Pulls in `tooltip` for file-name hovers.",
   },
+  "conversation-timeline": {
+    description:
+      "A dense rail of thin marks, one per message, that expands into a labelled list on hover — a minimap for long chats. Use it beside a conversation to jump between messages.",
+    categories: ["navigation", "communication"],
+    docs: "Named export: ConversationTimeline (plus the TimelineCheckpoint type). `checkpoints` is `{ id, label, sublabel?, role? }[]`, `activeId` marks the selected row with `accent` and `onSelect` receives a clicked id. `side` puts labels left or right; `rowHeight` / `collapsedRowHeight` set the expanded and resting row sizes, `visibleCount` caps rows before scrolling and `labelWidth` fixes the label column. Hover or focus expands it; touch devices stay expanded; respects prefers-reduced-motion.",
+  },
   "copy-button": {
     description:
       "A clipboard button that confirms the copy in place — the icon pops to a check and the label swaps to \"Copied!\" — plus a read-only Copy Field for links, tokens and commands. Use it anywhere a value needs to be copied without a toast.",
@@ -677,32 +683,32 @@ export const META: Record<string, ItemMeta> = {
     categories: ["marketing"],
     docs: "Named export: HeroBlock. Everything is a prop — `variant` switches between 'bounce', 'typing', and 'slider', `typingWords` cycles between `titlePrefix` and `titleSuffix`, `cliCommand` renders a copyable install line, and `sliderImages` / `mainImage` customize the 3D marquee visual.",
   },
-  "hero-video-player": {
+  "video-player": {
     description:
       "A video hero with thumbnail and glow that plays in a modal, inline in the card, or directly on load — behind a YouTube embed or a native HTML5 video.",
     categories: ["marketing", "media"],
-    docs: "Named export: HeroVideoPlayer. `videoUrl` and `thumbnailUrl` drive it; `playbackMode` is modal | inline | direct and `source` is youtube | video (a native <video>). `aspectRatio` is 16/9 | 21/9 | 4/3 | 1/1 and `modalSize` is md | lg | xl | full. `onPlay` and `onClose` hook into analytics. In modal and inline the media only loads on click, so it stays off the initial page weight; `direct` renders it immediately and honours `autoPlay` / `muted` / `loop`.",
+    docs: "Named export: VideoPlayer. `videoUrl` and `thumbnailUrl` drive it; `playbackMode` is modal | inline | direct and `source` is youtube | video (a native <video>). `aspectRatio` is 16/9 | 21/9 | 4/3 | 1/1 and `modalSize` is md | lg | xl | full. `onPlay` and `onClose` hook into analytics. In modal and inline the media only loads on click, so it stays off the initial page weight; `direct` renders it immediately and honours `autoPlay` / `muted` / `loop`.",
   },
-  "hero-audio-player": {
-    title: "Hero Audio Player",
+  "audio-player": {
+    title: "Audio Player",
     description:
       "An audio player with artwork, transport, scrubber and volume, in a hero card, a compact bar, or wrapped around the browser's native controls.",
     categories: ["marketing", "media"],
-    docs: "Named export: HeroAudioPlayer. `audioUrl` and `artworkUrl` drive it; `variant` is hero | bar | native. Built on a plain <audio> element with no player library, so it adds no npm weight beyond the icons. Playback state mirrors the element's own events, which keeps it correct when a media key or the native controls change it. `skipSeconds` sizes the jump buttons (0 hides them) and the accent follows `--theme-color`.",
+    docs: "Named export: AudioPlayer. `audioUrl` and `artworkUrl` drive it; `variant` is hero | bar | native. Built on a plain <audio> element with no player library, so it adds no npm weight beyond the icons. Playback state mirrors the element's own events, which keeps it correct when a media key or the native controls change it. `skipSeconds` sizes the jump buttons (0 hides them) and the accent follows `--theme-color`.",
   },
-  "hero-video-player-plyr": {
-    title: "Hero Video Player (Plyr)",
+  "video-player-plyr": {
+    title: "Video Player (Plyr)",
     description:
       "A hero video player built on Plyr — one accessible, skinnable control bar in front of HTML5 files, YouTube and Vimeo alike.",
     categories: ["media"],
-    docs: "Named export: HeroPlyrPlayer. Requires the `plyr` package, which the CLI installs. `provider` is html5 | youtube | vimeo and `mediaType` is video | audio; `accentColor` sets Plyr's `--plyr-color-main`, and `controls` takes Plyr's control-name array. Plyr is imported dynamically inside an effect, so the component server-renders cleanly. Its control icons come from Plyr's CDN sprite by default — set `iconUrl` to a self-hosted `plyr.svg` if the page must not reach a third-party host.",
+    docs: "Named export: PlyrPlayer. Requires the `plyr` package, which the CLI installs. `provider` is html5 | youtube | vimeo and `mediaType` is video | audio; `accentColor` sets Plyr's `--plyr-color-main`, and `controls` takes Plyr's control-name array. Plyr is imported dynamically inside an effect, so the component server-renders cleanly. Its control icons come from Plyr's CDN sprite by default — set `iconUrl` to a self-hosted `plyr.svg` if the page must not reach a third-party host.",
   },
-  "hero-video-player-jw": {
-    title: "Hero Video Player (JW Player)",
+  "video-player-jw": {
+    title: "Video Player (JW Player)",
     description:
       "A hero video player built on JW Player, with colour skin presets and a native fallback for when the licensed library is unavailable.",
     categories: ["media"],
-    docs: "Named exports: HeroJwPlayer, JW_DEMO_LIBRARY_URL, plus the JwSkinConfig and JwSkinPreset types. No npm dependency — the JW library is a licensed remote script loaded from `libraryUrl`. It defaults to JW's public documentation library, which is fine to evaluate against but must be replaced with your own `https://cdn.jwplayer.com/libraries/<PLAYER_ID>.js` before shipping; a self-hosted build also needs `licenseKey`. `skin` picks a colour preset (default | midnight | neon | sunset | minimal), `skinConfig` takes a raw JW skin object, and `skinUrl` / `skinName` point at a custom stylesheet. If the library fails to load the component falls back to a native <video> rather than a black box.",
+    docs: "Named exports: JwPlayer, JW_DEMO_LIBRARY_URL, plus the JwSkinConfig and JwSkinPreset types. No npm dependency — the JW library is a licensed remote script loaded from `libraryUrl`. It defaults to JW's public documentation library, which is fine to evaluate against but must be replaced with your own `https://cdn.jwplayer.com/libraries/<PLAYER_ID>.js` before shipping; a self-hosted build also needs `licenseKey`. `skin` picks a colour preset (default | midnight | neon | sunset | minimal), `skinConfig` takes a raw JW skin object, and `skinUrl` / `skinName` point at a custom stylesheet. If the library fails to load the component falls back to a native <video> rather than a black box.",
   },
   pricing: {
     description:

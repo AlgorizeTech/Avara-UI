@@ -63,6 +63,12 @@
       "originalMdx": "[framework]\\architecture\\page.mdx"
     },
     {
+      "name": "nextjs/audio-player",
+      "path": "/docs/nextjs-audio-player.md",
+      "url": "/docs/nextjs/audio-player",
+      "originalMdx": "[framework]\\audio-player\\page.mdx"
+    },
+    {
       "name": "nextjs/book-appointment",
       "path": "/docs/nextjs-book-appointment.md",
       "url": "/docs/nextjs/book-appointment",
@@ -343,12 +349,6 @@
       "path": "/docs/nextjs-hero.md",
       "url": "/docs/nextjs/hero",
       "originalMdx": "[framework]\\hero\\page.mdx"
-    },
-    {
-      "name": "nextjs/hero-video-player",
-      "path": "/docs/nextjs-hero-video-player.md",
-      "url": "/docs/nextjs/hero-video-player",
-      "originalMdx": "[framework]\\hero-video-player\\page.mdx"
     },
     {
       "name": "nextjs/image-compare",
@@ -753,6 +753,12 @@
       "originalMdx": "[framework]\\video-accordion\\page.mdx"
     },
     {
+      "name": "nextjs/video-player",
+      "path": "/docs/nextjs-video-player.md",
+      "url": "/docs/nextjs/video-player",
+      "originalMdx": "[framework]\\video-player\\page.mdx"
+    },
+    {
       "name": "nextjs/wizard",
       "path": "/docs/nextjs-wizard.md",
       "url": "/docs/nextjs/wizard",
@@ -823,6 +829,12 @@
       "path": "/docs/reactjs-architecture.md",
       "url": "/docs/reactjs/architecture",
       "originalMdx": "[framework]\\architecture\\page.mdx"
+    },
+    {
+      "name": "reactjs/audio-player",
+      "path": "/docs/reactjs-audio-player.md",
+      "url": "/docs/reactjs/audio-player",
+      "originalMdx": "[framework]\\audio-player\\page.mdx"
     },
     {
       "name": "reactjs/book-appointment",
@@ -1105,12 +1117,6 @@
       "path": "/docs/reactjs-hero.md",
       "url": "/docs/reactjs/hero",
       "originalMdx": "[framework]\\hero\\page.mdx"
-    },
-    {
-      "name": "reactjs/hero-video-player",
-      "path": "/docs/reactjs-hero-video-player.md",
-      "url": "/docs/reactjs/hero-video-player",
-      "originalMdx": "[framework]\\hero-video-player\\page.mdx"
     },
     {
       "name": "reactjs/image-compare",
@@ -1513,6 +1519,12 @@
       "path": "/docs/reactjs-video-accordion.md",
       "url": "/docs/reactjs/video-accordion",
       "originalMdx": "[framework]\\video-accordion\\page.mdx"
+    },
+    {
+      "name": "reactjs/video-player",
+      "path": "/docs/reactjs-video-player.md",
+      "url": "/docs/reactjs/video-player",
+      "originalMdx": "[framework]\\video-player\\page.mdx"
     },
     {
       "name": "reactjs/wizard",

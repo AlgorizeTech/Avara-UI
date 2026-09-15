@@ -17,6 +17,7 @@ This directory contains auto-generated Markdown versions of all MDX documentatio
 - [nextjs/api-playground](/docs/nextjs-api-playground.md) - Source: `[framework]\api-playground\page.mdx`
 - [nextjs/apple-select](/docs/nextjs-apple-select.md) - Source: `[framework]\apple-select\page.mdx`
 - [nextjs/architecture](/docs/nextjs-architecture.md) - Source: `[framework]\architecture\page.mdx`
+- [nextjs/audio-player](/docs/nextjs-audio-player.md) - Source: `[framework]\audio-player\page.mdx`
 - [nextjs/book-appointment](/docs/nextjs-book-appointment.md) - Source: `[framework]\book-appointment\page.mdx`
 - [nextjs/book-flip](/docs/nextjs-book-flip.md) - Source: `[framework]\book-flip\page.mdx`
 - [nextjs/breadcrumb](/docs/nextjs-breadcrumb.md) - Source: `[framework]\breadcrumb\page.mdx`
@@ -64,7 +65,6 @@ This directory contains auto-generated Markdown versions of all MDX documentatio
 - [nextjs/half-stars](/docs/nextjs-half-stars.md) - Source: `[framework]\half-stars\page.mdx`
 - [nextjs/heart-signal](/docs/nextjs-heart-signal.md) - Source: `[framework]\heart-signal\page.mdx`
 - [nextjs/hero](/docs/nextjs-hero.md) - Source: `[framework]\hero\page.mdx`
-- [nextjs/hero-video-player](/docs/nextjs-hero-video-player.md) - Source: `[framework]\hero-video-player\page.mdx`
 - [nextjs/image-compare](/docs/nextjs-image-compare.md) - Source: `[framework]\image-compare\page.mdx`
 - [nextjs/index](/docs/nextjs-index.md) - Source: `[framework]\index\page.mdx`
 - [nextjs/infrastructure-topology](/docs/nextjs-infrastructure-topology.md) - Source: `[framework]\infrastructure-topology\page.mdx`
@@ -132,6 +132,7 @@ This directory contains auto-generated Markdown versions of all MDX documentatio
 - [nextjs/verify-badge](/docs/nextjs-verify-badge.md) - Source: `[framework]\verify-badge\page.mdx`
 - [nextjs/vertical-tabs](/docs/nextjs-vertical-tabs.md) - Source: `[framework]\vertical-tabs\page.mdx`
 - [nextjs/video-accordion](/docs/nextjs-video-accordion.md) - Source: `[framework]\video-accordion\page.mdx`
+- [nextjs/video-player](/docs/nextjs-video-player.md) - Source: `[framework]\video-player\page.mdx`
 - [nextjs/wizard](/docs/nextjs-wizard.md) - Source: `[framework]\wizard\page.mdx`
 - [page.mdx](/docs/page.mdx.md) - Source: `page.mdx`
 - [reactjs/3d-carousel](/docs/reactjs-3d-carousel.md) - Source: `[framework]\3d-carousel\page.mdx`
@@ -144,6 +145,7 @@ This directory contains auto-generated Markdown versions of all MDX documentatio
 - [reactjs/api-playground](/docs/reactjs-api-playground.md) - Source: `[framework]\api-playground\page.mdx`
 - [reactjs/apple-select](/docs/reactjs-apple-select.md) - Source: `[framework]\apple-select\page.mdx`
 - [reactjs/architecture](/docs/reactjs-architecture.md) - Source: `[framework]\architecture\page.mdx`
+- [reactjs/audio-player](/docs/reactjs-audio-player.md) - Source: `[framework]\audio-player\page.mdx`
 - [reactjs/book-appointment](/docs/reactjs-book-appointment.md) - Source: `[framework]\book-appointment\page.mdx`
 - [reactjs/book-flip](/docs/reactjs-book-flip.md) - Source: `[framework]\book-flip\page.mdx`
 - [reactjs/breadcrumb](/docs/reactjs-breadcrumb.md) - Source: `[framework]\breadcrumb\page.mdx`
@@ -191,7 +193,6 @@ This directory contains auto-generated Markdown versions of all MDX documentatio
 - [reactjs/half-stars](/docs/reactjs-half-stars.md) - Source: `[framework]\half-stars\page.mdx`
 - [reactjs/heart-signal](/docs/reactjs-heart-signal.md) - Source: `[framework]\heart-signal\page.mdx`
 - [reactjs/hero](/docs/reactjs-hero.md) - Source: `[framework]\hero\page.mdx`
-- [reactjs/hero-video-player](/docs/reactjs-hero-video-player.md) - Source: `[framework]\hero-video-player\page.mdx`
 - [reactjs/image-compare](/docs/reactjs-image-compare.md) - Source: `[framework]\image-compare\page.mdx`
 - [reactjs/index](/docs/reactjs-index.md) - Source: `[framework]\index\page.mdx`
 - [reactjs/infrastructure-topology](/docs/reactjs-infrastructure-topology.md) - Source: `[framework]\infrastructure-topology\page.mdx`
@@ -259,6 +260,7 @@ This directory contains auto-generated Markdown versions of all MDX documentatio
 - [reactjs/verify-badge](/docs/reactjs-verify-badge.md) - Source: `[framework]\verify-badge\page.mdx`
 - [reactjs/vertical-tabs](/docs/reactjs-vertical-tabs.md) - Source: `[framework]\vertical-tabs\page.mdx`
 - [reactjs/video-accordion](/docs/reactjs-video-accordion.md) - Source: `[framework]\video-accordion\page.mdx`
+- [reactjs/video-player](/docs/reactjs-video-player.md) - Source: `[framework]\video-player\page.mdx`
 - [reactjs/wizard](/docs/reactjs-wizard.md) - Source: `[framework]\wizard\page.mdx`
 
 ## Usage

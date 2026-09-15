@@ -84,7 +84,7 @@ const SKIN_PRESETS: Record<Exclude<JwSkinPreset, "default">, JwSkinConfig> = {
   },
 };
 
-export interface HeroJwPlayerProps
+export interface JwPlayerProps
   extends Omit<React.HTMLAttributes<HTMLDivElement>, "title"> {
   /** JW library script. See {@link JW_DEMO_LIBRARY_URL} before shipping. */
   libraryUrl?: string;
@@ -253,7 +253,7 @@ function MediaOverlay({
   );
 }
 
-export const HeroJwPlayer = React.forwardRef<HTMLDivElement, HeroJwPlayerProps>(
+export const JwPlayer = React.forwardRef<HTMLDivElement, JwPlayerProps>(
   (
     {
       libraryUrl = JW_DEMO_LIBRARY_URL,
@@ -454,4 +454,4 @@ export const HeroJwPlayer = React.forwardRef<HTMLDivElement, HeroJwPlayerProps>(
   },
 );
 
-HeroJwPlayer.displayName = "HeroJwPlayer";
+JwPlayer.displayName = "JwPlayer";

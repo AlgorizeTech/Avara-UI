@@ -1,6 +1,6 @@
 "use client";
 
-import { HeroJwPlayer } from "@/components/custom/blocks/HeroVideoPlayerJwBlock";
+import { JwPlayer } from "@/components/custom/blocks/VideoPlayerJwBlock";
 
 // Overlay copy is one line over the picture, so it stays short.
 const COPY = {
@@ -26,7 +26,7 @@ const COPY = {
   },
 } as const;
 
-export default function HeroVideoPlayerJwDemo({
+export default function VideoPlayerJwDemo({
   skin = "default",
   aspectRatio = "16/9",
   enableGlow = true,
@@ -49,7 +49,7 @@ export default function HeroVideoPlayerJwDemo({
       <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(0,0,0,0.05)_1px,transparent_1px)] dark:bg-[radial-gradient(circle_at_center,rgba(255,255,255,0.05)_1px,transparent_1px)] bg-[size:24px_24px] pointer-events-none" />
 
       <div className="relative z-10 w-full max-w-7xl">
-        <HeroJwPlayer
+        <JwPlayer
           skin={skin}
           aspectRatio={aspectRatio}
           enableGlow={enableGlow}
