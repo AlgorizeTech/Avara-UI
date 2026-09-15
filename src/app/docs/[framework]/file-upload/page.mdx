@@ -13,7 +13,7 @@ A highly-orchestrated, premium file upload component suite based on modern UX en
 
 The suite is two pieces you compose yourself: a `Dropzone` that hands you `File[]`, and an `UploadItem` that renders one entry of your own queue state. Drop real files into the first preview — its simulator randomly fails some at 89% so you can watch the inline retry resume.
 
-Three upload surfaces live on this page, and each installs separately: the `Dropzone` + `UploadItem` suite, the `Input` block's built-in file mode for simple forms, and the `Folder` block as a playful drop target.
+Three upload surfaces live on this page, and each installs separately: the `Dropzone` + `UploadItem` suite, the `Input` block's built-in file mode for simple forms, and the `Folder` block as a playful drop target. Each section below ends with its own install.
 
 export const usageDropzone = `"use client";
 
@@ -133,6 +133,10 @@ export default function UploadStates() {
   );
 }`;
 
+## Dropzone and upload queue
+
+The full suite: a `Dropzone` that hands you `File[]`, and an `UploadItem` for each row of your own queue state.
+
 <ExampleShowcase
   name="upload"
   colorControl
@@ -158,30 +162,96 @@ export default function UploadStates() {
       usage: usageDropzone,
       code: extractCode("src/components/custom/blocks/UploadBlock.tsx"),
     },
+    {
+      title: "Upload states",
+      propNotes: [
+        {
+          prop: "status",
+          effect:
+            "drives the whole row — `idle`, `uploading`, `paused`, `error` and `success` each pick their own colours, icon and messaging.",
+        },
+        {
+          prop: "onRetry",
+          effect:
+            "is what the inline Retry button calls after an `error`; `onRemove` backs the X.",
+        },
+      ],
+      props: { showAll: "states" },
+      usage: usageStates,
+    },
   ]}
 />
 
-## Installation
+### Install the upload suite
 
 <Installation name="upload" />
 
-### Optional — simple file input
-
-The form-field example below is the `Input` block in file mode. It installs on its own and has no dependency on the upload suite.
-
-<Installation name="input" />
-
-### Optional — folder drop target
-
-The folder example is built on the `Folder` block, which installs separately.
-
-<Installation name="folder" />
-
-### Optional — animated queue
-
-The animated-queue example additionally uses `framer-motion`. It is optional; `UploadItem` renders fine without it.
+The dropzone example animates its queue with `framer-motion`. It is optional — `UploadItem` renders fine without it.
 
 <Cli command={`install framer-motion`} />
+
+export const usageFileInput = `"use client";
+
+import { InputBlock } from "@/components/custom/blocks/InputBlock";
+
+export default function FileUploadInput() {
+  // type="file" turns the Input block into a drag-and-drop zone with
+  // previews, sizes and remove buttons — no queue state to manage.
+  return (
+    <InputBlock
+      type="file"
+      multiple
+      accept="image/*"
+      label="Upload Portfolio"
+      helperText="Attach your files here."
+      onFilesChange={(files) => console.log("Uploaded files:", files)}
+    />
+  );
+}`;
+
+## Simple file input
+
+For a form that just needs files attached, the `Input` block has a file mode with previews and removal built in. It has no dependency on the upload suite.
+
+<ExampleShowcase
+  name="input"
+  colorControl
+  colorLabel="Active Color"
+  columns={1}
+  examples={[
+    {
+      title: "Simple file input",
+      subheading: "For a form that just needs files attached: the `Input` block in file mode, with previews and removal built in.",
+      propNotes: [
+        {
+          lead: "Set",
+          prop: "type",
+          value: '"file"',
+          effect:
+            "on `InputBlock` to turn the field into a drag-and-drop zone with previews.",
+        },
+        {
+          prop: "onFilesChange",
+          effect:
+            "returns native `File[]` on drop, selection and removal.",
+        },
+        {
+          prop: "multiple",
+          effect:
+            "and `accept` pass through; `accept` takes the standard HTML string such as `\"image/*\"`.",
+        },
+      ],
+      props: { inputType: "file", isMultiple: true, isImageOnly: true },
+      usage: usageFileInput,
+      code: extractCode("src/components/custom/blocks/InputBlock.tsx"),
+      minHeight: 460,
+    },
+  ]}
+/>
+
+### Install the input block
+
+<Installation name="input" />
 
 export const usageFolder = `"use client";
 
@@ -229,84 +299,14 @@ export default function DropZone() {
   );
 }`;
 
-export const usageFileInput = `"use client";
+## Folder drop target
 
-import { InputBlock } from "@/components/custom/blocks/InputBlock";
-
-export default function FileUploadInput() {
-  // type="file" turns the Input block into a drag-and-drop zone with
-  // previews, sizes and remove buttons — no queue state to manage.
-  return (
-    <InputBlock
-      type="file"
-      multiple
-      accept="image/*"
-      label="Upload Portfolio"
-      helperText="Attach your files here."
-      onFilesChange={(files) => console.log("Uploaded files:", files)}
-    />
-  );
-}`;
-
-## Examples
-
-<ExampleShowcase
-  name="input"
-  colorControl
-  colorLabel="Active Color"
-  columns={1}
-  examples={[
-    {
-      title: "Simple file input",
-      subheading: "For a form that just needs files attached: the `Input` block in file mode, with previews and removal built in.",
-      propNotes: [
-        {
-          lead: "Set",
-          prop: "type",
-          value: '"file"',
-          effect:
-            "on `InputBlock` to turn the field into a drag-and-drop zone with previews.",
-        },
-        {
-          prop: "onFilesChange",
-          effect:
-            "returns native `File[]` on drop, selection and removal.",
-        },
-        {
-          prop: "multiple",
-          effect:
-            "and `accept` pass through; `accept` takes the standard HTML string such as `\"image/*\"`.",
-        },
-      ],
-      props: { inputType: "file", isMultiple: true, isImageOnly: true },
-      usage: usageFileInput,
-      code: extractCode("src/components/custom/blocks/InputBlock.tsx"),
-      minHeight: 460,
-    },
-  ]}
-/>
+The `Folder` block as an upload surface — a playful alternative to a dropzone for a handful of files.
 
 <ExampleShowcase
   name="upload"
   columns={1}
   examples={[
-    {
-      title: "Upload states",
-      propNotes: [
-        {
-          prop: "status",
-          effect:
-            "drives the whole row — `idle`, `uploading`, `paused`, `error` and `success` each pick their own colours, icon and messaging.",
-        },
-        {
-          prop: "onRetry",
-          effect:
-            "is what the inline Retry button calls after an `error`; `onRemove` backs the X.",
-        },
-      ],
-      props: { showAll: "states" },
-      usage: usageStates,
-    },
     {
       title: "Folder drop target",
       subheading: "The `Folder` block as an upload surface: drop files on it or click to browse. It starts empty, each dropped file becomes a card with its own progress bar, the pocket tracks the overall figure, and an × removes a file.",
@@ -335,6 +335,10 @@ export default function FileUploadInput() {
     },
   ]}
 />
+
+### Install the folder block
+
+<Installation name="folder" />
 
 ## Features
 Discover the key capabilities that make this component an excellent choice for modern, animated user interfaces.
