@@ -6,7 +6,6 @@ The `RadialOrbitalTimeline` places event nodes along a circular orbit surroundin
 
 export const defaultUsage = `import RadialOrbitalTimeline, { type TimelineItem } from "@/components/custom/blocks/RadialOrbitalTimeline";
 
-// Reusable Outer Orbit Data (Layer 1 - Rotates Counter-Clockwise)
 const outerOrbitItems: TimelineItem[] = [
   {
     id: 1,
@@ -70,7 +69,6 @@ const outerOrbitItems: TimelineItem[] = [
   },
 ];
 
-// Reusable Inner Orbit Data (Layer 2 - Rotates Clockwise)
 const innerOrbitItems: TimelineItem[] = [
   {
     id: 6,
@@ -136,13 +134,84 @@ const innerOrbitItems: TimelineItem[] = [
 
 export default function ReusableTimelineExample() {
   return (
-    
-      {/* Explicitly pass orbitCount={2} for dual concentric counter-rotating orbits */}
+
+  );
+}`;
+
+export const singleOrbitUsage = `import RadialOrbitalTimeline, { type TimelineItem } from "@/components/custom/blocks/RadialOrbitalTimeline";
+
+const singleOrbitItems: TimelineItem[] = [
+  {
+    id: 1,
+    title: "Planning",
+    date: "Q1 2024",
+    content: "Define product roadmap, architecture blueprints, and design system specs.",
+    category: "Phase 1",
+    icon: Rocket,
+    relatedIds: [2],
+    status: "completed",
+    energy: 100,
+    color: "bg-blue-500 text-white border-blue-400",
+  },
+  {
+    id: 2,
+    title: "Research",
+    date: "Q1 2024",
+    content: "User persona discovery, competitive analysis, and tech stack benchmarking.",
+    category: "Phase 1.5",
+    icon: Zap,
+    relatedIds: [3],
+    status: "completed",
+    energy: 90,
+    color: "bg-purple-500 text-white border-purple-400",
+  },
+  {
+    id: 3,
+    title: "Security Audit",
+    date: "Q2 2024",
+    content: "Penetration testing, OAuth2 setup, and end-to-end data encryption verification.",
+    category: "Phase 2",
+    icon: Shield,
+    relatedIds: [4],
+    status: "completed",
+    energy: 85,
+    color: "bg-amber-500 text-white border-amber-400",
+  },
+  {
+    id: 4,
+    title: "Development",
+    date: "Q3 2024",
+    content: "Frontend component construction, state management, and API endpoints integration.",
+    category: "Phase 3",
+    icon: Code,
+    relatedIds: [5],
+    status: "in-progress",
+    energy: 70,
+    color: "bg-emerald-500 text-white border-emerald-400",
+  },
+  {
+    id: 5,
+    title: "AI Integrations",
+    date: "Q4 2024",
+    content: "Integrate LLM capabilities, predictive telemetry, and real-time smart suggestions.",
+    category: "Phase 3.5",
+    icon: Sparkles,
+    relatedIds: [1],
+    status: "in-progress",
+    energy: 60,
+    color: "bg-pink-500 text-white border-pink-400",
+  },
+];
+
+export default function SingleOrbitExample() {
+  return (
 
   );
 }`;
 
 ## Installation
+
+## Single Orbit Variant
 
 ## Props Reference: RadialOrbitalTimeline
 
