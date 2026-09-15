@@ -241,62 +241,54 @@ export const TOKEN_GROUPS = [
 // ─── Preset Definitions ─────────────────────────────────────────
 
 /**
- * Neutral — the project's default (matches globals.css).
- *
- * A two-tone system rather than a gray ramp: one page colour, one text colour,
- * and everything secondary is the text colour at an alpha. Light mode sits on
- * a warm off-white (#f5f5f0) with near-black (#111) text instead of pure
- * white/black, dark mode on #09090b with white text. Muted text is the
- * foreground at 70% — 6.8:1 on the light page and 9.7:1 on the dark one, so
- * secondary copy stays comfortably readable in both. Borders and surfaces are
- * likewise 4–12% tints of the text colour, which is what keeps them looking
- * consistent when the page colour changes underneath them.
+ * Neutral — the project's current default (matches globals.css).
+ * All achromatic OKLCH values (chroma = 0).
  */
 const neutral: ThemePreset = {
   name: "neutral",
   label: "Neutral",
   colors: {
     light: {
-      background: "oklch(0.969 0.007 106.5)",
-      foreground: "oklch(0.178 0 0)",
+      background: "oklch(1 0 0)",
+      foreground: "oklch(0.145 0 0)",
       card: "oklch(1 0 0)",
-      "card-foreground": "oklch(0.178 0 0)",
+      "card-foreground": "oklch(0.145 0 0)",
       popover: "oklch(1 0 0)",
-      "popover-foreground": "oklch(0.178 0 0)",
-      primary: "oklch(0.178 0 0)",
-      "primary-foreground": "oklch(1 0 0)",
-      secondary: "oklch(0 0 0 / 5%)",
-      "secondary-foreground": "oklch(0.178 0 0)",
-      muted: "oklch(0 0 0 / 4%)",
-      "muted-foreground": "oklch(0.178 0 0 / 70%)",
-      accent: "oklch(0 0 0 / 7%)",
-      "accent-foreground": "oklch(0.178 0 0)",
+      "popover-foreground": "oklch(0.145 0 0)",
+      primary: "oklch(0.205 0 0)",
+      "primary-foreground": "oklch(0.985 0 0)",
+      secondary: "oklch(0.97 0 0)",
+      "secondary-foreground": "oklch(0.205 0 0)",
+      muted: "oklch(0.97 0 0)",
+      "muted-foreground": "oklch(0.556 0 0)",
+      accent: "oklch(0.97 0 0)",
+      "accent-foreground": "oklch(0.205 0 0)",
       destructive: "oklch(0.577 0.245 27.325)",
       "destructive-foreground": "oklch(0.985 0 0)",
-      border: "oklch(0 0 0 / 8%)",
-      input: "oklch(0 0 0 / 8%)",
-      ring: "oklch(0.178 0 0 / 30%)",
+      border: "oklch(0.922 0 0)",
+      input: "oklch(0.922 0 0)",
+      ring: "oklch(0.708 0 0)",
     },
     dark: {
-      background: "oklch(0.141 0.004 285.8)",
-      foreground: "oklch(1 0 0)",
-      card: "oklch(0.183 0.004 286)",
-      "card-foreground": "oklch(1 0 0)",
-      popover: "oklch(0.183 0.004 286)",
-      "popover-foreground": "oklch(1 0 0)",
-      primary: "oklch(1 0 0)",
-      "primary-foreground": "oklch(0.178 0 0)",
-      secondary: "oklch(1 0 0 / 12%)",
-      "secondary-foreground": "oklch(1 0 0)",
-      muted: "oklch(1 0 0 / 5%)",
-      "muted-foreground": "oklch(1 0 0 / 70%)",
-      accent: "oklch(1 0 0 / 8%)",
-      "accent-foreground": "oklch(1 0 0)",
+      background: "oklch(0.145 0 0)",
+      foreground: "oklch(0.985 0 0)",
+      card: "oklch(0.205 0 0)",
+      "card-foreground": "oklch(0.985 0 0)",
+      popover: "oklch(0.205 0 0)",
+      "popover-foreground": "oklch(0.985 0 0)",
+      primary: "oklch(0.922 0 0)",
+      "primary-foreground": "oklch(0.205 0 0)",
+      secondary: "oklch(0.269 0 0)",
+      "secondary-foreground": "oklch(0.985 0 0)",
+      muted: "oklch(0.269 0 0)",
+      "muted-foreground": "oklch(0.708 0 0)",
+      accent: "oklch(0.269 0 0)",
+      "accent-foreground": "oklch(0.985 0 0)",
       destructive: "oklch(0.704 0.191 22.216)",
       "destructive-foreground": "oklch(0.985 0 0)",
-      border: "oklch(1 0 0 / 8%)",
-      input: "oklch(1 0 0 / 8%)",
-      ring: "oklch(1 0 0 / 30%)",
+      border: "oklch(0.269 0 0)",
+      input: "oklch(0.269 0 0)",
+      ring: "oklch(0.556 0 0)",
     },
   },
 };

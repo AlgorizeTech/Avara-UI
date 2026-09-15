@@ -519,10 +519,10 @@ User question: ${prompt}`;
             animate={{ opacity: 1, scale: 1, y: 0 }}
             exit={{ opacity: 0, scale: 0.95, y: -20 }}
             transition={{ duration: 0.2, ease: "easeOut" }}
-            className="w-full max-w-2xl bg-popover/80 backdrop-blur-xl rounded-xl shadow-2xl border border-border overflow-hidden"
+            className="w-full max-w-2xl bg-white/80 dark:bg-black/80 backdrop-blur-xl rounded-xl shadow-2xl border border-white/20 dark:border-zinc-800/50 overflow-hidden"
           >
             {/* Search Input */}
-            <div className="flex items-center gap-3 px-4 py-4 border-b border-border bg-popover/50 backdrop-blur-sm">
+            <div className="flex items-center gap-3 px-4 py-4 border-b border-white/20 dark:border-zinc-800/50 bg-white/50 dark:bg-black/50 backdrop-blur-sm">
               {/* AI Toggle Switch */}
               {/* <div className="flex items-center gap-2 mr-2">
                 <button
@@ -533,7 +533,7 @@ User question: ${prompt}`;
                     setAiConversation([]);
                   }}
                   className={`relative inline-flex h-6 w-11 items-center rounded-full transition-colors focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 ${
-                    isAIMode ? 'bg-blue-600' : 'bg-muted-foreground/30'
+                    isAIMode ? 'bg-blue-600' : 'bg-zinc-300 dark:bg-zinc-700'
                   }`}
                   role="switch"
                   aria-checked={isAIMode}
@@ -547,11 +547,11 @@ User question: ${prompt}`;
                     {isAIMode ? (
                       <div className="m-1 w-2 h-2 bg-blue-600 rounded-full" />
                     ) : (
-                      <div className="m-1 w-2 h-2 bg-muted-foreground/60 rounded-full" />
+                      <div className="m-1 w-2 h-2 bg-zinc-400 rounded-full" />
                     )}
                   </span>
                 </button>
-                <span className="text-xs text-muted-foreground">
+                <span className="text-xs text-zinc-500 dark:text-zinc-400">
                   {isAIMode ? 'AI' : 'Search'}
                 </span>
               </div> */}
@@ -560,7 +560,7 @@ User question: ${prompt}`;
               {isAIMode ? (
                 <Bot className="w-5 h-5 text-blue-600 dark:text-blue-400" />
               ) : (
-                <Search className="w-5 h-5 text-muted-foreground" />
+                <Search className="w-5 h-5 text-zinc-600 dark:text-zinc-400" />
               )}
 
               {/* Input Field */}
@@ -571,22 +571,22 @@ User question: ${prompt}`;
                   placeholder={isAIMode ? "Ask AI about components..." : "Search components and documentation..."}
                   value={query}
                   onChange={(e) => setQuery(e.target.value)}
-                  className="w-full bg-transparent text-foreground placeholder:text-muted-foreground outline-none text-lg"
+                  className="w-full bg-transparent text-zinc-900 dark:text-zinc-100 placeholder-zinc-500 outline-none text-lg"
                 />
               </form>
 
               {/* Results Counter / AI Status */}
-              <div className="flex items-center gap-2 text-xs text-muted-foreground">
+              <div className="flex items-center gap-2 text-xs text-zinc-500">
                 {isAIMode ? (
                   <span className="px-2 py-1 bg-blue-100 dark:bg-blue-900/50 backdrop-blur-sm rounded text-blue-600 dark:text-blue-400 border border-blue-200 dark:border-blue-700/50">
                     {isAILoading ? 'AI thinking...' : 'AI Ready'}
                   </span>
                 ) : (
-                  <span className="px-2 py-1 bg-muted backdrop-blur-sm rounded text-muted-foreground border border-border">
+                  <span className="px-2 py-1 bg-white/70 dark:bg-zinc-900/70 backdrop-blur-sm rounded text-zinc-600 dark:text-zinc-400 border border-white/20 dark:border-zinc-700/50">
                     {filteredItems.length} results
                   </span>
                 )}
-                <kbd className="px-2 py-1 bg-muted backdrop-blur-sm rounded text-muted-foreground border border-border">
+                <kbd className="px-2 py-1 bg-white/70 dark:bg-zinc-900/70 backdrop-blur-sm rounded text-zinc-600 dark:text-zinc-400 border border-white/20 dark:border-zinc-700/50">
                   <Command className="w-3 h-3 inline mr-1" />K
                 </kbd>
               </div>
@@ -613,7 +613,7 @@ User question: ${prompt}`;
                         <div className={`rounded-2xl px-4 py-3 ${
                           message.type === 'user'
                             ? 'bg-blue-600 text-white'
-                            : 'bg-muted backdrop-blur-sm border border-border text-foreground'
+                            : 'bg-white/70 dark:bg-zinc-800/70 backdrop-blur-sm border border-white/20 dark:border-zinc-700/50 text-zinc-900 dark:text-zinc-100'
                         }`}>
                           <div className="text-sm whitespace-pre-wrap">
                             {message.type === 'ai' ? (
@@ -634,11 +634,11 @@ User question: ${prompt}`;
                         <div className="w-10 h-10 rounded-full flex items-center justify-center flex-shrink-0">
                           <AILogo size="md" loading={isAILoading} />
                         </div>
-                        <div className="rounded-2xl px-4 py-3 bg-muted backdrop-blur-sm border border-border text-foreground">
+                        <div className="rounded-2xl px-4 py-3 bg-white/70 dark:bg-zinc-800/70 backdrop-blur-sm border border-white/20 dark:border-zinc-700/50 text-zinc-900 dark:text-zinc-100">
                           {isAILoading && !aiResponse ? (
                             <div className="flex items-center gap-2">
                               <div className="animate-spin w-4 h-4 border-2 border-blue-600 border-t-transparent rounded-full"></div>
-                              <span className="text-sm text-muted-foreground">AI is thinking...</span>
+                              <span className="text-sm text-zinc-500">AI is thinking...</span>
                             </div>
                           ) : (
                             <div className="text-sm whitespace-pre-wrap">
@@ -656,8 +656,8 @@ User question: ${prompt}`;
                       <div className="w-20 h-20 mx-auto mb-4 rounded-full flex items-center justify-center">
                         <AILogo size="lg" />
                       </div>
-                      <h3 className="text-lg font-medium text-foreground mb-2">AI Assistant Ready</h3>
-                      <p className="text-sm text-muted-foreground max-w-md mx-auto">
+                      <h3 className="text-lg font-medium text-zinc-900 dark:text-zinc-100 mb-2">AI Assistant Ready</h3>
+                      <p className="text-sm text-zinc-500 dark:text-zinc-400 max-w-md mx-auto">
                         Ask me anything about the Algorize UI components! I can help you find the right component, explain usage patterns, or provide implementation guidance.
                       </p>
                       <div className="mt-4 flex flex-wrap gap-2 justify-center">
@@ -675,7 +675,7 @@ User question: ${prompt}`;
                               fetchAIResponse(suggestion);
                               setQuery("");
                             }}
-                            className="px-3 py-1.5 text-xs bg-muted backdrop-blur-sm rounded-full text-muted-foreground border border-border hover:bg-accent hover:text-foreground transition-colors"
+                            className="px-3 py-1.5 text-xs bg-white/70 dark:bg-zinc-800/70 backdrop-blur-sm rounded-full text-zinc-600 dark:text-zinc-400 border border-white/20 dark:border-zinc-700/50 hover:bg-white/90 dark:hover:bg-zinc-700/90 transition-colors"
                           >
                             {suggestion}
                           </button>
@@ -693,31 +693,31 @@ User question: ${prompt}`;
                         key={item.id}
                         href={navHref(item, framework)}
                         onClick={handleSelectAndClose}
-                        className={`flex items-center gap-3 px-4 py-3 hover:bg-accent transition-colors ${
+                        className={`flex items-center gap-3 px-4 py-3 hover:bg-white/50 dark:hover:bg-zinc-900/50 transition-colors ${
                           index === selectedIndex
-                            ? "bg-accent"
+                            ? "bg-white/50 dark:bg-zinc-900/50"
                             : ""
                         }`}
                       >
-                        <div className="flex-shrink-0 text-muted-foreground">
+                        <div className="flex-shrink-0 text-zinc-600 dark:text-zinc-500">
                           {getItemIcon(item)}
                         </div>
                         <div className="flex-1 min-w-0">
-                          <div className="font-medium text-foreground truncate">
+                          <div className="font-medium text-zinc-900 dark:text-zinc-100 truncate">
                             {item.title}
                           </div>
-                          <div className="text-sm text-muted-foreground truncate">
+                          <div className="text-sm text-zinc-500 dark:text-zinc-400 truncate">
                             {item.description}
                           </div>
                         </div>
-                        <div className="flex-shrink-0 text-xs text-muted-foreground/60 bg-muted backdrop-blur-sm px-2 py-1 rounded border border-border">
+                        <div className="flex-shrink-0 text-xs text-zinc-400 bg-white/70 dark:bg-zinc-900/70 backdrop-blur-sm px-2 py-1 rounded border border-white/20 dark:border-zinc-700/50">
                           {item.category}
                         </div>
                       </Link>
                     ))}
                   </div>
                 ) : (
-                  <div className="py-8 text-center text-muted-foreground">
+                  <div className="py-8 text-center text-zinc-600 dark:text-zinc-500">
                     <Search className="w-8 h-8 mx-auto mb-2 opacity-50" />
                     <p>No results found for &quot;{query}&quot;</p>
                   </div>
@@ -726,22 +726,22 @@ User question: ${prompt}`;
             </div>
 
             {/* Footer */}
-            <div className="px-4 py-3 border-t border-border bg-popover/50 backdrop-blur-sm">
-              <div className="flex items-center justify-between text-xs text-muted-foreground">
+            <div className="px-4 py-3 border-t border-white/20 dark:border-zinc-800/50 bg-white/50 dark:bg-black/50 backdrop-blur-sm">
+              <div className="flex items-center justify-between text-xs text-zinc-500">
                 <div className="flex items-center gap-4">
                   <span className="flex items-center gap-1">
-                    <kbd className="px-1.5 py-0.5 bg-muted backdrop-blur-sm rounded border border-border">↑</kbd>
-                    <kbd className="px-1.5 py-0.5 bg-muted backdrop-blur-sm rounded border border-border">↓</kbd>
+                    <kbd className="px-1.5 py-0.5 bg-white/70 dark:bg-zinc-900/70 backdrop-blur-sm rounded border border-white/20 dark:border-zinc-700/50">↑</kbd>
+                    <kbd className="px-1.5 py-0.5 bg-white/70 dark:bg-zinc-900/70 backdrop-blur-sm rounded border border-white/20 dark:border-zinc-700/50">↓</kbd>
                     to navigate
                   </span>
                   <span className="flex items-center gap-1">
-                    <kbd className="px-1.5 py-0.5 bg-muted backdrop-blur-sm rounded border border-border">↵</kbd>
+                    <kbd className="px-1.5 py-0.5 bg-white/70 dark:bg-zinc-900/70 backdrop-blur-sm rounded border border-white/20 dark:border-zinc-700/50">↵</kbd>
                     {isAIMode ? 'to send' : 'to select'}
                   </span>
                   {/* Clear Search Button */}
                   <button
                     onClick={handleClearSearch}
-                    className="flex items-center gap-1 px-2 py-1 bg-muted backdrop-blur-sm rounded border border-border hover:bg-accent transition-colors text-muted-foreground hover:text-foreground"
+                    className="flex items-center gap-1 px-2 py-1 bg-white/70 dark:bg-zinc-900/70 backdrop-blur-sm rounded border border-white/20 dark:border-zinc-700/50 hover:bg-white/90 dark:hover:bg-zinc-700/90 transition-colors text-zinc-600 dark:text-zinc-400 hover:text-zinc-800 dark:hover:text-zinc-200"
                     title={isAIMode ? "Clear AI conversation (Ctrl+K)" : "Clear search (Ctrl+K)"}
                   >
                     <X className="w-3 h-3" />
@@ -752,7 +752,7 @@ User question: ${prompt}`;
                   </button>
                 </div>
                 <span className="flex items-center gap-1">
-                  <kbd className="px-1.5 py-0.5 bg-muted backdrop-blur-sm rounded border border-border">esc</kbd>
+                  <kbd className="px-1.5 py-0.5 bg-white/70 dark:bg-zinc-900/70 backdrop-blur-sm rounded border border-white/20 dark:border-zinc-700/50">esc</kbd>
                   to close
                 </span>
               </div>

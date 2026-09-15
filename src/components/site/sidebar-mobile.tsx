@@ -81,10 +81,10 @@ const MenuItem: React.FC<{ item: MenuItem; isNested?: boolean; onClose: () => vo
           'flex items-center justify-between py-1 text-sm transition-colors cursor-pointer relative',
           isNested ? 'pl-6' : 'font-medium',
           isActive || hasActiveChild
-            ? 'text-foreground'
+            ? 'text-zinc-900 dark:text-white'
             : isNested
-              ? 'text-muted-foreground hover:text-foreground'
-              : 'text-muted-foreground hover:text-foreground'
+              ? 'text-zinc-500 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-zinc-200'
+              : 'text-zinc-500 dark:text-white/80 hover:text-zinc-900 dark:hover:text-white/90'
         )}
       >
         <span className="flex items-center gap-2">
@@ -102,7 +102,7 @@ const MenuItem: React.FC<{ item: MenuItem; isNested?: boolean; onClose: () => vo
             </span>
           )}
           {isNested && (
-            <span className="w-1 h-1 rounded-full bg-muted-foreground/60 mr-2"></span>
+            <span className="w-1 h-1 rounded-full bg-zinc-400 dark:bg-zinc-500 mr-2"></span>
           )}
           {item.label}
           {item.badge && (
@@ -126,7 +126,7 @@ const MenuItem: React.FC<{ item: MenuItem; isNested?: boolean; onClose: () => vo
         <ul
           className={cn(
             'mt-0.5 space-y-0.5',
-            isNested ? 'pl-2' : 'ml-4 border-l border-border mt-0.5 relative'
+            isNested ? 'pl-2' : 'ml-4 border-l border-zinc-100 dark:border-zinc-800 mt-0.5 relative'
           )}
         >
           {item.children.map((child, index) => {
@@ -148,7 +148,7 @@ const MenuItem: React.FC<{ item: MenuItem; isNested?: boolean; onClose: () => vo
                       'block py-1 text-sm',
                       isChildActive
                         ? 'text-blue-600 dark:text-blue-400 font-medium'
-                        : 'text-muted-foreground hover:text-foreground'
+                        : 'text-zinc-600 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-zinc-200'
                     )}
                     aria-current={isChildActive ? 'page' : undefined}
                   >
@@ -184,7 +184,7 @@ export const SidebarMobile = ({ onClose }: { onClose: () => void }) => {
   const currentSlug = slugFromPathname(currentPath);
 
   return (
-    <aside className="w-full h-[calc(100%-60px)] sticky top-[60px] border-t border-border overflow-visible">
+    <aside className="w-full h-[calc(100%-60px)] sticky top-[60px] border-t border-zinc-100 dark:border-zinc-800 overflow-visible">
       <ScrollArea className="h-full w-full">
         <div className="py-6 px-6 relative overflow-visible">
           {/* Same control, same position as desktop. onNavigate closes the sheet:
@@ -200,7 +200,7 @@ export const SidebarMobile = ({ onClose }: { onClose: () => void }) => {
             </ul>
           </nav>
 
-          <div className="mt-6 pt-3 border-t border-border">
+          <div className="mt-6 pt-3 border-t border-zinc-100 dark:border-zinc-800">
             <div className="flex items-center">
               {/* Active indicator dot for Getting Started Guide - inline */}
               {currentSlug === 'index' && (

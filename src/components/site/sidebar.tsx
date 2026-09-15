@@ -142,7 +142,7 @@ const MenuItem: React.FC<{
         "font-semibold text-[14px] py-1.5 px-3",
         isExactActive || isParentActive
           ? "bg-primary/10 text-primary font-bold"
-          : "text-foreground hover:bg-primary/5 hover:text-primary",
+          : "text-zinc-900 dark:text-zinc-100 hover:bg-primary/5 hover:text-primary",
       );
     }
     if (level === 1) {
@@ -151,7 +151,7 @@ const MenuItem: React.FC<{
         // Highlights the Level 1 parent (e.g., "Scroll Stack") when any child is clicked!
         isExactActive || isParentActive
           ? "bg-primary/10 text-primary font-semibold"
-          : "text-muted-foreground hover:text-primary hover:bg-primary/5",
+          : "text-zinc-600 dark:text-zinc-400 hover:text-primary hover:bg-primary/5",
       );
     }
     // Level 2+ (Sub-children and deeper)
@@ -159,7 +159,7 @@ const MenuItem: React.FC<{
       "text-[13px] py-1 px-2.5",
       isExactActive || isParentActive
         ? "bg-primary/10 text-primary font-medium"
-        : "text-muted-foreground hover:text-primary hover:bg-primary/5",
+        : "text-zinc-500 dark:text-zinc-400 hover:text-primary hover:bg-primary/5",
     );
   };
 
@@ -167,7 +167,7 @@ const MenuItem: React.FC<{
     <span className="flex items-center justify-between w-full truncate pr-1">
       <span className="flex items-center gap-2 truncate">
         {hasChildren && (
-          <span className="text-muted-foreground/60 shrink-0 transition-transform duration-200">
+          <span className="text-zinc-400 shrink-0 transition-transform duration-200">
             {actualIsOpen ? (
               <ChevronDown className="w-3.5 h-3.5" />
             ) : (
@@ -231,7 +231,7 @@ const MenuItem: React.FC<{
             className={cn(
               "overflow-hidden relative flex flex-col gap-0.5 mt-0.5",
               // Dynamic left indentation & guide line for every nested level
-              "ml-3.5 pl-2.5 border-l border-border",
+              "ml-3.5 pl-2.5 border-l border-zinc-200 dark:border-zinc-800/80",
             )}
           >
             {item.children!.map((child, index) => (
@@ -288,27 +288,27 @@ const Sidebar = () => {
   const isSearching = searchQuery.trim().length > 0;
 
   return (
-    <aside className="hidden md:flex flex-col w-[240px] shrink-0 h-[calc(100dvh-57px)] sticky top-[57px] border-r border-border bg-background/50 backdrop-blur-xl">
+    <aside className="hidden md:flex flex-col w-[240px] shrink-0 h-[calc(100dvh-57px)] sticky top-[57px] border-r border-zinc-200 dark:border-zinc-800/50 bg-white/50 dark:bg-black/20 backdrop-blur-xl">
       {/* --- STICKY FRAMEWORK SWITCHER + SEARCH INPUT ---
           One control group: the switcher scopes the tree, search filters within
           that scope, and neither may scroll away from the reader. */}
-      <div className="p-3 pb-3 border-b border-border bg-background/80 backdrop-blur-md sticky top-0 z-20 shrink-0 space-y-2.5">
+      <div className="p-3 pb-3 border-b border-zinc-200/60 dark:border-zinc-800/60 bg-white/80 dark:bg-zinc-950/80 backdrop-blur-md sticky top-0 z-20 shrink-0 space-y-2.5">
         <FrameworkSwitcher />
         <div className="relative flex items-center w-full">
-          <Search className="absolute left-3 w-4 h-4 text-muted-foreground/60 pointer-events-none" />
+          <Search className="absolute left-3 w-4 h-4 text-zinc-400 pointer-events-none" />
           <input
             type="search"
             placeholder="Search components..."
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
-            className="w-full h-10 bg-muted hover:bg-accent border border-input focus:border-ring rounded-lg pl-9 pr-8 py-2.5 text-sm text-foreground placeholder:text-muted-foreground outline-none transition-all shadow-none [&::-webkit-search-cancel-button]:appearance-none"
+            className="w-full h-10 bg-zinc-100/60 hover:bg-zinc-100 dark:bg-zinc-800/40 dark:hover:bg-zinc-800/60 border border-zinc-200 dark:border-zinc-800 focus:border-zinc-400 dark:focus:border-zinc-600 rounded-lg pl-9 pr-8 py-2.5 text-sm text-zinc-900 dark:text-zinc-100 placeholder:text-zinc-500 dark:placeholder:text-zinc-400 outline-none transition-all shadow-none [&::-webkit-search-cancel-button]:appearance-none"
             aria-label="Search documentation components"
           />
           {isSearching && (
             <button
               type="button"
               onClick={() => setSearchQuery("")}
-              className="absolute right-2.5 p-1 rounded-md text-muted-foreground/60 hover:text-foreground transition-colors focus:outline-none focus:ring-2 focus:ring-ring"
+              className="absolute right-2.5 p-1 rounded-md text-zinc-400 hover:text-zinc-600 dark:hover:text-zinc-200 transition-colors focus:outline-none focus:ring-2 focus:ring-zinc-300 dark:focus:ring-zinc-600"
               aria-label="Clear search"
             >
               <X className="w-3.5 h-3.5" />
@@ -340,10 +340,10 @@ const Sidebar = () => {
               </ul>
             ) : (
               <div className="pl-4 py-8 text-center flex flex-col items-center justify-center gap-2">
-                <p className="text-sm font-medium text-foreground">
+                <p className="text-sm font-medium text-zinc-900 dark:text-zinc-100">
                   No results found
                 </p>
-                <p className="text-xs text-muted-foreground">
+                <p className="text-xs text-zinc-500 dark:text-zinc-400">
                   We couldn't find anything for "{searchQuery}"
                 </p>
               </div>
@@ -351,17 +351,17 @@ const Sidebar = () => {
           </nav>
 
           {/* Quick Links Section */}
-          <div className="mt-8 pt-4 border-t border-border pl-4">
+          <div className="mt-8 pt-4 border-t border-zinc-200 dark:border-zinc-800/50 pl-4">
             <Link
               href={docsHref(framework, "index")}
               className={cn(
                 "flex items-center gap-2 py-2 px-3 rounded-lg text-[13.5px] transition-all cursor-pointer",
                 currentSlug === "index"
-                  ? "text-foreground bg-accent font-medium"
-                  : "text-muted-foreground hover:text-foreground hover:bg-accent",
+                  ? "text-zinc-900 dark:text-white bg-zinc-100 dark:bg-zinc-800/50 font-medium"
+                  : "text-zinc-600 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-zinc-100 hover:bg-zinc-50 dark:hover:bg-zinc-900/50",
               )}
             >
-              <PlayCircle className="w-4 h-4 text-muted-foreground/60 shrink-0" />
+              <PlayCircle className="w-4 h-4 text-zinc-400 shrink-0" />
               Getting Started Guide
             </Link>
           </div>

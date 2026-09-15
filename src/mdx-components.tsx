@@ -72,7 +72,7 @@ export function useMDXComponents(components: MDXComponents): MDXComponents {
 
     p: ({ children, ...props }: React.ComponentProps<'p'>) => {
       return (
-        <p className="mb-4 text-sm leading-relaxed text-muted-foreground" {...props}>
+        <p className="mb-4 text-sm leading-relaxed text-foreground/70" {...props}>
           {children}
         </p>
       );
@@ -80,7 +80,7 @@ export function useMDXComponents(components: MDXComponents): MDXComponents {
 
     ul: ({ children, ...props }: React.ComponentProps<'ul'>) => {
       return (
-        <ul className="list-disc list-inside mb-6 ml-6 space-y-2 text-sm leading-relaxed" {...props}>
+        <ul className="list-disc list-inside mb-6 ml-6 space-y-2" {...props}>
           {children}
         </ul>
       );
@@ -88,7 +88,7 @@ export function useMDXComponents(components: MDXComponents): MDXComponents {
 
     ol: ({ children, ...props }: React.ComponentProps<'ol'>) => {
       return (
-        <ol className="list-decimal list-inside mb-6 ml-6 space-y-2 text-sm leading-relaxed" {...props}>
+        <ol className="list-decimal list-inside mb-6 ml-6 space-y-2" {...props}>
           {children}
         </ol>
       );
@@ -96,7 +96,7 @@ export function useMDXComponents(components: MDXComponents): MDXComponents {
 
     li: ({ children, ...props }: React.ComponentProps<'li'>) => {
       return (
-        <li className="text-muted-foreground" {...props}>
+        <li className="text-gray-700 dark:text-gray-300" {...props}>
           {children}
         </li>
       );
@@ -105,7 +105,7 @@ export function useMDXComponents(components: MDXComponents): MDXComponents {
     blockquote: ({ children, ...props }: React.ComponentProps<'blockquote'>) => {
       return (
         <blockquote
-          className="border-l-4 border-border pl-6 italic my-6 text-sm leading-relaxed text-muted-foreground"
+          className="border-l-4 border-blue-500 pl-6 italic my-6 text-gray-600 dark:text-gray-400"
           {...props}
         >
           {children}
