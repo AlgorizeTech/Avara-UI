@@ -72,7 +72,7 @@ export const MagicBentoCard = React.forwardRef<
 
       {/* 2. Highlight: Continuously Spinning Conic Gradient */}
       {highlight && (
-        <div className="absolute inset-[-100%] animate-[spin_4s_linear_infinite] bg-[conic-gradient(from_90deg_at_50%_50%,transparent_0%,var(--magic-color)_50%,transparent_100%)] opacity-30 dark:opacity-50 group-hover:opacity-80 transition-opacity duration-500" />
+        <div className="absolute inset-[-100%] animate-[spin_4s_linear_infinite] bg-[conic-gradient(from_90deg_at_50%_50%,transparent_0%,var(--magic-color)_50%,transparent_100%)] opacity-70 dark:opacity-90 group-hover:opacity-100 transition-opacity duration-500" />
       )}
 
       {/* 3. Hover: Mouse-Tracking Border Spotlight */}
