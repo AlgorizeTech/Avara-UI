@@ -123,11 +123,38 @@ const PLAIN_VARIANTS: Record<string, string> = {
   link: "bg-transparent text-primary border-transparent shadow-none underline-offset-4 hover:underline",
 };
 
+export function getButtonThemeStyle(color?: string): React.CSSProperties {
+  if (!color || color === "default" || color === "primary") {
+    return {};
+  }
+
+  let primary = color;
+  let primaryForeground = "#ffffff";
+
+  if (color === "indigo") {
+    primary = "#6366f1";
+  } else if (color === "rose") {
+    primary = "#f43f5e";
+  } else if (color === "emerald") {
+    primary = "#10b981";
+  } else if (color === "zinc") {
+    primary = "#27272a";
+    primaryForeground = "#fafafa";
+  }
+
+  return {
+    "--primary": primary,
+    "--primary-foreground": primaryForeground,
+    "--ring": primary,
+  } as React.CSSProperties;
+}
+
 export interface ButtonProps
   extends React.ButtonHTMLAttributes<HTMLButtonElement> {
   variant?: ButtonVariant;
   size?: ButtonSize;
   loading?: boolean;
+  color?: string;
   iconLeft?: React.ReactNode;
   iconRight?: React.ReactNode;
 }
@@ -147,9 +174,11 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
       size = "default",
       children,
       loading,
+      color,
       onClick,
       iconLeft,
       iconRight,
+      style,
       ...props
     },
     ref,
@@ -157,6 +186,7 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
     const [ripples, setRipples] = useState<Ripple[]>([]);
 
     const iconOnly = !children && Boolean(iconLeft || iconRight);
+    const combinedStyle = { ...getButtonThemeStyle(color), ...style };
 
     useEffect(() => {
       const styleId = "ripple-animation-style";
@@ -239,6 +269,7 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
           onClick={createRipple}
           disabled={loading}
           ref={ref}
+          style={combinedStyle}
           {...props}
         >
           <span className="relative z-10 inline-flex items-center justify-center gap-2">

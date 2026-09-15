@@ -27,9 +27,14 @@ export function ShowcaseColorProvider({ children }: { children: React.ReactNode 
   const pathname = usePathname();
   const [color, setColor] = useState(DEFAULT_SHOWCASE_COLOR);
   const pickerOwnerRef = useRef<string | null>(null);
+  const prevPathname = useRef(pathname);
+
+  if (prevPathname.current !== pathname) {
+    prevPathname.current = pathname;
+    pickerOwnerRef.current = null;
+  }
 
   useEffect(() => {
-    pickerOwnerRef.current = null;
     setColor(DEFAULT_SHOWCASE_COLOR);
   }, [pathname]);
 

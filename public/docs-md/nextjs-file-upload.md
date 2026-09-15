@@ -14,14 +14,38 @@ Three upload surfaces live on this page, and each installs separately: the `Drop
 
 export const usageDropzone = `"use client";
 
-export default function AvatarDropzone() {
-  // accept is the native input string; maxSize is in MB and is echoed
-  // in the helper text under the icon.
+export default function FileUploader() {
+  const [files, setFiles] = useState([]);
+
+  const handleFilesDrop = (droppedFiles: File[]) => {
+    const newItems: FileUploadState[] = droppedFiles.map((file) => ({
+      id: Math.random().toString(36).substring(7),
+      file,
+      progress: 100,
+      status: "success",
+      previewUrl: file.type.startsWith("image/")
+        ? URL.createObjectURL(file)
+        : undefined,
+    }));
+    setFiles((prev) => [...newItems, ...prev]);
+  };
+
+  const handleRemove = (id: string) => {
+    setFiles((prev) => prev.filter((f) => f.id !== id));
+  };
+
   return (
-     console.log(files)}
-      accept="image/png,image/jpeg"
-      maxSize={5}
-    />
+
+      {files.length > 0 && (
+
+            Uploaded Files ({files.length})
+
+            {files.map((item) => (
+
+            ))}
+
+      )}
+    
   );
 }`;
 

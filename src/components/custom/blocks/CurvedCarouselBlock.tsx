@@ -182,7 +182,22 @@ export function CurvedCarousel({
   const [windowWidth, setWindowWidth] = useState(1200);
   const sweepDirection = useRef<1 | -1>(1);
 
-  const total = carouselItems.length;
+  let arcItems = carouselItems;
+  if (carouselItems.length > 0 && carouselItems.length < 24) {
+    const repeatCount = Math.ceil(24 / carouselItems.length);
+    const duplicated: CurvedCarouselCard[] = [];
+    for (let i = 0; i < repeatCount; i++) {
+      carouselItems.forEach((item, idx) => {
+        duplicated.push({
+          ...item,
+          id: `${item.id}-dup-${i}-${idx}`,
+        });
+      });
+    }
+    arcItems = duplicated.slice(0, 24);
+  }
+
+  const total = arcItems.length;
 
   useEffect(() => {
     // Track screen width dynamically for fluid scaling:
@@ -354,7 +369,7 @@ export function CurvedCarousel({
     >
       {/* FLUID RESPONSIVE 360-DEGREE GIANT WHEEL RING */}
       <div className="relative w-full h-full flex items-center justify-center overflow-hidden">
-        {carouselItems.map((item, index) => {
+        {arcItems.map((item, index) => {
           // 15-degree step angle (360 / 24 = 15 deg)
           const spokeAngle = index * (360 / total);
           const currentAngle = spokeAngle + rotationAngle;

@@ -19,6 +19,7 @@ import { cn } from "@/lib/utils";
 
 export interface ParticleCanvasProps extends React.HTMLAttributes<HTMLDivElement> {
   content?: string;
+  variant?: "repel" | (string & {});
   particleSize?: number;
   particleGap?: number;
   speed?: number;
@@ -47,6 +48,7 @@ interface Particle {
 
 export function ParticleCanvas({
   content = "AlgorizeTech",
+  variant = "repel",
   particleSize = 2.5,
   particleGap = 5,
   speed = 1,
