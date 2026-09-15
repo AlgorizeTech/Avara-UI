@@ -916,10 +916,10 @@ export function ExampleShowcase({
   minHeight = 550,
   maxHeight = 1400,
   className,
-  colorControl = false,
+  colorControl = true,
   defaultColor = DEFAULT_SHOWCASE_COLOR,
   colorProp = "color",
-  colorLabel = "Theme Color",
+  colorLabel = "Active Color",
   controls = [],
 }: {
   /** Registry name of the demo (src/preview/registry.tsx). */

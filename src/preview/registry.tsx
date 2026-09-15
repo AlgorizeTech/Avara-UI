@@ -12,7 +12,6 @@ export const sandboxRegistry: Record<string, LazyExoticComponent<ComponentType<a
   "ai-chat": lazyRetry(() => import("./demos/ai-chat-demo")),
   "alert": lazyRetry(() => import("./demos/alert-demo")),
   "animated-list": lazyRetry(() => import("./demos/animated-list-demo")),
-  "animated-marquee": lazyRetry(() => import("./demos/animated-marquee-demo")),
   "animated-timeline": lazyRetry(() => import("./demos/animated-timeline-demo")),
   "animated-typography": lazyRetry(() => import("./demos/animated-typography-demo")),
   "api-playground": lazyRetry(() => import("./demos/api-playground-demo")),

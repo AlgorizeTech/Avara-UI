@@ -1,6 +1,6 @@
 "use client";
 
-import Button from "@/components/custom/blocks/Button";
+import Button, { getButtonThemeStyle } from "@/components/custom/blocks/Button";
 import {
   AppleIcon,
   ArrowLeftIcon,
@@ -44,11 +44,18 @@ type LayoutType =
 
 export default function ButtonDemo({
   layout = "basic",
+  color = "primary",
 }: {
   layout?: "basic" | "slide-icon" | "slide-text" | "icon-only" | "social";
+  color?: string;
 }) {
+  const themeStyle = getButtonThemeStyle(color);
+
   return (
-    <div className="w-full min-h-[320px] h-full flex flex-col items-center justify-center p-8 m-0">
+    <div
+      className="w-full min-h-[320px] h-full flex flex-col items-center justify-center p-8 m-0"
+      style={themeStyle}
+    >
       {layout === "basic" && (
         <div className="w-full h-full flex flex-wrap items-center justify-center gap-8 m-0 py-12">
           {/* 1. Single Conic Spinning Border */}

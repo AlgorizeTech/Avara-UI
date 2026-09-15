@@ -1,6 +1,6 @@
 {
-  "generatedAt": "2026-09-15T05:44:38.625Z",
-  "totalFiles": 257,
+  "generatedAt": "2026-09-15T07:10:35.166Z",
+  "totalFiles": 253,
   "files": [
     {
       "name": "nextjs/3d-carousel",
@@ -31,12 +31,6 @@
       "path": "/docs/nextjs-animated-list.md",
       "url": "/docs/nextjs/animated-list",
       "originalMdx": "[framework]\\animated-list\\page.mdx"
-    },
-    {
-      "name": "nextjs/animated-marquee",
-      "path": "/docs/nextjs-animated-marquee.md",
-      "url": "/docs/nextjs/animated-marquee",
-      "originalMdx": "[framework]\\animated-marquee\\page.mdx"
     },
     {
       "name": "nextjs/animated-timeline",
@@ -805,12 +799,6 @@
       "path": "/docs/reactjs-animated-list.md",
       "url": "/docs/reactjs/animated-list",
       "originalMdx": "[framework]\\animated-list\\page.mdx"
-    },
-    {
-      "name": "reactjs/animated-marquee",
-      "path": "/docs/reactjs-animated-marquee.md",
-      "url": "/docs/reactjs/animated-marquee",
-      "originalMdx": "[framework]\\animated-marquee\\page.mdx"
     },
     {
       "name": "reactjs/animated-timeline",

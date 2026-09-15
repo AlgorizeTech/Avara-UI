@@ -7,7 +7,6 @@ export const sandboxNames = [
   "ai-chat",
   "alert",
   "animated-list",
-  "animated-marquee",
   "animated-timeline",
   "animated-typography",
   "api-playground",
