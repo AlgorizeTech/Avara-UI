@@ -17,17 +17,65 @@ Three upload surfaces live on this page, and each installs separately: the `Drop
 
 export const usageDropzone = `"use client";
 
-import { Dropzone } from "@/components/custom/blocks/UploadBlock";
+import {
+  Dropzone,
+  UploadItem,
+  type FileUploadState,
+} from "@/components/custom/blocks/UploadBlock";
+import { AnimatePresence, motion } from "framer-motion";
+import { useState } from "react";
 
-export default function AvatarDropzone() {
-  // accept is the native input string; maxSize is in MB and is echoed
-  // in the helper text under the icon.
+export default function FileUploader() {
+  const [files, setFiles] = useState<FileUploadState[]>([]);
+
+  const handleFilesDrop = (droppedFiles: File[]) => {
+    const newItems: FileUploadState[] = droppedFiles.map((file) => ({
+      id: Math.random().toString(36).substring(7),
+      file,
+      progress: 100,
+      status: "success",
+      previewUrl: file.type.startsWith("image/")
+        ? URL.createObjectURL(file)
+        : undefined,
+    }));
+    setFiles((prev) => [...newItems, ...prev]);
+  };
+
+  const handleRemove = (id: string) => {
+    setFiles((prev) => prev.filter((f) => f.id !== id));
+  };
+
   return (
-    <Dropzone
-      onFilesDrop={(files) => console.log(files)}
-      accept="image/png,image/jpeg"
-      maxSize={5}
-    />
+    <div className="w-full max-w-md flex flex-col gap-6 mx-auto">
+      <Dropzone
+        onFilesDrop={handleFilesDrop}
+        accept="image/*,application/pdf"
+        maxSize={5}
+      />
+
+      {files.length > 0 && (
+        <div className="flex flex-col gap-2">
+          <div className="flex items-center justify-between text-xs font-bold uppercase tracking-wider text-zinc-500 px-1">
+            <span>Uploaded Files ({files.length})</span>
+          </div>
+
+          <AnimatePresence mode="popLayout">
+            {files.map((item) => (
+              <motion.div
+                key={item.id}
+                layout
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: -20 }}
+                transition={{ duration: 0.3 }}
+              >
+                <UploadItem item={item} onRemove={handleRemove} />
+              </motion.div>
+            ))}
+          </AnimatePresence>
+        </div>
+      )}
+    </div>
   );
 }`;
 
@@ -87,6 +135,7 @@ export default function UploadStates() {
 
 <ExampleShowcase
   name="upload"
+  colorControl
   columns={1}
   examples={[
     {
