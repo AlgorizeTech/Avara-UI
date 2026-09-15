@@ -6,7 +6,6 @@ import { usePathname } from "next/navigation";
 import { docsHref, frameworkFromPathname } from "@/lib/framework";
 import {
 	Boxes,
-	Sparkles,
 	LayoutTemplate,
 	ArrowRight,
 	LayoutGrid,
@@ -118,7 +117,7 @@ const COMPONENT_META: Record<
 	"verify-badge": { countText: "Trust Badge", illustrationType: "verify-badge" },
 	wizard: { countText: "Multi-Step Form", illustrationType: "wizard" },
 
-	// Animated Ui Components
+	// Ui Components (motion-driven; formerly a separate "Animated Ui Components" group)
 	"3d-carousel": { countText: "3D Physics Spring", illustrationType: "carousel" },
 	"animated-list": { countText: "Staggered Entrance", illustrationType: "animated-list" },
 	"chat-bubble": { countText: "Spring Motion Feed", illustrationType: "chat" },
@@ -155,12 +154,8 @@ const COMPONENT_META: Record<
 
 const CATEGORY_META: Record<string, { subtitle: string; icon: any }> = {
 	"Ui Components": {
-		subtitle: "Essential primitive building blocks for clean, high-performance web applications.",
+		subtitle: "Primitive building blocks and fluid, motion-driven components for clean, high-performance web applications.",
 		icon: Boxes,
-	},
-	"Animated Ui Components": {
-		subtitle: "Fluid, interactive components powered by Framer Motion & spring physics.",
-		icon: Sparkles,
 	},
 	"Website Sections": {
 		subtitle: "Production-ready full section blocks for landing pages and SaaS platforms.",
