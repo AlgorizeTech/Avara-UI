@@ -5,7 +5,7 @@ import { extractCode } from "@/lib/code";
 
 A section that shows where the data comes from and what comes out: source cards on the left feed one node in the middle, which fans out to result cards on the right. The connectors are real curves measured from the cards, so they hold at any width; when the section first scrolls into view the sources arrive, the lines draw themselves to the core, the core lands, the lines draw on and the results arrive — then a dash keeps moving along every line.
 
-`DataFlow` is built on <DocLink to="flowchart">Flowchart</DocLink>: the connectors are `FlowCanvas` and `FlowConnection` inside a fluid `Flowchart`, and it installs alongside. Every card is a named part — `Source`, `Core`, `Output` — with `Pill`, `Tag` and `Row` for the bits inside, so the content is entirely yours; the example below fills its output cards with <DocLink to="half-stars">Half Stars</DocLink> and <DocLink to="button">Button</DocLink>, which you add as you need them.
+`DataFlow` is built on <DocLink to="flowchart">Flowchart</DocLink> and <DocLink to="apple-select">Apple Select</DocLink>: the connectors are `FlowCanvas` and `FlowConnection` inside a fluid `Flowchart`, and the key phrases of the intro are selected iOS-style by `AppleSelect`; both install alongside. Every card is a named part — `Source`, `Core`, `Output` — with `Pill`, `Tag` and `Row` for the bits inside, so the content is entirely yours; the example below fills its output cards with <DocLink to="half-stars">Half Stars</DocLink> and <DocLink to="button">Button</DocLink>, which you add as you need them.
 
 export const usageSection = `"use client";
 
@@ -31,12 +31,8 @@ export default function Intelligence() {
     <DataFlow
       eyebrow="Integrated intelligence"
       heading="From Data to Opportunities"
-      intro={
-        <>
-          We scraped <mark>10 platforms</mark> and analyzed <mark>millions of complaints</mark>, reviews, and
-          revenue signals to hand you <mark>validated startup opportunities</mark>.
-        </>
-      }
+      intro="We scraped 10 platforms and analyzed millions of complaints, reviews, and revenue signals to hand you validated startup opportunities."
+      highlights={["10 platforms", "millions of complaints", "validated startup opportunities"]}
     >
       <DataFlow.Source title="App stores" count="2 sources" items={APP_STORES} />
       <DataFlow.Source title="Review platforms" count="4 sources" items={REVIEW_SITES} />
@@ -100,10 +96,10 @@ export default function Intelligence() {
             "is a result card: `title`, a `badge` pill, and whatever you put inside. `DataFlow.Row`, `DataFlow.Tag` and `DataFlow.Pill` are the pieces the demo's four cards are made of.",
         },
         {
-          lead: "Wrap a phrase of the",
-          prop: "intro",
-          value: "in <mark>",
-          effect: "and it sets as a black pill, the way the heading's key numbers are picked out.",
+          lead: "List phrases from the intro in",
+          prop: "highlights",
+          effect:
+            "and `AppleSelect` picks them out with a translucent tint and lollipop handles, fading in with the reveal. Each phrase is matched once, in order; one that is not in the text is skipped.",
         },
         {
           prop: "reveal",
@@ -141,7 +137,7 @@ Each curve is a `FlowConnection` from <DocLink to="flowchart">Flowchart</DocLink
 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 my-6 not-prose">
   <div className="p-6 rounded-2xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900">
     <h3 className="text-lg font-semibold text-zinc-900 dark:text-zinc-50 mb-2">Built from the library</h3>
-    <p className="text-zinc-600 dark:text-zinc-400 text-sm">Flowchart draws the connectors and installs with this item. The example's output cards use Half Stars and Button — add whichever pieces your own cards need.</p>
+    <p className="text-zinc-600 dark:text-zinc-400 text-sm">Flowchart draws the connectors and Apple Select picks out the intro's phrases; both install with this item. The example's output cards use Half Stars and Button — add whichever pieces your own cards need.</p>
   </div>
   <div className="p-6 rounded-2xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900">
     <h3 className="text-lg font-semibold text-zinc-900 dark:text-zinc-50 mb-2">One reveal, then a pulse</h3>
@@ -186,9 +182,15 @@ Each curve is a `FlowConnection` from <DocLink to="flowchart">Flowchart</DocLink
       </tr>
       <tr>
         <td><code>intro</code></td>
-        <td><code>ReactNode</code></td>
+        <td><code>string</code></td>
         <td>—</td>
-        <td>Paragraph under the headline. A <code>&lt;mark&gt;</code> inside it sets as a black pill.</td>
+        <td>Paragraph under the headline, rendered by <code>AppleSelect</code>.</td>
+      </tr>
+      <tr>
+        <td><code>highlights</code></td>
+        <td><code>string[]</code></td>
+        <td><code>[]</code></td>
+        <td>Phrases from <code>intro</code> to select, each matched once in order of appearance.</td>
       </tr>
       <tr>
         <td><code>accent</code></td>

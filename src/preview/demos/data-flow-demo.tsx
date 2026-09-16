@@ -70,12 +70,8 @@ export default function DataFlowDemo({
       reveal={reveal}
       eyebrow="Integrated intelligence"
       heading="From Data to Opportunities"
-      intro={
-        <>
-          We scraped <mark>10 platforms</mark> and analyzed <mark>millions of complaints</mark>, reviews, and revenue signals
-          to hand you <mark>validated startup opportunities</mark>.
-        </>
-      }
+      intro="We scraped 10 platforms and analyzed millions of complaints, reviews, and revenue signals to hand you validated startup opportunities."
+      highlights={["10 platforms", "millions of complaints", "validated startup opportunities"]}
       className={cn("max-w-6xl", rounded && "overflow-hidden rounded-[28px] border border-black/[0.06] dark:border-white/10")}
     >
       {SOURCES.map((s) => (

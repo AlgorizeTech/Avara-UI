@@ -232,7 +232,7 @@
           "target": "components/custom/blocks/AppleSelectBlock.tsx"
         }
       ],
-      "docs": "Named export: AppleSelect. `text` is the full string and `selection` is a `[start, end]` character range (end exclusive, like String.slice). The range is fixed by the author, not draggable. `color` takes any CSS colour, `handles={false}` drops the lollipops, and `animate` fades the highlight in on mount. Renders a <p>; other HTML attributes are forwarded to it."
+      "docs": "Named export: AppleSelect. `text` is the full string and `selection` is a `[start, end]` character range (end exclusive, like String.slice) or an array of them for several phrases. The range is fixed by the author, not draggable. `color` takes any CSS colour, `handles={false}` drops the lollipops, and `animate` fades the highlight in on mount. Renders a <p>; other HTML attributes are forwarded to it."
     },
     {
       "name": "audio-player",
@@ -915,6 +915,7 @@
         "gsap"
       ],
       "registryDependencies": [
+        "https://algorize-ui.vercel.app/r/apple-select.json",
         "https://algorize-ui.vercel.app/r/flowchart.json",
         "utils"
       ],
@@ -925,7 +926,7 @@
           "target": "components/custom/blocks/DataFlowBlock.tsx"
         }
       ],
-      "docs": "Named export: DataFlow, with parts Source, Core, Output, Pill, Tag and Row. Composed from the flowchart item, which installs alongside it; the docs example also uses half-stars and button inside its output cards. Connectors are measured from the cards at runtime (ResizeObserver), hidden below lg; `reveal` is in-view or immediate; `accent` pins the dash colour, otherwise it follows --primary. Wrap intro phrases in <mark> for black pills."
+      "docs": "Named export: DataFlow, with parts Source, Core, Output, Pill, Tag and Row. Composed from the flowchart and apple-select items, which install alongside it (`intro` + `highlights` render through AppleSelect); the docs example also uses half-stars and button inside its output cards. Connectors are measured from the cards at runtime (ResizeObserver), hidden below lg; `reveal` is in-view or immediate; `accent` pins the dash colour, otherwise it follows --primary. Wrap intro phrases in <mark> for black pills."
     },
     {
       "name": "data-grid",

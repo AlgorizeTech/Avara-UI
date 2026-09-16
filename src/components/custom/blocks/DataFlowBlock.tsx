@@ -3,6 +3,7 @@
 import React, { useEffect, useRef, useState } from "react";
 import gsap from "gsap";
 import { cn } from "@/lib/utils";
+import { AppleSelect } from "./AppleSelectBlock";
 import { FlowCanvas, Flowchart, FlowConnection } from "./FlowchartBlock";
 
 // ==========================================
@@ -157,8 +158,10 @@ export interface DataFlowProps extends React.HTMLAttributes<HTMLElement> {
   /** Small line over the heading. */
   eyebrow?: React.ReactNode;
   heading: React.ReactNode;
-  /** Wrap a phrase in <mark> to set it as a black pill. */
-  intro?: React.ReactNode;
+  /** Paragraph under the heading. Phrases listed in `highlights` are selected in it, iOS-style. */
+  intro?: string;
+  /** Phrases from `intro` to select — each is matched once, in order of appearance. */
+  highlights?: string[];
   /** Colour of the moving dashes and any accent inside; defaults to the theme's primary. */
   accent?: string;
   /** Play the reveal when the section enters the viewport (default) or immediately. */
@@ -182,6 +185,7 @@ function DataFlowRoot({
   eyebrow,
   heading,
   intro,
+  highlights = [],
   accent,
   reveal = "in-view",
   className,
@@ -302,6 +306,19 @@ function DataFlowRoot({
 
   const sourceCount = sources.length;
 
+  // Turn the highlight phrases into character ranges; a phrase that is not in
+  // the text is skipped rather than throwing.
+  const ranges: [number, number][] = [];
+  if (intro) {
+    let from = 0;
+    for (const phrase of highlights) {
+      const at = intro.indexOf(phrase, from);
+      if (at === -1) continue;
+      ranges.push([at, at + phrase.length]);
+      from = at + phrase.length;
+    }
+  }
+
   return (
     <section
       ref={sectionRef}
@@ -318,9 +335,12 @@ function DataFlowRoot({
             {heading}
           </h2>
           {intro && (
-            <p className="mx-auto mt-5 max-w-[38rem] text-[17px] leading-[1.75] text-black/65 dark:text-white/65 [&_mark]:mx-0.5 [&_mark]:rounded-md [&_mark]:bg-[#141414] [&_mark]:px-1.5 [&_mark]:py-0.5 [&_mark]:font-semibold [&_mark]:text-white dark:[&_mark]:bg-white dark:[&_mark]:text-[#141414]">
-              {intro}
-            </p>
+            <AppleSelect
+              text={intro}
+              selection={ranges}
+              animate={inView}
+              className="mx-auto mt-5 max-w-[38rem] text-[17px] leading-[1.85] text-black/65 dark:text-white/65 [&_mark]:font-semibold [&_mark]:text-[#141414] dark:[&_mark]:text-white"
+            />
           )}
         </header>
       )}
@@ -340,7 +360,8 @@ function DataFlowRoot({
                 height={size.h}
                 viewBox={`0 0 ${size.w} ${size.h}`}
                 preserveAspectRatio="none"
-                className="hidden overflow-visible lg:block"
+                // Under the cards: if a curve ever crosses one it disappears behind it.
+                className="z-0 hidden overflow-visible lg:block"
               >
                 {paths.map((d, i) => (
                   <FlowConnection
@@ -357,16 +378,16 @@ function DataFlowRoot({
               </FlowCanvas>
             )}
 
-            <div className="flex flex-col justify-center gap-4">{sources}</div>
+            <div className="relative z-10 flex flex-col justify-center gap-4">{sources}</div>
 
             {/* Below lg the columns stack; short dashed spines stand in for the curves. */}
-            <div className="flex flex-col items-center justify-center gap-3">
+            <div className="relative z-10 flex flex-col items-center justify-center gap-3">
               <span className="h-7 w-px border-l border-dashed border-black/25 lg:hidden dark:border-white/25" aria-hidden />
               <div className="w-full max-w-[15.5rem]">{core}</div>
               <span className="h-7 w-px border-l border-dashed border-black/25 lg:hidden dark:border-white/25" aria-hidden />
             </div>
 
-            <div className="flex flex-col justify-center gap-4">{outputs}</div>
+            <div className="relative z-10 flex flex-col justify-center gap-4">{outputs}</div>
           </div>
         </Flowchart>
       </div>
