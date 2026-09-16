@@ -41,6 +41,7 @@ export const sandboxRegistry: Record<string, LazyExoticComponent<ComponentType<a
   "cursor-animation": lazyRetry(() => import("./demos/cursor-animation-demo")),
   "curved-carousel": lazyRetry(() => import("./demos/curved-carousel-demo")),
   "custom-code-block": lazyRetry(() => import("./demos/custom-code-block-demo")),
+  "data-flow": lazyRetry(() => import("./demos/data-flow-demo")),
   "data-grid": lazyRetry(() => import("./demos/data-grid-demo")),
   "data-maps": lazyRetry(() => import("./demos/data-maps-demo")),
   "date-picker": lazyRetry(() => import("./demos/date-picker-demo")),

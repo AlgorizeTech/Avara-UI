@@ -526,11 +526,11 @@ function PhoneCard({ plans, onAction, className, ...props }: BentoPhoneProps) {
           reads as held, and let run off the bottom edge. */}
       <div className="absolute left-1/2 top-10 w-[340px] origin-top -translate-x-[40%] rotate-[12deg] scale-[0.76] sm:scale-[0.8] lg:scale-[0.82]">
         <Iphone17ProMaxMockup>
-          <div className="h-full w-full bg-gradient-to-b from-[#ebe7f7] to-[#dfe9f6] px-4 pt-14 text-[#141414]">
+          <div className="h-full w-full bg-gradient-to-b from-[#ebe7f7] to-[#dfe9f6] px-3 pt-14 text-[#141414]">
             <PlanTile plan={main} />
             <div className="mt-5 text-center">
               {main.price && <p className="text-[2rem] font-semibold leading-none tracking-tight">{main.price}</p>}
-              {main.note && <p className="mx-auto mt-2 max-w-[13rem] text-[11px] text-black/60">{main.note}</p>}
+              {main.note && <p className="mx-auto mt-2 max-w-[16rem] text-[12px] text-black/60">{main.note}</p>}
               <Button variant="default" size="sm" className="mt-4 h-9 rounded-full px-5 text-[11px]" onClick={onAction}>
                 {main.action ?? "Start now"}
               </Button>
@@ -538,7 +538,7 @@ function PhoneCard({ plans, onAction, className, ...props }: BentoPhoneProps) {
             {main.benefits && main.benefits.length > 0 && (
               <div className="mt-6 text-center">
                 <p className="font-serif text-xl italic leading-none">Benefits</p>
-                <ul className="mt-2 space-y-0.5 text-[10.5px] text-black/65">
+                <ul className="mt-2 space-y-0.5 text-[12px] text-black/65">
                   {main.benefits.map((b) => (
                     <li key={b}>{b}</li>
                   ))}

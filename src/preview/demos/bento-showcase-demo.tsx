@@ -40,7 +40,7 @@ const PLANS: [BentoPlan, BentoPlan] = [
     price: "$3,500",
     note: "7–12 qualified leads a month, guaranteed",
     image: "https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?q=80&w=600&auto=format&fit=crop",
-    benefits: ["Lead qualification", "Calendar booking", "Template A/B testing", "Intelligent research", "Email outreach"],
+    benefits: ["Lead qualification", "Intelligent research", "Email outreach"],
     action: "Start now",
   },
   {

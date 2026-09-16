@@ -902,6 +902,32 @@
       "docs": "Named exports: CustomCodeBlock, CodeTab. `tabs` take { code, language, fileName }; a single tab renders without the tab strip. Uses `lucide-react` for file-type icons. Highlighting is a built-in regex tokenizer, not Shiki or Prism — good for snippets, not a full editor."
     },
     {
+      "name": "data-flow",
+      "type": "registry:component",
+      "title": "Data Flow",
+      "author": "AlgorizeTech",
+      "description": "A sources → core → outputs section: platform cards on the left feed one node in the middle, which fans out to result cards on the right, with curved connectors that draw in on first view and then carry a moving dash. Use it to explain a pipeline, an integration, or where an AI product's data comes from.",
+      "categories": [
+        "marketing",
+        "data-display"
+      ],
+      "dependencies": [
+        "gsap"
+      ],
+      "registryDependencies": [
+        "https://algorize-ui.vercel.app/r/flowchart.json",
+        "utils"
+      ],
+      "files": [
+        {
+          "path": "src/components/custom/blocks/DataFlowBlock.tsx",
+          "type": "registry:component",
+          "target": "components/custom/blocks/DataFlowBlock.tsx"
+        }
+      ],
+      "docs": "Named export: DataFlow, with parts Source, Core, Output, Pill, Tag and Row. Composed from the flowchart item, which installs alongside it; the docs example also uses half-stars and button inside its output cards. Connectors are measured from the cards at runtime (ResizeObserver), hidden below lg; `reveal` is in-view or immediate; `accent` pins the dash colour, otherwise it follows --primary. Wrap intro phrases in <mark> for black pills."
+    },
+    {
       "name": "data-grid",
       "type": "registry:component",
       "title": "Data Grid",
@@ -1274,7 +1300,7 @@
           "target": "components/custom/blocks/flowchart-context.ts"
         }
       ],
-      "docs": "Named exports: Flowchart, FlowCanvas, FlowNode, FlowConnection, useFlowchart. Nodes declare `connectedPaths`; setting the active path highlights every node and connection on it. Positions are authored by you — there is no auto-layout."
+      "docs": "Named exports: Flowchart, FlowCanvas, FlowNode, FlowConnection, useFlowchart. Nodes declare `connectedPaths`; setting the active path highlights every node and connection on it. Positions are authored by you — there is no auto-layout. `layout=\"fluid\"` drops the fixed canvas so connections can be drawn over your own layout; `FlowConnection` takes `dashed`, `flowDash`, `glow` and `drawDuration`."
     },
     {
       "name": "folder",

@@ -36,6 +36,7 @@ export const sandboxNames = [
   "cursor-animation",
   "curved-carousel",
   "custom-code-block",
+  "data-flow",
   "data-grid",
   "data-maps",
   "date-picker",

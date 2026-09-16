@@ -61,6 +61,7 @@
     "src/components/custom/blocks/CursorAnimationBlock.tsx",
     "src/components/custom/blocks/CurvedCarouselBlock.tsx",
     "src/components/custom/blocks/CustomCodeBlock.tsx",
+    "src/components/custom/blocks/DataFlowBlock.tsx",
     "src/components/custom/blocks/DataGridBlock.tsx",
     "src/components/custom/blocks/DataMapsBlock.tsx",
     "src/components/custom/blocks/DatePickerBlock.tsx",

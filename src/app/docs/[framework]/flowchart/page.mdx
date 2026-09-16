@@ -334,6 +334,13 @@ export default function AccentedPipeline() {
         <td>Accent applied to the active stream, node ports and focus rings.</td>
       </tr>
       <tr>
+        <td><code>Flowchart</code></td>
+        <td><code>layout</code></td>
+        <td><code>"fixed" | "fluid"</code></td>
+        <td><code>"fixed"</code></td>
+        <td><code>fixed</code> is the 900×400 blueprint canvas. <code>fluid</code> is only the context and a positioned box, for connectors drawn over ordinary layout — give <code>FlowCanvas</code> its own <code>viewBox</code>. This is how <DocLink to="data-flow">Data Flow</DocLink> draws its curves.</td>
+      </tr>
+      <tr>
         <td><code>FlowNode</code></td>
         <td><code>id</code></td>
         <td><code>string</code></td>
@@ -381,6 +388,34 @@ export default function AccentedPipeline() {
         <td><code>string</code></td>
         <td><strong>Required</strong></td>
         <td>SVG path data — <code>M</code>/<code>L</code> for right angles, <code>C</code> for curves.</td>
+      </tr>
+      <tr>
+        <td><code>FlowConnection</code></td>
+        <td><code>dashed</code></td>
+        <td><code>boolean | string</code></td>
+        <td><code>false</code></td>
+        <td>Draw the resting line dashed — <code>true</code> for <code>"4 6"</code>, or your own pattern. Applied once the draw-in finishes.</td>
+      </tr>
+      <tr>
+        <td><code>FlowConnection</code></td>
+        <td><code>flowDash</code></td>
+        <td><code>string</code></td>
+        <td><code>"6 10"</code></td>
+        <td>Dash pattern of the moving stream while the route is active. The loop length is one dash plus one gap, so any pattern cycles cleanly.</td>
+      </tr>
+      <tr>
+        <td><code>FlowConnection</code></td>
+        <td><code>glow</code></td>
+        <td><code>boolean</code></td>
+        <td><code>true</code></td>
+        <td>The soft blurred halo under the active stream.</td>
+      </tr>
+      <tr>
+        <td><code>FlowConnection</code></td>
+        <td><code>drawDuration</code></td>
+        <td><code>number</code></td>
+        <td><code>1.2</code></td>
+        <td>Seconds the draw-in takes on mount. The stream only starts once the line is drawn; under prefers-reduced-motion both are skipped.</td>
       </tr>
     </tbody>
   </table>

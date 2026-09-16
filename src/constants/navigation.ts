@@ -221,6 +221,12 @@ export const navigation: NavigationItem[] = [
         badge: "New",
         keywords: ["booking", "appointment", "schedule", "calendar", "slots", "doctor", "clinic", "reservation"],
       },
+      {
+        label: "Data Flow",
+        slug: "data-flow",
+        badge: "New",
+        keywords: ["data", "flow", "pipeline", "sources", "diagram", "connectors", "ai", "intelligence", "process"],
+      },
       { label: "Footer", slug: "footer" },
       { label: "Hero", slug: "hero" },
       { label: "Navbar", slug: "navbar", badge: "Core" },
