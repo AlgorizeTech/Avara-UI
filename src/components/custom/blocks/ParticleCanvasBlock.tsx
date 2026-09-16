@@ -46,6 +46,21 @@ interface Particle {
   forceMult: number;
 }
 
+const PRESET_ACCENT_HEX: Record<string, string> = {
+  indigo: "#6366f1",
+  rose: "#f43f5e",
+  emerald: "#10b981",
+  zinc: "#18181b",
+  amber: "#f59e0b",
+  blue: "#3b82f6",
+};
+
+/** Turns a preset accent name or custom hex string into a CSS color, or null for default theme. */
+function resolveColorAccent(color?: string): string | null {
+  if (!color || color === "primary" || color === "default") return null;
+  return PRESET_ACCENT_HEX[color] ?? color;
+}
+
 export function ParticleCanvas({
   content = "AlgorizeTech",
   variant = "repel",
@@ -62,35 +77,72 @@ export function ParticleCanvas({
 }: ParticleCanvasProps) {
   const { resolvedTheme } = useTheme();
   const mounted = useIsMounted();
-  const [themePrimaryColor, setThemePrimaryColor] = useState<string>("#3b82f6");
+  const [themePrimaryColor, setThemePrimaryColor] = useState<string>("currentColor");
 
-
-  // Dynamically resolve exact `bg-primary` color matching the header active item background
-  useEffect(() => {
-    if (typeof window === "undefined" || !mounted) return;
+  // Real-time semantic CSS theme color resolver (supports standard CSS vars and Shadcn HSL variables)
+  const getActivePrimaryColor = (): string => {
+    if (typeof window === "undefined") return resolvedTheme === "light" ? "#18181b" : "#3b82f6";
     try {
-      const tempEl = document.createElement("div");
-      tempEl.className = "bg-primary";
-      tempEl.style.position = "absolute";
-      tempEl.style.visibility = "hidden";
-      tempEl.style.pointerEvents = "none";
-      document.body.appendChild(tempEl);
-      const computedBg = window.getComputedStyle(tempEl).backgroundColor;
-      document.body.removeChild(tempEl);
+      // 1. Direct CSS variable evaluation
+      const dummy = document.createElement("div");
+      dummy.style.color = "var(--primary)";
+      dummy.style.position = "absolute";
+      dummy.style.visibility = "hidden";
+      dummy.style.pointerEvents = "none";
+      document.body.appendChild(dummy);
+      let computedColor = window.getComputedStyle(dummy).color;
+      document.body.removeChild(dummy);
 
-      if (computedBg && computedBg !== "rgba(0, 0, 0, 0)" && computedBg !== "transparent") {
-        // The resolved colour is read off a probe element, which only exists once mounted.
-        setThemePrimaryColor(computedBg);
-      } else {
-        setThemePrimaryColor(resolvedTheme === "light" ? "#18181b" : "#3b82f6");
+      if (computedColor && computedColor !== "rgba(0, 0, 0, 0)" && computedColor !== "transparent") {
+        return computedColor;
+      }
+
+      // 2. Shadcn HSL CSS variable format fallback (hsl(var(--primary)))
+      const dummyHsl = document.createElement("div");
+      dummyHsl.style.color = "hsl(var(--primary))";
+      dummyHsl.style.position = "absolute";
+      dummyHsl.style.visibility = "hidden";
+      dummyHsl.style.pointerEvents = "none";
+      document.body.appendChild(dummyHsl);
+      computedColor = window.getComputedStyle(dummyHsl).color;
+      document.body.removeChild(dummyHsl);
+
+      if (computedColor && computedColor !== "rgba(0, 0, 0, 0)" && computedColor !== "transparent") {
+        return computedColor;
       }
     } catch {
-      setThemePrimaryColor(resolvedTheme === "light" ? "#18181b" : "#3b82f6");
+      // Colour could not be resolved; fallback used below
     }
+    return resolvedTheme === "light" ? "#18181b" : "#3b82f6";
+  };
+
+  // Dynamically observe and resolve exact active site theme --primary CSS color variable
+  useEffect(() => {
+    if (typeof window === "undefined" || !mounted) return;
+
+    const updateThemeColor = () => {
+      const activeColor = getActivePrimaryColor();
+      setThemePrimaryColor(activeColor);
+    };
+
+    updateThemeColor();
+
+    const observer = new MutationObserver(() => updateThemeColor());
+    observer.observe(document.documentElement, {
+      attributes: true,
+      attributeFilter: ["class", "style", "data-theme"],
+    });
+
+    return () => observer.disconnect();
   }, [mounted, resolvedTheme]);
 
-  // Uniform theme color applied to ALL particles
-  const effectiveColor = color || themePrimaryColor;
+  // Resolve picked color from color picker or fallback to exact active header primary theme color
+  const resolvedPickerColor = resolveColorAccent(color);
+  const effectiveColor =
+    resolvedPickerColor ||
+    (themePrimaryColor !== "currentColor"
+      ? themePrimaryColor
+      : getActivePrimaryColor());
 
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
   const containerRef = useRef<HTMLDivElement | null>(null);
@@ -181,8 +233,15 @@ export function ParticleCanvas({
 
       particlesRef.current = newParticles;
     },
-    [sampleParticles, particleSize, effectiveColor]
+    [sampleParticles, particleSize]
   );
+
+  // Update existing particles' color dynamically without resetting position/scatter
+  useEffect(() => {
+    particlesRef.current.forEach((p) => {
+      p.color = effectiveColor;
+    });
+  }, [effectiveColor]);
 
   useEffect(() => {
     const canvas = canvasRef.current;
