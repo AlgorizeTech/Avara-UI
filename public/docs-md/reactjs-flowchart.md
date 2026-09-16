@@ -112,6 +112,12 @@ export default function AccentedPipeline() {
         "indigo"
         Accent applied to the active stream, node ports and focus rings.
 
+        Flowchart
+        layout
+        "fixed" | "fluid"
+        "fixed"
+        fixed is the 900×400 blueprint canvas. fluid is only the context and a positioned box, for connectors drawn over ordinary layout — give FlowCanvas its own viewBox. This is how Data Flow draws its curves.
+
         FlowNode
         id
         string
@@ -153,6 +159,30 @@ export default function AccentedPipeline() {
         string
         Required
         SVG path data — M/L for right angles, C for curves.
+
+        FlowConnection
+        dashed
+        boolean | string
+        false
+        Draw the resting line dashed — true for "4 6", or your own pattern. Applied once the draw-in finishes.
+
+        FlowConnection
+        flowDash
+        string
+        "6 10"
+        Dash pattern of the moving stream while the route is active. The loop length is one dash plus one gap, so any pattern cycles cleanly.
+
+        FlowConnection
+        glow
+        boolean
+        true
+        The soft blurred halo under the active stream.
+
+        FlowConnection
+        drawDuration
+        number
+        1.2
+        Seconds the draw-in takes on mount. The stream only starts once the line is drawn; under prefers-reduced-motion both are skipped.
 
 ---
 

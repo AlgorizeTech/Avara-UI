@@ -2,8 +2,8 @@
 
 This directory contains auto-generated Markdown versions of all MDX documentation pages.
 
-**Generated at:** 2026-09-16T11:56:21.333Z
-**Total files:** 263
+**Generated at:** 2026-09-16T13:22:26.190Z
+**Total files:** 281
 
 ## Available Files
 
@@ -18,6 +18,8 @@ This directory contains auto-generated Markdown versions of all MDX documentatio
 - [nextjs/apple-select](/docs/nextjs-apple-select.md) - Source: `[framework]\apple-select\page.mdx`
 - [nextjs/architecture](/docs/nextjs-architecture.md) - Source: `[framework]\architecture\page.mdx`
 - [nextjs/audio-player](/docs/nextjs-audio-player.md) - Source: `[framework]\audio-player\page.mdx`
+- [nextjs/avatar-stack](/docs/nextjs-avatar-stack.md) - Source: `[framework]\avatar-stack\page.mdx`
+- [nextjs/bento-showcase](/docs/nextjs-bento-showcase.md) - Source: `[framework]\bento-showcase\page.mdx`
 - [nextjs/book-appointment](/docs/nextjs-book-appointment.md) - Source: `[framework]\book-appointment\page.mdx`
 - [nextjs/book-flip](/docs/nextjs-book-flip.md) - Source: `[framework]\book-flip\page.mdx`
 - [nextjs/booking-card](/docs/nextjs-booking-card.md) - Source: `[framework]\booking-card\page.mdx`
@@ -30,6 +32,8 @@ This directory contains auto-generated Markdown versions of all MDX documentatio
 - [nextjs/chart](/docs/nextjs-chart.md) - Source: `[framework]\chart\page.mdx`
 - [nextjs/chat](/docs/nextjs-chat.md) - Source: `[framework]\chat\page.mdx`
 - [nextjs/chat-bubble](/docs/nextjs-chat-bubble.md) - Source: `[framework]\chat-bubble\page.mdx`
+- [nextjs/circular-text](/docs/nextjs-circular-text.md) - Source: `[framework]\circular-text\page.mdx`
+- [nextjs/collage-hero](/docs/nextjs-collage-hero.md) - Source: `[framework]\collage-hero\page.mdx`
 - [nextjs/collapsible](/docs/nextjs-collapsible.md) - Source: `[framework]\collapsible\page.mdx`
 - [nextjs/color-picker](/docs/nextjs-color-picker.md) - Source: `[framework]\color-picker\page.mdx`
 - [nextjs/command](/docs/nextjs-command.md) - Source: `[framework]\command\page.mdx`
@@ -40,6 +44,7 @@ This directory contains auto-generated Markdown versions of all MDX documentatio
 - [nextjs/cursor-animation](/docs/nextjs-cursor-animation.md) - Source: `[framework]\cursor-animation\page.mdx`
 - [nextjs/curved-carousel](/docs/nextjs-curved-carousel.md) - Source: `[framework]\curved-carousel\page.mdx`
 - [nextjs/custom-code-block](/docs/nextjs-custom-code-block.md) - Source: `[framework]\custom-code-block\page.mdx`
+- [nextjs/data-flow](/docs/nextjs-data-flow.md) - Source: `[framework]\data-flow\page.mdx`
 - [nextjs/data-grid](/docs/nextjs-data-grid.md) - Source: `[framework]\data-grid\page.mdx`
 - [nextjs/data-maps](/docs/nextjs-data-maps.md) - Source: `[framework]\data-maps\page.mdx`
 - [nextjs/data-table](/docs/nextjs-data-table.md) - Source: `[framework]\data-table\page.mdx`
@@ -55,6 +60,7 @@ This directory contains auto-generated Markdown versions of all MDX documentatio
 - [nextjs/examples/counter](/docs/nextjs-examples-counter.md) - Source: `[framework]\examples\counter\page.mdx`
 - [nextjs/examples/video-text](/docs/nextjs-examples-video-text.md) - Source: `[framework]\examples\video-text\page.mdx`
 - [nextjs/examples/waitlist](/docs/nextjs-examples-waitlist.md) - Source: `[framework]\examples\waitlist\page.mdx`
+- [nextjs/fashion-hero](/docs/nextjs-fashion-hero.md) - Source: `[framework]\fashion-hero\page.mdx`
 - [nextjs/file-upload](/docs/nextjs-file-upload.md) - Source: `[framework]\file-upload\page.mdx`
 - [nextjs/first-app](/docs/nextjs-first-app.md) - Source: `[framework]\first-app\_content\nextjs.mdx`
 - [nextjs/fleet-tracker](/docs/nextjs-fleet-tracker.md) - Source: `[framework]\fleet-tracker\page.mdx`
@@ -87,10 +93,12 @@ This directory contains auto-generated Markdown versions of all MDX documentatio
 - [nextjs/navbar](/docs/nextjs-navbar.md) - Source: `[framework]\navbar\page.mdx`
 - [nextjs/navigation](/docs/nextjs-navigation.md) - Source: `[framework]\navigation\page.mdx`
 - [nextjs/network-graph](/docs/nextjs-network-graph.md) - Source: `[framework]\network-graph\page.mdx`
+- [nextjs/newsletter](/docs/nextjs-newsletter.md) - Source: `[framework]\newsletter\page.mdx`
 - [nextjs/otp-input](/docs/nextjs-otp-input.md) - Source: `[framework]\otp-input\page.mdx`
 - [nextjs/pagination](/docs/nextjs-pagination.md) - Source: `[framework]\pagination\page.mdx`
 - [nextjs/particle-canvas](/docs/nextjs-particle-canvas.md) - Source: `[framework]\particle-canvas\page.mdx`
 - [nextjs/piano](/docs/nextjs-piano.md) - Source: `[framework]\piano\page.mdx`
+- [nextjs/platform-grid](/docs/nextjs-platform-grid.md) - Source: `[framework]\platform-grid\page.mdx`
 - [nextjs/popover](/docs/nextjs-popover.md) - Source: `[framework]\popover\page.mdx`
 - [nextjs/pricing](/docs/nextjs-pricing.md) - Source: `[framework]\pricing\page.mdx`
 - [nextjs/product-details](/docs/nextjs-product-details.md) - Source: `[framework]\product-details\page.mdx`
@@ -115,6 +123,7 @@ This directory contains auto-generated Markdown versions of all MDX documentatio
 - [nextjs/squircle-carousel](/docs/nextjs-squircle-carousel.md) - Source: `[framework]\squircle-carousel\page.mdx`
 - [nextjs/stepper](/docs/nextjs-stepper.md) - Source: `[framework]\stepper\page.mdx`
 - [nextjs/support-dashboard](/docs/nextjs-support-dashboard.md) - Source: `[framework]\support-dashboard\page.mdx`
+- [nextjs/support-hero](/docs/nextjs-support-hero.md) - Source: `[framework]\support-hero\page.mdx`
 - [nextjs/table](/docs/nextjs-table.md) - Source: `[framework]\table\page.mdx`
 - [nextjs/table-of-contents](/docs/nextjs-table-of-contents.md) - Source: `[framework]\table-of-contents\page.mdx`
 - [nextjs/terminal](/docs/nextjs-terminal.md) - Source: `[framework]\terminal\page.mdx`
@@ -150,6 +159,8 @@ This directory contains auto-generated Markdown versions of all MDX documentatio
 - [reactjs/apple-select](/docs/reactjs-apple-select.md) - Source: `[framework]\apple-select\page.mdx`
 - [reactjs/architecture](/docs/reactjs-architecture.md) - Source: `[framework]\architecture\page.mdx`
 - [reactjs/audio-player](/docs/reactjs-audio-player.md) - Source: `[framework]\audio-player\page.mdx`
+- [reactjs/avatar-stack](/docs/reactjs-avatar-stack.md) - Source: `[framework]\avatar-stack\page.mdx`
+- [reactjs/bento-showcase](/docs/reactjs-bento-showcase.md) - Source: `[framework]\bento-showcase\page.mdx`
 - [reactjs/book-appointment](/docs/reactjs-book-appointment.md) - Source: `[framework]\book-appointment\page.mdx`
 - [reactjs/book-flip](/docs/reactjs-book-flip.md) - Source: `[framework]\book-flip\page.mdx`
 - [reactjs/booking-card](/docs/reactjs-booking-card.md) - Source: `[framework]\booking-card\page.mdx`
@@ -162,6 +173,8 @@ This directory contains auto-generated Markdown versions of all MDX documentatio
 - [reactjs/chart](/docs/reactjs-chart.md) - Source: `[framework]\chart\page.mdx`
 - [reactjs/chat](/docs/reactjs-chat.md) - Source: `[framework]\chat\page.mdx`
 - [reactjs/chat-bubble](/docs/reactjs-chat-bubble.md) - Source: `[framework]\chat-bubble\page.mdx`
+- [reactjs/circular-text](/docs/reactjs-circular-text.md) - Source: `[framework]\circular-text\page.mdx`
+- [reactjs/collage-hero](/docs/reactjs-collage-hero.md) - Source: `[framework]\collage-hero\page.mdx`
 - [reactjs/collapsible](/docs/reactjs-collapsible.md) - Source: `[framework]\collapsible\page.mdx`
 - [reactjs/color-picker](/docs/reactjs-color-picker.md) - Source: `[framework]\color-picker\page.mdx`
 - [reactjs/command](/docs/reactjs-command.md) - Source: `[framework]\command\page.mdx`
@@ -172,6 +185,7 @@ This directory contains auto-generated Markdown versions of all MDX documentatio
 - [reactjs/cursor-animation](/docs/reactjs-cursor-animation.md) - Source: `[framework]\cursor-animation\page.mdx`
 - [reactjs/curved-carousel](/docs/reactjs-curved-carousel.md) - Source: `[framework]\curved-carousel\page.mdx`
 - [reactjs/custom-code-block](/docs/reactjs-custom-code-block.md) - Source: `[framework]\custom-code-block\page.mdx`
+- [reactjs/data-flow](/docs/reactjs-data-flow.md) - Source: `[framework]\data-flow\page.mdx`
 - [reactjs/data-grid](/docs/reactjs-data-grid.md) - Source: `[framework]\data-grid\page.mdx`
 - [reactjs/data-maps](/docs/reactjs-data-maps.md) - Source: `[framework]\data-maps\page.mdx`
 - [reactjs/data-table](/docs/reactjs-data-table.md) - Source: `[framework]\data-table\page.mdx`
@@ -187,6 +201,7 @@ This directory contains auto-generated Markdown versions of all MDX documentatio
 - [reactjs/examples/counter](/docs/reactjs-examples-counter.md) - Source: `[framework]\examples\counter\page.mdx`
 - [reactjs/examples/video-text](/docs/reactjs-examples-video-text.md) - Source: `[framework]\examples\video-text\page.mdx`
 - [reactjs/examples/waitlist](/docs/reactjs-examples-waitlist.md) - Source: `[framework]\examples\waitlist\page.mdx`
+- [reactjs/fashion-hero](/docs/reactjs-fashion-hero.md) - Source: `[framework]\fashion-hero\page.mdx`
 - [reactjs/file-upload](/docs/reactjs-file-upload.md) - Source: `[framework]\file-upload\page.mdx`
 - [reactjs/first-app](/docs/reactjs-first-app.md) - Source: `[framework]\first-app\_content\reactjs.mdx`
 - [reactjs/fleet-tracker](/docs/reactjs-fleet-tracker.md) - Source: `[framework]\fleet-tracker\page.mdx`
@@ -219,10 +234,12 @@ This directory contains auto-generated Markdown versions of all MDX documentatio
 - [reactjs/navbar](/docs/reactjs-navbar.md) - Source: `[framework]\navbar\page.mdx`
 - [reactjs/navigation](/docs/reactjs-navigation.md) - Source: `[framework]\navigation\page.mdx`
 - [reactjs/network-graph](/docs/reactjs-network-graph.md) - Source: `[framework]\network-graph\page.mdx`
+- [reactjs/newsletter](/docs/reactjs-newsletter.md) - Source: `[framework]\newsletter\page.mdx`
 - [reactjs/otp-input](/docs/reactjs-otp-input.md) - Source: `[framework]\otp-input\page.mdx`
 - [reactjs/pagination](/docs/reactjs-pagination.md) - Source: `[framework]\pagination\page.mdx`
 - [reactjs/particle-canvas](/docs/reactjs-particle-canvas.md) - Source: `[framework]\particle-canvas\page.mdx`
 - [reactjs/piano](/docs/reactjs-piano.md) - Source: `[framework]\piano\page.mdx`
+- [reactjs/platform-grid](/docs/reactjs-platform-grid.md) - Source: `[framework]\platform-grid\page.mdx`
 - [reactjs/popover](/docs/reactjs-popover.md) - Source: `[framework]\popover\page.mdx`
 - [reactjs/pricing](/docs/reactjs-pricing.md) - Source: `[framework]\pricing\page.mdx`
 - [reactjs/product-details](/docs/reactjs-product-details.md) - Source: `[framework]\product-details\page.mdx`
@@ -247,6 +264,7 @@ This directory contains auto-generated Markdown versions of all MDX documentatio
 - [reactjs/squircle-carousel](/docs/reactjs-squircle-carousel.md) - Source: `[framework]\squircle-carousel\page.mdx`
 - [reactjs/stepper](/docs/reactjs-stepper.md) - Source: `[framework]\stepper\page.mdx`
 - [reactjs/support-dashboard](/docs/reactjs-support-dashboard.md) - Source: `[framework]\support-dashboard\page.mdx`
+- [reactjs/support-hero](/docs/reactjs-support-hero.md) - Source: `[framework]\support-hero\page.mdx`
 - [reactjs/table](/docs/reactjs-table.md) - Source: `[framework]\table\page.mdx`
 - [reactjs/table-of-contents](/docs/reactjs-table-of-contents.md) - Source: `[framework]\table-of-contents\page.mdx`
 - [reactjs/terminal](/docs/reactjs-terminal.md) - Source: `[framework]\terminal\page.mdx`

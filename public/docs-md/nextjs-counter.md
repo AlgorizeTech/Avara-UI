@@ -161,6 +161,38 @@ Explore the Counter component's number animation features, including customizabl
           Strings to append before or after the number (e.g. "$" or{" "}
           "%").
 
+          bare
+
+          boolean
+
+          false
+
+          Animated only: render just the figure as a span, no card — it inherits the surrounding type. For a number inside your own layout.
+
+          decimals
+
+          number
+
+          0
+
+          Animated only: decimal places shown while counting, e.g. 1 for 5.5.
+
+          startOnView
+
+          boolean
+
+          false
+
+          Animated only: wait until the counter is on screen before counting, so a figure below the fold is seen counting. Under prefers-reduced-motion the target is shown at once.
+
+          className
+
+          string
+        
+        —
+        
+          Animated only: classes for the figure (bare) or the card.
+
           targetDate
 
           Date
