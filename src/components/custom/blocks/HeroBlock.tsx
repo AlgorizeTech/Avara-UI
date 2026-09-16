@@ -2,6 +2,7 @@
 
 import React, { forwardRef, useEffect, useState } from "react";
 import { cn } from "@/lib/utils";
+import { HalfStars } from "@/components/custom/blocks/HalfStarsBlock";
 import { ArrowRight, ArrowUpRight, Check, Copy, Sparkles, Terminal, Star, Code, Mail, FileText, Heart, ShieldCheck, ShoppingBag, Package } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 
@@ -518,9 +519,15 @@ export const HeroBlock = forwardRef<HTMLElement, HeroBlockProps>(
 
                 <div className="space-y-0.5 min-w-0">
                   <div className="flex items-center gap-1 text-amber-500 text-xs font-black">
-                    {[...Array(5)].map((_, i) => (
-                      <Star key={i} className="size-3.5 fill-amber-500 text-amber-500" />
-                    ))}
+                    <HalfStars
+                      rating={5}
+                      size={14}
+                      showText={false}
+                      activeColor="text-amber-500"
+                      inactiveColor="text-amber-500/20"
+                      role="img"
+                      aria-label="Rated 5.0 out of 5"
+                    />
                     <span className="ml-1 text-foreground font-extrabold text-xs">5.0</span>
                   </div>
                   <p className="text-xs font-semibold text-muted-foreground truncate">

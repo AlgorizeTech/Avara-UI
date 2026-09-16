@@ -1,12 +1,10 @@
 "use client";
 
 import { useState } from "react";
-import {
-  GlassPanel,
-  ProfilePage,
-  type SurfaceVariant,
-  WorkdayDial,
-} from "@/components/custom/blocks/ProfilePageBlock";
+import { GlassPanel, type SurfaceVariant } from "@/components/custom/blocks/GlassPanelBlock";
+import { ProfilePage, WorkdayDial } from "@/components/custom/blocks/ProfilePageBlock";
+import { SocialLinks } from "@/components/custom/blocks/SocialLinksBlock";
+import { VerifyBadge } from "@/components/custom/blocks/VerifyBadgeBlock";
 import { cn } from "@/lib/utils";
 import {
   ArrowLeft,
@@ -113,8 +111,9 @@ export default function ProfilePageDemo({
             </span>
           </div>
           <div className="min-w-0">
-            <h1 className="text-3xl font-semibold tracking-tight sm:text-[40px] sm:leading-none">
+            <h1 className="flex flex-wrap items-center gap-2.5 text-3xl font-semibold tracking-tight sm:text-[40px] sm:leading-none">
               Ayesha Karim
+              <VerifyBadge size="lg" aria-label="Verified" />
             </h1>
             <p className="mt-2 text-base text-black/60 dark:text-white/60">
               Design engineer at Northwind
@@ -130,6 +129,16 @@ export default function ProfilePageDemo({
                 <Globe className="size-3.5" /> ayesha.design
               </li>
             </ul>
+            <SocialLinks
+              size="sm"
+              variant="ghost"
+              className="mt-3 -ml-2 gap-0.5"
+              links={[
+                { network: "x", href: "https://x.com", label: "Ayesha on X" },
+                { network: "github", href: "https://github.com", label: "Ayesha on GitHub" },
+                { network: "dribbble", href: "https://dribbble.com", label: "Ayesha on Dribbble" },
+              ]}
+            />
           </div>
         </div>
 

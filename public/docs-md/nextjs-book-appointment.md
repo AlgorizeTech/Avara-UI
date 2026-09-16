@@ -104,10 +104,12 @@ export default function BookAppointment() {
           Where her week goes
 
       {/* Booking */}
+      {/* The Booker is the panel's whole inside, so its confirmation covers
+          the panel edge to edge instead of stopping at the padding. */}
       
-        Book an appointment
          new Promise((resolve) => setTimeout(resolve, 900))}
         >
+          Book an appointment
            d.getDay() === 0} />
           
             Time
@@ -280,10 +282,12 @@ export default function BookAppointment() {
           Where her week goes
 
       {/* Booking */}
+      {/* The Booker is the panel's whole inside, so its confirmation covers
+          the panel edge to edge instead of stopping at the padding. */}
       
-        Book an appointment
          new Promise((resolve) => setTimeout(resolve, 900))}
         >
+          Book an appointment
            d.getDay() === 0} />
           
             Time
@@ -360,6 +364,12 @@ function ActivityBar() {
           effect:
             "on `Booker.Days` strikes out days with nothing free. Sundays here; feed it your real availability.",
         },
+        {
+          lead: "The arrows page",
+          prop: "Booker.Days",
+          effect:
+            "a week at a time, up to `horizon` days out (90 by default). Days start today, so the previous arrow is disabled on the first page — nobody can book into the past.",
+        },
       ],
       props: { rounded: true },
       usage: usagePage,
@@ -399,11 +409,11 @@ const AFTERNOON = [{ label: "1:00 PM" }, { label: "2:00 PM" }, { label: "3:00 PM
 export default function Booking() {
   return (
 
-        Book an appointment
          {
             await fetch("/api/book", { method: "POST", body: JSON.stringify({ day, slot }) });
           }}
         >
+          Book an appointment
            d.getDay() === 0} />
           
             Time
@@ -426,7 +436,7 @@ Choosing a new day clears the slot, since availability changes with the day. The
     Days and slots are radio groups with full date names; taken slots and closed days are disabled, not hidden; the busy button carries aria-busy and the confirmation is a status region.
 
     Honest about today
-    The default seven days are built on the client, so a server render never guesses the visitor's date. Pass your own days array to offer a different range.
+    The default days are built on the client, so a server render never guesses the visitor's date. They start today and page forward a week at a time — the previous arrow never reaches into the past. Pass your own days array to offer a different range.
 
 ## Props Reference
 
@@ -456,8 +466,18 @@ Choosing a new day clears the slot, since availability changes with the day. The
 
         days
         Date[]
-        next 7 days
-        Days on offer, in order. The default is built on the client so the server never guesses today.
+        today → horizon
+        Days on offer, in order, paged count at a time with the previous/next arrows. The default is built on the client so the server never guesses today, and it starts today — there is no paging back into the past.
+
+        count
+        number
+        7
+        Days shown per page.
+
+        horizon
+        number
+        90
+        How far ahead the default days run, in days from today. Ignored when days is given.
 
         unavailable
         (day: Date) =&gt; boolean

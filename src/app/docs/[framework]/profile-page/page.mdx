@@ -5,12 +5,15 @@ import { extractCode } from "@/lib/code";
 
 A person as a page: an aurora backdrop, frosted panels in four shapes, and a 24-hour dial that shows when they are at work — live, in their own time zone.
 
-`ProfilePageBlock` ships four primitives rather than one monolith. `ProfilePage` is the backdrop and a 12-column grid; `GlassPanel` is one glass recipe with a `shape` that encodes hierarchy (a `slab` for the hero, a `tile` for content, a `disc` for a single number, a `capsule` for chips); `WorkdayDial` is the one element that moves; `useLocalTime` is the hook under it. Compose them with your own data — nothing has to be reshaped to fit.
+The page is primitives rather than one monolith. `ProfilePage` is the backdrop and a 12-column grid; `GlassPanel` — from <DocLink to="glass-panel">Glass Panel</DocLink>, which installs alongside — is one glass recipe with a `shape` that encodes hierarchy (a `slab` for the hero, a `tile` for content, a `disc` for a single number, a `capsule` for chips); `WorkdayDial` is the one element that moves; `useLocalTime` is the hook under it. Compose them with your own data — nothing has to be reshaped to fit. The example page also drops in two other library pieces where a profile wants them: a <DocLink to="verify-badge">Verify Badge</DocLink> beside the name and a row of <DocLink to="social-links">Social Links</DocLink> under the contact details.
 
 export const usagePage = `"use client";
 
 import { useState } from "react";
-import { GlassPanel, ProfilePage, WorkdayDial } from "@/components/custom/blocks/ProfilePageBlock";
+import { GlassPanel } from "@/components/custom/blocks/GlassPanelBlock";
+import { ProfilePage, WorkdayDial } from "@/components/custom/blocks/ProfilePageBlock";
+import { SocialLinks } from "@/components/custom/blocks/SocialLinksBlock";
+import { VerifyBadge } from "@/components/custom/blocks/VerifyBadgeBlock";
 import { cn } from "@/lib/utils";
 import {
   ArrowLeft,
@@ -110,8 +113,9 @@ export default function ProfilePageDemo() {
             </span>
           </div>
           <div className="min-w-0">
-            <h1 className="text-3xl font-semibold tracking-tight sm:text-[40px] sm:leading-none">
+            <h1 className="flex flex-wrap items-center gap-2.5 text-3xl font-semibold tracking-tight sm:text-[40px] sm:leading-none">
               Ayesha Karim
+              <VerifyBadge size="lg" aria-label="Verified" />
             </h1>
             <p className="mt-2 text-base text-black/60 dark:text-white/60">
               Design engineer at Northwind
@@ -127,6 +131,16 @@ export default function ProfilePageDemo() {
                 <Globe className="size-3.5" /> ayesha.design
               </li>
             </ul>
+            <SocialLinks
+              size="sm"
+              variant="ghost"
+              className="mt-3 -ml-2 gap-0.5"
+              links={[
+                { network: "x", href: "https://x.com", label: "Ayesha on X" },
+                { network: "github", href: "https://github.com", label: "Ayesha on GitHub" },
+                { network: "dribbble", href: "https://dribbble.com", label: "Ayesha on Dribbble" },
+              ]}
+            />
           </div>
         </div>
 
@@ -291,7 +305,10 @@ export default function ProfilePageDemo() {
 export const usagePageSolid = `"use client";
 
 import { useState } from "react";
-import { GlassPanel, ProfilePage, WorkdayDial } from "@/components/custom/blocks/ProfilePageBlock";
+import { GlassPanel } from "@/components/custom/blocks/GlassPanelBlock";
+import { ProfilePage, WorkdayDial } from "@/components/custom/blocks/ProfilePageBlock";
+import { SocialLinks } from "@/components/custom/blocks/SocialLinksBlock";
+import { VerifyBadge } from "@/components/custom/blocks/VerifyBadgeBlock";
 import { cn } from "@/lib/utils";
 import {
   ArrowLeft,
@@ -391,8 +408,9 @@ export default function ProfilePageDemo() {
             </span>
           </div>
           <div className="min-w-0">
-            <h1 className="text-3xl font-semibold tracking-tight sm:text-[40px] sm:leading-none">
+            <h1 className="flex flex-wrap items-center gap-2.5 text-3xl font-semibold tracking-tight sm:text-[40px] sm:leading-none">
               Ayesha Karim
+              <VerifyBadge size="lg" aria-label="Verified" />
             </h1>
             <p className="mt-2 text-base text-black/60 dark:text-white/60">
               Design engineer at Northwind
@@ -408,6 +426,16 @@ export default function ProfilePageDemo() {
                 <Globe className="size-3.5" /> ayesha.design
               </li>
             </ul>
+            <SocialLinks
+              size="sm"
+              variant="ghost"
+              className="mt-3 -ml-2 gap-0.5"
+              links={[
+                { network: "x", href: "https://x.com", label: "Ayesha on X" },
+                { network: "github", href: "https://github.com", label: "Ayesha on GitHub" },
+                { network: "dribbble", href: "https://dribbble.com", label: "Ayesha on Dribbble" },
+              ]}
+            />
           </div>
         </div>
 
@@ -629,7 +657,8 @@ export default function ProfilePageDemo() {
 The page above is a composition, not a component with forty props. Start from three panels and add what your data has.
 
 ```tsx
-import { GlassPanel, ProfilePage, WorkdayDial } from "@/components/custom/blocks/ProfilePageBlock";
+import { GlassPanel } from "@/components/custom/blocks/GlassPanelBlock";
+import { ProfilePage, WorkdayDial } from "@/components/custom/blocks/ProfilePageBlock";
 
 export default function Minimal() {
   return (
@@ -713,44 +742,7 @@ Grid spans are plain Tailwind: the grid is `grid-cols-1 md:grid-cols-6 lg:grid-c
 
 ### GlassPanel
 
-<div className="overflow-x-auto my-4">
-  <table>
-    <thead>
-      <tr>
-        <th>Prop</th>
-        <th>Type</th>
-        <th>Default</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><code>shape</code></td>
-        <td><code>"slab" | "tile" | "disc" | "capsule"</code></td>
-        <td><code>"tile"</code></td>
-        <td>Corner treatment. <code>disc</code> also forces a square aspect.</td>
-      </tr>
-      <tr>
-        <td><code>variant</code></td>
-        <td><code>"glass" | "solid"</code></td>
-        <td>from <code>ProfilePage</code></td>
-        <td>Override the page's surface for this one panel.</td>
-      </tr>
-      <tr>
-        <td><code>interactive</code></td>
-        <td><code>boolean</code></td>
-        <td><code>false</code></td>
-        <td>Pointer cursor and a small lift on hover.</td>
-      </tr>
-      <tr>
-        <td><code>className</code></td>
-        <td><code>string</code></td>
-        <td>—</td>
-        <td>Column span (<code>lg:col-span-8</code>), padding, and layout of the contents.</td>
-      </tr>
-    </tbody>
-  </table>
-</div>
+`GlassPanel` (and `useSurface`) come from <DocLink to="glass-panel">Glass Panel</DocLink>; its `shape`, `variant` and `interactive` props are documented there. `ProfilePage` is that page's `GlassBackdrop` under the page's own name.
 
 ### WorkdayDial
 

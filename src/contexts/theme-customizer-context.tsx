@@ -98,6 +98,22 @@ function loadState(): ThemeCustomizerState {
     const stored = localStorage.getItem(STORAGE_KEY);
     if (stored) {
       const parsed = JSON.parse(stored) as ThemeCustomizerState;
+      // A named preset is re-resolved from its current definition rather than
+      // trusted from storage: the stored colours are a snapshot from whenever
+      // the reader last visited, and once a preset's palette is edited in code
+      // every returning reader would otherwise be pinned to the old one. Only
+      // "custom" carries colours the reader actually chose.
+      const preset =
+        parsed.activePreset && parsed.activePreset !== "custom"
+          ? THEME_PRESETS.find((p) => p.name === parsed.activePreset)
+          : undefined;
+      if (preset && typeof parsed.radius === "number") {
+        return {
+          radius: parsed.radius,
+          activePreset: preset.name,
+          colors: presetColors(preset),
+        };
+      }
       // Validate that all tokens exist
       const hasAllTokens = COLOR_TOKENS.every(
         (t) => t in parsed.colors.light && t in parsed.colors.dark

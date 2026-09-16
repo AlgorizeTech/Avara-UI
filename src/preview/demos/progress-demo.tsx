@@ -29,6 +29,9 @@ function StagedOperation({
   const [value, setValue] = useState(0);
   const [status, setStatus] = useState<ProgressStatus>("active");
   const [running, setRunning] = useState(false);
+  // Bumped on run/reset to remount the indicators, so a fresh run starts at
+  // zero instead of tweening down from wherever the last one ended.
+  const [run, setRun] = useState(0);
   const failAtRef = useRef<number | null>(null);
 
   useEffect(() => {
@@ -56,6 +59,7 @@ function StagedOperation({
     setValue(0);
     setStatus("active");
     setRunning(true);
+    setRun((r) => r + 1);
   };
   const fail = () => {
     failAtRef.current = Math.max(value + 1, 60);
@@ -69,6 +73,7 @@ function StagedOperation({
     setRunning(false);
     setValue(0);
     setStatus("active");
+    setRun((r) => r + 1);
   };
 
   const hint =
@@ -92,7 +97,7 @@ function StagedOperation({
 
   return (
     <div className="w-full max-w-2xl mx-auto flex flex-col gap-8">
-      <div className="flex flex-col sm:flex-row items-center gap-8 sm:gap-10">
+      <div key={run} className="flex flex-col sm:flex-row items-center gap-8 sm:gap-10">
         <CircularProgress
           value={value}
           max={100}
@@ -447,10 +452,14 @@ export default function ProgressDemo({
           showValue={showValue}
           tooltip={tooltip}
         >
-          <span className="text-3xl font-bold tabular-nums">{value}</span>
-          <span className="text-[11px] font-medium uppercase tracking-wide text-muted-foreground">
-            of {max} credits
-          </span>
+          {(shown) => (
+            <>
+              <span className="text-3xl font-bold tabular-nums">{shown}</span>
+              <span className="text-[11px] font-medium uppercase tracking-wide text-muted-foreground">
+                of {max} credits
+              </span>
+            </>
+          )}
         </CircularProgress>
       </div>
     );

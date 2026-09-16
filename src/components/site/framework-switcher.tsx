@@ -1,11 +1,9 @@
 "use client";
 
 import { AnimatePresence, motion } from "framer-motion";
-import { Check, ChevronsUpDown } from "lucide-react";
+import { Atom, Check, ChevronsUpDown, Triangle, type LucideIcon } from "lucide-react";
 import { usePathname, useRouter } from "next/navigation";
 import React, { useCallback, useEffect, useId, useRef, useState } from "react";
-import type { IconType } from "react-icons";
-import { SiNextdotjs, SiReact } from "react-icons/si";
 
 import { useFramework } from "@/hooks/use-framework";
 import {
@@ -27,10 +25,13 @@ import { cn } from "@/lib/utils";
  * atom reads as "this is the framework". `brand` is set only where a framework
  * owns a colour — Next.js is monochrome by design and inherits the theme, so
  * the two marks stay distinguishable in both light and dark.
+ *
+ * lucide has no brand logos, so these are the nearest generic marks: the atom
+ * for React, the Vercel-style triangle for Next.js.
  */
-const FRAMEWORK_BRAND: Record<Framework, { Icon: IconType; brand?: string }> = {
-  nextjs: { Icon: SiNextdotjs },
-  reactjs: { Icon: SiReact, brand: "text-[#0B93C4] dark:text-[#61DAFB]" },
+const FRAMEWORK_BRAND: Record<Framework, { Icon: LucideIcon; brand?: string }> = {
+  nextjs: { Icon: Triangle },
+  reactjs: { Icon: Atom, brand: "text-[#0B93C4] dark:text-[#61DAFB]" },
 };
 
 /** The tile the mark sits in — shared by the trigger and the options so the

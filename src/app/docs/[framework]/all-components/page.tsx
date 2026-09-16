@@ -6,7 +6,6 @@ import { usePathname } from "next/navigation";
 import { docsHref, frameworkFromPathname } from "@/lib/framework";
 import {
 	Boxes,
-	Sparkles,
 	LayoutTemplate,
 	ArrowRight,
 	LayoutGrid,
@@ -66,6 +65,7 @@ const COMPONENT_META: Record<
 	piano: { countText: "Acoustic Synthesizer", illustrationType: "piano" },
 	command: { countText: "Cmd+K Palette", illustrationType: "command" },
 	"context-menu": { countText: "Right Click Menu", illustrationType: "context-menu" },
+	"conversation-timeline": { countText: "Chat Minimap Rail", illustrationType: "conversation-timeline" },
 	"copy-button": { countText: "Clipboard Confirm", illustrationType: "copy-button" },
 	counter: { countText: "Animated Numbers", illustrationType: "counter" },
 	"custom-code-block": { countText: "Code Highlighter", illustrationType: "code-block" },
@@ -78,7 +78,8 @@ const COMPONENT_META: Record<
 	folder: { countText: "Tactile File Folder", illustrationType: "folder" },
 	form: { countText: "Validated Forms", illustrationType: "form" },
 	"half-stars": { countText: "Rating Stars", illustrationType: "half-stars" },
-	"hero-video-player": { countText: "Video & Audio Players", illustrationType: "hero-videoplayer" },
+	"audio-player": { countText: "Audio Hero & Bar", illustrationType: "hero-videoplayer" },
+	"video-player": { countText: "Video Players", illustrationType: "hero-videoplayer" },
 	"image-compare": { countText: "Before & After Slider", illustrationType: "image-compare" },
 	input: { countText: "Text & Fields", illustrationType: "input" },
 	invoice: { countText: "Billing Paper", illustrationType: "invoice" },
@@ -116,7 +117,7 @@ const COMPONENT_META: Record<
 	"verify-badge": { countText: "Trust Badge", illustrationType: "verify-badge" },
 	wizard: { countText: "Multi-Step Form", illustrationType: "wizard" },
 
-	// Animated Ui Components
+	// Ui Components (motion-driven; formerly a separate "Animated Ui Components" group)
 	"3d-carousel": { countText: "3D Physics Spring", illustrationType: "carousel" },
 	"animated-list": { countText: "Staggered Entrance", illustrationType: "animated-list" },
 	"chat-bubble": { countText: "Spring Motion Feed", illustrationType: "chat" },
@@ -153,12 +154,8 @@ const COMPONENT_META: Record<
 
 const CATEGORY_META: Record<string, { subtitle: string; icon: any }> = {
 	"Ui Components": {
-		subtitle: "Essential primitive building blocks for clean, high-performance web applications.",
+		subtitle: "Primitive building blocks and fluid, motion-driven components for clean, high-performance web applications.",
 		icon: Boxes,
-	},
-	"Animated Ui Components": {
-		subtitle: "Fluid, interactive components powered by Framer Motion & spring physics.",
-		icon: Sparkles,
 	},
 	"Website Sections": {
 		subtitle: "Production-ready full section blocks for landing pages and SaaS platforms.",
@@ -1930,6 +1927,26 @@ function MiniatureIllustration({
 							))}
 							Selected
 						</span>
+					</div>
+				)}
+
+				{type === "conversation-timeline" && (
+					<div className="w-full flex items-center justify-center my-auto">
+						<div className="flex flex-col gap-[3px]">
+							{[0.28, 0.28, 1, 0.28, 0.28, 0.28, 0.28].map((op, i) => (
+								<div key={i} className="flex items-center gap-1.5">
+									<span
+										className={`h-[2px] w-6 rounded-full ${i === 2 ? "bg-sky-500" : "bg-foreground"}`}
+										style={{ opacity: op }}
+									/>
+									{i === 2 && (
+										<span className="text-[6px] font-medium leading-none text-foreground">
+											Can you help me set up auth?
+										</span>
+									)}
+								</div>
+							))}
+						</div>
 					</div>
 				)}
 

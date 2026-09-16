@@ -17,6 +17,7 @@ import {
 } from "lucide-react";
 import React, { useEffect, useRef, useState } from "react";
 import { type PricingColor, getThemeStyles } from "./pricing-theme";
+import { ToggleGroup, ToggleGroupItem } from "./ToggleGroupBlock";
 export type PricingVariant =
   | "default"
   | "elegant"
@@ -116,22 +117,23 @@ export function PricingCards({
     <div className="w-full max-w-6xl mx-auto py-8 sm:py-12" style={style}>
       {data.tabs.length > 1 && (
         <div className="flex justify-center mb-8 sm:mb-12">
-          <div className="bg-muted p-1 rounded-xl flex gap-1 border border-border">
+          {/* Library ToggleGroup; an empty value (re-clicking the active
+              tab) is ignored so one tab is always selected. */}
+          <ToggleGroup
+            type="single"
+            color={color}
+            value={activeTab}
+            onValueChange={(id) => {
+              if (id) setActiveTab(id);
+            }}
+            aria-label="Billing period"
+          >
             {data.tabs.map((tab) => (
-              <button
-                key={tab.id}
-                onClick={() => setActiveTab(tab.id)}
-                className={cn(
-                  "px-4 py-2 rounded-lg text-sm font-semibold transition-all cursor-pointer",
-                  activeTab === tab.id
-                    ? "bg-background text-foreground shadow-sm"
-                    : "text-muted-foreground hover:text-foreground",
-                )}
-              >
+              <ToggleGroupItem key={tab.id} value={tab.id} className="font-semibold">
                 {tab.label}
-              </button>
+              </ToggleGroupItem>
             ))}
-          </div>
+          </ToggleGroup>
         </div>
       )}
 
@@ -870,24 +872,30 @@ export function PricingTypographic({
           </div>
 
           {hasYearlyPlans && (
-            <div className="flex gap-6 shrink-0">
-              {["monthly", "yearly"].map((cycle) => (
-                <button
+            // The library's ToggleGroup in single mode. Re-clicking the active
+            // cycle would clear it, so an empty value is ignored — one of the
+            // two is always chosen.
+            <ToggleGroup
+              type="single"
+              size="sm"
+              color={color}
+              value={billingCycle}
+              onValueChange={(cycle) => {
+                if (cycle) handleToggleCycle(cycle as "monthly" | "yearly");
+              }}
+              aria-label="Billing cycle"
+              className="shrink-0"
+            >
+              {(["monthly", "yearly"] as const).map((cycle) => (
+                <ToggleGroupItem
                   key={cycle}
-                  onClick={() =>
-                    handleToggleCycle(cycle as "monthly" | "yearly")
-                  }
-                  className={cn(
-                    "text-sm font-bold uppercase tracking-widest pb-1 border-b-2 transition-all duration-300 cursor-pointer",
-                    billingCycle === cycle
-                      ? cn(theme.text, theme.border)
-                      : "text-muted-foreground border-transparent hover:text-foreground",
-                  )}
+                  value={cycle}
+                  className="font-bold uppercase tracking-widest"
                 >
                   {cycle}
-                </button>
+                </ToggleGroupItem>
               ))}
-            </div>
+            </ToggleGroup>
           )}
         </div>
 

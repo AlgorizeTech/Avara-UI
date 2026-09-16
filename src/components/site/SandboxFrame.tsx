@@ -1,5 +1,6 @@
 "use client";
 
+import { isDefaultAccent } from "@/lib/accent";
 import { cn } from "@/lib/utils";
 import React, { useEffect, useMemo, useRef, useState } from "react";
 
@@ -12,6 +13,7 @@ import React, { useEffect, useMemo, useRef, useState } from "react";
 export function SandboxFrame({
   name,
   sandboxProps,
+  accent,
   viewportWidth,
   scale = 1,
   resetKey = 0,
@@ -23,6 +25,13 @@ export function SandboxFrame({
   name: string;
   /** JSON-serializable props bridged into the demo, live. */
   sandboxProps?: Record<string, unknown>;
+  /**
+   * The page's colour-picker value. The sandbox document repoints its theme
+   * tokens (`--primary`…) at it, so every token-styled element in the demo
+   * follows the picker the same way it follows the sidebar theme customizer —
+   * not only the ones a demo's `color` prop happens to reach.
+   */
+  accent?: string;
   /** Viewport width in px; null/undefined fills the container. */
   viewportWidth?: number | null;
   /** Visually shrinks the frame (real viewport stays viewportWidth). */
@@ -45,6 +54,8 @@ export function SandboxFrame({
   const [ready, setReady] = useState(false);
   const propsRef = useRef(sandboxProps);
   propsRef.current = sandboxProps;
+  const accentRef = useRef(accent);
+  accentRef.current = accent;
 
   // New document (mount or reset) → back to the loading state until the demo
   // signals it has actually mounted. A safety timeout reveals the frame even
@@ -57,10 +68,11 @@ export function SandboxFrame({
 
   // The iframe reloads ONLY on reset — live prop changes go over postMessage.
   const src = useMemo(() => {
-    const query = propsRef.current
-      ? `?props=${encodeURIComponent(JSON.stringify(propsRef.current))}`
-      : "";
-    return `/preview/${name}${query}`;
+    const query = new URLSearchParams();
+    if (propsRef.current) query.set("props", JSON.stringify(propsRef.current));
+    if (!isDefaultAccent(accentRef.current)) query.set("accent", accentRef.current!);
+    const search = query.toString();
+    return `/preview/${name}${search ? `?${search}` : ""}`;
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [name, resetKey]);
 
@@ -78,12 +90,17 @@ export function SandboxFrame({
   // demo must not paint one frame of the wrong size or the wrong props.
   const postState = () => {
     post({ type: "sandbox:props", props: propsRef.current ?? {} });
+    post({ type: "sandbox:accent", accent: accentRef.current ?? null });
     post({ type: "sandbox:fill", fill: fillRef.current });
   };
 
   useEffect(() => {
     post({ type: "sandbox:props", props: sandboxProps ?? {} });
   }, [sandboxProps]);
+
+  useEffect(() => {
+    post({ type: "sandbox:accent", accent: accent ?? null });
+  }, [accent]);
 
   useEffect(() => {
     post({ type: "sandbox:fill", fill });

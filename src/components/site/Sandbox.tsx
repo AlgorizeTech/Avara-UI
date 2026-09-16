@@ -181,6 +181,7 @@ function useFullscreenOverlay(
 export function Sandbox({
   name,
   sandboxProps,
+  accent,
   tabs,
   options = {},
   minHeight = 550,
@@ -190,6 +191,8 @@ export function Sandbox({
   name: string;
   /** JSON-serializable props bridged into the demo, live. */
   sandboxProps?: Record<string, unknown>;
+  /** Page colour-picker value, applied as theme tokens inside the frame. */
+  accent?: string;
   tabs: SandboxTab[];
   options?: SandboxOptions;
   minHeight?: number;
@@ -622,6 +625,7 @@ export function Sandbox({
                 <SandboxFrame
                   name={name}
                   sandboxProps={sandboxProps}
+                  accent={accent}
                   viewportWidth={isFullscreen ? null : viewportWidth}
                   scale={isFullscreen ? 1 : visualScale}
                   resetKey={resetKey}
@@ -1050,6 +1054,7 @@ export function ExampleShowcase({
                 code: effectiveCode,
               }}
               controlCard={index === 0 ? controlCard : null}
+              accent={colorControl ? color : undefined}
               options={example.options ?? options}
               minHeight={example.minHeight ?? minHeight}
               maxHeight={example.maxHeight ?? maxHeight}
@@ -1065,6 +1070,7 @@ function ExampleCard({
   name,
   example,
   controlCard,
+  accent,
   options,
   minHeight,
   maxHeight,
@@ -1073,6 +1079,8 @@ function ExampleCard({
   example: ResolvedShowcaseExample;
   /** The gallery's live-control card, drawn just above this preview. */
   controlCard?: React.ReactNode;
+  /** The gallery's colour-picker value, applied as theme tokens in the frame. */
+  accent?: string;
   options?: SandboxOptions;
   minHeight: number;
   maxHeight: number;
@@ -1143,6 +1151,7 @@ function ExampleCard({
           <Sandbox
             name={name}
             sandboxProps={props}
+            accent={accent}
             tabs={tabs}
             options={options}
             minHeight={minHeight}

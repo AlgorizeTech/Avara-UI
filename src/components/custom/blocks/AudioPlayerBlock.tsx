@@ -21,9 +21,9 @@ import React, { useCallback, useEffect, useRef, useState } from "react";
  * - `native` — the browser's own `<audio controls>` under the artwork. No
  *   custom transport to keep in sync, and the most accessible by default.
  */
-export type HeroAudioVariant = "hero" | "bar" | "native";
+export type AudioVariant = "hero" | "bar" | "native";
 
-export interface HeroAudioPlayerProps
+export interface AudioPlayerProps
   extends Omit<React.HTMLAttributes<HTMLDivElement>, "onPlay" | "onPause"> {
   /** Audio file the browser plays natively — mp3, ogg, wav, m4a. */
   audioUrl?: string;
@@ -34,7 +34,7 @@ export interface HeroAudioPlayerProps
   badge?: string;
   title?: string;
   subtitle?: string;
-  variant?: HeroAudioVariant;
+  variant?: AudioVariant;
   enableGlow?: boolean;
   /** Seconds the skip buttons jump. Set to 0 to hide them. */
   skipSeconds?: number;
@@ -62,9 +62,9 @@ function formatTime(seconds: number): string {
 const ICON_BUTTON =
   "flex items-center justify-center rounded-full text-white/70 transition-colors duration-200 hover:text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/60 cursor-pointer disabled:cursor-not-allowed disabled:opacity-40";
 
-export const HeroAudioPlayer = React.forwardRef<
+export const AudioPlayer = React.forwardRef<
   HTMLDivElement,
-  HeroAudioPlayerProps
+  AudioPlayerProps
 >(
   (
     {
@@ -387,4 +387,4 @@ export const HeroAudioPlayer = React.forwardRef<
   },
 );
 
-HeroAudioPlayer.displayName = "HeroAudioPlayer";
+AudioPlayer.displayName = "AudioPlayer";

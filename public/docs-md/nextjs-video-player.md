@@ -1,21 +1,20 @@
-# Hero Video Player
+# Video Player
 
-An embeddable, hardware-accelerated media hero for landing pages and high-conversion sections. Features a glassmorphism CTA, automatic dark/light mode responsiveness, and full keyboard accessibility.
+An embeddable, hardware-accelerated video hero for landing pages and high-conversion sections. Features a glassmorphism CTA, automatic dark/light mode responsiveness, and full keyboard accessibility.
 
-Four independent components live on this page, and each installs on its own:
+Three independent components live on this page, and each installs on its own:
 
-- **`HeroVideoPlayer`** — the poster hero. `playbackMode` opens the video in a **modal**, swaps it **inline** into the card, or renders it **directly** on load; `source` puts either a YouTube embed or a native HTML5 `` behind it. No player library.
-- **`HeroAudioPlayer`** — the same hero language for audio, with artwork, transport, scrubber and volume. No player library.
-- **`HeroPlyrPlayer`** — [Plyr](https://plyr.io) driving HTML5 files, YouTube and Vimeo behind one skinnable control bar.
-- **`HeroJwPlayer`** — [JW Player](https://jwplayer.com) with colour skin presets, for teams already on JW's platform.
+- **`VideoPlayer`** — the poster hero. `playbackMode` opens the video in a **modal**, swaps it **inline** into the card, or renders it **directly** on load; `source` puts either a YouTube embed or a native HTML5 `` behind it. No player library.
+- **`PlyrPlayer`** — [Plyr](https://plyr.io) driving HTML5 files, YouTube and Vimeo behind one skinnable control bar.
+- **`JwPlayer`** — [JW Player](https://jwplayer.com) with colour skin presets, for teams already on JW's platform.
 
-Reach for the first two unless you need adaptive streaming, DRM or a shared control bar across providers — they add no player dependency at all.
+Reach for the first unless you need adaptive streaming, DRM or a shared control bar across providers — it adds no player dependency at all. Looking for audio? The Audio Player has its own page.
 
 ## YouTube & native video
 
 Click the CTA in any preview to start playback. In `modal` mode `Esc` closes the dialog and focus returns to the play button.
 
-export const usageDefault = `import { HeroVideoPlayer } from "@/components/custom/blocks/HeroVideoPlayerBlock";
+export const usageDefault = `import { VideoPlayer } from "@/components/custom/blocks/VideoPlayerBlock";
 
 export default function HeroSection() {
   return (
@@ -23,7 +22,7 @@ export default function HeroSection() {
   );
 }`;
 
-export const usageInline = `import { HeroVideoPlayer } from "@/components/custom/blocks/HeroVideoPlayerBlock";
+export const usageInline = `import { VideoPlayer } from "@/components/custom/blocks/VideoPlayerBlock";
 
 export default function InlineHero() {
   return (
@@ -31,7 +30,7 @@ export default function InlineHero() {
   );
 }`;
 
-export const usageDirect = `import { HeroVideoPlayer } from "@/components/custom/blocks/HeroVideoPlayerBlock";
+export const usageDirect = `import { VideoPlayer } from "@/components/custom/blocks/VideoPlayerBlock";
 
 export default function DirectEmbedHero() {
   return (
@@ -39,7 +38,7 @@ export default function DirectEmbedHero() {
   );
 }`;
 
-export const usageNative = `import { HeroVideoPlayer } from "@/components/custom/blocks/HeroVideoPlayerBlock";
+export const usageNative = `import { VideoPlayer } from "@/components/custom/blocks/VideoPlayerBlock";
 
 export default function NativeVideoHero() {
   return (
@@ -47,7 +46,7 @@ export default function NativeVideoHero() {
   );
 }`;
 
-export const usageNativeModal = `import { HeroVideoPlayer } from "@/components/custom/blocks/HeroVideoPlayerBlock";
+export const usageNativeModal = `import { VideoPlayer } from "@/components/custom/blocks/VideoPlayerBlock";
 
 const track = (event: string) => console.log(event);
 
@@ -106,93 +105,11 @@ export default function NativeModalHero() {
 
 ### Install the video player
 
-## Audio player
-
-`HeroAudioPlayer` is a separate component with the same visual language. It wraps a plain `` element and mirrors that element's events, so the UI stays correct when a media key, the OS, or the native controls change playback.
-
-export const usageAudioHero = `import { HeroAudioPlayer } from "@/components/custom/blocks/HeroAudioPlayerBlock";
-
-export default function PodcastHero() {
-  return (
-    
-  );
-}`;
-
-export const usageAudioBar = `import { HeroAudioPlayer } from "@/components/custom/blocks/HeroAudioPlayerBlock";
-
-export default function EpisodeRow() {
-  return (
-    
-  );
-}`;
-
-export const usageAudioNative = `import { HeroAudioPlayer } from "@/components/custom/blocks/HeroAudioPlayerBlock";
-
-export default function NativeAudioHero() {
-  return (
-    
-  );
-}`;
-
-` element.",
-      propNotes: [
-        {
-          prop: "variant",
-          value: '"hero"',
-          effect:
-            "is the default — artwork beside its own transport. `audioUrl` and `artworkUrl` are the only two props it really needs.",
-        },
-        {
-          prop: "skipSeconds",
-          value: "{10}",
-          effect:
-            "sizes the rewind and forward jumps. Set it to `0` to drop both buttons.",
-        },
-      ],
-      props: { variant: "hero" },
-      usage: usageAudioHero,
-      code: extractCode("src/components/custom/blocks/HeroAudioPlayerBlock.tsx"),
-    },
-    {
-      title: "Compact bar",
-      subheading:
-        "The same player as one row — for a sidebar, an episode list, or a sticky footer.",
-      propNotes: [
-        {
-          prop: "variant",
-          value: '"bar"',
-          effect:
-            "collapses artwork, copy and transport into a single row. The volume slider hides below `sm` where there is no room for it.",
-        },
-      ],
-      props: { variant: "bar", enableGlow: false },
-      usage: usageAudioBar,
-    },
-    {
-      title: "Native controls",
-      subheading:
-        "The browser's own audio controls under the artwork — nothing custom to keep in sync.",
-      propNotes: [
-        {
-          prop: "variant",
-          value: '"native"',
-          effect:
-            "renders `` instead of the custom transport. The most accessible option by default, and the one that inherits platform features like playback speed for free.",
-        },
-      ],
-      props: { variant: "native" },
-      usage: usageAudioNative,
-    },
-  ]}
-/>
-
-### Install the audio player
-
 ## Plyr player
 
 [Plyr](https://plyr.io) puts one accessible control bar in front of HTML5 files, YouTube and Vimeo, so all three look and behave identically. It installs the `plyr` package and is imported dynamically inside an effect, which keeps the component server-renderable.
 
-export const usagePlyrHtml5 = `import { HeroPlyrPlayer } from "@/components/custom/blocks/HeroVideoPlayerPlyrBlock";
+export const usagePlyrHtml5 = `import { PlyrPlayer } from "@/components/custom/blocks/VideoPlayerPlyrBlock";
 
 export default function PlyrHero() {
   return (
@@ -200,17 +117,9 @@ export default function PlyrHero() {
   );
 }`;
 
-export const usagePlyrYouTube = `import { HeroPlyrPlayer } from "@/components/custom/blocks/HeroVideoPlayerPlyrBlock";
+export const usagePlyrYouTube = `import { PlyrPlayer } from "@/components/custom/blocks/VideoPlayerPlyrBlock";
 
 export default function PlyrYouTubeHero() {
-  return (
-    
-  );
-}`;
-
-export const usagePlyrAudio = `import { HeroPlyrPlayer } from "@/components/custom/blocks/HeroVideoPlayerPlyrBlock";
-
-export default function PlyrAudioHero() {
   return (
     
   );
@@ -227,7 +136,7 @@ export default function PlyrAudioHero() {
       props: { provider: "html5", mediaType: "video" },
       usage: usagePlyrHtml5,
       code: extractCode(
-        "src/components/custom/blocks/HeroVideoPlayerPlyrBlock.tsx",
+        "src/components/custom/blocks/VideoPlayerPlyrBlock.tsx",
       ),
     },
     {
@@ -250,21 +159,6 @@ export default function PlyrAudioHero() {
       props: { provider: "youtube", mediaType: "video" },
       usage: usagePlyrYouTube,
     },
-    {
-      title: "Plyr — Audio",
-      subheading: "The same component in its audio layout, with no video frame.",
-      propNotes: [
-        {
-          prop: "mediaType",
-          value: '"audio"',
-          effect:
-            "renders an `` element, so the card drops the aspect ratio and sizes to the control bar.",
-        },
-      ],
-      props: { mediaType: "audio" },
-      minHeight: 320,
-      usage: usagePlyrAudio,
-    },
   ]}
 />
 
@@ -272,9 +166,9 @@ export default function PlyrAudioHero() {
 
 ## JW Player
 
-[JW Player](https://jwplayer.com) is a licensed, remotely hosted library rather than an npm package, so `HeroJwPlayer` loads it from a `libraryUrl` you supply and falls back to a native `` if it is unavailable. The previews below run on JW's public documentation library — see the setup note under Installation before shipping.
+[JW Player](https://jwplayer.com) is a licensed, remotely hosted library rather than an npm package, so `JwPlayer` loads it from a `libraryUrl` you supply and falls back to a native `` if it is unavailable. The previews below run on JW's public documentation library — see the setup note under Installation before shipping.
 
-export const usageJwDefault = `import { HeroJwPlayer } from "@/components/custom/blocks/HeroVideoPlayerJwBlock";
+export const usageJwDefault = `import { JwPlayer } from "@/components/custom/blocks/VideoPlayerJwBlock";
 
 export default function JwHero() {
   return (
@@ -282,7 +176,7 @@ export default function JwHero() {
   );
 }`;
 
-export const usageJwSkin = `import { HeroJwPlayer } from "@/components/custom/blocks/HeroVideoPlayerJwBlock";
+export const usageJwSkin = `import { JwPlayer } from "@/components/custom/blocks/VideoPlayerJwBlock";
 
 export default function SkinnedJwHero() {
   return (
@@ -290,7 +184,7 @@ export default function SkinnedJwHero() {
   );
 }`;
 
-export const usageJwCustom = `import { HeroJwPlayer } from "@/components/custom/blocks/HeroVideoPlayerJwBlock";
+export const usageJwCustom = `import { JwPlayer } from "@/components/custom/blocks/VideoPlayerJwBlock";
 
 export default function BrandedJwHero() {
   return (
@@ -302,7 +196,7 @@ export default function BrandedJwHero() {
 
 ### JW Player setup
 
-`HeroJwPlayer` has no npm dependency: JW ships a licensed library from its own CDN, and the component loads it at runtime.
+`JwPlayer` has no npm dependency: JW ships a licensed library from its own CDN, and the component loads it at runtime.
 
 1. Create a player in the [JW Dashboard](https://dashboard.jwplayer.com) and copy its cloud-hosted library URL — `https://cdn.jwplayer.com/libraries/.js`.
 2. Pass it as `libraryUrl`. For a self-hosted build, also pass the `licenseKey` from your player settings.
@@ -315,8 +209,8 @@ If the library fails to load, the component renders a native `` with the poster 
     Three Reveal Modes
     Open in a dialog, swap the player into the card in place, or render it directly on load — one prop, no layout rewrite.
 
-    Five Player Backends
-    YouTube embeds, native HTML5 video, native audio, Plyr and JW Player — sharing one hero card, one title treatment and one glow treatment.
+    Four Player Backends
+    YouTube embeds, native HTML5 video, Plyr and JW Player — sharing one hero card, one title treatment and one glow treatment.
 
     Deferred Media Weight
     In modal and inline mode nothing but the poster loads until a click, so an embed never lands on your Largest Contentful Paint.
@@ -345,11 +239,11 @@ If the library fails to load, the component renders a native `` with the poster 
     Before anything has played, the title and subtitle sit at the foot of the frame and stay there — nothing is happening yet, so they are free to introduce the video, and nobody should have to hover to learn what they are about to watch. Once playback starts the picture is the point, so the copy moves to a top bar that only appears on hover, the way YouTube does. It never returns to the bottom, because pausing does not undo having started. This applies to the players we draw the chrome for — the native &lt;video&gt;, Plyr and JW. A YouTube or Vimeo embed already paints its own title bar, so nothing is layered on top of it.
 
     Choosing a backend
-    Start with HeroVideoPlayer — it ships no player library. Move to Plyr when you need one consistent, skinnable control bar across YouTube, Vimeo and self-hosted files. Move to JW Player when you are already on JW's platform for adaptive streaming, DRM or analytics.
+    Start with VideoPlayer — it ships no player library. Move to Plyr when you need one consistent, skinnable control bar across YouTube, Vimeo and self-hosted files. Move to JW Player when you are already on JW's platform for adaptive streaming, DRM or analytics.
 
 ## Props Reference
 
-### HeroVideoPlayer
+### VideoPlayer
 
         Prop
         Type
@@ -446,64 +340,7 @@ If the library fails to load, the component renders a native `` with the poster 
         undefined
         Classes on the outer wrapper. All other standard div attributes pass through.
 
-### HeroAudioPlayer
-
-        Prop
-        Type
-        Default
-        Description
-
-        audioUrl
-        string
-        "https://cdn.plyr.io/..."
-        Audio file the browser plays natively — mp3, ogg, wav, m4a.
-
-        audioType
-        string
-        "audio/mpeg"
-        MIME type on the &lt;source&gt;, so the browser can skip a format it cannot play.
-
-        variant
-        "hero" | "bar" | "native"
-        "hero"
-        Full artwork card, single compact row, or the browser's own &lt;audio controls&gt; under the artwork.
-
-        artworkUrl / artworkAlt
-        string
-        "https://images.unsplash..."
-        Cover image and its alt text.
-
-        badge / title / subtitle
-        string
-        "Now Playing" / …
-        Track copy. subtitle is the natural place for the artist or show name.
-
-        skipSeconds
-        number
-        10
-        Seconds the rewind and forward buttons jump. 0 hides both.
-
-        autoPlay / loop
-        boolean
-        false
-        Passed to the &lt;audio&gt; element. Autoplay is blocked without a prior interaction on most browsers.
-
-        preload
-        "none" | "metadata" | "auto"
-        "metadata"
-        How much the browser fetches up front. metadata is enough to show the duration.
-
-        enableGlow
-        boolean
-        true
-        Ambient blur gradient behind the card.
-
-        onPlay / onPause / onEnded
-        () =&gt; void
-        undefined
-        Playback callbacks for analytics.
-
-### HeroPlyrPlayer
+### PlyrPlayer
 
         Prop
         Type
@@ -575,7 +412,7 @@ If the library fails to load, the component renders a native `` with the poster 
         undefined
         Fires once Plyr has initialised and replaced the raw media element.
 
-### HeroJwPlayer
+### JwPlayer
 
         Prop
         Type
@@ -654,6 +491,6 @@ If the library fails to load, the component renders a native `` with the poster 
 
 ---
 
-**Component Path:** `[framework]\hero-video-player\page.mdx`
+**Component Path:** `[framework]\video-player\page.mdx`
 
 **Web Version:** Visit the corresponding URL on the Algorize UI documentation site for live previews and interactive examples.

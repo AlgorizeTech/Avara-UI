@@ -3,6 +3,7 @@
 import { useEffect, useState, useCallback } from "react";
 import { cn } from "@/lib/utils";
 import { Star, ArrowLeft, ArrowRight } from "lucide-react";
+import { HalfStars } from "@/components/custom/blocks/HalfStarsBlock";
 import { motion, AnimatePresence } from "framer-motion";
 
 export type ReviewsVariant =
@@ -293,14 +294,15 @@ function StackedCardsCarousel({
 						transition={{ duration: 0.25 }}
 						className="flex items-center gap-1.5"
 					>
-						<div className="flex items-center text-amber-500 gap-1">
-							{Array.from({ length: 5 }).map((_, i) => (
-								<Star
-									key={i}
-									className="size-3.5 sm:size-4 fill-amber-500 text-amber-500"
-								/>
-							))}
-						</div>
+						<HalfStars
+							rating={activeReview.rating}
+							size={16}
+							showText={false}
+							activeColor="text-amber-500"
+							inactiveColor="text-amber-500/20"
+							role="img"
+							aria-label={`Rated ${activeReview.rating.toFixed(1)} out of 5`}
+						/>
 						<span className="text-xs font-bold text-foreground">
 							{activeReview.rating.toFixed(1)}
 						</span>
@@ -394,11 +396,17 @@ function ReviewCard({
 			{/* Top Bar: Stars Badge + Verified Tag */}
 			<div className="flex items-center justify-between gap-2 mb-3">
 				<div className="flex items-center gap-1 bg-amber-500/10 border border-amber-500/20 px-2.5 py-1 rounded-full text-amber-500">
-					{Array.from({ length: 5 }).map((_, i) => (
-						<Star key={i} className="size-3.5 fill-amber-500 text-amber-500" />
-					))}
+					<HalfStars
+						rating={review.rating}
+						size={14}
+						showText={false}
+						activeColor="text-amber-500"
+						inactiveColor="text-amber-500/20"
+						role="img"
+						aria-label={`Rated ${review.rating.toFixed(1)} out of 5`}
+					/>
 					<span className="text-xs font-extrabold text-amber-600 dark:text-amber-400 ml-1">
-						5.0
+						{review.rating.toFixed(1)}
 					</span>
 				</div>
 				<span className="inline-flex items-center gap-1 text-[10px] font-bold uppercase tracking-wider text-primary bg-primary/10 border border-primary/20 px-2.5 py-0.5 rounded-full">

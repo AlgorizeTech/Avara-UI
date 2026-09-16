@@ -2,7 +2,9 @@
 
 import React, { useState } from 'react';
 import { motion } from 'framer-motion';
-import { ArrowRight, CheckCircle, Loader2 } from 'lucide-react';
+import { ArrowRight, CheckCircle } from 'lucide-react';
+import Button from '@/components/custom/blocks/Button';
+import { InputBlock } from '@/components/custom/blocks/InputBlock';
 
 interface WaitlistProps {
   className?: string;
@@ -91,50 +93,32 @@ export default function Waitlist({ className = '' }: WaitlistProps) {
       </div>
 
       <form onSubmit={handleSubmit} className="space-y-4">
-        <div className="space-y-2">
-          <div className="relative">
-            <input
-              type="email"
-              value={email}
-              onChange={(e) => {
-                setEmail(e.target.value);
-                setError('');
-              }}
-              placeholder="Enter your email"
-              className="flex h-10 w-full rounded-md border border-gray-200 dark:border-gray-800 bg-white dark:bg-black px-3 py-2 text-sm ring-offset-white placeholder:text-gray-500 dark:placeholder:text-gray-400 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gray-950 dark:focus-visible:ring-gray-300 focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 dark:ring-offset-black transition-all"
-              disabled={isLoading}
-            />
-          </div>
-          {error && (
-            <motion.p
-              initial={{ opacity: 0, y: -10 }}
-              animate={{ opacity: 1, y: 0 }}
-              className="text-sm font-medium text-red-600 dark:text-red-400"
-            >
-              {error}
-            </motion.p>
-          )}
-        </div>
-
-        <motion.button
-          type="submit"
+        {/* The library's Input: it owns the error line, so a wrong address is
+            reported beside the field rather than in a separate element. */}
+        <InputBlock
+          type="email"
+          inputSize="sm"
+          value={email}
+          onChange={(e) => {
+            setEmail(e.target.value);
+            setError('');
+          }}
+          placeholder="Enter your email"
           disabled={isLoading}
-          whileHover={{ scale: isLoading ? 1 : 1.02 }}
-          whileTap={{ scale: isLoading ? 1 : 0.98 }}
-          className="inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium ring-offset-white transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gray-950 focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 dark:ring-offset-black dark:focus-visible:ring-gray-300 bg-gray-900 text-gray-50 hover:bg-gray-900/90 dark:bg-gray-50 dark:text-gray-900 dark:hover:bg-gray-50/90 h-10 px-4 py-2 w-full gap-2"
+          error={error || undefined}
+          aria-label="Email address"
+        />
+
+        <Button
+          type="submit"
+          variant="default"
+          size="sm"
+          loading={isLoading}
+          iconRight={<ArrowRight className="w-4 h-4" />}
+          className="w-full"
         >
-          {isLoading ? (
-            <>
-              <Loader2 className="w-4 h-4 animate-spin" />
-              Joining...
-            </>
-          ) : (
-            <>
-              Join waitlist
-              <ArrowRight className="w-4 h-4" />
-            </>
-          )}
-        </motion.button>
+          {isLoading ? 'Joining...' : 'Join waitlist'}
+        </Button>
       </form>
 
       <p className="text-xs text-gray-500 dark:text-gray-400 text-center mt-4 leading-relaxed">

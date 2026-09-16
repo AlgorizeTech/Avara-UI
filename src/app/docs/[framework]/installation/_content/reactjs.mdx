@@ -218,7 +218,9 @@ Components are published as a [shadcn registry](https://ui.shadcn.com/docs/regis
 ### Step 1: Initialize your project
 
 Run this once per project. It creates `components.json`, writes `src/lib/utils.ts` with the
-`cn` helper, and confirms your path aliases.
+`cn` helper, installs `lucide-react` as the icon library, and confirms your path aliases.
+Every component imports those two, which is why no component page lists them again —
+each page's install step names only what that component adds on top.
 
 Algorize UI components are built on Radix primitives, so select the Radix base. Passing it
 on the command line also keeps the command usable in CI:

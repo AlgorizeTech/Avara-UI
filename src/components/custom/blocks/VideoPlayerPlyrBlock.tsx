@@ -9,7 +9,7 @@ import "plyr/dist/plyr.css";
 /** Where the media comes from. Plyr wraps all three behind one control bar. */
 export type PlyrProvider = "html5" | "youtube" | "vimeo";
 
-export interface HeroPlyrPlayerProps
+export interface PlyrPlayerProps
   extends React.HTMLAttributes<HTMLDivElement> {
   /**
    * For `provider="html5"` a media file URL. For `youtube` / `vimeo` either a
@@ -145,9 +145,9 @@ function MediaOverlay({
   );
 }
 
-export const HeroPlyrPlayer = React.forwardRef<
+export const PlyrPlayer = React.forwardRef<
   HTMLDivElement,
-  HeroPlyrPlayerProps
+  PlyrPlayerProps
 >(
   (
     {
@@ -345,4 +345,4 @@ export const HeroPlyrPlayer = React.forwardRef<
   },
 );
 
-HeroPlyrPlayer.displayName = "HeroPlyrPlayer";
+PlyrPlayer.displayName = "PlyrPlayer";

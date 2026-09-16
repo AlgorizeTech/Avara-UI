@@ -157,7 +157,9 @@ Follow this step-by-step guide to install common peer dependencies, configure Ta
 
 ### Step 1: Install Common Peer Dependencies
 
-Install the core peer dependencies used across our UI components for animations, icons and themes:
+Install the core peer dependencies used across our UI components for animations, icons and themes.
+`lucide-react` and the `cn` helper below are what every component imports, so no component page
+lists them again — each page's install step names only what that component adds on top:
 
 ```bash
 npm install framer-motion lucide-react next-themes clsx tailwind-merge

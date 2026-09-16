@@ -22,6 +22,22 @@ const sampleData = [
   { label: "Dec", value: 4800 },
 ];
 
+// Shares of a whole, for the two legend charts.
+const visitReasons = [
+  { label: "Hypertension management", value: 35 },
+  { label: "Preventive cardiology", value: 25 },
+  { label: "Heart failure monitoring", value: 22 },
+  { label: "Chest pain evaluation", value: 18 },
+];
+
+const weekActivities = [
+  { label: "Clinical", value: 47 },
+  { label: "Research", value: 24 },
+  { label: "Teaching", value: 16 },
+  { label: "Admin", value: 10 },
+  { label: "Other", value: 3 },
+];
+
 export default function ChartDemo({
   type = "bar",
   color = "primary",
@@ -33,6 +49,28 @@ export default function ChartDemo({
   showGrid?: boolean;
   showArea?: boolean;
 }) {
+  // The legend charts show shares of a whole in a compact card, not a
+  // 300px stage — they lay out like the panels they were built for.
+  if (type === "donut-legend" || type === "stacked-bar") {
+    const isDonut = type === "donut-legend";
+    return (
+      <div className="w-full flex items-center justify-center min-h-[320px] px-6 relative z-10">
+        <div className="w-full max-w-md rounded-3xl border border-border bg-card p-6 text-card-foreground shadow-sm">
+          <h3 className="text-sm font-semibold">{isDonut ? "Top visit reasons" : "Where the week goes"}</h3>
+          <ChartBlock
+            key={`${type}-${color}`}
+            type={type}
+            data={isDonut ? visitReasons : weekActivities}
+            valueSuffix="%"
+            centerLabel="top reason"
+            hoverLabel="of visits"
+            className="mt-4"
+          />
+        </div>
+      </div>
+    );
+  }
+
   // We cut down the slices for pie/donut to avoid it looking too dense
   const activeData =
     type === "pie" || type === "donut" ? sampleData.slice(0, 5) : sampleData;

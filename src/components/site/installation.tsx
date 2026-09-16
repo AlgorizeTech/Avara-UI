@@ -86,6 +86,18 @@ const BADGE =
 const STEP_HEADING = "text-2xl font-semibold mb-3 mt-8 scroll-m-24";
 
 /**
+ * Dependencies every project already has once it has followed the installation
+ * guide: `shadcn init` writes `lib/utils.ts` (the `cn` helper) and installs
+ * `lucide-react` as the icon library. Almost every item in the registry lists
+ * both, so repeating them under ninety-odd components buried the dependency
+ * that was actually specific to a component — `leaflet`, `gsap`, `three` —
+ * in the same two lines every time. They are filtered out here and named once,
+ * in the SetupPath sentence above the command.
+ */
+const BASELINE_COMPONENTS = new Set(["utils"]);
+const BASELINE_PACKAGES = new Set(["lucide-react"]);
+
+/**
  * Separates two independent install blocks on a page that documents more than
  * one component. Without it the second block's "1." reads as a continuation of
  * the first block's steps rather than the start of a new sequence.
@@ -188,11 +200,20 @@ export function Installation({ name, showSetupPath = true }: InstallationProps) 
   const title = item.title ?? name;
   const target = item.files?.[0]?.target;
   const direct = item.dependencies ?? [];
-  const components = item.registryDependencies ?? [];
+  const components = (item.registryDependencies ?? []).filter(
+    (dependency) => !BASELINE_COMPONENTS.has(label(dependency)),
+  );
   // Includes packages inherited through `components`; see transitivePackages.
-  const packages = [...new Set(transitivePackages(name))].sort();
+  const packages = [...new Set(transitivePackages(name))]
+    .filter((pkg) => !BASELINE_PACKAGES.has(pkg))
+    .sort();
   const inherited = packages.filter((pkg) => !direct.includes(pkg));
   const total = packages.length + components.length;
+  // True when the only things filtered out were the baseline ones — the reader
+  // should hear that the component still needs them, just not from this page.
+  const onlyBaseline =
+    total === 0 &&
+    ((item.registryDependencies?.length ?? 0) > 0 || (item.dependencies?.length ?? 0) > 0);
 
   return (
     // data-toc-skip: the step headings are structure inside the Installation
@@ -223,15 +244,27 @@ export function Installation({ name, showSetupPath = true }: InstallationProps) 
       <div className="space-y-3">
         {total === 0 ? (
           <p className="leading-7 text-gray-700 dark:text-gray-300">
-            None — {title} has no npm packages or registry components to
-            install.
+            {onlyBaseline ? (
+              <>
+                Nothing beyond the shared setup — {title} needs only the{" "}
+                <code>cn</code> helper and <code>lucide-react</code>, which the
+                installation guide already put in place.
+              </>
+            ) : (
+              <>
+                None — {title} has no npm packages or registry components to
+                install.
+              </>
+            )}
           </p>
         ) : (
           <>
             <p className="leading-7 text-gray-700 dark:text-gray-300">
               Step 1 installs {total > 1 ? "these" : "this"} for you. Run{" "}
               {total > 1 ? "them" : "it"} yourself only if you are adding{" "}
-              {title} to an existing project by hand.
+              {title} to an existing project by hand. The <code>cn</code>{" "}
+              helper and <code>lucide-react</code> are not listed — the
+              installation guide covers them once for every component.
               {inherited.length > 0 && (
                 <>
                   {" "}
