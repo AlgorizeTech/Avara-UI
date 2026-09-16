@@ -1,0 +1,325 @@
+import { ExampleShowcase } from "@/components/site/Sandbox";
+import { extractCode } from "@/lib/code";
+
+# Booking Card
+
+A booking panel that goes inside any card: a strip of days paged a week at a time, time slots in groups, a button that reads the choice back before anyone confirms, and a confirmation that draws itself in over the form once the booking is made.
+
+`BookingCard` is a compound component. It holds the chosen day and slot; `BookingCard.Days`, `BookingCard.Slots`, `BookingCard.Submit` and `BookingCard.Confirmation` go inside it in whatever layout the panel needs. It draws no surface of its own, so it sits as comfortably in a plain bordered card as in a glass slab from <DocLink to="glass-panel">Glass Panel</DocLink> — the <DocLink to="book-appointment">Book Appointment</DocLink> section is the same card on a full page.
+
+export const usageCard = `"use client";
+
+import { BookingCard } from "@/components/custom/blocks/BookingCardBlock";
+
+const MORNING = [{ label: "9:00 AM" }, { label: "10:00 AM" }, { label: "11:00 AM", taken: true }];
+const AFTERNOON = [{ label: "12:00 PM" }, { label: "1:00 PM" }, { label: "2:00 PM" }, { label: "3:00 PM", taken: true }];
+
+export default function Booking() {
+  return (
+    <div className="w-full max-w-md rounded-3xl border border-border bg-card text-card-foreground shadow-sm">
+      <BookingCard
+        className="flex h-full flex-col gap-5 p-6"
+        onBook={async ({ day, slot }) => {
+          await fetch("/api/book", { method: "POST", body: JSON.stringify({ day, slot }) });
+        }}
+      >
+        <h2 className="text-lg font-semibold tracking-tight">Book an appointment</h2>
+        <BookingCard.Days unavailable={(d) => d.getDay() === 0} />
+        <div className="space-y-4">
+          <p className="text-sm font-semibold">Time</p>
+          <BookingCard.Slots label="Morning" slots={MORNING} />
+          <BookingCard.Slots label="Afternoon" slots={AFTERNOON} />
+        </div>
+        <BookingCard.Submit className="mt-auto" />
+        <BookingCard.Confirmation withName="Dr. Chen" place="Manhattan Health Associates" />
+      </BookingCard>
+    </div>
+  );
+}
+`;
+
+export const usageGlass = `"use client";
+
+import { BookingCard } from "@/components/custom/blocks/BookingCardBlock";
+import { GlassBackdrop, GlassPanel } from "@/components/custom/blocks/GlassPanelBlock";
+
+const MORNING = [{ label: "9:00 AM" }, { label: "10:00 AM" }, { label: "11:00 AM", taken: true }];
+const AFTERNOON = [{ label: "12:00 PM" }, { label: "1:00 PM" }, { label: "2:00 PM" }, { label: "3:00 PM", taken: true }];
+
+export default function Booking() {
+  return (
+    <GlassBackdrop className="w-full max-w-md rounded-[36px]">
+      {/* The card is the panel's whole inside, so the confirmation reaches
+          the panel's edges and corners instead of stopping at the padding. */}
+      <GlassPanel shape="slab" className="col-span-full">
+        <BookingCard
+          className="flex h-full flex-col gap-5 p-6"
+          onBook={async ({ day, slot }) => {
+            await fetch("/api/book", { method: "POST", body: JSON.stringify({ day, slot }) });
+          }}
+        >
+          <h2 className="text-lg font-semibold tracking-tight">Book an appointment</h2>
+          <BookingCard.Days unavailable={(d) => d.getDay() === 0} />
+          <div className="space-y-4">
+            <p className="text-sm font-semibold">Time</p>
+            <BookingCard.Slots label="Morning" slots={MORNING} />
+            <BookingCard.Slots label="Afternoon" slots={AFTERNOON} />
+          </div>
+          <BookingCard.Submit className="mt-auto" />
+          <BookingCard.Confirmation withName="Dr. Chen" place="Manhattan Health Associates" />
+        </BookingCard>
+      </GlassPanel>
+    </GlassBackdrop>
+  );
+}
+`;
+
+<ExampleShowcase
+  name="booking-card"
+  columns={1}
+  examples={[
+    {
+      title: "In a card",
+      subheading: "Pick a day and a time, press Book — the button stays busy while your onBook promise runs, then the check draws itself and the details rise in.",
+      propNotes: [
+        {
+          prop: "BookingCard",
+          effect:
+            "holds the chosen day and slot. Put `BookingCard.Days`, `BookingCard.Slots`, `BookingCard.Submit` and `BookingCard.Confirmation` inside it in any layout; the confirmation covers the `BookingCard` it sits in — so give the `BookingCard` the panel's padding (heading included) and the cover reaches the panel's edges and corners.",
+        },
+        {
+          lead: "Return a promise from",
+          prop: "onBook",
+          effect:
+            "and the button stays busy until it settles — resolve to show the confirmation, throw to drop back to the form.",
+        },
+        {
+          prop: "unavailable",
+          value: "(day) => day.getDay() === 0",
+          effect:
+            "on `BookingCard.Days` strikes out days with nothing free. Sundays here; feed it your real availability.",
+        },
+        {
+          lead: "The Book button, the check and every focus ring take",
+          prop: "--primary",
+          effect:
+            "so the card follows your theme — pick a colour above to see it. Selected days and slots stay a neutral ink that reads on glass or solid.",
+        },
+        {
+          lead: "The arrows page",
+          prop: "BookingCard.Days",
+          effect:
+            "a week at a time, up to `horizon` days out (90 by default). Days start today, so the previous arrow is disabled on the first page — nobody can book into the past.",
+        },
+      ],
+      props: { surface: "card" },
+      usage: usageCard,
+      code: extractCode("src/components/custom/blocks/BookingCardBlock.tsx"),
+      minHeight: 560,
+    },
+  ]}
+/>
+
+## Installation
+
+<Installation name="booking-card" />
+
+## Examples
+
+<ExampleShowcase
+  name="booking-card"
+  columns={1}
+  examples={[
+    {
+      title: "In a glass slab",
+      subheading: "The same card inside a GlassPanel from Glass Panel. Nothing inside the card changes — it is surface-neutral by design.",
+      propNotes: [
+        {
+          lead: "Wrap it in a",
+          prop: "GlassPanel",
+          effect:
+            "and the card takes the panel's corners: its root is `rounded-[inherit]`, so the confirmation's cover matches whatever shape it sits in.",
+        },
+      ],
+      props: { surface: "glass" },
+      usage: usageGlass,
+      minHeight: 560,
+    },
+  ]}
+/>
+
+Choosing a new day clears the slot, since availability changes with the day. The submit button is disabled until both are chosen, and once they are it reads the choice back — *Book now, Wed 25 at 9:00 AM* — so nobody confirms blind.
+
+## Features
+
+<div className="grid grid-cols-1 sm:grid-cols-2 gap-4 my-6 not-prose">
+  <div className="p-6 rounded-2xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900">
+    <h3 className="text-lg font-semibold text-zinc-900 dark:text-zinc-50 mb-2">One state, any layout</h3>
+    <p className="text-zinc-600 dark:text-zinc-400 text-sm">Days, slots and the button share one context. Stack them, put them side by side, split them across panels — the card does not care.</p>
+  </div>
+  <div className="p-6 rounded-2xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900">
+    <h3 className="text-lg font-semibold text-zinc-900 dark:text-zinc-50 mb-2">A confirmation that shows what happened</h3>
+    <p className="text-zinc-600 dark:text-zinc-400 text-sm">When onBook resolves, a check draws itself over the form and the day, time and place rise in beneath it. Book another clears it. It holds still under prefers-reduced-motion.</p>
+  </div>
+  <div className="p-6 rounded-2xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900">
+    <h3 className="text-lg font-semibold text-zinc-900 dark:text-zinc-50 mb-2">Keyboard and screen reader ready</h3>
+    <p className="text-zinc-600 dark:text-zinc-400 text-sm">Days and slots are radio groups with full date names; taken slots and closed days are disabled, not hidden; the busy button carries aria-busy and the confirmation is a status region.</p>
+  </div>
+  <div className="p-6 rounded-2xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900">
+    <h3 className="text-lg font-semibold text-zinc-900 dark:text-zinc-50 mb-2">Honest about today</h3>
+    <p className="text-zinc-600 dark:text-zinc-400 text-sm">The default days are built on the client, so a server render never guesses the visitor's date. They start today and page forward a week at a time — the previous arrow never reaches into the past. Pass your own days array to offer a different range.</p>
+  </div>
+</div>
+
+## Props Reference
+
+### BookingCard
+
+<div className="overflow-x-auto my-4">
+  <table>
+    <thead>
+      <tr>
+        <th>Prop</th>
+        <th>Type</th>
+        <th>Default</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><code>onBook</code></td>
+        <td><code>(booking: &#123; day: Date; slot: string &#125;) =&gt; void | Promise&lt;void&gt;</code></td>
+        <td>—</td>
+        <td>Called on confirm. Return a promise to hold the busy state; a rejection returns to the form.</td>
+      </tr>
+      <tr>
+        <td><code>className</code></td>
+        <td><code>string</code></td>
+        <td>—</td>
+        <td>Layout of the parts inside. The confirmation is positioned against this element.</td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+### BookingCard.Days
+
+<div className="overflow-x-auto my-4">
+  <table>
+    <thead>
+      <tr>
+        <th>Prop</th>
+        <th>Type</th>
+        <th>Default</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><code>days</code></td>
+        <td><code>Date[]</code></td>
+        <td>today → <code>horizon</code></td>
+        <td>Days on offer, in order, paged <code>count</code> at a time with the previous/next arrows. The default is built on the client so the server never guesses today, and it starts today — there is no paging back into the past.</td>
+      </tr>
+      <tr>
+        <td><code>count</code></td>
+        <td><code>number</code></td>
+        <td><code>7</code></td>
+        <td>Days shown per page.</td>
+      </tr>
+      <tr>
+        <td><code>horizon</code></td>
+        <td><code>number</code></td>
+        <td><code>90</code></td>
+        <td>How far ahead the default days run, in days from today. Ignored when <code>days</code> is given.</td>
+      </tr>
+      <tr>
+        <td><code>unavailable</code></td>
+        <td><code>(day: Date) =&gt; boolean</code></td>
+        <td>—</td>
+        <td>Days with nothing free — shown struck through, not selectable.</td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+### BookingCard.Slots
+
+<div className="overflow-x-auto my-4">
+  <table>
+    <thead>
+      <tr>
+        <th>Prop</th>
+        <th>Type</th>
+        <th>Default</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><code>label</code></td>
+        <td><code>string</code></td>
+        <td>—</td>
+        <td>Group title, e.g. <code>&quot;Morning&quot;</code>.</td>
+      </tr>
+      <tr>
+        <td><code>slots</code></td>
+        <td><code>&#123; label: string; taken?: boolean &#125;[]</code></td>
+        <td>—</td>
+        <td>Times in the group. Disabled until a day is chosen; <code>taken</code> slots are shown struck through.</td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+### BookingCard.Submit
+
+<div className="overflow-x-auto my-4">
+  <table>
+    <thead>
+      <tr>
+        <th>Prop</th>
+        <th>Type</th>
+        <th>Default</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><code>children</code></td>
+        <td><code>ReactNode</code></td>
+        <td><code>&quot;Book now&quot;</code></td>
+        <td>Button text. Once a day and slot are chosen it reads back the choice, e.g. <em>Book now, Wed 25 at 9:00 AM</em>.</td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+### BookingCard.Confirmation
+
+<div className="overflow-x-auto my-4">
+  <table>
+    <thead>
+      <tr>
+        <th>Prop</th>
+        <th>Type</th>
+        <th>Default</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><code>withName</code></td>
+        <td><code>string</code></td>
+        <td>—</td>
+        <td>Who the appointment is with.</td>
+      </tr>
+      <tr>
+        <td><code>place</code></td>
+        <td><code>string</code></td>
+        <td>—</td>
+        <td>Where, appended after the name.</td>
+      </tr>
+    </tbody>
+  </table>
+</div>

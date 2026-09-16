@@ -1,8 +1,10 @@
 "use client";
 
 import { cn } from "@/lib/utils";
-import { Check, Eye, EyeOff } from "lucide-react";
+import { Check } from "lucide-react";
+import Button from "./Button";
 import { GitHubIcon, GoogleIcon } from "./Icons";
+import { InputBlock } from "./InputBlock";
 import { useState } from "react";
 import { getThemeStyles } from "./login-form-theme";
 
@@ -41,68 +43,8 @@ export interface LoginFormProps {
 }
 
 // --- INLINE UI COMPONENTS ---
-interface FieldInputProps extends React.InputHTMLAttributes<HTMLInputElement> {
-  label?: React.ReactNode;
-  error?: string;
-  description?: React.ReactNode;
-}
-
-const Input = ({
-  label,
-  id,
-  error,
-  description,
-  type = "text",
-  className,
-  ...props
-}: FieldInputProps) => {
-  const [showPassword, setShowPassword] = useState(false);
-  const isPassword = type === "password";
-  const inputType = isPassword ? (showPassword ? "text" : "password") : type;
-
-  return (
-    <div className="flex flex-col gap-1.5 w-full">
-      <label
-        htmlFor={id}
-        className="text-sm font-semibold text-foreground"
-      >
-        {label} {props.required && <span className="text-red-500">*</span>}
-      </label>
-      <div className="relative">
-        <input
-          id={id}
-          type={inputType}
-          className={cn(
-            "flex h-11 w-full rounded-lg border bg-white/80 dark:bg-zinc-950/70 backdrop-blur-md px-3 py-2 text-sm text-foreground placeholder:text-muted-foreground font-medium focus:outline-none focus:ring-2 focus:border-transparent transition-all shadow-sm",
-            error
-              ? "border-red-500 focus:ring-red-500"
-              : "border-border",
-            isPassword && "pr-10",
-            className,
-          )}
-          {...props}
-        />
-        {isPassword && (
-          <button
-            type="button"
-            aria-label={showPassword ? "Hide password" : "Show password"}
-            onClick={() => setShowPassword(!showPassword)}
-            className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground transition-colors"
-          >
-            {showPassword ? <EyeOff size={18} /> : <Eye size={18} />}
-          </button>
-        )}
-      </div>
-      {description && !error && (
-        <p className="text-[11px] text-muted-foreground">{description}</p>
-      )}
-      {error && (
-        <p className="text-[11px] text-red-500 font-semibold">{error}</p>
-      )}
-    </div>
-  );
-};
-
+// Text fields and buttons come from the library (InputBlock, Button); the
+// checkbox is the one control it does not have yet, so it stays inline.
 interface FieldCheckboxProps
   extends Omit<React.InputHTMLAttributes<HTMLInputElement>, "onChange"> {
   label?: React.ReactNode;
@@ -157,37 +99,6 @@ const Checkbox = ({
       <p className="text-[11px] text-red-500 font-semibold ml-6">{error}</p>
     )}
   </div>
-);
-
-interface FieldButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
-  variant?: "default" | "outline" | "ghost" | string;
-  size?: "default" | "sm" | "lg" | string;
-  theme?: Record<string, string>;
-}
-
-const Button = ({
-  className,
-  variant = "default",
-  size = "default",
-  disabled,
-  theme,
-  children,
-  ...props
-}: FieldButtonProps) => (
-  <button
-    disabled={disabled}
-    className={cn(
-      "inline-flex items-center justify-center rounded-lg text-sm font-bold transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 cursor-pointer active:scale-[0.98]",
-      variant === "default" && theme?.bg,
-      variant === "outline" &&
-        "border-2 border-border/80 bg-white/70 dark:bg-zinc-900/80 backdrop-blur-md hover:bg-card text-foreground shadow-xs",
-      size === "default" && "h-11 px-4 py-2",
-      className,
-    )}
-    {...props}
-  >
-    {children}
-  </button>
 );
 
 // --- MAIN COMPONENT ---
@@ -255,20 +166,24 @@ export default function LoginForm({
 
       <div className="grid grid-cols-1 xs:grid-cols-2 gap-2.5 sm:gap-3 mb-5 sm:mb-6">
         <Button
-          variant="outline"
+          variant="ghost"
           type="button"
+          color={color}
           onClick={() => onSocialSignIn?.("github")}
-          className="w-full flex items-center justify-center gap-2"
+          iconLeft={<GitHubIcon size={18} />}
+          className="w-full h-11 border border-border/80 bg-white/70 backdrop-blur-md hover:bg-card hover:text-foreground dark:bg-zinc-900/80"
         >
-          <GitHubIcon size={18} /> <span>GitHub</span>
+          GitHub
         </Button>
         <Button
-          variant="outline"
+          variant="ghost"
           type="button"
+          color={color}
           onClick={() => onSocialSignIn?.("google")}
-          className="w-full flex items-center justify-center gap-2"
+          iconLeft={<GoogleIcon size={18} />}
+          className="w-full h-11 border border-border/80 bg-white/70 backdrop-blur-md hover:bg-card hover:text-foreground dark:bg-zinc-900/80"
         >
-          <GoogleIcon size={18} /> <span>Google</span>
+          Google
         </Button>
       </div>
 
@@ -281,7 +196,7 @@ export default function LoginForm({
       </div>
 
       <form onSubmit={handleSubmit} className="space-y-3.5 sm:space-y-4">
-        <Input
+        <InputBlock
           label="Email Address"
           id="login-email"
           name="email"
@@ -291,9 +206,9 @@ export default function LoginForm({
           value={formData.email}
           onChange={(e: React.ChangeEvent<HTMLInputElement>) => handleChange("email", e.target.value)}
           error={errors.email}
-          className={theme.ring}
+          color={color}
         />
-        <Input
+        <InputBlock
           label="Password"
           id="login-password"
           name="password"
@@ -303,7 +218,7 @@ export default function LoginForm({
           value={formData.password}
           onChange={(e: React.ChangeEvent<HTMLInputElement>) => handleChange("password", e.target.value)}
           error={errors.password}
-          className={theme.ring}
+          color={color}
         />
 
         <div className="flex items-center justify-between gap-3 pt-1">
@@ -327,9 +242,10 @@ export default function LoginForm({
 
         <Button
           type="submit"
-          theme={theme}
-          className="w-full mt-4 shadow-lg shadow-black/5"
-          disabled={loading}
+          variant="default"
+          color={color}
+          loading={loading}
+          className="w-full h-11 mt-4 shadow-lg shadow-black/5"
         >
           {loading ? "Please wait..." : "Sign In"}
         </Button>

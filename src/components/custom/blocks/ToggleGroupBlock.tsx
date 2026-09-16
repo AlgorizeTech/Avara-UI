@@ -8,6 +8,7 @@ import { getThemeStyles } from "./toggle-group-theme";
 // THEME & CONFIGURATION
 // ==========================================
 export type ToggleGroupColor =
+  | "primary"
   | "indigo"
   | "rose"
   | "emerald"

@@ -118,6 +118,12 @@ export const META: Record<string, ItemMeta> = {
     categories: ["feedback"],
     docs: "Shimmer keyframes ship inline in a scoped <style> block — no global CSS or Tailwind config changes required.",
   },
+  "social-links": {
+    description:
+      "A row of brand marks that link out — X, GitHub, LinkedIn, YouTube, Instagram, Facebook, Discord, Dribbble, email. Use it in footers, profile cards and author bylines.",
+    categories: ["navigation", "marketing"],
+    docs: "Named export: SocialLinks (plus the SocialLink and SocialNetwork types). `links` is { network, href, label? }[]; `variant` is tile | outline | ghost, `size` is sm | md | lg. Links open in a new tab unless `external` is false; mailto links never do. Brand marks are inline SVG, so no icon package is needed.",
+  },
   progress: {
     description:
       "A themeable progress bar in three forms — a single bar, a multi-segment track, and a ring — with an optional labelled field wrapper. Use it for determinate operations where percentage complete is known.",
@@ -245,7 +251,7 @@ export const META: Record<string, ItemMeta> = {
     description:
       "A set of toggle buttons behaving as either radio group or checkbox group. Use it for view switches and filter bars where all options should stay visible.",
     categories: ["forms", "actions"],
-    docs: "Named exports: ToggleGroup, ToggleGroupItem, getThemeStyles. Set `type` to single or multiple — `value` is a string for single, an array for multiple. Compose ToggleGroupItem children; the group passes theme and size down.",
+    docs: "Named exports: ToggleGroup, ToggleGroupItem, getThemeStyles. Set `type` to single or multiple — `value` is a string for single, an array for multiple. Compose ToggleGroupItem children; the group passes theme and size down. `color` accepts primary (the theme token), indigo, rose, emerald, zinc or a hex.",
   },
   "ui-multi-select": {
     description:
@@ -305,13 +311,13 @@ export const META: Record<string, ItemMeta> = {
     description:
       "A sign-in form with social buttons, password reveal, remember-me and four layout variants. Use it as the entry point of an authenticated app.",
     categories: ["authentication", "forms"],
-    docs: "Default export: LoginForm. Also exports getThemeStyles and the LoginFormValues type. `variant` is default | split | glass | minimal — split renders a gradient side panel. `onSubmit` receives the validated credentials; without it the form simulates a round trip. `signupHref` points at the matching `register-form` page. Validation is client-side presentation only — enforce it again on your server.",
+    docs: "Default export: LoginForm. Also exports getThemeStyles and the LoginFormValues type. Fields and buttons are the library's input and button items, which install alongside it. `variant` is default | split | glass | minimal — split renders a gradient side panel. `onSubmit` receives the validated credentials; without it the form simulates a round trip. `signupHref` points at the matching `register-form` page. Validation is client-side presentation only — enforce it again on your server.",
   },
   "register-form": {
     description:
       "A sign-up form with paired name fields, password confirmation, a terms checkbox and four layout variants. Use it wherever new accounts are created.",
     categories: ["authentication", "forms"],
-    docs: "Default export: RegisterForm. Also exports getThemeStyles and the RegisterFormValues type. `variant` is default | split | glass | minimal — split renders a gradient side panel. `onSubmit` receives the validated fields; without it the form simulates a round trip. `loginHref` points at the matching `login-form` page, and `minPasswordLength` sets the client-side minimum. Validation is client-side presentation only — enforce it again on your server.",
+    docs: "Default export: RegisterForm. Also exports getThemeStyles and the RegisterFormValues type. Fields and buttons are the library's input and button items, which install alongside it. `variant` is default | split | glass | minimal — split renders a gradient side panel. `onSubmit` receives the validated fields; without it the form simulates a round trip. `loginHref` points at the matching `login-form` page, and `minPasswordLength` sets the client-side minimum. Validation is client-side presentation only — enforce it again on your server.",
   },
   "signup-form": {
     description:
@@ -367,13 +373,13 @@ export const META: Record<string, ItemMeta> = {
     description:
       "A collapsible application sidebar with grouped items, brand header, footer and a mobile drawer. Use it as the primary shell for a dashboard.",
     categories: ["navigation", "layout"],
-    docs: "Named exports: SidebarProvider, Sidebar, SidebarHeader, SidebarBrand, SidebarContent, SidebarGroup, SidebarFooter, useSidebar. Wrap your app in SidebarProvider; read `expanded` and `isMobileOpen` from useSidebar to drive your own toggle. Variants: attached | floating.",
+    docs: "Named exports: SidebarProvider, Sidebar, SidebarHeader, SidebarBrand, SidebarContent, SidebarGroup, SidebarFooter, useSidebar. Wrap your app in SidebarProvider; read `expanded` and `isMobileOpen` from useSidebar to drive your own toggle. Variants: attached | floating. Collapsed item labels show in the `tooltip` item, which installs alongside.",
   },
   navbar: {
     description:
       "A responsive marketing navbar with logo, links, mobile menu and GSAP entrance animation. Use it as the top bar of a landing page.",
     categories: ["navigation", "marketing"],
-    docs: "Named exports: NavbarBlock, getThemeStyles. Variants: default | floating | centered | minimal | glass. Uses next/link, so it needs edits outside Next.js. For app chrome with dropdown panels, use `navigation-menu`.",
+    docs: "Named exports: NavbarBlock, getThemeStyles. Variants: default | floating | centered | minimal | glass. Links render through `linkComponent` (a plain `a` by default; pass next/link in Next.js). The mobile menu toggles are the `button` item, which installs alongside. For app chrome with dropdown panels, use `navigation-menu`.",
   },
   command: {
     description:
@@ -466,7 +472,7 @@ export const META: Record<string, ItemMeta> = {
     description:
       "A dependency-free chart rendering bar, line, pie and donut from a single data array. Use it for simple dashboard visuals without pulling in a charting library.",
     categories: ["data-display"],
-    docs: "Named exports: ChartBlock. `data` takes { label, value }; switch presentation with `type` (bar | line | pie | donut) and set `height` in pixels. Hand-drawn SVG with no chart library, so bundle cost is nil — but there are no axes, tooltips or scales beyond what is drawn. Use a real charting library for analytical work.",
+    docs: "Named exports: ChartBlock. `data` takes { label, value, color? }; switch presentation with `type` (bar | line | pie | donut | donut-legend | stacked-bar) and set `height` in pixels for the axis charts. The two legend types colour each share from `colors` (theme accent first) and take `centerLabel` / `hoverLabel`. Hand-drawn SVG with no chart library, so bundle cost is nil — but there are no axes or scales beyond what is drawn. Use a real charting library for analytical work.",
   },
   timeline: {
     description:
@@ -502,19 +508,31 @@ export const META: Record<string, ItemMeta> = {
     description:
       "A collection of 4 modern, animated, fully responsive Footer components for web applications, SaaS platforms, and marketing landing pages.",
     categories: ["marketing", "navigation", "layout"],
-    docs: "Named export: Footer. Accepts `variant` (4 responsive variants: simple-centered, glass-dock, neon-glow-pulse, quantum-particle-beam), `brandName`, `tagline`, `logo`, `className`. All variants adapt across mobile, tablet, and desktop screens.",
+    docs: "Named export: Footer. Accepts `variant` (4 responsive variants: simple-centered, glass-dock, neon-glow-pulse, quantum-particle-beam), `brandName`, `tagline`, `logo`, `socialLinks`, `className`. The social row is the `social-links` item, which installs alongside. All variants adapt across mobile, tablet, and desktop screens.",
+  },
+  "booking-card": {
+    description:
+      "A booking panel for any card: a day strip paged a week at a time, time slots in groups, a button that reads back the choice, and a confirmation that draws itself in. Use it wherever a page ends in an appointment.",
+    categories: ["forms", "dates"],
+    docs: "Named export: BookingCard (plus the BookingSlot and Booking types). `BookingCard` is a compound component — put `BookingCard.Days`, `BookingCard.Slots`, `BookingCard.Submit` and `BookingCard.Confirmation` inside it in any layout; it holds the chosen day and slot and calls `onBook`. It draws no surface of its own: make it the padded inside of whatever panel it sits in so the confirmation reaches the edges. The submit button, check mark and focus rings use the `--primary` token.",
   },
   "book-appointment": {
     description:
-      "A booking flow in the glass style: a day strip, time slots, a button that reads back the choice, and a confirmation that draws itself in. Use it for clinics, salons, consultations — any page that ends in an appointment.",
+      "A practitioner's page that ends in an appointment: portrait and contact, scores as stars, two small charts, and a booking panel — glass or solid. Use it for clinics, salons, consultations.",
     categories: ["forms", "marketing"],
-    docs: "Named exports: Booker, StarRating. `Booker` is a compound component — put `Booker.Days`, `Booker.Slots`, `Booker.Submit` and `Booker.Confirmation` inside it in any layout; it holds the chosen day and slot and calls `onBook`. Pair with `ProfilePage` and `GlassPanel` from the profile-page item for the frosted panels.",
+    docs: "Named export: BookAppointment. Composed from the booking-card, glass-panel, half-stars and chart items, which install alongside it. Pass `practitioner`, `slotGroups` and `onBook`; `scores`, `visitReasons` and `activities` fill the stars, donut and bar; `variant` switches glass to solid.",
+  },
+  "glass-panel": {
+    description:
+      "A frosted surface in four shapes and the aurora ground it sits on. Use it for glass bento layouts, profile and booking pages — or flip it to solid cards with one prop.",
+    categories: ["layout"],
+    docs: "Named exports: GlassBackdrop, GlassPanel, useSurface (plus SurfaceVariant, GlassShape types). `GlassBackdrop` washes three `aurora` colours behind a 12-column grid and sets `variant` (glass | solid) for every `GlassPanel` inside; panels take `shape` (slab, tile, disc, capsule), `interactive`, and Tailwind column spans.",
   },
   "profile-page": {
     description:
-      "A person's profile as a glass bento page: an aurora backdrop, one frosted panel recipe in four shapes, and a 24-hour dial that shows their working window live. Use it for team directories, member pages and public profiles.",
+      "A person's profile as a glass bento page: an aurora backdrop, frosted panels, and a 24-hour dial that shows their working window live. Use it for team directories, member pages and public profiles.",
     categories: ["layout", "marketing"],
-    docs: "Named exports: ProfilePage, GlassPanel, WorkdayDial, useLocalTime. `ProfilePage` is the backdrop and 12-column grid; place `GlassPanel`s inside with `shape` (slab, tile, disc, capsule) and column spans. `WorkdayDial` takes `timeZone`, `start`, `end`, `place`, `name`.",
+    docs: "Named exports: ProfilePage, WorkdayDial, useLocalTime (GlassPanel and useSurface are re-exported from the glass-panel item, which installs alongside). `ProfilePage` is the glass backdrop and 12-column grid; place `GlassPanel`s inside with `shape` and column spans. `WorkdayDial` takes `timeZone`, `start`, `end`, `place`, `name`.",
   },
   "product-details": {
     description:
@@ -714,7 +732,7 @@ export const META: Record<string, ItemMeta> = {
     description:
       "A complete pricing system with plan cards, a comparison table, an interactive plan builder and an interactive service checklist.",
     categories: ["commerce", "marketing"],
-    docs: "Named exports: PricingCards, PricingBuilder, PricingTable, PricingSlider, PricingTypographic, PricingPlans. The largest pricing item — variants include cards, builder, table, slider, typographic, and interactive service checklist.",
+    docs: "Named exports: PricingCards, PricingBuilder, PricingTable, PricingSlider, PricingTypographic, PricingPlans. The largest pricing item — variants include cards, builder, table, slider, typographic, and interactive service checklist. The typographic billing switch is the `toggle-group` item, which installs alongside.",
   },
   "pricing-plan": {
     description:

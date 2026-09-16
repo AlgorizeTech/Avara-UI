@@ -3,6 +3,13 @@
 import React from "react";
 
 const colorThemes: Record<string, Record<string, string>> = {
+  // The theme's own accent, so a group follows whatever `--primary` the
+  // consumer set — the same contract Button and Input honour.
+  primary: {
+    bg: "bg-primary text-primary-foreground",
+    text: "text-primary",
+    border: "border-primary text-primary bg-primary/10",
+  },
   indigo: {
     bg: "bg-indigo-500 text-white",
     text: "text-indigo-600 dark:text-indigo-400",

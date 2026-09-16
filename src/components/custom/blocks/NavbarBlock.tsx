@@ -4,6 +4,7 @@ import { cn } from "@/lib/utils";
 import gsap from "gsap";
 import { ArrowRight, ChevronDown, Command, Menu, X } from "lucide-react";
 import React, { useEffect, useRef, useState } from "react";
+import Button from "./Button";
 import { getThemeStyles } from "./navbar-theme";
 
 export type NavbarColor =
@@ -249,12 +250,14 @@ export function NavbarBlock({
             </div>
             <div className="flex justify-end gap-4">
               <DesktopActions themeBg={theme.bg} linkComponent={Link} />
-              <button
-                className="lg:hidden"
+              <Button
+                variant="ghost"
+                size="sm"
+                aria-label="Open menu"
+                iconLeft={<Menu className="w-6 h-6 text-foreground" />}
+                className="lg:hidden shadow-none"
                 onClick={() => setMobileMenuOpen(true)}
-              >
-                <Menu className="w-6 h-6 text-foreground" />
-              </button>
+              />
             </div>
           </div>
         ) : (
@@ -265,12 +268,14 @@ export function NavbarBlock({
             </div>
             <div className="flex items-center gap-4">
               <DesktopActions themeBg={theme.bg} linkComponent={Link} />
-              <button
-                className="lg:hidden p-2 -mr-2 text-muted-foreground"
+              <Button
+                variant="ghost"
+                size="sm"
+                aria-label="Open menu"
+                iconLeft={<Menu className="w-6 h-6" />}
+                className="lg:hidden -mr-2 text-muted-foreground shadow-none"
                 onClick={() => setMobileMenuOpen(true)}
-              >
-                <Menu className="w-6 h-6" />
-              </button>
+              />
             </div>
           </div>
         )}
@@ -304,17 +309,19 @@ export function NavbarBlock({
             )}
           >
             <Logo themeBg={theme.bg} logoText={logoText} linkComponent={Link} />
-            <button
+            <Button
+              variant="ghost"
+              size="sm"
+              aria-label="Close menu"
+              iconLeft={<X className="w-5 h-5" />}
               onClick={() => setMobileMenuOpen(false)}
               className={cn(
-                "p-2 -mr-2 rounded-full text-muted-foreground hover:text-foreground transition-colors",
+                "-mr-2 rounded-full text-muted-foreground shadow-none hover:text-foreground",
                 isGlass
                   ? "hover:bg-white/20 dark:hover:bg-white/10"
                   : "bg-muted",
               )}
-            >
-              <X className="w-5 h-5" />
-            </button>
+            />
           </div>
           <div className="flex-1 overflow-y-auto p-6 flex flex-col gap-6">
             {NAV_LINKS.map((link) => (
