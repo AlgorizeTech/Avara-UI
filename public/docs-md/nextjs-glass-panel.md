@@ -87,6 +87,11 @@ export default function Solid() {
         violet, sky, peach
         Colours of the three blobs behind the glass. Ignored by solid.
 
+        gridClassName
+        string
+        —
+        Classes for the inner grid — row heights (lg:auto-rows-[13rem]), gaps, a max width.
+
         className
         string
         —
