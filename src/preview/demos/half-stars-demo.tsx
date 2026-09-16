@@ -120,7 +120,7 @@ export default function HalfStarsDemo({
               rating={customRating}
               maxStars={10}
               size={40}
-              activeColor={color !== "primary" ? starActiveColor : "text-red-500"}
+              activeColor={starActiveColor}
               inactiveColor="text-red-200 dark:text-red-900"
               interactive={true}
               allowHalf={true}

@@ -61,7 +61,7 @@ export default function BasicOtp() {
         ) : (
           <button
             disabled={value.length !== LENGTH}
-            className="px-6 py-2 rounded-xl text-sm font-bold bg-zinc-900 text-white dark:bg-white dark:text-zinc-900 disabled:opacity-30 disabled:cursor-not-allowed transition-all"
+            className="px-6 py-2 rounded-xl text-sm font-bold bg-primary text-primary-foreground hover:bg-primary/90 disabled:opacity-30 disabled:cursor-not-allowed transition-all"
           >
             Verify Code
           </button>
@@ -124,7 +124,7 @@ export default function UnderlinedOtp() {
         ) : (
           <button
             disabled={value.length !== LENGTH}
-            className="px-6 py-2 rounded-xl text-sm font-bold bg-zinc-900 text-white dark:bg-white dark:text-zinc-900 disabled:opacity-30 disabled:cursor-not-allowed transition-all"
+            className="px-6 py-2 rounded-xl text-sm font-bold bg-primary text-primary-foreground hover:bg-primary/90 disabled:opacity-30 disabled:cursor-not-allowed transition-all"
           >
             Verify Code
           </button>
@@ -190,38 +190,6 @@ export default function UnderlinedOtp() {
     },
   ]}
 />
-
-## Usage
-
-The component acts exactly like a standard controlled or uncontrolled React input. You can listen to every keystroke via `onChange`, or simply wait for the user to finish typing via `onComplete`.
-
-```tsx
-import { useState } from "react";
-import { OtpInputBlock } from "@/components/custom/blocks/OtpInputBlock";
-
-export default function VerificationForm() {
-  const [code, setCode] = useState("");
-
-  const handleVerify = (finalCode: string) => {
-    console.log("Submitting code to API:", finalCode);
-    // API logic here...
-  };
-
-  return (
-    <div className="flex flex-col gap-4">
-      <h3 className="font-bold text-lg">Enter Security Code</h3>
-      <OtpInputBlock
-        color="#10b981"
-        length="{6}"
-        onChange="{setCode}"
-        onComplete="{handleVerify}"
-        value="{code}"
-        variant="filled"
-      />
-    </div>
-  );
-}
-```
 
 ## Features
 Learn about the OTP Input's seamless user experience, featuring automatic focus advancing, paste support, and backspace handling.
@@ -368,7 +336,7 @@ Learn about the OTP Input's seamless user experience, featuring automatic focus 
           <code>"indigo" | "rose" | "emerald" | "zinc" | string</code>
         </td>
         <td>
-          <code>"indigo"</code>
+          <code>"primary"</code>
         </td>
         <td>
           The theme color applied to the borders, text, and focus rings. Fully

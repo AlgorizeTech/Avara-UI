@@ -83,19 +83,41 @@ const themeColors = {
   rose: "text-rose-600 dark:text-rose-400 bg-rose-50/50 dark:bg-rose-500/10 border-rose-100 dark:border-rose-500/20",
 };
 
+const colorMap: Record<string, string> = {
+  indigo: "#4f46e5",
+  rose: "#e11d48",
+  emerald: "#10b981",
+  zinc: "#3f3f46",
+  amber: "#f59e0b",
+  blue: "#3b82f6",
+};
+
+const getThemeColor = (color: string) => {
+  if (color.startsWith("#")) return color;
+  return colorMap[color] || "var(--primary)";
+};
+
 export default function MasonryGridDemo({
   triggerKey = 0,
   columnsClassName = "columns-1 sm:columns-2 lg:columns-3",
   gapClassName = "gap-6",
   animateIn = true,
   staggerDelay,
+  color = "primary",
 }: {
   triggerKey?: number;
   columnsClassName?: string;
   gapClassName?: string;
   animateIn?: boolean;
   staggerDelay?: number;
+  color?: string;
 }) {
+  const themeColor = getThemeColor(color);
+  const containerStyle =
+    color && color !== "primary" && color !== "default"
+      ? ({ "--primary": themeColor } as React.CSSProperties)
+      : undefined;
+
   // Determine variant type based on props passed from Sandbox/page.mdx
   let items = variantItems.default;
   if (columnsClassName.includes("lg:columns-4")) {
@@ -108,7 +130,10 @@ export default function MasonryGridDemo({
     items = variantItems.gap;
   }
   return (
-    <div className="w-full relative p-4 sm:p-8 md:p-12 bg-zinc-100 dark:bg-zinc-900 rounded-2xl border border-zinc-200 dark:border-zinc-800 overflow-hidden">
+    <div
+      className="w-full relative overflow-hidden p-[10px]"
+      style={containerStyle}
+    >
 
       <MasonryGrid
         key={`${triggerKey}-${columnsClassName}-${gapClassName}-${animateIn}-${staggerDelay}`}
@@ -153,11 +178,7 @@ export default function MasonryGridDemo({
               >
                 <div className="relative z-10 flex flex-col items-start justify-between h-full w-full overflow-hidden">
                   <div
-                    className={cn(
-                      "p-3 rounded-2xl bg-zinc-100 dark:bg-black/20 shadow-sm border border-zinc-200/80 dark:border-white/5 shrink-0",
-                      themeColors[item.theme || "blue"].split(" ")[0],
-                      themeColors[item.theme || "blue"].split(" ")[1],
-                    )}
+                    className="p-3 rounded-2xl bg-primary/10 text-primary border border-primary/20 shrink-0"
                   >
                     {item.icon}
                   </div>
@@ -182,10 +203,7 @@ export default function MasonryGridDemo({
               )}
             >
               <div
-                className={cn(
-                  "w-10 h-10 sm:w-12 sm:h-12 rounded-2xl flex items-center justify-center transition-colors duration-300 shrink-0",
-                  themeColors[item.theme || "blue"],
-                )}
+                className="w-10 h-10 sm:w-12 sm:h-12 rounded-2xl flex items-center justify-center transition-colors duration-300 shrink-0 bg-primary/10 text-primary border border-primary/20"
               >
                 {item.icon}
               </div>
@@ -197,7 +215,7 @@ export default function MasonryGridDemo({
                   {item.desc}
                 </p>
               </div>
-              <div className="absolute top-5 right-5 sm:top-8 sm:right-8 w-8 h-8 sm:w-10 sm:h-10 rounded-full bg-zinc-100 dark:bg-zinc-800/80 flex items-center justify-center opacity-0 scale-75 group-hover:opacity-100 group-hover:scale-100 group-hover:bg-zinc-900 group-hover:text-white dark:group-hover:bg-white dark:group-hover:text-zinc-900 transition-all duration-500 cubic-bezier(0.4, 0, 0.2, 1)">
+              <div className="absolute top-5 right-5 sm:top-8 sm:right-8 w-8 h-8 sm:w-10 sm:h-10 rounded-full bg-zinc-100 dark:bg-zinc-800/80 flex items-center justify-center opacity-0 scale-75 group-hover:opacity-100 group-hover:scale-100 group-hover:bg-primary group-hover:text-primary-foreground transition-all duration-500 cubic-bezier(0.4, 0, 0.2, 1)">
                 <ArrowUpRight className="w-4 h-4" />
               </div>
             </div>

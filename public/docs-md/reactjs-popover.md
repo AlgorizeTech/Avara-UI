@@ -19,6 +19,8 @@ export default function AccountMenu() {
 
       {/* className overrides the default w-72 */}
 
+              AB
+
               Andy Bernard
               andy@dundermifflin.com
 

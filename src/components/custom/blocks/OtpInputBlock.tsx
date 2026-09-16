@@ -176,7 +176,7 @@ export const OtpInputBlock = forwardRef<HTMLDivElement, OtpInputProps>(
         default:
           return cn(
             base,
-            "border border-border bg-white dark:bg-[#09090b] shadow-sm",
+            "border border-border bg-background shadow-sm",
             "focus:ring-2",
             theme.focusRing,
           );

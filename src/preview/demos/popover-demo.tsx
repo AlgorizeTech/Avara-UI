@@ -10,6 +10,20 @@ import { Settings2, User } from "lucide-react";
 type Side = "top" | "right" | "bottom" | "left";
 type Align = "start" | "center" | "end";
 
+const colorMap: Record<string, string> = {
+  indigo: "#4f46e5",
+  rose: "#e11d48",
+  emerald: "#10b981",
+  zinc: "#3f3f46",
+  amber: "#f59e0b",
+  blue: "#3b82f6",
+};
+
+const getThemeColor = (color: string) => {
+  if (color.startsWith("#")) return color;
+  return colorMap[color] || "var(--primary)";
+};
+
 const TRIGGER =
   "flex items-center gap-2 px-4 py-2 bg-zinc-100 dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 rounded-xl hover:scale-105 transition-transform cursor-pointer shadow-sm text-sm font-semibold";
 
@@ -38,7 +52,7 @@ const DimensionsForm = () => (
           <input
             id={field.id}
             defaultValue={field.value}
-            className="col-span-2 h-8 rounded-md border border-zinc-200 dark:border-zinc-800 bg-transparent px-3 focus:outline-none focus:ring-2 focus:ring-indigo-500"
+            className="col-span-2 h-8 rounded-md border border-zinc-200 dark:border-zinc-800 bg-transparent px-3 focus:outline-none focus:ring-2 focus:ring-primary"
           />
         </div>
       ))}
@@ -49,14 +63,16 @@ const DimensionsForm = () => (
 const AccountMenu = ({ align = "end" }: { align?: Align }) => (
   <Popover>
     <PopoverTrigger>
-      <div className="w-10 h-10 rounded-full bg-indigo-100 text-indigo-600 dark:bg-indigo-500/20 dark:text-indigo-400 flex items-center justify-center cursor-pointer hover:bg-indigo-200 transition-colors">
+      <div className="w-10 h-10 rounded-full bg-primary/10 text-primary flex items-center justify-center cursor-pointer hover:bg-primary/20 transition-colors">
         <User className="w-5 h-5" />
       </div>
     </PopoverTrigger>
     <PopoverContent side="bottom" align={align} className="w-64">
       <div className="flex flex-col gap-3">
         <div className="flex items-center gap-3 border-b border-zinc-100 dark:border-zinc-800/50 pb-3">
-          <div className="w-10 h-10 rounded-full bg-zinc-200 dark:bg-zinc-800 flex shrink-0" />
+          <div className="w-10 h-10 rounded-full bg-primary/20 text-primary flex items-center justify-center font-bold text-sm shrink-0">
+            AB
+          </div>
           <div className="flex flex-col">
             <span className="text-sm font-bold">Andy Bernard</span>
             <span className="text-xs text-zinc-500">andy@dundermifflin.com</span>
@@ -68,7 +84,7 @@ const AccountMenu = ({ align = "end" }: { align?: Align }) => (
         <button className="text-left text-sm text-zinc-600 dark:text-zinc-300 hover:text-zinc-900 dark:hover:text-white">
           Billing Settings
         </button>
-        <button className="text-left text-sm text-red-600 hover:text-red-700 mt-2">
+        <button className="text-left text-sm text-rose-600 hover:text-rose-700 mt-2 font-medium">
           Log out
         </button>
       </div>
@@ -81,16 +97,27 @@ export default function PopoverDemo({
   align = "center",
   sideOffset,
   example = "all",
+  color = "primary",
 }: {
   side?: Side;
   align?: Align;
   sideOffset?: number;
   /** "all" is the classic layout; the others isolate one aspect of the API. */
   example?: "all" | "settings" | "sides" | "align" | "menu";
+  color?: string;
 }) {
+  const themeColor = getThemeColor(color);
+  const containerStyle =
+    color && color !== "primary" && color !== "default"
+      ? ({ "--primary": themeColor } as React.CSSProperties)
+      : undefined;
+
   if (example !== "all") {
     return (
-      <div className="w-full flex items-center justify-center min-h-[400px] relative z-10 overflow-hidden">
+      <div
+        className="w-full flex items-center justify-center min-h-[400px] relative z-10 overflow-hidden"
+        style={containerStyle}
+      >
         {example === "settings" && (
           <Popover>
             <PopoverTrigger>
@@ -147,7 +174,10 @@ export default function PopoverDemo({
   }
 
   return (
-    <div className="w-full flex items-center justify-center min-h-[400px] relative z-10 overflow-hidden">
+    <div
+      className="w-full flex items-center justify-center min-h-[400px] relative z-10 overflow-hidden"
+      style={containerStyle}
+    >
       <Popover>
         <PopoverTrigger>
           <div className="flex items-center gap-2 px-4 py-2 bg-zinc-100 dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 rounded-xl hover:scale-105 transition-transform cursor-pointer shadow-sm text-sm font-semibold">

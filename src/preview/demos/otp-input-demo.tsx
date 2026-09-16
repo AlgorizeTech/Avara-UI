@@ -7,6 +7,20 @@ import {
 import { CheckCircle2, KeyRound } from "lucide-react";
 import { useState } from "react";
 
+const colorMap: Record<string, string> = {
+  indigo: "#4f46e5",
+  rose: "#e11d48",
+  emerald: "#10b981",
+  zinc: "#3f3f46",
+  amber: "#f59e0b",
+  blue: "#3b82f6",
+};
+
+const getThemeColor = (color: string) => {
+  if (color.startsWith("#")) return color;
+  return colorMap[color] || "var(--primary)";
+};
+
 export default function OtpInputDemo({
   variant = "default",
   length = 6,
@@ -27,6 +41,11 @@ export default function OtpInputDemo({
   const [isComplete, setIsComplete] = useState(false);
   const [lengthValues, setLengthValues] = useState<Record<number, string>>({});
 
+  const activeColor = getThemeColor(color);
+  const containerStyle = activeColor
+    ? ({ "--primary": activeColor } as React.CSSProperties)
+    : undefined;
+
   const handleComplete = (_val: string) => {
     setIsComplete(true);
     // Simulate a fake verify load
@@ -37,7 +56,10 @@ export default function OtpInputDemo({
 
   if (showAll === "lengths") {
     return (
-      <div className="w-full flex flex-col items-center justify-center min-h-[400px] relative z-10">
+      <div
+        className="w-full flex flex-col items-center justify-center min-h-[400px] relative z-10"
+        style={containerStyle}
+      >
         <div className="flex w-full max-w-sm flex-col items-center gap-8">
           {[4, 6, 8].map((len) => (
             <div key={len} className="flex w-full flex-col items-center gap-2">
@@ -61,7 +83,10 @@ export default function OtpInputDemo({
   }
 
   return (
-    <div className="w-full flex flex-col items-center justify-center min-h-[400px] relative z-10">
+    <div
+      className="w-full flex flex-col items-center justify-center min-h-[400px] relative z-10"
+      style={containerStyle}
+    >
       <div className="flex flex-col items-center max-w-sm w-full text-center gap-8">
         <div className="flex flex-col items-center gap-3">
           <div className="w-12 h-12 rounded-full bg-zinc-100 dark:bg-zinc-900 flex items-center justify-center mb-2 text-zinc-900 dark:text-white">
@@ -101,7 +126,7 @@ export default function OtpInputDemo({
             <button
               disabled={currentValue.length !== length || isDisabled}
               onClick={() => handleComplete(currentValue)}
-              className="px-6 py-2 rounded-xl text-sm font-bold bg-zinc-900 text-white dark:bg-white dark:text-zinc-900 disabled:opacity-30 disabled:cursor-not-allowed transition-all"
+              className="px-6 py-2 rounded-xl text-sm font-bold bg-primary text-primary-foreground hover:bg-primary/90 disabled:opacity-30 disabled:cursor-not-allowed transition-all"
             >
               Verify Code
             </button>
