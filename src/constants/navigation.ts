@@ -210,14 +210,32 @@ export const navigation: NavigationItem[] = [
         ],
       },
       {
+        label: "Bento Showcase",
+        slug: "bento-showcase",
+        badge: "New",
+        keywords: ["bento", "showcase", "marketing", "grid", "marquee", "scroll", "outsourcing", "agency", "landing"],
+      },
+      {
         label: "Book Appointment",
         slug: "book-appointment",
         badge: "New",
         keywords: ["booking", "appointment", "schedule", "calendar", "slots", "doctor", "clinic", "reservation"],
       },
+      {
+        label: "Data Flow",
+        slug: "data-flow",
+        badge: "New",
+        keywords: ["data", "flow", "pipeline", "sources", "diagram", "connectors", "ai", "intelligence", "process"],
+      },
       { label: "Footer", slug: "footer" },
       { label: "Hero", slug: "hero" },
       { label: "Navbar", slug: "navbar", badge: "Core" },
+      {
+        label: "Platform Grid",
+        slug: "platform-grid",
+        badge: "New",
+        keywords: ["platform", "grid", "features", "tiles", "bento", "tools", "catalog", "spotlight"],
+      },
       { label: "Pricing Section", slug: "pricing" },
       { label: "Product Details", slug: "product-details" },
       {

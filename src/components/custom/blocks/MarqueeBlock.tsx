@@ -91,6 +91,11 @@ export const MarqueeBlock = forwardRef<HTMLDivElement, MarqueeProps>(
           /* THE FIX: Hardcode the pause logic directly into the injected stylesheet so it never fails */
           ${pauseOnHover ? `.group:hover .marquee-inner-${uniqueId} { animation-play-state: paused; }` : ""}
 
+          /* Hold still for people who asked for less motion; the content is all still there. */
+          @media (prefers-reduced-motion: reduce) {
+            .marquee-inner-${uniqueId} { animation-play-state: paused; }
+          }
+
           @keyframes marquee-horizontal {
             from { transform: translateX(0); }
             to { transform: translateX(calc(-100% - var(--marquee-gap))); }

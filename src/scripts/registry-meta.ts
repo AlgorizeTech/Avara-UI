@@ -194,7 +194,7 @@ export const META: Record<string, ItemMeta> = {
     description:
       "An iOS-style text selection rendered from a fixed character range — translucent highlight with lollipop handles on either end. Use it in docs, tutorials and marketing copy to point at part of a sentence.",
     categories: ["typography"],
-    docs: "Named export: AppleSelect. `text` is the full string and `selection` is a `[start, end]` character range (end exclusive, like String.slice). The range is fixed by the author, not draggable. `color` takes any CSS colour, `handles={false}` drops the lollipops, and `animate` fades the highlight in on mount. Renders a <p>; other HTML attributes are forwarded to it.",
+    docs: "Named export: AppleSelect. `text` is the full string and `selection` is a `[start, end]` character range (end exclusive, like String.slice) or an array of them for several phrases. The range is fixed by the author, not draggable. `color` takes any CSS colour, `handles={false}` drops the lollipops, and `animate` fades the highlight in on mount. Renders a <p>; other HTML attributes are forwarded to it.",
   },
   kbd: {
     description:
@@ -516,11 +516,29 @@ export const META: Record<string, ItemMeta> = {
     categories: ["forms", "dates"],
     docs: "Named export: BookingCard (plus the BookingSlot and Booking types). `BookingCard` is a compound component — put `BookingCard.Days`, `BookingCard.Slots`, `BookingCard.Submit` and `BookingCard.Confirmation` inside it in any layout; it holds the chosen day and slot and calls `onBook`. It draws no surface of its own: make it the padded inside of whatever panel it sits in so the confirmation reaches the edges. The submit button, check mark and focus rings use the `--primary` token.",
   },
+  "bento-showcase": {
+    description:
+      "A six-card marketing bento on black: a hero with a live chat, a case-studies laptop, a headline, figures that scroll up, the plans on a phone, and a team strip that scrolls left. Use it as the showcase section of an agency or services landing page.",
+    categories: ["marketing", "layout"],
+    docs: "Named export: BentoShowcase, with parts Card, Hero, CaseStudies, Headline, Stats, Phone and Team. Composed from the marquee, chat-bubble, half-stars, mobile-mockup and button items, which install alongside it. Headlines are children — wrap the display phrase in <em> for the serif italic; `Card` takes a `tone` and grid placement via className.",
+  },
   "book-appointment": {
     description:
       "A practitioner's page that ends in an appointment: portrait and contact, scores as stars, two small charts, and a booking panel — glass or solid. Use it for clinics, salons, consultations.",
     categories: ["forms", "marketing"],
     docs: "Named export: BookAppointment. Composed from the booking-card, glass-panel, half-stars and chart items, which install alongside it. Pass `practitioner`, `slotGroups` and `onBook`; `scores`, `visitReasons` and `activities` fill the stars, donut and bar; `variant` switches glass to solid.",
+  },
+  "data-flow": {
+    description:
+      "A sources → core → outputs section: platform cards on the left feed one node in the middle, which fans out to result cards on the right, with curved connectors that draw in on first view and then carry a moving dash. Use it to explain a pipeline, an integration, or where an AI product's data comes from.",
+    categories: ["marketing", "data-display"],
+    docs: "Named export: DataFlow, with parts Source, Core, Output, Pill, Tag and Row. Composed from the flowchart and apple-select items, which install alongside it (`intro` + `highlights` render through AppleSelect); the docs example also uses half-stars and button inside its output cards. Connectors are measured from the cards at runtime (ResizeObserver), hidden below lg; `reveal` is in-view or immediate; `accent` pins the dash colour, otherwise it follows --primary. Wrap intro phrases in <mark> for black pills.",
+  },
+  "platform-grid": {
+    description:
+      "Everything a product offers as one hairline grid: small icon-and-name tiles and a few 2×2 features that show a piece of the product on a tilting card. Reveals as a wave from the centre, then a spotlight follows the pointer. Use it as the 'full platform' section of a product site.",
+    categories: ["marketing", "navigation"],
+    docs: "Named export: PlatformGrid, with parts Tile, Feature, Mock and Pill. Composed from the tilted-card item, which installs alongside it. Cells pack densely (grid-auto-flow: dense) so features stay square at 8, 6, 4, 3 or 2 columns; `reveal` is in-view or immediate; `fadeEdges` masks the outer columns; `accent` pins the hover/spotlight colour, otherwise it follows --primary. Tiles with `href` are links (`linkComponent` for a router Link).",
   },
   "glass-panel": {
     description:
@@ -544,7 +562,7 @@ export const META: Record<string, ItemMeta> = {
     description:
       "A node-and-connector flow diagram with highlightable paths and GSAP transitions. Use it to explain a pipeline or decision flow.",
     categories: ["data-display"],
-    docs: "Named exports: Flowchart, FlowCanvas, FlowNode, FlowConnection, useFlowchart. Nodes declare `connectedPaths`; setting the active path highlights every node and connection on it. Positions are authored by you — there is no auto-layout.",
+    docs: "Named exports: Flowchart, FlowCanvas, FlowNode, FlowConnection, useFlowchart. Nodes declare `connectedPaths`; setting the active path highlights every node and connection on it. Positions are authored by you — there is no auto-layout. `layout=\"fluid\"` drops the fixed canvas so connections can be drawn over your own layout; `FlowConnection` takes `dashed`, `flowDash`, `glow` and `drawDuration`.",
   },
   invoice: {
     description:

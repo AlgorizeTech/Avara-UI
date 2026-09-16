@@ -232,7 +232,7 @@
           "target": "components/custom/blocks/AppleSelectBlock.tsx"
         }
       ],
-      "docs": "Named export: AppleSelect. `text` is the full string and `selection` is a `[start, end]` character range (end exclusive, like String.slice). The range is fixed by the author, not draggable. `color` takes any CSS colour, `handles={false}` drops the lollipops, and `animate` fades the highlight in on mount. Renders a <p>; other HTML attributes are forwarded to it."
+      "docs": "Named export: AppleSelect. `text` is the full string and `selection` is a `[start, end]` character range (end exclusive, like String.slice) or an array of them for several phrases. The range is fixed by the author, not draggable. `color` takes any CSS colour, `handles={false}` drops the lollipops, and `animate` fades the highlight in on mount. Renders a <p>; other HTML attributes are forwarded to it."
     },
     {
       "name": "audio-player",
@@ -258,6 +258,36 @@
         }
       ],
       "docs": "Named export: AudioPlayer. `audioUrl` and `artworkUrl` drive it; `variant` is hero | bar | native. Built on a plain <audio> element with no player library, so it adds no npm weight beyond the icons. Playback state mirrors the element's own events, which keeps it correct when a media key or the native controls change it. `skipSeconds` sizes the jump buttons (0 hides them) and the accent follows `--theme-color`."
+    },
+    {
+      "name": "bento-showcase",
+      "type": "registry:component",
+      "title": "Bento Showcase",
+      "author": "AlgorizeTech",
+      "description": "A six-card marketing bento on black: a hero with a live chat, a case-studies laptop, a headline, figures that scroll up, the plans on a phone, and a team strip that scrolls left. Use it as the showcase section of an agency or services landing page.",
+      "categories": [
+        "marketing",
+        "layout"
+      ],
+      "dependencies": [
+        "lucide-react"
+      ],
+      "registryDependencies": [
+        "https://algorize-ui.vercel.app/r/button.json",
+        "https://algorize-ui.vercel.app/r/chat-bubble.json",
+        "https://algorize-ui.vercel.app/r/half-stars.json",
+        "https://algorize-ui.vercel.app/r/marquee.json",
+        "https://algorize-ui.vercel.app/r/mobile-mockup.json",
+        "utils"
+      ],
+      "files": [
+        {
+          "path": "src/components/custom/blocks/BentoShowcaseBlock.tsx",
+          "type": "registry:component",
+          "target": "components/custom/blocks/BentoShowcaseBlock.tsx"
+        }
+      ],
+      "docs": "Named export: BentoShowcase, with parts Card, Hero, CaseStudies, Headline, Stats, Phone and Team. Composed from the marquee, chat-bubble, half-stars, mobile-mockup and button items, which install alongside it. Headlines are children — wrap the display phrase in <em> for the serif italic; `Card` takes a `tone` and grid placement via className."
     },
     {
       "name": "book-appointment",
@@ -872,6 +902,33 @@
       "docs": "Named exports: CustomCodeBlock, CodeTab. `tabs` take { code, language, fileName }; a single tab renders without the tab strip. Uses `lucide-react` for file-type icons. Highlighting is a built-in regex tokenizer, not Shiki or Prism — good for snippets, not a full editor."
     },
     {
+      "name": "data-flow",
+      "type": "registry:component",
+      "title": "Data Flow",
+      "author": "AlgorizeTech",
+      "description": "A sources → core → outputs section: platform cards on the left feed one node in the middle, which fans out to result cards on the right, with curved connectors that draw in on first view and then carry a moving dash. Use it to explain a pipeline, an integration, or where an AI product's data comes from.",
+      "categories": [
+        "marketing",
+        "data-display"
+      ],
+      "dependencies": [
+        "gsap"
+      ],
+      "registryDependencies": [
+        "https://algorize-ui.vercel.app/r/apple-select.json",
+        "https://algorize-ui.vercel.app/r/flowchart.json",
+        "utils"
+      ],
+      "files": [
+        {
+          "path": "src/components/custom/blocks/DataFlowBlock.tsx",
+          "type": "registry:component",
+          "target": "components/custom/blocks/DataFlowBlock.tsx"
+        }
+      ],
+      "docs": "Named export: DataFlow, with parts Source, Core, Output, Pill, Tag and Row. Composed from the flowchart and apple-select items, which install alongside it (`intro` + `highlights` render through AppleSelect); the docs example also uses half-stars and button inside its output cards. Connectors are measured from the cards at runtime (ResizeObserver), hidden below lg; `reveal` is in-view or immediate; `accent` pins the dash colour, otherwise it follows --primary. Wrap intro phrases in <mark> for black pills."
+    },
+    {
       "name": "data-grid",
       "type": "registry:component",
       "title": "Data Grid",
@@ -1244,7 +1301,7 @@
           "target": "components/custom/blocks/flowchart-context.ts"
         }
       ],
-      "docs": "Named exports: Flowchart, FlowCanvas, FlowNode, FlowConnection, useFlowchart. Nodes declare `connectedPaths`; setting the active path highlights every node and connection on it. Positions are authored by you — there is no auto-layout."
+      "docs": "Named exports: Flowchart, FlowCanvas, FlowNode, FlowConnection, useFlowchart. Nodes declare `connectedPaths`; setting the active path highlights every node and connection on it. Positions are authored by you — there is no auto-layout. `layout=\"fluid\"` drops the fixed canvas so connections can be drawn over your own layout; `FlowConnection` takes `dashed`, `flowDash`, `glow` and `drawDuration`."
     },
     {
       "name": "folder",
@@ -2132,6 +2189,32 @@
         }
       ],
       "docs": "Named export: Piano. Supports `defaultVolume` (0 to 1), `defaultShowKeys` (boolean), and `className`. Synthesizes real acoustic piano notes using native Web Audio API."
+    },
+    {
+      "name": "platform-grid",
+      "type": "registry:component",
+      "title": "Platform Grid",
+      "author": "AlgorizeTech",
+      "description": "Everything a product offers as one hairline grid: small icon-and-name tiles and a few 2×2 features that show a piece of the product on a tilting card. Reveals as a wave from the centre, then a spotlight follows the pointer. Use it as the 'full platform' section of a product site.",
+      "categories": [
+        "marketing",
+        "navigation"
+      ],
+      "dependencies": [
+        "gsap"
+      ],
+      "registryDependencies": [
+        "https://algorize-ui.vercel.app/r/tilted-card.json",
+        "utils"
+      ],
+      "files": [
+        {
+          "path": "src/components/custom/blocks/PlatformGridBlock.tsx",
+          "type": "registry:component",
+          "target": "components/custom/blocks/PlatformGridBlock.tsx"
+        }
+      ],
+      "docs": "Named export: PlatformGrid, with parts Tile, Feature, Mock and Pill. Composed from the tilted-card item, which installs alongside it. Cells pack densely (grid-auto-flow: dense) so features stay square at 8, 6, 4, 3 or 2 columns; `reveal` is in-view or immediate; `fadeEdges` masks the outer columns; `accent` pins the hover/spotlight colour, otherwise it follows --primary. Tiles with `href` are links (`linkComponent` for a router Link)."
     },
     {
       "name": "popover",

@@ -202,9 +202,9 @@ Discover the Apple Select component's capabilities for pointing at part of a sen
       </tr>
       <tr>
         <td><code>selection</code></td>
-        <td><code>[number, number]</code></td>
+        <td><code>[number, number] | [number, number][]</code></td>
         <td><strong>Required</strong></td>
-        <td>Character range to highlight as <code>[start, end]</code>. <code>end</code> is exclusive, like <code>String.slice</code>; out-of-range values are clamped and an empty range renders plain text.</td>
+        <td>Character range to highlight as <code>[start, end]</code>, or several ranges for more than one phrase — each gets its own handles. <code>end</code> is exclusive, like <code>String.slice</code>; out-of-range values are clamped, overlapping ranges merge, and an empty range renders plain text.</td>
       </tr>
       <tr>
         <td><code>color</code></td>

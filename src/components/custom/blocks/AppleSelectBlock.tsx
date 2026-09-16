@@ -9,9 +9,10 @@ export interface AppleSelectProps
   text: string;
   /**
    * Character range to highlight as `[start, end]` — `end` is exclusive, the
-   * same way `String.slice` works. Out-of-range values are clamped.
+   * same way `String.slice` works — or several such ranges for more than one
+   * phrase. Out-of-range values are clamped; overlapping ranges are merged.
    */
-  selection: [number, number];
+  selection: [number, number] | [number, number][];
   /** Accent for the highlight and handles. Any CSS colour; defaults to the theme primary. */
   color?: string;
   /** Show the iOS-style lollipop handles on either end of the range. */
@@ -91,10 +92,53 @@ export const AppleSelect = React.forwardRef<HTMLParagraphElement, AppleSelectPro
     },
     ref
   ) => {
-    // Clamp the range so a stale index never throws or highlights backwards.
-    const start = Math.min(Math.max(0, selection[0]), text.length);
-    const end = Math.min(Math.max(start, selection[1]), text.length);
-    const hasRange = end > start;
+    // One range or many: clamp each so a stale index never throws or
+    // highlights backwards, sort them, and merge any that overlap.
+    const raw: [number, number][] =
+      Array.isArray(selection[0]) ? (selection as [number, number][]) : [selection as [number, number]];
+    const ranges = raw
+      .map(([a, b]) => {
+        const start = Math.min(Math.max(0, a), text.length);
+        const end = Math.min(Math.max(start, b), text.length);
+        return [start, end] as [number, number];
+      })
+      .filter(([a, b]) => b > a)
+      .sort((x, y) => x[0] - y[0])
+      .reduce<[number, number][]>((acc, r) => {
+        const last = acc[acc.length - 1];
+        if (last && r[0] <= last[1]) last[1] = Math.max(last[1], r[1]);
+        else acc.push([r[0], r[1]]);
+        return acc;
+      }, []);
+
+    const parts: React.ReactNode[] = [];
+    let cursor = 0;
+    ranges.forEach(([start, end], i) => {
+      parts.push(text.slice(cursor, start));
+      parts.push(
+        <React.Fragment key={i}>
+          {handles && <Handle edge="start" color={color} animate={animate} />}
+          <mark
+            className="rounded-[0.15em] px-[0.05em]"
+            style={{
+              // Translucent tint keeps the text colour intact — like a real
+              // selection rather than a solid highlighter.
+              backgroundColor: `color-mix(in oklab, ${color} 35%, transparent)`,
+              color: "inherit",
+              // Wrapped lines each get their own rounded corners.
+              WebkitBoxDecorationBreak: "clone",
+              boxDecorationBreak: "clone",
+              animation: animate ? "apple-select-highlight 0.4s ease-out both" : undefined,
+            }}
+          >
+            {text.slice(start, end)}
+          </mark>
+          {handles && <Handle edge="end" color={color} animate={animate} />}
+        </React.Fragment>,
+      );
+      cursor = end;
+    });
+    parts.push(text.slice(cursor));
 
     return (
       <p
@@ -104,29 +148,7 @@ export const AppleSelect = React.forwardRef<HTMLParagraphElement, AppleSelectPro
         {...props}
       >
         {animate && <style>{KEYFRAMES}</style>}
-        {text.slice(0, start)}
-        {hasRange && (
-          <>
-            {handles && <Handle edge="start" color={color} animate={animate} />}
-            <mark
-              className="rounded-[0.15em] px-[0.05em]"
-              style={{
-                // Translucent tint keeps the text colour intact — like a real
-                // selection rather than a solid highlighter.
-                backgroundColor: `color-mix(in oklab, ${color} 35%, transparent)`,
-                color: "inherit",
-                // Wrapped lines each get their own rounded corners.
-                WebkitBoxDecorationBreak: "clone",
-                boxDecorationBreak: "clone",
-                animation: animate ? "apple-select-highlight 0.4s ease-out both" : undefined,
-              }}
-            >
-              {text.slice(start, end)}
-            </mark>
-            {handles && <Handle edge="end" color={color} animate={animate} />}
-          </>
-        )}
-        {text.slice(end)}
+        {parts}
       </p>
     );
   }
