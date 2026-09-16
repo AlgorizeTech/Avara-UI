@@ -4,6 +4,7 @@ import { cn } from "@/lib/utils";
 import { Menu, X } from "lucide-react";
 import React, { useEffect, useState } from "react";
 import { SidebarContext, useSidebar } from "./sidebar-context";
+import { Tooltip, TooltipContent, TooltipTrigger } from "./TooltipBlock";
 
 // ==========================================
 // 1. PROVIDER & ROOT LAYOUT
@@ -240,7 +241,7 @@ export function SidebarItem({
 }: SidebarItemProps) {
   const { expanded, color } = useSidebar();
 
-  return (
+  const item = (
     <button
       className={cn(
         "group relative flex w-full items-center rounded-lg px-3 py-2 text-sm font-medium transition-all duration-200 outline-none",
@@ -277,15 +278,23 @@ export function SidebarItem({
       >
         {children}
       </div>
-
-      {/* Pure CSS Native Tooltip (Shows only when collapsed on hover) */}
-      {!expanded && (
-        <div className="absolute left-full ml-4 hidden rounded-md bg-primary px-2 py-1 text-xs font-bold text-primary-foreground opacity-0 shadow-md group-hover:block group-hover:opacity-100 z-50">
-          {children}
-          <div className="absolute -left-1 top-1/2 h-2 w-2 -translate-y-1/2 rotate-45 bg-primary" />
-        </div>
-      )}
     </button>
+  );
+
+  // Collapsed rail: the label moves into a Tooltip. It portals to the body,
+  // so it is never clipped by the rail's overflow the way an absolutely
+  // positioned label would be.
+  if (expanded) return item;
+  return (
+    <Tooltip delayDuration={100}>
+      {/* The button is the tab stop; the trigger wrapper only listens. */}
+      <TooltipTrigger className="block w-full" tabIndex={-1}>
+        {item}
+      </TooltipTrigger>
+      <TooltipContent side="right" sideOffset={12} className="font-bold">
+        {children}
+      </TooltipContent>
+    </Tooltip>
   );
 }
 

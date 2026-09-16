@@ -3,20 +3,17 @@ import { extractCode } from "@/lib/code";
 
 # Book Appointment
 
-A booking flow for a page that ends in an appointment: a strip of days, time slots in groups, a button that reads back the choice, and a confirmation that draws itself in once the booking is made.
+A booking flow for a page that ends in an appointment: a practitioner's portrait and contact details, their scores as stars, two small charts, and a booking panel with a strip of days, time slots in groups, a button that reads back the choice, and a confirmation that draws itself in once the booking is made.
 
-`Booker` is a compound component. It holds the chosen day and slot; `Booker.Days`, `Booker.Slots`, `Booker.Submit` and `Booker.Confirmation` go inside it in whatever layout the page needs. The example below pairs it with the frosted panels from <DocLink to="profile-page">Profile Page</DocLink> — a practitioner's card on the left, the booking on the right — but the booker has no opinion about what sits beside it.
+`BookAppointment` is a section built from library pieces. The surface is <DocLink to="glass-panel">Glass Panel</DocLink> (`GlassBackdrop` and `GlassPanel`), the scores are <DocLink to="half-stars">Half Stars</DocLink>, and the booking panel is <DocLink to="booking-card">Booking Card</DocLink> — a compound component that can be dropped into any panel on any page. Hand it a `practitioner`, some `slotGroups` and an `onBook`, and it lays the page out.
 
 export const usagePage = `"use client";
 
-import { useState } from "react";
-import { Booker, StarRating } from "@/components/custom/blocks/BookAppointmentBlock";
-import { GlassPanel, ProfilePage } from "@/components/custom/blocks/ProfilePageBlock";
-import { cn } from "@/lib/utils";
-import { Languages, Mail, MapPin, Phone } from "lucide-react";
+import { BookAppointment } from "@/components/custom/blocks/BookAppointmentBlock";
 
 const DOCTOR = {
   name: "Dr. Emily Chen, MD",
+  shortName: "Dr. Chen",
   specialties: "Internal medicine, Cardiology",
   practice: "Manhattan Health Associates",
   photo:
@@ -26,27 +23,16 @@ const DOCTOR = {
   reviews: 38,
   summary:
     "Patients describe Dr. Chen as thorough and easy to talk to. They value her cardiology expertise and clear explanations; a few mention delays getting a callback.",
+  location: "New York, NY, Manhattan Health Associates",
+  phone: "(212) 555-7890",
+  email: "drchen@example.com",
+  languages: "English, Spanish",
 };
 
 const SCORES = [
   { label: "Wait time", value: 4.63 },
   { label: "Bedside manner", value: 4.19 },
   { label: "Clear explanations", value: 4.74 },
-];
-
-// Categorical hues in a fixed order; gray is reserved for "Other".
-const STROKE = [
-  "stroke-violet-600 dark:stroke-violet-500",
-  "stroke-teal-600",
-  "stroke-amber-600",
-  "stroke-rose-600",
-];
-const SWATCH = [
-  "bg-violet-600 dark:bg-violet-500",
-  "bg-teal-600",
-  "bg-amber-600",
-  "bg-rose-600",
-  "bg-zinc-400 dark:bg-zinc-500",
 ];
 
 const VISIT_REASONS = [
@@ -64,223 +50,43 @@ const ACTIVITIES = [
   { label: "Other", value: 3 },
 ];
 
-const MORNING = [
-  { label: "9:00 AM" },
-  { label: "10:00 AM" },
-  { label: "11:00 AM", taken: true },
+const SLOT_GROUPS = [
+  {
+    label: "Morning",
+    slots: [{ label: "9:00 AM" }, { label: "10:00 AM" }, { label: "11:00 AM", taken: true }],
+  },
+  {
+    label: "Afternoon",
+    slots: [{ label: "12:00 PM" }, { label: "1:00 PM" }, { label: "2:00 PM" }, { label: "3:00 PM", taken: true }],
+  },
 ];
-const AFTERNOON = [
-  { label: "12:00 PM" },
-  { label: "1:00 PM" },
-  { label: "2:00 PM" },
-  { label: "3:00 PM", taken: true },
-];
 
-export default function BookAppointment() {
+export default function BookAppointmentPage() {
   return (
-    <ProfilePage aurora={["#c4b5fd", "#99f6e4", "#fde68a"]} className="min-h-dvh">
-      {/* Portrait and contact */}
-      <div className="flex flex-col gap-4 md:col-span-2 lg:col-span-3">
-        <GlassPanel shape="slab" className="overflow-hidden">
-          <img
-            src={DOCTOR.photo}
-            alt={DOCTOR.photoAlt}
-            loading="lazy"
-            className="aspect-[3/4] w-full object-cover object-top"
-          />
-        </GlassPanel>
-
-        <GlassPanel className="p-5">
-          <ul className="space-y-2.5 text-sm">
-            <li className="flex items-center gap-2.5">
-              <MapPin className="size-4 shrink-0 text-black/50 dark:text-white/50" />
-              <span>New York, NY, {DOCTOR.practice}</span>
-            </li>
-            <li className="flex items-center gap-2.5">
-              <Phone className="size-4 shrink-0 text-black/50 dark:text-white/50" />
-              <a href="tel:+12125557890" className="hover:underline">(212) 555-7890</a>
-            </li>
-            <li className="flex items-center gap-2.5">
-              <Mail className="size-4 shrink-0 text-black/50 dark:text-white/50" />
-              <a href="mailto:drchen@example.com" className="hover:underline">drchen@example.com</a>
-            </li>
-            <li className="flex items-center gap-2.5">
-              <Languages className="size-4 shrink-0 text-black/50 dark:text-white/50" />
-              <span>English, Spanish</span>
-            </li>
-          </ul>
-        </GlassPanel>
-      </div>
-
-      {/* Name, scores, charts */}
-      <div className="flex flex-col gap-4 md:col-span-4 lg:col-span-5">
-        <GlassPanel shape="slab" className="flex flex-col gap-5 p-6">
-          <div>
-            <h1 className="text-2xl font-semibold tracking-tight sm:text-3xl">{DOCTOR.name}</h1>
-            <p className="mt-1 text-sm text-black/60 dark:text-white/60">{DOCTOR.specialties}</p>
-          </div>
-
-          <div className="flex gap-4">
-            {/* The score is the one loud element on the page */}
-            <div className="grid size-24 shrink-0 place-items-center rounded-[30%] bg-violet-600 text-white dark:bg-violet-500">
-              <div className="text-center">
-                <p className="text-3xl font-semibold leading-none tabular-nums">{DOCTOR.rating}</p>
-                <p className="mt-1 text-[11px] opacity-80">{DOCTOR.reviews} reviews</p>
-              </div>
-            </div>
-            <div className="min-w-0">
-              <p className="text-xs font-medium text-black/50 dark:text-white/50">Patients say</p>
-              <p className="mt-1 text-sm leading-relaxed text-black/70 dark:text-white/70">{DOCTOR.summary}</p>
-            </div>
-          </div>
-
-          <div className="grid gap-3 sm:grid-cols-3">
-            {SCORES.map((s) => (
-              <div key={s.label}>
-                <p className="text-xs text-black/50 dark:text-white/50">{s.label}</p>
-                <StarRating className="mt-1" label={s.label} value={s.value} />
-              </div>
-            ))}
-          </div>
-        </GlassPanel>
-
-        <GlassPanel className="p-6">
-          <h2 className="text-sm font-semibold">Top visit reasons</h2>
-          <VisitReasons />
-        </GlassPanel>
-
-        <GlassPanel className="p-6">
-          <h2 className="text-sm font-semibold">Where her week goes</h2>
-          <ActivityBar />
-        </GlassPanel>
-      </div>
-
-      {/* Booking */}
-      {/* The Booker is the panel's whole inside, so its confirmation covers
-          the panel edge to edge instead of stopping at the padding. */}
-      <GlassPanel shape="slab" className="self-start md:col-span-6 lg:col-span-4">
-        <Booker
-          className="flex h-full flex-col gap-5 p-6"
-          onBook={() => new Promise((resolve) => setTimeout(resolve, 900))}
-        >
-          <h2 className="text-lg font-semibold tracking-tight">Book an appointment</h2>
-          <Booker.Days unavailable={(d) => d.getDay() === 0} />
-          <div className="space-y-4">
-            <p className="text-sm font-semibold">Time</p>
-            <Booker.Slots label="Morning" slots={MORNING} />
-            <Booker.Slots label="Afternoon" slots={AFTERNOON} />
-          </div>
-          <Booker.Submit className="mt-auto" />
-          <Booker.Confirmation withName="Dr. Chen" place={DOCTOR.practice} />
-        </Booker>
-      </GlassPanel>
-
-    </ProfilePage>
-  );
-}
-
-/* Donut: four reasons, hover a segment (or its legend row) to read it. */
-function VisitReasons() {
-  const [active, setActive] = useState<number | null>(null);
-  const total = VISIT_REASONS.reduce((sum, r) => sum + r.value, 0); // 100, but never assume
-  const R = 38;
-  const C = 2 * Math.PI * R;
-  const GAP = 2; // surface gap between segments, in viewBox units
-  let offset = 0;
-
-  return (
-    <div className="mt-4 flex flex-col items-center gap-5 sm:flex-row">
-      <div className="relative size-36 shrink-0">
-        <svg viewBox="0 0 100 100" className="size-full -rotate-90" role="img" aria-label="Visit reasons, share of visits">
-          {VISIT_REASONS.map((r, i) => {
-            const length = (C * r.value) / total;
-            const el = (
-              <circle
-                key={r.label}
-                cx="50"
-                cy="50"
-                r={R}
-                fill="none"
-                strokeWidth={active === i ? 16 : 14}
-                strokeDasharray={\`\${Math.max(0, length - GAP)} \${C}\`}
-                strokeDashoffset={-offset}
-                onMouseEnter={() => setActive(i)}
-                onMouseLeave={() => setActive(null)}
-                className={cn(
-                  "cursor-pointer transition-[stroke-width,opacity] duration-200",
-                  STROKE[i],
-                  active !== null && active !== i && "opacity-40",
-                )}
-              />
-            );
-            offset += length;
-            return el;
-          })}
-        </svg>
-        {/* Centre reads the hovered segment; at rest, the largest one */}
-        <div className="absolute inset-0 grid place-items-center text-center">
-          <div>
-            <p className="text-xl font-semibold tabular-nums">{VISIT_REASONS[active ?? 0].value}%</p>
-            <p className="text-[10px] text-black/50 dark:text-white/50">{active === null ? "top reason" : "of visits"}</p>
-          </div>
-        </div>
-      </div>
-      <ul className="min-w-0 flex-1 space-y-2 text-sm">
-        {VISIT_REASONS.map((r, i) => (
-          <li
-            key={r.label}
-            onMouseEnter={() => setActive(i)}
-            onMouseLeave={() => setActive(null)}
-            className={cn("flex items-start gap-2.5 transition-opacity", active !== null && active !== i && "opacity-50")}
-          >
-            <span className={cn("mt-1.5 size-2.5 shrink-0 rounded-full", SWATCH[i])} />
-            <span className="min-w-0 flex-1 leading-snug">{r.label}</span>
-            <span className="tabular-nums font-medium">{r.value}%</span>
-          </li>
-        ))}
-      </ul>
-    </div>
-  );
-}
-
-/* One stacked bar, 2px gaps between segments, legend below. */
-function ActivityBar() {
-  return (
-    <div className="mt-4">
-      <div className="flex h-8 gap-0.5 overflow-hidden rounded-lg" role="img" aria-label="Share of the week by activity">
-        {ACTIVITIES.map((a, i) => (
-          <div
-            key={a.label}
-            style={{ width: \`\${a.value}%\` }}
-            title={\`\${a.label} \${a.value}%\`}
-            className={cn("h-full first:rounded-l-lg last:rounded-r-lg", SWATCH[i])}
-          />
-        ))}
-      </div>
-      <ul className="mt-3 flex flex-wrap gap-x-4 gap-y-1.5 text-xs">
-        {ACTIVITIES.map((a, i) => (
-          <li key={a.label} className="flex items-center gap-1.5">
-            <span className={cn("size-2 rounded-full", SWATCH[i])} />
-            <span className="text-black/70 dark:text-white/70">{a.label}</span>
-            <span className="tabular-nums font-medium">{a.value}%</span>
-          </li>
-        ))}
-      </ul>
-    </div>
+    <BookAppointment
+      aurora={["#c4b5fd", "#99f6e4", "#fde68a"]}
+      practitioner={DOCTOR}
+      scores={SCORES}
+      visitReasons={VISIT_REASONS}
+      activities={ACTIVITIES}
+      slotGroups={SLOT_GROUPS}
+      unavailable={(d) => d.getDay() === 0}
+      onBook={async ({ day, slot }) => {
+        await fetch("/api/book", { method: "POST", body: JSON.stringify({ day, slot }) });
+      }}
+      className="min-h-dvh"
+    />
   );
 }
 `;
 
 export const usagePageSolid = `"use client";
 
-import { useState } from "react";
-import { Booker, StarRating } from "@/components/custom/blocks/BookAppointmentBlock";
-import { GlassPanel, ProfilePage } from "@/components/custom/blocks/ProfilePageBlock";
-import { cn } from "@/lib/utils";
-import { Languages, Mail, MapPin, Phone } from "lucide-react";
+import { BookAppointment } from "@/components/custom/blocks/BookAppointmentBlock";
 
 const DOCTOR = {
   name: "Dr. Emily Chen, MD",
+  shortName: "Dr. Chen",
   specialties: "Internal medicine, Cardiology",
   practice: "Manhattan Health Associates",
   photo:
@@ -290,27 +96,16 @@ const DOCTOR = {
   reviews: 38,
   summary:
     "Patients describe Dr. Chen as thorough and easy to talk to. They value her cardiology expertise and clear explanations; a few mention delays getting a callback.",
+  location: "New York, NY, Manhattan Health Associates",
+  phone: "(212) 555-7890",
+  email: "drchen@example.com",
+  languages: "English, Spanish",
 };
 
 const SCORES = [
   { label: "Wait time", value: 4.63 },
   { label: "Bedside manner", value: 4.19 },
   { label: "Clear explanations", value: 4.74 },
-];
-
-// Categorical hues in a fixed order; gray is reserved for "Other".
-const STROKE = [
-  "stroke-violet-600 dark:stroke-violet-500",
-  "stroke-teal-600",
-  "stroke-amber-600",
-  "stroke-rose-600",
-];
-const SWATCH = [
-  "bg-violet-600 dark:bg-violet-500",
-  "bg-teal-600",
-  "bg-amber-600",
-  "bg-rose-600",
-  "bg-zinc-400 dark:bg-zinc-500",
 ];
 
 const VISIT_REASONS = [
@@ -328,209 +123,32 @@ const ACTIVITIES = [
   { label: "Other", value: 3 },
 ];
 
-const MORNING = [
-  { label: "9:00 AM" },
-  { label: "10:00 AM" },
-  { label: "11:00 AM", taken: true },
+const SLOT_GROUPS = [
+  {
+    label: "Morning",
+    slots: [{ label: "9:00 AM" }, { label: "10:00 AM" }, { label: "11:00 AM", taken: true }],
+  },
+  {
+    label: "Afternoon",
+    slots: [{ label: "12:00 PM" }, { label: "1:00 PM" }, { label: "2:00 PM" }, { label: "3:00 PM", taken: true }],
+  },
 ];
-const AFTERNOON = [
-  { label: "12:00 PM" },
-  { label: "1:00 PM" },
-  { label: "2:00 PM" },
-  { label: "3:00 PM", taken: true },
-];
 
-export default function BookAppointment() {
+export default function BookAppointmentPage() {
   return (
-    <ProfilePage variant="solid" className="min-h-dvh">
-      {/* Portrait and contact */}
-      <div className="flex flex-col gap-4 md:col-span-2 lg:col-span-3">
-        <GlassPanel shape="slab" className="overflow-hidden">
-          <img
-            src={DOCTOR.photo}
-            alt={DOCTOR.photoAlt}
-            loading="lazy"
-            className="aspect-[3/4] w-full object-cover object-top"
-          />
-        </GlassPanel>
-
-        <GlassPanel className="p-5">
-          <ul className="space-y-2.5 text-sm">
-            <li className="flex items-center gap-2.5">
-              <MapPin className="size-4 shrink-0 text-black/50 dark:text-white/50" />
-              <span>New York, NY, {DOCTOR.practice}</span>
-            </li>
-            <li className="flex items-center gap-2.5">
-              <Phone className="size-4 shrink-0 text-black/50 dark:text-white/50" />
-              <a href="tel:+12125557890" className="hover:underline">(212) 555-7890</a>
-            </li>
-            <li className="flex items-center gap-2.5">
-              <Mail className="size-4 shrink-0 text-black/50 dark:text-white/50" />
-              <a href="mailto:drchen@example.com" className="hover:underline">drchen@example.com</a>
-            </li>
-            <li className="flex items-center gap-2.5">
-              <Languages className="size-4 shrink-0 text-black/50 dark:text-white/50" />
-              <span>English, Spanish</span>
-            </li>
-          </ul>
-        </GlassPanel>
-      </div>
-
-      {/* Name, scores, charts */}
-      <div className="flex flex-col gap-4 md:col-span-4 lg:col-span-5">
-        <GlassPanel shape="slab" className="flex flex-col gap-5 p-6">
-          <div>
-            <h1 className="text-2xl font-semibold tracking-tight sm:text-3xl">{DOCTOR.name}</h1>
-            <p className="mt-1 text-sm text-black/60 dark:text-white/60">{DOCTOR.specialties}</p>
-          </div>
-
-          <div className="flex gap-4">
-            {/* The score is the one loud element on the page */}
-            <div className="grid size-24 shrink-0 place-items-center rounded-[30%] bg-violet-600 text-white dark:bg-violet-500">
-              <div className="text-center">
-                <p className="text-3xl font-semibold leading-none tabular-nums">{DOCTOR.rating}</p>
-                <p className="mt-1 text-[11px] opacity-80">{DOCTOR.reviews} reviews</p>
-              </div>
-            </div>
-            <div className="min-w-0">
-              <p className="text-xs font-medium text-black/50 dark:text-white/50">Patients say</p>
-              <p className="mt-1 text-sm leading-relaxed text-black/70 dark:text-white/70">{DOCTOR.summary}</p>
-            </div>
-          </div>
-
-          <div className="grid gap-3 sm:grid-cols-3">
-            {SCORES.map((s) => (
-              <div key={s.label}>
-                <p className="text-xs text-black/50 dark:text-white/50">{s.label}</p>
-                <StarRating className="mt-1" label={s.label} value={s.value} />
-              </div>
-            ))}
-          </div>
-        </GlassPanel>
-
-        <GlassPanel className="p-6">
-          <h2 className="text-sm font-semibold">Top visit reasons</h2>
-          <VisitReasons />
-        </GlassPanel>
-
-        <GlassPanel className="p-6">
-          <h2 className="text-sm font-semibold">Where her week goes</h2>
-          <ActivityBar />
-        </GlassPanel>
-      </div>
-
-      {/* Booking */}
-      {/* The Booker is the panel's whole inside, so its confirmation covers
-          the panel edge to edge instead of stopping at the padding. */}
-      <GlassPanel shape="slab" className="self-start md:col-span-6 lg:col-span-4">
-        <Booker
-          className="flex h-full flex-col gap-5 p-6"
-          onBook={() => new Promise((resolve) => setTimeout(resolve, 900))}
-        >
-          <h2 className="text-lg font-semibold tracking-tight">Book an appointment</h2>
-          <Booker.Days unavailable={(d) => d.getDay() === 0} />
-          <div className="space-y-4">
-            <p className="text-sm font-semibold">Time</p>
-            <Booker.Slots label="Morning" slots={MORNING} />
-            <Booker.Slots label="Afternoon" slots={AFTERNOON} />
-          </div>
-          <Booker.Submit className="mt-auto" />
-          <Booker.Confirmation withName="Dr. Chen" place={DOCTOR.practice} />
-        </Booker>
-      </GlassPanel>
-
-    </ProfilePage>
-  );
-}
-
-/* Donut: four reasons, hover a segment (or its legend row) to read it. */
-function VisitReasons() {
-  const [active, setActive] = useState<number | null>(null);
-  const total = VISIT_REASONS.reduce((sum, r) => sum + r.value, 0); // 100, but never assume
-  const R = 38;
-  const C = 2 * Math.PI * R;
-  const GAP = 2; // surface gap between segments, in viewBox units
-  let offset = 0;
-
-  return (
-    <div className="mt-4 flex flex-col items-center gap-5 sm:flex-row">
-      <div className="relative size-36 shrink-0">
-        <svg viewBox="0 0 100 100" className="size-full -rotate-90" role="img" aria-label="Visit reasons, share of visits">
-          {VISIT_REASONS.map((r, i) => {
-            const length = (C * r.value) / total;
-            const el = (
-              <circle
-                key={r.label}
-                cx="50"
-                cy="50"
-                r={R}
-                fill="none"
-                strokeWidth={active === i ? 16 : 14}
-                strokeDasharray={\`\${Math.max(0, length - GAP)} \${C}\`}
-                strokeDashoffset={-offset}
-                onMouseEnter={() => setActive(i)}
-                onMouseLeave={() => setActive(null)}
-                className={cn(
-                  "cursor-pointer transition-[stroke-width,opacity] duration-200",
-                  STROKE[i],
-                  active !== null && active !== i && "opacity-40",
-                )}
-              />
-            );
-            offset += length;
-            return el;
-          })}
-        </svg>
-        {/* Centre reads the hovered segment; at rest, the largest one */}
-        <div className="absolute inset-0 grid place-items-center text-center">
-          <div>
-            <p className="text-xl font-semibold tabular-nums">{VISIT_REASONS[active ?? 0].value}%</p>
-            <p className="text-[10px] text-black/50 dark:text-white/50">{active === null ? "top reason" : "of visits"}</p>
-          </div>
-        </div>
-      </div>
-      <ul className="min-w-0 flex-1 space-y-2 text-sm">
-        {VISIT_REASONS.map((r, i) => (
-          <li
-            key={r.label}
-            onMouseEnter={() => setActive(i)}
-            onMouseLeave={() => setActive(null)}
-            className={cn("flex items-start gap-2.5 transition-opacity", active !== null && active !== i && "opacity-50")}
-          >
-            <span className={cn("mt-1.5 size-2.5 shrink-0 rounded-full", SWATCH[i])} />
-            <span className="min-w-0 flex-1 leading-snug">{r.label}</span>
-            <span className="tabular-nums font-medium">{r.value}%</span>
-          </li>
-        ))}
-      </ul>
-    </div>
-  );
-}
-
-/* One stacked bar, 2px gaps between segments, legend below. */
-function ActivityBar() {
-  return (
-    <div className="mt-4">
-      <div className="flex h-8 gap-0.5 overflow-hidden rounded-lg" role="img" aria-label="Share of the week by activity">
-        {ACTIVITIES.map((a, i) => (
-          <div
-            key={a.label}
-            style={{ width: \`\${a.value}%\` }}
-            title={\`\${a.label} \${a.value}%\`}
-            className={cn("h-full first:rounded-l-lg last:rounded-r-lg", SWATCH[i])}
-          />
-        ))}
-      </div>
-      <ul className="mt-3 flex flex-wrap gap-x-4 gap-y-1.5 text-xs">
-        {ACTIVITIES.map((a, i) => (
-          <li key={a.label} className="flex items-center gap-1.5">
-            <span className={cn("size-2 rounded-full", SWATCH[i])} />
-            <span className="text-black/70 dark:text-white/70">{a.label}</span>
-            <span className="tabular-nums font-medium">{a.value}%</span>
-          </li>
-        ))}
-      </ul>
-    </div>
+    <BookAppointment
+      variant="solid"
+      practitioner={DOCTOR}
+      scores={SCORES}
+      visitReasons={VISIT_REASONS}
+      activities={ACTIVITIES}
+      slotGroups={SLOT_GROUPS}
+      unavailable={(d) => d.getDay() === 0}
+      onBook={async ({ day, slot }) => {
+        await fetch("/api/book", { method: "POST", body: JSON.stringify({ day, slot }) });
+      }}
+      className="min-h-dvh"
+    />
   );
 }
 `;
@@ -544,9 +162,14 @@ function ActivityBar() {
       subheading: "Pick a day and a time, press Book — the button stays busy while your onBook promise runs, then the check draws itself and the details rise in.",
       propNotes: [
         {
-          prop: "Booker",
+          prop: "practitioner",
           effect:
-            "holds the chosen day and slot. Put `Booker.Days`, `Booker.Slots`, `Booker.Submit` and `Booker.Confirmation` inside it in any layout; the confirmation covers the `Booker` it sits in — so give the `Booker` the panel's padding (heading included) and the cover reaches the panel's edges and corners.",
+            "fills the portrait, contact list, name, overall score and summary. `shortName` is how the confirmation refers to them; contact rows are left out when their field is missing.",
+        },
+        {
+          prop: "slotGroups",
+          effect:
+            "are the times on offer, one `BookingCard.Slots` group per entry. Mark a slot `taken` to show it struck through.",
         },
         {
           lead: "Return a promise from",
@@ -558,13 +181,12 @@ function ActivityBar() {
           prop: "unavailable",
           value: "(day) => day.getDay() === 0",
           effect:
-            "on `Booker.Days` strikes out days with nothing free. Sundays here; feed it your real availability.",
+            "strikes out days with nothing free. Sundays here; feed it your real availability.",
         },
         {
-          lead: "The arrows page",
-          prop: "Booker.Days",
+          prop: "scores",
           effect:
-            "a week at a time, up to `horizon` days out (90 by default). Days start today, so the previous arrow is disabled on the first page — nobody can book into the past.",
+            "render as `HalfStars` with fractional fill. `visitReasons` and `activities` are `ChartBlock`s — a `donut-legend` and a `stacked-bar`; leave either out and its panel is not drawn.",
         },
       ],
       props: { rounded: true },
@@ -581,7 +203,7 @@ function ActivityBar() {
           prop: "variant",
           value: '"solid"',
           effect:
-            "on `ProfilePage` and every panel becomes a solid card; the aurora is not drawn. Days, slots and the confirmation use neutral inks that read on either surface.",
+            "and every panel becomes a solid card; the aurora is not drawn. Days, slots and the confirmation use neutral inks that read on either surface.",
         },
       ],
       props: { rounded: true, variant: "solid" },
@@ -595,39 +217,39 @@ function ActivityBar() {
 
 <Installation name="book-appointment" />
 
-## Just the booker
+## Just the booking panel
 
-The booking panel on its own, inside one glass slab. Everything else on the example page is ordinary content.
+The booking panel is its own component, <DocLink to="booking-card">Booking Card</DocLink>, and works inside any panel — not only this page. Give it the panel's padding so the confirmation reaches the edges.
 
 ```tsx
-import { Booker } from "@/components/custom/blocks/BookAppointmentBlock";
-import { GlassPanel, ProfilePage } from "@/components/custom/blocks/ProfilePageBlock";
+import { BookingCard } from "@/components/custom/blocks/BookingCardBlock";
+import { GlassBackdrop, GlassPanel } from "@/components/custom/blocks/GlassPanelBlock";
 
 const MORNING = [{ label: "9:00 AM" }, { label: "10:00 AM" }, { label: "11:00 AM", taken: true }];
 const AFTERNOON = [{ label: "1:00 PM" }, { label: "2:00 PM" }, { label: "3:00 PM" }];
 
 export default function Booking() {
   return (
-    <ProfilePage className="rounded-[36px]">
+    <GlassBackdrop className="rounded-[36px]">
       <GlassPanel shape="slab" className="lg:col-span-4">
-        <Booker
+        <BookingCard
           className="flex h-full flex-col gap-5 p-6"
           onBook={async ({ day, slot }) => {
             await fetch("/api/book", { method: "POST", body: JSON.stringify({ day, slot }) });
           }}
         >
           <h2 className="text-lg font-semibold tracking-tight">Book an appointment</h2>
-          <Booker.Days unavailable={(d) => d.getDay() === 0} />
+          <BookingCard.Days unavailable={(d) => d.getDay() === 0} />
           <div className="space-y-4">
             <p className="text-sm font-semibold">Time</p>
-            <Booker.Slots label="Morning" slots={MORNING} />
-            <Booker.Slots label="Afternoon" slots={AFTERNOON} />
+            <BookingCard.Slots label="Morning" slots={MORNING} />
+            <BookingCard.Slots label="Afternoon" slots={AFTERNOON} />
           </div>
-          <Booker.Submit className="mt-auto" />
-          <Booker.Confirmation withName="Dr. Chen" place="Manhattan Health Associates" />
-        </Booker>
+          <BookingCard.Submit className="mt-auto" />
+          <BookingCard.Confirmation withName="Dr. Chen" place="Manhattan Health Associates" />
+        </BookingCard>
       </GlassPanel>
-    </ProfilePage>
+    </GlassBackdrop>
   );
 }
 ```
@@ -638,8 +260,8 @@ Choosing a new day clears the slot, since availability changes with the day. The
 
 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 my-6 not-prose">
   <div className="p-6 rounded-2xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900">
-    <h3 className="text-lg font-semibold text-zinc-900 dark:text-zinc-50 mb-2">One state, any layout</h3>
-    <p className="text-zinc-600 dark:text-zinc-400 text-sm">Days, slots and the button share one context. Stack them, put them side by side, split them across panels — the booker does not care.</p>
+    <h3 className="text-lg font-semibold text-zinc-900 dark:text-zinc-50 mb-2">Built from the library</h3>
+    <p className="text-zinc-600 dark:text-zinc-400 text-sm">Glass Panel for the surface, Half Stars for the scores, Chart for the donut and bar, Booking Card for the booking. Install this one item and all four come with it.</p>
   </div>
   <div className="p-6 rounded-2xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900">
     <h3 className="text-lg font-semibold text-zinc-900 dark:text-zinc-50 mb-2">A confirmation that shows what happened</h3>
@@ -657,7 +279,7 @@ Choosing a new day clears the slot, since availability changes with the day. The
 
 ## Props Reference
 
-### Booker
+### BookAppointment
 
 <div className="overflow-x-auto my-4">
   <table>
@@ -670,6 +292,18 @@ Choosing a new day clears the slot, since availability changes with the day. The
       </tr>
     </thead>
     <tbody>
+      <tr>
+        <td><code>practitioner</code></td>
+        <td><code>Practitioner</code></td>
+        <td>—</td>
+        <td>Who the page is about. See the shape below.</td>
+      </tr>
+      <tr>
+        <td><code>slotGroups</code></td>
+        <td><code>&#123; label: string; slots: &#123; label: string; taken?: boolean &#125;[] &#125;[]</code></td>
+        <td>—</td>
+        <td>Times on offer, grouped, e.g. Morning and Afternoon.</td>
+      </tr>
       <tr>
         <td><code>onBook</code></td>
         <td><code>(booking: &#123; day: Date; slot: string &#125;) =&gt; void | Promise&lt;void&gt;</code></td>
@@ -677,162 +311,113 @@ Choosing a new day clears the slot, since availability changes with the day. The
         <td>Called on confirm. Return a promise to hold the busy state; a rejection returns to the form.</td>
       </tr>
       <tr>
-        <td><code>className</code></td>
-        <td><code>string</code></td>
-        <td>—</td>
-        <td>Layout of the parts inside. The confirmation is positioned against this element.</td>
-      </tr>
-    </tbody>
-  </table>
-</div>
-
-### Booker.Days
-
-<div className="overflow-x-auto my-4">
-  <table>
-    <thead>
-      <tr>
-        <th>Prop</th>
-        <th>Type</th>
-        <th>Default</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><code>days</code></td>
-        <td><code>Date[]</code></td>
-        <td>today → <code>horizon</code></td>
-        <td>Days on offer, in order, paged <code>count</code> at a time with the previous/next arrows. The default is built on the client so the server never guesses today, and it starts today — there is no paging back into the past.</td>
-      </tr>
-      <tr>
-        <td><code>count</code></td>
-        <td><code>number</code></td>
-        <td><code>7</code></td>
-        <td>Days shown per page.</td>
-      </tr>
-      <tr>
-        <td><code>horizon</code></td>
-        <td><code>number</code></td>
-        <td><code>90</code></td>
-        <td>How far ahead the default days run, in days from today. Ignored when <code>days</code> is given.</td>
-      </tr>
-      <tr>
         <td><code>unavailable</code></td>
         <td><code>(day: Date) =&gt; boolean</code></td>
         <td>—</td>
-        <td>Days with nothing free — shown struck through, not selectable.</td>
+        <td>Days with nothing free — struck through, not selectable.</td>
       </tr>
-    </tbody>
-  </table>
-</div>
-
-### Booker.Slots
-
-<div className="overflow-x-auto my-4">
-  <table>
-    <thead>
       <tr>
-        <th>Prop</th>
-        <th>Type</th>
-        <th>Default</th>
-        <th>Description</th>
+        <td><code>scores</code></td>
+        <td><code>&#123; label: string; value: number &#125;[]</code></td>
+        <td><code>[]</code></td>
+        <td>Named scores out of 5, shown as <code>HalfStars</code> under the summary.</td>
       </tr>
-    </thead>
-    <tbody>
       <tr>
-        <td><code>label</code></td>
+        <td><code>visitReasons</code></td>
+        <td><code>&#123; label: string; value: number &#125;[]</code></td>
+        <td>—</td>
+        <td>Shares in percent for the donut. Omit to leave the panel out.</td>
+      </tr>
+      <tr>
+        <td><code>activities</code></td>
+        <td><code>&#123; label: string; value: number &#125;[]</code></td>
+        <td>—</td>
+        <td>Shares in percent for the stacked bar. Omit to leave the panel out.</td>
+      </tr>
+      <tr>
+        <td><code>bookingHeading</code></td>
+        <td><code>string</code></td>
+        <td><code>&quot;Book an appointment&quot;</code></td>
+        <td>Heading over the booking panel.</td>
+      </tr>
+      <tr>
+        <td><code>variant</code></td>
+        <td><code>&quot;glass&quot; | &quot;solid&quot;</code></td>
+        <td><code>&quot;glass&quot;</code></td>
+        <td>Frosted panels over an aurora, or solid cards with a shadow.</td>
+      </tr>
+      <tr>
+        <td><code>aurora</code></td>
+        <td><code>[string, string, string]</code></td>
+        <td>violet, teal, amber</td>
+        <td>The three colours washed behind the glass. Ignored by <code>solid</code>.</td>
+      </tr>
+      <tr>
+        <td><code>className</code></td>
         <td><code>string</code></td>
         <td>—</td>
-        <td>Group title, e.g. <code>&quot;Morning&quot;</code>.</td>
-      </tr>
-      <tr>
-        <td><code>slots</code></td>
-        <td><code>&#123; label: string; taken?: boolean &#125;[]</code></td>
-        <td>—</td>
-        <td>Times in the group. Disabled until a day is chosen; <code>taken</code> slots are shown struck through.</td>
+        <td>Applied to the page shell. Any other prop is spread there too.</td>
       </tr>
     </tbody>
   </table>
 </div>
 
-### Booker.Submit
+### Practitioner
 
 <div className="overflow-x-auto my-4">
   <table>
     <thead>
       <tr>
-        <th>Prop</th>
+        <th>Field</th>
         <th>Type</th>
-        <th>Default</th>
         <th>Description</th>
       </tr>
     </thead>
     <tbody>
       <tr>
-        <td><code>children</code></td>
-        <td><code>ReactNode</code></td>
-        <td><code>&quot;Book now&quot;</code></td>
-        <td>Button text. Once a day and slot are chosen it reads back the choice, e.g. <em>Book now, Wed 25 at 9:00 AM</em>.</td>
-      </tr>
-    </tbody>
-  </table>
-</div>
-
-### Booker.Confirmation
-
-<div className="overflow-x-auto my-4">
-  <table>
-    <thead>
-      <tr>
-        <th>Prop</th>
-        <th>Type</th>
-        <th>Default</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><code>withName</code></td>
+        <td><code>name</code></td>
         <td><code>string</code></td>
-        <td>—</td>
-        <td>Who the appointment is with.</td>
+        <td>Full name for the heading, e.g. <code>&quot;Dr. Emily Chen, MD&quot;</code>.</td>
       </tr>
       <tr>
-        <td><code>place</code></td>
+        <td><code>shortName</code></td>
         <td><code>string</code></td>
-        <td>—</td>
-        <td>Where, appended after the name.</td>
+        <td>How the confirmation refers to them, e.g. <code>&quot;Dr. Chen&quot;</code>. Falls back to <code>name</code>.</td>
       </tr>
-    </tbody>
-  </table>
-</div>
-
-### StarRating
-
-<div className="overflow-x-auto my-4">
-  <table>
-    <thead>
       <tr>
-        <th>Prop</th>
-        <th>Type</th>
-        <th>Default</th>
-        <th>Description</th>
+        <td><code>specialties</code></td>
+        <td><code>string</code></td>
+        <td>One line under the name.</td>
       </tr>
-    </thead>
-    <tbody>
       <tr>
-        <td><code>value</code></td>
+        <td><code>practice</code></td>
+        <td><code>string</code></td>
+        <td>Where they work; appended to the confirmation.</td>
+      </tr>
+      <tr>
+        <td><code>photo</code>, <code>photoAlt</code></td>
+        <td><code>string</code></td>
+        <td>The portrait and its alt text.</td>
+      </tr>
+      <tr>
+        <td><code>rating</code>, <code>reviews</code></td>
         <td><code>number</code></td>
-        <td>—</td>
-        <td>0–5, fractional. Partial stars fill to the fraction.</td>
+        <td>Overall score out of 5 and the number of reviews behind it.</td>
       </tr>
       <tr>
-        <td><code>label</code></td>
+        <td><code>summary</code></td>
         <td><code>string</code></td>
-        <td>—</td>
-        <td>What is being rated; used in the accessible name.</td>
+        <td>A short read of what patients say.</td>
+      </tr>
+      <tr>
+        <td><code>location</code>, <code>phone</code>, <code>email</code>, <code>languages</code></td>
+        <td><code>string</code></td>
+        <td>Contact rows. Each is optional; a missing one is simply not drawn. Phone and email become links.</td>
       </tr>
     </tbody>
   </table>
 </div>
+
+### BookingCard
+
+The booking panel's own props — `onBook`, `BookingCard.Days`, `BookingCard.Slots`, `BookingCard.Submit`, `BookingCard.Confirmation` — are documented on the <DocLink to="booking-card">Booking Card</DocLink> page.

@@ -19,6 +19,7 @@ import {
   Banknote,
   CreditCard,
 } from "lucide-react";
+import { HalfStars } from "@/components/custom/blocks/HalfStarsBlock";
 import { cn } from "@/lib/utils";
 
 export type ProductDetailsVariant =
@@ -73,17 +74,19 @@ const DEFAULT_COLORS: ProductColor[] = [
 
 const DEFAULT_SIZES = ["US 8", "US 9", "US 10", "US 11", "US 12"];
 
-/** Five stars, filled up to `rating`. */
-function Stars({ className, rating }: { className?: string; rating: number }) {
+/** Five stars, filled to the fraction of `rating` — the library's HalfStars at product-card size. */
+function Stars({ className, rating, size = 16 }: { className?: string; rating: number; size?: number }) {
   return (
-    <div className="flex text-amber-400 shrink-0">
-      {Array.from({ length: 5 }, (_, i) => (
-        <Star
-          key={i}
-          className={cn(className, i < Math.round(rating) && "fill-amber-400")}
-        />
-      ))}
-    </div>
+    <HalfStars
+      rating={rating}
+      size={size}
+      showText={false}
+      activeColor="text-amber-400"
+      inactiveColor="text-amber-400/25"
+      role="img"
+      aria-label={`Rated ${rating} out of 5`}
+      className={cn("shrink-0", className)}
+    />
   );
 }
 
@@ -195,7 +198,7 @@ export function ProductDetails({
               <div className="space-y-3">
                 <div className="flex flex-wrap items-center gap-2">
                   <span className="px-2.5 py-0.5 rounded-full bg-background border border-border text-foreground text-[11px] font-bold shrink-0 whitespace-nowrap">{badge}</span>
-                  <Stars className="size-4" rating={rating} />
+                  <Stars size={16} rating={rating} />
                   <span className="text-xs font-bold text-foreground shrink-0">{rating}</span>
                   <span className="text-xs text-muted-foreground whitespace-nowrap">({reviews} Verified Runner Reviews)</span>
                 </div>
@@ -338,7 +341,7 @@ export function ProductDetails({
                   <div className="flex flex-wrap items-center gap-2">
                     <span className="px-2.5 py-0.5 rounded-full bg-background border border-border text-foreground text-[11px] font-bold shrink-0 whitespace-nowrap">{badge}</span>
                     <div className="flex items-center gap-1.5 shrink-0 whitespace-nowrap">
-                      <Stars className="size-3.5" rating={rating} />
+                      <Stars size={14} rating={rating} />
                       <span className="text-xs font-bold text-muted-foreground whitespace-nowrap">{rating} ({reviews} Reviews)</span>
                     </div>
                   </div>
@@ -517,7 +520,7 @@ export function ProductDetails({
                 </span>
                 <span className="text-muted-foreground text-xs hidden sm:inline">•</span>
                 <div className="flex items-center gap-1.5">
-                  <Stars className="size-3.5" rating={rating} />
+                  <Stars size={14} rating={rating} />
                   <span className="text-xs font-black text-foreground">{rating}</span>
                   <span className="text-[10px] sm:text-[11px] text-muted-foreground font-medium">({reviews} Reviews)</span>
                 </div>
@@ -901,7 +904,7 @@ export function ProductDetails({
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4 text-xs">
                 <div className="p-5 sm:p-6 rounded-2xl sm:rounded-3xl bg-card border border-border space-y-2">
                   <div className="flex items-center justify-between">
-                    <Stars className="size-3.5" rating={5} />
+                    <Stars size={14} rating={5} />
                     <span className="text-[11px] text-muted-foreground font-medium">2 days ago</span>
                   </div>
                   <p className="font-black text-sm text-foreground">"Best running shoes I have owned!"</p>
@@ -911,7 +914,7 @@ export function ProductDetails({
 
                 <div className="p-5 sm:p-6 rounded-2xl sm:rounded-3xl bg-card border border-border space-y-2">
                   <div className="flex items-center justify-between">
-                    <Stars className="size-3.5" rating={5} />
+                    <Stars size={14} rating={5} />
                     <span className="text-[11px] text-muted-foreground font-medium">1 week ago</span>
                   </div>
                   <p className="font-black text-sm text-foreground">"True to size & premium quality"</p>

@@ -264,17 +264,19 @@
       "type": "registry:component",
       "title": "Book Appointment",
       "author": "AlgorizeTech",
-      "description": "A booking flow in the glass style: a day strip, time slots, a button that reads back the choice, and a confirmation that draws itself in. Use it for clinics, salons, consultations — any page that ends in an appointment.",
+      "description": "A practitioner's page that ends in an appointment: portrait and contact, scores as stars, two small charts, and a booking panel — glass or solid. Use it for clinics, salons, consultations.",
       "categories": [
         "forms",
         "marketing"
       ],
       "dependencies": [
-        "framer-motion",
         "lucide-react"
       ],
       "registryDependencies": [
-        "utils"
+        "https://algorize-ui.vercel.app/r/booking-card.json",
+        "https://algorize-ui.vercel.app/r/chart.json",
+        "https://algorize-ui.vercel.app/r/glass-panel.json",
+        "https://algorize-ui.vercel.app/r/half-stars.json"
       ],
       "files": [
         {
@@ -283,7 +285,7 @@
           "target": "components/custom/blocks/BookAppointmentBlock.tsx"
         }
       ],
-      "docs": "Named exports: Booker, StarRating. `Booker` is a compound component — put `Booker.Days`, `Booker.Slots`, `Booker.Submit` and `Booker.Confirmation` inside it in any layout; it holds the chosen day and slot and calls `onBook`. Pair with `ProfilePage` and `GlassPanel` from the profile-page item for the frosted panels."
+      "docs": "Named export: BookAppointment. Composed from the booking-card, glass-panel, half-stars and chart items, which install alongside it. Pass `practitioner`, `slotGroups` and `onBook`; `scores`, `visitReasons` and `activities` fill the stars, donut and bar; `variant` switches glass to solid."
     },
     {
       "name": "book-flip",
@@ -309,6 +311,32 @@
         }
       ],
       "docs": "Supports leaves array prop, controlled currentIndex, keyboard navigation, and custom aspect ratios."
+    },
+    {
+      "name": "booking-card",
+      "type": "registry:component",
+      "title": "Booking Card",
+      "author": "AlgorizeTech",
+      "description": "A booking panel for any card: a day strip paged a week at a time, time slots in groups, a button that reads back the choice, and a confirmation that draws itself in. Use it wherever a page ends in an appointment.",
+      "categories": [
+        "forms",
+        "dates"
+      ],
+      "dependencies": [
+        "framer-motion",
+        "lucide-react"
+      ],
+      "registryDependencies": [
+        "utils"
+      ],
+      "files": [
+        {
+          "path": "src/components/custom/blocks/BookingCardBlock.tsx",
+          "type": "registry:component",
+          "target": "components/custom/blocks/BookingCardBlock.tsx"
+        }
+      ],
+      "docs": "Named export: BookingCard (plus the BookingSlot and Booking types). `BookingCard` is a compound component — put `BookingCard.Days`, `BookingCard.Slots`, `BookingCard.Submit` and `BookingCard.Confirmation` inside it in any layout; it holds the chosen day and slot and calls `onBook`. It draws no surface of its own: make it the padded inside of whatever panel it sits in so the confirmation reaches the edges. The submit button, check mark and focus rings use the `--primary` token."
     },
     {
       "name": "breadcrumb",
@@ -521,7 +549,7 @@
           "target": "components/custom/blocks/ChartBlock.tsx"
         }
       ],
-      "docs": "Named exports: ChartBlock. `data` takes { label, value }; switch presentation with `type` (bar | line | pie | donut) and set `height` in pixels. Hand-drawn SVG with no chart library, so bundle cost is nil — but there are no axes, tooltips or scales beyond what is drawn. Use a real charting library for analytical work."
+      "docs": "Named exports: ChartBlock. `data` takes { label, value, color? }; switch presentation with `type` (bar | line | pie | donut | donut-legend | stacked-bar) and set `height` in pixels for the axis charts. The two legend types colour each share from `colors` (theme accent first) and take `centerLabel` / `hoverLabel`. Hand-drawn SVG with no chart library, so bundle cost is nil — but there are no axes or scales beyond what is drawn. Use a real charting library for analytical work."
     },
     {
       "name": "chat",
@@ -1259,6 +1287,7 @@
         "lucide-react"
       ],
       "registryDependencies": [
+        "https://algorize-ui.vercel.app/r/social-links.json",
         "utils"
       ],
       "files": [
@@ -1268,7 +1297,7 @@
           "target": "components/custom/blocks/FooterBlock.tsx"
         }
       ],
-      "docs": "Named export: Footer. Accepts `variant` (4 responsive variants: simple-centered, glass-dock, neon-glow-pulse, quantum-particle-beam), `brandName`, `tagline`, `logo`, `className`. All variants adapt across mobile, tablet, and desktop screens."
+      "docs": "Named export: Footer. Accepts `variant` (4 responsive variants: simple-centered, glass-dock, neon-glow-pulse, quantum-particle-beam), `brandName`, `tagline`, `logo`, `socialLinks`, `className`. The social row is the `social-links` item, which installs alongside. All variants adapt across mobile, tablet, and desktop screens."
     },
     {
       "name": "form",
@@ -1297,6 +1326,28 @@
         }
       ],
       "docs": "Named exports: FormWrapper, FormField, FormError, FormSubmit, getThemeStyles. Layout and styling only — bring your own state, via react-hook-form or otherwise. FormSubmit takes `isSubmitting` to render its pending state."
+    },
+    {
+      "name": "glass-panel",
+      "type": "registry:component",
+      "title": "Glass Panel",
+      "author": "AlgorizeTech",
+      "description": "A frosted surface in four shapes and the aurora ground it sits on. Use it for glass bento layouts, profile and booking pages — or flip it to solid cards with one prop.",
+      "categories": [
+        "layout"
+      ],
+      "dependencies": [],
+      "registryDependencies": [
+        "utils"
+      ],
+      "files": [
+        {
+          "path": "src/components/custom/blocks/GlassPanelBlock.tsx",
+          "type": "registry:component",
+          "target": "components/custom/blocks/GlassPanelBlock.tsx"
+        }
+      ],
+      "docs": "Named exports: GlassBackdrop, GlassPanel, useSurface (plus SurfaceVariant, GlassShape types). `GlassBackdrop` washes three `aurora` colours behind a 12-column grid and sets `variant` (glass | solid) for every `GlassPanel` inside; panels take `shape` (slab, tile, disc, capsule), `interactive`, and Tailwind column spans."
     },
     {
       "name": "globe",
@@ -1382,6 +1433,7 @@
         "lucide-react"
       ],
       "registryDependencies": [
+        "https://algorize-ui.vercel.app/r/half-stars.json",
         "utils"
       ],
       "files": [
@@ -1683,7 +1735,9 @@
         "lucide-react"
       ],
       "registryDependencies": [
+        "https://algorize-ui.vercel.app/r/button.json",
         "https://algorize-ui.vercel.app/r/icons.json",
+        "https://algorize-ui.vercel.app/r/input.json",
         "utils"
       ],
       "files": [
@@ -1698,7 +1752,7 @@
           "target": "components/custom/blocks/login-form-theme.ts"
         }
       ],
-      "docs": "Default export: LoginForm. Also exports getThemeStyles and the LoginFormValues type. `variant` is default | split | glass | minimal — split renders a gradient side panel. `onSubmit` receives the validated credentials; without it the form simulates a round trip. `signupHref` points at the matching `register-form` page. Validation is client-side presentation only — enforce it again on your server."
+      "docs": "Default export: LoginForm. Also exports getThemeStyles and the LoginFormValues type. Fields and buttons are the library's input and button items, which install alongside it. `variant` is default | split | glass | minimal — split renders a gradient side panel. `onSubmit` receives the validated credentials; without it the form simulates a round trip. `signupHref` points at the matching `register-form` page. Validation is client-side presentation only — enforce it again on your server."
     },
     {
       "name": "magic-bento",
@@ -1883,6 +1937,7 @@
         "lucide-react"
       ],
       "registryDependencies": [
+        "https://algorize-ui.vercel.app/r/button.json",
         "utils"
       ],
       "files": [
@@ -1897,7 +1952,7 @@
           "target": "components/custom/blocks/navbar-theme.ts"
         }
       ],
-      "docs": "Named exports: NavbarBlock, getThemeStyles. Variants: default | floating | centered | minimal | glass. Uses next/link, so it needs edits outside Next.js. For app chrome with dropdown panels, use `navigation-menu`."
+      "docs": "Named exports: NavbarBlock, getThemeStyles. Variants: default | floating | centered | minimal | glass. Links render through `linkComponent` (a plain `a` by default; pass next/link in Next.js). The mobile menu toggles are the `button` item, which installs alongside. For app chrome with dropdown panels, use `navigation-menu`."
     },
     {
       "name": "navigation-menu",
@@ -2115,6 +2170,7 @@
         "lucide-react"
       ],
       "registryDependencies": [
+        "https://algorize-ui.vercel.app/r/toggle-group.json",
         "utils"
       ],
       "files": [
@@ -2129,7 +2185,7 @@
           "target": "components/custom/blocks/pricing-theme.ts"
         }
       ],
-      "docs": "Named exports: PricingCards, PricingBuilder, PricingTable, PricingSlider, PricingTypographic, PricingPlans. The largest pricing item — variants include cards, builder, table, slider, typographic, and interactive service checklist."
+      "docs": "Named exports: PricingCards, PricingBuilder, PricingTable, PricingSlider, PricingTypographic, PricingPlans. The largest pricing item — variants include cards, builder, table, slider, typographic, and interactive service checklist. The typographic billing switch is the `toggle-group` item, which installs alongside."
     },
     {
       "name": "pricing-plan",
@@ -2247,6 +2303,7 @@
         "lucide-react"
       ],
       "registryDependencies": [
+        "https://algorize-ui.vercel.app/r/half-stars.json",
         "utils"
       ],
       "files": [
@@ -2263,13 +2320,14 @@
       "type": "registry:component",
       "title": "Profile Page",
       "author": "AlgorizeTech",
-      "description": "A person's profile as a glass bento page: an aurora backdrop, one frosted panel recipe in four shapes, and a 24-hour dial that shows their working window live. Use it for team directories, member pages and public profiles.",
+      "description": "A person's profile as a glass bento page: an aurora backdrop, frosted panels, and a 24-hour dial that shows their working window live. Use it for team directories, member pages and public profiles.",
       "categories": [
         "layout",
         "marketing"
       ],
       "dependencies": [],
       "registryDependencies": [
+        "https://algorize-ui.vercel.app/r/glass-panel.json",
         "utils"
       ],
       "files": [
@@ -2279,7 +2337,7 @@
           "target": "components/custom/blocks/ProfilePageBlock.tsx"
         }
       ],
-      "docs": "Named exports: ProfilePage, GlassPanel, WorkdayDial, useLocalTime. `ProfilePage` is the backdrop and 12-column grid; place `GlassPanel`s inside with `shape` (slab, tile, disc, capsule) and column spans. `WorkdayDial` takes `timeZone`, `start`, `end`, `place`, `name`."
+      "docs": "Named exports: ProfilePage, WorkdayDial, useLocalTime (GlassPanel and useSurface are re-exported from the glass-panel item, which installs alongside). `ProfilePage` is the glass backdrop and 12-column grid; place `GlassPanel`s inside with `shape` and column spans. `WorkdayDial` takes `timeZone`, `start`, `end`, `place`, `name`."
     },
     {
       "name": "progress",
@@ -2425,7 +2483,9 @@
         "lucide-react"
       ],
       "registryDependencies": [
+        "https://algorize-ui.vercel.app/r/button.json",
         "https://algorize-ui.vercel.app/r/icons.json",
+        "https://algorize-ui.vercel.app/r/input.json",
         "utils"
       ],
       "files": [
@@ -2440,7 +2500,7 @@
           "target": "components/custom/blocks/register-form-theme.ts"
         }
       ],
-      "docs": "Default export: RegisterForm. Also exports getThemeStyles and the RegisterFormValues type. `variant` is default | split | glass | minimal — split renders a gradient side panel. `onSubmit` receives the validated fields; without it the form simulates a round trip. `loginHref` points at the matching `login-form` page, and `minPasswordLength` sets the client-side minimum. Validation is client-side presentation only — enforce it again on your server."
+      "docs": "Default export: RegisterForm. Also exports getThemeStyles and the RegisterFormValues type. Fields and buttons are the library's input and button items, which install alongside it. `variant` is default | split | glass | minimal — split renders a gradient side panel. `onSubmit` receives the validated fields; without it the form simulates a round trip. `loginHref` points at the matching `login-form` page, and `minPasswordLength` sets the client-side minimum. Validation is client-side presentation only — enforce it again on your server."
     },
     {
       "name": "resizable",
@@ -2481,6 +2541,7 @@
         "lucide-react"
       ],
       "registryDependencies": [
+        "https://algorize-ui.vercel.app/r/half-stars.json",
         "utils"
       ],
       "files": [
@@ -2658,6 +2719,7 @@
         "lucide-react"
       ],
       "registryDependencies": [
+        "https://algorize-ui.vercel.app/r/tooltip.json",
         "utils"
       ],
       "files": [
@@ -2672,7 +2734,7 @@
           "target": "components/custom/blocks/sidebar-context.ts"
         }
       ],
-      "docs": "Named exports: SidebarProvider, Sidebar, SidebarHeader, SidebarBrand, SidebarContent, SidebarGroup, SidebarFooter, useSidebar. Wrap your app in SidebarProvider; read `expanded` and `isMobileOpen` from useSidebar to drive your own toggle. Variants: attached | floating."
+      "docs": "Named exports: SidebarProvider, Sidebar, SidebarHeader, SidebarBrand, SidebarContent, SidebarGroup, SidebarFooter, useSidebar. Wrap your app in SidebarProvider; read `expanded` and `isMobileOpen` from useSidebar to drive your own toggle. Variants: attached | floating. Collapsed item labels show in the `tooltip` item, which installs alongside."
     },
     {
       "name": "signup-form",
@@ -2721,6 +2783,31 @@
         }
       ],
       "docs": "Shimmer keyframes ship inline in a scoped <style> block — no global CSS or Tailwind config changes required."
+    },
+    {
+      "name": "social-links",
+      "type": "registry:component",
+      "title": "Social Links",
+      "author": "AlgorizeTech",
+      "description": "A row of brand marks that link out — X, GitHub, LinkedIn, YouTube, Instagram, Facebook, Discord, Dribbble, email. Use it in footers, profile cards and author bylines.",
+      "categories": [
+        "navigation",
+        "marketing"
+      ],
+      "dependencies": [
+        "lucide-react"
+      ],
+      "registryDependencies": [
+        "utils"
+      ],
+      "files": [
+        {
+          "path": "src/components/custom/blocks/SocialLinksBlock.tsx",
+          "type": "registry:component",
+          "target": "components/custom/blocks/SocialLinksBlock.tsx"
+        }
+      ],
+      "docs": "Named export: SocialLinks (plus the SocialLink and SocialNetwork types). `links` is { network, href, label? }[]; `variant` is tile | outline | ghost, `size` is sm | md | lg. Links open in a new tab unless `external` is false; mailto links never do. Brand marks are inline SVG, so no icon package is needed."
     },
     {
       "name": "sonner",
@@ -3253,7 +3340,7 @@
           "target": "components/custom/blocks/toggle-group-theme.ts"
         }
       ],
-      "docs": "Named exports: ToggleGroup, ToggleGroupItem, getThemeStyles. Set `type` to single or multiple — `value` is a string for single, an array for multiple. Compose ToggleGroupItem children; the group passes theme and size down."
+      "docs": "Named exports: ToggleGroup, ToggleGroupItem, getThemeStyles. Set `type` to single or multiple — `value` is a string for single, an array for multiple. Compose ToggleGroupItem children; the group passes theme and size down. `color` accepts primary (the theme token), indigo, rose, emerald, zinc or a hex."
     },
     {
       "name": "tooltip",
