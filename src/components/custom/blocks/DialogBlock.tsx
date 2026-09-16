@@ -237,7 +237,7 @@ export function DialogContent({
     >
       {/* Backdrop */}
       <div
-        className="fixed inset-0 bg-black/80 backdrop-blur-sm animate-in fade-in duration-200"
+        className="fixed inset-0 bg-black/30 dark:bg-black/80 backdrop-blur-sm animate-in fade-in duration-200"
         onClick={() => setOpen(false)}
         aria-hidden="true"
       />
