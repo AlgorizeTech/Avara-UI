@@ -119,6 +119,7 @@ export const sandboxNames = [
   "stepper",
   "sticky-scroll-stack",
   "support",
+  "support-hero",
   "table",
   "table-of-contents",
   "terminal",

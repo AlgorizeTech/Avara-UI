@@ -140,6 +140,7 @@
     "src/components/custom/blocks/StickyScrollStackBlock.tsx",
     "src/components/custom/blocks/Support-dashboard.tsx",
     "src/components/custom/blocks/SupportContainer.tsx",
+    "src/components/custom/blocks/SupportHeroBlock.tsx",
     "src/components/custom/blocks/SupportPage.tsx",
     "src/components/custom/blocks/TableBlock.tsx",
     "src/components/custom/blocks/TableOfContentsBlock.tsx",

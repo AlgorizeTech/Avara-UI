@@ -124,6 +124,7 @@ export const sandboxRegistry: Record<string, LazyExoticComponent<ComponentType<a
   "stepper": lazyRetry(() => import("./demos/stepper-demo")),
   "sticky-scroll-stack": lazyRetry(() => import("./demos/sticky-scroll-stack-demo")),
   "support": lazyRetry(() => import("./demos/support-demo")),
+  "support-hero": lazyRetry(() => import("./demos/support-hero-demo")),
   "table": lazyRetry(() => import("./demos/table-demo")),
   "table-of-contents": lazyRetry(() => import("./demos/table-of-contents-demo")),
   "terminal": lazyRetry(() => import("./demos/terminal-demo")),
