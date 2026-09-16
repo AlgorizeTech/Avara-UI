@@ -296,10 +296,13 @@ export function ImageCompare({
       {/* VARIANT 5: MINIMAL LINE */}
       {variant === "minimal-line" && (
         <div
-          className="absolute top-0 bottom-0 z-30 w-0.5 transition-all duration-75 pointer-events-none bg-white"
-          style={{ left: `${sliderPos}%` }}
+          className="absolute top-0 bottom-0 z-30 w-0.5 transition-all duration-75 pointer-events-none"
+          style={{ left: `${sliderPos}%`, backgroundColor: activeColor }}
         >
-          <div className="absolute top-1/2 -translate-x-1/2 -translate-y-1/2 w-4 h-4 rounded-full bg-white shadow-lg border border-black/20" />
+          <div
+            className="absolute top-1/2 -translate-x-1/2 -translate-y-1/2 w-4 h-4 rounded-full shadow-lg border border-black/20"
+            style={{ backgroundColor: activeColor }}
+          />
         </div>
       )}
 
