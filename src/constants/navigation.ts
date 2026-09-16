@@ -210,6 +210,12 @@ export const navigation: NavigationItem[] = [
         ],
       },
       {
+        label: "Bento Showcase",
+        slug: "bento-showcase",
+        badge: "New",
+        keywords: ["bento", "showcase", "marketing", "grid", "marquee", "scroll", "outsourcing", "agency", "landing"],
+      },
+      {
         label: "Book Appointment",
         slug: "book-appointment",
         badge: "New",

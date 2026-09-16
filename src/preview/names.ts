@@ -12,6 +12,7 @@ export const sandboxNames = [
   "api-playground",
   "apple-select",
   "audio-player",
+  "bento-showcase",
   "book-appointment",
   "book-flip",
   "booking-card",

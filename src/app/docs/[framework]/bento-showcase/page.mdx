@@ -1,0 +1,463 @@
+import { ExampleShowcase } from "@/components/site/Sandbox";
+import { extractCode } from "@/lib/code";
+
+# Bento Showcase
+
+A six-card marketing bento on a black ground: a hero with a live chat and a headline, a laptop of case studies, one line that says what you do, figures that scroll up, the plans on a phone, and a strip of the team that scrolls left. Flat pastel cards, no borders, no shadows — colour is the only thing separating them.
+
+`BentoShowcase` is a section built from library pieces. Both moving cards are <DocLink to="marquee">Marquee</DocLink> (`direction="up"` and `"left"`), the conversation is <DocLink to="chat-bubble">Chat Bubble</DocLink>, the rating is <DocLink to="half-stars">Half Stars</DocLink>, the device is <DocLink to="mobile-mockup">Mobile Mockup</DocLink> and the call to action is <DocLink to="button">Button</DocLink>. Each card is a named part — `Hero`, `CaseStudies`, `Headline`, `Stats`, `Phone`, `Team` — so a page can leave one out, reorder them, or add its own with `BentoShowcase.Card`.
+
+export const usageSection = `"use client";
+
+import { BentoShowcase } from "@/components/custom/blocks/BentoShowcaseBlock";
+
+const CASE_STUDIES = [
+  {
+    quote: "5% of deal-closing rate and appointments for a solution provider",
+    metrics: [{ value: "+70%", label: "Close rate" }, { value: "$250K", label: "Revenue" }],
+  },
+  {
+    quote: "Saving time: 3x appointments booked per week for a SaaS team",
+    metrics: [{ value: "+85%", label: "Bookings" }, { value: "$140K", label: "Pipeline" }],
+  },
+  {
+    quote: "Sold-out delivery slots and a reduced late rate for a logistics firm",
+    metrics: [{ value: "+45%", label: "On time" }, { value: "$90K", label: "Saved" }],
+  },
+];
+
+const STATS = [
+  { value: ">30,000", caption: "Leads generated a month, on average", tone: "cream", ornament: "spheres" },
+  { value: "$180M", caption: "Brought to our clients so far", tone: "lilac", ornament: "ring" },
+  { value: "200+", caption: "Sales reps on the floor right now", tone: "ink", ornament: "drops" },
+];
+
+const PLANS = [
+  {
+    rank: "#2",
+    name: "Professional",
+    price: "$3,500",
+    note: "7–12 qualified leads a month, guaranteed",
+    image: "/plans/professional.jpg",
+    benefits: ["Lead qualification", "Calendar booking", "Template A/B testing", "Intelligent research", "Email outreach"],
+    action: "Start now",
+  },
+  { rank: "#3", name: "Enterprise", image: "/plans/enterprise.jpg" },
+];
+
+// Four photos and two figure discs make six cells — an even count keeps the
+// high/low rhythm intact across the loop.
+const TEAM = [
+  { src: "/team/desk.jpg", alt: "A desk from above" },
+  { src: "/team/floor.jpg", alt: "Two agents at their desks" },
+  { src: "/team/maria.jpg", alt: "Maria on a call" },
+  { src: "/team/alex.jpg", alt: "Alex at his laptop" },
+];
+
+export default function Showcase() {
+  return (
+    <BentoShowcase className="rounded-[36px]">
+      <BentoShowcase.Hero
+        label="Outsourcing company"
+        photo="/team/agent.jpg"
+        photoAlt="A support agent wearing a headset at her laptop"
+        chat={{
+          from: "Maria",
+          fromRole: "Sales rep",
+          message: "Hi! Can you help me cancel my reservation for Pete Mitchell made earlier this week?",
+          as: "AgainAgain",
+          reply: "Sure, I'll cancel that immediately for you!",
+        }}
+        avatars={["/team/maria.jpg", "/team/tom.jpg", "/team/alex.jpg"]}
+      >
+        <em>Trusted by</em> 1000’s of sales reps
+      </BentoShowcase.Hero>
+
+      <BentoShowcase.CaseStudies rating={5} reviews={42} items={CASE_STUDIES} />
+
+      <BentoShowcase.Headline label="Customer support" photo="/team/group.jpg" photoAlt="The support team">
+        We handle your
+        <br />
+        calls so you <em>run your business</em>
+      </BentoShowcase.Headline>
+
+      <BentoShowcase.Stats items={STATS} />
+
+      <BentoShowcase.Phone plans={PLANS} onAction={() => router.push("/pricing")} />
+
+      <BentoShowcase.Team photos={TEAM} stat={{ value: "97%", caption: "AHT (Average Handling Time)" }} />
+    </BentoShowcase>
+  );
+}
+`;
+
+<ExampleShowcase
+  name="bento-showcase"
+  columns={1}
+  examples={[
+    {
+      title: "Outsourcing company",
+      subheading: "Three columns and three rows at desktop, two columns at tablet, a single stack on phones. The figures scroll up and the team scrolls left; both pause under the pointer and hold still under prefers-reduced-motion.",
+      propNotes: [
+        {
+          prop: "Hero",
+          effect:
+            "takes a `photo`, a `chat` (who wrote, what they wrote, who replied and what) and the headline as children — wrap the display phrase in `<em>` for the serif italic. `avatars` sit under it as social proof.",
+        },
+        {
+          prop: "Stats",
+          effect:
+            "is a `MarqueeBlock` going up: each item is a figure, a caption, a `tone` and an optional `ornament` (spheres, ring, drops).",
+        },
+        {
+          prop: "Team",
+          effect:
+            "is a `MarqueeBlock` going left: every cell is an ellipse, cells alternate high and low, and a figure disc follows every other photo when `stat` is given. Keep the cell count even so the loop stays seamless.",
+        },
+        {
+          prop: "Headline",
+          effect:
+            "sets the `<em>` phrase on its own line in the serif, with a scribble under it. Put a `<br />` where the sans lines should break.",
+        },
+        {
+          prop: "Phone",
+          effect:
+            "puts the first plan on an `Iphone17ProMaxMockup`, tilted and run off the card's edge, with the second plan peeking in below. `onAction` is the button.",
+        },
+      ],
+      props: { rounded: true },
+      usage: usageSection,
+      code: extractCode("src/components/custom/blocks/BentoShowcaseBlock.tsx"),
+      minHeight: 820,
+    },
+  ]}
+/>
+
+## Installation
+
+<Installation name="bento-showcase" />
+
+## Your own card
+
+Every part renders through `BentoShowcase.Card`, and so can yours. It takes a `tone`, an optional top-right `label`, and the grid placement as ordinary Tailwind — the grid is `3fr 2fr 3fr` across, rows of `15rem`, at `lg`; two columns at `md`.
+
+```tsx
+<BentoShowcase>
+  <BentoShowcase.Card tone="butter" label="Office hours" className="min-h-[15rem] p-6 lg:col-start-2 lg:row-start-1">
+    <p className="text-[1.6rem] font-semibold tracking-tight">24/7</p>
+    <p className="mt-1 text-sm text-black/60">Someone always picks up.</p>
+  </BentoShowcase.Card>
+  {/* …the rest */}
+</BentoShowcase>
+```
+
+The built-in parts carry their own placement (`Hero` is column 1, rows 1–2; `Phone` is column 3, rows 2–3, and so on). Pass `className` with your own `lg:col-start-*` / `lg:row-start-*` to move one — later utilities win.
+
+## Features
+
+<div className="grid grid-cols-1 sm:grid-cols-2 gap-4 my-6 not-prose">
+  <div className="p-6 rounded-2xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900">
+    <h3 className="text-lg font-semibold text-zinc-900 dark:text-zinc-50 mb-2">Built from the library</h3>
+    <p className="text-zinc-600 dark:text-zinc-400 text-sm">Marquee for both scrolling cards, Chat Bubble for the conversation, Half Stars for the rating, Mobile Mockup for the device and Button for the call to action. Install this one item and all five come with it.</p>
+  </div>
+  <div className="p-6 rounded-2xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900">
+    <h3 className="text-lg font-semibold text-zinc-900 dark:text-zinc-50 mb-2">Two things move, nothing else</h3>
+    <p className="text-zinc-600 dark:text-zinc-400 text-sm">The figures scroll up and the team scrolls left; the chat pops in once. Both marquees pause under the pointer and stay put under prefers-reduced-motion, with the content still readable.</p>
+  </div>
+  <div className="p-6 rounded-2xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900">
+    <h3 className="text-lg font-semibold text-zinc-900 dark:text-zinc-50 mb-2">Compound, not configured</h3>
+    <p className="text-zinc-600 dark:text-zinc-400 text-sm">Six named parts you can drop, reorder or replace, and a plain Card for anything else. Headlines are children, so the serif phrase is an em tag, not a prop.</p>
+  </div>
+  <div className="p-6 rounded-2xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900">
+    <h3 className="text-lg font-semibold text-zinc-900 dark:text-zinc-50 mb-2">Responsive to a single column</h3>
+    <p className="text-zinc-600 dark:text-zinc-400 text-sm">3-2-3 columns at lg, two at md, one on phones. The tilted phone and both marquees keep their own height when the grid rows go away.</p>
+  </div>
+</div>
+
+## Props Reference
+
+### BentoShowcase
+
+<div className="overflow-x-auto my-4">
+  <table>
+    <thead>
+      <tr>
+        <th>Prop</th>
+        <th>Type</th>
+        <th>Default</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><code>children</code></td>
+        <td><code>ReactNode</code></td>
+        <td>—</td>
+        <td>The cards. Any mix of the named parts and <code>BentoShowcase.Card</code>.</td>
+      </tr>
+      <tr>
+        <td><code>className</code></td>
+        <td><code>string</code></td>
+        <td>—</td>
+        <td>Applied to the black section. Add <code>rounded-[36px]</code> inside a container.</td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+### BentoShowcase.Card
+
+<div className="overflow-x-auto my-4">
+  <table>
+    <thead>
+      <tr>
+        <th>Prop</th>
+        <th>Type</th>
+        <th>Default</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><code>tone</code></td>
+        <td><code>"cream" | "ice" | "lilac" | "sky" | "butter" | "ink"</code></td>
+        <td><code>"cream"</code></td>
+        <td>The card's colour. <code>ink</code> is the one dark tone, with white text.</td>
+      </tr>
+      <tr>
+        <td><code>label</code></td>
+        <td><code>ReactNode</code></td>
+        <td>—</td>
+        <td>Small caption in the top-right corner.</td>
+      </tr>
+      <tr>
+        <td><code>className</code></td>
+        <td><code>string</code></td>
+        <td>—</td>
+        <td>Grid placement, padding, minimum height.</td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+### BentoShowcase.Hero
+
+<div className="overflow-x-auto my-4">
+  <table>
+    <thead>
+      <tr>
+        <th>Prop</th>
+        <th>Type</th>
+        <th>Default</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><code>photo</code>, <code>photoAlt</code></td>
+        <td><code>string</code></td>
+        <td>—</td>
+        <td>The portrait, shown in an arch. Use a picture with the subject in the upper middle.</td>
+      </tr>
+      <tr>
+        <td><code>chat</code></td>
+        <td><code>&#123; from, fromRole?, message, as, reply, avatar? &#125;</code></td>
+        <td>—</td>
+        <td>The customer's message and the reply. <code>as</code> is the name the reply is sent under.</td>
+      </tr>
+      <tr>
+        <td><code>chip</code></td>
+        <td><code>string</code></td>
+        <td><code>"Assistant"</code></td>
+        <td>The yellow chip under the chat.</td>
+      </tr>
+      <tr>
+        <td><code>avatars</code></td>
+        <td><code>string[]</code></td>
+        <td><code>[]</code></td>
+        <td>Small overlapping faces under the headline.</td>
+      </tr>
+      <tr>
+        <td><code>label</code></td>
+        <td><code>ReactNode</code></td>
+        <td><code>"Outsourcing company"</code></td>
+        <td>Top-right caption.</td>
+      </tr>
+      <tr>
+        <td><code>children</code></td>
+        <td><code>ReactNode</code></td>
+        <td>—</td>
+        <td>The headline. An <code>&lt;em&gt;</code> inside it is set in the serif italic.</td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+### BentoShowcase.CaseStudies
+
+<div className="overflow-x-auto my-4">
+  <table>
+    <thead>
+      <tr>
+        <th>Prop</th>
+        <th>Type</th>
+        <th>Default</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><code>items</code></td>
+        <td><code>&#123; quote, metrics: &#123; value, label? &#125;[] &#125;[]</code></td>
+        <td>—</td>
+        <td>Up to three results on the laptop screen, each a quote over two figures.</td>
+      </tr>
+      <tr>
+        <td><code>rating</code>, <code>reviews</code></td>
+        <td><code>number</code></td>
+        <td><code>5</code>, —</td>
+        <td>Stars in the corner and the count under them.</td>
+      </tr>
+      <tr>
+        <td><code>logo</code></td>
+        <td><code>ReactNode</code></td>
+        <td>a black disc</td>
+        <td>Mark shown before the stars — your own logo, or <code>null</code> for none.</td>
+      </tr>
+      <tr>
+        <td><code>title</code></td>
+        <td><code>string</code></td>
+        <td><code>"Case Studies"</code></td>
+        <td>Heading on the screen; wraps to two lines.</td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+### BentoShowcase.Headline
+
+<div className="overflow-x-auto my-4">
+  <table>
+    <thead>
+      <tr>
+        <th>Prop</th>
+        <th>Type</th>
+        <th>Default</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><code>photo</code>, <code>photoAlt</code></td>
+        <td><code>string</code></td>
+        <td>—</td>
+        <td>Small picture in the top-left, clipped to a pill.</td>
+      </tr>
+      <tr>
+        <td><code>label</code></td>
+        <td><code>ReactNode</code></td>
+        <td><code>"Customer support"</code></td>
+        <td>Top-right caption.</td>
+      </tr>
+      <tr>
+        <td><code>children</code></td>
+        <td><code>ReactNode</code></td>
+        <td>—</td>
+        <td>The line. The <code>&lt;em&gt;</code> phrase takes its own line in the serif italic with a scribble under it; add <code>&lt;br /&gt;</code> where the sans lines should break.</td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+### BentoShowcase.Stats
+
+<div className="overflow-x-auto my-4">
+  <table>
+    <thead>
+      <tr>
+        <th>Prop</th>
+        <th>Type</th>
+        <th>Default</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><code>items</code></td>
+        <td><code>&#123; value, caption, tone?, ornament? &#125;[]</code></td>
+        <td>—</td>
+        <td>Figures that scroll up. <code>ornament</code> is <code>"spheres"</code>, <code>"ring"</code> or <code>"drops"</code>, drawn in CSS.</td>
+      </tr>
+      <tr>
+        <td><code>speed</code></td>
+        <td><code>number</code></td>
+        <td><code>16</code></td>
+        <td>Seconds per loop.</td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+### BentoShowcase.Phone
+
+<div className="overflow-x-auto my-4">
+  <table>
+    <thead>
+      <tr>
+        <th>Prop</th>
+        <th>Type</th>
+        <th>Default</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><code>plans</code></td>
+        <td><code>[BentoPlan, BentoPlan?]</code></td>
+        <td>—</td>
+        <td>The first plan is shown in full (<code>rank</code>, <code>name</code>, <code>price</code>, <code>note</code>, <code>image</code>, <code>benefits</code>, <code>action</code>); the second only needs <code>rank</code>, <code>name</code> and <code>image</code>.</td>
+      </tr>
+      <tr>
+        <td><code>onAction</code></td>
+        <td><code>() =&gt; void</code></td>
+        <td>—</td>
+        <td>Click handler for the button on the screen.</td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+### BentoShowcase.Team
+
+<div className="overflow-x-auto my-4">
+  <table>
+    <thead>
+      <tr>
+        <th>Prop</th>
+        <th>Type</th>
+        <th>Default</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><code>photos</code></td>
+        <td><code>&#123; src, alt? &#125;[]</code></td>
+        <td>—</td>
+        <td>Portraits that scroll left as ellipses, alternating high and low.</td>
+      </tr>
+      <tr>
+        <td><code>stat</code></td>
+        <td><code>&#123; value, caption &#125;</code></td>
+        <td>—</td>
+        <td>A figure repeated in a disc after every other photo.</td>
+      </tr>
+      <tr>
+        <td><code>speed</code></td>
+        <td><code>number</code></td>
+        <td><code>36</code></td>
+        <td>Seconds per loop.</td>
+      </tr>
+    </tbody>
+  </table>
+</div>

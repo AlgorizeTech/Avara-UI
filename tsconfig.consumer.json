@@ -40,6 +40,7 @@
     "src/components/custom/blocks/ApiPlaygroundBlock.tsx",
     "src/components/custom/blocks/AppleSelectBlock.tsx",
     "src/components/custom/blocks/AudioPlayerBlock.tsx",
+    "src/components/custom/blocks/BentoShowcaseBlock.tsx",
     "src/components/custom/blocks/BookAppointmentBlock.tsx",
     "src/components/custom/blocks/BookingCardBlock.tsx",
     "src/components/custom/blocks/BreadcrumbBlock.tsx",
