@@ -146,11 +146,11 @@ export default function TextEditor() {
 
           color
 
-          "indigo" | "rose" | "emerald" | "zinc" | string
+          "primary" | "indigo" | "rose" | "emerald" | "zinc" | string
 
           "zinc"
 
-          The dynamic accent color applied to active items. Fully supports custom hex codes.
+          The dynamic accent color applied to active items. "primary" follows your theme's --primary token; custom hex codes are fully supported.
 
           ToggleGroup
 

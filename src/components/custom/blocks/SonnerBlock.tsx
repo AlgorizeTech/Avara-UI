@@ -105,7 +105,7 @@ function ToastCard({
 
   const typeStyles = {
     default:
-      "bg-white dark:bg-[#050505] text-foreground border-border",
+      "bg-white dark:bg-zinc-950 text-foreground border-primary/20 dark:border-primary/30 shadow-lg",
     success:
       "bg-emerald-50 dark:bg-emerald-500/10 text-emerald-900 dark:text-emerald-100 border-emerald-200 dark:border-emerald-500/20",
     error:

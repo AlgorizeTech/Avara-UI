@@ -13,6 +13,8 @@ See implementation in: `src/app/docs/[framework]/examples/waitlist/waitlist3.tsx
 
 Beautiful waitlist components with email collection, loading states, and success animations. Perfect for capturing early user interest before product launches with professional shadcn-style design aesthetics.
 
+Each example is built on the library's Input and Button, so install those two and the rest of the code copies across as is.
+
 ## Default Waitlist
 
 A clean, professional waitlist component with email input, loading state, and success animation. Features a card-based design with proper form validation and smooth transitions.

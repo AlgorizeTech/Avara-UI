@@ -69,6 +69,11 @@ Discover the key capabilities of the `Footer` component:
         undefined
         Custom logo icon component.
 
+        socialLinks
+        SocialLink[]
+        X, GitHub, LinkedIn, YouTube, Instagram
+        The social row, rendered by Social Links. Each entry is &#123; network, href, label? &#125;; pass only the networks you have.
+
         className
         string
         ""

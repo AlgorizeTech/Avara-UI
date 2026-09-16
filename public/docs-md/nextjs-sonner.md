@@ -10,7 +10,7 @@ export const usageDefault = `"use client";
 
 // The trigger styling the preview uses.
 const BTN =
-  "px-4 py-2 rounded-lg font-medium transition-colors bg-zinc-100 dark:bg-zinc-800 text-zinc-900 dark:text-white hover:bg-zinc-200 dark:hover:bg-zinc-700";
+  "px-4 py-2 rounded-lg font-medium transition-colors bg-primary text-primary-foreground hover:bg-primary/90 shadow-sm cursor-pointer";
 
 //  belongs once at the root of your app. It is mounted here only so
 // this example runs on its own.
@@ -32,7 +32,7 @@ export const usageTypes = `"use client";
 
 // The trigger styling the preview uses.
 const BTN =
-  "px-4 py-2 rounded-lg font-medium transition-colors bg-zinc-100 dark:bg-zinc-800 text-zinc-900 dark:text-white hover:bg-zinc-200 dark:hover:bg-zinc-700";
+  "px-4 py-2 rounded-lg font-medium transition-colors bg-primary text-primary-foreground hover:bg-primary/90 shadow-sm cursor-pointer";
 
 //  belongs once at the root of your app. It is mounted here only so
 // this example runs on its own.
@@ -59,7 +59,7 @@ export const usageAction = `"use client";
 
 // The trigger styling the preview uses.
 const BTN =
-  "px-4 py-2 rounded-lg font-medium transition-colors bg-zinc-100 dark:bg-zinc-800 text-zinc-900 dark:text-white hover:bg-zinc-200 dark:hover:bg-zinc-700";
+  "px-4 py-2 rounded-lg font-medium transition-colors bg-primary text-primary-foreground hover:bg-primary/90 shadow-sm cursor-pointer";
 
 //  belongs once at the root of your app. It is mounted here only so
 // this example runs on its own.
@@ -84,7 +84,7 @@ export const usageStack = `"use client";
 
 // The trigger styling the preview uses.
 const BTN =
-  "px-4 py-2 rounded-lg font-medium transition-colors bg-zinc-100 dark:bg-zinc-800 text-zinc-900 dark:text-white hover:bg-zinc-200 dark:hover:bg-zinc-700";
+  "px-4 py-2 rounded-lg font-medium transition-colors bg-primary text-primary-foreground hover:bg-primary/90 shadow-sm cursor-pointer";
 
 //  belongs once at the root of your app. It is mounted here only so
 // this example runs on its own.
@@ -109,7 +109,7 @@ export const usageExpand = `"use client";
 
 // The trigger styling the preview uses.
 const BTN =
-  "px-4 py-2 rounded-lg font-medium transition-colors bg-zinc-100 dark:bg-zinc-800 text-zinc-900 dark:text-white hover:bg-zinc-200 dark:hover:bg-zinc-700";
+  "px-4 py-2 rounded-lg font-medium transition-colors bg-primary text-primary-foreground hover:bg-primary/90 shadow-sm cursor-pointer";
 
 export default function ExpandedStack() {
   // expand keeps the stack permanently open instead of collapsing it in 3D.
@@ -132,7 +132,7 @@ export const usageDuration = `"use client";
 
 // The trigger styling the preview uses.
 const BTN =
-  "px-4 py-2 rounded-lg font-medium transition-colors bg-zinc-100 dark:bg-zinc-800 text-zinc-900 dark:text-white hover:bg-zinc-200 dark:hover:bg-zinc-700";
+  "px-4 py-2 rounded-lg font-medium transition-colors bg-primary text-primary-foreground hover:bg-primary/90 shadow-sm cursor-pointer";
 
 //  belongs once at the root of your app. It is mounted here only so
 // this example runs on its own.

@@ -4,7 +4,7 @@ A beautiful, completely custom charting engine built from the ground up for mode
 
 This `ChartBlock` completely drops heavy dependencies (No `recharts`, No `chart.js`, No `gsap`). It leverages the power of **Responsive CSS Flexbox** for the Bar charts to ensure they anchor perfectly to the axis without squashing, uses **Smooth Bezier Curves** for the Line/Area SVG paths, and utilizes pure **SVG Stroke-Dasharray Math** for perfect Pie and Donut charts that never stretch into ovals.
 
-One `data` array of `{ label, value }` drives every chart type — the engine handles scaling, height distribution and polar math. Hover any bar, point or slice for its tooltip.
+One `data` array of `{ label, value }` drives every chart type — the engine handles scaling, height distribution and polar math. Hover any bar, point or slice for its tooltip. Two further types, `donut-legend` and `stacked-bar`, show shares of a whole with a legend, each share in its own colour — the charts on the Book Appointment page.
 
 export const chartData = `const revenue: ChartDataPoint[] = [
   { label: "Jan", value: 1200 },
@@ -80,6 +80,41 @@ export default function RevenueDonut() {
   );
 }`;
 
+export const usageDonutLegend = `import { ChartBlock } from "@/components/custom/blocks/ChartBlock";
+
+const visitReasons = [
+  { label: "Hypertension management", value: 35 },
+  { label: "Preventive cardiology", value: 25 },
+  { label: "Heart failure monitoring", value: 22 },
+  { label: "Chest pain evaluation", value: 18 },
+];
+
+export default function VisitReasons() {
+  return (
+    
+      Top visit reasons
+
+  );
+}`;
+
+export const usageStackedBar = `import { ChartBlock } from "@/components/custom/blocks/ChartBlock";
+
+const week = [
+  { label: "Clinical", value: 47 },
+  { label: "Research", value: 24 },
+  { label: "Teaching", value: 16 },
+  { label: "Admin", value: 10 },
+  { label: "Other", value: 3 },
+];
+
+export default function WeekSplit() {
+  return (
+    
+      Where the week goes
+
+  );
+}`;
+
 ## Installation
 
 ## Examples
@@ -113,15 +148,15 @@ Explore the Chart component's data visualization capabilities, featuring respons
 
           data
 
-          {`{ label: string, value: number }[]`}
+          {`{ label: string, value: number, color?: string }[]`}
 
           Required
         
-        An array of objects mapping string labels to numerical values.
+        An array of objects mapping string labels to numerical values. color pins one share's colour in the legend charts.
 
           type
 
-          "bar" | "line" | "pie" | "donut"
+          "bar" | "line" | "pie" | "donut" | "donut-legend" | "stacked-bar"
 
           "bar"
         
@@ -143,7 +178,36 @@ Explore the Chart component's data visualization capabilities, featuring respons
           300
 
           Forces a fixed pixel height for the chart container to prevent layout
-          shifting. Width is always 100% responsive.
+          shifting. Width is always 100% responsive. The legend charts size to
+          their content unless it is set.
+
+          colors
+
+          string[]
+        
+        accent, teal, amber, rose, grey
+        
+          Legend charts only: one colour per share, in order,
+          wrapping if there are more shares than colours. The first entry is
+          var(--primary), so the lead share follows your theme.
+
+          centerLabel
+
+          string
+
+          "largest"
+
+          Donut with legend only: caption under the centre
+          value at rest, where the largest share is shown.
+
+          hoverLabel
+
+          string
+
+          "share"
+
+          Donut with legend only: caption while a share is
+          hovered.
 
           showGrid
 

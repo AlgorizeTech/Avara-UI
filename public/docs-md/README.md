@@ -2,8 +2,8 @@
 
 This directory contains auto-generated Markdown versions of all MDX documentation pages.
 
-**Generated at:** 2026-09-16T07:20:42.725Z
-**Total files:** 253
+**Generated at:** 2026-09-16T08:13:42.074Z
+**Total files:** 263
 
 ## Available Files
 
@@ -20,6 +20,7 @@ This directory contains auto-generated Markdown versions of all MDX documentatio
 - [nextjs/audio-player](/docs/nextjs-audio-player.md) - Source: `[framework]\audio-player\page.mdx`
 - [nextjs/book-appointment](/docs/nextjs-book-appointment.md) - Source: `[framework]\book-appointment\page.mdx`
 - [nextjs/book-flip](/docs/nextjs-book-flip.md) - Source: `[framework]\book-flip\page.mdx`
+- [nextjs/booking-card](/docs/nextjs-booking-card.md) - Source: `[framework]\booking-card\page.mdx`
 - [nextjs/breadcrumb](/docs/nextjs-breadcrumb.md) - Source: `[framework]\breadcrumb\page.mdx`
 - [nextjs/button](/docs/nextjs-button.md) - Source: `[framework]\button\page.mdx`
 - [nextjs/calendar](/docs/nextjs-calendar.md) - Source: `[framework]\calendar\page.mdx`
@@ -63,6 +64,7 @@ This directory contains auto-generated Markdown versions of all MDX documentatio
 - [nextjs/folder](/docs/nextjs-folder.md) - Source: `[framework]\folder\page.mdx`
 - [nextjs/footer](/docs/nextjs-footer.md) - Source: `[framework]\footer\page.mdx`
 - [nextjs/form](/docs/nextjs-form.md) - Source: `[framework]\form\page.mdx`
+- [nextjs/glass-panel](/docs/nextjs-glass-panel.md) - Source: `[framework]\glass-panel\page.mdx`
 - [nextjs/half-stars](/docs/nextjs-half-stars.md) - Source: `[framework]\half-stars\page.mdx`
 - [nextjs/heart-signal](/docs/nextjs-heart-signal.md) - Source: `[framework]\heart-signal\page.mdx`
 - [nextjs/hero](/docs/nextjs-hero.md) - Source: `[framework]\hero\page.mdx`
@@ -106,6 +108,7 @@ This directory contains auto-generated Markdown versions of all MDX documentatio
 - [nextjs/sidebar](/docs/nextjs-sidebar.md) - Source: `[framework]\sidebar\page.mdx`
 - [nextjs/signup-form](/docs/nextjs-signup-form.md) - Source: `[framework]\signup-form\page.mdx`
 - [nextjs/skeleton](/docs/nextjs-skeleton.md) - Source: `[framework]\skeleton\page.mdx`
+- [nextjs/social-links](/docs/nextjs-social-links.md) - Source: `[framework]\social-links\page.mdx`
 - [nextjs/sonner](/docs/nextjs-sonner.md) - Source: `[framework]\sonner\page.mdx`
 - [nextjs/split-scroll-stepper](/docs/nextjs-split-scroll-stepper.md) - Source: `[framework]\split-scroll-stepper\page.mdx`
 - [nextjs/split-stepper](/docs/nextjs-split-stepper.md) - Source: `[framework]\split-stepper\page.mdx`
@@ -149,6 +152,7 @@ This directory contains auto-generated Markdown versions of all MDX documentatio
 - [reactjs/audio-player](/docs/reactjs-audio-player.md) - Source: `[framework]\audio-player\page.mdx`
 - [reactjs/book-appointment](/docs/reactjs-book-appointment.md) - Source: `[framework]\book-appointment\page.mdx`
 - [reactjs/book-flip](/docs/reactjs-book-flip.md) - Source: `[framework]\book-flip\page.mdx`
+- [reactjs/booking-card](/docs/reactjs-booking-card.md) - Source: `[framework]\booking-card\page.mdx`
 - [reactjs/breadcrumb](/docs/reactjs-breadcrumb.md) - Source: `[framework]\breadcrumb\page.mdx`
 - [reactjs/button](/docs/reactjs-button.md) - Source: `[framework]\button\page.mdx`
 - [reactjs/calendar](/docs/reactjs-calendar.md) - Source: `[framework]\calendar\page.mdx`
@@ -192,6 +196,7 @@ This directory contains auto-generated Markdown versions of all MDX documentatio
 - [reactjs/folder](/docs/reactjs-folder.md) - Source: `[framework]\folder\page.mdx`
 - [reactjs/footer](/docs/reactjs-footer.md) - Source: `[framework]\footer\page.mdx`
 - [reactjs/form](/docs/reactjs-form.md) - Source: `[framework]\form\page.mdx`
+- [reactjs/glass-panel](/docs/reactjs-glass-panel.md) - Source: `[framework]\glass-panel\page.mdx`
 - [reactjs/half-stars](/docs/reactjs-half-stars.md) - Source: `[framework]\half-stars\page.mdx`
 - [reactjs/heart-signal](/docs/reactjs-heart-signal.md) - Source: `[framework]\heart-signal\page.mdx`
 - [reactjs/hero](/docs/reactjs-hero.md) - Source: `[framework]\hero\page.mdx`
@@ -235,6 +240,7 @@ This directory contains auto-generated Markdown versions of all MDX documentatio
 - [reactjs/sidebar](/docs/reactjs-sidebar.md) - Source: `[framework]\sidebar\page.mdx`
 - [reactjs/signup-form](/docs/reactjs-signup-form.md) - Source: `[framework]\signup-form\page.mdx`
 - [reactjs/skeleton](/docs/reactjs-skeleton.md) - Source: `[framework]\skeleton\page.mdx`
+- [reactjs/social-links](/docs/reactjs-social-links.md) - Source: `[framework]\social-links\page.mdx`
 - [reactjs/sonner](/docs/reactjs-sonner.md) - Source: `[framework]\sonner\page.mdx`
 - [reactjs/split-scroll-stepper](/docs/reactjs-split-scroll-stepper.md) - Source: `[framework]\split-scroll-stepper\page.mdx`
 - [reactjs/split-stepper](/docs/reactjs-split-stepper.md) - Source: `[framework]\split-stepper\page.mdx`
