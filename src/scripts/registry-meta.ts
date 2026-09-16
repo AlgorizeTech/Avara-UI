@@ -546,6 +546,18 @@ export const META: Record<string, ItemMeta> = {
     categories: ["marketing", "layout"],
     docs: "Named export: SupportHero, with parts Card, Integrations, Stat, Photo and Team. Composed from the glass-panel, text-animation, counter and button items, which install alongside it. Cards land in one staggered pass after the headline (`reveal` in-view or immediate); Stats count up when on screen; hover lifts cards, zooms portraits and drifts the faces. `cta` takes a label plus `onClick` or `href`.",
   },
+  "collage-hero": {
+    description:
+      "A playful hero: a badge whose name turns around a mark, a serif headline with two coloured words, hashtag pills, a five-column photo collage and a footer with a quote, a scroll pill and a watch-video trigger. Use it for a kindergarten, studio, school or any warm, busy place.",
+    categories: ["marketing", "layout"],
+    docs: "Named export: CollageHero (plus CollageHero.Badge and CollageHero.Photo). Composed from the button and dialog items, which install alongside it. Pass `brand`, `heading` (with <em> for the coloured words), `tags`, `caption`, seven `photos`, `quote`, `scrollLabel`/`scrollTo` and `video` ({ text, url }). `accent` sets --primary for the section, `highlight` the second colour; `reveal` is in-view or immediate.",
+  },
+  newsletter: {
+    description:
+      "A sign-up section in three layouts: readers' faces drifting around a centred form, a panel with a pointer glow and a ticker of who just joined, or the form beside a fanned stack of recent issues. The form becomes a thank-you when your promise resolves.",
+    categories: ["marketing", "forms"],
+    docs: "Named export: Newsletter, with parts Heading, Intro, Form, Proof, Ticker and Issues. Composed from the input, button, marquee and tilted-card items, which install alongside it. `variant` is portraits | spotlight | issues, each styled for light and dark mode; `portraits` takes up to four faces; `Form` takes `onSubscribe(email)` (a promise holds the busy state), `action`, `successTitle`/`successText`; `accent` pins the glow and button colour; `reveal` is in-view or immediate.",
+  },
   "glass-panel": {
     description:
       "A frosted surface in four shapes and the aurora ground it sits on. Use it for glass bento layouts, profile and booking pages — or flip it to solid cards with one prop.",

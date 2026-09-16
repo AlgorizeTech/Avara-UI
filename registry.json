@@ -631,6 +631,34 @@
       "docs": "Named exports: ChatBubble, ChatAvatar, ChatMessage, ChatTimestamp. `layout` is default | group-top | group-middle | group-bottom and adjusts the corner radii so consecutive messages from one sender read as a block. `status` renders sent | delivered | read ticks. These are the pieces `chat` assembles."
     },
     {
+      "name": "collage-hero",
+      "type": "registry:component",
+      "title": "Collage Hero",
+      "author": "AlgorizeTech",
+      "description": "A playful hero: a badge whose name turns around a mark, a serif headline with two coloured words, hashtag pills, a five-column photo collage and a footer with a quote, a scroll pill and a watch-video trigger. Use it for a kindergarten, studio, school or any warm, busy place.",
+      "categories": [
+        "marketing",
+        "layout"
+      ],
+      "dependencies": [
+        "gsap",
+        "lucide-react"
+      ],
+      "registryDependencies": [
+        "https://algorize-ui.vercel.app/r/button.json",
+        "https://algorize-ui.vercel.app/r/dialog.json",
+        "utils"
+      ],
+      "files": [
+        {
+          "path": "src/components/custom/blocks/CollageHeroBlock.tsx",
+          "type": "registry:component",
+          "target": "components/custom/blocks/CollageHeroBlock.tsx"
+        }
+      ],
+      "docs": "Named export: CollageHero (plus CollageHero.Badge and CollageHero.Photo). Composed from the button and dialog items, which install alongside it. Pass `brand`, `heading` (with <em> for the coloured words), `tags`, `caption`, seven `photos`, `quote`, `scrollLabel`/`scrollTo` and `video` ({ text, url }). `accent` sets --primary for the section, `highlight` the second colour; `reveal` is in-view or immediate."
+    },
+    {
       "name": "collapsible",
       "type": "registry:component",
       "title": "Collapsible",
@@ -2064,6 +2092,36 @@
         }
       ],
       "docs": "Named export: NetworkGraph. `nodes` take { id, ring, image?, fallback?, label?, size? } — `ring` assigns the orbit. Tune spacing with `ringCount`, `baseRadius` and `ringGap`; `animateIn` staggers the reveal. Positions are computed by ring, not by force simulation."
+    },
+    {
+      "name": "newsletter",
+      "type": "registry:component",
+      "title": "Newsletter",
+      "author": "AlgorizeTech",
+      "description": "A sign-up section in three layouts: readers' faces drifting around a centred form, a panel with a pointer glow and a ticker of who just joined, or the form beside a fanned stack of recent issues. The form becomes a thank-you when your promise resolves.",
+      "categories": [
+        "marketing",
+        "forms"
+      ],
+      "dependencies": [
+        "framer-motion",
+        "lucide-react"
+      ],
+      "registryDependencies": [
+        "https://algorize-ui.vercel.app/r/button.json",
+        "https://algorize-ui.vercel.app/r/input.json",
+        "https://algorize-ui.vercel.app/r/marquee.json",
+        "https://algorize-ui.vercel.app/r/tilted-card.json",
+        "utils"
+      ],
+      "files": [
+        {
+          "path": "src/components/custom/blocks/NewsletterBlock.tsx",
+          "type": "registry:component",
+          "target": "components/custom/blocks/NewsletterBlock.tsx"
+        }
+      ],
+      "docs": "Named export: Newsletter, with parts Heading, Intro, Form, Proof, Ticker and Issues. Composed from the input, button, marquee and tilted-card items, which install alongside it. `variant` is portraits | spotlight | issues, each styled for light and dark mode; `portraits` takes up to four faces; `Form` takes `onSubscribe(email)` (a promise holds the busy state), `action`, `successTitle`/`successText`; `accent` pins the glow and button colour; `reveal` is in-view or immediate."
     },
     {
       "name": "otp-input",

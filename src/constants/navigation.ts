@@ -222,6 +222,12 @@ export const navigation: NavigationItem[] = [
         keywords: ["booking", "appointment", "schedule", "calendar", "slots", "doctor", "clinic", "reservation"],
       },
       {
+        label: "Collage Hero",
+        slug: "collage-hero",
+        badge: "New",
+        keywords: ["hero", "collage", "kindergarten", "school", "photos", "badge", "video", "playful"],
+      },
+      {
         label: "Data Flow",
         slug: "data-flow",
         badge: "New",
@@ -254,10 +260,10 @@ export const navigation: NavigationItem[] = [
         keywords: ["hero", "ai", "support", "saas", "landing", "bento", "glass", "counter", "cta"],
       },
       {
-        label: "Waitlist Section",
-        slug: "examples/waitlist",
+        label: "Newsletter",
+        slug: "newsletter",
         badge: "New",
-        keywords: ["waitlist", "coming soon", "launch", "signup", "email", "newsletter"],
+        keywords: ["newsletter", "subscribe", "signup", "email", "waitlist", "coming soon", "launch", "mailing list"],
       },
     ],
   },
