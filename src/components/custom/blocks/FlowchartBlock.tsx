@@ -148,14 +148,15 @@ export const FlowNode = forwardRef<HTMLDivElement, FlowNodeProps>(
       },
     };
 
-    const currentTheme = colorThemes[color] || colorThemes.primary;
+    const currentTheme = colorThemes[color] ?? colorThemes["primary"] ?? { ring: "", glow: "", iconBg: "" };
 
     return (
       <div
         ref={nodeRef}
-        onClick={() =>
-          connectedPaths.length > 0 && setActivePath(connectedPaths[0])
-        }
+        onClick={() => {
+          const first = connectedPaths[0];
+          if (first) setActivePath(first);
+        }}
         // Enforced strict absolute height & width to secure connection nodes
         className={cn(
           "absolute w-[240px] h-[68px] p-3 rounded-xl transition-all duration-300 cursor-pointer opacity-0 flex items-center gap-3 backdrop-blur-xl select-none",
@@ -307,7 +308,7 @@ export const FlowConnection = forwardRef<SVGPathElement, FlowConnectionProps>(
       emerald: "#10b981",
       zinc: "#71717a",
     };
-    const activeStroke = strokeColors[color] || strokeColors.primary;
+    const activeStroke = strokeColors[color] ?? strokeColors["primary"] ?? "var(--primary)";
 
     return (
       <>

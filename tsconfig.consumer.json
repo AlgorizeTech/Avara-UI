@@ -107,6 +107,7 @@
     "src/components/custom/blocks/PaginationBlock.tsx",
     "src/components/custom/blocks/ParticleCanvasBlock.tsx",
     "src/components/custom/blocks/PaymentBlock.tsx",
+    "src/components/custom/blocks/PlatformGridBlock.tsx",
     "src/components/custom/blocks/PopoverBlock.tsx",
     "src/components/custom/blocks/Pricing-plan.tsx",
     "src/components/custom/blocks/Pricing.tsx",

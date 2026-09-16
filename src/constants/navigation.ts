@@ -230,6 +230,12 @@ export const navigation: NavigationItem[] = [
       { label: "Footer", slug: "footer" },
       { label: "Hero", slug: "hero" },
       { label: "Navbar", slug: "navbar", badge: "Core" },
+      {
+        label: "Platform Grid",
+        slug: "platform-grid",
+        badge: "New",
+        keywords: ["platform", "grid", "features", "tiles", "bento", "tools", "catalog", "spotlight"],
+      },
       { label: "Pricing Section", slug: "pricing" },
       { label: "Product Details", slug: "product-details" },
       {

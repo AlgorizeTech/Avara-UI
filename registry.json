@@ -2191,6 +2191,32 @@
       "docs": "Named export: Piano. Supports `defaultVolume` (0 to 1), `defaultShowKeys` (boolean), and `className`. Synthesizes real acoustic piano notes using native Web Audio API."
     },
     {
+      "name": "platform-grid",
+      "type": "registry:component",
+      "title": "Platform Grid",
+      "author": "AlgorizeTech",
+      "description": "Everything a product offers as one hairline grid: small icon-and-name tiles and a few 2×2 features that show a piece of the product on a tilting card. Reveals as a wave from the centre, then a spotlight follows the pointer. Use it as the 'full platform' section of a product site.",
+      "categories": [
+        "marketing",
+        "navigation"
+      ],
+      "dependencies": [
+        "gsap"
+      ],
+      "registryDependencies": [
+        "https://algorize-ui.vercel.app/r/tilted-card.json",
+        "utils"
+      ],
+      "files": [
+        {
+          "path": "src/components/custom/blocks/PlatformGridBlock.tsx",
+          "type": "registry:component",
+          "target": "components/custom/blocks/PlatformGridBlock.tsx"
+        }
+      ],
+      "docs": "Named export: PlatformGrid, with parts Tile, Feature, Mock and Pill. Composed from the tilted-card item, which installs alongside it. Cells pack densely (grid-auto-flow: dense) so features stay square at 8, 6, 4, 3 or 2 columns; `reveal` is in-view or immediate; `fadeEdges` masks the outer columns; `accent` pins the hover/spotlight colour, otherwise it follows --primary. Tiles with `href` are links (`linkComponent` for a router Link)."
+    },
+    {
       "name": "popover",
       "type": "registry:component",
       "title": "Popover",

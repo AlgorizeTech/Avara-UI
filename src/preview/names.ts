@@ -91,6 +91,7 @@ export const sandboxNames = [
   "pagination",
   "particle-canvas",
   "piano",
+  "platform-grid",
   "popover",
   "pricing",
   "product-details",
