@@ -1,0 +1,24 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "avatar-stack",
+  "title": "Avatar Stack",
+  "author": "AlgorizeTech",
+  "description": "A row of overlapping faces that folds the rest into a +N disc and takes a trailing action. Use it as the social-proof cue under a headline or beside a count.",
+  "dependencies": [],
+  "registryDependencies": [
+    "utils"
+  ],
+  "files": [
+    {
+      "path": "src/components/custom/blocks/AvatarStackBlock.tsx",
+      "content": "\"use client\";\n\nimport React from \"react\";\nimport { cn } from \"@/lib/utils\";\n\n// ==========================================\n// AVATAR STACK\n// A row of overlapping faces — the \"people who…\" cue under a headline or\n// beside a count. Shows up to `max` faces, folds the rest into a \"+N\" disc,\n// and takes an optional trailing action, like a follow button.\n// ==========================================\n\nexport interface StackAvatar {\n  src: string;\n  alt?: string;\n}\n\nexport type AvatarStackSize = \"sm\" | \"md\" | \"lg\";\n\nexport interface AvatarStackProps extends React.HTMLAttributes<HTMLDivElement> {\n  avatars: StackAvatar[];\n  size?: AvatarStackSize;\n  /** Faces shown before the rest fold into a count. */\n  max?: number;\n  /** Colour of the gap between faces — match the surface they sit on. */\n  ringClassName?: string;\n  /** A trailing element that shares the stack's size, e.g. a \"+\" button. */\n  action?: React.ReactNode;\n  /** Faces slide apart a little when the stack is hovered. */\n  spreadOnHover?: boolean;\n}\n\nconst SIZES: Record<AvatarStackSize, { box: string; overlap: string; text: string }> = {\n  sm: { box: \"size-7\", overlap: \"-space-x-2\", text: \"text-[10px]\" },\n  md: { box: \"size-9\", overlap: \"-space-x-2.5\", text: \"text-[11px]\" },\n  lg: { box: \"size-11\", overlap: \"-space-x-3\", text: \"text-xs\" },\n};\n\nexport const AvatarStack = React.forwardRef<HTMLDivElement, AvatarStackProps>(\n  (\n    {\n      avatars,\n      size = \"md\",\n      max = 4,\n      ringClassName = \"ring-white dark:ring-zinc-950\",\n      action,\n      spreadOnHover = true,\n      className,\n      ...props\n    },\n    ref,\n  ) => {\n    const s = SIZES[size];\n    const shown = avatars.slice(0, max);\n    const rest = avatars.length - shown.length;\n    const disc = cn(\n      \"relative grid shrink-0 place-items-center overflow-hidden rounded-full ring-2 transition-transform duration-300 ease-out\",\n      s.box,\n      ringClassName,\n      spreadOnHover && \"group-hover:translate-x-[var(--as-shift)]\",\n    );\n\n    return (\n      <div\n        ref={ref}\n        className={cn(\"group flex items-center\", s.overlap, className)}\n        {...props}\n      >\n        {shown.map((a, i) => (\n          <span\n            key={a.src}\n            className={cn(disc, \"bg-black/5\")}\n            // Each face slides a touch further than the last, so the row fans out.\n            style={{ \"--as-shift\": `${i * 3}px`, zIndex: shown.length - i } as React.CSSProperties}\n          >\n            <img src={a.src} alt={a.alt ?? \"\"} className=\"h-full w-full object-cover\" />\n          </span>\n        ))}\n        {rest > 0 && (\n          <span\n            className={cn(disc, \"bg-[#141414] font-semibold text-white dark:bg-white dark:text-[#141414]\", s.text)}\n            style={{ \"--as-shift\": `${shown.length * 3}px` } as React.CSSProperties}\n          >\n            +{rest}\n          </span>\n        )}\n        {action && (\n          <span\n            className={cn(disc, \"overflow-visible ring-0\")}\n            style={{ \"--as-shift\": `${(shown.length + (rest > 0 ? 1 : 0)) * 3}px` } as React.CSSProperties}\n          >\n            {action}\n          </span>\n        )}\n      </div>\n    );\n  },\n);\nAvatarStack.displayName = \"AvatarStack\";\n\nexport default AvatarStack;\n",
+      "type": "registry:component",
+      "target": "components/custom/blocks/AvatarStackBlock.tsx"
+    }
+  ],
+  "docs": "Named export: AvatarStack. `avatars` are { src, alt? }; `size` sm | md | lg; `max` faces before the +N disc; `ringClassName` is the gap colour; `action` renders last at face size; `spreadOnHover` fans the faces apart under the pointer.",
+  "categories": [
+    "data-display"
+  ],
+  "type": "registry:component"
+}

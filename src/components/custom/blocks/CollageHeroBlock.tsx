@@ -1,10 +1,11 @@
 "use client";
 
-import React, { useEffect, useId, useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import gsap from "gsap";
 import { ArrowDown, Play } from "lucide-react";
 import { cn } from "@/lib/utils";
 import Button from "./Button";
+import { CircularText } from "./CircularTextBlock";
 import { Dialog, DialogContent, DialogTrigger } from "./DialogBlock";
 
 // ==========================================
@@ -55,39 +56,19 @@ export interface CollageHeroProps extends React.HTMLAttributes<HTMLElement> {
 }
 
 // ------------------------------------------
-// Badge — words on a circle, turning
+// Badge — words on a circle, turning (CircularText with the three-dot mark)
 // ------------------------------------------
 function Badge({ text, logo }: { text: string; logo?: React.ReactNode }) {
-  const id = useId();
-  const ring = `${text} · `.repeat(3);
   return (
-    <div className="relative grid size-32 place-items-center sm:size-36">
-      <svg
-        viewBox="0 0 100 100"
-        className="absolute inset-0 size-full animate-[spin_22s_linear_infinite] motion-reduce:animate-none"
-        aria-hidden
-      >
-        <defs>
-          <path id={id} d="M 50,50 m -38,0 a 38,38 0 1,1 76,0 a 38,38 0 1,1 -76,0" />
-        </defs>
-        <text className="fill-primary font-sans text-[9.5px] font-semibold tracking-[0.18em]">
-          <textPath href={`#${id}`} startOffset="0">
-            {ring}
-          </textPath>
-        </text>
-      </svg>
-      <span className="absolute inset-[11%] rounded-full border border-black/10" aria-hidden />
-      <span className="relative grid size-14 place-items-center sm:size-16">
-        {logo ?? (
-          <span className="relative block size-12" aria-hidden>
-            <span className="absolute left-1 top-0 size-6 rounded-full bg-primary" />
-            <span className="absolute left-6 top-4 size-6 rounded-full bg-[var(--kg-highlight)]" />
-            <span className="absolute left-1 top-6 size-6 rounded-full bg-primary" />
-          </span>
-        )}
-      </span>
-      <span className="sr-only">{text}</span>
-    </div>
+    <CircularText text={text} size={144} speed={22} innerRing className="[&>svg]:size-full">
+      {logo ?? (
+        <span className="relative block size-12" aria-hidden>
+          <span className="absolute left-1 top-0 size-6 rounded-full bg-primary" />
+          <span className="absolute left-6 top-4 size-6 rounded-full bg-[var(--kg-highlight)]" />
+          <span className="absolute left-1 top-6 size-6 rounded-full bg-primary" />
+        </span>
+      )}
+    </CircularText>
   );
 }
 

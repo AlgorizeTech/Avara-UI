@@ -82,6 +82,12 @@ export const navigation: NavigationItem[] = [
       { label: "Api Playground", slug: "api-playground" },
       { label: "Apple Select", slug: "apple-select", badge: "New" },
       { label: "Audio Player", slug: "audio-player", badge: "New" },
+      {
+        label: "Avatar Stack",
+        slug: "avatar-stack",
+        badge: "New",
+        keywords: ["avatar", "avatars", "faces", "group", "stack", "overlap", "social proof", "people"],
+      },
       { label: "Book Flip", slug: "book-flip" },
       {
         label: "Booking Card",
@@ -98,6 +104,12 @@ export const navigation: NavigationItem[] = [
       { label: "Chart", slug: "chart" },
       { label: "Chat", slug: "chat" },
       { label: "Chat Bubble", slug: "chat-bubble" },
+      {
+        label: "Circular Text",
+        slug: "circular-text",
+        badge: "New",
+        keywords: ["circular", "circle", "text", "rotating", "spinning", "badge", "stamp", "textpath", "ring"],
+      },
       { label: "Collapsible", slug: "collapsible" },
       { label: "Color Picker", slug: "color-picker" },
       { label: "Command", slug: "command" },
@@ -235,6 +247,12 @@ export const navigation: NavigationItem[] = [
       },
       { label: "Footer", slug: "footer" },
       { label: "Hero", slug: "hero" },
+      {
+        label: "Fashion Hero",
+        slug: "fashion-hero",
+        badge: "New",
+        keywords: ["fashion", "hero", "lookbook", "collage", "editorial", "clothing", "store", "photos", "tilt"],
+      },
       { label: "Navbar", slug: "navbar", badge: "Core" },
       {
         label: "Platform Grid",

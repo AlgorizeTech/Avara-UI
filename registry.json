@@ -260,6 +260,28 @@
       "docs": "Named export: AudioPlayer. `audioUrl` and `artworkUrl` drive it; `variant` is hero | bar | native. Built on a plain <audio> element with no player library, so it adds no npm weight beyond the icons. Playback state mirrors the element's own events, which keeps it correct when a media key or the native controls change it. `skipSeconds` sizes the jump buttons (0 hides them) and the accent follows `--theme-color`."
     },
     {
+      "name": "avatar-stack",
+      "type": "registry:component",
+      "title": "Avatar Stack",
+      "author": "AlgorizeTech",
+      "description": "A row of overlapping faces that folds the rest into a +N disc and takes a trailing action. Use it as the social-proof cue under a headline or beside a count.",
+      "categories": [
+        "data-display"
+      ],
+      "dependencies": [],
+      "registryDependencies": [
+        "utils"
+      ],
+      "files": [
+        {
+          "path": "src/components/custom/blocks/AvatarStackBlock.tsx",
+          "type": "registry:component",
+          "target": "components/custom/blocks/AvatarStackBlock.tsx"
+        }
+      ],
+      "docs": "Named export: AvatarStack. `avatars` are { src, alt? }; `size` sm | md | lg; `max` faces before the +N disc; `ringClassName` is the gap colour; `action` renders last at face size; `spreadOnHover` fans the faces apart under the pointer."
+    },
+    {
       "name": "bento-showcase",
       "type": "registry:component",
       "title": "Bento Showcase",
@@ -631,6 +653,28 @@
       "docs": "Named exports: ChatBubble, ChatAvatar, ChatMessage, ChatTimestamp. `layout` is default | group-top | group-middle | group-bottom and adjusts the corner radii so consecutive messages from one sender read as a block. `status` renders sent | delivered | read ticks. These are the pieces `chat` assembles."
     },
     {
+      "name": "circular-text",
+      "type": "registry:component",
+      "title": "Circular Text",
+      "author": "AlgorizeTech",
+      "description": "Words set on a circle, turning slowly, with room in the middle for a mark, a play button or a link. Use it for video badges, stamps and 'see the work' links.",
+      "categories": [
+        "typography"
+      ],
+      "dependencies": [],
+      "registryDependencies": [
+        "utils"
+      ],
+      "files": [
+        {
+          "path": "src/components/custom/blocks/CircularTextBlock.tsx",
+          "type": "registry:component",
+          "target": "components/custom/blocks/CircularTextBlock.tsx"
+        }
+      ],
+      "docs": "Named export: CircularText. `text` repeats to fill the ring (or `repeat` times), `size` in px, `speed` seconds per turn (0 holds still), `direction`, `fontSize`/`tracking` in units of a 100-wide circle, `color` (currentColor follows the parent), `innerRing`. Children sit in the middle. Holds still under prefers-reduced-motion."
+    },
+    {
       "name": "collage-hero",
       "type": "registry:component",
       "title": "Collage Hero",
@@ -646,6 +690,7 @@
       ],
       "registryDependencies": [
         "https://algorize-ui.vercel.app/r/button.json",
+        "https://algorize-ui.vercel.app/r/circular-text.json",
         "https://algorize-ui.vercel.app/r/dialog.json",
         "utils"
       ],
@@ -656,7 +701,7 @@
           "target": "components/custom/blocks/CollageHeroBlock.tsx"
         }
       ],
-      "docs": "Named export: CollageHero (plus CollageHero.Badge and CollageHero.Photo). Composed from the button and dialog items, which install alongside it. Pass `brand`, `heading` (with <em> for the coloured words), `tags`, `caption`, seven `photos`, `quote`, `scrollLabel`/`scrollTo` and `video` ({ text, url }). `accent` sets --primary for the section, `highlight` the second colour; `reveal` is in-view or immediate."
+      "docs": "Named export: CollageHero (plus CollageHero.Badge and CollageHero.Photo). Composed from the button, circular-text and dialog items, which install alongside it. Pass `brand`, `heading` (with <em> for the coloured words), `tags`, `caption`, seven `photos`, `quote`, `scrollLabel`/`scrollTo` and `video` ({ text, url }). `accent` sets --primary for the section, `highlight` the second colour; `reveal` is in-view or immediate."
     },
     {
       "name": "collapsible",
@@ -1220,6 +1265,37 @@
         }
       ],
       "docs": "Named exports: EmailApp, plus Email, EmailLabel and Attachment types. The largest block in the registry — a complete application layout with demo data to replace, not a single element. Variants: default | minimal | glass."
+    },
+    {
+      "name": "fashion-hero",
+      "type": "registry:component",
+      "title": "Fashion Hero",
+      "author": "AlgorizeTech",
+      "description": "A fashion hero: a bold headline between a turning video badge and a stack of faces, five staggered columns of looks on flat colour that tilt under the pointer, a call to action on the middle look, and a footer with a quote and the next story. Use it for a clothing store, a lookbook or an editorial landing page.",
+      "categories": [
+        "marketing",
+        "layout"
+      ],
+      "dependencies": [
+        "gsap",
+        "lucide-react"
+      ],
+      "registryDependencies": [
+        "https://algorize-ui.vercel.app/r/avatar-stack.json",
+        "https://algorize-ui.vercel.app/r/circular-text.json",
+        "https://algorize-ui.vercel.app/r/dialog.json",
+        "https://algorize-ui.vercel.app/r/text-animation.json",
+        "https://algorize-ui.vercel.app/r/tilted-card.json",
+        "utils"
+      ],
+      "files": [
+        {
+          "path": "src/components/custom/blocks/FashionHeroBlock.tsx",
+          "type": "registry:component",
+          "target": "components/custom/blocks/FashionHeroBlock.tsx"
+        }
+      ],
+      "docs": "Named export: FashionHero (plus FashionHero.Look). Composed from the circular-text, avatar-stack, text-animation, tilted-card and dialog items, which install alongside it. Pass `heading`, up to seven `looks` ({ src, alt, tone, blend?, position? }), `video` ({ badge, url }), `avatars` + `avatarsHref`, `cta`, `quote`, `teaser` and `linkComponent`; `accent` sets --primary, `reveal` is in-view or immediate."
     },
     {
       "name": "fleet-map",
