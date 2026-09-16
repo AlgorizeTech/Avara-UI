@@ -36,22 +36,33 @@ export default function SupportHeroDemo({
       />
 
       <SupportHero.Photo
-        src={pexels(1681010)}
-        alt="A young man in a red jacket looking into the distance"
+        src={pexels(7709208)}
+        alt="A support agent on a call at her laptop"
         label="Transcript"
-        position="center 35%"
+        position="58% center"
         className="lg:row-span-2 lg:h-auto"
       />
 
-      <SupportHero.Stat value={83} suffix="%" caption="Up to 83% of conversations autonomously resolved" tone="lime" />
-
-      <SupportHero.Photo
-        src={pexels(3767392)}
-        alt="A woman with headphones around her neck, smiling"
-        position="center 30%"
+      <SupportHero.Stat
+        value={83}
+        suffix="%"
+        caption="Up to 83% of conversations autonomously resolved"
+        image="https://images.unsplash.com/photo-1745674684463-62f62cb88d4c?q=80&w=1170&auto=format&fit=crop"
+        imageAlt="A laptop on a desk showing an AI assistant asking what it can help with"
+        imagePosition="70% center"
       />
 
-      <SupportHero.Stat value={5.5} decimals={1} suffix="B" caption="More efficient than human representatives" />
+      <SupportHero.Photo src={pexels(3184639)} alt="A team working through charts on a laptop" position="center 40%" />
+
+      <SupportHero.Stat
+        value={5.5}
+        decimals={1}
+        suffix="B"
+        caption="More efficient than human representatives"
+        image="https://images.unsplash.com/photo-1746883741141-04859907ef5f?q=80&w=1170&auto=format&fit=crop"
+        imageAlt="A phone propped against a laptop, an AI chat open on its screen"
+        imagePosition="65% center"
+      />
 
       <SupportHero.Team
         title={

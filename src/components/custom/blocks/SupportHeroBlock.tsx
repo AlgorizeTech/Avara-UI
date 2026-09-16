@@ -80,22 +80,60 @@ export interface SupportHeroStatProps extends Omit<SupportHeroCardProps, "childr
   prefix?: string;
   suffix?: string;
   caption: string;
-  /** Frosted, or the lime accent card. */
-  tone?: "glass" | "lime";
+  /** Frosted, or the accent card in the theme's primary colour. */
+  tone?: "glass" | "accent";
+  /** A picture behind the whole card. Only the bottom-left corner, where the figure sits, is washed with the card colour; the rest of the picture shows through — so pick one whose subject sits up and to the right. */
+  image?: string;
+  imageAlt?: string;
+  /** Where the picture is anchored as it crops. */
+  imagePosition?: string;
 }
 
-function Stat({ value, decimals = 0, prefix = "", suffix = "", caption, tone = "glass", className, ...props }: SupportHeroStatProps) {
+function Stat({
+  value,
+  decimals = 0,
+  prefix = "",
+  suffix = "",
+  caption,
+  tone = "glass",
+  image,
+  imageAlt = "",
+  imagePosition = "center",
+  className,
+  ...props
+}: SupportHeroStatProps) {
+  const accent = tone === "accent";
   return (
     <Card
       className={cn(
         "flex flex-col justify-end p-6",
-        tone === "lime" &&
-          "border-[#d3ecad] bg-[#cfe9a4] shadow-[inset_0_1px_0_rgba(255,255,255,0.5),0_24px_48px_-28px_rgba(101,163,13,0.45)] text-[#1f2a12] backdrop-blur-0 dark:border-[#8fbf4a]/40 dark:bg-[#8fbf4a]/30 dark:text-[#e9f5d6]",
+        accent &&
+          "border-primary/40 bg-primary text-primary-foreground shadow-[inset_0_1px_0_rgba(255,255,255,0.25),0_24px_48px_-28px_var(--primary)] backdrop-blur-0",
         className,
       )}
       {...props}
     >
-      <p className="text-[2.9rem] font-semibold leading-none tracking-[-0.03em]">
+      {image && (
+        <>
+          <img
+            src={image}
+            alt={imageAlt}
+            style={{ objectPosition: imagePosition }}
+            className="absolute inset-0 h-full w-full object-cover transition-transform duration-700 ease-out group-hover:scale-[1.05]"
+          />
+          {/* Only the corner under the figure is washed; the picture stays clear elsewhere. */}
+          <span
+            aria-hidden
+            className={cn(
+              "absolute inset-0 bg-gradient-to-tr from-32% via-50% to-72%",
+              accent
+                ? "from-primary via-primary/80 to-transparent"
+                : "from-white via-white/85 to-transparent dark:from-zinc-900 dark:via-zinc-900/85",
+            )}
+          />
+        </>
+      )}
+      <p className="relative z-10 text-[2.9rem] font-semibold leading-none tracking-[-0.03em]">
         <CounterBlock
           type="animated"
           bare
@@ -107,7 +145,7 @@ function Stat({ value, decimals = 0, prefix = "", suffix = "", caption, tone = "
           color="zinc"
         />
       </p>
-      <p className={cn("mt-3 max-w-[13rem] text-[11px] leading-snug", tone === "lime" ? "text-[#1f2a12]/70 dark:text-[#e9f5d6]/70" : "text-black/55 dark:text-white/55")}>
+      <p className={cn("relative z-10 mt-3 max-w-[11rem] text-[11px] leading-snug", accent ? "text-primary-foreground/80" : "text-black/55 dark:text-white/55")}>
         {caption}
       </p>
     </Card>

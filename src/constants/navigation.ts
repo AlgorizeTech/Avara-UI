@@ -210,12 +210,6 @@ export const navigation: NavigationItem[] = [
         ],
       },
       {
-        label: "AI Support Hero",
-        slug: "support-hero",
-        badge: "New",
-        keywords: ["hero", "ai", "support", "saas", "landing", "bento", "glass", "counter", "cta"],
-      },
-      {
         label: "Bento Showcase",
         slug: "bento-showcase",
         badge: "New",
@@ -253,6 +247,12 @@ export const navigation: NavigationItem[] = [
       { label: "Review Section", slug: "reviews" },
       { label: "Sidebar Section", slug: "sidebar" },
       { label: "Support Dashboard", slug: "support-dashboard", badge: "Core" },
+      {
+        label: "Support Hero",
+        slug: "support-hero",
+        badge: "New",
+        keywords: ["hero", "ai", "support", "saas", "landing", "bento", "glass", "counter", "cta"],
+      },
       {
         label: "Waitlist Section",
         slug: "examples/waitlist",

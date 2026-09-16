@@ -1,7 +1,7 @@
 import { ExampleShowcase } from "@/components/site/Sandbox";
 import { extractCode } from "@/lib/code";
 
-# AI Support Hero
+# Support Hero
 
 A product hero on a soft grey ground: a headline that rises in word by word, one line under it and one call to action, then a bento of frosted cards — integrations on white tiles, two figures that count up, two portraits and a team card with faces scattered over a field of dots. The cards land in one staggered pass after the headline; after that only the pointer moves anything: cards lift, portraits zoom a touch, the integration tiles rise one after another, the faces drift apart.
 
@@ -33,11 +33,26 @@ export default function Hero() {
       />
 
       {/* Spans both rows at desktop. */}
-      <SupportHero.Photo src="/hero/transcript.jpg" alt="…" label="Transcript" position="center 35%" className="lg:row-span-2 lg:h-auto" />
+      <SupportHero.Photo src="/hero/agent.jpg" alt="…" label="Transcript" position="58% center" className="lg:row-span-2 lg:h-auto" />
 
-      <SupportHero.Stat value={83} suffix="%" caption="Up to 83% of conversations autonomously resolved" tone="lime" />
-      <SupportHero.Photo src="/hero/agent.jpg" alt="…" position="center 30%" />
-      <SupportHero.Stat value={5.5} decimals={1} suffix="B" caption="More efficient than human representatives" />
+      <SupportHero.Stat
+        value={83}
+        suffix="%"
+        caption="Up to 83% of conversations autonomously resolved"
+        image="/hero/assistant.jpg"
+        imageAlt="A laptop showing an AI assistant"
+        imagePosition="70% center"
+      />
+      <SupportHero.Photo src="/hero/team.jpg" alt="…" position="center 40%" />
+      <SupportHero.Stat
+        value={5.5}
+        decimals={1}
+        suffix="B"
+        caption="More efficient than human representatives"
+        image="/hero/phone.jpg"
+        imageAlt="A phone with an AI chat open"
+        imagePosition="65% center"
+      />
 
       <SupportHero.Team
         title={<>Automated<br />Customer Service<br />Quality</>}
@@ -64,7 +79,7 @@ export default function Hero() {
         {
           prop: "Stat",
           effect:
-            "counts up with `CounterBlock` — `value`, `decimals`, `prefix`, `suffix` — starting when the card is on screen. `tone=\"lime\"` is the accent card.",
+            "counts up with `CounterBlock` — `value`, `decimals`, `prefix`, `suffix` — starting when the card is on screen. `tone=\"accent\"` is the card in the theme's primary colour. Give it an `image` and the picture fills the card, with only the bottom-left corner under the figure washed in the card colour — the rest shows through, so pick a picture whose subject sits up and to the right.",
         },
         {
           prop: "Photo",
@@ -242,9 +257,21 @@ The call to action is a `Button`. Give `cta` an `onClick`, or an `href` to navig
       </tr>
       <tr>
         <td><code>tone</code></td>
-        <td><code>"glass" | "lime"</code></td>
+        <td><code>"glass" | "accent"</code></td>
         <td><code>"glass"</code></td>
-        <td>Frosted, or the lime accent card.</td>
+        <td>Frosted, or the accent card in the theme's primary colour with its foreground for text.</td>
+      </tr>
+      <tr>
+        <td><code>image</code>, <code>imageAlt</code></td>
+        <td><code>string</code></td>
+        <td>—</td>
+        <td>A picture behind the whole card. Only the bottom-left corner, under the figure, is washed with the card colour; the rest stays clear. Zooms a touch on hover.</td>
+      </tr>
+      <tr>
+        <td><code>imagePosition</code></td>
+        <td><code>string</code></td>
+        <td><code>"center"</code></td>
+        <td>CSS <code>object-position</code> for the crop — e.g. <code>"70% center"</code> to favour a subject on the right.</td>
       </tr>
     </tbody>
   </table>
