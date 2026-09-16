@@ -156,8 +156,8 @@ Discover the Selection Frame's capabilities for putting a design-tool spotlight 
 
         color
         string
-        "#0d99ff"
-        Accent colour (Figma blue by default). Any CSS colour.
+        "var(--primary)"
+        Accent colour. Any CSS colour or theme variable.
 
         radius
         number

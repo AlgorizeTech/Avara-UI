@@ -6,19 +6,18 @@ import {
   SelectionFrame,
 } from "@/components/custom/blocks/SelectionFrameBlock";
 
-// "Default" on the page's colour picker means the component's own default —
-// Figma blue — rather than the site primary, so the hero matches the original.
-const getThemeColorHex = (c: string) => {
+const colorMap: Record<string, string> = {
+  indigo: "#6366f1",
+  rose: "#f43f5e",
+  emerald: "#10b981",
+  zinc: "#18181b",
+  amber: "#f59e0b",
+  blue: "#0d99ff",
+};
+
+const getThemeColor = (c: string) => {
   if (c.startsWith("#")) return c;
-  const map: Record<string, string> = {
-    primary: "#0d99ff",
-    default: "#0d99ff",
-    indigo: "#6366f1",
-    rose: "#f43f5e",
-    emerald: "#10b981",
-    zinc: "#18181b",
-  };
-  return map[c] || "#0d99ff";
+  return colorMap[c] || "var(--primary)";
 };
 
 const HEADLINE = "text-[28px] font-semibold text-zinc-900 dark:text-zinc-50";
@@ -47,7 +46,7 @@ export default function SelectionFrameDemo({
   /** Which preview to render. */
   example?: "default" | "handles" | "lines" | "animated" | "usage" | "block";
 }) {
-  const accent = getThemeColorHex(color);
+  const accent = getThemeColor(color);
 
   if (example === "handles") {
     return (

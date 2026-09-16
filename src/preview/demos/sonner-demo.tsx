@@ -6,7 +6,7 @@ import { cn } from "@/lib/utils";
 import { useState } from "react";
 
 const BTN =
-  "px-4 py-2 rounded-lg font-medium transition-colors bg-zinc-100 dark:bg-zinc-800 text-zinc-900 dark:text-white hover:bg-zinc-200 dark:hover:bg-zinc-700";
+  "px-4 py-2 rounded-lg font-medium transition-colors bg-primary text-primary-foreground hover:bg-primary/90 shadow-sm cursor-pointer";
 
 /** Laid out as a 3-column grid so the buttons mirror where the stack lands. */
 const POSITIONS: { value: NonNullable<ToasterProps["position"]>; label: string }[] =
@@ -24,11 +24,27 @@ const POSITIONS: { value: NonNullable<ToasterProps["position"]>; label: string }
 const TRIGGER_ROW =
   "w-full flex flex-wrap content-center items-center justify-center gap-x-3 gap-y-2 sm:gap-4 min-h-[300px] relative z-10";
 
+const colorMap: Record<string, string> = {
+  indigo: "#4f46e5",
+  rose: "#e11d48",
+  emerald: "#10b981",
+  zinc: "#3f3f46",
+  amber: "#f59e0b",
+  blue: "#3b82f6",
+};
+
+const getThemeColor = (color: string) => {
+  if (color.startsWith("#")) return color;
+  return colorMap[color] || "var(--primary)";
+};
+
 export default function SonnerDemo({
+  color = "primary",
   position = "bottom-right",
   expand = false,
   example = "all",
 }: {
+  color?: string;
   position?: ToasterProps["position"];
   expand?: boolean;
   /** Picks which trigger buttons the preview renders. "all" is the classic set. */
@@ -45,9 +61,15 @@ export default function SonnerDemo({
     NonNullable<ToasterProps["position"]>
   >(position ?? "bottom-right");
 
+  const themeColor = getThemeColor(color);
+  const containerStyle =
+    color && color !== "primary" && color !== "default"
+      ? ({ "--primary": themeColor } as React.CSSProperties)
+      : undefined;
+
   if (example !== "all") {
     return (
-      <>
+      <div style={containerStyle} className="w-full flex flex-col items-center justify-center">
         <Toaster
           position={example === "position" ? activePosition : position}
           expand={expand}
@@ -78,7 +100,7 @@ export default function SonnerDemo({
                     description: "Your site is now live on the production server.",
                   })
                 }
-                className="px-4 py-2 bg-emerald-100 dark:bg-emerald-500/20 text-emerald-900 dark:text-emerald-400 rounded-lg font-medium hover:bg-emerald-200 dark:hover:bg-emerald-500/30 transition-colors"
+                className="px-4 py-2 bg-emerald-100 dark:bg-emerald-500/20 text-emerald-900 dark:text-emerald-400 rounded-lg font-medium hover:bg-emerald-200 dark:hover:bg-emerald-500/30 transition-colors cursor-pointer"
               >
                 Success
               </button>
@@ -88,7 +110,7 @@ export default function SonnerDemo({
                     description: "Could not reach the database. Please try again later.",
                   })
                 }
-                className="px-4 py-2 bg-red-100 dark:bg-red-500/20 text-red-900 dark:text-red-400 rounded-lg font-medium hover:bg-red-200 dark:hover:bg-red-500/30 transition-colors"
+                className="px-4 py-2 bg-red-100 dark:bg-red-500/20 text-red-900 dark:text-red-400 rounded-lg font-medium hover:bg-red-200 dark:hover:bg-red-500/30 transition-colors cursor-pointer"
               >
                 Error
               </button>
@@ -98,7 +120,7 @@ export default function SonnerDemo({
                     description: "A new device just signed in to your account.",
                   })
                 }
-                className="px-4 py-2 bg-blue-100 dark:bg-blue-500/20 text-blue-900 dark:text-blue-400 rounded-lg font-medium hover:bg-blue-200 dark:hover:bg-blue-500/30 transition-colors"
+                className="px-4 py-2 bg-blue-100 dark:bg-blue-500/20 text-blue-900 dark:text-blue-400 rounded-lg font-medium hover:bg-blue-200 dark:hover:bg-blue-500/30 transition-colors cursor-pointer"
               >
                 Info
               </button>
@@ -112,7 +134,7 @@ export default function SonnerDemo({
                   action: { label: "Undo", onClick: () => alert("Undo clicked!") },
                 })
               }
-              className="px-4 py-2 bg-zinc-900 dark:bg-white text-white dark:text-zinc-900 rounded-lg font-medium hover:opacity-90 transition-opacity"
+              className={BTN}
             >
               With Action
             </button>
@@ -146,9 +168,9 @@ export default function SonnerDemo({
                     }, 50);
                   }}
                   className={cn(
-                    "px-2 py-2 rounded-lg text-xs sm:text-sm font-medium transition-colors",
+                    "px-2 py-2 rounded-lg text-xs sm:text-sm font-medium transition-colors cursor-pointer",
                     activePosition === p.value
-                      ? "bg-primary/10 text-primary ring-1 ring-primary/30"
+                      ? "bg-primary text-primary-foreground shadow-sm"
                       : "bg-zinc-100 dark:bg-zinc-800 text-zinc-900 dark:text-white hover:bg-zinc-200 dark:hover:bg-zinc-700",
                   )}
                 >
@@ -178,19 +200,19 @@ export default function SonnerDemo({
                     duration: 1500,
                   })
                 }
-                className="px-4 py-2 bg-emerald-100 dark:bg-emerald-500/20 text-emerald-900 dark:text-emerald-400 rounded-lg font-medium hover:bg-emerald-200 dark:hover:bg-emerald-500/30 transition-colors"
+                className="px-4 py-2 bg-emerald-100 dark:bg-emerald-500/20 text-emerald-900 dark:text-emerald-400 rounded-lg font-medium hover:bg-emerald-200 dark:hover:bg-emerald-500/30 transition-colors cursor-pointer"
               >
                 Quick
               </button>
             </>
           )}
         </div>
-      </>
+      </div>
     );
   }
 
   return (
-    <>
+    <div style={containerStyle} className="w-full flex flex-col items-center justify-center">
       {/* The Toaster is mounted inside the demo so toasts render in the sandbox page */}
       <Toaster position={position} expand={expand} />
 
@@ -201,7 +223,7 @@ export default function SonnerDemo({
               description: "Your changes have been saved to the database.",
             })
           }
-          className="px-4 py-2 bg-zinc-100 dark:bg-zinc-800 text-zinc-900 dark:text-white rounded-lg font-medium hover:bg-zinc-200 dark:hover:bg-zinc-700 transition-colors"
+          className={BTN}
         >
           Default
         </button>
@@ -212,7 +234,7 @@ export default function SonnerDemo({
               description: "Your site is now live on the production server.",
             })
           }
-          className="px-4 py-2 bg-emerald-100 dark:bg-emerald-500/20 text-emerald-900 dark:text-emerald-400 rounded-lg font-medium hover:bg-emerald-200 dark:hover:bg-emerald-500/30 transition-colors"
+          className="px-4 py-2 bg-emerald-100 dark:bg-emerald-500/20 text-emerald-900 dark:text-emerald-400 rounded-lg font-medium hover:bg-emerald-200 dark:hover:bg-emerald-500/30 transition-colors cursor-pointer"
         >
           Success
         </button>
@@ -224,7 +246,7 @@ export default function SonnerDemo({
                 "Could not reach the database. Please try again later.",
             })
           }
-          className="px-4 py-2 bg-red-100 dark:bg-red-500/20 text-red-900 dark:text-red-400 rounded-lg font-medium hover:bg-red-200 dark:hover:bg-red-500/30 transition-colors"
+          className="px-4 py-2 bg-red-100 dark:bg-red-500/20 text-red-900 dark:text-red-400 rounded-lg font-medium hover:bg-red-200 dark:hover:bg-red-500/30 transition-colors cursor-pointer"
         >
           Error
         </button>
@@ -238,11 +260,11 @@ export default function SonnerDemo({
               },
             })
           }
-          className="px-4 py-2 bg-zinc-900 dark:bg-white text-white dark:text-zinc-900 rounded-lg font-medium hover:opacity-90 transition-opacity"
+          className={BTN}
         >
           With Action
         </button>
       </div>
-    </>
+    </div>
   );
 }

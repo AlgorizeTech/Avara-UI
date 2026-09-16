@@ -4,7 +4,7 @@ Two production-ready authentication blocks: a **Login Form** for returning users
 
 They are separate components on purpose. Sign-in and sign-up are different pages with different fields, different validation rules and different autofill hints — a browser password manager cannot offer to save a new credential on a form it thinks might be a login. Install only the one a given route needs; each has its own install command, and each command sits with the block it installs.
 
-Both share the same `variant` and `color` surface, so a login page and a register page match without any extra work.
+Both share the same `variant` and `color` surface, so a login page and a register page match without any extra work. The fields are the library's Input and the buttons its Button, each handed the same `color`, so the whole form follows one accent and picks up any change you make to those components.
 
 ## Login form
 

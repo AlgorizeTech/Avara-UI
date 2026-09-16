@@ -1,6 +1,6 @@
 {
-  "generatedAt": "2026-09-16T07:09:33.255Z",
-  "totalFiles": 253,
+  "generatedAt": "2026-09-16T11:56:21.253Z",
+  "totalFiles": 263,
   "files": [
     {
       "name": "nextjs/3d-carousel",
@@ -79,6 +79,12 @@
       "path": "/docs/nextjs-book-flip.md",
       "url": "/docs/nextjs/book-flip",
       "originalMdx": "[framework]\\book-flip\\page.mdx"
+    },
+    {
+      "name": "nextjs/booking-card",
+      "path": "/docs/nextjs-booking-card.md",
+      "url": "/docs/nextjs/booking-card",
+      "originalMdx": "[framework]\\booking-card\\page.mdx"
     },
     {
       "name": "nextjs/breadcrumb",
@@ -339,6 +345,12 @@
       "originalMdx": "[framework]\\form\\page.mdx"
     },
     {
+      "name": "nextjs/glass-panel",
+      "path": "/docs/nextjs-glass-panel.md",
+      "url": "/docs/nextjs/glass-panel",
+      "originalMdx": "[framework]\\glass-panel\\page.mdx"
+    },
+    {
       "name": "nextjs/half-stars",
       "path": "/docs/nextjs-half-stars.md",
       "url": "/docs/nextjs/half-stars",
@@ -595,6 +607,12 @@
       "path": "/docs/nextjs-skeleton.md",
       "url": "/docs/nextjs/skeleton",
       "originalMdx": "[framework]\\skeleton\\page.mdx"
+    },
+    {
+      "name": "nextjs/social-links",
+      "path": "/docs/nextjs-social-links.md",
+      "url": "/docs/nextjs/social-links",
+      "originalMdx": "[framework]\\social-links\\page.mdx"
     },
     {
       "name": "nextjs/sonner",
@@ -855,6 +873,12 @@
       "originalMdx": "[framework]\\book-flip\\page.mdx"
     },
     {
+      "name": "reactjs/booking-card",
+      "path": "/docs/reactjs-booking-card.md",
+      "url": "/docs/reactjs/booking-card",
+      "originalMdx": "[framework]\\booking-card\\page.mdx"
+    },
+    {
       "name": "reactjs/breadcrumb",
       "path": "/docs/reactjs-breadcrumb.md",
       "url": "/docs/reactjs/breadcrumb",
@@ -1113,6 +1137,12 @@
       "originalMdx": "[framework]\\form\\page.mdx"
     },
     {
+      "name": "reactjs/glass-panel",
+      "path": "/docs/reactjs-glass-panel.md",
+      "url": "/docs/reactjs/glass-panel",
+      "originalMdx": "[framework]\\glass-panel\\page.mdx"
+    },
+    {
       "name": "reactjs/half-stars",
       "path": "/docs/reactjs-half-stars.md",
       "url": "/docs/reactjs/half-stars",
@@ -1369,6 +1399,12 @@
       "path": "/docs/reactjs-skeleton.md",
       "url": "/docs/reactjs/skeleton",
       "originalMdx": "[framework]\\skeleton\\page.mdx"
+    },
+    {
+      "name": "reactjs/social-links",
+      "path": "/docs/reactjs-social-links.md",
+      "url": "/docs/reactjs/social-links",
+      "originalMdx": "[framework]\\social-links\\page.mdx"
     },
     {
       "name": "reactjs/sonner",

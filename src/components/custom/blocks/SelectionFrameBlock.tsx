@@ -18,7 +18,7 @@ export interface SelectionFrameProps {
   dash?: [number, number];
   /** Marching ants — only applies to "dashed" / "long" lines. Handles always pop in. Default false. */
   animated?: boolean;
-  /** Accent colour. Default Figma blue. */
+  /** Accent colour. Default primary theme color. */
   color?: string;
   /** Frame corner radius. Default 0. */
   radius?: number;
@@ -43,7 +43,7 @@ export function SelectionFrame({
   line = "solid",
   dash,
   animated = false,
-  color = "#0d99ff",
+  color = "var(--primary, #0d99ff)",
   radius = 0,
   padding = 4,
   inline = true,

@@ -1,11 +1,12 @@
 # Book Appointment
 
-A booking flow for a page that ends in an appointment: a strip of days, time slots in groups, a button that reads back the choice, and a confirmation that draws itself in once the booking is made.
+A booking flow for a page that ends in an appointment: a practitioner's portrait and contact details, their scores as stars, two small charts, and a booking panel with a strip of days, time slots in groups, a button that reads back the choice, and a confirmation that draws itself in once the booking is made.
 
-`Booker` is a compound component. It holds the chosen day and slot; `Booker.Days`, `Booker.Slots`, `Booker.Submit` and `Booker.Confirmation` go inside it in whatever layout the page needs. The example below pairs it with the frosted panels from Profile Page — a practitioner's card on the left, the booking on the right — but the booker has no opinion about what sits beside it.
+`BookAppointment` is a section built from library pieces. The surface is Glass Panel (`GlassBackdrop` and `GlassPanel`), the scores are Half Stars, and the booking panel is Booking Card — a compound component that can be dropped into any panel on any page. Hand it a `practitioner`, some `slotGroups` and an `onBook`, and it lays the page out.
 
 export const usagePage = `const DOCTOR = {
   name: "Dr. Emily Chen, MD",
+  shortName: "Dr. Chen",
   specialties: "Internal medicine, Cardiology",
   practice: "Manhattan Health Associates",
   photo:
@@ -15,27 +16,16 @@ export const usagePage = `const DOCTOR = {
   reviews: 38,
   summary:
     "Patients describe Dr. Chen as thorough and easy to talk to. They value her cardiology expertise and clear explanations; a few mention delays getting a callback.",
+  location: "New York, NY, Manhattan Health Associates",
+  phone: "(212) 555-7890",
+  email: "drchen@example.com",
+  languages: "English, Spanish",
 };
 
 const SCORES = [
   { label: "Wait time", value: 4.63 },
   { label: "Bedside manner", value: 4.19 },
   { label: "Clear explanations", value: 4.74 },
-];
-
-// Categorical hues in a fixed order; gray is reserved for "Other".
-const STROKE = [
-  "stroke-violet-600 dark:stroke-violet-500",
-  "stroke-teal-600",
-  "stroke-amber-600",
-  "stroke-rose-600",
-];
-const SWATCH = [
-  "bg-violet-600 dark:bg-violet-500",
-  "bg-teal-600",
-  "bg-amber-600",
-  "bg-rose-600",
-  "bg-zinc-400 dark:bg-zinc-500",
 ];
 
 const VISIT_REASONS = [
@@ -53,135 +43,32 @@ const ACTIVITIES = [
   { label: "Other", value: 3 },
 ];
 
-const MORNING = [
-  { label: "9:00 AM" },
-  { label: "10:00 AM" },
-  { label: "11:00 AM", taken: true },
+const SLOT_GROUPS = [
+  {
+    label: "Morning",
+    slots: [{ label: "9:00 AM" }, { label: "10:00 AM" }, { label: "11:00 AM", taken: true }],
+  },
+  {
+    label: "Afternoon",
+    slots: [{ label: "12:00 PM" }, { label: "1:00 PM" }, { label: "2:00 PM" }, { label: "3:00 PM", taken: true }],
+  },
 ];
-const AFTERNOON = [
-  { label: "12:00 PM" },
-  { label: "1:00 PM" },
-  { label: "2:00 PM" },
-  { label: "3:00 PM", taken: true },
-];
 
-export default function BookAppointment() {
+export default function BookAppointmentPage() {
   return (
-    
-      {/* Portrait and contact */}
-
-              New York, NY, {DOCTOR.practice}
-
-              (212) 555-7890
-
-              drchen@example.com
-
-              English, Spanish
-
-      {/* Name, scores, charts */}
-
-            {DOCTOR.name}
-            {DOCTOR.specialties}
-
-            {/* The score is the one loud element on the page */}
-
-                {DOCTOR.rating}
-                {DOCTOR.reviews} reviews
-
-              Patients say
-              {DOCTOR.summary}
-
-            {SCORES.map((s) => (
-              
-                {s.label}
-
-            ))}
-
-          Top visit reasons
-
-          Where her week goes
-
-      {/* Booking */}
-      {/* The Booker is the panel's whole inside, so its confirmation covers
-          the panel edge to edge instead of stopping at the padding. */}
-      
-         new Promise((resolve) => setTimeout(resolve, 900))}
-        >
-          Book an appointment
-           d.getDay() === 0} />
-          
-            Time
-
-  );
-}
-
-/* Donut: four reasons, hover a segment (or its legend row) to read it. */
-function VisitReasons() {
-  const [active, setActive] = useState(null);
-  const total = VISIT_REASONS.reduce((sum, r) => sum + r.value, 0); // 100, but never assume
-  const R = 38;
-  const C = 2 * Math.PI * R;
-  const GAP = 2; // surface gap between segments, in viewBox units
-  let offset = 0;
-
-  return (
-
-          {VISIT_REASONS.map((r, i) => {
-            const length = (C * r.value) / total;
-            const el = (
-               setActive(i)}
-                onMouseLeave={() => setActive(null)}
-                className={cn(
-                  "cursor-pointer transition-[stroke-width,opacity] duration-200",
-                  STROKE[i],
-                  active !== null && active !== i && "opacity-40",
-                )}
-              />
-            );
-            offset += length;
-            return el;
-          })}
-        
-        {/* Centre reads the hovered segment; at rest, the largest one */}
-
-            {VISIT_REASONS[active ?? 0].value}%
-            {active === null ? "top reason" : "of visits"}
-
-        {VISIT_REASONS.map((r, i) => (
-           setActive(i)}
-            onMouseLeave={() => setActive(null)}
-            className={cn("flex items-start gap-2.5 transition-opacity", active !== null && active !== i && "opacity-50")}
-          >
-            
-            {r.label}
-            {r.value}%
-          
-        ))}
-
-  );
-}
-
-/* One stacked bar, 2px gaps between segments, legend below. */
-function ActivityBar() {
-  return (
-
-        {ACTIVITIES.map((a, i) => (
-          
-        ))}
-
-        {ACTIVITIES.map((a, i) => (
-
-            {a.label}
-            {a.value}%
-          
-        ))}
-
+     d.getDay() === 0}
+      onBook={async ({ day, slot }) => {
+        await fetch("/api/book", { method: "POST", body: JSON.stringify({ day, slot }) });
+      }}
+      className="min-h-dvh"
+    />
   );
 }
 `;
 
 export const usagePageSolid = `const DOCTOR = {
   name: "Dr. Emily Chen, MD",
+  shortName: "Dr. Chen",
   specialties: "Internal medicine, Cardiology",
   practice: "Manhattan Health Associates",
   photo:
@@ -191,27 +78,16 @@ export const usagePageSolid = `const DOCTOR = {
   reviews: 38,
   summary:
     "Patients describe Dr. Chen as thorough and easy to talk to. They value her cardiology expertise and clear explanations; a few mention delays getting a callback.",
+  location: "New York, NY, Manhattan Health Associates",
+  phone: "(212) 555-7890",
+  email: "drchen@example.com",
+  languages: "English, Spanish",
 };
 
 const SCORES = [
   { label: "Wait time", value: 4.63 },
   { label: "Bedside manner", value: 4.19 },
   { label: "Clear explanations", value: 4.74 },
-];
-
-// Categorical hues in a fixed order; gray is reserved for "Other".
-const STROKE = [
-  "stroke-violet-600 dark:stroke-violet-500",
-  "stroke-teal-600",
-  "stroke-amber-600",
-  "stroke-rose-600",
-];
-const SWATCH = [
-  "bg-violet-600 dark:bg-violet-500",
-  "bg-teal-600",
-  "bg-amber-600",
-  "bg-rose-600",
-  "bg-zinc-400 dark:bg-zinc-500",
 ];
 
 const VISIT_REASONS = [
@@ -229,142 +105,37 @@ const ACTIVITIES = [
   { label: "Other", value: 3 },
 ];
 
-const MORNING = [
-  { label: "9:00 AM" },
-  { label: "10:00 AM" },
-  { label: "11:00 AM", taken: true },
+const SLOT_GROUPS = [
+  {
+    label: "Morning",
+    slots: [{ label: "9:00 AM" }, { label: "10:00 AM" }, { label: "11:00 AM", taken: true }],
+  },
+  {
+    label: "Afternoon",
+    slots: [{ label: "12:00 PM" }, { label: "1:00 PM" }, { label: "2:00 PM" }, { label: "3:00 PM", taken: true }],
+  },
 ];
-const AFTERNOON = [
-  { label: "12:00 PM" },
-  { label: "1:00 PM" },
-  { label: "2:00 PM" },
-  { label: "3:00 PM", taken: true },
-];
 
-export default function BookAppointment() {
+export default function BookAppointmentPage() {
   return (
-    
-      {/* Portrait and contact */}
-
-              New York, NY, {DOCTOR.practice}
-
-              (212) 555-7890
-
-              drchen@example.com
-
-              English, Spanish
-
-      {/* Name, scores, charts */}
-
-            {DOCTOR.name}
-            {DOCTOR.specialties}
-
-            {/* The score is the one loud element on the page */}
-
-                {DOCTOR.rating}
-                {DOCTOR.reviews} reviews
-
-              Patients say
-              {DOCTOR.summary}
-
-            {SCORES.map((s) => (
-              
-                {s.label}
-
-            ))}
-
-          Top visit reasons
-
-          Where her week goes
-
-      {/* Booking */}
-      {/* The Booker is the panel's whole inside, so its confirmation covers
-          the panel edge to edge instead of stopping at the padding. */}
-      
-         new Promise((resolve) => setTimeout(resolve, 900))}
-        >
-          Book an appointment
-           d.getDay() === 0} />
-          
-            Time
-
-  );
-}
-
-/* Donut: four reasons, hover a segment (or its legend row) to read it. */
-function VisitReasons() {
-  const [active, setActive] = useState(null);
-  const total = VISIT_REASONS.reduce((sum, r) => sum + r.value, 0); // 100, but never assume
-  const R = 38;
-  const C = 2 * Math.PI * R;
-  const GAP = 2; // surface gap between segments, in viewBox units
-  let offset = 0;
-
-  return (
-
-          {VISIT_REASONS.map((r, i) => {
-            const length = (C * r.value) / total;
-            const el = (
-               setActive(i)}
-                onMouseLeave={() => setActive(null)}
-                className={cn(
-                  "cursor-pointer transition-[stroke-width,opacity] duration-200",
-                  STROKE[i],
-                  active !== null && active !== i && "opacity-40",
-                )}
-              />
-            );
-            offset += length;
-            return el;
-          })}
-        
-        {/* Centre reads the hovered segment; at rest, the largest one */}
-
-            {VISIT_REASONS[active ?? 0].value}%
-            {active === null ? "top reason" : "of visits"}
-
-        {VISIT_REASONS.map((r, i) => (
-           setActive(i)}
-            onMouseLeave={() => setActive(null)}
-            className={cn("flex items-start gap-2.5 transition-opacity", active !== null && active !== i && "opacity-50")}
-          >
-            
-            {r.label}
-            {r.value}%
-          
-        ))}
-
-  );
-}
-
-/* One stacked bar, 2px gaps between segments, legend below. */
-function ActivityBar() {
-  return (
-
-        {ACTIVITIES.map((a, i) => (
-          
-        ))}
-
-        {ACTIVITIES.map((a, i) => (
-
-            {a.label}
-            {a.value}%
-          
-        ))}
-
+     d.getDay() === 0}
+      onBook={async ({ day, slot }) => {
+        await fetch("/api/book", { method: "POST", body: JSON.stringify({ day, slot }) });
+      }}
+      className="min-h-dvh"
+    />
   );
 }
 `;
 
  day.getDay() === 0",
           effect:
-            "on `Booker.Days` strikes out days with nothing free. Sundays here; feed it your real availability.",
+            "strikes out days with nothing free. Sundays here; feed it your real availability.",
         },
         {
-          lead: "The arrows page",
-          prop: "Booker.Days",
+          prop: "scores",
           effect:
-            "a week at a time, up to `horizon` days out (90 by default). Days start today, so the previous arrow is disabled on the first page — nobody can book into the past.",
+            "render as `HalfStars` with fractional fill. `visitReasons` and `activities` are `ChartBlock`s — a `donut-legend` and a `stacked-bar`; leave either out and its panel is not drawn.",
         },
       ],
       props: { rounded: true },
@@ -381,7 +152,7 @@ function ActivityBar() {
           prop: "variant",
           value: '"solid"',
           effect:
-            "on `ProfilePage` and every panel becomes a solid card; the aurora is not drawn. Days, slots and the confirmation use neutral inks that read on either surface.",
+            "and every panel becomes a solid card; the aurora is not drawn. Days, slots and the confirmation use neutral inks that read on either surface.",
         },
       ],
       props: { rounded: true, variant: "solid" },
@@ -393,9 +164,9 @@ function ActivityBar() {
 
 ## Installation
 
-## Just the booker
+## Just the booking panel
 
-The booking panel on its own, inside one glass slab. Everything else on the example page is ordinary content.
+The booking panel is its own component, Booking Card, and works inside any panel — not only this page. Give it the panel's padding so the confirmation reaches the edges.
 
 ```tsx
 
@@ -422,8 +193,8 @@ Choosing a new day clears the slot, since availability changes with the day. The
 
 ## Features
 
-    One state, any layout
-    Days, slots and the button share one context. Stack them, put them side by side, split them across panels — the booker does not care.
+    Built from the library
+    Glass Panel for the surface, Half Stars for the scores, Chart for the donut and bar, Booking Card for the booking. Install this one item and all four come with it.
 
     A confirmation that shows what happened
     When onBook resolves, a check draws itself over the form and the day, time and place rise in beneath it. Book another clears it. It holds still under prefers-reduced-motion.
@@ -436,112 +207,109 @@ Choosing a new day clears the slot, since availability changes with the day. The
 
 ## Props Reference
 
-### Booker
+### BookAppointment
 
         Prop
         Type
         Default
         Description
+
+        practitioner
+        Practitioner
+        —
+        Who the page is about. See the shape below.
+
+        slotGroups
+        &#123; label: string; slots: &#123; label: string; taken?: boolean &#125;[] &#125;[]
+        —
+        Times on offer, grouped, e.g. Morning and Afternoon.
 
         onBook
         (booking: &#123; day: Date; slot: string &#125;) =&gt; void | Promise&lt;void&gt;
         —
         Called on confirm. Return a promise to hold the busy state; a rejection returns to the form.
 
-        className
-        string
-        —
-        Layout of the parts inside. The confirmation is positioned against this element.
-
-### Booker.Days
-
-        Prop
-        Type
-        Default
-        Description
-
-        days
-        Date[]
-        today → horizon
-        Days on offer, in order, paged count at a time with the previous/next arrows. The default is built on the client so the server never guesses today, and it starts today — there is no paging back into the past.
-
-        count
-        number
-        7
-        Days shown per page.
-
-        horizon
-        number
-        90
-        How far ahead the default days run, in days from today. Ignored when days is given.
-
         unavailable
         (day: Date) =&gt; boolean
         —
-        Days with nothing free — shown struck through, not selectable.
+        Days with nothing free — struck through, not selectable.
 
-### Booker.Slots
+        scores
+        &#123; label: string; value: number &#125;[]
+        []
+        Named scores out of 5, shown as HalfStars under the summary.
 
-        Prop
-        Type
-        Default
-        Description
+        visitReasons
+        &#123; label: string; value: number &#125;[]
+        —
+        Shares in percent for the donut. Omit to leave the panel out.
 
-        label
+        activities
+        &#123; label: string; value: number &#125;[]
+        —
+        Shares in percent for the stacked bar. Omit to leave the panel out.
+
+        bookingHeading
+        string
+        &quot;Book an appointment&quot;
+        Heading over the booking panel.
+
+        variant
+        &quot;glass&quot; | &quot;solid&quot;
+        &quot;glass&quot;
+        Frosted panels over an aurora, or solid cards with a shadow.
+
+        aurora
+        [string, string, string]
+        violet, teal, amber
+        The three colours washed behind the glass. Ignored by solid.
+
+        className
         string
         —
-        Group title, e.g. &quot;Morning&quot;.
+        Applied to the page shell. Any other prop is spread there too.
 
-        slots
-        &#123; label: string; taken?: boolean &#125;[]
-        —
-        Times in the group. Disabled until a day is chosen; taken slots are shown struck through.
+### Practitioner
 
-### Booker.Submit
-
-        Prop
+        Field
         Type
-        Default
         Description
 
-        children
-        ReactNode
-        &quot;Book now&quot;
-        Button text. Once a day and slot are chosen it reads back the choice, e.g. Book now, Wed 25 at 9:00 AM.
-
-### Booker.Confirmation
-
-        Prop
-        Type
-        Default
-        Description
-
-        withName
+        name
         string
-        —
-        Who the appointment is with.
+        Full name for the heading, e.g. &quot;Dr. Emily Chen, MD&quot;.
 
-        place
+        shortName
         string
-        —
-        Where, appended after the name.
+        How the confirmation refers to them, e.g. &quot;Dr. Chen&quot;. Falls back to name.
 
-### StarRating
+        specialties
+        string
+        One line under the name.
 
-        Prop
-        Type
-        Default
-        Description
+        practice
+        string
+        Where they work; appended to the confirmation.
 
-        value
+        photo, photoAlt
+        string
+        The portrait and its alt text.
+
+        rating, reviews
         number
-        —
-        0–5, fractional. Partial stars fill to the fraction.
+        Overall score out of 5 and the number of reviews behind it.
 
-        label
+        summary
         string
-        —
-        What is being rated; used in the accessible name.
+        A short read of what patients say.
+
+        location, phone, email, languages
+        string
+        Contact rows. Each is optional; a missing one is simply not drawn. Phone and email become links.
+
+### BookingCard
+
+The booking panel's own props — `onBook`, `BookingCard.Days`, `BookingCard.Slots`, `BookingCard.Submit`, `BookingCard.Confirmation` — are documented on the Booking Card page.
 
 ---
 

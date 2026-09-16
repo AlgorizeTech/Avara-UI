@@ -2,7 +2,7 @@
 
 A person as a page: an aurora backdrop, frosted panels in four shapes, and a 24-hour dial that shows when they are at work — live, in their own time zone.
 
-`ProfilePageBlock` ships four primitives rather than one monolith. `ProfilePage` is the backdrop and a 12-column grid; `GlassPanel` is one glass recipe with a `shape` that encodes hierarchy (a `slab` for the hero, a `tile` for content, a `disc` for a single number, a `capsule` for chips); `WorkdayDial` is the one element that moves; `useLocalTime` is the hook under it. Compose them with your own data — nothing has to be reshaped to fit.
+The page is primitives rather than one monolith. `ProfilePage` is the backdrop and a 12-column grid; `GlassPanel` — from Glass Panel, which installs alongside — is one glass recipe with a `shape` that encodes hierarchy (a `slab` for the hero, a `tile` for content, a `disc` for a single number, a `capsule` for chips); `WorkdayDial` is the one element that moves; `useLocalTime` is the hook under it. Compose them with your own data — nothing has to be reshaped to fit. The example page also drops in two other library pieces where a profile wants them: a Verify Badge beside the name and a row of Social Links under the contact details.
 
 export const usagePage = `"use client";
 
@@ -390,30 +390,7 @@ Grid spans are plain Tailwind: the grid is `grid-cols-1 md:grid-cols-6 lg:grid-c
 
 ### GlassPanel
 
-        Prop
-        Type
-        Default
-        Description
-
-        shape
-        "slab" | "tile" | "disc" | "capsule"
-        "tile"
-        Corner treatment. disc also forces a square aspect.
-
-        variant
-        "glass" | "solid"
-        from ProfilePage
-        Override the page's surface for this one panel.
-
-        interactive
-        boolean
-        false
-        Pointer cursor and a small lift on hover.
-
-        className
-        string
-        —
-        Column span (lg:col-span-8), padding, and layout of the contents.
+`GlassPanel` (and `useSurface`) come from Glass Panel; its `shape`, `variant` and `interactive` props are documented there. `ProfilePage` is that page's `GlassBackdrop` under the page's own name.
 
 ### WorkdayDial
 
