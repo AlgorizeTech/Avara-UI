@@ -27,10 +27,13 @@ export interface GlassBackdropProps extends React.HTMLAttributes<HTMLDivElement>
    * Any CSS colour. The defaults are violet, sky and peach. Ignored by `solid`.
    */
   aurora?: [string, string, string];
+  /** Classes for the inner grid — row heights, gaps, a max width. */
+  gridClassName?: string;
 }
 
 export function GlassBackdrop({
   className,
+  gridClassName,
   children,
   variant = "glass",
   aurora = ["#a78bfa", "#7dd3fc", "#fdba74"],
@@ -67,7 +70,7 @@ export function GlassBackdrop({
           </div>
         )}
 
-        <div className="grid grid-cols-1 gap-4 p-4 sm:p-6 md:grid-cols-6 lg:grid-cols-12">
+        <div className={cn("grid grid-cols-1 gap-4 p-4 sm:p-6 md:grid-cols-6 lg:grid-cols-12", gridClassName)}>
           {children}
         </div>
       </div>

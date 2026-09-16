@@ -82,6 +82,12 @@ export const navigation: NavigationItem[] = [
       { label: "Api Playground", slug: "api-playground" },
       { label: "Apple Select", slug: "apple-select", badge: "New" },
       { label: "Audio Player", slug: "audio-player", badge: "New" },
+      {
+        label: "Avatar Stack",
+        slug: "avatar-stack",
+        badge: "New",
+        keywords: ["avatar", "avatars", "faces", "group", "stack", "overlap", "social proof", "people"],
+      },
       { label: "Book Flip", slug: "book-flip" },
       {
         label: "Booking Card",
@@ -98,6 +104,12 @@ export const navigation: NavigationItem[] = [
       { label: "Chart", slug: "chart" },
       { label: "Chat", slug: "chat" },
       { label: "Chat Bubble", slug: "chat-bubble" },
+      {
+        label: "Circular Text",
+        slug: "circular-text",
+        badge: "New",
+        keywords: ["circular", "circle", "text", "rotating", "spinning", "badge", "stamp", "textpath", "ring"],
+      },
       { label: "Collapsible", slug: "collapsible" },
       { label: "Color Picker", slug: "color-picker" },
       { label: "Command", slug: "command" },
@@ -222,6 +234,12 @@ export const navigation: NavigationItem[] = [
         keywords: ["booking", "appointment", "schedule", "calendar", "slots", "doctor", "clinic", "reservation"],
       },
       {
+        label: "Collage Hero",
+        slug: "collage-hero",
+        badge: "New",
+        keywords: ["hero", "collage", "kindergarten", "school", "photos", "badge", "video", "playful"],
+      },
+      {
         label: "Data Flow",
         slug: "data-flow",
         badge: "New",
@@ -229,6 +247,12 @@ export const navigation: NavigationItem[] = [
       },
       { label: "Footer", slug: "footer" },
       { label: "Hero", slug: "hero" },
+      {
+        label: "Fashion Hero",
+        slug: "fashion-hero",
+        badge: "New",
+        keywords: ["fashion", "hero", "lookbook", "collage", "editorial", "clothing", "store", "photos", "tilt"],
+      },
       { label: "Navbar", slug: "navbar", badge: "Core" },
       {
         label: "Platform Grid",
@@ -248,10 +272,16 @@ export const navigation: NavigationItem[] = [
       { label: "Sidebar Section", slug: "sidebar" },
       { label: "Support Dashboard", slug: "support-dashboard", badge: "Core" },
       {
-        label: "Waitlist Section",
-        slug: "examples/waitlist",
+        label: "Support Hero",
+        slug: "support-hero",
         badge: "New",
-        keywords: ["waitlist", "coming soon", "launch", "signup", "email", "newsletter"],
+        keywords: ["hero", "ai", "support", "saas", "landing", "bento", "glass", "counter", "cta"],
+      },
+      {
+        label: "Newsletter",
+        slug: "newsletter",
+        badge: "New",
+        keywords: ["newsletter", "subscribe", "signup", "email", "waitlist", "coming soon", "launch", "mailing list"],
       },
     ],
   },

@@ -2,15 +2,27 @@
 
 import React from "react";
 
-const colorThemes: Record<string, Record<string, string>> = {
-  primary: {
-    bg: "bg-primary text-primary-foreground",
-    text: "text-primary",
-    border: "border-primary",
-    ring: "ring-primary/20",
-    fill: "stroke-primary",
-    bgSoft: "bg-primary/10 text-primary",
-  },
+/** The class set one colour gives the block. */
+export interface CounterTheme {
+  bg: string;
+  text: string;
+  border: string;
+  ring: string;
+  fill: string;
+  bgSoft: string;
+}
+
+const PRIMARY: CounterTheme = {
+  bg: "bg-primary text-primary-foreground",
+  text: "text-primary",
+  border: "border-primary",
+  ring: "ring-primary/20",
+  fill: "stroke-primary",
+  bgSoft: "bg-primary/10 text-primary",
+};
+
+const colorThemes: Record<string, CounterTheme> = {
+  primary: PRIMARY,
   indigo: {
     bg: "bg-indigo-600 text-white",
     text: "text-indigo-600 dark:text-indigo-400",
@@ -56,11 +68,11 @@ const hexToRgb = (hex: string) => {
       .join("");
   const result = /^([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(cleanHex);
   return result
-    ? `${parseInt(result[1], 16)}, ${parseInt(result[2], 16)}, ${parseInt(result[3], 16)}`
+    ? `${parseInt(result[1] ?? "63", 16)}, ${parseInt(result[2] ?? "66", 16)}, ${parseInt(result[3] ?? "f1", 16)}`
     : "99, 102, 241";
 };
 
-export const getThemeStyles = (color: string) => {
+export const getThemeStyles = (color: string): { theme: CounterTheme; style: React.CSSProperties } => {
   if (color && color.startsWith("#")) {
     const rgb = hexToRgb(color);
     return {
@@ -79,5 +91,5 @@ export const getThemeStyles = (color: string) => {
       } as React.CSSProperties,
     };
   }
-  return { theme: colorThemes[color] || colorThemes.primary, style: {} };
+  return { theme: colorThemes[color] ?? PRIMARY, style: {} };
 };

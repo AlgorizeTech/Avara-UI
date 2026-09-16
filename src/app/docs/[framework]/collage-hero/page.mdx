@@ -1,0 +1,210 @@
+import { ExampleShowcase } from "@/components/site/Sandbox";
+import { extractCode } from "@/lib/code";
+
+# Collage Hero
+
+A hero for a place that is warm and busy — a kindergarten here, but any studio, school or workshop: a badge whose name turns slowly around a mark, a serif headline with two words in colour, three hashtag pills, a collage of seven photographs in five staggered columns, and a footer with a quote, a scroll-down pill and a watch-video trigger. When it first appears the headline rises out of a blur, the pills pop in with a twist and the photographs come up one after another; after that the badge keeps turning and the pointer does the rest — photographs lift and zoom a touch, pills straighten, the arrow nods.
+
+`CollageHero` is built from library pieces: the scroll pill is <DocLink to="button">Button</DocLink>, the video opens in a <DocLink to="dialog">Dialog</DocLink>. The colours come from the theme — the violet is `--primary` (pin it with `accent`) and the second colour is `highlight`.
+
+export const usageSection = `"use client";
+
+import { CollageHero } from "@/components/custom/blocks/CollageHeroBlock";
+
+const PHOTOS = [
+  { src: "/kinder/toys.jpg", alt: "Wooden dinosaurs on a stack of books" },
+  { src: "/kinder/blocks.jpg", alt: "A child playing with wooden blocks" },
+  { src: "/kinder/painting.jpg", alt: "Children painting at a low table" },
+  { src: "/kinder/teacher.jpg", alt: "A teacher helping a girl paint", position: "40% top" },
+  { src: "/kinder/dino.jpg", alt: "A boy holding a wooden dinosaur" },
+  { src: "/kinder/grass.jpg", alt: "Children on the grass with their toys" },
+  { src: "/kinder/lion.jpg", alt: "A girl beside a paper lion", position: "center 35%" },
+];
+
+export default function Hero() {
+  return (
+    <CollageHero
+      accent="#5b4bf0"
+      brand="KinderNest"
+      heading={<>A happy space<br />to <em>explore</em> and <em>create</em></>}
+      tags={[{ label: "#learn" }, { label: "#enjoy" }, { label: "#play" }]}
+      caption="Playful and caring for little learners"
+      photos={PHOTOS}
+      quote="Our kindergarten is a warm and welcoming environment where children feel safe, inspired, and excited to learn every day."
+      scrollLabel="Scroll down"
+      scrollTo="#programme"
+      video={{
+        eyebrow: "Watch video",
+        text: "Watch how a day unfolds at our friendly kindergarten",
+        url: "https://www.youtube.com/embed/LXb3EKWsInQ?autoplay=1",
+        title: "A day at KinderNest",
+      }}
+    />
+  );
+}
+`;
+
+<ExampleShowcase
+  name="collage-hero"
+  columns={1}
+  examples={[
+    {
+      title: "A happy space",
+      subheading: "Badge, headline and pills across the top; five columns of photographs; quote, scroll pill and video trigger along the foot. Three columns at tablet — a portrait, a stack and the tall one, then three landscapes in a row — and two on phones. Hover the photographs and the pills, open the video.",
+      propNotes: [
+        {
+          prop: "heading",
+          effect:
+            "is any node; wrap the words to colour in `<em>` — the first takes the accent, the second the `highlight`. Use `<br />` for a deliberate break.",
+        },
+        {
+          prop: "photos",
+          effect:
+            "are laid out left to right: one under the caption, two stacked, one tall in the middle, two stacked, one on the right. Each takes a `position` for its crop. Fewer than seven is fine; the columns just empty.",
+        },
+        {
+          prop: "tags",
+          effect:
+            "are up to three pills, scattered and tilted at desktop and in a plain row below. `tone` picks soft / highlight / accent; the defaults cycle through them.",
+        },
+        {
+          prop: "video",
+          effect:
+            "renders the play trigger; its `url` is an embed URL shown in a `Dialog` at 16:9. `scrollLabel` is a `Button` that scrolls to `scrollTo`, or the next section.",
+        },
+        {
+          prop: "reveal",
+          value: '"in-view"',
+          effect:
+            "(the default) plays the sequence the first time the section enters the viewport; the docs pass `\"immediate\"`. Under prefers-reduced-motion the badge holds still and the section renders finished.",
+        },
+      ],
+      props: { rounded: true },
+      usage: usageSection,
+      code: extractCode("src/components/custom/blocks/CollageHeroBlock.tsx"),
+      minHeight: 900,
+    },
+  ]}
+/>
+
+## Installation
+
+<Installation name="collage-hero" />
+
+## The badge
+
+`CollageHero.Badge` is exported on its own: the `brand` text set on an SVG circle with `textPath`, turning once every 22 seconds, around a `logo` — three dots in the accent and highlight by default, or anything you pass. Under `prefers-reduced-motion` it does not turn.
+
+```tsx
+<CollageHero.Badge text="KinderNest" logo={<img src="/mark.svg" alt="" className="size-10" />} />
+```
+
+## Features
+
+<div className="grid grid-cols-1 sm:grid-cols-2 gap-4 my-6 not-prose">
+  <div className="p-6 rounded-2xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900">
+    <h3 className="text-lg font-semibold text-zinc-900 dark:text-zinc-50 mb-2">Built from the library</h3>
+    <p className="text-zinc-600 dark:text-zinc-400 text-sm">Button for the scroll pill, Dialog for the video. Both install with this item; the rest is Tailwind and one SVG.</p>
+  </div>
+  <div className="p-6 rounded-2xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900">
+    <h3 className="text-lg font-semibold text-zinc-900 dark:text-zinc-50 mb-2">One reveal, one thing that keeps moving</h3>
+    <p className="text-zinc-600 dark:text-zinc-400 text-sm">Headline, pills, photographs, footer — one timeline the first time the section appears. The turning badge is the only ambient motion, and it stops under reduced motion.</p>
+  </div>
+  <div className="p-6 rounded-2xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900">
+    <h3 className="text-lg font-semibold text-zinc-900 dark:text-zinc-50 mb-2">Two colours, from the theme</h3>
+    <p className="text-zinc-600 dark:text-zinc-400 text-sm">The accent is your primary colour unless you pin it; the second colour is one prop. Pills, badge, coloured words, play button and scroll pill all follow.</p>
+  </div>
+  <div className="p-6 rounded-2xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900">
+    <h3 className="text-lg font-semibold text-zinc-900 dark:text-zinc-50 mb-2">Real links and dialogs</h3>
+    <p className="text-zinc-600 dark:text-zinc-400 text-sm">The video trigger is keyboard-operable and opens a proper dialog with focus handling; every photograph carries its alt text; nothing depends on JavaScript to be visible.</p>
+  </div>
+</div>
+
+## Props Reference
+
+<div className="overflow-x-auto my-4">
+  <table>
+    <thead>
+      <tr>
+        <th>Prop</th>
+        <th>Type</th>
+        <th>Default</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><code>brand</code></td>
+        <td><code>string</code></td>
+        <td>—</td>
+        <td>The words that run around the badge.</td>
+      </tr>
+      <tr>
+        <td><code>logo</code></td>
+        <td><code>ReactNode</code></td>
+        <td>three dots</td>
+        <td>What sits in the middle of the badge.</td>
+      </tr>
+      <tr>
+        <td><code>heading</code></td>
+        <td><code>ReactNode</code></td>
+        <td>—</td>
+        <td>The headline. <code>&lt;em&gt;</code> words take the accent, then the highlight.</td>
+      </tr>
+      <tr>
+        <td><code>tags</code></td>
+        <td><code>&#123; label: string; tone?: "accent" | "highlight" | "soft" &#125;[]</code></td>
+        <td><code>[]</code></td>
+        <td>Up to three pills.</td>
+      </tr>
+      <tr>
+        <td><code>caption</code></td>
+        <td><code>string</code></td>
+        <td>—</td>
+        <td>Tracked caps over the first photograph.</td>
+      </tr>
+      <tr>
+        <td><code>photos</code></td>
+        <td><code>&#123; src: string; alt: string; position?: string &#125;[]</code></td>
+        <td>—</td>
+        <td>Up to seven photographs, in layout order.</td>
+      </tr>
+      <tr>
+        <td><code>quote</code></td>
+        <td><code>string</code></td>
+        <td>—</td>
+        <td>Footer quote, with a large opening mark in the accent.</td>
+      </tr>
+      <tr>
+        <td><code>scrollLabel</code>, <code>scrollTo</code></td>
+        <td><code>string</code></td>
+        <td><code>"Scroll down"</code>, next section</td>
+        <td>The scroll pill and the selector it scrolls to.</td>
+      </tr>
+      <tr>
+        <td><code>video</code></td>
+        <td><code>&#123; eyebrow?: string; text: string; url: string; title?: string &#125;</code></td>
+        <td>—</td>
+        <td>The play trigger and the embed it opens.</td>
+      </tr>
+      <tr>
+        <td><code>accent</code></td>
+        <td><code>string</code></td>
+        <td>theme primary</td>
+        <td>Sets <code>--primary</code> for the section.</td>
+      </tr>
+      <tr>
+        <td><code>highlight</code></td>
+        <td><code>string</code></td>
+        <td><code>"#f5c542"</code></td>
+        <td>The second colour.</td>
+      </tr>
+      <tr>
+        <td><code>reveal</code></td>
+        <td><code>"in-view" | "immediate"</code></td>
+        <td><code>"in-view"</code></td>
+        <td>When the sequence plays.</td>
+      </tr>
+    </tbody>
+  </table>
+</div>

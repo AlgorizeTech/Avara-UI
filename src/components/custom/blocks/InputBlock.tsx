@@ -360,9 +360,12 @@ export const InputBlock = forwardRef<HTMLInputElement, InputBlockProps>(
 
     const processFiles = useCallback(
       (newFiles: File[]) => {
+        const first = newFiles[0];
         const validFiles = multiple
           ? [...selectedFiles, ...newFiles]
-          : [newFiles[0]];
+          : first
+            ? [first]
+            : [];
         setSelectedFiles(validFiles);
         if (onFilesChange) onFilesChange(validFiles);
 
