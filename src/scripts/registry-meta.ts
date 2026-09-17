@@ -576,6 +576,12 @@ export const META: Record<string, ItemMeta> = {
     categories: ["marketing", "forms"],
     docs: "Named export: Newsletter, with parts Heading, Intro, Form, Proof, Ticker and Issues. Composed from the input, button, marquee and tilted-card items, which install alongside it. `variant` is portraits | spotlight | issues, each styled for light and dark mode; `portraits` takes up to four faces; `Form` takes `onSubscribe(email)` (a promise holds the busy state), `action`, `successTitle`/`successText`; `accent` pins the glow and button colour; `reveal` is in-view or immediate.",
   },
+  waitlist: {
+    description:
+      "A pre-launch sign-up in three layouts: a compact card, a brand mark with a live countdown over the form, or a pill on a soft ground with the faces already in and a bar of the spots claimed. The form becomes the reader's place in line — a number that counts up, and an invite link to copy — when your promise resolves.",
+    categories: ["marketing", "forms"],
+    docs: "Named export: Waitlist, with parts Mark, Countdown, Heading, Intro, Form, Proof and Spots. Composed from the input, button, avatar-stack, progress and copy-button items, which install alongside it. `variant` is card | launch | queue, each styled for light and dark mode; `Countdown` takes a `date`; `Form` takes `onJoin(email)` — resolve a number to show it as the place in line, throw an Error to show its message — plus `action`, `shareUrl`, `note` and the success copy; `Spots` takes `claimed` and `total`; `accent` pins the colour; `reveal` is in-view or immediate.",
+  },
   "glass-panel": {
     description:
       "A frosted surface in four shapes and the aurora ground it sits on. Use it for glass bento layouts, profile and booking pages — or flip it to solid cards with one prop.",

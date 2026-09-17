@@ -169,6 +169,7 @@
     "src/components/custom/blocks/VideoPlayerBlock.tsx",
     "src/components/custom/blocks/VideoPlayerJwBlock.tsx",
     "src/components/custom/blocks/VideoPlayerPlyrBlock.tsx",
+    "src/components/custom/blocks/WaitlistBlock.tsx",
     "src/components/custom/blocks/WizardBlock.tsx",
     "src/components/custom/blocks/animated-timeline-theme.ts",
     "src/components/custom/blocks/animated-typography-theme.ts",
