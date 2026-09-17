@@ -169,7 +169,7 @@ export default function DialogSizes() {
   );
 }`;
 
-export const usageConfirmDelete = `type Project = { id: string; name: string };
+export const usageConfirmDelete = `type Project = { id: string; name: string; meta?: string };
 
 export default function ProjectList({
   projects,
@@ -209,7 +209,7 @@ export default function ProjectList({
 
             Delete “{pending?.name}”?
             
-              This permanently removes the project and everything inside it.
+              This removes the project and the {pending?.meta ? pending.meta.split(" ")[0] : "selected"} files inside it. You cannot undo this.
 
                setPending(null)}
                 disabled={deleting}
