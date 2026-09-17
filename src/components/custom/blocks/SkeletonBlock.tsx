@@ -60,9 +60,10 @@ export function SkeletonBlock({
   style,
   ...props
 }: SkeletonBlockProps) {
-  // Base shapes for the atomic components
+  // Base shapes for the atomic components — uses opacity-tinted primary theme color
+  // so the docs theme color picker dynamically themes the skeleton placeholders live.
   const baseClasses = cn(
-    "relative overflow-hidden bg-muted",
+    "relative overflow-hidden bg-primary/10 border border-primary/20",
     animation === "pulse" && "animate-pulse",
   );
 
@@ -80,7 +81,11 @@ export function SkeletonBlock({
   if (variant === "profile") {
     return (
       <div
-        className={cn("flex items-center justify-center gap-4 w-full max-w-xs mx-auto", className)}
+        className={cn(
+          "flex items-center justify-center gap-4 w-full mx-auto",
+          width === undefined && "max-w-xs",
+          className,
+        )}
         style={customStyles}
         {...props}
       >
@@ -103,7 +108,8 @@ export function SkeletonBlock({
     return (
       <div
         className={cn(
-          "flex flex-col gap-2.5 w-full max-w-sm mx-auto items-center",
+          "flex flex-col gap-2.5 w-full mx-auto items-center",
+          width === undefined && "max-w-sm",
           className,
         )}
         style={customStyles}
@@ -123,7 +129,8 @@ export function SkeletonBlock({
     return (
       <div
         className={cn(
-          "flex flex-col gap-3 w-full max-w-sm p-4 border border-border rounded-2xl bg-card text-card-foreground",
+          "flex flex-col gap-3 w-full p-4 border border-zinc-200 dark:border-zinc-800 rounded-2xl bg-white dark:bg-zinc-950 text-foreground shadow-sm",
+          width === undefined && "max-w-sm",
           className,
         )}
         style={customStyles}
@@ -145,12 +152,15 @@ export function SkeletonBlock({
     );
   }
 
-  // --- ATOMIC & CUSTOM VARIANTS ---
+  // --- ATOMIC & CUSTOM VARIANTS (rect, circle, custom) ---
 
   const atomicClasses = cn(
     baseClasses,
-    variant === "circle" && !radius && "rounded-full w-12 h-12",
-    variant === "rect" && !height && "min-h-[100px] w-full",
+    variant === "circle" && !radius && "rounded-full",
+    variant === "circle" && width === undefined && "w-12",
+    variant === "circle" && height === undefined && "h-12",
+    variant === "rect" && width === undefined && "w-full",
+    variant === "rect" && height === undefined && "min-h-[100px]",
     variant === "rect" && !radius && "rounded-xl",
     className,
   );

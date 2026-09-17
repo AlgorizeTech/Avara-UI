@@ -50,6 +50,7 @@ export default function StaticSkeleton() {
 
 export const usageCustom = `import { SkeletonBlock } from "@/components/custom/blocks/SkeletonBlock";
 
+// Custom atomic composition with explicit width, height and radius props
 export default function CustomSkeleton() {
   return (
 
