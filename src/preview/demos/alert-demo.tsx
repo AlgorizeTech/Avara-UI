@@ -19,12 +19,6 @@ const TYPE_ICONS: Record<AlertType, string> = {
   dark: "Bell",
 };
 
-/** Backdrop the glass variant needs to read correctly. */
-const backdropFor = (variant: AlertVariant) =>
-  variant === "glass"
-    ? "bg-gradient-to-br from-indigo-500/30 via-purple-500/20 to-pink-500/30 dark:from-indigo-900/50 dark:via-purple-950/40 dark:to-pink-900/50 relative overflow-hidden"
-    : "bg-transparent";
-
 export default function AlertDemo({
   type = "success",
   variant = "modern",

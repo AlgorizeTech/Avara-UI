@@ -7,7 +7,6 @@ import {
   DataTableCell,
   DataTableContent,
   DataTableEmpty,
-  DataTableExpandedRow,
   DataTableExport,
   DataTableFooter,
   DataTableHead,

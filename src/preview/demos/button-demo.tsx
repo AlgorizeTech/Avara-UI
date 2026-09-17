@@ -3,7 +3,6 @@
 import Button, { getButtonThemeStyle } from "@/components/custom/blocks/Button";
 import {
   AppleIcon,
-  ArrowLeftIcon,
   ArrowRightIcon,
   BellIcon,
   CheckIcon,
@@ -12,7 +11,6 @@ import {
   FacebookIcon,
   GitHubIcon,
   GoogleIcon,
-  HeartIcon,
   LinkedInIcon,
   MailIcon,
   MicrosoftIcon,
@@ -22,25 +20,11 @@ import {
   SearchIcon,
   SettingsIcon,
   ShareIcon,
-  ShoppingCartIcon,
   SlackIcon,
   StarIcon,
   XIcon,
   XIcon2,
 } from "@/components/custom/blocks/Icons";
-
-type LayoutType =
-  | "basic"
-  | "default"
-  | "variants"
-  | "sizes"
-  | "loading"
-  | "with-icon"
-  | "commerce"
-  | "social"
-  | "icon-only"
-  | "right-icon"
-  | "others";
 
 export default function ButtonDemo({
   layout = "basic",
