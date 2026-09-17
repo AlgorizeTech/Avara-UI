@@ -38,20 +38,20 @@ const chatVariants: Record<ChatVariant, Record<string, string>> = {
     msgThem:
       "bg-card text-foreground rounded-2xl rounded-bl-sm border border-border shadow-sm",
     msgMe: "rounded-2xl rounded-br-sm shadow-sm border border-transparent",
+    composer: "",
   },
+  // Two cards, not one: the contact list and the thread are separate
+  // bordered cards with a gap between them, and the wrapper draws nothing —
+  // so the chat sits on the page as two panels rather than one big card.
   minimal: {
-    wrapper: "bg-transparent border-none shadow-none rounded-none",
-    sidebar:
-      "bg-muted/50 rounded-2xl border border-border lg:mr-4",
-    main: "bg-transparent",
-    header:
-      "bg-transparent border-b border-border mb-2 pb-4",
-    footer:
-      "bg-transparent border-t border-border mt-2 pt-4",
-    inputBg:
-      "bg-muted border border-border",
-    msgThem:
-      "bg-muted text-foreground rounded-2xl rounded-bl-sm",
+    wrapper: "bg-transparent border-none shadow-none rounded-none gap-4",
+    sidebar: "bg-card border border-border rounded-2xl shadow-sm overflow-hidden",
+    main: "bg-card border border-border rounded-2xl shadow-sm overflow-hidden",
+    header: "bg-transparent border-b border-border",
+    footer: "bg-transparent border-t border-border",
+    inputBg: "bg-muted border border-transparent",
+    composer: "",
+    msgThem: "bg-muted text-foreground rounded-2xl rounded-bl-sm",
     msgMe: "rounded-2xl rounded-br-sm shadow-sm",
   },
   glass: {
@@ -69,6 +69,7 @@ const chatVariants: Record<ChatVariant, Record<string, string>> = {
     msgThem:
       "bg-white/50 dark:bg-black/50 backdrop-blur-md text-foreground border border-white/30 dark:border-white/10 rounded-2xl rounded-bl-sm",
     msgMe: "rounded-2xl rounded-br-sm shadow-lg",
+    composer: "",
   },
 };
 
@@ -704,6 +705,7 @@ export default function ChatApp({
                 className={cn(
                   "flex items-center gap-2 sm:gap-3 w-full rounded-full transition-all px-4 py-1.5",
                   styles.inputBg,
+                  styles.composer,
                   theme.focusRing,
                 )}
               >

@@ -48,7 +48,7 @@ const ACTIVITY = [
 ];
 
 const focusRing =
-  "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-violet-500 focus-visible:ring-offset-2 focus-visible:ring-offset-white dark:focus-visible:ring-offset-[#0b0b0f]";
+  "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-white dark:focus-visible:ring-offset-[#0b0b0f]";
 
 export default function ProfilePageDemo() {
   const [following, setFollowing] = useState(false);
@@ -81,7 +81,7 @@ export default function ProfilePageDemo() {
               "inline-flex h-11 items-center gap-2 rounded-full px-5 text-sm font-medium transition-colors",
               following
                 ? "border border-black/10 bg-black/[0.03] text-black hover:bg-black/[0.06] dark:border-white/15 dark:bg-white/5 dark:text-white dark:hover:bg-white/10"
-                : "bg-violet-600 text-white hover:bg-violet-500",
+                : "bg-primary text-primary-foreground hover:bg-primary/90",
               focusRing,
             )}
           >
@@ -208,7 +208,7 @@ const ACTIVITY = [
 ];
 
 const focusRing =
-  "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-violet-500 focus-visible:ring-offset-2 focus-visible:ring-offset-white dark:focus-visible:ring-offset-[#0b0b0f]";
+  "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-white dark:focus-visible:ring-offset-[#0b0b0f]";
 
 export default function ProfilePageDemo() {
   const [following, setFollowing] = useState(false);
@@ -241,7 +241,7 @@ export default function ProfilePageDemo() {
               "inline-flex h-11 items-center gap-2 rounded-full px-5 text-sm font-medium transition-colors",
               following
                 ? "border border-black/10 bg-black/[0.03] text-black hover:bg-black/[0.06] dark:border-white/15 dark:bg-white/5 dark:text-white dark:hover:bg-white/10"
-                : "bg-violet-600 text-white hover:bg-violet-500",
+                : "bg-primary text-primary-foreground hover:bg-primary/90",
               focusRing,
             )}
           >
@@ -356,6 +356,9 @@ Grid spans are plain Tailwind: the grid is `grid-cols-1 md:grid-cols-6 lg:grid-c
 
     Light and dark by construction
     Panels are translucent white over the aurora in light mode and over near-black in dark mode. The blobs dim, the text flips, nothing else has to change.
+
+    Theme colours
+    The dial's arc and marker, the Follow button, the progress bars and the avatar are all written against primary and ring, so the page follows your theme preset — and the colour picker above — with no prop. Pass var(--primary) into aurora and the backdrop follows too.
 
     Still, on purpose
     Nothing animates on load. The only motion is the marker on the dial and a lift on panels you mark interactive — and both hold still under prefers-reduced-motion.

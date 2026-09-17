@@ -2,7 +2,9 @@
 
 import { isDefaultAccent } from "@/lib/accent";
 import { cn } from "@/lib/utils";
+import { useTheme } from "next-themes";
 import React, { useEffect, useMemo, useRef, useState } from "react";
+import { revealThemeAt } from "./theme";
 
 /**
  * Embeds a /sandbox/[name] page in an iframe. The demo runs as a REAL
@@ -106,6 +108,13 @@ export function SandboxFrame({
     post({ type: "sandbox:fill", fill });
   }, [fill]);
 
+  // A demo can hand a theme switch to the page (`sandbox:theme`): a View
+  // Transition can't leave the iframe's document, so the theme-switcher demo
+  // asks us to run the header's reveal here, from where the click landed.
+  const { setTheme } = useTheme();
+  const setThemeRef = useRef(setTheme);
+  setThemeRef.current = setTheme;
+
   // Auto-height reported from inside the sandbox document.
   useEffect(() => {
     const onMessage = (event: MessageEvent) => {
@@ -117,6 +126,15 @@ export function SandboxFrame({
       }
       if (data?.type === "sandbox:ready") {
         setReady(true);
+      }
+      if (data?.type === "sandbox:theme" && typeof data.theme === "string") {
+        const frame = iframeRef.current;
+        const rect = frame?.getBoundingClientRect();
+        // x/y are the sandbox's own CSS pixels; the frame may be scaled down.
+        const ratio = frame && rect && frame.clientWidth > 0 ? rect.width / frame.clientWidth : 1;
+        const x = rect ? rect.left + (typeof data.x === "number" ? data.x * ratio : rect.width / 2) : window.innerWidth / 2;
+        const y = rect ? rect.top + (typeof data.y === "number" ? data.y * ratio : rect.height / 2) : window.innerHeight / 2;
+        revealThemeAt(x, y, () => setThemeRef.current(data.theme));
       }
     };
     window.addEventListener("message", onMessage);

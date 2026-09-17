@@ -64,7 +64,7 @@ const ACTIVITY = [
 ];
 
 const focusRing =
-  "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-violet-500 focus-visible:ring-offset-2 focus-visible:ring-offset-white dark:focus-visible:ring-offset-[#0b0b0f]";
+  "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-white dark:focus-visible:ring-offset-[#0b0b0f]";
 
 export default function ProfilePageDemo({
   rounded = true,
@@ -77,7 +77,13 @@ export default function ProfilePageDemo({
   const [following, setFollowing] = useState(false);
 
   return (
-    <ProfilePage variant={variant} className={cn("max-w-6xl", rounded && "rounded-[36px]")}>
+    <ProfilePage
+      variant={variant}
+      // First blob on the theme colour, so the backdrop follows the palette
+      // (and the docs picker) along with the dial and the buttons.
+      aurora={["var(--primary)", "#7dd3fc", "#fdba74"]}
+      className={cn("max-w-6xl", rounded && "rounded-[36px]")}
+    >
       {/* Hero */}
       <GlassPanel shape="slab" className="flex flex-col gap-6 p-6 sm:p-8 md:col-span-6 lg:col-span-8">
         <div className="flex items-center justify-between">
@@ -106,7 +112,7 @@ export default function ProfilePageDemo({
           {/* Squircle avatar — the only shape on the page that isn't a
               rectangle, circle or capsule, so it reads as the person */}
           <div className="relative shrink-0">
-            <span className="grid size-24 place-items-center rounded-[30%] bg-gradient-to-br from-violet-500 to-fuchsia-500 text-3xl font-semibold text-white shadow-[0_16px_32px_-16px_rgba(124,58,237,0.7)] sm:size-28 sm:text-4xl">
+            <span className="grid size-24 place-items-center rounded-[30%] bg-gradient-to-br from-primary to-primary/70 text-3xl font-semibold text-primary-foreground shadow-[0_16px_32px_-16px_var(--primary)] sm:size-28 sm:text-4xl">
               AK
             </span>
           </div>
@@ -152,7 +158,7 @@ export default function ProfilePageDemo({
               "inline-flex h-11 items-center gap-2 rounded-full px-5 text-sm font-medium transition-colors",
               following
                 ? "border border-black/10 bg-black/[0.03] text-black hover:bg-black/[0.06] dark:border-white/15 dark:bg-white/5 dark:text-white dark:hover:bg-white/10"
-                : "bg-violet-600 text-white hover:bg-violet-500",
+                : "bg-primary text-primary-foreground hover:bg-primary/90",
               focusRing,
             )}
           >
@@ -242,7 +248,7 @@ export default function ProfilePageDemo({
                 className="h-1.5 overflow-hidden rounded-full bg-black/10 dark:bg-white/10"
               >
                 <div
-                  className="h-full rounded-full bg-violet-600 dark:bg-violet-400"
+                  className="h-full rounded-full bg-primary"
                   style={{ width: `${item.progress}%` }}
                 />
               </div>
@@ -251,7 +257,7 @@ export default function ProfilePageDemo({
               className={cn(
                 "text-xs font-medium",
                 item.progress !== undefined
-                  ? "text-violet-700 dark:text-violet-300"
+                  ? "text-primary"
                   : "text-black/50 dark:text-white/50",
               )}
             >

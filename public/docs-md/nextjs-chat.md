@@ -64,7 +64,8 @@ export const usageMinimal = `import ChatApp, { type Contact, type CurrentUser } 
 ${chatData}
 
 export default function MinimalChat() {
-  // Borders and shadows stripped back for embedding inside an existing panel.
+  // Two cards instead of one: the contact list and the thread are separate
+  // bordered cards with a gap between them, sitting directly on the page.
   return (
     
   );
@@ -140,8 +141,11 @@ Explore the Chat component's robust features, including message grouping, timest
 
           "default"
 
-          Applies overarching structural layouts, including borders, backdrop
-          blurs, and shadows.
+          The shell. default is one card with the list and the
+          thread side by side; minimal is two separate cards —
+          the list and the thread — with a gap between them and no outer box;
+          glass is one translucent card over a photo. The
+          conversation is the same in all three.
 
           color
 

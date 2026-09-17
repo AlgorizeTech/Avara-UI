@@ -81,6 +81,18 @@ export default function HighlightedBento() {
 
 ## Examples
 
+## Theming the glow
+
+Every effect — the spinning `highlight` border, the pointer-tracked border and the inner glow — reads one colour. Out of the box it is your shadcn `--primary`, so the component works with no extra setup. To re-tint a whole grid, set the two CSS variables on any ancestor:
+
+```tsx
+
+  …
+
+```
+
+`--magic-glow` is optional — when only `--magic-color` is set, the glow is derived from it at 15% opacity.
+
 ## Features
 Discover the key capabilities that make this component an excellent choice for modern, animated user interfaces.
 
@@ -168,6 +180,29 @@ Discover the key capabilities that make this component an excellent choice for m
 
           Used to control the grid spanning and dimensions of the specific card
           (e.g., col-span-1 md:col-span-2 lg:row-span-2).
+
+          CSS variable
+
+          --magic-color
+
+          &lt;color&gt;
+
+          var(--primary)
+
+          Colour of the spinning highlight border and the
+          pointer-tracked border. Set it on any ancestor to re-tint every card
+          below it.
+
+          CSS variable
+
+          --magic-glow
+
+          &lt;color&gt;
+
+          --magic-color at 15%
+
+          Colour of the soft inner glow that follows the cursor. Defaults to a
+          translucent version of --magic-color.
 
 ---
 
