@@ -59,7 +59,6 @@ This directory contains auto-generated Markdown versions of all MDX documentatio
 - [nextjs/examples/button](/docs/nextjs-examples-button.md) - Source: `[framework]\examples\button\page.mdx`
 - [nextjs/examples/counter](/docs/nextjs-examples-counter.md) - Source: `[framework]\examples\counter\page.mdx`
 - [nextjs/examples/video-text](/docs/nextjs-examples-video-text.md) - Source: `[framework]\examples\video-text\page.mdx`
-- [nextjs/examples/waitlist](/docs/nextjs-examples-waitlist.md) - Source: `[framework]\examples\waitlist\page.mdx`
 - [nextjs/fashion-hero](/docs/nextjs-fashion-hero.md) - Source: `[framework]\fashion-hero\page.mdx`
 - [nextjs/file-upload](/docs/nextjs-file-upload.md) - Source: `[framework]\file-upload\page.mdx`
 - [nextjs/first-app](/docs/nextjs-first-app.md) - Source: `[framework]\first-app\_content\nextjs.mdx`
@@ -146,6 +145,7 @@ This directory contains auto-generated Markdown versions of all MDX documentatio
 - [nextjs/vertical-tabs](/docs/nextjs-vertical-tabs.md) - Source: `[framework]\vertical-tabs\page.mdx`
 - [nextjs/video-accordion](/docs/nextjs-video-accordion.md) - Source: `[framework]\video-accordion\page.mdx`
 - [nextjs/video-player](/docs/nextjs-video-player.md) - Source: `[framework]\video-player\page.mdx`
+- [nextjs/waitlist](/docs/nextjs-waitlist.md) - Source: `[framework]\waitlist\page.mdx`
 - [nextjs/wizard](/docs/nextjs-wizard.md) - Source: `[framework]\wizard\page.mdx`
 - [page.mdx](/docs/page.mdx.md) - Source: `page.mdx`
 - [reactjs/3d-carousel](/docs/reactjs-3d-carousel.md) - Source: `[framework]\3d-carousel\page.mdx`
@@ -200,7 +200,6 @@ This directory contains auto-generated Markdown versions of all MDX documentatio
 - [reactjs/examples/button](/docs/reactjs-examples-button.md) - Source: `[framework]\examples\button\page.mdx`
 - [reactjs/examples/counter](/docs/reactjs-examples-counter.md) - Source: `[framework]\examples\counter\page.mdx`
 - [reactjs/examples/video-text](/docs/reactjs-examples-video-text.md) - Source: `[framework]\examples\video-text\page.mdx`
-- [reactjs/examples/waitlist](/docs/reactjs-examples-waitlist.md) - Source: `[framework]\examples\waitlist\page.mdx`
 - [reactjs/fashion-hero](/docs/reactjs-fashion-hero.md) - Source: `[framework]\fashion-hero\page.mdx`
 - [reactjs/file-upload](/docs/reactjs-file-upload.md) - Source: `[framework]\file-upload\page.mdx`
 - [reactjs/first-app](/docs/reactjs-first-app.md) - Source: `[framework]\first-app\_content\reactjs.mdx`
@@ -287,6 +286,7 @@ This directory contains auto-generated Markdown versions of all MDX documentatio
 - [reactjs/vertical-tabs](/docs/reactjs-vertical-tabs.md) - Source: `[framework]\vertical-tabs\page.mdx`
 - [reactjs/video-accordion](/docs/reactjs-video-accordion.md) - Source: `[framework]\video-accordion\page.mdx`
 - [reactjs/video-player](/docs/reactjs-video-player.md) - Source: `[framework]\video-player\page.mdx`
+- [reactjs/waitlist](/docs/reactjs-waitlist.md) - Source: `[framework]\waitlist\page.mdx`
 - [reactjs/wizard](/docs/reactjs-wizard.md) - Source: `[framework]\wizard\page.mdx`
 
 ## Usage

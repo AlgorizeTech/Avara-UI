@@ -8,6 +8,8 @@ export const usageBadge = `import { Play } from "lucide-react";
 
 export default function VideoBadge() {
   return (
+    // The ring is \`var(--primary)\` by default; the button uses the same tokens,
+    // so both follow the theme.
 
   );
 }`;
@@ -16,9 +18,13 @@ export const usageStamp = `import { CircularText } from "@/components/custom/blo
 
 export default function Stamp() {
   return (
-    
-      tz
-    
+    <>
+      {/* Ring in the theme colour, mark in ink. */}
+      
+        tz
+      
+      {/* The other way round: ring in ink, dot in the theme colour. */}
+
   );
 }`;
 
@@ -26,6 +32,8 @@ export const usageLink = `import { ArrowUpRight } from "lucide-react";
 
 export default function SeeTheWork() {
   return (
+    // \`currentColor\` takes the anchor's ink — \`text-primary\` here — so the
+    // ring, the border and the arrow all follow the theme.
 
   );
 }`;

@@ -4144,6 +4144,37 @@
       "docs": "Named export: PlyrPlayer. Requires the `plyr` package, which the CLI installs. `provider` is html5 | youtube | vimeo and `mediaType` is video | audio; `accentColor` sets Plyr's `--plyr-color-main`, and `controls` takes Plyr's control-name array. Plyr is imported dynamically inside an effect, so the component server-renders cleanly. Its control icons come from Plyr's CDN sprite by default — set `iconUrl` to a self-hosted `plyr.svg` if the page must not reach a third-party host."
     },
     {
+      "name": "waitlist",
+      "type": "registry:component",
+      "title": "Waitlist",
+      "author": "AlgorizeTech",
+      "description": "A pre-launch sign-up in three layouts: a compact card, a brand mark with a live countdown over the form, or a pill on a soft ground with the faces already in and a bar of the spots claimed. The form becomes the reader's place in line — a number that counts up, and an invite link to copy — when your promise resolves.",
+      "categories": [
+        "marketing",
+        "forms"
+      ],
+      "dependencies": [
+        "framer-motion",
+        "lucide-react"
+      ],
+      "registryDependencies": [
+        "https://algorize-ui.vercel.app/r/avatar-stack.json",
+        "https://algorize-ui.vercel.app/r/button.json",
+        "https://algorize-ui.vercel.app/r/copy-button.json",
+        "https://algorize-ui.vercel.app/r/input.json",
+        "https://algorize-ui.vercel.app/r/progress.json",
+        "utils"
+      ],
+      "files": [
+        {
+          "path": "src/components/custom/blocks/WaitlistBlock.tsx",
+          "type": "registry:component",
+          "target": "components/custom/blocks/WaitlistBlock.tsx"
+        }
+      ],
+      "docs": "Named export: Waitlist, with parts Mark, Countdown, Heading, Intro, Form, Proof and Spots. Composed from the input, button, avatar-stack, progress and copy-button items, which install alongside it. `variant` is card | launch | queue, each styled for light and dark mode; `Countdown` takes a `date`; `Form` takes `onJoin(email)` — resolve a number to show it as the place in line, throw an Error to show its message — plus `action`, `shareUrl`, `note` and the success copy; `Spots` takes `claimed` and `total`; `accent` pins the colour; `reveal` is in-view or immediate."
+    },
+    {
       "name": "wizard",
       "type": "registry:component",
       "title": "Wizard",

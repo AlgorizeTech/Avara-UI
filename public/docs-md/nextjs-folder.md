@@ -8,6 +8,7 @@ Explore the different variations of the Folder — each example shows a live pre
 
 export const usageDefault = `import { Folder } from "@/components/custom/blocks/FolderBlock";
 
+// The folder takes a soft tint of the theme colour by default; pass \`color\` to pin one.
 // peek={0} → an empty folder; peek={3} (default) → filled
 export default function ProductShots() {
   return (
@@ -51,7 +52,7 @@ export default function DesignAssets() {
 
   return (
     
-      {/* the icon adopts a darker shade of the folder colour */}
+      {/* the icon adopts a darker shade of the folder colour, itself a tint of the theme */}
 
         {ICONS.map(({ id, icon: I }) => (
            setIconId(id)}
@@ -127,8 +128,8 @@ Discover the Folder's capabilities for presenting a group of files as one tactil
 
         color
         string
-        soft neutral
-        Folder body colour — any CSS colour. Pocket, icon and skeleton cards derive their shades from it.
+        tint of --primary
+        Folder body colour — any CSS colour. By default a pastel of the theme colour (FOLDER_THEME_TINT: lightness 0.88, chroma at 40%). Pocket, icon and skeleton cards derive their shades from it.
 
         icon
         LucideIcon

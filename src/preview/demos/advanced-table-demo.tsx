@@ -179,7 +179,7 @@ export default function AdvancedTableDemo({
         <DataTableHeading title="Team members">
           {searchable && <DataTableSearch placeholder="Search all columns…" />}
           <div className="flex items-center gap-2">
-            <DataTablePageSize color={color as TableColor} />
+            <DataTablePageSize />
             <DataTableExport filename="team-members" color={color as TableColor} />
           </div>
         </DataTableHeading>

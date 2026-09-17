@@ -370,7 +370,6 @@ function FolderUploader() {
     <Folder
       interactive
       peek={0}
-      color="#bfdbfe"
       icon={ImageIcon}
       label="Drop zone"
       files={files}
