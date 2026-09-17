@@ -117,6 +117,17 @@ const COMPONENT_META: Record<
 	wizard: { countText: "Multi-Step Form", illustrationType: "wizard" },
 
 	// Ui Components (motion-driven; formerly a separate "Animated Ui Components" group)
+	"avatar-stack": { countText: "Overlapping Faces", illustrationType: "avatar-stack" },
+	"book-flip": { countText: "3D Page Turns", illustrationType: "book-flip" },
+	"booking-card": { countText: "Days & Time Slots", illustrationType: "booking-card" },
+	"circular-text": { countText: "Rotating Ring Text", illustrationType: "circular-text" },
+	"draggable-card-list": { countText: "Spring Reorder List", illustrationType: "draggable-card-list" },
+	"flow-gallery": { countText: "3D Cascading Stream", illustrationType: "flow-gallery" },
+	"glass-panel": { countText: "Frosted Aurora Surface", illustrationType: "glass-panel" },
+	"infrastructure-topology": { countText: "Live Service Mesh", illustrationType: "infrastructure-topology" },
+	"social-links": { countText: "Brand Mark Row", illustrationType: "social-links" },
+	"squircle-carousel": { countText: "Masked Tile Slider", illustrationType: "squircle-carousel" },
+	"table-of-contents": { countText: "Scroll-Spy Nav", illustrationType: "table-of-contents" },
 	"3d-carousel": { countText: "3D Physics Spring", illustrationType: "carousel" },
 	"animated-list": { countText: "Staggered Entrance", illustrationType: "animated-list" },
 	"chat-bubble": { countText: "Spring Motion Feed", illustrationType: "chat" },
@@ -149,6 +160,16 @@ const COMPONENT_META: Record<
 	reviews: { countText: "Testimonial Grid", illustrationType: "reviews" },
 	sidebar: { countText: "App Shell Layout", illustrationType: "sidebar" },
 	"support-dashboard": { countText: "Full SaaS Dashboard", illustrationType: "dashboard" },
+	"bento-showcase": { countText: "Six-Card Marketing Bento", illustrationType: "bento-showcase" },
+	"book-appointment": { countText: "Practitioner Booking Flow", illustrationType: "book-appointment" },
+	"collage-hero": { countText: "Playful Photo Collage", illustrationType: "collage-hero" },
+	"data-flow": { countText: "Sources → Node → Results", illustrationType: "data-flow" },
+	"fashion-hero": { countText: "Staggered Lookbook", illustrationType: "fashion-hero" },
+	"platform-grid": { countText: "Hairline Feature Grid", illustrationType: "platform-grid" },
+	"profile-page": { countText: "Glass Bento & 24h Dial", illustrationType: "profile-page" },
+	"support-hero": { countText: "Frosted Bento Hero", illustrationType: "support-hero" },
+	newsletter: { countText: "3 Sign-up Layouts", illustrationType: "newsletter" },
+	waitlist: { countText: "Countdown & Queue", illustrationType: "waitlist" },
 };
 
 const CATEGORY_META: Record<string, { subtitle: string; icon: any }> = {
@@ -2498,6 +2519,683 @@ function MiniatureIllustration({
 									Reset
 								</span>
 							</div>
+						</div>
+					</div>
+				)}
+
+				{type === "avatar-stack" && (
+					<div className="w-full flex flex-col items-center justify-center gap-1.5 my-auto">
+						<div className="flex items-center">
+							{["bg-rose-400", "bg-amber-400", "bg-emerald-400", "bg-sky-400"].map((c, i) => (
+								<span
+									key={c}
+									className={`size-5 rounded-full ${c} border-2 border-background text-[6px] font-extrabold text-white flex items-center justify-center shadow-xs`}
+									style={{ marginLeft: i ? -6 : 0 }}>
+									{["JD", "AL", "MK", "SR"][i]}
+								</span>
+							))}
+							<span className="size-5 rounded-full bg-muted border-2 border-background text-[6px] font-extrabold text-foreground flex items-center justify-center -ml-1.5">
+								+12
+							</span>
+							<span className="ml-1.5 px-1.5 py-0.5 rounded-full bg-primary text-primary-foreground text-[6px] font-bold">
+								Join
+							</span>
+						</div>
+						<span className="text-[6px] font-semibold text-muted-foreground">
+							Trusted by 2,000+ makers
+						</span>
+					</div>
+				)}
+
+				{type === "book-flip" && (
+					<div className="w-full flex flex-col items-center justify-center gap-1 my-auto">
+						<div className="relative flex w-24 h-13 [perspective:120px]">
+							<div className="flex-1 rounded-l-md bg-background border border-border border-r-0 shadow-inner p-1 space-y-0.5">
+								<div className="h-[2px] w-3/4 rounded bg-foreground/50" />
+								<div className="h-[2px] w-full rounded bg-muted-foreground/30" />
+								<div className="h-[2px] w-5/6 rounded bg-muted-foreground/30" />
+								<div className="h-[2px] w-2/3 rounded bg-muted-foreground/30" />
+							</div>
+							<div className="w-[3px] bg-gradient-to-r from-black/20 via-black/5 to-black/20" />
+							<div className="flex-1 rounded-r-md bg-background border border-border border-l-0 p-1 space-y-0.5">
+								<div className="h-[2px] w-full rounded bg-muted-foreground/30" />
+								<div className="h-[2px] w-4/5 rounded bg-muted-foreground/30" />
+								<div className="h-4 w-full rounded bg-primary/15 border border-primary/30" />
+							</div>
+							{/* Turning leaf */}
+							<div className="absolute right-0 top-0 h-full w-1/2 origin-left rounded-r-md bg-gradient-to-l from-muted to-background border border-border shadow-md [transform:rotateY(-40deg)]" />
+						</div>
+						<div className="flex items-center gap-1 text-[6px] text-muted-foreground">
+							<span className="px-1 rounded border border-border">‹</span>
+							<span className="font-bold text-foreground">3 / 12</span>
+							<span className="px-1 rounded border border-border">›</span>
+						</div>
+					</div>
+				)}
+
+				{type === "booking-card" && (
+					<div className="w-full max-w-[136px] mx-auto my-auto rounded-lg bg-background border border-border p-1.5 space-y-1">
+						<div className="grid grid-cols-5 gap-0.5 text-center">
+							{["Mo", "Tu", "We", "Th", "Fr"].map((d, i) => (
+								<div
+									key={d}
+									className={`rounded py-0.5 leading-none ${i === 2 ? "bg-primary text-primary-foreground" : "bg-muted/60 text-muted-foreground"}`}>
+									<div className="text-[4.5px] font-bold uppercase">{d}</div>
+									<div className="text-[6px] font-extrabold">{12 + i}</div>
+								</div>
+							))}
+						</div>
+						<div className="grid grid-cols-3 gap-0.5">
+							{["9:00", "10:30", "14:00"].map((t, i) => (
+								<span
+									key={t}
+									className={`rounded border text-[5.5px] font-bold text-center py-0.5 ${i === 1 ? "border-primary bg-primary/10 text-primary" : "border-border text-foreground"}`}>
+									{t}
+								</span>
+							))}
+						</div>
+						<div className="rounded bg-primary text-primary-foreground text-[6px] font-bold text-center py-0.5">
+							Book Wed 14 · 10:30
+						</div>
+					</div>
+				)}
+
+				{type === "circular-text" && (
+					<div className="w-full flex items-center justify-center my-auto">
+						<div className="relative size-14">
+							<svg
+								viewBox="0 0 100 100"
+								className="size-full animate-[spin_14s_linear_infinite] text-foreground">
+								<defs>
+									<path id="mini-ring" d="M50,50 m-38,0 a38,38 0 1,1 76,0 a38,38 0 1,1 -76,0" />
+								</defs>
+								<text fontSize="12.5" fontWeight="800" letterSpacing="1.5" fill="currentColor">
+									<textPath href="#mini-ring">SCROLL DOWN • WATCH REEL • </textPath>
+								</text>
+							</svg>
+							<span className="absolute inset-0 m-auto size-6 rounded-full bg-primary text-primary-foreground flex items-center justify-center text-[8px] pl-0.5">
+								▶
+							</span>
+						</div>
+					</div>
+				)}
+
+				{type === "design-components-folder" && (
+					<div className="w-full flex items-center justify-center my-auto">
+						<div className="relative w-20 h-14">
+							<div className="absolute left-0 top-1 w-8 h-3 rounded-t-md bg-primary/30" />
+							<div className="absolute inset-x-0 top-3 bottom-0 rounded-md bg-primary/30" />
+							<div className="absolute left-2 top-0 w-8 h-9 -rotate-12 rounded-sm bg-background border border-border shadow-sm p-0.5">
+								<div className="h-1.5 w-full rounded-sm bg-rose-400/70" />
+							</div>
+							<div className="absolute left-6 -top-1 w-8 h-9 rounded-sm bg-background border border-border shadow-sm p-0.5">
+								<div className="h-1.5 w-full rounded-sm bg-sky-400/70" />
+							</div>
+							<div className="absolute left-10 top-0 w-8 h-9 rotate-12 rounded-sm bg-background border border-border shadow-sm p-0.5">
+								<div className="h-1.5 w-full rounded-sm bg-emerald-400/70" />
+							</div>
+							<div className="absolute inset-x-0 bottom-0 h-7 rounded-md bg-primary/60 backdrop-blur-[2px] shadow-inner flex items-end justify-center pb-1">
+								<span className="text-[6px] font-extrabold text-primary-foreground tracking-wide">
+									Components
+								</span>
+							</div>
+						</div>
+					</div>
+				)}
+
+				{type === "draggable-card-list" && (
+					<div className="w-full max-w-[136px] mx-auto my-auto space-y-1">
+						{[
+							{ t: "Design review", b: "Design", bc: "bg-rose-100 text-rose-700 border-rose-200 dark:bg-rose-950 dark:text-rose-300 dark:border-rose-900", a: "bg-rose-400", lift: false },
+							{ t: "Ship v2.1", b: "Release", bc: "bg-sky-100 text-sky-700 border-sky-200 dark:bg-sky-950 dark:text-sky-300 dark:border-sky-900", a: "bg-sky-400", lift: true },
+							{ t: "Write docs", b: "Docs", bc: "bg-emerald-100 text-emerald-700 border-emerald-200 dark:bg-emerald-950 dark:text-emerald-300 dark:border-emerald-900", a: "bg-emerald-400", lift: false },
+						].map((row) => (
+							<div
+								key={row.t}
+								className={`flex items-center gap-1 rounded-md bg-background border pl-0 pr-1 py-0.5 overflow-hidden ${row.lift ? "border-primary shadow-md -rotate-1 scale-[1.04]" : "border-border"}`}>
+								<span className={`w-[3px] self-stretch ${row.a}`} />
+								<span className="flex-1 text-[6px] font-bold text-foreground truncate">
+									{row.t}
+								</span>
+								<span className={`px-1 rounded-full border text-[5px] font-bold ${row.bc}`}>
+									{row.b}
+								</span>
+								<span className="text-[7px] leading-none text-muted-foreground/70 tracking-[-2px]">
+									⋮⋮
+								</span>
+							</div>
+						))}
+					</div>
+				)}
+
+				{type === "flow-gallery" && (
+					<div className="w-full h-full flex items-center justify-center my-auto overflow-hidden [perspective:200px]">
+						<div className="flex gap-1 [transform:rotateX(18deg)_rotateY(-14deg)_rotateZ(6deg)]">
+							{["from-rose-400 to-orange-300", "from-sky-400 to-indigo-400", "from-emerald-400 to-teal-300", "from-fuchsia-400 to-purple-400", "from-amber-300 to-yellow-200"].map((g, i) => (
+								<div
+									key={g}
+									className={`w-7 h-10 rounded-md bg-gradient-to-br ${g} shadow-md shrink-0`}
+									style={{ transform: `translateY(${(i - 2) * 5}px)` }}
+								/>
+							))}
+						</div>
+					</div>
+				)}
+
+				{type === "glass-panel" && (
+					<div className="w-full h-full relative rounded-lg overflow-hidden my-auto border border-border/60">
+						{/* Aurora backdrop */}
+						<div className="absolute -top-3 -left-2 size-14 rounded-full bg-fuchsia-400/60 blur-md" />
+						<div className="absolute -bottom-4 left-8 size-14 rounded-full bg-sky-400/60 blur-md" />
+						<div className="absolute -top-2 -right-3 size-12 rounded-full bg-amber-300/60 blur-md" />
+						{/* Frosted panels in four shapes */}
+						<div className="absolute inset-0 grid grid-cols-3 gap-1 p-1.5">
+							<div className="col-span-2 rounded-md bg-white/45 dark:bg-white/15 backdrop-blur-sm border border-white/70 dark:border-white/25 shadow-xs p-1">
+								<div className="h-[2px] w-1/2 rounded bg-foreground/50" />
+								<div className="h-[2px] w-3/4 rounded bg-foreground/30 mt-0.5" />
+							</div>
+							<div className="rounded-full aspect-square mx-auto w-full bg-white/45 dark:bg-white/15 backdrop-blur-sm border border-white/70 dark:border-white/25 shadow-xs" />
+							<div className="rounded-full bg-white/45 dark:bg-white/15 backdrop-blur-sm border border-white/70 dark:border-white/25 shadow-xs h-4" />
+							<div className="col-span-2 rounded-md bg-white/45 dark:bg-white/15 backdrop-blur-sm border border-white/70 dark:border-white/25 shadow-xs flex items-center justify-center text-[6px] font-extrabold text-foreground">
+								Glass
+							</div>
+						</div>
+					</div>
+				)}
+
+				{type === "heart-signal" && (
+					<div className="w-full max-w-[136px] mx-auto my-auto rounded-lg bg-background border border-border p-1.5 relative overflow-hidden">
+						<div className="flex items-center justify-between mb-1">
+							<span className="text-[6px] font-bold text-muted-foreground uppercase tracking-wider">
+								Telemetry
+							</span>
+							<span className="flex items-center gap-0.5 px-1 rounded-full bg-primary/10 border border-primary/30 text-[6px] font-extrabold text-primary">
+								<span className="text-rose-500 animate-pulse">♥</span> 72 BPM
+							</span>
+						</div>
+						<svg viewBox="0 0 120 28" className="w-full h-7 text-primary">
+							<polyline
+								fill="none"
+								stroke="currentColor"
+								strokeWidth="1.6"
+								strokeLinejoin="round"
+								strokeLinecap="round"
+								points="0,16 18,16 24,16 28,9 32,22 36,4 40,26 44,14 48,16 66,16 72,16 76,9 80,22 84,4 88,26 92,14 96,16 120,16"
+							/>
+						</svg>
+					</div>
+				)}
+
+				{type === "particle-canvas" && (
+					<div className="w-full h-full relative flex items-center justify-center my-auto rounded-lg bg-card border border-border overflow-hidden">
+						<span
+							className="text-[30px] font-black tracking-tight leading-none text-transparent bg-clip-text select-none"
+							style={{
+								backgroundImage: "radial-gradient(circle, var(--primary) 0.9px, transparent 1.1px)",
+								backgroundSize: "3.5px 3.5px",
+							}}>
+							NEXUS
+						</span>
+						{/* Pointer with a small cleared halo */}
+						<span className="absolute right-6 top-2 size-6 rounded-full bg-card/80 border border-primary/30" />
+						<span className="absolute right-[34px] top-[18px] size-1.5 rounded-full bg-primary" />
+					</div>
+				)}
+
+				{type === "social-links" && (
+					<div className="w-full flex flex-col items-center justify-center gap-1.5 my-auto">
+						<div className="flex items-center gap-1">
+							{[
+								{ g: "𝕏", c: "" },
+								{ g: "GH", c: "text-[5.5px]" },
+								{ g: "in", c: "text-sky-600" },
+								{ g: "▶", c: "text-rose-500" },
+								{ g: "◎", c: "text-fuchsia-500" },
+								{ g: "✉", c: "text-amber-500" },
+							].map((m) => (
+								<span
+									key={m.g}
+									className={`size-5 rounded-md bg-background border border-border shadow-xs flex items-center justify-center text-[8px] font-black text-foreground ${m.c}`}>
+									{m.g}
+								</span>
+							))}
+						</div>
+						<span className="text-[6px] font-semibold text-muted-foreground">
+							Follow us everywhere
+						</span>
+					</div>
+				)}
+
+				{type === "squircle-carousel" && (
+					<div className="w-full flex items-center justify-center my-auto overflow-hidden">
+						<div className="grid grid-cols-5 gap-[3px]">
+							{Array.from({ length: 10 }).map((_, i) => (
+								<span
+									key={i}
+									className="size-5 rounded-[38%]"
+									style={{
+										backgroundImage:
+											"linear-gradient(135deg, var(--primary) 0%, #38bdf8 45%, #f472b6 100%)",
+										backgroundSize: "500% 200%",
+										backgroundPosition: `${(i % 5) * 25}% ${Math.floor(i / 5) * 100}%`,
+									}}
+								/>
+							))}
+						</div>
+					</div>
+				)}
+
+				{type === "table-of-contents" && (
+					<div className="w-full h-full flex gap-1.5 my-auto px-0.5">
+						<div className="w-12 shrink-0 rounded-md bg-background border border-border p-1 relative">
+							<div className="absolute left-0 top-1 bottom-1 w-[2px] rounded bg-border">
+								<div className="absolute top-[38%] h-[22%] w-full rounded bg-primary" />
+							</div>
+							<div className="h-2.5 rounded border border-border/70 bg-muted/50 mb-1" />
+							{["Intro", "Setup", "Usage", "API", "FAQ"].map((h, i) => (
+								<div
+									key={h}
+									className={`text-[5px] leading-[7px] pl-1 truncate ${i === 2 ? "font-extrabold text-primary" : "text-muted-foreground"}`}>
+									{h}
+								</div>
+							))}
+						</div>
+						<div className="flex-1 space-y-1 pt-0.5">
+							<div className="h-[2px] w-full rounded bg-primary/50" />
+							<div className="h-[3px] w-2/3 rounded bg-foreground/60" />
+							<div className="h-[2px] w-full rounded bg-muted-foreground/30" />
+							<div className="h-[2px] w-11/12 rounded bg-muted-foreground/30" />
+							<div className="h-[2px] w-4/5 rounded bg-muted-foreground/30" />
+							<div className="h-[3px] w-1/2 rounded bg-foreground/60 mt-1.5" />
+							<div className="h-[2px] w-full rounded bg-muted-foreground/30" />
+						</div>
+					</div>
+				)}
+
+				{type === "infrastructure-topology" && (
+					<div className="w-full h-full relative flex items-center justify-center my-auto rounded-lg bg-card border border-border overflow-hidden">
+						<svg viewBox="0 0 100 60" preserveAspectRatio="none" className="absolute inset-0 w-full h-full text-primary">
+							{[
+								[14, 12],
+								[86, 12],
+								[14, 48],
+								[86, 48],
+							].map(([x, y]) => (
+								<line
+									key={`${x}-${y}`}
+									x1="50"
+									y1="30"
+									x2={x}
+									y2={y}
+									stroke="currentColor"
+									strokeOpacity="0.35"
+									strokeWidth="1"
+									strokeDasharray="2 2"
+								/>
+							))}
+						</svg>
+						{["left-1.5 top-1.5", "right-1.5 top-1.5", "left-1.5 bottom-1.5", "right-1.5 bottom-1.5"].map((pos, i) => (
+							<span
+								key={pos}
+								className={`absolute ${pos} px-1 py-0.5 rounded bg-background border border-border text-[5px] font-bold text-foreground`}>
+								{["api", "auth", "db", "cache"][i]}
+							</span>
+						))}
+						<span className="relative size-7 rounded-full bg-primary/15 border border-primary flex items-center justify-center text-[5.5px] font-extrabold text-primary shadow-[0_0_12px_var(--primary)]">
+							core
+						</span>
+					</div>
+				)}
+
+				{type === "data-flow" && (
+					<div className="w-full h-full relative flex items-center justify-between my-auto px-0.5">
+						<svg
+							viewBox="0 0 100 40"
+							preserveAspectRatio="none"
+							className="absolute inset-0 w-full h-full text-primary/60">
+							<path d="M24 10 C 40 10, 40 20, 50 20" fill="none" stroke="currentColor" strokeWidth="1" />
+							<path d="M24 30 C 40 30, 40 20, 50 20" fill="none" stroke="currentColor" strokeWidth="1" />
+							<path d="M50 20 C 60 20, 60 10, 76 10" fill="none" stroke="currentColor" strokeWidth="1" />
+							<path d="M50 20 C 60 20, 60 30, 76 30" fill="none" stroke="currentColor" strokeWidth="1" />
+						</svg>
+						<div className="flex flex-col gap-2 w-[24%] relative">
+							{["CRM", "Sheets"].map((s) => (
+								<span
+									key={s}
+									className="rounded bg-background border border-border text-[5px] font-bold text-foreground text-center py-1">
+									{s}
+								</span>
+							))}
+						</div>
+						<span className="relative size-7 rounded-full bg-primary text-primary-foreground text-[5.5px] font-extrabold flex items-center justify-center shadow-md">
+							AI
+						</span>
+						<div className="flex flex-col gap-2 w-[24%] relative">
+							{["Report", "Alerts"].map((s) => (
+								<span
+									key={s}
+									className="rounded bg-primary/10 border border-primary/30 text-[5px] font-bold text-primary text-center py-1">
+									{s}
+								</span>
+							))}
+						</div>
+					</div>
+				)}
+
+				{type === "fashion-hero" && (
+					<div className="w-full h-full flex flex-col justify-between my-auto px-0.5 gap-1">
+						<div className="flex items-center justify-between">
+							<span className="size-4 rounded-full border border-dashed border-foreground/60 flex items-center justify-center text-[5px]">
+								▶
+							</span>
+							<div className="text-center text-[9px] font-black leading-[9px] tracking-tighter text-foreground uppercase">
+								Wear
+								<br />
+								Bold
+							</div>
+							<div className="flex">
+								{["bg-rose-400", "bg-amber-400", "bg-sky-400"].map((c, i) => (
+									<span
+										key={c}
+										className={`size-3 rounded-full ${c} border border-background`}
+										style={{ marginLeft: i ? -4 : 0 }}
+									/>
+								))}
+							</div>
+						</div>
+						<div className="flex items-end justify-center gap-1">
+							{["bg-orange-200", "bg-lime-200", "bg-sky-200", "bg-pink-200", "bg-violet-200"].map((c, i) => (
+								<div
+									key={c}
+									className={`w-5 rounded-sm ${c} relative overflow-hidden shrink-0 ${i === 2 ? "border border-primary" : ""}`}
+									style={{ height: 22 + (i % 2 ? 6 : 0) }}>
+									<span className="absolute bottom-0 left-1/2 -translate-x-1/2 w-3 h-3 rounded-t-full bg-foreground/60" />
+									<span className="absolute bottom-2.5 left-1/2 -translate-x-1/2 size-1.5 rounded-full bg-foreground/60" />
+								</div>
+							))}
+						</div>
+					</div>
+				)}
+
+				{type === "platform-grid" && (
+					<div className="w-full h-full my-auto grid grid-cols-4 grid-rows-3 gap-px bg-border rounded-md overflow-hidden border border-border">
+						{Array.from({ length: 12 }).map((_, i) =>
+							i === 5 ? (
+								<div
+									key={i}
+									className="col-span-2 row-span-2 bg-background p-1 flex items-center justify-center [perspective:80px]">
+									<div className="w-full h-full rounded-sm bg-gradient-to-br from-primary/25 to-primary/5 border border-primary/40 [transform:rotateX(8deg)_rotateY(-8deg)] shadow-sm flex items-center justify-center text-[5.5px] font-extrabold text-primary">
+										Feature
+									</div>
+								</div>
+							) : i === 6 || i === 9 || i === 10 ? null : (
+								<div key={i} className="bg-background flex flex-col items-center justify-center gap-0.5">
+									<span className="size-1.5 rounded-sm bg-foreground/60" />
+									<span className="h-[2px] w-3 rounded bg-muted-foreground/40" />
+								</div>
+							),
+						)}
+					</div>
+				)}
+
+				{type === "product-details" && (
+					<div className="w-full h-full flex gap-1.5 my-auto px-0.5">
+						<div className="w-[40%] rounded-md bg-gradient-to-br from-muted to-muted/40 border border-border relative flex items-center justify-center">
+							<span className="w-6 h-8 rounded-sm bg-primary/70 shadow-sm" />
+							<div className="absolute bottom-1 left-1/2 -translate-x-1/2 flex gap-0.5">
+								<span className="size-1.5 rounded-full bg-primary ring-1 ring-background" />
+								<span className="size-1.5 rounded-full bg-rose-400" />
+								<span className="size-1.5 rounded-full bg-emerald-400" />
+							</div>
+						</div>
+						<div className="flex-1 flex flex-col justify-between py-0.5">
+							<div>
+								<div className="text-[7px] font-extrabold text-foreground leading-tight">
+									Aero Jacket
+								</div>
+								<div className="text-[5px] text-amber-500">
+									★★★★☆ <span className="text-muted-foreground">(128)</span>
+								</div>
+							</div>
+							<div className="text-[8px] font-black text-foreground">$129</div>
+							<div>
+								<div className="h-[3px] w-full rounded bg-muted overflow-hidden">
+									<div className="h-full w-1/4 bg-rose-500" />
+								</div>
+								<div className="text-[4.5px] text-rose-500 font-bold">Only 3 left</div>
+							</div>
+							<span className="rounded bg-primary text-primary-foreground text-[5.5px] font-bold text-center py-0.5">
+								Add to cart
+							</span>
+						</div>
+					</div>
+				)}
+
+				{type === "profile-page" && (
+					<div className="w-full h-full relative rounded-lg overflow-hidden my-auto border border-border/60">
+						<div className="absolute -top-4 -left-3 size-16 rounded-full bg-violet-400/50 blur-md" />
+						<div className="absolute -bottom-5 right-0 size-16 rounded-full bg-sky-400/50 blur-md" />
+						<div className="absolute inset-0 grid grid-cols-3 gap-1 p-1.5">
+							<div className="rounded-full aspect-square w-full bg-white/50 dark:bg-white/15 backdrop-blur-sm border border-white/70 dark:border-white/25 flex items-center justify-center text-[7px] font-black text-foreground">
+								SR
+							</div>
+							<div className="col-span-2 rounded-md bg-white/50 dark:bg-white/15 backdrop-blur-sm border border-white/70 dark:border-white/25 p-1">
+								<div className="text-[6px] font-extrabold text-foreground leading-tight">
+									Sadiq Rahman
+								</div>
+								<div className="text-[4.5px] text-muted-foreground">Design Engineer · Dhaka</div>
+							</div>
+							<div className="col-span-2 rounded-md bg-white/50 dark:bg-white/15 backdrop-blur-sm border border-white/70 dark:border-white/25 flex items-center gap-1 px-1">
+								<span className="size-1 rounded-full bg-emerald-500" />
+								<span className="text-[5px] font-bold text-foreground">At work · 14:20</span>
+							</div>
+							{/* 24h dial */}
+							<div className="rounded-full aspect-square w-full bg-white/50 dark:bg-white/15 backdrop-blur-sm border border-white/70 dark:border-white/25 relative">
+								<svg viewBox="0 0 24 24" className="absolute inset-0.5 text-primary">
+									<circle cx="12" cy="12" r="9" fill="none" stroke="currentColor" strokeOpacity="0.25" strokeWidth="2.5" />
+									<circle
+										cx="12"
+										cy="12"
+										r="9"
+										fill="none"
+										stroke="currentColor"
+										strokeWidth="2.5"
+										strokeDasharray="20 56.5"
+										strokeLinecap="round"
+										transform="rotate(-90 12 12)"
+									/>
+								</svg>
+							</div>
+						</div>
+					</div>
+				)}
+
+				{type === "reviews" && (
+					<div className="w-full h-full relative flex items-center justify-center my-auto">
+						<div className="w-16 h-11 rounded-lg bg-muted/60 border border-border absolute -translate-x-8 rotate-[-8deg] scale-90" />
+						<div className="w-16 h-11 rounded-lg bg-muted/60 border border-border absolute translate-x-8 rotate-[8deg] scale-90" />
+						<div className="w-20 rounded-lg bg-background border border-primary shadow-md z-10 p-1.5 space-y-0.5">
+							<div className="text-[6px] text-amber-500 leading-none">★★★★★</div>
+							<div className="text-[5px] text-foreground leading-tight">
+								“Shipped our redesign in a week. Unreal.”
+							</div>
+							<div className="flex items-center gap-1 pt-0.5">
+								<span className="size-2.5 rounded-full bg-sky-400" />
+								<span className="text-[4.5px] font-bold text-muted-foreground">Ava · Growth Lead</span>
+							</div>
+						</div>
+						<span className="absolute left-0 bottom-0 size-3.5 rounded-full border border-border bg-background text-[6px] flex items-center justify-center">
+							‹
+						</span>
+						<span className="absolute right-0 bottom-0 size-3.5 rounded-full border border-border bg-background text-[6px] flex items-center justify-center">
+							›
+						</span>
+					</div>
+				)}
+
+				{type === "support-hero" && (
+					<div className="w-full h-full relative rounded-lg overflow-hidden my-auto bg-muted/50 border border-border/60 p-1.5 flex flex-col gap-1">
+						<div className="text-center">
+							<div className="text-[8px] font-black tracking-tight text-foreground leading-none">
+								Support that never sleeps
+							</div>
+							<span className="inline-block mt-0.5 px-1.5 rounded-full bg-primary text-primary-foreground text-[5px] font-bold">
+								Start free
+							</span>
+						</div>
+						<div className="grid grid-cols-3 gap-1 flex-1">
+							<div className="rounded-md bg-white/70 dark:bg-white/10 backdrop-blur-sm border border-white/80 dark:border-white/20 flex items-center justify-center gap-0.5">
+								{["bg-rose-400", "bg-sky-400", "bg-emerald-400"].map((c) => (
+									<span key={c} className={`size-2 rounded-sm ${c}`} />
+								))}
+							</div>
+							<div className="rounded-md bg-white/70 dark:bg-white/10 backdrop-blur-sm border border-white/80 dark:border-white/20 flex flex-col items-center justify-center leading-none">
+								<span className="text-[8px] font-black text-primary">12k</span>
+								<span className="text-[4px] text-muted-foreground">tickets</span>
+							</div>
+							<div className="rounded-md bg-white/70 dark:bg-white/10 backdrop-blur-sm border border-white/80 dark:border-white/20 flex flex-col items-center justify-center leading-none">
+								<span className="text-[8px] font-black text-primary">98%</span>
+								<span className="text-[4px] text-muted-foreground">CSAT</span>
+							</div>
+						</div>
+					</div>
+				)}
+
+				{type === "newsletter" && (
+					<div className="w-full h-full relative flex items-center justify-center my-auto rounded-lg bg-muted/40 border border-border/60 overflow-hidden">
+						{["left-1.5 top-1.5 bg-rose-400", "right-2 top-2 bg-amber-400", "left-2.5 bottom-1.5 bg-emerald-400", "right-1.5 bottom-2 bg-sky-400"].map((c) => (
+							<span key={c} className={`absolute ${c} size-4 rounded-full border-2 border-background shadow-xs`} />
+						))}
+						<div className="relative w-24 space-y-1 text-center">
+							<div className="text-[6.5px] font-extrabold text-foreground leading-none">
+								Join the newsletter
+							</div>
+							<div className="flex gap-0.5">
+								<span className="flex-1 h-4 rounded border border-border bg-background text-[5px] leading-4 px-1 text-muted-foreground text-left truncate">
+									you@email.com
+								</span>
+								<span className="h-4 px-1.5 rounded bg-primary text-primary-foreground text-[5px] font-bold leading-4">
+									Subscribe
+								</span>
+							</div>
+						</div>
+					</div>
+				)}
+
+				{type === "waitlist" && (
+					<div className="w-full max-w-[136px] mx-auto my-auto flex flex-col items-center gap-1">
+						<span className="px-1.5 py-0.5 rounded-full bg-primary/10 border border-primary/30 text-[5px] font-bold text-primary uppercase tracking-wider">
+							Coming soon
+						</span>
+						<div className="flex items-center gap-0.5">
+							{["03", "14", "22"].map((n, i) => (
+								<React.Fragment key={n}>
+									<span className="w-5 h-5 rounded bg-background border border-border text-[7px] font-black text-foreground flex items-center justify-center font-mono">
+										{n}
+									</span>
+									{i < 2 && <span className="text-[7px] font-black text-muted-foreground">:</span>}
+								</React.Fragment>
+							))}
+						</div>
+						<div className="flex gap-0.5 w-full">
+							<span className="flex-1 h-4 rounded border border-border bg-background text-[5px] leading-4 px-1 text-muted-foreground truncate">
+								you@email.com
+							</span>
+							<span className="h-4 px-1.5 rounded bg-primary text-primary-foreground text-[5px] font-bold leading-4">
+								Join
+							</span>
+						</div>
+						<span className="text-[5px] font-semibold text-muted-foreground">
+							You&apos;re <strong className="text-foreground">#1,248</strong> in the queue
+						</span>
+					</div>
+				)}
+
+				{type === "bento-showcase" && (
+					<div className="w-full h-full my-auto grid grid-cols-3 grid-rows-2 gap-1">
+						<div className="row-span-2 rounded-md bg-background border border-border p-1 flex flex-col justify-end gap-0.5">
+							<span className="self-start max-w-[80%] px-1 py-0.5 rounded-md rounded-bl-none bg-muted text-[4.5px] text-foreground">
+								Hi! Need a site?
+							</span>
+							<span className="self-end max-w-[80%] px-1 py-0.5 rounded-md rounded-br-none bg-primary text-primary-foreground text-[4.5px]">
+								Yes, this week
+							</span>
+						</div>
+						<div className="rounded-md bg-background border border-border flex flex-col items-center justify-center leading-none">
+							<span className="text-[8px] font-black text-primary">240+</span>
+							<span className="text-[4px] text-muted-foreground">projects</span>
+						</div>
+						<div className="rounded-md bg-background border border-border p-1 flex items-center justify-center">
+							<span className="w-7 h-4 rounded-sm bg-foreground/80 border-b-2 border-foreground" />
+						</div>
+						<div className="col-span-2 rounded-md bg-background border border-border overflow-hidden flex items-center gap-1 px-1">
+							{["bg-rose-400", "bg-amber-400", "bg-emerald-400", "bg-sky-400", "bg-violet-400", "bg-pink-400"].map((c) => (
+								<span key={c} className={`size-3 rounded-full ${c} shrink-0`} />
+							))}
+						</div>
+					</div>
+				)}
+
+				{type === "book-appointment" && (
+					<div className="w-full h-full relative rounded-lg overflow-hidden my-auto border border-border/60">
+						<div className="absolute -top-4 -right-3 size-16 rounded-full bg-teal-300/50 blur-md" />
+						<div className="absolute -bottom-4 -left-3 size-14 rounded-full bg-sky-300/50 blur-md" />
+						<div className="absolute inset-0 flex gap-1 p-1.5">
+							<div className="w-[38%] rounded-md bg-white/60 dark:bg-white/15 backdrop-blur-sm border border-white/70 dark:border-white/25 p-1 flex flex-col items-center justify-center gap-0.5 text-center">
+								<span className="size-5 rounded-full bg-sky-400 border-2 border-background" />
+								<span className="text-[5px] font-extrabold text-foreground leading-none">Dr. Lin</span>
+								<span className="text-[5px] text-amber-500 leading-none">★★★★½</span>
+							</div>
+							<div className="flex-1 rounded-md bg-white/60 dark:bg-white/15 backdrop-blur-sm border border-white/70 dark:border-white/25 p-1 flex flex-col justify-between">
+								<div className="grid grid-cols-4 gap-0.5">
+									{["12", "13", "14", "15"].map((d, i) => (
+										<span
+											key={d}
+											className={`rounded text-[5px] font-bold text-center ${i === 1 ? "bg-primary text-primary-foreground" : "bg-muted text-muted-foreground"}`}>
+											{d}
+										</span>
+									))}
+								</div>
+								<div className="grid grid-cols-2 gap-0.5">
+									<span className="rounded border border-primary bg-primary/10 text-[4.5px] font-bold text-primary text-center">
+										9:30
+									</span>
+									<span className="rounded border border-border text-[4.5px] font-bold text-foreground text-center">
+										11:00
+									</span>
+								</div>
+								<span className="rounded bg-primary text-primary-foreground text-[5px] font-bold text-center py-0.5">
+									Book
+								</span>
+							</div>
+						</div>
+					</div>
+				)}
+
+				{type === "collage-hero" && (
+					<div className="w-full h-full flex gap-1.5 my-auto px-0.5">
+						<div className="flex-1 flex flex-col justify-center gap-1">
+							<div className="text-[8px] font-serif font-black leading-[9px] text-foreground">
+								Where <span className="text-primary">little</span> minds{" "}
+								<span className="text-amber-500">grow</span>
+							</div>
+							<div className="flex gap-0.5">
+								{["#play", "#learn", "#care"].map((h) => (
+									<span
+										key={h}
+										className="px-1 rounded-full border border-border bg-background text-[4.5px] font-bold text-muted-foreground">
+										{h}
+									</span>
+								))}
+							</div>
+						</div>
+						<div className="relative w-14 h-full">
+							<div className="absolute left-0 top-1 w-8 h-8 rounded-md bg-amber-200 rotate-[-8deg] shadow-sm" />
+							<div className="absolute right-0 top-3 w-8 h-8 rounded-md bg-sky-200 rotate-[6deg] shadow-sm" />
+							<div className="absolute left-3 bottom-0 w-8 h-7 rounded-md bg-rose-200 rotate-[3deg] shadow-sm" />
+							<span className="absolute -top-0.5 -right-0.5 size-5 rounded-full border border-dashed border-primary bg-background/80 flex items-center justify-center text-[5px] text-primary">
+								▶
+							</span>
 						</div>
 					</div>
 				)}
