@@ -21,7 +21,7 @@ const ToastButtons = ({ example = "all" }: { example?: ExampleMode }) => {
               description: "We'll let you know as soon as they reply.",
             })
           }
-          className="px-6 py-2.5 bg-zinc-900 dark:bg-white text-white dark:text-zinc-900 text-sm font-bold rounded-xl transition-colors shadow-sm"
+          className="px-6 py-2.5 bg-primary text-primary-foreground text-sm font-bold rounded-xl transition-colors shadow-sm hover:opacity-90 cursor-pointer"
         >
           Show toast
         </button>
@@ -103,7 +103,7 @@ const ToastButtons = ({ example = "all" }: { example?: ExampleMode }) => {
               },
             })
           }
-          className={`${TRIGGER} bg-blue-600 hover:bg-blue-700`}
+          className={`${TRIGGER} bg-primary text-primary-foreground hover:opacity-90 cursor-pointer`}
         >
           Toast with action
         </button>
@@ -123,7 +123,7 @@ const ToastButtons = ({ example = "all" }: { example?: ExampleMode }) => {
               duration: 0,
             })
           }
-          className={`${TRIGGER} bg-blue-600 hover:bg-blue-700`}
+          className={`${TRIGGER} bg-primary text-primary-foreground hover:opacity-90 cursor-pointer`}
         >
           Persistent toast
         </button>
@@ -136,7 +136,7 @@ const ToastButtons = ({ example = "all" }: { example?: ExampleMode }) => {
               duration: 1500,
             })
           }
-          className={`${TRIGGER} bg-emerald-600 hover:bg-emerald-700`}
+          className={`${TRIGGER} bg-emerald-600 hover:bg-emerald-700 cursor-pointer`}
         >
           Quick toast
         </button>
