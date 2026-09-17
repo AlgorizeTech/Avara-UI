@@ -266,6 +266,10 @@ export function Folder({
   const [focusedIn, setFocusedIn] = useState(false);
   const [pinned, setPinned] = useState(false);
   const [fanStart, setFanStart] = useState(0);
+  // Set while a card is being dragged, so the click that follows the release
+  // isn't read as a tap on the folder — which would toggle the fan shut on
+  // touch, where the fan only stays open by being pinned.
+  const draggedRef = useRef(false);
   const closeTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   useEffect(
     () => () => {
@@ -505,7 +509,13 @@ export function Folder({
           if (!e.currentTarget.contains(e.relatedTarget as Node)) setFocusedIn(false);
         }}
         {...(tappable && {
-          onClick: () => setPinned((p) => !p),
+          onClick: () => {
+            if (draggedRef.current) {
+              draggedRef.current = false;
+              return;
+            }
+            setPinned((p) => !p);
+          },
           onKeyDown: (e: React.KeyboardEvent) => {
             if (e.key === "Enter" || e.key === " ") {
               e.preventDefault();
@@ -608,8 +618,17 @@ export function Folder({
             const cardEl = (
               <div className="relative h-full w-full">
                 {f.thumb ? (
-                  // eslint-disable-next-line @next/next/no-img-element
-                  <img src={f.thumb} alt="" style={{ width: "100%", height: "100%", objectFit: "cover" }} />
+                  // `draggable={false}` (and no pointer events on the image
+                  // itself): a bare <img> starts the browser's own drag — the
+                  // ghost-image kind — on the first pointer move, which
+                  // swallows the gesture before the card's drag can begin. So
+                  // photos couldn't be swiped while skeleton cards could.
+                  <img
+                    src={f.thumb}
+                    alt=""
+                    draggable={false}
+                    style={{ width: "100%", height: "100%", objectFit: "cover", pointerEvents: "none" }}
+                  />
                 ) : (
                   <SkeletonCard />
                 )}
@@ -660,6 +679,9 @@ export function Folder({
                     dragMomentum: false,
                     dragElastic: 0.35,
                     whileDrag: { cursor: "grabbing" },
+                    onDragStart: () => {
+                      draggedRef.current = true;
+                    },
                     onDragEnd: (e: MouseEvent | TouchEvent | PointerEvent, info: PanInfo) => {
                       e.stopPropagation();
                       const { offset, velocity } = info;

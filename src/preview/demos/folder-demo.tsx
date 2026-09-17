@@ -93,7 +93,11 @@ export default function FolderDemo({
   /** Which preview to render. */
   example?: "showcase" | "fan" | "icon" | "photos";
 }) {
-  const frame = "w-full flex items-center justify-center min-h-[420px] px-6 py-16 relative z-10";
+  // Headroom above, not around: the fan lifts the cards ~0.29×size above the
+  // folder's top edge and the name tooltip sits above that, so the open state
+  // needs far more room over the folder than under it. Centred padding put the
+  // folder mid-frame and the tooltip off the top of the preview.
+  const frame = "w-full flex items-center justify-center min-h-[460px] px-6 pt-32 pb-10 relative z-10";
 
   if (example === "fan") {
     return (
