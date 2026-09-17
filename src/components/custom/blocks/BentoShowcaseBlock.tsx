@@ -11,24 +11,28 @@ import { Iphone17ProMaxMockup } from "./MobileMockupBlock";
 
 // ==========================================
 // BENTO SHOWCASE
-// A six-card marketing bento on a black ground: a hero with a live chat,
-// a case-studies laptop, a headline, numbers that scroll up, a phone with
-// the plans, and a team strip that scrolls left. Every card is a named part
-// of `BentoShowcase`, so a page can drop one, reorder them, or add its own
-// with `BentoShowcase.Card`.
+// A six-card marketing bento: a hero with a live chat, a case-studies
+// laptop, a headline, numbers that scroll up, a phone with the plans, and a
+// team strip that scrolls left. Every card is a named part of
+// `BentoShowcase`, so a page can drop one, reorder them, or add its own with
+// `BentoShowcase.Card`. The section follows the site theme: pastels on white
+// in light mode, the same hues deepened on black in dark mode.
 // ==========================================
 
 export type BentoTone = "cream" | "ice" | "lilac" | "sky" | "butter" | "ink";
 
-// Flat pastels on black. Cards carry no border or shadow — colour is the
-// only thing separating them from the ground and from each other.
+// Flat tones, no border or shadow — colour is the only thing separating a
+// card from the ground and from its neighbours. Each pastel has a deep
+// counterpart for dark mode; `ink` is the contrast card and flips (dark on
+// light, light on dark); `butter` is the accent and stays yellow on both.
+// Secondary text inside a card uses `text-current/…` so it follows the tone.
 const TONES: Record<BentoTone, string> = {
-  cream: "bg-[#f2eee3] text-[#141414]",
-  ice: "bg-[#e6e8ed] text-[#141414]",
-  lilac: "bg-[#e9e5f5] text-[#141414]",
-  sky: "bg-[#d6e6f6] text-[#141414]",
+  cream: "bg-[#f2eee3] text-[#141414] dark:bg-[#1f1c17] dark:text-white",
+  ice: "bg-[#e6e8ed] text-[#141414] dark:bg-[#1c1e24] dark:text-white",
+  lilac: "bg-[#e9e5f5] text-[#141414] dark:bg-[#221d31] dark:text-white",
+  sky: "bg-[#d6e6f6] text-[#141414] dark:bg-[#172336] dark:text-white",
   butter: "bg-[#fbe9a6] text-[#141414]",
-  ink: "bg-[#161616] text-white",
+  ink: "bg-[#161616] text-white dark:bg-[#f2eee3] dark:text-[#141414]",
 };
 
 // ------------------------------------------
@@ -40,7 +44,7 @@ export interface BentoShowcaseProps extends React.HTMLAttributes<HTMLElement> {
 
 function BentoShowcaseRoot({ className, children, ...props }: BentoShowcaseProps) {
   return (
-    <section className={cn("w-full bg-black p-3", className)} {...props}>
+    <section className={cn("w-full bg-white p-3 dark:bg-black", className)} {...props}>
       {/* Three rows of 15rem at lg; the tall cards span two of them. At md the
           layout folds to two columns and four rows; on phones every card
           stacks and sizes itself. */}
@@ -67,7 +71,7 @@ function Card({ tone = "cream", label, className, children, ...props }: BentoCar
       {...props}
     >
       {label && (
-        <span className="absolute right-7 top-6 z-10 max-w-[7rem] text-right text-[9.5px] font-semibold uppercase leading-[1.35] tracking-[0.1em] text-black/60">
+        <span className="absolute right-7 top-6 z-10 max-w-[7rem] text-right text-[9.5px] font-semibold uppercase leading-[1.35] tracking-[0.1em] text-current/60">
           {label}
         </span>
       )}
@@ -125,7 +129,7 @@ function Hero({
       {...props}
     >
       {label && (
-        <span className="absolute inset-x-0 top-6 z-10 mx-auto max-w-[6.5rem] text-center text-[9.5px] font-semibold uppercase leading-[1.35] tracking-[0.1em] text-black/60">
+        <span className="absolute inset-x-0 top-6 z-10 mx-auto max-w-[6.5rem] text-center text-[9.5px] font-semibold uppercase leading-[1.35] tracking-[0.1em] text-current/60">
           {label}
         </span>
       )}
@@ -133,7 +137,7 @@ function Hero({
       <div className="absolute inset-x-[22%] top-[6.5rem] bottom-[7.5rem] overflow-hidden rounded-t-[999px]">
         <img src={photo} alt={photoAlt} className="h-full w-full object-cover object-top" />
         {/* Fade the crop into the card so the portrait reads as a cutout. */}
-        <span className="absolute inset-x-0 bottom-0 h-16 bg-gradient-to-t from-[#f2eee3] to-transparent" aria-hidden />
+        <span className="absolute inset-x-0 bottom-0 h-16 bg-gradient-to-t from-[#f2eee3] to-transparent dark:from-[#1f1c17]" aria-hidden />
       </div>
 
       {/* Call bar: two actions, the status, and a close. */}
@@ -144,11 +148,11 @@ function Hero({
         <span className="grid h-8 w-8 place-items-center rounded-full bg-[#c9c0f0] text-[#3b2f6b]">
           <MessageCircle size={14} strokeWidth={2.25} aria-hidden />
         </span>
-        <span className="ml-3 inline-flex items-center gap-1.5 rounded-full bg-white px-2.5 py-1 text-[10px] font-semibold">
+        <span className="ml-3 inline-flex items-center gap-1.5 rounded-full bg-white px-2.5 py-1 text-[10px] font-semibold dark:bg-white/10">
           <span className="h-1.5 w-1.5 rounded-full bg-emerald-500" aria-hidden />
           Online
         </span>
-        <span className="ml-auto grid h-8 w-8 place-items-center rounded-full bg-white text-black/60">
+        <span className="ml-auto grid h-8 w-8 place-items-center rounded-full bg-white text-black/60 dark:bg-white/10 dark:text-white/60">
           <X size={14} aria-hidden />
         </span>
       </div>
@@ -156,15 +160,15 @@ function Hero({
       {/* The customer, on the left. */}
       <div className="absolute left-[9%] top-[8.5rem] w-[52%]">
         <ChatBubble variant="received">
-          <ChatMessage className="border-0 bg-white px-3 py-2 text-[10px] leading-[1.3] text-[#141414] shadow-sm">
+          <ChatMessage className="border-0 bg-white px-3 py-2 text-[10px] leading-[1.3] text-[#141414] shadow-sm dark:bg-[#2b2822] dark:text-white dark:shadow-none">
             <span className="mb-1 flex items-center gap-1.5">
               <ChatAvatar
                 {...(chat.avatar ? { src: chat.avatar } : {})}
                 fallback={chat.from.slice(0, 1)}
-                className="order-none mt-0 h-4 w-4 bg-[#f2eee3] text-[8px]"
+                className="order-none mt-0 h-4 w-4 bg-[#f2eee3] text-[8px] dark:bg-white/15"
               />
               <span className="text-[8.5px] font-semibold leading-none">{chat.from}</span>
-              {chat.fromRole && <span className="text-[7.5px] leading-none text-black/45">{chat.fromRole}</span>}
+              {chat.fromRole && <span className="text-[7.5px] leading-none text-current/45">{chat.fromRole}</span>}
             </span>
             {chat.message}
           </ChatMessage>
@@ -216,7 +220,7 @@ function Hero({
                 key={src}
                 src={src}
                 alt=""
-                className="h-6 w-6 rounded-full border-2 border-[#f2eee3] object-cover"
+                className="h-6 w-6 rounded-full border-2 border-[#f2eee3] object-cover dark:border-[#1f1c17]"
               />
             ))}
           </div>
@@ -246,8 +250,8 @@ export interface BentoCaseStudiesProps extends React.HTMLAttributes<HTMLDivEleme
 
 function DefaultLogo() {
   return (
-    <span className="grid h-5 w-5 place-items-center rounded-full bg-[#141414]" aria-hidden>
-      <svg viewBox="0 0 12 12" className="h-3 w-3" fill="none" stroke="#fff" strokeWidth="2.2" strokeLinecap="round">
+    <span className="grid h-5 w-5 place-items-center rounded-full bg-[#141414] text-white dark:bg-white dark:text-[#141414]" aria-hidden>
+      <svg viewBox="0 0 12 12" className="h-3 w-3" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round">
         <path d="M9 3.5A3.6 3.6 0 1 0 9 8.5" />
       </svg>
     </span>
@@ -277,14 +281,14 @@ function CaseStudies({
             size={13}
             showText={false}
             activeColor="text-[#f5c518]"
-            inactiveColor="text-black/10"
+            inactiveColor="text-black/10 dark:text-white/15"
             className="gap-0"
             role="img"
             aria-label={`${rating} out of 5`}
           />
         </div>
         {reviews !== undefined && (
-          <p className="mt-0.5 text-[10px] font-medium text-black/70">{reviews} reviews</p>
+          <p className="mt-0.5 text-[10px] font-medium text-current/70">{reviews} reviews</p>
         )}
       </div>
 
@@ -460,7 +464,7 @@ function Stats({ items, speed = 16, className, ...props }: BentoStatsProps) {
           >
             <div className="min-w-0">
               <p className="text-[1.45rem] font-semibold leading-none tracking-[-0.02em]">{item.value}</p>
-              <p className={cn("mt-1.5 text-[9px] leading-tight", item.tone === "ink" ? "text-white/60" : "text-black/55")}>
+              <p className="mt-1.5 text-[9px] leading-tight text-current/60">
                 {item.caption}
               </p>
             </div>
@@ -526,11 +530,11 @@ function PhoneCard({ plans, onAction, className, ...props }: BentoPhoneProps) {
           reads as held, and let run off the bottom edge. */}
       <div className="absolute left-1/2 top-10 w-[340px] origin-top -translate-x-[40%] rotate-[12deg] scale-[0.76] sm:scale-[0.8] lg:scale-[0.82]">
         <Iphone17ProMaxMockup>
-          <div className="h-full w-full bg-gradient-to-b from-[#ebe7f7] to-[#dfe9f6] px-3 pt-14 text-[#141414]">
+          <div className="h-full w-full bg-gradient-to-b from-[#ebe7f7] to-[#dfe9f6] px-3 pt-14 text-[#141414] dark:from-[#1c1826] dark:to-[#141c2a] dark:text-white">
             <PlanTile plan={main} />
             <div className="mt-5 text-center">
               {main.price && <p className="text-[2rem] font-semibold leading-none tracking-tight">{main.price}</p>}
-              {main.note && <p className="mx-auto mt-2 max-w-[16rem] text-[12px] text-black/60">{main.note}</p>}
+              {main.note && <p className="mx-auto mt-2 max-w-[16rem] text-[12px] text-current/60">{main.note}</p>}
               <Button variant="default" size="sm" className="mt-4 h-9 rounded-full px-5 text-[11px]" onClick={onAction}>
                 {main.action ?? "Start now"}
               </Button>
@@ -538,7 +542,7 @@ function PhoneCard({ plans, onAction, className, ...props }: BentoPhoneProps) {
             {main.benefits && main.benefits.length > 0 && (
               <div className="mt-6 text-center">
                 <p className="font-serif text-xl italic leading-none">Benefits</p>
-                <ul className="mt-2 space-y-0.5 text-[12px] text-black/65">
+                <ul className="mt-2 space-y-0.5 text-[12px] text-current/65">
                   {main.benefits.map((b) => (
                     <li key={b}>{b}</li>
                   ))}
@@ -580,12 +584,12 @@ function Team({ photos, stat, speed = 36, className, ...props }: BentoTeamProps)
         <div
           key={`stat-${i}`}
           className={cn(
-            "grid h-[9.25rem] w-[5.75rem] shrink-0 place-items-center rounded-full text-center",
+            "grid h-[9.25rem] w-[5.75rem] shrink-0 place-items-center rounded-full text-center text-[#141414]",
             discs++ % 2 === 0 ? "bg-[#fbe9a6]" : "bg-[#fdf7e6]",
           )}
         >
           <div className="max-w-[4.75rem]">
-            <p className="text-[8.5px] font-semibold leading-[1.3] text-black/75">{stat.caption}</p>
+            <p className="text-[8.5px] font-semibold leading-[1.3] text-current/75">{stat.caption}</p>
             <p className="mt-1.5 text-[1.6rem] font-semibold leading-none tracking-[-0.02em]">{stat.value}</p>
           </div>
         </div>,
