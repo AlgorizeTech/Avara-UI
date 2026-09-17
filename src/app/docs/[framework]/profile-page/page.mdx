@@ -73,13 +73,13 @@ const ACTIVITY = [
 ];
 
 const focusRing =
-  "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-violet-500 focus-visible:ring-offset-2 focus-visible:ring-offset-white dark:focus-visible:ring-offset-[#0b0b0f]";
+  "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-white dark:focus-visible:ring-offset-[#0b0b0f]";
 
 export default function ProfilePageDemo() {
   const [following, setFollowing] = useState(false);
 
   return (
-    <ProfilePage className="min-h-dvh">
+    <ProfilePage aurora={["var(--primary)", "#7dd3fc", "#fdba74"]} className="min-h-dvh">
       {/* Hero */}
       <GlassPanel shape="slab" className="flex flex-col gap-6 p-6 sm:p-8 md:col-span-6 lg:col-span-8">
         <div className="flex items-center justify-between">
@@ -108,7 +108,7 @@ export default function ProfilePageDemo() {
           {/* Squircle avatar — the only shape on the page that isn't a
               rectangle, circle or capsule, so it reads as the person */}
           <div className="relative shrink-0">
-            <span className="grid size-24 place-items-center rounded-[30%] bg-gradient-to-br from-violet-500 to-fuchsia-500 text-3xl font-semibold text-white shadow-[0_16px_32px_-16px_rgba(124,58,237,0.7)] sm:size-28 sm:text-4xl">
+            <span className="grid size-24 place-items-center rounded-[30%] bg-gradient-to-br from-primary to-primary/70 text-3xl font-semibold text-primary-foreground shadow-[0_16px_32px_-16px_var(--primary)] sm:size-28 sm:text-4xl">
               AK
             </span>
           </div>
@@ -154,7 +154,7 @@ export default function ProfilePageDemo() {
               "inline-flex h-11 items-center gap-2 rounded-full px-5 text-sm font-medium transition-colors",
               following
                 ? "border border-black/10 bg-black/[0.03] text-black hover:bg-black/[0.06] dark:border-white/15 dark:bg-white/5 dark:text-white dark:hover:bg-white/10"
-                : "bg-violet-600 text-white hover:bg-violet-500",
+                : "bg-primary text-primary-foreground hover:bg-primary/90",
               focusRing,
             )}
           >
@@ -244,7 +244,7 @@ export default function ProfilePageDemo() {
                 className="h-1.5 overflow-hidden rounded-full bg-black/10 dark:bg-white/10"
               >
                 <div
-                  className="h-full rounded-full bg-violet-600 dark:bg-violet-400"
+                  className="h-full rounded-full bg-primary"
                   style={{ width: \`\${item.progress}%\` }}
                 />
               </div>
@@ -253,7 +253,7 @@ export default function ProfilePageDemo() {
               className={cn(
                 "text-xs font-medium",
                 item.progress !== undefined
-                  ? "text-violet-700 dark:text-violet-300"
+                  ? "text-primary"
                   : "text-black/50 dark:text-white/50",
               )}
             >
@@ -368,7 +368,7 @@ const ACTIVITY = [
 ];
 
 const focusRing =
-  "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-violet-500 focus-visible:ring-offset-2 focus-visible:ring-offset-white dark:focus-visible:ring-offset-[#0b0b0f]";
+  "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-white dark:focus-visible:ring-offset-[#0b0b0f]";
 
 export default function ProfilePageDemo() {
   const [following, setFollowing] = useState(false);
@@ -403,7 +403,7 @@ export default function ProfilePageDemo() {
           {/* Squircle avatar — the only shape on the page that isn't a
               rectangle, circle or capsule, so it reads as the person */}
           <div className="relative shrink-0">
-            <span className="grid size-24 place-items-center rounded-[30%] bg-gradient-to-br from-violet-500 to-fuchsia-500 text-3xl font-semibold text-white shadow-[0_16px_32px_-16px_rgba(124,58,237,0.7)] sm:size-28 sm:text-4xl">
+            <span className="grid size-24 place-items-center rounded-[30%] bg-gradient-to-br from-primary to-primary/70 text-3xl font-semibold text-primary-foreground shadow-[0_16px_32px_-16px_var(--primary)] sm:size-28 sm:text-4xl">
               AK
             </span>
           </div>
@@ -449,7 +449,7 @@ export default function ProfilePageDemo() {
               "inline-flex h-11 items-center gap-2 rounded-full px-5 text-sm font-medium transition-colors",
               following
                 ? "border border-black/10 bg-black/[0.03] text-black hover:bg-black/[0.06] dark:border-white/15 dark:bg-white/5 dark:text-white dark:hover:bg-white/10"
-                : "bg-violet-600 text-white hover:bg-violet-500",
+                : "bg-primary text-primary-foreground hover:bg-primary/90",
               focusRing,
             )}
           >
@@ -539,7 +539,7 @@ export default function ProfilePageDemo() {
                 className="h-1.5 overflow-hidden rounded-full bg-black/10 dark:bg-white/10"
               >
                 <div
-                  className="h-full rounded-full bg-violet-600 dark:bg-violet-400"
+                  className="h-full rounded-full bg-primary"
                   style={{ width: \`\${item.progress}%\` }}
                 />
               </div>
@@ -548,7 +548,7 @@ export default function ProfilePageDemo() {
               className={cn(
                 "text-xs font-medium",
                 item.progress !== undefined
-                  ? "text-violet-700 dark:text-violet-300"
+                  ? "text-primary"
                   : "text-black/50 dark:text-white/50",
               )}
             >
@@ -599,6 +599,7 @@ export default function ProfilePageDemo() {
 
 <ExampleShowcase
   name="profile-page"
+  colorControl
   columns={1}
   examples={[
     {
@@ -616,12 +617,12 @@ export default function ProfilePageDemo() {
           prop: "WorkdayDial",
           value: "timeZone, start, end",
           effect:
-            "and it draws the working window as an arc on a labelled 24-hour ring, with a live marker that goes violet inside the window and grey outside it. Hover or focus the ring for the window converted to the viewer's own time and how long until it opens.",
+            "and it draws the working window as an arc on a labelled 24-hour ring, with a live marker that takes the theme's primary colour inside the window and grey outside it. Hover or focus the ring for the window converted to the viewer's own time and how long until it opens.",
         },
         {
           prop: "aurora",
           effect:
-            "on `ProfilePage` takes three colours for the blobs the glass blurs. Change them per person or per team; the panels adapt because they are translucent.",
+            "on `ProfilePage` takes three colours for the blobs the glass blurs. Any CSS colour works, including `var(--primary)` to tie the first blob to the theme, as the example does. Change them per person or per team; the panels adapt because they are translucent.",
         },
       ],
       props: { rounded: true },
@@ -696,6 +697,10 @@ Grid spans are plain Tailwind: the grid is `grid-cols-1 md:grid-cols-6 lg:grid-c
   <div className="p-6 rounded-2xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900">
     <h3 className="text-lg font-semibold text-zinc-900 dark:text-zinc-50 mb-2">Light and dark by construction</h3>
     <p className="text-zinc-600 dark:text-zinc-400 text-sm">Panels are translucent white over the aurora in light mode and over near-black in dark mode. The blobs dim, the text flips, nothing else has to change.</p>
+  </div>
+  <div className="p-6 rounded-2xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900">
+    <h3 className="text-lg font-semibold text-zinc-900 dark:text-zinc-50 mb-2">Theme colours</h3>
+    <p className="text-zinc-600 dark:text-zinc-400 text-sm">The dial's arc and marker, the Follow button, the progress bars and the avatar are all written against <code>primary</code> and <code>ring</code>, so the page follows your theme preset — and the colour picker above — with no prop. Pass <code>var(--primary)</code> into <code>aurora</code> and the backdrop follows too.</p>
   </div>
   <div className="p-6 rounded-2xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900">
     <h3 className="text-lg font-semibold text-zinc-900 dark:text-zinc-50 mb-2">Still, on purpose</h3>

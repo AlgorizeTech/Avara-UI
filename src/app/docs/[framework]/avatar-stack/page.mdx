@@ -1,0 +1,162 @@
+import { ExampleShowcase } from "@/components/site/Sandbox";
+import { extractCode } from "@/lib/code";
+
+# Avatar Stack
+
+A row of overlapping faces — the "people who…" cue under a headline, beside a count, or next to a join button. It shows up to `max` faces, folds the rest into a "+N" disc, and takes an optional trailing `action` that shares the stack's size. On hover the faces fan apart a little, so the row answers the pointer without turning into a carousel.
+
+Several sections used to hand-roll this row; <DocLink to="fashion-hero">Fashion Hero</DocLink> uses this one.
+
+export const usageAction = `import { Plus } from "lucide-react";
+import { AvatarStack } from "@/components/custom/blocks/AvatarStackBlock";
+
+const PEOPLE = [
+  { src: "/people/ana.jpg", alt: "Ana" },
+  { src: "/people/tom.jpg", alt: "Tom" },
+  { src: "/people/mara.jpg", alt: "Mara" },
+];
+
+export default function Community() {
+  return (
+    <AvatarStack
+      avatars={PEOPLE}
+      size="md"
+      action={
+        <a href="/join" aria-label="Join the community" className="grid size-full place-items-center rounded-full bg-[#111] text-white ring-2 ring-white">
+          <Plus size={16} />
+        </a>
+      }
+    />
+  );
+}`;
+
+export const usageCount = `import { AvatarStack } from "@/components/custom/blocks/AvatarStackBlock";
+
+export default function JoinedThisMonth({ people }: { people: { src: string; alt: string }[] }) {
+  return (
+    <div className="flex items-center gap-3">
+      <AvatarStack avatars={people} max={3} />
+      <p className="text-sm text-muted-foreground">
+        <span className="font-semibold text-foreground">2,400+</span> people joined this month
+      </p>
+    </div>
+  );
+}`;
+
+<ExampleShowcase
+  name="avatar-stack"
+  columns={1}
+  examples={[
+    {
+      title: "With an action",
+      subheading: "Three faces and a plus button that shares their size. Hover the row and the faces fan out.",
+      propNotes: [
+        {
+          prop: "action",
+          effect:
+            "is any element rendered last in the row at the same size as a face — give it `size-full` and its own ring. A link or a button both work.",
+        },
+        {
+          prop: "spreadOnHover",
+          effect: "slides each face a few pixels further than the one before it while the row is hovered; set it to `false` for a still row.",
+        },
+      ],
+      props: { example: "action" },
+      usage: usageAction,
+      code: extractCode("src/components/custom/blocks/AvatarStackBlock.tsx"),
+      minHeight: 240,
+    },
+  ]}
+/>
+
+## Installation
+
+<Installation name="avatar-stack" />
+
+## Examples
+
+<ExampleShowcase
+  name="avatar-stack"
+  columns={1}
+  examples={[
+    {
+      title: "Folded count",
+      subheading: "Six people, three shown — the rest become a +3 disc.",
+      propNotes: [
+        {
+          prop: "max",
+          effect: "is how many faces show before the rest fold into a count. The count disc is black, so it reads as a number, not a face.",
+        },
+      ],
+      props: { example: "count", max: 3 },
+      usage: usageCount,
+      minHeight: 240,
+    },
+    {
+      title: "Sizes",
+      subheading: "sm, md and lg — 28, 36 and 44 pixels, with overlap and count text scaled to match.",
+      propNotes: [
+        {
+          prop: "ringClassName",
+          effect:
+            "is the gap colour between faces (`ring-white` by default, `ring-zinc-950` in dark). Match it to the surface the stack sits on.",
+        },
+      ],
+      props: { example: "sizes" },
+      minHeight: 260,
+    },
+  ]}
+/>
+
+## Props Reference
+
+<div className="overflow-x-auto my-4">
+  <table>
+    <thead>
+      <tr>
+        <th>Prop</th>
+        <th>Type</th>
+        <th>Default</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><code>avatars</code></td>
+        <td><code>&#123; src: string; alt?: string &#125;[]</code></td>
+        <td><strong>Required</strong></td>
+        <td>The faces, in order.</td>
+      </tr>
+      <tr>
+        <td><code>size</code></td>
+        <td><code>"sm" | "md" | "lg"</code></td>
+        <td><code>"md"</code></td>
+        <td>28, 36 or 44 pixels per face.</td>
+      </tr>
+      <tr>
+        <td><code>max</code></td>
+        <td><code>number</code></td>
+        <td><code>4</code></td>
+        <td>Faces shown before the rest fold into a +N disc.</td>
+      </tr>
+      <tr>
+        <td><code>ringClassName</code></td>
+        <td><code>string</code></td>
+        <td><code>"ring-white dark:ring-zinc-950"</code></td>
+        <td>Colour of the gap between faces.</td>
+      </tr>
+      <tr>
+        <td><code>action</code></td>
+        <td><code>ReactNode</code></td>
+        <td>—</td>
+        <td>A trailing element at the same size as a face.</td>
+      </tr>
+      <tr>
+        <td><code>spreadOnHover</code></td>
+        <td><code>boolean</code></td>
+        <td><code>true</code></td>
+        <td>Faces fan apart a little while the row is hovered.</td>
+      </tr>
+    </tbody>
+  </table>
+</div>

@@ -2,16 +2,27 @@
 
 import React from "react";
 
-const colorThemes: Record<string, Record<string, string>> = {
-  primary: {
-    ring: "focus-within:ring-primary/30 focus-within:border-primary",
-    text: "text-primary",
-    bg: "bg-primary text-primary-foreground",
-    bgSoft:
-      "bg-primary/10 text-foreground",
-    glow: "focus-within:shadow-[0_0_20px_var(--primary)] focus-within:border-primary",
-    dragActive: "border-primary bg-primary/10",
-  },
+/** The class set one colour gives the block. */
+export interface InputTheme {
+  ring: string;
+  text: string;
+  bg: string;
+  bgSoft: string;
+  glow: string;
+  dragActive: string;
+}
+
+const PRIMARY: InputTheme = {
+  ring: "focus-within:ring-primary/30 focus-within:border-primary",
+  text: "text-primary",
+  bg: "bg-primary text-primary-foreground",
+  bgSoft: "bg-primary/10 text-foreground",
+  glow: "focus-within:shadow-[0_0_20px_var(--primary)] focus-within:border-primary",
+  dragActive: "border-primary bg-primary/10",
+};
+
+const colorThemes: Record<string, InputTheme> = {
+  primary: PRIMARY,
   indigo: {
     ring: "focus-within:ring-indigo-500/30 focus-within:border-indigo-500",
     text: "text-indigo-600 dark:text-indigo-400",
@@ -58,11 +69,11 @@ const hexToRgb = (hex: string) => {
       .join("");
   const result = /^([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(cleanHex);
   return result
-    ? `${parseInt(result[1], 16)}, ${parseInt(result[2], 16)}, ${parseInt(result[3], 16)}`
+    ? `${parseInt(result[1] ?? "63", 16)}, ${parseInt(result[2] ?? "66", 16)}, ${parseInt(result[3] ?? "f1", 16)}`
     : "99, 102, 241";
 };
 
-export const getThemeStyles = (color: string) => {
+export const getThemeStyles = (color: string): { theme: InputTheme; style: React.CSSProperties } => {
   if (color && color.startsWith("#")) {
     const rgb = hexToRgb(color);
     return {
@@ -82,5 +93,5 @@ export const getThemeStyles = (color: string) => {
       } as React.CSSProperties,
     };
   }
-  return { theme: colorThemes[color] || colorThemes.primary, style: {} };
+  return { theme: colorThemes[color] ?? PRIMARY, style: {} };
 };

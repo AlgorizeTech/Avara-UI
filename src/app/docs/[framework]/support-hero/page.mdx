@@ -1,0 +1,343 @@
+import { ExampleShowcase } from "@/components/site/Sandbox";
+import { extractCode } from "@/lib/code";
+
+# Support Hero
+
+A product hero on a soft grey ground: a headline that rises in word by word, one line under it and one call to action, then a bento of frosted cards — integrations on white tiles, two figures that count up, two portraits and a team card with faces scattered over a field of dots. The cards land in one staggered pass after the headline; after that only the pointer moves anything: cards lift, portraits zoom a touch, the integration tiles rise one after another, the faces drift apart.
+
+`SupportHero` is built from library pieces. The ground and the cards are <DocLink to="glass-panel">Glass Panel</DocLink> (`GlassBackdrop` with a grey aurora, `GlassPanel` tiles), the headline is <DocLink to="text-animation">Text Animation</DocLink>'s `blur-in-up`, the figures are <DocLink to="counter">Counter</DocLink>'s animated type in its new bare form, and the call to action is <DocLink to="button">Button</DocLink>. Every card is a named part — `Integrations`, `Stat`, `Photo`, `Team` — plus a plain `Card` for anything else.
+
+export const usageSection = `"use client";
+
+import { SupportHero } from "@/components/custom/blocks/SupportHeroBlock";
+import { DiscordIcon, GoogleCalendarIcon, SlackIcon } from "@/components/custom/blocks/Icons";
+
+const AVATARS = [
+  { src: "/team/ana.jpg", alt: "Ana" },
+  { src: "/team/tom.jpg", alt: "Tom" },
+  { src: "/team/mei.jpg", alt: "Mei" },
+  { src: "/team/raj.jpg", alt: "Raj" },
+];
+
+export default function Hero() {
+  return (
+    <SupportHero
+      heading="AI-Driven Support To Boost Your Business Growth"
+      subtitle="A platform that helps customer service leaders provide efficient, high-quality support at scale with an AI agent, improving speed and quality across all channels, 24/7."
+      cta={{ label: "Book a demo", href: "/demo" }}
+    >
+      <SupportHero.Integrations
+        icons={[<DiscordIcon key="d" />, <SlackIcon key="s" />, <GoogleCalendarIcon key="c" />]}
+        title="Integrations"
+        text="Way better at getting things done than human agents"
+      />
+
+      {/* Spans both rows at desktop. */}
+      <SupportHero.Photo src="/hero/agent.jpg" alt="…" label="Transcript" position="58% center" className="lg:row-span-2 lg:h-auto" />
+
+      <SupportHero.Stat
+        value={83}
+        suffix="%"
+        caption="Up to 83% of conversations autonomously resolved"
+        image="/hero/assistant.jpg"
+        imageAlt="A laptop showing an AI assistant"
+        imagePosition="70% center"
+      />
+      <SupportHero.Photo src="/hero/team.jpg" alt="…" position="center 40%" />
+      <SupportHero.Stat
+        value={5.5}
+        decimals={1}
+        suffix="B"
+        caption="More efficient than human representatives"
+        image="/hero/phone.jpg"
+        imageAlt="A phone with an AI chat open"
+        imagePosition="65% center"
+      />
+
+      <SupportHero.Team
+        title={<>Automated<br />Customer Service<br />Quality</>}
+        avatars={AVATARS}
+      />
+    </SupportHero>
+  );
+}
+`;
+
+<ExampleShowcase
+  name="support-hero"
+  columns={1}
+  examples={[
+    {
+      title: "Headline, call to action, six cards",
+      subheading: "Twelve columns at desktop — 3 / 3 / 3 / 3 on the first row with the portrait spanning both rows, 3 / 6 on the second. Six columns at tablet, one on phones. Hover the cards.",
+      propNotes: [
+        {
+          prop: "heading",
+          effect:
+            "is set by `TextAnimation` in `blur-in-up`: each word rises out of a blur the first time the section is on screen. `subtitle` and the `cta` button fade in behind it.",
+        },
+        {
+          prop: "Stat",
+          effect:
+            "counts up with `CounterBlock` — `value`, `decimals`, `prefix`, `suffix` — starting when the card is on screen. `tone=\"accent\"` is the card in the theme's primary colour. Give it an `image` and the picture fills the card, with only the bottom-left corner under the figure washed in the card colour — the rest shows through, so pick a picture whose subject sits up and to the right.",
+        },
+        {
+          prop: "Photo",
+          effect:
+            "fills its card with a portrait; `position` sets the crop anchor, `label` a word in the corner. Add `lg:row-span-2 lg:h-auto` to make one tall.",
+        },
+        {
+          prop: "Team",
+          effect:
+            "scatters up to six `avatars` over the right half of the card, above a field of dots. They pop in after the cards and drift outward on hover.",
+        },
+        {
+          prop: "reveal",
+          value: '"in-view"',
+          effect:
+            "(the default) plays everything the first time the section enters the viewport; the docs pass `\"immediate\"`. Under prefers-reduced-motion the section renders finished.",
+        },
+      ],
+      props: { rounded: true },
+      usage: usageSection,
+      code: extractCode("src/components/custom/blocks/SupportHeroBlock.tsx"),
+      minHeight: 980,
+    },
+  ]}
+/>
+
+## Installation
+
+<Installation name="support-hero" />
+
+## Layout
+
+The bento is the `GlassBackdrop` grid — one column on phones, six at `md`, twelve at `lg` — and every part carries a default span (`Integrations`, `Stat` and `Photo` take three columns, `Team` takes six). Cards are a fixed `13rem` tall at `lg`, so a part given `lg:row-span-2 lg:h-auto` is exactly two cards tall. Pass any other span through `className`; the built-in parts are `GlassPanel`s, so `variant="solid"` on a card also works.
+
+The call to action is a `Button`. Give `cta` an `onClick`, or an `href` to navigate to on click — pass a router `push` in `onClick` when you want client-side navigation.
+
+## Features
+
+<div className="grid grid-cols-1 sm:grid-cols-2 gap-4 my-6 not-prose">
+  <div className="p-6 rounded-2xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900">
+    <h3 className="text-lg font-semibold text-zinc-900 dark:text-zinc-50 mb-2">Built from the library</h3>
+    <p className="text-zinc-600 dark:text-zinc-400 text-sm">Glass Panel for the ground and the cards, Text Animation for the headline, Counter for the figures, Button for the call to action. Install this one item and all four come with it.</p>
+  </div>
+  <div className="p-6 rounded-2xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900">
+    <h3 className="text-lg font-semibold text-zinc-900 dark:text-zinc-50 mb-2">One sequence, then the pointer</h3>
+    <p className="text-zinc-600 dark:text-zinc-400 text-sm">Words, line, button, cards, faces — one timeline the first time the section appears. After that nothing moves unless you hover it. Reduced motion renders the finished state.</p>
+  </div>
+  <div className="p-6 rounded-2xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900">
+    <h3 className="text-lg font-semibold text-zinc-900 dark:text-zinc-50 mb-2">Figures that count when seen</h3>
+    <p className="text-zinc-600 dark:text-zinc-400 text-sm">Each Stat waits until its card is on screen before counting, so a hero below the fold does not run its numbers while nobody is looking.</p>
+  </div>
+  <div className="p-6 rounded-2xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900">
+    <h3 className="text-lg font-semibold text-zinc-900 dark:text-zinc-50 mb-2">Server-safe</h3>
+    <p className="text-zinc-600 dark:text-zinc-400 text-sm">Cards and faces render opaque in the HTML and only animate once the page is live; nothing depends on JavaScript to be visible.</p>
+  </div>
+</div>
+
+## Props Reference
+
+### SupportHero
+
+<div className="overflow-x-auto my-4">
+  <table>
+    <thead>
+      <tr>
+        <th>Prop</th>
+        <th>Type</th>
+        <th>Default</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><code>heading</code></td>
+        <td><code>string</code></td>
+        <td>—</td>
+        <td>The headline, animated word by word.</td>
+      </tr>
+      <tr>
+        <td><code>subtitle</code></td>
+        <td><code>ReactNode</code></td>
+        <td>—</td>
+        <td>The line under it.</td>
+      </tr>
+      <tr>
+        <td><code>cta</code></td>
+        <td><code>&#123; label: string; href?: string; onClick?: () =&gt; void &#125;</code></td>
+        <td>—</td>
+        <td>The button. <code>href</code> is navigated to on click.</td>
+      </tr>
+      <tr>
+        <td><code>aurora</code></td>
+        <td><code>[string, string, string]</code></td>
+        <td>three greys</td>
+        <td>Colours washed behind the glass.</td>
+      </tr>
+      <tr>
+        <td><code>reveal</code></td>
+        <td><code>"in-view" | "immediate"</code></td>
+        <td><code>"in-view"</code></td>
+        <td>When the sequence plays.</td>
+      </tr>
+      <tr>
+        <td><code>children</code></td>
+        <td><code>ReactNode</code></td>
+        <td>—</td>
+        <td>The cards, in the order they should fill the grid.</td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+### SupportHero.Integrations
+
+<div className="overflow-x-auto my-4">
+  <table>
+    <thead>
+      <tr>
+        <th>Prop</th>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><code>icons</code></td>
+        <td><code>ReactNode[]</code></td>
+        <td>Marks shown on white tiles, e.g. from the <code>icons</code> item.</td>
+      </tr>
+      <tr>
+        <td><code>title</code>, <code>text</code></td>
+        <td><code>string</code></td>
+        <td>Heading and the line under it.</td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+### SupportHero.Stat
+
+<div className="overflow-x-auto my-4">
+  <table>
+    <thead>
+      <tr>
+        <th>Prop</th>
+        <th>Type</th>
+        <th>Default</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><code>value</code></td>
+        <td><code>number</code></td>
+        <td>—</td>
+        <td>The figure counted up to.</td>
+      </tr>
+      <tr>
+        <td><code>decimals</code></td>
+        <td><code>number</code></td>
+        <td><code>0</code></td>
+        <td>Decimal places, e.g. <code>1</code> for 5.5.</td>
+      </tr>
+      <tr>
+        <td><code>prefix</code>, <code>suffix</code></td>
+        <td><code>string</code></td>
+        <td>—</td>
+        <td>Text either side of the figure, e.g. <code>"%"</code>, <code>"B"</code>.</td>
+      </tr>
+      <tr>
+        <td><code>caption</code></td>
+        <td><code>string</code></td>
+        <td>—</td>
+        <td>What the figure means.</td>
+      </tr>
+      <tr>
+        <td><code>tone</code></td>
+        <td><code>"glass" | "accent"</code></td>
+        <td><code>"glass"</code></td>
+        <td>Frosted, or the accent card in the theme's primary colour with its foreground for text.</td>
+      </tr>
+      <tr>
+        <td><code>image</code>, <code>imageAlt</code></td>
+        <td><code>string</code></td>
+        <td>—</td>
+        <td>A picture behind the whole card. Only the bottom-left corner, under the figure, is washed with the card colour; the rest stays clear. Zooms a touch on hover.</td>
+      </tr>
+      <tr>
+        <td><code>imagePosition</code></td>
+        <td><code>string</code></td>
+        <td><code>"center"</code></td>
+        <td>CSS <code>object-position</code> for the crop — e.g. <code>"70% center"</code> to favour a subject on the right.</td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+### SupportHero.Photo
+
+<div className="overflow-x-auto my-4">
+  <table>
+    <thead>
+      <tr>
+        <th>Prop</th>
+        <th>Type</th>
+        <th>Default</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><code>src</code>, <code>alt</code></td>
+        <td><code>string</code></td>
+        <td>—</td>
+        <td>The portrait.</td>
+      </tr>
+      <tr>
+        <td><code>label</code></td>
+        <td><code>string</code></td>
+        <td>—</td>
+        <td>A word in the top-left corner.</td>
+      </tr>
+      <tr>
+        <td><code>position</code></td>
+        <td><code>string</code></td>
+        <td><code>"center"</code></td>
+        <td>CSS <code>object-position</code> for the crop.</td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+### SupportHero.Team
+
+<div className="overflow-x-auto my-4">
+  <table>
+    <thead>
+      <tr>
+        <th>Prop</th>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><code>title</code></td>
+        <td><code>ReactNode</code></td>
+        <td>The heading; use <code>&lt;br /&gt;</code> for deliberate breaks.</td>
+      </tr>
+      <tr>
+        <td><code>avatars</code></td>
+        <td><code>&#123; src: string; alt?: string &#125;[]</code></td>
+        <td>Up to six faces, scattered over the right half.</td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+### SupportHero.Card
+
+A <code>GlassPanel</code> that takes part in the reveal: <code>shape="tile"</code>, <code>interactive</code>, three columns wide and <code>13rem</code> tall at <code>lg</code>. All <code>GlassPanel</code> props apply.

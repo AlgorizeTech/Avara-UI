@@ -4,7 +4,7 @@ import { cn } from "@/lib/utils";
 import gsap from "gsap";
 import { Clock, Minus, Plus } from "lucide-react";
 import React, { useEffect, useRef, useState } from "react";
-import { getThemeStyles } from "./counter-theme";
+import { getThemeStyles, type CounterTheme } from "./counter-theme";
 
 // ==========================================
 // DYNAMIC THEME ENGINE
@@ -20,7 +20,7 @@ export type CounterVariant = "default" | "outline" | "soft" | "vertical";
 /** What every counter variant needs to paint itself. */
 interface CounterBaseProps {
   /** A row out of the block’s colour table. */
-  theme: Record<string, string>;
+  theme: CounterTheme;
   style?: React.CSSProperties;
   label?: string;
 }
@@ -36,6 +36,13 @@ interface AnimatedCounterProps extends CounterBaseProps {
   targetValue: number;
   prefix?: string;
   suffix?: string;
+  /** Just the figure, no card — it inherits the surrounding type. */
+  bare?: boolean;
+  /** Decimal places to show while counting, e.g. 1 for 5.5. */
+  decimals?: number;
+  /** Wait until the counter is on screen before counting. */
+  startOnView?: boolean;
+  className?: string;
 }
 
 interface CircularCounterProps extends CounterBaseProps {
@@ -237,29 +244,86 @@ const AnimatedCounter = ({
   targetValue,
   prefix,
   suffix,
+  bare = false,
+  decimals = 0,
+  startOnView = false,
+  className,
 }: AnimatedCounterProps) => {
   const [displayVal, setDisplayVal] = useState(0);
+  const [armed, setArmed] = useState(!startOnView);
+  const rootRef = useRef<HTMLDivElement | HTMLSpanElement>(null);
+
+  // With `startOnView` the count waits for the element to be visible.
+  useEffect(() => {
+    if (armed) return;
+    const el = rootRef.current;
+    if (!el || typeof IntersectionObserver === "undefined") {
+      setArmed(true);
+      return;
+    }
+    const io = new IntersectionObserver(
+      (entries) => {
+        if (entries.some((e) => e.isIntersecting)) {
+          setArmed(true);
+          io.disconnect();
+        }
+      },
+      { threshold: 0.3 },
+    );
+    io.observe(el);
+    return () => io.disconnect();
+  }, [armed]);
 
   useEffect(() => {
+    if (!armed) return;
+    const reduced =
+      typeof window !== "undefined" &&
+      window.matchMedia?.("(prefers-reduced-motion: reduce)").matches;
+    if (reduced) {
+      setDisplayVal(targetValue);
+      return;
+    }
     const obj = { val: 0 };
-    gsap.to(obj, {
+    const tween = gsap.to(obj, {
       val: targetValue,
       duration: 2,
       ease: "power3.out",
-      onUpdate: () => setDisplayVal(Math.floor(obj.val)),
+      onUpdate: () => setDisplayVal(obj.val),
     });
-  }, [targetValue]);
+    return () => {
+      tween.kill();
+    };
+  }, [armed, targetValue]);
+
+  const formatted = displayVal.toLocaleString(undefined, {
+    minimumFractionDigits: decimals,
+    maximumFractionDigits: decimals,
+  });
+
+  if (bare) {
+    return (
+      <span ref={rootRef as React.RefObject<HTMLSpanElement>} className={cn("tabular-nums", className)} style={style}>
+        {prefix}
+        {formatted}
+        {suffix}
+      </span>
+    );
+  }
 
   return (
     <div
-      className="flex flex-col items-center justify-center p-8 bg-card border border-border rounded-2xl shadow-xl w-full max-w-sm"
+      ref={rootRef as React.RefObject<HTMLDivElement>}
+      className={cn(
+        "flex flex-col items-center justify-center p-8 bg-card border border-border rounded-2xl shadow-xl w-full max-w-sm",
+        className,
+      )}
       style={style}
     >
       <div
         className={cn("text-6xl font-black tracking-tighter mb-2", theme.text)}
       >
         {prefix}
-        {displayVal.toLocaleString()}
+        {formatted}
         {suffix}
       </div>
       {label && (
@@ -416,6 +480,14 @@ export interface CounterProps {
   prefix?: string;
   suffix?: string;
   targetDate?: Date;
+  /** Animated only: just the figure, no card — it inherits the surrounding type. */
+  bare?: boolean;
+  /** Animated only: decimal places, e.g. 1 for 5.5. */
+  decimals?: number;
+  /** Animated only: wait until the counter is on screen before counting. */
+  startOnView?: boolean;
+  /** Animated only: classes for the figure (bare) or the card. */
+  className?: string;
 }
 
 /**
@@ -462,6 +534,10 @@ export function CounterBlock({
   prefix = "",
   suffix = "",
   targetDate,
+  bare,
+  decimals,
+  startOnView,
+  className,
 }: CounterProps) {
   const { theme, style } = getThemeStyles(color);
 
@@ -486,6 +562,10 @@ export function CounterBlock({
         targetValue={targetValue}
         prefix={prefix}
         suffix={suffix}
+        {...(bare !== undefined ? { bare } : {})}
+        {...(decimals !== undefined ? { decimals } : {})}
+        {...(startOnView !== undefined ? { startOnView } : {})}
+        {...(className !== undefined ? { className } : {})}
       />
     );
   if (type === "circular")
@@ -504,7 +584,7 @@ export function CounterBlock({
         theme={theme}
         style={style}
         label={label}
-        targetDate={targetDate}
+        {...(targetDate !== undefined ? { targetDate } : {})}
       />
     );
 

@@ -84,9 +84,9 @@ Discover the Apple Select component's capabilities for pointing at part of a sen
         The full sentence or paragraph to render.
 
         selection
-        [number, number]
+        [number, number] | [number, number][]
         Required
-        Character range to highlight as [start, end]. end is exclusive, like String.slice; out-of-range values are clamped and an empty range renders plain text.
+        Character range to highlight as [start, end], or several ranges for more than one phrase — each gets its own handles. end is exclusive, like String.slice; out-of-range values are clamped, overlapping ranges merge, and an empty range renders plain text.
 
         color
         string

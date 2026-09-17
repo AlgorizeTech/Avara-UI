@@ -86,6 +86,9 @@ export function useLocalTime(timeZone: string): LocalTime | null {
 
 // ==========================================
 // 4. WORKDAY DIAL — 24 hours on a ring
+// The working arc, the live marker and the "Working now" line take the
+// theme's `primary` (and the focus ring `ring`), so the dial follows the
+// site palette — and the docs colour picker — like every other block.
 // ==========================================
 export interface WorkdayDialProps {
   /** IANA zone the person works in, e.g. "Asia/Dhaka". */
@@ -196,7 +199,7 @@ export function WorkdayDial({
       onFocus={() => setFocused(true)}
       onBlur={() => setFocused(false)}
       className={cn(
-        "relative mx-auto aspect-square w-full max-w-[240px] rounded-full p-6 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-violet-500 focus-visible:ring-offset-4 focus-visible:ring-offset-transparent",
+        "relative mx-auto aspect-square w-full max-w-[240px] rounded-full p-6 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-4 focus-visible:ring-offset-transparent",
         className,
       )}
     >
@@ -233,7 +236,7 @@ export function WorkdayDial({
           strokeLinecap="round"
           strokeDasharray={`${(CIRCUMFERENCE * (end - start)) / 24} ${CIRCUMFERENCE}`}
           strokeDashoffset={-(CIRCUMFERENCE * start) / 24}
-          className="stroke-violet-600 dark:stroke-violet-400"
+          className="stroke-primary"
         />
         {/* Six-hour ticks, just outside the ring */}
         {[0, 6, 12, 18].map((h) => {
@@ -266,7 +269,7 @@ export function WorkdayDial({
               r="3"
               className={cn(
                 working
-                  ? "fill-violet-600 dark:fill-violet-400"
+                  ? "fill-primary"
                   : "fill-zinc-400 dark:fill-zinc-500",
               )}
             />
@@ -286,7 +289,7 @@ export function WorkdayDial({
             className={cn(
               "mt-2 text-xs font-medium",
               working
-                ? "text-violet-700 dark:text-violet-300"
+                ? "text-primary"
                 : "text-black/50 dark:text-white/50",
             )}
           >
@@ -324,7 +327,7 @@ export function WorkdayDial({
             className={cn(
               "mt-1 font-medium",
               working
-                ? "text-violet-700 dark:text-violet-300"
+                ? "text-primary"
                 : "text-black/60 dark:text-white/60",
             )}
           >

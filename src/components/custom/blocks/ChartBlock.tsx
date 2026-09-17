@@ -107,7 +107,7 @@ export function ChartBlock({
   const isLegendChart = type === "donut-legend" || type === "stacked-bar";
   // Every share gets a colour: its own, else the palette in order, wrapping.
   const shareColor = (d: ChartDataPoint, i: number) =>
-    getThemeColor(d.color ?? colors[i % colors.length]);
+    getThemeColor(d.color ?? colors[i % colors.length] ?? "primary");
 
   return (
     <div
@@ -289,15 +289,19 @@ function SmoothLineChart({
   const points = data.map((d, i) => ({
     x: (i / Math.max(data.length - 1, 1)) * 100,
     y: 100 - (d.value / maxVal) * 100,
+    label: d.label,
+    value: d.value,
   }));
 
   // Mathematical cubic bezier curve generator for a premium SaaS look
   const createSmoothPath = (pts: { x: number; y: number }[]) => {
-    if (pts.length === 0) return "";
-    let d = `M ${pts[0].x} ${pts[0].y}`;
+    const first = pts[0];
+    if (!first) return "";
+    let d = `M ${first.x} ${first.y}`;
     for (let i = 1; i < pts.length; i++) {
       const prev = pts[i - 1];
       const curr = pts[i];
+      if (!prev || !curr) continue;
       const cpX = (prev.x + curr.x) / 2; // Midpoint easing
       d += ` C ${cpX} ${prev.y}, ${cpX} ${curr.y}, ${curr.x} ${curr.y}`;
     }
@@ -411,11 +415,11 @@ function SmoothLineChart({
                   style={{ backgroundColor: color }}
                 >
                   <div className="text-[10px] text-white/80 uppercase tracking-wider font-semibold">
-                    {data[i].label}
+                    {p.label}
                   </div>
                   <div>
                     {prefix}
-                    {data[i].value}
+                    {p.value}
                     {suffix}
                   </div>
                 </div>
@@ -432,7 +436,7 @@ function SmoothLineChart({
                   : "text-muted-foreground",
               )}
             >
-              {data[i].label}
+              {p.label}
             </span>
           </div>
         ))}
@@ -475,10 +479,11 @@ function CircularChart({
 
   // Map data to stroke dashes
   const slices = data.map((d, i) => {
-    const sliceRatio = sliceRatios[i];
+    const sliceRatio = sliceRatios[i] ?? 0;
+    const startRatio = startRatios[i] ?? 0;
     const strokeDasharray = `${sliceRatio * circumference} ${circumference}`;
-    const strokeDashoffset = -(startRatios[i] * circumference);
-    const endOffset = (startRatios[i] + sliceRatio) * circumference;
+    const strokeDashoffset = -(startRatio * circumference);
+    const endOffset = (startRatio + sliceRatio) * circumference;
 
     const midAngle =
       ((endOffset - (sliceRatio * circumference) / 2) / circumference) *
@@ -500,6 +505,7 @@ function CircularChart({
       ty,
     };
   });
+  const hovered = hoveredIndex === null ? undefined : slices[hoveredIndex];
 
   return (
     <div className="relative w-full h-full flex items-center justify-center animate-fade">
@@ -547,12 +553,12 @@ function CircularChart({
         </svg>
 
         {/* Tooltip Overlay */}
-        {hoveredIndex !== null && (
+        {hovered && (
           <div
             className="absolute z-50 pointer-events-none animate-in fade-in zoom-in-95 duration-200 flex flex-col items-center"
             style={{
-              left: `${slices[hoveredIndex].tx}%`,
-              top: `${slices[hoveredIndex].ty}%`,
+              left: `${hovered.tx}%`,
+              top: `${hovered.ty}%`,
               transform: "translate(-50%, -50%)",
             }}
           >
@@ -561,11 +567,11 @@ function CircularChart({
               style={{ backgroundColor: color }}
             >
               <div className="text-[10px] text-white/80 uppercase tracking-wider font-semibold">
-                {slices[hoveredIndex].label}
+                {hovered.label}
               </div>
               <div>
                 {prefix}
-                {slices[hoveredIndex].value}
+                {hovered.value}
                 {suffix}
               </div>
             </div>
@@ -620,7 +626,7 @@ function DonutLegendChart({
   }, 0);
 
   // The centre reads the hovered share; at rest, the largest one.
-  const largest = data.reduce((best, d, i) => (d.value > data[best].value ? i : best), 0);
+  const largest = data.reduce((best, d, i) => (d.value > (data[best]?.value ?? -Infinity) ? i : best), 0);
   const shown = data[active ?? largest];
 
   return (
@@ -639,7 +645,7 @@ function DonutLegendChart({
                 stroke={shareColor(d, i)}
                 strokeWidth={active === i ? 16 : 14}
                 strokeDasharray={`${Math.max(0, length - GAP)} ${C}`}
-                strokeDashoffset={-starts[i]}
+                strokeDashoffset={-(starts[i] ?? 0)}
                 onMouseEnter={() => setActive(i)}
                 onMouseLeave={() => setActive(null)}
                 className={cn(

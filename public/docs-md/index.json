@@ -69,6 +69,18 @@
       "originalMdx": "[framework]\\audio-player\\page.mdx"
     },
     {
+      "name": "nextjs/avatar-stack",
+      "path": "/docs/nextjs-avatar-stack.md",
+      "url": "/docs/nextjs/avatar-stack",
+      "originalMdx": "[framework]\\avatar-stack\\page.mdx"
+    },
+    {
+      "name": "nextjs/bento-showcase",
+      "path": "/docs/nextjs-bento-showcase.md",
+      "url": "/docs/nextjs/bento-showcase",
+      "originalMdx": "[framework]\\bento-showcase\\page.mdx"
+    },
+    {
       "name": "nextjs/book-appointment",
       "path": "/docs/nextjs-book-appointment.md",
       "url": "/docs/nextjs/book-appointment",
@@ -141,6 +153,18 @@
       "originalMdx": "[framework]\\chat-bubble\\page.mdx"
     },
     {
+      "name": "nextjs/circular-text",
+      "path": "/docs/nextjs-circular-text.md",
+      "url": "/docs/nextjs/circular-text",
+      "originalMdx": "[framework]\\circular-text\\page.mdx"
+    },
+    {
+      "name": "nextjs/collage-hero",
+      "path": "/docs/nextjs-collage-hero.md",
+      "url": "/docs/nextjs/collage-hero",
+      "originalMdx": "[framework]\\collage-hero\\page.mdx"
+    },
+    {
       "name": "nextjs/collapsible",
       "path": "/docs/nextjs-collapsible.md",
       "url": "/docs/nextjs/collapsible",
@@ -199,6 +223,12 @@
       "path": "/docs/nextjs-custom-code-block.md",
       "url": "/docs/nextjs/custom-code-block",
       "originalMdx": "[framework]\\custom-code-block\\page.mdx"
+    },
+    {
+      "name": "nextjs/data-flow",
+      "path": "/docs/nextjs-data-flow.md",
+      "url": "/docs/nextjs/data-flow",
+      "originalMdx": "[framework]\\data-flow\\page.mdx"
     },
     {
       "name": "nextjs/data-grid",
@@ -289,6 +319,12 @@
       "path": "/docs/nextjs-examples-waitlist.md",
       "url": "/docs/nextjs/examples/waitlist",
       "originalMdx": "[framework]\\examples\\waitlist\\page.mdx"
+    },
+    {
+      "name": "nextjs/fashion-hero",
+      "path": "/docs/nextjs-fashion-hero.md",
+      "url": "/docs/nextjs/fashion-hero",
+      "originalMdx": "[framework]\\fashion-hero\\page.mdx"
     },
     {
       "name": "nextjs/file-upload",
@@ -483,6 +519,12 @@
       "originalMdx": "[framework]\\network-graph\\page.mdx"
     },
     {
+      "name": "nextjs/newsletter",
+      "path": "/docs/nextjs-newsletter.md",
+      "url": "/docs/nextjs/newsletter",
+      "originalMdx": "[framework]\\newsletter\\page.mdx"
+    },
+    {
       "name": "nextjs/otp-input",
       "path": "/docs/nextjs-otp-input.md",
       "url": "/docs/nextjs/otp-input",
@@ -505,6 +547,12 @@
       "path": "/docs/nextjs-piano.md",
       "url": "/docs/nextjs/piano",
       "originalMdx": "[framework]\\piano\\page.mdx"
+    },
+    {
+      "name": "nextjs/platform-grid",
+      "path": "/docs/nextjs-platform-grid.md",
+      "url": "/docs/nextjs/platform-grid",
+      "originalMdx": "[framework]\\platform-grid\\page.mdx"
     },
     {
       "name": "nextjs/popover",
@@ -649,6 +697,12 @@
       "path": "/docs/nextjs-support-dashboard.md",
       "url": "/docs/nextjs/support-dashboard",
       "originalMdx": "[framework]\\support-dashboard\\page.mdx"
+    },
+    {
+      "name": "nextjs/support-hero",
+      "path": "/docs/nextjs-support-hero.md",
+      "url": "/docs/nextjs/support-hero",
+      "originalMdx": "[framework]\\support-hero\\page.mdx"
     },
     {
       "name": "nextjs/table",
@@ -861,6 +915,18 @@
       "originalMdx": "[framework]\\audio-player\\page.mdx"
     },
     {
+      "name": "reactjs/avatar-stack",
+      "path": "/docs/reactjs-avatar-stack.md",
+      "url": "/docs/reactjs/avatar-stack",
+      "originalMdx": "[framework]\\avatar-stack\\page.mdx"
+    },
+    {
+      "name": "reactjs/bento-showcase",
+      "path": "/docs/reactjs-bento-showcase.md",
+      "url": "/docs/reactjs/bento-showcase",
+      "originalMdx": "[framework]\\bento-showcase\\page.mdx"
+    },
+    {
       "name": "reactjs/book-appointment",
       "path": "/docs/reactjs-book-appointment.md",
       "url": "/docs/reactjs/book-appointment",
@@ -933,6 +999,18 @@
       "originalMdx": "[framework]\\chat-bubble\\page.mdx"
     },
     {
+      "name": "reactjs/circular-text",
+      "path": "/docs/reactjs-circular-text.md",
+      "url": "/docs/reactjs/circular-text",
+      "originalMdx": "[framework]\\circular-text\\page.mdx"
+    },
+    {
+      "name": "reactjs/collage-hero",
+      "path": "/docs/reactjs-collage-hero.md",
+      "url": "/docs/reactjs/collage-hero",
+      "originalMdx": "[framework]\\collage-hero\\page.mdx"
+    },
+    {
       "name": "reactjs/collapsible",
       "path": "/docs/reactjs-collapsible.md",
       "url": "/docs/reactjs/collapsible",
@@ -991,6 +1069,12 @@
       "path": "/docs/reactjs-custom-code-block.md",
       "url": "/docs/reactjs/custom-code-block",
       "originalMdx": "[framework]\\custom-code-block\\page.mdx"
+    },
+    {
+      "name": "reactjs/data-flow",
+      "path": "/docs/reactjs-data-flow.md",
+      "url": "/docs/reactjs/data-flow",
+      "originalMdx": "[framework]\\data-flow\\page.mdx"
     },
     {
       "name": "reactjs/data-grid",
@@ -1081,6 +1165,12 @@
       "path": "/docs/reactjs-examples-waitlist.md",
       "url": "/docs/reactjs/examples/waitlist",
       "originalMdx": "[framework]\\examples\\waitlist\\page.mdx"
+    },
+    {
+      "name": "reactjs/fashion-hero",
+      "path": "/docs/reactjs-fashion-hero.md",
+      "url": "/docs/reactjs/fashion-hero",
+      "originalMdx": "[framework]\\fashion-hero\\page.mdx"
     },
     {
       "name": "reactjs/file-upload",
@@ -1275,6 +1365,12 @@
       "originalMdx": "[framework]\\network-graph\\page.mdx"
     },
     {
+      "name": "reactjs/newsletter",
+      "path": "/docs/reactjs-newsletter.md",
+      "url": "/docs/reactjs/newsletter",
+      "originalMdx": "[framework]\\newsletter\\page.mdx"
+    },
+    {
       "name": "reactjs/otp-input",
       "path": "/docs/reactjs-otp-input.md",
       "url": "/docs/reactjs/otp-input",
@@ -1297,6 +1393,12 @@
       "path": "/docs/reactjs-piano.md",
       "url": "/docs/reactjs/piano",
       "originalMdx": "[framework]\\piano\\page.mdx"
+    },
+    {
+      "name": "reactjs/platform-grid",
+      "path": "/docs/reactjs-platform-grid.md",
+      "url": "/docs/reactjs/platform-grid",
+      "originalMdx": "[framework]\\platform-grid\\page.mdx"
     },
     {
       "name": "reactjs/popover",
@@ -1441,6 +1543,12 @@
       "path": "/docs/reactjs-support-dashboard.md",
       "url": "/docs/reactjs/support-dashboard",
       "originalMdx": "[framework]\\support-dashboard\\page.mdx"
+    },
+    {
+      "name": "reactjs/support-hero",
+      "path": "/docs/reactjs-support-hero.md",
+      "url": "/docs/reactjs/support-hero",
+      "originalMdx": "[framework]\\support-hero\\page.mdx"
     },
     {
       "name": "reactjs/table",

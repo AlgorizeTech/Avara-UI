@@ -208,6 +208,23 @@ export default function HighlightedBento() {
   ]}
 />
 
+## Theming the glow
+
+Every effect — the spinning `highlight` border, the pointer-tracked border and the inner glow — reads one colour. Out of the box it is your shadcn `--primary`, so the component works with no extra setup. To re-tint a whole grid, set the two CSS variables on any ancestor:
+
+```tsx
+<div
+  style={{
+    "--magic-color": "#6366f1",
+    "--magic-glow": "color-mix(in srgb, #6366f1 15%, transparent)",
+  } as React.CSSProperties}
+>
+  <MagicBento>…</MagicBento>
+</div>
+```
+
+`--magic-glow` is optional — when only `--magic-color` is set, the glow is derived from it at 15% opacity.
+
 ## Features
 Discover the key capabilities that make this component an excellent choice for modern, animated user interfaces.
 
@@ -347,6 +364,43 @@ Discover the key capabilities that make this component an excellent choice for m
         <td>
           Used to control the grid spanning and dimensions of the specific card
           (e.g., <code>col-span-1 md:col-span-2 lg:row-span-2</code>).
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <em>CSS variable</em>
+        </td>
+        <td>
+          <code>--magic-color</code>
+        </td>
+        <td>
+          <code>&lt;color&gt;</code>
+        </td>
+        <td>
+          <code>var(--primary)</code>
+        </td>
+        <td>
+          Colour of the spinning <code>highlight</code> border and the
+          pointer-tracked border. Set it on any ancestor to re-tint every card
+          below it.
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <em>CSS variable</em>
+        </td>
+        <td>
+          <code>--magic-glow</code>
+        </td>
+        <td>
+          <code>&lt;color&gt;</code>
+        </td>
+        <td>
+          <code>--magic-color</code> at 15%
+        </td>
+        <td>
+          Colour of the soft inner glow that follows the cursor. Defaults to a
+          translucent version of <code>--magic-color</code>.
         </td>
       </tr>
     </tbody>

@@ -50,11 +50,6 @@ Discover the key capabilities that make this component an excellent choice for m
         "AlgorizeTech"
         The text string to convert into animated particles.
 
-        variant
-        "repel"
-        "repel"
-        Organic staggered repulsion physics variant where particles react dynamically to cursor movement.
-
         particleSize
         number
         2.5
@@ -72,8 +67,8 @@ Discover the key capabilities that make this component an excellent choice for m
 
         color
         string
-        adaptive
-        Optional custom particle color. Matches header active theme color by default for all dots.
+        undefined
+        Optional particle color. Accepts a preset accent name ("indigo", "rose", "emerald", "zinc", "amber", "blue") or any CSS color string. When omitted (or set to "primary" / "default"), particles resolve to the active theme's --primary color.
 
         backgroundColor
         string
@@ -84,6 +79,21 @@ Discover the key capabilities that make this component an excellent choice for m
         boolean
         true
         Enables mouse and touch repulsion tracking.
+
+        fontSize
+        number
+        auto
+        Font size (px) used to rasterize content before sampling. When omitted, it is computed from the canvas size and text length so the text fills the container.
+
+        fontFamily
+        string
+        "system-ui, -apple-system, sans-serif"
+        CSS font-family used to render the text that particles are sampled from. The text is always drawn bold.
+
+        className
+        string
+        undefined
+        Extra classes merged onto the wrapper &lt;div&gt; (defaults to relative w-full h-full min-h-[600px]). All other HTMLAttributes&lt;HTMLDivElement&gt; are spread onto the wrapper as well.
 
 ---
 

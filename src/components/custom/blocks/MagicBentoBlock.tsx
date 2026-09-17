@@ -39,10 +39,19 @@ export interface MagicBentoCardProps
   highlight?: boolean; // Activates the continuously spinning border
 }
 
+// Every glow reads from these two. They resolve on the card itself so the
+// component works with nothing but the shadcn theme, yet any ancestor can
+// still set `--magic-color` / `--magic-glow` to re-tint a whole grid.
+const magicVars = {
+  "--mb-color": "var(--magic-color, var(--primary, #6366f1))",
+  "--mb-glow":
+    "var(--magic-glow, color-mix(in srgb, var(--mb-color) 15%, transparent))",
+} as React.CSSProperties;
+
 export const MagicBentoCard = React.forwardRef<
   HTMLDivElement,
   MagicBentoCardProps
->(({ children, className, highlight = false, ...props }, ref) => {
+>(({ children, className, highlight = false, style, ...props }, ref) => {
   const mouseX = useMotionValue(0);
   const mouseY = useMotionValue(0);
 
@@ -65,6 +74,7 @@ export const MagicBentoCard = React.forwardRef<
         "group relative flex flex-col overflow-hidden rounded-3xl bg-muted border border-transparent min-h-[200px] transition-transform duration-300 active:scale-[0.98]",
         className,
       )}
+      style={{ ...magicVars, ...style }}
       {...props}
     >
       {/* 1. Base Static Border */}
@@ -72,7 +82,7 @@ export const MagicBentoCard = React.forwardRef<
 
       {/* 2. Highlight: Continuously Spinning Conic Gradient */}
       {highlight && (
-        <div className="absolute inset-[-100%] animate-[spin_4s_linear_infinite] bg-[conic-gradient(from_90deg_at_50%_50%,transparent_0%,var(--magic-color)_50%,transparent_100%)] opacity-70 dark:opacity-90 group-hover:opacity-100 transition-opacity duration-500" />
+        <div className="absolute inset-[-100%] animate-[spin_4s_linear_infinite] bg-[conic-gradient(from_90deg_at_50%_50%,transparent_0%,var(--mb-color)_50%,transparent_100%)] opacity-70 dark:opacity-90 group-hover:opacity-100 transition-opacity duration-500" />
       )}
 
       {/* 3. Hover: Mouse-Tracking Border Spotlight */}
@@ -82,7 +92,7 @@ export const MagicBentoCard = React.forwardRef<
           background: useMotionTemplate`
               radial-gradient(
                 600px circle at ${mouseX}px ${mouseY}px,
-                var(--magic-color),
+                var(--mb-color),
                 transparent 40%
               )
             `,
@@ -99,7 +109,7 @@ export const MagicBentoCard = React.forwardRef<
           background: useMotionTemplate`
               radial-gradient(
                 600px circle at ${mouseX}px ${mouseY}px,
-                var(--magic-glow),
+                var(--mb-glow),
                 transparent 40%
               )
             `,

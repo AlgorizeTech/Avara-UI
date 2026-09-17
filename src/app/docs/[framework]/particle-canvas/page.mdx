@@ -17,7 +17,6 @@ export default function ParticleCanvasDemo() {
     <div className="relative w-full h-[650px] min-h-max bg-zinc-50 dark:bg-zinc-950 rounded-xl overflow-hidden flex items-center justify-center border border-zinc-200 dark:border-zinc-800">
       <ParticleCanvas
         content="AlgorizeTech"
-        variant="repel"
         particleSize={2.5}
         particleGap={5}
         speed={1}
@@ -33,7 +32,7 @@ export default function ParticleCanvasDemo() {
   examples={[
     {
       title: "Text Particle Repel",
-      props: { content: "AlgorizeTech", variant: "repel" },
+      props: { content: "AlgorizeTech" },
       usage: usageDefault,
       code: extractCode("src/components/custom/blocks/ParticleCanvasBlock.tsx"),
     },
@@ -100,12 +99,6 @@ Discover the key capabilities that make this component an excellent choice for m
         <td>The text string to convert into animated particles.</td>
       </tr>
       <tr>
-        <td><code>variant</code></td>
-        <td><code>"repel"</code></td>
-        <td><code>"repel"</code></td>
-        <td>Organic staggered repulsion physics variant where particles react dynamically to cursor movement.</td>
-      </tr>
-      <tr>
         <td><code>particleSize</code></td>
         <td><code>number</code></td>
         <td><code>2.5</code></td>
@@ -126,8 +119,8 @@ Discover the key capabilities that make this component an excellent choice for m
       <tr>
         <td><code>color</code></td>
         <td><code>string</code></td>
-        <td><code>adaptive</code></td>
-        <td>Optional custom particle color. Matches header active theme color by default for all dots.</td>
+        <td><code>undefined</code></td>
+        <td>Optional particle color. Accepts a preset accent name (<code>"indigo"</code>, <code>"rose"</code>, <code>"emerald"</code>, <code>"zinc"</code>, <code>"amber"</code>, <code>"blue"</code>) or any CSS color string. When omitted (or set to <code>"primary"</code> / <code>"default"</code>), particles resolve to the active theme's <code>--primary</code> color.</td>
       </tr>
       <tr>
         <td><code>backgroundColor</code></td>
@@ -140,6 +133,24 @@ Discover the key capabilities that make this component an excellent choice for m
         <td><code>boolean</code></td>
         <td><code>true</code></td>
         <td>Enables mouse and touch repulsion tracking.</td>
+      </tr>
+      <tr>
+        <td><code>fontSize</code></td>
+        <td><code>number</code></td>
+        <td><code>auto</code></td>
+        <td>Font size (px) used to rasterize <code>content</code> before sampling. When omitted, it is computed from the canvas size and text length so the text fills the container.</td>
+      </tr>
+      <tr>
+        <td><code>fontFamily</code></td>
+        <td><code>string</code></td>
+        <td><code>"system-ui, -apple-system, sans-serif"</code></td>
+        <td>CSS font-family used to render the text that particles are sampled from. The text is always drawn bold.</td>
+      </tr>
+      <tr>
+        <td><code>className</code></td>
+        <td><code>string</code></td>
+        <td><code>undefined</code></td>
+        <td>Extra classes merged onto the wrapper <code>&lt;div&gt;</code> (defaults to <code>relative w-full h-full min-h-[600px]</code>). All other <code>HTMLAttributes&lt;HTMLDivElement&gt;</code> are spread onto the wrapper as well.</td>
       </tr>
     </tbody>
   </table>

@@ -202,9 +202,9 @@ export function BookAppointment({
       {/* The BookingCard is the panel's whole inside, so its confirmation covers
           the panel edge to edge instead of stopping at the padding. */}
       <GlassPanel shape="slab" className="self-start md:col-span-6 lg:col-span-4">
-        <BookingCard className="flex h-full flex-col gap-5 p-6" onBook={onBook}>
+        <BookingCard className="flex h-full flex-col gap-5 p-6" {...(onBook ? { onBook } : {})}>
           <h2 className="text-lg font-semibold tracking-tight">{bookingHeading}</h2>
-          <BookingCard.Days unavailable={unavailable} />
+          <BookingCard.Days {...(unavailable ? { unavailable } : {})} />
           <div className="space-y-4">
             <p className="text-sm font-semibold">Time</p>
             {slotGroups.map((group) => (

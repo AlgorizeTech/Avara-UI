@@ -194,7 +194,7 @@ export const META: Record<string, ItemMeta> = {
     description:
       "An iOS-style text selection rendered from a fixed character range — translucent highlight with lollipop handles on either end. Use it in docs, tutorials and marketing copy to point at part of a sentence.",
     categories: ["typography"],
-    docs: "Named export: AppleSelect. `text` is the full string and `selection` is a `[start, end]` character range (end exclusive, like String.slice). The range is fixed by the author, not draggable. `color` takes any CSS colour, `handles={false}` drops the lollipops, and `animate` fades the highlight in on mount. Renders a <p>; other HTML attributes are forwarded to it.",
+    docs: "Named export: AppleSelect. `text` is the full string and `selection` is a `[start, end]` character range (end exclusive, like String.slice) or an array of them for several phrases. The range is fixed by the author, not draggable. `color` takes any CSS colour, `handles={false}` drops the lollipops, and `animate` fades the highlight in on mount. Renders a <p>; other HTML attributes are forwarded to it.",
   },
   kbd: {
     description:
@@ -516,17 +516,71 @@ export const META: Record<string, ItemMeta> = {
     categories: ["forms", "dates"],
     docs: "Named export: BookingCard (plus the BookingSlot and Booking types). `BookingCard` is a compound component — put `BookingCard.Days`, `BookingCard.Slots`, `BookingCard.Submit` and `BookingCard.Confirmation` inside it in any layout; it holds the chosen day and slot and calls `onBook`. It draws no surface of its own: make it the padded inside of whatever panel it sits in so the confirmation reaches the edges. The submit button, check mark and focus rings use the `--primary` token.",
   },
+  "bento-showcase": {
+    description:
+      "A six-card marketing bento on black: a hero with a live chat, a case-studies laptop, a headline, figures that scroll up, the plans on a phone, and a team strip that scrolls left. Use it as the showcase section of an agency or services landing page.",
+    categories: ["marketing", "layout"],
+    docs: "Named export: BentoShowcase, with parts Card, Hero, CaseStudies, Headline, Stats, Phone and Team. Composed from the marquee, chat-bubble, half-stars, mobile-mockup and button items, which install alongside it. Headlines are children — wrap the display phrase in <em> for the serif italic; `Card` takes a `tone` and grid placement via className.",
+  },
   "book-appointment": {
     description:
       "A practitioner's page that ends in an appointment: portrait and contact, scores as stars, two small charts, and a booking panel — glass or solid. Use it for clinics, salons, consultations.",
     categories: ["forms", "marketing"],
     docs: "Named export: BookAppointment. Composed from the booking-card, glass-panel, half-stars and chart items, which install alongside it. Pass `practitioner`, `slotGroups` and `onBook`; `scores`, `visitReasons` and `activities` fill the stars, donut and bar; `variant` switches glass to solid.",
   },
+  "data-flow": {
+    description:
+      "A sources → core → outputs section: platform cards on the left feed one node in the middle, which fans out to result cards on the right, with curved connectors that draw in on first view and then carry a moving dash. Use it to explain a pipeline, an integration, or where an AI product's data comes from.",
+    categories: ["marketing", "data-display"],
+    docs: "Named export: DataFlow, with parts Source, Core, Output, Pill, Tag and Row. Composed from the flowchart and apple-select items, which install alongside it (`intro` + `highlights` render through AppleSelect); the docs example also uses half-stars and button inside its output cards. Connectors are measured from the cards at runtime (ResizeObserver), hidden below lg; `reveal` is in-view or immediate; `accent` pins the dash colour, otherwise it follows --primary. Wrap intro phrases in <mark> for black pills.",
+  },
+  "platform-grid": {
+    description:
+      "Everything a product offers as one hairline grid: small icon-and-name tiles and a few 2×2 features that show a piece of the product on a tilting card. Reveals as a wave from the centre, then a spotlight follows the pointer. Use it as the 'full platform' section of a product site.",
+    categories: ["marketing", "navigation"],
+    docs: "Named export: PlatformGrid, with parts Tile, Feature, Mock and Pill. Composed from the tilted-card item, which installs alongside it. Cells pack densely (grid-auto-flow: dense) so features stay square at 8, 6, 4, 3 or 2 columns; `reveal` is in-view or immediate; `fadeEdges` masks the outer columns; `accent` pins the hover/spotlight colour, otherwise it follows --primary. Tiles with `href` are links (`linkComponent` for a router Link).",
+  },
+  "support-hero": {
+    description:
+      "A product hero on a soft grey ground: a headline that rises in word by word, one line and one call to action, then a bento of frosted cards — integrations, two figures that count up, two portraits and a team card with faces scattered over it. Use it as the opening section of a SaaS or AI product site.",
+    categories: ["marketing", "layout"],
+    docs: "Named export: SupportHero, with parts Card, Integrations, Stat, Photo and Team. Composed from the glass-panel, text-animation, counter and button items, which install alongside it. Cards land in one staggered pass after the headline (`reveal` in-view or immediate); Stats count up when on screen; hover lifts cards, zooms portraits and drifts the faces. `cta` takes a label plus `onClick` or `href`.",
+  },
+  "circular-text": {
+    description:
+      "Words set on a circle, turning slowly, with room in the middle for a mark, a play button or a link. Use it for video badges, stamps and 'see the work' links.",
+    categories: ["typography"],
+    docs: "Named export: CircularText. `text` repeats to fill the ring (or `repeat` times), `size` in px, `speed` seconds per turn (0 holds still), `direction`, `fontSize`/`tracking` in units of a 100-wide circle, `color` (currentColor follows the parent), `innerRing`. Children sit in the middle. Holds still under prefers-reduced-motion.",
+  },
+  "avatar-stack": {
+    description:
+      "A row of overlapping faces that folds the rest into a +N disc and takes a trailing action. Use it as the social-proof cue under a headline or beside a count.",
+    categories: ["data-display"],
+    docs: "Named export: AvatarStack. `avatars` are { src, alt? }; `size` sm | md | lg; `max` faces before the +N disc; `ringClassName` is the gap colour; `action` renders last at face size; `spreadOnHover` fans the faces apart under the pointer.",
+  },
+  "fashion-hero": {
+    description:
+      "A fashion hero: a bold headline between a turning video badge and a stack of faces, five staggered columns of looks on flat colour that tilt under the pointer, a call to action on the middle look, and a footer with a quote and the next story. Use it for a clothing store, a lookbook or an editorial landing page.",
+    categories: ["marketing", "layout"],
+    docs: "Named export: FashionHero (plus FashionHero.Look). Composed from the circular-text, avatar-stack, text-animation, tilted-card and dialog items, which install alongside it. Pass `heading`, up to seven `looks` ({ src, alt, tone, blend?, position? }), `video` ({ badge, url }), `avatars` + `avatarsHref`, `cta`, `quote`, `teaser` and `linkComponent`; `accent` sets --primary, `reveal` is in-view or immediate.",
+  },
+  "collage-hero": {
+    description:
+      "A playful hero: a badge whose name turns around a mark, a serif headline with two coloured words, hashtag pills, a five-column photo collage and a footer with a quote, a scroll pill and a watch-video trigger. Use it for a kindergarten, studio, school or any warm, busy place.",
+    categories: ["marketing", "layout"],
+    docs: "Named export: CollageHero (plus CollageHero.Badge and CollageHero.Photo). Composed from the button, circular-text and dialog items, which install alongside it. Pass `brand`, `heading` (with <em> for the coloured words), `tags`, `caption`, seven `photos`, `quote`, `scrollLabel`/`scrollTo` and `video` ({ text, url }). `accent` sets --primary for the section, `highlight` the second colour; `reveal` is in-view or immediate.",
+  },
+  newsletter: {
+    description:
+      "A sign-up section in three layouts: readers' faces drifting around a centred form, a panel with a pointer glow and a ticker of who just joined, or the form beside a fanned stack of recent issues. The form becomes a thank-you when your promise resolves.",
+    categories: ["marketing", "forms"],
+    docs: "Named export: Newsletter, with parts Heading, Intro, Form, Proof, Ticker and Issues. Composed from the input, button, marquee and tilted-card items, which install alongside it. `variant` is portraits | spotlight | issues, each styled for light and dark mode; `portraits` takes up to four faces; `Form` takes `onSubscribe(email)` (a promise holds the busy state), `action`, `successTitle`/`successText`; `accent` pins the glow and button colour; `reveal` is in-view or immediate.",
+  },
   "glass-panel": {
     description:
       "A frosted surface in four shapes and the aurora ground it sits on. Use it for glass bento layouts, profile and booking pages — or flip it to solid cards with one prop.",
     categories: ["layout"],
-    docs: "Named exports: GlassBackdrop, GlassPanel, useSurface (plus SurfaceVariant, GlassShape types). `GlassBackdrop` washes three `aurora` colours behind a 12-column grid and sets `variant` (glass | solid) for every `GlassPanel` inside; panels take `shape` (slab, tile, disc, capsule), `interactive`, and Tailwind column spans.",
+    docs: "Named exports: GlassBackdrop, GlassPanel, useSurface (plus SurfaceVariant, GlassShape types). `GlassBackdrop` washes three `aurora` colours behind a 12-column grid (`gridClassName` for row heights and gaps) and sets `variant` (glass | solid) for every `GlassPanel` inside; panels take `shape` (slab, tile, disc, capsule), `interactive`, and Tailwind column spans.",
   },
   "profile-page": {
     description:
@@ -544,7 +598,7 @@ export const META: Record<string, ItemMeta> = {
     description:
       "A node-and-connector flow diagram with highlightable paths and GSAP transitions. Use it to explain a pipeline or decision flow.",
     categories: ["data-display"],
-    docs: "Named exports: Flowchart, FlowCanvas, FlowNode, FlowConnection, useFlowchart. Nodes declare `connectedPaths`; setting the active path highlights every node and connection on it. Positions are authored by you — there is no auto-layout.",
+    docs: "Named exports: Flowchart, FlowCanvas, FlowNode, FlowConnection, useFlowchart. Nodes declare `connectedPaths`; setting the active path highlights every node and connection on it. Positions are authored by you — there is no auto-layout. `layout=\"fluid\"` drops the fixed canvas so connections can be drawn over your own layout; `FlowConnection` takes `dashed`, `flowDash`, `glow` and `drawDuration`.",
   },
   invoice: {
     description:
@@ -760,9 +814,9 @@ export const META: Record<string, ItemMeta> = {
   },
   "theme-switcher": {
     description:
-      "A light/dark toggle in icon, pill or dropdown form, with a GSAP icon transition. Use it in a navbar or settings panel.",
+      "A light/dark toggle in icon, pill or dropdown form, with a circular reveal that grows out of the control and a GSAP icon transition. Use it in a navbar or settings panel.",
     categories: ["utilities", "actions"],
-    docs: "Named export: ThemeSwitcher. Variants: icon | pill | dropdown — dropdown includes a system option. Requires `next-themes` with a ThemeProvider mounted above it; without one it renders but will not change the theme.",
+    docs: "Named export: ThemeSwitcher. Variants: icon | pill | dropdown — dropdown includes a system option. Switching runs a circular View-Transition reveal from the clicked control; the CSS it needs is injected by the component, so nothing goes in globals.css. `reveal={false}` for an instant switch. Requires `next-themes` with a ThemeProvider mounted above it; without one it renders but will not change the theme.",
   },
   "design-components-folder": {
     description:
@@ -817,7 +871,7 @@ export const META: Record<string, ItemMeta> = {
     description:
       "A number component in four modes — stepper, count-up, circular progress and countdown. Use it for quantity inputs and animated statistics.",
     categories: ["data-display", "forms"],
-    docs: "Named exports: CounterBlock, getThemeStyles. `type` is stepper | animated | circular | countdown — stepper is an input with min/max, the others are display-only. Variants: default | outline | soft | vertical.",
+    docs: "Named exports: CounterBlock, getThemeStyles. `type` is stepper | animated | circular | countdown — stepper is an input with min/max, the others are display-only. Variants: default | outline | soft | vertical. The animated type also takes `bare` (just the figure, no card), `decimals`, `startOnView` (count once visible) and `className`.",
   },
   carousel: {
     description:

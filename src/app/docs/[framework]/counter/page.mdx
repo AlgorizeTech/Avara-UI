@@ -380,6 +380,60 @@ Explore the Counter component's number animation features, including customizabl
       </tr>
       <tr>
         <td>
+          <code>bare</code>
+        </td>
+        <td>
+          <code>boolean</code>
+        </td>
+        <td>
+          <code>false</code>
+        </td>
+        <td>
+          <strong>Animated only:</strong> render just the figure as a <code>span</code>, no card — it inherits the surrounding type. For a number inside your own layout.
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <code>decimals</code>
+        </td>
+        <td>
+          <code>number</code>
+        </td>
+        <td>
+          <code>0</code>
+        </td>
+        <td>
+          <strong>Animated only:</strong> decimal places shown while counting, e.g. <code>1</code> for 5.5.
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <code>startOnView</code>
+        </td>
+        <td>
+          <code>boolean</code>
+        </td>
+        <td>
+          <code>false</code>
+        </td>
+        <td>
+          <strong>Animated only:</strong> wait until the counter is on screen before counting, so a figure below the fold is seen counting. Under prefers-reduced-motion the target is shown at once.
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <code>className</code>
+        </td>
+        <td>
+          <code>string</code>
+        </td>
+        <td>—</td>
+        <td>
+          <strong>Animated only:</strong> classes for the figure (<code>bare</code>) or the card.
+        </td>
+      </tr>
+      <tr>
+        <td>
           <code>targetDate</code>
         </td>
         <td>

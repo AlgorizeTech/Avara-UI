@@ -198,7 +198,7 @@ export const ChatMessage = forwardRef<HTMLDivElement, ChatMessageProps>(
             "px-4 py-2.5 text-[15px] leading-relaxed shadow-sm",
             getBorderRadius(),
             isSent
-              ? sentColors[color] || sentColors.default
+              ? sentColors[color] || sentColors["default"]
               : "bg-muted text-foreground border border-border/50",
             className,
           )}

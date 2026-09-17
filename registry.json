@@ -232,7 +232,7 @@
           "target": "components/custom/blocks/AppleSelectBlock.tsx"
         }
       ],
-      "docs": "Named export: AppleSelect. `text` is the full string and `selection` is a `[start, end]` character range (end exclusive, like String.slice). The range is fixed by the author, not draggable. `color` takes any CSS colour, `handles={false}` drops the lollipops, and `animate` fades the highlight in on mount. Renders a <p>; other HTML attributes are forwarded to it."
+      "docs": "Named export: AppleSelect. `text` is the full string and `selection` is a `[start, end]` character range (end exclusive, like String.slice) or an array of them for several phrases. The range is fixed by the author, not draggable. `color` takes any CSS colour, `handles={false}` drops the lollipops, and `animate` fades the highlight in on mount. Renders a <p>; other HTML attributes are forwarded to it."
     },
     {
       "name": "audio-player",
@@ -258,6 +258,58 @@
         }
       ],
       "docs": "Named export: AudioPlayer. `audioUrl` and `artworkUrl` drive it; `variant` is hero | bar | native. Built on a plain <audio> element with no player library, so it adds no npm weight beyond the icons. Playback state mirrors the element's own events, which keeps it correct when a media key or the native controls change it. `skipSeconds` sizes the jump buttons (0 hides them) and the accent follows `--theme-color`."
+    },
+    {
+      "name": "avatar-stack",
+      "type": "registry:component",
+      "title": "Avatar Stack",
+      "author": "AlgorizeTech",
+      "description": "A row of overlapping faces that folds the rest into a +N disc and takes a trailing action. Use it as the social-proof cue under a headline or beside a count.",
+      "categories": [
+        "data-display"
+      ],
+      "dependencies": [],
+      "registryDependencies": [
+        "utils"
+      ],
+      "files": [
+        {
+          "path": "src/components/custom/blocks/AvatarStackBlock.tsx",
+          "type": "registry:component",
+          "target": "components/custom/blocks/AvatarStackBlock.tsx"
+        }
+      ],
+      "docs": "Named export: AvatarStack. `avatars` are { src, alt? }; `size` sm | md | lg; `max` faces before the +N disc; `ringClassName` is the gap colour; `action` renders last at face size; `spreadOnHover` fans the faces apart under the pointer."
+    },
+    {
+      "name": "bento-showcase",
+      "type": "registry:component",
+      "title": "Bento Showcase",
+      "author": "AlgorizeTech",
+      "description": "A six-card marketing bento on black: a hero with a live chat, a case-studies laptop, a headline, figures that scroll up, the plans on a phone, and a team strip that scrolls left. Use it as the showcase section of an agency or services landing page.",
+      "categories": [
+        "marketing",
+        "layout"
+      ],
+      "dependencies": [
+        "lucide-react"
+      ],
+      "registryDependencies": [
+        "https://algorize-ui.vercel.app/r/button.json",
+        "https://algorize-ui.vercel.app/r/chat-bubble.json",
+        "https://algorize-ui.vercel.app/r/half-stars.json",
+        "https://algorize-ui.vercel.app/r/marquee.json",
+        "https://algorize-ui.vercel.app/r/mobile-mockup.json",
+        "utils"
+      ],
+      "files": [
+        {
+          "path": "src/components/custom/blocks/BentoShowcaseBlock.tsx",
+          "type": "registry:component",
+          "target": "components/custom/blocks/BentoShowcaseBlock.tsx"
+        }
+      ],
+      "docs": "Named export: BentoShowcase, with parts Card, Hero, CaseStudies, Headline, Stats, Phone and Team. Composed from the marquee, chat-bubble, half-stars, mobile-mockup and button items, which install alongside it. Headlines are children — wrap the display phrase in <em> for the serif italic; `Card` takes a `tone` and grid placement via className."
     },
     {
       "name": "book-appointment",
@@ -601,6 +653,57 @@
       "docs": "Named exports: ChatBubble, ChatAvatar, ChatMessage, ChatTimestamp. `layout` is default | group-top | group-middle | group-bottom and adjusts the corner radii so consecutive messages from one sender read as a block. `status` renders sent | delivered | read ticks. These are the pieces `chat` assembles."
     },
     {
+      "name": "circular-text",
+      "type": "registry:component",
+      "title": "Circular Text",
+      "author": "AlgorizeTech",
+      "description": "Words set on a circle, turning slowly, with room in the middle for a mark, a play button or a link. Use it for video badges, stamps and 'see the work' links.",
+      "categories": [
+        "typography"
+      ],
+      "dependencies": [],
+      "registryDependencies": [
+        "utils"
+      ],
+      "files": [
+        {
+          "path": "src/components/custom/blocks/CircularTextBlock.tsx",
+          "type": "registry:component",
+          "target": "components/custom/blocks/CircularTextBlock.tsx"
+        }
+      ],
+      "docs": "Named export: CircularText. `text` repeats to fill the ring (or `repeat` times), `size` in px, `speed` seconds per turn (0 holds still), `direction`, `fontSize`/`tracking` in units of a 100-wide circle, `color` (currentColor follows the parent), `innerRing`. Children sit in the middle. Holds still under prefers-reduced-motion."
+    },
+    {
+      "name": "collage-hero",
+      "type": "registry:component",
+      "title": "Collage Hero",
+      "author": "AlgorizeTech",
+      "description": "A playful hero: a badge whose name turns around a mark, a serif headline with two coloured words, hashtag pills, a five-column photo collage and a footer with a quote, a scroll pill and a watch-video trigger. Use it for a kindergarten, studio, school or any warm, busy place.",
+      "categories": [
+        "marketing",
+        "layout"
+      ],
+      "dependencies": [
+        "gsap",
+        "lucide-react"
+      ],
+      "registryDependencies": [
+        "https://algorize-ui.vercel.app/r/button.json",
+        "https://algorize-ui.vercel.app/r/circular-text.json",
+        "https://algorize-ui.vercel.app/r/dialog.json",
+        "utils"
+      ],
+      "files": [
+        {
+          "path": "src/components/custom/blocks/CollageHeroBlock.tsx",
+          "type": "registry:component",
+          "target": "components/custom/blocks/CollageHeroBlock.tsx"
+        }
+      ],
+      "docs": "Named export: CollageHero (plus CollageHero.Badge and CollageHero.Photo). Composed from the button, circular-text and dialog items, which install alongside it. Pass `brand`, `heading` (with <em> for the coloured words), `tags`, `caption`, seven `photos`, `quote`, `scrollLabel`/`scrollTo` and `video` ({ text, url }). `accent` sets --primary for the section, `highlight` the second colour; `reveal` is in-view or immediate."
+    },
+    {
       "name": "collapsible",
       "type": "registry:component",
       "title": "Collapsible",
@@ -797,7 +900,7 @@
           "target": "components/custom/blocks/counter-theme.ts"
         }
       ],
-      "docs": "Named exports: CounterBlock, getThemeStyles. `type` is stepper | animated | circular | countdown — stepper is an input with min/max, the others are display-only. Variants: default | outline | soft | vertical."
+      "docs": "Named exports: CounterBlock, getThemeStyles. `type` is stepper | animated | circular | countdown — stepper is an input with min/max, the others are display-only. Variants: default | outline | soft | vertical. The animated type also takes `bare` (just the figure, no card), `decimals`, `startOnView` (count once visible) and `className`."
     },
     {
       "name": "cursor-animation",
@@ -870,6 +973,33 @@
         }
       ],
       "docs": "Named exports: CustomCodeBlock, CodeTab. `tabs` take { code, language, fileName }; a single tab renders without the tab strip. Uses `lucide-react` for file-type icons. Highlighting is a built-in regex tokenizer, not Shiki or Prism — good for snippets, not a full editor."
+    },
+    {
+      "name": "data-flow",
+      "type": "registry:component",
+      "title": "Data Flow",
+      "author": "AlgorizeTech",
+      "description": "A sources → core → outputs section: platform cards on the left feed one node in the middle, which fans out to result cards on the right, with curved connectors that draw in on first view and then carry a moving dash. Use it to explain a pipeline, an integration, or where an AI product's data comes from.",
+      "categories": [
+        "marketing",
+        "data-display"
+      ],
+      "dependencies": [
+        "gsap"
+      ],
+      "registryDependencies": [
+        "https://algorize-ui.vercel.app/r/apple-select.json",
+        "https://algorize-ui.vercel.app/r/flowchart.json",
+        "utils"
+      ],
+      "files": [
+        {
+          "path": "src/components/custom/blocks/DataFlowBlock.tsx",
+          "type": "registry:component",
+          "target": "components/custom/blocks/DataFlowBlock.tsx"
+        }
+      ],
+      "docs": "Named export: DataFlow, with parts Source, Core, Output, Pill, Tag and Row. Composed from the flowchart and apple-select items, which install alongside it (`intro` + `highlights` render through AppleSelect); the docs example also uses half-stars and button inside its output cards. Connectors are measured from the cards at runtime (ResizeObserver), hidden below lg; `reveal` is in-view or immediate; `accent` pins the dash colour, otherwise it follows --primary. Wrap intro phrases in <mark> for black pills."
     },
     {
       "name": "data-grid",
@@ -1137,6 +1267,37 @@
       "docs": "Named exports: EmailApp, plus Email, EmailLabel and Attachment types. The largest block in the registry — a complete application layout with demo data to replace, not a single element. Variants: default | minimal | glass."
     },
     {
+      "name": "fashion-hero",
+      "type": "registry:component",
+      "title": "Fashion Hero",
+      "author": "AlgorizeTech",
+      "description": "A fashion hero: a bold headline between a turning video badge and a stack of faces, five staggered columns of looks on flat colour that tilt under the pointer, a call to action on the middle look, and a footer with a quote and the next story. Use it for a clothing store, a lookbook or an editorial landing page.",
+      "categories": [
+        "marketing",
+        "layout"
+      ],
+      "dependencies": [
+        "gsap",
+        "lucide-react"
+      ],
+      "registryDependencies": [
+        "https://algorize-ui.vercel.app/r/avatar-stack.json",
+        "https://algorize-ui.vercel.app/r/circular-text.json",
+        "https://algorize-ui.vercel.app/r/dialog.json",
+        "https://algorize-ui.vercel.app/r/text-animation.json",
+        "https://algorize-ui.vercel.app/r/tilted-card.json",
+        "utils"
+      ],
+      "files": [
+        {
+          "path": "src/components/custom/blocks/FashionHeroBlock.tsx",
+          "type": "registry:component",
+          "target": "components/custom/blocks/FashionHeroBlock.tsx"
+        }
+      ],
+      "docs": "Named export: FashionHero (plus FashionHero.Look). Composed from the circular-text, avatar-stack, text-animation, tilted-card and dialog items, which install alongside it. Pass `heading`, up to seven `looks` ({ src, alt, tone, blend?, position? }), `video` ({ badge, url }), `avatars` + `avatarsHref`, `cta`, `quote`, `teaser` and `linkComponent`; `accent` sets --primary, `reveal` is in-view or immediate."
+    },
+    {
       "name": "fleet-map",
       "type": "registry:component",
       "title": "Fleet Map",
@@ -1244,7 +1405,7 @@
           "target": "components/custom/blocks/flowchart-context.ts"
         }
       ],
-      "docs": "Named exports: Flowchart, FlowCanvas, FlowNode, FlowConnection, useFlowchart. Nodes declare `connectedPaths`; setting the active path highlights every node and connection on it. Positions are authored by you — there is no auto-layout."
+      "docs": "Named exports: Flowchart, FlowCanvas, FlowNode, FlowConnection, useFlowchart. Nodes declare `connectedPaths`; setting the active path highlights every node and connection on it. Positions are authored by you — there is no auto-layout. `layout=\"fluid\"` drops the fixed canvas so connections can be drawn over your own layout; `FlowConnection` takes `dashed`, `flowDash`, `glow` and `drawDuration`."
     },
     {
       "name": "folder",
@@ -1347,7 +1508,7 @@
           "target": "components/custom/blocks/GlassPanelBlock.tsx"
         }
       ],
-      "docs": "Named exports: GlassBackdrop, GlassPanel, useSurface (plus SurfaceVariant, GlassShape types). `GlassBackdrop` washes three `aurora` colours behind a 12-column grid and sets `variant` (glass | solid) for every `GlassPanel` inside; panels take `shape` (slab, tile, disc, capsule), `interactive`, and Tailwind column spans."
+      "docs": "Named exports: GlassBackdrop, GlassPanel, useSurface (plus SurfaceVariant, GlassShape types). `GlassBackdrop` washes three `aurora` colours behind a 12-column grid (`gridClassName` for row heights and gaps) and sets `variant` (glass | solid) for every `GlassPanel` inside; panels take `shape` (slab, tile, disc, capsule), `interactive`, and Tailwind column spans."
     },
     {
       "name": "globe",
@@ -2009,6 +2170,36 @@
       "docs": "Named export: NetworkGraph. `nodes` take { id, ring, image?, fallback?, label?, size? } — `ring` assigns the orbit. Tune spacing with `ringCount`, `baseRadius` and `ringGap`; `animateIn` staggers the reveal. Positions are computed by ring, not by force simulation."
     },
     {
+      "name": "newsletter",
+      "type": "registry:component",
+      "title": "Newsletter",
+      "author": "AlgorizeTech",
+      "description": "A sign-up section in three layouts: readers' faces drifting around a centred form, a panel with a pointer glow and a ticker of who just joined, or the form beside a fanned stack of recent issues. The form becomes a thank-you when your promise resolves.",
+      "categories": [
+        "marketing",
+        "forms"
+      ],
+      "dependencies": [
+        "framer-motion",
+        "lucide-react"
+      ],
+      "registryDependencies": [
+        "https://algorize-ui.vercel.app/r/button.json",
+        "https://algorize-ui.vercel.app/r/input.json",
+        "https://algorize-ui.vercel.app/r/marquee.json",
+        "https://algorize-ui.vercel.app/r/tilted-card.json",
+        "utils"
+      ],
+      "files": [
+        {
+          "path": "src/components/custom/blocks/NewsletterBlock.tsx",
+          "type": "registry:component",
+          "target": "components/custom/blocks/NewsletterBlock.tsx"
+        }
+      ],
+      "docs": "Named export: Newsletter, with parts Heading, Intro, Form, Proof, Ticker and Issues. Composed from the input, button, marquee and tilted-card items, which install alongside it. `variant` is portraits | spotlight | issues, each styled for light and dark mode; `portraits` takes up to four faces; `Form` takes `onSubscribe(email)` (a promise holds the busy state), `action`, `successTitle`/`successText`; `accent` pins the glow and button colour; `reveal` is in-view or immediate."
+    },
+    {
       "name": "otp-input",
       "type": "registry:component",
       "title": "OTP Input",
@@ -2132,6 +2323,32 @@
         }
       ],
       "docs": "Named export: Piano. Supports `defaultVolume` (0 to 1), `defaultShowKeys` (boolean), and `className`. Synthesizes real acoustic piano notes using native Web Audio API."
+    },
+    {
+      "name": "platform-grid",
+      "type": "registry:component",
+      "title": "Platform Grid",
+      "author": "AlgorizeTech",
+      "description": "Everything a product offers as one hairline grid: small icon-and-name tiles and a few 2×2 features that show a piece of the product on a tilting card. Reveals as a wave from the centre, then a spotlight follows the pointer. Use it as the 'full platform' section of a product site.",
+      "categories": [
+        "marketing",
+        "navigation"
+      ],
+      "dependencies": [
+        "gsap"
+      ],
+      "registryDependencies": [
+        "https://algorize-ui.vercel.app/r/tilted-card.json",
+        "utils"
+      ],
+      "files": [
+        {
+          "path": "src/components/custom/blocks/PlatformGridBlock.tsx",
+          "type": "registry:component",
+          "target": "components/custom/blocks/PlatformGridBlock.tsx"
+        }
+      ],
+      "docs": "Named export: PlatformGrid, with parts Tile, Feature, Mock and Pill. Composed from the tilted-card item, which installs alongside it. Cells pack densely (grid-auto-flow: dense) so features stay square at 8, 6, 4, 3 or 2 columns; `reveal` is in-view or immediate; `fadeEdges` masks the outer columns; `accent` pins the hover/spotlight colour, otherwise it follows --primary. Tiles with `href` are links (`linkComponent` for a router Link)."
     },
     {
       "name": "popover",
@@ -3018,6 +3235,36 @@
       "docs": "Named exports: SupportDashboard, plus Ticket, TicketContact, TicketSLA, TicketMessage and SupportData types. `layout` switches between chat and table views over the same ticket data. Depends on `select`. The most feature-complete block in the registry — expect to replace its demo data wholesale."
     },
     {
+      "name": "support-hero",
+      "type": "registry:component",
+      "title": "Support Hero",
+      "author": "AlgorizeTech",
+      "description": "A product hero on a soft grey ground: a headline that rises in word by word, one line and one call to action, then a bento of frosted cards — integrations, two figures that count up, two portraits and a team card with faces scattered over it. Use it as the opening section of a SaaS or AI product site.",
+      "categories": [
+        "marketing",
+        "layout"
+      ],
+      "dependencies": [
+        "gsap",
+        "lucide-react"
+      ],
+      "registryDependencies": [
+        "https://algorize-ui.vercel.app/r/button.json",
+        "https://algorize-ui.vercel.app/r/counter.json",
+        "https://algorize-ui.vercel.app/r/glass-panel.json",
+        "https://algorize-ui.vercel.app/r/text-animation.json",
+        "utils"
+      ],
+      "files": [
+        {
+          "path": "src/components/custom/blocks/SupportHeroBlock.tsx",
+          "type": "registry:component",
+          "target": "components/custom/blocks/SupportHeroBlock.tsx"
+        }
+      ],
+      "docs": "Named export: SupportHero, with parts Card, Integrations, Stat, Photo and Team. Composed from the glass-panel, text-animation, counter and button items, which install alongside it. Cards land in one staggered pass after the headline (`reveal` in-view or immediate); Stats count up when on screen; hover lifts cards, zooms portraits and drifts the faces. `cta` takes a label plus `onClick` or `href`."
+    },
+    {
       "name": "support-page",
       "type": "registry:component",
       "title": "Support Page",
@@ -3157,7 +3404,7 @@
       "type": "registry:component",
       "title": "Theme Switcher",
       "author": "AlgorizeTech",
-      "description": "A light/dark toggle in icon, pill or dropdown form, with a GSAP icon transition. Use it in a navbar or settings panel.",
+      "description": "A light/dark toggle in icon, pill or dropdown form, with a circular reveal that grows out of the control and a GSAP icon transition. Use it in a navbar or settings panel.",
       "categories": [
         "utilities",
         "actions"
@@ -3177,7 +3424,7 @@
           "target": "components/custom/blocks/ThemeSwitcherBlock.tsx"
         }
       ],
-      "docs": "Named export: ThemeSwitcher. Variants: icon | pill | dropdown — dropdown includes a system option. Requires `next-themes` with a ThemeProvider mounted above it; without one it renders but will not change the theme."
+      "docs": "Named export: ThemeSwitcher. Variants: icon | pill | dropdown — dropdown includes a system option. Switching runs a circular View-Transition reveal from the clicked control; the CSS it needs is injected by the component, so nothing goes in globals.css. `reveal={false}` for an instant switch. Requires `next-themes` with a ThemeProvider mounted above it; without one it renders but will not change the theme."
     },
     {
       "name": "tilted-card",
