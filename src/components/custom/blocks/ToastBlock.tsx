@@ -4,36 +4,13 @@ import { cn } from "@/lib/utils";
 import gsap from "gsap";
 import { AlertCircle, AlertTriangle, BadgeCheck, CheckCircle2, Info, X } from "lucide-react";
 import React, { useCallback, useEffect, useLayoutEffect, useRef, useState } from "react";
-import { ToastContext, type ToastProps, type ToastType, getThemeStyles } from "./toast-context";
+import { ToastContext, type ToastProps, type ToastType } from "./toast-context";
 
 // ==========================================
 // DYNAMIC THEME ENGINE
 // ==========================================
-export type ToastColor =
-  | "primary"
-  | "indigo"
-  | "rose"
-  | "emerald"
-  | "zinc"
-  | (string & {});
 export type ToastVariant = "default" | "glow" | "glass" | "minimal";
 export type ToastPosition = "top-right" | "top-left" | "top-center" | "bottom-right" | "bottom-left" | "bottom-center";
-
-// Accent each type bleeds into the glass card. `default` falls back to the
-// provider color so the tint always matches the theme.
-const TYPE_TINT: Record<Exclude<ToastType, "default">, string> = {
-  success: "#10b981",
-  error: "#ef4444",
-  warning: "#f59e0b",
-  info: "#3b82f6",
-};
-const NAMED_TINT: Record<string, string> = {
-  primary: "var(--primary)",
-  indigo: "#6366f1",
-  rose: "#f43f5e",
-  emerald: "#10b981",
-  zinc: "#a1a1aa",
-};
 
 // Stack geometry: how far each card behind the front one peeks out, how much
 // it shrinks, how many stay visible, and the gap between cards once expanded.
@@ -48,16 +25,14 @@ const STACK_GAP = 12;
 interface ToastItemProps extends ToastProps {
   onRemove: (id: string) => void;
   variant: ToastVariant;
-  color: ToastColor;
   position: ToastPosition;
   /** Freezes the auto-dismiss timer — used by the stack while it is expanded. */
   paused?: boolean;
 }
 
-const ToastItem = ({ id, title, description, type = "default", duration = 5000, action, onRemove, variant, color, position, paused = false }: ToastItemProps) => {
+const ToastItem = ({ id, title, description, type = "default", duration = 5000, action, onRemove, variant, position, paused = false }: ToastItemProps) => {
   const toastRef = useRef<HTMLDivElement>(null);
   const [hovered, setHovered] = useState(false);
-  const { theme, style } = getThemeStyles(color);
 
   // Determine entrance direction based on position
   const isTop = position.includes("top");
@@ -106,37 +81,73 @@ const ToastItem = ({ id, title, description, type = "default", duration = 5000, 
     };
   }, [duration, isPaused, handleClose]);
 
-  // Styling logic
+  // Styling logic & type specific colors
   const typeStyles = {
-    success: { icon: variant === "glass" ? BadgeCheck : CheckCircle2, iconColor: "text-emerald-500" },
-    error: { icon: AlertCircle, iconColor: "text-red-500" },
-    warning: { icon: AlertTriangle, iconColor: "text-amber-500" },
-    info: { icon: Info, iconColor: "text-blue-500" },
-    default: { icon: null, iconColor: "" },
+    success: {
+      icon: variant === "glass" ? BadgeCheck : CheckCircle2,
+      iconColor: "text-emerald-500",
+      colorVar: "#10b981", // emerald-500
+      glowBorder: "border-emerald-500/40 dark:border-emerald-500/50",
+      glowShadow: "shadow-[0_0_20px_rgba(16,185,129,0.35)]",
+      minimalBorder: "border-l-emerald-500",
+    },
+    error: {
+      icon: AlertCircle,
+      iconColor: "text-red-500",
+      colorVar: "#ef4444", // red-500
+      glowBorder: "border-red-500/40 dark:border-red-500/50",
+      glowShadow: "shadow-[0_0_20px_rgba(239,68,68,0.35)]",
+      minimalBorder: "border-l-red-500",
+    },
+    warning: {
+      icon: AlertTriangle,
+      iconColor: "text-amber-500",
+      colorVar: "#f59e0b", // amber-500
+      glowBorder: "border-amber-500/40 dark:border-amber-500/50",
+      glowShadow: "shadow-[0_0_20px_rgba(245,158,11,0.35)]",
+      minimalBorder: "border-l-amber-500",
+    },
+    info: {
+      icon: Info,
+      iconColor: "text-blue-500",
+      colorVar: "#3b82f6", // blue-500
+      glowBorder: "border-blue-500/40 dark:border-blue-500/50",
+      glowShadow: "shadow-[0_0_20px_rgba(59,130,246,0.35)]",
+      minimalBorder: "border-l-blue-500",
+    },
+    default: {
+      icon: null,
+      iconColor: "",
+      colorVar: "var(--primary)",
+      glowBorder: "border-primary/40 dark:border-primary/50",
+      glowShadow: "shadow-[0_0_20px_var(--primary)]",
+      minimalBorder: "border-l-primary",
+    },
   };
-  const { icon: Icon, iconColor } = typeStyles[type];
+  const currentType = typeStyles[type];
+  const { icon: Icon, iconColor } = currentType;
 
   const variantStyles = {
     default: "bg-background border border-border shadow-xl",
-    glow: cn("bg-white dark:bg-[#09090b] shadow-lg border", theme.glow),
-    // Frosted dark card with the type accent bleeding in from the icon corner.
-    glass: "rounded-2xl border border-black/10 dark:border-white/10 bg-white/70 dark:bg-zinc-900/70 backdrop-blur-xl shadow-2xl shadow-black/10 dark:shadow-black/40",
-    minimal: cn("border-l-4 rounded-l-none bg-background shadow-md", theme.border),
+    glow: cn(
+      "bg-white dark:bg-[#09090b] shadow-lg border text-foreground",
+      currentType.glowBorder,
+      currentType.glowShadow
+    ),
+    glass: "rounded-2xl border border-white/30 dark:border-white/10 bg-white/70 dark:bg-zinc-900/70 backdrop-blur-xl shadow-2xl shadow-black/10 dark:shadow-black/40",
+    minimal: cn("border-l-4 rounded-l-none bg-background shadow-md", currentType.minimalBorder),
   };
 
   const isGlass = variant === "glass";
-  const tint = type === "default"
-    ? (color.startsWith("#") ? color : NAMED_TINT[color] ?? NAMED_TINT.primary)
-    : TYPE_TINT[type];
   const glassStyle: React.CSSProperties = isGlass
-    ? { backgroundImage: `radial-gradient(140% 120% at 0% 0%, color-mix(in oklab, ${tint} 32%, transparent) 0%, transparent 60%)` }
+    ? { backgroundImage: `radial-gradient(140% 120% at 0% 0%, color-mix(in oklab, ${currentType.colorVar} 35%, transparent) 0%, transparent 65%)` }
     : {};
 
   return (
     <div
       ref={toastRef}
       className={cn("pointer-events-auto flex w-full max-w-sm items-start gap-4 rounded-xl p-4 transition-colors", variantStyles[variant])}
-      style={{ ...style, ...glassStyle }}
+      style={glassStyle}
       onMouseEnter={() => setHovered(true)}
       onMouseLeave={() => setHovered(false)}
     >
@@ -156,7 +167,7 @@ const ToastItem = ({ id, title, description, type = "default", duration = 5000, 
         {description && <p className="text-sm text-muted-foreground">{description}</p>}
 
         {action && (
-          <button onClick={() => { action.onClick(); handleClose(); }} className={cn("mt-2 w-max text-xs font-bold transition-colors active:scale-95", theme.text, "hover:opacity-70")}>
+          <button onClick={() => { action.onClick(); handleClose(); }} className="mt-2 w-max px-3 py-1.5 rounded-lg text-xs font-bold bg-primary text-primary-foreground transition-all hover:opacity-90 active:scale-95 shadow-xs">
             {action.label}
           </button>
         )}
@@ -206,7 +217,6 @@ const StackSlot = ({ id, onHeight, className, style, children }: StackSlotProps)
 export interface ToastProviderProps {
   children: React.ReactNode;
   variant?: ToastVariant;
-  color?: ToastColor;
   position?: ToastPosition;
   /**
    * Piles toasts on top of each other — the newest in front, older ones
@@ -215,7 +225,7 @@ export interface ToastProviderProps {
   stack?: boolean;
 }
 
-export function ToastProvider({ children, variant = "default", color = "primary", position = "bottom-right", stack = false }: ToastProviderProps) {
+export function ToastProvider({ children, variant = "default", position = "bottom-right", stack = false }: ToastProviderProps) {
   const [toasts, setToasts] = useState<ToastProps[]>([]);
   const [hovered, setHovered] = useState(false);
   const [heights, setHeights] = useState<Record<string, number>>({});
@@ -309,7 +319,7 @@ export function ToastProvider({ children, variant = "default", color = "primary"
                   transformOrigin: isTop ? "top center" : "bottom center",
                 }}
               >
-                <ToastItem {...t} onRemove={dismiss} variant={variant} color={color} position={position} paused={expanded} />
+                <ToastItem {...t} onRemove={dismiss} variant={variant} position={position} paused={expanded} />
               </StackSlot>
             );
           })}
@@ -317,7 +327,7 @@ export function ToastProvider({ children, variant = "default", color = "primary"
       ) : (
         <div className={cn("fixed z-[100] flex max-h-screen w-full sm:w-auto p-4 sm:p-0 gap-3 pointer-events-none", positionClasses[position])}>
           {toasts.map((t) => (
-            <ToastItem key={t.id} {...t} onRemove={dismiss} variant={variant} color={color} position={position} />
+            <ToastItem key={t.id} {...t} onRemove={dismiss} variant={variant} position={position} />
           ))}
         </div>
       )}

@@ -177,7 +177,7 @@ function Triggers() {
 // wraps your whole tree once, in layout.tsx.
 export default function GlowToasts() {
   return (
-    // variant and color live on the provider, so every toast it renders picks it up.
+    // variant lives on the provider, so every toast it renders picks it up.
 
   );
 }`;
@@ -216,7 +216,7 @@ function Triggers() {
 // wraps your whole tree once, in layout.tsx.
 export default function GlassToasts() {
   return (
-    // variant and color live on the provider, so every toast it renders picks it up.
+    // variant lives on the provider, so every toast it renders picks it up.
 
   );
 }`;
@@ -302,7 +302,7 @@ export default function MinimalToasts() {
 
 ### Wrap your app
 
-`ToastProvider` owns the queue, so it has to sit above anything that calls `useToast` — usually `app/layout.tsx`. The global `variant`, `color` and `position` are set there, and the first example's **Usage** tab shows the whole wiring.
+`ToastProvider` owns the queue, so it has to sit above anything that calls `useToast` — usually `app/layout.tsx`. The global `variant` and `position` are set there, and the first example's **Usage** tab shows the whole wiring.
 
 ## Examples
 
@@ -353,15 +353,6 @@ Discover the Toast component's notification features, including auto-dismissal, 
           Determines the global visual styling of the toast cards.{" "}
           glow adds a coloured halo, glass a frosted,
           type-tinted card, minimal a thin accent bar.
-
-          color
-
-          "primary" | "indigo" | "rose" | "emerald" | "zinc" | string
-
-          "primary"
-
-          Applies the global color theme to the glow shadows and border accents.
-          Accepts valid hex codes (e.g. "#8b5cf6").
 
           stack
 
