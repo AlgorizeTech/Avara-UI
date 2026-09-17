@@ -199,13 +199,11 @@ const ToastButtons = ({ example = "all" }: { example?: ExampleMode }) => {
 export default function ToastDemo({
   variant = "default",
   position = "bottom-right",
-  color = "primary",
   stack = false,
   example = "all",
 }: {
   variant?: ToastVariant;
   position?: ToastPosition;
-  color?: string;
   stack?: boolean;
   /** Picks which trigger buttons the preview renders. "all" is the classic set. */
   example?: ExampleMode;
@@ -214,9 +212,8 @@ export default function ToastDemo({
     <div className="relative w-full flex flex-col items-center justify-center min-h-[500px]">
       {/* We must wrap the preview area in the provider so the hooks work */}
       <ToastProvider
-        key={`${variant}-${color}-${position}-${stack}`}
+        key={`${variant}-${position}-${stack}`}
         variant={variant}
-        color={color}
         position={position}
         stack={stack}
       >

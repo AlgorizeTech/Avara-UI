@@ -71,21 +71,27 @@ function StandardModal() {
         isOpen={isOpen}
         onClose={() => setIsOpen(false)}
         contentClassName="max-w-md bg-background rounded-2xl shadow-xl border border-border"
-        ariaLabel="System Update Available"
       >
         <div className="p-2 sm:p-4">
-          <ModalHeader className="border-none p-4 pb-2 flex items-center justify-between">
-            <div className="w-12 h-12 rounded-2xl flex items-center justify-center shrink-0 shadow-sm transition-all border bg-primary/10 text-primary border-primary">
-              <AlertCircle className="w-6 h-6" />
-            </div>
-            <span className="text-xs font-semibold px-3 py-1 rounded-full bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border border-emerald-500/20">
-              v2.4.0 Live
-            </span>
-          </ModalHeader>
+          <ModalHeader
+            className="border-none p-4 pb-2 flex items-start justify-between gap-4"
+            title={
+              <div className="flex items-center gap-3">
+                <div className="w-12 h-12 rounded-2xl flex items-center justify-center shrink-0 shadow-sm transition-all border bg-primary/10 text-primary border-primary">
+                  <AlertCircle className="w-6 h-6" />
+                </div>
+                <div className="flex flex-col">
+                  <h2 className="text-xl font-bold tracking-tight text-foreground">
+                    System Update Available
+                  </h2>
+                  <span className="text-xs font-semibold text-emerald-600 dark:text-emerald-400">
+                    v2.4.0 Live
+                  </span>
+                </div>
+              </div>
+            }
+          />
           <ModalBody className="p-4 pt-2 space-y-2">
-            <h2 className="text-2xl font-bold tracking-tight text-foreground">
-              System Update Available
-            </h2>
             <p className="text-muted-foreground leading-relaxed text-sm sm:text-base font-normal">
               A new software update is ready to be installed. This update
               includes new features, performance improvements, and critical
@@ -327,21 +333,27 @@ function GlassModal() {
         onClose={() => setIsOpen(false)}
         overlayClassName="bg-black/50 backdrop-blur-md"
         contentClassName="max-w-md bg-white/75 dark:bg-zinc-900/80 backdrop-blur-2xl backdrop-saturate-200 rounded-3xl shadow-[0_25px_60px_rgba(0,0,0,0.35)] border border-white/60 dark:border-white/20 text-foreground"
-        ariaLabel="System Update Available"
       >
         <div className="p-2 sm:p-4">
-          <ModalHeader className="border-none p-4 pb-2 flex items-center justify-between">
-            <div className="w-12 h-12 rounded-2xl flex items-center justify-center shrink-0 shadow-sm transition-all border bg-white/50 dark:bg-white/10 border-white/40 dark:border-white/20 text-foreground">
-              <AlertCircle className="w-6 h-6" />
-            </div>
-            <span className="text-xs font-semibold px-3 py-1 rounded-full bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border border-emerald-500/20">
-              v2.4.0 Live
-            </span>
-          </ModalHeader>
+          <ModalHeader
+            className="border-none p-4 pb-2 flex items-start justify-between gap-4"
+            title={
+              <div className="flex items-center gap-3">
+                <div className="w-12 h-12 rounded-2xl flex items-center justify-center shrink-0 shadow-sm transition-all border bg-white/50 dark:bg-white/10 border-white/40 dark:border-white/20 text-foreground">
+                  <AlertCircle className="w-6 h-6" />
+                </div>
+                <div className="flex flex-col">
+                  <h2 className="text-xl font-bold tracking-tight text-foreground">
+                    System Update Available
+                  </h2>
+                  <span className="text-xs font-semibold text-emerald-600 dark:text-emerald-400">
+                    v2.4.0 Live
+                  </span>
+                </div>
+              </div>
+            }
+          />
           <ModalBody className="p-4 pt-2 space-y-2">
-            <h2 className="text-2xl font-bold tracking-tight text-foreground">
-              System Update Available
-            </h2>
             <p className="text-muted-foreground leading-relaxed text-sm sm:text-base font-normal">
               A new software update is ready to be installed. This update
               includes new features, performance improvements, and critical

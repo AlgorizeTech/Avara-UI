@@ -44,19 +44,29 @@ export const usageBottom = `export default function BottomSheet() {
 }`;
 
 export const usageControlled = `export default function OnboardingDrawer() {
-  // Nothing says the state has to come from a button — open it yourself
-  // after a fetch, a route change, or on first mount.
+  // Open on mount by initializing state to true
   const [open, setOpen] = useState(true);
 
   useEffect(() => {
-    // localStorage does not exist while server-rendering, so this cannot
-    // move into the useState initialiser.
-    if (localStorage.getItem("onboarded")) setOpen(false);
+    // Optionally check if onboarded in browser
+    if (typeof window !== "undefined" && localStorage.getItem("onboarded")) {
+      setOpen(false);
+    }
   }, []);
 
   return (
+    <>
+       setOpen(true)}>Open Drawer (left)
 
-          Welcome aboard
+            Welcome aboard
+            
+              This drawer opens automatically on mount without needing a trigger click.
+
+              You can use this for onboarding flows, announcements, or cookie consent banners.
+
+             setOpen(false)}>Get Started
+             setOpen(false)}>
+              Cancel
 
   );
 }`;

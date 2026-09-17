@@ -96,6 +96,9 @@ export const Drawer = ({
   );
 };
 
+const useIsomorphicLayoutEffect =
+  typeof window !== "undefined" ? React.useLayoutEffect : React.useEffect;
+
 export const DrawerOverlay = ({
   className,
   ...props
@@ -103,7 +106,8 @@ export const DrawerOverlay = ({
   const { open, onOpenChange } = useContext(DrawerContext)!;
   const overlayRef = useRef<HTMLDivElement>(null);
 
-  useEffect(() => {
+  useIsomorphicLayoutEffect(() => {
+    if (!overlayRef.current) return;
     if (open) {
       gsap.fromTo(
         overlayRef.current,
@@ -127,6 +131,7 @@ export const DrawerOverlay = ({
         "absolute inset-0 bg-black/60 backdrop-blur-sm pointer-events-auto",
         className,
       )}
+      style={{ opacity: 0, ...props.style }}
       {...props}
     />
   );
@@ -135,7 +140,7 @@ export const DrawerOverlay = ({
 export const DrawerContent = React.forwardRef<
   HTMLDivElement,
   React.HTMLAttributes<HTMLDivElement>
->(({ className, children, ...props }, ref) => {
+>(({ className, children, style, ...props }, ref) => {
   const { open, side, onOpenChange } = useContext(DrawerContext)!;
   const contentRef = useRef<HTMLDivElement>(null);
 
@@ -143,32 +148,36 @@ export const DrawerContent = React.forwardRef<
   const sideConfig = {
     top: {
       class: "top-0 left-0 right-0 w-full max-h-[85vh] sm:max-h-[80vh] rounded-b-2xl",
-      hidden: { y: "-100%", x: 0 },
+      hidden: { y: "-100%", x: "0%" },
+      initialStyle: { transform: "translateY(-100%)" },
     },
     bottom: {
       class: "bottom-0 left-0 right-0 w-full max-h-[85vh] sm:max-h-[80vh] rounded-t-2xl",
-      hidden: { y: "100%", x: 0 },
+      hidden: { y: "100%", x: "0%" },
+      initialStyle: { transform: "translateY(100%)" },
     },
     left: {
       class:
         "top-0 left-0 bottom-0 h-full w-[400px] max-w-[85vw] rounded-r-2xl",
-      hidden: { x: "-100%", y: 0 },
+      hidden: { x: "-100%", y: "0%" },
+      initialStyle: { transform: "translateX(-100%)" },
     },
     right: {
       class:
         "top-0 right-0 bottom-0 h-full w-[400px] max-w-[85vw] rounded-l-2xl",
-      hidden: { x: "100%", y: 0 },
+      hidden: { x: "100%", y: "0%" },
+      initialStyle: { transform: "translateX(100%)" },
     },
   };
 
-  useEffect(() => {
+  useIsomorphicLayoutEffect(() => {
     const el = contentRef.current;
     if (!el) return;
 
     if (open) {
       gsap.fromTo(el, sideConfig[side].hidden, {
-        x: 0,
-        y: 0,
+        x: "0%",
+        y: "0%",
         duration: 0.4,
         ease: "power3.out",
       });
@@ -194,6 +203,7 @@ export const DrawerContent = React.forwardRef<
         sideConfig[side].class,
         className,
       )}
+      style={{ ...sideConfig[side].initialStyle, ...style }}
       {...props}
     >
       <button
