@@ -62,14 +62,14 @@ export const Alert: React.FC<AlertProps> = ({
   const alertTypes: Record<AlertType, Record<AlertVariant, string>> = {
     primary: {
       solid:
-        "bg-blue-50 border-blue-200 text-blue-800 dark:bg-blue-900/20 dark:border-blue-800/50 dark:text-blue-300",
+        "bg-primary border-primary text-primary-foreground",
       outline:
-        "bg-background border-blue-300 text-blue-800 dark:border-blue-800/50 dark:text-blue-400",
+        "bg-background border-2 border-primary text-foreground",
       modern:
-        "bg-card border-0 border-l-4 border-l-blue-500 shadow-xl shadow-blue-500/10 text-foreground",
+        "bg-card border-0 border-l-4 border-l-primary shadow-xl shadow-primary/10 text-foreground",
       glass:
-        "bg-blue-500/10 dark:bg-blue-500/15 backdrop-blur-xl border border-blue-500/20 text-blue-800 dark:text-blue-300 shadow-lg",
-      glow: "bg-background border border-blue-500/40 dark:border-blue-500/50 shadow-[0_0_20px_rgba(59,130,246,0.2)] dark:shadow-[0_0_20px_rgba(59,130,246,0.35)] text-blue-900 dark:text-blue-400",
+        "bg-white/20 dark:bg-black/30 backdrop-blur-md border border-white/30 dark:border-white/10 text-white shadow-xl ring-1 ring-white/20",
+      glow: "bg-background border border-primary/40 dark:border-primary/50 shadow-[0_0_20px_var(--primary)] text-primary",
     },
     secondary: {
       solid:
@@ -79,7 +79,7 @@ export const Alert: React.FC<AlertProps> = ({
       modern:
         "bg-card border-0 border-l-4 border-l-zinc-500 shadow-xl shadow-zinc-500/10 text-foreground",
       glass:
-        "bg-zinc-500/10 dark:bg-zinc-500/15 backdrop-blur-xl border border-zinc-500/20 text-foreground shadow-lg",
+        "bg-white/20 dark:bg-black/30 backdrop-blur-md border border-white/30 dark:border-white/10 text-white shadow-xl ring-1 ring-white/20",
       glow: "bg-background border border-zinc-400/40 dark:border-zinc-500/50 shadow-[0_0_20px_rgba(113,113,122,0.15)] dark:shadow-[0_0_20px_rgba(113,113,122,0.3)] text-foreground",
     },
     success: {
@@ -90,7 +90,7 @@ export const Alert: React.FC<AlertProps> = ({
       modern:
         "bg-card border-0 border-l-4 border-l-green-500 shadow-xl shadow-green-500/10 text-foreground",
       glass:
-        "bg-green-500/10 dark:bg-green-500/15 backdrop-blur-xl border border-green-500/20 text-green-800 dark:text-green-300 shadow-lg",
+        "bg-emerald-500/20 dark:bg-emerald-500/20 backdrop-blur-md border border-emerald-300/40 text-white shadow-xl ring-1 ring-emerald-400/30",
       glow: "bg-background border border-green-500/40 dark:border-green-500/50 shadow-[0_0_20px_rgba(34,197,94,0.2)] dark:shadow-[0_0_20px_rgba(34,197,94,0.35)] text-green-900 dark:text-green-400",
     },
     danger: {
@@ -101,7 +101,7 @@ export const Alert: React.FC<AlertProps> = ({
       modern:
         "bg-card border-0 border-l-4 border-l-red-500 shadow-xl shadow-red-500/10 text-foreground",
       glass:
-        "bg-red-500/10 dark:bg-red-500/15 backdrop-blur-xl border border-red-500/20 text-red-800 dark:text-red-300 shadow-lg",
+        "bg-rose-500/20 dark:bg-rose-500/20 backdrop-blur-md border border-rose-300/40 text-white shadow-xl ring-1 ring-rose-400/30",
       glow: "bg-background border border-red-500/40 dark:border-red-500/50 shadow-[0_0_20px_rgba(239,68,68,0.2)] dark:shadow-[0_0_20px_rgba(239,68,68,0.35)] text-red-900 dark:text-red-400",
     },
     warning: {
@@ -112,7 +112,7 @@ export const Alert: React.FC<AlertProps> = ({
       modern:
         "bg-card border-0 border-l-4 border-l-yellow-500 shadow-xl shadow-yellow-500/10 text-foreground",
       glass:
-        "bg-yellow-500/10 dark:bg-yellow-500/15 backdrop-blur-xl border border-yellow-500/20 text-yellow-800 dark:text-yellow-300 shadow-lg",
+        "bg-amber-500/20 dark:bg-amber-500/20 backdrop-blur-md border border-amber-300/40 text-white shadow-xl ring-1 ring-amber-400/30",
       glow: "bg-background border border-yellow-500/50 dark:border-yellow-500/50 shadow-[0_0_20px_rgba(234,179,8,0.2)] dark:shadow-[0_0_20px_rgba(234,179,8,0.35)] text-yellow-950 dark:text-yellow-400",
     },
     info: {
@@ -123,7 +123,7 @@ export const Alert: React.FC<AlertProps> = ({
       modern:
         "bg-card border-0 border-l-4 border-l-cyan-500 shadow-xl shadow-cyan-500/10 text-foreground",
       glass:
-        "bg-cyan-500/10 dark:bg-cyan-500/15 backdrop-blur-xl border border-cyan-500/20 text-cyan-800 dark:text-cyan-300 shadow-lg",
+        "bg-sky-500/20 dark:bg-sky-500/20 backdrop-blur-md border border-sky-300/40 text-white shadow-xl ring-1 ring-sky-400/30",
       glow: "bg-background border border-cyan-500/40 dark:border-cyan-500/50 shadow-[0_0_20px_rgba(6,182,212,0.2)] dark:shadow-[0_0_20px_rgba(6,182,212,0.35)] text-cyan-900 dark:text-cyan-400",
     },
     dark: {
@@ -134,7 +134,7 @@ export const Alert: React.FC<AlertProps> = ({
       modern:
         "bg-card border-0 border-l-4 border-l-zinc-800 dark:border-l-zinc-100 shadow-xl shadow-zinc-900/10 text-foreground",
       glass:
-        "bg-primary/10 backdrop-blur-xl border border-primary/20 text-foreground shadow-lg",
+        "bg-black/30 dark:bg-black/40 backdrop-blur-md border border-white/20 text-white shadow-xl ring-1 ring-white/10",
       glow: "bg-background border border-zinc-800/40 dark:border-zinc-500/50 shadow-[0_0_20px_rgba(0,0,0,0.1)] dark:shadow-[0_0_20px_rgba(255,255,255,0.15)] text-foreground",
     },
   };
@@ -172,7 +172,7 @@ export const Alert: React.FC<AlertProps> = ({
   return (
     <div
       className={cn(
-        `relative flex items-start p-4 rounded-xl transition-all duration-300 ease-in-out overflow-hidden`,
+        `relative w-full flex items-start p-4 rounded-xl transition-all duration-300 ease-in-out overflow-hidden`,
         // Default border fallback for old variants
         (variant === "solid" || variant === "outline") && "border shadow-sm",
         // Smooth entrance animation

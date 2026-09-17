@@ -213,13 +213,13 @@ export default function TableDemo({
 
   return (
     <div
-      className={`w-full flex flex-col items-start justify-center min-h-[500px] ${
+      className={`w-full p-4 sm:p-6 flex flex-col items-start justify-center ${
         variant === "glass"
-          ? "p-4 sm:p-8 bg-gradient-to-br from-indigo-500/80 via-purple-500/80 to-pink-500/80 rounded-2xl"
+          ? "bg-gradient-to-br from-indigo-500/80 via-purple-500/80 to-pink-500/80 rounded-2xl"
           : ""
       } relative z-10`}
     >
-      <div className="w-full max-w-5xl mx-auto">
+      <div className="w-full">
         <Table variant={variant} color={color} size={size}>
           <TableHeading
             title="Invoices"
@@ -310,7 +310,7 @@ export default function TableDemo({
                           <button
                             onClick={() => console.log("Edit", invoice)}
                             aria-label={`Edit ${invoice.reference}`}
-                            className="p-1.5 rounded-md text-muted-foreground hover:text-foreground hover:bg-muted transition-colors"
+                            className="p-1.5 rounded-md text-muted-foreground hover:text-foreground hover:bg-primary/10 transition-colors"
                           >
                             <Edit2 className="w-4 h-4" />
                           </button>

@@ -197,10 +197,22 @@ const getDotClass = (ts: number) => {
         Fires when the selection changes, with the full row objects.
 
         DataTable
-        variant / size / color
-        —
-        —
-        Passed through to Table.
+        variant
+        "default" | "minimal" | "glass"
+        "default"
+        Visual skin variant of the table container and rows.
+
+        DataTable
+        color
+        "primary" | "indigo" | "rose" | "emerald" | "zinc" | string
+        "primary"
+        Accent theme color for active selection, soft borders, hover highlights, and active elements. Accepts preset names or custom hex codes.
+
+        DataTable
+        size
+        "sm" | "md" | "lg"
+        "md"
+        Density padding and text sizing for table cells and toolbars.
 
         DataTableHead
         sortBy

@@ -16,6 +16,7 @@ import {
   DataTableCell,
   DataTableContent,
   DataTableEmpty,
+  DataTableExport,
   DataTableFooter,
   DataTableHead,
   DataTableHeader,
@@ -103,7 +104,10 @@ export default function UserTable() {
     <DataTable data={data} getRowId={(row) => row.id}>
       <DataTableHeading title="Team members">
         <DataTableSearch placeholder="Search all columns…" />
-        <DataTablePageSize />
+        <div className="flex items-center gap-2">
+          <DataTablePageSize />
+          <DataTableExport filename="team-members" />
+        </div>
       </DataTableHeading>
 
       <DataTableContent>
@@ -326,10 +330,24 @@ export default function UserTable() {
       </tr>
       <tr>
         <td><code>DataTable</code></td>
-        <td><code>variant</code> / <code>size</code> / <code>color</code></td>
-        <td>—</td>
-        <td>—</td>
-        <td>Passed through to <code>Table</code>.</td>
+        <td><code>variant</code></td>
+        <td><code>"default" | "minimal" | "glass"</code></td>
+        <td><code>"default"</code></td>
+        <td>Visual skin variant of the table container and rows.</td>
+      </tr>
+      <tr>
+        <td><code>DataTable</code></td>
+        <td><code>color</code></td>
+        <td><code>"primary" | "indigo" | "rose" | "emerald" | "zinc" | string</code></td>
+        <td><code>"primary"</code></td>
+        <td>Accent theme color for active selection, soft borders, hover highlights, and active elements. Accepts preset names or custom hex codes.</td>
+      </tr>
+      <tr>
+        <td><code>DataTable</code></td>
+        <td><code>size</code></td>
+        <td><code>"sm" | "md" | "lg"</code></td>
+        <td><code>"md"</code></td>
+        <td>Density padding and text sizing for table cells and toolbars.</td>
       </tr>
       <tr>
         <td><code>DataTableHead</code></td>

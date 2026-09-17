@@ -127,7 +127,7 @@ export function useMDXComponents(components: MDXComponents): MDXComponents {
       // Otherwise, it's inline code, so style it appropriately
       return (
         <code
-          className="bg-gray-100 dark:bg-gray-800 px-1.5 py-0.5 rounded text-xs font-mono text-red-600 dark:text-red-400 whitespace-nowrap"
+          className="bg-primary/10 px-1.5 py-0.5 rounded text-xs font-mono text-primary whitespace-nowrap"
           {...props}
         >
           {children}

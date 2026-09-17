@@ -55,8 +55,13 @@ export const usageGlass = `import { Alert } from "@/components/custom/blocks/Ale
 
 export default function GlassAlert() {
   return (
-    // Glass needs something behind it — put it over an image or gradient.
-    <div className="p-8 rounded-2xl bg-gradient-to-br from-blue-100 to-zinc-50 dark:from-blue-900/40 dark:to-black">
+    // Glass needs something vibrant behind it — put it over an image or gradient.
+    <div className="relative p-8 rounded-2xl overflow-hidden min-h-[250px] flex items-center justify-center">
+      <img
+        src="https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?q=80&w=1200&auto=format&fit=crop"
+        alt="Background"
+        className="absolute inset-0 size-full object-cover"
+      />
       <Alert
         type="primary"
         variant="glass"
@@ -150,6 +155,7 @@ export default function RichAlert() {
 <ExampleShowcase
   name="alert"
   columns={1}
+  colorControl={false}
   examples={[
     {
       title: "Alert",
@@ -198,6 +204,7 @@ export default function RichAlert() {
 <ExampleShowcase
   name="alert"
   columns={1}
+  colorControl={false}
   examples={[
     {
       title: "Semantic types",

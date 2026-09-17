@@ -34,7 +34,7 @@ export const usageGlass = `import { Alert } from "@/components/custom/blocks/Ale
 
 export default function GlassAlert() {
   return (
-    // Glass needs something behind it — put it over an image or gradient.
+    // Glass needs something vibrant behind it — put it over an image or gradient.
 
   );
 }`;

@@ -813,7 +813,7 @@ function renderInline(text: string): React.ReactNode {
       return (
         <code
           key={i}
-          className="rounded bg-zinc-100 px-1.5 py-0.5 font-mono text-[0.85em] text-red-600 dark:bg-zinc-800 dark:text-red-400"
+          className="rounded bg-primary/10 px-1.5 py-0.5 font-mono text-[0.85em] text-primary"
         >
           {part.slice(1, -1)}
         </code>

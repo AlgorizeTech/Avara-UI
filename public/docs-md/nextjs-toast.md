@@ -76,9 +76,6 @@ export default function ToastTypes() {
 
 export const usageAction = `"use client";
 
-const TRIGGER =
-  "px-6 py-2.5 text-white text-sm font-bold rounded-xl transition-colors shadow-sm";
-
 function Triggers() {
   const { toast } = useToast();
 
@@ -94,7 +91,7 @@ function Triggers() {
             },
           })
         }
-        className={\`\${TRIGGER} bg-blue-600 hover:bg-blue-700\`}
+        className="px-6 py-2.5 bg-primary text-primary-foreground text-sm font-bold rounded-xl transition-colors shadow-sm hover:opacity-90 cursor-pointer"
       >
         Toast with action
 
@@ -127,7 +124,7 @@ function Triggers() {
             duration: 0,
           })
         }
-        className={\`\${TRIGGER} bg-blue-600 hover:bg-blue-700\`}
+        className="px-6 py-2.5 bg-primary text-primary-foreground text-sm font-bold rounded-xl transition-colors shadow-sm hover:opacity-90 cursor-pointer"
       >
         Persistent toast
 
