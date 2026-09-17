@@ -99,33 +99,56 @@ export const usageControlled = `"use client";
 
 import { useEffect, useState } from "react";
 import {
+  Button,
   Drawer,
   DrawerContent,
+  DrawerDescription,
+  DrawerFooter,
   DrawerHeader,
   DrawerOverlay,
   DrawerTitle,
 } from "@/components/custom/blocks/Drawer";
 
 export default function OnboardingDrawer() {
-  // Nothing says the state has to come from a button — open it yourself
-  // after a fetch, a route change, or on first mount.
+  // Open on mount by initializing state to true
   const [open, setOpen] = useState(true);
 
   useEffect(() => {
-    // localStorage does not exist while server-rendering, so this cannot
-    // move into the useState initialiser.
-    if (localStorage.getItem("onboarded")) setOpen(false);
+    // Optionally check if onboarded in browser
+    if (typeof window !== "undefined" && localStorage.getItem("onboarded")) {
+      setOpen(false);
+    }
   }, []);
 
   return (
-    <Drawer open={open} onOpenChange={setOpen} side="left">
-      <DrawerOverlay />
-      <DrawerContent>
-        <DrawerHeader>
-          <DrawerTitle>Welcome aboard</DrawerTitle>
-        </DrawerHeader>
-      </DrawerContent>
-    </Drawer>
+    <>
+      <Button onClick={() => setOpen(true)}>Open Drawer (left)</Button>
+
+      <Drawer open={open} onOpenChange={setOpen} side="left">
+        <DrawerOverlay />
+        <DrawerContent>
+          <DrawerHeader>
+            <DrawerTitle>Welcome aboard</DrawerTitle>
+            <DrawerDescription>
+              This drawer opens automatically on mount without needing a trigger click.
+            </DrawerDescription>
+          </DrawerHeader>
+
+          <div className="p-6 flex-1 overflow-y-auto">
+            <p className="text-sm text-zinc-600 dark:text-zinc-400">
+              You can use this for onboarding flows, announcements, or cookie consent banners.
+            </p>
+          </div>
+
+          <DrawerFooter>
+            <Button onClick={() => setOpen(false)}>Get Started</Button>
+            <Button variant="outline" onClick={() => setOpen(false)}>
+              Cancel
+            </Button>
+          </DrawerFooter>
+        </DrawerContent>
+      </Drawer>
+    </>
   );
 }`;
 
