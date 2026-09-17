@@ -7,6 +7,8 @@ import {
   DataTableCell,
   DataTableContent,
   DataTableEmpty,
+  DataTableExpandedRow,
+  DataTableExport,
   DataTableFooter,
   DataTableHead,
   DataTableHeader,
@@ -176,7 +178,10 @@ export default function AdvancedTableDemo({
       >
         <DataTableHeading title="Team members">
           {searchable && <DataTableSearch placeholder="Search all columns…" />}
-          <DataTablePageSize color={color as TableColor} />
+          <div className="flex items-center gap-2">
+            <DataTablePageSize color={color as TableColor} />
+            <DataTableExport filename="team-members" color={color as TableColor} />
+          </div>
         </DataTableHeading>
 
         <DataTableContent>
