@@ -65,26 +65,26 @@ export default function CardDemo({
             <CardDescription>You have 3 unread messages.</CardDescription>
           </CardHeader>
           <CardContent className="grid gap-4">
-            <div className="flex items-center gap-4 p-3 rounded-lg border border-zinc-100 dark:border-zinc-800/50 bg-zinc-50 dark:bg-zinc-900/20">
-              <Bell className="w-5 h-5 text-indigo-500" />
+            <div className="flex items-center gap-4 p-3 rounded-lg border border-primary/20 bg-primary/5">
+              <Bell className="w-5 h-5 text-primary" />
               <div className="flex-1 space-y-1">
                 <p className="text-sm font-medium leading-none">System Update</p>
-                <p className="text-xs text-zinc-500 dark:text-zinc-400">
+                <p className="text-xs text-muted-foreground">
                   A new version is available.
                 </p>
               </div>
             </div>
-            <div className="flex items-center gap-4 p-3 rounded-lg border border-zinc-100 dark:border-zinc-800/50 bg-zinc-50 dark:bg-zinc-900/20">
-              <Settings className="w-5 h-5 text-rose-500" />
+            <div className="flex items-center gap-4 p-3 rounded-lg border border-primary/20 bg-primary/5">
+              <Settings className="w-5 h-5 text-primary" />
               <div className="flex-1 space-y-1">
                 <p className="text-sm font-medium leading-none">Account Notice</p>
-                <p className="text-xs text-zinc-500 dark:text-zinc-400">
+                <p className="text-xs text-muted-foreground">
                   Please verify your email address.
                 </p>
               </div>
             </div>
           </CardContent>
-          <CardFooter className="border-t border-zinc-100 dark:border-zinc-800/50 pt-6">
+          <CardFooter className="border-t border-primary/20 pt-6">
             <button className="w-full py-2 bg-primary text-primary-foreground rounded-md text-sm font-medium hover:opacity-90 transition-opacity">
               Mark all as read
             </button>
@@ -178,7 +178,7 @@ export default function CardDemo({
             badge="Best Seller"
             badgeVariant="emerald"
             image={
-              <div className="w-full h-full bg-gradient-to-br from-emerald-500/15 via-teal-500/10 to-emerald-500/5 dark:from-emerald-500/20 dark:to-zinc-900 flex items-center justify-center">
+              <div className="w-full h-full bg-gradient-to-br from-primary/20 via-primary/10 to-primary/5 dark:from-primary/20 dark:to-zinc-900 flex items-center justify-center">
                 <span className="text-5xl drop-shadow-md group-hover:scale-110 transition-transform duration-300">🎧</span>
               </div>
             }
@@ -282,7 +282,7 @@ export default function CardDemo({
               badgeVariant="rose"
               rating={4.9}
               image={
-                <div className="w-full h-full bg-gradient-to-br from-rose-500/15 via-pink-500/10 to-transparent flex items-center justify-center">
+                <div className="w-full h-full bg-gradient-to-br from-primary/20 via-primary/10 to-transparent flex items-center justify-center">
                   <span className="text-4xl drop-shadow-md">🖱️</span>
                 </div>
               }
@@ -394,7 +394,7 @@ function ShopCards({ interactive }: { interactive: boolean }) {
               type="button"
               aria-label={`Add ${item.title} to basket`}
               onClick={(e) => e.stopPropagation()}
-              className="grid size-11 place-items-center rounded-full bg-[#0f172a] text-white transition-colors hover:bg-[#1e293b] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#0f172a] focus-visible:ring-offset-2 focus-visible:ring-offset-white"
+              className="grid size-11 place-items-center rounded-full bg-primary text-primary-foreground transition-opacity hover:opacity-90 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 focus-visible:ring-offset-white"
             >
               <ShoppingBasket className="size-[18px]" />
             </button>
@@ -485,7 +485,7 @@ function BlogShowcaseCards({ interactive }: { interactive: boolean }) {
           </CardDescription>
         </CardHeader>
 
-        <CardFooter className="items-center gap-3 border-t border-border/70 px-6 pb-6 pt-4">
+        <CardFooter className="items-center gap-3 border-t border-primary/20 px-6 pb-6 pt-4">
           <img
             src={FEATURED_STORY.avatar}
             alt=""
@@ -504,14 +504,14 @@ function BlogShowcaseCards({ interactive }: { interactive: boolean }) {
 
       <Card
         variant="bordered"
-        className="divide-y divide-border overflow-hidden rounded-lg"
+        className="divide-y divide-primary/20 overflow-hidden rounded-lg"
       >
         <p className="px-5 py-3.5 text-sm font-medium">Latest</p>
         {FEED_STORIES.map((story) => (
           <button
             key={story.title}
             type="button"
-            className="flex w-full items-center gap-4 p-4 text-left transition-colors hover:bg-muted/60 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-rose-500/70"
+            className="flex w-full items-center gap-4 p-4 text-left transition-colors hover:bg-primary/10 hover:text-primary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-primary cursor-pointer group"
           >
             <img
               src={story.thumb}
@@ -665,17 +665,17 @@ function ProfileCards({ interactive }: { interactive: boolean }) {
   return (
     <div className="grid w-full max-w-4xl gap-5 lg:grid-cols-2">
       <Card variant="bordered" className="overflow-hidden rounded-3xl">
-        <div className="h-24 bg-violet-500/10 bg-[radial-gradient(circle_at_1px_1px,rgba(139,92,246,0.35)_1px,transparent_0)] [background-size:12px_12px]" />
+        <div className="h-24 bg-primary/10 bg-[radial-gradient(circle_at_1px_1px,var(--primary)_1px,transparent_0)] [background-size:12px_12px] opacity-40" />
 
         <CardHeader className="gap-3 px-6 pb-0 pt-0">
           <div className="-mt-11 flex items-end justify-between gap-3">
             <div className="relative">
-              <span className="grid size-20 place-items-center rounded-full bg-violet-500/15 text-xl font-semibold text-violet-700 ring-4 ring-white dark:bg-violet-500/20 dark:text-violet-200 dark:ring-[#050505]">
+              <span className="grid size-20 place-items-center rounded-full bg-primary/15 text-xl font-semibold text-primary ring-4 ring-white dark:ring-[#050505]">
                 AK
               </span>
-              <span className="absolute bottom-1 right-1 size-3.5 rounded-full bg-emerald-500 ring-2 ring-white dark:ring-[#050505]" />
+              <span className="absolute bottom-1 right-1 size-3.5 rounded-full bg-primary ring-2 ring-white dark:ring-[#050505]" />
             </div>
-            <span className="mb-1 rounded-full border border-emerald-500/30 bg-emerald-500/10 px-2.5 py-1 text-xs font-medium text-emerald-700 dark:text-emerald-300">
+            <span className="mb-1 rounded-full border border-primary/30 bg-primary/10 px-2.5 py-1 text-xs font-medium text-primary">
               Open to projects
             </span>
           </div>
@@ -699,14 +699,14 @@ function ProfileCards({ interactive }: { interactive: boolean }) {
               (tag) => (
                 <span
                   key={tag}
-                  className="rounded-full border border-border px-3 py-1 text-xs text-muted-foreground"
+                  className="rounded-full border border-primary/20 px-3 py-1 text-xs text-muted-foreground hover:border-primary/50 hover:text-primary transition-colors"
                 >
                   {tag}
                 </span>
               ),
             )}
           </div>
-          <div className="grid grid-cols-3 divide-x divide-border rounded-2xl border border-border bg-muted/40 py-3 text-center">
+          <div className="grid grid-cols-3 divide-x divide-primary/20 rounded-2xl border border-primary/20 bg-primary/[0.008] py-3 text-center">
             {[
               ["128", "Components"],
               ["342", "Merged PRs"],
@@ -726,10 +726,10 @@ function ProfileCards({ interactive }: { interactive: boolean }) {
             aria-pressed={following}
             onClick={() => setFollowing((v) => !v)}
             className={cn(
-              "inline-flex flex-1 items-center justify-center gap-2 rounded-full border px-4 py-2.5 text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-violet-500 focus-visible:ring-offset-2 focus-visible:ring-offset-background",
+              "inline-flex flex-1 items-center justify-center gap-2 rounded-full border px-4 py-2.5 text-sm font-medium transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 cursor-pointer",
               following
-                ? "border-border text-foreground hover:bg-muted"
-                : "border-violet-600 bg-violet-600 text-white hover:border-violet-500 hover:bg-violet-500",
+                ? "border-primary/20 text-foreground hover:bg-muted"
+                : "border-primary bg-primary text-primary-foreground hover:opacity-90 shadow-sm",
             )}
           >
             {following ? (
@@ -744,7 +744,7 @@ function ProfileCards({ interactive }: { interactive: boolean }) {
           </button>
           <button
             type="button"
-            className="inline-flex items-center justify-center gap-2 rounded-full border border-border px-4 py-2.5 text-sm font-medium transition-colors hover:bg-muted focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-violet-500 focus-visible:ring-offset-2 focus-visible:ring-offset-background"
+            className="inline-flex items-center justify-center gap-2 rounded-full border border-primary/20 px-4 py-2.5 text-sm font-medium transition-colors hover:bg-muted hover:border-primary/50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary cursor-pointer"
           >
             <MessageCircle className="size-4" /> Message
           </button>
@@ -761,8 +761,7 @@ function ProfileCards({ interactive }: { interactive: boolean }) {
           >
             <span
               className={cn(
-                "grid size-12 shrink-0 place-items-center rounded-2xl text-sm font-semibold",
-                member.tint,
+                "grid size-12 shrink-0 place-items-center rounded-2xl text-sm font-semibold bg-primary/10 text-primary",
               )}
             >
               {member.initials}
@@ -779,7 +778,7 @@ function ProfileCards({ interactive }: { interactive: boolean }) {
             <button
               type="button"
               aria-label={`Message ${member.name}`}
-              className="grid size-9 shrink-0 place-items-center rounded-full border border-border text-muted-foreground transition-colors hover:bg-muted hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-violet-500"
+              className="grid size-9 shrink-0 place-items-center rounded-full border border-primary/20 text-muted-foreground transition-colors hover:bg-muted hover:text-primary hover:border-primary/50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary cursor-pointer"
             >
               <MessageCircle className="size-4" />
             </button>
@@ -788,7 +787,7 @@ function ProfileCards({ interactive }: { interactive: boolean }) {
 
         <button
           type="button"
-          className="flex items-center justify-center gap-2 rounded-2xl border border-dashed border-border p-5 text-sm text-muted-foreground transition-colors hover:border-violet-500/50 hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-violet-500"
+          className="flex items-center justify-center gap-2 rounded-2xl border border-dashed border-primary/30 p-5 text-sm text-muted-foreground transition-colors hover:border-primary hover:text-primary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary cursor-pointer"
         >
           <UserPlus className="size-4" /> Invite a teammate
         </button>
@@ -847,7 +846,7 @@ function BoardingPassCard() {
             </div>
           </div>
 
-          <div className="mt-7 grid grid-cols-3 gap-4 border-t border-border pt-5">
+          <div className="mt-7 grid grid-cols-3 gap-4 border-t border-primary/20 pt-5">
             {[
               ["Passenger", "R. Chowdhury"],
               ["Gate", "C4"],
@@ -861,12 +860,12 @@ function BoardingPassCard() {
           </div>
         </div>
 
-        <div className="relative border-t border-dashed border-border p-6 sm:w-48 sm:border-l sm:border-t-0">
+        <div className="relative border-t border-dashed border-primary/30 p-6 sm:w-48 sm:border-l sm:border-t-0">
           {/* Punched holes where the stub tears off: half outside the card,
               filled with the page colour, so they read as bites. */}
-          <span className="absolute -left-2.5 -top-2.5 size-5 rounded-full border border-border bg-background" />
-          <span className="absolute -bottom-2.5 -left-2.5 hidden size-5 rounded-full border border-border bg-background sm:block" />
-          <span className="absolute -right-2.5 -top-2.5 size-5 rounded-full border border-border bg-background sm:hidden" />
+          <span className="absolute -left-2.5 -top-2.5 size-5 rounded-full border border-primary/30 bg-background" />
+          <span className="absolute -bottom-2.5 -left-2.5 hidden size-5 rounded-full border border-primary/30 bg-background sm:block" />
+          <span className="absolute -right-2.5 -top-2.5 size-5 rounded-full border border-primary/30 bg-background sm:hidden" />
 
           <p className="text-xs text-muted-foreground">Seat</p>
           <p className="font-mono text-4xl font-semibold tracking-tight">14A</p>
@@ -915,15 +914,15 @@ function NowPlayingCard() {
       variant="bordered"
       className="w-full max-w-2xl overflow-hidden rounded-2xl sm:flex-row"
     >
-      <div className="grid aspect-square w-full shrink-0 place-items-center bg-indigo-950 sm:aspect-auto sm:size-48">
+      <div className="grid aspect-square w-full shrink-0 place-items-center bg-zinc-950 dark:bg-zinc-900 sm:aspect-auto sm:size-48">
         <div
           className={cn(
             "grid size-32 place-items-center rounded-full bg-[repeating-radial-gradient(circle_at_50%_50%,rgba(255,255,255,0.10)_0_1px,transparent_1px_5px)] ring-1 ring-white/10 sm:size-36",
             playing && "[animation-duration:6s] motion-safe:animate-spin",
           )}
         >
-          <span className="grid size-12 place-items-center rounded-full bg-amber-400">
-            <span className="size-1.5 rounded-full bg-indigo-950" />
+          <span className="grid size-12 place-items-center rounded-full bg-primary text-primary-foreground">
+            <span className="size-1.5 rounded-full bg-zinc-950" />
           </span>
         </div>
       </div>
@@ -936,7 +935,7 @@ function NowPlayingCard() {
                 <span
                   key={i}
                   className={cn(
-                    "w-[3px] rounded-full bg-indigo-500",
+                    "w-[3px] rounded-full bg-primary",
                     playing && "motion-safe:animate-pulse",
                   )}
                   style={{ height, animationDelay: `${i * 160}ms` }}
@@ -951,7 +950,7 @@ function NowPlayingCard() {
           <p className="text-sm text-muted-foreground">Lila Moreau Trio</p>
         </div>
 
-        <div className="relative rounded-md focus-within:ring-2 focus-within:ring-indigo-500">
+        <div className="relative rounded-md focus-within:ring-2 focus-within:ring-primary">
           <div
             aria-hidden
             className="pointer-events-none flex h-10 items-end gap-[3px]"
@@ -962,7 +961,7 @@ function NowPlayingCard() {
                 className={cn(
                   "min-w-0 flex-1 rounded-full transition-colors",
                   i / WAVEFORM.length <= progress
-                    ? "bg-indigo-500"
+                    ? "bg-primary"
                     : "bg-muted-foreground/25",
                 )}
                 style={{ height: `${height}%` }}
@@ -989,7 +988,7 @@ function NowPlayingCard() {
           <button
             type="button"
             aria-label="Previous track"
-            className="grid size-9 place-items-center rounded-full text-muted-foreground transition-colors hover:bg-muted hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500"
+            className="grid size-9 place-items-center rounded-full text-muted-foreground transition-colors hover:bg-primary/10 hover:text-primary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary cursor-pointer"
           >
             <SkipBack className="size-4" />
           </button>
@@ -997,7 +996,7 @@ function NowPlayingCard() {
             type="button"
             aria-label={playing ? "Pause" : "Play"}
             onClick={() => setPlaying((value) => !value)}
-            className="grid size-11 place-items-center rounded-full bg-indigo-600 text-white transition-colors hover:bg-indigo-500 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500 focus-visible:ring-offset-2 focus-visible:ring-offset-background"
+            className="grid size-11 place-items-center rounded-full bg-primary text-primary-foreground transition-all hover:opacity-90 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 cursor-pointer shadow-sm"
           >
             {playing ? (
               <Pause className="size-5" />
@@ -1008,7 +1007,7 @@ function NowPlayingCard() {
           <button
             type="button"
             aria-label="Next track"
-            className="grid size-9 place-items-center rounded-full text-muted-foreground transition-colors hover:bg-muted hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500"
+            className="grid size-9 place-items-center rounded-full text-muted-foreground transition-colors hover:bg-primary/10 hover:text-primary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary cursor-pointer"
           >
             <SkipForward className="size-4" />
           </button>
@@ -1018,7 +1017,7 @@ function NowPlayingCard() {
             aria-label={saved ? "Remove from library" : "Save to library"}
             aria-pressed={saved}
             onClick={() => setSaved((value) => !value)}
-            className="grid size-9 place-items-center rounded-full text-muted-foreground transition-colors hover:bg-muted hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500"
+            className="grid size-9 place-items-center rounded-full text-muted-foreground transition-colors hover:bg-primary/10 hover:text-primary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary cursor-pointer"
           >
             <Heart className={cn("size-4", saved && "fill-rose-500 text-rose-500")} />
           </button>

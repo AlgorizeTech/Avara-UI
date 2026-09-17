@@ -94,8 +94,8 @@ export function ProductCard({
     return (
       <article
         className={cn(
-          "w-full rounded-2xl bg-card border border-border/80 p-4 flex flex-col sm:flex-row items-center gap-4 text-foreground transition-all duration-200",
-          interactive && "hover:shadow-md hover:border-border hover:-translate-y-0.5",
+          "w-full rounded-2xl bg-primary/[0.008] border border-primary/20 p-4 flex flex-col sm:flex-row items-center gap-4 text-foreground transition-all duration-200",
+          interactive && "hover:shadow-md hover:border-primary/50 hover:-translate-y-0.5",
           className
         )}
       >
@@ -154,13 +154,13 @@ export function ProductCard({
   return (
     <article
       className={cn(
-        "w-full rounded-2xl bg-card border border-border/80 overflow-hidden flex flex-col justify-between text-foreground transition-all duration-200 group",
-        interactive && "hover:shadow-lg hover:border-border hover:-translate-y-1",
+        "w-full rounded-2xl bg-primary/[0.008] border border-primary/20 overflow-hidden flex flex-col justify-between text-foreground transition-all duration-200 group",
+        interactive && "hover:shadow-lg hover:border-primary/50 hover:-translate-y-1",
         className
       )}
     >
       {/* Image Preview Area */}
-      <div className="relative aspect-4/3 w-full bg-gradient-to-br from-zinc-100 to-zinc-200 dark:from-zinc-900 dark:to-zinc-800 flex items-center justify-center p-0 overflow-hidden">
+      <div className="relative aspect-4/3 w-full bg-gradient-to-br from-primary/10 via-primary/5 to-transparent flex items-center justify-center p-0 overflow-hidden">
         {badge && (
           <span
             className={cn(
@@ -259,7 +259,7 @@ export function ProductCard({
             <button
               type="button"
               onClick={onQuickView}
-              className="px-3 py-2 rounded-xl border border-border bg-background hover:bg-muted text-foreground text-xs font-bold flex items-center gap-1.5 transition-colors active:scale-95"
+              className="px-3 py-2 rounded-xl border border-primary/30 bg-background hover:bg-primary/10 hover:text-primary hover:border-primary/50 text-foreground text-xs font-bold flex items-center gap-1.5 transition-colors active:scale-95 cursor-pointer"
             >
               <Eye className="size-3.5" /> Quick View
             </button>
