@@ -3247,7 +3247,7 @@ function FooterSection() {
 
 export default function HomePage() {
 	return (
-		<div className="min-h-screen bg-background text-foreground selection:bg-primary/20 overflow-x-hidden font-sans">
+		<div className="min-h-screen bg-background text-foreground selection:bg-primary/20 overflow-x-hidden font-site-sans">
 			<HeroSection />
 			<TechStackMarquee />
 			<ComponentShowcase />
