@@ -576,7 +576,7 @@ function ComponentShowcase() {
 							<Layers className="size-3.5" />
 							Live Interactive Components
 						</span>
-						<h2 className="text-3xl md:text-4xl lg:text-5xl font-black tracking-tight text-foreground mb-4">
+						<h2 className="text-3xl md:text-4xl lg:text-5xl font-semibold tracking-tight text-foreground mb-4">
 							Real Motion &amp; Interactive Blocks
 						</h2>
 						<p className="text-muted-foreground text-sm md:text-base max-w-xl leading-relaxed">
@@ -743,7 +743,7 @@ function WhyChooseUsSection() {
 					animate={isInView ? { opacity: 1, y: 0 } : {}}
 					transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
 					className="text-center mb-16 md:mb-20">
-					<h2 className="text-3xl md:text-4xl lg:text-5xl font-black tracking-tighter text-foreground mb-4 bg-clip-text text-transparent bg-gradient-to-b from-foreground to-foreground/50 pb-2">
+					<h2 className="text-3xl md:text-4xl lg:text-5xl font-semibold tracking-tighter text-foreground mb-4 bg-clip-text text-transparent bg-gradient-to-b from-foreground to-foreground/50 pb-2">
 						Why Docs UI?
 					</h2>
 					<p className="text-muted-foreground/80 text-[15px] md:text-base max-w-xl mx-auto leading-relaxed font-medium">
@@ -1160,7 +1160,7 @@ function MiniatureIllustration({
 						<span className="inline-block px-1.5 py-0.5 rounded-full bg-primary/10 text-primary text-[8px] font-bold border border-primary/20">
 							Next.js 15
 						</span>
-						<div className="text-[11px] font-black tracking-tight text-foreground leading-tight">
+						<div className="text-[11px] font-semibold tracking-tight text-foreground leading-tight">
 							Build Next-Gen UI
 						</div>
 						<div className="flex justify-center gap-1 pt-0.5">
@@ -1191,19 +1191,19 @@ function MiniatureIllustration({
 								<div className="text-[6px] font-bold text-muted-foreground truncate">
 									Free
 								</div>
-								<div className="text-[8px] font-black text-foreground">$0</div>
+								<div className="text-[8px] font-semibold text-foreground">$0</div>
 								<div className="h-1.5 w-full rounded bg-muted text-[5px] font-bold text-muted-foreground flex items-center justify-center">
 									Free
 								</div>
 							</div>
 							<div className="flex-1 p-1 rounded-md border border-primary bg-primary/10 text-center space-y-0.5 shadow-2xs relative min-w-0">
-								<span className="absolute -top-1.5 left-1/2 -translate-x-1/2 text-[4px] font-black px-0.5 rounded bg-primary text-primary-foreground whitespace-nowrap">
+								<span className="absolute -top-1.5 left-1/2 -translate-x-1/2 text-[4px] font-semibold px-0.5 rounded bg-primary text-primary-foreground whitespace-nowrap">
 									HOT
 								</span>
-								<div className="text-[6px] font-black text-primary truncate">
+								<div className="text-[6px] font-semibold text-primary truncate">
 									Pro
 								</div>
-								<div className="text-[8px] font-black text-primary">$29</div>
+								<div className="text-[8px] font-semibold text-primary">$29</div>
 								<div className="h-1.5 w-full rounded bg-primary text-[5px] font-bold text-primary-foreground flex items-center justify-center shadow-2xs">
 									Pro
 								</div>
@@ -1212,7 +1212,7 @@ function MiniatureIllustration({
 								<div className="text-[6px] font-bold text-muted-foreground truncate">
 									Enterprise
 								</div>
-								<div className="text-[8px] font-black text-foreground">$99</div>
+								<div className="text-[8px] font-semibold text-foreground">$99</div>
 								<div className="h-1.5 w-full rounded bg-muted text-[5px] font-bold text-muted-foreground flex items-center justify-center">
 									VIP
 								</div>
@@ -1295,7 +1295,7 @@ function MiniatureIllustration({
 				{type === "navbar" && (
 					<div className="w-full my-auto px-0.5">
 						<div className="w-full p-1.5 rounded-xl bg-background border border-border/80 flex items-center justify-between shadow-xs px-2.5">
-							<div className="flex items-center gap-1.5 text-[8.5px] font-black text-foreground">
+							<div className="flex items-center gap-1.5 text-[8.5px] font-semibold text-foreground">
 								<span className="size-2 rounded bg-primary" />
 								<span>DocsUI</span>
 							</div>
@@ -1354,11 +1354,11 @@ function MiniatureIllustration({
 				{type === "stepper" && (
 					<div className="w-full space-y-2 my-auto px-1">
 						<div className="flex items-center justify-between">
-							<span className="size-3.5 rounded-full bg-primary text-[7px] text-primary-foreground font-black flex items-center justify-center">
+							<span className="size-3.5 rounded-full bg-primary text-[7px] text-primary-foreground font-semibold flex items-center justify-center">
 								1
 							</span>
 							<div className="h-0.5 flex-1 bg-primary mx-1" />
-							<span className="size-3.5 rounded-full bg-primary text-[7px] text-primary-foreground font-black flex items-center justify-center">
+							<span className="size-3.5 rounded-full bg-primary text-[7px] text-primary-foreground font-semibold flex items-center justify-center">
 								2
 							</span>
 							<div className="h-0.5 flex-1 bg-muted-foreground/30 mx-1" />
@@ -1397,7 +1397,7 @@ function MiniatureIllustration({
 
 				{type === "carousel" && (
 					<div className="w-full flex items-center justify-between gap-1 my-auto px-0.5">
-						<div className="size-4 rounded-full bg-muted border border-border text-[7px] font-black text-muted-foreground flex items-center justify-center shrink-0">
+						<div className="size-4 rounded-full bg-muted border border-border text-[7px] font-semibold text-muted-foreground flex items-center justify-center shrink-0">
 							‹
 						</div>
 						<div className="flex-1 h-14 rounded-xl bg-background border border-primary/50 p-1.5 shadow-sm flex flex-col justify-between items-center text-center">
@@ -1410,7 +1410,7 @@ function MiniatureIllustration({
 								<span className="size-1 rounded-full bg-primary/40" />
 							</div>
 						</div>
-						<div className="size-4 rounded-full bg-muted border border-border text-[7px] font-black text-muted-foreground flex items-center justify-center shrink-0">
+						<div className="size-4 rounded-full bg-muted border border-border text-[7px] font-semibold text-muted-foreground flex items-center justify-center shrink-0">
 							›
 						</div>
 					</div>
@@ -1429,11 +1429,11 @@ function MiniatureIllustration({
 				{type === "counter" && (
 					<div className="w-full flex items-center justify-center my-auto">
 						<div className="px-3 py-2 rounded-xl bg-background border border-border shadow-xs flex items-center gap-2">
-							<span className="size-4 rounded bg-muted border border-border font-black text-[9px] flex items-center justify-center text-foreground">
+							<span className="size-4 rounded bg-muted border border-border font-semibold text-[9px] flex items-center justify-center text-foreground">
 								-
 							</span>
-							<span className="text-sm font-black text-primary px-1">99+</span>
-							<span className="size-4 rounded bg-primary text-primary-foreground font-black text-[9px] flex items-center justify-center">
+							<span className="text-sm font-semibold text-primary px-1">99+</span>
+							<span className="size-4 rounded bg-primary text-primary-foreground font-semibold text-[9px] flex items-center justify-center">
 								+
 							</span>
 						</div>
@@ -1501,21 +1501,21 @@ function MiniatureIllustration({
 					<div className="w-full grid grid-cols-3 gap-1 my-auto px-0.5">
 						<div className="space-y-1">
 							<div className="h-10 rounded-lg bg-primary/20 border border-primary/40 p-1 flex items-end">
-								<span className="text-[5px] font-black text-primary">#01</span>
+								<span className="text-[5px] font-semibold text-primary">#01</span>
 							</div>
 							<div className="h-6 rounded-lg bg-muted border border-border" />
 						</div>
 						<div className="space-y-1">
 							<div className="h-6 rounded-lg bg-muted border border-border" />
 							<div className="h-11 rounded-lg bg-emerald-500/20 border border-emerald-500/40 p-1 flex items-end">
-								<span className="text-[5px] font-black text-emerald-500">
+								<span className="text-[5px] font-semibold text-emerald-500">
 									#02
 								</span>
 							</div>
 						</div>
 						<div className="space-y-1">
 							<div className="h-12 rounded-lg bg-primary/10 border border-primary/20 p-1 flex items-end">
-								<span className="text-[5px] font-black text-primary">#03</span>
+								<span className="text-[5px] font-semibold text-primary">#03</span>
 							</div>
 						</div>
 					</div>
@@ -1602,16 +1602,16 @@ function MiniatureIllustration({
 						{/* Layer 2 Outer Orbital Circle */}
 						<div className="size-24 rounded-full border border-dashed border-primary/25 absolute flex items-center justify-center pointer-events-none">
 							{/* Outer Orbit Nodes */}
-							<div className="absolute -top-1.5 left-1/2 -translate-x-1/2 size-3 rounded-full bg-emerald-500 text-[5px] font-black text-white flex items-center justify-center shadow-xs">
+							<div className="absolute -top-1.5 left-1/2 -translate-x-1/2 size-3 rounded-full bg-emerald-500 text-[5px] font-semibold text-white flex items-center justify-center shadow-xs">
 								A
 							</div>
-							<div className="absolute -bottom-1.5 left-1/2 -translate-x-1/2 size-3 rounded-full bg-amber-500 text-[5px] font-black text-white flex items-center justify-center shadow-xs">
+							<div className="absolute -bottom-1.5 left-1/2 -translate-x-1/2 size-3 rounded-full bg-amber-500 text-[5px] font-semibold text-white flex items-center justify-center shadow-xs">
 								B
 							</div>
-							<div className="absolute top-1/2 -left-1.5 -translate-y-1/2 size-3 rounded-full bg-indigo-500 text-[5px] font-black text-white flex items-center justify-center shadow-xs">
+							<div className="absolute top-1/2 -left-1.5 -translate-y-1/2 size-3 rounded-full bg-indigo-500 text-[5px] font-semibold text-white flex items-center justify-center shadow-xs">
 								C
 							</div>
-							<div className="absolute top-1/2 -right-1.5 -translate-y-1/2 size-3 rounded-full bg-sky-500 text-[5px] font-black text-white flex items-center justify-center shadow-xs">
+							<div className="absolute top-1/2 -right-1.5 -translate-y-1/2 size-3 rounded-full bg-sky-500 text-[5px] font-semibold text-white flex items-center justify-center shadow-xs">
 								D
 							</div>
 						</div>
@@ -1623,7 +1623,7 @@ function MiniatureIllustration({
 						</div>
 
 						{/* Central Node */}
-						<div className="size-6 rounded-full bg-primary text-primary-foreground font-black text-[7.5px] flex items-center justify-center shadow-md z-10 border-2 border-background ring-2 ring-primary/20">
+						<div className="size-6 rounded-full bg-primary text-primary-foreground font-semibold text-[7.5px] flex items-center justify-center shadow-md z-10 border-2 border-background ring-2 ring-primary/20">
 							Core
 						</div>
 					</div>
@@ -1685,7 +1685,7 @@ function MiniatureIllustration({
 								<div className="text-[5.5px] font-bold text-muted-foreground">
 									Tickets
 								</div>
-								<div className="text-[8px] font-black text-foreground">
+								<div className="text-[8px] font-semibold text-foreground">
 									1,240
 								</div>
 							</div>
@@ -1693,13 +1693,13 @@ function MiniatureIllustration({
 								<div className="text-[5.5px] font-bold text-primary">
 									Resolved
 								</div>
-								<div className="text-[8px] font-black text-primary">98%</div>
+								<div className="text-[8px] font-semibold text-primary">98%</div>
 							</div>
 							<div className="p-1 rounded-md bg-background border border-border/80 text-center space-y-0.5">
 								<div className="text-[5.5px] font-bold text-muted-foreground">
 									Avg Time
 								</div>
-								<div className="text-[8px] font-black text-emerald-500">
+								<div className="text-[8px] font-semibold text-emerald-500">
 									12m
 								</div>
 							</div>
@@ -1826,7 +1826,7 @@ function MiniatureIllustration({
 
 				{type === "typography" && (
 					<div className="w-full flex flex-col justify-between my-auto space-y-1 px-1">
-						<div className="text-xs font-black tracking-tight text-foreground border-b border-border/40 pb-0.5">
+						<div className="text-xs font-semibold tracking-tight text-foreground border-b border-border/40 pb-0.5">
 							H1. Heading Text
 						</div>
 						<div className="text-[8px] font-bold text-primary">
@@ -2045,7 +2045,7 @@ function MiniatureIllustration({
 							</span>
 
 							{/* Start Date Selection Range */}
-							<span className="py-0.5 rounded-l-md bg-primary text-primary-foreground font-black shadow-2xs">
+							<span className="py-0.5 rounded-l-md bg-primary text-primary-foreground font-semibold shadow-2xs">
 								14
 							</span>
 							<span className="py-0.5 bg-primary/20 text-primary font-extrabold">
@@ -2055,7 +2055,7 @@ function MiniatureIllustration({
 								16
 							</span>
 							{/* End Date Selection Range */}
-							<span className="py-0.5 rounded-r-md bg-primary text-primary-foreground font-black shadow-2xs">
+							<span className="py-0.5 rounded-r-md bg-primary text-primary-foreground font-semibold shadow-2xs">
 								17
 							</span>
 
@@ -2506,7 +2506,7 @@ function MiniatureIllustration({
 				{type === "invoice" && (
 					<div className="w-full p-1.5 rounded-lg bg-background border border-border space-y-1 my-auto text-[5.5px] overflow-hidden">
 						<div className="flex justify-between items-center border-b border-border/40 pb-0.5">
-							<span className="font-black text-foreground">INV-#402</span>
+							<span className="font-semibold text-foreground">INV-#402</span>
 							<span className="text-[5px] font-extrabold text-emerald-500 bg-emerald-500/10 px-1 rounded">
 								PAID
 							</span>
@@ -2587,7 +2587,7 @@ function MiniatureIllustration({
 						</div>
 
 						{/* Bangladesh Tag */}
-						<div className="absolute bottom-1 left-1 px-1 py-0.2 rounded bg-background/90 border border-border text-[5px] font-black text-primary shadow-2xs">
+						<div className="absolute bottom-1 left-1 px-1 py-0.2 rounded bg-background/90 border border-border text-[5px] font-semibold text-primary shadow-2xs">
 							Bangladesh
 						</div>
 					</div>
@@ -2596,7 +2596,7 @@ function MiniatureIllustration({
 				{type === "menubar" && (
 					<div className="w-full p-1 rounded-lg bg-background border border-border shadow-xs my-auto text-[6px]">
 						<div className="flex items-center gap-2 border-b border-border/40 pb-0.5 px-0.5 font-bold text-foreground">
-							<span className="text-primary font-black">File</span>
+							<span className="text-primary font-semibold">File</span>
 							<span className="text-muted-foreground">Edit</span>
 							<span className="text-muted-foreground">View</span>
 						</div>
@@ -2609,13 +2609,13 @@ function MiniatureIllustration({
 
 				{type === "otp-input" && (
 					<div className="w-full flex items-center justify-center gap-1 my-auto">
-						<div className="size-5 rounded-md border border-primary bg-primary/10 text-primary font-black text-[9px] flex items-center justify-center shadow-2xs">
+						<div className="size-5 rounded-md border border-primary bg-primary/10 text-primary font-semibold text-[9px] flex items-center justify-center shadow-2xs">
 							4
 						</div>
-						<div className="size-5 rounded-md border border-primary bg-primary/10 text-primary font-black text-[9px] flex items-center justify-center shadow-2xs">
+						<div className="size-5 rounded-md border border-primary bg-primary/10 text-primary font-semibold text-[9px] flex items-center justify-center shadow-2xs">
 							8
 						</div>
-						<div className="size-5 rounded-md border-2 border-primary bg-background text-foreground font-black text-[9px] flex items-center justify-center shadow-2xs ring-2 ring-primary/20">
+						<div className="size-5 rounded-md border-2 border-primary bg-background text-foreground font-semibold text-[9px] flex items-center justify-center shadow-2xs ring-2 ring-primary/20">
 							2
 						</div>
 						<div className="size-5 rounded-md border border-border bg-muted/40 text-muted-foreground font-bold text-[9px] flex items-center justify-center">
@@ -2700,7 +2700,7 @@ function MiniatureIllustration({
 					<div className="w-full p-2 rounded-xl bg-card border border-border/80 my-auto text-[6px] space-y-1.5 shadow-2xs">
 						{/* Multi-layered Toast Banner */}
 						<div className="p-1.5 rounded-lg bg-background border border-emerald-500/40 flex items-start gap-1.5 shadow-xs">
-							<div className="size-3.5 rounded-full bg-emerald-500/15 text-emerald-500 flex items-center justify-center text-[7px] font-black shrink-0">
+							<div className="size-3.5 rounded-full bg-emerald-500/15 text-emerald-500 flex items-center justify-center text-[7px] font-semibold shrink-0">
 								✓
 							</div>
 							<div className="flex-1 min-w-0">
@@ -2772,7 +2772,7 @@ function MiniatureIllustration({
 						<span className="px-1.5 py-0.5 rounded bg-muted border border-border text-muted-foreground">
 							Prev
 						</span>
-						<span className="size-4 rounded bg-primary text-primary-foreground flex items-center justify-center font-black shadow-2xs">
+						<span className="size-4 rounded bg-primary text-primary-foreground flex items-center justify-center font-semibold shadow-2xs">
 							1
 						</span>
 						<span className="size-4 rounded bg-background border border-border text-foreground flex items-center justify-center">
@@ -2814,7 +2814,7 @@ function MiniatureIllustration({
 				{type === "wizard" && (
 					<div className="w-full space-y-1.5 my-auto px-0.5 text-[6px]">
 						<div className="flex justify-between items-center font-extrabold text-foreground border-b border-border/40 pb-0.5">
-							<span className="text-primary font-black">Step 2: Profile</span>
+							<span className="text-primary font-semibold">Step 2: Profile</span>
 							<span className="text-[5.5px] text-muted-foreground">2 of 4</span>
 						</div>
 						<div className="h-1.5 w-full bg-muted rounded-full overflow-hidden">
@@ -2848,7 +2848,7 @@ function MiniatureIllustration({
 						</div>
 
 						{/* Top Right Analytics Pill */}
-						<div className="absolute top-1 right-1 px-1 py-0.2 rounded bg-background/90 border border-border text-[5px] font-black text-primary shadow-xs">
+						<div className="absolute top-1 right-1 px-1 py-0.2 rounded bg-background/90 border border-border text-[5px] font-semibold text-primary shadow-xs">
 							+42% Data Flow
 						</div>
 					</div>
@@ -2856,7 +2856,7 @@ function MiniatureIllustration({
 
 				{type === "hero-videoplayer" && (
 					<div className="w-full h-full rounded-xl bg-card border border-border relative flex items-center justify-center my-auto overflow-hidden shadow-sm">
-						<div className="size-7 rounded-full bg-primary text-primary-foreground flex items-center justify-center font-black text-xs shadow-lg ring-4 ring-primary/20">
+						<div className="size-7 rounded-full bg-primary text-primary-foreground flex items-center justify-center font-semibold text-xs shadow-lg ring-4 ring-primary/20">
 							▶
 						</div>
 						<div className="absolute bottom-1.5 left-2 right-2 h-1 rounded-full bg-muted overflow-hidden">
@@ -2896,7 +2896,7 @@ function MiniatureIllustration({
 						<span>★</span>
 						<span>★</span>
 						<span className="opacity-40">★</span>
-						<span className="text-[7.5px] font-black text-foreground ml-1">
+						<span className="text-[7.5px] font-semibold text-foreground ml-1">
 							4.8
 						</span>
 					</div>
@@ -2937,7 +2937,7 @@ function ComponentPreviewGridSection() {
 						<LayoutGrid className="size-3.5" />
 						Component Preview Catalog
 					</span>
-					<h2 className="text-3xl md:text-4xl lg:text-5xl font-black tracking-tight text-foreground mb-4">
+					<h2 className="text-3xl md:text-4xl lg:text-5xl font-semibold tracking-tight text-foreground mb-4">
 						Explore Built-in Component Previews
 					</h2>
 					<p className="text-muted-foreground text-sm md:text-base max-w-xl mx-auto leading-relaxed">
@@ -3113,12 +3113,12 @@ function CTASection() {
 
 				{/* Centered Content Container */}
 				<div className="relative z-10 text-center flex flex-col items-center max-w-3xl mx-auto space-y-6">
-					<div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-primary/10 border border-primary/30 text-xs font-black text-primary backdrop-blur-md shadow-xs">
+					<div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-primary/10 border border-primary/30 text-xs font-semibold text-primary backdrop-blur-md shadow-xs">
 						<Sparkles className="size-3.5 text-primary" />
 						<span>Developer-First Component Library</span>
 					</div>
 
-					<h2 className="text-3xl sm:text-5xl md:text-6xl font-black tracking-tight text-foreground dark:text-white leading-[1.08]">
+					<h2 className="text-3xl sm:text-5xl md:text-6xl font-semibold tracking-tight text-foreground dark:text-white leading-[1.08]">
 						Build Next-Gen <br className="hidden sm:block" />
 						<span className="text-primary">React Interfaces Today.</span>
 					</h2>
@@ -3176,7 +3176,7 @@ function CTASection() {
 					<div className="pt-4 flex flex-col sm:flex-row items-center justify-center gap-4 w-full sm:w-auto">
 						<Link
 							href="/docs/nextjs/all-components"
-							className="w-full sm:w-auto px-9 py-4 rounded-2xl bg-primary text-primary-foreground text-xs sm:text-sm font-black shadow-lg hover:shadow-primary/30 hover:scale-[1.03] active:scale-[0.98] transition-all flex items-center justify-center gap-2">
+							className="w-full sm:w-auto px-9 py-4 rounded-2xl bg-primary text-primary-foreground text-xs sm:text-sm font-semibold shadow-lg hover:shadow-primary/30 hover:scale-[1.03] active:scale-[0.98] transition-all flex items-center justify-center gap-2">
 							Browse All Components
 							<ArrowRight className="size-4" />
 						</Link>
@@ -3209,7 +3209,7 @@ function FooterSection() {
 					<div className="size-7 rounded-lg bg-primary/10 flex items-center justify-center border border-primary/20">
 						<Layers className="size-3.5 text-primary" />
 					</div>
-					<span className="font-black text-base text-foreground tracking-tight">
+					<span className="font-semibold text-base text-foreground tracking-tight">
 						Docs UI
 					</span>
 					<span className="text-[12px] text-muted-foreground font-medium hidden sm:inline-block border-l border-border/50 pl-3 ml-1">
@@ -3247,7 +3247,7 @@ function FooterSection() {
 
 export default function HomePage() {
 	return (
-		<div className="min-h-screen bg-background text-foreground selection:bg-primary/20 overflow-x-hidden font-sans">
+		<div className="min-h-screen bg-background text-foreground selection:bg-primary/20 overflow-x-hidden font-site-sans">
 			<HeroSection />
 			<TechStackMarquee />
 			<ComponentShowcase />

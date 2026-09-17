@@ -37,7 +37,13 @@ export function ThemeControl() {
   const { setTheme } = useTheme();
   const pathname = usePathname();
 
-  if (pathname === "/themes" || pathname?.startsWith("/preview")) {
+  // The home page keeps its own fixed typography (see .font-site-sans), so the
+  // customizer tab is hidden there along with the pages that host their own.
+  if (
+    pathname === "/" ||
+    pathname === "/themes" ||
+    pathname?.startsWith("/preview")
+  ) {
     return null;
   }
 
