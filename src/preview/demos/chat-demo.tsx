@@ -55,6 +55,16 @@ export default function ChatDemo({
   variant?: string;
   color?: string;
 }) {
+  const chat = (
+    <ChatApp
+      key={`${variant}-${color}`}
+      variant={variant as any}
+      color={color as any}
+      currentUser={sampleCurrentUser}
+      contactsData={sampleContactsData}
+    />
+  );
+
   return (
     <div
       className={`w-full transition-all duration-500 rounded-2xl ${
@@ -69,13 +79,7 @@ export default function ChatDemo({
           : undefined
       }
     >
-      <ChatApp
-        key={`${variant}-${color}`}
-        variant={variant as any}
-        color={color as any}
-        currentUser={sampleCurrentUser}
-        contactsData={sampleContactsData}
-      />
+      {chat}
     </div>
   );
 }

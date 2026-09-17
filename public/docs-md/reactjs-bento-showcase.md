@@ -1,6 +1,6 @@
 # Bento Showcase
 
-A six-card marketing bento on a black ground: a hero with a live chat and a headline, a laptop of case studies, one line that says what you do, figures that scroll up, the plans on a phone, and a strip of the team that scrolls left. Flat pastel cards, no borders, no shadows — colour is the only thing separating them.
+A six-card marketing bento: a hero with a live chat and a headline, a laptop of case studies, one line that says what you do, figures that scroll up, the plans on a phone, and a strip of the team that scrolls left. Flat cards, no borders, no shadows — colour is the only thing separating them. One component, both themes: pastels on white in light mode, the same hues deepened on black in dark mode, switched by the `dark` class like the rest of the library.
 
 `BentoShowcase` is a section built from library pieces. Both moving cards are Marquee (`direction="up"` and `"left"`), the conversation is Chat Bubble, the rating is Half Stars, the device is Mobile Mockup and the call to action is Button. Each card is a named part — `Hero`, `CaseStudies`, `Headline`, `Stats`, `Phone`, `Team` — so a page can leave one out, reorder them, or add its own with `BentoShowcase.Card`.
 
@@ -121,6 +121,9 @@ The built-in parts carry their own placement (`Hero` is column 1, rows 1–2; `P
     Compound, not configured
     Six named parts you can drop, reorder or replace, and a plain Card for anything else. Headlines are children, so the serif phrase is an em tag, not a prop.
 
+    Light and dark, one component
+    Follows the site theme with no prop: a white ground and pastel cards in light mode, a black ground and the same hues deepened in dark mode. The chat, the phone screen and the call bar switch with it; the laptop, the yellow accents and the ornaments stay as they are.
+
     Responsive to a single column
     3-2-3 columns at lg, two at md, one on phones. The tilted phone and both marquees keep their own height when the grid rows go away.
 
@@ -141,7 +144,7 @@ The built-in parts carry their own placement (`Hero` is column 1, rows 1–2; `P
         className
         string
         —
-        Applied to the black section. Add rounded-[36px] inside a container.
+        Applied to the section (white in light mode, black in dark). Add rounded-[36px] inside a container.
 
 ### BentoShowcase.Card
 
@@ -153,7 +156,7 @@ The built-in parts carry their own placement (`Hero` is column 1, rows 1–2; `P
         tone
         "cream" | "ice" | "lilac" | "sky" | "butter" | "ink"
         "cream"
-        The card's colour. ink is the one dark tone, with white text.
+        The card's colour. Every pastel has a deep dark-mode counterpart; ink is the contrast card and flips (dark on light, light on dark); butter is the accent and stays yellow on both. Use text-current/… for secondary text so it follows the tone.
 
         label
         ReactNode
