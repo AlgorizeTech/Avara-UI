@@ -23,12 +23,14 @@ export default function UpdateModal() {
 
        setIsOpen(false)}
         contentClassName="max-w-md bg-background rounded-2xl shadow-xl border border-border"
-        ariaLabel="System Update Available"
       >
 
-              v2.4.0 Live
+                    System Update Available
 
-              System Update Available
+                    v2.4.0 Live
+
+            }
+          />
 
               A new software update is ready to be installed. This update
               includes new features, performance improvements, and critical
@@ -187,12 +189,14 @@ export default function GlassModal() {
        setIsOpen(false)}
         overlayClassName="bg-black/50 backdrop-blur-md"
         contentClassName="max-w-md bg-white/75 dark:bg-zinc-900/80 backdrop-blur-2xl backdrop-saturate-200 rounded-3xl shadow-[0_25px_60px_rgba(0,0,0,0.35)] border border-white/60 dark:border-white/20 text-foreground"
-        ariaLabel="System Update Available"
       >
 
-              v2.4.0 Live
+                    System Update Available
 
-              System Update Available
+                    v2.4.0 Live
+
+            }
+          />
 
               A new software update is ready to be installed. This update
               includes new features, performance improvements, and critical

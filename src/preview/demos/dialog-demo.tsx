@@ -436,7 +436,7 @@ function DeleteConfirmationDialog() {
             </div>
             <DialogTitle>Delete “{pending?.name}”?</DialogTitle>
             <DialogDescription>
-              This removes the project and the {pending?.meta.split(" ")[0]} files
+              This removes the project and the {pending?.meta ? pending.meta.split(" ")[0] : "selected"} files
               inside it. You cannot undo this.
             </DialogDescription>
           </DialogHeader>

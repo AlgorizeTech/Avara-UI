@@ -893,12 +893,6 @@ export default function ProfileCards({ interactive }: { interactive: boolean }) 
           effect:
             "so the image bleeds to the card's edges; `overflow-hidden` on the `Card` is what clips it to the corner radius.",
         },
-        {
-          prop: "layout",
-          value: '"blog-showcase"',
-          effect:
-            "pairs the featured card with a sidebar whose rows are split by `divide-y`, so a feed needs no second component.",
-        },
       ],
       props: { variant: "bordered", layout: "blog-showcase", interactive: true },
       usage: usageBlogShowcase,
@@ -914,11 +908,6 @@ export default function ProfileCards({ interactive }: { interactive: boolean }) 
           effect:
             "to make the whole card clickable \u2014 the cover then scales gently on hover, and holds still under `prefers-reduced-motion`.",
         },
-        {
-          prop: "layout",
-          value: '"blog-grid"',
-          effect: "drops to two columns at `sm` and one on a phone.",
-        },
       ],
       props: { variant: "bordered", layout: "blog-grid", interactive: true },
       usage: usageBlogGrid,
@@ -928,12 +917,6 @@ export default function ProfileCards({ interactive }: { interactive: boolean }) 
       title: "Profile card",
       subheading: "A person as a card: a patterned banner, an avatar that overlaps it, a few numbers, and one primary action — beside a column of teammates in the compact row form.",
       propNotes: [
-        {
-          prop: "layout",
-          value: '"profile"',
-          effect:
-            "puts a full profile beside compact teammate rows. The Follow button holds its own state and reports it with `aria-pressed`.",
-        },
         {
           prop: "interactive",
           value: "true",
@@ -948,12 +931,6 @@ export default function ProfileCards({ interactive }: { interactive: boolean }) 
       title: "Shop tiles",
       subheading: "Pastel product tiles: a tag, a two-line title, the product on the right, and a frosted price bar with one action. The photo's backdrop and the tile share a colour, so the masked edge between them disappears.",
       propNotes: [
-        {
-          prop: "layout",
-          value: '"shop"',
-          effect:
-            "sets each tile's colour inline as both `backgroundColor` and a `--tint` variable, so the bottom fade can be written as `from-(--tint)` without a class per colour.",
-        },
         {
           lead: "Set",
           prop: "interactive",
@@ -984,14 +961,6 @@ export default function ProfileCards({ interactive }: { interactive: boolean }) 
     {
       title: "Now playing",
       subheading: "A horizontal card holding live state: the record turns while the track runs, and the waveform doubles as a scrubber.",
-      propNotes: [
-        {
-          prop: "layout",
-          value: '"media"',
-          effect:
-            "puts a full-bleed art panel beside `CardContent`. An invisible `input[type=range]` covers the bars, so seeking works by pointer and keyboard.",
-        },
-      ],
       props: { variant: "bordered", layout: "media" },
       usage: usageMedia,
       minHeight: 460,
