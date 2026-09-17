@@ -3115,10 +3115,10 @@ function MiniatureIllustration({
 					<div className="w-full h-full my-auto grid grid-cols-3 grid-rows-2 gap-1">
 						<div className="row-span-2 rounded-md bg-background border border-border p-1 flex flex-col justify-end gap-0.5">
 							<span className="self-start max-w-[80%] px-1 py-0.5 rounded-md rounded-bl-none bg-muted text-[4.5px] text-foreground">
-								Hi! Need a site?
+								Need a site?
 							</span>
 							<span className="self-end max-w-[80%] px-1 py-0.5 rounded-md rounded-br-none bg-primary text-primary-foreground text-[4.5px]">
-								Yes, this week
+								This week!
 							</span>
 						</div>
 						<div className="rounded-md bg-background border border-border flex flex-col items-center justify-center leading-none">
