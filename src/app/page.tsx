@@ -13,7 +13,6 @@ import {
 } from "@/components/custom/blocks/ThreeDCarouselBlock";
 import { CommandSearchBlock } from "@/components/custom/blocks/UtilityBlocks";
 import { DesignComponentsFolder } from "@/components/custom/blocks/DesignComponentsFolder";
-import { HeroBlock } from "@/components/custom/blocks/HeroBlock";
 import { HomepageHeroBlock } from "@/components/custom/blocks/HomepageHeroBlock";
 import { cn } from "@/lib/utils";
 import {

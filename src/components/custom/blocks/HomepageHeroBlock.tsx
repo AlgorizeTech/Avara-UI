@@ -119,7 +119,7 @@ export const HomepageHeroBlock = forwardRef<HTMLElement, HomepageHeroBlockProps>
             )}
 
             {/* Dynamic Animated Title Word (Vertical Text Slide / Word Flip) */}
-            <h1 className="text-xl xs:text-2xl sm:text-2xl md:text-3xl lg:text-4xl xl:text-5xl font-black tracking-tight leading-tight text-foreground text-center inline-flex items-center justify-center flex-wrap">
+            <h1 className="text-xl xs:text-2xl sm:text-2xl md:text-3xl lg:text-5xl xl:text-6xl font-semibold tracking-tight leading-tight text-foreground text-center inline-flex items-center justify-center flex-wrap">
               <span className="shrink-0 mr-2">
                 {titlePrefix}
                 <span className="text-primary">Interactive</span>
@@ -136,7 +136,7 @@ export const HomepageHeroBlock = forwardRef<HTMLElement, HomepageHeroBlockProps>
                       duration: 0.45,
                       ease: [0.16, 1, 0.3, 1],
                     }}
-                    className="text-foreground font-black inline-block whitespace-nowrap text-left"
+                    className="text-foreground font-semibold inline-block whitespace-nowrap text-left"
                   >
                     {currentWord}
                   </motion.span>

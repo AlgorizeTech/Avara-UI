@@ -9,7 +9,6 @@ import {
 	LayoutTemplate,
 	ArrowRight,
 	LayoutGrid,
-	Globe,
 } from "lucide-react";
 import { navigation } from "@/constants/navigation";
 import { sandboxNames } from "@/preview/names";

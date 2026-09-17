@@ -63,7 +63,6 @@ function resolveColorAccent(color?: string): string | null {
 
 export function ParticleCanvas({
   content = "AlgorizeTech",
-  variant = "repel",
   particleSize = 2.5,
   particleGap = 5,
   speed = 1,
