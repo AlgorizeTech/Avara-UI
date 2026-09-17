@@ -814,9 +814,9 @@ export const META: Record<string, ItemMeta> = {
   },
   "theme-switcher": {
     description:
-      "A light/dark toggle in icon, pill or dropdown form, with a GSAP icon transition. Use it in a navbar or settings panel.",
+      "A light/dark toggle in icon, pill or dropdown form, with a circular reveal that grows out of the control and a GSAP icon transition. Use it in a navbar or settings panel.",
     categories: ["utilities", "actions"],
-    docs: "Named export: ThemeSwitcher. Variants: icon | pill | dropdown — dropdown includes a system option. Requires `next-themes` with a ThemeProvider mounted above it; without one it renders but will not change the theme.",
+    docs: "Named export: ThemeSwitcher. Variants: icon | pill | dropdown — dropdown includes a system option. Switching runs a circular View-Transition reveal from the clicked control; the CSS it needs is injected by the component, so nothing goes in globals.css. `reveal={false}` for an instant switch. Requires `next-themes` with a ThemeProvider mounted above it; without one it renders but will not change the theme.",
   },
   "design-components-folder": {
     description:

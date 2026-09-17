@@ -7,7 +7,9 @@ A premium, GSAP-powered dark mode toggle component built specifically for Next.j
 
 It includes three distinct layout variants (Icon, Pill, and Dropdown) to match different areas of your application, from compact navigation bars to sprawling settings menus. It safely handles React hydration to prevent the dreaded "dark mode flash" on initial load.
 
-Each switcher below is live and writes through `next-themes`, so flipping one changes the theme for the whole docs site.
+Switching runs the same circular reveal as the toggle in this site's header: the new theme grows out of the control as a circle over the page, using the View Transitions API. The CSS that reveal needs is part of the component — it goes into `<head>` the first time a switcher mounts — so an installed copy works without touching `globals.css`. Browsers without View Transitions, and users who prefer reduced motion, get an instant switch.
+
+Each switcher below is live and writes through `next-themes`, so flipping one changes the theme for the whole docs site. The previews run in their own frame, and a View Transition can't cross documents, so here the demo hands the pick to the page through `applyTheme` — what you see is the header's own reveal, starting from the control you clicked. In your app the component does all of that itself.
 
 export const usageIcon = `import { ThemeSwitcher } from "@/components/custom/blocks/ThemeSwitcherBlock";
 
@@ -42,7 +44,7 @@ export default function DropdownSwitcher() {
   examples={[
     {
       title: "Icon",
-      subheading: "One button that flips between light and dark, with a GSAP micro-interaction on the icon.",
+      subheading: "One button that flips between light and dark, with a GSAP micro-interaction on the icon and the circular reveal growing out of it.",
       propNotes: [
         {
           prop: "variant",
@@ -126,9 +128,17 @@ export default function RootLayout({
 
 ## Features
 
-Explore the Theme Switcher's dark mode capabilities, featuring hydration-safe rendering and GSAP-powered layout transitions.
+Explore the Theme Switcher's dark mode capabilities, featuring the circular reveal, hydration-safe rendering and GSAP-powered layout transitions.
 
 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 my-6 not-prose">
+  <div className="p-6 rounded-2xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900">
+    <h3 className="text-lg font-semibold text-zinc-900 dark:text-zinc-50 mb-2">Circular Reveal</h3>
+    <p className="text-zinc-600 dark:text-zinc-400 text-sm">The new theme sweeps out from whichever control was clicked, via the View Transitions API. The `::view-transition` rules it needs ship inside the component, so nothing has to be added to your global stylesheet. Set <code>reveal={false}</code> for an instant switch.</p>
+  </div>
+  <div className="p-6 rounded-2xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900">
+    <h3 className="text-lg font-semibold text-zinc-900 dark:text-zinc-50 mb-2">Self-contained</h3>
+    <p className="text-zinc-600 dark:text-zinc-400 text-sm">Every style the switcher relies on is in <code>ThemeSwitcherBlock.tsx</code>: Tailwind classes for the controls, and the reveal CSS injected once into <code>&lt;head&gt;</code>. Install it and it works; nothing to copy into <code>globals.css</code>.</p>
+  </div>
   <div className="p-6 rounded-2xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900">
     <h3 className="text-lg font-semibold text-zinc-900 dark:text-zinc-50 mb-2">Hydration Safe</h3>
     <p className="text-zinc-600 dark:text-zinc-400 text-sm">Safely checks if the component is mounted on the client to completely eliminate the infamous React hydration mismatch errors.</p>
@@ -199,6 +209,62 @@ Explore the Theme Switcher's dark mode capabilities, featuring hydration-safe re
               options.
             </li>
           </ul>
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <code>ThemeSwitcher</code>
+        </td>
+        <td>
+          <code>reveal</code>
+        </td>
+        <td>
+          <code>boolean</code>
+        </td>
+        <td>
+          <code>true</code>
+        </td>
+        <td>
+          Grow the new theme out of the clicked control as a circle. Skipped
+          automatically when the browser lacks the View Transitions API, the
+          user prefers reduced motion, or nothing visible would change (for
+          example picking <code>system</code> while it already resolves to the
+          current theme).
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <code>ThemeSwitcher</code>
+        </td>
+        <td>
+          <code>revealDuration</code>
+        </td>
+        <td>
+          <code>number</code>
+        </td>
+        <td>
+          <code>500</code>
+        </td>
+        <td>Length of the reveal, in milliseconds.</td>
+      </tr>
+      <tr>
+        <td>
+          <code>ThemeSwitcher</code>
+        </td>
+        <td>
+          <code>applyTheme</code>
+        </td>
+        <td>
+          <code>(theme: string, origin: Element | null) =&gt; void</code>
+        </td>
+        <td>
+          <code>undefined</code>
+        </td>
+        <td>
+          Replace how a picked theme is applied. By default the switcher reveals
+          and calls <code>setTheme</code>; pass this to do it yourself — persist
+          it first, or hand the switch to a parent document. <code>origin</code>{" "}
+          is the element that was clicked, for positioning your own reveal.
         </td>
       </tr>
       <tr>

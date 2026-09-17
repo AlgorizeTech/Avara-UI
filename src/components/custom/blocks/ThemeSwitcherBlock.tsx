@@ -4,7 +4,8 @@ import { cn } from "@/lib/utils";
 import gsap from "gsap";
 import { Monitor, Moon, Sun } from "lucide-react";
 import { useTheme } from "next-themes";
-import React, { useEffect, useRef, useState, useSyncExternalStore } from "react";
+import React, { useCallback, useEffect, useRef, useState, useSyncExternalStore } from "react";
+import { flushSync } from "react-dom";
 
 /**
  * False while server-rendering and during hydration, true afterwards — without
@@ -18,20 +19,140 @@ const useIsMounted = () =>
     () => false,
   );
 
+// ==========================================
+// CIRCULAR REVEAL
+// The new theme grows out of the control as a circle, using the View
+// Transitions API. Everything it needs lives here — the rules below go into
+// <head> the first time a switcher mounts — so an installed copy works
+// without touching globals.css.
+// ==========================================
+const REVEAL_STYLE_ID = "theme-switcher-reveal";
+const REVEAL_CSS = `
+::view-transition-old(root),
+::view-transition-new(root) {
+  animation: none;
+  mix-blend-mode: normal;
+}
+::view-transition-old(root) { z-index: 1; }
+::view-transition-new(root) { z-index: 9999; }
+/* No CSS transitions while the reveal runs, or colours fade twice. */
+html.theme-transitioning *,
+html.theme-transitioning *::before,
+html.theme-transitioning *::after {
+  transition: none !important;
+}
+`;
+
+function ensureRevealStyles() {
+  if (typeof document === "undefined" || document.getElementById(REVEAL_STYLE_ID)) return;
+  const style = document.createElement("style");
+  style.id = REVEAL_STYLE_ID;
+  style.textContent = REVEAL_CSS;
+  document.head.appendChild(style);
+}
+
+type ViewTransitionDocument = Document & {
+  startViewTransition?: (update: () => void) => {
+    ready: Promise<void>;
+    finished: Promise<void>;
+  };
+};
+
+/**
+ * Applies `apply` behind a circle that grows from the centre of `origin` to
+ * the far corner of the viewport. Falls back to a plain switch when the
+ * browser has no View Transitions API or the user prefers reduced motion.
+ */
+function revealFrom(origin: Element, apply: () => void, duration: number) {
+  const doc = document as ViewTransitionDocument;
+  if (
+    !doc.startViewTransition ||
+    window.matchMedia("(prefers-reduced-motion: reduce)").matches
+  ) {
+    apply();
+    return;
+  }
+
+  const rect = origin.getBoundingClientRect();
+  const x = rect.left + rect.width / 2;
+  const y = rect.top + rect.height / 2;
+  const endRadius = Math.hypot(
+    Math.max(x, window.innerWidth - x),
+    Math.max(y, window.innerHeight - y),
+  );
+
+  const root = document.documentElement;
+  const done = () => root.classList.remove("theme-transitioning");
+  // Belt and braces: never leave transitions disabled if `finished` is slow.
+  window.setTimeout(done, duration + 250);
+
+  const transition = doc.startViewTransition(() => {
+    root.classList.add("theme-transitioning");
+    // Flush so the new theme class is on <html> before the snapshot is taken.
+    flushSync(apply);
+  });
+
+  transition.ready.then(() => {
+    root.animate(
+      {
+        clipPath: [
+          `circle(0px at ${x}px ${y}px)`,
+          `circle(${endRadius}px at ${x}px ${y}px)`,
+        ],
+      },
+      { duration, easing: "ease-in-out", pseudoElement: "::view-transition-new(root)" },
+    );
+  });
+  transition.finished.then(done, done);
+}
+
 
 export type ThemeVariant = "icon" | "pill" | "dropdown";
 
 export interface ThemeSwitcherProps
   extends React.HTMLAttributes<HTMLDivElement> {
   variant?: ThemeVariant;
+  /** Grow the new theme out of the control as a circle. Off = instant switch. */
+  reveal?: boolean;
+  /** Length of the reveal, in ms. */
+  revealDuration?: number;
+  /**
+   * Replace how a picked theme is applied. By default the switcher reveals
+   * and calls next-themes' setTheme; pass this to do it yourself — persist it
+   * first, or hand the switch to a parent document. Gets the theme and the
+   * element that was clicked, for the reveal origin.
+   */
+  applyTheme?: (theme: string, origin: Element | null) => void;
 }
 
 export const ThemeSwitcher = React.forwardRef<
   HTMLDivElement,
   ThemeSwitcherProps
->(({ variant = "icon", className, ...props }, ref) => {
+>(({ variant = "icon", reveal = true, revealDuration = 500, applyTheme, className, ...props }, ref) => {
   const mounted = useIsMounted();
-  const { theme, setTheme, resolvedTheme } = useTheme();
+  const { theme, setTheme, resolvedTheme, systemTheme } = useTheme();
+
+  useEffect(() => {
+    if (reveal) ensureRevealStyles();
+  }, [reveal]);
+
+  // What the variants call. Reveals from the element that was clicked, unless
+  // nothing visible would change (e.g. "system" resolving to the current theme).
+  const select = useCallback(
+    (next: string, origin?: Element | null) => {
+      if (applyTheme) {
+        applyTheme(next, origin ?? null);
+        return;
+      }
+      const nextResolved = next === "system" ? systemTheme : next;
+      if (!reveal || !origin || nextResolved === resolvedTheme) {
+        setTheme(next);
+        return;
+      }
+      revealFrom(origin, () => setTheme(next), revealDuration);
+    },
+    [applyTheme, reveal, revealDuration, resolvedTheme, setTheme, systemTheme],
+  );
 
   // Avoid hydration mismatch by waiting for mount
 
@@ -69,7 +190,7 @@ export const ThemeSwitcher = React.forwardRef<
     return (
       <ThemeSwitcherPill
         theme={theme}
-        setTheme={setTheme}
+        setTheme={select}
         className={className}
         {...props}
         ref={ref}
@@ -82,7 +203,7 @@ export const ThemeSwitcher = React.forwardRef<
       <ThemeSwitcherDropdown
         theme={theme}
         resolvedTheme={resolvedTheme}
-        setTheme={setTheme}
+        setTheme={select}
         className={className}
         {...props}
         ref={ref}
@@ -93,7 +214,7 @@ export const ThemeSwitcher = React.forwardRef<
   return (
     <ThemeSwitcherIcon
       resolvedTheme={resolvedTheme}
-      setTheme={setTheme}
+      setTheme={select}
       className={className}
       {...props}
       ref={ref}
@@ -109,7 +230,8 @@ interface ThemeSwitcherVariantProps
   theme?: string;
   /** What "system" actually resolved to: light | dark. */
   resolvedTheme?: string;
-  setTheme: (theme: string) => void;
+  /** Pass the clicked element as `origin` so the reveal grows from it. */
+  setTheme: (theme: string, origin?: Element | null) => void;
 }
 
 // ==========================================
@@ -169,7 +291,7 @@ const ThemeSwitcherPill = React.forwardRef<HTMLDivElement, ThemeSwitcherVariantP
               ref={(el) => {
                 buttonsRef.current[i] = el;
               }}
-              onClick={() => setTheme(tab.id)}
+              onClick={(e) => setTheme(tab.id, e.currentTarget)}
               className={cn(
                 "relative z-10 flex items-center justify-center w-8 h-8 rounded-full transition-colors duration-200",
                 isActive
@@ -195,7 +317,7 @@ const ThemeSwitcherIcon = React.forwardRef<HTMLDivElement, ThemeSwitcherVariantP
   ({ resolvedTheme, setTheme, className, ...props }, ref) => {
     const iconRef = useRef<HTMLDivElement>(null);
 
-    const toggleTheme = () => {
+    const toggleTheme = (e: React.MouseEvent<HTMLButtonElement>) => {
       const isDark = resolvedTheme === "dark";
 
       // GSAP spin animation
@@ -210,7 +332,7 @@ const ThemeSwitcherIcon = React.forwardRef<HTMLDivElement, ThemeSwitcherVariantP
         });
       }
 
-      setTheme(isDark ? "light" : "dark");
+      setTheme(isDark ? "light" : "dark", e.currentTarget);
     };
 
     return (
@@ -329,7 +451,7 @@ const ThemeSwitcherDropdown = React.forwardRef<HTMLDivElement, ThemeSwitcherVari
                 key={item.id}
                 onClick={(e) => {
                   e.stopPropagation();
-                  setTheme(item.id);
+                  setTheme(item.id, e.currentTarget);
                   setIsOpen(false);
                 }}
                 className={cn(
