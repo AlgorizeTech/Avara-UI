@@ -284,10 +284,10 @@ export default function DropZone() {
   };
 
   return (
+    // The folder takes a soft tint of the theme colour by default; pass \`color\` to pin one.
     <Folder
       interactive
       peek={0}
-      color="#bfdbfe"
       icon={Image}
       label="Drop zone"
       files={files}
@@ -305,11 +305,12 @@ The `Folder` block as an upload surface — a playful alternative to a dropzone 
 
 <ExampleShowcase
   name="upload"
+  colorControl
   columns={1}
   examples={[
     {
       title: "Folder drop target",
-      subheading: "The `Folder` block as an upload surface: drop files on it or click to browse. It starts empty, each dropped file becomes a card with its own progress bar, the pocket tracks the overall figure, and an × removes a file.",
+      subheading: "The `Folder` block as an upload surface, tinted with the theme colour: drop files on it or click to browse. It starts empty, each dropped file becomes a card with its own progress bar, the pocket tracks the overall figure, and an × removes a file.",
       propNotes: [
         {
           lead: "Set",
@@ -327,6 +328,11 @@ The `Folder` block as an upload surface — a playful alternative to a dropzone 
           prop: "progress",
           effect:
             "drives the bar across the pocket (0–100); a per-file `progress` draws a bar on that card. `onRemoveFile` adds an × to each fanned card.",
+        },
+        {
+          prop: "color",
+          effect:
+            "defaults to a soft tint of `--primary` (lightness 0.88, chroma at 40%), so the folder — body, pocket, icon and the peeking cards — follows your theme preset and the colour picker above without going heavy. Pass any CSS colour to pin one.",
         },
       ],
       props: { layout: "folder" },
