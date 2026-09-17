@@ -17,10 +17,11 @@ Explore the different variations of the Folder — each example shows a live pre
 export const usageDefault = `import { Folder } from "@/components/custom/blocks/FolderBlock";
 import { Image } from "lucide-react";
 
+// The folder takes a soft tint of the theme colour by default; pass \`color\` to pin one.
 // peek={0} → an empty folder; peek={3} (default) → filled
 export default function ProductShots() {
   return (
-    <Folder label="Product shots" count="36 photos" color="#bfdbfe" icon={Image} peek={3} />
+    <Folder label="Product shots" count="36 photos" icon={Image} peek={3} />
   );
 }`;
 
@@ -41,7 +42,7 @@ const files = [
 ];
 
 export default function CaseFiles() {
-  return <Folder files={files} label="Case files" color="#bfdbfe" icon={FileText} />;
+  return <Folder files={files} label="Case files" icon={FileText} />;
 }`;
 
 export const usageIcon = `"use client";
@@ -65,8 +66,8 @@ export default function DesignAssets() {
 
   return (
     <div className="flex flex-col items-center gap-8">
-      {/* the icon adopts a darker shade of the folder colour */}
-      <Folder color="#bfdbfe" icon={icon} label="Design assets" count="24 files" />
+      {/* the icon adopts a darker shade of the folder colour, itself a tint of the theme */}
+      <Folder icon={icon} label="Design assets" count="24 files" />
 
       <div className="flex items-center gap-1.5 rounded-full border border-zinc-200 bg-white p-1 dark:border-zinc-800 dark:bg-zinc-900">
         {ICONS.map(({ id, icon: I }) => (
@@ -99,7 +100,7 @@ const photos = [
 ];
 
 export default function SummerTrip() {
-  return <Folder files={photos} label="Summer trip" count="6 photos" color="#bfdbfe" icon={Camera} />;
+  return <Folder files={photos} label="Summer trip" count="6 photos" icon={Camera} />;
 }`;
 
 <ExampleShowcase
@@ -125,6 +126,11 @@ export default function SummerTrip() {
           prop: "size",
           effect:
             "is the folder width in pixels; height, tab, corner radius and card sizes all derive from it.",
+        },
+        {
+          prop: "color",
+          effect:
+            "defaults to a soft tint of `--primary` (lightness 0.88, chroma at 40%), so the folder — body, pocket, icon and the peeking cards — follows your theme preset and the colour picker above without going heavy. Pass any CSS colour to pin one.",
         },
       ],
       props: { example: "showcase" },

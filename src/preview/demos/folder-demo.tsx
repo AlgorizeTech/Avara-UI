@@ -12,20 +12,11 @@ import {
 } from "lucide-react";
 import { useState } from "react";
 
-// "Default" on the page's colour picker means the folder's showcase blue, so
-// the hero matches the original out of the box.
-const getThemeColorHex = (c: string) => {
-  if (c.startsWith("#")) return c;
-  const map: Record<string, string> = {
-    primary: "#bfdbfe",
-    default: "#bfdbfe",
-    indigo: "#c7d2fe",
-    rose: "#fecdd3",
-    emerald: "#a7f3d0",
-    zinc: "#d4d4d8",
-  };
-  return map[c] || "#bfdbfe";
-};
+// No `color` is passed to any folder here on purpose. The sandbox repoints
+// `--primary` at the page's colour picker (and, on "Default", leaves the site
+// theme's own value in place), and the folder's default colour is a soft
+// OKLCH tint of that token — so every example follows the theme preset and
+// the picker without a hand-kept hex map, exactly as the upload page does.
 
 const CASE_FILES: FolderFile[] = [
   { name: "Deposition_transcript.pdf" },
@@ -59,13 +50,13 @@ const ICONS: Array<{ id: string; icon: LucideIcon }> = [
   { id: "video", icon: Video },
 ];
 
-function IconPicker({ color }: { color: string }) {
+function IconPicker() {
   const [iconId, setIconId] = useState("palette");
   const icon = ICONS.find((i) => i.id === iconId)?.icon ?? Palette;
 
   return (
     <div className="flex flex-col items-center gap-8">
-      <Folder color={color} icon={icon} label="Design assets" count="24 files" />
+      <Folder icon={icon} label="Design assets" count="24 files" />
 
       <div className="flex items-center gap-1.5 rounded-full border border-zinc-200 bg-white p-1 dark:border-zinc-800 dark:bg-zinc-900">
         {ICONS.map(({ id, icon: I }) => (
@@ -89,12 +80,12 @@ function IconPicker({ color }: { color: string }) {
 }
 
 export default function FolderDemo({
-  color = "primary",
   peek = 3,
   size = 260,
   blur = 10,
   example = "showcase",
 }: {
+  /** Injected by the colour picker; the folder reads it from `--primary` instead. */
   color?: string;
   peek?: number;
   size?: number;
@@ -102,13 +93,12 @@ export default function FolderDemo({
   /** Which preview to render. */
   example?: "showcase" | "fan" | "icon" | "photos";
 }) {
-  const accent = getThemeColorHex(color);
   const frame = "w-full flex items-center justify-center min-h-[420px] px-6 py-16 relative z-10";
 
   if (example === "fan") {
     return (
       <div className={frame}>
-        <Folder files={CASE_FILES} label="Case files" color={accent} icon={FileText} size={size} blur={blur} />
+        <Folder files={CASE_FILES} label="Case files" icon={FileText} size={size} blur={blur} />
       </div>
     );
   }
@@ -116,7 +106,7 @@ export default function FolderDemo({
   if (example === "icon") {
     return (
       <div className={frame}>
-        <IconPicker color={accent} />
+        <IconPicker />
       </div>
     );
   }
@@ -124,7 +114,7 @@ export default function FolderDemo({
   if (example === "photos") {
     return (
       <div className={frame}>
-        <Folder files={PHOTOS} label="Summer trip" count="6 photos" color={accent} icon={Camera} size={size} blur={blur} />
+        <Folder files={PHOTOS} label="Summer trip" count="6 photos" icon={Camera} size={size} blur={blur} />
       </div>
     );
   }
@@ -134,7 +124,6 @@ export default function FolderDemo({
       <Folder
         label="Product shots"
         count="36 photos"
-        color={accent}
         icon={ImageIcon}
         peek={peek}
         size={size}
