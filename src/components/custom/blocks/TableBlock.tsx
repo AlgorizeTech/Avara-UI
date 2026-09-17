@@ -61,26 +61,26 @@ interface VariantSkin {
 
 const variantClasses: Record<TableVariant, VariantSkin> = {
   default: {
-    wrapper: "bg-white dark:bg-zinc-950 border border-border rounded-xl shadow-sm overflow-hidden",
-    heading: "border-b border-border bg-white dark:bg-zinc-950",
-    footer: "border-t border-border bg-white dark:bg-zinc-950",
-    headerRow: "bg-zinc-50/80 dark:bg-zinc-900/80 border-b border-border",
-    row: "group border-b border-border/70 last:border-0 transition-colors bg-white dark:bg-zinc-950 hover:bg-zinc-50/80 dark:hover:bg-zinc-900/60",
+    wrapper: "w-full bg-white dark:bg-zinc-950 border rounded-xl shadow-sm overflow-hidden",
+    heading: "border-b bg-white dark:bg-zinc-950",
+    footer: "border-t bg-white dark:bg-zinc-950",
+    headerRow: "bg-zinc-50/80 dark:bg-zinc-900/80 border-b",
+    row: "group border-b last:border-0 transition-colors bg-white dark:bg-zinc-950 hover:bg-zinc-50/80 dark:hover:bg-zinc-900/60",
     selectedRow: "bg-zinc-100/80 dark:bg-zinc-900",
-    expanded: "bg-zinc-50/50 dark:bg-zinc-900/40 border-b border-border/70",
+    expanded: "bg-zinc-50/50 dark:bg-zinc-900/40 border-b",
   },
   minimal: {
-    wrapper: "bg-transparent w-full",
-    heading: "border-b border-border",
-    footer: "border-t border-border",
-    headerRow: "border-b-2 border-border",
-    row: "group border-b border-border/60 last:border-0 transition-colors hover:bg-muted/40",
-    selectedRow: "bg-muted/60",
-    expanded: "bg-muted/20 border-b border-border/60",
+    wrapper: "w-full bg-transparent",
+    heading: "border-b",
+    footer: "border-t",
+    headerRow: "border-b-2",
+    row: "group border-b last:border-0 transition-colors bg-transparent hover:bg-zinc-50/80 dark:hover:bg-zinc-900/60",
+    selectedRow: "bg-zinc-100/80 dark:bg-zinc-900/80",
+    expanded: "bg-zinc-50/50 dark:bg-zinc-900/40 border-b",
   },
   glass: {
     wrapper:
-      "bg-white/40 dark:bg-black/40 backdrop-blur-xl border border-white/20 dark:border-white/10 rounded-xl shadow-xl overflow-hidden",
+      "w-full bg-white/40 dark:bg-black/40 backdrop-blur-xl border border-white/20 dark:border-white/10 rounded-xl shadow-xl overflow-hidden",
     heading: "border-b border-white/20 dark:border-white/10",
     footer: "border-t border-white/20 dark:border-white/10",
     headerRow:
@@ -164,7 +164,7 @@ export const TableHeading = forwardRef<HTMLDivElement, TableHeadingProps>(
           "flex flex-wrap items-center justify-between gap-3",
           sizeClasses[size].bar,
           variantClasses[variant].heading,
-          variant === "default" && (theme.borderSoft || "border-primary/25"),
+          (variant === "default" || variant === "minimal") && (theme.borderSoft || "border-primary/12"),
           className,
         )}
         {...props}
@@ -286,7 +286,7 @@ export const TableRow = forwardRef<HTMLTableRowElement, TableRowProps>(
         data-selected={selected || undefined}
         className={cn(
           isHeader ? skin.headerRow : skin.row,
-          variant === "default" && (theme.borderSoft || "border-primary/25"),
+          (variant === "default" || variant === "minimal") && (theme.borderSoft || "border-primary/12"),
           !isHeader && selected && skin.selectedRow,
           className,
         )}
@@ -410,7 +410,7 @@ export const TableFooter = forwardRef<
         "flex flex-col sm:flex-row items-center justify-center sm:justify-between gap-3 text-center sm:text-left w-full",
         sizeClasses[size].bar,
         variantClasses[variant].footer,
-        variant === "default" && (theme.borderSoft || "border-primary/25"),
+        (variant === "default" || variant === "minimal") && (theme.borderSoft || "border-primary/12"),
         className,
       )}
       {...props}
@@ -804,7 +804,7 @@ function DataTableImpl<T>({
         variant={variant}
         color={color}
         size={size}
-        className={cn("relative", className)}
+        className={cn("relative w-full", className)}
         {...props}
       >
         {children}

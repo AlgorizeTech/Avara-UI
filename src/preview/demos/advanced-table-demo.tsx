@@ -167,7 +167,7 @@ export default function AdvancedTableDemo({
   const columnCount = 5 + (selectable ? 1 : 0);
 
   return (
-    <div className="w-full flex flex-col items-center justify-center transition-colors duration-300 rounded-2xl p-0 m-0 relative">
+    <div className="w-full flex flex-col items-center justify-center transition-colors duration-300 rounded-2xl p-4 sm:p-6 m-0 relative">
       <DataTable
         key={`${searchable}-${selectable}-${example}-${color}`}
         data={data}
@@ -288,7 +288,7 @@ export default function AdvancedTableDemo({
                 <div className="flex items-center gap-1">
                   <button
                     onClick={() => handleOpenEditModal(selectedIds)}
-                    className="flex items-center gap-1 px-2 py-1 rounded-md text-[11px] sm:text-[12px] font-bold bg-white/20 hover:bg-white/30 text-white transition-colors whitespace-nowrap active:scale-95 cursor-pointer"
+                    className="flex items-center gap-1 px-2 py-1 rounded-md text-[11px] sm:text-[12px] font-bold bg-white/20 hover:bg-white text-white hover:text-black transition-all whitespace-nowrap active:scale-95 cursor-pointer"
                   >
                     <Edit2 className="w-3 h-3" />
                     <span className="hidden sm:inline">Edit</span>
