@@ -156,7 +156,7 @@ export default function LoginForm({
   const FormContent = (
     <div className="w-full max-w-md mx-auto flex flex-col justify-center h-full">
       <div className="mb-8 text-center sm:text-left">
-        <h2 className="text-3xl font-black text-foreground tracking-tight mb-2">
+        <h2 className="text-3xl font-semibold text-foreground tracking-tight mb-2">
           Welcome back
         </h2>
         <p className="text-sm text-muted-foreground font-medium">
@@ -301,7 +301,7 @@ export default function LoginForm({
           />
 
           <div className="relative z-10">
-            <div className="flex items-center gap-2 font-black text-2xl tracking-tighter">
+            <div className="flex items-center gap-2 font-semibold text-2xl tracking-tighter">
               <div className="w-8 h-8 rounded-lg bg-current/20 flex items-center justify-center backdrop-blur-md">
                 ⚡
               </div>

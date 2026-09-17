@@ -166,10 +166,10 @@ export function DesignComponentsFolder({
                         <span className="py-0.5 rounded text-foreground">3</span>
                         <span className="py-0.5 rounded text-foreground">4</span>
                         <span className="py-0.5 rounded text-foreground">5</span>
-                        <span className="py-0.5 rounded-l-md bg-indigo-600 text-white font-black">14</span>
+                        <span className="py-0.5 rounded-l-md bg-indigo-600 text-white font-semibold">14</span>
                         <span className="py-0.5 bg-indigo-500/20 text-indigo-600 font-extrabold">15</span>
                         <span className="py-0.5 bg-indigo-500/20 text-indigo-600 font-extrabold">16</span>
-                        <span className="py-0.5 rounded-r-md bg-indigo-600 text-white font-black">17</span>
+                        <span className="py-0.5 rounded-r-md bg-indigo-600 text-white font-semibold">17</span>
                       </div>
                     </div>
                   </div>
@@ -282,7 +282,7 @@ export function DesignComponentsFolder({
                       <span className="size-3 rounded-full bg-rose-500/30 block animate-ping absolute inset-0" />
                       <span className="size-2 rounded-full bg-rose-500 block ring-2 ring-rose-500/40 border border-white shadow-xs" />
                     </div>
-                    <div className="absolute bottom-1 left-1 px-1 py-0.2 rounded bg-background/90 border border-sky-500/30 text-[5px] font-black text-sky-600 shadow-2xs">
+                    <div className="absolute bottom-1 left-1 px-1 py-0.2 rounded bg-background/90 border border-sky-500/30 text-[5px] font-semibold text-sky-600 shadow-2xs">
                       Bangladesh
                     </div>
                   </div>
@@ -477,10 +477,10 @@ export function DesignComponentsFolder({
 
                   <div className="w-full h-full relative flex items-center justify-center p-1 my-auto overflow-hidden">
                     <div className="size-20 rounded-full border border-dashed border-cyan-500/35 absolute flex items-center justify-center pointer-events-none">
-                      <div className="absolute -top-1.5 left-1/2 -translate-x-1/2 size-3 rounded-full bg-emerald-500 text-[5px] font-black text-white flex items-center justify-center shadow-xs">A</div>
-                      <div className="absolute -bottom-1.5 left-1/2 -translate-x-1/2 size-3 rounded-full bg-amber-500 text-[5px] font-black text-white flex items-center justify-center shadow-xs">B</div>
+                      <div className="absolute -top-1.5 left-1/2 -translate-x-1/2 size-3 rounded-full bg-emerald-500 text-[5px] font-semibold text-white flex items-center justify-center shadow-xs">A</div>
+                      <div className="absolute -bottom-1.5 left-1/2 -translate-x-1/2 size-3 rounded-full bg-amber-500 text-[5px] font-semibold text-white flex items-center justify-center shadow-xs">B</div>
                     </div>
-                    <div className="size-5 rounded-full bg-cyan-500 text-white font-black text-[7px] flex items-center justify-center shadow-md z-10 border-2 border-background ring-2 ring-cyan-500/20">Core</div>
+                    <div className="size-5 rounded-full bg-cyan-500 text-white font-semibold text-[7px] flex items-center justify-center shadow-md z-10 border-2 border-background ring-2 ring-cyan-500/20">Core</div>
                   </div>
 
                   <span className="absolute top-2.5 right-2.5 text-[10px] font-extrabold px-2 py-0.5 rounded-full bg-cyan-500 text-white shadow-sm z-10">
@@ -529,7 +529,7 @@ export function DesignComponentsFolder({
 
                   <div className="w-full my-auto px-0.5">
                     <div className="w-full p-1.5 rounded-xl bg-card border border-purple-500/20 flex items-center justify-between shadow-xs px-2.5">
-                      <div className="flex items-center gap-1.5 text-[8.5px] font-black text-foreground">
+                      <div className="flex items-center gap-1.5 text-[8.5px] font-semibold text-foreground">
                         <span className="size-2 rounded bg-purple-500" />
                         <span>DocsUI</span>
                       </div>
@@ -617,7 +617,7 @@ export function DesignComponentsFolder({
             {/* Folder Text Content Overlay */}
             <div className="absolute inset-0 p-8 sm:p-12 md:p-16 lg:p-20 flex flex-col justify-end pointer-events-auto">
               <div className="relative z-10">
-                <h3 className="text-3xl sm:text-5xl md:text-6xl lg:text-7xl font-extrabold text-primary-foreground tracking-tight leading-[1.05]">
+                <h3 className="text-3xl sm:text-5xl md:text-6xl lg:text-7xl font-semibold text-primary-foreground tracking-tight leading-[1.05]">
                   Design<br />Components
                 </h3>
               </div>
