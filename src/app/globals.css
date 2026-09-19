@@ -200,6 +200,13 @@ html.dark .shiki span {
   border-radius: 0.375rem !important;
   font-size: 0.85em !important;
   box-shadow: none !important;
+  /* A file path or long identifier is one unbreakable word; without this it
+     runs past the content column on phones. `anywhere` also counts towards
+     min-content, so the chip can never widen a flex or grid parent either.
+     Breaks land at spaces first, inside a word only when it cannot fit. */
+  overflow-wrap: anywhere;
+  box-decoration-break: clone;
+  -webkit-box-decoration-break: clone;
 }
 
 .dark :not(pre) > code:not([data-badge]) {

@@ -9,6 +9,12 @@ const withBundleAnalyzer = require("@next/bundle-analyzer")({
 const nextConfig: NextConfig = {
   /* config options here */
   output: "export", // Force static export - no server functions
+
+  // Stamped into both bundles at build time. src/constants/navigation.ts judges
+  // time-limited "New" badges against it so server and client always agree.
+  env: {
+    NEXT_PUBLIC_BUILD_TIME: new Date().toISOString(),
+  },
   trailingSlash: false,
   reactStrictMode: true,
   pageExtensions: ["js", "jsx", "ts", "tsx", "md", "mdx"],
