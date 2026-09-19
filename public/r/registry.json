@@ -2672,6 +2672,7 @@
         "utilities"
       ],
       "dependencies": [
+        "framer-motion",
         "lucide-react"
       ],
       "registryDependencies": [
@@ -2685,7 +2686,7 @@
           "target": "components/custom/range-date-picker.tsx"
         }
       ],
-      "docs": "Supports variant=('single' | 'dual' | 'priced-single' | 'priced-dual'), getPrice, color, value={from, to}, and onChange."
+      "docs": "Named export: RangeDatePicker. Supports variant=('single' | 'dual' | 'priced-single' | 'priced-dual'), getPrice, color, value={from, to}, onChange, disablePast / minDate / maxDate. `showTime` adds Start / End time columns: the card opens as a bare calendar (empty when uncontrolled) and a time rail unfolds beside it on the first pick — under it when narrow — and folds away on Clear; `timeFormat` (12h | 24h) and `minuteStep` tune the columns. Installs time-picker alongside."
     },
     {
       "name": "register-form",
