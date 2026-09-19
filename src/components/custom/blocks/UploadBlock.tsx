@@ -34,51 +34,9 @@ export interface FileUploadState {
   previewUrl?: string;
 }
 
-// Hex to RGB converter for GSAP rgba() tweens
-const hexToRgb = (hex: string) => {
-  let cleanHex = hex.replace(/^#/, "");
-  if (cleanHex.length === 3)
-    cleanHex = cleanHex
-      .split("")
-      .map((x) => x + x)
-      .join("");
-  const result = /^([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(cleanHex);
-  return result
-    ? `${parseInt(result[1], 16)}, ${parseInt(result[2], 16)}, ${parseInt(result[3], 16)}`
-    : "99, 102, 241"; // Default indigo RGB
-};
-
-// Hook to seamlessly grab and listen to the primaryColor from localStorage
-function useThemeColor(defaultColor = "#6366f1") {
-  const [color, setColor] = useState(defaultColor);
-
-  useEffect(() => {
-    if (typeof window === "undefined") return;
-
-    const fetchColor = () => {
-      const stored = localStorage.getItem("primaryColor");
-      if (stored && stored !== color) {
-        setColor(stored);
-      }
-    };
-
-    // Initial fetch
-    fetchColor();
-
-    // Listen for cross-tab changes
-    window.addEventListener("storage", fetchColor);
-
-    // Polling interval for same-tab dynamic changes (e.g. from a control panel)
-    const interval = setInterval(fetchColor, 500);
-
-    return () => {
-      window.removeEventListener("storage", fetchColor);
-      clearInterval(interval);
-    };
-  }, [color]);
-
-  return color;
-}
+// Accent colour comes from the `--primary` theme token (`border-primary`,
+// `bg-primary`, `text-primary`), so the dropzone and the progress bar follow
+// the site theme and the docs colour picker with no prop and no polling.
 
 // ==========================================
 // 1. DROPZONE (Glitch-Free & Theme Adaptive)
@@ -97,53 +55,25 @@ export const Dropzone = forwardRef<HTMLDivElement, DropzoneProps>(
     const fileInputRef = useRef<HTMLInputElement>(null);
     const [isDragging, setIsDragging] = useState(false);
 
-    // Fetch dynamic theme color
-    const primaryColor = useThemeColor();
-
     // Drag counter prevents bubbling glitches when hovering over children
     const dragCounter = useRef(0);
 
     React.useImperativeHandle(ref, () => internalRef.current as HTMLDivElement);
 
-    // GSAP Reaction on Drag (Injected with Dynamic LocalStorage Theme)
+    // GSAP moves the icon and text on drag; the colours (border, tint, glow,
+    // icon) are Tailwind `data-[dragging]` classes on the token, since GSAP
+    // cannot tween an oklch/var() colour.
     useEffect(() => {
-      if (!internalRef.current || !iconRef.current || !textRef.current) return;
-
-      const rgbColor = hexToRgb(primaryColor);
+      if (!iconRef.current || !textRef.current) return;
 
       if (isDragging) {
-        gsap.to(internalRef.current, {
-          borderColor: primaryColor,
-          backgroundColor: `rgba(${rgbColor}, 0.05)`,
-          boxShadow: `0 0 30px -5px rgba(${rgbColor}, 0.2)`,
-          duration: 0.3,
-          ease: "power2.out",
-        });
-        gsap.to(iconRef.current, {
-          y: -8,
-          scale: 1.1,
-          color: primaryColor,
-          duration: 0.4,
-          ease: "back.out(2)",
-        });
+        gsap.to(iconRef.current, { y: -8, scale: 1.1, duration: 0.4, ease: "back.out(2)" });
         gsap.to(textRef.current, { y: -4, duration: 0.4, ease: "back.out(2)" });
       } else {
-        gsap.to(internalRef.current, {
-          borderColor: "rgba(113, 113, 122, 0.4)", // zinc-500/40
-          backgroundColor: "transparent",
-          boxShadow: "0 0 0px rgba(0,0,0,0)",
-          duration: 0.3,
-        });
-        gsap.to(iconRef.current, {
-          y: 0,
-          scale: 1,
-          color: "#71717a",
-          duration: 0.4,
-          ease: "power2.out",
-        });
+        gsap.to(iconRef.current, { y: 0, scale: 1, duration: 0.4, ease: "power2.out" });
         gsap.to(textRef.current, { y: 0, duration: 0.4, ease: "power2.out" });
       }
-    }, [isDragging, primaryColor]);
+    }, [isDragging]);
 
     const handleDragEnter = (e: React.DragEvent) => {
       e.preventDefault();
@@ -193,8 +123,11 @@ export const Dropzone = forwardRef<HTMLDivElement, DropzoneProps>(
         onDragOver={handleDragOver}
         onDrop={handleDrop}
         onClick={() => fileInputRef.current?.click()}
+        data-dragging={isDragging || undefined}
         className={cn(
-          "relative w-full rounded-2xl border-2 border-dashed border-border flex flex-col items-center justify-center py-12 px-6 cursor-pointer transition-colors overflow-hidden group bg-white/50 dark:bg-transparent",
+          "relative w-full rounded-2xl border-2 border-dashed border-border flex flex-col items-center justify-center py-12 px-6 cursor-pointer overflow-hidden group bg-white/50 dark:bg-transparent",
+          "transition-[border-color,background-color,box-shadow] duration-300",
+          "data-[dragging]:border-primary data-[dragging]:bg-primary/5 data-[dragging]:shadow-[0_0_30px_-5px_color-mix(in_oklab,var(--primary)_20%,transparent)]",
           className,
         )}
         {...props}
@@ -211,7 +144,7 @@ export const Dropzone = forwardRef<HTMLDivElement, DropzoneProps>(
         {/* pointer-events-none prevents drag events from bubbling and glitching the hover state */}
         <div
           ref={iconRef}
-          className="text-muted-foreground mb-4 transition-colors pointer-events-none"
+          className="text-muted-foreground mb-4 transition-colors duration-300 pointer-events-none group-data-[dragging]:text-primary"
         >
           <UploadCloud className="w-10 h-10" strokeWidth={1.5} />
         </div>
@@ -252,8 +185,6 @@ export const UploadItem = forwardRef<HTMLDivElement, UploadItemProps>(
     const progressRef = useRef<HTMLDivElement>(null);
     const glowRef = useRef<HTMLDivElement>(null);
 
-    // Fetch dynamic theme color
-    const primaryColor = useThemeColor();
 
     React.useImperativeHandle(ref, () => cardRef.current as HTMLDivElement);
 
@@ -304,7 +235,7 @@ export const UploadItem = forwardRef<HTMLDivElement, UploadItemProps>(
       ? "bg-rose-500"
       : isSuccess
         ? "bg-emerald-500"
-        : ""; // We use inline styles for the active upload state
+        : "bg-primary";
 
     const iconColor = isError
       ? "text-rose-500"
@@ -433,12 +364,7 @@ export const UploadItem = forwardRef<HTMLDivElement, UploadItemProps>(
               "absolute top-0 bottom-0 left-0 rounded-full",
               barColorClass,
             )}
-            style={{
-              width: "0%",
-              // Inject custom localStorage theme color ONLY if it's currently uploading
-              backgroundColor:
-                !isError && !isSuccess ? primaryColor : undefined,
-            }}
+            style={{ width: "0%" }}
           />
         </div>
       </div>

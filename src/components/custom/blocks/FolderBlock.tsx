@@ -24,12 +24,24 @@ export interface FolderFile {
   name?: string;
 }
 
+/**
+ * The default folder colour: the theme's `--primary` taken down to a pastel
+ * — lightness pinned at 0.88 and chroma cut to 40%, the weight of a `#bfdbfe`
+ * — so it reads as a folder, not a button, and still shifts with the theme.
+ * A grey primary gives a soft grey folder.
+ */
+export const FOLDER_THEME_TINT = "oklch(from var(--primary) 0.88 calc(c * 0.4) h)";
+
 export interface FolderProps {
   /** Title under the folder. */
   label?: string;
   /** Count / subtitle line. Falls back to "{n} items". */
   count?: string;
-  /** Folder body colour. Any CSS color. Default a soft neutral. */
+  /**
+   * Folder body colour. Any CSS colour; by default a soft tint of the theme
+   * colour (`FOLDER_THEME_TINT`), so the folder follows the theme without
+   * shouting. Pocket, icon and skeleton cards derive their shades from it.
+   */
   color?: string;
   /** A lucide icon shown on the front pocket. */
   icon?: LucideIcon;
@@ -228,7 +240,7 @@ function FanNav({
 export function Folder({
   label,
   count,
-  color,
+  color = FOLDER_THEME_TINT,
   icon: Icon,
   blur = 10,
   size = 260,
@@ -254,6 +266,10 @@ export function Folder({
   const [focusedIn, setFocusedIn] = useState(false);
   const [pinned, setPinned] = useState(false);
   const [fanStart, setFanStart] = useState(0);
+  // Set while a card is being dragged, so the click that follows the release
+  // isn't read as a tap on the folder — which would toggle the fan shut on
+  // touch, where the fan only stays open by being pinned.
+  const draggedRef = useRef(false);
   const closeTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   useEffect(
     () => () => {
@@ -317,7 +333,7 @@ export function Folder({
     [w, pocketH, r],
   );
 
-  const body = color ?? "var(--folder-body)";
+  const body = color;
 
   /* ── fan geometry ────────────────────────────────────────────────────── */
   const cardW = w * 0.56;
@@ -467,16 +483,13 @@ export function Folder({
           ? "Drop files or click"
           : undefined);
 
-  // Tint the peeking skeleton cards to match `color` instead of leaving them
-  // on the fixed light/dark tokens — same OKLCH-relative approach as the
-  // pocket/icon, applied as custom-property overrides so SkeletonCard
-  // doesn't need to know about `color` at all.
-  const cardVars = color
-    ? ({
-        "--folder-card": `oklch(from ${color} 0.97 calc(c * 0.3) h)`,
-        "--folder-card-accent": `oklch(from ${color} 0.88 calc(c * 0.6) h)`,
-      } as React.CSSProperties)
-    : undefined;
+  // Tint the peeking skeleton cards to match `color` — same OKLCH-relative
+  // approach as the pocket/icon, applied as custom-property overrides so
+  // SkeletonCard doesn't need to know about `color` at all.
+  const cardVars = {
+    "--folder-card": `oklch(from ${color} 0.97 calc(c * 0.3) h)`,
+    "--folder-card-accent": `oklch(from ${color} 0.88 calc(c * 0.6) h)`,
+  } as React.CSSProperties;
 
   return (
     <div ref={wrapRef} className={cn("inline-flex flex-col items-center gap-4", className)} style={cardVars}>
@@ -496,7 +509,13 @@ export function Folder({
           if (!e.currentTarget.contains(e.relatedTarget as Node)) setFocusedIn(false);
         }}
         {...(tappable && {
-          onClick: () => setPinned((p) => !p),
+          onClick: () => {
+            if (draggedRef.current) {
+              draggedRef.current = false;
+              return;
+            }
+            setPinned((p) => !p);
+          },
           onKeyDown: (e: React.KeyboardEvent) => {
             if (e.key === "Enter" || e.key === " ") {
               e.preventDefault();
@@ -599,8 +618,17 @@ export function Folder({
             const cardEl = (
               <div className="relative h-full w-full">
                 {f.thumb ? (
-                  // eslint-disable-next-line @next/next/no-img-element
-                  <img src={f.thumb} alt="" style={{ width: "100%", height: "100%", objectFit: "cover" }} />
+                  // `draggable={false}` (and no pointer events on the image
+                  // itself): a bare <img> starts the browser's own drag — the
+                  // ghost-image kind — on the first pointer move, which
+                  // swallows the gesture before the card's drag can begin. So
+                  // photos couldn't be swiped while skeleton cards could.
+                  <img
+                    src={f.thumb}
+                    alt=""
+                    draggable={false}
+                    style={{ width: "100%", height: "100%", objectFit: "cover", pointerEvents: "none" }}
+                  />
                 ) : (
                   <SkeletonCard />
                 )}
@@ -651,6 +679,9 @@ export function Folder({
                     dragMomentum: false,
                     dragElastic: 0.35,
                     whileDrag: { cursor: "grabbing" },
+                    onDragStart: () => {
+                      draggedRef.current = true;
+                    },
                     onDragEnd: (e: MouseEvent | TouchEvent | PointerEvent, info: PanInfo) => {
                       e.stopPropagation();
                       const { offset, velocity } = info;
@@ -769,7 +800,7 @@ export function Folder({
               // bump is perceptually consistent for every base colour — mixing
               // a fixed % of white lightens a near-black colour far more than
               // a near-white one.
-              background: color ? `oklch(from ${color} calc(l + 0.08) c h / 0.92)` : "var(--folder-pocket)",
+              background: `oklch(from ${color} calc(l + 0.08) c h / 0.92)`,
               backdropFilter: `blur(${blur}px)`,
               WebkitBackdropFilter: `blur(${blur}px)`,
               boxShadow: "inset 0 1.5px 0 rgba(255,255,255,0.55)",
@@ -778,10 +809,11 @@ export function Folder({
             {(Icon || stickers) && (
               <div
                 className="absolute inset-0 flex flex-col items-center justify-center gap-2"
-                // Same relative-lightness reasoning as the pocket background —
-                // darkening by a fixed OKLCH amount instead of mixing a fixed %
-                // of black, so an already-dark colour isn't crushed.
-                style={{ color: color ? `oklch(from ${color} calc(l - 0.22) c h)` : "var(--folder-icon)" }}
+                // Same relative-lightness reasoning as the pocket background,
+                // and the step flips direction at mid-lightness (`sign()`), so
+                // the icon darkens on a light body and lightens on a dark one
+                // — a near-black theme colour no longer crushes it to black.
+                style={{ color: `oklch(from ${color} calc(l - 0.22 * sign(l - 0.5)) c h)` }}
               >
                 {Icon && <Icon size={Math.round(w * 0.15)} strokeWidth={1.8} />}
                 {stickers && <div className="flex items-center gap-3">{stickers}</div>}
@@ -828,18 +860,12 @@ export function Folder({
 
       <style>{`
         :root {
-          --folder-body: #dfe1e7;
-          --folder-pocket: rgba(232,234,239,0.86);
-          --folder-icon: #71717a;
           --folder-card: #ffffff;
           --folder-card-accent: #e6e8ee;
           --folder-card-line: rgba(0,0,0,0.08);
           --folder-card-line-strong: rgba(0,0,0,0.16);
         }
         .dark {
-          --folder-body: #2c2d33;
-          --folder-pocket: rgba(40,41,47,0.8);
-          --folder-icon: #52525b;
           --folder-card: #eceef3;
           --folder-card-accent: #d5d8e0;
           --folder-card-line: rgba(0,0,0,0.10);

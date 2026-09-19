@@ -582,7 +582,7 @@ function CircularChart({
         {type === "donut" && (
           <div className="absolute inset-0 flex flex-col items-center justify-center pointer-events-none">
             <span className="text-xs font-medium text-muted-foreground">Total</span>
-            <span className="text-xl font-black text-foreground">
+            <span className="text-xl font-semibold text-foreground">
               {prefix}
               {total}
               {suffix}

@@ -1,8 +1,11 @@
 "use client";
 
-import { Accordion } from "@/components/custom/blocks/Accordion";
+import {
+  Accordion,
+  type AccordionDataItem,
+} from "@/components/custom/blocks/Accordion";
 
-const sampleData = [
+const sampleData: AccordionDataItem[] = [
   {
     value: "getting-started",
     title: "How do I get started?",
@@ -32,64 +35,165 @@ const sampleData = [
   },
 ];
 
+/** Questions about the library itself, for the section layout. */
+const libraryFaq: AccordionDataItem[] = [
+  {
+    value: "frameworks",
+    title: "Does it work outside Next.js?",
+    icon: "Code",
+    content: [
+      "Every block is plain React and Tailwind. The docs show a Next.js and a React (Vite) version of each snippet, and only the few components that use next/link or next/image need a one-line swap.",
+    ],
+  },
+  {
+    value: "theming",
+    title: "Can I change the colors?",
+    icon: "Palette",
+    content: [
+      "Everything reads the shadcn theme tokens (primary, card, muted, border), so one edit to globals.css restyles all of it.",
+      "The color picker above this preview is doing exactly that.",
+    ],
+  },
+  {
+    value: "updates",
+    title: "How do updates reach my project?",
+    icon: "RefreshCw",
+    content: [
+      "The CLI copies the source into your repo, so nothing changes behind your back. Re-run the install command to pull a newer version, then review the diff like any other change.",
+    ],
+  },
+  {
+    value: "license",
+    title: "How is it licensed?",
+    icon: "Scale",
+    content: [
+      "MIT. Use it in client work, products and templates, with no attribution required.",
+    ],
+  },
+];
+
 type Variant = "default" | "bordered" | "filled" | "ghost" | "elevated";
+type Animation = "none" | "stack";
+type Interaction =
+  | "single"
+  | "single-mandatory"
+  | "multiple"
+  | "multiple-non-collapsible";
+
+function FaqSection({ animation }: { animation: Animation }) {
+  return (
+    <section className="w-full rounded-3xl border border-border bg-background px-6 py-12 sm:px-10 lg:px-14 lg:py-16">
+      <div className="mx-auto grid max-w-6xl gap-12 lg:grid-cols-[minmax(0,5fr)_minmax(0,7fr)] lg:gap-20">
+        <div className="lg:sticky lg:top-8 lg:self-start">
+          <h2 className="max-w-md font-serif text-4xl leading-[1.05] tracking-tight text-foreground sm:text-5xl">
+            Questions people ask before they install.
+          </h2>
+          <p className="mt-5 max-w-md text-base leading-relaxed text-muted-foreground">
+            Short answers on licensing, theming and where the components run.
+            If yours isn&apos;t here, we read every message.
+          </p>
+
+          <div className="mt-8 flex max-w-md items-center gap-4 rounded-2xl bg-muted/60 p-4">
+            <div className="flex -space-x-2">
+              {["AR", "MK", "JS"].map((initials) => (
+                <span
+                  key={initials}
+                  className="flex size-9 items-center justify-center rounded-full border-2 border-background bg-primary/15 text-xs font-medium text-primary"
+                >
+                  {initials}
+                </span>
+              ))}
+            </div>
+            <div className="min-w-0">
+              <p className="text-sm font-medium text-foreground">Still stuck?</p>
+              <a
+                href="#"
+                className="text-sm text-muted-foreground underline-offset-4 transition-colors hover:text-primary hover:underline"
+              >
+                Email the team, we reply within a day
+              </a>
+            </div>
+          </div>
+        </div>
+
+        <Accordion
+          accordionData={libraryFaq}
+          type="single"
+          collapsible
+          variant="default"
+          animation={animation}
+          defaultValue="theming"
+        />
+      </div>
+    </section>
+  );
+}
 
 export default function AccordionDemo({
-  variant = "bordered",
+  variant = "default",
   interaction = "single",
+  animation = "none",
+  layout = "list",
   expandIcon,
   showAll,
 }: {
   variant?: Variant;
-  interaction?: "single" | "single-mandatory" | "multiple" | "multiple-non-collapsible";
+  interaction?: Interaction;
+  /** "stack" deals the items out from a pile when the accordion comes into view. */
+  animation?: Animation;
+  /** "section" renders the accordion inside a two-column FAQ section. */
+  layout?: "list" | "section";
   /** Lucide name from the block's ICON_MAP, e.g. "Plus". */
   expandIcon?: string;
   /** Render-all mode: one short accordion per visual variant. */
   showAll?: "variants";
 }) {
   const accordionType = interaction.startsWith("multiple") ? "multiple" : "single";
-  const isCollapsible = interaction !== "single-mandatory" && interaction !== "multiple-non-collapsible";
+  const isCollapsible =
+    interaction !== "single-mandatory" && interaction !== "multiple-non-collapsible";
+
+  if (layout === "section") {
+    return (
+      <div className="w-full p-2 sm:p-4">
+        <FaqSection key={animation} animation={animation} />
+      </div>
+    );
+  }
 
   if (showAll === "variants") {
-    const variants: Variant[] = [
-      "default",
-      "bordered",
-      "filled",
-      "ghost",
-      "elevated",
-    ];
+    const variants: Variant[] = ["default", "bordered", "filled", "elevated", "ghost"];
 
     return (
-      <div className="w-full max-w-2xl mx-auto p-4 md:p-8 bg-transparent flex flex-col gap-6">
+      <div className="mx-auto flex w-full max-w-2xl flex-col gap-10 p-4 md:p-8">
         {variants.map((v) => (
-          <Accordion
-            key={v}
-            variant={v}
-            type="single"
-            collapsible
-            defaultValue={v}
-            accordionData={[
-              {
-                value: v,
-                title: `variant="${v}"`,
-                icon: "FileText",
-                content: [`The “${v}” accordion styling.`],
-              },
-            ]}
-          />
+          <div key={v} className="flex flex-col gap-3">
+            <p className="text-xs text-muted-foreground">
+              <code className="rounded-md bg-muted px-1.5 py-0.5 font-mono text-[11px] text-foreground">
+                variant=&quot;{v}&quot;
+              </code>
+            </p>
+            <Accordion
+              variant={v}
+              type="single"
+              collapsible
+              defaultValue="pricing"
+              accordionData={sampleData}
+            />
+          </div>
         ))}
       </div>
     );
   }
 
   return (
-    <div className="w-full max-w-2xl mx-auto p-4 md:p-8 bg-transparent">
+    <div className="mx-auto w-full max-w-2xl p-4 md:p-8">
       <Accordion
-        key={`${variant}-${interaction}-${expandIcon ?? "chevron"}`}
+        key={`${variant}-${interaction}-${animation}-${expandIcon ?? "default"}`}
         accordionData={sampleData}
         type={accordionType}
         collapsible={isCollapsible}
         variant={variant}
+        animation={animation}
         expandIcon={expandIcon}
         defaultValue={
           accordionType === "single" ? "getting-started" : ["getting-started"]

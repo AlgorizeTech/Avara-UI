@@ -12,8 +12,10 @@ import { CircularText } from "@/components/custom/blocks/CircularTextBlock";
 
 export default function VideoBadge() {
   return (
-    <CircularText text="Learn about us through this video" size={128} speed={20} color="currentColor">
-      <span className="grid size-11 place-items-center rounded-full bg-[#111] text-white">
+    // The ring is \`var(--primary)\` by default; the button uses the same tokens,
+    // so both follow the theme.
+    <CircularText text="Learn about us through this video" size={128} speed={20}>
+      <span className="grid size-11 place-items-center rounded-full bg-primary text-primary-foreground">
         <Play size={14} className="ml-0.5 fill-current" />
       </span>
     </CircularText>
@@ -24,9 +26,16 @@ export const usageStamp = `import { CircularText } from "@/components/custom/blo
 
 export default function Stamp() {
   return (
-    <CircularText text="Est. 2021" separator=" ✦ " size={140} fontSize={10} innerRing>
-      <span className="font-serif text-3xl italic">tz</span>
-    </CircularText>
+    <>
+      {/* Ring in the theme colour, mark in ink. */}
+      <CircularText text="Est. 2021" separator=" ✦ " size={140} fontSize={10} innerRing>
+        <span className="font-serif text-3xl italic text-foreground">tz</span>
+      </CircularText>
+      {/* The other way round: ring in ink, dot in the theme colour. */}
+      <CircularText text="Open studio" size={110} fontSize={11} tracking={0.22} color="currentColor" className="text-foreground">
+        <span className="size-3 rounded-full bg-primary" />
+      </CircularText>
+    </>
   );
 }`;
 
@@ -35,9 +44,11 @@ import { CircularText } from "@/components/custom/blocks/CircularTextBlock";
 
 export default function SeeTheWork() {
   return (
-    <a href="/work" className="group rounded-full outline-none focus-visible:ring-2 focus-visible:ring-primary/50">
+    // \`currentColor\` takes the anchor's ink — \`text-primary\` here — so the
+    // ring, the border and the arrow all follow the theme.
+    <a href="/work" className="group rounded-full text-primary outline-none focus-visible:ring-2 focus-visible:ring-primary/50">
       <CircularText text="See the work" size={128} color="currentColor">
-        <span className="grid size-12 place-items-center rounded-full border border-current transition-colors group-hover:bg-[#111] group-hover:text-white">
+        <span className="grid size-12 place-items-center rounded-full border border-current transition-colors group-hover:bg-primary group-hover:text-primary-foreground">
           <ArrowUpRight size={18} />
         </span>
       </CircularText>
@@ -47,11 +58,12 @@ export default function SeeTheWork() {
 
 <ExampleShowcase
   name="circular-text"
+  colorControl
   columns={1}
   examples={[
     {
       title: "Video badge",
-      subheading: "A phrase on the ring and a play button in the middle. The ring turns once every 20 seconds and holds still under prefers-reduced-motion.",
+      subheading: "A phrase on the ring and a play button in the middle, both in the theme colour. The ring turns once every 20 seconds and holds still under prefers-reduced-motion.",
       propNotes: [
         {
           prop: "text",
@@ -62,6 +74,11 @@ export default function SeeTheWork() {
           prop: "children",
           effect:
             "sit in the middle, centred. Anything goes — a button, a mark, a number.",
+        },
+        {
+          prop: "color",
+          effect:
+            "is `var(--primary)` by default, so the ring follows your theme preset and the colour picker above with no prop. Pass any CSS colour to pin it.",
         },
       ],
       props: { example: "badge" },
@@ -80,11 +97,12 @@ export default function SeeTheWork() {
 
 <ExampleShowcase
   name="circular-text"
+  colorControl
   columns={1}
   examples={[
     {
       title: "Stamps",
-      subheading: "Two marks with their own separators, one with the inner ring.",
+      subheading: "Two marks with their own separators, one with the inner ring — the first puts the theme colour on the ring, the second on the centre dot.",
       propNotes: [
         {
           prop: "innerRing",
@@ -108,7 +126,7 @@ export default function SeeTheWork() {
           lead: "Set",
           prop: "color",
           value: '"currentColor"',
-          effect: "and the ring takes the text colour of its parent, so it follows a link's hover and dark-mode ink.",
+          effect: "and the ring takes the text colour of its parent — `text-primary` on the anchor here — so it follows the theme, a link's hover and dark-mode ink together.",
         },
         {
           prop: "direction",

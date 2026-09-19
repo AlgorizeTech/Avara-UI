@@ -315,12 +315,6 @@
       "originalMdx": "[framework]\\examples\\video-text\\page.mdx"
     },
     {
-      "name": "nextjs/examples/waitlist",
-      "path": "/docs/nextjs-examples-waitlist.md",
-      "url": "/docs/nextjs/examples/waitlist",
-      "originalMdx": "[framework]\\examples\\waitlist\\page.mdx"
-    },
-    {
       "name": "nextjs/fashion-hero",
       "path": "/docs/nextjs-fashion-hero.md",
       "url": "/docs/nextjs/fashion-hero",
@@ -837,6 +831,12 @@
       "originalMdx": "[framework]\\video-player\\page.mdx"
     },
     {
+      "name": "nextjs/waitlist",
+      "path": "/docs/nextjs-waitlist.md",
+      "url": "/docs/nextjs/waitlist",
+      "originalMdx": "[framework]\\waitlist\\page.mdx"
+    },
+    {
       "name": "nextjs/wizard",
       "path": "/docs/nextjs-wizard.md",
       "url": "/docs/nextjs/wizard",
@@ -1159,12 +1159,6 @@
       "path": "/docs/reactjs-examples-video-text.md",
       "url": "/docs/reactjs/examples/video-text",
       "originalMdx": "[framework]\\examples\\video-text\\page.mdx"
-    },
-    {
-      "name": "reactjs/examples/waitlist",
-      "path": "/docs/reactjs-examples-waitlist.md",
-      "url": "/docs/reactjs/examples/waitlist",
-      "originalMdx": "[framework]\\examples\\waitlist\\page.mdx"
     },
     {
       "name": "reactjs/fashion-hero",
@@ -1681,6 +1675,12 @@
       "path": "/docs/reactjs-video-player.md",
       "url": "/docs/reactjs/video-player",
       "originalMdx": "[framework]\\video-player\\page.mdx"
+    },
+    {
+      "name": "reactjs/waitlist",
+      "path": "/docs/reactjs-waitlist.md",
+      "url": "/docs/reactjs/waitlist",
+      "originalMdx": "[framework]\\waitlist\\page.mdx"
     },
     {
       "name": "reactjs/wizard",

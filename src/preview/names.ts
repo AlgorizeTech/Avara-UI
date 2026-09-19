@@ -155,6 +155,7 @@ export const sandboxNames = [
   "video-player",
   "video-player-jw",
   "video-player-plyr",
+  "waitlist",
   "wizard",
 ] as const;
 

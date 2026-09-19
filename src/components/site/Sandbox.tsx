@@ -199,7 +199,6 @@ export function Sandbox({
   maxHeight?: number;
 }) {
   const {
-    fit: fitOption = options.zoom ?? true,
     fullscreen: fullscreenOption = true,
     deviceSwitcher = true,
     reset = true,

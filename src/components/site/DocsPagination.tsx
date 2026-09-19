@@ -2,7 +2,7 @@
 
 import { usePathname, useRouter } from "next/navigation";
 import { navHref, navigation } from "@/constants/navigation";
-import { docsHref, frameworkFromPathname, slugFromPathname } from "@/lib/framework";
+import { frameworkFromPathname, slugFromPathname } from "@/lib/framework";
 import Link from "next/link";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import { useEffect, useState } from "react";

@@ -746,6 +746,17 @@ html body[data-scroll-locked] {
   --default-mono-font-feature-settings: normal;
   --default-mono-font-variation-settings: normal;
 }
+
+/* Pins the site's default body family regardless of the customizer's font
+   choice. The customizer overrides --font-sans inline on <html>; redeclaring
+   it on this wrapper wins for everything inside, so `font-sans` utilities
+   underneath still resolve to DM Sans. Used by the home page, whose
+   typography is part of the design and shouldn't follow the reader's pick. */
+.font-site-sans {
+  --font-sans: var(--font-dm-sans), ui-sans-serif, system-ui, sans-serif,
+    "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+  font-family: var(--font-sans);
+}
 /* Grid background with light/dark mode and more visible lines */
 .grid-bg {
   background-image:

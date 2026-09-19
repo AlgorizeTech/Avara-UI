@@ -109,7 +109,7 @@ export const HomepageHeroBlock = forwardRef<HTMLElement, HomepageHeroBlockProps>
             {/* Top Pill Badge */}
             {badgeText && (
               <Link href={badgeHref} className="inline-block group">
-                <div className="inline-flex items-center gap-1 sm:gap-2 px-2.5 sm:px-5 py-1 sm:py-2.5 rounded-full bg-primary/10 border border-primary/30 text-[9px] xs:text-[10px] sm:text-base font-bold text-primary group-hover:bg-primary/20 group-hover:border-primary/50 transition-all duration-300">
+                <div className="inline-flex items-center gap-1 sm:gap-2 px-2.5 sm:px-3 py-1 sm:py-1.5 rounded-full bg-primary/10 border border-primary/30 text-[9px] xs:text-[10px] sm:text-xs font-bold text-primary group-hover:bg-primary/20 group-hover:border-primary/50 transition-all duration-300">
                   <Sparkles className="size-2.5 xs:size-3 sm:size-4 text-primary animate-spin shrink-0" />
                   <span className="truncate max-w-[140px] xs:max-w-[170px] sm:max-w-none">
                     {badgeText}
@@ -119,7 +119,7 @@ export const HomepageHeroBlock = forwardRef<HTMLElement, HomepageHeroBlockProps>
             )}
 
             {/* Dynamic Animated Title Word (Vertical Text Slide / Word Flip) */}
-            <h1 className="text-xl xs:text-2xl sm:text-2xl md:text-3xl lg:text-4xl xl:text-5xl font-black tracking-tight leading-tight text-foreground text-center inline-flex items-center justify-center flex-wrap">
+            <h1 className="text-xl xs:text-2xl sm:text-2xl md:text-3xl lg:text-5xl xl:text-7xl font-medium tracking-tight leading-tight text-foreground text-center inline-flex items-center justify-center flex-wrap">
               <span className="shrink-0 mr-2">
                 {titlePrefix}
                 <span className="text-primary">Interactive</span>
@@ -136,7 +136,7 @@ export const HomepageHeroBlock = forwardRef<HTMLElement, HomepageHeroBlockProps>
                       duration: 0.45,
                       ease: [0.16, 1, 0.3, 1],
                     }}
-                    className="text-foreground font-black inline-block whitespace-nowrap text-left"
+                    className="text-foreground font-medium inline-block whitespace-nowrap text-left"
                   >
                     {currentWord}
                   </motion.span>

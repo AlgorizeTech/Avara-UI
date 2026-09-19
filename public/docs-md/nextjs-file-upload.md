@@ -150,6 +150,7 @@ export default function DropZone() {
   };
 
   return (
+    // The folder takes a soft tint of the theme colour by default; pass \`color\` to pin one.
      setFiles((prev) => prev.filter((_, idx) => idx !== i))}
       accept="image/*,.pdf"
     />

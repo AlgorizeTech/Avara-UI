@@ -6,9 +6,10 @@ import * as React from "react";
 
 import { cn } from "@/lib/utils";
 
-type AccordionProps = React.ComponentPropsWithoutRef<
-  typeof AccordionPrimitive.Root
->;
+// ComponentProps, not ComponentPropsWithoutRef: React 19 passes `ref` as an
+// ordinary prop, so blocks can reach the root element (the Accordion block
+// measures it for its stack entrance).
+type AccordionProps = React.ComponentProps<typeof AccordionPrimitive.Root>;
 function Accordion(props: AccordionProps) {
   return <AccordionPrimitive.Root data-slot="accordion" {...props} />;
 }
