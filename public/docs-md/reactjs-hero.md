@@ -58,6 +58,14 @@ export default function OrbitHeroDemo() {
   );
 }`;
 
+export const usageNorway = `import { HeroBlock } from "@/components/custom/blocks/HeroBlock";
+
+export default function NorwayHeroDemo() {
+  return (
+    
+  );
+}`;
+
 ## Props Reference
 
         Prop

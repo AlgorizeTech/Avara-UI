@@ -13,7 +13,7 @@ const RADIUS_OPTIONS = [
 ];
 
 export function RadiusPicker() {
-  const { state, setRadius } = useThemeCustomizer();
+  const { state, setRadius, hydrated } = useThemeCustomizer();
   const radius = state.radius;
   const [inputValue, setInputValue] = React.useState<string>(String(radius));
 
@@ -51,21 +51,24 @@ export function RadiusPicker() {
 
       {/* Preset buttons */}
       <div className="flex gap-1.5">
-        {RADIUS_OPTIONS.map((option) => (
-          <button
-            key={option.value}
-            type="button"
-            onClick={() => setRadius(option.value)}
-            className={cn(
-              "flex-1 py-1.5 text-xs font-medium rounded-md transition-all duration-200 cursor-pointer border outline-none focus-visible:ring-2 focus-visible:ring-ring",
-              radius === option.value
-                ? "bg-primary text-primary-foreground border-primary shadow-sm"
-                : "bg-background text-muted-foreground border-border hover:bg-primary/10 hover:border-primary/30 hover:text-primary"
-            )}
-          >
-            {option.label}
-          </button>
-        ))}
+        {RADIUS_OPTIONS.map((option) => {
+          const isActive = hydrated && radius === option.value;
+          return (
+            <button
+              key={option.value}
+              type="button"
+              onClick={() => setRadius(option.value)}
+              className={cn(
+                "flex-1 py-1.5 text-xs font-medium rounded-md transition-all duration-200 cursor-pointer border outline-none focus-visible:ring-2 focus-visible:ring-ring",
+                isActive
+                  ? "bg-primary text-primary-foreground border-primary shadow-sm"
+                  : "bg-background text-muted-foreground border-border hover:bg-primary/10 hover:border-primary/30 hover:text-primary"
+              )}
+            >
+              {option.label}
+            </button>
+          );
+        })}
       </div>
     </div>
   );

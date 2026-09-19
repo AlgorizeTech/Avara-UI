@@ -30,8 +30,8 @@ const GitHubIcon = (props: React.SVGProps<SVGSVGElement>) => (
    ═══════════════════════════════════════════════ */
 
 export interface HeroBlockProps extends React.HTMLAttributes<HTMLElement> {
-  /** Animation variant: "bounce", "typing", "slider", "glow-arc", "pet-shop", "doctor", "component-wall", "orbit" */
-  variant?: "bounce" | "typing" | "slider" | "glow-arc" | "pet-shop" | "doctor" | "component-wall" | "orbit";
+  /** Animation variant: "bounce", "typing", "slider", "glow-arc", "pet-shop", "doctor", "component-wall", "orbit", "norway" */
+  variant?: "bounce" | "typing" | "slider" | "glow-arc" | "pet-shop" | "doctor" | "component-wall" | "orbit" | "norway";
   /** Optional badge text displayed inside the top pill badge */
   badgeText?: string;
   /** Badge link URL */
@@ -158,6 +158,15 @@ const DEFAULT_ORBIT_IMAGES = [
   "https://images.unsplash.com/photo-1473448912268-2022ce9509d8?q=80&w=600&auto=format&fit=crop", // Pine Tree Forest
   "https://images.unsplash.com/photo-1518495973542-4542c06a5843?q=80&w=600&auto=format&fit=crop", // Sunlit Trees
 ];
+
+const DEFAULT_NORWAY_IMAGES = {
+  bg: "https://images.unsplash.com/photo-1506744038136-46273834b3fb?q=80&w=1920&auto=format&fit=crop", // Norway Fjord Mountain
+  mainHeroHex: "https://images.unsplash.com/photo-1470071459604-3b5ec3a7fe05?q=80&w=1000&auto=format&fit=crop", // Majestic Foggy Waterfall & Green Valley Nature
+  topHex: "https://images.unsplash.com/photo-1448375240586-882707db888b?q=80&w=800&auto=format&fit=crop", // Sunlit Forest Nature Path
+  rightHex: "https://images.unsplash.com/photo-1507525428034-b723cf961d3e?q=80&w=800&auto=format&fit=crop", // Emerald Fjord Beach Nature
+  bottomHex: "https://images.unsplash.com/photo-1441974231531-c6227db76b6e?q=80&w=800&auto=format&fit=crop", // Green Wilderness Sunlight Trees
+  bottomRightVertical: "https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?q=80&w=800&auto=format&fit=crop", // Alpine Mountain Peak Nature Reflection
+};
 
 /* ═══════════════════════════════════════════════
    MAIN HERO BLOCK COMPONENT
@@ -336,6 +345,184 @@ export const HeroBlock = forwardRef<HTMLElement, HeroBlockProps>(
     } as React.CSSProperties;
 
     const currentWord = typingWords?.[currentWordIndex] || "";
+
+    /* ═══════════════════════════════════════════════
+       VARIANT: NORWAY (HEXAGON NATURE GALLERY HERO)
+       ═══════════════════════════════════════════════ */
+    if (variant === "norway") {
+      const norwayTitlePrefix = titlePrefix === "Build " ? "Amazing" : titlePrefix;
+      const norwayTitleAccent = titleSuffix || (titlePrefix === "Build " ? "NORWAY" : "NORWAY");
+      const norwaySubtitle =
+        subtitle ===
+        "A meticulous library of React components & interactive blocks, engineered for seamless performance with Tailwind CSS, TypeScript, GSAP, and Framer Motion."
+          ? "Visit Norway, you will never regret it. This is something incredible - fantastic nature, fjords, fancy outlines of the coast..."
+          : subtitle;
+      const norwayPrimaryAction = primaryActionLabel === "Browse Components" ? "BOOK A TOUR" : primaryActionLabel;
+
+      return (
+        <section
+          ref={ref}
+          style={customStyle}
+          className={cn(
+            "relative w-full min-h-[520px] sm:min-h-[720px] lg:min-h-[840px] flex flex-col justify-between overflow-hidden bg-white dark:bg-black text-foreground select-none py-6 sm:py-8 px-3 xs:px-4 sm:px-8 lg:px-12 transition-colors duration-500",
+            className,
+          )}
+          {...props}
+        >
+          {/* Subtle Masked Grid Background */}
+          <div className="absolute inset-0 bg-[linear-gradient(to_right,rgba(0,0,0,0.03)_1px,transparent_1px),linear-gradient(to_bottom,rgba(0,0,0,0.03)_1px,transparent_1px)] dark:bg-[linear-gradient(to_right,rgba(255,255,255,0.025)_1px,transparent_1px),linear-gradient(to_bottom,rgba(255,255,255,0.025)_1px,transparent_1px)] bg-[size:24px_24px] sm:bg-[size:32px_32px] [mask-image:radial-gradient(ellipse_80%_80%_at_50%_50%,black_30%,transparent_100%)] pointer-events-none" />
+
+          {/* Pointy-Top Regular Hexagon Clip Path (50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%) */}
+          <style>{`
+            .clip-hexagon-pointy {
+              clip-path: polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%);
+            }
+          `}</style>
+
+          {/* Main Hero Visual Area */}
+          <div className="relative z-20 max-w-[1400px] mx-auto w-full flex-1 grid grid-cols-1 lg:grid-cols-12 gap-6 sm:gap-8 items-center my-auto">
+            
+            {/* Left Column: Typography & Subtitle */}
+            <div className="col-span-1 lg:col-span-5 flex flex-col justify-center text-center lg:text-left items-center lg:items-start space-y-3 sm:space-y-5 lg:space-y-7 z-30">
+              
+              {/* Title & Gold Line Sub-Badge */}
+              <div className="space-y-1 sm:space-y-2 flex flex-col items-center lg:items-start">
+                <p className="text-lg xs:text-xl sm:text-2xl md:text-3xl font-light tracking-wide text-zinc-600 dark:text-zinc-300">
+                  {norwayTitlePrefix}
+                </p>
+
+                <div className="flex items-center justify-center lg:justify-start gap-3 sm:gap-4">
+                  <div className="w-8 xs:w-12 sm:w-16 h-[2px] sm:h-[2.5px]" style={{ backgroundColor: "var(--hero-accent-text)" }} />
+                  <h1 className="text-3xl xs:text-4xl sm:text-6xl md:text-7xl font-extrabold tracking-widest uppercase" style={{ color: "var(--hero-accent-text)" }}>
+                    {norwayTitleAccent}
+                  </h1>
+                </div>
+              </div>
+
+              {/* Subtitle Paragraph */}
+              <p className="text-xs xs:text-sm sm:text-base text-zinc-600 dark:text-zinc-400 leading-normal sm:leading-relaxed max-w-xs xs:max-w-sm sm:max-w-md font-light">
+                {norwaySubtitle}
+              </p>
+            </div>
+
+            {/* Right Column: Identical Pointy-Top Hexagonal Mosaic Grid */}
+            <div className="col-span-1 lg:col-span-7 relative w-full h-[320px] xs:h-[380px] sm:h-[540px] md:h-[620px] flex items-center justify-center overflow-visible">
+              <div className="relative w-full max-w-[320px] xs:max-w-[400px] sm:max-w-[650px] h-full flex items-center justify-center">
+
+                {/* Main Waterfall Hero Pointy Hexagon (Span Left Center) */}
+                <motion.div
+                  whileHover={{ scale: 1.02 }}
+                  transition={{ duration: 0.3 }}
+                  className="absolute left-[0%] top-[8%] sm:left-[2%] sm:top-[10%] w-[150px] h-[173px] xs:w-[190px] xs:h-[219px] sm:w-[330px] sm:h-[380px] md:w-[390px] md:h-[450px] z-20"
+                >
+                  <div className="clip-hexagon-pointy w-full h-full relative shadow-2xl bg-zinc-100 dark:bg-zinc-900 group cursor-pointer overflow-hidden">
+                    <img
+                      src={mainImage !== DEFAULT_MAIN_IMAGE ? mainImage : DEFAULT_NORWAY_IMAGES.mainHeroHex}
+                      alt="Norway Waterfall Bridge"
+                      className="w-full h-full object-cover"
+                    />
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+                  </div>
+                </motion.div>
+
+                {/* Top Center Pointy Hexagon */}
+                <motion.div
+                  whileHover={{ scale: 1.03 }}
+                  transition={{ duration: 0.3 }}
+                  className="absolute left-[36%] top-[0%] sm:left-[40%] sm:top-[0%] w-[80px] h-[92px] xs:w-[100px] xs:h-[115px] sm:w-[170px] sm:h-[196px] md:w-[200px] md:h-[230px] z-10"
+                >
+                  <div className="clip-hexagon-pointy w-full h-full relative shadow-xl bg-zinc-100 dark:bg-zinc-900 group cursor-pointer overflow-hidden">
+                    <img
+                      src={DEFAULT_NORWAY_IMAGES.topHex}
+                      alt="Lofoten Islands"
+                      className="w-full h-full object-cover"
+                    />
+                  </div>
+                </motion.div>
+
+                {/* Middle Right Coast Pointy Hexagon */}
+                <motion.div
+                  whileHover={{ scale: 1.03 }}
+                  transition={{ duration: 0.3 }}
+                  className="absolute right-[0%] top-[20%] sm:right-[5%] sm:top-[26%] w-[75px] h-[86px] xs:w-[95px] xs:h-[109px] sm:w-[165px] sm:h-[190px] md:w-[195px] md:h-[225px] z-10"
+                >
+                  <div className="clip-hexagon-pointy w-full h-full relative shadow-xl bg-zinc-100 dark:bg-zinc-900 group cursor-pointer overflow-hidden">
+                    <img
+                      src={DEFAULT_NORWAY_IMAGES.rightHex}
+                      alt="Fjord Emerald Coast"
+                      className="w-full h-full object-cover"
+                    />
+                  </div>
+                </motion.div>
+
+                {/* Golden Pointy Hexagonal Action Button (BOOK A TOUR) */}
+                <motion.div
+                  whileHover={{ scale: 1.04 }}
+                  whileTap={{ scale: 0.96 }}
+                  transition={{ duration: 0.2 }}
+                  className="absolute left-[38%] bottom-[8%] sm:left-[42%] sm:bottom-[12%] w-[75px] h-[86px] xs:w-[95px] xs:h-[109px] sm:w-[155px] sm:h-[178px] md:w-[180px] md:h-[207px] z-30 cursor-pointer"
+                >
+                  <Link
+                    href={primaryActionHref}
+                    className="clip-hexagon-pointy w-full h-full bg-[var(--hero-accent-text)] text-white dark:text-[#0A1A1B] hover:opacity-90 flex flex-col items-center justify-center p-1.5 sm:p-3 text-center transition-opacity shadow-2xl group"
+                  >
+                    <span className="text-[8px] xs:text-[9px] sm:text-xs font-black tracking-wider uppercase flex items-center gap-1 group-hover:translate-x-0.5 transition-transform">
+                      <span>▶</span>
+                    </span>
+                    <span className="text-[9px] xs:text-[10px] sm:text-sm md:text-base font-black tracking-widest leading-none sm:leading-tight uppercase mt-0.5 sm:mt-1">
+                      {norwayPrimaryAction}
+                    </span>
+                  </Link>
+                </motion.div>
+
+                {/* Bottom Left Mountain Valley Pointy Hexagon */}
+                <motion.div
+                  whileHover={{ scale: 1.03 }}
+                  transition={{ duration: 0.3 }}
+                  className="absolute left-[18%] bottom-[0%] sm:left-[22%] sm:bottom-[2%] w-[65px] h-[75px] xs:w-[85px] xs:h-[98px] sm:w-[140px] sm:h-[161px] md:w-[160px] md:h-[184px] z-10"
+                >
+                  <div className="clip-hexagon-pointy w-full h-full relative shadow-xl bg-zinc-100 dark:bg-zinc-900 group cursor-pointer overflow-hidden">
+                    <img
+                      src={DEFAULT_NORWAY_IMAGES.bottomHex}
+                      alt="Aerial Ocean Fjord"
+                      className="w-full h-full object-cover"
+                    />
+                  </div>
+                </motion.div>
+
+                {/* Bottom Far-Right Fjord Landscape Pointy Hexagon */}
+                <motion.div
+                  whileHover={{ scale: 1.03 }}
+                  transition={{ duration: 0.3 }}
+                  className="absolute right-[-2%] bottom-[-2%] sm:right-[0%] sm:bottom-[0%] w-[75px] h-[86px] xs:w-[95px] xs:h-[109px] sm:w-[160px] sm:h-[184px] md:w-[185px] md:h-[213px] z-10"
+                >
+                  <div className="clip-hexagon-pointy w-full h-full relative shadow-xl bg-zinc-100 dark:bg-zinc-900 group cursor-pointer overflow-hidden">
+                    <img
+                      src={DEFAULT_NORWAY_IMAGES.bottomRightVertical}
+                      alt="Norwegian Coastal Reflections"
+                      className="w-full h-full object-cover"
+                    />
+                  </div>
+                </motion.div>
+
+              </div>
+            </div>
+
+          </div>
+
+          {/* Bottom Social Media Bar */}
+          <div className="relative z-20 max-w-[1400px] mx-auto w-full pt-4 sm:pt-6 border-t border-zinc-200 dark:border-zinc-800 flex flex-wrap items-center justify-center lg:justify-start gap-3 xs:gap-5 sm:gap-8 text-[10px] xs:text-xs font-light text-zinc-500 dark:text-zinc-400">
+            <div className="flex items-center gap-4 xs:gap-6 sm:gap-8 tracking-wider">
+              <Link href="#" className="hover:text-foreground dark:hover:text-white transition-colors">Facebook</Link>
+              <Link href="#" className="hover:text-foreground dark:hover:text-white transition-colors">Twitter</Link>
+              <Link href="#" className="hover:text-foreground dark:hover:text-white transition-colors">Instagram</Link>
+              <Link href="#" className="hover:text-foreground dark:hover:text-white transition-colors">Pinterest</Link>
+              <Link href="#" className="hover:text-foreground dark:hover:text-white transition-colors">Google+</Link>
+            </div>
+          </div>
+        </section>
+      );
+    }
 
     /* ═══════════════════════════════════════════════
        VARIANT: ORBIT (INFINITE CIRCULAR REVOLVING GALLERY HERO)

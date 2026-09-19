@@ -6,9 +6,9 @@ import { THEME_PRESETS } from '@/lib/theme-presets';
 import { cn } from '@/lib/utils';
 import { Check } from 'lucide-react';
 export function ThemePresetSelector() {
-  const { activePreset, applyPreset, currentMode } = useThemeCustomizer();
+  const { activePreset, applyPreset, currentMode, hydrated } = useThemeCustomizer();
 
-  const isCustom = activePreset === 'custom';
+  const isCustom = hydrated && activePreset === 'custom';
 
   return (
     <div className="space-y-2.5">
@@ -25,7 +25,7 @@ export function ThemePresetSelector() {
 
       <div className="grid grid-cols-3 gap-2">
         {THEME_PRESETS.map((preset) => {
-          const isActive = activePreset === preset.name;
+          const isActive = hydrated && activePreset === preset.name;
           const presetColors = preset.colors[currentMode];
           const previewColors = [
             presetColors['primary'],
@@ -47,10 +47,10 @@ export function ThemePresetSelector() {
                   : undefined
               }
               className={cn(
-                "relative group flex flex-col justify-between p-2.5 rounded-lg border text-left transition-all duration-150 cursor-pointer h-[76px]",
+                "relative group flex flex-col justify-between p-2.5 rounded-lg border text-left transition-all duration-150 cursor-pointer h-[76px] focus:outline-none focus-visible:outline-none",
                 isActive
                   ? "bg-white dark:bg-zinc-900 shadow-sm"
-                  : "bg-background border-border hover:bg-primary/5 hover:border-primary/30"
+                  : "bg-background border-border/80 hover:bg-primary/5 hover:border-primary/30"
               )}
             >
               {/* Row of Color Swatches */}

@@ -288,24 +288,39 @@ export default function OrbitHeroDemo() {
   );
 }`;
 
+export const usageNorway = `import { HeroBlock } from "@/components/custom/blocks/HeroBlock";
+
+export default function NorwayHeroDemo() {
+  return (
+    <HeroBlock
+      variant="norway"
+      titlePrefix="Amazing"
+      titleSuffix="NORWAY"
+      subtitle="Visit Norway, you will never regret it. This is something incredible - fantastic nature, fjords, fancy outlines of the coast..."
+      primaryActionLabel="BOOK A TOUR"
+      primaryActionHref="/tours"
+    />
+  );
+}`;
+
 <ExampleShowcase
-  name="homepage-hero-orbit"
+  name="homepage-hero-norway"
   colorControl
   columns={1}
-  minHeight={480}
+  minHeight={520}
   examples={[
     {
-      title: "Infinite Revolving Circular Orbit Hero",
-      subheading: "Brand & motion studio landing hero featuring text and CTAs on the left, and a continuous 360-degree revolving image ring gallery on the right.",
+      title: "Hexagon Nature Gallery Hero",
+      subheading: "Atmospheric nature travel hero featuring bold gold typography, dark fjord background, and a hexagonal honeycomb photo collage with interactive hexagonal CTA button.",
       propNotes: [
         {
           lead: "Set",
           prop: "variant",
-          value: '"orbit"',
-          effect: "renders a split 2-column hero with an infinitely spinning 360-degree circular gallery wheel of upright cards.",
+          value: '"norway"',
+          effect: "renders a dark nature landing hero with a hexagonal mosaic photo grid and bottom social navigation.",
         },
       ],
-      usage: usageOrbit,
+      usage: usageNorway,
     },
   ]}
 />
