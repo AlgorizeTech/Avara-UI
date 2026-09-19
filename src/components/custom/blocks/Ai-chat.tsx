@@ -1345,7 +1345,7 @@ export default function AIChat({
                         }
                         label="Add files or tools"
                         iconOnly
-                        width="w-[300px]"
+                        width="w-[340px] max-w-[calc(100vw-2rem)]"
                       >
                         <div className="p-1">
                           {tools.map((tool) => {

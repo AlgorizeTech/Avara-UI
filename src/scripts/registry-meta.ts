@@ -745,7 +745,7 @@ export const META: Record<string, ItemMeta> = {
     description:
       "An AI assistant interface with thread history sidebar, streaming-style responses and a prompt composer. Use it as the front end for an LLM feature.",
     categories: ["communication"],
-    docs: "Named exports: AIChat, plus ChatThread, Message, ChatModel, EffortOption, SendPayload and UploadHandler types. Responses are mocked — wire `onSend` ({ content, attachments, model, effort }) to your endpoint and `uploadFile` (file, onProgress, signal) to your storage. The composer ships with drag-and-drop attachments (rocket progress indicator), a `models` picker, a Faster↔Smarter `efforts` slider that lights the prompt bar at the top level, and mic dictation via getUserMedia + the Web Speech API with graceful fallbacks. Variants: default | minimal | glass.",
+    docs: "Named exports: AIChat, plus ChatThread, Message, ChatModel, EffortOption, ComposerTool, SendPayload and UploadHandler types. Responses are mocked — wire `onSend` ({ content, attachments, model, effort, tools }) to your endpoint and `uploadFile` (file, onProgress, signal) to your storage. The composer ships with a + menu (`tools`: one upload row opens the picker, the rest insert @Label mentions), drag-and-drop attachments (rocket progress indicator), a `models` picker, a Faster↔Smarter `efforts` slider that lights the prompt bar at the top level, and mic dictation via getUserMedia + the Web Speech API with graceful fallbacks. Variants: default | minimal | glass.",
   },
   email: {
     description:
