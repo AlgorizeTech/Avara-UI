@@ -292,6 +292,13 @@ const rawNavigation: NavigationItem[] = [
       { label: "Footer", slug: "footer" },
       { label: "Hero", slug: "hero" },
       {
+        label: "Hero Carousel",
+        slug: "hero-carousel",
+        badge: "New",
+        addedOn: "2026-09-19",
+        keywords: ["hero", "carousel", "slider", "travel", "tour", "photos", "glass", "autoplay", "cards", "queue"],
+      },
+      {
         label: "Fashion Hero",
         slug: "fashion-hero",
         badge: "New",

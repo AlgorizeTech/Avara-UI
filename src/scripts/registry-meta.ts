@@ -570,6 +570,12 @@ export const META: Record<string, ItemMeta> = {
     categories: ["marketing", "layout"],
     docs: "Named export: CollageHero (plus CollageHero.Badge and CollageHero.Photo). Composed from the button, circular-text and dialog items, which install alongside it. Pass `brand`, `heading` (with <em> for the coloured words), `tags`, `caption`, seven `photos`, `quote`, `scrollLabel`/`scrollTo` and `video` ({ text, url }). `accent` sets --primary for the section, `highlight` the second colour; `reveal` is in-view or immediate.",
   },
+  "hero-carousel": {
+    description:
+      "A full-bleed photo hero with a queue of cards: the front card is the slide on screen, the ones behind it are what comes next. Every five seconds or on a click the queue slides forward, the photograph behind crossfades and the headline and caption follow. A glass panel carries the faces of past guests, an intro and the call to action.",
+    categories: ["marketing", "layout"],
+    docs: "Named export: HeroCarousel. Composed from the avatar-stack item, which installs alongside it. Pass `slides` ({ image, alt, title, description?, heading?, position? }), `eyebrow`, `heading`, `intro`, `avatars` + `avatarsLabel`, `cta` ({ label, href }) and `linkComponent`. `interval` is the autoplay gap in ms (0 turns it off), `accent` sets --primary, `reveal` is in-view or immediate, `onChange` reports the front slide.",
+  },
   newsletter: {
     description:
       "A sign-up section in three layouts: readers' faces drifting around a centred form, a panel with a pointer glow and a ticker of who just joined, or the form beside a fanned stack of recent issues. The form becomes a thank-you when your promise resolves.",

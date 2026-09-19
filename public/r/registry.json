@@ -1608,6 +1608,33 @@
       "docs": "Named export: HeroBlock. Everything is a prop — `variant` switches between 'bounce', 'typing', and 'slider', `typingWords` cycles between `titlePrefix` and `titleSuffix`, `cliCommand` renders a copyable install line, and `sliderImages` / `mainImage` customize the 3D marquee visual."
     },
     {
+      "name": "hero-carousel",
+      "type": "registry:component",
+      "title": "Hero Carousel",
+      "author": "AlgorizeTech",
+      "description": "A full-bleed photo hero with a queue of cards: the front card is the slide on screen, the ones behind it are what comes next. Every five seconds or on a click the queue slides forward, the photograph behind crossfades and the headline and caption follow. A glass panel carries the faces of past guests, an intro and the call to action.",
+      "categories": [
+        "marketing",
+        "layout"
+      ],
+      "dependencies": [
+        "gsap",
+        "lucide-react"
+      ],
+      "registryDependencies": [
+        "https://algorize-ui.vercel.app/r/avatar-stack.json",
+        "utils"
+      ],
+      "files": [
+        {
+          "path": "src/components/custom/blocks/HeroCarouselBlock.tsx",
+          "type": "registry:component",
+          "target": "components/custom/blocks/HeroCarouselBlock.tsx"
+        }
+      ],
+      "docs": "Named export: HeroCarousel. Composed from the avatar-stack item, which installs alongside it. Pass `slides` ({ image, alt, title, description?, heading?, position? }), `eyebrow`, `heading`, `intro`, `avatars` + `avatarsLabel`, `cta` ({ label, href }) and `linkComponent`. `interval` is the autoplay gap in ms (0 turns it off), `accent` sets --primary, `reveal` is in-view or immediate, `onChange` reports the front slide."
+    },
+    {
       "name": "homepage-hero",
       "type": "registry:component",
       "title": "Homepage Hero",

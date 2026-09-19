@@ -64,6 +64,7 @@ export const sandboxNames = [
   "heart-signal",
   "hero-data",
   "hero",
+  "hero-carousel",
   "hero-doctor",
   "hero-minimal",
   "hero-saas",
