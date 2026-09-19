@@ -3,9 +3,9 @@ import { extractCode } from "@/lib/code";
 
 # AI Assistant Chat
 
-A premium, interactive LLM chat interface featuring conversation history management, real-time typing indicators, editable chat titles, and modern structural variants.
+A premium, interactive LLM chat interface featuring conversation history management, real-time typing indicators, editable chat titles, and a full prompt composer — file attachments with a rocket upload indicator, a model picker, a Faster ↔ Smarter effort slider, and voice dictation with a live waveform.
 
-Every preview is live — send a prompt to see the simulated stream, rename a thread, or hit **New Chat**. `variant` changes the shell only; history management and the typing indicator behave identically in all three.
+Every preview is live — send a prompt to see the simulated stream, rename a thread, or hit **New Chat**. Try the composer too: drop a file on it (or press the paperclip) and watch the rocket carry it to 100%, switch the model, slide effort up to **Max** for the glowing prompt bar, or tap the mic and talk. `variant` changes the shell only; everything else behaves identically in all three.
 
 export const chatData = `const chatHistory: ChatThread[] = [
   { id: 1, title: "Help with React Components", date: "Today" },
@@ -45,6 +45,68 @@ export default function Assistant() {
   return (
     <div className="w-full h-[600px]">
       <AIChat chatHistory={chatHistory} initialMessages={initialMessages} />
+    </div>
+  );
+}`;
+
+export const usageComposer = `import AIChat, {
+  type ChatModel,
+  type SendPayload,
+  type UploadHandler,
+} from "@/components/custom/blocks/Ai-chat";
+
+const models: ChatModel[] = [
+  { id: "gpt-5", name: "GPT-5", description: "Flagship reasoning", badge: "New" },
+  { id: "claude-sonnet-5", name: "Claude Sonnet 5", description: "Fast and capable" },
+];
+
+// Stream a real upload and report progress as it goes. Reject to mark the chip failed;
+// \`signal\` aborts if the user removes the chip mid-flight.
+const uploadFile: UploadHandler = (file, onProgress, signal) =>
+  new Promise((resolve, reject) => {
+    const xhr = new XMLHttpRequest();
+    xhr.open("POST", "/api/upload");
+    xhr.upload.onprogress = (e) =>
+      e.lengthComputable && onProgress(Math.round((e.loaded / e.total) * 100));
+    xhr.onload = () => (xhr.status < 300 ? resolve() : reject(new Error(xhr.statusText)));
+    xhr.onerror = () => reject(new Error("Network error"));
+    signal.addEventListener("abort", () => xhr.abort());
+    const body = new FormData();
+    body.append("file", file);
+    xhr.send(body);
+  });
+
+export default function WiredAssistant() {
+  const handleSend = ({ content, attachments, model, effort }: SendPayload) => {
+    // attachments are the finished uploads; model.id and effort.id go to your endpoint
+    fetch("/api/chat", {
+      method: "POST",
+      body: JSON.stringify({ content, files: attachments.map((a) => a.id), model: model.id, effort: effort.id }),
+    });
+  };
+
+  return (
+    <div className="w-full h-[600px]">
+      <AIChat
+        models={models}
+        defaultModelId="claude-sonnet-5"
+        defaultEffort="high"
+        accept="image/*,.pdf,.md"
+        maxFiles={4}
+        uploadFile={uploadFile}
+        onSend={handleSend}
+      />
+    </div>
+  );
+}`;
+
+export const usageMaxEffort = `import AIChat from "@/components/custom/blocks/Ai-chat";
+
+export default function MaxEffortAssistant() {
+  return (
+    <div className="w-full h-[600px]">
+      {/* The highest effort level lights the prompt bar: a rising glow and a scatter of twinkling specks. */}
+      <AIChat defaultEffort="max" />
     </div>
   );
 }`;
@@ -135,6 +197,48 @@ export default function GlassAssistant() {
   columns={1}
   examples={[
     {
+      title: "Max effort",
+      propNotes: [
+        {
+          lead: "Set",
+          prop: "defaultEffort",
+          value: '"max"',
+          effect:
+            "to open at the top of the Faster ↔ Smarter slider. The highest level tints the effort pill and lights the prompt bar with a glow and twinkling specks; any lower level turns it off again.",
+        },
+        {
+          prop: "efforts",
+          effect:
+            "replaces the four built-in levels — pass `{ id, label, description, level }[]` and the slider gets one stop per entry.",
+        },
+      ],
+      props: { variant: "default", defaultEffort: "max" },
+      usage: usageMaxEffort,
+    },
+    {
+      title: "Wired to your backend",
+      propNotes: [
+        {
+          lead: "Pass",
+          prop: "uploadFile",
+          effect:
+            "as `(file, onProgress, signal) => Promise<void>` to replace the simulated upload — the rocket follows whatever percentage you report, and the chip turns green when the promise resolves or red when it rejects.",
+        },
+        {
+          prop: "onSend",
+          effect:
+            "receives `{ content, attachments, model, effort }` every time a prompt goes out, so the endpoint gets the model id, the effort id and the finished uploads in one call.",
+        },
+        {
+          prop: "models",
+          effect:
+            "fills the picker with your own `{ id, name, description?, badge? }[]`; `defaultModelId` chooses the initial one.",
+        },
+      ],
+      props: { variant: "default" },
+      usage: usageComposer,
+    },
+    {
       title: "Minimal",
       propNotes: [
         {
@@ -169,6 +273,15 @@ export default function GlassAssistant() {
     },
   ]}
 />
+
+## The composer
+
+Everything under the prompt is built in and works without any props:
+
+- **Attachments** — the paperclip opens a file picker, and files can also be dropped anywhere on the composer. Each file becomes a chip with a rocket that launches from the left, rides the progress track with a flickering exhaust, then blasts off the end as a check bursts in at 100%. Images show a thumbnail; the send button waits until every upload has landed. Uploads are simulated until you pass `uploadFile`.
+- **Model picker** — a popover listing `models` (four demo models by default). The chosen model is stamped on each reply's timestamp.
+- **Effort** — a Faster ↔ Smarter slider with one stop per level. At the highest level the pill switches to a sparkle and the prompt bar glows with a scatter of twinkling specks. The simulated reply also takes a little longer the higher you go.
+- **Dictation** — the mic opens the microphone and drives a 22-bar waveform from the live audio level, while the Web Speech API writes what you say into the prompt. Without mic permission the wave runs an idle animation; without speech recognition the wave still shows so the button visibly responds. Tap again (or press Escape) to stop.
 
 ## Features
 Explore the Ai-Chat interface features, including message streaming, typing indicators, and seamless integration with AI models.
@@ -242,7 +355,9 @@ Explore the Ai-Chat interface features, including message streaming, typing indi
         <td>
           Array of initial message objects (<code>id</code>, <code>role</code>,{" "}
           <code>content</code>, <code>time</code>) to populate the active chat
-          window.
+          window. Optional <code>attachments</code>, <code>model</code> and{" "}
+          <code>effort</code> render file chips in the bubble and a model tag on
+          the timestamp.
         </td>
       </tr>
       <tr>
@@ -273,6 +388,130 @@ Explore the Ai-Chat interface features, including message streaming, typing indi
           hex string (e.g. <code>"#8b5cf6"</code>) is injected as CSS variables.
           Unrecognised names fall back to <code>"primary"</code>.
         </td>
+      </tr>
+      <tr>
+        <td>
+          <code>models</code>
+        </td>
+        <td>
+          <code>ChatModel[]</code>
+        </td>
+        <td>
+          <code>defaultModels</code>
+        </td>
+        <td>
+          Models offered in the composer's picker: <code>{"{ id, name, description?, badge? }"}</code>.
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <code>defaultModelId</code>
+        </td>
+        <td>
+          <code>string</code>
+        </td>
+        <td>first model</td>
+        <td>Which model is selected on mount.</td>
+      </tr>
+      <tr>
+        <td>
+          <code>onModelChange</code>
+        </td>
+        <td>
+          <code>(model: ChatModel) =&gt; void</code>
+        </td>
+        <td>—</td>
+        <td>Fires when a model is picked.</td>
+      </tr>
+      <tr>
+        <td>
+          <code>efforts</code>
+        </td>
+        <td>
+          <code>EffortOption[]</code>
+        </td>
+        <td>
+          <code>defaultEfforts</code>
+        </td>
+        <td>
+          Stops on the effort slider: <code>{"{ id, label, description?, level }"}</code>{" "}
+          with <code>level</code> from 1 upward. The highest level lights the
+          prompt bar.
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <code>defaultEffort</code>
+        </td>
+        <td>
+          <code>"low" | "medium" | "high" | "max" | string</code>
+        </td>
+        <td>
+          <code>"medium"</code>
+        </td>
+        <td>Which effort is selected on mount.</td>
+      </tr>
+      <tr>
+        <td>
+          <code>onEffortChange</code>
+        </td>
+        <td>
+          <code>(effort: EffortOption) =&gt; void</code>
+        </td>
+        <td>—</td>
+        <td>Fires as the slider moves.</td>
+      </tr>
+      <tr>
+        <td>
+          <code>onSend</code>
+        </td>
+        <td>
+          <code>(payload: SendPayload) =&gt; void</code>
+        </td>
+        <td>—</td>
+        <td>
+          Called with <code>{"{ content, attachments, model, effort }"}</code>{" "}
+          whenever a prompt is sent — the hook for your own endpoint.
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <code>uploadFile</code>
+        </td>
+        <td>
+          <code>UploadHandler</code>
+        </td>
+        <td>simulated</td>
+        <td>
+          <code>(file, onProgress, signal) =&gt; Promise&lt;void&gt;</code>. Report
+          0–100 through <code>onProgress</code>; resolve when stored, reject to
+          mark the chip failed. <code>signal</code> aborts when the chip is
+          removed mid-upload.
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <code>accept</code>
+        </td>
+        <td>
+          <code>string</code>
+        </td>
+        <td>any file</td>
+        <td>
+          Forwarded to the file input, e.g. <code>"image/*,.pdf"</code>.
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <code>maxFiles</code>
+        </td>
+        <td>
+          <code>number</code>
+        </td>
+        <td>
+          <code>6</code>
+        </td>
+        <td>Maximum attachments on one message; the paperclip disables at the cap.</td>
       </tr>
     </tbody>
   </table>

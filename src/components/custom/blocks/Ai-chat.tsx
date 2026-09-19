@@ -1,17 +1,29 @@
 "use client";
 
 import { cn } from "@/lib/utils";
+import { AnimatePresence, motion } from "framer-motion";
 import {
   Bot,
+  Calendar,
+  ChartLine,
   Check,
+  ChevronDown,
+  CircleHelp,
   Copy,
+  Cpu,
   Edit2,
+  FileText,
+  Gauge,
+  Globe,
+  ImageIcon,
+  Mail,
   Menu,
   MessageSquare,
   Mic,
   MoreVertical,
   Paperclip,
   Plus,
+  Rocket,
   Send,
   Settings,
   Sparkles,
@@ -20,7 +32,7 @@ import {
   Trash2,
   X,
 } from "lucide-react";
-import { useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 
 // ==========================================
 // VARIANT & COLOR CONFIGURATION
@@ -164,23 +176,243 @@ export type ChatThread = {
  */
 export type MessageRole = "ai" | "user" | (string & {});
 
+/** A file that travelled with a message — what the bubble renders. */
+export type MessageAttachment = {
+  id: string;
+  name: string;
+  size: number;
+  type: string;
+  /** Object URL or remote URL; images render as thumbnails when present. */
+  previewUrl?: string;
+};
+
 export type Message = {
   id: number | string;
   role: MessageRole;
   content: string;
   time: string;
+  attachments?: MessageAttachment[];
+  /** Display name of the model that produced (or was asked for) this message. */
+  model?: string;
+  /** Display label of the effort level in force for this message. */
+  effort?: string;
 };
+
+export type ChatModel = {
+  id: string;
+  name: string;
+  description?: string;
+  /** Small tag beside the name, e.g. "Pro" or "New". */
+  badge?: string;
+};
+
+export type EffortLevel = "low" | "medium" | "high" | "max" | (string & {});
+
+export type EffortOption = {
+  id: EffortLevel;
+  label: string;
+  description?: string;
+  /** 1–4, how many bars the indicator lights. */
+  level: number;
+};
+
+/**
+ * One row of the composer's "+" menu. `action: "upload"` opens the file
+ * picker; everything else (the default) drops `@Label` into the prompt so the
+ * request can name the source it wants.
+ */
+export type ComposerTool = {
+  id: string;
+  label: string;
+  description?: string;
+  icon?: React.ReactNode;
+  action?: "upload" | "mention";
+};
+
+/** What `onSend` receives — everything the composer knows when a prompt goes out. */
+export type SendPayload = {
+  content: string;
+  attachments: MessageAttachment[];
+  model: ChatModel;
+  effort: EffortOption;
+  /** Tools named in the prompt as `@Label`, in the order they appear. */
+  tools: ComposerTool[];
+};
+
+/**
+ * Bring-your-own upload. Report progress as 0–100; resolve when the file is
+ * stored, reject to mark the chip as failed. `signal` aborts when the user
+ * removes the chip mid-flight.
+ */
+export type UploadHandler = (
+  file: File,
+  onProgress: (percent: number) => void,
+  signal: AbortSignal,
+) => Promise<void>;
+
+type UploadStatus = "uploading" | "done" | "error";
+
+type PendingAttachment = MessageAttachment & {
+  file: File;
+  progress: number;
+  status: UploadStatus;
+};
+
+export const defaultModels: ChatModel[] = [
+  {
+    id: "nova-ultra",
+    name: "Nova Ultra",
+    description: "Deepest reasoning for hard problems",
+    badge: "Pro",
+  },
+  {
+    id: "nova-pro",
+    name: "Nova Pro",
+    description: "Best for everyday complex work",
+  },
+  {
+    id: "nova-flash",
+    name: "Nova Flash",
+    description: "Fast answers at a lower cost",
+  },
+  {
+    id: "nova-mini",
+    name: "Nova Mini",
+    description: "Lightweight, near-instant replies",
+  },
+];
+
+export const defaultEfforts: EffortOption[] = [
+  { id: "low", label: "Low", description: "Quickest reply", level: 1 },
+  {
+    id: "medium",
+    label: "Medium",
+    description: "Balanced speed and depth",
+    level: 2,
+  },
+  {
+    id: "high",
+    label: "High",
+    description: "Thinks longer before answering",
+    level: 3,
+  },
+  { id: "max", label: "Max", description: "Most thorough reasoning", level: 4 },
+];
+
+export const defaultTools: ComposerTool[] = [
+  {
+    id: "files",
+    label: "Photos & files",
+    description: "Upload from this device",
+    icon: <Paperclip className="w-4 h-4" />,
+    action: "upload",
+  },
+  {
+    id: "web",
+    label: "Web search",
+    description: "Live results",
+    icon: <Globe className="w-4 h-4" />,
+  },
+  {
+    id: "sales",
+    label: "Sales data",
+    description: "Revenue and churn",
+    icon: <ChartLine className="w-4 h-4" />,
+  },
+  {
+    id: "documents",
+    label: "Documents",
+    description: "Specs, notes, briefs",
+    icon: <FileText className="w-4 h-4" />,
+  },
+  {
+    id: "mail",
+    label: "Mail",
+    description: "Read and draft mail",
+    icon: <Mail className="w-4 h-4" />,
+  },
+  {
+    id: "calendar",
+    label: "Calendar",
+    description: "Events and availability",
+    icon: <Calendar className="w-4 h-4" />,
+  },
+];
+
+/** `@Label` as it is written into the prompt. */
+const mentionFor = (tool: ComposerTool) => `@${tool.label}`;
+
+const formatBytes = (bytes: number) => {
+  if (bytes < 1024) return `${bytes} B`;
+  if (bytes < 1024 * 1024) return `${(bytes / 1024).toFixed(0)} KB`;
+  return `${(bytes / (1024 * 1024)).toFixed(1)} MB`;
+};
+
+/**
+ * Stand-in for a network upload: eases to 100% over one to three seconds
+ * depending on size, with a short hitch near the end the way real transfers
+ * have. Swap it out with the `uploadFile` prop.
+ */
+const simulateUpload: UploadHandler = (file, onProgress, signal) =>
+  new Promise<void>((resolve, reject) => {
+    const total = 1400 + Math.min(file.size / 15000, 2200);
+    const start = performance.now();
+    const tick = (now: number) => {
+      if (signal.aborted) {
+        reject(new DOMException("Upload cancelled", "AbortError"));
+        return;
+      }
+      const t = Math.min(Math.max((now - start) / total, 0), 1);
+      const eased = 1 - Math.pow(1 - t, 2.4);
+      const hitch = t > 0.72 && t < 0.82 ? 0.72 : eased;
+      onProgress(Math.round(Math.min(hitch, eased) * 100));
+      if (t < 1) requestAnimationFrame(tick);
+      else resolve();
+    };
+    requestAnimationFrame(tick);
+  });
 
 export default function AIChat({
   chatHistory = [],
   initialMessages = [],
   variant = "default",
   color = "primary",
+  models = defaultModels,
+  defaultModelId,
+  onModelChange,
+  efforts = defaultEfforts,
+  defaultEffort = "medium",
+  onEffortChange,
+  onSend,
+  uploadFile,
+  accept,
+  maxFiles = 6,
+  tools = defaultTools,
 }: {
   chatHistory?: readonly ChatThread[];
   initialMessages?: readonly Message[];
   variant?: AIChatVariant;
   color?: AIChatColor;
+  /** Models offered in the composer's picker. */
+  models?: readonly ChatModel[];
+  /** Which model is selected on mount; the first one when omitted. */
+  defaultModelId?: string;
+  onModelChange?: (model: ChatModel) => void;
+  /** Effort levels offered in the composer's picker. */
+  efforts?: readonly EffortOption[];
+  /** Which effort is selected on mount. */
+  defaultEffort?: EffortLevel;
+  onEffortChange?: (effort: EffortOption) => void;
+  /** Fires with the prompt, its finished attachments and the chosen model and effort. */
+  onSend?: (payload: SendPayload) => void;
+  /** Real upload for attachments. Uploads are simulated when omitted. */
+  uploadFile?: UploadHandler;
+  /** Passed to the file input, e.g. "image/*,.pdf". Anything when omitted. */
+  accept?: string;
+  /** Maximum attachments on one message. */
+  maxFiles?: number;
+  /** Rows of the "+" menu. One `action: "upload"` row opens the picker; the rest insert `@Label`. */
+  tools?: readonly ComposerTool[];
 }) {
   const isCustomHex = color.startsWith("#");
 
@@ -248,8 +480,142 @@ export default function AIChat({
   );
   const [editTitleValue, setEditTitleValue] = useState("");
 
+  const [selectedModelId, setSelectedModelId] = useState<string>(
+    () => defaultModelId ?? models[0]?.id ?? "",
+  );
+  const [selectedEffortId, setSelectedEffortId] =
+    useState<EffortLevel>(defaultEffort);
+  const [attachments, setAttachments] = useState<PendingAttachment[]>([]);
+  const [isDragging, setIsDragging] = useState(false);
+  const [openMenu, setOpenMenu] = useState<
+    "tools" | "model" | "effort" | null
+  >(null);
+
+  const fileInputRef = useRef<HTMLInputElement>(null);
+  const textareaRef = useRef<HTMLTextAreaElement>(null);
+  const abortControllers = useRef(new Map<string, AbortController>());
+
+  const selectedModel =
+    models.find((m) => m.id === selectedModelId) ?? models[0] ?? defaultModels[1];
+  const selectedEffort =
+    efforts.find((e) => e.id === selectedEffortId) ??
+    efforts[0] ??
+    defaultEfforts[1];
+
+  const isUploading = attachments.some((a) => a.status === "uploading");
+
   const chatScrollRef = useRef<HTMLDivElement>(null);
   const activeMessages = activeChatId ? messagesMap[activeChatId] || [] : [];
+
+  const voice = useVoiceInput(
+    useCallback((transcript: string) => setInputValue(transcript), []),
+    () => inputValue,
+  );
+
+  // Abort in-flight uploads when the component unmounts.
+  useEffect(() => {
+    const controllers = abortControllers.current;
+    return () => {
+      controllers.forEach((c) => c.abort());
+      controllers.clear();
+    };
+  }, []);
+
+  const updateAttachment = (id: string, patch: Partial<PendingAttachment>) =>
+    setAttachments((prev) =>
+      prev.map((a) => (a.id === id ? { ...a, ...patch } : a)),
+    );
+
+  const addFiles = (incoming: FileList | File[]) => {
+    const room = Math.max(0, maxFiles - attachments.length);
+    const next: PendingAttachment[] = Array.from(incoming)
+      .slice(0, room)
+      .map((file) => ({
+        id: `${Date.now()}-${Math.random().toString(36).slice(2, 8)}`,
+        name: file.name,
+        size: file.size,
+        type: file.type,
+        previewUrl: file.type.startsWith("image/")
+          ? URL.createObjectURL(file)
+          : undefined,
+        file,
+        progress: 0,
+        status: "uploading",
+      }));
+    if (next.length === 0) return;
+
+    setAttachments((prev) => [...prev, ...next]);
+
+    const upload = uploadFile ?? simulateUpload;
+    next.forEach((att) => {
+      const controller = new AbortController();
+      abortControllers.current.set(att.id, controller);
+      upload(
+        att.file,
+        (pct) => updateAttachment(att.id, { progress: pct }),
+        controller.signal,
+      )
+        .then(() => updateAttachment(att.id, { progress: 100, status: "done" }))
+        .catch((err: unknown) => {
+          if ((err as { name?: string })?.name !== "AbortError")
+            updateAttachment(att.id, { status: "error" });
+        })
+        .finally(() => abortControllers.current.delete(att.id));
+    });
+  };
+
+  const removeAttachment = (id: string) => {
+    abortControllers.current.get(id)?.abort();
+    setAttachments((prev) => {
+      const target = prev.find((a) => a.id === id);
+      if (target?.previewUrl) URL.revokeObjectURL(target.previewUrl);
+      return prev.filter((a) => a.id !== id);
+    });
+  };
+
+  /** Runs a "+" menu row: open the picker, or write `@Label` at the caret. */
+  const runTool = (tool: ComposerTool) => {
+    setOpenMenu(null);
+    if (tool.action === "upload") {
+      fileInputRef.current?.click();
+      return;
+    }
+    const token = mentionFor(tool);
+    const el = textareaRef.current;
+    const value = inputValue;
+    const already = value.includes(token);
+    let next = value;
+    let caret = value.length;
+    if (!already) {
+      const start = el?.selectionStart ?? value.length;
+      const end = el?.selectionEnd ?? value.length;
+      const before = value.slice(0, start);
+      const after = value.slice(end);
+      const lead = before && !/\s$/.test(before) ? " " : "";
+      const trail = after && !/^\s/.test(after) ? " " : " ";
+      next = `${before}${lead}${token}${trail}${after}`;
+      caret = (before + lead + token + trail).length;
+      setInputValue(next);
+    }
+    requestAnimationFrame(() => {
+      el?.focus();
+      el?.setSelectionRange(caret, caret);
+    });
+  };
+
+  const selectModel = (model: ChatModel) => {
+    setSelectedModelId(model.id);
+    setOpenMenu(null);
+    onModelChange?.(model);
+  };
+
+  const selectEffort = (effort: EffortOption) => {
+    setSelectedEffortId(effort.id);
+    onEffortChange?.(effort);
+  };
+
+  const maxEffortLevel = Math.max(...efforts.map((e) => e.level));
+  const isMaxEffort = selectedEffort.level >= maxEffortLevel;
 
   useEffect(() => {
     if (chatScrollRef.current) {
@@ -329,17 +695,44 @@ export default function AIChat({
 
   const handleSendMessage = (e?: React.FormEvent) => {
     e?.preventDefault();
-    if (!inputValue.trim() || !activeChatId) return;
+    const content = inputValue.trim();
+    if (!activeChatId || isUploading || voice.isListening) return;
+    if (!content && attachments.length === 0) return;
+
+    const sent: MessageAttachment[] = attachments
+      .filter((a) => a.status === "done")
+      .map(({ id, name, size, type, previewUrl }) => ({
+        id,
+        name,
+        size,
+        type,
+        previewUrl,
+      }));
 
     const userMsg: Message = {
       id: Date.now(),
       role: "user",
-      content: inputValue,
+      content,
       time: new Date().toLocaleTimeString([], {
         hour: "2-digit",
         minute: "2-digit",
       }),
+      attachments: sent.length ? sent : undefined,
     };
+
+    const mentioned = tools
+      .filter((t) => t.action !== "upload" && content.includes(mentionFor(t)))
+      .sort(
+        (a, b) => content.indexOf(mentionFor(a)) - content.indexOf(mentionFor(b)),
+      );
+
+    onSend?.({
+      content,
+      attachments: sent,
+      model: selectedModel,
+      effort: selectedEffort,
+      tools: mentioned,
+    });
 
     setMessagesMap((prev) => ({
       ...prev,
@@ -359,32 +752,51 @@ export default function AIChat({
     );
 
     setInputValue("");
+    setAttachments([]);
     setIsTyping(true);
 
-    setTimeout(() => {
-      const aiMsg: Message = {
-        id: Date.now() + 1,
-        role: "ai",
-        content:
-          "That's a great point! Based on your input, I can process this and generate the optimal solution. Let me know if you need any specific adjustments.",
-        time: new Date().toLocaleTimeString([], {
-          hour: "2-digit",
-          minute: "2-digit",
-        }),
-      };
+    const fileNote =
+      sent.length > 0
+        ? `I've received ${sent.length === 1 ? sent[0].name : `${sent.length} files`} and read through ${sent.length === 1 ? "it" : "them"}. `
+        : "";
+    const toolNote =
+      mentioned.length > 0
+        ? `Checking ${mentioned.map((t) => t.label).join(", ")} for you. `
+        : "";
 
-      setMessagesMap((prev) => ({
-        ...prev,
-        [activeChatId]: [...(prev[activeChatId] || []), aiMsg],
-      }));
-      setIsTyping(false);
-    }, 1500);
+    setTimeout(
+      () => {
+        const aiMsg: Message = {
+          id: Date.now() + 1,
+          role: "ai",
+          content: `${fileNote}${toolNote}That's a great point! Based on your input, I can process this and generate the optimal solution. Let me know if you need any specific adjustments.`,
+          time: new Date().toLocaleTimeString([], {
+            hour: "2-digit",
+            minute: "2-digit",
+          }),
+          model: selectedModel.name,
+          effort: selectedEffort.label,
+        };
+
+        setMessagesMap((prev) => ({
+          ...prev,
+          [activeChatId]: [...(prev[activeChatId] || []), aiMsg],
+        }));
+        setIsTyping(false);
+      },
+      // Higher effort "thinks" a little longer, so the picker visibly does something.
+      900 + selectedEffort.level * 400,
+    );
   };
 
   const handleKeyDown = (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
     if (e.key === "Enter" && !e.shiftKey) {
       e.preventDefault();
       handleSendMessage();
+    }
+    if (e.key === "Escape") {
+      setOpenMenu(null);
+      if (voice.isListening) voice.stop();
     }
   };
 
@@ -684,6 +1096,39 @@ export default function AIChat({
                             : styles.msgAi,
                         )}
                       >
+                        {msg.attachments && msg.attachments.length > 0 && (
+                          <div
+                            className={cn(
+                              "flex flex-wrap gap-2",
+                              msg.content && "mb-3",
+                            )}
+                          >
+                            {msg.attachments.map((file) =>
+                              file.previewUrl &&
+                              file.type.startsWith("image/") ? (
+                                <img
+                                  key={file.id}
+                                  src={file.previewUrl}
+                                  alt={file.name}
+                                  className="h-24 max-w-[180px] rounded-xl object-cover border border-white/20"
+                                />
+                              ) : (
+                                <div
+                                  key={file.id}
+                                  className="flex items-center gap-2 rounded-xl bg-black/10 dark:bg-white/10 px-3 py-2 text-xs max-w-[220px]"
+                                >
+                                  <FileText className="w-4 h-4 shrink-0 opacity-80" />
+                                  <span className="truncate font-semibold">
+                                    {file.name}
+                                  </span>
+                                  <span className="shrink-0 opacity-70">
+                                    {formatBytes(file.size)}
+                                  </span>
+                                </div>
+                              ),
+                            )}
+                          </div>
+                        )}
                         {msg.content}
                       </div>
 
@@ -692,6 +1137,12 @@ export default function AIChat({
                       >
                         <span className="text-[10px] font-medium text-muted-foreground">
                           {msg.time}
+                          {msg.model && (
+                            <span className="opacity-80">
+                              {" "}· {msg.model}
+                              {msg.effort && ` · ${msg.effort} effort`}
+                            </span>
+                          )}
                         </span>
                         {msg.role !== "user" && (
                           <div className="flex items-center gap-1.5 text-muted-foreground">
@@ -740,49 +1191,345 @@ export default function AIChat({
               <div className="max-w-3xl mx-auto">
                 <form
                   onSubmit={handleSendMessage}
+                  onDragOver={(e) => {
+                    e.preventDefault();
+                    if (!isDragging) setIsDragging(true);
+                  }}
+                  onDragLeave={(e) => {
+                    if (!e.currentTarget.contains(e.relatedTarget as Node))
+                      setIsDragging(false);
+                  }}
+                  onDrop={(e) => {
+                    e.preventDefault();
+                    setIsDragging(false);
+                    if (e.dataTransfer.files.length) addFiles(e.dataTransfer.files);
+                  }}
                   className={cn(
-                    "flex items-end gap-2 rounded-2xl p-2 transition-all shadow-sm",
+                    "relative flex flex-col gap-1 rounded-2xl p-2 transition-all shadow-sm",
                     styles.input,
                     theme.ring,
+                    isDragging && cn("ring-2", theme.inputBorder),
+                    isMaxEffort && cn("shadow-lg", theme.shadow),
                   )}
                 >
-                  <button
-                    type="button"
-                    className="p-2.5 text-muted-foreground hover:text-foreground transition-colors shrink-0 rounded-xl hover:bg-muted/50"
-                  >
-                    <Paperclip className="w-5 h-5" />
-                  </button>
+                  <MaxEffortGlow active={isMaxEffort} className={theme.primaryText} />
 
-                  <textarea
-                    value={inputValue}
-                    onChange={(e) => setInputValue(e.target.value)}
-                    onKeyDown={handleKeyDown}
-                    placeholder="Message the AI Assistant..."
-                    className="flex-1 max-h-32 bg-transparent border-none focus:outline-none text-[15px] text-foreground placeholder:text-muted-foreground resize-none py-3 px-2 [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none] cursor-text"
-                    rows={1}
-                    style={{ minHeight: "48px" }}
+                  <input
+                    ref={fileInputRef}
+                    type="file"
+                    multiple
+                    accept={accept}
+                    className="hidden"
+                    onChange={(e) => {
+                      if (e.target.files?.length) addFiles(e.target.files);
+                      e.target.value = "";
+                    }}
                   />
 
-                  <div className="flex items-center gap-1 shrink-0 pb-1">
-                    <button
-                      type="button"
+                  {/* Drop hint */}
+                  <AnimatePresence>
+                    {isDragging && (
+                      <motion.div
+                        initial={{ opacity: 0 }}
+                        animate={{ opacity: 1 }}
+                        exit={{ opacity: 0 }}
+                        className={cn(
+                          "absolute inset-0 z-20 rounded-2xl border-2 border-dashed flex items-center justify-center gap-2 text-sm font-semibold bg-background/80 backdrop-blur-sm pointer-events-none",
+                          theme.inputBorder,
+                          theme.primaryText,
+                        )}
+                      >
+                        <Paperclip className="w-4 h-4" /> Drop files to attach
+                      </motion.div>
+                    )}
+                  </AnimatePresence>
+
+                  {/* Attachments */}
+                  <AnimatePresence initial={false}>
+                    {attachments.length > 0 && (
+                      <motion.div
+                        key="attachments"
+                        initial={{ opacity: 0, height: 0 }}
+                        animate={{ opacity: 1, height: "auto" }}
+                        exit={{ opacity: 0, height: 0 }}
+                        transition={{ duration: 0.25, ease: "easeOut" }}
+                        className="overflow-hidden"
+                      >
+                        <div className="flex flex-wrap gap-2 px-1 pt-1.5 pb-1">
+                          <AnimatePresence initial={false}>
+                            {attachments.map((att) => (
+                              <AttachmentChip
+                                key={att.id}
+                                attachment={att}
+                                theme={theme}
+                                onRemove={() => removeAttachment(att.id)}
+                              />
+                            ))}
+                          </AnimatePresence>
+                        </div>
+                      </motion.div>
+                    )}
+                  </AnimatePresence>
+
+                  {/* Prompt / listening surface */}
+                  <div className="relative">
+                    <textarea
+                      ref={textareaRef}
+                      value={inputValue}
+                      onChange={(e) => setInputValue(e.target.value)}
+                      onKeyDown={handleKeyDown}
+                      placeholder={
+                        voice.isListening
+                          ? ""
+                          : "Message the AI Assistant..."
+                      }
                       className={cn(
-                        "p-2 text-muted-foreground rounded-xl transition-colors",
-                        theme.primaryHover,
+                        "w-full max-h-32 bg-transparent border-none focus:outline-none text-[15px] text-foreground placeholder:text-muted-foreground resize-none py-3 px-2 [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none] cursor-text transition-opacity",
+                        voice.isListening && "opacity-0 pointer-events-none",
                       )}
-                    >
-                      <Mic className="w-5 h-5" />
-                    </button>
-                    <button
-                      type="submit"
-                      disabled={!inputValue.trim()}
-                      className={cn(
-                        "p-2.5 rounded-xl hover:scale-105 active:scale-95 disabled:opacity-50 disabled:hover:scale-100 transition-all shadow-sm cursor-pointer",
-                        theme.primaryBg,
+                      rows={1}
+                      style={{ minHeight: "48px" }}
+                    />
+                    <AnimatePresence>
+                      {voice.isListening && (
+                        <motion.div
+                          initial={{ opacity: 0, y: 4 }}
+                          animate={{ opacity: 1, y: 0 }}
+                          exit={{ opacity: 0, y: 4 }}
+                          transition={{ duration: 0.2 }}
+                          className="absolute inset-0 flex items-center gap-3 px-2"
+                        >
+                          <ListeningWave
+                            barsRef={voice.barsRef}
+                            live={voice.hasLiveAudio}
+                            className={theme.primaryText}
+                          />
+                          <div className="min-w-0 flex-1">
+                            <p
+                              className={cn(
+                                "text-sm font-semibold leading-tight",
+                                theme.primaryText,
+                              )}
+                            >
+                              Listening…
+                            </p>
+                            <p className="text-xs text-muted-foreground truncate">
+                              {inputValue
+                                ? inputValue
+                                : voice.supportsDictation
+                                  ? "Speak now — tap the mic to stop"
+                                  : "Dictation isn't available in this browser"}
+                            </p>
+                          </div>
+                        </motion.div>
                       )}
-                    >
-                      <Send className="w-4 h-4 ml-0.5" />
-                    </button>
+                    </AnimatePresence>
+                  </div>
+
+                  {/* Toolbar */}
+                  <div className="flex items-center justify-between gap-2 flex-wrap">
+                    <div className="flex items-center gap-1 min-w-0">
+                      <ComposerMenu
+                        open={openMenu === "tools"}
+                        onOpenChange={(open) =>
+                          setOpenMenu(open ? "tools" : null)
+                        }
+                        theme={theme}
+                        icon={
+                          <Plus
+                            className={cn(
+                              "w-[18px] h-[18px] transition-transform duration-200",
+                              openMenu === "tools" && "rotate-45",
+                            )}
+                          />
+                        }
+                        label="Add files or tools"
+                        iconOnly
+                        width="w-[300px]"
+                      >
+                        <div className="p-1">
+                          {tools.map((tool) => {
+                            const isUpload = tool.action === "upload";
+                            const full = isUpload && attachments.length >= maxFiles;
+                            return (
+                              <button
+                                key={tool.id}
+                                type="button"
+                                role="menuitem"
+                                disabled={full}
+                                onClick={() => runTool(tool)}
+                                className="w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-left transition-colors hover:bg-muted disabled:opacity-40 cursor-pointer disabled:cursor-not-allowed"
+                              >
+                                <span className="shrink-0 text-muted-foreground">
+                                  {tool.icon ?? <Plus className="w-4 h-4" />}
+                                </span>
+                                <span className="min-w-0 flex items-baseline gap-2 truncate">
+                                  <span className="text-sm font-semibold text-foreground">
+                                    {tool.label}
+                                  </span>
+                                  {tool.description && (
+                                    <span className="text-xs text-muted-foreground truncate">
+                                      {tool.description}
+                                    </span>
+                                  )}
+                                </span>
+                              </button>
+                            );
+                          })}
+                        </div>
+                      </ComposerMenu>
+
+                      <ComposerMenu
+                        open={openMenu === "model"}
+                        onOpenChange={(open) =>
+                          setOpenMenu(open ? "model" : null)
+                        }
+                        theme={theme}
+                        icon={<Cpu className="w-3.5 h-3.5 mb-0.25" />}
+                        label={selectedModel.name}
+                        heading="Model"
+                      >
+                        {models.map((model) => {
+                          const active = model.id === selectedModel.id;
+                          return (
+                            <MenuItem
+                              key={model.id}
+                              active={active}
+                              theme={theme}
+                              onClick={() => selectModel(model)}
+                            >
+                              <div className="min-w-0 flex-1">
+                                <div className="flex items-center gap-1.5">
+                                  <span className="text-sm font-semibold truncate">
+                                    {model.name}
+                                  </span>
+                                  {model.badge && (
+                                    <span
+                                      className={cn(
+                                        "text-[9px] font-bold uppercase tracking-wide px-1.5 py-px rounded-full",
+                                        theme.lightBg,
+                                      )}
+                                    >
+                                      {model.badge}
+                                    </span>
+                                  )}
+                                </div>
+                                {model.description && (
+                                  <p className="text-xs text-muted-foreground truncate">
+                                    {model.description}
+                                  </p>
+                                )}
+                              </div>
+                            </MenuItem>
+                          );
+                        })}
+                      </ComposerMenu>
+
+                      <ComposerMenu
+                        open={openMenu === "effort"}
+                        onOpenChange={(open) =>
+                          setOpenMenu(open ? "effort" : null)
+                        }
+                        theme={theme}
+                        icon={
+                          isMaxEffort ? (
+                            <Sparkles className="w-3.5 h-3.5 mb-0.25" />
+                          ) : (
+                            <Gauge className="w-3.5 h-3.5 mb-0.25" />
+                          )
+                        }
+                        label={selectedEffort.label}
+                        highlighted={isMaxEffort}
+                        width="w-72"
+                      >
+                        <div className="p-3">
+                          <div className="flex items-center justify-between gap-3">
+                            <p className="text-sm font-medium text-muted-foreground leading-none">
+                              Effort
+                              <span className="ml-2 font-semibold text-foreground">
+                                {selectedEffort.label}
+                              </span>
+                            </p>
+                            <span
+                              title={
+                                selectedEffort.description ??
+                                "How long the model thinks before answering"
+                              }
+                              className="p-0.5 -mr-0.5 rounded-full text-muted-foreground/70 hover:text-foreground cursor-help"
+                            >
+                              <CircleHelp className="w-4 h-4" />
+                            </span>
+                          </div>
+                          <div className="mt-4 mb-2 flex items-center justify-between text-xs font-medium text-muted-foreground leading-none">
+                            <span>Faster</span>
+                            <span>Smarter</span>
+                          </div>
+                          <EffortSlider
+                            efforts={efforts}
+                            value={efforts.findIndex(
+                              (e) => e.id === selectedEffort.id,
+                            )}
+                            onChange={(i) => selectEffort(efforts[i])}
+                            theme={theme}
+                          />
+                        </div>
+                      </ComposerMenu>
+                    </div>
+
+                    <div className="flex items-center gap-1 shrink-0">
+                      <button
+                        type="button"
+                        onClick={() => {
+                          voice.toggle();
+                          if (voice.isListening) textareaRef.current?.focus();
+                        }}
+                        title={voice.isListening ? "Stop listening" : "Dictate"}
+                        aria-pressed={voice.isListening}
+                        className={cn(
+                          "relative p-2 rounded-xl transition-colors cursor-pointer",
+                          voice.isListening
+                            ? cn("text-white shadow-md", theme.primaryBg)
+                            : cn("text-muted-foreground", theme.primaryHover),
+                        )}
+                      >
+                        {voice.isListening && (
+                          <>
+                            <span
+                              className={cn(
+                                "absolute inset-0 rounded-xl animate-ping opacity-40",
+                                theme.primaryBg,
+                              )}
+                            />
+                            <span
+                              className={cn(
+                                "absolute -inset-1 rounded-2xl opacity-30 blur-sm",
+                                theme.primaryBg,
+                              )}
+                            />
+                          </>
+                        )}
+                        <Mic className="relative w-5 h-5" />
+                      </button>
+                      <button
+                        type="submit"
+                        disabled={
+                          (!inputValue.trim() && attachments.length === 0) ||
+                          isUploading ||
+                          voice.isListening
+                        }
+                        className={cn(
+                          "p-2.5 rounded-xl hover:scale-105 active:scale-95 disabled:opacity-50 disabled:hover:scale-100 transition-all shadow-sm cursor-pointer disabled:cursor-not-allowed",
+                          theme.primaryBg,
+                        )}
+                        title={
+                          isUploading
+                            ? "Waiting for uploads to finish"
+                            : "Send message"
+                        }
+                      >
+                        <Send className="w-4 h-4" />
+                      </button>
+                    </div>
                   </div>
                 </form>
                 <p className="text-center text-[11px] font-medium text-muted-foreground mt-3 cursor-default">
@@ -796,4 +1543,719 @@ export default function AIChat({
       </main>
     </div>
   );
+}
+
+// ==========================================
+// COMPOSER PIECES
+// ==========================================
+type Theme = Record<string, string>;
+
+/**
+ * The upload indicator: a rocket that launches from the left, rides the
+ * progress along the track with a flickering exhaust, then blasts off the end
+ * and hands over to a check when the file has landed.
+ */
+function RocketProgress({
+  progress,
+  status,
+  theme,
+}: {
+  progress: number;
+  status: UploadStatus;
+  theme: Theme;
+}) {
+  const done = status === "done";
+  const failed = status === "error";
+  // Position and fill are CSS transitions: they keep gliding between progress
+  // events even when the page's JS frame budget is tight.
+  const glide = "left 450ms cubic-bezier(0.22, 1, 0.36, 1)";
+
+  return (
+    <div className="relative h-5 w-full">
+      {/* Track */}
+      <div className="absolute left-0 right-0 top-1/2 -translate-y-1/2 h-[3px] rounded-full bg-foreground/10 overflow-hidden">
+        <div
+          style={{
+            width: `${done ? 100 : progress}%`,
+            transition: "width 450ms cubic-bezier(0.22, 1, 0.36, 1)",
+          }}
+          className={cn(
+            "h-full rounded-full",
+            failed
+              ? "bg-rose-500"
+              : done
+                ? "bg-emerald-500"
+                : cn("bg-current opacity-70", theme.primaryText),
+          )}
+        />
+      </div>
+
+      {/* Rocket */}
+      <AnimatePresence>
+        {!done && !failed && (
+          <motion.div
+            key="rocket"
+            className={cn("absolute top-1/2 z-10", theme.primaryText)}
+            style={{ left: `${progress}%`, transition: glide }}
+            exit={{ left: "100%", transition: { duration: 0.2 } }}
+          >
+            <motion.div
+              className="relative -translate-x-1/2 -translate-y-1/2"
+              initial={{ scale: 0, y: 8, opacity: 0, rotate: 60 }}
+              animate={{ scale: 1, y: 0, opacity: 1, rotate: 45 }}
+              exit={{
+                x: 14,
+                y: -18,
+                scale: 0.4,
+                opacity: 0,
+                rotate: 20,
+                transition: { duration: 0.35, ease: "easeIn" },
+              }}
+              transition={{ type: "spring", stiffness: 260, damping: 16 }}
+            >
+              {/* Bob while in flight */}
+              <motion.div
+                animate={{ y: [0, -1.5, 0, 1.5, 0] }}
+                transition={{ duration: 1.4, repeat: Infinity, ease: "easeInOut" }}
+                className="relative"
+              >
+                {/* Exhaust: sits behind the tail (bottom-left of the rotated icon) */}
+                <motion.span
+                  className="absolute left-[-9px] top-[9px] h-[3px] w-3 rounded-full bg-gradient-to-l from-orange-400 via-amber-300 to-transparent origin-right"
+                  style={{ rotate: -45 }}
+                  animate={{ scaleX: [0.6, 1.3, 0.8, 1.1, 0.6], opacity: [0.7, 1, 0.8, 1, 0.7] }}
+                  transition={{ duration: 0.35, repeat: Infinity, ease: "easeInOut" }}
+                />
+                <Rocket className="w-3.5 h-3.5 drop-shadow-sm" />
+              </motion.div>
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+
+      {/* Landing */}
+      <AnimatePresence>
+        {done && (
+          <motion.span
+            key="landed"
+            className="absolute right-0 top-1/2 -translate-y-1/2 translate-x-1/2 z-10 flex items-center justify-center"
+          >
+            <motion.span
+              className="absolute size-4 rounded-full bg-emerald-500/40"
+              initial={{ scale: 0.4, opacity: 0.9 }}
+              animate={{ scale: 2.6, opacity: 0 }}
+              transition={{ duration: 0.6, ease: "easeOut" }}
+            />
+            <motion.span
+              className="relative size-4 rounded-full bg-emerald-500 text-white flex items-center justify-center shadow-sm"
+              initial={{ scale: 0, rotate: -90 }}
+              animate={{ scale: 1, rotate: 0 }}
+              transition={{ type: "spring", stiffness: 380, damping: 14, delay: 0.15 }}
+            >
+              <Check className="w-2.5 h-2.5" strokeWidth={3.5} />
+            </motion.span>
+          </motion.span>
+        )}
+        {failed && (
+          <motion.span
+            key="failed"
+            initial={{ scale: 0 }}
+            animate={{ scale: 1 }}
+            className="absolute right-0 top-1/2 -translate-y-1/2 translate-x-1/2 z-10 size-4 rounded-full bg-rose-500 text-white flex items-center justify-center"
+          >
+            <X className="w-2.5 h-2.5" strokeWidth={3.5} />
+          </motion.span>
+        )}
+      </AnimatePresence>
+    </div>
+  );
+}
+
+function AttachmentChip({
+  attachment,
+  theme,
+  onRemove,
+}: {
+  attachment: PendingAttachment;
+  theme: Theme;
+  onRemove: () => void;
+}) {
+  const isImage = attachment.type.startsWith("image/");
+  const statusText =
+    attachment.status === "done"
+      ? "Uploaded"
+      : attachment.status === "error"
+        ? "Failed"
+        : `${attachment.progress}%`;
+
+  return (
+    <motion.div
+      layout
+      initial={{ opacity: 0, scale: 0.85, y: 6 }}
+      animate={{ opacity: 1, scale: 1, y: 0 }}
+      exit={{ opacity: 0, scale: 0.85, y: 6 }}
+      transition={{ type: "spring", stiffness: 320, damping: 24 }}
+      className="group relative flex items-center gap-2.5 rounded-xl border border-border bg-card/90 pl-2 pr-3 py-2 w-[232px] max-w-full shadow-sm"
+    >
+      <div
+        className={cn(
+          "size-9 shrink-0 rounded-lg overflow-hidden flex items-center justify-center",
+          theme.lightBg,
+        )}
+      >
+        {isImage && attachment.previewUrl ? (
+          <img
+            src={attachment.previewUrl}
+            alt=""
+            className="size-full object-cover"
+          />
+        ) : isImage ? (
+          <ImageIcon className="w-4 h-4" />
+        ) : (
+          <FileText className="w-4 h-4" />
+        )}
+      </div>
+
+      <div className="min-w-0 flex-1">
+        <div className="flex items-center justify-between gap-2 leading-tight">
+          <span className="text-xs font-semibold text-foreground truncate">
+            {attachment.name}
+          </span>
+          <span
+            className={cn(
+              "text-[10px] font-bold tabular-nums shrink-0",
+              attachment.status === "done"
+                ? "text-emerald-600 dark:text-emerald-400"
+                : attachment.status === "error"
+                  ? "text-rose-500"
+                  : "text-muted-foreground",
+            )}
+          >
+            {statusText}
+          </span>
+        </div>
+        <RocketProgress
+          progress={attachment.progress}
+          status={attachment.status}
+          theme={theme}
+        />
+        <p className="text-[10px] text-muted-foreground leading-none -mt-0.5">
+          {formatBytes(attachment.size)}
+        </p>
+      </div>
+
+      <button
+        type="button"
+        onClick={onRemove}
+        aria-label={`Remove ${attachment.name}`}
+        className="absolute -top-1.5 -right-1.5 size-5 rounded-full bg-foreground text-background flex items-center justify-center shadow opacity-0 group-hover:opacity-100 focus-visible:opacity-100 transition-opacity cursor-pointer"
+      >
+        <X className="w-3 h-3" strokeWidth={3} />
+      </button>
+    </motion.div>
+  );
+}
+
+const THUMB_WIDTH = 14;
+const TRACK_INSET = 3;
+
+/**
+ * Faster ↔ Smarter slider with one stop per effort option. A transparent
+ * native range input sits on top for pointer, touch and keyboard handling;
+ * the visuals underneath follow its value.
+ */
+function EffortSlider({
+  efforts,
+  value,
+  onChange,
+  theme,
+}: {
+  efforts: readonly EffortOption[];
+  value: number;
+  onChange: (index: number) => void;
+  theme: Theme;
+}) {
+  const last = Math.max(efforts.length - 1, 1);
+  const index = Math.min(Math.max(0, value), last);
+  // Stop centres run from half a thumb in from each end, inside the track inset.
+  const stopLeft = (i: number) => {
+    const p = i / last;
+    const edge = TRACK_INSET + THUMB_WIDTH / 2;
+    return `calc(${edge}px + ${p} * (100% - ${edge * 2}px))`;
+  };
+  const thumbLeft = stopLeft(index);
+  const spring = { type: "spring" as const, stiffness: 400, damping: 30 };
+
+  return (
+    <div className={cn("relative h-8 w-full select-none", theme.primaryText)}>
+      <div className="absolute inset-0 rounded-full bg-muted" />
+      {/* Fill runs from the track's start to the thumb's trailing edge */}
+      <motion.div
+        className="absolute rounded-full bg-current opacity-40"
+        style={{ top: TRACK_INSET, bottom: TRACK_INSET, left: TRACK_INSET }}
+        initial={false}
+        animate={{ width: `calc(${thumbLeft} + ${THUMB_WIDTH / 2 - TRACK_INSET}px)` }}
+        transition={spring}
+      />
+      {efforts.map((effort, i) => (
+        <span
+          key={effort.id}
+          className={cn(
+            "absolute top-1/2 size-[5px] -translate-x-1/2 -translate-y-1/2 rounded-full transition-colors duration-300",
+            i <= index ? "bg-white/80" : "bg-foreground/20",
+          )}
+          style={{ left: stopLeft(i) }}
+        />
+      ))}
+      <motion.div
+        className="absolute top-1/2 -translate-x-1/2 -translate-y-1/2 rounded-full bg-current shadow-sm"
+        style={{ width: THUMB_WIDTH, height: `calc(100% - ${TRACK_INSET * 2}px)` }}
+        initial={false}
+        animate={{ left: thumbLeft }}
+        transition={spring}
+      />
+      <input
+        type="range"
+        min={0}
+        max={last}
+        step={1}
+        value={index}
+        onChange={(e) => onChange(Number(e.target.value))}
+        aria-label="Effort"
+        aria-valuetext={efforts[index]?.label}
+        className="absolute inset-0 w-full h-full opacity-0 cursor-pointer m-0"
+      />
+    </div>
+  );
+}
+
+const PARTICLE_COUNT = 26;
+
+/** Deterministic 0–1 noise so server and client render the same sky. */
+const noise = (i: number, salt: number) => {
+  const x = Math.sin(i * 12.9898 + salt * 78.233) * 43758.5453;
+  return x - Math.floor(x);
+};
+
+/**
+ * The "Max" sky: a soft glow rising from the bottom of the prompt bar and a
+ * scatter of twinkling specks, denser near the floor. Pure decoration — it
+ * never intercepts the pointer.
+ */
+function MaxEffortGlow({
+  active,
+  className,
+}: {
+  active: boolean;
+  className?: string;
+}) {
+  return (
+    <AnimatePresence>
+      {active && (
+        <motion.div
+          key="max-glow"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          exit={{ opacity: 0 }}
+          transition={{ duration: 0.5 }}
+          aria-hidden
+          className={cn(
+            "pointer-events-none absolute inset-0 overflow-hidden rounded-2xl",
+            className,
+          )}
+        >
+          <div className="absolute inset-x-0 bottom-0 h-3/4 bg-[radial-gradient(ellipse_at_bottom,currentColor,transparent_65%)] opacity-15" />
+          <motion.div
+            className="absolute inset-x-6 bottom-0 h-1/2 bg-[radial-gradient(ellipse_at_bottom,currentColor,transparent_60%)] opacity-20 blur-xl"
+            animate={{ opacity: [0.12, 0.26, 0.12] }}
+            transition={{ duration: 3.2, repeat: Infinity, ease: "easeInOut" }}
+          />
+          {Array.from({ length: PARTICLE_COUNT }).map((_, i) => {
+            const x = noise(i, 1) * 100;
+            // Square the vertical noise so most specks sit low, like the reference.
+            const y = 100 - Math.pow(noise(i, 2), 2) * 95;
+            const size = 1.5 + noise(i, 3) * 2;
+            const duration = 1.8 + noise(i, 4) * 2.4;
+            const delay = noise(i, 5) * 3;
+            return (
+              <motion.span
+                key={i}
+                className="absolute rounded-full bg-current"
+                style={{
+                  left: `${x}%`,
+                  top: `${y}%`,
+                  width: size,
+                  height: size,
+                  boxShadow: "0 0 6px 1px currentColor",
+                }}
+                animate={{
+                  opacity: [0, 0.9, 0],
+                  scale: [0.4, 1.3, 0.4],
+                  y: [0, -6, -12],
+                }}
+                transition={{
+                  duration,
+                  delay,
+                  repeat: Infinity,
+                  ease: "easeInOut",
+                }}
+              />
+            );
+          })}
+        </motion.div>
+      )}
+    </AnimatePresence>
+  );
+}
+
+const BAR_COUNT = 22;
+
+/**
+ * The waveform shown while dictating. With a live microphone the bars follow
+ * the analyser through refs (no re-render per frame); without one they run a
+ * soft idle animation so the state still reads as "listening".
+ */
+function ListeningWave({
+  barsRef,
+  live,
+  className,
+}: {
+  barsRef: React.MutableRefObject<(HTMLSpanElement | null)[]>;
+  live: boolean;
+  className?: string;
+}) {
+  return (
+    <div
+      className={cn("flex items-center gap-[3px] h-8 shrink-0", className)}
+      aria-hidden
+    >
+      {Array.from({ length: BAR_COUNT }).map((_, i) => {
+        // Taller in the middle so the idle shape reads as a voice, not noise.
+        const envelope = 0.35 + 0.65 * Math.sin((i / (BAR_COUNT - 1)) * Math.PI);
+        return live ? (
+          <span
+            key={i}
+            ref={(el) => {
+              barsRef.current[i] = el;
+            }}
+            className="w-[3px] h-full rounded-full bg-current origin-center will-change-transform"
+            style={{ transform: "scaleY(0.15)" }}
+          />
+        ) : (
+          <motion.span
+            key={i}
+            className="w-[3px] h-full rounded-full bg-current origin-center"
+            animate={{
+              scaleY: [0.15, envelope, 0.3, envelope * 0.8, 0.15],
+            }}
+            transition={{
+              duration: 0.9 + (i % 5) * 0.12,
+              repeat: Infinity,
+              ease: "easeInOut",
+              delay: (i % 7) * 0.07,
+            }}
+          />
+        );
+      })}
+    </div>
+  );
+}
+
+function ComposerMenu({
+  open,
+  onOpenChange,
+  icon,
+  label,
+  heading,
+  highlighted = false,
+  iconOnly = false,
+  width = "w-64",
+  theme,
+  children,
+}: {
+  open: boolean;
+  onOpenChange: (open: boolean) => void;
+  icon: React.ReactNode;
+  label: React.ReactNode;
+  /** Small caps title above the items; omit when the panel draws its own. */
+  heading?: string;
+  /** Tints the trigger even while closed — used when effort is at Max. */
+  highlighted?: boolean;
+  /** Square icon trigger with `label` as its accessible name — the "+" button. */
+  iconOnly?: boolean;
+  width?: string;
+  theme: Theme;
+  children: React.ReactNode;
+}) {
+  const ref = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    if (!open) return;
+    const onPointerDown = (e: MouseEvent | TouchEvent) => {
+      if (!ref.current?.contains(e.target as Node)) onOpenChange(false);
+    };
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === "Escape") onOpenChange(false);
+    };
+    document.addEventListener("mousedown", onPointerDown);
+    document.addEventListener("touchstart", onPointerDown);
+    document.addEventListener("keydown", onKey);
+    return () => {
+      document.removeEventListener("mousedown", onPointerDown);
+      document.removeEventListener("touchstart", onPointerDown);
+      document.removeEventListener("keydown", onKey);
+    };
+  }, [open, onOpenChange]);
+
+  return (
+    <div ref={ref} className="relative">
+      <button
+        type="button"
+        onClick={() => onOpenChange(!open)}
+        aria-haspopup="menu"
+        aria-expanded={open}
+        title={iconOnly && typeof label === "string" ? label : undefined}
+        aria-label={iconOnly && typeof label === "string" ? label : undefined}
+        className={cn(
+          "flex items-center rounded-lg text-xs font-semibold transition-colors cursor-pointer",
+          iconOnly
+            ? "size-8 justify-center"
+            : "gap-1.5 h-8 pl-2 pr-1.5 max-w-[160px]",
+          open || highlighted
+            ? cn(theme.lightBg, highlighted && theme.primaryText)
+            : cn("text-muted-foreground", theme.primaryHover),
+        )}
+      >
+        <span className="shrink-0">{icon}</span>
+        {!iconOnly && (
+          <>
+            <span className="truncate">{label}</span>
+            <ChevronDown
+              className={cn(
+                "w-3.5 h-3.5 shrink-0 transition-transform duration-200",
+                open && "rotate-180",
+              )}
+            />
+          </>
+        )}
+      </button>
+
+      <AnimatePresence>
+        {open && (
+          <motion.div
+            role="menu"
+            initial={{ opacity: 0, y: 6, scale: 0.96 }}
+            animate={{ opacity: 1, y: 0, scale: 1 }}
+            exit={{ opacity: 0, y: 6, scale: 0.96 }}
+            transition={{ duration: 0.16, ease: "easeOut" }}
+            style={{ transformOrigin: "bottom left" }}
+            className={cn(
+              "absolute bottom-full left-0 mb-2 rounded-xl border border-border bg-popover text-popover-foreground shadow-xl p-1 z-50",
+              width,
+            )}
+          >
+            {heading && (
+              <p className="px-2.5 pt-1.5 pb-1 text-[10px] font-bold uppercase tracking-wider text-muted-foreground">
+                {heading}
+              </p>
+            )}
+            {children}
+          </motion.div>
+        )}
+      </AnimatePresence>
+    </div>
+  );
+}
+
+function MenuItem({
+  active,
+  theme,
+  onClick,
+  children,
+}: {
+  active: boolean;
+  theme: Theme;
+  onClick: () => void;
+  children: React.ReactNode;
+}) {
+  return (
+    <button
+      type="button"
+      role="menuitemradio"
+      aria-checked={active}
+      onClick={onClick}
+      className={cn(
+        "w-full flex items-center gap-2.5 px-2.5 py-2 rounded-lg text-left transition-colors cursor-pointer",
+        active ? theme.lightBg : "hover:bg-muted",
+      )}
+    >
+      {children}
+      <Check
+        className={cn(
+          "w-4 h-4 shrink-0 transition-opacity",
+          theme.primaryText,
+          active ? "opacity-100" : "opacity-0",
+        )}
+      />
+    </button>
+  );
+}
+
+// ==========================================
+// VOICE INPUT
+// ==========================================
+type SpeechResultEvent = {
+  results: ArrayLike<ArrayLike<{ transcript: string }> & { isFinal: boolean }>;
+};
+
+type SpeechRecognitionLike = {
+  continuous: boolean;
+  interimResults: boolean;
+  lang: string;
+  onresult: ((e: SpeechResultEvent) => void) | null;
+  onend: (() => void) | null;
+  onerror: (() => void) | null;
+  start: () => void;
+  stop: () => void;
+};
+
+const getSpeechRecognition = () => {
+  if (typeof window === "undefined") return null;
+  const w = window as unknown as {
+    SpeechRecognition?: new () => SpeechRecognitionLike;
+    webkitSpeechRecognition?: new () => SpeechRecognitionLike;
+  };
+  return w.SpeechRecognition ?? w.webkitSpeechRecognition ?? null;
+};
+
+/**
+ * Microphone for the composer. Opens the mic for a live level meter (driving
+ * `barsRef` each frame), and runs the Web Speech API alongside it for the
+ * transcript. Either half degrades on its own: no analyser → idle wave, no
+ * recognition → the wave still shows so the user knows the button did something.
+ */
+function useVoiceInput(
+  onTranscript: (text: string) => void,
+  getCurrentText: () => string,
+) {
+  const [isListening, setIsListening] = useState(false);
+  const [hasLiveAudio, setHasLiveAudio] = useState(false);
+  const barsRef = useRef<(HTMLSpanElement | null)[]>([]);
+
+  const wantListening = useRef(false);
+  const recognitionRef = useRef<SpeechRecognitionLike | null>(null);
+  const streamRef = useRef<MediaStream | null>(null);
+  const audioCtxRef = useRef<AudioContext | null>(null);
+  const rafRef = useRef<number | null>(null);
+  const baseTextRef = useRef("");
+
+  const supportsDictation =
+    typeof window !== "undefined" && getSpeechRecognition() !== null;
+
+  const stop = useCallback(() => {
+    wantListening.current = false;
+    setIsListening(false);
+    setHasLiveAudio(false);
+
+    if (rafRef.current) cancelAnimationFrame(rafRef.current);
+    rafRef.current = null;
+    recognitionRef.current?.stop();
+    recognitionRef.current = null;
+    streamRef.current?.getTracks().forEach((t) => t.stop());
+    streamRef.current = null;
+    audioCtxRef.current?.close().catch(() => {});
+    audioCtxRef.current = null;
+  }, []);
+
+  const start = useCallback(async () => {
+    wantListening.current = true;
+    setIsListening(true);
+    baseTextRef.current = getCurrentText();
+
+    // 1. Transcript
+    const SR = getSpeechRecognition();
+    if (SR) {
+      const rec = new SR();
+      rec.continuous = true;
+      rec.interimResults = true;
+      rec.lang = typeof navigator !== "undefined" ? navigator.language : "en-US";
+      rec.onresult = (e) => {
+        let finalText = "";
+        let interim = "";
+        for (let i = 0; i < e.results.length; i++) {
+          const res = e.results[i];
+          if (res.isFinal) finalText += res[0].transcript;
+          else interim += res[0].transcript;
+        }
+        const base = baseTextRef.current;
+        const joiner = base && !/\s$/.test(base) ? " " : "";
+        onTranscript(`${base}${joiner}${finalText}${interim}`.trimStart());
+      };
+      // Chrome ends the session after a pause; keep going until the user stops.
+      rec.onend = () => {
+        if (wantListening.current && recognitionRef.current === rec) {
+          try {
+            rec.start();
+          } catch {
+            /* already restarting */
+          }
+        }
+      };
+      rec.onerror = () => {};
+      recognitionRef.current = rec;
+      try {
+        rec.start();
+      } catch {
+        recognitionRef.current = null;
+      }
+    }
+
+    // 2. Level meter
+    try {
+      const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+      if (!wantListening.current) {
+        stream.getTracks().forEach((t) => t.stop());
+        return;
+      }
+      const ctx = new AudioContext();
+      const analyser = ctx.createAnalyser();
+      analyser.fftSize = 64;
+      analyser.smoothingTimeConstant = 0.75;
+      ctx.createMediaStreamSource(stream).connect(analyser);
+      const data = new Uint8Array(analyser.frequencyBinCount);
+
+      streamRef.current = stream;
+      audioCtxRef.current = ctx;
+      setHasLiveAudio(true);
+
+      const draw = () => {
+        analyser.getByteFrequencyData(data);
+        const bars = barsRef.current;
+        const n = bars.length;
+        for (let i = 0; i < n; i++) {
+          const bar = bars[i];
+          if (!bar) continue;
+          // Mirror around the centre so the wave is symmetrical like a voice meter.
+          const dist = Math.abs(i - (n - 1) / 2) / ((n - 1) / 2);
+          const bin = Math.floor(dist * (data.length - 1));
+          const v = data[bin] / 255;
+          bar.style.transform = `scaleY(${(0.15 + v * 0.85).toFixed(3)})`;
+        }
+        rafRef.current = requestAnimationFrame(draw);
+      };
+      draw();
+    } catch {
+      // Mic denied or unavailable — the idle wave stands in.
+      setHasLiveAudio(false);
+    }
+  }, [getCurrentText, onTranscript]);
+
+  const toggle = useCallback(() => {
+    if (wantListening.current) stop();
+    else void start();
+  }, [start, stop]);
+
+  useEffect(() => stop, [stop]);
+
+  return { isListening, hasLiveAudio, supportsDictation, barsRef, toggle, stop };
 }
