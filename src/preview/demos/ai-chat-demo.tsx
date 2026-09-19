@@ -3,6 +3,7 @@
 import AIChat, {
   AIChatColor,
   AIChatVariant,
+  EffortLevel,
 } from "@/components/custom/blocks/Ai-chat";
 
 const sampleChatHistory = [
@@ -38,9 +39,11 @@ const sampleInitialMessages = [
 export default function AIChatDemo({
   variant = "default",
   color = "primary",
+  defaultEffort = "medium",
 }: {
   variant?: AIChatVariant;
   color?: AIChatColor | string;
+  defaultEffort?: EffortLevel;
 }) {
   return (
     <div
@@ -59,11 +62,13 @@ export default function AIChatDemo({
       }
     >
       <AIChat
-        key={`${variant}-${color}`}
+        key={`${variant}-${color}-${defaultEffort}`}
         variant={variant}
         color={color}
-        chatHistory={sampleChatHistory}
-        initialMessages={sampleInitialMessages}
+        defaultEffort={defaultEffort}
+        // Compact opens on its hero — a title and the prompt bar — so it gets no seed data.
+        chatHistory={variant === "compact" ? [] : sampleChatHistory}
+        initialMessages={variant === "compact" ? [] : sampleInitialMessages}
       />
     </div>
   );
