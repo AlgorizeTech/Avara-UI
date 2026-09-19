@@ -5,7 +5,7 @@ import { extractCode } from "@/lib/code";
 
 A premium, interactive LLM chat interface featuring conversation history management, real-time typing indicators, editable chat titles, and a full prompt composer — a **+** menu for files and `@Mention` tools, a rocket upload indicator, a model picker, a Faster ↔ Smarter effort slider, and voice dictation with a live waveform.
 
-Every preview is live — send a prompt to see the simulated stream, rename a thread, or hit **New Chat**. Try the composer too: press **+** and pick *Photos & files* (or drop a file on the bar) and watch the rocket carry it to 100%, pick *Documents* or *Mail* to drop an `@Documents` mention into the prompt, switch the model, slide effort up to **Max** for the glowing prompt bar, or tap the mic and talk. `variant` changes the shell only; everything else behaves identically in all three.
+Every preview is live — send a prompt to see the simulated stream, rename a thread, or hit **New Chat**. Try the composer too: press **+** and pick *Photos & files* (or drop a file on the bar) and watch the rocket carry it to 100%, pick *Documents* or *Mail* to drop an `@Documents` mention into the prompt, switch the model, slide effort up to **Max** for the glowing prompt bar, or tap the mic and talk. `variant` changes the shell only — `compact` also drops the history sidebar — and everything else behaves identically in all four.
 
 export const chatData = `const chatHistory: ChatThread[] = [
   { id: 1, title: "Help with React Components", date: "Today" },
@@ -117,13 +117,18 @@ export default function WiredAssistant() {
   );
 }`;
 
-export const usageMaxEffort = `import AIChat from "@/components/custom/blocks/Ai-chat";
+export const usageCompact = `import AIChat from "@/components/custom/blocks/Ai-chat";
 
-export default function MaxEffortAssistant() {
+export default function CompactAssistant() {
   return (
     <div className="w-full h-[600px]">
-      {/* The highest effort level lights the prompt bar: a rising glow and a scatter of twinkling specks. */}
-      <AIChat defaultEffort="max" />
+      {/* No sidebar and nothing said yet: just the title and the prompt bar, like a hero.
+          The first message swaps it for the conversation view. */}
+      <AIChat
+        variant="compact"
+        heroTitle="What can I help you with?"
+        heroSubtitle="Ask a question, attach a file, or pick a source with +"
+      />
     </div>
   );
 }`;
@@ -214,23 +219,29 @@ export default function GlassAssistant() {
   columns={1}
   examples={[
     {
-      title: "Max effort",
+      title: "Compact",
       propNotes: [
         {
           lead: "Set",
-          prop: "defaultEffort",
-          value: '"max"',
+          prop: "variant",
+          value: '"compact"',
           effect:
-            "to open at the top of the Faster ↔ Smarter slider. The highest level tints the effort pill and lights the prompt bar with a glow and twinkling specks; any lower level turns it off again.",
+            "for no history sidebar. While nothing has been said it is a hero — `heroTitle` over the prompt bar, no header, no messages. The first message you send swaps it for the conversation view, and **New chat** in that view brings the hero back.",
         },
         {
-          prop: "efforts",
+          prop: "heroTitle",
           effect:
-            "replaces the four built-in levels — pass `{ id, label, description, level }[]` and the slider gets one stop per entry.",
+            "and `heroSubtitle` set the copy above the bar. Seed `initialMessages` instead and it opens on the conversation directly.",
+        },
+        {
+          prop: "showSidebar",
+          value: "false",
+          effect:
+            "does the same to any other variant, so a `glass` panel can open on its hero too.",
         },
       ],
-      props: { variant: "default", defaultEffort: "max" },
-      usage: usageMaxEffort,
+      props: { variant: "compact" },
+      usage: usageCompact,
     },
     {
       title: "Wired to your backend",
@@ -383,12 +394,58 @@ Explore the Ai-Chat interface features, including message streaming, typing indi
           <code>variant</code>
         </td>
         <td>
-          <code>"default" | "minimal" | "glass"</code>
+          <code>"default" | "minimal" | "glass" | "compact"</code>
         </td>
         <td>
           <code>"default"</code>
         </td>
-        <td>Applies overarching structural and aesthetic layout styling.</td>
+        <td>
+          Applies overarching structural and aesthetic layout styling.{" "}
+          <code>"compact"</code> is the default shell without the history
+          sidebar.
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <code>showSidebar</code>
+        </td>
+        <td>
+          <code>boolean</code>
+        </td>
+        <td>
+          <code>variant !== "compact"</code>
+        </td>
+        <td>
+          Renders the thread history beside the conversation. Pass{" "}
+          <code>false</code> to remove it from any variant; an empty thread
+          then shows the hero, and a <code>New chat</code> button appears in
+          the conversation header.
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <code>heroTitle</code>
+        </td>
+        <td>
+          <code>string</code>
+        </td>
+        <td>
+          <code>"What can I help you with?"</code>
+        </td>
+        <td>
+          Title above the prompt bar in the hero state (sidebar-less, nothing
+          said yet).
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <code>heroSubtitle</code>
+        </td>
+        <td>
+          <code>string</code>
+        </td>
+        <td>—</td>
+        <td>Optional line under the hero title.</td>
       </tr>
       <tr>
         <td>

@@ -3,9 +3,9 @@ import { extractCode } from "@/lib/code";
 
 # Accordion
 
-A powerful, reusable extension of the standard shadcn/ui accordion. This custom wrapper adds built-in support for array-based data mapping, dynamic icons, and 5 highly customizable styling variants.
+A data-driven accordion built on the Radix primitive, with five variants that each look like a different component rather than the same card in five borders. The open panel is the only thing that gets the accent: it lifts out as a card, inverts to your primary color, or grows a rail down its edge, depending on the variant.
 
-You feed it an `accordionData` array — the wrapper maps it to items, icons and content for you.
+You feed it an `accordionData` array — the wrapper maps it to items, icons and content for you. Switch on `animation="stack"` and the items start piled on the first one and deal down into place when the accordion scrolls into view.
 
 export const usageData = `const faqItems: AccordionDataItem[] = [
   {
@@ -39,11 +39,14 @@ export const usageDefault = `import { Accordion, type AccordionDataItem } from "
 ${usageData}
 
 export default function Faq() {
+  // animation="stack" piles the items on the first one and deals them out
+  // once the accordion scrolls into view. Leave it off for plain rendering.
   return (
     <Accordion
       accordionData={faqItems}
       type="single"
       collapsible
+      animation="stack"
       defaultValue="getting-started"
     />
   );
@@ -111,8 +114,15 @@ export default function AlwaysOpenFaq() {
           value: '"getting-started"',
           effect: "matches an item's `value` to decide which panel starts open.",
         },
+        {
+          lead: "Add",
+          prop: "animation",
+          value: '"stack"',
+          effect:
+            "to start the items piled on the first one and deal them into place when the accordion scrolls into view. Reload the preview to watch it again.",
+        },
       ],
-      props: { variant: "default", interaction: "single" },
+      props: { variant: "default", interaction: "single", animation: "stack" },
       usage: usageDefault,
       code: extractCode("src/components/custom/blocks/Accordion.tsx"),
     },
@@ -124,6 +134,168 @@ export default function AlwaysOpenFaq() {
 <Installation name="accordion" />
 
 ## Examples
+
+export const usageSection = `import { Accordion, type AccordionDataItem } from "@/components/custom/blocks/Accordion";
+
+const faq: AccordionDataItem[] = [
+  {
+    value: "frameworks",
+    title: "Does it work outside Next.js?",
+    icon: "Code",
+    content: [
+      "Every block is plain React and Tailwind. The docs show a Next.js and a React (Vite) version of each snippet, and only the few components that use next/link or next/image need a one-line swap.",
+    ],
+  },
+  {
+    value: "theming",
+    title: "Can I change the colors?",
+    icon: "Palette",
+    content: [
+      "Everything reads the shadcn theme tokens (primary, card, muted, border), so one edit to globals.css restyles all of it.",
+    ],
+  },
+  {
+    value: "updates",
+    title: "How do updates reach my project?",
+    icon: "RefreshCw",
+    content: [
+      "The CLI copies the source into your repo, so nothing changes behind your back. Re-run the install command to pull a newer version, then review the diff like any other change.",
+    ],
+  },
+  {
+    value: "license",
+    title: "How is it licensed?",
+    icon: "Scale",
+    content: ["MIT. Use it in client work, products and templates, with no attribution required."],
+  },
+];
+
+export default function FaqSection() {
+  return (
+    <section className="px-6 py-16 sm:px-10 lg:px-14 lg:py-24">
+      <div className="mx-auto grid max-w-6xl gap-12 lg:grid-cols-[minmax(0,5fr)_minmax(0,7fr)] lg:gap-20">
+        {/* Left column stays put while the answers scroll on large screens. */}
+        <div className="lg:sticky lg:top-8 lg:self-start">
+          <h2 className="max-w-md font-serif text-4xl leading-[1.05] tracking-tight text-foreground sm:text-5xl">
+            Questions people ask before they install.
+          </h2>
+          <p className="mt-5 max-w-md text-base leading-relaxed text-muted-foreground">
+            Short answers on licensing, theming and where the components run.
+            If yours isn't here, we read every message.
+          </p>
+
+          <div className="mt-8 flex max-w-md items-center gap-4 rounded-2xl bg-muted/60 p-4">
+            <div className="flex -space-x-2">
+              {["AR", "MK", "JS"].map((initials) => (
+                <span
+                  key={initials}
+                  className="flex size-9 items-center justify-center rounded-full border-2 border-background bg-primary/15 text-xs font-medium text-primary"
+                >
+                  {initials}
+                </span>
+              ))}
+            </div>
+            <div className="min-w-0">
+              <p className="text-sm font-medium text-foreground">Still stuck?</p>
+              <a
+                href="mailto:hello@example.com"
+                className="text-sm text-muted-foreground underline-offset-4 transition-colors hover:text-primary hover:underline"
+              >
+                Email the team, we reply within a day
+              </a>
+            </div>
+          </div>
+        </div>
+
+        <Accordion
+          accordionData={faq}
+          type="single"
+          collapsible
+          variant="default"
+          animation="stack"
+          defaultValue="theming"
+        />
+      </div>
+    </section>
+  );
+}`;
+
+export const usageStackElevated = `import { Accordion, type AccordionDataItem } from "@/components/custom/blocks/Accordion";
+
+${usageData}
+
+export default function StackedFaq() {
+  // The entrance works with every variant. It waits for the accordion to
+  // scroll into view, and is skipped for visitors who prefer reduced motion.
+  return (
+    <Accordion
+      accordionData={faqItems}
+      type="single"
+      collapsible
+      variant="elevated"
+      animation="stack"
+      defaultValue="getting-started"
+    />
+  );
+}`;
+
+export const usageVariants = `import { Accordion, type AccordionDataItem } from "@/components/custom/blocks/Accordion";
+
+${usageData}
+
+const variants = ["default", "bordered", "filled", "elevated", "ghost"] as const;
+
+export default function AccordionVariants() {
+  return (
+    <div className="flex flex-col gap-10">
+      {variants.map((variant) => (
+        <Accordion
+          key={variant}
+          variant={variant}
+          accordionData={faqItems}
+          type="single"
+          collapsible
+          defaultValue="pricing"
+        />
+      ))}
+    </div>
+  );
+}`;
+
+<ExampleShowcase
+  name="accordion"
+  columns={1}
+  minHeight={640}
+  examples={[
+    {
+      title: "FAQ section",
+      subheading:
+        "A two-column section: sticky heading and a support card on the left, the accordion on the right.",
+      propNotes: [
+        {
+          lead: "Compose",
+          prop: "Accordion",
+          effect:
+            "inside a `grid` with `lg:grid-cols-[minmax(0,5fr)_minmax(0,7fr)]`. The left column is `lg:sticky` so the intro stays put while long answers scroll.",
+        },
+        {
+          prop: "animation",
+          value: '"stack"',
+          effect:
+            "deals the questions out when the section scrolls into view, so the entrance reads as one moment rather than a page full of fades.",
+        },
+        {
+          prop: "defaultValue",
+          value: '"theming"',
+          effect:
+            "opens the answer you most want people to read first. Any `value` from the array works.",
+        },
+      ],
+      props: { layout: "section", animation: "stack" },
+      usage: usageSection,
+    },
+  ]}
+/>
 
 export const usageMultiplePermanent = `import { Accordion, type AccordionDataItem } from "@/components/custom/blocks/Accordion";
 
@@ -192,28 +364,84 @@ export default function PermanentMultiOpenFaq() {
       props: { variant: "ghost", interaction: "multiple-non-collapsible" },
       usage: usageMultiplePermanent,
     },
+    {
+      title: "Stack entrance",
+      subheading:
+        "The deal-out entrance on the `elevated` variant. It works with all five.",
+      propNotes: [
+        {
+          lead: "Set",
+          prop: "animation",
+          value: '"stack"',
+          effect:
+            "to pile the items on the first one and deal them down with a stagger. It runs once, when the accordion first scrolls into view, and is skipped when the visitor prefers reduced motion.",
+        },
+        {
+          prop: "variant",
+          value: '"elevated"',
+          effect:
+            "keeps every item on its own card, so the open one rises on a primary ring instead of changing shape.",
+        },
+      ],
+      props: { variant: "elevated", interaction: "single", animation: "stack" },
+      usage: usageStackElevated,
+    },
+    {
+      title: "All variants",
+      subheading:
+        "Same data, five looks. Pick by how much the accordion should stand out from what surrounds it.",
+      propNotes: [
+        {
+          prop: "variant",
+          value: '"default"',
+          effect:
+            "keeps closed rows quiet and lifts the open one out as a card. Best on a plain page background.",
+        },
+        {
+          prop: "variant",
+          value: '"bordered"',
+          effect:
+            "wraps everything in one outlined panel with a rail on the open row. Best inside cards and settings pages.",
+        },
+        {
+          prop: "variant",
+          value: '"filled"',
+          effect:
+            "inverts the open item to your primary color. Loudest of the five.",
+        },
+        {
+          prop: "variant",
+          value: '"ghost"',
+          effect:
+            "is type and hairlines only. Best for long editorial FAQs.",
+        },
+      ],
+      props: { showAll: "variants" },
+      usage: usageVariants,
+      minHeight: 900,
+    },
   ]}
 />
 
 ## Features
-Discover the flexible features of the Accordion, such as single or multiple collapsible states, smooth height animations, and full keyboard accessibility.
+Single or multiple open panels, a one-time stack entrance, and five variants that all read your theme tokens.
 
 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 my-6 not-prose">
   <div className="p-6 rounded-2xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900">
-    <h3 className="text-lg font-semibold text-zinc-900 dark:text-zinc-50 mb-2">Customizable</h3>
-    <p className="text-zinc-600 dark:text-zinc-400 text-sm">Easily adapt the component's styling and behavior to fit your application's unique design system.</p>
+    <h3 className="text-lg font-semibold text-zinc-900 dark:text-zinc-50 mb-2">Follows your theme</h3>
+    <p className="text-zinc-600 dark:text-zinc-400 text-sm">Every variant is built from the shadcn tokens, so changing <code>--primary</code> restyles the open panel, the rail and the icon tile together.</p>
   </div>
   <div className="p-6 rounded-2xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900">
     <h3 className="text-lg font-semibold text-zinc-900 dark:text-zinc-50 mb-2">Accessible</h3>
-    <p className="text-zinc-600 dark:text-zinc-400 text-sm">Built with accessibility in mind, ensuring all users can interact with your application effectively.</p>
+    <p className="text-zinc-600 dark:text-zinc-400 text-sm">Radix handles roles, arrow-key navigation and focus. The visible focus ring follows the shape of each variant, and the entrance respects reduced motion.</p>
   </div>
   <div className="p-6 rounded-2xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900">
     <h3 className="text-lg font-semibold text-zinc-900 dark:text-zinc-50 mb-2">Responsive</h3>
-    <p className="text-zinc-600 dark:text-zinc-400 text-sm">Fully responsive design that looks and works great across desktop, tablet, and mobile devices.</p>
+    <p className="text-zinc-600 dark:text-zinc-400 text-sm">Rows wrap cleanly at phone width; the open card in the default variant only grows wider than the list from <code>sm</code> up.</p>
   </div>
   <div className="p-6 rounded-2xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900">
-    <h3 className="text-lg font-semibold text-zinc-900 dark:text-zinc-50 mb-2">Performant</h3>
-    <p className="text-zinc-600 dark:text-zinc-400 text-sm">Optimized for maximum performance with minimal re-renders and efficient state management.</p>
+    <h3 className="text-lg font-semibold text-zinc-900 dark:text-zinc-50 mb-2">No animation library</h3>
+    <p className="text-zinc-600 dark:text-zinc-400 text-sm">The stack entrance uses the Web Animations API and runs once. The only dependency beyond Radix is <code>lucide-react</code>.</p>
   </div>
 </div>
 
@@ -222,7 +450,7 @@ Discover the flexible features of the Accordion, such as single or multiple coll
 <div className="flex flex-col gap-4 my-6 not-prose">
   <div className="p-5 rounded-xl border border-blue-200 dark:border-blue-900/50 bg-blue-50/50 dark:bg-blue-950/20">
     <h4 className="text-base font-semibold text-blue-900 dark:text-blue-300 mb-1">Usage Guidelines</h4>
-    <p className="text-blue-800 dark:text-blue-400/80 text-sm">Follow standard design principles when implementing this component. Ensure proper contrast, spacing, and context within your layout.</p>
+    <p className="text-blue-800 dark:text-blue-400/80 text-sm">Use <code>animation="stack"</code> once per page, on the accordion you want people to notice; two decks dealing at the same time cancel each other out. Give it at least three items so the pile reads as a deck, and keep <code>defaultValue</code> set so the open card is part of the deal.</p>
   </div>
 </div>
 
@@ -264,7 +492,28 @@ Discover the flexible features of the Accordion, such as single or multiple coll
         <td>
           <code>"default"</code>
         </td>
-        <td>Applies pre-defined structural and aesthetic styling.</td>
+        <td>
+          Which look to use. <code>default</code> lifts the open row out as a
+          card, <code>bordered</code> grows a rail on it, <code>filled</code>{" "}
+          inverts it to <code>primary</code>, <code>elevated</code> raises it on
+          a ring, <code>ghost</code> is type and hairlines only.
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <code>animation</code>
+        </td>
+        <td>
+          <code>"none" | "stack"</code>
+        </td>
+        <td>
+          <code>"none"</code>
+        </td>
+        <td>
+          <code>"stack"</code> piles the items on the first one and deals them
+          into place once the accordion scrolls into view. Runs once; skipped
+          under <code>prefers-reduced-motion</code>.
+        </td>
       </tr>
       <tr>
         <td>

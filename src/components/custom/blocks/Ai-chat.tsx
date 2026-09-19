@@ -37,7 +37,7 @@ import { useCallback, useEffect, useRef, useState } from "react";
 // ==========================================
 // VARIANT & COLOR CONFIGURATION
 // ==========================================
-export type AIChatVariant = "default" | "minimal" | "glass";
+export type AIChatVariant = "default" | "minimal" | "glass" | "compact";
 
 // We use (string & {}) to preserve IDE autocomplete for the predefined types
 // while still allowing any arbitrary hex string like "#000fff".
@@ -57,24 +57,31 @@ const chatVariants: Record<AIChatVariant, Record<string, string>> = {
     main: "bg-white dark:bg-[#09090b]",
     header:
       "bg-white/80 dark:bg-[#09090b]/80 border-b border-border backdrop-blur-xl",
-    input:
-      "bg-muted border border-border",
+    input: "bg-muted border border-border",
     msgUser: "text-white rounded-2xl rounded-tr-sm shadow-sm",
     msgAi:
       "bg-card text-foreground border border-border rounded-2xl rounded-tl-sm shadow-sm",
   },
   minimal: {
     wrapper: "bg-transparent border-none shadow-none rounded-none",
-    sidebar:
-      "bg-muted/50 rounded-2xl border border-border lg:mr-4",
+    sidebar: "bg-muted/50 rounded-2xl border border-border lg:mr-4",
     main: "bg-transparent",
-    header:
-      "bg-transparent border-b border-border mb-2",
-    input:
-      "bg-muted border border-border",
+    header: "bg-transparent border-b border-border mb-2",
+    input: "bg-muted border border-border",
     msgUser: "text-white rounded-2xl rounded-br-sm shadow-sm",
+    msgAi: "bg-muted text-foreground rounded-2xl rounded-bl-sm",
+  },
+  compact: {
+    wrapper:
+      "bg-white dark:bg-[#09090b] border border-border shadow-none rounded-2xl",
+    sidebar: "",
+    main: "bg-white dark:bg-[#09090b]",
+    header:
+      "bg-white/80 dark:bg-[#09090b]/80 border-b border-border backdrop-blur-xl",
+    input: "bg-muted border border-border",
+    msgUser: "text-white rounded-2xl rounded-tr-sm shadow-sm",
     msgAi:
-      "bg-muted text-foreground rounded-2xl rounded-bl-sm",
+      "bg-card text-foreground border border-border rounded-2xl rounded-tl-sm shadow-sm",
   },
   glass: {
     wrapper:
@@ -96,10 +103,8 @@ const colorThemes: Record<string, Record<string, string>> = {
   primary: {
     primaryText: "text-primary",
     primaryBg: "bg-primary hover:bg-primary/90 text-primary-foreground",
-    primaryHover:
-      "hover:text-primary hover:bg-primary/10",
-    lightBg:
-      "bg-primary/10 text-foreground",
+    primaryHover: "hover:text-primary hover:bg-primary/10",
+    lightBg: "bg-primary/10 text-foreground",
     gradient: "from-primary to-primary/80",
     shadow: "shadow-primary/20",
     ring: "focus-within:border-primary/50 focus-within:ring-primary/10",
@@ -377,6 +382,9 @@ export default function AIChat({
   initialMessages = [],
   variant = "default",
   color = "primary",
+  showSidebar = variant !== "compact",
+  heroTitle = "What can I help you with?",
+  heroSubtitle,
   models = defaultModels,
   defaultModelId,
   onModelChange,
@@ -393,6 +401,17 @@ export default function AIChat({
   initialMessages?: readonly Message[];
   variant?: AIChatVariant;
   color?: AIChatColor;
+  /**
+   * Renders the thread history beside the conversation. Off for `compact`,
+   * on for every other variant; pass `false` to drop it from any shell.
+   */
+  showSidebar?: boolean;
+  /**
+   * Shown above the prompt bar while a sidebar-less conversation is still
+   * empty — the hero state before anything has been said.
+   */
+  heroTitle?: string;
+  heroSubtitle?: string;
   /** Models offered in the composer's picker. */
   models?: readonly ChatModel[];
   /** Which model is selected on mount; the first one when omitted. */
@@ -444,16 +463,24 @@ export default function AIChat({
 
   const styles = chatVariants[variant];
 
-  const [chats, setChats] = useState<ChatThread[]>(() => [...chatHistory]);
+  // Without a sidebar there is nothing to pick a thread from, so an empty
+  // history starts one conversation seeded with `initialMessages`.
+  const [threads] = useState<readonly ChatThread[]>(() =>
+    chatHistory.length === 0 && !showSidebar
+      ? [{ id: "conversation", title: "New Conversation", date: "Today" }]
+      : chatHistory,
+  );
+
+  const [chats, setChats] = useState<ChatThread[]>(() => [...threads]);
   const [activeChatId, setActiveChatId] = useState<number | string | null>(
-    chatHistory.length > 0 ? chatHistory[0].id : null,
+    threads.length > 0 ? threads[0].id : null,
   );
 
   const [messagesMap, setMessagesMap] = useState<
     Record<string | number, Message[]>
   >(() => {
     const map: Record<string | number, Message[]> = {};
-    chatHistory.forEach((chat, index) => {
+    threads.forEach((chat, index) => {
       map[chat.id] =
         index === 0
           ? [...initialMessages]
@@ -487,16 +514,18 @@ export default function AIChat({
     useState<EffortLevel>(defaultEffort);
   const [attachments, setAttachments] = useState<PendingAttachment[]>([]);
   const [isDragging, setIsDragging] = useState(false);
-  const [openMenu, setOpenMenu] = useState<
-    "tools" | "model" | "effort" | null
-  >(null);
+  const [openMenu, setOpenMenu] = useState<"tools" | "model" | "effort" | null>(
+    null,
+  );
 
   const fileInputRef = useRef<HTMLInputElement>(null);
   const textareaRef = useRef<HTMLTextAreaElement>(null);
   const abortControllers = useRef(new Map<string, AbortController>());
 
   const selectedModel =
-    models.find((m) => m.id === selectedModelId) ?? models[0] ?? defaultModels[1];
+    models.find((m) => m.id === selectedModelId) ??
+    models[0] ??
+    defaultModels[1];
   const selectedEffort =
     efforts.find((e) => e.id === selectedEffortId) ??
     efforts[0] ??
@@ -630,17 +659,21 @@ export default function AIChat({
     setChats([newChat, ...chats]);
     setMessagesMap((prev) => ({
       ...prev,
-      [newId]: [
-        {
-          id: Date.now() + 1,
-          role: "ai",
-          content: "Hello! I am your AI assistant. How can I help you today?",
-          time: new Date().toLocaleTimeString([], {
-            hour: "2-digit",
-            minute: "2-digit",
-          }),
-        },
-      ],
+      // Without a sidebar a new thread starts at the hero, not at a greeting.
+      [newId]: showSidebar
+        ? [
+            {
+              id: Date.now() + 1,
+              role: "ai",
+              content:
+                "Hello! I am your AI assistant. How can I help you today?",
+              time: new Date().toLocaleTimeString([], {
+                hour: "2-digit",
+                minute: "2-digit",
+              }),
+            },
+          ]
+        : [],
     }));
     setActiveChatId(newId);
     if (typeof window !== "undefined" && window.innerWidth < 1024)
@@ -723,7 +756,8 @@ export default function AIChat({
     const mentioned = tools
       .filter((t) => t.action !== "upload" && content.includes(mentionFor(t)))
       .sort(
-        (a, b) => content.indexOf(mentionFor(a)) - content.indexOf(mentionFor(b)),
+        (a, b) =>
+          content.indexOf(mentionFor(a)) - content.indexOf(mentionFor(b)),
       );
 
     onSend?.({
@@ -800,6 +834,350 @@ export default function AIChat({
     }
   };
 
+  const isHero = !showSidebar && activeMessages.length === 0 && !isTyping;
+
+  /** The prompt bar — rendered under the thread, or alone in the hero state. */
+  const composer = (
+    <div className="p-4 sm:p-6 bg-transparent shrink-0 z-10">
+      <div className="max-w-3xl mx-auto">
+        <form
+          onSubmit={handleSendMessage}
+          onDragOver={(e) => {
+            e.preventDefault();
+            if (!isDragging) setIsDragging(true);
+          }}
+          onDragLeave={(e) => {
+            if (!e.currentTarget.contains(e.relatedTarget as Node))
+              setIsDragging(false);
+          }}
+          onDrop={(e) => {
+            e.preventDefault();
+            setIsDragging(false);
+            if (e.dataTransfer.files.length) addFiles(e.dataTransfer.files);
+          }}
+          className={cn(
+            "relative flex flex-col gap-1 rounded-2xl p-2 transition-all shadow-sm",
+            styles.input,
+            theme.ring,
+            isDragging && cn("ring-2", theme.inputBorder),
+            isMaxEffort && cn("shadow-lg", theme.shadow),
+          )}
+        >
+          <MaxEffortGlow active={isMaxEffort} className={theme.primaryText} />
+
+          <input
+            ref={fileInputRef}
+            type="file"
+            multiple
+            accept={accept}
+            className="hidden"
+            onChange={(e) => {
+              if (e.target.files?.length) addFiles(e.target.files);
+              e.target.value = "";
+            }}
+          />
+
+          {/* Drop hint */}
+          <AnimatePresence>
+            {isDragging && (
+              <motion.div
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                exit={{ opacity: 0 }}
+                className={cn(
+                  "absolute inset-0 z-20 rounded-2xl border-2 border-dashed flex items-center justify-center gap-2 text-sm font-semibold bg-background/80 backdrop-blur-sm pointer-events-none",
+                  theme.inputBorder,
+                  theme.primaryText,
+                )}
+              >
+                <Paperclip className="w-4 h-4" /> Drop files to attach
+              </motion.div>
+            )}
+          </AnimatePresence>
+
+          {/* Attachments */}
+          <AnimatePresence initial={false}>
+            {attachments.length > 0 && (
+              <motion.div
+                key="attachments"
+                initial={{ opacity: 0, height: 0 }}
+                animate={{ opacity: 1, height: "auto" }}
+                exit={{ opacity: 0, height: 0 }}
+                transition={{ duration: 0.25, ease: "easeOut" }}
+                className="overflow-hidden"
+              >
+                <div className="flex flex-wrap gap-2 px-1 pt-1.5 pb-1">
+                  <AnimatePresence initial={false}>
+                    {attachments.map((att) => (
+                      <AttachmentChip
+                        key={att.id}
+                        attachment={att}
+                        theme={theme}
+                        onRemove={() => removeAttachment(att.id)}
+                      />
+                    ))}
+                  </AnimatePresence>
+                </div>
+              </motion.div>
+            )}
+          </AnimatePresence>
+
+          {/* Prompt / listening surface */}
+          <div className="relative">
+            <textarea
+              ref={textareaRef}
+              value={inputValue}
+              onChange={(e) => setInputValue(e.target.value)}
+              onKeyDown={handleKeyDown}
+              placeholder={
+                voice.isListening ? "" : "Message the AI Assistant..."
+              }
+              className={cn(
+                "w-full max-h-32 bg-transparent border-none focus:outline-none text-[15px] text-foreground placeholder:text-muted-foreground resize-none py-3 px-2 [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none] cursor-text transition-opacity",
+                voice.isListening && "opacity-0 pointer-events-none",
+              )}
+              rows={1}
+              style={{ minHeight: "48px" }}
+            />
+            <AnimatePresence>
+              {voice.isListening && (
+                <motion.div
+                  initial={{ opacity: 0, y: 4 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={{ opacity: 0, y: 4 }}
+                  transition={{ duration: 0.2 }}
+                  className="absolute inset-0 flex items-center gap-3 px-2"
+                >
+                  <ListeningWave
+                    barsRef={voice.barsRef}
+                    live={voice.hasLiveAudio}
+                    className={theme.primaryText}
+                  />
+                  <div className="min-w-0 flex-1">
+                    <p
+                      className={cn(
+                        "text-sm font-semibold leading-tight",
+                        theme.primaryText,
+                      )}
+                    >
+                      Listening…
+                    </p>
+                    <p className="text-xs text-muted-foreground truncate">
+                      {inputValue
+                        ? inputValue
+                        : voice.supportsDictation
+                          ? "Speak now — tap the mic to stop"
+                          : "Dictation isn't available in this browser"}
+                    </p>
+                  </div>
+                </motion.div>
+              )}
+            </AnimatePresence>
+          </div>
+
+          {/* Toolbar */}
+          <div className="flex items-center justify-between gap-2 flex-wrap">
+            <div className="flex items-center gap-1 min-w-0">
+              <ComposerMenu
+                open={openMenu === "tools"}
+                onOpenChange={(open) => setOpenMenu(open ? "tools" : null)}
+                theme={theme}
+                icon={
+                  <Plus
+                    className={cn(
+                      "w-[18px] h-[18px] transition-transform duration-200",
+                      openMenu === "tools" && "rotate-45",
+                    )}
+                  />
+                }
+                label="Add files or tools"
+                iconOnly
+                width="w-[340px] max-w-[calc(100vw-2rem)]"
+              >
+                <div className="p-1">
+                  {tools.map((tool) => {
+                    const isUpload = tool.action === "upload";
+                    const full = isUpload && attachments.length >= maxFiles;
+                    return (
+                      <button
+                        key={tool.id}
+                        type="button"
+                        role="menuitem"
+                        disabled={full}
+                        onClick={() => runTool(tool)}
+                        className="w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-left transition-colors hover:bg-muted disabled:opacity-40 cursor-pointer disabled:cursor-not-allowed"
+                      >
+                        <span className="shrink-0 text-muted-foreground">
+                          {tool.icon ?? <Plus className="w-4 h-4" />}
+                        </span>
+                        <span className="min-w-0 flex items-baseline gap-2 truncate">
+                          <span className="text-sm font-semibold text-foreground">
+                            {tool.label}
+                          </span>
+                          {tool.description && (
+                            <span className="text-xs text-muted-foreground truncate">
+                              {tool.description}
+                            </span>
+                          )}
+                        </span>
+                      </button>
+                    );
+                  })}
+                </div>
+              </ComposerMenu>
+
+              <ComposerMenu
+                open={openMenu === "model"}
+                onOpenChange={(open) => setOpenMenu(open ? "model" : null)}
+                theme={theme}
+                icon={<Cpu className="w-3.5 h-3.5 mb-0.25" />}
+                label={selectedModel.name}
+                heading="Model"
+              >
+                {models.map((model) => {
+                  const active = model.id === selectedModel.id;
+                  return (
+                    <MenuItem
+                      key={model.id}
+                      active={active}
+                      theme={theme}
+                      onClick={() => selectModel(model)}
+                    >
+                      <div className="min-w-0 flex-1">
+                        <div className="flex items-center gap-1.5">
+                          <span className="text-sm font-semibold truncate">
+                            {model.name}
+                          </span>
+                          {model.badge && (
+                            <span
+                              className={cn(
+                                "text-[9px] font-bold uppercase tracking-wide px-1.5 py-px rounded-full",
+                                theme.lightBg,
+                              )}
+                            >
+                              {model.badge}
+                            </span>
+                          )}
+                        </div>
+                        {model.description && (
+                          <p className="text-xs text-muted-foreground truncate">
+                            {model.description}
+                          </p>
+                        )}
+                      </div>
+                    </MenuItem>
+                  );
+                })}
+              </ComposerMenu>
+
+              <ComposerMenu
+                open={openMenu === "effort"}
+                onOpenChange={(open) => setOpenMenu(open ? "effort" : null)}
+                theme={theme}
+                icon={
+                  isMaxEffort ? (
+                    <Sparkles className="w-3.5 h-3.5 mb-0.25" />
+                  ) : (
+                    <Gauge className="w-3.5 h-3.5 mb-0.25" />
+                  )
+                }
+                label={selectedEffort.label}
+                highlighted={isMaxEffort}
+                width="w-72"
+              >
+                <div className="p-3">
+                  <div className="flex items-center justify-between gap-3">
+                    <p className="text-sm font-medium text-muted-foreground leading-none">
+                      Effort
+                      <span className="ml-2 font-semibold text-foreground">
+                        {selectedEffort.label}
+                      </span>
+                    </p>
+                    <span
+                      title={
+                        selectedEffort.description ??
+                        "How long the model thinks before answering"
+                      }
+                      className="p-0.5 -mr-0.5 rounded-full text-muted-foreground/70 hover:text-foreground cursor-help"
+                    >
+                      <CircleHelp className="w-4 h-4" />
+                    </span>
+                  </div>
+                  <div className="mt-4 mb-2 flex items-center justify-between text-xs font-medium text-muted-foreground leading-none">
+                    <span>Faster</span>
+                    <span>Smarter</span>
+                  </div>
+                  <EffortSlider
+                    efforts={efforts}
+                    value={efforts.findIndex((e) => e.id === selectedEffort.id)}
+                    onChange={(i) => selectEffort(efforts[i])}
+                    theme={theme}
+                  />
+                </div>
+              </ComposerMenu>
+            </div>
+
+            <div className="flex items-center gap-1 shrink-0">
+              <button
+                type="button"
+                onClick={() => {
+                  voice.toggle();
+                  if (voice.isListening) textareaRef.current?.focus();
+                }}
+                title={voice.isListening ? "Stop listening" : "Dictate"}
+                aria-pressed={voice.isListening}
+                className={cn(
+                  "relative p-2 rounded-xl transition-colors cursor-pointer",
+                  voice.isListening
+                    ? cn("text-white shadow-md", theme.primaryBg)
+                    : cn("text-muted-foreground", theme.primaryHover),
+                )}
+              >
+                {voice.isListening && (
+                  <>
+                    <span
+                      className={cn(
+                        "absolute inset-0 rounded-xl animate-ping opacity-40",
+                        theme.primaryBg,
+                      )}
+                    />
+                    <span
+                      className={cn(
+                        "absolute -inset-1 rounded-2xl opacity-30 blur-sm",
+                        theme.primaryBg,
+                      )}
+                    />
+                  </>
+                )}
+                <Mic className="relative w-5 h-5" />
+              </button>
+              <button
+                type="submit"
+                disabled={
+                  (!inputValue.trim() && attachments.length === 0) ||
+                  isUploading ||
+                  voice.isListening
+                }
+                className={cn(
+                  "p-2.5 rounded-xl hover:scale-105 active:scale-95 disabled:opacity-50 disabled:hover:scale-100 transition-all shadow-sm cursor-pointer disabled:cursor-not-allowed",
+                  theme.primaryBg,
+                )}
+                title={
+                  isUploading ? "Waiting for uploads to finish" : "Send message"
+                }
+              >
+                <Send className="w-4 h-4" />
+              </button>
+            </div>
+          </div>
+        </form>
+        <p className="text-center text-[11px] font-medium text-muted-foreground mt-3 cursor-default">
+          AI can make mistakes. Consider verifying important information.
+        </p>
+      </div>
+    </div>
+  );
+
   return (
     <div
       style={customVars}
@@ -809,157 +1187,164 @@ export default function AIChat({
       )}
     >
       {/* === LEFT SIDEBAR === */}
-      <aside
-        className={cn(
-          `absolute lg:relative z-30 w-[280px] shrink-0 h-full flex flex-col transition-transform duration-300 ease-in-out ${isSidebarOpen ? "translate-x-0" : "-translate-x-full lg:translate-x-0"}`,
-          styles.sidebar,
-        )}
-      >
-        <div className="p-5 border-b border-border shrink-0">
-          <div className="flex items-center justify-between mb-4 lg:hidden">
-            <h2 className="font-bold text-foreground">
-              History
-            </h2>
+      {showSidebar && (
+        <aside
+          className={cn(
+            `absolute lg:relative z-30 w-[280px] shrink-0 h-full flex flex-col transition-transform duration-300 ease-in-out ${isSidebarOpen ? "translate-x-0" : "-translate-x-full lg:translate-x-0"}`,
+            styles.sidebar,
+          )}
+        >
+          <div className="p-5 border-b border-border shrink-0">
+            <div className="flex items-center justify-between mb-4 lg:hidden">
+              <h2 className="font-bold text-foreground">History</h2>
+              <button
+                onClick={() => setIsSidebarOpen(false)}
+                className="text-muted-foreground"
+              >
+                <X className="w-5 h-5" />
+              </button>
+            </div>
             <button
-              onClick={() => setIsSidebarOpen(false)}
-              className="text-muted-foreground"
-            >
-              <X className="w-5 h-5" />
-            </button>
-          </div>
-          <button
-            onClick={handleNewChat}
-            className={cn(
-              "w-full flex items-center justify-center gap-2 py-3 rounded-xl font-bold transition-all shadow-md active:scale-95 cursor-pointer",
-              theme.primaryBg,
-              theme.shadow,
-            )}
-          >
-            <Plus className="w-4 h-4" /> New Chat
-          </button>
-        </div>
-
-        <div className="flex-1 overflow-y-auto [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none] p-3">
-          {["Today", "Yesterday", "Previous 7 Days"].map((dateGroup) => {
-            const groupChats = chats.filter((c) => c.date === dateGroup);
-            if (groupChats.length === 0) return null;
-
-            return (
-              <div key={dateGroup} className="mb-6">
-                <p className="text-[11px] font-bold text-muted-foreground uppercase tracking-wider mb-2 px-3">
-                  {dateGroup}
-                </p>
-                <div className="space-y-0.5">
-                  {groupChats.map((chat) => {
-                    const isActive = activeChatId === chat.id;
-                    const isEditing = editingChatId === chat.id;
-
-                    return (
-                      <div
-                        key={chat.id}
-                        onClick={() => handleSelectChat(chat.id)}
-                        className={`flex items-center justify-between px-3 py-2.5 rounded-lg cursor-pointer transition-all text-sm group ${
-                          isActive
-                            ? cn("font-semibold", theme.lightBg)
-                            : "text-muted-foreground hover:bg-muted font-medium"
-                        }`}
-                      >
-                        {isEditing ? (
-                          <div
-                            className="flex items-center gap-2 w-full cursor-default"
-                            onClick={(e) => e.stopPropagation()}
-                          >
-                            <MessageSquare
-                              className={cn(
-                                "w-4 h-4 shrink-0",
-                                theme.primaryText,
-                              )}
-                            />
-                            <input
-                              autoFocus
-                              value={editTitleValue}
-                              onChange={(e) =>
-                                setEditTitleValue(e.target.value)
-                              }
-                              onKeyDown={(e) => {
-                                if (e.key === "Enter") saveEditChat(chat.id, e);
-                                if (e.key === "Escape") cancelEditChat(e);
-                              }}
-                              className={cn(
-                                "flex-1 bg-background border rounded px-2 py-0.5 text-xs outline-none text-foreground cursor-text",
-                                theme.inputBorder,
-                                theme.focusRing,
-                              )}
-                            />
-                            <button
-                              onClick={(e) => saveEditChat(chat.id, e)}
-                              className="text-emerald-500 hover:text-emerald-600 cursor-pointer shrink-0"
-                            >
-                              <Check className="w-4 h-4" />
-                            </button>
-                            <button
-                              onClick={cancelEditChat}
-                              className="text-rose-500 hover:text-rose-600 cursor-pointer shrink-0"
-                            >
-                              <X className="w-4 h-4" />
-                            </button>
-                          </div>
-                        ) : (
-                          <>
-                            <div className="flex items-center gap-3 truncate pr-2 min-w-0">
-                              <MessageSquare
-                                className={`w-4 h-4 shrink-0 ${isActive ? theme.primaryText : "text-zinc-400 group-hover:text-zinc-600 dark:group-hover:text-zinc-200"}`}
-                              />
-                              <span className="truncate">{chat.title}</span>
-                            </div>
-                            <div className="flex items-center gap-1.5 opacity-0 group-hover:opacity-100 transition-opacity shrink-0">
-                              <button
-                                onClick={(e) => startEditingChat(chat, e)}
-                                className={cn(
-                                  "p-1.5 text-muted-foreground rounded-md transition-colors cursor-pointer",
-                                  theme.primaryHover,
-                                )}
-                              >
-                                <Edit2 className="w-3.5 h-3.5" />
-                              </button>
-                              <button
-                                onClick={(e) => handleDeleteChat(chat.id, e)}
-                                className="p-1.5 text-zinc-400 hover:text-rose-500 hover:bg-rose-50 dark:hover:bg-rose-500/20 rounded-md transition-colors cursor-pointer"
-                              >
-                                <Trash2 className="w-3.5 h-3.5" />
-                              </button>
-                            </div>
-                          </>
-                        )}
-                      </div>
-                    );
-                  })}
-                </div>
-              </div>
-            );
-          })}
-        </div>
-
-        <div className="p-4 border-t border-border shrink-0 flex items-center justify-between cursor-pointer hover:bg-muted transition-colors">
-          <div className="flex items-center gap-3">
-            <div
+              onClick={handleNewChat}
               className={cn(
-                "w-8 h-8 rounded-full bg-gradient-to-tr flex items-center justify-center font-bold text-xs shadow-sm",
-                theme.gradient,
-                theme.primaryBg.includes("text-") ? theme.primaryBg.split(" ").filter(c => c.startsWith("text-") || c.startsWith("dark:text-")).join(" ") : "text-primary-foreground",
+                "w-full flex items-center justify-center gap-2 py-3 rounded-xl font-bold transition-all shadow-md active:scale-95 cursor-pointer",
+                theme.primaryBg,
+                theme.shadow,
               )}
             >
-              JM
-            </div>
-            <span className="text-sm font-bold text-foreground">
-              Joel M.
-            </span>
+              <Plus className="w-4 h-4" /> New Chat
+            </button>
           </div>
-          <Settings className="w-4 h-4 text-muted-foreground hover:text-foreground" />
-        </div>
-      </aside>
 
-      {isSidebarOpen && (
+          <div className="flex-1 overflow-y-auto [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none] p-3">
+            {["Today", "Yesterday", "Previous 7 Days"].map((dateGroup) => {
+              const groupChats = chats.filter((c) => c.date === dateGroup);
+              if (groupChats.length === 0) return null;
+
+              return (
+                <div key={dateGroup} className="mb-6">
+                  <p className="text-[11px] font-bold text-muted-foreground uppercase tracking-wider mb-2 px-3">
+                    {dateGroup}
+                  </p>
+                  <div className="space-y-0.5">
+                    {groupChats.map((chat) => {
+                      const isActive = activeChatId === chat.id;
+                      const isEditing = editingChatId === chat.id;
+
+                      return (
+                        <div
+                          key={chat.id}
+                          onClick={() => handleSelectChat(chat.id)}
+                          className={`flex items-center justify-between px-3 py-2.5 rounded-lg cursor-pointer transition-all text-sm group ${
+                            isActive
+                              ? cn("font-semibold", theme.lightBg)
+                              : "text-muted-foreground hover:bg-muted font-medium"
+                          }`}
+                        >
+                          {isEditing ? (
+                            <div
+                              className="flex items-center gap-2 w-full cursor-default"
+                              onClick={(e) => e.stopPropagation()}
+                            >
+                              <MessageSquare
+                                className={cn(
+                                  "w-4 h-4 shrink-0",
+                                  theme.primaryText,
+                                )}
+                              />
+                              <input
+                                autoFocus
+                                value={editTitleValue}
+                                onChange={(e) =>
+                                  setEditTitleValue(e.target.value)
+                                }
+                                onKeyDown={(e) => {
+                                  if (e.key === "Enter")
+                                    saveEditChat(chat.id, e);
+                                  if (e.key === "Escape") cancelEditChat(e);
+                                }}
+                                className={cn(
+                                  "flex-1 bg-background border rounded px-2 py-0.5 text-xs outline-none text-foreground cursor-text",
+                                  theme.inputBorder,
+                                  theme.focusRing,
+                                )}
+                              />
+                              <button
+                                onClick={(e) => saveEditChat(chat.id, e)}
+                                className="text-emerald-500 hover:text-emerald-600 cursor-pointer shrink-0"
+                              >
+                                <Check className="w-4 h-4" />
+                              </button>
+                              <button
+                                onClick={cancelEditChat}
+                                className="text-rose-500 hover:text-rose-600 cursor-pointer shrink-0"
+                              >
+                                <X className="w-4 h-4" />
+                              </button>
+                            </div>
+                          ) : (
+                            <>
+                              <div className="flex items-center gap-3 truncate pr-2 min-w-0">
+                                <MessageSquare
+                                  className={`w-4 h-4 shrink-0 ${isActive ? theme.primaryText : "text-zinc-400 group-hover:text-zinc-600 dark:group-hover:text-zinc-200"}`}
+                                />
+                                <span className="truncate">{chat.title}</span>
+                              </div>
+                              <div className="flex items-center gap-1.5 opacity-0 group-hover:opacity-100 transition-opacity shrink-0">
+                                <button
+                                  onClick={(e) => startEditingChat(chat, e)}
+                                  className={cn(
+                                    "p-1.5 text-muted-foreground rounded-md transition-colors cursor-pointer",
+                                    theme.primaryHover,
+                                  )}
+                                >
+                                  <Edit2 className="w-3.5 h-3.5" />
+                                </button>
+                                <button
+                                  onClick={(e) => handleDeleteChat(chat.id, e)}
+                                  className="p-1.5 text-zinc-400 hover:text-rose-500 hover:bg-rose-50 dark:hover:bg-rose-500/20 rounded-md transition-colors cursor-pointer"
+                                >
+                                  <Trash2 className="w-3.5 h-3.5" />
+                                </button>
+                              </div>
+                            </>
+                          )}
+                        </div>
+                      );
+                    })}
+                  </div>
+                </div>
+              );
+            })}
+          </div>
+
+          <div className="p-4 border-t border-border shrink-0 flex items-center justify-between cursor-pointer hover:bg-muted transition-colors">
+            <div className="flex items-center gap-3">
+              <div
+                className={cn(
+                  "w-8 h-8 rounded-full bg-gradient-to-tr flex items-center justify-center font-bold text-xs shadow-sm",
+                  theme.gradient,
+                  theme.primaryBg.includes("text-")
+                    ? theme.primaryBg
+                        .split(" ")
+                        .filter(
+                          (c) =>
+                            c.startsWith("text-") || c.startsWith("dark:text-"),
+                        )
+                        .join(" ")
+                    : "text-primary-foreground",
+                )}
+              >
+                JM
+              </div>
+              <span className="text-sm font-bold text-foreground">Joel M.</span>
+            </div>
+            <Settings className="w-4 h-4 text-muted-foreground hover:text-foreground" />
+          </div>
+        </aside>
+      )}
+
+      {showSidebar && isSidebarOpen && (
         <div
           className="absolute inset-0 bg-black/40 dark:bg-black/60 backdrop-blur-sm z-20 lg:hidden cursor-pointer"
           onClick={() => setIsSidebarOpen(false)}
@@ -988,16 +1373,19 @@ export default function AIChat({
               How can I help you today?
             </h2>
             <p className="text-muted-foreground text-sm max-w-md mb-8">
-              Select a conversation from the sidebar or start a new one to begin
-              chatting.
+              {showSidebar
+                ? "Select a conversation from the sidebar or start a new one to begin chatting."
+                : "Start a new conversation to begin chatting."}
             </p>
             <div className="flex items-center gap-4">
-              <button
-                className="lg:hidden px-6 py-2.5 bg-card border border-border text-foreground rounded-xl text-sm font-bold shadow-sm transition-all active:scale-95"
-                onClick={() => setIsSidebarOpen(true)}
-              >
-                View History
-              </button>
+              {showSidebar && (
+                <button
+                  className="lg:hidden px-6 py-2.5 bg-card border border-border text-foreground rounded-xl text-sm font-bold shadow-sm transition-all active:scale-95"
+                  onClick={() => setIsSidebarOpen(true)}
+                >
+                  View History
+                </button>
+              )}
               <button
                 onClick={handleNewChat}
                 className={cn(
@@ -1010,6 +1398,32 @@ export default function AIChat({
               </button>
             </div>
           </div>
+        ) : isHero ? (
+          <div className="flex-1 flex flex-col items-center justify-center min-h-0">
+            <motion.div
+              initial={{ opacity: 0, y: 10 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.4, ease: "easeOut" }}
+              className="w-full max-w-3xl px-4 sm:px-6 text-center"
+            >
+              <h2 className="text-2xl sm:text-4xl font-bold tracking-tight text-foreground">
+                {heroTitle}
+              </h2>
+              {heroSubtitle && (
+                <p className="mt-2 text-sm sm:text-base text-muted-foreground">
+                  {heroSubtitle}
+                </p>
+              )}
+            </motion.div>
+            <motion.div
+              initial={{ opacity: 0, y: 14 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.4, ease: "easeOut", delay: 0.08 }}
+              className="w-full"
+            >
+              {composer}
+            </motion.div>
+          </div>
         ) : (
           <>
             <header
@@ -1019,19 +1433,30 @@ export default function AIChat({
               )}
             >
               <div className="flex items-center gap-3">
-                <button
-                  className="lg:hidden text-muted-foreground hover:text-foreground transition-colors shrink-0"
-                  onClick={() => setIsSidebarOpen(true)}
-                >
-                  <Menu className="w-5 h-5" />
-                </button>
+                {showSidebar && (
+                  <button
+                    className="lg:hidden text-muted-foreground hover:text-foreground transition-colors shrink-0"
+                    onClick={() => setIsSidebarOpen(true)}
+                  >
+                    <Menu className="w-5 h-5" />
+                  </button>
+                )}
                 <div className="flex items-center gap-3">
                   <div
                     className={cn(
                       "w-9 h-9 bg-gradient-to-br rounded-xl flex items-center justify-center shadow-sm",
                       theme.gradient,
                       theme.shadow,
-                      theme.primaryBg.includes("text-") ? theme.primaryBg.split(" ").filter(c => c.startsWith("text-") || c.startsWith("dark:text-")).join(" ") : "text-primary-foreground",
+                      theme.primaryBg.includes("text-")
+                        ? theme.primaryBg
+                            .split(" ")
+                            .filter(
+                              (c) =>
+                                c.startsWith("text-") ||
+                                c.startsWith("dark:text-"),
+                            )
+                            .join(" ")
+                        : "text-primary-foreground",
                     )}
                   >
                     <Sparkles className="w-4 h-4" />
@@ -1046,9 +1471,26 @@ export default function AIChat({
                   </div>
                 </div>
               </div>
-              <button className="p-2 text-muted-foreground hover:text-foreground hover:bg-muted rounded-lg transition-colors">
-                <MoreVertical className="w-5 h-5" />
-              </button>
+              <div className="flex items-center gap-1">
+                {!showSidebar && (
+                  <button
+                    type="button"
+                    onClick={handleNewChat}
+                    title="New chat"
+                    className={cn(
+                      "flex items-center gap-1.5 h-9 px-3 rounded-lg text-xs font-bold transition-colors cursor-pointer",
+                      theme.lightBg,
+                      theme.primaryText,
+                    )}
+                  >
+                    <Plus className="w-4 h-4" />
+                    <span className="hidden sm:inline">New chat</span>
+                  </button>
+                )}
+                <button className="p-2 text-muted-foreground hover:text-foreground hover:bg-muted rounded-lg transition-colors">
+                  <MoreVertical className="w-5 h-5" />
+                </button>
+              </div>
             </header>
 
             <div
@@ -1067,7 +1509,16 @@ export default function AIChat({
                           className={cn(
                             "w-8 h-8 bg-gradient-to-br rounded-lg flex items-center justify-center shadow-sm",
                             theme.gradient,
-                            theme.primaryBg.includes("text-") ? theme.primaryBg.split(" ").filter(c => c.startsWith("text-") || c.startsWith("dark:text-")).join(" ") : "text-primary-foreground",
+                            theme.primaryBg.includes("text-")
+                              ? theme.primaryBg
+                                  .split(" ")
+                                  .filter(
+                                    (c) =>
+                                      c.startsWith("text-") ||
+                                      c.startsWith("dark:text-"),
+                                  )
+                                  .join(" ")
+                              : "text-primary-foreground",
                           )}
                         >
                           <Bot className="w-5 h-5" />
@@ -1077,7 +1528,16 @@ export default function AIChat({
                           className={cn(
                             "w-8 h-8 rounded-lg bg-gradient-to-tr flex items-center justify-center font-bold text-xs shadow-sm",
                             theme.gradient,
-                            theme.primaryBg.includes("text-") ? theme.primaryBg.split(" ").filter(c => c.startsWith("text-") || c.startsWith("dark:text-")).join(" ") : "text-primary-foreground",
+                            theme.primaryBg.includes("text-")
+                              ? theme.primaryBg
+                                  .split(" ")
+                                  .filter(
+                                    (c) =>
+                                      c.startsWith("text-") ||
+                                      c.startsWith("dark:text-"),
+                                  )
+                                  .join(" ")
+                              : "text-primary-foreground",
                           )}
                         >
                           JM
@@ -1139,7 +1599,8 @@ export default function AIChat({
                           {msg.time}
                           {msg.model && (
                             <span className="opacity-80">
-                              {" "}· {msg.model}
+                              {" "}
+                              · {msg.model}
                               {msg.effort && ` · ${msg.effort} effort`}
                             </span>
                           )}
@@ -1187,357 +1648,7 @@ export default function AIChat({
               </div>
             </div>
 
-            <div className="p-4 sm:p-6 bg-transparent shrink-0 z-10">
-              <div className="max-w-3xl mx-auto">
-                <form
-                  onSubmit={handleSendMessage}
-                  onDragOver={(e) => {
-                    e.preventDefault();
-                    if (!isDragging) setIsDragging(true);
-                  }}
-                  onDragLeave={(e) => {
-                    if (!e.currentTarget.contains(e.relatedTarget as Node))
-                      setIsDragging(false);
-                  }}
-                  onDrop={(e) => {
-                    e.preventDefault();
-                    setIsDragging(false);
-                    if (e.dataTransfer.files.length) addFiles(e.dataTransfer.files);
-                  }}
-                  className={cn(
-                    "relative flex flex-col gap-1 rounded-2xl p-2 transition-all shadow-sm",
-                    styles.input,
-                    theme.ring,
-                    isDragging && cn("ring-2", theme.inputBorder),
-                    isMaxEffort && cn("shadow-lg", theme.shadow),
-                  )}
-                >
-                  <MaxEffortGlow active={isMaxEffort} className={theme.primaryText} />
-
-                  <input
-                    ref={fileInputRef}
-                    type="file"
-                    multiple
-                    accept={accept}
-                    className="hidden"
-                    onChange={(e) => {
-                      if (e.target.files?.length) addFiles(e.target.files);
-                      e.target.value = "";
-                    }}
-                  />
-
-                  {/* Drop hint */}
-                  <AnimatePresence>
-                    {isDragging && (
-                      <motion.div
-                        initial={{ opacity: 0 }}
-                        animate={{ opacity: 1 }}
-                        exit={{ opacity: 0 }}
-                        className={cn(
-                          "absolute inset-0 z-20 rounded-2xl border-2 border-dashed flex items-center justify-center gap-2 text-sm font-semibold bg-background/80 backdrop-blur-sm pointer-events-none",
-                          theme.inputBorder,
-                          theme.primaryText,
-                        )}
-                      >
-                        <Paperclip className="w-4 h-4" /> Drop files to attach
-                      </motion.div>
-                    )}
-                  </AnimatePresence>
-
-                  {/* Attachments */}
-                  <AnimatePresence initial={false}>
-                    {attachments.length > 0 && (
-                      <motion.div
-                        key="attachments"
-                        initial={{ opacity: 0, height: 0 }}
-                        animate={{ opacity: 1, height: "auto" }}
-                        exit={{ opacity: 0, height: 0 }}
-                        transition={{ duration: 0.25, ease: "easeOut" }}
-                        className="overflow-hidden"
-                      >
-                        <div className="flex flex-wrap gap-2 px-1 pt-1.5 pb-1">
-                          <AnimatePresence initial={false}>
-                            {attachments.map((att) => (
-                              <AttachmentChip
-                                key={att.id}
-                                attachment={att}
-                                theme={theme}
-                                onRemove={() => removeAttachment(att.id)}
-                              />
-                            ))}
-                          </AnimatePresence>
-                        </div>
-                      </motion.div>
-                    )}
-                  </AnimatePresence>
-
-                  {/* Prompt / listening surface */}
-                  <div className="relative">
-                    <textarea
-                      ref={textareaRef}
-                      value={inputValue}
-                      onChange={(e) => setInputValue(e.target.value)}
-                      onKeyDown={handleKeyDown}
-                      placeholder={
-                        voice.isListening
-                          ? ""
-                          : "Message the AI Assistant..."
-                      }
-                      className={cn(
-                        "w-full max-h-32 bg-transparent border-none focus:outline-none text-[15px] text-foreground placeholder:text-muted-foreground resize-none py-3 px-2 [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none] cursor-text transition-opacity",
-                        voice.isListening && "opacity-0 pointer-events-none",
-                      )}
-                      rows={1}
-                      style={{ minHeight: "48px" }}
-                    />
-                    <AnimatePresence>
-                      {voice.isListening && (
-                        <motion.div
-                          initial={{ opacity: 0, y: 4 }}
-                          animate={{ opacity: 1, y: 0 }}
-                          exit={{ opacity: 0, y: 4 }}
-                          transition={{ duration: 0.2 }}
-                          className="absolute inset-0 flex items-center gap-3 px-2"
-                        >
-                          <ListeningWave
-                            barsRef={voice.barsRef}
-                            live={voice.hasLiveAudio}
-                            className={theme.primaryText}
-                          />
-                          <div className="min-w-0 flex-1">
-                            <p
-                              className={cn(
-                                "text-sm font-semibold leading-tight",
-                                theme.primaryText,
-                              )}
-                            >
-                              Listening…
-                            </p>
-                            <p className="text-xs text-muted-foreground truncate">
-                              {inputValue
-                                ? inputValue
-                                : voice.supportsDictation
-                                  ? "Speak now — tap the mic to stop"
-                                  : "Dictation isn't available in this browser"}
-                            </p>
-                          </div>
-                        </motion.div>
-                      )}
-                    </AnimatePresence>
-                  </div>
-
-                  {/* Toolbar */}
-                  <div className="flex items-center justify-between gap-2 flex-wrap">
-                    <div className="flex items-center gap-1 min-w-0">
-                      <ComposerMenu
-                        open={openMenu === "tools"}
-                        onOpenChange={(open) =>
-                          setOpenMenu(open ? "tools" : null)
-                        }
-                        theme={theme}
-                        icon={
-                          <Plus
-                            className={cn(
-                              "w-[18px] h-[18px] transition-transform duration-200",
-                              openMenu === "tools" && "rotate-45",
-                            )}
-                          />
-                        }
-                        label="Add files or tools"
-                        iconOnly
-                        width="w-[340px] max-w-[calc(100vw-2rem)]"
-                      >
-                        <div className="p-1">
-                          {tools.map((tool) => {
-                            const isUpload = tool.action === "upload";
-                            const full = isUpload && attachments.length >= maxFiles;
-                            return (
-                              <button
-                                key={tool.id}
-                                type="button"
-                                role="menuitem"
-                                disabled={full}
-                                onClick={() => runTool(tool)}
-                                className="w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-left transition-colors hover:bg-muted disabled:opacity-40 cursor-pointer disabled:cursor-not-allowed"
-                              >
-                                <span className="shrink-0 text-muted-foreground">
-                                  {tool.icon ?? <Plus className="w-4 h-4" />}
-                                </span>
-                                <span className="min-w-0 flex items-baseline gap-2 truncate">
-                                  <span className="text-sm font-semibold text-foreground">
-                                    {tool.label}
-                                  </span>
-                                  {tool.description && (
-                                    <span className="text-xs text-muted-foreground truncate">
-                                      {tool.description}
-                                    </span>
-                                  )}
-                                </span>
-                              </button>
-                            );
-                          })}
-                        </div>
-                      </ComposerMenu>
-
-                      <ComposerMenu
-                        open={openMenu === "model"}
-                        onOpenChange={(open) =>
-                          setOpenMenu(open ? "model" : null)
-                        }
-                        theme={theme}
-                        icon={<Cpu className="w-3.5 h-3.5 mb-0.25" />}
-                        label={selectedModel.name}
-                        heading="Model"
-                      >
-                        {models.map((model) => {
-                          const active = model.id === selectedModel.id;
-                          return (
-                            <MenuItem
-                              key={model.id}
-                              active={active}
-                              theme={theme}
-                              onClick={() => selectModel(model)}
-                            >
-                              <div className="min-w-0 flex-1">
-                                <div className="flex items-center gap-1.5">
-                                  <span className="text-sm font-semibold truncate">
-                                    {model.name}
-                                  </span>
-                                  {model.badge && (
-                                    <span
-                                      className={cn(
-                                        "text-[9px] font-bold uppercase tracking-wide px-1.5 py-px rounded-full",
-                                        theme.lightBg,
-                                      )}
-                                    >
-                                      {model.badge}
-                                    </span>
-                                  )}
-                                </div>
-                                {model.description && (
-                                  <p className="text-xs text-muted-foreground truncate">
-                                    {model.description}
-                                  </p>
-                                )}
-                              </div>
-                            </MenuItem>
-                          );
-                        })}
-                      </ComposerMenu>
-
-                      <ComposerMenu
-                        open={openMenu === "effort"}
-                        onOpenChange={(open) =>
-                          setOpenMenu(open ? "effort" : null)
-                        }
-                        theme={theme}
-                        icon={
-                          isMaxEffort ? (
-                            <Sparkles className="w-3.5 h-3.5 mb-0.25" />
-                          ) : (
-                            <Gauge className="w-3.5 h-3.5 mb-0.25" />
-                          )
-                        }
-                        label={selectedEffort.label}
-                        highlighted={isMaxEffort}
-                        width="w-72"
-                      >
-                        <div className="p-3">
-                          <div className="flex items-center justify-between gap-3">
-                            <p className="text-sm font-medium text-muted-foreground leading-none">
-                              Effort
-                              <span className="ml-2 font-semibold text-foreground">
-                                {selectedEffort.label}
-                              </span>
-                            </p>
-                            <span
-                              title={
-                                selectedEffort.description ??
-                                "How long the model thinks before answering"
-                              }
-                              className="p-0.5 -mr-0.5 rounded-full text-muted-foreground/70 hover:text-foreground cursor-help"
-                            >
-                              <CircleHelp className="w-4 h-4" />
-                            </span>
-                          </div>
-                          <div className="mt-4 mb-2 flex items-center justify-between text-xs font-medium text-muted-foreground leading-none">
-                            <span>Faster</span>
-                            <span>Smarter</span>
-                          </div>
-                          <EffortSlider
-                            efforts={efforts}
-                            value={efforts.findIndex(
-                              (e) => e.id === selectedEffort.id,
-                            )}
-                            onChange={(i) => selectEffort(efforts[i])}
-                            theme={theme}
-                          />
-                        </div>
-                      </ComposerMenu>
-                    </div>
-
-                    <div className="flex items-center gap-1 shrink-0">
-                      <button
-                        type="button"
-                        onClick={() => {
-                          voice.toggle();
-                          if (voice.isListening) textareaRef.current?.focus();
-                        }}
-                        title={voice.isListening ? "Stop listening" : "Dictate"}
-                        aria-pressed={voice.isListening}
-                        className={cn(
-                          "relative p-2 rounded-xl transition-colors cursor-pointer",
-                          voice.isListening
-                            ? cn("text-white shadow-md", theme.primaryBg)
-                            : cn("text-muted-foreground", theme.primaryHover),
-                        )}
-                      >
-                        {voice.isListening && (
-                          <>
-                            <span
-                              className={cn(
-                                "absolute inset-0 rounded-xl animate-ping opacity-40",
-                                theme.primaryBg,
-                              )}
-                            />
-                            <span
-                              className={cn(
-                                "absolute -inset-1 rounded-2xl opacity-30 blur-sm",
-                                theme.primaryBg,
-                              )}
-                            />
-                          </>
-                        )}
-                        <Mic className="relative w-5 h-5" />
-                      </button>
-                      <button
-                        type="submit"
-                        disabled={
-                          (!inputValue.trim() && attachments.length === 0) ||
-                          isUploading ||
-                          voice.isListening
-                        }
-                        className={cn(
-                          "p-2.5 rounded-xl hover:scale-105 active:scale-95 disabled:opacity-50 disabled:hover:scale-100 transition-all shadow-sm cursor-pointer disabled:cursor-not-allowed",
-                          theme.primaryBg,
-                        )}
-                        title={
-                          isUploading
-                            ? "Waiting for uploads to finish"
-                            : "Send message"
-                        }
-                      >
-                        <Send className="w-4 h-4" />
-                      </button>
-                    </div>
-                  </div>
-                </form>
-                <p className="text-center text-[11px] font-medium text-muted-foreground mt-3 cursor-default">
-                  AI can make mistakes. Consider verifying important
-                  information.
-                </p>
-              </div>
-            </div>
+            {composer}
           </>
         )}
       </main>
@@ -1616,15 +1727,26 @@ function RocketProgress({
               {/* Bob while in flight */}
               <motion.div
                 animate={{ y: [0, -1.5, 0, 1.5, 0] }}
-                transition={{ duration: 1.4, repeat: Infinity, ease: "easeInOut" }}
+                transition={{
+                  duration: 1.4,
+                  repeat: Infinity,
+                  ease: "easeInOut",
+                }}
                 className="relative"
               >
                 {/* Exhaust: sits behind the tail (bottom-left of the rotated icon) */}
                 <motion.span
                   className="absolute left-[-9px] top-[9px] h-[3px] w-3 rounded-full bg-gradient-to-l from-orange-400 via-amber-300 to-transparent origin-right"
                   style={{ rotate: -45 }}
-                  animate={{ scaleX: [0.6, 1.3, 0.8, 1.1, 0.6], opacity: [0.7, 1, 0.8, 1, 0.7] }}
-                  transition={{ duration: 0.35, repeat: Infinity, ease: "easeInOut" }}
+                  animate={{
+                    scaleX: [0.6, 1.3, 0.8, 1.1, 0.6],
+                    opacity: [0.7, 1, 0.8, 1, 0.7],
+                  }}
+                  transition={{
+                    duration: 0.35,
+                    repeat: Infinity,
+                    ease: "easeInOut",
+                  }}
                 />
                 <Rocket className="w-3.5 h-3.5 drop-shadow-sm" />
               </motion.div>
@@ -1650,7 +1772,12 @@ function RocketProgress({
               className="relative size-4 rounded-full bg-emerald-500 text-white flex items-center justify-center shadow-sm"
               initial={{ scale: 0, rotate: -90 }}
               animate={{ scale: 1, rotate: 0 }}
-              transition={{ type: "spring", stiffness: 380, damping: 14, delay: 0.15 }}
+              transition={{
+                type: "spring",
+                stiffness: 380,
+                damping: 14,
+                delay: 0.15,
+              }}
             >
               <Check className="w-2.5 h-2.5" strokeWidth={3.5} />
             </motion.span>
@@ -1794,7 +1921,9 @@ function EffortSlider({
         className="absolute rounded-full bg-current opacity-40"
         style={{ top: TRACK_INSET, bottom: TRACK_INSET, left: TRACK_INSET }}
         initial={false}
-        animate={{ width: `calc(${thumbLeft} + ${THUMB_WIDTH / 2 - TRACK_INSET}px)` }}
+        animate={{
+          width: `calc(${thumbLeft} + ${THUMB_WIDTH / 2 - TRACK_INSET}px)`,
+        }}
         transition={spring}
       />
       {efforts.map((effort, i) => (
@@ -1809,7 +1938,10 @@ function EffortSlider({
       ))}
       <motion.div
         className="absolute top-1/2 -translate-x-1/2 -translate-y-1/2 rounded-full bg-current shadow-sm"
-        style={{ width: THUMB_WIDTH, height: `calc(100% - ${TRACK_INSET * 2}px)` }}
+        style={{
+          width: THUMB_WIDTH,
+          height: `calc(100% - ${TRACK_INSET * 2}px)`,
+        }}
         initial={false}
         animate={{ left: thumbLeft }}
         transition={spring}
@@ -1931,7 +2063,8 @@ function ListeningWave({
     >
       {Array.from({ length: BAR_COUNT }).map((_, i) => {
         // Taller in the middle so the idle shape reads as a voice, not noise.
-        const envelope = 0.35 + 0.65 * Math.sin((i / (BAR_COUNT - 1)) * Math.PI);
+        const envelope =
+          0.35 + 0.65 * Math.sin((i / (BAR_COUNT - 1)) * Math.PI);
         return live ? (
           <span
             key={i}
@@ -2178,7 +2311,8 @@ function useVoiceInput(
       const rec = new SR();
       rec.continuous = true;
       rec.interimResults = true;
-      rec.lang = typeof navigator !== "undefined" ? navigator.language : "en-US";
+      rec.lang =
+        typeof navigator !== "undefined" ? navigator.language : "en-US";
       rec.onresult = (e) => {
         let finalText = "";
         let interim = "";
@@ -2257,5 +2391,12 @@ function useVoiceInput(
 
   useEffect(() => stop, [stop]);
 
-  return { isListening, hasLiveAudio, supportsDictation, barsRef, toggle, stop };
+  return {
+    isListening,
+    hasLiveAudio,
+    supportsDictation,
+    barsRef,
+    toggle,
+    stop,
+  };
 }
