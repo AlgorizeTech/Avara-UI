@@ -94,7 +94,7 @@ type VariantStyles = {
   expand: string;
   expandIcon: "plus" | "chevron";
   content: string;
-  /** Extra content padding when the row carries an icon, so text aligns with the title. */
+  /** Extra content padding when the row carries an icon, so text aligns with the title. Dropped below `sm`, where the column is too narrow to spend on an indent. */
   contentWithIcon?: string;
   /** Draws a thin line from the icon down the answer. */
   thread?: boolean;
@@ -126,7 +126,7 @@ const VARIANTS: Record<Exclude<AccordionVariant, "card-filled">, VariantStyles> 
     ),
     expandIcon: "plus",
     content: "relative px-4 pb-5 pr-12 text-muted-foreground",
-    contentWithIcon: "pl-[4.5rem]",
+    contentWithIcon: "sm:pl-[4.5rem]",
     thread: true,
   },
 
@@ -147,7 +147,7 @@ const VARIANTS: Record<Exclude<AccordionVariant, "card-filled">, VariantStyles> 
       "flex shrink-0 items-center justify-center text-muted-foreground transition-transform duration-300 group-data-[state=open]:rotate-180 group-data-[state=open]:text-primary",
     expandIcon: "chevron",
     content: "px-5 pb-5 pr-12 text-muted-foreground",
-    contentWithIcon: "pl-[3.25rem]",
+    contentWithIcon: "sm:pl-[3.25rem]",
   },
 
   // "Inverted": muted blocks; the open one flips entirely to the accent.
@@ -171,7 +171,7 @@ const VARIANTS: Record<Exclude<AccordionVariant, "card-filled">, VariantStyles> 
     ),
     expandIcon: "chevron",
     content: "px-5 pb-5 pr-12 text-primary-foreground/85",
-    contentWithIcon: "pl-[4.25rem]",
+    contentWithIcon: "sm:pl-[4.25rem]",
   },
 
   // "Cards": separated cards; the open one rises on a primary ring.
@@ -193,7 +193,7 @@ const VARIANTS: Record<Exclude<AccordionVariant, "card-filled">, VariantStyles> 
       "flex shrink-0 items-center justify-center text-muted-foreground transition-transform duration-300 group-data-[state=open]:rotate-180",
     expandIcon: "chevron",
     content: "px-5 pb-5 pr-12 text-muted-foreground",
-    contentWithIcon: "pl-[4.25rem]",
+    contentWithIcon: "sm:pl-[4.25rem]",
   },
 
   // "Editorial": nothing but type and hairlines.
@@ -209,7 +209,7 @@ const VARIANTS: Record<Exclude<AccordionVariant, "card-filled">, VariantStyles> 
       "flex shrink-0 items-center justify-center text-muted-foreground transition-transform duration-300 group-data-[state=open]:rotate-45",
     expandIcon: "plus",
     content: "max-w-prose pb-6 pr-10 text-[15px] leading-relaxed text-muted-foreground",
-    contentWithIcon: "pl-8",
+    contentWithIcon: "sm:pl-8",
   },
 };
 
@@ -407,7 +407,7 @@ export function Accordion({
             hasIcon && styles.contentWithIcon,
             styles.thread &&
               hasIcon &&
-              "before:absolute before:bottom-5 before:left-[2.25rem] before:top-0 before:w-px before:bg-gradient-to-b before:from-primary/50 before:to-transparent",
+              "before:absolute before:bottom-5 before:left-[2.25rem] before:top-0 before:hidden before:w-px before:bg-gradient-to-b before:from-primary/50 before:to-transparent sm:before:block",
             contentClassName,
           )}
         >
