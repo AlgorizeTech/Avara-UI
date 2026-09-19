@@ -13,7 +13,14 @@ export type NavigationChild = {
   /** Path below the framework segment, e.g. "accordion" or "examples/counter". */
   slug?: string;
   href?: string;
+  /**
+   * Small tag after the label. `"New"` is time-limited: pair it with `addedOn`
+   * and it disappears on its own after NEW_BADGE_DAYS. Every other badge
+   * ("Core", "Updated", …) stays until it is removed by hand.
+   */
   badge?: string;
+  /** The day the page shipped, "YYYY-MM-DD". Drives the `"New"` badge's expiry. */
+  addedOn?: string;
   /**
    * Extra search terms for the command palette, which otherwise indexes nothing
    * but the label. Needed where a page is known by names its label does not
@@ -45,7 +52,35 @@ export const navHref = (
   framework: Framework,
 ) => (item.slug ? docsHref(framework, item.slug) : (item.href ?? "#"));
 
-export const navigation: NavigationItem[] = [
+/** How long a page keeps its "New" badge after `addedOn`. */
+export const NEW_BADGE_DAYS = 2;
+
+/**
+ * The clock the "New" badges are judged against. The site is a static export
+ * and every consumer reads `navigation` at module scope, so this has to be one
+ * value shared by the server and the client bundle — the build time, stamped
+ * into NEXT_PUBLIC_BUILD_TIME by next.config.ts. A badge therefore expires at
+ * the first build after its window closes, and no reader ever sees a badge
+ * that the markup they were served did not have.
+ */
+const badgeClock =
+  Date.parse(process.env.NEXT_PUBLIC_BUILD_TIME ?? "") || Date.now();
+
+export const isFreshlyAdded = (addedOn?: string) =>
+  !!addedOn &&
+  badgeClock - Date.parse(addedOn) < NEW_BADGE_DAYS * 24 * 60 * 60 * 1000;
+
+const expireNewBadges = (items: NavigationItem[]): NavigationItem[] =>
+  items.map((group) => ({
+    ...group,
+    children: group.children.map((child) =>
+      child.badge === "New" && !isFreshlyAdded(child.addedOn)
+        ? { ...child, badge: undefined }
+        : child,
+    ),
+  }));
+
+const rawNavigation: NavigationItem[] = [
   {
     label: "Getting Started",
     children: [
@@ -80,12 +115,13 @@ export const navigation: NavigationItem[] = [
       { label: "Animated Timeline", slug: "animated-timeline" },
       { label: "Animated Typography", slug: "animated-typography" },
       { label: "Api Playground", slug: "api-playground" },
-      { label: "Apple Select", slug: "apple-select", badge: "New" },
-      { label: "Audio Player", slug: "audio-player", badge: "New" },
+      { label: "Apple Select", slug: "apple-select", badge: "New", addedOn: "2026-09-13" },
+      { label: "Audio Player", slug: "audio-player", badge: "New", addedOn: "2026-09-15" },
       {
         label: "Avatar Stack",
         slug: "avatar-stack",
         badge: "New",
+        addedOn: "2026-09-16",
         keywords: ["avatar", "avatars", "faces", "group", "stack", "overlap", "social proof", "people"],
       },
       { label: "Book Flip", slug: "book-flip" },
@@ -93,6 +129,7 @@ export const navigation: NavigationItem[] = [
         label: "Booking Card",
         slug: "booking-card",
         badge: "New",
+        addedOn: "2026-09-16",
         keywords: ["booking", "appointment", "schedule", "calendar", "slots", "time picker", "reservation"],
       },
       { label: "Breadcrumb", slug: "breadcrumb" },
@@ -108,6 +145,7 @@ export const navigation: NavigationItem[] = [
         label: "Circular Text",
         slug: "circular-text",
         badge: "New",
+        addedOn: "2026-09-16",
         keywords: ["circular", "circle", "text", "rotating", "spinning", "badge", "stamp", "textpath", "ring"],
       },
       { label: "Collapsible", slug: "collapsible" },
@@ -115,8 +153,8 @@ export const navigation: NavigationItem[] = [
       { label: "Command", slug: "command" },
       { label: "Components Folder", slug: "design-components-folder" },
       { label: "ContextMenu", slug: "context-menu" },
-      { label: "Conversation Timeline", slug: "conversation-timeline", badge: "New" },
-      { label: "Copy Button", slug: "copy-button", badge: "New" },
+      { label: "Conversation Timeline", slug: "conversation-timeline", badge: "New", addedOn: "2026-09-15" },
+      { label: "Copy Button", slug: "copy-button", badge: "New", addedOn: "2026-09-14" },
       { label: "Counter", slug: "counter" },
       { label: "Cursor Animation", slug: "cursor-animation" },
       { label: "Curved Carousel", slug: "curved-carousel" },
@@ -132,12 +170,13 @@ export const navigation: NavigationItem[] = [
       { label: "File Upload", slug: "file-upload" },
       { label: "Floating ContactButton", slug: "floating-contact-button" },
       { label: "Flow Gallery", slug: "flow-gallery" },
-      { label: "Folder", slug: "folder", badge: "New" },
+      { label: "Folder", slug: "folder", badge: "New", addedOn: "2026-09-13" },
       { label: "Form", slug: "form" },
       {
         label: "Glass Panel",
         slug: "glass-panel",
         badge: "New",
+        addedOn: "2026-09-16",
         keywords: ["glass", "glassmorphism", "frosted", "aurora", "bento", "panel", "card", "backdrop"],
       },
       { label: "Half Stars", slug: "half-stars" },
@@ -173,19 +212,20 @@ export const navigation: NavigationItem[] = [
       { label: "Scroll Area", slug: "scroll-area" },
       { label: "Scroll Stack", slug: "scroll-stack" },
       { label: "Select", slug: "select" },
-      { label: "Selection Frame", slug: "selection-frame", badge: "New" },
+      { label: "Selection Frame", slug: "selection-frame", badge: "New", addedOn: "2026-09-13" },
       { label: "Skeleton", slug: "skeleton" },
       {
         label: "Social Links",
         slug: "social-links",
         badge: "New",
+        addedOn: "2026-09-16",
         keywords: ["social", "share", "follow", "github", "linkedin", "x", "twitter", "instagram", "youtube", "brand icons"],
       },
       { label: "Sonner", slug: "sonner" },
       { label: "Squircle Carousel", slug: "squircle-carousel" },
       { label: "Stepper", slug: "stepper" },
       { label: "Table", slug: "table" },
-      { label: "Table of Contents", slug: "table-of-contents", badge: "New" },
+      { label: "Table of Contents", slug: "table-of-contents", badge: "New", addedOn: "2026-09-07" },
       { label: "Tabs", slug: "vertical-tabs" },
       { label: "Theme Switcher", slug: "theme-switcher" },
       { label: "Tilted Card", slug: "tilted-card" },
@@ -225,24 +265,28 @@ export const navigation: NavigationItem[] = [
         label: "Bento Showcase",
         slug: "bento-showcase",
         badge: "New",
+        addedOn: "2026-09-16",
         keywords: ["bento", "showcase", "marketing", "grid", "marquee", "scroll", "outsourcing", "agency", "landing"],
       },
       {
         label: "Book Appointment",
         slug: "book-appointment",
         badge: "New",
+        addedOn: "2026-09-13",
         keywords: ["booking", "appointment", "schedule", "calendar", "slots", "doctor", "clinic", "reservation"],
       },
       {
         label: "Collage Hero",
         slug: "collage-hero",
         badge: "New",
+        addedOn: "2026-09-16",
         keywords: ["hero", "collage", "kindergarten", "school", "photos", "badge", "video", "playful"],
       },
       {
         label: "Data Flow",
         slug: "data-flow",
         badge: "New",
+        addedOn: "2026-09-16",
         keywords: ["data", "flow", "pipeline", "sources", "diagram", "connectors", "ai", "intelligence", "process"],
       },
       { label: "Footer", slug: "footer" },
@@ -251,6 +295,7 @@ export const navigation: NavigationItem[] = [
         label: "Fashion Hero",
         slug: "fashion-hero",
         badge: "New",
+        addedOn: "2026-09-16",
         keywords: ["fashion", "hero", "lookbook", "collage", "editorial", "clothing", "store", "photos", "tilt"],
       },
       { label: "Navbar", slug: "navbar", badge: "Core" },
@@ -258,6 +303,7 @@ export const navigation: NavigationItem[] = [
         label: "Platform Grid",
         slug: "platform-grid",
         badge: "New",
+        addedOn: "2026-09-16",
         keywords: ["platform", "grid", "features", "tiles", "bento", "tools", "catalog", "spotlight"],
       },
       { label: "Pricing Section", slug: "pricing" },
@@ -266,6 +312,7 @@ export const navigation: NavigationItem[] = [
         label: "Profile Page",
         slug: "profile-page",
         badge: "New",
+        addedOn: "2026-09-13",
         keywords: ["profile", "user profile", "member", "team", "bento", "glass", "glassmorphism"],
       },
       { label: "Review Section", slug: "reviews" },
@@ -275,18 +322,21 @@ export const navigation: NavigationItem[] = [
         label: "Support Hero",
         slug: "support-hero",
         badge: "New",
+        addedOn: "2026-09-16",
         keywords: ["hero", "ai", "support", "saas", "landing", "bento", "glass", "counter", "cta"],
       },
       {
         label: "Newsletter",
         slug: "newsletter",
         badge: "New",
+        addedOn: "2026-09-15",
         keywords: ["newsletter", "subscribe", "signup", "email", "mailing list"],
       },
       {
         label: "Waitlist",
         slug: "waitlist",
         badge: "New",
+        addedOn: "2026-09-17",
         keywords: ["waitlist", "early access", "coming soon", "launch", "countdown", "signup", "email", "pre-launch", "queue"],
       },
     ],
@@ -298,6 +348,7 @@ export const navigation: NavigationItem[] = [
         label: "Overview",
         slug: "third-party",
         badge: "New",
+        addedOn: "2026-09-09",
         keywords: ["integration", "third party", "library", "ecosystem"],
       },
       {
@@ -334,3 +385,6 @@ export const navigation: NavigationItem[] = [
     ],
   },
 ];
+
+/** The sidebar tree with time-limited badges already resolved. */
+export const navigation: NavigationItem[] = expireNewBadges(rawNavigation);

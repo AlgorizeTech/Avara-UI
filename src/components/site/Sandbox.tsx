@@ -833,9 +833,14 @@ function renderInline(text: string): React.ReactNode {
  * Badge used for both halves of a prop reference — name and value alike.
  * Rendered with `data-badge`, which opts out of the global !important inline
  * <code> styling in globals.css; without it these classes never take effect.
+ *
+ * Inline rather than inline-block so a long badge wraps at word boundaries
+ * like the surrounding text; `box-decoration-break: clone` repeats the pill
+ * background and ring on each line it spans. Kept in step with BADGE in
+ * installation.tsx.
  */
 const PROP_BADGE =
-  "inline-block rounded-md bg-primary/10 px-1.5 py-0.5 font-mono text-xs font-medium text-primary ring-1 ring-primary/20 [overflow-wrap:anywhere]";
+  "inline rounded-md bg-primary/10 px-1.5 py-0.5 font-mono text-xs font-medium text-primary ring-1 ring-primary/20 [overflow-wrap:anywhere] [box-decoration-break:clone] [-webkit-box-decoration-break:clone]";
 
 /**
  * The prop cheat sheet. Runs on directly under the subheading — same text
@@ -852,14 +857,19 @@ function PropNotes({ notes }: { notes: PropNote[] }) {
           key={`${note.prop}-${note.value ?? i}`}
           className="text-sm leading-6 text-zinc-500 dark:text-zinc-400"
         >
-          <dt className="mr-1.5 inline-flex items-center gap-1 align-middle">
-            {note.lead && <span className="mr-0.5">{note.lead}</span>}
+          {/* Inline, not flex: a long prop or value then wraps by word with the
+              prose instead of being squeezed and split mid-word on narrow screens. */}
+          <dt className="mr-1.5 inline">
+            {note.lead && <span className="mr-1">{note.lead}</span>}
             <code data-badge className={PROP_BADGE}>
               {note.prop}
             </code>
             {note.value !== undefined && (
               <>
-                <span aria-hidden className="font-mono text-xs text-zinc-400">
+                <span
+                  aria-hidden
+                  className="mx-1 font-mono text-xs text-zinc-400"
+                >
                   =
                 </span>
                 <code data-badge className={PROP_BADGE}>

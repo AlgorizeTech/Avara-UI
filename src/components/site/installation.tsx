@@ -81,7 +81,7 @@ function transitivePackages(name: string, seen = new Set<string>()): string[] {
  * without it those rules win and the badge renders as a plain slate chip.
  */
 const BADGE =
-  "inline-block rounded-md bg-primary/10 px-1.5 py-0.5 font-mono text-xs font-medium text-primary ring-1 ring-primary/20 [overflow-wrap:anywhere]";
+  "inline rounded-md bg-primary/10 px-1.5 py-0.5 font-mono text-xs font-medium text-primary ring-1 ring-primary/20 [overflow-wrap:anywhere] [box-decoration-break:clone] [-webkit-box-decoration-break:clone]";
 
 const STEP_HEADING = "text-2xl font-semibold mb-3 mt-8 scroll-m-24";
 
@@ -144,6 +144,29 @@ export function InstallGroup({ children }: { children: React.ReactNode }) {
           {i > 0 && React.isValidElement<InstallationProps>(block)
             ? React.cloneElement(block, { showSetupPath: false })
             : block}
+        </React.Fragment>
+      ))}
+    </>
+  );
+}
+
+/**
+ * A path with a break opportunity after every "/", so a long target like
+ * components/custom/blocks/CollageHeroBlock.tsx wraps at a segment boundary
+ * on narrow screens instead of wherever the column happens to end.
+ */
+function BreakablePath({ path }: { path: string }) {
+  const segments = path.split("/");
+  return (
+    <>
+      {segments.map((segment, i) => (
+        <React.Fragment key={i}>
+          {i > 0 && (
+            <>
+              /<wbr />
+            </>
+          )}
+          {segment}
         </React.Fragment>
       ))}
     </>
@@ -229,7 +252,14 @@ export function Installation({ name, showSetupPath = true }: InstallationProps) 
       <div className="space-y-3">
         <Cli command={`add ${name}.json`} />
         <p className="leading-7 text-gray-700 dark:text-gray-300">
-          {target ? <code>{target}</code> : <>The component</>} is written into
+          {target ? (
+            <code>
+              <BreakablePath path={target} />
+            </code>
+          ) : (
+            <>The component</>
+          )}{" "}
+          is written into
           your project. Copy any snippet from a{" "}
           <strong className="font-bold">Usage</strong> tab above and it runs.
         </p>
