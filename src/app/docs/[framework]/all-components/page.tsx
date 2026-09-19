@@ -163,6 +163,7 @@ const COMPONENT_META: Record<
 	"bento-showcase": { countText: "Six-Card Marketing Bento", illustrationType: "bento-showcase" },
 	"book-appointment": { countText: "Practitioner Booking Flow", illustrationType: "book-appointment" },
 	"collage-hero": { countText: "Playful Photo Collage", illustrationType: "collage-hero" },
+	"hero-carousel": { countText: "Queue of Cards & Glass Panel", illustrationType: "hero-carousel" },
 	"data-flow": { countText: "Sources → Node → Results", illustrationType: "data-flow" },
 	"fashion-hero": { countText: "Staggered Lookbook", illustrationType: "fashion-hero" },
 	"platform-grid": { countText: "Hairline Feature Grid", illustrationType: "platform-grid" },
@@ -3168,6 +3169,34 @@ function MiniatureIllustration({
 									Book
 								</span>
 							</div>
+						</div>
+					</div>
+				)}
+
+				{type === "hero-carousel" && (
+					<div className="relative w-full h-full rounded-md overflow-hidden bg-gradient-to-b from-sky-300 via-slate-500 to-slate-800">
+						<span className="absolute left-1/2 top-1 -translate-x-1/2 rounded-full border border-white/40 bg-white/20 px-1 text-[4px] text-white">
+							guided trips
+						</span>
+						<div className="absolute left-0 right-0 top-[9px] text-center text-[7px] font-light leading-[8px] text-white">
+							Wake up above
+							<br />
+							the clouds
+						</div>
+						<div className="absolute left-1 bottom-1 w-9 h-7 rounded-[3px] border border-white/30 bg-white/20 backdrop-blur-[1px] p-0.5 flex flex-col gap-0.5">
+							<div className="flex -space-x-0.5">
+								{[0, 1, 2].map((i) => (
+									<span key={i} className="size-1.5 rounded-full bg-white/80 ring-[0.5px] ring-slate-500" />
+								))}
+							</div>
+							<span className="h-[2px] w-6 rounded bg-white/50" />
+							<span className="h-[2px] w-5 rounded bg-white/50" />
+							<span className="mt-auto h-2 w-5 rounded-full bg-white/80" />
+						</div>
+						<div className="absolute right-0.5 bottom-1 flex items-end gap-0.5">
+							<div className="w-6 h-5 rounded-[3px] bg-amber-200/90 border border-white/40 self-start" />
+							<div className="w-3 h-7 rounded-[3px] bg-indigo-300/90 border border-white/40" />
+							<div className="w-3 h-7 rounded-[3px] bg-emerald-300/90 border border-white/40" />
 						</div>
 					</div>
 				)}
