@@ -50,6 +50,14 @@ export default function ComponentWallHeroDemo() {
   );
 }`;
 
+export const usageOrbit = `import { HeroBlock } from "@/components/custom/blocks/HeroBlock";
+
+export default function OrbitHeroDemo() {
+  return (
+    
+  );
+}`;
+
 ## Props Reference
 
         Prop
@@ -59,11 +67,11 @@ export default function ComponentWallHeroDemo() {
 
           variant
 
-          "bounce" | "typing" | "slider" | "pet-shop"
+          "bounce" | "typing" | "slider" | "pet-shop" | "doctor" | "component-wall" | "orbit"
 
           "bounce"
 
-          The layout & animation style. "bounce" uses spring word motion; "typing" uses typewriter effect; "slider" renders a split 2-column hero with continuous slider; "pet-shop" renders a clean 2-column pet shop & e-commerce hero.
+          The layout & animation style. "bounce" uses spring word motion; "typing" uses typewriter effect; "slider" renders split 2-column hero with continuous marquee; "orbit" renders infinite revolving circular image ring hero.
 
           typingWords
 

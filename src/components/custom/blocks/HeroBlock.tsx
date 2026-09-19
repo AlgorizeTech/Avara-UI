@@ -1,6 +1,6 @@
 "use client";
 
-import React, { forwardRef, useEffect, useState } from "react";
+import React, { forwardRef, useEffect, useRef, useState } from "react";
 import { cn } from "@/lib/utils";
 import { HalfStars } from "@/components/custom/blocks/HalfStarsBlock";
 import { ArrowRight, ArrowUpRight, Check, Copy, Sparkles, Terminal, Star, Code, Mail, FileText, Heart, ShieldCheck, ShoppingBag, Package } from "lucide-react";
@@ -30,8 +30,8 @@ const GitHubIcon = (props: React.SVGProps<SVGSVGElement>) => (
    ═══════════════════════════════════════════════ */
 
 export interface HeroBlockProps extends React.HTMLAttributes<HTMLElement> {
-  /** Animation variant: "bounce", "typing", "slider", "glow-arc", "pet-shop", "doctor", "component-wall" */
-  variant?: "bounce" | "typing" | "slider" | "glow-arc" | "pet-shop" | "doctor" | "component-wall";
+  /** Animation variant: "bounce", "typing", "slider", "glow-arc", "pet-shop", "doctor", "component-wall", "orbit" */
+  variant?: "bounce" | "typing" | "slider" | "glow-arc" | "pet-shop" | "doctor" | "component-wall" | "orbit";
   /** Optional badge text displayed inside the top pill badge */
   badgeText?: string;
   /** Badge link URL */
@@ -141,6 +141,24 @@ const DEFAULT_SLIDER_IMAGES = [
 const DEFAULT_MAIN_IMAGE =
   "https://images.unsplash.com/photo-1524504388940-b1c1722653e1?q=80&w=1200&auto=format&fit=crop";
 
+const DEFAULT_ORBIT_IMAGES = [
+  "https://images.unsplash.com/photo-1506744038136-46273834b3fb?q=80&w=600&auto=format&fit=crop", // Yosemite Nature
+  "https://images.unsplash.com/photo-1448375240586-882707db888b?q=80&w=600&auto=format&fit=crop", // Dense Sunlit Forest Path
+  "https://images.unsplash.com/photo-1470071459604-3b5ec3a7fe05?q=80&w=600&auto=format&fit=crop", // Mountain Fog
+  "https://images.unsplash.com/photo-1441974231531-c6227db76b6e?q=80&w=600&auto=format&fit=crop", // Forest Sunbeam
+  "https://images.unsplash.com/photo-1472214103451-9374bd1c798e?q=80&w=600&auto=format&fit=crop", // Green Valley
+  "https://images.unsplash.com/photo-1501785888041-af3ef285b470?q=80&w=600&auto=format&fit=crop", // Mountain Lake
+  "https://images.unsplash.com/photo-1469474968028-56623f02e42e?q=80&w=600&auto=format&fit=crop", // Wilderness Mountains
+  "https://images.unsplash.com/photo-1426604966848-d7adac402bff?q=80&w=600&auto=format&fit=crop", // Mountain Peak Sunset
+  "https://images.unsplash.com/photo-1447752875215-b2761acb3c5d?q=80&w=600&auto=format&fit=crop", // Autumn Forest Stream
+  "https://images.unsplash.com/photo-1507525428034-b723cf961d3e?q=80&w=600&auto=format&fit=crop", // Tropical Coast
+  "https://images.unsplash.com/photo-1433086966358-54859d0ed716?q=80&w=600&auto=format&fit=crop", // Waterfall Landscape
+  "https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?q=80&w=600&auto=format&fit=crop", // Alps Rocky Peaks
+  "https://images.unsplash.com/photo-1500530855697-b586d89ba3ee?q=80&w=600&auto=format&fit=crop", // Golden Sunset Lake
+  "https://images.unsplash.com/photo-1473448912268-2022ce9509d8?q=80&w=600&auto=format&fit=crop", // Pine Tree Forest
+  "https://images.unsplash.com/photo-1518495973542-4542c06a5843?q=80&w=600&auto=format&fit=crop", // Sunlit Trees
+];
+
 /* ═══════════════════════════════════════════════
    MAIN HERO BLOCK COMPONENT
    ═══════════════════════════════════════════════ */
@@ -187,6 +205,54 @@ export const HeroBlock = forwardRef<HTMLElement, HeroBlockProps>(
     // Typing effect state (used when variant === "typing")
     const [currentText, setCurrentText] = useState("");
     const [isDeleting, setIsDeleting] = useState(false);
+
+    // Particle trail cursor effect (used when variant === "orbit")
+    const orbitContainerRef = useRef<HTMLElement | null>(null);
+    const orbitTargetPosRef = useRef({ x: -100, y: -100 });
+    const [orbitMousePos, setOrbitMousePos] = useState({ x: -100, y: -100 });
+    const [orbitTrail, setOrbitTrail] = useState<{ x: number; y: number; id: number }[]>([]);
+    const [isOrbitSectionHovered, setIsOrbitSectionHovered] = useState(false);
+
+    useEffect(() => {
+      if (variant !== "orbit" || !isOrbitSectionHovered) return;
+
+      let animId: number;
+      let lastTrailTime = 0;
+
+      const loop = (timestamp: number) => {
+        const target = orbitTargetPosRef.current;
+
+        if (timestamp - lastTrailTime > 20) {
+          lastTrailTime = timestamp;
+          setOrbitTrail((prev) => [
+            { x: target.x, y: target.y, id: timestamp },
+            ...prev.slice(0, 7),
+          ]);
+        }
+
+        animId = requestAnimationFrame(loop);
+      };
+
+      animId = requestAnimationFrame(loop);
+      return () => cancelAnimationFrame(animId);
+    }, [isOrbitSectionHovered, variant]);
+
+    const handleOrbitMouseMove = (e: React.MouseEvent<HTMLElement>) => {
+      if (!orbitContainerRef.current) return;
+      const rect = orbitContainerRef.current.getBoundingClientRect();
+      const x = e.clientX - rect.left;
+      const y = e.clientY - rect.top;
+      orbitTargetPosRef.current = { x, y };
+      setOrbitMousePos({ x, y });
+    };
+
+    const handleOrbitMouseEnter = () => setIsOrbitSectionHovered(true);
+    const handleOrbitMouseLeave = () => {
+      setIsOrbitSectionHovered(false);
+      orbitTargetPosRef.current = { x: -100, y: -100 };
+      setOrbitMousePos({ x: -100, y: -100 });
+      setOrbitTrail([]);
+    };
 
     // Word bounce effect interval (used when variant === "bounce")
     useEffect(() => {
@@ -270,6 +336,259 @@ export const HeroBlock = forwardRef<HTMLElement, HeroBlockProps>(
     } as React.CSSProperties;
 
     const currentWord = typingWords?.[currentWordIndex] || "";
+
+    /* ═══════════════════════════════════════════════
+       VARIANT: ORBIT (INFINITE CIRCULAR REVOLVING GALLERY HERO)
+       ═══════════════════════════════════════════════ */
+    if (variant === "orbit") {
+      const orbitImagesList =
+        sliderImages && sliderImages !== DEFAULT_SLIDER_IMAGES && sliderImages.length > 0
+          ? sliderImages
+          : DEFAULT_ORBIT_IMAGES;
+      const count = orbitImagesList.length;
+
+      const orbitTitlePrefix =
+        titlePrefix === "Build " ? "Explore the" : titlePrefix;
+      const orbitTitleAccent =
+        titleSuffix || (titlePrefix === "Build " ? "Beauty of Pure Nature." : "");
+      const orbitSubtitle =
+        subtitle ===
+        "A meticulous library of React components & interactive blocks, engineered for seamless performance with Tailwind CSS, TypeScript, GSAP, and Framer Motion."
+          ? "Immerse yourself in breathtaking landscapes, untouched wilderness, and timeless natural wonder."
+          : subtitle;
+      const orbitBadgeText =
+        badgeText === "Next-Gen React Components"
+          ? "BRAND & MOTION STUDIO"
+          : badgeText;
+      const orbitPrimaryAction =
+        primaryActionLabel === "Browse Components"
+          ? "Explore Gallery"
+          : primaryActionLabel;
+
+      return (
+        <section
+          ref={(node) => {
+            orbitContainerRef.current = node;
+            if (typeof ref === "function") ref(node);
+            else if (ref) (ref as React.MutableRefObject<HTMLElement | null>).current = node;
+          }}
+          onMouseMove={handleOrbitMouseMove}
+          onMouseEnter={handleOrbitMouseEnter}
+          onMouseLeave={handleOrbitMouseLeave}
+          style={customStyle}
+          className={cn(
+            "relative w-full overflow-hidden py-12 sm:py-16 lg:py-24 bg-white dark:bg-black text-foreground transition-colors duration-300 min-h-[580px] flex items-center select-none",
+            className,
+          )}
+          {...props}
+        >
+          {/* PARTICLES TRAIL CURSOR ANIMATION OVER ORBIT SECTION */}
+          {isOrbitSectionHovered && (
+            <div className="pointer-events-none absolute inset-0 z-50 overflow-hidden">
+              {orbitTrail.map((pt, i) => {
+                const size = Math.max(4, 18 - i * 2);
+                const opacity = (orbitTrail.length - i) / orbitTrail.length;
+                return (
+                  <div
+                    key={pt.id + i}
+                    className="pointer-events-none absolute -translate-x-1/2 -translate-y-1/2 rounded-full transition-opacity duration-150"
+                    style={{
+                      left: `${pt.x}px`,
+                      top: `${pt.y}px`,
+                      width: `${size}px`,
+                      height: `${size}px`,
+                      backgroundColor: "var(--hero-accent-text)",
+                      opacity: opacity * 0.7,
+                    }}
+                  />
+                );
+              })}
+              <div
+                className="pointer-events-none absolute -translate-x-1/2 -translate-y-1/2 w-4 h-4 rounded-full shadow-lg"
+                style={{
+                  left: `${orbitMousePos.x}px`,
+                  top: `${orbitMousePos.y}px`,
+                  backgroundColor: "var(--hero-accent-text)",
+                }}
+              />
+            </div>
+          )}
+          {/* Custom style for responsive orbit radius, equal card dimensions, and constant equal distance animation */}
+          <style>{`
+            .hero-orbit-card {
+              --orbit-r: 110px;
+            }
+            @media (min-width: 480px) {
+              .hero-orbit-card {
+                --orbit-r: 135px;
+              }
+            }
+            @media (min-width: 640px) {
+              .hero-orbit-card {
+                --orbit-r: 185px;
+              }
+            }
+            @media (min-width: 1024px) {
+              .hero-orbit-card {
+                --orbit-r: 220px;
+              }
+            }
+            @keyframes hero-orbit-slide {
+              0% {
+                transform: rotate(0deg) translateY(calc(-1 * var(--orbit-r, 220px))) rotate(0deg);
+                z-index: 10;
+                opacity: 0.82;
+              }
+              25% {
+                transform: rotate(90deg) translateY(calc(-1 * var(--orbit-r, 220px))) rotate(-90deg);
+                z-index: 25;
+                opacity: 0.95;
+              }
+              50% {
+                transform: rotate(180deg) translateY(calc(-1 * var(--orbit-r, 220px))) rotate(-180deg);
+                z-index: 50;
+                opacity: 1;
+              }
+              75% {
+                transform: rotate(270deg) translateY(calc(-1 * var(--orbit-r, 220px))) rotate(-270deg);
+                z-index: 25;
+                opacity: 0.95;
+              }
+              100% {
+                transform: rotate(360deg) translateY(calc(-1 * var(--orbit-r, 220px))) rotate(-360deg);
+                z-index: 10;
+                opacity: 0.82;
+              }
+            }
+            .hero-orbit-card-anim {
+              animation: hero-orbit-slide 36s linear infinite;
+            }
+            .hero-orbit-wrapper:hover .hero-orbit-card-anim {
+              animation-play-state: paused;
+            }
+          `}</style>
+
+          <div className="relative z-10 max-w-[1380px] mx-auto w-full px-4 sm:px-6 md:px-10">
+            <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-8 items-center">
+              
+              {/* LEFT COLUMN: Text Content & Actions */}
+              <div className="col-span-1 lg:col-span-6 flex flex-col justify-center space-y-6 sm:space-y-8 z-10">
+                {/* Brand / Subhead Tag - Clean Minimalist Text (No BG, No Border) */}
+                {orbitBadgeText && (
+                  <Link href={badgeHref} className="inline-block group self-start">
+                    <div className="inline-flex items-center gap-2 text-xs sm:text-sm font-semibold tracking-widest uppercase text-muted-foreground group-hover:text-foreground transition-colors">
+                      <Sparkles className="size-3.5 text-[var(--hero-accent-text)] shrink-0" />
+                      <span>{orbitBadgeText}</span>
+                    </div>
+                  </Link>
+                )}
+
+                {/* Main Headline (Clean layout, compatible with all fonts & sizes) */}
+                <h1 className="text-xl sm:text-3xl lg:text-[36px] xl:text-[42px] font-extrabold tracking-tight leading-[1.15] text-foreground">
+                  <span className="block">{orbitTitlePrefix}</span>
+                  {orbitTitleAccent && (
+                    <span
+                      className="font-black block text-foreground mt-1 tracking-tight"
+                      style={{ color: "var(--hero-accent-text)" }}
+                    >
+                      {orbitTitleAccent}
+                    </span>
+                  )}
+                </h1>
+
+                {/* Subtitle Paragraph with Accent Left Line */}
+                {orbitSubtitle && (
+                  <div 
+                    className="border-l-3 pl-4 py-1 transition-colors duration-300"
+                    style={{ borderColor: "var(--hero-accent-text)" }}
+                  >
+                    <p className="text-sm sm:text-base lg:text-lg text-muted-foreground leading-relaxed max-w-lg font-medium">
+                      {orbitSubtitle}
+                    </p>
+                  </div>
+                )}
+
+                {/* Actions Row */}
+                <div className="flex flex-wrap items-center gap-3.5 sm:gap-4 pt-2">
+                  <Link
+                    href={primaryActionHref}
+                    className="group inline-flex items-center justify-center gap-2.5 px-7 py-3.5 sm:py-4 rounded-2xl font-extrabold text-sm sm:text-base shadow-xl transition-all duration-300 hover:-translate-y-0.5 active:translate-y-0"
+                    style={{
+                      backgroundColor: "var(--hero-accent-text)",
+                      color: "var(--primary-foreground)",
+                    }}
+                  >
+                    <span>{orbitPrimaryAction}</span>
+                    <ArrowRight className="size-4 group-hover:translate-x-1 transition-transform shrink-0" />
+                  </Link>
+
+                  {secondaryActionLabel && (
+                    <Link
+                      href={secondaryActionHref}
+                      className="inline-flex items-center justify-center gap-2 px-6 py-3.5 sm:py-4 rounded-2xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900/80 hover:bg-zinc-100 dark:hover:bg-zinc-800 text-foreground text-sm sm:text-base font-bold transition-all duration-300 hover:-translate-y-0.5 active:translate-y-0 shadow-sm"
+                    >
+                      <span>{secondaryActionLabel}</span>
+                      <ArrowUpRight className="size-4 text-muted-foreground shrink-0" />
+                    </Link>
+                  )}
+                </div>
+
+                {/* Feature Highlights Trust Row */}
+                <div className="pt-2 flex flex-wrap items-center gap-5 sm:gap-8 text-xs font-bold text-muted-foreground border-t border-border/40">
+                  <div className="flex items-center gap-2">
+                    <div className="size-2 rounded-full" style={{ backgroundColor: "var(--hero-accent-text)" }} />
+                    <span>15 Curated Landscapes</span>
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <div className="size-2 rounded-full bg-emerald-500" />
+                    <span>360° Revolving Orbit</span>
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <div className="size-2 rounded-full bg-amber-500" />
+                    <span>Interactive Pause</span>
+                  </div>
+                </div>
+              </div>
+
+              {/* RIGHT COLUMN: Stationary Track with 15 Position-to-Position Sliding Orbit Nature Cards */}
+              <div className="col-span-1 lg:col-span-6 relative flex items-center justify-center h-[460px] sm:h-[560px] lg:h-[620px] overflow-visible py-4">
+                
+                {/* Stationary Center Ring Track (Wrapper pauses ALL cards on hover) */}
+                <div className="hero-orbit-wrapper relative size-[340px] sm:size-[440px] lg:size-[480px] rounded-full flex items-center justify-center overflow-visible pointer-events-auto cursor-pointer">
+                  {/* Outer Orbit Guide Track Line */}
+                  <div className="absolute inset-0 rounded-full border border-border/30 dark:border-white/10 pointer-events-none" />
+
+                  {/* Render 15 Nature Cards Sliding position-by-position with CONSTANT EQUAL DISTANCE */}
+                  {orbitImagesList.map((imgUrl, i) => {
+                    const delay = -((i / count) * 36);
+                    return (
+                      <div
+                        key={i}
+                        className="hero-orbit-card hero-orbit-card-anim absolute top-1/2 left-1/2 -ml-[38px] -mt-[48px] sm:-ml-[62px] sm:-mt-[77px] lg:-ml-[75px] lg:-mt-[90px] w-[76px] h-[96px] sm:w-[125px] sm:h-[155px] lg:w-[150px] lg:h-[180px] pointer-events-auto"
+                        style={{
+                          animationDelay: `${delay}s`,
+                        }}
+                      >
+                        {/* Upright Card Box with squircle rounded corners */}
+                        <div className="w-full h-full rounded-[22px] sm:rounded-[28px] overflow-hidden shadow-2xl border-2 border-background/90 dark:border-zinc-800 bg-card group hover:scale-110 transition-all duration-300">
+                          <img
+                            src={imgUrl}
+                            alt={`Nature image ${i + 1}`}
+                            className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                          />
+                        </div>
+                      </div>
+                    );
+                  })}
+                </div>
+
+              </div>
+
+            </div>
+          </div>
+        </section>
+      );
+    }
 
     /* ═══════════════════════════════════════════════
        VARIANT: COMPONENT WALL (FULL-SCREEN MULTI-COLUMN IMAGE WALL HERO)

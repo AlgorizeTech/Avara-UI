@@ -4,7 +4,7 @@ import { cn } from "@/lib/utils";
 import gsap from "gsap";
 import { AlertCircle, AlertTriangle, BadgeCheck, CheckCircle2, Info, X } from "lucide-react";
 import React, { useCallback, useEffect, useLayoutEffect, useRef, useState } from "react";
-import { ToastContext, type ToastProps, type ToastType } from "./toast-context";
+import { ToastContext, type ToastProps } from "./toast-context";
 
 // ==========================================
 // DYNAMIC THEME ENGINE

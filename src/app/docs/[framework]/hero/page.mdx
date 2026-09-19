@@ -271,6 +271,45 @@ export default function ComponentWallHeroDemo() {
   ]}
 />
 
+export const usageOrbit = `import { HeroBlock } from "@/components/custom/blocks/HeroBlock";
+
+export default function OrbitHeroDemo() {
+  return (
+    <HeroBlock
+      variant="orbit"
+      badgeText="(BRAND & MOTION STUDIO)"
+      badgeHref="/docs"
+      titlePrefix="Motion is the"
+      titleSuffix="first thing anyone reads."
+      subtitle="We build identity systems and the motion that carries them — from the first frame to the shipped product."
+      primaryActionLabel="Start a project"
+      primaryActionHref="/contact"
+    />
+  );
+}`;
+
+<ExampleShowcase
+  name="homepage-hero-orbit"
+  colorControl
+  columns={1}
+  minHeight={480}
+  examples={[
+    {
+      title: "Infinite Revolving Circular Orbit Hero",
+      subheading: "Brand & motion studio landing hero featuring text and CTAs on the left, and a continuous 360-degree revolving image ring gallery on the right.",
+      propNotes: [
+        {
+          lead: "Set",
+          prop: "variant",
+          value: '"orbit"',
+          effect: "renders a split 2-column hero with an infinitely spinning 360-degree circular gallery wheel of upright cards.",
+        },
+      ],
+      usage: usageOrbit,
+    },
+  ]}
+/>
+
 ## Props Reference
 
 <div className="overflow-x-auto mb-8">
@@ -289,13 +328,13 @@ export default function ComponentWallHeroDemo() {
           <code>variant</code>
         </td>
         <td>
-          <code>"bounce" | "typing" | "slider" | "pet-shop"</code>
+          <code>"bounce" | "typing" | "slider" | "pet-shop" | "doctor" | "component-wall" | "orbit"</code>
         </td>
         <td>
           <code>"bounce"</code>
         </td>
         <td>
-          The layout & animation style. <code>"bounce"</code> uses spring word motion; <code>"typing"</code> uses typewriter effect; <code>"slider"</code> renders a split 2-column hero with continuous slider; <code>"pet-shop"</code> renders a clean 2-column pet shop & e-commerce hero.
+          The layout & animation style. <code>"bounce"</code> uses spring word motion; <code>"typing"</code> uses typewriter effect; <code>"slider"</code> renders split 2-column hero with continuous marquee; <code>"orbit"</code> renders infinite revolving circular image ring hero.
         </td>
       </tr>
       <tr>
