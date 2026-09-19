@@ -70,6 +70,8 @@ export const sandboxNames = [
   "homepage-hero-component-wall",
   "homepage-hero",
   "homepage-hero-glow-arc",
+  "homepage-hero-norway",
+  "homepage-hero-orbit",
   "homepage-hero-slider",
   "homepage-hero-typing",
   "horizontal-scroll-stack",

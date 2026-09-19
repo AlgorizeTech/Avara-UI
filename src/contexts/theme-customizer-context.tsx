@@ -46,6 +46,7 @@ export interface ThemeCustomizerState {
 
 interface ThemeCustomizerContextValue {
   state: ThemeCustomizerState;
+  hydrated: boolean;
   // Color manipulation
   setColorToken: (
     mode: "light" | "dark",
@@ -87,7 +88,7 @@ function getInitialState(): ThemeCustomizerState {
   return {
     colors: presetColors(getDefaultPreset()),
     radius: 0.625,
-    activePreset: DEFAULT_PRESET,
+    activePreset: "",
   };
 }
 
@@ -399,6 +400,7 @@ ${[...CHART_TOKENS, ...SIDEBAR_TOKENS]
   const value = useMemo<ThemeCustomizerContextValue>(
     () => ({
       state,
+      hydrated,
       setColorToken,
       getColorToken,
       setRadius,
@@ -410,6 +412,7 @@ ${[...CHART_TOKENS, ...SIDEBAR_TOKENS]
     }),
     [
       state,
+      hydrated,
       setColorToken,
       getColorToken,
       setRadius,
