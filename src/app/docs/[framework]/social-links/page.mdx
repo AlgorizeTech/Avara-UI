@@ -69,6 +69,26 @@ export default function AuthorCard() {
   );
 }`;
 
+export const usageExpandReveal = `import { SocialLinks } from "@/components/custom/blocks/SocialLinksBlock";
+
+export default function ExpandShareButton() {
+  return (
+    <div className="flex gap-8 items-center">
+      {/* Expand Top */}
+      <SocialLinks variant="expand-reveal" expandDirection="top" links={links} />
+
+      {/* Expand Right (Default) */}
+      <SocialLinks variant="expand-reveal" expandDirection="right" links={links} />
+
+      {/* Expand Left */}
+      <SocialLinks variant="expand-reveal" expandDirection="left" links={links} />
+
+      {/* Expand Bottom */}
+      <SocialLinks variant="expand-reveal" expandDirection="bottom" links={links} />
+    </div>
+  );
+}`;
+
 <ExampleShowcase
   name="social-links"
   colorControl={false}
@@ -108,6 +128,27 @@ export default function AuthorCard() {
   colorControl={false}
   columns={1}
   examples={[
+    {
+      title: "Expandable 4-directional share buttons",
+      subheading: "Icon-only share button trigger that animates social icons expanding smoothly in 4 directions: top, right, left, or bottom.",
+      propNotes: [
+        {
+          prop: "variant",
+          value: '"expand-reveal"',
+          effect:
+            "renders an icon-only Share trigger button that expands social link tiles on mouse hover.",
+        },
+        {
+          prop: "expandDirection",
+          value: '"top" | "right" | "left" | "bottom"',
+          effect:
+            "controls direction of animated reveal. Defaults to \"right\".",
+        },
+      ],
+      props: { example: "expand-reveal", variant: "expand-reveal" },
+      usage: usageExpandReveal,
+      minHeight: 720,
+    },
     {
       title: "Every network, outlined",
       subheading: "All nine networks at the large size on the outline surface.",

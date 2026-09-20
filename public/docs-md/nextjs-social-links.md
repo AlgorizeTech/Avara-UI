@@ -31,6 +31,22 @@ export default function AuthorCard() {
   );
 }`;
 
+export const usageExpandReveal = `import { SocialLinks } from "@/components/custom/blocks/SocialLinksBlock";
+
+export default function ExpandShareButton() {
+  return (
+    
+      {/* Expand Top */}
+
+      {/* Expand Right (Default) */}
+
+      {/* Expand Left */}
+
+      {/* Expand Bottom */}
+
+  );
+}`;
+
 ## Installation
 
 ## Examples
