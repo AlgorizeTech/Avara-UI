@@ -89,6 +89,26 @@ export default function ExpandShareButton() {
   );
 }`;
 
+export const usageExpandReplace = `import { SocialLinks } from "@/components/custom/blocks/SocialLinksBlock";
+
+export default function ExpandReplaceShareButton() {
+  return (
+    <div className="flex gap-8 items-center">
+      {/* Expand & Replace Top */}
+      <SocialLinks variant="expand-replace" expandDirection="top" links={links} />
+
+      {/* Expand & Replace Right (Default) */}
+      <SocialLinks variant="expand-replace" expandDirection="right" links={links} />
+
+      {/* Expand & Replace Left */}
+      <SocialLinks variant="expand-replace" expandDirection="left" links={links} />
+
+      {/* Expand & Replace Bottom */}
+      <SocialLinks variant="expand-replace" expandDirection="bottom" links={links} />
+    </div>
+  );
+}`;
+
 <ExampleShowcase
   name="social-links"
   colorControl={false}
@@ -128,6 +148,27 @@ export default function ExpandShareButton() {
   colorControl={false}
   columns={1}
   examples={[
+    {
+      title: "Expand and replace share button (Trigger hides on hover)",
+      subheading: "Share trigger button hides on hover, with social link icons revealing directly from the trigger position in 4 directions.",
+      propNotes: [
+        {
+          prop: "variant",
+          value: '"expand-replace"',
+          effect:
+            "hides the trigger button on hover and expands social link icons starting directly from its exact position.",
+        },
+        {
+          prop: "expandDirection",
+          value: '"top" | "right" | "left" | "bottom"',
+          effect:
+            "controls direction of animated reveal. Defaults to \"right\".",
+        },
+      ],
+      props: { example: "expand-replace", variant: "expand-replace" },
+      usage: usageExpandReplace,
+      minHeight: 720,
+    },
     {
       title: "Expandable 4-directional share buttons",
       subheading: "Icon-only share button trigger that animates social icons expanding smoothly in 4 directions: top, right, left, or bottom.",

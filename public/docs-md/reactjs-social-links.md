@@ -47,6 +47,22 @@ export default function ExpandShareButton() {
   );
 }`;
 
+export const usageExpandReplace = `import { SocialLinks } from "@/components/custom/blocks/SocialLinksBlock";
+
+export default function ExpandReplaceShareButton() {
+  return (
+    
+      {/* Expand & Replace Top */}
+
+      {/* Expand & Replace Right (Default) */}
+
+      {/* Expand & Replace Left */}
+
+      {/* Expand & Replace Bottom */}
+
+  );
+}`;
+
 ## Installation
 
 ## Examples

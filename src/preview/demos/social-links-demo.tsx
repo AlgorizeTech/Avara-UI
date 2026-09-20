@@ -30,9 +30,41 @@ export default function SocialLinksDemo({
 }: {
   variant?: SocialLinksVariant;
   size?: SocialLinksSize;
-  /** `row` is the five footer networks; `all` every network; `byline` an author card; `expand-reveal` animated share button. */
-  example?: "row" | "all" | "byline" | "expand-reveal";
+  /** `row` is the five footer networks; `all` every network; `byline` an author card; `expand-reveal` animated share button; `expand-replace` trigger-hide animated share button. */
+  example?: "row" | "all" | "byline" | "expand-reveal" | "expand-replace";
 }) {
+  if (example === "expand-replace" || variant === "expand-replace") {
+    return (
+      <div className="w-full min-h-[720px] flex items-center justify-center p-4 sm:p-16">
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-x-32 gap-y-36 sm:gap-y-44 w-full max-w-xl mx-auto py-24">
+          {/* 1. Expand Top */}
+          <div className="flex items-center justify-center gap-3 order-3 sm:order-1">
+            <span className="px-2.5 py-0.5 rounded-full bg-muted/80 text-[10px] font-bold text-muted-foreground uppercase tracking-widest border border-border/40 select-none">Top</span>
+            <SocialLinks links={LINKS} variant="expand-replace" expandDirection="top" size={size} />
+          </div>
+
+          {/* 2. Expand Right */}
+          <div className="flex items-center justify-start sm:justify-center gap-3 order-2 sm:order-2">
+            <SocialLinks links={LINKS} variant="expand-replace" expandDirection="right" size={size} />
+            <span className="px-2.5 py-0.5 rounded-full bg-muted/80 text-[10px] font-bold text-muted-foreground uppercase tracking-widest border border-border/40 select-none">Right</span>
+          </div>
+
+          {/* 3. Expand Left */}
+          <div className="flex items-center justify-end sm:justify-center gap-3 order-4 sm:order-3">
+            <span className="px-2.5 py-0.5 rounded-full bg-muted/80 text-[10px] font-bold text-muted-foreground uppercase tracking-widest border border-border/40 select-none">Left</span>
+            <SocialLinks links={LINKS} variant="expand-replace" expandDirection="left" size={size} />
+          </div>
+
+          {/* 4. Expand Bottom */}
+          <div className="flex items-center justify-center gap-3 order-1 sm:order-4">
+            <span className="px-2.5 py-0.5 rounded-full bg-muted/80 text-[10px] font-bold text-muted-foreground uppercase tracking-widest border border-border/40 select-none">Bottom</span>
+            <SocialLinks links={LINKS} variant="expand-replace" expandDirection="bottom" size={size} />
+          </div>
+        </div>
+      </div>
+    );
+  }
+
   if (example === "expand-reveal" || variant === "expand-reveal") {
     return (
       <div className="w-full min-h-[720px] flex items-center justify-center p-4 sm:p-16">

@@ -98,16 +98,16 @@ export interface SocialLink {
   label?: string;
 }
 
-export type SocialLinksVariant = "tile" | "outline" | "ghost" | "expand-reveal";
+export type SocialLinksVariant = "tile" | "outline" | "ghost" | "expand-reveal" | "expand-replace";
 export type SocialLinksSize = "sm" | "md" | "lg";
 export type SocialLinksExpandDirection = "right" | "left" | "top" | "bottom";
 
 export interface SocialLinksProps extends React.HTMLAttributes<HTMLDivElement> {
   links: SocialLink[];
-  /** `tile` sits on a soft fill, `outline` on a border, `ghost` on nothing, `expand-reveal` reveals icons on hover. */
+  /** `tile` sits on a soft fill, `outline` on a border, `ghost` on nothing, `expand-reveal` reveals icons beside button on hover, `expand-replace` hides button on hover and reveals icons starting from button position. */
   variant?: SocialLinksVariant;
   size?: SocialLinksSize;
-  /** Direction in which social icons reveal in `expand-reveal` mode. Defaults to `"right"`. */
+  /** Direction in which social icons reveal in `expand-reveal` and `expand-replace` modes. Defaults to `"right"`. */
   expandDirection?: SocialLinksExpandDirection;
   /**
    * The element used for links. Defaults to a plain `a`. In Next.js, pass
@@ -124,7 +124,7 @@ const SIZES: Record<SocialLinksSize, { tile: string; mark: string }> = {
   lg: { tile: "size-12 rounded-2xl", mark: "size-5" },
 };
 
-const VARIANTS: Record<Exclude<SocialLinksVariant, "expand-reveal">, string> = {
+const VARIANTS: Record<Exclude<SocialLinksVariant, "expand-reveal" | "expand-replace">, string> = {
   tile: "bg-muted/60 text-muted-foreground hover:bg-primary/10 hover:text-primary",
   outline: "border border-border text-muted-foreground hover:border-primary/40 hover:bg-primary/10 hover:text-primary",
   ghost: "text-muted-foreground hover:bg-muted hover:text-foreground",
@@ -145,6 +145,91 @@ export const SocialLinks = React.forwardRef<HTMLDivElement, SocialLinksProps>(
     ref,
   ) => {
     const s = SIZES[size];
+
+    if (variant === "expand-replace") {
+      const containerPositionStyles: Record<SocialLinksExpandDirection, string> = {
+        right: "left-0 top-1/2 -translate-y-1/2 flex-row max-w-0 group-hover:max-w-[500px]",
+        left: "right-0 top-1/2 -translate-y-1/2 flex-row-reverse max-w-0 group-hover:max-w-[500px]",
+        top: "bottom-0 left-1/2 -translate-x-1/2 flex-col-reverse max-h-0 group-hover:max-h-[500px]",
+        bottom: "top-0 left-1/2 -translate-x-1/2 flex-col max-h-0 group-hover:max-h-[500px]",
+      };
+
+      const itemInitialTranslate: Record<SocialLinksExpandDirection, string> = {
+        right: "scale-0 opacity-0",
+        left: "scale-0 opacity-0",
+        top: "scale-0 opacity-0",
+        bottom: "scale-0 opacity-0",
+      };
+
+      return (
+        <div
+          ref={ref}
+          className={cn("group relative inline-flex items-center justify-center", className)}
+          {...props}
+        >
+          {/* Main Trigger Share Button (Hides on hover with smooth fade & scale down) */}
+          <button
+            type="button"
+            aria-label="Share"
+            className={cn(
+              "relative z-10 inline-flex items-center justify-center font-medium transition-all duration-300 shadow-sm cursor-pointer select-none shrink-0",
+              "group-hover:opacity-0 group-hover:scale-50 group-hover:pointer-events-none",
+              s.tile,
+              "bg-muted/80 text-foreground border border-border/60 hover:shadow-md"
+            )}
+          >
+            <svg
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="2"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              className={s.mark}
+            >
+              <path d="M4 12v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8" />
+              <polyline points="16 6 12 2 8 6" />
+              <line x1="12" y1="2" x2="12" y2="15" />
+            </svg>
+          </button>
+
+          {/* Staggered Expandable Icons Container starting directly from Share button position (Fade & scale pop-in) */}
+          <div
+            className={cn(
+              "absolute flex items-center gap-2.5 opacity-0 pointer-events-none overflow-hidden transition-all duration-500 [transition-timing-function:cubic-bezier(0.34,1.56,0.64,1)] group-hover:opacity-100 group-hover:pointer-events-auto z-20",
+              containerPositionStyles[expandDirection]
+            )}
+          >
+            {links.map(({ network, href, label }, index) => {
+              const { label: name, Mark } = NETWORKS[network];
+              const isMail = href.startsWith("mailto:");
+              return (
+                <Link
+                  key={`${network}-${href}`}
+                  href={href}
+                  aria-label={label ?? name}
+                  title={label ?? name}
+                  {...(external && !isMail ? { target: "_blank", rel: "noopener noreferrer" } : {})}
+                  style={{
+                    transitionDelay: `${index * 60}ms`,
+                  }}
+                  className={cn(
+                    "inline-flex shrink-0 items-center justify-center transition-all duration-300 [transition-timing-function:cubic-bezier(0.34,1.56,0.64,1)]",
+                    itemInitialTranslate[expandDirection],
+                    "group-hover:scale-100 opacity-0 group-hover:opacity-100",
+                    "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background",
+                    s.tile,
+                    "bg-muted/90 text-muted-foreground hover:bg-primary hover:text-primary-foreground hover:scale-110 shadow-md border border-border/40"
+                  )}
+                >
+                  <Mark className={s.mark} />
+                </Link>
+              );
+            })}
+          </div>
+        </div>
+      );
+    }
 
     if (variant === "expand-reveal") {
       const containerPositionStyles: Record<SocialLinksExpandDirection, string> = {
