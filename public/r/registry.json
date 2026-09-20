@@ -777,6 +777,34 @@
       "docs": "Named exports: Command, CommandDialog, CommandInput, CommandList, CommandEmpty, CommandGroup, CommandItem, CommandSeparator. Use CommandDialog with `open` / `onOpenChange` for the overlay form, or Command inline. Set `shouldFilter` false to filter server-side yourself. Bind your own ⌘K listener — no global shortcut is registered for you."
     },
     {
+      "name": "component-wall",
+      "type": "registry:component",
+      "title": "Component Wall",
+      "author": "AlgorizeTech",
+      "description": "A landing hero for a component library: copy on the left, and on the right a wall of screenshots that never ends. A camera hangs over the wall zoomed in on one card; every few seconds it pulls back, glides to another card picked at random and settles on it.",
+      "categories": [
+        "marketing",
+        "layout"
+      ],
+      "dependencies": [
+        "gsap",
+        "lucide-react"
+      ],
+      "registryDependencies": [
+        "https://algorize-ui.vercel.app/r/avatar-stack.json",
+        "https://algorize-ui.vercel.app/r/half-stars.json",
+        "utils"
+      ],
+      "files": [
+        {
+          "path": "src/components/custom/blocks/ComponentWallBlock.tsx",
+          "type": "registry:component",
+          "target": "components/custom/blocks/ComponentWallBlock.tsx"
+        }
+      ],
+      "docs": "Named export: ComponentWall. Composed from the avatar-stack and half-stars items, which install alongside it. Pass `badge` ({ label, text?, href?, icon? }), `heading`, `description`, `primaryAction`/`secondaryAction` ({ label, href }), `trust` ({ text, avatars?, rating? }) and `items` ({ title, image }[] — every screenshot sits in the same 493:332 frame). `columns` sets the grid, `interval` the rest between flights in ms (0 holds still), `order` is serial (card by card) or shuffle (every card once per round, at random), `zoom` the resting scale; `onFocus` reports the card in view; `linkComponent` takes next/link."
+    },
+    {
       "name": "compute",
       "type": "registry:component",
       "title": "Compute",
@@ -1586,7 +1614,7 @@
       "type": "registry:component",
       "title": "Hero",
       "author": "AlgorizeTech",
-      "description": "A prop-driven hero section supporting spring word bounce, character typewriter, 3D split marquee slider, pet-shop, doctor and component-wall variants.",
+      "description": "A prop-driven hero section supporting spring word bounce, character typewriter, 3D split marquee slider, pet-shop and doctor variants.",
       "categories": [
         "marketing"
       ],
@@ -1595,7 +1623,6 @@
         "lucide-react"
       ],
       "registryDependencies": [
-        "https://algorize-ui.vercel.app/r/half-stars.json",
         "utils"
       ],
       "files": [
