@@ -93,6 +93,7 @@ type ButtonVariant =
   | "glowing-line-trace"
   | "prism-reflection-shimmer"
   | "dual-spin-border"
+  | "shards-control"
   // The plain shadcn-style surfaces. Everything above is an animated
   // treatment; these five are the ordinary buttons most pages actually need,
   // and the docs have always advertised them.
@@ -157,6 +158,20 @@ export interface ButtonProps
   color?: string;
   iconLeft?: React.ReactNode;
   iconRight?: React.ReactNode;
+
+  /* Props for "shards-control" glass dark parameter tile variant */
+  controlType?: "color" | "select" | "slider" | "toggle";
+  label?: string;
+  value?: string | number;
+  options?: string[];
+  checked?: boolean;
+  onCheckedChange?: (checked: boolean) => void;
+  colorHex?: string;
+  onColorChange?: (color: string) => void;
+  min?: number;
+  max?: number;
+  step?: number;
+  onValueChange?: (value: number | string) => void;
 }
 
 interface Ripple {
@@ -165,6 +180,234 @@ interface Ripple {
   size: number;
   id: number;
 }
+
+/* Helper HSV/HSL conversion for full interactive Color Canvas and Hue Slider */
+function hsvToHex(h: number, s: number, v: number): string {
+  const f = (n: number, k = (n + h / 60) % 6) =>
+    v - v * s * Math.max(0, Math.min(k, 4 - k, 1));
+  const r = Math.round(f(5) * 255);
+  const g = Math.round(f(3) * 255);
+  const b = Math.round(f(1) * 255);
+  return `#${((1 << 24) + (r << 16) + (g << 8) + b).toString(16).slice(1)}`;
+}
+
+function hexToHsv(hex: string): { h: number; s: number; v: number } {
+  let c = hex.replace("#", "");
+  if (c.length === 3) {
+    c = c.split("").map((x) => x + x).join("");
+  }
+  const num = parseInt(c, 16);
+  if (isNaN(num)) return { h: 270, s: 0.7, v: 0.7 };
+  const r = ((num >> 16) & 255) / 255;
+  const g = ((num >> 8) & 255) / 255;
+  const b = (num & 255) / 255;
+
+  const max = Math.max(r, g, b);
+  const min = Math.min(r, g, b);
+  const d = max - min;
+  let h = 0;
+  const s = max === 0 ? 0 : d / max;
+  const v = max;
+
+  if (max !== min) {
+    switch (max) {
+      case r:
+        h = (g - b) / d + (g < b ? 6 : 0);
+        break;
+      case g:
+        h = (b - r) / d + 2;
+        break;
+      case b:
+        h = (r - g) / d + 4;
+        break;
+    }
+    h /= 6;
+  }
+  return { h: Math.round(h * 360), s, v };
+}
+
+const ColorPickerPopover: React.FC<{
+  color: string;
+  onChange: (hex: string) => void;
+  onClose: () => void;
+}> = ({ color, onChange, onClose }) => {
+  const initialHsv = React.useMemo(() => hexToHsv(color), []);
+  const [hue, setHue] = useState(initialHsv.h);
+  const [sat, setSat] = useState(initialHsv.s);
+  const [val, setVal] = useState(initialHsv.v);
+
+  const canvasRef = React.useRef<HTMLDivElement>(null);
+  const hueRef = React.useRef<HTMLDivElement>(null);
+
+  const [isDraggingCanvas, setIsDraggingCanvas] = useState(false);
+  const [isDraggingHue, setIsDraggingHue] = useState(false);
+
+  // Sync internal state when external color changes (e.g. swatch click)
+  useEffect(() => {
+    if (!isDraggingCanvas && !isDraggingHue) {
+      const hsv = hexToHsv(color);
+      setSat(hsv.s);
+      setVal(hsv.v);
+      if (hsv.s > 0.05) {
+        setHue(hsv.h);
+      }
+    }
+  }, [color, isDraggingCanvas, isDraggingHue]);
+
+  const handleCanvasMove = React.useCallback(
+    (clientX: number, clientY: number) => {
+      if (!canvasRef.current) return;
+      const rect = canvasRef.current.getBoundingClientRect();
+      const x = Math.max(0, Math.min(rect.width, clientX - rect.left));
+      const y = Math.max(0, Math.min(rect.height, clientY - rect.top));
+
+      const newSat = x / rect.width;
+      const newVal = 1 - y / rect.height;
+
+      setSat(newSat);
+      setVal(newVal);
+      onChange(hsvToHex(hue, newSat, newVal));
+    },
+    [hue, onChange]
+  );
+
+  const handleHueMove = React.useCallback(
+    (clientX: number) => {
+      if (!hueRef.current) return;
+      const rect = hueRef.current.getBoundingClientRect();
+      const x = Math.max(0, Math.min(rect.width, clientX - rect.left));
+      const newHue = (x / rect.width) * 360;
+
+      setHue(newHue);
+      onChange(hsvToHex(newHue, sat, val));
+    },
+    [sat, val, onChange]
+  );
+
+  useEffect(() => {
+    if (!isDraggingCanvas) return;
+    const onMove = (e: MouseEvent) => handleCanvasMove(e.clientX, e.clientY);
+    const onUp = () => setIsDraggingCanvas(false);
+    window.addEventListener("mousemove", onMove);
+    window.addEventListener("mouseup", onUp);
+    return () => {
+      window.removeEventListener("mousemove", onMove);
+      window.removeEventListener("mouseup", onUp);
+    };
+  }, [isDraggingCanvas, handleCanvasMove]);
+
+  useEffect(() => {
+    if (!isDraggingHue) return;
+    const onMove = (e: MouseEvent) => handleHueMove(e.clientX);
+    const onUp = () => setIsDraggingHue(false);
+    window.addEventListener("mousemove", onMove);
+    window.addEventListener("mouseup", onUp);
+    return () => {
+      window.removeEventListener("mousemove", onMove);
+      window.removeEventListener("mouseup", onUp);
+    };
+  }, [isDraggingHue, handleHueMove]);
+
+  const hueColor = hsvToHex(hue, 1, 1);
+
+  return (
+    <>
+      <div
+        className="fixed inset-0 z-40"
+        onClick={(e) => {
+          e.stopPropagation();
+          onClose();
+        }}
+      />
+      <div className="absolute left-0 right-0 top-full mt-1.5 z-50 p-3 rounded-2xl border border-border/80 dark:border-white/10 bg-background dark:bg-[#18181b] shadow-lg flex flex-col gap-3 animate-in fade-in-0 zoom-in-95 duration-150 custom-control-interactive">
+        {/* 1. Interactive 2D Color Spectrum Field Box */}
+        <div
+          ref={canvasRef}
+          onMouseDown={(e) => {
+            e.stopPropagation();
+            setIsDraggingCanvas(true);
+            handleCanvasMove(e.clientX, e.clientY);
+          }}
+          className="relative w-full h-32 rounded-xl overflow-hidden cursor-crosshair select-none"
+          style={{
+            backgroundColor: hueColor,
+            backgroundImage:
+              "linear-gradient(to top, #000 0%, transparent 80%), linear-gradient(to right, #fff 0%, transparent 65%)",
+          }}
+        >
+          {/* Selector Pointer Circle */}
+          <div
+            className="absolute w-4 h-4 -ml-2 -mt-2 rounded-full border-2 border-white shadow-md pointer-events-none transition-transform active:scale-125"
+            style={{
+              left: `${sat * 100}%`,
+              top: `${(1 - val) * 100}%`,
+              backgroundColor: color,
+            }}
+          />
+        </div>
+
+        {/* 2. Rainbow Hue Spectrum Drag Bar */}
+        <div
+          ref={hueRef}
+          onMouseDown={(e) => {
+            e.stopPropagation();
+            setIsDraggingHue(true);
+            handleHueMove(e.clientX);
+          }}
+          className="relative w-full h-3.5 rounded-full cursor-pointer select-none"
+        >
+          <div
+            className="w-full h-full rounded-full"
+            style={{
+              background:
+                "linear-gradient(to right, #ff0000, #ffff00, #00ff00, #00ffff, #0000ff, #ff00ff, #ff0000)",
+            }}
+          />
+          {/* Slider Ring Handle */}
+          <div
+            className="absolute top-1/2 -translate-y-1/2 w-4 h-4 -ml-2 rounded-full border-2 border-white shadow-md pointer-events-none"
+            style={{
+              left: `${(hue / 360) * 100}%`,
+              backgroundColor: hueColor,
+            }}
+          />
+        </div>
+
+        {/* 3. Palette Color Swatches Grid */}
+        <div className="flex flex-wrap gap-2.5 pt-1">
+          {[
+            "#a855f7",
+            "#8b5cf6",
+            "#6366f1",
+            "#3b82f6",
+            "#06b6d4",
+            "#10b981",
+            "#84cc16",
+            "#eab308",
+            "#f97316",
+            "#ef4444",
+            "#ec4899",
+            "#f43f5e",
+            "#ffffff",
+            "#94a3b8",
+            "#000000",
+          ].map((hex) => (
+            <button
+              key={hex}
+              type="button"
+              onClick={(e) => {
+                e.stopPropagation();
+                onChange(hex);
+              }}
+              className="w-5 h-5 rounded-md transition-transform hover:scale-110 active:scale-95 border border-black/15 dark:border-white/20 shadow-xs cursor-pointer"
+              style={{ backgroundColor: hex }}
+            />
+          ))}
+        </div>
+      </div>
+    </>
+  );
+};
 
 const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
   (
@@ -179,6 +422,18 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
       iconLeft,
       iconRight,
       style,
+      controlType = "select",
+      label,
+      value,
+      options = [],
+      checked = false,
+      onCheckedChange,
+      colorHex,
+      onColorChange,
+      min = 0,
+      max = 10,
+      step = 0.1,
+      onValueChange,
       ...props
     },
     ref,
@@ -303,6 +558,293 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
             </div>
           )}
         </button>
+      );
+    }
+
+    // Variant: Animated Customizable Control Tile with Custom Popover Dropdown & Custom Color Picker Modal
+    if (variant === "shards-control") {
+      const [internalColor, setInternalColor] = useState(colorHex || "#896abd");
+      const [internalVal, setInternalVal] = useState(value !== undefined ? String(value) : (options[0] || "1"));
+      const [internalChecked, setInternalChecked] = useState(Boolean(checked));
+
+      const [isSelectOpen, setIsSelectOpen] = useState(false);
+      const [isColorOpen, setIsColorOpen] = useState(false);
+      const [isDraggingSlider, setIsDraggingSlider] = useState(false);
+
+      const containerRef = React.useRef<HTMLDivElement>(null);
+      const sliderRef = React.useRef<HTMLDivElement>(null);
+
+      // Outside click listener to dismiss open popovers
+      useEffect(() => {
+        if (!isSelectOpen && !isColorOpen) return;
+        const handleOutsideClick = (e: MouseEvent) => {
+          if (containerRef.current && !containerRef.current.contains(e.target as Node)) {
+            setIsSelectOpen(false);
+            setIsColorOpen(false);
+          }
+        };
+        document.addEventListener("mousedown", handleOutsideClick);
+        return () => document.removeEventListener("mousedown", handleOutsideClick);
+      }, [isSelectOpen, isColorOpen]);
+
+      // Keep internal state updated if props change dynamically
+      useEffect(() => {
+        if (colorHex !== undefined) setInternalColor(colorHex);
+      }, [colorHex]);
+
+      useEffect(() => {
+        if (value !== undefined) setInternalVal(String(value));
+      }, [value]);
+
+      useEffect(() => {
+        if (checked !== undefined) setInternalChecked(Boolean(checked));
+      }, [checked]);
+
+      const displayLabel = label || children || "Shards";
+      const displayColor = internalColor;
+      const displayValue = internalVal;
+      const displayChecked = internalChecked;
+
+      // Calculate numeric percentage for slider fill (0% to 100%)
+      const numVal = Number(displayValue) !== undefined && !isNaN(Number(displayValue)) ? Number(displayValue) : min;
+      const percentage = Math.max(0, Math.min(100, ((numVal - min) / (max - min)) * 100));
+
+      // Dragging logic for full-tile slider
+      const handleSliderMove = React.useCallback(
+        (clientX: number) => {
+          if (!sliderRef.current) return;
+          const rect = sliderRef.current.getBoundingClientRect();
+          const offsetX = Math.max(0, Math.min(rect.width, clientX - rect.left));
+          const ratio = offsetX / rect.width;
+          let rawVal = min + ratio * (max - min);
+
+          // Round to step precision
+          if (step) {
+            const precision = (step.toString().split(".")[1] || "").length;
+            rawVal = Number(Math.round(Number(rawVal + "e" + precision)) + "e-" + precision);
+          }
+          const clampedVal = Math.max(min, Math.min(max, rawVal));
+          const valStr = step < 1 ? clampedVal.toFixed(1) : String(Math.round(clampedVal));
+
+          setInternalVal(valStr);
+          onValueChange?.(Number(valStr));
+        },
+        [min, max, step, onValueChange]
+      );
+
+      const handleMouseDown = (e: React.MouseEvent<HTMLDivElement>) => {
+        if (controlType !== "slider") return;
+        setIsDraggingSlider(true);
+        handleSliderMove(e.clientX);
+      };
+
+      useEffect(() => {
+        if (!isDraggingSlider) return;
+
+        const onMouseMove = (e: MouseEvent) => handleSliderMove(e.clientX);
+        const onMouseUp = () => setIsDraggingSlider(false);
+
+        window.addEventListener("mousemove", onMouseMove);
+        window.addEventListener("mouseup", onMouseUp);
+
+        return () => {
+          window.removeEventListener("mousemove", onMouseMove);
+          window.removeEventListener("mouseup", onMouseUp);
+        };
+      }, [isDraggingSlider, handleSliderMove]);
+
+      // Handle tile click for non-slider controls
+      const handleTileClick = (e: React.MouseEvent<HTMLDivElement>) => {
+        if (controlType === "slider") return;
+        // Prevent tile click when clicking directly inside interactive child controls
+        if ((e.target as HTMLElement).closest(".custom-control-interactive")) return;
+
+        if (controlType === "toggle") {
+          const next = !displayChecked;
+          setInternalChecked(next);
+          onCheckedChange?.(next);
+        } else if (controlType === "select") {
+          setIsSelectOpen((prev) => !prev);
+        } else if (controlType === "color") {
+          setIsColorOpen((prev) => !prev);
+        }
+      };
+
+      /* SPECIAL RENDER FOR FULL TILE RANGE SLIDER BUTTON */
+      if (controlType === "slider") {
+        return (
+          <div
+            ref={sliderRef}
+            onMouseDown={handleMouseDown}
+            className={cn(
+              "relative flex items-center justify-between w-full h-12 px-4 rounded-xl border select-none group cursor-pointer overflow-hidden transition-all duration-200",
+              "bg-background/90 border-border/80 dark:bg-[#16161d] dark:border-white/10",
+              className
+            )}
+            style={combinedStyle}
+          >
+            {/* Filled Active Drag Pill Surface with vertical border line & handle cursor */}
+            <div
+              className="absolute left-0 top-0 bottom-0 bg-primary/15 dark:bg-white/10 rounded-xl transition-all duration-75 pointer-events-none border-r-2 border-primary dark:border-zinc-300/80"
+              style={{ width: `${percentage}%` }}
+            >
+              {/* Invisible Edge Drag Indicator with cursor-ew-resize */}
+              <span className="absolute right-0 top-0 bottom-0 w-3 -mr-1.5 cursor-ew-resize pointer-events-auto" />
+            </div>
+
+            {/* Label on Left */}
+            <span className="relative z-10 text-foreground dark:text-zinc-200 font-semibold text-xs tracking-wide pointer-events-none">
+              {displayLabel}
+            </span>
+
+            {/* Value Display on Right */}
+            <span className="relative z-10 font-mono text-xs font-bold text-foreground dark:text-zinc-100 pointer-events-none">
+              {displayValue}
+            </span>
+          </div>
+        );
+      }
+
+      return (
+        <div
+          ref={(node) => {
+            containerRef.current = node;
+            if (typeof ref === "function") {
+              ref(node as any);
+            } else if (ref && "current" in ref) {
+              (ref as any).current = node;
+            }
+          }}
+          onClick={handleTileClick}
+          className={cn(
+            "relative flex items-center justify-between w-full h-12 px-4 py-2.5 rounded-xl border backdrop-blur-md text-xs font-semibold select-none group cursor-pointer transition-all duration-200 ease-out",
+            "bg-background/90 text-foreground border-border/80 dark:bg-card/90 dark:border-white/10",
+            className
+          )}
+          style={combinedStyle}
+        >
+          {/* Label on Left */}
+          <span className="text-foreground/90 dark:text-zinc-200 font-semibold tracking-wide truncate max-w-[45%] transition-colors duration-200">
+            {displayLabel}
+          </span>
+
+          {/* Right Control UI depending on controlType */}
+          <div className="flex items-center gap-2.5 shrink-0 relative z-20">
+            {/* 1. Custom Color Picker Trigger */}
+            {controlType === "color" && (
+              <div className="custom-control-interactive">
+                <button
+                  type="button"
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    setIsColorOpen(!isColorOpen);
+                  }}
+                  className="flex items-center gap-2 transition-transform active:scale-95 cursor-pointer"
+                >
+                  <span
+                    className="w-5 h-5 rounded-md shadow-xs border-0 transition-transform duration-200 hover:scale-105"
+                    style={{ backgroundColor: displayColor }}
+                  />
+                  <span className="font-mono text-xs text-foreground dark:text-zinc-200 font-medium px-2.5 py-1.5 rounded-lg bg-black/5 dark:bg-white/10 border-0">
+                    {displayColor}
+                  </span>
+                </button>
+              </div>
+            )}
+
+            {/* 2. Custom Animated Dropdown Select Trigger */}
+            {controlType === "select" && (
+              <div className="custom-control-interactive">
+                <button
+                  type="button"
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    setIsSelectOpen(!isSelectOpen);
+                  }}
+                  className="flex items-center gap-1.5 text-foreground/90 dark:text-zinc-200 text-xs font-semibold px-2 py-1 rounded-md transition-all duration-200 hover:text-primary active:scale-95 cursor-pointer"
+                >
+                  <span className="truncate">{displayValue || "Select"}</span>
+                  <span className={cn("text-foreground/70 dark:text-zinc-400 text-[10px] transition-transform duration-200", isSelectOpen && "rotate-180")}>
+                    ▲
+                  </span>
+                </button>
+              </div>
+            )}
+
+            {/* 3. Toggle Switch Control */}
+            {controlType === "toggle" && (
+              <button
+                type="button"
+                role="switch"
+                aria-checked={displayChecked}
+                onClick={(e) => {
+                  e.stopPropagation();
+                  const next = !displayChecked;
+                  setInternalChecked(next);
+                  onCheckedChange?.(next);
+                }}
+                className={cn(
+                  "relative inline-flex h-5 w-9 shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-300 ease-in-out focus:outline-none focus:ring-2 focus:ring-primary/40 custom-control-interactive",
+                  displayChecked ? "bg-primary" : "bg-muted dark:bg-zinc-800"
+                )}
+              >
+                <span
+                  className={cn(
+                    "pointer-events-none inline-block h-4 w-4 transform rounded-full bg-white dark:bg-zinc-100 shadow-md ring-0 transition duration-300 ease-in-out",
+                    displayChecked ? "translate-x-4" : "translate-x-0"
+                  )}
+                />
+              </button>
+            )}
+          </div>
+
+          {/* Full-Width Floating Color Picker Modal (Matching user uploaded design) */}
+          {controlType === "color" && isColorOpen && (
+            <ColorPickerPopover
+              color={displayColor}
+              onChange={(newHex) => {
+                setInternalColor(newHex);
+                onColorChange?.(newHex);
+              }}
+              onClose={() => setIsColorOpen(false)}
+            />
+          )}
+
+          {/* Full-Width Floating Dropdown Menu (Exact parent tile button width with tight mt-1 gap) */}
+          {controlType === "select" && isSelectOpen && (
+            <>
+              <div
+                className="fixed inset-0 z-40"
+                onClick={(e) => {
+                  e.stopPropagation();
+                  setIsSelectOpen(false);
+                }}
+              />
+              <div className="absolute left-0 right-0 top-full mt-1 z-50 py-2 px-1 rounded-2xl border border-border/80 dark:border-white/10 bg-background dark:bg-[#16161d] shadow-lg flex flex-col gap-1 overflow-hidden animate-in fade-in-0 zoom-in-95 duration-150 custom-control-interactive">
+                {(options.length > 0 ? options : ["Right", "Left", "Center", "Full"]).map((opt) => (
+                  <button
+                    key={opt}
+                    type="button"
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      setInternalVal(opt);
+                      onValueChange?.(opt);
+                      setIsSelectOpen(false);
+                    }}
+                    className={cn(
+                      "w-full text-left px-4 py-2 text-xs font-medium transition-colors duration-150 rounded-xl hover:bg-muted/80 dark:hover:bg-white/5 cursor-pointer",
+                      displayValue === opt
+                        ? "text-foreground dark:text-white font-semibold"
+                        : "text-muted-foreground dark:text-zinc-400"
+                    )}
+                  >
+                    {opt}
+                  </button>
+                ))}
+              </div>
+            </>
+          )}
+        </div>
       );
     }
 

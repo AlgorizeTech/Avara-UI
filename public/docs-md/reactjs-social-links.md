@@ -31,6 +31,38 @@ export default function AuthorCard() {
   );
 }`;
 
+export const usageExpandReveal = `import { SocialLinks } from "@/components/custom/blocks/SocialLinksBlock";
+
+export default function ExpandShareButton() {
+  return (
+    
+      {/* Expand Top */}
+
+      {/* Expand Right (Default) */}
+
+      {/* Expand Left */}
+
+      {/* Expand Bottom */}
+
+  );
+}`;
+
+export const usageExpandReplace = `import { SocialLinks } from "@/components/custom/blocks/SocialLinksBlock";
+
+export default function ExpandReplaceShareButton() {
+  return (
+    
+      {/* Expand & Replace Top */}
+
+      {/* Expand & Replace Right (Default) */}
+
+      {/* Expand & Replace Left */}
+
+      {/* Expand & Replace Bottom */}
+
+  );
+}`;
+
 ## Installation
 
 Register the @algorize-ui registry once per project, then add the component:

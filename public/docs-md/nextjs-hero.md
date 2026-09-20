@@ -58,11 +58,11 @@ export default function Page() {
 
           variant
 
-          "bounce" | "typing" | "slider" | "glow-arc" | "pet-shop" | "doctor"
+          "bounce" | "typing" | "slider" | "glow-arc" | "pet-shop" | "doctor" | "component-wall" | "orbit" | "norway"
 
           "bounce"
 
-          The layout & animation style. "bounce" uses spring word motion; "typing" uses typewriter effect; "slider" renders split 2-column hero with continuous marquee; "glow-arc" renders centered radial glow arc. The screenshot wall, the revolving ring and the hexagonal mosaic heroes are their own sections: Component Wall, Orbit Gallery and Honeycomb Hero.
+          The layout & animation style. "bounce" uses spring word motion; "typing" uses typewriter effect; "slider" renders split 2-column hero with continuous marquee; "glow-arc" renders centered radial glow arc; "component-wall" renders 3D component grid; "orbit" renders 360° revolving gallery orbit; "norway" renders hexagonal honeycomb nature gallery.
 
           typingWords
 
