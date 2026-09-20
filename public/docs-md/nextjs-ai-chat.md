@@ -135,6 +135,13 @@ export default function GlassAssistant() {
 
 ## Installation
 
+Register the @algorize-ui registry once per project, then add the component:
+
+```bash
+npx shadcn@latest registry add @algorize-ui=https://algorize-ui.vercel.app/r/{name}.json
+npx shadcn@latest add @algorize-ui/ai-chat
+```
+
 ## Examples
 
  Promise` to replace the simulated upload — the rocket follows whatever percentage you report, and the chip turns green when the promise resolves or red when it rejects.",

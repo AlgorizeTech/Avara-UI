@@ -10,6 +10,13 @@ export default function Page() {
   );
 }`;
 
+Register the @algorize-ui registry once per project, then add the component:
+
+```bash
+npx shadcn@latest registry add @algorize-ui=https://algorize-ui.vercel.app/r/{name}.json
+npx shadcn@latest add @algorize-ui/hero
+```
+
 export const usageTyping = `import { HeroBlock } from "@/components/custom/blocks/HeroBlock";
 
 export default function Page() {
@@ -37,30 +44,6 @@ export default function Page() {
 export const usageDoctor = `import { HeroBlock } from "@/components/custom/blocks/HeroBlock";
 
 export default function Page() {
-  return (
-    
-  );
-}`;
-
-export const usageComponentWall = `import { HeroBlock } from "@/components/custom/blocks/HeroBlock";
-
-export default function ComponentWallHeroDemo() {
-  return (
-    
-  );
-}`;
-
-export const usageOrbit = `import { HeroBlock } from "@/components/custom/blocks/HeroBlock";
-
-export default function OrbitHeroDemo() {
-  return (
-    
-  );
-}`;
-
-export const usageNorway = `import { HeroBlock } from "@/components/custom/blocks/HeroBlock";
-
-export default function NorwayHeroDemo() {
   return (
     
   );

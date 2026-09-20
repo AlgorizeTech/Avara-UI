@@ -124,6 +124,13 @@ export default function GappedStack() {
 
 ### Installation
 
+Register the @algorize-ui registry once per project, then add the component:
+
+```bash
+npx shadcn@latest registry add @algorize-ui=https://algorize-ui.vercel.app/r/{name}.json
+npx shadcn@latest add @algorize-ui/scroll-stack
+```
+
 ## Sticky stack
 
 export const stickyItems = `import { Palette, Smartphone, Sparkles } from "lucide-react";
@@ -217,6 +224,13 @@ export default function TunedStickyStack() {
 }`;
 
 ### Installation
+
+Register the @algorize-ui registry once per project, then add the component:
+
+```bash
+npx shadcn@latest registry add @algorize-ui=https://algorize-ui.vercel.app/r/{name}.json
+npx shadcn@latest add @algorize-ui/sticky-scroll-stack
+```
 
 ### More examples
 
@@ -344,6 +358,13 @@ export default function PinnedLeftStack() {
 
 ### Installation
 
+Register the @algorize-ui registry once per project, then add the component:
+
+```bash
+npx shadcn@latest registry add @algorize-ui=https://algorize-ui.vercel.app/r/{name}.json
+npx shadcn@latest add @algorize-ui/split-scroll-stack
+```
+
 ### More examples
 
 export const railSteps = `import {
@@ -412,6 +433,13 @@ export default function ProcessRail() {
 }`;
 
 ### Installation
+
+Register the @algorize-ui registry once per project, then add the component:
+
+```bash
+npx shadcn@latest registry add @algorize-ui=https://algorize-ui.vercel.app/r/{name}.json
+npx shadcn@latest add @algorize-ui/horizontal-scroll-stack
+```
 
 export const usageHorizontalShort = `import { HorizontalRail } from "@/components/custom/blocks/HorizontalRailBlock";
 

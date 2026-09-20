@@ -168,6 +168,13 @@ export default function StaticWall() {
 
 ## Installation
 
+Register the @algorize-ui registry once per project, then add the component:
+
+```bash
+npx shadcn@latest registry add @algorize-ui=https://algorize-ui.vercel.app/r/{name}.json
+npx shadcn@latest add @algorize-ui/masonry-grid
+```
+
 ## Examples
 
 ## Features

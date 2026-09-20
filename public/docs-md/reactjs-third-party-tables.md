@@ -167,6 +167,13 @@ export default function TanStackDataTable() {
 
 The example renders through our table primitives, so install those too:
 
+Register the @algorize-ui registry once per project, then add the component:
+
+```bash
+npx shadcn@latest registry add @algorize-ui=https://algorize-ui.vercel.app/r/{name}.json
+npx shadcn@latest add @algorize-ui/table
+```
+
 It also uses `Badge` and `Button`:
 
 ### Coming from v8

@@ -4,7 +4,14 @@ A sign-up section in three layouts. **Portraits** puts four readers' faces aroun
 
 `Newsletter` is built from library pieces: the field is Input, the action is Button, the ticker is Marquee and the top issue sits on a Tilted Card. Every piece of copy is a named part — `Heading`, `Intro`, `Form`, `Proof`, `Ticker`, `Issues` — so the words are yours.
 
-export const usagePortraits = `const FACES = ["/readers/ana.jpg", "/readers/tom.jpg", "/readers/mei.jpg", "/readers/raj.jpg", "/readers/lea.jpg"];
+export const usagePortraits = `// Faces from Pexels, free to use.
+const FACES = [
+  "https://images.pexels.com/photos/2379004/pexels-photo-2379004.jpeg?auto=compress&cs=tinysrgb&w=160",
+  "https://images.pexels.com/photos/220453/pexels-photo-220453.jpeg?auto=compress&cs=tinysrgb&w=160",
+  "https://images.pexels.com/photos/2381069/pexels-photo-2381069.jpeg?auto=compress&cs=tinysrgb&w=160",
+  "https://images.pexels.com/photos/1130626/pexels-photo-1130626.jpeg?auto=compress&cs=tinysrgb&w=160",
+  "https://images.pexels.com/photos/3785079/pexels-photo-3785079.jpeg?auto=compress&cs=tinysrgb&w=160",
+];
 
 export default function Signup() {
   return (
@@ -25,8 +32,8 @@ export default function Signup() {
 `;
 
 export const usageSpotlight = `const JOINED = [
-  { name: "Ana", avatar: "/readers/ana.jpg", when: "just now" },
-  { name: "Tom", avatar: "/readers/tom.jpg", when: "2 min ago" },
+  { name: "Ana", avatar: "https://images.pexels.com/photos/2379004/pexels-photo-2379004.jpeg?auto=compress&cs=tinysrgb&w=160", when: "just now" },
+  { name: "Tom", avatar: "https://images.pexels.com/photos/220453/pexels-photo-220453.jpeg?auto=compress&cs=tinysrgb&w=160", when: "2 min ago" },
   { name: "Noah", when: "15 min ago" },
 ];
 
@@ -47,7 +54,7 @@ export const usageIssues = `const ISSUES = [
     title: "The quiet power of defaults",
     date: "Issue 42 · This week",
     excerpt: "Why the choices you never make shape your product more than the ones you agonise over.",
-    cover: "/issues/42.jpg",
+    cover: "https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?q=80&w=800&auto=format&fit=crop",
     tag: "Design",
   },
   { title: "Shipping less, on purpose", date: "Issue 41", excerpt: "" },
@@ -67,6 +74,13 @@ export default function Signup() {
 `;
 
 ## Installation
+
+Register the @algorize-ui registry once per project, then add the component:
+
+```bash
+npx shadcn@latest registry add @algorize-ui=https://algorize-ui.vercel.app/r/{name}.json
+npx shadcn@latest add @algorize-ui/newsletter
+```
 
 ## Examples
 

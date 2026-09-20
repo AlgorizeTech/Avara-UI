@@ -105,6 +105,13 @@ export default function NativeModalHero() {
 
 ### Install the video player
 
+Register the @algorize-ui registry once per project, then add the component:
+
+```bash
+npx shadcn@latest registry add @algorize-ui=https://algorize-ui.vercel.app/r/{name}.json
+npx shadcn@latest add @algorize-ui/video-player
+```
+
 ## Plyr player
 
 [Plyr](https://plyr.io) puts one accessible control bar in front of HTML5 files, YouTube and Vimeo, so all three look and behave identically. It installs the `plyr` package and is imported dynamically inside an effect, which keeps the component server-renderable.
@@ -164,6 +171,13 @@ export default function PlyrYouTubeHero() {
 
 ### Install the Plyr player
 
+Register the @algorize-ui registry once per project, then add the component:
+
+```bash
+npx shadcn@latest registry add @algorize-ui=https://algorize-ui.vercel.app/r/{name}.json
+npx shadcn@latest add @algorize-ui/video-player-plyr
+```
+
 ## JW Player
 
 [JW Player](https://jwplayer.com) is a licensed, remotely hosted library rather than an npm package, so `JwPlayer` loads it from a `libraryUrl` you supply and falls back to a native `` if it is unavailable. The previews below run on JW's public documentation library — see the setup note under Installation before shipping.
@@ -193,6 +207,13 @@ export default function BrandedJwHero() {
 }`;
 
 ### Install the JW player
+
+Register the @algorize-ui registry once per project, then add the component:
+
+```bash
+npx shadcn@latest registry add @algorize-ui=https://algorize-ui.vercel.app/r/{name}.json
+npx shadcn@latest add @algorize-ui/video-player-jw
+```
 
 ### JW Player setup
 

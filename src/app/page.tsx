@@ -62,7 +62,10 @@ const sampleChartData = [
 const sampleTerminalCode = `$ npx shadcn@latest init
 ✔ Created components.json and lib/utils.ts.
 
-$ npx shadcn@latest add https://algorize-ui.vercel.app/r/ai-chat.json
+$ npx shadcn@latest registry add @algorize-ui=https://algorize-ui.vercel.app/r/{name}.json
+✔ Added registry @algorize-ui to components.json.
+
+$ npx shadcn@latest add @algorize-ui/ai-chat
 ✔ Installed dependencies: lucide-react
 ✔ Created components/custom/blocks/Ai-chat.tsx
 
@@ -305,7 +308,7 @@ function HeroInteractiveHub() {
 									<div className="p-2.5 rounded-2xl rounded-tl-none bg-muted/80 text-foreground max-w-[85%] leading-relaxed border border-border/40">
 										Run{" "}
 										<code className="px-1 py-0.5 rounded bg-background font-mono text-[11px] text-primary">
-											npx shadcn@latest add &lt;url&gt;
+											npx shadcn@latest add @algorize-ui/&lt;name&gt;
 										</code>{" "}
 										and the source lands in your project. Zero npm lock-in!
 									</div>
@@ -448,7 +451,15 @@ function HeroInteractiveHub() {
 								</p>
 								<p className="break-all">
 									<span className="text-primary font-bold">$</span> npx
-									shadcn@latest add algorize-ui.vercel.app/r/ai-chat.json
+									shadcn@latest registry add
+									@algorize-ui=https://algorize-ui.vercel.app/r/&#123;name&#125;.json
+								</p>
+								<p className="text-emerald-400">
+									✔ Added registry @algorize-ui to components.json.
+								</p>
+								<p className="break-all">
+									<span className="text-primary font-bold">$</span> npx
+									shadcn@latest add @algorize-ui/ai-chat
 								</p>
 								<p className="text-emerald-400">
 									✔ Installed dependencies: lucide-react
@@ -3033,8 +3044,7 @@ function CTASection() {
 	const isInView = useInView(ref, { once: true, margin: "-40px" });
 	const [copied, setCopied] = useState(false);
 	const [, setTypedText] = useState("");
-	const fullCommand =
-		"npx shadcn@latest add https://algorize-ui.vercel.app/r/button.json";
+	const fullCommand = "npx shadcn@latest add @algorize-ui/button";
 
 	useEffect(() => {
 		let index = 0;
@@ -3060,8 +3070,7 @@ function CTASection() {
 	}, []);
 
 	const handleCopy = () => {
-		const textToCopy =
-			"npx shadcn@latest add https://algorize-ui.vercel.app/r/button.json";
+		const textToCopy = fullCommand;
 		if (navigator.clipboard && navigator.clipboard.writeText) {
 			navigator.clipboard
 				.writeText(textToCopy)
@@ -3139,8 +3148,7 @@ function CTASection() {
 									&gt;_
 								</span>
 								<span className="font-bold tracking-tight truncate group-hover:text-primary transition-colors">
-									npx shadcn@latest add
-									https://algorize-ui.vercel.app/r/button.json
+									npx shadcn@latest add @algorize-ui/button
 								</span>
 							</div>
 							<div className="flex items-center gap-2 shrink-0">
@@ -3156,6 +3164,14 @@ function CTASection() {
 								</button>
 							</div>
 						</div>
+						<p className="mt-2.5 text-[11px] sm:text-xs text-muted-foreground dark:text-zinc-400">
+							New project? Register the registry once with{" "}
+							<Link
+								href="/docs/nextjs/installation#step-2-register-the-registry"
+								className="font-mono text-primary hover:underline">
+								shadcn registry add @algorize-ui=…
+							</Link>
+						</p>
 					</div>
 
 					{/* Feature Badges Strip */}

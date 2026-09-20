@@ -215,7 +215,31 @@ should read:
 
 Two fields differ from a Next.js setup: `rsc` is `false`, and `tailwind.css` points at `src/index.css` rather than `src/app/globals.css`.
 
-### Step 2: Pick a theme
+### Step 2: Register the registry
+
+Run this once per project. It adds an `@algorize-ui` entry to `components.json`, so every
+component can be installed by name instead of by URL:
+
+```bash
+npx shadcn@latest registry add @algorize-ui=https://algorize-ui.vercel.app/r/{name}.json
+```
+
+Or write it into `components.json` by hand — the two are equivalent:
+
+```json
+{
+  "registries": {
+    "@algorize-ui": "https://algorize-ui.vercel.app/r/{name}.json"
+  }
+}
+```
+
+The CLI replaces `{name}` with the item you ask for, so `@algorize-ui/hero` resolves to
+`https://algorize-ui.vercel.app/r/hero.json`. Skipping this step is not fatal either: every
+command on this site has a **URL** toggle that prints the full address, which needs no setup.
+The shadcn MCP server reads the same entry, so AI-assisted installs resolve `@algorize-ui/…` too.
+
+### Step 3: Pick a theme
 
 Do this before you add anything. Every component reads its colours, radius and fonts from CSS
 variables rather than hard-coded classes, and `shadcn init` only wrote the default set.
@@ -227,13 +251,18 @@ Adding components first is not fatal; they render in the default palette until y
 own variables in. Doing it now just means the first component you install already looks like
 your product.
 
-### Step 3: Add a component
+### Step 4: Add a component
 
-Every component page carries its own command. Point the CLI at the component's URL in the registry:
+Every component page carries its own command. Name the component under the registry you
+registered in step 2:
 
 ```bash
-npx shadcn@latest add hero.json
+npx shadcn@latest add @algorize-ui/hero
 ```
+
+Several at once work too — `add @algorize-ui/hero @algorize-ui/navbar` — and you can browse
+what is available from the terminal with `npx shadcn@latest list @algorize-ui` or
+`npx shadcn@latest search @algorize-ui --query pricing`.
 
 The CLI writes the source into your project, installs its npm dependencies and pulls in any other registry components it needs. You own the file from that point on — edit it freely.
 

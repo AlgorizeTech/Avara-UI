@@ -60,7 +60,7 @@ export default function InviteLink() {
 
 export const usageCode = `import { CopyButton } from "@/components/custom/blocks/CopyButtonBlock";
 
-const SNIPPET = "npx shadcn@latest add https://algorize-ui.vercel.app/r/copy-button.json";
+const SNIPPET = "npx shadcn@latest add @algorize-ui/copy-button";
 
 export default function CommandBlock() {
   return (
@@ -88,6 +88,13 @@ export default function CustomLabels() {
 }`;
 
 ## Installation
+
+Register the @algorize-ui registry once per project, then add the component:
+
+```bash
+npx shadcn@latest registry add @algorize-ui=https://algorize-ui.vercel.app/r/{name}.json
+npx shadcn@latest add @algorize-ui/copy-button
+```
 
 ## Examples
 

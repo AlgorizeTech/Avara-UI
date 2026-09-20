@@ -80,6 +80,13 @@ export default function ReaderExample() {
 
 ### Installation
 
+Register the @algorize-ui registry once per project, then add the component:
+
+```bash
+npx shadcn@latest registry add @algorize-ui=https://algorize-ui.vercel.app/r/{name}.json
+npx shadcn@latest add @algorize-ui/qr-code-generator
+```
+
 ### More examples
 
 ## QR reader
@@ -87,6 +94,13 @@ export default function ReaderExample() {
 A separate component with its own dependencies — decoding happens entirely in the browser.
 
 ### Installation
+
+Register the @algorize-ui registry once per project, then add the component:
+
+```bash
+npx shadcn@latest registry add @algorize-ui=https://algorize-ui.vercel.app/r/{name}.json
+npx shadcn@latest add @algorize-ui/qr-code-reader
+```
 
 ## Features
 Explore the QR Code Generator's customizable features, allowing for different colors, sizes, and embedded logos within the code.

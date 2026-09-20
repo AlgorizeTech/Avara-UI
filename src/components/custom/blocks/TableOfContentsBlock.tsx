@@ -102,7 +102,7 @@ const DEFAULT_ITEMS: TOCItem[] = [
 			"The command writes the block, its theme helper, and any missing utilities, then reports which files it touched so you can review them before committing.",
 		],
 		codeSnippet:
-			"npx shadcn@latest add https://algorize-ui.vercel.app/r/table-of-contents.json",
+			"npx shadcn@latest add @algorize-ui/table-of-contents",
 	},
 	{
 		id: "configuration",

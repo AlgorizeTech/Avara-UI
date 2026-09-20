@@ -2,10 +2,22 @@ import fs from "fs";
 import path from "path";
 import { glob } from "glob";
 import { BUILT_FRAMEWORKS } from "../lib/framework";
+import { REGISTRY_ADD_ARGS, REGISTRY_NAMESPACE, addArgsFor, resolveAddArg } from "../lib/registry";
 import { stripUseClient } from "../lib/snippet";
 
 /** The dynamic route segment, as it appears on disk. */
 const FRAMEWORK_SEGMENT = "[framework]";
+
+/**
+ * Mirrors `resolveSegments` in components/site/cli.tsx for the `add` case:
+ * `add button.json utils` → `add @algorize-ui/button utils`. Other commands
+ * (`init`, `registry add …`, `install gsap`) pass through untouched.
+ */
+const expandCliShorthand = (command: string) => {
+  const add = command.match(/^add\s+(.+)$/);
+  if (!add) return command;
+  return `add ${add[1].trim().split(/\s+/).map((arg) => resolveAddArg(arg)).join(" ")}`;
+};
 
 /**
  * Applies the page's React rule to a whole markdown document.
@@ -128,11 +140,28 @@ function convertMdxToMd(content: string, componentPath: string): string {
     }
   );
   
-  // Convert <Cli> component to code block
+  // Convert <Cli> component to code block. The page writes `add foo.json` as
+  // shorthand for one of our items; expand it exactly as <Cli> does on the web,
+  // or the markdown would tell a reader to run a command the CLI rejects.
   mdContent = mdContent.replace(
     /<Cli\s+command=\{`([^`]+)`\}\s*\/>/g,
-    '```bash\nnpx shadcn@latest $1\n```'
+    (_, command: string) => '```bash\nnpx shadcn@latest ' + expandCliShorthand(command) + '\n```'
   );
+
+  // Convert <Installation name="…"> to the command it renders. The web
+  // component also lists dependencies read from registry.json; the CLI
+  // installs those itself, so the command alone is enough here.
+  mdContent = mdContent.replace(
+    /<Installation\s+name="([^"]+)"[^>]*\/>/g,
+    (_, name: string) =>
+      `Register the ${REGISTRY_NAMESPACE} registry once per project, then add the component:\n\n` +
+      '```bash\n' +
+      `npx shadcn@latest ${REGISTRY_ADD_ARGS}\n` +
+      `npx shadcn@latest ${addArgsFor(name)}\n` +
+      '```'
+  );
+  // <InstallGroup> only wraps several <Installation>s; drop the wrapper.
+  mdContent = mdContent.replace(/<\/?InstallGroup>/g, '');
   
   // Convert <CodeBlock> to a reference
   mdContent = mdContent.replace(

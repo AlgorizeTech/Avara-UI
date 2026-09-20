@@ -10,7 +10,7 @@ const wall = (name: string, title: string): WallItem => ({
 
 const ITEMS: WallItem[] = [
   wall("hero", "Word bounce hero"),
-  wall("pricing", "Pricing plans"),
+  wall("pricing", "Product showcase"),
   wall("bento-showcase", "Bento showcase"),
   wall("book-appointment", "Book appointment"),
   wall("collage-hero", "Collage hero"),

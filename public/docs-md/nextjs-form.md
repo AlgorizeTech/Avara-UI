@@ -45,6 +45,13 @@ export default function SubmittingForm() {
 
 ## Installation
 
+Register the @algorize-ui registry once per project, then add the component:
+
+```bash
+npx shadcn@latest registry add @algorize-ui=https://algorize-ui.vercel.app/r/{name}.json
+npx shadcn@latest add @algorize-ui/form
+```
+
 ### Optional — schema validation
 
 The form primitives are unopinionated about validation; the native example uses plain React state. Only add these if you want the schema-driven approach from the second example.
