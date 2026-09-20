@@ -162,6 +162,7 @@ const COMPONENT_META: Record<
 	"support-dashboard": { countText: "Full SaaS Dashboard", illustrationType: "dashboard" },
 	"bento-showcase": { countText: "Six-Card Marketing Bento", illustrationType: "bento-showcase" },
 	"book-appointment": { countText: "Practitioner Booking Flow", illustrationType: "book-appointment" },
+	"component-wall": { countText: "Camera Over a Screenshot Wall", illustrationType: "component-wall" },
 	"collage-hero": { countText: "Playful Photo Collage", illustrationType: "collage-hero" },
 	"hero-carousel": { countText: "Queue of Cards & Glass Panel", illustrationType: "hero-carousel" },
 	"honeycomb-hero": { countText: "Hexagonal Photo Mosaic", illustrationType: "honeycomb-hero" },
@@ -3251,6 +3252,35 @@ function MiniatureIllustration({
 							<div className="w-6 h-5 rounded-[3px] bg-amber-200/90 border border-white/40 self-start" />
 							<div className="w-3 h-7 rounded-[3px] bg-indigo-300/90 border border-white/40" />
 							<div className="w-3 h-7 rounded-[3px] bg-emerald-300/90 border border-white/40" />
+						</div>
+					</div>
+				)}
+
+				{type === "component-wall" && (
+					<div className="w-full h-full flex gap-1.5 my-auto px-0.5 items-center">
+						<div className="flex-1 flex flex-col gap-0.5">
+							<span className="w-fit rounded-full bg-muted px-1 text-[4px] text-muted-foreground">Changelog</span>
+							<span className="text-[7px] font-bold leading-[8px] text-foreground">The component library for landing pages.</span>
+							<span className="h-[2px] w-9 rounded bg-muted-foreground/30" />
+							<div className="mt-0.5 flex gap-0.5">
+								<span className="h-2 w-5 rounded-[2px] bg-foreground" />
+								<span className="h-2 w-5 rounded-[2px] border border-border" />
+							</div>
+						</div>
+						<div className="relative w-14 h-full overflow-hidden [mask-image:linear-gradient(to_left,black_70%,transparent)]">
+							{[
+								"left-0 top-0 h-5 opacity-50",
+								"left-0 top-6 h-6 opacity-50",
+								"left-[26px] top-2 h-7 opacity-100 ring-1 ring-primary",
+								"left-[26px] top-[42px] h-5 opacity-50",
+								"left-[52px] top-0 h-6 opacity-50",
+								"left-[52px] top-7 h-6 opacity-50",
+							].map((c, i) => (
+								<span key={i} className={`absolute w-6 rounded-[3px] border border-border bg-background ${c}`}>
+									<span className="absolute inset-x-1 top-1 h-[2px] rounded bg-muted-foreground/40" />
+									<span className="absolute inset-x-1 top-2.5 bottom-1 rounded-[2px] bg-muted" />
+								</span>
+							))}
 						</div>
 					</div>
 				)}
