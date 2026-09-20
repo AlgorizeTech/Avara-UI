@@ -30,16 +30,55 @@ export default function ButtonDemo({
   layout = "basic",
   color = "primary",
 }: {
-  layout?: "basic" | "slide-icon" | "slide-text" | "icon-only" | "social";
+  layout?: "basic" | "slide-icon" | "slide-text" | "icon-only" | "social" | "shards-panel";
   color?: string;
 }) {
   const themeStyle = getButtonThemeStyle(color);
 
   return (
     <div
-      className="w-full min-h-[320px] h-full flex flex-col items-center justify-center p-8 m-0"
+      className="w-full min-h-[460px] h-full flex flex-col items-center justify-center p-4 sm:p-8 m-0"
       style={themeStyle}
     >
+      {layout === "shards-panel" && (
+        <div className="w-full max-w-4xl mx-auto grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 font-sans py-4 pb-[200px]">
+          {/* 1. Color Picker Button */}
+          <Button
+            variant="shards-control"
+            controlType="color"
+            label="Shards"
+            colorHex="#a855f7"
+          />
+
+          {/* 2. Dropdown Select Button */}
+          <Button
+            variant="shards-control"
+            controlType="select"
+            label="Placement"
+            value="Full"
+            options={["Full", "Center", "Top", "Bottom"]}
+          />
+
+          {/* 3. Range Slider Button */}
+          <Button
+            variant="shards-control"
+            controlType="slider"
+            label="Scale"
+            value={1}
+            min={0}
+            max={3}
+            step={0.1}
+          />
+
+          {/* 4. Toggle Switch Button */}
+          <Button
+            variant="shards-control"
+            controlType="toggle"
+            label="Hold to Gather"
+            checked={true}
+          />
+        </div>
+      )}
       {layout === "basic" && (
         <div className="w-full h-full flex flex-wrap items-center justify-center gap-8 m-0 py-12">
           {/* 1. Single Conic Spinning Border */}

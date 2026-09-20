@@ -6,18 +6,6 @@ There is **no column config and no required row shape**. Whatever your API retur
 
 Every example below is live. Click a sortable header, expand a row, or hover the right edge of a row to reveal its actions.
 
-## Anatomy
-
-```tsx
-
-        Customer
-
-        Alice Freeman
-
-  …
-
-```
-
 `Table` is the card. `TableContent` renders the scroll container and the `` element. Everything else maps one-to-one onto the HTML table tags, so `colSpan`, `scope` and any other native attribute pass straight through.
 
 export const invoiceType = `type Invoice = {

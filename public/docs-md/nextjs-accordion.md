@@ -1,8 +1,8 @@
 # Accordion
 
-A powerful, reusable extension of the standard shadcn/ui accordion. This custom wrapper adds built-in support for array-based data mapping, dynamic icons, and 5 highly customizable styling variants.
+A data-driven accordion built on the Radix primitive, with five variants that each look like a different component rather than the same card in five borders. The open panel is the only thing that gets the accent: it lifts out as a card, inverts to your primary color, or grows a rail down its edge, depending on the variant.
 
-You feed it an `accordionData` array — the wrapper maps it to items, icons and content for you.
+You feed it an `accordionData` array — the wrapper maps it to items, icons and content for you. Switch on `animation="stack"` and the items start piled on the first one and deal down into place when the accordion scrolls into view.
 
 export const usageData = `const faqItems: AccordionDataItem[] = [
   {
@@ -36,6 +36,8 @@ export const usageDefault = `import { Accordion, type AccordionDataItem } from "
 ${usageData}
 
 export default function Faq() {
+  // animation="stack" piles the items on the first one and deals them out
+  // once the accordion scrolls into view. Leave it off for plain rendering.
   return (
     
   );
@@ -69,6 +71,92 @@ export default function AlwaysOpenFaq() {
 
 ## Examples
 
+export const usageSection = `import { Accordion, type AccordionDataItem } from "@/components/custom/blocks/Accordion";
+
+const faq: AccordionDataItem[] = [
+  {
+    value: "frameworks",
+    title: "Does it work outside Next.js?",
+    icon: "Code",
+    content: [
+      "Every block is plain React and Tailwind. The docs show a Next.js and a React (Vite) version of each snippet, and only the few components that use next/link or next/image need a one-line swap.",
+    ],
+  },
+  {
+    value: "theming",
+    title: "Can I change the colors?",
+    icon: "Palette",
+    content: [
+      "Everything reads the shadcn theme tokens (primary, card, muted, border), so one edit to globals.css restyles all of it.",
+    ],
+  },
+  {
+    value: "updates",
+    title: "How do updates reach my project?",
+    icon: "RefreshCw",
+    content: [
+      "The CLI copies the source into your repo, so nothing changes behind your back. Re-run the install command to pull a newer version, then review the diff like any other change.",
+    ],
+  },
+  {
+    value: "license",
+    title: "How is it licensed?",
+    icon: "Scale",
+    content: ["MIT. Use it in client work, products and templates, with no attribution required."],
+  },
+];
+
+export default function FaqSection() {
+  return (
+
+        {/* Left column stays put while the answers scroll on large screens. */}
+
+            Questions people ask before they install.
+
+            Short answers on licensing, theming and where the components run.
+            If yours isn't here, we read every message.
+
+              {["AR", "MK", "JS"].map((initials) => (
+                
+                  {initials}
+                
+              ))}
+
+              Still stuck?
+              
+                Email the team, we reply within a day
+
+  );
+}`;
+
+export const usageStackElevated = `import { Accordion, type AccordionDataItem } from "@/components/custom/blocks/Accordion";
+
+${usageData}
+
+export default function StackedFaq() {
+  // The entrance works with every variant. It waits for the accordion to
+  // scroll into view, and is skipped for visitors who prefer reduced motion.
+  return (
+    
+  );
+}`;
+
+export const usageVariants = `import { Accordion, type AccordionDataItem } from "@/components/custom/blocks/Accordion";
+
+${usageData}
+
+const variants = ["default", "bordered", "filled", "elevated", "ghost"] as const;
+
+export default function AccordionVariants() {
+  return (
+    
+      {variants.map((variant) => (
+        
+      ))}
+    
+  );
+}`;
+
 export const usageMultiplePermanent = `import { Accordion, type AccordionDataItem } from "@/components/custom/blocks/Accordion";
 
 ${usageData}
@@ -82,24 +170,24 @@ export default function PermanentMultiOpenFaq() {
 }`;
 
 ## Features
-Discover the flexible features of the Accordion, such as single or multiple collapsible states, smooth height animations, and full keyboard accessibility.
+Single or multiple open panels, a one-time stack entrance, and five variants that all read your theme tokens.
 
-    Customizable
-    Easily adapt the component's styling and behavior to fit your application's unique design system.
+    Follows your theme
+    Every variant is built from the shadcn tokens, so changing --primary restyles the open panel, the rail and the icon tile together.
 
     Accessible
-    Built with accessibility in mind, ensuring all users can interact with your application effectively.
+    Radix handles roles, arrow-key navigation and focus. The visible focus ring follows the shape of each variant, and the entrance respects reduced motion.
 
     Responsive
-    Fully responsive design that looks and works great across desktop, tablet, and mobile devices.
+    Rows wrap cleanly at phone width; the open card in the default variant only grows wider than the list from sm up.
 
-    Performant
-    Optimized for maximum performance with minimal re-renders and efficient state management.
+    No animation library
+    The stack entrance uses the Web Animations API and runs once. The only dependency beyond Radix is lucide-react.
 
 ## Best Practices & Guidelines
 
     Usage Guidelines
-    Follow standard design principles when implementing this component. Ensure proper contrast, spacing, and context within your layout.
+    Use animation="stack" once per page, on the accordion you want people to notice; two decks dealing at the same time cancel each other out. Give it at least three items so the pile reads as a deck, and keep defaultValue set so the open card is part of the deal.
 
 ## Props Reference
 
@@ -122,8 +210,21 @@ Discover the flexible features of the Accordion, such as single or multiple coll
           "default" | "bordered" | "filled" | "elevated" | "ghost"
 
           "default"
-        
-        Applies pre-defined structural and aesthetic styling.
+
+          Which look to use. default lifts the open row out as a
+          card, bordered grows a rail on it, filled{" "}
+          inverts it to primary, elevated raises it on
+          a ring, ghost is type and hairlines only.
+
+          animation
+
+          "none" | "stack"
+
+          "none"
+
+          "stack" piles the items on the first one and deals them
+          into place once the accordion scrolls into view. Runs once; skipped
+          under prefers-reduced-motion.
 
           type
 
