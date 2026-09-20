@@ -116,6 +116,22 @@ export default function SocialButtonDemo() {
   );
 }`;
 
+export const usageShardsPanel = `import Button from "@/components/custom/blocks/Button";
+
+export default function ControlButtonsDemo() {
+  return (
+    
+      {/* 1. Color Picker Button */}
+
+      {/* 2. Dropdown Select Button */}
+
+      {/* 3. Range Slider Button */}
+
+      {/* 4. Toggle Switch Button */}
+
+  );
+}`;
+
 ## Installation
 
 ## Features
@@ -138,11 +154,27 @@ export default function SocialButtonDemo() {
 
           variant
 
-          "outline" | "slide-icon" | "slide-icon-loop" | "slide-text" | "3d"
+          "outline" | "slide-icon" | "slide-icon-loop" | "slide-text" | "3d" | "shards-control"
 
           "outline"
         
-        Choose between 4-side border glow, sliding rounded icon, looping rounded icon, vertical text roll, or raised 3D press variant.
+        Choose between 4-side border glow, sliding rounded icon, looping rounded icon, vertical text roll, raised 3D press, or dark glass parameter control tile.
+
+          controlType
+
+          "color" | "select" | "slider" | "toggle"
+
+          "select"
+        
+        Input type for variant="shards-control" (color picker, select dropdown, range slider, or toggle switch).
+
+          label · value · options
+
+          string | number | string[]
+
+          —
+        
+        Label title, active value, and option choices for control tiles.
 
           size
 
