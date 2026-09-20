@@ -564,6 +564,12 @@ export const META: Record<string, ItemMeta> = {
     categories: ["marketing", "layout"],
     docs: "Named export: FashionHero (plus FashionHero.Look). Composed from the circular-text, avatar-stack, text-animation, tilted-card and dialog items, which install alongside it. Pass `heading`, up to seven `looks` ({ src, alt, tone, blend?, position? }), `video` ({ badge, url }), `avatars` + `avatarsHref`, `cta`, `quote`, `teaser` and `linkComponent`; `accent` sets --primary, `reveal` is in-view or immediate.",
   },
+  "component-wall": {
+    description:
+      "A landing hero for a component library: copy on the left, and on the right a wall of screenshots that never ends. A camera hangs over the wall zoomed in on one card; every few seconds it pulls back, glides to another card picked at random and settles on it.",
+    categories: ["marketing", "layout"],
+    docs: "Named export: ComponentWall. Composed from the avatar-stack and half-stars items, which install alongside it. Pass `badge` ({ label, text?, href?, icon? }), `heading`, `description`, `primaryAction`/`secondaryAction` ({ label, href }), `trust` ({ text, avatars?, rating? }) and `items` ({ title, image }[] — every screenshot sits in the same 493:332 frame). `columns` sets the grid, `interval` the rest between flights in ms (0 holds still), `order` is serial (card by card) or shuffle (every card once per round, at random), `zoom` the resting scale; `onFocus` reports the card in view; `linkComponent` takes next/link.",
+  },
   "collage-hero": {
     description:
       "A playful hero: a badge whose name turns around a mark, a serif headline with two coloured words, hashtag pills, a five-column photo collage and a footer with a quote, a scroll pill and a watch-video trigger. Use it for a kindergarten, studio, school or any warm, busy place.",
@@ -775,7 +781,7 @@ export const META: Record<string, ItemMeta> = {
   // ---- Phase 4E: marketing & landing blocks ----
   hero: {
     description:
-      "A prop-driven hero section supporting spring word bounce, character typewriter, 3D split marquee slider, pet-shop, doctor and component-wall variants.",
+      "A prop-driven hero section supporting spring word bounce, character typewriter, 3D split marquee slider, pet-shop and doctor variants.",
     categories: ["marketing"],
     docs: "Named export: HeroBlock. Everything is a prop — `variant` switches between 'bounce', 'typing', and 'slider', `typingWords` cycles between `titlePrefix` and `titleSuffix`, `cliCommand` renders a copyable install line, and `sliderImages` / `mainImage` customize the 3D marquee visual.",
   },
