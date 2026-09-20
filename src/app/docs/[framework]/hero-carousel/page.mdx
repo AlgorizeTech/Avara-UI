@@ -14,21 +14,21 @@ import { HeroCarousel } from "@/components/custom/blocks/HeroCarouselBlock";
 
 const SLIDES = [
   {
-    image: "/trips/rim.jpg",
+    image: "https://images.unsplash.com/photo-1506905925346-21bda4d32df4?q=80&w=1600&auto=format&fit=crop",
     alt: "Snow peaks at sunrise above a sea of cloud",
     title: "Crater rim at first light",
     description: "Up before dawn and on the rim as the valley fills with colour.",
     heading: <>Wake up above<br />the clouds</>,
   },
   {
-    image: "/trips/ridge.jpg",
+    image: "https://images.unsplash.com/photo-1470071459604-3b5ec3a7fe05?q=80&w=1600&auto=format&fit=crop",
     alt: "Fog rolling over dark ridges",
     title: "Ridge walk through the mist",
     description: "Six kilometres along the spine of the range. No scrambling.",
     heading: <>Walk the ridge<br />while it is still yours</>,
   },
   {
-    image: "/trips/canyon.jpg",
+    image: "https://images.unsplash.com/photo-1500530855697-b586d89ba3ee?q=80&w=1600&auto=format&fit=crop",
     alt: "A road through a red rock canyon",
     title: "The canyon by 4×4",
     description: "A jeep run down the canyon road to where the tarmac ends.",
@@ -45,7 +45,7 @@ export default function Hero() {
       heading={<>Wake up above<br />the clouds</>}
       slides={SLIDES}
       intro="Three days in the high country with a guide who grew up there."
-      avatars={[{ src: "/faces/1.jpg" }, { src: "/faces/2.jpg" }, { src: "/faces/3.jpg" }, { src: "/faces/4.jpg" }, { src: "/faces/5.jpg" }]}
+      avatars={[{ src: "https://i.pravatar.cc/80?img=12" }, { src: "https://i.pravatar.cc/80?img=32" }, { src: "https://i.pravatar.cc/80?img=47" }, { src: "https://i.pravatar.cc/80?img=5" }, { src: "https://i.pravatar.cc/80?img=58" }]}
       avatarsLabel="50+ people joined this year"
       cta={{ label: "Book the trip", href: "/book" }}
       linkComponent={Link}

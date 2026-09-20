@@ -13,14 +13,14 @@ import Link from "next/link";
 import { ComponentWall } from "@/components/custom/blocks/ComponentWallBlock";
 
 const ITEMS = [
-  { title: "Word bounce hero", image: "/wall/hero.jpg" },
-  { title: "Pricing plans", image: "/wall/pricing.jpg" },
-  { title: "Bento showcase", image: "/wall/bento.jpg" },
-  { title: "Book appointment", image: "/wall/booking.jpg" },
-  { title: "Collage hero", image: "/wall/collage.jpg" },
-  { title: "Fashion hero", image: "/wall/fashion.jpg" },
-  { title: "Hero carousel", image: "/wall/carousel.jpg" },
-  { title: "Honeycomb hero", image: "/wall/honeycomb.jpg" },
+  { title: "Word bounce hero", image: "https://algorize-ui.vercel.app/assets/wall/hero.jpg" },
+  { title: "Pricing plans", image: "https://algorize-ui.vercel.app/assets/wall/pricing.jpg" },
+  { title: "Bento showcase", image: "https://algorize-ui.vercel.app/assets/wall/bento-showcase.jpg" },
+  { title: "Book appointment", image: "https://algorize-ui.vercel.app/assets/wall/book-appointment.jpg" },
+  { title: "Collage hero", image: "https://algorize-ui.vercel.app/assets/wall/collage-hero.jpg" },
+  { title: "Fashion hero", image: "https://algorize-ui.vercel.app/assets/wall/fashion-hero.jpg" },
+  { title: "Hero carousel", image: "https://algorize-ui.vercel.app/assets/wall/hero-carousel.jpg" },
+  { title: "Honeycomb hero", image: "https://algorize-ui.vercel.app/assets/wall/honeycomb-hero.jpg" },
   // … as many as you like; four columns of six reads well
 ];
 
@@ -34,7 +34,7 @@ export default function Hero() {
       secondaryAction={{ label: "Get all-access", href: "/pricing" }}
       trust={{
         text: "Trusted by 120,000+ founders, developers and creators",
-        avatars: [{ src: "/faces/1.jpg" }, { src: "/faces/2.jpg" }, { src: "/faces/3.jpg" }, { src: "/faces/4.jpg" }, { src: "/faces/5.jpg" }],
+        avatars: [{ src: "https://i.pravatar.cc/80?img=12" }, { src: "https://i.pravatar.cc/80?img=32" }, { src: "https://i.pravatar.cc/80?img=47" }, { src: "https://i.pravatar.cc/80?img=5" }, { src: "https://i.pravatar.cc/80?img=58" }],
         rating: 5,
       }}
       items={ITEMS}
