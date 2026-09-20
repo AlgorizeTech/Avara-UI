@@ -83,7 +83,42 @@ function transitivePackages(name: string, seen = new Set<string>()): string[] {
 const BADGE =
   "inline rounded-md bg-primary/10 px-1.5 py-0.5 font-mono text-xs font-medium text-primary ring-1 ring-primary/20 [overflow-wrap:anywhere] [box-decoration-break:clone] [-webkit-box-decoration-break:clone]";
 
-const STEP_HEADING = "text-2xl font-semibold mb-3 mt-8 scroll-m-24";
+/**
+ * One numbered step on the install rail. The number sits in a disc centred on
+ * the rail (drawn as the parent's left border); the heading keeps its `id` so
+ * `#install-<name>` links still land on it.
+ */
+function Step({
+  number,
+  id,
+  title,
+  children,
+}: {
+  number: number;
+  id: string;
+  title: React.ReactNode;
+  children: React.ReactNode;
+}) {
+  return (
+    <section className="relative">
+      {/* Rail is 1px left of the parent's 2rem padding; the 1.75rem disc is
+          pulled back by half its width so it sits centred on the line. */}
+      <span
+        aria-hidden
+        className="absolute top-0 -left-[calc(2rem+0.875rem+1px)] flex size-7 items-center justify-center rounded-full border border-zinc-300 bg-white font-mono text-xs font-semibold text-zinc-700 shadow-sm dark:border-zinc-700 dark:bg-zinc-900 dark:text-zinc-200"
+      >
+        {number}
+      </span>
+      <h3
+        id={id}
+        className="mt-0 mb-4 scroll-m-24 text-xl leading-7 font-semibold"
+      >
+        {title}
+      </h3>
+      <div className="space-y-3">{children}</div>
+    </section>
+  );
+}
 
 /**
  * Dependencies every project already has once it has followed the installation
@@ -105,17 +140,11 @@ const BASELINE_PACKAGES = new Set(["lucide-react"]);
 function InstallDivider() {
   return (
     <div className="my-14 flex items-center gap-4">
-      <span
-        aria-hidden
-        className="h-px flex-1 bg-zinc-200 dark:bg-zinc-800"
-      />
+      <span aria-hidden className="h-px flex-1 bg-zinc-200 dark:bg-zinc-800" />
       <span className="text-xs font-medium tracking-[0.2em] text-zinc-400 uppercase dark:text-zinc-500">
         or
       </span>
-      <span
-        aria-hidden
-        className="h-px flex-1 bg-zinc-200 dark:bg-zinc-800"
-      />
+      <span aria-hidden className="h-px flex-1 bg-zinc-200 dark:bg-zinc-800" />
     </div>
   );
 }
@@ -208,7 +237,10 @@ function BadgeList({ items }: { items: string[] }) {
  * in a provider, an optional extra package) write it as ordinary MDX after this
  * element, so those steps keep their own heading in the table of contents.
  */
-export function Installation({ name, showSetupPath = true }: InstallationProps) {
+export function Installation({
+  name,
+  showSetupPath = true,
+}: InstallationProps) {
   const item = ITEMS.find((entry) => entry.name === name);
 
   // Fail at build time rather than shipping a page whose install command is a
@@ -236,7 +268,8 @@ export function Installation({ name, showSetupPath = true }: InstallationProps) 
   // should hear that the component still needs them, just not from this page.
   const onlyBaseline =
     total === 0 &&
-    ((item.registryDependencies?.length ?? 0) > 0 || (item.dependencies?.length ?? 0) > 0);
+    ((item.registryDependencies?.length ?? 0) > 0 ||
+      (item.dependencies?.length ?? 0) > 0);
 
   return (
     // data-toc-skip: the step headings are structure inside the Installation
@@ -245,93 +278,96 @@ export function Installation({ name, showSetupPath = true }: InstallationProps) 
     <div className="my-6" data-toc-skip>
       {showSetupPath && <SetupPath />}
 
-      <h3 id={`install-${name}`} className={`${STEP_HEADING} first:mt-0`}>
-        1. Install {title}
-      </h3>
-
-      <div className="space-y-3">
-        <Cli command={`add ${name}.json`} />
-        <p className="leading-7 text-gray-700 dark:text-gray-300">
-          {target ? (
-            <code>
-              <BreakablePath path={target} />
-            </code>
-          ) : (
-            <>The component</>
-          )}{" "}
-          is written into
-          your project. Copy any snippet from a{" "}
-          <strong className="font-bold">Usage</strong> tab above and it runs.
-        </p>
-      </div>
-
-      {/* Step 2 always renders, even with nothing to install: every component
-          then reads the same way, and "no dependencies" is worth stating. */}
-      <h3 id={`install-${name}-dependencies`} className={STEP_HEADING}>
-        2. Install dependencies
-      </h3>
-
-      <div className="space-y-3">
-        {total === 0 ? (
+      {/* The left border is the rail the step discs sit on. It runs to the end
+          of the last step's content rather than stopping at its disc: a rail
+          that ends mid-step looks like the step was cut off. */}
+      <div className="ml-3.5 space-y-10 border-l border-zinc-200 pl-8 dark:border-zinc-800">
+        <Step number={1} id={`install-${name}`} title={<>Install {title}</>}>
+          <Cli command={`add ${name}.json`} />
           <p className="leading-7 text-gray-700 dark:text-gray-300">
-            {onlyBaseline ? (
-              <>
-                Nothing beyond the shared setup — {title} needs only the{" "}
-                <code>cn</code> helper and <code>lucide-react</code>, which the
-                installation guide already put in place.
-              </>
+            {target ? (
+              <code>
+                <BreakablePath path={target} />
+              </code>
             ) : (
-              <>
-                None — {title} has no npm packages or registry components to
-                install.
-              </>
-            )}
+              <>The component</>
+            )}{" "}
+            is written into your project. Copy any snippet from a{" "}
+            <strong className="font-bold">Usage</strong> tab above and it runs.
           </p>
-        ) : (
-          <>
+        </Step>
+
+        {/* Step 2 always renders, even with nothing to install: every component
+            then reads the same way, and "no dependencies" is worth stating. */}
+        <Step
+          number={2}
+          id={`install-${name}-dependencies`}
+          title="Install dependencies"
+        >
+          {total === 0 ? (
             <p className="leading-7 text-gray-700 dark:text-gray-300">
-              Step 1 installs {total > 1 ? "these" : "this"} for you. Run{" "}
-              {total > 1 ? "them" : "it"} yourself only if you are adding{" "}
-              {title} to an existing project by hand. The <code>cn</code>{" "}
-              helper and <code>lucide-react</code> are not listed — the
-              installation guide covers them once for every component.
-              {inherited.length > 0 && (
+              {onlyBaseline ? (
                 <>
-                  {" "}
-                  <BadgeList items={inherited} /> come{inherited.length > 1 ? "" : "s"} in
-                  with the component{components.length > 1 ? "s" : ""} above rather than
-                  from {title} directly.
+                  Nothing beyond the shared setup — {title} needs only the{" "}
+                  <code>cn</code> helper and <code>lucide-react</code>, which
+                  the installation guide already put in place.
+                </>
+              ) : (
+                <>
+                  None — {title} has no npm packages or registry components to
+                  install.
                 </>
               )}
             </p>
+          ) : (
+            <>
+              <p className="leading-7 text-gray-700 dark:text-gray-300">
+                Step 1 installs {total > 1 ? "these" : "this"} for you. Run{" "}
+                {total > 1 ? "them" : "it"} yourself only if you are adding{" "}
+                {title} to an existing project by hand. The <code>cn</code>{" "}
+                helper and <code>lucide-react</code> are not listed — the
+                installation guide covers them once for every component.
+                {inherited.length > 0 && (
+                  <>
+                    {" "}
+                    <BadgeList items={inherited} /> come
+                    {inherited.length > 1 ? "" : "s"} in with the component
+                    {components.length > 1 ? "s" : ""} above rather than from{" "}
+                    {title} directly.
+                  </>
+                )}
+              </p>
 
-            {components.length > 0 && (
-              <div className="space-y-2">
-                <p className="text-sm leading-6 text-zinc-600 dark:text-zinc-400">
-                  <BadgeList items={components.map(label)} />{" "}
-                  {components.length > 1 ? "are components" : "is a component"},
-                  not {components.length > 1 ? "packages" : "a package"} — the
-                  shadcn CLI installs {components.length > 1 ? "them" : "it"} as
-                  source files.
-                </p>
-                <Cli command={`add ${components.map(toAddArg).join(" ")}`} />
-              </div>
-            )}
+              {components.length > 0 && (
+                <div className="space-y-2">
+                  <p className="text-sm leading-6 text-zinc-600 dark:text-zinc-400">
+                    <BadgeList items={components.map(label)} />{" "}
+                    {components.length > 1
+                      ? "are components"
+                      : "is a component"}
+                    , not {components.length > 1 ? "packages" : "a package"} —
+                    the shadcn CLI installs{" "}
+                    {components.length > 1 ? "them" : "it"} as source files.
+                  </p>
+                  <Cli command={`add ${components.map(toAddArg).join(" ")}`} />
+                </div>
+              )}
 
-            {packages.length > 0 && (
-              <div className="space-y-2">
-                <p className="text-sm leading-6 text-zinc-600 dark:text-zinc-400">
-                  <BadgeList items={packages} />{" "}
-                  {packages.length > 1
-                    ? "are npm packages"
-                    : "is an npm package"}
-                  .
-                </p>
-                <Cli command={`install ${packages.join(" ")}`} />
-              </div>
-            )}
-          </>
-        )}
+              {packages.length > 0 && (
+                <div className="space-y-2">
+                  <p className="text-sm leading-6 text-zinc-600 dark:text-zinc-400">
+                    <BadgeList items={packages} />{" "}
+                    {packages.length > 1
+                      ? "are npm packages"
+                      : "is an npm package"}
+                    .
+                  </p>
+                  <Cli command={`install ${packages.join(" ")}`} />
+                </div>
+              )}
+            </>
+          )}
+        </Step>
       </div>
     </div>
   );

@@ -4,7 +4,11 @@ A six-card marketing bento: a hero with a live chat and a headline, a laptop of 
 
 `BentoShowcase` is a section built from library pieces. Both moving cards are Marquee (`direction="up"` and `"left"`), the conversation is Chat Bubble, the rating is Half Stars, the device is Mobile Mockup and the call to action is Button. Each card is a named part — `Hero`, `CaseStudies`, `Headline`, `Stats`, `Phone`, `Team` — so a page can leave one out, reorder them, or add its own with `BentoShowcase.Card`.
 
-export const usageSection = `const CASE_STUDIES = [
+export const usageSection = `// Photos from Pexels, free to use.
+const pexels = (id: number, w = 900) =>
+  \`https://images.pexels.com/photos/\${id}/pexels-photo-\${id}.jpeg?auto=compress&cs=tinysrgb&w=\${w}\`;
+
+const CASE_STUDIES = [
   {
     quote: "5% of deal-closing rate and appointments for a solution provider",
     metrics: [{ value: "+70%", label: "Close rate" }, { value: "$250K", label: "Revenue" }],
@@ -31,20 +35,20 @@ const PLANS = [
     name: "Professional",
     price: "$3,500",
     note: "7–12 qualified leads a month, guaranteed",
-    image: "/plans/professional.jpg",
+    image: "https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?q=80&w=600&auto=format&fit=crop",
     benefits: ["Lead qualification", "Calendar booking", "Template A/B testing", "Intelligent research", "Email outreach"],
     action: "Start now",
   },
-  { rank: "#3", name: "Enterprise", image: "/plans/enterprise.jpg" },
+  { rank: "#3", name: "Enterprise", image: "https://images.unsplash.com/photo-1550684848-fac1c5b4e853?q=80&w=600&auto=format&fit=crop" },
 ];
 
 // Four photos and two figure discs make six cells — an even count keeps the
 // high/low rhythm intact across the loop.
 const TEAM = [
-  { src: "/team/desk.jpg", alt: "A desk from above" },
-  { src: "/team/floor.jpg", alt: "Two agents at their desks" },
-  { src: "/team/maria.jpg", alt: "Maria on a call" },
-  { src: "/team/alex.jpg", alt: "Alex at his laptop" },
+  { src: pexels(7688336, 500), alt: "A desk from above" },
+  { src: pexels(8867434, 500), alt: "Two agents at their desks" },
+  { src: pexels(7658387, 500), alt: "Maria on a call" },
+  { src: pexels(7709086, 500), alt: "Alex at his laptop" },
 ];
 
 export default function Showcase() {
@@ -94,6 +98,13 @@ export default function Showcase() {
 />
 
 ## Installation
+
+Register the @algorize-ui registry once per project, then add the component:
+
+```bash
+npx shadcn@latest registry add @algorize-ui=https://algorize-ui.vercel.app/r/{name}.json
+npx shadcn@latest add @algorize-ui/bento-showcase
+```
 
 ## Your own card
 

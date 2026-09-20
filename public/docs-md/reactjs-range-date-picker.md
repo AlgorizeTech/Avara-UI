@@ -78,25 +78,26 @@ export default function UpcomingStay() {
 export const usageTime = `import { RangeDatePicker, type DateRange } from "@/components/custom/range-date-picker";
 
 export default function BookingWindow() {
-  const [range, setRange] = useState(() => {
-    const from = new Date();
-    from.setDate(from.getDate() + 1);
-    from.setHours(9, 0, 0, 0);
-    const to = new Date();
-    to.setDate(to.getDate() + 5);
-    to.setHours(17, 0, 0, 0);
-    return { from, to };
-  });
+  // Start empty: the card is just the calendar until a start day is picked.
+  const [range, setRange] = useState({ from: null, to: null });
 
-  // showTime adds Start / End time columns — to the right of the calendar
-  // when the card is wide enough, under it otherwise. Both dates carry a time, and on
-  // a same-day range the end can never be earlier than the start.
+  // showTime keeps the time columns folded away until the first pick, then
+  // unfolds them beside the calendar (under it when the card is narrow).
+  // Both dates carry a time, and on a same-day range the end can never be
+  // earlier than the start. Clear folds the columns away again.
   return (
     
   );
 }`;
 
 ## Installation
+
+Register the @algorize-ui registry once per project, then add the component:
+
+```bash
+npx shadcn@latest registry add @algorize-ui=https://algorize-ui.vercel.app/r/{name}.json
+npx shadcn@latest add @algorize-ui/range-date-picker
+```
 
 ## Features
 
@@ -174,7 +175,7 @@ Discover the interactive capabilities of the `RangeDatePicker` component:
         showTime
         boolean
         false
-        Adds Start / End time columns — to the right of a single-month calendar when the card is at least 32rem wide, under it otherwise (dual-month always stacks). Both from and to carry a time; on a same-day range the end can never precede the start.
+        Adds Start / End time columns. The card opens with the calendar alone and starts empty when uncontrolled; picking a start day unfolds the columns to the right of a single-month calendar when there is room for the wider card, under it otherwise (dual-month always stacks). Clear folds them away. Both from and to carry a time; on a same-day range the end can never precede the start.
 
         timeFormat
         "12h" | "24h"

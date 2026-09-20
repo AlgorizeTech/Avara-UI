@@ -36,6 +36,13 @@ export default function DropdownSwitcher() {
 
 ## Installation
 
+Register the @algorize-ui registry once per project, then add the component:
+
+```bash
+npx shadcn@latest registry add @algorize-ui=https://algorize-ui.vercel.app/r/{name}.json
+npx shadcn@latest add @algorize-ui/theme-switcher
+```
+
 ### Configure next-themes
 
 `ThemeSwitcher` reads and writes the theme through `next-themes`, so your app has to be wrapped in its provider once. `suppressHydrationWarning` on `` is required — the theme class is applied before React hydrates.

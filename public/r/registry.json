@@ -777,6 +777,34 @@
       "docs": "Named exports: Command, CommandDialog, CommandInput, CommandList, CommandEmpty, CommandGroup, CommandItem, CommandSeparator. Use CommandDialog with `open` / `onOpenChange` for the overlay form, or Command inline. Set `shouldFilter` false to filter server-side yourself. Bind your own ⌘K listener — no global shortcut is registered for you."
     },
     {
+      "name": "component-wall",
+      "type": "registry:component",
+      "title": "Component Wall",
+      "author": "AlgorizeTech",
+      "description": "A landing hero for a component library: copy on the left, and on the right a wall of screenshots that never ends. A camera hangs over the wall zoomed in on one card; every few seconds it pulls back, glides to another card picked at random and settles on it.",
+      "categories": [
+        "marketing",
+        "layout"
+      ],
+      "dependencies": [
+        "gsap",
+        "lucide-react"
+      ],
+      "registryDependencies": [
+        "https://algorize-ui.vercel.app/r/avatar-stack.json",
+        "https://algorize-ui.vercel.app/r/half-stars.json",
+        "utils"
+      ],
+      "files": [
+        {
+          "path": "src/components/custom/blocks/ComponentWallBlock.tsx",
+          "type": "registry:component",
+          "target": "components/custom/blocks/ComponentWallBlock.tsx"
+        }
+      ],
+      "docs": "Named export: ComponentWall. Composed from the avatar-stack and half-stars items, which install alongside it. Pass `badge` ({ label, text?, href?, icon? }), `heading`, `description`, `primaryAction`/`secondaryAction` ({ label, href }), `trust` ({ text, avatars?, rating? }) and `items` ({ title, image }[] — every screenshot sits in the same 493:332 frame). `columns` sets the grid, `interval` the rest between flights in ms (0 holds still), `order` is serial (card by card) or shuffle (every card once per round, at random), `zoom` the resting scale; `onFocus` reports the card in view; `linkComponent` takes next/link."
+    },
+    {
       "name": "compute",
       "type": "registry:component",
       "title": "Compute",
@@ -1586,7 +1614,7 @@
       "type": "registry:component",
       "title": "Hero",
       "author": "AlgorizeTech",
-      "description": "A prop-driven hero section supporting spring word bounce, character typewriter, and 3D split marquee slider variants.",
+      "description": "A prop-driven hero section supporting spring word bounce, character typewriter, 3D split marquee slider, pet-shop and doctor variants.",
       "categories": [
         "marketing"
       ],
@@ -1595,7 +1623,6 @@
         "lucide-react"
       ],
       "registryDependencies": [
-        "https://algorize-ui.vercel.app/r/half-stars.json",
         "utils"
       ],
       "files": [
@@ -1606,6 +1633,33 @@
         }
       ],
       "docs": "Named export: HeroBlock. Everything is a prop — `variant` switches between 'bounce', 'typing', and 'slider', `typingWords` cycles between `titlePrefix` and `titleSuffix`, `cliCommand` renders a copyable install line, and `sliderImages` / `mainImage` customize the 3D marquee visual."
+    },
+    {
+      "name": "hero-carousel",
+      "type": "registry:component",
+      "title": "Hero Carousel",
+      "author": "AlgorizeTech",
+      "description": "A full-bleed photo hero with a queue of cards: the front card is the slide on screen, the ones behind it are what comes next. Every five seconds or on a click the queue slides forward, the photograph behind crossfades and the headline and caption follow. A glass panel carries the faces of past guests, an intro and the call to action.",
+      "categories": [
+        "marketing",
+        "layout"
+      ],
+      "dependencies": [
+        "gsap",
+        "lucide-react"
+      ],
+      "registryDependencies": [
+        "https://algorize-ui.vercel.app/r/avatar-stack.json",
+        "utils"
+      ],
+      "files": [
+        {
+          "path": "src/components/custom/blocks/HeroCarouselBlock.tsx",
+          "type": "registry:component",
+          "target": "components/custom/blocks/HeroCarouselBlock.tsx"
+        }
+      ],
+      "docs": "Named export: HeroCarousel. Composed from the avatar-stack item, which installs alongside it. Pass `slides` ({ image, alt, title, description?, heading?, position? }), `eyebrow`, `heading`, `intro`, `avatars` + `avatarsLabel`, `cta` ({ label, href }) and `linkComponent`. `interval` is the autoplay gap in ms (0 turns it off), `accent` sets --primary, `reveal` is in-view or immediate, `onChange` reports the front slide."
     },
     {
       "name": "homepage-hero",
@@ -1631,6 +1685,32 @@
           "target": "components/custom/blocks/HomepageHeroBlock.tsx"
         }
       ]
+    },
+    {
+      "name": "honeycomb-hero",
+      "type": "registry:component",
+      "title": "Honeycomb Hero",
+      "author": "AlgorizeTech",
+      "description": "A travel hero in deep teal: a light line over a huge gold word, and a honeycomb of hexagonal photographs with a gold hexagonal call to action set among them. The large hexagon is the slide on screen and its photograph tints the background; every five seconds, or on the arrows at the foot, every hexagon moves one step along the ring, endlessly.",
+      "categories": [
+        "marketing",
+        "layout"
+      ],
+      "dependencies": [
+        "gsap",
+        "lucide-react"
+      ],
+      "registryDependencies": [
+        "utils"
+      ],
+      "files": [
+        {
+          "path": "src/components/custom/blocks/HoneycombHeroBlock.tsx",
+          "type": "registry:component",
+          "target": "components/custom/blocks/HoneycombHeroBlock.tsx"
+        }
+      ],
+      "docs": "Named export: HoneycombHero. Pass `title` and `titleAccent`, `subtitle`, `primaryActionLabel` (a \\n breaks the line) and `primaryActionHref`, `images` ({ src, alt }[] in queue order — nine cells are visible), `socialLinks`, `interval` in ms (0 turns autoplay off) and `onChange`. `accent` is the gold, `background` the teal; `linkComponent` takes next/link."
     },
     {
       "name": "horizontal-rail",
@@ -2201,6 +2281,31 @@
       "docs": "Named export: Newsletter, with parts Heading, Intro, Form, Proof, Ticker and Issues. Composed from the input, button, marquee and tilted-card items, which install alongside it. `variant` is portraits | spotlight | issues, each styled for light and dark mode; `portraits` takes up to four faces; `Form` takes `onSubscribe(email)` (a promise holds the busy state), `action`, `successTitle`/`successText`; `accent` pins the glow and button colour; `reveal` is in-view or immediate."
     },
     {
+      "name": "orbit-gallery",
+      "type": "registry:component",
+      "title": "Orbit Gallery",
+      "author": "AlgorizeTech",
+      "description": "A two-column hero with a ring of photo cards revolving on the right, each card staying upright as it travels. Hovering the ring holds it still; moving the pointer over the section leaves a trail of dots in the accent colour. Use it for an agency, studio or gallery.",
+      "categories": [
+        "marketing",
+        "layout"
+      ],
+      "dependencies": [
+        "lucide-react"
+      ],
+      "registryDependencies": [
+        "utils"
+      ],
+      "files": [
+        {
+          "path": "src/components/custom/blocks/OrbitGalleryBlock.tsx",
+          "type": "registry:component",
+          "target": "components/custom/blocks/OrbitGalleryBlock.tsx"
+        }
+      ],
+      "docs": "Named export: OrbitGallery. Pass `badgeText`/`badgeHref`, `title` and `titleAccent`, `subtitle`, primary and secondary actions, `images` (any count — they space themselves evenly), `duration` in seconds for one revolution and `highlights` for the dotted facts row. `color` is a preset name or any CSS colour; `linkComponent` takes next/link."
+    },
+    {
       "name": "otp-input",
       "type": "registry:component",
       "title": "OTP Input",
@@ -2672,6 +2777,7 @@
         "utilities"
       ],
       "dependencies": [
+        "framer-motion",
         "lucide-react"
       ],
       "registryDependencies": [
@@ -2685,7 +2791,7 @@
           "target": "components/custom/range-date-picker.tsx"
         }
       ],
-      "docs": "Supports variant=('single' | 'dual' | 'priced-single' | 'priced-dual'), getPrice, color, value={from, to}, and onChange."
+      "docs": "Named export: RangeDatePicker. Supports variant=('single' | 'dual' | 'priced-single' | 'priced-dual'), getPrice, color, value={from, to}, onChange, disablePast / minDate / maxDate. `showTime` adds Start / End time columns: the card opens as a bare calendar (empty when uncontrolled) and a time rail unfolds beside it on the first pick — under it when narrow — and folds away on Clear; `timeFormat` (12h | 24h) and `minuteStep` tune the columns. Installs time-picker alongside."
     },
     {
       "name": "register-form",

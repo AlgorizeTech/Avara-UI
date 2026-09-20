@@ -31,18 +31,26 @@ Run once per project. It writes `components.json` and the `cn` helper in
 npx shadcn@latest init
 ```
 
-### 3. Add a component
+### 3. Register the registry
+
+Also once per project. It tells the CLI where `@algorize-ui/…` lives:
+
+```bash
+npx shadcn@latest registry add @algorize-ui=https://algorize-ui.vercel.app/r/{name}.json
+```
+
+### 4. Add a component
 
 Every component page carries its own command — this one installs the card:
 
 ```bash
-npx shadcn@latest add card.json
+npx shadcn@latest add @algorize-ui/card
 ```
 
 The CLI writes `components/custom/blocks/CardBlock.tsx` and installs whatever
 that component needs.
 
-### 4. Use it
+### 5. Use it
 
 ```tsx
 // app/page.tsx

@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useSyncExternalStore } from "react";
+import { useLayoutEffect, useRef, useState, useSyncExternalStore } from "react";
 
 /**
  * False while server-rendering and during hydration, true afterwards — without
@@ -15,7 +15,9 @@ const useIsMounted = () =>
   );
 
 import { cn } from "@/lib/utils";
+import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
 import {
+  CalendarDays,
   ChevronLeft,
   ChevronRight,
   Clock,
@@ -60,8 +62,10 @@ export interface RangeDatePickerProps {
   /** Latest selectable day (inclusive). */
   maxDate?: Date;
   /**
-   * Adds Start / End time columns under the calendar. Both dates in the range
-   * then carry a time, and the end can never precede the start on the same day.
+   * Adds Start / End time columns. The card opens with the calendar alone;
+   * picking a start day unfolds the columns beside it (under it when the card
+   * is narrow), and clearing the range folds them away again. Both dates then
+   * carry a time, and the end can never precede the start on the same day.
    */
   showTime?: boolean;
   /** 12-hour clock with AM / PM, or 24-hour. Default "12h". */
@@ -156,11 +160,27 @@ const isSameDay = (date1: Date | null, date2: Date | null): boolean => {
   );
 };
 
-const isBetween = (target: Date, start: Date | null, end: Date | null): boolean => {
+const isBetween = (
+  target: Date,
+  start: Date | null,
+  end: Date | null,
+): boolean => {
   if (!start || !end) return false;
-  const t = new Date(target.getFullYear(), target.getMonth(), target.getDate()).getTime();
-  const s = new Date(start.getFullYear(), start.getMonth(), start.getDate()).getTime();
-  const e = new Date(end.getFullYear(), end.getMonth(), end.getDate()).getTime();
+  const t = new Date(
+    target.getFullYear(),
+    target.getMonth(),
+    target.getDate(),
+  ).getTime();
+  const s = new Date(
+    start.getFullYear(),
+    start.getMonth(),
+    start.getDate(),
+  ).getTime();
+  const e = new Date(
+    end.getFullYear(),
+    end.getMonth(),
+    end.getDate(),
+  ).getTime();
   const min = Math.min(s, e);
   const max = Math.max(s, e);
   return t > min && t < max;
@@ -172,7 +192,8 @@ const formatDateString = (date: Date | null): string => {
   return `${month} ${date.getDate()}, ${date.getFullYear()}`;
 };
 
-const startOfDay = (d: Date) => new Date(d.getFullYear(), d.getMonth(), d.getDate());
+const startOfDay = (d: Date) =>
+  new Date(d.getFullYear(), d.getMonth(), d.getDate());
 const endOfDay = (d: Date) =>
   new Date(d.getFullYear(), d.getMonth(), d.getDate(), 23, 59, 59, 999);
 
@@ -208,6 +229,34 @@ const generateMonthDays = (year: number, month: number) => {
   return days;
 };
 
+/** Card width with the calendar alone, and with the time rail unfolded beside it. */
+const CALENDAR_WIDTH = "24rem";
+const DUAL_WIDTH = "42rem";
+// Rail column (11rem) + its divider padding (1.25rem) + gap to the calendar (1.5rem):
+// added to the calendar width so the grid keeps its exact size while the rail opens.
+const CALENDAR_WITH_RAIL_WIDTH = "37.75rem";
+/** Below this much room the rail unfolds under the calendar instead of beside it. */
+const SIDE_RAIL_MIN_PX = 512;
+
+/**
+ * Width of the element, kept current through a ResizeObserver. Drives the
+ * side-vs-stacked decision in JS (rather than a container query) so the
+ * unfold can animate the right axis and the card can grow in step with it.
+ */
+function useElementWidth(ref: React.RefObject<HTMLElement | null>) {
+  const [width, setWidth] = useState(0);
+  useLayoutEffect(() => {
+    const el = ref.current;
+    if (!el) return;
+    const measure = () => setWidth(el.getBoundingClientRect().width);
+    measure();
+    const ro = new ResizeObserver(measure);
+    ro.observe(el);
+    return () => ro.disconnect();
+  }, [ref]);
+  return width;
+}
+
 export function RangeDatePicker({
   className,
   variant = "single",
@@ -228,7 +277,6 @@ export function RangeDatePicker({
 }: RangeDatePickerProps) {
   const mounted = useIsMounted();
 
-
   const isDual = variant === "dual" || variant === "priced-dual";
   const isPriced =
     showPrices ||
@@ -237,11 +285,13 @@ export function RangeDatePicker({
     variant === "priced-dual" ||
     getPrice !== undefined;
 
+  // With time columns the card starts empty and the rail unfolds on the first
+  // pick; without them the familiar last-week range is seeded.
   const [internalFrom, setInternalFrom] = useState<Date | null>(
-    () => defaultFrom ?? subDays(new Date(), 7)
+    () => defaultFrom ?? (showTime ? null : subDays(new Date(), 7)),
   );
   const [internalTo, setInternalTo] = useState<Date | null>(
-    () => defaultTo ?? new Date()
+    () => defaultTo ?? (showTime ? null : new Date()),
   );
 
   const fromDate = value !== undefined ? value.from : internalFrom;
@@ -255,11 +305,29 @@ export function RangeDatePicker({
 
   const theme = colorThemes[color] || colorThemes.primary;
 
+  const frameRef = useRef<HTMLDivElement>(null);
+  const frameWidth = useElementWidth(frameRef);
+  const reduceMotion = useReducedMotion();
+
   // Dual month + times stays stacked — three columns would be far too wide.
-  const sideTimes = showTime && !isDual;
+  // A single month gets the rail beside it when there is room for the open card.
+  const sideTimes = showTime && !isDual && frameWidth >= SIDE_RAIL_MIN_PX;
+  // The rail exists once a start day is chosen and folds away on Clear.
+  const railOpen = showTime && selectingFrom !== null;
+
+  const unfold = reduceMotion
+    ? { duration: 0 }
+    : { type: "spring" as const, stiffness: 240, damping: 30, mass: 0.9 };
+  const settle = reduceMotion
+    ? { duration: 0 }
+    : { duration: 0.28, ease: [0.22, 1, 0.36, 1] as const };
 
   const formatStamp = (date: Date | null) =>
-    !date ? "" : showTime ? `${formatDateString(date)}, ${formatTime(date, timeFormat)}` : formatDateString(date);
+    !date
+      ? ""
+      : showTime
+        ? `${formatDateString(date)}, ${formatTime(date, timeFormat)}`
+        : formatDateString(date);
 
   // Adopt a new controlled range as it arrives. Handled during render so
   // the previous range is never painted first.
@@ -288,11 +356,14 @@ export function RangeDatePicker({
 
   // Times are compared with each other only when both ends fall on one day,
   // and with "now" only on today when the past is disabled.
-  const sameDay = (a: Date | null, b: Date | null) => !!a && !!b && isSameDay(a, b);
+  const sameDay = (a: Date | null, b: Date | null) =>
+    !!a && !!b && isSameDay(a, b);
   // The start moves freely (an end that would fall behind it is pushed
   // forward by `handleFromTime`); only the end is fenced by the start.
   const fromMinTime =
-    disablePast && selectingFrom && isSameDay(selectingFrom, today) ? today : null;
+    disablePast && selectingFrom && isSameDay(selectingFrom, today)
+      ? today
+      : null;
   const toMinTime = sameDay(selectingFrom, selectingTo)
     ? selectingFrom
     : disablePast && selectingTo && isSameDay(selectingTo, today)
@@ -305,7 +376,8 @@ export function RangeDatePicker({
     if (!showTime) return day;
     const src = previous ?? roundToStep(today, minuteStep);
     let next = setTime(day, src.getHours(), src.getMinutes());
-    if (disablePast && isSameDay(next, today) && next < today) next = roundToStep(today, minuteStep);
+    if (disablePast && isSameDay(next, today) && next < today)
+      next = roundToStep(today, minuteStep);
     return next;
   };
 
@@ -329,14 +401,17 @@ export function RangeDatePicker({
       newFrom = withTime(clickedDate, selectingFrom);
       newTo = null;
     } else if (selectingFrom && !selectingTo) {
-      if (startOfDay(clickedDate).getTime() < startOfDay(selectingFrom).getTime()) {
+      if (
+        startOfDay(clickedDate).getTime() < startOfDay(selectingFrom).getTime()
+      ) {
         newFrom = withTime(clickedDate, selectingFrom);
         newTo = selectingFrom;
       } else {
         newFrom = selectingFrom;
         newTo = withTime(clickedDate, selectingTo);
         // Same day, end earlier than start: pull the end up to the start.
-        if (isSameDay(newFrom, newTo) && newTo < newFrom) newTo = new Date(newFrom);
+        if (isSameDay(newFrom, newTo) && newTo < newFrom)
+          newTo = new Date(newFrom);
       }
     }
 
@@ -351,10 +426,18 @@ export function RangeDatePicker({
   const handleToTime = (next: Date) => commitRange(selectingFrom, next);
 
   const resetRange = () => {
+    // With time columns, Clear returns to the empty card so the rail folds
+    // away; the plain calendar resets to today as before.
+    if (showTime) {
+      commitRange(null, null);
+      return;
+    }
     // Reset keeps whatever times were chosen; with the past disabled, today's
     // start is clamped to now by `withTime`.
     const from = withTime(startOfDay(today), selectingFrom);
-    const to = isDual ? withTime(addDays(startOfDay(today), 28), selectingTo) : withTime(startOfDay(today), selectingTo);
+    const to = isDual
+      ? withTime(addDays(startOfDay(today), 28), selectingTo)
+      : withTime(startOfDay(today), selectingTo);
     commitRange(from, isSameDay(from, to) && to < from ? new Date(from) : to);
     setViewDate(new Date(from));
   };
@@ -373,26 +456,41 @@ export function RangeDatePicker({
   const prevMonth = () => setViewDate(new Date(year1, month1 - 1, 1));
   const nextMonth = () => setViewDate(new Date(year1, month1 + 1, 1));
 
-  const effectiveTo = selectingTo || (selectingFrom && hoverDate ? hoverDate : null);
+  const effectiveTo =
+    selectingTo || (selectingFrom && hoverDate ? hoverDate : null);
   const effectiveFrom =
-    selectingFrom && effectiveTo && effectiveTo.getTime() < selectingFrom.getTime()
+    selectingFrom &&
+    effectiveTo &&
+    effectiveTo.getTime() < selectingFrom.getTime()
       ? effectiveTo
       : selectingFrom;
   const effectiveEnd =
-    selectingFrom && effectiveTo && effectiveTo.getTime() < selectingFrom.getTime()
+    selectingFrom &&
+    effectiveTo &&
+    effectiveTo.getTime() < selectingFrom.getTime()
       ? selectingFrom
       : effectiveTo;
 
+  // The frame is the space the card may take. Its width never animates and is
+  // measured for the side-or-stacked call; it wraps the skeleton too so the
+  // observed node survives the switch to the real card.
+  const frameClass = cn(
+    "w-full mx-auto",
+    isDual ? "max-w-2xl" : showTime ? "max-w-[37.75rem]" : "max-w-sm",
+  );
+
   if (!mounted) {
     return (
-      <div
-        className={cn(
-          "w-full rounded-2xl bg-card border border-border/80 p-5 animate-pulse",
-          isDual ? "max-w-2xl h-96" : "max-w-sm h-80",
-          isPriced && "h-[420px]",
-          className
-        )}
-      />
+      <div ref={frameRef} className={frameClass}>
+        <div
+          className={cn(
+            "w-full rounded-2xl bg-card border border-border/80 p-5 animate-pulse mx-auto",
+            isDual ? "max-w-2xl h-96" : "max-w-sm h-80",
+            isPriced && "h-[420px]",
+            className,
+          )}
+        />
+      </div>
     );
   }
 
@@ -401,7 +499,7 @@ export function RangeDatePicker({
     m: number,
     days: { date: Date; isCurrentMonth: boolean }[],
     showPrevNav: boolean,
-    showNextNav: boolean
+    showNextNav: boolean,
   ) => (
     <div className="flex-1 flex flex-col justify-between min-w-0">
       {/* Month Header */}
@@ -452,10 +550,10 @@ export function RangeDatePicker({
             ? getPrice
               ? getPrice(date)
               : isPriced
-              ? date.getDay() === 0 || date.getDay() === 6
-                ? "$120"
-                : "$100"
-              : null
+                ? date.getDay() === 0 || date.getDay() === 6
+                  ? "$120"
+                  : "$100"
+                : null
             : null;
 
           return (
@@ -469,7 +567,7 @@ export function RangeDatePicker({
                 isPriced ? "h-12" : "h-8",
                 isInRange && theme.rangeBg,
                 isStart && effectiveEnd && "rounded-l-xl",
-                isEnd && effectiveFrom && "rounded-r-xl"
+                isEnd && effectiveFrom && "rounded-r-xl",
               )}
             >
               <button
@@ -481,16 +579,25 @@ export function RangeDatePicker({
                   "w-full rounded-xl transition-all duration-100 flex flex-col items-center justify-center z-10 px-1 py-1",
                   isPriced ? "h-11" : "size-8 rounded-lg",
                   !isCurrentMonth && "text-muted-foreground/30",
-                  isCurrentMonth && !isStart && !isEnd && "hover:bg-muted text-foreground",
-                  (isStart || isEnd) && cn(theme.bg, theme.bgHover, "font-extrabold scale-105 shadow-xs"),
-                  isOff && "text-muted-foreground/40 cursor-not-allowed hover:bg-transparent"
+                  isCurrentMonth &&
+                    !isStart &&
+                    !isEnd &&
+                    "hover:bg-muted text-foreground",
+                  (isStart || isEnd) &&
+                    cn(
+                      theme.bg,
+                      theme.bgHover,
+                      "font-extrabold scale-105 shadow-xs",
+                    ),
+                  isOff &&
+                    "text-muted-foreground/40 cursor-not-allowed hover:bg-transparent",
                 )}
               >
                 <span
                   className={cn(
                     "text-xs font-bold leading-tight",
                     (isStart || isEnd) && "text-primary-foreground",
-                    isOff && "line-through font-normal"
+                    isOff && "line-through font-normal",
                   )}
                 >
                   {date.getDate()}
@@ -501,7 +608,7 @@ export function RangeDatePicker({
                       "text-[10px] font-semibold leading-tight mt-0.5 tracking-tight",
                       isStart || isEnd
                         ? "text-primary-foreground/90 font-bold"
-                        : "text-muted-foreground"
+                        : "text-muted-foreground",
                     )}
                   >
                     {price}
@@ -515,116 +622,220 @@ export function RangeDatePicker({
     </div>
   );
 
-  return (
-    <article
+  const timeEnds = [
+    {
+      key: "from",
+      label: "Start",
+      date: selectingFrom,
+      min: fromMinTime,
+      onChange: handleFromTime,
+    },
+    {
+      key: "to",
+      label: "End",
+      date: selectingTo,
+      min: toMinTime,
+      onChange: handleToTime,
+    },
+  ] as const;
+
+  /** One Start / End column: label, chosen time, and the picker or a hint. */
+  const renderTimeColumn = (end: (typeof timeEnds)[number]) => (
+    <div className="flex flex-col gap-2 min-w-0">
+      <div className="flex items-center justify-between">
+        <span className="flex items-center gap-1.5 text-[10px] font-bold uppercase tracking-wider text-muted-foreground">
+          <Clock className="size-3.5" /> {end.label}
+        </span>
+        <span
+          className={cn(
+            "text-xs font-bold tabular-nums",
+            end.date ? theme.text : "text-muted-foreground",
+          )}
+        >
+          {end.date ? formatTime(end.date, timeFormat) : "--:--"}
+        </span>
+      </div>
+      <AnimatePresence mode="wait" initial={false}>
+        {end.date ? (
+          <motion.div
+            key="picker"
+            initial={{ opacity: 0, y: 6 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -6 }}
+            transition={settle}
+          >
+            <TimePicker
+              value={end.date}
+              onChange={end.onChange}
+              format={timeFormat}
+              minuteStep={minuteStep}
+              minTime={end.min}
+              maxTime={null}
+              color={color}
+              disabled={disabled}
+              className="h-28"
+            />
+          </motion.div>
+        ) : (
+          <motion.div
+            key="hint"
+            initial={{ opacity: 0, y: 6 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -6 }}
+            transition={settle}
+            className="h-28 rounded-xl border border-dashed border-border/80 flex flex-col items-center justify-center gap-1.5 px-3 text-center"
+          >
+            <CalendarDays className="size-4 text-muted-foreground/70" />
+            <span className="text-[11px] font-medium leading-snug text-muted-foreground">
+              Pick an end day on the calendar
+            </span>
+          </motion.div>
+        )}
+      </AnimatePresence>
+    </div>
+  );
+
+  /** The two columns, stacked in the rail or side by side under the calendar. */
+  const timeColumns = (stacked: boolean) => (
+    <div
       className={cn(
-        "@container/range w-full rounded-2xl bg-card border border-border/80 p-5 flex flex-col gap-4 text-foreground select-none overflow-hidden shadow-none mx-auto my-auto",
-        // A single month with time columns may grow so the columns can sit
-        // beside the calendar; the container query below decides when.
-        isDual ? "max-w-2xl" : showTime ? "max-w-xl" : "max-w-sm",
-        disabled && "opacity-60 pointer-events-none",
-        className
+        "grid gap-4",
+        stacked ? "grid-cols-1" : "grid-cols-1 sm:grid-cols-2",
       )}
     >
-      {/* Calendar + (single-month) time columns: stacked, or side by side with
-          the times on the RIGHT once the card is wide enough. */}
-      <div
+      {timeEnds.map((end, i) => (
+        <motion.div
+          key={end.key}
+          initial={{ opacity: 0, x: stacked ? -12 : 0, y: stacked ? 0 : 8 }}
+          animate={{ opacity: 1, x: 0, y: 0 }}
+          transition={
+            reduceMotion
+              ? { duration: 0 }
+              : { ...settle, delay: 0.12 + i * 0.07 }
+          }
+        >
+          {renderTimeColumn(end)}
+        </motion.div>
+      ))}
+    </div>
+  );
+
+  return (
+    <div ref={frameRef} className={frameClass}>
+      <motion.article
+        initial={false}
+        animate={{
+          maxWidth: isDual
+            ? DUAL_WIDTH
+            : sideTimes && railOpen
+              ? CALENDAR_WITH_RAIL_WIDTH
+              : CALENDAR_WIDTH,
+        }}
+        transition={unfold}
         className={cn(
-          "w-full flex flex-col gap-6",
-          sideTimes && "@min-[32rem]/range:flex-row @min-[32rem]/range:gap-0"
+          "w-full rounded-2xl bg-card border border-border/80 p-5 flex flex-col gap-4 text-foreground select-none overflow-hidden shadow-none mx-auto my-auto",
+          disabled && "opacity-60 pointer-events-none",
+          className,
         )}
       >
-        {/* Calendars Grid Area */}
-        <div className={cn("w-full flex flex-col gap-6 min-w-0", isDual && "sm:flex-row sm:gap-8")}>
-          {/* Left Calendar (Month 1) */}
-          {renderSingleMonthGrid(year1, month1, days1, true, !isDual)}
-
-          {/* Right Calendar (Month 2 - Dual Variant Only) */}
-          {isDual && (
-            <div className="border-t border-border/60 pt-6 sm:border-t-0 sm:pt-0 sm:border-l sm:pl-8 flex-1">
-              {renderSingleMonthGrid(year2, month2, days2, false, true)}
-            </div>
-          )}
-        </div>
-
-        {/* Start / End time */}
-        {showTime && (
+        {/* Calendar + time rail: the rail unfolds to the RIGHT of a single month
+          when there is room, and DOWN from under the calendar otherwise. */}
+        <div className={cn("w-full flex", sideTimes ? "flex-row" : "flex-col")}>
+          {/* Calendars Grid Area */}
           <div
             className={cn(
-              "grid grid-cols-1 sm:grid-cols-2 gap-4 pt-4 border-t border-border/60",
-              // Beside the calendar: one fixed-width column (so the lists are
-              // never squeezed), Start over End, divider on the left.
-              sideTimes &&
-                "@min-[32rem]/range:grid-cols-1 @min-[32rem]/range:w-44 @min-[32rem]/range:shrink-0 @min-[32rem]/range:pt-0 @min-[32rem]/range:border-t-0 @min-[32rem]/range:border-l @min-[32rem]/range:pl-5 @min-[32rem]/range:ml-6"
+              "w-full flex flex-col gap-6 min-w-0",
+              isDual && "sm:flex-row sm:gap-8",
             )}
           >
-            {(
-              [
-                { key: "from", label: "Start", date: selectingFrom, min: fromMinTime, max: null, onChange: handleFromTime },
-                { key: "to", label: "End", date: selectingTo, min: toMinTime, max: null, onChange: handleToTime },
-              ] as const
-            ).map((end) => (
-              <div key={end.key} className="flex flex-col gap-2 min-w-0">
-                <div className="flex items-center justify-between">
-                  <span className="flex items-center gap-1.5 text-[10px] font-bold uppercase tracking-wider text-muted-foreground">
-                    <Clock className="size-3.5" /> {end.label}
-                  </span>
-                  <span
-                    className={cn(
-                      "text-xs font-bold tabular-nums",
-                      end.date ? theme.text : "text-muted-foreground"
-                    )}
-                  >
-                    {end.date ? formatTime(end.date, timeFormat) : "--:--"}
-                  </span>
-                </div>
-                <TimePicker
-                  value={end.date}
-                  onChange={end.onChange}
-                  format={timeFormat}
-                  minuteStep={minuteStep}
-                  minTime={end.min}
-                  maxTime={end.max}
-                  color={color}
-                  disabled={disabled || !end.date}
-                  className="h-28"
-                />
-              </div>
-            ))}
-          </div>
-        )}
-      </div>
+            {/* Left Calendar (Month 1) */}
+            {renderSingleMonthGrid(year1, month1, days1, true, !isDual)}
 
-      {/* Bottom Footer Status Bar */}
-      <footer className="flex items-center justify-between pt-3 mt-1 border-t border-border/60">
-        <div className="text-[11px] font-medium text-muted-foreground truncate max-w-[280px]">
-          {selectingFrom && selectingTo && (showTime || !isSameDay(selectingFrom, selectingTo)) ? (
-            <span className="flex items-center gap-1.5">
-              <span className={cn("size-2 rounded-full", theme.bg)} />
-              <strong className="text-foreground">{formatStamp(selectingFrom)}</strong> –{" "}
-              <strong className="text-foreground">{formatStamp(selectingTo)}</strong>
-            </span>
-          ) : selectingFrom ? (
-            <span className="flex items-center gap-1.5">
-              <span className={cn("size-2 rounded-full", theme.bg)} />
-              <strong className="text-foreground">{formatStamp(selectingFrom)}</strong>
-            </span>
-          ) : (
-            <span>Select date range</span>
-          )}
+            {/* Right Calendar (Month 2 - Dual Variant Only) */}
+            {isDual && (
+              <div className="border-t border-border/60 pt-6 sm:border-t-0 sm:pt-0 sm:border-l sm:pl-8 flex-1">
+                {renderSingleMonthGrid(year2, month2, days2, false, true)}
+              </div>
+            )}
+          </div>
+
+          {/* Start / End time rail */}
+          <AnimatePresence initial={false}>
+            {railOpen && sideTimes && (
+              <motion.div
+                key="rail-side"
+                initial={{ width: 0, opacity: 0 }}
+                animate={{ width: "auto", opacity: 1 }}
+                exit={{ width: 0, opacity: 0, transition: settle }}
+                transition={unfold}
+                className="shrink-0 overflow-hidden"
+              >
+                {/* Fixed-width column so the lists are never squeezed mid-unfold. */}
+                <div className="w-44 ml-6 pl-5 border-l border-border/60 h-full">
+                  {timeColumns(true)}
+                </div>
+              </motion.div>
+            )}
+            {railOpen && !sideTimes && (
+              <motion.div
+                key="rail-stacked"
+                initial={{ height: 0, opacity: 0 }}
+                animate={{ height: "auto", opacity: 1 }}
+                exit={{ height: 0, opacity: 0, transition: settle }}
+                transition={unfold}
+                className="overflow-hidden"
+              >
+                <div className="pt-4 mt-6 border-t border-border/60">
+                  {timeColumns(false)}
+                </div>
+              </motion.div>
+            )}
+          </AnimatePresence>
         </div>
 
-        {(selectingFrom || selectingTo) && (
-          <button
-            type="button"
-            onClick={resetRange}
-            className="flex items-center gap-1 px-2.5 py-1 rounded-lg border border-border/80 text-[11px] font-bold text-muted-foreground hover:text-foreground hover:bg-muted transition-colors"
-          >
-            <RotateCcw className="size-3" />
-            Reset
-          </button>
-        )}
-      </footer>
-    </article>
+        {/* Bottom Footer Status Bar */}
+        <footer className="flex items-center justify-between pt-3 mt-1 border-t border-border/60">
+          <div className="text-[11px] font-medium text-muted-foreground truncate max-w-[280px]">
+            {selectingFrom &&
+            selectingTo &&
+            (showTime || !isSameDay(selectingFrom, selectingTo)) ? (
+              <span className="flex items-center gap-1.5">
+                <span className={cn("size-2 rounded-full", theme.bg)} />
+                <strong className="text-foreground">
+                  {formatStamp(selectingFrom)}
+                </strong>{" "}
+                –{" "}
+                <strong className="text-foreground">
+                  {formatStamp(selectingTo)}
+                </strong>
+              </span>
+            ) : selectingFrom ? (
+              <span className="flex items-center gap-1.5">
+                <span className={cn("size-2 rounded-full", theme.bg)} />
+                <strong className="text-foreground">
+                  {formatStamp(selectingFrom)}
+                </strong>
+                {showTime && <span>– choose an end day</span>}
+              </span>
+            ) : (
+              <span>
+                {showTime ? "Choose a start day" : "Select date range"}
+              </span>
+            )}
+          </div>
+
+          {(selectingFrom || selectingTo) && (
+            <button
+              type="button"
+              onClick={resetRange}
+              className="flex items-center gap-1 px-2.5 py-1 rounded-lg border border-border/80 text-[11px] font-bold text-muted-foreground hover:text-foreground hover:bg-muted transition-colors"
+            >
+              <RotateCcw className="size-3" />
+              {showTime ? "Clear" : "Reset"}
+            </button>
+          )}
+        </footer>
+      </motion.article>
+    </div>
   );
 }

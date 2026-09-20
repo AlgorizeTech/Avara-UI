@@ -13,7 +13,7 @@ Open each dialog from its trigger — the background scrollbar vanishes while it
 export const usageDefault = `"use client";
 
 // CopyField ships with the copy-button item:
-// npx shadcn@latest add https://algorize-ui.vercel.app/r/copy-button.json
+// npx shadcn@latest add @algorize-ui/copy-button
 
 export default function ShareDialog() {
   return (
@@ -277,6 +277,13 @@ export default function NestedDialog() {
 }`;
 
 ## Installation
+
+Register the @algorize-ui registry once per project, then add the component:
+
+```bash
+npx shadcn@latest registry add @algorize-ui=https://algorize-ui.vercel.app/r/{name}.json
+npx shadcn@latest add @algorize-ui/dialog
+```
 
 ## Examples
 

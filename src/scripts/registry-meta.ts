@@ -152,7 +152,7 @@ export const META: Record<string, ItemMeta> = {
     description:
       "An interactive Range Date Picker featuring single month, dual-month, and rate-priced calendar layouts with customizable theme colors.",
     categories: ["forms", "utilities"],
-    docs: "Supports variant=('single' | 'dual' | 'priced-single' | 'priced-dual'), getPrice, color, value={from, to}, and onChange.",
+    docs: "Named export: RangeDatePicker. Supports variant=('single' | 'dual' | 'priced-single' | 'priced-dual'), getPrice, color, value={from, to}, onChange, disablePast / minDate / maxDate. `showTime` adds Start / End time columns: the card opens as a bare calendar (empty when uncontrolled) and a time rail unfolds beside it on the first pick — under it when narrow — and folds away on Clear; `timeFormat` (12h | 24h) and `minuteStep` tune the columns. Installs time-picker alongside.",
   },
   "otp-input": {
     description:
@@ -564,11 +564,35 @@ export const META: Record<string, ItemMeta> = {
     categories: ["marketing", "layout"],
     docs: "Named export: FashionHero (plus FashionHero.Look). Composed from the circular-text, avatar-stack, text-animation, tilted-card and dialog items, which install alongside it. Pass `heading`, up to seven `looks` ({ src, alt, tone, blend?, position? }), `video` ({ badge, url }), `avatars` + `avatarsHref`, `cta`, `quote`, `teaser` and `linkComponent`; `accent` sets --primary, `reveal` is in-view or immediate.",
   },
+  "component-wall": {
+    description:
+      "A landing hero for a component library: copy on the left, and on the right a wall of screenshots that never ends. A camera hangs over the wall zoomed in on one card; every few seconds it pulls back, glides to another card picked at random and settles on it.",
+    categories: ["marketing", "layout"],
+    docs: "Named export: ComponentWall. Composed from the avatar-stack and half-stars items, which install alongside it. Pass `badge` ({ label, text?, href?, icon? }), `heading`, `description`, `primaryAction`/`secondaryAction` ({ label, href }), `trust` ({ text, avatars?, rating? }) and `items` ({ title, image }[] — every screenshot sits in the same 493:332 frame). `columns` sets the grid, `interval` the rest between flights in ms (0 holds still), `order` is serial (card by card) or shuffle (every card once per round, at random), `zoom` the resting scale; `onFocus` reports the card in view; `linkComponent` takes next/link.",
+  },
   "collage-hero": {
     description:
       "A playful hero: a badge whose name turns around a mark, a serif headline with two coloured words, hashtag pills, a five-column photo collage and a footer with a quote, a scroll pill and a watch-video trigger. Use it for a kindergarten, studio, school or any warm, busy place.",
     categories: ["marketing", "layout"],
     docs: "Named export: CollageHero (plus CollageHero.Badge and CollageHero.Photo). Composed from the button, circular-text and dialog items, which install alongside it. Pass `brand`, `heading` (with <em> for the coloured words), `tags`, `caption`, seven `photos`, `quote`, `scrollLabel`/`scrollTo` and `video` ({ text, url }). `accent` sets --primary for the section, `highlight` the second colour; `reveal` is in-view or immediate.",
+  },
+  "honeycomb-hero": {
+    description:
+      "A travel hero in deep teal: a light line over a huge gold word, and a honeycomb of hexagonal photographs with a gold hexagonal call to action set among them. The large hexagon is the slide on screen and its photograph tints the background; every five seconds, or on the arrows at the foot, every hexagon moves one step along the ring, endlessly.",
+    categories: ["marketing", "layout"],
+    docs: "Named export: HoneycombHero. Pass `title` and `titleAccent`, `subtitle`, `primaryActionLabel` (a \\n breaks the line) and `primaryActionHref`, `images` ({ src, alt }[] in queue order — nine cells are visible), `socialLinks`, `interval` in ms (0 turns autoplay off) and `onChange`. `accent` is the gold, `background` the teal; `linkComponent` takes next/link.",
+  },
+  "orbit-gallery": {
+    description:
+      "A two-column hero with a ring of photo cards revolving on the right, each card staying upright as it travels. Hovering the ring holds it still; moving the pointer over the section leaves a trail of dots in the accent colour. Use it for an agency, studio or gallery.",
+    categories: ["marketing", "layout"],
+    docs: "Named export: OrbitGallery. Pass `badgeText`/`badgeHref`, `title` and `titleAccent`, `subtitle`, primary and secondary actions, `images` (any count — they space themselves evenly), `duration` in seconds for one revolution and `highlights` for the dotted facts row. `color` is a preset name or any CSS colour; `linkComponent` takes next/link.",
+  },
+  "hero-carousel": {
+    description:
+      "A full-bleed photo hero with a queue of cards: the front card is the slide on screen, the ones behind it are what comes next. Every five seconds or on a click the queue slides forward, the photograph behind crossfades and the headline and caption follow. A glass panel carries the faces of past guests, an intro and the call to action.",
+    categories: ["marketing", "layout"],
+    docs: "Named export: HeroCarousel. Composed from the avatar-stack item, which installs alongside it. Pass `slides` ({ image, alt, title, description?, heading?, position? }), `eyebrow`, `heading`, `intro`, `avatars` + `avatarsLabel`, `cta` ({ label, href }) and `linkComponent`. `interval` is the autoplay gap in ms (0 turns it off), `accent` sets --primary, `reveal` is in-view or immediate, `onChange` reports the front slide.",
   },
   newsletter: {
     description:
@@ -757,7 +781,7 @@ export const META: Record<string, ItemMeta> = {
   // ---- Phase 4E: marketing & landing blocks ----
   hero: {
     description:
-      "A prop-driven hero section supporting spring word bounce, character typewriter, and 3D split marquee slider variants.",
+      "A prop-driven hero section supporting spring word bounce, character typewriter, 3D split marquee slider, pet-shop and doctor variants.",
     categories: ["marketing"],
     docs: "Named export: HeroBlock. Everything is a prop — `variant` switches between 'bounce', 'typing', and 'slider', `typingWords` cycles between `titlePrefix` and `titleSuffix`, `cliCommand` renders a copyable install line, and `sliderImages` / `mainImage` customize the 3D marquee visual.",
   },

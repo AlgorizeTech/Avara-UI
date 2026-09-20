@@ -70,18 +70,26 @@ about React Server Components — a Vite app has none.
 npx shadcn@latest init
 ```
 
-### 4. Add a component
+### 4. Register the registry
+
+Also once per project. It tells the CLI where `@algorize-ui/…` lives:
+
+```bash
+npx shadcn@latest registry add @algorize-ui=https://algorize-ui.vercel.app/r/{name}.json
+```
+
+### 5. Add a component
 
 Every component page carries its own command — this one installs the card:
 
 ```bash
-npx shadcn@latest add card.json
+npx shadcn@latest add @algorize-ui/card
 ```
 
 The CLI writes `src/components/custom/blocks/CardBlock.tsx` and installs whatever
 that component needs.
 
-### 5. Use it
+### 6. Use it
 
 ```tsx
 // src/App.tsx

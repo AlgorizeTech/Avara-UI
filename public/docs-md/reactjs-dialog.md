@@ -11,7 +11,7 @@ Open each dialog from its trigger — the background scrollbar vanishes while it
 `DialogContent` sizes itself from a `size` prop: `sm` through `xl` for panels that sit on the page, and `full` for a surface that takes the whole viewport with its content centred in the middle of it. Dialogs also nest — render one inside another's content and the inner window portals above its parent, with `Escape` and backdrop clicks reaching only whichever one is on top.
 
 export const usageDefault = `// CopyField ships with the copy-button item:
-// npx shadcn@latest add https://algorize-ui.vercel.app/r/copy-button.json
+// npx shadcn@latest add @algorize-ui/copy-button
 
 export default function ShareDialog() {
   return (
@@ -267,6 +267,13 @@ export default function NestedDialog() {
 }`;
 
 ## Installation
+
+Register the @algorize-ui registry once per project, then add the component:
+
+```bash
+npx shadcn@latest registry add @algorize-ui=https://algorize-ui.vercel.app/r/{name}.json
+npx shadcn@latest add @algorize-ui/dialog
+```
 
 ## Examples
 

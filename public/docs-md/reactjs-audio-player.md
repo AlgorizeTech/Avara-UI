@@ -82,6 +82,13 @@ export default function NativeAudioHero() {
 
 ## Installation
 
+Register the @algorize-ui registry once per project, then add the component:
+
+```bash
+npx shadcn@latest registry add @algorize-ui=https://algorize-ui.vercel.app/r/{name}.json
+npx shadcn@latest add @algorize-ui/audio-player
+```
+
 ## Plyr audio
 
 The Plyr player from the Video Player page also has an audio layout: set `mediaType="audio"` and the card drops its video frame and sizes to the control bar. Use it when you want Plyr's control bar for both media types across a site.
@@ -105,6 +112,13 @@ export default function PlyrAudioHero() {
 />
 
 ### Install the Plyr player
+
+Register the @algorize-ui registry once per project, then add the component:
+
+```bash
+npx shadcn@latest registry add @algorize-ui=https://algorize-ui.vercel.app/r/{name}.json
+npx shadcn@latest add @algorize-ui/video-player-plyr
+```
 
 ## Features
 

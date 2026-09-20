@@ -119,8 +119,9 @@ cd my-app
 npm install clsx tailwind-merge framer-motion lucide-react
 
 # Add Shadcn UI components for faster development
-npx shadcn-ui@latest init
-npx shadcn-ui@latest add button card dialog
+npx shadcn@latest init
+npx shadcn@latest registry add @algorize-ui=https://algorize-ui.vercel.app/r/{name}.json
+npx shadcn@latest add @algorize-ui/button @algorize-ui/card @algorize-ui/dialog
 
 # Start the development server on port 3000
 npm run dev
@@ -175,6 +176,13 @@ export default function MultiFileSnippet() {
 }`;
 
 ## Installation
+
+Register the @algorize-ui registry once per project, then add the component:
+
+```bash
+npx shadcn@latest registry add @algorize-ui=https://algorize-ui.vercel.app/r/{name}.json
+npx shadcn@latest add @algorize-ui/custom-code-block
+```
 
 ## Examples
 

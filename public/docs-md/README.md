@@ -37,6 +37,7 @@ This directory contains auto-generated Markdown versions of all MDX documentatio
 - [nextjs/collapsible](/docs/nextjs-collapsible.md) - Source: `[framework]\collapsible\page.mdx`
 - [nextjs/color-picker](/docs/nextjs-color-picker.md) - Source: `[framework]\color-picker\page.mdx`
 - [nextjs/command](/docs/nextjs-command.md) - Source: `[framework]\command\page.mdx`
+- [nextjs/component-wall](/docs/nextjs-component-wall.md) - Source: `[framework]\component-wall\page.mdx`
 - [nextjs/context-menu](/docs/nextjs-context-menu.md) - Source: `[framework]\context-menu\page.mdx`
 - [nextjs/conversation-timeline](/docs/nextjs-conversation-timeline.md) - Source: `[framework]\conversation-timeline\page.mdx`
 - [nextjs/copy-button](/docs/nextjs-copy-button.md) - Source: `[framework]\copy-button\page.mdx`
@@ -73,6 +74,8 @@ This directory contains auto-generated Markdown versions of all MDX documentatio
 - [nextjs/half-stars](/docs/nextjs-half-stars.md) - Source: `[framework]\half-stars\page.mdx`
 - [nextjs/heart-signal](/docs/nextjs-heart-signal.md) - Source: `[framework]\heart-signal\page.mdx`
 - [nextjs/hero](/docs/nextjs-hero.md) - Source: `[framework]\hero\page.mdx`
+- [nextjs/hero-carousel](/docs/nextjs-hero-carousel.md) - Source: `[framework]\hero-carousel\page.mdx`
+- [nextjs/honeycomb-hero](/docs/nextjs-honeycomb-hero.md) - Source: `[framework]\honeycomb-hero\page.mdx`
 - [nextjs/image-compare](/docs/nextjs-image-compare.md) - Source: `[framework]\image-compare\page.mdx`
 - [nextjs/index](/docs/nextjs-index.md) - Source: `[framework]\index\page.mdx`
 - [nextjs/infrastructure-topology](/docs/nextjs-infrastructure-topology.md) - Source: `[framework]\infrastructure-topology\page.mdx`
@@ -93,6 +96,7 @@ This directory contains auto-generated Markdown versions of all MDX documentatio
 - [nextjs/navigation](/docs/nextjs-navigation.md) - Source: `[framework]\navigation\page.mdx`
 - [nextjs/network-graph](/docs/nextjs-network-graph.md) - Source: `[framework]\network-graph\page.mdx`
 - [nextjs/newsletter](/docs/nextjs-newsletter.md) - Source: `[framework]\newsletter\page.mdx`
+- [nextjs/orbit-gallery](/docs/nextjs-orbit-gallery.md) - Source: `[framework]\orbit-gallery\page.mdx`
 - [nextjs/otp-input](/docs/nextjs-otp-input.md) - Source: `[framework]\otp-input\page.mdx`
 - [nextjs/pagination](/docs/nextjs-pagination.md) - Source: `[framework]\pagination\page.mdx`
 - [nextjs/particle-canvas](/docs/nextjs-particle-canvas.md) - Source: `[framework]\particle-canvas\page.mdx`
@@ -178,6 +182,7 @@ This directory contains auto-generated Markdown versions of all MDX documentatio
 - [reactjs/collapsible](/docs/reactjs-collapsible.md) - Source: `[framework]\collapsible\page.mdx`
 - [reactjs/color-picker](/docs/reactjs-color-picker.md) - Source: `[framework]\color-picker\page.mdx`
 - [reactjs/command](/docs/reactjs-command.md) - Source: `[framework]\command\page.mdx`
+- [reactjs/component-wall](/docs/reactjs-component-wall.md) - Source: `[framework]\component-wall\page.mdx`
 - [reactjs/context-menu](/docs/reactjs-context-menu.md) - Source: `[framework]\context-menu\page.mdx`
 - [reactjs/conversation-timeline](/docs/reactjs-conversation-timeline.md) - Source: `[framework]\conversation-timeline\page.mdx`
 - [reactjs/copy-button](/docs/reactjs-copy-button.md) - Source: `[framework]\copy-button\page.mdx`
@@ -214,6 +219,8 @@ This directory contains auto-generated Markdown versions of all MDX documentatio
 - [reactjs/half-stars](/docs/reactjs-half-stars.md) - Source: `[framework]\half-stars\page.mdx`
 - [reactjs/heart-signal](/docs/reactjs-heart-signal.md) - Source: `[framework]\heart-signal\page.mdx`
 - [reactjs/hero](/docs/reactjs-hero.md) - Source: `[framework]\hero\page.mdx`
+- [reactjs/hero-carousel](/docs/reactjs-hero-carousel.md) - Source: `[framework]\hero-carousel\page.mdx`
+- [reactjs/honeycomb-hero](/docs/reactjs-honeycomb-hero.md) - Source: `[framework]\honeycomb-hero\page.mdx`
 - [reactjs/image-compare](/docs/reactjs-image-compare.md) - Source: `[framework]\image-compare\page.mdx`
 - [reactjs/index](/docs/reactjs-index.md) - Source: `[framework]\index\page.mdx`
 - [reactjs/infrastructure-topology](/docs/reactjs-infrastructure-topology.md) - Source: `[framework]\infrastructure-topology\page.mdx`
@@ -234,6 +241,7 @@ This directory contains auto-generated Markdown versions of all MDX documentatio
 - [reactjs/navigation](/docs/reactjs-navigation.md) - Source: `[framework]\navigation\page.mdx`
 - [reactjs/network-graph](/docs/reactjs-network-graph.md) - Source: `[framework]\network-graph\page.mdx`
 - [reactjs/newsletter](/docs/reactjs-newsletter.md) - Source: `[framework]\newsletter\page.mdx`
+- [reactjs/orbit-gallery](/docs/reactjs-orbit-gallery.md) - Source: `[framework]\orbit-gallery\page.mdx`
 - [reactjs/otp-input](/docs/reactjs-otp-input.md) - Source: `[framework]\otp-input\page.mdx`
 - [reactjs/pagination](/docs/reactjs-pagination.md) - Source: `[framework]\pagination\page.mdx`
 - [reactjs/particle-canvas](/docs/reactjs-particle-canvas.md) - Source: `[framework]\particle-canvas\page.mdx`

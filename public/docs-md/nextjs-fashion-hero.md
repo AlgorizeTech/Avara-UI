@@ -6,15 +6,19 @@ A fashion hero: a bold two-line headline between a turning video badge and a sta
 
 export const usageSection = `"use client";
 
+// Photos from Pexels, free to use.
+const pexels = (id: number, w = 700) =>
+  \`https://images.pexels.com/photos/\${id}/pexels-photo-\${id}.jpeg?auto=compress&cs=tinysrgb&w=\${w}\`;
+
 // A person on a plain studio background, multiplied onto a colour that echoes the outfit.
 const LOOKS = [
-  { src: "/looks/lime-trousers.jpg", alt: "A woman in a pink shirt and lime trousers, on yellow", tone: "#f0a72f", blend: false },
-  { src: "/looks/june.jpg", alt: "A woman in a dark top, smiling", tone: "#f7d774" },
-  { src: "/looks/pink-dress.jpg", alt: "A woman in a pale pink dress", tone: "#f4b7c5", blend: false },
-  { src: "/looks/striped-shirt.jpg", alt: "A woman in a striped blue shirt", tone: "#8cc4ee" },
-  { src: "/looks/coral-dress.jpg", alt: "A woman in a coral shirt dress", tone: "#f9a875" },
-  { src: "/looks/grey-hoodie.jpg", alt: "A woman in a grey hoodie, hood up", tone: "#bfe4c6" },
-  { src: "/looks/leather-jacket.jpg", alt: "A man in a black leather jacket", tone: "#2e9c82" },
+  { src: pexels(16944801), alt: "A woman in a pink shirt and lime trousers, on yellow", tone: "#f0a72f", blend: false },
+  { src: pexels(1520760, 500), alt: "A woman in a dark top, smiling", tone: "#f7d774" },
+  { src: pexels(1036623), alt: "A woman in a pale pink dress", tone: "#f4b7c5", blend: false },
+  { src: pexels(1462637), alt: "A woman in a striped blue shirt", tone: "#8cc4ee" },
+  { src: pexels(9558236), alt: "A woman in a coral shirt dress", tone: "#f9a875" },
+  { src: pexels(6311613), alt: "A woman in a grey hoodie, hood up", tone: "#bfe4c6" },
+  { src: pexels(3775534, 500), alt: "A man in a black leather jacket", tone: "#2e9c82" },
 ];
 
 export default function Hero() {
@@ -25,6 +29,13 @@ export default function Hero() {
 `;
 
 ## Installation
+
+Register the @algorize-ui registry once per project, then add the component:
+
+```bash
+npx shadcn@latest registry add @algorize-ui=https://algorize-ui.vercel.app/r/{name}.json
+npx shadcn@latest add @algorize-ui/fashion-hero
+```
 
 ## Photos on colour
 

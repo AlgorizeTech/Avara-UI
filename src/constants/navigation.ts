@@ -276,6 +276,13 @@ const rawNavigation: NavigationItem[] = [
         keywords: ["booking", "appointment", "schedule", "calendar", "slots", "doctor", "clinic", "reservation"],
       },
       {
+        label: "Component Wall",
+        slug: "component-wall",
+        badge: "New",
+        addedOn: "2026-09-20",
+        keywords: ["hero", "wall", "screenshots", "camera", "zoom", "library", "landing", "showcase", "grid"],
+      },
+      {
         label: "Collage Hero",
         slug: "collage-hero",
         badge: "New",
@@ -291,6 +298,27 @@ const rawNavigation: NavigationItem[] = [
       },
       { label: "Footer", slug: "footer" },
       { label: "Hero", slug: "hero" },
+      {
+        label: "Hero Carousel",
+        slug: "hero-carousel",
+        badge: "New",
+        addedOn: "2026-09-19",
+        keywords: ["hero", "carousel", "slider", "travel", "tour", "photos", "glass", "autoplay", "cards", "queue"],
+      },
+      {
+        label: "Honeycomb Hero",
+        slug: "honeycomb-hero",
+        badge: "New",
+        addedOn: "2026-09-20",
+        keywords: ["hero", "hexagon", "honeycomb", "nature", "travel", "photos", "mosaic", "norway"],
+      },
+      {
+        label: "Orbit Gallery",
+        slug: "orbit-gallery",
+        badge: "New",
+        addedOn: "2026-09-20",
+        keywords: ["hero", "orbit", "gallery", "revolving", "carousel", "cards", "ring", "agency", "studio"],
+      },
       {
         label: "Fashion Hero",
         slug: "fashion-hero",

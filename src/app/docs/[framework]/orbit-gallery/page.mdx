@@ -1,0 +1,159 @@
+import { ExampleShowcase } from "@/components/site/Sandbox";
+import { extractCode } from "@/lib/code";
+
+# Orbit Gallery
+
+A two-column hero for an agency, studio or gallery: copy and actions on the left, and on the right a ring of photo cards that revolves once every 36 seconds, each card staying upright as it travels. Hovering the ring holds it still; moving the pointer anywhere over the section leaves a short trail of dots in the accent colour.
+
+The ring is pure CSS — one keyframe rotates each card about the centre, pushes it out by a radius that grows with the breakpoint, and counter-rotates it upright — so any number of `images` space themselves evenly and the motion costs nothing on the main thread. Under `prefers-reduced-motion` the ring holds still.
+
+export const usage = `"use client";
+
+import Link from "next/link";
+import { OrbitGallery } from "@/components/custom/blocks/OrbitGalleryBlock";
+
+// Landscapes from Unsplash, free to use.
+const IMAGES = [
+  "https://images.unsplash.com/photo-1506744038136-46273834b3fb?q=80&w=600&auto=format&fit=crop",
+  "https://images.unsplash.com/photo-1448375240586-882707db888b?q=80&w=600&auto=format&fit=crop",
+  "https://images.unsplash.com/photo-1470071459604-3b5ec3a7fe05?q=80&w=600&auto=format&fit=crop",
+  "https://images.unsplash.com/photo-1441974231531-c6227db76b6e?q=80&w=600&auto=format&fit=crop",
+  "https://images.unsplash.com/photo-1472214103451-9374bd1c798e?q=80&w=600&auto=format&fit=crop",
+  "https://images.unsplash.com/photo-1501785888041-af3ef285b470?q=80&w=600&auto=format&fit=crop",
+];
+
+export default function Hero() {
+  return (
+    <OrbitGallery
+      badgeText="Brand & motion studio"
+      badgeHref="/about"
+      title="Motion is the"
+      titleAccent="first thing anyone reads."
+      subtitle="We build identity systems and the motion that carries them — from the first frame to the shipped product."
+      primaryActionLabel="Start a project"
+      primaryActionHref="/contact"
+      secondaryActionLabel="See the work"
+      secondaryActionHref="/work"
+      images={IMAGES}
+      highlights={[{ label: "40 shipped identities" }, { label: "Motion first", color: "#10b981" }]}
+      duration={36}
+      linkComponent={Link}
+    />
+  );
+}
+`;
+
+<ExampleShowcase
+  name="orbit-gallery"
+  colorControl
+  columns={1}
+  minHeight={520}
+  examples={[
+    {
+      title: "Motion is the first thing anyone reads",
+      subheading: "Copy and actions on the left, the revolving ring on the right. Hover the ring to hold it; move the pointer over the section for the trail.",
+      propNotes: [
+        {
+          prop: "images",
+          effect: "are the cards on the ring, in orbit order. Any count works — each is offset by a share of `duration`, so they stay evenly spaced.",
+        },
+        {
+          prop: "duration",
+          value: "36",
+          effect: "is the seconds for one full revolution.",
+        },
+        {
+          prop: "highlights",
+          effect: "are the dotted facts under the actions; each takes a `label` and an optional dot `color` (the accent by default). Pass `[]` to drop the row.",
+        },
+        {
+          prop: "color",
+          effect: "is the accent — a preset (indigo, rose, emerald, zinc) or any CSS colour — and is nudged for contrast on light and dark surfaces. Left unset it follows your theme.",
+        },
+      ],
+      usage,
+      code: extractCode("src/components/custom/blocks/OrbitGalleryBlock.tsx"),
+    },
+  ]}
+/>
+
+## Installation
+
+<Installation name="orbit-gallery" />
+
+## Props Reference
+
+<div className="overflow-x-auto my-4">
+  <table>
+    <thead>
+      <tr>
+        <th>Prop</th>
+        <th>Type</th>
+        <th>Default</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><code>badgeText</code>, <code>badgeHref</code></td>
+        <td><code>string</code></td>
+        <td><code>"Brand & motion studio"</code>, <code>"#"</code></td>
+        <td>The tracked line above the headline and where it links.</td>
+      </tr>
+      <tr>
+        <td><code>title</code>, <code>titleAccent</code></td>
+        <td><code>string</code></td>
+        <td><code>"Explore the"</code>, <code>"Beauty of Pure Nature."</code></td>
+        <td>The two lines of the headline; the second is set in the accent.</td>
+      </tr>
+      <tr>
+        <td><code>subtitle</code></td>
+        <td><code>string</code></td>
+        <td>—</td>
+        <td>The paragraph beside the accent rule.</td>
+      </tr>
+      <tr>
+        <td><code>primaryActionLabel</code>, <code>primaryActionHref</code></td>
+        <td><code>string</code></td>
+        <td><code>"Explore gallery"</code>, <code>"#"</code></td>
+        <td>The filled button.</td>
+      </tr>
+      <tr>
+        <td><code>secondaryActionLabel</code>, <code>secondaryActionHref</code></td>
+        <td><code>string</code></td>
+        <td>—</td>
+        <td>The outlined button; omitted when there is no label.</td>
+      </tr>
+      <tr>
+        <td><code>images</code></td>
+        <td><code>string[]</code></td>
+        <td>15 landscapes</td>
+        <td>The cards on the ring, in orbit order.</td>
+      </tr>
+      <tr>
+        <td><code>duration</code></td>
+        <td><code>number</code></td>
+        <td><code>36</code></td>
+        <td>Seconds per revolution.</td>
+      </tr>
+      <tr>
+        <td><code>highlights</code></td>
+        <td><code>&#123; label: string; color?: string &#125;[]</code></td>
+        <td>three facts</td>
+        <td>The dotted row under the actions.</td>
+      </tr>
+      <tr>
+        <td><code>color</code></td>
+        <td><code>string</code></td>
+        <td>theme primary</td>
+        <td>Accent colour — a preset name or any CSS colour.</td>
+      </tr>
+      <tr>
+        <td><code>linkComponent</code></td>
+        <td><code>ElementType</code></td>
+        <td><code>"a"</code></td>
+        <td>What renders every link; pass <code>next/link</code> in Next.js.</td>
+      </tr>
+    </tbody>
+  </table>
+</div>

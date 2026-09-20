@@ -6,11 +6,15 @@ A product hero on a soft grey ground: a headline that rises in word by word, one
 
 export const usageSection = `"use client";
 
+// Photos from Pexels, free to use.
+const pexels = (id: number, w = 800) =>
+  \`https://images.pexels.com/photos/\${id}/pexels-photo-\${id}.jpeg?auto=compress&cs=tinysrgb&w=\${w}\`;
+
 const AVATARS = [
-  { src: "/team/ana.jpg", alt: "Ana" },
-  { src: "/team/tom.jpg", alt: "Tom" },
-  { src: "/team/mei.jpg", alt: "Mei" },
-  { src: "/team/raj.jpg", alt: "Raj" },
+  { src: pexels(2379004, 120), alt: "Ana" },
+  { src: pexels(220453, 120), alt: "Tom" },
+  { src: pexels(2381069, 120), alt: "Mei" },
+  { src: pexels(1130626, 120), alt: "Raj" },
 ];
 
 export default function Hero() {
@@ -32,6 +36,13 @@ export default function Hero() {
 `;
 
 ## Installation
+
+Register the @algorize-ui registry once per project, then add the component:
+
+```bash
+npx shadcn@latest registry add @algorize-ui=https://algorize-ui.vercel.app/r/{name}.json
+npx shadcn@latest add @algorize-ui/support-hero
+```
 
 ## Layout
 

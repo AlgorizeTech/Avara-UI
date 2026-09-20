@@ -76,6 +76,13 @@ A customizable and interactive button component with a built-in ripple effect.
 
 ## Installation & Import
 
+Register the @algorize-ui registry once per project, then add the component:
+
+```bash
+npx shadcn@latest registry add @algorize-ui=https://algorize-ui.vercel.app/r/{name}.json
+npx shadcn@latest add @algorize-ui/button
+```
+
 Then import it:
 
 ```tsx

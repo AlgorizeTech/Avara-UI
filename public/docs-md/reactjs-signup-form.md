@@ -49,6 +49,13 @@ export default function MinimalLoginPage() {
 
 ### Install the login form
 
+Register the @algorize-ui registry once per project, then add the component:
+
+```bash
+npx shadcn@latest registry add @algorize-ui=https://algorize-ui.vercel.app/r/{name}.json
+npx shadcn@latest add @algorize-ui/login-form
+```
+
 ### More login examples
 
 Every example below is the same `LoginForm` you just installed — only the props change.
@@ -95,6 +102,13 @@ export default function MinimalRegisterPage() {
 }`;
 
 ### Install the register form
+
+Register the @algorize-ui registry once per project, then add the component:
+
+```bash
+npx shadcn@latest registry add @algorize-ui=https://algorize-ui.vercel.app/r/{name}.json
+npx shadcn@latest add @algorize-ui/register-form
+```
 
 ### More register examples
 
