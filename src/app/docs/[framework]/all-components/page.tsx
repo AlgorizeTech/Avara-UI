@@ -164,6 +164,8 @@ const COMPONENT_META: Record<
 	"book-appointment": { countText: "Practitioner Booking Flow", illustrationType: "book-appointment" },
 	"collage-hero": { countText: "Playful Photo Collage", illustrationType: "collage-hero" },
 	"hero-carousel": { countText: "Queue of Cards & Glass Panel", illustrationType: "hero-carousel" },
+	"honeycomb-hero": { countText: "Hexagonal Photo Mosaic", illustrationType: "honeycomb-hero" },
+	"orbit-gallery": { countText: "Revolving Ring of Cards", illustrationType: "orbit-gallery" },
 	"data-flow": { countText: "Sources → Node → Results", illustrationType: "data-flow" },
 	"fashion-hero": { countText: "Staggered Lookbook", illustrationType: "fashion-hero" },
 	"platform-grid": { countText: "Hairline Feature Grid", illustrationType: "platform-grid" },
@@ -3169,6 +3171,58 @@ function MiniatureIllustration({
 									Book
 								</span>
 							</div>
+						</div>
+					</div>
+				)}
+
+				{type === "honeycomb-hero" && (
+					<div className="w-full h-full flex gap-1.5 my-auto px-0.5 items-center">
+						<div className="flex-1 flex flex-col gap-0.5">
+							<span className="text-[5px] font-light text-muted-foreground">Amazing</span>
+							<div className="flex items-center gap-0.5">
+								<span className="h-[1px] w-2 bg-primary" />
+								<span className="text-[8px] font-black tracking-widest text-primary">NORWAY</span>
+							</div>
+							<span className="h-[2px] w-8 rounded bg-muted-foreground/30" />
+							<span className="h-[2px] w-6 rounded bg-muted-foreground/30" />
+						</div>
+						<div className="relative w-14 h-full">
+							{[
+								{ c: "left-0 top-1 w-6 h-7 bg-emerald-300" },
+								{ c: "left-5 top-0 w-3.5 h-4 bg-sky-200" },
+								{ c: "right-0 top-2 w-3.5 h-4 bg-teal-300" },
+								{ c: "left-2 bottom-0 w-3.5 h-4 bg-lime-300" },
+								{ c: "right-0 bottom-0 w-3.5 h-4 bg-cyan-300" },
+								{ c: "left-6 bottom-1 w-3.5 h-4 bg-primary" },
+							].map((h, i) => (
+								<span
+									key={i}
+									className={`absolute ${h.c}`}
+									style={{ clipPath: "polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%)" }}
+								/>
+							))}
+						</div>
+					</div>
+				)}
+
+				{type === "orbit-gallery" && (
+					<div className="w-full h-full flex gap-1.5 my-auto px-0.5 items-center">
+						<div className="flex-1 flex flex-col gap-0.5">
+							<span className="text-[4px] font-bold tracking-widest uppercase text-muted-foreground">✦ Studio</span>
+							<span className="text-[7px] font-black leading-[8px] text-foreground">
+								Motion is <span className="text-primary">first.</span>
+							</span>
+							<span className="h-[2px] w-8 rounded bg-muted-foreground/30" />
+							<span className="mt-0.5 h-2 w-6 rounded-[2px] bg-primary" />
+						</div>
+						<div className="relative size-12 shrink-0 rounded-full border border-border">
+							{[0, 60, 120, 180, 240, 300].map((deg, i) => (
+								<span
+									key={deg}
+									className={`absolute left-1/2 top-1/2 -ml-[3px] -mt-[4px] w-1.5 h-2 rounded-[2px] border border-background ${["bg-emerald-300", "bg-sky-300", "bg-amber-300", "bg-rose-300", "bg-lime-300", "bg-violet-300"][i]}`}
+									style={{ transform: `rotate(${deg}deg) translateY(-22px) rotate(${-deg}deg)` }}
+								/>
+							))}
 						</div>
 					</div>
 				)}

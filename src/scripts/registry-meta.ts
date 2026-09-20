@@ -570,6 +570,18 @@ export const META: Record<string, ItemMeta> = {
     categories: ["marketing", "layout"],
     docs: "Named export: CollageHero (plus CollageHero.Badge and CollageHero.Photo). Composed from the button, circular-text and dialog items, which install alongside it. Pass `brand`, `heading` (with <em> for the coloured words), `tags`, `caption`, seven `photos`, `quote`, `scrollLabel`/`scrollTo` and `video` ({ text, url }). `accent` sets --primary for the section, `highlight` the second colour; `reveal` is in-view or immediate.",
   },
+  "honeycomb-hero": {
+    description:
+      "A nature or travel hero: a light headline over a bold, tracked accent word, and a honeycomb of five hexagonal photographs with a hexagonal call to action set among them. A row of social links runs along the foot.",
+    categories: ["marketing", "layout"],
+    docs: "Named export: HoneycombHero. Pass `title` and `titleAccent`, `subtitle`, `primaryActionLabel`/`primaryActionHref`, five `images` ({ src, alt }: large left, top centre, middle right, bottom left, bottom right) and `socialLinks`. `color` is a preset name or any CSS colour; `linkComponent` takes next/link.",
+  },
+  "orbit-gallery": {
+    description:
+      "A two-column hero with a ring of photo cards revolving on the right, each card staying upright as it travels. Hovering the ring holds it still; moving the pointer over the section leaves a trail of dots in the accent colour. Use it for an agency, studio or gallery.",
+    categories: ["marketing", "layout"],
+    docs: "Named export: OrbitGallery. Pass `badgeText`/`badgeHref`, `title` and `titleAccent`, `subtitle`, primary and secondary actions, `images` (any count — they space themselves evenly), `duration` in seconds for one revolution and `highlights` for the dotted facts row. `color` is a preset name or any CSS colour; `linkComponent` takes next/link.",
+  },
   "hero-carousel": {
     description:
       "A full-bleed photo hero with a queue of cards: the front card is the slide on screen, the ones behind it are what comes next. Every five seconds or on a click the queue slides forward, the photograph behind crossfades and the headline and caption follow. A glass panel carries the faces of past guests, an intro and the call to action.",
@@ -763,7 +775,7 @@ export const META: Record<string, ItemMeta> = {
   // ---- Phase 4E: marketing & landing blocks ----
   hero: {
     description:
-      "A prop-driven hero section supporting spring word bounce, character typewriter, and 3D split marquee slider variants.",
+      "A prop-driven hero section supporting spring word bounce, character typewriter, 3D split marquee slider, pet-shop, doctor and component-wall variants.",
     categories: ["marketing"],
     docs: "Named export: HeroBlock. Everything is a prop — `variant` switches between 'bounce', 'typing', and 'slider', `typingWords` cycles between `titlePrefix` and `titleSuffix`, `cliCommand` renders a copyable install line, and `sliderImages` / `mainImage` customize the 3D marquee visual.",
   },

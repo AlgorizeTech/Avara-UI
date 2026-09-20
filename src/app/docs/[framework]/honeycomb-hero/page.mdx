@@ -1,0 +1,137 @@
+import { ExampleShowcase } from "@/components/site/Sandbox";
+import { extractCode } from "@/lib/code";
+
+# Honeycomb Hero
+
+A nature or travel hero: a light line over a bold, tracked accent word on the left, and on the right a honeycomb of five hexagonal photographs with a hexagonal call to action set among them. Each cell lifts a touch on hover; a row of social links runs along the foot over a faint grid that fades towards the edges.
+
+The hexagons are a single `clip-path` polygon on each cell, so the photographs stay ordinary `<img>` elements — swap any of the five for your own.
+
+export const usage = `"use client";
+
+import Link from "next/link";
+import { HoneycombHero } from "@/components/custom/blocks/HoneycombHeroBlock";
+
+const IMAGES = [
+  { src: "/norway/waterfall.jpg", alt: "A foggy waterfall in a green valley" },
+  { src: "/norway/forest.jpg", alt: "A sunlit forest path" },
+  { src: "/norway/fjord.jpg", alt: "An emerald fjord beach" },
+  { src: "/norway/trees.jpg", alt: "Sunlight through wilderness trees" },
+  { src: "/norway/peak.jpg", alt: "An alpine peak reflected in a lake" },
+];
+
+export default function Hero() {
+  return (
+    <HoneycombHero
+      title="Amazing"
+      titleAccent="Norway"
+      subtitle="Visit Norway, you will never regret it. Fantastic nature, fjords, and the fancy outlines of the coast."
+      primaryActionLabel="Book a tour"
+      primaryActionHref="/tours"
+      images={IMAGES}
+      socialLinks={[
+        { label: "Instagram", href: "https://instagram.com/yourpage" },
+        { label: "YouTube", href: "https://youtube.com/yourchannel" },
+      ]}
+      color="#d4a017"
+      linkComponent={Link}
+    />
+  );
+}
+`;
+
+<ExampleShowcase
+  name="honeycomb-hero"
+  colorControl
+  columns={1}
+  minHeight={520}
+  examples={[
+    {
+      title: "Amazing Norway",
+      subheading: "Headline and subtitle on the left, the honeycomb on the right with the hexagonal button set among the photographs. Hover a cell to lift it.",
+      propNotes: [
+        {
+          prop: "images",
+          effect: "are the five cells, in this order: the large one at left, top centre, middle right, bottom left, bottom right. Fewer than five leaves those cells empty.",
+        },
+        {
+          prop: "titleAccent",
+          effect: "is set bold, upper-case and tracked in the accent colour, with a short rule before it; `title` is the light line above.",
+        },
+        {
+          prop: "socialLinks",
+          effect: "run along the foot; pass `[]` to drop the bar.",
+        },
+        {
+          prop: "color",
+          effect: "is the accent for the word, the rule and the hexagonal button — a preset (indigo, rose, emerald, zinc) or any CSS colour, nudged for contrast on light and dark surfaces.",
+        },
+      ],
+      usage,
+      code: extractCode("src/components/custom/blocks/HoneycombHeroBlock.tsx"),
+    },
+  ]}
+/>
+
+## Installation
+
+<Installation name="honeycomb-hero" />
+
+## Props Reference
+
+<div className="overflow-x-auto my-4">
+  <table>
+    <thead>
+      <tr>
+        <th>Prop</th>
+        <th>Type</th>
+        <th>Default</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><code>title</code>, <code>titleAccent</code></td>
+        <td><code>string</code></td>
+        <td><code>"Amazing"</code>, <code>"Norway"</code></td>
+        <td>The light line and the bold accent word.</td>
+      </tr>
+      <tr>
+        <td><code>subtitle</code></td>
+        <td><code>string</code></td>
+        <td>—</td>
+        <td>The paragraph under the headline.</td>
+      </tr>
+      <tr>
+        <td><code>primaryActionLabel</code>, <code>primaryActionHref</code></td>
+        <td><code>string</code></td>
+        <td><code>"Book a tour"</code>, <code>"#"</code></td>
+        <td>The hexagonal button.</td>
+      </tr>
+      <tr>
+        <td><code>images</code></td>
+        <td><code>&#123; src: string; alt: string &#125;[]</code></td>
+        <td>five landscapes</td>
+        <td>The cells of the honeycomb, in layout order.</td>
+      </tr>
+      <tr>
+        <td><code>socialLinks</code></td>
+        <td><code>&#123; label: string; href: string &#125;[]</code></td>
+        <td>five networks</td>
+        <td>The links along the foot.</td>
+      </tr>
+      <tr>
+        <td><code>color</code></td>
+        <td><code>string</code></td>
+        <td>theme primary</td>
+        <td>Accent colour — a preset name or any CSS colour.</td>
+      </tr>
+      <tr>
+        <td><code>linkComponent</code></td>
+        <td><code>ElementType</code></td>
+        <td><code>"a"</code></td>
+        <td>What renders every link; pass <code>next/link</code> in Next.js.</td>
+      </tr>
+    </tbody>
+  </table>
+</div>

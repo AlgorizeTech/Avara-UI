@@ -1586,7 +1586,7 @@
       "type": "registry:component",
       "title": "Hero",
       "author": "AlgorizeTech",
-      "description": "A prop-driven hero section supporting spring word bounce, character typewriter, and 3D split marquee slider variants.",
+      "description": "A prop-driven hero section supporting spring word bounce, character typewriter, 3D split marquee slider, pet-shop, doctor and component-wall variants.",
       "categories": [
         "marketing"
       ],
@@ -1658,6 +1658,31 @@
           "target": "components/custom/blocks/HomepageHeroBlock.tsx"
         }
       ]
+    },
+    {
+      "name": "honeycomb-hero",
+      "type": "registry:component",
+      "title": "Honeycomb Hero",
+      "author": "AlgorizeTech",
+      "description": "A nature or travel hero: a light headline over a bold, tracked accent word, and a honeycomb of five hexagonal photographs with a hexagonal call to action set among them. A row of social links runs along the foot.",
+      "categories": [
+        "marketing",
+        "layout"
+      ],
+      "dependencies": [
+        "framer-motion"
+      ],
+      "registryDependencies": [
+        "utils"
+      ],
+      "files": [
+        {
+          "path": "src/components/custom/blocks/HoneycombHeroBlock.tsx",
+          "type": "registry:component",
+          "target": "components/custom/blocks/HoneycombHeroBlock.tsx"
+        }
+      ],
+      "docs": "Named export: HoneycombHero. Pass `title` and `titleAccent`, `subtitle`, `primaryActionLabel`/`primaryActionHref`, five `images` ({ src, alt }: large left, top centre, middle right, bottom left, bottom right) and `socialLinks`. `color` is a preset name or any CSS colour; `linkComponent` takes next/link."
     },
     {
       "name": "horizontal-rail",
@@ -2226,6 +2251,31 @@
         }
       ],
       "docs": "Named export: Newsletter, with parts Heading, Intro, Form, Proof, Ticker and Issues. Composed from the input, button, marquee and tilted-card items, which install alongside it. `variant` is portraits | spotlight | issues, each styled for light and dark mode; `portraits` takes up to four faces; `Form` takes `onSubscribe(email)` (a promise holds the busy state), `action`, `successTitle`/`successText`; `accent` pins the glow and button colour; `reveal` is in-view or immediate."
+    },
+    {
+      "name": "orbit-gallery",
+      "type": "registry:component",
+      "title": "Orbit Gallery",
+      "author": "AlgorizeTech",
+      "description": "A two-column hero with a ring of photo cards revolving on the right, each card staying upright as it travels. Hovering the ring holds it still; moving the pointer over the section leaves a trail of dots in the accent colour. Use it for an agency, studio or gallery.",
+      "categories": [
+        "marketing",
+        "layout"
+      ],
+      "dependencies": [
+        "lucide-react"
+      ],
+      "registryDependencies": [
+        "utils"
+      ],
+      "files": [
+        {
+          "path": "src/components/custom/blocks/OrbitGalleryBlock.tsx",
+          "type": "registry:component",
+          "target": "components/custom/blocks/OrbitGalleryBlock.tsx"
+        }
+      ],
+      "docs": "Named export: OrbitGallery. Pass `badgeText`/`badgeHref`, `title` and `titleAccent`, `subtitle`, primary and secondary actions, `images` (any count — they space themselves evenly), `duration` in seconds for one revolution and `highlights` for the dotted facts row. `color` is a preset name or any CSS colour; `linkComponent` takes next/link."
     },
     {
       "name": "otp-input",

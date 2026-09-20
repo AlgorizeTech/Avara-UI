@@ -299,6 +299,20 @@ const rawNavigation: NavigationItem[] = [
         keywords: ["hero", "carousel", "slider", "travel", "tour", "photos", "glass", "autoplay", "cards", "queue"],
       },
       {
+        label: "Honeycomb Hero",
+        slug: "honeycomb-hero",
+        badge: "New",
+        addedOn: "2026-09-20",
+        keywords: ["hero", "hexagon", "honeycomb", "nature", "travel", "photos", "mosaic", "norway"],
+      },
+      {
+        label: "Orbit Gallery",
+        slug: "orbit-gallery",
+        badge: "New",
+        addedOn: "2026-09-20",
+        keywords: ["hero", "orbit", "gallery", "revolving", "carousel", "cards", "ring", "agency", "studio"],
+      },
+      {
         label: "Fashion Hero",
         slug: "fashion-hero",
         badge: "New",
