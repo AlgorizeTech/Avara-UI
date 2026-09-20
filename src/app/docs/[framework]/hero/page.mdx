@@ -286,6 +286,28 @@ export default function OrbitHeroDemo() {
   );
 }`;
 
+<ExampleShowcase
+  name="homepage-hero-orbit"
+  colorControl
+  columns={1}
+  minHeight={520}
+  examples={[
+    {
+      title: "360° Revolving Orbit Gallery Hero",
+      subheading: "Interactive agency & motion studio hero featuring a 360-degree continuous revolving circular card orbit gallery with hover pause.",
+      propNotes: [
+        {
+          lead: "Set",
+          prop: "variant",
+          value: '"orbit"',
+          effect: "renders a 2-column hero featuring a 360-degree revolving orbit card gallery track.",
+        },
+      ],
+      usage: usageOrbit,
+    },
+  ]}
+/>
+
 export const usageNorway = `import { HeroBlock } from "@/components/custom/blocks/HeroBlock";
 
 export default function NorwayHeroDemo() {
@@ -341,13 +363,13 @@ export default function NorwayHeroDemo() {
           <code>variant</code>
         </td>
         <td>
-          <code>"bounce" | "typing" | "slider" | "pet-shop" | "doctor" | "component-wall" | "orbit"</code>
+          <code>"bounce" | "typing" | "slider" | "glow-arc" | "pet-shop" | "doctor" | "component-wall" | "orbit" | "norway"</code>
         </td>
         <td>
           <code>"bounce"</code>
         </td>
         <td>
-          The layout & animation style. <code>"bounce"</code> uses spring word motion; <code>"typing"</code> uses typewriter effect; <code>"slider"</code> renders split 2-column hero with continuous marquee; <code>"orbit"</code> renders infinite revolving circular image ring hero.
+          The layout & animation style. <code>"bounce"</code> uses spring word motion; <code>"typing"</code> uses typewriter effect; <code>"slider"</code> renders split 2-column hero with continuous marquee; <code>"glow-arc"</code> renders centered radial glow arc; <code>"component-wall"</code> renders 3D component grid; <code>"orbit"</code> renders 360° revolving gallery orbit; <code>"norway"</code> renders hexagonal honeycomb nature gallery.
         </td>
       </tr>
       <tr>
