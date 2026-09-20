@@ -39,6 +39,13 @@ export default function Intelligence() {
 
 ## Installation
 
+Register the @algorize-ui registry once per project, then add the component:
+
+```bash
+npx shadcn@latest registry add @algorize-ui=https://algorize-ui.vercel.app/r/{name}.json
+npx shadcn@latest add @algorize-ui/data-flow
+```
+
 ## How the lines are drawn
 
 The section measures its cards after layout and lays a cubic curve from each source's right edge to the core's left edge, and from the core's right edge to each output's left edge. A `ResizeObserver` re-measures whenever the board changes size, so the lines follow the layout instead of being drawn for one width. Below `lg` the columns stack and the curves would have to cross the cards, so they are hidden and short dashed spines mark the flow instead.

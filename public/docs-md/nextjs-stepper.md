@@ -44,7 +44,7 @@ function ReviewPanel() {
 export const usageFlow = `"use client";
 
 // The Workspace step picks a role with the Select block:
-//   npx shadcn@latest add https://algorize-ui.vercel.app/r/select.json
+//   npx shadcn@latest add @algorize-ui/select
 
 const PRIMARY_ROLE_OPTIONS = [
   "Developer",
@@ -286,6 +286,13 @@ export default function OnboardingWizard() {
 }`;
 
 ## Installation
+
+Register the @algorize-ui registry once per project, then add the component:
+
+```bash
+npx shadcn@latest registry add @algorize-ui=https://algorize-ui.vercel.app/r/{name}.json
+npx shadcn@latest add @algorize-ui/stepper
+```
 
 ## Features
 Learn about the Stepper component's linear progression features, providing clear visual feedback for multi-step forms and processes.

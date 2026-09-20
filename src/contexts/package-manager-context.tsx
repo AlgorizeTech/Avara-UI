@@ -2,6 +2,8 @@
 
 import React, { createContext, useContext, useState, useEffect } from "react";
 
+import { isRegistryForm, type RegistryForm } from "@/lib/registry";
+
 export type PackageManager = "npm" | "pnpm" | "yarn" | "bun";
 
 export const PM_COMMANDS = {
@@ -29,6 +31,13 @@ interface PackageManagerContextType {
   packageManager: PackageManager;
   setPackageManager: (pm: PackageManager) => void;
   getCommand: (type?: "dlx" | "install" | "create") => string;
+  /**
+   * Whether `add` commands print `@algorize-ui/foo` or the full registry URL.
+   * Lives next to the package manager because it is the same kind of choice —
+   * a reader picks it once and expects every command on the site to follow.
+   */
+  registryForm: RegistryForm;
+  setRegistryForm: (form: RegistryForm) => void;
 }
 
 const PackageManagerContext = createContext<PackageManagerContextType | undefined>(undefined);
@@ -39,6 +48,9 @@ interface PackageManagerProviderProps {
 
 export function PackageManagerProvider({ children }: PackageManagerProviderProps) {
   const [packageManager, setPackageManagerState] = useState<PackageManager>("npm");
+  // Namespace by default: it is the form the installation guide teaches, and
+  // the one that keeps working if the registry ever moves host.
+  const [registryForm, setRegistryFormState] = useState<RegistryForm>("namespace");
 
   // Load from localStorage on mount
   useEffect(() => {
@@ -46,12 +58,21 @@ export function PackageManagerProvider({ children }: PackageManagerProviderProps
     if (saved && (saved === "npm" || saved === "pnpm" || saved === "yarn" || saved === "bun")) {
       setPackageManagerState(saved as PackageManager);
     }
+    const savedForm = localStorage.getItem("preferred-registry-form");
+    if (isRegistryForm(savedForm)) {
+      setRegistryFormState(savedForm);
+    }
   }, []);
 
   // Save to localStorage when changed
   const setPackageManager = (pm: PackageManager) => {
     setPackageManagerState(pm);
     localStorage.setItem("preferred-package-manager", pm);
+  };
+
+  const setRegistryForm = (form: RegistryForm) => {
+    setRegistryFormState(form);
+    localStorage.setItem("preferred-registry-form", form);
   };
 
   // Helper function to get the appropriate command
@@ -74,6 +95,8 @@ export function PackageManagerProvider({ children }: PackageManagerProviderProps
         packageManager,
         setPackageManager,
         getCommand,
+        registryForm,
+        setRegistryForm,
       }}
     >
       {children}

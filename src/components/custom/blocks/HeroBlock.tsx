@@ -161,7 +161,7 @@ export const HeroBlock = forwardRef<HTMLElement, HeroBlockProps>(
       ],
       titleSuffix = "",
       subtitle = "A meticulous library of React components & interactive blocks, engineered for seamless performance with Tailwind CSS, TypeScript, GSAP, and Framer Motion.",
-      cliCommand = "npx shadcn@latest add https://algorize-ui.vercel.app/r/button.json",
+      cliCommand = "npx shadcn@latest add @algorize-ui/button",
       primaryActionLabel = "Browse Components",
       primaryActionHref = "/docs",
       secondaryActionLabel = "Star on GitHub",

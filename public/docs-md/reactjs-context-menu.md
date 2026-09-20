@@ -59,6 +59,13 @@ export const usageFull = `export default function DocumentMenu() {
 
 ## Installation
 
+Register the @algorize-ui registry once per project, then add the component:
+
+```bash
+npx shadcn@latest registry add @algorize-ui=https://algorize-ui.vercel.app/r/{name}.json
+npx shadcn@latest add @algorize-ui/context-menu
+```
+
 ## Features
 Explore the ContextMenu's right-click features, including nested submenus, disabled states, and keyboard navigation.
 

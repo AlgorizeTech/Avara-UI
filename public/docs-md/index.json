@@ -1,6 +1,6 @@
 {
-  "generatedAt": "2026-09-19T16:42:41.775Z",
-  "totalFiles": 281,
+  "generatedAt": "2026-09-20T12:24:31.115Z",
+  "totalFiles": 289,
   "files": [
     {
       "name": "nextjs/3d-carousel",
@@ -181,6 +181,12 @@
       "path": "/docs/nextjs-command.md",
       "url": "/docs/nextjs/command",
       "originalMdx": "[framework]\\command\\page.mdx"
+    },
+    {
+      "name": "nextjs/component-wall",
+      "path": "/docs/nextjs-component-wall.md",
+      "url": "/docs/nextjs/component-wall",
+      "originalMdx": "[framework]\\component-wall\\page.mdx"
     },
     {
       "name": "nextjs/context-menu",
@@ -399,6 +405,18 @@
       "originalMdx": "[framework]\\hero\\page.mdx"
     },
     {
+      "name": "nextjs/hero-carousel",
+      "path": "/docs/nextjs-hero-carousel.md",
+      "url": "/docs/nextjs/hero-carousel",
+      "originalMdx": "[framework]\\hero-carousel\\page.mdx"
+    },
+    {
+      "name": "nextjs/honeycomb-hero",
+      "path": "/docs/nextjs-honeycomb-hero.md",
+      "url": "/docs/nextjs/honeycomb-hero",
+      "originalMdx": "[framework]\\honeycomb-hero\\page.mdx"
+    },
+    {
       "name": "nextjs/image-compare",
       "path": "/docs/nextjs-image-compare.md",
       "url": "/docs/nextjs/image-compare",
@@ -517,6 +535,12 @@
       "path": "/docs/nextjs-newsletter.md",
       "url": "/docs/nextjs/newsletter",
       "originalMdx": "[framework]\\newsletter\\page.mdx"
+    },
+    {
+      "name": "nextjs/orbit-gallery",
+      "path": "/docs/nextjs-orbit-gallery.md",
+      "url": "/docs/nextjs/orbit-gallery",
+      "originalMdx": "[framework]\\orbit-gallery\\page.mdx"
     },
     {
       "name": "nextjs/otp-input",
@@ -1029,6 +1053,12 @@
       "originalMdx": "[framework]\\command\\page.mdx"
     },
     {
+      "name": "reactjs/component-wall",
+      "path": "/docs/reactjs-component-wall.md",
+      "url": "/docs/reactjs/component-wall",
+      "originalMdx": "[framework]\\component-wall\\page.mdx"
+    },
+    {
       "name": "reactjs/context-menu",
       "path": "/docs/reactjs-context-menu.md",
       "url": "/docs/reactjs/context-menu",
@@ -1245,6 +1275,18 @@
       "originalMdx": "[framework]\\hero\\page.mdx"
     },
     {
+      "name": "reactjs/hero-carousel",
+      "path": "/docs/reactjs-hero-carousel.md",
+      "url": "/docs/reactjs/hero-carousel",
+      "originalMdx": "[framework]\\hero-carousel\\page.mdx"
+    },
+    {
+      "name": "reactjs/honeycomb-hero",
+      "path": "/docs/reactjs-honeycomb-hero.md",
+      "url": "/docs/reactjs/honeycomb-hero",
+      "originalMdx": "[framework]\\honeycomb-hero\\page.mdx"
+    },
+    {
       "name": "reactjs/image-compare",
       "path": "/docs/reactjs-image-compare.md",
       "url": "/docs/reactjs/image-compare",
@@ -1363,6 +1405,12 @@
       "path": "/docs/reactjs-newsletter.md",
       "url": "/docs/reactjs/newsletter",
       "originalMdx": "[framework]\\newsletter\\page.mdx"
+    },
+    {
+      "name": "reactjs/orbit-gallery",
+      "path": "/docs/reactjs-orbit-gallery.md",
+      "url": "/docs/reactjs/orbit-gallery",
+      "originalMdx": "[framework]\\orbit-gallery\\page.mdx"
     },
     {
       "name": "reactjs/otp-input",

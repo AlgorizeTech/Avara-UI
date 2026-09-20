@@ -40,6 +40,13 @@ export default function Platform() {
 
 ## Installation
 
+Register the @algorize-ui registry once per project, then add the component:
+
+```bash
+npx shadcn@latest registry add @algorize-ui=https://algorize-ui.vercel.app/r/{name}.json
+npx shadcn@latest add @algorize-ui/platform-grid
+```
+
 ## How the grid packs
 
 The grid is `grid-auto-flow: dense`: cells are placed in source order into the first slot they fit, and a 2×2 feature that will not fit on the current row is held until it does while smaller tiles fill in behind it. At eight columns the example's features land in the middle because they are listed after the second tile of the second row; at four columns they simply pack where they fit. Order your children for the widest layout and let the narrower ones sort themselves out.

@@ -72,6 +72,13 @@ export default function InfrastructureTopologyDemo() {
 
 ## Installation
 
+Register the @algorize-ui registry once per project, then add the component:
+
+```bash
+npx shadcn@latest registry add @algorize-ui=https://algorize-ui.vercel.app/r/{name}.json
+npx shadcn@latest add @algorize-ui/infrastructure-topology
+```
+
 ## Features
 
 - **Central Neural Mesh Hub**: Mode-adaptive pulsing concentric rings with core status & version indicator.

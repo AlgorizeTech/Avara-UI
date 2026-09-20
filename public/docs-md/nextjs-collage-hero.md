@@ -6,14 +6,18 @@ A hero for a place that is warm and busy — a kindergarten here, but any studio
 
 export const usageSection = `"use client";
 
+// Photos from Pexels, free to use.
+const pexels = (id: number, w = 800) =>
+  \`https://images.pexels.com/photos/\${id}/pexels-photo-\${id}.jpeg?auto=compress&cs=tinysrgb&w=\${w}\`;
+
 const PHOTOS = [
-  { src: "/kinder/toys.jpg", alt: "Wooden dinosaurs on a stack of books" },
-  { src: "/kinder/blocks.jpg", alt: "A child playing with wooden blocks" },
-  { src: "/kinder/painting.jpg", alt: "Children painting at a low table" },
-  { src: "/kinder/teacher.jpg", alt: "A teacher helping a girl paint", position: "40% top" },
-  { src: "/kinder/dino.jpg", alt: "A boy holding a wooden dinosaur" },
-  { src: "/kinder/grass.jpg", alt: "Children on the grass with their toys" },
-  { src: "/kinder/lion.jpg", alt: "A girl beside a paper lion", position: "center 35%" },
+  { src: pexels(3661193), alt: "Wooden dinosaurs on a stack of books" },
+  { src: pexels(3661387), alt: "A child playing with wooden blocks" },
+  { src: pexels(8612967), alt: "Children painting at a low table" },
+  { src: pexels(8535214), alt: "A teacher helping a girl paint", position: "40% top" },
+  { src: pexels(3661286), alt: "A boy holding a wooden dinosaur" },
+  { src: pexels(8613317), alt: "Children on the grass with their toys" },
+  { src: pexels(8535227), alt: "A girl beside a paper lion", position: "center 35%" },
 ];
 
 export default function Hero() {
@@ -70,11 +74,19 @@ export default function Hero() {
 
 ## Installation
 
+Register the @algorize-ui registry once per project, then add the component:
+
+```bash
+npx shadcn@latest registry add @algorize-ui=https://algorize-ui.vercel.app/r/{name}.json
+npx shadcn@latest add @algorize-ui/collage-hero
+```
+
 ## The badge
 
 `CollageHero.Badge` is exported on its own: the `brand` text set on an SVG circle with `textPath`, turning once every 22 seconds, around a `logo` — three dots in the accent and highlight by default, or anything you pass. Under `prefers-reduced-motion` it does not turn.
 
 ```tsx
+
 } />
 ```
 

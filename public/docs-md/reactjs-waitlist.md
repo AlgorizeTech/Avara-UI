@@ -4,7 +4,13 @@ A pre-launch sign-up in three layouts. **Card** is a compact card with the field
 
 `Waitlist` is built from library pieces: the field is Input, the action is Button, the faces are an Avatar Stack, the spots bar is Progress and the invite link is a Copy Button. Every piece of copy is a named part — `Mark`, `Countdown`, `Heading`, `Intro`, `Form`, `Proof`, `Spots` — so the words are yours.
 
-export const usageLaunch = `const FACES = ["/people/ana.jpg", "/people/tom.jpg", "/people/mei.jpg", "/people/raj.jpg"];
+export const usageLaunch = `// Faces from Pexels, free to use.
+const FACES = [
+  "https://images.pexels.com/photos/2379004/pexels-photo-2379004.jpeg?auto=compress&cs=tinysrgb&w=160",
+  "https://images.pexels.com/photos/220453/pexels-photo-220453.jpeg?auto=compress&cs=tinysrgb&w=160",
+  "https://images.pexels.com/photos/2381069/pexels-photo-2381069.jpeg?auto=compress&cs=tinysrgb&w=160",
+  "https://images.pexels.com/photos/1130626/pexels-photo-1130626.jpeg?auto=compress&cs=tinysrgb&w=160",
+];
 
 export default function EarlyAccess() {
   return (
@@ -55,6 +61,13 @@ export const usageQueue = `export default function GetInLine() {
 `;
 
 ## Installation
+
+Register the @algorize-ui registry once per project, then add the component:
+
+```bash
+npx shadcn@latest registry add @algorize-ui=https://algorize-ui.vercel.app/r/{name}.json
+npx shadcn@latest add @algorize-ui/waitlist
+```
 
 ## Examples
 

@@ -103,6 +103,13 @@ export default function ShowcaseStartingOnThird() {
 
 ## Installation
 
+Register the @algorize-ui registry once per project, then add the component:
+
+```bash
+npx shadcn@latest registry add @algorize-ui=https://algorize-ui.vercel.app/r/{name}.json
+npx shadcn@latest add @algorize-ui/scroll-accordion-showcase
+```
+
 ### Accent color
 
 The accent is resolved at runtime, so it adopts your site's primary color with no configuration. The component reads a hex from `localStorage` (any key starting with `localStorageKey`), then the `--primary-color` / `--primary` / `--theme-color` CSS variables, and only falls back to `defaultAccentColor` if neither is set.

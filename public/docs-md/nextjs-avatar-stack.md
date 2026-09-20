@@ -6,10 +6,14 @@ Several sections used to hand-roll this row; Fashion Hero uses this one.
 
 export const usageAction = `import { Plus } from "lucide-react";
 
+// Faces from Pexels, free to use.
+const pexels = (id: number) =>
+  \`https://images.pexels.com/photos/\${id}/pexels-photo-\${id}.jpeg?auto=compress&cs=tinysrgb&w=120&h=120&fit=crop\`;
+
 const PEOPLE = [
-  { src: "/people/ana.jpg", alt: "Ana" },
-  { src: "/people/tom.jpg", alt: "Tom" },
-  { src: "/people/mara.jpg", alt: "Mara" },
+  { src: pexels(1036623), alt: "Ana" },
+  { src: pexels(2043590), alt: "Tom" },
+  { src: pexels(1587009), alt: "Mara" },
 ];
 
 export default function Community() {
@@ -31,6 +35,13 @@ export default function JoinedThisMonth({ people }: { people: { src: string; alt
 }`;
 
 ## Installation
+
+Register the @algorize-ui registry once per project, then add the component:
+
+```bash
+npx shadcn@latest registry add @algorize-ui=https://algorize-ui.vercel.app/r/{name}.json
+npx shadcn@latest add @algorize-ui/avatar-stack
+```
 
 ## Examples
 

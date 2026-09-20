@@ -97,6 +97,13 @@ The full suite: a `Dropzone` that hands you `File[]`, and an `UploadItem` for ea
 
 ### Install the upload suite
 
+Register the @algorize-ui registry once per project, then add the component:
+
+```bash
+npx shadcn@latest registry add @algorize-ui=https://algorize-ui.vercel.app/r/{name}.json
+npx shadcn@latest add @algorize-ui/upload
+```
+
 The dropzone example animates its queue with `framer-motion`. It is optional — `UploadItem` renders fine without it.
 
 ```bash
@@ -117,6 +124,13 @@ export const usageFileInput = `export default function FileUploadInput() {
 For a form that just needs files attached, the `Input` block has a file mode with previews and removal built in. It has no dependency on the upload suite.
 
 ### Install the input block
+
+Register the @algorize-ui registry once per project, then add the component:
+
+```bash
+npx shadcn@latest registry add @algorize-ui=https://algorize-ui.vercel.app/r/{name}.json
+npx shadcn@latest add @algorize-ui/input
+```
 
 export const usageFolder = `export default function DropZone() {
   const [files, setFiles] = useState([]);
@@ -154,6 +168,13 @@ export const usageFolder = `export default function DropZone() {
 The `Folder` block as an upload surface — a playful alternative to a dropzone for a handful of files.
 
 ### Install the folder block
+
+Register the @algorize-ui registry once per project, then add the component:
+
+```bash
+npx shadcn@latest registry add @algorize-ui=https://algorize-ui.vercel.app/r/{name}.json
+npx shadcn@latest add @algorize-ui/folder
+```
 
 ## Features
 Discover the key capabilities that make this component an excellent choice for modern, animated user interfaces.

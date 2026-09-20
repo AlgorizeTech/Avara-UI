@@ -32,7 +32,7 @@ const TYPING_WORDS = [
 ];
 
 const CLI_COMMAND =
-  "npx shadcn@latest add https://algorize-ui.vercel.app/r/mobile-mockup.json";
+  "npx shadcn@latest add @algorize-ui/mobile-mockup";
 
 /** The strip that follows the hero on the homepage, at phone width. */
 const TECH_STACK = ["React JS", "Next.js", "TypeScript", "Tailwind CSS"];

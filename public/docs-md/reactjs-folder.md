@@ -66,12 +66,12 @@ export const usagePhotos = `import { Folder } from "@/components/custom/blocks/F
 
 // { thumb } turns a card into a photo. Add { name } for a hover tooltip.
 const photos = [
-  { thumb: "/photos/IMG_4021.jpg", name: "IMG_4021.jpg" },
-  { thumb: "/photos/IMG_4022.jpg", name: "IMG_4022.jpg" },
-  { thumb: "/photos/IMG_4023.jpg", name: "IMG_4023.jpg" },
-  { thumb: "/photos/IMG_4024.jpg", name: "IMG_4024.jpg" },
-  { thumb: "/photos/IMG_4025.jpg", name: "IMG_4025.jpg" },
-  { thumb: "/photos/IMG_4026.jpg", name: "IMG_4026.jpg" },
+  { thumb: "https://images.unsplash.com/photo-1470071459604-3b5ec3a7fe05?auto=format&fit=crop&w=320&q=70", name: "IMG_4021.jpg" },
+  { thumb: "https://images.unsplash.com/photo-1506905925346-21bda4d32df4?auto=format&fit=crop&w=320&q=70", name: "IMG_4022.jpg" },
+  { thumb: "https://images.unsplash.com/photo-1441974231531-c6227db76b6e?auto=format&fit=crop&w=320&q=70", name: "IMG_4023.jpg" },
+  { thumb: "https://images.unsplash.com/photo-1472214103451-9374bd1c798e?auto=format&fit=crop&w=320&q=70", name: "IMG_4024.jpg" },
+  { thumb: "https://images.unsplash.com/photo-1501785888041-af3ef285b470?auto=format&fit=crop&w=320&q=70", name: "IMG_4025.jpg" },
+  { thumb: "https://images.unsplash.com/photo-1518837695005-2083093ee35b?auto=format&fit=crop&w=320&q=70", name: "IMG_4026.jpg" },
 ];
 
 export default function SummerTrip() {
@@ -79,6 +79,13 @@ export default function SummerTrip() {
 }`;
 
 ## Installation
+
+Register the @algorize-ui registry once per project, then add the component:
+
+```bash
+npx shadcn@latest registry add @algorize-ui=https://algorize-ui.vercel.app/r/{name}.json
+npx shadcn@latest add @algorize-ui/folder
+```
 
 ## Examples
 

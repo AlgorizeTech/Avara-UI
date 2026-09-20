@@ -168,6 +168,13 @@ export default function BookAppointmentPage() {
 
 ## Installation
 
+Register the @algorize-ui registry once per project, then add the component:
+
+```bash
+npx shadcn@latest registry add @algorize-ui=https://algorize-ui.vercel.app/r/{name}.json
+npx shadcn@latest add @algorize-ui/book-appointment
+```
+
 ## Just the booking panel
 
 The booking panel is its own component, Booking Card, and works inside any panel — not only this page. Give it the panel's padding so the confirmation reaches the edges.

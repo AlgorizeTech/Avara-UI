@@ -10,6 +10,13 @@ export default function Page() {
   );
 }`;
 
+Register the @algorize-ui registry once per project, then add the component:
+
+```bash
+npx shadcn@latest registry add @algorize-ui=https://algorize-ui.vercel.app/r/{name}.json
+npx shadcn@latest add @algorize-ui/hero
+```
+
 export const usageTyping = `import { HeroBlock } from "@/components/custom/blocks/HeroBlock";
 
 export default function Page() {
@@ -42,30 +49,6 @@ export default function Page() {
   );
 }`;
 
-export const usageComponentWall = `import { HeroBlock } from "@/components/custom/blocks/HeroBlock";
-
-export default function ComponentWallHeroDemo() {
-  return (
-    
-  );
-}`;
-
-export const usageOrbit = `import { HeroBlock } from "@/components/custom/blocks/HeroBlock";
-
-export default function OrbitHeroDemo() {
-  return (
-    
-  );
-}`;
-
-export const usageNorway = `import { HeroBlock } from "@/components/custom/blocks/HeroBlock";
-
-export default function NorwayHeroDemo() {
-  return (
-    
-  );
-}`;
-
 ## Props Reference
 
         Prop
@@ -75,11 +58,11 @@ export default function NorwayHeroDemo() {
 
           variant
 
-          "bounce" | "typing" | "slider" | "pet-shop" | "doctor" | "component-wall" | "orbit"
+          "bounce" | "typing" | "slider" | "glow-arc" | "pet-shop" | "doctor"
 
           "bounce"
 
-          The layout & animation style. "bounce" uses spring word motion; "typing" uses typewriter effect; "slider" renders split 2-column hero with continuous marquee; "orbit" renders infinite revolving circular image ring hero.
+          The layout & animation style. "bounce" uses spring word motion; "typing" uses typewriter effect; "slider" renders split 2-column hero with continuous marquee; "glow-arc" renders centered radial glow arc. The screenshot wall, the revolving ring and the hexagonal mosaic heroes are their own sections: Component Wall, Orbit Gallery and Honeycomb Hero.
 
           typingWords
 
