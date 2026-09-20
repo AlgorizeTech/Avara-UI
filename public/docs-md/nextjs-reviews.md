@@ -107,6 +107,16 @@ export default function VerticalMarqueeDemo() {
   );
 }`;
 
+export const usageLogoCarousel = `import { ReviewsBlock, type ReviewItem } from "@/components/custom/blocks/ReviewsBlock";
+
+${sampleReviewsData}
+
+export default function LogoCarouselDemo() {
+  return (
+    
+  );
+}`;
+
 ## Installation
 
 Register the @algorize-ui registry once per project, then add the component:
@@ -122,6 +132,7 @@ Discover the key capabilities of the `ReviewsBlock` component:
 
 - **UpDown Vertical Marquee**: 4 infinite scrolling columns moving continuously (Column 1 Up, Column 2 Down, Column 3 Up, Column 4 Down) with hover-to-pause interaction.
 - **3D Stacked Portrait Carousel**: Interactive 3-card stacked portrait layout with Framer Motion spring physics, rolling 3D card rotation, and circular arrow buttons.
+- **Interactive Brand Logo Carousel**: Split card layout with company logo tabs, quote transition animations, author portrait, indicator dots, and round navigation controls.
 - **Modern Review Cards**: Avatar image, name, role, 5-star rating, and clean typography in a modern card container.
 - **Dynamic Site Theme Accent**: Automatically binds to site CSS variables (`var(--primary)`) with live color preset support.
 - **Full Customizability**: Pass custom `variant`, `title`, `subtitle`, `reviews` data array, and `glowColor` accents.
@@ -134,9 +145,9 @@ Discover the key capabilities of the `ReviewsBlock` component:
         Description
 
         variant
-        "up-down-vertical-marquee" | "stacked-carousel"
+        "up-down-vertical-marquee" | "stacked-carousel" | "logo-carousel"
         "up-down-vertical-marquee"
-        Determines the visual review layout style (infinite up/down vertical marquee or 3D stacked cards).
+        Determines the visual review layout style (infinite up/down vertical marquee, 3D stacked cards, or brand logo carousel).
 
         title
         string

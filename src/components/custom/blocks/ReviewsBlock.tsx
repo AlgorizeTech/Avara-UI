@@ -8,7 +8,8 @@ import { motion, AnimatePresence } from "framer-motion";
 
 export type ReviewsVariant =
 	| "up-down-vertical-marquee"
-	| "stacked-carousel";
+	| "stacked-carousel"
+	| "logo-carousel";
 
 export interface ReviewItem {
 	id: string;
@@ -17,6 +18,9 @@ export interface ReviewItem {
 	avatar?: string;
 	rating: number;
 	content: string;
+	company?: string;
+	logo?: React.ReactNode;
+	highlight?: string;
 }
 
 export interface ReviewsProps {
@@ -561,6 +565,176 @@ function FourColumnMarqueeReviews({
 }
 
 // ==========================================
+// LOGO TAB TESTIMONIAL CAROUSEL VARIANT
+// ==========================================
+function LogoCarouselVariant({
+	reviews,
+	title = "Loved by teams building what's next",
+	subtitle = "Hear how founders are using our platform to save time, simplify their workflow, and grow their business.",
+}: {
+	reviews: ReviewItem[];
+	title?: string;
+	subtitle?: string;
+}) {
+	const [activeIndex, setActiveIndex] = useState(0);
+
+	const items = reviews.length > 0 ? reviews : DEFAULT_REVIEWS;
+	const activeItem = items[activeIndex] || items[0];
+
+	const handlePrev = () => {
+		setActiveIndex((prev) => (prev - 1 + items.length) % items.length);
+	};
+
+	const handleNext = () => {
+		setActiveIndex((prev) => (prev + 1) % items.length);
+	};
+
+	return (
+		<div className="w-full max-w-5xl mx-auto py-8 px-4 flex flex-col items-center">
+			{/* Top Header Badge & Titles */}
+			<div className="text-center max-w-2xl mx-auto mb-10 space-y-3">
+				<span className="inline-block px-3 py-1 rounded-full border border-border/60 bg-muted/40 text-[11px] font-semibold uppercase tracking-widest text-muted-foreground select-none">
+					Testimonials
+				</span>
+				<h2 className="text-3xl sm:text-5xl font-extrabold tracking-tight text-foreground leading-tight">
+					{title}
+				</h2>
+				{subtitle && (
+					<p className="text-sm sm:text-base text-muted-foreground leading-relaxed pt-1">
+						{subtitle}
+					</p>
+				)}
+			</div>
+
+			{/* Company Logos Row */}
+			<div className="w-full overflow-x-auto no-scrollbar py-4 mb-6">
+				<div className="flex items-center justify-center min-w-max gap-8 sm:gap-14 mx-auto px-4">
+					{items.map((item, idx) => {
+						const isActive = idx === activeIndex;
+						return (
+							<button
+								key={item.id || idx}
+								type="button"
+								onClick={() => setActiveIndex(idx)}
+								className={cn(
+									"flex items-center gap-2.5 px-4 py-2 rounded-xl transition-all duration-300 cursor-pointer select-none",
+									isActive
+										? "opacity-100 scale-105 font-bold text-foreground"
+										: "opacity-40 hover:opacity-75 grayscale hover:grayscale-0 text-muted-foreground"
+								)}
+							>
+								{item.logo ? (
+									<div className="size-6 shrink-0 flex items-center justify-center">
+										{item.logo}
+									</div>
+								) : (
+									<div className="size-6 rounded-full bg-primary/20 text-primary flex items-center justify-center text-xs font-bold">
+										{item.company ? item.company.charAt(0) : item.name.charAt(0)}
+									</div>
+								)}
+								<span className="text-sm sm:text-base tracking-tight font-semibold">
+									{item.company || item.name}
+								</span>
+							</button>
+						);
+					})}
+				</div>
+			</div>
+
+			{/* Pagination Indicator Dots */}
+			<div className="flex items-center justify-center gap-2 mb-8">
+				{items.map((_, idx) => (
+					<button
+						key={idx}
+						type="button"
+						onClick={() => setActiveIndex(idx)}
+						aria-label={`Go to slide ${idx + 1}`}
+						className={cn(
+							"h-2 rounded-full transition-all duration-300 cursor-pointer",
+							idx === activeIndex
+								? "w-8 bg-foreground shadow-sm"
+								: "w-2 bg-muted-foreground/30 hover:bg-muted-foreground/50"
+						)}
+					/>
+				))}
+			</div>
+
+			{/* Split Testimonial Card */}
+			<div className="w-full max-w-4xl rounded-3xl border border-border/60 bg-card text-card-foreground shadow-lg overflow-hidden grid grid-cols-1 md:grid-cols-12 transition-all duration-500">
+				{/* Quote & Author Info (Left Column) */}
+				<div className="md:col-span-7 p-8 sm:p-12 flex flex-col justify-between space-y-6">
+					<AnimatePresence mode="wait">
+						<motion.div
+							key={activeItem.id || activeIndex}
+							initial={{ opacity: 0, y: 10 }}
+							animate={{ opacity: 1, y: 0 }}
+							exit={{ opacity: 0, y: -10 }}
+							transition={{ duration: 0.3 }}
+							className="space-y-6"
+						>
+							<p className="text-lg sm:text-2xl font-medium text-foreground leading-relaxed tracking-tight">
+								{activeItem.content.startsWith('"')
+									? activeItem.content
+									: `"${activeItem.content}"`}
+							</p>
+
+							<div className="pt-4 border-t border-border/40">
+								<h3 className="text-lg sm:text-xl font-bold font-serif text-foreground">
+									{activeItem.name}
+								</h3>
+								<p className="text-xs sm:text-sm text-muted-foreground mt-0.5">
+									{activeItem.role}
+									{activeItem.company ? `, ${activeItem.company}` : ""}
+								</p>
+							</div>
+						</motion.div>
+					</AnimatePresence>
+				</div>
+
+				{/* Author Portrait Image (Right Column) */}
+				<div className="md:col-span-5 relative min-h-[280px] sm:min-h-[360px] bg-muted/30 overflow-hidden">
+					<AnimatePresence mode="wait">
+						<motion.img
+							key={activeItem.id || activeIndex}
+							src={
+								activeItem.avatar ||
+								"https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=800&q=80"
+							}
+							alt={activeItem.name}
+							initial={{ opacity: 0, scale: 1.05 }}
+							animate={{ opacity: 1, scale: 1 }}
+							exit={{ opacity: 0, scale: 0.95 }}
+							transition={{ duration: 0.4 }}
+							className="absolute inset-0 w-full h-full object-cover object-center"
+						/>
+					</AnimatePresence>
+				</div>
+			</div>
+
+			{/* Arrow Navigation Buttons */}
+			<div className="flex items-center justify-center gap-3 mt-8">
+				<button
+					type="button"
+					onClick={handlePrev}
+					className="size-11 rounded-xl border border-border/80 bg-card text-foreground hover:bg-muted active:scale-95 transition-all flex items-center justify-center shadow-sm cursor-pointer"
+					aria-label="Previous review"
+				>
+					<ArrowLeft className="size-4 stroke-[2.5]" />
+				</button>
+				<button
+					type="button"
+					onClick={handleNext}
+					className="size-11 rounded-xl bg-foreground text-background hover:scale-105 active:scale-95 transition-all flex items-center justify-center shadow-md cursor-pointer"
+					aria-label="Next review"
+				>
+					<ArrowRight className="size-4 stroke-[2.5]" />
+				</button>
+			</div>
+		</div>
+	);
+}
+
+// ==========================================
 // MAIN REVIEWS BLOCK
 // ==========================================
 export function ReviewsBlock({
@@ -573,6 +747,23 @@ export function ReviewsBlock({
 	marqueeSpeed = 100,
 	className,
 }: ReviewsProps) {
+	if (variant === "logo-carousel") {
+		return (
+			<section
+				className={cn(
+					"relative w-full bg-background text-foreground py-12 sm:py-20 px-4 overflow-hidden border-y border-border transition-colors duration-300",
+					className,
+				)}
+			>
+				<LogoCarouselVariant
+					reviews={reviews}
+					title={title !== "Loved by Tech Leaders Worldwide" ? title : "Loved by teams building what's next"}
+					subtitle={subtitle !== "See how fast-growing teams scale products with our senior engineering team." ? subtitle : "Hear how founders are using our platform to save time, simplify their workflow, and grow their business."}
+				/>
+			</section>
+		);
+	}
+
 	const isStacked = variant === "stacked-carousel";
 
 	return (

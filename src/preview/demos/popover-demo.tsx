@@ -25,7 +25,7 @@ const getThemeColor = (color: string) => {
 };
 
 const TRIGGER =
-  "flex items-center gap-2 px-4 py-2 bg-zinc-100 dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 rounded-xl hover:scale-105 transition-transform cursor-pointer shadow-sm text-sm font-semibold";
+  "flex items-center gap-2 px-4 py-2 bg-primary text-primary-foreground hover:bg-primary/90 rounded-xl hover:scale-105 transition-transform cursor-pointer shadow-sm text-sm font-semibold";
 
 const DimensionsForm = () => (
   <div className="space-y-4">
@@ -52,7 +52,7 @@ const DimensionsForm = () => (
           <input
             id={field.id}
             defaultValue={field.value}
-            className="col-span-2 h-8 rounded-md border border-zinc-200 dark:border-zinc-800 bg-transparent px-3 focus:outline-none focus:ring-2 focus:ring-primary"
+            className="col-span-2 h-8 rounded-md border border-zinc-200 dark:border-zinc-800 bg-transparent px-3 text-zinc-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-primary"
           />
         </div>
       ))}
@@ -122,7 +122,7 @@ export default function PopoverDemo({
           <Popover>
             <PopoverTrigger>
               <div className={TRIGGER}>
-                <Settings2 className="w-4 h-4 text-zinc-700 dark:text-zinc-300" />
+                <Settings2 className="w-4 h-4" />
                 Configure Settings
               </div>
             </PopoverTrigger>
@@ -180,8 +180,8 @@ export default function PopoverDemo({
     >
       <Popover>
         <PopoverTrigger>
-          <div className="flex items-center gap-2 px-4 py-2 bg-zinc-100 dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 rounded-xl hover:scale-105 transition-transform cursor-pointer shadow-sm text-sm font-semibold">
-            <Settings2 className="w-4 h-4 text-zinc-700 dark:text-zinc-300" />
+          <div className={TRIGGER}>
+            <Settings2 className="w-4 h-4 text-muted-foreground" />
             Configure Settings
           </div>
         </PopoverTrigger>
