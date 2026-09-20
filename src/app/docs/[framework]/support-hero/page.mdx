@@ -12,11 +12,15 @@ export const usageSection = `"use client";
 import { SupportHero } from "@/components/custom/blocks/SupportHeroBlock";
 import { DiscordIcon, GoogleCalendarIcon, SlackIcon } from "@/components/custom/blocks/Icons";
 
+// Photos from Pexels, free to use.
+const pexels = (id: number, w = 800) =>
+  \`https://images.pexels.com/photos/\${id}/pexels-photo-\${id}.jpeg?auto=compress&cs=tinysrgb&w=\${w}\`;
+
 const AVATARS = [
-  { src: "/team/ana.jpg", alt: "Ana" },
-  { src: "/team/tom.jpg", alt: "Tom" },
-  { src: "/team/mei.jpg", alt: "Mei" },
-  { src: "/team/raj.jpg", alt: "Raj" },
+  { src: pexels(2379004, 120), alt: "Ana" },
+  { src: pexels(220453, 120), alt: "Tom" },
+  { src: pexels(2381069, 120), alt: "Mei" },
+  { src: pexels(1130626, 120), alt: "Raj" },
 ];
 
 export default function Hero() {
@@ -33,23 +37,23 @@ export default function Hero() {
       />
 
       {/* Spans both rows at desktop. */}
-      <SupportHero.Photo src="/hero/agent.jpg" alt="…" label="Transcript" position="58% center" className="lg:row-span-2 lg:h-auto" />
+      <SupportHero.Photo src={pexels(7709208)} alt="…" label="Transcript" position="58% center" className="lg:row-span-2 lg:h-auto" />
 
       <SupportHero.Stat
         value={83}
         suffix="%"
         caption="Up to 83% of conversations autonomously resolved"
-        image="/hero/assistant.jpg"
+        image="https://images.unsplash.com/photo-1745674684463-62f62cb88d4c?q=80&w=1170&auto=format&fit=crop"
         imageAlt="A laptop showing an AI assistant"
         imagePosition="70% center"
       />
-      <SupportHero.Photo src="/hero/team.jpg" alt="…" position="center 40%" />
+      <SupportHero.Photo src={pexels(3184639)} alt="…" position="center 40%" />
       <SupportHero.Stat
         value={5.5}
         decimals={1}
         suffix="B"
         caption="More efficient than human representatives"
-        image="/hero/phone.jpg"
+        image="https://images.unsplash.com/photo-1746883741141-04859907ef5f?q=80&w=1170&auto=format&fit=crop"
         imageAlt="A phone with an AI chat open"
         imagePosition="65% center"
       />

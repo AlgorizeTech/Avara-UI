@@ -17,6 +17,8 @@ export default function RangeDatePickerDemo({
   color?: string;
 }) {
   const [range, setRange] = useState<{ from: Date | null; to: Date | null }>(() => {
+    // With time columns the card opens empty: the rail unfolds on the first pick.
+    if (showTime) return { from: null, to: null };
     const to = new Date();
     const from = new Date();
     if (disablePast) {
@@ -34,10 +36,6 @@ export default function RangeDatePickerDemo({
       from.setDate(to.getDate() - 14);
     } else {
       from.setDate(to.getDate() - 7);
-    }
-    if (showTime) {
-      from.setHours(9, 0, 0, 0);
-      to.setHours(17, 0, 0, 0);
     }
     return { from, to };
   });

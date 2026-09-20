@@ -228,123 +228,6 @@ export default function Page() {
   ]}
 />
 
-export const usageComponentWall = `import { HeroBlock } from "@/components/custom/blocks/HeroBlock";
-
-export default function ComponentWallHeroDemo() {
-  return (
-    <HeroBlock
-      variant="component-wall"
-      badgeText="50+ new blocks released"
-      badgeHref="/docs"
-      titlePrefix="The React component library for"
-      titleSuffix="beautiful landing pages."
-      subtitle="200+ production-ready components, blocks and templates built with React, Tailwind CSS and Motion. Copy, paste, customize and ship at lightning speed without wrestling with animations or styling."
-      primaryActionLabel="Browse Components"
-      primaryActionHref="/docs"
-      secondaryActionLabel="Get All Access"
-      secondaryActionHref="https://github.com/AlgorizeTech"
-    />
-  );
-}`;
-
-<ExampleShowcase
-  name="homepage-hero-component-wall"
-  colorControl
-  columns={1}
-  minHeight={340}
-  examples={[
-    {
-      title: "3D Component Grid Wall Showcase Hero",
-      subheading: "Ultra-modern SaaS & component library landing hero featuring a 3D perspective floating component grid wall, changelog badge, CTAs, and avatar rating trust proof.",
-      propNotes: [
-        {
-          lead: "Set",
-          prop: "variant",
-          value: '"component-wall"',
-          effect: "renders a 2-column hero with 3D tilted floating UI component grid wall showcase.",
-        },
-      ],
-      usage: usageComponentWall,
-    },
-  ]}
-/>
-
-export const usageOrbit = `import { HeroBlock } from "@/components/custom/blocks/HeroBlock";
-
-export default function OrbitHeroDemo() {
-  return (
-    <HeroBlock
-      variant="orbit"
-      badgeText="(BRAND & MOTION STUDIO)"
-      badgeHref="/docs"
-      titlePrefix="Motion is the"
-      titleSuffix="first thing anyone reads."
-      subtitle="We build identity systems and the motion that carries them — from the first frame to the shipped product."
-      primaryActionLabel="Start a project"
-      primaryActionHref="/contact"
-    />
-  );
-}`;
-
-<ExampleShowcase
-  name="homepage-hero-orbit"
-  colorControl
-  columns={1}
-  minHeight={520}
-  examples={[
-    {
-      title: "360° Revolving Orbit Gallery Hero",
-      subheading: "Interactive agency & motion studio hero featuring a 360-degree continuous revolving circular card orbit gallery with hover pause.",
-      propNotes: [
-        {
-          lead: "Set",
-          prop: "variant",
-          value: '"orbit"',
-          effect: "renders a 2-column hero featuring a 360-degree revolving orbit card gallery track.",
-        },
-      ],
-      usage: usageOrbit,
-    },
-  ]}
-/>
-
-export const usageNorway = `import { HeroBlock } from "@/components/custom/blocks/HeroBlock";
-
-export default function NorwayHeroDemo() {
-  return (
-    <HeroBlock
-      variant="norway"
-      titlePrefix="Amazing"
-      titleSuffix="NORWAY"
-      subtitle="Visit Norway, you will never regret it. This is something incredible - fantastic nature, fjords, fancy outlines of the coast..."
-      primaryActionLabel="BOOK A TOUR"
-      primaryActionHref="/tours"
-    />
-  );
-}`;
-
-<ExampleShowcase
-  name="homepage-hero-norway"
-  colorControl
-  columns={1}
-  minHeight={520}
-  examples={[
-    {
-      title: "Hexagon Nature Gallery Hero",
-      subheading: "Atmospheric nature travel hero featuring bold gold typography, dark fjord background, and a hexagonal honeycomb photo collage with interactive hexagonal CTA button.",
-      propNotes: [
-        {
-          lead: "Set",
-          prop: "variant",
-          value: '"norway"',
-          effect: "renders a dark nature landing hero with a hexagonal mosaic photo grid and bottom social navigation.",
-        },
-      ],
-      usage: usageNorway,
-    },
-  ]}
-/>
-
 ## Props Reference
 
 <div className="overflow-x-auto mb-8">
@@ -363,13 +246,13 @@ export default function NorwayHeroDemo() {
           <code>variant</code>
         </td>
         <td>
-          <code>"bounce" | "typing" | "slider" | "glow-arc" | "pet-shop" | "doctor" | "component-wall" | "orbit" | "norway"</code>
+          <code>"bounce" | "typing" | "slider" | "glow-arc" | "pet-shop" | "doctor"</code>
         </td>
         <td>
           <code>"bounce"</code>
         </td>
         <td>
-          The layout & animation style. <code>"bounce"</code> uses spring word motion; <code>"typing"</code> uses typewriter effect; <code>"slider"</code> renders split 2-column hero with continuous marquee; <code>"glow-arc"</code> renders centered radial glow arc; <code>"component-wall"</code> renders 3D component grid; <code>"orbit"</code> renders 360° revolving gallery orbit; <code>"norway"</code> renders hexagonal honeycomb nature gallery.
+          The layout & animation style. <code>"bounce"</code> uses spring word motion; <code>"typing"</code> uses typewriter effect; <code>"slider"</code> renders split 2-column hero with continuous marquee; <code>"glow-arc"</code> renders centered radial glow arc. The screenshot wall, the revolving ring and the hexagonal mosaic heroes are their own sections: <DocLink to="component-wall">Component Wall</DocLink>, <DocLink to="orbit-gallery">Orbit Gallery</DocLink> and <DocLink to="honeycomb-hero">Honeycomb Hero</DocLink>.
         </td>
       </tr>
       <tr>

@@ -162,7 +162,11 @@ const COMPONENT_META: Record<
 	"support-dashboard": { countText: "Full SaaS Dashboard", illustrationType: "dashboard" },
 	"bento-showcase": { countText: "Six-Card Marketing Bento", illustrationType: "bento-showcase" },
 	"book-appointment": { countText: "Practitioner Booking Flow", illustrationType: "book-appointment" },
+	"component-wall": { countText: "Camera Over a Screenshot Wall", illustrationType: "component-wall" },
 	"collage-hero": { countText: "Playful Photo Collage", illustrationType: "collage-hero" },
+	"hero-carousel": { countText: "Queue of Cards & Glass Panel", illustrationType: "hero-carousel" },
+	"honeycomb-hero": { countText: "Hexagonal Photo Mosaic", illustrationType: "honeycomb-hero" },
+	"orbit-gallery": { countText: "Revolving Ring of Cards", illustrationType: "orbit-gallery" },
 	"data-flow": { countText: "Sources → Node → Results", illustrationType: "data-flow" },
 	"fashion-hero": { countText: "Staggered Lookbook", illustrationType: "fashion-hero" },
 	"platform-grid": { countText: "Hairline Feature Grid", illustrationType: "platform-grid" },
@@ -3168,6 +3172,115 @@ function MiniatureIllustration({
 									Book
 								</span>
 							</div>
+						</div>
+					</div>
+				)}
+
+				{type === "honeycomb-hero" && (
+					<div className="w-full h-full flex gap-1.5 my-auto px-0.5 items-center">
+						<div className="flex-1 flex flex-col gap-0.5">
+							<span className="text-[5px] font-light text-muted-foreground">Amazing</span>
+							<div className="flex items-center gap-0.5">
+								<span className="h-[1px] w-2 bg-primary" />
+								<span className="text-[8px] font-black tracking-widest text-primary">NORWAY</span>
+							</div>
+							<span className="h-[2px] w-8 rounded bg-muted-foreground/30" />
+							<span className="h-[2px] w-6 rounded bg-muted-foreground/30" />
+						</div>
+						<div className="relative w-14 h-full">
+							{[
+								{ c: "left-0 top-1 w-6 h-7 bg-emerald-300" },
+								{ c: "left-5 top-0 w-3.5 h-4 bg-sky-200" },
+								{ c: "right-0 top-2 w-3.5 h-4 bg-teal-300" },
+								{ c: "left-2 bottom-0 w-3.5 h-4 bg-lime-300" },
+								{ c: "right-0 bottom-0 w-3.5 h-4 bg-cyan-300" },
+								{ c: "left-6 bottom-1 w-3.5 h-4 bg-primary" },
+							].map((h, i) => (
+								<span
+									key={i}
+									className={`absolute ${h.c}`}
+									style={{ clipPath: "polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%)" }}
+								/>
+							))}
+						</div>
+					</div>
+				)}
+
+				{type === "orbit-gallery" && (
+					<div className="w-full h-full flex gap-1.5 my-auto px-0.5 items-center">
+						<div className="flex-1 flex flex-col gap-0.5">
+							<span className="text-[4px] font-bold tracking-widest uppercase text-muted-foreground">✦ Studio</span>
+							<span className="text-[7px] font-black leading-[8px] text-foreground">
+								Motion is <span className="text-primary">first.</span>
+							</span>
+							<span className="h-[2px] w-8 rounded bg-muted-foreground/30" />
+							<span className="mt-0.5 h-2 w-6 rounded-[2px] bg-primary" />
+						</div>
+						<div className="relative size-12 shrink-0 rounded-full border border-border">
+							{[0, 60, 120, 180, 240, 300].map((deg, i) => (
+								<span
+									key={deg}
+									className={`absolute left-1/2 top-1/2 -ml-[3px] -mt-[4px] w-1.5 h-2 rounded-[2px] border border-background ${["bg-emerald-300", "bg-sky-300", "bg-amber-300", "bg-rose-300", "bg-lime-300", "bg-violet-300"][i]}`}
+									style={{ transform: `rotate(${deg}deg) translateY(-22px) rotate(${-deg}deg)` }}
+								/>
+							))}
+						</div>
+					</div>
+				)}
+
+				{type === "hero-carousel" && (
+					<div className="relative w-full h-full rounded-md overflow-hidden bg-gradient-to-b from-sky-300 via-slate-500 to-slate-800">
+						<span className="absolute left-1/2 top-1 -translate-x-1/2 rounded-full border border-white/40 bg-white/20 px-1 text-[4px] text-white">
+							guided trips
+						</span>
+						<div className="absolute left-0 right-0 top-[9px] text-center text-[7px] font-light leading-[8px] text-white">
+							Wake up above
+							<br />
+							the clouds
+						</div>
+						<div className="absolute left-1 bottom-1 w-9 h-7 rounded-[3px] border border-white/30 bg-white/20 backdrop-blur-[1px] p-0.5 flex flex-col gap-0.5">
+							<div className="flex -space-x-0.5">
+								{[0, 1, 2].map((i) => (
+									<span key={i} className="size-1.5 rounded-full bg-white/80 ring-[0.5px] ring-slate-500" />
+								))}
+							</div>
+							<span className="h-[2px] w-6 rounded bg-white/50" />
+							<span className="h-[2px] w-5 rounded bg-white/50" />
+							<span className="mt-auto h-2 w-5 rounded-full bg-white/80" />
+						</div>
+						<div className="absolute right-0.5 bottom-1 flex items-end gap-0.5">
+							<div className="w-6 h-5 rounded-[3px] bg-amber-200/90 border border-white/40 self-start" />
+							<div className="w-3 h-7 rounded-[3px] bg-indigo-300/90 border border-white/40" />
+							<div className="w-3 h-7 rounded-[3px] bg-emerald-300/90 border border-white/40" />
+						</div>
+					</div>
+				)}
+
+				{type === "component-wall" && (
+					<div className="w-full h-full flex gap-1.5 my-auto px-0.5 items-center">
+						<div className="flex-1 flex flex-col gap-0.5">
+							<span className="w-fit rounded-full bg-muted px-1 text-[4px] text-muted-foreground">Changelog</span>
+							<span className="text-[7px] font-bold leading-[8px] text-foreground">The component library for landing pages.</span>
+							<span className="h-[2px] w-9 rounded bg-muted-foreground/30" />
+							<div className="mt-0.5 flex gap-0.5">
+								<span className="h-2 w-5 rounded-[2px] bg-foreground" />
+								<span className="h-2 w-5 rounded-[2px] border border-border" />
+							</div>
+						</div>
+						<div className="relative w-14 h-full overflow-hidden [mask-image:linear-gradient(to_left,black_70%,transparent)]">
+							{[
+								"left-0 top-0 h-5 opacity-50",
+								"left-0 top-6 h-6 opacity-50",
+								"left-[26px] top-2 h-7 opacity-100 ring-1 ring-primary",
+								"left-[26px] top-[42px] h-5 opacity-50",
+								"left-[52px] top-0 h-6 opacity-50",
+								"left-[52px] top-7 h-6 opacity-50",
+							].map((c, i) => (
+								<span key={i} className={`absolute w-6 rounded-[3px] border border-border bg-background ${c}`}>
+									<span className="absolute inset-x-1 top-1 h-[2px] rounded bg-muted-foreground/40" />
+									<span className="absolute inset-x-1 top-2.5 bottom-1 rounded-[2px] bg-muted" />
+								</span>
+							))}
 						</div>
 					</div>
 				)}

@@ -51,11 +51,13 @@ export interface ProductDetailsProps {
   className?: string;
 }
 
+// Sneakers from Unsplash, free to use — so the block shows real photos even
+// before a consumer passes their own `images`.
 const DEFAULT_IMAGES = [
-  "/assets/red-shows.jpg",
-  "/assets/purple-shows.jpg",
-  "/assets/blue-shows.jpg",
-  "/assets/baby-pink-shows.jpg",
+  "https://images.unsplash.com/photo-1542291026-7eec264c27ff?auto=format&fit=crop&w=800&q=80",
+  "https://images.unsplash.com/photo-1582588678413-dbf45f4823e9?auto=format&fit=crop&w=800&q=80",
+  "https://images.unsplash.com/photo-1597045566677-8cf032ed6634?auto=format&fit=crop&w=800&q=80",
+  "https://images.unsplash.com/photo-1595950653106-6c9ebd614d3a?auto=format&fit=crop&w=800&q=80",
 ];
 
 const ITEM_BG_CLASSES = [

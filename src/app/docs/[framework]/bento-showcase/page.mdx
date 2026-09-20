@@ -11,6 +11,10 @@ export const usageSection = `"use client";
 
 import { BentoShowcase } from "@/components/custom/blocks/BentoShowcaseBlock";
 
+// Photos from Pexels, free to use.
+const pexels = (id: number, w = 900) =>
+  \`https://images.pexels.com/photos/\${id}/pexels-photo-\${id}.jpeg?auto=compress&cs=tinysrgb&w=\${w}\`;
+
 const CASE_STUDIES = [
   {
     quote: "5% of deal-closing rate and appointments for a solution provider",
@@ -38,20 +42,20 @@ const PLANS = [
     name: "Professional",
     price: "$3,500",
     note: "7–12 qualified leads a month, guaranteed",
-    image: "/plans/professional.jpg",
+    image: "https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?q=80&w=600&auto=format&fit=crop",
     benefits: ["Lead qualification", "Calendar booking", "Template A/B testing", "Intelligent research", "Email outreach"],
     action: "Start now",
   },
-  { rank: "#3", name: "Enterprise", image: "/plans/enterprise.jpg" },
+  { rank: "#3", name: "Enterprise", image: "https://images.unsplash.com/photo-1550684848-fac1c5b4e853?q=80&w=600&auto=format&fit=crop" },
 ];
 
 // Four photos and two figure discs make six cells — an even count keeps the
 // high/low rhythm intact across the loop.
 const TEAM = [
-  { src: "/team/desk.jpg", alt: "A desk from above" },
-  { src: "/team/floor.jpg", alt: "Two agents at their desks" },
-  { src: "/team/maria.jpg", alt: "Maria on a call" },
-  { src: "/team/alex.jpg", alt: "Alex at his laptop" },
+  { src: pexels(7688336, 500), alt: "A desk from above" },
+  { src: pexels(8867434, 500), alt: "Two agents at their desks" },
+  { src: pexels(7658387, 500), alt: "Maria on a call" },
+  { src: pexels(7709086, 500), alt: "Alex at his laptop" },
 ];
 
 export default function Showcase() {
@@ -59,7 +63,7 @@ export default function Showcase() {
     <BentoShowcase className="rounded-[36px]">
       <BentoShowcase.Hero
         label="Outsourcing company"
-        photo="/team/agent.jpg"
+        photo={pexels(7709208)}
         photoAlt="A support agent wearing a headset at her laptop"
         chat={{
           from: "Maria",
@@ -68,14 +72,14 @@ export default function Showcase() {
           as: "AgainAgain",
           reply: "Sure, I'll cancel that immediately for you!",
         }}
-        avatars={["/team/maria.jpg", "/team/tom.jpg", "/team/alex.jpg"]}
+        avatars={[pexels(7658387, 120), pexels(8867433, 120), pexels(8867434, 120)]}
       >
         <em>Trusted by</em> 1000’s of sales reps
       </BentoShowcase.Hero>
 
       <BentoShowcase.CaseStudies rating={5} reviews={42} items={CASE_STUDIES} />
 
-      <BentoShowcase.Headline label="Customer support" photo="/team/group.jpg" photoAlt="The support team">
+      <BentoShowcase.Headline label="Customer support" photo={pexels(8867482, 600)} photoAlt="The support team">
         We handle your
         <br />
         calls so you <em>run your business</em>

@@ -107,19 +107,13 @@ export const usageTime = `import { RangeDatePicker, type DateRange } from "@/com
 import { useState } from "react";
 
 export default function BookingWindow() {
-  const [range, setRange] = useState<DateRange>(() => {
-    const from = new Date();
-    from.setDate(from.getDate() + 1);
-    from.setHours(9, 0, 0, 0);
-    const to = new Date();
-    to.setDate(to.getDate() + 5);
-    to.setHours(17, 0, 0, 0);
-    return { from, to };
-  });
+  // Start empty: the card is just the calendar until a start day is picked.
+  const [range, setRange] = useState<DateRange>({ from: null, to: null });
 
-  // showTime adds Start / End time columns — to the right of the calendar
-  // when the card is wide enough, under it otherwise. Both dates carry a time, and on
-  // a same-day range the end can never be earlier than the start.
+  // showTime keeps the time columns folded away until the first pick, then
+  // unfolds them beside the calendar (under it when the card is narrow).
+  // Both dates carry a time, and on a same-day range the end can never be
+  // earlier than the start. Clear folds the columns away again.
   return (
     <RangeDatePicker
       variant="single"
@@ -178,13 +172,13 @@ export default function BookingWindow() {
     },
     {
       title: "Range with times",
-      subheading: "Start and End columns sit to the right of the calendar when the card has room, and stack under it when it doesn't. The end can't precede the start on the same day.",
+      subheading: "The card opens as a bare calendar. Pick a start day and a time rail unfolds beside it — Start first, then an End column once the end day is chosen. The rail unfolds under the calendar when the card is narrow, and Clear folds it away.",
       propNotes: [
         {
           lead: "Set",
           prop: "showTime",
           effect:
-            "to add Start / End time columns; both `from` and `to` carry a time and the footer shows it. `timeFormat` switches to 24-hour and `minuteStep` sets the granularity.",
+            "to add the Start / End time columns. With no `value` the card starts empty; both `from` and `to` then carry a time and the footer shows it. `timeFormat` switches to 24-hour and `minuteStep` sets the granularity.",
         },
       ],
       usage: usageTime,
@@ -293,7 +287,7 @@ Discover the interactive capabilities of the `RangeDatePicker` component:
         <td><code>showTime</code></td>
         <td><code>boolean</code></td>
         <td><code>false</code></td>
-        <td>Adds Start / End time columns — to the right of a single-month calendar when the card is at least 32rem wide, under it otherwise (dual-month always stacks). Both <code>from</code> and <code>to</code> carry a time; on a same-day range the end can never precede the start.</td>
+        <td>Adds Start / End time columns. The card opens with the calendar alone and starts empty when uncontrolled; picking a start day unfolds the columns to the right of a single-month calendar when there is room for the wider card, under it otherwise (dual-month always stacks). Clear folds them away. Both <code>from</code> and <code>to</code> carry a time; on a same-day range the end can never precede the start.</td>
       </tr>
       <tr>
         <td><code>timeFormat</code></td>
