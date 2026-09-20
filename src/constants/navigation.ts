@@ -276,6 +276,13 @@ const rawNavigation: NavigationItem[] = [
         keywords: ["booking", "appointment", "schedule", "calendar", "slots", "doctor", "clinic", "reservation"],
       },
       {
+        label: "Component Wall",
+        slug: "component-wall",
+        badge: "New",
+        addedOn: "2026-09-20",
+        keywords: ["hero", "wall", "screenshots", "camera", "zoom", "library", "landing", "showcase", "grid"],
+      },
+      {
         label: "Collage Hero",
         slug: "collage-hero",
         badge: "New",
