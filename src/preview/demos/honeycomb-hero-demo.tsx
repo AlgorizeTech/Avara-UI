@@ -2,16 +2,21 @@
 
 import { HoneycombHero } from "@/components/custom/blocks/HoneycombHeroBlock";
 
-export default function HoneycombHeroDemo({ color = "primary" }: { color?: string }) {
+export default function HoneycombHeroDemo({
+  interval = 5000,
+}: {
+  /** Milliseconds between steps; 0 turns autoplay off. */
+  interval?: number;
+}) {
   return (
-    <div className="w-full overflow-hidden rounded-2xl border border-zinc-200 bg-white dark:border-zinc-800 dark:bg-black">
+    <div className="w-full overflow-hidden rounded-2xl">
       <HoneycombHero
-        color={color}
         title="Amazing"
         titleAccent="Norway"
         subtitle="Visit Norway, you will never regret it. This is something incredible - fantastic nature, fjords, fancy outlines of the coast..."
-        primaryActionLabel="Book a tour"
+        primaryActionLabel={"Book\na tour"}
         primaryActionHref="#"
+        interval={interval}
         className="w-full"
       />
     </div>

@@ -572,9 +572,9 @@ export const META: Record<string, ItemMeta> = {
   },
   "honeycomb-hero": {
     description:
-      "A nature or travel hero: a light headline over a bold, tracked accent word, and a honeycomb of five hexagonal photographs with a hexagonal call to action set among them. A row of social links runs along the foot.",
+      "A travel hero in deep teal: a light line over a huge gold word, and a honeycomb of hexagonal photographs with a gold hexagonal call to action set among them. The large hexagon is the slide on screen and its photograph tints the background; every five seconds, or on the arrows at the foot, every hexagon moves one step along the ring, endlessly.",
     categories: ["marketing", "layout"],
-    docs: "Named export: HoneycombHero. Pass `title` and `titleAccent`, `subtitle`, `primaryActionLabel`/`primaryActionHref`, five `images` ({ src, alt }: large left, top centre, middle right, bottom left, bottom right) and `socialLinks`. `color` is a preset name or any CSS colour; `linkComponent` takes next/link.",
+    docs: "Named export: HoneycombHero. Pass `title` and `titleAccent`, `subtitle`, `primaryActionLabel` (a \\n breaks the line) and `primaryActionHref`, `images` ({ src, alt }[] in queue order — nine cells are visible), `socialLinks`, `interval` in ms (0 turns autoplay off) and `onChange`. `accent` is the gold, `background` the teal; `linkComponent` takes next/link.",
   },
   "orbit-gallery": {
     description:
