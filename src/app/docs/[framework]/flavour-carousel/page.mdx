@@ -14,15 +14,17 @@ export const usageSection = `"use client";
 import { FlavourCarousel } from "@/components/custom/blocks/FlavourCarouselBlock";
 
 // Every product image must share the same crop, so only the contents appear to change.
+const asset = (name: string) => "https://algorize-ui.vercel.app/assets/matcha/" + name + ".webp";
+
 const FLAVOURS = [
-  { name: "Strawberry", price: "$6.50", tint: "#e5394a", product: "/matcha/cup-strawberry.webp", tile: "/matcha/strawberry.webp" },
-  { name: "Mixed berry", price: "$6.90", tint: "#6a46a8", product: "/matcha/cup-berry.webp", tile: "/matcha/berry.webp" },
-  { name: "Mango", price: "$6.50", tint: "#f4a51c", product: "/matcha/cup-mango.webp", tile: "/matcha/mango.webp" },
-  { name: "Passion fruit", price: "$6.90", tint: "#c2604a", product: "/matcha/cup-passion.webp", tile: "/matcha/passion.webp" },
-  { name: "Chocolate", price: "$6.90", tint: "#8a5a3c", product: "/matcha/cup-chocolate.webp", tile: "/matcha/chocolate.webp" },
-  { name: "Cookies and cream", price: "$7.20", tint: "#5c4a44", product: "/matcha/cup-cookie.webp", tile: "/matcha/cookie.webp" },
-  { name: "Grape", price: "$6.50", tint: "#a3305e", product: "/matcha/cup-grape.webp", tile: "/matcha/grape.webp" },
-  { name: "Ube", price: "$7.20", tint: "#9a5ec2", product: "/matcha/cup-ube.webp", tile: "/matcha/ube.webp" },
+  { name: "Strawberry", price: "$6.50", tint: "#e5394a", product: asset("cup-strawberry"), tile: asset("flavour-strawberry") },
+  { name: "Mixed berry", price: "$6.90", tint: "#6a46a8", product: asset("cup-berry"), tile: asset("flavour-berry") },
+  { name: "Mango", price: "$6.50", tint: "#f4a51c", product: asset("cup-mango"), tile: asset("flavour-mango") },
+  { name: "Passion fruit", price: "$6.90", tint: "#c2604a", product: asset("cup-passion"), tile: asset("flavour-passion") },
+  { name: "Chocolate", price: "$6.90", tint: "#8a5a3c", product: asset("cup-chocolate"), tile: asset("flavour-chocolate") },
+  { name: "Cookies and cream", price: "$7.20", tint: "#5c4a44", product: asset("cup-cookie"), tile: asset("flavour-cookie") },
+  { name: "Grape", price: "$6.50", tint: "#a3305e", product: asset("cup-grape"), tile: asset("flavour-grape") },
+  { name: "Ube", price: "$7.20", tint: "#9a5ec2", product: asset("cup-ube"), tile: asset("flavour-ube") },
 ];
 
 export default function Flavours() {
@@ -30,8 +32,8 @@ export default function Flavours() {
     <FlavourCarousel
       flavours={FLAVOURS}
       heading="Choose your matcha tea"
-      backgroundImage="/matcha/backdrop.webp"
-      foregroundImage="/matcha/powder.webp"
+      backgroundImage={asset("green-background-matcha")}
+      foregroundImage={asset("matcha-powder")}
       interval={5000}
       onAdd={(flavour) => addToCart(flavour.name)}
     />
