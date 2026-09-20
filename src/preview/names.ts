@@ -54,6 +54,7 @@ export const sandboxNames = [
   "email",
   "fashion-hero",
   "fleet",
+  "flavour-carousel",
   "floating-contact-button",
   "flow-gallery",
   "flowchart",

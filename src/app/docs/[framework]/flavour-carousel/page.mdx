@@ -1,0 +1,213 @@
+import { ExampleShowcase } from "@/components/site/Sandbox";
+import { extractCode } from "@/lib/code";
+
+# Flavour Carousel
+
+A product hero for anything that comes in flavours — a matcha latte here, but ice cream, juice or a candle would do. The product stands in a mountain of matcha powder against a moss-green backdrop and its flavours flank it on four tilted cream tiles. Every five seconds, or when a tile is clicked, the ring turns: the chosen tile slides into the cup and shrinks away, and the cup — which never moves — cross-fades to the picture with that flavour inside. A soft glow behind the cup takes the flavour's colour; a price pill and an add-to-cart button hang under the cup, and the headline sits low over the powder.
+
+When the section first appears only the cup is there; the ring rises from behind the powder already spinning, one continuous turn that eases to a stop on the first flavour in a little over two seconds, and the price, cart and headline fade up as it lands. The scene is three layers — a backdrop, the cup, and a transparent cutout of the powder laid in front of the cup so the glass stands in it — positioned in fractions of the stage, measured from the design. One component serves both themes: the scene is the same in both, and in dark mode only the tiles change, from cream to a translucent black that sits into the ground. Without pictures the scene is drawn — moss with a heap of powder. Every move is a spring, so a click in the middle of a turn simply redirects it; a tile two steps away is walked to one step at a time, at a quicker pace, so the ring always behaves like a carousel; and a tile only ever leaves on its own side of the cup and arrives from the other — nothing is seen crossing the stage. The pictures of the product are stacked and the newest fades in over the one before, so the cup never dips or flickers mid-change; the ring holds while the pointer or keyboard focus is on it, while the tab is hidden and while the section is off screen. Under `prefers-reduced-motion` every change is a cut.
+
+`FlavourCarousel` is built from library pieces: the cart button is <DocLink to="button">Button</DocLink>.
+
+export const usageSection = `"use client";
+
+import { FlavourCarousel } from "@/components/custom/blocks/FlavourCarouselBlock";
+
+// Every product image must share the same crop, so only the contents appear to change.
+const FLAVOURS = [
+  { name: "Strawberry", price: "$6.50", tint: "#e5394a", product: "/matcha/cup-strawberry.webp", tile: "/matcha/strawberry.webp" },
+  { name: "Mixed berry", price: "$6.90", tint: "#6a46a8", product: "/matcha/cup-berry.webp", tile: "/matcha/berry.webp" },
+  { name: "Mango", price: "$6.50", tint: "#f4a51c", product: "/matcha/cup-mango.webp", tile: "/matcha/mango.webp" },
+  { name: "Passion fruit", price: "$6.90", tint: "#c2604a", product: "/matcha/cup-passion.webp", tile: "/matcha/passion.webp" },
+  { name: "Chocolate", price: "$6.90", tint: "#8a5a3c", product: "/matcha/cup-chocolate.webp", tile: "/matcha/chocolate.webp" },
+  { name: "Cookies and cream", price: "$7.20", tint: "#5c4a44", product: "/matcha/cup-cookie.webp", tile: "/matcha/cookie.webp" },
+  { name: "Grape", price: "$6.50", tint: "#a3305e", product: "/matcha/cup-grape.webp", tile: "/matcha/grape.webp" },
+  { name: "Ube", price: "$7.20", tint: "#9a5ec2", product: "/matcha/cup-ube.webp", tile: "/matcha/ube.webp" },
+];
+
+export default function Flavours() {
+  return (
+    <FlavourCarousel
+      flavours={FLAVOURS}
+      heading="Choose your matcha tea"
+      backgroundImage="/matcha/backdrop.webp"
+      foregroundImage="/matcha/powder.webp"
+      interval={5000}
+      onAdd={(flavour) => addToCart(flavour.name)}
+    />
+  );
+}
+`;
+
+<ExampleShowcase
+  name="flavour-carousel"
+  columns={1}
+  examples={[
+    {
+      title: "Choose your matcha tea",
+      subheading: "Eight flavours around one cup on a mountain of powder. The ring spins up from behind the powder and settles; then wait five seconds or click a tile: it slides into the cup and the cup's contents change with it. Four tiles on tablets and up, two on phones; switch the site theme to see the tiles go dark. Arrow keys turn the ring when it has focus; hovering holds it.",
+      propNotes: [
+        {
+          prop: "flavours",
+          effect:
+            "are `{ name, price?, tint?, product, tile }` in ring order. `product` is the picture of the product with that flavour inside — cut every one with the same geometry so only the contents change — and `tile` is what sits on the cream tile. `tint` colours the glow behind the product.",
+        },
+        {
+          prop: "reveal",
+          value: '"in-view"',
+          effect:
+            "(the default) plays the entrance the first time the section is on screen; the docs pass `\"immediate\"`, and `\"none\"` renders the ring in place. Under prefers-reduced-motion the ring is simply there.",
+        },
+        {
+          prop: "interval",
+          value: "5000",
+          effect: "is the rest between turns in milliseconds; `0` turns autoplay off and leaves the tiles to the user.",
+        },
+        {
+          prop: "onAdd",
+          effect:
+            "renders the cart button under the price pill and receives the chosen flavour; leave it out and only the pill remains. The pill shows the `price` (the name when there is none) and announces the name to screen readers. `onChange` reports every turn.",
+        },
+        {
+          prop: "foregroundImage",
+          effect:
+            "is the powder — a transparent cutout with its peak at the horizontal centre — anchored to the foot of the stage in front of the cup, `foregroundHeight` (default `0.41`) of the stage tall. `backgroundImage` covers the section behind everything. Leave both out and the scene is drawn from `background`, `mound` (`[light, dark]`) and `paper`.",
+        },
+      ],
+      props: { rounded: true },
+      usage: usageSection,
+      code: extractCode("src/components/custom/blocks/FlavourCarouselBlock.tsx"),
+      minHeight: 720,
+    },
+  ]}
+/>
+
+## Installation
+
+<Installation name="flavour-carousel" />
+
+## Preparing the pictures
+
+The trick that makes the cup look untouched is that every `product` picture is the same photograph with different contents, cut with identical geometry. If your renders come as one sheet, cut every cell with the same crop box rather than trimming each to its own edges — a shift of even a few pixels reads as the cup jumping. The powder is a separate cutout with a transparent background and its peak at the horizontal centre, so it can stand in front of the cup over a plain backdrop; keep the backdrop free of powder or the two will fight. Transparent WebP keeps each picture under 150 KB.
+
+## Features
+
+<div className="grid grid-cols-1 sm:grid-cols-2 gap-4 my-6 not-prose">
+  <div className="p-6 rounded-2xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900">
+    <h3 className="text-lg font-semibold text-zinc-900 dark:text-zinc-50 mb-2">The product never moves</h3>
+    <p className="text-zinc-600 dark:text-zinc-400 text-sm">The pictures are stacked and the newest fades in over the one before, so there is no dip, no flicker and no jump — only the contents change.</p>
+  </div>
+  <div className="p-6 rounded-2xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900">
+    <h3 className="text-lg font-semibold text-zinc-900 dark:text-zinc-50 mb-2">Springs, and no crossings</h3>
+    <p className="text-zinc-600 dark:text-zinc-400 text-sm">Every tile animates to its resting place with a spring, so clicking during a turn redirects the motion instead of restarting it. A far tile is reached step by step at double pace, and a tile remembers which side of the cup it is on: it leaves on that side and comes back in from the other, never across the stage.</p>
+  </div>
+  <div className="p-6 rounded-2xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900">
+    <h3 className="text-lg font-semibold text-zinc-900 dark:text-zinc-50 mb-2">One entrance, then it holds still when it should</h3>
+    <p className="text-zinc-600 dark:text-zinc-400 text-sm">The ring spins up from behind the powder once, as a single decelerating turn, and hands over to the springs where it stops. After that autoplay pauses while the pointer or focus is on the ring, while the tab is hidden and while the section is scrolled out of view.</p>
+  </div>
+  <div className="p-6 rounded-2xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900">
+    <h3 className="text-lg font-semibold text-zinc-900 dark:text-zinc-50 mb-2">Keyboard and screen readers</h3>
+    <p className="text-zinc-600 dark:text-zinc-400 text-sm">Tiles are buttons with a pressed state, the arrow keys turn the ring, the tag is a live region and the cart button names the flavour it adds. Reduced motion turns every change into a cut.</p>
+  </div>
+</div>
+
+## Props Reference
+
+<div className="overflow-x-auto my-4">
+  <table>
+    <thead>
+      <tr>
+        <th>Prop</th>
+        <th>Type</th>
+        <th>Default</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><code>flavours</code></td>
+        <td><code>&#123; name: string; price?: string; tint?: string; product: string; tile: string; alt?: string &#125;[]</code></td>
+        <td>—</td>
+        <td>The flavours in ring order. <code>product</code> is the picture with that flavour inside, <code>tile</code> the ingredient on the tile.</td>
+      </tr>
+      <tr>
+        <td><code>heading</code></td>
+        <td><code>ReactNode</code></td>
+        <td>—</td>
+        <td>The headline low over the mound.</td>
+      </tr>
+      <tr>
+        <td><code>initial</code></td>
+        <td><code>number</code></td>
+        <td><code>0</code></td>
+        <td>The flavour in the cup at the start.</td>
+      </tr>
+      <tr>
+        <td><code>reveal</code></td>
+        <td><code>"in-view" | "immediate" | "none"</code></td>
+        <td><code>"in-view"</code></td>
+        <td>When the entrance plays: the ring rises from behind the powder, spinning, and settles on <code>initial</code>.</td>
+      </tr>
+      <tr>
+        <td><code>interval</code></td>
+        <td><code>number</code></td>
+        <td><code>5000</code></td>
+        <td>Milliseconds between turns; <code>0</code> turns autoplay off.</td>
+      </tr>
+      <tr>
+        <td><code>onChange</code></td>
+        <td><code>(index, flavour) =&gt; void</code></td>
+        <td>—</td>
+        <td>Called after every turn.</td>
+      </tr>
+      <tr>
+        <td><code>onAdd</code>, <code>addLabel</code></td>
+        <td><code>(flavour, index) =&gt; void</code>, <code>string</code></td>
+        <td>—, <code>"Add to cart"</code></td>
+        <td>Renders the cart button under the price; the label names it for assistive technology.</td>
+      </tr>
+      <tr>
+        <td><code>backgroundImage</code></td>
+        <td><code>string</code></td>
+        <td>—</td>
+        <td>The backdrop, covering the section. Without it the ground is drawn.</td>
+      </tr>
+      <tr>
+        <td><code>backgroundPosition</code></td>
+        <td><code>string</code></td>
+        <td><code>"50% 50%"</code></td>
+        <td><code>object-position</code> for the backdrop.</td>
+      </tr>
+      <tr>
+        <td><code>foregroundImage</code></td>
+        <td><code>string</code></td>
+        <td>—</td>
+        <td>The powder cutout, anchored to the foot of the stage in front of the cup.</td>
+      </tr>
+      <tr>
+        <td><code>foregroundHeight</code></td>
+        <td><code>number</code></td>
+        <td><code>0.41</code></td>
+        <td>The powder's height as a share of the stage; anything wider than the stage is clipped.</td>
+      </tr>
+      <tr>
+        <td><code>background</code></td>
+        <td><code>string</code></td>
+        <td><code>"#3b4726"</code></td>
+        <td>The drawn ground when there is no backdrop.</td>
+      </tr>
+      <tr>
+        <td><code>mound</code></td>
+        <td><code>[string, string]</code></td>
+        <td><code>["#7a9550", "#465b2b"]</code></td>
+        <td>The drawn powder mound, light and dark.</td>
+      </tr>
+      <tr>
+        <td><code>paper</code></td>
+        <td><code>string</code></td>
+        <td><code>"#f4f1e7"</code></td>
+        <td>The cream of the tiles (light mode), the price pill and the cart.</td>
+      </tr>
+    </tbody>
+  </table>
+</div>

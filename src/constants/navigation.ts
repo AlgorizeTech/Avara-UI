@@ -290,6 +290,13 @@ const rawNavigation: NavigationItem[] = [
         keywords: ["hero", "collage", "kindergarten", "school", "photos", "badge", "video", "playful"],
       },
       {
+        label: "Flavour Carousel",
+        slug: "flavour-carousel",
+        badge: "New",
+        addedOn: "2026-09-20",
+        keywords: ["carousel", "flavour", "flavor", "matcha", "product", "hero", "cup", "drink", "cart", "picker", "ring"],
+      },
+      {
         label: "Data Flow",
         slug: "data-flow",
         badge: "New",
