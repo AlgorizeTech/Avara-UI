@@ -280,7 +280,7 @@
           "target": "components/custom/blocks/AvatarStackBlock.tsx"
         }
       ],
-      "docs": "Named export: AvatarStack. `avatars` are { src, alt? }; `size` sm | md | lg; `max` faces before the +N disc; `ringClassName` is the gap colour; `action` renders last at face size; `spreadOnHover` fans the faces apart under the pointer."
+      "docs": "Named export: AvatarStack. `avatars` are { src, alt? }; `size` sm | md | lg; `max` faces before the +N disc; `ringClassName` is the gap colour; `action` renders last at face size; `spreadOnHover` fans the faces apart under the pointer; `liftOnHover` raises the hovered face above its neighbours."
     },
     {
       "name": "bento-showcase",
@@ -781,18 +781,21 @@
       "type": "registry:component",
       "title": "Component Wall",
       "author": "AlgorizeTech",
-      "description": "A landing hero for a component library: copy on the left, and on the right a wall of screenshots that never ends. A camera hangs over the wall zoomed in on one card; every few seconds it pulls back, glides to another card picked at random and settles on it.",
+      "description": "A landing hero for a component library: on the right a wall of screenshots that never ends, a camera gliding from card to card; on the left a headline that blurs in word by word and keeps one word turning, a lead, an install command that names whichever card the camera is resting on, two actions and a line of trust.",
       "categories": [
         "marketing",
         "layout"
       ],
       "dependencies": [
-        "gsap",
+        "framer-motion",
         "lucide-react"
       ],
       "registryDependencies": [
         "https://algorize-ui.vercel.app/r/avatar-stack.json",
+        "https://algorize-ui.vercel.app/r/copy-button.json",
         "https://algorize-ui.vercel.app/r/half-stars.json",
+        "https://algorize-ui.vercel.app/r/image-wall.json",
+        "https://algorize-ui.vercel.app/r/text-animation.json",
         "utils"
       ],
       "files": [
@@ -802,7 +805,7 @@
           "target": "components/custom/blocks/ComponentWallBlock.tsx"
         }
       ],
-      "docs": "Named export: ComponentWall. Composed from the avatar-stack and half-stars items, which install alongside it. Pass `badge` ({ label, text?, href?, icon? }), `heading`, `description`, `primaryAction`/`secondaryAction` ({ label, href }), `trust` ({ text, avatars?, rating? }) and `items` ({ title, image }[] — every screenshot sits in the same 493:332 frame). `columns` sets the grid, `interval` the rest between flights in ms (0 holds still), `order` is serial (card by card) or shuffle (every card once per round, at random), `zoom` the resting scale; `onFocus` reports the card in view; `linkComponent` takes next/link."
+      "docs": "Named export: ComponentWall (plus the ComponentWallItem type). Composed from the image-wall, text-animation, copy-button, avatar-stack and half-stars items, which install alongside it. Pass `badge` ({ label, href? }), `heading` (a string, revealed word by word; write `{word}` where `headingWords` take turns every `wordInterval` ms, and name one word in `accent` for the primary colour), `description`, `install` ({ command } — write `{item}` where the focused card's `slug` goes, e.g. `npx shadcn@latest add @algorize-ui/{item}`), `primaryAction`/`secondaryAction` ({ label, href, icon? }), `trust` ({ text, avatars?, rating? }) and `items` ({ title, image, slug? }[] — every screenshot sits in the same 493:332 frame; slug defaults to the title in kebab-case). `columns`, `interval` (ms the camera rests; 0 holds still), `order` (serial | shuffle), `zoom` and `onFocus` pass straight to the wall; `linkComponent` takes next/link. The headline uses your theme's font-serif, the command font-mono; colours are theme tokens."
     },
     {
       "name": "compute",
@@ -1327,6 +1330,34 @@
       "docs": "Named export: FashionHero (plus FashionHero.Look). Composed from the circular-text, avatar-stack, text-animation, tilted-card and dialog items, which install alongside it. Pass `heading`, up to seven `looks` ({ src, alt, tone, blend?, position? }), `video` ({ badge, url }), `avatars` + `avatarsHref`, `cta`, `quote`, `teaser` and `linkComponent`; `accent` sets --primary, `reveal` is in-view or immediate."
     },
     {
+      "name": "flavour-carousel",
+      "type": "registry:component",
+      "title": "Flavour Carousel",
+      "author": "AlgorizeTech",
+      "description": "A product hero for anything that comes in flavours: the product stands in a mountain of powder against a moss backdrop and its flavours flank it on four tilted cream tiles. It rises from behind the powder spinning and settles; then every five seconds, or on a click, the chosen tile slides into the cup and the cup cross-fades to that flavour without moving; a glow takes the flavour's colour, a price pill and add-to-cart hang under the cup. One component for both themes: in dark mode the tiles go translucent black.",
+      "categories": [
+        "marketing",
+        "commerce",
+        "media"
+      ],
+      "dependencies": [
+        "framer-motion",
+        "lucide-react"
+      ],
+      "registryDependencies": [
+        "https://algorize-ui.vercel.app/r/button.json",
+        "utils"
+      ],
+      "files": [
+        {
+          "path": "src/components/custom/blocks/FlavourCarouselBlock.tsx",
+          "type": "registry:component",
+          "target": "components/custom/blocks/FlavourCarouselBlock.tsx"
+        }
+      ],
+      "docs": "Named export: FlavourCarousel. Composed from the button item, which installs alongside it. Pass `flavours` ({ name, price?, tint?, product, tile }[] — every product image must share the same crop), `heading`, `interval` in ms (0 turns autoplay off), `initial`, `reveal` (in-view, immediate or none), `onChange` and `onAdd` (omit it to hide the cart button) with `addLabel`. `backgroundImage` is the backdrop and `foregroundImage` the transparent powder cutout laid in front of the cup (`foregroundHeight` of the stage tall); without them the scene is drawn from `background`, `mound` ([light, dark]) and `paper`."
+    },
+    {
       "name": "fleet-map",
       "type": "registry:component",
       "title": "Fleet Map",
@@ -1806,6 +1837,31 @@
         }
       ],
       "docs": "Named export: ImageCompare. `beforeImage` and `afterImage` take URLs, with `beforeLabel` / `afterLabel` for the badges and `initialPosition` as a 0-100 percentage. Variants: classic-slider | split-handle | glowing-divider | badge-overlay | minimal. Both images should share an aspect ratio or the reveal will misalign."
+    },
+    {
+      "name": "image-wall",
+      "type": "registry:component",
+      "title": "Image Wall",
+      "author": "AlgorizeTech",
+      "description": "A wall of screenshots that never ends, and a camera hanging over it: it rests zoomed in on one card, then every few seconds pulls back, glides to the next and settles on it. Use it wherever a set of images should keep showing itself — a hero, a gallery band, a showcase.",
+      "categories": [
+        "media",
+        "marketing"
+      ],
+      "dependencies": [
+        "gsap"
+      ],
+      "registryDependencies": [
+        "utils"
+      ],
+      "files": [
+        {
+          "path": "src/components/custom/blocks/ImageWallBlock.tsx",
+          "type": "registry:component",
+          "target": "components/custom/blocks/ImageWallBlock.tsx"
+        }
+      ],
+      "docs": "Named export: ImageWall (plus the WallItem type). Pass `items` ({ title, image }[] — every image is cropped from its top edge into the same 493:332 frame) and give it a height with `className`; it fills its box. `columns` sets the tile, `interval` the rest between flights in ms (0 holds still), `order` is serial (card by card) or shuffle (every card once per round, at random), `zoom` the resting scale — a box under 420px tall eases it down to 0.72 so a few cards fit, one under 640px wide to 0.5 so the flight between cards stays visible on a phone; `onFocus` reports the card in view. The camera holds while hovered, while the tab is hidden and while off screen; under prefers-reduced-motion it cuts instead of flying."
     },
     {
       "name": "infrastructure-topology",
@@ -3504,7 +3560,7 @@
           "target": "components/custom/blocks/TextAnimationBlock.tsx"
         }
       ],
-      "docs": "Named export: TextAnimation. `text` is a plain string it splits internally; `as` sets the rendered element and `delay` / `duration` control timing. For dependency-free effects, use `animated-typography`."
+      "docs": "Named export: TextAnimation. `text` is a plain string it splits internally; `as` sets the rendered element and `delay` / `duration` control timing; `renderWord(word, index)` swaps what a word renders as on the word-level variants (pop-in, flip, blur-in-up) while keeping its entrance. For dependency-free effects, use `animated-typography`."
     },
     {
       "name": "theme-switcher",

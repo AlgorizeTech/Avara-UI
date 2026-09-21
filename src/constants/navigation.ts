@@ -182,6 +182,13 @@ const rawNavigation: NavigationItem[] = [
       { label: "Half Stars", slug: "half-stars" },
       { label: "Heart Signal", slug: "heart-signal" },
       { label: "Image Compare", slug: "image-compare" },
+      {
+        label: "Image Wall",
+        slug: "image-wall",
+        badge: "New",
+        addedOn: "2026-09-21",
+        keywords: ["image", "wall", "carousel", "screenshots", "camera", "zoom", "gallery", "grid", "masonry", "showcase"],
+      },
       { label: "Infrastructure Topology", slug: "infrastructure-topology" },
       { label: "Input", slug: "input" },
       { label: "Invoice", slug: "invoice" },
@@ -288,6 +295,13 @@ const rawNavigation: NavigationItem[] = [
         badge: "New",
         addedOn: "2026-09-16",
         keywords: ["hero", "collage", "kindergarten", "school", "photos", "badge", "video", "playful"],
+      },
+      {
+        label: "Flavour Carousel",
+        slug: "flavour-carousel",
+        badge: "New",
+        addedOn: "2026-09-20",
+        keywords: ["carousel", "flavour", "flavor", "matcha", "product", "hero", "cup", "drink", "cart", "picker", "ring"],
       },
       {
         label: "Data Flow",

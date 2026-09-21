@@ -556,7 +556,7 @@ export const META: Record<string, ItemMeta> = {
     description:
       "A row of overlapping faces that folds the rest into a +N disc and takes a trailing action. Use it as the social-proof cue under a headline or beside a count.",
     categories: ["data-display"],
-    docs: "Named export: AvatarStack. `avatars` are { src, alt? }; `size` sm | md | lg; `max` faces before the +N disc; `ringClassName` is the gap colour; `action` renders last at face size; `spreadOnHover` fans the faces apart under the pointer.",
+    docs: "Named export: AvatarStack. `avatars` are { src, alt? }; `size` sm | md | lg; `max` faces before the +N disc; `ringClassName` is the gap colour; `action` renders last at face size; `spreadOnHover` fans the faces apart under the pointer; `liftOnHover` raises the hovered face above its neighbours.",
   },
   "fashion-hero": {
     description:
@@ -566,15 +566,21 @@ export const META: Record<string, ItemMeta> = {
   },
   "component-wall": {
     description:
-      "A landing hero for a component library: copy on the left, and on the right a wall of screenshots that never ends. A camera hangs over the wall zoomed in on one card; every few seconds it pulls back, glides to another card picked at random and settles on it.",
+      "A landing hero for a component library: on the right a wall of screenshots that never ends, a camera gliding from card to card; on the left a headline that blurs in word by word and keeps one word turning, a lead, an install command that names whichever card the camera is resting on, two actions and a line of trust.",
     categories: ["marketing", "layout"],
-    docs: "Named export: ComponentWall. Composed from the avatar-stack and half-stars items, which install alongside it. Pass `badge` ({ label, text?, href?, icon? }), `heading`, `description`, `primaryAction`/`secondaryAction` ({ label, href }), `trust` ({ text, avatars?, rating? }) and `items` ({ title, image }[] — every screenshot sits in the same 493:332 frame). `columns` sets the grid, `interval` the rest between flights in ms (0 holds still), `order` is serial (card by card) or shuffle (every card once per round, at random), `zoom` the resting scale; `onFocus` reports the card in view; `linkComponent` takes next/link.",
+    docs: "Named export: ComponentWall (plus the ComponentWallItem type). Composed from the image-wall, text-animation, copy-button, avatar-stack and half-stars items, which install alongside it. Pass `badge` ({ label, href? }), `heading` (a string, revealed word by word; write `{word}` where `headingWords` take turns every `wordInterval` ms, and name one word in `accent` for the primary colour), `description`, `install` ({ command } — write `{item}` where the focused card's `slug` goes, e.g. `npx shadcn@latest add @algorize-ui/{item}`), `primaryAction`/`secondaryAction` ({ label, href, icon? }), `trust` ({ text, avatars?, rating? }) and `items` ({ title, image, slug? }[] — every screenshot sits in the same 493:332 frame; slug defaults to the title in kebab-case). `columns`, `interval` (ms the camera rests; 0 holds still), `order` (serial | shuffle), `zoom` and `onFocus` pass straight to the wall; `linkComponent` takes next/link. The headline uses your theme's font-serif, the command font-mono; colours are theme tokens.",
   },
   "collage-hero": {
     description:
       "A playful hero: a badge whose name turns around a mark, a serif headline with two coloured words, hashtag pills, a five-column photo collage and a footer with a quote, a scroll pill and a watch-video trigger. Use it for a kindergarten, studio, school or any warm, busy place.",
     categories: ["marketing", "layout"],
     docs: "Named export: CollageHero (plus CollageHero.Badge and CollageHero.Photo). Composed from the button, circular-text and dialog items, which install alongside it. Pass `brand`, `heading` (with <em> for the coloured words), `tags`, `caption`, seven `photos`, `quote`, `scrollLabel`/`scrollTo` and `video` ({ text, url }). `accent` sets --primary for the section, `highlight` the second colour; `reveal` is in-view or immediate.",
+  },
+  "flavour-carousel": {
+    description:
+      "A product hero for anything that comes in flavours: the product stands in a mountain of powder against a moss backdrop and its flavours flank it on four tilted cream tiles. It rises from behind the powder spinning and settles; then every five seconds, or on a click, the chosen tile slides into the cup and the cup cross-fades to that flavour without moving; a glow takes the flavour's colour, a price pill and add-to-cart hang under the cup. One component for both themes: in dark mode the tiles go translucent black.",
+    categories: ["marketing", "commerce", "media"],
+    docs: "Named export: FlavourCarousel. Composed from the button item, which installs alongside it. Pass `flavours` ({ name, price?, tint?, product, tile }[] — every product image must share the same crop), `heading`, `interval` in ms (0 turns autoplay off), `initial`, `reveal` (in-view, immediate or none), `onChange` and `onAdd` (omit it to hide the cart button) with `addLabel`. `backgroundImage` is the backdrop and `foregroundImage` the transparent powder cutout laid in front of the cup (`foregroundHeight` of the stage tall); without them the scene is drawn from `background`, `mound` ([light, dark]) and `paper`.",
   },
   "honeycomb-hero": {
     description:
@@ -665,6 +671,12 @@ export const META: Record<string, ItemMeta> = {
       "Device frames for iPhone (5 through 17 Pro Max), Samsung and Pixel that wrap a screenshot, video or live children. Use them to present an app on a marketing page.",
     categories: ["media", "marketing"],
     docs: "Named exports: Iphone17ProMaxMockup, Iphone14ProMaxMockup, Iphone12ProMaxMockup, Iphone5Mockup, SamsungS24UltraMockup, GooglePixel8Mockup, GooglePixel10Mockup. Each takes `src`, `videoSrc`, or arbitrary children rendered inside the screen. Pure CSS and SVG — no images to ship.",
+  },
+  "image-wall": {
+    description:
+      "A wall of screenshots that never ends, and a camera hanging over it: it rests zoomed in on one card, then every few seconds pulls back, glides to the next and settles on it. Use it wherever a set of images should keep showing itself — a hero, a gallery band, a showcase.",
+    categories: ["media", "marketing"],
+    docs: "Named export: ImageWall (plus the WallItem type). Pass `items` ({ title, image }[] — every image is cropped from its top edge into the same 493:332 frame) and give it a height with `className`; it fills its box. `columns` sets the tile, `interval` the rest between flights in ms (0 holds still), `order` is serial (card by card) or shuffle (every card once per round, at random), `zoom` the resting scale — a box under 420px tall eases it down to 0.72 so a few cards fit, one under 640px wide to 0.5 so the flight between cards stays visible on a phone; `onFocus` reports the card in view. The camera holds while hovered, while the tab is hidden and while off screen; under prefers-reduced-motion it cuts instead of flying.",
   },
   "image-compare": {
     description:
@@ -895,7 +907,7 @@ export const META: Record<string, ItemMeta> = {
     description:
       "Character and word-level text motion driven by Framer Motion. Use it for hero headlines that need finer control than a whole-block fade.",
     categories: ["typography", "marketing"],
-    docs: "Named export: TextAnimation. `text` is a plain string it splits internally; `as` sets the rendered element and `delay` / `duration` control timing. For dependency-free effects, use `animated-typography`.",
+    docs: "Named export: TextAnimation. `text` is a plain string it splits internally; `as` sets the rendered element and `delay` / `duration` control timing; `renderWord(word, index)` swaps what a word renders as on the word-level variants (pop-in, flip, blur-in-up) while keeping its entrance. For dependency-free effects, use `animated-typography`.",
   },
   counter: {
     description:

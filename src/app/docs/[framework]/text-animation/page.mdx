@@ -292,6 +292,23 @@ export default function HeadlineAnimation() {
           Accepts all native HTML attributes (e.g., <code>id</code>, <code>onClick</code>) which are seamlessly forwarded to the wrapper element.
         </td>
       </tr>
+      <tr>
+        <td>
+          <code>TextAnimation</code>
+        </td>
+        <td>
+          <code>renderWord</code>
+        </td>
+        <td>
+          <code>(word: string, index: number) =&gt; ReactNode</code>
+        </td>
+        <td>
+          —
+        </td>
+        <td>
+          Swap what a word renders as while keeping its entrance — a coloured span, a word that later changes. Word-level variants only: <code>pop-in</code>, <code>flip</code>, <code>blur-in-up</code>. <DocLink to="component-wall">Component Wall</DocLink> uses it for its accent and turning word.
+        </td>
+      </tr>
     </tbody>
   </table>
 </div>
