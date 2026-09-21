@@ -53,7 +53,7 @@ const DEFAULT_REVIEWS: ReviewItem[] = [
 			"https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&w=800&q=80",
 		rating: 5.0,
 		content:
-			"The difference between AlgorizeTech and other agencies is their talent pool. You actually work with the senior developers they pitch you. The code quality, architecture, and attention to detail are on a completely different level.",
+			"The difference between AlgorizeTech and other agencies is their talent pool. You actually work with senior developers. Code quality and architecture are top-tier!",
 	},
 	{
 		id: "3",
@@ -63,7 +63,7 @@ const DEFAULT_REVIEWS: ReviewItem[] = [
 			"https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=800&q=80",
 		rating: 5.0,
 		content:
-			"Their 'Quality Obsessed' mantra is apparent in everything they do. They pushed back on bad ideas, suggested better alternatives, and delivered a final product that increased our conversion rate by 40% in the first month.",
+			"Their 'Quality Obsessed' mantra is apparent in everything they do. They pushed back on bad ideas, suggested better alternatives, and boosted conversion by 40%!",
 	},
 	{
 		id: "4",
@@ -73,7 +73,7 @@ const DEFAULT_REVIEWS: ReviewItem[] = [
 			"https://images.unsplash.com/photo-1517841905240-472988babdf9?auto=format&fit=crop&w=800&q=80",
 		rating: 5.0,
 		content:
-			"Integrating their modular UI components shaved weeks off our launch roadmap. The performance optimizations and accessibility features built right in saved us hundreds of hours.",
+			"Integrating their UI components shaved weeks off our launch roadmap. Built-in performance optimizations and accessibility standards saved us hundreds of hours!",
 	},
 	{
 		id: "5",
@@ -83,7 +83,7 @@ const DEFAULT_REVIEWS: ReviewItem[] = [
 			"https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&w=800&q=80",
 		rating: 5.0,
 		content:
-			"The unlimited revisions gave us the creative freedom to truly experiment without worrying about scope creep or hidden fees. AlgorizeTech didn't stop until we were 100% thrilled with the result.",
+			"The unlimited revisions gave us creative freedom without scope creep. AlgorizeTech refined every single detail until our team was 100% thrilled with results!",
 	},
 	{
 		id: "6",
@@ -93,7 +93,7 @@ const DEFAULT_REVIEWS: ReviewItem[] = [
 			"https://images.unsplash.com/photo-1539571696357-5a69c17a67c6?auto=format&fit=crop&w=800&q=80",
 		rating: 5.0,
 		content:
-			"The attention to typography, micro-interactions, and responsive layout scaling surpassed all our expectations.",
+			"The attention to clean typography, micro-interactions, and layout scaling surpassed all expectations. It transformed our web product into a modern design!",
 	},
 	{
 		id: "7",
@@ -103,7 +103,7 @@ const DEFAULT_REVIEWS: ReviewItem[] = [
 			"https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?auto=format&fit=crop&w=800&q=80",
 		rating: 5.0,
 		content:
-			"Their components are bulletproof. Seamless dark mode integration and flawless animation physics out of the box.",
+			"Their component library is bulletproof. Seamless dark mode integration, accessible keyboard navigation, and animation physics work impeccably out of the box!",
 	},
 	{
 		id: "8",
@@ -113,7 +113,7 @@ const DEFAULT_REVIEWS: ReviewItem[] = [
 			"https://images.unsplash.com/photo-1522075469751-3a6694fb2f61?auto=format&fit=crop&w=800&q=80",
 		rating: 5.0,
 		content:
-			"Outstanding developer experience. Clean TypeScript types, modular exports, and instant setup across projects.",
+			"Outstanding developer experience from day one. Clean TypeScript types, well-documented component exports, and instant setup made integration effortless!",
 	},
 ];
 
@@ -589,39 +589,42 @@ function LogoCarouselVariant({
 		setActiveIndex((prev) => (prev + 1) % items.length);
 	};
 
+	const handleSelect = (idx: number) => {
+		setActiveIndex(idx);
+	};
+
 	return (
 		<div className="w-full max-w-5xl mx-auto py-8 px-4 flex flex-col items-center">
 			{/* Top Header Badge & Titles */}
-			<div className="text-center max-w-2xl mx-auto mb-10 space-y-3">
-				<span className="inline-block px-3 py-1 rounded-full border border-border/60 bg-muted/40 text-[11px] font-semibold uppercase tracking-widest text-muted-foreground select-none">
-					Testimonials
-				</span>
-				<h2 className="text-3xl sm:text-5xl font-extrabold tracking-tight text-foreground leading-tight">
-					{title}
-				</h2>
-				{subtitle && (
-					<p className="text-sm sm:text-base text-muted-foreground leading-relaxed pt-1">
-						{subtitle}
-					</p>
-				)}
-			</div>
+			{(title || subtitle) && (
+				<div className="relative z-20 w-full mx-auto text-center space-y-3 mb-8 sm:mb-10 flex flex-col items-center">
+					<div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-primary/10 border border-primary/20 text-primary text-xs font-semibold uppercase tracking-wider">
+						<Star className="size-3.5 fill-primary text-primary" /> Client Testimonials
+					</div>
+					{title && (
+						<h2 className="text-2xl sm:text-4xl font-extrabold tracking-tight text-foreground leading-tight">
+							{title}
+						</h2>
+					)}
+					{subtitle && (
+						<p className="text-xs sm:text-base text-muted-foreground w-[90%] max-w-5xl mx-auto leading-relaxed">
+							{subtitle}
+						</p>
+					)}
+				</div>
+			)}
 
-			{/* Company Logos Row */}
-			<div className="w-full overflow-x-auto no-scrollbar py-4 mb-6">
-				<div className="flex items-center justify-center min-w-max gap-8 sm:gap-14 mx-auto px-4">
-					{items.map((item, idx) => {
-						const isActive = idx === activeIndex;
+			{/* Company Logos Row (Independent Infinite Marquee) */}
+			<div className="w-full overflow-hidden relative py-4 mb-6 group">
+				<div className="pointer-events-none absolute left-0 top-0 bottom-0 w-12 bg-gradient-to-r from-background to-transparent z-10" />
+				<div className="pointer-events-none absolute right-0 top-0 bottom-0 w-12 bg-gradient-to-l from-background to-transparent z-10" />
+
+				<div className="flex w-max gap-8 sm:gap-14 reviews-hmarquee-left group-hover:[animation-play-state:paused]">
+					{[...items, ...items, ...items, ...items].map((item, idx) => {
 						return (
-							<button
-								key={item.id || idx}
-								type="button"
-								onClick={() => setActiveIndex(idx)}
-								className={cn(
-									"flex items-center gap-2.5 px-4 py-2 rounded-xl transition-all duration-300 cursor-pointer select-none",
-									isActive
-										? "opacity-100 scale-105 font-bold text-foreground"
-										: "opacity-40 hover:opacity-75 grayscale hover:grayscale-0 text-muted-foreground"
-								)}
+							<div
+								key={`${item.id || idx}-${idx}`}
+								className="flex items-center gap-2.5 px-4 py-2 rounded-xl select-none shrink-0 opacity-60 hover:opacity-100 transition-opacity duration-300 text-muted-foreground hover:text-foreground"
 							>
 								{item.logo ? (
 									<div className="size-6 shrink-0 flex items-center justify-center">
@@ -635,7 +638,7 @@ function LogoCarouselVariant({
 								<span className="text-sm sm:text-base tracking-tight font-semibold">
 									{item.company || item.name}
 								</span>
-							</button>
+							</div>
 						);
 					})}
 				</div>
@@ -647,35 +650,66 @@ function LogoCarouselVariant({
 					<button
 						key={idx}
 						type="button"
-						onClick={() => setActiveIndex(idx)}
+						onClick={() => handleSelect(idx)}
 						aria-label={`Go to slide ${idx + 1}`}
 						className={cn(
 							"h-2 rounded-full transition-all duration-300 cursor-pointer",
 							idx === activeIndex
-								? "w-8 bg-foreground shadow-sm"
+								? "w-8 bg-primary shadow-sm"
 								: "w-2 bg-muted-foreground/30 hover:bg-muted-foreground/50"
 						)}
 					/>
 				))}
 			</div>
 
-			{/* Split Testimonial Card */}
-			<div className="w-full max-w-4xl rounded-3xl border border-border/60 bg-card text-card-foreground shadow-lg overflow-hidden grid grid-cols-1 md:grid-cols-12 transition-all duration-500">
+			{/* Split Testimonial Card (White Background, Zero Shadow) */}
+			<div className="w-full max-w-4xl rounded-2xl border border-border/80 bg-background dark:bg-card text-foreground shadow-none overflow-hidden grid grid-cols-1 md:grid-cols-12 transition-all duration-300">
 				{/* Quote & Author Info (Left Column) */}
-				<div className="md:col-span-7 p-8 sm:p-12 flex flex-col justify-between space-y-6">
+				<div className="md:col-span-7 p-8 sm:p-12 flex flex-col justify-between space-y-6 overflow-hidden">
 					<AnimatePresence mode="wait">
 						<motion.div
 							key={activeItem.id || activeIndex}
-							initial={{ opacity: 0, y: 10 }}
+							initial={{ opacity: 0, y: 28 }}
 							animate={{ opacity: 1, y: 0 }}
-							exit={{ opacity: 0, y: -10 }}
-							transition={{ duration: 0.3 }}
+							exit={{ opacity: 0, y: -16 }}
+							transition={{ duration: 0.4, ease: [0.16, 1, 0.3, 1] }}
 							className="space-y-6"
 						>
 							<p className="text-lg sm:text-2xl font-medium text-foreground leading-relaxed tracking-tight">
-								{activeItem.content.startsWith('"')
-									? activeItem.content
-									: `"${activeItem.content}"`}
+								{(() => {
+									const quoteText = activeItem.content.startsWith('"')
+										? activeItem.content
+										: `"${activeItem.content}"`;
+									const words = quoteText.split(" ");
+									let globalCharIdx = 0;
+									return (
+										<span className="inline">
+											{words.map((word, wordIdx) => {
+												const chars = word.split("");
+												const wordNode = (
+													<span key={wordIdx} className="inline-block whitespace-nowrap mr-[0.25em]">
+														{chars.map((char) => {
+															const idx = globalCharIdx++;
+															return (
+																<span
+																	key={idx}
+																	className="inline-block text-muted-foreground/30 animate-[typo-color-reveal_0.6s_cubic-bezier(0.16,1,0.3,1)_both]"
+																	style={{
+																		animationDelay: `${idx * 14}ms`,
+																	}}
+																>
+																	{char}
+																</span>
+															);
+														})}
+													</span>
+												);
+												globalCharIdx++;
+												return wordNode;
+											})}
+										</span>
+									);
+								})()}
 							</p>
 
 							<div className="pt-4 border-t border-border/40">
@@ -691,23 +725,25 @@ function LogoCarouselVariant({
 					</AnimatePresence>
 				</div>
 
-				{/* Author Portrait Image (Right Column) */}
-				<div className="md:col-span-5 relative min-h-[280px] sm:min-h-[360px] bg-muted/30 overflow-hidden">
-					<AnimatePresence mode="wait">
-						<motion.img
-							key={activeItem.id || activeIndex}
-							src={
-								activeItem.avatar ||
-								"https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=800&q=80"
-							}
-							alt={activeItem.name}
-							initial={{ opacity: 0, scale: 1.05 }}
-							animate={{ opacity: 1, scale: 1 }}
-							exit={{ opacity: 0, scale: 0.95 }}
-							transition={{ duration: 0.4 }}
-							className="absolute inset-0 w-full h-full object-cover object-center"
-						/>
-					</AnimatePresence>
+				{/* Author Portrait Image (Right Column with 4px Padding) */}
+				<div className="md:col-span-5 relative min-h-[280px] sm:min-h-[360px] p-1 sm:p-1.5">
+					<div className="relative w-full h-full rounded-xl sm:rounded-2xl overflow-hidden bg-muted/20">
+						<AnimatePresence mode="wait">
+							<motion.img
+								key={activeItem.id || activeIndex}
+								src={
+									activeItem.avatar ||
+									"https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=800&q=80"
+								}
+								alt={activeItem.name}
+								initial={{ opacity: 0, scale: 1.08 }}
+								animate={{ opacity: 1, scale: 1 }}
+								exit={{ opacity: 0, scale: 0.95 }}
+								transition={{ duration: 0.45, ease: [0.16, 1, 0.3, 1] }}
+								className="absolute inset-0 w-full h-full object-cover object-center rounded-xl sm:rounded-2xl"
+							/>
+						</AnimatePresence>
+					</div>
 				</div>
 			</div>
 
@@ -716,7 +752,7 @@ function LogoCarouselVariant({
 				<button
 					type="button"
 					onClick={handlePrev}
-					className="size-11 rounded-xl border border-border/80 bg-card text-foreground hover:bg-muted active:scale-95 transition-all flex items-center justify-center shadow-sm cursor-pointer"
+					className="size-11 rounded-xl border border-border/80 bg-background dark:bg-card text-foreground hover:bg-muted active:scale-95 transition-all flex items-center justify-center shadow-none cursor-pointer"
 					aria-label="Previous review"
 				>
 					<ArrowLeft className="size-4 stroke-[2.5]" />
@@ -724,7 +760,7 @@ function LogoCarouselVariant({
 				<button
 					type="button"
 					onClick={handleNext}
-					className="size-11 rounded-xl bg-foreground text-background hover:scale-105 active:scale-95 transition-all flex items-center justify-center shadow-md cursor-pointer"
+					className="size-11 rounded-xl bg-primary text-primary-foreground hover:opacity-90 active:scale-95 transition-all flex items-center justify-center shadow-none cursor-pointer"
 					aria-label="Next review"
 				>
 					<ArrowRight className="size-4 stroke-[2.5]" />
@@ -744,7 +780,7 @@ export function ReviewsBlock({
 	reviews = DEFAULT_REVIEWS,
 	autoSlide = true,
 	autoSlideInterval = 4000,
-	marqueeSpeed = 100,
+	marqueeSpeed = 30,
 	className,
 }: ReviewsProps) {
 	if (variant === "logo-carousel") {
@@ -755,6 +791,28 @@ export function ReviewsBlock({
 					className,
 				)}
 			>
+				<style>{`
+					@keyframes reviews-marquee-left-scroll {
+						from { transform: translateX(0); }
+						to   { transform: translateX(-50%); }
+					}
+					@keyframes typo-color-reveal {
+						0% {
+							color: var(--primary, oklch(0.205 0 0));
+							opacity: 0.25;
+						}
+						100% {
+							color: inherit;
+							opacity: 1;
+						}
+					}
+					.reviews-hmarquee-left {
+						animation: reviews-marquee-left-scroll ${marqueeSpeed}s linear infinite;
+					}
+					.reviews-hmarquee-left:hover {
+						animation-play-state: paused;
+					}
+				`}</style>
 				<LogoCarouselVariant
 					reviews={reviews}
 					title={title !== "Loved by Tech Leaders Worldwide" ? title : "Loved by teams building what's next"}
