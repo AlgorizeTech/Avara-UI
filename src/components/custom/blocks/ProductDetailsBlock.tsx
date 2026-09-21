@@ -19,7 +19,6 @@ import {
   Banknote,
   CreditCard,
 } from "lucide-react";
-import { HalfStars } from "@/components/custom/blocks/HalfStarsBlock";
 import { cn } from "@/lib/utils";
 
 export type ProductDetailsVariant =
@@ -51,13 +50,11 @@ export interface ProductDetailsProps {
   className?: string;
 }
 
-// Sneakers from Unsplash, free to use — so the block shows real photos even
-// before a consumer passes their own `images`.
 const DEFAULT_IMAGES = [
-  "https://images.unsplash.com/photo-1542291026-7eec264c27ff?auto=format&fit=crop&w=800&q=80",
-  "https://images.unsplash.com/photo-1582588678413-dbf45f4823e9?auto=format&fit=crop&w=800&q=80",
-  "https://images.unsplash.com/photo-1597045566677-8cf032ed6634?auto=format&fit=crop&w=800&q=80",
-  "https://images.unsplash.com/photo-1595950653106-6c9ebd614d3a?auto=format&fit=crop&w=800&q=80",
+  "/assets/red-shows.jpg",
+  "/assets/purple-shows.jpg",
+  "/assets/blue-shows.jpg",
+  "/assets/baby-pink-shows.jpg",
 ];
 
 const ITEM_BG_CLASSES = [
@@ -76,19 +73,17 @@ const DEFAULT_COLORS: ProductColor[] = [
 
 const DEFAULT_SIZES = ["US 8", "US 9", "US 10", "US 11", "US 12"];
 
-/** Five stars, filled to the fraction of `rating` — the library's HalfStars at product-card size. */
-function Stars({ className, rating, size = 16 }: { className?: string; rating: number; size?: number }) {
+/** Five stars, filled up to `rating`. */
+function Stars({ className, rating }: { className?: string; rating: number }) {
   return (
-    <HalfStars
-      rating={rating}
-      size={size}
-      showText={false}
-      activeColor="text-amber-400"
-      inactiveColor="text-amber-400/25"
-      role="img"
-      aria-label={`Rated ${rating} out of 5`}
-      className={cn("shrink-0", className)}
-    />
+    <div className="flex text-amber-400 shrink-0">
+      {Array.from({ length: 5 }, (_, i) => (
+        <Star
+          key={i}
+          className={cn(className, i < Math.round(rating) && "fill-amber-400")}
+        />
+      ))}
+    </div>
   );
 }
 
@@ -200,7 +195,7 @@ export function ProductDetails({
               <div className="space-y-3">
                 <div className="flex flex-wrap items-center gap-2">
                   <span className="px-2.5 py-0.5 rounded-full bg-background border border-border text-foreground text-[11px] font-bold shrink-0 whitespace-nowrap">{badge}</span>
-                  <Stars size={16} rating={rating} />
+                  <Stars className="size-4" rating={rating} />
                   <span className="text-xs font-bold text-foreground shrink-0">{rating}</span>
                   <span className="text-xs text-muted-foreground whitespace-nowrap">({reviews} Verified Runner Reviews)</span>
                 </div>
@@ -343,7 +338,7 @@ export function ProductDetails({
                   <div className="flex flex-wrap items-center gap-2">
                     <span className="px-2.5 py-0.5 rounded-full bg-background border border-border text-foreground text-[11px] font-bold shrink-0 whitespace-nowrap">{badge}</span>
                     <div className="flex items-center gap-1.5 shrink-0 whitespace-nowrap">
-                      <Stars size={14} rating={rating} />
+                      <Stars className="size-3.5" rating={rating} />
                       <span className="text-xs font-bold text-muted-foreground whitespace-nowrap">{rating} ({reviews} Reviews)</span>
                     </div>
                   </div>
@@ -520,9 +515,8 @@ export function ProductDetails({
                 <span className="px-2.5 sm:px-3 py-1 rounded-full bg-primary/10 text-primary text-[10px] sm:text-[11px] font-black uppercase tracking-widest border border-primary/20">
                   {badge}
                 </span>
-                <span className="text-muted-foreground text-xs hidden sm:inline">•</span>
                 <div className="flex items-center gap-1.5">
-                  <Stars size={14} rating={rating} />
+                  <Stars className="size-3.5" rating={rating} />
                   <span className="text-xs font-black text-foreground">{rating}</span>
                   <span className="text-[10px] sm:text-[11px] text-muted-foreground font-medium">({reviews} Reviews)</span>
                 </div>
@@ -906,22 +900,22 @@ export function ProductDetails({
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4 text-xs">
                 <div className="p-5 sm:p-6 rounded-2xl sm:rounded-3xl bg-card border border-border space-y-2">
                   <div className="flex items-center justify-between">
-                    <Stars size={14} rating={5} />
+                    <Stars className="size-3.5" rating={5} />
                     <span className="text-[11px] text-muted-foreground font-medium">2 days ago</span>
                   </div>
                   <p className="font-black text-sm text-foreground">"Best running shoes I have owned!"</p>
                   <p className="text-muted-foreground leading-relaxed font-medium">"The air cushioning makes walking all day effortless. The Flyknit upper feels breathable and lightweight."</p>
-                  <span className="text-[11px] font-black text-foreground block pt-1">— Marcus L., Verified Runner</span>
+                  <span className="text-[11px] font-black text-foreground block pt-1">ΓÇö Marcus L., Verified Runner</span>
                 </div>
 
                 <div className="p-5 sm:p-6 rounded-2xl sm:rounded-3xl bg-card border border-border space-y-2">
                   <div className="flex items-center justify-between">
-                    <Stars size={14} rating={5} />
+                    <Stars className="size-3.5" rating={5} />
                     <span className="text-[11px] text-muted-foreground font-medium">1 week ago</span>
                   </div>
                   <p className="font-black text-sm text-foreground">"True to size & premium quality"</p>
                   <p className="text-muted-foreground leading-relaxed font-medium">"Super fast shipping, fits perfectly right out of the box. Colorway looks even better in real life!"</p>
-                  <span className="text-[11px] font-black text-foreground block pt-1">— Sarah K., Verified Customer</span>
+                  <span className="text-[11px] font-black text-foreground block pt-1">ΓÇö Sarah K., Verified Customer</span>
                 </div>
               </div>
             )}
