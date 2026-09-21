@@ -5,7 +5,7 @@ import { extractCode } from "@/lib/code";
 
 A wall of screenshots that never ends, and a camera hanging over it. The camera rests zoomed in on one card; every few seconds it pulls back, glides to the next card and settles on it, brightening that card while the rest stay dimmed. Hovering the wall holds the camera where it is.
 
-The wall is one tile of cards in staggered columns, repeated around itself eight times, so however far the camera travels it never finds an edge. Every image sits in the same 493:332 frame under a small mono caption, and the camera walks the cards in order — each gets its turn before any comes round again. It fills whatever box you give it: a tall window shows one card at a time, a short band eases the zoom down so a few show at once. <DocLink to="component-wall">Component Wall</DocLink> is this wall beside a column of hero copy.
+The wall is one tile of cards in staggered columns, repeated around itself eight times, so however far the camera travels it never finds an edge. Every image sits in the same 493:332 frame under a small mono caption, and the camera walks the cards in order — each gets its turn before any comes round again. It fills whatever box you give it: a tall window shows one card at a time, a short band eases the zoom down so a few show at once, and on a phone it pulls back further still so the flight between cards is something to watch. <DocLink to="component-wall">Component Wall</DocLink> is this wall beside a column of hero copy.
 
 export const usage = `"use client";
 
@@ -82,7 +82,7 @@ export default function Still() {
         {
           prop: "zoom",
           value: "1.35",
-          effect: "is the camera's resting scale. In a box under 420px tall it eases down to 0.72 so a few cards fit.",
+          effect: "is the camera's resting scale. In a box under 420px tall it eases down to 0.72 so a few cards fit; under 640px wide, to 0.5. Mid-flight the camera pulls back to 0.64 of wherever it rests.",
         },
         {
           prop: "className",
@@ -120,7 +120,7 @@ export default function Still() {
         {
           lead: "A box under",
           prop: "420px",
-          effect: "tall caps the zoom at 0.72 whatever `zoom` says, so the band shows neighbours instead of one card spilling out.",
+          effect: "tall caps the zoom at 0.72 whatever `zoom` says, so the band shows neighbours instead of one card spilling out; a box under 640px wide caps it at 0.5.",
         },
       ],
       props: { example: "band", order: "shuffle" },
@@ -153,7 +153,7 @@ export default function Still() {
 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 my-6 not-prose">
   <div className="p-6 rounded-2xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900">
     <h3 className="text-lg font-semibold text-zinc-900 dark:text-zinc-50 mb-2">A camera, not a slider</h3>
-    <p className="text-zinc-600 dark:text-zinc-400 text-sm">One GSAP timeline moves the whole wall: it pulls the scale back to 0.86 while gliding to the next card, then settles back in. Nothing inside the wall moves on its own, so it stays cheap however many cards you give it.</p>
+    <p className="text-zinc-600 dark:text-zinc-400 text-sm">One GSAP timeline moves the whole wall: it pulls the camera back to 0.64 of its resting scale while gliding to the next card, then settles back in. Nothing inside the wall moves on its own, so it stays cheap however many cards you give it.</p>
   </div>
   <div className="p-6 rounded-2xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900">
     <h3 className="text-lg font-semibold text-zinc-900 dark:text-zinc-50 mb-2">A wall without edges</h3>
@@ -161,7 +161,7 @@ export default function Still() {
   </div>
   <div className="p-6 rounded-2xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900">
     <h3 className="text-lg font-semibold text-zinc-900 dark:text-zinc-50 mb-2">Any box</h3>
-    <p className="text-zinc-600 dark:text-zinc-400 text-sm">Size it with a class and it fills the box; a short band eases the zoom down so a few cards fit. The camera re-aims on every resize and holds while hovered, hidden or off screen.</p>
+    <p className="text-zinc-600 dark:text-zinc-400 text-sm">Size it with a class and it fills the box; a short band eases the zoom down so a few cards fit, and a phone-width box pulls back further so the journey between cards stays visible. The camera re-aims on every resize and holds while hovered, hidden or off screen.</p>
   </div>
   <div className="p-6 rounded-2xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900">
     <h3 className="text-lg font-semibold text-zinc-900 dark:text-zinc-50 mb-2">Quiet by request</h3>
@@ -210,7 +210,7 @@ export default function Still() {
         <td><code>zoom</code></td>
         <td><code>number</code></td>
         <td><code>1.35</code></td>
-        <td>The camera's resting scale; capped at 0.72 in a box under 420px tall.</td>
+        <td>The camera's resting scale; capped at 0.72 in a box under 420px tall and 0.5 in one under 640px wide.</td>
       </tr>
       <tr>
         <td><code>onFocus</code></td>

@@ -48,7 +48,11 @@ const COL_W = 400;
 const CARD_W = 384;
 const GAP = 16;
 const STAGGER = 72;
-const FLIGHT_ZOOM = 0.86;
+/** How far the camera pulls back mid-flight, as a share of its resting scale. */
+const FLIGHT_PULL = 0.64;
+/** Resting scale in a short window (a band under some copy) and in a narrow one (a phone). */
+const BAND_ZOOM = 0.72;
+const PHONE_ZOOM = 0.5;
 // Inside the card: a 1px border, 6 of padding each side, a 16-tall caption, 6 below it.
 const CARD_BORDER = 1;
 const CARD_PAD = 6;
@@ -115,8 +119,10 @@ export const ImageWall = forwardRef<HTMLDivElement, ImageWallProps>(
         const W = wrap.clientWidth;
         const H = wrap.clientHeight;
         // A short window (a band under some copy) pulls the camera back so a
-        // few cards show at once instead of one card spilling out of the band.
-        const s = H < 420 ? Math.min(zoom, 0.72) : zoom;
+        // few cards show at once instead of one card spilling out of the band;
+        // a narrow one (a phone) pulls back further still, so the flight from
+        // card to card is a visible journey rather than a swap.
+        const s = W < 640 ? Math.min(zoom, PHONE_ZOOM) : H < 420 ? Math.min(zoom, BAND_ZOOM) : zoom;
         const cx = card.left + CARD_W / 2;
         const cy = card.top + CARD_H / 2;
         return { x: W / 2 - s * cx, y: H / 2 - s * cy, s };
@@ -161,7 +167,7 @@ export const ImageWall = forwardRef<HTMLDivElement, ImageWallProps>(
               setFocus(i);
             },
           })
-          .to(cam, { s: FLIGHT_ZOOM, duration: 1, ease: "power2.inOut" }, 0)
+          .to(cam, { s: target.s * FLIGHT_PULL, duration: 1, ease: "power2.inOut" }, 0)
           .to(cam, { x: target.x, y: target.y, duration: 2, ease: "power2.inOut" }, 0)
           .to(cam, { s: target.s, duration: 1, ease: "power2.inOut" }, 1);
       },

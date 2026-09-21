@@ -18,6 +18,12 @@ export interface TextAnimationProps extends React.HTMLAttributes<HTMLDivElement>
   duration?: number;
   delay?: number;
   as?: React.ElementType;
+  /**
+   * Swap what a word renders as, keeping its entrance. Word-level variants
+   * only (`pop-in`, `flip`, `blur-in-up`): return the word itself with some
+   * markup, e.g. a coloured span or a word that later changes.
+   */
+  renderWord?: (word: string, index: number) => React.ReactNode;
 }
 
 export const TextAnimation = React.forwardRef<
@@ -31,6 +37,7 @@ export const TextAnimation = React.forwardRef<
       duration = 0.5, 
       delay = 0, 
       as: Component = "p",
+      renderWord,
       className, 
       ...props 
     },
@@ -191,7 +198,7 @@ export const TextAnimation = React.forwardRef<
                   variants={childVariants}
                   className="inline-block"
                 >
-                  {word}
+                  {renderWord ? renderWord(word, index) : word}
                 </motion.span>
               ))}
             </MotionComponent>
@@ -231,7 +238,7 @@ export const TextAnimation = React.forwardRef<
                   variants={childVariants}
                   className="inline-block origin-bottom"
                 >
-                  {word}
+                  {renderWord ? renderWord(word, index) : word}
                 </motion.span>
               ))}
             </MotionComponent>
@@ -315,7 +322,7 @@ export const TextAnimation = React.forwardRef<
                   variants={childVariants}
                   className="inline-block"
                 >
-                  {word}
+                  {renderWord ? renderWord(word, index) : word}
                 </motion.span>
               ))}
             </MotionComponent>

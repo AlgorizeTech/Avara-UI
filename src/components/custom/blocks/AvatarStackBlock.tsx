@@ -28,6 +28,8 @@ export interface AvatarStackProps extends React.HTMLAttributes<HTMLDivElement> {
   action?: React.ReactNode;
   /** Faces slide apart a little when the stack is hovered. */
   spreadOnHover?: boolean;
+  /** A hovered face rises above its neighbours and grows a touch, so it can be seen whole. */
+  liftOnHover?: boolean;
 }
 
 const SIZES: Record<AvatarStackSize, { box: string; overlap: string; text: string }> = {
@@ -45,6 +47,7 @@ export const AvatarStack = React.forwardRef<HTMLDivElement, AvatarStackProps>(
       ringClassName = "ring-white dark:ring-zinc-950",
       action,
       spreadOnHover = true,
+      liftOnHover = true,
       className,
       ...props
     },
@@ -53,11 +56,13 @@ export const AvatarStack = React.forwardRef<HTMLDivElement, AvatarStackProps>(
     const s = SIZES[size];
     const shown = avatars.slice(0, max);
     const rest = avatars.length - shown.length;
+    // Layering comes from `--as-z` so a hover class can still win over it.
     const disc = cn(
-      "relative grid shrink-0 place-items-center overflow-hidden rounded-full ring-2 transition-transform duration-300 ease-out",
+      "relative z-[var(--as-z)] grid shrink-0 place-items-center overflow-hidden rounded-full ring-2 transition-transform duration-300 ease-out",
       s.box,
       ringClassName,
       spreadOnHover && "group-hover:translate-x-[var(--as-shift)]",
+      liftOnHover && "hover:z-50 hover:scale-115",
     );
 
     return (
@@ -71,7 +76,7 @@ export const AvatarStack = React.forwardRef<HTMLDivElement, AvatarStackProps>(
             key={a.src}
             className={cn(disc, "bg-black/5")}
             // Each face slides a touch further than the last, so the row fans out.
-            style={{ "--as-shift": `${i * 3}px`, zIndex: shown.length - i } as React.CSSProperties}
+            style={{ "--as-shift": `${i * 3}px`, "--as-z": shown.length - i } as React.CSSProperties}
           >
             <img src={a.src} alt={a.alt ?? ""} className="h-full w-full object-cover" />
           </span>
@@ -79,7 +84,7 @@ export const AvatarStack = React.forwardRef<HTMLDivElement, AvatarStackProps>(
         {rest > 0 && (
           <span
             className={cn(disc, "bg-[#141414] font-semibold text-white dark:bg-white dark:text-[#141414]", s.text)}
-            style={{ "--as-shift": `${shown.length * 3}px` } as React.CSSProperties}
+            style={{ "--as-shift": `${shown.length * 3}px`, "--as-z": 0 } as React.CSSProperties}
           >
             +{rest}
           </span>
@@ -87,7 +92,7 @@ export const AvatarStack = React.forwardRef<HTMLDivElement, AvatarStackProps>(
         {action && (
           <span
             className={cn(disc, "overflow-visible ring-0")}
-            style={{ "--as-shift": `${(shown.length + (rest > 0 ? 1 : 0)) * 3}px` } as React.CSSProperties}
+            style={{ "--as-shift": `${(shown.length + (rest > 0 ? 1 : 0)) * 3}px`, "--as-z": 0 } as React.CSSProperties}
           >
             {action}
           </span>

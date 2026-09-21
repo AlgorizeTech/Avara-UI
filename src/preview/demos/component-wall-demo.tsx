@@ -1,14 +1,17 @@
 "use client";
 
-import { ComponentWall, type WallItem } from "@/components/custom/blocks/ComponentWallBlock";
+import { ComponentWall, type ComponentWallItem } from "@/components/custom/blocks/ComponentWallBlock";
+import { GitHubIcon } from "@/components/custom/blocks/Icons";
 
 // Screenshots of this library's own sections, captured from their previews.
-const wall = (name: string, title: string): WallItem => ({
+// The name is the registry item, so the install line names something real.
+const wall = (slug: string, title: string): ComponentWallItem => ({
+  slug,
   title,
-  image: `/assets/wall/${name}.jpg`,
+  image: `/assets/wall/${slug}.jpg`,
 });
 
-const ITEMS: WallItem[] = [
+const ITEMS: ComponentWallItem[] = [
   wall("hero", "Word bounce hero"),
   wall("pricing", "Product showcase"),
   wall("bento-showcase", "Bento showcase"),
@@ -35,7 +38,7 @@ const ITEMS: WallItem[] = [
   wall("data-grid", "Data grid"),
 ];
 
-const AVATARS = [12, 32, 47, 5, 58, 21, 36].map((n) => ({ src: `https://i.pravatar.cc/80?img=${n}`, alt: "" }));
+const AVATARS = [12, 32, 47, 5, 58].map((n) => ({ src: `https://i.pravatar.cc/80?img=${n}`, alt: "" }));
 
 export default function ComponentWallDemo({
   interval = 4500,
@@ -49,11 +52,14 @@ export default function ComponentWallDemo({
   return (
     <div className="w-full overflow-hidden rounded-2xl border border-zinc-200 dark:border-zinc-800">
       <ComponentWall
-        badge={{ label: "Changelog", text: "60+ new blocks", href: "#" }}
-        heading="The React component library for beautiful landing pages."
-        description="200+ production-ready components, blocks and templates built with React, Tailwind CSS and Motion. Copy, paste, customize, and ship at lightning speed without wrestling with animations or styling."
+        badge={{ label: "Next-gen React components", href: "#" }}
+        heading="Build interactive {word}."
+        headingWords={["interfaces", "components", "experiences", "animations", "dashboards"]}
+        accent="interactive"
+        description="A meticulous library of React components and interactive blocks, engineered for seamless performance with Tailwind CSS, TypeScript, GSAP and Framer Motion."
+        install={{ command: "npx shadcn@latest add @algorize-ui/{item}" }}
         primaryAction={{ label: "Browse components", href: "#" }}
-        secondaryAction={{ label: "Get all-access", href: "#" }}
+        secondaryAction={{ label: "Star on GitHub", href: "#", icon: <GitHubIcon size={16} /> }}
         trust={{ text: "Trusted by 120,000+ founders, developers and creators", avatars: AVATARS, rating: 5 }}
         items={ITEMS}
         interval={interval}

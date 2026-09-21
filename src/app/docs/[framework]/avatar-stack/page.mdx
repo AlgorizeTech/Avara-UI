@@ -65,6 +65,10 @@ export default function JoinedThisMonth({ people }: { people: { src: string; alt
           prop: "spreadOnHover",
           effect: "slides each face a few pixels further than the one before it while the row is hovered; set it to `false` for a still row.",
         },
+        {
+          prop: "liftOnHover",
+          effect: "raises the face under the pointer above its neighbours and grows it a touch, so a half-covered face can be seen whole; `false` keeps the stacking order fixed.",
+        },
       ],
       props: { example: "action" },
       usage: usageAction,
@@ -162,6 +166,12 @@ export default function JoinedThisMonth({ people }: { people: { src: string; alt
         <td><code>boolean</code></td>
         <td><code>true</code></td>
         <td>Faces fan apart a little while the row is hovered.</td>
+      </tr>
+      <tr>
+        <td><code>liftOnHover</code></td>
+        <td><code>boolean</code></td>
+        <td><code>true</code></td>
+        <td>The hovered face rises above its neighbours and scales up slightly.</td>
       </tr>
     </tbody>
   </table>
