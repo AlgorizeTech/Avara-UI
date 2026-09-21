@@ -17,10 +17,10 @@ import { TextAnimation } from "./TextAnimationBlock";
 // left, the copy: a small badge, a headline that blurs in word by word (one
 // word in the primary colour, one that takes turns), a lead, an install
 // command whose component name follows the card the camera is resting on,
-// two actions and a line of trust. Along the bottom of the wall, over a
-// fade, the tools it is built with — a few related ones at a time, taking
-// turns. On desktop the wall fills the right side and fades under the copy;
-// below that it is a band under it.
+// two actions and a line of trust. The tools it is built with — a few
+// related ones at a time, taking turns — sit over the lower wall on desktop,
+// where the wall fills the right side and fades under the copy; on the
+// stacked layouts the wall is a band under the copy and the tools follow it.
 // ==========================================
 
 export interface ComponentWallItem extends WallItem {
@@ -61,10 +61,11 @@ export interface ComponentWallProps
   /** The cards on the wall, in reading order down the columns. */
   items: ComponentWallItem[];
   /**
-   * The tools over the lower part of the wall: the label, then two rows — an
-   * odd batch staggers as three over four. `groups` are shown one at a time —
-   * put related tools together, four to eight per batch — each fading in the
-   * way the headline word does. Names show from `xl` up; below that only the marks.
+   * The tools the library is built with: the label, then two rows — an odd
+   * batch staggers as three over four. Over the lower wall on desktop, under
+   * the band on smaller screens. `groups` are shown one at a time — put
+   * related tools together, four to eight per batch — each fading in the way
+   * the headline word does. Names show from `xl` up; below that only the marks.
    */
   stack?: { label?: string; groups: StackTool[][]; interval?: number };
   /** Pass `next/link` to keep client-side navigation. */
@@ -348,15 +349,16 @@ export const ComponentWall = forwardRef<HTMLElement, ComponentWallProps>(
 
           {/* ---- The tools, over the lower part of the wall ---- */}
           {stack && group && (
-            <div className="pointer-events-none absolute inset-x-0 bottom-0 z-20 lg:left-auto lg:right-0 lg:w-[56%] xl:w-[58%]">
-              {/* The wall blurs and fades out under the tools: a blur that
-                  strengthens towards the bottom, under a wash of the background. */}
-              <div className="absolute inset-x-0 bottom-0 h-64 backdrop-blur-md [mask-image:linear-gradient(to_top,black_45%,transparent_100%)] lg:h-[12rem]" aria-hidden />
-              <div className="absolute inset-x-0 bottom-0 h-64 bg-gradient-to-t from-background/90 from-30% via-background/70 to-transparent lg:h-[12rem]" aria-hidden />
-              {/* Sits about a fifth of the way up the wall, so it is in view under the
-                  copy. The padding is a share of the strip's width, which on both
-                  layouts is proportional to the wall's height. */}
-              <div className="pointer-events-auto relative flex w-full flex-col items-start gap-3 pl-6 pb-[9%] md:pl-10 lg:pb-[7%] lg:pl-12 pr-0 xl:pl-24">
+            <div className="pointer-events-none relative z-20 lg:absolute lg:bottom-0 lg:right-0 lg:w-[56%] xl:w-[58%]">
+              {/* On desktop the wall blurs and fades out under the tools: a blur that
+                  strengthens towards the bottom, under a wash of the background. On
+                  the stacked layouts the tools simply follow the band. */}
+              <div className="absolute inset-x-0 bottom-0 hidden h-[12rem] backdrop-blur-md [mask-image:linear-gradient(to_top,black_45%,transparent_100%)] lg:block" aria-hidden />
+              <div className="absolute inset-x-0 bottom-0 hidden h-[12rem] bg-gradient-to-t from-background/90 from-30% via-background/70 to-transparent lg:block" aria-hidden />
+              {/* On desktop it sits a little way up the wall, in view under the copy —
+                  the padding is a share of the strip's width, which is proportional
+                  to the wall's height. */}
+              <div className="pointer-events-auto relative flex w-full flex-col items-start justify-center gap-3 py-7 px-6 md:pr-0 md:pl-10 lg:pb-[7%] lg:pl-12 lg:pt-0 xl:pl-24">
                 {stack.label && <span className="text-[13px] leading-tight text-muted-foreground font-semibold">{stack.label}</span>}
                 <div className="grid w-full min-w-0" aria-live="polite">
                   <AnimatePresence initial={false} mode="popLayout">
@@ -381,7 +383,7 @@ export const ComponentWall = forwardRef<HTMLElement, ComponentWallProps>(
                           key={tool.name}
                           variants={{ hidden: wordIn, visible: { ...wordAt, transition: { duration: 0.6, ease: "easeOut" } }, gone: { ...wordOut, transition: { duration: 0.4, ease: "easeIn" } } }}
                           className={cn(
-                            "col-span-2 flex min-w-0 items-center gap-2.5 text-foreground [&>img]:size-8 [&>img]:shrink-0 [&>img]:object-contain xl:[&>img]:size-6 [&>svg]:size-7 [&>svg]:shrink-0 xl:[&>svg]:size-5",
+                            "col-span-2 flex min-w-0 items-center justify-center gap-2.5 text-foreground [&>img]:size-8 [&>img]:shrink-0 [&>img]:object-contain xl:[&>img]:size-6 [&>svg]:size-7 [&>svg]:shrink-0 xl:[&>svg]:size-5",
                             i === 0 && group.length % 2 === 1 && "col-start-2",
                           )}
                         >

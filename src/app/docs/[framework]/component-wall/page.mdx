@@ -3,7 +3,7 @@ import { extractCode } from "@/lib/code";
 
 # Component Wall
 
-A landing hero for a component library. On the right, a wall of screenshots that never ends: a camera hangs over it zoomed in on one card, and every few seconds pulls back, glides to the next card and settles on it. On the left, the copy — a small badge, a headline that blurs in word by word and keeps one word changing, a lead, an install command, two actions and a line of trust. Over the lower part of the wall, the tools it is built with: a label, then two rows of marks — an odd batch staggers as three over four — one batch of related tools at a time.
+A landing hero for a component library. On the right, a wall of screenshots that never ends: a camera hangs over it zoomed in on one card, and every few seconds pulls back, glides to the next card and settles on it. On the left, the copy — a small badge, a headline that blurs in word by word and keeps one word changing, a lead, an install command, two actions and a line of trust. Over the lower part of the wall on desktop — under the band on phones — the tools it is built with: a label, then two rows of marks — an odd batch staggers as three over four — one batch of related tools at a time.
 
 The two halves talk to each other. The install line ends in the name of the card the camera is resting on, and slides to the next name as the camera lands — so the hero is always showing something the reader can paste into a terminal. The wall is an <DocLink to="image-wall">Image Wall</DocLink>, the headline a <DocLink to="text-animation">Text Animation</DocLink>, the copy control a <DocLink to="copy-button">Copy Button</DocLink>, the faces an <DocLink to="avatar-stack">Avatar Stack</DocLink> and the stars <DocLink to="half-stars">Half Stars</DocLink>. The headline is set in your theme's `font-serif`, the rest in `font-sans`; every colour is a theme token.
 
@@ -101,7 +101,7 @@ export default function Hero() {
         {
           prop: "stack",
           effect:
-            "is the tools over the lower part of the wall: a `label`, then `groups` of four to eight `{ name, icon }` shown one batch at a time — an odd batch as three over four — each mark blurring in the way the headline word does, every `interval` ms (3600). The wall blurs and fades beneath them. From `xl` up names sit beside the marks; below that only the marks show.",
+            "is the tools the library is built with — over the lower wall on desktop, under the band on smaller screens: a `label`, then `groups` of four to eight `{ name, icon }` shown one batch at a time — an odd batch as three over four — each mark blurring in the way the headline word does, every `interval` ms (3600). On desktop the wall blurs and fades beneath them. From `xl` up names sit beside the marks; below that only the marks show.",
         },
       ],
       usage,
