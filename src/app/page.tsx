@@ -12,8 +12,9 @@ import {
 	CarouselItem,
 } from "@/components/custom/blocks/ThreeDCarouselBlock";
 import { CommandSearchBlock } from "@/components/custom/blocks/UtilityBlocks";
-import { DesignComponentsFolder } from "@/components/custom/blocks/DesignComponentsFolder";
-import { HomepageHeroBlock } from "@/components/custom/blocks/HomepageHeroBlock";
+import { ComponentWall } from "@/components/custom/blocks/ComponentWallBlock";
+import { GitHubIcon } from "@/components/custom/blocks/Icons";
+import { WALL_AVATARS, WALL_ITEMS } from "@/constants/component-wall";
 import { cn } from "@/lib/utils";
 import {
 	ArrowRight,
@@ -500,27 +501,25 @@ function HeroSection() {
 	return (
 		<section className="relative w-full overflow-hidden">
 			{/* Links are passed explicitly rather than relying on the block's
-			    defaults: HeroBlock ships in the registry, so its defaults
+			    defaults: ComponentWall ships in the registry, so its defaults
 			    have to make sense in a consumer's project, where this site's
-			    routes do not exist. */}
-			<HomepageHeroBlock
-				badgeHref="/docs/nextjs/index"
-				primaryActionLabel="Browse Components"
-				primaryActionHref="/docs/nextjs/all-components"
-				secondaryActionHref={links.github}
+			    routes do not exist. The wall's cards are this site's own
+			    sections, and the install line names whichever one the camera
+			    is resting on. */}
+			<ComponentWall
+				badge={{ label: "Next-gen React components", href: "/docs/nextjs/index" }}
+				heading="Build interactive {word}."
+				headingWords={["interfaces", "components", "experiences", "animations", "dashboards"]}
+				accent="interactive"
+				description="A meticulous library of React components and interactive blocks, engineered for seamless performance with Tailwind CSS, TypeScript, GSAP and Framer Motion."
+				install={{ command: "npx shadcn@latest add @algorize-ui/{item}" }}
+				primaryAction={{ label: "Browse components", href: "/docs/nextjs/all-components" }}
+				secondaryAction={{ label: "Star on GitHub", href: links.github, icon: <GitHubIcon size={16} /> }}
+				trust={{ text: "Loved by developers shipping real products with it", avatars: WALL_AVATARS, rating: 5 }}
+				items={WALL_ITEMS}
+				interval={4500}
+				linkComponent={Link}
 			/>
-			<div className="relative z-10 max-w-[1320px] mx-auto w-full px-6 md:px-8 pb-4 sm:pb-10">
-				{/* ═══════════════════════════════════════════════
-           REPLACED HERO TERMINAL WITH DESIGN COMPONENTS FOLDER
-           ═══════════════════════════════════════════════ */}
-				<motion.div
-					initial={{ opacity: 0, y: 30 }}
-					animate={{ opacity: 1, y: 0 }}
-					transition={{ duration: 0.7, delay: 0.5 }}
-					className="w-full -mt-8 sm:mt-10 flex justify-center">
-					<DesignComponentsFolder />
-				</motion.div>
-			</div>
 		</section>
 	);
 }

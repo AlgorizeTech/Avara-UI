@@ -1,6 +1,6 @@
 {
-  "generatedAt": "2026-09-21T08:24:43.664Z",
-  "totalFiles": 289,
+  "generatedAt": "2026-09-21T08:12:37.191Z",
+  "totalFiles": 293,
   "files": [
     {
       "name": "nextjs/3d-carousel",
@@ -339,6 +339,12 @@
       "originalMdx": "[framework]\\first-app\\_content\\nextjs.mdx"
     },
     {
+      "name": "nextjs/flavour-carousel",
+      "path": "/docs/nextjs-flavour-carousel.md",
+      "url": "/docs/nextjs/flavour-carousel",
+      "originalMdx": "[framework]\\flavour-carousel\\page.mdx"
+    },
+    {
       "name": "nextjs/fleet-tracker",
       "path": "/docs/nextjs-fleet-tracker.md",
       "url": "/docs/nextjs/fleet-tracker",
@@ -421,6 +427,12 @@
       "path": "/docs/nextjs-image-compare.md",
       "url": "/docs/nextjs/image-compare",
       "originalMdx": "[framework]\\image-compare\\page.mdx"
+    },
+    {
+      "name": "nextjs/image-wall",
+      "path": "/docs/nextjs-image-wall.md",
+      "url": "/docs/nextjs/image-wall",
+      "originalMdx": "[framework]\\image-wall\\page.mdx"
     },
     {
       "name": "nextjs/index",
@@ -1209,6 +1221,12 @@
       "originalMdx": "[framework]\\first-app\\_content\\reactjs.mdx"
     },
     {
+      "name": "reactjs/flavour-carousel",
+      "path": "/docs/reactjs-flavour-carousel.md",
+      "url": "/docs/reactjs/flavour-carousel",
+      "originalMdx": "[framework]\\flavour-carousel\\page.mdx"
+    },
+    {
       "name": "reactjs/fleet-tracker",
       "path": "/docs/reactjs-fleet-tracker.md",
       "url": "/docs/reactjs/fleet-tracker",
@@ -1291,6 +1309,12 @@
       "path": "/docs/reactjs-image-compare.md",
       "url": "/docs/reactjs/image-compare",
       "originalMdx": "[framework]\\image-compare\\page.mdx"
+    },
+    {
+      "name": "reactjs/image-wall",
+      "path": "/docs/reactjs-image-wall.md",
+      "url": "/docs/reactjs/image-wall",
+      "originalMdx": "[framework]\\image-wall\\page.mdx"
     },
     {
       "name": "reactjs/index",

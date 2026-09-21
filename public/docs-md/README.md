@@ -2,8 +2,8 @@
 
 This directory contains auto-generated Markdown versions of all MDX documentation pages.
 
-**Generated at:** 2026-09-21T08:24:43.747Z
-**Total files:** 289
+**Generated at:** 2026-09-21T08:12:37.218Z
+**Total files:** 293
 
 ## Available Files
 
@@ -63,6 +63,7 @@ This directory contains auto-generated Markdown versions of all MDX documentatio
 - [nextjs/fashion-hero](/docs/nextjs-fashion-hero.md) - Source: `[framework]\fashion-hero\page.mdx`
 - [nextjs/file-upload](/docs/nextjs-file-upload.md) - Source: `[framework]\file-upload\page.mdx`
 - [nextjs/first-app](/docs/nextjs-first-app.md) - Source: `[framework]\first-app\_content\nextjs.mdx`
+- [nextjs/flavour-carousel](/docs/nextjs-flavour-carousel.md) - Source: `[framework]\flavour-carousel\page.mdx`
 - [nextjs/fleet-tracker](/docs/nextjs-fleet-tracker.md) - Source: `[framework]\fleet-tracker\page.mdx`
 - [nextjs/floating-contact-button](/docs/nextjs-floating-contact-button.md) - Source: `[framework]\floating-contact-button\page.mdx`
 - [nextjs/flow-gallery](/docs/nextjs-flow-gallery.md) - Source: `[framework]\flow-gallery\page.mdx`
@@ -77,6 +78,7 @@ This directory contains auto-generated Markdown versions of all MDX documentatio
 - [nextjs/hero-carousel](/docs/nextjs-hero-carousel.md) - Source: `[framework]\hero-carousel\page.mdx`
 - [nextjs/honeycomb-hero](/docs/nextjs-honeycomb-hero.md) - Source: `[framework]\honeycomb-hero\page.mdx`
 - [nextjs/image-compare](/docs/nextjs-image-compare.md) - Source: `[framework]\image-compare\page.mdx`
+- [nextjs/image-wall](/docs/nextjs-image-wall.md) - Source: `[framework]\image-wall\page.mdx`
 - [nextjs/index](/docs/nextjs-index.md) - Source: `[framework]\index\page.mdx`
 - [nextjs/infrastructure-topology](/docs/nextjs-infrastructure-topology.md) - Source: `[framework]\infrastructure-topology\page.mdx`
 - [nextjs/input](/docs/nextjs-input.md) - Source: `[framework]\input\page.mdx`
@@ -208,6 +210,7 @@ This directory contains auto-generated Markdown versions of all MDX documentatio
 - [reactjs/fashion-hero](/docs/reactjs-fashion-hero.md) - Source: `[framework]\fashion-hero\page.mdx`
 - [reactjs/file-upload](/docs/reactjs-file-upload.md) - Source: `[framework]\file-upload\page.mdx`
 - [reactjs/first-app](/docs/reactjs-first-app.md) - Source: `[framework]\first-app\_content\reactjs.mdx`
+- [reactjs/flavour-carousel](/docs/reactjs-flavour-carousel.md) - Source: `[framework]\flavour-carousel\page.mdx`
 - [reactjs/fleet-tracker](/docs/reactjs-fleet-tracker.md) - Source: `[framework]\fleet-tracker\page.mdx`
 - [reactjs/floating-contact-button](/docs/reactjs-floating-contact-button.md) - Source: `[framework]\floating-contact-button\page.mdx`
 - [reactjs/flow-gallery](/docs/reactjs-flow-gallery.md) - Source: `[framework]\flow-gallery\page.mdx`
@@ -222,6 +225,7 @@ This directory contains auto-generated Markdown versions of all MDX documentatio
 - [reactjs/hero-carousel](/docs/reactjs-hero-carousel.md) - Source: `[framework]\hero-carousel\page.mdx`
 - [reactjs/honeycomb-hero](/docs/reactjs-honeycomb-hero.md) - Source: `[framework]\honeycomb-hero\page.mdx`
 - [reactjs/image-compare](/docs/reactjs-image-compare.md) - Source: `[framework]\image-compare\page.mdx`
+- [reactjs/image-wall](/docs/reactjs-image-wall.md) - Source: `[framework]\image-wall\page.mdx`
 - [reactjs/index](/docs/reactjs-index.md) - Source: `[framework]\index\page.mdx`
 - [reactjs/infrastructure-topology](/docs/reactjs-infrastructure-topology.md) - Source: `[framework]\infrastructure-topology\page.mdx`
 - [reactjs/input](/docs/reactjs-input.md) - Source: `[framework]\input\page.mdx`

@@ -82,6 +82,11 @@ npx shadcn@latest add @algorize-ui/avatar-stack
         true
         Faces fan apart a little while the row is hovered.
 
+        liftOnHover
+        boolean
+        true
+        The hovered face rises above its neighbours and scales up slightly.
+
 ---
 
 **Component Path:** `[framework]\avatar-stack\page.mdx`

@@ -3,37 +3,42 @@ import { extractCode } from "@/lib/code";
 
 # Component Wall
 
-A landing hero for a component library: the copy on the left — a changelog pill, a bold headline, a paragraph, two actions and a line of trust — and on the right a wall of screenshots that never ends. A camera hangs over the wall, zoomed in on one card; every few seconds it pulls back, glides to the next card, and settles on it, brightening that card while the rest stay dimmed.
+A landing hero for a component library. On the right, a wall of screenshots that never ends: a camera hangs over it zoomed in on one card, and every few seconds pulls back, glides to the next card and settles on it. On the left, the copy — a small badge, a headline that blurs in word by word and keeps one word changing, a lead, an install command, two actions and a line of trust.
 
-The wall is one tile of cards in staggered columns, repeated around itself eight times, so however far the camera travels it never finds an edge. Every screenshot sits in the same 493:332 frame, and the camera walks the cards in order — each one gets its turn before any comes round again. The faces are an <DocLink to="avatar-stack">AvatarStack</DocLink> and the stars are <DocLink to="half-stars">HalfStars</DocLink>.
+The two halves talk to each other. The install line ends in the name of the card the camera is resting on, and slides to the next name as the camera lands — so the hero is always showing something the reader can paste into a terminal. The wall is an <DocLink to="image-wall">Image Wall</DocLink>, the headline a <DocLink to="text-animation">Text Animation</DocLink>, the copy control a <DocLink to="copy-button">Copy Button</DocLink>, the faces an <DocLink to="avatar-stack">Avatar Stack</DocLink> and the stars <DocLink to="half-stars">Half Stars</DocLink>. The headline is set in your theme's `font-serif`, the rest in `font-sans`; every colour is a theme token.
 
 export const usage = `"use client";
 
 import Link from "next/link";
 import { ComponentWall } from "@/components/custom/blocks/ComponentWallBlock";
+import { GitHubIcon } from "@/components/custom/blocks/Icons";
 
+// slug is what the install line calls the card; it defaults to the title in kebab-case.
 const ITEMS = [
-  { title: "Word bounce hero", image: "https://algorize-ui.vercel.app/assets/wall/hero.jpg" },
-  { title: "Pricing plans", image: "https://algorize-ui.vercel.app/assets/wall/pricing.jpg" },
-  { title: "Bento showcase", image: "https://algorize-ui.vercel.app/assets/wall/bento-showcase.jpg" },
-  { title: "Book appointment", image: "https://algorize-ui.vercel.app/assets/wall/book-appointment.jpg" },
-  { title: "Collage hero", image: "https://algorize-ui.vercel.app/assets/wall/collage-hero.jpg" },
-  { title: "Fashion hero", image: "https://algorize-ui.vercel.app/assets/wall/fashion-hero.jpg" },
-  { title: "Hero carousel", image: "https://algorize-ui.vercel.app/assets/wall/hero-carousel.jpg" },
-  { title: "Honeycomb hero", image: "https://algorize-ui.vercel.app/assets/wall/honeycomb-hero.jpg" },
+  { slug: "hero", title: "Word bounce hero", image: "https://algorize-ui.vercel.app/assets/wall/hero.jpg" },
+  { slug: "pricing", title: "Pricing plans", image: "https://algorize-ui.vercel.app/assets/wall/pricing.jpg" },
+  { slug: "bento-showcase", title: "Bento showcase", image: "https://algorize-ui.vercel.app/assets/wall/bento-showcase.jpg" },
+  { slug: "book-appointment", title: "Book appointment", image: "https://algorize-ui.vercel.app/assets/wall/book-appointment.jpg" },
+  { slug: "collage-hero", title: "Collage hero", image: "https://algorize-ui.vercel.app/assets/wall/collage-hero.jpg" },
+  { slug: "fashion-hero", title: "Fashion hero", image: "https://algorize-ui.vercel.app/assets/wall/fashion-hero.jpg" },
+  { slug: "hero-carousel", title: "Hero carousel", image: "https://algorize-ui.vercel.app/assets/wall/hero-carousel.jpg" },
+  { slug: "honeycomb-hero", title: "Honeycomb hero", image: "https://algorize-ui.vercel.app/assets/wall/honeycomb-hero.jpg" },
   // … as many as you like; four columns of six reads well
 ];
 
 export default function Hero() {
   return (
     <ComponentWall
-      badge={{ label: "Changelog", text: "60+ new blocks", href: "/changelog" }}
-      heading="The React component library for beautiful landing pages."
-      description="200+ production-ready components, blocks and templates built with React, Tailwind CSS and Motion. Copy, paste, customize, and ship."
+      badge={{ label: "Next-gen React components", href: "/docs" }}
+      heading="Build interactive {word}."
+      headingWords={["interfaces", "components", "experiences", "animations", "dashboards"]}
+      accent="interactive"
+      description="A meticulous library of React components and interactive blocks, engineered for seamless performance with Tailwind CSS, TypeScript, GSAP and Framer Motion."
+      install={{ command: "npx shadcn@latest add @algorize-ui/{item}" }}
       primaryAction={{ label: "Browse components", href: "/docs" }}
-      secondaryAction={{ label: "Get all-access", href: "/pricing" }}
+      secondaryAction={{ label: "Star on GitHub", href: "https://github.com/AlgorizeTech", icon: <GitHubIcon size={16} /> }}
       trust={{
-        text: "Trusted by 120,000+ founders, developers and creators",
+        text: "Loved by developers shipping real products with it",
         avatars: [{ src: "https://i.pravatar.cc/80?img=12" }, { src: "https://i.pravatar.cc/80?img=32" }, { src: "https://i.pravatar.cc/80?img=47" }, { src: "https://i.pravatar.cc/80?img=5" }, { src: "https://i.pravatar.cc/80?img=58" }],
         rating: 5,
       }}
@@ -51,19 +56,23 @@ export default function Hero() {
   minHeight={720}
   examples={[
     {
-      title: "The React component library for beautiful landing pages",
-      subheading: "Copy on the left, the wall on the right. Wait a few seconds: the camera pulls back, glides to another card and settles on it. Hovering the wall holds the camera.",
+      title: "Build interactive interfaces",
+      subheading: "Copy on the left, the wall on the right. Wait a few seconds: the camera glides to another card, and the install line changes to name it. Hovering the wall holds the camera.",
       propNotes: [
+        {
+          prop: "install",
+          effect:
+            "is the command in the box. Write `{item}` where the card's name goes — `\"npx shadcn@latest add @algorize-ui/{item}\"` — and the focused card's `slug` fills it in, sliding to the next as the camera lands. The copy button copies the whole resolved line. On phones only the last word before the name (`@algorize-ui/`) stays.",
+        },
+        {
+          prop: "heading",
+          effect:
+            "is a string, revealed word by word with the library's blur-in-up text animation. Write `{word}` where `headingWords` take turns — each new word blurs in the same way, every `wordInterval` ms — and name one word in `accent` to set it in the primary colour. Keep it short: it's set large in `font-serif` and wraps at about fourteen characters per line.",
+        },
         {
           prop: "items",
           effect:
-            "are the cards, dealt into `columns` in order. Each has a mono `title` and an `image`, cropped from its top edge into the same 493:332 frame as every other card; odd columns start lower so the rows stagger.",
-        },
-        {
-          prop: "order",
-          value: '"serial"',
-          effect:
-            "walks the cards one after another; `\"shuffle\"` visits every card once per round in a random order. Either way a card never comes round again before all the others have had a turn.",
+            "are the cards, dealt into `columns` in order. Each has a mono `title`, an `image` cropped into the same 493:332 frame, and an optional `slug` for the install line (default: the title in kebab-case).",
         },
         {
           prop: "interval",
@@ -72,13 +81,8 @@ export default function Hero() {
             "is how long the camera rests on a card. It holds while the wall is hovered, while the tab is hidden and while the section is off screen; `0` keeps the camera still on the first card.",
         },
         {
-          prop: "zoom",
-          value: "1.35",
-          effect: "is the camera's resting scale; on the stacked layouts, where the wall is only a band, it eases down to 1 so a card fits.",
-        },
-        {
           prop: "trust",
-          effect: "is the sentence, the faces and the stars under the actions; leave out `avatars` or `rating` to drop either.",
+          effect: "is the faces, the stars and the sentence under the actions; leave out `avatars` or `rating` to drop either.",
         },
       ],
       usage,
@@ -95,20 +99,20 @@ export default function Hero() {
 
 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 my-6 not-prose">
   <div className="p-6 rounded-2xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900">
-    <h3 className="text-lg font-semibold text-zinc-900 dark:text-zinc-50 mb-2">A camera, not a slider</h3>
-    <p className="text-zinc-600 dark:text-zinc-400 text-sm">One GSAP timeline moves the whole wall: it pulls the scale back to 0.86 while gliding to the next card, then settles back to 1.35. Nothing inside the wall moves on its own, so it stays cheap however many cards you give it.</p>
+    <h3 className="text-lg font-semibold text-zinc-900 dark:text-zinc-50 mb-2">An install line that follows the camera</h3>
+    <p className="text-zinc-600 dark:text-zinc-400 text-sm">The wall reports the card it has settled on; the hero puts that card's slug into the command and slides the old name out. Whatever the reader is looking at, the line beside it is the way to get it.</p>
   </div>
   <div className="p-6 rounded-2xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900">
-    <h3 className="text-lg font-semibold text-zinc-900 dark:text-zinc-50 mb-2">A wall without edges</h3>
-    <p className="text-zinc-600 dark:text-zinc-400 text-sm">The tile is drawn nine times — itself and its eight neighbours — so the camera can settle on a card at the very edge and still see cards all around it. The copies are hidden from assistive tech.</p>
+    <h3 className="text-lg font-semibold text-zinc-900 dark:text-zinc-50 mb-2">One entrance, in order</h3>
+    <p className="text-zinc-600 dark:text-zinc-400 text-sm">The headline blurs in word by word; then the lead, the command, the actions and the trust line rise once, each a beat after the last. The changing word in the headline replays that same blur each time it turns. Under prefers-reduced-motion everything is simply there, and both the headline word and the name in the command cut instead of moving.</p>
   </div>
   <div className="p-6 rounded-2xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900">
-    <h3 className="text-lg font-semibold text-zinc-900 dark:text-zinc-50 mb-2">Every device</h3>
-    <p className="text-zinc-600 dark:text-zinc-400 text-sm">On desktop the wall fills the right 58–60% and fades under the copy; below that it becomes a band under the copy with a gentler zoom. The camera re-aims on every resize.</p>
+    <h3 className="text-lg font-semibold text-zinc-900 dark:text-zinc-50 mb-2">Built on Image Wall</h3>
+    <p className="text-zinc-600 dark:text-zinc-400 text-sm">The wall, its camera and its flights are the Image Wall component; this hero passes the wall props straight through and only decides where the wall sits — the right 56–58% on desktop, fading under the copy; a band under the copy below that.</p>
   </div>
   <div className="p-6 rounded-2xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900">
-    <h3 className="text-lg font-semibold text-zinc-900 dark:text-zinc-50 mb-2">Quiet by request</h3>
-    <p className="text-zinc-600 dark:text-zinc-400 text-sm">Under prefers-reduced-motion the camera cuts between cards instead of flying; the wall is labelled with the card in view, and the copy column is ordinary, keyboard-reachable markup.</p>
+    <h3 className="text-lg font-semibold text-zinc-900 dark:text-zinc-50 mb-2">Your theme, your fonts</h3>
+    <p className="text-zinc-600 dark:text-zinc-400 text-sm">Background, text, the primary button and the stars all read theme tokens, so a palette change reaches every part. The headline uses <code>font-serif</code> and the command <code>font-mono</code> — set those in your Tailwind theme and the hero follows.</p>
   </div>
 </div>
 
@@ -127,27 +131,51 @@ export default function Hero() {
     <tbody>
       <tr>
         <td><code>badge</code></td>
-        <td><code>&#123; label: string; text?: string; href?: string; icon?: ReactNode &#125;</code></td>
+        <td><code>&#123; label: string; href?: string &#125;</code></td>
         <td>—</td>
-        <td>The pill above the headline.</td>
+        <td>The small link above the headline.</td>
       </tr>
       <tr>
         <td><code>heading</code></td>
-        <td><code>ReactNode</code></td>
+        <td><code>string</code></td>
         <td>—</td>
-        <td>The headline.</td>
+        <td>The headline, revealed word by word. <code>&#123;word&#125;</code> is where <code>headingWords</code> take turns.</td>
+      </tr>
+      <tr>
+        <td><code>headingWords</code></td>
+        <td><code>string[]</code></td>
+        <td>—</td>
+        <td>Words that take turns at <code>&#123;word&#125;</code>, each blurring in like the headline did.</td>
+      </tr>
+      <tr>
+        <td><code>wordInterval</code></td>
+        <td><code>number</code></td>
+        <td><code>2400</code></td>
+        <td>Milliseconds each heading word stays.</td>
+      </tr>
+      <tr>
+        <td><code>accent</code></td>
+        <td><code>string</code></td>
+        <td>—</td>
+        <td>A word of the headline set in the primary colour.</td>
       </tr>
       <tr>
         <td><code>description</code></td>
         <td><code>string</code></td>
         <td>—</td>
-        <td>The paragraph under it.</td>
+        <td>The lead under it.</td>
+      </tr>
+      <tr>
+        <td><code>install</code></td>
+        <td><code>&#123; command: string &#125;</code></td>
+        <td>—</td>
+        <td>The install line; <code>&#123;item&#125;</code> becomes the focused card's slug. Omit to drop the box.</td>
       </tr>
       <tr>
         <td><code>primaryAction</code>, <code>secondaryAction</code></td>
-        <td><code>&#123; label: string; href: string &#125;</code></td>
+        <td><code>&#123; label: string; href: string; icon?: ReactNode &#125;</code></td>
         <td>—</td>
-        <td>The dark button and the light one.</td>
+        <td>The primary button and the outlined one.</td>
       </tr>
       <tr>
         <td><code>trust</code></td>
@@ -157,9 +185,9 @@ export default function Hero() {
       </tr>
       <tr>
         <td><code>items</code></td>
-        <td><code>&#123; title: string; image: string &#125;[]</code></td>
+        <td><code>&#123; title: string; image: string; slug?: string &#125;[]</code></td>
         <td>—</td>
-        <td>The cards on the wall, each in a 493:332 frame.</td>
+        <td>The cards on the wall, each in a 493:332 frame. <code>items</code>, <code>columns</code>, <code>order</code>, <code>interval</code>, <code>zoom</code> and <code>onFocus</code> are passed straight to the <DocLink to="image-wall">Image Wall</DocLink>.</td>
       </tr>
       <tr>
         <td><code>columns</code></td>
