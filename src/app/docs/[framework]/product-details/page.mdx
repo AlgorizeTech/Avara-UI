@@ -14,16 +14,16 @@ export const productData = `const product = {
   description: "Engineered with reactive Air Cushioning and breathable Flyknit upper for high-performance city workouts and daily street style.",
   badge: "Special Edition",
   images: [
-    "https://images.unsplash.com/photo-1542291026-7eec264c27ff?auto=format&fit=crop&w=800&q=80",
-    "https://images.unsplash.com/photo-1582588678413-dbf45f4823e9?auto=format&fit=crop&w=800&q=80",
-    "https://images.unsplash.com/photo-1597045566677-8cf032ed6634?auto=format&fit=crop&w=800&q=80",
-    "https://images.unsplash.com/photo-1595950653106-6c9ebd614d3a?auto=format&fit=crop&w=800&q=80",
+    "/assets/red-shows.jpg",
+    "/assets/purple-shows.jpg",
+    "/assets/blue-shows.jpg",
+    "/assets/baby-pink-shows.jpg",
   ],
   colors: [
-    { name: "Crimson Red / Black", class: "bg-rose-600" },
-    { name: "Vibrant Yellow Edition", class: "bg-amber-400" },
-    { name: "Stealth Black / Gold", class: "bg-slate-900" },
-    { name: "Minimal Pure White", class: "bg-muted border border-border" },
+    { name: "Crimson Red", class: "bg-[#BC2433]", bgClass: "bg-primary/10 border-primary/20", image: "/assets/red-shows.jpg" },
+    { name: "Vibrant Purple", class: "bg-[#4A2C81]", bgClass: "bg-primary/10 border-primary/20", image: "/assets/purple-shows.jpg" },
+    { name: "Cobalt Blue", class: "bg-[#0A53B8]", bgClass: "bg-primary/10 border-primary/20", image: "/assets/blue-shows.jpg" },
+    { name: "Baby Pink", class: "bg-[#E4ADB2]", bgClass: "bg-primary/10 border-primary/20", image: "/assets/baby-pink-shows.jpg" },
   ],
   sizes: ["US 8", "US 9", "US 10", "US 11", "US 12"],
 };`;
@@ -186,7 +186,7 @@ Discover the key capabilities of the `ProductDetails` component:
         <td><code>zoomMode</code></td>
         <td><code>"inner" | "side"</code></td>
         <td><code>"inner"</code></td>
-        <td>Controls HD image zoom mode for 1st variant (<code>"color-sync-gallery"</code>). <code>"inner"</code> magnifies directly within the hero frame; <code>"side"</code> projects a 2.8x HD lens window to the right of the image on hover.</td>
+        <td>Controls HD image zoom mode for 1st variant (<code>color-sync-gallery</code>). <code>"inner"</code> magnifies directly within the hero frame; <code>"side"</code> projects a 2.8x HD lens window to the right of the image on hover.</td>
       </tr>
       <tr>
         <td><code>title</code></td>
