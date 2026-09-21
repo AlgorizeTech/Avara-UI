@@ -14,7 +14,7 @@ import {
 import { CommandSearchBlock } from "@/components/custom/blocks/UtilityBlocks";
 import { ComponentWall } from "@/components/custom/blocks/ComponentWallBlock";
 import { GitHubIcon } from "@/components/custom/blocks/Icons";
-import { WALL_AVATARS, WALL_ITEMS } from "@/constants/component-wall";
+import { WALL_AVATARS, WALL_ITEMS, WALL_STACK } from "@/constants/component-wall";
 import { cn } from "@/lib/utils";
 import {
 	ArrowRight,
@@ -74,16 +74,6 @@ $ npm run dev
 ▲ Next.js (Turbopack)
 - Local: http://localhost:3000
 ✓ Ready in 1.8s`;
-
-const techStack = [
-	{ name: "React JS", color: "var(--primary)" },
-	{ name: "Next.js", color: "var(--foreground)" },
-	{ name: "TypeScript", color: "var(--primary)" },
-	{ name: "Tailwind CSS", color: "var(--primary)" },
-	{ name: "Framer Motion", color: "var(--primary)" },
-	{ name: "GSAP", color: "var(--primary)" },
-	{ name: "Lucide Icons", color: "var(--primary)" },
-];
 
 const sampleDockItems: DockItem[] = [
 	{
@@ -515,52 +505,11 @@ function HeroSection() {
 				install={{ command: "npx shadcn@latest add @algorize-ui/{item}" }}
 				primaryAction={{ label: "Browse components", href: "/docs/nextjs/all-components" }}
 				secondaryAction={{ label: "Star on GitHub", href: links.github, icon: <GitHubIcon size={16} /> }}
-				trust={{ text: "Loved by developers shipping real products with it", avatars: WALL_AVATARS, rating: 5 }}
 				items={WALL_ITEMS}
+				stack={{ label: "Built with", groups: WALL_STACK }}
 				interval={4500}
 				linkComponent={Link}
 			/>
-		</section>
-	);
-}
-
-/* ═══════════════════════════════════════════════
-   SECTION 2: TECH STACK MARQUEE
-   ═══════════════════════════════════════════════ */
-
-function TechStackMarquee() {
-	const marqueeItems = [...techStack, ...techStack, ...techStack, ...techStack];
-
-	return (
-		<section className="border-y border-border bg-muted/40 py-5 overflow-hidden relative select-none">
-			<div className="flex w-max marquee-track">
-				{/* Unit 1 */}
-				<div className="flex items-center shrink-0">
-					{marqueeItems.map((tech, i) => (
-						<div
-							key={`m1-${tech.name}-${i}`}
-							className="flex items-center gap-2.5 px-7 shrink-0">
-							<div className="size-2 rounded-full shrink-0 bg-primary" />
-							<span className="text-xs font-bold text-muted-foreground whitespace-nowrap tracking-wide">
-								{tech.name}
-							</span>
-						</div>
-					))}
-				</div>
-				{/* Unit 2 (Exact Duplicate for Infinite Loop) */}
-				<div className="flex items-center shrink-0" aria-hidden="true">
-					{marqueeItems.map((tech, i) => (
-						<div
-							key={`m2-${tech.name}-${i}`}
-							className="flex items-center gap-2.5 px-7 shrink-0">
-							<div className="size-2 rounded-full shrink-0 bg-primary" />
-							<span className="text-xs font-bold text-muted-foreground whitespace-nowrap tracking-wide">
-								{tech.name}
-							</span>
-						</div>
-					))}
-				</div>
-			</div>
 		</section>
 	);
 }
@@ -3264,7 +3213,6 @@ export default function HomePage() {
 	return (
 		<div className="min-h-screen bg-background text-foreground selection:bg-primary/20 overflow-x-hidden font-site-sans">
 			<HeroSection />
-			<TechStackMarquee />
 			<ComponentShowcase />
 			<WhyChooseUsSection />
 			<ComponentPreviewGridSection />

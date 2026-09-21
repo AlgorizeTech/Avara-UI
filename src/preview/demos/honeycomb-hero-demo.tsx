@@ -3,7 +3,7 @@
 import { HoneycombHero } from "@/components/custom/blocks/HoneycombHeroBlock";
 
 export default function HoneycombHeroDemo({
-  interval = 5000,
+  interval = 4000,
 }: {
   /** Milliseconds between steps; 0 turns autoplay off. */
   interval?: number;

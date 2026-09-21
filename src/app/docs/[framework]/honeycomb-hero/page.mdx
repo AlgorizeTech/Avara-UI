@@ -3,7 +3,7 @@ import { extractCode } from "@/lib/code";
 
 # Honeycomb Hero
 
-A travel hero in deep teal: a light line over a huge gold word on the left, and on the right a honeycomb of hexagonal photographs with a gold hexagonal call to action set among them. The large hexagon is the slide on screen — its photograph is also the tinted background behind everything — and the smaller ones are the queue. Every five seconds, or on the arrows at the foot, every hexagon moves one step along the honeycomb: the next photograph grows into the feature spot while the feature slides to the back of the queue. The loop never ends, in either direction.
+A travel hero in deep teal: a light line over a huge gold word on the left, and on the right a honeycomb of hexagonal photographs with a gold hexagonal call to action set among them. The large hexagon is the slide on screen — its photograph is also the tinted background behind everything — and the smaller ones are the queue. Every four seconds, or on the arrows at the foot, every hexagon moves one step along the honeycomb: the next photograph grows into the feature spot while the feature slides to the back of the queue. The loop never ends, in either direction.
 
 The honeycomb is measured from the design and laid out in percentages of a fixed-aspect stage anchored to the right edge, so the composition holds at any size and whatever falls past the edge is clipped, as intended. The letters of the accent word that cross the feature photograph turn white.
 
@@ -38,7 +38,7 @@ export default function Hero() {
         { label: "Instagram", href: "#" },
         { label: "YouTube", href: "#" },
       ]}
-      interval={5000}
+      interval={4000}
       linkComponent={Link}
     />
   );
@@ -52,7 +52,7 @@ export default function Hero() {
   examples={[
     {
       title: "Amazing Norway",
-      subheading: "Copy on the left, the honeycomb on the right with the gold hexagon set among the photographs. Wait five seconds or use the arrows at the foot: every hexagon moves one step along the ring. Hovering the honeycomb holds it.",
+      subheading: "Copy on the left, the honeycomb on the right with the gold hexagon set among the photographs. Wait four seconds or use the arrows at the foot: every hexagon moves one step along the ring. Hovering the honeycomb holds it.",
       propNotes: [
         {
           prop: "images",
@@ -61,7 +61,7 @@ export default function Hero() {
         },
         {
           prop: "interval",
-          value: "5000",
+          value: "4000",
           effect:
             "is the gap between steps in milliseconds. It pauses while the honeycomb is hovered, while the tab is hidden and while the section is off screen; `0` turns autoplay off and leaves the arrows.",
         },
@@ -152,7 +152,7 @@ export default function Hero() {
       <tr>
         <td><code>interval</code></td>
         <td><code>number</code></td>
-        <td><code>5000</code></td>
+        <td><code>4000</code></td>
         <td>Milliseconds between steps; <code>0</code> turns autoplay off.</td>
       </tr>
       <tr>

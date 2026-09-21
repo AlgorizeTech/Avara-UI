@@ -2,7 +2,7 @@
 
 import { ComponentWall } from "@/components/custom/blocks/ComponentWallBlock";
 import { GitHubIcon } from "@/components/custom/blocks/Icons";
-import { WALL_AVATARS, WALL_ITEMS } from "@/constants/component-wall";
+import { WALL_AVATARS, WALL_ITEMS, WALL_STACK } from "@/constants/component-wall";
 
 export default function ComponentWallDemo({
   interval = 4500,
@@ -26,6 +26,7 @@ export default function ComponentWallDemo({
         secondaryAction={{ label: "Star on GitHub", href: "#", icon: <GitHubIcon size={16} /> }}
         trust={{ text: "Loved by developers shipping real products with it", avatars: WALL_AVATARS, rating: 5 }}
         items={WALL_ITEMS}
+        stack={{ label: "Built with", groups: WALL_STACK }}
         interval={interval}
         order={order}
       />
