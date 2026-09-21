@@ -182,6 +182,13 @@ const rawNavigation: NavigationItem[] = [
       { label: "Half Stars", slug: "half-stars" },
       { label: "Heart Signal", slug: "heart-signal" },
       { label: "Image Compare", slug: "image-compare" },
+      {
+        label: "Image Wall",
+        slug: "image-wall",
+        badge: "New",
+        addedOn: "2026-09-21",
+        keywords: ["image", "wall", "carousel", "screenshots", "camera", "zoom", "gallery", "grid", "masonry", "showcase"],
+      },
       { label: "Infrastructure Topology", slug: "infrastructure-topology" },
       { label: "Input", slug: "input" },
       { label: "Invoice", slug: "invoice" },

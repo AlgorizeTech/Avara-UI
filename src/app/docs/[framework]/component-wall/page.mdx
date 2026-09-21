@@ -5,7 +5,7 @@ import { extractCode } from "@/lib/code";
 
 A landing hero for a component library: the copy on the left — a changelog pill, a bold headline, a paragraph, two actions and a line of trust — and on the right a wall of screenshots that never ends. A camera hangs over the wall, zoomed in on one card; every few seconds it pulls back, glides to the next card, and settles on it, brightening that card while the rest stay dimmed.
 
-The wall is one tile of cards in staggered columns, repeated around itself eight times, so however far the camera travels it never finds an edge. Every screenshot sits in the same 493:332 frame, and the camera walks the cards in order — each one gets its turn before any comes round again. The faces are an <DocLink to="avatar-stack">AvatarStack</DocLink> and the stars are <DocLink to="half-stars">HalfStars</DocLink>.
+The wall is an <DocLink to="image-wall">Image Wall</DocLink>: one tile of cards in staggered columns, repeated around itself eight times, so however far the camera travels it never finds an edge. Every screenshot sits in the same 493:332 frame, and the camera walks the cards in order — each one gets its turn before any comes round again. This hero only positions it — the whole right side on desktop, fading under the copy; a band under the copy below that. The faces are an <DocLink to="avatar-stack">AvatarStack</DocLink> and the stars are <DocLink to="half-stars">HalfStars</DocLink>.
 
 export const usage = `"use client";
 
@@ -95,8 +95,8 @@ export default function Hero() {
 
 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 my-6 not-prose">
   <div className="p-6 rounded-2xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900">
-    <h3 className="text-lg font-semibold text-zinc-900 dark:text-zinc-50 mb-2">A camera, not a slider</h3>
-    <p className="text-zinc-600 dark:text-zinc-400 text-sm">One GSAP timeline moves the whole wall: it pulls the scale back to 0.86 while gliding to the next card, then settles back to 1.35. Nothing inside the wall moves on its own, so it stays cheap however many cards you give it.</p>
+    <h3 className="text-lg font-semibold text-zinc-900 dark:text-zinc-50 mb-2">Built on Image Wall</h3>
+    <p className="text-zinc-600 dark:text-zinc-400 text-sm">The wall, its camera and its flights are the Image Wall component; this hero passes the wall props straight through and only decides where the wall sits. Install the wall on its own for a gallery band or a showcase.</p>
   </div>
   <div className="p-6 rounded-2xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900">
     <h3 className="text-lg font-semibold text-zinc-900 dark:text-zinc-50 mb-2">A wall without edges</h3>
@@ -159,7 +159,7 @@ export default function Hero() {
         <td><code>items</code></td>
         <td><code>&#123; title: string; image: string &#125;[]</code></td>
         <td>—</td>
-        <td>The cards on the wall, each in a 493:332 frame.</td>
+        <td>The cards on the wall, each in a 493:332 frame. <code>items</code>, <code>columns</code>, <code>order</code>, <code>interval</code>, <code>zoom</code> and <code>onFocus</code> are passed straight to the <DocLink to="image-wall">Image Wall</DocLink>.</td>
       </tr>
       <tr>
         <td><code>columns</code></td>

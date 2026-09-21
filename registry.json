@@ -787,12 +787,12 @@
         "layout"
       ],
       "dependencies": [
-        "gsap",
         "lucide-react"
       ],
       "registryDependencies": [
         "https://algorize-ui.vercel.app/r/avatar-stack.json",
         "https://algorize-ui.vercel.app/r/half-stars.json",
+        "https://algorize-ui.vercel.app/r/image-wall.json",
         "utils"
       ],
       "files": [
@@ -802,7 +802,7 @@
           "target": "components/custom/blocks/ComponentWallBlock.tsx"
         }
       ],
-      "docs": "Named export: ComponentWall. Composed from the avatar-stack and half-stars items, which install alongside it. Pass `badge` ({ label, text?, href?, icon? }), `heading`, `description`, `primaryAction`/`secondaryAction` ({ label, href }), `trust` ({ text, avatars?, rating? }) and `items` ({ title, image }[] — every screenshot sits in the same 493:332 frame). `columns` sets the grid, `interval` the rest between flights in ms (0 holds still), `order` is serial (card by card) or shuffle (every card once per round, at random), `zoom` the resting scale; `onFocus` reports the card in view; `linkComponent` takes next/link."
+      "docs": "Named export: ComponentWall. Composed from the image-wall, avatar-stack and half-stars items, which install alongside it. Pass `badge` ({ label, text?, href?, icon? }), `heading`, `description`, `primaryAction`/`secondaryAction` ({ label, href }), `trust` ({ text, avatars?, rating? }) and the ImageWall props — `items` ({ title, image }[] — every screenshot sits in the same 493:332 frame), `columns`, `interval` (ms the camera rests; 0 holds still), `order` (serial | shuffle), `zoom` and `onFocus`; `linkComponent` takes next/link."
     },
     {
       "name": "compute",
@@ -1834,6 +1834,31 @@
         }
       ],
       "docs": "Named export: ImageCompare. `beforeImage` and `afterImage` take URLs, with `beforeLabel` / `afterLabel` for the badges and `initialPosition` as a 0-100 percentage. Variants: classic-slider | split-handle | glowing-divider | badge-overlay | minimal. Both images should share an aspect ratio or the reveal will misalign."
+    },
+    {
+      "name": "image-wall",
+      "type": "registry:component",
+      "title": "Image Wall",
+      "author": "AlgorizeTech",
+      "description": "A wall of screenshots that never ends, and a camera hanging over it: it rests zoomed in on one card, then every few seconds pulls back, glides to the next and settles on it. Use it wherever a set of images should keep showing itself — a hero, a gallery band, a showcase.",
+      "categories": [
+        "media",
+        "marketing"
+      ],
+      "dependencies": [
+        "gsap"
+      ],
+      "registryDependencies": [
+        "utils"
+      ],
+      "files": [
+        {
+          "path": "src/components/custom/blocks/ImageWallBlock.tsx",
+          "type": "registry:component",
+          "target": "components/custom/blocks/ImageWallBlock.tsx"
+        }
+      ],
+      "docs": "Named export: ImageWall (plus the WallItem type). Pass `items` ({ title, image }[] — every image is cropped from its top edge into the same 493:332 frame) and give it a height with `className`; it fills its box. `columns` sets the tile, `interval` the rest between flights in ms (0 holds still), `order` is serial (card by card) or shuffle (every card once per round, at random), `zoom` the resting scale — a box under 420px tall eases it down so a few cards fit; `onFocus` reports the card in view. The camera holds while hovered, while the tab is hidden and while off screen; under prefers-reduced-motion it cuts instead of flying."
     },
     {
       "name": "infrastructure-topology",

@@ -568,7 +568,7 @@ export const META: Record<string, ItemMeta> = {
     description:
       "A landing hero for a component library: copy on the left, and on the right a wall of screenshots that never ends. A camera hangs over the wall zoomed in on one card; every few seconds it pulls back, glides to another card picked at random and settles on it.",
     categories: ["marketing", "layout"],
-    docs: "Named export: ComponentWall. Composed from the avatar-stack and half-stars items, which install alongside it. Pass `badge` ({ label, text?, href?, icon? }), `heading`, `description`, `primaryAction`/`secondaryAction` ({ label, href }), `trust` ({ text, avatars?, rating? }) and `items` ({ title, image }[] — every screenshot sits in the same 493:332 frame). `columns` sets the grid, `interval` the rest between flights in ms (0 holds still), `order` is serial (card by card) or shuffle (every card once per round, at random), `zoom` the resting scale; `onFocus` reports the card in view; `linkComponent` takes next/link.",
+    docs: "Named export: ComponentWall. Composed from the image-wall, avatar-stack and half-stars items, which install alongside it. Pass `badge` ({ label, text?, href?, icon? }), `heading`, `description`, `primaryAction`/`secondaryAction` ({ label, href }), `trust` ({ text, avatars?, rating? }) and the ImageWall props — `items` ({ title, image }[] — every screenshot sits in the same 493:332 frame), `columns`, `interval` (ms the camera rests; 0 holds still), `order` (serial | shuffle), `zoom` and `onFocus`; `linkComponent` takes next/link.",
   },
   "collage-hero": {
     description:
@@ -671,6 +671,12 @@ export const META: Record<string, ItemMeta> = {
       "Device frames for iPhone (5 through 17 Pro Max), Samsung and Pixel that wrap a screenshot, video or live children. Use them to present an app on a marketing page.",
     categories: ["media", "marketing"],
     docs: "Named exports: Iphone17ProMaxMockup, Iphone14ProMaxMockup, Iphone12ProMaxMockup, Iphone5Mockup, SamsungS24UltraMockup, GooglePixel8Mockup, GooglePixel10Mockup. Each takes `src`, `videoSrc`, or arbitrary children rendered inside the screen. Pure CSS and SVG — no images to ship.",
+  },
+  "image-wall": {
+    description:
+      "A wall of screenshots that never ends, and a camera hanging over it: it rests zoomed in on one card, then every few seconds pulls back, glides to the next and settles on it. Use it wherever a set of images should keep showing itself — a hero, a gallery band, a showcase.",
+    categories: ["media", "marketing"],
+    docs: "Named export: ImageWall (plus the WallItem type). Pass `items` ({ title, image }[] — every image is cropped from its top edge into the same 493:332 frame) and give it a height with `className`; it fills its box. `columns` sets the tile, `interval` the rest between flights in ms (0 holds still), `order` is serial (card by card) or shuffle (every card once per round, at random), `zoom` the resting scale — a box under 420px tall eases it down so a few cards fit; `onFocus` reports the card in view. The camera holds while hovered, while the tab is hidden and while off screen; under prefers-reduced-motion it cuts instead of flying.",
   },
   "image-compare": {
     description:
