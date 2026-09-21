@@ -141,7 +141,7 @@ export const HoneycombHero = forwardRef<HTMLElement, HoneycombHeroProps>(
       primaryActionHref = "#",
       images = DEFAULT_IMAGES,
       socialLinks = DEFAULT_SOCIAL,
-      interval = 5000,
+      interval = 4000,
       onChange,
       accent = "#e0a83d",
       background = "#0b2a2d",
@@ -196,7 +196,10 @@ export const HoneycombHero = forwardRef<HTMLElement, HoneycombHeroProps>(
         if (!animate) {
           gsap.set(el, target);
         } else {
-          gsap.to(el, { ...target, duration: 1.15, ease: "power3.inOut", delay: k * 0.045, overwrite: "auto" });
+          // A step taken mid-tween must not let the old tween run on through
+          // the new one's stagger delay, so the old one is dropped first.
+          gsap.killTweensOf(el);
+          gsap.to(el, { ...target, duration: 1.15, ease: "power3.inOut", delay: k * 0.045 });
         }
       });
       placedRef.current = true;

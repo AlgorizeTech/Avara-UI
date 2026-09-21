@@ -1,6 +1,6 @@
 # Honeycomb Hero
 
-A travel hero in deep teal: a light line over a huge gold word on the left, and on the right a honeycomb of hexagonal photographs with a gold hexagonal call to action set among them. The large hexagon is the slide on screen — its photograph is also the tinted background behind everything — and the smaller ones are the queue. Every five seconds, or on the arrows at the foot, every hexagon moves one step along the honeycomb: the next photograph grows into the feature spot while the feature slides to the back of the queue. The loop never ends, in either direction.
+A travel hero in deep teal: a light line over a huge gold word on the left, and on the right a honeycomb of hexagonal photographs with a gold hexagonal call to action set among them. The large hexagon is the slide on screen — its photograph is also the tinted background behind everything — and the smaller ones are the queue. Every four seconds, or on the arrows at the foot, every hexagon moves one step along the honeycomb: the next photograph grows into the feature spot while the feature slides to the back of the queue. The loop never ends, in either direction.
 
 The honeycomb is measured from the design and laid out in percentages of a fixed-aspect stage anchored to the right edge, so the composition holds at any size and whatever falls past the edge is clipped, as intended. The letters of the accent word that cross the feature photograph turn white.
 
@@ -80,7 +80,7 @@ npx shadcn@latest add @algorize-ui/honeycomb-hero
 
         interval
         number
-        5000
+        4000
         Milliseconds between steps; 0 turns autoplay off.
 
         onChange

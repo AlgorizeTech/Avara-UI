@@ -854,19 +854,6 @@ html body[data-scroll-locked] {
 /* HOMEPAGE STYLES                              */
 /* ============================================ */
 
-/* Marquee */
-@keyframes marquee-scroll {
-  from { transform: translateX(0); }
-  to   { transform: translateX(-50%); }
-}
-
-.marquee-track {
-  animation: marquee-scroll 35s linear infinite;
-}
-.marquee-track:hover {
-  animation-play-state: paused;
-}
-
 /* Showcase card hover */
 .showcase-card {
   transition: border-color 0.3s ease, box-shadow 0.3s ease, transform 0.3s ease;
