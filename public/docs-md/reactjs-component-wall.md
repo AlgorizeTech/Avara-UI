@@ -1,24 +1,34 @@
 # Component Wall
 
-A landing hero for a component library: the copy on the left — a changelog pill, a bold headline, a paragraph, two actions and a line of trust — and on the right a wall of screenshots that never ends. A camera hangs over the wall, zoomed in on one card; every few seconds it pulls back, glides to the next card, and settles on it, brightening that card while the rest stay dimmed.
+A landing hero for a component library. On the right, a wall of screenshots that never ends: a camera hangs over it zoomed in on one card, and every few seconds pulls back, glides to the next card and settles on it. On the left, the copy — a small badge, a headline that blurs in word by word and keeps one word changing, a lead, an install command, two actions and a line of trust.
 
-The wall is one tile of cards in staggered columns, repeated around itself eight times, so however far the camera travels it never finds an edge. Every screenshot sits in the same 493:332 frame, and the camera walks the cards in order — each one gets its turn before any comes round again. The faces are an AvatarStack and the stars are HalfStars.
+The two halves talk to each other. The install line ends in the name of the card the camera is resting on, and slides to the next name as the camera lands — so the hero is always showing something the reader can paste into a terminal. The wall is an Image Wall, the headline a Text Animation, the copy control a Copy Button, the faces an Avatar Stack and the stars Half Stars. The headline is set in your theme's `font-serif`, the rest in `font-sans`; every colour is a theme token.
 
-export const usage = `const ITEMS = [
-  { title: "Word bounce hero", image: "https://algorize-ui.vercel.app/assets/wall/hero.jpg" },
-  { title: "Pricing plans", image: "https://algorize-ui.vercel.app/assets/wall/pricing.jpg" },
-  { title: "Bento showcase", image: "https://algorize-ui.vercel.app/assets/wall/bento-showcase.jpg" },
-  { title: "Book appointment", image: "https://algorize-ui.vercel.app/assets/wall/book-appointment.jpg" },
-  { title: "Collage hero", image: "https://algorize-ui.vercel.app/assets/wall/collage-hero.jpg" },
-  { title: "Fashion hero", image: "https://algorize-ui.vercel.app/assets/wall/fashion-hero.jpg" },
-  { title: "Hero carousel", image: "https://algorize-ui.vercel.app/assets/wall/hero-carousel.jpg" },
-  { title: "Honeycomb hero", image: "https://algorize-ui.vercel.app/assets/wall/honeycomb-hero.jpg" },
+export const usage = `// slug is what the install line calls the card; it defaults to the title in kebab-case.
+const ITEMS = [
+  { slug: "hero", title: "Word bounce hero", image: "https://algorize-ui.vercel.app/assets/wall/hero.jpg" },
+  { slug: "pricing", title: "Pricing plans", image: "https://algorize-ui.vercel.app/assets/wall/pricing.jpg" },
+  { slug: "bento-showcase", title: "Bento showcase", image: "https://algorize-ui.vercel.app/assets/wall/bento-showcase.jpg" },
+  { slug: "book-appointment", title: "Book appointment", image: "https://algorize-ui.vercel.app/assets/wall/book-appointment.jpg" },
+  { slug: "collage-hero", title: "Collage hero", image: "https://algorize-ui.vercel.app/assets/wall/collage-hero.jpg" },
+  { slug: "fashion-hero", title: "Fashion hero", image: "https://algorize-ui.vercel.app/assets/wall/fashion-hero.jpg" },
+  { slug: "hero-carousel", title: "Hero carousel", image: "https://algorize-ui.vercel.app/assets/wall/hero-carousel.jpg" },
+  { slug: "honeycomb-hero", title: "Honeycomb hero", image: "https://algorize-ui.vercel.app/assets/wall/honeycomb-hero.jpg" },
   // … as many as you like; four columns of six reads well
 ];
 
 export default function Hero() {
   return (
-    
+     }}
+      trust={{
+        text: "Loved by developers shipping real products with it",
+        avatars: [{ src: "https://i.pravatar.cc/80?img=12" }, { src: "https://i.pravatar.cc/80?img=32" }, { src: "https://i.pravatar.cc/80?img=47" }, { src: "https://i.pravatar.cc/80?img=5" }, { src: "https://i.pravatar.cc/80?img=58" }],
+        rating: 5,
+      }}
+      items={ITEMS}
+      interval={4500}
+      linkComponent={Link}
+    />
   );
 }
 `;
@@ -34,17 +44,17 @@ npx shadcn@latest add @algorize-ui/component-wall
 
 ## Features
 
-    A camera, not a slider
-    One GSAP timeline moves the whole wall: it pulls the scale back to 0.86 while gliding to the next card, then settles back to 1.35. Nothing inside the wall moves on its own, so it stays cheap however many cards you give it.
+    An install line that follows the camera
+    The wall reports the card it has settled on; the hero puts that card's slug into the command and slides the old name out. Whatever the reader is looking at, the line beside it is the way to get it.
 
-    A wall without edges
-    The tile is drawn nine times — itself and its eight neighbours — so the camera can settle on a card at the very edge and still see cards all around it. The copies are hidden from assistive tech.
+    One entrance, in order
+    The headline blurs in word by word; then the lead, the command, the actions and the trust line rise once, each a beat after the last. The changing word in the headline replays that same blur each time it turns. Under prefers-reduced-motion everything is simply there, and both the headline word and the name in the command cut instead of moving.
 
-    Every device
-    On desktop the wall fills the right 58–60% and fades under the copy; below that it becomes a band under the copy with a gentler zoom. The camera re-aims on every resize.
+    Built on Image Wall
+    The wall, its camera and its flights are the Image Wall component; this hero passes the wall props straight through and only decides where the wall sits — the right 56–58% on desktop, fading under the copy; a band under the copy below that.
 
-    Quiet by request
-    Under prefers-reduced-motion the camera cuts between cards instead of flying; the wall is labelled with the card in view, and the copy column is ordinary, keyboard-reachable markup.
+    Your theme, your fonts
+    Background, text, the primary button and the stars all read theme tokens, so a palette change reaches every part. The headline uses font-serif and the command font-mono — set those in your Tailwind theme and the hero follows.
 
 ## Props Reference
 
@@ -54,24 +64,44 @@ npx shadcn@latest add @algorize-ui/component-wall
         Description
 
         badge
-        &#123; label: string; text?: string; href?: string; icon?: ReactNode &#125;
+        &#123; label: string; href?: string &#125;
         —
-        The pill above the headline.
+        The small link above the headline.
 
         heading
-        ReactNode
+        string
         —
-        The headline.
+        The headline, revealed word by word. &#123;word&#125; is where headingWords take turns.
+
+        headingWords
+        string[]
+        —
+        Words that take turns at &#123;word&#125;, each blurring in like the headline did.
+
+        wordInterval
+        number
+        2400
+        Milliseconds each heading word stays.
+
+        accent
+        string
+        —
+        A word of the headline set in the primary colour.
 
         description
         string
         —
-        The paragraph under it.
+        The lead under it.
+
+        install
+        &#123; command: string &#125;
+        —
+        The install line; &#123;item&#125; becomes the focused card's slug. Omit to drop the box.
 
         primaryAction, secondaryAction
-        &#123; label: string; href: string &#125;
+        &#123; label: string; href: string; icon?: ReactNode &#125;
         —
-        The dark button and the light one.
+        The primary button and the outlined one.
 
         trust
         &#123; text: string; avatars?: &#123; src; alt? &#125;[]; rating?: number &#125;
@@ -79,9 +109,9 @@ npx shadcn@latest add @algorize-ui/component-wall
         The trust line under the actions.
 
         items
-        &#123; title: string; image: string &#125;[]
+        &#123; title: string; image: string; slug?: string &#125;[]
         —
-        The cards on the wall, each in a 493:332 frame.
+        The cards on the wall, each in a 493:332 frame. items, columns, order, interval, zoom and onFocus are passed straight to the Image Wall.
 
         columns
         number

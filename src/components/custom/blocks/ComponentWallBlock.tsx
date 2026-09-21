@@ -199,7 +199,7 @@ export const ComponentWall = forwardRef<HTMLElement, ComponentWallProps>(
       >
         <div className="relative flex w-full flex-col lg:min-h-[44rem] lg:flex-row lg:items-center">
           {/* ---- Copy ---- */}
-          <div className="relative z-30 mx-auto flex w-full max-w-[84rem] items-center px-6 md:px-10">
+          <div className="relative z-30 mx-auto flex w-full max-w-[98rem] items-center px-6 md:px-10 xl:pl-20">
             <motion.div
               variants={riseGroup}
               initial={reduceMotion ? false : "hidden"}

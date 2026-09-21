@@ -163,6 +163,9 @@ export const ImageWall = forwardRef<HTMLDivElement, ImageWallProps>(
           .timeline({
             onUpdate: paint,
             onComplete: () => {
+              // Land where the card is *now*: the box may have resized mid-flight.
+              cameraRef.current = restFor(i);
+              paint();
               setFlying(false);
               setFocus(i);
             },

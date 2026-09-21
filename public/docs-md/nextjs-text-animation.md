@@ -132,6 +132,16 @@ npx shadcn@latest add @algorize-ui/text-animation
 
           Accepts all native HTML attributes (e.g., id, onClick) which are seamlessly forwarded to the wrapper element.
 
+          TextAnimation
+
+          renderWord
+
+          (word: string, index: number) =&gt; ReactNode
+
+          —
+
+          Swap what a word renders as while keeping its entrance — a coloured span, a word that later changes. Word-level variants only: pop-in, flip, blur-in-up. Component Wall uses it for its accent and turning word.
+
 ---
 
 **Component Path:** `[framework]\text-animation\page.mdx`
