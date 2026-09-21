@@ -154,6 +154,50 @@ export default function SocialButtonDemo() {
   );
 }`;
 
+export const usageShardsPanel = `import Button from "@/components/custom/blocks/Button";
+
+export default function ControlButtonsDemo() {
+  return (
+    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+      {/* 1. Color Picker Button */}
+      <Button
+        variant="shards-control"
+        controlType="color"
+        label="Shards"
+        colorHex="#a855f7"
+      />
+
+      {/* 2. Dropdown Select Button */}
+      <Button
+        variant="shards-control"
+        controlType="select"
+        label="Placement"
+        value="Full"
+        options={["Full", "Center", "Top", "Bottom"]}
+      />
+
+      {/* 3. Range Slider Button */}
+      <Button
+        variant="shards-control"
+        controlType="slider"
+        label="Scale"
+        value={1}
+        min={0}
+        max={3}
+        step={0.1}
+      />
+
+      {/* 4. Toggle Switch Button */}
+      <Button
+        variant="shards-control"
+        controlType="toggle"
+        label="Hold to Gather"
+        checked={true}
+      />
+    </div>
+  );
+}`;
+
 <ExampleShowcase
   name="button"
   colorControl
@@ -164,6 +208,14 @@ export default function SocialButtonDemo() {
       propNotes: [{ lead: "Feature", prop: "variant", value: '"outline"', effect: "renders a continuous spinning conic-gradient glowing line with solid white/black bg and hover theme fill." }],
       props: { layout: "basic" },
       usage: usageDefault,
+      code: extractCode("src/components/custom/blocks/Button.tsx"),
+    },
+    {
+      title: "Dark Glass Parameter Control Panel Tiles",
+      description: "Interactive dark glass control tiles for parameter panels (Color pickers, dropdown selects, sliders, and toggle switches).",
+      propNotes: [{ lead: "Shards Control", prop: "variant", value: '"shards-control"', effect: "renders a dark glass control tile tile supporting `controlType='color' | 'select' | 'slider' | 'toggle'`." }],
+      props: { layout: "shards-panel" },
+      usage: usageShardsPanel,
       code: extractCode("src/components/custom/blocks/Button.tsx"),
     },
     {
@@ -230,12 +282,36 @@ export default function SocialButtonDemo() {
           <code>variant</code>
         </td>
         <td>
-          <code>"outline" | "slide-icon" | "slide-icon-loop" | "slide-text" | "3d"</code>
+          <code>"outline" | "slide-icon" | "slide-icon-loop" | "slide-text" | "3d" | "shards-control"</code>
         </td>
         <td>
           <code>"outline"</code>
         </td>
-        <td>Choose between 4-side border glow, sliding rounded icon, looping rounded icon, vertical text roll, or raised 3D press variant.</td>
+        <td>Choose between 4-side border glow, sliding rounded icon, looping rounded icon, vertical text roll, raised 3D press, or dark glass parameter control tile.</td>
+      </tr>
+      <tr>
+        <td>
+          <code>controlType</code>
+        </td>
+        <td>
+          <code>"color" | "select" | "slider" | "toggle"</code>
+        </td>
+        <td>
+          <code>"select"</code>
+        </td>
+        <td>Input type for <code>variant="shards-control"</code> (color picker, select dropdown, range slider, or toggle switch).</td>
+      </tr>
+      <tr>
+        <td>
+          <code>label</code> · <code>value</code> · <code>options</code>
+        </td>
+        <td>
+          <code>string | number | string[]</code>
+        </td>
+        <td>
+          <code>—</code>
+        </td>
+        <td>Label title, active value, and option choices for control tiles.</td>
       </tr>
       <tr>
         <td>

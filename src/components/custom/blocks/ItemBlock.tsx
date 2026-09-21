@@ -48,12 +48,12 @@ export function ItemBlock({
         "hover:bg-muted active:scale-[0.98]",
     ),
     bordered: cn(
-      "p-4 rounded-xl border border-border bg-white dark:bg-[#050505] shadow-sm",
+      "p-4 rounded-xl border border-border bg-card text-card-foreground shadow-sm",
       isClickable &&
         "hover:border-border hover:shadow-md active:scale-[0.98]",
     ),
     card: cn(
-      "p-5 rounded-2xl border border-border bg-white dark:bg-[#050505] shadow-sm gap-4",
+      "p-5 rounded-2xl border border-border bg-card text-card-foreground shadow-sm gap-4",
       isClickable &&
         "hover:shadow-md hover:-translate-y-1 hover:border-border",
     ),
