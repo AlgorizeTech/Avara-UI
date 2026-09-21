@@ -53,7 +53,7 @@ const DEFAULT_REVIEWS: ReviewItem[] = [
 			"https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&w=800&q=80",
 		rating: 5.0,
 		content:
-			"The difference between AlgorizeTech and other agencies is their talent pool. You actually work with the senior developers they pitch you. The code quality, architecture, and attention to detail are on a completely different level.",
+			"The difference between AlgorizeTech and other agencies is their talent pool. You actually work with senior developers. Code quality and architecture are top-tier!",
 	},
 	{
 		id: "3",
@@ -63,7 +63,7 @@ const DEFAULT_REVIEWS: ReviewItem[] = [
 			"https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=800&q=80",
 		rating: 5.0,
 		content:
-			"Their 'Quality Obsessed' mantra is apparent in everything they do. They pushed back on bad ideas, suggested better alternatives, and delivered a final product that increased our conversion rate by 40% in the first month.",
+			"Their 'Quality Obsessed' mantra is apparent in everything they do. They pushed back on bad ideas, suggested better alternatives, and boosted conversion by 40%!",
 	},
 	{
 		id: "4",
@@ -73,7 +73,7 @@ const DEFAULT_REVIEWS: ReviewItem[] = [
 			"https://images.unsplash.com/photo-1517841905240-472988babdf9?auto=format&fit=crop&w=800&q=80",
 		rating: 5.0,
 		content:
-			"Integrating their modular UI components shaved weeks off our launch roadmap. The performance optimizations and accessibility features built right in saved us hundreds of hours.",
+			"Integrating their UI components shaved weeks off our launch roadmap. Built-in performance optimizations and accessibility standards saved us hundreds of hours!",
 	},
 	{
 		id: "5",
@@ -83,7 +83,7 @@ const DEFAULT_REVIEWS: ReviewItem[] = [
 			"https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&w=800&q=80",
 		rating: 5.0,
 		content:
-			"The unlimited revisions gave us the creative freedom to truly experiment without worrying about scope creep or hidden fees. AlgorizeTech didn't stop until we were 100% thrilled with the result.",
+			"The unlimited revisions gave us creative freedom without scope creep. AlgorizeTech refined every single detail until our team was 100% thrilled with results!",
 	},
 	{
 		id: "6",
@@ -93,7 +93,7 @@ const DEFAULT_REVIEWS: ReviewItem[] = [
 			"https://images.unsplash.com/photo-1539571696357-5a69c17a67c6?auto=format&fit=crop&w=800&q=80",
 		rating: 5.0,
 		content:
-			"The attention to typography, micro-interactions, and responsive layout scaling surpassed all our expectations.",
+			"The attention to clean typography, micro-interactions, and layout scaling surpassed all expectations. It transformed our web product into a modern design!",
 	},
 	{
 		id: "7",
@@ -103,7 +103,7 @@ const DEFAULT_REVIEWS: ReviewItem[] = [
 			"https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?auto=format&fit=crop&w=800&q=80",
 		rating: 5.0,
 		content:
-			"Their components are bulletproof. Seamless dark mode integration and flawless animation physics out of the box.",
+			"Their component library is bulletproof. Seamless dark mode integration, accessible keyboard navigation, and animation physics work impeccably out of the box!",
 	},
 	{
 		id: "8",
@@ -113,7 +113,7 @@ const DEFAULT_REVIEWS: ReviewItem[] = [
 			"https://images.unsplash.com/photo-1522075469751-3a6694fb2f61?auto=format&fit=crop&w=800&q=80",
 		rating: 5.0,
 		content:
-			"Outstanding developer experience. Clean TypeScript types, modular exports, and instant setup across projects.",
+			"Outstanding developer experience from day one. Clean TypeScript types, well-documented component exports, and instant setup made integration effortless!",
 	},
 ];
 
@@ -593,25 +593,6 @@ function LogoCarouselVariant({
 		setActiveIndex(idx);
 	};
 
-	// Ultra-smooth cross-fade & scale transition
-	const fadeScaleVariants = {
-		enter: {
-			opacity: 0,
-			scale: 0.96,
-			filter: "blur(4px)",
-		},
-		center: {
-			opacity: 1,
-			scale: 1,
-			filter: "blur(0px)",
-		},
-		exit: {
-			opacity: 0,
-			scale: 1.03,
-			filter: "blur(4px)",
-		},
-	};
-
 	return (
 		<div className="w-full max-w-5xl mx-auto py-8 px-4 flex flex-col items-center">
 			{/* Top Header Badge & Titles */}
@@ -688,17 +669,47 @@ function LogoCarouselVariant({
 					<AnimatePresence mode="wait">
 						<motion.div
 							key={activeItem.id || activeIndex}
-							variants={fadeScaleVariants}
-							initial="enter"
-							animate="center"
-							exit="exit"
-							transition={{ duration: 0.3, ease: "easeInOut" }}
+							initial={{ opacity: 0, y: 28 }}
+							animate={{ opacity: 1, y: 0 }}
+							exit={{ opacity: 0, y: -16 }}
+							transition={{ duration: 0.4, ease: [0.16, 1, 0.3, 1] }}
 							className="space-y-6"
 						>
 							<p className="text-lg sm:text-2xl font-medium text-foreground leading-relaxed tracking-tight">
-								{activeItem.content.startsWith('"')
-									? activeItem.content
-									: `"${activeItem.content}"`}
+								{(() => {
+									const quoteText = activeItem.content.startsWith('"')
+										? activeItem.content
+										: `"${activeItem.content}"`;
+									const words = quoteText.split(" ");
+									let globalCharIdx = 0;
+									return (
+										<span className="inline">
+											{words.map((word, wordIdx) => {
+												const chars = word.split("");
+												const wordNode = (
+													<span key={wordIdx} className="inline-block whitespace-nowrap mr-[0.25em]">
+														{chars.map((char) => {
+															const idx = globalCharIdx++;
+															return (
+																<span
+																	key={idx}
+																	className="inline-block text-muted-foreground/30 animate-[typo-color-reveal_0.6s_cubic-bezier(0.16,1,0.3,1)_both]"
+																	style={{
+																		animationDelay: `${idx * 14}ms`,
+																	}}
+																>
+																	{char}
+																</span>
+															);
+														})}
+													</span>
+												);
+												globalCharIdx++;
+												return wordNode;
+											})}
+										</span>
+									);
+								})()}
 							</p>
 
 							<div className="pt-4 border-t border-border/40">
@@ -714,24 +725,25 @@ function LogoCarouselVariant({
 					</AnimatePresence>
 				</div>
 
-				{/* Author Portrait Image (Right Column) */}
-				<div className="md:col-span-5 relative min-h-[280px] sm:min-h-[360px] bg-muted/20 overflow-hidden">
-					<AnimatePresence mode="wait">
-						<motion.img
-							key={activeItem.id || activeIndex}
-							src={
-								activeItem.avatar ||
-								"https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=800&q=80"
-							}
-							alt={activeItem.name}
-							variants={fadeScaleVariants}
-							initial="enter"
-							animate="center"
-							exit="exit"
-							transition={{ duration: 0.3, ease: "easeInOut" }}
-							className="absolute inset-0 w-full h-full object-cover object-center"
-						/>
-					</AnimatePresence>
+				{/* Author Portrait Image (Right Column with 4px Padding) */}
+				<div className="md:col-span-5 relative min-h-[280px] sm:min-h-[360px] p-1 sm:p-1.5">
+					<div className="relative w-full h-full rounded-xl sm:rounded-2xl overflow-hidden bg-muted/20">
+						<AnimatePresence mode="wait">
+							<motion.img
+								key={activeItem.id || activeIndex}
+								src={
+									activeItem.avatar ||
+									"https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=800&q=80"
+								}
+								alt={activeItem.name}
+								initial={{ opacity: 0, scale: 1.08 }}
+								animate={{ opacity: 1, scale: 1 }}
+								exit={{ opacity: 0, scale: 0.95 }}
+								transition={{ duration: 0.45, ease: [0.16, 1, 0.3, 1] }}
+								className="absolute inset-0 w-full h-full object-cover object-center rounded-xl sm:rounded-2xl"
+							/>
+						</AnimatePresence>
+					</div>
 				</div>
 			</div>
 
@@ -783,6 +795,16 @@ export function ReviewsBlock({
 					@keyframes reviews-marquee-left-scroll {
 						from { transform: translateX(0); }
 						to   { transform: translateX(-50%); }
+					}
+					@keyframes typo-color-reveal {
+						0% {
+							color: var(--primary, oklch(0.205 0 0));
+							opacity: 0.25;
+						}
+						100% {
+							color: inherit;
+							opacity: 1;
+						}
 					}
 					.reviews-hmarquee-left {
 						animation: reviews-marquee-left-scroll ${marqueeSpeed}s linear infinite;
