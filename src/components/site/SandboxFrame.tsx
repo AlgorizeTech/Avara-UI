@@ -44,15 +44,15 @@ export function SandboxFrame({
   maxHeight?: number;
   /**
    * Fills the container instead of auto-sizing to the height the demo reports.
-   * The sandbox document is told over postMessage — NOT through the URL, which
-   * would reload it — so entering fullscreen resizes the live demo instead of
+   * Only the iframe's box changes — nothing goes through the URL, which would
+   * reload it — so entering fullscreen resizes the live demo instead of
    * throwing it away and loading a second one.
    */
   fill?: boolean;
   className?: string;
 }) {
   const iframeRef = useRef<HTMLIFrameElement>(null);
-  const [contentHeight, setContentHeight] = useState(minHeight);
+  const [contentHeight, setContentHeight] = useState(0);
   const [ready, setReady] = useState(false);
   const propsRef = useRef(sandboxProps);
   propsRef.current = sandboxProps;
@@ -78,9 +78,6 @@ export function SandboxFrame({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [name, resetKey]);
 
-  const fillRef = useRef(fill);
-  fillRef.current = fill;
-
   const post = (message: Record<string, unknown>) => {
     iframeRef.current?.contentWindow?.postMessage(
       message,
@@ -89,11 +86,10 @@ export function SandboxFrame({
   };
 
   // Sent together on load: a document that just booted needs both, and the
-  // demo must not paint one frame of the wrong size or the wrong props.
+  // demo must not paint one frame with the wrong accent or the wrong props.
   const postState = () => {
     post({ type: "sandbox:props", props: propsRef.current ?? {} });
     post({ type: "sandbox:accent", accent: accentRef.current ?? null });
-    post({ type: "sandbox:fill", fill: fillRef.current });
   };
 
   useEffect(() => {
@@ -103,10 +99,6 @@ export function SandboxFrame({
   useEffect(() => {
     post({ type: "sandbox:accent", accent: accent ?? null });
   }, [accent]);
-
-  useEffect(() => {
-    post({ type: "sandbox:fill", fill });
-  }, [fill]);
 
   // A demo can hand a theme switch to the page (`sandbox:theme`): a View
   // Transition can't leave the iframe's document, so the theme-switcher demo
@@ -141,14 +133,20 @@ export function SandboxFrame({
     return () => window.removeEventListener("message", onMessage);
   }, []);
 
-  // The frame is shrunk visually (scale), but `minHeight` describes the CARD.
-  // Sizing the iframe to minHeight would leave it covering only minHeight*scale
-  // of the card, so the document's bottom edge — where fixed overlays like the
-  // toast stack anchor — floats above the card floor. Growing the iframe's own
-  // viewport by 1/scale makes the scaled frame fill the card exactly.
+  // The iframe's own viewport always covers the whole card, and grows past it
+  // for taller demos. The sandbox document centres the demo in that viewport
+  // and lays fixed overlays (a modal, the toast stack) against it — so a lone
+  // button sits mid-card and the modal it opens has the full card to appear
+  // in, while a tall hero is never cropped to the floor.
+  //
+  // `minHeight` describes the CARD, but the frame is shrunk visually by
+  // `scale`: sizing the iframe to minHeight would cover only minHeight*scale
+  // of the card and leave the document's bottom edge floating above the card
+  // floor. Growing the iframe's viewport by 1/scale makes the scaled frame
+  // fill the card exactly.
   const safeScale = scale > 0 ? scale : 1;
-  const targetHeight = contentHeight > 0 ? contentHeight : minHeight;
-  const frameHeight = ready ? targetHeight : Math.max(minHeight, targetHeight);
+  const floorHeight = Math.ceil(minHeight / safeScale);
+  const frameHeight = Math.max(floorHeight, contentHeight);
 
   return (
     <div

@@ -218,18 +218,14 @@ export function ComponentPreviewTooltip({
     return () => window.removeEventListener("message", onMessage);
   }, []);
 
-  // Props and fill mode travel by postMessage, exactly as SandboxFrame does.
-  // Fill makes the demo centre itself in the stage instead of hugging the top
-  // edge, which is what a fixed-size preview box wants.
+  // Props travel by postMessage, exactly as SandboxFrame does. The sandbox
+  // document centres the demo in its viewport on its own, which is what a
+  // fixed-size preview box wants.
   const onLoad = () => {
     const target = iframeRef.current?.contentWindow;
     if (!target) return;
     target.postMessage(
       { type: "sandbox:props", props: {} },
-      window.location.origin,
-    );
-    target.postMessage(
-      { type: "sandbox:fill", fill: false },
       window.location.origin,
     );
   };

@@ -3,7 +3,7 @@ import { extractCode } from "@/lib/code";
 
 # Counter Block
 
-A multi-purpose, highly animated Counter component. Whether you need a user-interactive Stepper for e-commerce, an animated statistics ticker, a circular progress tracker, or a promotional countdown timer, this block handles it all with built-in GSAP fluid animations.
+A multi-purpose, highly animated Counter component. Whether you need a user-interactive Stepper for e-commerce, an animated statistics ticker, a circular progress tracker, or a promotional countdown timer, this block handles it all with built-in fluid animations. The countdown comes in two designs: framed figures under a pill, or `slide` — soft tiles where only the figure that changed slides, the same countdown the <DocLink to="waitlist">Waitlist</DocLink> launch panel uses.
 
 Explore the different variations of the Counter component — each example shows a live preview with the exact code to copy.
 
@@ -98,6 +98,57 @@ export default function LaunchCountdown() {
   return <CounterBlock type="countdown" label="Next Product Launch" />;
 }`;
 
+export const usageSlide = `import { CounterBlock } from "@/components/custom/blocks/CounterBlock";
+
+export default function OpensIn() {
+  return (
+    <CounterBlock
+      type="countdown"
+      variant="slide"
+      label="Launches in"
+      doneLabel="We're live"
+      targetDate="2026-11-01T09:00:00Z"
+    />
+  );
+}`;
+
+<ExampleShowcase
+  name="counter"
+  colorControl
+  columns={1}
+  examples={[
+    {
+      title: "Slide countdown",
+      subheading: "Days, hours, minutes and seconds to a date on soft tiles. Watch the seconds: only the figure that changed slides, the others hold still.",
+      propNotes: [
+        {
+          lead: "Set",
+          prop: "type",
+          value: '"countdown"',
+          effect: "with `variant=\"slide\"` for the tile design. The figures read `--` until the first tick, so server and client paint the same.",
+        },
+        {
+          prop: "targetDate",
+          effect: "is a `Date`, ISO string or timestamp; left out, it counts three days from mount.",
+        },
+        {
+          prop: "doneLabel",
+          effect: "replaces `label` once the date has passed, and the figures go away.",
+        },
+      ],
+      props: { type: "countdown", variant: "slide" },
+      usage: usageSlide,
+      code: extractCode("src/components/custom/blocks/CounterBlock.tsx"),
+    },
+  ]}
+/>
+
+## Installation
+
+<Installation name="counter" />
+
+## Examples
+
 <ExampleShowcase
   name="counter"
   colorControl
@@ -121,22 +172,7 @@ export default function LaunchCountdown() {
       ],
       props: { type: "stepper" },
       usage: usageStepper,
-      code: extractCode("src/components/custom/blocks/CounterBlock.tsx"),
     },
-  ]}
-/>
-
-## Installation
-
-<Installation name="counter" />
-
-## Examples
-
-<ExampleShowcase
-  name="counter"
-  colorControl
-  columns={1}
-  examples={[
     {
       title: "Outline stepper",
       propNotes: [
@@ -209,7 +245,7 @@ export default function LaunchCountdown() {
           lead: "Set",
           prop: "type",
           value: '"countdown"',
-          effect: "to tick down to a target date rather than counting up.",
+          effect: "to tick down to a target date rather than counting up. This is the default design — framed figures under a pill with a clock.",
         },
       ],
       props: { type: "countdown" },
@@ -279,17 +315,14 @@ Explore the Counter component's number animation features, including customizabl
           <code>variant</code>
         </td>
         <td>
-          <code>"default" | "outline" | "soft" | "vertical"</code>
+          <code>"default" | "outline" | "soft" | "vertical" | "slide"</code>
         </td>
         <td>
           <code>"default"</code>
         </td>
         <td>
-          Applies unique structural layouts{" "}
-          <strong>
-            only to the <code>stepper</code> type
-          </strong>
-          .
+          <code>outline</code>, <code>soft</code> and <code>vertical</code> are layouts for the{" "}
+          <code>stepper</code> type; <code>slide</code> is the <code>countdown</code>'s tile design, where a figure that changes slides out above as the new one comes up from below.
         </td>
       </tr>
       <tr>
@@ -297,14 +330,14 @@ Explore the Counter component's number animation features, including customizabl
           <code>color</code>
         </td>
         <td>
-          <code>"indigo" | "rose" | "emerald" | "zinc" | string</code>
+          <code>"primary" | "indigo" | "rose" | "emerald" | "zinc" | "inherit" | string</code>
         </td>
         <td>
-          <code>"indigo"</code>
+          <code>"primary"</code>
         </td>
         <td>
           Applies global color themes. Accepts valid hex codes (e.g.{" "}
-          <code>"#00FF00"</code>).
+          <code>"#00FF00"</code>). <code>inherit</code> takes the surrounding text colour, for a counter inside a section that sets its own.
         </td>
       </tr>
       <tr>
@@ -437,13 +470,27 @@ Explore the Counter component's number animation features, including customizabl
           <code>targetDate</code>
         </td>
         <td>
-          <code>Date</code>
+          <code>Date | string | number</code>
         </td>
         <td>
           <code>3 days from now</code>
         </td>
         <td>
-          The target expiration date for the <code>countdown</code> timer.
+          <strong>Countdown only:</strong> when the timer reaches zero — a <code>Date</code>, an ISO string or a timestamp.
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <code>doneLabel</code>
+        </td>
+        <td>
+          <code>string</code>
+        </td>
+        <td>
+          <code>"Time's up"</code>
+        </td>
+        <td>
+          <strong>Countdown only:</strong> what the label becomes once the date has passed. The <code>slide</code> variant also hides its figures then.
         </td>
       </tr>
     </tbody>

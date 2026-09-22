@@ -610,7 +610,7 @@ export const META: Record<string, ItemMeta> = {
     description:
       "A pre-launch sign-up in three layouts: a compact card, a brand mark with a live countdown over the form, or a pill on a soft ground with the faces already in and a bar of the spots claimed. The form becomes the reader's place in line — a number that counts up, and an invite link to copy — when your promise resolves.",
     categories: ["marketing", "forms"],
-    docs: "Named export: Waitlist, with parts Mark, Countdown, Heading, Intro, Form, Proof and Spots. Composed from the input, button, avatar-stack, progress and copy-button items, which install alongside it. `variant` is card | launch | queue, each styled for light and dark mode; `Countdown` takes a `date`; `Form` takes `onJoin(email)` — resolve a number to show it as the place in line, throw an Error to show its message — plus `action`, `shareUrl`, `note` and the success copy; `Spots` takes `claimed` and `total`; `accent` pins the colour; `reveal` is in-view or immediate.",
+    docs: "Named export: Waitlist, with parts Mark, Countdown, Heading, Intro, Form, Proof and Spots. Composed from the counter, input, button, avatar-stack, progress and copy-button items, which install alongside it. `variant` is card | launch | queue, each styled for light and dark mode; `Countdown` takes a `date` and is the counter's slide countdown; `Form` takes `onJoin(email)` — resolve a number to show it as the place in line, throw an Error to show its message — plus `action`, `shareUrl`, `note` and the success copy; `Spots` takes `claimed` and `total`; `accent` pins the colour; `reveal` is in-view or immediate.",
   },
   "glass-panel": {
     description:
@@ -913,7 +913,7 @@ export const META: Record<string, ItemMeta> = {
     description:
       "A number component in four modes — stepper, count-up, circular progress and countdown. Use it for quantity inputs and animated statistics.",
     categories: ["data-display", "forms"],
-    docs: "Named exports: CounterBlock, getThemeStyles. `type` is stepper | animated | circular | countdown — stepper is an input with min/max, the others are display-only. Variants: default | outline | soft | vertical. The animated type also takes `bare` (just the figure, no card), `decimals`, `startOnView` (count once visible) and `className`.",
+    docs: "Named exports: CounterBlock, getThemeStyles. `type` is stepper | animated | circular | countdown — stepper is an input with min/max, the others are display-only. Variants: default | outline | soft | vertical for the stepper; `slide` for the countdown (soft tiles, only the figure that changed slides — the same countdown the waitlist item uses). The countdown takes `targetDate` (Date, ISO string or timestamp) and `doneLabel`. The animated type also takes `bare` (just the figure, no card), `decimals`, `startOnView` (count once visible) and `className`. `color` accepts a theme name, a hex code or `inherit`.",
   },
   carousel: {
     description:

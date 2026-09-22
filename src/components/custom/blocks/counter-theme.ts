@@ -21,8 +21,19 @@ const PRIMARY: CounterTheme = {
   bgSoft: "bg-primary/10 text-primary",
 };
 
+/** Takes the surrounding text colour, for a counter inside a section that sets its own. */
+const INHERIT: CounterTheme = {
+  bg: "bg-current text-background",
+  text: "text-current",
+  border: "border-current",
+  ring: "ring-current/20",
+  fill: "stroke-current",
+  bgSoft: "bg-current/10 text-current",
+};
+
 const colorThemes: Record<string, CounterTheme> = {
   primary: PRIMARY,
+  inherit: INHERIT,
   indigo: {
     bg: "bg-indigo-600 text-white",
     text: "text-indigo-600 dark:text-indigo-400",
