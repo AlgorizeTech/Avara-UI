@@ -271,6 +271,7 @@
       ],
       "dependencies": [],
       "registryDependencies": [
+        "https://algorize-ui.vercel.app/r/tooltip.json",
         "utils"
       ],
       "files": [

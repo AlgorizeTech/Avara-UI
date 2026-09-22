@@ -6,11 +6,13 @@ import {
   ArrowRight,
   Building,
   Check,
+  CheckCircle2,
   Code2,
   HelpCircle,
   Minus,
   PenTool,
   Rocket,
+  Sparkles,
   Star,
   Users,
   Zap,
@@ -20,9 +22,45 @@ import { type PricingColor, getThemeStyles } from "./pricing-theme";
 import { ToggleGroup, ToggleGroupItem } from "./ToggleGroupBlock";
 export type PricingVariant =
   | "default"
+  | "dot-pattern"
+  | "scale"
   | "elegant"
   | "minimal"
   | "bordered";
+
+// Two-tone leaf tree icon matching uploaded image (yellow/amber left leaf, bright green right leaf, dark trunk)
+const SproutIcon = ({ className }: { className?: string }) => (
+  <svg
+    viewBox="0 0 24 24"
+    fill="none"
+    xmlns="http://www.w3.org/2000/svg"
+    className={cn("w-6 h-6", className)}
+  >
+    {/* Central Trunk */}
+    <path
+      d="M12 21V11"
+      stroke="#1E293B"
+      strokeWidth="2"
+      strokeLinecap="round"
+    />
+    {/* Left Leaf - Golden/Amber */}
+    <path
+      d="M11.5 12.5C11.5 12.5 6 12 5 7.5C4 3.5 8 3 11.5 7.5C11.5 9 11.5 12.5 11.5 12.5Z"
+      fill="#EAB308"
+      stroke="#CA8A04"
+      strokeWidth="1"
+      strokeLinejoin="round"
+    />
+    {/* Right Leaf - Bright Green */}
+    <path
+      d="M12.5 10.5C12.5 10.5 13 4 17.5 4.5C21 5 18.5 10 14.5 11.5C13.5 12 12.5 10.5 12.5 10.5Z"
+      fill="#84CC16"
+      stroke="#65A30D"
+      strokeWidth="1"
+      strokeLinejoin="round"
+    />
+  </svg>
+);
 
 const iconMap: Record<string, React.ElementType> = {
   Rocket,
@@ -99,12 +137,18 @@ export function PricingCards({
   variant = "default",
   color = "primary",
   counting = true,
+  title,
+  subtitle,
+  badgeText,
   linkComponent: LinkComp = "a",
 }: {
   data: PricingData;
   variant?: PricingVariant;
   color?: PricingColor;
   counting?: boolean;
+  title?: string;
+  subtitle?: string;
+  badgeText?: string;
   linkComponent?: React.ElementType;
 }) {
   const [activeTab, setActiveTab] = useState(data.tabs[0]?.id || "monthly");
@@ -113,8 +157,86 @@ export function PricingCards({
   const currentTab =
     data.tabs.find((t) => t.id === activeTab) || data.tabs[0];
 
+  if (variant === "dot-pattern") {
+    const convertedPlans: DotPatternPlanItem[] = currentTab.plans.map((p) => ({
+      id: p.id,
+      badgeTag: p.title.toUpperCase(),
+      price: p.price.startsWith("$") ? p.price : `$${p.price}`,
+      period: p.period ? `/${p.period}` : undefined,
+      description: p.subtitle,
+      buttonText: p.buttonText,
+      featured: p.popular,
+      featuresTitle: "What's included:",
+      features: p.features,
+    }));
+    return (
+      <PricingDotPattern
+        title={title}
+        subtitle={subtitle}
+        badgeText={badgeText}
+        plans={convertedPlans}
+        color={color}
+        counting={counting}
+        linkComponent={LinkComp}
+      />
+    );
+  }
+
+  if (variant === "scale") {
+    const scaleFormattedPlans: { monthly: ScalePlanItem[]; annually: ScalePlanItem[] } & Record<string, ScalePlanItem[]> = {
+      monthly: [],
+      annually: [],
+    };
+    data.tabs.forEach((tab) => {
+      scaleFormattedPlans[tab.id] = tab.plans.map((p) => ({
+        id: p.id,
+        title: p.title,
+        subtitle: p.subtitle,
+        price: p.price.startsWith("$") ? p.price : `$${p.price}`,
+        period: p.period ? `/${p.period}` : undefined,
+        buttonText: p.buttonText,
+        popular: p.popular,
+        icon: p.icon,
+        featuresTitle: "WHAT'S INCLUDED:",
+        features: p.features,
+      }));
+    });
+    return (
+      <PricingScale
+        title={title}
+        subtitle={subtitle}
+        badgeText={badgeText}
+        plans={scaleFormattedPlans}
+        color={color}
+        counting={counting}
+        linkComponent={LinkComp}
+      />
+    );
+  }
+
   return (
     <div className="w-full max-w-6xl mx-auto py-8 sm:py-12" style={style}>
+      {(title || subtitle || badgeText) && (
+        <div className="text-center space-y-3 sm:space-y-4 max-w-2xl mx-auto mb-8 sm:mb-12">
+          {badgeText && (
+            <div className={cn("inline-flex items-center gap-1.5 px-3.5 py-1 rounded-full border text-[11px] font-semibold tracking-wide shadow-2xs transition-colors", theme.bgSoft, theme.border)}>
+              <Sparkles className={cn("w-3.5 h-3.5 fill-current", theme.text)} />
+              <span>{badgeText}</span>
+            </div>
+          )}
+          {title && (
+            <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold tracking-tight text-foreground leading-[1.15]">
+              {title}
+            </h2>
+          )}
+          {subtitle && (
+            <p className="text-sm sm:text-base text-muted-foreground leading-relaxed">
+              {subtitle}
+            </p>
+          )}
+        </div>
+      )}
+
       {data.tabs.length > 1 && (
         <div className="flex justify-center mb-8 sm:mb-12">
           {/* Library ToggleGroup; an empty value (re-clicking the active
@@ -824,9 +946,12 @@ export function PricingTypographic({
 
   return (
     <section
-      style={style}
+      style={{
+        ...style,
+        backgroundColor: "color-mix(in srgb, var(--pricing-accent, currentColor) 3%, var(--background, transparent))",
+      }}
       className={cn(
-        "py-8 sm:py-16 md:py-24 px-4 sm:px-6 bg-background text-foreground font-sans antialiased overflow-hidden rounded-3xl border border-border w-full transition-colors duration-300 relative",
+        "py-8 sm:py-16 md:py-24 px-4 sm:px-6 text-foreground font-sans antialiased overflow-hidden rounded-3xl border border-border w-full transition-colors duration-300 relative",
         "selection:bg-[var(--pricing-accent)] selection:text-[var(--pricing-on)]",
       )}
     >
@@ -1504,4 +1629,548 @@ export function PricingPlans({
   );
 }
 
+// ==========================================
+// 7. PRICING SCALE (MODERN CREATOR & SCALE CARDS)
+// ==========================================
+export interface ScalePlanItem {
+  id: string;
+  title: string;
+  subtitle: string;
+  price: string;
+  period?: string;
+  buttonText: string;
+  popular?: boolean;
+  popularBadgeText?: string;
+  icon?: string;
+  featuresTitle?: string;
+  features: string[];
+}
+
+export interface PricingScaleProps {
+  badgeText?: string;
+  title?: string;
+  subtitle?: string;
+  monthlyLabel?: string;
+  annuallyLabel?: string;
+  annualDiscountText?: string;
+  plans?: {
+    monthly: ScalePlanItem[];
+    annually: ScalePlanItem[];
+  };
+  footerTitle?: string;
+  footerSubtitle?: string;
+  footerCtaText?: string;
+  footerCtaHref?: string;
+  color?: PricingColor;
+  counting?: boolean;
+  linkComponent?: React.ElementType;
+}
+
+const defaultScalePlans = {
+  monthly: [
+    {
+      id: "launch",
+      title: "Launch Plan",
+      subtitle: "Ideal for startups and solo marketers",
+      price: "$299.00",
+      period: "/Month",
+      buttonText: "Start with Launch",
+      popular: false,
+      icon: "Rocket",
+      featuresTitle: "WHAT'S INCLUDED:",
+      features: [
+        "Up to 10,000 subscribers",
+        "5 automation workflows",
+        "Basic A/B testing",
+        "Email support",
+        "Drag-and-drop builder",
+      ],
+    },
+    {
+      id: "scale",
+      title: "Scale Plan",
+      subtitle: "For growing teams ready to accelerate",
+      price: "$899.00",
+      period: "/Month",
+      buttonText: "Upgrade to Scale",
+      popular: true,
+      popularBadgeText: "Most Popular",
+      icon: "Sprout",
+      featuresTitle: "INCLUDED EVERYTHING IN LAUNCH, PLUS:",
+      features: [
+        "Unlimited automation workflows",
+        "Advanced segmentation & analytics",
+        "Priority live chat support",
+        "Custom branded templates",
+        "Dedicated onboarding",
+      ],
+    },
+  ],
+  annually: [
+    {
+      id: "launch-annual",
+      title: "Launch Plan",
+      subtitle: "Ideal for startups and solo marketers",
+      price: "$269.00",
+      period: "/Month",
+      buttonText: "Start with Launch",
+      popular: false,
+      icon: "Rocket",
+      featuresTitle: "WHAT'S INCLUDED:",
+      features: [
+        "Up to 10,000 subscribers",
+        "5 automation workflows",
+        "Basic A/B testing",
+        "Email support",
+        "Drag-and-drop builder",
+      ],
+    },
+    {
+      id: "scale-annual",
+      title: "Scale Plan",
+      subtitle: "For growing teams ready to accelerate",
+      price: "$809.00",
+      period: "/Month",
+      buttonText: "Upgrade to Scale",
+      popular: true,
+      popularBadgeText: "Most Popular",
+      icon: "Sprout",
+      featuresTitle: "INCLUDED EVERYTHING IN LAUNCH, PLUS:",
+      features: [
+        "Unlimited automation workflows",
+        "Advanced segmentation & analytics",
+        "Priority live chat support",
+        "Custom branded templates",
+        "Dedicated onboarding",
+      ],
+    },
+  ],
+};
+
+export function PricingScale({
+  badgeText = "PRICING",
+  title = "Pricing That Scales With You",
+  subtitle = "From solo creators to enterprise teams, pick the plan that matches your ambitions.",
+  monthlyLabel = "MONTHLY",
+  annuallyLabel = "ANNUALLY",
+  annualDiscountText = "(SAVE 10%)",
+  plans = defaultScalePlans,
+  footerTitle = "Need help choosing the right plan?",
+  footerSubtitle = "Schedule a complimentary 20-minute strategy call with our team.",
+  footerCtaText = "Book a Free Strategy Call",
+  footerCtaHref = "#",
+  color = "primary",
+  counting = true,
+  linkComponent: LinkComp = "a",
+}: PricingScaleProps = {}) {
+  const [billingCycle, setBillingCycle] = useState<"monthly" | "annually">("monthly");
+  const { theme, style } = getThemeStyles(color);
+  const currentPlans = plans[billingCycle] || plans.monthly;
+
+  return (
+    <section className="w-full bg-slate-50/60 dark:bg-zinc-950/60 py-10 sm:py-16 px-4 sm:px-6 font-sans transition-colors duration-300" style={style}>
+      <div className="max-w-4xl mx-auto space-y-10 sm:space-y-12">
+        {/* Header */}
+        <div className="text-center space-y-3 sm:space-y-4 max-w-2xl mx-auto">
+          {badgeText && (
+            <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full border border-slate-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 text-[11px] font-semibold tracking-wider text-slate-600 dark:text-zinc-400 uppercase shadow-2xs">
+              <span className={cn("w-1.5 h-1.5 rounded-full bg-current", theme.text)} />
+              {badgeText}
+            </div>
+          )}
+          <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold tracking-tight text-slate-900 dark:text-white">
+            {title}
+          </h2>
+          <p className="text-sm sm:text-base text-slate-500 dark:text-zinc-400 max-w-lg mx-auto leading-relaxed">
+            {subtitle}
+          </p>
+
+          {/* Toggle switch */}
+          <div className="pt-3 flex items-center justify-center gap-3">
+            <span className={cn("text-xs font-bold tracking-wider transition-colors", billingCycle === "monthly" ? "text-slate-900 dark:text-white" : "text-slate-400 dark:text-zinc-500")}>
+              {monthlyLabel}
+            </span>
+            <button
+              type="button"
+              onClick={() => setBillingCycle((prev) => (prev === "monthly" ? "annually" : "monthly"))}
+              className={cn(
+                "relative inline-flex h-6 w-11 shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out focus:outline-none",
+                billingCycle === "annually" ? theme.bg : "bg-slate-200 dark:bg-zinc-800"
+              )}
+              role="switch"
+              aria-checked={billingCycle === "annually"}
+            >
+              <span
+                className={cn(
+                  "pointer-events-none inline-block h-5 w-5 transform rounded-full bg-white dark:bg-zinc-200 shadow-sm ring-0 transition duration-200 ease-in-out",
+                  billingCycle === "annually" ? "translate-x-5" : "translate-x-0"
+                )}
+              />
+            </button>
+            <span className={cn("text-xs font-bold tracking-wider transition-colors", billingCycle === "annually" ? "text-slate-900 dark:text-white" : "text-slate-400 dark:text-zinc-500")}>
+              {annuallyLabel} <span className="text-slate-400 dark:text-zinc-500 font-medium">{annualDiscountText}</span>
+            </span>
+          </div>
+        </div>
+
+        {/* Card Container Grid */}
+        <div className="bg-slate-100/70 dark:bg-zinc-900/60 p-3 sm:p-4 rounded-[32px] border border-slate-200/80 dark:border-zinc-800/80 grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-6 shadow-xs">
+          {currentPlans.map((plan) => {
+            const isPopular = plan.popular;
+            return (
+              <div
+                key={plan.id}
+                className={cn(
+                  "relative rounded-[24px] p-6 sm:p-8 flex flex-col justify-between transition-all duration-300",
+                  isPopular
+                    ? cn("bg-white dark:bg-zinc-900 ring-2 shadow-lg shadow-slate-200/50 dark:shadow-none", theme.ring)
+                    : "bg-slate-100/60 dark:bg-zinc-900/40 border-0 shadow-none"
+                )}
+              >
+                {/* Top header area */}
+                <div>
+                  <div className="flex items-center justify-between mb-6">
+                    <div className={cn(
+                      "w-10 h-10 rounded-xl flex items-center justify-center border shadow-2xs",
+                      isPopular
+                        ? "bg-slate-50 dark:bg-zinc-800 border-slate-200/60 dark:border-zinc-700/60"
+                        : "bg-white dark:bg-zinc-800 border-white dark:border-zinc-700"
+                    )}>
+                      {plan.icon === "Sprout" ? (
+                        <SproutIcon />
+                      ) : (
+                        <Rocket className={cn("w-5 h-5", isPopular ? theme.text : "text-slate-700 dark:text-zinc-300")} />
+                      )}
+                    </div>
+
+                    {isPopular && (
+                      <div className="inline-flex items-center gap-1 px-3 py-1 rounded-full border border-slate-200 dark:border-zinc-700 bg-slate-50 dark:bg-zinc-800 text-xs font-semibold text-slate-700 dark:text-zinc-300 shadow-2xs">
+                        <Star className={cn("w-3.5 h-3.5 fill-current", theme.text)} />
+                        <span>{plan.popularBadgeText || "Most Popular"}</span>
+                      </div>
+                    )}
+                  </div>
+
+                  <h3 className="text-xl sm:text-2xl font-bold text-slate-900 dark:text-white mb-1">
+                    {plan.title}
+                  </h3>
+                  <p className="text-xs sm:text-sm text-slate-500 dark:text-zinc-400 mb-6">
+                    {plan.subtitle}
+                  </p>
+
+                  <div className="flex items-baseline gap-1 pb-6 mb-6 border-b border-slate-100 dark:border-zinc-800">
+                    <span className="text-3xl sm:text-4xl md:text-[40px] font-extrabold tracking-tight text-slate-900 dark:text-white">
+                      <AnimatedPrice value={plan.price} counting={counting} />
+                    </span>
+                    {plan.period && (
+                      <span className="text-xs sm:text-sm text-slate-400 dark:text-zinc-500 font-medium">
+                        {plan.period}
+                      </span>
+                    )}
+                  </div>
+
+                  {/* Features list */}
+                  {plan.featuresTitle && (
+                    <h4 className="text-[11px] font-bold tracking-wider text-slate-900 dark:text-white uppercase mb-4">
+                      {plan.featuresTitle}
+                    </h4>
+                  )}
+
+                  <ul className="space-y-3 mb-8">
+                    {plan.features.map((feature, idx) => (
+                      <li key={idx} className="flex items-start gap-2.5 text-xs sm:text-sm text-slate-600 dark:text-zinc-300">
+                        <Check className={cn("w-4 h-4 shrink-0 mt-0.5", theme.text)} />
+                        <span>{feature}</span>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+
+                {/* Button */}
+                <LinkComp
+                  href="#"
+                  className={cn(
+                    "w-full py-3.5 px-4 rounded-full text-xs sm:text-sm font-semibold text-center shadow-md hover:opacity-95 transition-all duration-200 cursor-pointer block",
+                    isPopular
+                      ? theme.bg
+                      : "text-white bg-gradient-to-b from-zinc-800 to-zinc-950 dark:from-zinc-100 dark:to-zinc-300 dark:text-zinc-900"
+                  )}
+                >
+                  {plan.buttonText}
+                </LinkComp>
+              </div>
+            );
+          })}
+        </div>
+
+        {/* Footer Banner */}
+        <div className="bg-slate-100/80 dark:bg-zinc-900/80 border border-slate-200/80 dark:border-zinc-800/80 rounded-[24px] p-6 sm:p-8 flex flex-col sm:flex-row items-center justify-between gap-4 shadow-xs">
+          <div className="text-center sm:text-left">
+            <h4 className="text-base sm:text-lg font-bold text-slate-900 dark:text-white">
+              {footerTitle}
+            </h4>
+            <p className="text-xs sm:text-sm text-slate-500 dark:text-zinc-400 mt-0.5">
+              {footerSubtitle}
+            </p>
+          </div>
+          <LinkComp
+            href={footerCtaHref}
+            className={cn(
+              "inline-flex items-center gap-2 px-5 py-3 rounded-full text-xs sm:text-sm font-semibold shadow-md hover:opacity-95 transition-all duration-200 whitespace-nowrap cursor-pointer",
+              theme.bg
+            )}
+          >
+            <span>{footerCtaText}</span>
+            <ArrowRight className="w-4 h-4" />
+          </LinkComp>
+        </div>
+      </div>
+    </section>
+  );
+}
+
+// ==========================================
+// 8. PRICING DOT PATTERN (DOT MATRIX GRADIENT CARDS)
+// ==========================================
+export interface DotPatternPlanItem {
+  id: string;
+  badgeTag: string;
+  price: string;
+  period?: string;
+  description: string;
+  buttonText: string;
+  featured?: boolean;
+  featuresTitle?: string;
+  features: string[];
+  ctaHref?: string;
+}
+
+export interface PricingDotPatternProps {
+  badgeText?: string;
+  title?: string;
+  subtitle?: string;
+  plans?: DotPatternPlanItem[];
+  color?: PricingColor;
+  counting?: boolean;
+  linkComponent?: React.ElementType;
+}
+
+const defaultDotPatternPlans: DotPatternPlanItem[] = [
+  {
+    id: "basic",
+    badgeTag: "BASIC",
+    price: "$199",
+    period: "/month",
+    description: "Basic tools for content generation. Best for one just trying out.",
+    buttonText: "Get Started",
+    featured: false,
+    featuresTitle: "What's included:",
+    features: [
+      "1 project",
+      "Up to 3 pages",
+      "Email support",
+      "Basic analytics",
+    ],
+  },
+  {
+    id: "starter",
+    badgeTag: "STARTER",
+    price: "$299",
+    period: "/month",
+    description: "Advanced tools for consistent content generation. Best for one getting started.",
+    buttonText: "Get Started",
+    featured: true,
+    featuresTitle: "What's included:",
+    features: [
+      "1 project",
+      "Up to 3 pages",
+      "Email support",
+      "Basic analytics",
+    ],
+  },
+  {
+    id: "pro",
+    badgeTag: "PRO",
+    price: "$599",
+    period: "/month",
+    description: "Advanced tools for consistent content generation, unlimited credits. Best for teams",
+    buttonText: "Get Started",
+    featured: false,
+    featuresTitle: "What's included:",
+    features: [
+      "1 project",
+      "Up to 3 pages",
+      "Email support",
+      "Basic analytics",
+    ],
+  },
+];
+
+export function PricingDotPattern({
+  badgeText = "Pricing",
+  title = "Simple, transparent pricing that helps you scale.",
+  subtitle = "Select any plan that suits you and kick start your content creation journey with us",
+  plans = defaultDotPatternPlans,
+  color = "primary",
+  counting = true,
+  linkComponent: LinkComp = "a",
+}: PricingDotPatternProps = {}) {
+  const { theme, style } = getThemeStyles(color);
+
+  return (
+    <section
+      className="w-full bg-slate-50/70 dark:bg-zinc-950/70 py-12 sm:py-20 px-4 sm:px-6 font-sans transition-colors duration-300"
+      style={style}
+    >
+      <div className="max-w-6xl mx-auto space-y-12 sm:space-y-16">
+        {/* Header */}
+        <div className="text-center space-y-3 sm:space-y-4 max-w-2xl mx-auto">
+          {badgeText && (
+            <div className={cn("inline-flex items-center gap-1.5 px-3.5 py-1 rounded-full border text-[11px] font-semibold tracking-wide shadow-2xs transition-colors", theme.bgSoft, theme.border)}>
+              <Sparkles className={cn("w-3.5 h-3.5 fill-current", theme.text)} />
+              <span>{badgeText}</span>
+            </div>
+          )}
+          <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold tracking-tight text-slate-900 dark:text-white leading-[1.15]">
+            {title}
+          </h2>
+          <p className="text-sm sm:text-base text-slate-500 dark:text-zinc-400 max-w-md mx-auto leading-relaxed">
+            {subtitle}
+          </p>
+        </div>
+
+        {/* Cards Grid */}
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 sm:gap-8 items-stretch">
+          {plans.map((plan) => {
+            const isFeatured = plan.featured;
+            return (
+              <div
+                key={plan.id}
+                className={cn(
+                  "relative rounded-2xl p-6 sm:p-8 flex flex-col justify-between transition-all duration-300 bg-white/60 dark:bg-zinc-900/50 backdrop-blur-xs shadow-none overflow-hidden",
+                  isFeatured
+                    ? cn("border", theme.border)
+                    : "border border-slate-200/90 dark:border-zinc-800/90"
+                )}
+                style={isFeatured ? { borderColor: "color-mix(in srgb, var(--pricing-accent, currentColor) 10%, transparent)" } : undefined}
+              >
+                {/* Dot Matrix Background Pattern positioned at top header section matching sample image */}
+                <div
+                  className={cn(
+                    "absolute top-0 left-0 right-0 h-48 pointer-events-none transition-opacity",
+                    isFeatured
+                      ? cn("opacity-75 dark:opacity-55", theme.text)
+                      : "opacity-35 dark:opacity-20 text-slate-400 dark:text-zinc-600"
+                  )}
+                  style={{
+                    backgroundImage: `radial-gradient(currentColor 1.5px, transparent 1.5px)`,
+                    backgroundSize: "13px 13px",
+                    maskImage: "linear-gradient(to bottom, rgba(0,0,0,1) 0%, rgba(0,0,0,0.85) 60%, rgba(0,0,0,0) 100%)",
+                    WebkitMaskImage: "linear-gradient(to bottom, rgba(0,0,0,1) 0%, rgba(0,0,0,0.85) 60%, rgba(0,0,0,0) 100%)",
+                  }}
+                />
+
+                {/* 4 Corner Angle Brackets following rounded card edges */}
+                <div
+                  className={cn(
+                    "absolute top-0 left-0 w-3.5 h-3.5 border-t-2 border-l-2 rounded-tl-xl pointer-events-none transition-colors",
+                    isFeatured ? "border-[var(--pricing-accent)]" : "border-slate-400/80 dark:border-zinc-600"
+                  )}
+                />
+                <div
+                  className={cn(
+                    "absolute top-0 right-0 w-3.5 h-3.5 border-t-2 border-r-2 rounded-tr-xl pointer-events-none transition-colors",
+                    isFeatured ? "border-[var(--pricing-accent)]" : "border-slate-400/80 dark:border-zinc-600"
+                  )}
+                />
+                <div
+                  className={cn(
+                    "absolute bottom-0 left-0 w-3.5 h-3.5 border-b-2 border-l-2 rounded-bl-xl pointer-events-none transition-colors",
+                    isFeatured ? "border-[var(--pricing-accent)]" : "border-slate-400/80 dark:border-zinc-600"
+                  )}
+                />
+                <div
+                  className={cn(
+                    "absolute bottom-0 right-0 w-3.5 h-3.5 border-b-2 border-r-2 rounded-br-xl pointer-events-none transition-colors",
+                    isFeatured ? "border-[var(--pricing-accent)]" : "border-slate-400/80 dark:border-zinc-600"
+                  )}
+                />
+
+                {/* Card Content */}
+                <div className="relative z-10 flex-1 flex flex-col justify-between">
+                  <div>
+                    {/* Badge Tag */}
+                    <span
+                      className={cn(
+                        "text-[12px] font-bold tracking-widest uppercase block mb-5",
+                        isFeatured ? theme.text : "text-slate-800 dark:text-zinc-200"
+                      )}
+                    >
+                      {plan.badgeTag}
+                    </span>
+
+                    {/* Price */}
+                    <div className="flex items-baseline gap-1 mb-3">
+                      <span className="text-4xl sm:text-5xl font-bold tracking-tight text-slate-900 dark:text-white">
+                        <AnimatedPrice value={plan.price} counting={counting} />
+                      </span>
+                      {plan.period && (
+                        <span className="text-xs sm:text-sm text-slate-500 dark:text-zinc-400 font-medium">
+                          {plan.period}
+                        </span>
+                      )}
+                    </div>
+
+                    {/* Description */}
+                    <p className="text-xs sm:text-sm text-slate-600 dark:text-zinc-400 leading-relaxed mb-8 min-h-[44px]">
+                      {plan.description}
+                    </p>
+
+                    {/* Button */}
+                    <LinkComp
+                      href={plan.ctaHref || "#"}
+                      className={cn(
+                        "w-full py-3.5 px-4 rounded-xl text-xs sm:text-sm font-semibold flex items-center justify-center gap-2 shadow-md hover:opacity-95 transition-all duration-200 cursor-pointer mb-10 text-white",
+                        isFeatured
+                          ? theme.bg
+                          : "bg-gradient-to-b from-slate-700 to-slate-800 dark:from-zinc-700 dark:to-zinc-800"
+                      )}
+                    >
+                      <span>{plan.buttonText}</span>
+                      <ArrowRight className="w-4 h-4 shrink-0" />
+                    </LinkComp>
+
+                    {/* Features List Header */}
+                    {plan.featuresTitle && (
+                      <h4 className="text-[11px] font-bold tracking-wider text-slate-900 dark:text-white uppercase mb-4">
+                        {plan.featuresTitle}
+                      </h4>
+                    )}
+
+                    {/* Features Item */}
+                    <ul className="space-y-3.5">
+                      {plan.features.map((feature, idx) => (
+                        <li key={idx} className="flex items-center gap-3 text-xs sm:text-sm text-slate-600 dark:text-zinc-300">
+                          <CheckCircle2
+                            className={cn(
+                              "w-4 h-4 shrink-0 fill-current",
+                              isFeatured ? theme.text : "text-slate-700 dark:text-zinc-400"
+                            )}
+                          />
+                          <span>{feature}</span>
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+                </div>
+              </div>
+            );
+          })}
+        </div>
+      </div>
+    </section>
+  );
+}
+
 export default PricingCards;
+
