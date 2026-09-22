@@ -1,6 +1,6 @@
 "use client";
 
-import React, { createContext, useContext, useEffect, useState } from "react";
+import React, { createContext, useContext, useState } from "react";
 import { AnimatePresence, motion, useReducedMotion, type Variants } from "framer-motion";
 import { AlertCircle, ArrowRight, Mail } from "lucide-react";
 import { cn } from "@/lib/utils";
@@ -8,18 +8,20 @@ import Button from "./Button";
 import { InputBlock } from "./InputBlock";
 import { AvatarStack } from "./AvatarStackBlock";
 import { CopyButton } from "./CopyButtonBlock";
+import { CounterBlock } from "./CounterBlock";
 import { Progress, useCountUp } from "./ProgressBlock";
 
 // ==========================================
 // WAITLIST
 // A pre-launch sign-up in three layouts. `card` is a compact card with the
 // field over the button; `launch` puts a brand mark and a live countdown to
-// the opening date over the form on a wide panel; `queue` sets the form as a
-// pill on a soft ground with the faces of who is already in and a bar of the
-// spots claimed. Whichever layout, the form becomes the reader's place in
-// line when your promise resolves — a number that counts up, and a link to
-// share to move up. One reveal when the section first appears; after that
-// only the countdown's seconds and the reader's own actions move anything.
+// the opening date (the Counter block's slide countdown) over the form on a
+// wide panel; `queue` sets the form as a pill on a soft ground with the faces
+// of who is already in and a bar of the spots claimed. Whichever layout, the
+// form becomes the reader's place in line when your promise resolves — a
+// number that counts up, and a link to share to move up. One reveal when the
+// section first appears; after that only the countdown's seconds and the
+// reader's own actions move anything.
 // ==========================================
 
 export type WaitlistVariant = "card" | "launch" | "queue";
@@ -86,71 +88,12 @@ export interface WaitlistCountdownProps extends React.HTMLAttributes<HTMLDivElem
   doneLabel?: string;
 }
 
-type Remaining = { days: number; hours: number; minutes: number; seconds: number };
-
-function remainingUntil(target: number): Remaining | null {
-  const diff = target - Date.now();
-  if (diff <= 0) return null;
-  const total = Math.floor(diff / 1000);
-  return {
-    days: Math.floor(total / 86400),
-    hours: Math.floor((total % 86400) / 3600),
-    minutes: Math.floor((total % 3600) / 60),
-    seconds: total % 60,
-  };
-}
-
-function Figure({ value, unit }: { value: number | null; unit: string }) {
-  const { reduced } = useContext(WaitlistContext);
-  const text = value === null ? "--" : String(value).padStart(2, "0");
-  return (
-    <div className="flex min-w-[3.75rem] flex-col items-center rounded-xl bg-black/[0.045] px-3 py-2.5 dark:bg-white/[0.07]">
-      <span className="relative block h-[1.75rem] overflow-hidden text-[1.5rem] font-semibold leading-[1.75rem] tabular-nums tracking-[-0.03em]">
-        {/* Only the figure that changed slides; the others hold still. */}
-        <AnimatePresence initial={false} mode="popLayout">
-          <motion.span
-            key={text}
-            className="block"
-            initial={reduced ? false : { y: "0.7em", opacity: 0 }}
-            animate={{ y: 0, opacity: 1 }}
-            exit={reduced ? undefined : { y: "-0.7em", opacity: 0 }}
-            transition={{ duration: 0.32, ease: EASE }}
-          >
-            {text}
-          </motion.span>
-        </AnimatePresence>
-      </span>
-      <span className="mt-1 text-[11px] font-medium opacity-55">{unit}</span>
-    </div>
-  );
-}
-
+/** The counter's slide countdown, in the section's own text colour. */
 function Countdown({ date, label = "Opens in", doneLabel = "We're open", className, ...props }: WaitlistCountdownProps) {
-  const target = typeof date === "string" ? new Date(date).getTime() : date.getTime();
-  // Null until mounted, so the server and the first client paint agree.
-  const [left, setLeft] = useState<Remaining | null | undefined>(undefined);
-
-  useEffect(() => {
-    const tick = () => setLeft(remainingUntil(target));
-    tick();
-    const id = window.setInterval(tick, 1000);
-    return () => window.clearInterval(id);
-  }, [target]);
-
-  const over = left === null;
-
   return (
     <Reveal className="mb-8">
       <div className={cn("flex flex-col items-center", className)} {...props}>
-        <p className="mb-3 text-[13px] font-medium opacity-60">{over ? doneLabel : label}</p>
-        {!over && (
-          <div className="flex items-center gap-2" role="timer" aria-live="off">
-            <Figure value={left?.days ?? null} unit="days" />
-            <Figure value={left?.hours ?? null} unit="hours" />
-            <Figure value={left?.minutes ?? null} unit="minutes" />
-            <Figure value={left?.seconds ?? null} unit="seconds" />
-          </div>
-        )}
+        <CounterBlock type="countdown" variant="slide" color="inherit" targetDate={date} label={label} doneLabel={doneLabel} />
       </div>
     </Reveal>
   );

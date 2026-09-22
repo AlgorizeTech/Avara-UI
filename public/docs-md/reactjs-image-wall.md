@@ -97,6 +97,11 @@ npx shadcn@latest add @algorize-ui/image-wall
         1.35
         The camera's resting scale; capped at 0.72 in a box under 420px tall and 0.5 in one under 640px wide.
 
+        intro
+        number
+        0
+        Milliseconds the camera drifts, pulled back with no card in focus, before its first landing.
+
         onFocus
         (index: number) =&gt; void
         —

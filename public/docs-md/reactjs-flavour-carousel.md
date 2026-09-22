@@ -21,6 +21,9 @@ const FLAVOURS = [
 ];
 
 export default function Flavours() {
+  // Replace with your cart: the button hands you the flavour that is in the cup.
+  const addToCart = (name: string) => console.log("Added " + name + " to cart");
+
   return (
      addToCart(flavour.name)}
     />

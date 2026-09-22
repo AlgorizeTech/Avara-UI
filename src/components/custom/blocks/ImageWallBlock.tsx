@@ -36,6 +36,12 @@ export interface ImageWallProps extends Omit<React.HTMLAttributes<HTMLDivElement
   order?: "serial" | "shuffle";
   /** Camera scale while resting on a card. */
   zoom?: number;
+  /**
+   * Milliseconds the camera drifts across the wall, pulled back with no card
+   * in focus, before its first landing — time for whatever sits beside the
+   * wall to arrive. `0` starts on the first card.
+   */
+  intro?: number;
   /** Called with the index of the card the camera has settled on. */
   onFocus?: (index: number) => void;
 }
@@ -86,7 +92,7 @@ const prefersReducedMotion = () =>
 // Root
 // ------------------------------------------
 export const ImageWall = forwardRef<HTMLDivElement, ImageWallProps>(
-  ({ items, columns = 4, interval = 4500, order = "serial", zoom = 1.35, onFocus, className, ...props }, ref) => {
+  ({ items, columns = 4, interval = 4500, order = "serial", zoom = 1.35, intro = 0, onFocus, className, ...props }, ref) => {
     const wrapRef = useRef<HTMLDivElement | null>(null);
     const canvasRef = useRef<HTMLDivElement>(null);
     const cameraRef = useRef({ x: 0, y: 0, s: zoom });
@@ -108,6 +114,8 @@ export const ImageWall = forwardRef<HTMLDivElement, ImageWallProps>(
       if (!el) return;
       const { x, y, s } = cameraRef.current;
       el.style.transform = `translate3d(${x}px, ${y}px, 0) scale(${s})`;
+      // The server renders the canvas invisible: it has no camera until now.
+      el.style.opacity = "1";
     }, []);
 
     // Where the camera rests to hold card `i` in the middle of the window.
@@ -130,7 +138,11 @@ export const ImageWall = forwardRef<HTMLDivElement, ImageWallProps>(
       [placed, zoom],
     );
 
-    // ---- First frame, and every resize: snap to the focused card.
+    // ---- First frame, and every resize: snap to the focused card. On the very
+    // first frame, with an `intro`, the camera instead starts pulled back and
+    // off to one side and drifts towards the first card, landing on it only
+    // when the intro is over.
+    const introDone = useRef(false);
     useLayoutEffect(() => {
       const wrap = wrapRef.current;
       if (!wrap) return;
@@ -139,12 +151,35 @@ export const ImageWall = forwardRef<HTMLDivElement, ImageWallProps>(
         cameraRef.current = restFor(focusRef.current);
         paint();
       };
-      snap();
+      if (!introDone.current && intro > 0 && n > 0 && !prefersReducedMotion()) {
+        introDone.current = true;
+        const target = restFor(focusRef.current);
+        const cam = cameraRef.current;
+        cam.s = target.s * FLIGHT_PULL;
+        cam.x = target.x - wrap.clientWidth * 0.35;
+        cam.y = target.y - wrap.clientHeight * 0.2;
+        paint();
+        setFlying(true);
+        flightRef.current = gsap
+          .timeline({
+            onUpdate: paint,
+            onComplete: () => {
+              cameraRef.current = restFor(focusRef.current);
+              paint();
+              setFlying(false);
+            },
+          })
+          .to(cam, { x: target.x, y: target.y, duration: intro / 1000 + 1, ease: "power1.inOut" }, 0)
+          .to(cam, { s: target.s, duration: 1, ease: "power2.inOut" }, intro / 1000);
+      } else {
+        introDone.current = true;
+        snap();
+      }
       if (typeof ResizeObserver === "undefined") return;
       const ro = new ResizeObserver(snap);
       ro.observe(wrap);
       return () => ro.disconnect();
-    }, [restFor, paint]);
+    }, [restFor, paint, intro, n]);
 
     // ---- The flight: pull back while gliding, then settle in.
     const flyTo = useCallback(
@@ -256,7 +291,11 @@ export const ImageWall = forwardRef<HTMLDivElement, ImageWallProps>(
         }}
         className={cn("relative h-96 w-full overflow-hidden", className)}
       >
-        <div ref={canvasRef} className="absolute left-0 top-0 will-change-transform" style={{ width, height, transformOrigin: "0 0" }}>
+        <div
+          ref={canvasRef}
+          className="absolute left-0 top-0 opacity-0 transition-opacity duration-700 will-change-transform"
+          style={{ width, height, transformOrigin: "0 0" }}
+        >
           {offsets.map(({ dx, dy }) => {
             const copy = dx !== 0 || dy !== 0;
             return placed.map((card, i) => {

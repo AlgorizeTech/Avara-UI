@@ -141,7 +141,7 @@ export const HoneycombHero = forwardRef<HTMLElement, HoneycombHeroProps>(
       primaryActionHref = "#",
       images = DEFAULT_IMAGES,
       socialLinks = DEFAULT_SOCIAL,
-      interval = 5000,
+      interval = 4000,
       onChange,
       accent = "#e0a83d",
       background = "#0b2a2d",
@@ -167,7 +167,6 @@ export const HoneycombHero = forwardRef<HTMLElement, HoneycombHeroProps>(
     // `offset` is how many steps the queue has moved; cell i sits in slot
     // (i - offset) mod 9, so the cell in slot 0 is the feature.
     const [offset, setOffset] = useState(0);
-    const [hover, setHover] = useState(false);
     const [hidden, setHidden] = useState(false);
     const [onScreen, setOnScreen] = useState(true);
     const [cut, setCut] = useState<number | null>(null);
@@ -196,7 +195,10 @@ export const HoneycombHero = forwardRef<HTMLElement, HoneycombHeroProps>(
         if (!animate) {
           gsap.set(el, target);
         } else {
-          gsap.to(el, { ...target, duration: 1.15, ease: "power3.inOut", delay: k * 0.045, overwrite: "auto" });
+          // A step taken mid-tween must not let the old tween run on through
+          // the new one's stagger delay, so the old one is dropped first.
+          gsap.killTweensOf(el);
+          gsap.to(el, { ...target, duration: 1.15, ease: "power3.inOut", delay: k * 0.045 });
         }
       });
       placedRef.current = true;
@@ -233,9 +235,8 @@ export const HoneycombHero = forwardRef<HTMLElement, HoneycombHeroProps>(
       return () => ro.disconnect();
     }, []);
 
-    // ---- Autoplay: held while the honeycomb is hovered, the tab is hidden or
-    // the section is off screen.
-    const paused = hover || hidden || !onScreen;
+    // ---- Autoplay: held while the tab is hidden or the section is off screen.
+    const paused = hidden || !onScreen;
     useEffect(() => {
       if (interval <= 0 || paused) return;
       const t = window.setTimeout(() => go(1), interval);
@@ -342,8 +343,6 @@ export const HoneycombHero = forwardRef<HTMLElement, HoneycombHeroProps>(
             role="group"
             aria-roledescription="carousel"
             aria-label="Photographs"
-            onMouseEnter={() => setHover(true)}
-            onMouseLeave={() => setHover(false)}
             className={cn(
               "relative z-10 mx-auto w-full max-w-[34rem] overflow-hidden lg:absolute lg:inset-y-0 lg:right-0 lg:mx-0 lg:h-full lg:w-auto lg:max-w-none lg:overflow-visible",
               // Below the desktop layout the stage is cut by its own box, so the

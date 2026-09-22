@@ -1,12 +1,22 @@
 "use client";
 
-import LoginForm from "@/components/custom/blocks/LoginForm";
+import DraggableCardList, {
+	DraggableCardItem,
+} from "@/components/custom/draggable-card-list";
 import { ChartBlock } from "@/components/custom/blocks/ChartBlock";
+import {
+	Folder,
+	type FolderFile,
+} from "@/components/custom/blocks/FolderBlock";
+import { DesignComponentsFolder } from "@/components/custom/blocks/DesignComponentsFolder";
 import { Dock, DockItem } from "@/components/custom/blocks/DockBlock";
 import {
-	MemoriesCard,
-	MemoryItem,
-} from "@/components/custom/blocks/MemoriesCardBlock";
+	ChatAvatar,
+	ChatBubble,
+	ChatMessage,
+	ChatTimestamp,
+	ChatTypingIndicator,
+} from "@/components/custom/blocks/ChatBubbleBlock";
 import {
 	ThreeDCarousel,
 	CarouselItem,
@@ -14,7 +24,7 @@ import {
 import { CommandSearchBlock } from "@/components/custom/blocks/UtilityBlocks";
 import { ComponentWall } from "@/components/custom/blocks/ComponentWallBlock";
 import { GitHubIcon } from "@/components/custom/blocks/Icons";
-import { WALL_AVATARS, WALL_ITEMS } from "@/constants/component-wall";
+import { WALL_ITEMS, WALL_STACK } from "@/constants/component-wall";
 import { cn } from "@/lib/utils";
 import {
 	ArrowRight,
@@ -22,10 +32,14 @@ import {
 	Bot,
 	Check,
 	Code2,
+	Compass,
 	Copy,
+	FileText,
+	FolderOpen,
 	Github,
 	Layers,
 	Lock,
+	MessageCircle,
 	Paintbrush,
 	Sparkles,
 	Terminal,
@@ -33,12 +47,14 @@ import {
 	Boxes,
 	BarChart3,
 	Share2,
-	Compass,
 	Cpu,
 	CheckCircle2,
 	LayoutGrid,
 	Send,
 	GitPullRequest,
+	GripVertical,
+	Image as ImageIcon,
+	SmilePlus,
 } from "lucide-react";
 import { motion, useInView } from "motion/react";
 import Link from "next/link";
@@ -75,16 +91,6 @@ $ npm run dev
 - Local: http://localhost:3000
 ✓ Ready in 1.8s`;
 
-const techStack = [
-	{ name: "React JS", color: "var(--primary)" },
-	{ name: "Next.js", color: "var(--foreground)" },
-	{ name: "TypeScript", color: "var(--primary)" },
-	{ name: "Tailwind CSS", color: "var(--primary)" },
-	{ name: "Framer Motion", color: "var(--primary)" },
-	{ name: "GSAP", color: "var(--primary)" },
-	{ name: "Lucide Icons", color: "var(--primary)" },
-];
-
 const sampleDockItems: DockItem[] = [
 	{
 		id: "home",
@@ -109,37 +115,61 @@ const sampleDockItems: DockItem[] = [
 	},
 ];
 
-const sampleMemories: MemoryItem[] = [
+const sampleCaseFiles: FolderFile[] = [
+	{ name: "Deposition_transcript.pdf" },
+	{ name: "Exhibit_A_photos.zip" },
+	{ name: "Witness_statement_02.docx" },
+	{ name: "Timeline_v3.xlsx" },
+	{ name: "Court_filing_draft.pdf" },
+	{ name: "Evidence_log.csv" },
+];
+
+const sampleTasks: DraggableCardItem[] = [
 	{
 		id: "1",
-		title: "Alpine Forest Lake",
-		location: "Swiss Alps",
-		date: "Latest Release",
-		image:
-			"https://images.unsplash.com/photo-1448375240586-882707db888b?w=800&auto=format&fit=crop&q=80",
-		description:
-			"Serene pine forests reflecting over calm turquoise mountain waters.",
-		tag: "Featured",
+		title: "Perf Audit",
+		description: "Split bundles, cut LCP to 0.8s",
+		date: "2026-08-30",
+		badge: "PERF",
+		badgeStyle:
+			"bg-amber-500/10 text-amber-700 dark:text-amber-300 border border-amber-500/30",
+		accentColor: "from-amber-400 via-orange-500 to-yellow-500",
+		hoverBorderColor: "hover:border-amber-500/80 dark:hover:border-amber-400/80",
 	},
 	{
 		id: "2",
-		title: "Majestic Mountain Ridge",
-		location: "Dolomites, Italy",
-		date: "Interactive",
-		image:
-			"https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?w=800&auto=format&fit=crop&q=80",
-		description: "Towering mountain peaks bathed in golden morning sunlight.",
-		tag: "Landscape",
+		title: "Security Patch",
+		description: "Upgrade deps, rotate API tokens",
+		date: "2026-08-30",
+		badge: "SECURITY",
+		badgeStyle:
+			"bg-emerald-500/10 text-emerald-700 dark:text-emerald-300 border border-emerald-500/30",
+		accentColor: "from-emerald-400 via-teal-500 to-cyan-500",
+		hoverBorderColor:
+			"hover:border-emerald-500/80 dark:hover:border-emerald-400/80",
 	},
 	{
 		id: "3",
-		title: "Emerald Forest Stream",
-		location: "Pacific Northwest",
-		date: "Wilderness",
-		image:
-			"https://images.unsplash.com/photo-1506744038136-46273834b3fb?w=800&auto=format&fit=crop&q=80",
-		description: "Tranquil river winding through dense ancient rainforests.",
-		tag: "Nature",
+		title: "UI Kit v2.4",
+		description: "Dark mode tokens and aria roles",
+		date: "2026-08-30",
+		badge: "LIBRARY",
+		badgeStyle:
+			"bg-purple-500/10 text-purple-700 dark:text-purple-300 border border-purple-500/30",
+		accentColor: "from-purple-400 via-indigo-500 to-violet-500",
+		hoverBorderColor:
+			"hover:border-purple-500/80 dark:hover:border-purple-400/80",
+	},
+	{
+		id: "4",
+		title: "DB Migration",
+		description: "Zero-downtime Postgres indexing",
+		date: "2026-08-30",
+		badge: "DATABASE",
+		badgeStyle:
+			"bg-blue-500/10 text-blue-700 dark:text-blue-300 border border-blue-500/30",
+		accentColor: "from-blue-400 via-indigo-500 to-cyan-500",
+		hoverBorderColor: "hover:border-blue-500/80 dark:hover:border-blue-400/80",
 	},
 ];
 
@@ -511,56 +541,15 @@ function HeroSection() {
 				heading="Build interactive {word}."
 				headingWords={["interfaces", "components", "experiences", "animations", "dashboards"]}
 				accent="interactive"
-				description="A meticulous library of React components and interactive blocks, engineered for seamless performance with Tailwind CSS, TypeScript, GSAP and Framer Motion."
+				description="A meticulous library of React components and interactive blocks, engineered for seamless performance with Tailwind CSS, TypeScript, GSAP and Framer Motion — delivered through the shadcn CLI."
 				install={{ command: "npx shadcn@latest add @algorize-ui/{item}" }}
 				primaryAction={{ label: "Browse components", href: "/docs/nextjs/all-components" }}
 				secondaryAction={{ label: "Star on GitHub", href: links.github, icon: <GitHubIcon size={16} /> }}
-				trust={{ text: "Loved by developers shipping real products with it", avatars: WALL_AVATARS, rating: 5 }}
 				items={WALL_ITEMS}
+				stack={{ label: "Built with", groups: WALL_STACK }}
 				interval={4500}
 				linkComponent={Link}
 			/>
-		</section>
-	);
-}
-
-/* ═══════════════════════════════════════════════
-   SECTION 2: TECH STACK MARQUEE
-   ═══════════════════════════════════════════════ */
-
-function TechStackMarquee() {
-	const marqueeItems = [...techStack, ...techStack, ...techStack, ...techStack];
-
-	return (
-		<section className="border-y border-border bg-muted/40 py-5 overflow-hidden relative select-none">
-			<div className="flex w-max marquee-track">
-				{/* Unit 1 */}
-				<div className="flex items-center shrink-0">
-					{marqueeItems.map((tech, i) => (
-						<div
-							key={`m1-${tech.name}-${i}`}
-							className="flex items-center gap-2.5 px-7 shrink-0">
-							<div className="size-2 rounded-full shrink-0 bg-primary" />
-							<span className="text-xs font-bold text-muted-foreground whitespace-nowrap tracking-wide">
-								{tech.name}
-							</span>
-						</div>
-					))}
-				</div>
-				{/* Unit 2 (Exact Duplicate for Infinite Loop) */}
-				<div className="flex items-center shrink-0" aria-hidden="true">
-					{marqueeItems.map((tech, i) => (
-						<div
-							key={`m2-${tech.name}-${i}`}
-							className="flex items-center gap-2.5 px-7 shrink-0">
-							<div className="size-2 rounded-full shrink-0 bg-primary" />
-							<span className="text-xs font-bold text-muted-foreground whitespace-nowrap tracking-wide">
-								{tech.name}
-							</span>
-						</div>
-					))}
-				</div>
-			</div>
 		</section>
 	);
 }
@@ -590,7 +579,7 @@ function ComponentShowcase() {
 							Real Motion &amp; Interactive Blocks
 						</h2>
 						<p className="text-muted-foreground text-sm md:text-base max-w-xl leading-relaxed">
-							Featuring Memories Cards, Magnifying Dock, and 3D Motion Carousel.
+							Featuring Chat Bubbles, Magnifying Dock, and 3D Motion Carousel.
 						</p>
 					</div>
 					<Link
@@ -612,18 +601,84 @@ function ComponentShowcase() {
 						<div className="showcase-card rounded-2xl border border-border bg-card p-4 overflow-hidden shadow-lg">
 							<div className="px-2 pb-3 border-b border-border flex items-center justify-between text-xs text-muted-foreground font-medium mb-3">
 								<span className="flex items-center gap-1.5 text-foreground font-semibold">
-									<Sparkles className="size-3.5 text-primary" />
-									3D Memories Card
+									<MessageCircle className="size-3.5 text-primary" />
+									Chat Bubbles
 								</span>
 								<span className="text-[10px] px-2 py-0.5 rounded bg-primary/10 text-primary font-semibold">
-									Drag / Swipe
+									Compound
 								</span>
 							</div>
-							<div className="flex justify-center py-2">
-								<MemoriesCard
-									items={sampleMemories}
-									className="max-w-[320px]"
-								/>
+							<div className="rounded-xl border border-border bg-background overflow-hidden flex flex-col">
+								{/* Header */}
+								<div className="px-4 py-3 border-b border-border flex items-center gap-3 bg-card/80 backdrop-blur-md">
+									<div className="w-8 h-8 rounded-full bg-gradient-to-tr from-rose-400 to-orange-300 shadow-inner" />
+									<div>
+										<h3 className="text-sm font-semibold text-foreground leading-none">
+											Sarah Jenkins
+										</h3>
+										<span className="text-[11px] text-muted-foreground">
+											Online
+										</span>
+									</div>
+								</div>
+
+								{/* Chat Area */}
+								<div className="p-4 flex flex-col space-y-1">
+									<ChatBubble variant="received" layout="group-top">
+										<ChatAvatar fallback="SJ" />
+										<ChatMessage>
+											Why does everyone pick this library for chat UIs?
+										</ChatMessage>
+									</ChatBubble>
+									<ChatBubble variant="received" layout="group-bottom">
+										<ChatAvatar fallback="SJ" />
+										<ChatMessage>
+											Every other kit made me hand-roll the bubble corners.
+											<ChatTimestamp time="10:24 AM" />
+										</ChatMessage>
+									</ChatBubble>
+
+									<div className="h-4" />
+
+									<ChatBubble variant="sent" layout="group-top">
+										<ChatAvatar fallback="ME" />
+										<ChatMessage color="primary">
+											It&apos;s compound: avatar, message, timestamp — compose
+											them, no config objects.
+										</ChatMessage>
+									</ChatBubble>
+									<ChatBubble variant="sent" layout="group-bottom">
+										<ChatAvatar fallback="ME" />
+										<ChatMessage color="primary">
+											Grouping, read receipts and the pop-in animation are
+											built in and theme-aware.
+											<ChatTimestamp time="10:25 AM" status="read" />
+										</ChatMessage>
+									</ChatBubble>
+
+									<div className="h-4" />
+
+									<ChatBubble variant="received">
+										<ChatAvatar fallback="SJ" />
+										<ChatMessage className="px-0 py-0 bg-transparent border-0 shadow-none dark:bg-transparent">
+											<ChatTypingIndicator />
+										</ChatMessage>
+									</ChatBubble>
+								</div>
+
+								{/* Input Mock */}
+								<div className="p-4 bg-muted/40 border-t border-border">
+									<div className="flex items-center gap-3 px-3 py-2 bg-card border border-border rounded-full shadow-sm">
+										<ImageIcon className="w-5 h-5 text-muted-foreground" />
+										<span className="flex-1 text-sm text-muted-foreground">
+											Type a message...
+										</span>
+										<SmilePlus className="w-5 h-5 text-muted-foreground" />
+										<div className="w-7 h-7 rounded-full bg-primary flex items-center justify-center ml-1">
+											<Send className="w-3.5 h-3.5 text-primary-foreground -ml-0.5" />
+										</div>
+									</div>
+								</div>
 							</div>
 						</div>
 
@@ -654,8 +709,36 @@ function ComponentShowcase() {
 									Interactive
 								</span>
 							</div>
-							<div className="py-2">
-								<ThreeDCarousel items={sampleCarouselItems} autoPlay={false} />
+							{/* The carousel lays out at a fixed 840px wide / 580px tall so the
+							    fanned side cards fit, then is scaled to half so the whole fan
+							    shows inside the column. */}
+							<div className="relative h-[250px] md:h-[290px] overflow-hidden">
+								<div className="absolute left-1/2 top-0 w-[840px] -translate-x-1/2 scale-50 origin-top">
+									<ThreeDCarousel
+										items={sampleCarouselItems}
+										autoPlay={false}
+									/>
+								</div>
+							</div>
+						</div>
+
+						<div className="showcase-card rounded-2xl border border-border bg-card p-5 overflow-hidden shadow-lg">
+							<div className="flex items-center justify-between mb-4">
+								<span className="flex items-center gap-1.5 text-xs font-semibold text-foreground">
+									<FolderOpen className="size-3.5 text-primary" />
+									Design Components Folder
+								</span>
+								<span className="text-[10px] px-2 py-0.5 rounded bg-primary/10 text-primary font-semibold">
+									Auto Loop
+								</span>
+							</div>
+							{/* Same trick as the carousel above: the stage is sized by viewport
+							    breakpoints (up to 960×700), so it is laid out at 840px wide and
+							    scaled to half to fit the column. */}
+							<div className="relative h-[290px] md:h-[330px] lg:h-[350px] overflow-hidden">
+								<div className="absolute left-1/2 top-0 w-[840px] -translate-x-1/2 scale-50 origin-top">
+									<DesignComponentsFolder disableLinks className="py-0 md:py-0" />
+								</div>
 							</div>
 						</div>
 
@@ -689,36 +772,38 @@ function ComponentShowcase() {
 						className="flex flex-col gap-6">
 						<div className="showcase-card rounded-2xl border border-border bg-card p-5 overflow-hidden shadow-lg">
 							<div className="flex items-center justify-between mb-4">
-								<div>
-									<h4 className="text-sm font-bold text-foreground">
-										Analytics Chart
-									</h4>
-									<p className="text-xs text-muted-foreground">
-										Live SVG bar chart
-									</p>
-								</div>
-								<span className="text-xs font-semibold px-2.5 py-1 rounded-full bg-primary/10 text-primary border border-primary/20">
-									Active
+								<span className="flex items-center gap-1.5 text-xs font-semibold text-foreground">
+									<FolderOpen className="size-3.5 text-primary" />
+									Folder
+								</span>
+								<span className="text-[10px] px-2 py-0.5 rounded bg-primary/10 text-primary font-semibold">
+									Fan on Hover
 								</span>
 							</div>
-							<ChartBlock
-								data={sampleChartData}
-								type="bar"
-								color="var(--primary)"
-								height={220}
-								valuePrefix="$"
-							/>
+							{/* Headroom above, not around: the fan lifts the file cards well
+							    above the folder's top edge and the name tooltip sits above that. */}
+							<div className="flex items-center justify-center pt-24 pb-4">
+								<Folder
+									files={sampleCaseFiles}
+									label="Case files"
+									icon={FileText}
+									size={200}
+								/>
+							</div>
 						</div>
 
 						<div className="showcase-card rounded-2xl border border-border bg-card p-2 overflow-hidden shadow-lg">
 							<div className="px-3 py-2 border-b border-border flex items-center justify-between text-xs text-muted-foreground font-medium">
 								<span className="flex items-center gap-1.5 text-foreground font-semibold">
-									<Lock className="size-3.5 text-primary" />
-									Login Form Card
+									<GripVertical className="size-3.5 text-primary" />
+									Draggable Card List
+								</span>
+								<span className="text-[10px] px-2 py-0.5 rounded bg-primary/10 text-primary font-semibold">
+									Drag to Reorder
 								</span>
 							</div>
 							<div className="p-3">
-								<LoginForm variant="default" color="primary" />
+								<DraggableCardList variant="classic" items={sampleTasks} />
 							</div>
 						</div>
 					</motion.div>
@@ -3264,7 +3349,6 @@ export default function HomePage() {
 	return (
 		<div className="min-h-screen bg-background text-foreground selection:bg-primary/20 overflow-x-hidden font-site-sans">
 			<HeroSection />
-			<TechStackMarquee />
 			<ComponentShowcase />
 			<WhyChooseUsSection />
 			<ComponentPreviewGridSection />

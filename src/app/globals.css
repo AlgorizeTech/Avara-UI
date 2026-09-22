@@ -820,6 +820,39 @@ html body[data-scroll-locked] {
   --color-sidebar-ring: var(--sidebar-ring);
 }
 
+/* Bare `border-primary` / `ring-primary` (no opacity modifier) render at 30%
+   instead of the solid primary color — a solid primary edge reads too heavy
+   next to the default `border-border`. Rings are included because
+   `ring-2 ring-primary` (the "active card" treatment in carousels, memories
+   card, product cards…) looks like a solid border. Declared after Tailwind's
+   own utilities in the same layer so it wins at equal specificity, covering
+   every call site without editing them. `@utility border-primary` can't do
+   this: Tailwind still emits its functional `border-primary` after the
+   custom one.
+   Left as written: explicit modifiers (`border-primary/50`), per-side
+   utilities (`border-l-primary`, used for accent stripes and CSS-triangle
+   arrows), and `focus:ring-primary` — the keyboard focus indicator should
+   stay at full strength. Add a selector here if a new variant of the bare
+   class (e.g. `group-hover:border-primary`) gets used. */
+@layer utilities {
+  .border-primary,
+  .focus\:border-primary:focus,
+  .data-\[dragging\]\:border-primary[data-dragging] {
+    border-color: color-mix(in oklab, var(--color-primary) 30%, transparent);
+  }
+  .ring-primary {
+    --tw-ring-color: color-mix(in oklab, var(--color-primary) 30%, transparent);
+  }
+  @media (hover: hover) {
+    .hover\:border-primary:hover {
+      border-color: color-mix(in oklab, var(--color-primary) 30%, transparent);
+    }
+    .hover\:ring-primary:hover {
+      --tw-ring-color: color-mix(in oklab, var(--color-primary) 30%, transparent);
+    }
+  }
+}
+
 @layer base {
   * {
     @apply border-border outline-ring/50;
@@ -853,19 +886,6 @@ html body[data-scroll-locked] {
 /* ============================================ */
 /* HOMEPAGE STYLES                              */
 /* ============================================ */
-
-/* Marquee */
-@keyframes marquee-scroll {
-  from { transform: translateX(0); }
-  to   { transform: translateX(-50%); }
-}
-
-.marquee-track {
-  animation: marquee-scroll 35s linear infinite;
-}
-.marquee-track:hover {
-  animation-play-state: paused;
-}
 
 /* Showcase card hover */
 .showcase-card {

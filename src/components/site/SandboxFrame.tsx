@@ -44,15 +44,19 @@ export function SandboxFrame({
   maxHeight?: number;
   /**
    * Fills the container instead of auto-sizing to the height the demo reports.
-   * The sandbox document is told over postMessage — NOT through the URL, which
-   * would reload it — so entering fullscreen resizes the live demo instead of
+   * A demo taller than the container is scaled down to fit it, never scrolled.
+   * Only the iframe's box changes — nothing goes through the URL, which would
+   * reload it — so entering fullscreen resizes the live demo instead of
    * throwing it away and loading a second one.
    */
   fill?: boolean;
   className?: string;
 }) {
   const iframeRef = useRef<HTMLIFrameElement>(null);
-  const [contentHeight, setContentHeight] = useState(minHeight);
+  const wrapperRef = useRef<HTMLDivElement>(null);
+  const [contentHeight, setContentHeight] = useState(0);
+  // The container's box, for fill mode: the frame is fitted to it.
+  const [fillSize, setFillSize] = useState({ width: 0, height: 0 });
   const [ready, setReady] = useState(false);
   const propsRef = useRef(sandboxProps);
   propsRef.current = sandboxProps;
@@ -78,9 +82,6 @@ export function SandboxFrame({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [name, resetKey]);
 
-  const fillRef = useRef(fill);
-  fillRef.current = fill;
-
   const post = (message: Record<string, unknown>) => {
     iframeRef.current?.contentWindow?.postMessage(
       message,
@@ -89,11 +90,10 @@ export function SandboxFrame({
   };
 
   // Sent together on load: a document that just booted needs both, and the
-  // demo must not paint one frame of the wrong size or the wrong props.
+  // demo must not paint one frame with the wrong accent or the wrong props.
   const postState = () => {
     post({ type: "sandbox:props", props: propsRef.current ?? {} });
     post({ type: "sandbox:accent", accent: accentRef.current ?? null });
-    post({ type: "sandbox:fill", fill: fillRef.current });
   };
 
   useEffect(() => {
@@ -103,10 +103,6 @@ export function SandboxFrame({
   useEffect(() => {
     post({ type: "sandbox:accent", accent: accent ?? null });
   }, [accent]);
-
-  useEffect(() => {
-    post({ type: "sandbox:fill", fill });
-  }, [fill]);
 
   // A demo can hand a theme switch to the page (`sandbox:theme`): a View
   // Transition can't leave the iframe's document, so the theme-switcher demo
@@ -141,17 +137,65 @@ export function SandboxFrame({
     return () => window.removeEventListener("message", onMessage);
   }, []);
 
-  // The frame is shrunk visually (scale), but `minHeight` describes the CARD.
-  // Sizing the iframe to minHeight would leave it covering only minHeight*scale
-  // of the card, so the document's bottom edge — where fixed overlays like the
-  // toast stack anchor — floats above the card floor. Growing the iframe's own
-  // viewport by 1/scale makes the scaled frame fill the card exactly.
+  useEffect(() => {
+    const wrapper = wrapperRef.current;
+    if (!fill || !wrapper) return;
+    const measure = () =>
+      setFillSize({ width: wrapper.clientWidth, height: wrapper.clientHeight });
+    measure();
+    const observer = new ResizeObserver(measure);
+    observer.observe(wrapper);
+    return () => observer.disconnect();
+  }, [fill]);
+
+  // Fill mode: the screen is the ceiling, not a floor. A demo taller than the
+  // container would otherwise scroll inside the frame, so it is scaled down
+  // until its full height is exactly the container's — the iframe keeps the
+  // real screen width as its viewport (so breakpoints match the screen) and
+  // is letterboxed horizontally by the same factor. `min-h-screen` in the
+  // document then equals the content height, so nothing scrolls either way.
+  const fillScale =
+    fill && fillSize.height > 0 && contentHeight > fillSize.height
+      ? fillSize.height / contentHeight
+      : 1;
+  const fillFrameHeight =
+    fillSize.height > 0 ? Math.ceil(fillSize.height / fillScale) : undefined;
+  const fillFrameLeft = Math.round((fillSize.width * (1 - fillScale)) / 2);
+
+  // The iframe's own viewport always covers the whole card, and grows past it
+  // for taller demos. The sandbox document centres the demo in that viewport
+  // and lays fixed overlays (a modal, the toast stack) against it — so a lone
+  // button sits mid-card and the modal it opens has the full card to appear
+  // in, while a tall hero is never cropped to the floor.
+  //
+  // `minHeight` describes the CARD, but the frame is shrunk visually by
+  // `scale`: sizing the iframe to minHeight would cover only minHeight*scale
+  // of the card and leave the document's bottom edge floating above the card
+  // floor. Growing the iframe's viewport by 1/scale makes the scaled frame
+  // fill the card exactly.
   const safeScale = scale > 0 ? scale : 1;
-  const targetHeight = contentHeight > 0 ? contentHeight : minHeight;
-  const frameHeight = ready ? targetHeight : Math.max(minHeight, targetHeight);
+  const floorHeight = Math.ceil(minHeight / safeScale);
+  const frameHeight = Math.max(floorHeight, contentHeight);
+
+  const frameStyle: React.CSSProperties = fill
+    ? {
+        left: fillFrameLeft,
+        width: fillSize.width > 0 ? fillSize.width : "100%",
+        height: fillFrameHeight ?? "100%",
+        transform: fillScale !== 1 ? `scale(${fillScale})` : undefined,
+        transformOrigin: "top left",
+      }
+    : {
+        left: 0,
+        width: viewportWidth == null ? "100%" : `${viewportWidth}px`,
+        height: frameHeight,
+        transform: scale !== 1 ? `scale(${scale})` : undefined,
+        transformOrigin: "top left",
+      };
 
   return (
     <div
+      ref={wrapperRef}
       className={cn(
         "relative w-full overflow-hidden",
         !fill && "transition-[height] duration-300 ease-out",
@@ -166,15 +210,10 @@ export function SandboxFrame({
         title={`${name} sandbox preview`}
         onLoad={postState}
         className={cn(
-          "absolute top-0 left-0 block border-0 transition-opacity duration-300",
+          "absolute top-0 block border-0 transition-opacity duration-300",
           ready ? "opacity-100" : "opacity-0",
         )}
-        style={{
-          width: fill || viewportWidth == null ? "100%" : `${viewportWidth}px`,
-          height: fill ? "100%" : frameHeight,
-          transform: !fill && scale !== 1 ? `scale(${scale})` : undefined,
-          transformOrigin: "top left",
-        }}
+        style={frameStyle}
       />
       {/* Loading state: covers the frame until the demo has truly mounted, so
           no unstyled or partially-loaded markup is ever visible. */}

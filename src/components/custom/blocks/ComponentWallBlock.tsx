@@ -17,8 +17,10 @@ import { TextAnimation } from "./TextAnimationBlock";
 // left, the copy: a small badge, a headline that blurs in word by word (one
 // word in the primary colour, one that takes turns), a lead, an install
 // command whose component name follows the card the camera is resting on,
-// two actions and a line of trust. On desktop the wall fills
-// the right side and fades under the copy; below that it is a band under it.
+// two actions and a line of trust. The tools it is built with — a few
+// related ones at a time, taking turns — sit over the lower wall on desktop,
+// where the wall fills the right side and fades under the copy; on the
+// stacked layouts the wall is a band under the copy and the tools follow it.
 // ==========================================
 
 export interface ComponentWallItem extends WallItem {
@@ -31,7 +33,7 @@ export interface ComponentWallItem extends WallItem {
 
 export interface ComponentWallProps
   extends Omit<React.HTMLAttributes<HTMLElement>, "onFocus">,
-    Pick<ImageWallProps, "columns" | "interval" | "order" | "zoom" | "onFocus"> {
+    Pick<ImageWallProps, "columns" | "interval" | "order" | "zoom" | "intro" | "onFocus"> {
   /** The small link above the headline. */
   badge?: { label: string; href?: string };
   /**
@@ -58,8 +60,21 @@ export interface ComponentWallProps
   trust?: { text: string; avatars?: StackAvatar[]; rating?: number };
   /** The cards on the wall, in reading order down the columns. */
   items: ComponentWallItem[];
+  /**
+   * The tools the library is built with: the label, then two rows — an odd
+   * batch staggers as three over four. Over the lower wall on desktop, under
+   * the band on smaller screens. `groups` are shown one at a time — put
+   * related tools together, four to eight per batch — each fading in the way
+   * the headline word does. Names show from `xl` up; below that only the marks.
+   */
+  stack?: { label?: string; groups: StackTool[][]; interval?: number };
   /** Pass `next/link` to keep client-side navigation. */
   linkComponent?: React.ElementType;
+}
+
+export interface StackTool {
+  icon: React.ReactNode;
+  name: string;
 }
 
 const kebab = (s: string) =>
@@ -78,10 +93,10 @@ const wordAt = { opacity: 1, y: 0, filter: "blur(0px)" };
 const wordOut = { opacity: 0, y: -20, filter: "blur(8px)" };
 
 // The lead, the install line, the actions and the trust line rise once, in
-// order, after the headline has had its say.
+// order, starting the moment the headline does.
 const riseGroup: Variants = {
   hidden: {},
-  visible: { transition: { delayChildren: 0.55, staggerChildren: 0.12 } },
+  visible: { transition: { staggerChildren: 0.1 } },
 };
 const rise: Variants = {
   hidden: { opacity: 0, y: 14 },
@@ -105,10 +120,13 @@ export const ComponentWall = forwardRef<HTMLElement, ComponentWallProps>(
       secondaryAction,
       trust,
       items,
+      stack,
       columns,
       interval,
       order,
       zoom,
+      // Long enough for the headline and the lines under it to have risen.
+      intro = 1800,
       onFocus,
       linkComponent: Link = "a",
       className,
@@ -173,6 +191,17 @@ export const ComponentWall = forwardRef<HTMLElement, ComponentWallProps>(
       return item ? (item.slug ?? kebab(item.title)) : "";
     }, [items, focus]);
 
+    // ---- The batch of tools showing under the wall.
+    const groupCount = stack?.groups.length ?? 0;
+    const groupInterval = stack?.interval ?? 3600;
+    const [groupIndex, setGroupIndex] = useState(0);
+    useEffect(() => {
+      if (groupCount < 2 || groupInterval <= 0) return;
+      const t = window.setInterval(() => setGroupIndex((i) => (i + 1) % groupCount), groupInterval);
+      return () => window.clearInterval(t);
+    }, [groupCount, groupInterval]);
+    const group = stack?.groups[groupIndex];
+
     // `npx shadcn@latest add @algorize-ui/{item}` splits into what comes before
     // the name and after it; the last word before it (`@algorize-ui/`) stays on
     // phones, the rest of the prefix only shows from `sm` up.
@@ -224,7 +253,7 @@ export const ComponentWall = forwardRef<HTMLElement, ComponentWallProps>(
                 variant="blur-in-up"
                 text={heading}
                 renderWord={renderWord}
-                delay={0.1}
+                delay={0}
                 className="max-w-[14ch] gap-y-0 font-serif text-[2.6rem] font-medium leading-[1.02] tracking-[-0.02em] text-foreground sm:text-[3.4rem] xl:text-[4rem]"
               />
 
@@ -316,9 +345,67 @@ export const ComponentWall = forwardRef<HTMLElement, ComponentWallProps>(
             interval={interval}
             order={order}
             zoom={zoom}
+            intro={intro}
             onFocus={handleFocus}
             className="h-80 [mask-image:linear-gradient(to_left,black_85%,transparent_100%)] sm:h-96 lg:absolute lg:inset-y-0 lg:right-0 lg:h-auto lg:w-[56%] lg:[mask-image:linear-gradient(to_left,black_72%,transparent_100%)] xl:w-[58%]"
           />
+
+          {/* ---- The tools, over the lower part of the wall ---- */}
+          {stack && group && (
+            <div className="pointer-events-none relative z-20 lg:absolute lg:bottom-0 lg:right-0 lg:w-[56%] xl:w-[58%]">
+              {/* On desktop the wall blurs and fades out under the tools: a blur that
+                  strengthens towards the bottom, under a wash of the background. On
+                  the stacked layouts the tools simply follow the band. */}
+              <div className="absolute inset-x-0 bottom-0 hidden h-[12rem] backdrop-blur-md [mask-image:linear-gradient(to_top,black_45%,transparent_100%)] lg:block" aria-hidden />
+              <div className="absolute inset-x-0 bottom-0 hidden h-[12rem] bg-gradient-to-t from-background/90 from-30% via-background/70 to-transparent lg:block" aria-hidden />
+              {/* On desktop it sits a little way up the wall, in view under the copy —
+                  the padding is a share of the strip's width, which is proportional
+                  to the wall's height. */}
+              <motion.div
+                // Arrives with the last of the copy, so nothing shows ahead of the headline.
+                initial={reduceMotion ? false : { opacity: 0, y: 14 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.6, delay: 0.5, ease: [0.22, 1, 0.36, 1] }}
+                className="pointer-events-auto relative flex w-full flex-col items-start justify-center gap-3 py-7 px-6 md:pr-0 md:pl-10 lg:pb-[7%] lg:pl-12 lg:pt-0 xl:pl-24"
+              >
+                {stack.label && <span className="text-[13px] leading-tight text-muted-foreground font-semibold">{stack.label}</span>}
+                <div className="grid w-full min-w-0" aria-live="polite">
+                  <AnimatePresence initial={false} mode="popLayout">
+                    <motion.ul
+                      key={groupIndex}
+                      initial={reduceMotion ? false : "hidden"}
+                      animate="visible"
+                      exit={reduceMotion ? undefined : "gone"}
+                      variants={{
+                        hidden: {},
+                        visible: { transition: { staggerChildren: 0.05 } },
+                        gone: { transition: { staggerChildren: 0.03 } },
+                      }}
+                      // Two rows, two columns per tool. An odd batch puts the smaller
+                      // row on top, starting one column in, so it sits between the
+                      // tools below (three over four); an even batch lines up.
+                      className="col-start-1 row-start-1 grid gap-x-2 gap-y-[22px] sm:gap-x-3"
+                      style={{ gridTemplateColumns: `repeat(${2 * Math.ceil(group.length / 2)}, minmax(0, 1fr))` }}
+                    >
+                      {group.map((tool, i) => (
+                        <motion.li
+                          key={tool.name}
+                          variants={{ hidden: wordIn, visible: { ...wordAt, transition: { duration: 0.6, ease: "easeOut" } }, gone: { ...wordOut, transition: { duration: 0.4, ease: "easeIn" } } }}
+                          className={cn(
+                            "col-span-2 flex min-w-0 items-center justify-center gap-2.5 text-foreground [&>img]:size-8 [&>img]:shrink-0 [&>img]:object-contain xl:[&>img]:size-6 [&>svg]:size-7 [&>svg]:shrink-0 xl:[&>svg]:size-5",
+                            i === 0 && group.length % 2 === 1 && "col-start-2",
+                          )}
+                        >
+                          {tool.icon}
+                          <span className="hidden truncate text-[13px] font-medium xl:inline">{tool.name}</span>
+                        </motion.li>
+                      ))}
+                    </motion.ul>
+                  </AnimatePresence>
+                </div>
+              </motion.div>
+            </div>
+          )}
         </div>
       </section>
     );

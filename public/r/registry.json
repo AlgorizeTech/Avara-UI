@@ -782,7 +782,7 @@
       "type": "registry:component",
       "title": "Component Wall",
       "author": "AlgorizeTech",
-      "description": "A landing hero for a component library: on the right a wall of screenshots that never ends, a camera gliding from card to card; on the left a headline that blurs in word by word and keeps one word turning, a lead, an install command that names whichever card the camera is resting on, two actions and a line of trust.",
+      "description": "A landing hero for a component library: on the right a wall of screenshots that never ends, a camera gliding from card to card; on the left a headline that blurs in word by word and keeps one word turning, a lead, an install command that names whichever card the camera is resting on, two actions and a line of trust; over the lower part of the wall, the tools it is built with in batches.",
       "categories": [
         "marketing",
         "layout"
@@ -806,7 +806,7 @@
           "target": "components/custom/blocks/ComponentWallBlock.tsx"
         }
       ],
-      "docs": "Named export: ComponentWall (plus the ComponentWallItem type). Composed from the image-wall, text-animation, copy-button, avatar-stack and half-stars items, which install alongside it. Pass `badge` ({ label, href? }), `heading` (a string, revealed word by word; write `{word}` where `headingWords` take turns every `wordInterval` ms, and name one word in `accent` for the primary colour), `description`, `install` ({ command } — write `{item}` where the focused card's `slug` goes, e.g. `npx shadcn@latest add @algorize-ui/{item}`), `primaryAction`/`secondaryAction` ({ label, href, icon? }), `trust` ({ text, avatars?, rating? }) and `items` ({ title, image, slug? }[] — every screenshot sits in the same 493:332 frame; slug defaults to the title in kebab-case). `columns`, `interval` (ms the camera rests; 0 holds still), `order` (serial | shuffle), `zoom` and `onFocus` pass straight to the wall; `linkComponent` takes next/link. The headline uses your theme's font-serif, the command font-mono; colours are theme tokens."
+      "docs": "Named export: ComponentWall (plus the ComponentWallItem and StackTool types). Composed from the image-wall, text-animation, copy-button, avatar-stack and half-stars items, which install alongside it. Pass `badge` ({ label, href? }), `heading` (a string, revealed word by word; write `{word}` where `headingWords` take turns every `wordInterval` ms, and name one word in `accent` for the primary colour), `description`, `install` ({ command } — write `{item}` where the focused card's `slug` goes, e.g. `npx shadcn@latest add @algorize-ui/{item}`), `primaryAction`/`secondaryAction` ({ label, href, icon? }), `trust` ({ text, avatars?, rating? }), `items` ({ title, image, slug? }[] — every screenshot sits in the same 493:332 frame; slug defaults to the title in kebab-case) and `stack` ({ label?, groups: { name, icon }[][], interval? } — the tools over the lower wall on desktop and under the band on phones, one batch of four to eight at a time, an odd batch as three over four; names from xl up). `columns`, `interval` (ms the camera rests; 0 holds still), `order` (serial | shuffle), `zoom`, `intro` (ms the camera drifts with nothing in focus while the copy arrives; default 1800) and `onFocus` pass straight to the wall; `linkComponent` takes next/link. The headline uses your theme's font-serif, the command font-mono; colours are theme tokens."
     },
     {
       "name": "compute",
@@ -933,7 +933,7 @@
           "target": "components/custom/blocks/counter-theme.ts"
         }
       ],
-      "docs": "Named exports: CounterBlock, getThemeStyles. `type` is stepper | animated | circular | countdown — stepper is an input with min/max, the others are display-only. Variants: default | outline | soft | vertical. The animated type also takes `bare` (just the figure, no card), `decimals`, `startOnView` (count once visible) and `className`."
+      "docs": "Named exports: CounterBlock, getThemeStyles. `type` is stepper | animated | circular | countdown — stepper is an input with min/max, the others are display-only. Variants: default | outline | soft | vertical for the stepper; `slide` for the countdown (soft tiles, only the figure that changed slides — the same countdown the waitlist item uses). The countdown takes `targetDate` (Date, ISO string or timestamp) and `doneLabel`. The animated type also takes `bare` (just the figure, no card), `decimals`, `startOnView` (count once visible) and `className`. `color` accepts a theme name, a hex code or `inherit`."
     },
     {
       "name": "cursor-animation",
@@ -1862,7 +1862,7 @@
           "target": "components/custom/blocks/ImageWallBlock.tsx"
         }
       ],
-      "docs": "Named export: ImageWall (plus the WallItem type). Pass `items` ({ title, image }[] — every image is cropped from its top edge into the same 493:332 frame) and give it a height with `className`; it fills its box. `columns` sets the tile, `interval` the rest between flights in ms (0 holds still), `order` is serial (card by card) or shuffle (every card once per round, at random), `zoom` the resting scale — a box under 420px tall eases it down to 0.72 so a few cards fit, one under 640px wide to 0.5 so the flight between cards stays visible on a phone; `onFocus` reports the card in view. The camera holds while hovered, while the tab is hidden and while off screen; under prefers-reduced-motion it cuts instead of flying."
+      "docs": "Named export: ImageWall (plus the WallItem type). Pass `items` ({ title, image }[] — every image is cropped from its top edge into the same 493:332 frame) and give it a height with `className`; it fills its box. `columns` sets the tile, `interval` the rest between flights in ms (0 holds still), `order` is serial (card by card) or shuffle (every card once per round, at random), `zoom` the resting scale — a box under 420px tall eases it down to 0.72 so a few cards fit, one under 640px wide to 0.5 so the flight between cards stays visible on a phone; `intro` (ms) drifts the camera, pulled back with nothing in focus, before its first landing; `onFocus` reports the card in view. The camera holds while hovered, while the tab is hidden and while off screen; under prefers-reduced-motion it cuts instead of flying."
     },
     {
       "name": "infrastructure-topology",
@@ -4324,6 +4324,7 @@
         "https://algorize-ui.vercel.app/r/avatar-stack.json",
         "https://algorize-ui.vercel.app/r/button.json",
         "https://algorize-ui.vercel.app/r/copy-button.json",
+        "https://algorize-ui.vercel.app/r/counter.json",
         "https://algorize-ui.vercel.app/r/input.json",
         "https://algorize-ui.vercel.app/r/progress.json",
         "utils"
@@ -4335,7 +4336,7 @@
           "target": "components/custom/blocks/WaitlistBlock.tsx"
         }
       ],
-      "docs": "Named export: Waitlist, with parts Mark, Countdown, Heading, Intro, Form, Proof and Spots. Composed from the input, button, avatar-stack, progress and copy-button items, which install alongside it. `variant` is card | launch | queue, each styled for light and dark mode; `Countdown` takes a `date`; `Form` takes `onJoin(email)` — resolve a number to show it as the place in line, throw an Error to show its message — plus `action`, `shareUrl`, `note` and the success copy; `Spots` takes `claimed` and `total`; `accent` pins the colour; `reveal` is in-view or immediate."
+      "docs": "Named export: Waitlist, with parts Mark, Countdown, Heading, Intro, Form, Proof and Spots. Composed from the counter, input, button, avatar-stack, progress and copy-button items, which install alongside it. `variant` is card | launch | queue, each styled for light and dark mode; `Countdown` takes a `date` and is the counter's slide countdown; `Form` takes `onJoin(email)` — resolve a number to show it as the place in line, throw an Error to show its message — plus `action`, `shareUrl`, `note` and the success copy; `Spots` takes `claimed` and `total`; `accent` pins the colour; `reveal` is in-view or immediate."
     },
     {
       "name": "wizard",
