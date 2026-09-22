@@ -11,7 +11,24 @@ import { getThemeStyles, type CounterTheme } from "./counter-theme";
 // ==========================================
 export type CounterColor = "indigo" | "rose" | "emerald" | "zinc" | string;
 export type CounterType = "stepper" | "animated" | "circular" | "countdown";
-export type CounterVariant = "default" | "outline" | "soft" | "vertical";
+/**
+ * `outline`, `soft` and `vertical` are stepper layouts; `slide` is the
+ * countdown's tile design, where a figure that changes slides out above as
+ * the new one comes up from below.
+ */
+export type CounterVariant = "default" | "outline" | "soft" | "vertical" | "slide";
+
+// The slide countdown's keyframes ship inline so the block stays
+// self-contained — no plugin, no globals.css entry.
+const KEYFRAMES = `
+@keyframes counter-slide-in {
+  from { transform: translateY(0.7em); opacity: 0; }
+  to { transform: none; opacity: 1; }
+}
+@keyframes counter-slide-out {
+  from { transform: none; opacity: 1; }
+  to { transform: translateY(-0.7em); opacity: 0; }
+}`;
 
 // ==========================================
 // INTERNAL SUB-COMPONENTS
@@ -52,6 +69,9 @@ interface CircularCounterProps extends CounterBaseProps {
 
 interface CountdownCounterProps extends CounterBaseProps {
   targetDate?: string | number | Date;
+  /** What the label becomes once the date has passed. */
+  doneLabel?: string;
+  variant?: CounterVariant;
 }
 
 const StepperCounter = ({
@@ -412,46 +432,78 @@ const CircularCounter = ({
   );
 };
 
+type Remaining = { d: number; h: number; m: number; s: number };
+
+const ZERO: Remaining = { d: 0, h: 0, m: 0, s: 0 };
+
+function remainingUntil(target: number): Remaining | null {
+  const diff = target - Date.now();
+  if (diff <= 0) return null;
+  const total = Math.floor(diff / 1000);
+  return {
+    d: Math.floor(total / 86400),
+    h: Math.floor((total % 86400) / 3600),
+    m: Math.floor((total % 3600) / 60),
+    s: total % 60,
+  };
+}
+
+/**
+ * Ticks once a second. `undefined` until the first client tick, so the server
+ * and the first client paint agree; `null` once the date has passed. With no
+ * date it counts down three days from mount.
+ */
+function useCountdown(targetDate?: string | number | Date) {
+  const target = targetDate === undefined ? undefined : new Date(targetDate).getTime();
+  const [left, setLeft] = useState<Remaining | null | undefined>(undefined);
+
+  useEffect(() => {
+    const at = target ?? Date.now() + 3 * 24 * 60 * 60 * 1000;
+    const tick = () => setLeft(remainingUntil(at));
+    tick();
+    const id = window.setInterval(tick, 1000);
+    return () => window.clearInterval(id);
+  }, [target]);
+
+  return left;
+}
+
 const CountdownCounter = ({
   theme,
   style,
   label,
   targetDate,
+  doneLabel,
+  variant,
 }: CountdownCounterProps) => {
-  const [timeLeft, setTimeLeft] = useState({ d: 0, h: 0, m: 0, s: 0 });
+  const left = useCountdown(targetDate);
+  const over = left === null;
+  const caption = over ? doneLabel : label;
 
-  useEffect(() => {
-    const target = targetDate
-      ? new Date(targetDate).getTime()
-      : new Date().getTime() + 3 * 24 * 60 * 60 * 1000;
+  if (variant === "slide") {
+    return (
+      <div className="flex flex-col items-center" style={style}>
+        <style>{KEYFRAMES}</style>
+        {caption && <p className="mb-3 text-[13px] font-medium opacity-60">{caption}</p>}
+        {!over && (
+          <div className="flex items-center gap-2" role="timer" aria-live="off">
+            <SlideFigure themeText={theme.text} value={left?.d ?? null} unit="days" />
+            <SlideFigure themeText={theme.text} value={left?.h ?? null} unit="hours" />
+            <SlideFigure themeText={theme.text} value={left?.m ?? null} unit="minutes" />
+            <SlideFigure themeText={theme.text} value={left?.s ?? null} unit="seconds" />
+          </div>
+        )}
+      </div>
+    );
+  }
 
-    const updateTimer = () => {
-      const now = new Date().getTime();
-      const difference = target - now;
-
-      if (difference <= 0) {
-        setTimeLeft({ d: 0, h: 0, m: 0, s: 0 });
-        return;
-      }
-
-      setTimeLeft({
-        d: Math.floor(difference / (1000 * 60 * 60 * 24)),
-        h: Math.floor((difference % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60)),
-        m: Math.floor((difference % (1000 * 60 * 60)) / (1000 * 60)),
-        s: Math.floor((difference % (1000 * 60)) / 1000),
-      });
-    };
-
-    updateTimer();
-    const interval = setInterval(updateTimer, 1000);
-    return () => clearInterval(interval);
-  }, [targetDate]);
+  const timeLeft = left ?? ZERO;
 
   return (
     <div className="flex flex-col items-center gap-8" style={style}>
-      {label && (
+      {caption && (
         <div className="flex items-center gap-2 px-4 py-1.5 rounded-full bg-muted border border-border text-sm font-bold text-muted-foreground">
-          <Clock size={16} className={theme.text} /> {label}
+          <Clock size={16} className={theme.text} /> {caption}
         </div>
       )}
       <div className="flex gap-3 sm:gap-4">
@@ -470,7 +522,8 @@ const CountdownCounter = ({
 
 export interface CounterProps {
   type?: CounterType;
-  variant?: CounterVariant; // Specific to Stepper type
+  /** Stepper layouts, plus `slide` for the countdown. */
+  variant?: CounterVariant;
   color?: CounterColor;
   label?: string;
   initialValue?: number;
@@ -479,7 +532,10 @@ export interface CounterProps {
   targetValue?: number;
   prefix?: string;
   suffix?: string;
-  targetDate?: Date;
+  /** Countdown only: when it reaches zero. Defaults to three days from mount. */
+  targetDate?: Date | string | number;
+  /** Countdown only: what the label becomes once the date has passed. */
+  doneLabel?: string;
   /** Animated only: just the figure, no card — it inherits the surrounding type. */
   bare?: boolean;
   /** Animated only: decimal places, e.g. 1 for 5.5. */
@@ -522,6 +578,56 @@ function TimeUnit({
   );
 }
 
+/** One tile of the slide countdown. `null` paints "--" before the first tick. */
+function SlideFigure({
+  value,
+  unit,
+  themeText,
+}: {
+  value: number | null;
+  unit: string;
+  themeText: string;
+}) {
+  const text = value === null ? "--" : String(value).padStart(2, "0");
+  // A figure that changes keeps its old text mounted for one pass so it can
+  // slide out above while the new one comes up from below; the others hold
+  // still. Nothing moves on the first paint.
+  const [shown, setShown] = useState({ current: text, previous: null as string | null });
+  if (shown.current !== text) setShown({ current: text, previous: shown.current });
+
+  return (
+    <div className="flex min-w-[3.75rem] flex-col items-center rounded-xl bg-black/[0.045] px-3 py-2.5 dark:bg-white/[0.07]">
+      <span
+        className={cn(
+          "relative block h-[1.75rem] overflow-hidden text-[1.5rem] font-semibold leading-[1.75rem] tabular-nums tracking-[-0.03em]",
+          themeText,
+        )}
+      >
+        {shown.previous !== null && (
+          <span
+            key={`out-${shown.previous}`}
+            aria-hidden
+            className="absolute inset-0 block animate-[counter-slide-out_0.32s_cubic-bezier(0.16,1,0.3,1)_both] motion-reduce:hidden"
+            onAnimationEnd={() => setShown((s) => ({ ...s, previous: null }))}
+          >
+            {shown.previous}
+          </span>
+        )}
+        <span
+          className={cn(
+            "block",
+            shown.previous !== null &&
+              "animate-[counter-slide-in_0.32s_cubic-bezier(0.16,1,0.3,1)_both] motion-reduce:animate-none",
+          )}
+        >
+          {text}
+        </span>
+      </span>
+      <span className="mt-1 text-[11px] font-medium opacity-55">{unit}</span>
+    </div>
+  );
+}
+
 export function CounterBlock({
   type = "stepper",
   variant = "default",
@@ -534,6 +640,7 @@ export function CounterBlock({
   prefix = "",
   suffix = "",
   targetDate,
+  doneLabel = "Time's up",
   bare,
   decimals,
   startOnView,
@@ -584,6 +691,8 @@ export function CounterBlock({
         theme={theme}
         style={style}
         label={label}
+        variant={variant}
+        doneLabel={doneLabel}
         {...(targetDate !== undefined ? { targetDate } : {})}
       />
     );

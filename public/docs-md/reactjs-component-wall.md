@@ -1,6 +1,6 @@
 # Component Wall
 
-A landing hero for a component library. On the right, a wall of screenshots that never ends: a camera hangs over it zoomed in on one card, and every few seconds pulls back, glides to the next card and settles on it. On the left, the copy — a small badge, a headline that blurs in word by word and keeps one word changing, a lead, an install command, two actions and a line of trust. Over the lower part of the wall, the tools it is built with: a label, then two rows of marks — an odd batch staggers as three over four — one batch of related tools at a time.
+A landing hero for a component library. On the right, a wall of screenshots that never ends: a camera hangs over it zoomed in on one card, and every few seconds pulls back, glides to the next card and settles on it. On the left, the copy — a small badge, a headline that blurs in word by word and keeps one word changing, a lead, an install command, two actions and a line of trust. Over the lower part of the wall on desktop — under the band on phones — the tools it is built with: a label, then two rows of marks — an odd batch staggers as three over four — one batch of related tools at a time.
 
 The two halves talk to each other. The install line ends in the name of the card the camera is resting on, and slides to the next name as the camera lands — so the hero is always showing something the reader can paste into a terminal. The wall is an Image Wall, the headline a Text Animation, the copy control a Copy Button, the faces an Avatar Stack and the stars Half Stars. The headline is set in your theme's `font-serif`, the rest in `font-sans`; every colour is a theme token.
 
@@ -62,7 +62,7 @@ npx shadcn@latest add @algorize-ui/component-wall
     The wall reports the card it has settled on; the hero puts that card's slug into the command and slides the old name out. Whatever the reader is looking at, the line beside it is the way to get it.
 
     One entrance, in order
-    The headline blurs in word by word; then the lead, the command, the actions and the trust line rise once, each a beat after the last. The changing word in the headline replays that same blur each time it turns. Under prefers-reduced-motion everything is simply there, and both the headline word and the name in the command cut instead of moving.
+    The headline blurs in word by word; then the lead, the command, the actions and the trust line rise once, each a beat after the last. Meanwhile the wall fades in with its camera pulled back and drifting, nothing in focus, and lands on the first card once the copy is in — so nothing on the page jumps. The changing word in the headline replays that same blur each time it turns. Under prefers-reduced-motion everything is simply there, and both the headline word and the name in the command cut instead of moving.
 
     Built on Image Wall
     The wall, its camera and its flights are the Image Wall component; this hero passes the wall props straight through and only decides where the wall sits — the right 56–58% on desktop, fading under the copy; a band under the copy below that.
@@ -128,7 +128,7 @@ npx shadcn@latest add @algorize-ui/component-wall
         items
         &#123; title: string; image: string; slug?: string &#125;[]
         —
-        The cards on the wall, each in a 493:332 frame. items, columns, order, interval, zoom and onFocus are passed straight to the Image Wall.
+        The cards on the wall, each in a 493:332 frame. items, columns, order, interval, zoom, intro and onFocus are passed straight to the Image Wall.
 
         stack
         &#123; label?: string; groups: &#123; name: string; icon: ReactNode &#125;[][]; interval?: number &#125;
@@ -154,6 +154,11 @@ npx shadcn@latest add @algorize-ui/component-wall
         number
         1.35
         The camera's resting scale.
+
+        intro
+        number
+        1800
+        Milliseconds the camera drifts with no card in focus while the copy arrives, before landing on the first card. 0 starts on it.
 
         onFocus
         (index: number) =&gt; void

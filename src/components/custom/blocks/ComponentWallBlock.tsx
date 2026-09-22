@@ -33,7 +33,7 @@ export interface ComponentWallItem extends WallItem {
 
 export interface ComponentWallProps
   extends Omit<React.HTMLAttributes<HTMLElement>, "onFocus">,
-    Pick<ImageWallProps, "columns" | "interval" | "order" | "zoom" | "onFocus"> {
+    Pick<ImageWallProps, "columns" | "interval" | "order" | "zoom" | "intro" | "onFocus"> {
   /** The small link above the headline. */
   badge?: { label: string; href?: string };
   /**
@@ -125,6 +125,8 @@ export const ComponentWall = forwardRef<HTMLElement, ComponentWallProps>(
       interval,
       order,
       zoom,
+      // Long enough for the headline and the lines under it to have risen.
+      intro = 1800,
       onFocus,
       linkComponent: Link = "a",
       className,
@@ -343,6 +345,7 @@ export const ComponentWall = forwardRef<HTMLElement, ComponentWallProps>(
             interval={interval}
             order={order}
             zoom={zoom}
+            intro={intro}
             onFocus={handleFocus}
             className="h-80 [mask-image:linear-gradient(to_left,black_85%,transparent_100%)] sm:h-96 lg:absolute lg:inset-y-0 lg:right-0 lg:h-auto lg:w-[56%] lg:[mask-image:linear-gradient(to_left,black_72%,transparent_100%)] xl:w-[58%]"
           />
@@ -358,7 +361,13 @@ export const ComponentWall = forwardRef<HTMLElement, ComponentWallProps>(
               {/* On desktop it sits a little way up the wall, in view under the copy —
                   the padding is a share of the strip's width, which is proportional
                   to the wall's height. */}
-              <div className="pointer-events-auto relative flex w-full flex-col items-start justify-center gap-3 py-7 px-6 md:pr-0 md:pl-10 lg:pb-[7%] lg:pl-12 lg:pt-0 xl:pl-24">
+              <motion.div
+                // Arrives with the last of the copy, so nothing shows ahead of the headline.
+                initial={reduceMotion ? false : { opacity: 0, y: 14 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.6, delay: 0.5, ease: [0.22, 1, 0.36, 1] }}
+                className="pointer-events-auto relative flex w-full flex-col items-start justify-center gap-3 py-7 px-6 md:pr-0 md:pl-10 lg:pb-[7%] lg:pl-12 lg:pt-0 xl:pl-24"
+              >
                 {stack.label && <span className="text-[13px] leading-tight text-muted-foreground font-semibold">{stack.label}</span>}
                 <div className="grid w-full min-w-0" aria-live="polite">
                   <AnimatePresence initial={false} mode="popLayout">
@@ -394,7 +403,7 @@ export const ComponentWall = forwardRef<HTMLElement, ComponentWallProps>(
                     </motion.ul>
                   </AnimatePresence>
                 </div>
-              </div>
+              </motion.div>
             </div>
           )}
         </div>
