@@ -38,10 +38,12 @@ export const WALL_ITEMS: ComponentWallItem[] = [
 
 export const WALL_AVATARS = [12, 32, 47, 5, 58].map((n) => ({ src: `https://i.pravatar.cc/80?img=${n}`, alt: "" }));
 
-// What the library is built with — front-end only. Eight marks make three
-// batches of seven, each leaving a different one out and in a different
-// order, so every swap reads as a change. The marks are the images in
-// public/assets/tech-icons; the black Next.js disc inverts in dark.
+// What the library is built with — front-end only. Nine marks make three
+// batches of seven, each leaving two out and in a different order, so every
+// swap reads as a change. The marks are the images in public/assets/tech-icons;
+// the black Next.js disc and the shadcn slashes invert in dark. shadcn is
+// credited because the registry format and the CLI every install runs through
+// are theirs.
 const tool = (name: string, file: string, className?: string): StackTool => ({
   name,
   icon: <img src={`/assets/tech-icons/${file}`} alt="" className={className} />,
@@ -55,9 +57,10 @@ const redux = tool("Redux", "redux.png");
 const tailwind = tool("Tailwind CSS", "tailwind.png");
 const css = tool("CSS", "css.png");
 const html = tool("HTML", "HTML.png");
+const shadcn = tool("shadcn/ui", "shadcn.svg", "dark:invert");
 
 export const WALL_STACK: StackTool[][] = [
-  [react, next, ts, js, tailwind, css, html],
-  [tailwind, css, html, react, redux, ts, next],
-  [js, ts, react, redux, next, tailwind, html],
+  [react, next, shadcn, ts, tailwind, css, html],
+  [shadcn, tailwind, css, html, react, redux, ts],
+  [js, ts, react, next, shadcn, tailwind, html],
 ];

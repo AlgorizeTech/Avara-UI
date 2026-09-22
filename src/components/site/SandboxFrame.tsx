@@ -44,6 +44,7 @@ export function SandboxFrame({
   maxHeight?: number;
   /**
    * Fills the container instead of auto-sizing to the height the demo reports.
+   * A demo taller than the container is scaled down to fit it, never scrolled.
    * Only the iframe's box changes — nothing goes through the URL, which would
    * reload it — so entering fullscreen resizes the live demo instead of
    * throwing it away and loading a second one.
@@ -52,7 +53,10 @@ export function SandboxFrame({
   className?: string;
 }) {
   const iframeRef = useRef<HTMLIFrameElement>(null);
+  const wrapperRef = useRef<HTMLDivElement>(null);
   const [contentHeight, setContentHeight] = useState(0);
+  // The container's box, for fill mode: the frame is fitted to it.
+  const [fillSize, setFillSize] = useState({ width: 0, height: 0 });
   const [ready, setReady] = useState(false);
   const propsRef = useRef(sandboxProps);
   propsRef.current = sandboxProps;
@@ -133,6 +137,31 @@ export function SandboxFrame({
     return () => window.removeEventListener("message", onMessage);
   }, []);
 
+  useEffect(() => {
+    const wrapper = wrapperRef.current;
+    if (!fill || !wrapper) return;
+    const measure = () =>
+      setFillSize({ width: wrapper.clientWidth, height: wrapper.clientHeight });
+    measure();
+    const observer = new ResizeObserver(measure);
+    observer.observe(wrapper);
+    return () => observer.disconnect();
+  }, [fill]);
+
+  // Fill mode: the screen is the ceiling, not a floor. A demo taller than the
+  // container would otherwise scroll inside the frame, so it is scaled down
+  // until its full height is exactly the container's — the iframe keeps the
+  // real screen width as its viewport (so breakpoints match the screen) and
+  // is letterboxed horizontally by the same factor. `min-h-screen` in the
+  // document then equals the content height, so nothing scrolls either way.
+  const fillScale =
+    fill && fillSize.height > 0 && contentHeight > fillSize.height
+      ? fillSize.height / contentHeight
+      : 1;
+  const fillFrameHeight =
+    fillSize.height > 0 ? Math.ceil(fillSize.height / fillScale) : undefined;
+  const fillFrameLeft = Math.round((fillSize.width * (1 - fillScale)) / 2);
+
   // The iframe's own viewport always covers the whole card, and grows past it
   // for taller demos. The sandbox document centres the demo in that viewport
   // and lays fixed overlays (a modal, the toast stack) against it — so a lone
@@ -148,8 +177,25 @@ export function SandboxFrame({
   const floorHeight = Math.ceil(minHeight / safeScale);
   const frameHeight = Math.max(floorHeight, contentHeight);
 
+  const frameStyle: React.CSSProperties = fill
+    ? {
+        left: fillFrameLeft,
+        width: fillSize.width > 0 ? fillSize.width : "100%",
+        height: fillFrameHeight ?? "100%",
+        transform: fillScale !== 1 ? `scale(${fillScale})` : undefined,
+        transformOrigin: "top left",
+      }
+    : {
+        left: 0,
+        width: viewportWidth == null ? "100%" : `${viewportWidth}px`,
+        height: frameHeight,
+        transform: scale !== 1 ? `scale(${scale})` : undefined,
+        transformOrigin: "top left",
+      };
+
   return (
     <div
+      ref={wrapperRef}
       className={cn(
         "relative w-full overflow-hidden",
         !fill && "transition-[height] duration-300 ease-out",
@@ -164,15 +210,10 @@ export function SandboxFrame({
         title={`${name} sandbox preview`}
         onLoad={postState}
         className={cn(
-          "absolute top-0 left-0 block border-0 transition-opacity duration-300",
+          "absolute top-0 block border-0 transition-opacity duration-300",
           ready ? "opacity-100" : "opacity-0",
         )}
-        style={{
-          width: fill || viewportWidth == null ? "100%" : `${viewportWidth}px`,
-          height: fill ? "100%" : frameHeight,
-          transform: !fill && scale !== 1 ? `scale(${scale})` : undefined,
-          transformOrigin: "top left",
-        }}
+        style={frameStyle}
       />
       {/* Loading state: covers the frame until the demo has truly mounted, so
           no unstyled or partially-loaded markup is ever visible. */}

@@ -541,7 +541,7 @@ function HeroSection() {
 				heading="Build interactive {word}."
 				headingWords={["interfaces", "components", "experiences", "animations", "dashboards"]}
 				accent="interactive"
-				description="A meticulous library of React components and interactive blocks, engineered for seamless performance with Tailwind CSS, TypeScript, GSAP and Framer Motion."
+				description="A meticulous library of React components and interactive blocks, engineered for seamless performance with Tailwind CSS, TypeScript, GSAP and Framer Motion — delivered through the shadcn CLI."
 				install={{ command: "npx shadcn@latest add @algorize-ui/{item}" }}
 				primaryAction={{ label: "Browse components", href: "/docs/nextjs/all-components" }}
 				secondaryAction={{ label: "Star on GitHub", href: links.github, icon: <GitHubIcon size={16} /> }}
