@@ -6,11 +6,13 @@ import {
   ArrowRight,
   Building,
   Check,
+  CheckCircle2,
   Code2,
   HelpCircle,
   Minus,
   PenTool,
   Rocket,
+  Sparkles,
   Star,
   Users,
   Zap,
@@ -20,6 +22,8 @@ import { type PricingColor, getThemeStyles } from "./pricing-theme";
 import { ToggleGroup, ToggleGroupItem } from "./ToggleGroupBlock";
 export type PricingVariant =
   | "default"
+  | "dot-pattern"
+  | "scale"
   | "elegant"
   | "minimal"
   | "bordered";
@@ -133,12 +137,18 @@ export function PricingCards({
   variant = "default",
   color = "primary",
   counting = true,
+  title,
+  subtitle,
+  badgeText,
   linkComponent: LinkComp = "a",
 }: {
   data: PricingData;
   variant?: PricingVariant;
   color?: PricingColor;
   counting?: boolean;
+  title?: string;
+  subtitle?: string;
+  badgeText?: string;
   linkComponent?: React.ElementType;
 }) {
   const [activeTab, setActiveTab] = useState(data.tabs[0]?.id || "monthly");
@@ -147,8 +157,83 @@ export function PricingCards({
   const currentTab =
     data.tabs.find((t) => t.id === activeTab) || data.tabs[0];
 
+  if (variant === "dot-pattern") {
+    const convertedPlans: DotPatternPlanItem[] = currentTab.plans.map((p) => ({
+      id: p.id,
+      badgeTag: p.title.toUpperCase(),
+      price: p.price.startsWith("$") ? p.price : `$${p.price}`,
+      period: p.period ? `/${p.period}` : undefined,
+      description: p.subtitle,
+      buttonText: p.buttonText,
+      featured: p.popular,
+      featuresTitle: "What's included:",
+      features: p.features,
+    }));
+    return (
+      <PricingDotPattern
+        title={title}
+        subtitle={subtitle}
+        badgeText={badgeText}
+        plans={convertedPlans}
+        color={color}
+        counting={counting}
+        linkComponent={LinkComp}
+      />
+    );
+  }
+
+  if (variant === "scale") {
+    const scaleFormattedPlans: Record<string, ScalePlanItem[]> = {};
+    data.tabs.forEach((tab) => {
+      scaleFormattedPlans[tab.id] = tab.plans.map((p) => ({
+        id: p.id,
+        title: p.title,
+        subtitle: p.subtitle,
+        price: p.price.startsWith("$") ? p.price : `$${p.price}`,
+        period: p.period ? `/${p.period}` : undefined,
+        buttonText: p.buttonText,
+        popular: p.popular,
+        icon: p.icon,
+        featuresTitle: "WHAT'S INCLUDED:",
+        features: p.features,
+      }));
+    });
+    return (
+      <PricingScale
+        title={title}
+        subtitle={subtitle}
+        badgeText={badgeText}
+        plans={scaleFormattedPlans}
+        color={color}
+        counting={counting}
+        linkComponent={LinkComp}
+      />
+    );
+  }
+
   return (
     <div className="w-full max-w-6xl mx-auto py-8 sm:py-12" style={style}>
+      {(title || subtitle || badgeText) && (
+        <div className="text-center space-y-3 sm:space-y-4 max-w-2xl mx-auto mb-8 sm:mb-12">
+          {badgeText && (
+            <div className={cn("inline-flex items-center gap-1.5 px-3.5 py-1 rounded-full border text-[11px] font-semibold tracking-wide shadow-2xs transition-colors", theme.bgSoft, theme.border)}>
+              <Sparkles className={cn("w-3.5 h-3.5 fill-current", theme.text)} />
+              <span>{badgeText}</span>
+            </div>
+          )}
+          {title && (
+            <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold tracking-tight text-foreground leading-[1.15]">
+              {title}
+            </h2>
+          )}
+          {subtitle && (
+            <p className="text-sm sm:text-base text-muted-foreground leading-relaxed">
+              {subtitle}
+            </p>
+          )}
+        </div>
+      )}
+
       {data.tabs.length > 1 && (
         <div className="flex justify-center mb-8 sm:mb-12">
           {/* Library ToggleGroup; an empty value (re-clicking the active
@@ -858,9 +943,12 @@ export function PricingTypographic({
 
   return (
     <section
-      style={style}
+      style={{
+        ...style,
+        backgroundColor: "color-mix(in srgb, var(--pricing-accent, currentColor) 3%, var(--background, transparent))",
+      }}
       className={cn(
-        "py-8 sm:py-16 md:py-24 px-4 sm:px-6 bg-background text-foreground font-sans antialiased overflow-hidden rounded-3xl border border-border w-full transition-colors duration-300 relative",
+        "py-8 sm:py-16 md:py-24 px-4 sm:px-6 text-foreground font-sans antialiased overflow-hidden rounded-3xl border border-border w-full transition-colors duration-300 relative",
         "selection:bg-[var(--pricing-accent)] selection:text-[var(--pricing-on)]",
       )}
     >
@@ -1832,6 +1920,249 @@ export function PricingScale({
             <span>{footerCtaText}</span>
             <ArrowRight className="w-4 h-4" />
           </LinkComp>
+        </div>
+      </div>
+    </section>
+  );
+}
+
+// ==========================================
+// 8. PRICING DOT PATTERN (DOT MATRIX GRADIENT CARDS)
+// ==========================================
+export interface DotPatternPlanItem {
+  id: string;
+  badgeTag: string;
+  price: string;
+  period?: string;
+  description: string;
+  buttonText: string;
+  featured?: boolean;
+  featuresTitle?: string;
+  features: string[];
+  ctaHref?: string;
+}
+
+export interface PricingDotPatternProps {
+  badgeText?: string;
+  title?: string;
+  subtitle?: string;
+  plans?: DotPatternPlanItem[];
+  color?: PricingColor;
+  counting?: boolean;
+  linkComponent?: React.ElementType;
+}
+
+const defaultDotPatternPlans: DotPatternPlanItem[] = [
+  {
+    id: "basic",
+    badgeTag: "BASIC",
+    price: "$199",
+    period: "/month",
+    description: "Basic tools for content generation. Best for one just trying out.",
+    buttonText: "Get Started",
+    featured: false,
+    featuresTitle: "What's included:",
+    features: [
+      "1 project",
+      "Up to 3 pages",
+      "Email support",
+      "Basic analytics",
+    ],
+  },
+  {
+    id: "starter",
+    badgeTag: "STARTER",
+    price: "$299",
+    period: "/month",
+    description: "Advanced tools for consistent content generation. Best for one getting started.",
+    buttonText: "Get Started",
+    featured: true,
+    featuresTitle: "What's included:",
+    features: [
+      "1 project",
+      "Up to 3 pages",
+      "Email support",
+      "Basic analytics",
+    ],
+  },
+  {
+    id: "pro",
+    badgeTag: "PRO",
+    price: "$599",
+    period: "/month",
+    description: "Advanced tools for consistent content generation, unlimited credits. Best for teams",
+    buttonText: "Get Started",
+    featured: false,
+    featuresTitle: "What's included:",
+    features: [
+      "1 project",
+      "Up to 3 pages",
+      "Email support",
+      "Basic analytics",
+    ],
+  },
+];
+
+export function PricingDotPattern({
+  badgeText = "Pricing",
+  title = "Simple, transparent pricing that helps you scale.",
+  subtitle = "Select any plan that suits you and kick start your content creation journey with us",
+  plans = defaultDotPatternPlans,
+  color = "primary",
+  counting = true,
+  linkComponent: LinkComp = "a",
+}: PricingDotPatternProps = {}) {
+  const { theme, style } = getThemeStyles(color);
+
+  return (
+    <section
+      className="w-full bg-slate-50/70 dark:bg-zinc-950/70 py-12 sm:py-20 px-4 sm:px-6 font-sans transition-colors duration-300"
+      style={style}
+    >
+      <div className="max-w-6xl mx-auto space-y-12 sm:space-y-16">
+        {/* Header */}
+        <div className="text-center space-y-3 sm:space-y-4 max-w-2xl mx-auto">
+          {badgeText && (
+            <div className={cn("inline-flex items-center gap-1.5 px-3.5 py-1 rounded-full border text-[11px] font-semibold tracking-wide shadow-2xs transition-colors", theme.bgSoft, theme.border)}>
+              <Sparkles className={cn("w-3.5 h-3.5 fill-current", theme.text)} />
+              <span>{badgeText}</span>
+            </div>
+          )}
+          <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold tracking-tight text-slate-900 dark:text-white leading-[1.15]">
+            {title}
+          </h2>
+          <p className="text-sm sm:text-base text-slate-500 dark:text-zinc-400 max-w-md mx-auto leading-relaxed">
+            {subtitle}
+          </p>
+        </div>
+
+        {/* Cards Grid */}
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 sm:gap-8 items-stretch">
+          {plans.map((plan) => {
+            const isFeatured = plan.featured;
+            return (
+              <div
+                key={plan.id}
+                className={cn(
+                  "relative rounded-2xl p-6 sm:p-8 flex flex-col justify-between transition-all duration-300 bg-white/60 dark:bg-zinc-900/50 backdrop-blur-xs shadow-none overflow-hidden",
+                  isFeatured
+                    ? cn("border", theme.border)
+                    : "border border-slate-200/90 dark:border-zinc-800/90"
+                )}
+                style={isFeatured ? { borderColor: "color-mix(in srgb, var(--pricing-accent, currentColor) 10%, transparent)" } : undefined}
+              >
+                {/* Dot Matrix Background Pattern positioned at top header section matching sample image */}
+                <div
+                  className={cn(
+                    "absolute top-0 left-0 right-0 h-48 pointer-events-none transition-opacity",
+                    isFeatured
+                      ? cn("opacity-75 dark:opacity-55", theme.text)
+                      : "opacity-35 dark:opacity-20 text-slate-400 dark:text-zinc-600"
+                  )}
+                  style={{
+                    backgroundImage: `radial-gradient(currentColor 1.5px, transparent 1.5px)`,
+                    backgroundSize: "13px 13px",
+                    maskImage: "linear-gradient(to bottom, rgba(0,0,0,1) 0%, rgba(0,0,0,0.85) 60%, rgba(0,0,0,0) 100%)",
+                    WebkitMaskImage: "linear-gradient(to bottom, rgba(0,0,0,1) 0%, rgba(0,0,0,0.85) 60%, rgba(0,0,0,0) 100%)",
+                  }}
+                />
+
+                {/* 4 Corner Angle Brackets following rounded card edges */}
+                <div
+                  className={cn(
+                    "absolute top-0 left-0 w-3.5 h-3.5 border-t-2 border-l-2 rounded-tl-xl pointer-events-none transition-colors",
+                    isFeatured ? "border-[var(--pricing-accent)]" : "border-slate-400/80 dark:border-zinc-600"
+                  )}
+                />
+                <div
+                  className={cn(
+                    "absolute top-0 right-0 w-3.5 h-3.5 border-t-2 border-r-2 rounded-tr-xl pointer-events-none transition-colors",
+                    isFeatured ? "border-[var(--pricing-accent)]" : "border-slate-400/80 dark:border-zinc-600"
+                  )}
+                />
+                <div
+                  className={cn(
+                    "absolute bottom-0 left-0 w-3.5 h-3.5 border-b-2 border-l-2 rounded-bl-xl pointer-events-none transition-colors",
+                    isFeatured ? "border-[var(--pricing-accent)]" : "border-slate-400/80 dark:border-zinc-600"
+                  )}
+                />
+                <div
+                  className={cn(
+                    "absolute bottom-0 right-0 w-3.5 h-3.5 border-b-2 border-r-2 rounded-br-xl pointer-events-none transition-colors",
+                    isFeatured ? "border-[var(--pricing-accent)]" : "border-slate-400/80 dark:border-zinc-600"
+                  )}
+                />
+
+                {/* Card Content */}
+                <div className="relative z-10 flex-1 flex flex-col justify-between">
+                  <div>
+                    {/* Badge Tag */}
+                    <span
+                      className={cn(
+                        "text-[12px] font-bold tracking-widest uppercase block mb-5",
+                        isFeatured ? theme.text : "text-slate-800 dark:text-zinc-200"
+                      )}
+                    >
+                      {plan.badgeTag}
+                    </span>
+
+                    {/* Price */}
+                    <div className="flex items-baseline gap-1 mb-3">
+                      <span className="text-4xl sm:text-5xl font-bold tracking-tight text-slate-900 dark:text-white">
+                        <AnimatedPrice value={plan.price} counting={counting} />
+                      </span>
+                      {plan.period && (
+                        <span className="text-xs sm:text-sm text-slate-500 dark:text-zinc-400 font-medium">
+                          {plan.period}
+                        </span>
+                      )}
+                    </div>
+
+                    {/* Description */}
+                    <p className="text-xs sm:text-sm text-slate-600 dark:text-zinc-400 leading-relaxed mb-8 min-h-[44px]">
+                      {plan.description}
+                    </p>
+
+                    {/* Button */}
+                    <LinkComp
+                      href={plan.ctaHref || "#"}
+                      className={cn(
+                        "w-full py-3.5 px-4 rounded-xl text-xs sm:text-sm font-semibold flex items-center justify-center gap-2 shadow-md hover:opacity-95 transition-all duration-200 cursor-pointer mb-10 text-white",
+                        isFeatured
+                          ? theme.bg
+                          : "bg-gradient-to-b from-slate-700 to-slate-800 dark:from-zinc-700 dark:to-zinc-800"
+                      )}
+                    >
+                      <span>{plan.buttonText}</span>
+                      <ArrowRight className="w-4 h-4 shrink-0" />
+                    </LinkComp>
+
+                    {/* Features List Header */}
+                    {plan.featuresTitle && (
+                      <h4 className="text-[11px] font-bold tracking-wider text-slate-900 dark:text-white uppercase mb-4">
+                        {plan.featuresTitle}
+                      </h4>
+                    )}
+
+                    {/* Features Item */}
+                    <ul className="space-y-3.5">
+                      {plan.features.map((feature, idx) => (
+                        <li key={idx} className="flex items-center gap-3 text-xs sm:text-sm text-slate-600 dark:text-zinc-300">
+                          <CheckCircle2
+                            className={cn(
+                              "w-4 h-4 shrink-0 fill-current",
+                              isFeatured ? theme.text : "text-slate-700 dark:text-zinc-400"
+                            )}
+                          />
+                          <span>{feature}</span>
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+                </div>
+              </div>
+            );
+          })}
         </div>
       </div>
     </section>

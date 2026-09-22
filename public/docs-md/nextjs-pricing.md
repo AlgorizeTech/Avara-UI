@@ -2,7 +2,7 @@
 
 A collection of highly-converting, responsive pricing sections. Whether you need traditional tiered subscription cards, a detailed comparison table, or an interactive GSAP-powered quote builder, these components are designed to maximize conversions.
 
-`Pricing.tsx` exports seven independent layouts — `PricingCards`, `PricingScale`, `PricingBuilder`, `PricingTable`, `PricingSlider`, `PricingTypographic` and `PricingPlans` — that share one color engine. Pick the layout that matches your funnel, then use the theme control above the gallery to see the accent cascade through badges, gradients, glows and buttons.
+`Pricing.tsx` exports eight independent layouts — `PricingCards`, `PricingScale`, `PricingDotPattern`, `PricingBuilder`, `PricingTable`, `PricingSlider`, `PricingTypographic` and `PricingPlans` — that share one color engine. Pick the layout that matches your funnel, then use the theme control above the gallery to see the accent cascade through badges, gradients, glows and buttons.
 
 export const pricingData = `const data: PricingData = {
   tabs: [
@@ -334,6 +334,52 @@ const services: PricingServiceOption[] = [
 ];
 
 export default function InteractiveChecklistPricing() {
+  return (
+    
+  );
+}`;
+
+export const dotPatternData = `const dotPatternPlans = [
+  {
+    id: "basic",
+    badgeTag: "BASIC",
+    price: "$199",
+    period: "/month",
+    description: "Basic tools for content generation. Best for one just trying out.",
+    buttonText: "Get Started",
+    featured: false,
+    featuresTitle: "What's included:",
+    features: ["1 project", "Up to 3 pages", "Email support", "Basic analytics"],
+  },
+  {
+    id: "starter",
+    badgeTag: "STARTER",
+    price: "$299",
+    period: "/month",
+    description: "Advanced tools for consistent content generation. Best for one getting started.",
+    buttonText: "Get Started",
+    featured: true,
+    featuresTitle: "What's included:",
+    features: ["1 project", "Up to 3 pages", "Email support", "Basic analytics"],
+  },
+  {
+    id: "pro",
+    badgeTag: "PRO",
+    price: "$599",
+    period: "/month",
+    description: "Advanced tools for consistent content generation, unlimited credits. Best for teams",
+    buttonText: "Get Started",
+    featured: false,
+    featuresTitle: "What's included:",
+    features: ["1 project", "Up to 3 pages", "Email support", "Basic analytics"],
+  },
+];`;
+
+export const usageDotPattern = `import { PricingDotPattern, type DotPatternPlanItem } from "@/components/custom/blocks/Pricing";
+
+${dotPatternData}
+
+export default function DotPatternPricing() {
   return (
     
   );
