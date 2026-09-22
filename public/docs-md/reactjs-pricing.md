@@ -375,14 +375,13 @@ export const dotPatternData = `const dotPatternPlans = [
   },
 ];`;
 
-export const usageDotPattern = `import { PricingDotPattern, type DotPatternPlanItem } from "@/components/custom/blocks/Pricing";
+export const usageDotPattern = `import { PricingCards, type PricingData } from "@/components/custom/blocks/Pricing";
 
-${dotPatternData}
+${pricingData}
 
 export default function DotPatternPricing() {
-  return (
-    
-  );
+  // Use variant="dot-pattern" to enable the dot matrix layout
+  return ;
 }`;
 
 export const scaleData = `const scalePlansData = {
@@ -466,14 +465,13 @@ export const scaleData = `const scalePlansData = {
   ],
 };`;
 
-export const usageScale = `import { PricingScale, type ScalePlanItem } from "@/components/custom/blocks/Pricing";
+export const usageScale = `import { PricingCards, type PricingData } from "@/components/custom/blocks/Pricing";
 
-${scaleData}
+${pricingData}
 
 export default function ScalablePricing() {
-  return (
-    
-  );
+  // Use variant="scale" to enable the interactive split layout
+  return ;
 }`;
 
 ## Installation
@@ -506,13 +504,35 @@ npx shadcn@latest add @algorize-ui/pricing
 
           variant
 
-            "default" | "premium" | "elegant" | "minimal" | "bordered"
+            "default" | "dot-pattern" | "scale" | "elegant" | "minimal" | "bordered"
 
           "default"
 
-          Applies overarching structural layouts. premium adds
-          heavy shadows and gradients to popular cards, while{" "}
-          elegant uses soft border-top accents.
+          Applies structural card layouts. dot-pattern renders dot-matrix header cards, scale renders dual-panel scaling cards, bordered uses neo-brutalist edges, and elegant uses soft border-top accents.
+
+          title
+
+          string
+
+          undefined
+
+          Optional section header title text displayed above the pricing cards.
+
+          subtitle
+
+          string
+
+          undefined
+
+          Optional subheader text displayed underneath the main title.
+
+          badgeText
+
+          string
+
+          undefined
+
+          Optional top badge tag text rendered above the section title.
 
           color
 

@@ -183,7 +183,10 @@ export function PricingCards({
   }
 
   if (variant === "scale") {
-    const scaleFormattedPlans: Record<string, ScalePlanItem[]> = {};
+    const scaleFormattedPlans: { monthly: ScalePlanItem[]; annually: ScalePlanItem[] } & Record<string, ScalePlanItem[]> = {
+      monthly: [],
+      annually: [],
+    };
     data.tabs.forEach((tab) => {
       scaleFormattedPlans[tab.id] = tab.plans.map((p) => ({
         id: p.id,
