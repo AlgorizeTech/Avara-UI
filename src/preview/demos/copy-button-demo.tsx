@@ -42,7 +42,12 @@ export default function CopyButtonDemo({
 
   if (example === "sizes") {
     return (
-      <div className="w-full flex flex-wrap items-end justify-center gap-4 min-h-[300px] px-6 relative z-10">
+      /* No min-height here, unlike the examples above: `items-end` gives the
+         three sizes a common baseline, and inside a 300px box it would pin
+         that baseline to the box's bottom edge — leaving the row sitting low
+         in the preview. The row hugs its tallest item instead, and the
+         sandbox stage centres it. */
+      <div className="w-full flex flex-wrap items-end justify-center gap-4 px-6 relative z-10">
         {SIZES.map((s) => (
           <div key={s} className="flex flex-col items-center gap-3">
             <CopyButton value={`size="${s}"`} size={s} variant={variant} color={color} />

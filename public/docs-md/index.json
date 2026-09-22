@@ -1,6 +1,6 @@
 {
-  "generatedAt": "2026-09-22T08:00:39.902Z",
-  "totalFiles": 293,
+  "generatedAt": "2026-09-22T12:14:26.546Z",
+  "totalFiles": 283,
   "files": [
     {
       "name": "nextjs/3d-carousel",
@@ -159,12 +159,6 @@
       "originalMdx": "[framework]\\circular-text\\page.mdx"
     },
     {
-      "name": "nextjs/collage-hero",
-      "path": "/docs/nextjs-collage-hero.md",
-      "url": "/docs/nextjs/collage-hero",
-      "originalMdx": "[framework]\\collage-hero\\page.mdx"
-    },
-    {
       "name": "nextjs/collapsible",
       "path": "/docs/nextjs-collapsible.md",
       "url": "/docs/nextjs/collapsible",
@@ -321,12 +315,6 @@
       "originalMdx": "[framework]\\examples\\video-text\\page.mdx"
     },
     {
-      "name": "nextjs/fashion-hero",
-      "path": "/docs/nextjs-fashion-hero.md",
-      "url": "/docs/nextjs/fashion-hero",
-      "originalMdx": "[framework]\\fashion-hero\\page.mdx"
-    },
-    {
       "name": "nextjs/file-upload",
       "path": "/docs/nextjs-file-upload.md",
       "url": "/docs/nextjs/file-upload",
@@ -409,18 +397,6 @@
       "path": "/docs/nextjs-hero.md",
       "url": "/docs/nextjs/hero",
       "originalMdx": "[framework]\\hero\\page.mdx"
-    },
-    {
-      "name": "nextjs/hero-carousel",
-      "path": "/docs/nextjs-hero-carousel.md",
-      "url": "/docs/nextjs/hero-carousel",
-      "originalMdx": "[framework]\\hero-carousel\\page.mdx"
-    },
-    {
-      "name": "nextjs/honeycomb-hero",
-      "path": "/docs/nextjs-honeycomb-hero.md",
-      "url": "/docs/nextjs/honeycomb-hero",
-      "originalMdx": "[framework]\\honeycomb-hero\\page.mdx"
     },
     {
       "name": "nextjs/image-compare",
@@ -729,12 +705,6 @@
       "originalMdx": "[framework]\\support-dashboard\\page.mdx"
     },
     {
-      "name": "nextjs/support-hero",
-      "path": "/docs/nextjs-support-hero.md",
-      "url": "/docs/nextjs/support-hero",
-      "originalMdx": "[framework]\\support-hero\\page.mdx"
-    },
-    {
       "name": "nextjs/table",
       "path": "/docs/nextjs-table.md",
       "url": "/docs/nextjs/table",
@@ -1041,12 +1011,6 @@
       "originalMdx": "[framework]\\circular-text\\page.mdx"
     },
     {
-      "name": "reactjs/collage-hero",
-      "path": "/docs/reactjs-collage-hero.md",
-      "url": "/docs/reactjs/collage-hero",
-      "originalMdx": "[framework]\\collage-hero\\page.mdx"
-    },
-    {
       "name": "reactjs/collapsible",
       "path": "/docs/reactjs-collapsible.md",
       "url": "/docs/reactjs/collapsible",
@@ -1203,12 +1167,6 @@
       "originalMdx": "[framework]\\examples\\video-text\\page.mdx"
     },
     {
-      "name": "reactjs/fashion-hero",
-      "path": "/docs/reactjs-fashion-hero.md",
-      "url": "/docs/reactjs/fashion-hero",
-      "originalMdx": "[framework]\\fashion-hero\\page.mdx"
-    },
-    {
       "name": "reactjs/file-upload",
       "path": "/docs/reactjs-file-upload.md",
       "url": "/docs/reactjs/file-upload",
@@ -1291,18 +1249,6 @@
       "path": "/docs/reactjs-hero.md",
       "url": "/docs/reactjs/hero",
       "originalMdx": "[framework]\\hero\\page.mdx"
-    },
-    {
-      "name": "reactjs/hero-carousel",
-      "path": "/docs/reactjs-hero-carousel.md",
-      "url": "/docs/reactjs/hero-carousel",
-      "originalMdx": "[framework]\\hero-carousel\\page.mdx"
-    },
-    {
-      "name": "reactjs/honeycomb-hero",
-      "path": "/docs/reactjs-honeycomb-hero.md",
-      "url": "/docs/reactjs/honeycomb-hero",
-      "originalMdx": "[framework]\\honeycomb-hero\\page.mdx"
     },
     {
       "name": "reactjs/image-compare",
@@ -1609,12 +1555,6 @@
       "path": "/docs/reactjs-support-dashboard.md",
       "url": "/docs/reactjs/support-dashboard",
       "originalMdx": "[framework]\\support-dashboard\\page.mdx"
-    },
-    {
-      "name": "reactjs/support-hero",
-      "path": "/docs/reactjs-support-hero.md",
-      "url": "/docs/reactjs/support-hero",
-      "originalMdx": "[framework]\\support-hero\\page.mdx"
     },
     {
       "name": "reactjs/table",

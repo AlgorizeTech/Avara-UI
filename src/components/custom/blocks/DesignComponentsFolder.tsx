@@ -7,6 +7,22 @@ import {
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 
+// Folder silhouette in the 660×310 viewBox: tab on the left, body below.
+const FOLDER_PATH = `
+  M -8 8
+  C -8 3, -3 0, 8 0
+  L 330 0
+  C 347 0, 360 25, 372 45
+  C 380 58, 392 68, 408 68
+  L 638 68
+  C 644 68, 648 72, 648 80
+  L 620 302
+  C 620 307, 616 310, 610 310
+  L 30 310
+  C 24 310, 20 307, 20 302
+  Z
+`;
+
 export interface DesignComponentsFolderProps {
   color?: string;
   className?: string;
@@ -566,51 +582,33 @@ export function DesignComponentsFolder({
         </div>
 
         {/* ═══════════════════════════════════════════════
-           FOREGROUND BLUE FROSTED GLASS FOLDER BOX (+50PX HEIGHT, TIGHTER CORNERS)
+           FOREGROUND SOLID FOLDER BOX (+50PX HEIGHT, TIGHTER CORNERS)
            ═══════════════════════════════════════════════ */}
         <div className="absolute bottom-0 w-[90%] sm:w-[82%] md:w-[620px] lg:w-[720px] h-[210px] min-[420px]:h-[250px] min-[520px]:h-[290px] sm:h-[330px] md:h-[400px] lg:h-[440px] z-30 pointer-events-none">
           <div className="relative w-full h-full">
             {/* Folder Box */}
             <div className="absolute inset-0">
-              {/* Subtle backdrop blur clipped strictly within folder shape boundaries */}
-              <div 
-                className="absolute inset-0 backdrop-blur-[3px] pointer-events-none"
-                style={{ clipPath: "url(#folderShapeClip)" }}
-              />
               <svg
                 className="w-full h-full relative z-10"
                 viewBox="-10 0 660 310"
                 preserveAspectRatio="none"
               >
                 <defs>
-                  <clipPath id="folderShapeClip" clipPathUnits="objectBoundingBox">
-                    <path d="M -0.012,0.0258 C -0.012,0.0097 -0.004,0 0.012,0 L 0.500,0 C 0.525,0 0.545,0.0806 0.564,0.145 C 0.576,0.187 0.594,0.2193 0.618,0.2193 L 0.966,0.2193 C 0.975,0.2193 0.982,0.2322 0.982,0.258 L 0.939,0.9742 C 0.939,0.9903 0.933,1 0.924,1 L 0.045,1 C 0.036,1 0.030,0.9903 0.030,0.9742 Z" />
-                  </clipPath>
+                  {/* Fully opaque so the cards tucked behind the folder never show
+                      through; a faint white wash keeps the top-left highlight. */}
                   <linearGradient id="themeFolderGradient" x1="0%" y1="0%" x2="100%" y2="100%">
-                    <stop offset="0%" stopColor="var(--primary)" stopOpacity="0.75" />
-                    <stop offset="50%" stopColor="var(--primary)" stopOpacity="0.82" />
-                    <stop offset="100%" stopColor="var(--primary)" stopOpacity="0.9" />
+                    <stop offset="0%" stopColor="#ffffff" stopOpacity="0.14" />
+                    <stop offset="50%" stopColor="#ffffff" stopOpacity="0.06" />
+                    <stop offset="100%" stopColor="#ffffff" stopOpacity="0" />
                   </linearGradient>
                 </defs>
                 <path
-                  d="
-                    M -8 8
-                    C -8 3, -3 0, 8 0
-                    L 330 0
-                    C 347 0, 360 25, 372 45
-                    C 380 58, 392 68, 408 68
-                    L 638 68
-                    C 644 68, 648 72, 648 80
-                    L 620 302
-                    C 620 307, 616 310, 610 310
-                    L 30 310
-                    C 24 310, 20 307, 20 302
-                    Z
-                  "
-                  fill="url(#themeFolderGradient)"
+                  d={FOLDER_PATH}
+                  fill="var(--primary)"
                   stroke="rgba(255, 255, 255, 0.45)"
                   strokeWidth="2"
                 />
+                <path d={FOLDER_PATH} fill="url(#themeFolderGradient)" />
               </svg>
             </div>
 
