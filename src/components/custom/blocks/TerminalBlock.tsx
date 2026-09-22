@@ -236,7 +236,7 @@ export const TerminalBlock = forwardRef<HTMLDivElement, TerminalBlockProps>(
             {language && (
               <span
                 className={cn(
-                  "px-2 py-1 rounded-md text-[10px] font-bold uppercase tracking-wider",
+                  "px-2 py-1 rounded-md text-[10px] font-semibold uppercase tracking-wider",
                   theme.bg,
                   theme.border,
                   "border",

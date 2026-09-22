@@ -61,7 +61,7 @@ export function CSSExportDialog() {
               </div>
 
               <div>
-                <Dialog.Title className="text-lg font-bold tracking-tight text-foreground">
+                <Dialog.Title className="text-lg font-semibold tracking-tight text-foreground">
                   Export Theme Variables
                 </Dialog.Title>
                 <Dialog.Description className="text-xs sm:text-sm text-muted-foreground mt-0.5 leading-relaxed">

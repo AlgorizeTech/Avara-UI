@@ -403,7 +403,7 @@ export function SquircleCarousel({
                     {previewText && (
                         <button
                             type="button"
-                            className="px-4 py-1.5 rounded-lg text-xs font-bold tracking-wider text-primary bg-primary/10 hover:bg-primary/20 transition-colors uppercase cursor-pointer"
+                            className="px-4 py-1.5 rounded-lg text-xs font-semibold tracking-wider text-primary bg-primary/10 hover:bg-primary/20 transition-colors uppercase cursor-pointer"
                         >
                             {previewText}
                         </button>
@@ -412,7 +412,7 @@ export function SquircleCarousel({
                     {ctaText && (
                         <button
                             type="button"
-                            className="px-4 py-1.5 rounded-lg text-xs font-bold tracking-wider text-primary-foreground bg-primary hover:bg-primary/90 shadow-sm transition-all cursor-pointer flex items-center gap-1.5"
+                            className="px-4 py-1.5 rounded-lg text-xs font-semibold tracking-wider text-primary-foreground bg-primary hover:bg-primary/90 shadow-sm transition-all cursor-pointer flex items-center gap-1.5"
                         >
                             <span>🔒</span>
                             <span>{ctaText}</span>

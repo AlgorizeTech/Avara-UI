@@ -293,7 +293,7 @@ export function Installation({
               <>The component</>
             )}{" "}
             is written into your project. Copy any snippet from a{" "}
-            <strong className="font-bold">Usage</strong> tab above and it runs.
+            <strong className="font-semibold">Usage</strong> tab above and it runs.
           </p>
         </Step>
 

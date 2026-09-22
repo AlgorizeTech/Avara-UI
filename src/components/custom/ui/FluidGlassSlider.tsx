@@ -161,7 +161,7 @@ export default function FluidGlassSlider({ slides, className }: Props) {
             <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/30 to-black/40"></div>
 
             <div className="relative z-10 w-full">
-              <h2 className="text-3xl md:text-5xl lg:text-[4rem] font-bold leading-[1.1] mb-8 md:mb-14 tracking-tight max-w-4xl drop-shadow-xl">
+              <h2 className="text-3xl md:text-5xl lg:text-[4rem] font-semibold leading-[1.1] mb-8 md:mb-14 tracking-tight max-w-4xl drop-shadow-xl">
                 {slide.title}
               </h2>
               <p className="text-[10px] md:text-[11px] uppercase tracking-[0.2em] font-semibold text-gray-300 drop-shadow-md">

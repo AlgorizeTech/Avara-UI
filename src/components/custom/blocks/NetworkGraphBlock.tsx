@@ -131,13 +131,13 @@ export const NetworkGraph = React.forwardRef<HTMLDivElement, NetworkGraphProps>(
                     className="w-full h-full object-cover"
                   />
                 ) : (
-                  <span className="text-xs sm:text-sm font-bold text-muted-foreground uppercase">
+                  <span className="text-xs sm:text-sm font-semibold text-muted-foreground uppercase">
                     {centerNode.fallback}
                   </span>
                 )}
               </div>
               {centerNode.label && (
-                <div className="absolute top-[calc(100%+10px)] sm:top-[calc(100%+14px)] left-1/2 -translate-x-1/2 whitespace-nowrap px-3 py-1 sm:py-1.5 rounded-full bg-primary text-primary-foreground text-[10px] sm:text-xs font-bold shadow-sm z-50">
+                <div className="absolute top-[calc(100%+10px)] sm:top-[calc(100%+14px)] left-1/2 -translate-x-1/2 whitespace-nowrap px-3 py-1 sm:py-1.5 rounded-full bg-primary text-primary-foreground text-[10px] sm:text-xs font-semibold shadow-sm z-50">
                   {centerNode.label}
                 </div>
               )}
@@ -247,7 +247,7 @@ function OrbitRing({
                       className="w-full h-full object-cover"
                     />
                   ) : (
-                    <span className="text-[10px] sm:text-xs font-bold text-muted-foreground uppercase tracking-wider">
+                    <span className="text-[10px] sm:text-xs font-semibold text-muted-foreground uppercase tracking-wider">
                       {node.fallback}
                     </span>
                   )}

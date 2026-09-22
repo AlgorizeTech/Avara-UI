@@ -181,7 +181,7 @@ const StackCard: React.FC<{
               </div>
             )}
             <div>
-              <h3 className="text-lg sm:text-xl md:text-2xl font-bold tracking-tight text-foreground">
+              <h3 className="text-lg sm:text-xl md:text-2xl font-semibold tracking-tight text-foreground">
                 {item.title}
               </h3>
               {item.badge && (
@@ -384,7 +384,7 @@ export const StickyScrollStack = React.forwardRef<
                   <button
                     onClick={onHeaderButtonClick}
                     type="button"
-                    className="inline-flex items-center justify-center gap-2 px-6 py-3.5 rounded-2xl font-bold text-sm text-primary-foreground dark:text-zinc-900 bg-[var(--theme-color,var(--primary))] hover:opacity-90 shadow-lg hover:shadow-xl transition-all duration-200 cursor-pointer active:scale-95"
+                    className="inline-flex items-center justify-center gap-2 px-6 py-3.5 rounded-2xl font-semibold text-sm text-primary-foreground dark:text-zinc-900 bg-[var(--theme-color,var(--primary))] hover:opacity-90 shadow-lg hover:shadow-xl transition-all duration-200 cursor-pointer active:scale-95"
                   >
                     <span>{headerButtonText}</span>
                     <ArrowRight className="w-4 h-4" />

@@ -450,7 +450,7 @@ export function UserGraph({
                   {isSelected && (
                     isTopHalf ? (
                       <div className="absolute bottom-full mb-1.5 sm:mb-2 flex flex-col items-center pointer-events-none drop-shadow-md">
-                        <div className="px-2 py-0.5 rounded-md bg-primary text-primary-foreground text-[9px] font-bold whitespace-nowrap shadow-md">
+                        <div className="px-2 py-0.5 rounded-md bg-primary text-primary-foreground text-[9px] font-semibold whitespace-nowrap shadow-md">
                           {tool.name}
                         </div>
                         <div className="w-0 h-0 border-x-[5px] border-x-transparent border-t-[5px] border-t-primary -mt-[1px]" />
@@ -458,7 +458,7 @@ export function UserGraph({
                     ) : (
                       <div className="absolute top-full mt-1.5 sm:mt-2 flex flex-col items-center pointer-events-none drop-shadow-md">
                         <div className="w-0 h-0 border-x-[5px] border-x-transparent border-b-[5px] border-b-primary -mb-[1px]" />
-                        <div className="px-2 py-0.5 rounded-md bg-primary text-primary-foreground text-[9px] font-bold whitespace-nowrap shadow-md">
+                        <div className="px-2 py-0.5 rounded-md bg-primary text-primary-foreground text-[9px] font-semibold whitespace-nowrap shadow-md">
                           {tool.name}
                         </div>
                       </div>
@@ -680,7 +680,7 @@ export function UserGraph({
                   <span className="absolute bottom-0 right-0.5 size-3 rounded-full bg-emerald-500 ring-2 ring-slate-50 dark:ring-[#0c0e1a]" />
                 </div>
                 <div className="mt-1 text-center">
-                  <h4 className="text-xs font-bold text-foreground tracking-wide whitespace-nowrap">{orchestrator.name}</h4>
+                  <h4 className="text-xs font-semibold text-foreground tracking-wide whitespace-nowrap">{orchestrator.name}</h4>
                   <p className="text-[10px] font-medium text-muted-foreground whitespace-nowrap">{orchestrator.role}</p>
                 </div>
               </div>
@@ -704,7 +704,7 @@ export function UserGraph({
                       )}
                     >
                       {/* Sub-Agent Title Header ABOVE Avatar */}
-                      <span className={cn("text-[11px] sm:text-xs font-bold text-center leading-tight mb-2.5 whitespace-nowrap transition-colors", isHovered ? accentColor.textClass : "text-foreground")}>
+                      <span className={cn("text-[11px] sm:text-xs font-semibold text-center leading-tight mb-2.5 whitespace-nowrap transition-colors", isHovered ? accentColor.textClass : "text-foreground")}>
                         {agent.title}
                       </span>
 
@@ -747,7 +747,7 @@ export function UserGraph({
                               )}
                             >
                               {app.customText ? (
-                                <span className="text-[10px] font-bold font-mono uppercase tracking-tighter">
+                                <span className="text-[10px] font-semibold font-mono uppercase tracking-tighter">
                                   {app.customText}
                                 </span>
                               ) : (
@@ -799,7 +799,7 @@ export function UserGraph({
                 {/* Horizontally Centered Info Card */}
                 <div className="w-full flex items-center justify-between p-3.5 rounded-xl bg-white dark:bg-[#181c2b] border-2 border-transparent shadow-xs">
                   <div className="min-w-0 pr-2">
-                    <h4 className="text-xs sm:text-sm font-bold text-foreground truncate">{orchestrator.name}</h4>
+                    <h4 className="text-xs sm:text-sm font-semibold text-foreground truncate">{orchestrator.name}</h4>
                     <p className="text-[10px] sm:text-xs font-medium text-muted-foreground truncate">{orchestrator.role}</p>
                   </div>
                   <span className="px-2 py-0.5 sm:px-2.5 sm:py-1 rounded-md text-[10px] sm:text-[11px] font-semibold bg-emerald-50 text-emerald-600 border border-emerald-200 dark:bg-emerald-950/60 dark:text-emerald-400 dark:border-emerald-800 flex-shrink-0 whitespace-nowrap">
@@ -826,7 +826,7 @@ export function UserGraph({
                       {/* Left Avatar Column with Red Numbered Badge */}
                       <div className="relative flex-shrink-0">
                         {/* Red Numbered Badge */}
-                        <div className="absolute -top-1 -left-1 size-4 bg-rose-600 text-white font-bold text-[9px] rounded-xs flex items-center justify-center z-20 shadow-xs">
+                        <div className="absolute -top-1 -left-1 size-4 bg-rose-600 text-white font-semibold text-[9px] rounded-xs flex items-center justify-center z-20 shadow-xs">
                           {idx + 1}
                         </div>
 
@@ -868,7 +868,7 @@ export function UserGraph({
                       >
                         {/* Card Header Row */}
                         <div className="flex items-center justify-between gap-1.5">
-                          <h5 className={cn("text-xs sm:text-sm font-bold truncate", isActive ? accentColor.textClass : "text-foreground")}>
+                          <h5 className={cn("text-xs sm:text-sm font-semibold truncate", isActive ? accentColor.textClass : "text-foreground")}>
                             {agent.title}
                           </h5>
                           <span className="text-[9px] sm:text-[10px] font-mono font-semibold uppercase text-muted-foreground tracking-wider flex-shrink-0 whitespace-nowrap">
@@ -887,7 +887,7 @@ export function UserGraph({
                               <div
                                 key={app.id}
                                 className={cn(
-                                  "size-6 sm:size-7 rounded-md flex items-center justify-center border text-[9px] sm:text-[10px] font-bold shadow-2xs transition-transform group-hover:scale-105 flex-shrink-0",
+                                  "size-6 sm:size-7 rounded-md flex items-center justify-center border text-[9px] sm:text-[10px] font-semibold shadow-2xs transition-transform group-hover:scale-105 flex-shrink-0",
                                   app.bgColor,
                                   app.textColor,
                                   app.borderColor || "border-border"

@@ -594,7 +594,7 @@ export function HeartSignal({
             />
           </div>
           <div className="flex items-baseline gap-1">
-            <span className="text-sm sm:text-base font-bold tracking-tight text-zinc-900 dark:text-zinc-50 leading-none">
+            <span className="text-sm sm:text-base font-semibold tracking-tight text-zinc-900 dark:text-zinc-50 leading-none">
               {bpm}
             </span>
             <span className="text-[9px] sm:text-[10px] font-semibold text-zinc-500 dark:text-zinc-400 uppercase leading-none">

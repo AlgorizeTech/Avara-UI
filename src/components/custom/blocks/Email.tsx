@@ -182,7 +182,7 @@ const BulletproofAvatar = ({
       />
     ) : (
       <div
-        className={`w-full h-full flex items-center justify-center font-bold text-sm m-0 p-0 tracking-wider ${color}`}
+        className={`w-full h-full flex items-center justify-center font-semibold text-sm m-0 p-0 tracking-wider ${color}`}
       >
         {initials}
       </div>
@@ -395,7 +395,7 @@ export default function EmailApp({
       >
         <div className="p-5 border-b border-border shrink-0">
           <div className="flex items-center justify-between mb-4 lg:hidden">
-            <h2 className="font-bold text-foreground">
+            <h2 className="font-semibold text-foreground">
               Mailbox
             </h2>
             <button
@@ -447,7 +447,7 @@ export default function EmailApp({
                   {unreadCount > 0 && (
                     <span
                       className={cn(
-                        "text-white text-[10px] font-bold px-2 py-0.5 rounded-full shadow-sm",
+                        "text-white text-[10px] font-semibold px-2 py-0.5 rounded-full shadow-sm",
                         theme.bg,
                       )}
                     >
@@ -460,7 +460,7 @@ export default function EmailApp({
           </nav>
 
           <div className="px-6">
-            <p className="text-[11px] font-bold text-muted-foreground uppercase tracking-wider mb-3">
+            <p className="text-[11px] font-semibold text-muted-foreground uppercase tracking-wider mb-3">
               Labels
             </p>
             <div className="space-y-0.5 -mx-3">
@@ -644,7 +644,7 @@ export default function EmailApp({
                       <div className="flex-1 min-w-0 flex flex-col sm:flex-row sm:items-center gap-1 sm:gap-4 pr-8 sm:pr-0">
                         <div className="flex items-center justify-between sm:w-48 shrink-0">
                           <span
-                            className={`text-[15px] truncate ${!email.isRead ? "font-bold text-zinc-900 dark:text-white" : "font-medium text-zinc-700 dark:text-zinc-300"}`}
+                            className={`text-[15px] truncate ${!email.isRead ? "font-semibold text-zinc-900 dark:text-white" : "font-medium text-zinc-700 dark:text-zinc-300"}`}
                           >
                             {email.sender}
                           </span>
@@ -727,7 +727,7 @@ export default function EmailApp({
                   <div className="w-16 h-16 bg-muted rounded-full flex items-center justify-center mb-4">
                     <Mail className="w-8 h-8 text-zinc-400 dark:text-zinc-600" />
                   </div>
-                  <h3 className="text-lg font-bold text-foreground mb-1">
+                  <h3 className="text-lg font-semibold text-foreground mb-1">
                     Nothing to see here
                   </h3>
                   <p className="text-sm text-muted-foreground">
@@ -764,7 +764,7 @@ export default function EmailApp({
                   {activeEmail?.labels?.map((lbl, i) => (
                     <span
                       key={i}
-                      className={`px-2 py-0.5 sm:px-2.5 rounded-md text-[10px] sm:text-[11px] font-bold tracking-wide uppercase ${lbl.pill}`}
+                      className={`px-2 py-0.5 sm:px-2.5 rounded-md text-[10px] sm:text-[11px] font-semibold tracking-wide uppercase ${lbl.pill}`}
                     >
                       {lbl.name}
                     </span>
@@ -849,7 +849,7 @@ export default function EmailApp({
 
             <div className="flex-1 overflow-y-auto p-4 sm:p-8 [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]">
               <div className="max-w-3xl mx-auto">
-                <h1 className="text-lg sm:text-2xl font-bold text-foreground mb-4 sm:mb-8 break-words leading-snug">
+                <h1 className="text-lg sm:text-2xl font-semibold text-foreground mb-4 sm:mb-8 break-words leading-snug">
                   {activeEmail?.subject}
                 </h1>
                 <div className="flex flex-col sm:flex-row sm:items-start justify-between gap-3 sm:gap-4 mb-6 sm:mb-8 pb-4 sm:pb-0 border-b sm:border-b-0 border-border">
@@ -861,7 +861,7 @@ export default function EmailApp({
                       size={40}
                     />
                     <div className="min-w-0 flex-1">
-                      <h3 className="text-sm sm:text-base font-bold text-foreground truncate">
+                      <h3 className="text-sm sm:text-base font-semibold text-foreground truncate">
                         {activeEmail?.sender}
                       </h3>
                       <p className="text-xs sm:text-sm text-muted-foreground font-medium truncate">
@@ -894,7 +894,7 @@ export default function EmailApp({
                           : "border-t border-border",
                       )}
                     >
-                      <p className="text-xs font-bold uppercase tracking-wider text-muted-foreground mb-4">
+                      <p className="text-xs font-semibold uppercase tracking-wider text-muted-foreground mb-4">
                         Attachments ({activeEmail.attachments.length})
                       </p>
                       <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4">
@@ -915,7 +915,7 @@ export default function EmailApp({
                             <div className="min-w-0 flex-1">
                               <p
                                 className={cn(
-                                  "text-xs sm:text-sm font-bold text-foreground truncate transition-colors",
+                                  "text-xs sm:text-sm font-semibold text-foreground truncate transition-colors",
                                   `group-hover:${theme.text}`,
                                 )}
                               >
@@ -982,7 +982,7 @@ export default function EmailApp({
                   : "bg-muted border-border",
               )}
             >
-              <h3 className="font-bold text-sm text-foreground">
+              <h3 className="font-semibold text-sm text-foreground">
                 New Message
               </h3>
               <button
@@ -1025,7 +1025,7 @@ export default function EmailApp({
                   required
                   type="text"
                   name="subject"
-                  className="flex-1 bg-transparent text-sm font-bold outline-none text-foreground placeholder:text-zinc-300 dark:placeholder:text-zinc-700"
+                  className="flex-1 bg-transparent text-sm font-semibold outline-none text-foreground placeholder:text-zinc-300 dark:placeholder:text-zinc-700"
                 />
               </div>
 
@@ -1089,7 +1089,7 @@ export default function EmailApp({
                 <button
                   type="submit"
                   className={cn(
-                    "cursor-pointer flex items-center gap-2 px-5 py-2.5 rounded-lg text-sm font-bold transition-all active:scale-95 shadow-md",
+                    "cursor-pointer flex items-center gap-2 px-5 py-2.5 rounded-lg text-sm font-semibold transition-all active:scale-95 shadow-md",
                     theme.bg,
                   )}
                 >

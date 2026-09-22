@@ -45,7 +45,7 @@ export function FormWrapper({
         {(title || description) && (
           <div className="mb-8 border-b border-border pb-6">
             {title && (
-              <h2 className="text-2xl font-black tracking-tight text-foreground">
+              <h2 className="text-2xl font-bold tracking-tight text-foreground">
                 {title}
               </h2>
             )}
@@ -86,7 +86,7 @@ export function FormError({
     return (
       <div className="mt-1 flex items-center gap-1.5 overflow-hidden">
         <div className="w-1 h-3 bg-red-500 shrink-0" />
-        <span className="text-red-500 font-bold text-xs tracking-wider uppercase">
+        <span className="text-red-500 font-semibold text-xs tracking-wider uppercase">
           {message}
         </span>
       </div>
@@ -170,7 +170,7 @@ export function FormField({
       {label && (
         <label
           className={cn(
-            "text-sm font-bold",
+            "text-sm font-semibold",
             error ? "text-red-500" : "text-foreground",
           )}
         >
@@ -197,7 +197,7 @@ export function FormSubmit({
     <button
       type="submit"
       disabled={isSubmitting}
-      className="relative w-full overflow-hidden rounded-xl font-bold text-[var(--theme-color-foreground)] shadow-lg transition-transform active:scale-95 disabled:opacity-70 disabled:cursor-not-allowed group mt-2"
+      className="relative w-full overflow-hidden rounded-xl font-semibold text-[var(--theme-color-foreground)] shadow-lg transition-transform active:scale-95 disabled:opacity-70 disabled:cursor-not-allowed group mt-2"
     >
       <div className="absolute inset-0 bg-[var(--theme-color)] transition-opacity group-hover:opacity-90" />
       <div className="relative px-6 py-3.5 flex items-center justify-center gap-2 w-full h-full">

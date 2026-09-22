@@ -162,7 +162,7 @@ export const VideoAccordion = React.forwardRef<
                   opacity: isActive ? 1 : 0,
                   transform: isActive ? "translateY(0)" : "translateY(20px)",
                 }}
-                className="text-white font-bold tracking-tight text-xl md:text-3xl mb-2 whitespace-normal leading-tight"
+                className="text-white font-semibold tracking-tight text-xl md:text-3xl mb-2 whitespace-normal leading-tight"
               >
                 {panel.title}
               </h3>

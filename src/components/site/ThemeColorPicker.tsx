@@ -17,7 +17,7 @@ export function ThemeColorPicker({
 	return (
 		<div
 			className={cn("flex flex-col gap-2", className)}>
-      <label className="text-xs font-bold uppercase tracking-wider text-zinc-500">
+      <label className="text-xs font-semibold uppercase tracking-wider text-zinc-500">
         {label}
       </label>
 			<div className="w-fit max-w-full flex flex-wrap items-center justify-start gap-x-1 gap-y-1.5 sm:gap-x-1.5 p-1 bg-zinc-200/60 dark:bg-black/40 rounded-xl border border-zinc-200 dark:border-white/5">

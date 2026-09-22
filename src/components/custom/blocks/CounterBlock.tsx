@@ -125,7 +125,7 @@ const StepperCounter = ({
             >
               <Minus size={18} strokeWidth={2.5} />
             </button>
-            <div className="w-14 text-center text-xl font-bold text-foreground select-none">
+            <div className="w-14 text-center text-xl font-semibold text-foreground select-none">
               {count}
             </div>
             <button
@@ -161,7 +161,7 @@ const StepperCounter = ({
             </button>
             <div
               className={cn(
-                "w-16 text-center text-2xl font-black select-none",
+                "w-16 text-center text-2xl font-bold select-none",
                 theme.text,
               )}
             >
@@ -195,7 +195,7 @@ const StepperCounter = ({
             >
               <Plus size={20} strokeWidth={2.5} />
             </button>
-            <div className="w-14 py-3 text-center font-black text-xl border-y border-border bg-background select-none">
+            <div className="w-14 py-3 text-center font-bold text-xl border-y border-border bg-background select-none">
               {count}
             </div>
             <button
@@ -227,7 +227,7 @@ const StepperCounter = ({
             >
               <Minus size={18} strokeWidth={2.5} />
             </button>
-            <div className="w-16 text-center text-xl font-bold text-foreground select-none">
+            <div className="w-16 text-center text-xl font-semibold text-foreground select-none">
               {count}
             </div>
             <button
@@ -340,14 +340,14 @@ const AnimatedCounter = ({
       style={style}
     >
       <div
-        className={cn("text-6xl font-black tracking-tighter mb-2", theme.text)}
+        className={cn("text-6xl font-bold tracking-tighter mb-2", theme.text)}
       >
         {prefix}
         {formatted}
         {suffix}
       </div>
       {label && (
-        <div className="text-sm font-bold text-muted-foreground uppercase tracking-widest">
+        <div className="text-sm font-semibold text-muted-foreground uppercase tracking-widest">
           {label}
         </div>
       )}
@@ -417,14 +417,14 @@ const CircularCounter = ({
           />
         </svg>
         <div className="absolute flex flex-col items-center justify-center text-center">
-          <span className="text-3xl font-black tracking-tighter text-foreground">
+          <span className="text-3xl font-bold tracking-tighter text-foreground">
             {displayVal}
             {suffix}
           </span>
         </div>
       </div>
       {label && (
-        <span className="text-sm font-bold text-muted-foreground uppercase tracking-widest">
+        <span className="text-sm font-semibold text-muted-foreground uppercase tracking-widest">
           {label}
         </span>
       )}
@@ -502,7 +502,7 @@ const CountdownCounter = ({
   return (
     <div className="flex flex-col items-center gap-8" style={style}>
       {caption && (
-        <div className="flex items-center gap-2 px-4 py-1.5 rounded-full bg-muted border border-border text-sm font-bold text-muted-foreground">
+        <div className="flex items-center gap-2 px-4 py-1.5 rounded-full bg-muted border border-border text-sm font-semibold text-muted-foreground">
           <Clock size={16} className={theme.text} /> {caption}
         </div>
       )}
@@ -564,14 +564,14 @@ function TimeUnit({
       <div className="w-16 h-16 sm:w-20 sm:h-20 flex items-center justify-center bg-card border border-border rounded-2xl shadow-lg mb-3">
         <span
           className={cn(
-            "text-2xl sm:text-3xl font-black tracking-tighter",
+            "text-2xl sm:text-3xl font-bold tracking-tighter",
             themeText,
           )}
         >
           {value.toString().padStart(2, "0")}
         </span>
       </div>
-      <span className="text-[10px] sm:text-xs font-bold text-muted-foreground uppercase tracking-widest">
+      <span className="text-[10px] sm:text-xs font-semibold text-muted-foreground uppercase tracking-widest">
         {unit}
       </span>
     </div>

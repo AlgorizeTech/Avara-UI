@@ -55,14 +55,14 @@ const ItemRow = ({
     <div className="flex flex-col flex-1 justify-between">
       <div className="flex justify-between items-start gap-2">
         <div>
-          <h4 className="text-sm font-bold text-foreground leading-tight">
+          <h4 className="text-sm font-semibold text-foreground leading-tight">
             {item.name}
           </h4>
           <p className="text-xs text-muted-foreground mt-1">
             {item.color} | Size: {item.size}
           </p>
         </div>
-        <span className="text-sm font-bold text-foreground shrink-0">
+        <span className="text-sm font-semibold text-foreground shrink-0">
           ${(item.price * item.quantity).toFixed(2)}
         </span>
       </div>
@@ -74,7 +74,7 @@ const ItemRow = ({
           >
             <Minus size={14} strokeWidth={2.5} />
           </button>
-          <span className="w-6 text-center text-xs font-bold select-none">
+          <span className="w-6 text-center text-xs font-semibold select-none">
             {item.quantity}
           </span>
           <button
@@ -126,16 +126,16 @@ const Summary = ({
     </div>
     <div className="border-t border-border my-1" />
     <div className="flex justify-between items-end mb-4">
-      <span className="text-base font-bold text-foreground">
+      <span className="text-base font-semibold text-foreground">
         Total
       </span>
-      <span className="text-2xl font-black text-foreground">
+      <span className="text-2xl font-bold text-foreground">
         ${subtotal.toFixed(2)}
       </span>
     </div>
     <button
       className={cn(
-        "w-full py-4 rounded-xl font-bold flex items-center justify-center gap-2 transition-all active:scale-[0.98] shadow-md hover:shadow-lg",
+        "w-full py-4 rounded-xl font-semibold flex items-center justify-center gap-2 transition-all active:scale-[0.98] shadow-md hover:shadow-lg",
         theme.bg,
       )}
     >
@@ -334,7 +334,7 @@ function TriggerButton({
         <span
           ref={badgeRef}
           className={cn(
-            "absolute -top-1 -right-1 w-5 h-5 flex items-center justify-center text-[10px] font-bold rounded-full shadow-sm",
+            "absolute -top-1 -right-1 w-5 h-5 flex items-center justify-center text-[10px] font-semibold rounded-full shadow-sm",
             themeBg,
           )}
         >
@@ -474,10 +474,10 @@ export function CartBlock({
       <div className="w-full max-w-5xl mx-auto p-4 sm:p-8" style={style}>
         <div className="flex items-center gap-3 mb-8">
           <ShoppingCart className={cn("w-8 h-8", theme.text)} />
-          <h2 className="text-3xl font-black text-foreground">
+          <h2 className="text-3xl font-bold text-foreground">
             Your Cart
           </h2>
-          <span className="ml-2 px-3 py-1 rounded-full bg-muted text-sm font-bold text-muted-foreground">
+          <span className="ml-2 px-3 py-1 rounded-full bg-muted text-sm font-semibold text-muted-foreground">
             {totalItems} Items
           </span>
         </div>
@@ -485,12 +485,12 @@ export function CartBlock({
         {items.length === 0 ? (
           <div className="flex flex-col items-center justify-center py-24 bg-background border border-border rounded-3xl">
             <ShoppingBag className="w-16 h-16 text-zinc-300 dark:text-zinc-700 mb-4" />
-            <h3 className="text-xl font-bold text-foreground mb-2">
+            <h3 className="text-xl font-semibold text-foreground mb-2">
               Your cart is empty
             </h3>
             <button
               className={cn(
-                "mt-4 px-6 py-3 rounded-xl font-bold shadow-sm transition-opacity",
+                "mt-4 px-6 py-3 rounded-xl font-semibold shadow-sm transition-opacity",
                 theme.bg,
               )}
             >
@@ -500,7 +500,7 @@ export function CartBlock({
         ) : (
           <div className="flex flex-col lg:flex-row gap-8">
             <div className="flex-1 bg-background border border-border rounded-3xl p-6 sm:p-8 shadow-sm">
-              <h3 className="text-lg font-bold text-foreground mb-4 border-b border-border pb-4">
+              <h3 className="text-lg font-semibold text-foreground mb-4 border-b border-border pb-4">
                 Order Items
               </h3>
               {items.map((item) => (
@@ -562,10 +562,10 @@ export function CartBlock({
             <div className="px-6 py-5 border-b border-border flex items-center justify-between shrink-0">
               <div className="flex items-center gap-2">
                 <ShoppingBag className={cn("w-5 h-5", theme.text)} />
-                <h3 className="text-lg font-bold text-foreground">
+                <h3 className="text-lg font-semibold text-foreground">
                   Shopping Cart
                 </h3>
-                <span className="ml-2 px-2 py-0.5 rounded-full bg-muted text-xs font-bold text-muted-foreground">
+                <span className="ml-2 px-2 py-0.5 rounded-full bg-muted text-xs font-semibold text-muted-foreground">
                   {totalItems}
                 </span>
               </div>

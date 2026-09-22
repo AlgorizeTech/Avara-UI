@@ -142,7 +142,7 @@ export const SplitStepper = React.forwardRef<HTMLDivElement, SplitStepperProps>(
                   <div className="flex items-center gap-3.5">
                     <span
                       className={cn(
-                        "w-9 h-9 sm:w-10 sm:h-10 rounded-xl flex items-center justify-center font-mono font-bold text-sm border transition-colors duration-300",
+                        "w-9 h-9 sm:w-10 sm:h-10 rounded-xl flex items-center justify-center font-mono font-semibold text-sm border transition-colors duration-300",
                         isActive
                           ? "text-white border-transparent shadow-md"
                           : isCompleted
@@ -162,7 +162,7 @@ export const SplitStepper = React.forwardRef<HTMLDivElement, SplitStepperProps>(
 
                     <h3
                       className={cn(
-                        "text-lg sm:text-2xl font-bold tracking-tight transition-colors duration-300",
+                        "text-lg sm:text-2xl font-semibold tracking-tight transition-colors duration-300",
                         isActive
                           ? "text-foreground"
                           : "text-muted-foreground group-hover:text-foreground",
@@ -205,7 +205,7 @@ export const SplitStepper = React.forwardRef<HTMLDivElement, SplitStepperProps>(
                       <span
                         key={tIdx}
                         className={cn(
-                          "px-3 py-1 rounded-lg text-[11px] sm:text-xs font-bold uppercase tracking-wider border transition-all duration-300",
+                          "px-3 py-1 rounded-lg text-[11px] sm:text-xs font-semibold uppercase tracking-wider border transition-all duration-300",
                           isActive
                             ? "border-transparent shadow-xs"
                             : "bg-transparent border-border text-zinc-400 dark:text-zinc-600",
@@ -255,7 +255,7 @@ export const SplitStepper = React.forwardRef<HTMLDivElement, SplitStepperProps>(
                   <div className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-white/30 to-transparent pointer-events-none" />
 
                   <div className="flex items-center justify-between relative z-10 mb-4">
-                    <span className="px-3 py-1 rounded-full bg-white/10 backdrop-blur-md text-[11px] font-mono font-bold tracking-widest uppercase border border-white/15">
+                    <span className="px-3 py-1 rounded-full bg-white/10 backdrop-blur-md text-[11px] font-mono font-semibold tracking-widest uppercase border border-white/15">
                       STEP // {step.stepNumber}
                     </span>
                     <div

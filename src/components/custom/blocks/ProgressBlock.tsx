@@ -761,7 +761,7 @@ export const CircularProgress = forwardRef<
         {readout !== null && readout !== false && (
           <div
             className={cn(
-              "absolute inset-0 flex flex-col items-center justify-center text-center font-bold leading-tight tabular-nums transition-colors",
+              "absolute inset-0 flex flex-col items-center justify-center text-center font-semibold leading-tight tabular-nums transition-colors",
               readoutTone ? readoutTone.text : "text-foreground",
             )}
             style={{ fontSize: Math.max(12, Math.round(circleSize * 0.18)) }}

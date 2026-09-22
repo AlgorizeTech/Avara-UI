@@ -179,7 +179,7 @@ function AnimatedTimelineNode({
           >
             <h3
               className={cn(
-                "text-base font-bold text-foreground transition-colors",
+                "text-base font-semibold text-foreground transition-colors",
                 "group-hover:text-[var(--atl-color)]",
               )}
             >

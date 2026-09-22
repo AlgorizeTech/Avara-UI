@@ -179,7 +179,7 @@ const BulletproofAvatar = ({
         />
       ) : (
         <div
-          className={`w-full h-full flex items-center justify-center font-bold text-sm m-0 p-0 tracking-wider ${color}`}
+          className={`w-full h-full flex items-center justify-center font-semibold text-sm m-0 p-0 tracking-wider ${color}`}
         >
           {initials}
         </div>
@@ -385,7 +385,7 @@ export default function ChatApp({
       >
         <div className="pt-6 pb-4 px-5 shrink-0 flex-none min-w-0 box-border">
           <div className="flex items-center justify-between mb-6">
-            <h1 className="text-xl font-bold text-foreground tracking-tight">
+            <h1 className="text-xl font-semibold text-foreground tracking-tight">
               Messages
             </h1>
             <BulletproofAvatar
@@ -486,7 +486,7 @@ export default function ChatApp({
                     {contact.unread > 0 && (
                       <span
                         className={cn(
-                          "w-4 h-4 rounded-full text-white flex items-center justify-center text-[9px] font-bold shrink-0 shadow-sm",
+                          "w-4 h-4 rounded-full text-white flex items-center justify-center text-[9px] font-semibold shrink-0 shadow-sm",
                           theme.bg,
                         )}
                       >
@@ -531,7 +531,7 @@ export default function ChatApp({
             >
               <MessageCircle className="w-10 h-10 -rotate-3" />
             </div>
-            <h3 className="text-xl font-bold text-foreground mb-2">
+            <h3 className="text-xl font-semibold text-foreground mb-2">
               Your Messages
             </h3>
             <p className="text-muted-foreground text-sm max-w-xs">
@@ -577,7 +577,7 @@ export default function ChatApp({
                   }
                 />
                 <div className="min-w-0 flex-1">
-                  <h2 className="text-base font-bold text-foreground leading-tight truncate">
+                  <h2 className="text-base font-semibold text-foreground leading-tight truncate">
                     {activeContact.name}
                   </h2>
                   <div className="flex items-center gap-1.5 mt-0.5">

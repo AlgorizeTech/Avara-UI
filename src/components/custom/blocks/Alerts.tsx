@@ -210,7 +210,7 @@ export const Alert: React.FC<AlertProps> = ({
         )}
       >
         {title && (
-          <h4 className={cn(`font-bold mb-1 tracking-tight`, titleClassName)}>
+          <h4 className={cn(`font-semibold mb-1 tracking-tight`, titleClassName)}>
             {title}
           </h4>
         )}

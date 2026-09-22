@@ -297,7 +297,7 @@ export const CopyField = forwardRef<HTMLDivElement, CopyFieldProps>(
 
     return (
       <div ref={ref} className={cn("flex w-full flex-col gap-1.5", className)} {...props}>
-        {label && <span className="text-sm font-bold text-foreground">{label}</span>}
+        {label && <span className="text-sm font-semibold text-foreground">{label}</span>}
         <div className={cn("flex w-full items-center", inset ? "relative" : "gap-2")}>
           {prefix && !inset && (
             <span className="shrink-0 text-muted-foreground">{prefix}</span>

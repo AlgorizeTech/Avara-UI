@@ -116,7 +116,7 @@ export function ThemePreview() {
     <div className="space-y-10 p-6 lg:p-8">
       {/* Header */}
       <div>
-        <h2 className="text-2xl font-bold tracking-tight text-foreground">
+        <h2 className="text-2xl font-semibold tracking-tight text-foreground">
           Preview Components
         </h2>
         <p className="text-sm text-muted-foreground mt-1">

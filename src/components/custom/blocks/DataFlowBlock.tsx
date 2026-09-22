@@ -29,7 +29,7 @@ function Pill({ className, children, ...props }: React.HTMLAttributes<HTMLSpanEl
   return (
     <span
       className={cn(
-        "inline-flex shrink-0 items-center rounded-full bg-[#141414] px-2.5 py-1 text-[10.5px] font-bold leading-none tracking-tight text-white dark:bg-white dark:text-[#141414]",
+        "inline-flex shrink-0 items-center rounded-full bg-[#141414] px-2.5 py-1 text-[10.5px] font-semibold leading-none tracking-tight text-white dark:bg-white dark:text-[#141414]",
         className,
       )}
       {...props}

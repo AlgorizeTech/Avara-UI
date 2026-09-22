@@ -611,7 +611,7 @@ const ShardsControlTile = ({
           </span>
 
           {/* Value Display on Right */}
-          <span className="relative z-10 font-mono text-xs font-bold text-foreground dark:text-zinc-100 pointer-events-none">
+          <span className="relative z-10 font-mono text-xs font-semibold text-foreground dark:text-zinc-100 pointer-events-none">
             {displayValue}
           </span>
         </div>
@@ -2270,7 +2270,7 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
           className={cn(
             baseClasses,
             sizeClasses[size],
-            "relative z-10 w-max px-5 py-2.5 bg-yellow-400 text-black font-bold shadow-[0_0_20px_#facc15] animate-[pulse_1s_infinite]",
+            "relative z-10 w-max px-5 py-2.5 bg-yellow-400 text-black font-semibold shadow-[0_0_20px_#facc15] animate-[pulse_1s_infinite]",
             className,
           )}
           onClick={createRipple}
@@ -2278,7 +2278,7 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
           ref={ref}
           {...props}
         >
-          <span className="relative z-10 flex items-center justify-center gap-2 font-bold">
+          <span className="relative z-10 flex items-center justify-center gap-2 font-semibold">
             {loading && <Loader2 className="h-4 w-4" />}
             {!loading && iconLeft && <span>{iconLeft}</span>}
             {children}
@@ -2303,7 +2303,7 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
           ref={ref}
           {...props}
         >
-          <span className="relative z-10 flex items-center justify-center gap-2 font-bold tracking-wider">
+          <span className="relative z-10 flex items-center justify-center gap-2 font-semibold tracking-wider">
             {loading && <Loader2 className="h-4 w-4" />}
             {!loading && iconLeft && <span>{iconLeft}</span>}
             {children}

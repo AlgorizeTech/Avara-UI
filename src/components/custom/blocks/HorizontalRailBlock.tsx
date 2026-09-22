@@ -48,15 +48,15 @@ function RailCard({
     >
       <div>
         <div className="flex items-center justify-between mb-4 sm:mb-6">
-          <div className="w-12 h-12 rounded-xl bg-[var(--theme-color,var(--primary))]/10 border border-[var(--theme-color,var(--primary))]/20 flex items-center justify-center text-[var(--theme-color,var(--primary))] font-bold shadow-xs">
+          <div className="w-12 h-12 rounded-xl bg-[var(--theme-color,var(--primary))]/10 border border-[var(--theme-color,var(--primary))]/20 flex items-center justify-center text-[var(--theme-color,var(--primary))] font-semibold shadow-xs">
             {item.icon}
           </div>
-          <span className="text-4xl sm:text-5xl font-black text-slate-200 dark:text-zinc-800/80 tracking-tighter select-none group-hover:text-[var(--theme-color,var(--primary))]/25 transition-colors duration-300">
+          <span className="text-4xl sm:text-5xl font-bold text-slate-200 dark:text-zinc-800/80 tracking-tighter select-none group-hover:text-[var(--theme-color,var(--primary))]/25 transition-colors duration-300">
             {displayNum}
           </span>
         </div>
 
-        <h3 className="text-xl sm:text-2xl font-bold tracking-tight text-foreground mb-2 sm:mb-3">
+        <h3 className="text-xl sm:text-2xl font-semibold tracking-tight text-foreground mb-2 sm:mb-3">
           {item.title}
         </h3>
         <p className="text-sm sm:text-base text-muted-foreground leading-relaxed font-normal">

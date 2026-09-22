@@ -60,11 +60,11 @@ export function DocsPagination() {
       <div className="flex flex-col items-center mb-6">
         <p className="text-[13px] text-zinc-500 dark:text-zinc-400 flex items-center gap-1.5 font-medium">
           Tip: Use 
-          <kbd className="px-1.5 py-0.5 bg-zinc-100 dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 rounded shadow-sm text-xs font-mono font-bold text-zinc-700 dark:text-zinc-300">Alt</kbd> 
+          <kbd className="px-1.5 py-0.5 bg-zinc-100 dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 rounded shadow-sm text-xs font-mono font-semibold text-zinc-700 dark:text-zinc-300">Alt</kbd> 
           + 
-          <kbd className="px-1.5 py-0.5 bg-zinc-100 dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 rounded shadow-sm text-xs font-mono font-bold text-zinc-700 dark:text-zinc-300">←</kbd> 
+          <kbd className="px-1.5 py-0.5 bg-zinc-100 dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 rounded shadow-sm text-xs font-mono font-semibold text-zinc-700 dark:text-zinc-300">←</kbd> 
           / 
-          <kbd className="px-1.5 py-0.5 bg-zinc-100 dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 rounded shadow-sm text-xs font-mono font-bold text-zinc-700 dark:text-zinc-300">→</kbd> 
+          <kbd className="px-1.5 py-0.5 bg-zinc-100 dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 rounded shadow-sm text-xs font-mono font-semibold text-zinc-700 dark:text-zinc-300">→</kbd> 
           to navigate
         </p>
       </div>
@@ -77,7 +77,7 @@ export function DocsPagination() {
               <span className="text-xs font-medium text-zinc-500 dark:text-zinc-400 group-hover:text-zinc-600 dark:group-hover:text-zinc-300">
                 Previous
               </span>
-              <span className="text-[15px] font-bold text-zinc-900 dark:text-zinc-100 group-hover:text-primary transition-colors">
+              <span className="text-[15px] font-semibold text-zinc-900 dark:text-zinc-100 group-hover:text-primary transition-colors">
                 {prev.label}
               </span>
             </div>
@@ -92,7 +92,7 @@ export function DocsPagination() {
               <span className="text-xs font-medium text-zinc-500 dark:text-zinc-400 group-hover:text-zinc-600 dark:group-hover:text-zinc-300">
                 Next
               </span>
-              <span className="text-[15px] font-bold text-zinc-900 dark:text-zinc-100 group-hover:text-primary transition-colors">
+              <span className="text-[15px] font-semibold text-zinc-900 dark:text-zinc-100 group-hover:text-primary transition-colors">
                 {next.label}
               </span>
             </div>

@@ -109,7 +109,7 @@ export const HomepageHeroBlock = forwardRef<HTMLElement, HomepageHeroBlockProps>
             {/* Top Pill Badge */}
             {badgeText && (
               <Link href={badgeHref} className="inline-block group">
-                <div className="inline-flex items-center gap-1 sm:gap-2 px-2.5 sm:px-3 py-1 sm:py-1.5 rounded-full bg-primary/10 border border-primary/30 text-[9px] xs:text-[10px] sm:text-xs font-bold text-primary group-hover:bg-primary/20 group-hover:border-primary/50 transition-all duration-300">
+                <div className="inline-flex items-center gap-1 sm:gap-2 px-2.5 sm:px-3 py-1 sm:py-1.5 rounded-full bg-primary/10 border border-primary/30 text-[9px] xs:text-[10px] sm:text-xs font-semibold text-primary group-hover:bg-primary/20 group-hover:border-primary/50 transition-all duration-300">
                   <Sparkles className="size-2.5 xs:size-3 sm:size-4 text-primary animate-spin shrink-0" />
                   <span className="truncate max-w-[140px] xs:max-w-[170px] sm:max-w-none">
                     {badgeText}
@@ -181,7 +181,7 @@ export const HomepageHeroBlock = forwardRef<HTMLElement, HomepageHeroBlockProps>
               {primaryActionLabel && (
                 <Link
                   href={primaryActionHref}
-                  className="px-2.5 xs:px-3 sm:px-9 h-8 xs:h-9 sm:h-[58px] rounded-lg sm:rounded-2xl bg-primary text-primary-foreground text-[10px] xs:text-xs sm:text-base md:text-lg font-bold hover:opacity-90 hover:scale-[1.02] active:scale-[0.98] transition-all flex items-center justify-center gap-1 sm:gap-2.5 flex-1 sm:flex-initial min-w-0 sm:min-w-[220px]"
+                  className="px-2.5 xs:px-3 sm:px-9 h-8 xs:h-9 sm:h-[58px] rounded-lg sm:rounded-2xl bg-primary text-primary-foreground text-[10px] xs:text-xs sm:text-base md:text-lg font-semibold hover:opacity-90 hover:scale-[1.02] active:scale-[0.98] transition-all flex items-center justify-center gap-1 sm:gap-2.5 flex-1 sm:flex-initial min-w-0 sm:min-w-[220px]"
                 >
                   <span>{primaryActionLabel}</span>
                   <ArrowRight className="size-3 sm:size-5 shrink-0" />
@@ -196,7 +196,7 @@ export const HomepageHeroBlock = forwardRef<HTMLElement, HomepageHeroBlockProps>
                       ? "_blank"
                       : undefined
                   }
-                  className="px-2.5 xs:px-3 sm:px-9 h-8 xs:h-9 sm:h-[58px] rounded-lg sm:rounded-2xl border border-border bg-card text-foreground text-[10px] xs:text-xs sm:text-base md:text-lg font-bold hover:bg-primary/10 hover:border-primary/50 hover:text-primary hover:scale-[1.02] active:scale-[0.98] transition-all flex items-center justify-center gap-1 sm:gap-2.5 flex-1 sm:flex-initial min-w-0 sm:min-w-[220px]"
+                  className="px-2.5 xs:px-3 sm:px-9 h-8 xs:h-9 sm:h-[58px] rounded-lg sm:rounded-2xl border border-border bg-card text-foreground text-[10px] xs:text-xs sm:text-base md:text-lg font-semibold hover:bg-primary/10 hover:border-primary/50 hover:text-primary hover:scale-[1.02] active:scale-[0.98] transition-all flex items-center justify-center gap-1 sm:gap-2.5 flex-1 sm:flex-initial min-w-0 sm:min-w-[220px]"
                 >
                   <span>{secondaryActionLabel}</span>
                   <GitHubIcon className="size-3 sm:size-5 shrink-0" />

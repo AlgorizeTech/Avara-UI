@@ -37,7 +37,7 @@ const invoiceVariants: Record<InvoiceVariant, Record<string, string>> = {
     sidebarCard:
       "bg-white dark:bg-zinc-950 border border-border shadow-sm rounded-2xl",
     tableHeader:
-      "bg-zinc-900 text-white dark:bg-zinc-800 font-bold uppercase text-xs tracking-wider",
+      "bg-zinc-900 text-white dark:bg-zinc-800 font-semibold uppercase text-xs tracking-wider",
     tableRow:
       "divide-border hover:bg-zinc-100 dark:hover:bg-zinc-900",
     inputBg:
@@ -52,7 +52,7 @@ const invoiceVariants: Record<InvoiceVariant, Record<string, string>> = {
     sidebarCard:
       "bg-white dark:bg-zinc-950 border-4 border-black dark:border-white shadow-[6px_6px_0px_0px_rgba(0,0,0,1)] dark:shadow-[6px_6px_0px_0px_rgba(255,255,255,1)] rounded-none",
     tableHeader:
-      "bg-black text-white dark:bg-white dark:text-black font-black uppercase border-b-4 border-black",
+      "bg-black text-white dark:bg-white dark:text-black font-bold uppercase border-b-4 border-black",
     tableRow:
       "divide-y-4 divide-black dark:divide-white hover:bg-yellow-200 dark:hover:bg-zinc-800 font-mono",
     inputBg:
@@ -211,7 +211,7 @@ export default function Invoice({
               <button
                 onClick={() => setIsEditing(!isEditing)}
                 className={cn(
-                  "px-3 py-1.5 sm:px-3.5 sm:py-1.5 rounded-xl font-bold text-xs flex items-center justify-center gap-1.5 transition-all cursor-pointer shadow-sm",
+                  "px-3 py-1.5 sm:px-3.5 sm:py-1.5 rounded-xl font-semibold text-xs flex items-center justify-center gap-1.5 transition-all cursor-pointer shadow-sm",
                   theme.bg
                 )}
                 title={isEditing ? "Save Statement" : "Edit Statement"}
@@ -246,7 +246,7 @@ export default function Invoice({
               </div>
               <div className="min-w-0 flex-1">
                 <div className="flex items-center gap-2">
-                  <h1 className={cn("text-xl sm:text-2xl font-black tracking-tight", theme.fg)}>ALGORIZE_UI</h1>
+                  <h1 className={cn("text-xl sm:text-2xl font-bold tracking-tight", theme.fg)}>ALGORIZE_UI</h1>
                   <CheckCircle2 className={cn("w-4 h-4 sm:hidden shrink-0", theme.fg)} />
                 </div>
                 <p className={cn("text-[11px] sm:text-xs mt-0.5 break-words", theme.fgMuted)}>450 South Brand Brooklyn, CA 91905</p>
@@ -254,7 +254,7 @@ export default function Invoice({
             </div>
 
             <div className={cn("text-left sm:text-right w-full sm:w-auto pt-2 sm:pt-0 border-t sm:border-none", theme.fgBorder)}>
-              <span className={cn("hidden sm:inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-[11px] font-bold shadow-md mb-1.5", theme.inverse)}>
+              <span className={cn("hidden sm:inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-[11px] font-semibold shadow-md mb-1.5", theme.inverse)}>
                 <CheckCircle2 className="w-3.5 h-3.5" /> VERIFIED STATEMENT
               </span>
               <EditableInput
@@ -262,8 +262,8 @@ export default function Invoice({
                 value={data.invoiceNumber}
                 onChange={(e) => handleMainChange("invoiceNumber", e.target.value)}
                 align="right"
-                inputBg={cn("border font-mono font-black", theme.fgSoft, theme.fg)}
-                className={cn("text-2xl sm:text-3xl font-black font-mono break-all tracking-tight", theme.fg)}
+                inputBg={cn("border font-mono font-bold", theme.fgSoft, theme.fg)}
+                className={cn("text-2xl sm:text-3xl font-bold font-mono break-all tracking-tight", theme.fg)}
               />
             </div>
           </div>
@@ -271,19 +271,19 @@ export default function Invoice({
           {/* Metadata Strip */}
           <div className="p-4 sm:p-8 grid grid-cols-1 md:grid-cols-3 gap-4 sm:gap-6 bg-zinc-50 dark:bg-zinc-900 border-b border-border">
             <div className="p-4 rounded-xl bg-white dark:bg-zinc-950 border border-border shadow-sm space-y-1">
-              <span className="text-[10px] font-bold uppercase tracking-wider text-muted-foreground block mb-2">Invoice To</span>
-              <EditableInput isEditing={isEditing} value={data.invoiceTo.name} onChange={(e) => handleNestedChange("invoiceTo", "name", e.target.value)} className="font-bold text-foreground text-sm" />
+              <span className="text-[10px] font-semibold uppercase tracking-wider text-muted-foreground block mb-2">Invoice To</span>
+              <EditableInput isEditing={isEditing} value={data.invoiceTo.name} onChange={(e) => handleNestedChange("invoiceTo", "name", e.target.value)} className="font-semibold text-foreground text-sm" />
               <EditableInput isEditing={isEditing} value={data.invoiceTo.company} onChange={(e) => handleNestedChange("invoiceTo", "company", e.target.value)} className="text-xs text-muted-foreground" />
               <EditableInput isEditing={isEditing} value={data.invoiceTo.email} onChange={(e) => handleNestedChange("invoiceTo", "email", e.target.value)} className="text-xs text-muted-foreground break-all" />
             </div>
             <div className="p-4 rounded-xl bg-white dark:bg-zinc-950 border border-border shadow-sm space-y-1">
-              <span className="text-[10px] font-bold uppercase tracking-wider text-muted-foreground block mb-2">Schedule & Due</span>
+              <span className="text-[10px] font-semibold uppercase tracking-wider text-muted-foreground block mb-2">Schedule & Due</span>
               <p className="text-xs text-muted-foreground flex items-center justify-between">Issued: <EditableInput isEditing={isEditing} value={data.dateIssued} onChange={(e) => handleMainChange("dateIssued", e.target.value)} className="font-semibold text-foreground" /></p>
               <p className="text-xs text-muted-foreground flex items-center justify-between">Due Date: <EditableInput isEditing={isEditing} value={data.dateDue} onChange={(e) => handleMainChange("dateDue", e.target.value)} className="font-semibold text-foreground" /></p>
               <p className="text-xs text-muted-foreground flex items-center justify-between">Rep: <EditableInput isEditing={isEditing} value={data.salesPerson} onChange={(e) => handleMainChange("salesPerson", e.target.value)} className="font-semibold text-foreground" /></p>
             </div>
             <div className="p-4 rounded-xl bg-white dark:bg-zinc-950 border border-border shadow-sm space-y-1">
-              <span className="text-[10px] font-bold uppercase tracking-wider text-muted-foreground block mb-2">Settlement Account</span>
+              <span className="text-[10px] font-semibold uppercase tracking-wider text-muted-foreground block mb-2">Settlement Account</span>
               <EditableInput isEditing={isEditing} value={data.billTo.bankName} onChange={(e) => handleNestedChange("billTo", "bankName", e.target.value)} className="text-xs text-muted-foreground font-semibold" />
               <EditableInput isEditing={isEditing} value={data.billTo.iban} onChange={(e) => handleNestedChange("billTo", "iban", e.target.value)} className="text-xs font-mono text-muted-foreground break-all" />
               <EditableInput isEditing={isEditing} value={data.billTo.swift} onChange={(e) => handleNestedChange("billTo", "swift", e.target.value)} className="text-xs font-mono text-muted-foreground break-all" />
@@ -300,7 +300,7 @@ export default function Invoice({
                   className="p-4 rounded-2xl bg-zinc-50 dark:bg-zinc-900/60 border border-zinc-200 dark:border-zinc-800 space-y-3 shadow-sm"
                 >
                   <div className="flex items-center justify-between gap-2">
-                    <span className={cn("text-[10px] font-mono font-bold tracking-wider uppercase px-2.5 py-1 rounded-md shadow-sm", theme.bg)}>
+                    <span className={cn("text-[10px] font-mono font-semibold tracking-wider uppercase px-2.5 py-1 rounded-md shadow-sm", theme.bg)}>
                       SERVICE #{idx + 1}
                     </span>
                     {isEditing && (
@@ -315,13 +315,13 @@ export default function Invoice({
                   </div>
 
                   <div className="space-y-1">
-                    <span className="text-[10px] font-bold uppercase tracking-wider text-muted-foreground block">Service Description</span>
+                    <span className="text-[10px] font-semibold uppercase tracking-wider text-muted-foreground block">Service Description</span>
                     <EditableInput
                       isEditing={isEditing}
                       value={item.item}
                       onChange={(e) => handleItemChange(idx, "item", e.target.value)}
-                      inputBg="bg-white dark:bg-zinc-950 text-foreground border border-border font-bold text-xs"
-                      className="font-bold text-foreground text-sm"
+                      inputBg="bg-white dark:bg-zinc-950 text-foreground border border-border font-semibold text-xs"
+                      className="font-semibold text-foreground text-sm"
                     />
                     <EditableInput
                       isEditing={isEditing}
@@ -334,7 +334,7 @@ export default function Invoice({
 
                   <div className="grid grid-cols-3 gap-2 pt-2 border-t border-zinc-200 dark:border-zinc-800 text-xs">
                     <div className="bg-white dark:bg-zinc-950 p-2.5 rounded-xl border border-zinc-200 dark:border-zinc-800">
-                      <span className="text-[9px] font-bold text-muted-foreground block uppercase mb-0.5">Hours</span>
+                      <span className="text-[9px] font-semibold text-muted-foreground block uppercase mb-0.5">Hours</span>
                       <EditableInput
                         isEditing={isEditing}
                         value={item.hours}
@@ -344,7 +344,7 @@ export default function Invoice({
                       />
                     </div>
                     <div className="bg-white dark:bg-zinc-950 p-2.5 rounded-xl border border-zinc-200 dark:border-zinc-800">
-                      <span className="text-[9px] font-bold text-muted-foreground block uppercase mb-0.5">Qty</span>
+                      <span className="text-[9px] font-semibold text-muted-foreground block uppercase mb-0.5">Qty</span>
                       <EditableInput
                         isEditing={isEditing}
                         value={item.qty}
@@ -354,14 +354,14 @@ export default function Invoice({
                       />
                     </div>
                     <div className="bg-white dark:bg-zinc-950 p-2.5 rounded-xl border border-zinc-200 dark:border-zinc-800">
-                      <span className="text-[9px] font-bold text-muted-foreground block uppercase mb-0.5">Amount</span>
+                      <span className="text-[9px] font-semibold text-muted-foreground block uppercase mb-0.5">Amount</span>
                       <EditableInput
                         isEditing={isEditing}
                         value={item.total}
                         onChange={(e) => handleItemChange(idx, "total", e.target.value)}
                         align="right"
-                        inputBg="bg-zinc-100 dark:bg-zinc-900 text-foreground border border-border text-xs font-bold"
-                        className="font-bold text-foreground text-xs"
+                        inputBg="bg-zinc-100 dark:bg-zinc-900 text-foreground border border-border text-xs font-semibold"
+                        className="font-semibold text-foreground text-xs"
                       />
                     </div>
                   </div>
@@ -372,7 +372,7 @@ export default function Invoice({
             {/* Desktop Table View (>= sm) */}
             <div className="hidden sm:block rounded-xl border border-border mb-6 overflow-hidden">
               <table className="w-full text-left text-xs sm:text-sm border-collapse">
-                <thead className="bg-zinc-900 text-white dark:bg-zinc-800 text-xs uppercase tracking-wider font-bold">
+                <thead className="bg-zinc-900 text-white dark:bg-zinc-800 text-xs uppercase tracking-wider font-semibold">
                   <tr>
                     <th className="p-3.5 w-10">#</th>
                     <th className="p-3.5">Service Description</th>
@@ -386,13 +386,13 @@ export default function Invoice({
                     <tr key={idx} className="hover:bg-zinc-50 dark:hover:bg-zinc-900">
                       <td className="p-3.5 font-mono text-xs text-muted-foreground">{idx + 1}</td>
                       <td className="p-3.5 space-y-1">
-                        <EditableInput isEditing={isEditing} value={item.item} onChange={(e) => handleItemChange(idx, "item", e.target.value)} className="font-bold text-foreground" />
+                        <EditableInput isEditing={isEditing} value={item.item} onChange={(e) => handleItemChange(idx, "item", e.target.value)} className="font-semibold text-foreground" />
                         <EditableInput isEditing={isEditing} value={item.description} onChange={(e) => handleItemChange(idx, "description", e.target.value)} className="text-xs text-muted-foreground" />
                       </td>
                       <td className="p-3.5 text-right font-medium">
                         <EditableInput isEditing={isEditing} value={item.qty} onChange={(e) => handleItemChange(idx, "qty", e.target.value)} align="right" />
                       </td>
-                      <td className="p-3.5 text-right font-bold text-foreground">
+                      <td className="p-3.5 text-right font-semibold text-foreground">
                         <EditableInput isEditing={isEditing} value={item.total} onChange={(e) => handleItemChange(idx, "total", e.target.value)} align="right" />
                       </td>
                       {isEditing && (
@@ -407,7 +407,7 @@ export default function Invoice({
             </div>
 
             {isEditing && (
-              <button onClick={addItem} className={cn("flex items-center gap-2 text-xs font-bold mb-6 px-3.5 py-2 rounded-xl border border-border bg-zinc-50 dark:bg-zinc-900 hover:bg-zinc-100 dark:hover:bg-zinc-800 transition-all cursor-pointer shadow-sm", theme.text)}>
+              <button onClick={addItem} className={cn("flex items-center gap-2 text-xs font-semibold mb-6 px-3.5 py-2 rounded-xl border border-border bg-zinc-50 dark:bg-zinc-900 hover:bg-zinc-100 dark:hover:bg-zinc-800 transition-all cursor-pointer shadow-sm", theme.text)}>
                 <Plus className="w-4 h-4" /> Add Service Item
               </button>
             )}
@@ -417,7 +417,7 @@ export default function Invoice({
               <div className="p-4 rounded-xl bg-zinc-100 dark:bg-zinc-900 border border-border flex items-center gap-4">
                 <QrCode className="w-10 h-10 text-zinc-900 dark:text-white shrink-0" />
                 <div>
-                  <p className="font-bold text-xs text-foreground">Mobile Bank Scan & Pay</p>
+                  <p className="font-semibold text-xs text-foreground">Mobile Bank Scan & Pay</p>
                   <p className="text-[11px] text-muted-foreground">Scan with corporate banking app to settle instantly.</p>
                 </div>
               </div>
@@ -426,7 +426,7 @@ export default function Invoice({
                 <p className="text-xs text-muted-foreground flex justify-between md:justify-end gap-2">Tax: <EditableInput isEditing={isEditing} value={data.tax} onChange={(e) => handleMainChange("tax", e.target.value)} className="font-semibold text-foreground" /></p>
                 <div className="pt-2 border-t border-border">
                   <span className="text-xs text-muted-foreground uppercase font-mono block">Grand Total Due</span>
-                  <EditableInput isEditing={isEditing} value={data.grandTotal} onChange={(e) => handleMainChange("grandTotal", e.target.value)} align="right" className={cn("text-2xl sm:text-3xl font-black", theme.text)} />
+                  <EditableInput isEditing={isEditing} value={data.grandTotal} onChange={(e) => handleMainChange("grandTotal", e.target.value)} align="right" className={cn("text-2xl sm:text-3xl font-bold", theme.text)} />
                 </div>
               </div>
             </div>
@@ -441,38 +441,38 @@ export default function Invoice({
         <div className="space-y-6 font-mono w-full">
           {/* Action Bar */}
           <div className={cn("p-4 border-4 border-black dark:border-white shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] sm:shadow-[6px_6px_0px_0px_rgba(0,0,0,1)] flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 print:hidden", theme.bg)}>
-            <span className={cn("font-black uppercase text-xs sm:text-sm", theme.fg)}>[ACTION_PANEL // NEO_BRUTAL]</span>
+            <span className={cn("font-bold uppercase text-xs sm:text-sm", theme.fg)}>[ACTION_PANEL // NEO_BRUTAL]</span>
             <div className="flex flex-wrap items-center gap-2.5 w-full sm:w-auto">
-              <button onClick={() => setIsEditing(!isEditing)} className="flex-1 sm:flex-initial px-3.5 py-2 bg-black text-white font-black text-xs uppercase border-2 border-black shadow-[2px_2px_0px_0px_rgba(255,255,255,1)] hover:bg-zinc-800 cursor-pointer">
+              <button onClick={() => setIsEditing(!isEditing)} className="flex-1 sm:flex-initial px-3.5 py-2 bg-black text-white font-bold text-xs uppercase border-2 border-black shadow-[2px_2px_0px_0px_rgba(255,255,255,1)] hover:bg-zinc-800 cursor-pointer">
                 {isEditing ? "SAVE_DATA" : "EDIT_INVOICE"}
               </button>
-              <button onClick={handlePrint} className="flex-1 sm:flex-initial px-3.5 py-2 bg-white text-black font-black text-xs uppercase border-2 border-black shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] hover:bg-zinc-100 cursor-pointer">PRINT_PDF</button>
-              <button onClick={handleDownload} className="flex-1 sm:flex-initial px-3.5 py-2 bg-white text-black font-black text-xs uppercase border-2 border-black shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] hover:bg-zinc-100 cursor-pointer">GET_JSON</button>
+              <button onClick={handlePrint} className="flex-1 sm:flex-initial px-3.5 py-2 bg-white text-black font-bold text-xs uppercase border-2 border-black shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] hover:bg-zinc-100 cursor-pointer">PRINT_PDF</button>
+              <button onClick={handleDownload} className="flex-1 sm:flex-initial px-3.5 py-2 bg-white text-black font-bold text-xs uppercase border-2 border-black shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] hover:bg-zinc-100 cursor-pointer">GET_JSON</button>
             </div>
           </div>
 
           <div className="bg-white dark:bg-zinc-950 border-4 border-black dark:border-white shadow-[6px_6px_0px_0px_rgba(0,0,0,1)] sm:shadow-[10px_10px_0px_0px_rgba(0,0,0,1)] p-4 sm:p-8 md:p-10 space-y-6 sm:space-y-8">
             <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 pb-6 border-b-4 border-black dark:border-white">
               <div>
-                <span className={cn("border-2 border-black font-black px-2.5 py-1 text-xs uppercase tracking-wider", theme.bg)}>STATEMENT // OFFICIAL</span>
-                <h1 className="text-2xl sm:text-3xl font-black uppercase text-foreground mt-3">ALGORIZE_UI</h1>
+                <span className={cn("border-2 border-black font-bold px-2.5 py-1 text-xs uppercase tracking-wider", theme.bg)}>STATEMENT // OFFICIAL</span>
+                <h1 className="text-2xl sm:text-3xl font-bold uppercase text-foreground mt-3">ALGORIZE_UI</h1>
               </div>
               <div className="text-left sm:text-right">
-                <EditableInput isEditing={isEditing} value={data.invoiceNumber} onChange={(e) => handleMainChange("invoiceNumber", e.target.value)} align="right" className={cn("text-2xl sm:text-3xl font-black break-all", theme.text)} />
+                <EditableInput isEditing={isEditing} value={data.invoiceNumber} onChange={(e) => handleMainChange("invoiceNumber", e.target.value)} align="right" className={cn("text-2xl sm:text-3xl font-bold break-all", theme.text)} />
                 <p className="text-xs text-muted-foreground">DATE: {data.dateIssued}</p>
               </div>
             </div>
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-6">
               <div className="p-4 border-4 border-black dark:border-white shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] bg-white dark:bg-zinc-900 space-y-1">
-                <span className="font-black uppercase text-xs block mb-1">BILL_TO:</span>
-                <EditableInput isEditing={isEditing} value={data.invoiceTo.name} onChange={(e) => handleNestedChange("invoiceTo", "name", e.target.value)} className="font-bold text-base sm:text-lg" />
+                <span className="font-bold uppercase text-xs block mb-1">BILL_TO:</span>
+                <EditableInput isEditing={isEditing} value={data.invoiceTo.name} onChange={(e) => handleNestedChange("invoiceTo", "name", e.target.value)} className="font-semibold text-base sm:text-lg" />
                 <EditableInput isEditing={isEditing} value={data.invoiceTo.company} onChange={(e) => handleNestedChange("invoiceTo", "company", e.target.value)} className="text-xs" />
                 <EditableInput isEditing={isEditing} value={data.invoiceTo.email} onChange={(e) => handleNestedChange("invoiceTo", "email", e.target.value)} className="text-xs break-all" />
               </div>
               <div className={cn("p-4 border-4 border-black dark:border-white shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] text-foreground space-y-1", theme.lightBg)}>
-                <span className="font-black uppercase text-xs block mb-1">PAYMENT_TERMS:</span>
-                <p className="text-xs font-bold">DUE: <EditableInput isEditing={isEditing} value={data.dateDue} onChange={(e) => handleMainChange("dateDue", e.target.value)} /></p>
+                <span className="font-bold uppercase text-xs block mb-1">PAYMENT_TERMS:</span>
+                <p className="text-xs font-semibold">DUE: <EditableInput isEditing={isEditing} value={data.dateDue} onChange={(e) => handleMainChange("dateDue", e.target.value)} /></p>
                 <p className="text-xs">BANK: <EditableInput isEditing={isEditing} value={data.billTo.bankName} onChange={(e) => handleNestedChange("billTo", "bankName", e.target.value)} /></p>
                 <p className="text-xs font-mono break-all">IBAN: <EditableInput isEditing={isEditing} value={data.billTo.iban} onChange={(e) => handleNestedChange("billTo", "iban", e.target.value)} /></p>
               </div>
@@ -481,7 +481,7 @@ export default function Invoice({
             {/* Brutalist Table */}
             <div className="border-4 border-black dark:border-white overflow-hidden">
               <table className="w-full text-left text-xs sm:text-sm">
-                <thead className="bg-black text-white dark:bg-white dark:text-black font-black uppercase text-xs">
+                <thead className="bg-black text-white dark:bg-white dark:text-black font-bold uppercase text-xs">
                   <tr>
                     <th className="p-3 border-r-2 border-black dark:border-white">ITEM</th>
                     <th className="p-3 text-right border-r-2 border-black dark:border-white w-16">QTY</th>
@@ -492,18 +492,18 @@ export default function Invoice({
                 <tbody className="divide-y-2 divide-black dark:divide-white">
                   {data.items.map((item, idx) => (
                     <tr key={idx} className="hover:bg-zinc-100 dark:hover:bg-zinc-800">
-                      <td className="p-3 border-r-2 border-black dark:border-white font-bold">
+                      <td className="p-3 border-r-2 border-black dark:border-white font-semibold">
                         <EditableInput isEditing={isEditing} value={item.item} onChange={(e) => handleItemChange(idx, "item", e.target.value)} />
                       </td>
                       <td className="p-3 text-right border-r-2 border-black dark:border-white">
                         <EditableInput isEditing={isEditing} value={item.qty} onChange={(e) => handleItemChange(idx, "qty", e.target.value)} align="right" />
                       </td>
-                      <td className={cn("p-3 text-right font-black", theme.text)}>
+                      <td className={cn("p-3 text-right font-bold", theme.text)}>
                         <EditableInput isEditing={isEditing} value={item.total} onChange={(e) => handleItemChange(idx, "total", e.target.value)} align="right" />
                       </td>
                       {isEditing && (
                         <td className="p-3 text-center border-l-2 border-black">
-                          <button onClick={() => removeItem(idx)} className="text-rose-600 font-bold p-1"><Trash2 className="w-4 h-4" /></button>
+                          <button onClick={() => removeItem(idx)} className="text-rose-600 font-semibold p-1"><Trash2 className="w-4 h-4" /></button>
                         </td>
                       )}
                     </tr>
@@ -513,21 +513,21 @@ export default function Invoice({
             </div>
 
             {isEditing && (
-              <button onClick={addItem} className="px-4 py-2 bg-black text-white font-black text-xs uppercase border-2 border-black shadow-[2px_2px_0px_0px_rgba(0,0,0,1)]">
+              <button onClick={addItem} className="px-4 py-2 bg-black text-white font-bold text-xs uppercase border-2 border-black shadow-[2px_2px_0px_0px_rgba(0,0,0,1)]">
                 + ADD_ITEM
               </button>
             )}
 
             <div className="flex justify-end pt-4">
               <div className={cn("p-4 sm:p-6 border-4 border-black dark:border-white shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] sm:shadow-[6px_6px_0px_0px_rgba(0,0,0,1)] text-right space-y-1 w-full sm:w-auto", theme.bg)}>
-                <span className={cn("font-black text-xs uppercase block", theme.fg)}>AMOUNT DUE NOW</span>
+                <span className={cn("font-bold text-xs uppercase block", theme.fg)}>AMOUNT DUE NOW</span>
                 <EditableInput
                   isEditing={isEditing}
                   value={data.grandTotal}
                   onChange={(e) => handleMainChange("grandTotal", e.target.value)}
                   align="right"
-                  inputBg={cn("border-2 font-mono font-black", theme.fgSoft, theme.fg)}
-                  className={cn("text-2xl sm:text-4xl font-black tracking-tight", theme.fg)}
+                  inputBg={cn("border-2 font-mono font-bold", theme.fgSoft, theme.fg)}
+                  className={cn("text-2xl sm:text-4xl font-bold tracking-tight", theme.fg)}
                 />
               </div>
             </div>
@@ -549,7 +549,7 @@ export default function Invoice({
                 </div>
                 <div className="min-w-0 flex-1">
                   <div className="flex items-center gap-2">
-                    <h1 className="text-xl sm:text-2xl font-bold text-foreground tracking-tight">ALGORIZE_UI</h1>
+                    <h1 className="text-xl sm:text-2xl font-semibold text-foreground tracking-tight">ALGORIZE_UI</h1>
                   </div>
                   <p className="text-xs sm:text-sm text-muted-foreground mt-1 max-w-[220px] leading-relaxed break-words">
                     Office 149, 450 South Brand Brooklyn San Diego County, CA 91905, USA
@@ -564,7 +564,7 @@ export default function Invoice({
                   <span className="text-base sm:text-xl font-medium text-muted-foreground uppercase tracking-widest">
                     INVOICE
                   </span>
-                  <EditableInput isEditing={isEditing} value={data.invoiceNumber} onChange={(e) => handleMainChange("invoiceNumber", e.target.value)} align="right" className="font-bold text-xl sm:text-2xl text-foreground" />
+                  <EditableInput isEditing={isEditing} value={data.invoiceNumber} onChange={(e) => handleMainChange("invoiceNumber", e.target.value)} align="right" className="font-semibold text-xl sm:text-2xl text-foreground" />
                 </div>
 
                 <div className="grid grid-cols-[auto,1fr] gap-x-3 sm:gap-x-4 gap-y-2 text-xs sm:text-sm items-center sm:text-right text-left">
@@ -579,7 +579,7 @@ export default function Invoice({
             {/* Billing Info */}
             <section className="grid grid-cols-1 md:grid-cols-2 gap-6 sm:gap-10 mb-8 sm:mb-12">
               <div>
-                <span className="text-[11px] font-bold uppercase tracking-wider text-muted-foreground mb-3 block">Invoice To</span>
+                <span className="text-[11px] font-semibold uppercase tracking-wider text-muted-foreground mb-3 block">Invoice To</span>
                 <div className="space-y-1.5 text-xs sm:text-sm break-words">
                   <EditableInput isEditing={isEditing} inputBg={invoiceVariants[variant].inputBg} focusRing={theme.focusRing} value={data.invoiceTo.name} onChange={(e) => handleNestedChange("invoiceTo", "name", e.target.value)} placeholder="Name" className="font-semibold text-sm sm:text-base text-foreground mb-2" />
                   <EditableInput isEditing={isEditing} inputBg={invoiceVariants[variant].inputBg} focusRing={theme.focusRing} value={data.invoiceTo.company} onChange={(e) => handleNestedChange("invoiceTo", "company", e.target.value)} placeholder="Company" className="text-muted-foreground" />
@@ -588,11 +588,11 @@ export default function Invoice({
               </div>
 
               <div>
-                <span className="text-[11px] font-bold uppercase tracking-wider text-muted-foreground mb-3 block">Payment Details</span>
+                <span className="text-[11px] font-semibold uppercase tracking-wider text-muted-foreground mb-3 block">Payment Details</span>
                 <div className={cn("p-3.5 sm:p-4 rounded-lg space-y-2.5 sm:space-y-3 text-xs sm:text-sm", invoiceVariants[variant].blockBg)}>
                   <div className="flex justify-between items-center pb-2.5 sm:pb-3 border-b border-border">
                     <span className="font-medium text-muted-foreground">Total Due:</span>
-                    <EditableInput isEditing={isEditing} inputBg={invoiceVariants[variant].inputBg} focusRing={theme.focusRing} value={data.billTo.totalDue} onChange={(e) => handleNestedChange("billTo", "totalDue", e.target.value)} align="right" className={cn("font-bold text-base sm:text-lg", theme.text)} />
+                    <EditableInput isEditing={isEditing} inputBg={invoiceVariants[variant].inputBg} focusRing={theme.focusRing} value={data.billTo.totalDue} onChange={(e) => handleNestedChange("billTo", "totalDue", e.target.value)} align="right" className={cn("font-semibold text-base sm:text-lg", theme.text)} />
                   </div>
                   <div className="grid grid-cols-[75px,1fr] gap-2 items-center">
                     <span className="text-muted-foreground">Bank:</span>
@@ -607,7 +607,7 @@ export default function Invoice({
             {/* Table */}
             <section className="mb-8 sm:mb-10 rounded-xl w-full overflow-hidden border border-border">
               <table className="w-full text-left text-xs sm:text-sm text-foreground border-collapse">
-                <thead className={cn("text-muted-foreground uppercase tracking-wider text-[10px] font-bold", invoiceVariants[variant].tableHeader)}>
+                <thead className={cn("text-muted-foreground uppercase tracking-wider text-[10px] font-semibold", invoiceVariants[variant].tableHeader)}>
                   <tr>
                     <th className="px-4 py-4">Item Details</th>
                     <th className="px-4 py-4 text-right w-20">Qty</th>
@@ -625,7 +625,7 @@ export default function Invoice({
                       <td className="px-4 py-4 align-top text-right font-medium">
                         <EditableInput isEditing={isEditing} value={item.qty} onChange={(e) => handleItemChange(idx, "qty", e.target.value)} align="right" />
                       </td>
-                      <td className="px-4 py-4 align-top text-right font-bold">
+                      <td className="px-4 py-4 align-top text-right font-semibold">
                         <EditableInput isEditing={isEditing} value={item.total} onChange={(e) => handleItemChange(idx, "total", e.target.value)} align="right" />
                       </td>
                       {isEditing && (
@@ -640,7 +640,7 @@ export default function Invoice({
 
               {isEditing && (
                 <div className="p-3 border-t border-border">
-                  <button onClick={addItem} className={cn("flex items-center gap-2 text-xs font-bold", theme.text)}>
+                  <button onClick={addItem} className={cn("flex items-center gap-2 text-xs font-semibold", theme.text)}>
                     <Plus className="w-4 h-4" /> Add Item
                   </button>
                 </div>
@@ -656,7 +656,7 @@ export default function Invoice({
               )}
               <div className="text-left sm:text-right w-full sm:w-auto">
                 <span className="text-xs text-muted-foreground block uppercase font-mono">Grand Total</span>
-                <EditableInput isEditing={isEditing} value={data.grandTotal} onChange={(e) => handleMainChange("grandTotal", e.target.value)} align="right" className={cn("text-2xl font-bold", theme.text)} />
+                <EditableInput isEditing={isEditing} value={data.grandTotal} onChange={(e) => handleMainChange("grandTotal", e.target.value)} align="right" className={cn("text-2xl font-semibold", theme.text)} />
               </div>
             </footer>
           </div>
@@ -666,7 +666,7 @@ export default function Invoice({
             <button
               onClick={() => setIsEditing(!isEditing)}
               className={cn(
-                "w-full py-3 px-4 rounded-xl font-bold text-sm transition-all flex items-center justify-center gap-2 cursor-pointer shadow-md",
+                "w-full py-3 px-4 rounded-xl font-semibold text-sm transition-all flex items-center justify-center gap-2 cursor-pointer shadow-md",
                 isEditing ? "bg-emerald-600 hover:bg-emerald-700 text-white" : theme.bg,
               )}
             >

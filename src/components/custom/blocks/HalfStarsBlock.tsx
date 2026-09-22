@@ -131,7 +131,7 @@ export const HalfStars = React.forwardRef<HTMLDivElement, HalfStarsProps>(
           })}
         </div>
         {showText && (
-          <span className="text-xl font-bold text-foreground tabular-nums">
+          <span className="text-xl font-semibold text-foreground tabular-nums">
             <span className="inline-block w-[45px] text-center">
               {Number.isInteger(safeRating) ? safeRating : safeRating.toFixed(1)}
             </span>

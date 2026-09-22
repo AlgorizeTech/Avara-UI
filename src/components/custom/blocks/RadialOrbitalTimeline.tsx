@@ -559,7 +559,7 @@ export default function RadialOrbitalTimeline({
                   ${isMobile ? "text-[10px]" : "text-xs font-semibold"}
                   ${
                     isExpanded
-                      ? isMobile ? "top-5 text-primary font-bold scale-105" : "top-10 text-primary font-bold scale-110"
+                      ? isMobile ? "top-5 text-primary font-semibold scale-105" : "top-10 text-primary font-semibold scale-110"
                       : isMobile ? "top-4 text-zinc-600 dark:text-white/70" : "top-7 text-zinc-600 dark:text-white/70"
                   }
                 `}
@@ -574,7 +574,7 @@ export default function RadialOrbitalTimeline({
                     <CardHeader className="pb-2">
                       <div className="flex justify-between items-center">
                         <Badge
-                          className={`px-2 text-xs font-bold ${getStatusStyles(
+                          className={`px-2 text-xs font-semibold ${getStatusStyles(
                             item.status
                           )}`}
                         >
@@ -588,7 +588,7 @@ export default function RadialOrbitalTimeline({
                           {item.date}
                         </span>
                       </div>
-                      <CardTitle className="text-sm mt-2 font-bold text-zinc-900 dark:text-white">
+                      <CardTitle className="text-sm mt-2 font-semibold text-zinc-900 dark:text-white">
                         {item.title}
                       </CardTitle>
                     </CardHeader>
@@ -601,7 +601,7 @@ export default function RadialOrbitalTimeline({
                             <Zap size={10} className="mr-1 text-primary" />
                             Energy Level
                           </span>
-                          <span className="font-mono font-bold text-zinc-900 dark:text-white">{item.energy}%</span>
+                          <span className="font-mono font-semibold text-zinc-900 dark:text-white">{item.energy}%</span>
                         </div>
                         <div className="w-full h-1 bg-zinc-200 dark:bg-white/10 rounded-full overflow-hidden">
                           <div

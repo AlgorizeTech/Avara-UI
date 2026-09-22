@@ -532,7 +532,7 @@ export function RangeDatePicker({
       {/* Weekdays Header */}
       <section className="grid grid-cols-7 gap-1 text-center mb-2">
         {WEEKDAY_NAMES.map((day) => (
-          <span key={day} className="text-xs font-bold text-muted-foreground">
+          <span key={day} className="text-xs font-semibold text-muted-foreground">
             {day}
           </span>
         ))}
@@ -595,7 +595,7 @@ export function RangeDatePicker({
               >
                 <span
                   className={cn(
-                    "text-xs font-bold leading-tight",
+                    "text-xs font-semibold leading-tight",
                     (isStart || isEnd) && "text-primary-foreground",
                     isOff && "line-through font-normal",
                   )}
@@ -607,7 +607,7 @@ export function RangeDatePicker({
                     className={cn(
                       "text-[10px] font-semibold leading-tight mt-0.5 tracking-tight",
                       isStart || isEnd
-                        ? "text-primary-foreground/90 font-bold"
+                        ? "text-primary-foreground/90 font-semibold"
                         : "text-muted-foreground",
                     )}
                   >
@@ -643,12 +643,12 @@ export function RangeDatePicker({
   const renderTimeColumn = (end: (typeof timeEnds)[number]) => (
     <div className="flex flex-col gap-2 min-w-0">
       <div className="flex items-center justify-between">
-        <span className="flex items-center gap-1.5 text-[10px] font-bold uppercase tracking-wider text-muted-foreground">
+        <span className="flex items-center gap-1.5 text-[10px] font-semibold uppercase tracking-wider text-muted-foreground">
           <Clock className="size-3.5" /> {end.label}
         </span>
         <span
           className={cn(
-            "text-xs font-bold tabular-nums",
+            "text-xs font-semibold tabular-nums",
             end.date ? theme.text : "text-muted-foreground",
           )}
         >
@@ -828,7 +828,7 @@ export function RangeDatePicker({
             <button
               type="button"
               onClick={resetRange}
-              className="flex items-center gap-1 px-2.5 py-1 rounded-lg border border-border/80 text-[11px] font-bold text-muted-foreground hover:text-foreground hover:bg-muted transition-colors"
+              className="flex items-center gap-1 px-2.5 py-1 rounded-lg border border-border/80 text-[11px] font-semibold text-muted-foreground hover:text-foreground hover:bg-muted transition-colors"
             >
               <RotateCcw className="size-3" />
               {showTime ? "Clear" : "Reset"}

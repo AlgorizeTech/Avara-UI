@@ -300,7 +300,7 @@ export const WizardNavigation = forwardRef<
         type="button"
         onClick={nextStep}
         className={cn(
-          "px-6 py-3 rounded-xl font-bold text-sm sm:text-base flex items-center gap-2 transition-all active:scale-95 shadow-sm",
+          "px-6 py-3 rounded-xl font-semibold text-sm sm:text-base flex items-center gap-2 transition-all active:scale-95 shadow-sm",
           !isHex && (btnColors[color] || btnColors.indigo),
         )}
         style={isHex ? { backgroundColor: color, color: "#ffffff" } : undefined}

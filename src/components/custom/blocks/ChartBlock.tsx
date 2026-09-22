@@ -225,7 +225,7 @@ function BarChart({
             {/* Tooltip */}
             <div className="absolute -top-12 opacity-0 scale-95 group-hover:opacity-100 group-hover:scale-100 transition-all duration-200 pointer-events-none z-50 flex flex-col items-center">
               <div
-                className="text-white px-3 py-1.5 rounded-lg shadow-xl text-xs font-bold whitespace-nowrap text-center"
+                className="text-white px-3 py-1.5 rounded-lg shadow-xl text-xs font-semibold whitespace-nowrap text-center"
                 style={{ backgroundColor: color }}
               >
                 <div className="text-[10px] text-white/80 uppercase tracking-wider font-semibold">
@@ -411,7 +411,7 @@ function SmoothLineChart({
                 )}
               >
                 <div
-                  className="text-white px-3 py-1.5 rounded-lg shadow-xl text-xs font-bold whitespace-nowrap text-center"
+                  className="text-white px-3 py-1.5 rounded-lg shadow-xl text-xs font-semibold whitespace-nowrap text-center"
                   style={{ backgroundColor: color }}
                 >
                   <div className="text-[10px] text-white/80 uppercase tracking-wider font-semibold">
@@ -563,7 +563,7 @@ function CircularChart({
             }}
           >
             <div
-              className="text-white px-3 py-1.5 rounded-lg shadow-xl text-xs font-bold whitespace-nowrap text-center"
+              className="text-white px-3 py-1.5 rounded-lg shadow-xl text-xs font-semibold whitespace-nowrap text-center"
               style={{ backgroundColor: color }}
             >
               <div className="text-[10px] text-white/80 uppercase tracking-wider font-semibold">

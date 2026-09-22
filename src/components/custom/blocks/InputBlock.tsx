@@ -431,7 +431,7 @@ export const InputBlock = forwardRef<HTMLInputElement, InputBlockProps>(
           {label && (
             <label
               className={cn(
-                "text-sm font-bold",
+                "text-sm font-semibold",
                 hasError ? "text-red-500" : "text-foreground",
                 disabled && "opacity-50",
               )}
@@ -483,7 +483,7 @@ export const InputBlock = forwardRef<HTMLInputElement, InputBlockProps>(
               />
             </div>
             <p
-              className={cn("font-bold text-foreground", s.text)}
+              className={cn("font-semibold text-foreground", s.text)}
             >
               {isDragging
                 ? "Drop files here"
@@ -530,7 +530,7 @@ export const InputBlock = forwardRef<HTMLInputElement, InputBlockProps>(
                       </div>
                     )}
                     <div className="flex flex-col min-w-0">
-                      <span className="text-sm font-bold text-foreground truncate">
+                      <span className="text-sm font-semibold text-foreground truncate">
                         {file.name}
                       </span>
                       <span className="text-xs text-muted-foreground font-medium">
@@ -578,7 +578,7 @@ export const InputBlock = forwardRef<HTMLInputElement, InputBlockProps>(
         {label && (
           <label
             className={cn(
-              "text-sm font-bold",
+              "text-sm font-semibold",
               hasError ? "text-red-500" : "text-foreground",
               disabled && "opacity-50",
             )}

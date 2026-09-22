@@ -189,7 +189,7 @@ export default function LoginForm({
 
       <div className="relative flex items-center mb-5 sm:mb-6">
         <div className="flex-grow border-t border-border"></div>
-        <span className="flex-shrink-0 mx-3 sm:mx-4 text-muted-foreground text-[10px] sm:text-xs font-bold uppercase tracking-widest">
+        <span className="flex-shrink-0 mx-3 sm:mx-4 text-muted-foreground text-[10px] sm:text-xs font-semibold uppercase tracking-widest">
           Or continue with
         </span>
         <div className="flex-grow border-t border-border"></div>
@@ -232,7 +232,7 @@ export default function LoginForm({
           <a
             href={forgotPasswordHref}
             className={cn(
-              "text-xs font-bold hover:underline transition-all shrink-0",
+              "text-xs font-semibold hover:underline transition-all shrink-0",
               theme.text,
             )}
           >
@@ -257,7 +257,7 @@ export default function LoginForm({
           <a
             href={signupHref}
             className={cn(
-              "font-bold hover:underline transition-all",
+              "font-semibold hover:underline transition-all",
               theme.text,
             )}
           >
@@ -479,7 +479,7 @@ export default function LoginForm({
           </div>
 
           <div className="relative z-10 max-w-sm">
-            <h1 className="text-4xl font-bold mb-4 leading-tight">
+            <h1 className="text-4xl font-semibold mb-4 leading-tight">
               Welcome back. Pick up where you left off.
             </h1>
             <p className="font-medium opacity-80">

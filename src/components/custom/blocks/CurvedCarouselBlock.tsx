@@ -348,7 +348,7 @@ export function CurvedCarousel({
         <div className="absolute bottom-6 sm:bottom-8 z-40 flex flex-col items-center pointer-events-none">
           <div className="flex items-center gap-3">
             <span className="w-8 h-[1.5px] bg-foreground/30" />
-            <span className="text-foreground font-mono text-xs tracking-[0.25em] uppercase font-bold">
+            <span className="text-foreground font-mono text-xs tracking-[0.25em] uppercase font-semibold">
               Continuous Curved Marquee
             </span>
             <span className="w-8 h-[1.5px] bg-foreground/30" />
@@ -412,7 +412,7 @@ export function CurvedCarousel({
       <div className="absolute bottom-8 sm:bottom-12 z-40 flex flex-col items-center pointer-events-none">
         <div className="flex items-center gap-3">
           <span className="w-8 h-[1.5px] bg-foreground/30" />
-          <span className="text-foreground font-mono text-xs sm:text-sm tracking-[0.25em] uppercase font-bold">
+          <span className="text-foreground font-mono text-xs sm:text-sm tracking-[0.25em] uppercase font-semibold">
             Curved Carousel
           </span>
           <span className="w-8 h-[1.5px] bg-foreground/30" />

@@ -28,7 +28,7 @@ export function DocsLayoutContent({ children }: { children: ReactNode }) {
             className="prose prose-zinc dark:prose-invert max-w-none w-full min-w-0 max-w-full
             prose-headings:font-serif prose-headings:text-foreground prose-headings:tracking-[-0.01em]
             prose-h1:text-[clamp(34px,6vw,52px)] prose-h1:font-normal prose-h1:leading-[1.2] prose-h1:mb-6
-            prose-h2:text-2xl prose-h2:font-bold prose-h2:mt-16 prose-h2:mb-4 prose-h2:scroll-m-24
+            prose-h2:text-2xl prose-h2:font-semibold prose-h2:mt-16 prose-h2:mb-4 prose-h2:scroll-m-24
             prose-h3:text-lg prose-h3:font-semibold prose-h3:scroll-m-24
             prose-h4:text-[15px] prose-h4:font-semibold prose-h4:leading-[1.25]
             prose-p:text-sm prose-p:leading-relaxed prose-p:text-foreground/70

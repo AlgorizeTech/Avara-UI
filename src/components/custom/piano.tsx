@@ -166,7 +166,7 @@ export function Piano({
           <div className="size-7 sm:size-9 rounded-2xl bg-white border border-zinc-200 flex items-center justify-center shadow-sm">
             <Music className="size-3.5 sm:size-4 text-zinc-900" />
           </div>
-          <h2 className="text-sm sm:text-lg font-black tracking-widest text-primary uppercase">
+          <h2 className="text-sm sm:text-lg font-bold tracking-widest text-primary uppercase">
             PIANO
           </h2>
         </div>
@@ -186,7 +186,7 @@ export function Piano({
                 <VolumeX className="size-4 text-red-400" />
               )}
             </button>
-            <span className="text-[10px] sm:text-xs font-bold uppercase text-zinc-400">
+            <span className="text-[10px] sm:text-xs font-semibold uppercase text-zinc-400">
               Volume
             </span>
             <div className="relative w-20 sm:w-28 h-4 flex items-center shrink-0">
@@ -214,7 +214,7 @@ export function Piano({
 
           {/* Show Keys Toggle Switch (Height Matched to Volume Slider) */}
           <div className="flex items-center gap-2">
-            <span className="text-[10px] sm:text-xs font-bold uppercase text-zinc-400">
+            <span className="text-[10px] sm:text-xs font-semibold uppercase text-zinc-400">
               Show Keys
             </span>
             <div className="h-4 flex items-center">
@@ -276,8 +276,8 @@ export function Piano({
                 {showKeys && (
                   <span
                     className={cn(
-                      "text-xs font-mono font-bold uppercase tracking-wider transition-colors",
-                      isActive ? "text-primary font-black" : "text-zinc-500"
+                      "text-xs font-mono font-semibold uppercase tracking-wider transition-colors",
+                      isActive ? "text-primary font-bold" : "text-zinc-500"
                     )}
                   >
                     {item.keyTrigger === ";" ? ";" : item.keyTrigger.toUpperCase()}
@@ -310,7 +310,7 @@ export function Piano({
                 {showKeys && (
                   <span
                     className={cn(
-                      "text-[10px] font-mono font-bold uppercase tracking-wider transition-colors",
+                      "text-[10px] font-mono font-semibold uppercase tracking-wider transition-colors",
                       isActive ? "text-primary-foreground" : "text-zinc-400"
                     )}
                   >

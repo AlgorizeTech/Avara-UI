@@ -1188,7 +1188,7 @@ function CalendarDashboard({
                           </span>
                           <span
                             className={cn(
-                              "text-xs sm:text-sm font-bold w-6 h-6 sm:w-7 sm:h-7 flex items-center justify-center rounded-full transition-colors",
+                              "text-xs sm:text-sm font-semibold w-6 h-6 sm:w-7 sm:h-7 flex items-center justify-center rounded-full transition-colors",
                               isToday
                                 ? theme.primaryBg
                                 : "text-foreground hover:bg-muted",

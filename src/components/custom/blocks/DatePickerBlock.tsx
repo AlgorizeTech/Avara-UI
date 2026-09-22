@@ -341,12 +341,12 @@ export const DatePickerBlock = forwardRef<HTMLDivElement, DatePickerBlockProps>(
 
     const timeHeader = (
       <div className="flex items-center justify-between mb-2">
-        <span className="flex items-center gap-1.5 text-[10px] font-bold uppercase tracking-wider text-muted-foreground">
+        <span className="flex items-center gap-1.5 text-[10px] font-semibold uppercase tracking-wider text-muted-foreground">
           <Clock className="w-3.5 h-3.5" /> Time
         </span>
         <span
           className={cn(
-            "text-xs font-bold tabular-nums",
+            "text-xs font-semibold tabular-nums",
             value ? theme.text : "text-muted-foreground",
           )}
         >
@@ -365,7 +365,7 @@ export const DatePickerBlock = forwardRef<HTMLDivElement, DatePickerBlockProps>(
         {label && (
           <label
             className={cn(
-              "text-sm font-bold",
+              "text-sm font-semibold",
               hasError ? "text-red-500" : "text-foreground",
               disabled && "opacity-50",
             )}
@@ -433,7 +433,7 @@ export const DatePickerBlock = forwardRef<HTMLDivElement, DatePickerBlockProps>(
                   >
                     <ChevronLeft className="w-4 h-4" />
                   </button>
-                  <div className="text-sm font-bold text-foreground">
+                  <div className="text-sm font-semibold text-foreground">
                     {MONTH_NAMES[currentMonth]} {currentYear}
                   </div>
                   <button
@@ -449,7 +449,7 @@ export const DatePickerBlock = forwardRef<HTMLDivElement, DatePickerBlockProps>(
                   {DAY_NAMES.map((day) => (
                     <div
                       key={day}
-                      className="text-center text-[10px] font-bold uppercase tracking-wider text-muted-foreground"
+                      className="text-center text-[10px] font-semibold uppercase tracking-wider text-muted-foreground"
                     >
                       {day}
                     </div>
@@ -481,10 +481,10 @@ export const DatePickerBlock = forwardRef<HTMLDivElement, DatePickerBlockProps>(
                         className={cn(
                           "w-8 h-8 flex items-center justify-center rounded-full text-sm transition-all duration-200 cursor-pointer mx-auto",
                           isSelected
-                            ? cn(theme.bg, "font-bold shadow-sm scale-110")
+                            ? cn(theme.bg, "font-semibold shadow-sm scale-110")
                             : isToday
                               ? cn(
-                                  "font-bold bg-muted",
+                                  "font-semibold bg-muted",
                                   theme.text,
                                 )
                               : "text-foreground font-medium hover:bg-muted",
@@ -546,7 +546,7 @@ export const DatePickerBlock = forwardRef<HTMLDivElement, DatePickerBlockProps>(
                   setIsOpen(false);
                 }}
                 className={cn(
-                  "mt-3 w-full h-9 rounded-lg text-sm font-bold transition-colors",
+                  "mt-3 w-full h-9 rounded-lg text-sm font-semibold transition-colors",
                   theme.bg,
                 )}
               >

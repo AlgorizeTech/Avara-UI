@@ -100,7 +100,7 @@ export function ShowcaseSliders({
         return (
           <div key={ctrl.name} className="flex flex-col gap-2 min-w-0">
             <div className="flex items-center justify-between gap-2">
-              <span className="text-xs font-bold uppercase tracking-wider text-zinc-500 truncate">
+              <span className="text-xs font-semibold uppercase tracking-wider text-zinc-500 truncate">
                 {ctrl.label}
               </span>
               <span className="shrink-0 font-mono text-xs font-semibold tabular-nums text-zinc-700 dark:text-zinc-300">

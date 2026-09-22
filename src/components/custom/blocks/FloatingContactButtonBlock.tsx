@@ -319,7 +319,7 @@ export const FloatingContactButtonBlock = React.forwardRef<
                   </div>
                   <div className="flex flex-col min-w-0">
                     <div className="flex items-center gap-1.5">
-                      <h3 className="font-bold text-xs sm:text-sm tracking-tight truncate text-primary-foreground dark:text-zinc-900">
+                      <h3 className="font-semibold text-xs sm:text-sm tracking-tight truncate text-primary-foreground dark:text-zinc-900">
                         {title}
                       </h3>
                       <Sparkles className="w-3.5 h-3.5 opacity-80 shrink-0 animate-pulse text-primary-foreground dark:text-zinc-900" />
@@ -344,7 +344,7 @@ export const FloatingContactButtonBlock = React.forwardRef<
                 className="flex-1 p-3 sm:p-4 overflow-y-auto flex flex-col gap-3 sm:gap-3.5 bg-muted/50"
               >
                 <div className="text-center my-1">
-                  <span className="text-[10px] font-mono font-bold uppercase tracking-widest px-2.5 py-1 rounded-full bg-muted/60 text-muted-foreground">
+                  <span className="text-[10px] font-mono font-semibold uppercase tracking-widest px-2.5 py-1 rounded-full bg-muted/60 text-muted-foreground">
                     Today
                   </span>
                 </div>

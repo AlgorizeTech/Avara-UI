@@ -247,7 +247,7 @@ export function ImageCompare({
           style={{ left: `${sliderPos}%` }}
         >
           <div
-            className="absolute top-1/2 -translate-x-1/2 -translate-y-1/2 px-3 py-1.5 rounded-xl border text-xs font-black tracking-wider uppercase shadow-xl flex items-center gap-1.5 pointer-events-auto text-primary-foreground dark:text-zinc-900"
+            className="absolute top-1/2 -translate-x-1/2 -translate-y-1/2 px-3 py-1.5 rounded-xl border text-xs font-bold tracking-wider uppercase shadow-xl flex items-center gap-1.5 pointer-events-auto text-primary-foreground dark:text-zinc-900"
             style={{
               backgroundColor: activeColor,
               borderColor: "rgba(255,255,255,0.4)",
@@ -313,7 +313,7 @@ export function ImageCompare({
           style={{ left: `${sliderPos}%`, backgroundColor: activeColor }}
         >
           <div
-            className="absolute top-6 -translate-x-1/2 px-3 py-1 rounded-full text-[10px] font-black uppercase shadow-lg text-primary-foreground dark:text-zinc-900"
+            className="absolute top-6 -translate-x-1/2 px-3 py-1 rounded-full text-[10px] font-bold uppercase shadow-lg text-primary-foreground dark:text-zinc-900"
             style={{ backgroundColor: activeColor }}
           >
             Hover Reveal
@@ -343,7 +343,7 @@ export function ImageCompare({
           style={{ left: `${sliderPos}%`, top: `${sliderPosY}%`, borderColor: activeColor }}
         >
           <div
-            className="absolute top-2 left-1/2 -translate-x-1/2 px-2.5 py-0.5 rounded-full text-[10px] font-black shadow-md text-primary-foreground dark:text-zinc-900"
+            className="absolute top-2 left-1/2 -translate-x-1/2 px-2.5 py-0.5 rounded-full text-[10px] font-bold shadow-md text-primary-foreground dark:text-zinc-900"
             style={{ backgroundColor: activeColor }}
           >
             Lens Scope

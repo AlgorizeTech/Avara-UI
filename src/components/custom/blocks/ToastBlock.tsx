@@ -163,11 +163,11 @@ const ToastItem = ({ id, title, description, type = "default", duration = 5000, 
       )}
 
       <div className="flex flex-col gap-1 w-full min-w-0">
-        <h3 className="text-sm font-bold text-foreground">{title}</h3>
+        <h3 className="text-sm font-semibold text-foreground">{title}</h3>
         {description && <p className="text-sm text-muted-foreground">{description}</p>}
 
         {action && (
-          <button onClick={() => { action.onClick(); handleClose(); }} className="mt-2 w-max px-3 py-1.5 rounded-lg text-xs font-bold bg-primary text-primary-foreground transition-all hover:opacity-90 active:scale-95 shadow-xs">
+          <button onClick={() => { action.onClick(); handleClose(); }} className="mt-2 w-max px-3 py-1.5 rounded-lg text-xs font-semibold bg-primary text-primary-foreground transition-all hover:opacity-90 active:scale-95 shadow-xs">
             {action.label}
           </button>
         )}

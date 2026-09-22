@@ -268,7 +268,7 @@ export function CursorAnimation({
               {getVariantIcon()}
             </div>
             <div>
-              <h3 className="text-xl font-bold text-foreground tracking-tight">
+              <h3 className="text-xl font-semibold text-foreground tracking-tight">
                 Hover & Move Cursor
               </h3>
               <p className="text-sm text-muted-foreground mt-1.5 leading-relaxed">
@@ -388,7 +388,7 @@ export function CursorAnimation({
               }}
             >
               <div
-                className="flex items-center gap-1.5 px-3 py-1.5 rounded-full text-white text-xs font-bold shadow-xl whitespace-nowrap"
+                className="flex items-center gap-1.5 px-3 py-1.5 rounded-full text-white text-xs font-semibold shadow-xl whitespace-nowrap"
                 style={{ backgroundColor: activeColor }}
               >
                 <span>{label}</span>

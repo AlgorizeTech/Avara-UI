@@ -226,7 +226,7 @@ function MediaOverlay({
   const copy = (
     <>
       {title && (
-        <h3 className="line-clamp-1 text-base font-bold tracking-tight text-white drop-shadow-sm sm:text-xl md:text-2xl">
+        <h3 className="line-clamp-1 text-base font-semibold tracking-tight text-white drop-shadow-sm sm:text-xl md:text-2xl">
           {title}
         </h3>
       )}

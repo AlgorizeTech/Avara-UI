@@ -338,8 +338,8 @@ export const HeroBlock = forwardRef<HTMLElement, HeroBlockProps>(
                   <div className="absolute top-2 left-0 sm:-left-2 px-4 py-2 rounded-2xl bg-card border-2 border-border flex items-center gap-2.5 z-20">
                     <div className="size-2 rounded-full" style={{ backgroundColor: "var(--hero-accent-text)" }} />
                     <div>
-                      <p className="text-[11px] font-black text-foreground">{featurePillText}</p>
-                      <p className="text-[9px] font-bold" style={{ color: "var(--hero-accent-text)" }}>Verified Doctors</p>
+                      <p className="text-[11px] font-bold text-foreground">{featurePillText}</p>
+                      <p className="text-[9px] font-semibold" style={{ color: "var(--hero-accent-text)" }}>Verified Doctors</p>
                     </div>
                   </div>
 
@@ -349,13 +349,13 @@ export const HeroBlock = forwardRef<HTMLElement, HeroBlockProps>(
                       <img src={catImage} alt="Cat Supplies" className="w-full h-full object-cover" />
                     </div>
                     <div>
-                      <p className="text-[11px] font-black text-foreground">Cat Essentials</p>
-                      <p className="text-[9px] font-bold text-muted-foreground">Same Day Delivery</p>
+                      <p className="text-[11px] font-bold text-foreground">Cat Essentials</p>
+                      <p className="text-[9px] font-semibold text-muted-foreground">Same Day Delivery</p>
                     </div>
                   </div>
 
                   {/* Center Left Rating Pill */}
-                  <div className="absolute bottom-1/3 -left-4 px-3.5 py-1.5 rounded-full font-black text-xs border z-20" style={{ backgroundColor: "var(--hero-accent-text)", color: "var(--primary-foreground)", borderColor: "var(--hero-accent-text)" }}>
+                  <div className="absolute bottom-1/3 -left-4 px-3.5 py-1.5 rounded-full font-bold text-xs border z-20" style={{ backgroundColor: "var(--hero-accent-text)", color: "var(--primary-foreground)", borderColor: "var(--hero-accent-text)" }}>
                     {ratingText}
                   </div>
 
@@ -368,7 +368,7 @@ export const HeroBlock = forwardRef<HTMLElement, HeroBlockProps>(
                 {/* Category Pills Header */}
                 <div className="flex flex-wrap items-center gap-2">
                   {badgeTags?.[0] && (
-                    <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full border text-xs font-bold" style={{ backgroundColor: "rgba(16, 185, 129, 0.08)", borderColor: "rgba(16, 185, 129, 0.25)", color: "var(--hero-accent-text)" }}>
+                    <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full border text-xs font-semibold" style={{ backgroundColor: "rgba(16, 185, 129, 0.08)", borderColor: "rgba(16, 185, 129, 0.25)", color: "var(--hero-accent-text)" }}>
                       <ShieldCheck className="size-3.5 shrink-0" style={{ color: "var(--hero-accent-text)" }} />
                       <span>{badgeTags[0]}</span>
                     </div>
@@ -382,7 +382,7 @@ export const HeroBlock = forwardRef<HTMLElement, HeroBlockProps>(
                 </div>
 
                 {/* Main Heading */}
-                <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-black tracking-tight leading-[1.15] text-foreground">
+                <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold tracking-tight leading-[1.15] text-foreground">
                   <span className="block">{petTitlePrefix}</span>
                   <span className="block mt-1" style={{ color: "var(--hero-accent-text)" }}>
                     {petTitleAccent}
@@ -403,7 +403,7 @@ export const HeroBlock = forwardRef<HTMLElement, HeroBlockProps>(
                     {categories.map((cat, i) => (
                       <span
                         key={i}
-                        className="px-3 py-1 rounded-xl bg-card border border-border text-xs font-bold text-foreground cursor-pointer transition-all"
+                        className="px-3 py-1 rounded-xl bg-card border border-border text-xs font-semibold text-foreground cursor-pointer transition-all"
                       >
                         {cat}
                       </span>
@@ -425,7 +425,7 @@ export const HeroBlock = forwardRef<HTMLElement, HeroBlockProps>(
 
                   <Link
                     href={secondaryActionHref}
-                    className="inline-flex items-center justify-center gap-2.5 px-6 py-4 rounded-2xl border border-border bg-card hover:bg-accent text-foreground font-bold text-sm sm:text-base transition-all active:scale-95 text-center"
+                    className="inline-flex items-center justify-center gap-2.5 px-6 py-4 rounded-2xl border border-border bg-card hover:bg-accent text-foreground font-semibold text-sm sm:text-base transition-all active:scale-95 text-center"
                   >
                     <span>{petSecondaryAction}</span>
                     <ArrowUpRight className="size-4 shrink-0" style={{ color: "var(--hero-accent-text)" }} />
@@ -433,7 +433,7 @@ export const HeroBlock = forwardRef<HTMLElement, HeroBlockProps>(
                 </div>
 
                 {/* Trust Footer Line */}
-                <div className="pt-3 flex items-center gap-4 text-xs font-bold text-muted-foreground">
+                <div className="pt-3 flex items-center gap-4 text-xs font-semibold text-muted-foreground">
                   <div className="flex items-center gap-1.5">
                     <ShieldCheck className="size-4" style={{ color: "var(--hero-accent-text)" }} />
                     <span>Vet Verified Ingredients</span>
@@ -553,7 +553,7 @@ export const HeroBlock = forwardRef<HTMLElement, HeroBlockProps>(
               <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3 sm:gap-5 pt-1 sm:pt-2 w-full">
                 <Link
                   href={primaryActionHref}
-                  className="w-full sm:w-auto inline-flex items-center justify-center gap-2.5 sm:gap-3 px-6 sm:px-7 py-3 sm:py-3.5 rounded-full font-bold text-xs sm:text-base shadow-md transition-all active:scale-95 text-center"
+                  className="w-full sm:w-auto inline-flex items-center justify-center gap-2.5 sm:gap-3 px-6 sm:px-7 py-3 sm:py-3.5 rounded-full font-semibold text-xs sm:text-base shadow-md transition-all active:scale-95 text-center"
                   style={{
                     backgroundColor: "var(--hero-accent-text)",
                     color: "var(--primary-foreground)",
@@ -565,7 +565,7 @@ export const HeroBlock = forwardRef<HTMLElement, HeroBlockProps>(
 
                 <Link
                   href={secondaryActionHref}
-                  className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-5 sm:px-6 py-3 sm:py-3.5 rounded-full font-bold text-xs sm:text-base hover:underline transition-all text-center"
+                  className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-5 sm:px-6 py-3 sm:py-3.5 rounded-full font-semibold text-xs sm:text-base hover:underline transition-all text-center"
                   style={{ color: "var(--hero-accent-text)" }}
                 >
                   <span>{docSecondaryAction}</span>
@@ -578,7 +578,7 @@ export const HeroBlock = forwardRef<HTMLElement, HeroBlockProps>(
                   <p className="text-xl sm:text-3xl lg:text-4xl font-extrabold text-zinc-900 dark:text-white">
                     {stat1Val}
                   </p>
-                  <div className="flex items-center gap-1.5 text-[11px] sm:text-xs font-bold text-zinc-500 dark:text-zinc-400">
+                  <div className="flex items-center gap-1.5 text-[11px] sm:text-xs font-semibold text-zinc-500 dark:text-zinc-400">
                     <ShieldCheck className="size-3.5 shrink-0" style={{ color: "var(--hero-accent-text)" }} />
                     <span>{stat1Label}</span>
                   </div>
@@ -588,7 +588,7 @@ export const HeroBlock = forwardRef<HTMLElement, HeroBlockProps>(
                   <p className="text-xl sm:text-3xl lg:text-4xl font-extrabold text-zinc-900 dark:text-white">
                     {stat2Val}
                   </p>
-                  <div className="flex items-center gap-1.5 text-[11px] sm:text-xs font-bold text-zinc-500 dark:text-zinc-400">
+                  <div className="flex items-center gap-1.5 text-[11px] sm:text-xs font-semibold text-zinc-500 dark:text-zinc-400">
                     <Heart className="size-3.5 text-rose-500 shrink-0" />
                     <span>{stat2Label}</span>
                   </div>
@@ -659,7 +659,7 @@ export const HeroBlock = forwardRef<HTMLElement, HeroBlockProps>(
                       className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
                     />
                     <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-transparent to-transparent flex items-end p-2 sm:p-3.5">
-                      <p className="text-[9px] sm:text-xs font-black text-white leading-tight">
+                      <p className="text-[9px] sm:text-xs font-bold text-white leading-tight">
                         Lab-Trusted. <br /> Doorstep Delivered.
                       </p>
                     </div>
@@ -814,7 +814,7 @@ export const HeroBlock = forwardRef<HTMLElement, HeroBlockProps>(
                   
                   {sliderBadgeText && (
                     <Link href={badgeHref} className="inline-block group/badge self-start">
-                      <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-primary/10 border border-primary/30 text-xs sm:text-sm font-bold text-[var(--hero-accent-text)] group-hover/badge:bg-primary/20 transition-all duration-300">
+                      <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-primary/10 border border-primary/30 text-xs sm:text-sm font-semibold text-[var(--hero-accent-text)] group-hover/badge:bg-primary/20 transition-all duration-300">
                         <Terminal className="size-3.5 text-[var(--hero-accent-text)] shrink-0" />
                         <span>{sliderBadgeText}</span>
                       </div>
@@ -822,9 +822,9 @@ export const HeroBlock = forwardRef<HTMLElement, HeroBlockProps>(
                   )}
 
                   {/* Clean Static 2-Line Developer Heading */}
-                  <h1 className="text-xl sm:text-3xl md:text-4xl lg:text-5xl font-black tracking-tight flex flex-col leading-tight">
+                  <h1 className="text-xl sm:text-3xl md:text-4xl lg:text-5xl font-bold tracking-tight flex flex-col leading-tight">
                     <span className="text-foreground shrink-0">{sliderTitlePrefix}</span>
-                    <span className="text-[var(--hero-accent-text)] font-black">
+                    <span className="text-[var(--hero-accent-text)] font-bold">
                       {sliderTitleAccent}
                     </span>
                   </h1>
@@ -840,7 +840,7 @@ export const HeroBlock = forwardRef<HTMLElement, HeroBlockProps>(
                     {sliderPrimaryActionLabel && (
                       <Link
                         href={primaryActionHref}
-                        className="inline-flex items-center justify-center gap-2 px-5 sm:px-6 py-3 sm:py-3.5 rounded-2xl bg-primary text-primary-foreground text-xs sm:text-base font-bold hover:opacity-90 transition-all active:scale-95 w-full sm:w-auto text-center"
+                        className="inline-flex items-center justify-center gap-2 px-5 sm:px-6 py-3 sm:py-3.5 rounded-2xl bg-primary text-primary-foreground text-xs sm:text-base font-semibold hover:opacity-90 transition-all active:scale-95 w-full sm:w-auto text-center"
                       >
                         <span>{sliderPrimaryActionLabel}</span>
                         <ArrowRight className="size-4" />
@@ -850,7 +850,7 @@ export const HeroBlock = forwardRef<HTMLElement, HeroBlockProps>(
                     {sliderSecondaryActionLabel && (
                       <Link
                         href={sliderSecondaryActionHref}
-                        className="inline-flex items-center justify-center gap-2 px-4 sm:px-5 py-3 sm:py-3.5 rounded-2xl border border-zinc-200 dark:border-zinc-800 bg-zinc-100/70 dark:bg-zinc-900 hover:bg-zinc-200/80 dark:hover:bg-zinc-800 text-xs sm:text-sm font-bold transition-all cursor-pointer text-foreground active:scale-95 w-full sm:w-auto text-center"
+                        className="inline-flex items-center justify-center gap-2 px-4 sm:px-5 py-3 sm:py-3.5 rounded-2xl border border-zinc-200 dark:border-zinc-800 bg-zinc-100/70 dark:bg-zinc-900 hover:bg-zinc-200/80 dark:hover:bg-zinc-800 text-xs sm:text-sm font-semibold transition-all cursor-pointer text-foreground active:scale-95 w-full sm:w-auto text-center"
                       >
                         {sliderSecondaryActionLabel.toLowerCase().includes("github") ? (
                           <GitHubIcon className="size-4 shrink-0 text-foreground" />
@@ -879,7 +879,7 @@ export const HeroBlock = forwardRef<HTMLElement, HeroBlockProps>(
                           className="w-full h-full object-cover group-hover/thumb:scale-110 transition-transform duration-500"
                         />
                         <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent opacity-0 group-hover/thumb:opacity-100 transition-opacity duration-300 flex items-end p-2">
-                          <span className="text-[10px] font-bold text-white tracking-wide truncate">
+                          <span className="text-[10px] font-semibold text-white tracking-wide truncate">
                             {devLabels[idx % devLabels.length]}
                           </span>
                         </div>
@@ -906,7 +906,7 @@ export const HeroBlock = forwardRef<HTMLElement, HeroBlockProps>(
 
                   {/* Developer Floating Badge Top Left */}
                   <div className="absolute top-4 left-4 sm:top-5 sm:left-5 p-2.5 sm:p-4 rounded-2xl bg-background/85 backdrop-blur-xl border border-border flex items-center gap-2.5 sm:gap-3">
-                    <div className="size-8 sm:size-10 rounded-xl bg-primary/20 text-[var(--hero-accent-text)] flex items-center justify-center font-bold shrink-0">
+                    <div className="size-8 sm:size-10 rounded-xl bg-primary/20 text-[var(--hero-accent-text)] flex items-center justify-center font-semibold shrink-0">
                       <Code className="size-4 sm:size-5" />
                     </div>
                     <div>
@@ -919,8 +919,8 @@ export const HeroBlock = forwardRef<HTMLElement, HeroBlockProps>(
                   <div className="absolute bottom-4 right-4 sm:bottom-5 sm:right-5 p-2.5 sm:p-4 rounded-2xl bg-background/85 backdrop-blur-xl border border-border flex items-center gap-2.5 sm:gap-3">
                     <div className="size-2.5 sm:size-3 rounded-full bg-emerald-500 shrink-0" />
                     <div>
-                      <p className="text-[11px] sm:text-xs font-bold text-foreground">Developer Experience</p>
-                      <p className="text-[9px] sm:text-[10px] text-emerald-500 font-bold">Copy-Paste Ready</p>
+                      <p className="text-[11px] sm:text-xs font-semibold text-foreground">Developer Experience</p>
+                      <p className="text-[9px] sm:text-[10px] text-emerald-500 font-semibold">Copy-Paste Ready</p>
                     </div>
                   </div>
 
@@ -963,7 +963,7 @@ export const HeroBlock = forwardRef<HTMLElement, HeroBlockProps>(
             {/* Top Pill Badge */}
             {badgeText && (
               <Link href={badgeHref} className="inline-block group">
-                <div className="inline-flex items-center gap-1 sm:gap-2 px-2.5 sm:px-5 py-1 sm:py-2.5 rounded-full bg-primary/10 border border-primary/30 text-[9px] xs:text-[10px] sm:text-base font-bold text-[var(--hero-accent-text)] group-hover:bg-primary/20 group-hover:border-primary/50 transition-all duration-300">
+                <div className="inline-flex items-center gap-1 sm:gap-2 px-2.5 sm:px-5 py-1 sm:py-2.5 rounded-full bg-primary/10 border border-primary/30 text-[9px] xs:text-[10px] sm:text-base font-semibold text-[var(--hero-accent-text)] group-hover:bg-primary/20 group-hover:border-primary/50 transition-all duration-300">
                   <Sparkles className="size-2.5 xs:size-3 sm:size-4 text-[var(--hero-accent-text)] animate-spin shrink-0" />
                   <span className="truncate max-w-[140px] xs:max-w-[170px] sm:max-w-none">
                     {badgeText}
@@ -973,7 +973,7 @@ export const HeroBlock = forwardRef<HTMLElement, HeroBlockProps>(
             )}
 
             {/* Dynamic Animated Title Word */}
-            <h1 className="text-xl xs:text-2xl sm:text-2xl md:text-3xl lg:text-4xl xl:text-5xl font-black tracking-tight leading-tight text-foreground text-center inline-flex items-center justify-center flex-wrap gap-x-1.5 sm:gap-x-2.5">
+            <h1 className="text-xl xs:text-2xl sm:text-2xl md:text-3xl lg:text-4xl xl:text-5xl font-bold tracking-tight leading-tight text-foreground text-center inline-flex items-center justify-center flex-wrap gap-x-1.5 sm:gap-x-2.5">
               <span className="shrink-0">
                 {titlePrefix}{" "}
                 <span className="text-[var(--hero-accent-text)]">
@@ -1066,7 +1066,7 @@ export const HeroBlock = forwardRef<HTMLElement, HeroBlockProps>(
               {primaryActionLabel && (
                 <Link
                   href={primaryActionHref}
-                  className="px-2.5 xs:px-3 sm:px-9 h-8 xs:h-9 sm:h-[58px] rounded-lg sm:rounded-2xl bg-primary text-primary-foreground text-[10px] xs:text-xs sm:text-base md:text-lg font-bold hover:opacity-90 hover:scale-[1.02] active:scale-[0.98] transition-all flex items-center justify-center gap-1 sm:gap-2.5 flex-1 sm:flex-initial min-w-0 sm:min-w-[220px]"
+                  className="px-2.5 xs:px-3 sm:px-9 h-8 xs:h-9 sm:h-[58px] rounded-lg sm:rounded-2xl bg-primary text-primary-foreground text-[10px] xs:text-xs sm:text-base md:text-lg font-semibold hover:opacity-90 hover:scale-[1.02] active:scale-[0.98] transition-all flex items-center justify-center gap-1 sm:gap-2.5 flex-1 sm:flex-initial min-w-0 sm:min-w-[220px]"
                 >
                   <span>{primaryActionLabel}</span>
                   <ArrowRight className="size-3 sm:size-5 shrink-0" />
@@ -1081,7 +1081,7 @@ export const HeroBlock = forwardRef<HTMLElement, HeroBlockProps>(
                       ? "_blank"
                       : undefined
                   }
-                  className="px-2.5 xs:px-3 sm:px-9 h-8 xs:h-9 sm:h-[58px] rounded-lg sm:rounded-2xl border border-border bg-card text-foreground text-[10px] xs:text-xs sm:text-base md:text-lg font-bold hover:bg-primary/10 hover:border-primary/50 hover:text-[var(--hero-accent-text)] hover:scale-[1.02] active:scale-[0.98] transition-all flex items-center justify-center gap-1 sm:gap-2.5 flex-1 sm:flex-initial min-w-0 sm:min-w-[220px]"
+                  className="px-2.5 xs:px-3 sm:px-9 h-8 xs:h-9 sm:h-[58px] rounded-lg sm:rounded-2xl border border-border bg-card text-foreground text-[10px] xs:text-xs sm:text-base md:text-lg font-semibold hover:bg-primary/10 hover:border-primary/50 hover:text-[var(--hero-accent-text)] hover:scale-[1.02] active:scale-[0.98] transition-all flex items-center justify-center gap-1 sm:gap-2.5 flex-1 sm:flex-initial min-w-0 sm:min-w-[220px]"
                 >
                   <span>{secondaryActionLabel}</span>
                   <GitHubIcon className="size-3 sm:size-5 shrink-0" />

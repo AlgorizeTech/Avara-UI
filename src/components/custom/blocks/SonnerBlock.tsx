@@ -147,7 +147,7 @@ function ToastCard({
               action.onClick();
               onDismiss();
             }}
-            className="mt-1 sm:mt-2 w-max px-2.5 py-1 text-[10px] sm:text-xs font-bold rounded-md bg-primary text-primary-foreground hover:opacity-90 transition-opacity"
+            className="mt-1 sm:mt-2 w-max px-2.5 py-1 text-[10px] sm:text-xs font-semibold rounded-md bg-primary text-primary-foreground hover:opacity-90 transition-opacity"
           >
             {action.label}
           </button>

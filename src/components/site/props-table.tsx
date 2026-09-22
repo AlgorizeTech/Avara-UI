@@ -11,13 +11,13 @@ export const PropsTable = ({
 }) => (
   <div className="my-6 w-full max-w-full overflow-x-auto lg:overflow-x-hidden rounded-xl border border-zinc-200 dark:border-zinc-800 bg-transparent not-prose cursor-pointer block">
     <table className="w-full min-w-[560px] lg:min-w-0 text-sm my-0 border-collapse text-left cursor-pointer overflow-hidden table-auto">
-      <thead className="bg-transparent text-zinc-900 dark:text-zinc-100 border-b border-zinc-200 dark:border-zinc-800 text-[12px] font-bold uppercase tracking-wider cursor-pointer">
+      <thead className="bg-transparent text-zinc-900 dark:text-zinc-100 border-b border-zinc-200 dark:border-zinc-800 text-[12px] font-semibold uppercase tracking-wider cursor-pointer">
         <tr className="divide-x divide-zinc-200 dark:divide-zinc-800 border-b border-zinc-200 dark:border-zinc-800 cursor-pointer">
-          <th className="px-4 py-3.5 text-left font-bold tracking-wider whitespace-normal [overflow-wrap:anywhere] border-b border-zinc-200 dark:border-zinc-800 cursor-pointer">Prop</th>
-          <th className="px-4 py-3.5 text-left font-bold tracking-wider whitespace-normal [overflow-wrap:anywhere] border-b border-zinc-200 dark:border-zinc-800 cursor-pointer">Type</th>
-          <th className="px-4 py-3.5 text-left font-bold tracking-wider whitespace-normal [overflow-wrap:anywhere] border-b border-zinc-200 dark:border-zinc-800 cursor-pointer">Default</th>
-          <th className="px-4 py-3.5 text-left font-bold tracking-wider whitespace-normal [overflow-wrap:anywhere] border-b border-zinc-200 dark:border-zinc-800 cursor-pointer">Required</th>
-          <th className="px-4 py-3.5 text-left font-bold tracking-wider border-b border-zinc-200 dark:border-zinc-800 cursor-pointer">Description</th>
+          <th className="px-4 py-3.5 text-left font-semibold tracking-wider whitespace-normal [overflow-wrap:anywhere] border-b border-zinc-200 dark:border-zinc-800 cursor-pointer">Prop</th>
+          <th className="px-4 py-3.5 text-left font-semibold tracking-wider whitespace-normal [overflow-wrap:anywhere] border-b border-zinc-200 dark:border-zinc-800 cursor-pointer">Type</th>
+          <th className="px-4 py-3.5 text-left font-semibold tracking-wider whitespace-normal [overflow-wrap:anywhere] border-b border-zinc-200 dark:border-zinc-800 cursor-pointer">Default</th>
+          <th className="px-4 py-3.5 text-left font-semibold tracking-wider whitespace-normal [overflow-wrap:anywhere] border-b border-zinc-200 dark:border-zinc-800 cursor-pointer">Required</th>
+          <th className="px-4 py-3.5 text-left font-semibold tracking-wider border-b border-zinc-200 dark:border-zinc-800 cursor-pointer">Description</th>
         </tr>
       </thead>
       <tbody className="divide-y divide-zinc-200 dark:divide-zinc-800 cursor-pointer">

@@ -114,7 +114,7 @@ function Pill({
   return (
     <span
       className={cn(
-        "inline-flex shrink-0 items-center rounded-full px-1.5 py-[3px] text-[7.5px] font-bold leading-none",
+        "inline-flex shrink-0 items-center rounded-full px-1.5 py-[3px] text-[7.5px] font-semibold leading-none",
         tone === "ink" && "bg-[#141414] text-white dark:bg-white dark:text-[#141414]",
         tone === "accent" && "bg-primary text-primary-foreground",
         tone === "soft" && "bg-black/[0.06] font-medium text-black/60 dark:bg-white/10 dark:text-white/60",

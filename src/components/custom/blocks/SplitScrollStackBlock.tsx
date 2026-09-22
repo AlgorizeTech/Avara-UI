@@ -207,7 +207,7 @@ export const SplitScrollStack = React.forwardRef<
                     {/* Step Badge */}
                     <span
                       className={cn(
-                        "w-11 h-11 rounded-xl flex items-center justify-center font-mono font-bold text-sm border transition-all duration-300 shadow-sm",
+                        "w-11 h-11 rounded-xl flex items-center justify-center font-mono font-semibold text-sm border transition-all duration-300 shadow-sm",
                         isActive
                           ? "text-primary-foreground dark:text-zinc-900 border-transparent scale-110"
                           : isPassed
@@ -227,7 +227,7 @@ export const SplitScrollStack = React.forwardRef<
 
                     <h3
                       className={cn(
-                        "text-2xl sm:text-3xl font-black tracking-tight transition-colors duration-300",
+                        "text-2xl sm:text-3xl font-bold tracking-tight transition-colors duration-300",
                         isActive
                           ? "text-foreground"
                           : "text-muted-foreground",
@@ -273,7 +273,7 @@ export const SplitScrollStack = React.forwardRef<
                       <span
                         key={tIdx}
                         className={cn(
-                          "px-3.5 py-1.5 rounded-xl text-xs font-bold uppercase tracking-wider border transition-all duration-300",
+                          "px-3.5 py-1.5 rounded-xl text-xs font-semibold uppercase tracking-wider border transition-all duration-300",
                           isActive
                             ? "border-transparent shadow-xs font-extrabold"
                             : "bg-transparent border-border text-zinc-400 dark:text-zinc-600",
@@ -327,7 +327,7 @@ export const SplitScrollStack = React.forwardRef<
 
                     {/* Card Header */}
                     <div className="flex items-center justify-between relative z-10 mb-4">
-                      <span className="px-3.5 py-1 rounded-full bg-muted dark:bg-white/10 text-[11px] font-mono font-bold tracking-widest uppercase border border-border flex items-center gap-2 text-foreground">
+                      <span className="px-3.5 py-1 rounded-full bg-muted dark:bg-white/10 text-[11px] font-mono font-semibold tracking-widest uppercase border border-border flex items-center gap-2 text-foreground">
                         <Layers className="w-3.5 h-3.5" /> DECK //{" "}
                         {item.stepNumber}
                       </span>
@@ -344,7 +344,7 @@ export const SplitScrollStack = React.forwardRef<
 
                     {/* Card Footer */}
                     <div className="relative z-10 pt-4 border-t border-border flex items-center justify-between text-xs text-muted-foreground dark:text-white/60 font-medium">
-                      <span className="truncate pr-2 font-bold text-foreground dark:text-white/90">
+                      <span className="truncate pr-2 font-semibold text-foreground dark:text-white/90">
                         {item.title}
                       </span>
                       <span className="font-mono text-[10px] uppercase tracking-wider text-muted-foreground dark:text-white/40 flex-shrink-0">
