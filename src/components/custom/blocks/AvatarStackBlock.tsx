@@ -2,6 +2,11 @@
 
 import React from "react";
 import { cn } from "@/lib/utils";
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipTrigger,
+} from "@/components/custom/blocks/TooltipBlock";
 
 // ==========================================
 // AVATAR STACK
@@ -58,7 +63,7 @@ export const AvatarStack = React.forwardRef<HTMLDivElement, AvatarStackProps>(
     const rest = avatars.length - shown.length;
     // Layering comes from `--as-z` so a hover class can still win over it.
     const disc = cn(
-      "relative z-[var(--as-z)] grid shrink-0 place-items-center overflow-hidden rounded-full ring-2 transition-transform duration-300 ease-out",
+      "relative z-[var(--as-z)] grid shrink-0 place-items-center overflow-hidden rounded-full ring-2 transition-transform duration-300 ease-out cursor-pointer",
       s.box,
       ringClassName,
       spreadOnHover && "group-hover:translate-x-[var(--as-shift)]",
@@ -71,16 +76,29 @@ export const AvatarStack = React.forwardRef<HTMLDivElement, AvatarStackProps>(
         className={cn("group flex items-center", s.overlap, className)}
         {...props}
       >
-        {shown.map((a, i) => (
-          <span
-            key={a.src}
-            className={cn(disc, "bg-black/5")}
-            // Each face slides a touch further than the last, so the row fans out.
-            style={{ "--as-shift": `${i * 3}px`, "--as-z": shown.length - i } as React.CSSProperties}
-          >
-            <img src={a.src} alt={a.alt ?? ""} className="h-full w-full object-cover" />
-          </span>
-        ))}
+        {shown.map((a, i) => {
+          const avatarElement = (
+            <span
+              key={a.src}
+              className={cn(disc, "bg-black/5")}
+              // Each face slides a touch further than the last, so the row fans out.
+              style={{ "--as-shift": `${i * 3}px`, "--as-z": shown.length - i } as React.CSSProperties}
+            >
+              <img src={a.src} alt={a.alt ?? ""} className="h-full w-full object-cover" />
+            </span>
+          );
+
+          if (a.alt) {
+            return (
+              <Tooltip key={a.src}>
+                <TooltipTrigger asChild>{avatarElement}</TooltipTrigger>
+                <TooltipContent side="top">{a.alt}</TooltipContent>
+              </Tooltip>
+            );
+          }
+
+          return avatarElement;
+        })}
         {rest > 0 && (
           <span
             className={cn(disc, "bg-[#141414] font-semibold text-white dark:bg-white dark:text-[#141414]", s.text)}

@@ -361,7 +361,7 @@ function StackedCardsCarousel({
 					<button
 						type="button"
 						onClick={handlePrev}
-						className="size-10 sm:size-12 rounded-full bg-foreground text-background hover:scale-105 active:scale-95 transition-all flex items-center justify-center shadow-lg cursor-pointer"
+						className="size-10 sm:size-12 rounded-full bg-primary text-primary-foreground hover:scale-105 active:scale-95 transition-all flex items-center justify-center shadow-lg cursor-pointer"
 						aria-label="Previous review"
 					>
 						<ArrowLeft className="size-4 sm:size-5 stroke-[2.5]" />
@@ -369,7 +369,7 @@ function StackedCardsCarousel({
 					<button
 						type="button"
 						onClick={handleNext}
-						className="size-10 sm:size-12 rounded-full bg-foreground text-background hover:scale-105 active:scale-95 transition-all flex items-center justify-center shadow-lg cursor-pointer"
+						className="size-10 sm:size-12 rounded-full bg-primary text-primary-foreground hover:scale-105 active:scale-95 transition-all flex items-center justify-center shadow-lg cursor-pointer"
 						aria-label="Next review"
 					>
 						<ArrowRight className="size-4 sm:size-5 stroke-[2.5]" />
@@ -752,7 +752,7 @@ function LogoCarouselVariant({
 				<button
 					type="button"
 					onClick={handlePrev}
-					className="size-11 rounded-xl border border-border/80 bg-background dark:bg-card text-foreground hover:bg-muted active:scale-95 transition-all flex items-center justify-center shadow-none cursor-pointer"
+					className="size-11 rounded-xl border border-primary/30 bg-primary/10 text-primary hover:bg-primary/20 active:scale-95 transition-all flex items-center justify-center shadow-none cursor-pointer"
 					aria-label="Previous review"
 				>
 					<ArrowLeft className="size-4 stroke-[2.5]" />

@@ -226,6 +226,22 @@ function hexToHsv(hex: string): { h: number; s: number; v: number } {
   return { h: Math.round(h * 360), s, v };
 }
 
+function colorWithAlpha(color: string, alpha: number): string {
+  if (color.startsWith("#")) {
+    let hex = color.slice(1);
+    if (hex.length === 3) {
+      hex = hex.split("").map((x) => x + x).join("");
+    }
+    if (hex.length === 6) {
+      const r = parseInt(hex.slice(0, 2), 16);
+      const g = parseInt(hex.slice(2, 4), 16);
+      const b = parseInt(hex.slice(4, 6), 16);
+      return `rgba(${r}, ${g}, ${b}, ${alpha})`;
+    }
+  }
+  return color;
+}
+
 const ColorPickerPopover: React.FC<{
   color: string;
   onChange: (hex: string) => void;
@@ -456,6 +472,7 @@ const ShardsControlTile = ({
     const [internalColor, setInternalColor] = useState(colorHex || "#896abd");
     const [internalVal, setInternalVal] = useState(value !== undefined ? String(value) : (options[0] || "1"));
     const [internalChecked, setInternalChecked] = useState(Boolean(checked));
+    const [colorKey, setColorKey] = useState(0);
 
     const [isSelectOpen, setIsSelectOpen] = useState(false);
     const [isColorOpen, setIsColorOpen] = useState(false);
@@ -494,6 +511,12 @@ const ShardsControlTile = ({
     const displayColor = internalColor;
     const displayValue = internalVal;
     const displayChecked = internalChecked;
+
+    const handleColorChange = (newHex: string) => {
+      setInternalColor(newHex);
+      setColorKey((prev) => prev + 1);
+      onColorChange?.(newHex);
+    };
 
     // Calculate numeric percentage for slider fill (0% to 100%)
     const numVal = Number(displayValue) !== undefined && !isNaN(Number(displayValue)) ? Number(displayValue) : min;
@@ -607,14 +630,125 @@ const ShardsControlTile = ({
         }}
         onClick={handleTileClick}
         className={cn(
-          "relative flex items-center justify-between w-full h-12 px-4 py-2.5 rounded-xl border backdrop-blur-md text-xs font-semibold select-none group cursor-pointer transition-all duration-200 ease-out",
+          "relative flex items-center justify-between w-full h-12 px-4 py-2.5 rounded-xl border backdrop-blur-md text-xs font-semibold select-none group cursor-pointer transition-colors duration-200",
+          (isSelectOpen || isColorOpen) ? "z-30" : "z-10",
           "bg-background/90 text-foreground border-border/80 dark:bg-card/90 dark:border-white/10",
           className
         )}
         style={style}
       >
+        {/* Shards Color Animation Keyframes */}
+        <style
+          dangerouslySetInnerHTML={{
+            __html: `
+              @keyframes shards-sweep-anim {
+                0% {
+                  transform: translateX(-120%) skewX(-20deg);
+                  opacity: 0;
+                }
+                20% {
+                  opacity: 0.95;
+                }
+                75% {
+                  opacity: 0.95;
+                }
+                100% {
+                  transform: translateX(220%) skewX(-20deg);
+                  opacity: 0;
+                }
+              }
+              @keyframes shards-bg-pulse {
+                0% {
+                  opacity: 0;
+                }
+                25% {
+                  opacity: 0.45;
+                }
+                70% {
+                  opacity: 0.2;
+                }
+                100% {
+                  opacity: 0;
+                }
+              }
+              @keyframes shards-border-glow {
+                0% {
+                  opacity: 0;
+                }
+                25% {
+                  opacity: 1;
+                }
+                100% {
+                  opacity: 0;
+                }
+              }
+              @keyframes shards-radial-burst {
+                0% {
+                  transform: scale(0.1);
+                  opacity: 0.95;
+                }
+                50% {
+                  opacity: 0.6;
+                }
+                100% {
+                  transform: scale(4);
+                  opacity: 0;
+                }
+              }
+            `,
+          }}
+        />
+
+        {/* Dynamic Animated Background Effect on Color Change */}
+        {controlType === "color" && colorKey > 0 && (
+          <div
+            key={`shards-color-anim-${colorKey}`}
+            className="absolute inset-0 rounded-xl overflow-hidden pointer-events-none z-0"
+            style={{ borderRadius: "inherit" }}
+          >
+            {/* Ambient Background Glow Flash */}
+            <div
+              className="absolute inset-0 rounded-xl pointer-events-none"
+              style={{
+                borderRadius: "inherit",
+                backgroundColor: displayColor,
+                animation: "shards-bg-pulse 0.85s cubic-bezier(0.16, 1, 0.3, 1) forwards",
+              }}
+            />
+
+            {/* Radial Color Shockwave Burst from the right (color indicator) */}
+            <div
+              className="absolute right-6 top-1/2 -translate-y-1/2 w-28 h-28 -mr-14 -mt-14 rounded-full pointer-events-none"
+              style={{
+                background: `radial-gradient(circle, ${colorWithAlpha(displayColor, 0.85)} 0%, ${colorWithAlpha(displayColor, 0.4)} 45%, transparent 70%)`,
+                animation: "shards-radial-burst 0.85s cubic-bezier(0.16, 1, 0.3, 1) forwards",
+              }}
+            />
+
+            {/* Luminous Wave Sweep */}
+            <div
+              className="absolute inset-0 w-full h-full pointer-events-none"
+              style={{
+                borderRadius: "inherit",
+                background: `linear-gradient(90deg, transparent 0%, ${colorWithAlpha(displayColor, 0.25)} 15%, ${colorWithAlpha(displayColor, 0.95)} 50%, ${colorWithAlpha(displayColor, 0.25)} 85%, transparent 100%)`,
+                animation: "shards-sweep-anim 0.85s cubic-bezier(0.16, 1, 0.3, 1) forwards",
+              }}
+            />
+
+            {/* Glowing Border Pulse Ring */}
+            <div
+              className="absolute inset-0 rounded-xl pointer-events-none"
+              style={{
+                borderRadius: "inherit",
+                boxShadow: `0 0 0 2px ${displayColor}, 0 0 20px 4px ${colorWithAlpha(displayColor, 0.6)}`,
+                animation: "shards-border-glow 0.85s cubic-bezier(0.16, 1, 0.3, 1) forwards",
+              }}
+            />
+          </div>
+        )}
+
         {/* Label on Left */}
-        <span className="text-foreground/90 dark:text-zinc-200 font-semibold tracking-wide truncate max-w-[45%] transition-colors duration-200">
+        <span className="relative z-10 text-foreground/90 dark:text-zinc-200 font-semibold tracking-wide truncate max-w-[45%] transition-colors duration-200 pointer-events-none">
           {displayLabel}
         </span>
 
@@ -693,8 +827,7 @@ const ShardsControlTile = ({
           <ColorPickerPopover
             color={displayColor}
             onChange={(newHex) => {
-              setInternalColor(newHex);
-              onColorChange?.(newHex);
+              handleColorChange(newHex);
             }}
             onClose={() => setIsColorOpen(false)}
           />
