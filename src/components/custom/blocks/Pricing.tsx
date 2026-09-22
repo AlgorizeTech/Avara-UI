@@ -225,7 +225,7 @@ export function PricingCards({
             </div>
           )}
           {title && (
-            <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold tracking-tight text-foreground leading-[1.15]">
+            <h2 className="text-3xl sm:text-4xl md:text-5xl font-semibold tracking-tight text-foreground leading-[1.15]">
               {title}
             </h2>
           )}
@@ -1778,7 +1778,7 @@ export function PricingScale({
               {badgeText}
             </div>
           )}
-          <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold tracking-tight text-slate-900 dark:text-white">
+          <h2 className="text-3xl sm:text-4xl md:text-5xl font-semibold tracking-tight text-slate-900 dark:text-white">
             {title}
           </h2>
           <p className="text-sm sm:text-base text-slate-500 dark:text-zinc-400 max-w-lg mx-auto leading-relaxed">
@@ -1787,7 +1787,7 @@ export function PricingScale({
 
           {/* Toggle switch */}
           <div className="pt-3 flex items-center justify-center gap-3">
-            <span className={cn("text-xs font-bold tracking-wider transition-colors", billingCycle === "monthly" ? "text-slate-900 dark:text-white" : "text-slate-400 dark:text-zinc-500")}>
+            <span className={cn("text-xs font-semibold tracking-wider transition-colors", billingCycle === "monthly" ? "text-slate-900 dark:text-white" : "text-slate-400 dark:text-zinc-500")}>
               {monthlyLabel}
             </span>
             <button
@@ -1807,7 +1807,7 @@ export function PricingScale({
                 )}
               />
             </button>
-            <span className={cn("text-xs font-bold tracking-wider transition-colors", billingCycle === "annually" ? "text-slate-900 dark:text-white" : "text-slate-400 dark:text-zinc-500")}>
+            <span className={cn("text-xs font-semibold tracking-wider transition-colors", billingCycle === "annually" ? "text-slate-900 dark:text-white" : "text-slate-400 dark:text-zinc-500")}>
               {annuallyLabel} <span className="text-slate-400 dark:text-zinc-500 font-medium">{annualDiscountText}</span>
             </span>
           </div>
@@ -1851,7 +1851,7 @@ export function PricingScale({
                     )}
                   </div>
 
-                  <h3 className="text-xl sm:text-2xl font-bold text-slate-900 dark:text-white mb-1">
+                  <h3 className="text-xl sm:text-2xl font-semibold text-slate-900 dark:text-white mb-1">
                     {plan.title}
                   </h3>
                   <p className="text-xs sm:text-sm text-slate-500 dark:text-zinc-400 mb-6">
@@ -1871,7 +1871,7 @@ export function PricingScale({
 
                   {/* Features list */}
                   {plan.featuresTitle && (
-                    <h4 className="text-[11px] font-bold tracking-wider text-slate-900 dark:text-white uppercase mb-4">
+                    <h4 className="text-[11px] font-semibold tracking-wider text-slate-900 dark:text-white uppercase mb-4">
                       {plan.featuresTitle}
                     </h4>
                   )}
@@ -1906,7 +1906,7 @@ export function PricingScale({
         {/* Footer Banner */}
         <div className="bg-slate-100/80 dark:bg-zinc-900/80 border border-slate-200/80 dark:border-zinc-800/80 rounded-[24px] p-6 sm:p-8 flex flex-col sm:flex-row items-center justify-between gap-4 shadow-xs">
           <div className="text-center sm:text-left">
-            <h4 className="text-base sm:text-lg font-bold text-slate-900 dark:text-white">
+            <h4 className="text-base sm:text-lg font-semibold text-slate-900 dark:text-white">
               {footerTitle}
             </h4>
             <p className="text-xs sm:text-sm text-slate-500 dark:text-zinc-400 mt-0.5">
@@ -2031,7 +2031,7 @@ export function PricingDotPattern({
               <span>{badgeText}</span>
             </div>
           )}
-          <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold tracking-tight text-slate-900 dark:text-white leading-[1.15]">
+          <h2 className="text-3xl sm:text-4xl md:text-5xl font-semibold tracking-tight text-slate-900 dark:text-white leading-[1.15]">
             {title}
           </h2>
           <p className="text-sm sm:text-base text-slate-500 dark:text-zinc-400 max-w-md mx-auto leading-relaxed">
@@ -2102,7 +2102,7 @@ export function PricingDotPattern({
                     {/* Badge Tag */}
                     <span
                       className={cn(
-                        "text-[12px] font-bold tracking-widest uppercase block mb-5",
+                        "text-[12px] font-semibold tracking-widest uppercase block mb-5",
                         isFeatured ? theme.text : "text-slate-800 dark:text-zinc-200"
                       )}
                     >
@@ -2111,7 +2111,7 @@ export function PricingDotPattern({
 
                     {/* Price */}
                     <div className="flex items-baseline gap-1 mb-3">
-                      <span className="text-4xl sm:text-5xl font-bold tracking-tight text-slate-900 dark:text-white">
+                      <span className="text-4xl sm:text-5xl font-semibold tracking-tight text-slate-900 dark:text-white">
                         <AnimatedPrice value={plan.price} counting={counting} />
                       </span>
                       {plan.period && (
@@ -2142,7 +2142,7 @@ export function PricingDotPattern({
 
                     {/* Features List Header */}
                     {plan.featuresTitle && (
-                      <h4 className="text-[11px] font-bold tracking-wider text-slate-900 dark:text-white uppercase mb-4">
+                      <h4 className="text-[11px] font-semibold tracking-wider text-slate-900 dark:text-white uppercase mb-4">
                         {plan.featuresTitle}
                       </h4>
                     )}
