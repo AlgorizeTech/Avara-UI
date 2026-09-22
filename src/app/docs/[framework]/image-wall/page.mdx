@@ -88,6 +88,12 @@ export default function Still() {
           prop: "className",
           effect: "sizes the box — the wall has no height of its own beyond a default `h-96`. Round it, mask it, position it; the camera re-aims on every resize.",
         },
+        {
+          prop: "intro",
+          value: "0",
+          effect:
+            "in milliseconds makes the camera start pulled back and off to one side, drifting towards the first card with nothing in focus, and land on it only when the time is up — room for copy beside the wall to arrive first. The canvas is invisible until the camera has painted once, so the server-rendered wall never flashes unpositioned.",
+        },
       ],
       props: { example: "window" },
       usage,
@@ -211,6 +217,12 @@ export default function Still() {
         <td><code>number</code></td>
         <td><code>1.35</code></td>
         <td>The camera's resting scale; capped at 0.72 in a box under 420px tall and 0.5 in one under 640px wide.</td>
+      </tr>
+      <tr>
+        <td><code>intro</code></td>
+        <td><code>number</code></td>
+        <td><code>0</code></td>
+        <td>Milliseconds the camera drifts, pulled back with no card in focus, before its first landing.</td>
       </tr>
       <tr>
         <td><code>onFocus</code></td>

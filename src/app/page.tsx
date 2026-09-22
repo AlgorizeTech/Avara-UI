@@ -14,7 +14,7 @@ import {
 import { CommandSearchBlock } from "@/components/custom/blocks/UtilityBlocks";
 import { ComponentWall } from "@/components/custom/blocks/ComponentWallBlock";
 import { GitHubIcon } from "@/components/custom/blocks/Icons";
-import { WALL_AVATARS, WALL_ITEMS, WALL_STACK } from "@/constants/component-wall";
+import { WALL_ITEMS, WALL_STACK } from "@/constants/component-wall";
 import { cn } from "@/lib/utils";
 import {
 	ArrowRight,

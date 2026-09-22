@@ -123,7 +123,7 @@ export default function Hero() {
   </div>
   <div className="p-6 rounded-2xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900">
     <h3 className="text-lg font-semibold text-zinc-900 dark:text-zinc-50 mb-2">One entrance, in order</h3>
-    <p className="text-zinc-600 dark:text-zinc-400 text-sm">The headline blurs in word by word; then the lead, the command, the actions and the trust line rise once, each a beat after the last. The changing word in the headline replays that same blur each time it turns. Under prefers-reduced-motion everything is simply there, and both the headline word and the name in the command cut instead of moving.</p>
+    <p className="text-zinc-600 dark:text-zinc-400 text-sm">The headline blurs in word by word; then the lead, the command, the actions and the trust line rise once, each a beat after the last. Meanwhile the wall fades in with its camera pulled back and drifting, nothing in focus, and lands on the first card once the copy is in — so nothing on the page jumps. The changing word in the headline replays that same blur each time it turns. Under prefers-reduced-motion everything is simply there, and both the headline word and the name in the command cut instead of moving.</p>
   </div>
   <div className="p-6 rounded-2xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900">
     <h3 className="text-lg font-semibold text-zinc-900 dark:text-zinc-50 mb-2">Built on Image Wall</h3>
@@ -210,7 +210,7 @@ export default function Hero() {
         <td><code>items</code></td>
         <td><code>&#123; title: string; image: string; slug?: string &#125;[]</code></td>
         <td>—</td>
-        <td>The cards on the wall, each in a 493:332 frame. <code>items</code>, <code>columns</code>, <code>order</code>, <code>interval</code>, <code>zoom</code> and <code>onFocus</code> are passed straight to the <DocLink to="image-wall">Image Wall</DocLink>.</td>
+        <td>The cards on the wall, each in a 493:332 frame. <code>items</code>, <code>columns</code>, <code>order</code>, <code>interval</code>, <code>zoom</code>, <code>intro</code> and <code>onFocus</code> are passed straight to the <DocLink to="image-wall">Image Wall</DocLink>.</td>
       </tr>
       <tr>
         <td><code>stack</code></td>
@@ -241,6 +241,12 @@ export default function Hero() {
         <td><code>number</code></td>
         <td><code>1.35</code></td>
         <td>The camera's resting scale.</td>
+      </tr>
+      <tr>
+        <td><code>intro</code></td>
+        <td><code>number</code></td>
+        <td><code>1800</code></td>
+        <td>Milliseconds the camera drifts with no card in focus while the copy arrives, before landing on the first card. <code>0</code> starts on it.</td>
       </tr>
       <tr>
         <td><code>onFocus</code></td>

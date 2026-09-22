@@ -10,9 +10,9 @@ const wall = (slug: string, title: string): ComponentWallItem => ({
 });
 
 export const WALL_ITEMS: ComponentWallItem[] = [
+  wall("bento-showcase", "Bento showcase"),
   wall("hero", "Word bounce hero"),
   wall("pricing", "Product showcase"),
-  wall("bento-showcase", "Bento showcase"),
   wall("book-appointment", "Book appointment"),
   wall("collage-hero", "Collage hero"),
   wall("fashion-hero", "Fashion hero"),
