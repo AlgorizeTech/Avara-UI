@@ -228,7 +228,7 @@ export default function UploadDemo({
 
           {files.length > 0 && (
             <div className="flex flex-col">
-              <div className="flex items-center justify-between text-xs font-bold uppercase tracking-wider text-zinc-500 mb-2 px-1">
+              <div className="flex items-center justify-between text-xs font-semibold uppercase tracking-wider text-zinc-500 mb-2 px-1">
                 <span>Uploading {totalCount} files</span>
                 <span>
                   {doneCount} of {totalCount} done
@@ -296,7 +296,7 @@ export default function UploadDemo({
 
         {files.length > 0 && (
           <div className="flex flex-col">
-            <div className="flex items-center justify-between text-xs font-bold uppercase tracking-wider text-zinc-500 mb-2 px-1">
+            <div className="flex items-center justify-between text-xs font-semibold uppercase tracking-wider text-zinc-500 mb-2 px-1">
               <span>Uploading {totalCount} files</span>
               <span>
                 {doneCount} of {totalCount} done

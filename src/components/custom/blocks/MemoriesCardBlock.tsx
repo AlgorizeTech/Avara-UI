@@ -150,7 +150,7 @@ export const MemoriesCard = React.forwardRef<HTMLDivElement, MemoriesCardProps>(
                     "absolute inset-0 rounded-3xl overflow-hidden shadow-2xl transition-shadow duration-300",
                     "bg-card border border-border/80",
                     isFront
-                      ? "cursor-grab active:cursor-grabbing shadow-primary/20 dark:shadow-primary/20 ring-2 ring-primary"
+                      ? "cursor-grab active:cursor-grabbing shadow-primary/20 dark:shadow-primary/20 ring-2 ring-primary/30"
                       : "pointer-events-none hover:border-primary/50 shadow-md shadow-zinc-300/40 dark:shadow-black/50",
                   )}
                 >
@@ -225,7 +225,7 @@ export const MemoriesCard = React.forwardRef<HTMLDivElement, MemoriesCardProps>(
           <button
             onClick={handleReset}
             title="Reset stack order"
-            className="inline-flex items-center gap-1.5 text-xs font-semibold text-foreground bg-background border border-border px-3 py-1.5 rounded-full shadow-sm hover:bg-primary hover:text-primary-foreground hover:border-primary active:scale-95 transition-all"
+            className="inline-flex items-center gap-1.5 text-xs font-semibold text-foreground bg-background border border-border px-3 py-1.5 rounded-full shadow-sm hover:bg-primary hover:text-primary-foreground hover:border-primary/30 active:scale-95 transition-all"
           >
             <RotateCcw className="w-3.5 h-3.5" />
             Reset

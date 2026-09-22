@@ -4,9 +4,9 @@ import React from "react";
 
 const colorThemes: Record<string, Record<string, string>> = {
   primary: {
-    focusRing: "focus:ring-primary focus:border-primary",
+    focusRing: "focus:ring-primary focus:border-primary/30",
     text: "text-primary",
-    border: "border-primary",
+    border: "border-primary/30",
   },
   indigo: {
     focusRing: "focus:ring-indigo-500 focus:border-indigo-500",

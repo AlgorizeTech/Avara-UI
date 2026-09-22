@@ -84,7 +84,7 @@ export const getThemeStyles = (color: string) => {
       theme: {
         bg: "bg-primary text-primary-foreground hover:bg-primary/90",
         text: "text-primary",
-        border: "border-primary",
+        border: "border-primary/30",
         ring: "focus:ring-primary/40",
         gradient: "from-primary to-primary/70",
         // The token designed to be legible on --primary, which inverts by theme.

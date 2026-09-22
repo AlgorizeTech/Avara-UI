@@ -7,7 +7,7 @@ const colorThemes: Record<string, Record<string, string>> = {
     bg: "bg-primary",
     on: "text-primary-foreground",
     text: "text-primary",
-    border: "border-primary",
+    border: "border-primary/30",
     glow: "shadow-[0_0_15px_rgba(var(--primary),0.5)]",
   },
   indigo: {

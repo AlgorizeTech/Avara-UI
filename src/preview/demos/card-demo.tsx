@@ -127,7 +127,7 @@ export default function CardDemo({
               <CreditCard className="h-4 w-4 text-zinc-400" />
             </CardHeader>
             <CardContent>
-              <div className="text-2xl font-bold">$45,231.89</div>
+              <div className="text-2xl font-semibold">$45,231.89</div>
               <p className="text-xs text-emerald-500 font-medium mt-1">
                 +20.1% from last month
               </p>
@@ -141,7 +141,7 @@ export default function CardDemo({
               <Bell className="h-4 w-4 text-zinc-400" />
             </CardHeader>
             <CardContent>
-              <div className="text-2xl font-bold">+2350</div>
+              <div className="text-2xl font-semibold">+2350</div>
               <p className="text-xs text-emerald-500 font-medium mt-1">
                 +180.1% from last month
               </p>
@@ -155,7 +155,7 @@ export default function CardDemo({
               <Settings className="h-4 w-4 text-zinc-400" />
             </CardHeader>
             <CardContent>
-              <div className="text-2xl font-bold">+573</div>
+              <div className="text-2xl font-semibold">+573</div>
               <p className="text-xs text-zinc-500 font-medium mt-1">
                 +201 since last hour
               </p>
@@ -729,7 +729,7 @@ function ProfileCards({ interactive }: { interactive: boolean }) {
               "inline-flex flex-1 items-center justify-center gap-2 rounded-full border px-4 py-2.5 text-sm font-medium transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 cursor-pointer",
               following
                 ? "border-primary/20 text-foreground hover:bg-muted"
-                : "border-primary bg-primary text-primary-foreground hover:opacity-90 shadow-sm",
+                : "border-primary/30 bg-primary text-primary-foreground hover:opacity-90 shadow-sm",
             )}
           >
             {following ? (
@@ -787,7 +787,7 @@ function ProfileCards({ interactive }: { interactive: boolean }) {
 
         <button
           type="button"
-          className="flex items-center justify-center gap-2 rounded-2xl border border-dashed border-primary/30 p-5 text-sm text-muted-foreground transition-colors hover:border-primary hover:text-primary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary cursor-pointer"
+          className="flex items-center justify-center gap-2 rounded-2xl border border-dashed border-primary/30 p-5 text-sm text-muted-foreground transition-colors hover:border-primary/30 hover:text-primary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary cursor-pointer"
         >
           <UserPlus className="size-4" /> Invite a teammate
         </button>

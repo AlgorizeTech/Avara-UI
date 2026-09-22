@@ -24,7 +24,7 @@ export function DarkModeControl() {
         className={cn(
           "flex h-16 w-1/3 cursor-pointer flex-col items-center justify-center rounded border-2 p-2",
           active
-            ? "bg-primary/5 border-primary"
+            ? "bg-primary/5 border-primary/30"
             : "hover:border-neutral-400 dark:hover:border-neutral-700",
         )}
       >

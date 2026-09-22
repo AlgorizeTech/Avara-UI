@@ -40,7 +40,7 @@ export default function ScrollStackDemo({
               <div className="w-3 h-3 rounded-full bg-emerald-500" />
               <span className="text-xs font-mono text-zinc-500 dark:text-zinc-400 ml-2">sync-stream.ts</span>
             </div>
-            <span className="text-[10px] font-mono px-2 py-0.5 rounded bg-[var(--theme-color,var(--primary))]/15 text-[var(--theme-color,var(--primary))] font-bold border border-[var(--theme-color,var(--primary))]/30">
+            <span className="text-[10px] font-mono px-2 py-0.5 rounded bg-[var(--theme-color,var(--primary))]/15 text-[var(--theme-color,var(--primary))] font-semibold border border-[var(--theme-color,var(--primary))]/30">
               CONNECTED
             </span>
           </div>
@@ -48,7 +48,7 @@ export default function ScrollStackDemo({
           <div className="my-4 font-mono text-xs space-y-2">
             <div className="flex items-center justify-between text-zinc-600 dark:text-zinc-400">
               <span>&gt; Latency benchmark:</span>
-              <span className="text-emerald-600 dark:text-emerald-400 font-bold">12ms (Ultra Fast)</span>
+              <span className="text-emerald-600 dark:text-emerald-400 font-semibold">12ms (Ultra Fast)</span>
             </div>
             <div className="w-full bg-zinc-200 dark:bg-zinc-800 rounded-full h-2 overflow-hidden">
               <div className="bg-[var(--theme-color,var(--primary))] h-full w-[88%] rounded-full animate-pulse" />
@@ -64,7 +64,7 @@ export default function ScrollStackDemo({
               <div className="w-2 h-2 rounded-full bg-[var(--theme-color,var(--primary))] animate-ping" />
               <span>Streaming 1.4k ops/sec</span>
             </div>
-            <span className="text-[11px] font-bold text-zinc-600 dark:text-zinc-300">v2.4.0</span>
+            <span className="text-[11px] font-semibold text-zinc-600 dark:text-zinc-300">v2.4.0</span>
           </div>
         </div>
       ),
@@ -79,11 +79,11 @@ export default function ScrollStackDemo({
         <div className="w-full h-full flex flex-col justify-center gap-3 p-6 bg-zinc-100 dark:bg-zinc-900 rounded-2xl border border-zinc-200 dark:border-zinc-800 text-zinc-900 dark:text-white relative overflow-hidden">
           <div className="p-3.5 rounded-xl bg-white dark:bg-zinc-950 border border-zinc-200 dark:border-zinc-800 flex items-center justify-between shadow-xs">
             <div className="flex items-center gap-3">
-              <div className="w-8 h-8 rounded-lg bg-[var(--theme-color,var(--primary))]/10 border border-[var(--theme-color,var(--primary))]/30 flex items-center justify-center text-[var(--theme-color,var(--primary))] font-bold text-xs">
+              <div className="w-8 h-8 rounded-lg bg-[var(--theme-color,var(--primary))]/10 border border-[var(--theme-color,var(--primary))]/30 flex items-center justify-center text-[var(--theme-color,var(--primary))] font-semibold text-xs">
                 API
               </div>
               <div>
-                <div className="text-xs font-bold text-zinc-900 dark:text-white">Presentation Layer</div>
+                <div className="text-xs font-semibold text-zinc-900 dark:text-white">Presentation Layer</div>
                 <div className="text-[10px] text-zinc-500 dark:text-zinc-400">GraphQL & REST Endpoints</div>
               </div>
             </div>
@@ -92,11 +92,11 @@ export default function ScrollStackDemo({
 
           <div className="p-4 rounded-xl bg-[var(--theme-color,var(--primary))]/10 border border-[var(--theme-color,var(--primary))]/30 flex items-center justify-between shadow-md">
             <div className="flex items-center gap-3">
-              <div className="w-8 h-8 rounded-lg bg-[var(--theme-color,var(--primary))] text-white font-bold flex items-center justify-center text-xs shadow-md">
+              <div className="w-8 h-8 rounded-lg bg-[var(--theme-color,var(--primary))] text-white font-semibold flex items-center justify-center text-xs shadow-md">
                 CORE
               </div>
               <div>
-                <div className="text-xs font-bold text-zinc-900 dark:text-white">Business Logic Service</div>
+                <div className="text-xs font-semibold text-zinc-900 dark:text-white">Business Logic Service</div>
                 <div className="text-[10px] text-[var(--theme-color,var(--primary))] font-medium">Decoupled Domain Engine</div>
               </div>
             </div>
@@ -105,11 +105,11 @@ export default function ScrollStackDemo({
 
           <div className="p-3.5 rounded-xl bg-white dark:bg-zinc-950 border border-zinc-200 dark:border-zinc-800 flex items-center justify-between shadow-xs">
             <div className="flex items-center gap-3">
-              <div className="w-8 h-8 rounded-lg bg-indigo-500/10 border border-indigo-500/30 flex items-center justify-center text-indigo-600 dark:text-indigo-400 font-bold text-xs">
+              <div className="w-8 h-8 rounded-lg bg-indigo-500/10 border border-indigo-500/30 flex items-center justify-center text-indigo-600 dark:text-indigo-400 font-semibold text-xs">
                 DB
               </div>
               <div>
-                <div className="text-xs font-bold text-zinc-900 dark:text-white">Persistence & Cache</div>
+                <div className="text-xs font-semibold text-zinc-900 dark:text-white">Persistence & Cache</div>
                 <div className="text-[10px] text-zinc-500 dark:text-zinc-400">PostgreSQL + Redis Cluster</div>
               </div>
             </div>
@@ -127,14 +127,14 @@ export default function ScrollStackDemo({
       content: (
         <div className="w-full h-full p-6 bg-zinc-100 dark:bg-zinc-900 rounded-2xl border border-zinc-200 dark:border-zinc-800 text-zinc-900 dark:text-white flex flex-col justify-between">
           <div className="flex items-center justify-between mb-2">
-            <span className="text-xs font-bold text-zinc-700 dark:text-zinc-300 tracking-wide uppercase">Component Gallery</span>
+            <span className="text-xs font-semibold text-zinc-700 dark:text-zinc-300 tracking-wide uppercase">Component Gallery</span>
             <span className="text-[11px] font-mono px-2 py-0.5 rounded bg-white dark:bg-zinc-950 border border-zinc-200 dark:border-zinc-800 text-[var(--theme-color,var(--primary))] font-semibold">42 Blocks</span>
           </div>
 
           <div className="grid grid-cols-2 gap-3">
             <div className="p-3 rounded-xl bg-white dark:bg-zinc-950 border border-zinc-200 dark:border-zinc-800 flex flex-col gap-2">
               <div className="flex items-center justify-between">
-                <div className="w-6 h-6 rounded-md bg-[var(--theme-color,var(--primary))]/10 flex items-center justify-center text-[var(--theme-color,var(--primary))] text-[10px] font-bold">
+                <div className="w-6 h-6 rounded-md bg-[var(--theme-color,var(--primary))]/10 flex items-center justify-center text-[var(--theme-color,var(--primary))] text-[10px] font-semibold">
                   Card
                 </div>
                 <span className="text-[9px] text-emerald-600 dark:text-emerald-400 font-semibold">Ready</span>
@@ -145,7 +145,7 @@ export default function ScrollStackDemo({
 
             <div className="p-3 rounded-xl bg-white dark:bg-zinc-950 border border-zinc-200 dark:border-zinc-800 flex flex-col gap-2">
               <div className="flex items-center justify-between">
-                <div className="w-6 h-6 rounded-md bg-indigo-500/10 flex items-center justify-center text-indigo-600 dark:text-indigo-400 text-[10px] font-bold">
+                <div className="w-6 h-6 rounded-md bg-indigo-500/10 flex items-center justify-center text-indigo-600 dark:text-indigo-400 text-[10px] font-semibold">
                   Nav
                 </div>
                 <span className="text-[9px] text-emerald-600 dark:text-emerald-400 font-semibold">Ready</span>
@@ -156,15 +156,15 @@ export default function ScrollStackDemo({
 
             <div className="col-span-2 p-3.5 rounded-xl bg-[var(--theme-color,var(--primary))]/10 border border-[var(--theme-color,var(--primary))]/30 flex items-center justify-between">
               <div className="flex items-center gap-2.5">
-                <div className="w-7 h-7 rounded-lg bg-[var(--theme-color,var(--primary))] text-white font-bold flex items-center justify-center text-xs shadow-md">
+                <div className="w-7 h-7 rounded-lg bg-[var(--theme-color,var(--primary))] text-white font-semibold flex items-center justify-center text-xs shadow-md">
                   ✨
                 </div>
                 <div>
-                  <div className="text-xs font-bold text-zinc-900 dark:text-white">Scroll Stack</div>
+                  <div className="text-xs font-semibold text-zinc-900 dark:text-white">Scroll Stack</div>
                   <div className="text-[10px] text-[var(--theme-color,var(--primary))]">Interactive GSAP Widget</div>
                 </div>
               </div>
-              <div className="px-2.5 py-1 rounded-lg bg-[var(--theme-color,var(--primary))] text-white font-bold text-[10px] shadow-xs">
+              <div className="px-2.5 py-1 rounded-lg bg-[var(--theme-color,var(--primary))] text-white font-semibold text-[10px] shadow-xs">
                 Insert
               </div>
             </div>
@@ -187,7 +187,7 @@ export default function ScrollStackDemo({
         <div className="w-full h-full p-6 bg-zinc-100 dark:bg-zinc-900 rounded-2xl border border-zinc-200 dark:border-zinc-800 text-zinc-900 dark:text-white flex flex-col justify-between items-center text-center">
           <div className="w-full flex items-center justify-between border-b border-zinc-200 dark:border-zinc-800 pb-3">
             <span className="text-xs font-mono text-zinc-500 dark:text-zinc-400">SECURITY_CHECK // PASSED</span>
-            <span className="text-[10px] font-mono px-2 py-0.5 rounded bg-emerald-500/10 text-emerald-600 dark:text-emerald-300 font-bold">
+            <span className="text-[10px] font-mono px-2 py-0.5 rounded bg-emerald-500/10 text-emerald-600 dark:text-emerald-300 font-semibold">
               AES-256
             </span>
           </div>
@@ -197,13 +197,13 @@ export default function ScrollStackDemo({
               <ShieldCheck className="w-10 h-10 text-[var(--theme-color,var(--primary))]" />
               <div className="absolute -top-1 -right-1 w-4 h-4 rounded-full bg-emerald-500 border-2 border-white dark:border-zinc-900" />
             </div>
-            <h4 className="text-sm font-bold mt-3 text-zinc-900 dark:text-white">SOC2 & ISO-27001 Certified</h4>
+            <h4 className="text-sm font-semibold mt-3 text-zinc-900 dark:text-white">SOC2 & ISO-27001 Certified</h4>
             <p className="text-[11px] text-zinc-500 dark:text-zinc-400 mt-1 max-w-[220px]">Zero trust architecture with continuous runtime vulnerability scanning.</p>
           </div>
 
           <div className="w-full p-2.5 rounded-xl bg-white dark:bg-zinc-950 border border-zinc-200 dark:border-zinc-800 flex items-center justify-between text-xs font-mono shadow-xs">
             <span className="text-zinc-500 dark:text-zinc-400">Encryption Status</span>
-            <span className="text-emerald-600 dark:text-emerald-400 font-bold">ACTIVE</span>
+            <span className="text-emerald-600 dark:text-emerald-400 font-semibold">ACTIVE</span>
           </div>
         </div>
       ),
@@ -222,7 +222,7 @@ export default function ScrollStackDemo({
       style={{ "--theme-color": getThemeColorHex(color) } as React.CSSProperties}
     >
       {/* Scroll Instruction Badge */}
-      <div className="absolute top-4 left-1/2 -translate-x-1/2 z-30 bg-white/90 dark:bg-black/80 backdrop-blur-md text-zinc-800 dark:text-white text-[11px] font-bold uppercase tracking-widest px-4 py-1.5 rounded-full border border-zinc-300 dark:border-white/10 pointer-events-none shadow-lg">
+      <div className="absolute top-4 left-1/2 -translate-x-1/2 z-30 bg-white/90 dark:bg-black/80 backdrop-blur-md text-zinc-800 dark:text-white text-[11px] font-semibold uppercase tracking-widest px-4 py-1.5 rounded-full border border-zinc-300 dark:border-white/10 pointer-events-none shadow-lg">
         ↓ Scroll inside preview box to trigger stack ↓
       </div>
 

@@ -598,7 +598,7 @@ export function CursorAnimation({
 
               {/* Minimalist Precision Reticle Cursor Pointer Centered in the Image */}
               <div
-                className="pointer-events-none absolute flex items-center justify-center rounded-full z-50 transition-transform duration-75 bg-background/30 backdrop-blur-xs border border-primary"
+                className="pointer-events-none absolute flex items-center justify-center rounded-full z-50 transition-transform duration-75 bg-background/30 backdrop-blur-xs border border-primary/30"
                 style={{
                   left: `${mousePos.x}px`,
                   top: `${mousePos.y}px`,

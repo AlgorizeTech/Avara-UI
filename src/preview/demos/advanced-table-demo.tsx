@@ -287,7 +287,7 @@ export default function AdvancedTableDemo({
                 <div className="flex items-center gap-1">
                   <button
                     onClick={() => handleOpenEditModal(selectedIds)}
-                    className="flex items-center gap-1 px-2 py-1 rounded-md text-[11px] sm:text-[12px] font-bold bg-white/20 hover:bg-white text-white hover:text-black transition-all whitespace-nowrap active:scale-95 cursor-pointer"
+                    className="flex items-center gap-1 px-2 py-1 rounded-md text-[11px] sm:text-[12px] font-semibold bg-white/20 hover:bg-white text-white hover:text-black transition-all whitespace-nowrap active:scale-95 cursor-pointer"
                   >
                     <Edit2 className="w-3 h-3" />
                     <span className="hidden sm:inline">Edit</span>
@@ -297,7 +297,7 @@ export default function AdvancedTableDemo({
                       handleBatchDelete(selectedIds);
                       clearSelection();
                     }}
-                    className="flex items-center gap-1 px-2 py-1 rounded-md text-[11px] sm:text-[12px] font-bold bg-black/20 hover:bg-black/30 text-white transition-colors whitespace-nowrap active:scale-95 cursor-pointer"
+                    className="flex items-center gap-1 px-2 py-1 rounded-md text-[11px] sm:text-[12px] font-semibold bg-black/20 hover:bg-black/30 text-white transition-colors whitespace-nowrap active:scale-95 cursor-pointer"
                   >
                     <Trash2 className="w-3 h-3" />
                     <span className="hidden sm:inline">Delete</span>
@@ -329,7 +329,7 @@ export default function AdvancedTableDemo({
         >
           <div className="flex items-start justify-between mb-5">
             <div>
-              <div className="text-base font-bold text-[#111827] dark:text-white">
+              <div className="text-base font-semibold text-[#111827] dark:text-white">
                 Edit Selected Users
               </div>
               <div className="text-xs text-[#9ca3af] mt-0.5">{subtitleText}</div>

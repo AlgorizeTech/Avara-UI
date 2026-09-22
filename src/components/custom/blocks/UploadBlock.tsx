@@ -34,7 +34,7 @@ export interface FileUploadState {
   previewUrl?: string;
 }
 
-// Accent colour comes from the `--primary` theme token (`border-primary`,
+// Accent colour comes from the `--primary` theme token (`border-primary/30`,
 // `bg-primary`, `text-primary`), so the dropzone and the progress bar follow
 // the site theme and the docs colour picker with no prop and no polling.
 
@@ -127,7 +127,7 @@ export const Dropzone = forwardRef<HTMLDivElement, DropzoneProps>(
         className={cn(
           "relative w-full rounded-2xl border-2 border-dashed border-border flex flex-col items-center justify-center py-12 px-6 cursor-pointer overflow-hidden group bg-white/50 dark:bg-transparent",
           "transition-[border-color,background-color,box-shadow] duration-300",
-          "data-[dragging]:border-primary data-[dragging]:bg-primary/5 data-[dragging]:shadow-[0_0_30px_-5px_color-mix(in_oklab,var(--primary)_20%,transparent)]",
+          "data-[dragging]:border-primary/30 data-[dragging]:bg-primary/5 data-[dragging]:shadow-[0_0_30px_-5px_color-mix(in_oklab,var(--primary)_20%,transparent)]",
           className,
         )}
         {...props}

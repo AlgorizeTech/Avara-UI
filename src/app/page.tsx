@@ -241,7 +241,7 @@ function HeroInteractiveHub() {
 						<button
 							onClick={() => setActiveTab("ai")}
 							className={cn(
-								"flex items-center gap-1.5 px-3 py-1 rounded-md transition-all cursor-pointer text-xs font-bold",
+								"flex items-center gap-1.5 px-3 py-1 rounded-md transition-all cursor-pointer text-xs font-semibold",
 								activeTab === "ai"
 									? "bg-primary text-primary-foreground shadow-sm"
 									: "text-muted-foreground hover:text-foreground",
@@ -252,7 +252,7 @@ function HeroInteractiveHub() {
 						<button
 							onClick={() => setActiveTab("chart")}
 							className={cn(
-								"flex items-center gap-1.5 px-3 py-1 rounded-md transition-all cursor-pointer text-xs font-bold",
+								"flex items-center gap-1.5 px-3 py-1 rounded-md transition-all cursor-pointer text-xs font-semibold",
 								activeTab === "chart"
 									? "bg-primary text-primary-foreground shadow-sm"
 									: "text-muted-foreground hover:text-foreground",
@@ -263,7 +263,7 @@ function HeroInteractiveHub() {
 						<button
 							onClick={() => setActiveTab("auth")}
 							className={cn(
-								"flex items-center gap-1.5 px-3 py-1 rounded-md transition-all cursor-pointer text-xs font-bold",
+								"flex items-center gap-1.5 px-3 py-1 rounded-md transition-all cursor-pointer text-xs font-semibold",
 								activeTab === "auth"
 									? "bg-primary text-primary-foreground shadow-sm"
 									: "text-muted-foreground hover:text-foreground",
@@ -274,7 +274,7 @@ function HeroInteractiveHub() {
 						<button
 							onClick={() => setActiveTab("terminal")}
 							className={cn(
-								"flex items-center gap-1.5 px-3 py-1 rounded-md transition-all cursor-pointer text-xs font-bold",
+								"flex items-center gap-1.5 px-3 py-1 rounded-md transition-all cursor-pointer text-xs font-semibold",
 								activeTab === "terminal"
 									? "bg-primary text-primary-foreground shadow-sm"
 									: "text-muted-foreground hover:text-foreground",
@@ -296,7 +296,7 @@ function HeroInteractiveHub() {
 							{/* AI Chat Header */}
 							<div className="flex items-center justify-between border-b border-border/50 pb-2.5">
 								<div className="flex items-center gap-2.5">
-									<div className="size-8 rounded-lg bg-primary text-primary-foreground flex items-center justify-center font-bold shadow-md">
+									<div className="size-8 rounded-lg bg-primary text-primary-foreground flex items-center justify-center font-semibold shadow-md">
 										<Bot className="size-4" />
 									</div>
 									<div>
@@ -309,7 +309,7 @@ function HeroInteractiveHub() {
 										</span>
 									</div>
 								</div>
-								<span className="text-[10px] px-2 py-0.5 rounded-full bg-primary/10 text-primary font-bold border border-primary/20">
+								<span className="text-[10px] px-2 py-0.5 rounded-full bg-primary/10 text-primary font-semibold border border-primary/20">
 									GPT-4o
 								</span>
 							</div>
@@ -370,14 +370,14 @@ function HeroInteractiveHub() {
 							className="p-4 rounded-xl bg-card border border-border shadow-sm flex flex-col justify-between h-full">
 							<div className="flex items-center justify-between mb-2">
 								<div>
-									<h4 className="text-xs font-bold text-foreground">
+									<h4 className="text-xs font-semibold text-foreground">
 										Weekly Growth Metrics
 									</h4>
 									<p className="text-[10px] text-muted-foreground">
 										Real-time data visualization
 									</p>
 								</div>
-								<span className="px-2.5 py-0.5 text-[10px] font-bold rounded-full bg-primary/10 text-primary border border-primary/20">
+								<span className="px-2.5 py-0.5 text-[10px] font-semibold rounded-full bg-primary/10 text-primary border border-primary/20">
 									+24.8%
 								</span>
 							</div>
@@ -399,7 +399,7 @@ function HeroInteractiveHub() {
 							className="p-4 rounded-xl bg-card border border-border shadow-sm flex flex-col justify-between h-full max-w-sm mx-auto w-full">
 							<div>
 								<div className="text-center mb-4">
-									<div className="size-9 rounded-xl bg-primary/10 text-primary border border-primary/20 flex items-center justify-center mx-auto mb-2 font-bold shadow-sm">
+									<div className="size-9 rounded-xl bg-primary/10 text-primary border border-primary/20 flex items-center justify-center mx-auto mb-2 font-semibold shadow-sm">
 										<Lock className="size-4" />
 									</div>
 									<h4 className="text-sm font-extrabold text-foreground">
@@ -412,30 +412,30 @@ function HeroInteractiveHub() {
 
 								<div className="space-y-3 text-xs">
 									<div>
-										<label className="block text-[11px] font-bold text-foreground mb-1">
+										<label className="block text-[11px] font-semibold text-foreground mb-1">
 											Email Address
 										</label>
 										<input
 											type="email"
 											placeholder="name@company.com"
-											className="w-full px-3 py-2 rounded-lg border border-border bg-background text-foreground text-xs outline-none focus:border-primary"
+											className="w-full px-3 py-2 rounded-lg border border-border bg-background text-foreground text-xs outline-none focus:border-primary/30"
 										/>
 									</div>
 									<div>
-										<label className="block text-[11px] font-bold text-foreground mb-1">
+										<label className="block text-[11px] font-semibold text-foreground mb-1">
 											Password
 										</label>
 										<input
 											type="password"
 											placeholder="••••••••"
-											className="w-full px-3 py-2 rounded-lg border border-border bg-background text-foreground text-xs outline-none focus:border-primary"
+											className="w-full px-3 py-2 rounded-lg border border-border bg-background text-foreground text-xs outline-none focus:border-primary/30"
 										/>
 									</div>
 								</div>
 							</div>
 
 							<div className="mt-4 pt-2">
-								<button className="w-full py-2.5 rounded-lg bg-primary text-primary-foreground text-xs font-bold shadow-md hover:opacity-90 transition-all cursor-pointer">
+								<button className="w-full py-2.5 rounded-lg bg-primary text-primary-foreground text-xs font-semibold shadow-md hover:opacity-90 transition-all cursor-pointer">
 									Sign In
 								</button>
 							</div>
@@ -451,7 +451,7 @@ function HeroInteractiveHub() {
 							<div className="flex items-center justify-between border-b border-zinc-800 pb-2 mb-2">
 								<div className="flex items-center gap-1.5">
 									<Terminal className="size-3.5 text-primary" />
-									<span className="text-[11px] font-bold text-zinc-300">
+									<span className="text-[11px] font-semibold text-zinc-300">
 										install.sh
 									</span>
 								</div>
@@ -459,7 +459,7 @@ function HeroInteractiveHub() {
 									onClick={handleCopyCode}
 									className="flex items-center gap-1 text-[10px] text-zinc-400 hover:text-white transition-colors">
 									{copied ? (
-										<span className="text-emerald-400 font-bold flex items-center gap-1">
+										<span className="text-emerald-400 font-semibold flex items-center gap-1">
 											<Check className="size-3" /> Copied
 										</span>
 									) : (
@@ -474,14 +474,14 @@ function HeroInteractiveHub() {
 							{/* Mirrors sampleTerminalCode, which the Copy button writes. */}
 							<div className="space-y-2 text-[11px] leading-relaxed text-zinc-300">
 								<p>
-									<span className="text-primary font-bold">$</span> npx
+									<span className="text-primary font-semibold">$</span> npx
 									shadcn@latest init
 								</p>
 								<p className="text-emerald-400">
 									✔ Created components.json and lib/utils.ts.
 								</p>
 								<p className="break-all">
-									<span className="text-primary font-bold">$</span> npx
+									<span className="text-primary font-semibold">$</span> npx
 									shadcn@latest registry add
 									@algorize-ui=https://algorize-ui.vercel.app/r/&#123;name&#125;.json
 								</p>
@@ -489,13 +489,13 @@ function HeroInteractiveHub() {
 									✔ Added registry @algorize-ui to components.json.
 								</p>
 								<p className="break-all">
-									<span className="text-primary font-bold">$</span> npx
+									<span className="text-primary font-semibold">$</span> npx
 									shadcn@latest add @algorize-ui/ai-chat
 								</p>
 								<p className="text-emerald-400">
 									✔ Installed dependencies: lucide-react
 								</p>
-								<p className="text-emerald-400 font-bold">
+								<p className="text-emerald-400 font-semibold">
 									✔ Created components/custom/blocks/Ai-chat.tsx
 								</p>
 							</div>
@@ -571,7 +571,7 @@ function ComponentShowcase() {
 					transition={{ duration: 0.6 }}
 					className="flex flex-col md:flex-row md:items-end md:justify-between gap-4 mb-14">
 					<div>
-						<span className="inline-flex items-center gap-1.5 text-xs font-bold uppercase tracking-[0.2em] text-primary mb-3">
+						<span className="inline-flex items-center gap-1.5 text-xs font-semibold uppercase tracking-[0.2em] text-primary mb-3">
 							<Layers className="size-3.5" />
 							Live Interactive Components
 						</span>
@@ -857,7 +857,7 @@ function WhyChooseUsSection() {
 						transition={{ duration: 0.7, delay: 0.1, ease: [0.16, 1, 0.3, 1] }}
 						className="group flex flex-col p-8 rounded-[2rem] bg-card/20 backdrop-blur-2xl border border-border/40 shadow-xl hover:bg-card/40 hover:border-primary/30 transition-all duration-700">
 						<div className="mb-6">
-							<h3 className="text-xl md:text-2xl font-bold text-foreground mb-3 tracking-tight">
+							<h3 className="text-xl md:text-2xl font-semibold text-foreground mb-3 tracking-tight">
 								Components You Won&apos;t Find Anywhere
 							</h3>
 							<p className="text-[14px] text-muted-foreground/90 leading-relaxed max-w-sm font-medium">
@@ -878,7 +878,7 @@ function WhyChooseUsSection() {
 								<div className="size-14 sm:size-16 rounded-full bg-background border border-primary/20 text-primary flex items-center justify-center mb-4 transition-transform duration-700 group-hover:translate-z-[30px] shadow-xl shadow-primary/20">
 									<Layers className="size-6 sm:size-7" />
 								</div>
-								<p className="font-bold text-[14px] sm:text-base transition-transform duration-700 group-hover:translate-z-[20px] text-foreground tracking-tight">
+								<p className="font-semibold text-[14px] sm:text-base transition-transform duration-700 group-hover:translate-z-[20px] text-foreground tracking-tight">
 									Interactive Card
 								</p>
 								<p className="text-[10px] text-muted-foreground/80 mt-1.5 transition-transform duration-700 group-hover:translate-z-[15px] font-medium uppercase tracking-widest">
@@ -895,7 +895,7 @@ function WhyChooseUsSection() {
 						transition={{ duration: 0.7, delay: 0.2, ease: [0.16, 1, 0.3, 1] }}
 						className="group flex flex-col p-8 rounded-[2rem] bg-card/20 backdrop-blur-2xl border border-border/40 shadow-xl hover:bg-card/40 hover:border-primary/30 transition-all duration-700">
 						<div className="mb-6">
-							<h3 className="text-xl md:text-2xl font-bold text-foreground mb-3 tracking-tight">
+							<h3 className="text-xl md:text-2xl font-semibold text-foreground mb-3 tracking-tight">
 								Built with Modern Frameworks
 							</h3>
 							<p className="text-[14px] text-muted-foreground/90 leading-relaxed max-w-sm font-medium">
@@ -950,7 +950,7 @@ function WhyChooseUsSection() {
 						transition={{ duration: 0.7, delay: 0.3, ease: [0.16, 1, 0.3, 1] }}
 						className="group flex flex-col p-8 rounded-[2rem] bg-card/20 backdrop-blur-2xl border border-border/40 shadow-xl hover:bg-card/40 hover:border-primary/30 transition-all duration-700">
 						<div className="mb-6">
-							<h3 className="text-xl md:text-2xl font-bold text-foreground mb-3 tracking-tight">
+							<h3 className="text-xl md:text-2xl font-semibold text-foreground mb-3 tracking-tight">
 								Open Source With Story
 							</h3>
 							<p className="text-[14px] text-muted-foreground/90 leading-relaxed max-w-sm font-medium">
@@ -1012,7 +1012,7 @@ function WhyChooseUsSection() {
 						transition={{ duration: 0.7, delay: 0.4, ease: [0.16, 1, 0.3, 1] }}
 						className="group flex flex-col p-8 rounded-[2rem] bg-card/20 backdrop-blur-2xl border border-border/40 shadow-xl hover:bg-card/40 hover:border-primary/30 transition-all duration-700">
 						<div className="mb-6">
-							<h3 className="text-xl md:text-2xl font-bold text-foreground mb-3 tracking-tight">
+							<h3 className="text-xl md:text-2xl font-semibold text-foreground mb-3 tracking-tight">
 								Build Landing Pages Faster
 							</h3>
 							<p className="text-[14px] text-muted-foreground/90 leading-relaxed max-w-sm font-medium">
@@ -1037,7 +1037,7 @@ function WhyChooseUsSection() {
 								</div>
 
 								<div className="absolute inset-0 bg-background/20 backdrop-blur-[2px] opacity-0 group-hover:opacity-100 transition-opacity duration-700 flex items-center justify-center z-20">
-									<div className="translate-y-6 group-hover:translate-y-0 transition-transform duration-700 delay-100 ease-[0.16,1,0.3,1] px-4 py-2 sm:px-5 sm:py-2.5 rounded-xl bg-zinc-900 dark:bg-zinc-100 text-white dark:text-zinc-900 font-bold text-[13px] sm:text-sm shadow-xl flex items-center gap-2.5 border border-zinc-700 dark:border-zinc-300">
+									<div className="translate-y-6 group-hover:translate-y-0 transition-transform duration-700 delay-100 ease-[0.16,1,0.3,1] px-4 py-2 sm:px-5 sm:py-2.5 rounded-xl bg-zinc-900 dark:bg-zinc-100 text-white dark:text-zinc-900 font-semibold text-[13px] sm:text-sm shadow-xl flex items-center gap-2.5 border border-zinc-700 dark:border-zinc-300">
 										<Zap className="size-3.5 sm:size-4 text-amber-400 fill-amber-400 drop-shadow-[0_0_6px_rgba(251,191,36,0.5)]" />
 										Ship at lightspeed
 									</div>
@@ -1252,17 +1252,17 @@ function MiniatureIllustration({
 			<div className="flex-1 flex flex-col justify-center items-center relative overflow-hidden">
 				{type === "hero" && (
 					<div className="w-full text-center space-y-1.5 px-1 my-auto">
-						<span className="inline-block px-1.5 py-0.5 rounded-full bg-primary/10 text-primary text-[8px] font-bold border border-primary/20">
+						<span className="inline-block px-1.5 py-0.5 rounded-full bg-primary/10 text-primary text-[8px] font-semibold border border-primary/20">
 							Next.js 15
 						</span>
 						<div className="text-[11px] font-semibold tracking-tight text-foreground leading-tight">
 							Build Next-Gen UI
 						</div>
 						<div className="flex justify-center gap-1 pt-0.5">
-							<span className="px-2 py-0.5 rounded bg-primary text-primary-foreground text-[8px] font-bold shadow-xs">
+							<span className="px-2 py-0.5 rounded bg-primary text-primary-foreground text-[8px] font-semibold shadow-xs">
 								Get Started
 							</span>
-							<span className="px-2 py-0.5 rounded border border-border text-[8px] font-bold text-foreground">
+							<span className="px-2 py-0.5 rounded border border-border text-[8px] font-semibold text-foreground">
 								Docs
 							</span>
 						</div>
@@ -1273,7 +1273,7 @@ function MiniatureIllustration({
 					<div className="w-full flex flex-col justify-between my-auto space-y-1 px-0.5">
 						{/* Monthly / Annual Pill Toggle */}
 						<div className="mx-auto px-1.5 py-0.5 rounded-full bg-muted border border-border/60 flex items-center gap-0.5 text-[6px]">
-							<span className="font-bold text-primary px-1 rounded-full bg-background shadow-2xs">
+							<span className="font-semibold text-primary px-1 rounded-full bg-background shadow-2xs">
 								Monthly
 							</span>
 							<span className="text-muted-foreground font-semibold">
@@ -1283,15 +1283,15 @@ function MiniatureIllustration({
 						{/* 3 Cards Showcase */}
 						<div className="w-full flex items-center justify-between gap-1 pt-0.5">
 							<div className="flex-1 p-1 rounded-md border border-border/80 bg-background text-center space-y-0.5 min-w-0">
-								<div className="text-[6px] font-bold text-muted-foreground truncate">
+								<div className="text-[6px] font-semibold text-muted-foreground truncate">
 									Free
 								</div>
 								<div className="text-[8px] font-semibold text-foreground">$0</div>
-								<div className="h-1.5 w-full rounded bg-muted text-[5px] font-bold text-muted-foreground flex items-center justify-center">
+								<div className="h-1.5 w-full rounded bg-muted text-[5px] font-semibold text-muted-foreground flex items-center justify-center">
 									Free
 								</div>
 							</div>
-							<div className="flex-1 p-1 rounded-md border border-primary bg-primary/10 text-center space-y-0.5 shadow-2xs relative min-w-0">
+							<div className="flex-1 p-1 rounded-md border border-primary/30 bg-primary/10 text-center space-y-0.5 shadow-2xs relative min-w-0">
 								<span className="absolute -top-1.5 left-1/2 -translate-x-1/2 text-[4px] font-semibold px-0.5 rounded bg-primary text-primary-foreground whitespace-nowrap">
 									HOT
 								</span>
@@ -1299,16 +1299,16 @@ function MiniatureIllustration({
 									Pro
 								</div>
 								<div className="text-[8px] font-semibold text-primary">$29</div>
-								<div className="h-1.5 w-full rounded bg-primary text-[5px] font-bold text-primary-foreground flex items-center justify-center shadow-2xs">
+								<div className="h-1.5 w-full rounded bg-primary text-[5px] font-semibold text-primary-foreground flex items-center justify-center shadow-2xs">
 									Pro
 								</div>
 							</div>
 							<div className="flex-1 p-1 rounded-md border border-border/80 bg-background text-center space-y-0.5 min-w-0">
-								<div className="text-[6px] font-bold text-muted-foreground truncate">
+								<div className="text-[6px] font-semibold text-muted-foreground truncate">
 									Enterprise
 								</div>
 								<div className="text-[8px] font-semibold text-foreground">$99</div>
-								<div className="h-1.5 w-full rounded bg-muted text-[5px] font-bold text-muted-foreground flex items-center justify-center">
+								<div className="h-1.5 w-full rounded bg-muted text-[5px] font-semibold text-muted-foreground flex items-center justify-center">
 									VIP
 								</div>
 							</div>
@@ -1318,7 +1318,7 @@ function MiniatureIllustration({
 
 				{type === "chart" && (
 					<div className="w-full h-full flex flex-col justify-between py-1 relative">
-						<div className="flex justify-between items-center text-[7.5px] font-bold text-muted-foreground px-1 z-10">
+						<div className="flex justify-between items-center text-[7.5px] font-semibold text-muted-foreground px-1 z-10">
 							<span>Revenue Stream</span>
 							<span className="text-emerald-500 font-extrabold">+34.2%</span>
 						</div>
@@ -1371,16 +1371,16 @@ function MiniatureIllustration({
 				{type === "dock" && (
 					<div className="w-full flex items-center justify-center my-auto">
 						<div className="px-2.5 py-1.5 rounded-2xl bg-background border border-border/80 shadow-md flex items-end gap-1.5">
-							<div className="size-4 rounded-lg bg-rose-500/80 flex items-center justify-center text-[7px] text-white font-bold">
+							<div className="size-4 rounded-lg bg-rose-500/80 flex items-center justify-center text-[7px] text-white font-semibold">
 								A
 							</div>
-							<div className="size-4 rounded-lg bg-amber-500/80 flex items-center justify-center text-[7px] text-white font-bold">
+							<div className="size-4 rounded-lg bg-amber-500/80 flex items-center justify-center text-[7px] text-white font-semibold">
 								B
 							</div>
-							<div className="size-5 rounded-lg bg-primary text-primary-foreground flex items-center justify-center text-[9px] font-bold shadow-sm -translate-y-1">
+							<div className="size-5 rounded-lg bg-primary text-primary-foreground flex items-center justify-center text-[9px] font-semibold shadow-sm -translate-y-1">
 								★
 							</div>
-							<div className="size-4 rounded-lg bg-emerald-500/80 flex items-center justify-center text-[7px] text-white font-bold">
+							<div className="size-4 rounded-lg bg-emerald-500/80 flex items-center justify-center text-[7px] text-white font-semibold">
 								C
 							</div>
 						</div>
@@ -1394,7 +1394,7 @@ function MiniatureIllustration({
 								<span className="size-2 rounded bg-primary" />
 								<span>DocsUI</span>
 							</div>
-							<div className="flex items-center gap-2 text-[7px] font-bold text-muted-foreground">
+							<div className="flex items-center gap-2 text-[7px] font-semibold text-muted-foreground">
 								<span>Features</span>
 								<span>Docs</span>
 								<span className="px-2 py-0.5 rounded-md bg-primary text-primary-foreground font-extrabold text-[6.5px]">
@@ -1407,17 +1407,17 @@ function MiniatureIllustration({
 
 				{type === "table" && (
 					<div className="w-full space-y-1 my-auto text-[8px] font-mono">
-						<div className="flex items-center justify-between border-b border-border/60 pb-0.5 font-bold text-primary">
+						<div className="flex items-center justify-between border-b border-border/60 pb-0.5 font-semibold text-primary">
 							<span>Name</span>
 							<span>Status</span>
 						</div>
 						<div className="flex items-center justify-between text-foreground">
 							<span>Button.tsx</span>
-							<span className="text-emerald-500 font-bold">Ready</span>
+							<span className="text-emerald-500 font-semibold">Ready</span>
 						</div>
 						<div className="flex items-center justify-between text-foreground">
 							<span>Card.tsx</span>
-							<span className="text-emerald-500 font-bold">Ready</span>
+							<span className="text-emerald-500 font-semibold">Ready</span>
 						</div>
 					</div>
 				)}
@@ -1426,7 +1426,7 @@ function MiniatureIllustration({
 					<div className="w-full flex items-center justify-center my-auto">
 						<div className="w-4/5 p-2 rounded-xl bg-background border border-border shadow-lg space-y-1.5">
 							<div className="flex justify-between items-center border-b border-border/40 pb-0.5">
-								<span className="text-[9px] font-bold text-foreground">
+								<span className="text-[9px] font-semibold text-foreground">
 									Modal Dialog
 								</span>
 								<span className="text-[8px] text-muted-foreground">✕</span>
@@ -1435,10 +1435,10 @@ function MiniatureIllustration({
 								Confirm action step?
 							</div>
 							<div className="flex justify-end gap-1 pt-0.5">
-								<span className="px-1.5 py-0.5 rounded bg-muted text-[7px] font-bold">
+								<span className="px-1.5 py-0.5 rounded bg-muted text-[7px] font-semibold">
 									Cancel
 								</span>
-								<span className="px-1.5 py-0.5 rounded bg-primary text-primary-foreground text-[7px] font-bold">
+								<span className="px-1.5 py-0.5 rounded bg-primary text-primary-foreground text-[7px] font-semibold">
 									Confirm
 								</span>
 							</div>
@@ -1457,11 +1457,11 @@ function MiniatureIllustration({
 								2
 							</span>
 							<div className="h-0.5 flex-1 bg-muted-foreground/30 mx-1" />
-							<span className="size-3.5 rounded-full bg-muted border border-border text-[7px] text-muted-foreground font-bold flex items-center justify-center">
+							<span className="size-3.5 rounded-full bg-muted border border-border text-[7px] text-muted-foreground font-semibold flex items-center justify-center">
 								3
 							</span>
 						</div>
-						<div className="text-center text-[8px] font-bold text-foreground">
+						<div className="text-center text-[8px] font-semibold text-foreground">
 							Step 2: Configuration
 						</div>
 					</div>
@@ -1480,11 +1480,11 @@ function MiniatureIllustration({
 
 				{type === "auth" && (
 					<div className="w-full max-w-[130px] p-2 rounded-xl bg-background border border-border shadow-xs space-y-1.5 text-center my-auto">
-						<div className="text-[8px] font-bold text-foreground">Sign In</div>
+						<div className="text-[8px] font-semibold text-foreground">Sign In</div>
 						<div className="h-3 w-full bg-muted border border-border rounded flex items-center px-1 text-[7px] text-muted-foreground">
 							email@app.com
 						</div>
-						<div className="h-3 w-full bg-primary text-primary-foreground font-bold rounded flex items-center justify-center text-[7px]">
+						<div className="h-3 w-full bg-primary text-primary-foreground font-semibold rounded flex items-center justify-center text-[7px]">
 							Submit
 						</div>
 					</div>
@@ -1513,7 +1513,7 @@ function MiniatureIllustration({
 
 				{type === "card" && (
 					<div className="w-full max-w-[130px] p-2 rounded-xl bg-background border border-border/80 shadow-xs space-y-1.5 my-auto">
-						<div className="h-7 w-full bg-primary/10 rounded-lg border border-primary/20 flex items-center justify-center text-[8px] font-bold text-primary">
+						<div className="h-7 w-full bg-primary/10 rounded-lg border border-primary/20 flex items-center justify-center text-[8px] font-semibold text-primary">
 							Card View
 						</div>
 						<div className="h-1.5 w-3/4 bg-foreground/80 rounded" />
@@ -1537,15 +1537,15 @@ function MiniatureIllustration({
 
 				{type === "cart" && (
 					<div className="w-full max-w-[130px] p-2 rounded-xl bg-background border border-border shadow-xs space-y-1.5 my-auto text-[7px]">
-						<div className="flex justify-between items-center font-bold text-foreground border-b border-border pb-0.5">
+						<div className="flex justify-between items-center font-semibold text-foreground border-b border-border pb-0.5">
 							<span>Shopping Cart</span>
 							<span className="text-primary">2 Items</span>
 						</div>
 						<div className="flex justify-between items-center text-muted-foreground">
 							<span>Next UI Kit</span>
-							<span className="font-bold text-foreground">$49</span>
+							<span className="font-semibold text-foreground">$49</span>
 						</div>
-						<div className="h-3 w-full bg-primary text-primary-foreground font-bold rounded flex items-center justify-center text-[7px]">
+						<div className="h-3 w-full bg-primary text-primary-foreground font-semibold rounded flex items-center justify-center text-[7px]">
 							Checkout
 						</div>
 					</div>
@@ -1556,7 +1556,7 @@ function MiniatureIllustration({
 						<div className="p-1.5 rounded-lg bg-background border border-border flex items-center justify-between shadow-xs">
 							<div className="flex items-center gap-1.5">
 								<span className="size-2 rounded-full bg-primary" />
-								<span className="text-[8px] font-bold text-foreground">
+								<span className="text-[8px] font-semibold text-foreground">
 									Item Component
 								</span>
 							</div>
@@ -1568,13 +1568,13 @@ function MiniatureIllustration({
 				{type === "resizable" && (
 					<div className="w-full h-full flex gap-1.5 p-1 my-auto">
 						<div className="w-1/2 h-full rounded-lg bg-background border border-border p-1 flex flex-col justify-center items-center">
-							<span className="text-[7px] font-bold text-muted-foreground">
+							<span className="text-[7px] font-semibold text-muted-foreground">
 								Left
 							</span>
 						</div>
 						<div className="w-1 h-full rounded bg-primary/40 my-auto cursor-col-resize" />
 						<div className="w-1/2 h-full rounded-lg bg-background border border-border p-1 flex flex-col justify-center items-center">
-							<span className="text-[7px] font-bold text-muted-foreground">
+							<span className="text-[7px] font-semibold text-muted-foreground">
 								Right
 							</span>
 						</div>
@@ -1584,7 +1584,7 @@ function MiniatureIllustration({
 				{type === "scroll-area" && (
 					<div className="w-full h-full p-1.5 rounded-lg bg-background border border-border flex justify-between my-auto relative">
 						<div className="space-y-1 text-[7px] text-foreground">
-							<div className="font-bold text-primary">Scroll Area</div>
+							<div className="font-semibold text-primary">Scroll Area</div>
 							<div className="text-muted-foreground">Row item 1</div>
 							<div className="text-muted-foreground">Row item 2</div>
 						</div>
@@ -1644,8 +1644,8 @@ function MiniatureIllustration({
 
 				{type === "file-upload" && (
 					<div className="w-full max-w-[130px] p-2 rounded-xl bg-background border border-dashed border-primary/60 text-center space-y-1 my-auto">
-						<span className="text-xs text-primary font-bold">☁</span>
-						<div className="text-[8px] font-bold text-foreground">
+						<span className="text-xs text-primary font-semibold">☁</span>
+						<div className="text-[8px] font-semibold text-foreground">
 							Drag & Drop File
 						</div>
 					</div>
@@ -1653,7 +1653,7 @@ function MiniatureIllustration({
 
 				{type === "tilted-card" && (
 					<div className="w-full flex items-center justify-center my-auto">
-						<div className="w-20 h-12 rounded-xl bg-background border border-primary shadow-lg rotate-6 hover:rotate-0 transition-transform p-1.5 text-center flex flex-col justify-center">
+						<div className="w-20 h-12 rounded-xl bg-background border border-primary/30 shadow-lg rotate-6 hover:rotate-0 transition-transform p-1.5 text-center flex flex-col justify-center">
 							<span className="text-[8px] font-extrabold text-primary">
 								3D Tilted Card
 							</span>
@@ -1664,8 +1664,8 @@ function MiniatureIllustration({
 				{type === "memories-card" && (
 					<div className="w-full flex items-center justify-center my-auto relative h-12">
 						<div className="w-16 h-10 rounded-lg bg-muted/60 border border-border absolute -top-1 rotate-3" />
-						<div className="w-16 h-10 rounded-lg bg-background border border-primary shadow-md z-10 p-1 text-center flex flex-col justify-center">
-							<span className="text-[7px] font-bold text-primary">
+						<div className="w-16 h-10 rounded-lg bg-background border border-primary/30 shadow-md z-10 p-1 text-center flex flex-col justify-center">
+							<span className="text-[7px] font-semibold text-primary">
 								Memories
 							</span>
 						</div>
@@ -1675,7 +1675,7 @@ function MiniatureIllustration({
 				{type === "scroll-stack" && (
 					<div className="w-full flex flex-col items-center gap-1 my-auto">
 						<div className="w-20 h-3 rounded-t-lg bg-muted border border-border" />
-						<div className="w-22 h-6 rounded-lg bg-background border border-primary shadow-xs p-1 text-center text-[7px] font-bold text-primary">
+						<div className="w-22 h-6 rounded-lg bg-background border border-primary/30 shadow-xs p-1 text-center text-[7px] font-semibold text-primary">
 							Scroll Stack Card
 						</div>
 					</div>
@@ -1684,10 +1684,10 @@ function MiniatureIllustration({
 				{type === "magic-bento" && (
 					<div className="w-full grid grid-cols-2 gap-1 my-auto px-1">
 						<div className="h-10 rounded-lg bg-primary/20 border border-primary/40 p-1 flex flex-col justify-between">
-							<span className="text-[7px] font-bold text-primary">Glow</span>
+							<span className="text-[7px] font-semibold text-primary">Glow</span>
 						</div>
 						<div className="h-10 rounded-lg bg-card border border-border p-1 flex flex-col justify-between">
-							<span className="text-[7px] font-bold text-foreground">Tilt</span>
+							<span className="text-[7px] font-semibold text-foreground">Tilt</span>
 						</div>
 					</div>
 				)}
@@ -1736,7 +1736,7 @@ function MiniatureIllustration({
 									</span>
 								</div>
 								<div className="space-y-0.5 pt-0.5">
-									<div className="px-1 py-0.5 rounded bg-primary/10 text-primary text-[6px] font-bold flex items-center justify-between">
+									<div className="px-1 py-0.5 rounded bg-primary/10 text-primary text-[6px] font-semibold flex items-center justify-between">
 										<span>Overview</span>
 										<span className="size-1 rounded-full bg-primary" />
 									</div>
@@ -1755,7 +1755,7 @@ function MiniatureIllustration({
 						{/* Main Content App Shell */}
 						<div className="flex-1 h-full rounded-lg border border-border/60 bg-card p-1.5 flex flex-col justify-between space-y-1">
 							<div className="flex items-center justify-between">
-								<div className="h-1.5 w-1/2 rounded bg-foreground/80 font-bold" />
+								<div className="h-1.5 w-1/2 rounded bg-foreground/80 font-semibold" />
 								<div className="size-2 rounded-full bg-primary/40" />
 							</div>
 							<div className="grid grid-cols-2 gap-1 my-auto">
@@ -1777,7 +1777,7 @@ function MiniatureIllustration({
 						{/* Top Stat Widgets */}
 						<div className="grid grid-cols-3 gap-1">
 							<div className="p-1 rounded-md bg-background border border-border/80 text-center space-y-0.5">
-								<div className="text-[5.5px] font-bold text-muted-foreground">
+								<div className="text-[5.5px] font-semibold text-muted-foreground">
 									Tickets
 								</div>
 								<div className="text-[8px] font-semibold text-foreground">
@@ -1785,13 +1785,13 @@ function MiniatureIllustration({
 								</div>
 							</div>
 							<div className="p-1 rounded-md bg-primary/10 border border-primary/20 text-center space-y-0.5">
-								<div className="text-[5.5px] font-bold text-primary">
+								<div className="text-[5.5px] font-semibold text-primary">
 									Resolved
 								</div>
 								<div className="text-[8px] font-semibold text-primary">98%</div>
 							</div>
 							<div className="p-1 rounded-md bg-background border border-border/80 text-center space-y-0.5">
-								<div className="text-[5.5px] font-bold text-muted-foreground">
+								<div className="text-[5.5px] font-semibold text-muted-foreground">
 									Avg Time
 								</div>
 								<div className="text-[8px] font-semibold text-emerald-500">
@@ -1802,14 +1802,14 @@ function MiniatureIllustration({
 						{/* Support Feed / Chart Area */}
 						<div className="w-full p-1 rounded-lg bg-background border border-border flex items-center justify-between text-[6px]">
 							<div className="space-y-0.5">
-								<div className="font-bold text-foreground">
+								<div className="font-semibold text-foreground">
 									Active Customer Queue
 								</div>
 								<div className="text-[5.5px] text-muted-foreground">
 									14 Agent Agents Online
 								</div>
 							</div>
-							<span className="px-1.5 py-0.5 rounded bg-emerald-500 text-white font-bold text-[5.5px]">
+							<span className="px-1.5 py-0.5 rounded bg-emerald-500 text-white font-semibold text-[5.5px]">
 								Live
 							</span>
 						</div>
@@ -1818,7 +1818,7 @@ function MiniatureIllustration({
 
 				{type === "marquee" && (
 					<div className="w-full flex flex-col justify-between my-auto space-y-2 px-1 relative overflow-hidden">
-						<div className="text-center text-[7px] font-bold text-muted-foreground uppercase tracking-widest">
+						<div className="text-center text-[7px] font-semibold text-muted-foreground uppercase tracking-widest">
 							Trusted by 500+ Companies
 						</div>
 						{/* Infinite Horizontal Logo Ticker Strip */}
@@ -1826,10 +1826,10 @@ function MiniatureIllustration({
 							<div className="px-1.5 py-0.5 rounded bg-primary/10 border border-primary/20 text-[7px] font-extrabold text-primary flex items-center gap-1">
 								<span className="size-1.5 rounded-full bg-primary" /> React
 							</div>
-							<div className="px-1.5 py-0.5 rounded bg-muted border border-border/60 text-[7px] font-bold text-foreground flex items-center gap-1">
+							<div className="px-1.5 py-0.5 rounded bg-muted border border-border/60 text-[7px] font-semibold text-foreground flex items-center gap-1">
 								<span className="size-1.5 rounded-full bg-sky-500" /> Next.js
 							</div>
-							<div className="px-1.5 py-0.5 rounded bg-muted border border-border/60 text-[7px] font-bold text-foreground flex items-center gap-1">
+							<div className="px-1.5 py-0.5 rounded bg-muted border border-border/60 text-[7px] font-semibold text-foreground flex items-center gap-1">
 								<span className="size-1.5 rounded-full bg-indigo-500" />{" "}
 								Tailwind
 							</div>
@@ -1841,7 +1841,7 @@ function MiniatureIllustration({
 					<div className="w-full h-full relative flex flex-col justify-end items-end p-1.5 my-auto overflow-hidden">
 						{/* Single Chat Popup Window Card */}
 						<div className="w-22 p-1 mb-1 rounded-lg bg-background border border-border shadow-xs space-y-0.5 text-[5.5px]">
-							<div className="flex items-center gap-1 font-bold text-foreground border-b border-border/40 pb-0.5">
+							<div className="flex items-center gap-1 font-semibold text-foreground border-b border-border/40 pb-0.5">
 								<span className="size-1 rounded-full bg-emerald-500" />
 								<span>Support</span>
 							</div>
@@ -1850,7 +1850,7 @@ function MiniatureIllustration({
 							</div>
 						</div>
 						{/* Floating Trigger FAB Button */}
-						<div className="size-5 rounded-full bg-primary text-primary-foreground font-bold text-[9px] flex items-center justify-center shadow-xs border border-background ring-1 ring-primary/20 shrink-0">
+						<div className="size-5 rounded-full bg-primary text-primary-foreground font-semibold text-[9px] flex items-center justify-center shadow-xs border border-background ring-1 ring-primary/20 shrink-0">
 							💬
 						</div>
 					</div>
@@ -1863,19 +1863,19 @@ function MiniatureIllustration({
 							<span className="text-[5.5px] font-extrabold text-primary px-1 py-0.2 rounded bg-background border border-primary/20 self-start">
 								Active Stream
 							</span>
-							<div className="size-5 rounded-full bg-primary text-primary-foreground flex items-center justify-center font-bold text-[7px] mx-auto shadow-md">
+							<div className="size-5 rounded-full bg-primary text-primary-foreground flex items-center justify-center font-semibold text-[7px] mx-auto shadow-md">
 								▶
 							</div>
 							<div className="h-1 w-3/4 bg-primary/60 rounded" />
 						</div>
 						{/* Collapsed Video Panels */}
 						<div className="w-4 h-full rounded-lg bg-muted/60 border border-border flex flex-col items-center justify-center">
-							<span className="text-[6px] text-muted-foreground font-bold">
+							<span className="text-[6px] text-muted-foreground font-semibold">
 								▶
 							</span>
 						</div>
 						<div className="w-4 h-full rounded-lg bg-muted/60 border border-border flex flex-col items-center justify-center">
-							<span className="text-[6px] text-muted-foreground font-bold">
+							<span className="text-[6px] text-muted-foreground font-semibold">
 								▶
 							</span>
 						</div>
@@ -1908,7 +1908,7 @@ function MiniatureIllustration({
 								<span className="size-1 rounded-full bg-muted-foreground/60" />
 							</div>
 							<div className="flex-1 p-1 rounded-lg bg-background border border-border/70 text-[6px]">
-								<div className="font-bold text-foreground flex justify-between">
+								<div className="font-semibold text-foreground flex justify-between">
 									<span>Beta Testing</span>
 									<span className="text-[5px] text-muted-foreground">
 										Yesterday
@@ -1924,7 +1924,7 @@ function MiniatureIllustration({
 						<div className="text-xs font-semibold tracking-tight text-foreground border-b border-border/40 pb-0.5">
 							H1. Heading Text
 						</div>
-						<div className="text-[8px] font-bold text-primary">
+						<div className="text-[8px] font-semibold text-primary">
 							H2. Subtitle Paragraph
 						</div>
 						<div className="text-[6.5px] text-muted-foreground leading-tight">
@@ -1942,14 +1942,14 @@ function MiniatureIllustration({
 									New Order #108
 								</span>
 							</div>
-							<span className="text-[5.5px] font-bold text-primary">
+							<span className="text-[5.5px] font-semibold text-primary">
 								Just now
 							</span>
 						</div>
 						<div className="p-1 rounded-md bg-background border border-border text-[6.5px] flex items-center justify-between opacity-80">
 							<div className="flex items-center gap-1">
 								<span className="size-1.5 rounded-full bg-sky-500" />
-								<span className="font-bold text-foreground">
+								<span className="font-semibold text-foreground">
 									User Signed Up
 								</span>
 							</div>
@@ -1969,7 +1969,7 @@ function MiniatureIllustration({
 								Yes. Adheres to WAI-ARIA standards.
 							</div>
 						</div>
-						<div className="p-1 rounded-lg bg-muted/40 border border-border flex justify-between items-center font-bold text-foreground">
+						<div className="p-1 rounded-lg bg-muted/40 border border-border flex justify-between items-center font-semibold text-foreground">
 							<span>Is it styled?</span>
 							<span className="text-[8px] text-muted-foreground">▼</span>
 						</div>
@@ -1982,13 +1982,13 @@ function MiniatureIllustration({
 							<span className="px-1 py-0.2 rounded bg-emerald-500/20 text-emerald-500 font-extrabold text-[5.5px]">
 								GET
 							</span>
-							<span className="text-muted-foreground font-bold">
+							<span className="text-muted-foreground font-semibold">
 								/api/v1/users
 							</span>
 						</div>
 						<div className="flex items-center justify-between text-foreground">
-							<span className="text-primary font-bold">Status: 200 OK</span>
-							<span className="px-1 rounded bg-primary text-primary-foreground font-bold text-[5.5px]">
+							<span className="text-primary font-semibold">Status: 200 OK</span>
+							<span className="px-1 rounded bg-primary text-primary-foreground font-semibold text-[5.5px]">
 								Send
 							</span>
 						</div>
@@ -1997,7 +1997,7 @@ function MiniatureIllustration({
 
 				{type === "breadcrumb" && (
 					<div className="w-full flex items-center justify-center my-auto">
-						<div className="px-2 py-1 rounded-lg bg-background border border-border shadow-2xs flex items-center gap-1 text-[7px] font-bold">
+						<div className="px-2 py-1 rounded-lg bg-background border border-border shadow-2xs flex items-center gap-1 text-[7px] font-semibold">
 							<span className="text-muted-foreground">Docs</span>
 							<span className="text-muted-foreground/60">/</span>
 							<span className="text-muted-foreground">Components</span>
@@ -2015,22 +2015,22 @@ function MiniatureIllustration({
 								<span>Deploy</span>
 								<span className="text-[5.5px]">🚀</span>
 							</div>
-							<div className="px-2 py-1 rounded-lg bg-secondary text-secondary-foreground text-[6.5px] font-bold shadow-2xs flex items-center gap-1 border border-border/60 cursor-pointer">
+							<div className="px-2 py-1 rounded-lg bg-secondary text-secondary-foreground text-[6.5px] font-semibold shadow-2xs flex items-center gap-1 border border-border/60 cursor-pointer">
 								<span>Secondary</span>
 							</div>
-							<div className="px-2 py-1 rounded-lg border border-border bg-background text-[6.5px] font-bold text-foreground hover:bg-muted cursor-pointer">
+							<div className="px-2 py-1 rounded-lg border border-border bg-background text-[6.5px] font-semibold text-foreground hover:bg-muted cursor-pointer">
 								Outline
 							</div>
 						</div>
 
 						{/* Bottom Row: Destructive + Loading + Icon Only */}
 						<div className="flex items-center justify-center gap-1.5 flex-wrap">
-							<div className="px-2 py-0.5 rounded-lg bg-rose-500/10 border border-rose-500/30 text-rose-500 text-[6px] font-bold flex items-center gap-1 cursor-pointer">
+							<div className="px-2 py-0.5 rounded-lg bg-rose-500/10 border border-rose-500/30 text-rose-500 text-[6px] font-semibold flex items-center gap-1 cursor-pointer">
 								<span>Delete</span>
 								<span className="text-[5.5px]">🗑</span>
 							</div>
 							<div className="px-2 py-0.5 rounded-lg bg-primary/20 text-primary text-[6px] font-extrabold flex items-center gap-1 cursor-pointer">
-								<span className="size-2 rounded-full border border-primary border-t-transparent animate-spin" />
+								<span className="size-2 rounded-full border border-primary/30 border-t-transparent animate-spin" />
 								<span>Loading...</span>
 							</div>
 							<div className="size-5 rounded-lg bg-muted border border-border flex items-center justify-center text-[7px] text-foreground font-extrabold shadow-2xs cursor-pointer">
@@ -2044,13 +2044,13 @@ function MiniatureIllustration({
 					<div className="w-full p-1.5 rounded-xl bg-background border border-border shadow-md space-y-1 my-auto text-[6.5px]">
 						<div className="flex items-center gap-1 border-b border-border/40 pb-1 px-1">
 							<span className="text-[7.5px] text-primary">🔍</span>
-							<span className="font-bold text-foreground">Search docs...</span>
+							<span className="font-semibold text-foreground">Search docs...</span>
 							<span className="ml-auto text-[5.5px] px-1 bg-muted rounded border border-border text-muted-foreground">
 								⌘K
 							</span>
 						</div>
 						<div className="space-y-0.5">
-							<div className="px-1 py-0.5 rounded bg-primary/10 text-primary font-bold flex justify-between">
+							<div className="px-1 py-0.5 rounded bg-primary/10 text-primary font-semibold flex justify-between">
 								<span>&gt; Components</span>
 								<span>Enter</span>
 							</div>
@@ -2069,10 +2069,10 @@ function MiniatureIllustration({
 								</span>
 							</div>
 							<div className="flex items-center gap-0.5 text-muted-foreground text-[6px]">
-								<span className="size-3.5 rounded-md bg-muted/60 border border-border flex items-center justify-center cursor-pointer hover:bg-primary hover:text-primary-foreground font-bold">
+								<span className="size-3.5 rounded-md bg-muted/60 border border-border flex items-center justify-center cursor-pointer hover:bg-primary hover:text-primary-foreground font-semibold">
 									‹
 								</span>
-								<span className="size-3.5 rounded-md bg-muted/60 border border-border flex items-center justify-center cursor-pointer hover:bg-primary hover:text-primary-foreground font-bold">
+								<span className="size-3.5 rounded-md bg-muted/60 border border-border flex items-center justify-center cursor-pointer hover:bg-primary hover:text-primary-foreground font-semibold">
 									›
 								</span>
 							</div>
@@ -2090,7 +2090,7 @@ function MiniatureIllustration({
 						</div>
 
 						{/* Full Month Calendar Matrix */}
-						<div className="grid grid-cols-7 gap-0.5 text-center font-bold text-[6px] items-center">
+						<div className="grid grid-cols-7 gap-0.5 text-center font-semibold text-[6px] items-center">
 							<span className="text-muted-foreground/30 py-0.5">26</span>
 							<span className="text-muted-foreground/30 py-0.5">27</span>
 							<span className="text-muted-foreground/30 py-0.5">28</span>
@@ -2214,7 +2214,7 @@ function MiniatureIllustration({
 							<span>Toggle Details</span>
 							<span className="text-[7px] text-primary">▲</span>
 						</div>
-						<div className="p-1.5 rounded-lg bg-primary/10 border border-primary/20 text-[6.5px] font-bold text-primary">
+						<div className="p-1.5 rounded-lg bg-primary/10 border border-primary/20 text-[6.5px] font-semibold text-primary">
 							Expanded Panel Content
 						</div>
 					</div>
@@ -2227,7 +2227,7 @@ function MiniatureIllustration({
 								<span>Copy Link</span>
 								<span className="text-muted-foreground">⌘C</span>
 							</div>
-							<div className="px-1.5 py-0.5 rounded bg-primary text-primary-foreground font-bold flex justify-between">
+							<div className="px-1.5 py-0.5 rounded bg-primary text-primary-foreground font-semibold flex justify-between">
 								<span>Inspect Element</span>
 								<span>⌘I</span>
 							</div>
@@ -2246,7 +2246,7 @@ function MiniatureIllustration({
 								<div className="font-extrabold text-foreground border-b border-border/40 pb-0.5 text-center">
 									Drawer Sheet
 								</div>
-								<div className="px-1.5 py-0.5 rounded bg-primary/10 text-primary font-bold text-[5.5px]">
+								<div className="px-1.5 py-0.5 rounded bg-primary/10 text-primary font-semibold text-[5.5px]">
 									Option 1: Edit Profile
 								</div>
 								<div className="px-1.5 py-0.5 rounded bg-muted text-muted-foreground font-medium text-[5.5px]">
@@ -2254,7 +2254,7 @@ function MiniatureIllustration({
 								</div>
 							</div>
 
-							<div className="h-3 w-full bg-primary text-primary-foreground rounded-lg flex items-center justify-center font-bold text-[6px] shadow-2xs">
+							<div className="h-3 w-full bg-primary text-primary-foreground rounded-lg flex items-center justify-center font-semibold text-[6px] shadow-2xs">
 								Submit
 							</div>
 						</div>
@@ -2271,7 +2271,7 @@ function MiniatureIllustration({
 								Are you sure you want to continue?
 							</div>
 							<div className="flex justify-end gap-1 pt-0.5">
-								<span className="px-1.5 py-0.5 rounded bg-primary text-primary-foreground font-bold text-[5.5px]">
+								<span className="px-1.5 py-0.5 rounded bg-primary text-primary-foreground font-semibold text-[5.5px]">
 									Confirm
 								</span>
 							</div>
@@ -2281,7 +2281,7 @@ function MiniatureIllustration({
 
 				{type === "data-grid" && (
 					<div className="w-full p-1 rounded-lg bg-background border border-border space-y-1 my-auto text-[6px] font-mono">
-						<div className="grid grid-cols-3 gap-1 font-bold text-primary border-b border-border/40 pb-0.5">
+						<div className="grid grid-cols-3 gap-1 font-semibold text-primary border-b border-border/40 pb-0.5">
 							<span>ID</span>
 							<span>Name</span>
 							<span>Role</span>
@@ -2289,12 +2289,12 @@ function MiniatureIllustration({
 						<div className="grid grid-cols-3 gap-1 text-foreground">
 							<span>#01</span>
 							<span>Alex</span>
-							<span className="text-emerald-500 font-bold">Admin</span>
+							<span className="text-emerald-500 font-semibold">Admin</span>
 						</div>
 						<div className="grid grid-cols-3 gap-1 text-foreground">
 							<span>#02</span>
 							<span>Sarah</span>
-							<span className="text-sky-500 font-bold">User</span>
+							<span className="text-sky-500 font-semibold">User</span>
 						</div>
 					</div>
 				)}
@@ -2328,10 +2328,10 @@ function MiniatureIllustration({
 						{/* Table Rows */}
 						<div className="space-y-0.5 text-[5.5px]">
 							<div className="grid grid-cols-12 gap-1 items-center bg-primary/5 p-0.5 rounded border border-primary/20">
-								<span className="col-span-1 text-center text-primary font-bold">
+								<span className="col-span-1 text-center text-primary font-semibold">
 									☑
 								</span>
-								<span className="col-span-4 font-bold text-foreground truncate">
+								<span className="col-span-4 font-semibold text-foreground truncate">
 									Alex Rivers
 								</span>
 								<span className="col-span-3">
@@ -2356,7 +2356,7 @@ function MiniatureIllustration({
 										Pending
 									</span>
 								</span>
-								<span className="col-span-4 text-right font-bold text-foreground">
+								<span className="col-span-4 text-right font-semibold text-foreground">
 									$420.00
 								</span>
 							</div>
@@ -2373,7 +2373,7 @@ function MiniatureIllustration({
 										Paid
 									</span>
 								</span>
-								<span className="col-span-4 text-right font-bold text-foreground">
+								<span className="col-span-4 text-right font-semibold text-foreground">
 									$3,890.00
 								</span>
 							</div>
@@ -2382,7 +2382,7 @@ function MiniatureIllustration({
 						{/* Table Footer Pagination */}
 						<div className="flex justify-between items-center border-t border-border/40 pt-1 px-0.5 text-[5px] text-muted-foreground font-medium">
 							<span>Page 1 of 12</span>
-							<div className="flex gap-0.5 font-bold">
+							<div className="flex gap-0.5 font-semibold">
 								<span className="px-1 py-0.2 rounded bg-muted">‹ Prev</span>
 								<span className="px-1 py-0.2 rounded bg-muted text-foreground">
 									Next ›
@@ -2396,7 +2396,7 @@ function MiniatureIllustration({
 					<div className="w-full h-full p-1 rounded-xl bg-background border border-border/80 flex flex-col justify-center items-center overflow-hidden">
 						<div className="w-[96%] space-y-1 my-auto">
 							{/* Realistic Input Field with Active Selection Trigger */}
-							<div className="w-full flex items-center justify-between px-2 py-1 rounded-lg bg-card border border-primary shadow-xs ring-2 ring-primary/30">
+							<div className="w-full flex items-center justify-between px-2 py-1 rounded-lg bg-card border border-primary/30 shadow-xs ring-2 ring-primary/30">
 								<div className="flex items-center gap-1.5 min-w-0">
 									<div className="p-0.5 rounded bg-primary text-primary-foreground shrink-0 animate-pulse">
 										<svg
@@ -2412,7 +2412,7 @@ function MiniatureIllustration({
 										</svg>
 									</div>
 									<div className="flex flex-col text-left leading-none truncate">
-										<span className="text-[5px] text-primary font-bold uppercase tracking-wider">
+										<span className="text-[5px] text-primary font-semibold uppercase tracking-wider">
 											Picking Date...
 										</span>
 										<span className="text-[6.5px] font-extrabold text-foreground truncate">
@@ -2420,7 +2420,7 @@ function MiniatureIllustration({
 										</span>
 									</div>
 								</div>
-								<span className="text-[5.5px] text-primary font-bold">▲</span>
+								<span className="text-[5.5px] text-primary font-semibold">▲</span>
 							</div>
 
 							{/* Realistic Floating Popover Dropdown Card with Live Selection */}
@@ -2433,24 +2433,24 @@ function MiniatureIllustration({
 									<span className="px-1 py-0.5 rounded-full bg-muted text-muted-foreground font-medium whitespace-nowrap">
 										Tomorrow
 									</span>
-									<span className="px-1.5 py-0.5 rounded-full bg-primary text-primary-foreground font-bold whitespace-nowrap shadow-2xs">
+									<span className="px-1.5 py-0.5 rounded-full bg-primary text-primary-foreground font-semibold whitespace-nowrap shadow-2xs">
 										Pick Date Range
 									</span>
 								</div>
 
 								{/* Month Header Navigation */}
 								<div className="flex items-center justify-between px-1 py-0.5 rounded bg-muted/40 text-[6px]">
-									<span className="size-3 rounded hover:bg-background flex items-center justify-center font-bold text-muted-foreground cursor-pointer">
+									<span className="size-3 rounded hover:bg-background flex items-center justify-center font-semibold text-muted-foreground cursor-pointer">
 										‹
 									</span>
-									<span className="font-bold text-foreground">August 2026</span>
-									<span className="size-3 rounded hover:bg-background flex items-center justify-center font-bold text-muted-foreground cursor-pointer">
+									<span className="font-semibold text-foreground">August 2026</span>
+									<span className="size-3 rounded hover:bg-background flex items-center justify-center font-semibold text-muted-foreground cursor-pointer">
 										›
 									</span>
 								</div>
 
 								{/* Weekday Grid Labels */}
-								<div className="grid grid-cols-7 gap-0.5 font-bold text-muted-foreground/70 text-center text-[4.5px] uppercase">
+								<div className="grid grid-cols-7 gap-0.5 font-semibold text-muted-foreground/70 text-center text-[4.5px] uppercase">
 									<span>Su</span>
 									<span>Mo</span>
 									<span>Tu</span>
@@ -2511,7 +2511,7 @@ function MiniatureIllustration({
 									</span>
 
 									{/* Start Date Selected */}
-									<span className="py-0.5 rounded-md bg-primary text-primary-foreground font-bold shadow-xs">
+									<span className="py-0.5 rounded-md bg-primary text-primary-foreground font-semibold shadow-xs">
 										14
 									</span>
 									<span className="py-0.5 bg-primary/20 text-primary font-semibold">
@@ -2527,7 +2527,7 @@ function MiniatureIllustration({
 
 									{/* ACTIVE PICKING DATE (18) WITH CURSOR POINTER & TOOLTIP */}
 									<div className="relative flex items-center justify-center">
-										<span className="w-full py-0.5 rounded-md bg-primary text-primary-foreground font-extrabold shadow-md ring-2 ring-primary ring-offset-1 scale-105 z-10">
+										<span className="w-full py-0.5 rounded-md bg-primary text-primary-foreground font-extrabold shadow-md ring-2 ring-primary/30 ring-offset-1 scale-105 z-10">
 											18
 										</span>
 										{/* Cursor Pointer Graphic */}
@@ -2578,12 +2578,12 @@ function MiniatureIllustration({
 				{type === "form" && (
 					<div className="w-full p-1.5 rounded-lg bg-background border border-border space-y-1 my-auto text-[6px]">
 						<div className="space-y-0.5">
-							<div className="font-bold text-foreground">Username</div>
-							<div className="h-2.5 w-full rounded bg-muted border border-primary/40 px-1 flex items-center text-[5.5px] text-primary font-bold">
+							<div className="font-semibold text-foreground">Username</div>
+							<div className="h-2.5 w-full rounded bg-muted border border-primary/40 px-1 flex items-center text-[5.5px] text-primary font-semibold">
 								alex_dev
 							</div>
 						</div>
-						<div className="h-3 w-full rounded bg-primary text-primary-foreground font-bold flex items-center justify-center text-[6px]">
+						<div className="h-3 w-full rounded bg-primary text-primary-foreground font-semibold flex items-center justify-center text-[6px]">
 							Submit Form
 						</div>
 					</div>
@@ -2591,7 +2591,7 @@ function MiniatureIllustration({
 
 				{type === "input" && (
 					<div className="w-full p-1.5 rounded-lg bg-background border border-border space-y-1 my-auto text-[6.5px]">
-						<div className="h-4 w-full rounded-md border border-primary bg-primary/5 px-1.5 flex items-center justify-between text-primary font-bold">
+						<div className="h-4 w-full rounded-md border border-primary/30 bg-primary/5 px-1.5 flex items-center justify-between text-primary font-semibold">
 							<span>Input value...</span>
 							<span className="size-1 rounded-full bg-primary animate-pulse" />
 						</div>
@@ -2609,11 +2609,11 @@ function MiniatureIllustration({
 						<div className="space-y-0.5 border-b border-border/20 pb-0.5">
 							<div className="flex justify-between text-muted-foreground">
 								<span>UI Kit License</span>
-								<span className="font-bold text-foreground">$149.00</span>
+								<span className="font-semibold text-foreground">$149.00</span>
 							</div>
 							<div className="flex justify-between text-muted-foreground">
 								<span>Support Addon</span>
-								<span className="font-bold text-foreground">$49.00</span>
+								<span className="font-semibold text-foreground">$49.00</span>
 							</div>
 						</div>
 						<div className="flex justify-between font-extrabold text-foreground pt-0.5">
@@ -2625,11 +2625,11 @@ function MiniatureIllustration({
 
 				{type === "kbd" && (
 					<div className="w-full flex items-center justify-center gap-1 my-auto">
-						<span className="px-1.5 py-0.5 rounded-md bg-muted border-b-2 border-border text-[7px] font-mono font-bold text-foreground shadow-2xs">
+						<span className="px-1.5 py-0.5 rounded-md bg-muted border-b-2 border-border text-[7px] font-mono font-semibold text-foreground shadow-2xs">
 							Ctrl
 						</span>
 						<span className="text-[7px] text-muted-foreground">+</span>
-						<span className="px-1.5 py-0.5 rounded-md bg-primary border-b-2 border-primary/70 text-[7px] font-mono font-bold text-primary-foreground shadow-2xs">
+						<span className="px-1.5 py-0.5 rounded-md bg-primary border-b-2 border-primary/70 text-[7px] font-mono font-semibold text-primary-foreground shadow-2xs">
 							K
 						</span>
 					</div>
@@ -2644,7 +2644,7 @@ function MiniatureIllustration({
 									10:42 AM
 								</span>
 							</div>
-							<div className="text-[5.5px] text-foreground font-bold truncate">
+							<div className="text-[5.5px] text-foreground font-semibold truncate">
 								Project Assets Ready
 							</div>
 						</div>
@@ -2690,7 +2690,7 @@ function MiniatureIllustration({
 
 				{type === "menubar" && (
 					<div className="w-full p-1 rounded-lg bg-background border border-border shadow-xs my-auto text-[6px]">
-						<div className="flex items-center gap-2 border-b border-border/40 pb-0.5 px-0.5 font-bold text-foreground">
+						<div className="flex items-center gap-2 border-b border-border/40 pb-0.5 px-0.5 font-semibold text-foreground">
 							<span className="text-primary font-semibold">File</span>
 							<span className="text-muted-foreground">Edit</span>
 							<span className="text-muted-foreground">View</span>
@@ -2704,16 +2704,16 @@ function MiniatureIllustration({
 
 				{type === "otp-input" && (
 					<div className="w-full flex items-center justify-center gap-1 my-auto">
-						<div className="size-5 rounded-md border border-primary bg-primary/10 text-primary font-semibold text-[9px] flex items-center justify-center shadow-2xs">
+						<div className="size-5 rounded-md border border-primary/30 bg-primary/10 text-primary font-semibold text-[9px] flex items-center justify-center shadow-2xs">
 							4
 						</div>
-						<div className="size-5 rounded-md border border-primary bg-primary/10 text-primary font-semibold text-[9px] flex items-center justify-center shadow-2xs">
+						<div className="size-5 rounded-md border border-primary/30 bg-primary/10 text-primary font-semibold text-[9px] flex items-center justify-center shadow-2xs">
 							8
 						</div>
-						<div className="size-5 rounded-md border-2 border-primary bg-background text-foreground font-semibold text-[9px] flex items-center justify-center shadow-2xs ring-2 ring-primary/20">
+						<div className="size-5 rounded-md border-2 border-primary/30 bg-background text-foreground font-semibold text-[9px] flex items-center justify-center shadow-2xs ring-2 ring-primary/20">
 							2
 						</div>
-						<div className="size-5 rounded-md border border-border bg-muted/40 text-muted-foreground font-bold text-[9px] flex items-center justify-center">
+						<div className="size-5 rounded-md border border-border bg-muted/40 text-muted-foreground font-semibold text-[9px] flex items-center justify-center">
 							•
 						</div>
 					</div>
@@ -2769,14 +2769,14 @@ function MiniatureIllustration({
 									Event Triggered
 								</span>
 							</div>
-							<span className="text-[5.5px] text-primary font-bold">Undo</span>
+							<span className="text-[5.5px] text-primary font-semibold">Undo</span>
 						</div>
 					</div>
 				)}
 
 				{type === "select" && (
 					<div className="w-full p-1 rounded-lg bg-background border border-border shadow-2xs space-y-1 my-auto text-[6.5px]">
-						<div className="flex justify-between items-center px-1.5 py-0.5 rounded bg-muted border border-border font-bold text-foreground">
+						<div className="flex justify-between items-center px-1.5 py-0.5 rounded bg-muted border border-border font-semibold text-foreground">
 							<span>Select Option</span>
 							<span className="text-[6px] text-primary">▼</span>
 						</div>
@@ -2829,7 +2829,7 @@ function MiniatureIllustration({
 							<div className="absolute -bottom-1 left-1/2 -translate-x-1/2 border-4 border-transparent border-t-foreground" />
 						</div>
 						{/* Target Interactive Trigger Element */}
-						<div className="px-2.5 py-1 rounded-lg bg-primary/10 border border-primary/30 text-primary text-[6.5px] font-bold flex items-center gap-1">
+						<div className="px-2.5 py-1 rounded-lg bg-primary/10 border border-primary/30 text-primary text-[6.5px] font-semibold flex items-center gap-1">
 							<span>★</span>
 							<span>Bookmark</span>
 						</div>
@@ -2838,7 +2838,7 @@ function MiniatureIllustration({
 
 				{type === "toggle-group" && (
 					<div className="w-full flex items-center justify-center my-auto">
-						<div className="p-0.5 rounded-lg bg-muted border border-border flex items-center gap-0.5 text-[6.5px] font-bold">
+						<div className="p-0.5 rounded-lg bg-muted border border-border flex items-center gap-0.5 text-[6.5px] font-semibold">
 							<span className="px-1.5 py-0.5 rounded bg-background text-foreground shadow-2xs">
 								Left
 							</span>
@@ -2857,13 +2857,13 @@ function MiniatureIllustration({
 							<span className="size-1.5 rounded-full bg-amber-500/80" />
 							<span className="size-1.5 rounded-full bg-emerald-500/80" />
 						</div>
-						<div className="font-bold">$ npm run dev</div>
+						<div className="font-semibold">$ npm run dev</div>
 						<div className="text-muted-foreground">Ready in 2.4s</div>
 					</div>
 				)}
 
 				{type === "pagination" && (
-					<div className="w-full flex items-center justify-center gap-1 my-auto text-[6.5px] font-bold">
+					<div className="w-full flex items-center justify-center gap-1 my-auto text-[6.5px] font-semibold">
 						<span className="px-1.5 py-0.5 rounded bg-muted border border-border text-muted-foreground">
 							Prev
 						</span>
@@ -2881,7 +2881,7 @@ function MiniatureIllustration({
 
 				{type === "tabs" && (
 					<div className="w-full space-y-1 my-auto px-0.5 text-[6.5px]">
-						<div className="p-0.5 rounded-lg bg-muted border border-border flex gap-0.5 font-bold">
+						<div className="p-0.5 rounded-lg bg-muted border border-border flex gap-0.5 font-semibold">
 							<span className="flex-1 py-0.5 rounded bg-background text-primary text-center font-extrabold shadow-2xs">
 								Account
 							</span>
@@ -2897,7 +2897,7 @@ function MiniatureIllustration({
 
 				{type === "theme-switcher" && (
 					<div className="w-full flex items-center justify-center my-auto">
-						<div className="p-1 rounded-full bg-muted border border-border flex items-center gap-1 text-[8px] font-bold shadow-2xs">
+						<div className="p-1 rounded-full bg-muted border border-border flex items-center gap-1 text-[8px] font-semibold shadow-2xs">
 							<span className="p-1 rounded-full bg-background text-amber-500 shadow-xs">
 								☀️
 							</span>
@@ -3001,9 +3001,9 @@ function MiniatureIllustration({
 					<div className="w-full p-1.5 rounded-xl bg-muted/60 border border-border font-mono text-[6px] space-y-1 my-auto">
 						<div className="flex justify-between text-[5.5px] text-muted-foreground border-b border-border/40 pb-0.5">
 							<span>component.tsx</span>
-							<span className="text-primary font-bold">Copy</span>
+							<span className="text-primary font-semibold">Copy</span>
 						</div>
-						<div className="text-primary font-bold">
+						<div className="text-primary font-semibold">
 							<span className="text-rose-500">const</span> App = () =&gt;
 						</div>
 					</div>
@@ -3028,7 +3028,7 @@ function ComponentPreviewGridSection() {
 					animate={isInView ? { opacity: 1, y: 0 } : {}}
 					transition={{ duration: 0.6 }}
 					className="text-center mb-12">
-					<span className="inline-flex items-center gap-1.5 text-xs font-bold uppercase tracking-[0.2em] text-primary mb-3">
+					<span className="inline-flex items-center gap-1.5 text-xs font-semibold uppercase tracking-[0.2em] text-primary mb-3">
 						<LayoutGrid className="size-3.5" />
 						Component Preview Catalog
 					</span>
@@ -3059,8 +3059,8 @@ function ComponentPreviewGridSection() {
 										className={cn(
 											"rounded-2xl border border-border/70 bg-card p-4 transition-all duration-300 flex flex-col h-full justify-between overflow-hidden",
 											!isLastRow
-												? "hover:border-primary hover:-translate-y-1.5"
-												: "hover:border-primary",
+												? "hover:border-primary/30 hover:-translate-y-1.5"
+												: "hover:border-primary/30",
 										)}>
 										{/* Card Thumbnail / Illustration */}
 										<div className="w-full h-32 rounded-xl mb-4 overflow-hidden relative">
@@ -3080,7 +3080,7 @@ function ComponentPreviewGridSection() {
 											<div>
 												<h4
 													className={cn(
-														"text-sm font-bold text-foreground transition-colors",
+														"text-sm font-semibold text-foreground transition-colors",
 														!isLastRow && "group-hover:text-primary",
 													)}>
 													{item.title}
@@ -3108,7 +3108,7 @@ function ComponentPreviewGridSection() {
 					<div className="absolute inset-x-0 bottom-0 h-36 bg-gradient-to-t from-background via-background/90 to-transparent flex items-end justify-center pb-2 pointer-events-none rounded-b-2xl z-20">
 						<Link
 							href="/docs/nextjs/all-components"
-							className="pointer-events-auto inline-flex items-center gap-2 px-7 py-3 rounded-xl font-bold text-sm bg-primary/10 text-primary hover:bg-primary hover:text-primary-foreground border border-primary/20 hover:border-primary transition-all duration-300 backdrop-blur-md group/btn">
+							className="pointer-events-auto inline-flex items-center gap-2 px-7 py-3 rounded-xl font-semibold text-sm bg-primary/10 text-primary hover:bg-primary hover:text-primary-foreground border border-primary/20 hover:border-primary/30 transition-all duration-300 backdrop-blur-md group/btn">
 							Explore All Components
 							<ArrowRight className="size-4 transition-transform group-hover/btn:translate-x-1" />
 						</Link>
@@ -3228,10 +3228,10 @@ function CTASection() {
 							title="Click to copy command"
 							className="flex items-center justify-between gap-3 px-4.5 py-3.5 rounded-2xl border border-primary/25 dark:border-zinc-800 bg-background/90 dark:bg-zinc-900/90 hover:border-primary/60 transition-all cursor-pointer shadow-md group font-mono text-xs sm:text-sm text-foreground dark:text-zinc-100 backdrop-blur-md">
 							<div className="flex items-center gap-2.5 overflow-hidden">
-								<span className="text-primary font-bold font-mono text-sm sm:text-base cursor-pointer">
+								<span className="text-primary font-semibold font-mono text-sm sm:text-base cursor-pointer">
 									&gt;_
 								</span>
-								<span className="font-bold tracking-tight truncate group-hover:text-primary transition-colors">
+								<span className="font-semibold tracking-tight truncate group-hover:text-primary transition-colors">
 									npx shadcn@latest add @algorize-ui/button
 								</span>
 							</div>
@@ -3259,7 +3259,7 @@ function CTASection() {
 					</div>
 
 					{/* Feature Badges Strip */}
-					<div className="flex flex-wrap items-center justify-center gap-3 text-xs font-bold text-muted-foreground dark:text-zinc-300 pt-1">
+					<div className="flex flex-wrap items-center justify-center gap-3 text-xs font-semibold text-muted-foreground dark:text-zinc-300 pt-1">
 						<span className="flex items-center gap-1.5 px-3.5 py-1.5 rounded-xl bg-background/90 dark:bg-zinc-900 border border-primary/20 dark:border-zinc-800 shadow-2xs backdrop-blur-md">
 							<CheckCircle2 className="size-4 text-primary" /> Free Forever
 						</span>
@@ -3283,7 +3283,7 @@ function CTASection() {
 						<Link
 							href={links.github}
 							target="_blank"
-							className="w-full sm:w-auto px-9 py-4 rounded-2xl border border-primary/20 dark:border-zinc-800 bg-background/90 dark:bg-zinc-900/80 text-foreground dark:text-zinc-200 text-xs sm:text-sm font-bold hover:bg-primary/10 hover:border-primary/50 hover:text-primary transition-all flex items-center justify-center gap-2 shadow-sm">
+							className="w-full sm:w-auto px-9 py-4 rounded-2xl border border-primary/20 dark:border-zinc-800 bg-background/90 dark:bg-zinc-900/80 text-foreground dark:text-zinc-200 text-xs sm:text-sm font-semibold hover:bg-primary/10 hover:border-primary/50 hover:text-primary transition-all flex items-center justify-center gap-2 shadow-sm">
 							<Github className="size-4 text-foreground dark:text-zinc-300" />
 							<span>Star on GitHub</span>
 							<span className="px-2 py-0.5 rounded-full bg-primary/10 text-primary border border-primary/20 ml-1 font-mono text-[10px]">
@@ -3317,7 +3317,7 @@ function FooterSection() {
 					</span>
 				</div>
 
-				<div className="flex items-center gap-5 text-[12px] font-bold text-muted-foreground">
+				<div className="flex items-center gap-5 text-[12px] font-semibold text-muted-foreground">
 					<Link
 						href="/docs/nextjs/index"
 						className="hover:text-foreground transition-colors">

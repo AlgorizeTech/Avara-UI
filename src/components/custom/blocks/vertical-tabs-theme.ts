@@ -6,7 +6,7 @@ const colorThemes: Record<string, Record<string, string>> = {
   primary: {
     bg: "bg-primary text-primary-foreground",
     text: "text-primary",
-    border: "border-primary",
+    border: "border-primary/30",
     dot: "bg-primary-foreground",
     soft: "bg-primary/10 text-primary dark:bg-primary/20",
     bar: "bg-primary",

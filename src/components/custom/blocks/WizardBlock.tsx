@@ -251,7 +251,7 @@ export const WizardInput = forwardRef<
 
   const isHex = color && color.startsWith("#");
   const focusColors: Record<string, string> = {
-    primary: "focus:border-primary",
+    primary: "focus:border-primary/30",
     indigo: "focus:border-indigo-500",
     blue: "focus:border-blue-500",
     rose: "focus:border-rose-500",

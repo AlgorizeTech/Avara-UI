@@ -869,7 +869,7 @@ export const DataTableSearch = forwardRef<
         placeholder={placeholder}
         style={themeStyle}
         className={cn(
-          "w-full h-9 pl-9 pr-3 py-1.5 text-[13px] bg-white dark:bg-zinc-950 text-foreground border rounded-lg outline-none transition-all shadow-sm focus:border-primary",
+          "w-full h-9 pl-9 pr-3 py-1.5 text-[13px] bg-white dark:bg-zinc-950 text-foreground border rounded-lg outline-none transition-all shadow-sm focus:border-primary/30",
           theme.borderSoft || "border-border",
           theme.hoverBorder,
           theme.focusRing,
@@ -930,7 +930,7 @@ export const DataTablePageSize = forwardRef<
             theme.borderSoft || "border-border",
             theme.hoverBorder,
             theme.focusRing,
-            isOpen && "border-primary",
+            isOpen && "border-primary/30",
           )}
         >
           <span>{pageSize}</span>

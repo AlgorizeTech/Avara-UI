@@ -128,7 +128,7 @@ export default function ToggleGroupDemo({
     <div className="w-full flex flex-col items-center justify-center min-h-[400px] gap-12 relative z-10">
       {/* Example 1: Single Selection (Alignment) */}
       <div className="flex flex-col items-center gap-4">
-        <label className="text-sm font-bold text-zinc-500 uppercase tracking-widest">
+        <label className="text-sm font-semibold text-zinc-500 uppercase tracking-widest">
           Single Selection
         </label>
         <ToggleGroup
@@ -161,7 +161,7 @@ export default function ToggleGroupDemo({
 
       {/* Example 2: Multiple Selection (Formatting) */}
       <div className="flex flex-col items-center gap-4">
-        <label className="text-sm font-bold text-zinc-500 uppercase tracking-widest">
+        <label className="text-sm font-semibold text-zinc-500 uppercase tracking-widest">
           Multiple Selection
         </label>
         <ToggleGroup

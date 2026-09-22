@@ -283,7 +283,7 @@ export const TableOfContents: React.FC = () => {
             href="https://algorizetech.com"
             target="_blank"
             rel="noopener noreferrer"
-            className="group block relative overflow-hidden rounded-xl border border-zinc-200/80 dark:border-zinc-800 hover:border-primary dark:hover:border-primary transition-colors duration-200 shadow-none cursor-pointer"
+            className="group block relative overflow-hidden rounded-xl border border-zinc-200/80 dark:border-zinc-800 hover:border-primary/30 dark:hover:border-primary/30 transition-colors duration-200 shadow-none cursor-pointer"
           >
             <img
               src="/assets/algorizetech-banner.png"

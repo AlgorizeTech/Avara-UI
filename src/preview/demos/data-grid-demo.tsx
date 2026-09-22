@@ -130,7 +130,7 @@ export default function DataGridDemo({
       <div className="w-full flex flex-col gap-2">
         <div className="flex items-center justify-between px-2 mb-2">
           <div className="flex flex-col">
-            <h3 className="font-bold text-lg text-zinc-900 dark:text-zinc-100">
+            <h3 className="font-semibold text-lg text-zinc-900 dark:text-zinc-100">
               {preset.title}
             </h3>
             <p className="text-sm text-zinc-500">
@@ -145,7 +145,7 @@ export default function DataGridDemo({
                 ? { backgroundColor: String(color), color: "#fff" }
                 : undefined
             }
-            className={`hidden sm:flex items-center gap-2 px-3 py-1.5 text-xs font-bold rounded-lg transition-all shadow-xs ${
+            className={`hidden sm:flex items-center gap-2 px-3 py-1.5 text-xs font-semibold rounded-lg transition-all shadow-xs ${
               color === "indigo"
                 ? "bg-indigo-600 hover:bg-indigo-700 text-white"
                 : color === "rose"

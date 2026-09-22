@@ -97,8 +97,8 @@ function getColorDetails(colorKey: string) {
           hex: colorKey,
           bgClass: "bg-primary text-primary-foreground",
           textClass: "text-primary",
-          ringClass: "ring-primary border-primary",
-          borderClass: "border-primary",
+          ringClass: "ring-primary/30 border-primary/30",
+          borderClass: "border-primary/30",
           strokeHex: colorKey,
         };
       }
@@ -106,8 +106,8 @@ function getColorDetails(colorKey: string) {
         hex: "currentColor",
         bgClass: "bg-primary text-primary-foreground",
         textClass: "text-primary",
-        ringClass: "ring-primary border-primary",
-        borderClass: "border-primary",
+        ringClass: "ring-primary/30 border-primary/30",
+        borderClass: "border-primary/30",
         strokeHex: "var(--primary, #3b82f6)",
       };
   }
@@ -386,7 +386,7 @@ export function UserGraph({
             <div
               className={cn(
                 "absolute size-[90px] sm:size-[110px] rounded-full border opacity-20",
-                color === "default" || color === "primary" ? "border-primary bg-primary/10" : ""
+                color === "default" || color === "primary" ? "border-primary/30 bg-primary/10" : ""
               )}
               style={color !== "default" && color !== "primary" ? { borderColor: accentColor.hex, backgroundColor: `${accentColor.hex}10` } : undefined}
             />

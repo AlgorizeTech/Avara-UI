@@ -91,7 +91,7 @@ const PRIMARY_ROLE_OPTIONS = [
 const BACK_BTN =
   "flex items-center gap-1.5 px-4 py-2.5 rounded-xl border border-border bg-secondary text-secondary-foreground font-semibold text-sm disabled:opacity-40 disabled:cursor-not-allowed hover:bg-secondary/80 transition-all active:scale-95 cursor-pointer";
 const NEXT_BTN =
-  "flex items-center gap-1.5 px-6 py-2.5 rounded-xl text-primary-foreground font-bold text-sm shadow-md transition-all hover:brightness-110 active:scale-95 cursor-pointer bg-primary";
+  "flex items-center gap-1.5 px-6 py-2.5 rounded-xl text-primary-foreground font-semibold text-sm shadow-md transition-all hover:brightness-110 active:scale-95 cursor-pointer bg-primary";
 
 // Controlled field. 'error' is what makes a blocked Next visible to the reader.
 function Field({
@@ -113,7 +113,7 @@ function Field({
 }) {
   return (
     <label className="flex flex-col gap-1.5 w-full">
-      <span className="text-xs font-bold text-foreground uppercase tracking-wider">
+      <span className="text-xs font-semibold text-foreground uppercase tracking-wider">
         {label} <span className="text-destructive">*</span>
       </span>
       <div className="relative flex items-center">
@@ -159,7 +159,7 @@ function StepCard({
   return (
     <div className="w-full p-6 sm:p-8 bg-card text-card-foreground rounded-2xl border border-border shadow-sm flex flex-col gap-5">
       <div>
-        <h3 className="text-lg font-bold text-foreground">{title}</h3>
+        <h3 className="text-lg font-semibold text-foreground">{title}</h3>
         <p className="text-xs text-muted-foreground">{subtitle}</p>
       </div>
       {children}
@@ -273,7 +273,7 @@ export default function OnboardingWizard() {
               error={errors.company}
             />
             <div className="flex flex-col gap-1.5 w-full">
-              <label className="text-xs font-bold text-zinc-700 dark:text-zinc-300 uppercase tracking-wider">
+              <label className="text-xs font-semibold text-zinc-700 dark:text-zinc-300 uppercase tracking-wider">
                 Primary Role
               </label>
               <SelectBlock
@@ -327,19 +327,19 @@ export default function OnboardingWizard() {
           <div className="grid grid-cols-2 gap-4 bg-muted/50 p-4 rounded-xl border border-border text-xs">
             <div>
               <span className="text-muted-foreground block font-semibold">Name:</span>
-              <span className="font-bold text-foreground text-sm">{formData.fullName || "—"}</span>
+              <span className="font-semibold text-foreground text-sm">{formData.fullName || "—"}</span>
             </div>
             <div>
               <span className="text-muted-foreground block font-semibold">Email:</span>
-              <span className="font-bold text-foreground text-sm truncate block">{formData.email || "—"}</span>
+              <span className="font-semibold text-foreground text-sm truncate block">{formData.email || "—"}</span>
             </div>
             <div>
               <span className="text-muted-foreground block font-semibold">Company:</span>
-              <span className="font-bold text-foreground text-sm">{formData.company || "—"}</span>
+              <span className="font-semibold text-foreground text-sm">{formData.company || "—"}</span>
             </div>
             <div>
               <span className="text-muted-foreground block font-semibold">Role:</span>
-              <span className="font-bold text-foreground text-sm">{formData.role || "—"}</span>
+              <span className="font-semibold text-foreground text-sm">{formData.role || "—"}</span>
             </div>
           </div>
 
@@ -347,7 +347,7 @@ export default function OnboardingWizard() {
             <div className="p-4 bg-destructive/10 border border-destructive/30 rounded-xl flex items-start gap-3 text-destructive">
               <XCircle className="w-5 h-5 flex-shrink-0 mt-0.5" />
               <div className="text-xs">
-                <strong className="font-bold block mb-0.5">Submission Failed</strong>
+                <strong className="font-semibold block mb-0.5">Submission Failed</strong>
                 <span>{submitError}</span>
               </div>
             </div>

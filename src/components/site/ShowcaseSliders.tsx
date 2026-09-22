@@ -135,7 +135,7 @@ export function ShowcaseSliders({
               {/* Thumb. `left` is pulled back by its own width across the
                     travel so it stays inside the track at both ends. */}
               <div
-                className="absolute w-4 h-4 rounded-full bg-white dark:bg-zinc-900 border-2 border-primary shadow-sm pointer-events-none transition-transform duration-75 group-hover:scale-110 peer-focus-visible:scale-110 peer-focus-visible:ring-4 peer-focus-visible:ring-primary/30"
+                className="absolute w-4 h-4 rounded-full bg-white dark:bg-zinc-900 border-2 border-primary/30 shadow-sm pointer-events-none transition-transform duration-75 group-hover:scale-110 peer-focus-visible:scale-110 peer-focus-visible:ring-4 peer-focus-visible:ring-primary/30"
                 style={{
                   left: `calc(${percent}% - ${(percent / 100) * 16}px)`,
                 }}

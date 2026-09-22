@@ -23,7 +23,7 @@ const colorThemes: Record<string, Record<string, string>> = {
     inverse: "bg-primary-foreground text-primary",
     lightBg: "bg-primary/10 text-primary",
     border: "border-primary/30",
-    focusRing: "focus:ring-primary/20 focus:border-primary",
+    focusRing: "focus:ring-primary/20 focus:border-primary/30",
   },
   indigo: {
     text: "text-indigo-600 dark:text-indigo-400",

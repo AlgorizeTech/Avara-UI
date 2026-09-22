@@ -121,7 +121,7 @@ function SingleCardItem({
             aria-label="Drag to reorder"
             className={cn(
                 "p-2.5 rounded-2xl text-muted-foreground/60 hover:text-foreground hover:bg-muted/80 cursor-grab active:cursor-grabbing transition-colors shrink-0 group-hover:text-foreground/90",
-                variant === "modern" && "bg-muted/60 dark:bg-zinc-800/80 border border-border/50 hover:bg-primary hover:text-primary-foreground hover:border-primary transition-all duration-200"
+                variant === "modern" && "bg-muted/60 dark:bg-zinc-800/80 border border-border/50 hover:bg-primary hover:text-primary-foreground hover:border-primary/30 transition-all duration-200"
             )}
         >
             <GripVertical className="w-5 h-5" />

@@ -155,7 +155,7 @@ const pricingVariants: Record<string, Record<string, string>> = {
     container: "w-full p-6",
     card: "relative transition-all duration-200 hover:shadow-lg dark:hover:shadow-xl dark:bg-slate-900 dark:border-slate-700",
     cardPopular:
-      "border-primary shadow-lg scale-105 dark:border-primary dark:shadow-primary/20",
+      "border-primary/30 shadow-lg scale-105 dark:border-primary/30 dark:shadow-primary/20",
     cardHeader: "text-center pb-4",
     price: "text-3xl font-semibold dark:text-white",
     button: "w-full mb-6",
@@ -171,7 +171,7 @@ const pricingVariants: Record<string, Record<string, string>> = {
     container: "w-full p-8",
     card: "relative transition-all duration-300 hover:shadow-2xl border-2 dark:bg-slate-900 dark:border-slate-700 dark:hover:shadow-2xl dark:hover:shadow-slate-900/50",
     cardPopular:
-      "border-gradient-to-r from-primary to-primary/70 shadow-2xl scale-110 bg-gradient-to-br from-background to-primary/5 dark:from-slate-900 dark:to-primary/10 dark:border-primary dark:shadow-primary/20",
+      "border-gradient-to-r from-primary to-primary/70 shadow-2xl scale-110 bg-gradient-to-br from-background to-primary/5 dark:from-slate-900 dark:to-primary/10 dark:border-primary/30 dark:shadow-primary/20",
     cardHeader: "text-center pb-6",
     price:
       "text-4xl font-extrabold bg-gradient-to-r from-primary to-primary/70 bg-clip-text text-transparent dark:from-primary dark:to-primary/80",
@@ -361,7 +361,7 @@ export function BasicPricingPlan({
               className={cn(
                 variantStyles.card,
                 plan.popular && variantStyles.cardPopular,
-                plan.active && "ring-2 ring-primary",
+                plan.active && "ring-2 ring-primary/30",
                 cardClassName,
                 plan.rootClassName,
                 tabStyle === "toggle" &&

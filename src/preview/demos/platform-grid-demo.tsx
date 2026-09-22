@@ -90,7 +90,7 @@ const CELLS: Cell[] = [
     card: (
       <PlatformGrid.Mock>
         <div className="flex items-center justify-between gap-2">
-          <span className="text-[9px] font-bold">Email Client</span>
+          <span className="text-[9px] font-semibold">Email Client</span>
           <PlatformGrid.Pill>Gap: 8.5</PlatformGrid.Pill>
         </div>
         <p className="truncate text-[7px] text-black/50 dark:text-white/50">Sync failures dominate 1,412 negative reviews</p>
@@ -108,7 +108,7 @@ const CELLS: Cell[] = [
     card: (
       <PlatformGrid.Mock>
         <div className="flex items-center justify-between gap-2">
-          <span className="text-[9px] font-bold">360 Degree Feedback</span>
+          <span className="text-[9px] font-semibold">360 Degree Feedback</span>
           <PlatformGrid.Pill>Gap: 8.0</PlatformGrid.Pill>
         </div>
         <p className="truncate text-[7px] text-black/50 dark:text-white/50">Integration issues with meeting link systems</p>
@@ -158,7 +158,7 @@ const CELLS: Cell[] = [
           <span className="grid h-4 w-4 place-items-center rounded-[4px] bg-primary text-primary-foreground">
             <ClipboardList size={9} />
           </span>
-          <span className="text-[9px] font-bold">MealPrepPro Planner</span>
+          <span className="text-[9px] font-semibold">MealPrepPro Planner</span>
         </div>
         <p className="text-[7px] text-black/50 dark:text-white/50">
           <span className="text-primary">★</span> 4.2 · 15 reviews · Paid

@@ -112,7 +112,7 @@ export default function SidebarDemo({
             <div className="flex items-center gap-4">
               <MobileSidebarTrigger className="md:hidden" />
               <SidebarTrigger />
-              <h1 className="text-lg font-bold text-zinc-900 dark:text-white hidden sm:block">
+              <h1 className="text-lg font-semibold text-zinc-900 dark:text-white hidden sm:block">
                 {activeRoute}
               </h1>
             </div>

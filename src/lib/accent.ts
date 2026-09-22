@@ -4,7 +4,7 @@ import type { CSSProperties } from "react";
  * Bridging the docs colour picker into a preview.
  *
  * Most blocks are already written against the `--primary` token (`bg-primary`,
- * `ring-primary`, `text-primary-foreground`…). Rather than teaching each one a
+ * `ring-primary/30`, `text-primary-foreground`…). Rather than teaching each one a
  * bespoke `color` prop, a demo can repoint that token for its own subtree and
  * every one of those classes follows along.
  */

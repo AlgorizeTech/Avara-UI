@@ -4,12 +4,12 @@ import React from "react";
 
 const colorThemes: Record<string, Record<string, string>> = {
   primary: {
-    ring: "ring-primary/30 border-primary",
+    ring: "ring-primary/30 border-primary/30",
     text: "text-primary",
     bg: "bg-primary text-primary-foreground",
     bgSoft:
       "bg-primary/10 text-foreground",
-    glow: "shadow-[0_0_20px_var(--primary)] border-primary",
+    glow: "shadow-[0_0_20px_var(--primary)] border-primary/30",
   },
   indigo: {
     ring: "ring-indigo-500/30 border-indigo-500",

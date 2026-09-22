@@ -61,7 +61,7 @@ export default function AnimatedTypographyDemo({
         <div className="w-full max-w-4xl mx-auto flex flex-col gap-8">
           {variants.map((v) => (
             <div key={v} className="flex flex-col gap-1">
-              <span className="text-[11px] font-bold uppercase tracking-wider text-zinc-500">
+              <span className="text-[11px] font-semibold uppercase tracking-wider text-zinc-500">
                 variant=&quot;{v}&quot;
               </span>
               <AnimatedTypographyBlock
@@ -128,7 +128,7 @@ export default function AnimatedTypographyDemo({
         <div className="w-full max-w-4xl mx-auto flex flex-col gap-8">
           {rows.map((row) => (
             <div key={row.label} className="flex flex-col gap-1">
-              <span className="text-[11px] font-bold uppercase tracking-wider text-zinc-500">
+              <span className="text-[11px] font-semibold uppercase tracking-wider text-zinc-500">
                 {row.label}
               </span>
               {row.node}

@@ -269,7 +269,7 @@ export function Piano({
                 className={cn(
                   "flex-1 h-full rounded-b-xl sm:rounded-b-2xl border border-zinc-300 shadow-md flex flex-col justify-end items-center pb-2 sm:pb-3 transition-all duration-75 relative z-0",
                   isActive
-                    ? "bg-primary/25 translate-y-1 shadow-inner border-primary"
+                    ? "bg-primary/25 translate-y-1 shadow-inner border-primary/30"
                     : "bg-gradient-to-b from-zinc-100 via-white to-zinc-100 hover:bg-zinc-100 active:translate-y-1 active:bg-primary/25"
                 )}
               >
@@ -303,7 +303,7 @@ export function Piano({
                 className={cn(
                   "absolute top-2 sm:top-3 w-[7%] h-[60%] rounded-b-lg border-x border-b border-black shadow-xl z-10 flex flex-col justify-end items-center pb-2.5 transition-all duration-75",
                   isActive
-                    ? "bg-primary border-primary text-primary-foreground translate-y-1 shadow-inner"
+                    ? "bg-primary border-primary/30 text-primary-foreground translate-y-1 shadow-inner"
                     : "bg-gradient-to-b from-zinc-800 via-zinc-900 to-black hover:from-zinc-700 active:translate-y-1 active:bg-primary"
                 )}
               >

@@ -127,7 +127,7 @@ function CarouselCard({
           "w-full h-full rounded-3xl overflow-hidden shadow-2xl transition-shadow duration-300",
           "bg-card border border-border",
           isCenter
-            ? "shadow-primary/20 dark:shadow-primary/20 ring-2 ring-primary"
+            ? "shadow-primary/20 dark:shadow-primary/20 ring-2 ring-primary/30"
             : "hover:border-primary/50 shadow-md",
         )}
       >
@@ -250,7 +250,7 @@ export const ThreeDCarousel = React.forwardRef<
           <button
             onClick={handlePrev}
             aria-label="Previous Slide"
-            className="p-3 rounded-full bg-background border border-border text-foreground hover:bg-primary hover:text-primary-foreground hover:border-primary hover:scale-105 active:scale-95 transition-all shadow-md"
+            className="p-3 rounded-full bg-background border border-border text-foreground hover:bg-primary hover:text-primary-foreground hover:border-primary/30 hover:scale-105 active:scale-95 transition-all shadow-md"
           >
             <ChevronLeft className="w-5 h-5" />
           </button>
@@ -259,7 +259,7 @@ export const ThreeDCarousel = React.forwardRef<
           <button
             onClick={() => setIsPlaying(!isPlaying)}
             aria-label={isPlaying ? "Pause Auto-play" : "Start Auto-play"}
-            className="p-3 rounded-full bg-background border border-border text-foreground hover:bg-primary hover:text-primary-foreground hover:border-primary hover:scale-105 active:scale-95 transition-all shadow-md"
+            className="p-3 rounded-full bg-background border border-border text-foreground hover:bg-primary hover:text-primary-foreground hover:border-primary/30 hover:scale-105 active:scale-95 transition-all shadow-md"
           >
             {isPlaying ? (
               <Pause className="w-5 h-5" />
@@ -271,7 +271,7 @@ export const ThreeDCarousel = React.forwardRef<
           <button
             onClick={handleNext}
             aria-label="Next Slide"
-            className="p-3 rounded-full bg-background border border-border text-foreground hover:bg-primary hover:text-primary-foreground hover:border-primary hover:scale-105 active:scale-95 transition-all shadow-md"
+            className="p-3 rounded-full bg-background border border-border text-foreground hover:bg-primary hover:text-primary-foreground hover:border-primary/30 hover:scale-105 active:scale-95 transition-all shadow-md"
           >
             <ChevronRight className="w-5 h-5" />
           </button>

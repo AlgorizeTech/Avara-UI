@@ -28,7 +28,7 @@ export const usageDefault = `import { VerifyBadge } from "@/components/custom/bl
 export default function ProfileName() {
   return (
     <div className="flex items-center gap-2">
-      <span className="font-bold text-zinc-900 dark:text-zinc-50 text-[15px] tracking-tight">
+      <span className="font-semibold text-zinc-900 dark:text-zinc-50 text-[15px] tracking-tight">
         AlgorizeSystem
       </span>
       <VerifyBadge color="#1d9bf0" size="md" animate />
@@ -54,7 +54,7 @@ export const usageStatic = `import { VerifyBadge } from "@/components/custom/blo
 export default function StaticBadge() {
   return (
     <div className="flex items-center gap-2">
-      <span className="font-bold text-zinc-900 dark:text-zinc-50 text-[15px] tracking-tight">
+      <span className="font-semibold text-zinc-900 dark:text-zinc-50 text-[15px] tracking-tight">
         AlgorizeSystem
       </span>
       <VerifyBadge color="#1d9bf0" size="md" animate={false} />
@@ -108,12 +108,12 @@ export default function NotificationCard() {
           >
             <BotAvatar className="w-3.5 h-3.5" />
           </div>
-          <span className="font-bold text-zinc-900 dark:text-zinc-50 text-sm sm:text-[15px] tracking-tight truncate">
+          <span className="font-semibold text-zinc-900 dark:text-zinc-50 text-sm sm:text-[15px] tracking-tight truncate">
             AlgorizeSystem
           </span>
           <VerifyBadge color={accent} size="md" animate />
           <span
-            className="text-[9px] font-bold px-1.5 py-0.5 rounded-[4px] uppercase tracking-wider border shrink-0"
+            className="text-[9px] font-semibold px-1.5 py-0.5 rounded-[4px] uppercase tracking-wider border shrink-0"
             style={{
               backgroundColor: \`color-mix(in srgb, \${accent} 15%, transparent)\`,
               borderColor: \`color-mix(in srgb, \${accent} 30%, transparent)\`,

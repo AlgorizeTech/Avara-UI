@@ -142,7 +142,7 @@ export default function MagicBentoDemo({
               Insights
             </div>
             <div className="mt-auto">
-              <h3 className="text-lg font-bold text-zinc-900 dark:text-white tracking-tight">
+              <h3 className="text-lg font-semibold text-zinc-900 dark:text-white tracking-tight">
                 Analytics
               </h3>
               <p className="text-sm text-zinc-600 dark:text-zinc-400 mt-1">
@@ -158,7 +158,7 @@ export default function MagicBentoDemo({
               Overview
             </div>
             <div className="mt-auto">
-              <h3 className="text-lg font-bold text-zinc-900 dark:text-white tracking-tight">
+              <h3 className="text-lg font-semibold text-zinc-900 dark:text-white tracking-tight">
                 Dashboard
               </h3>
               <p className="text-sm text-zinc-600 dark:text-zinc-400 mt-1">
@@ -195,7 +195,7 @@ export default function MagicBentoDemo({
             </div>
 
             <div className="mt-auto relative z-10">
-              <h3 className="text-2xl font-bold text-zinc-900 dark:text-white tracking-tight">
+              <h3 className="text-2xl font-semibold text-zinc-900 dark:text-white tracking-tight">
                 Collaboration
               </h3>
               <p className="text-base text-zinc-600 dark:text-zinc-400 mt-1">
@@ -229,7 +229,7 @@ export default function MagicBentoDemo({
             </div>
 
             <div className="mt-auto relative z-10">
-              <h3 className="text-2xl font-bold text-zinc-900 dark:text-white tracking-tight">
+              <h3 className="text-2xl font-semibold text-zinc-900 dark:text-white tracking-tight">
                 Automation
               </h3>
               <p className="text-base text-zinc-600 dark:text-zinc-400 mt-1">
@@ -245,7 +245,7 @@ export default function MagicBentoDemo({
               Connectivity
             </div>
             <div className="mt-auto">
-              <h3 className="text-lg font-bold text-zinc-900 dark:text-white tracking-tight">
+              <h3 className="text-lg font-semibold text-zinc-900 dark:text-white tracking-tight">
                 Integration
               </h3>
               <p className="text-sm text-zinc-600 dark:text-zinc-400 mt-1">
@@ -261,7 +261,7 @@ export default function MagicBentoDemo({
               Protection
             </div>
             <div className="mt-auto">
-              <h3 className="text-lg font-bold text-zinc-900 dark:text-white tracking-tight">
+              <h3 className="text-lg font-semibold text-zinc-900 dark:text-white tracking-tight">
                 Security
               </h3>
               <p className="text-sm text-zinc-600 dark:text-zinc-400 mt-1">
