@@ -220,7 +220,7 @@ export function ProductDetails({
                 </div>
                 <div className="flex flex-wrap gap-3">
                   {colors.map((c, idx) => (
-                    <button key={idx} onClick={() => setSelectedColor(idx)} className={cn("size-9 rounded-full transition-all border-2 flex items-center justify-center shrink-0", c.class, selectedColor === idx ? "ring-2 ring-primary ring-offset-2 ring-offset-white dark:ring-offset-slate-950 scale-110" : "opacity-80")}>
+                    <button key={idx} onClick={() => setSelectedColor(idx)} className={cn("size-9 rounded-full transition-all border-2 flex items-center justify-center shrink-0", c.class, selectedColor === idx ? "ring-2 ring-primary/30 ring-offset-2 ring-offset-white dark:ring-offset-slate-950 scale-110" : "opacity-80")}>
                       {selectedColor === idx && <Check className={cn("size-4", idx === 3 ? "text-foreground" : "text-white")} />}
                     </button>
                   ))}
@@ -234,7 +234,7 @@ export function ProductDetails({
                 </div>
                 <div className="flex flex-wrap gap-2">
                   {sizes.map((s) => (
-                    <button key={s} onClick={() => setSelectedSize(s)} className={cn("px-3.5 sm:px-4 py-2 sm:py-2.5 rounded-xl text-xs font-semibold border transition-all bg-card shrink-0", selectedSize === s ? "bg-primary text-primary-foreground border-primary" : "border-border text-foreground hover:bg-muted")}>
+                    <button key={s} onClick={() => setSelectedSize(s)} className={cn("px-3.5 sm:px-4 py-2 sm:py-2.5 rounded-xl text-xs font-semibold border transition-all bg-card shrink-0", selectedSize === s ? "bg-primary text-primary-foreground border-primary/30" : "border-border text-foreground hover:bg-muted")}>
                       {s}
                     </button>
                   ))}
@@ -264,7 +264,7 @@ export function ProductDetails({
           <div className="border-t border-border pt-8 space-y-6">
             <div className="flex gap-4 border-b border-border pb-3">
               {(["specs", "shipping", "reviews"] as const).map((tab) => (
-                <button key={tab} onClick={() => setActiveTab(tab)} className={cn("text-xs font-semibold uppercase tracking-wider pb-2 border-b-2 transition-all capitalize", activeTab === tab ? "border-primary text-foreground" : "border-transparent text-muted-foreground hover:text-foreground")}>
+                <button key={tab} onClick={() => setActiveTab(tab)} className={cn("text-xs font-semibold uppercase tracking-wider pb-2 border-b-2 transition-all capitalize", activeTab === tab ? "border-primary/30 text-foreground" : "border-transparent text-muted-foreground hover:text-foreground")}>
                   {tab}
                 </button>
               ))}
@@ -326,7 +326,7 @@ export function ProductDetails({
  
                 <div className="flex gap-2.5">
                   {images.map((img, idx) => (
-                    <button key={idx} onClick={() => setSelectedImage(idx)} className={cn("flex-1 aspect-square rounded-xl overflow-hidden border-2 transition-all p-0 flex items-center justify-center", ITEM_BG_CLASSES[idx % ITEM_BG_CLASSES.length], selectedImage === idx ? "border-primary scale-105" : "border-border opacity-70 hover:opacity-100")}>
+                    <button key={idx} onClick={() => setSelectedImage(idx)} className={cn("flex-1 aspect-square rounded-xl overflow-hidden border-2 transition-all p-0 flex items-center justify-center", ITEM_BG_CLASSES[idx % ITEM_BG_CLASSES.length], selectedImage === idx ? "border-primary/30 scale-105" : "border-border opacity-70 hover:opacity-100")}>
                       <img src={img} alt="Thumb" className="w-full h-full object-cover scale-120 p-0" />
                     </button>
                   ))}
@@ -361,7 +361,7 @@ export function ProductDetails({
                   <span className="text-xs font-semibold uppercase tracking-wider text-muted-foreground block">Colorway: {colors[selectedColor].name}</span>
                   <div className="flex flex-wrap gap-2.5">
                     {colors.map((c, idx) => (
-                      <button key={idx} onClick={() => setSelectedColor(idx)} className={cn("size-8 rounded-xl border-2 transition-all flex items-center justify-center shrink-0", c.class, selectedColor === idx ? "ring-2 ring-primary scale-110" : "opacity-75")}>
+                      <button key={idx} onClick={() => setSelectedColor(idx)} className={cn("size-8 rounded-xl border-2 transition-all flex items-center justify-center shrink-0", c.class, selectedColor === idx ? "ring-2 ring-primary/30 scale-110" : "opacity-75")}>
                         {selectedColor === idx && <Check className={cn("size-3.5", idx === 3 ? "text-foreground" : "text-white")} />}
                       </button>
                     ))}
@@ -372,7 +372,7 @@ export function ProductDetails({
                   <span className="text-xs font-semibold uppercase tracking-wider text-muted-foreground block">US Shoe Size</span>
                   <div className="flex flex-wrap gap-2">
                     {sizes.map((s) => (
-                      <button key={s} onClick={() => setSelectedSize(s)} className={cn("px-3.5 py-1.5 rounded-xl text-xs font-semibold border transition-all bg-background shrink-0", selectedSize === s ? "bg-primary text-primary-foreground border-primary" : "border-border text-foreground hover:bg-muted")}>
+                      <button key={s} onClick={() => setSelectedSize(s)} className={cn("px-3.5 py-1.5 rounded-xl text-xs font-semibold border transition-all bg-background shrink-0", selectedSize === s ? "bg-primary text-primary-foreground border-primary/30" : "border-border text-foreground hover:bg-muted")}>
                         {s}
                       </button>
                     ))}
@@ -456,7 +456,7 @@ export function ProductDetails({
                   <label className="text-xs font-semibold uppercase tracking-wider text-muted-foreground block">Colorway: {colors[selectedColor].name}</label>
                   <div className="flex flex-wrap gap-2.5">
                     {colors.map((c, idx) => (
-                      <button key={idx} onClick={() => setSelectedColor(idx)} className={cn("size-8 rounded-full border-2 transition-all flex items-center justify-center shrink-0", c.class, selectedColor === idx ? "ring-2 ring-primary scale-110" : "opacity-75")}>
+                      <button key={idx} onClick={() => setSelectedColor(idx)} className={cn("size-8 rounded-full border-2 transition-all flex items-center justify-center shrink-0", c.class, selectedColor === idx ? "ring-2 ring-primary/30 scale-110" : "opacity-75")}>
                         {selectedColor === idx && <Check className={cn("size-3.5", idx === 3 ? "text-foreground" : "text-white")} />}
                       </button>
                     ))}
@@ -467,7 +467,7 @@ export function ProductDetails({
                   <label className="text-xs font-semibold uppercase tracking-wider text-muted-foreground block">US Shoe Size</label>
                   <div className="flex flex-wrap gap-2">
                     {sizes.map((s) => (
-                      <button key={s} onClick={() => setSelectedSize(s)} className={cn("px-3.5 py-1.5 rounded-xl text-xs font-semibold border transition-all bg-background shrink-0", selectedSize === s ? "bg-primary text-primary-foreground border-primary" : "border-border text-foreground hover:bg-muted")}>
+                      <button key={s} onClick={() => setSelectedSize(s)} className={cn("px-3.5 py-1.5 rounded-xl text-xs font-semibold border transition-all bg-background shrink-0", selectedSize === s ? "bg-primary text-primary-foreground border-primary/30" : "border-border text-foreground hover:bg-muted")}>
                         {s}
                       </button>
                     ))}
@@ -497,7 +497,7 @@ export function ProductDetails({
 
           <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 text-xs">
             {images.map((img, idx) => (
-              <button key={idx} onClick={() => setSelectedImage(idx)} className={cn("aspect-[4/3] rounded-2xl overflow-hidden border-2 transition-all p-0 flex items-center justify-center", ITEM_BG_CLASSES[idx % ITEM_BG_CLASSES.length], selectedImage === idx ? "border-primary scale-105" : "border-border opacity-70 hover:opacity-100")}>
+              <button key={idx} onClick={() => setSelectedImage(idx)} className={cn("aspect-[4/3] rounded-2xl overflow-hidden border-2 transition-all p-0 flex items-center justify-center", ITEM_BG_CLASSES[idx % ITEM_BG_CLASSES.length], selectedImage === idx ? "border-primary/30 scale-105" : "border-border opacity-70 hover:opacity-100")}>
                 <img src={img} alt="Bento Thumb" className="w-full h-full object-cover scale-120 p-0" />
               </button>
             ))}
@@ -639,7 +639,7 @@ export function ProductDetails({
                         "size-10 sm:size-11 rounded-lg transition-all border-2 flex items-center justify-center shrink-0 cursor-pointer p-0",
                         c.class,
                         selectedColor === idx
-                          ? "ring-2 ring-primary ring-offset-2 ring-offset-background scale-105"
+                          ? "ring-2 ring-primary/30 ring-offset-2 ring-offset-background scale-105"
                           : "opacity-85 hover:opacity-100"
                       )}
                       title={c.name}
@@ -666,7 +666,7 @@ export function ProductDetails({
                       className={cn(
                         "py-2.5 sm:py-3 text-center text-xs font-bold rounded-lg border transition-all cursor-pointer",
                         selectedSize === s
-                          ? "bg-primary text-primary-foreground border-primary shadow-sm"
+                          ? "bg-primary text-primary-foreground border-primary/30 shadow-sm"
                           : "bg-card border-border text-foreground hover:bg-muted/70"
                       )}
                     >
@@ -692,7 +692,7 @@ export function ProductDetails({
                     className={cn(
                       "p-4 rounded-2xl border text-xs font-semibold transition-all flex items-start gap-3 cursor-pointer text-left relative group",
                       paymentMethod === "cod"
-                        ? "bg-primary/10 border-primary text-foreground ring-1 ring-primary"
+                        ? "bg-primary/10 border-primary/30 text-foreground ring-1 ring-primary/30"
                         : "bg-card border-border text-foreground hover:bg-muted/60"
                     )}
                   >
@@ -708,7 +708,7 @@ export function ProductDetails({
                         <span className="font-bold text-xs text-foreground block">Cash on Delivery</span>
                         <div className={cn(
                           "size-4 rounded-full border flex items-center justify-center transition-all",
-                          paymentMethod === "cod" ? "border-primary bg-primary" : "border-border"
+                          paymentMethod === "cod" ? "border-primary/30 bg-primary" : "border-border"
                         )}>
                           {paymentMethod === "cod" && <Check className="size-3 text-primary-foreground stroke-[3]" />}
                         </div>
@@ -723,7 +723,7 @@ export function ProductDetails({
                     className={cn(
                       "p-4 rounded-2xl border text-xs font-semibold transition-all flex items-start gap-3 cursor-pointer text-left relative group",
                       paymentMethod === "online"
-                        ? "bg-primary/10 border-primary text-foreground ring-1 ring-primary"
+                        ? "bg-primary/10 border-primary/30 text-foreground ring-1 ring-primary/30"
                         : "bg-card border-border text-foreground hover:bg-muted/60"
                     )}
                   >
@@ -739,7 +739,7 @@ export function ProductDetails({
                         <span className="font-bold text-xs text-foreground block">Digital / Card</span>
                         <div className={cn(
                           "size-4 rounded-full border flex items-center justify-center transition-all",
-                          paymentMethod === "online" ? "border-primary bg-primary" : "border-border"
+                          paymentMethod === "online" ? "border-primary/30 bg-primary" : "border-border"
                         )}>
                           {paymentMethod === "online" && <Check className="size-3 text-primary-foreground stroke-[3]" />}
                         </div>
@@ -802,7 +802,7 @@ export function ProductDetails({
                     className={cn(
                       "px-4 sm:px-5 py-2 rounded-full text-xs font-bold uppercase tracking-wider transition-all cursor-pointer capitalize border shrink-0",
                       activeTab === tab
-                        ? "bg-primary text-primary-foreground border-primary"
+                        ? "bg-primary text-primary-foreground border-primary/30"
                         : "bg-background border-border text-muted-foreground hover:text-foreground hover:bg-muted"
                     )}
                   >
@@ -989,7 +989,7 @@ export function ProductDetails({
                       className={cn(
                         "size-9 sm:size-12 rounded-lg sm:rounded-xl overflow-hidden border-2 transition-all cursor-pointer p-0 flex items-center justify-center",
                         ITEM_BG_CLASSES[idx % ITEM_BG_CLASSES.length],
-                        selectedImage === idx ? "border-primary scale-105" : "border-border opacity-70 hover:opacity-100"
+                        selectedImage === idx ? "border-primary/30 scale-105" : "border-border opacity-70 hover:opacity-100"
                       )}
                     >
                       <img src={img} alt="Thumb" className="w-full h-full object-cover scale-120 p-0" />

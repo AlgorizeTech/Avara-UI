@@ -62,9 +62,9 @@ export const Alert: React.FC<AlertProps> = ({
   const alertTypes: Record<AlertType, Record<AlertVariant, string>> = {
     primary: {
       solid:
-        "bg-primary border-primary text-primary-foreground",
+        "bg-primary border-primary/30 text-primary-foreground",
       outline:
-        "bg-background border-2 border-primary text-foreground",
+        "bg-background border-2 border-primary/30 text-foreground",
       modern:
         "bg-card border-0 border-l-4 border-l-primary shadow-xl shadow-primary/10 text-foreground",
       glass:

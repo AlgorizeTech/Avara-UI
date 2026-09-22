@@ -418,7 +418,7 @@ function HeroInteractiveHub() {
 										<input
 											type="email"
 											placeholder="name@company.com"
-											className="w-full px-3 py-2 rounded-lg border border-border bg-background text-foreground text-xs outline-none focus:border-primary"
+											className="w-full px-3 py-2 rounded-lg border border-border bg-background text-foreground text-xs outline-none focus:border-primary/30"
 										/>
 									</div>
 									<div>
@@ -428,7 +428,7 @@ function HeroInteractiveHub() {
 										<input
 											type="password"
 											placeholder="••••••••"
-											className="w-full px-3 py-2 rounded-lg border border-border bg-background text-foreground text-xs outline-none focus:border-primary"
+											className="w-full px-3 py-2 rounded-lg border border-border bg-background text-foreground text-xs outline-none focus:border-primary/30"
 										/>
 									</div>
 								</div>
@@ -1291,7 +1291,7 @@ function MiniatureIllustration({
 									Free
 								</div>
 							</div>
-							<div className="flex-1 p-1 rounded-md border border-primary bg-primary/10 text-center space-y-0.5 shadow-2xs relative min-w-0">
+							<div className="flex-1 p-1 rounded-md border border-primary/30 bg-primary/10 text-center space-y-0.5 shadow-2xs relative min-w-0">
 								<span className="absolute -top-1.5 left-1/2 -translate-x-1/2 text-[4px] font-semibold px-0.5 rounded bg-primary text-primary-foreground whitespace-nowrap">
 									HOT
 								</span>
@@ -1653,7 +1653,7 @@ function MiniatureIllustration({
 
 				{type === "tilted-card" && (
 					<div className="w-full flex items-center justify-center my-auto">
-						<div className="w-20 h-12 rounded-xl bg-background border border-primary shadow-lg rotate-6 hover:rotate-0 transition-transform p-1.5 text-center flex flex-col justify-center">
+						<div className="w-20 h-12 rounded-xl bg-background border border-primary/30 shadow-lg rotate-6 hover:rotate-0 transition-transform p-1.5 text-center flex flex-col justify-center">
 							<span className="text-[8px] font-extrabold text-primary">
 								3D Tilted Card
 							</span>
@@ -1664,7 +1664,7 @@ function MiniatureIllustration({
 				{type === "memories-card" && (
 					<div className="w-full flex items-center justify-center my-auto relative h-12">
 						<div className="w-16 h-10 rounded-lg bg-muted/60 border border-border absolute -top-1 rotate-3" />
-						<div className="w-16 h-10 rounded-lg bg-background border border-primary shadow-md z-10 p-1 text-center flex flex-col justify-center">
+						<div className="w-16 h-10 rounded-lg bg-background border border-primary/30 shadow-md z-10 p-1 text-center flex flex-col justify-center">
 							<span className="text-[7px] font-bold text-primary">
 								Memories
 							</span>
@@ -1675,7 +1675,7 @@ function MiniatureIllustration({
 				{type === "scroll-stack" && (
 					<div className="w-full flex flex-col items-center gap-1 my-auto">
 						<div className="w-20 h-3 rounded-t-lg bg-muted border border-border" />
-						<div className="w-22 h-6 rounded-lg bg-background border border-primary shadow-xs p-1 text-center text-[7px] font-bold text-primary">
+						<div className="w-22 h-6 rounded-lg bg-background border border-primary/30 shadow-xs p-1 text-center text-[7px] font-bold text-primary">
 							Scroll Stack Card
 						</div>
 					</div>
@@ -2030,7 +2030,7 @@ function MiniatureIllustration({
 								<span className="text-[5.5px]">🗑</span>
 							</div>
 							<div className="px-2 py-0.5 rounded-lg bg-primary/20 text-primary text-[6px] font-extrabold flex items-center gap-1 cursor-pointer">
-								<span className="size-2 rounded-full border border-primary border-t-transparent animate-spin" />
+								<span className="size-2 rounded-full border border-primary/30 border-t-transparent animate-spin" />
 								<span>Loading...</span>
 							</div>
 							<div className="size-5 rounded-lg bg-muted border border-border flex items-center justify-center text-[7px] text-foreground font-extrabold shadow-2xs cursor-pointer">
@@ -2396,7 +2396,7 @@ function MiniatureIllustration({
 					<div className="w-full h-full p-1 rounded-xl bg-background border border-border/80 flex flex-col justify-center items-center overflow-hidden">
 						<div className="w-[96%] space-y-1 my-auto">
 							{/* Realistic Input Field with Active Selection Trigger */}
-							<div className="w-full flex items-center justify-between px-2 py-1 rounded-lg bg-card border border-primary shadow-xs ring-2 ring-primary/30">
+							<div className="w-full flex items-center justify-between px-2 py-1 rounded-lg bg-card border border-primary/30 shadow-xs ring-2 ring-primary/30">
 								<div className="flex items-center gap-1.5 min-w-0">
 									<div className="p-0.5 rounded bg-primary text-primary-foreground shrink-0 animate-pulse">
 										<svg
@@ -2527,7 +2527,7 @@ function MiniatureIllustration({
 
 									{/* ACTIVE PICKING DATE (18) WITH CURSOR POINTER & TOOLTIP */}
 									<div className="relative flex items-center justify-center">
-										<span className="w-full py-0.5 rounded-md bg-primary text-primary-foreground font-extrabold shadow-md ring-2 ring-primary ring-offset-1 scale-105 z-10">
+										<span className="w-full py-0.5 rounded-md bg-primary text-primary-foreground font-extrabold shadow-md ring-2 ring-primary/30 ring-offset-1 scale-105 z-10">
 											18
 										</span>
 										{/* Cursor Pointer Graphic */}
@@ -2591,7 +2591,7 @@ function MiniatureIllustration({
 
 				{type === "input" && (
 					<div className="w-full p-1.5 rounded-lg bg-background border border-border space-y-1 my-auto text-[6.5px]">
-						<div className="h-4 w-full rounded-md border border-primary bg-primary/5 px-1.5 flex items-center justify-between text-primary font-bold">
+						<div className="h-4 w-full rounded-md border border-primary/30 bg-primary/5 px-1.5 flex items-center justify-between text-primary font-bold">
 							<span>Input value...</span>
 							<span className="size-1 rounded-full bg-primary animate-pulse" />
 						</div>
@@ -2704,13 +2704,13 @@ function MiniatureIllustration({
 
 				{type === "otp-input" && (
 					<div className="w-full flex items-center justify-center gap-1 my-auto">
-						<div className="size-5 rounded-md border border-primary bg-primary/10 text-primary font-semibold text-[9px] flex items-center justify-center shadow-2xs">
+						<div className="size-5 rounded-md border border-primary/30 bg-primary/10 text-primary font-semibold text-[9px] flex items-center justify-center shadow-2xs">
 							4
 						</div>
-						<div className="size-5 rounded-md border border-primary bg-primary/10 text-primary font-semibold text-[9px] flex items-center justify-center shadow-2xs">
+						<div className="size-5 rounded-md border border-primary/30 bg-primary/10 text-primary font-semibold text-[9px] flex items-center justify-center shadow-2xs">
 							8
 						</div>
-						<div className="size-5 rounded-md border-2 border-primary bg-background text-foreground font-semibold text-[9px] flex items-center justify-center shadow-2xs ring-2 ring-primary/20">
+						<div className="size-5 rounded-md border-2 border-primary/30 bg-background text-foreground font-semibold text-[9px] flex items-center justify-center shadow-2xs ring-2 ring-primary/20">
 							2
 						</div>
 						<div className="size-5 rounded-md border border-border bg-muted/40 text-muted-foreground font-bold text-[9px] flex items-center justify-center">
@@ -3059,8 +3059,8 @@ function ComponentPreviewGridSection() {
 										className={cn(
 											"rounded-2xl border border-border/70 bg-card p-4 transition-all duration-300 flex flex-col h-full justify-between overflow-hidden",
 											!isLastRow
-												? "hover:border-primary hover:-translate-y-1.5"
-												: "hover:border-primary",
+												? "hover:border-primary/30 hover:-translate-y-1.5"
+												: "hover:border-primary/30",
 										)}>
 										{/* Card Thumbnail / Illustration */}
 										<div className="w-full h-32 rounded-xl mb-4 overflow-hidden relative">
@@ -3108,7 +3108,7 @@ function ComponentPreviewGridSection() {
 					<div className="absolute inset-x-0 bottom-0 h-36 bg-gradient-to-t from-background via-background/90 to-transparent flex items-end justify-center pb-2 pointer-events-none rounded-b-2xl z-20">
 						<Link
 							href="/docs/nextjs/all-components"
-							className="pointer-events-auto inline-flex items-center gap-2 px-7 py-3 rounded-xl font-bold text-sm bg-primary/10 text-primary hover:bg-primary hover:text-primary-foreground border border-primary/20 hover:border-primary transition-all duration-300 backdrop-blur-md group/btn">
+							className="pointer-events-auto inline-flex items-center gap-2 px-7 py-3 rounded-xl font-bold text-sm bg-primary/10 text-primary hover:bg-primary hover:text-primary-foreground border border-primary/20 hover:border-primary/30 transition-all duration-300 backdrop-blur-md group/btn">
 							Explore All Components
 							<ArrowRight className="size-4 transition-transform group-hover/btn:translate-x-1" />
 						</Link>

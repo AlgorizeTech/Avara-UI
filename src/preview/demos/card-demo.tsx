@@ -729,7 +729,7 @@ function ProfileCards({ interactive }: { interactive: boolean }) {
               "inline-flex flex-1 items-center justify-center gap-2 rounded-full border px-4 py-2.5 text-sm font-medium transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 cursor-pointer",
               following
                 ? "border-primary/20 text-foreground hover:bg-muted"
-                : "border-primary bg-primary text-primary-foreground hover:opacity-90 shadow-sm",
+                : "border-primary/30 bg-primary text-primary-foreground hover:opacity-90 shadow-sm",
             )}
           >
             {following ? (
@@ -787,7 +787,7 @@ function ProfileCards({ interactive }: { interactive: boolean }) {
 
         <button
           type="button"
-          className="flex items-center justify-center gap-2 rounded-2xl border border-dashed border-primary/30 p-5 text-sm text-muted-foreground transition-colors hover:border-primary hover:text-primary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary cursor-pointer"
+          className="flex items-center justify-center gap-2 rounded-2xl border border-dashed border-primary/30 p-5 text-sm text-muted-foreground transition-colors hover:border-primary/30 hover:text-primary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary cursor-pointer"
         >
           <UserPlus className="size-4" /> Invite a teammate
         </button>

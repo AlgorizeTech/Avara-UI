@@ -233,7 +233,7 @@ export function ProductCard({
                     "size-3.5 rounded-full border transition-all",
                     col.value,
                     selectedColorIdx === idx
-                      ? "ring-2 ring-primary ring-offset-1 scale-110"
+                      ? "ring-2 ring-primary/30 ring-offset-1 scale-110"
                       : "opacity-75 hover:opacity-100"
                   )}
                 />

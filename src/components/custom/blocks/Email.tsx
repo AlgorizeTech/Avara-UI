@@ -84,7 +84,7 @@ const colorThemes: Record<string, Record<string, string>> = {
     text: "text-primary",
     bg: "bg-primary hover:bg-primary/90 text-primary-foreground shadow-primary/20",
     lightBg: "bg-primary/10 text-primary",
-    border: "border-primary",
+    border: "border-primary/30",
     focusRing:
       "focus:border-primary/30 focus:ring-primary/10 dark:focus:ring-primary/20",
     dot: "bg-primary",

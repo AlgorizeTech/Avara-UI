@@ -4,12 +4,12 @@ import React from "react";
 
 const colorThemes: Record<string, Record<string, string>> = {
   primary: {
-    ring: "focus-within:ring-primary/30 focus-within:border-primary",
+    ring: "focus-within:ring-primary/30 focus-within:border-primary/30",
     text: "text-primary",
     bg: "bg-primary text-primary-foreground hover:bg-primary/90",
     bgSoft:
       "bg-primary/10 text-foreground hover:bg-primary/20",
-    glow: "focus-within:shadow-[0_0_20px_var(--primary)] focus-within:border-primary",
+    glow: "focus-within:shadow-[0_0_20px_var(--primary)] focus-within:border-primary/30",
   },
   indigo: {
     ring: "focus-within:ring-indigo-500/30 focus-within:border-indigo-500",

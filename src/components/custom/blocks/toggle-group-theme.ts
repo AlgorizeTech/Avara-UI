@@ -8,7 +8,7 @@ const colorThemes: Record<string, Record<string, string>> = {
   primary: {
     bg: "bg-primary text-primary-foreground",
     text: "text-primary",
-    border: "border-primary text-primary bg-primary/10",
+    border: "border-primary/30 text-primary bg-primary/10",
   },
   indigo: {
     bg: "bg-indigo-500 text-white",

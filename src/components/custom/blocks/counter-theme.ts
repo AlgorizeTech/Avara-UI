@@ -15,7 +15,7 @@ export interface CounterTheme {
 const PRIMARY: CounterTheme = {
   bg: "bg-primary text-primary-foreground",
   text: "text-primary",
-  border: "border-primary",
+  border: "border-primary/30",
   ring: "ring-primary/20",
   fill: "stroke-primary",
   bgSoft: "bg-primary/10 text-primary",

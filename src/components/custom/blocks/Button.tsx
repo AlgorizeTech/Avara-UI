@@ -598,7 +598,7 @@ const ShardsControlTile = ({
         >
           {/* Filled Active Drag Pill Surface with vertical border line & handle cursor */}
           <div
-            className="absolute left-0 top-0 bottom-0 bg-primary/15 dark:bg-white/10 rounded-xl transition-all duration-75 pointer-events-none border-r-2 border-primary dark:border-zinc-300/80"
+            className="absolute left-0 top-0 bottom-0 bg-primary/15 dark:bg-white/10 rounded-xl transition-all duration-75 pointer-events-none border-r-2 border-primary/30 dark:border-zinc-300/80"
             style={{ width: `${percentage}%` }}
           >
             {/* Invisible Edge Drag Indicator with cursor-ew-resize */}
@@ -1479,7 +1479,7 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
           className={cn(
             baseClasses,
             sizeClasses[size],
-            "relative z-10 w-max overflow-hidden px-6 py-2.5 bg-primary text-primary-foreground border-2 border-primary shadow-md",
+            "relative z-10 w-max overflow-hidden px-6 py-2.5 bg-primary text-primary-foreground border-2 border-primary/30 shadow-md",
             className,
           )}
           onClick={createRipple}
@@ -1576,7 +1576,7 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
           className={cn(
             baseClasses,
             sizeClasses[size],
-            "relative z-10 w-max px-5 py-2.5 transition-all duration-300 hover:ring-2 hover:ring-primary hover:ring-offset-2 dark:hover:ring-offset-black",
+            "relative z-10 w-max px-5 py-2.5 transition-all duration-300 hover:ring-2 hover:ring-primary/30 hover:ring-offset-2 dark:hover:ring-offset-black",
             className,
           )}
           onClick={createRipple}
@@ -1778,7 +1778,7 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
           className={cn(
             baseClasses,
             sizeClasses[size],
-            "relative z-10 w-max px-5 py-2.5 bg-primary text-primary-foreground border-2 border-primary shadow-[0_0_15px_var(--primary,#3b82f6)] animate-bounce",
+            "relative z-10 w-max px-5 py-2.5 bg-primary text-primary-foreground border-2 border-primary/30 shadow-[0_0_15px_var(--primary,#3b82f6)] animate-bounce",
             className,
           )}
           onClick={createRipple}
@@ -2512,7 +2512,7 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
           className={cn(
             baseClasses,
             sizeClasses[size],
-            "relative z-10 w-max px-6 py-2.5 border-2 border-primary animate-[pulse_2s_infinite] shadow-[0_0_15px_var(--primary,#3b82f6)]",
+            "relative z-10 w-max px-6 py-2.5 border-2 border-primary/30 animate-[pulse_2s_infinite] shadow-[0_0_15px_var(--primary,#3b82f6)]",
             className,
           )}
           onClick={createRipple}
@@ -2612,7 +2612,7 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
           className={cn(
             baseClasses,
             sizeClasses[size],
-            "relative z-10 w-max px-6 py-2.5 border border-primary/40 before:absolute before:top-0 before:left-0 before:w-3 before:h-3 before:border-t-2 before:border-l-2 before:border-primary before:animate-pulse after:absolute after:bottom-0 after:right-0 after:w-3 after:h-3 after:border-b-2 after:border-r-2 after:border-primary after:animate-pulse",
+            "relative z-10 w-max px-6 py-2.5 border border-primary/40 before:absolute before:top-0 before:left-0 before:w-3 before:h-3 before:border-t-2 before:border-l-2 before:border-primary/30 before:animate-pulse after:absolute after:bottom-0 after:right-0 after:w-3 after:h-3 after:border-b-2 after:border-r-2 after:border-primary/30 after:animate-pulse",
             className,
           )}
           onClick={createRipple}
@@ -2854,7 +2854,7 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
           className={cn(
             baseClasses,
             sizeClasses[size],
-            "relative z-10 w-max px-6 py-2.5 border-2 border-primary animate-pulse shadow-[0_0_15px_var(--primary,#3b82f6)]",
+            "relative z-10 w-max px-6 py-2.5 border-2 border-primary/30 animate-pulse shadow-[0_0_15px_var(--primary,#3b82f6)]",
             className,
           )}
           onClick={createRipple}
@@ -3001,7 +3001,7 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
       return (
         <div className="relative inline-flex items-center justify-center group rounded-xl isolation-auto">
           {/* Ring 1: Fast Sharp Border Line */}
-          <span className="absolute inset-0 rounded-xl border border-primary animate-[ping_1.8s_cubic-bezier(0,0,0.2,1)_infinite] pointer-events-none -z-10" />
+          <span className="absolute inset-0 rounded-xl border border-primary/30 animate-[ping_1.8s_cubic-bezier(0,0,0.2,1)_infinite] pointer-events-none -z-10" />
           {/* Ring 2: Slow Offset Outer Border Line */}
           <span className="absolute inset-0 rounded-xl border border-primary/60 animate-[ping_1.8s_cubic-bezier(0,0,0.2,1)_infinite] [animation-delay:0.9s] pointer-events-none -z-10" />
 
@@ -3041,10 +3041,10 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
     if (variant === "corner-dash-pulse") {
       return (
         <div className="relative inline-flex items-center justify-center group p-1 rounded-xl isolation-auto">
-          <span className="absolute -top-1.5 -left-1.5 w-3.5 h-3.5 border-t-2 border-l-2 border-primary rounded-tl-md animate-[ping_2s_infinite] pointer-events-none" />
-          <span className="absolute -top-1.5 -right-1.5 w-3.5 h-3.5 border-t-2 border-r-2 border-primary rounded-tr-md animate-[ping_2s_infinite] pointer-events-none" />
-          <span className="absolute -bottom-1.5 -left-1.5 w-3.5 h-3.5 border-b-2 border-l-2 border-primary rounded-bl-md animate-[ping_2s_infinite] pointer-events-none" />
-          <span className="absolute -bottom-1.5 -right-1.5 w-3.5 h-3.5 border-b-2 border-r-2 border-primary rounded-br-md animate-[ping_2s_infinite] pointer-events-none" />
+          <span className="absolute -top-1.5 -left-1.5 w-3.5 h-3.5 border-t-2 border-l-2 border-primary/30 rounded-tl-md animate-[ping_2s_infinite] pointer-events-none" />
+          <span className="absolute -top-1.5 -right-1.5 w-3.5 h-3.5 border-t-2 border-r-2 border-primary/30 rounded-tr-md animate-[ping_2s_infinite] pointer-events-none" />
+          <span className="absolute -bottom-1.5 -left-1.5 w-3.5 h-3.5 border-b-2 border-l-2 border-primary/30 rounded-bl-md animate-[ping_2s_infinite] pointer-events-none" />
+          <span className="absolute -bottom-1.5 -right-1.5 w-3.5 h-3.5 border-b-2 border-r-2 border-primary/30 rounded-br-md animate-[ping_2s_infinite] pointer-events-none" />
 
           <button
             className={cn(

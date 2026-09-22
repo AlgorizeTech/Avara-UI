@@ -131,9 +131,9 @@ const colorThemes: Record<SupportColor, Record<string, string>> = {
     text: "text-primary",
     bg: "bg-primary hover:bg-primary/90 text-primary-foreground shadow-primary/20",
     lightBg: "bg-primary/10 text-primary",
-    border: "border-primary",
-    activeBorder: "border-b-2 border-primary",
-    focusRing: "focus:ring-primary/20 focus:border-primary",
+    border: "border-primary/30",
+    activeBorder: "border-b-2 border-primary/30",
+    focusRing: "focus:ring-primary/20 focus:border-primary/30",
     iconBg: "bg-primary/10 text-primary",
   },
   indigo: {
@@ -1394,7 +1394,7 @@ export default function SupportDashboard({
                         className={cn(
                           "px-4 py-3 text-[12px] font-semibold transition-colors m-0 cursor-pointer",
                           activeDetailsTab === tab
-                            ? "text-foreground border-b-2 border-primary"
+                            ? "text-foreground border-b-2 border-primary/30"
                             : "text-muted-foreground hover:text-foreground border-b-2 border-transparent",
                         )}
                       >

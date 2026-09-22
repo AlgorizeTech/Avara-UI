@@ -11,10 +11,10 @@ const colorThemes: Record<string, Record<string, string>> = {
     bg: "bg-primary text-primary-foreground",
     text: "text-primary",
     bgSoft: "bg-primary/10",
-    border: "border-primary",
+    border: "border-primary/30",
     borderSoft: "border-primary/12",
-    focusRing: "focus:border-primary focus:outline-none",
-    hoverBorder: "hover:border-primary",
+    focusRing: "focus:border-primary/30 focus:outline-none",
+    hoverBorder: "hover:border-primary/30",
     hoverBgSoft: "hover:bg-primary/5",
   },
   indigo: {

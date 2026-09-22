@@ -393,7 +393,7 @@ function ReviewCard({
 	return (
 		<div
 			className={cn(
-				"relative p-5 sm:p-6 rounded-3xl bg-card border border-border/80 text-card-foreground shadow-sm hover:border-primary hover:shadow-xl hover:shadow-primary/5 hover:-translate-y-1 transition-all duration-300 group flex flex-col justify-between overflow-hidden cursor-pointer select-none",
+				"relative p-5 sm:p-6 rounded-3xl bg-card border border-border/80 text-card-foreground shadow-sm hover:border-primary/30 hover:shadow-xl hover:shadow-primary/5 hover:-translate-y-1 transition-all duration-300 group flex flex-col justify-between overflow-hidden cursor-pointer select-none",
 				className
 			)}
 		>

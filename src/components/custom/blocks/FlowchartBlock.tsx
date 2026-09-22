@@ -133,7 +133,7 @@ export const FlowNode = forwardRef<HTMLDivElement, FlowNodeProps>(
         iconBg: "bg-emerald-500 text-white border-emerald-400",
       },
       zinc: {
-        ring: "ring-primary",
+        ring: "ring-primary/30",
         glow: "shadow-[0_0_30px_-5px_rgba(0,0,0,0.2)] dark:shadow-[0_0_30px_-5px_rgba(255,255,255,0.15)]",
         iconBg:
           "bg-primary text-primary-foreground border-zinc-700",
@@ -144,7 +144,7 @@ export const FlowNode = forwardRef<HTMLDivElement, FlowNodeProps>(
       primary: {
         ring: "ring-primary/80",
         glow: "shadow-[0_0_30px_-5px_var(--primary)]",
-        iconBg: "bg-primary text-primary-foreground border-primary",
+        iconBg: "bg-primary text-primary-foreground border-primary/30",
       },
     };
 

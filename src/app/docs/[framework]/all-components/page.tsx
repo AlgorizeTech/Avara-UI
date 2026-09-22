@@ -295,7 +295,7 @@ function MiniatureIllustration({
 									Free
 								</div>
 							</div>
-							<div className="flex-1 p-1 rounded-md border border-primary bg-primary/10 text-center space-y-0.5 shadow-2xs relative min-w-0">
+							<div className="flex-1 p-1 rounded-md border border-primary/30 bg-primary/10 text-center space-y-0.5 shadow-2xs relative min-w-0">
 								<span className="absolute -top-1.5 left-1/2 -translate-x-1/2 text-[4px] font-black px-0.5 rounded bg-primary text-primary-foreground whitespace-nowrap">
 									HOT
 								</span>
@@ -652,7 +652,7 @@ function MiniatureIllustration({
 				{type === "image-compare" && (
 					<div className="w-full h-full rounded-xl bg-card border border-border flex flex-col justify-center relative overflow-hidden my-auto shadow-2xs group/imgcomp">
 						<div className="absolute inset-0 flex">
-							<div className="w-1/2 h-full bg-primary/20 flex items-center justify-center text-[7px] font-black text-primary border-r border-primary">
+							<div className="w-1/2 h-full bg-primary/20 flex items-center justify-center text-[7px] font-black text-primary border-r border-primary/30">
 								BEFORE
 							</div>
 							<div className="w-1/2 h-full bg-emerald-500/20 flex items-center justify-center text-[7px] font-black text-emerald-500">
@@ -730,7 +730,7 @@ function MiniatureIllustration({
 
 				{type === "tilted-card" && (
 					<div className="w-full flex items-center justify-center my-auto">
-						<div className="w-20 h-12 rounded-xl bg-background border border-primary shadow-lg rotate-6 hover:rotate-0 transition-transform p-1.5 text-center flex flex-col justify-center">
+						<div className="w-20 h-12 rounded-xl bg-background border border-primary/30 shadow-lg rotate-6 hover:rotate-0 transition-transform p-1.5 text-center flex flex-col justify-center">
 							<span className="text-[8px] font-extrabold text-primary">
 								3D Tilted Card
 							</span>
@@ -741,7 +741,7 @@ function MiniatureIllustration({
 				{type === "memories-card" && (
 					<div className="w-full flex items-center justify-center my-auto relative h-12">
 						<div className="w-16 h-10 rounded-lg bg-muted/60 border border-border absolute -top-1 rotate-3" />
-						<div className="w-16 h-10 rounded-lg bg-background border border-primary shadow-md z-10 p-1 text-center flex flex-col justify-center">
+						<div className="w-16 h-10 rounded-lg bg-background border border-primary/30 shadow-md z-10 p-1 text-center flex flex-col justify-center">
 							<span className="text-[7px] font-bold text-primary">
 								Memories
 							</span>
@@ -752,7 +752,7 @@ function MiniatureIllustration({
 				{type === "scroll-stack" && (
 					<div className="w-full flex flex-col items-center gap-1 my-auto">
 						<div className="w-20 h-3 rounded-t-lg bg-muted border border-border" />
-						<div className="w-22 h-6 rounded-lg bg-background border border-primary shadow-xs p-1 text-center text-[7px] font-bold text-primary">
+						<div className="w-22 h-6 rounded-lg bg-background border border-primary/30 shadow-xs p-1 text-center text-[7px] font-bold text-primary">
 							Scroll Stack Card
 						</div>
 					</div>
@@ -1226,7 +1226,7 @@ function MiniatureIllustration({
 								<span className="text-[5.5px]">🗑</span>
 							</div>
 							<div className="px-2 py-1 rounded-lg bg-primary/20 text-primary text-[6px] font-extrabold flex items-center gap-1 cursor-pointer">
-								<span className="size-2 rounded-full border border-primary border-t-transparent animate-spin" />
+								<span className="size-2 rounded-full border border-primary/30 border-t-transparent animate-spin" />
 								<span>Loading...</span>
 							</div>
 							<div className="size-5 rounded-lg bg-muted border border-border flex items-center justify-center text-[7px] text-foreground font-extrabold shadow-2xs cursor-pointer pt-0.25">
@@ -1588,7 +1588,7 @@ function MiniatureIllustration({
 					<div className="w-full h-full p-1 rounded-xl bg-background border border-border/80 flex flex-col justify-center items-center overflow-hidden">
 						<div className="w-[96%] space-y-1 my-auto">
 							{/* Realistic Input Field with Active Selection Trigger */}
-							<div className="w-full flex items-center justify-between px-2 py-1 pb-0.5 rounded-lg bg-card border border-primary shadow-xs ring-2 ring-primary/30">
+							<div className="w-full flex items-center justify-between px-2 py-1 pb-0.5 rounded-lg bg-card border border-primary/30 shadow-xs ring-2 ring-primary/30">
 								<div className="flex items-center gap-1.5 min-w-0">
 									<div className="p-0.5 rounded bg-primary text-primary-foreground shrink-0 animate-pulse">
 										<svg
@@ -1719,7 +1719,7 @@ function MiniatureIllustration({
 
 									{/* ACTIVE PICKING DATE (18) WITH CURSOR POINTER & TOOLTIP */}
 									<div className="relative flex items-center justify-center">
-										<span className="w-full py-0.5 rounded-md bg-primary text-primary-foreground font-extrabold shadow-md ring-2 ring-primary ring-offset-1 scale-105 z-10">
+										<span className="w-full py-0.5 rounded-md bg-primary text-primary-foreground font-extrabold shadow-md ring-2 ring-primary/30 ring-offset-1 scale-105 z-10">
 											18
 										</span>
 										{/* Cursor Pointer Graphic */}
@@ -1879,7 +1879,7 @@ function MiniatureIllustration({
 
 				{type === "input" && (
 					<div className="w-full p-1.5 rounded-lg bg-background border border-border space-y-1 my-auto text-[6.5px]">
-						<div className="h-4 w-full rounded-md border border-primary bg-primary/5 px-1.5 flex items-center justify-between text-primary font-bold">
+						<div className="h-4 w-full rounded-md border border-primary/30 bg-primary/5 px-1.5 flex items-center justify-between text-primary font-bold">
 							<span>Input value...</span>
 							<span className="size-1 rounded-full bg-primary animate-pulse" />
 						</div>
@@ -2061,13 +2061,13 @@ function MiniatureIllustration({
 
 				{type === "otp-input" && (
 					<div className="w-full flex items-center justify-center gap-1 my-auto">
-						<div className="size-5 rounded-md border border-primary bg-primary/10 text-primary font-black text-[9px] flex items-center justify-center shadow-2xs">
+						<div className="size-5 rounded-md border border-primary/30 bg-primary/10 text-primary font-black text-[9px] flex items-center justify-center shadow-2xs">
 							4
 						</div>
-						<div className="size-5 rounded-md border border-primary bg-primary/10 text-primary font-black text-[9px] flex items-center justify-center shadow-2xs">
+						<div className="size-5 rounded-md border border-primary/30 bg-primary/10 text-primary font-black text-[9px] flex items-center justify-center shadow-2xs">
 							8
 						</div>
-						<div className="size-5 rounded-md border-2 border-primary bg-background text-foreground font-black text-[9px] flex items-center justify-center shadow-2xs ring-2 ring-primary/20">
+						<div className="size-5 rounded-md border-2 border-primary/30 bg-background text-foreground font-black text-[9px] flex items-center justify-center shadow-2xs ring-2 ring-primary/20">
 							2
 						</div>
 						<div className="size-5 rounded-md border border-border bg-muted/40 text-muted-foreground font-bold text-[9px] flex items-center justify-center">
@@ -2588,7 +2588,7 @@ function MiniatureIllustration({
 							{["9:00", "10:30", "14:00"].map((t, i) => (
 								<span
 									key={t}
-									className={`rounded border text-[5.5px] font-bold text-center py-0.5 ${i === 1 ? "border-primary bg-primary/10 text-primary" : "border-border text-foreground"}`}>
+									className={`rounded border text-[5.5px] font-bold text-center py-0.5 ${i === 1 ? "border-primary/30 bg-primary/10 text-primary" : "border-border text-foreground"}`}>
 									{t}
 								</span>
 							))}
@@ -2651,7 +2651,7 @@ function MiniatureIllustration({
 						].map((row) => (
 							<div
 								key={row.t}
-								className={`flex items-center gap-1 rounded-md bg-background border pl-0 pr-1 py-0.5 overflow-hidden ${row.lift ? "border-primary shadow-md -rotate-1 scale-[1.04]" : "border-border"}`}>
+								className={`flex items-center gap-1 rounded-md bg-background border pl-0 pr-1 py-0.5 overflow-hidden ${row.lift ? "border-primary/30 shadow-md -rotate-1 scale-[1.04]" : "border-border"}`}>
 								<span className={`w-[3px] self-stretch ${row.a}`} />
 								<span className="flex-1 text-[6px] font-bold text-foreground truncate">
 									{row.t}
@@ -2840,7 +2840,7 @@ function MiniatureIllustration({
 								{["api", "auth", "db", "cache"][i]}
 							</span>
 						))}
-						<span className="relative size-7 rounded-full bg-primary/15 border border-primary flex items-center justify-center text-[5.5px] font-extrabold text-primary shadow-[0_0_12px_var(--primary)]">
+						<span className="relative size-7 rounded-full bg-primary/15 border border-primary/30 flex items-center justify-center text-[5.5px] font-extrabold text-primary shadow-[0_0_12px_var(--primary)]">
 							core
 						</span>
 					</div>
@@ -2906,7 +2906,7 @@ function MiniatureIllustration({
 							{["bg-orange-200", "bg-lime-200", "bg-sky-200", "bg-pink-200", "bg-violet-200"].map((c, i) => (
 								<div
 									key={c}
-									className={`w-5 rounded-sm ${c} relative overflow-hidden shrink-0 ${i === 2 ? "border border-primary" : ""}`}
+									className={`w-5 rounded-sm ${c} relative overflow-hidden shrink-0 ${i === 2 ? "border border-primary/30" : ""}`}
 									style={{ height: 22 + (i % 2 ? 6 : 0) }}>
 									<span className="absolute bottom-0 left-1/2 -translate-x-1/2 w-3 h-3 rounded-t-full bg-foreground/60" />
 									<span className="absolute bottom-2.5 left-1/2 -translate-x-1/2 size-1.5 rounded-full bg-foreground/60" />
@@ -3013,7 +3013,7 @@ function MiniatureIllustration({
 					<div className="w-full h-full relative flex items-center justify-center my-auto">
 						<div className="w-16 h-11 rounded-lg bg-muted/60 border border-border absolute -translate-x-8 rotate-[-8deg] scale-90" />
 						<div className="w-16 h-11 rounded-lg bg-muted/60 border border-border absolute translate-x-8 rotate-[8deg] scale-90" />
-						<div className="w-20 rounded-lg bg-background border border-primary shadow-md z-10 p-1.5 space-y-0.5">
+						<div className="w-20 rounded-lg bg-background border border-primary/30 shadow-md z-10 p-1.5 space-y-0.5">
 							<div className="text-[6px] text-amber-500 leading-none">★★★★★</div>
 							<div className="text-[5px] text-foreground leading-tight">
 								“Shipped our redesign in a week. Unreal.”
@@ -3156,7 +3156,7 @@ function MiniatureIllustration({
 									))}
 								</div>
 								<div className="grid grid-cols-2 gap-0.5">
-									<span className="rounded border border-primary bg-primary/10 text-[4.5px] font-bold text-primary text-center">
+									<span className="rounded border border-primary/30 bg-primary/10 text-[4.5px] font-bold text-primary text-center">
 										9:30
 									</span>
 									<span className="rounded border border-border text-[4.5px] font-bold text-foreground text-center">
@@ -3266,7 +3266,7 @@ function MiniatureIllustration({
 							{[
 								"left-0 top-0 h-5 opacity-50",
 								"left-0 top-6 h-6 opacity-50",
-								"left-[26px] top-2 h-7 opacity-100 ring-1 ring-primary",
+								"left-[26px] top-2 h-7 opacity-100 ring-1 ring-primary/30",
 								"left-[26px] top-[42px] h-5 opacity-50",
 								"left-[52px] top-0 h-6 opacity-50",
 								"left-[52px] top-7 h-6 opacity-50",
@@ -3301,7 +3301,7 @@ function MiniatureIllustration({
 							<div className="absolute left-0 top-1 w-8 h-8 rounded-md bg-amber-200 rotate-[-8deg] shadow-sm" />
 							<div className="absolute right-0 top-3 w-8 h-8 rounded-md bg-sky-200 rotate-[6deg] shadow-sm" />
 							<div className="absolute left-3 bottom-0 w-8 h-7 rounded-md bg-rose-200 rotate-[3deg] shadow-sm" />
-							<span className="absolute -top-0.5 -right-0.5 size-5 rounded-full border border-dashed border-primary bg-background/80 flex items-center justify-center text-[5px] text-primary">
+							<span className="absolute -top-0.5 -right-0.5 size-5 rounded-full border border-dashed border-primary/30 bg-background/80 flex items-center justify-center text-[5px] text-primary">
 								▶
 							</span>
 						</div>
@@ -3377,7 +3377,7 @@ export default function AllComponentsDocsPage() {
 										href={item.href || docsHref(framework, item.slug || "")}
 										{...getTriggerProps(item.previewName, item.title)}
 										className="group block rounded-2xl">
-										<div className="rounded-2xl border border-border/70 bg-card p-4 transition-all duration-300 hover:border-primary hover:shadow-xl hover:-translate-y-1.5 flex flex-col h-full justify-between overflow-hidden">
+										<div className="rounded-2xl border border-border/70 bg-card p-4 transition-all duration-300 hover:border-primary/30 hover:shadow-xl hover:-translate-y-1.5 flex flex-col h-full justify-between overflow-hidden">
 											{/* Card Thumbnail / Illustration */}
 											<div className="w-full h-32 rounded-xl mb-4 overflow-hidden relative">
 												<MiniatureIllustration
