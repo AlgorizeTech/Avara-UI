@@ -180,7 +180,7 @@ const DockIcon: React.FC<DockIconProps> = ({
       >
         {/* Notification Badge */}
         {item.badge && (
-          <span className="absolute -top-1 -right-1 flex h-3.5 w-3.5 sm:h-4 sm:min-w-4 items-center justify-center rounded-full bg-rose-500 px-1 text-[9px] sm:text-[10px] font-bold text-white shadow-sm border border-white dark:border-zinc-900 animate-pulse">
+          <span className="absolute -top-1 -right-1 flex h-3.5 w-3.5 sm:h-4 sm:min-w-4 items-center justify-center rounded-full bg-rose-500 px-1 text-[9px] sm:text-[10px] font-semibold text-white shadow-sm border border-white dark:border-zinc-900 animate-pulse">
             {item.badge}
           </span>
         )}

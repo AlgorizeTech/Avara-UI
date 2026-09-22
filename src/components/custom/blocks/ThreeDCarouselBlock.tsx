@@ -147,7 +147,7 @@ function CarouselCard({
             <span className="text-xs font-semibold uppercase tracking-wider px-3 py-1 rounded-full bg-primary/90 backdrop-blur-md w-fit mb-2 text-primary-foreground shadow-sm">
               {item.category}
             </span>
-            <h3 className="text-xl md:text-2xl font-bold tracking-tight mb-1 leading-snug">
+            <h3 className="text-xl md:text-2xl font-semibold tracking-tight mb-1 leading-snug">
               {item.title}
             </h3>
             {item.description && (

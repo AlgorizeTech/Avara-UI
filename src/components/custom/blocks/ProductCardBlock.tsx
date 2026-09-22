@@ -101,7 +101,7 @@ export function ProductCard({
       >
         {/* Thumbnail Image */}
         <div className="size-24 rounded-2xl bg-primary/10 border border-primary/20 shrink-0 flex items-center justify-center overflow-hidden">
-          {image || <span className="text-3xl font-black">🛍️</span>}
+          {image || <span className="text-3xl font-bold">🛍️</span>}
         </div>
 
         {/* Content */}
@@ -118,7 +118,7 @@ export function ProductCard({
               </span>
             )}
             {rating !== undefined && (
-              <span className="text-xs font-bold text-amber-500 flex items-center gap-1">
+              <span className="text-xs font-semibold text-amber-500 flex items-center gap-1">
                 <Star className="size-3 fill-amber-500" /> {rating}
               </span>
             )}
@@ -132,7 +132,7 @@ export function ProductCard({
         {/* Price & Action */}
         <div className="flex items-center gap-4 shrink-0 border-t sm:border-t-0 sm:border-l border-border/60 pt-3 sm:pt-0 sm:pl-4 w-full sm:w-auto justify-between sm:justify-end">
           <div className="text-left sm:text-right">
-            <span className="text-lg font-black text-foreground">{price}</span>
+            <span className="text-lg font-bold text-foreground">{price}</span>
             {originalPrice && (
               <p className="text-xs text-muted-foreground line-through">{originalPrice}</p>
             )}
@@ -193,7 +193,7 @@ export function ProductCard({
 
         {/* Product Visual */}
         <div className="w-full h-full flex items-center justify-center group-hover:scale-105 transition-transform duration-300">
-          {image || <span className="text-4xl font-black">📦</span>}
+          {image || <span className="text-4xl font-bold">📦</span>}
         </div>
       </div>
 
@@ -203,7 +203,7 @@ export function ProductCard({
           <div className="flex items-center justify-between text-xs text-muted-foreground mb-1">
             {subtitle && <span className="font-semibold text-primary">{subtitle}</span>}
             {rating !== undefined && (
-              <span className="flex items-center gap-1 font-bold text-amber-500 ml-auto">
+              <span className="flex items-center gap-1 font-semibold text-amber-500 ml-auto">
                 <Star className="size-3.5 fill-amber-500" /> {rating}
                 {reviewsCount !== undefined && (
                   <span className="text-muted-foreground font-normal">({reviewsCount})</span>
@@ -246,7 +246,7 @@ export function ProductCard({
       {/* Footer / Actions */}
       <div className="p-4 pt-2 flex items-center justify-between border-t border-border/40 mt-1">
         <div>
-          <span className="text-lg font-black text-foreground">{price}</span>
+          <span className="text-lg font-bold text-foreground">{price}</span>
           {originalPrice && (
             <span className="text-xs text-muted-foreground line-through ml-2">
               {originalPrice}
@@ -259,7 +259,7 @@ export function ProductCard({
             <button
               type="button"
               onClick={onQuickView}
-              className="px-3 py-2 rounded-xl border border-primary/30 bg-background hover:bg-primary/10 hover:text-primary hover:border-primary/50 text-foreground text-xs font-bold flex items-center gap-1.5 transition-colors active:scale-95 cursor-pointer"
+              className="px-3 py-2 rounded-xl border border-primary/30 bg-background hover:bg-primary/10 hover:text-primary hover:border-primary/50 text-foreground text-xs font-semibold flex items-center gap-1.5 transition-colors active:scale-95 cursor-pointer"
             >
               <Eye className="size-3.5" /> Quick View
             </button>
@@ -269,7 +269,7 @@ export function ProductCard({
             <button
               type="button"
               onClick={onAddToCart}
-              className="px-3.5 py-2 rounded-xl bg-primary text-primary-foreground text-xs font-bold flex items-center gap-1.5 hover:opacity-90 transition-opacity active:scale-95 shadow-xs"
+              className="px-3.5 py-2 rounded-xl bg-primary text-primary-foreground text-xs font-semibold flex items-center gap-1.5 hover:opacity-90 transition-opacity active:scale-95 shadow-xs"
             >
               <ShoppingCart className="size-3.5" /> Add
             </button>
@@ -279,7 +279,7 @@ export function ProductCard({
             <button
               type="button"
               onClick={onBuyNow}
-              className="px-3.5 py-2 rounded-xl bg-primary text-primary-foreground text-xs font-bold flex items-center gap-1.5 hover:opacity-90 transition-opacity active:scale-95 shadow-xs"
+              className="px-3.5 py-2 rounded-xl bg-primary text-primary-foreground text-xs font-semibold flex items-center gap-1.5 hover:opacity-90 transition-opacity active:scale-95 shadow-xs"
             >
               <Zap className="size-3.5" /> Buy Now
             </button>

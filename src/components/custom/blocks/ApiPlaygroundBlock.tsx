@@ -414,7 +414,7 @@ export const ApiPlaygroundBlock = forwardRef<
               onClick={handleSend}
               disabled={isLoading}
               className={cn(
-                "flex items-center justify-center gap-2 h-9 px-4 rounded-lg text-sm font-bold transition-all disabled:opacity-50 shrink-0 w-full sm:w-auto cursor-pointer",
+                "flex items-center justify-center gap-2 h-9 px-4 rounded-lg text-sm font-semibold transition-all disabled:opacity-50 shrink-0 w-full sm:w-auto cursor-pointer",
                 theme.bg,
                 !isLoading && theme.glow,
               )}
@@ -439,7 +439,7 @@ export const ApiPlaygroundBlock = forwardRef<
                   key={tab}
                   onClick={() => setActiveTab(tab)}
                   className={cn(
-                    "px-3 sm:px-4 py-2 text-xs font-bold capitalize transition-all border-b-2 whitespace-nowrap shrink-0 cursor-pointer",
+                    "px-3 sm:px-4 py-2 text-xs font-semibold capitalize transition-all border-b-2 whitespace-nowrap shrink-0 cursor-pointer",
                     activeTab === tab
                       ? cn("border-[var(--api-color)]", theme.text)
                       : "border-transparent text-muted-foreground hover:text-foreground",

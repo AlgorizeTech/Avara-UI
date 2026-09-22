@@ -475,7 +475,7 @@ export const BookFlip = forwardRef<BookFlipHandle, BookFlipProps>(({
                                     <div className="relative p-2 sm:p-3.5 z-10 flex items-center justify-between pointer-events-none">
                                         {!isFrontCover && leaf.frontBadge ? (
                                             <span className={cn(
-                                                "px-1.5 sm:px-2.5 py-0.5 sm:py-1 rounded-md text-[7px] sm:text-[9px] font-black uppercase tracking-widest text-white bg-gradient-to-r ml-1 sm:ml-2",
+                                                "px-1.5 sm:px-2.5 py-0.5 sm:py-1 rounded-md text-[7px] sm:text-[9px] font-bold uppercase tracking-widest text-white bg-gradient-to-r ml-1 sm:ml-2",
                                                 frontGrad
                                             )}>
                                                 {leaf.frontBadge}
@@ -497,7 +497,7 @@ export const BookFlip = forwardRef<BookFlipHandle, BookFlipProps>(({
                                             <div className="flex items-center justify-between z-20 pt-1 sm:pt-2">
                                                 <div className="flex items-center gap-1 bg-black/70 backdrop-blur-md px-2 sm:px-3 py-0.5 sm:py-1 rounded-full border border-white/20">
                                                     <Globe className="w-2.5 h-2.5 sm:w-3.5 sm:h-3.5 text-emerald-400" />
-                                                    <span className="text-[7px] sm:text-[9px] font-mono font-bold tracking-widest text-white uppercase">
+                                                    <span className="text-[7px] sm:text-[9px] font-mono font-semibold tracking-widest text-white uppercase">
                                                         VOL. 08 — EDITION I
                                                     </span>
                                                 </div>
@@ -507,7 +507,7 @@ export const BookFlip = forwardRef<BookFlipHandle, BookFlipProps>(({
                                             {/* Bottom Magazine Monograph Header */}
                                             <div className="z-20 space-y-1 sm:space-y-2 pb-2 sm:pb-6">
                                                 <div className="w-6 sm:w-10 h-0.5 sm:h-1 bg-gradient-to-r from-emerald-400 to-teal-500 rounded-full" />
-                                                <h1 className="text-xl sm:text-4xl font-black tracking-tighter text-white uppercase font-sans leading-tight sm:leading-none drop-shadow-2xl">
+                                                <h1 className="text-xl sm:text-4xl font-bold tracking-tighter text-white uppercase font-sans leading-tight sm:leading-none drop-shadow-2xl">
                                                     {leaf.frontTitle || "TERRA INCOGNITA"}
                                                 </h1>
                                                 <p className="text-[10px] sm:text-xs font-medium text-emerald-200/90 leading-tight sm:leading-relaxed max-w-[95%] sm:max-w-[90%] line-clamp-2 sm:line-clamp-none">
@@ -522,7 +522,7 @@ export const BookFlip = forwardRef<BookFlipHandle, BookFlipProps>(({
                                         /* Standard Plate Front Layout */
                                         <div className="relative p-2 sm:p-4 z-10 space-y-0.5 sm:space-y-1 pointer-events-none">
                                             {leaf.frontTitle && (
-                                                <h4 className="text-xs sm:text-base font-black tracking-tight text-white leading-tight">
+                                                <h4 className="text-xs sm:text-base font-bold tracking-tight text-white leading-tight">
                                                     {leaf.frontTitle}
                                                 </h4>
                                             )}
@@ -560,7 +560,7 @@ export const BookFlip = forwardRef<BookFlipHandle, BookFlipProps>(({
                                     <div className="relative p-2 sm:p-3.5 z-10 flex items-center justify-between pointer-events-none">
                                         {!isBackCover && leaf.backBadge ? (
                                             <span className={cn(
-                                                "px-1.5 sm:px-2.5 py-0.5 sm:py-1 rounded-md text-[7px] sm:text-[9px] font-black uppercase tracking-widest text-white bg-gradient-to-r",
+                                                "px-1.5 sm:px-2.5 py-0.5 sm:py-1 rounded-md text-[7px] sm:text-[9px] font-bold uppercase tracking-widest text-white bg-gradient-to-r",
                                                 backGrad
                                             )}>
                                                 {leaf.backBadge}
@@ -579,7 +579,7 @@ export const BookFlip = forwardRef<BookFlipHandle, BookFlipProps>(({
                                         /* Luxurious Royal Back Cover Design */
                                         <div className="relative p-3 sm:p-6 z-10 w-full space-y-1.5 sm:space-y-3 pointer-events-none bg-gradient-to-t from-black/95 via-black/85 to-transparent text-center flex flex-col items-center justify-end pb-4 sm:pb-9">
                                             <div className="w-8 sm:w-12 h-0.5 bg-gradient-to-r from-purple-400 to-indigo-500 rounded-full mb-0.5" />
-                                            <h3 className="text-xs sm:text-base font-black tracking-[0.15em] sm:tracking-[0.2em] uppercase text-white font-serif">
+                                            <h3 className="text-xs sm:text-base font-bold tracking-[0.15em] sm:tracking-[0.2em] uppercase text-white font-serif">
                                                 {leaf.backTitle || "THE INFINITE COSMOS"}
                                             </h3>
                                             <p className="text-[9px] sm:text-[11px] font-medium text-zinc-300/90 leading-tight sm:leading-relaxed max-w-[95%] sm:max-w-[92%] line-clamp-2 sm:line-clamp-none">
@@ -594,7 +594,7 @@ export const BookFlip = forwardRef<BookFlipHandle, BookFlipProps>(({
                                         /* Standard Plate Back Layout */
                                         <div className="relative p-2 sm:p-4 z-10 space-y-0.5 sm:space-y-1 pointer-events-none">
                                             {leaf.backTitle && (
-                                                <h4 className="text-xs sm:text-base font-black tracking-tight text-white leading-tight">
+                                                <h4 className="text-xs sm:text-base font-bold tracking-tight text-white leading-tight">
                                                     {leaf.backTitle}
                                                 </h4>
                                             )}
@@ -636,7 +636,7 @@ export const BookFlip = forwardRef<BookFlipHandle, BookFlipProps>(({
                     </button>
 
                     {/* Page Leaves Counter Badge */}
-                    <div className="px-3.5 py-1.5 rounded-full bg-background border border-border/60 text-xs font-mono font-bold text-foreground flex items-center gap-1.5 shadow-none">
+                    <div className="px-3.5 py-1.5 rounded-full bg-background border border-border/60 text-xs font-mono font-semibold text-foreground flex items-center gap-1.5 shadow-none">
                         <span className="text-emerald-600 dark:text-emerald-400 font-extrabold">{currentTurned}</span>
                         <span className="text-muted-foreground/60 font-normal">/</span>
                         <span>{totalLeaves}</span>

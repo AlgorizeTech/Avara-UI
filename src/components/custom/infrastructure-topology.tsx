@@ -289,21 +289,21 @@ export function InfrastructureTopology({
             {/* Header Section */}
             <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 sm:gap-4 pb-4 sm:pb-6 border-b border-border/40">
                 <div className="space-y-1">
-                    <h2 className="text-lg sm:text-xl md:text-2xl font-black tracking-tight text-foreground">
+                    <h2 className="text-lg sm:text-xl md:text-2xl font-bold tracking-tight text-foreground">
                         {headerTitle}
                     </h2>
-                    <p className="text-[10px] sm:text-[11px] font-mono font-bold tracking-widest text-muted-foreground">
+                    <p className="text-[10px] sm:text-[11px] font-mono font-semibold tracking-widest text-muted-foreground">
                         {headerSubtitle}
                     </p>
                 </div>
 
                 <div className="flex items-center gap-2">
-                    <div className="px-3 py-1 rounded-full text-[11px] sm:text-xs font-mono font-bold bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border border-emerald-500/20 flex items-center gap-1.5 cursor-pointer hover:bg-emerald-500/20 transition-colors">
+                    <div className="px-3 py-1 rounded-full text-[11px] sm:text-xs font-mono font-semibold bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border border-emerald-500/20 flex items-center gap-1.5 cursor-pointer hover:bg-emerald-500/20 transition-colors">
                         <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
                         <span>{statusBadge}</span>
                     </div>
 
-                    <div className="px-3 py-1 rounded-full text-[11px] sm:text-xs font-mono font-bold bg-muted/80 text-muted-foreground border border-border/60 flex items-center gap-1.5 cursor-pointer hover:bg-muted transition-colors">
+                    <div className="px-3 py-1 rounded-full text-[11px] sm:text-xs font-mono font-semibold bg-muted/80 text-muted-foreground border border-border/60 flex items-center gap-1.5 cursor-pointer hover:bg-muted transition-colors">
                         <Wifi className="w-3.5 h-3.5" />
                         <span>{bandwidthBadge}</span>
                     </div>
@@ -407,10 +407,10 @@ export function InfrastructureTopology({
                     </div>
 
                     <div className="text-center mt-2.5 space-y-0.5">
-                        <h4 className={cn("text-[11px] lg:text-xs font-black tracking-wider uppercase", centerTheme.text)}>
+                        <h4 className={cn("text-[11px] lg:text-xs font-bold tracking-wider uppercase", centerTheme.text)}>
                             {centerTitle}
                         </h4>
-                        <p className="text-[9px] lg:text-[10px] font-mono font-bold text-muted-foreground">
+                        <p className="text-[9px] lg:text-[10px] font-mono font-semibold text-muted-foreground">
                             {centerSubtitle}
                         </p>
                     </div>
@@ -456,7 +456,7 @@ export function InfrastructureTopology({
                                 </div>
 
                                 <div className="space-y-0.5 min-w-0 w-full">
-                                    <h3 className="text-xs md:text-sm font-bold text-foreground leading-tight truncate">
+                                    <h3 className="text-xs md:text-sm font-semibold text-foreground leading-tight truncate">
                                         {node.title}
                                     </h3>
                                     <p className="text-[9px] md:text-[10px] font-mono font-medium text-muted-foreground truncate">
@@ -466,7 +466,7 @@ export function InfrastructureTopology({
 
                                 <span
                                     className={cn(
-                                        "px-2 md:px-2.5 py-0.5 rounded-full text-[8px] md:text-[9px] font-mono font-bold tracking-wider border uppercase flex items-center gap-1 cursor-pointer",
+                                        "px-2 md:px-2.5 py-0.5 rounded-full text-[8px] md:text-[9px] font-mono font-semibold tracking-wider border uppercase flex items-center gap-1 cursor-pointer",
                                         getBadgeStyle(node.badgeVariant)
                                     )}
                                 >
@@ -489,10 +489,10 @@ export function InfrastructureTopology({
                             <Zap className={cn("w-5 h-5 animate-pulse", centerTheme.text)} />
                         </div>
                     </div>
-                    <h4 className={cn("text-xs font-black tracking-wider uppercase mt-2", centerTheme.text)}>
+                    <h4 className={cn("text-xs font-bold tracking-wider uppercase mt-2", centerTheme.text)}>
                         {centerTitle}
                     </h4>
-                    <p className="text-[9px] font-mono font-bold text-muted-foreground">
+                    <p className="text-[9px] font-mono font-semibold text-muted-foreground">
                         {centerSubtitle}
                     </p>
                 </div>
@@ -513,12 +513,12 @@ export function InfrastructureTopology({
 
                             <div className="flex-1 min-w-0 space-y-0.5">
                                 <div className="flex items-center justify-between gap-1">
-                                    <h3 className="text-xs font-bold text-foreground truncate">
+                                    <h3 className="text-xs font-semibold text-foreground truncate">
                                         {node.title}
                                     </h3>
                                     <span
                                         className={cn(
-                                            "px-1.5 py-0.2 rounded text-[8px] font-mono font-bold border uppercase shrink-0",
+                                            "px-1.5 py-0.2 rounded text-[8px] font-mono font-semibold border uppercase shrink-0",
                                             getBadgeStyle(node.badgeVariant)
                                         )}
                                     >
@@ -545,10 +545,10 @@ export function InfrastructureTopology({
                             {metric.icon}
                         </div>
                         <div className="flex flex-col">
-                            <span className="text-[8px] sm:text-[9px] font-mono font-bold text-muted-foreground tracking-wider">
+                            <span className="text-[8px] sm:text-[9px] font-mono font-semibold text-muted-foreground tracking-wider">
                                 {metric.label}
                             </span>
-                            <span className={cn("text-[11px] sm:text-xs font-mono font-bold", metric.color)}>
+                            <span className={cn("text-[11px] sm:text-xs font-mono font-semibold", metric.color)}>
                                 {metric.value}
                             </span>
                         </div>

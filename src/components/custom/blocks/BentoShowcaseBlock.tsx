@@ -210,7 +210,7 @@ function Hero({
 
       {/* Headline. */}
       <div className="absolute inset-x-5 bottom-7 text-center">
-        <h3 className="mx-auto max-w-[17rem] font-sans text-[1.7rem] font-bold leading-[1.02] tracking-[-0.02em] [&_em]:font-serif [&_em]:font-normal [&_em]:italic">
+        <h3 className="mx-auto max-w-[17rem] font-sans text-[1.7rem] font-semibold leading-[1.02] tracking-[-0.02em] [&_em]:font-serif [&_em]:font-normal [&_em]:italic">
           {children}
         </h3>
         {avatars.length > 0 && (
@@ -307,7 +307,7 @@ function CaseStudies({
                   <div className="mt-2 flex items-end gap-1.5">
                     {item.metrics.slice(0, 2).map((m) => (
                       <div key={m.value} className="min-w-0">
-                        <p className="text-[9.5px] font-bold leading-none">{m.value}</p>
+                        <p className="text-[9.5px] font-semibold leading-none">{m.value}</p>
                         {m.label && <p className="mt-0.5 truncate text-[4.5px] uppercase tracking-wider text-black/45">{m.label}</p>}
                       </div>
                     ))}

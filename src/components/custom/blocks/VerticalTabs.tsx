@@ -448,7 +448,7 @@ export function VerticalTabs({
                 strokeWidth={2.5}
               />
             )}
-            <h2 className="text-2xl md:text-3xl font-bold text-foreground tracking-tight">
+            <h2 className="text-2xl md:text-3xl font-semibold text-foreground tracking-tight">
               {activeTab.label}
             </h2>
           </div>

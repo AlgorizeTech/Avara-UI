@@ -387,7 +387,7 @@ export const SignupForm = () => {
           <div className="w-12 h-12 bg-indigo-50 dark:bg-indigo-500/10 rounded-2xl flex items-center justify-center mx-auto mb-4 border border-indigo-100 dark:border-indigo-500/20">
             <User className="w-6 h-6 text-indigo-600 dark:text-indigo-400" />
           </div>
-          <h2 className="text-2xl font-black text-foreground tracking-tight">
+          <h2 className="text-2xl font-bold text-foreground tracking-tight">
             Create Account
           </h2>
           <p className="text-[13.5px] text-muted-foreground mt-1.5">
@@ -484,7 +484,7 @@ export const SignupForm = () => {
             <button
               type="submit"
               disabled={loading}
-              className="relative w-full h-12 rounded-xl bg-primary text-primary-foreground font-bold text-[15px] overflow-hidden group disabled:opacity-70 disabled:cursor-not-allowed transition-transform active:scale-[0.98]"
+              className="relative w-full h-12 rounded-xl bg-primary text-primary-foreground font-semibold text-[15px] overflow-hidden group disabled:opacity-70 disabled:cursor-not-allowed transition-transform active:scale-[0.98]"
             >
               {/* Button Hover Shine */}
               <div className="absolute inset-0 -translate-x-full bg-gradient-to-r from-transparent via-white/20 dark:via-black/10 to-transparent group-hover:animate-[shimmer_1.5s_infinite]" />
@@ -513,7 +513,7 @@ export const SignupForm = () => {
             Already have an account?{" "}
             <a
               href="#"
-              className="text-indigo-600 dark:text-indigo-400 hover:text-indigo-700 dark:hover:text-indigo-300 font-bold transition-colors"
+              className="text-indigo-600 dark:text-indigo-400 hover:text-indigo-700 dark:hover:text-indigo-300 font-semibold transition-colors"
             >
               Sign in
             </a>

@@ -290,7 +290,7 @@ export const OrbitGallery = forwardRef<HTMLElement, OrbitGalleryProps>(
               <h1 className="text-xl font-extrabold leading-[1.15] tracking-tight text-foreground sm:text-3xl lg:text-[36px] xl:text-[42px]">
                 <span className="block">{title}</span>
                 {titleAccent && (
-                  <span className="mt-1 block font-black tracking-tight" style={{ color: "var(--hero-accent-text)" }}>
+                  <span className="mt-1 block font-bold tracking-tight" style={{ color: "var(--hero-accent-text)" }}>
                     {titleAccent}
                   </span>
                 )}
@@ -315,7 +315,7 @@ export const OrbitGallery = forwardRef<HTMLElement, OrbitGalleryProps>(
                 {secondaryActionLabel && (
                   <Link
                     href={secondaryActionHref}
-                    className="inline-flex items-center justify-center gap-2 rounded-2xl border border-zinc-200 bg-white px-6 py-3.5 text-sm font-bold text-foreground shadow-sm transition-all duration-300 hover:-translate-y-0.5 hover:bg-zinc-100 active:translate-y-0 dark:border-zinc-800 dark:bg-zinc-900/80 dark:hover:bg-zinc-800 sm:py-4 sm:text-base"
+                    className="inline-flex items-center justify-center gap-2 rounded-2xl border border-zinc-200 bg-white px-6 py-3.5 text-sm font-semibold text-foreground shadow-sm transition-all duration-300 hover:-translate-y-0.5 hover:bg-zinc-100 active:translate-y-0 dark:border-zinc-800 dark:bg-zinc-900/80 dark:hover:bg-zinc-800 sm:py-4 sm:text-base"
                   >
                     <span>{secondaryActionLabel}</span>
                     <ArrowUpRight className="size-4 shrink-0 text-muted-foreground" />
@@ -324,7 +324,7 @@ export const OrbitGallery = forwardRef<HTMLElement, OrbitGalleryProps>(
               </div>
 
               {highlights.length > 0 && (
-                <div className="flex flex-wrap items-center gap-5 border-t border-border/40 pt-2 text-xs font-bold text-muted-foreground sm:gap-8">
+                <div className="flex flex-wrap items-center gap-5 border-t border-border/40 pt-2 text-xs font-semibold text-muted-foreground sm:gap-8">
                   {highlights.map((h) => (
                     <div key={h.label} className="flex items-center gap-2">
                       <div className="size-2 rounded-full" style={{ backgroundColor: h.color ?? "var(--hero-accent-text)" }} />

@@ -229,7 +229,7 @@ function FashionHeroRoot({
               variant="blur-in-up"
               as="h1"
               delay={0.1}
-              className="mx-auto max-w-[16ch] justify-center font-sans text-[2.5rem] font-bold leading-[1.02] tracking-[-0.035em] sm:text-[3.4rem] lg:text-[3.9rem]"
+              className="mx-auto max-w-[16ch] justify-center font-sans text-[2.5rem] font-semibold leading-[1.02] tracking-[-0.035em] sm:text-[3.4rem] lg:text-[3.9rem]"
             />
           </div>
         </div>
@@ -314,7 +314,7 @@ function FashionHeroRoot({
                     <ArrowRight size={18} className="transition-transform duration-300 group-hover/teaser:translate-x-0.5" />
                   </span>
                 </span>
-                <span className="mt-3 block text-[17px] font-bold leading-snug tracking-[-0.01em] underline decoration-transparent decoration-2 underline-offset-4 transition-[text-decoration-color] duration-300 group-hover/teaser:decoration-current">
+                <span className="mt-3 block text-[17px] font-semibold leading-snug tracking-[-0.01em] underline decoration-transparent decoration-2 underline-offset-4 transition-[text-decoration-color] duration-300 group-hover/teaser:decoration-current">
                   {teaser.title}
                 </span>
               </Link>

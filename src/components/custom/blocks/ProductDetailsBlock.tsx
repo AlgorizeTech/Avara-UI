@@ -148,7 +148,7 @@ export function ProductDetails({
                 <img src={images[selectedImage]} alt="Sneaker" className={cn("peer w-full h-full object-cover scale-140 p-0 transition-all duration-300 hover:scale-105", sizeScaleClass)} />
 
                 <div className="absolute inset-0 bg-black/20 opacity-0 peer-hover:opacity-100 transition-opacity flex items-center justify-center pointer-events-none z-10">
-                  <span className="px-4 py-2 rounded-full bg-black/60 text-white backdrop-blur-md text-xs font-bold flex items-center gap-2">
+                  <span className="px-4 py-2 rounded-full bg-black/60 text-white backdrop-blur-md text-xs font-semibold flex items-center gap-2">
                     <ZoomIn className="size-4" /> Click to Expand
                   </span>
                 </div>
@@ -194,28 +194,28 @@ export function ProductDetails({
             <div className="lg:col-span-5 space-y-6">
               <div className="space-y-3">
                 <div className="flex flex-wrap items-center gap-2">
-                  <span className="px-2.5 py-0.5 rounded-full bg-background border border-border text-foreground text-[11px] font-bold shrink-0 whitespace-nowrap">{badge}</span>
+                  <span className="px-2.5 py-0.5 rounded-full bg-background border border-border text-foreground text-[11px] font-semibold shrink-0 whitespace-nowrap">{badge}</span>
                   <Stars className="size-4" rating={rating} />
-                  <span className="text-xs font-bold text-foreground shrink-0">{rating}</span>
+                  <span className="text-xs font-semibold text-foreground shrink-0">{rating}</span>
                   <span className="text-xs text-muted-foreground whitespace-nowrap">({reviews} Verified Runner Reviews)</span>
                 </div>
                 <h1 className="text-3xl font-extrabold tracking-tight text-foreground">{title || "Nike Air Max 270 React Sneakers"}</h1>
                 <p className="text-xs sm:text-sm text-muted-foreground leading-relaxed">{description || "Engineered with Max Air 270 cushioning and lightweight Nike React foam for exceptional everyday comfort and energy return."}</p>
               </div>
 
-              <div className="p-4 rounded-2xl bg-card border border-border text-foreground text-xs font-bold flex items-center gap-2">
+              <div className="p-4 rounded-2xl bg-card border border-border text-foreground text-xs font-semibold flex items-center gap-2">
                 <Flame className="size-4 shrink-0 text-amber-500" />
                 <span>High Demand: Only 4 pairs left in stock for fast dispatch!</span>
               </div>
 
               <div className="flex flex-wrap items-center gap-2.5 sm:gap-3">
-                <span className="text-2xl sm:text-3xl font-black text-foreground">{price || "$160.00"}</span>
+                <span className="text-2xl sm:text-3xl font-bold text-foreground">{price || "$160.00"}</span>
                 <span className="text-base sm:text-lg text-muted-foreground line-through">{originalPrice || "$190.00"}</span>
-                <span className="px-2.5 py-1 rounded-full bg-card border border-border text-foreground text-xs font-bold shrink-0 whitespace-nowrap">Save $30 Today</span>
+                <span className="px-2.5 py-1 rounded-full bg-card border border-border text-foreground text-xs font-semibold shrink-0 whitespace-nowrap">Save $30 Today</span>
               </div>
 
               <div className="space-y-3">
-                <div className="flex flex-wrap justify-between items-center text-xs font-bold uppercase tracking-wider text-muted-foreground gap-1">
+                <div className="flex flex-wrap justify-between items-center text-xs font-semibold uppercase tracking-wider text-muted-foreground gap-1">
                   <span>Colorway: {colors[selectedColor].name}</span>
                 </div>
                 <div className="flex flex-wrap gap-3">
@@ -228,13 +228,13 @@ export function ProductDetails({
               </div>
 
               <div className="space-y-3">
-                <div className="flex flex-wrap justify-between items-center text-xs font-bold uppercase tracking-wider text-muted-foreground gap-1">
+                <div className="flex flex-wrap justify-between items-center text-xs font-semibold uppercase tracking-wider text-muted-foreground gap-1">
                   <span>Select US Shoe Size</span>
                   <a href="#" className="text-foreground hover:underline text-[11px]">Size Guide</a>
                 </div>
                 <div className="flex flex-wrap gap-2">
                   {sizes.map((s) => (
-                    <button key={s} onClick={() => setSelectedSize(s)} className={cn("px-3.5 sm:px-4 py-2 sm:py-2.5 rounded-xl text-xs font-bold border transition-all bg-card shrink-0", selectedSize === s ? "bg-primary text-primary-foreground border-primary" : "border-border text-foreground hover:bg-muted")}>
+                    <button key={s} onClick={() => setSelectedSize(s)} className={cn("px-3.5 sm:px-4 py-2 sm:py-2.5 rounded-xl text-xs font-semibold border transition-all bg-card shrink-0", selectedSize === s ? "bg-primary text-primary-foreground border-primary" : "border-border text-foreground hover:bg-muted")}>
                       {s}
                     </button>
                   ))}
@@ -244,11 +244,11 @@ export function ProductDetails({
               <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3 pt-2">
                 <div className="flex items-center justify-between sm:justify-start rounded-2xl border border-border bg-card p-1">
                   <button onClick={() => setQuantity(Math.max(1, quantity - 1))} className="p-2 rounded-xl hover:bg-muted text-foreground"><Minus className="size-3.5" /></button>
-                  <span className="px-4 text-xs font-bold text-foreground">{quantity}</span>
+                  <span className="px-4 text-xs font-semibold text-foreground">{quantity}</span>
                   <button onClick={() => setQuantity(quantity + 1)} className="p-2 rounded-xl hover:bg-muted text-foreground"><Plus className="size-3.5" /></button>
                 </div>
 
-                <button className="flex-1 py-3.5 rounded-2xl bg-primary text-primary-foreground font-bold text-sm hover:opacity-90 transition-all flex items-center justify-center gap-2">
+                <button className="flex-1 py-3.5 rounded-2xl bg-primary text-primary-foreground font-semibold text-sm hover:opacity-90 transition-all flex items-center justify-center gap-2">
                   <ShoppingBag className="size-4" /> Add Sneaker to Bag
                 </button>
               </div>
@@ -264,7 +264,7 @@ export function ProductDetails({
           <div className="border-t border-border pt-8 space-y-6">
             <div className="flex gap-4 border-b border-border pb-3">
               {(["specs", "shipping", "reviews"] as const).map((tab) => (
-                <button key={tab} onClick={() => setActiveTab(tab)} className={cn("text-xs font-bold uppercase tracking-wider pb-2 border-b-2 transition-all capitalize", activeTab === tab ? "border-primary text-foreground" : "border-transparent text-muted-foreground hover:text-foreground")}>
+                <button key={tab} onClick={() => setActiveTab(tab)} className={cn("text-xs font-semibold uppercase tracking-wider pb-2 border-b-2 transition-all capitalize", activeTab === tab ? "border-primary text-foreground" : "border-transparent text-muted-foreground hover:text-foreground")}>
                   {tab}
                 </button>
               ))}
@@ -272,21 +272,21 @@ export function ProductDetails({
 
             {activeTab === "specs" && (
               <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4 text-xs">
-                <div className="p-4 rounded-2xl bg-card border border-border"><span className="text-muted-foreground">Upper Material</span><p className="font-bold text-sm text-foreground">Breathable Flyknit Mesh</p></div>
-                <div className="p-4 rounded-2xl bg-card border border-border"><span className="text-muted-foreground">Midsole</span><p className="font-bold text-sm text-foreground">Max Air 270 Cushioning</p></div>
-                <div className="p-4 rounded-2xl bg-card border border-border"><span className="text-muted-foreground">Outsole</span><p className="font-bold text-sm text-foreground">Durable Rubber Traction</p></div>
-                <div className="p-4 rounded-2xl bg-card border border-border"><span className="text-muted-foreground">Weight</span><p className="font-bold text-sm text-foreground">310 grams (US 10)</p></div>
+                <div className="p-4 rounded-2xl bg-card border border-border"><span className="text-muted-foreground">Upper Material</span><p className="font-semibold text-sm text-foreground">Breathable Flyknit Mesh</p></div>
+                <div className="p-4 rounded-2xl bg-card border border-border"><span className="text-muted-foreground">Midsole</span><p className="font-semibold text-sm text-foreground">Max Air 270 Cushioning</p></div>
+                <div className="p-4 rounded-2xl bg-card border border-border"><span className="text-muted-foreground">Outsole</span><p className="font-semibold text-sm text-foreground">Durable Rubber Traction</p></div>
+                <div className="p-4 rounded-2xl bg-card border border-border"><span className="text-muted-foreground">Weight</span><p className="font-semibold text-sm text-foreground">310 grams (US 10)</p></div>
               </div>
             )}
             {activeTab === "shipping" && (
               <div className="p-4 rounded-2xl bg-card border border-border text-xs text-muted-foreground space-y-1 font-medium">
-                <p className="font-bold text-foreground">Double-Boxed Express Delivery</p>
+                <p className="font-semibold text-foreground">Double-Boxed Express Delivery</p>
                 <p>All shoes ship in protective double-boxing with tracking link provided.</p>
               </div>
             )}
             {activeTab === "reviews" && (
               <div className="p-4 rounded-2xl bg-card border border-border text-xs text-muted-foreground space-y-1 font-medium">
-                <p className="font-bold text-foreground">{rating} out of 5 stars ({reviews} Verified Reviews)</p>
+                <p className="font-semibold text-foreground">{rating} out of 5 stars ({reviews} Verified Reviews)</p>
                 <p>"Super comfortable for all-day walking and running. True to size!" - Marcus L.</p>
               </div>
             )}
@@ -310,7 +310,7 @@ export function ProductDetails({
                   <img src={images[selectedImage]} alt="Glass Sneaker" className={cn("peer w-full h-full object-cover scale-140 p-0 transition-all duration-300 hover:scale-105", sizeScaleClass)} />
  
                   <div className="absolute inset-0 bg-black/20 opacity-0 peer-hover:opacity-100 transition-opacity flex items-center justify-center pointer-events-none z-10">
-                    <span className="px-4 py-2 rounded-full bg-black/60 text-white backdrop-blur-md text-xs font-bold flex items-center gap-2">
+                    <span className="px-4 py-2 rounded-full bg-black/60 text-white backdrop-blur-md text-xs font-semibold flex items-center gap-2">
                       <ZoomIn className="size-4" /> Click to Expand
                     </span>
                   </div>
@@ -336,17 +336,17 @@ export function ProductDetails({
               <div className="lg:col-span-6 space-y-6">
                 <div className="space-y-2">
                   <div className="flex flex-wrap items-center gap-2">
-                    <span className="px-2.5 py-0.5 rounded-full bg-background border border-border text-foreground text-[11px] font-bold shrink-0 whitespace-nowrap">{badge}</span>
+                    <span className="px-2.5 py-0.5 rounded-full bg-background border border-border text-foreground text-[11px] font-semibold shrink-0 whitespace-nowrap">{badge}</span>
                     <div className="flex items-center gap-1.5 shrink-0 whitespace-nowrap">
                       <Stars className="size-3.5" rating={rating} />
-                      <span className="text-xs font-bold text-muted-foreground whitespace-nowrap">{rating} ({reviews} Reviews)</span>
+                      <span className="text-xs font-semibold text-muted-foreground whitespace-nowrap">{rating} ({reviews} Reviews)</span>
                     </div>
                   </div>
-                  <h1 className="text-2xl sm:text-3xl font-bold tracking-tight text-foreground">{title || "Adidas Ultraboost Light Running Shoes"}</h1>
+                  <h1 className="text-2xl sm:text-3xl font-semibold tracking-tight text-foreground">{title || "Adidas Ultraboost Light Running Shoes"}</h1>
                   <p className="text-xs text-muted-foreground leading-relaxed">{description || "Engineered with Max Air 270 cushioning and lightweight Nike React foam for exceptional everyday comfort and energy return."}</p>
                 </div>
 
-                <div className="p-3 rounded-xl bg-background border border-border text-foreground text-xs font-bold flex items-center gap-2">
+                <div className="p-3 rounded-xl bg-background border border-border text-foreground text-xs font-semibold flex items-center gap-2">
                   <Flame className="size-4 text-amber-500 shrink-0" />
                   <span>High Demand: Only 4 pairs left in stock for fast dispatch!</span>
                 </div>
@@ -354,11 +354,11 @@ export function ProductDetails({
                 <div className="flex flex-wrap items-center gap-2.5 sm:gap-3">
                   <span className="text-2xl sm:text-3xl font-extrabold text-foreground">{price || "$160.00"}</span>
                   <span className="text-base text-muted-foreground line-through">{originalPrice || "$190.00"}</span>
-                  <span className="px-2.5 py-1 rounded-full bg-card border border-border text-foreground text-xs font-bold shrink-0 whitespace-nowrap">Save $30 Today</span>
+                  <span className="px-2.5 py-1 rounded-full bg-card border border-border text-foreground text-xs font-semibold shrink-0 whitespace-nowrap">Save $30 Today</span>
                 </div>
 
                 <div className="space-y-2">
-                  <span className="text-xs font-bold uppercase tracking-wider text-muted-foreground block">Colorway: {colors[selectedColor].name}</span>
+                  <span className="text-xs font-semibold uppercase tracking-wider text-muted-foreground block">Colorway: {colors[selectedColor].name}</span>
                   <div className="flex flex-wrap gap-2.5">
                     {colors.map((c, idx) => (
                       <button key={idx} onClick={() => setSelectedColor(idx)} className={cn("size-8 rounded-xl border-2 transition-all flex items-center justify-center shrink-0", c.class, selectedColor === idx ? "ring-2 ring-primary scale-110" : "opacity-75")}>
@@ -369,10 +369,10 @@ export function ProductDetails({
                 </div>
 
                 <div className="space-y-2">
-                  <span className="text-xs font-bold uppercase tracking-wider text-muted-foreground block">US Shoe Size</span>
+                  <span className="text-xs font-semibold uppercase tracking-wider text-muted-foreground block">US Shoe Size</span>
                   <div className="flex flex-wrap gap-2">
                     {sizes.map((s) => (
-                      <button key={s} onClick={() => setSelectedSize(s)} className={cn("px-3.5 py-1.5 rounded-xl text-xs font-bold border transition-all bg-background shrink-0", selectedSize === s ? "bg-primary text-primary-foreground border-primary" : "border-border text-foreground hover:bg-muted")}>
+                      <button key={s} onClick={() => setSelectedSize(s)} className={cn("px-3.5 py-1.5 rounded-xl text-xs font-semibold border transition-all bg-background shrink-0", selectedSize === s ? "bg-primary text-primary-foreground border-primary" : "border-border text-foreground hover:bg-muted")}>
                         {s}
                       </button>
                     ))}
@@ -382,11 +382,11 @@ export function ProductDetails({
                 <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3 pt-2">
                   <div className="flex items-center justify-between sm:justify-start rounded-xl border border-border bg-background p-1">
                     <button onClick={() => setQuantity(Math.max(1, quantity - 1))} className="p-1.5 rounded-lg hover:bg-muted text-foreground"><Minus className="size-3" /></button>
-                    <span className="px-3 text-xs font-bold text-foreground">{quantity}</span>
+                    <span className="px-3 text-xs font-semibold text-foreground">{quantity}</span>
                     <button onClick={() => setQuantity(quantity + 1)} className="p-1.5 rounded-lg hover:bg-muted text-foreground"><Plus className="size-3" /></button>
                   </div>
 
-                  <button className="flex-1 py-3 rounded-xl bg-primary text-primary-foreground font-bold text-xs hover:opacity-90 transition-all flex items-center justify-center gap-2">
+                  <button className="flex-1 py-3 rounded-xl bg-primary text-primary-foreground font-semibold text-xs hover:opacity-90 transition-all flex items-center justify-center gap-2">
                     <ShoppingBag className="size-4" /> Add Sneaker to Bag
                   </button>
                 </div>
@@ -417,13 +417,13 @@ export function ProductDetails({
               <div className="absolute inset-0 bg-gradient-to-t from-slate-950/80 via-slate-950/20 to-transparent pointer-events-none z-0" />
 
               <div className="absolute inset-0 bg-black/20 opacity-0 peer-hover:opacity-100 transition-opacity flex items-center justify-center pointer-events-none z-10">
-                <span className="px-4 py-2 rounded-full bg-black/60 text-white backdrop-blur-md text-xs font-bold flex items-center gap-2">
+                <span className="px-4 py-2 rounded-full bg-black/60 text-white backdrop-blur-md text-xs font-semibold flex items-center gap-2">
                   <ZoomIn className="size-4" /> Click to Expand
                 </span>
               </div>
 
               <div className="relative z-20 flex justify-between items-start">
-                <span className="px-3.5 py-1 rounded-full bg-slate-900/90 border border-slate-700 text-white text-xs font-black uppercase tracking-wider backdrop-blur-md">
+                <span className="px-3.5 py-1 rounded-full bg-slate-900/90 border border-slate-700 text-white text-xs font-bold uppercase tracking-wider backdrop-blur-md">
                   20% OFF
                 </span>
                 <button onClick={(e) => { e.stopPropagation(); setLiked(!liked); }} className="p-3 rounded-full bg-slate-900/80 border border-slate-700 text-white hover:text-rose-500 transition-all backdrop-blur-md z-20">
@@ -432,28 +432,28 @@ export function ProductDetails({
               </div>
 
               <div className="relative z-20 space-y-3 max-w-xl pointer-events-none">
-                <div className="flex items-center gap-2 text-amber-300 text-xs font-bold drop-shadow">
+                <div className="flex items-center gap-2 text-amber-300 text-xs font-semibold drop-shadow">
                   <Star className="size-4 fill-amber-300 fill-amber-300" /> {rating} Rating ({reviews} Verified Runner Reviews)
                 </div>
                 <h1 className="text-3xl sm:text-4xl font-extrabold text-white drop-shadow-md">{title || "Air Jordan 1 Retro High OG Vintage"}</h1>
                 <p className="text-xs sm:text-sm text-slate-100/90 line-clamp-2 drop-shadow">{description || "Engineered with Max Air 270 cushioning and lightweight Nike React foam for exceptional everyday comfort and energy return."}</p>
                 <div className="flex flex-wrap items-center gap-2.5 sm:gap-3 pt-2">
-                  <span className="text-2xl sm:text-3xl font-black text-white drop-shadow-md">{price || "$160.00"}</span>
+                  <span className="text-2xl sm:text-3xl font-bold text-white drop-shadow-md">{price || "$160.00"}</span>
                   <span className="text-base sm:text-lg text-white/70 line-through">{originalPrice || "$190.00"}</span>
-                  <span className="px-2.5 py-0.5 rounded-full bg-white/20 border border-white/30 text-white text-xs font-bold backdrop-blur-sm shrink-0 whitespace-nowrap">Save $30 Today</span>
+                  <span className="px-2.5 py-0.5 rounded-full bg-white/20 border border-white/30 text-white text-xs font-semibold backdrop-blur-sm shrink-0 whitespace-nowrap">Save $30 Today</span>
                 </div>
               </div>
             </div>
 
             <div className="lg:col-span-5 space-y-6 p-6 rounded-3xl bg-card border border-border flex flex-col justify-between">
               <div className="space-y-4">
-                <div className="p-3 rounded-2xl bg-background border border-border text-foreground text-xs font-bold flex items-center gap-2">
+                <div className="p-3 rounded-2xl bg-background border border-border text-foreground text-xs font-semibold flex items-center gap-2">
                   <Flame className="size-4 text-amber-500 shrink-0" />
                   <span>High Demand: Only 4 pairs left in stock!</span>
                 </div>
 
                 <div className="space-y-2">
-                  <label className="text-xs font-bold uppercase tracking-wider text-muted-foreground block">Colorway: {colors[selectedColor].name}</label>
+                  <label className="text-xs font-semibold uppercase tracking-wider text-muted-foreground block">Colorway: {colors[selectedColor].name}</label>
                   <div className="flex flex-wrap gap-2.5">
                     {colors.map((c, idx) => (
                       <button key={idx} onClick={() => setSelectedColor(idx)} className={cn("size-8 rounded-full border-2 transition-all flex items-center justify-center shrink-0", c.class, selectedColor === idx ? "ring-2 ring-primary scale-110" : "opacity-75")}>
@@ -464,10 +464,10 @@ export function ProductDetails({
                 </div>
 
                 <div className="space-y-2">
-                  <label className="text-xs font-bold uppercase tracking-wider text-muted-foreground block">US Shoe Size</label>
+                  <label className="text-xs font-semibold uppercase tracking-wider text-muted-foreground block">US Shoe Size</label>
                   <div className="flex flex-wrap gap-2">
                     {sizes.map((s) => (
-                      <button key={s} onClick={() => setSelectedSize(s)} className={cn("px-3.5 py-1.5 rounded-xl text-xs font-bold border transition-all bg-background shrink-0", selectedSize === s ? "bg-primary text-primary-foreground border-primary" : "border-border text-foreground hover:bg-muted")}>
+                      <button key={s} onClick={() => setSelectedSize(s)} className={cn("px-3.5 py-1.5 rounded-xl text-xs font-semibold border transition-all bg-background shrink-0", selectedSize === s ? "bg-primary text-primary-foreground border-primary" : "border-border text-foreground hover:bg-muted")}>
                         {s}
                       </button>
                     ))}
@@ -477,11 +477,11 @@ export function ProductDetails({
                 <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3">
                   <div className="flex items-center justify-between sm:justify-start rounded-xl border border-border bg-background p-1">
                     <button onClick={() => setQuantity(Math.max(1, quantity - 1))} className="p-1.5 rounded-lg hover:bg-muted text-foreground"><Minus className="size-3" /></button>
-                    <span className="px-3 text-xs font-bold text-foreground">{quantity}</span>
+                    <span className="px-3 text-xs font-semibold text-foreground">{quantity}</span>
                     <button onClick={() => setQuantity(quantity + 1)} className="p-1.5 rounded-lg hover:bg-muted text-foreground"><Plus className="size-3" /></button>
                   </div>
 
-                  <button className="flex-1 py-3 rounded-xl bg-primary text-primary-foreground font-bold text-xs hover:opacity-90 transition-all flex items-center justify-center gap-2">
+                  <button className="flex-1 py-3 rounded-xl bg-primary text-primary-foreground font-semibold text-xs hover:opacity-90 transition-all flex items-center justify-center gap-2">
                     <ShoppingBag className="size-4" /> Add Sneaker to Bag
                   </button>
                 </div>
@@ -512,16 +512,16 @@ export function ProductDetails({
           <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4 pb-6 border-b border-border">
             <div className="space-y-1.5">
               <div className="flex flex-wrap items-center gap-2 sm:gap-2.5">
-                <span className="px-2.5 sm:px-3 py-1 rounded-full bg-primary/10 text-primary text-[10px] sm:text-[11px] font-black uppercase tracking-widest border border-primary/20">
+                <span className="px-2.5 sm:px-3 py-1 rounded-full bg-primary/10 text-primary text-[10px] sm:text-[11px] font-bold uppercase tracking-widest border border-primary/20">
                   {badge}
                 </span>
                 <div className="flex items-center gap-1.5">
                   <Stars className="size-3.5" rating={rating} />
-                  <span className="text-xs font-black text-foreground">{rating}</span>
+                  <span className="text-xs font-bold text-foreground">{rating}</span>
                   <span className="text-[10px] sm:text-[11px] text-muted-foreground font-medium">({reviews} Reviews)</span>
                 </div>
               </div>
-              <h1 className="text-2xl sm:text-4xl md:text-5xl font-black tracking-tight text-foreground">
+              <h1 className="text-2xl sm:text-4xl md:text-5xl font-bold tracking-tight text-foreground">
                 {title || "Nike Air Max Pulse 2026"}
               </h1>
             </div>
@@ -529,9 +529,9 @@ export function ProductDetails({
             <div className="flex items-center gap-3 shrink-0">
               <div className="text-left sm:text-right">
                 <span className="text-xs text-muted-foreground line-through font-semibold block">{originalPrice || "$240.00"}</span>
-                <span className="text-2xl sm:text-4xl font-black text-foreground">{price || "$189.99"}</span>
+                <span className="text-2xl sm:text-4xl font-bold text-foreground">{price || "$189.99"}</span>
               </div>
-              <span className="px-3 sm:px-3.5 py-1.5 sm:py-2 rounded-2xl bg-primary text-primary-foreground text-[11px] sm:text-xs font-black uppercase tracking-wider">
+              <span className="px-3 sm:px-3.5 py-1.5 sm:py-2 rounded-2xl bg-primary text-primary-foreground text-[11px] sm:text-xs font-bold uppercase tracking-wider">
                 SAVE $50
               </span>
             </div>
@@ -599,7 +599,7 @@ export function ProductDetails({
                     backgroundRepeat: "no-repeat",
                   }}
                 >
-                  <div className="absolute bottom-4 left-4 px-3.5 py-1.5 rounded-full bg-background border border-border text-xs font-bold text-foreground">
+                  <div className="absolute bottom-4 left-4 px-3.5 py-1.5 rounded-full bg-background border border-border text-xs font-semibold text-foreground">
                     2.8x HD Zoom View
                   </div>
                 </div>
@@ -614,12 +614,12 @@ export function ProductDetails({
                   {description || "Engineered with reactive Air Cushioning and breathable Flyknit upper for high-performance city workouts and daily street style."}
                 </p>
 
-                <div className="p-3.5 sm:p-4 rounded-2xl bg-card border border-border text-xs font-bold flex flex-wrap items-center justify-between gap-2.5">
+                <div className="p-3.5 sm:p-4 rounded-2xl bg-card border border-border text-xs font-semibold flex flex-wrap items-center justify-between gap-2.5">
                   <div className="flex items-center gap-2.5">
                     <div className="size-2 rounded-full bg-emerald-500 animate-pulse shrink-0" />
                     <span className="text-foreground font-extrabold text-xs">In Stock & Ready to Ship</span>
                   </div>
-                  <span className="text-[10px] sm:text-[11px] px-2.5 py-1 rounded-full bg-primary/10 text-primary font-black uppercase tracking-wider shrink-0">
+                  <span className="text-[10px] sm:text-[11px] px-2.5 py-1 rounded-full bg-primary/10 text-primary font-bold uppercase tracking-wider shrink-0">
                     Only 4 left
                   </span>
                 </div>
@@ -627,8 +627,8 @@ export function ProductDetails({
 
               {/* Colorway Selection Swatches (Square Color Swatches with Checkmark) */}
               <div className="space-y-3 pt-1">
-                <div className="flex justify-between items-center text-xs font-black uppercase tracking-widest text-muted-foreground">
-                  <span>Colorway: <strong className="text-foreground font-black">{colors[selectedColor].name}</strong></span>
+                <div className="flex justify-between items-center text-xs font-bold uppercase tracking-widest text-muted-foreground">
+                  <span>Colorway: <strong className="text-foreground font-bold">{colors[selectedColor].name}</strong></span>
                 </div>
                 <div className="flex flex-wrap gap-2.5 sm:gap-3">
                   {colors.map((c, idx) => (
@@ -654,7 +654,7 @@ export function ProductDetails({
 
               {/* Shoe Size Grid (Clean Square Box Tiles) */}
               <div className="space-y-3 pt-1">
-                <div className="flex justify-between items-center text-xs font-black uppercase tracking-widest text-muted-foreground">
+                <div className="flex justify-between items-center text-xs font-bold uppercase tracking-widest text-muted-foreground">
                   <span>Select US Shoe Size</span>
                   <a href="#" className="text-primary hover:underline text-[11px] font-extrabold uppercase tracking-wider">Size Guide</a>
                 </div>
@@ -664,7 +664,7 @@ export function ProductDetails({
                       key={s}
                       onClick={() => setSelectedSize(s)}
                       className={cn(
-                        "py-2.5 sm:py-3 text-center text-xs font-black rounded-lg border transition-all cursor-pointer",
+                        "py-2.5 sm:py-3 text-center text-xs font-bold rounded-lg border transition-all cursor-pointer",
                         selectedSize === s
                           ? "bg-primary text-primary-foreground border-primary shadow-sm"
                           : "bg-card border-border text-foreground hover:bg-muted/70"
@@ -678,7 +678,7 @@ export function ProductDetails({
 
               {/* Payment Method Selector (Ultra-Modern High-End Cards) */}
               <div className="space-y-3 pt-1">
-                <div className="flex justify-between items-center text-xs font-black uppercase tracking-widest text-muted-foreground">
+                <div className="flex justify-between items-center text-xs font-bold uppercase tracking-widest text-muted-foreground">
                   <span>Select Payment Method</span>
                   <span className="text-[11px] text-emerald-500 font-extrabold flex items-center gap-1">
                     <ShieldCheck className="size-3.5" /> 100% Secure
@@ -690,7 +690,7 @@ export function ProductDetails({
                     type="button"
                     onClick={() => setPaymentMethod("cod")}
                     className={cn(
-                      "p-4 rounded-2xl border text-xs font-bold transition-all flex items-start gap-3 cursor-pointer text-left relative group",
+                      "p-4 rounded-2xl border text-xs font-semibold transition-all flex items-start gap-3 cursor-pointer text-left relative group",
                       paymentMethod === "cod"
                         ? "bg-primary/10 border-primary text-foreground ring-1 ring-primary"
                         : "bg-card border-border text-foreground hover:bg-muted/60"
@@ -705,7 +705,7 @@ export function ProductDetails({
 
                     <div className="space-y-0.5 flex-1 min-w-0">
                       <div className="flex items-center justify-between">
-                        <span className="font-black text-xs text-foreground block">Cash on Delivery</span>
+                        <span className="font-bold text-xs text-foreground block">Cash on Delivery</span>
                         <div className={cn(
                           "size-4 rounded-full border flex items-center justify-center transition-all",
                           paymentMethod === "cod" ? "border-primary bg-primary" : "border-border"
@@ -721,7 +721,7 @@ export function ProductDetails({
                     type="button"
                     onClick={() => setPaymentMethod("online")}
                     className={cn(
-                      "p-4 rounded-2xl border text-xs font-bold transition-all flex items-start gap-3 cursor-pointer text-left relative group",
+                      "p-4 rounded-2xl border text-xs font-semibold transition-all flex items-start gap-3 cursor-pointer text-left relative group",
                       paymentMethod === "online"
                         ? "bg-primary/10 border-primary text-foreground ring-1 ring-primary"
                         : "bg-card border-border text-foreground hover:bg-muted/60"
@@ -736,7 +736,7 @@ export function ProductDetails({
 
                     <div className="space-y-0.5 flex-1 min-w-0">
                       <div className="flex items-center justify-between">
-                        <span className="font-black text-xs text-foreground block">Digital / Card</span>
+                        <span className="font-bold text-xs text-foreground block">Digital / Card</span>
                         <div className={cn(
                           "size-4 rounded-full border flex items-center justify-center transition-all",
                           paymentMethod === "online" ? "border-primary bg-primary" : "border-border"
@@ -754,11 +754,11 @@ export function ProductDetails({
               <div className="flex flex-col sm:flex-row items-stretch gap-3 pt-2">
                 <div className="flex items-center justify-between rounded-2xl border border-border bg-card p-1.5 sm:min-w-[130px]">
                   <button onClick={() => setQuantity(Math.max(1, quantity - 1))} className="p-2 sm:p-2.5 rounded-xl hover:bg-muted text-foreground cursor-pointer transition-colors"><Minus className="size-4" /></button>
-                  <span className="px-4 text-xs font-black text-foreground">{quantity}</span>
+                  <span className="px-4 text-xs font-bold text-foreground">{quantity}</span>
                   <button onClick={() => setQuantity(quantity + 1)} className="p-2 sm:p-2.5 rounded-xl hover:bg-muted text-foreground cursor-pointer transition-colors"><Plus className="size-4" /></button>
                 </div>
 
-                <button className="flex-1 py-3.5 sm:py-4 rounded-2xl bg-primary text-primary-foreground font-black text-xs uppercase tracking-widest hover:opacity-90 transition-all flex items-center justify-center gap-2.5 cursor-pointer">
+                <button className="flex-1 py-3.5 sm:py-4 rounded-2xl bg-primary text-primary-foreground font-bold text-xs uppercase tracking-widest hover:opacity-90 transition-all flex items-center justify-center gap-2.5 cursor-pointer">
                   <ShoppingBag className="size-4" /> Add Sneaker to Bag
                 </button>
               </div>
@@ -800,7 +800,7 @@ export function ProductDetails({
                     key={tab}
                     onClick={() => setActiveTab(tab)}
                     className={cn(
-                      "px-4 sm:px-5 py-2 rounded-full text-xs font-black uppercase tracking-wider transition-all cursor-pointer capitalize border shrink-0",
+                      "px-4 sm:px-5 py-2 rounded-full text-xs font-bold uppercase tracking-wider transition-all cursor-pointer capitalize border shrink-0",
                       activeTab === tab
                         ? "bg-primary text-primary-foreground border-primary"
                         : "bg-background border-border text-muted-foreground hover:text-foreground hover:bg-muted"
@@ -820,46 +820,46 @@ export function ProductDetails({
             {activeTab === "specs" && (
               <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-3 sm:gap-4 text-xs">
                 <div className="p-5 sm:p-6 rounded-2xl sm:rounded-3xl bg-card border border-border flex flex-col justify-between space-y-4 hover:border-primary/40 transition-colors">
-                  <div className="flex justify-between items-center text-primary font-black">
+                  <div className="flex justify-between items-center text-primary font-bold">
                     <span className="text-[10px] uppercase tracking-widest">Upper</span>
                     <span className="text-xs">01</span>
                   </div>
                   <div>
                     <span className="text-muted-foreground font-medium text-[11px] block">Material Construction</span>
-                    <p className="font-black text-sm text-foreground pt-0.5">Breathable Flyknit Mesh</p>
+                    <p className="font-bold text-sm text-foreground pt-0.5">Breathable Flyknit Mesh</p>
                   </div>
                 </div>
 
                 <div className="p-5 sm:p-6 rounded-2xl sm:rounded-3xl bg-card border border-border flex flex-col justify-between space-y-4 hover:border-primary/40 transition-colors">
-                  <div className="flex justify-between items-center text-primary font-black">
+                  <div className="flex justify-between items-center text-primary font-bold">
                     <span className="text-[10px] uppercase tracking-widest">Midsole</span>
                     <span className="text-xs">02</span>
                   </div>
                   <div>
                     <span className="text-muted-foreground font-medium text-[11px] block">Cushioning Tech</span>
-                    <p className="font-black text-sm text-foreground pt-0.5">Max Air 270 Foam</p>
+                    <p className="font-bold text-sm text-foreground pt-0.5">Max Air 270 Foam</p>
                   </div>
                 </div>
 
                 <div className="p-5 sm:p-6 rounded-2xl sm:rounded-3xl bg-card border border-border flex flex-col justify-between space-y-4 hover:border-primary/40 transition-colors">
-                  <div className="flex justify-between items-center text-primary font-black">
+                  <div className="flex justify-between items-center text-primary font-bold">
                     <span className="text-[10px] uppercase tracking-widest">Outsole</span>
                     <span className="text-xs">03</span>
                   </div>
                   <div>
                     <span className="text-muted-foreground font-medium text-[11px] block">Traction Surface</span>
-                    <p className="font-black text-sm text-foreground pt-0.5">Durable Rubber Tread</p>
+                    <p className="font-bold text-sm text-foreground pt-0.5">Durable Rubber Tread</p>
                   </div>
                 </div>
 
                 <div className="p-5 sm:p-6 rounded-2xl sm:rounded-3xl bg-card border border-border flex flex-col justify-between space-y-4 hover:border-primary/40 transition-colors">
-                  <div className="flex justify-between items-center text-primary font-black">
+                  <div className="flex justify-between items-center text-primary font-bold">
                     <span className="text-[10px] uppercase tracking-widest">Weight</span>
                     <span className="text-xs">04</span>
                   </div>
                   <div>
                     <span className="text-muted-foreground font-medium text-[11px] block">Standard Mass</span>
-                    <p className="font-black text-sm text-foreground pt-0.5">310 grams (US 10)</p>
+                    <p className="font-bold text-sm text-foreground pt-0.5">310 grams (US 10)</p>
                   </div>
                 </div>
               </div>
@@ -869,27 +869,27 @@ export function ProductDetails({
             {activeTab === "shipping" && (
               <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 sm:gap-4 text-xs">
                 <div className="p-5 sm:p-6 rounded-2xl sm:rounded-3xl bg-card border border-border space-y-3">
-                  <div className="flex items-center gap-2 text-primary font-black text-xs uppercase tracking-wider">
+                  <div className="flex items-center gap-2 text-primary font-bold text-xs uppercase tracking-wider">
                     <Truck className="size-4" />
                     <span>Double-Boxed</span>
                   </div>
-                  <p className="font-black text-sm text-foreground">Express Delivery</p>
+                  <p className="font-bold text-sm text-foreground">Express Delivery</p>
                   <p className="text-muted-foreground leading-relaxed font-medium">All shoes ship in protective double-boxing with tracking link provided upon dispatch.</p>
                 </div>
                 <div className="p-5 sm:p-6 rounded-2xl sm:rounded-3xl bg-card border border-border space-y-3">
-                  <div className="flex items-center gap-2 text-primary font-black text-xs uppercase tracking-wider">
+                  <div className="flex items-center gap-2 text-primary font-bold text-xs uppercase tracking-wider">
                     <RotateCcw className="size-4" />
                     <span>Free Exchange</span>
                   </div>
-                  <p className="font-black text-sm text-foreground">30-Day Easy Exchange</p>
+                  <p className="font-bold text-sm text-foreground">30-Day Easy Exchange</p>
                   <p className="text-muted-foreground leading-relaxed font-medium">If the size doesn't fit, return or exchange within 30 days with hassle-free support.</p>
                 </div>
                 <div className="p-5 sm:p-6 rounded-2xl sm:rounded-3xl bg-card border border-border space-y-3">
-                  <div className="flex items-center gap-2 text-primary font-black text-xs uppercase tracking-wider">
+                  <div className="flex items-center gap-2 text-primary font-bold text-xs uppercase tracking-wider">
                     <ShieldCheck className="size-4" />
                     <span>100% Authentic</span>
                   </div>
-                  <p className="font-black text-sm text-foreground">Guaranteed Original</p>
+                  <p className="font-bold text-sm text-foreground">Guaranteed Original</p>
                   <p className="text-muted-foreground leading-relaxed font-medium">Verified original factory sneakers with official serial codes and packaging.</p>
                 </div>
               </div>
@@ -903,9 +903,9 @@ export function ProductDetails({
                     <Stars className="size-3.5" rating={5} />
                     <span className="text-[11px] text-muted-foreground font-medium">2 days ago</span>
                   </div>
-                  <p className="font-black text-sm text-foreground">"Best running shoes I have owned!"</p>
+                  <p className="font-bold text-sm text-foreground">"Best running shoes I have owned!"</p>
                   <p className="text-muted-foreground leading-relaxed font-medium">"The air cushioning makes walking all day effortless. The Flyknit upper feels breathable and lightweight."</p>
-                  <span className="text-[11px] font-black text-foreground block pt-1">ΓÇö Marcus L., Verified Runner</span>
+                  <span className="text-[11px] font-bold text-foreground block pt-1">ΓÇö Marcus L., Verified Runner</span>
                 </div>
 
                 <div className="p-5 sm:p-6 rounded-2xl sm:rounded-3xl bg-card border border-border space-y-2">
@@ -913,9 +913,9 @@ export function ProductDetails({
                     <Stars className="size-3.5" rating={5} />
                     <span className="text-[11px] text-muted-foreground font-medium">1 week ago</span>
                   </div>
-                  <p className="font-black text-sm text-foreground">"True to size & premium quality"</p>
+                  <p className="font-bold text-sm text-foreground">"True to size & premium quality"</p>
                   <p className="text-muted-foreground leading-relaxed font-medium">"Super fast shipping, fits perfectly right out of the box. Colorway looks even better in real life!"</p>
-                  <span className="text-[11px] font-black text-foreground block pt-1">ΓÇö Sarah K., Verified Customer</span>
+                  <span className="text-[11px] font-bold text-foreground block pt-1">ΓÇö Sarah K., Verified Customer</span>
                 </div>
               </div>
             )}

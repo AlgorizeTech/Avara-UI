@@ -167,14 +167,14 @@ export function DesignComponentsFolder({
                           <span className="font-extrabold text-[7.5px] text-foreground">August 2026</span>
                         </div>
                         <div className="flex items-center gap-0.5 text-muted-foreground text-[6px]">
-                          <span className="size-3 rounded bg-muted/60 border border-border flex items-center justify-center font-bold">‹</span>
-                          <span className="size-3 rounded bg-muted/60 border border-border flex items-center justify-center font-bold">›</span>
+                          <span className="size-3 rounded bg-muted/60 border border-border flex items-center justify-center font-semibold">‹</span>
+                          <span className="size-3 rounded bg-muted/60 border border-border flex items-center justify-center font-semibold">›</span>
                         </div>
                       </div>
                       <div className="grid grid-cols-7 gap-0.5 font-extrabold text-muted-foreground/70 text-center text-[5.5px] uppercase">
                         <span>Su</span><span>Mo</span><span>Tu</span><span>We</span><span>Th</span><span>Fr</span><span>Sa</span>
                       </div>
-                      <div className="grid grid-cols-7 gap-0.5 text-center font-bold text-[6px] items-center">
+                      <div className="grid grid-cols-7 gap-0.5 text-center font-semibold text-[6px] items-center">
                         <span className="text-muted-foreground/30 py-0.5">30</span>
                         <span className="text-muted-foreground/30 py-0.5">31</span>
                         <span className="py-0.5 rounded text-foreground">1</span>
@@ -194,7 +194,7 @@ export function DesignComponentsFolder({
                 {/* Bottom: Card Info & Arrow */}
                 <div className="flex items-center justify-between pt-1 shrink-0">
                   <div className="min-w-0 pr-1">
-                    <h4 className="text-xs sm:text-sm font-bold text-foreground transition-colors group-hover:text-indigo-500 truncate">
+                    <h4 className="text-xs sm:text-sm font-semibold text-foreground transition-colors group-hover:text-indigo-500 truncate">
                       Calendar
                     </h4>
                     <p className="text-[10px] sm:text-xs text-muted-foreground mt-0.5 font-medium truncate">
@@ -239,8 +239,8 @@ export function DesignComponentsFolder({
                         </div>
                       </div>
                       <div className="grid grid-cols-12 gap-1 items-center bg-emerald-500/10 p-0.5 rounded border border-emerald-500/20 text-[5.5px]">
-                        <span className="col-span-1 text-center text-emerald-600 font-bold">☑</span>
-                        <span className="col-span-6 font-bold text-foreground truncate">Alex Rivers</span>
+                        <span className="col-span-1 text-center text-emerald-600 font-semibold">☑</span>
+                        <span className="col-span-6 font-semibold text-foreground truncate">Alex Rivers</span>
                         <span className="col-span-5 text-right font-extrabold text-emerald-500">$1,250.00</span>
                       </div>
                     </div>
@@ -254,7 +254,7 @@ export function DesignComponentsFolder({
                 {/* Bottom: Card Info & Arrow */}
                 <div className="flex items-center justify-between pt-1 shrink-0">
                   <div className="min-w-0 pr-1">
-                    <h4 className="text-xs sm:text-sm font-bold text-foreground transition-colors group-hover:text-emerald-500 truncate">
+                    <h4 className="text-xs sm:text-sm font-semibold text-foreground transition-colors group-hover:text-emerald-500 truncate">
                       Data Table
                     </h4>
                     <p className="text-[10px] sm:text-xs text-muted-foreground mt-0.5 font-medium truncate">
@@ -307,7 +307,7 @@ export function DesignComponentsFolder({
                 {/* Bottom: Card Info & Arrow */}
                 <div className="flex items-center justify-between pt-1 shrink-0">
                   <div className="min-w-0 pr-1">
-                    <h4 className="text-xs sm:text-sm font-bold text-foreground transition-colors group-hover:text-sky-500 truncate">
+                    <h4 className="text-xs sm:text-sm font-semibold text-foreground transition-colors group-hover:text-sky-500 truncate">
                       Map
                     </h4>
                     <p className="text-[10px] sm:text-xs text-muted-foreground mt-0.5 font-medium truncate">
@@ -344,7 +344,7 @@ export function DesignComponentsFolder({
                   </div>
 
                   <div className="w-full flex items-center justify-center my-auto">
-                    <div className="px-2.5 py-1.5 sm:px-3 sm:py-2 rounded-xl bg-card border border-violet-500/20 shadow-sm flex items-center gap-1 sm:gap-1.5 text-[6.5px] sm:text-[8px] font-bold">
+                    <div className="px-2.5 py-1.5 sm:px-3 sm:py-2 rounded-xl bg-card border border-violet-500/20 shadow-sm flex items-center gap-1 sm:gap-1.5 text-[6.5px] sm:text-[8px] font-semibold">
                       <span className="text-muted-foreground">Docs</span>
                       <span className="text-muted-foreground/50">/</span>
                       <span className="text-muted-foreground">Components</span>
@@ -357,7 +357,7 @@ export function DesignComponentsFolder({
                 {/* Bottom: Card Info & Arrow */}
                 <div className="flex items-center justify-between pt-1 shrink-0">
                   <div className="min-w-0 pr-1">
-                    <h4 className="text-xs sm:text-sm font-bold text-foreground transition-colors group-hover:text-violet-500 truncate">
+                    <h4 className="text-xs sm:text-sm font-semibold text-foreground transition-colors group-hover:text-violet-500 truncate">
                       Breadcrumb
                     </h4>
                     <p className="text-[10px] sm:text-xs text-muted-foreground mt-0.5 font-medium truncate">
@@ -395,10 +395,10 @@ export function DesignComponentsFolder({
 
                   <div className="w-full flex items-center justify-center my-auto">
                     <div className="px-2.5 py-1.5 rounded-2xl bg-card border border-amber-500/20 shadow-md flex items-end gap-1.5">
-                      <div className="size-4 rounded-lg bg-rose-500/80 flex items-center justify-center text-[7px] text-white font-bold">A</div>
-                      <div className="size-4 rounded-lg bg-amber-500/80 flex items-center justify-center text-[7px] text-white font-bold">B</div>
-                      <div className="size-5 rounded-lg bg-amber-500 text-white flex items-center justify-center text-[9px] font-bold shadow-sm -translate-y-1">★</div>
-                      <div className="size-4 rounded-lg bg-emerald-500/80 flex items-center justify-center text-[7px] text-white font-bold">C</div>
+                      <div className="size-4 rounded-lg bg-rose-500/80 flex items-center justify-center text-[7px] text-white font-semibold">A</div>
+                      <div className="size-4 rounded-lg bg-amber-500/80 flex items-center justify-center text-[7px] text-white font-semibold">B</div>
+                      <div className="size-5 rounded-lg bg-amber-500 text-white flex items-center justify-center text-[9px] font-semibold shadow-sm -translate-y-1">★</div>
+                      <div className="size-4 rounded-lg bg-emerald-500/80 flex items-center justify-center text-[7px] text-white font-semibold">C</div>
                     </div>
                   </div>
 
@@ -410,7 +410,7 @@ export function DesignComponentsFolder({
                 {/* Bottom: Card Info & Arrow */}
                 <div className="flex items-center justify-between pt-1 shrink-0">
                   <div className="min-w-0 pr-1">
-                    <h4 className="text-xs sm:text-sm font-bold text-foreground transition-colors group-hover:text-amber-500 truncate">
+                    <h4 className="text-xs sm:text-sm font-semibold text-foreground transition-colors group-hover:text-amber-500 truncate">
                       Dock
                     </h4>
                     <p className="text-[10px] sm:text-xs text-muted-foreground mt-0.5 font-medium truncate">
@@ -447,15 +447,15 @@ export function DesignComponentsFolder({
                   </div>
 
                   <div className="w-full max-w-[130px] p-2 rounded-xl bg-card border border-dashed border-rose-500/60 text-center space-y-1 my-auto mx-auto">
-                    <span className="text-xs text-rose-500 font-bold">☁</span>
-                    <div className="text-[8px] font-bold text-foreground">Drag &amp; Drop File</div>
+                    <span className="text-xs text-rose-500 font-semibold">☁</span>
+                    <div className="text-[8px] font-semibold text-foreground">Drag &amp; Drop File</div>
                   </div>
                 </div>
 
                 {/* Bottom: Card Info & Arrow */}
                 <div className="flex items-center justify-between pt-1 shrink-0">
                   <div className="min-w-0 pr-1">
-                    <h4 className="text-xs sm:text-sm font-bold text-foreground transition-colors group-hover:text-rose-500 truncate">
+                    <h4 className="text-xs sm:text-sm font-semibold text-foreground transition-colors group-hover:text-rose-500 truncate">
                       File Upload
                     </h4>
                     <p className="text-[10px] sm:text-xs text-muted-foreground mt-0.5 font-medium truncate">
@@ -507,7 +507,7 @@ export function DesignComponentsFolder({
                 {/* Bottom: Card Info & Arrow */}
                 <div className="flex items-center justify-between pt-1 shrink-0">
                   <div className="min-w-0 pr-1">
-                    <h4 className="text-xs sm:text-sm font-bold text-foreground transition-colors group-hover:text-cyan-500 truncate">
+                    <h4 className="text-xs sm:text-sm font-semibold text-foreground transition-colors group-hover:text-cyan-500 truncate">
                       Network Graph
                     </h4>
                     <p className="text-[10px] sm:text-xs text-muted-foreground mt-0.5 font-medium truncate">
@@ -549,7 +549,7 @@ export function DesignComponentsFolder({
                         <span className="size-2 rounded bg-purple-500" />
                         <span>DocsUI</span>
                       </div>
-                      <div className="flex items-center gap-2 text-[7px] font-bold text-muted-foreground">
+                      <div className="flex items-center gap-2 text-[7px] font-semibold text-muted-foreground">
                         <span>Docs</span>
                         <span className="px-2 py-0.5 rounded-md bg-purple-600 text-white font-extrabold text-[6.5px]">Login</span>
                       </div>
@@ -564,7 +564,7 @@ export function DesignComponentsFolder({
                 {/* Bottom: Card Info & Arrow */}
                 <div className="flex items-center justify-between pt-1 shrink-0">
                   <div className="min-w-0 pr-1">
-                    <h4 className="text-xs sm:text-sm font-bold text-foreground transition-colors group-hover:text-purple-500 truncate">
+                    <h4 className="text-xs sm:text-sm font-semibold text-foreground transition-colors group-hover:text-purple-500 truncate">
                       Navbar
                     </h4>
                     <p className="text-[10px] sm:text-xs text-muted-foreground mt-0.5 font-medium truncate">

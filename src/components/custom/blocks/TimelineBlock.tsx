@@ -276,7 +276,7 @@ function TimelineNode({
             <div className="flex flex-col gap-1 min-w-0">
               <h3
                 className={cn(
-                  "text-base font-bold transition-colors",
+                  "text-base font-semibold transition-colors",
                   isGlass ? "text-white" : "text-foreground",
                   "group-hover:text-[var(--timeline-color)]",
                 )}

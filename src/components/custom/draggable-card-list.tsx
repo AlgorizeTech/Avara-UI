@@ -176,7 +176,7 @@ function SingleCardItem({
                                     )}
                                 </button>
                             )}
-                            <h3 className={cn("text-base font-bold tracking-tight text-foreground leading-tight", item.completed && "line-through text-muted-foreground")}>
+                            <h3 className={cn("text-base font-semibold tracking-tight text-foreground leading-tight", item.completed && "line-through text-muted-foreground")}>
                                 {item.title}
                             </h3>
                         </div>
@@ -263,7 +263,7 @@ function SingleCardItem({
                             )}
                         </button>
                     )}
-                    <h3 className={cn("text-base font-bold tracking-tight text-foreground leading-tight", item.completed && "line-through text-muted-foreground")}>
+                    <h3 className={cn("text-base font-semibold tracking-tight text-foreground leading-tight", item.completed && "line-through text-muted-foreground")}>
                         {item.title}
                     </h3>
 
@@ -358,7 +358,7 @@ export function DraggableCardList({
             {/* Optional Title Header */}
             {title && (
                 <div className="text-center space-y-1 mb-6">
-                    <h2 className="text-xl sm:text-2xl font-black tracking-tight text-foreground">
+                    <h2 className="text-xl sm:text-2xl font-bold tracking-tight text-foreground">
                         {title}
                     </h2>
                     {subtitle && (

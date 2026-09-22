@@ -48,7 +48,7 @@ const alignStyles: Record<TypographyAlign, string> = {
 
 const baseStyles: Record<TypographyTag, string> = {
   h1: "font-extrabold tracking-tight leading-snug whitespace-nowrap max-w-full overflow-visible",
-  h2: "font-bold tracking-tight leading-snug whitespace-nowrap max-w-full overflow-visible",
+  h2: "font-semibold tracking-tight leading-snug whitespace-nowrap max-w-full overflow-visible",
   h3: "font-semibold tracking-tight leading-snug whitespace-nowrap max-w-full overflow-visible",
   h4: "font-semibold tracking-tight leading-snug whitespace-nowrap max-w-full overflow-visible",
   h5: "font-medium leading-normal whitespace-nowrap max-w-full overflow-visible",

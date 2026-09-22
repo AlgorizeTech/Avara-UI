@@ -256,7 +256,7 @@ export function ComponentPreviewTooltip({
         className="flex items-center justify-between gap-2 border-b border-border/70 bg-muted/40 px-3"
         style={{ height: HEADER_HEIGHT }}
       >
-        <span className="truncate text-[11px] font-bold tracking-tight text-foreground">
+        <span className="truncate text-[11px] font-semibold tracking-tight text-foreground">
           {title}
         </span>
         <span className="flex shrink-0 items-center gap-1.5 text-[10px] font-semibold uppercase tracking-[0.14em] text-muted-foreground">

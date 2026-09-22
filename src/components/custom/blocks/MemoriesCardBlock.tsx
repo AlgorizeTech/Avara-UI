@@ -199,7 +199,7 @@ export const MemoriesCard = React.forwardRef<HTMLDivElement, MemoriesCardProps>(
                         )}
                       </div>
 
-                      <h3 className="text-2xl md:text-3xl font-bold tracking-tight mb-2 leading-snug text-white">
+                      <h3 className="text-2xl md:text-3xl font-semibold tracking-tight mb-2 leading-snug text-white">
                         {item.title}
                       </h3>
 

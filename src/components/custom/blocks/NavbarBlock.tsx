@@ -67,7 +67,7 @@ function Logo({
             contrasting foreground for every theme, including a white pick. */}
         <Command className="w-4 h-4" />
       </div>
-      <span className="font-black text-xl tracking-tight text-foreground">
+      <span className="font-bold text-xl tracking-tight text-foreground">
         {logoText}
       </span>
     </Link>
@@ -145,14 +145,14 @@ function DesktopActions({
     <div className="hidden lg:flex items-center gap-3">
       <Link
         href="#"
-        className="px-4 py-2 text-sm font-bold text-muted-foreground hover:text-foreground transition-colors"
+        className="px-4 py-2 text-sm font-semibold text-muted-foreground hover:text-foreground transition-colors"
       >
         Sign In
       </Link>
       <Link
         href="#"
         className={cn(
-          "px-5 py-2 text-sm font-bold rounded-full transition-transform active:scale-95 shadow-sm",
+          "px-5 py-2 text-sm font-semibold rounded-full transition-transform active:scale-95 shadow-sm",
           themeBg,
         )}
       >
@@ -328,7 +328,7 @@ export function NavbarBlock({
               <div key={link.name} className="flex flex-col gap-3">
                 <Link
                   href={link.href}
-                  className="text-xl font-bold text-foreground flex items-center justify-between"
+                  className="text-xl font-semibold text-foreground flex items-center justify-between"
                 >
                   {link.name}{" "}
                   {link.hasDropdown && (
@@ -369,7 +369,7 @@ export function NavbarBlock({
             <Link
               href="#"
               className={cn(
-                "w-full py-3 px-4 text-center font-bold text-foreground border rounded-xl transition-colors",
+                "w-full py-3 px-4 text-center font-semibold text-foreground border rounded-xl transition-colors",
                 isGlass
                   ? "border-white/20 dark:border-white/10 hover:bg-white/20 dark:hover:bg-white/10"
                   : "border-border hover:bg-muted",
@@ -380,7 +380,7 @@ export function NavbarBlock({
             <Link
               href="#"
               className={cn(
-                "w-full py-3 px-4 text-center font-bold rounded-xl transition-transform active:scale-95",
+                "w-full py-3 px-4 text-center font-semibold rounded-xl transition-transform active:scale-95",
                 theme.bg,
               )}
             >

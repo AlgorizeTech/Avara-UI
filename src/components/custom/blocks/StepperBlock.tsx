@@ -127,7 +127,7 @@ export const Stepper = React.forwardRef<HTMLDivElement, StepperProps>(
                 <div className="mt-1.5 sm:mt-3 text-center flex flex-col items-center w-full min-w-0">
                   <span
                     className={cn(
-                      "text-[11px] sm:text-sm font-bold leading-tight break-words hyphens-auto transition-colors duration-300",
+                      "text-[11px] sm:text-sm font-semibold leading-tight break-words hyphens-auto transition-colors duration-300",
                       isActive || isCompleted
                         ? "text-foreground"
                         : "text-muted-foreground",
@@ -195,7 +195,7 @@ const StepIndicatorContent = ({
   return (
     <div
       ref={contentRef}
-      className="font-bold text-xs sm:text-sm flex items-center justify-center"
+      className="font-semibold text-xs sm:text-sm flex items-center justify-center"
     >
       {Icon ? <Icon className="w-4 h-4 sm:w-5 sm:h-5" /> : index + 1}
     </div>

@@ -179,7 +179,7 @@ export default function RegisterForm({
   const FormContent = (
     <div className="w-full max-w-md mx-auto flex flex-col justify-center h-full">
       <div className="mb-8 text-center sm:text-left">
-        <h2 className="text-3xl font-black text-foreground tracking-tight mb-2">
+        <h2 className="text-3xl font-bold text-foreground tracking-tight mb-2">
           Create an account
         </h2>
         <p className="text-sm text-muted-foreground font-medium">
@@ -212,7 +212,7 @@ export default function RegisterForm({
 
       <div className="relative flex items-center mb-5 sm:mb-6">
         <div className="flex-grow border-t border-border"></div>
-        <span className="flex-shrink-0 mx-3 sm:mx-4 text-muted-foreground text-[10px] sm:text-xs font-bold uppercase tracking-widest">
+        <span className="flex-shrink-0 mx-3 sm:mx-4 text-muted-foreground text-[10px] sm:text-xs font-semibold uppercase tracking-widest">
           Or continue with
         </span>
         <div className="flex-grow border-t border-border"></div>
@@ -290,14 +290,14 @@ export default function RegisterForm({
                 I agree to the{" "}
                 <a
                   href={termsHref}
-                  className={cn("font-bold hover:underline", theme.text)}
+                  className={cn("font-semibold hover:underline", theme.text)}
                 >
                   Terms of Service
                 </a>{" "}
                 and{" "}
                 <a
                   href={privacyHref}
-                  className={cn("font-bold hover:underline", theme.text)}
+                  className={cn("font-semibold hover:underline", theme.text)}
                 >
                   Privacy Policy
                 </a>
@@ -327,7 +327,7 @@ export default function RegisterForm({
           <a
             href={loginHref}
             className={cn(
-              "font-bold hover:underline transition-all",
+              "font-semibold hover:underline transition-all",
               theme.text,
             )}
           >
@@ -371,7 +371,7 @@ export default function RegisterForm({
           />
 
           <div className="relative z-10">
-            <div className="flex items-center gap-2 font-black text-2xl tracking-tighter">
+            <div className="flex items-center gap-2 font-bold text-2xl tracking-tighter">
               <div className="w-8 h-8 rounded-lg bg-current/20 flex items-center justify-center backdrop-blur-md">
                 ⚡
               </div>
@@ -580,7 +580,7 @@ export default function RegisterForm({
           </div>
 
           <div className="relative z-10 max-w-sm">
-            <h1 className="text-4xl font-bold mb-4 leading-tight">
+            <h1 className="text-4xl font-semibold mb-4 leading-tight">
               Start building your next big idea.
             </h1>
             <p className="font-medium opacity-80">

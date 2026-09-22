@@ -139,7 +139,7 @@ export function ThemeCustomizerSidebar() {
       <div className="flex-1 overflow-y-auto px-5 py-6 pb-6 space-y-6">
         {/* Header */}
         <div>
-          <h2 className="text-lg font-bold tracking-tight text-foreground">
+          <h2 className="text-lg font-semibold tracking-tight text-foreground">
             Customize
           </h2>
           <p className="text-xs text-muted-foreground mt-0.5">

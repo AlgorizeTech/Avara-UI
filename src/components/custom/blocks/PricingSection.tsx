@@ -116,7 +116,7 @@ const PricingSection = ({
     >
       <div className="relative mx-auto max-w-7xl px-6 lg:px-8">
         <header className="mx-auto max-w-2xl text-center mb-8">
-          <h2 className="pricing-header-el mt-2 text-4xl font-bold text-foreground sm:text-5xl">
+          <h2 className="pricing-header-el mt-2 text-4xl font-semibold text-foreground sm:text-5xl">
             Choose your plan
           </h2>
           <p className="pricing-header-el mt-6 text-lg text-muted-foreground">
@@ -206,7 +206,7 @@ const PricingSection = ({
                     </p>
 
                     <div className="mt-6 flex items-baseline gap-1">
-                      <span className="text-4xl font-bold text-foreground">
+                      <span className="text-4xl font-semibold text-foreground">
                         {price === 0 ? (
                           "Free"
                         ) : (
@@ -225,7 +225,7 @@ const PricingSection = ({
 
                     <Link
                       href="#"
-                      className={`group mt-6 flex w-full items-center justify-center gap-2 rounded-xl py-3 px-4 text-sm font-bold transition ${
+                      className={`group mt-6 flex w-full items-center justify-center gap-2 rounded-xl py-3 px-4 text-sm font-semibold transition ${
                         plan.isFeatured
                           ? "bg-lime-400 dark:bg-[#CCFF00] text-black hover:bg-lime-500 dark:hover:bg-[#b3e600]"
                           : "bg-zinc-200 dark:bg-gray-300 text-zinc-900 dark:text-black hover:bg-zinc-300 dark:hover:bg-gray-400"

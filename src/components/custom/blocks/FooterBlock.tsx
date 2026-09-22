@@ -158,7 +158,7 @@ export function Footer({
           <BrandLogo logo={logo} brandName={brandName} />
           
           <div className="max-w-xl space-y-3 px-2">
-            <h3 className="text-lg sm:text-xl font-bold tracking-tight text-foreground">Build faster with modern component building blocks</h3>
+            <h3 className="text-lg sm:text-xl font-semibold tracking-tight text-foreground">Build faster with modern component building blocks</h3>
             <p className="text-xs sm:text-sm text-muted-foreground leading-relaxed">{tagline}</p>
           </div>
 
@@ -213,7 +213,7 @@ export function Footer({
             <div className="grid grid-cols-2 sm:grid-cols-4 gap-6 pt-6 border-t border-border/80 text-xs sm:text-sm">
               {linkSections.map((col, idx) => (
                 <div key={idx} className="space-y-3">
-                  <h4 className="font-bold text-xs uppercase tracking-wider text-foreground">{col.title}</h4>
+                  <h4 className="font-semibold text-xs uppercase tracking-wider text-foreground">{col.title}</h4>
                   <ul className="space-y-2 text-xs text-muted-foreground">
                     {col.links.map((link, lIdx) => (
                       <li key={lIdx}>
@@ -250,7 +250,7 @@ export function Footer({
             <div className="grid grid-cols-2 sm:grid-cols-4 gap-6 sm:gap-8 text-xs sm:text-sm">
               {linkSections.map((col, idx) => (
                 <div key={idx} className="space-y-3">
-                  <h4 className="font-bold text-purple-600 dark:text-purple-400 uppercase tracking-wider text-xs">{col.title}</h4>
+                  <h4 className="font-semibold text-purple-600 dark:text-purple-400 uppercase tracking-wider text-xs">{col.title}</h4>
                   <ul className="space-y-2 text-xs text-muted-foreground">
                     {col.links.map((link, lIdx) => (
                       <li key={lIdx}>
@@ -288,7 +288,7 @@ export function Footer({
             <div className="grid grid-cols-2 sm:grid-cols-4 gap-6 sm:gap-8 pt-6 border-t border-primary/20 text-xs sm:text-sm">
               {linkSections.map((col, idx) => (
                 <div key={idx} className="space-y-3">
-                  <h4 className="font-bold text-xs uppercase tracking-wider text-foreground">{col.title}</h4>
+                  <h4 className="font-semibold text-xs uppercase tracking-wider text-foreground">{col.title}</h4>
                   <ul className="space-y-2 text-xs text-muted-foreground">
                     {col.links.map((link, lIdx) => (
                       <li key={lIdx}>

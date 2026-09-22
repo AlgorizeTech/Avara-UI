@@ -167,7 +167,7 @@ export function HeroCarousel({
   slides = [],
   rootClassName = "relative z-50 flex h-60 max-lg:h-[360px] w-full transform flex-col items-center justify-center gap-5 overflow-hidden rounded-lg bg-cover duration-1000 ease-linear before:absolute before:inset-0 before:bg-black/50 sm:h-96 md:h-[540px] md:rounded-xl lg:gap-10 xl:flex-row",
   textContainerClassName = "absolute max-lg:top-12 max-lg:pl-[15px] left-0 w-full lg:w-1/2 rounded-lg px-4 text-white drop-shadow-lg z-40",
-  titleClassName = "mb-3 text-xl font-bold sm:text-2xl lg:text-3xl",
+  titleClassName = "mb-3 text-xl font-semibold sm:text-2xl lg:text-3xl",
   descriptionClassName = "text-xs sm:text-sm md:text-base lg:text-lg max-lg:line-clamp-2",
   slideContainerClassName = "absolute -right-5 max-lg:translate-y-[80px] z-50 ml-auto w-1/2 overflow-hidden px-4 py-10 lg:-right-16",
   slideClassName = "h-[180px] min-w-[90px] sm:h-[200px] lg:h-[320px] lg:min-w-[184px] z-50 rounded-lg duration-300",
@@ -680,7 +680,7 @@ export function RadialCarousel({
                     ) : null}
 
                     {item.rating && (
-                      <div className="flex items-center gap-0.5 bg-black/50 backdrop-blur-md px-1 sm:px-1.5 py-0.5 rounded-full text-[9px] sm:text-xs font-bold text-amber-400 border border-white/10">
+                      <div className="flex items-center gap-0.5 bg-black/50 backdrop-blur-md px-1 sm:px-1.5 py-0.5 rounded-full text-[9px] sm:text-xs font-semibold text-amber-400 border border-white/10">
                         <span>★</span>
                         <span className="text-white">{item.rating}</span>
                       </div>
@@ -947,7 +947,7 @@ export function FanCarousel({
                     ) : null}
 
                     {item.rating && (
-                      <div className="flex items-center gap-0.5 bg-black/50 backdrop-blur-md px-1 sm:px-1.5 py-0.5 rounded-full text-[9px] sm:text-xs font-bold text-amber-400 border border-white/10">
+                      <div className="flex items-center gap-0.5 bg-black/50 backdrop-blur-md px-1 sm:px-1.5 py-0.5 rounded-full text-[9px] sm:text-xs font-semibold text-amber-400 border border-white/10">
                         <span>★</span>
                         <span className="text-white">{item.rating}</span>
                       </div>
@@ -1175,7 +1175,7 @@ export function FluidGlassSlider({ slides, className }: FluidGlassSliderProps) {
             <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/30 to-black/40"></div>
 
             <div className="relative z-10 w-full">
-              <h2 className="text-3xl md:text-5xl lg:text-[4rem] font-bold leading-[1.1] mb-8 md:mb-14 tracking-tight max-w-4xl drop-shadow-xl">
+              <h2 className="text-3xl md:text-5xl lg:text-[4rem] font-semibold leading-[1.1] mb-8 md:mb-14 tracking-tight max-w-4xl drop-shadow-xl">
                 {slide.title}
               </h2>
               <p className="text-[10px] md:text-[11px] uppercase tracking-[0.2em] font-semibold text-gray-300 drop-shadow-md">

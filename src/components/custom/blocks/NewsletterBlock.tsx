@@ -243,7 +243,7 @@ function Proof({ avatars, className, children, ...props }: NewsletterProofProps)
             ))}
           </span>
           <span
-            className="-ml-1 grid h-7 w-7 place-items-center rounded-full bg-[#141414] text-[11px] font-bold text-white ring-2 ring-white dark:bg-white/15 dark:ring-zinc-900"
+            className="-ml-1 grid h-7 w-7 place-items-center rounded-full bg-[#141414] text-[11px] font-semibold text-white ring-2 ring-white dark:bg-white/15 dark:ring-zinc-900"
             aria-hidden
           >
             +
@@ -276,7 +276,7 @@ function Ticker({ items, className }: { items: NewsletterTickerItem[]; className
             {it.avatar ? (
               <img src={it.avatar} alt="" className="h-6 w-6 rounded-full object-cover" />
             ) : (
-              <span className="grid h-6 w-6 place-items-center rounded-full bg-black/10 text-[10px] font-bold dark:bg-white/15">
+              <span className="grid h-6 w-6 place-items-center rounded-full bg-black/10 text-[10px] font-semibold dark:bg-white/15">
                 {it.name.slice(0, 1)}
               </span>
             )}

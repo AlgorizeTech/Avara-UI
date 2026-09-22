@@ -140,7 +140,7 @@ export function SidebarBrand({
   return (
     <div
       className={cn(
-        "flex items-center font-black text-xl text-foreground",
+        "flex items-center font-bold text-xl text-foreground",
         className,
       )}
       {...props}
@@ -212,7 +212,7 @@ export function SidebarGroup({
       {label && (
         <div
           className={cn(
-            "px-3 text-xs font-bold uppercase tracking-wider text-muted-foreground transition-all duration-300 overflow-hidden",
+            "px-3 text-xs font-semibold uppercase tracking-wider text-muted-foreground transition-all duration-300 overflow-hidden",
             expanded
               ? "max-h-[20px] opacity-100 mb-1"
               : "max-h-0 opacity-0 mb-0",
@@ -291,7 +291,7 @@ export function SidebarItem({
       <TooltipTrigger className="block w-full" tabIndex={-1}>
         {item}
       </TooltipTrigger>
-      <TooltipContent side="right" sideOffset={12} className="font-bold">
+      <TooltipContent side="right" sideOffset={12} className="font-semibold">
         {children}
       </TooltipContent>
     </Tooltip>

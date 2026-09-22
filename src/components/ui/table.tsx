@@ -23,7 +23,7 @@ export function Table({ headers, rows, className = "", variant = 'default' }: Ta
         return {
           table: "w-full border-collapse border-2 border-gray-300 dark:border-gray-600 rounded-lg overflow-hidden shadow-md",
           thead: "bg-gray-100 dark:bg-gray-800 border-b-2 border-gray-300 dark:border-gray-600",
-          th: "border-r border-gray-300 dark:border-gray-600 px-6 py-3 text-left text-xs font-bold text-gray-700 dark:text-gray-300 uppercase tracking-wider last:border-r-0",
+          th: "border-r border-gray-300 dark:border-gray-600 px-6 py-3 text-left text-xs font-semibold text-gray-700 dark:text-gray-300 uppercase tracking-wider last:border-r-0",
           tbody: "bg-white dark:bg-gray-900",
           tr: "border-b border-gray-200 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors",
           td: "border-r border-gray-200 dark:border-gray-700 px-6 py-4 text-sm text-gray-900 dark:text-gray-100 last:border-r-0"
@@ -177,7 +177,7 @@ export function TableHeader({ children, variant = 'default' }: { children: React
       case 'striped':
         return "px-6 py-4 text-left text-sm font-semibold uppercase tracking-wider";
       case 'bordered':
-        return "border-r border-gray-300 dark:border-gray-600 px-6 py-3 text-left text-xs font-bold text-gray-700 dark:text-gray-300 uppercase tracking-wider last:border-r-0";
+        return "border-r border-gray-300 dark:border-gray-600 px-6 py-3 text-left text-xs font-semibold text-gray-700 dark:text-gray-300 uppercase tracking-wider last:border-r-0";
       case 'minimal':
         return "px-4 py-3 text-left text-sm font-semibold text-gray-900 dark:text-gray-100";
       default:

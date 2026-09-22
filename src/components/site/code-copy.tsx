@@ -74,7 +74,7 @@ const CodeCopy = ({
           >
             <span
               className={cn(
-                "text-[9px] font-bold leading-none mt-px",
+                "text-[9px] font-semibold leading-none mt-px",
                 textClass,
               )}
             >

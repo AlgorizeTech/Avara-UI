@@ -157,7 +157,7 @@ const pricingVariants: Record<string, Record<string, string>> = {
     cardPopular:
       "border-primary shadow-lg scale-105 dark:border-primary dark:shadow-primary/20",
     cardHeader: "text-center pb-4",
-    price: "text-3xl font-bold dark:text-white",
+    price: "text-3xl font-semibold dark:text-white",
     button: "w-full mb-6",
     buttonPopular:
       "bg-primary hover:bg-primary/90 dark:bg-primary dark:hover:bg-primary/90",
@@ -179,7 +179,7 @@ const pricingVariants: Record<string, Record<string, string>> = {
     buttonPopular:
       "bg-gradient-to-r from-primary to-primary/80 hover:from-primary/90 hover:to-primary/70 shadow-lg dark:from-primary dark:to-primary/80 dark:hover:from-primary/90 dark:hover:to-primary/70",
     featuresTitle:
-      "font-bold text-sm text-foreground uppercase tracking-wide border-b border-border pb-2 dark:text-white dark:border-slate-700",
+      "font-semibold text-sm text-foreground uppercase tracking-wide border-b border-border pb-2 dark:text-white dark:border-slate-700",
     featureIcon: "rounded-lg p-1 mr-3 mt-0.5 shadow-sm dark:shadow-slate-800",
     featureIconPopular:
       "bg-gradient-to-br from-primary to-primary/80 dark:from-primary dark:to-primary/80",
@@ -575,7 +575,7 @@ export function TablePricingPlan({
                 {plan.title}
               </h3>
               <div className="mb-4">
-                <span className="text-3xl font-bold">
+                <span className="text-3xl font-semibold">
                   {typeof plan.price === "string" && plan.price.startsWith("$") ? "$" : ""}
                   <AnimatedPrice value={plan.price} counting={counting} />
                 </span>
@@ -832,7 +832,7 @@ export function SliderPricingPlan({
             <div className="flex items-baseline justify-start mb-2">
               <span
                 className={cn(
-                  "text-5xl font-bold text-foreground",
+                  "text-5xl font-semibold text-foreground",
                   classNames.price,
                 )}
               >

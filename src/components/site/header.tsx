@@ -149,7 +149,7 @@ const Header = () => {
                 />
               </svg>
             </div>
-            <span className="font-bold text-[16px] tracking-tight text-foreground flex items-center gap-1.5">
+            <span className="font-semibold text-[16px] tracking-tight text-foreground flex items-center gap-1.5">
               Docs UI
               <span className="text-[10px] font-semibold px-1.5 py-0.5 rounded-full bg-primary/10 text-primary border border-primary/20 leading-none">v1.0</span>
             </span>

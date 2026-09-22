@@ -1051,7 +1051,7 @@ export default function AIChat({
                           {model.badge && (
                             <span
                               className={cn(
-                                "text-[9px] font-bold uppercase tracking-wide px-1.5 py-px rounded-full",
+                                "text-[9px] font-semibold uppercase tracking-wide px-1.5 py-px rounded-full",
                                 theme.lightBg,
                               )}
                             >
@@ -1196,7 +1196,7 @@ export default function AIChat({
         >
           <div className="p-5 border-b border-border shrink-0">
             <div className="flex items-center justify-between mb-4 lg:hidden">
-              <h2 className="font-bold text-foreground">History</h2>
+              <h2 className="font-semibold text-foreground">History</h2>
               <button
                 onClick={() => setIsSidebarOpen(false)}
                 className="text-muted-foreground"
@@ -1207,7 +1207,7 @@ export default function AIChat({
             <button
               onClick={handleNewChat}
               className={cn(
-                "w-full flex items-center justify-center gap-2 py-3 rounded-xl font-bold transition-all shadow-md active:scale-95 cursor-pointer",
+                "w-full flex items-center justify-center gap-2 py-3 rounded-xl font-semibold transition-all shadow-md active:scale-95 cursor-pointer",
                 theme.primaryBg,
                 theme.shadow,
               )}
@@ -1223,7 +1223,7 @@ export default function AIChat({
 
               return (
                 <div key={dateGroup} className="mb-6">
-                  <p className="text-[11px] font-bold text-muted-foreground uppercase tracking-wider mb-2 px-3">
+                  <p className="text-[11px] font-semibold text-muted-foreground uppercase tracking-wider mb-2 px-3">
                     {dateGroup}
                   </p>
                   <div className="space-y-0.5">
@@ -1322,7 +1322,7 @@ export default function AIChat({
             <div className="flex items-center gap-3">
               <div
                 className={cn(
-                  "w-8 h-8 rounded-full bg-gradient-to-tr flex items-center justify-center font-bold text-xs shadow-sm",
+                  "w-8 h-8 rounded-full bg-gradient-to-tr flex items-center justify-center font-semibold text-xs shadow-sm",
                   theme.gradient,
                   theme.primaryBg.includes("text-")
                     ? theme.primaryBg
@@ -1337,7 +1337,7 @@ export default function AIChat({
               >
                 JM
               </div>
-              <span className="text-sm font-bold text-foreground">Joel M.</span>
+              <span className="text-sm font-semibold text-foreground">Joel M.</span>
             </div>
             <Settings className="w-4 h-4 text-muted-foreground hover:text-foreground" />
           </div>
@@ -1369,7 +1369,7 @@ export default function AIChat({
             >
               <Bot className="w-10 h-10 text-white -rotate-3" />
             </div>
-            <h2 className="text-2xl font-bold text-foreground mb-2">
+            <h2 className="text-2xl font-semibold text-foreground mb-2">
               How can I help you today?
             </h2>
             <p className="text-muted-foreground text-sm max-w-md mb-8">
@@ -1380,7 +1380,7 @@ export default function AIChat({
             <div className="flex items-center gap-4">
               {showSidebar && (
                 <button
-                  className="lg:hidden px-6 py-2.5 bg-card border border-border text-foreground rounded-xl text-sm font-bold shadow-sm transition-all active:scale-95"
+                  className="lg:hidden px-6 py-2.5 bg-card border border-border text-foreground rounded-xl text-sm font-semibold shadow-sm transition-all active:scale-95"
                   onClick={() => setIsSidebarOpen(true)}
                 >
                   View History
@@ -1389,7 +1389,7 @@ export default function AIChat({
               <button
                 onClick={handleNewChat}
                 className={cn(
-                  "px-6 py-2.5 rounded-xl text-sm font-bold transition-all active:scale-95 flex items-center gap-2 shadow-md",
+                  "px-6 py-2.5 rounded-xl text-sm font-semibold transition-all active:scale-95 flex items-center gap-2 shadow-md",
                   theme.primaryBg,
                   theme.shadow,
                 )}
@@ -1406,7 +1406,7 @@ export default function AIChat({
               transition={{ duration: 0.4, ease: "easeOut" }}
               className="w-full max-w-3xl px-4 sm:px-6 text-center"
             >
-              <h2 className="text-2xl sm:text-4xl font-bold tracking-tight text-foreground">
+              <h2 className="text-2xl sm:text-4xl font-semibold tracking-tight text-foreground">
                 {heroTitle}
               </h2>
               {heroSubtitle && (
@@ -1462,7 +1462,7 @@ export default function AIChat({
                     <Sparkles className="w-4 h-4" />
                   </div>
                   <div>
-                    <h2 className="text-sm font-bold text-foreground leading-tight">
+                    <h2 className="text-sm font-semibold text-foreground leading-tight">
                       AI Assistant
                     </h2>
                     <p className="text-xs font-medium text-emerald-600 dark:text-emerald-400 mt-0.5">
@@ -1478,7 +1478,7 @@ export default function AIChat({
                     onClick={handleNewChat}
                     title="New chat"
                     className={cn(
-                      "flex items-center gap-1.5 h-9 px-3 rounded-lg text-xs font-bold transition-colors cursor-pointer",
+                      "flex items-center gap-1.5 h-9 px-3 rounded-lg text-xs font-semibold transition-colors cursor-pointer",
                       theme.lightBg,
                       theme.primaryText,
                     )}
@@ -1526,7 +1526,7 @@ export default function AIChat({
                       ) : (
                         <div
                           className={cn(
-                            "w-8 h-8 rounded-lg bg-gradient-to-tr flex items-center justify-center font-bold text-xs shadow-sm",
+                            "w-8 h-8 rounded-lg bg-gradient-to-tr flex items-center justify-center font-semibold text-xs shadow-sm",
                             theme.gradient,
                             theme.primaryBg.includes("text-")
                               ? theme.primaryBg
@@ -1850,7 +1850,7 @@ function AttachmentChip({
           </span>
           <span
             className={cn(
-              "text-[10px] font-bold tabular-nums shrink-0",
+              "text-[10px] font-semibold tabular-nums shrink-0",
               attachment.status === "done"
                 ? "text-emerald-600 dark:text-emerald-400"
                 : attachment.status === "error"
@@ -2188,7 +2188,7 @@ function ComposerMenu({
             )}
           >
             {heading && (
-              <p className="px-2.5 pt-1.5 pb-1 text-[10px] font-bold uppercase tracking-wider text-muted-foreground">
+              <p className="px-2.5 pt-1.5 pb-1 text-[10px] font-semibold uppercase tracking-wider text-muted-foreground">
                 {heading}
               </p>
             )}

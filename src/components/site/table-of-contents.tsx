@@ -133,7 +133,7 @@ export const TableOfContents: React.FC = () => {
         {/* Header: Title + Progress Bar */}
         <div className="flex-shrink-0 pt-6 px-4 pb-3 flex flex-col gap-2">
           <div className="flex items-center justify-between">
-            <span className="text-[11px] font-bold uppercase tracking-widest text-zinc-400 dark:text-zinc-500">
+            <span className="text-[11px] font-semibold uppercase tracking-widest text-zinc-400 dark:text-zinc-500">
               On this page
             </span>
           </div>
@@ -149,7 +149,7 @@ export const TableOfContents: React.FC = () => {
               />
             </div>
             <span
-              className="text-[10.5px] font-bold tabular-nums w-7 text-right transition-colors duration-100"
+              className="text-[10.5px] font-semibold tabular-nums w-7 text-right transition-colors duration-100"
               style={{ color: dynamicColor }}
             >
               {Math.round(scrollProgress)}%

@@ -330,7 +330,7 @@ export const ScrollAccordionShowcase = React.forwardRef<
                     color: isActive ? accentColor : undefined,
                   }}
                   className={cn(
-                    "inline-flex items-center gap-2 px-3.5 sm:px-4 py-1.5 sm:py-2 rounded-full text-[11px] sm:text-xs font-mono font-bold uppercase transition-all duration-300 border shrink-0 cursor-pointer outline-none",
+                    "inline-flex items-center gap-2 px-3.5 sm:px-4 py-1.5 sm:py-2 rounded-full text-[11px] sm:text-xs font-mono font-semibold uppercase transition-all duration-300 border shrink-0 cursor-pointer outline-none",
                     isActive
                       ? "shadow-sm scale-105"
                       : "bg-muted dark:bg-white/5 border-border text-muted-foreground hover:border-border",
@@ -410,7 +410,7 @@ export const ScrollAccordionShowcase = React.forwardRef<
                               color: isActive ? accentColor : undefined,
                             }}
                             className={cn(
-                              "font-mono text-xs sm:text-sm font-bold px-2.5 sm:px-3 py-1 sm:py-1.5 rounded-lg sm:rounded-xl border transition-all duration-300 shrink-0 mt-0.5 sm:mt-0",
+                              "font-mono text-xs sm:text-sm font-semibold px-2.5 sm:px-3 py-1 sm:py-1.5 rounded-lg sm:rounded-xl border transition-all duration-300 shrink-0 mt-0.5 sm:mt-0",
                               !isActive &&
                                 "bg-muted dark:bg-white/5 border-border text-muted-foreground",
                             )}
@@ -419,7 +419,7 @@ export const ScrollAccordionShowcase = React.forwardRef<
                           </span>
                           <h3
                             className={cn(
-                              "text-base sm:text-2xl font-bold tracking-tight transition-colors duration-300 leading-snug sm:leading-tight",
+                              "text-base sm:text-2xl font-semibold tracking-tight transition-colors duration-300 leading-snug sm:leading-tight",
                               isActive
                                 ? "text-foreground"
                                 : "text-muted-foreground",
@@ -436,7 +436,7 @@ export const ScrollAccordionShowcase = React.forwardRef<
                           className={cn(
                             "w-8 h-8 sm:w-9 sm:h-9 rounded-full flex items-center justify-center shrink-0 transition-all duration-300 mt-0.5 sm:mt-0 self-start sm:self-center",
                             isActive
-                              ? "rotate-0 shadow-md font-bold"
+                              ? "rotate-0 shadow-md font-semibold"
                               : "bg-muted dark:bg-white/5 text-muted-foreground -rotate-45 group-hover:bg-muted dark:group-hover:bg-white/10 group-hover:text-foreground",
                           )}
                         >
@@ -481,7 +481,7 @@ export const ScrollAccordionShowcase = React.forwardRef<
                                         borderColor: activeBadgeBorder,
                                         color: accentColor,
                                       }}
-                                      className="inline-flex items-center gap-1 sm:gap-1.5 px-2.5 sm:px-3 py-1 rounded-full text-[10px] sm:text-[11px] font-bold uppercase tracking-wider border transition-colors duration-300"
+                                      className="inline-flex items-center gap-1 sm:gap-1.5 px-2.5 sm:px-3 py-1 rounded-full text-[10px] sm:text-[11px] font-semibold uppercase tracking-wider border transition-colors duration-300"
                                     >
                                       <CheckCircle2
                                         style={{ color: accentColor }}
@@ -555,7 +555,7 @@ export const ScrollAccordionShowcase = React.forwardRef<
                         />
                         <span
                           style={{ color: accentColor }}
-                          className="text-[10px] sm:text-[11px] font-mono font-bold uppercase tracking-widest"
+                          className="text-[10px] sm:text-[11px] font-mono font-semibold uppercase tracking-widest"
                         >
                           {activeItem.badgeText || "Selected Service"}
                         </span>
@@ -567,7 +567,7 @@ export const ScrollAccordionShowcase = React.forwardRef<
                           animate={{ opacity: 1, y: 0 }}
                           exit={{ opacity: 0, y: -5 }}
                           transition={{ duration: 0.2 }}
-                          className="text-sm sm:text-lg font-bold text-foreground tracking-tight leading-snug truncate"
+                          className="text-sm sm:text-lg font-semibold text-foreground tracking-tight leading-snug truncate"
                         >
                           {activeItem.title}
                         </motion.p>

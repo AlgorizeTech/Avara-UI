@@ -297,17 +297,17 @@ export const UploadItem = forwardRef<HTMLDivElement, UploadItemProps>(
 
           <div className="flex-1 min-w-0 flex flex-col justify-center pt-0.5">
             <div className="flex items-center justify-between gap-4">
-              <h4 className="text-[14px] font-bold text-foreground truncate pr-2">
+              <h4 className="text-[14px] font-semibold text-foreground truncate pr-2">
                 {file.name}
               </h4>
-              <span className="text-[13px] font-bold text-foreground flex-shrink-0">
+              <span className="text-[13px] font-semibold text-foreground flex-shrink-0">
                 {Math.round(progress)}%
               </span>
             </div>
 
             {/* Badges / File Info */}
             <div className="flex items-center gap-2 mt-1 mb-2">
-              <span className="bg-muted text-muted-foreground px-1.5 py-0.5 rounded text-[10px] font-bold uppercase tracking-wider border border-border dark:border-transparent">
+              <span className="bg-muted text-muted-foreground px-1.5 py-0.5 rounded text-[10px] font-semibold uppercase tracking-wider border border-border dark:border-transparent">
                 {fileExtension}
               </span>
               <span className="text-[11px] font-semibold text-muted-foreground">
@@ -338,7 +338,7 @@ export const UploadItem = forwardRef<HTMLDivElement, UploadItemProps>(
                 {(isError || isPaused) && onRetry && (
                   <button
                     onClick={() => onRetry(item.id)}
-                    className="flex items-center gap-1.5 px-2 py-1 rounded-md bg-muted hover:bg-muted text-foreground text-[11px] font-bold transition-colors border border-border dark:border-transparent"
+                    className="flex items-center gap-1.5 px-2 py-1 rounded-md bg-muted hover:bg-muted text-foreground text-[11px] font-semibold transition-colors border border-border dark:border-transparent"
                   >
                     <RefreshCw className="w-3 h-3" /> Retry
                   </button>

@@ -65,7 +65,7 @@ function Mark({ className, children, ...props }: React.HTMLAttributes<HTMLDivEle
     <Reveal className="mb-6 flex justify-center">
       <div
         className={cn(
-          "grid size-12 place-items-center overflow-hidden rounded-[14px] bg-primary text-[1.25rem] font-bold text-primary-foreground shadow-[0_1px_2px_rgba(0,0,0,0.08),0_8px_20px_-10px_color-mix(in_oklab,var(--primary)_60%,transparent)]",
+          "grid size-12 place-items-center overflow-hidden rounded-[14px] bg-primary text-[1.25rem] font-semibold text-primary-foreground shadow-[0_1px_2px_rgba(0,0,0,0.08),0_8px_20px_-10px_color-mix(in_oklab,var(--primary)_60%,transparent)]",
           className,
         )}
         {...props}

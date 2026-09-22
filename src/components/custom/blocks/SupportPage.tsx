@@ -221,7 +221,7 @@ export default function SupportPage() {
                           : "hover:bg-muted border-l-4 border-l-transparent"
                       }`}
                     >
-                      <div className="w-10 h-10 rounded bg-[#0070e0] dark:bg-[#3b82f6] text-white flex items-center justify-center font-bold mr-3 shrink-0 mt-1">
+                      <div className="w-10 h-10 rounded bg-[#0070e0] dark:bg-[#3b82f6] text-white flex items-center justify-center font-semibold mr-3 shrink-0 mt-1">
                         {ticket.initials}
                       </div>
                       <div className="flex-1 min-w-0">
@@ -229,7 +229,7 @@ export default function SupportPage() {
                           <div
                             className={`text-sm truncate pr-2 ${
                               isActive
-                                ? "font-bold text-[#0070e0] dark:text-[#3b82f6]"
+                                ? "font-semibold text-[#0070e0] dark:text-[#3b82f6]"
                                 : "font-medium text-[#031849] dark:text-zinc-100"
                             }`}
                           >
@@ -281,7 +281,7 @@ export default function SupportPage() {
                   <div className="flex-1 flex flex-col min-w-0 h-full animate-in fade-in duration-300">
                     {/* Chat Header */}
                     <div className="flex items-center p-4 border-b border-[#e0e0e0] dark:border-zinc-800 bg-white dark:bg-[#121217] shrink-0 transition-colors">
-                      <div className="w-10 h-10 rounded bg-[#0070e0] dark:bg-[#3b82f6] text-white flex items-center justify-center font-bold mr-3 shrink-0">
+                      <div className="w-10 h-10 rounded bg-[#0070e0] dark:bg-[#3b82f6] text-white flex items-center justify-center font-semibold mr-3 shrink-0">
                         {selectedTicket.initials}
                       </div>
                       <div className="text-base font-medium text-[#0070e0] dark:text-[#3b82f6]">
@@ -302,7 +302,7 @@ export default function SupportPage() {
                             >
                               {!isSent && (
                                 <div
-                                  className={`w-10 h-10 rounded bg-[#0070e0] dark:bg-[#3b82f6] text-white flex items-center justify-center font-bold mr-3 shrink-0 ${
+                                  className={`w-10 h-10 rounded bg-[#0070e0] dark:bg-[#3b82f6] text-white flex items-center justify-center font-semibold mr-3 shrink-0 ${
                                     !msg.showAvatar ? "invisible" : ""
                                   }`}
                                 >

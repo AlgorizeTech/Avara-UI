@@ -307,7 +307,7 @@ function StackedCardsCarousel({
 							role="img"
 							aria-label={`Rated ${activeReview.rating.toFixed(1)} out of 5`}
 						/>
-						<span className="text-xs font-bold text-foreground">
+						<span className="text-xs font-semibold text-foreground">
 							{activeReview.rating.toFixed(1)}
 						</span>
 					</motion.div>
@@ -413,7 +413,7 @@ function ReviewCard({
 						{review.rating.toFixed(1)}
 					</span>
 				</div>
-				<span className="inline-flex items-center gap-1 text-[10px] font-bold uppercase tracking-wider text-primary bg-primary/10 border border-primary/20 px-2.5 py-0.5 rounded-full">
+				<span className="inline-flex items-center gap-1 text-[10px] font-semibold uppercase tracking-wider text-primary bg-primary/10 border border-primary/20 px-2.5 py-0.5 rounded-full">
 					Verified
 				</span>
 			</div>
@@ -436,14 +436,14 @@ function ReviewCard({
 								className="size-10 rounded-full object-cover ring-2 ring-primary/20 group-hover:ring-primary/60 transition-all duration-300"
 							/>
 						) : (
-							<div className="size-10 rounded-full bg-primary/10 text-primary flex items-center justify-center font-bold text-sm ring-2 ring-primary/20 group-hover:ring-primary/60 transition-all duration-300">
+							<div className="size-10 rounded-full bg-primary/10 text-primary flex items-center justify-center font-semibold text-sm ring-2 ring-primary/20 group-hover:ring-primary/60 transition-all duration-300">
 								{review.name.charAt(0)}
 							</div>
 						)}
 						<span className="absolute -bottom-0.5 -right-0.5 size-3 bg-emerald-500 rounded-full ring-2 ring-card" />
 					</div>
 					<div className="min-w-0">
-						<h4 className="text-xs sm:text-sm font-bold text-foreground group-hover:text-primary transition-colors truncate">
+						<h4 className="text-xs sm:text-sm font-semibold text-foreground group-hover:text-primary transition-colors truncate">
 							{review.name}
 						</h4>
 						<p className="text-[11px] text-muted-foreground truncate font-medium">
@@ -631,7 +631,7 @@ function LogoCarouselVariant({
 										{item.logo}
 									</div>
 								) : (
-									<div className="size-6 rounded-full bg-primary/20 text-primary flex items-center justify-center text-xs font-bold">
+									<div className="size-6 rounded-full bg-primary/20 text-primary flex items-center justify-center text-xs font-semibold">
 										{item.company ? item.company.charAt(0) : item.name.charAt(0)}
 									</div>
 								)}
@@ -713,7 +713,7 @@ function LogoCarouselVariant({
 							</p>
 
 							<div className="pt-4 border-t border-border/40">
-								<h3 className="text-lg sm:text-xl font-bold font-serif text-foreground">
+								<h3 className="text-lg sm:text-xl font-semibold font-serif text-foreground">
 									{activeItem.name}
 								</h3>
 								<p className="text-xs sm:text-sm text-muted-foreground mt-0.5">

@@ -158,7 +158,7 @@ export default function SupportContainer() {
                           : "hover:bg-muted border-l-4 border-l-transparent"
                       }`}
                     >
-                      <div className="w-10 h-10 rounded bg-[#0070e0] dark:bg-[#3b82f6] text-white flex items-center justify-center font-bold mr-3 shrink-0 mt-1">
+                      <div className="w-10 h-10 rounded bg-[#0070e0] dark:bg-[#3b82f6] text-white flex items-center justify-center font-semibold mr-3 shrink-0 mt-1">
                         {ticket.initials}
                       </div>
                       <div className="flex-1 min-w-0">
@@ -166,7 +166,7 @@ export default function SupportContainer() {
                           <div
                             className={`text-sm truncate pr-2 ${
                               isActive
-                                ? "font-bold text-[#0070e0] dark:text-[#3b82f6]"
+                                ? "font-semibold text-[#0070e0] dark:text-[#3b82f6]"
                                 : "font-medium text-[#031849] dark:text-zinc-100"
                             }`}
                           >
@@ -214,10 +214,10 @@ export default function SupportContainer() {
                 <div className="flex-1 flex flex-col h-full overflow-hidden animate-in fade-in duration-300">
                   <div className="bg-white dark:bg-[#121217] p-6 border-b border-[#dcedff] dark:border-zinc-800 shrink-0 transition-colors">
                     <div className="flex justify-between items-start mb-4">
-                      <h2 className="text-xl font-bold text-[#031849] dark:text-zinc-100 leading-tight">
+                      <h2 className="text-xl font-semibold text-[#031849] dark:text-zinc-100 leading-tight">
                         {selectedTicket.title}
                       </h2>
-                      <span className="px-3 py-1 bg-[#eff5ff] dark:bg-[#3b82f6]/10 text-[#0070e0] dark:text-[#3b82f6] text-xs font-bold rounded-full border border-[#dcedff] dark:border-[#3b82f6]/30">
+                      <span className="px-3 py-1 bg-[#eff5ff] dark:bg-[#3b82f6]/10 text-[#0070e0] dark:text-[#3b82f6] text-xs font-semibold rounded-full border border-[#dcedff] dark:border-[#3b82f6]/30">
                         {selectedTicket.id}
                       </span>
                     </div>
@@ -245,7 +245,7 @@ export default function SupportContainer() {
 
                   <div className="flex-1 p-6 overflow-y-auto custom-scrollbar">
                     <div className="flex gap-4 mb-6">
-                      <div className="w-10 h-10 rounded-full bg-[#0070e0] dark:bg-[#3b82f6] text-white flex items-center justify-center font-bold shrink-0">
+                      <div className="w-10 h-10 rounded-full bg-[#0070e0] dark:bg-[#3b82f6] text-white flex items-center justify-center font-semibold shrink-0">
                         {selectedTicket.initials}
                       </div>
                       <div className="bg-white dark:bg-[#121217] p-4 rounded-xl rounded-tl-none shadow-sm border border-[#dcedff] dark:border-zinc-800 max-w-3xl transition-colors">

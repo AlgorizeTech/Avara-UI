@@ -958,7 +958,7 @@ export const DataTablePageSize = forwardRef<
                   className={cn(
                     "flex items-center justify-between w-full px-3 py-1.5 text-xs font-medium transition-colors text-left cursor-pointer",
                     isSelected
-                      ? cn(theme.bgSoft, theme.text, "font-bold")
+                      ? cn(theme.bgSoft, theme.text, "font-semibold")
                       : cn("hover:bg-muted text-foreground/80", theme.hoverBgSoft),
                   )}
                 >
@@ -1142,7 +1142,7 @@ export function DataTableExport<T = unknown>({
         <Download className="w-3.5 h-3.5 text-muted-foreground" />
         <span>Export</span>
         {isSelectedOnly && (
-          <span className="ml-0.5 px-1.5 py-0.2 rounded-full text-[10px] font-bold bg-primary/10 text-primary">
+          <span className="ml-0.5 px-1.5 py-0.2 rounded-full text-[10px] font-semibold bg-primary/10 text-primary">
             {count}
           </span>
         )}
@@ -1450,7 +1450,7 @@ export function DataTableBatchBar<T = unknown>({
       inert={count === 0}
       aria-hidden={count === 0}
     >
-      <span className="text-[11px] sm:text-[12px] font-black whitespace-nowrap pl-0.5">
+      <span className="text-[11px] sm:text-[12px] font-bold whitespace-nowrap pl-0.5">
         {count} selected
       </span>
       <div className="w-px h-[16px] bg-current opacity-30 shrink-0 mx-0.5" />
@@ -1520,7 +1520,7 @@ export function DataTablePagination({ className }: { className?: string }) {
             className={cn(
               "w-8 h-8 rounded-lg text-[13px] font-medium border-[1.5px] flex items-center justify-center transition-all",
               isActive
-                ? cn(theme.bg, theme.border, "font-bold")
+                ? cn(theme.bg, theme.border, "font-semibold")
                 : "border-transparent text-foreground/70 hover:bg-muted hover:border-border",
             )}
           >

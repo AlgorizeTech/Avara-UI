@@ -542,7 +542,7 @@ export default function FleetTracker({
                 <Navigation2 className={cn("w-5 h-5", theme.bg.includes("text-") ? theme.bg.split(" ").filter(c => c.startsWith("text-") || c.startsWith("dark:text-")).join(" ") : "text-primary-foreground")} />
               </div>
               <div>
-                <h2 className="font-bold text-lg text-foreground leading-tight">
+                <h2 className="font-semibold text-lg text-foreground leading-tight">
                   Fleet Command
                 </h2>
                 <p className="text-xs font-medium text-muted-foreground">
@@ -624,7 +624,7 @@ export default function FleetTracker({
                   <div className="flex justify-between items-start mb-1">
                     <h4
                       className={cn(
-                        "font-bold text-sm truncate",
+                        "font-semibold text-sm truncate",
                         isActive
                           ? variant === "default"
                             ? theme.text
@@ -636,7 +636,7 @@ export default function FleetTracker({
                     </h4>
                     <span
                       className={cn(
-                        "text-[10px] font-bold px-2 py-0.5 rounded-md uppercase tracking-wider",
+                        "text-[10px] font-semibold px-2 py-0.5 rounded-md uppercase tracking-wider",
                         getStatusStyle(vehicle.status),
                       )}
                     >
@@ -715,7 +715,7 @@ export default function FleetTracker({
                 >
                   <rl.Popup className="font-sans">
                     <div className="text-center">
-                      <h3 className="font-bold text-sm text-foreground m-0 leading-tight">
+                      <h3 className="font-semibold text-sm text-foreground m-0 leading-tight">
                         {vehicle.id}
                       </h3>
                       <p className="text-xs text-muted-foreground mt-1 m-0">

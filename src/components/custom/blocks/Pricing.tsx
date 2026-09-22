@@ -173,7 +173,7 @@ export function PricingCards({
               {isPopular && (
                 <div
                   className={cn(
-                    "absolute -top-3.5 left-1/2 -translate-x-1/2 px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider shadow-sm",
+                    "absolute -top-3.5 left-1/2 -translate-x-1/2 px-3 py-1 rounded-full text-xs font-semibold uppercase tracking-wider shadow-sm",
                     theme.bg,
                   )}
                 >
@@ -196,7 +196,7 @@ export function PricingCards({
                       )}
                     />
                   </div>
-                  <h3 className="text-xl font-bold text-foreground">
+                  <h3 className="text-xl font-semibold text-foreground">
                     {plan.title}
                   </h3>
                 </div>
@@ -206,7 +206,7 @@ export function PricingCards({
                 </p>
 
                 <div className="flex items-baseline gap-1 mb-6">
-                  <span className="text-4xl sm:text-5xl font-black text-foreground">
+                  <span className="text-4xl sm:text-5xl font-bold text-foreground">
                     <AnimatedPrice value={plan.price} counting={counting} />
                   </span>
                   <span className="text-sm text-muted-foreground">
@@ -227,7 +227,7 @@ export function PricingCards({
               <LinkComp
                 href="#"
                 className={cn(
-                  "w-full py-3 rounded-xl font-bold text-sm text-center transition-all cursor-pointer block",
+                  "w-full py-3 rounded-xl font-semibold text-sm text-center transition-all cursor-pointer block",
                   isPopular
                     ? cn(theme.bg, "shadow-md hover:opacity-90")
                     : variant === "minimal"
@@ -305,7 +305,7 @@ export function PricingBuilder({
       style={style}
     >
       <div className="text-center mb-8 sm:mb-12">
-        <h3 className="text-2xl sm:text-3xl font-bold text-foreground mb-2">
+        <h3 className="text-2xl sm:text-3xl font-semibold text-foreground mb-2">
           {title}
         </h3>
         <p className="text-sm sm:text-base text-muted-foreground">
@@ -343,7 +343,7 @@ export function PricingBuilder({
                     {mod.name}
                   </span>
                 </div>
-                <span className="font-bold text-sm text-foreground">
+                <span className="font-semibold text-sm text-foreground">
                   +${mod.price}/mo
                 </span>
               </div>
@@ -353,11 +353,11 @@ export function PricingBuilder({
 
         <div className="bg-muted/40 p-6 sm:p-8 rounded-3xl border border-border flex flex-col justify-between h-full min-h-[300px]">
           <div>
-            <span className="text-xs font-bold uppercase tracking-wider text-muted-foreground mb-2 block">
+            <span className="text-xs font-semibold uppercase tracking-wider text-muted-foreground mb-2 block">
               Estimated Total
             </span>
             <div className="flex items-baseline gap-1 mb-6">
-              <span className="text-5xl sm:text-6xl font-black text-foreground">
+              <span className="text-5xl sm:text-6xl font-bold text-foreground">
                 <AnimatedPrice value={totalPrice} counting={counting} />
               </span>
               <span className="text-muted-foreground font-medium">/month</span>
@@ -369,7 +369,7 @@ export function PricingBuilder({
 
           <button
             className={cn(
-              "w-full py-3.5 rounded-xl font-bold text-sm transition-all cursor-pointer shadow-md hover:opacity-90",
+              "w-full py-3.5 rounded-xl font-semibold text-sm transition-all cursor-pointer shadow-md hover:opacity-90",
               theme.bg,
             )}
           >
@@ -447,7 +447,7 @@ export function PricingTable({
 
   const ctaClass = (featured?: boolean) =>
     cn(
-      "w-full py-2.5 rounded-xl font-bold transition-all text-sm cursor-pointer",
+      "w-full py-2.5 rounded-xl font-semibold transition-all text-sm cursor-pointer",
       featured
         ? cn(theme.bg, theme.shadow)
         : "border border-border dark:bg-zinc-800 text-foreground",
@@ -476,13 +476,13 @@ export function PricingTable({
             >
               <h4
                 className={cn(
-                  "text-lg font-bold",
+                  "text-lg font-semibold",
                   plan.featured ? theme.text : "text-foreground",
                 )}
               >
                 {plan.title}
               </h4>
-              <div className="text-3xl font-black text-foreground mb-5">
+              <div className="text-3xl font-bold text-foreground mb-5">
                 {plan.price.startsWith("$") ? "$" : ""}
                 <AnimatedPrice value={plan.price} counting={counting} />
               </div>
@@ -492,7 +492,7 @@ export function PricingTable({
             </div>
             {data.sections.map((section, sIdx) => (
               <div key={sIdx}>
-                <div className="px-6 py-2.5 bg-muted/80 border-b border-border font-bold text-xs text-foreground uppercase tracking-wider">
+                <div className="px-6 py-2.5 bg-muted/80 border-b border-border font-semibold text-xs text-foreground uppercase tracking-wider">
                   {section.title}
                 </div>
                 {section.features.map((feature, fIdx) => (
@@ -519,7 +519,7 @@ export function PricingTable({
           <div className="min-w-[800px]">
             <div className="grid grid-cols-4 bg-muted border-b border-border">
               <div className="p-6 flex items-end">
-                <h3 className="font-bold text-xl text-foreground">
+                <h3 className="font-semibold text-xl text-foreground">
                   Compare Plans
                 </h3>
               </div>
@@ -538,7 +538,7 @@ export function PricingTable({
                   )}
                   <h4
                     className={cn(
-                      "text-lg font-bold mb-2",
+                      "text-lg font-semibold mb-2",
                       plan.featured
                         ? theme.text
                         : "text-foreground",
@@ -546,7 +546,7 @@ export function PricingTable({
                   >
                     {plan.title}
                   </h4>
-                  <div className="text-3xl font-black text-foreground mb-6">
+                  <div className="text-3xl font-bold text-foreground mb-6">
                     {plan.price.startsWith("$") ? "$" : ""}
                     <AnimatedPrice value={plan.price} counting={counting} />
                   </div>
@@ -559,7 +559,7 @@ export function PricingTable({
             {data.sections.map((section, sIdx) => (
               <div key={sIdx}>
                 <div className="grid grid-cols-4 bg-muted/80 border-b border-border">
-                  <div className="p-4 font-bold text-sm text-foreground uppercase tracking-wider">
+                  <div className="p-4 font-semibold text-sm text-foreground uppercase tracking-wider">
                     {section.title}
                   </div>
                   <div className="border-l border-border"></div>
@@ -636,14 +636,14 @@ export function PricingSlider({
       className={cn("w-full max-w-2xl mx-auto p-5 sm:p-8 md:p-12 bg-background border border-border rounded-3xl shadow-sm text-center", className)}
       style={style}
     >
-      <h3 className="text-xl sm:text-2xl font-bold text-foreground mb-2">
+      <h3 className="text-xl sm:text-2xl font-semibold text-foreground mb-2">
         {title}
       </h3>
       <p className="text-sm sm:text-base text-muted-foreground mb-6 sm:mb-10">
         {subtitle}
       </p>
       <div className="mb-6 sm:mb-12">
-        <div className="text-[52px] sm:text-[80px] font-black tracking-tighter leading-none text-foreground mb-2">
+        <div className="text-[52px] sm:text-[80px] font-bold tracking-tighter leading-none text-foreground mb-2">
           $<AnimatedPrice value={calculatedPrice} counting={counting} />
         </div>
         <p className="text-muted-foreground font-medium tracking-wide uppercase text-xs sm:text-sm">
@@ -651,7 +651,7 @@ export function PricingSlider({
         </p>
       </div>
       <div className="relative mb-6 sm:mb-12">
-        <div className="flex justify-between items-center text-xs sm:text-sm font-bold text-muted-foreground mb-4 px-1 uppercase tracking-widest">
+        <div className="flex justify-between items-center text-xs sm:text-sm font-semibold text-muted-foreground mb-4 px-1 uppercase tracking-widest">
           <span>{minViews}</span>
           <span className={cn("font-extrabold px-3 py-1 rounded-lg border border-border bg-muted/50 shadow-2xs transition-colors", theme.text)}>
             {pageviews} Views
@@ -695,7 +695,7 @@ export function PricingSlider({
       </div>
       <button
         className={cn(
-          "w-full py-3.5 sm:py-4 rounded-xl font-bold text-sm sm:text-lg transition-all active:scale-[0.98] cursor-pointer shadow-lg",
+          "w-full py-3.5 sm:py-4 rounded-xl font-semibold text-sm sm:text-lg transition-all active:scale-[0.98] cursor-pointer shadow-lg",
           theme.bg,
         )}
       >
@@ -862,7 +862,7 @@ export function PricingTypographic({
                 Pricing
               </span>
             </h2>
-            <h3 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-black tracking-tighter leading-none mb-3 sm:mb-5 text-foreground">
+            <h3 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold tracking-tighter leading-none mb-3 sm:mb-5 text-foreground">
               Pricing Model.
             </h3>
             <p className="text-muted-foreground text-sm sm:text-lg md:text-xl font-medium leading-relaxed">
@@ -890,7 +890,7 @@ export function PricingTypographic({
                 <ToggleGroupItem
                   key={cycle}
                   value={cycle}
-                  className="font-bold uppercase tracking-widest"
+                  className="font-semibold uppercase tracking-widest"
                 >
                   {cycle}
                 </ToggleGroupItem>
@@ -934,7 +934,7 @@ export function PricingTypographic({
                     )}
                     <span
                       className={cn(
-                        "text-4xl lg:text-5xl xl:text-[4rem] font-black uppercase tracking-tighter leading-[0.85] break-words whitespace-normal inline-block transition-colors duration-300",
+                        "text-4xl lg:text-5xl xl:text-[4rem] font-bold uppercase tracking-tighter leading-[0.85] break-words whitespace-normal inline-block transition-colors duration-300",
                         isActive
                           ? theme.text
                           : "outline-text group-hover:text-foreground/80",
@@ -964,7 +964,7 @@ export function PricingTypographic({
                   />
                 )}
 
-                <div className="absolute right-2 -top-6 text-[110px] xl:text-[145px] font-black text-foreground/[0.03] pointer-events-none select-none tracking-tighter leading-none transition-colors duration-300 max-w-full overflow-hidden text-right">
+                <div className="absolute right-2 -top-6 text-[110px] xl:text-[145px] font-bold text-foreground/[0.03] pointer-events-none select-none tracking-tighter leading-none transition-colors duration-300 max-w-full overflow-hidden text-right">
                   $<AnimatedPrice key={`wm-${activePlan.id}-${activePlan.price}`} value={activePlan.price} counting={counting} />
                 </div>
 
@@ -972,7 +972,7 @@ export function PricingTypographic({
                   {activePlan.isFeatured && (
                     <div
                       className={cn(
-                        "inline-flex items-center gap-1.5 px-3 py-1 text-[10px] font-bold uppercase tracking-widest mb-4 rounded-full border",
+                        "inline-flex items-center gap-1.5 px-3 py-1 text-[10px] font-semibold uppercase tracking-widest mb-4 rounded-full border",
                         theme.bgSoft,
                         theme.border,
                         theme.text,
@@ -984,10 +984,10 @@ export function PricingTypographic({
                   )}
 
                   <div className="flex items-end gap-2 mb-4">
-                    <span className="text-3xl font-bold text-zinc-400 dark:text-zinc-600 mb-2">
+                    <span className="text-3xl font-semibold text-zinc-400 dark:text-zinc-600 mb-2">
                       $
                     </span>
-                    <span className="text-[70px] xl:text-[90px] leading-none font-black tracking-tighter text-foreground">
+                    <span className="text-[70px] xl:text-[90px] leading-none font-bold tracking-tighter text-foreground">
                       <AnimatedPrice key={`main-${activePlan.id}-${activePlan.price}`} value={activePlan.price} counting={counting} />
                     </span>
                   </div>
@@ -1018,7 +1018,7 @@ export function PricingTypographic({
                 <LinkComp
                   href="#"
                   className={cn(
-                    "group mt-auto w-max py-4 px-8 rounded-full text-sm font-bold uppercase tracking-widest flex items-center justify-center gap-3 relative overflow-hidden z-10",
+                    "group mt-auto w-max py-4 px-8 rounded-full text-sm font-semibold uppercase tracking-widest flex items-center justify-center gap-3 relative overflow-hidden z-10",
                     activePlan.isFeatured
                       ? theme.bg
                       : "bg-muted text-zinc-900 dark:bg-white dark:text-black",
@@ -1089,7 +1089,7 @@ export function PricingTypographic({
                     )}
                     <span
                       className={cn(
-                        "text-3xl md:text-4xl font-black uppercase tracking-tighter leading-[0.9] break-words whitespace-normal transition-colors duration-300",
+                        "text-3xl md:text-4xl font-bold uppercase tracking-tighter leading-[0.9] break-words whitespace-normal transition-colors duration-300",
                         isActive ? theme.text : "outline-text",
                       )}
                     >
@@ -1127,10 +1127,10 @@ export function PricingTypographic({
                       )}
 
                       <div className="flex items-end gap-1.5 mb-3 relative z-10">
-                        <span className="text-xl font-bold text-zinc-400 dark:text-zinc-600 mb-1.5">
+                        <span className="text-xl font-semibold text-zinc-400 dark:text-zinc-600 mb-1.5">
                           $
                         </span>
-                        <span className="text-5xl md:text-6xl font-black tracking-tighter text-foreground">
+                        <span className="text-5xl md:text-6xl font-bold tracking-tighter text-foreground">
                           <AnimatedPrice key={`mob-${plan.id}-${plan.price}`} value={plan.price} counting={counting} />
                         </span>
                       </div>
@@ -1161,7 +1161,7 @@ export function PricingTypographic({
                       <LinkComp
                         href="#"
                         className={cn(
-                          "group w-full py-4 rounded-xl text-sm font-bold uppercase tracking-widest flex items-center justify-center gap-3 relative overflow-hidden z-10",
+                          "group w-full py-4 rounded-xl text-sm font-semibold uppercase tracking-widest flex items-center justify-center gap-3 relative overflow-hidden z-10",
                           plan.isFeatured
                             ? theme.bg
                             : "bg-muted text-zinc-900 dark:bg-white dark:text-black",
@@ -1439,7 +1439,7 @@ export function PricingPlans({
           <div className="bg-card border border-border rounded-2xl sm:rounded-3xl p-5 sm:p-8 md:p-10 shadow-sm relative flex flex-col justify-between min-h-[400px] sm:min-h-[500px] transition-colors">
             <div ref={cardContentRef}>
               <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-6 sm:mb-8">
-                <h4 className={cn("text-xl sm:text-2xl font-bold transition-colors duration-300", hasSelection ? "text-foreground" : "text-muted-foreground")}>
+                <h4 className={cn("text-xl sm:text-2xl font-semibold transition-colors duration-300", hasSelection ? "text-foreground" : "text-muted-foreground")}>
                   {cardData.title}
                 </h4>
                 {cardData.tag && (
@@ -1489,7 +1489,7 @@ export function PricingPlans({
             <Link
               href={hasSelection ? ctaHref : "#"}
               className={cn(
-                "w-full text-center transition-all duration-300 font-bold text-base sm:text-lg md:text-xl py-3.5 sm:py-5 rounded-xl mt-auto flex items-center justify-center",
+                "w-full text-center transition-all duration-300 font-semibold text-base sm:text-lg md:text-xl py-3.5 sm:py-5 rounded-xl mt-auto flex items-center justify-center",
                 hasSelection
                   ? cn(theme.bg, "shadow-lg")
                   : "bg-muted text-muted-foreground/50 cursor-not-allowed pointer-events-none shadow-none",

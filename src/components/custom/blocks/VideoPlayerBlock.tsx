@@ -198,7 +198,7 @@ function MediaOverlay({
   const copy = (
     <>
       {title && (
-        <h3 className="line-clamp-1 text-base font-bold tracking-tight text-white drop-shadow-sm sm:text-xl md:text-2xl">
+        <h3 className="line-clamp-1 text-base font-semibold tracking-tight text-white drop-shadow-sm sm:text-xl md:text-2xl">
           {title}
         </h3>
       )}
@@ -360,7 +360,7 @@ export const VideoPlayer = React.forwardRef<
     ) : null;
 
     const badgePill = badge ? (
-      <div className="inline-flex items-center gap-1.5 rounded-2xl border border-white/20 bg-white/10 px-3 py-1.5 text-[10px] font-bold tracking-wider text-white uppercase shadow-sm backdrop-blur-md sm:gap-2 sm:px-4 sm:text-xs dark:bg-black/40">
+      <div className="inline-flex items-center gap-1.5 rounded-2xl border border-white/20 bg-white/10 px-3 py-1.5 text-[10px] font-semibold tracking-wider text-white uppercase shadow-sm backdrop-blur-md sm:gap-2 sm:px-4 sm:text-xs dark:bg-black/40">
         <Sparkles className="h-3 w-3 shrink-0 animate-pulse text-amber-400 sm:h-3.5 sm:w-3.5" />
         <span className="max-w-[180px] truncate sm:max-w-none">{badge}</span>
       </div>

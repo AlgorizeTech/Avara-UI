@@ -184,7 +184,7 @@ export const FlowNode = forwardRef<HTMLDivElement, FlowNodeProps>(
           </div>
         )}
         <div className="min-w-0 flex-1">
-          <h4 className="text-[13.5px] font-bold tracking-tight text-foreground truncate">
+          <h4 className="text-[13.5px] font-semibold tracking-tight text-foreground truncate">
             {title}
           </h4>
           {description && (

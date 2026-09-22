@@ -201,7 +201,7 @@ export function TimePicker({
         theme={theme}
         disabled={disabled || !value}
       />
-      <span className="self-center text-sm font-bold text-muted-foreground">:</span>
+      <span className="self-center text-sm font-semibold text-muted-foreground">:</span>
       <Column
         label="Minute"
         items={minuteItems}

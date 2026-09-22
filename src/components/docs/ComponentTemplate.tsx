@@ -51,7 +51,7 @@ export function ComponentTemplate({
         
         {/* Component Header */}
         <header className="mb-8">
-          <h1 className="text-4xl font-bold mb-4 bg-gradient-to-r from-blue-600 via-purple-600 to-pink-600 bg-clip-text text-transparent">
+          <h1 className="text-4xl font-semibold mb-4 bg-gradient-to-r from-blue-600 via-purple-600 to-pink-600 bg-clip-text text-transparent">
             {componentName} Component
           </h1>
           <p className="text-xl text-zinc-600 dark:text-zinc-400 leading-relaxed">

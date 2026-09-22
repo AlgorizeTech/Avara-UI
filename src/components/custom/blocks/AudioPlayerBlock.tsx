@@ -198,7 +198,7 @@ export const AudioPlayer = React.forwardRef<
     const copy = (
       <div className="min-w-0">
         {badge && (
-          <span className="mb-1.5 inline-flex items-center gap-1.5 rounded-full border border-white/20 bg-white/10 px-2.5 py-1 text-[10px] font-bold tracking-wider text-white uppercase backdrop-blur-md">
+          <span className="mb-1.5 inline-flex items-center gap-1.5 rounded-full border border-white/20 bg-white/10 px-2.5 py-1 text-[10px] font-semibold tracking-wider text-white uppercase backdrop-blur-md">
             <Music className="h-3 w-3 shrink-0 text-amber-400" />
             {badge}
           </span>

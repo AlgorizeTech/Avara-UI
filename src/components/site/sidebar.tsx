@@ -141,7 +141,7 @@ const MenuItem: React.FC<{
       return cn(
         "font-semibold text-[14px] py-1.5 px-3",
         isExactActive || isParentActive
-          ? "bg-primary/10 text-primary font-bold"
+          ? "bg-primary/10 text-primary font-semibold"
           : "text-zinc-900 dark:text-zinc-100 hover:bg-primary/5 hover:text-primary",
       );
     }
@@ -181,7 +181,7 @@ const MenuItem: React.FC<{
       {item.badge && (
         <span
           className={cn(
-            "text-[10px] font-bold px-1.5 py-px rounded-md ml-2 shrink-0",
+            "text-[10px] font-semibold px-1.5 py-px rounded-md ml-2 shrink-0",
             getBadgeStyle(item.badge),
           )}
         >
