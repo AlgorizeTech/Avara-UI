@@ -1,10 +1,11 @@
 "use client";
 
-import { PricingBuilder, PricingCards, PricingData, PricingPlans, PricingSlider, PricingTable, PricingTableData, PricingTypographic, PricingVariant } from "@/components/custom/blocks/Pricing";
+import { PricingBuilder, PricingCards, PricingData, PricingPlans, PricingScale, PricingSlider, PricingTable, PricingTableData, PricingTypographic, PricingVariant } from "@/components/custom/blocks/Pricing";
 import { PricingColor } from "@/components/custom/blocks/pricing-theme";
 
 type LayoutType =
   | "cards"
+  | "scale"
   | "builder"
   | "table"
   | "slider"
@@ -285,6 +286,9 @@ export default function PricingDemo({
       )}
       {layout === "plans" && (
         <PricingPlans key={`plans-${color}-${counting}`} color={color} counting={counting} />
+      )}
+      {layout === "scale" && (
+        <PricingScale key={`scale-${color}-${counting}`} color={color} counting={counting} />
       )}
     </div>
   );

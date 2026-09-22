@@ -2,7 +2,7 @@
 
 A collection of highly-converting, responsive pricing sections. Whether you need traditional tiered subscription cards, a detailed comparison table, or an interactive GSAP-powered quote builder, these components are designed to maximize conversions.
 
-`Pricing.tsx` exports six independent layouts — `PricingCards`, `PricingBuilder`, `PricingTable`, `PricingSlider`, `PricingTypographic` and `PricingPlans` — that share one color engine. Pick the layout that matches your funnel, then use the theme control above the gallery to see the accent cascade through badges, gradients, glows and buttons.
+`Pricing.tsx` exports seven independent layouts — `PricingCards`, `PricingScale`, `PricingBuilder`, `PricingTable`, `PricingSlider`, `PricingTypographic` and `PricingPlans` — that share one color engine. Pick the layout that matches your funnel, then use the theme control above the gallery to see the accent cascade through badges, gradients, glows and buttons.
 
 export const pricingData = `const data: PricingData = {
   tabs: [
@@ -339,6 +339,97 @@ export default function InteractiveChecklistPricing() {
   );
 }`;
 
+export const scaleData = `const scalePlansData = {
+  monthly: [
+    {
+      id: "launch",
+      title: "Launch Plan",
+      subtitle: "Ideal for startups and solo marketers",
+      price: "$299.00",
+      period: "/Month",
+      buttonText: "Start with Launch",
+      popular: false,
+      icon: "Rocket",
+      featuresTitle: "WHAT'S INCLUDED:",
+      features: [
+        "Up to 10,000 subscribers",
+        "5 automation workflows",
+        "Basic A/B testing",
+        "Email support",
+        "Drag-and-drop builder",
+      ],
+    },
+    {
+      id: "scale",
+      title: "Scale Plan",
+      subtitle: "For growing teams ready to accelerate",
+      price: "$899.00",
+      period: "/Month",
+      buttonText: "Upgrade to Scale",
+      popular: true,
+      popularBadgeText: "Most Popular",
+      icon: "Sprout",
+      featuresTitle: "INCLUDED EVERYTHING IN LAUNCH, PLUS:",
+      features: [
+        "Unlimited automation workflows",
+        "Advanced segmentation & analytics",
+        "Priority live chat support",
+        "Custom branded templates",
+        "Dedicated onboarding",
+      ],
+    },
+  ],
+  annually: [
+    {
+      id: "launch-annual",
+      title: "Launch Plan",
+      subtitle: "Ideal for startups and solo marketers",
+      price: "$269.00",
+      period: "/Month",
+      buttonText: "Start with Launch",
+      popular: false,
+      icon: "Rocket",
+      featuresTitle: "WHAT'S INCLUDED:",
+      features: [
+        "Up to 10,000 subscribers",
+        "5 automation workflows",
+        "Basic A/B testing",
+        "Email support",
+        "Drag-and-drop builder",
+      ],
+    },
+    {
+      id: "scale-annual",
+      title: "Scale Plan",
+      subtitle: "For growing teams ready to accelerate",
+      price: "$809.00",
+      period: "/Month",
+      buttonText: "Upgrade to Scale",
+      popular: true,
+      popularBadgeText: "Most Popular",
+      icon: "Sprout",
+      featuresTitle: "INCLUDED EVERYTHING IN LAUNCH, PLUS:",
+      features: [
+        "Unlimited automation workflows",
+        "Advanced segmentation & analytics",
+        "Priority live chat support",
+        "Custom branded templates",
+        "Dedicated onboarding",
+      ],
+    },
+  ],
+};`;
+
+export const usageScale = `import { PricingScale, type ScalePlanItem } from "@/components/custom/blocks/Pricing";
+
+${scaleData}
+
+export default function ScalablePricing() {
+  return (
+    
+  );
+}`;
+
 ## Installation
 
 Register the @algorize-ui registry once per project, then add the component:
@@ -521,6 +612,38 @@ npx shadcn@latest add @algorize-ui/pricing
           PricingColor
 
           Accent theme color for selected checkboxes, total calculation and CTA button.
+
+          PricingScale
+
+          plans
+
+          {"{ monthly: ScalePlanItem[]; annually: ScalePlanItem[] }"}
+
+          Object containing monthly and annually arrays of pricing plan cards with titles, prices, icons and features.
+
+          PricingScale
+
+          badgeText / title / subtitle
+
+          string
+
+          Custom text props for top pill badge, section heading, and description paragraph.
+
+          PricingScale
+
+          footerTitle / footerSubtitle / footerCtaText / footerCtaHref
+
+          string
+
+          Configuration props for the bottom strategy call CTA banner.
+
+          PricingScale
+
+          color
+
+          PricingColor
+
+          Applies accent color to popular plan ring/badge, checkmarks, active toggle, and CTA buttons.
 
 ---
 

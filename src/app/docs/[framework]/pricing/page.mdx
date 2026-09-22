@@ -5,7 +5,7 @@ import { extractCode } from "@/lib/code";
 
 A collection of highly-converting, responsive pricing sections. Whether you need traditional tiered subscription cards, a detailed comparison table, or an interactive GSAP-powered quote builder, these components are designed to maximize conversions.
 
-`Pricing.tsx` exports six independent layouts — `PricingCards`, `PricingBuilder`, `PricingTable`, `PricingSlider`, `PricingTypographic` and `PricingPlans` — that share one color engine. Pick the layout that matches your funnel, then use the theme control above the gallery to see the accent cascade through badges, gradients, glows and buttons.
+`Pricing.tsx` exports seven independent layouts — `PricingCards`, `PricingScale`, `PricingBuilder`, `PricingTable`, `PricingSlider`, `PricingTypographic` and `PricingPlans` — that share one color engine. Pick the layout that matches your funnel, then use the theme control above the gallery to see the accent cascade through badges, gradients, glows and buttons.
 
 export const pricingData = `const data: PricingData = {
   tabs: [
@@ -372,11 +372,131 @@ export default function InteractiveChecklistPricing() {
   );
 }`;
 
+export const scaleData = `const scalePlansData = {
+  monthly: [
+    {
+      id: "launch",
+      title: "Launch Plan",
+      subtitle: "Ideal for startups and solo marketers",
+      price: "$299.00",
+      period: "/Month",
+      buttonText: "Start with Launch",
+      popular: false,
+      icon: "Rocket",
+      featuresTitle: "WHAT'S INCLUDED:",
+      features: [
+        "Up to 10,000 subscribers",
+        "5 automation workflows",
+        "Basic A/B testing",
+        "Email support",
+        "Drag-and-drop builder",
+      ],
+    },
+    {
+      id: "scale",
+      title: "Scale Plan",
+      subtitle: "For growing teams ready to accelerate",
+      price: "$899.00",
+      period: "/Month",
+      buttonText: "Upgrade to Scale",
+      popular: true,
+      popularBadgeText: "Most Popular",
+      icon: "Sprout",
+      featuresTitle: "INCLUDED EVERYTHING IN LAUNCH, PLUS:",
+      features: [
+        "Unlimited automation workflows",
+        "Advanced segmentation & analytics",
+        "Priority live chat support",
+        "Custom branded templates",
+        "Dedicated onboarding",
+      ],
+    },
+  ],
+  annually: [
+    {
+      id: "launch-annual",
+      title: "Launch Plan",
+      subtitle: "Ideal for startups and solo marketers",
+      price: "$269.00",
+      period: "/Month",
+      buttonText: "Start with Launch",
+      popular: false,
+      icon: "Rocket",
+      featuresTitle: "WHAT'S INCLUDED:",
+      features: [
+        "Up to 10,000 subscribers",
+        "5 automation workflows",
+        "Basic A/B testing",
+        "Email support",
+        "Drag-and-drop builder",
+      ],
+    },
+    {
+      id: "scale-annual",
+      title: "Scale Plan",
+      subtitle: "For growing teams ready to accelerate",
+      price: "$809.00",
+      period: "/Month",
+      buttonText: "Upgrade to Scale",
+      popular: true,
+      popularBadgeText: "Most Popular",
+      icon: "Sprout",
+      featuresTitle: "INCLUDED EVERYTHING IN LAUNCH, PLUS:",
+      features: [
+        "Unlimited automation workflows",
+        "Advanced segmentation & analytics",
+        "Priority live chat support",
+        "Custom branded templates",
+        "Dedicated onboarding",
+      ],
+    },
+  ],
+};`;
+
+export const usageScale = `import { PricingScale, type ScalePlanItem } from "@/components/custom/blocks/Pricing";
+
+${scaleData}
+
+export default function ScalablePricing() {
+  return (
+    <PricingScale
+      badgeText="PRICING"
+      title="Pricing That Scales With You"
+      subtitle="From solo creators to enterprise teams, pick the plan that matches your ambitions."
+      monthlyLabel="MONTHLY"
+      annuallyLabel="ANNUALLY"
+      annualDiscountText="(SAVE 10%)"
+      plans={scalePlansData}
+      footerTitle="Need help choosing the right plan?"
+      footerSubtitle="Schedule a complimentary 20-minute strategy call with our team."
+      footerCtaText="Book a Free Strategy Call"
+      footerCtaHref="#"
+      color="indigo"
+      counting={true}
+    />
+  );
+}`;
+
 <ExampleShowcase
   name="pricing"
   colorControl
   columns={1}
   examples={[
+    {
+      title: "Scale cards",
+      subheading: "Modern dual-card layout with launch & scale plans, monthly/annual toggle, and bottom strategy call CTA.",
+      propNotes: [
+        {
+          lead: "Pass",
+          prop: "plans",
+          effect:
+            "to customize monthly and annual pricing tiers, icons, and features.",
+        },
+      ],
+      props: { layout: "scale", counting: true },
+      usage: usageScale,
+      code: extractCode("src/components/custom/blocks/Pricing.tsx"),
+    },
     {
       title: "Tiered cards",
       subheading: "One card per plan, with a billing-cycle tab strip above them.",
@@ -396,7 +516,6 @@ export default function InteractiveChecklistPricing() {
       ],
       props: { layout: "cards", variant: "default", counting: true },
       usage: usageCards,
-      code: extractCode("src/components/custom/blocks/Pricing.tsx"),
     },
   ]}
 />
@@ -818,6 +937,62 @@ export default function InteractiveChecklistPricing() {
         </td>
         <td>
           Accent theme color for selected checkboxes, total calculation and CTA button.
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <code>PricingScale</code>
+        </td>
+        <td>
+          <code>plans</code>
+        </td>
+        <td>
+          <code>{"{ monthly: ScalePlanItem[]; annually: ScalePlanItem[] }"}</code>
+        </td>
+        <td>
+          Object containing <code>monthly</code> and <code>annually</code> arrays of pricing plan cards with titles, prices, icons and features.
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <code>PricingScale</code>
+        </td>
+        <td>
+          <code>badgeText / title / subtitle</code>
+        </td>
+        <td>
+          <code>string</code>
+        </td>
+        <td>
+          Custom text props for top pill badge, section heading, and description paragraph.
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <code>PricingScale</code>
+        </td>
+        <td>
+          <code>footerTitle / footerSubtitle / footerCtaText / footerCtaHref</code>
+        </td>
+        <td>
+          <code>string</code>
+        </td>
+        <td>
+          Configuration props for the bottom strategy call CTA banner.
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <code>PricingScale</code>
+        </td>
+        <td>
+          <code>color</code>
+        </td>
+        <td>
+          <code>PricingColor</code>
+        </td>
+        <td>
+          Applies accent color to popular plan ring/badge, checkmarks, active toggle, and CTA buttons.
         </td>
       </tr>
     </tbody>
