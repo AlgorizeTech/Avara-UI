@@ -81,7 +81,7 @@ export default function MarqueeDemo({
       return logos.map((logo, i) => (
         <div
           key={i}
-          className="flex items-center gap-2 text-zinc-400 hover:text-zinc-900 dark:hover:text-zinc-100 transition-colors font-bold text-xl"
+          className="flex items-center gap-2 text-zinc-400 hover:text-zinc-900 dark:hover:text-zinc-100 transition-colors font-semibold text-xl"
         >
           <logo.icon className="w-8 h-8" />
           {logo.name}
@@ -98,11 +98,11 @@ export default function MarqueeDemo({
             "{t.text}"
           </p>
           <div className="flex items-center gap-3">
-            <div className="w-10 h-10 rounded-full bg-zinc-200 dark:bg-zinc-800 flex items-center justify-center font-bold text-zinc-500">
+            <div className="w-10 h-10 rounded-full bg-zinc-200 dark:bg-zinc-800 flex items-center justify-center font-semibold text-zinc-500">
               {t.name.charAt(0)}
             </div>
             <div>
-              <p className="text-sm font-bold text-zinc-900 dark:text-zinc-100">
+              <p className="text-sm font-semibold text-zinc-900 dark:text-zinc-100">
                 {t.name}
               </p>
               <p className="text-xs text-zinc-500">{t.role}</p>

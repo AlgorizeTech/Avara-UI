@@ -84,7 +84,7 @@ const STATUS_STYLES: Record<Invoice["status"], string> = {
 
 const StatusPill = ({ status }: { status: Invoice["status"] }) => (
   <span
-    className={`px-2.5 py-1 rounded-md text-[11px] font-bold uppercase tracking-wider ${STATUS_STYLES[status]}`}
+    className={`px-2.5 py-1 rounded-md text-[11px] font-semibold uppercase tracking-wider ${STATUS_STYLES[status]}`}
   >
     {status}
   </span>
@@ -174,7 +174,7 @@ export default function TableDemo({
       <div className="w-full flex flex-col gap-8 p-4 sm:p-6">
         {TABLE_SIZES.map((each) => (
           <div key={each} className="flex flex-col gap-2">
-            <span className="text-xs font-bold uppercase tracking-wider text-muted-foreground">
+            <span className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">
               size=&quot;{each}&quot;
             </span>
             <Table variant={variant} color={color} size={each}>
@@ -330,7 +330,7 @@ export default function TableDemo({
                         open={expanded.has(invoice.reference)}
                         colSpan={columnCount}
                       >
-                        <h4 className="text-sm font-bold text-foreground">
+                        <h4 className="text-sm font-semibold text-foreground">
                           Transaction summary
                         </h4>
                         <p className="text-sm text-muted-foreground max-w-2xl leading-relaxed mt-1">

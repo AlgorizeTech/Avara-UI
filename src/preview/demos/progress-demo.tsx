@@ -454,7 +454,7 @@ export default function ProgressDemo({
         >
           {(shown) => (
             <>
-              <span className="text-3xl font-bold tabular-nums">{shown}</span>
+              <span className="text-3xl font-semibold tabular-nums">{shown}</span>
               <span className="text-[11px] font-medium uppercase tracking-wide text-muted-foreground">
                 of {max} credits
               </span>

@@ -92,7 +92,7 @@ export default function OtpInputDemo({
           <div className="w-12 h-12 rounded-full bg-zinc-100 dark:bg-zinc-900 flex items-center justify-center mb-2 text-zinc-900 dark:text-white">
             <KeyRound className="w-6 h-6" />
           </div>
-          <h3 className="text-xl font-bold text-zinc-900 dark:text-white tracking-tight">
+          <h3 className="text-xl font-semibold text-zinc-900 dark:text-white tracking-tight">
             Two-Step Verification
           </h3>
           <p className="text-sm text-zinc-500 dark:text-zinc-400">
@@ -118,7 +118,7 @@ export default function OtpInputDemo({
 
         <div className="h-10 flex items-center justify-center">
           {isComplete ? (
-            <div className="flex items-center gap-2 text-sm font-bold text-emerald-600 dark:text-emerald-400 animate-in fade-in slide-in-from-bottom-2">
+            <div className="flex items-center gap-2 text-sm font-semibold text-emerald-600 dark:text-emerald-400 animate-in fade-in slide-in-from-bottom-2">
               <CheckCircle2 className="w-4 h-4" />
               Verified Successfully
             </div>
@@ -126,7 +126,7 @@ export default function OtpInputDemo({
             <button
               disabled={currentValue.length !== length || isDisabled}
               onClick={() => handleComplete(currentValue)}
-              className="px-6 py-2 rounded-xl text-sm font-bold bg-primary text-primary-foreground hover:bg-primary/90 disabled:opacity-30 disabled:cursor-not-allowed transition-all"
+              className="px-6 py-2 rounded-xl text-sm font-semibold bg-primary text-primary-foreground hover:bg-primary/90 disabled:opacity-30 disabled:cursor-not-allowed transition-all"
             >
               Verify Code
             </button>

@@ -6,7 +6,7 @@ import { useToast } from "@/components/custom/blocks/toast-context";
 type ExampleMode = "all" | "basic" | "types" | "action" | "persistent" | "stack";
 
 const TRIGGER =
-  "px-6 py-2.5 text-white text-sm font-bold rounded-xl transition-colors shadow-sm";
+  "px-6 py-2.5 text-white text-sm font-semibold rounded-xl transition-colors shadow-sm";
 
 const ToastButtons = ({ example = "all" }: { example?: ExampleMode }) => {
   const { toast } = useToast();
@@ -21,7 +21,7 @@ const ToastButtons = ({ example = "all" }: { example?: ExampleMode }) => {
               description: "We'll let you know as soon as they reply.",
             })
           }
-          className="px-6 py-2.5 bg-primary text-primary-foreground text-sm font-bold rounded-xl transition-colors shadow-sm hover:opacity-90 cursor-pointer"
+          className="px-6 py-2.5 bg-primary text-primary-foreground text-sm font-semibold rounded-xl transition-colors shadow-sm hover:opacity-90 cursor-pointer"
         >
           Show toast
         </button>
@@ -154,7 +154,7 @@ const ToastButtons = ({ example = "all" }: { example?: ExampleMode }) => {
             type: "success",
           })
         }
-        className="px-6 py-2.5 bg-emerald-600 text-white text-sm font-bold rounded-xl hover:bg-emerald-700 transition-colors shadow-sm"
+        className="px-6 py-2.5 bg-emerald-600 text-white text-sm font-semibold rounded-xl hover:bg-emerald-700 transition-colors shadow-sm"
       >
         Success Toast
       </button>
@@ -166,7 +166,7 @@ const ToastButtons = ({ example = "all" }: { example?: ExampleMode }) => {
             type: "error",
           })
         }
-        className="px-6 py-2.5 bg-red-600 text-white text-sm font-bold rounded-xl hover:bg-red-700 transition-colors shadow-sm"
+        className="px-6 py-2.5 bg-red-600 text-white text-sm font-semibold rounded-xl hover:bg-red-700 transition-colors shadow-sm"
       >
         Error Toast
       </button>
@@ -182,13 +182,13 @@ const ToastButtons = ({ example = "all" }: { example?: ExampleMode }) => {
             },
           })
         }
-        className="px-6 py-2.5 bg-blue-600 text-white text-sm font-bold rounded-xl hover:bg-blue-700 transition-colors shadow-sm"
+        className="px-6 py-2.5 bg-blue-600 text-white text-sm font-semibold rounded-xl hover:bg-blue-700 transition-colors shadow-sm"
       >
         Info (with Action)
       </button>
       <button
         onClick={() => toast({ title: "Message sent", type: "default" })}
-        className="px-6 py-2.5 bg-zinc-900 dark:bg-white text-white dark:text-zinc-900 text-sm font-bold rounded-xl transition-colors shadow-sm"
+        className="px-6 py-2.5 bg-zinc-900 dark:bg-white text-white dark:text-zinc-900 text-sm font-semibold rounded-xl transition-colors shadow-sm"
       >
         Default Simple
       </button>

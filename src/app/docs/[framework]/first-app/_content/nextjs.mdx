@@ -210,7 +210,7 @@ Let's create a new page for your application:
 export default function About() {
   return (
     <div className="min-h-screen flex flex-col items-center justify-center">
-      <h1 className="text-4xl font-bold mb-4">About Page</h1>
+      <h1 className="text-4xl font-semibold mb-4">About Page</h1>
       <p className="text-xl">This is my first Next.js app!</p>
     </div>
   );
@@ -283,7 +283,7 @@ interface CardProps {
 export default function Card({ title, children }: CardProps) {
   return (
     <div className="border rounded-lg shadow-lg p-6 max-w-md">
-      <h2 className="text-2xl font-bold mb-4">{title}</h2>
+      <h2 className="text-2xl font-semibold mb-4">{title}</h2>
       <div>{children}</div>
     </div>
   );

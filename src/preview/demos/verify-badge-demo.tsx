@@ -34,7 +34,7 @@ export default function VerifyBadgeDemo({
     return (
       <div className="w-full min-h-[380px] flex items-center justify-center">
         <div className="flex items-center gap-2">
-          <span className="font-bold text-zinc-900 dark:text-zinc-50 text-[15px] tracking-tight">
+          <span className="font-semibold text-zinc-900 dark:text-zinc-50 text-[15px] tracking-tight">
             AlgorizeSystem
           </span>
           <VerifyBadge color={activeHex} size={size} animate={animate} />
@@ -109,12 +109,12 @@ export default function VerifyBadgeDemo({
                 <line x1="16" y1="16" x2="16" y2="16" />
               </svg>
             </div>
-            <span className="font-bold text-zinc-900 dark:text-zinc-50 text-sm sm:text-[15px] tracking-tight truncate">
+            <span className="font-semibold text-zinc-900 dark:text-zinc-50 text-sm sm:text-[15px] tracking-tight truncate">
               AlgorizeSystem
             </span>
             <VerifyBadge color={activeHex} size={size} animate={animate} />
             <span
-              className="text-[9px] font-bold px-1.5 py-0.5 rounded-[4px] uppercase tracking-wider border shrink-0"
+              className="text-[9px] font-semibold px-1.5 py-0.5 rounded-[4px] uppercase tracking-wider border shrink-0"
               style={{
                 backgroundColor: activeHex.startsWith("#")
                   ? `${activeHex}20`

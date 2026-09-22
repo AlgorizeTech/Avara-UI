@@ -258,17 +258,17 @@ function MiniatureIllustration({
 			<div className="flex-1 flex flex-col justify-center items-center relative overflow-hidden">
 				{type === "hero" && (
 					<div className="w-full text-center space-y-1.5 px-1 my-auto">
-						<span className="inline-block px-1.5 py-0.5 rounded-full bg-primary/10 text-primary text-[8px] font-bold border border-primary/20">
+						<span className="inline-block px-1.5 py-0.5 rounded-full bg-primary/10 text-primary text-[8px] font-semibold border border-primary/20">
 							Next.js 15
 						</span>
-						<div className="text-[11px] font-black tracking-tight text-foreground leading-tight">
+						<div className="text-[11px] font-bold tracking-tight text-foreground leading-tight">
 							Build Next-Gen UI
 						</div>
 						<div className="flex justify-center gap-1 pt-0.5">
-							<span className="px-2 py-0.5 rounded bg-primary text-primary-foreground text-[8px] font-bold shadow-xs">
+							<span className="px-2 py-0.5 rounded bg-primary text-primary-foreground text-[8px] font-semibold shadow-xs">
 								Get Started
 							</span>
-							<span className="px-2 py-0.5 rounded border border-border text-[8px] font-bold text-foreground">
+							<span className="px-2 py-0.5 rounded border border-border text-[8px] font-semibold text-foreground">
 								Docs
 							</span>
 						</div>
@@ -278,7 +278,7 @@ function MiniatureIllustration({
 				{type === "pricing" && (
 					<div className="w-full flex flex-col justify-between my-auto space-y-1 px-0.5">
 						<div className="mx-auto px-1.5 py-0.5 rounded-full bg-muted border border-border/60 flex items-center gap-0.5 text-[6px]">
-							<span className="font-bold text-primary px-1 rounded-full bg-background shadow-2xs">
+							<span className="font-semibold text-primary px-1 rounded-full bg-background shadow-2xs">
 								Monthly
 							</span>
 							<span className="text-muted-foreground font-semibold">
@@ -287,32 +287,32 @@ function MiniatureIllustration({
 						</div>
 						<div className="w-full flex items-center justify-between gap-1 pt-0.5">
 							<div className="flex-1 p-1 rounded-md border border-border/80 bg-background text-center space-y-0.5 min-w-0">
-								<div className="text-[6px] font-bold text-muted-foreground truncate">
+								<div className="text-[6px] font-semibold text-muted-foreground truncate">
 									Free
 								</div>
-								<div className="text-[8px] font-black text-foreground">$0</div>
-								<div className="h-1.5 w-full rounded bg-muted text-[5px] font-bold text-muted-foreground flex items-center justify-center">
+								<div className="text-[8px] font-bold text-foreground">$0</div>
+								<div className="h-1.5 w-full rounded bg-muted text-[5px] font-semibold text-muted-foreground flex items-center justify-center">
 									Free
 								</div>
 							</div>
 							<div className="flex-1 p-1 rounded-md border border-primary/30 bg-primary/10 text-center space-y-0.5 shadow-2xs relative min-w-0">
-								<span className="absolute -top-1.5 left-1/2 -translate-x-1/2 text-[4px] font-black px-0.5 rounded bg-primary text-primary-foreground whitespace-nowrap">
+								<span className="absolute -top-1.5 left-1/2 -translate-x-1/2 text-[4px] font-bold px-0.5 rounded bg-primary text-primary-foreground whitespace-nowrap">
 									HOT
 								</span>
-								<div className="text-[6px] font-black text-primary truncate">
+								<div className="text-[6px] font-bold text-primary truncate">
 									Pro
 								</div>
-								<div className="text-[8px] font-black text-primary">$29</div>
-								<div className="h-1.5 w-full rounded bg-primary text-[5px] font-bold text-primary-foreground flex items-center justify-center shadow-2xs">
+								<div className="text-[8px] font-bold text-primary">$29</div>
+								<div className="h-1.5 w-full rounded bg-primary text-[5px] font-semibold text-primary-foreground flex items-center justify-center shadow-2xs">
 									Pro
 								</div>
 							</div>
 							<div className="flex-1 p-1 rounded-md border border-border/80 bg-background text-center space-y-0.5 min-w-0">
-								<div className="text-[6px] font-bold text-muted-foreground truncate">
+								<div className="text-[6px] font-semibold text-muted-foreground truncate">
 									Enterprise
 								</div>
-								<div className="text-[8px] font-black text-foreground">$99</div>
-								<div className="h-1.5 w-full rounded bg-muted text-[5px] font-bold text-muted-foreground flex items-center justify-center">
+								<div className="text-[8px] font-bold text-foreground">$99</div>
+								<div className="h-1.5 w-full rounded bg-muted text-[5px] font-semibold text-muted-foreground flex items-center justify-center">
 									VIP
 								</div>
 							</div>
@@ -322,7 +322,7 @@ function MiniatureIllustration({
 
 				{type === "chart" && (
 					<div className="w-full h-full flex flex-col justify-between py-1 relative">
-						<div className="flex justify-between items-center text-[7.5px] font-bold text-muted-foreground px-1 z-10">
+						<div className="flex justify-between items-center text-[7.5px] font-semibold text-muted-foreground px-1 z-10">
 							<span>Revenue Stream</span>
 							<span className="text-emerald-500 font-extrabold">+34.2%</span>
 						</div>
@@ -379,16 +379,16 @@ function MiniatureIllustration({
 				{type === "dock" && (
 					<div className="w-full flex items-center justify-center my-auto">
 						<div className="px-2.5 py-1.5 rounded-2xl bg-background border border-border/80 shadow-md flex items-end gap-1.5">
-							<div className="size-4 rounded-lg bg-rose-500/80 flex items-center justify-center text-[7px] text-white font-bold">
+							<div className="size-4 rounded-lg bg-rose-500/80 flex items-center justify-center text-[7px] text-white font-semibold">
 								A
 							</div>
-							<div className="size-4 rounded-lg bg-amber-500/80 flex items-center justify-center text-[7px] text-white font-bold">
+							<div className="size-4 rounded-lg bg-amber-500/80 flex items-center justify-center text-[7px] text-white font-semibold">
 								B
 							</div>
-							<div className="size-5 rounded-lg bg-primary text-primary-foreground flex items-center justify-center text-[9px] font-bold shadow-sm -translate-y-1">
+							<div className="size-5 rounded-lg bg-primary text-primary-foreground flex items-center justify-center text-[9px] font-semibold shadow-sm -translate-y-1">
 								★
 							</div>
-							<div className="size-4 rounded-lg bg-emerald-500/80 flex items-center justify-center text-[7px] text-white font-bold">
+							<div className="size-4 rounded-lg bg-emerald-500/80 flex items-center justify-center text-[7px] text-white font-semibold">
 								C
 							</div>
 						</div>
@@ -398,11 +398,11 @@ function MiniatureIllustration({
 				{type === "navbar" && (
 					<div className="w-full my-auto px-0.5">
 						<div className="w-full p-1.5 rounded-xl bg-background border border-border/80 flex items-center justify-between shadow-xs px-2.5">
-							<div className="flex items-center gap-1.5 text-[8.5px] font-black text-foreground">
+							<div className="flex items-center gap-1.5 text-[8.5px] font-bold text-foreground">
 								<span className="size-2 rounded bg-primary" />
 								<span>DocsUI</span>
 							</div>
-							<div className="flex items-center gap-2 text-[7px] font-bold text-muted-foreground">
+							<div className="flex items-center gap-2 text-[7px] font-semibold text-muted-foreground">
 								<span>Features</span>
 								<span>Docs</span>
 								<span className="px-2 py-0.5 rounded-md bg-primary text-primary-foreground font-extrabold text-[6.5px]">
@@ -415,17 +415,17 @@ function MiniatureIllustration({
 
 				{type === "table" && (
 					<div className="w-full space-y-1 my-auto text-[8px] font-mono">
-						<div className="flex items-center justify-between border-b border-border/60 pb-0.5 font-bold text-primary">
+						<div className="flex items-center justify-between border-b border-border/60 pb-0.5 font-semibold text-primary">
 							<span>Name</span>
 							<span>Status</span>
 						</div>
 						<div className="flex items-center justify-between text-foreground">
 							<span>Button.tsx</span>
-							<span className="text-emerald-500 font-bold">Ready</span>
+							<span className="text-emerald-500 font-semibold">Ready</span>
 						</div>
 						<div className="flex items-center justify-between text-foreground">
 							<span>Card.tsx</span>
-							<span className="text-emerald-500 font-bold">Ready</span>
+							<span className="text-emerald-500 font-semibold">Ready</span>
 						</div>
 					</div>
 				)}
@@ -434,7 +434,7 @@ function MiniatureIllustration({
 					<div className="w-full flex items-center justify-center my-auto">
 						<div className="w-4/5 p-2 rounded-xl bg-background border border-border shadow-lg space-y-1.5">
 							<div className="flex justify-between items-center border-b border-border/40 pb-0.5">
-								<span className="text-[9px] font-bold text-foreground pb-0.5">
+								<span className="text-[9px] font-semibold text-foreground pb-0.5">
 									Modal Dialog
 								</span>
 								<span className="text-[8px] text-muted-foreground pr-1.5 pb-0.5">✕</span>
@@ -443,10 +443,10 @@ function MiniatureIllustration({
 								Confirm action step?
 							</div>
 							<div className="flex justify-end gap-1 pt-0.5">
-								<span className="px-1.5 py-0.5 rounded bg-muted text-[7px] font-bold">
+								<span className="px-1.5 py-0.5 rounded bg-muted text-[7px] font-semibold">
 									Cancel
 								</span>
-								<span className="px-1.5 py-0.5 rounded bg-primary text-primary-foreground text-[7px] font-bold">
+								<span className="px-1.5 py-0.5 rounded bg-primary text-primary-foreground text-[7px] font-semibold">
 									Confirm
 								</span>
 							</div>
@@ -457,19 +457,19 @@ function MiniatureIllustration({
 				{type === "stepper" && (
 					<div className="w-full space-y-2 my-auto px-1">
 						<div className="flex items-center justify-between">
-							<span className="size-3.5 rounded-full bg-primary text-[7px] text-primary-foreground font-black flex items-center justify-center">
+							<span className="size-3.5 rounded-full bg-primary text-[7px] text-primary-foreground font-bold flex items-center justify-center">
 								1
 							</span>
 							<div className="h-0.5 flex-1 bg-primary mx-1" />
-							<span className="size-3.5 rounded-full bg-primary text-[7px] text-primary-foreground font-black flex items-center justify-center">
+							<span className="size-3.5 rounded-full bg-primary text-[7px] text-primary-foreground font-bold flex items-center justify-center">
 								2
 							</span>
 							<div className="h-0.5 flex-1 bg-muted-foreground/30 mx-1" />
-							<span className="size-3.5 rounded-full bg-muted border border-border text-[7px] text-muted-foreground font-bold flex items-center justify-center">
+							<span className="size-3.5 rounded-full bg-muted border border-border text-[7px] text-muted-foreground font-semibold flex items-center justify-center">
 								3
 							</span>
 						</div>
-						<div className="text-center text-[8px] font-bold text-foreground">
+						<div className="text-center text-[8px] font-semibold text-foreground">
 							Step 2: Configuration
 						</div>
 					</div>
@@ -488,11 +488,11 @@ function MiniatureIllustration({
 
 				{type === "auth" && (
 					<div className="w-full max-w-[130px] p-2 rounded-xl bg-background border border-border shadow-xs space-y-1.5 text-center my-auto">
-						<div className="text-[8px] font-bold text-foreground">Sign In</div>
+						<div className="text-[8px] font-semibold text-foreground">Sign In</div>
 						<div className="h-3 w-full bg-muted border border-border rounded flex items-center px-1 text-[7px] text-muted-foreground">
 							email@app.com
 						</div>
-						<div className="h-3 w-full bg-primary text-primary-foreground font-bold rounded flex items-center justify-center text-[7px]">
+						<div className="h-3 w-full bg-primary text-primary-foreground font-semibold rounded flex items-center justify-center text-[7px]">
 							Submit
 						</div>
 					</div>
@@ -500,7 +500,7 @@ function MiniatureIllustration({
 
 				{type === "carousel" && (
 					<div className="w-full flex items-center justify-between gap-1 my-auto px-0.5">
-						<div className="size-4 rounded-full bg-muted border border-border text-[7px] font-black text-muted-foreground flex items-center justify-center shrink-0">
+						<div className="size-4 rounded-full bg-muted border border-border text-[7px] font-bold text-muted-foreground flex items-center justify-center shrink-0">
 							‹
 						</div>
 						<div className="flex-1 h-14 rounded-xl bg-background border border-primary/50 p-1.5 shadow-sm flex flex-col justify-between items-center text-center">
@@ -513,7 +513,7 @@ function MiniatureIllustration({
 								<span className="size-1 rounded-full bg-primary/40" />
 							</div>
 						</div>
-						<div className="size-4 rounded-full bg-muted border border-border text-[7px] font-black text-muted-foreground flex items-center justify-center shrink-0">
+						<div className="size-4 rounded-full bg-muted border border-border text-[7px] font-bold text-muted-foreground flex items-center justify-center shrink-0">
 							›
 						</div>
 					</div>
@@ -521,7 +521,7 @@ function MiniatureIllustration({
 
 				{type === "card" && (
 					<div className="w-full max-w-[130px] p-2 rounded-xl bg-background border border-border/80 shadow-xs space-y-1.5 my-auto">
-						<div className="w-full bg-primary/10 rounded-lg border border-primary/20 flex items-center justify-center text-[8px] font-bold text-primary py-1.5 pb-1.25">
+						<div className="w-full bg-primary/10 rounded-lg border border-primary/20 flex items-center justify-center text-[8px] font-semibold text-primary py-1.5 pb-1.25">
 							Card View
 						</div>
 						<div className="h-1.5 w-3/4 bg-foreground/80 rounded" />
@@ -532,11 +532,11 @@ function MiniatureIllustration({
 				{type === "counter" && (
 					<div className="w-full flex items-center justify-center my-auto">
 						<div className="px-3 py-2 rounded-xl bg-background border border-border shadow-xs flex items-center gap-2">
-							<span className="size-4 rounded bg-muted border border-border font-black text-[9px] flex items-center justify-center text-foreground">
+							<span className="size-4 rounded bg-muted border border-border font-bold text-[9px] flex items-center justify-center text-foreground">
 								-
 							</span>
-							<span className="text-sm font-black text-primary px-1">99+</span>
-							<span className="size-4 rounded bg-primary text-primary-foreground font-black text-[9px] flex items-center justify-center">
+							<span className="text-sm font-bold text-primary px-1">99+</span>
+							<span className="size-4 rounded bg-primary text-primary-foreground font-bold text-[9px] flex items-center justify-center">
 								+
 							</span>
 						</div>
@@ -545,15 +545,15 @@ function MiniatureIllustration({
 
 				{type === "cart" && (
 					<div className="w-full max-w-[130px] p-2 rounded-xl bg-background border border-border shadow-xs space-y-1.5 my-auto text-[7px]">
-						<div className="flex justify-between items-center font-bold text-foreground border-b border-border pb-0.75">
+						<div className="flex justify-between items-center font-semibold text-foreground border-b border-border pb-0.75">
 							<span>Shopping Cart</span>
 							<span className="text-primary">2 Items</span>
 						</div>
 						<div className="flex justify-between items-center text-muted-foreground">
 							<span>Next UI Kit</span>
-							<span className="font-bold text-foreground">$49</span>
+							<span className="font-semibold text-foreground">$49</span>
 						</div>
-						<div className="h-5 w-full bg-primary text-primary-foreground font-bold rounded flex items-center justify-center text-[7px]">
+						<div className="h-5 w-full bg-primary text-primary-foreground font-semibold rounded flex items-center justify-center text-[7px]">
 							Checkout
 						</div>
 					</div>
@@ -564,7 +564,7 @@ function MiniatureIllustration({
 						<div className="p-1.5 rounded-lg bg-background border border-border flex items-center justify-between shadow-xs">
 							<div className="flex items-center gap-1.5">
 								<span className="size-2 rounded-full bg-primary" />
-								<span className="text-[8px] font-bold text-foreground">
+								<span className="text-[8px] font-semibold text-foreground">
 									Item Component
 								</span>
 							</div>
@@ -576,13 +576,13 @@ function MiniatureIllustration({
 				{type === "resizable" && (
 					<div className="w-full h-full flex gap-1.5 p-1 my-auto">
 						<div className="w-1/2 h-full rounded-lg bg-background border border-border p-1 flex flex-col justify-center items-center">
-							<span className="text-[7px] font-bold text-muted-foreground">
+							<span className="text-[7px] font-semibold text-muted-foreground">
 								Left
 							</span>
 						</div>
 						<div className="w-1 h-full rounded bg-primary/40 my-auto cursor-col-resize" />
 						<div className="w-1/2 h-full rounded-lg bg-background border border-border p-1 flex flex-col justify-center items-center">
-							<span className="text-[7px] font-bold text-muted-foreground">
+							<span className="text-[7px] font-semibold text-muted-foreground">
 								Right
 							</span>
 						</div>
@@ -592,7 +592,7 @@ function MiniatureIllustration({
 				{type === "scroll-area" && (
 					<div className="w-full h-full p-1.5 rounded-lg bg-background border border-border flex justify-between my-auto relative">
 						<div className="space-y-1 text-[7px] text-foreground">
-							<div className="font-bold text-primary">Scroll Area</div>
+							<div className="font-semibold text-primary">Scroll Area</div>
 							<div className="text-muted-foreground">Row item 1</div>
 							<div className="text-muted-foreground">Row item 2</div>
 						</div>
@@ -604,21 +604,21 @@ function MiniatureIllustration({
 					<div className="w-full grid grid-cols-3 gap-1 my-auto px-1">
 						<div className="space-y-1">
 							<div className="h-10 rounded-lg bg-primary/20 border border-primary/40 p-1 flex items-end">
-								<span className="text-[5px] font-black text-primary">#01</span>
+								<span className="text-[5px] font-bold text-primary">#01</span>
 							</div>
 							<div className="h-6 rounded-lg bg-muted border border-border" />
 						</div>
 						<div className="space-y-1">
 							<div className="h-6 rounded-lg bg-muted border border-border" />
 							<div className="h-11 rounded-lg bg-emerald-500/20 border border-emerald-500/40 p-1 flex items-end">
-								<span className="text-[5px] font-black text-emerald-500">
+								<span className="text-[5px] font-bold text-emerald-500">
 									#02
 								</span>
 							</div>
 						</div>
 						<div className="space-y-1">
 							<div className="h-12 rounded-lg bg-primary/10 border border-primary/20 p-1 flex items-end">
-								<span className="text-[5px] font-black text-primary">#03</span>
+								<span className="text-[5px] font-bold text-primary">#03</span>
 							</div>
 						</div>
 					</div>
@@ -652,14 +652,14 @@ function MiniatureIllustration({
 				{type === "image-compare" && (
 					<div className="w-full h-full rounded-xl bg-card border border-border flex flex-col justify-center relative overflow-hidden my-auto shadow-2xs group/imgcomp">
 						<div className="absolute inset-0 flex">
-							<div className="w-1/2 h-full bg-primary/20 flex items-center justify-center text-[7px] font-black text-primary border-r border-primary/30">
+							<div className="w-1/2 h-full bg-primary/20 flex items-center justify-center text-[7px] font-bold text-primary border-r border-primary/30">
 								BEFORE
 							</div>
-							<div className="w-1/2 h-full bg-emerald-500/20 flex items-center justify-center text-[7px] font-black text-emerald-500">
+							<div className="w-1/2 h-full bg-emerald-500/20 flex items-center justify-center text-[7px] font-bold text-emerald-500">
 								AFTER
 							</div>
 						</div>
-						<div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 size-4 rounded-full bg-primary text-primary-foreground font-black text-[7px] flex items-center justify-center shadow-md">
+						<div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 size-4 rounded-full bg-primary text-primary-foreground font-bold text-[7px] flex items-center justify-center shadow-md">
 							↔
 						</div>
 					</div>
@@ -671,7 +671,7 @@ function MiniatureIllustration({
 							<div className="w-8 h-12 rounded-lg bg-emerald-500/20 border border-emerald-500/40 -rotate-25 -translate-x-12 translate-y-3 opacity-60 shadow-xs" />
 							<div className="w-9 h-14 rounded-lg bg-orange-500/20 border border-orange-500/40 -rotate-12 -translate-x-6 translate-y-1 shadow-md" />
 							<div className="w-10 h-16 rounded-xl bg-primary text-primary-foreground font-mono text-[5px] flex flex-col justify-between p-1 z-10 shadow-xl border border-white/20">
-								<span className="font-bold">Violet</span>
+								<span className="font-semibold">Violet</span>
 								<span className="self-end text-[4px]">004</span>
 							</div>
 							<div className="w-9 h-14 rounded-lg bg-amber-500/20 border border-amber-500/40 rotate-12 translate-x-6 translate-y-1 shadow-md" />
@@ -690,7 +690,7 @@ function MiniatureIllustration({
 
 						{/* Target Area UI */}
 						<div className="relative z-10 flex flex-col items-center gap-1 text-center">
-							<div className="size-7 rounded-lg bg-primary/10 border border-primary/30 text-primary flex items-center justify-center text-[10px] font-black shadow-xs">
+							<div className="size-7 rounded-lg bg-primary/10 border border-primary/30 text-primary flex items-center justify-center text-[10px] font-bold shadow-xs">
 								✦
 							</div>
 							<div className="text-[7.5px] font-extrabold text-foreground">
@@ -721,8 +721,8 @@ function MiniatureIllustration({
 
 				{type === "file-upload" && (
 					<div className="w-full max-w-[130px] p-2 rounded-xl bg-background border border-dashed border-primary/60 text-center space-y-1 my-auto">
-						<span className="text-xs text-primary font-bold">☁</span>
-						<div className="text-[8px] font-bold text-foreground">
+						<span className="text-xs text-primary font-semibold">☁</span>
+						<div className="text-[8px] font-semibold text-foreground">
 							Drag & Drop File
 						</div>
 					</div>
@@ -742,7 +742,7 @@ function MiniatureIllustration({
 					<div className="w-full flex items-center justify-center my-auto relative h-12">
 						<div className="w-16 h-10 rounded-lg bg-muted/60 border border-border absolute -top-1 rotate-3" />
 						<div className="w-16 h-10 rounded-lg bg-background border border-primary/30 shadow-md z-10 p-1 text-center flex flex-col justify-center">
-							<span className="text-[7px] font-bold text-primary">
+							<span className="text-[7px] font-semibold text-primary">
 								Memories
 							</span>
 						</div>
@@ -752,7 +752,7 @@ function MiniatureIllustration({
 				{type === "scroll-stack" && (
 					<div className="w-full flex flex-col items-center gap-1 my-auto">
 						<div className="w-20 h-3 rounded-t-lg bg-muted border border-border" />
-						<div className="w-22 h-6 rounded-lg bg-background border border-primary/30 shadow-xs p-1 text-center text-[7px] font-bold text-primary">
+						<div className="w-22 h-6 rounded-lg bg-background border border-primary/30 shadow-xs p-1 text-center text-[7px] font-semibold text-primary">
 							Scroll Stack Card
 						</div>
 					</div>
@@ -761,10 +761,10 @@ function MiniatureIllustration({
 				{type === "magic-bento" && (
 					<div className="w-full grid grid-cols-2 gap-1 my-auto px-1">
 						<div className="h-10 rounded-lg bg-primary/20 border border-primary/40 p-1 flex flex-col justify-between">
-							<span className="text-[7px] font-bold text-primary">Glow</span>
+							<span className="text-[7px] font-semibold text-primary">Glow</span>
 						</div>
 						<div className="h-10 rounded-lg bg-card border border-border p-1 flex flex-col justify-between">
-							<span className="text-[7px] font-bold text-foreground">Tilt</span>
+							<span className="text-[7px] font-semibold text-foreground">Tilt</span>
 						</div>
 					</div>
 				)}
@@ -890,7 +890,7 @@ function MiniatureIllustration({
 						{/* Central Core Pulse Node */}
 						<div className="relative z-10 flex items-center justify-center">
 							<span className="animate-ping absolute size-8 rounded-full bg-primary opacity-40" />
-							<div className="size-8 rounded-full bg-primary text-primary-foreground font-black text-[7.5px] flex flex-col items-center justify-center shadow-xl border-2 border-background ring-4 ring-primary/30">
+							<div className="size-8 rounded-full bg-primary text-primary-foreground font-bold text-[7.5px] flex flex-col items-center justify-center shadow-xl border-2 border-background ring-4 ring-primary/30">
 								<span>CORE</span>
 							</div>
 						</div>
@@ -943,7 +943,7 @@ function MiniatureIllustration({
 									</span>
 								</div>
 								<div className="space-y-0.5 pt-0.5">
-									<div className="px-1 py-0.5 rounded bg-primary/10 text-primary text-[6px] font-bold flex items-center justify-between">
+									<div className="px-1 py-0.5 rounded bg-primary/10 text-primary text-[6px] font-semibold flex items-center justify-between">
 										<span>Overview</span>
 										<span className="size-1 rounded-full bg-primary" />
 									</div>
@@ -961,7 +961,7 @@ function MiniatureIllustration({
 						</div>
 						<div className="flex-1 h-full rounded-lg border border-border/60 bg-card p-1.5 flex flex-col justify-between space-y-1">
 							<div className="flex items-center justify-between">
-								<div className="h-1.5 w-1/2 rounded bg-foreground/80 font-bold" />
+								<div className="h-1.5 w-1/2 rounded bg-foreground/80 font-semibold" />
 								<div className="size-2 rounded-full bg-primary/40" />
 							</div>
 							<div className="grid grid-cols-2 gap-1 my-auto">
@@ -982,38 +982,38 @@ function MiniatureIllustration({
 					<div className="w-full h-full p-1 flex flex-col justify-between my-auto space-y-1 overflow-hidden">
 						<div className="grid grid-cols-3 gap-1">
 							<div className="p-1 rounded-md bg-background border border-border/80 text-center space-y-0.5">
-								<div className="text-[5.5px] font-bold text-muted-foreground">
+								<div className="text-[5.5px] font-semibold text-muted-foreground">
 									Tickets
 								</div>
-								<div className="text-[8px] font-black text-foreground">
+								<div className="text-[8px] font-bold text-foreground">
 									1,240
 								</div>
 							</div>
 							<div className="p-1 rounded-md bg-primary/10 border border-primary/20 text-center space-y-0.5">
-								<div className="text-[5.5px] font-bold text-primary">
+								<div className="text-[5.5px] font-semibold text-primary">
 									Resolved
 								</div>
-								<div className="text-[8px] font-black text-primary">98%</div>
+								<div className="text-[8px] font-bold text-primary">98%</div>
 							</div>
 							<div className="p-1 rounded-md bg-background border border-border/80 text-center space-y-0.5">
-								<div className="text-[5.5px] font-bold text-muted-foreground">
+								<div className="text-[5.5px] font-semibold text-muted-foreground">
 									Avg Time
 								</div>
-								<div className="text-[8px] font-black text-emerald-500">
+								<div className="text-[8px] font-bold text-emerald-500">
 									12m
 								</div>
 							</div>
 						</div>
 						<div className="w-full p-1 rounded-lg bg-background border border-border flex items-center justify-between text-[6px]">
 							<div className="space-y-0.5">
-								<div className="font-bold text-foreground">
+								<div className="font-semibold text-foreground">
 									Active Customer Queue
 								</div>
 								<div className="text-[5.5px] text-muted-foreground">
 									14 Agent Agents Online
 								</div>
 							</div>
-							<span className="px-1.5 py-0.5 rounded bg-emerald-500 text-white font-bold text-[5.5px]">
+							<span className="px-1.5 py-0.5 rounded bg-emerald-500 text-white font-semibold text-[5.5px]">
 								Live
 							</span>
 						</div>
@@ -1022,17 +1022,17 @@ function MiniatureIllustration({
 
 				{type === "marquee" && (
 					<div className="w-full flex flex-col justify-between my-auto space-y-2 px-1 relative overflow-hidden">
-						<div className="text-center text-[7px] font-bold text-muted-foreground uppercase tracking-widest">
+						<div className="text-center text-[7px] font-semibold text-muted-foreground uppercase tracking-widest">
 							Trusted by 500+ Companies
 						</div>
 						<div className="w-full flex items-center justify-between gap-1.5 py-1 px-1 rounded-xl bg-background border border-border/80 relative shadow-2xs">
 							<div className="px-1.5 py-0.5 rounded bg-primary/10 border border-primary/20 text-[7px] font-extrabold text-primary flex items-center gap-1">
 								<span className="size-1.5 rounded-full bg-primary" /> React
 							</div>
-							<div className="px-1.5 py-0.5 rounded bg-muted border border-border/60 text-[7px] font-bold text-foreground flex items-center gap-1">
+							<div className="px-1.5 py-0.5 rounded bg-muted border border-border/60 text-[7px] font-semibold text-foreground flex items-center gap-1">
 								<span className="size-1.5 rounded-full bg-sky-500" /> Next.js
 							</div>
-							<div className="px-1.5 py-0.5 rounded bg-muted border border-border/60 text-[7px] font-bold text-foreground flex items-center gap-1">
+							<div className="px-1.5 py-0.5 rounded bg-muted border border-border/60 text-[7px] font-semibold text-foreground flex items-center gap-1">
 								<span className="size-1.5 rounded-full bg-indigo-500" />{" "}
 								Tailwind
 							</div>
@@ -1043,7 +1043,7 @@ function MiniatureIllustration({
 				{type === "floating-contact" && (
 					<div className="w-full h-full relative flex flex-col justify-end items-end p-1.5 my-auto overflow-hidden">
 						<div className="w-22 p-1 mb-1 rounded-lg bg-background border border-border shadow-xs space-y-0.5 text-[5.5px]">
-							<div className="flex items-center gap-1 font-bold text-foreground border-b border-border/40 pb-0.5">
+							<div className="flex items-center gap-1 font-semibold text-foreground border-b border-border/40 pb-0.5">
 								<span className="size-1 rounded-full bg-emerald-500" />
 								<span>Support</span>
 							</div>
@@ -1051,7 +1051,7 @@ function MiniatureIllustration({
 								Help Chat
 							</div>
 						</div>
-						<div className="size-5 rounded-full bg-primary text-primary-foreground font-bold text-[9px] flex items-center justify-center shadow-xs border border-background ring-1 ring-primary/20 shrink-0">
+						<div className="size-5 rounded-full bg-primary text-primary-foreground font-semibold text-[9px] flex items-center justify-center shadow-xs border border-background ring-1 ring-primary/20 shrink-0">
 							💬
 						</div>
 					</div>
@@ -1063,18 +1063,18 @@ function MiniatureIllustration({
 							<span className="text-[5.5px] font-extrabold text-primary px-1 py-0.2 rounded bg-background border border-primary/20 self-start">
 								Active Stream
 							</span>
-							<div className="size-5 rounded-full bg-primary text-primary-foreground flex items-center justify-center font-bold text-[7px] mx-auto shadow-md">
+							<div className="size-5 rounded-full bg-primary text-primary-foreground flex items-center justify-center font-semibold text-[7px] mx-auto shadow-md">
 								▶
 							</div>
 							<div className="h-1 w-3/4 bg-primary/60 rounded" />
 						</div>
 						<div className="w-4 h-full rounded-lg bg-muted/60 border border-border flex flex-col items-center justify-center">
-							<span className="text-[6px] text-muted-foreground font-bold">
+							<span className="text-[6px] text-muted-foreground font-semibold">
 								▶
 							</span>
 						</div>
 						<div className="w-4 h-full rounded-lg bg-muted/60 border border-border flex flex-col items-center justify-center">
-							<span className="text-[6px] text-muted-foreground font-bold">
+							<span className="text-[6px] text-muted-foreground font-semibold">
 								▶
 							</span>
 						</div>
@@ -1104,7 +1104,7 @@ function MiniatureIllustration({
 								<span className="size-1 rounded-full bg-muted-foreground/60" />
 							</div>
 							<div className="flex-1 p-1 rounded-lg bg-background border border-border/70 text-[6px]">
-								<div className="font-bold text-foreground flex justify-between">
+								<div className="font-semibold text-foreground flex justify-between">
 									<span>Beta Testing</span>
 									<span className="text-[5px] text-muted-foreground">
 										Yesterday
@@ -1117,10 +1117,10 @@ function MiniatureIllustration({
 
 				{type === "typography" && (
 					<div className="w-full flex flex-col justify-between my-auto space-y-1 px-1">
-						<div className="text-xs font-black tracking-tight text-foreground border-b border-border/40 pb-0.5">
+						<div className="text-xs font-bold tracking-tight text-foreground border-b border-border/40 pb-0.5">
 							H1. Heading Text
 						</div>
-						<div className="text-[8px] font-bold text-primary">
+						<div className="text-[8px] font-semibold text-primary">
 							H2. Subtitle Paragraph
 						</div>
 						<div className="text-[6.5px] text-muted-foreground leading-tight">
@@ -1138,14 +1138,14 @@ function MiniatureIllustration({
 									New Order #108
 								</span>
 							</div>
-							<span className="text-[5.5px] font-bold text-primary">
+							<span className="text-[5.5px] font-semibold text-primary">
 								Just now
 							</span>
 						</div>
 						<div className="p-1 rounded-md bg-background border border-border text-[6.5px] flex items-center justify-between opacity-80">
 							<div className="flex items-center gap-1">
 								<span className="size-1.5 rounded-full bg-sky-500" />
-								<span className="font-bold text-foreground">
+								<span className="font-semibold text-foreground">
 									User Signed Up
 								</span>
 							</div>
@@ -1165,7 +1165,7 @@ function MiniatureIllustration({
 								Yes. Adheres to WAI-ARIA standards.
 							</div>
 						</div>
-						<div className="py-1 px-2 rounded-lg bg-muted/40 border border-border flex justify-between items-center font-bold text-foreground">
+						<div className="py-1 px-2 rounded-lg bg-muted/40 border border-border flex justify-between items-center font-semibold text-foreground">
 							<span>Is it styled?</span>
 							<span className="text-[8px] text-muted-foreground pt-0.75">▼</span>
 						</div>
@@ -1178,13 +1178,13 @@ function MiniatureIllustration({
 							<span className="px-1 py-0.2 rounded bg-emerald-500/20 text-emerald-500 font-extrabold text-[5.5px]">
 								GET
 							</span>
-							<span className="text-muted-foreground font-bold">
+							<span className="text-muted-foreground font-semibold">
 								/api/v1/users
 							</span>
 						</div>
 						<div className="flex items-center justify-between text-foreground">
-							<span className="text-primary font-bold">Status: 200 OK</span>
-							<span className="px-1 rounded bg-primary text-primary-foreground font-bold text-[5.5px]">
+							<span className="text-primary font-semibold">Status: 200 OK</span>
+							<span className="px-1 rounded bg-primary text-primary-foreground font-semibold text-[5.5px]">
 								Send
 							</span>
 						</div>
@@ -1193,7 +1193,7 @@ function MiniatureIllustration({
 
 				{type === "breadcrumb" && (
 					<div className="w-full flex items-center justify-center my-auto">
-						<div className="px-2 py-1 pb-0.5 pb-0.5 rounded-lg bg-background border border-border shadow-2xs flex items-center gap-1 text-[7px] font-bold">
+						<div className="px-2 py-1 pb-0.5 pb-0.5 rounded-lg bg-background border border-border shadow-2xs flex items-center gap-1 text-[7px] font-semibold">
 							<span className="text-muted-foreground">Docs</span>
 							<span className="text-muted-foreground/60">/</span>
 							<span className="text-muted-foreground">Components</span>
@@ -1211,17 +1211,17 @@ function MiniatureIllustration({
 								<span>Deploy</span>
 								<span className="text-[5.5px]">🚀</span>
 							</div>
-							<div className="px-2 py-1 pb-0.5 rounded-lg bg-secondary text-secondary-foreground text-[6.5px] font-bold shadow-2xs flex items-center gap-1 border border-border/60 cursor-pointer">
+							<div className="px-2 py-1 pb-0.5 rounded-lg bg-secondary text-secondary-foreground text-[6.5px] font-semibold shadow-2xs flex items-center gap-1 border border-border/60 cursor-pointer">
 								<span>Secondary</span>
 							</div>
-							<div className="px-2 py-1 pb-0.5 rounded-lg border border-border bg-background text-[6.5px] font-bold text-foreground hover:bg-muted cursor-pointer">
+							<div className="px-2 py-1 pb-0.5 rounded-lg border border-border bg-background text-[6.5px] font-semibold text-foreground hover:bg-muted cursor-pointer">
 								Outline
 							</div>
 						</div>
 
 						{/* Bottom Row: Destructive + Loading + Icon Only */}
 						<div className="flex items-center justify-center gap-1.5 flex-wrap">
-							<div className="px-2 py-1 pb-0.75 rounded-lg bg-rose-500/10 border border-rose-500/30 text-rose-500 text-[6px] font-bold flex items-center gap-1 cursor-pointer">
+							<div className="px-2 py-1 pb-0.75 rounded-lg bg-rose-500/10 border border-rose-500/30 text-rose-500 text-[6px] font-semibold flex items-center gap-1 cursor-pointer">
 								<span>Delete</span>
 								<span className="text-[5.5px]">🗑</span>
 							</div>
@@ -1240,13 +1240,13 @@ function MiniatureIllustration({
 					<div className="w-full p-1.5 rounded-xl bg-background border border-border shadow-md space-y-1 my-auto text-[6.5px]">
 						<div className="flex items-center gap-1 border-b border-border/40 pb-1 px-1">
 							<span className="text-[7.5px] text-primary">🔍</span>
-							<span className="font-bold text-foreground">Search docs...</span>
+							<span className="font-semibold text-foreground">Search docs...</span>
 							<span className="ml-auto text-[5.5px] py-0.75 pb-0.25 px-1 bg-muted rounded border border-border text-muted-foreground">
 								⌘K
 							</span>
 						</div>
 						<div className="space-y-0.5">
-							<div className="px-1.5 py-1 pb-0.5 rounded bg-primary/10 text-primary font-bold flex justify-between">
+							<div className="px-1.5 py-1 pb-0.5 rounded bg-primary/10 text-primary font-semibold flex justify-between">
 								<span>&gt; Components</span>
 								<span>Enter</span>
 							</div>
@@ -1265,10 +1265,10 @@ function MiniatureIllustration({
 								</span>
 							</div>
 							<div className="flex items-center gap-0.5 text-muted-foreground text-[6px]">
-								<span className="size-3.5 rounded-md bg-muted/60 border border-border flex items-center justify-center cursor-pointer hover:bg-primary hover:text-primary-foreground font-bold">
+								<span className="size-3.5 rounded-md bg-muted/60 border border-border flex items-center justify-center cursor-pointer hover:bg-primary hover:text-primary-foreground font-semibold">
 									‹
 								</span>
-								<span className="size-3.5 rounded-md bg-muted/60 border border-border flex items-center justify-center cursor-pointer hover:bg-primary hover:text-primary-foreground font-bold">
+								<span className="size-3.5 rounded-md bg-muted/60 border border-border flex items-center justify-center cursor-pointer hover:bg-primary hover:text-primary-foreground font-semibold">
 									›
 								</span>
 							</div>
@@ -1286,7 +1286,7 @@ function MiniatureIllustration({
 						</div>
 
 						{/* Full Month Calendar Matrix */}
-						<div className="grid grid-cols-7 gap-0.5 text-center font-bold text-[6px] items-center">
+						<div className="grid grid-cols-7 gap-0.5 text-center font-semibold text-[6px] items-center">
 							<span className="text-muted-foreground/30 py-0.5">26</span>
 							<span className="text-muted-foreground/30 py-0.5">27</span>
 							<span className="text-muted-foreground/30 py-0.5">28</span>
@@ -1336,7 +1336,7 @@ function MiniatureIllustration({
 							</span>
 
 							{/* Start Date Selection Range */}
-							<span className="py-0.5 rounded-l-md bg-primary text-primary-foreground font-black shadow-2xs">
+							<span className="py-0.5 rounded-l-md bg-primary text-primary-foreground font-bold shadow-2xs">
 								14
 							</span>
 							<span className="py-0.5 bg-primary/20 text-primary font-extrabold">
@@ -1346,7 +1346,7 @@ function MiniatureIllustration({
 								16
 							</span>
 							{/* End Date Selection Range */}
-							<span className="py-0.5 rounded-r-md bg-primary text-primary-foreground font-black shadow-2xs">
+							<span className="py-0.5 rounded-r-md bg-primary text-primary-foreground font-bold shadow-2xs">
 								17
 							</span>
 
@@ -1410,7 +1410,7 @@ function MiniatureIllustration({
 							<span>Toggle Details</span>
 							<span className="text-[7px] pr-0.5 text-primary">▲</span>
 						</div>
-						<div className="p-1.5 pb-1.25 rounded-lg bg-primary/10 border border-primary/20 text-[6.5px] font-bold text-primary">
+						<div className="p-1.5 pb-1.25 rounded-lg bg-primary/10 border border-primary/20 text-[6.5px] font-semibold text-primary">
 							Expanded Panel Content
 						</div>
 					</div>
@@ -1423,7 +1423,7 @@ function MiniatureIllustration({
 								<span>Copy Link</span>
 								<span className="text-muted-foreground">⌘C</span>
 							</div>
-							<div className="px-1.5 py-0.5 rounded bg-primary text-primary-foreground font-bold flex justify-between">
+							<div className="px-1.5 py-0.5 rounded bg-primary text-primary-foreground font-semibold flex justify-between">
 								<span>Inspect Element</span>
 								<span>⌘I</span>
 							</div>
@@ -1439,14 +1439,14 @@ function MiniatureIllustration({
 								<div className="font-extrabold text-foreground border-b border-border/40 pb-1.5 text-center">
 									Drawer Sheet
 								</div>
-								<div className="px-1.5 py-0.5 rounded bg-primary/10 text-primary font-bold text-[5.5px]">
+								<div className="px-1.5 py-0.5 rounded bg-primary/10 text-primary font-semibold text-[5.5px]">
 									Option 1: Edit Profile
 								</div>
 								<div className="px-1.5 py-0.5 rounded bg-muted text-muted-foreground font-medium text-[5.5px]">
 									Option 2: Settings
 								</div>
 							</div>
-							<div className="h-3 w-full bg-primary text-primary-foreground rounded-lg flex items-center justify-center font-bold text-[6px] shadow-2xs">
+							<div className="h-3 w-full bg-primary text-primary-foreground rounded-lg flex items-center justify-center font-semibold text-[6px] shadow-2xs">
 								Submit
 							</div>
 						</div>
@@ -1463,7 +1463,7 @@ function MiniatureIllustration({
 								Are you sure you want to continue?
 							</div>
 							<div className="flex justify-end gap-1 pt-0.5">
-								<span className="px-1.5 py-0.5 rounded bg-primary text-primary-foreground font-bold text-[5.5px]">
+								<span className="px-1.5 py-0.5 rounded bg-primary text-primary-foreground font-semibold text-[5.5px]">
 									Confirm
 								</span>
 							</div>
@@ -1473,7 +1473,7 @@ function MiniatureIllustration({
 
 				{type === "data-grid" && (
 					<div className="w-full px-2 py-1 rounded-lg bg-background border border-border space-y-1 my-auto text-[6px] font-mono">
-						<div className="grid grid-cols-3 gap-1 font-bold text-primary border-b border-border/40 pb-1">
+						<div className="grid grid-cols-3 gap-1 font-semibold text-primary border-b border-border/40 pb-1">
 							<span>ID</span>
 							<span>Name</span>
 							<span>Role</span>
@@ -1481,12 +1481,12 @@ function MiniatureIllustration({
 						<div className="grid grid-cols-3 gap-1 text-foreground">
 							<span>#01</span>
 							<span>Alex</span>
-							<span className="text-emerald-500 font-bold">Admin</span>
+							<span className="text-emerald-500 font-semibold">Admin</span>
 						</div>
 						<div className="grid grid-cols-3 gap-1 text-foreground">
 							<span>#02</span>
 							<span>Sarah</span>
-							<span className="text-sky-500 font-bold">User</span>
+							<span className="text-sky-500 font-semibold">User</span>
 						</div>
 					</div>
 				)}
@@ -1520,10 +1520,10 @@ function MiniatureIllustration({
 						{/* Table Rows */}
 						<div className="space-y-0.5 text-[5.5px]">
 							<div className="grid grid-cols-12 gap-1 items-center bg-primary/5 pb-0 p-0.25 rounded border border-primary/20">
-								<span className="col-span-1 text-center text-primary font-bold">
+								<span className="col-span-1 text-center text-primary font-semibold">
 									☑
 								</span>
-								<span className="col-span-4 font-bold text-foreground truncate">
+								<span className="col-span-4 font-semibold text-foreground truncate">
 									Alex Rivers
 								</span>
 								<span className="col-span-3">
@@ -1548,7 +1548,7 @@ function MiniatureIllustration({
 										Pending
 									</span>
 								</span>
-								<span className="col-span-4 text-right font-bold text-foreground">
+								<span className="col-span-4 text-right font-semibold text-foreground">
 									$420.00
 								</span>
 							</div>
@@ -1565,7 +1565,7 @@ function MiniatureIllustration({
 										Paid
 									</span>
 								</span>
-								<span className="col-span-4 text-right font-bold text-foreground">
+								<span className="col-span-4 text-right font-semibold text-foreground">
 									$3,890.00
 								</span>
 							</div> */}
@@ -1574,7 +1574,7 @@ function MiniatureIllustration({
 						{/* Table Footer Pagination */}
 						<div className="flex justify-between items-center px-0.5 text-[5px] text-muted-foreground font-medium">
 							<span>Page 1 of 12</span>
-							<div className="flex gap-0.5 font-bold">
+							<div className="flex gap-0.5 font-semibold">
 								<span className="px-1 py-0.2 rounded bg-muted">‹ Prev</span>
 								<span className="px-1 py-0.2 rounded bg-muted text-foreground">
 									Next ›
@@ -1604,7 +1604,7 @@ function MiniatureIllustration({
 										</svg>
 									</div>
 									<div className="flex flex-col text-left leading-none truncate">
-										<span className="text-[5px] text-primary font-bold uppercase tracking-wider">
+										<span className="text-[5px] text-primary font-semibold uppercase tracking-wider">
 											Picking Date...
 										</span>
 										<span className="text-[6.5px] font-extrabold text-foreground truncate">
@@ -1612,7 +1612,7 @@ function MiniatureIllustration({
 										</span>
 									</div>
 								</div>
-								<span className="text-[5.5px] text-primary font-bold">▲</span>
+								<span className="text-[5.5px] text-primary font-semibold">▲</span>
 							</div>
 
 							{/* Realistic Floating Popover Dropdown Card with Live Selection */}
@@ -1625,24 +1625,24 @@ function MiniatureIllustration({
 									<span className="px-1 py-0.5 rounded-full bg-muted text-muted-foreground font-medium whitespace-nowrap">
 										Tomorrow
 									</span>
-									<span className="px-1.5 py-0.5 rounded-full bg-primary text-primary-foreground font-bold whitespace-nowrap shadow-2xs">
+									<span className="px-1.5 py-0.5 rounded-full bg-primary text-primary-foreground font-semibold whitespace-nowrap shadow-2xs">
 										Pick Date Range
 									</span>
 								</div>
 
 								{/* Month Header Navigation */}
 								<div className="flex items-center justify-between px-1 py-0.5 rounded bg-muted/40 text-[6px]">
-									<span className="size-3 rounded hover:bg-background flex items-center justify-center font-bold text-muted-foreground cursor-pointer">
+									<span className="size-3 rounded hover:bg-background flex items-center justify-center font-semibold text-muted-foreground cursor-pointer">
 										‹
 									</span>
-									<span className="font-bold text-foreground">August 2026</span>
-									<span className="size-3 rounded hover:bg-background flex items-center justify-center font-bold text-muted-foreground cursor-pointer">
+									<span className="font-semibold text-foreground">August 2026</span>
+									<span className="size-3 rounded hover:bg-background flex items-center justify-center font-semibold text-muted-foreground cursor-pointer">
 										›
 									</span>
 								</div>
 
 								{/* Weekday Grid Labels */}
-								<div className="grid grid-cols-7 gap-0.5 font-bold text-muted-foreground/70 text-center text-[4.5px] uppercase">
+								<div className="grid grid-cols-7 gap-0.5 font-semibold text-muted-foreground/70 text-center text-[4.5px] uppercase">
 									<span>Su</span>
 									<span>Mo</span>
 									<span>Tu</span>
@@ -1703,7 +1703,7 @@ function MiniatureIllustration({
 									</span>
 
 									{/* Start Date Selected */}
-									<span className="py-0.5 rounded-md bg-primary text-primary-foreground font-bold shadow-xs">
+									<span className="py-0.5 rounded-md bg-primary text-primary-foreground font-semibold shadow-xs">
 										14
 									</span>
 									<span className="py-0.5 bg-primary/20 text-primary font-semibold">
@@ -1815,7 +1815,7 @@ function MiniatureIllustration({
 
 						<div className="flex flex-col items-center justify-between h-full w-full py-1 z-10">
 							{/* Root Node (Top Admin) */}
-							<div className="flex items-center gap-1 px-2 py-0.5 rounded-full bg-primary text-primary-foreground text-[6px] font-black shadow-md border border-white/20">
+							<div className="flex items-center gap-1 px-2 py-0.5 rounded-full bg-primary text-primary-foreground text-[6px] font-bold shadow-md border border-white/20">
 								<span className="size-1.5 rounded-full bg-white animate-ping" />
 								<span>You (Admin)</span>
 							</div>
@@ -1846,16 +1846,16 @@ function MiniatureIllustration({
 
 							{/* Tier 3 Nodes (Sub-Agent Workers) */}
 							<div className="flex justify-between w-full px-1">
-								<span className="size-3 rounded-full bg-emerald-500/20 border border-emerald-500 text-[4.5px] font-bold text-emerald-600 dark:text-emerald-400 flex items-center justify-center">
+								<span className="size-3 rounded-full bg-emerald-500/20 border border-emerald-500 text-[4.5px] font-semibold text-emerald-600 dark:text-emerald-400 flex items-center justify-center">
 									A1
 								</span>
-								<span className="size-3 rounded-full bg-sky-500/20 border border-sky-500 text-[4.5px] font-bold text-sky-600 dark:text-sky-400 flex items-center justify-center">
+								<span className="size-3 rounded-full bg-sky-500/20 border border-sky-500 text-[4.5px] font-semibold text-sky-600 dark:text-sky-400 flex items-center justify-center">
 									A2
 								</span>
-								<span className="size-3 rounded-full bg-amber-500/20 border border-amber-500 text-[4.5px] font-bold text-amber-600 dark:text-amber-400 flex items-center justify-center">
+								<span className="size-3 rounded-full bg-amber-500/20 border border-amber-500 text-[4.5px] font-semibold text-amber-600 dark:text-amber-400 flex items-center justify-center">
 									B1
 								</span>
-								<span className="size-3 rounded-full bg-purple-500/20 border border-purple-500 text-[4.5px] font-bold text-purple-600 dark:text-purple-400 flex items-center justify-center">
+								<span className="size-3 rounded-full bg-purple-500/20 border border-purple-500 text-[4.5px] font-semibold text-purple-600 dark:text-purple-400 flex items-center justify-center">
 									B2
 								</span>
 							</div>
@@ -1866,12 +1866,12 @@ function MiniatureIllustration({
 				{type === "form" && (
 					<div className="w-full p-1.5 rounded-lg bg-background border border-border space-y-1 my-auto text-[6px]">
 						<div className="space-y-0.5">
-							<div className="font-bold text-foreground">Username</div>
-							<div className="h-2.5 w-full rounded bg-muted border border-primary/40 px-1 flex items-center text-[5.5px] text-primary font-bold">
+							<div className="font-semibold text-foreground">Username</div>
+							<div className="h-2.5 w-full rounded bg-muted border border-primary/40 px-1 flex items-center text-[5.5px] text-primary font-semibold">
 								alex_dev
 							</div>
 						</div>
-						<div className="h-3 w-full rounded bg-primary text-primary-foreground font-bold flex items-center justify-center text-[6px]">
+						<div className="h-3 w-full rounded bg-primary text-primary-foreground font-semibold flex items-center justify-center text-[6px]">
 							Submit Form
 						</div>
 					</div>
@@ -1879,7 +1879,7 @@ function MiniatureIllustration({
 
 				{type === "input" && (
 					<div className="w-full p-1.5 rounded-lg bg-background border border-border space-y-1 my-auto text-[6.5px]">
-						<div className="h-4 w-full rounded-md border border-primary/30 bg-primary/5 px-1.5 flex items-center justify-between text-primary font-bold">
+						<div className="h-4 w-full rounded-md border border-primary/30 bg-primary/5 px-1.5 flex items-center justify-between text-primary font-semibold">
 							<span>Input value...</span>
 							<span className="size-1 rounded-full bg-primary animate-pulse" />
 						</div>
@@ -1889,7 +1889,7 @@ function MiniatureIllustration({
 				{type === "invoice" && (
 					<div className="w-full p-1.5 rounded-lg bg-background border border-border space-y-1 my-auto text-[5.5px] overflow-hidden">
 						<div className="flex justify-between items-center border-b border-border/40 pb-0.5">
-							<span className="font-black text-foreground">INV-#402</span>
+							<span className="font-bold text-foreground">INV-#402</span>
 							<span className="text-[5px] font-extrabold text-emerald-500 bg-emerald-500/10 px-1 rounded">
 								PAID
 							</span>
@@ -1897,11 +1897,11 @@ function MiniatureIllustration({
 						<div className="space-y-0.5 border-b border-border/20 pb-0.5">
 							<div className="flex justify-between text-muted-foreground">
 								<span>UI Kit License</span>
-								<span className="font-bold text-foreground">$149.00</span>
+								<span className="font-semibold text-foreground">$149.00</span>
 							</div>
 							<div className="flex justify-between text-muted-foreground">
 								<span>Support Addon</span>
-								<span className="font-bold text-foreground">$49.00</span>
+								<span className="font-semibold text-foreground">$49.00</span>
 							</div>
 						</div>
 						<div className="flex justify-between font-extrabold text-foreground pt-0.5">
@@ -1939,7 +1939,7 @@ function MiniatureIllustration({
 
 				{type === "selection-frame" && (
 					<div className="w-full flex items-center justify-center my-auto">
-						<span className="relative inline-block px-1.5 py-0.5 text-[8px] font-bold text-foreground">
+						<span className="relative inline-block px-1.5 py-0.5 text-[8px] font-semibold text-foreground">
 							<span className="absolute inset-0 border-[1.5px] border-sky-500" />
 							{["-top-[3px] -left-[3px]", "-top-[3px] -right-[3px]", "-bottom-[3px] -left-[3px]", "-bottom-[3px] -right-[3px]"].map((pos) => (
 								<span key={pos} className={`absolute ${pos} size-[5px] bg-background border-[1.5px] border-sky-500`} />
@@ -1974,7 +1974,7 @@ function MiniatureIllustration({
 						<span className="flex-1 h-5 rounded-md border border-border bg-background px-1.5 text-[6px] font-mono leading-5 text-muted-foreground truncate">
 							nexus.dev/u/johndoe
 						</span>
-						<span className="flex h-5 items-center gap-1 rounded-md bg-primary px-1.5 text-[6px] font-bold text-primary-foreground">
+						<span className="flex h-5 items-center gap-1 rounded-md bg-primary px-1.5 text-[6px] font-semibold text-primary-foreground">
 							<span className="text-[7px]">✓</span> Copied!
 						</span>
 					</div>
@@ -1982,11 +1982,11 @@ function MiniatureIllustration({
 
 				{type === "kbd" && (
 					<div className="w-full flex items-center justify-center gap-1 my-auto">
-						<span className="px-1.5 py-0.5 rounded-md bg-muted border-b-2 border-border text-[7px] font-mono font-bold text-foreground shadow-2xs">
+						<span className="px-1.5 py-0.5 rounded-md bg-muted border-b-2 border-border text-[7px] font-mono font-semibold text-foreground shadow-2xs">
 							Ctrl
 						</span>
 						<span className="text-[7px] text-muted-foreground">+</span>
-						<span className="px-1.5 py-0.5 rounded-md bg-primary border-b-2 border-primary/70 text-[7px] font-mono font-bold text-primary-foreground shadow-2xs">
+						<span className="px-1.5 py-0.5 rounded-md bg-primary border-b-2 border-primary/70 text-[7px] font-mono font-semibold text-primary-foreground shadow-2xs">
 							K
 						</span>
 					</div>
@@ -2001,7 +2001,7 @@ function MiniatureIllustration({
 									10:42 AM
 								</span>
 							</div>
-							<div className="text-[5.5px] text-foreground font-bold truncate">
+							<div className="text-[5.5px] text-foreground font-semibold truncate">
 								Project Assets Ready
 							</div>
 						</div>
@@ -2039,7 +2039,7 @@ function MiniatureIllustration({
 						</div>
 
 						{/* Bangladesh Tag */}
-						<div className="absolute bottom-1 left-1 px-1 py-0.2 rounded bg-background/90 border border-border text-[5px] font-black text-primary shadow-2xs">
+						<div className="absolute bottom-1 left-1 px-1 py-0.2 rounded bg-background/90 border border-border text-[5px] font-bold text-primary shadow-2xs">
 							Bangladesh
 						</div>
 					</div>
@@ -2047,8 +2047,8 @@ function MiniatureIllustration({
 
 				{type === "menubar" && (
 					<div className="w-full p-1 rounded-lg bg-background border border-border shadow-xs my-auto text-[6px]">
-						<div className="flex items-center gap-2 border-b border-border/40 pb-0.5 px-0.5 font-bold text-foreground">
-							<span className="text-primary font-black">File</span>
+						<div className="flex items-center gap-2 border-b border-border/40 pb-0.5 px-0.5 font-semibold text-foreground">
+							<span className="text-primary font-bold">File</span>
 							<span className="text-muted-foreground">Edit</span>
 							<span className="text-muted-foreground">View</span>
 						</div>
@@ -2061,16 +2061,16 @@ function MiniatureIllustration({
 
 				{type === "otp-input" && (
 					<div className="w-full flex items-center justify-center gap-1 my-auto">
-						<div className="size-5 rounded-md border border-primary/30 bg-primary/10 text-primary font-black text-[9px] flex items-center justify-center shadow-2xs">
+						<div className="size-5 rounded-md border border-primary/30 bg-primary/10 text-primary font-bold text-[9px] flex items-center justify-center shadow-2xs">
 							4
 						</div>
-						<div className="size-5 rounded-md border border-primary/30 bg-primary/10 text-primary font-black text-[9px] flex items-center justify-center shadow-2xs">
+						<div className="size-5 rounded-md border border-primary/30 bg-primary/10 text-primary font-bold text-[9px] flex items-center justify-center shadow-2xs">
 							8
 						</div>
-						<div className="size-5 rounded-md border-2 border-primary/30 bg-background text-foreground font-black text-[9px] flex items-center justify-center shadow-2xs ring-2 ring-primary/20">
+						<div className="size-5 rounded-md border-2 border-primary/30 bg-background text-foreground font-bold text-[9px] flex items-center justify-center shadow-2xs ring-2 ring-primary/20">
 							2
 						</div>
-						<div className="size-5 rounded-md border border-border bg-muted/40 text-muted-foreground font-bold text-[9px] flex items-center justify-center">
+						<div className="size-5 rounded-md border border-border bg-muted/40 text-muted-foreground font-semibold text-[9px] flex items-center justify-center">
 							•
 						</div>
 					</div>
@@ -2123,14 +2123,14 @@ function MiniatureIllustration({
 									Event Triggered
 								</span>
 							</div>
-							<span className="text-[5.5px] text-primary font-bold">Undo</span>
+							<span className="text-[5.5px] text-primary font-semibold">Undo</span>
 						</div>
 					</div>
 				)}
 
 				{type === "select" && (
 					<div className="w-full p-1 rounded-lg bg-background border border-border shadow-2xs space-y-1 my-auto text-[6.5px]">
-						<div className="flex justify-between items-center px-1.5 py-0.5 rounded bg-muted border border-border font-bold text-foreground">
+						<div className="flex justify-between items-center px-1.5 py-0.5 rounded bg-muted border border-border font-semibold text-foreground">
 							<span>Select Option</span>
 							<span className="text-[6px] text-primary">▼</span>
 						</div>
@@ -2149,7 +2149,7 @@ function MiniatureIllustration({
 					<div className="w-full p-2 rounded-xl bg-card border border-border/80 my-auto text-[6px] space-y-1.5 shadow-2xs">
 						{/* Multi-layered Toast Banner */}
 						<div className="p-1.5 rounded-lg bg-background border border-emerald-500/40 flex items-start gap-1.5 shadow-xs">
-							<div className="size-3.5 rounded-full bg-emerald-500/15 text-emerald-500 flex items-center justify-center text-[7px] font-black shrink-0">
+							<div className="size-3.5 rounded-full bg-emerald-500/15 text-emerald-500 flex items-center justify-center text-[7px] font-bold shrink-0">
 								✓
 							</div>
 							<div className="flex-1 min-w-0">
@@ -2183,7 +2183,7 @@ function MiniatureIllustration({
 							<div className="absolute -bottom-1 left-1/2 -translate-x-1/2 border-4 border-transparent border-t-foreground" />
 						</div>
 						{/* Target Interactive Trigger Element */}
-						<div className="px-2.5 py-1 rounded-lg bg-primary/10 border border-primary/30 text-primary text-[6.5px] font-bold flex items-center gap-1">
+						<div className="px-2.5 py-1 rounded-lg bg-primary/10 border border-primary/30 text-primary text-[6.5px] font-semibold flex items-center gap-1">
 							<span>★</span>
 							<span>Bookmark</span>
 						</div>
@@ -2192,7 +2192,7 @@ function MiniatureIllustration({
 
 				{type === "toggle-group" && (
 					<div className="w-full flex items-center justify-center my-auto">
-						<div className="p-0.5 rounded-lg bg-muted border border-border flex items-center gap-0.5 text-[6.5px] font-bold">
+						<div className="p-0.5 rounded-lg bg-muted border border-border flex items-center gap-0.5 text-[6.5px] font-semibold">
 							<span className="px-1.5 py-0.5 rounded bg-background text-foreground shadow-2xs">
 								Left
 							</span>
@@ -2211,17 +2211,17 @@ function MiniatureIllustration({
 							<span className="size-1.5 rounded-full bg-amber-500/80" />
 							<span className="size-1.5 rounded-full bg-emerald-500/80" />
 						</div>
-						<div className="font-bold">$ npm run dev</div>
+						<div className="font-semibold">$ npm run dev</div>
 						<div className="text-muted-foreground">Ready in 2.4s</div>
 					</div>
 				)}
 
 				{type === "pagination" && (
-					<div className="w-full flex items-center justify-center gap-1 my-auto text-[6.5px] font-bold">
+					<div className="w-full flex items-center justify-center gap-1 my-auto text-[6.5px] font-semibold">
 						<span className="px-1.5 py-0.5 rounded bg-muted border border-border text-muted-foreground">
 							Prev
 						</span>
-						<span className="size-4 rounded bg-primary text-primary-foreground flex items-center justify-center font-black shadow-2xs">
+						<span className="size-4 rounded bg-primary text-primary-foreground flex items-center justify-center font-bold shadow-2xs">
 							1
 						</span>
 						<span className="px-2 rounded bg-background border border-border text-foreground flex items-center justify-center">
@@ -2235,7 +2235,7 @@ function MiniatureIllustration({
 
 				{type === "tabs" && (
 					<div className="w-full space-y-1 my-auto px-0.5 text-[6.5px]">
-						<div className="p-0.5 rounded-lg bg-muted border border-border flex gap-0.5 font-bold">
+						<div className="p-0.5 rounded-lg bg-muted border border-border flex gap-0.5 font-semibold">
 							<span className="flex-1 py-0.5 rounded bg-background text-primary text-center font-extrabold shadow-2xs">
 								Account
 							</span>
@@ -2251,7 +2251,7 @@ function MiniatureIllustration({
 
 				{type === "theme-switcher" && (
 					<div className="w-full flex items-center justify-center my-auto">
-						<div className="p-1 rounded-full bg-muted border border-border flex items-center gap-1 text-[8px] font-bold shadow-2xs">
+						<div className="p-1 rounded-full bg-muted border border-border flex items-center gap-1 text-[8px] font-semibold shadow-2xs">
 							<span className="p-1 rounded-full bg-background text-amber-500 shadow-xs">
 								☀️
 							</span>
@@ -2263,7 +2263,7 @@ function MiniatureIllustration({
 				{type === "wizard" && (
 					<div className="w-full space-y-1.5 my-auto px-0.5 text-[6px]">
 						<div className="flex justify-between items-center font-extrabold text-foreground border-b border-border/40 pb-0.5">
-							<span className="text-primary font-black">Step 2: Profile</span>
+							<span className="text-primary font-bold">Step 2: Profile</span>
 							<span className="text-[5.5px] text-muted-foreground">2 of 4</span>
 						</div>
 						<div className="h-1.5 w-full bg-muted rounded-full overflow-hidden">
@@ -2291,7 +2291,7 @@ function MiniatureIllustration({
 							<span className="size-5 rounded-full bg-emerald-500/20 block animate-ping absolute inset-0" />
 							<span className="size-2.5 rounded-full bg-emerald-500 block border border-white shadow-xs" />
 						</div>
-						<div className="absolute top-1 right-1 px-1 py-0.25 pb-0 rounded bg-background/90 border border-border text-[5px] font-black text-primary shadow-xs">
+						<div className="absolute top-1 right-1 px-1 py-0.25 pb-0 rounded bg-background/90 border border-border text-[5px] font-bold text-primary shadow-xs">
 							+42% Data Flow
 						</div>
 					</div>
@@ -2299,7 +2299,7 @@ function MiniatureIllustration({
 
 				{type === "hero-videoplayer" && (
 					<div className="w-full h-full rounded-xl bg-card border border-border relative flex items-center justify-center my-auto overflow-hidden shadow-sm">
-						<div className="size-7 rounded-full bg-primary text-primary-foreground flex items-center justify-center font-black text-xs shadow-lg ring-4 ring-primary/20">
+						<div className="size-7 rounded-full bg-primary text-primary-foreground flex items-center justify-center font-bold text-xs shadow-lg ring-4 ring-primary/20">
 							▶
 						</div>
 						<div className="absolute bottom-1.5 left-2 right-2 h-1 rounded-full bg-muted overflow-hidden">
@@ -2339,7 +2339,7 @@ function MiniatureIllustration({
 						<span>★</span>
 						<span>★</span>
 						<span className="opacity-40">★</span>
-						<span className="text-[7.5px] font-black text-foreground ml-1">
+						<span className="text-[7.5px] font-bold text-foreground ml-1">
 							4.8
 						</span>
 					</div>
@@ -2349,9 +2349,9 @@ function MiniatureIllustration({
 					<div className="w-full p-1.5 rounded-lg bg-muted/60 border border-border font-mono text-[6px] space-y-1 my-auto">
 						<div className="flex justify-between text-[5.5px] text-muted-foreground border-b border-border/40 pb-1">
 							<span>component.tsx</span>
-							<span className="text-primary font-bold">Copy</span>
+							<span className="text-primary font-semibold">Copy</span>
 						</div>
-						<div className="text-primary font-bold">
+						<div className="text-primary font-semibold">
 							<span className="text-rose-500">const</span> App = () =&gt;
 						</div>
 					</div>
@@ -2364,7 +2364,7 @@ function MiniatureIllustration({
 							<div className="w-9 h-2 rounded-full bg-muted border border-border flex items-center px-0.5">
 								<div className="size-1.5 rounded-full bg-primary" />
 							</div>
-							<div className="text-[7px] font-mono font-black text-primary">#6366F1</div>
+							<div className="text-[7px] font-mono font-bold text-primary">#6366F1</div>
 						</div>
 					</div>
 				)}
@@ -2393,17 +2393,17 @@ function MiniatureIllustration({
 									August 2026
 								</span>
 								<div className="flex items-center gap-0.5">
-									<span className="size-2.5 rounded border border-border/80 flex items-center justify-center text-[5px] font-bold text-muted-foreground">
+									<span className="size-2.5 rounded border border-border/80 flex items-center justify-center text-[5px] font-semibold text-muted-foreground">
 										‹
 									</span>
-									<span className="size-2.5 rounded border border-border/80 flex items-center justify-center text-[5px] font-bold text-muted-foreground">
+									<span className="size-2.5 rounded border border-border/80 flex items-center justify-center text-[5px] font-semibold text-muted-foreground">
 										›
 									</span>
 								</div>
 							</div>
 
 							{/* Weekday Grid Labels */}
-							<div className="grid grid-cols-7 text-center text-[4.5px] font-bold uppercase text-muted-foreground/70">
+							<div className="grid grid-cols-7 text-center text-[4.5px] font-semibold uppercase text-muted-foreground/70">
 								<span>Su</span>
 								<span>Mo</span>
 								<span>Tu</span>
@@ -2510,11 +2510,11 @@ function MiniatureIllustration({
 							<div className="flex items-center justify-between pt-1 border-t border-border/60">
 								<span className="flex items-center gap-1 text-[4.5px] font-medium text-muted-foreground truncate">
 									<span className="size-1 rounded-full bg-primary shrink-0" />
-									<strong className="font-bold text-foreground">Aug 8</strong>
+									<strong className="font-semibold text-foreground">Aug 8</strong>
 									<span>–</span>
-									<strong className="font-bold text-foreground">Aug 13</strong>
+									<strong className="font-semibold text-foreground">Aug 13</strong>
 								</span>
-								<span className="px-1 py-0.5 rounded border border-border/80 text-[4.5px] font-bold text-muted-foreground shrink-0">
+								<span className="px-1 py-0.5 rounded border border-border/80 text-[4.5px] font-semibold text-muted-foreground shrink-0">
 									Reset
 								</span>
 							</div>
@@ -2536,7 +2536,7 @@ function MiniatureIllustration({
 							<span className="size-5 rounded-full bg-muted border-2 border-background text-[6px] font-extrabold text-foreground flex items-center justify-center -ml-1.5">
 								+12
 							</span>
-							<span className="ml-1.5 px-1.5 py-0.5 rounded-full bg-primary text-primary-foreground text-[6px] font-bold">
+							<span className="ml-1.5 px-1.5 py-0.5 rounded-full bg-primary text-primary-foreground text-[6px] font-semibold">
 								Join
 							</span>
 						</div>
@@ -2566,7 +2566,7 @@ function MiniatureIllustration({
 						</div>
 						<div className="flex items-center gap-1 text-[6px] text-muted-foreground">
 							<span className="px-1 rounded border border-border">‹</span>
-							<span className="font-bold text-foreground">3 / 12</span>
+							<span className="font-semibold text-foreground">3 / 12</span>
 							<span className="px-1 rounded border border-border">›</span>
 						</div>
 					</div>
@@ -2579,7 +2579,7 @@ function MiniatureIllustration({
 								<div
 									key={d}
 									className={`rounded py-0.5 leading-none ${i === 2 ? "bg-primary text-primary-foreground" : "bg-muted/60 text-muted-foreground"}`}>
-									<div className="text-[4.5px] font-bold uppercase">{d}</div>
+									<div className="text-[4.5px] font-semibold uppercase">{d}</div>
 									<div className="text-[6px] font-extrabold">{12 + i}</div>
 								</div>
 							))}
@@ -2588,12 +2588,12 @@ function MiniatureIllustration({
 							{["9:00", "10:30", "14:00"].map((t, i) => (
 								<span
 									key={t}
-									className={`rounded border text-[5.5px] font-bold text-center py-0.5 ${i === 1 ? "border-primary/30 bg-primary/10 text-primary" : "border-border text-foreground"}`}>
+									className={`rounded border text-[5.5px] font-semibold text-center py-0.5 ${i === 1 ? "border-primary/30 bg-primary/10 text-primary" : "border-border text-foreground"}`}>
 									{t}
 								</span>
 							))}
 						</div>
-						<div className="rounded bg-primary text-primary-foreground text-[6px] font-bold text-center py-0.5">
+						<div className="rounded bg-primary text-primary-foreground text-[6px] font-semibold text-center py-0.5">
 							Book Wed 14 · 10:30
 						</div>
 					</div>
@@ -2653,10 +2653,10 @@ function MiniatureIllustration({
 								key={row.t}
 								className={`flex items-center gap-1 rounded-md bg-background border pl-0 pr-1 py-0.5 overflow-hidden ${row.lift ? "border-primary/30 shadow-md -rotate-1 scale-[1.04]" : "border-border"}`}>
 								<span className={`w-[3px] self-stretch ${row.a}`} />
-								<span className="flex-1 text-[6px] font-bold text-foreground truncate">
+								<span className="flex-1 text-[6px] font-semibold text-foreground truncate">
 									{row.t}
 								</span>
-								<span className={`px-1 rounded-full border text-[5px] font-bold ${row.bc}`}>
+								<span className={`px-1 rounded-full border text-[5px] font-semibold ${row.bc}`}>
 									{row.b}
 								</span>
 								<span className="text-[7px] leading-none text-muted-foreground/70 tracking-[-2px]">
@@ -2705,7 +2705,7 @@ function MiniatureIllustration({
 				{type === "heart-signal" && (
 					<div className="w-full max-w-[136px] mx-auto my-auto rounded-lg bg-background border border-border p-1.5 relative overflow-hidden">
 						<div className="flex items-center justify-between mb-1">
-							<span className="text-[6px] font-bold text-muted-foreground uppercase tracking-wider">
+							<span className="text-[6px] font-semibold text-muted-foreground uppercase tracking-wider">
 								Telemetry
 							</span>
 							<span className="flex items-center gap-0.5 px-1 rounded-full bg-primary/10 border border-primary/30 text-[6px] font-extrabold text-primary">
@@ -2728,7 +2728,7 @@ function MiniatureIllustration({
 				{type === "particle-canvas" && (
 					<div className="w-full h-full relative flex items-center justify-center my-auto rounded-lg bg-card border border-border overflow-hidden">
 						<span
-							className="text-[30px] font-black tracking-tight leading-none text-transparent bg-clip-text select-none"
+							className="text-[30px] font-bold tracking-tight leading-none text-transparent bg-clip-text select-none"
 							style={{
 								backgroundImage: "radial-gradient(circle, var(--primary) 0.9px, transparent 1.1px)",
 								backgroundSize: "3.5px 3.5px",
@@ -2754,7 +2754,7 @@ function MiniatureIllustration({
 							].map((m) => (
 								<span
 									key={m.g}
-									className={`size-5 rounded-md bg-background border border-border shadow-xs flex items-center justify-center text-[8px] font-black text-foreground ${m.c}`}>
+									className={`size-5 rounded-md bg-background border border-border shadow-xs flex items-center justify-center text-[8px] font-bold text-foreground ${m.c}`}>
 									{m.g}
 								</span>
 							))}
@@ -2836,7 +2836,7 @@ function MiniatureIllustration({
 						{["left-1.5 top-1.5", "right-1.5 top-1.5", "left-1.5 bottom-1.5", "right-1.5 bottom-1.5"].map((pos, i) => (
 							<span
 								key={pos}
-								className={`absolute ${pos} px-1 py-0.5 rounded bg-background border border-border text-[5px] font-bold text-foreground`}>
+								className={`absolute ${pos} px-1 py-0.5 rounded bg-background border border-border text-[5px] font-semibold text-foreground`}>
 								{["api", "auth", "db", "cache"][i]}
 							</span>
 						))}
@@ -2861,7 +2861,7 @@ function MiniatureIllustration({
 							{["CRM", "Sheets"].map((s) => (
 								<span
 									key={s}
-									className="rounded bg-background border border-border text-[5px] font-bold text-foreground text-center py-1">
+									className="rounded bg-background border border-border text-[5px] font-semibold text-foreground text-center py-1">
 									{s}
 								</span>
 							))}
@@ -2873,7 +2873,7 @@ function MiniatureIllustration({
 							{["Report", "Alerts"].map((s) => (
 								<span
 									key={s}
-									className="rounded bg-primary/10 border border-primary/30 text-[5px] font-bold text-primary text-center py-1">
+									className="rounded bg-primary/10 border border-primary/30 text-[5px] font-semibold text-primary text-center py-1">
 									{s}
 								</span>
 							))}
@@ -2887,7 +2887,7 @@ function MiniatureIllustration({
 							<span className="size-4 rounded-full border border-dashed border-foreground/60 flex items-center justify-center text-[5px]">
 								▶
 							</span>
-							<div className="text-center text-[9px] font-black leading-[9px] tracking-tighter text-foreground uppercase">
+							<div className="text-center text-[9px] font-bold leading-[9px] tracking-tighter text-foreground uppercase">
 								Wear
 								<br />
 								Bold
@@ -2956,14 +2956,14 @@ function MiniatureIllustration({
 									★★★★☆ <span className="text-muted-foreground">(128)</span>
 								</div>
 							</div>
-							<div className="text-[8px] font-black text-foreground">$129</div>
+							<div className="text-[8px] font-bold text-foreground">$129</div>
 							<div>
 								<div className="h-[3px] w-full rounded bg-muted overflow-hidden">
 									<div className="h-full w-1/4 bg-rose-500" />
 								</div>
-								<div className="text-[4.5px] text-rose-500 font-bold">Only 3 left</div>
+								<div className="text-[4.5px] text-rose-500 font-semibold">Only 3 left</div>
 							</div>
-							<span className="rounded bg-primary text-primary-foreground text-[5.5px] font-bold text-center py-0.5">
+							<span className="rounded bg-primary text-primary-foreground text-[5.5px] font-semibold text-center py-0.5">
 								Add to cart
 							</span>
 						</div>
@@ -2975,7 +2975,7 @@ function MiniatureIllustration({
 						<div className="absolute -top-4 -left-3 size-16 rounded-full bg-violet-400/50 blur-md" />
 						<div className="absolute -bottom-5 right-0 size-16 rounded-full bg-sky-400/50 blur-md" />
 						<div className="absolute inset-0 grid grid-cols-3 gap-1 p-1.5">
-							<div className="rounded-full aspect-square w-full bg-white/50 dark:bg-white/15 backdrop-blur-sm border border-white/70 dark:border-white/25 flex items-center justify-center text-[7px] font-black text-foreground">
+							<div className="rounded-full aspect-square w-full bg-white/50 dark:bg-white/15 backdrop-blur-sm border border-white/70 dark:border-white/25 flex items-center justify-center text-[7px] font-bold text-foreground">
 								SR
 							</div>
 							<div className="col-span-2 rounded-md bg-white/50 dark:bg-white/15 backdrop-blur-sm border border-white/70 dark:border-white/25 p-1">
@@ -2986,7 +2986,7 @@ function MiniatureIllustration({
 							</div>
 							<div className="col-span-2 rounded-md bg-white/50 dark:bg-white/15 backdrop-blur-sm border border-white/70 dark:border-white/25 flex items-center gap-1 px-1">
 								<span className="size-1 rounded-full bg-emerald-500" />
-								<span className="text-[5px] font-bold text-foreground">At work · 14:20</span>
+								<span className="text-[5px] font-semibold text-foreground">At work · 14:20</span>
 							</div>
 							{/* 24h dial */}
 							<div className="rounded-full aspect-square w-full bg-white/50 dark:bg-white/15 backdrop-blur-sm border border-white/70 dark:border-white/25 relative">
@@ -3020,7 +3020,7 @@ function MiniatureIllustration({
 							</div>
 							<div className="flex items-center gap-1 pt-0.5">
 								<span className="size-2.5 rounded-full bg-sky-400" />
-								<span className="text-[4.5px] font-bold text-muted-foreground">Ava · Growth Lead</span>
+								<span className="text-[4.5px] font-semibold text-muted-foreground">Ava · Growth Lead</span>
 							</div>
 						</div>
 						<span className="absolute left-0 bottom-0 size-3.5 rounded-full border border-border bg-background text-[6px] flex items-center justify-center">
@@ -3035,10 +3035,10 @@ function MiniatureIllustration({
 				{type === "support-hero" && (
 					<div className="w-full h-full relative rounded-lg overflow-hidden my-auto bg-muted/50 border border-border/60 p-1.5 flex flex-col gap-1">
 						<div className="text-center">
-							<div className="text-[8px] font-black tracking-tight text-foreground leading-none">
+							<div className="text-[8px] font-bold tracking-tight text-foreground leading-none">
 								Support that never sleeps
 							</div>
-							<span className="inline-block mt-0.5 px-1.5 rounded-full bg-primary text-primary-foreground text-[5px] font-bold">
+							<span className="inline-block mt-0.5 px-1.5 rounded-full bg-primary text-primary-foreground text-[5px] font-semibold">
 								Start free
 							</span>
 						</div>
@@ -3049,11 +3049,11 @@ function MiniatureIllustration({
 								))}
 							</div>
 							<div className="rounded-md bg-white/70 dark:bg-white/10 backdrop-blur-sm border border-white/80 dark:border-white/20 flex flex-col items-center justify-center leading-none">
-								<span className="text-[8px] font-black text-primary">12k</span>
+								<span className="text-[8px] font-bold text-primary">12k</span>
 								<span className="text-[4px] text-muted-foreground">tickets</span>
 							</div>
 							<div className="rounded-md bg-white/70 dark:bg-white/10 backdrop-blur-sm border border-white/80 dark:border-white/20 flex flex-col items-center justify-center leading-none">
-								<span className="text-[8px] font-black text-primary">98%</span>
+								<span className="text-[8px] font-bold text-primary">98%</span>
 								<span className="text-[4px] text-muted-foreground">CSAT</span>
 							</div>
 						</div>
@@ -3073,7 +3073,7 @@ function MiniatureIllustration({
 								<span className="flex-1 h-4 rounded border border-border bg-background text-[5px] leading-4 px-1 text-muted-foreground text-left truncate">
 									you@email.com
 								</span>
-								<span className="h-4 px-1.5 rounded bg-primary text-primary-foreground text-[5px] font-bold leading-4">
+								<span className="h-4 px-1.5 rounded bg-primary text-primary-foreground text-[5px] font-semibold leading-4">
 									Subscribe
 								</span>
 							</div>
@@ -3083,16 +3083,16 @@ function MiniatureIllustration({
 
 				{type === "waitlist" && (
 					<div className="w-full max-w-[136px] mx-auto my-auto flex flex-col items-center gap-1">
-						<span className="px-1.5 py-0.5 rounded-full bg-primary/10 border border-primary/30 text-[5px] font-bold text-primary uppercase tracking-wider">
+						<span className="px-1.5 py-0.5 rounded-full bg-primary/10 border border-primary/30 text-[5px] font-semibold text-primary uppercase tracking-wider">
 							Coming soon
 						</span>
 						<div className="flex items-center gap-0.5">
 							{["03", "14", "22"].map((n, i) => (
 								<React.Fragment key={n}>
-									<span className="w-5 h-5 rounded bg-background border border-border text-[7px] font-black text-foreground flex items-center justify-center font-mono">
+									<span className="w-5 h-5 rounded bg-background border border-border text-[7px] font-bold text-foreground flex items-center justify-center font-mono">
 										{n}
 									</span>
-									{i < 2 && <span className="text-[7px] font-black text-muted-foreground">:</span>}
+									{i < 2 && <span className="text-[7px] font-bold text-muted-foreground">:</span>}
 								</React.Fragment>
 							))}
 						</div>
@@ -3100,7 +3100,7 @@ function MiniatureIllustration({
 							<span className="flex-1 h-4 rounded border border-border bg-background text-[5px] leading-4 px-1 text-muted-foreground truncate">
 								you@email.com
 							</span>
-							<span className="h-4 px-1.5 rounded bg-primary text-primary-foreground text-[5px] font-bold leading-4">
+							<span className="h-4 px-1.5 rounded bg-primary text-primary-foreground text-[5px] font-semibold leading-4">
 								Join
 							</span>
 						</div>
@@ -3121,7 +3121,7 @@ function MiniatureIllustration({
 							</span>
 						</div>
 						<div className="rounded-md bg-background border border-border flex flex-col items-center justify-center leading-none">
-							<span className="text-[8px] font-black text-primary">240+</span>
+							<span className="text-[8px] font-bold text-primary">240+</span>
 							<span className="text-[4px] text-muted-foreground">projects</span>
 						</div>
 						<div className="rounded-md bg-background border border-border p-1 flex items-center justify-center">
@@ -3150,20 +3150,20 @@ function MiniatureIllustration({
 									{["12", "13", "14", "15"].map((d, i) => (
 										<span
 											key={d}
-											className={`rounded text-[5px] font-bold text-center ${i === 1 ? "bg-primary text-primary-foreground" : "bg-muted text-muted-foreground"}`}>
+											className={`rounded text-[5px] font-semibold text-center ${i === 1 ? "bg-primary text-primary-foreground" : "bg-muted text-muted-foreground"}`}>
 											{d}
 										</span>
 									))}
 								</div>
 								<div className="grid grid-cols-2 gap-0.5">
-									<span className="rounded border border-primary/30 bg-primary/10 text-[4.5px] font-bold text-primary text-center">
+									<span className="rounded border border-primary/30 bg-primary/10 text-[4.5px] font-semibold text-primary text-center">
 										9:30
 									</span>
-									<span className="rounded border border-border text-[4.5px] font-bold text-foreground text-center">
+									<span className="rounded border border-border text-[4.5px] font-semibold text-foreground text-center">
 										11:00
 									</span>
 								</div>
-								<span className="rounded bg-primary text-primary-foreground text-[5px] font-bold text-center py-0.5">
+								<span className="rounded bg-primary text-primary-foreground text-[5px] font-semibold text-center py-0.5">
 									Book
 								</span>
 							</div>
@@ -3177,7 +3177,7 @@ function MiniatureIllustration({
 							<span className="text-[5px] font-light text-muted-foreground">Amazing</span>
 							<div className="flex items-center gap-0.5">
 								<span className="h-[1px] w-2 bg-primary" />
-								<span className="text-[8px] font-black tracking-widest text-primary">NORWAY</span>
+								<span className="text-[8px] font-bold tracking-widest text-primary">NORWAY</span>
 							</div>
 							<span className="h-[2px] w-8 rounded bg-muted-foreground/30" />
 							<span className="h-[2px] w-6 rounded bg-muted-foreground/30" />
@@ -3204,8 +3204,8 @@ function MiniatureIllustration({
 				{type === "orbit-gallery" && (
 					<div className="w-full h-full flex gap-1.5 my-auto px-0.5 items-center">
 						<div className="flex-1 flex flex-col gap-0.5">
-							<span className="text-[4px] font-bold tracking-widest uppercase text-muted-foreground">✦ Studio</span>
-							<span className="text-[7px] font-black leading-[8px] text-foreground">
+							<span className="text-[4px] font-semibold tracking-widest uppercase text-muted-foreground">✦ Studio</span>
+							<span className="text-[7px] font-bold leading-[8px] text-foreground">
 								Motion is <span className="text-primary">first.</span>
 							</span>
 							<span className="h-[2px] w-8 rounded bg-muted-foreground/30" />
@@ -3255,7 +3255,7 @@ function MiniatureIllustration({
 					<div className="w-full h-full flex gap-1.5 my-auto px-0.5 items-center">
 						<div className="flex-1 flex flex-col gap-0.5">
 							<span className="w-fit rounded-full bg-muted px-1 text-[4px] text-muted-foreground">Changelog</span>
-							<span className="text-[7px] font-bold leading-[8px] text-foreground">The component library for landing pages.</span>
+							<span className="text-[7px] font-semibold leading-[8px] text-foreground">The component library for landing pages.</span>
 							<span className="h-[2px] w-9 rounded bg-muted-foreground/30" />
 							<div className="mt-0.5 flex gap-0.5">
 								<span className="h-2 w-5 rounded-[2px] bg-foreground" />
@@ -3283,7 +3283,7 @@ function MiniatureIllustration({
 				{type === "collage-hero" && (
 					<div className="w-full h-full flex gap-1.5 my-auto px-0.5">
 						<div className="flex-1 flex flex-col justify-center gap-1">
-							<div className="text-[8px] font-serif font-black leading-[9px] text-foreground">
+							<div className="text-[8px] font-serif font-bold leading-[9px] text-foreground">
 								Where <span className="text-primary">little</span> minds{" "}
 								<span className="text-amber-500">grow</span>
 							</div>
@@ -3291,7 +3291,7 @@ function MiniatureIllustration({
 								{["#play", "#learn", "#care"].map((h) => (
 									<span
 										key={h}
-										className="px-1 rounded-full border border-border bg-background text-[4.5px] font-bold text-muted-foreground">
+										className="px-1 rounded-full border border-border bg-background text-[4.5px] font-semibold text-muted-foreground">
 										{h}
 									</span>
 								))}
@@ -3326,13 +3326,13 @@ export default function AllComponentsDocsPage() {
 			<div className="w-full space-y-12">
 				{/* Section Header - Left Aligned Exactly like Docs Layout */}
 				<div className="text-left space-y-3 pb-4 border-b border-border/60">
-					<span className="inline-flex items-center gap-1.5 text-xs font-bold uppercase tracking-[0.2em] text-primary">
+					<span className="inline-flex items-center gap-1.5 text-xs font-semibold uppercase tracking-[0.2em] text-primary">
 						<LayoutGrid className="size-3.5" />
 						Component Preview Catalog
 					</span>
 					<h1
 						id="explore-built-in-component-previews"
-						className="text-3xl md:text-4xl lg:text-5xl font-black tracking-tight text-foreground">
+						className="text-3xl md:text-4xl lg:text-5xl font-bold tracking-tight text-foreground">
 						Explore Built-in Component Previews
 					</h1>
 					<p className="text-muted-foreground text-sm md:text-base leading-relaxed w-full">
@@ -3356,7 +3356,7 @@ export default function AllComponentsDocsPage() {
 											id={group.categoryTitle
 												.toLowerCase()
 												.replace(/\s+/g, "-")}
-											className="text-xl md:text-2xl font-black tracking-tight text-foreground leading-tight">
+											className="text-xl md:text-2xl font-bold tracking-tight text-foreground leading-tight">
 											{group.categoryTitle}
 										</h2>
 									</div>
@@ -3364,7 +3364,7 @@ export default function AllComponentsDocsPage() {
 										{group.categorySubtitle}
 									</p>
 								</div>
-								<span className="text-xs font-mono font-bold text-primary px-2.5 py-1 rounded-full bg-primary/10 border border-primary/20 self-start sm:self-auto shrink-0">
+								<span className="text-xs font-mono font-semibold text-primary px-2.5 py-1 rounded-full bg-primary/10 border border-primary/20 self-start sm:self-auto shrink-0">
 									{group.items.length} Components
 								</span>
 							</div>
@@ -3394,7 +3394,7 @@ export default function AllComponentsDocsPage() {
 											{/* Card Info */}
 											<div className="flex items-center justify-between pt-1">
 												<div>
-													<h3 className="text-sm font-bold text-foreground group-hover:text-primary transition-colors">
+													<h3 className="text-sm font-semibold text-foreground group-hover:text-primary transition-colors">
 														{item.title}
 													</h3>
 													<p className="text-xs text-muted-foreground mt-0.5 font-medium">

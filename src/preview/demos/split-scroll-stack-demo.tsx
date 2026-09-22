@@ -24,7 +24,7 @@ const MockLandingView = () => (
   <div className="w-full h-full flex flex-col gap-3 justify-center">
     <div className="flex items-center gap-2 mb-2">
       <LayoutTemplate className="w-8 h-8 text-amber-500 dark:text-amber-400" />
-      <span className="text-lg font-bold text-zinc-900 dark:text-white tracking-tight">
+      <span className="text-lg font-semibold text-zinc-900 dark:text-white tracking-tight">
         High-Converting UI
       </span>
     </div>
@@ -32,7 +32,7 @@ const MockLandingView = () => (
       <div className="w-2/3 h-3 bg-zinc-300 dark:bg-white/20 rounded-full" />
       <div className="w-1/2 h-2.5 bg-zinc-200 dark:bg-white/10 rounded-full" />
       <div className="flex gap-2 mt-auto">
-        <div className="h-6 w-20 rounded-md bg-amber-500/20 border border-amber-500/40 flex items-center justify-center text-[10px] font-bold text-amber-600 dark:text-amber-300">
+        <div className="h-6 w-20 rounded-md bg-amber-500/20 border border-amber-500/40 flex items-center justify-center text-[10px] font-semibold text-amber-600 dark:text-amber-300">
           CTA Button
         </div>
         <div className="h-6 w-16 rounded-md bg-zinc-200 dark:bg-white/10" />
@@ -45,7 +45,7 @@ const MockSaaSView = () => (
   <div className="w-full h-full flex flex-col gap-3 justify-center">
     <div className="flex items-center gap-2 mb-1">
       <BarChart3 className="w-8 h-8 text-indigo-500 dark:text-indigo-400" />
-      <span className="text-lg font-bold text-zinc-900 dark:text-white tracking-tight">
+      <span className="text-lg font-semibold text-zinc-900 dark:text-white tracking-tight">
         SaaS Dashboard Architecture
       </span>
     </div>
@@ -54,13 +54,13 @@ const MockSaaSView = () => (
         <span className="text-[10px] text-indigo-600 dark:text-indigo-300 font-mono uppercase">
           MRR Growth
         </span>
-        <span className="text-xl font-black text-zinc-900 dark:text-white">+148.2%</span>
+        <span className="text-xl font-bold text-zinc-900 dark:text-white">+148.2%</span>
       </div>
       <div className="h-20 rounded-xl bg-zinc-100 dark:bg-white/5 border border-zinc-200 dark:border-white/10 p-3 flex flex-col justify-between">
         <span className="text-[10px] text-zinc-500 dark:text-white/50 font-mono uppercase">
           Active Users
         </span>
-        <span className="text-xl font-black text-zinc-900 dark:text-white">24,892</span>
+        <span className="text-xl font-bold text-zinc-900 dark:text-white">24,892</span>
       </div>
     </div>
   </div>
@@ -70,7 +70,7 @@ const MockAIView = () => (
   <div className="w-full h-full flex flex-col gap-3 justify-center">
     <div className="flex items-center gap-2 mb-1">
       <Cpu className="w-8 h-8 text-emerald-500 dark:text-emerald-400" />
-      <span className="text-lg font-bold text-zinc-900 dark:text-white tracking-tight">
+      <span className="text-lg font-semibold text-zinc-900 dark:text-white tracking-tight">
         AI & LLM Integration
       </span>
     </div>
@@ -81,7 +81,7 @@ const MockAIView = () => (
       </div>
       <p className="mt-1 text-[11px]">&gt; Initializing RAG pipeline...</p>
       <p className="text-[11px]">&gt; Vector embeddings synced (1.2ms)</p>
-      <p className="text-emerald-700 dark:text-white font-bold animate-pulse">
+      <p className="text-emerald-700 dark:text-white font-semibold animate-pulse">
         &gt; Ready for token streaming_
       </p>
     </div>
@@ -93,7 +93,7 @@ const MockMobileView = () => (
     <div className="flex flex-col justify-center gap-2">
       <div className="flex items-center gap-2">
         <Smartphone className="w-8 h-8 text-rose-500 dark:text-rose-400" />
-        <span className="text-lg font-bold text-zinc-900 dark:text-white tracking-tight">
+        <span className="text-lg font-semibold text-zinc-900 dark:text-white tracking-tight">
           Mobile First
         </span>
       </div>
@@ -183,7 +183,7 @@ export default function SplitScrollStackDemo({
       style={{ "--theme-color": getThemeColorHex(color) } as React.CSSProperties}
     >
       {/* Scroll instruction banner */}
-      <div className="hidden md:block absolute top-4 left-1/2 -translate-x-1/2 z-30 bg-black/80 backdrop-blur-md text-white text-[11px] font-bold uppercase tracking-widest px-4 py-1.5 rounded-full border border-white/10 pointer-events-none shadow-lg">
+      <div className="hidden md:block absolute top-4 left-1/2 -translate-x-1/2 z-30 bg-black/80 backdrop-blur-md text-white text-[11px] font-semibold uppercase tracking-widest px-4 py-1.5 rounded-full border border-white/10 pointer-events-none shadow-lg">
         ↓ Scroll inside preview box to trigger stack ↓
       </div>
 

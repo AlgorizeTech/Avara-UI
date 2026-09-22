@@ -105,7 +105,7 @@ export default function DataFlowDemo({
       <DataFlow.Output title="Startup Opportunities" badge="15,000+ scored">
         <DataFlow.Row className="border border-emerald-500/25 bg-emerald-50 text-[11px] leading-snug text-emerald-800 dark:bg-emerald-950/40 dark:text-emerald-200">
           <span>
-            <strong className="font-bold">Opportunity:</strong> Self-serve report builder for agencies, demand already proven
+            <strong className="font-semibold">Opportunity:</strong> Self-serve report builder for agencies, demand already proven
           </span>
         </DataFlow.Row>
         <div className="flex justify-end">

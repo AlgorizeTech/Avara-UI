@@ -191,12 +191,12 @@ export default function ScrollAreaDemo({
           <div className="pr-2 flex flex-col gap-2">
             <div className="flex items-center justify-between pb-2 mb-1 border-b border-zinc-100 dark:border-zinc-800/80">
               <h4
-                className={`text-sm font-bold leading-none ${variant === "glass" ? "text-white" : "text-zinc-900 dark:text-white"}`}
+                className={`text-sm font-semibold leading-none ${variant === "glass" ? "text-white" : "text-zinc-900 dark:text-white"}`}
               >
                 Direct Messages
               </h4>
               <span
-                className={`text-[11px] px-2.5 py-0.5 rounded-full font-bold border ${
+                className={`text-[11px] px-2.5 py-0.5 rounded-full font-semibold border ${
                   variant === "glass"
                     ? "bg-white/20 text-white border-white/30 backdrop-blur-md"
                     : accent.badge
@@ -232,7 +232,7 @@ export default function ScrollAreaDemo({
                 {/* Message details */}
                 <div className="flex flex-col gap-0.5 flex-1 min-w-0">
                   <div className="flex items-center justify-between gap-2">
-                    <span className="text-xs font-bold truncate">
+                    <span className="text-xs font-semibold truncate">
                       {item.name}
                     </span>
                     <span className={`text-[10px] whitespace-nowrap ${variant === "glass" ? "text-white/70" : "text-zinc-400 dark:text-zinc-500"}`}>
@@ -246,7 +246,7 @@ export default function ScrollAreaDemo({
 
                 {/* Unread badge */}
                 {item.unread > 0 && (
-                  <span className={`shrink-0 w-4 h-4 rounded-full text-[10px] font-bold flex items-center justify-center ${accent.pill}`}>
+                  <span className={`shrink-0 w-4 h-4 rounded-full text-[10px] font-semibold flex items-center justify-center ${accent.pill}`}>
                     {item.unread}
                   </span>
                 )}
@@ -323,14 +323,14 @@ export default function ScrollAreaDemo({
                     className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
                   />
                   <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent" />
-                  <span className="absolute top-3 left-3 px-2.5 py-1 rounded-full text-[10px] font-bold tracking-wide uppercase bg-black/50 backdrop-blur-md text-white border border-white/20">
+                  <span className="absolute top-3 left-3 px-2.5 py-1 rounded-full text-[10px] font-semibold tracking-wide uppercase bg-black/50 backdrop-blur-md text-white border border-white/20">
                     {art.category}
                   </span>
                 </div>
 
                 {/* Card Content */}
                 <div className="p-3.5 sm:p-4 flex flex-col gap-2">
-                  <h4 className="text-sm font-bold truncate leading-snug">
+                  <h4 className="text-sm font-semibold truncate leading-snug">
                     {art.title}
                   </h4>
                   <div className="flex items-center gap-2 pt-1 border-t border-zinc-100 dark:border-zinc-800/80">
@@ -433,8 +433,8 @@ export default function ScrollAreaDemo({
             ].map((col, cIdx) => (
               <div key={cIdx} className="flex flex-col gap-3.5 w-[210px] shrink-0">
                 <div className="flex items-center justify-between px-1">
-                  <span className="text-xs font-bold">{col.column}</span>
-                  <span className={`text-[10px] px-2 py-0.5 rounded-full font-bold border ${col.badgeColor}`}>
+                  <span className="text-xs font-semibold">{col.column}</span>
+                  <span className={`text-[10px] px-2 py-0.5 rounded-full font-semibold border ${col.badgeColor}`}>
                     {col.tasks.length}
                   </span>
                 </div>
@@ -455,7 +455,7 @@ export default function ScrollAreaDemo({
                         {task.size}
                       </span>
                     </div>
-                    <span className="text-xs font-bold leading-snug">
+                    <span className="text-xs font-semibold leading-snug">
                       {task.name}
                     </span>
                   </div>

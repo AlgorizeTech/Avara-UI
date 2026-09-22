@@ -304,7 +304,7 @@ html.dark .shiki span {
   }
 
   .vitepress-table code {
-    @apply font-mono text-xs bg-transparent border-none p-0 font-bold text-zinc-900 dark:text-zinc-100;
+    @apply font-mono text-xs bg-transparent border-none p-0 font-semibold text-zinc-900 dark:text-zinc-100;
   }
 
 }

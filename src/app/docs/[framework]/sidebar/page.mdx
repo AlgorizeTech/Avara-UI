@@ -74,7 +74,7 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
           {/* Opens the flyout under md; collapses the rail above it */}
           <MobileSidebarTrigger className="md:hidden" />
           <SidebarTrigger />
-          <h1 className="text-lg font-bold">{activeRoute}</h1>
+          <h1 className="text-lg font-semibold">{activeRoute}</h1>
         </header>
 
         <main className="flex-1 p-6 overflow-y-auto">{children}</main>

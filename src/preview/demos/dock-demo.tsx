@@ -111,7 +111,7 @@ export default function DockDemo({
       {/* Dummy Desktop Workplace State Indicator */}
       <div className="absolute top-6 left-6 text-xs font-mono text-zinc-400 dark:text-zinc-600">
         Active App:{" "}
-        <span className="text-zinc-800 dark:text-zinc-300 uppercase font-bold">
+        <span className="text-zinc-800 dark:text-zinc-300 uppercase font-semibold">
           {active}
         </span>
       </div>

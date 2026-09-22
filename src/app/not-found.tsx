@@ -26,7 +26,7 @@ export default function NotFound() {
 
         {/* Title & Description */}
         <div className="space-y-2 max-w-lg">
-          <h2 className="text-2xl sm:text-3xl font-bold tracking-tight text-foreground">
+          <h2 className="text-2xl sm:text-3xl font-semibold tracking-tight text-foreground">
             Lost in Hyperspace?
           </h2>
           <p className="text-sm sm:text-base text-muted-foreground leading-relaxed">

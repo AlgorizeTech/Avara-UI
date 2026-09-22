@@ -55,7 +55,7 @@ export default function ModalDemo({
 }
 
 const triggerClass =
-  "px-6 py-3 rounded-lg font-bold transition-transform active:scale-95 shadow-md bg-primary hover:bg-primary/90 text-primary-foreground";
+  "px-6 py-3 rounded-lg font-semibold transition-transform active:scale-95 shadow-md bg-primary hover:bg-primary/90 text-primary-foreground";
 
 /** Icon, headline, body copy and a pair of actions — the everyday shape. */
 function StandardModal() {
@@ -81,7 +81,7 @@ function StandardModal() {
                   <AlertCircle className="w-6 h-6" />
                 </div>
                 <div className="flex flex-col">
-                  <h2 className="text-xl font-bold tracking-tight text-foreground">
+                  <h2 className="text-xl font-semibold tracking-tight text-foreground">
                     System Update Available
                   </h2>
                   <span className="text-xs font-semibold text-emerald-600 dark:text-emerald-400">
@@ -107,7 +107,7 @@ function StandardModal() {
             </button>
             <button
               onClick={() => setIsOpen(false)}
-              className="px-6 py-2.5 rounded-xl text-sm font-bold shadow-lg shadow-primary/20 active:scale-95 transition-all bg-primary hover:bg-primary/90 text-primary-foreground"
+              className="px-6 py-2.5 rounded-xl text-sm font-semibold shadow-lg shadow-primary/20 active:scale-95 transition-all bg-primary hover:bg-primary/90 text-primary-foreground"
             >
               Install Now
             </button>
@@ -135,7 +135,7 @@ function FormModal() {
         contentClassName="max-w-lg bg-background rounded-2xl shadow-xl border border-border"
       >
         <ModalHeader className="border-b border-border/60">
-          <h2 className="text-lg font-bold text-foreground">
+          <h2 className="text-lg font-semibold text-foreground">
             Invite Team Member
           </h2>
         </ModalHeader>
@@ -185,7 +185,7 @@ function FormModal() {
           </button>
           <button
             onClick={() => setIsOpen(false)}
-            className="px-5 py-2.5 rounded-lg font-bold shadow-sm transition-opacity bg-primary hover:bg-primary/90 text-primary-foreground"
+            className="px-5 py-2.5 rounded-lg font-semibold shadow-sm transition-opacity bg-primary hover:bg-primary/90 text-primary-foreground"
           >
             Send Invite
           </button>
@@ -215,7 +215,7 @@ function ConfirmationModal() {
           <div className="w-16 h-16 rounded-2xl flex items-center justify-center mb-5 border shadow-sm transition-colors bg-rose-50 dark:bg-rose-500/10 border-rose-200 dark:border-rose-500/20 text-rose-600 dark:text-rose-400">
             <AlertCircle className="w-8 h-8" />
           </div>
-          <h2 className="text-xl font-bold text-foreground mb-2">
+          <h2 className="text-xl font-semibold text-foreground mb-2">
             Delete permanently?
           </h2>
           <p className="text-sm text-foreground font-medium leading-relaxed mb-8">
@@ -231,7 +231,7 @@ function ConfirmationModal() {
             </button>
             <button
               onClick={() => setIsOpen(false)}
-              className="flex-1 py-2.5 rounded-lg font-bold bg-red-600 hover:bg-red-700 text-white shadow-sm transition-colors"
+              className="flex-1 py-2.5 rounded-lg font-semibold bg-red-600 hover:bg-red-700 text-white shadow-sm transition-colors"
             >
               Delete
             </button>
@@ -260,7 +260,7 @@ function FullscreenModal() {
         <div className="flex flex-col h-full">
           <ModalHeader className="border-b border-border pr-12">
             <div className="min-w-0">
-              <h2 className="text-xl sm:text-2xl font-black text-foreground">
+              <h2 className="text-xl sm:text-2xl font-bold text-foreground">
                 Project Configuration
               </h2>
               <p className="text-sm text-muted-foreground mt-1 font-normal">
@@ -271,7 +271,7 @@ function FullscreenModal() {
           <ModalBody className="flex-1 max-h-none">
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6 sm:gap-8 p-2">
               <div className="space-y-6">
-                <h3 className="text-sm font-bold uppercase tracking-widest text-muted-foreground">
+                <h3 className="text-sm font-semibold uppercase tracking-widest text-muted-foreground">
                   General
                 </h3>
                 <div className="h-12 w-full bg-muted rounded-lg animate-pulse" />
@@ -279,7 +279,7 @@ function FullscreenModal() {
                 <div className="h-12 w-3/4 bg-muted rounded-lg animate-pulse" />
               </div>
               <div className="space-y-6">
-                <h3 className="text-sm font-bold uppercase tracking-widest text-muted-foreground">
+                <h3 className="text-sm font-semibold uppercase tracking-widest text-muted-foreground">
                   Security
                 </h3>
                 <div className="h-32 w-full bg-muted rounded-lg animate-pulse" />
@@ -290,7 +290,7 @@ function FullscreenModal() {
           <ModalFooter className="border-t border-border bg-muted flex flex-col-reverse sm:flex-row gap-3 sm:justify-between sm:items-center">
             <button
               onClick={() => setIsOpen(false)}
-              className="py-2 sm:py-0 text-sm font-bold text-red-500 hover:text-red-600 transition-colors"
+              className="py-2 sm:py-0 text-sm font-semibold text-red-500 hover:text-red-600 transition-colors"
             >
               Delete Project
             </button>
@@ -303,7 +303,7 @@ function FullscreenModal() {
               </button>
               <button
                 onClick={() => setIsOpen(false)}
-                className="px-6 py-3 rounded-lg font-bold shadow-md transition-opacity bg-primary hover:bg-primary/90 text-primary-foreground"
+                className="px-6 py-3 rounded-lg font-semibold shadow-md transition-opacity bg-primary hover:bg-primary/90 text-primary-foreground"
               >
                 Save Configuration
               </button>
@@ -343,7 +343,7 @@ function GlassModal() {
                   <AlertCircle className="w-6 h-6" />
                 </div>
                 <div className="flex flex-col">
-                  <h2 className="text-xl font-bold tracking-tight text-foreground">
+                  <h2 className="text-xl font-semibold tracking-tight text-foreground">
                     System Update Available
                   </h2>
                   <span className="text-xs font-semibold text-emerald-600 dark:text-emerald-400">
@@ -369,7 +369,7 @@ function GlassModal() {
             </button>
             <button
               onClick={() => setIsOpen(false)}
-              className="px-6 py-2.5 rounded-xl text-sm font-bold shadow-lg shadow-primary/20 active:scale-95 transition-all bg-primary hover:bg-primary/90 text-primary-foreground"
+              className="px-6 py-2.5 rounded-xl text-sm font-semibold shadow-lg shadow-primary/20 active:scale-95 transition-all bg-primary hover:bg-primary/90 text-primary-foreground"
             >
               Install Now
             </button>

@@ -39,25 +39,25 @@ export default function SocialLinksDemo({
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-x-32 gap-y-36 sm:gap-y-44 w-full max-w-xl mx-auto py-24">
           {/* 1. Expand Top */}
           <div className="flex items-center justify-center gap-3 order-3 sm:order-1">
-            <span className="px-2.5 py-0.5 rounded-full bg-muted/80 text-[10px] font-bold text-muted-foreground uppercase tracking-widest border border-border/40 select-none">Top</span>
+            <span className="px-2.5 py-0.5 rounded-full bg-muted/80 text-[10px] font-semibold text-muted-foreground uppercase tracking-widest border border-border/40 select-none">Top</span>
             <SocialLinks links={LINKS} variant="expand-replace" expandDirection="top" size={size} />
           </div>
 
           {/* 2. Expand Right */}
           <div className="flex items-center justify-start sm:justify-center gap-3 order-2 sm:order-2">
             <SocialLinks links={LINKS} variant="expand-replace" expandDirection="right" size={size} />
-            <span className="px-2.5 py-0.5 rounded-full bg-muted/80 text-[10px] font-bold text-muted-foreground uppercase tracking-widest border border-border/40 select-none">Right</span>
+            <span className="px-2.5 py-0.5 rounded-full bg-muted/80 text-[10px] font-semibold text-muted-foreground uppercase tracking-widest border border-border/40 select-none">Right</span>
           </div>
 
           {/* 3. Expand Left */}
           <div className="flex items-center justify-end sm:justify-center gap-3 order-4 sm:order-3">
-            <span className="px-2.5 py-0.5 rounded-full bg-muted/80 text-[10px] font-bold text-muted-foreground uppercase tracking-widest border border-border/40 select-none">Left</span>
+            <span className="px-2.5 py-0.5 rounded-full bg-muted/80 text-[10px] font-semibold text-muted-foreground uppercase tracking-widest border border-border/40 select-none">Left</span>
             <SocialLinks links={LINKS} variant="expand-replace" expandDirection="left" size={size} />
           </div>
 
           {/* 4. Expand Bottom */}
           <div className="flex items-center justify-center gap-3 order-1 sm:order-4">
-            <span className="px-2.5 py-0.5 rounded-full bg-muted/80 text-[10px] font-bold text-muted-foreground uppercase tracking-widest border border-border/40 select-none">Bottom</span>
+            <span className="px-2.5 py-0.5 rounded-full bg-muted/80 text-[10px] font-semibold text-muted-foreground uppercase tracking-widest border border-border/40 select-none">Bottom</span>
             <SocialLinks links={LINKS} variant="expand-replace" expandDirection="bottom" size={size} />
           </div>
         </div>
@@ -71,25 +71,25 @@ export default function SocialLinksDemo({
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-x-32 gap-y-36 sm:gap-y-44 w-full max-w-xl mx-auto py-24">
           {/* 1. Expand Top (Appears below on small screens so top icons reveal upward cleanly) */}
           <div className="flex items-center justify-center gap-3 order-3 sm:order-1">
-            <span className="px-2.5 py-0.5 rounded-full bg-muted/80 text-[10px] font-bold text-muted-foreground uppercase tracking-widest border border-border/40 select-none">Top</span>
+            <span className="px-2.5 py-0.5 rounded-full bg-muted/80 text-[10px] font-semibold text-muted-foreground uppercase tracking-widest border border-border/40 select-none">Top</span>
             <SocialLinks links={LINKS} variant="expand-reveal" expandDirection="top" size={size} />
           </div>
 
           {/* 2. Expand Right (Text badge placed on right side) */}
           <div className="flex items-center justify-start sm:justify-center gap-3 order-2 sm:order-2">
             <SocialLinks links={LINKS} variant="expand-reveal" expandDirection="right" size={size} />
-            <span className="px-2.5 py-0.5 rounded-full bg-muted/80 text-[10px] font-bold text-muted-foreground uppercase tracking-widest border border-border/40 select-none">Right</span>
+            <span className="px-2.5 py-0.5 rounded-full bg-muted/80 text-[10px] font-semibold text-muted-foreground uppercase tracking-widest border border-border/40 select-none">Right</span>
           </div>
 
           {/* 3. Expand Left (Pushed fully to the right edge on mobile) */}
           <div className="flex items-center justify-end sm:justify-center gap-3 order-4 sm:order-3">
-            <span className="px-2.5 py-0.5 rounded-full bg-muted/80 text-[10px] font-bold text-muted-foreground uppercase tracking-widest border border-border/40 select-none">Left</span>
+            <span className="px-2.5 py-0.5 rounded-full bg-muted/80 text-[10px] font-semibold text-muted-foreground uppercase tracking-widest border border-border/40 select-none">Left</span>
             <SocialLinks links={LINKS} variant="expand-reveal" expandDirection="left" size={size} />
           </div>
 
           {/* 4. Expand Bottom (Appears above on small screens so bottom icons reveal downward cleanly) */}
           <div className="flex items-center justify-center gap-3 order-1 sm:order-4">
-            <span className="px-2.5 py-0.5 rounded-full bg-muted/80 text-[10px] font-bold text-muted-foreground uppercase tracking-widest border border-border/40 select-none">Bottom</span>
+            <span className="px-2.5 py-0.5 rounded-full bg-muted/80 text-[10px] font-semibold text-muted-foreground uppercase tracking-widest border border-border/40 select-none">Bottom</span>
             <SocialLinks links={LINKS} variant="expand-reveal" expandDirection="bottom" size={size} />
           </div>
         </div>

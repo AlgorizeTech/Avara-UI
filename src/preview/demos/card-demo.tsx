@@ -127,7 +127,7 @@ export default function CardDemo({
               <CreditCard className="h-4 w-4 text-zinc-400" />
             </CardHeader>
             <CardContent>
-              <div className="text-2xl font-bold">$45,231.89</div>
+              <div className="text-2xl font-semibold">$45,231.89</div>
               <p className="text-xs text-emerald-500 font-medium mt-1">
                 +20.1% from last month
               </p>
@@ -141,7 +141,7 @@ export default function CardDemo({
               <Bell className="h-4 w-4 text-zinc-400" />
             </CardHeader>
             <CardContent>
-              <div className="text-2xl font-bold">+2350</div>
+              <div className="text-2xl font-semibold">+2350</div>
               <p className="text-xs text-emerald-500 font-medium mt-1">
                 +180.1% from last month
               </p>
@@ -155,7 +155,7 @@ export default function CardDemo({
               <Settings className="h-4 w-4 text-zinc-400" />
             </CardHeader>
             <CardContent>
-              <div className="text-2xl font-bold">+573</div>
+              <div className="text-2xl font-semibold">+573</div>
               <p className="text-xs text-zinc-500 font-medium mt-1">
                 +201 since last hour
               </p>

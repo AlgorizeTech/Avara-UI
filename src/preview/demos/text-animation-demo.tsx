@@ -45,7 +45,7 @@ export default function TextAnimationDemo({
       <div className="w-full min-h-[300px] bg-white dark:bg-black rounded-2xl border border-slate-200 dark:border-slate-800 flex flex-col gap-8 p-8 overflow-hidden">
         {ALL_VARIANTS.map((v) => (
           <div key={v} className="flex flex-col gap-1">
-            <span className="text-[11px] font-bold uppercase tracking-wider text-zinc-500">
+            <span className="text-[11px] font-semibold uppercase tracking-wider text-zinc-500">
               variant=&quot;{v}&quot;
             </span>
             <TextAnimation

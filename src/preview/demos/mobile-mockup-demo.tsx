@@ -92,12 +92,12 @@ function HeroScreen({ homeIndicator = true }: { homeIndicator?: boolean }) {
       </div>
 
       <div className="relative z-10 flex-1 flex flex-col items-center justify-center text-center px-4 gap-2.5 min-h-0">
-        <div className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-primary/10 border border-primary/30 text-[9px] font-bold text-primary">
+        <div className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-primary/10 border border-primary/30 text-[9px] font-semibold text-primary">
           <Sparkles className="size-2.5 shrink-0" />
           <span>Next-Gen React Components</span>
         </div>
 
-        <h1 className="text-[19px] font-black tracking-tight leading-tight text-foreground">
+        <h1 className="text-[19px] font-bold tracking-tight leading-tight text-foreground">
           Build <span className="text-primary">Interactive</span>
           <span className="block relative h-[1.3em] overflow-hidden">
             <AnimatePresence mode="wait" initial={false}>
@@ -139,7 +139,7 @@ function HeroScreen({ homeIndicator = true }: { homeIndicator?: boolean }) {
         <div className="flex items-center gap-2 w-full max-w-[230px]">
           <button
             type="button"
-            className="flex-1 h-9 rounded-xl bg-primary text-primary-foreground text-[10px] font-bold flex items-center justify-center gap-1.5 hover:opacity-90 active:scale-[0.98] transition-all"
+            className="flex-1 h-9 rounded-xl bg-primary text-primary-foreground text-[10px] font-semibold flex items-center justify-center gap-1.5 hover:opacity-90 active:scale-[0.98] transition-all"
           >
             Browse Components
             <ArrowRight className="size-3 shrink-0" />
@@ -155,7 +155,7 @@ function HeroScreen({ homeIndicator = true }: { homeIndicator?: boolean }) {
 
         <div className="w-full max-w-[230px] rounded-xl border border-border bg-card/80 overflow-hidden">
           <div className="flex items-center justify-between px-2.5 py-1.5 border-b border-border/70">
-            <span className="flex items-center gap-1 text-[8px] font-bold text-foreground">
+            <span className="flex items-center gap-1 text-[8px] font-semibold text-foreground">
               <Sparkles className="size-2 text-primary shrink-0" />
               Live Component Preview
             </span>
@@ -178,7 +178,7 @@ function HeroScreen({ homeIndicator = true }: { homeIndicator?: boolean }) {
           {TECH_STACK.map((tech) => (
             <span
               key={tech}
-              className="flex items-center gap-1 text-[8px] font-bold tracking-wide text-muted-foreground whitespace-nowrap"
+              className="flex items-center gap-1 text-[8px] font-semibold tracking-wide text-muted-foreground whitespace-nowrap"
             >
               <span className="size-1 rounded-full bg-primary shrink-0" />
               {tech}

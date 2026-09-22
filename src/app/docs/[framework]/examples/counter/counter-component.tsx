@@ -12,7 +12,7 @@ export default function Counter({ initialCount = 0 }: CounterProps) {
   
   return (
     <div className="text-center">
-      <p className="text-5xl font-bold my-6">{count}</p>
+      <p className="text-5xl font-semibold my-6">{count}</p>
       <div className="flex justify-center gap-3">
         <Button onClick={() => setCount(count + 1)}>Increment</Button>
         <Button variant="secondary" onClick={() => setCount(count - 1)}>Decrement</Button>

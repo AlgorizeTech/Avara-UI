@@ -66,7 +66,7 @@ export default function TiltedCardDemo({
                 </div>
               </div>
 
-              <h3 className="text-xl sm:text-2xl font-black text-zinc-900 dark:text-white tracking-tight uppercase mb-1 drop-shadow-sm">
+              <h3 className="text-xl sm:text-2xl font-bold text-zinc-900 dark:text-white tracking-tight uppercase mb-1 drop-shadow-sm">
                 Access Key
               </h3>
               <p className="text-xs sm:text-sm font-medium text-zinc-500 dark:text-zinc-400 font-mono tracking-widest">
