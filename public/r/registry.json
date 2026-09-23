@@ -100,6 +100,28 @@
       "docs": "Named export: Alert. `type` is primary | secondary | success | danger | warning | info | dark; `variant` is solid | outline | modern | glass | glow. Set `dismissible` with `onDismiss` to make it closable. For transient messages, use `toast` or `sonner`."
     },
     {
+      "name": "animated-faq",
+      "type": "registry:component",
+      "title": "Animated Faq",
+      "author": "AlgorizeTech",
+      "description": "TODO: describe animated-faq. Generated placeholder.",
+      "categories": [],
+      "dependencies": [
+        "lucide-react",
+        "motion"
+      ],
+      "registryDependencies": [
+        "utils"
+      ],
+      "files": [
+        {
+          "path": "src/components/custom/blocks/AnimatedFAQBlock.tsx",
+          "type": "registry:component",
+          "target": "components/custom/blocks/AnimatedFAQBlock.tsx"
+        }
+      ]
+    },
+    {
       "name": "animated-list",
       "type": "registry:component",
       "title": "Animated List",
