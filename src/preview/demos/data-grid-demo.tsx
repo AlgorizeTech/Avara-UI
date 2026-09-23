@@ -154,8 +154,8 @@ export default function DataGridDemo({
                 ? "bg-emerald-600 hover:bg-emerald-700 text-white"
                 : color === "blue"
                 ? "bg-blue-600 hover:bg-blue-700 text-white"
-                : color === "zinc"
-                ? "bg-zinc-900 dark:bg-zinc-100 text-white dark:text-zinc-900 hover:bg-zinc-800 dark:hover:bg-zinc-200"
+                : color === "lavender"
+                ? "bg-[#9b8afb] hover:bg-[#9b8afb]/90 text-white"
                 : "bg-primary text-primary-foreground hover:opacity-90"
             }`}
           >

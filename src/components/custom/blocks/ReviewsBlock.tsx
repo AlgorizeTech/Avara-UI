@@ -40,7 +40,7 @@ const DEFAULT_REVIEWS: ReviewItem[] = [
 		name: "Tamar Mendelson",
 		role: "Restaurant Critic",
 		avatar:
-			"https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=800&q=80",
+			"https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_800,c_limit/v1790150483/photo-1534528741775-53994a69daeb-1790150482280.jpg",
 		rating: 5.0,
 		content:
 			"I was impressed by the food! And I could really tell that they use high-quality ingredients. The staff was friendly and attentive. I'll definitely be back for more!",
@@ -50,7 +50,7 @@ const DEFAULT_REVIEWS: ReviewItem[] = [
 		name: "Alice Johnson",
 		role: "Product Director",
 		avatar:
-			"https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&w=800&q=80",
+			"https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_800,c_limit/v1790158813/photo-1494790108377-be9c29b29330-1790158812212.jpg",
 		rating: 5.0,
 		content:
 			"The difference between AlgorizeTech and other agencies is their talent pool. You actually work with senior developers. Code quality and architecture are top-tier!",
@@ -60,7 +60,7 @@ const DEFAULT_REVIEWS: ReviewItem[] = [
 		name: "Arlene McCoy",
 		role: "Co-Founder & CEO",
 		avatar:
-			"https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=800&q=80",
+			"https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_800,c_limit/v1790150480/photo-1507003211169-0a1dd7228f2d-1790150482276.jpg",
 		rating: 5.0,
 		content:
 			"Their 'Quality Obsessed' mantra is apparent in everything they do. They pushed back on bad ideas, suggested better alternatives, and boosted conversion by 40%!",
@@ -70,7 +70,7 @@ const DEFAULT_REVIEWS: ReviewItem[] = [
 		name: "Sofia Chen",
 		role: "Lead Systems Architect",
 		avatar:
-			"https://images.unsplash.com/photo-1517841905240-472988babdf9?auto=format&fit=crop&w=800&q=80",
+			"https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_800,c_limit/v1790150481/photo-1517841905240-472988babdf9-1790150482277.jpg",
 		rating: 5.0,
 		content:
 			"Integrating their UI components shaved weeks off our launch roadmap. Built-in performance optimizations and accessibility standards saved us hundreds of hours!",
@@ -80,7 +80,7 @@ const DEFAULT_REVIEWS: ReviewItem[] = [
 		name: "Mr. Martin",
 		role: "Chief Operating Officer",
 		avatar:
-			"https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&w=800&q=80",
+			"https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_800,c_limit/v1790158814/photo-1500648767791-00dcc994a43e-1790158812212.jpg",
 		rating: 5.0,
 		content:
 			"The unlimited revisions gave us creative freedom without scope creep. AlgorizeTech refined every single detail until our team was 100% thrilled with results!",
@@ -90,7 +90,7 @@ const DEFAULT_REVIEWS: ReviewItem[] = [
 		name: "David Kim",
 		role: "Head of Design",
 		avatar:
-			"https://images.unsplash.com/photo-1539571696357-5a69c17a67c6?auto=format&fit=crop&w=800&q=80",
+			"https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_800,c_limit/v1790158814/photo-1539571696357-5a69c17a67c6-1790158812214.jpg",
 		rating: 5.0,
 		content:
 			"The attention to clean typography, micro-interactions, and layout scaling surpassed all expectations. It transformed our web product into a modern design!",
@@ -100,7 +100,7 @@ const DEFAULT_REVIEWS: ReviewItem[] = [
 		name: "Elena Rostova",
 		role: "VP of Engineering",
 		avatar:
-			"https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?auto=format&fit=crop&w=800&q=80",
+			"https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_800,c_limit/v1790158814/photo-1573496359142-b8d87734a5a2-1790158812214.jpg",
 		rating: 5.0,
 		content:
 			"Their component library is bulletproof. Seamless dark mode integration, accessible keyboard navigation, and animation physics work impeccably out of the box!",
@@ -110,7 +110,7 @@ const DEFAULT_REVIEWS: ReviewItem[] = [
 		name: "Marcus Vance",
 		role: "Tech Lead",
 		avatar:
-			"https://images.unsplash.com/photo-1522075469751-3a6694fb2f61?auto=format&fit=crop&w=800&q=80",
+			"https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_800,c_limit/v1790158814/photo-1522075469751-3a6694fb2f61-1790158812213.jpg",
 		rating: 5.0,
 		content:
 			"Outstanding developer experience from day one. Clean TypeScript types, well-documented component exports, and instant setup made integration effortless!",
@@ -277,7 +277,7 @@ function StackedCardsCarousel({
 							}}
 						>
 							<img
-								src={review.avatar || "https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=800&q=80"}
+								src={review.avatar || "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_800,c_limit/v1790150483/photo-1534528741775-53994a69daeb-1790150482280.jpg"}
 								alt={review.name}
 								className="w-full h-full object-cover rounded-[24px] sm:rounded-[28px] pointer-events-none"
 							/>
@@ -733,7 +733,7 @@ function LogoCarouselVariant({
 								key={activeItem.id || activeIndex}
 								src={
 									activeItem.avatar ||
-									"https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=800&q=80"
+									"https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_800,c_limit/v1790150483/photo-1534528741775-53994a69daeb-1790150482280.jpg"
 								}
 								alt={activeItem.name}
 								initial={{ opacity: 0, scale: 1.08 }}

@@ -76,7 +76,7 @@ export const ThemeSwitcher = ({ className }: { className?: string } = {}) => {
     <button
       onClick={toggleTheme}
       className={cn(
-        "flex items-center justify-center rounded-md p-2 text-sm transition-colors text-zinc-950 dark:text-zinc-50 cursor-pointer",
+        "flex items-center justify-center rounded-md p-2 text-sm transition-colors text-foreground cursor-pointer",
         className
       )}
       aria-label="Toggle Theme"

@@ -53,6 +53,9 @@ const transformNavigation = (): MenuItem[] => {
 
 const menuData = transformNavigation();
 
+// Mirrors the desktop sidebar: badges are accent tints, whatever they say.
+const BADGE = 'text-[9px] font-bold uppercase tracking-wider leading-none px-1.5 py-0.5 rounded-md bg-primary/15 text-primary border border-primary/30 ml-1.5';
+
 const MenuItem: React.FC<{ item: MenuItem; isNested?: boolean; onClose: () => void }> = ({
   item,
   isNested = false,
@@ -78,55 +81,45 @@ const MenuItem: React.FC<{ item: MenuItem; isNested?: boolean; onClose: () => vo
       <div
         onClick={handleClick}
         className={cn(
-          'flex items-center justify-between py-1 text-sm transition-colors cursor-pointer relative',
-          isNested ? 'pl-6' : 'font-medium',
-          isActive || hasActiveChild
-            ? 'text-zinc-900 dark:text-white'
-            : isNested
-              ? 'text-zinc-500 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-zinc-200'
-              : 'text-zinc-500 dark:text-white/80 hover:text-zinc-900 dark:hover:text-white/90'
+          'flex items-center justify-between transition-colors cursor-pointer relative select-none',
+          // Top level is a group label (11px uppercase, ink 35%); nested rows
+          // are ordinary items (13px, ink 55%) — the desktop sidebar's scale.
+          isNested
+            ? cn(
+                'pl-6 min-h-8 py-[0.35rem] pr-2 rounded-md text-[13px]',
+                isActive || hasActiveChild
+                  ? 'text-primary font-medium'
+                  : 'text-foreground/55 hover:text-foreground'
+              )
+            : cn(
+                'mb-1.5 text-[11px] font-semibold uppercase tracking-[0.08em]',
+                hasActiveChild ? 'text-foreground/60' : 'text-foreground/35 hover:text-foreground/60'
+              )
         )}
       >
-        <span className="flex items-center gap-2">
-          {/* Active indicator dot for main section links */}
-          {!isNested && (isActive || hasActiveChild) && (
-            <div className="w-2 h-2 bg-blue-500 rounded-full mr-1 flex-shrink-0" />
-          )}
+        <span className="flex items-center gap-1.5">
           {!isNested && item.children && (
             <span>
               {isOpen ? (
-                <ChevronDown className="w-3.5 h-3.5 opacity-60" />
+                <ChevronDown className="w-3 h-3 opacity-70" />
               ) : (
-                <ChevronRight className="w-3.5 h-3.5 opacity-60" />
+                <ChevronRight className="w-3 h-3 opacity-70" />
               )}
             </span>
           )}
           {isNested && (
-            <span className="w-1 h-1 rounded-full bg-zinc-400 dark:bg-zinc-500 mr-2"></span>
+            <span className="w-1 h-1 rounded-full bg-foreground/30 mr-2"></span>
           )}
           {item.label}
-          {item.badge && (
-            <span
-              className={cn(
-                'text-xs font-medium px-2 py-0.5 rounded-full ml-1.5',
-                item.badge === 'New'
-                  ? 'bg-primary/10 text-primary border border-primary/20'
-                  : item.badge === 'Updated'
-                    ? 'bg-orange-100 text-orange-700 dark:bg-orange-950/60 dark:text-orange-400'
-                    : 'bg-blue-100 text-blue-700 dark:bg-blue-950/60 dark:text-blue-400'
-              )}
-            >
-              {item.badge}
-            </span>
-          )}
+          {item.badge && <span className={BADGE}>{item.badge}</span>}
         </span>
       </div>
 
       {item.children && isOpen && (
         <ul
           className={cn(
-            'mt-0.5 space-y-0.5',
-            isNested ? 'pl-2' : 'ml-4 border-l border-zinc-100 dark:border-zinc-800 mt-0.5 relative'
+            'space-y-0.5',
+            isNested ? 'pl-2' : 'ml-1.5 border-l border-foreground/[0.06] relative'
           )}
         >
           {item.children.map((child, index) => {
@@ -135,39 +128,24 @@ const MenuItem: React.FC<{ item: MenuItem; isNested?: boolean; onClose: () => vo
             return isNested ? (
               <MenuItem key={index} item={child} isNested onClose={onClose} />
             ) : (
-              <li key={child.slug} className="relative py-0 pl-4">
+              <li key={child.slug} className="relative pl-3">
                 <div className="flex items-center">
-                  {/* Active indicator dot for child links */}
-                  {isChildActive && (
-                    <div className="w-2 h-2 bg-blue-500 rounded-full mr-2 flex-shrink-0" />
-                  )}
+                  {/* Active state is the accent colour alone — no filled
+                      background, no dot — as in the desktop sidebar. */}
                   <Link
                     href={child.href || docsHref(framework, child.slug || "")}
                     onClick={onClose}
                     className={cn(
-                      'block py-1 text-sm',
+                      'flex items-center min-h-8 py-[0.35rem] pr-2 rounded-md text-[13px] transition-colors',
                       isChildActive
-                        ? 'text-blue-600 dark:text-blue-400 font-medium'
-                        : 'text-zinc-600 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-zinc-200'
+                        ? 'text-primary font-medium'
+                        : 'text-foreground/55 hover:text-foreground'
                     )}
                     aria-current={isChildActive ? 'page' : undefined}
                   >
                     {child.label}
                   </Link>
-                  {child.badge && (
-                    <span
-                      className={cn(
-                        'text-xs font-medium px-2 py-0.5 rounded-full ml-1.5',
-                        child.badge === 'New'
-                          ? 'bg-green-100 text-green-700 dark:bg-green-950/60 dark:text-green-400'
-                          : child.badge === 'Updated'
-                            ? 'bg-orange-100 text-orange-700 dark:bg-orange-950/60 dark:text-orange-400'
-                            : 'bg-blue-100 text-blue-700 dark:bg-blue-950/60 dark:text-blue-400'
-                      )}
-                    >
-                      {child.badge}
-                    </span>
-                  )}
+                  {child.badge && <span className={BADGE}>{child.badge}</span>}
                 </div>
               </li>
             );
@@ -184,7 +162,7 @@ export const SidebarMobile = ({ onClose }: { onClose: () => void }) => {
   const currentSlug = slugFromPathname(currentPath);
 
   return (
-    <aside className="w-full h-[calc(100%-60px)] sticky top-[60px] border-t border-zinc-100 dark:border-zinc-800 overflow-visible">
+    <aside className="w-full h-[calc(100%-60px)] sticky top-[60px] overflow-visible">
       <ScrollArea className="h-full w-full">
         <div className="py-6 px-6 relative overflow-visible">
           {/* Same control, same position as desktop. onNavigate closes the sheet:
@@ -193,27 +171,24 @@ export const SidebarMobile = ({ onClose }: { onClose: () => void }) => {
           <FrameworkSwitcher onNavigate={onClose} className="mb-5" />
 
           <nav role="navigation" aria-label="Documentation navigation">
-            <ul className="space-y-1 relative">
+            <ul className="space-y-5 relative">
               {menuData.map((item, index) => (
                 <MenuItem key={index} item={item} onClose={onClose} />
               ))}
             </ul>
           </nav>
 
-          <div className="mt-6 pt-3 border-t border-zinc-100 dark:border-zinc-800">
+          <div className="mt-6 pt-3 border-t border-foreground/[0.06]">
             <div className="flex items-center">
-              {/* Active indicator dot for Getting Started Guide - inline */}
-              {currentSlug === 'index' && (
-                <div className="w-2 h-2 bg-blue-500 rounded-full mr-2 flex-shrink-0" />
-              )}
               <Link
                 href={docsHref(framework, 'index')}
                 className={cn(
-                  'block py-1.5 text-sm',
+                  'flex items-center min-h-8 py-[0.35rem] pr-2 rounded-md text-[13px] transition-colors',
                   currentSlug === 'index'
-                    ? 'text-blue-600 dark:text-blue-400 font-medium'
-                    : 'text-blue-600 dark:text-blue-400 hover:text-blue-700 dark:hover:text-blue-300'
+                    ? 'text-primary font-medium'
+                    : 'text-foreground/55 hover:text-foreground'
                 )}
+                aria-current={currentSlug === 'index' ? 'page' : undefined}
                 onClick={onClose}
               >
                 Getting Started Guide

@@ -51,7 +51,7 @@ export function FontFamilyControl() {
 
   return (
     <div className="w-full space-y-2.5">
-      <span className="text-xs font-semibold uppercase tracking-wider text-muted-foreground block">
+      <span className="text-[11px] font-semibold uppercase tracking-[0.08em] text-foreground/35 block">
         Font Family
       </span>
       <MultiSelect

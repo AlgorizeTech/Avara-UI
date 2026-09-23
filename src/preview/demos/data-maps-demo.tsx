@@ -70,6 +70,7 @@ const getHexForColor = (c: string) => {
     default: "var(--primary)",
     blue: "#2563eb",
     emerald: "#10b981",
+    lavender: "#9b8afb",
     rose: "#e11d48",
     violet: "#7c3aed",
   };

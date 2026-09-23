@@ -35,6 +35,13 @@ const sampleData: AccordionDataItem[] = [
   },
 ];
 
+/** The three faces on the "Still stuck?" card in the section layout. */
+const SUPPORT_TEAM = [
+  { name: "Ana R.", src: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_120,h_120,c_fill/v1790145139/pexels-photo-1036623-1790145143487.jpg" },
+  { name: "Tom M.", src: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_120,h_120,c_fill/v1790145142/pexels-photo-2043590-1790145143488.jpg" },
+  { name: "Mara K.", src: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_120,h_120,c_fill/v1790145139/pexels-photo-1587009-1790145143488.jpg" },
+];
+
 /** Questions about the library itself, for the section layout. */
 const libraryFaq: AccordionDataItem[] = [
   {
@@ -95,13 +102,14 @@ function FaqSection({ animation }: { animation: Animation }) {
 
           <div className="mt-8 flex max-w-md items-center gap-4 rounded-2xl bg-muted/60 p-4">
             <div className="flex -space-x-2">
-              {["AR", "MK", "JS"].map((initials) => (
-                <span
-                  key={initials}
-                  className="flex size-9 items-center justify-center rounded-full border-2 border-background bg-primary/15 text-xs font-medium text-primary"
-                >
-                  {initials}
-                </span>
+              {SUPPORT_TEAM.map((person) => (
+                <img
+                  key={person.name}
+                  src={person.src}
+                  alt={person.name}
+                  className="size-9 rounded-full border-2 border-background object-cover"
+                  loading="lazy"
+                />
               ))}
             </div>
             <div className="min-w-0">

@@ -17,10 +17,10 @@ export function FontSizeControl() {
   return (
     <div className="space-y-2">
       <div className="flex items-center justify-between">
-        <span className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">
+        <span className="text-[11px] font-semibold uppercase tracking-[0.08em] text-foreground/35">
           Scale
         </span>
-        <span className="font-semibold text-primary">{fontSize}%</span>
+        <span className="text-[12px] tabular-nums text-foreground/50">{fontSize}%</span>
       </div>
       <Slider
         value={[Number(fontSize)]}
@@ -29,7 +29,7 @@ export function FontSizeControl() {
         max={130}
         step={5}
       />
-      <div className="flex justify-between text-[10px] text-muted-foreground">
+      <div className="flex justify-between text-[11px] tabular-nums text-foreground/35">
         <span>75%</span>
         <span>100%</span>
         <span>130%</span>

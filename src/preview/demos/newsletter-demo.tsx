@@ -3,17 +3,19 @@
 import { Newsletter, type NewsletterVariant } from "@/components/custom/blocks/NewsletterBlock";
 import { cn } from "@/lib/utils";
 
-// Faces from Pexels (free to use).
-const pexels = (id: number, w = 160) =>
-  `https://images.pexels.com/photos/${id}/pexels-photo-${id}.jpeg?auto=compress&cs=tinysrgb&w=${w}`;
-
-const FACES = [2379004, 220453, 2381069, 1130626, 3785079].map((id) => pexels(id));
+const FACES = [
+  "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_160,c_limit/v1790158812/pexels-photo-2379004-1790158812208.jpg",
+  "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_160,c_limit/v1790158810/pexels-photo-220453-1790158812206.jpg",
+  "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_160,c_limit/v1790158812/pexels-photo-2381069-1790158812209.jpg",
+  "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_160,c_limit/v1790158812/pexels-photo-1130626-1790158812207.jpg",
+  "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_160,c_limit/v1790158812/pexels-photo-3785079-1790158812209.jpg",
+];
 
 const PORTRAITS = [
-  { src: pexels(2379004, 240), alt: "A reader" },
-  { src: pexels(2381069, 240), alt: "A reader" },
-  { src: pexels(1130626, 240), alt: "A reader" },
-  { src: pexels(3785079, 240), alt: "A reader" },
+  { src: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_240,c_limit/v1790158812/pexels-photo-2379004-1790158812208.jpg", alt: "A reader" },
+  { src: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_240,c_limit/v1790158812/pexels-photo-2381069-1790158812209.jpg", alt: "A reader" },
+  { src: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_240,c_limit/v1790158812/pexels-photo-1130626-1790158812207.jpg", alt: "A reader" },
+  { src: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_240,c_limit/v1790158812/pexels-photo-3785079-1790158812209.jpg", alt: "A reader" },
 ];
 
 const JOINED = [
@@ -30,7 +32,7 @@ const ISSUES = [
     title: "The quiet power of defaults",
     date: "Issue 42 · This week",
     excerpt: "Why the choices you never make shape your product more than the ones you agonise over — and how to pick them well.",
-    cover: "https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?q=80&w=800&auto=format&fit=crop",
+    cover: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_800,c_limit/v1790148864/photo-1618005182384-a83a8bd57fbe-1790148865111.jpg",
     tag: "Design",
   },
   { title: "Shipping less, on purpose", date: "Issue 41", excerpt: "" },

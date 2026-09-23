@@ -27,7 +27,7 @@ export function useMDXComponents(components: MDXComponents): MDXComponents {
       return (
         <h1
           id={id}
-          className="font-serif text-[clamp(34px,9vw,52px)] font-normal leading-[1.2] tracking-[-0.01em] text-foreground mb-4 mt-8 first:mt-0"
+          className="font-serif text-2xl font-normal leading-8 text-foreground mb-6 mt-0"
           {...props}
         >
           {children}
@@ -40,7 +40,7 @@ export function useMDXComponents(components: MDXComponents): MDXComponents {
       return (
         <h2
           id={id}
-          className="font-serif text-2xl font-bold text-foreground mb-3 mt-10 first:mt-0"
+          className="font-serif text-2xl font-normal leading-8 text-foreground mb-6 mt-16 first:mt-0"
           {...props}
         >
           {children}
@@ -51,7 +51,7 @@ export function useMDXComponents(components: MDXComponents): MDXComponents {
     h3: ({ children, ...props }: React.ComponentProps<'h3'>) => {
       const id = createSlug(children?.toString() || '');
       return (
-        <h3 id={id} className="font-serif text-lg font-semibold text-foreground mb-2 mt-6 first:mt-0" {...props}>
+        <h3 id={id} className="font-serif text-lg font-normal leading-7 text-foreground mb-4 mt-10 first:mt-0" {...props}>
           {children}
         </h3>
       );
@@ -62,7 +62,7 @@ export function useMDXComponents(components: MDXComponents): MDXComponents {
       return (
         <h4
           id={id}
-          className="font-serif text-[15px] font-semibold leading-[1.25] tracking-[-0.01em] text-foreground mb-2 mt-4 first:mt-0"
+          className="font-serif text-[15px] font-normal leading-[1.25] tracking-[-0.01em] text-foreground mb-2 mt-6 first:mt-0"
           {...props}
         >
           {children}
@@ -72,7 +72,7 @@ export function useMDXComponents(components: MDXComponents): MDXComponents {
 
     p: ({ children, ...props }: React.ComponentProps<'p'>) => {
       return (
-        <p className="mb-4 text-sm leading-relaxed text-foreground/70" {...props}>
+        <p className="mb-6 text-[15px] leading-[1.8] text-foreground/60" {...props}>
           {children}
         </p>
       );
@@ -80,7 +80,7 @@ export function useMDXComponents(components: MDXComponents): MDXComponents {
 
     ul: ({ children, ...props }: React.ComponentProps<'ul'>) => {
       return (
-        <ul className="list-disc list-inside mb-6 ml-6 space-y-2" {...props}>
+        <ul className="list-disc list-inside mb-8 space-y-1 text-[15px] leading-[1.8] text-foreground/60" {...props}>
           {children}
         </ul>
       );
@@ -88,7 +88,7 @@ export function useMDXComponents(components: MDXComponents): MDXComponents {
 
     ol: ({ children, ...props }: React.ComponentProps<'ol'>) => {
       return (
-        <ol className="list-decimal list-inside mb-6 ml-6 space-y-2" {...props}>
+        <ol className="list-decimal list-inside mb-8 space-y-1 text-[15px] leading-[1.8] text-foreground/60" {...props}>
           {children}
         </ol>
       );
@@ -96,7 +96,7 @@ export function useMDXComponents(components: MDXComponents): MDXComponents {
 
     li: ({ children, ...props }: React.ComponentProps<'li'>) => {
       return (
-        <li className="text-gray-700 dark:text-gray-300" {...props}>
+        <li className="text-foreground/60" {...props}>
           {children}
         </li>
       );
@@ -105,7 +105,7 @@ export function useMDXComponents(components: MDXComponents): MDXComponents {
     blockquote: ({ children, ...props }: React.ComponentProps<'blockquote'>) => {
       return (
         <blockquote
-          className="border-l-4 border-blue-500 pl-6 italic my-6 text-gray-600 dark:text-gray-400"
+          className="my-6 rounded-xl border border-primary/15 bg-primary/5 p-4 text-[13px] leading-relaxed text-foreground/50 font-normal not-italic [&_p]:mb-0 [&_p]:before:content-none [&_p]:after:content-none [&_p]:text-[13px] [&_p]:leading-relaxed [&_p]:text-foreground/50 [&_strong]:font-medium [&_strong]:text-primary"
           {...props}
         >
           {children}
@@ -127,7 +127,7 @@ export function useMDXComponents(components: MDXComponents): MDXComponents {
       // Otherwise, it's inline code, so style it appropriately
       return (
         <code
-          className="bg-primary/10 px-1.5 py-0.5 rounded text-xs font-mono text-primary whitespace-nowrap"
+          className="bg-foreground/[0.06] px-1.5 py-0.5 rounded text-[12px] font-mono text-foreground/70 whitespace-nowrap"
           {...props}
         >
           {children}
@@ -148,7 +148,7 @@ export function useMDXComponents(components: MDXComponents): MDXComponents {
       return (
         <div className="my-6 w-full max-w-full overflow-x-auto lg:overflow-x-hidden bg-transparent [scrollbar-width:thin] cursor-pointer">
           <table
-            className="w-full max-w-full min-w-[35rem] lg:min-w-60 table-auto border-collapse rounded-xl border border-zinc-200 dark:border-zinc-800 text-left text-sm cursor-pointer overflow-hidden"
+            className="w-full max-w-full min-w-[35rem] lg:min-w-60 table-auto border-collapse rounded-xl border border-foreground/[0.06] bg-foreground/[0.04] text-left text-[13px] cursor-pointer overflow-hidden"
             {...props}
           >
             {children}
@@ -160,7 +160,7 @@ export function useMDXComponents(components: MDXComponents): MDXComponents {
     thead: ({ children, ...props }: React.ComponentProps<'thead'>) => {
       return (
         <thead
-          className="bg-transparent border-b border-zinc-200 dark:border-zinc-800 text-[12px] font-bold uppercase tracking-wider text-zinc-900 dark:text-zinc-100 cursor-pointer"
+          className="bg-transparent border-b border-foreground/[0.06] text-[11px] font-semibold uppercase tracking-[0.06em] text-foreground/60 cursor-pointer"
           {...props}
         >
           {children}
@@ -170,7 +170,7 @@ export function useMDXComponents(components: MDXComponents): MDXComponents {
 
     tbody: ({ children, ...props }: React.ComponentProps<'tbody'>) => {
       return (
-        <tbody className="divide-y divide-zinc-200 dark:divide-zinc-800 cursor-pointer" {...props}>
+        <tbody className="divide-y divide-foreground/[0.08] cursor-pointer" {...props}>
           {children}
         </tbody>
       );
@@ -179,7 +179,7 @@ export function useMDXComponents(components: MDXComponents): MDXComponents {
     tr: ({ children, ...props }: React.ComponentProps<'tr'>) => {
       return (
         <tr
-          className="hover:bg-zinc-50 dark:hover:bg-zinc-900/50 transition-colors duration-150 cursor-pointer"
+          className="hover:bg-foreground/[0.07] transition-colors duration-150 cursor-pointer"
           {...props}
         >
           {children}
@@ -190,7 +190,7 @@ export function useMDXComponents(components: MDXComponents): MDXComponents {
     th: ({ children, ...props }: React.ComponentProps<'th'>) => {
       return (
         <th
-          className="px-4 sm:px-5 py-3.5 text-left text-[12px] font-bold text-zinc-900 dark:text-zinc-100 uppercase tracking-wider border-b border-r border-zinc-200 dark:border-zinc-800 last:border-r-0 whitespace-normal [overflow-wrap:anywhere] [&_code]:whitespace-normal cursor-pointer"
+          className="px-4 py-2.5 text-left text-[11px] font-semibold text-foreground/60 bg-foreground/[0.07] uppercase tracking-[0.06em] border-b border-r border-foreground/[0.06] last:border-r-0 whitespace-normal [overflow-wrap:anywhere] [&_code]:whitespace-normal cursor-pointer"
           {...props}
         >
           {children}
@@ -200,7 +200,7 @@ export function useMDXComponents(components: MDXComponents): MDXComponents {
 
     td: ({ children, ...props }: React.ComponentProps<'td'>) => {
       return (
-        <td className="px-4 sm:px-5 py-3 text-sm text-zinc-800 dark:text-zinc-200 border-r border-zinc-200 dark:border-zinc-800 last:border-r-0 align-top first:font-extrabold first:text-zinc-900 dark:first:text-white whitespace-normal [overflow-wrap:anywhere] [&_code]:whitespace-normal cursor-pointer" {...props}>
+        <td className="px-4 py-2.5 text-[13px] text-foreground/55 border-r border-foreground/[0.06] last:border-r-0 align-top first:font-medium first:text-foreground whitespace-normal [overflow-wrap:anywhere] [&_code]:whitespace-normal cursor-pointer" {...props}>
           {children}
         </td>
       );
@@ -213,7 +213,7 @@ export function useMDXComponents(components: MDXComponents): MDXComponents {
 
     strong: ({ children, ...props }: React.ComponentProps<'strong'>) => {
       return (
-        <strong className="font-bold" {...props}>
+        <strong className="font-semibold text-foreground" {...props}>
           {children}
         </strong>
       );
@@ -228,7 +228,7 @@ export function useMDXComponents(components: MDXComponents): MDXComponents {
     },
 
     hr: ({ ...props }: React.ComponentProps<'hr'>) => {
-      return <hr className="my-8 border-gray-300 dark:border-gray-700" {...props} />;
+      return <hr className="my-10 border-foreground/[0.08]" {...props} />;
     },
 
     // Strikethrough text (GitHub Flavored Markdown)
@@ -248,7 +248,7 @@ export function useMDXComponents(components: MDXComponents): MDXComponents {
             type="checkbox"
             checked={checked}
             disabled={disabled}
-            className="mr-2 accent-blue-600"
+            className="mr-2 accent-primary"
             {...props}
           />
         );
@@ -260,7 +260,7 @@ export function useMDXComponents(components: MDXComponents): MDXComponents {
     kbd: ({ children, ...props }: React.ComponentProps<'kbd'>) => {
       return (
         <kbd
-          className="inline-flex items-center rounded border border-gray-300 dark:border-gray-600 bg-gray-100 dark:bg-gray-800 px-2 py-1 text-xs font-mono"
+          className="inline-flex items-center rounded-md border border-foreground/[0.08] bg-foreground/[0.04] px-1.5 py-0.5 text-[12px] font-mono text-foreground/70"
           {...props}
         >
           {children}
@@ -271,7 +271,7 @@ export function useMDXComponents(components: MDXComponents): MDXComponents {
     // Highlighted text
     mark: ({ children, ...props }: React.ComponentProps<'mark'>) => {
       return (
-        <mark className="bg-yellow-200 dark:bg-yellow-800 px-1 rounded" {...props}>
+        <mark className="bg-primary/20 text-foreground px-1 rounded" {...props}>
           {children}
         </mark>
       );

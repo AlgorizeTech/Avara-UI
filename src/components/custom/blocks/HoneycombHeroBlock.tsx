@@ -2,34 +2,44 @@
 
 import React, { forwardRef, useCallback, useEffect, useLayoutEffect, useRef, useState } from "react";
 import gsap from "gsap";
-import { ChevronLeft, ChevronRight } from "lucide-react";
+import { ChevronLeft, ChevronRight, Compass } from "lucide-react";
 import { cn } from "@/lib/utils";
 
 // ==========================================
 // HONEYCOMB HERO
-// A travel hero in deep teal: a light line over a huge accent word on the
-// left, and on the right a honeycomb of hexagonal photographs with a gold
-// hexagonal call to action set among them. The large hexagon is the slide on
-// screen — its photograph is also the tinted background — and the smaller
-// ones are the queue. Every few seconds, or on the arrows at the foot, every
-// hexagon moves one step along the honeycomb: the next photo grows into the
-// feature spot while the feature slides to the back of the queue. The loop
-// never ends.
+// A travel hero on a dark, shifting ground: a light line over a huge white
+// word on the left, and on the right a honeycomb of hexagonal photographs
+// with a primary hexagonal call to action set among them. The
+// large hexagon is the slide on screen — its photograph is also the
+// background, tinted with that photograph's own tone, so the colour behind
+// everything changes with the slide — and the smaller ones are the queue.
+// Every few seconds, or on the arrows at the foot, every hexagon moves one
+// step along the honeycomb: the next photo grows into the feature spot while
+// the feature slides to the back of the queue. The loop never ends. Where
+// the huge word crosses the photographs, its letters turn the primary. Every
+// accent reads the theme's tokens where the section sits, so a theme change
+// repaints it.
 // ==========================================
 
 export interface HoneycombImage {
   src: string;
   alt: string;
+  /**
+   * The colour behind everything while this photograph is featured — keep
+   * it deep, the copy is white. Defaults to `background`.
+   */
+  tone?: string;
 }
 
 export interface HoneycombHeroProps extends Omit<React.HTMLAttributes<HTMLElement>, "onChange"> {
   /** The light line above the accent word. */
   title?: string;
-  /** The huge, tracked, upper-case word in the accent colour. */
+  /** The huge, tracked, upper-case word, in white. */
   titleAccent?: string;
+  /** The letters of the huge word that cross the photographs; the primary by default. */
+  titleOverlapColor?: string;
   subtitle?: string;
-  /** The words in the gold hexagon; a `
-` breaks the line. */
+  /** The words in the call-to-action hexagon; a `\n` breaks the line. */
   primaryActionLabel?: string;
   primaryActionHref?: string;
   /**
@@ -42,9 +52,12 @@ export interface HoneycombHeroProps extends Omit<React.HTMLAttributes<HTMLElemen
   /** Milliseconds between steps; `0` turns autoplay off. */
   interval?: number;
   onChange?: (index: number) => void;
-  /** The accent: the word, the rule, the arrows and the call to action. */
+  /**
+   * Sets `--primary` for the section — the word, the rule, the arrows and the
+   * call to action. The theme's primary by default.
+   */
   accent?: string;
-  /** The teal behind everything. */
+  /** The tone for photographs without their own; a deep shade of the primary by default. */
   background?: string;
   /** Pass `next/link` to keep client-side navigation. */
   linkComponent?: React.ElementType;
@@ -99,34 +112,47 @@ const CELLS = SLOTS.length;
 
 // A pointy-top regular hexagon.
 const HEX_CLIP = "polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%)";
+// The same hexagon as SVG points, in a 100-wide box.
+const HEX_POINTS = [
+  [50, 0],
+  [100, 25],
+  [100, 75],
+  [50, 100],
+  [0, 75],
+  [0, 25],
+]
+  .map(([x, y]) => `${x},${((y / 100) * 100 * HEX_H).toFixed(2)}`)
+  .join(" ");
 
 const prefersReducedMotion = () =>
   typeof window !== "undefined" && window.matchMedia?.("(prefers-reduced-motion: reduce)").matches;
 
 // ------------------------------------------
-// Defaults — Lofoten and the fjords, from Unsplash.
+// Defaults — Lofoten and the fjords, from Unsplash, each with a deep tone
+// drawn from the photograph, so the ground shifts colour as the queue turns.
 // ------------------------------------------
-const unsplash = (id: string, w = 1400) => `https://images.unsplash.com/photo-${id}?q=80&w=${w}&auto=format&fit=crop`;
 
 const DEFAULT_IMAGES: HoneycombImage[] = [
-  { src: unsplash("1628344253777-f73a64d8f983"), alt: "A waterfall pouring through a green gorge" },
-  { src: unsplash("1663428520845-056989f8a664"), alt: "Red cabins at Hamnøy under a mountain" },
-  { src: unsplash("1710762634126-4c0e8fba44d8"), alt: "A snowy village below white peaks" },
-  { src: unsplash("1593378026483-2a1fd46a35bd"), alt: "Green aurora above snowy mountains" },
-  { src: unsplash("1695496896465-9e59091a8ed1"), alt: "Turquoise water between mountain ridges" },
-  { src: unsplash("1721335916916-37c319adce3a"), alt: "A sandy beach beneath a rocky headland" },
-  { src: unsplash("1527004013197-933c4bb611b3"), alt: "A red cabin on a rocky shore" },
-  { src: unsplash("1682952986992-de7082fb213d"), alt: "Waterfalls running down the wall of a fjord" },
-  { src: unsplash("1607888566357-ec0b61abee46"), alt: "A waterfall beside a wooden viewpoint" },
+  { src: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_1400,c_limit/v1790158809/photo-1628344253777-f73a64d8f983-1790158812202.jpg", alt: "A waterfall pouring through a green gorge", tone: "#0f2e22" },
+  { src: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_1400,c_limit/v1790158811/photo-1663428520845-056989f8a664-1790158812204.jpg", alt: "Red cabins at Hamnøy under a mountain", tone: "#1f2140" },
+  { src: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_1400,c_limit/v1790158812/photo-1710762634126-4c0e8fba44d8-1790158812206.jpg", alt: "A snowy village below white peaks", tone: "#18233a" },
+  { src: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_1400,c_limit/v1790158815/photo-1593378026483-2a1fd46a35bd-1790158812215.jpg", alt: "Green aurora above snowy mountains", tone: "#0b2a2d" },
+  { src: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_1400,c_limit/v1790158812/photo-1695496896465-9e59091a8ed1-1790158812205.jpg", alt: "Turquoise water between mountain ridges", tone: "#082f3d" },
+  { src: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_1400,c_limit/v1790158812/photo-1721335916916-37c319adce3a-1790158812206.jpg", alt: "A sandy beach beneath a rocky headland", tone: "#1d2b36" },
+  { src: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_1400,c_limit/v1790166049/photo-1527004013197-933c4bb611b3-1790166052225.jpg", alt: "A red cabin on a rocky shore", tone: "#2a1f3d" },
+  { src: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_1400,c_limit/v1790158811/photo-1682952986992-de7082fb213d-1790158812205.jpg", alt: "Waterfalls running down the wall of a fjord", tone: "#132a3b" },
+  { src: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_1400,c_limit/v1790158809/photo-1607888566357-ec0b61abee46-1790158812198.jpg", alt: "A waterfall beside a wooden viewpoint", tone: "#1c2b17" },
 ];
 
 const DEFAULT_SOCIAL = [
-  { label: "Facebook", href: "#" },
-  { label: "Twitter", href: "#" },
   { label: "Instagram", href: "#" },
+  { label: "YouTube", href: "#" },
+  { label: "TikTok", href: "#" },
   { label: "Pinterest", href: "#" },
-  { label: "Google+", href: "#" },
 ];
+
+/** A deep shade of the primary, for photographs without a tone of their own. */
+const DEFAULT_BACKGROUND = "color-mix(in oklab, var(--primary) 16%, #05080a)";
 
 // ------------------------------------------
 // Root
@@ -134,17 +160,18 @@ const DEFAULT_SOCIAL = [
 export const HoneycombHero = forwardRef<HTMLElement, HoneycombHeroProps>(
   (
     {
-      title = "Amazing",
-      titleAccent = "Norway",
-      subtitle = "Visit Norway, you will never regret it. This is something incredible - fantastic nature, fjords, fancy outlines of the coast...",
-      primaryActionLabel = "Book\na tour",
+      title = "Wander the",
+      titleAccent = "Fjords",
+      titleOverlapColor = "var(--primary)",
+      subtitle = "Waterfalls that drop straight into the sea, red cabins at the water's edge and skies that glow green after dark — small-group journeys through the far north.",
+      primaryActionLabel = "Plan\nyour trip",
       primaryActionHref = "#",
       images = DEFAULT_IMAGES,
       socialLinks = DEFAULT_SOCIAL,
       interval = 4000,
       onChange,
-      accent = "#e0a83d",
-      background = "#0b2a2d",
+      accent,
+      background = DEFAULT_BACKGROUND,
       linkComponent: Link = "a",
       className,
       style,
@@ -174,6 +201,8 @@ export const HoneycombHero = forwardRef<HTMLElement, HoneycombHeroProps>(
     const slotOf = useCallback((i: number, off: number) => (((i - off) % CELLS) + CELLS) % CELLS, []);
     const featureCell = slotOf(0, -offset); // the cell in slot 0
     const featureIndex = featureCell % n;
+    const toneOf = (img: HoneycombImage | undefined) => img?.tone ?? background;
+    const tone = toneOf(images[featureIndex]);
 
     const go = useCallback((dir: 1 | -1) => setOffset((o) => o + dir), []);
 
@@ -214,8 +243,8 @@ export const HoneycombHero = forwardRef<HTMLElement, HoneycombHeroProps>(
       });
     }, [featureIndex]);
 
-    // ---- The accent word turns white where it crosses the feature photo:
-    // a white copy is clipped at the stage's left edge.
+    // ---- The accent word turns the primary where it crosses the photographs:
+    // a coloured copy is clipped at the stage's left edge.
     useLayoutEffect(() => {
       const root = rootRef.current;
       const stage = stageRef.current;
@@ -268,7 +297,7 @@ export const HoneycombHero = forwardRef<HTMLElement, HoneycombHeroProps>(
     };
 
     const arrow =
-      "grid size-7 place-items-center rounded-sm text-[var(--hc-accent)] outline-none transition-transform duration-300 hover:scale-125 focus-visible:ring-2 focus-visible:ring-[var(--hc-accent)]";
+      "grid size-7 place-items-center rounded-sm text-primary outline-none transition-transform duration-300 hover:scale-125 focus-visible:ring-2 focus-visible:ring-primary";
 
     return (
       <section
@@ -278,15 +307,21 @@ export const HoneycombHero = forwardRef<HTMLElement, HoneycombHeroProps>(
           else if (ref) (ref as React.MutableRefObject<HTMLElement | null>).current = node;
         }}
         onKeyDown={onKeyDown}
-        style={{ "--hc-accent": accent, "--hc-bg": background, ...style } as React.CSSProperties}
+        // `--hc-bg` is the featured photograph's tone; everything painted with it
+        // eases to the next one as the queue turns.
+        style={{ ...(accent ? { "--primary": accent } : {}), "--hc-bg": tone, ...style } as React.CSSProperties}
         className={cn(
-          "relative isolate w-full overflow-hidden bg-[var(--hc-bg)] text-white [container-type:inline-size]",
+          // No `dark` class here: it would redeclare `--primary` from the
+          // stylesheet and cut the section off from a theme set on <html>.
+          "relative isolate w-full overflow-hidden bg-[var(--hc-bg)] text-white transition-[background-color] duration-[1400ms] ease-in-out [container-type:inline-size]",
           "lg:aspect-[948/583] lg:max-h-[54rem] lg:min-h-[36rem]",
           className,
         )}
         {...props}
       >
-        {/* ---- The background: the feature photograph, tinted teal ---- */}
+        {/* ---- The background: the feature photograph, tinted with its own
+            tone. Each layer carries its tint, so crossfading the layers
+            crossfades the colour too. ---- */}
         <div className="absolute inset-0" aria-hidden>
           {images.map((img, i) => (
             <div
@@ -295,14 +330,14 @@ export const HoneycombHero = forwardRef<HTMLElement, HoneycombHeroProps>(
                 bgRefs.current[i] = el;
               }}
               className="absolute inset-0"
-              style={{ opacity: i === 0 ? 1 : 0 }}
+              style={{ opacity: i === 0 ? 1 : 0, "--hc-tone": toneOf(img) } as React.CSSProperties}
             >
               <img src={img.src} alt="" draggable={false} className="absolute inset-0 h-full w-full object-cover [filter:saturate(0.55)_brightness(0.7)]" />
+              <div className="absolute inset-0 bg-[var(--hc-tone)] opacity-80 mix-blend-color" />
+              <div className="absolute inset-0 bg-[var(--hc-tone)] opacity-55" />
+              <div className="absolute inset-0 bg-[linear-gradient(90deg,var(--hc-tone)_0%,transparent_45%),linear-gradient(180deg,transparent_60%,var(--hc-tone)_100%)] opacity-90" />
             </div>
           ))}
-          <div className="absolute inset-0 bg-[var(--hc-bg)] opacity-80 mix-blend-color" />
-          <div className="absolute inset-0 bg-[var(--hc-bg)] opacity-55" />
-          <div className="absolute inset-0 bg-[linear-gradient(90deg,var(--hc-bg)_0%,transparent_45%),linear-gradient(180deg,transparent_60%,var(--hc-bg)_100%)] opacity-90" />
         </div>
 
         <div className="relative flex flex-col lg:absolute lg:inset-0 lg:block">
@@ -314,16 +349,20 @@ export const HoneycombHero = forwardRef<HTMLElement, HoneycombHeroProps>(
               {/* The rule runs in from the section's left edge. */}
               <span
                 aria-hidden
-                className="absolute top-1/2 hidden h-[3px] -translate-y-1/2 bg-[var(--hc-accent)] lg:block"
+                className="absolute top-1/2 hidden h-[3px] -translate-y-1/2 bg-primary lg:block"
                 style={{ left: "-14.8cqw", width: "8.4cqw" }}
               />
               <h1
                 ref={headingRef}
-                className="relative inline-block whitespace-nowrap font-sans text-[clamp(2.75rem,9.4cqw,7.5rem)] font-extrabold uppercase leading-[0.95] tracking-[0.02em] text-[var(--hc-accent)]"
+                className="relative inline-block whitespace-nowrap font-sans text-[clamp(2.75rem,9.4cqw,7.5rem)] font-extrabold uppercase leading-[0.95] tracking-[0.02em] text-white"
               >
                 {titleAccent}
                 {cut !== null && (
-                  <span aria-hidden className="absolute inset-0 text-white" style={{ clipPath: `inset(-0.2em -0.1em -0.2em ${cut}px)` }}>
+                  <span
+                    aria-hidden
+                    className="absolute inset-0 transition-colors duration-[1400ms] ease-in-out [text-shadow:0_2px_24px_rgb(0_0_0/0.35)]"
+                    style={{ color: titleOverlapColor, clipPath: `inset(-0.2em -0.1em -0.2em ${cut}px)` }}
+                  >
                     {titleAccent}
                   </span>
                 )}
@@ -365,10 +404,13 @@ export const HoneycombHero = forwardRef<HTMLElement, HoneycombHeroProps>(
                   aria-hidden={k !== 0}
                 >
                   {/* A hair of inset keeps a gap between neighbours. */}
-                  <div className="absolute inset-[3.5%] overflow-hidden bg-[var(--hc-bg)]" style={{ clipPath: HEX_CLIP }}>
+                  <div
+                    className="absolute inset-[3.5%] overflow-hidden bg-[var(--hc-bg)] transition-[background-color] duration-[1400ms]"
+                    style={{ clipPath: HEX_CLIP }}
+                  >
                     <img src={img.src} alt={k === 0 ? img.alt : ""} draggable={false} className="h-full w-full object-cover" />
                     <div
-                      className="absolute inset-0 bg-[var(--hc-bg)] transition-opacity duration-1000"
+                      className="absolute inset-0 bg-[var(--hc-bg)] transition-[opacity,background-color] duration-1000"
                       style={{ opacity: k === 0 ? 0 : 0.18 }}
                     />
                   </div>
@@ -376,18 +418,39 @@ export const HoneycombHero = forwardRef<HTMLElement, HoneycombHeroProps>(
               );
             })}
 
-            {/* The call to action: a gold hexagon set among the photographs. */}
+            {/* The call to action: a primary cell in the honeycomb. A hairline
+                hexagon inside it echoes the photographs around it; on hover the
+                compass turns and the inner cell swells, on focus it goes solid. */}
             <div className="absolute z-40" style={{ ...CTA_SLOT, aspectRatio: `1 / ${HEX_H}` }}>
               <Link
                 href={primaryActionHref}
-                className="group absolute inset-[3.5%] flex flex-col items-end justify-end bg-[var(--hc-accent)] pb-[22%] pr-[14%] text-right text-[#1a1a1a] outline-none transition-[transform,filter] duration-300 hover:brightness-105 focus-visible:brightness-110 active:scale-[0.98]"
+                className="group absolute inset-[3.5%] grid place-items-center bg-primary text-primary-foreground outline-none transition-[filter,transform] duration-300 hover:brightness-110 active:scale-[0.97]"
                 style={{ clipPath: HEX_CLIP }}
               >
-                <span className="mb-[6%] block text-[clamp(0.5rem,1.3cqw,0.9rem)] transition-transform duration-300 group-hover:translate-x-0.5" aria-hidden>
-                  ▶
-                </span>
-                <span className="block whitespace-pre-line font-sans text-[clamp(0.55rem,1.35cqw,0.95rem)] font-extrabold uppercase leading-[1.25] tracking-[0.12em]">
-                  {primaryActionLabel}
+                <svg
+                  aria-hidden
+                  viewBox={`0 0 100 ${(100 * HEX_H).toFixed(2)}`}
+                  preserveAspectRatio="none"
+                  className="absolute inset-[11%] h-[78%] w-[78%] overflow-visible opacity-35 transition-[opacity,transform] duration-500 ease-out group-hover:opacity-70 group-focus-visible:opacity-100 motion-safe:group-hover:scale-105"
+                >
+                  <polygon
+                    points={HEX_POINTS}
+                    fill="none"
+                    stroke="currentColor"
+                    strokeWidth={1}
+                    vectorEffect="non-scaling-stroke"
+                    className="group-focus-visible:[stroke-width:2]"
+                  />
+                </svg>
+                <span className="relative flex flex-col items-center gap-[0.55em] text-center text-[clamp(0.65rem,1.65cqw,1.2rem)]">
+                  <Compass
+                    aria-hidden
+                    strokeWidth={1.75}
+                    className="size-[1.85em] transition-transform duration-500 ease-out motion-safe:group-hover:rotate-45"
+                  />
+                  <span className="block whitespace-pre-line font-sans font-semibold leading-[1.15] tracking-[-0.01em]">
+                    {primaryActionLabel}
+                  </span>
                 </span>
               </Link>
             </div>

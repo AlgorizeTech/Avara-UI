@@ -15,7 +15,7 @@ import { useRef, useState } from "react";
 
 const getThemeColorHex = (c: string) => {
   if (c.startsWith("#")) return c;
-  const map: Record<string, string> = { primary: "var(--primary)", default: "var(--primary)", indigo: "#6366f1", rose: "#f43f5e", emerald: "#10b981", zinc: "#18181b" };
+  const map: Record<string, string> = { primary: "var(--primary)", default: "var(--primary)", indigo: "#6366f1", rose: "#f43f5e", emerald: "#10b981", lavender: "#9b8afb" };
   return map[c] || "var(--primary)";
 };
 

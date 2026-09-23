@@ -157,7 +157,7 @@ const Header = () => {
 
           <button
             onClick={() => setSidebarOpen(false)}
-            className="p-1 rounded-md text-muted-foreground hover:bg-muted transition-colors cursor-pointer"
+            className="p-1 rounded-md text-foreground/55 hover:text-foreground hover:bg-muted transition-colors cursor-pointer"
           >
             <X className="size-4" />
           </button>
@@ -240,8 +240,10 @@ const Header = () => {
           <nav className="pointer-events-auto hidden md:flex items-center gap-1 p-1 h-10 rounded-full bg-black/[0.03] dark:bg-white/[0.04] backdrop-blur-xl border border-border/40 absolute left-1/2 -translate-x-1/2 text-[13px] text-foreground transition-all">
             <Link
               className={cn(
-                "flex items-center gap-1.5 px-3.5 py-1.5 rounded-full transition-all text-[12.5px] text-foreground hover:bg-foreground/5",
-                isGuidePath(pathname) ? "font-semibold" : "font-medium"
+                "flex items-center gap-1.5 px-3.5 py-1.5 rounded-full transition-all text-[12.5px] hover:bg-foreground/5",
+                isGuidePath(pathname)
+                  ? "font-semibold text-foreground"
+                  : "font-medium text-foreground/80 hover:text-foreground"
               )}
               href={docsEntryFor(pathname)}
               prefetch={false}
@@ -251,8 +253,10 @@ const Header = () => {
             </Link>
             <Link
               className={cn(
-                "flex items-center gap-1.5 px-3.5 py-1.5 rounded-full transition-all text-[12.5px] text-foreground hover:bg-foreground/5",
-                pathname.startsWith("/docs/") && !isGuidePath(pathname) ? "font-semibold" : "font-medium"
+                "flex items-center gap-1.5 px-3.5 py-1.5 rounded-full transition-all text-[12.5px] hover:bg-foreground/5",
+                pathname.startsWith("/docs/") && !isGuidePath(pathname)
+                  ? "font-semibold text-foreground"
+                  : "font-medium text-foreground/80 hover:text-foreground"
               )}
               href={docsHref(frameworkFromPathname(pathname), "all-components")}
               prefetch={false}
@@ -262,8 +266,10 @@ const Header = () => {
             </Link>
             <Link
               className={cn(
-                "flex items-center gap-1.5 px-3.5 py-1.5 rounded-full transition-all text-[12.5px] text-foreground hover:bg-foreground/5",
-                pathname.startsWith("/themes") ? "font-semibold" : "font-medium"
+                "flex items-center gap-1.5 px-3.5 py-1.5 rounded-full transition-all text-[12.5px] hover:bg-foreground/5",
+                pathname.startsWith("/themes")
+                  ? "font-semibold text-foreground"
+                  : "font-medium text-foreground/80 hover:text-foreground"
               )}
               href="/themes"
               prefetch={false}
@@ -281,15 +287,15 @@ const Header = () => {
               className="pointer-events-auto flex items-center gap-2.5 h-10 pl-3.5 pr-5 rounded-full bg-black/[0.03] dark:bg-white/[0.04] backdrop-blur-xl border border-border/40 hover:border-border/70 transition-all text-left cursor-pointer"
               aria-label="Open command palette search"
             >
-              <Search className="w-3.5 h-3.5 text-muted-foreground shrink-0" />
-              <span className="hidden md:inline text-[12.5px] text-muted-foreground">
+              <Search className="w-3.5 h-3.5 text-foreground/50 shrink-0" />
+              <span className="hidden md:inline text-[12.5px] text-foreground/50">
                 Search…
               </span>
               <div className="hidden md:flex items-center gap-1 shrink-0 select-none ml-2.5">
-                <kbd className="size-[19px] flex items-center justify-center rounded-[5px] border border-border/60 text-muted-foreground font-mono text-[10px] leading-none bg-foreground/5">
+                <kbd className="size-[19px] flex items-center justify-center rounded-[5px] border border-border/60 text-foreground/40 font-mono text-[10px] leading-none bg-foreground/5">
                   ⌘
                 </kbd>
-                <kbd className="size-[19px] flex items-center justify-center rounded-[5px] border border-border/60 text-muted-foreground font-mono text-[10px] leading-none bg-foreground/5">
+                <kbd className="size-[19px] flex items-center justify-center rounded-[5px] border border-border/60 text-foreground/40 font-mono text-[10px] leading-none bg-foreground/5">
                   K
                 </kbd>
               </div>
@@ -300,7 +306,7 @@ const Header = () => {
               href="https://www.linkedin.com/company/algorizetech/"
               target="_blank"
               rel="noopener noreferrer"
-              className="pointer-events-auto hidden lg:flex items-center justify-center size-10 rounded-full bg-black/[0.03] dark:bg-white/[0.04] backdrop-blur-xl border border-border/40 text-muted-foreground hover:text-foreground hover:border-border/70 transition-all"
+              className="pointer-events-auto hidden lg:flex items-center justify-center size-10 rounded-full bg-black/[0.03] dark:bg-white/[0.04] backdrop-blur-xl border border-border/40 text-foreground/80 hover:text-foreground hover:border-border/70 transition-all"
               aria-label="View LinkedIn Profile"
             >
               <Linkedin className="w-4 h-4" />
@@ -311,13 +317,13 @@ const Header = () => {
               href="https://github.com/docs/docs"
               target="_blank"
               rel="noopener noreferrer"
-              className="pointer-events-auto hidden sm:flex items-center gap-2 h-10 px-3.5 rounded-full bg-black/[0.03] dark:bg-white/[0.04] backdrop-blur-xl border border-border/40 text-muted-foreground hover:text-foreground hover:border-border/70 transition-all text-[12.5px] font-medium"
+              className="pointer-events-auto hidden sm:flex items-center gap-2 h-10 px-3.5 rounded-full bg-black/[0.03] dark:bg-white/[0.04] backdrop-blur-xl border border-border/40 text-foreground/80 hover:text-foreground hover:border-border/70 transition-all text-[12.5px] font-medium"
               aria-label="View project on GitHub"
             >
               <GitHubIcon className="w-4 h-4 fill-current" />
               <span className="text-[12px] font-semibold text-foreground">GitHub</span>
               <span className="w-px h-3.5 bg-border/60 mx-0.5" />
-              <span className="text-[11px] font-semibold text-muted-foreground">
+              <span className="text-[11px] font-semibold text-foreground/50">
                 2.1k
               </span>
             </Link>

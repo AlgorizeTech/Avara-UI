@@ -239,13 +239,13 @@ Discover the Conversation Timeline's capabilities as a minimap for long conversa
 ## Best Practices & Guidelines
 
 <div className="flex flex-col gap-4 my-6 not-prose">
-  <div className="p-5 rounded-xl border border-blue-200 dark:border-blue-900/50 bg-blue-50/50 dark:bg-blue-950/20">
-    <h4 className="text-base font-semibold text-blue-900 dark:text-blue-300 mb-1">Keep labels short</h4>
-    <p className="text-blue-800 dark:text-blue-400/80 text-sm">Labels truncate at <code>labelWidth</code>. Use the first line of a message or a summary rather than the full text.</p>
+  <div className="rounded-xl border border-foreground/[0.06] bg-foreground/[0.03] p-4">
+    <h4 className="font-sans text-[14px] font-semibold text-foreground mb-1">Keep labels short</h4>
+    <p className="text-[13px] leading-relaxed text-foreground/50">Labels truncate at <code>labelWidth</code>. Use the first line of a message or a summary rather than the full text.</p>
   </div>
-  <div className="p-5 rounded-xl border border-amber-200 dark:border-amber-900/50 bg-amber-50/50 dark:bg-amber-950/20">
-    <h4 className="text-base font-semibold text-amber-900 dark:text-amber-300 mb-1">Leave room to expand</h4>
-    <p className="text-amber-800 dark:text-amber-400/80 text-sm">The rail's height grows from <code>visibleCount × collapsedRowHeight</code> to <code>visibleCount × rowHeight</code> on hover. Place it where that growth won't push other content around.</p>
+  <div className="rounded-xl border border-primary/15 bg-primary/5 p-4">
+    <h4 className="font-sans text-[14px] font-semibold text-primary mb-1">Leave room to expand</h4>
+    <p className="text-[13px] leading-relaxed text-foreground/50">The rail's height grows from <code>visibleCount × collapsedRowHeight</code> to <code>visibleCount × rowHeight</code> on hover. Place it where that growth won't push other content around.</p>
   </div>
 </div>
 

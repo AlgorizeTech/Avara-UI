@@ -27,7 +27,7 @@ export default function HeroSection() {
       subtitle="A cinematic journey through serene mountain vistas and ancient forests."
       playButtonLabel="Watch Film"
       videoUrl="https://www.youtube.com/embed/LXb3EKWsInQ"
-      thumbnailUrl="https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=1920&q=80"
+      thumbnailUrl="https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_1920,c_limit/v1790146210/photo-1507525428034-b723cf961d3e-1790146212208.jpg"
     />
   );
 }`;
@@ -43,7 +43,7 @@ export default function InlineHero() {
       subtitle="The player swaps into the card itself — no overlay, no scroll lock."
       playButtonLabel="Play Here"
       videoUrl="https://www.youtube.com/embed/LXb3EKWsInQ"
-      thumbnailUrl="https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=1920&q=80"
+      thumbnailUrl="https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_1920,c_limit/v1790146210/photo-1507525428034-b723cf961d3e-1790146212208.jpg"
     />
   );
 }`;
@@ -335,7 +335,7 @@ export default function JwHero() {
     <JwPlayer
       libraryUrl="https://cdn.jwplayer.com/libraries/YOUR_PLAYER_ID.js"
       playlistUrl="https://cdn.jwplayer.com/v2/media/hWF9vG66"
-      posterUrl="https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=1920&q=80"
+      posterUrl="https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_1920,c_limit/v1790146210/photo-1506744038136-46273834b3fb-1790146212208.jpg"
       title="Enterprise-grade video delivery"
       subtitle="JW's own control bar, untouched."
     />
@@ -350,7 +350,7 @@ export default function SkinnedJwHero() {
       libraryUrl="https://cdn.jwplayer.com/libraries/YOUR_PLAYER_ID.js"
       skin="midnight"
       playlistUrl="https://cdn.jwplayer.com/v2/media/hWF9vG66"
-      posterUrl="https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=1920&q=80"
+      posterUrl="https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_1920,c_limit/v1790146210/photo-1506744038136-46273834b3fb-1790146212208.jpg"
       title="Skinned to your brand"
       subtitle="Control bar, menus, time slider and tooltips, all from one skin config."
     />
@@ -489,25 +489,25 @@ If the library fails to load, the component renders a native `<video>` with the 
 ## Best Practices & Guidelines
 
 <div className="flex flex-col gap-4 my-6 not-prose">
-  <div className="p-5 rounded-xl border border-blue-200 dark:border-blue-900/50 bg-blue-50/50 dark:bg-blue-950/20">
-    <h4 className="text-base font-semibold text-blue-900 dark:text-blue-300 mb-1">Picking a playback mode</h4>
-    <p className="text-blue-800 dark:text-blue-400/80 text-sm">Use <code>modal</code> above the fold, where the video is the page's main call to action. Use <code>inline</code> mid-page — an overlay that hijacks the whole viewport from a card the reader scrolled past reads as an interruption. Use <code>direct</code> when the video <em>is</em> the content, such as a documentation walkthrough.</p>
+  <div className="rounded-xl border border-foreground/[0.06] bg-foreground/[0.03] p-4">
+    <h4 className="font-sans text-[14px] font-semibold text-foreground mb-1">Picking a playback mode</h4>
+    <p className="text-[13px] leading-relaxed text-foreground/50">Use <code>modal</code> above the fold, where the video is the page's main call to action. Use <code>inline</code> mid-page — an overlay that hijacks the whole viewport from a card the reader scrolled past reads as an interruption. Use <code>direct</code> when the video <em>is</em> the content, such as a documentation walkthrough.</p>
   </div>
-  <div className="p-5 rounded-xl border border-amber-200 dark:border-amber-900/50 bg-amber-50/50 dark:bg-amber-950/20">
-    <h4 className="text-base font-semibold text-amber-900 dark:text-amber-300 mb-1">Autoplay is a request, not a guarantee</h4>
-    <p className="text-amber-800 dark:text-amber-400/80 text-sm">Browsers block autoplay with sound. <code>autoPlay</code> only applies to <code>playbackMode="direct"</code>, and the native player mutes itself when it is set. In <code>modal</code> and <code>inline</code> the click <em>is</em> the gesture, so playback starts on its own and the component adds <code>autoplay=1</code> to the embed URL for you.</p>
+  <div className="rounded-xl border border-primary/15 bg-primary/5 p-4">
+    <h4 className="font-sans text-[14px] font-semibold text-primary mb-1">Autoplay is a request, not a guarantee</h4>
+    <p className="text-[13px] leading-relaxed text-foreground/50">Browsers block autoplay with sound. <code>autoPlay</code> only applies to <code>playbackMode="direct"</code>, and the native player mutes itself when it is set. In <code>modal</code> and <code>inline</code> the click <em>is</em> the gesture, so playback starts on its own and the component adds <code>autoplay=1</code> to the embed URL for you.</p>
   </div>
-  <div className="p-5 rounded-xl border border-emerald-200 dark:border-emerald-900/50 bg-emerald-50/50 dark:bg-emerald-950/20">
-    <h4 className="text-base font-semibold text-emerald-900 dark:text-emerald-300 mb-1">Optimizing thumbnails</h4>
-    <p className="text-emerald-800 dark:text-emerald-400/80 text-sm">Give <code>thumbnailUrl</code> a resolution that matches your <code>aspectRatio</code>. It is the poster, the LCP candidate and — for <code>source="video"</code> — the <code>&lt;video&gt;</code> element's own <code>poster</code>, so a mismatched crop shows up in all three places.</p>
+  <div className="rounded-xl border border-foreground/[0.06] bg-foreground/[0.03] p-4">
+    <h4 className="font-sans text-[14px] font-semibold text-foreground mb-1">Optimizing thumbnails</h4>
+    <p className="text-[13px] leading-relaxed text-foreground/50">Give <code>thumbnailUrl</code> a resolution that matches your <code>aspectRatio</code>. It is the poster, the LCP candidate and — for <code>source="video"</code> — the <code>&lt;video&gt;</code> element's own <code>poster</code>, so a mismatched crop shows up in all three places.</p>
   </div>
-  <div className="p-5 rounded-xl border border-rose-200 dark:border-rose-900/50 bg-rose-50/50 dark:bg-rose-950/20">
-    <h4 className="text-base font-semibold text-rose-900 dark:text-rose-300 mb-1">The title treatment follows playback</h4>
-    <p className="text-rose-800 dark:text-rose-400/80 text-sm">Before anything has played, the title and subtitle sit at the foot of the frame and stay there — nothing is happening yet, so they are free to introduce the video, and nobody should have to hover to learn what they are about to watch. Once playback starts the picture is the point, so the copy moves to a top bar that only appears on hover, the way YouTube does. It never returns to the bottom, because pausing does not undo having started. This applies to the players we draw the chrome for — the native <code>&lt;video&gt;</code>, Plyr and JW. A YouTube or Vimeo <em>embed</em> already paints its own title bar, so nothing is layered on top of it.</p>
+  <div className="rounded-xl border border-foreground/[0.06] bg-foreground/[0.03] p-4">
+    <h4 className="font-sans text-[14px] font-semibold text-foreground mb-1">The title treatment follows playback</h4>
+    <p className="text-[13px] leading-relaxed text-foreground/50">Before anything has played, the title and subtitle sit at the foot of the frame and stay there — nothing is happening yet, so they are free to introduce the video, and nobody should have to hover to learn what they are about to watch. Once playback starts the picture is the point, so the copy moves to a top bar that only appears on hover, the way YouTube does. It never returns to the bottom, because pausing does not undo having started. This applies to the players we draw the chrome for — the native <code>&lt;video&gt;</code>, Plyr and JW. A YouTube or Vimeo <em>embed</em> already paints its own title bar, so nothing is layered on top of it.</p>
   </div>
-  <div className="p-5 rounded-xl border border-purple-200 dark:border-purple-900/50 bg-purple-50/50 dark:bg-purple-950/20">
-    <h4 className="text-base font-semibold text-purple-900 dark:text-purple-300 mb-1">Choosing a backend</h4>
-    <p className="text-purple-800 dark:text-purple-400/80 text-sm">Start with <code>VideoPlayer</code> — it ships no player library. Move to Plyr when you need one consistent, skinnable control bar across YouTube, Vimeo and self-hosted files. Move to JW Player when you are already on JW's platform for adaptive streaming, DRM or analytics.</p>
+  <div className="rounded-xl border border-foreground/[0.06] bg-foreground/[0.03] p-4">
+    <h4 className="font-sans text-[14px] font-semibold text-foreground mb-1">Choosing a backend</h4>
+    <p className="text-[13px] leading-relaxed text-foreground/50">Start with <code>VideoPlayer</code> — it ships no player library. Move to Plyr when you need one consistent, skinnable control bar across YouTube, Vimeo and self-hosted files. Move to JW Player when you are already on JW's platform for adaptive streaming, DRM or analytics.</p>
   </div>
 </div>
 

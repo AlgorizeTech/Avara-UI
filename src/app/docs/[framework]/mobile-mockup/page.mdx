@@ -291,17 +291,17 @@ Learn about the Mobile Mockup component's realistic device framing, perfect for 
 ## Best Practices & Guidelines
 
 <div className="flex flex-col gap-4 my-6 not-prose">
-  <div className="p-5 rounded-xl border border-blue-200 dark:border-blue-900/50 bg-blue-50/50 dark:bg-blue-950/20">
-    <h4 className="text-base font-semibold text-blue-900 dark:text-blue-300 mb-1">Content Aspect Ratios</h4>
-    <p className="text-blue-800 dark:text-blue-400/80 text-sm">When passing screenshots as images, try to ensure they roughly match a vertical aspect ratio close to the frame you picked (16:9 on the iPhone 5, 19.5:9 on the iPhone 12/14/17 and Samsung, 20:9 on the Pixels) to prevent unnatural stretching or cropping inside the frame.</p>
+  <div className="rounded-xl border border-foreground/[0.06] bg-foreground/[0.03] p-4">
+    <h4 className="font-sans text-[14px] font-semibold text-foreground mb-1">Content Aspect Ratios</h4>
+    <p className="text-[13px] leading-relaxed text-foreground/50">When passing screenshots as images, try to ensure they roughly match a vertical aspect ratio close to the frame you picked (16:9 on the iPhone 5, 19.5:9 on the iPhone 12/14/17 and Samsung, 20:9 on the Pixels) to prevent unnatural stretching or cropping inside the frame.</p>
   </div>
-  <div className="p-5 rounded-xl border border-emerald-200 dark:border-emerald-900/50 bg-emerald-50/50 dark:bg-emerald-950/20">
-    <h4 className="text-base font-semibold text-emerald-900 dark:text-emerald-300 mb-1">Sizing Live Screens</h4>
-    <p className="text-emerald-800 dark:text-emerald-400/80 text-sm">Tailwind's responsive prefixes key off the viewport, not the frame. A section that uses <code>sm:</code> or <code>lg:</code> classes still renders at desktop sizes inside a 300px-wide mockup, so give an embedded screen a fixed type scale instead of reusing your page-level layout component.</p>
+  <div className="rounded-xl border border-foreground/[0.06] bg-foreground/[0.03] p-4">
+    <h4 className="font-sans text-[14px] font-semibold text-foreground mb-1">Sizing Live Screens</h4>
+    <p className="text-[13px] leading-relaxed text-foreground/50">Tailwind's responsive prefixes key off the viewport, not the frame. A section that uses <code>sm:</code> or <code>lg:</code> classes still renders at desktop sizes inside a 300px-wide mockup, so give an embedded screen a fixed type scale instead of reusing your page-level layout component.</p>
   </div>
-  <div className="p-5 rounded-xl border border-amber-200 dark:border-amber-900/50 bg-amber-50/50 dark:bg-amber-950/20">
-    <h4 className="text-base font-semibold text-amber-900 dark:text-amber-300 mb-1">Handling Overflow</h4>
-    <p className="text-amber-800 dark:text-amber-400/80 text-sm">If you are passing interactive React components inside the mockup instead of an image, ensure you add <code>overflow-y-auto</code> to your child wrapper if you want the screen content to be scrollable.</p>
+  <div className="rounded-xl border border-primary/15 bg-primary/5 p-4">
+    <h4 className="font-sans text-[14px] font-semibold text-primary mb-1">Handling Overflow</h4>
+    <p className="text-[13px] leading-relaxed text-foreground/50">If you are passing interactive React components inside the mockup instead of an image, ensure you add <code>overflow-y-auto</code> to your child wrapper if you want the screen content to be scrollable.</p>
   </div>
 </div>
 

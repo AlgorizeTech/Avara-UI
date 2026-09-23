@@ -137,6 +137,13 @@ export default function AlwaysOpenFaq() {
 
 export const usageSection = `import { Accordion, type AccordionDataItem } from "@/components/custom/blocks/Accordion";
 
+// The three faces on the "Still stuck?" card.
+const SUPPORT_TEAM = [
+  { name: "Ana R.", src: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_120,h_120,c_fill/v1790145139/pexels-photo-1036623-1790145143487.jpg" },
+  { name: "Tom M.", src: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_120,h_120,c_fill/v1790145142/pexels-photo-2043590-1790145143488.jpg" },
+  { name: "Mara K.", src: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_120,h_120,c_fill/v1790145139/pexels-photo-1587009-1790145143488.jpg" },
+];
+
 const faq: AccordionDataItem[] = [
   {
     value: "frameworks",
@@ -186,13 +193,14 @@ export default function FaqSection() {
 
           <div className="mt-8 flex max-w-md items-center gap-4 rounded-2xl bg-muted/60 p-4">
             <div className="flex -space-x-2">
-              {["AR", "MK", "JS"].map((initials) => (
-                <span
-                  key={initials}
-                  className="flex size-9 items-center justify-center rounded-full border-2 border-background bg-primary/15 text-xs font-medium text-primary"
-                >
-                  {initials}
-                </span>
+              {SUPPORT_TEAM.map((person) => (
+                <img
+                  key={person.name}
+                  src={person.src}
+                  alt={person.name}
+                  className="size-9 rounded-full border-2 border-background object-cover"
+                  loading="lazy"
+                />
               ))}
             </div>
             <div className="min-w-0">
@@ -448,9 +456,9 @@ Single or multiple open panels, a one-time stack entrance, and five variants tha
 ## Best Practices & Guidelines
 
 <div className="flex flex-col gap-4 my-6 not-prose">
-  <div className="p-5 rounded-xl border border-blue-200 dark:border-blue-900/50 bg-blue-50/50 dark:bg-blue-950/20">
-    <h4 className="text-base font-semibold text-blue-900 dark:text-blue-300 mb-1">Usage Guidelines</h4>
-    <p className="text-blue-800 dark:text-blue-400/80 text-sm">Use <code>animation="stack"</code> once per page, on the accordion you want people to notice; two decks dealing at the same time cancel each other out. Give it at least three items so the pile reads as a deck, and keep <code>defaultValue</code> set so the open card is part of the deal.</p>
+  <div className="rounded-xl border border-foreground/[0.06] bg-foreground/[0.03] p-4">
+    <h4 className="font-sans text-[14px] font-semibold text-foreground mb-1">Usage Guidelines</h4>
+    <p className="text-[13px] leading-relaxed text-foreground/50">Use <code>animation="stack"</code> once per page, on the accordion you want people to notice; two decks dealing at the same time cancel each other out. Give it at least three items so the pile reads as a deck, and keep <code>defaultValue</code> set so the open card is part of the deal.</p>
   </div>
 </div>
 

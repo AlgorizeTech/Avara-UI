@@ -68,12 +68,12 @@ export const usagePhotos = `import { Folder } from "@/components/custom/blocks/F
 
 // { thumb } turns a card into a photo. Add { name } for a hover tooltip.
 const photos = [
-  { thumb: "https://images.unsplash.com/photo-1470071459604-3b5ec3a7fe05?auto=format&fit=crop&w=320&q=70", name: "IMG_4021.jpg" },
-  { thumb: "https://images.unsplash.com/photo-1506905925346-21bda4d32df4?auto=format&fit=crop&w=320&q=70", name: "IMG_4022.jpg" },
-  { thumb: "https://images.unsplash.com/photo-1441974231531-c6227db76b6e?auto=format&fit=crop&w=320&q=70", name: "IMG_4023.jpg" },
-  { thumb: "https://images.unsplash.com/photo-1472214103451-9374bd1c798e?auto=format&fit=crop&w=320&q=70", name: "IMG_4024.jpg" },
-  { thumb: "https://images.unsplash.com/photo-1501785888041-af3ef285b470?auto=format&fit=crop&w=320&q=70", name: "IMG_4025.jpg" },
-  { thumb: "https://images.unsplash.com/photo-1518837695005-2083093ee35b?auto=format&fit=crop&w=320&q=70", name: "IMG_4026.jpg" },
+  { thumb: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_320,c_limit/v1790146209/photo-1470071459604-3b5ec3a7fe05-1790146212205.jpg", name: "IMG_4021.jpg" },
+  { thumb: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_320,c_limit/v1790146210/photo-1506905925346-21bda4d32df4-1790146212208.jpg", name: "IMG_4022.jpg" },
+  { thumb: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_320,c_limit/v1790146211/photo-1441974231531-c6227db76b6e-1790146212212.jpg", name: "IMG_4023.jpg" },
+  { thumb: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_320,c_limit/v1790146210/photo-1472214103451-9374bd1c798e-1790146212205.jpg", name: "IMG_4024.jpg" },
+  { thumb: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_320,c_limit/v1790146210/photo-1501785888041-af3ef285b470-1790146212207.jpg", name: "IMG_4025.jpg" },
+  { thumb: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_320,c_limit/v1790150482/photo-1518837695005-2083093ee35b-1790150482277.jpg", name: "IMG_4026.jpg" },
 ];
 
 export default function SummerTrip() {

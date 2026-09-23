@@ -134,7 +134,7 @@ const DEFAULT_SUB_AGENTS: SubAgent[] = [
     title: "Sales Lead",
     role: "Enterprise Conversions",
     avatarUrl:
-      "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=300&auto=format&fit=crop&q=80",
+      "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_300,c_limit/v1790158814/photo-1500648767791-00dcc994a43e-1790158812212.jpg",
     status: "online",
     percentX: 10,
     svgX: 100,
@@ -149,7 +149,7 @@ const DEFAULT_SUB_AGENTS: SubAgent[] = [
     title: "Marketing Director",
     role: "Global Campaigns",
     avatarUrl:
-      "https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=300&auto=format&fit=crop&q=80",
+      "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_300,c_limit/v1790150483/photo-1534528741775-53994a69daeb-1790150482280.jpg",
     status: "online",
     percentX: 30,
     svgX: 300,
@@ -164,7 +164,7 @@ const DEFAULT_SUB_AGENTS: SubAgent[] = [
     title: "Support Lead",
     role: "Priority Escalations",
     avatarUrl:
-      "https://images.unsplash.com/photo-1519085360753-af0119f7cbe7?w=300&auto=format&fit=crop&q=80",
+      "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_300,c_limit/v1790159965/photo-1519085360753-af0119f7cbe7-1790159970113.jpg",
     status: "idle",
     percentX: 50,
     svgX: 500,
@@ -179,7 +179,7 @@ const DEFAULT_SUB_AGENTS: SubAgent[] = [
     title: "Financial Officer",
     role: "Billing & Audit",
     avatarUrl:
-      "https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=300&auto=format&fit=crop&q=80",
+      "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_300,c_limit/v1790158814/photo-1573496359142-b8d87734a5a2-1790158812214.jpg",
     status: "online",
     percentX: 70,
     svgX: 700,
@@ -194,7 +194,7 @@ const DEFAULT_SUB_AGENTS: SubAgent[] = [
     title: "Data Engineer",
     role: "BI & Pipeline Systems",
     avatarUrl:
-      "https://images.unsplash.com/photo-1522075469751-3a6694fb2f61?w=300&auto=format&fit=crop&q=80",
+      "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_300,c_limit/v1790158814/photo-1522075469751-3a6694fb2f61-1790158812213.jpg",
     status: "online",
     percentX: 90,
     svgX: 900,
@@ -221,7 +221,7 @@ const DEFAULT_ORCHESTRATOR = {
   name: "John Doe",
   role: "Senior Product Designer",
   avatarUrl:
-    "https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?w=300&auto=format&fit=crop&q=80",
+    "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_300,c_limit/v1790150480/photo-1506794778202-cad84cf45f1d-1790150482275.jpg",
 };
 
 export function UserGraph({

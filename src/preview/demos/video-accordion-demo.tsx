@@ -13,7 +13,7 @@ const samplePanels: AccordionPanel[] = [
       "Explore the tranquil turquoise waters of pristine high-altitude mountain lakes surrounded by majestic peaks.",
     videoSrc: "/videos/sanctuary.mp4",
     posterUrl:
-      "https://images.unsplash.com/photo-1506744038136-46273834b3fb?q=80&w=1200&auto=format&fit=crop",
+      "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_1200,c_limit/v1790146210/photo-1506744038136-46273834b3fb-1790146212208.jpg",
   },
   {
     id: "wildlife",
@@ -22,7 +22,7 @@ const samplePanels: AccordionPanel[] = [
       "Venture deep into lush, ancient pine groves and mist-shrouded woodland valleys untouched by time.",
     videoSrc: "/videos/rainforest.mp4",
     posterUrl:
-      "https://images.unsplash.com/photo-1470058869958-2a77ade41c02?q=80&w=1200&auto=format&fit=crop",
+      "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_1200,c_limit/v1790159968/photo-1470058869958-2a77ade41c02-1790159970122.jpg",
   },
   {
     id: "soaring",
@@ -31,7 +31,7 @@ const samplePanels: AccordionPanel[] = [
       "Soar above golden sunset horizons, jagged rocky cliffs, and sweeping atmospheric cloudscapes.",
     videoSrc: "/videos/ridge.mp4",
     posterUrl:
-      "https://images.unsplash.com/photo-1470071459604-3b5ec3a7fe05?q=80&w=1200&auto=format&fit=crop",
+      "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_1200,c_limit/v1790146209/photo-1470071459604-3b5ec3a7fe05-1790146212205.jpg",
   },
   {
     id: "nature",
@@ -40,7 +40,7 @@ const samplePanels: AccordionPanel[] = [
       "Listen to the peaceful roar of crystal streams flowing through mossy granite boulders in deep wilderness.",
     videoSrc: "/videos/waterfalls.mp4",
     posterUrl:
-      "https://images.unsplash.com/photo-1432405972618-c60b0225b8f9?q=80&w=1200&auto=format&fit=crop",
+      "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_1200,c_limit/v1790159968/photo-1432405972618-c60b0225b8f9-1790159970121.jpg",
   },
 ];
 

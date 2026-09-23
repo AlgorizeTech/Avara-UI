@@ -1,10 +1,11 @@
 "use client";
 
 import { TableOfContentsBlock } from "@/components/custom/blocks/TableOfContentsBlock";
+import { toBlockColor } from "@/lib/accent";
 import React from "react";
 
 export default function TableOfContentsDemo({
-	color = "primary",
+	color: pickedColor = "primary",
 	showProgress = true,
 	showSearch = true,
 }: {
@@ -12,6 +13,7 @@ export default function TableOfContentsDemo({
 	showProgress?: boolean;
 	showSearch?: boolean;
 }) {
+	const color = toBlockColor(pickedColor);
 	return (
 		<div className="w-full p-4 sm:p-6 bg-background text-foreground max-h-[650px] overflow-y-auto rounded-2xl border border-border/40">
 			<div className="w-full max-w-6xl mx-auto">

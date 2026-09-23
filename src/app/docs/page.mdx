@@ -44,31 +44,31 @@ import { COMPONENT_COUNT, links } from "@/config/site";
 Algorize UI is a library of {COMPONENT_COUNT} React components installed straight
 into your project by the shadcn CLI — no wrapper package, no lock-in.
 
-<div className="grid grid-cols-1 md:grid-cols-2 gap-6 mt-8">
-  <DocLink to="index" className="block p-6 rounded-lg border border-zinc-200 hover:border-primary/30 hover:shadow-md transition-all dark:border-zinc-800 dark:hover:border-primary/30">
-    <h3 className="text-xl font-semibold mb-2">Introduction</h3>
-    <span className="block text-zinc-600 dark:text-zinc-400">
+<div className="not-prose grid grid-cols-1 md:grid-cols-2 gap-4 mt-8">
+  <DocLink to="index" className="group block p-5 rounded-xl border border-foreground/[0.06] bg-foreground/[0.03] hover:bg-foreground/[0.07] transition-colors">
+    <h3 className="text-[14px] font-semibold text-foreground group-hover:text-primary transition-colors mb-[7px]">Introduction</h3>
+    <span className="block text-[13px] leading-[1.65] text-foreground/45">
       What the library is, how the registry install model works, and what ships in it.
     </span>
   </DocLink>
 
-  <DocLink to="installation" className="block p-6 rounded-lg border border-zinc-200 hover:border-primary/30 hover:shadow-md transition-all dark:border-zinc-800 dark:hover:border-primary/30">
-    <h3 className="text-xl font-semibold mb-2">Installation</h3>
-    <span className="block text-zinc-600 dark:text-zinc-400">
+  <DocLink to="installation" className="group block p-5 rounded-xl border border-foreground/[0.06] bg-foreground/[0.03] hover:bg-foreground/[0.07] transition-colors">
+    <h3 className="text-[14px] font-semibold text-foreground group-hover:text-primary transition-colors mb-[7px]">Installation</h3>
+    <span className="block text-[13px] leading-[1.65] text-foreground/45">
       Requirements, initializing the CLI, and where installed files land.
     </span>
   </DocLink>
 
-  <DocLink to="first-app" className="block p-6 rounded-lg border border-zinc-200 hover:border-primary/30 hover:shadow-md transition-all dark:border-zinc-800 dark:hover:border-primary/30">
-    <h3 className="text-xl font-semibold mb-2">Quick Start</h3>
-    <span className="block text-zinc-600 dark:text-zinc-400">
+  <DocLink to="first-app" className="group block p-5 rounded-xl border border-foreground/[0.06] bg-foreground/[0.03] hover:bg-foreground/[0.07] transition-colors">
+    <h3 className="text-[14px] font-semibold text-foreground group-hover:text-primary transition-colors mb-[7px]">Quick Start</h3>
+    <span className="block text-[13px] leading-[1.65] text-foreground/45">
       Go from an empty project to a rendered component in four steps.
     </span>
   </DocLink>
 
-  <DocLink to="all-components" className="block p-6 rounded-lg border border-zinc-200 hover:border-primary/30 hover:shadow-md transition-all dark:border-zinc-800 dark:hover:border-primary/30">
-    <h3 className="text-xl font-semibold mb-2">Browse Components</h3>
-    <span className="block text-zinc-600 dark:text-zinc-400">
+  <DocLink to="all-components" className="group block p-5 rounded-xl border border-foreground/[0.06] bg-foreground/[0.03] hover:bg-foreground/[0.07] transition-colors">
+    <h3 className="text-[14px] font-semibold text-foreground group-hover:text-primary transition-colors mb-[7px]">Browse Components</h3>
+    <span className="block text-[13px] leading-[1.65] text-foreground/45">
       All of them, each with live previews, prop notes and an install command.
     </span>
   </DocLink>
@@ -84,48 +84,48 @@ into your project by the shadcn CLI — no wrapper package, no lock-in.
   </TabsList>
   
   <TabsContent value="components">
-    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 mt-4">
-      <DocLink to="button" className="block p-4 rounded-lg border border-zinc-200 hover:border-primary/30 hover:bg-primary/5 transition-colors dark:border-zinc-800 dark:hover:border-primary/30 dark:hover:bg-primary/10">
-        <h4 className="font-medium">Button</h4>
-        <span className="block text-sm text-zinc-600 dark:text-zinc-400 mt-1">Customizable button with multiple variants</span>
+    <div className="not-prose grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 mt-4">
+      <DocLink to="button" className="group block p-4 rounded-xl border border-foreground/[0.06] bg-foreground/[0.03] hover:bg-foreground/[0.07] transition-colors">
+        <h4 className="text-[14px] font-semibold text-foreground group-hover:text-primary transition-colors">Button</h4>
+        <span className="block text-[12px] text-foreground/40 mt-1">Customizable button with multiple variants</span>
       </DocLink>
       
-      <DocLink to="card" className="block p-4 rounded-lg border border-zinc-200 hover:border-primary/30 hover:bg-primary/5 transition-colors dark:border-zinc-800 dark:hover:border-primary/30 dark:hover:bg-primary/10">
-        <h4 className="font-medium">Card</h4>
-        <span className="block text-sm text-zinc-600 dark:text-zinc-400 mt-1">Flexible container for content</span>
+      <DocLink to="card" className="group block p-4 rounded-xl border border-foreground/[0.06] bg-foreground/[0.03] hover:bg-foreground/[0.07] transition-colors">
+        <h4 className="text-[14px] font-semibold text-foreground group-hover:text-primary transition-colors">Card</h4>
+        <span className="block text-[12px] text-foreground/40 mt-1">Flexible container for content</span>
       </DocLink>
       
-      <DocLink to="vertical-tabs" className="block p-4 rounded-lg border border-zinc-200 hover:border-primary/30 hover:bg-primary/5 transition-colors dark:border-zinc-800 dark:hover:border-primary/30 dark:hover:bg-primary/10">
-        <h4 className="font-medium">Tabs</h4>
-        <span className="block text-sm text-zinc-600 dark:text-zinc-400 mt-1">Accessible tab interface</span>
+      <DocLink to="vertical-tabs" className="group block p-4 rounded-xl border border-foreground/[0.06] bg-foreground/[0.03] hover:bg-foreground/[0.07] transition-colors">
+        <h4 className="text-[14px] font-semibold text-foreground group-hover:text-primary transition-colors">Tabs</h4>
+        <span className="block text-[12px] text-foreground/40 mt-1">Accessible tab interface</span>
       </DocLink>
     </div>
   </TabsContent>
   
   <TabsContent value="hooks">
-    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 mt-4">
-      <div className="p-4 rounded-lg border border-gray-200 dark:border-gray-800">
-        <h4 className="font-medium">useToast</h4>
-        <p className="text-sm text-gray-600 dark:text-gray-400 mt-1">Display notifications to users</p>
+    <div className="not-prose grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 mt-4">
+      <div className="p-4 rounded-xl border border-foreground/[0.06] bg-foreground/[0.03]">
+        <h4 className="text-[14px] font-semibold text-foreground group-hover:text-primary transition-colors">useToast</h4>
+        <p className="text-[12px] text-foreground/40 mt-1">Display notifications to users</p>
       </div>
       
-      <div className="p-4 rounded-lg border border-gray-200 dark:border-gray-800">
-        <h4 className="font-medium">useMediaQuery</h4>
-        <p className="text-sm text-gray-600 dark:text-gray-400 mt-1">Responsive design helpers</p>
+      <div className="p-4 rounded-xl border border-foreground/[0.06] bg-foreground/[0.03]">
+        <h4 className="text-[14px] font-semibold text-foreground group-hover:text-primary transition-colors">useMediaQuery</h4>
+        <p className="text-[12px] text-foreground/40 mt-1">Responsive design helpers</p>
       </div>
     </div>
   </TabsContent>
   
   <TabsContent value="utilities">
-    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 mt-4">
-      <div className="p-4 rounded-lg border border-gray-200 dark:border-gray-800">
-        <h4 className="font-medium">cn</h4>
-        <p className="text-sm text-gray-600 dark:text-gray-400 mt-1">Class name merging utility</p>
+    <div className="not-prose grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 mt-4">
+      <div className="p-4 rounded-xl border border-foreground/[0.06] bg-foreground/[0.03]">
+        <h4 className="text-[14px] font-semibold text-foreground group-hover:text-primary transition-colors">cn</h4>
+        <p className="text-[12px] text-foreground/40 mt-1">Class name merging utility</p>
       </div>
       
-      <div className="p-4 rounded-lg border border-gray-200 dark:border-gray-800">
-        <h4 className="font-medium">createSlug</h4>
-        <p className="text-sm text-gray-600 dark:text-gray-400 mt-1">URL-friendly string generator</p>
+      <div className="p-4 rounded-xl border border-foreground/[0.06] bg-foreground/[0.03]">
+        <h4 className="text-[14px] font-semibold text-foreground group-hover:text-primary transition-colors">createSlug</h4>
+        <p className="text-[12px] text-foreground/40 mt-1">URL-friendly string generator</p>
       </div>
     </div>
   </TabsContent>

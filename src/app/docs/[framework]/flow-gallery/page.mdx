@@ -12,52 +12,52 @@ export const itemsCode = `const items: FlowGalleryItem[] = [
   {
     id: "1",
     title: "Cyberpunk Officer",
-    imageUrl: "https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?auto=format&fit=crop&w=800&q=80",
+    imageUrl: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_800,c_limit/v1790148864/photo-1618005182384-a83a8bd57fbe-1790148865111.jpg",
   },
   {
     id: "2",
     title: "Neon Cyberpunk Girl",
-    imageUrl: "https://images.unsplash.com/photo-1578632767115-351597cf2477?auto=format&fit=crop&w=800&q=80",
+    imageUrl: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_800,c_limit/v1790150483/photo-1578632767115-351597cf2477-1790150482281.jpg",
   },
   {
     id: "3",
     title: "Ramen Bowl Art",
-    imageUrl: "https://images.unsplash.com/photo-1569718212165-3a8278d5f624?auto=format&fit=crop&w=800&q=80",
+    imageUrl: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_800,c_limit/v1790148864/photo-1569718212165-3a8278d5f624-1790148865111.jpg",
   },
   {
     id: "4",
     title: "Suit Business Portrait",
-    imageUrl: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=800&q=80",
+    imageUrl: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_800,c_limit/v1790150480/photo-1507003211169-0a1dd7228f2d-1790150482276.jpg",
   },
   {
     id: "5",
     title: "Grizzly Bear Wildlife",
-    imageUrl: "https://images.unsplash.com/photo-1530595467537-0b5996c41f2d?auto=format&fit=crop&w=800&q=80",
+    imageUrl: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_800,c_limit/v1790150482/photo-1530595467537-0b5996c41f2d-1790150482280.jpg",
   },
   {
     id: "6",
     title: "Skateboard Graphic",
-    imageUrl: "https://images.unsplash.com/photo-1520045892732-304bc3ac5d8e?auto=format&fit=crop&w=800&q=80",
+    imageUrl: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_800,c_limit/v1790150482/photo-1520045892732-304bc3ac5d8e-1790150482278.jpg",
   },
   {
     id: "7",
     title: "Abstract Fluid Ink",
-    imageUrl: "https://images.unsplash.com/photo-1541701494587-cb58502866ab?auto=format&fit=crop&w=800&q=80",
+    imageUrl: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_800,c_limit/v1790150483/photo-1541701494587-cb58502866ab-1790150482281.jpg",
   },
   {
     id: "8",
     title: "Deep Space Black Hole",
-    imageUrl: "https://images.unsplash.com/photo-1451187580459-43490279c0fa?auto=format&fit=crop&w=800&q=80",
+    imageUrl: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_800,c_limit/v1790145141/photo-1451187580459-43490279c0fa-1790145143491.jpg",
   },
   {
     id: "9",
     title: "Misty Pine Forest",
-    imageUrl: "https://images.unsplash.com/photo-1470071459604-3b5ec3a7fe05?auto=format&fit=crop&w=800&q=80",
+    imageUrl: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_800,c_limit/v1790146209/photo-1470071459604-3b5ec3a7fe05-1790146212205.jpg",
   },
   {
     id: "10",
     title: "Sunset Mountain Peak",
-    imageUrl: "https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=800&q=80",
+    imageUrl: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_800,c_limit/v1790146210/photo-1506744038136-46273834b3fb-1790146212208.jpg",
   },
 ];`;
 
@@ -183,13 +183,13 @@ Discover the key capabilities that make this component an excellent choice for m
 ## Best Practices & Guidelines
 
 <div className="flex flex-col gap-4 my-6 not-prose">
-  <div className="p-5 rounded-xl border border-blue-200 dark:border-blue-900/50 bg-blue-50/50 dark:bg-blue-950/20">
-    <h4 className="text-base font-semibold text-blue-900 dark:text-blue-300 mb-1">Image Resolution & Aspect Ratios</h4>
-    <p className="text-blue-800 dark:text-blue-400/80 text-sm">Use square or near-square images (800x800) so that card items maintain crisp aspect ratios when rendered in the 3D plane.</p>
+  <div className="rounded-xl border border-foreground/[0.06] bg-foreground/[0.03] p-4">
+    <h4 className="font-sans text-[14px] font-semibold text-foreground mb-1">Image Resolution & Aspect Ratios</h4>
+    <p className="text-[13px] leading-relaxed text-foreground/50">Use square or near-square images (800x800) so that card items maintain crisp aspect ratios when rendered in the 3D plane.</p>
   </div>
-  <div className="p-5 rounded-xl border border-amber-200 dark:border-amber-900/50 bg-amber-50/50 dark:bg-amber-950/20">
-    <h4 className="text-base font-semibold text-amber-900 dark:text-amber-300 mb-1">Performance & GPU Acceleration</h4>
-    <p className="text-amber-800 dark:text-amber-400/80 text-sm">The stream plane uses hardware-accelerated <code>transform: translate3d()</code> properties to maintain 60fps performance across devices.</p>
+  <div className="rounded-xl border border-primary/15 bg-primary/5 p-4">
+    <h4 className="font-sans text-[14px] font-semibold text-primary mb-1">Performance & GPU Acceleration</h4>
+    <p className="text-[13px] leading-relaxed text-foreground/50">The stream plane uses hardware-accelerated <code>transform: translate3d()</code> properties to maintain 60fps performance across devices.</p>
   </div>
 </div>
 

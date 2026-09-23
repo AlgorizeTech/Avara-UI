@@ -122,42 +122,29 @@ export const TableOfContents: React.FC = () => {
     };
   }, [displayActiveId, chapters]);
 
-  const dynamicColor =
-    scrollProgress > 50
-      ? `rgb(${Math.round(255 - ((scrollProgress - 50) / 50) * 200)}, 180, 100)`
-      : `rgb(100, 180, ${Math.round(255 - (scrollProgress / 50) * 150)})`;
-
   return (
     <aside className="hidden lg:flex flex-col w-[180px] xl:w-[200px] 2xl:w-[212px] shrink-0 sticky top-[57px] h-[calc(100dvh-57px)] relative">
-      <div className="flex flex-col h-full border-l border-zinc-200 dark:border-zinc-800/70 bg-white/50 dark:bg-transparent overflow-hidden">
+      <div className="flex flex-col h-full bg-background overflow-hidden">
         {/* Header: Title + Progress Bar */}
-        <div className="flex-shrink-0 pt-6 px-4 pb-3 flex flex-col gap-2">
+        <div className="flex-shrink-0 pt-5 px-4 pb-3 flex flex-col gap-2">
           <div className="flex items-center justify-between">
-            <span className="text-[11px] font-semibold uppercase tracking-widest text-zinc-400 dark:text-zinc-500">
+            <span className="text-[11px] font-semibold uppercase tracking-[0.08em] text-foreground/35">
               On this page
             </span>
           </div>
 
           <div className="flex items-center gap-2">
-            <div className="flex-1 h-[3px] rounded-full bg-zinc-200 dark:bg-zinc-800 overflow-hidden">
+            <div className="flex-1 h-[3px] rounded-full bg-foreground/[0.06] overflow-hidden">
               <div
-                className="h-full transition-all duration-150 rounded-full"
-                style={{
-                  width: `${scrollProgress}%`,
-                  backgroundColor: dynamicColor,
-                }}
+                className="h-full bg-primary transition-all duration-150 rounded-full"
+                style={{ width: `${scrollProgress}%` }}
               />
             </div>
-            <span
-              className="text-[10.5px] font-semibold tabular-nums w-7 text-right transition-colors duration-100"
-              style={{ color: dynamicColor }}
-            >
+            <span className="text-[11px] font-medium tabular-nums w-7 text-right text-foreground/35">
               {Math.round(scrollProgress)}%
             </span>
           </div>
         </div>
-
-        <div className="h-px bg-zinc-200 dark:bg-zinc-800 flex-shrink-0" />
 
         {/* Accordion Chapters List (Original Table of Contents) */}
         <div
@@ -170,7 +157,7 @@ export const TableOfContents: React.FC = () => {
             className="relative py-1"
           >
             {/* Static vertical track line */}
-            <div className="absolute left-[15px] top-0 bottom-0 w-px bg-zinc-200 dark:bg-zinc-800" />
+            <div className="absolute left-[15px] top-0 bottom-0 w-px bg-foreground/[0.08]" />
 
             {chapters.map((chapter, chapterIndex) => {
               const isChapterOpen = chapter === activeChapter;
@@ -190,9 +177,11 @@ export const TableOfContents: React.FC = () => {
                       style={{ paddingLeft: "26px" }}
                       className={cn(
                         "group relative w-full text-left pr-4 leading-snug transition-all duration-200 cursor-pointer flex items-center",
-                        "py-2 mb-1 text-[13px] font-extrabold uppercase tracking-wider text-zinc-900 dark:text-zinc-100",
-                        isChapterBreak &&
-                          "mt-4 pt-4 border-t border-zinc-200/80 dark:border-zinc-800/80",
+                        "py-1.5 text-[13px] font-medium",
+                        isRootActive
+                          ? "text-primary"
+                          : "text-foreground/80 hover:text-foreground",
+                        isChapterBreak && "mt-3",
                       )}
                     >
                       {isRootActive && (
@@ -206,7 +195,7 @@ export const TableOfContents: React.FC = () => {
                           }}
                         />
                       )}
-                      <span className={cn("truncate", isRootActive && "text-primary")}>{chapter.root.text}</span>
+                      <span className="truncate">{chapter.root.text}</span>
                     </button>
                   )}
 
@@ -233,14 +222,14 @@ export const TableOfContents: React.FC = () => {
                               data-toc-active={isActive || undefined}
                               style={{ paddingLeft: `${26 + indent}px` }}
                               className={cn(
-                                "group relative w-full text-left pr-4 leading-snug transition-all duration-200 cursor-pointer flex items-center",
-                                isSection &&
-                                  "py-1.5 mt-0.5 text-[12.5px] font-medium text-zinc-700 dark:text-zinc-300",
-                                isChild &&
-                                  "py-1 text-[12px] font-normal text-zinc-500 dark:text-zinc-400",
+                                "group relative w-full text-left pr-4 leading-snug transition-colors duration-150 cursor-pointer flex items-center",
+                                isSection && "py-1.5 text-[13px]",
+                                isChild && "py-1 text-[12.5px]",
                                 isActive
-                                  ? "text-primary font-semibold"
-                                  : "hover:text-primary",
+                                  ? "text-primary font-medium"
+                                  : isChild
+                                    ? "text-foreground/45 hover:text-foreground"
+                                    : "text-foreground/55 hover:text-foreground",
                               )}
                             >
                               {isActive && (
@@ -260,7 +249,7 @@ export const TableOfContents: React.FC = () => {
                                     "inline-block w-1 h-1 rounded-full mr-2 shrink-0 transition-colors",
                                     isActive
                                       ? "bg-primary"
-                                      : "bg-zinc-300 dark:bg-zinc-700 group-hover:bg-primary/70",
+                                      : "bg-foreground/20 group-hover:bg-foreground/60",
                                   )}
                                 />
                               )}
@@ -278,12 +267,12 @@ export const TableOfContents: React.FC = () => {
         </div>
 
         {/* Algorize Tech Promo Banner Image Segment */}
-        <div className="px-2.5 py-2.5 border-t border-zinc-200 dark:border-zinc-800/80 shrink-0">
+        <div className="px-2.5 py-2.5 border-t border-foreground/[0.06] shrink-0">
           <a
             href="https://algorizetech.com"
             target="_blank"
             rel="noopener noreferrer"
-            className="group block relative overflow-hidden rounded-xl border border-zinc-200/80 dark:border-zinc-800 hover:border-primary/30 dark:hover:border-primary/30 transition-colors duration-200 shadow-none cursor-pointer"
+            className="group block relative overflow-hidden rounded-xl border border-foreground/[0.06] hover:border-primary/30 transition-colors duration-200 shadow-none cursor-pointer"
           >
             <img
               src="/assets/algorizetech-banner.png"
@@ -299,19 +288,16 @@ export const TableOfContents: React.FC = () => {
           </a>
         </div>
 
-        <div className="h-px bg-zinc-200 dark:bg-zinc-800 flex-shrink-0" />
-
         {/* Footer nav */}
         <div className="flex-shrink-0 px-3 py-3 flex gap-2">
           <button
             onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
             className={cn(
               "flex-1 flex items-center justify-center gap-1.5",
-              "py-[7px] rounded-lg text-[11.5px] font-medium",
-              "bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800",
-              "text-zinc-600 dark:text-zinc-400 hover:bg-zinc-50 dark:hover:bg-zinc-800/80",
-              "hover:text-zinc-900 dark:hover:text-zinc-200 hover:border-zinc-300 dark:hover:border-zinc-700",
-              "transition-all duration-150 cursor-pointer shadow-sm",
+              "py-[7px] rounded-full text-[12px] font-medium",
+              "bg-foreground/[0.04] text-foreground/70",
+              "hover:bg-foreground/[0.08] hover:text-foreground",
+              "transition-colors duration-150 cursor-pointer",
             )}
           >
             <ArrowUp className="w-3 h-3" /> Top
@@ -325,11 +311,10 @@ export const TableOfContents: React.FC = () => {
             }
             className={cn(
               "flex-1 flex items-center justify-center gap-1.5",
-              "py-[7px] rounded-lg text-[11.5px] font-medium",
-              "bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800",
-              "text-zinc-600 dark:text-zinc-400 hover:bg-zinc-50 dark:hover:bg-zinc-800/80",
-              "hover:text-zinc-900 dark:hover:text-zinc-200 hover:border-zinc-300 dark:hover:border-zinc-700",
-              "transition-all duration-150 cursor-pointer shadow-sm",
+              "py-[7px] rounded-full text-[12px] font-medium",
+              "bg-foreground/[0.04] text-foreground/70",
+              "hover:bg-foreground/[0.08] hover:text-foreground",
+              "transition-colors duration-150 cursor-pointer",
             )}
           >
             <ArrowDown className="w-3 h-3" /> End

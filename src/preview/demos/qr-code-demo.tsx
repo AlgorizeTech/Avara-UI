@@ -27,10 +27,9 @@ const namedThemes: Record<string, { text: string; button: string }> = {
     text: "text-emerald-600 dark:text-emerald-400",
     button: "bg-emerald-600 hover:bg-emerald-700 text-white",
   },
-  zinc: {
-    text: "text-zinc-900 dark:text-zinc-100",
-    button:
-      "bg-zinc-900 hover:bg-zinc-800 text-white dark:bg-zinc-100 dark:hover:bg-zinc-200 dark:text-zinc-900",
+  lavender: {
+    text: "text-[#9b8afb]",
+    button: "bg-[#9b8afb] hover:bg-[#9b8afb]/90 text-white",
   },
 };
 

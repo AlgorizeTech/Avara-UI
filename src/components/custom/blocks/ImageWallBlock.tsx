@@ -42,6 +42,12 @@ export interface ImageWallProps extends Omit<React.HTMLAttributes<HTMLDivElement
    * wall to arrive. `0` starts on the first card.
    */
   intro?: number;
+  /**
+   * Where in the window the resting card sits, as shares of its width and
+   * height — `{ x: 0.5, y: 0.5 }`, the middle, by default. Two walls side by
+   * side read better with one card resting high and the other low.
+   */
+  anchor?: { x?: number; y?: number };
   /** Called with the index of the card the camera has settled on. */
   onFocus?: (index: number) => void;
 }
@@ -92,7 +98,9 @@ const prefersReducedMotion = () =>
 // Root
 // ------------------------------------------
 export const ImageWall = forwardRef<HTMLDivElement, ImageWallProps>(
-  ({ items, columns = 4, interval = 4500, order = "serial", zoom = 1.35, intro = 0, onFocus, className, ...props }, ref) => {
+  ({ items, columns = 4, interval = 4500, order = "serial", zoom = 1.35, intro = 0, anchor, onFocus, className, ...props }, ref) => {
+    const ax = anchor?.x ?? 0.5;
+    const ay = anchor?.y ?? 0.5;
     const wrapRef = useRef<HTMLDivElement | null>(null);
     const canvasRef = useRef<HTMLDivElement>(null);
     const cameraRef = useRef({ x: 0, y: 0, s: zoom });
@@ -118,7 +126,7 @@ export const ImageWall = forwardRef<HTMLDivElement, ImageWallProps>(
       el.style.opacity = "1";
     }, []);
 
-    // Where the camera rests to hold card `i` in the middle of the window.
+    // Where the camera rests to hold card `i` at the anchor — the middle of the window by default.
     const restFor = useCallback(
       (i: number) => {
         const wrap = wrapRef.current;
@@ -133,9 +141,9 @@ export const ImageWall = forwardRef<HTMLDivElement, ImageWallProps>(
         const s = W < 640 ? Math.min(zoom, PHONE_ZOOM) : H < 420 ? Math.min(zoom, BAND_ZOOM) : zoom;
         const cx = card.left + CARD_W / 2;
         const cy = card.top + CARD_H / 2;
-        return { x: W / 2 - s * cx, y: H / 2 - s * cy, s };
+        return { x: W * ax - s * cx, y: H * ay - s * cy, s };
       },
-      [placed, zoom],
+      [placed, zoom, ax, ay],
     );
 
     // ---- First frame, and every resize: snap to the focused card. On the very
@@ -151,8 +159,10 @@ export const ImageWall = forwardRef<HTMLDivElement, ImageWallProps>(
         cameraRef.current = restFor(focusRef.current);
         paint();
       };
+      let introLive = false;
       if (!introDone.current && intro > 0 && n > 0 && !prefersReducedMotion()) {
         introDone.current = true;
+        introLive = true;
         const target = restFor(focusRef.current);
         const cam = cameraRef.current;
         cam.s = target.s * FLIGHT_PULL;
@@ -164,6 +174,7 @@ export const ImageWall = forwardRef<HTMLDivElement, ImageWallProps>(
           .timeline({
             onUpdate: paint,
             onComplete: () => {
+              introLive = false;
               cameraRef.current = restFor(focusRef.current);
               paint();
               setFlying(false);
@@ -175,10 +186,20 @@ export const ImageWall = forwardRef<HTMLDivElement, ImageWallProps>(
         introDone.current = true;
         snap();
       }
-      if (typeof ResizeObserver === "undefined") return;
-      const ro = new ResizeObserver(snap);
-      ro.observe(wrap);
-      return () => ro.disconnect();
+      const ro = typeof ResizeObserver === "undefined" ? null : new ResizeObserver(snap);
+      ro?.observe(wrap);
+      return () => {
+        ro?.disconnect();
+        // Torn down mid-intro — React's rehearsal unmount in development, or the
+        // geometry changing under it — stop it and let the next run start it
+        // afresh. Left alone, a killed intro never clears `flying`, and the
+        // camera never moves again.
+        if (introLive) {
+          flightRef.current?.kill();
+          introDone.current = false;
+          setFlying(false);
+        }
+      };
     }, [restFor, paint, intro, n]);
 
     // ---- The flight: pull back while gliding, then settle in.

@@ -56,7 +56,7 @@ export default function AIChatDemo({
         variant === "glass"
           ? {
               backgroundImage:
-                'url("https://images.unsplash.com/photo-1470071459604-3b5ec3a7fe05?auto=format&fit=crop&w=1600&q=80")',
+                'url("https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_1600,c_limit/v1790146209/photo-1470071459604-3b5ec3a7fe05-1790146212205.jpg")',
             }
           : undefined
       }

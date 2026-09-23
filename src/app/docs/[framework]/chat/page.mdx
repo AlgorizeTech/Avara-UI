@@ -8,7 +8,7 @@ A fully interactive, encapsulated chat interface. Features include search filter
 Every preview is live — pick a contact, search the list, or send a message and watch the simulated reply come back. `variant` changes the shell only; the conversation state, search and typing simulation are identical across all three.
 
 export const chatData = `const currentUser: CurrentUser = {
-  avatar: "https://i.pravatar.cc/150?u=current",
+  avatar: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto/v1790148864/80-1-1790148865111.jpg",
   status: "online",
 };
 
@@ -20,7 +20,7 @@ const contactsData: Contact[] = [
     date: "Mar 13",
     unread: 1,
     status: "offline",
-    avatar: "https://i.pravatar.cc/150?u=1",
+    avatar: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto/v1790148865/80-1790148865113.jpg",
   },
   {
     // No \`avatar\`? \`initials\` + \`color\` render the fallback tile instead.
@@ -50,7 +50,7 @@ const contactsData: Contact[] = [
     date: "Dec 11",
     unread: 0,
     status: "online",
-    avatar: "https://i.pravatar.cc/150?u=4",
+    avatar: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto/v1790148865/80-3-1790148865112.jpg",
   },
 ];`;
 
@@ -89,7 +89,7 @@ export default function GlassChat() {
       className="p-8 rounded-2xl bg-cover bg-center"
       style={{
         backgroundImage:
-          "url('https://images.unsplash.com/photo-1470071459604-3b5ec3a7fe05?q=80&w=1200&auto=format&fit=crop')",
+          "url('https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_1200,c_limit/v1790146209/photo-1470071459604-3b5ec3a7fe05-1790146212205.jpg')",
       }}
     >
       <ChatApp
@@ -197,9 +197,9 @@ Explore the Chat component's robust features, including message grouping, timest
 ## Best Practices & Guidelines
 
 <div className="flex flex-col gap-4 my-6 not-prose">
-  <div className="p-5 rounded-xl border border-blue-200 dark:border-blue-900/50 bg-blue-50/50 dark:bg-blue-950/20">
-    <h4 className="text-base font-semibold text-blue-900 dark:text-blue-300 mb-1">Usage Guidelines</h4>
-    <p className="text-blue-800 dark:text-blue-400/80 text-sm">Follow standard design principles when implementing this component. Ensure proper contrast, spacing, and context within your layout.</p>
+  <div className="rounded-xl border border-foreground/[0.06] bg-foreground/[0.03] p-4">
+    <h4 className="font-sans text-[14px] font-semibold text-foreground mb-1">Usage Guidelines</h4>
+    <p className="text-[13px] leading-relaxed text-foreground/50">Follow standard design principles when implementing this component. Ensure proper contrast, spacing, and context within your layout.</p>
   </div>
 </div>
 

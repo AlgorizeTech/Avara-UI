@@ -34,7 +34,7 @@ export function RadiusPicker() {
     <div className="space-y-2.5">
       {/* Title + Custom Radius Input */}
       <div className="flex items-center justify-between">
-        <span className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">
+        <span className="text-[11px] font-semibold uppercase tracking-[0.08em] text-foreground/35">
           Radius
         </span>
         <input
@@ -44,7 +44,7 @@ export function RadiusPicker() {
           max="5"
           value={inputValue}
           onChange={handleCustomInputChange}
-          className="w-12 h-7 text-xs font-medium text-center rounded-md border border-primary/20 dark:border-primary/30 bg-primary/5 dark:bg-primary/10 text-foreground focus:outline-none focus:ring-1 focus:ring-primary focus:border-primary/30 transition-all [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none"
+          className="w-12 h-7 text-[12px] tabular-nums text-center rounded-md border border-foreground/10 bg-foreground/[0.03] text-foreground/50 focus:text-foreground focus:outline-none focus:ring-2 focus:ring-primary/40 transition-all [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none"
           title="Custom radius value"
         />
       </div>
@@ -59,10 +59,10 @@ export function RadiusPicker() {
               type="button"
               onClick={() => setRadius(option.value)}
               className={cn(
-                "flex-1 py-1.5 text-xs font-medium rounded-md transition-all duration-200 cursor-pointer border outline-none focus-visible:ring-2 focus-visible:ring-ring",
+                "flex-1 py-1.5 text-[12px] font-medium tabular-nums rounded-lg transition-colors duration-200 cursor-pointer outline-none focus-visible:ring-2 focus-visible:ring-primary/40",
                 isActive
-                  ? "bg-primary text-primary-foreground border-primary/30 shadow-sm"
-                  : "bg-background text-muted-foreground border-border hover:bg-primary/10 hover:border-primary/30 hover:text-primary"
+                  ? "bg-primary/15 text-primary"
+                  : "bg-foreground/[0.05] text-foreground/40 hover:text-foreground/70"
               )}
             >
               {option.label}

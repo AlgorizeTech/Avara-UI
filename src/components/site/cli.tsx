@@ -85,10 +85,14 @@ function resolveSegments(
   ];
 }
 
+/**
+ * The tool reads in the accent and what it is told to do in the ink's 75%
+ * step, so the eye lands on the part that changes per package manager.
+ */
 const TONE_CLASS: Record<Segment["tone"], string> = {
-  runner: "text-amber-400",
-  package: "text-teal-500",
-  args: "text-zinc-700 dark:text-zinc-300",
+  runner: "text-primary",
+  package: "text-primary/70",
+  args: "text-foreground/75",
 };
 
 /**
@@ -146,18 +150,17 @@ export const Cli = ({ command }: CliProps) => {
   };
 
   return (
-    // The command row is a shade darker than the page (zinc-100 on the off-white
-    // page, zinc-900 on the near-black one). It used to be pure white / zinc-950,
-    // which is the page colour on both themes, so the command read as a line of
-    // body text with a border around it rather than as something to run.
-    <div className="relative w-full overflow-hidden rounded-xl border border-zinc-200 bg-zinc-100 shadow-sm dark:border-zinc-800 dark:bg-zinc-900">
-      {/* PM Selector. The active tab shares the command row's background so it
-          reads as the open panel; the bar behind it sits one step lighter. */}
-      <div className="flex flex-wrap items-center justify-between gap-y-1 border-b border-zinc-200 bg-zinc-50 pt-1.5 dark:border-zinc-800 dark:bg-zinc-950">
+    // The docs code figure: an ink-tint frame holding a 40px tab bar and an
+    // inset panel in the page colour, so the command reads as something to
+    // run rather than a line of body text.
+    <div className="relative w-full overflow-hidden rounded-xl bg-foreground/[0.03]">
+      {/* PM Selector. Text tabs on the frame; the active one is full ink with
+          an accent rule under it, the rest sit at the ink's 40% step. */}
+      <div className="flex flex-wrap items-center justify-between gap-y-1 pl-3 pr-1.5 sm:pl-5">
         <div
           role="tablist"
           aria-label="Package manager"
-          className="-mb-px flex items-center gap-0.5 px-1.5 sm:gap-1 sm:px-2"
+          className="flex h-10 items-stretch gap-x-3 sm:gap-x-4"
         >
           {(Object.keys(PM_COMMANDS) as PackageManager[]).map((name) => {
             const isActive = name === pm;
@@ -167,30 +170,40 @@ export const Cli = ({ command }: CliProps) => {
                 key={name}
                 onClick={() => setPm(name)}
                 className={cn(
-                  "flex min-w-0 cursor-pointer items-center gap-1 rounded-t-lg border-b-2 px-1.5 py-1.5 text-xs font-medium transition-all duration-200 sm:gap-1.5 sm:px-4 sm:py-2 sm:text-sm",
-                  "focus:outline-none focus-visible:ring-2 focus-visible:ring-amber-400",
+                  "relative flex min-w-0 cursor-pointer items-center gap-1.5 text-[12px] font-medium transition-colors duration-200 sm:text-[13px]",
+                  "focus:outline-none focus-visible:rounded-sm focus-visible:ring-2 focus-visible:ring-primary/60",
                   isActive
-                    ? "border-amber-400 bg-zinc-100 font-semibold text-zinc-900 dark:bg-zinc-900 dark:text-zinc-50"
-                    : "border-transparent text-zinc-500 hover:bg-zinc-200/60 hover:text-zinc-900 dark:text-zinc-400 dark:hover:bg-zinc-800/60 dark:hover:text-zinc-200",
+                    ? "text-foreground"
+                    : "text-foreground/40 hover:text-foreground/70",
                 )}
                 aria-selected={isActive}
                 role="tab"
                 tabIndex={isActive ? 0 : -1}
               >
+                {/* Idle marks take the tab's own ink step; the active one
+                    shows the tool's brand colour. */}
                 <PmIcon
-                  className="size-3.5 shrink-0 sm:size-[18px]"
-                  color={isActive ? PACKAGE_MANAGER_ICONS[name].color : "#666"}
+                  className="size-3.5 shrink-0"
+                  color={isActive ? PACKAGE_MANAGER_ICONS[name].color : "currentColor"}
                 />
                 {name}
+                {isActive && (
+                  <motion.span
+                    layoutId={`${id}-pm-underline`}
+                    transition={slide}
+                    aria-hidden
+                    className="absolute inset-x-0 bottom-0 h-0.5 rounded-full bg-primary shadow-[0_0_8px] shadow-primary/40"
+                  />
+                )}
               </button>
             );
           })}
         </div>
 
         {/* How the item is named. A second axis beside the package manager,
-            and deliberately in the same vocabulary — amber marks the active
-            choice on both — so it reads as part of the command block rather
-            than a widget dropped onto it. */}
+            and deliberately in the same vocabulary — the accent marks the
+            active choice on both — so it reads as part of the command block
+            rather than a widget dropped onto it. */}
         {hasOwnItems && (
           <div
             role="radiogroup"
@@ -209,7 +222,7 @@ export const Cli = ({ command }: CliProps) => {
                 ) as HTMLButtonElement | null)?.focus();
               }
             }}
-            className="ml-auto flex shrink-0 items-center gap-1 px-1.5 sm:px-2"
+            className="ml-auto flex shrink-0 items-center gap-0.5 rounded-lg bg-foreground/[0.04] p-0.5"
           >
             {REGISTRY_FORMS.map((candidate) => {
               const isActive = candidate === form;
@@ -224,11 +237,11 @@ export const Cli = ({ command }: CliProps) => {
                   title={FORM_TITLE[candidate]}
                   onClick={() => setForm(candidate)}
                   className={cn(
-                    "relative cursor-pointer rounded-md px-2 py-1 font-mono text-xs font-medium transition-colors duration-150 motion-reduce:transition-none sm:px-2.5 sm:text-sm",
-                    "focus:outline-none focus-visible:ring-2 focus-visible:ring-amber-400",
+                    "relative cursor-pointer rounded-md px-2 py-1 font-mono text-[12px] font-medium transition-colors duration-150 motion-reduce:transition-none sm:px-2.5",
+                    "focus:outline-none focus-visible:ring-2 focus-visible:ring-primary/60",
                     isActive
-                      ? "text-zinc-900 dark:text-zinc-50"
-                      : "text-zinc-500 hover:bg-zinc-200/60 hover:text-zinc-900 dark:text-zinc-400 dark:hover:bg-zinc-800/60 dark:hover:text-zinc-100",
+                      ? "text-primary"
+                      : "text-foreground/40 hover:text-foreground/70",
                   )}
                 >
                   {isActive && (
@@ -236,7 +249,7 @@ export const Cli = ({ command }: CliProps) => {
                       layoutId={`${id}-form-highlight`}
                       transition={slide}
                       aria-hidden
-                      className="absolute inset-0 rounded-md bg-amber-400/15 ring-1 ring-inset ring-amber-400/70 dark:bg-amber-400/10"
+                      className="absolute inset-0 rounded-md bg-primary/15"
                     />
                   )}
                   <span className="relative">{FORM_LABEL[candidate]}</span>
@@ -251,17 +264,17 @@ export const Cli = ({ command }: CliProps) => {
           scroll region rather than inside it — an absolute child of a scroll
           container scrolls away with the content, and any vertical offset on it
           turns the container's implied `overflow-y: auto` into a real scrollbar. */}
-      <div className="relative bg-zinc-100 dark:bg-zinc-900">
+      <div className="relative mx-1.5 mb-1.5 overflow-hidden rounded-md bg-background">
         {/* Deliberately not Tailwind's `overflow-x-auto` class: globals.css
             targets that bare class name with !important table-wrapper styles
             (1.5rem block margins, an 8px gray-track scrollbar). */}
-        <div className="min-w-0 max-w-full py-4 pl-4 pr-14 text-left font-mono text-sm font-medium whitespace-nowrap [overflow-x:auto] [overflow-y:hidden] [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden">
+        <div className="min-w-0 max-w-full py-4 pl-5 pr-14 text-left font-mono text-[13px] leading-[1.7] whitespace-nowrap [overflow-x:auto] [overflow-y:hidden] [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden">
           {/* Shell prompt: the conventional "this is a command" cue. Excluded
               from text selection so a drag-copy does not pick it up; the copy
               button copies `fullCommand`, which never contained it. */}
           <span
             aria-hidden
-            className="mr-2 select-none text-zinc-400 dark:text-zinc-500"
+            className="mr-2 select-none text-foreground/30"
           >
             $
           </span>
@@ -291,19 +304,19 @@ export const Cli = ({ command }: CliProps) => {
             never collides with the icon. */}
         <div
           aria-hidden
-          className="pointer-events-none absolute inset-y-0 right-0 w-20 bg-gradient-to-l from-zinc-100 via-zinc-100/90 to-transparent dark:from-zinc-900 dark:via-zinc-900/90"
+          className="pointer-events-none absolute inset-y-0 right-0 w-20 bg-gradient-to-l from-background via-background/90 to-transparent"
         />
 
         <button
           onClick={handleCopy}
-          className="absolute right-2 top-1/2 grid h-8 w-8 -translate-y-1/2 place-items-center rounded-md border border-zinc-300/80 bg-white text-zinc-500 shadow-sm transition-colors duration-200 hover:border-zinc-400 hover:text-zinc-900 focus:outline-none focus-visible:ring-2 focus-visible:ring-amber-400 sm:right-3 dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-400 dark:hover:border-zinc-600 dark:hover:text-zinc-50"
+          className="absolute right-2 top-1/2 grid h-8 w-8 -translate-y-1/2 place-items-center rounded-md text-foreground/30 transition-colors duration-200 hover:text-foreground/60 focus:outline-none focus-visible:ring-2 focus-visible:ring-primary/60 sm:right-2.5"
           title={copied ? "Copied!" : "Copy command"}
           aria-label={copied ? "Copied!" : "Copy command"}
         >
           {copied ? (
-            <Check size={16} className="text-green-500" />
+            <Check size={14} className="text-green-500" />
           ) : (
-            <Copy size={16} />
+            <Copy size={14} />
           )}
         </button>
       </div>

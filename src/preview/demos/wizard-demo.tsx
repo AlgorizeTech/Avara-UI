@@ -11,6 +11,7 @@ import {
   WizardTitle,
 } from "@/components/custom/blocks/WizardBlock";
 import { CheckCircle2 } from "lucide-react";
+import { toBlockColor } from "@/lib/accent";
 import { useState } from "react";
 
 /** Lets the native Enter key advance the wizard from inside a step's form. */
@@ -25,7 +26,7 @@ const submitToNext = (e: React.FormEvent<HTMLFormElement>) => {
 };
 
 export default function WizardDemo({
-  color = "primary",
+  color: pickedColor = "primary",
   wizardKey = 0,
   initialStep = 0,
   showProgress = true,
@@ -38,6 +39,7 @@ export default function WizardDemo({
   /** Set false to leave <WizardProgress /> out of the tree. */
   showProgress?: boolean;
 }) {
+  const color = toBlockColor(pickedColor);
   // Local restart counter for the in-demo "Finish & Restart" button
   const [localKey, setLocalKey] = useState(0);
 
