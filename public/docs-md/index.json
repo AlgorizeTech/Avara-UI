@@ -1,6 +1,6 @@
 {
-  "generatedAt": "2026-09-22T12:58:57.614Z",
-  "totalFiles": 283,
+  "generatedAt": "2026-09-23T06:46:05.658Z",
+  "totalFiles": 285,
   "files": [
     {
       "name": "nextjs/3d-carousel",
@@ -403,6 +403,12 @@
       "path": "/docs/nextjs-image-compare.md",
       "url": "/docs/nextjs/image-compare",
       "originalMdx": "[framework]\\image-compare\\page.mdx"
+    },
+    {
+      "name": "nextjs/image-viewer",
+      "path": "/docs/nextjs-image-viewer.md",
+      "url": "/docs/nextjs/image-viewer",
+      "originalMdx": "[framework]\\image-viewer\\page.mdx"
     },
     {
       "name": "nextjs/image-wall",
@@ -1255,6 +1261,12 @@
       "path": "/docs/reactjs-image-compare.md",
       "url": "/docs/reactjs/image-compare",
       "originalMdx": "[framework]\\image-compare\\page.mdx"
+    },
+    {
+      "name": "reactjs/image-viewer",
+      "path": "/docs/reactjs-image-viewer.md",
+      "url": "/docs/reactjs/image-viewer",
+      "originalMdx": "[framework]\\image-viewer\\page.mdx"
     },
     {
       "name": "reactjs/image-wall",

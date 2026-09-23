@@ -157,6 +157,7 @@ const COMPONENT_META: Record<
 	navbar: { countText: "Responsive Header", illustrationType: "navbar" },
 	pricing: { countText: "Tier & Feature Matrix", illustrationType: "pricing" },
 	"product-details": { countText: "4 Unique Layouts", illustrationType: "product-details" },
+	"image-viewer": { countText: "4 Viewer Variants", illustrationType: "product-details" },
 	reviews: { countText: "Testimonial Grid", illustrationType: "reviews" },
 	sidebar: { countText: "App Shell Layout", illustrationType: "sidebar" },
 	"support-dashboard": { countText: "Full SaaS Dashboard", illustrationType: "dashboard" },

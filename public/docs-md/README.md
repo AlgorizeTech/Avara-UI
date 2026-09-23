@@ -2,8 +2,8 @@
 
 This directory contains auto-generated Markdown versions of all MDX documentation pages.
 
-**Generated at:** 2026-09-22T12:58:57.732Z
-**Total files:** 283
+**Generated at:** 2026-09-23T06:46:05.738Z
+**Total files:** 285
 
 ## Available Files
 
@@ -74,6 +74,7 @@ This directory contains auto-generated Markdown versions of all MDX documentatio
 - [nextjs/heart-signal](/docs/nextjs-heart-signal.md) - Source: `[framework]\heart-signal\page.mdx`
 - [nextjs/hero](/docs/nextjs-hero.md) - Source: `[framework]\hero\page.mdx`
 - [nextjs/image-compare](/docs/nextjs-image-compare.md) - Source: `[framework]\image-compare\page.mdx`
+- [nextjs/image-viewer](/docs/nextjs-image-viewer.md) - Source: `[framework]\image-viewer\page.mdx`
 - [nextjs/image-wall](/docs/nextjs-image-wall.md) - Source: `[framework]\image-wall\page.mdx`
 - [nextjs/index](/docs/nextjs-index.md) - Source: `[framework]\index\page.mdx`
 - [nextjs/infrastructure-topology](/docs/nextjs-infrastructure-topology.md) - Source: `[framework]\infrastructure-topology\page.mdx`
@@ -216,6 +217,7 @@ This directory contains auto-generated Markdown versions of all MDX documentatio
 - [reactjs/heart-signal](/docs/reactjs-heart-signal.md) - Source: `[framework]\heart-signal\page.mdx`
 - [reactjs/hero](/docs/reactjs-hero.md) - Source: `[framework]\hero\page.mdx`
 - [reactjs/image-compare](/docs/reactjs-image-compare.md) - Source: `[framework]\image-compare\page.mdx`
+- [reactjs/image-viewer](/docs/reactjs-image-viewer.md) - Source: `[framework]\image-viewer\page.mdx`
 - [reactjs/image-wall](/docs/reactjs-image-wall.md) - Source: `[framework]\image-wall\page.mdx`
 - [reactjs/index](/docs/reactjs-index.md) - Source: `[framework]\index\page.mdx`
 - [reactjs/infrastructure-topology](/docs/reactjs-infrastructure-topology.md) - Source: `[framework]\infrastructure-topology\page.mdx`

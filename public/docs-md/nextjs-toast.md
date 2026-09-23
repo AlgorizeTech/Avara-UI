@@ -18,7 +18,7 @@ function Triggers() {
             description: "We'll let you know as soon as they reply.",
           })
         }
-        className="px-6 py-2.5 bg-zinc-900 dark:bg-white text-white dark:text-zinc-900 text-sm font-bold rounded-xl transition-colors shadow-sm"
+        className="px-6 py-2.5 bg-zinc-900 dark:bg-white text-white dark:text-zinc-900 text-sm font-semibold rounded-xl transition-colors shadow-sm"
       >
         Show toast
 
@@ -37,7 +37,7 @@ export default function SendMessage() {
 export const usageTypes = `"use client";
 
 const TRIGGER =
-  "px-6 py-2.5 text-white text-sm font-bold rounded-xl transition-colors shadow-sm";
+  "px-6 py-2.5 text-white text-sm font-semibold rounded-xl transition-colors shadow-sm";
 
 function Triggers() {
   const { toast } = useToast();
@@ -91,7 +91,7 @@ function Triggers() {
             },
           })
         }
-        className="px-6 py-2.5 bg-primary text-primary-foreground text-sm font-bold rounded-xl transition-colors shadow-sm hover:opacity-90 cursor-pointer"
+        className="px-6 py-2.5 bg-primary text-primary-foreground text-sm font-semibold rounded-xl transition-colors shadow-sm hover:opacity-90 cursor-pointer"
       >
         Toast with action
 
@@ -110,7 +110,7 @@ export default function ToastWithAction() {
 export const usageDuration = `"use client";
 
 const TRIGGER =
-  "px-6 py-2.5 text-white text-sm font-bold rounded-xl transition-colors shadow-sm";
+  "px-6 py-2.5 text-white text-sm font-semibold rounded-xl transition-colors shadow-sm";
 
 function Triggers() {
   const { toast } = useToast();
@@ -124,7 +124,7 @@ function Triggers() {
             duration: 0,
           })
         }
-        className="px-6 py-2.5 bg-primary text-primary-foreground text-sm font-bold rounded-xl transition-colors shadow-sm hover:opacity-90 cursor-pointer"
+        className="px-6 py-2.5 bg-primary text-primary-foreground text-sm font-semibold rounded-xl transition-colors shadow-sm hover:opacity-90 cursor-pointer"
       >
         Persistent toast
 
@@ -154,7 +154,7 @@ export default function ToastDuration() {
 export const usageGlow = `"use client";
 
 const TRIGGER =
-  "px-6 py-2.5 text-white text-sm font-bold rounded-xl transition-colors shadow-sm";
+  "px-6 py-2.5 text-white text-sm font-semibold rounded-xl transition-colors shadow-sm";
 
 function Triggers() {
   const { toast } = useToast();
@@ -195,7 +195,7 @@ export default function GlowToasts() {
 export const usageGlass = `"use client";
 
 const TRIGGER =
-  "px-6 py-2.5 text-white text-sm font-bold rounded-xl transition-colors shadow-sm";
+  "px-6 py-2.5 text-white text-sm font-semibold rounded-xl transition-colors shadow-sm";
 
 function Triggers() {
   const { toast } = useToast();
@@ -236,7 +236,7 @@ export default function GlassToasts() {
 export const usageStack = `"use client";
 
 const TRIGGER =
-  "px-6 py-2.5 text-white text-sm font-bold rounded-xl transition-colors shadow-sm";
+  "px-6 py-2.5 text-white text-sm font-semibold rounded-xl transition-colors shadow-sm";
 
 function Triggers() {
   const { toast } = useToast();
@@ -276,7 +276,7 @@ export default function StackedToasts() {
 export const usageMinimal = `"use client";
 
 const TRIGGER =
-  "px-6 py-2.5 text-white text-sm font-bold rounded-xl transition-colors shadow-sm";
+  "px-6 py-2.5 text-white text-sm font-semibold rounded-xl transition-colors shadow-sm";
 
 function Triggers() {
   const { toast } = useToast();

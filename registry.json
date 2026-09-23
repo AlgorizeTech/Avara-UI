@@ -1840,6 +1840,32 @@
       "docs": "Named export: ImageCompare. `beforeImage` and `afterImage` take URLs, with `beforeLabel` / `afterLabel` for the badges and `initialPosition` as a 0-100 percentage. Variants: classic-slider | split-handle | glowing-divider | badge-overlay | minimal. Both images should share an aspect ratio or the reveal will misalign."
     },
     {
+      "name": "image-viewer",
+      "type": "registry:component",
+      "title": "Image Viewer",
+      "author": "AlgorizeTech",
+      "description": "A collection of 4 responsive E-commerce Image Viewer components featuring inner lens magnifying zoom, HD side portal projection, carousel sliders, and interactive thumbnail strips.",
+      "categories": [
+        "media",
+        "commerce",
+        "data-display"
+      ],
+      "dependencies": [
+        "lucide-react"
+      ],
+      "registryDependencies": [
+        "utils"
+      ],
+      "files": [
+        {
+          "path": "src/components/custom/blocks/ImageViewerBlock.tsx",
+          "type": "registry:component",
+          "target": "components/custom/blocks/ImageViewerBlock.tsx"
+        }
+      ],
+      "docs": "Named export: ImageViewer. Accepts `variant` (4 variants: inner-zoom, side-zoom, slider, thumbnails), `thumbnailPosition` (left, right, bottom), `images`, `colors`, `badge`, `showWishlist`, `enableLightbox`, `className`. Includes built-in fullscreen lightbox modal with keyboard and arrow controls."
+    },
+    {
       "name": "image-wall",
       "type": "registry:component",
       "title": "Image Wall",

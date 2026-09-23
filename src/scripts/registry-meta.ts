@@ -630,6 +630,12 @@ export const META: Record<string, ItemMeta> = {
     categories: ["commerce", "marketing", "layout"],
     docs: "Named export: ProductDetails. Accepts `variant` (4 variants: modern-split-gallery, floating-card-glass, bento-editorial-showcase, color-sync-gallery), `title`, `price`, `originalPrice`, `description`, `className`. Adaptable across mobile, tablet, and desktop viewports.",
   },
+  "image-viewer": {
+    description:
+      "A collection of 4 responsive E-commerce Image Viewer components featuring inner lens magnifying zoom, HD side portal projection, carousel sliders, and interactive thumbnail strips.",
+    categories: ["media", "commerce", "data-display"],
+    docs: "Named export: ImageViewer. Accepts `variant` (4 variants: inner-zoom, side-zoom, slider, thumbnails), `thumbnailPosition` (left, right, bottom), `images`, `colors`, `badge`, `showWishlist`, `enableLightbox`, `className`. Includes built-in fullscreen lightbox modal with keyboard and arrow controls.",
+  },
   flowchart: {
     description:
       "A node-and-connector flow diagram with highlightable paths and GSAP transitions. Use it to explain a pipeline or decision flow.",

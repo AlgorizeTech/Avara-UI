@@ -15,7 +15,7 @@ export const usageStandard = `export default function UpdateModal() {
   return (
     <>
        setIsOpen(true)}
-        className="px-6 py-3 rounded-lg font-bold transition-transform active:scale-95 shadow-md bg-primary hover:bg-primary/90 text-primary-foreground"
+        className="px-6 py-3 rounded-lg font-semibold transition-transform active:scale-95 shadow-md bg-primary hover:bg-primary/90 text-primary-foreground"
       >
         Open Standard Modal
 
@@ -40,7 +40,7 @@ export const usageStandard = `export default function UpdateModal() {
               Remind Me Later
             
              setIsOpen(false)}
-              className="px-6 py-2.5 rounded-xl text-sm font-bold shadow-lg shadow-primary/20 active:scale-95 transition-all bg-primary hover:bg-primary/90 text-primary-foreground"
+              className="px-6 py-2.5 rounded-xl text-sm font-semibold shadow-lg shadow-primary/20 active:scale-95 transition-all bg-primary hover:bg-primary/90 text-primary-foreground"
             >
               Install Now
 
@@ -54,7 +54,7 @@ export const usageForm = `export default function InviteModal() {
   return (
     <>
        setIsOpen(true)}
-        className="px-6 py-3 rounded-lg font-bold transition-transform active:scale-95 shadow-md bg-primary hover:bg-primary/90 text-primary-foreground"
+        className="px-6 py-3 rounded-lg font-semibold transition-transform active:scale-95 shadow-md bg-primary hover:bg-primary/90 text-primary-foreground"
       >
         Open Form Modal
 
@@ -79,7 +79,7 @@ export const usageForm = `export default function InviteModal() {
             Cancel
           
            setIsOpen(false)}
-            className="px-5 py-2.5 rounded-lg font-bold shadow-sm transition-opacity bg-primary hover:bg-primary/90 text-primary-foreground"
+            className="px-5 py-2.5 rounded-lg font-semibold shadow-sm transition-opacity bg-primary hover:bg-primary/90 text-primary-foreground"
           >
             Send Invite
 
@@ -92,7 +92,7 @@ export const usageConfirmation = `export default function ConfirmDeleteModal() {
   return (
     <>
        setIsOpen(true)}
-        className="px-6 py-3 rounded-lg font-bold transition-transform active:scale-95 shadow-md bg-primary hover:bg-primary/90 text-primary-foreground"
+        className="px-6 py-3 rounded-lg font-semibold transition-transform active:scale-95 shadow-md bg-primary hover:bg-primary/90 text-primary-foreground"
       >
         Open Confirmation Modal
 
@@ -113,7 +113,7 @@ export const usageConfirmation = `export default function ConfirmDeleteModal() {
               Cancel
             
              setIsOpen(false)}
-              className="flex-1 py-2.5 rounded-lg font-bold bg-red-600 hover:bg-red-700 text-white shadow-sm transition-colors"
+              className="flex-1 py-2.5 rounded-lg font-semibold bg-red-600 hover:bg-red-700 text-white shadow-sm transition-colors"
             >
               Delete
 
@@ -126,7 +126,7 @@ export const usageFullscreen = `export default function SettingsModal() {
   return (
     <>
        setIsOpen(true)}
-        className="px-6 py-3 rounded-lg font-bold transition-transform active:scale-95 shadow-md bg-primary hover:bg-primary/90 text-primary-foreground"
+        className="px-6 py-3 rounded-lg font-semibold transition-transform active:scale-95 shadow-md bg-primary hover:bg-primary/90 text-primary-foreground"
       >
         Open Fullscreen Modal
 
@@ -148,7 +148,7 @@ export const usageFullscreen = `export default function SettingsModal() {
                   Security
 
              setIsOpen(false)}
-              className="py-2 sm:py-0 text-sm font-bold text-red-500 hover:text-red-600 transition-colors"
+              className="py-2 sm:py-0 text-sm font-semibold text-red-500 hover:text-red-600 transition-colors"
             >
               Delete Project
 
@@ -158,7 +158,7 @@ export const usageFullscreen = `export default function SettingsModal() {
                 Discard Changes
               
                setIsOpen(false)}
-                className="px-6 py-3 rounded-lg font-bold shadow-md transition-opacity bg-primary hover:bg-primary/90 text-primary-foreground"
+                className="px-6 py-3 rounded-lg font-semibold shadow-md transition-opacity bg-primary hover:bg-primary/90 text-primary-foreground"
               >
                 Save Configuration
 
@@ -171,7 +171,7 @@ export const usageGlass = `export default function GlassModal() {
   return (
     <>
        setIsOpen(true)}
-        className="px-6 py-3 rounded-lg font-bold transition-transform active:scale-95 shadow-md bg-primary hover:bg-primary/90 text-primary-foreground"
+        className="px-6 py-3 rounded-lg font-semibold transition-transform active:scale-95 shadow-md bg-primary hover:bg-primary/90 text-primary-foreground"
       >
         Open Glass Modal
 
@@ -198,7 +198,7 @@ export const usageGlass = `export default function GlassModal() {
               Remind Me Later
             
              setIsOpen(false)}
-              className="px-6 py-2.5 rounded-xl text-sm font-bold shadow-lg shadow-primary/20 active:scale-95 transition-all bg-primary hover:bg-primary/90 text-primary-foreground"
+              className="px-6 py-2.5 rounded-xl text-sm font-semibold shadow-lg shadow-primary/20 active:scale-95 transition-all bg-primary hover:bg-primary/90 text-primary-foreground"
             >
               Install Now
 
