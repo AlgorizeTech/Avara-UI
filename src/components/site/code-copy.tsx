@@ -1,4 +1,6 @@
 "use client";
+import { useId } from "react";
+import { motion, useReducedMotion } from "framer-motion";
 import { cn } from "@/lib/utils";
 
 export type LanguageType = 'tsx' | 'jsx';
@@ -30,10 +32,11 @@ const LANGUAGES: Array<{
 /**
  * TS/JS switch for a code panel.
  *
- * Built from the same tokens as the Sandbox tab pills it sits beside — same
- * track, same active fill — so the header reads as one row of controls. The
- * type badges are drawn in CSS rather than imported as icons, which keeps
- * them crisp at 16px and tied to the official brand colours.
+ * A compact segmented control sized to sit inside the 40px code bar: the
+ * selected side takes the accent tint, the other rests at the ink's 40% step.
+ * The type badges are drawn in CSS rather than imported as icons, which keeps
+ * them crisp and tied to the official brand colours; the idle one is
+ * desaturated like an inactive tab icon.
  */
 const CodeCopy = ({
   className,
@@ -44,48 +47,68 @@ const CodeCopy = ({
   selectedLanguage?: LanguageType;
   onLanguageChange?: (language: LanguageType) => void;
 }) => {
+  // One highlight per switch, so two panels on a page never trade it.
+  const id = useId();
+  const reduceMotion = useReducedMotion();
+
   return (
     <div
       className={cn(
-        "flex items-center gap-1 bg-zinc-200/50 dark:bg-zinc-800/50 p-1 rounded-lg animate-in fade-in duration-200",
+        "flex items-center gap-0.5 rounded-lg bg-foreground/[0.04] p-0.5 animate-in fade-in duration-200",
         className,
       )}
     >
-      {LANGUAGES.map(({ value, label, badge, badgeClass, textClass }) => (
-        <button
-          key={value}
-          type="button"
-          onClick={() => onLanguageChange?.(value)}
-          aria-pressed={selectedLanguage === value}
-          // Keeps the full name for screen readers once the word is hidden.
-          aria-label={label}
-          className={cn(
-            "flex items-center gap-1.5 px-1.5 sm:px-3 py-1.5 text-xs font-semibold rounded-md transition-all cursor-pointer",
-            selectedLanguage === value
-              ? "bg-white dark:bg-zinc-700 text-zinc-900 dark:text-white shadow-sm"
-              : "text-zinc-500 hover:text-zinc-700 dark:text-zinc-400 dark:hover:text-zinc-200",
-          )}
-        >
-          <div
+      {LANGUAGES.map(({ value, label, badge, badgeClass, textClass }) => {
+        const isActive = selectedLanguage === value;
+        return (
+          <button
+            key={value}
+            type="button"
+            onClick={() => onLanguageChange?.(value)}
+            aria-pressed={isActive}
+            // Keeps the full name for screen readers once the word is hidden.
+            aria-label={label}
             className={cn(
-              "w-4 h-4 rounded-[3px] flex items-center justify-center shrink-0",
-              badgeClass,
+              "relative flex items-center gap-1.5 px-1.5 sm:px-2.5 py-1 text-[12px] font-medium rounded-md transition-colors cursor-pointer",
+              isActive
+                ? "text-primary"
+                : "text-foreground/40 hover:text-foreground/70",
             )}
           >
-            <span
+            {isActive && (
+              <motion.span
+                layoutId={`${id}-language`}
+                aria-hidden
+                transition={
+                  reduceMotion
+                    ? { duration: 0 }
+                    : { type: "spring", stiffness: 520, damping: 42, mass: 0.8 }
+                }
+                className="absolute inset-0 rounded-md bg-primary/15"
+              />
+            )}
+            <div
               className={cn(
-                "text-[9px] font-semibold leading-none mt-px",
-                textClass,
+                "relative w-3.5 h-3.5 rounded-[3px] flex items-center justify-center shrink-0 transition-[filter,opacity]",
+                badgeClass,
+                !isActive && "grayscale opacity-60",
               )}
             >
-              {badge}
-            </span>
-          </div>
-          {/* Below sm the badge alone carries the meaning — it already reads
-              TS/JS — so the word is dropped rather than truncated. */}
-          <span className="hidden sm:inline">{label}</span>
-        </button>
-      ))}
+              <span
+                className={cn(
+                  "text-[8px] font-semibold leading-none mt-px",
+                  textClass,
+                )}
+              >
+                {badge}
+              </span>
+            </div>
+            {/* Below sm the badge alone carries the meaning — it already reads
+                TS/JS — so the word is dropped rather than truncated. */}
+            <span className="relative hidden sm:inline">{label}</span>
+          </button>
+        );
+      })}
     </div>
   );
 };

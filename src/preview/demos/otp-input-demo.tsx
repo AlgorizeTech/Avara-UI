@@ -11,7 +11,7 @@ const colorMap: Record<string, string> = {
   indigo: "#4f46e5",
   rose: "#e11d48",
   emerald: "#10b981",
-  zinc: "#3f3f46",
+  lavender: "#9b8afb",
   amber: "#f59e0b",
   blue: "#3b82f6",
 };

@@ -98,21 +98,21 @@ export function ColorTokenPicker({ token, mode, label }: ColorTokenPickerProps) 
 
   return (
     <div className="relative flex items-center justify-between gap-3 py-1.5" ref={containerRef}>
-      <span className="text-sm font-medium text-zinc-700 dark:text-zinc-300 capitalize truncate">
+      <span className="text-[13px] text-foreground/70 capitalize truncate">
         {label || token.replace('-', ' ')}
       </span>
       
       <button
         type="button"
         onClick={() => setIsOpen(!isOpen)}
-        className="flex items-center gap-2 px-2 py-1.5 rounded-md border border-border bg-background hover:bg-primary/10 hover:border-primary/30 transition-all duration-150"
+        className="flex items-center gap-2 px-2 py-1.5 rounded-lg border border-foreground/10 bg-foreground/[0.03] hover:bg-foreground/[0.05] hover:border-foreground/15 transition-all duration-150"
         aria-expanded={isOpen}
       >
         <span 
-          className="w-5 h-5 rounded-full border border-zinc-200 dark:border-zinc-800 shadow-sm"
+          className="w-5 h-5 rounded-full border border-foreground/10 shadow-sm"
           style={{ backgroundColor: localHex }}
         />
-        <span className="text-xs font-mono text-zinc-500 dark:text-zinc-400 w-[52px] text-left">
+        <span className="text-[12px] font-mono text-foreground/50 w-[52px] text-left">
           {localHex.toUpperCase()}
         </span>
       </button>
@@ -127,18 +127,18 @@ export function ColorTokenPicker({ token, mode, label }: ColorTokenPickerProps) 
                 animate={{ opacity: 1, y: 0, scale: 1 }}
                 exit={{ opacity: 0, y: -5, scale: 0.95 }}
                 transition={{ duration: 0.15, ease: 'easeOut' }}
-                className="w-full p-3 bg-white dark:bg-zinc-950 border border-zinc-200 dark:border-zinc-800 rounded-lg shadow-xl shadow-zinc-200/20 dark:shadow-black/40"
+                className="w-full p-3 bg-popover text-popover-foreground border border-border rounded-xl shadow-[0_12px_32px_-12px_rgba(24,24,27,0.22)] dark:shadow-[0_16px_40px_-12px_rgba(0,0,0,0.7)]"
                 onKeyDown={handleKeyDown}
               >
                 <div className="space-y-3">
                   <div className="flex items-center gap-2">
-                    <Palette className="w-4 h-4 text-zinc-400" />
-                    <span className="text-xs font-medium text-zinc-600 dark:text-zinc-300">Edit Color</span>
+                    <Palette className="w-3.5 h-3.5 text-foreground/35" />
+                    <span className="text-[11px] font-semibold uppercase tracking-[0.08em] text-foreground/35">Edit Color</span>
                   </div>
                   
                   <div className="flex gap-2 items-center">
                     <div className="relative flex-1">
-                      <span className="absolute left-2.5 top-1/2 -translate-y-1/2 text-zinc-400 text-sm font-mono">#</span>
+                      <span className="absolute left-2.5 top-1/2 -translate-y-1/2 text-foreground/35 text-[12px] font-mono">#</span>
                       <input
                         ref={inputRef}
                         type="text"
@@ -148,11 +148,11 @@ export function ColorTokenPicker({ token, mode, label }: ColorTokenPickerProps) 
                           handleHexChange({ ...e, target: { ...e.target, value: `#${val}` } } as any);
                         }}
                         maxLength={6}
-                        className="w-full pl-6 pr-3 py-1.5 bg-zinc-50 dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 rounded-md text-sm font-mono text-zinc-700 dark:text-zinc-300 focus:outline-none focus:ring-2 focus:ring-zinc-400 dark:focus:ring-zinc-600 transition-all"
+                        className="w-full pl-6 pr-3 py-1.5 bg-foreground/[0.03] border border-foreground/10 rounded-md text-[12px] font-mono text-foreground/70 focus:outline-none focus:ring-2 focus:ring-primary/40 transition-all"
                       />
                     </div>
                     
-                    <div className="relative w-8 h-8 rounded-md overflow-hidden border border-zinc-200 dark:border-zinc-800 shrink-0 cursor-pointer">
+                    <div className="relative w-8 h-8 rounded-md overflow-hidden border border-foreground/10 shrink-0 cursor-pointer">
                       <input
                         type="color"
                         value={localHex}

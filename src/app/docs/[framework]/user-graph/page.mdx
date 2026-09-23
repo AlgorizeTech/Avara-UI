@@ -138,9 +138,9 @@ Discover the key capabilities of the User Graph hierarchy tree:
 ## Best Practices & Guidelines
 
 <div className="flex flex-col gap-4 my-6 not-prose">
-  <div className="p-5 rounded-xl border border-blue-200 dark:border-blue-900/50 bg-blue-50/50 dark:bg-blue-950/20">
-    <h4 className="text-base font-semibold text-blue-900 dark:text-blue-300 mb-1">Hierarchy Organization</h4>
-    <p className="text-blue-800 dark:text-blue-400/80 text-sm">Ensure nodes are grouped logically into User, Orchestrator, and Sub-Agent tiers so the hierarchy flows naturally from top to bottom.</p>
+  <div className="rounded-xl border border-foreground/[0.06] bg-foreground/[0.03] p-4">
+    <h4 className="font-sans text-[14px] font-semibold text-foreground mb-1">Hierarchy Organization</h4>
+    <p className="text-[13px] leading-relaxed text-foreground/50">Ensure nodes are grouped logically into User, Orchestrator, and Sub-Agent tiers so the hierarchy flows naturally from top to bottom.</p>
   </div>
 </div>
 
@@ -149,49 +149,49 @@ Discover the key capabilities of the User Graph hierarchy tree:
 <div className="overflow-x-auto">
   <table className="w-full text-left text-sm">
     <thead>
-      <tr className="border-b border-zinc-200 dark:border-zinc-800 font-semibold">
+      <tr className="border-b border-foreground/[0.08] font-semibold">
         <th className="py-3 px-4">Prop</th>
         <th className="py-3 px-4">Type</th>
         <th className="py-3 px-4">Default</th>
         <th className="py-3 px-4">Description</th>
       </tr>
     </thead>
-    <tbody className="divide-y divide-zinc-200 dark:divide-zinc-800">
+    <tbody className="divide-y divide-foreground/[0.08]">
       <tr>
         <td className="py-3 px-4 font-mono text-xs">color</td>
         <td className="py-3 px-4 font-mono text-xs text-primary">string</td>
         <td className="py-3 px-4 font-mono text-xs text-muted-foreground">"primary"</td>
-        <td className="py-3 px-4 text-zinc-600 dark:text-zinc-400">Accent for the avatar ring, the selected orbit node and the ambient glow. Takes <code>"indigo"</code>, <code>"rose"</code>, <code>"emerald"</code>, <code>"zinc"</code>, any hex string, or <code>"primary"</code> to follow your theme.</td>
+        <td className="py-3 px-4 text-foreground/55">Accent for the avatar ring, the selected orbit node and the ambient glow. Takes <code>"indigo"</code>, <code>"rose"</code>, <code>"emerald"</code>, <code>"zinc"</code>, any hex string, or <code>"primary"</code> to follow your theme.</td>
       </tr>
       <tr>
         <td className="py-3 px-4 font-mono text-xs">defaultSelectedTool</td>
         <td className="py-3 px-4 font-mono text-xs text-primary">string</td>
         <td className="py-3 px-4 font-mono text-xs text-muted-foreground">"phone"</td>
-        <td className="py-3 px-4 text-zinc-600 dark:text-zinc-400">The <code>id</code> of the orbit node highlighted on first render. Clicking another node takes over from there.</td>
+        <td className="py-3 px-4 text-foreground/55">The <code>id</code> of the orbit node highlighted on first render. Clicking another node takes over from there.</td>
       </tr>
       <tr>
         <td className="py-3 px-4 font-mono text-xs">orbitTools</td>
         <td className="py-3 px-4 font-mono text-xs text-primary">OrbitTool[]</td>
         <td className="py-3 px-4 font-mono text-xs text-muted-foreground">11 sample channels</td>
-        <td className="py-3 px-4 text-zinc-600 dark:text-zinc-400">The ring of channel nodes. Each is <code>{"{ id, name, icon }"}</code>, where <code>icon</code> is any React component. They are spaced evenly, so the ring re-balances for any array length.</td>
+        <td className="py-3 px-4 text-foreground/55">The ring of channel nodes. Each is <code>{"{ id, name, icon }"}</code>, where <code>icon</code> is any React component. They are spaced evenly, so the ring re-balances for any array length.</td>
       </tr>
       <tr>
         <td className="py-3 px-4 font-mono text-xs">subAgents</td>
         <td className="py-3 px-4 font-mono text-xs text-primary">SubAgent[]</td>
         <td className="py-3 px-4 font-mono text-xs text-muted-foreground">5 sample agents</td>
-        <td className="py-3 px-4 text-zinc-600 dark:text-zinc-400">The bottom tier. Each entry carries <code>title</code>, <code>role</code>, <code>avatarUrl</code>, <code>status</code>, its <code>apps</code> badges, and two positions: <code>percentX</code> for the card and <code>svgX</code> for the connector curve in the 1000-wide viewBox.</td>
+        <td className="py-3 px-4 text-foreground/55">The bottom tier. Each entry carries <code>title</code>, <code>role</code>, <code>avatarUrl</code>, <code>status</code>, its <code>apps</code> badges, and two positions: <code>percentX</code> for the card and <code>svgX</code> for the connector curve in the 1000-wide viewBox.</td>
       </tr>
       <tr>
         <td className="py-3 px-4 font-mono text-xs">orchestrator</td>
         <td className="py-3 px-4 font-mono text-xs text-primary">{"{ name, role, avatarUrl }"}</td>
         <td className="py-3 px-4 font-mono text-xs text-muted-foreground">sample lead</td>
-        <td className="py-3 px-4 text-zinc-600 dark:text-zinc-400">The middle-tier node linking the orbit to the sub-agents.</td>
+        <td className="py-3 px-4 text-foreground/55">The middle-tier node linking the orbit to the sub-agents.</td>
       </tr>
       <tr>
         <td className="py-3 px-4 font-mono text-xs">className</td>
         <td className="py-3 px-4 font-mono text-xs text-primary">string</td>
         <td className="py-3 px-4 font-mono text-xs text-muted-foreground">undefined</td>
-        <td className="py-3 px-4 text-zinc-600 dark:text-zinc-400">Merged onto the outer container. Every other <code>div</code> prop is spread there too.</td>
+        <td className="py-3 px-4 text-foreground/55">Merged onto the outer container. Every other <code>div</code> prop is spread there too.</td>
       </tr>
     </tbody>
   </table>

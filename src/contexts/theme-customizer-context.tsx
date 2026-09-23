@@ -88,7 +88,7 @@ function getInitialState(): ThemeCustomizerState {
   return {
     colors: presetColors(getDefaultPreset()),
     radius: 0.625,
-    activePreset: "",
+    activePreset: DEFAULT_PRESET,
   };
 }
 
@@ -103,10 +103,14 @@ function loadState(): ThemeCustomizerState {
       // trusted from storage: the stored colours are a snapshot from whenever
       // the reader last visited, and once a preset's palette is edited in code
       // every returning reader would otherwise be pinned to the old one. Only
-      // "custom" carries colours the reader actually chose.
+      // "custom" carries colours the reader actually chose. An empty name is
+      // a reader who never picked anything — state used to be saved that way —
+      // so they follow the current default rather than a snapshot of the old.
       const preset =
-        parsed.activePreset && parsed.activePreset !== "custom"
-          ? THEME_PRESETS.find((p) => p.name === parsed.activePreset)
+        parsed.activePreset !== "custom"
+          ? THEME_PRESETS.find(
+              (p) => p.name === (parsed.activePreset || DEFAULT_PRESET),
+            )
           : undefined;
       if (preset && typeof parsed.radius === "number") {
         return {

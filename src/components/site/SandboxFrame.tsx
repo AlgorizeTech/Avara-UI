@@ -220,8 +220,8 @@ export function SandboxFrame({
       {!ready && (
         <div className="absolute inset-0 flex items-center justify-center">
           <div className="flex flex-col items-center gap-3 animate-in fade-in duration-200">
-            <div className="w-6 h-6 rounded-full border-2 border-zinc-200 dark:border-zinc-800 border-t-zinc-500 dark:border-t-zinc-300 animate-spin" />
-            <span className="text-xs font-medium text-zinc-400 dark:text-zinc-500">
+            <div className="w-6 h-6 rounded-full border-2 border-border border-t-foreground/55 animate-spin" />
+            <span className="text-xs font-medium text-foreground/40">
               Loading preview…
             </span>
           </div>

@@ -51,19 +51,19 @@ export function OtherFrameworkGuide({
   return (
     <Link
       href={docsHref(other, slug)}
-      className="not-prose group my-6 flex items-center gap-3 rounded-xl border border-zinc-200 bg-zinc-50/80 px-4 py-3 no-underline transition-colors hover:border-primary/40 hover:bg-primary/5 dark:border-zinc-800 dark:bg-zinc-900/50 dark:hover:border-primary/40"
+      className="not-prose group my-6 flex items-center gap-3 rounded-xl border border-foreground/[0.06] bg-foreground/[0.03] px-4 py-3 no-underline transition-colors hover:border-primary/25 hover:bg-primary/5"
     >
-      <span className="flex-1 text-sm text-zinc-600 dark:text-zinc-400">
+      <span className="flex-1 text-[13px] leading-relaxed text-foreground/50">
         Using{" "}
-        <strong className="font-semibold text-zinc-900 dark:text-zinc-100">
+        <strong className="font-semibold text-foreground">
           {meta.label}
         </strong>{" "}
-        <span className="text-zinc-500 dark:text-zinc-500">({meta.hint})</span>{" "}
+        <span className="text-foreground/40">({meta.hint})</span>{" "}
         instead? Read the {meta.label} {label}.
       </span>
       <ArrowRight
         aria-hidden
-        className="size-4 shrink-0 text-zinc-400 transition-transform group-hover:translate-x-0.5 group-hover:text-primary"
+        className="size-4 shrink-0 text-foreground/30 transition-[color,transform] group-hover:translate-x-0.5 group-hover:text-primary"
       />
     </Link>
   );

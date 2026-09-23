@@ -81,7 +81,19 @@ function transitivePackages(name: string, seen = new Set<string>()): string[] {
  * without it those rules win and the badge renders as a plain slate chip.
  */
 const BADGE =
-  "inline rounded-md bg-primary/10 px-1.5 py-0.5 font-mono text-xs font-medium text-primary ring-1 ring-primary/20 [overflow-wrap:anywhere] [box-decoration-break:clone] [-webkit-box-decoration-break:clone]";
+  "inline rounded-md border border-primary/25 bg-primary/15 px-[7px] py-[2px] font-mono text-[12px] leading-[1.55] text-primary [overflow-wrap:anywhere] [box-decoration-break:clone] [-webkit-box-decoration-break:clone]";
+
+/**
+ * Plain inline code (a path, a package name in passing). Also `data-badge`,
+ * for the same reason as BADGE; the classes are the docs inline-code style.
+ */
+const CODE =
+  "rounded bg-foreground/[0.06] px-1.5 py-0.5 font-mono text-[12px] text-foreground/70 [overflow-wrap:anywhere]";
+
+/** Body copy on the docs ladder: 15px at the ink's 60% step. */
+const BODY = "text-[15px] leading-[1.8] text-foreground/60";
+/** The smaller aside under a command: 14px at 50%. */
+const SMALL = "text-[14px] leading-relaxed text-foreground/50";
 
 /**
  * One numbered step on the install rail. The number sits in a disc centred on
@@ -105,13 +117,13 @@ function Step({
           pulled back by half its width so it sits centred on the line. */}
       <span
         aria-hidden
-        className="absolute top-0 -left-[calc(2rem+0.875rem+1px)] flex size-7 items-center justify-center rounded-full border border-zinc-300 bg-white font-mono text-xs font-semibold text-zinc-700 shadow-sm dark:border-zinc-700 dark:bg-zinc-900 dark:text-zinc-200"
+        className="absolute top-0 -left-[calc(2rem+0.875rem+1px)] flex size-7 items-center justify-center rounded-full border border-foreground/10 bg-background font-mono text-[12px] font-medium text-foreground/70"
       >
         {number}
       </span>
       <h3
         id={id}
-        className="mt-0 mb-4 scroll-m-24 text-xl leading-7 font-semibold"
+        className="mt-0 mb-4 scroll-m-24 font-serif text-lg leading-7 font-normal text-foreground"
       >
         {title}
       </h3>
@@ -140,11 +152,11 @@ const BASELINE_PACKAGES = new Set(["lucide-react"]);
 function InstallDivider() {
   return (
     <div className="my-14 flex items-center gap-4">
-      <span aria-hidden className="h-px flex-1 bg-zinc-200 dark:bg-zinc-800" />
-      <span className="text-xs font-medium tracking-[0.2em] text-zinc-400 uppercase dark:text-zinc-500">
+      <span aria-hidden className="h-px flex-1 bg-foreground/[0.08]" />
+      <span className="text-[11px] font-semibold tracking-[0.08em] text-foreground/30 uppercase">
         or
       </span>
-      <span aria-hidden className="h-px flex-1 bg-zinc-200 dark:bg-zinc-800" />
+      <span aria-hidden className="h-px flex-1 bg-foreground/[0.08]" />
     </div>
   );
 }
@@ -275,25 +287,27 @@ export function Installation({
     // data-toc-skip: the step headings are structure inside the Installation
     // section, not navigation targets. A page documenting four components would
     // otherwise put four identical "2. Install dependencies" in the sidebar.
-    <div className="my-6" data-toc-skip>
+    // not-prose: every element here sets its own type, and the prose-code
+    // modifiers on the docs wrapper would otherwise outrank the chips.
+    <div className="not-prose my-6" data-toc-skip>
       {showSetupPath && <SetupPath />}
 
       {/* The left border is the rail the step discs sit on. It runs to the end
           of the last step's content rather than stopping at its disc: a rail
           that ends mid-step looks like the step was cut off. */}
-      <div className="ml-3.5 space-y-10 border-l border-zinc-200 pl-8 dark:border-zinc-800">
+      <div className="ml-3.5 space-y-10 border-l border-foreground/[0.08] pl-8">
         <Step number={1} id={`install-${name}`} title={<>Install {title}</>}>
           <Cli command={`add ${name}.json`} />
-          <p className="leading-7 text-gray-700 dark:text-gray-300">
+          <p className={BODY}>
             {target ? (
-              <code>
+              <code data-badge className={CODE}>
                 <BreakablePath path={target} />
               </code>
             ) : (
               <>The component</>
             )}{" "}
             is written into your project. Copy any snippet from a{" "}
-            <strong className="font-semibold">Usage</strong> tab above and it runs.
+            <strong className="font-semibold text-foreground">Usage</strong> tab above and it runs.
           </p>
         </Step>
 
@@ -305,11 +319,12 @@ export function Installation({
           title="Install dependencies"
         >
           {total === 0 ? (
-            <p className="leading-7 text-gray-700 dark:text-gray-300">
+            <p className={BODY}>
               {onlyBaseline ? (
                 <>
                   Nothing beyond the shared setup — {title} needs only the{" "}
-                  <code>cn</code> helper and <code>lucide-react</code>, which
+                  <code data-badge className={CODE}>cn</code> helper and{" "}
+                  <code data-badge className={CODE}>lucide-react</code>, which
                   the installation guide already put in place.
                 </>
               ) : (
@@ -321,11 +336,12 @@ export function Installation({
             </p>
           ) : (
             <>
-              <p className="leading-7 text-gray-700 dark:text-gray-300">
+              <p className={BODY}>
                 Step 1 installs {total > 1 ? "these" : "this"} for you. Run{" "}
                 {total > 1 ? "them" : "it"} yourself only if you are adding{" "}
-                {title} to an existing project by hand. The <code>cn</code>{" "}
-                helper and <code>lucide-react</code> are not listed — the
+                {title} to an existing project by hand. The{" "}
+                <code data-badge className={CODE}>cn</code> helper and{" "}
+                <code data-badge className={CODE}>lucide-react</code> are not listed — the
                 installation guide covers them once for every component.
                 {inherited.length > 0 && (
                   <>
@@ -340,7 +356,7 @@ export function Installation({
 
               {components.length > 0 && (
                 <div className="space-y-2">
-                  <p className="text-sm leading-6 text-zinc-600 dark:text-zinc-400">
+                  <p className={SMALL}>
                     <BadgeList items={components.map(label)} />{" "}
                     {components.length > 1
                       ? "are components"
@@ -355,7 +371,7 @@ export function Installation({
 
               {packages.length > 0 && (
                 <div className="space-y-2">
-                  <p className="text-sm leading-6 text-zinc-600 dark:text-zinc-400">
+                  <p className={SMALL}>
                     <BadgeList items={packages} />{" "}
                     {packages.length > 1
                       ? "are npm packages"

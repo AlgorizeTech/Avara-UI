@@ -43,7 +43,7 @@ function ModeToggle() {
   return (
     <div className="space-y-2.5">
       <SectionLabel>Mode</SectionLabel>
-      <div className="grid grid-cols-3 gap-1.5 p-1 rounded-lg bg-muted/50 border border-border">
+      <div className="grid grid-cols-3 gap-1.5">
         {modes.map((mode) => {
           const active = current === mode.value;
           return (
@@ -51,10 +51,10 @@ function ModeToggle() {
               key={mode.value}
               onClick={() => setTheme(mode.value)}
               className={cn(
-                "flex items-center justify-center gap-1.5 rounded-md px-3 py-2 text-xs font-medium transition-all cursor-pointer",
+                "flex items-center justify-center gap-1.5 rounded-lg px-3 py-2 text-[13px] font-medium transition-colors cursor-pointer",
                 active
-                  ? "bg-background text-foreground shadow-sm"
-                  : "text-muted-foreground hover:text-foreground"
+                  ? "bg-primary/15 text-primary"
+                  : "bg-foreground/[0.05] text-foreground/40 hover:text-foreground/70"
               )}
             >
               <mode.icon className="h-3.5 w-3.5" />
@@ -83,26 +83,26 @@ function ColorSection({
   const [isOpen, setIsOpen] = useState(defaultOpen);
 
   return (
-    <div className={cn("border border-border rounded-lg transition-all duration-200 overflow-hidden", isOpen && "border-primary/30")}>
+    <div className={cn("border border-foreground/[0.06] rounded-xl transition-all duration-200 overflow-hidden", isOpen && "border-primary/25")}>
       <button
         onClick={() => setIsOpen(!isOpen)}
         className={cn(
-          "flex w-full items-center justify-between px-3 py-2.5 text-xs font-medium transition-all duration-200 cursor-pointer",
+          "flex w-full items-center justify-between px-3 py-2.5 text-[13px] font-medium transition-all duration-200 cursor-pointer",
           isOpen
-            ? "bg-primary/10 text-primary font-semibold"
-            : "text-foreground hover:bg-primary/10 hover:text-primary"
+            ? "text-primary"
+            : "text-foreground/70 hover:bg-foreground/[0.04] hover:text-foreground"
         )}
       >
         {label}
         <ChevronDown
           className={cn(
-            "h-3.5 w-3.5 text-muted-foreground transition-transform duration-200",
+            "h-3.5 w-3.5 text-foreground/35 transition-transform duration-200",
             isOpen && "rotate-180 text-primary"
           )}
         />
       </button>
       {isOpen && (
-        <div className="px-3 pb-3 space-y-2 border-t border-border pt-2">
+        <div className="px-3 pb-3 space-y-2 border-t border-foreground/[0.06] pt-2">
           {tokens.map((token) => (
             <ColorTokenPicker key={token} token={token} mode={mode} />
           ))}
@@ -116,7 +116,7 @@ function ColorSection({
 
 function SectionLabel({ children }: { children: React.ReactNode }) {
   return (
-    <p className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">
+    <p className="text-[11px] font-semibold uppercase tracking-[0.08em] text-foreground/35">
       {children}
     </p>
   );
@@ -125,7 +125,7 @@ function SectionLabel({ children }: { children: React.ReactNode }) {
 // ─── Divider ─────────────────────────────────────────────────────
 
 function Divider() {
-  return <div className="h-px bg-border" />;
+  return <div className="h-px bg-foreground/[0.06]" />;
 }
 
 // ─── Main Sidebar Component ─────────────────────────────────────
@@ -139,10 +139,10 @@ export function ThemeCustomizerSidebar() {
       <div className="flex-1 overflow-y-auto px-5 py-6 pb-6 space-y-6">
         {/* Header */}
         <div>
-          <h2 className="text-lg font-semibold tracking-tight text-foreground">
+          <h2 className="font-serif text-lg leading-7 font-normal text-foreground">
             Customize
           </h2>
-          <p className="text-xs text-muted-foreground mt-0.5">
+          <p className="text-[13px] text-foreground/50 mt-0.5">
             Pick a preset or fine-tune individual tokens
           </p>
         </div>
@@ -190,11 +190,11 @@ export function ThemeCustomizerSidebar() {
       </div>
 
       {/* Sticky Footer Actions */}
-      <div className="border-t border-border p-4 pb-10 flex items-center gap-2 bg-background/80 backdrop-blur-sm">
+      <div className="border-t border-foreground/[0.06] p-4 pb-10 flex items-center gap-2 bg-background/80 backdrop-blur-sm">
         <CSSExportDialog />
         <button
           onClick={resetToDefaults}
-          className="flex items-center justify-center gap-1.5 h-9 rounded-lg border border-border px-3 text-xs font-medium text-muted-foreground hover:text-foreground hover:bg-accent transition-colors cursor-pointer"
+          className="flex items-center justify-center gap-1.5 h-9 px-4 shrink-0 rounded-full bg-foreground/[0.04] hover:bg-foreground/10 text-[13px] font-medium text-foreground/80 hover:text-foreground transition-colors cursor-pointer"
         >
           <RotateCcw className="h-3.5 w-3.5" />
           Reset

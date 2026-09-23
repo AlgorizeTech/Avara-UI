@@ -13,11 +13,11 @@ export function ThemePresetSelector() {
   return (
     <div className="space-y-2.5">
       <div className="flex items-center justify-between">
-        <span className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">
+        <span className="text-[11px] font-semibold uppercase tracking-[0.08em] text-foreground/35">
           Theme Presets
         </span>
         {isCustom && (
-          <span className="text-[10px] uppercase font-semibold tracking-wider px-2 py-0.5 rounded-full bg-amber-100 text-amber-700 dark:bg-amber-900/30 dark:text-amber-400 border border-amber-200 dark:border-amber-800/50">
+          <span className="text-[10px] font-semibold leading-4 px-1.5 rounded-md bg-primary/15 text-primary">
             Custom
           </span>
         )}
@@ -26,7 +26,10 @@ export function ThemePresetSelector() {
       <div className="grid grid-cols-3 gap-2">
         {THEME_PRESETS.map((preset) => {
           const isActive = hydrated && activePreset === preset.name;
-          const presetColors = preset.colors[currentMode];
+          // The server can't know the reader's mode and renders dark; until
+          // hydration is done the swatches match it, or React keeps the
+          // server's inline colours (it never patches mismatched attributes).
+          const presetColors = preset.colors[hydrated ? currentMode : 'dark'];
           const previewColors = [
             presetColors['primary'],
             presetColors['secondary'],
@@ -49,8 +52,8 @@ export function ThemePresetSelector() {
               className={cn(
                 "relative group flex flex-col justify-between p-2.5 rounded-lg border text-left transition-all duration-150 cursor-pointer h-[76px] focus:outline-none focus-visible:outline-none",
                 isActive
-                  ? "bg-white dark:bg-zinc-900 shadow-sm"
-                  : "bg-background border-border/80 hover:bg-primary/5 hover:border-primary/30"
+                  ? "bg-card shadow-sm"
+                  : "bg-foreground/[0.03] border-foreground/[0.06] hover:bg-foreground/[0.05] hover:border-foreground/10"
               )}
             >
               {/* Row of Color Swatches */}
@@ -58,7 +61,7 @@ export function ThemePresetSelector() {
                 {previewColors.map((colorStr, i) => (
                   <div
                     key={i}
-                    className="w-3.5 h-3.5 rounded-[3px] border border-black/10 dark:border-white/10 shrink-0"
+                    className="w-3.5 h-3.5 rounded-[3px] border border-foreground/10 shrink-0"
                     style={{ backgroundColor: colorStr }}
                   />
                 ))}
@@ -67,10 +70,10 @@ export function ThemePresetSelector() {
               {/* Title & Checkmark */}
               <div className="flex items-center justify-between w-full mt-2">
                 <span className={cn(
-                  "text-[11.5px] font-medium leading-none",
+                  "text-[12px] font-medium leading-none transition-colors",
                   isActive
-                    ? "text-zinc-950 dark:text-white font-semibold"
-                    : "text-zinc-600 dark:text-zinc-400 group-hover:text-zinc-900 dark:group-hover:text-zinc-200"
+                    ? "text-foreground"
+                    : "text-foreground/55 group-hover:text-foreground"
                 )}>
                   {preset.label}
                 </span>

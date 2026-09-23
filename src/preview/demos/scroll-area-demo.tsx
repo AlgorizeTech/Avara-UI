@@ -22,10 +22,10 @@ const getDynamicColorClasses = (color: string) => {
         badge: "bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border-emerald-500/20",
         pill: "bg-emerald-600 text-white",
       };
-    case "zinc":
+    case "lavender":
       return {
-        badge: "bg-zinc-500/10 text-zinc-700 dark:text-zinc-300 border-zinc-500/20",
-        pill: "bg-zinc-800 text-white",
+        badge: "bg-[#9b8afb]/10 text-[#9b8afb] border-[#9b8afb]/20",
+        pill: "bg-[#9b8afb] text-white",
       };
     default:
       return {

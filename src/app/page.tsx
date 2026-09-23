@@ -311,7 +311,7 @@ function HeroInteractiveHub() {
 										</span>
 									</div>
 								</div>
-								<span className="text-[10px] px-2 py-0.5 rounded-full bg-primary/10 text-primary font-semibold border border-primary/20">
+								<span className="text-[11px] font-semibold px-2.5 py-0.5 rounded-full bg-primary/10 text-primary border border-primary/20">
 									GPT-4o
 								</span>
 							</div>
@@ -379,7 +379,7 @@ function HeroInteractiveHub() {
 										Real-time data visualization
 									</p>
 								</div>
-								<span className="px-2.5 py-0.5 text-[10px] font-semibold rounded-full bg-primary/10 text-primary border border-primary/20">
+								<span className="text-[11px] font-semibold px-2.5 py-0.5 rounded-full bg-primary/10 text-primary border border-primary/20">
 									+24.8%
 								</span>
 							</div>
@@ -526,8 +526,55 @@ function HeroInteractiveHub() {
 }
 
 /* ═══════════════════════════════════════════════
+   SHARED TYPE RAMP
+   One set of classes per role so every section reads the same. Colours are
+   an opacity ladder on the theme's ink (`text-foreground/NN`) rather than
+   separate greys, so the theme customizer re-skins the page with the rest
+   of the site.
+   ═══════════════════════════════════════════════ */
+
+const SECTION_INNER = "max-w-[1160px] mx-auto px-5 md:px-10";
+const SECTION_EYEBROW =
+	"inline-flex items-center gap-1.5 text-[11px] font-semibold uppercase tracking-[0.12em] text-foreground/30 mb-3";
+const SECTION_H2 =
+	"font-serif font-normal text-[clamp(26px,3.6vw,46px)] leading-[1.15] tracking-[-0.02em] text-foreground mb-3";
+const SECTION_SUB = "text-[15px] leading-[1.65] text-foreground/45 max-w-[490px]";
+const CARD_TITLE = "font-sans text-[14px] font-semibold text-foreground mb-[7px]";
+const CARD_COPY = "text-[13px] leading-[1.65] text-foreground/45";
+const CARD_SURFACE = "border border-foreground/[0.06] bg-card";
+const EYEBROW_PILL =
+	"inline-flex items-center gap-1.5 rounded-full bg-foreground/[0.04] backdrop-blur px-3 py-1 text-[12px] text-foreground/90";
+const CHIP =
+	"text-[9px] font-bold uppercase tracking-wider leading-none px-1.5 py-0.5 rounded-md bg-primary/15 text-primary border border-primary/30";
+const BTN_CLAY =
+	"inline-flex items-center justify-center gap-2 rounded-full bg-foreground text-background text-[14px] font-semibold tracking-[0.3px] px-7 py-3 hover:bg-foreground/90 transition-colors";
+const BTN_SOFT =
+	"inline-flex items-center justify-center gap-2 rounded-full bg-foreground/[0.04] hover:bg-foreground/10 text-foreground text-[14px] font-medium px-7 py-3 transition-colors";
+
+/* ═══════════════════════════════════════════════
    SECTION 1: HERO
    ═══════════════════════════════════════════════ */
+
+/* ComponentWall ships in the registry, so its own type scale stays generic;
+   the site's hero ramp is layered on from here through its `className`,
+   reaching the copy column by structure: the badge is the link just above
+   the h1, the description the paragraph right after it, and the two actions
+   the links in the row that follows. */
+const HERO_TYPE = [
+	// Eyebrow pill
+	"[&_div:has(+h1)>a]:gap-1.5 [&_div:has(+h1)>a]:border-transparent [&_div:has(+h1)>a]:bg-foreground/[0.04] [&_div:has(+h1)>a]:px-3 [&_div:has(+h1)>a]:py-1 [&_div:has(+h1)>a]:text-[12px] [&_div:has(+h1)>a]:font-normal [&_div:has(+h1)>a]:text-foreground/90",
+	"[&_div:has(+h1)>a]:hover:border-transparent [&_div:has(+h1)>a]:hover:bg-foreground/10 [&_div:has(+h1)>a]:hover:text-foreground",
+	// Headline: Cooper at its regular weight
+	"[&_h1]:font-normal [&_h1]:text-[clamp(34px,6.8vw,84px)] [&_h1]:leading-[1.06] [&_h1]:tracking-[-0.03em] [&_h1]:text-foreground",
+	// Subtitle
+	"[&_h1+p]:text-[clamp(13px,1.45vw,18px)] [&_h1+p]:leading-[1.65] [&_h1+p]:text-foreground/60",
+	// Primary action: the clay button
+	"[&_h1~div>a:first-child]:h-11 [&_h1~div>a:first-child]:rounded-full [&_h1~div>a:first-child]:bg-foreground [&_h1~div>a:first-child]:px-7 [&_h1~div>a:first-child]:text-[14px] [&_h1~div>a:first-child]:font-semibold [&_h1~div>a:first-child]:tracking-[0.3px] [&_h1~div>a:first-child]:text-background [&_h1~div>a:first-child]:hover:bg-foreground/90",
+	// Secondary action: an ink-tint pill
+	"[&_h1~div>a:nth-child(2)]:h-11 [&_h1~div>a:nth-child(2)]:rounded-full [&_h1~div>a:nth-child(2)]:border-transparent [&_h1~div>a:nth-child(2)]:bg-foreground/[0.04] [&_h1~div>a:nth-child(2)]:px-7 [&_h1~div>a:nth-child(2)]:text-[14px] [&_h1~div>a:nth-child(2)]:font-medium [&_h1~div>a:nth-child(2)]:text-foreground [&_h1~div>a:nth-child(2)]:hover:bg-foreground/10",
+	// "Built with" label over the tool strip
+	"[&_h1~div>span:first-child]:text-[11px] [&_h1~div>span:first-child]:uppercase [&_h1~div>span:first-child]:tracking-[0.12em] [&_h1~div>span:first-child]:text-foreground/40",
+].join(" ");
 
 function HeroSection() {
 	return (
@@ -553,6 +600,7 @@ function HeroSection() {
 				stack={{ label: "Built with", groups: WALL_STACK }}
 				interval={4500}
 				linkComponent={Link}
+				className={HERO_TYPE}
 			/>
 		</section>
 	);
@@ -567,28 +615,28 @@ function ComponentShowcase() {
 	const isInView = useInView(ref, { once: true, margin: "-80px" });
 
 	return (
-		<section ref={ref} className="py-20 md:py-28 px-6 md:px-8">
-			<div className="max-w-[1320px] mx-auto">
+		<section ref={ref} className="py-13 md:py-16">
+			<div className={SECTION_INNER}>
 				<motion.div
 					initial={{ opacity: 0, y: 30 }}
 					animate={isInView ? { opacity: 1, y: 0 } : {}}
 					transition={{ duration: 0.6 }}
-					className="flex flex-col md:flex-row md:items-end md:justify-between gap-4 mb-14">
+					className="flex flex-col md:flex-row md:items-end md:justify-between gap-4 mb-10">
 					<div>
-						<span className="inline-flex items-center gap-1.5 text-xs font-semibold uppercase tracking-[0.2em] text-primary mb-3">
+						<span className={SECTION_EYEBROW}>
 							<Layers className="size-3.5" />
 							Live Interactive Components
 						</span>
-						<h2 className="text-3xl md:text-4xl lg:text-5xl font-semibold tracking-tight text-foreground mb-4">
+						<h2 className={SECTION_H2}>
 							Real Motion &amp; Interactive Blocks
 						</h2>
-						<p className="text-muted-foreground text-sm md:text-base max-w-xl leading-relaxed">
+						<p className={SECTION_SUB}>
 							Featuring Chat Bubbles, Magnifying Dock, and 3D Motion Carousel.
 						</p>
 					</div>
 					<Link
 						href="/docs/nextjs/index"
-						className="group flex items-center gap-1.5 text-sm font-semibold text-muted-foreground hover:text-primary transition-colors shrink-0">
+						className="group flex items-center gap-1.5 text-[13px] font-medium text-foreground/70 hover:text-foreground transition-colors shrink-0">
 						View all components
 						<ArrowUpRight className="size-4 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" />
 					</Link>
@@ -602,13 +650,13 @@ function ComponentShowcase() {
 						animate={isInView ? { opacity: 1, y: 0 } : {}}
 						transition={{ duration: 0.5, delay: 0.1 }}
 						className="flex flex-col gap-6">
-						<div className="showcase-card rounded-2xl border border-border bg-card p-4 overflow-hidden shadow-lg">
-							<div className="px-2 pb-3 border-b border-border flex items-center justify-between text-xs text-muted-foreground font-medium mb-3">
+						<div className="showcase-card rounded-2xl border border-foreground/[0.06] bg-card p-4 overflow-hidden">
+							<div className="px-2 pb-3 border-b border-foreground/[0.06] flex items-center justify-between text-[14px] text-foreground/40 font-medium mb-3">
 								<span className="flex items-center gap-1.5 text-foreground font-semibold">
 									<MessageCircle className="size-3.5 text-primary" />
 									Chat Bubbles
 								</span>
-								<span className="text-[10px] px-2 py-0.5 rounded bg-primary/10 text-primary font-semibold">
+								<span className={CHIP}>
 									Compound
 								</span>
 							</div>
@@ -617,10 +665,10 @@ function ComponentShowcase() {
 								<div className="px-4 py-3 border-b border-border flex items-center gap-3 bg-card/80 backdrop-blur-md">
 									<div className="w-8 h-8 rounded-full bg-gradient-to-tr from-rose-400 to-orange-300 shadow-inner" />
 									<div>
-										<h3 className="text-sm font-semibold text-foreground leading-none">
+										<h3 className="font-sans text-sm font-semibold text-foreground leading-none">
 											Sarah Jenkins
 										</h3>
-										<span className="text-[11px] text-muted-foreground">
+										<span className="text-[11px] text-foreground/40">
 											Online
 										</span>
 									</div>
@@ -671,13 +719,13 @@ function ComponentShowcase() {
 								</div>
 
 								{/* Input Mock */}
-								<div className="p-4 bg-muted/40 border-t border-border">
+								<div className="p-4 bg-foreground/[0.03] border-t border-border">
 									<div className="flex items-center gap-3 px-3 py-2 bg-card border border-border rounded-full shadow-sm">
-										<ImageIcon className="w-5 h-5 text-muted-foreground" />
-										<span className="flex-1 text-sm text-muted-foreground">
+										<ImageIcon className="w-5 h-5 text-foreground/40" />
+										<span className="flex-1 text-[13px] text-foreground/40">
 											Type a message...
 										</span>
-										<SmilePlus className="w-5 h-5 text-muted-foreground" />
+										<SmilePlus className="w-5 h-5 text-foreground/40" />
 										<div className="w-7 h-7 rounded-full bg-primary flex items-center justify-center ml-1">
 											<Send className="w-3.5 h-3.5 text-primary-foreground -ml-0.5" />
 										</div>
@@ -686,8 +734,8 @@ function ComponentShowcase() {
 							</div>
 						</div>
 
-						<div className="showcase-card rounded-2xl border border-border bg-card p-2 overflow-hidden shadow-lg">
-							<div className="px-3 py-2 border-b border-border flex items-center justify-between text-xs text-muted-foreground font-medium">
+						<div className="showcase-card rounded-2xl border border-foreground/[0.06] bg-card p-2 overflow-hidden">
+							<div className="px-3 py-2 border-b border-foreground/[0.06] flex items-center justify-between text-[14px] text-foreground/40 font-medium">
 								<span className="flex items-center gap-1.5 text-foreground font-semibold">
 									<Terminal className="size-3.5 text-primary" />
 									Command Launcher
@@ -703,13 +751,13 @@ function ComponentShowcase() {
 						animate={isInView ? { opacity: 1, y: 0 } : {}}
 						transition={{ duration: 0.5, delay: 0.2 }}
 						className="flex flex-col gap-6">
-						<div className="showcase-card rounded-2xl border border-border bg-card p-5 overflow-hidden shadow-lg">
+						<div className="showcase-card rounded-2xl border border-foreground/[0.06] bg-card p-5 overflow-hidden">
 							<div className="flex items-center justify-between mb-4">
-								<span className="flex items-center gap-1.5 text-xs font-semibold text-foreground">
+								<span className="flex items-center gap-1.5 text-[14px] font-semibold text-foreground">
 									<Layers className="size-3.5 text-primary" />
 									3D Fanned Carousel
 								</span>
-								<span className="text-[10px] px-2 py-0.5 rounded bg-primary/10 text-primary font-semibold">
+								<span className={CHIP}>
 									Interactive
 								</span>
 							</div>
@@ -726,13 +774,13 @@ function ComponentShowcase() {
 							</div>
 						</div>
 
-						<div className="showcase-card rounded-2xl border border-border bg-card p-5 overflow-hidden shadow-lg">
+						<div className="showcase-card rounded-2xl border border-foreground/[0.06] bg-card p-5 overflow-hidden">
 							<div className="flex items-center justify-between mb-4">
-								<span className="flex items-center gap-1.5 text-xs font-semibold text-foreground">
+								<span className="flex items-center gap-1.5 text-[14px] font-semibold text-foreground">
 									<FolderOpen className="size-3.5 text-primary" />
 									Design Components Folder
 								</span>
-								<span className="text-[10px] px-2 py-0.5 rounded bg-primary/10 text-primary font-semibold">
+								<span className={CHIP}>
 									Auto Loop
 								</span>
 							</div>
@@ -746,13 +794,13 @@ function ComponentShowcase() {
 							</div>
 						</div>
 
-						<div className="showcase-card rounded-2xl border border-border bg-card p-6 overflow-hidden shadow-lg flex flex-col items-center justify-center min-h-[220px]">
-							<div className="w-full flex items-center justify-between text-xs font-medium mb-6">
+						<div className="showcase-card rounded-2xl border border-foreground/[0.06] bg-card p-6 overflow-hidden flex flex-col items-center justify-center min-h-[220px]">
+							<div className="w-full flex items-center justify-between text-[14px] font-medium mb-6">
 								<span className="flex items-center gap-1.5 text-foreground font-semibold">
 									<Compass className="size-3.5 text-primary" />
 									Magnifying macOS Dock
 								</span>
-								<span className="text-[10px] font-semibold text-primary px-2 py-0.5 rounded bg-primary/10">
+								<span className={CHIP}>
 									Interactive Hover
 								</span>
 							</div>
@@ -774,13 +822,13 @@ function ComponentShowcase() {
 						animate={isInView ? { opacity: 1, y: 0 } : {}}
 						transition={{ duration: 0.5, delay: 0.3 }}
 						className="flex flex-col gap-6">
-						<div className="showcase-card rounded-2xl border border-border bg-card p-5 overflow-hidden shadow-lg">
+						<div className="showcase-card rounded-2xl border border-foreground/[0.06] bg-card p-5 overflow-hidden">
 							<div className="flex items-center justify-between mb-4">
-								<span className="flex items-center gap-1.5 text-xs font-semibold text-foreground">
+								<span className="flex items-center gap-1.5 text-[14px] font-semibold text-foreground">
 									<FolderOpen className="size-3.5 text-primary" />
 									Folder
 								</span>
-								<span className="text-[10px] px-2 py-0.5 rounded bg-primary/10 text-primary font-semibold">
+								<span className={CHIP}>
 									Fan on Hover
 								</span>
 							</div>
@@ -796,13 +844,13 @@ function ComponentShowcase() {
 							</div>
 						</div>
 
-						<div className="showcase-card rounded-2xl border border-border bg-card p-2 overflow-hidden shadow-lg">
-							<div className="px-3 py-2 border-b border-border flex items-center justify-between text-xs text-muted-foreground font-medium">
+						<div className="showcase-card rounded-2xl border border-foreground/[0.06] bg-card p-2 overflow-hidden">
+							<div className="px-3 py-2 border-b border-foreground/[0.06] flex items-center justify-between text-[14px] text-foreground/40 font-medium">
 								<span className="flex items-center gap-1.5 text-foreground font-semibold">
 									<GripVertical className="size-3.5 text-primary" />
 									Draggable Card List
 								</span>
-								<span className="text-[10px] px-2 py-0.5 rounded bg-primary/10 text-primary font-semibold">
+								<span className={CHIP}>
 									Drag to Reorder
 								</span>
 							</div>
@@ -828,24 +876,24 @@ function WhyChooseUsSection() {
 	return (
 		<section
 			ref={ref}
-			className="py-20 md:py-28 px-6 md:px-8 border-y border-border/30 bg-background relative overflow-hidden">
+			className="py-12 md:py-16 border-y border-foreground/[0.06] bg-background relative overflow-hidden">
 			{/* Background Subtle Ambient Lighting */}
 			<div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[600px] bg-primary/5 rounded-[100%] blur-[120px] pointer-events-none mix-blend-screen" />
 
 			{/* Subtle Grid overlay for texture */}
-			<div className="absolute inset-0 bg-[linear-gradient(rgba(255,255,255,0.015)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.015)_1px,transparent_1px)] bg-[size:48px_48px] pointer-events-none [mask-image:radial-gradient(ellipse_60%_60%_at_50%_50%,black_40%,transparent_100%)] dark:bg-[linear-gradient(rgba(255,255,255,0.015)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.015)_1px,transparent_1px)]" />
+			<div className="absolute inset-0 bg-[linear-gradient(color-mix(in_oklab,var(--foreground)_2%,transparent)_1px,transparent_1px),linear-gradient(90deg,color-mix(in_oklab,var(--foreground)_2%,transparent)_1px,transparent_1px)] bg-[size:48px_48px] pointer-events-none [mask-image:radial-gradient(ellipse_60%_60%_at_50%_50%,black_40%,transparent_100%)]" />
 
-			<div className="max-w-[1140px] mx-auto relative z-10">
+			<div className={cn(SECTION_INNER, "relative z-10")}>
 				{/* Section Header */}
 				<motion.div
 					initial={{ opacity: 0, y: 30 }}
 					animate={isInView ? { opacity: 1, y: 0 } : {}}
 					transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
-					className="text-center mb-16 md:mb-20">
-					<h2 className="text-3xl md:text-4xl lg:text-5xl font-semibold tracking-tighter text-foreground mb-4 bg-clip-text text-transparent bg-gradient-to-b from-foreground to-foreground/50 pb-2">
+					className="text-center mb-10 md:mb-12">
+					<h2 className={SECTION_H2}>
 						Why Docs UI?
 					</h2>
-					<p className="text-muted-foreground/80 text-[15px] md:text-base max-w-xl mx-auto leading-relaxed font-medium">
+					<p className={cn(SECTION_SUB, "mx-auto")}>
 						Engineered to explore unique interaction patterns—from 3D
 						displacement hover effects to beautiful physics animations and
 						scalable layouts.
@@ -853,18 +901,18 @@ function WhyChooseUsSection() {
 				</motion.div>
 
 				{/* 2x2 Bento Grid - Scaled down for breathing room */}
-				<div className="grid grid-cols-1 lg:grid-cols-2 gap-6 md:gap-8">
+				<div className="grid grid-cols-1 lg:grid-cols-2 gap-4 md:gap-5">
 					{/* Card 1: Components You Won't Find Anywhere */}
 					<motion.div
 						initial={{ opacity: 0, y: 40 }}
 						animate={isInView ? { opacity: 1, y: 0 } : {}}
 						transition={{ duration: 0.7, delay: 0.1, ease: [0.16, 1, 0.3, 1] }}
-						className="group flex flex-col p-8 rounded-[2rem] bg-card/20 backdrop-blur-2xl border border-border/40 shadow-xl hover:bg-card/40 hover:border-primary/30 transition-all duration-700">
+						className={cn("group flex flex-col p-6 md:p-8 rounded-2xl hover:border-primary/30 transition-all duration-700", CARD_SURFACE)}>
 						<div className="mb-6">
-							<h3 className="text-xl md:text-2xl font-semibold text-foreground mb-3 tracking-tight">
+							<h3 className={CARD_TITLE}>
 								Components You Won&apos;t Find Anywhere
 							</h3>
-							<p className="text-[14px] text-muted-foreground/90 leading-relaxed max-w-sm font-medium">
+							<p className={cn(CARD_COPY, "max-w-sm")}>
 								Unique interaction patterns like displacement hover effects,
 								fluid animations, and cards that stand out from typical UI
 								libraries.
@@ -875,17 +923,17 @@ function WhyChooseUsSection() {
 						<div className="mt-auto flex justify-center items-center h-48 sm:h-60 perspective-[1200px] relative">
 							<div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-40 h-40 bg-primary/20 blur-[50px] rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-1000" />
 
-							<div className="w-[240px] h-[150px] sm:w-[280px] sm:h-[180px] rounded-2xl border border-white/10 dark:border-white/5 bg-gradient-to-b from-white/50 to-white/10 dark:from-white/10 dark:to-white/5 backdrop-blur-xl shadow-2xl relative transition-transform duration-700 ease-out group-hover:[transform:rotateX(18deg)_rotateY(-18deg)_scale(1.03)] flex flex-col items-center justify-center p-5 overflow-hidden transform-gpu ring-1 ring-black/5 dark:ring-white/5">
+							<div className="w-[240px] h-[150px] sm:w-[280px] sm:h-[180px] rounded-2xl border border-foreground/[0.06] bg-gradient-to-b from-card to-foreground/[0.03] backdrop-blur-xl shadow-2xl relative transition-transform duration-700 ease-out group-hover:[transform:rotateX(18deg)_rotateY(-18deg)_scale(1.03)] flex flex-col items-center justify-center p-5 overflow-hidden transform-gpu ring-1 ring-foreground/5">
 								<div className="absolute inset-0 bg-gradient-to-tr from-primary/15 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-700" />
 								<div className="absolute inset-0 bg-gradient-to-tr from-white/0 via-white/20 to-white/0 -translate-x-[150%] group-hover:translate-x-[150%] transition-transform duration-1000 ease-in-out pointer-events-none" />
 
 								<div className="size-14 sm:size-16 rounded-full bg-background border border-primary/20 text-primary flex items-center justify-center mb-4 transition-transform duration-700 group-hover:translate-z-[30px] shadow-xl shadow-primary/20">
 									<Layers className="size-6 sm:size-7" />
 								</div>
-								<p className="font-semibold text-[14px] sm:text-base transition-transform duration-700 group-hover:translate-z-[20px] text-foreground tracking-tight">
+								<p className="font-semibold text-[14px] transition-transform duration-700 group-hover:translate-z-[20px] text-foreground">
 									Interactive Card
 								</p>
-								<p className="text-[10px] text-muted-foreground/80 mt-1.5 transition-transform duration-700 group-hover:translate-z-[15px] font-medium uppercase tracking-widest">
+								<p className="text-[10px] text-foreground/30 mt-1.5 transition-transform duration-700 group-hover:translate-z-[15px] font-semibold uppercase tracking-[0.12em]">
 									Hover to preview
 								</p>
 							</div>
@@ -897,12 +945,12 @@ function WhyChooseUsSection() {
 						initial={{ opacity: 0, y: 40 }}
 						animate={isInView ? { opacity: 1, y: 0 } : {}}
 						transition={{ duration: 0.7, delay: 0.2, ease: [0.16, 1, 0.3, 1] }}
-						className="group flex flex-col p-8 rounded-[2rem] bg-card/20 backdrop-blur-2xl border border-border/40 shadow-xl hover:bg-card/40 hover:border-primary/30 transition-all duration-700">
+						className={cn("group flex flex-col p-6 md:p-8 rounded-2xl hover:border-primary/30 transition-all duration-700", CARD_SURFACE)}>
 						<div className="mb-6">
-							<h3 className="text-xl md:text-2xl font-semibold text-foreground mb-3 tracking-tight">
+							<h3 className={CARD_TITLE}>
 								Built with Modern Frameworks
 							</h3>
-							<p className="text-[14px] text-muted-foreground/90 leading-relaxed max-w-sm font-medium">
+							<p className={cn(CARD_COPY, "max-w-sm")}>
 								Designed to work seamlessly with Next.js, React, and Tailwind
 								CSS. Engineered for rapid integration into real-world production
 								projects.
@@ -936,7 +984,7 @@ function WhyChooseUsSection() {
 								].map((f, idx) => (
 									<div
 										key={f.name}
-										className="size-14 sm:size-16 rounded-2xl bg-background/80 backdrop-blur-md border border-white/20 dark:border-white/10 shadow-[0_12px_24px_rgba(0,0,0,0.06)] flex items-center justify-center text-muted-foreground/70 transition-all duration-700 ease-out hover:-translate-y-4 sm:hover:-translate-y-6 hover:shadow-[0_24px_40px_rgba(var(--primary-rgb),0.15)] hover:border-primary/50 hover:text-primary relative group/icon before:absolute before:inset-0 before:rounded-2xl before:bg-gradient-to-b before:from-white/20 before:to-transparent before:opacity-0 hover:before:opacity-100"
+										className="size-14 sm:size-16 rounded-2xl bg-background/80 backdrop-blur-md border border-foreground/[0.08] shadow-[0_12px_24px_rgba(0,0,0,0.06)] flex items-center justify-center text-foreground/40 transition-all duration-700 ease-out hover:-translate-y-4 sm:hover:-translate-y-6 hover:shadow-[0_24px_40px_rgba(var(--primary-rgb),0.15)] hover:border-primary/50 hover:text-primary relative group/icon before:absolute before:inset-0 before:rounded-2xl before:bg-gradient-to-b before:from-white/20 before:to-transparent before:opacity-0 hover:before:opacity-100"
 										style={{ transitionDelay: `${idx * 40}ms` }}>
 										<div className="transform-gpu rotate-x-[0deg] rotate-z-[0deg] relative z-10">
 											{f.icon}
@@ -952,12 +1000,12 @@ function WhyChooseUsSection() {
 						initial={{ opacity: 0, y: 40 }}
 						animate={isInView ? { opacity: 1, y: 0 } : {}}
 						transition={{ duration: 0.7, delay: 0.3, ease: [0.16, 1, 0.3, 1] }}
-						className="group flex flex-col p-8 rounded-[2rem] bg-card/20 backdrop-blur-2xl border border-border/40 shadow-xl hover:bg-card/40 hover:border-primary/30 transition-all duration-700">
+						className={cn("group flex flex-col p-6 md:p-8 rounded-2xl hover:border-primary/30 transition-all duration-700", CARD_SURFACE)}>
 						<div className="mb-6">
-							<h3 className="text-xl md:text-2xl font-semibold text-foreground mb-3 tracking-tight">
+							<h3 className={CARD_TITLE}>
 								Open Source With Story
 							</h3>
-							<p className="text-[14px] text-muted-foreground/90 leading-relaxed max-w-sm font-medium">
+							<p className={cn(CARD_COPY, "max-w-sm")}>
 								Every component is crafted with intention. Each block explores a
 								unique interaction pattern and the reasoning behind its
 								structural design.
@@ -994,7 +1042,7 @@ function WhyChooseUsSection() {
 									/>
 								</svg>
 
-								<div className="size-12 sm:size-14 rounded-2xl border border-white/10 dark:border-white/5 bg-background/50 backdrop-blur-md shadow-lg flex items-center justify-center group-hover:border-primary/40 group-hover:text-primary transition-all duration-500 group-hover:-translate-y-2 group-hover:shadow-[0_12px_24px_rgba(var(--primary-rgb),0.1)] ring-1 ring-black/5 dark:ring-white/5">
+								<div className="size-12 sm:size-14 rounded-2xl border border-foreground/[0.06] bg-background/50 backdrop-blur-md shadow-lg flex items-center justify-center group-hover:border-primary/40 group-hover:text-primary transition-all duration-500 group-hover:-translate-y-2 group-hover:shadow-[0_12px_24px_rgba(var(--primary-rgb),0.1)] ring-1 ring-foreground/5">
 									<Code2 className="size-5 sm:size-6 opacity-70 group-hover:opacity-100" />
 								</div>
 
@@ -1002,7 +1050,7 @@ function WhyChooseUsSection() {
 									<GitPullRequest className="size-7 sm:size-8 relative z-10" />
 								</div>
 
-								<div className="size-12 sm:size-14 rounded-2xl border border-white/10 dark:border-white/5 bg-background/50 backdrop-blur-md shadow-lg flex items-center justify-center group-hover:border-primary/40 group-hover:text-primary transition-all duration-500 group-hover:-translate-y-2 group-hover:shadow-[0_12px_24px_rgba(var(--primary-rgb),0.1)] ring-1 ring-black/5 dark:ring-white/5">
+								<div className="size-12 sm:size-14 rounded-2xl border border-foreground/[0.06] bg-background/50 backdrop-blur-md shadow-lg flex items-center justify-center group-hover:border-primary/40 group-hover:text-primary transition-all duration-500 group-hover:-translate-y-2 group-hover:shadow-[0_12px_24px_rgba(var(--primary-rgb),0.1)] ring-1 ring-foreground/5">
 									<Share2 className="size-5 sm:size-6 opacity-70 group-hover:opacity-100" />
 								</div>
 							</div>
@@ -1014,12 +1062,12 @@ function WhyChooseUsSection() {
 						initial={{ opacity: 0, y: 40 }}
 						animate={isInView ? { opacity: 1, y: 0 } : {}}
 						transition={{ duration: 0.7, delay: 0.4, ease: [0.16, 1, 0.3, 1] }}
-						className="group flex flex-col p-8 rounded-[2rem] bg-card/20 backdrop-blur-2xl border border-border/40 shadow-xl hover:bg-card/40 hover:border-primary/30 transition-all duration-700">
+						className={cn("group flex flex-col p-6 md:p-8 rounded-2xl hover:border-primary/30 transition-all duration-700", CARD_SURFACE)}>
 						<div className="mb-6">
-							<h3 className="text-xl md:text-2xl font-semibold text-foreground mb-3 tracking-tight">
+							<h3 className={CARD_TITLE}>
 								Build Landing Pages Faster
 							</h3>
-							<p className="text-[14px] text-muted-foreground/90 leading-relaxed max-w-sm font-medium">
+							<p className={cn(CARD_COPY, "max-w-sm")}>
 								Launch polished interfaces in minutes using pre-built UI blocks
 								designed for speed. Skip repetitive scaffolding and focus on
 								shipping.
@@ -1028,20 +1076,20 @@ function WhyChooseUsSection() {
 
 						{/* Visual Block: Scaled Down Skeletons */}
 						<div className="mt-auto flex justify-center items-center h-48 sm:h-60 relative">
-							<div className="w-full max-w-[280px] rounded-2xl border border-black/5 dark:border-white/5 p-4 sm:p-5 space-y-3 sm:space-y-4 bg-background/80 backdrop-blur-sm shadow-xl relative group-hover:border-primary/30 transition-all duration-700 overflow-hidden ring-1 ring-black/5 dark:ring-white/5">
+							<div className="w-full max-w-[280px] rounded-2xl border border-foreground/[0.06] p-4 sm:p-5 space-y-3 sm:space-y-4 bg-background/80 backdrop-blur-sm shadow-xl relative group-hover:border-primary/30 transition-all duration-700 overflow-hidden ring-1 ring-foreground/5">
 								{/* Dark-mode aware shimmer effect */}
-								<div className="absolute inset-0 -translate-x-full bg-gradient-to-r from-transparent via-black/5 dark:via-white/5 to-transparent group-hover:animate-[shimmer_2s_infinite] z-0" />
+								<div className="absolute inset-0 -translate-x-full bg-gradient-to-r from-transparent via-foreground/5 to-transparent group-hover:animate-[shimmer_2s_infinite] z-0" />
 
 								{/* Skeletons with proper light/dark contrast */}
-								<div className="h-3 w-1/3 rounded-md bg-zinc-200 dark:bg-muted/60 relative z-10" />
-								<div className="h-16 sm:h-20 w-full rounded-xl bg-zinc-100 dark:bg-muted/40 relative z-10" />
+								<div className="h-3 w-1/3 rounded-md bg-foreground/[0.08] relative z-10" />
+								<div className="h-16 sm:h-20 w-full rounded-xl bg-foreground/[0.04] relative z-10" />
 								<div className="flex gap-3 relative z-10">
-									<div className="h-20 sm:h-24 flex-1 rounded-xl bg-zinc-100 dark:bg-muted/40" />
-									<div className="h-20 sm:h-24 flex-1 rounded-xl bg-zinc-100 dark:bg-muted/40" />
+									<div className="h-20 sm:h-24 flex-1 rounded-xl bg-foreground/[0.04]" />
+									<div className="h-20 sm:h-24 flex-1 rounded-xl bg-foreground/[0.04]" />
 								</div>
 
 								<div className="absolute inset-0 bg-background/20 backdrop-blur-[2px] opacity-0 group-hover:opacity-100 transition-opacity duration-700 flex items-center justify-center z-20">
-									<div className="translate-y-6 group-hover:translate-y-0 transition-transform duration-700 delay-100 ease-[0.16,1,0.3,1] px-4 py-2 sm:px-5 sm:py-2.5 rounded-xl bg-zinc-900 dark:bg-zinc-100 text-white dark:text-zinc-900 font-semibold text-[13px] sm:text-sm shadow-xl flex items-center gap-2.5 border border-zinc-700 dark:border-zinc-300">
+									<div className="translate-y-6 group-hover:translate-y-0 transition-transform duration-700 delay-100 ease-[0.16,1,0.3,1] px-4 py-2 sm:px-5 sm:py-2.5 rounded-full bg-foreground text-background font-semibold tracking-[0.3px] text-[13px] shadow-xl flex items-center gap-2.5">
 										<Zap className="size-3.5 sm:size-4 text-amber-400 fill-amber-400 drop-shadow-[0_0_6px_rgba(251,191,36,0.5)]" />
 										Ship at lightspeed
 									</div>
@@ -3024,22 +3072,22 @@ function ComponentPreviewGridSection() {
 	return (
 		<section
 			ref={ref}
-			className="py-20 md:py-28 px-6 md:px-8 border-t border-border/40 bg-muted/20">
-			<div className="max-w-[1320px] mx-auto">
+			className="py-12 md:py-16 bg-foreground/[0.02]">
+			<div className={SECTION_INNER}>
 				{/* Section Title */}
 				<motion.div
 					initial={{ opacity: 0, y: 30 }}
 					animate={isInView ? { opacity: 1, y: 0 } : {}}
 					transition={{ duration: 0.6 }}
-					className="text-center mb-12">
-					<span className="inline-flex items-center gap-1.5 text-xs font-semibold uppercase tracking-[0.2em] text-primary mb-3">
+					className="text-center mb-10">
+					<span className={SECTION_EYEBROW}>
 						<LayoutGrid className="size-3.5" />
 						Component Preview Catalog
 					</span>
-					<h2 className="text-3xl md:text-4xl lg:text-5xl font-semibold tracking-tight text-foreground mb-4">
+					<h2 className={SECTION_H2}>
 						Explore Built-in Component Previews
 					</h2>
-					<p className="text-muted-foreground text-sm md:text-base max-w-xl mx-auto leading-relaxed">
+					<p className={cn(SECTION_SUB, "mx-auto")}>
 						Click any component card below to inspect interactive live previews,
 						installation guides, and full source code.
 					</p>
@@ -3061,7 +3109,7 @@ function ComponentPreviewGridSection() {
 									className="group block rounded-2xl">
 									<div
 										className={cn(
-											"rounded-2xl border border-border/70 bg-card p-4 transition-all duration-300 flex flex-col h-full justify-between overflow-hidden",
+											"rounded-2xl border border-foreground/[0.06] bg-card p-4 transition-all duration-300 flex flex-col h-full justify-between overflow-hidden",
 											!isLastRow
 												? "hover:border-primary/30 hover:-translate-y-1.5"
 												: "hover:border-primary/30",
@@ -3073,7 +3121,7 @@ function ComponentPreviewGridSection() {
 												type={item.illustrationType}
 											/>
 											{item.badge && (
-												<span className="absolute top-2.5 right-2.5 text-[10px] font-extrabold px-2 py-0.5 rounded-full bg-primary text-primary-foreground shadow-sm">
+												<span className="absolute top-2.5 right-2.5 text-[9px] font-bold uppercase tracking-wider leading-none px-1.5 py-0.5 rounded-md bg-primary/15 text-primary border border-primary/30 backdrop-blur-sm">
 													{item.badge}
 												</span>
 											)}
@@ -3084,18 +3132,18 @@ function ComponentPreviewGridSection() {
 											<div>
 												<h4
 													className={cn(
-														"text-sm font-semibold text-foreground transition-colors",
+														"font-sans text-[14px] font-semibold text-foreground transition-colors",
 														!isLastRow && "group-hover:text-primary",
 													)}>
 													{item.title}
 												</h4>
-												<p className="text-xs text-muted-foreground mt-0.5 font-medium">
+												<p className="text-[13px] leading-[1.65] text-foreground/45 mt-0.5">
 													{item.countText}
 												</p>
 											</div>
 											<div
 												className={cn(
-													"size-7 rounded-lg bg-muted flex items-center justify-center text-muted-foreground transition-all",
+													"size-7 rounded-lg bg-foreground/[0.05] flex items-center justify-center text-foreground/40 transition-all",
 													!isLastRow &&
 														"group-hover:bg-primary group-hover:text-primary-foreground",
 												)}>
@@ -3112,7 +3160,7 @@ function ComponentPreviewGridSection() {
 					<div className="absolute inset-x-0 bottom-0 h-36 bg-gradient-to-t from-background via-background/90 to-transparent flex items-end justify-center pb-2 pointer-events-none rounded-b-2xl z-20">
 						<Link
 							href="/docs/nextjs/all-components"
-							className="pointer-events-auto inline-flex items-center gap-2 px-7 py-3 rounded-xl font-semibold text-sm bg-primary/10 text-primary hover:bg-primary hover:text-primary-foreground border border-primary/20 hover:border-primary/30 transition-all duration-300 backdrop-blur-md group/btn">
+							className={cn(BTN_CLAY, "pointer-events-auto group/btn")}>
 							Explore All Components
 							<ArrowRight className="size-4 transition-transform group-hover/btn:translate-x-1" />
 						</Link>
@@ -3325,7 +3373,7 @@ function RatingStars({ rating }: { rating: number }) {
 							<svg
 								viewBox="0 0 24 24"
 								fill="currentColor"
-								className="absolute inset-0 size-full text-zinc-300 dark:text-zinc-700">
+								className="absolute inset-0 size-full text-foreground/15">
 								<path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z" />
 							</svg>
 
@@ -3345,7 +3393,7 @@ function RatingStars({ rating }: { rating: number }) {
 					);
 				})}
 			</div>
-			<span className="text-[11px] font-semibold text-muted-foreground font-mono">
+			<span className="text-[11px] font-semibold text-foreground/40 font-mono">
 				{rating.toFixed(1)}
 			</span>
 		</div>
@@ -3354,7 +3402,7 @@ function RatingStars({ rating }: { rating: number }) {
 
 function FeedbackCard({ item }: { item: FeedbackItem }) {
 	return (
-		<div className="group relative w-[320px] sm:w-[380px] shrink-0 p-5 sm:p-6 rounded-2xl bg-card/75 dark:bg-zinc-900/60 backdrop-blur-xl border border-border/60 hover:border-primary/40 hover:bg-card dark:hover:bg-zinc-900/90 shadow-2xs hover:shadow-xl hover:shadow-primary/5 transition-colors transition-shadow duration-200 flex flex-col justify-between select-none cursor-default">
+		<div className="group relative w-[320px] sm:w-[380px] shrink-0 p-5 sm:p-6 rounded-2xl bg-card border border-foreground/[0.06] hover:border-primary/40 shadow-2xs hover:shadow-xl hover:shadow-primary/5 transition-colors transition-shadow duration-200 flex flex-col justify-between select-none cursor-default">
 			{/* Subtle top border shimmer on hover */}
 			<div className="absolute inset-x-0 top-0 h-[1.5px] bg-gradient-to-r from-transparent via-primary/40 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 rounded-t-2xl" />
 
@@ -3365,13 +3413,13 @@ function FeedbackCard({ item }: { item: FeedbackItem }) {
 						<img
 							src={item.avatar}
 							alt={item.name}
-							className="size-10 sm:size-11 rounded-full object-cover ring-2 ring-border/60 group-hover:ring-primary/40 transition-all duration-300"
+							className="size-10 sm:size-11 rounded-full object-cover ring-2 ring-foreground/[0.06] group-hover:ring-primary/40 transition-all duration-300"
 						/>
 						<span className="absolute bottom-0 right-0 size-2.5 bg-emerald-500 rounded-full ring-2 ring-card" />
 					</div>
 					<div className="min-w-0">
 						<div className="flex items-center gap-1.5">
-							<span className="text-sm font-semibold text-foreground truncate group-hover:text-primary transition-colors">
+							<span className="text-[14px] font-semibold text-foreground truncate group-hover:text-primary transition-colors">
 								{item.name}
 							</span>
 							<span
@@ -3380,10 +3428,10 @@ function FeedbackCard({ item }: { item: FeedbackItem }) {
 								<Check className="size-2.5 stroke-[3]" />
 							</span>
 						</div>
-						<p className="text-xs text-muted-foreground truncate">
+						<p className="text-[12px] text-foreground/40 truncate">
 							<span className="font-medium text-foreground/70">{item.handle}</span>
 							{item.role && (
-								<span className="text-muted-foreground/60"> • {item.role}</span>
+								<span className="text-foreground/40"> • {item.role}</span>
 							)}
 						</p>
 					</div>
@@ -3391,23 +3439,23 @@ function FeedbackCard({ item }: { item: FeedbackItem }) {
 
 				{/* Source / Company Pill */}
 				{item.company && (
-					<span className="shrink-0 text-[10px] font-mono font-medium px-2 py-0.5 rounded-md bg-muted/60 dark:bg-zinc-800/80 text-muted-foreground border border-border/50">
+					<span className="shrink-0 text-[10px] font-mono font-medium px-2 py-0.5 rounded-md bg-foreground/[0.04] text-foreground/50">
 						{item.company}
 					</span>
 				)}
 			</div>
 
 			{/* Review Quote Body (Consistently 3 lines) */}
-			<p className="text-[13px] sm:text-sm text-foreground/80 dark:text-zinc-300 leading-relaxed font-normal mb-4 line-clamp-3 min-h-[3.9rem]">
+			<p className="text-[13px] text-foreground/60 leading-[1.65] font-normal mb-4 line-clamp-3 min-h-[4.1rem]">
 				"{item.content}"
 			</p>
 
 			{/* Bottom Bar: 5-Stars Rating + Feature Tag */}
-			<div className="flex items-center justify-between gap-2 pt-3 border-t border-border/40 text-xs">
+			<div className="flex items-center justify-between gap-2 pt-3 border-t border-foreground/[0.06] text-xs">
 				<RatingStars rating={item.rating} />
 
 				{item.tag && (
-					<span className="text-[11px] font-medium px-2.5 py-0.5 rounded-full bg-muted/70 dark:bg-zinc-800/70 text-muted-foreground group-hover:text-primary group-hover:bg-primary/10 border border-border/50 group-hover:border-primary/20 transition-all">
+					<span className="text-[11px] font-medium px-2.5 py-0.5 rounded-full bg-foreground/[0.04] text-foreground/50 group-hover:text-primary group-hover:bg-primary/15 transition-all">
 						{item.tag}
 					</span>
 				)}
@@ -3423,26 +3471,26 @@ function FeedbackSection() {
 	return (
 		<section
 			ref={ref}
-			className="py-20 md:py-28 relative overflow-hidden bg-background">
+			className="py-13 md:py-16 relative overflow-hidden bg-background">
 			{/* Ambient background glows */}
 			<div className="pointer-events-none absolute -top-40 left-1/2 -translate-x-1/2 w-[700px] h-[350px] bg-primary/5 rounded-full blur-3xl opacity-70" />
 			<div className="pointer-events-none absolute bottom-0 right-10 w-96 h-96 bg-primary/5 rounded-full blur-3xl opacity-50" />
 
-			<div className="max-w-[1320px] mx-auto px-6 md:px-8 mb-12 sm:mb-16">
+			<div className={cn(SECTION_INNER, "mb-10 sm:mb-12")}>
 				{/* Section Header */}
 				<motion.div
 					initial={{ opacity: 0, y: 20 }}
 					animate={isInView ? { opacity: 1, y: 0 } : {}}
 					transition={{ duration: 0.6 }}
-					className="text-center space-y-4 max-w-3xl mx-auto">
-					<div className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-primary/10 border border-primary/20 text-primary text-xs font-semibold uppercase tracking-wider shadow-2xs">
-						<MessageCircle className="size-3.5" />
+					className="text-center max-w-3xl mx-auto">
+					<div className={cn(EYEBROW_PILL, "mb-4")}>
+						<MessageCircle className="size-3.5 text-primary" />
 						Developer Feedback
 					</div>
-					<h2 className="text-3xl sm:text-4xl md:text-5xl font-semibold tracking-tight text-foreground">
+					<h2 className={SECTION_H2}>
 						What developers are saying
 					</h2>
-					<p className="text-sm sm:text-base text-muted-foreground leading-relaxed max-w-2xl mx-auto">
+					<p className={cn(SECTION_SUB, "mx-auto")}>
 						Real impressions and feedback from developers and designers exploring Docs UI.
 					</p>
 				</motion.div>
@@ -3573,7 +3621,7 @@ function CTASection() {
 	return (
 		<section
 			ref={ref}
-			className="py-24 md:py-32 px-6 md:px-8 relative overflow-hidden">
+			className="py-12 md:py-16 relative overflow-hidden">
 			{/* Dynamic Background Mesh */}
 			<div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-primary/10 via-background to-background pointer-events-none" />
 
@@ -3581,100 +3629,102 @@ function CTASection() {
 				initial={{ opacity: 0, y: 40, scale: 0.98 }}
 				animate={isInView ? { opacity: 1, y: 0, scale: 1 } : {}}
 				transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
-				className="max-w-[1320px] mx-auto relative rounded-3xl overflow-hidden border border-primary/20 bg-gradient-to-b from-primary/5 via-background to-primary/10 dark:from-zinc-950 dark:via-zinc-900/90 dark:to-zinc-950 p-8 sm:p-12 md:p-16 text-foreground dark:text-white shadow-[0_20px_60px_-15px_rgba(var(--primary-rgb),0.12)] dark:border-zinc-800">
-				{/* Glowing Radial Mesh Accents */}
-				<div className="absolute top-0 right-0 size-96 rounded-full bg-primary/20 blur-[120px] pointer-events-none" />
-				<div className="absolute bottom-0 left-0 size-96 rounded-full bg-primary/15 blur-[120px] pointer-events-none" />
+				className={cn(SECTION_INNER, "relative")}>
+				<div className="relative rounded-3xl overflow-hidden border border-foreground/[0.06] bg-gradient-to-b from-primary/5 via-card to-primary/10 px-5 py-10 sm:p-12 md:p-16 text-foreground">
+					{/* Glowing Radial Mesh Accents */}
+					<div className="absolute top-0 right-0 size-96 rounded-full bg-primary/20 blur-[120px] pointer-events-none" />
+					<div className="absolute bottom-0 left-0 size-96 rounded-full bg-primary/15 blur-[120px] pointer-events-none" />
 
-				{/* Subtle Background Radial Grid for Depth */}
-				<div className="absolute inset-0 bg-[radial-gradient(var(--primary)_1.5px,transparent_1.5px)] [background-size:24px_24px] opacity-[0.08] pointer-events-none" />
+					{/* Subtle Background Radial Grid for Depth */}
+					<div className="absolute inset-0 bg-[radial-gradient(var(--primary)_1.5px,transparent_1.5px)] [background-size:24px_24px] opacity-[0.08] pointer-events-none" />
 
-				{/* Centered Content Container */}
-				<div className="relative z-10 text-center flex flex-col items-center max-w-3xl mx-auto space-y-6">
-					<div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-primary/10 border border-primary/30 text-xs font-semibold text-primary backdrop-blur-md shadow-xs">
-						<Sparkles className="size-3.5 text-primary" />
-						<span>Developer-First Component Library</span>
-					</div>
-
-					<h2 className="text-3xl sm:text-5xl md:text-6xl font-semibold tracking-tight text-foreground dark:text-white leading-[1.08]">
-						Build Next-Gen <br className="hidden sm:block" />
-						<span className="text-primary">React Interfaces Today.</span>
-					</h2>
-
-					<p className="text-muted-foreground dark:text-zinc-300 text-sm sm:text-base md:text-lg leading-relaxed font-semibold max-w-xl">
-						Designed for the shadcn/ui &amp; Tailwind CSS ecosystem. Install
-						fully responsive, accessible, and animated UI components.
-					</p>
-
-					{/* Interactive CLI Quick Copy Pill Box */}
-					<div className="w-full max-w-md pt-1">
-						<div
-							onClick={handleCopy}
-							title="Click to copy command"
-							className="flex items-center justify-between gap-3 px-4.5 py-3.5 rounded-2xl border border-primary/25 dark:border-zinc-800 bg-background/90 dark:bg-zinc-900/90 hover:border-primary/60 transition-all cursor-pointer shadow-md group font-mono text-xs sm:text-sm text-foreground dark:text-zinc-100 backdrop-blur-md">
-							<div className="flex items-center gap-2.5 overflow-hidden">
-								<span className="text-primary font-semibold font-mono text-sm sm:text-base cursor-pointer">
-									&gt;_
-								</span>
-								<span className="font-semibold tracking-tight truncate group-hover:text-primary transition-colors">
-									npx shadcn@latest add @algorize-ui/button
-								</span>
-							</div>
-							<div className="flex items-center gap-2 shrink-0">
-								<div className="h-4 w-px bg-border dark:bg-zinc-800" />
-								<button
-									type="button"
-									className="p-1.5 rounded-xl group-hover:bg-primary/20 text-muted-foreground dark:text-zinc-400 group-hover:text-primary transition-all cursor-pointer">
-									{copied ? (
-										<Check className="size-4 text-emerald-500" />
-									) : (
-										<Copy className="size-4" />
-									)}
-								</button>
-							</div>
+					{/* Centered Content Container */}
+					<div className="relative z-10 text-center flex flex-col items-center max-w-3xl mx-auto space-y-6">
+						<div className={EYEBROW_PILL}>
+							<Sparkles className="size-3.5 text-primary" />
+							<span>Developer-First Component Library</span>
 						</div>
-						<p className="mt-2.5 text-[11px] sm:text-xs text-muted-foreground dark:text-zinc-400">
-							New project? Register the registry once with{" "}
-							<Link
-								href="/docs/nextjs/installation#step-2-register-the-registry"
-								className="font-mono text-primary hover:underline">
-								shadcn registry add @algorize-ui=…
-							</Link>
+
+						<h2 className="font-serif font-normal text-[clamp(24px,3.2vw,42px)] leading-[1.12] tracking-[-0.02em] text-foreground">
+							Build Next-Gen <br className="hidden sm:block" />
+							<span className="text-primary">React Interfaces Today.</span>
+						</h2>
+
+						<p className={SECTION_SUB}>
+							Designed for the shadcn/ui &amp; Tailwind CSS ecosystem. Install
+							fully responsive, accessible, and animated UI components.
 						</p>
-					</div>
 
-					{/* Feature Badges Strip */}
-					<div className="flex flex-wrap items-center justify-center gap-3 text-xs font-semibold text-muted-foreground dark:text-zinc-300 pt-1">
-						<span className="flex items-center gap-1.5 px-3.5 py-1.5 rounded-xl bg-background/90 dark:bg-zinc-900 border border-primary/20 dark:border-zinc-800 shadow-2xs backdrop-blur-md">
-							<CheckCircle2 className="size-4 text-primary" /> Free Forever
-						</span>
-						<span className="flex items-center gap-1.5 px-3.5 py-1.5 rounded-lg bg-background/90 dark:bg-zinc-900 border border-primary/20 dark:border-zinc-800 shadow-2xs backdrop-blur-md">
-							<CheckCircle2 className="size-4 text-primary" /> Fully
-							Customizable
-						</span>
-						<span className="flex items-center gap-1.5 px-3.5 py-1.5 rounded-lg bg-background/90 dark:bg-zinc-900 border border-primary/20 dark:border-zinc-800 shadow-2xs backdrop-blur-md">
-							<CheckCircle2 className="size-4 text-primary" /> 100% Type-Safe
-						</span>
-					</div>
+						{/* Interactive CLI Quick Copy Pill Box */}
+						<div className="w-full max-w-md pt-1">
+							<div
+								onClick={handleCopy}
+								title="Click to copy command"
+								className="flex items-center justify-between gap-3 px-4.5 py-3 rounded-xl border border-foreground/[0.06] bg-background/90 hover:border-primary/40 transition-all cursor-pointer group font-mono text-[12px] sm:text-[13px] text-foreground backdrop-blur-md">
+								<div className="flex items-center gap-2.5 overflow-hidden">
+									<span className="text-primary font-semibold font-mono text-[13px] cursor-pointer">
+										&gt;_
+									</span>
+									<span className="font-medium truncate group-hover:text-primary transition-colors">
+										npx shadcn@latest add @algorize-ui/button
+									</span>
+								</div>
+								<div className="flex items-center gap-2 shrink-0">
+									<div className="h-4 w-px bg-border" />
+									<button
+										type="button"
+										className="p-1.5 rounded-lg group-hover:bg-primary/15 text-foreground/40 group-hover:text-primary transition-all cursor-pointer">
+										{copied ? (
+											<Check className="size-4 text-emerald-500" />
+										) : (
+											<Copy className="size-4" />
+										)}
+									</button>
+								</div>
+							</div>
+							<p className="mt-2.5 text-[12px] text-foreground/40">
+								New project? Register the registry once with{" "}
+								<Link
+									href="/docs/nextjs/installation#step-2-register-the-registry"
+									className="font-mono text-primary hover:underline">
+									shadcn registry add @algorize-ui=…
+								</Link>
+							</p>
+						</div>
 
-					{/* Action Buttons */}
-					<div className="pt-4 flex flex-col sm:flex-row items-center justify-center gap-4 w-full sm:w-auto">
-						<Link
-							href="/docs/nextjs/all-components"
-							className="w-full sm:w-auto px-9 py-4 rounded-2xl bg-primary text-primary-foreground text-xs sm:text-sm font-semibold shadow-lg hover:shadow-primary/30 hover:scale-[1.03] active:scale-[0.98] transition-all flex items-center justify-center gap-2">
-							Browse All Components
-							<ArrowRight className="size-4" />
-						</Link>
-						<Link
-							href={links.github}
-							target="_blank"
-							className="w-full sm:w-auto px-9 py-4 rounded-2xl border border-primary/20 dark:border-zinc-800 bg-background/90 dark:bg-zinc-900/80 text-foreground dark:text-zinc-200 text-xs sm:text-sm font-semibold hover:bg-primary/10 hover:border-primary/50 hover:text-primary transition-all flex items-center justify-center gap-2 shadow-sm">
-							<Github className="size-4 text-foreground dark:text-zinc-300" />
-							<span>Star on GitHub</span>
-							<span className="px-2 py-0.5 rounded-full bg-primary/10 text-primary border border-primary/20 ml-1 font-mono text-[10px]">
-								2.1k
+						{/* Feature Badges Strip */}
+						<div className="flex flex-wrap items-center justify-center gap-2 text-[12px] font-medium text-foreground/60 pt-1">
+							<span className="flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-foreground/[0.04]">
+								<CheckCircle2 className="size-3.5 text-primary" /> Free Forever
 							</span>
-						</Link>
+							<span className="flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-foreground/[0.04]">
+								<CheckCircle2 className="size-3.5 text-primary" /> Fully
+								Customizable
+							</span>
+							<span className="flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-foreground/[0.04]">
+								<CheckCircle2 className="size-3.5 text-primary" /> 100% Type-Safe
+							</span>
+						</div>
+
+						{/* Action Buttons */}
+						<div className="pt-2 flex flex-col sm:flex-row items-center justify-center gap-2.5 w-full sm:w-auto">
+							<Link
+								href="/docs/nextjs/all-components"
+								className={cn(BTN_CLAY, "w-full sm:w-auto active:scale-[0.98] transition-all")}>
+								Browse All Components
+								<ArrowRight className="size-4" />
+							</Link>
+							<Link
+								href={links.github}
+								target="_blank"
+								className={cn(BTN_SOFT, "w-full sm:w-auto active:scale-[0.98] transition-all")}>
+								<Github className="size-4" />
+								<span>Star on GitHub</span>
+								<span className={cn(CHIP, "ml-1 font-mono")}>
+									2.1k
+								</span>
+							</Link>
+						</div>
 					</div>
 				</div>
 			</motion.div>
@@ -3686,47 +3736,98 @@ function CTASection() {
    SECTION 7: FOOTER
    ═══════════════════════════════════════════════ */
 
+const FOOTER_GROUPS: {
+	label: string;
+	links: { label: string; href: string; external?: boolean }[];
+}[] = [
+	{
+		label: "Docs",
+		links: [
+			{ label: "Documentation", href: "/docs/nextjs/index" },
+			{ label: "All components", href: "/docs/nextjs/all-components" },
+			{ label: "Installation", href: "/docs/nextjs/installation" },
+		],
+	},
+	{
+		label: "Connect",
+		links: [
+			{ label: "GitHub", href: links.github, external: true },
+			{
+				label: "LinkedIn",
+				href: "https://www.linkedin.com/company/algorizetech/",
+				external: true,
+			},
+		],
+	},
+];
+
 function FooterSection() {
 	return (
-		<footer className="border-t border-border/50 px-6 md:px-8 bg-background">
-			<div className="max-w-[1320px] mx-auto py-10 md:py-12 flex flex-col sm:flex-row items-center justify-between gap-5">
-				<div className="flex flex-wrap items-center justify-center sm:justify-start gap-2.5 sm:gap-3">
-					<div className="size-7 rounded-lg bg-primary/10 flex items-center justify-center border border-primary/20">
-						<Layers className="size-3.5 text-primary" />
+		<footer className="border-t border-foreground/[0.06] bg-background overflow-hidden">
+			<div className={cn(SECTION_INNER, "pt-16 pb-6")}>
+				<div className="flex flex-col gap-10 sm:flex-row sm:items-start sm:justify-between">
+					<div className="max-w-[280px]">
+						<div className="flex items-center gap-2.5">
+							<div className="size-7 rounded-lg bg-primary/15 flex items-center justify-center">
+								<Layers className="size-3.5 text-primary" />
+							</div>
+							<span className="text-[14px] font-semibold text-foreground">
+								Docs UI
+							</span>
+						</div>
+						<p className="mt-3 text-[13px] leading-[1.65] text-foreground/45">
+							React components and interactive blocks, installed through the
+							shadcn CLI.
+						</p>
 					</div>
-					<span className="font-semibold text-base text-foreground tracking-tight">
-						Docs UI
-					</span>
-					<span className="text-[12px] text-muted-foreground font-medium border-l border-border/50 pl-3 ml-0.5">
+
+					<nav
+						aria-label="Footer"
+						className="grid grid-cols-2 gap-x-12 gap-y-8 sm:gap-x-16">
+						{FOOTER_GROUPS.map((group) => (
+							<div key={group.label}>
+								<p className="mb-2 text-[11px] font-semibold uppercase tracking-[0.05em] text-foreground/40">
+									{group.label}
+								</p>
+								<ul className="flex flex-col">
+									{group.links.map((link) => (
+										<li key={link.label}>
+											<Link
+												href={link.href}
+												{...(link.external && {
+													target: "_blank",
+													rel: "noopener noreferrer",
+												})}
+												className="inline-block py-1 text-[13px] font-medium text-foreground/70 hover:text-foreground transition-colors">
+												{link.label}
+											</Link>
+										</li>
+									))}
+								</ul>
+							</div>
+						))}
+					</nav>
+				</div>
+
+				{/* Wordmark */}
+				<div
+					aria-hidden
+					className="mt-14 select-none whitespace-nowrap font-serif font-bold text-[clamp(44px,13vw,160px)] leading-none tracking-[-0.04em] text-foreground/25">
+					Docs <span className="text-primary opacity-80">UI</span>
+				</div>
+
+				<div className="mt-6 flex flex-col gap-1.5 sm:flex-row sm:items-center sm:justify-between text-[12px] text-foreground/40">
+					<span>
 						Built by{" "}
 						<Link
 							href="https://algorizetech.com"
 							target="_blank"
 							rel="noopener noreferrer"
-							className="font-semibold text-foreground hover:text-primary transition-colors underline-offset-4 hover:underline">
+							className="font-medium text-foreground/70 hover:text-foreground transition-colors">
 							AlgorizeTech
 						</Link>
 					</span>
-				</div>
-
-				<div className="flex items-center gap-5 text-[12px] font-semibold text-muted-foreground">
-					<Link
-						href="/docs/nextjs/index"
-						className="hover:text-foreground transition-colors">
-						Documentation
-					</Link>
-					<Link
-						href={links.github}
-						target="_blank"
-						className="hover:text-primary transition-colors">
-						GitHub
-					</Link>
-					<Link
-						href="https://www.linkedin.com/company/algorizetech/"
-						target="_blank"
-						className="hover:text-foreground transition-colors">
-						LinkedIn
-					</Link>
+					<span>Free and open source.</span>
 				</div>
 			</div>
 		</footer>

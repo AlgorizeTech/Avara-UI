@@ -16,11 +16,12 @@ import {
   Underline,
 } from "lucide-react";
 import { useState } from "react";
+import { toBlockColor } from "@/lib/accent";
 
 export default function ToggleGroupDemo({
   variant = "default",
   size = "md",
-  color = "indigo",
+  color: pickedColor = "indigo",
   singleValue: initialSingleValue = "center",
   multipleValue: initialMultipleValue = ["bold"],
   example,
@@ -33,6 +34,7 @@ export default function ToggleGroupDemo({
   /** Single-example modes; omitted renders the full two-group demo. */
   example?: "single" | "multiple" | "sizes" | "disabled";
 }) {
+  const color = toBlockColor(pickedColor);
   // States for the interactive previews
   const [singleValue, setSingleValue] = useState(initialSingleValue);
   const [multipleValue, setMultipleValue] =

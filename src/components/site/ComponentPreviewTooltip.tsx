@@ -237,7 +237,7 @@ export function ComponentPreviewTooltip({
       aria-hidden
       className={cn(
         "fixed z-[60] pointer-events-none overflow-hidden rounded-xl",
-        "border border-border bg-card shadow-2xl shadow-black/20",
+        "border border-foreground/[0.08] bg-popover shadow-2xl shadow-black/20",
         "animate-in fade-in zoom-in-95 duration-200",
         // The panel opens at its full height and settles onto the demo's own
         // once it reports; animating that reads as the preview arriving rather
@@ -253,13 +253,13 @@ export function ComponentPreviewTooltip({
       }}
     >
       <div
-        className="flex items-center justify-between gap-2 border-b border-border/70 bg-muted/40 px-3"
+        className="flex items-center justify-between gap-2 border-b border-foreground/[0.06] bg-foreground/[0.03] px-3"
         style={{ height: HEADER_HEIGHT }}
       >
-        <span className="truncate text-[11px] font-semibold tracking-tight text-foreground">
+        <span className="truncate text-[12px] font-semibold text-foreground">
           {title}
         </span>
-        <span className="flex shrink-0 items-center gap-1.5 text-[10px] font-semibold uppercase tracking-[0.14em] text-muted-foreground">
+        <span className="flex shrink-0 items-center gap-1.5 text-[10px] font-semibold uppercase tracking-[0.08em] text-foreground/30">
           <span className="size-1.5 rounded-full bg-emerald-500" />
           Live preview
         </span>
@@ -292,8 +292,8 @@ export function ComponentPreviewTooltip({
         />
         {!ready && (
           <div className="absolute inset-0 flex flex-col items-center justify-center gap-2.5">
-            <div className="size-5 animate-spin rounded-full border-2 border-border border-t-muted-foreground" />
-            <span className="text-[11px] font-medium text-muted-foreground">
+            <div className="size-5 animate-spin rounded-full border-2 border-foreground/10 border-t-foreground/50" />
+            <span className="text-[11px] font-medium text-foreground/40">
               Loading preview…
             </span>
           </div>

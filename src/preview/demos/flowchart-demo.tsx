@@ -15,18 +15,21 @@ import {
 } from "lucide-react";
 
 export default function FlowchartDemo({
-  color = "indigo",
+  color: pickedColor = "indigo",
   replayKey = 0,
   initialActivePath = "success-path",
   example,
 }: {
-  color?: "blue" | "indigo" | "rose" | "emerald" | "zinc";
+  color?: "blue" | "indigo" | "rose" | "emerald" | "zinc" | "lavender";
   replayKey?: number;
   /** null leaves every route idle until a node is clicked. */
   initialActivePath?: string | null;
   /** "linear" renders the minimal three-node pipeline. */
   example?: "branching" | "linear";
 }) {
+  // The flowchart has no lavender palette of its own. Its "primary" palette
+  // follows --primary, which the sandbox points at the picked swatch.
+  const color = pickedColor === "lavender" ? "primary" : pickedColor;
   if (example === "linear") {
     return (
       <div className="w-full flex items-center justify-center transition-colors duration-300 rounded-2xl bg-white dark:bg-[#09090b] overflow-hidden p-4">

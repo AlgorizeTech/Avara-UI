@@ -65,10 +65,10 @@ export function SolidProgressBar() {
   return (
     <div className="fixed top-0 left-0 w-full h-[3px] z-[10000] pointer-events-none">
       {/* This is your perfectly solid, flat bar. 
-        It uses bg-zinc-900 in Light Mode, and bg-white in Dark Mode. 
+        It is the ink token (bg-foreground), so it follows every theme preset. 
       */}
       <div
-        className="h-full bg-zinc-900 dark:bg-white transition-all ease-out"
+        className="h-full bg-foreground transition-all ease-out"
         style={{
           width: `${progress}%`,
           transitionDuration: progress === 100 ? "300ms" : "400ms",

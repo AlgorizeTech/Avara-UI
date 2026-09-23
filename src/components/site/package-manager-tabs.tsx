@@ -32,7 +32,7 @@ export function PackageManagerTabs({ children, className }: PackageManagerTabsPr
 
   const getIcon = (pm: PackageManager) => {
     const Icon = PACKAGE_MANAGER_ICONS[pm].Icon;
-    return <Icon className="w-4 h-4" />;
+    return <Icon className="size-3.5" />;
   };
 
   return (
@@ -43,7 +43,7 @@ export function PackageManagerTabs({ children, className }: PackageManagerTabsPr
     >
       <TabsList>
         {packageManagers.map((pm) => (
-          <TabsTrigger key={pm} value={pm} className="flex items-center gap-2">
+          <TabsTrigger key={pm} value={pm} className="flex items-center gap-1.5">
             {getIcon(pm)}
             {pm}
           </TabsTrigger>

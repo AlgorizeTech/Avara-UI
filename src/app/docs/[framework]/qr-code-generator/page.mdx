@@ -275,26 +275,26 @@ Explore the QR Code Generator's customizable features, allowing for different co
 
 <div id="generator-docs-best-practices">
 <div className="flex flex-col gap-4 my-6 not-prose">
-  <div className="p-5 rounded-xl border border-indigo-200 dark:border-indigo-900/50 bg-indigo-50/50 dark:bg-indigo-950/20">
-    <h4 className="text-base font-semibold text-indigo-900 dark:text-indigo-300 mb-1">Color Contrast</h4>
-    <p className="text-indigo-800 dark:text-indigo-400/80 text-sm">Ensure a high contrast between the background and foreground colors. A light background (e.g., <code>#FFFFFF</code>) with a dark foreground (e.g., <code>#000000</code>) is recommended for optimal scannability by smartphone cameras.</p>
+  <div className="rounded-xl border border-foreground/[0.06] bg-foreground/[0.03] p-4">
+    <h4 className="font-sans text-[14px] font-semibold text-foreground mb-1">Color Contrast</h4>
+    <p className="text-[13px] leading-relaxed text-foreground/50">Ensure a high contrast between the background and foreground colors. A light background (e.g., <code>#FFFFFF</code>) with a dark foreground (e.g., <code>#000000</code>) is recommended for optimal scannability by smartphone cameras.</p>
   </div>
-  <div className="p-5 rounded-xl border border-emerald-200 dark:border-emerald-900/50 bg-emerald-50/50 dark:bg-emerald-950/20">
-    <h4 className="text-base font-semibold text-emerald-900 dark:text-emerald-300 mb-1">Error Correction Level</h4>
-    <p className="text-emerald-800 dark:text-emerald-400/80 text-sm">Use <strong>L (Low)</strong> for simple URLs to keep the QR code visually clean and sparse. Use <strong>H (High)</strong> if you plan to overlay a custom logo in the center, as it allows up to 30% of the code to be obscured without breaking.</p>
+  <div className="rounded-xl border border-foreground/[0.06] bg-foreground/[0.03] p-4">
+    <h4 className="font-sans text-[14px] font-semibold text-foreground mb-1">Error Correction Level</h4>
+    <p className="text-[13px] leading-relaxed text-foreground/50">Use <strong>L (Low)</strong> for simple URLs to keep the QR code visually clean and sparse. Use <strong>H (High)</strong> if you plan to overlay a custom logo in the center, as it allows up to 30% of the code to be obscured without breaking.</p>
   </div>
 </div>
 </div>
 
 <div id="reader-docs-best-practices">
 <div className="flex flex-col gap-4 my-6 not-prose">
-  <div className="p-5 rounded-xl border border-rose-200 dark:border-rose-900/50 bg-rose-50/50 dark:bg-rose-950/20">
-    <h4 className="text-base font-semibold text-rose-900 dark:text-rose-300 mb-1">Error Handling</h4>
-    <p className="text-rose-800 dark:text-rose-400/80 text-sm">The reader automatically handles invalid or unreadable images. Consider adding UI feedback (e.g., a toast notification) if the <code>onRead</code> callback isn't triggered after a user uploads an invalid file.</p>
+  <div className="rounded-xl border border-foreground/[0.06] bg-foreground/[0.03] p-4">
+    <h4 className="font-sans text-[14px] font-semibold text-foreground mb-1">Error Handling</h4>
+    <p className="text-[13px] leading-relaxed text-foreground/50">The reader automatically handles invalid or unreadable images. Consider adding UI feedback (e.g., a toast notification) if the <code>onRead</code> callback isn't triggered after a user uploads an invalid file.</p>
   </div>
-  <div className="p-5 rounded-xl border border-amber-200 dark:border-amber-900/50 bg-amber-50/50 dark:bg-amber-950/20">
-    <h4 className="text-base font-semibold text-amber-900 dark:text-amber-300 mb-1">Accessibility (a11y)</h4>
-    <p className="text-amber-800 dark:text-amber-400/80 text-sm">The drag-and-drop area is keyboard accessible, but ensure any surrounding labels or descriptions clearly instruct the user to upload a valid QR code image.</p>
+  <div className="rounded-xl border border-primary/15 bg-primary/5 p-4">
+    <h4 className="font-sans text-[14px] font-semibold text-primary mb-1">Accessibility (a11y)</h4>
+    <p className="text-[13px] leading-relaxed text-foreground/50">The drag-and-drop area is keyboard accessible, but ensure any surrounding labels or descriptions clearly instruct the user to upload a valid QR code image.</p>
   </div>
 </div>
 </div>

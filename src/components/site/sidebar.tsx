@@ -67,21 +67,10 @@ const transformNavigation = (): MenuItemType[] => {
 // pin the whole sidebar to whichever framework happened to build first.
 const menuData = transformNavigation();
 
-// Premium Badge Styling
-const getBadgeStyle = (badge: string) => {
-  switch (badge) {
-    case "New":
-      return "bg-primary/15 text-primary border border-primary/30";
-    case "Updated":
-      return "bg-primary/10 text-primary border border-primary/20";
-    case "Tool":
-      return "bg-primary/10 text-primary border border-primary/20";
-    case "Premium":
-      return "bg-primary/15 text-primary border border-primary/30";
-    default:
-      return "bg-primary/10 text-primary border border-primary/20";
-  }
-};
+// Reicon's status badge (their "BETA"): tiny bold uppercase in the accent on
+// an accent tint with a hairline, the same for every label.
+const BADGE =
+  "text-[9px] font-bold uppercase tracking-wider leading-none px-1.5 py-0.5 rounded-md bg-primary/15 text-primary border border-primary/30";
 
 // 2. Recursive active checker: returns true if THIS item or ANY descendant is active
 // Matches on slug, never on a composed href. An href comparison still typechecks
@@ -135,31 +124,27 @@ const MenuItem: React.FC<{
     }
   }, [hasActiveDescendant]);
 
-  // Dynamic visual hierarchy styling based on depth level
+  // Reicon's hierarchy: top-level sections read as small uppercase group
+  // labels; every link below is 13px ink at 55% that darkens on hover, and the
+  // current page is the accent at medium weight with no filled background.
   const getLevelClasses = () => {
     if (level === 0) {
       return cn(
-        "font-semibold text-[14px] py-1.5 px-3",
+        "text-[11px] font-semibold uppercase tracking-[0.08em] py-1.5 px-3",
         isExactActive || isParentActive
-          ? "bg-primary/10 text-primary font-semibold"
-          : "text-zinc-900 dark:text-zinc-100 hover:bg-primary/5 hover:text-primary",
+          ? "text-foreground/60"
+          : "text-foreground/35 hover:text-foreground/60",
       );
     }
-    if (level === 1) {
-      return cn(
-        "font-medium text-[13.5px] py-1.5 px-2.5",
-        // Highlights the Level 1 parent (e.g., "Scroll Stack") when any child is clicked!
-        isExactActive || isParentActive
-          ? "bg-primary/10 text-primary font-semibold"
-          : "text-zinc-600 dark:text-zinc-400 hover:text-primary hover:bg-primary/5",
-      );
-    }
-    // Level 2+ (Sub-children and deeper)
     return cn(
-      "text-[13px] py-1 px-2.5",
-      isExactActive || isParentActive
-        ? "bg-primary/10 text-primary font-medium"
-        : "text-zinc-500 dark:text-zinc-400 hover:text-primary hover:bg-primary/5",
+      "text-[13px] min-h-8 py-[0.35rem] px-2.5",
+      isExactActive
+        ? "text-primary font-medium"
+        : isParentActive
+          // A folder holding the current page (e.g. "Scroll Stack") stays in
+          // the ink so the trail down to the accent-coloured leaf reads.
+          ? "text-foreground font-medium"
+          : "text-foreground/55 hover:text-foreground",
     );
   };
 
@@ -167,7 +152,7 @@ const MenuItem: React.FC<{
     <span className="flex items-center justify-between w-full truncate pr-1">
       <span className="flex items-center gap-2 truncate">
         {hasChildren && (
-          <span className="text-zinc-400 shrink-0 transition-transform duration-200">
+          <span className="text-foreground/35 shrink-0 transition-transform duration-200">
             {actualIsOpen ? (
               <ChevronDown className="w-3.5 h-3.5" />
             ) : (
@@ -179,12 +164,7 @@ const MenuItem: React.FC<{
       </span>
 
       {item.badge && (
-        <span
-          className={cn(
-            "text-[10px] font-semibold px-1.5 py-px rounded-md ml-2 shrink-0",
-            getBadgeStyle(item.badge),
-          )}
-        >
+        <span className={cn(BADGE, "ml-2 shrink-0")}>
           {item.badge}
         </span>
       )}
@@ -192,7 +172,7 @@ const MenuItem: React.FC<{
   );
 
   const baseClasses = cn(
-    "relative flex items-center justify-between rounded-lg transition-all duration-200 select-none w-full text-left cursor-pointer",
+    "relative flex items-center justify-between rounded-md transition-colors duration-150 select-none w-full text-left cursor-pointer",
     getLevelClasses(),
   );
 
@@ -231,7 +211,7 @@ const MenuItem: React.FC<{
             className={cn(
               "overflow-hidden relative flex flex-col gap-0.5 mt-0.5",
               // Dynamic left indentation & guide line for every nested level
-              "ml-3.5 pl-2.5 border-l border-zinc-200 dark:border-zinc-800/80",
+              "ml-3.5 pl-2.5 border-l border-foreground/[0.08]",
             )}
           >
             {item.children!.map((child, index) => (
@@ -288,27 +268,27 @@ const Sidebar = () => {
   const isSearching = searchQuery.trim().length > 0;
 
   return (
-    <aside className="hidden md:flex flex-col w-[240px] shrink-0 h-[calc(100dvh-57px)] sticky top-[57px] border-r border-zinc-200 dark:border-zinc-800/50 bg-white/50 dark:bg-black/20 backdrop-blur-xl">
+    <aside className="hidden md:flex flex-col w-56 shrink-0 h-[calc(100dvh-57px)] sticky top-[57px] bg-background">
       {/* --- STICKY FRAMEWORK SWITCHER + SEARCH INPUT ---
           One control group: the switcher scopes the tree, search filters within
           that scope, and neither may scroll away from the reader. */}
-      <div className="p-3 pb-3 border-b border-zinc-200/60 dark:border-zinc-800/60 bg-white/80 dark:bg-zinc-950/80 backdrop-blur-md sticky top-0 z-20 shrink-0 space-y-2.5">
+      <div className="pt-5 pb-3 pl-0.5 pr-3 bg-background sticky top-0 z-20 shrink-0 space-y-2.5">
         <FrameworkSwitcher />
         <div className="relative flex items-center w-full">
-          <Search className="absolute left-3 w-4 h-4 text-zinc-400 pointer-events-none" />
+          <Search className="absolute left-3 w-3.5 h-3.5 text-foreground/35 pointer-events-none" />
           <input
             type="search"
             placeholder="Search components..."
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
-            className="w-full h-10 bg-zinc-100/60 hover:bg-zinc-100 dark:bg-zinc-800/40 dark:hover:bg-zinc-800/60 border border-zinc-200 dark:border-zinc-800 focus:border-zinc-400 dark:focus:border-zinc-600 rounded-lg pl-9 pr-8 py-2.5 text-sm text-zinc-900 dark:text-zinc-100 placeholder:text-zinc-500 dark:placeholder:text-zinc-400 outline-none transition-all shadow-none [&::-webkit-search-cancel-button]:appearance-none"
+            className="w-full h-9 bg-foreground/[0.03] hover:bg-foreground/[0.05] border border-foreground/10 focus:border-primary/40 rounded-lg pl-8 pr-8 py-2 text-[13px] text-foreground placeholder:text-foreground/35 outline-none transition-colors shadow-none [&::-webkit-search-cancel-button]:appearance-none"
             aria-label="Search documentation components"
           />
           {isSearching && (
             <button
               type="button"
               onClick={() => setSearchQuery("")}
-              className="absolute right-2.5 p-1 rounded-md text-zinc-400 hover:text-zinc-600 dark:hover:text-zinc-200 transition-colors focus:outline-none focus:ring-2 focus:ring-zinc-300 dark:focus:ring-zinc-600"
+              className="absolute right-2.5 p-1 rounded-md text-foreground/35 hover:text-foreground/70 transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-primary/40"
               aria-label="Clear search"
             >
               <X className="w-3.5 h-3.5" />
@@ -318,7 +298,7 @@ const Sidebar = () => {
       </div>
 
       <ScrollArea className="flex-1 w-full">
-        <div className="py-4 px-4 pl-0 flex flex-col h-full">
+        <div className="pt-2 pb-8 pr-3 pl-0 flex flex-col h-full">
 
           {/* --- NAVIGATION TREE --- */}
           <nav
@@ -327,7 +307,7 @@ const Sidebar = () => {
             className="flex-1"
           >
             {filteredMenuData.length > 0 ? (
-              <ul className="space-y-4">
+              <ul className="space-y-5">
                 {filteredMenuData.map((item, index) => (
                   <MenuItem
                     key={`${item.label}-${index}`}
@@ -340,10 +320,10 @@ const Sidebar = () => {
               </ul>
             ) : (
               <div className="pl-4 py-8 text-center flex flex-col items-center justify-center gap-2">
-                <p className="text-sm font-medium text-zinc-900 dark:text-zinc-100">
+                <p className="text-[13px] font-medium text-foreground">
                   No results found
                 </p>
-                <p className="text-xs text-zinc-500 dark:text-zinc-400">
+                <p className="text-[12px] text-foreground/40">
                   We couldn't find anything for "{searchQuery}"
                 </p>
               </div>
@@ -351,17 +331,17 @@ const Sidebar = () => {
           </nav>
 
           {/* Quick Links Section */}
-          <div className="mt-8 pt-4 border-t border-zinc-200 dark:border-zinc-800/50 pl-4">
+          <div className="mt-8 pt-4 border-t border-foreground/[0.06]">
             <Link
               href={docsHref(framework, "index")}
               className={cn(
-                "flex items-center gap-2 py-2 px-3 rounded-lg text-[13.5px] transition-all cursor-pointer",
+                "flex items-center gap-2 min-h-8 py-[0.35rem] px-3 rounded-md text-[13px] transition-colors cursor-pointer",
                 currentSlug === "index"
-                  ? "text-zinc-900 dark:text-white bg-zinc-100 dark:bg-zinc-800/50 font-medium"
-                  : "text-zinc-600 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-zinc-100 hover:bg-zinc-50 dark:hover:bg-zinc-900/50",
+                  ? "text-primary font-medium"
+                  : "text-foreground/55 hover:text-foreground",
               )}
             >
-              <PlayCircle className="w-4 h-4 text-zinc-400 shrink-0" />
+              <PlayCircle className="w-3.5 h-3.5 shrink-0 opacity-70" />
               Getting Started Guide
             </Link>
           </div>

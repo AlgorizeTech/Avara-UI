@@ -12,7 +12,7 @@ const getThemeColorHex = (c: string) => {
     indigo: "#6366f1",
     rose: "#f43f5e",
     emerald: "#10b981",
-    zinc: "#18181b",
+    lavender: "#9b8afb",
   };
   return map[c] || "var(--primary)";
 };

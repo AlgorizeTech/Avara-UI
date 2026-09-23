@@ -6,20 +6,20 @@ import { extractCode } from "@/lib/code";
 Every hero section in the library, on one page. Each is its own registry item with its own preview, install command and props — pick the one that suits the site and install only that. They run from the most opinionated layouts to the general-purpose `HeroBlock` and its five variants at the foot.
 
 <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 my-6 not-prose text-sm">
-  <a href="#honeycomb-hero" className="rounded-xl border border-zinc-200 dark:border-zinc-800 px-4 py-3 hover:border-primary/50 transition-colors"><strong className="block font-semibold text-zinc-900 dark:text-zinc-50">Honeycomb Hero</strong><span className="text-zinc-600 dark:text-zinc-400">A turning honeycomb of hexagonal photographs on a ground that changes colour with each slide — travel, nature, tours.</span></a>
-  <a href="#hero-carousel" className="rounded-xl border border-zinc-200 dark:border-zinc-800 px-4 py-3 hover:border-primary/50 transition-colors"><strong className="block font-semibold text-zinc-900 dark:text-zinc-50">Hero Carousel</strong><span className="text-zinc-600 dark:text-zinc-400">A full-bleed photo hero with a queue of cards and a glass panel.</span></a>
-  <a href="#fashion-hero" className="rounded-xl border border-zinc-200 dark:border-zinc-800 px-4 py-3 hover:border-primary/50 transition-colors"><strong className="block font-semibold text-zinc-900 dark:text-zinc-50">Fashion Hero</strong><span className="text-zinc-600 dark:text-zinc-400">Staggered columns of looks on flat colour — lookbook, store, editorial.</span></a>
-  <a href="#support-hero" className="rounded-xl border border-zinc-200 dark:border-zinc-800 px-4 py-3 hover:border-primary/50 transition-colors"><strong className="block font-semibold text-zinc-900 dark:text-zinc-50">Support Hero</strong><span className="text-zinc-600 dark:text-zinc-400">A frosted bento of cards and counting figures — SaaS and AI products.</span></a>
-  <a href="#collage-hero" className="rounded-xl border border-zinc-200 dark:border-zinc-800 px-4 py-3 hover:border-primary/50 transition-colors"><strong className="block font-semibold text-zinc-900 dark:text-zinc-50">Collage Hero</strong><span className="text-zinc-600 dark:text-zinc-400">A photo collage under a turning badge — school, studio, workshop.</span></a>
-  <a href="#hero-block" className="rounded-xl border border-zinc-200 dark:border-zinc-800 px-4 py-3 hover:border-primary/50 transition-colors"><strong className="block font-semibold text-zinc-900 dark:text-zinc-50">Hero Block</strong><span className="text-zinc-600 dark:text-zinc-400">Five marketing variants from one component — bounce, typing, slider, pet shop, doctor.</span></a>
+  <a href="#honeycomb-hero" className="rounded-xl bg-foreground/[0.03] border border-foreground/[0.06] px-4 py-3 hover:bg-foreground/[0.05] hover:border-primary/30 transition-colors"><strong className="block text-[14px] font-semibold text-foreground">Honeycomb Hero</strong><span className="text-[13px] leading-relaxed text-foreground/50">A turning honeycomb of hexagonal photographs on a ground that changes colour with each slide — travel, nature, tours.</span></a>
+  <a href="#hero-carousel" className="rounded-xl bg-foreground/[0.03] border border-foreground/[0.06] px-4 py-3 hover:bg-foreground/[0.05] hover:border-primary/30 transition-colors"><strong className="block text-[14px] font-semibold text-foreground">Hero Carousel</strong><span className="text-[13px] leading-relaxed text-foreground/50">A full-bleed photo hero with a queue of cards and a glass panel.</span></a>
+  <a href="#fashion-hero" className="rounded-xl bg-foreground/[0.03] border border-foreground/[0.06] px-4 py-3 hover:bg-foreground/[0.05] hover:border-primary/30 transition-colors"><strong className="block text-[14px] font-semibold text-foreground">Fashion Hero</strong><span className="text-[13px] leading-relaxed text-foreground/50">Staggered columns of looks on flat colour — lookbook, store, editorial.</span></a>
+  <a href="#support-hero" className="rounded-xl bg-foreground/[0.03] border border-foreground/[0.06] px-4 py-3 hover:bg-foreground/[0.05] hover:border-primary/30 transition-colors"><strong className="block text-[14px] font-semibold text-foreground">Support Hero</strong><span className="text-[13px] leading-relaxed text-foreground/50">A frosted bento of cards and counting figures — SaaS and AI products.</span></a>
+  <a href="#collage-hero" className="rounded-xl bg-foreground/[0.03] border border-foreground/[0.06] px-4 py-3 hover:bg-foreground/[0.05] hover:border-primary/30 transition-colors"><strong className="block text-[14px] font-semibold text-foreground">Collage Hero</strong><span className="text-[13px] leading-relaxed text-foreground/50">A photo collage under a turning badge — school, studio, workshop.</span></a>
+  <a href="#hero-block" className="rounded-xl bg-foreground/[0.03] border border-foreground/[0.06] px-4 py-3 hover:bg-foreground/[0.05] hover:border-primary/30 transition-colors"><strong className="block text-[14px] font-semibold text-foreground">Hero Block</strong><span className="text-[13px] leading-relaxed text-foreground/50">Five marketing variants from one component — bounce, typing, slider, pet shop, doctor.</span></a>
 </div>
 
 ## Honeycomb Hero
 
 
-A travel hero on a dark ground that shifts colour: a light line over a huge word in your theme's primary on the left, and on the right a honeycomb of hexagonal photographs with a primary hexagonal call to action set among them. The large hexagon is the slide on screen — its photograph is also the background behind everything, tinted with that photograph's own tone, so the colour of the whole section changes with the slide — and the smaller ones are the queue. Every four seconds, or on the arrows at the foot, every hexagon moves one step along the honeycomb: the next photograph grows into the feature spot while the feature slides to the back of the queue. The loop never ends, in either direction.
+A travel hero on a dark ground that shifts colour: a light line over a huge white word on the left, and on the right a honeycomb of hexagonal photographs with a primary hexagonal call to action set among them. The large hexagon is the slide on screen — its photograph is also the background behind everything, tinted with that photograph's own tone, so the colour of the whole section changes with the slide — and the smaller ones are the queue. Every four seconds, or on the arrows at the foot, every hexagon moves one step along the honeycomb: the next photograph grows into the feature spot while the feature slides to the back of the queue. The loop never ends, in either direction.
 
-The honeycomb is measured from the design and laid out in percentages of a fixed-aspect stage anchored to the right edge, so the composition holds at any size and whatever falls past the edge is clipped, as intended. The letters of the accent word that cross the photographs take a light tint of the featured photograph's tone — mint over the gorge, periwinkle over the snow — and ease to the next tint with the slide. The section is always a dark surface, so it reads your theme's dark-mode tokens: the word, the rule, the arrows and the hexagon take `primary`, the hexagon's label `primary-foreground`.
+The honeycomb is measured from the design and laid out in percentages of a fixed-aspect stage anchored to the right edge, so the composition holds at any size and whatever falls past the edge is clipped, as intended. The letters of the word that cross the photographs turn your theme's `primary`, as do the rule, the arrows and the call-to-action hexagon, whose compass and label take `primary-foreground`. They read the theme wherever the section sits, so switching themes repaints them.
 
 export const usageHoneycomb = `"use client";
 
@@ -82,11 +82,11 @@ export default function Hero() {
         },
         {
           prop: "primaryActionLabel",
-          effect: "fills the call-to-action hexagon; a `\\n` in the string breaks the line, as in PLAN / YOUR TRIP.",
+          effect: "fills the call-to-action hexagon; a `\\n` in the string breaks the line, as in Plan / your trip. A compass sits above it; on hover it turns and the hairline hexagon inside the cell swells, and on keyboard focus the hairline goes solid.",
         },
         {
           prop: "accent",
-          effect: "sets `--primary` for the section: the word, the rule, the arrows and the call to action, with the label in `primary-foreground`. Leave it out to use your theme's primary — its dark-mode value, since the section is always dark. `background` is the tone for photographs without one: a deep shade of the primary by default.",
+          effect: "sets `--primary` for the section: the letters of the word that cross the photographs, the rule, the arrows and the call to action, with its label in `primary-foreground`. Leave it out to follow your theme's primary. `background` is the tone for photographs without one: a deep shade of the primary by default.",
         },
       ],
       usage: usageHoneycomb,
@@ -142,7 +142,7 @@ export default function Hero() {
       <tr>
         <td><code>titleOverlapColor</code></td>
         <td><code>string</code></td>
-        <td>a light tint of the slide's tone</td>
+        <td>theme primary</td>
         <td>The letters of the accent word that cross the photographs.</td>
       </tr>
       <tr>
@@ -155,7 +155,7 @@ export default function Hero() {
         <td><code>primaryActionLabel</code>, <code>primaryActionHref</code></td>
         <td><code>string</code></td>
         <td><code>"Plan\nyour trip"</code>, <code>"#"</code></td>
-        <td>The call-to-action hexagon, in <code>primary</code>; <code>\n</code> breaks the line.</td>
+        <td>The call-to-action hexagon, in <code>primary</code> with a compass above the label; <code>\n</code> breaks the line.</td>
       </tr>
       <tr>
         <td><code>images</code></td>
