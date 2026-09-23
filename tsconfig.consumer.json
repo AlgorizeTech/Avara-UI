@@ -95,6 +95,7 @@
     "src/components/custom/blocks/HorizontalScrollStackBlock.tsx",
     "src/components/custom/blocks/Icons.tsx",
     "src/components/custom/blocks/ImageCompareBlock.tsx",
+    "src/components/custom/blocks/ImageViewerBlock.tsx",
     "src/components/custom/blocks/ImageWallBlock.tsx",
     "src/components/custom/blocks/InputBlock.tsx",
     "src/components/custom/blocks/Invoice.tsx",

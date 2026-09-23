@@ -102,7 +102,7 @@ const getDotClass = (ts: number) => {
         {({ selectedIds, clearSelection }) => (
           
              alert(\`Edit \${selectedIds.length} items\`)}
-              className="flex items-center gap-1 px-2 py-1 rounded-md text-[11px] sm:text-[12px] font-bold bg-white/20 hover:bg-white/30 text-white transition-colors cursor-pointer"
+              className="flex items-center gap-1 px-2 py-1 rounded-md text-[11px] sm:text-[12px] font-semibold bg-white/20 hover:bg-white/30 text-white transition-colors cursor-pointer"
             >
                Edit
             
@@ -110,7 +110,7 @@ const getDotClass = (ts: number) => {
                 handleBatchDelete(selectedIds);
                 clearSelection();
               }}
-              className="flex items-center gap-1 px-2 py-1 rounded-md text-[11px] sm:text-[12px] font-bold bg-black/20 hover:bg-black/30 text-white transition-colors cursor-pointer"
+              className="flex items-center gap-1 px-2 py-1 rounded-md text-[11px] sm:text-[12px] font-semibold bg-black/20 hover:bg-black/30 text-white transition-colors cursor-pointer"
             >
                Delete
 

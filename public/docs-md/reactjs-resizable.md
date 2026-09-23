@@ -52,7 +52,7 @@ function Editor() {
 
           &lt;h2{" "}
           className=
-          &quot;text-2xl font-bold&quot;
+          &quot;text-2xl font-semibold&quot;
           &gt;
           John Doe
           &lt;/h2&gt;

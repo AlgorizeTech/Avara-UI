@@ -77,6 +77,7 @@ export const sandboxNames = [
   "honeycomb-hero",
   "horizontal-scroll-stack",
   "image-compare",
+  "image-viewer",
   "image-wall",
   "infrastructure-topology",
   "input",

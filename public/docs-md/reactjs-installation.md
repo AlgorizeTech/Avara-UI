@@ -117,7 +117,7 @@ While you are here, delete `src/App.css` along with the `import "./App.css";` li
 npm run dev
 ```
 
-Put the classes `text-3xl font-bold underline` on a heading in `src/App.tsx`. If it renders
+Put the classes `text-3xl font-semibold underline` on a heading in `src/App.tsx`. If it renders
 large, bold and underlined, Tailwind is compiling and you can move on to the path aliases. If it
 renders as plain text, step 3 is the thing to re-check.
 

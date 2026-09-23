@@ -54,7 +54,9 @@ export function revealThemeAt(x: number, y: number, apply: () => void) {
   });
 }
 
-export const ThemeSwitcher = () => {
+import { cn } from "@/lib/utils";
+
+export const ThemeSwitcher = ({ className }: { className?: string } = {}) => {
   const { theme, setTheme } = useTheme();
   const [mounted, setMounted] = useState(false);
 
@@ -73,7 +75,10 @@ export const ThemeSwitcher = () => {
   return (
     <button
       onClick={toggleTheme}
-      className="flex items-center rounded-md p-2 text-sm transition-colors text-zinc-950 dark:text-zinc-50 cursor-pointer"
+      className={cn(
+        "flex items-center justify-center rounded-md p-2 text-sm transition-colors text-zinc-950 dark:text-zinc-50 cursor-pointer",
+        className
+      )}
       aria-label="Toggle Theme"
     >
       {mounted ? (isDark ? <Moon size={16} /> : <Sun size={16} />) : <div className="w-4 h-4" />}
