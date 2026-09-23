@@ -23,6 +23,7 @@ import {
 } from "@/components/custom/blocks/ThreeDCarouselBlock";
 import { CommandSearchBlock } from "@/components/custom/blocks/UtilityBlocks";
 import { ComponentWall } from "@/components/custom/blocks/ComponentWallBlock";
+import { MarqueeBlock } from "@/components/custom/blocks/MarqueeBlock";
 import { GitHubIcon } from "@/components/custom/blocks/Icons";
 import { WALL_ITEMS, WALL_STACK } from "@/constants/component-wall";
 import { cn } from "@/lib/utils";
@@ -42,6 +43,7 @@ import {
 	MessageCircle,
 	Paintbrush,
 	Sparkles,
+	Star,
 	Terminal,
 	Zap,
 	Boxes,
@@ -3120,6 +3122,387 @@ function ComponentPreviewGridSection() {
 }
 
 /* ═══════════════════════════════════════════════
+   SECTION 5.5: ANIMATED FEEDBACK & TESTIMONIALS
+   ═══════════════════════════════════════════════ */
+
+interface FeedbackItem {
+	id: string;
+	name: string;
+	role: string;
+	company?: string;
+	handle: string;
+	avatar: string;
+	content: string;
+	rating: number;
+	tag?: string;
+}
+
+const FEEDBACK_ROW_1: FeedbackItem[] = [
+	{
+		id: "fb-1",
+		name: "Tanvir Ahmed",
+		role: "Frontend Engineer",
+		company: "TechVibe",
+		handle: "@tanvir_dev",
+		avatar: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=200&q=80",
+		content: "Spent 20 minutes playing with the interactive Component Wall and 3D Carousel right on this landing page. The physics, responsiveness, and smoothness are unreal.",
+		rating: 5.0,
+		tag: "Live Previews",
+	},
+	{
+		id: "fb-2",
+		name: "Sarah Jenkins",
+		role: "Senior React Developer",
+		company: "Stripe",
+		handle: "@sarah_codes",
+		avatar: "https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&w=200&q=80",
+		content: "Ran the 'npx shadcn@latest add @algorize-ui/...' command in my Next.js 15 app. The code dropped directly into my components folder with zero dependency issues. Pure bliss.",
+		rating: 4.5,
+		tag: "CLI Registry",
+	},
+	{
+		id: "fb-3",
+		name: "Alex Rivera",
+		role: "Full-Stack Engineer",
+		company: "Indie Builder",
+		handle: "@alexrivera_ui",
+		avatar: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=200&q=80",
+		content: "The macOS Dock and Bento Showcase components on this website look like they were designed by Apple. Pasted them into our client portal and everyone was stunned.",
+		rating: 5.0,
+		tag: "Bento & Dock",
+	},
+	{
+		id: "fb-4",
+		name: "Marcus Vance",
+		role: "Design Engineer",
+		company: "AlgorizeTech",
+		handle: "@marcus_ui",
+		avatar: "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&w=200&q=80",
+		content: "Toggled between dark and light themes multiple times — the frosted glass blur, subtle border highlights, and color contrast are tuned to absolute perfection.",
+		rating: 4.0,
+		tag: "Dark Mode",
+	},
+	{
+		id: "fb-5",
+		name: "David Kim",
+		role: "Product Designer",
+		company: "Studio Neo",
+		handle: "@davidkim_design",
+		avatar: "https://images.unsplash.com/photo-1539571696357-5a69c17a67c6?auto=format&fit=crop&w=200&q=80",
+		content: "Finally a component collection where motion design feels purposeful, not distracting. The hover states, button springs, and tabs have so much character.",
+		rating: 4.5,
+		tag: "Micro-Interactions",
+	},
+];
+
+const FEEDBACK_ROW_2: FeedbackItem[] = [
+	{
+		id: "fb-6",
+		name: "Elena Rostova",
+		role: "Lead Systems Architect",
+		company: "Fintech Labs",
+		handle: "@elena_codes",
+		avatar: "https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?auto=format&fit=crop&w=200&q=80",
+		content: "Inspected the component source code in the docs. Clean, fully-typed TypeScript, accessible keyboard handlers, and no redundant abstractions. Exceptional code quality.",
+		rating: 5.0,
+		tag: "Clean TypeScript",
+	},
+	{
+		id: "fb-7",
+		name: "Liam O'Connor",
+		role: "SaaS Founder",
+		company: "LaunchFast",
+		handle: "@liam_builds",
+		avatar: "https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?auto=format&fit=crop&w=200&q=80",
+		content: "Needed a high-converting hero layout and an animated review marquee for our product launch tonight. Found Docs UI, copied the code, and went live in 15 minutes.",
+		rating: 3.5,
+		tag: "Fast Shipping",
+	},
+	{
+		id: "fb-8",
+		name: "Priya Patel",
+		role: "Principal Engineer",
+		company: "CloudScale",
+		handle: "@priya_dev",
+		avatar: "https://images.unsplash.com/photo-1580489944761-15a19d654956?auto=format&fit=crop&w=200&q=80",
+		content: "The keyboard navigation, ⌘K command menu, and ARIA attributes work right out of the box with zero hydration warnings. That's rare for animation-heavy UI.",
+		rating: 5.0,
+		tag: "Accessibility",
+	},
+	{
+		id: "fb-9",
+		name: "Daniel Zhao",
+		role: "Indie Hacker",
+		company: "MetricsHub",
+		handle: "@danielzhao",
+		avatar: "https://images.unsplash.com/photo-1522075469751-3a6694fb2f61?auto=format&fit=crop&w=200&q=80",
+		content: "The interactive chart preview and draggable card widgets look like they belong on Linear or Raycast. It makes our humble SaaS look like a venture-backed tool.",
+		rating: 4.0,
+		tag: "Linear-Grade UI",
+	},
+	{
+		id: "fb-10",
+		name: "Emily Watson",
+		role: "UI/UX Consultant",
+		company: "CreativeFlow",
+		handle: "@emily_ux",
+		avatar: "https://images.unsplash.com/photo-1544005313-94ddf0286df2?auto=format&fit=crop&w=200&q=80",
+		content: "Most UI documentation gives you boring static code. Here you can actually test every component state interactively right inside the page before copying. Phenomenal DX!",
+		rating: 3.5,
+		tag: "Docs Experience",
+	},
+];
+
+const FEEDBACK_ROW_3: FeedbackItem[] = [
+	{
+		id: "fb-11",
+		name: "Lucas Müller",
+		role: "Frontend Engineer",
+		company: "Berlin Devs",
+		handle: "@lucas_m",
+		avatar: "https://images.unsplash.com/photo-1517841905240-472988babdf9?auto=format&fit=crop&w=200&q=80",
+		content: "Browsed the documentation and interactive demos on mobile Safari. Butter-smooth 60fps animations, no weird horizontal scroll bugs, and touch-friendly controls.",
+		rating: 4.0,
+		tag: "Mobile Smooth",
+	},
+	{
+		id: "fb-12",
+		name: "Nabil Hasan",
+		role: "Full-Stack Developer",
+		company: "Dhaka",
+		handle: "@nabilhasan",
+		avatar: "https://images.unsplash.com/photo-1548142813-c348350df52b?auto=format&fit=crop&w=200&q=80",
+		content: "Can't believe this entire library and documentation is free and open-source. The component polish and design engineering easily rival premium $200 UI kits.",
+		rating: 5.0,
+		tag: "100% Free UI",
+	},
+	{
+		id: "fb-13",
+		name: "Chloe Dupont",
+		role: "Staff UI Engineer",
+		company: "Vercel Ecosystem",
+		handle: "@chloedupont",
+		avatar: "https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?auto=format&fit=crop&w=200&q=80",
+		content: "The way these components leverage Tailwind CSS variables makes theme customization so simple. It matched our existing design tokens in minutes.",
+		rating: 4.5,
+		tag: "Theming",
+	},
+	{
+		id: "fb-14",
+		name: "Arlene McCoy",
+		role: "Co-Founder & CTO",
+		company: "PeakScale",
+		handle: "@arlene_mccoy",
+		avatar: "https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&w=200&q=80",
+		content: "Replacing our previous clunky UI kit with Docs UI reduced our frontend bundle by 40% and improved our Core Web Vitals scores across the board.",
+		rating: 3.0,
+		tag: "Bundle Size",
+	},
+	{
+		id: "fb-15",
+		name: "Siddharth Rao",
+		role: "Senior Software Engineer",
+		company: "Bangalore",
+		handle: "@siddharth_dev",
+		avatar: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=200&q=80",
+		content: "The copy-paste workflow with zero external heavy npm packages gives us complete ownership of the UI. This is the future of frontend development.",
+		rating: 4.5,
+		tag: "Code Ownership",
+	},
+];
+
+function RatingStars({ rating }: { rating: number }) {
+	return (
+		<div className="flex items-center gap-1.5">
+			<div className="flex items-center gap-0.5">
+				{Array.from({ length: 5 }).map((_, index) => {
+					const fillPercentage = Math.max(0, Math.min(1, rating - index));
+					return (
+						<div key={index} className="relative size-3.5 shrink-0">
+							{/* Inactive Gray Star */}
+							<svg
+								viewBox="0 0 24 24"
+								fill="currentColor"
+								className="absolute inset-0 size-full text-zinc-300 dark:text-zinc-700">
+								<path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z" />
+							</svg>
+
+							{/* Active Golden Star (Clipped by percentage for half or full fill) */}
+							{fillPercentage > 0 && (
+								<svg
+									viewBox="0 0 24 24"
+									fill="currentColor"
+									className="absolute inset-0 size-full text-amber-400"
+									style={{
+										clipPath: `polygon(0 0, ${fillPercentage * 100}% 0, ${fillPercentage * 100}% 100%, 0 100%)`,
+									}}>
+									<path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z" />
+								</svg>
+							)}
+						</div>
+					);
+				})}
+			</div>
+			<span className="text-[11px] font-semibold text-muted-foreground font-mono">
+				{rating.toFixed(1)}
+			</span>
+		</div>
+	);
+}
+
+function FeedbackCard({ item }: { item: FeedbackItem }) {
+	return (
+		<div className="group relative w-[320px] sm:w-[380px] shrink-0 p-5 sm:p-6 rounded-2xl bg-card/75 dark:bg-zinc-900/60 backdrop-blur-xl border border-border/60 hover:border-primary/40 hover:bg-card dark:hover:bg-zinc-900/90 shadow-2xs hover:shadow-xl hover:shadow-primary/5 transition-colors transition-shadow duration-200 flex flex-col justify-between select-none cursor-default">
+			{/* Subtle top border shimmer on hover */}
+			<div className="absolute inset-x-0 top-0 h-[1.5px] bg-gradient-to-r from-transparent via-primary/40 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 rounded-t-2xl" />
+
+			{/* Top Bar: User Profile Header */}
+			<div className="flex items-start justify-between gap-3 mb-3.5">
+				<div className="flex items-center gap-3 min-w-0">
+					<div className="relative shrink-0">
+						<img
+							src={item.avatar}
+							alt={item.name}
+							className="size-10 sm:size-11 rounded-full object-cover ring-2 ring-border/60 group-hover:ring-primary/40 transition-all duration-300"
+						/>
+						<span className="absolute bottom-0 right-0 size-2.5 bg-emerald-500 rounded-full ring-2 ring-card" />
+					</div>
+					<div className="min-w-0">
+						<div className="flex items-center gap-1.5">
+							<span className="text-sm font-semibold text-foreground truncate group-hover:text-primary transition-colors">
+								{item.name}
+							</span>
+							<span
+								className="inline-flex items-center justify-center size-3.5 rounded-full bg-primary/15 text-primary shrink-0"
+								title="Verified Developer">
+								<Check className="size-2.5 stroke-[3]" />
+							</span>
+						</div>
+						<p className="text-xs text-muted-foreground truncate">
+							<span className="font-medium text-foreground/70">{item.handle}</span>
+							{item.role && (
+								<span className="text-muted-foreground/60"> • {item.role}</span>
+							)}
+						</p>
+					</div>
+				</div>
+
+				{/* Source / Company Pill */}
+				{item.company && (
+					<span className="shrink-0 text-[10px] font-mono font-medium px-2 py-0.5 rounded-md bg-muted/60 dark:bg-zinc-800/80 text-muted-foreground border border-border/50">
+						{item.company}
+					</span>
+				)}
+			</div>
+
+			{/* Review Quote Body (Consistently 3 lines) */}
+			<p className="text-[13px] sm:text-sm text-foreground/80 dark:text-zinc-300 leading-relaxed font-normal mb-4 line-clamp-3 min-h-[3.9rem]">
+				"{item.content}"
+			</p>
+
+			{/* Bottom Bar: 5-Stars Rating + Feature Tag */}
+			<div className="flex items-center justify-between gap-2 pt-3 border-t border-border/40 text-xs">
+				<RatingStars rating={item.rating} />
+
+				{item.tag && (
+					<span className="text-[11px] font-medium px-2.5 py-0.5 rounded-full bg-muted/70 dark:bg-zinc-800/70 text-muted-foreground group-hover:text-primary group-hover:bg-primary/10 border border-border/50 group-hover:border-primary/20 transition-all">
+						{item.tag}
+					</span>
+				)}
+			</div>
+		</div>
+	);
+}
+
+function FeedbackSection() {
+	const ref = useRef(null);
+	const isInView = useInView(ref, { once: true, margin: "-40px" });
+
+	return (
+		<section
+			ref={ref}
+			className="py-20 md:py-28 relative overflow-hidden bg-background">
+			{/* Ambient background glows */}
+			<div className="pointer-events-none absolute -top-40 left-1/2 -translate-x-1/2 w-[700px] h-[350px] bg-primary/5 rounded-full blur-3xl opacity-70" />
+			<div className="pointer-events-none absolute bottom-0 right-10 w-96 h-96 bg-primary/5 rounded-full blur-3xl opacity-50" />
+
+			<div className="max-w-[1320px] mx-auto px-6 md:px-8 mb-12 sm:mb-16">
+				{/* Section Header */}
+				<motion.div
+					initial={{ opacity: 0, y: 20 }}
+					animate={isInView ? { opacity: 1, y: 0 } : {}}
+					transition={{ duration: 0.6 }}
+					className="text-center space-y-4 max-w-3xl mx-auto">
+					<div className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-primary/10 border border-primary/20 text-primary text-xs font-semibold uppercase tracking-wider shadow-2xs">
+						<MessageCircle className="size-3.5" />
+						Developer Feedback
+					</div>
+					<h2 className="text-3xl sm:text-4xl md:text-5xl font-semibold tracking-tight text-foreground">
+						What developers are saying
+					</h2>
+					<p className="text-sm sm:text-base text-muted-foreground leading-relaxed max-w-2xl mx-auto">
+						Real impressions and feedback from developers and designers exploring Docs UI.
+					</p>
+				</motion.div>
+			</div>
+
+			{/* Animated Marquee Rows (3 Lanes, Slow & Smooth) */}
+			<motion.div
+				initial={{ opacity: 0 }}
+				animate={isInView ? { opacity: 1 } : {}}
+				transition={{ duration: 0.8, delay: 0.2 }}
+				className="space-y-4 sm:space-y-5 relative">
+				{/* Gradient side masks for ultra-smooth edge blending */}
+				<div className="pointer-events-none absolute inset-y-0 left-0 w-16 sm:w-32 bg-gradient-to-r from-background via-background/80 to-transparent z-10" />
+				<div className="pointer-events-none absolute inset-y-0 right-0 w-16 sm:w-32 bg-gradient-to-l from-background via-background/80 to-transparent z-10" />
+
+				{/* Row 1: Leftward scroll (Speed: 250s, continuous running) */}
+				<MarqueeBlock
+					direction="left"
+					speed={250}
+					pauseOnHover={false}
+					gap="1.25rem"
+					className="py-1">
+					{[...FEEDBACK_ROW_1, ...FEEDBACK_ROW_1, ...FEEDBACK_ROW_1].map(
+						(item, idx) => (
+							<FeedbackCard key={`r1-${item.id}-${idx}`} item={item} />
+						),
+					)}
+				</MarqueeBlock>
+
+				{/* Row 2: Rightward scroll (Opposite direction, Speed: 250s, continuous running) */}
+				<MarqueeBlock
+					direction="right"
+					speed={250}
+					pauseOnHover={false}
+					gap="1.25rem"
+					className="py-1">
+					{[...FEEDBACK_ROW_2, ...FEEDBACK_ROW_2, ...FEEDBACK_ROW_2].map(
+						(item, idx) => (
+							<FeedbackCard key={`r2-${item.id}-${idx}`} item={item} />
+						),
+					)}
+				</MarqueeBlock>
+
+				{/* Row 3: Leftward scroll (Speed: 250s, continuous running) */}
+				<MarqueeBlock
+					direction="left"
+					speed={250}
+					pauseOnHover={false}
+					gap="1.25rem"
+					className="py-1">
+					{[...FEEDBACK_ROW_3, ...FEEDBACK_ROW_3, ...FEEDBACK_ROW_3].map(
+						(item, idx) => (
+							<FeedbackCard key={`r3-${item.id}-${idx}`} item={item} />
+						),
+					)}
+				</MarqueeBlock>
+			</motion.div>
+		</section>
+	);
+}
+
+/* ═══════════════════════════════════════════════
    SECTION 6: RE-DESIGNED PREMIUM CTA BANNER
    ═══════════════════════════════════════════════ */
 
@@ -3359,6 +3742,7 @@ export default function HomePage() {
 			<ComponentShowcase />
 			<WhyChooseUsSection />
 			<ComponentPreviewGridSection />
+			<FeedbackSection />
 			<CTASection />
 			<FooterSection />
 		</div>

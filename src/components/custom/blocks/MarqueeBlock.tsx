@@ -59,11 +59,20 @@ export const MarqueeBlock = forwardRef<HTMLDivElement, MarqueeProps>(
 
     const uniqueId = React.useId().replace(/:/g, "");
 
+    const animationName = isVertical
+      ? isReverse
+        ? `marquee-v-down-${uniqueId}`
+        : `marquee-v-up-${uniqueId}`
+      : isReverse
+        ? `marquee-h-right-${uniqueId}`
+        : `marquee-h-left-${uniqueId}`;
+
     return (
       <div
         ref={ref}
         className={cn(
           "group relative flex overflow-hidden",
+          `marquee-container-${uniqueId}`,
           isVertical ? "flex-col" : "flex-row",
           fade && isVertical && "mask-vertical",
           fade && !isVertical && "mask-horizontal",
@@ -82,28 +91,49 @@ export const MarqueeBlock = forwardRef<HTMLDivElement, MarqueeProps>(
           .marquee-inner-${uniqueId} {
             display: flex;
             flex-shrink: 0;
-            justify-content: space-around;
+            justify-content: flex-start;
             gap: var(--marquee-gap);
-            animation: ${isVertical ? "marquee-vertical" : "marquee-horizontal"} var(--marquee-duration) linear infinite;
-            animation-direction: ${isReverse ? "reverse" : "normal"};
+            will-change: transform;
+            transform: translateZ(0);
+            backface-visibility: hidden;
+            animation: ${animationName} var(--marquee-duration) linear infinite;
           }
           
-          /* THE FIX: Hardcode the pause logic directly into the injected stylesheet so it never fails */
-          ${pauseOnHover ? `.group:hover .marquee-inner-${uniqueId} { animation-play-state: paused; }` : ""}
+          /* Instant smooth pause without jumping or browser matrix snap */
+          ${pauseOnHover ? `
+            .marquee-container-${uniqueId}:hover .marquee-inner-${uniqueId},
+            .marquee-inner-${uniqueId}:hover {
+              animation-play-state: paused !important;
+            }
+          ` : ""}
 
-          /* Hold still for people who asked for less motion; the content is all still there. */
+          /* Hold still for people who asked for less motion */
           @media (prefers-reduced-motion: reduce) {
-            .marquee-inner-${uniqueId} { animation-play-state: paused; }
+            .marquee-inner-${uniqueId} { animation-play-state: paused !important; }
           }
 
-          @keyframes marquee-horizontal {
-            from { transform: translateX(0); }
-            to { transform: translateX(calc(-100% - var(--marquee-gap))); }
+          /* Leftward scroll: from 0 to -100% */
+          @keyframes marquee-h-left-${uniqueId} {
+            from { transform: translate3d(0, 0, 0); }
+            to { transform: translate3d(calc(-100% - var(--marquee-gap)), 0, 0); }
           }
 
-          @keyframes marquee-vertical {
-            from { transform: translateY(0); }
-            to { transform: translateY(calc(-100% - var(--marquee-gap))); }
+          /* Rightward scroll: from -100% to 0, running forward so pause never jumps! */
+          @keyframes marquee-h-right-${uniqueId} {
+            from { transform: translate3d(calc(-100% - var(--marquee-gap)), 0, 0); }
+            to { transform: translate3d(0, 0, 0); }
+          }
+
+          /* Vertical up scroll */
+          @keyframes marquee-v-up-${uniqueId} {
+            from { transform: translate3d(0, 0, 0); }
+            to { transform: translate3d(0, calc(-100% - var(--marquee-gap)), 0); }
+          }
+
+          /* Vertical down scroll */
+          @keyframes marquee-v-down-${uniqueId} {
+            from { transform: translate3d(0, calc(-100% - var(--marquee-gap)), 0); }
+            to { transform: translate3d(0, 0, 0); }
           }
 
           .mask-horizontal {
@@ -117,7 +147,7 @@ export const MarqueeBlock = forwardRef<HTMLDivElement, MarqueeProps>(
           }
         `}</style>
 
-        {/* First track */}
+        {/* Track 1 */}
         <div
           className={cn(
             `marquee-inner-${uniqueId}`,
@@ -128,7 +158,29 @@ export const MarqueeBlock = forwardRef<HTMLDivElement, MarqueeProps>(
           {children}
         </div>
 
-        {/* Second track (Duplicate for seamless loop) */}
+        {/* Track 2 (Duplicate for seamless loop) */}
+        <div
+          className={cn(
+            `marquee-inner-${uniqueId}`,
+            isVertical ? "flex-col" : "flex-row",
+          )}
+          aria-hidden="true"
+        >
+          {children}
+        </div>
+
+        {/* Track 3 (Guarantees zero-gap on reverse/rightward scroll and ultra-wide screens) */}
+        <div
+          className={cn(
+            `marquee-inner-${uniqueId}`,
+            isVertical ? "flex-col" : "flex-row",
+          )}
+          aria-hidden="true"
+        >
+          {children}
+        </div>
+
+        {/* Track 4 (Guarantees zero-gap on reverse/rightward scroll and ultra-wide screens) */}
         <div
           className={cn(
             `marquee-inner-${uniqueId}`,
