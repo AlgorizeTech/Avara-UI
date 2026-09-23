@@ -88,8 +88,8 @@ export interface BookFlipHandle {
 const DEFAULT_PAGES: PageFlipLeaf[] = [
     {
         id: 1,
-        frontImage: "https://images.unsplash.com/photo-1518709268805-4e9042af9f23?auto=format&fit=crop&w=1200&q=80",
-        backImage: "https://images.unsplash.com/photo-1448375240586-882707db888b?auto=format&fit=crop&w=1200&q=80",
+        frontImage: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_1200,c_limit/v1790146211/photo-1518709268805-4e9042af9f23-1790146212209.jpg",
+        backImage: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_1200,c_limit/v1790145141/photo-1448375240586-882707db888b-1790145143491.jpg",
         frontTitle: "TERRA INCOGNITA",
         frontSubtitle: "A Visual Exploration of Earth's Most Remote Frontiers",
         frontBadge: "LIMITED EDITION",
@@ -101,8 +101,8 @@ const DEFAULT_PAGES: PageFlipLeaf[] = [
     },
     {
         id: 2,
-        frontImage: "https://images.unsplash.com/photo-1434394354979-a235cd36269d?auto=format&fit=crop&w=1200&q=80",
-        backImage: "https://images.unsplash.com/photo-1469854523086-cc02fe5d8800?auto=format&fit=crop&w=1200&q=80",
+        frontImage: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_1200,c_limit/v1790145141/photo-1434394354979-a235cd36269d-1790145143490.jpg",
+        backImage: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_1200,c_limit/v1790145141/photo-1469854523086-cc02fe5d8800-1790145143492.jpg",
         frontTitle: "Cascading Emerald",
         frontSubtitle: "Basalt Columns & Rainforest Mist",
         frontBadge: "Plate 02",
@@ -114,8 +114,8 @@ const DEFAULT_PAGES: PageFlipLeaf[] = [
     },
     {
         id: 3,
-        frontImage: "https://images.unsplash.com/photo-1517411032315-54ef2cb783bb?auto=format&fit=crop&w=1200&q=80",
-        backImage: "https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?auto=format&fit=crop&w=1200&q=80",
+        frontImage: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_1200,c_limit/v1790146210/photo-1517411032315-54ef2cb783bb-1790146212209.jpg",
+        backImage: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_1200,c_limit/v1790145141/photo-1464822759023-fed622ff2c3b-1790145143491.jpg",
         frontTitle: "Celestial Auroras",
         frontSubtitle: "Polar Nights & Luminous Fjord Skies",
         frontBadge: "Plate 04",
@@ -127,8 +127,8 @@ const DEFAULT_PAGES: PageFlipLeaf[] = [
     },
     {
         id: 4,
-        frontImage: "https://images.unsplash.com/photo-1509316975850-ff9c5deb0cd9?auto=format&fit=crop&w=1200&q=80",
-        backImage: "https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=1200&q=80",
+        frontImage: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_1200,c_limit/v1790146210/photo-1509316975850-ff9c5deb0cd9-1790146212209.jpg",
+        backImage: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_1200,c_limit/v1790146210/photo-1507525428034-b723cf961d3e-1790146212208.jpg",
         frontTitle: "Velvet Saharas",
         frontSubtitle: "Wind Sculpted Dunes & Sunset Glow",
         frontBadge: "Plate 06",
@@ -140,8 +140,8 @@ const DEFAULT_PAGES: PageFlipLeaf[] = [
     },
     {
         id: 5,
-        frontImage: "https://images.unsplash.com/photo-1500530855697-b586d89ba3ee?auto=format&fit=crop&w=1200&q=80",
-        backImage: "https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=1200&q=80",
+        frontImage: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_1200,c_limit/v1790145142/photo-1500530855697-b586d89ba3ee-1790145143493.jpg",
+        backImage: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_1200,c_limit/v1790146210/photo-1506744038136-46273834b3fb-1790146212208.jpg",
         frontTitle: "Zen Bamboo Sanctuary",
         frontSubtitle: "Whispering Canopy & Sunlit Paths",
         frontBadge: "Plate 08",
@@ -153,8 +153,8 @@ const DEFAULT_PAGES: PageFlipLeaf[] = [
     },
     {
         id: 6,
-        frontImage: "https://images.unsplash.com/photo-1476820865390-c52aeebb9891?auto=format&fit=crop&w=1200&q=80",
-        backImage: "https://images.unsplash.com/photo-1454496522488-7a8e488e8606?auto=format&fit=crop&w=1200&q=80",
+        frontImage: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_1200,c_limit/v1790145142/photo-1476820865390-c52aeebb9891-1790145143492.jpg",
+        backImage: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_1200,c_limit/v1790145141/photo-1454496522488-7a8e488e8606-1790145143491.jpg",
         frontTitle: "Golden Autumn",
         frontSubtitle: "Amber Woods & Crisp Air",
         frontBadge: "Plate 10",
@@ -166,8 +166,8 @@ const DEFAULT_PAGES: PageFlipLeaf[] = [
     },
     {
         id: 7,
-        frontImage: "https://images.unsplash.com/photo-1426604966848-d7adac402bff?auto=format&fit=crop&w=1200&q=80",
-        backImage: "https://images.unsplash.com/photo-1519681393784-d120267933ba?auto=format&fit=crop&w=1200&q=80",
+        frontImage: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_1200,c_limit/v1790145140/photo-1426604966848-d7adac402bff-1790145143490.jpg",
+        backImage: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_1200,c_limit/v1790146211/photo-1519681393784-d120267933ba-1790146212210.jpg",
         frontTitle: "Wilderness Meadows",
         frontSubtitle: "Alpine Wildflowers & Valley Breezes",
         frontBadge: "Plate 12",
@@ -179,8 +179,8 @@ const DEFAULT_PAGES: PageFlipLeaf[] = [
     },
     {
         id: 8,
-        frontImage: "https://images.unsplash.com/photo-1495616811223-4d98c6e9c869?auto=format&fit=crop&w=1200&q=80",
-        backImage: "https://images.unsplash.com/photo-1451187580459-43490279c0fa?auto=format&fit=crop&w=1200&q=80",
+        frontImage: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_1200,c_limit/v1790145142/photo-1495616811223-4d98c6e9c869-1790145143493.jpg",
+        backImage: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_1200,c_limit/v1790145141/photo-1451187580459-43490279c0fa-1790145143491.jpg",
         frontTitle: "Twilight Solitude",
         frontSubtitle: "Ocean Horizon & Evening Glow",
         frontBadge: "Plate 14",

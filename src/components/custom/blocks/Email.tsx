@@ -365,7 +365,7 @@ export default function EmailApp({
       isStarred: false,
       isRead: true,
       folder: "sent",
-      avatar: "https://i.pravatar.cc/150?u=me",
+      avatar: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto/v1790148864/80-1-1790148865111.jpg",
       labels: [],
       attachments: [],
     };

@@ -22,26 +22,26 @@ import {
 import "react-photo-album/masonry.css";
 import "yet-another-react-lightbox/styles.css";
 
-const unsplash = (id: string, width: number) =>
-  `https://images.unsplash.com/${id}?w=${width}&q=80&auto=format&fit=crop`;
+const sized = (url: string, width: number) =>
+  url.replace("/upload/", `/upload/w_${width},c_limit/`);
 
 const source = [
-  { id: "photo-1504674900247-0877df9cc836", width: 1600, height: 1067, alt: "Plated dish" },
-  { id: "photo-1414235077428-338989a2e8c0", width: 1600, height: 2400, alt: "Restaurant interior" },
-  { id: "photo-1466978913421-dad2ebd01d17", width: 1600, height: 1067, alt: "Espresso pour" },
-  { id: "photo-1498837167922-ddd27525d352", width: 1600, height: 2000, alt: "Market produce" },
-  { id: "photo-1476224203421-9ac39bcb3327", width: 1600, height: 1067, alt: "Breakfast spread" },
-  { id: "photo-1467003909585-2f8a72700288", width: 1600, height: 1067, alt: "Grilled plate" },
-  { id: "photo-1482049016688-2d3e1b311543", width: 1600, height: 1067, alt: "Fresh salad" },
+  { src: "https://images.unsplash.com/photo-1504674900247-0877df9cc836?w=1600&q=80&auto=format&fit=crop", width: 1600, height: 1067, alt: "Plated dish" },
+  { src: "https://images.unsplash.com/photo-1414235077428-338989a2e8c0?w=1600&q=80&auto=format&fit=crop", width: 1600, height: 2400, alt: "Restaurant interior" },
+  { src: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto/v1790159969/photo-1466978913421-dad2ebd01d17-1790159970121.jpg", width: 1600, height: 1067, alt: "Espresso pour" },
+  { src: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto/v1790159971/photo-1498837167922-ddd27525d352-1790159970124.jpg", width: 1600, height: 2000, alt: "Market produce" },
+  { src: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto/v1790159969/photo-1476224203421-9ac39bcb3327-1790159970123.jpg", width: 1600, height: 1067, alt: "Breakfast spread" },
+  { src: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto/v1790159969/photo-1467003909585-2f8a72700288-1790159970122.jpg", width: 1600, height: 1067, alt: "Grilled plate" },
+  { src: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto/v1790159971/photo-1482049016688-2d3e1b311543-1790159970124.jpg", width: 1600, height: 1067, alt: "Fresh salad" },
 ];
 
 const photos: Photo[] = source.map((photo) => ({
-  src: unsplash(photo.id, 1400),
+  src: sized(photo.src, 1400),
   width: photo.width,
   height: photo.height,
   alt: photo.alt,
   srcSet: [400, 700, 1000, 1400].map((width) => ({
-    src: unsplash(photo.id, width),
+    src: sized(photo.src, width),
     width,
     height: Math.round((photo.height / photo.width) * width),
   })),

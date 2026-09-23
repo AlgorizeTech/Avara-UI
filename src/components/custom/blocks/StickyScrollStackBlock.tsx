@@ -86,7 +86,7 @@ const defaultStackItems: ScrollStackItem[] = [
     description:
       "Building memorable, iconic brand identities that stand out in crowded markets.",
     imageUrl:
-      "https://images.unsplash.com/photo-1470071459604-3b5ec3a7fe05?auto=format&fit=crop&w=800&q=80",
+      "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_800,c_limit/v1790146209/photo-1470071459604-3b5ec3a7fe05-1790146212205.jpg",
     imageAlt: "Misty mountain forest nature landscape",
     buttonText: "Explore Branding",
   },
@@ -114,7 +114,7 @@ const defaultStackItems: ScrollStackItem[] = [
     description:
       "Scalable, secure web applications built with modern React and Next.js frameworks.",
     imageUrl:
-      "https://images.unsplash.com/photo-1469474968028-56623f02e42e?auto=format&fit=crop&w=800&q=80",
+      "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_800,c_limit/v1790146209/photo-1469474968028-56623f02e42e-1790146212205.jpg",
     imageAlt: "Golden mountain valley sunset nature landscape",
     buttonText: "Tech Stack Specs",
   },

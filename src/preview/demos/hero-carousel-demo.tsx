@@ -2,13 +2,9 @@
 
 import { HeroCarousel, type HeroSlide } from "@/components/custom/blocks/HeroCarouselBlock";
 
-// Photos from Unsplash (free to use): high country, from first light to the stars.
-const unsplash = (id: string, w = 1600) =>
-  `https://images.unsplash.com/photo-${id}?q=80&w=${w}&auto=format&fit=crop`;
-
 const SLIDES: HeroSlide[] = [
   {
-    image: unsplash("1506905925346-21bda4d32df4"),
+    image: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_1600,c_limit/v1790146210/photo-1506905925346-21bda4d32df4-1790146212208.jpg",
     alt: "Snow peaks at sunrise above a sea of cloud",
     title: "Crater rim at first light",
     description: "Up before dawn and on the rim as the valley fills with colour. Coffee at the top.",
@@ -21,7 +17,7 @@ const SLIDES: HeroSlide[] = [
     ),
   },
   {
-    image: unsplash("1470071459604-3b5ec3a7fe05"),
+    image: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_1600,c_limit/v1790146209/photo-1470071459604-3b5ec3a7fe05-1790146212205.jpg",
     alt: "Fog rolling over dark ridges and forest",
     title: "Ridge walk through the mist",
     description: "Six kilometres along the spine of the range. Steady ground, no scrambling.",
@@ -34,7 +30,7 @@ const SLIDES: HeroSlide[] = [
     ),
   },
   {
-    image: unsplash("1500530855697-b586d89ba3ee"),
+    image: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_1600,c_limit/v1790145142/photo-1500530855697-b586d89ba3ee-1790145143493.jpg",
     alt: "A road running through a red rock canyon towards the mountains",
     title: "The canyon by 4×4",
     description: "A jeep run down the canyon road to where the tarmac ends and the trail begins.",
@@ -48,7 +44,7 @@ const SLIDES: HeroSlide[] = [
     position: "center 60%",
   },
   {
-    image: unsplash("1519681393784-d120267933ba"),
+    image: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_1600,c_limit/v1790146211/photo-1519681393784-d120267933ba-1790146212210.jpg",
     alt: "Snowy mountains under a starry night sky",
     title: "Stars from the hut",
     description: "The night is the quiet part of the trip. Blankets, a stove, and no light for fifty miles.",
@@ -62,7 +58,13 @@ const SLIDES: HeroSlide[] = [
   },
 ];
 
-const AVATARS = [12, 32, 47, 5, 58].map((n) => ({ src: `https://i.pravatar.cc/80?img=${n}`, alt: "" }));
+const AVATARS = [
+  { src: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto/v1790148864/80-1-1790148865111.jpg", alt: "" },
+  { src: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto/v1790148864/80-2-1790148865112.jpg", alt: "" },
+  { src: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto/v1790148865/80-3-1790148865112.jpg", alt: "" },
+  { src: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto/v1790148865/80-4-1790148865113.jpg", alt: "" },
+  { src: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto/v1790148865/80-1790148865113.jpg", alt: "" },
+];
 
 export default function HeroCarouselDemo({
   reveal = "immediate",

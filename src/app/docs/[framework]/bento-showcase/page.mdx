@@ -11,10 +11,6 @@ export const usageSection = `"use client";
 
 import { BentoShowcase } from "@/components/custom/blocks/BentoShowcaseBlock";
 
-// Photos from Pexels, free to use.
-const pexels = (id: number, w = 900) =>
-  \`https://images.pexels.com/photos/\${id}/pexels-photo-\${id}.jpeg?auto=compress&cs=tinysrgb&w=\${w}\`;
-
 const CASE_STUDIES = [
   {
     quote: "5% of deal-closing rate and appointments for a solution provider",
@@ -42,20 +38,20 @@ const PLANS = [
     name: "Professional",
     price: "$3,500",
     note: "7–12 qualified leads a month, guaranteed",
-    image: "https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?q=80&w=600&auto=format&fit=crop",
+    image: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_600,c_limit/v1790148864/photo-1618005182384-a83a8bd57fbe-1790148865111.jpg",
     benefits: ["Lead qualification", "Calendar booking", "Template A/B testing", "Intelligent research", "Email outreach"],
     action: "Start now",
   },
-  { rank: "#3", name: "Enterprise", image: "https://images.unsplash.com/photo-1550684848-fac1c5b4e853?q=80&w=600&auto=format&fit=crop" },
+  { rank: "#3", name: "Enterprise", image: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_600,c_limit/v1790145140/photo-1550684848-fac1c5b4e853-1790145143489.jpg" },
 ];
 
 // Four photos and two figure discs make six cells — an even count keeps the
 // high/low rhythm intact across the loop.
 const TEAM = [
-  { src: pexels(7688336, 500), alt: "A desk from above" },
-  { src: pexels(8867434, 500), alt: "Two agents at their desks" },
-  { src: pexels(7658387, 500), alt: "Maria on a call" },
-  { src: pexels(7709086, 500), alt: "Alex at his laptop" },
+  { src: "https://images.pexels.com/photos/7688336/pexels-photo-7688336.jpeg?auto=compress&cs=tinysrgb&w=500", alt: "A desk from above" },
+  { src: "https://images.pexels.com/photos/8867434/pexels-photo-8867434.jpeg?auto=compress&cs=tinysrgb&w=500", alt: "Two agents at their desks" },
+  { src: "https://images.pexels.com/photos/7658387/pexels-photo-7658387.jpeg?auto=compress&cs=tinysrgb&w=500", alt: "Maria on a call" },
+  { src: "https://images.pexels.com/photos/7709086/pexels-photo-7709086.jpeg?auto=compress&cs=tinysrgb&w=500", alt: "Alex at his laptop" },
 ];
 
 export default function Showcase() {
@@ -63,7 +59,7 @@ export default function Showcase() {
     <BentoShowcase className="rounded-[36px]">
       <BentoShowcase.Hero
         label="Outsourcing company"
-        photo={pexels(7709208)}
+        photo={"https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_900,c_limit/v1790145139/pexels-photo-7709208-1790145143489.jpg"}
         photoAlt="A support agent wearing a headset at her laptop"
         chat={{
           from: "Maria",
@@ -72,14 +68,14 @@ export default function Showcase() {
           as: "AgainAgain",
           reply: "Sure, I'll cancel that immediately for you!",
         }}
-        avatars={[pexels(7658387, 120), pexels(8867433, 120), pexels(8867434, 120)]}
+        avatars={["https://images.pexels.com/photos/7658387/pexels-photo-7658387.jpeg?auto=compress&cs=tinysrgb&w=120", "https://images.pexels.com/photos/8867433/pexels-photo-8867433.jpeg?auto=compress&cs=tinysrgb&w=120", "https://images.pexels.com/photos/8867434/pexels-photo-8867434.jpeg?auto=compress&cs=tinysrgb&w=120"]}
       >
         <em>Trusted by</em> 1000’s of sales reps
       </BentoShowcase.Hero>
 
       <BentoShowcase.CaseStudies rating={5} reviews={42} items={CASE_STUDIES} />
 
-      <BentoShowcase.Headline label="Customer support" photo={pexels(8867482, 600)} photoAlt="The support team">
+      <BentoShowcase.Headline label="Customer support" photo={"https://images.pexels.com/photos/8867482/pexels-photo-8867482.jpeg?auto=compress&cs=tinysrgb&w=600"} photoAlt="The support team">
         We handle your
         <br />
         calls so you <em>run your business</em>

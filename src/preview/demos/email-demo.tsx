@@ -15,7 +15,7 @@ const sampleEmails = [
     fullDate: "Dec 10, 2026, 01:46 PM",
     isStarred: false,
     isRead: false,
-    avatar: "https://i.pravatar.cc/150?u=tommy",
+    avatar: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto/v1790148864/80-2-1790148865112.jpg",
     labels: [
       {
         color: "bg-rose-500",
@@ -36,7 +36,7 @@ const sampleEmails = [
     fullDate: "Dec 10, 2026, 01:55 PM",
     isStarred: true,
     isRead: true,
-    avatar: "https://i.pravatar.cc/150?u=tressa",
+    avatar: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto/v1790148865/80-4-1790148865113.jpg",
     labels: [
       {
         color: "bg-indigo-500",
@@ -93,7 +93,7 @@ export default function EmailDemo({
         variant === "glass"
           ? {
               backgroundImage:
-                'url("https://images.unsplash.com/photo-1470071459604-3b5ec3a7fe05?q=80&w=1200&auto=format&fit=crop")',
+                'url("https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_1200,c_limit/v1790146209/photo-1470071459604-3b5ec3a7fe05-1790146212205.jpg")',
             }
           : undefined
       }

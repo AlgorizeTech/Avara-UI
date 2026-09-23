@@ -37,7 +37,13 @@ export const WALL_ITEMS: ComponentWallItem[] = [
   wall("data-grid", "Data grid"),
 ];
 
-export const WALL_AVATARS = [12, 32, 47, 5, 58].map((n) => ({ src: `https://i.pravatar.cc/80?img=${n}`, alt: "" }));
+export const WALL_AVATARS = [
+  { src: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto/v1790148864/80-1-1790148865111.jpg", alt: "" },
+  { src: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto/v1790148864/80-2-1790148865112.jpg", alt: "" },
+  { src: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto/v1790148865/80-3-1790148865112.jpg", alt: "" },
+  { src: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto/v1790148865/80-4-1790148865113.jpg", alt: "" },
+  { src: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto/v1790148865/80-1790148865113.jpg", alt: "" },
+];
 
 // What the library is built with — front-end only. Ten marks make three
 // batches of seven, each leaving three out and in a different order, so every

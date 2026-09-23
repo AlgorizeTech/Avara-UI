@@ -108,6 +108,11 @@ npx shadcn@latest add @algorize-ui/image-wall
         0
         Milliseconds the camera drifts, pulled back with no card in focus, before its first landing.
 
+        anchor
+        &#123; x?: number; y?: number &#125;
+        &#123; x: 0.5, y: 0.5 &#125;
+        Where in the box the resting card sits, as shares of its width and height. Two walls side by side read better with one resting high and the other low.
+
         onFocus
         (index: number) =&gt; void
         —

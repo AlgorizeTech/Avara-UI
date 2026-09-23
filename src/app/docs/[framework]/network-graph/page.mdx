@@ -13,31 +13,31 @@ Assign each node a `ring` index and the component spaces that ring evenly across
 
 export const networkNodes = `const users: NetworkNode[] = [
   // Ring 1 (inner)
-  { id: "1", ring: 1, image: "https://i.pravatar.cc/150?u=1", label: "Sarah J." },
-  { id: "2", ring: 1, image: "https://i.pravatar.cc/150?u=2", label: "David B." },
+  { id: "1", ring: 1, image: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto/v1790148865/80-1790148865113.jpg", label: "Sarah J." },
+  { id: "2", ring: 1, image: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto/v1790148864/80-1-1790148865111.jpg", label: "David B." },
   // No image? \`fallback\` renders the initials tile instead.
   { id: "3", ring: 1, fallback: "JW", label: "James W." },
-  { id: "4", ring: 1, image: "https://i.pravatar.cc/150?u=4", label: "Lisa M." },
+  { id: "4", ring: 1, image: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto/v1790148865/80-3-1790148865112.jpg", label: "Lisa M." },
 
   // Ring 2 (outer)
-  { id: "5", ring: 2, image: "https://i.pravatar.cc/150?u=5", label: "Emma R." },
-  { id: "6", ring: 2, image: "https://i.pravatar.cc/150?u=6", label: "Noah P." },
+  { id: "5", ring: 2, image: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto/v1790148865/80-4-1790148865113.jpg", label: "Emma R." },
+  { id: "6", ring: 2, image: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto/v1790148865/80-1790148865113.jpg", label: "Noah P." },
   { id: "7", ring: 2, fallback: "MK", label: "Mike K." },
-  { id: "8", ring: 2, image: "https://i.pravatar.cc/150?u=8", label: "Ava T.", size: "sm" },
-  { id: "9", ring: 2, image: "https://i.pravatar.cc/150?u=9", label: "Ethan C." },
-  { id: "10", ring: 2, image: "https://i.pravatar.cc/150?u=10", label: "Olivia S.", size: "lg" },
-  { id: "11", ring: 2, image: "https://i.pravatar.cc/150?u=11", label: "Liam H." },
+  { id: "8", ring: 2, image: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto/v1790148864/80-2-1790148865112.jpg", label: "Ava T.", size: "sm" },
+  { id: "9", ring: 2, image: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto/v1790148865/80-3-1790148865112.jpg", label: "Ethan C." },
+  { id: "10", ring: 2, image: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto/v1790148865/80-3-1790148865112.jpg", label: "Olivia S.", size: "lg" },
+  { id: "11", ring: 2, image: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto/v1790148865/80-4-1790148865113.jpg", label: "Liam H." },
   { id: "12", ring: 2, fallback: "PL", label: "Priya L.", size: "sm" },
 
   // Ring 3 (outer)
-  { id: "13", ring: 3, image: "https://i.pravatar.cc/150?u=13", label: "Chloe D.", size: "sm" },
-  { id: "14", ring: 3, image: "https://i.pravatar.cc/150?u=14", label: "Marcus V.", size: "sm" },
-  { id: "15", ring: 3, image: "https://i.pravatar.cc/150?u=15", label: "Zoe N.", size: "md" },
+  { id: "13", ring: 3, image: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto/v1790148864/80-1-1790148865111.jpg", label: "Chloe D.", size: "sm" },
+  { id: "14", ring: 3, image: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto/v1790148864/80-2-1790148865112.jpg", label: "Marcus V.", size: "sm" },
+  { id: "15", ring: 3, image: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto/v1790148865/80-3-1790148865112.jpg", label: "Zoe N.", size: "md" },
   { id: "16", ring: 3, fallback: "AJ", label: "Aaron J.", size: "sm" },
-  { id: "17", ring: 3, image: "https://i.pravatar.cc/150?u=17", label: "Nina F.", size: "sm" },
-  { id: "18", ring: 3, image: "https://i.pravatar.cc/150?u=18", label: "Owen G.", size: "sm" },
+  { id: "17", ring: 3, image: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto/v1790148865/80-1790148865113.jpg", label: "Nina F.", size: "sm" },
+  { id: "18", ring: 3, image: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto/v1790148864/80-1-1790148865111.jpg", label: "Owen G.", size: "sm" },
   { id: "19", ring: 3, fallback: "TR", label: "Tara R.", size: "sm" },
-  { id: "20", ring: 3, image: "https://i.pravatar.cc/150?u=21", label: "Felix Q.", size: "sm" },
+  { id: "20", ring: 3, image: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto/v1790148865/80-1790148865113.jpg", label: "Felix Q.", size: "sm" },
 ];`;
 
 export const usageInteractive = `import {
@@ -59,7 +59,7 @@ export default function OrbitGraph() {
       baseRadius={18}
       ringGap={16}
       orbitSpeed={1}
-      centerNode={{ image: "https://i.pravatar.cc/150?u=99", label: "You" }}
+      centerNode={{ image: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto/v1790148865/80-1790148865113.jpg", label: "You" }}
     />
   );
 }`;

@@ -31,7 +31,7 @@ export default function AudioPlayerDemo({
           badge="Now Playing"
           title="It All Began With a Burst"
           subtitle="Kishi Bashi — 151a"
-          artworkUrl="https://images.unsplash.com/photo-1511671782779-c97d3d27a1d4?auto=format&fit=crop&w=1200&q=80"
+          artworkUrl="https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_1200,c_limit/v1790145142/photo-1511671782779-c97d3d27a1d4-1790145143493.jpg"
           artworkAlt="Studio microphone in warm light"
         />
       </div>

@@ -129,16 +129,16 @@ const toCss = ([r, g, b]: Rgb) => `rgb(${r}, ${g}, ${b})`;
    ═══════════════════════════════════════════════ */
 
 const DEFAULT_SLIDER_IMAGES = [
-  "https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?q=80&w=800&auto=format&fit=crop",
-  "https://images.unsplash.com/photo-1634017839464-5c339ebe3cb4?q=80&w=800&auto=format&fit=crop",
-  "https://images.unsplash.com/photo-1618005198919-d3d4b5a92ead?q=80&w=800&auto=format&fit=crop",
-  "https://images.unsplash.com/photo-1633356122544-f134324a6cee?q=80&w=800&auto=format&fit=crop",
-  "https://images.unsplash.com/photo-1620641788421-7a1c342ea42e?q=80&w=800&auto=format&fit=crop",
-  "https://images.unsplash.com/photo-1635070041078-e363dbe005cb?q=80&w=800&auto=format&fit=crop",
+  "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_800,c_limit/v1790148864/photo-1618005182384-a83a8bd57fbe-1790148865111.jpg",
+  "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_800,c_limit/v1790158810/photo-1634017839464-5c339ebe3cb4-1790158812203.jpg",
+  "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_800,c_limit/v1790158809/photo-1618005198919-d3d4b5a92ead-1790158812198.jpg",
+  "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_800,c_limit/v1790158809/photo-1633356122544-f134324a6cee-1790158812203.jpg",
+  "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_800,c_limit/v1790158809/photo-1620641788421-7a1c342ea42e-1790158812200.jpg",
+  "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_800,c_limit/v1790158811/photo-1635070041078-e363dbe005cb-1790158812204.jpg",
 ];
 
 const DEFAULT_MAIN_IMAGE =
-  "https://images.unsplash.com/photo-1524504388940-b1c1722653e1?q=80&w=1200&auto=format&fit=crop";
+  "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_1200,c_limit/v1790150482/photo-1524504388940-b1c1722653e1-1790150482279.jpg";
 
 /* ═══════════════════════════════════════════════
    MAIN HERO BLOCK COMPONENT
@@ -296,10 +296,10 @@ export const HeroBlock = forwardRef<HTMLElement, HeroBlockProps>(
 
       const dogImage =
         petImage ||
-        "https://images.unsplash.com/photo-1543466835-00a7907e9de1?q=80&w=800&auto=format&fit=crop";
+        "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_800,c_limit/v1790150479/photo-1543466835-00a7907e9de1-1790150482273.jpg";
       const catImage =
         secondaryPetImage ||
-        "https://images.unsplash.com/photo-1514888286974-6c03e2ca1dba?q=80&w=800&auto=format&fit=crop";
+        "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_800,c_limit/v1790150481/photo-1514888286974-6c03e2ca1dba-1790150482276.jpg";
 
       return (
         <section
@@ -478,19 +478,19 @@ export const HeroBlock = forwardRef<HTMLElement, HeroBlockProps>(
 
       const doctorMainImage =
         petImage ||
-        "https://images.unsplash.com/photo-1622253692010-333f2da6031d?q=80&w=800&auto=format&fit=crop";
+        "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_800,c_limit/v1790158809/photo-1622253692010-333f2da6031d-1790158812201.jpg";
 
       const doctorSubImage =
         secondaryPetImage ||
-        "https://images.unsplash.com/photo-1576091160399-112ba8d25d1d?q=80&w=800&auto=format&fit=crop";
+        "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_800,c_limit/v1790150483/photo-1576091160399-112ba8d25d1d-1790150482281.jpg";
 
       const labTestImage =
         mainImage === DEFAULT_MAIN_IMAGE
-          ? "https://images.unsplash.com/photo-1584036561566-baf8f5f1b144?q=80&w=800&auto=format&fit=crop"
+          ? "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_800,c_limit/v1790150483/photo-1584036561566-baf8f5f1b144-1790150482282.jpg"
           : mainImage;
 
       const inlineBadgeImage =
-        "https://images.unsplash.com/photo-1471864190281-a93a3070b6de?q=80&w=200&auto=format&fit=crop";
+        "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_200,c_limit/v1790150479/photo-1471864190281-a93a3070b6de-1790150482274.jpg";
 
       const stat1Val = ratingText === "4.9 ★ Rated" ? "100%" : ratingText;
       const stat1Label = badgeTags?.[0] === "Certified Organic & Vet Approved" ? "Safe & Private Results" : badgeTags?.[0] || "Safe & Private Results";
@@ -709,11 +709,11 @@ export const HeroBlock = forwardRef<HTMLElement, HeroBlockProps>(
                   {/* User Profile Avatar Stack (5 images with 3px gap) */}
                   <div className="flex items-center gap-[3px] shrink-0">
                     {[
-                      "https://images.unsplash.com/photo-1534528741775-53994a69daeb?q=80&w=100&auto=format&fit=crop",
-                      "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?q=80&w=100&auto=format&fit=crop",
-                      "https://images.unsplash.com/photo-1544005313-94ddf0286df2?q=80&w=100&auto=format&fit=crop",
-                      "https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?q=80&w=100&auto=format&fit=crop",
-                      "https://images.unsplash.com/photo-1517841905240-472988babdf9?q=80&w=100&auto=format&fit=crop",
+                      "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_100,c_limit/v1790150483/photo-1534528741775-53994a69daeb-1790150482280.jpg",
+                      "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_100,c_limit/v1790150480/photo-1507003211169-0a1dd7228f2d-1790150482276.jpg",
+                      "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_100,c_limit/v1790150478/photo-1544005313-94ddf0286df2-1790150482273.jpg",
+                      "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_100,c_limit/v1790150480/photo-1506794778202-cad84cf45f1d-1790150482275.jpg",
+                      "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_100,c_limit/v1790150481/photo-1517841905240-472988babdf9-1790150482277.jpg",
                     ].map((imgSrc, i) => (
                       <img
                         key={i}

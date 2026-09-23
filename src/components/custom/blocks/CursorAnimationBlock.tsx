@@ -32,14 +32,14 @@ export type CursorVariant =
 export type CursorColor = "indigo" | "rose" | "emerald" | "zinc" | "primary" | (string & {});
 
 const defaultTrailImages = [
-  "https://images.unsplash.com/photo-1506744038136-46273834b3fb?w=300&q=80",
-  "https://images.unsplash.com/photo-1511884642898-4c92249e20b6?w=300&q=80",
-  "https://images.unsplash.com/photo-1470071459604-3b5ec3a7fe05?w=300&q=80",
-  "https://images.unsplash.com/photo-1426604966848-d7adac402bff?w=300&q=80",
-  "https://images.unsplash.com/photo-1472214103451-9374bd1c798e?w=300&q=80",
-  "https://images.unsplash.com/photo-1447752875215-b2761acb3c5d?w=300&q=80",
-  "https://images.unsplash.com/photo-1469474968028-56623f02e42e?w=300&q=80",
-  "https://images.unsplash.com/photo-1501785888041-af3ef285b470?w=300&q=80",
+  "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_300,c_limit/v1790146210/photo-1506744038136-46273834b3fb-1790146212208.jpg",
+  "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_300,c_limit/v1790148864/photo-1511884642898-4c92249e20b6-1790148865110.jpg",
+  "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_300,c_limit/v1790146209/photo-1470071459604-3b5ec3a7fe05-1790146212205.jpg",
+  "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_300,c_limit/v1790145140/photo-1426604966848-d7adac402bff-1790145143490.jpg",
+  "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_300,c_limit/v1790146210/photo-1472214103451-9374bd1c798e-1790146212205.jpg",
+  "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_300,c_limit/v1790148863/photo-1447752875215-b2761acb3c5d-1790148865109.jpg",
+  "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_300,c_limit/v1790146209/photo-1469474968028-56623f02e42e-1790146212205.jpg",
+  "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_300,c_limit/v1790146210/photo-1501785888041-af3ef285b470-1790146212207.jpg",
 ];
 
 export interface CursorAnimationProps extends React.HTMLAttributes<HTMLDivElement> {

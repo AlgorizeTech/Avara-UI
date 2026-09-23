@@ -30,14 +30,14 @@ const CASE_FILES: FolderFile[] = [
 ];
 
 const PHOTOS: FolderFile[] = [
-  "photo-1470071459604-3b5ec3a7fe05",
-  "photo-1506905925346-21bda4d32df4",
-  "photo-1441974231531-c6227db76b6e",
-  "photo-1472214103451-9374bd1c798e",
-  "photo-1501785888041-af3ef285b470",
-  "photo-1518837695005-2083093ee35b",
-].map((id, i) => ({
-  thumb: `https://images.unsplash.com/${id}?auto=format&fit=crop&w=320&q=70`,
+  "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_320,c_limit/v1790146209/photo-1470071459604-3b5ec3a7fe05-1790146212205.jpg",
+  "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_320,c_limit/v1790146210/photo-1506905925346-21bda4d32df4-1790146212208.jpg",
+  "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_320,c_limit/v1790146211/photo-1441974231531-c6227db76b6e-1790146212212.jpg",
+  "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_320,c_limit/v1790146210/photo-1472214103451-9374bd1c798e-1790146212205.jpg",
+  "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_320,c_limit/v1790146210/photo-1501785888041-af3ef285b470-1790146212207.jpg",
+  "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_320,c_limit/v1790150482/photo-1518837695005-2083093ee35b-1790150482277.jpg",
+].map((thumb, i) => ({
+  thumb,
   name: `IMG_${String(4021 + i).padStart(4, "0")}.jpg`,
 }));
 

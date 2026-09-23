@@ -3,14 +3,10 @@
 import { BentoShowcase, type BentoPlan, type BentoStat } from "@/components/custom/blocks/BentoShowcaseBlock";
 import { cn } from "@/lib/utils";
 
-// Photos from Pexels (free to use): call-centre agents and a support team.
-const pexels = (id: number, w = 900) =>
-  `https://images.pexels.com/photos/${id}/pexels-photo-${id}.jpeg?auto=compress&cs=tinysrgb&w=${w}`;
+const HERO_PHOTO = "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_900,c_limit/v1790145139/pexels-photo-7709208-1790145143489.jpg";
+const TEAM_PHOTO = "https://images.pexels.com/photos/8867482/pexels-photo-8867482.jpeg?auto=compress&cs=tinysrgb&w=600";
 
-const HERO_PHOTO = pexels(7709208);
-const TEAM_PHOTO = pexels(8867482, 600);
-
-const AVATARS = [pexels(7658387, 120), pexels(8867433, 120), pexels(8867434, 120)];
+const AVATARS = ["https://images.pexels.com/photos/7658387/pexels-photo-7658387.jpeg?auto=compress&cs=tinysrgb&w=120", "https://images.pexels.com/photos/8867433/pexels-photo-8867433.jpeg?auto=compress&cs=tinysrgb&w=120", "https://images.pexels.com/photos/8867434/pexels-photo-8867434.jpeg?auto=compress&cs=tinysrgb&w=120"];
 
 const CASE_STUDIES = [
   {
@@ -39,24 +35,24 @@ const PLANS: [BentoPlan, BentoPlan] = [
     name: "Professional",
     price: "$3,500",
     note: "7–12 qualified leads a month, guaranteed",
-    image: "https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?q=80&w=600&auto=format&fit=crop",
+    image: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_600,c_limit/v1790148864/photo-1618005182384-a83a8bd57fbe-1790148865111.jpg",
     benefits: ["Lead qualification", "Intelligent research", "Email outreach"],
     action: "Start now",
   },
   {
     rank: "#3",
     name: "Enterprise",
-    image: "https://images.unsplash.com/photo-1550684848-fac1c5b4e853?q=80&w=600&auto=format&fit=crop",
+    image: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_600,c_limit/v1790145140/photo-1550684848-fac1c5b4e853-1790145143489.jpg",
   },
 ];
 
 // Four photos and two figure discs make six cells — an even count keeps the
 // high/low rhythm intact across the loop.
 const TEAM = [
-  { src: pexels(7688336, 500), alt: "A desk from above: laptop, notes and a coffee" },
-  { src: pexels(8867434, 500), alt: "Two agents at their desks" },
-  { src: pexels(7658387, 500), alt: "Agent on a call, smiling at a colleague" },
-  { src: pexels(7709086, 500), alt: "Agent working on a laptop" },
+  { src: "https://images.pexels.com/photos/7688336/pexels-photo-7688336.jpeg?auto=compress&cs=tinysrgb&w=500", alt: "A desk from above: laptop, notes and a coffee" },
+  { src: "https://images.pexels.com/photos/8867434/pexels-photo-8867434.jpeg?auto=compress&cs=tinysrgb&w=500", alt: "Two agents at their desks" },
+  { src: "https://images.pexels.com/photos/7658387/pexels-photo-7658387.jpeg?auto=compress&cs=tinysrgb&w=500", alt: "Agent on a call, smiling at a colleague" },
+  { src: "https://images.pexels.com/photos/7709086/pexels-photo-7709086.jpeg?auto=compress&cs=tinysrgb&w=500", alt: "Agent working on a laptop" },
 ];
 
 export default function BentoShowcaseDemo({

@@ -12,65 +12,65 @@ type GridItem = {
   title?: string;
   desc?: string;
   icon?: React.ReactNode;
-  imageId?: string;
+  imageSrc?: string;
   theme?: "blue" | "purple" | "emerald" | "rose";
 };
 
 const naturePhotos = [
-  "1448375240586-882707db888b", // Alpine lake
-  "1464822759023-fed622ff2c3b", // Mountain peak
-  "1506744038136-46273834b3fb", // Emerald stream
-  "1470071459604-3b5ec3a7fe05", // Misty forest
-  "1426604966848-d7adac402bff", // River valley
-  "1441974231531-c6227db76b6e", // Autumn path
-  "1469474968028-56623f02e42e", // Waterfall
-  "1507525428034-b723cf961d3e", // Beach sunset
+  "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_800,c_limit/v1790145141/photo-1448375240586-882707db888b-1790145143491.jpg", // Alpine lake
+  "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_800,c_limit/v1790145141/photo-1464822759023-fed622ff2c3b-1790145143491.jpg", // Mountain peak
+  "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_800,c_limit/v1790146210/photo-1506744038136-46273834b3fb-1790146212208.jpg", // Emerald stream
+  "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_800,c_limit/v1790146209/photo-1470071459604-3b5ec3a7fe05-1790146212205.jpg", // Misty forest
+  "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_800,c_limit/v1790145140/photo-1426604966848-d7adac402bff-1790145143490.jpg", // River valley
+  "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_800,c_limit/v1790146211/photo-1441974231531-c6227db76b6e-1790146212212.jpg", // Autumn path
+  "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_800,c_limit/v1790146209/photo-1469474968028-56623f02e42e-1790146212205.jpg", // Waterfall
+  "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_800,c_limit/v1790146210/photo-1507525428034-b723cf961d3e-1790146212208.jpg", // Beach sunset
 ];
 
 const variantItems: Record<string, GridItem[]> = {
   default: [
     { id: "1", type: "card", height: "h-56", title: "Alpine Forest Research", desc: "Exploring ancient pine ecosystems.", icon: <Layers className="w-5 h-5" />, theme: "blue" },
-    { id: "2", type: "image", height: "h-[28rem]", imageId: naturePhotos[0] },
+    { id: "2", type: "image", height: "h-[28rem]", imageSrc: naturePhotos[0] },
     { id: "3", type: "gradient", height: "h-48", title: "Mountain Ridge Wind", desc: "Atmospheric motion in high altitude.", icon: <Wand2 className="w-5 h-5" />, theme: "purple" },
     { id: "4", type: "card", height: "h-72", title: "Emerald Canopy", desc: "Dense rainforest vegetation metrics.", icon: <Cpu className="w-5 h-5" />, theme: "emerald" },
-    { id: "5", type: "image", height: "h-52", imageId: naturePhotos[1] },
+    { id: "5", type: "image", height: "h-52", imageSrc: naturePhotos[1] },
     { id: "6", type: "card", height: "h-60", title: "Wilderness Flora", desc: "Natural biological biodiversity.", icon: <Sparkles className="w-5 h-5" />, theme: "rose" },
-    { id: "7", type: "image", height: "h-[22rem]", imageId: naturePhotos[2] },
+    { id: "7", type: "image", height: "h-[22rem]", imageSrc: naturePhotos[2] },
     { id: "8", type: "gradient", height: "h-48", title: "Cascading Waters", desc: "Glacial river flow dynamics.", icon: <Layers className="w-5 h-5" />, theme: "blue" },
   ],
   columns: [
-    { id: "c1", type: "image", height: "h-[22rem]", imageId: naturePhotos[3] },
+    { id: "c1", type: "image", height: "h-[22rem]", imageSrc: naturePhotos[3] },
     { id: "c2", type: "card", height: "h-64", title: "Glacial Expedition", desc: "Tracking ice melt patterns across polar terrain.", icon: <Sparkles className="w-5 h-5" />, theme: "emerald" },
-    { id: "c3", type: "image", height: "h-[30rem]", imageId: naturePhotos[4] },
+    { id: "c3", type: "image", height: "h-[30rem]", imageSrc: naturePhotos[4] },
     { id: "c4", type: "gradient", height: "h-52", title: "Sunset Horizon", desc: "Coastal light refraction studies.", icon: <Layers className="w-5 h-5" />, theme: "purple" },
-    { id: "c5", type: "image", height: "h-[24rem]", imageId: naturePhotos[5] },
+    { id: "c5", type: "image", height: "h-[24rem]", imageSrc: naturePhotos[5] },
     { id: "c6", type: "card", height: "h-56", title: "Pine Forest Canopy", desc: "High resolution aerial drone mapping.", icon: <Cpu className="w-5 h-5" />, theme: "blue" },
-    { id: "c7", type: "image", height: "h-[28rem]", imageId: naturePhotos[6] },
+    { id: "c7", type: "image", height: "h-[28rem]", imageSrc: naturePhotos[6] },
     { id: "c8", type: "gradient", height: "h-48", title: "Lush River Flow", desc: "Freshwater aquatic ecosystem analytics.", icon: <Wand2 className="w-5 h-5" />, theme: "rose" },
   ],
   gap: [
     { id: "g1", type: "card", height: "h-60", title: "Highland Sanctuary", desc: "Protected mountain valley reserves.", icon: <Sparkles className="w-5 h-5" />, theme: "purple" },
-    { id: "g2", type: "image", height: "h-[26rem]", imageId: naturePhotos[6] },
+    { id: "g2", type: "image", height: "h-[26rem]", imageSrc: naturePhotos[6] },
     { id: "g3", type: "gradient", height: "h-48", title: "Forest Mist Stream", desc: "Hydrological condensation research.", icon: <Layers className="w-5 h-5" />, theme: "emerald" },
-    { id: "g4", type: "image", height: "h-[22rem]", imageId: naturePhotos[7] },
+    { id: "g4", type: "image", height: "h-[22rem]", imageSrc: naturePhotos[7] },
     { id: "g5", type: "card", height: "h-52", title: "Volcanic Ridge", desc: "Thermal geological formations.", icon: <Cpu className="w-5 h-5" />, theme: "rose" },
-    { id: "g6", type: "image", height: "h-[28rem]", imageId: naturePhotos[1] },
+    { id: "g6", type: "image", height: "h-[28rem]", imageSrc: naturePhotos[1] },
   ],
   stagger: [
-    { id: "s1", type: "image", height: "h-[28rem]", imageId: naturePhotos[2] },
+    { id: "s1", type: "image", height: "h-[28rem]", imageSrc: naturePhotos[2] },
     { id: "s2", type: "gradient", height: "h-52", title: "Aurora Skyward", desc: "Staggered particle illumination.", icon: <Wand2 className="w-5 h-5" />, theme: "blue" },
     { id: "s3", type: "card", height: "h-64", title: "Deep Woodland", desc: "Ancient oak and redwood groves.", icon: <Layers className="w-5 h-5" />, theme: "emerald" },
-    { id: "s4", type: "image", height: "h-[24rem]", imageId: naturePhotos[5] },
+    { id: "s4", type: "image", height: "h-[24rem]", imageSrc: naturePhotos[5] },
     { id: "s5", type: "card", height: "h-56", title: "Coastal Breeze", desc: "Oceanic climate metrics.", icon: <Sparkles className="w-5 h-5" />, theme: "rose" },
-    { id: "s6", type: "image", height: "h-[30rem]", imageId: naturePhotos[0] },
+    { id: "s6", type: "image", height: "h-[30rem]", imageSrc: naturePhotos[0] },
   ],
   static: [
     { id: "st1", type: "card", height: "h-52", title: "Static Meadow", desc: "Instant zero-motion render view.", icon: <Cpu className="w-5 h-5" />, theme: "emerald" },
-    { id: "st2", type: "image", height: "h-[26rem]", imageId: naturePhotos[4] },
+    { id: "st2", type: "image", height: "h-[26rem]", imageSrc: naturePhotos[4] },
     { id: "st3", type: "gradient", height: "h-48", title: "Timberland Grove", desc: "Pure CSS column layout flow.", icon: <Layers className="w-5 h-5" />, theme: "purple" },
-    { id: "st4", type: "image", height: "h-[24rem]", imageId: naturePhotos[3] },
+    { id: "st4", type: "image", height: "h-[24rem]", imageSrc: naturePhotos[3] },
     { id: "st5", type: "card", height: "h-60", title: "Glacial Basin", desc: "Sub-zero ice shelf monitoring.", icon: <Wand2 className="w-5 h-5" />, theme: "blue" },
-    { id: "st6", type: "image", height: "h-[28rem]", imageId: naturePhotos[6] },
+    { id: "st6", type: "image", height: "h-[28rem]", imageSrc: naturePhotos[6] },
   ],
 };
 
@@ -145,7 +145,7 @@ export default function MasonryGridDemo({
               >
                 <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/0 to-black/0 opacity-0 group-hover:opacity-100 transition-opacity duration-500 z-10" />
                 <img
-                  src={`https://images.unsplash.com/photo-${item.imageId}?q=80&w=800&auto=format&fit=crop`}
+                  src={item.imageSrc}
                   alt="Gallery masonry"
                   className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
                 />

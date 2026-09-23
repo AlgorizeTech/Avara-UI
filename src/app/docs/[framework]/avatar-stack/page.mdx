@@ -10,14 +10,10 @@ Several sections used to hand-roll this row; <DocLink to="hero#fashion-hero">Fas
 export const usageAction = `import { Plus } from "lucide-react";
 import { AvatarStack } from "@/components/custom/blocks/AvatarStackBlock";
 
-// Faces from Pexels, free to use.
-const pexels = (id: number) =>
-  \`https://images.pexels.com/photos/\${id}/pexels-photo-\${id}.jpeg?auto=compress&cs=tinysrgb&w=120&h=120&fit=crop\`;
-
 const PEOPLE = [
-  { src: pexels(1036623), alt: "Ana" },
-  { src: pexels(2043590), alt: "Tom" },
-  { src: pexels(1587009), alt: "Mara" },
+  { src: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_120,h_120,c_fill/v1790145139/pexels-photo-1036623-1790145143487.jpg", alt: "Ana" },
+  { src: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_120,h_120,c_fill/v1790145142/pexels-photo-2043590-1790145143488.jpg", alt: "Tom" },
+  { src: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_120,h_120,c_fill/v1790145139/pexels-photo-1587009-1790145143488.jpg", alt: "Mara" },
 ];
 
 export default function Community() {

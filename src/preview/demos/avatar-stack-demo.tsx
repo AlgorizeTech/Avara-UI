@@ -3,15 +3,13 @@
 import { Plus } from "lucide-react";
 import { AvatarStack, type AvatarStackSize } from "@/components/custom/blocks/AvatarStackBlock";
 
-const pexels = (id: number) => `https://images.pexels.com/photos/${id}/pexels-photo-${id}.jpeg?auto=compress&cs=tinysrgb&w=120&h=120&fit=crop`;
-
 const PEOPLE = [
-  { src: pexels(1036623), alt: "Ana" },
-  { src: pexels(2043590), alt: "Tom" },
-  { src: pexels(1587009), alt: "Mara" },
-  { src: pexels(3775534), alt: "Leo" },
-  { src: pexels(1520760), alt: "June" },
-  { src: pexels(6311475), alt: "Sam" },
+  { src: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_120,h_120,c_fill/v1790145139/pexels-photo-1036623-1790145143487.jpg", alt: "Ana" },
+  { src: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_120,h_120,c_fill/v1790145142/pexels-photo-2043590-1790145143488.jpg", alt: "Tom" },
+  { src: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_120,h_120,c_fill/v1790145139/pexels-photo-1587009-1790145143488.jpg", alt: "Mara" },
+  { src: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_120,h_120,c_fill/v1790145139/pexels-photo-3775534-1790145143488.jpg", alt: "Leo" },
+  { src: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_120,h_120,c_fill/v1790082180/pexels-photo-1520760-1790082180553.jpg", alt: "June" },
+  { src: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_120,h_120,c_fill/v1790145141/pexels-photo-6311475-1790145143489.jpg", alt: "Sam" },
 ];
 
 export default function AvatarStackDemo({

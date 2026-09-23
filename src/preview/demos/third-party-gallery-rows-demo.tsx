@@ -26,16 +26,16 @@ import "yet-another-react-lightbox/plugins/thumbnails.css";
 
 type GalleryPhoto = Photo & { title: string; description: string };
 
-const unsplash = (id: string, width: number) =>
-  `https://images.unsplash.com/${id}?w=${width}&q=80&auto=format&fit=crop`;
+const sized = (url: string, width: number) =>
+  url.replace("/upload/", `/upload/w_${width},c_limit/`);
 
 const source = [
-  { id: "photo-1506905925346-21bda4d32df4", width: 1600, height: 1067, title: "Coastline at dawn", description: "Tropical shoreline, long exposure" },
-  { id: "photo-1441974231531-c6227db76b6e", width: 1600, height: 1067, title: "Sunlit forest", description: "Temperate woodland canopy" },
-  { id: "photo-1464822759023-fed622ff2c3b", width: 1600, height: 1067, title: "Alpine ridge", description: "Above the treeline at first light" },
-  { id: "photo-1470071459604-3b5ec3a7fe05", width: 1600, height: 1067, title: "Valley fog", description: "Low cloud settling between peaks" },
-  { id: "photo-1418065460487-3e41a6c84dc5", width: 1600, height: 1067, title: "Golden field", description: "Late afternoon grassland" },
-  { id: "photo-1426604966848-d7adac402bff", width: 1600, height: 1067, title: "River bend", description: "Glacial meltwater in spring" },
+  { src: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto/v1790146210/photo-1506905925346-21bda4d32df4-1790146212208.jpg", width: 1600, height: 1067, title: "Coastline at dawn", description: "Tropical shoreline, long exposure" },
+  { src: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto/v1790146211/photo-1441974231531-c6227db76b6e-1790146212212.jpg", width: 1600, height: 1067, title: "Sunlit forest", description: "Temperate woodland canopy" },
+  { src: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto/v1790145141/photo-1464822759023-fed622ff2c3b-1790145143491.jpg", width: 1600, height: 1067, title: "Alpine ridge", description: "Above the treeline at first light" },
+  { src: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto/v1790146209/photo-1470071459604-3b5ec3a7fe05-1790146212205.jpg", width: 1600, height: 1067, title: "Valley fog", description: "Low cloud settling between peaks" },
+  { src: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto/v1790159968/photo-1418065460487-3e41a6c84dc5-1790159970119.jpg", width: 1600, height: 1067, title: "Golden field", description: "Late afternoon grassland" },
+  { src: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto/v1790145140/photo-1426604966848-d7adac402bff-1790145143490.jpg", width: 1600, height: 1067, title: "River bend", description: "Glacial meltwater in spring" },
 ];
 
 /**
@@ -44,14 +44,14 @@ const source = [
  * the page chrome, so the whole gallery drops inside a `Card` unchanged.
  */
 const photos: GalleryPhoto[] = source.map((photo) => ({
-  src: unsplash(photo.id, 1600),
+  src: sized(photo.src, 1600),
   width: photo.width,
   height: photo.height,
   alt: photo.title,
   title: photo.title,
   description: photo.description,
   srcSet: [480, 800, 1200, 1600].map((width) => ({
-    src: unsplash(photo.id, width),
+    src: sized(photo.src, width),
     width,
     height: Math.round((photo.height / photo.width) * width),
   })),

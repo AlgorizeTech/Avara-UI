@@ -10,7 +10,7 @@ const samplePages: PageFlipLeaf[] = [
   // 1. FRONT COVER (First leaf in array = Front Cover Photo & Metadata)
   {
     id: 1,
-    frontImage: "https://images.unsplash.com/photo-1518709268805-4e9042af9f23?auto=format&fit=crop&w=1200&q=80", //  {
+    frontImage: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_1200,c_limit/v1790146211/photo-1518709268805-4e9042af9f23-1790146212209.jpg", //  {
         console.log(\`Page flipped: \${turnedCount} / \${totalLeaves}\`);
       }}
     />

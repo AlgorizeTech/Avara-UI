@@ -83,7 +83,7 @@ export const FloatingContactButtonBlock = React.forwardRef<
       containerMode = "fixed",
       title = "Chat with us",
       subtitle = "We typically reply in a few minutes",
-      avatarUrl = "https://images.unsplash.com/photo-1534528741775-53994a69daeb?q=80&w=250&auto=format&fit=crop",
+      avatarUrl = "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_250,c_limit/v1790150483/photo-1534528741775-53994a69daeb-1790150482280.jpg",
       defaultOpen = false,
       localStorageKey = "primaryColor",
       defaultAccentColor = "var(--primary)",

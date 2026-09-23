@@ -123,18 +123,17 @@ const prefersReducedMotion = () =>
 // Defaults — Lofoten and the fjords, from Unsplash, each with a deep tone
 // drawn from the photograph, so the ground shifts colour as the queue turns.
 // ------------------------------------------
-const unsplash = (id: string, w = 1400) => `https://images.unsplash.com/photo-${id}?q=80&w=${w}&auto=format&fit=crop`;
 
 const DEFAULT_IMAGES: HoneycombImage[] = [
-  { src: unsplash("1628344253777-f73a64d8f983"), alt: "A waterfall pouring through a green gorge", tone: "#0f2e22" },
-  { src: unsplash("1663428520845-056989f8a664"), alt: "Red cabins at Hamnøy under a mountain", tone: "#1f2140" },
-  { src: unsplash("1710762634126-4c0e8fba44d8"), alt: "A snowy village below white peaks", tone: "#18233a" },
-  { src: unsplash("1593378026483-2a1fd46a35bd"), alt: "Green aurora above snowy mountains", tone: "#0b2a2d" },
-  { src: unsplash("1695496896465-9e59091a8ed1"), alt: "Turquoise water between mountain ridges", tone: "#082f3d" },
-  { src: unsplash("1721335916916-37c319adce3a"), alt: "A sandy beach beneath a rocky headland", tone: "#1d2b36" },
-  { src: unsplash("1527004013197-933c4bb611b3"), alt: "A red cabin on a rocky shore", tone: "#2a1f3d" },
-  { src: unsplash("1682952986992-de7082fb213d"), alt: "Waterfalls running down the wall of a fjord", tone: "#132a3b" },
-  { src: unsplash("1607888566357-ec0b61abee46"), alt: "A waterfall beside a wooden viewpoint", tone: "#1c2b17" },
+  { src: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_1400,c_limit/v1790158809/photo-1628344253777-f73a64d8f983-1790158812202.jpg", alt: "A waterfall pouring through a green gorge", tone: "#0f2e22" },
+  { src: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_1400,c_limit/v1790158811/photo-1663428520845-056989f8a664-1790158812204.jpg", alt: "Red cabins at Hamnøy under a mountain", tone: "#1f2140" },
+  { src: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_1400,c_limit/v1790158812/photo-1710762634126-4c0e8fba44d8-1790158812206.jpg", alt: "A snowy village below white peaks", tone: "#18233a" },
+  { src: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_1400,c_limit/v1790158815/photo-1593378026483-2a1fd46a35bd-1790158812215.jpg", alt: "Green aurora above snowy mountains", tone: "#0b2a2d" },
+  { src: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_1400,c_limit/v1790158812/photo-1695496896465-9e59091a8ed1-1790158812205.jpg", alt: "Turquoise water between mountain ridges", tone: "#082f3d" },
+  { src: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_1400,c_limit/v1790158812/photo-1721335916916-37c319adce3a-1790158812206.jpg", alt: "A sandy beach beneath a rocky headland", tone: "#1d2b36" },
+  { src: "https://images.unsplash.com/photo-1527004013197-933c4bb611b3?q=80&w=1400&auto=format&fit=crop", alt: "A red cabin on a rocky shore", tone: "#2a1f3d" },
+  { src: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_1400,c_limit/v1790158811/photo-1682952986992-de7082fb213d-1790158812205.jpg", alt: "Waterfalls running down the wall of a fjord", tone: "#132a3b" },
+  { src: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_1400,c_limit/v1790158809/photo-1607888566357-ec0b61abee46-1790158812198.jpg", alt: "A waterfall beside a wooden viewpoint", tone: "#1c2b17" },
 ];
 
 const DEFAULT_SOCIAL = [

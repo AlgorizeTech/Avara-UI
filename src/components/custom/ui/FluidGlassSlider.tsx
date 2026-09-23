@@ -14,21 +14,21 @@ const DEFAULT_SLIDES_DATA: Slide[] = [
   {
     id: 1,
     image:
-      "https://images.unsplash.com/photo-1506905925346-21bda4d32df4?q=80&w=2574&auto=format&fit=crop",
+      "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_2574,c_limit/v1790146210/photo-1506905925346-21bda4d32df4-1790146212208.jpg",
     title: "Discover pristine tropical beaches and crystal-clear waters",
     subtitle: "TROPICAL PARADISE",
   },
   {
     id: 2,
     image:
-      "https://images.unsplash.com/photo-1441974231531-c6227db76b6e?q=80&w=2574&auto=format&fit=crop",
+      "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_2574,c_limit/v1790146211/photo-1441974231531-c6227db76b6e-1790146212212.jpg",
     title: "Escape to the serene mountain heights and wilderness trails",
     subtitle: "MOUNTAIN ADVENTURES",
   },
   {
     id: 3,
     image:
-      "https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?q=80&w=2574&auto=format&fit=crop",
+      "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_2574,c_limit/v1790145141/photo-1464822759023-fed622ff2c3b-1790145143491.jpg",
     title: "Surround yourself with majestic peaks and alpine lakes",
     subtitle: "ALPINE RETREAT",
   },
