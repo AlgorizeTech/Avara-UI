@@ -3305,15 +3305,22 @@ function FooterSection() {
 	return (
 		<footer className="border-t border-border/50 px-6 md:px-8 bg-background">
 			<div className="max-w-[1320px] mx-auto py-10 md:py-12 flex flex-col sm:flex-row items-center justify-between gap-5">
-				<div className="flex items-center gap-3">
+				<div className="flex flex-wrap items-center justify-center sm:justify-start gap-2.5 sm:gap-3">
 					<div className="size-7 rounded-lg bg-primary/10 flex items-center justify-center border border-primary/20">
 						<Layers className="size-3.5 text-primary" />
 					</div>
 					<span className="font-semibold text-base text-foreground tracking-tight">
 						Docs UI
 					</span>
-					<span className="text-[12px] text-muted-foreground font-medium hidden sm:inline-block border-l border-border/50 pl-3 ml-1">
-						Crafting beautiful component documentation
+					<span className="text-[12px] text-muted-foreground font-medium border-l border-border/50 pl-3 ml-0.5">
+						Built by{" "}
+						<Link
+							href="https://algorizetech.com"
+							target="_blank"
+							rel="noopener noreferrer"
+							className="font-semibold text-foreground hover:text-primary transition-colors underline-offset-4 hover:underline">
+							AlgorizeTech
+						</Link>
 					</span>
 				</div>
 
