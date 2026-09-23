@@ -534,9 +534,11 @@ function HeroSection() {
 			    defaults: ComponentWall ships in the registry, so its defaults
 			    have to make sense in a consumer's project, where this site's
 			    routes do not exist. The wall's cards are this site's own
-			    sections, and the install line names whichever one the camera
-			    is resting on. */}
+			    sections, and the install line names whichever one a camera
+			    has just landed on — the centred layout puts the copy between
+			    two walls, one camera resting high and the other low. */}
 			<ComponentWall
+				layout="center"
 				badge={{ label: "Next-gen React components", href: "/docs/nextjs/index" }}
 				heading="Build interactive {word}."
 				headingWords={["interfaces", "components", "experiences", "animations", "dashboards"]}

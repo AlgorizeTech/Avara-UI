@@ -3174,10 +3174,10 @@ function MiniatureIllustration({
 				{type === "honeycomb-hero" && (
 					<div className="w-full h-full flex gap-1.5 my-auto px-0.5 items-center">
 						<div className="flex-1 flex flex-col gap-0.5">
-							<span className="text-[5px] font-light text-muted-foreground">Amazing</span>
+							<span className="text-[5px] font-light text-muted-foreground">Wander the</span>
 							<div className="flex items-center gap-0.5">
 								<span className="h-[1px] w-2 bg-primary" />
-								<span className="text-[8px] font-bold tracking-widest text-primary">NORWAY</span>
+								<span className="text-[8px] font-bold tracking-widest text-primary">FJORDS</span>
 							</div>
 							<span className="h-[2px] w-8 rounded bg-muted-foreground/30" />
 							<span className="h-[2px] w-6 rounded bg-muted-foreground/30" />
