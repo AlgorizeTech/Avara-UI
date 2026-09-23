@@ -258,16 +258,24 @@ export const OrbitGallery = forwardRef<HTMLElement, OrbitGalleryProps>(
             by the radius, then counter-rotated so it stays upright. The radius
             grows with the breakpoint. */}
         <style>{`
-          .orbit-gallery-card { --orbit-r: 110px; }
+          .orbit-gallery-ring {
+            transform-style: preserve-3d;
+            perspective: 3000px;
+          }
+          .orbit-gallery-card {
+            --orbit-r: 110px;
+            transform-style: preserve-3d;
+            backface-visibility: hidden;
+          }
           @media (min-width: 480px) { .orbit-gallery-card { --orbit-r: 135px; } }
           @media (min-width: 640px) { .orbit-gallery-card { --orbit-r: 185px; } }
           @media (min-width: 1024px) { .orbit-gallery-card { --orbit-r: 220px; } }
           @keyframes orbit-gallery-slide {
-            0%   { transform: rotate(0deg)   translateY(calc(-1 * var(--orbit-r))) rotate(0deg); }
-            25%  { transform: rotate(90deg)  translateY(calc(-1 * var(--orbit-r))) rotate(-90deg); }
-            50%  { transform: rotate(180deg) translateY(calc(-1 * var(--orbit-r))) rotate(-180deg); }
-            75%  { transform: rotate(270deg) translateY(calc(-1 * var(--orbit-r))) rotate(-270deg); }
-            100% { transform: rotate(360deg) translateY(calc(-1 * var(--orbit-r))) rotate(-360deg); }
+            0%   { transform: rotate(0deg)   translateY(calc(-1 * var(--orbit-r))) rotateY(2.5deg) rotate(0deg); }
+            25%  { transform: rotate(90deg)  translateY(calc(-1 * var(--orbit-r))) rotateY(2.5deg) rotate(-90deg); }
+            50%  { transform: rotate(180deg) translateY(calc(-1 * var(--orbit-r))) rotateY(2.5deg) rotate(-180deg); }
+            75%  { transform: rotate(270deg) translateY(calc(-1 * var(--orbit-r))) rotateY(2.5deg) rotate(-270deg); }
+            100% { transform: rotate(360deg) translateY(calc(-1 * var(--orbit-r))) rotateY(2.5deg) rotate(-360deg); }
           }
           .orbit-gallery-card { animation: orbit-gallery-slide var(--orbit-duration, 36s) linear infinite; }
           .orbit-gallery-ring:hover .orbit-gallery-card { animation-play-state: paused; }
