@@ -38,7 +38,7 @@ export default function RootLayout({
         <ResourcePreloader fonts={[]} images={['/logo.svg', '/og-image.png']} />
       </head>
       <body
-        className={`${geistMono.variable} antialiased min-h-screen bg-zinc-50 dark:bg-zinc-950 text-zinc-900 dark:text-zinc-100`}
+        className={`${geistMono.variable} antialiased min-h-screen bg-background text-foreground selection:bg-primary/25`}
       >
         <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
           <ThemeContextProvider>

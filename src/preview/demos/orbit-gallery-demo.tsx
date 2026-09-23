@@ -1,8 +1,10 @@
 "use client";
 
 import { OrbitGallery } from "@/components/custom/blocks/OrbitGalleryBlock";
+import { toBlockColor } from "@/lib/accent";
 
-export default function OrbitGalleryDemo({ color = "primary" }: { color?: string }) {
+export default function OrbitGalleryDemo({ color: pickedColor = "primary" }: { color?: string }) {
+  const color = toBlockColor(pickedColor);
   return (
     <div className="w-full overflow-hidden rounded-2xl border border-zinc-200 bg-white dark:border-zinc-800 dark:bg-black">
       <OrbitGallery

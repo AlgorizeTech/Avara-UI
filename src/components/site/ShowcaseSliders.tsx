@@ -42,7 +42,8 @@ export function ShowcaseControlCard({
         // Stacked on small screens; from lg a two-column grid — the picker in
         // the left half, the sliders starting at the right half.
         "flex flex-col gap-4 sm:gap-5 p-4 sm:p-5 lg:grid lg:grid-cols-2 lg:items-end lg:gap-x-8",
-        "bg-zinc-50 dark:bg-zinc-900/50 border border-zinc-200 dark:border-zinc-800 rounded-2xl",
+        // Same shell as the preview card below it.
+        "bg-foreground/[0.03] ring-1 ring-inset ring-foreground/[0.05] rounded-2xl",
         className,
       )}
     >
@@ -100,10 +101,10 @@ export function ShowcaseSliders({
         return (
           <div key={ctrl.name} className="flex flex-col gap-2 min-w-0">
             <div className="flex items-center justify-between gap-2">
-              <span className="text-xs font-semibold uppercase tracking-wider text-zinc-500 truncate">
+              <span className="text-xs font-semibold uppercase tracking-wider text-foreground/55 truncate">
                 {ctrl.label}
               </span>
-              <span className="shrink-0 font-mono text-xs font-semibold tabular-nums text-zinc-700 dark:text-zinc-300">
+              <span className="shrink-0 font-mono text-xs font-semibold tabular-nums text-foreground/80">
                 {formatValue(val, step)}
                 {ctrl.unit}
               </span>
@@ -111,7 +112,7 @@ export function ShowcaseSliders({
 
             <div className="relative flex items-center w-full h-4 group touch-none">
               {/* Track */}
-              <div className="absolute inset-x-0 h-1.5 rounded-full bg-zinc-300 dark:bg-zinc-700 overflow-hidden pointer-events-none">
+              <div className="absolute inset-x-0 h-1.5 rounded-full bg-foreground/15 dark:bg-foreground/[0.12] overflow-hidden pointer-events-none">
                 <div
                   className="h-full bg-primary"
                   style={{ width: `${percent}%` }}
@@ -135,7 +136,7 @@ export function ShowcaseSliders({
               {/* Thumb. `left` is pulled back by its own width across the
                     travel so it stays inside the track at both ends. */}
               <div
-                className="absolute w-4 h-4 rounded-full bg-white dark:bg-zinc-900 border-2 border-primary/30 shadow-sm pointer-events-none transition-transform duration-75 group-hover:scale-110 peer-focus-visible:scale-110 peer-focus-visible:ring-4 peer-focus-visible:ring-primary/30"
+                className="absolute w-4 h-4 rounded-full bg-card dark:bg-foreground/[0.04] border-2 border-primary/30 shadow-sm pointer-events-none transition-transform duration-75 group-hover:scale-110 peer-focus-visible:scale-110 peer-focus-visible:ring-4 peer-focus-visible:ring-primary/30"
                 style={{
                   left: `calc(${percent}% - ${(percent / 100) * 16}px)`,
                 }}

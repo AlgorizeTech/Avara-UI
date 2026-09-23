@@ -141,13 +141,16 @@ const sampleData: SupportData = {
 
 export default function SupportDemo({
   variant = "default",
-  color = "primary",
+  color: pickedColor = "primary",
   layout = "chat",
 }: {
   variant?: SupportVariant;
-  color?: SupportColor;
+  color?: SupportColor | "lavender";
   layout?: SupportLayout;
 }) {
+  // The dashboard has no lavender palette and no hex support. Its "primary"
+  // palette follows --primary, which the sandbox points at the picked swatch.
+  const color: SupportColor = pickedColor === "lavender" ? "primary" : pickedColor;
   return (
     <div
       className={`w-full transition-all duration-500 relative overflow-hidden rounded-2xl ${variant === "glass" ? "p-4 sm:p-8" : ""}`}

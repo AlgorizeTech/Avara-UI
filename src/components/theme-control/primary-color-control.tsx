@@ -9,7 +9,7 @@ export function PrimaryColorControl() {
 
   return (
     <div className="space-y-3 relative">
-      <p className="text-sm font-medium">Theme Presets</p>
+      <p className="text-[11px] font-semibold uppercase tracking-[0.08em] text-foreground/35">Theme Presets</p>
       <div className="flex flex-wrap gap-2">
         {THEME_PRESETS.map((preset) => {
           const isActive = activePreset === preset.name;
@@ -20,8 +20,8 @@ export function PrimaryColorControl() {
               className={cn(
                 "w-10 h-10 flex items-center justify-center rounded-lg border-2 p-0.5 cursor-pointer transition-all shrink-0",
                 isActive
-                  ? "border-primary/30 scale-105 shadow-sm bg-accent/30"
-                  : "border-transparent hover:border-muted-foreground/30",
+                  ? "border-primary/30 scale-105 shadow-sm bg-foreground/[0.04]"
+                  : "border-transparent hover:border-foreground/15",
               )}
               onClick={() => applyPreset(preset.name)}
               title={preset.label}

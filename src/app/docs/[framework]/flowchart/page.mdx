@@ -295,13 +295,13 @@ export default function AccentedPipeline() {
 ## Best Practices & Guidelines
 
 <div className="flex flex-col gap-4 my-6 not-prose">
-  <div className="p-5 rounded-xl border border-blue-200 dark:border-blue-900/50 bg-blue-50/50 dark:bg-blue-950/20">
-    <h4 className="text-base font-semibold text-blue-900 dark:text-blue-300 mb-1">Keep ports and paths in sync</h4>
-    <p className="text-blue-800 dark:text-blue-400/80 text-sm">Node positions come from Tailwind <code>left-[…]</code> / <code>top-[…]</code> classes and the routes are raw SVG coordinates, so the two are only aligned because you made them align. When you move a node, move the matching <code>M</code>/<code>L</code> coordinates with it.</p>
+  <div className="rounded-xl border border-foreground/[0.06] bg-foreground/[0.03] p-4">
+    <h4 className="font-sans text-[14px] font-semibold text-foreground mb-1">Keep ports and paths in sync</h4>
+    <p className="text-[13px] leading-relaxed text-foreground/50">Node positions come from Tailwind <code>left-[…]</code> / <code>top-[…]</code> classes and the routes are raw SVG coordinates, so the two are only aligned because you made them align. When you move a node, move the matching <code>M</code>/<code>L</code> coordinates with it.</p>
   </div>
-  <div className="p-5 rounded-xl border border-amber-200 dark:border-amber-900/50 bg-amber-50/50 dark:bg-amber-950/20">
-    <h4 className="text-base font-semibold text-amber-900 dark:text-amber-300 mb-1">Split long routes into segments</h4>
-    <p className="text-amber-800 dark:text-amber-400/80 text-sm">Several <code>FlowConnection</code>s can share the same <code>id</code>. Splitting a branch into per-hop segments lets the stream animation restart at each node instead of sweeping the whole diagram at once.</p>
+  <div className="rounded-xl border border-primary/15 bg-primary/5 p-4">
+    <h4 className="font-sans text-[14px] font-semibold text-primary mb-1">Split long routes into segments</h4>
+    <p className="text-[13px] leading-relaxed text-foreground/50">Several <code>FlowConnection</code>s can share the same <code>id</code>. Splitting a branch into per-hop segments lets the stream animation restart at each node instead of sweeping the whole diagram at once.</p>
   </div>
 </div>
 

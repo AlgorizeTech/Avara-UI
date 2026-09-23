@@ -5,9 +5,11 @@ import { resolveSnippet, resolveUsage, type Snippet } from "@/lib/snippet";
 import { cn } from "@/lib/utils";
 import type { BuiltinLanguage } from "shiki";
 import {
+  CODE_SURFACE,
   CodeBlockClient,
   isTransformable,
 } from "@/components/site/code-block-client";
+import { motion, useReducedMotion } from "framer-motion";
 import CodeCopy, { type LanguageType } from "@/components/site/code-copy";
 import {
   Code2,
@@ -27,6 +29,7 @@ import {
 import { SandboxFrame } from "@/components/site/SandboxFrame";
 import { prefetchHighlight, warmHighlighter } from "@/components/custom/ui/code-renderer-core";
 import { ThemeColorPicker } from "@/components/site/ThemeColorPicker";
+import { toBlockColor } from "@/lib/accent";
 import {
   ShowcaseControlCard,
   ShowcaseSliders,
@@ -224,6 +227,13 @@ export function Sandbox({
   const [isDragging, setIsDragging] = useState(false);
   const [resetKey, setResetKey] = useState(0);
   const [isFullscreen, setIsFullscreen] = useState(false);
+  // The active tab and device each get a pill that slides between options.
+  // A page shows several cards, so the layoutIds are scoped per instance.
+  const pillId = useId();
+  const reduceMotion = useReducedMotion();
+  const pillTransition = reduceMotion
+    ? { duration: 0 }
+    : { type: "spring" as const, stiffness: 420, damping: 34 };
   const areaRef = useRef<HTMLDivElement>(null);
   const closeFullscreenRef = useRef<HTMLButtonElement>(null);
 
@@ -397,25 +407,48 @@ export function Sandbox({
     isTransformable(currentLang);
 
   return (
-    <div className="w-full my-8 border border-zinc-200 dark:border-zinc-800 rounded-xl flex flex-col not-prose relative">
+    // The install box's anatomy — an ink-tint shell, a slim bar, the content
+    // on an inset panel — with its own accents: a hairline ring and a larger
+    // radius on the shell, a sliding pill (not an underline) for the tabs, and
+    // the active tab's icon in the primary colour.
+    <div className="w-full my-8 rounded-2xl bg-foreground/[0.03] ring-1 ring-inset ring-foreground/[0.05] flex flex-col not-prose relative">
       {/* Top Header Bar */}
-      <div className="flex flex-wrap items-center justify-between gap-3 px-4 py-3 border-b border-zinc-200 dark:border-zinc-800 bg-zinc-50 dark:bg-zinc-900/50 rounded-t-xl">
+      <div className="flex flex-wrap items-center justify-between gap-x-3 gap-y-2 min-h-12 py-2 pl-2 pr-2.5">
         {/* Left: tab pills */}
-        <div className="flex items-center gap-1 bg-zinc-200/50 dark:bg-zinc-800/50 p-1 rounded-lg">
-          {tabs.map((tab) => (
-            <button
-              key={tab.id}
-              onClick={() => setActiveTab(tab.id)}
-              className={cn(
-                "flex items-center gap-1.5 sm:gap-2 px-2 sm:px-3 py-1.5 text-xs sm:text-sm font-medium rounded-md transition-all cursor-pointer capitalize",
-                activeTab === tab.id
-                  ? "bg-white dark:bg-zinc-700 text-zinc-900 dark:text-white shadow-sm"
-                  : "text-zinc-500 hover:text-zinc-700 dark:text-zinc-400 dark:hover:text-zinc-200",
-              )}
-            >
-              {tab.icon ?? TAB_ICONS[tab.id]} {tab.label}
-            </button>
-          ))}
+        <div className="flex items-center gap-0.5">
+          {tabs.map((tab) => {
+            const isActive = activeTab === tab.id;
+            return (
+              <button
+                key={tab.id}
+                onClick={() => setActiveTab(tab.id)}
+                className={cn(
+                  "relative flex items-center gap-1.5 sm:gap-2 h-8 px-2.5 sm:px-3 text-[13px] font-medium rounded-lg transition-colors cursor-pointer capitalize",
+                  isActive
+                    ? "text-foreground"
+                    : "text-foreground/45 hover:text-foreground/80",
+                )}
+              >
+                {isActive && (
+                  <motion.span
+                    layoutId={`${pillId}-tab`}
+                    transition={pillTransition}
+                    aria-hidden
+                    className="absolute inset-0 rounded-lg bg-background shadow-[0_1px_2px_rgb(0_0_0/0.06)] ring-1 ring-foreground/[0.06]"
+                  />
+                )}
+                <span
+                  className={cn(
+                    "relative flex items-center [&_svg]:size-3.5 transition-colors",
+                    isActive && "text-primary",
+                  )}
+                >
+                  {tab.icon ?? TAB_ICONS[tab.id]}
+                </span>
+                <span className="relative">{tab.label}</span>
+              </button>
+            );
+          })}
         </div>
 
         {/* Right: the code tabs get the TS/JS switch in the same slot the
@@ -433,7 +466,7 @@ export function Sandbox({
           <div className="flex items-center gap-2 sm:gap-3 ml-auto">
             {/* True viewport width, plus how far it was shrunk to fit the
                 column, which the Fit button snaps back to 100%. */}
-            <span className="flex items-baseline gap-1.5 text-xs font-medium text-zinc-500 dark:text-zinc-400 min-w-[48px] justify-end tabular-nums whitespace-nowrap">
+            <span className="flex items-baseline gap-1.5 font-mono text-[11px] text-foreground/50 min-w-[48px] justify-end tabular-nums whitespace-nowrap">
               <span>
                 {viewportWidth === null
                   ? "—"
@@ -443,8 +476,8 @@ export function Sandbox({
                 className={cn(
                   "text-[11px] hidden sm:inline-block",
                   fitScale < 1
-                    ? "text-zinc-400 dark:text-zinc-500"
-                    : "text-zinc-300 dark:text-zinc-600",
+                    ? "text-foreground/35"
+                    : "text-foreground/25",
                 )}
                 title={
                   fitScale < 1
@@ -457,22 +490,30 @@ export function Sandbox({
             </span>
 
             {deviceSwitcher && (
-              <div className="flex items-center gap-1 bg-zinc-200/50 dark:bg-zinc-800/50 p-1 rounded-lg border border-zinc-200/50 dark:border-zinc-700/50">
+              <div className="flex items-center gap-0.5 bg-foreground/[0.04] p-0.5 rounded-lg">
                 {deviceButtons.map(({ device, icon, label }) => (
                   <button
                     key={device}
                     onClick={() => setPreviewWidth(DEVICE_PRESETS[device])}
                     className={cn(
-                      "p-1.5 rounded-md transition-all cursor-pointer",
+                      "relative p-1.5 rounded-md transition-colors cursor-pointer",
                       activeDevice === device
-                        ? "bg-white dark:bg-zinc-700 shadow-sm text-zinc-900 dark:text-zinc-100"
-                        : "text-zinc-500 hover:text-zinc-700 dark:text-zinc-400 dark:hover:text-zinc-200",
+                        ? "text-foreground"
+                        : "text-foreground/45 hover:text-foreground/80",
                     )}
                     title={label}
                     aria-label={label}
                     aria-pressed={activeDevice === device}
                   >
-                    {icon}
+                    {activeDevice === device && (
+                      <motion.span
+                        layoutId={`${pillId}-device`}
+                        transition={pillTransition}
+                        aria-hidden
+                        className="absolute inset-0 rounded-md bg-background shadow-[0_1px_2px_rgb(0_0_0/0.06)] ring-1 ring-foreground/[0.06]"
+                      />
+                    )}
+                    <span className="relative flex">{icon}</span>
                   </button>
                 ))}
               </div>
@@ -487,8 +528,8 @@ export function Sandbox({
                 className={cn(
                   "h-8 w-8 flex items-center justify-center rounded-lg transition-all active:scale-95 cursor-pointer shadow-sm border",
                   isFitted
-                    ? "bg-zinc-100 dark:bg-zinc-700 text-zinc-900 dark:text-zinc-100 border-zinc-300 dark:border-zinc-600"
-                    : "bg-white dark:bg-zinc-800 hover:bg-zinc-100 dark:hover:bg-zinc-700 text-zinc-500 hover:text-zinc-700 dark:text-zinc-400 dark:hover:text-zinc-200 border-zinc-200 dark:border-zinc-700",
+                    ? "bg-foreground/[0.05] dark:bg-foreground/[0.12] text-foreground border-foreground/15 dark:border-foreground/20"
+                    : "bg-card dark:bg-foreground/[0.08] hover:bg-foreground/[0.05] dark:hover:bg-foreground/[0.12] text-foreground/55 hover:text-foreground/80 border-border dark:border-foreground/15",
                 )}
                 title={
                   fitLandsOnDesktopFloor
@@ -511,7 +552,7 @@ export function Sandbox({
             {fullscreenOption && (
               <button
                 onClick={openFullscreen}
-                className="h-8 w-8 flex items-center justify-center rounded-lg transition-all active:scale-95 cursor-pointer shadow-sm border bg-white dark:bg-zinc-800 hover:bg-zinc-100 dark:hover:bg-zinc-700 text-zinc-500 hover:text-zinc-700 dark:text-zinc-400 dark:hover:text-zinc-200 border-zinc-200 dark:border-zinc-700"
+                className="h-8 w-8 flex items-center justify-center rounded-lg transition-colors active:scale-95 cursor-pointer text-foreground/45 hover:text-foreground hover:bg-foreground/[0.06] [&_svg]:size-3.5"
                 title="Open fullscreen preview"
                 aria-label="Open fullscreen preview"
                 aria-haspopup="dialog"
@@ -523,7 +564,7 @@ export function Sandbox({
             {reset && (
               <button
                 onClick={() => setResetKey((k) => k + 1)}
-                className="h-8 w-8 flex items-center justify-center rounded-lg transition-all active:scale-95 cursor-pointer shadow-sm border bg-white dark:bg-zinc-800 hover:bg-zinc-100 dark:hover:bg-zinc-700 text-zinc-500 hover:text-zinc-700 dark:text-zinc-400 dark:hover:text-zinc-200 border-zinc-200 dark:border-zinc-700"
+                className="h-8 w-8 flex items-center justify-center rounded-lg transition-colors active:scale-95 cursor-pointer text-foreground/45 hover:text-foreground hover:bg-foreground/[0.06] [&_svg]:size-3.5"
                 title="Reload preview"
                 aria-label="Reload preview"
               >
@@ -534,15 +575,16 @@ export function Sandbox({
         )}
       </div>
 
-      {/* Main Content Area */}
-      <div className="relative w-full bg-white dark:bg-[#09090b] rounded-b-xl">
+      {/* Main Content Area — an inset panel inside the shell. Not clipped:
+          the drag handle hangs over the stage's right edge. */}
+      <div className="relative w-full px-1.5 pb-1.5">
         {/* The preview stays MOUNTED across tab switches (hidden, not removed)
             so the sandbox iframe never reloads when returning to Preview. */}
         <div
           ref={areaRef}
           className={cn(
-            "flex items-stretch relative justify-start overflow-visible rounded-b-xl",
-            "bg-zinc-50/50 dark:bg-[#020202]",
+            "flex items-stretch relative justify-start overflow-visible rounded-xl ring-1 ring-foreground/[0.05]",
+            "bg-foreground/[0.015] dark:bg-background",
             !isPreviewActive && "hidden",
           )}
           style={{
@@ -550,7 +592,7 @@ export function Sandbox({
           }}
         >
             {/* Dashed Grid Background */}
-            <div className="absolute inset-0 pointer-events-none rounded-b-xl overflow-hidden">
+            <div className="absolute inset-0 pointer-events-none rounded-xl overflow-hidden">
               <svg width="100%" height="100%">
                 <defs>
                   <pattern
@@ -572,7 +614,7 @@ export function Sandbox({
                   width="100%"
                   height="100%"
                   fill="url(#sandbox-dashed-grid)"
-                  className="text-zinc-400/20 dark:text-white/10"
+                  className="text-foreground/[0.08] dark:text-foreground/10"
                 />
               </svg>
             </div>
@@ -599,14 +641,14 @@ export function Sandbox({
                     }
               }
               className={cn(
-                "flex justify-center bg-white dark:bg-[#09090b]",
+                "flex justify-center bg-card dark:bg-background",
                 isFullscreen
                   ? "fixed inset-0 z-[9999] items-stretch"
                   : [
                       "relative items-start transition-[width] ease-out",
                       isDragging ? "duration-0" : "duration-300",
-                      "border-r border-zinc-200 dark:border-zinc-800",
-                      isFitted ? "rounded-b-xl" : "rounded-bl-xl rounded-r-none",
+                      "border-r border-border",
+                      isFitted ? "rounded-xl" : "rounded-l-xl rounded-r-none",
                     ],
               )}
             >
@@ -616,7 +658,7 @@ export function Sandbox({
                   isFullscreen
                     ? "h-full"
                     : [
-                        isFitted ? "rounded-b-xl" : "rounded-bl-xl",
+                        isFitted ? "rounded-xl" : "rounded-l-xl",
                         isDragging && "pointer-events-none select-none",
                       ],
                 )}
@@ -648,9 +690,9 @@ export function Sandbox({
                     // The stage behind is the demo's own surface — near-white
                     // or near-black — so the button carries its own contrast
                     // rather than borrowing any.
-                    "bg-zinc-100/90 border border-zinc-300 text-zinc-700 hover:bg-white hover:text-zinc-900",
-                    "dark:bg-zinc-800/90 dark:border-zinc-600 dark:text-zinc-200 dark:hover:bg-zinc-700 dark:hover:text-white",
-                    "focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-500",
+                    "bg-foreground/[0.045] border border-foreground/15 text-foreground/80 hover:bg-card hover:text-foreground",
+                    "dark:bg-foreground/[0.072] dark:border-foreground/20 dark:text-foreground/80 dark:hover:bg-foreground/[0.12] dark:hover:text-foreground",
+                    "focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary",
                   )}
                   title="Close fullscreen preview (Esc)"
                   aria-label="Close fullscreen preview"
@@ -674,9 +716,9 @@ export function Sandbox({
                   onPointerUp={handlePointerEnd}
                   onPointerCancel={handlePointerEnd}
                   onKeyDown={handleResizeKeyDown}
-                  className="absolute -right-2.5 top-1/2 -translate-y-1/2 w-5 h-8 bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 rounded-[3px] hidden sm:flex items-center justify-center cursor-ew-resize shadow-sm hover:shadow-md transition-shadow z-10 touch-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-500"
+                  className="absolute -right-2.5 top-1/2 -translate-y-1/2 w-5 h-8 bg-card dark:bg-foreground/[0.08] border border-border dark:border-foreground/15 rounded-[3px] hidden sm:flex items-center justify-center cursor-ew-resize shadow-sm hover:shadow-md transition-shadow z-10 touch-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary"
                 >
-                  <GripVertical className="w-3.5 h-3.5 text-zinc-400" />
+                  <GripVertical className="w-3.5 h-3.5 text-foreground/40" />
                 </div>
               )}
             </div>
@@ -687,7 +729,12 @@ export function Sandbox({
             /* No height cap here: CodeBlocks sizes itself to the lines it is
                showing, so the panel opens without a scrollbar and only gains
                one once Show More adds lines past that height. */
-            <div className="relative w-full overflow-hidden rounded-b-xl">
+            <div
+              className={cn(
+                "relative w-full overflow-hidden rounded-xl bg-background ring-1 ring-foreground/[0.05]",
+                CODE_SURFACE,
+              )}
+            >
               <CodeBlockClient
                 code={currentTab.code}
                 lang={currentLang}
@@ -696,7 +743,7 @@ export function Sandbox({
               />
             </div>
           ) : (
-            <div className="relative w-full rounded-b-xl">
+            <div className="relative w-full rounded-xl bg-background ring-1 ring-foreground/[0.05]">
               {currentTab?.content}
             </div>
           ))}
@@ -820,7 +867,7 @@ function renderInline(text: string): React.ReactNode {
     }
     if (part.length > 4 && part.startsWith("**") && part.endsWith("**")) {
       return (
-        <strong key={i} className="font-semibold text-zinc-700 dark:text-zinc-200">
+        <strong key={i} className="font-semibold text-foreground/80">
           {part.slice(2, -2)}
         </strong>
       );
@@ -855,7 +902,7 @@ function PropNotes({ notes }: { notes: PropNote[] }) {
       {notes.map((note, i) => (
         <div
           key={`${note.prop}-${note.value ?? i}`}
-          className="text-sm leading-6 text-zinc-500 dark:text-zinc-400"
+          className="text-sm leading-6 text-foreground/55"
         >
           {/* Inline, not flex: a long prop or value then wraps by word with the
               prose instead of being squeezed and split mid-word on narrow screens. */}
@@ -868,7 +915,7 @@ function PropNotes({ notes }: { notes: PropNote[] }) {
               <>
                 <span
                   aria-hidden
-                  className="mx-1 font-mono text-xs text-zinc-400"
+                  className="mx-1 font-mono text-xs text-foreground/40"
                 >
                   =
                 </span>
@@ -1046,9 +1093,17 @@ export function ExampleShowcase({
             effectiveProps[colorProp] = color;
           }
 
+          // The demos know the picker's "lavender" id, the blocks don't — so the
+          // snippet a reader copies spells it as the hex it stands for.
           const effectiveUsage =
             resolveUsage(example.usage, framework) ??
-            generateFallbackUsage(name, example.title, effectiveProps);
+            generateFallbackUsage(
+              name,
+              example.title,
+              colorControl
+                ? { ...effectiveProps, [colorProp]: toBlockColor(color) }
+                : effectiveProps,
+            );
 
           const effectiveCode = resolveSnippet(example.code, framework) ?? fallbackCode;
 
@@ -1137,15 +1192,15 @@ function ExampleCard({
       <div>
         <h3
           id={anchor}
-          className="scroll-m-20 group text-lg font-semibold text-zinc-900 dark:text-zinc-50"
+          className="scroll-m-20 group text-lg font-semibold text-foreground"
         >
           <a href={`#${anchor}`} className="inline-flex items-center gap-2">
             {title}
-            <LinkIcon className="w-3.5 h-3.5 text-zinc-400 opacity-0 group-hover:opacity-100 transition-opacity" />
+            <LinkIcon className="w-3.5 h-3.5 text-foreground/40 opacity-0 group-hover:opacity-100 transition-opacity" />
           </a>
         </h3>
         {subheading && (
-          <p className="mt-1 text-sm text-zinc-500 dark:text-zinc-400">
+          <p className="mt-1 text-sm text-foreground/55">
             {renderInline(subheading)}
           </p>
         )}
@@ -1168,10 +1223,10 @@ function ExampleCard({
           />
         ) : (
           <div
-            className="my-4 w-full border border-zinc-200 dark:border-zinc-800 rounded-xl flex items-center justify-center bg-zinc-50/50 dark:bg-[#020202]"
-            style={{ minHeight: minHeight + 58 /* header bar height */ }}
+            className="my-8 w-full rounded-2xl ring-1 ring-inset ring-foreground/[0.05] flex items-center justify-center bg-foreground/[0.03]"
+            style={{ minHeight: minHeight + 54 /* 48px bar + 6px inset */ }}
           >
-            <div className="h-5 w-5 rounded-full border-2 border-zinc-300 dark:border-zinc-700 border-t-transparent animate-spin" />
+            <div className="h-5 w-5 rounded-full border-2 border-foreground/15 border-t-transparent animate-spin" />
           </div>
         )}
       </div>

@@ -231,13 +231,13 @@ const componentPreviewData: PreviewCategoryGroup[] = navigation
 
 function CardHeaderMockup({ title }: { title: string }) {
 	return (
-		<div className="flex items-center justify-between border-b border-border/50 pb-1.5 mb-1.5 shrink-0">
+		<div className="flex items-center justify-between border-b border-foreground/[0.06] pb-1.5 mb-1.5 shrink-0">
 			<div className="flex items-center gap-1">
 				<span className="size-1.5 rounded-full bg-rose-500/80 inline-block" />
 				<span className="size-1.5 rounded-full bg-amber-500/80 inline-block" />
 				<span className="size-1.5 rounded-full bg-emerald-500/80 inline-block" />
 			</div>
-			<span className="text-[9px] font-mono text-muted-foreground/70 truncate max-w-[120px] font-semibold">
+			<span className="text-[9px] font-mono text-foreground/35 truncate max-w-[120px] font-medium">
 				{title.toLowerCase().replace(/\s+/g, "-")}.tsx
 			</span>
 			<div className="size-2 rounded-full bg-primary/40" />
@@ -253,7 +253,7 @@ function MiniatureIllustration({
 	type: string;
 }) {
 	return (
-		<div className="w-full h-full rounded-xl border border-border/80 bg-gradient-to-b from-card to-muted/30 pt-1.5 p-2.5 flex flex-col justify-between overflow-hidden relative group-hover:border-primary/50 transition-colors">
+		<div className="w-full h-full rounded-lg border border-foreground/[0.06] bg-card pt-1.5 p-2.5 flex flex-col justify-between overflow-hidden relative group-hover:border-primary/25 transition-colors">
 			<CardHeaderMockup title={title} />
 
 			<div className="flex-1 flex flex-col justify-center items-center relative overflow-hidden">
@@ -3326,17 +3326,17 @@ export default function AllComponentsDocsPage() {
 		<div className="all-components-page not-prose w-full py-4 text-foreground">
 			<div className="w-full space-y-12">
 				{/* Section Header - Left Aligned Exactly like Docs Layout */}
-				<div className="text-left space-y-3 pb-4 border-b border-border/60">
-					<span className="inline-flex items-center gap-1.5 text-xs font-semibold uppercase tracking-[0.2em] text-primary">
+				<div className="text-left space-y-3 pb-6 border-b border-foreground/[0.06]">
+					<span className="inline-flex items-center gap-1.5 text-[11px] font-semibold uppercase tracking-[0.08em] text-foreground/30">
 						<LayoutGrid className="size-3.5" />
 						Component Preview Catalog
 					</span>
 					<h1
 						id="explore-built-in-component-previews"
-						className="text-3xl md:text-4xl lg:text-5xl font-bold tracking-tight text-foreground">
+						className="font-serif text-2xl leading-8 font-normal text-foreground">
 						Explore Built-in Component Previews
 					</h1>
-					<p className="text-muted-foreground text-sm md:text-base leading-relaxed w-full">
+					<p className="text-[14px] leading-relaxed text-foreground/50 w-full">
 						Click any component card below to inspect interactive live previews,
 						installation guides, and full source code.
 					</p>
@@ -3347,25 +3347,25 @@ export default function AllComponentsDocsPage() {
 					{componentPreviewData.map((group) => (
 						<div key={group.categoryTitle} className="space-y-6">
 							{/* Category Header */}
-							<div className="pb-3 border-b border-border/60 flex flex-col sm:flex-row sm:items-end justify-between gap-2">
+							<div className="pb-3 border-b border-foreground/[0.06] flex flex-col sm:flex-row sm:items-end justify-between gap-2">
 								<div>
 									<div className="flex items-center gap-3">
-										<div className="size-9 rounded-xl bg-primary/10 border border-primary/20 flex items-center justify-center text-primary shadow-xs shrink-0">
+										<div className="size-8 rounded-lg bg-primary/15 flex items-center justify-center text-primary shrink-0">
 											<group.icon className="size-4.5" />
 										</div>
 										<h2
 											id={group.categoryTitle
 												.toLowerCase()
 												.replace(/\s+/g, "-")}
-											className="text-xl md:text-2xl font-bold tracking-tight text-foreground leading-tight">
+											className="font-serif text-2xl leading-8 font-normal text-foreground">
 											{group.categoryTitle}
 										</h2>
 									</div>
-									<p className="text-xs sm:text-sm text-muted-foreground mt-2 font-medium">
+									<p className="text-[14px] leading-relaxed text-foreground/50 mt-2">
 										{group.categorySubtitle}
 									</p>
 								</div>
-								<span className="text-xs font-mono font-semibold text-primary px-2.5 py-1 rounded-full bg-primary/10 border border-primary/20 self-start sm:self-auto shrink-0">
+								<span className="text-[9px] font-bold uppercase tracking-wider leading-none px-1.5 py-0.5 rounded-md bg-primary/15 text-primary border border-primary/30 self-start sm:self-auto shrink-0">
 									{group.items.length} Components
 								</span>
 							</div>
@@ -3377,16 +3377,16 @@ export default function AllComponentsDocsPage() {
 										key={item.title}
 										href={item.href || docsHref(framework, item.slug || "")}
 										{...getTriggerProps(item.previewName, item.title)}
-										className="group block rounded-2xl">
-										<div className="rounded-2xl border border-border/70 bg-card p-4 transition-all duration-300 hover:border-primary/30 hover:shadow-xl hover:-translate-y-1.5 flex flex-col h-full justify-between overflow-hidden">
+										className="group block rounded-xl">
+										<div className="rounded-xl border border-foreground/[0.06] bg-foreground/[0.03] p-4 transition-all duration-300 hover:bg-foreground/[0.07] hover:-translate-y-1.5 flex flex-col h-full justify-between overflow-hidden">
 											{/* Card Thumbnail / Illustration */}
-											<div className="w-full h-32 rounded-xl mb-4 overflow-hidden relative">
+											<div className="w-full h-32 rounded-lg mb-4 overflow-hidden relative">
 												<MiniatureIllustration
 													title={item.title}
 													type={item.illustrationType}
 												/>
 												{item.badge && (
-													<span className="absolute top-2.5 right-2.5 text-[10px] font-extrabold px-2 py-0.5 rounded-full bg-primary text-primary-foreground shadow-sm">
+													<span className="absolute top-2.5 right-2.5 text-[9px] font-bold uppercase tracking-wider leading-none px-1.5 py-0.5 rounded-md bg-primary/15 text-primary border border-primary/30 backdrop-blur-sm">
 														{item.badge}
 													</span>
 												)}
@@ -3395,10 +3395,10 @@ export default function AllComponentsDocsPage() {
 											{/* Card Info */}
 											<div className="flex items-center justify-between pt-1">
 												<div>
-													<h3 className="text-sm font-semibold text-foreground group-hover:text-primary transition-colors">
+													<h3 className="text-[14px] font-semibold text-foreground group-hover:text-primary transition-colors">
 														{item.title}
 													</h3>
-													<p className="text-xs text-muted-foreground mt-0.5 font-medium">
+													<p className="text-[12px] text-foreground/40 mt-0.5">
 														{item.countText}
 													</p>
 												</div>

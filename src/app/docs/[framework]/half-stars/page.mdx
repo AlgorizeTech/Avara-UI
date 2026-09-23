@@ -205,13 +205,13 @@ Discover the Half Stars rating component's precise visual feedback, supporting f
 ## Best Practices & Guidelines
 
 <div className="flex flex-col gap-4 my-6 not-prose">
-  <div className="p-5 rounded-xl border border-blue-200 dark:border-blue-900/50 bg-blue-50/50 dark:bg-blue-950/20">
-    <h4 className="text-base font-semibold text-blue-900 dark:text-blue-300 mb-1">Precision Steps</h4>
-    <p className="text-blue-800 dark:text-blue-400/80 text-sm">If you are allowing user input via <code>interactive={true}</code>, it is recommended to set <code>allowHalf={true}</code> (step 0.5) or <code>step={1}</code> for standard reviews. Setting <code>step={0.1}</code> can make it difficult for users to intentionally click a precise score like 4.0 exactly.</p>
+  <div className="rounded-xl border border-foreground/[0.06] bg-foreground/[0.03] p-4">
+    <h4 className="font-sans text-[14px] font-semibold text-foreground mb-1">Precision Steps</h4>
+    <p className="text-[13px] leading-relaxed text-foreground/50">If you are allowing user input via <code>interactive={true}</code>, it is recommended to set <code>allowHalf={true}</code> (step 0.5) or <code>step={1}</code> for standard reviews. Setting <code>step={0.1}</code> can make it difficult for users to intentionally click a precise score like 4.0 exactly.</p>
   </div>
-  <div className="p-5 rounded-xl border border-amber-200 dark:border-amber-900/50 bg-amber-50/50 dark:bg-amber-950/20">
-    <h4 className="text-base font-semibold text-amber-900 dark:text-amber-300 mb-1">Color Contrast</h4>
-    <p className="text-amber-800 dark:text-amber-400/80 text-sm">Ensure your <code>inactiveColor</code> provides enough contrast against your background so users can clearly see the empty stars. By default, <code>text-slate-200</code> works well on white backgrounds.</p>
+  <div className="rounded-xl border border-primary/15 bg-primary/5 p-4">
+    <h4 className="font-sans text-[14px] font-semibold text-primary mb-1">Color Contrast</h4>
+    <p className="text-[13px] leading-relaxed text-foreground/50">Ensure your <code>inactiveColor</code> provides enough contrast against your background so users can clearly see the empty stars. By default, <code>text-slate-200</code> works well on white backgrounds.</p>
   </div>
 </div>
 

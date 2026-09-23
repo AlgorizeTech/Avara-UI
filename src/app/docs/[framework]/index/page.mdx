@@ -60,30 +60,30 @@ guide</DocLink>. Toggle to **URL** above for the form that needs no setup.
 Build software faster with complete code ownership, no wrapper package, and total styling freedom.
 
 <div className="grid grid-cols-1 md:grid-cols-3 gap-5 my-8 not-prose">
-  <div className="p-6 rounded-2xl border border-zinc-200 dark:border-zinc-800 bg-gradient-to-b from-white to-zinc-50/50 dark:from-zinc-900 dark:to-zinc-950/50 shadow-xs hover:border-primary/50 transition-all">
+  <div className="p-6 rounded-xl bg-foreground/[0.03] border border-foreground/[0.06] hover:border-primary/30 transition-colors">
     {/* Glyph stays on one line: MDX parses children of a multi-line JSX element as
         block content, which would wrap it in the custom <p> (mb-4) and push it 8px
         off-centre, since flex centres the margin box. */}
-    <div className="w-10 h-10 rounded-xl bg-primary/10 text-primary flex items-center justify-center font-semibold mb-4 leading-none">⚡</div>
-    <h3 className="text-base font-semibold text-zinc-900 dark:text-zinc-50 mb-2">No Wrapper Package</h3>
-    <p className="text-sm text-zinc-600 dark:text-zinc-400 leading-relaxed">
+    <div className="w-10 h-10 rounded-xl bg-primary/15 text-primary flex items-center justify-center font-semibold mb-4 leading-none">⚡</div>
+    <h3 className="text-[14px] font-semibold text-foreground mb-2">No Wrapper Package</h3>
+    <p className="text-[13px] leading-relaxed text-foreground/50">
       There is no library to install and version. The CLI writes each component's source into your codebase, so you own it and there is no lock-in.
     </p>
   </div>
 
-  <div className="p-6 rounded-2xl border border-zinc-200 dark:border-zinc-800 bg-gradient-to-b from-white to-zinc-50/50 dark:from-zinc-900 dark:to-zinc-950/50 shadow-xs hover:border-primary/50 transition-all">
-    <div className="w-10 h-10 rounded-xl bg-primary/10 text-primary flex items-center justify-center font-semibold mb-4 leading-none">🎨</div>
-    <h3 className="text-base font-semibold text-zinc-900 dark:text-zinc-50 mb-2">100% Customizability</h3>
-    <p className="text-sm text-zinc-600 dark:text-zinc-400 leading-relaxed">
-      Modify styles, animations, and behaviors directly within your <code className="text-xs px-1.5 py-0.5 rounded bg-zinc-100 dark:bg-zinc-800 font-mono">components/custom</code> folder.
+  <div className="p-6 rounded-xl bg-foreground/[0.03] border border-foreground/[0.06] hover:border-primary/30 transition-colors">
+    <div className="w-10 h-10 rounded-xl bg-primary/15 text-primary flex items-center justify-center font-semibold mb-4 leading-none">🎨</div>
+    <h3 className="text-[14px] font-semibold text-foreground mb-2">100% Customizability</h3>
+    <p className="text-[13px] leading-relaxed text-foreground/50">
+      Modify styles, animations, and behaviors directly within your <code className="font-mono text-[12px] text-foreground/70 bg-foreground/[0.06] px-1.5 py-0.5 rounded">components/custom</code> folder.
     </p>
   </div>
 
-  <div className="p-6 rounded-2xl border border-zinc-200 dark:border-zinc-800 bg-gradient-to-b from-white to-zinc-50/50 dark:from-zinc-900 dark:to-zinc-950/50 shadow-xs hover:border-primary/50 transition-all">
-    <div className="w-10 h-10 rounded-xl bg-primary/10 text-primary flex items-center justify-center font-semibold mb-4 leading-none">🧩</div>
-    <h3 className="text-base font-semibold text-zinc-900 dark:text-zinc-50 mb-2">Dependencies Per Component</h3>
-    <p className="text-sm text-zinc-600 dark:text-zinc-400 leading-relaxed">
-      Each component declares only what it imports — usually <code className="text-xs px-1.5 py-0.5 rounded bg-zinc-100 dark:bg-zinc-800 font-mono">lucide-react</code>, <code className="text-xs px-1.5 py-0.5 rounded bg-zinc-100 dark:bg-zinc-800 font-mono">gsap</code> or <code className="text-xs px-1.5 py-0.5 rounded bg-zinc-100 dark:bg-zinc-800 font-mono">framer-motion</code>, and often nothing at all. Its page lists them before you install.
+  <div className="p-6 rounded-xl bg-foreground/[0.03] border border-foreground/[0.06] hover:border-primary/30 transition-colors">
+    <div className="w-10 h-10 rounded-xl bg-primary/15 text-primary flex items-center justify-center font-semibold mb-4 leading-none">🧩</div>
+    <h3 className="text-[14px] font-semibold text-foreground mb-2">Dependencies Per Component</h3>
+    <p className="text-[13px] leading-relaxed text-foreground/50">
+      Each component declares only what it imports — usually <code className="font-mono text-[12px] text-foreground/70 bg-foreground/[0.06] px-1.5 py-0.5 rounded">lucide-react</code>, <code className="font-mono text-[12px] text-foreground/70 bg-foreground/[0.06] px-1.5 py-0.5 rounded">gsap</code> or <code className="font-mono text-[12px] text-foreground/70 bg-foreground/[0.06] px-1.5 py-0.5 rounded">framer-motion</code>, and often nothing at all. Its page lists them before you install.
     </p>
   </div>
 </div>
@@ -91,29 +91,29 @@ Build software faster with complete code ownership, no wrapper package, and tota
 ## What's in the library
 
 <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3 my-8 not-prose">
-  <DocLink to="hero" className="p-4 rounded-xl border border-zinc-200 dark:border-zinc-800 hover:border-primary/50 transition-colors">
-    <div className="text-2xl font-semibold text-primary">33</div>
-    <div className="text-xs text-zinc-600 dark:text-zinc-400 mt-1">Marketing sections</div>
+  <DocLink to="hero" className="p-4 rounded-xl bg-foreground/[0.03] border border-foreground/[0.06] hover:bg-foreground/[0.05] hover:border-primary/30 transition-colors">
+    <div className="font-serif text-2xl font-normal leading-none text-primary">33</div>
+    <div className="text-[12px] font-medium text-foreground/60 mt-1.5">Marketing sections</div>
   </DocLink>
-  <DocLink to="data-table" className="p-4 rounded-xl border border-zinc-200 dark:border-zinc-800 hover:border-primary/50 transition-colors">
-    <div className="text-2xl font-semibold text-primary">21</div>
-    <div className="text-xs text-zinc-600 dark:text-zinc-400 mt-1">Data display</div>
+  <DocLink to="data-table" className="p-4 rounded-xl bg-foreground/[0.03] border border-foreground/[0.06] hover:bg-foreground/[0.05] hover:border-primary/30 transition-colors">
+    <div className="font-serif text-2xl font-normal leading-none text-primary">21</div>
+    <div className="text-[12px] font-medium text-foreground/60 mt-1.5">Data display</div>
   </DocLink>
-  <DocLink to="form" className="p-4 rounded-xl border border-zinc-200 dark:border-zinc-800 hover:border-primary/50 transition-colors">
-    <div className="text-2xl font-semibold text-primary">18</div>
-    <div className="text-xs text-zinc-600 dark:text-zinc-400 mt-1">Forms &amp; inputs</div>
+  <DocLink to="form" className="p-4 rounded-xl bg-foreground/[0.03] border border-foreground/[0.06] hover:bg-foreground/[0.05] hover:border-primary/30 transition-colors">
+    <div className="font-serif text-2xl font-normal leading-none text-primary">18</div>
+    <div className="text-[12px] font-medium text-foreground/60 mt-1.5">Forms &amp; inputs</div>
   </DocLink>
-  <DocLink to="card" className="p-4 rounded-xl border border-zinc-200 dark:border-zinc-800 hover:border-primary/50 transition-colors">
-    <div className="text-2xl font-semibold text-primary">15</div>
-    <div className="text-xs text-zinc-600 dark:text-zinc-400 mt-1">Layout</div>
+  <DocLink to="card" className="p-4 rounded-xl bg-foreground/[0.03] border border-foreground/[0.06] hover:bg-foreground/[0.05] hover:border-primary/30 transition-colors">
+    <div className="font-serif text-2xl font-normal leading-none text-primary">15</div>
+    <div className="text-[12px] font-medium text-foreground/60 mt-1.5">Layout</div>
   </DocLink>
-  <DocLink to="carousel" className="p-4 rounded-xl border border-zinc-200 dark:border-zinc-800 hover:border-primary/50 transition-colors">
-    <div className="text-2xl font-semibold text-primary">14</div>
-    <div className="text-xs text-zinc-600 dark:text-zinc-400 mt-1">Media</div>
+  <DocLink to="carousel" className="p-4 rounded-xl bg-foreground/[0.03] border border-foreground/[0.06] hover:bg-foreground/[0.05] hover:border-primary/30 transition-colors">
+    <div className="font-serif text-2xl font-normal leading-none text-primary">14</div>
+    <div className="text-[12px] font-medium text-foreground/60 mt-1.5">Media</div>
   </DocLink>
-  <DocLink to="navigation" className="p-4 rounded-xl border border-zinc-200 dark:border-zinc-800 hover:border-primary/50 transition-colors">
-    <div className="text-2xl font-semibold text-primary">13</div>
-    <div className="text-xs text-zinc-600 dark:text-zinc-400 mt-1">Navigation</div>
+  <DocLink to="navigation" className="p-4 rounded-xl bg-foreground/[0.03] border border-foreground/[0.06] hover:bg-foreground/[0.05] hover:border-primary/30 transition-colors">
+    <div className="font-serif text-2xl font-normal leading-none text-primary">13</div>
+    <div className="text-[12px] font-medium text-foreground/60 mt-1.5">Navigation</div>
   </DocLink>
 </div>
 
@@ -200,16 +200,16 @@ the whole library before committing to it.
 ## Where next
 
 <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 my-8 not-prose">
-  <DocLink to="installation" className="block p-5 rounded-xl border border-zinc-200 dark:border-zinc-800 hover:border-primary/50 transition-colors">
-    <h3 className="text-base font-semibold text-zinc-900 dark:text-zinc-50 mb-1">Installation</h3>
-    <span className="block text-sm text-zinc-600 dark:text-zinc-400">Set up the CLI and add your first component.</span>
+  <DocLink to="installation" className="block p-5 rounded-xl bg-foreground/[0.03] border border-foreground/[0.06] hover:bg-foreground/[0.05] hover:border-primary/30 transition-colors">
+    <h3 className="text-[14px] font-semibold text-foreground mb-1">Installation</h3>
+    <span className="block text-[13px] leading-relaxed text-foreground/50">Set up the CLI and add your first component.</span>
   </DocLink>
-  <DocLink to="first-app" className="block p-5 rounded-xl border border-zinc-200 dark:border-zinc-800 hover:border-primary/50 transition-colors">
-    <h3 className="text-base font-semibold text-zinc-900 dark:text-zinc-50 mb-1">Quick Start</h3>
-    <span className="block text-sm text-zinc-600 dark:text-zinc-400">A component on screen in four steps.</span>
+  <DocLink to="first-app" className="block p-5 rounded-xl bg-foreground/[0.03] border border-foreground/[0.06] hover:bg-foreground/[0.05] hover:border-primary/30 transition-colors">
+    <h3 className="text-[14px] font-semibold text-foreground mb-1">Quick Start</h3>
+    <span className="block text-[13px] leading-relaxed text-foreground/50">A component on screen in four steps.</span>
   </DocLink>
-  <DocLink to="architecture" className="block p-5 rounded-xl border border-zinc-200 dark:border-zinc-800 hover:border-primary/50 transition-colors">
-    <h3 className="text-base font-semibold text-zinc-900 dark:text-zinc-50 mb-1">Architecture</h3>
-    <span className="block text-sm text-zinc-600 dark:text-zinc-400">How the library is structured and why.</span>
+  <DocLink to="architecture" className="block p-5 rounded-xl bg-foreground/[0.03] border border-foreground/[0.06] hover:bg-foreground/[0.05] hover:border-primary/30 transition-colors">
+    <h3 className="text-[14px] font-semibold text-foreground mb-1">Architecture</h3>
+    <span className="block text-[13px] leading-relaxed text-foreground/50">How the library is structured and why.</span>
   </DocLink>
 </div>

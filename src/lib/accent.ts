@@ -11,10 +11,10 @@ import type { CSSProperties } from "react";
 
 /** The swatches the picker offers, as concrete CSS colours. */
 const PRESET_HEX: Record<string, string> = {
+  lavender: "#9b8afb",
   indigo: "#6366f1",
   rose: "#f43f5e",
   emerald: "#10b981",
-  zinc: "#18181b",
 };
 
 /** True when the picker sits on "Default" — the page theme should win. */
@@ -30,6 +30,20 @@ export function isDefaultAccent(color?: string): boolean {
 export function resolveAccent(color?: string): string | null {
   if (isDefaultAccent(color)) return null;
   return PRESET_HEX[color as string] ?? (color as string);
+}
+
+/**
+ * The picker value in a form every block accepts. Blocks know the older swatch
+ * names but not "lavender" — and since that is also a CSS named colour
+ * (#e6e6fa), a block that passes unknown names straight through would paint
+ * the wrong shade, while others fall back to a different palette. Demos that
+ * hand the picker value to such a block run it through this first. Every
+ * other value is returned untouched.
+ */
+export function toBlockColor(color: string): string;
+export function toBlockColor(color: string | undefined): string | undefined;
+export function toBlockColor(color?: string): string | undefined {
+  return color === "lavender" ? PRESET_HEX.lavender : color;
 }
 
 function parseHex(input: string): [number, number, number] | null {

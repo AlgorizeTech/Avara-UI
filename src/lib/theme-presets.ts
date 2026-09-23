@@ -241,7 +241,65 @@ export const TOKEN_GROUPS = [
 // ─── Preset Definitions ─────────────────────────────────────────
 
 /**
- * Neutral — the project's current default (matches globals.css).
+ * Lavender — the project's default (matches globals.css).
+ *
+ * Reicon's palette: a warm off-white (#f5f5f0) / near-black (#09090b) page,
+ * #111 / #fff ink, and #9B8AFB as the one accent in both modes. Reicon draws
+ * muted text, hairlines and tinted surfaces as translucent ink; these are the
+ * same values flattened onto the page colour, since the customizer's picker
+ * only round-trips opaque colours.
+ */
+const lavender: ThemePreset = {
+  name: "lavender",
+  label: "Lavender",
+  colors: {
+    light: {
+      background: "oklch(0.969 0.007 106.522)", // #f5f5f0
+      foreground: "oklch(0.178 0 0)", // #111111
+      card: "oklch(1 0 0)",
+      "card-foreground": "oklch(0.178 0 0)",
+      popover: "oklch(1 0 0)",
+      "popover-foreground": "oklch(0.178 0 0)",
+      primary: "oklch(0.698 0.162 288.379)", // #9b8afb
+      "primary-foreground": "oklch(1 0 0)",
+      secondary: "oklch(0.939 0.007 106.527)", // ink 4% on the page
+      "secondary-foreground": "oklch(0.178 0 0)",
+      muted: "oklch(0.939 0.007 106.527)",
+      "muted-foreground": "oklch(0.572 0.005 106.542)", // ink 55%
+      accent: "oklch(0.939 0.007 106.527)",
+      "accent-foreground": "oklch(0.178 0 0)",
+      destructive: "oklch(0.577 0.245 27.325)",
+      "destructive-foreground": "oklch(0.985 0 0)",
+      border: "oklch(0.909 0.005 106.506)", // ink 8%
+      input: "oklch(0.909 0.005 106.506)",
+      ring: "oklch(0.698 0.162 288.379)",
+    },
+    dark: {
+      background: "oklch(0.141 0.004 285.823)", // #09090b
+      foreground: "oklch(1 0 0)",
+      card: "oklch(0.183 0.004 285.994)", // #121214
+      "card-foreground": "oklch(1 0 0)",
+      popover: "oklch(0.183 0.004 285.994)",
+      "popover-foreground": "oklch(1 0 0)",
+      primary: "oklch(0.698 0.162 288.379)", // #9b8afb
+      "primary-foreground": "oklch(1 0 0)",
+      secondary: "oklch(0.232 0.004 286.099)", // ink 8% on the page
+      "secondary-foreground": "oklch(1 0 0)",
+      muted: "oklch(0.232 0.004 286.099)",
+      "muted-foreground": "oklch(0.654 0.001 286.359)", // ink 55%
+      accent: "oklch(0.232 0.004 286.099)",
+      "accent-foreground": "oklch(1 0 0)",
+      destructive: "oklch(0.704 0.191 22.216)",
+      "destructive-foreground": "oklch(0.985 0 0)",
+      border: "oklch(0.232 0.004 286.099)", // ink 8%
+      input: "oklch(0.253 0.004 286.13)", // ink 10%
+      ring: "oklch(0.698 0.162 288.379)",
+    },
+  },
+};
+
+/**
+ * Neutral — shadcn's stock palette.
  * All achromatic OKLCH values (chroma = 0).
  */
 const neutral: ThemePreset = {
@@ -845,6 +903,7 @@ const stone: ThemePreset = {
 // ─── Export All Presets ───────────────────────────────────────────
 
 export const THEME_PRESETS: ThemePreset[] = [
+  lavender,
   neutral,
   zinc,
   slate,
@@ -860,4 +919,4 @@ export const THEME_PRESETS: ThemePreset[] = [
 ];
 
 /** The default preset name */
-export const DEFAULT_PRESET = "neutral";
+export const DEFAULT_PRESET = "lavender";

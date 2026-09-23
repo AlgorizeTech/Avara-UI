@@ -29,7 +29,7 @@ const demoNodes: NetworkNode[] = [
 
   // Ring 2 (Middle)
   { id: "5", ring: 2, image: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto/v1790148865/80-4-1790148865113.jpg", label: "Emma R." },
-  { id: "6", ring: 2, image: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto/v1790148865/80-1790148865113.jpg", label: "Noah P." },
+  { id: "6", ring: 2, image: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_160,c_limit/v1790158813/photo-1494790108377-be9c29b29330-1790158812212.jpg", label: "Noah P." },
   { id: "7", ring: 2, fallback: "MK", label: "Mike K." },
   {
     id: "8",
@@ -41,20 +41,20 @@ const demoNodes: NetworkNode[] = [
   {
     id: "9",
     ring: 2,
-    image: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto/v1790148865/80-3-1790148865112.jpg",
+    image: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_160,c_limit/v1790150480/photo-1507003211169-0a1dd7228f2d-1790150482276.jpg",
     label: "Ethan C.",
   },
   {
     id: "10",
     ring: 2,
-    image: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto/v1790148865/80-3-1790148865112.jpg",
+    image: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_160,c_limit/v1790150483/photo-1534528741775-53994a69daeb-1790150482280.jpg",
     label: "Olivia S.",
     size: "lg",
   },
   {
     id: "11",
     ring: 2,
-    image: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto/v1790148865/80-4-1790148865113.jpg",
+    image: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_160,c_limit/v1790158814/photo-1500648767791-00dcc994a43e-1790158812212.jpg",
     label: "Liam H.",
   },
   { id: "12", ring: 2, fallback: "PL", label: "Priya L.", size: "sm" },
@@ -63,21 +63,21 @@ const demoNodes: NetworkNode[] = [
   {
     id: "13",
     ring: 3,
-    image: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto/v1790148864/80-1-1790148865111.jpg",
+    image: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_160,c_limit/v1790158814/photo-1438761681033-6461ffad8d80-1790158812210.jpg",
     label: "Chloe D.",
     size: "sm",
   },
   {
     id: "14",
     ring: 3,
-    image: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto/v1790148864/80-2-1790148865112.jpg",
+    image: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_160,c_limit/v1790158813/photo-1472099645785-5658abf4ff4e-1790158812210.jpg",
     label: "Marcus V.",
     size: "sm",
   },
   {
     id: "15",
     ring: 3,
-    image: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto/v1790148865/80-3-1790148865112.jpg",
+    image: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_160,c_limit/v1790159965/photo-1519085360753-af0119f7cbe7-1790159970113.jpg",
     label: "Zoe N.",
     size: "md",
   },
@@ -85,14 +85,14 @@ const demoNodes: NetworkNode[] = [
   {
     id: "17",
     ring: 3,
-    image: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto/v1790148865/80-1790148865113.jpg",
+    image: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_160,c_limit/v1790150480/photo-1506794778202-cad84cf45f1d-1790150482275.jpg",
     label: "Nina F.",
     size: "sm",
   },
   {
     id: "18",
     ring: 3,
-    image: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto/v1790148864/80-1-1790148865111.jpg",
+    image: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_160,c_limit/v1790150482/photo-1524504388940-b1c1722653e1-1790150482279.jpg",
     label: "Owen G.",
     size: "sm",
   },
@@ -100,7 +100,7 @@ const demoNodes: NetworkNode[] = [
   {
     id: "20",
     ring: 3,
-    image: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto/v1790148865/80-1790148865113.jpg",
+    image: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_160,c_limit/v1790158814/photo-1522075469751-3a6694fb2f61-1790158812213.jpg",
     label: "Felix Q.",
     size: "sm",
   },
@@ -154,7 +154,7 @@ export default function NetworkGraphDemo({
           centerNode={
             showCenter
               ? {
-                  image: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto/v1790148865/80-1790148865113.jpg",
+                  image: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_160,c_limit/v1790150481/photo-1517841905240-472988babdf9-1790150482277.jpg",
                   label: "You",
                 }
               : undefined

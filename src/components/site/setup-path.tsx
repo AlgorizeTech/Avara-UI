@@ -23,33 +23,39 @@ import { DocLink } from "./doc-link";
  * that command below the fold. Boxed as a note rather than set as a paragraph
  * so it is not mistaken for the first line of the instructions.
  */
+/** Inline code inside the note; `data-badge` opts out of the global chip. */
+const CODE =
+  "rounded bg-foreground/[0.06] px-1.5 py-0.5 font-mono text-[12px] text-foreground/70";
+
 export function SetupPath() {
   return (
-    <p className="mb-8 flex gap-3 rounded-lg border border-zinc-200 bg-zinc-50 px-4 py-3 text-sm leading-relaxed text-zinc-600 dark:border-zinc-800 dark:bg-zinc-900/60 dark:text-zinc-400">
-      <Info
-        aria-hidden
-        className="mt-0.5 size-4 shrink-0 text-zinc-400 dark:text-zinc-500"
-      />
+    <p className="mb-8 flex gap-3 rounded-xl border border-primary/15 bg-primary/5 p-4 text-[13px] leading-relaxed text-foreground/50">
+      <Info aria-hidden className="mt-0.5 size-4 shrink-0 text-primary" />
       <span>
-        New project? Follow the{" "}
+        <span className="font-medium text-primary">New project?</span> Follow the{" "}
         <DocLink
           to="installation"
-          className="font-medium text-blue-600 hover:underline dark:text-blue-400"
+          className="font-medium text-primary hover:underline"
         >
           installation guide
         </DocLink>{" "}
-        to set up Tailwind CSS, shadcn, the <code>cn</code> helper and{" "}
-        <code>lucide-react</code>,{" "}
+        to set up Tailwind CSS, shadcn, the{" "}
+        <code data-badge className={CODE}>cn</code> helper and{" "}
+        <code data-badge className={CODE}>lucide-react</code>,{" "}
         <DocLink
           to="installation#step-2-register-the-registry"
-          className="font-medium text-blue-600 hover:underline dark:text-blue-400"
+          className="font-medium text-primary hover:underline"
         >
-          register the <code>{REGISTRY_NAMESPACE}</code> registry
+          register the{" "}
+          <code data-badge className={CODE}>
+            {REGISTRY_NAMESPACE}
+          </code>{" "}
+          registry
         </DocLink>{" "}
         once, then copy your styles from the{" "}
         <DocLink
           href="/themes"
-          className="font-medium text-blue-600 hover:underline dark:text-blue-400"
+          className="font-medium text-primary hover:underline"
         >
           Themes page
         </DocLink>

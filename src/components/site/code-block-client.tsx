@@ -10,6 +10,70 @@ import { JavaScriptIcon } from "@/assets/icons/javascript";
 import type { ReactElement } from "react";
 import { useState, useEffect, useRef } from "react";
 import { transformTsxToJsx } from "@/lib/tsx-to-jsx-transformer";
+import { cn } from "@/lib/utils";
+
+/**
+ * Re-skins the shared <CodeBlocks> viewer as the docs code panel: 13px/1.7
+ * mono, 20px/16px padding, a faint always-visible copy glyph and a quiet
+ * Show More bar. CodeBlocks ships to users through the registry, so its own
+ * classes stay untouched and the docs restyle it from the outside — every
+ * selector here is anchored on its root (`>div`) so nothing leaks into the
+ * highlighted markup. The `.shiki` metrics come from unlayered rules in
+ * globals.css, which only an !important utility can override.
+ */
+export const CODE_SURFACE = cn(
+  // Root: the inset panel paints the surface, so CodeBlocks' own fill and
+  // top rule go.
+  "[&>div]:border-t-0 [&>div]:bg-transparent",
+  // Content wrapper padding moves onto the <pre> below.
+  "[&>div>div>div]:p-0",
+  "[&_.shiki]:!px-5 [&_.shiki]:!py-4 [&_.shiki]:!font-mono [&_.shiki]:!text-[13px] [&_.shiki]:!leading-[1.7]",
+  "[&_.shiki-pending]:!px-5 [&_.shiki-pending]:!py-4 [&_.shiki-pending]:!font-mono [&_.shiki-pending]:!text-[13px] [&_.shiki-pending]:!leading-[1.7]",
+  // Copy button (the root's only direct <button>): a faint glyph, not a chip.
+  "[&>div>button]:top-2.5 [&>div>button]:right-2.5 [&>div>button]:p-1.5 [&>div>button]:border-0 [&>div>button]:bg-transparent [&>div>button]:opacity-100 [&>div>button]:text-foreground/30 [&>div>button]:backdrop-blur-none",
+  "[&>div>button:hover]:bg-transparent [&>div>button:hover]:text-foreground/60 [&>div>button_svg]:size-3.5",
+  // Show More / Show Less bar (the div after the content) and its pill.
+  "[&>div>div+div]:bg-transparent [&>div>div+div]:border-foreground/[0.06] [&>div>div+div]:py-3",
+  "[&>div>div+div_button]:h-8 [&>div>div+div_button]:border-0 [&>div>div+div_button]:bg-foreground/[0.04] [&>div>div+div_button]:text-[12px] [&>div>div+div_button]:font-medium [&>div>div+div_button]:text-foreground/70",
+  "[&>div>div+div_button:hover]:bg-foreground/10 [&>div>div+div_button:hover]:text-foreground",
+);
+
+/**
+ * The docs code figure: an ink-tint frame, a 40px bar and an inset
+ * `bg-background` panel for the code. Shared by the standalone block below
+ * and the MDX `pre` override, so every code sample on the site reads the same.
+ */
+export function CodeFrame({
+  header,
+  children,
+  className,
+}: {
+  /** Bar content — a filename, tabs, a switch. Omit for a bar-less panel. */
+  header?: React.ReactNode;
+  children: React.ReactNode;
+  className?: string;
+}) {
+  return (
+    <div
+      className={cn(
+        "not-prose relative w-full overflow-hidden rounded-xl bg-foreground/[0.03]",
+        !header && "pt-1.5",
+        className,
+      )}
+    >
+      {header && (
+        <div className="flex min-h-10 flex-wrap items-center justify-between gap-x-3 gap-y-1 py-1 pl-5 pr-1.5">
+          {header}
+        </div>
+      )}
+      <div className="px-1.5 pb-1.5">
+        <div className={cn("overflow-hidden rounded-md bg-background", CODE_SURFACE)}>
+          {children}
+        </div>
+      </div>
+    </div>
+  );
+}
 
 type CodeBlockClientProps = {
   code: string;
@@ -39,7 +103,7 @@ export const isTransformable = (lang: BuiltinLanguage): boolean =>
 
 // Function to get the appropriate icon for each language
 const getLanguageIcon = (language: string): ReactElement | null => {
-  const iconProps = { className: "w-4 h-4 mr-2" };
+  const iconProps = { className: "size-3.5 mr-2 shrink-0" };
 
   switch (language.toLowerCase()) {
     case 'tsx':
@@ -133,30 +197,32 @@ export const CodeBlockClient = ({
   // Standalone (an mdx <CodeBlock filePath="..." />): this block owns the
   // header, so the switch has somewhere to live.
   return (
-    <div className="not-prose relative w-full overflow-hidden rounded-lg border border-zinc-200 dark:border-zinc-800">
-      <div className="flex flex-wrap items-center justify-between gap-3 px-4 py-3 bg-zinc-50 dark:bg-zinc-900/50">
-        <div className="flex min-w-0 items-center">
-          {getLanguageIcon(displayLang)}
-          <span className="truncate text-xs font-mono uppercase tracking-wide text-zinc-500 dark:text-zinc-400">
-            {fileName ?? displayLang}
-          </span>
-          {isTransforming && (
-            <span
-              aria-hidden
-              className="ml-2 h-3 w-3 shrink-0 animate-spin rounded-full border-2 border-zinc-300 dark:border-zinc-600 border-t-transparent"
+    <CodeFrame
+      header={
+        <>
+          <div className="flex min-w-0 items-center">
+            {getLanguageIcon(displayLang)}
+            <span className="truncate text-[13px] font-medium text-foreground/60">
+              {fileName ?? displayLang}
+            </span>
+            {isTransforming && (
+              <span
+                aria-hidden
+                className="ml-2 h-3 w-3 shrink-0 animate-spin rounded-full border-2 border-foreground/20 border-t-transparent"
+              />
+            )}
+          </div>
+
+          {canToggle && (
+            <CodeCopy
+              selectedLanguage={selectedLanguage}
+              onLanguageChange={onLanguageChange ?? setOwnLanguage}
             />
           )}
-        </div>
-
-        {canToggle && (
-          <CodeCopy
-            selectedLanguage={selectedLanguage}
-            onLanguageChange={onLanguageChange ?? setOwnLanguage}
-          />
-        )}
-      </div>
-
+        </>
+      }
+    >
       <CodeBlocks code={transformedCode} language={displayLang} />
-    </div>
+    </CodeFrame>
   );
 };

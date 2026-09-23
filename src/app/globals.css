@@ -4,76 +4,80 @@
 
 @custom-variant dark (&:where(.dark, .dark *));
 
-/* CSS Variables for theming */
+/* CSS Variables for theming — the default "lavender" preset in
+   src/lib/theme-presets.ts (Reicon's palette). Keep the two in step: the
+   pre-paint init script skips injecting the default preset and relies on
+   these. Sidebar tokens mirror card/primary/accent/border as
+   resolvePresetColors derives them. */
 :root {
+  --background: oklch(0.969 0.007 106.522);
+  --foreground: oklch(0.178 0 0);
   --card: oklch(1 0 0);
-  --card-foreground: oklch(0.145 0 0);
+  --card-foreground: oklch(0.178 0 0);
   --popover: oklch(1 0 0);
-  --popover-foreground: oklch(0.145 0 0);
-  --primary: oklch(0.205 0 0);
-  --primary-foreground: oklch(0.985 0 0);
-  --secondary: oklch(0.97 0 0);
-  --secondary-foreground: oklch(0.205 0 0);
-  --muted: oklch(0.97 0 0);
-  --muted-foreground: oklch(0.556 0 0);
-  --accent: oklch(0.97 0 0);
-  --accent-foreground: oklch(0.205 0 0);
+  --popover-foreground: oklch(0.178 0 0);
+  --primary: oklch(0.698 0.162 288.379);
+  --primary-foreground: oklch(1 0 0);
+  --secondary: oklch(0.939 0.007 106.527);
+  --secondary-foreground: oklch(0.178 0 0);
+  --muted: oklch(0.939 0.007 106.527);
+  --muted-foreground: oklch(0.572 0.005 106.542);
+  --accent: oklch(0.939 0.007 106.527);
+  --accent-foreground: oklch(0.178 0 0);
   --destructive: oklch(0.577 0.245 27.325);
-  --destructive-foreground: 210 40% 98%;
-  --border: oklch(0.922 0 0);
-  --input: oklch(0.922 0 0);
-  --ring: oklch(0.708 0 0);
+  --destructive-foreground: oklch(0.985 0 0);
+  --border: oklch(0.909 0.005 106.506);
+  --input: oklch(0.909 0.005 106.506);
+  --ring: oklch(0.698 0.162 288.379);
   --radius: 0.625rem;
-  --background: oklch(1 0 0);
-  --foreground: oklch(0.145 0 0);
   --chart-1: oklch(0.646 0.222 41.116);
   --chart-2: oklch(0.6 0.118 184.704);
   --chart-3: oklch(0.398 0.07 227.392);
   --chart-4: oklch(0.828 0.189 84.429);
   --chart-5: oklch(0.769 0.188 70.08);
-  --sidebar: oklch(0.985 0 0);
-  --sidebar-foreground: oklch(0.145 0 0);
-  --sidebar-primary: oklch(0.205 0 0);
-  --sidebar-primary-foreground: oklch(0.985 0 0);
-  --sidebar-accent: oklch(0.97 0 0);
-  --sidebar-accent-foreground: oklch(0.205 0 0);
-  --sidebar-border: oklch(0.922 0 0);
-  --sidebar-ring: oklch(0.708 0 0);
+  --sidebar: oklch(1 0 0);
+  --sidebar-foreground: oklch(0.178 0 0);
+  --sidebar-primary: oklch(0.698 0.162 288.379);
+  --sidebar-primary-foreground: oklch(1 0 0);
+  --sidebar-accent: oklch(0.939 0.007 106.527);
+  --sidebar-accent-foreground: oklch(0.178 0 0);
+  --sidebar-border: oklch(0.909 0.005 106.506);
+  --sidebar-ring: oklch(0.698 0.162 288.379);
 }
 
 .dark {
-  --background: oklch(0.145 0 0);
-  --foreground: oklch(0.985 0 0);
-  --card: oklch(0.205 0 0);
-  --card-foreground: oklch(0.985 0 0);
-  --popover: oklch(0.205 0 0);
-  --popover-foreground: oklch(0.985 0 0);
-  --primary: oklch(0.922 0 0);
-  --primary-foreground: oklch(0.205 0 0);
-  --secondary: oklch(0.269 0 0);
-  --secondary-foreground: oklch(0.985 0 0);
-  --muted: oklch(0.269 0 0);
-  --muted-foreground: oklch(0.708 0 0);
-  --accent: oklch(0.269 0 0);
-  --accent-foreground: oklch(0.985 0 0);
+  --background: oklch(0.141 0.004 285.823);
+  --foreground: oklch(1 0 0);
+  --card: oklch(0.183 0.004 285.994);
+  --card-foreground: oklch(1 0 0);
+  --popover: oklch(0.183 0.004 285.994);
+  --popover-foreground: oklch(1 0 0);
+  --primary: oklch(0.698 0.162 288.379);
+  --primary-foreground: oklch(1 0 0);
+  --secondary: oklch(0.232 0.004 286.099);
+  --secondary-foreground: oklch(1 0 0);
+  --muted: oklch(0.232 0.004 286.099);
+  --muted-foreground: oklch(0.654 0.001 286.359);
+  --accent: oklch(0.232 0.004 286.099);
+  --accent-foreground: oklch(1 0 0);
   --destructive: oklch(0.704 0.191 22.216);
-  --destructive-foreground: 210 40% 98%;
-  --border: oklch(1 0 0 / 10%);
-  --input: oklch(1 0 0 / 15%);
-  --ring: oklch(0.556 0 0);
+  --destructive-foreground: oklch(0.985 0 0);
+  --border: oklch(0.232 0.004 286.099);
+  --input: oklch(0.253 0.004 286.13);
+  --ring: oklch(0.698 0.162 288.379);
   --chart-1: oklch(0.488 0.243 264.376);
   --chart-2: oklch(0.696 0.17 162.48);
   --chart-3: oklch(0.769 0.188 70.08);
   --chart-4: oklch(0.627 0.265 303.9);
   --chart-5: oklch(0.645 0.246 16.439);
-  --sidebar: oklch(0.205 0 0);
-  --sidebar-foreground: oklch(0.985 0 0);
-  --sidebar-primary: oklch(0.488 0.243 264.376);
-  --sidebar-primary-foreground: oklch(0.985 0 0);
-  --sidebar-accent: oklch(0.269 0 0);
-  --sidebar-accent-foreground: oklch(0.985 0 0);
-  --sidebar-border: oklch(1 0 0 / 10%);
-  --sidebar-ring: oklch(0.556 0 0);
+  --sidebar: oklch(0.183 0.004 285.994);
+  --sidebar-foreground: oklch(1 0 0);
+  --sidebar-primary: oklch(0.698 0.162 288.379);
+  --sidebar-primary-foreground: oklch(1 0 0);
+  --sidebar-accent: oklch(0.232 0.004 286.099);
+  --sidebar-accent-foreground: oklch(1 0 0);
+  --sidebar-border: oklch(0.232 0.004 286.099);
+  --sidebar-ring: oklch(0.698 0.162 288.379);
 }
 
 /* Circular Reveal View Transition for Theme Switcher */
@@ -124,10 +128,10 @@ html.dark .shiki span {
   overflow-x: auto;
   border-radius: 0;
   margin: 0;
-  padding: 1rem;
+  padding: 1rem 1.25rem;
   font-family: 'Fira Code', 'Monaco', 'Cascadia Code', 'Roboto Mono', Consolas, 'Courier New', monospace;
-  font-size: 0.875rem;
-  line-height: 1.5;
+  font-size: 13px;
+  line-height: 1.7;
   border: none !important;
   box-shadow: none !important;
 }
@@ -151,10 +155,10 @@ html.dark .shiki span {
 .shiki-pending {
   overflow-x: auto;
   margin: 0;
-  padding: 1rem;
+  padding: 1rem 1.25rem;
   font-family: 'Fira Code', 'Monaco', 'Cascadia Code', 'Roboto Mono', Consolas, 'Courier New', monospace;
-  font-size: 0.875rem;
-  line-height: 1.5;
+  font-size: 13px;
+  line-height: 1.7;
   white-space: pre;
   word-break: normal;
   background: transparent;
@@ -194,11 +198,15 @@ html.dark .shiki span {
  * into plain slate chips. Components that style their own <code> mark it
  * with data-badge rather than escalating to !important themselves. */
 :not(pre) > code:not([data-badge]) {
-  border: 1px solid #cbd5e1 !important;
-  background-color: #f1f5f9 !important;
-  padding: 0.15rem 0.4rem !important;
-  border-radius: 0.375rem !important;
-  font-size: 0.85em !important;
+  /* Reicon's chip: ink at 70% on an ink-6% tint, no border — 12px inside
+     15px prose, so 0.8em keeps the ratio inside headings too. */
+  border: none !important;
+  background-color: color-mix(in oklab, var(--foreground) 6%, transparent) !important;
+  color: color-mix(in oklab, var(--foreground) 70%, transparent) !important;
+  padding: 0.125rem 0.375rem !important;
+  border-radius: 0.25rem !important;
+  font-size: 0.8em !important;
+  font-weight: 400 !important;
   box-shadow: none !important;
   /* A file path or long identifier is one unbreakable word; without this it
      runs past the content column on phones. `anywhere` also counts towards
@@ -207,12 +215,6 @@ html.dark .shiki span {
   overflow-wrap: anywhere;
   box-decoration-break: clone;
   -webkit-box-decoration-break: clone;
-}
-
-.dark :not(pre) > code:not([data-badge]) {
-  border: 1px solid #334155 !important;
-  background-color: #1e293b !important;
-  color: #f8fafc !important;
 }
 
 /* Scrollbar styling for code blocks */
@@ -282,8 +284,8 @@ html.dark .shiki span {
   }
 
   .vitepress-table th {
-    @apply px-4 py-3 text-left text-sm font-semibold text-gray-900 dark:text-gray-100;
-    @apply border-b border-r border-gray-200 dark:border-gray-700;
+    @apply px-4 py-2.5 text-left text-[11px] font-semibold uppercase tracking-[0.06em] text-foreground/60 bg-foreground/[0.07];
+    @apply border-b border-r border-foreground/[0.06];
   }
 
   .vitepress-table th:last-child {
@@ -291,8 +293,8 @@ html.dark .shiki span {
   }
 
   .vitepress-table td {
-    @apply px-4 py-3 text-sm text-gray-700 dark:text-gray-300 break-words;
-    @apply border-b border-r border-gray-100 dark:border-gray-800;
+    @apply px-4 py-2.5 text-[13px] text-foreground/55 break-words;
+    @apply border-b border-r border-foreground/[0.06];
   }
 
   .vitepress-table td:last-child {
@@ -300,11 +302,11 @@ html.dark .shiki span {
   }
 
   .vitepress-table tr:hover {
-    @apply bg-gray-50 dark:bg-gray-800/30;
+    @apply bg-foreground/[0.07];
   }
 
   .vitepress-table code {
-    @apply font-mono text-xs bg-transparent border-none p-0 font-semibold text-zinc-900 dark:text-zinc-100;
+    @apply font-mono text-[12px] bg-transparent border-none p-0 text-foreground;
   }
 
 }
@@ -315,6 +317,31 @@ html.dark .shiki span {
   max-width: 100% !important;
 }
 
+/* The typography plugin's palette, repointed at the ink ladder (Reicon's
+   greys are the ink at an alpha). Covers everything the prose-* modifiers in
+   docs-layout-content.tsx don't name, in both modes and for every preset —
+   so no prose-invert is needed. */
+.prose {
+  --tw-prose-body: color-mix(in oklab, var(--foreground) 60%, transparent);
+  --tw-prose-headings: var(--foreground);
+  --tw-prose-lead: color-mix(in oklab, var(--foreground) 60%, transparent);
+  --tw-prose-links: var(--primary);
+  --tw-prose-bold: var(--foreground);
+  --tw-prose-counters: color-mix(in oklab, var(--foreground) 60%, transparent);
+  --tw-prose-bullets: color-mix(in oklab, var(--foreground) 60%, transparent);
+  --tw-prose-hr: color-mix(in oklab, var(--foreground) 8%, transparent);
+  --tw-prose-quotes: color-mix(in oklab, var(--foreground) 60%, transparent);
+  --tw-prose-quote-borders: color-mix(in oklab, var(--primary) 40%, transparent);
+  --tw-prose-captions: color-mix(in oklab, var(--foreground) 40%, transparent);
+  --tw-prose-kbd: var(--foreground);
+  --tw-prose-kbd-shadows: color-mix(in oklab, var(--foreground) 10%, transparent);
+  --tw-prose-code: color-mix(in oklab, var(--foreground) 70%, transparent);
+  --tw-prose-pre-code: var(--foreground);
+  --tw-prose-pre-bg: color-mix(in oklab, var(--foreground) 3%, transparent);
+  --tw-prose-th-borders: color-mix(in oklab, var(--foreground) 6%, transparent);
+  --tw-prose-td-borders: color-mix(in oklab, var(--foreground) 8%, transparent);
+}
+
 /* Pure Table Grid Layout */
 .prose table {
   width: 100% !important;
@@ -322,13 +349,13 @@ html.dark .shiki span {
   border-collapse: separate !important;
   border-spacing: 0 !important;
   border-radius: 0.75rem !important;
-  border: 1px solid #e4e4e7 !important;
+  border: 1px solid color-mix(in oklab, var(--foreground) 6%, transparent) !important;
   overflow: hidden !important;
   margin-top: 0 !important;
   margin-bottom: 0 !important;
-  font-size: 0.875rem !important;
+  font-size: 13px !important;
   text-align: left !important;
-  background-color: transparent !important;
+  background-color: color-mix(in oklab, var(--foreground) 4%, transparent) !important;
 }
 
 /* Cells wrap on every device instead of stretching the table onto one line. */
@@ -401,44 +428,6 @@ html.dark .shiki span {
   max-width: 100% !important;
 }
 
-.dark .prose table {
-  border: 1px solid #27272a !important;
-  background-color: transparent !important;
-}
-
-/* Data Cells Rules */
-.prose td {
-  padding: 0.875rem 1.25rem !important;
-  border-right: 1px solid #f4f4f5 !important;
-  vertical-align: top !important;
-}
-
-.dark .prose td {
-  border-right: 1px solid rgba(255, 255, 255, 0.07) !important;
-}
-
-.prose td:first-child {
-  font-weight: 800 !important;
-  color: #09090b !important;
-}
-
-.dark .prose td:first-child {
-  color: #ffffff !important;
-}
-
-/* Type & Description columns: Graceful text wrapping */
-.prose td:nth-child(2),
-.prose td:last-child {
-  border-right: none !important;
-  color: #52525b !important;
-  line-height: 1.6 !important;
-}
-
-.dark .prose td:nth-child(2),
-.dark .prose td:last-child {
-  color: #a1a1aa !important;
-}
-
 /* Outer scroll wrapper: positions scrollbar directly at bottom border of table */
 .prose div:has(> table),
 .prose .overflow-x-auto,
@@ -457,14 +446,7 @@ html.dark .shiki span {
   padding: 0 !important;
   -webkit-overflow-scrolling: touch;
   scrollbar-width: thin !important;
-  scrollbar-color: rgba(161, 161, 170, 0.5) transparent !important;
-}
-
-.dark .prose div:has(> table),
-.dark .prose .overflow-x-auto,
-.dark .overflow-x-auto {
-  border: none !important;
-  scrollbar-color: rgba(113, 113, 122, 0.5) transparent !important;
+  scrollbar-color: color-mix(in oklab, var(--foreground) 25%, transparent) transparent !important;
 }
 
 /* Custom WebKit Sleek Pill Scrollbar with Visible Gray Track Background */
@@ -498,150 +480,117 @@ html.dark .shiki span {
   background: transparent !important;
 }
 
-/* Track (where the scrollbar slides) - Visible Gray Background */
+/* Track (where the scrollbar slides) */
 .prose div:has(> table)::-webkit-scrollbar-track,
 .prose .overflow-x-auto::-webkit-scrollbar-track,
 .overflow-x-auto::-webkit-scrollbar-track {
-  background: #e4e4e7 !important;
+  background: color-mix(in oklab, var(--foreground) 6%, transparent) !important;
   border-radius: 0 0 0.5rem 0.5rem !important;
   margin: 0 !important;
 }
 
-.dark .prose div:has(> table)::-webkit-scrollbar-track,
-.dark .prose .overflow-x-auto::-webkit-scrollbar-track,
-.dark .overflow-x-auto::-webkit-scrollbar-track {
-  background: #27272a !important;
-}
-
-/* Thumb (the draggable bar) */
+/* Thumb (the draggable bar). The transparent border + padding-box clip
+   insets it from the track without having to know the track's colour. */
 .prose div:has(> table)::-webkit-scrollbar-thumb,
 .prose .overflow-x-auto::-webkit-scrollbar-thumb,
 .overflow-x-auto::-webkit-scrollbar-thumb {
-  background: #a1a1aa !important;
+  background: color-mix(in oklab, var(--foreground) 30%, transparent) !important;
+  background-clip: padding-box !important;
   border-radius: 9999px !important;
-  border: 1.5px solid #e4e4e7 !important;
+  border: 1.5px solid transparent !important;
   transition: background-color 0.2s ease-in-out !important;
-}
-
-.dark .prose div:has(> table)::-webkit-scrollbar-thumb,
-.dark .prose .overflow-x-auto::-webkit-scrollbar-thumb,
-.dark .overflow-x-auto::-webkit-scrollbar-thumb {
-  background: #52525b !important;
-  border: 1.5px solid #27272a !important;
 }
 
 .prose div:has(> table)::-webkit-scrollbar-thumb:hover,
 .prose .overflow-x-auto::-webkit-scrollbar-thumb:hover,
 .overflow-x-auto::-webkit-scrollbar-thumb:hover {
-  background: #71717a !important;
+  background: color-mix(in oklab, var(--foreground) 45%, transparent) !important;
+  background-clip: padding-box !important;
 }
 
-.dark .prose div:has(> table)::-webkit-scrollbar-thumb:hover,
-.dark .prose .overflow-x-auto::-webkit-scrollbar-thumb:hover,
-.dark .overflow-x-auto::-webkit-scrollbar-thumb:hover {
-  background: #71717a !important;
-}
-
-/* Header: Transparent Background & Subtle Gray Bottom Border */
+/* Reicon's table skin: every line and tint is the ink at a low alpha, so one
+   rule set serves both modes and any customizer preset. */
 .prose thead {
   background: transparent !important;
   background-color: transparent !important;
-  border-bottom: 1px solid #e4e4e7 !important;
-}
-
-.dark .prose thead {
-  background: transparent !important;
-  background-color: transparent !important;
-  border-bottom: 1px solid #27272a !important;
 }
 
 .prose th {
-  padding: 0.875rem 1.25rem !important;
-  font-weight: 700 !important;
-  font-size: 0.75rem !important;
+  padding: 0.625rem 1rem !important;
+  font-weight: 600 !important;
+  font-size: 11px !important;
+  line-height: 1.5 !important;
   text-transform: uppercase !important;
-  letter-spacing: 0.05em !important;
-  color: #71717a !important;
-  border-bottom: 1px solid #e4e4e7 !important;
-  border-right: 1px solid #f4f4f5 !important;
-}
-
-.dark .prose th {
-  color: #a1a1aa !important;
-  border-bottom: 1px solid #27272a !important;
-  border-right: 1px solid #27272a !important;
+  letter-spacing: 0.06em !important;
+  color: color-mix(in oklab, var(--foreground) 60%, transparent) !important;
+  background-color: color-mix(in oklab, var(--foreground) 7%, transparent) !important;
+  border-bottom: 1px solid color-mix(in oklab, var(--foreground) 6%, transparent) !important;
+  border-right: 1px solid color-mix(in oklab, var(--foreground) 6%, transparent) !important;
 }
 
 .prose th:last-child {
   border-right: none !important;
 }
 
-/* Rows & Gridlines */
+/* Rows. A <tr> can't draw a border in a border-spacing table, so the row
+   divider sits on its cells. */
 .prose tbody tr {
-  border-bottom: 1px solid #f4f4f5 !important;
   transition: background-color 0.15s ease !important;
 }
 
-.dark .prose tbody tr {
-  border-bottom: 1px solid rgba(255, 255, 255, 0.07) !important;
-}
-
-.prose tbody tr:last-child {
-  border-bottom: none !important;
+.prose tbody tr:not(:last-child) td {
+  border-bottom: 1px solid color-mix(in oklab, var(--foreground) 8%, transparent) !important;
 }
 
 .prose tbody tr:hover {
-  background-color: rgba(244, 244, 245, 0.6) !important;
+  background-color: color-mix(in oklab, var(--foreground) 7%, transparent) !important;
 }
 
-.dark .prose tbody tr:hover {
-  background-color: rgba(39, 39, 42, 0.4) !important;
-}
-
-/* Data Cells with Subtle Gray Vertical Gridlines */
 .prose td {
-  padding: 0.875rem 1.25rem !important;
-  border-right: 1px solid #f4f4f5 !important;
+  padding: 0.625rem 1rem !important;
+  border-right: 1px solid color-mix(in oklab, var(--foreground) 6%, transparent) !important;
   vertical-align: top !important;
-}
-
-.dark .prose td {
-  border-right: 1px solid rgba(255, 255, 255, 0.07) !important;
+  font-size: 13px !important;
+  line-height: 1.6 !important;
+  color: color-mix(in oklab, var(--foreground) 55%, transparent) !important;
 }
 
 .prose td:first-child {
-  font-weight: 800 !important;
-  color: #09090b !important;
-}
-
-.dark .prose td:first-child {
-  color: #ffffff !important;
+  font-weight: 500 !important;
+  color: var(--foreground) !important;
 }
 
 .prose td:last-child {
   border-right: none !important;
-  color: #52525b !important;
-  line-height: 1.6 !important;
+  font-size: 12.5px !important;
 }
 
-.dark .prose td:last-child {
-  color: #a1a1aa !important;
-}
-
-/* Table code elements: NO background & EXTRA BOLD text for Prop, Type, Default (non-last cells) */
+/* Prop / Type / Default (non-last cells) are plain monospace text, not
+   chips: the name in the first column in the ink, every other value a step
+   lighter. */
 .prose td:not(:last-child) code,
 .prose th:not(:last-child) code,
 .vitepress-table td:not(:last-child) code,
 .vitepress-table th:not(:last-child) code {
+  display: inline !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  border: none !important;
+  border-radius: 0 !important;
   background: transparent !important;
   background-color: transparent !important;
-  border: none !important;
-  outline: none !important;
-  padding: 0 !important;
-  margin: 0 !important;
-  font-weight: 800 !important;
+  font-size: 12px !important;
+  line-height: 1.55 !important;
+  font-weight: 400 !important;
   box-shadow: none !important;
-  color: inherit !important;
+  outline: none !important;
+  color: color-mix(in oklab, var(--foreground) 70%, transparent) !important;
+}
+
+.prose td:first-child:not(:last-child) code,
+.vitepress-table td:first-child:not(:last-child) code {
+  font-weight: 500 !important;
+  color: var(--foreground) !important;
 }
 
 /* Table Cursor Behavior */
@@ -858,16 +807,14 @@ html body[data-scroll-locked] {
 .showcase-card {
   transition: border-color 0.3s ease, box-shadow 0.3s ease, transform 0.3s ease;
 }
+/* Tints of the theme's ink and accent, so the hover follows the active preset. */
 .showcase-card:hover {
   transform: translateY(-3px);
+  border-color: color-mix(in oklab, var(--foreground) 12%, transparent) !important;
+  box-shadow: 0 8px 30px color-mix(in oklab, var(--foreground) 8%, transparent);
 }
 .dark .showcase-card:hover {
-  border-color: rgba(255,255,255,0.1) !important;
-  box-shadow: 0 8px 40px rgba(0,0,0,0.3), 0 0 20px rgba(99,102,241,0.04);
-}
-html:not(.dark) .showcase-card:hover {
-  border-color: rgba(0,0,0,0.12) !important;
-  box-shadow: 0 8px 30px rgba(0,0,0,0.08);
+  box-shadow: 0 8px 40px rgba(0,0,0,0.3), 0 0 20px color-mix(in oklab, var(--primary) 6%, transparent);
 }
 
 /* Completely hide scrollbars on Code blocks while retaining scrollability.

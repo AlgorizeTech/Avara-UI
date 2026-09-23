@@ -22,21 +22,21 @@ export function DarkModeControl() {
       <div
         onClick={() => setTheme(choice)}
         className={cn(
-          "flex h-16 w-1/3 cursor-pointer flex-col items-center justify-center rounded border-2 p-2",
+          "flex h-16 w-1/3 cursor-pointer flex-col items-center justify-center gap-1.5 rounded-lg border p-2 transition-colors",
           active
-            ? "bg-primary/5 border-primary/30"
-            : "hover:border-neutral-400 dark:hover:border-neutral-700",
+            ? "bg-primary/15 border-primary/25 text-primary"
+            : "bg-foreground/[0.03] border-foreground/[0.06] text-foreground/50 hover:bg-foreground/[0.05] hover:text-foreground",
         )}
       >
-        <Icon className={active ? "text-primary" : "text-neutral-500"} />
-        <small>{label}</small>
+        <Icon className="size-4" />
+        <small className="text-[12px] font-medium">{label}</small>
       </div>
     );
   };
 
   return (
     <div className="space-y-2.5">
-      <span className="text-xs font-semibold uppercase tracking-wider text-muted-foreground block">
+      <span className="text-[11px] font-semibold uppercase tracking-[0.08em] text-foreground/35 block">
         Mode
       </span>
       <div className="flex gap-2">

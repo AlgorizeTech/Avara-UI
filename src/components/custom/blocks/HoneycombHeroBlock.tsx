@@ -2,23 +2,23 @@
 
 import React, { forwardRef, useCallback, useEffect, useLayoutEffect, useRef, useState } from "react";
 import gsap from "gsap";
-import { ChevronLeft, ChevronRight } from "lucide-react";
+import { ChevronLeft, ChevronRight, Compass } from "lucide-react";
 import { cn } from "@/lib/utils";
 
 // ==========================================
 // HONEYCOMB HERO
-// A travel hero on a dark, shifting ground: a light line over a huge word in
-// the theme's primary on the left, and on the right a honeycomb of hexagonal
-// photographs with a primary hexagonal call to action set among them. The
+// A travel hero on a dark, shifting ground: a light line over a huge white
+// word on the left, and on the right a honeycomb of hexagonal photographs
+// with a primary hexagonal call to action set among them. The
 // large hexagon is the slide on screen — its photograph is also the
 // background, tinted with that photograph's own tone, so the colour behind
 // everything changes with the slide — and the smaller ones are the queue.
 // Every few seconds, or on the arrows at the foot, every hexagon moves one
 // step along the honeycomb: the next photo grows into the feature spot while
 // the feature slides to the back of the queue. The loop never ends. Where
-// the huge word crosses the photographs, its letters take a light tint of
-// the slide's tone. The section is always a dark surface, so it reads the
-// theme's dark tokens.
+// the huge word crosses the photographs, its letters turn the primary. Every
+// accent reads the theme's tokens where the section sits, so a theme change
+// repaints it.
 // ==========================================
 
 export interface HoneycombImage {
@@ -34,12 +34,9 @@ export interface HoneycombImage {
 export interface HoneycombHeroProps extends Omit<React.HTMLAttributes<HTMLElement>, "onChange"> {
   /** The light line above the accent word. */
   title?: string;
-  /** The huge, tracked, upper-case word in the accent colour. */
+  /** The huge, tracked, upper-case word, in white. */
   titleAccent?: string;
-  /**
-   * The letters of the accent word that cross the photographs. A light tint
-   * of the featured photograph's tone by default, easing with the slide.
-   */
+  /** The letters of the huge word that cross the photographs; the primary by default. */
   titleOverlapColor?: string;
   subtitle?: string;
   /** The words in the call-to-action hexagon; a `\n` breaks the line. */
@@ -57,7 +54,7 @@ export interface HoneycombHeroProps extends Omit<React.HTMLAttributes<HTMLElemen
   onChange?: (index: number) => void;
   /**
    * Sets `--primary` for the section — the word, the rule, the arrows and the
-   * call to action. The theme's primary (its dark-mode value) by default.
+   * call to action. The theme's primary by default.
    */
   accent?: string;
   /** The tone for photographs without their own; a deep shade of the primary by default. */
@@ -115,6 +112,17 @@ const CELLS = SLOTS.length;
 
 // A pointy-top regular hexagon.
 const HEX_CLIP = "polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%)";
+// The same hexagon as SVG points, in a 100-wide box.
+const HEX_POINTS = [
+  [50, 0],
+  [100, 25],
+  [100, 75],
+  [50, 100],
+  [0, 75],
+  [0, 25],
+]
+  .map(([x, y]) => `${x},${((y / 100) * 100 * HEX_H).toFixed(2)}`)
+  .join(" ");
 
 const prefersReducedMotion = () =>
   typeof window !== "undefined" && window.matchMedia?.("(prefers-reduced-motion: reduce)").matches;
@@ -154,7 +162,7 @@ export const HoneycombHero = forwardRef<HTMLElement, HoneycombHeroProps>(
     {
       title = "Wander the",
       titleAccent = "Fjords",
-      titleOverlapColor = "color-mix(in oklab, var(--hc-bg) 30%, white)",
+      titleOverlapColor = "var(--primary)",
       subtitle = "Waterfalls that drop straight into the sea, red cabins at the water's edge and skies that glow green after dark — small-group journeys through the far north.",
       primaryActionLabel = "Plan\nyour trip",
       primaryActionHref = "#",
@@ -235,8 +243,8 @@ export const HoneycombHero = forwardRef<HTMLElement, HoneycombHeroProps>(
       });
     }, [featureIndex]);
 
-    // ---- The accent word changes colour where it crosses the photographs:
-    // a tinted copy is clipped at the stage's left edge.
+    // ---- The accent word turns the primary where it crosses the photographs:
+    // a coloured copy is clipped at the stage's left edge.
     useLayoutEffect(() => {
       const root = rootRef.current;
       const stage = stageRef.current;
@@ -303,9 +311,9 @@ export const HoneycombHero = forwardRef<HTMLElement, HoneycombHeroProps>(
         // eases to the next one as the queue turns.
         style={{ ...(accent ? { "--primary": accent } : {}), "--hc-bg": tone, ...style } as React.CSSProperties}
         className={cn(
-          // Always a dark surface: `dark` makes the theme's tokens resolve to
-          // their dark values, so the primary reads against the photographs.
-          "dark relative isolate w-full overflow-hidden bg-[var(--hc-bg)] text-white transition-[background-color] duration-[1400ms] ease-in-out [container-type:inline-size]",
+          // No `dark` class here: it would redeclare `--primary` from the
+          // stylesheet and cut the section off from a theme set on <html>.
+          "relative isolate w-full overflow-hidden bg-[var(--hc-bg)] text-white transition-[background-color] duration-[1400ms] ease-in-out [container-type:inline-size]",
           "lg:aspect-[948/583] lg:max-h-[54rem] lg:min-h-[36rem]",
           className,
         )}
@@ -346,7 +354,7 @@ export const HoneycombHero = forwardRef<HTMLElement, HoneycombHeroProps>(
               />
               <h1
                 ref={headingRef}
-                className="relative inline-block whitespace-nowrap font-sans text-[clamp(2.75rem,9.4cqw,7.5rem)] font-extrabold uppercase leading-[0.95] tracking-[0.02em] text-primary"
+                className="relative inline-block whitespace-nowrap font-sans text-[clamp(2.75rem,9.4cqw,7.5rem)] font-extrabold uppercase leading-[0.95] tracking-[0.02em] text-white"
               >
                 {titleAccent}
                 {cut !== null && (
@@ -410,18 +418,39 @@ export const HoneycombHero = forwardRef<HTMLElement, HoneycombHeroProps>(
               );
             })}
 
-            {/* The call to action: a primary hexagon set among the photographs. */}
+            {/* The call to action: a primary cell in the honeycomb. A hairline
+                hexagon inside it echoes the photographs around it; on hover the
+                compass turns and the inner cell swells, on focus it goes solid. */}
             <div className="absolute z-40" style={{ ...CTA_SLOT, aspectRatio: `1 / ${HEX_H}` }}>
               <Link
                 href={primaryActionHref}
-                className="group absolute inset-[3.5%] flex flex-col items-end justify-end bg-primary pb-[22%] pr-[14%] text-right text-primary-foreground outline-none transition-[transform,filter] duration-300 hover:brightness-105 focus-visible:brightness-110 active:scale-[0.98]"
+                className="group absolute inset-[3.5%] grid place-items-center bg-primary text-primary-foreground outline-none transition-[filter,transform] duration-300 hover:brightness-110 active:scale-[0.97]"
                 style={{ clipPath: HEX_CLIP }}
               >
-                <span className="mb-[6%] block text-[clamp(0.5rem,1.3cqw,0.9rem)] transition-transform duration-300 group-hover:translate-x-0.5" aria-hidden>
-                  ▶
-                </span>
-                <span className="block whitespace-pre-line font-sans text-[clamp(0.55rem,1.35cqw,0.95rem)] font-extrabold uppercase leading-[1.25] tracking-[0.12em]">
-                  {primaryActionLabel}
+                <svg
+                  aria-hidden
+                  viewBox={`0 0 100 ${(100 * HEX_H).toFixed(2)}`}
+                  preserveAspectRatio="none"
+                  className="absolute inset-[11%] h-[78%] w-[78%] overflow-visible opacity-35 transition-[opacity,transform] duration-500 ease-out group-hover:opacity-70 group-focus-visible:opacity-100 motion-safe:group-hover:scale-105"
+                >
+                  <polygon
+                    points={HEX_POINTS}
+                    fill="none"
+                    stroke="currentColor"
+                    strokeWidth={1}
+                    vectorEffect="non-scaling-stroke"
+                    className="group-focus-visible:[stroke-width:2]"
+                  />
+                </svg>
+                <span className="relative flex flex-col items-center gap-[0.55em] text-center text-[clamp(0.65rem,1.65cqw,1.2rem)]">
+                  <Compass
+                    aria-hidden
+                    strokeWidth={1.75}
+                    className="size-[1.85em] transition-transform duration-500 ease-out motion-safe:group-hover:rotate-45"
+                  />
+                  <span className="block whitespace-pre-line font-sans font-semibold leading-[1.15] tracking-[-0.01em]">
+                    {primaryActionLabel}
+                  </span>
                 </span>
               </Link>
             </div>
