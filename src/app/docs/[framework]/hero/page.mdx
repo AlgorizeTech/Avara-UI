@@ -6,7 +6,7 @@ import { extractCode } from "@/lib/code";
 Every hero section in the library, on one page. Each is its own registry item with its own preview, install command and props — pick the one that suits the site and install only that. They run from the most opinionated layouts to the general-purpose `HeroBlock` and its five variants at the foot.
 
 <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 my-6 not-prose text-sm">
-  <a href="#honeycomb-hero" className="rounded-xl border border-zinc-200 dark:border-zinc-800 px-4 py-3 hover:border-primary/50 transition-colors"><strong className="block font-semibold text-zinc-900 dark:text-zinc-50">Honeycomb Hero</strong><span className="text-zinc-600 dark:text-zinc-400">A turning honeycomb of hexagonal photographs — travel, nature, tours.</span></a>
+  <a href="#honeycomb-hero" className="rounded-xl border border-zinc-200 dark:border-zinc-800 px-4 py-3 hover:border-primary/50 transition-colors"><strong className="block font-semibold text-zinc-900 dark:text-zinc-50">Honeycomb Hero</strong><span className="text-zinc-600 dark:text-zinc-400">A turning honeycomb of hexagonal photographs on a ground that changes colour with each slide — travel, nature, tours.</span></a>
   <a href="#hero-carousel" className="rounded-xl border border-zinc-200 dark:border-zinc-800 px-4 py-3 hover:border-primary/50 transition-colors"><strong className="block font-semibold text-zinc-900 dark:text-zinc-50">Hero Carousel</strong><span className="text-zinc-600 dark:text-zinc-400">A full-bleed photo hero with a queue of cards and a glass panel.</span></a>
   <a href="#fashion-hero" className="rounded-xl border border-zinc-200 dark:border-zinc-800 px-4 py-3 hover:border-primary/50 transition-colors"><strong className="block font-semibold text-zinc-900 dark:text-zinc-50">Fashion Hero</strong><span className="text-zinc-600 dark:text-zinc-400">Staggered columns of looks on flat colour — lookbook, store, editorial.</span></a>
   <a href="#support-hero" className="rounded-xl border border-zinc-200 dark:border-zinc-800 px-4 py-3 hover:border-primary/50 transition-colors"><strong className="block font-semibold text-zinc-900 dark:text-zinc-50">Support Hero</strong><span className="text-zinc-600 dark:text-zinc-400">A frosted bento of cards and counting figures — SaaS and AI products.</span></a>
@@ -17,40 +17,41 @@ Every hero section in the library, on one page. Each is its own registry item wi
 ## Honeycomb Hero
 
 
-A travel hero in deep teal: a light line over a huge gold word on the left, and on the right a honeycomb of hexagonal photographs with a gold hexagonal call to action set among them. The large hexagon is the slide on screen — its photograph is also the tinted background behind everything — and the smaller ones are the queue. Every four seconds, or on the arrows at the foot, every hexagon moves one step along the honeycomb: the next photograph grows into the feature spot while the feature slides to the back of the queue. The loop never ends, in either direction.
+A travel hero on a dark ground that shifts colour: a light line over a huge word in your theme's primary on the left, and on the right a honeycomb of hexagonal photographs with a primary hexagonal call to action set among them. The large hexagon is the slide on screen — its photograph is also the background behind everything, tinted with that photograph's own tone, so the colour of the whole section changes with the slide — and the smaller ones are the queue. Every four seconds, or on the arrows at the foot, every hexagon moves one step along the honeycomb: the next photograph grows into the feature spot while the feature slides to the back of the queue. The loop never ends, in either direction.
 
-The honeycomb is measured from the design and laid out in percentages of a fixed-aspect stage anchored to the right edge, so the composition holds at any size and whatever falls past the edge is clipped, as intended. The letters of the accent word that cross the feature photograph turn white.
+The honeycomb is measured from the design and laid out in percentages of a fixed-aspect stage anchored to the right edge, so the composition holds at any size and whatever falls past the edge is clipped, as intended. The letters of the accent word that cross the photographs take a light tint of the featured photograph's tone — mint over the gorge, periwinkle over the snow — and ease to the next tint with the slide. The section is always a dark surface, so it reads your theme's dark-mode tokens: the word, the rule, the arrows and the hexagon take `primary`, the hexagon's label `primary-foreground`.
 
 export const usageHoneycomb = `"use client";
 
 import Link from "next/link";
 import { HoneycombHero } from "@/components/custom/blocks/HoneycombHeroBlock";
 
+// tone is the colour behind everything while that photograph is featured; keep it deep.
 const IMAGES = [
-  { src: "https://images.unsplash.com/photo-1628344253777-f73a64d8f983?q=80&w=1400&auto=format&fit=crop", alt: "A waterfall pouring through a green gorge" },
-  { src: "https://images.unsplash.com/photo-1663428520845-056989f8a664?q=80&w=1400&auto=format&fit=crop", alt: "Red cabins at Hamnøy under a mountain" },
-  { src: "https://images.unsplash.com/photo-1710762634126-4c0e8fba44d8?q=80&w=1400&auto=format&fit=crop", alt: "A snowy village below white peaks" },
-  { src: "https://images.unsplash.com/photo-1593378026483-2a1fd46a35bd?q=80&w=1400&auto=format&fit=crop", alt: "Green aurora above snowy mountains" },
-  { src: "https://images.unsplash.com/photo-1695496896465-9e59091a8ed1?q=80&w=1400&auto=format&fit=crop", alt: "Turquoise water between mountain ridges" },
-  { src: "https://images.unsplash.com/photo-1721335916916-37c319adce3a?q=80&w=1400&auto=format&fit=crop", alt: "A sandy beach beneath a rocky headland" },
-  { src: "https://images.unsplash.com/photo-1527004013197-933c4bb611b3?q=80&w=1400&auto=format&fit=crop", alt: "A red cabin on a rocky shore" },
-  { src: "https://images.unsplash.com/photo-1682952986992-de7082fb213d?q=80&w=1400&auto=format&fit=crop", alt: "Waterfalls running down the wall of a fjord" },
-  { src: "https://images.unsplash.com/photo-1607888566357-ec0b61abee46?q=80&w=1400&auto=format&fit=crop", alt: "A waterfall beside a wooden viewpoint" },
+  { src: "https://images.unsplash.com/photo-1628344253777-f73a64d8f983?q=80&w=1400&auto=format&fit=crop", alt: "A waterfall pouring through a green gorge", tone: "#0f2e22" },
+  { src: "https://images.unsplash.com/photo-1663428520845-056989f8a664?q=80&w=1400&auto=format&fit=crop", alt: "Red cabins at Hamnøy under a mountain", tone: "#1f2140" },
+  { src: "https://images.unsplash.com/photo-1710762634126-4c0e8fba44d8?q=80&w=1400&auto=format&fit=crop", alt: "A snowy village below white peaks", tone: "#18233a" },
+  { src: "https://images.unsplash.com/photo-1593378026483-2a1fd46a35bd?q=80&w=1400&auto=format&fit=crop", alt: "Green aurora above snowy mountains", tone: "#0b2a2d" },
+  { src: "https://images.unsplash.com/photo-1695496896465-9e59091a8ed1?q=80&w=1400&auto=format&fit=crop", alt: "Turquoise water between mountain ridges", tone: "#082f3d" },
+  { src: "https://images.unsplash.com/photo-1721335916916-37c319adce3a?q=80&w=1400&auto=format&fit=crop", alt: "A sandy beach beneath a rocky headland", tone: "#1d2b36" },
+  { src: "https://images.unsplash.com/photo-1527004013197-933c4bb611b3?q=80&w=1400&auto=format&fit=crop", alt: "A red cabin on a rocky shore", tone: "#2a1f3d" },
+  { src: "https://images.unsplash.com/photo-1682952986992-de7082fb213d?q=80&w=1400&auto=format&fit=crop", alt: "Waterfalls running down the wall of a fjord", tone: "#132a3b" },
+  { src: "https://images.unsplash.com/photo-1607888566357-ec0b61abee46?q=80&w=1400&auto=format&fit=crop", alt: "A waterfall beside a wooden viewpoint", tone: "#1c2b17" },
 ];
 
 export default function Hero() {
   return (
     <HoneycombHero
-      title="Amazing"
-      titleAccent="Norway"
-      subtitle="Visit Norway, you will never regret it. Fantastic nature, fjords, and the fancy outlines of the coast."
-      primaryActionLabel={"Book\\na tour"}
+      title="Wander the"
+      titleAccent="Fjords"
+      subtitle="Waterfalls that drop straight into the sea, red cabins at the water's edge and skies that glow green after dark — small-group journeys through the far north."
+      primaryActionLabel={"Plan\\nyour trip"}
       primaryActionHref="/tours"
       images={IMAGES}
       socialLinks={[
-        { label: "Facebook", href: "#" },
         { label: "Instagram", href: "#" },
         { label: "YouTube", href: "#" },
+        { label: "TikTok", href: "#" },
       ]}
       interval={4000}
       linkComponent={Link}
@@ -65,13 +66,13 @@ export default function Hero() {
   minHeight={600}
   examples={[
     {
-      title: "Amazing Norway",
-      subheading: "Copy on the left, the honeycomb on the right with the gold hexagon set among the photographs. Wait four seconds or use the arrows at the foot: every hexagon moves one step along the ring.",
+      title: "Wander the fjords",
+      subheading: "Copy on the left, the honeycomb on the right with the primary hexagon set among the photographs. Wait four seconds or use the arrows at the foot: every hexagon moves one step along the ring, and the whole section eases to the new photograph's colour. Pick a colour above to repaint the accent.",
       propNotes: [
         {
           prop: "images",
           effect:
-            "are the photographs in queue order; the first is featured at the start. Nine cells are visible — fewer photographs are repeated around the ring, more simply wait their turn.",
+            "are the photographs in queue order; the first is featured at the start. Nine cells are visible — fewer photographs are repeated around the ring, more simply wait their turn. Give each a deep `tone` and the background tint, the fade towards the copy and the gaps between hexagons all ease to it while that photograph is featured.",
         },
         {
           prop: "interval",
@@ -81,12 +82,11 @@ export default function Hero() {
         },
         {
           prop: "primaryActionLabel",
-          effect: "fills the gold hexagon; a `\\n` in the string breaks the line, as in the design's BOOK / A TOUR.",
+          effect: "fills the call-to-action hexagon; a `\\n` in the string breaks the line, as in PLAN / YOUR TRIP.",
         },
         {
           prop: "accent",
-          value: '"#e0a83d"',
-          effect: "is the gold: the word, the rule, the arrows and the call to action. `background` is the teal behind everything, which also tints the feature photograph.",
+          effect: "sets `--primary` for the section: the word, the rule, the arrows and the call to action, with the label in `primary-foreground`. Leave it out to use your theme's primary — its dark-mode value, since the section is always dark. `background` is the tone for photographs without one: a deep shade of the primary by default.",
         },
       ],
       usage: usageHoneycomb,
@@ -108,7 +108,7 @@ export default function Hero() {
   </div>
   <div className="p-6 rounded-2xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900">
     <h3 className="text-lg font-semibold text-zinc-900 dark:text-zinc-50 mb-2">The feature is the background</h3>
-    <p className="text-zinc-600 dark:text-zinc-400 text-sm">Whatever photograph is in the large hexagon also fills the section behind everything, tinted with the teal and darkened towards the copy. It crossfades as the honeycomb turns.</p>
+    <p className="text-zinc-600 dark:text-zinc-400 text-sm">Whatever photograph is in the large hexagon also fills the section behind everything, tinted with its own tone and darkened towards the copy. Photograph and colour crossfade together as the honeycomb turns — deep green behind the gorge, indigo behind the cabins, night blue behind the snow.</p>
   </div>
   <div className="p-6 rounded-2xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900">
     <h3 className="text-lg font-semibold text-zinc-900 dark:text-zinc-50 mb-2">Measured, not guessed</h3>
@@ -136,8 +136,14 @@ export default function Hero() {
       <tr>
         <td><code>title</code>, <code>titleAccent</code></td>
         <td><code>string</code></td>
-        <td><code>"Amazing"</code>, <code>"Norway"</code></td>
+        <td><code>"Wander the"</code>, <code>"Fjords"</code></td>
         <td>The light line and the huge accent word.</td>
+      </tr>
+      <tr>
+        <td><code>titleOverlapColor</code></td>
+        <td><code>string</code></td>
+        <td>a light tint of the slide's tone</td>
+        <td>The letters of the accent word that cross the photographs.</td>
       </tr>
       <tr>
         <td><code>subtitle</code></td>
@@ -148,19 +154,19 @@ export default function Hero() {
       <tr>
         <td><code>primaryActionLabel</code>, <code>primaryActionHref</code></td>
         <td><code>string</code></td>
-        <td><code>"Book\na tour"</code>, <code>"#"</code></td>
-        <td>The gold hexagon; <code>\n</code> breaks the line.</td>
+        <td><code>"Plan\nyour trip"</code>, <code>"#"</code></td>
+        <td>The call-to-action hexagon, in <code>primary</code>; <code>\n</code> breaks the line.</td>
       </tr>
       <tr>
         <td><code>images</code></td>
-        <td><code>&#123; src: string; alt: string &#125;[]</code></td>
-        <td>nine Lofoten photographs</td>
-        <td>The queue, first featured.</td>
+        <td><code>&#123; src: string; alt: string; tone?: string &#125;[]</code></td>
+        <td>nine Lofoten photographs, each with a tone</td>
+        <td>The queue, first featured. <code>tone</code> is the colour behind everything while that photograph is featured; keep it deep, the copy is white.</td>
       </tr>
       <tr>
         <td><code>socialLinks</code></td>
         <td><code>&#123; label: string; href: string &#125;[]</code></td>
-        <td>five networks, all <code>#</code></td>
+        <td>four networks, all <code>#</code></td>
         <td>The links along the foot; <code>[]</code> hides them.</td>
       </tr>
       <tr>
@@ -178,14 +184,14 @@ export default function Hero() {
       <tr>
         <td><code>accent</code></td>
         <td><code>string</code></td>
-        <td><code>"#e0a83d"</code></td>
-        <td>The gold.</td>
+        <td>theme primary</td>
+        <td>Sets <code>--primary</code> for the section: the word, the rule, the arrows and the call to action.</td>
       </tr>
       <tr>
         <td><code>background</code></td>
         <td><code>string</code></td>
-        <td><code>"#0b2a2d"</code></td>
-        <td>The teal behind everything.</td>
+        <td>a deep shade of the primary</td>
+        <td>The tone for photographs without their own.</td>
       </tr>
       <tr>
         <td><code>linkComponent</code></td>
