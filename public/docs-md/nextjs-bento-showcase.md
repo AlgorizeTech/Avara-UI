@@ -43,10 +43,10 @@ const PLANS = [
 // Four photos and two figure discs make six cells — an even count keeps the
 // high/low rhythm intact across the loop.
 const TEAM = [
-  { src: "https://images.pexels.com/photos/7688336/pexels-photo-7688336.jpeg?auto=compress&cs=tinysrgb&w=500", alt: "A desk from above" },
-  { src: "https://images.pexels.com/photos/8867434/pexels-photo-8867434.jpeg?auto=compress&cs=tinysrgb&w=500", alt: "Two agents at their desks" },
-  { src: "https://images.pexels.com/photos/7658387/pexels-photo-7658387.jpeg?auto=compress&cs=tinysrgb&w=500", alt: "Maria on a call" },
-  { src: "https://images.pexels.com/photos/7709086/pexels-photo-7709086.jpeg?auto=compress&cs=tinysrgb&w=500", alt: "Alex at his laptop" },
+  { src: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_500,c_limit/v1790166049/pexels-photo-7688336-1790166052227.jpg", alt: "A desk from above" },
+  { src: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_500,c_limit/v1790166049/pexels-photo-8867434-1790166052229.jpg", alt: "Two agents at their desks" },
+  { src: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_500,c_limit/v1790166049/pexels-photo-7658387-1790166052226.jpg", alt: "Maria on a call" },
+  { src: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_500,c_limit/v1790166049/pexels-photo-7709086-1790166052228.jpg", alt: "Alex at his laptop" },
 ];
 
 export default function Showcase() {
