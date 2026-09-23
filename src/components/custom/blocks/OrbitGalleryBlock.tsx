@@ -263,14 +263,15 @@ export const OrbitGallery = forwardRef<HTMLElement, OrbitGalleryProps>(
           @media (min-width: 640px) { .orbit-gallery-card { --orbit-r: 185px; } }
           @media (min-width: 1024px) { .orbit-gallery-card { --orbit-r: 220px; } }
           @keyframes orbit-gallery-slide {
-            0%   { transform: rotate(0deg)   translateY(calc(-1 * var(--orbit-r))) rotate(0deg);    z-index: 10; opacity: 0.82; }
-            25%  { transform: rotate(90deg)  translateY(calc(-1 * var(--orbit-r))) rotate(-90deg);  z-index: 25; opacity: 0.95; }
-            50%  { transform: rotate(180deg) translateY(calc(-1 * var(--orbit-r))) rotate(-180deg); z-index: 50; opacity: 1; }
-            75%  { transform: rotate(270deg) translateY(calc(-1 * var(--orbit-r))) rotate(-270deg); z-index: 25; opacity: 0.95; }
-            100% { transform: rotate(360deg) translateY(calc(-1 * var(--orbit-r))) rotate(-360deg); z-index: 10; opacity: 0.82; }
+            0%   { transform: rotate(0deg)   translateY(calc(-1 * var(--orbit-r))) rotate(0deg); }
+            25%  { transform: rotate(90deg)  translateY(calc(-1 * var(--orbit-r))) rotate(-90deg); }
+            50%  { transform: rotate(180deg) translateY(calc(-1 * var(--orbit-r))) rotate(-180deg); }
+            75%  { transform: rotate(270deg) translateY(calc(-1 * var(--orbit-r))) rotate(-270deg); }
+            100% { transform: rotate(360deg) translateY(calc(-1 * var(--orbit-r))) rotate(-360deg); }
           }
           .orbit-gallery-card { animation: orbit-gallery-slide var(--orbit-duration, 36s) linear infinite; }
           .orbit-gallery-ring:hover .orbit-gallery-card { animation-play-state: paused; }
+          .orbit-gallery-card:hover { z-index: 50; }
           @media (prefers-reduced-motion: reduce) { .orbit-gallery-card { animation-play-state: paused; } }
         `}</style>
 
@@ -346,6 +347,7 @@ export const OrbitGallery = forwardRef<HTMLElement, OrbitGalleryProps>(
                 {images.map((src, i) => (
                   <div
                     key={src + i}
+                    data-index={i}
                     className="orbit-gallery-card pointer-events-auto absolute left-1/2 top-1/2 -ml-[38px] -mt-[48px] h-[96px] w-[76px] sm:-ml-[62px] sm:-mt-[77px] sm:h-[155px] sm:w-[125px] lg:-ml-[75px] lg:-mt-[90px] lg:h-[180px] lg:w-[150px]"
                     style={{ animationDelay: `${-((i / count) * duration)}s` }}
                   >
