@@ -8,6 +8,7 @@ import {
   ChevronRight,
   Clock,
 } from "lucide-react";
+import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
 import React, { forwardRef, useEffect, useRef, useState } from "react";
 import { getThemeStyles } from "./date-picker-theme";
 import {
@@ -48,7 +49,11 @@ const MONTH_NAMES = [
 ];
 const DAY_NAMES = ["Su", "Mo", "Tu", "We", "Th", "Fr", "Sa"];
 
-/** Popover widths: calendar only (18rem) and calendar + time columns (30rem). */
+/**
+ * Popover widths: the calendar alone (18rem) and the calendar with the time
+ * rail unfolded beside it (30rem). The 12rem difference is exactly the rail
+ * plus its gutter, so the calendar grid keeps its size while the rail opens.
+ */
 const POPOVER_PX = 288;
 const WIDE_POPOVER_PX = 480;
 
@@ -80,8 +85,10 @@ export interface DatePickerBlockProps {
   /** Latest selectable day (inclusive). */
   maxDate?: Date;
   /**
-   * Adds hour / minute (and AM-PM) columns under the calendar. Picking a day
-   * then keeps the popover open until Done, and `value` carries the time.
+   * Adds hour / minute (and AM-PM) columns. The popover opens on the calendar
+   * alone and unfolds the columns — beside it when there is room, below it
+   * otherwise — as soon as a day is picked, staying open until Done. `value`
+   * then carries the time as well as the day.
    */
   showTime?: boolean;
   /** 12-hour clock with AM / PM, or 24-hour. Default "12h". */
@@ -116,9 +123,9 @@ export const DatePickerBlock = forwardRef<HTMLDivElement, DatePickerBlockProps>(
   ) => {
     const [isOpen, setIsOpen] = useState(false);
     const [viewDate, setViewDate] = useState(value || new Date());
-    // The time a freshly picked day receives. Starts at "now" rounded up to the
-    // step, and follows the time columns even before a day has been chosen, so
-    // choosing a time first and a day second works in either order.
+    // The time a freshly picked day receives — "now" rounded up to the step.
+    // The columns only exist once a day is chosen, so this seeds that first
+    // pick rather than being something the user edits beforehand.
     const [pendingTime, setPendingTime] = useState(() => roundToStep(new Date(), minuteStep));
     // With time columns the popover can go wide and put them to the right of
     // the calendar — but only when the viewport has room for that width, so it
@@ -135,6 +142,20 @@ export const DatePickerBlock = forwardRef<HTMLDivElement, DatePickerBlockProps>(
     React.useImperativeHandle(ref, () => containerRef.current as HTMLDivElement);
 
     const hasError = Boolean(error);
+
+    const reduceMotion = useReducedMotion();
+    // The time panel is absent until a day lands: the popover opens on the
+    // calendar alone, unfolds on the first pick, and folds away again if the
+    // date is cleared. Mirrors `railOpen` in RangeDatePicker.
+    const railOpen = showTime && Boolean(value);
+
+    // Same curves as RangeDatePicker so both pickers unfold identically.
+    const unfold = reduceMotion
+      ? { duration: 0 }
+      : { type: "spring" as const, stiffness: 240, damping: 30, mass: 0.9 };
+    const settle = reduceMotion
+      ? { duration: 0 }
+      : { duration: 0.28, ease: [0.22, 1, 0.36, 1] as const };
 
     // Close on click outside
     useEffect(() => {
@@ -339,6 +360,9 @@ export const DatePickerBlock = forwardRef<HTMLDivElement, DatePickerBlockProps>(
 
     const styles = getVariantStyles();
 
+    // Only the side rail widens the popover; the stacked panel grows downward.
+    const popoverWidth = railOpen && sideLayout ? WIDE_POPOVER_PX : POPOVER_PX;
+
     const timeHeader = (
       <div className="flex items-center justify-between mb-2">
         <span className="flex items-center gap-1.5 text-[10px] font-semibold uppercase tracking-wider text-muted-foreground">
@@ -408,22 +432,33 @@ export const DatePickerBlock = forwardRef<HTMLDivElement, DatePickerBlockProps>(
           </div>
         </button>
 
-        {/* Calendar Popover */}
-        <div
+        {/* Calendar Popover — grows in step with the time rail beside it. */}
+        <motion.div
+          initial={false}
+          animate={{
+            width: popoverWidth,
+            opacity: isOpen ? 1 : 0,
+            scaleY: isOpen ? 1 : 0.95,
+            y: isOpen ? 0 : -8,
+          }}
+          transition={{
+            width: unfold,
+            default: reduceMotion
+              ? { duration: 0 }
+              : { duration: 0.2, ease: "easeOut" as const },
+          }}
           className={cn(
-            "absolute z-50 overflow-hidden bg-background border border-border rounded-xl shadow-xl transition-all duration-200 ease-out origin-top",
+            "absolute z-50 overflow-hidden bg-background border border-border rounded-xl shadow-xl origin-top",
             alignRight ? "right-0" : "left-0",
             // Never wider than the viewport minus a margin, so a phone still
             // sees the whole thing.
-            showTime && sideLayout ? "w-[30rem] max-w-[calc(100vw-2rem)]" : "w-72 max-w-[calc(100vw-2rem)]",
+            "max-w-[calc(100vw-2rem)]",
             variant === "underlined" ? "top-[100%]" : "top-[calc(100%+8px)]",
-            isOpen
-              ? "opacity-100 scale-y-100 translate-y-0 pointer-events-auto"
-              : "opacity-0 scale-y-95 -translate-y-2 pointer-events-none",
+            isOpen ? "pointer-events-auto" : "pointer-events-none",
           )}
         >
           <div className="p-4">
-            <div className={cn(showTime && sideLayout && "flex items-stretch gap-4")}>
+            <div className={cn(showTime && sideLayout && "flex items-stretch")}>
               <div className="min-w-0 flex-1">
                 {/* Header */}
                 <div className="flex items-center justify-between mb-4">
@@ -499,15 +534,56 @@ export const DatePickerBlock = forwardRef<HTMLDivElement, DatePickerBlockProps>(
                 </div>
               </div>
 
-              {/* Time — to the right of the calendar when there is room, under
-                  it otherwise. Fixed width so the columns are never squeezed. */}
-              {showTime && sideLayout && (
-                <div className="flex w-44 shrink-0 flex-col border-l border-border pl-4">
-                  {timeHeader}
-                  {/* The picker fills whatever height the calendar gives the
-                      row — absolutely positioned so its long lists never
-                      stretch the popover themselves. */}
-                  <div className="relative flex-1 min-h-32">
+              {/* Time — unfolds to the RIGHT of the calendar on the first pick
+                  when there is room, and DOWN from under it otherwise. The
+                  inner column is a fixed width so the lists are never squeezed
+                  mid-unfold, and its margin rides along so the calendar holds
+                  still. */}
+              <AnimatePresence initial={false}>
+                {railOpen && sideLayout && (
+                  <motion.div
+                    key="time-side"
+                    initial={{ width: 0, opacity: 0 }}
+                    animate={{ width: "auto", opacity: 1 }}
+                    exit={{ width: 0, opacity: 0, transition: settle }}
+                    transition={unfold}
+                    className="shrink-0 overflow-hidden"
+                  >
+                    <div className="flex h-full w-44 ml-4 flex-col border-l border-border pl-4">
+                      {timeHeader}
+                      {/* The picker fills whatever height the calendar gives
+                          the row — absolutely positioned so its long lists
+                          never stretch the popover themselves. */}
+                      <div className="relative flex-1 min-h-32">
+                        <TimePicker
+                          value={timeSource}
+                          onChange={handleTimeChange}
+                          format={timeFormat}
+                          minuteStep={minuteStep}
+                          minTime={minTime}
+                          maxTime={maxTime}
+                          color={color}
+                          className="absolute inset-0 h-auto"
+                        />
+                      </div>
+                    </div>
+                  </motion.div>
+                )}
+              </AnimatePresence>
+            </div>
+
+            <AnimatePresence initial={false}>
+              {railOpen && !sideLayout && (
+                <motion.div
+                  key="time-stacked"
+                  initial={{ height: 0, opacity: 0 }}
+                  animate={{ height: "auto", opacity: 1 }}
+                  exit={{ height: 0, opacity: 0, transition: settle }}
+                  transition={unfold}
+                  className="overflow-hidden"
+                >
+                  <div className="mt-4 pt-4 border-t border-border">
+                    {timeHeader}
                     <TimePicker
                       value={timeSource}
                       onChange={handleTimeChange}
@@ -516,45 +592,42 @@ export const DatePickerBlock = forwardRef<HTMLDivElement, DatePickerBlockProps>(
                       minTime={minTime}
                       maxTime={maxTime}
                       color={color}
-                      className="absolute inset-0 h-auto"
                     />
                   </div>
-                </div>
+                </motion.div>
               )}
-            </div>
+            </AnimatePresence>
 
-            {showTime && !sideLayout && (
-              <div className="mt-4 pt-4 border-t border-border">
-                {timeHeader}
-                <TimePicker
-                  value={timeSource}
-                  onChange={handleTimeChange}
-                  format={timeFormat}
-                  minuteStep={minuteStep}
-                  minTime={minTime}
-                  maxTime={maxTime}
-                  color={color}
-                />
-              </div>
-            )}
-
-            {showTime && (
-              <button
-                type="button"
-                onClick={(e) => {
-                  e.stopPropagation();
-                  setIsOpen(false);
-                }}
-                className={cn(
-                  "mt-3 w-full h-9 rounded-lg text-sm font-semibold transition-colors",
-                  theme.bg,
-                )}
-              >
-                Done
-              </button>
-            )}
+            {/* Done confirms the day and its time, so it rides in with the
+                panel rather than sitting under an empty calendar. */}
+            <AnimatePresence initial={false}>
+              {railOpen && (
+                <motion.div
+                  key="done"
+                  initial={{ height: 0, opacity: 0 }}
+                  animate={{ height: "auto", opacity: 1 }}
+                  exit={{ height: 0, opacity: 0, transition: settle }}
+                  transition={unfold}
+                  className="overflow-hidden"
+                >
+                  <button
+                    type="button"
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      setIsOpen(false);
+                    }}
+                    className={cn(
+                      "mt-3 w-full h-9 rounded-lg text-sm font-semibold transition-colors",
+                      theme.bg,
+                    )}
+                  >
+                    Done
+                  </button>
+                </motion.div>
+              )}
+            </AnimatePresence>
           </div>
-        </div>
+        </motion.div>
 
         {/* Helper & Error Text */}
         {error && (

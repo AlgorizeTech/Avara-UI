@@ -80,6 +80,13 @@ npx shadcn@latest add @algorize-ui/accordion
 
 export const usageSection = `import { Accordion, type AccordionDataItem } from "@/components/custom/blocks/Accordion";
 
+// The three faces on the "Still stuck?" card.
+const SUPPORT_TEAM = [
+  { name: "Ana R.", src: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_120,h_120,c_fill/v1790145139/pexels-photo-1036623-1790145143487.jpg" },
+  { name: "Tom M.", src: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_120,h_120,c_fill/v1790145142/pexels-photo-2043590-1790145143488.jpg" },
+  { name: "Mara K.", src: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_120,h_120,c_fill/v1790145139/pexels-photo-1587009-1790145143488.jpg" },
+];
+
 const faq: AccordionDataItem[] = [
   {
     value: "frameworks",
@@ -123,9 +130,7 @@ export default function FaqSection() {
             Short answers on licensing, theming and where the components run.
             If yours isn't here, we read every message.
 
-              {["AR", "MK", "JS"].map((initials) => (
-                
-                  {initials}
+              {SUPPORT_TEAM.map((person) => (
                 
               ))}
 

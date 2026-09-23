@@ -154,7 +154,7 @@ export default function ScrollAreaDemo({
       name: "Olivia Zhang",
       time: "Aug 08",
       unread: 0,
-      avatar: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_100,c_limit/v1790150483/photo-1534528741775-53994a69daeb-1790150482280.jpg",
+      avatar: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_100,c_limit/v1790150478/photo-1544005313-94ddf0286df2-1790150482273.jpg",
       status: "offline",
       message: "Published release notes for v2.4.0 UI component library.",
     },

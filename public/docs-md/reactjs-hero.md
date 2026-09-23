@@ -11,9 +11,9 @@ Every hero section in the library, on one page. Each is its own registry item wi
 
 ## Honeycomb Hero
 
-A travel hero on a dark ground that shifts colour: a light line over a huge word in your theme's primary on the left, and on the right a honeycomb of hexagonal photographs with a primary hexagonal call to action set among them. The large hexagon is the slide on screen — its photograph is also the background behind everything, tinted with that photograph's own tone, so the colour of the whole section changes with the slide — and the smaller ones are the queue. Every four seconds, or on the arrows at the foot, every hexagon moves one step along the honeycomb: the next photograph grows into the feature spot while the feature slides to the back of the queue. The loop never ends, in either direction.
+A travel hero on a dark ground that shifts colour: a light line over a huge white word on the left, and on the right a honeycomb of hexagonal photographs with a primary hexagonal call to action set among them. The large hexagon is the slide on screen — its photograph is also the background behind everything, tinted with that photograph's own tone, so the colour of the whole section changes with the slide — and the smaller ones are the queue. Every four seconds, or on the arrows at the foot, every hexagon moves one step along the honeycomb: the next photograph grows into the feature spot while the feature slides to the back of the queue. The loop never ends, in either direction.
 
-The honeycomb is measured from the design and laid out in percentages of a fixed-aspect stage anchored to the right edge, so the composition holds at any size and whatever falls past the edge is clipped, as intended. The letters of the accent word that cross the photographs take a light tint of the featured photograph's tone — mint over the gorge, periwinkle over the snow — and ease to the next tint with the slide. The section is always a dark surface, so it reads your theme's dark-mode tokens: the word, the rule, the arrows and the hexagon take `primary`, the hexagon's label `primary-foreground`.
+The honeycomb is measured from the design and laid out in percentages of a fixed-aspect stage anchored to the right edge, so the composition holds at any size and whatever falls past the edge is clipped, as intended. The letters of the word that cross the photographs turn your theme's `primary`, as do the rule, the arrows and the call-to-action hexagon, whose compass and label take `primary-foreground`. They read the theme wherever the section sits, so switching themes repaints them.
 
 export const usageHoneycomb = `// tone is the colour behind everything while that photograph is featured; keep it deep.
 const IMAGES = [
@@ -72,7 +72,7 @@ npx shadcn@latest add @algorize-ui/honeycomb-hero
 
         titleOverlapColor
         string
-        a light tint of the slide's tone
+        theme primary
         The letters of the accent word that cross the photographs.
 
         subtitle
@@ -83,7 +83,7 @@ npx shadcn@latest add @algorize-ui/honeycomb-hero
         primaryActionLabel, primaryActionHref
         string
         "Plan\nyour trip", "#"
-        The call-to-action hexagon, in primary; \n breaks the line.
+        The call-to-action hexagon, in primary with a compass above the label; \n breaks the line.
 
         images
         &#123; src: string; alt: string; tone?: string &#125;[]
