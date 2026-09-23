@@ -321,7 +321,7 @@ const SHOP_ITEMS = [
     price: "$42.00",
     tint: "#efb6c4",
     image:
-      "https://images.unsplash.com/photo-1769708638693-60abd4bdfa9e?q=80&w=600&auto=format&fit=crop",
+      "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_600,c_limit/v1790146211/photo-1769708638693-60abd4bdfa9e-1790146212211.jpg",
     imageAlt: "Woman in a pink coat adjusting her sunglasses against a pink wall",
     // She stands mid-frame; showing the left of the photo keeps her clear of the mask
     focus: "object-left",
@@ -332,7 +332,7 @@ const SHOP_ITEMS = [
     price: "$56.00",
     tint: "#fdd24f",
     image:
-      "https://images.unsplash.com/photo-1759313560255-0458c8f4e615?q=80&w=600&auto=format&fit=crop",
+      "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_600,c_limit/v1790146210/photo-1759313560255-0458c8f4e615-1790146212211.jpg",
     imageAlt: "Young girl in a blue star dress against a yellow backdrop",
     focus: "object-center",
   },
@@ -342,7 +342,7 @@ const SHOP_ITEMS = [
     price: "$80.00",
     tint: "#dcd6f4",
     image:
-      "https://images.unsplash.com/photo-1595950653106-6c9ebd614d3a?q=80&w=600&auto=format&fit=crop",
+      "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_600,c_limit/v1790146211/photo-1595950653106-6c9ebd614d3a-1790146212210.jpg",
     imageAlt: "Pastel sneakers on a pink and periwinkle surface",
     focus: "object-center",
   },
@@ -414,11 +414,11 @@ const FEATURED_STORY = {
   title: "The quiet cost of a re-render",
   dek: "A dashboard that only felt slow on Mondays, and the six components that explained it.",
   cover:
-    "https://images.unsplash.com/photo-1551288049-bebda4e38f71?q=80&w=1200&auto=format&fit=crop",
+    "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_1200,c_limit/v1790146211/photo-1551288049-bebda4e38f71-1790146212211.jpg",
   coverAlt: "Analytics dashboard charts on a laptop screen",
   author: "Priya Raman",
   avatar:
-    "https://images.unsplash.com/photo-1494790108377-be9c29b29330?q=80&w=200&auto=format&fit=crop",
+    "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_200,c_limit/v1790158813/photo-1494790108377-be9c29b29330-1790158812212.jpg",
   date: "4 March",
   read: "8 min",
 };
@@ -429,7 +429,7 @@ const FEED_STORIES = [
     topic: "Craft",
     read: "5 min",
     thumb:
-      "https://images.unsplash.com/photo-1504639725590-34d0984388bd?q=80&w=400&auto=format&fit=crop",
+      "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_400,c_limit/v1790146210/photo-1504639725590-34d0984388bd-1790146212207.jpg",
     thumbAlt: "Developer writing code at a desk",
   },
   {
@@ -437,7 +437,7 @@ const FEED_STORIES = [
     topic: "Design systems",
     read: "6 min",
     thumb:
-      "https://images.unsplash.com/photo-1460925895917-afdab827c52f?q=80&w=400&auto=format&fit=crop",
+      "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_400,c_limit/v1790146209/photo-1460925895917-afdab827c52f-1790146212204.jpg",
     thumbAlt: "Workspace with a laptop showing a web layout",
   },
   {
@@ -445,7 +445,7 @@ const FEED_STORIES = [
     topic: "Practice",
     read: "4 min",
     thumb:
-      "https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?q=80&w=400&auto=format&fit=crop",
+      "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_400,c_limit/v1790148864/photo-1618005182384-a83a8bd57fbe-1790148865111.jpg",
     thumbAlt: "Abstract render of connected nodes",
   },
 ];
@@ -547,11 +547,11 @@ const BLOG_POSTS = [
     title: "Grids that survive translation",
     dek: "German compound nouns broke our pricing table in four places. What we changed.",
     cover:
-      "https://images.unsplash.com/photo-1541701494587-cb58502866ab?q=80&w=800&auto=format&fit=crop",
+      "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_800,c_limit/v1790150483/photo-1541701494587-cb58502866ab-1790150482281.jpg",
     coverAlt: "Abstract flowing ink in blue and violet",
     author: "Maya Lin",
     avatar:
-      "https://images.unsplash.com/photo-1517841905240-472988babdf9?q=80&w=200&auto=format&fit=crop",
+      "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_200,c_limit/v1790150481/photo-1517841905240-472988babdf9-1790150482277.jpg",
     date: "11 March",
     read: "7 min",
   },
@@ -560,11 +560,11 @@ const BLOG_POSTS = [
     title: "The accessibility tree is not a mirror",
     dek: "Two components that looked identical read as completely different things aloud.",
     cover:
-      "https://images.unsplash.com/photo-1518709268805-4e9042af9f23?q=80&w=800&auto=format&fit=crop",
+      "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_800,c_limit/v1790146211/photo-1518709268805-4e9042af9f23-1790146212209.jpg",
     coverAlt: "Glowing circuit board traces",
     author: "Daniel Kim",
     avatar:
-      "https://images.unsplash.com/photo-1519085360753-af0119f7cbe7?q=80&w=200&auto=format&fit=crop",
+      "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_200,c_limit/v1790159965/photo-1519085360753-af0119f7cbe7-1790159970113.jpg",
     date: "9 March",
     read: "5 min",
   },
@@ -573,11 +573,11 @@ const BLOG_POSTS = [
     title: "Ship the model, keep the seams",
     dek: "Every inference call our app makes can fail. The UI has to say so plainly.",
     cover:
-      "https://images.unsplash.com/photo-1618005198919-d3d4b5a92ead?q=80&w=800&auto=format&fit=crop",
+      "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_800,c_limit/v1790158809/photo-1618005198919-d3d4b5a92ead-1790158812198.jpg",
     coverAlt: "Abstract render of intersecting shapes",
     author: "Ethan Wright",
     avatar:
-      "https://images.unsplash.com/photo-1522075469751-3a6694fb2f61?q=80&w=200&auto=format&fit=crop",
+      "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_200,c_limit/v1790158814/photo-1522075469751-3a6694fb2f61-1790158812213.jpg",
     date: "6 March",
     read: "9 min",
   },

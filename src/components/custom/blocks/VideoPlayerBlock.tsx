@@ -255,7 +255,7 @@ export const VideoPlayer = React.forwardRef<
   (
     {
       videoUrl = "https://www.youtube.com/embed/LXb3EKWsInQ?autoplay=1",
-      thumbnailUrl = "https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=1920&q=80",
+      thumbnailUrl = "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_1920,c_limit/v1790146210/photo-1506744038136-46273834b3fb-1790146212208.jpg",
       thumbnailAlt = "Nature Wilderness Video Thumbnail",
       badge = "Wilderness Exploration",
       title = "Experience Untouched Nature in 4K",

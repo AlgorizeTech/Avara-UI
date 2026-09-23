@@ -3,11 +3,13 @@
 import { Waitlist, type WaitlistVariant } from "@/components/custom/blocks/WaitlistBlock";
 import { cn } from "@/lib/utils";
 
-// Faces from Pexels (free to use).
-const pexels = (id: number, w = 160) =>
-  `https://images.pexels.com/photos/${id}/pexels-photo-${id}.jpeg?auto=compress&cs=tinysrgb&w=${w}`;
-
-const FACES = [2379004, 220453, 2381069, 1130626, 3785079].map((id) => pexels(id));
+const FACES = [
+  "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_160,c_limit/v1790158812/pexels-photo-2379004-1790158812208.jpg",
+  "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_160,c_limit/v1790158810/pexels-photo-220453-1790158812206.jpg",
+  "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_160,c_limit/v1790158812/pexels-photo-2381069-1790158812209.jpg",
+  "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_160,c_limit/v1790158812/pexels-photo-1130626-1790158812207.jpg",
+  "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_160,c_limit/v1790158812/pexels-photo-3785079-1790158812209.jpg",
+];
 
 // Fake the sign-up: a short wait, then the reader's place in line.
 const join = () => new Promise<number>((resolve) => setTimeout(() => resolve(2341), 900));

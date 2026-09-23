@@ -14,7 +14,7 @@ export const emailData = `const emails: Email[] = [
     fullDate: "Dec 10, 2026, 01:46 PM",
     isStarred: false,
     isRead: false,
-    avatar: "https://i.pravatar.cc/150?u=tommy",
+    avatar: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto/v1790148864/80-2-1790148865112.jpg",
     labels: [
       {
         color: "bg-rose-500",
@@ -35,7 +35,7 @@ export const emailData = `const emails: Email[] = [
     fullDate: "Dec 10, 2026, 01:55 PM",
     isStarred: true,
     isRead: true,
-    avatar: "https://i.pravatar.cc/150?u=tressa",
+    avatar: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto/v1790148865/80-4-1790148865113.jpg",
     labels: [
       {
         color: "bg-indigo-500",

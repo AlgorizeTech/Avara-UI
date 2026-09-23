@@ -110,7 +110,7 @@ export default function SocialLinksDemo({
       <div className="flex w-full min-h-[240px] items-center justify-center px-6">
         <div className="flex w-full max-w-sm items-center gap-4 rounded-2xl border border-border bg-card p-4 text-card-foreground shadow-sm">
           <img
-            src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?q=80&w=200&auto=format&fit=crop"
+            src="https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_200,c_limit/v1790158813/photo-1494790108377-be9c29b29330-1790158812212.jpg"
             alt="Ayesha Karim"
             className="size-14 shrink-0 rounded-full object-cover"
           />

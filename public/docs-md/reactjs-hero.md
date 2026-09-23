@@ -2,7 +2,7 @@
 
 Every hero section in the library, on one page. Each is its own registry item with its own preview, install command and props — pick the one that suits the site and install only that. They run from the most opinionated layouts to the general-purpose `HeroBlock` and its five variants at the foot.
 
-  Honeycomb HeroA turning honeycomb of hexagonal photographs — travel, nature, tours.
+  Honeycomb HeroA turning honeycomb of hexagonal photographs on a ground that changes colour with each slide — travel, nature, tours.
   Hero CarouselA full-bleed photo hero with a queue of cards and a glass panel.
   Fashion HeroStaggered columns of looks on flat colour — lookbook, store, editorial.
   Support HeroA frosted bento of cards and counting figures — SaaS and AI products.
@@ -11,20 +11,21 @@ Every hero section in the library, on one page. Each is its own registry item wi
 
 ## Honeycomb Hero
 
-A travel hero in deep teal: a light line over a huge gold word on the left, and on the right a honeycomb of hexagonal photographs with a gold hexagonal call to action set among them. The large hexagon is the slide on screen — its photograph is also the tinted background behind everything — and the smaller ones are the queue. Every four seconds, or on the arrows at the foot, every hexagon moves one step along the honeycomb: the next photograph grows into the feature spot while the feature slides to the back of the queue. The loop never ends, in either direction.
+A travel hero on a dark ground that shifts colour: a light line over a huge word in your theme's primary on the left, and on the right a honeycomb of hexagonal photographs with a primary hexagonal call to action set among them. The large hexagon is the slide on screen — its photograph is also the background behind everything, tinted with that photograph's own tone, so the colour of the whole section changes with the slide — and the smaller ones are the queue. Every four seconds, or on the arrows at the foot, every hexagon moves one step along the honeycomb: the next photograph grows into the feature spot while the feature slides to the back of the queue. The loop never ends, in either direction.
 
-The honeycomb is measured from the design and laid out in percentages of a fixed-aspect stage anchored to the right edge, so the composition holds at any size and whatever falls past the edge is clipped, as intended. The letters of the accent word that cross the feature photograph turn white.
+The honeycomb is measured from the design and laid out in percentages of a fixed-aspect stage anchored to the right edge, so the composition holds at any size and whatever falls past the edge is clipped, as intended. The letters of the accent word that cross the photographs take a light tint of the featured photograph's tone — mint over the gorge, periwinkle over the snow — and ease to the next tint with the slide. The section is always a dark surface, so it reads your theme's dark-mode tokens: the word, the rule, the arrows and the hexagon take `primary`, the hexagon's label `primary-foreground`.
 
-export const usageHoneycomb = `const IMAGES = [
-  { src: "https://images.unsplash.com/photo-1628344253777-f73a64d8f983?q=80&w=1400&auto=format&fit=crop", alt: "A waterfall pouring through a green gorge" },
-  { src: "https://images.unsplash.com/photo-1663428520845-056989f8a664?q=80&w=1400&auto=format&fit=crop", alt: "Red cabins at Hamnøy under a mountain" },
-  { src: "https://images.unsplash.com/photo-1710762634126-4c0e8fba44d8?q=80&w=1400&auto=format&fit=crop", alt: "A snowy village below white peaks" },
-  { src: "https://images.unsplash.com/photo-1593378026483-2a1fd46a35bd?q=80&w=1400&auto=format&fit=crop", alt: "Green aurora above snowy mountains" },
-  { src: "https://images.unsplash.com/photo-1695496896465-9e59091a8ed1?q=80&w=1400&auto=format&fit=crop", alt: "Turquoise water between mountain ridges" },
-  { src: "https://images.unsplash.com/photo-1721335916916-37c319adce3a?q=80&w=1400&auto=format&fit=crop", alt: "A sandy beach beneath a rocky headland" },
-  { src: "https://images.unsplash.com/photo-1527004013197-933c4bb611b3?q=80&w=1400&auto=format&fit=crop", alt: "A red cabin on a rocky shore" },
-  { src: "https://images.unsplash.com/photo-1682952986992-de7082fb213d?q=80&w=1400&auto=format&fit=crop", alt: "Waterfalls running down the wall of a fjord" },
-  { src: "https://images.unsplash.com/photo-1607888566357-ec0b61abee46?q=80&w=1400&auto=format&fit=crop", alt: "A waterfall beside a wooden viewpoint" },
+export const usageHoneycomb = `// tone is the colour behind everything while that photograph is featured; keep it deep.
+const IMAGES = [
+  { src: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_1400,c_limit/v1790158809/photo-1628344253777-f73a64d8f983-1790158812202.jpg", alt: "A waterfall pouring through a green gorge", tone: "#0f2e22" },
+  { src: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_1400,c_limit/v1790158811/photo-1663428520845-056989f8a664-1790158812204.jpg", alt: "Red cabins at Hamnøy under a mountain", tone: "#1f2140" },
+  { src: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_1400,c_limit/v1790158812/photo-1710762634126-4c0e8fba44d8-1790158812206.jpg", alt: "A snowy village below white peaks", tone: "#18233a" },
+  { src: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_1400,c_limit/v1790158815/photo-1593378026483-2a1fd46a35bd-1790158812215.jpg", alt: "Green aurora above snowy mountains", tone: "#0b2a2d" },
+  { src: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_1400,c_limit/v1790158812/photo-1695496896465-9e59091a8ed1-1790158812205.jpg", alt: "Turquoise water between mountain ridges", tone: "#082f3d" },
+  { src: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_1400,c_limit/v1790158812/photo-1721335916916-37c319adce3a-1790158812206.jpg", alt: "A sandy beach beneath a rocky headland", tone: "#1d2b36" },
+  { src: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_1400,c_limit/v1790166049/photo-1527004013197-933c4bb611b3-1790166052225.jpg", alt: "A red cabin on a rocky shore", tone: "#2a1f3d" },
+  { src: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_1400,c_limit/v1790158811/photo-1682952986992-de7082fb213d-1790158812205.jpg", alt: "Waterfalls running down the wall of a fjord", tone: "#132a3b" },
+  { src: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_1400,c_limit/v1790158809/photo-1607888566357-ec0b61abee46-1790158812198.jpg", alt: "A waterfall beside a wooden viewpoint", tone: "#1c2b17" },
 ];
 
 export default function Hero() {
@@ -49,7 +50,7 @@ npx shadcn@latest add @algorize-ui/honeycomb-hero
     The nine cells sit on a real hexagonal lattice, and the queue snakes around it so every step is a hop between neighbours. GSAP moves each cell to its next place with a short stagger — the one heading for the feature spot leads, the one leaving it follows last.
 
     The feature is the background
-    Whatever photograph is in the large hexagon also fills the section behind everything, tinted with the teal and darkened towards the copy. It crossfades as the honeycomb turns.
+    Whatever photograph is in the large hexagon also fills the section behind everything, tinted with its own tone and darkened towards the copy. Photograph and colour crossfade together as the honeycomb turns — deep green behind the gorge, indigo behind the cabins, night blue behind the snow.
 
     Measured, not guessed
     Every hexagon's position comes from the design in percentages of a fixed-aspect stage, so the composition is the same at 1024 and 1920 — including the cells cut by the right edge and the foot. Below the desktop breakpoint the honeycomb stacks under the copy.
@@ -66,8 +67,13 @@ npx shadcn@latest add @algorize-ui/honeycomb-hero
 
         title, titleAccent
         string
-        "Amazing", "Norway"
+        "Wander the", "Fjords"
         The light line and the huge accent word.
+
+        titleOverlapColor
+        string
+        a light tint of the slide's tone
+        The letters of the accent word that cross the photographs.
 
         subtitle
         string
@@ -76,17 +82,17 @@ npx shadcn@latest add @algorize-ui/honeycomb-hero
 
         primaryActionLabel, primaryActionHref
         string
-        "Book\na tour", "#"
-        The gold hexagon; \n breaks the line.
+        "Plan\nyour trip", "#"
+        The call-to-action hexagon, in primary; \n breaks the line.
 
         images
-        &#123; src: string; alt: string &#125;[]
-        nine Lofoten photographs
-        The queue, first featured.
+        &#123; src: string; alt: string; tone?: string &#125;[]
+        nine Lofoten photographs, each with a tone
+        The queue, first featured. tone is the colour behind everything while that photograph is featured; keep it deep, the copy is white.
 
         socialLinks
         &#123; label: string; href: string &#125;[]
-        five networks, all #
+        four networks, all #
         The links along the foot; [] hides them.
 
         interval
@@ -101,13 +107,13 @@ npx shadcn@latest add @algorize-ui/honeycomb-hero
 
         accent
         string
-        "#e0a83d"
-        The gold.
+        theme primary
+        Sets --primary for the section: the word, the rule, the arrows and the call to action.
 
         background
         string
-        "#0b2a2d"
-        The teal behind everything.
+        a deep shade of the primary
+        The tone for photographs without their own.
 
         linkComponent
         ElementType
@@ -122,21 +128,21 @@ A full-bleed photo hero for a place worth travelling to: an eyebrow pill, a larg
 
 export const usageHeroCarousel = `const SLIDES = [
   {
-    image: "https://images.unsplash.com/photo-1506905925346-21bda4d32df4?q=80&w=1600&auto=format&fit=crop",
+    image: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_1600,c_limit/v1790146210/photo-1506905925346-21bda4d32df4-1790146212208.jpg",
     alt: "Snow peaks at sunrise above a sea of cloud",
     title: "Crater rim at first light",
     description: "Up before dawn and on the rim as the valley fills with colour.",
     heading: <>Wake up abovethe clouds,
   },
   {
-    image: "https://images.unsplash.com/photo-1470071459604-3b5ec3a7fe05?q=80&w=1600&auto=format&fit=crop",
+    image: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_1600,c_limit/v1790146209/photo-1470071459604-3b5ec3a7fe05-1790146212205.jpg",
     alt: "Fog rolling over dark ridges",
     title: "Ridge walk through the mist",
     description: "Six kilometres along the spine of the range. No scrambling.",
     heading: <>Walk the ridgewhile it is still yours,
   },
   {
-    image: "https://images.unsplash.com/photo-1500530855697-b586d89ba3ee?q=80&w=1600&auto=format&fit=crop",
+    image: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_1600,c_limit/v1790145142/photo-1500530855697-b586d89ba3ee-1790145143493.jpg",
     alt: "A road through a red rock canyon",
     title: "The canyon by 4×4",
     description: "A jeep run down the canyon road to where the tarmac ends.",
@@ -150,7 +156,7 @@ export default function Hero() {
     Wake up abovethe clouds}
       slides={SLIDES}
       intro="Three days in the high country with a guide who grew up there."
-      avatars={[{ src: "https://i.pravatar.cc/80?img=12" }, { src: "https://i.pravatar.cc/80?img=32" }, { src: "https://i.pravatar.cc/80?img=47" }, { src: "https://i.pravatar.cc/80?img=5" }, { src: "https://i.pravatar.cc/80?img=58" }]}
+      avatars={[{ src: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto/v1790148864/80-1-1790148865111.jpg" }, { src: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto/v1790148864/80-2-1790148865112.jpg" }, { src: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto/v1790148865/80-3-1790148865112.jpg" }, { src: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto/v1790148865/80-4-1790148865113.jpg" }, { src: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto/v1790148865/80-1790148865113.jpg" }]}
       avatarsLabel="50+ people joined this year"
       cta={{ label: "Book the trip", href: "/book" }}
       linkComponent={Link}
@@ -264,19 +270,15 @@ A fashion hero: a bold two-line headline between a turning video badge and a sta
 
 `FashionHero` is built from library pieces: the badge is Circular Text, the faces are Avatar Stack, the headline is Text Animation (`blur-in-up`, word by word), every look is a Tilted Card, and the badge opens a Dialog. When it first scrolls into view the badge and faces settle in, the looks rise from the middle column outward, the button lands on its look and the footer follows — one reveal, then only the badge keeps turning and the pointer does the rest.
 
-export const usageFashion = `// Photos from Pexels, free to use.
-const pexels = (id: number, w = 700) =>
-  \`https://images.pexels.com/photos/\${id}/pexels-photo-\${id}.jpeg?auto=compress&cs=tinysrgb&w=\${w}\`;
-
-// A person on a plain studio background, multiplied onto a colour that echoes the outfit.
+export const usageFashion = `// A person on a plain studio background, multiplied onto a colour that echoes the outfit.
 const LOOKS = [
-  { src: pexels(16944801), alt: "A woman in a pink shirt and lime trousers, on yellow", tone: "#f0a72f", blend: false },
-  { src: pexels(1520760, 500), alt: "A woman in a dark top, smiling", tone: "#f7d774" },
-  { src: pexels(1036623), alt: "A woman in a pale pink dress", tone: "#f4b7c5", blend: false },
-  { src: pexels(1462637), alt: "A woman in a striped blue shirt", tone: "#8cc4ee" },
-  { src: pexels(9558236), alt: "A woman in a coral shirt dress", tone: "#f9a875" },
-  { src: pexels(6311613), alt: "A woman in a grey hoodie, hood up", tone: "#bfe4c6" },
-  { src: pexels(3775534, 500), alt: "A man in a black leather jacket", tone: "#2e9c82" },
+  { src: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_700,c_limit/v1790150481/pexels-photo-16944801-1790150482273.jpg", alt: "A woman in a pink shirt and lime trousers, on yellow", tone: "#f0a72f", blend: false },
+  { src: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_500,c_limit/v1790082180/pexels-photo-1520760-1790082180553.jpg", alt: "A woman in a dark top, smiling", tone: "#f7d774" },
+  { src: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_700,c_limit/v1790145139/pexels-photo-1036623-1790145143487.jpg", alt: "A woman in a pale pink dress", tone: "#f4b7c5", blend: false },
+  { src: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_700,c_limit/v1790150484/pexels-photo-1462637-1790150482282.jpg", alt: "A woman in a striped blue shirt", tone: "#8cc4ee" },
+  { src: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_700,c_limit/v1790150480/pexels-photo-9558236-1790150482273.jpg", alt: "A woman in a coral shirt dress", tone: "#f9a875" },
+  { src: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_700,c_limit/v1790150480/pexels-photo-6311613-1790150482272.jpg", alt: "A woman in a grey hoodie, hood up", tone: "#bfe4c6" },
+  { src: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_500,c_limit/v1790145139/pexels-photo-3775534-1790145143488.jpg", alt: "A man in a black leather jacket", tone: "#2e9c82" },
 ];
 
 export default function Hero() {
@@ -376,15 +378,11 @@ A product hero on a soft grey ground: a headline that rises in word by word, one
 
 `SupportHero` is built from library pieces. The ground and the cards are Glass Panel (`GlassBackdrop` with a grey aurora, `GlassPanel` tiles), the headline is Text Animation's `blur-in-up`, the figures are Counter's animated type in its new bare form, and the call to action is Button. Every card is a named part — `Integrations`, `Stat`, `Photo`, `Team` — plus a plain `Card` for anything else.
 
-export const usageSupport = `// Photos from Pexels, free to use.
-const pexels = (id: number, w = 800) =>
-  \`https://images.pexels.com/photos/\${id}/pexels-photo-\${id}.jpeg?auto=compress&cs=tinysrgb&w=\${w}\`;
-
-const AVATARS = [
-  { src: pexels(2379004, 120), alt: "Ana" },
-  { src: pexels(220453, 120), alt: "Tom" },
-  { src: pexels(2381069, 120), alt: "Mei" },
-  { src: pexels(1130626, 120), alt: "Raj" },
+export const usageSupport = `const AVATARS = [
+  { src: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_120,c_limit/v1790158812/pexels-photo-2379004-1790158812208.jpg", alt: "Ana" },
+  { src: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_120,c_limit/v1790158810/pexels-photo-220453-1790158812206.jpg", alt: "Tom" },
+  { src: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_120,c_limit/v1790158812/pexels-photo-2381069-1790158812209.jpg", alt: "Mei" },
+  { src: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_120,c_limit/v1790158812/pexels-photo-1130626-1790158812207.jpg", alt: "Raj" },
 ];
 
 export default function Hero() {
@@ -575,18 +573,14 @@ A hero for a place that is warm and busy — a kindergarten here, but any studio
 
 `CollageHero` is built from library pieces: the scroll pill is Button, the video opens in a Dialog. The colours come from the theme — the violet is `--primary` (pin it with `accent`) and the second colour is `highlight`.
 
-export const usageCollage = `// Photos from Pexels, free to use.
-const pexels = (id: number, w = 800) =>
-  \`https://images.pexels.com/photos/\${id}/pexels-photo-\${id}.jpeg?auto=compress&cs=tinysrgb&w=\${w}\`;
-
-const PHOTOS = [
-  { src: pexels(3661193), alt: "Wooden dinosaurs on a stack of books" },
-  { src: pexels(3661387), alt: "A child playing with wooden blocks" },
-  { src: pexels(8612967), alt: "Children painting at a low table" },
-  { src: pexels(8535214), alt: "A teacher helping a girl paint", position: "40% top" },
-  { src: pexels(3661286), alt: "A boy holding a wooden dinosaur" },
-  { src: pexels(8613317), alt: "Children on the grass with their toys" },
-  { src: pexels(8535227), alt: "A girl beside a paper lion", position: "center 35%" },
+export const usageCollage = `const PHOTOS = [
+  { src: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_700,c_limit/v1790148862/pexels-photo-3661193-1790148865106.jpg", alt: "Wooden dinosaurs on a stack of books" },
+  { src: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_700,c_limit/v1790148867/pexels-photo-3661387-1790148865107.jpg", alt: "A child playing with wooden blocks" },
+  { src: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_700,c_limit/v1790148863/pexels-photo-8612967-1790148865108.jpg", alt: "Children painting at a low table" },
+  { src: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_700,c_limit/v1790148863/pexels-photo-8535214-1790148865108.jpg", alt: "A teacher helping a girl paint", position: "40% top" },
+  { src: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_700,c_limit/v1790148863/pexels-photo-3661286-1790148865107.jpg", alt: "A boy holding a wooden dinosaur" },
+  { src: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_700,c_limit/v1790148866/pexels-photo-8613317-1790148865109.jpg", alt: "Children on the grass with their toys" },
+  { src: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_700,c_limit/v1790148862/pexels-photo-8535227-1790148865108.jpg", alt: "A girl beside a paper lion", position: "center 35%" },
 ];
 
 export default function Hero() {

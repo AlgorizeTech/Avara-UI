@@ -58,7 +58,7 @@ export default function VideoPlayerJwDemo({
           // JW's public docs library. Swap in your own player id before shipping.
           playlistUrl="https://cdn.jwplayer.com/v2/media/hWF9vG66"
           file="https://cdn.plyr.io/static/demo/View_From_A_Blue_Moon_Trailer-576p.mp4"
-          posterUrl="https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=1920&q=80"
+          posterUrl="https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_1920,c_limit/v1790146210/photo-1506744038136-46273834b3fb-1790146212208.jpg"
           {...COPY[skin]}
         />
       </div>

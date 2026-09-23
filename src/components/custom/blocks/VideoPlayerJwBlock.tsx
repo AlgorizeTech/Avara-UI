@@ -260,7 +260,7 @@ export const JwPlayer = React.forwardRef<HTMLDivElement, JwPlayerProps>(
       licenseKey,
       file,
       playlistUrl = "https://cdn.jwplayer.com/v2/media/hWF9vG66",
-      posterUrl = "https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=1920&q=80",
+      posterUrl = "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_1920,c_limit/v1790146210/photo-1506744038136-46273834b3fb-1790146212208.jpg",
       title = "Enterprise-grade video delivery",
       subtitle = "Adaptive streaming, analytics and DRM behind one control bar.",
       aspectRatio = "16/9",

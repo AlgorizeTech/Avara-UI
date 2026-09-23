@@ -7,7 +7,7 @@ const MEDIA = {
   youtube: {
     videoUrl: "https://www.youtube.com/embed/LXb3EKWsInQ?autoplay=1",
     thumbnailUrl:
-      "https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=1920&q=80",
+      "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_1920,c_limit/v1790146210/photo-1507525428034-b723cf961d3e-1790146212208.jpg",
     badge: "Nature 4K",
     title: "Wilderness Unbound",
     subtitle:

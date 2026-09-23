@@ -5,7 +5,7 @@ A fully interactive, encapsulated chat interface. Features include search filter
 Every preview is live — pick a contact, search the list, or send a message and watch the simulated reply come back. `variant` changes the shell only; the conversation state, search and typing simulation are identical across all three.
 
 export const chatData = `const currentUser: CurrentUser = {
-  avatar: "https://i.pravatar.cc/150?u=current",
+  avatar: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto/v1790148864/80-1-1790148865111.jpg",
   status: "online",
 };
 
@@ -17,7 +17,7 @@ const contactsData: Contact[] = [
     date: "Mar 13",
     unread: 1,
     status: "offline",
-    avatar: "https://i.pravatar.cc/150?u=1",
+    avatar: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto/v1790148865/80-1790148865113.jpg",
   },
   {
     // No \`avatar\`? \`initials\` + \`color\` render the fallback tile instead.
@@ -47,7 +47,7 @@ const contactsData: Contact[] = [
     date: "Dec 11",
     unread: 0,
     status: "online",
-    avatar: "https://i.pravatar.cc/150?u=4",
+    avatar: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto/v1790148865/80-3-1790148865112.jpg",
   },
 ];`;
 

@@ -135,7 +135,7 @@ export default function AlertDemo({
     >
       {variant === "glass" && (
         <img
-          src="https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?q=80&w=1200&auto=format&fit=crop"
+          src="https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_1200,c_limit/v1790148864/photo-1618005182384-a83a8bd57fbe-1790148865111.jpg"
           alt="Glass background"
           className="absolute inset-0 size-full object-cover"
         />

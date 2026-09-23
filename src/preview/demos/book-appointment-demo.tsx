@@ -10,7 +10,7 @@ const DOCTOR = {
   specialties: "Internal medicine, Cardiology",
   practice: "Manhattan Health Associates",
   photo:
-    "https://images.unsplash.com/photo-1638202993928-7267aad84c31?q=80&w=687&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+    "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_687,c_limit/v1790145142/photo-1638202993928-7267aad84c31-1790145143494.jpg",
   photoAlt: "Dr. Emily Chen in a white coat with a stethoscope",
   rating: 4.8,
   reviews: 38,

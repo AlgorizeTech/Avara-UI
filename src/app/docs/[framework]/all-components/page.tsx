@@ -850,28 +850,28 @@ function MiniatureIllustration({
 						<div className="size-28 rounded-full absolute flex items-center justify-center pointer-events-none animate-[spin_30s_linear_infinite]">
 							<div className="absolute -top-1.5 left-1/2 -translate-x-1/2 size-4 rounded-full ring-2 ring-emerald-500 bg-card p-0.5 shadow-md">
 								<img
-									src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=50&auto=format&fit=crop&q=80"
+									src="https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_50,c_limit/v1790150483/photo-1534528741775-53994a69daeb-1790150482280.jpg"
 									alt="Node"
 									className="size-full rounded-full object-cover"
 								/>
 							</div>
 							<div className="absolute -bottom-1.5 left-1/2 -translate-x-1/2 size-4 rounded-full ring-2 ring-amber-500 bg-card p-0.5 shadow-md">
 								<img
-									src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=50&auto=format&fit=crop&q=80"
+									src="https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_50,c_limit/v1790150480/photo-1507003211169-0a1dd7228f2d-1790150482276.jpg"
 									alt="Node"
 									className="size-full rounded-full object-cover"
 								/>
 							</div>
 							<div className="absolute top-1/2 -left-1.5 -translate-y-1/2 size-4 rounded-full ring-2 ring-indigo-500 bg-card p-0.5 shadow-md">
 								<img
-									src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=50&auto=format&fit=crop&q=80"
+									src="https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_50,c_limit/v1790158813/photo-1494790108377-be9c29b29330-1790158812212.jpg"
 									alt="Node"
 									className="size-full rounded-full object-cover"
 								/>
 							</div>
 							<div className="absolute top-1/2 -right-1.5 -translate-y-1/2 size-4 rounded-full ring-2 ring-sky-500 bg-card p-0.5 shadow-md">
 								<img
-									src="https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=50&auto=format&fit=crop&q=80"
+									src="https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_50,c_limit/v1790158814/photo-1500648767791-00dcc994a43e-1790158812212.jpg"
 									alt="Node"
 									className="size-full rounded-full object-cover"
 								/>
@@ -1825,7 +1825,7 @@ function MiniatureIllustration({
 							<div className="flex justify-between w-4/5 px-2">
 								<div className="flex items-center gap-1 p-0.5 pr-1.5 rounded-lg bg-card border border-primary/40 shadow-2xs">
 									<img
-										src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=50&auto=format&fit=crop&q=80"
+										src="https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_50,c_limit/v1790150483/photo-1534528741775-53994a69daeb-1790150482280.jpg"
 										alt="Sarah"
 										className="size-3.5 rounded-full object-cover"
 									/>
@@ -1835,7 +1835,7 @@ function MiniatureIllustration({
 								</div>
 								<div className="flex items-center gap-1 p-0.5 pr-1.5 rounded-lg bg-card border border-primary/40 shadow-2xs">
 									<img
-										src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=50&auto=format&fit=crop&q=80"
+										src="https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_50,c_limit/v1790150480/photo-1507003211169-0a1dd7228f2d-1790150482276.jpg"
 										alt="Alex"
 										className="size-3.5 rounded-full object-cover"
 									/>

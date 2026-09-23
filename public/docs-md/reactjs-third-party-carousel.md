@@ -15,11 +15,11 @@ means the controls here are ordinary `Button`s and each slide is an ordinary
 export const usageEmbla = `import { useCallback, useEffect, useState } from "react";
 
 const products = [
-  { name: "Aurora Desk Lamp", price: "$129", tag: "New", image: "https://images.unsplash.com/photo-1507473885765-e6ed057f782c?w=800&h=600&fit=crop" },
-  { name: "Vector Keyboard", price: "$189", tag: "Popular", image: "https://images.unsplash.com/photo-1587829741301-dc798b83add3?w=800&h=600&fit=crop" },
-  { name: "Halo Wireless Mouse", price: "$99", tag: "Restocked", image: "https://images.unsplash.com/photo-1527864550417-7fd91fc51a46?w=800&h=600&fit=crop" },
-  { name: "Drift Office Chair", price: "$349", tag: "Bestseller", image: "https://images.unsplash.com/photo-1580480055273-228ff5388ef8?w=800&h=600&fit=crop" },
-  { name: "Pulse Device Hub", price: "$149", tag: "New", image: "https://images.unsplash.com/photo-1596742578443-7682ef5251cd?w=800&h=600&fit=crop" },
+  { name: "Aurora Desk Lamp", price: "$129", tag: "New", image: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_800,c_limit/v1790159966/photo-1507473885765-e6ed057f782c-1790159970112.jpg" },
+  { name: "Vector Keyboard", price: "$189", tag: "Popular", image: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_800,c_limit/v1790159967/photo-1587829741301-dc798b83add3-1790159970115.jpg" },
+  { name: "Halo Wireless Mouse", price: "$99", tag: "Restocked", image: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_800,c_limit/v1790159966/photo-1527864550417-7fd91fc51a46-1790159970113.jpg" },
+  { name: "Drift Office Chair", price: "$349", tag: "Bestseller", image: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_800,c_limit/v1790159966/photo-1580480055273-228ff5388ef8-1790159970114.jpg" },
+  { name: "Pulse Device Hub", price: "$149", tag: "New", image: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_800,c_limit/v1790159967/photo-1596742578443-7682ef5251cd-1790159970115.jpg" },
 ];
 
 /**

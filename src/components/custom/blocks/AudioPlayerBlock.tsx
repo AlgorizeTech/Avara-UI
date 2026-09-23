@@ -70,7 +70,7 @@ export const AudioPlayer = React.forwardRef<
     {
       audioUrl = "https://cdn.plyr.io/static/demo/Kishi_Bashi_-_It_All_Began_With_a_Burst.mp3",
       audioType = "audio/mpeg",
-      artworkUrl = "https://images.unsplash.com/photo-1511671782779-c97d3d27a1d4?auto=format&fit=crop&w=1200&q=80",
+      artworkUrl = "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_1200,c_limit/v1790145142/photo-1511671782779-c97d3d27a1d4-1790145143493.jpg",
       artworkAlt = "Album artwork",
       badge = "Now Playing",
       title = "It All Began With a Burst",

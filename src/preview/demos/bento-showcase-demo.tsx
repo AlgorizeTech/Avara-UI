@@ -3,14 +3,10 @@
 import { BentoShowcase, type BentoPlan, type BentoStat } from "@/components/custom/blocks/BentoShowcaseBlock";
 import { cn } from "@/lib/utils";
 
-// Photos from Pexels (free to use): call-centre agents and a support team.
-const pexels = (id: number, w = 900) =>
-  `https://images.pexels.com/photos/${id}/pexels-photo-${id}.jpeg?auto=compress&cs=tinysrgb&w=${w}`;
+const HERO_PHOTO = "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_900,c_limit/v1790145139/pexels-photo-7709208-1790145143489.jpg";
+const TEAM_PHOTO = "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_600,c_limit/v1790166050/pexels-photo-8867482-1790166052229.jpg";
 
-const HERO_PHOTO = pexels(7709208);
-const TEAM_PHOTO = pexels(8867482, 600);
-
-const AVATARS = [pexels(7658387, 120), pexels(8867433, 120), pexels(8867434, 120)];
+const AVATARS = ["https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_120,c_limit/v1790166049/pexels-photo-7658387-1790166052226.jpg", "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_120,c_limit/v1790166049/pexels-photo-8867433-1790166052228.jpg", "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_120,c_limit/v1790166049/pexels-photo-8867434-1790166052229.jpg"];
 
 const CASE_STUDIES = [
   {
@@ -39,24 +35,24 @@ const PLANS: [BentoPlan, BentoPlan] = [
     name: "Professional",
     price: "$3,500",
     note: "7–12 qualified leads a month, guaranteed",
-    image: "https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?q=80&w=600&auto=format&fit=crop",
+    image: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_600,c_limit/v1790148864/photo-1618005182384-a83a8bd57fbe-1790148865111.jpg",
     benefits: ["Lead qualification", "Intelligent research", "Email outreach"],
     action: "Start now",
   },
   {
     rank: "#3",
     name: "Enterprise",
-    image: "https://images.unsplash.com/photo-1550684848-fac1c5b4e853?q=80&w=600&auto=format&fit=crop",
+    image: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_600,c_limit/v1790145140/photo-1550684848-fac1c5b4e853-1790145143489.jpg",
   },
 ];
 
 // Four photos and two figure discs make six cells — an even count keeps the
 // high/low rhythm intact across the loop.
 const TEAM = [
-  { src: pexels(7688336, 500), alt: "A desk from above: laptop, notes and a coffee" },
-  { src: pexels(8867434, 500), alt: "Two agents at their desks" },
-  { src: pexels(7658387, 500), alt: "Agent on a call, smiling at a colleague" },
-  { src: pexels(7709086, 500), alt: "Agent working on a laptop" },
+  { src: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_500,c_limit/v1790166049/pexels-photo-7688336-1790166052227.jpg", alt: "A desk from above: laptop, notes and a coffee" },
+  { src: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_500,c_limit/v1790166049/pexels-photo-8867434-1790166052229.jpg", alt: "Two agents at their desks" },
+  { src: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_500,c_limit/v1790166049/pexels-photo-7658387-1790166052226.jpg", alt: "Agent on a call, smiling at a colleague" },
+  { src: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_500,c_limit/v1790166049/pexels-photo-7709086-1790166052228.jpg", alt: "Agent working on a laptop" },
 ];
 
 export default function BentoShowcaseDemo({
