@@ -119,6 +119,17 @@ function loadState(): ThemeCustomizerState {
           colors: presetColors(preset),
         };
       }
+      // A preset that has since been removed: fall back to the default rather
+      // than keep a snapshot no preset card matches.
+      if (parsed.activePreset !== "custom") {
+        return {
+          ...getInitialState(),
+          radius:
+            typeof parsed.radius === "number"
+              ? parsed.radius
+              : getInitialState().radius,
+        };
+      }
       // Validate that all tokens exist
       const hasAllTokens = COLOR_TOKENS.every(
         (t) => t in parsed.colors.light && t in parsed.colors.dark
@@ -183,8 +194,10 @@ function injectCSSVariables(
     }
   }
 
-  // Inject radius
+  // Inject radius. At 0 the flag also squares every corner (see the
+  // `[data-radius-zero]` rule in globals.css).
   root.style.setProperty("--radius", `${radius}rem`);
+  root.toggleAttribute("data-radius-zero", radius === 0);
 }
 
 function clearInjectedCSS() {
@@ -193,6 +206,7 @@ function clearInjectedCSS() {
     root.style.removeProperty(`--${token}`);
   }
   root.style.removeProperty("--radius");
+  root.removeAttribute("data-radius-zero");
 }
 
 // ─── Context ─────────────────────────────────────────────────────
