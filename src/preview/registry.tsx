@@ -166,5 +166,6 @@ export const sandboxRegistry: Record<string, LazyExoticComponent<ComponentType<a
   "video-player-jw": lazyRetry(() => import("./demos/video-player-jw-demo")),
   "video-player-plyr": lazyRetry(() => import("./demos/video-player-plyr-demo")),
   "waitlist": lazyRetry(() => import("./demos/waitlist-demo")),
+  "wallet": lazyRetry(() => import("./demos/wallet-demo")),
   "wizard": lazyRetry(() => import("./demos/wizard-demo")),
 };

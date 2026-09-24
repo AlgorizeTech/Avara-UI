@@ -74,9 +74,16 @@ export const NAME_OVERRIDES: Record<string, string> = {
   "DesignComponentsFolder.tsx": "design-components-folder",
   "DesignFolderBox.tsx": "design-folder-box",
   "CounterSectionBlock.tsx": "counter-section",
+  "WalletBlock.tsx": "wallet",
 };
 
 export const META: Record<string, ItemMeta> = {
+  wallet: {
+    description:
+      "An interactive fintech cardholder wallet component featuring 3 serially staggered cards, curved pocket scoop, bottom thumb cutout, and light/dark mode styling.",
+    categories: ["data-display", "marketing", "actions"],
+    docs: "Named export: Wallet. Accepts cards array, overallBalance, allowReveal, and autoRevealOnHover.",
+  },
   "counter-section": {
     description:
       "A collection of 4 animated high-impact Counter and Stats Sections with viewport-triggered count-up easing, zero shadows, and full adaptive styling.",

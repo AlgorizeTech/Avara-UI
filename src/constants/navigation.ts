@@ -245,6 +245,17 @@ const rawNavigation: NavigationItem[] = [
       { label: "Verify Badge", slug: "verify-badge" },
       { label: "Video Accordion", slug: "video-accordion" },
       { label: "Video Player", slug: "video-player" },
+      {
+        label: "Wallet",
+        slug: "wallet",
+        badge: "New",
+        addedOn: "2026-09-24",
+        keywords: [
+          "wallet", "cards", "credit card", "fintech", "payment",
+          "staggered", "scoop", "reveal balance", "euros", "pounds",
+          "emv chip", "interactive", "hover animation",
+        ],
+      },
       { label: "Wizard", slug: "wizard" },
     ],
   },

@@ -4414,6 +4414,33 @@
       "docs": "Named export: Waitlist, with parts Mark, Countdown, Heading, Intro, Form, Proof and Spots. Composed from the counter, input, button, avatar-stack, progress and copy-button items, which install alongside it. `variant` is card | launch | queue, each styled for light and dark mode; `Countdown` takes a `date` and is the counter's slide countdown; `Form` takes `onJoin(email)` — resolve a number to show it as the place in line, throw an Error to show its message — plus `action`, `shareUrl`, `note` and the success copy; `Spots` takes `claimed` and `total`; `accent` pins the colour; `reveal` is in-view or immediate."
     },
     {
+      "name": "wallet",
+      "type": "registry:component",
+      "title": "Wallet",
+      "author": "AlgorizeTech",
+      "description": "An interactive fintech cardholder wallet component featuring 3 serially staggered cards, curved pocket scoop, bottom thumb cutout, and light/dark mode styling.",
+      "categories": [
+        "data-display",
+        "marketing",
+        "actions"
+      ],
+      "dependencies": [
+        "framer-motion",
+        "lucide-react"
+      ],
+      "registryDependencies": [
+        "utils"
+      ],
+      "files": [
+        {
+          "path": "src/components/custom/blocks/WalletBlock.tsx",
+          "type": "registry:component",
+          "target": "components/custom/blocks/WalletBlock.tsx"
+        }
+      ],
+      "docs": "Named export: Wallet. Accepts cards array, overallBalance, allowReveal, and autoRevealOnHover."
+    },
+    {
       "name": "wizard",
       "type": "registry:component",
       "title": "Wizard",
