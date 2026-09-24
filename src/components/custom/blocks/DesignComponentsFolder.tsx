@@ -60,29 +60,40 @@ export function DesignComponentsFolder({
     ? ({ "--primary": resolvedColor } as React.CSSProperties)
     : {};
 
+  // The retract loop runs only while the folder is on screen: off screen it
+  // would keep re-rendering every card for nothing. It picks up at the next
+  // card when the reader scrolls back.
+  const [onScreen, setOnScreen] = useState(false);
+  const nextCardRef = React.useRef(0);
+
   useEffect(() => {
-    if (!isInView) return;
+    if (!isInView || !onScreen) return;
 
-    // Start auto loop 2 seconds after initial entrance fan-out
-    const startTimer = setTimeout(() => {
-      let current = 0;
-
-      const interval = setInterval(() => {
+    let interval = 0;
+    let bringBack = 0;
+    // Start auto loop 2 seconds after the entrance fan-out (or the return).
+    const startTimer = window.setTimeout(() => {
+      interval = window.setInterval(() => {
         // Retract card into folder
-        setRetractedIndex(current);
+        setRetractedIndex(nextCardRef.current);
 
         // Bring card back out to visible state after 900ms
-        setTimeout(() => {
+        bringBack = window.setTimeout(() => {
           setRetractedIndex(null);
-          current = (current + 1) % 8;
+          nextCardRef.current = (nextCardRef.current + 1) % 8;
         }, 900);
       }, 2500);
-
-      return () => clearInterval(interval);
     }, 2000);
 
-    return () => clearTimeout(startTimer);
-  }, [isInView]);
+    // Every timer is cleared here — the interval and the pending bring-back
+    // included — so leaving the screen or unmounting stops the loop cold.
+    return () => {
+      window.clearTimeout(startTimer);
+      window.clearInterval(interval);
+      window.clearTimeout(bringBack);
+      setRetractedIndex(null);
+    };
+  }, [isInView, onScreen]);
 
   // Fan-out animation variants
   const fanOutVariants = {
@@ -130,7 +141,11 @@ export function DesignComponentsFolder({
       */}
       <div className="w-full flex justify-center items-center px-1 sm:px-0">
         <motion.div 
-          onViewportEnter={() => setIsInView(true)}
+          onViewportEnter={() => {
+            setIsInView(true);
+            setOnScreen(true);
+          }}
+          onViewportLeave={() => setOnScreen(false)}
           className="relative w-full min-[494px]:w-[70%] sm:w-full max-w-[960px] mx-auto h-[380px] min-[450px]:h-[440px] min-[550px]:h-[500px] min-[620px]:h-[540px] sm:h-[580px] md:h-[660px] lg:h-[700px] flex items-end justify-center origin-bottom scale-[0.88] min-[400px]:scale-[0.94] min-[500px]:scale-[0.98] sm:scale-100 transition-all duration-300"
         >
           {/* CARDS FANNING OUT & AUTOMATIC SEQUENTIAL RETRACTING LOOP */}

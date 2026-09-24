@@ -49,7 +49,7 @@ s.colorScheme=m;
 var raw=localStorage.getItem(${JSON.stringify(THEME_CUSTOMIZER_STORAGE_KEY)});
 if(raw){var v=JSON.parse(raw)||{},c=(v.colors||{})[m];
 if(c&&v.activePreset&&v.activePreset!==${JSON.stringify(DEFAULT_PRESET)}){var k=${JSON.stringify(COLOR_TOKENS)};for(var i=0;i<k.length;i++){if(c[k[i]])s.setProperty("--"+k[i],c[k[i]]);}}
-if(typeof v.radius==="number")s.setProperty("--radius",v.radius+"rem");}
+if(typeof v.radius==="number"){s.setProperty("--radius",v.radius+"rem");if(v.radius===0)d.setAttribute("data-radius-zero","");}}
 var fs=localStorage.getItem("fontSize");if(fs)s.fontSize=fs+"%";
 var ff=localStorage.getItem(${JSON.stringify(FONT_FAMILY_STORAGE_KEY)});
 if(ff){s.setProperty("--font-sans",'"'+ff+'", sans-serif');

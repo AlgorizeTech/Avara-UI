@@ -60,7 +60,7 @@ import {
 } from "lucide-react";
 import { motion, useInView } from "motion/react";
 import Link from "next/link";
-import { useEffect, useRef, useState } from "react";
+import { memo, useRef, useState } from "react";
 import { links } from "@/config/site";
 
 /* ═══════════════════════════════════════════════
@@ -3464,6 +3464,57 @@ function FeedbackCard({ item }: { item: FeedbackItem }) {
 	);
 }
 
+/* The three marquee lanes, memoised: FeedbackSection re-renders when it
+   scrolls into view, and without this every card in every lane (three
+   copies per lane, four tracks per marquee) re-rendered with it. */
+const FeedbackRows = memo(function FeedbackRows() {
+	return (
+		<>
+			{/* Row 1: Leftward scroll (Speed: 250s, continuous running) */}
+			<MarqueeBlock
+				direction="left"
+				speed={250}
+				pauseOnHover={false}
+				gap="1.25rem"
+				className="py-1">
+				{[...FEEDBACK_ROW_1, ...FEEDBACK_ROW_1, ...FEEDBACK_ROW_1].map(
+					(item, idx) => (
+						<FeedbackCard key={`r1-${item.id}-${idx}`} item={item} />
+					),
+				)}
+			</MarqueeBlock>
+
+			{/* Row 2: Rightward scroll (Opposite direction, Speed: 250s, continuous running) */}
+			<MarqueeBlock
+				direction="right"
+				speed={250}
+				pauseOnHover={false}
+				gap="1.25rem"
+				className="py-1">
+				{[...FEEDBACK_ROW_2, ...FEEDBACK_ROW_2, ...FEEDBACK_ROW_2].map(
+					(item, idx) => (
+						<FeedbackCard key={`r2-${item.id}-${idx}`} item={item} />
+					),
+				)}
+			</MarqueeBlock>
+
+			{/* Row 3: Leftward scroll (Speed: 250s, continuous running) */}
+			<MarqueeBlock
+				direction="left"
+				speed={250}
+				pauseOnHover={false}
+				gap="1.25rem"
+				className="py-1">
+				{[...FEEDBACK_ROW_3, ...FEEDBACK_ROW_3, ...FEEDBACK_ROW_3].map(
+					(item, idx) => (
+						<FeedbackCard key={`r3-${item.id}-${idx}`} item={item} />
+					),
+				)}
+			</MarqueeBlock>
+		</>
+	);
+});
+
 function FeedbackSection() {
 	const ref = useRef(null);
 	const isInView = useInView(ref, { once: true, margin: "-40px" });
@@ -3506,47 +3557,7 @@ function FeedbackSection() {
 				<div className="pointer-events-none absolute inset-y-0 left-0 w-16 sm:w-32 bg-gradient-to-r from-background via-background/80 to-transparent z-10" />
 				<div className="pointer-events-none absolute inset-y-0 right-0 w-16 sm:w-32 bg-gradient-to-l from-background via-background/80 to-transparent z-10" />
 
-				{/* Row 1: Leftward scroll (Speed: 250s, continuous running) */}
-				<MarqueeBlock
-					direction="left"
-					speed={250}
-					pauseOnHover={false}
-					gap="1.25rem"
-					className="py-1">
-					{[...FEEDBACK_ROW_1, ...FEEDBACK_ROW_1, ...FEEDBACK_ROW_1].map(
-						(item, idx) => (
-							<FeedbackCard key={`r1-${item.id}-${idx}`} item={item} />
-						),
-					)}
-				</MarqueeBlock>
-
-				{/* Row 2: Rightward scroll (Opposite direction, Speed: 250s, continuous running) */}
-				<MarqueeBlock
-					direction="right"
-					speed={250}
-					pauseOnHover={false}
-					gap="1.25rem"
-					className="py-1">
-					{[...FEEDBACK_ROW_2, ...FEEDBACK_ROW_2, ...FEEDBACK_ROW_2].map(
-						(item, idx) => (
-							<FeedbackCard key={`r2-${item.id}-${idx}`} item={item} />
-						),
-					)}
-				</MarqueeBlock>
-
-				{/* Row 3: Leftward scroll (Speed: 250s, continuous running) */}
-				<MarqueeBlock
-					direction="left"
-					speed={250}
-					pauseOnHover={false}
-					gap="1.25rem"
-					className="py-1">
-					{[...FEEDBACK_ROW_3, ...FEEDBACK_ROW_3, ...FEEDBACK_ROW_3].map(
-						(item, idx) => (
-							<FeedbackCard key={`r3-${item.id}-${idx}`} item={item} />
-						),
-					)}
-				</MarqueeBlock>
+				<FeedbackRows />
 			</motion.div>
 		</section>
 	);
@@ -3560,31 +3571,7 @@ function CTASection() {
 	const ref = useRef(null);
 	const isInView = useInView(ref, { once: true, margin: "-40px" });
 	const [copied, setCopied] = useState(false);
-	const [, setTypedText] = useState("");
 	const fullCommand = "npx shadcn@latest add @algorize-ui/button";
-
-	useEffect(() => {
-		let index = 0;
-		let isDeleting = false;
-		const interval = setInterval(() => {
-			if (!isDeleting) {
-				setTypedText(fullCommand.slice(0, index + 1));
-				index++;
-				if (index === fullCommand.length) {
-					isDeleting = true;
-					setTimeout(() => {}, 2000);
-				}
-			} else {
-				setTypedText(fullCommand.slice(0, index - 1));
-				index--;
-				if (index === 0) {
-					isDeleting = false;
-				}
-			}
-		}, 120);
-
-		return () => clearInterval(interval);
-	}, []);
 
 	const handleCopy = () => {
 		const textToCopy = fullCommand;

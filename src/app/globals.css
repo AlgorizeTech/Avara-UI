@@ -789,13 +789,17 @@ html body[data-scroll-locked] {
   }
 }
 
-/* Force zero border radius across all elements while the theme customizer
-   has set `--radius: 0rem` inline on <html>. Elements that must stay circular
-   (orbital lines) opt out with `.keep-rounded` and carry their own rounding.
-   The exported theme CSS emits the equivalent rule when radius is 0 — see
-   generateCSS in theme-customizer-context.tsx. */
-[style*="--radius: 0rem"] *:not(.keep-rounded),
-[style*="--radius:0rem"] *:not(.keep-rounded) {
+/* Force zero border radius across all elements while the theme customizer's
+   radius is 0 — it marks <html> with `data-radius-zero`. Elements that must
+   stay circular (orbital lines) opt out with `.keep-rounded` and carry their
+   own rounding. The exported theme CSS emits the equivalent rule when radius
+   is 0 — see generateCSS in theme-customizer-context.tsx.
+
+   Keyed on a data attribute, never on `[style*=…]`: a selector on the style
+   attribute with descendants after it makes every inline-style write on the
+   page (each GSAP / framer-motion frame) restyle that element's whole
+   subtree, which made the homepage stutter while anything animated. */
+[data-radius-zero] *:not(.keep-rounded) {
   border-radius: 0 !important;
 }
 

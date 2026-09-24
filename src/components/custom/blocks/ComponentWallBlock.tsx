@@ -73,8 +73,9 @@ export interface ComponentWallProps
   /**
    * `split`: the copy on the left, the wall on the right. `center`: the copy
    * in the middle between two walls, the left camera resting high and the
-   * right one low, taking turns; the tools sit under the copy. Below `lg`
-   * the walls become bands above and below the copy.
+   * right one low, taking turns; the tools sit under the copy. The walls
+   * split `items`, the first half on the left and the rest on the right.
+   * Below `lg` the walls become bands above and below the copy.
    */
   layout?: "split" | "center";
   /** Pass `next/link` to keep client-side navigation. */
@@ -296,14 +297,21 @@ export const ComponentWall = forwardRef<HTMLElement, ComponentWallProps>(
       return item ? (item.slug ?? kebab(item.title)) : "";
     }, [items, focus]);
 
-    // ---- The second wall, in the centred layout: the same cards dealt from
-    // halfway through, so the two walls never show the same thing. Its camera
-    // lands half an interval after the first one's, and the install line names
-    // whichever card was landed on last. Until its camera first moves it only
-    // ever reports its opening card, which is skipped, so the line opens on
-    // the first wall's card.
-    const shift = Math.floor(items.length / 2);
-    const endItems = useMemo(() => [...items.slice(shift), ...items.slice(0, shift)], [items, shift]);
+    // ---- The two walls of the centred layout split the cards: the first half
+    // on the left, the second half on the right, so each wall draws half as
+    // many and the two never show the same thing. (Under four cards a half
+    // would be a single card, so both walls then deal the whole set, the
+    // second from halfway through.) The right camera lands half an interval
+    // after the left one's, and the install line names whichever card was
+    // landed on last. Until its camera first moves it only ever reports its
+    // opening card, which is skipped, so the line opens on the left wall's card.
+    const split = items.length >= 4;
+    const shift = split ? Math.ceil(items.length / 2) : Math.floor(items.length / 2);
+    const startItems = useMemo(() => (split ? items.slice(0, shift) : items), [items, split, shift]);
+    const endItems = useMemo(
+      () => (split ? items.slice(shift) : [...items.slice(shift), ...items.slice(0, shift)]),
+      [items, split, shift],
+    );
     const endMoved = useRef(false);
     const handleEndFocus = useCallback(
       (i: number) => {
@@ -488,7 +496,7 @@ export const ComponentWall = forwardRef<HTMLElement, ComponentWallProps>(
             {/* ---- The first wall: a band above the copy, or the left half, its camera resting high ---- */}
             <ImageWall
               {...wallProps}
-              items={items}
+              items={startItems}
               intro={intro}
               anchor={desktop ? START_ANCHOR : MIDDLE}
               onFocus={handleFocus}

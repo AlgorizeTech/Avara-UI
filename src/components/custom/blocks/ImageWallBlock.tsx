@@ -97,7 +97,74 @@ const prefersReducedMotion = () =>
 // ------------------------------------------
 // Root
 // ------------------------------------------
-export const ImageWall = forwardRef<HTMLDivElement, ImageWallProps>(
+// One card on the wall. Memoised: the wall draws its tile nine times over, so
+// a camera landing must re-render only the card that lost the focus and the
+// one that gained it — never all of them.
+const WallCard = React.memo(function WallCard({
+  card,
+  left,
+  top,
+  copy,
+  isFocus,
+}: {
+  card: Placed;
+  left: number;
+  top: number;
+  copy: boolean;
+  isFocus: boolean;
+}) {
+  return (
+    <figure
+      aria-hidden={copy || undefined}
+      className="absolute flex flex-col gap-1.5 overflow-hidden rounded-xl border border-black/10 bg-gray-50 p-1.5 shadow-sm transition-[opacity,transform] duration-500 ease-out dark:border-white/10 dark:bg-neutral-900"
+      style={{
+        left,
+        top,
+        width: CARD_W,
+        height: CARD_H,
+        opacity: isFocus ? 1 : REST_DIM,
+        transform: isFocus ? "scale(1.012)" : "none",
+      }}
+    >
+      <figcaption className="flex h-4 shrink-0 items-center px-1 font-mono text-[9px] leading-none text-neutral-600 dark:text-neutral-400">
+        {card.title}
+      </figcaption>
+      <div
+        className="relative min-h-0 overflow-hidden rounded-lg border border-black/10 bg-white dark:border-white/10 dark:bg-neutral-950"
+        style={{ height: FRAME_H }}
+      >
+        <img
+          src={card.image}
+          alt=""
+          width={FRAME_W}
+          height={FRAME_H}
+          // Not lazy: the browser never counts the copies as in view
+          // inside the transformed canvas, and they share the originals'
+          // URLs anyway.
+          decoding="async"
+          draggable={false}
+          className="absolute inset-0 h-full w-full object-cover object-top"
+        />
+      </div>
+    </figure>
+  );
+});
+
+/** Cards at rest; the focused one is full strength. */
+const REST_DIM = 0.55;
+/**
+ * In flight every card sits at 0.45. Rather than transition hundreds of cards,
+ * one layer over all of them fades to 0.45 / 0.55 of what they show at rest.
+ */
+const FLIGHT_DIM = 0.45 / REST_DIM;
+
+/** Before the first camera paint only the tile itself is drawn. */
+const CENTER_TILE = "0,0";
+
+/** How long the page must be still before a paused flight resumes. */
+const SCROLL_SETTLE = 150;
+
+const ImageWallInner = forwardRef<HTMLDivElement, ImageWallProps>(
   ({ items, columns = 4, interval = 4500, order = "serial", zoom = 1.35, intro = 0, anchor, onFocus, className, ...props }, ref) => {
     const ax = anchor?.x ?? 0.5;
     const ay = anchor?.y ?? 0.5;
@@ -117,6 +184,62 @@ export const ImageWall = forwardRef<HTMLDivElement, ImageWallProps>(
     const [hidden, setHidden] = useState(false);
     const [onScreen, setOnScreen] = useState(true);
 
+    // ---- Which copies of the tile are drawn. The wall is its tile and eight
+    // neighbours so the camera never sees an edge, but the window only ever
+    // overlaps a few of them: render those (plus a card's width of margin),
+    // and re-render only when the set changes, not on every camera frame.
+    const tileRef = useRef({ width, height });
+    tileRef.current = { width, height };
+    const [tiles, setTiles] = useState(CENTER_TILE);
+    const tilesRef = useRef(CENTER_TILE);
+    // The window's size, cached: `cull` runs on every camera frame, and reading
+    // clientWidth there would force a style and layout flush each time.
+    const sizeRef = useRef({ w: 0, h: 0 });
+    useLayoutEffect(() => {
+      const wrap = wrapRef.current;
+      if (!wrap) return;
+      sizeRef.current = { w: wrap.clientWidth, h: wrap.clientHeight };
+      if (typeof ResizeObserver === "undefined") return;
+      const ro = new ResizeObserver(([entry]) => {
+        sizeRef.current = { w: entry.contentRect.width, h: entry.contentRect.height };
+      });
+      ro.observe(wrap);
+      return () => ro.disconnect();
+    }, []);
+    const cull = useCallback(() => {
+      const wrap = wrapRef.current;
+      if (!wrap) return;
+      const { x, y, s } = cameraRef.current;
+      const { width: tw, height: th } = tileRef.current;
+      let { w, h } = sizeRef.current;
+      if (!w || !h) {
+        w = wrap.clientWidth;
+        h = wrap.clientHeight;
+      }
+      // The window in canvas coordinates, where the centre tile spans 0..tw.
+      // A copy joins once it is within a card of the window but only leaves
+      // once it is two cards clear, so a camera resting near a tile's edge
+      // never mounts and unmounts the same copy back and forth.
+      const near = (dx: number, dy: number, m: number) =>
+        dx * tw < (w - x) / s + m &&
+        (dx + 1) * tw > -x / s - m &&
+        dy * th < (h - y) / s + m &&
+        (dy + 1) * th > -y / s - m;
+      const current = new Set(tilesRef.current.split("|"));
+      const keep: string[] = [];
+      for (let dy = -1; dy <= 1; dy++) {
+        for (let dx = -1; dx <= 1; dx++) {
+          const id = `${dx},${dy}`;
+          if (near(dx, dy, CARD_W) || (current.has(id) && near(dx, dy, CARD_W * 2))) keep.push(id);
+        }
+      }
+      const key = keep.join("|") || CENTER_TILE;
+      if (key !== tilesRef.current) {
+        tilesRef.current = key;
+        setTiles(key);
+      }
+    }, []);
+
     const paint = useCallback(() => {
       const el = canvasRef.current;
       if (!el) return;
@@ -124,7 +247,8 @@ export const ImageWall = forwardRef<HTMLDivElement, ImageWallProps>(
       el.style.transform = `translate3d(${x}px, ${y}px, 0) scale(${s})`;
       // The server renders the canvas invisible: it has no camera until now.
       el.style.opacity = "1";
-    }, []);
+      cull();
+    }, [cull]);
 
     // Where the camera rests to hold card `i` at the anchor — the middle of the window by default.
     const restFor = useCallback(
@@ -257,7 +381,40 @@ export const ImageWall = forwardRef<HTMLDivElement, ImageWallProps>(
       return roundRef.current.shift() ?? (current + 1) % n;
     }, [order, n]);
 
-    const paused = hover || hidden || !onScreen;
+    // ---- While the page scrolls the camera holds still: a flight freezes
+    // mid-air and picks up where it left off once the scroll settles, and no
+    // new one starts. Scrolling and a flight both need every frame; this way
+    // the scroll gets them. The flag flips only when scrolling starts or stops,
+    // never per scroll event, so the wall does not re-render as the page moves.
+    const [scrolling, setScrolling] = useState(false);
+    useEffect(() => {
+      let settle = 0;
+      let active = false;
+      const onScroll = () => {
+        if (!active) {
+          active = true;
+          setScrolling(true);
+        }
+        window.clearTimeout(settle);
+        settle = window.setTimeout(() => {
+          active = false;
+          setScrolling(false);
+        }, SCROLL_SETTLE);
+      };
+      window.addEventListener("scroll", onScroll, { passive: true });
+      return () => {
+        window.removeEventListener("scroll", onScroll);
+        window.clearTimeout(settle);
+      };
+    }, []);
+    useEffect(() => {
+      const flight = flightRef.current;
+      if (!flight) return;
+      if (scrolling) flight.pause();
+      else if (flight.paused()) flight.resume();
+    }, [scrolling]);
+
+    const paused = hover || hidden || !onScreen || scrolling;
     useEffect(() => {
       if (interval <= 0 || n < 2 || paused || flying) return;
       const t = window.setTimeout(() => flyTo(nextCard()), interval);
@@ -285,12 +442,36 @@ export const ImageWall = forwardRef<HTMLDivElement, ImageWallProps>(
       return () => io.disconnect();
     }, []);
 
-    // The tile and its eight neighbours, so the camera never sees an edge.
-    const offsets = useMemo(() => {
-      const out: { dx: number; dy: number }[] = [];
-      for (let dy = -1; dy <= 1; dy++) for (let dx = -1; dx <= 1; dx++) out.push({ dx, dy });
-      return out;
-    }, []);
+    // The copies of the tile the camera can currently see (see `cull`).
+    const offsets = useMemo(
+      () =>
+        tiles.split("|").map((t) => {
+          const [dx, dy] = t.split(",").map(Number);
+          return { dx, dy };
+        }),
+      [tiles],
+    );
+
+    // The focused card, or none mid-flight. Hover, visibility and on-screen
+    // changes leave the cards alone entirely; a landing touches two of them.
+    const lit = flying ? -1 : focus;
+    const cards = useMemo(
+      () =>
+        offsets.map(({ dx, dy }) => {
+          const copy = dx !== 0 || dy !== 0;
+          return placed.map((card, i) => (
+            <WallCard
+              key={`${dx},${dy},${i}`}
+              card={card}
+              left={card.left + dx * width}
+              top={card.top + dy * height}
+              copy={copy}
+              isFocus={!copy && i === lit}
+            />
+          ));
+        }),
+      [offsets, placed, width, height, lit],
+    );
 
     return (
       <div
@@ -317,53 +498,25 @@ export const ImageWall = forwardRef<HTMLDivElement, ImageWallProps>(
           className="absolute left-0 top-0 opacity-0 transition-opacity duration-700 will-change-transform"
           style={{ width, height, transformOrigin: "0 0" }}
         >
-          {offsets.map(({ dx, dy }) => {
-            const copy = dx !== 0 || dy !== 0;
-            return placed.map((card, i) => {
-              const isFocus = !copy && i === focus && !flying;
-              return (
-                <figure
-                  key={`${dx},${dy},${i}`}
-                  aria-hidden={copy || undefined}
-                  className="absolute flex flex-col gap-1.5 overflow-hidden rounded-xl border border-black/10 bg-gray-50 p-1.5 shadow-sm transition-[opacity,transform] duration-500 ease-out dark:border-white/10 dark:bg-neutral-900"
-                  style={{
-                    left: card.left + dx * width,
-                    top: card.top + dy * height,
-                    width: CARD_W,
-                    height: CARD_H,
-                    opacity: flying ? 0.45 : isFocus ? 1 : 0.55,
-                    transform: isFocus ? "scale(1.012)" : "none",
-                  }}
-                >
-                  <figcaption className="flex h-4 shrink-0 items-center px-1 font-mono text-[9px] leading-none text-neutral-600 dark:text-neutral-400">
-                    {card.title}
-                  </figcaption>
-                  <div
-                    className="relative min-h-0 overflow-hidden rounded-lg border border-black/10 bg-white dark:border-white/10 dark:bg-neutral-950"
-                    style={{ height: FRAME_H }}
-                  >
-                    <img
-                      src={card.image}
-                      alt=""
-                      width={FRAME_W}
-                      height={FRAME_H}
-                      // Not lazy: the browser never counts the copies as in view
-                      // inside the transformed canvas, and they share the originals'
-                      // URLs anyway.
-                      decoding="async"
-                      draggable={false}
-                      className="absolute inset-0 h-full w-full object-cover object-top"
-                    />
-                  </div>
-                </figure>
-              );
-            });
-          })}
+          {/* The flight dim: one layer fading, not every card. */}
+          <div
+            className="absolute inset-0 transition-opacity duration-500 ease-out"
+            style={{ opacity: flying ? FLIGHT_DIM : 1 }}
+          >
+            {cards}
+          </div>
         </div>
       </div>
     );
   },
 );
-ImageWall.displayName = "ImageWall";
+ImageWallInner.displayName = "ImageWall";
+
+/**
+ * Memoised: a host that re-renders on its own timers — a headline word taking
+ * turns, a tools strip — must not re-render every card on the wall with it.
+ * Pass stable `items`, `anchor` and `onFocus` to benefit.
+ */
+export const ImageWall = React.memo(ImageWallInner);
 
 export default ImageWall;

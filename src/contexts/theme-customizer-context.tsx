@@ -183,8 +183,10 @@ function injectCSSVariables(
     }
   }
 
-  // Inject radius
+  // Inject radius. At 0 the flag also squares every corner (see the
+  // `[data-radius-zero]` rule in globals.css).
   root.style.setProperty("--radius", `${radius}rem`);
+  root.toggleAttribute("data-radius-zero", radius === 0);
 }
 
 function clearInjectedCSS() {
@@ -193,6 +195,7 @@ function clearInjectedCSS() {
     root.style.removeProperty(`--${token}`);
   }
   root.style.removeProperty("--radius");
+  root.removeAttribute("data-radius-zero");
 }
 
 // ─── Context ─────────────────────────────────────────────────────
