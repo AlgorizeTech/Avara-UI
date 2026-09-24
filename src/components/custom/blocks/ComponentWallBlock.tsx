@@ -75,7 +75,8 @@ export interface ComponentWallProps
    * in the middle between two walls, the left camera resting high and the
    * right one low, taking turns; the tools sit under the copy. The walls
    * split `items`, the first half on the left and the rest on the right.
-   * Below `lg` the walls become bands above and below the copy.
+   * Below `lg` there is a single wall instead: a band of every card
+   * between the copy and the tools.
    */
   layout?: "split" | "center";
   /** Pass `next/link` to keep client-side navigation. */
@@ -122,8 +123,9 @@ const END_ANCHOR = { x: 0.73, y: 0.72 };
 const CENTER_ZOOM = 0.9;
 const MIDDLE = { x: 0.5, y: 0.5 };
 
+/** Null until measured on the client, so nothing breakpoint-specific mounts early. */
 function useMinWidth(px: number) {
-  const [matches, setMatches] = useState(false);
+  const [matches, setMatches] = useState<boolean | null>(null);
   useEffect(() => {
     const mq = window.matchMedia(`(min-width: ${px}px)`);
     const update = () => setMatches(mq.matches);
@@ -476,9 +478,31 @@ export const ComponentWall = forwardRef<HTMLElement, ComponentWallProps>(
           </motion.div>
         )}
 
+        {/* ---- Centred, below `lg`: the one wall, a full-width band between the
+            copy and the tools. It deals every card, being the only wall. The
+            box holds its height from the first paint; the wall mounts once the
+            breakpoint is known, so a desktop never loads it. ---- */}
+        {centered && (
+          <div
+            className="mt-10 h-64 w-screen max-w-none shrink-0 self-center sm:h-80 lg:hidden"
+            aria-hidden={desktop !== false || undefined}
+          >
+            {desktop === false && (
+              <ImageWall
+                {...wallProps}
+                items={items}
+                intro={intro}
+                anchor={MIDDLE}
+                onFocus={handleFocus}
+                className="h-full [mask-image:linear-gradient(to_bottom,transparent,black_18%,black_82%,transparent)]"
+              />
+            )}
+          </div>
+        )}
+
         {/* ---- Centred: the tools close the column, rising after the trust line ---- */}
         {centered && stack && group && (
-          <motion.div variants={rise} className="mt-12 flex w-full max-w-md flex-col items-center gap-5">
+          <motion.div variants={rise} className="mt-8 flex w-full max-w-md flex-col items-center gap-5 lg:mt-12">
             <ToolStrip label={stack.label} group={group} groupIndex={groupIndex} centered reduceMotion={reduceMotion} />
           </motion.div>
         )}
@@ -493,15 +517,18 @@ export const ComponentWall = forwardRef<HTMLElement, ComponentWallProps>(
           {...props}
         >
           <div className="relative flex w-full flex-col items-center lg:min-h-[46rem] lg:justify-center">
-            {/* ---- The first wall: a band above the copy, or the left half, its camera resting high ---- */}
-            <ImageWall
-              {...wallProps}
-              items={startItems}
-              intro={intro}
-              anchor={desktop ? START_ANCHOR : MIDDLE}
-              onFocus={handleFocus}
-              className="h-64 [mask-image:linear-gradient(to_bottom,black_55%,transparent_100%)] sm:h-80 lg:absolute lg:inset-y-0 lg:left-0 lg:h-auto lg:w-1/2 lg:[mask-image:linear-gradient(to_right,black_35%,transparent_68%)]"
-            />
+            {/* ---- From `lg`: the left wall, its camera resting high. (Below
+                `lg` a single band sits in the copy, over the tools.) ---- */}
+            {desktop && (
+              <ImageWall
+                {...wallProps}
+                items={startItems}
+                intro={intro}
+                anchor={START_ANCHOR}
+                onFocus={handleFocus}
+                className="absolute inset-y-0 left-0 h-auto w-1/2 [mask-image:linear-gradient(to_right,black_35%,transparent_68%)]"
+              />
+            )}
 
             {/* ---- The copy, over a soft wash of the background where the walls meet ---- */}
             <div className="pointer-events-none relative z-30 flex w-full justify-center px-6 md:px-10">
@@ -512,15 +539,17 @@ export const ComponentWall = forwardRef<HTMLElement, ComponentWallProps>(
               {copy}
             </div>
 
-            {/* ---- The second wall: a band below the copy, or the right half, its camera resting low ---- */}
-            <ImageWall
-              {...wallProps}
-              items={endItems}
-              intro={intro + restInterval / 2}
-              anchor={desktop ? END_ANCHOR : MIDDLE}
-              onFocus={handleEndFocus}
-              className="h-64 [mask-image:linear-gradient(to_top,black_55%,transparent_100%)] sm:h-80 lg:absolute lg:inset-y-0 lg:right-0 lg:h-auto lg:w-1/2 lg:[mask-image:linear-gradient(to_left,black_35%,transparent_68%)]"
-            />
+            {/* ---- From `lg`: the right wall, its camera resting low ---- */}
+            {desktop && (
+              <ImageWall
+                {...wallProps}
+                items={endItems}
+                intro={intro + restInterval / 2}
+                anchor={END_ANCHOR}
+                onFocus={handleEndFocus}
+                className="absolute inset-y-0 right-0 h-auto w-1/2 [mask-image:linear-gradient(to_left,black_35%,transparent_68%)]"
+              />
+            )}
           </div>
         </section>
       );
