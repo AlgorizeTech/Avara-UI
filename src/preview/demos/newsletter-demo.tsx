@@ -68,7 +68,7 @@ export default function NewsletterDemo({
 
   if (variant === "issues") {
     return (
-      <Newsletter variant="issues" reveal={reveal} className={cn(frame, rounded && "border border-black/[0.06] dark:border-white/10")}>
+      <Newsletter variant="issues" reveal={reveal} className={cn(frame, rounded && "border border-border")}>
         <Newsletter.Heading>A letter about making things well</Newsletter.Heading>
         <Newsletter.Intro>
           Essays on product, craft and the small decisions that compound. Read the latest first — then decide.

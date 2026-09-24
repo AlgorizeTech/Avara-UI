@@ -2,7 +2,7 @@
 
 A highly-orchestrated, premium file upload component suite based on modern UX engineering principles. It goes far beyond a native `` by addressing five distinct user feedback signals.
 
-1. **Drag Feedback:** The dropzone reacts physically (glow, border shift, icon scale) to drag events via GSAP.
+1. **Drag Feedback:** The dropzone reacts physically (glow, border shift, icon scale) to drag events.
 2. **Honest Progress:** Replaces mystery spinners with exact percentage tracking, dynamic time estimations, and file metadata.
 3. **Inline Retry:** Files that fail mid-upload do not reset. They halt their state, turn red, and offer an inline 1-click retry button to resume.
 4. **Upload Preview:** Extracts visual proof (thumbnails) of the file instantly on the client side before upload completes.
@@ -12,8 +12,22 @@ The suite is two pieces you compose yourself: a `Dropzone` that hands you `File[
 
 Three upload surfaces live on this page, and each installs separately: the `Dropzone` + `UploadItem` suite, the `Input` block's built-in file mode for simple forms, and the `Folder` block as a playful drop target. Each section below ends with its own install.
 
-export const usageDropzone = `export default function FileUploader() {
+export const usageDropzone = `// Rows fade up in; a removed row fades up out and closes its gap, so the
+// rows under it slide up. \`animationend\` then drops it from state.
+const queueCss = \`
+.upload-row { display: grid; grid-template-rows: 1fr; margin-top: 8px;
+  animation: upload-row-in 0.3s cubic-bezier(0, 0, 0.58, 1) backwards; }
+.upload-row > * { min-height: 0; }
+.upload-row[data-leaving] { animation: upload-row-out 0.3s cubic-bezier(0, 0, 0.58, 1) forwards; }
+@keyframes upload-row-in { from { opacity: 0; transform: translateY(20px); } }
+@keyframes upload-row-out {
+  to { opacity: 0; transform: translateY(-20px); grid-template-rows: 0fr; margin-top: 0; }
+}
+\`;
+
+export default function FileUploader() {
   const [files, setFiles] = useState([]);
+  const [leaving, setLeaving] = useState([]);
 
   const handleFilesDrop = (droppedFiles: File[]) => {
     const newItems: FileUploadState[] = droppedFiles.map((file) => ({
@@ -29,19 +43,30 @@ export const usageDropzone = `export default function FileUploader() {
   };
 
   const handleRemove = (id: string) => {
+    setLeaving((prev) => [...prev, id]);
+  };
+
+  const handleGone = (id: string) => {
     setFiles((prev) => prev.filter((f) => f.id !== id));
+    setLeaving((prev) => prev.filter((l) => l !== id));
   };
 
   return (
 
       {files.length > 0 && (
+        
+          {queueCss}
+          
+            Uploaded Files ({files.length - leaving.length})
 
-            Uploaded Files ({files.length})
+          {files.map((item) => (
+             {
+                if (e.target === e.currentTarget && leaving.includes(item.id)) handleGone(item.id);
+              }}
+            >
 
-            {files.map((item) => (
-
-            ))}
-
+          ))}
+        
       )}
     
   );
@@ -104,11 +129,7 @@ npx shadcn@latest registry add @algorize-ui=https://algorize-ui.vercel.app/r/{na
 npx shadcn@latest add @algorize-ui/upload
 ```
 
-The dropzone example animates its queue with `framer-motion`. It is optional — `UploadItem` renders fine without it.
-
-```bash
-npx shadcn@latest install framer-motion
-```
+The dropzone example animates its queue with a few lines of CSS in the example itself — no extra package. It is optional; `UploadItem` renders fine without it.
 
 export const usageFileInput = `export default function FileUploadInput() {
   // type="file" turns the Input block into a drag-and-drop zone with
@@ -174,6 +195,12 @@ Register the @algorize-ui registry once per project, then add the component:
 ```bash
 npx shadcn@latest registry add @algorize-ui=https://algorize-ui.vercel.app/r/{name}.json
 npx shadcn@latest add @algorize-ui/folder
+```
+
+Or the Framer Motion build (same props, same file — install one):
+
+```bash
+npx shadcn@latest add @algorize-ui/folder-framer
 ```
 
 ## Features

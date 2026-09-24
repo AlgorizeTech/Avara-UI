@@ -34,16 +34,16 @@ export function PaymentBlock() {
       <div className="p-6 pt-0 space-y-4">
         <div className="space-y-2">
           <label className="text-sm font-medium">Name on Card</label>
-          <input className="flex h-9 w-full rounded-md border border-border bg-transparent px-3 py-1 text-sm shadow-sm transition-colors focus:border-zinc-400 dark:focus:border-zinc-500 focus:outline-none cursor-text" placeholder="John Doe" />
+          <input className="flex h-9 w-full rounded-md border border-input bg-transparent px-3 py-1 text-sm shadow-sm transition-colors focus:border-ring focus:outline-none cursor-text" placeholder="John Doe" />
         </div>
         <div className="grid grid-cols-3 gap-4">
           <div className="col-span-2 space-y-2">
             <label className="text-sm font-medium">Card Number</label>
-            <input className="flex h-9 w-full rounded-md border border-border bg-transparent px-3 py-1 text-sm shadow-sm transition-colors focus:border-zinc-400 dark:focus:border-zinc-500 focus:outline-none cursor-text" placeholder="1234 5678 9012 3456" />
+            <input className="flex h-9 w-full rounded-md border border-input bg-transparent px-3 py-1 text-sm shadow-sm transition-colors focus:border-ring focus:outline-none cursor-text" placeholder="1234 5678 9012 3456" />
           </div>
           <div className="space-y-2">
             <label className="text-sm font-medium">CVV</label>
-            <input className="flex h-9 w-full rounded-md border border-border bg-transparent px-3 py-1 text-sm shadow-sm transition-colors focus:border-zinc-400 dark:focus:border-zinc-500 focus:outline-none cursor-text" placeholder="123" />
+            <input className="flex h-9 w-full rounded-md border border-input bg-transparent px-3 py-1 text-sm shadow-sm transition-colors focus:border-ring focus:outline-none cursor-text" placeholder="123" />
           </div>
         </div>
         <div className="grid grid-cols-2 gap-4">
@@ -68,7 +68,7 @@ export function PaymentBlock() {
             />
           </div>
         </div>
-        <button onClick={handleSubmit} disabled={isSubmitting} className="mt-2 w-full inline-flex h-9 items-center justify-center rounded-md bg-primary text-sm font-medium text-primary-foreground shadow transition-colors hover:bg-primary disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer">
+        <button onClick={handleSubmit} disabled={isSubmitting} className="mt-2 w-full inline-flex h-9 items-center justify-center rounded-md bg-primary text-sm font-medium text-primary-foreground shadow transition-colors hover:bg-primary/90 disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer">
           {isSubmitting ? (
             <svg className="animate-spin -ml-1 mr-3 h-4 w-4 text-current" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
               <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>

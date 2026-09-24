@@ -1,9 +1,26 @@
 "use client";
 
 import { cn } from "@/lib/utils";
-import gsap from "gsap";
-import React, { forwardRef, useEffect, useRef, useState } from "react";
+import React, { forwardRef, useLayoutEffect, useRef, useState } from "react";
 import { FlowchartContext, useFlowchart } from "./flowchart-context";
+
+// ==========================================
+// MOTION
+// ==========================================
+// GSAP's back.out(1.2) and power2.out, exact as cubic-beziers.
+const NODE_IN_EASE = "cubic-bezier(.3333, 1.4, .6667, 1)";
+const DRAW_EASE = "cubic-bezier(.3333, 1, .6667, 1)";
+
+const FLOWCHART_CSS = `
+@keyframes flowchart-node-in {
+  from { opacity: 0; transform: translateX(-10px) scale(0.9); }
+  to { opacity: 1; transform: none; }
+}
+@keyframes flowchart-draw {
+  from { stroke-dashoffset: var(--flowchart-len); }
+  to { stroke-dashoffset: 0; }
+}
+`;
 
 // ==========================================
 // COMPONENTS
@@ -51,7 +68,7 @@ export const Flowchart = forwardRef<HTMLDivElement, FlowchartProps>(
         <div
           ref={ref}
           className={cn(
-            "w-full overflow-x-auto bg-[#fafafa] dark:bg-[#050505] border border-border/80 rounded-2xl select-none shadow-inner custom-scrollbar",
+            "w-full overflow-x-auto bg-background border border-border/80 rounded-2xl select-none shadow-inner custom-scrollbar",
             className,
           )}
           {...props}
@@ -87,6 +104,7 @@ export const FlowNode = forwardRef<HTMLDivElement, FlowNodeProps>(
       icon: Icon,
       connectedPaths = [],
       className,
+      style,
       ...props
     },
     ref,
@@ -97,16 +115,6 @@ export const FlowNode = forwardRef<HTMLDivElement, FlowNodeProps>(
     React.useImperativeHandle(ref, () => nodeRef.current as HTMLDivElement);
 
     const isActiveNode = connectedPaths.includes(activePath || "");
-
-    useEffect(() => {
-      if (nodeRef.current) {
-        gsap.fromTo(
-          nodeRef.current,
-          { opacity: 0, scale: 0.9, x: -10 },
-          { opacity: 1, scale: 1, x: 0, duration: 0.5, ease: "back.out(1.2)" },
-        );
-      }
-    }, []);
 
     const colorThemes: Record<
       string,
@@ -159,18 +167,26 @@ export const FlowNode = forwardRef<HTMLDivElement, FlowNodeProps>(
         }}
         // Enforced strict absolute height & width to secure connection nodes
         className={cn(
-          "absolute w-[240px] h-[68px] p-3 rounded-xl transition-all duration-300 cursor-pointer opacity-0 flex items-center gap-3 backdrop-blur-xl select-none",
+          "absolute w-[240px] h-[68px] p-3 rounded-xl transition-all duration-300 cursor-pointer flex items-center gap-3 backdrop-blur-xl select-none",
           isActiveNode
             ? cn(
-                "bg-white/95 dark:bg-zinc-900/95 scale-[1.02] ring-2 z-30",
+                "bg-card/95 scale-[1.02] ring-2 z-30",
                 currentTheme.ring,
                 currentTheme.glow,
               )
-            : "bg-white/50 dark:bg-zinc-900/40 border border-border/80 hover:bg-white/80 dark:hover:bg-zinc-900/80 hover:scale-[1.01] shadow-sm z-20",
+            : "bg-card/50 border border-border/80 hover:bg-card/80 hover:scale-[1.01] shadow-sm z-20",
           className,
         )}
+        // Mount entrance: fades and scales in from the left. `scale: none`
+        // keeps the active / hover scale classes inert, as they have always been.
+        style={{
+          animation: `flowchart-node-in 0.5s ${NODE_IN_EASE} backwards`,
+          scale: "none",
+          ...style,
+        }}
         {...props}
       >
+        <style>{FLOWCHART_CSS}</style>
         {Icon && (
           <div
             className={cn(
@@ -256,36 +272,48 @@ export const FlowConnection = forwardRef<SVGPathElement, FlowConnectionProps>(
     // The moving overlay waits for the line to finish drawing itself.
     const [drawn, setDrawn] = useState(false);
 
-    useEffect(() => {
+    useLayoutEffect(() => {
       const el = staticLineRef.current;
       if (!el) return;
       const reduced =
         typeof window !== "undefined" &&
         window.matchMedia?.("(prefers-reduced-motion: reduce)").matches;
       if (reduced) {
-        gsap.set(el, { strokeDasharray: restingDash ?? "none", strokeDashoffset: 0 });
+        el.style.strokeDasharray = restingDash ?? "none";
+        el.style.strokeDashoffset = "0";
         setDrawn(true);
         return;
       }
       const length = el.getTotalLength();
-      const tween = gsap.fromTo(
-        el,
-        { strokeDasharray: length, strokeDashoffset: length },
-        {
-          strokeDashoffset: 0,
-          duration: drawDuration,
-          ease: "power2.out",
-          delay: 0.1,
-          // Once drawn, hand the line its resting pattern — the draw-in borrowed
-          // the dash array, so a dashed line has to be restored here.
-          onComplete: () => {
-            gsap.set(el, { strokeDasharray: restingDash ?? "none" });
-            setDrawn(true);
-          },
-        },
-      );
+      // Draw-in: one dash as long as the line, its offset run from the full
+      // length down to 0 (held hidden through the delay by `backwards`).
+      el.style.strokeDasharray = `${length}px`;
+      el.style.setProperty("--flowchart-len", `${length}px`);
+      el.style.animation = `flowchart-draw ${drawDuration}s ${DRAW_EASE} 0.1s backwards`;
+
+      let done = false;
+      // Once drawn, hand the line its resting pattern — the draw-in borrowed
+      // the dash array, so a dashed line has to be restored here.
+      const finish = () => {
+        if (done) return;
+        done = true;
+        window.clearTimeout(fallback);
+        el.removeEventListener("animationend", onEnd);
+        el.style.animation = "";
+        el.style.strokeDasharray = restingDash ?? "none";
+        el.style.strokeDashoffset = "0";
+        setDrawn(true);
+      };
+      const onEnd = (e: AnimationEvent) => {
+        if (e.target === el && e.animationName === "flowchart-draw") finish();
+      };
+      el.addEventListener("animationend", onEnd);
+      // A canvas under `display: none` (e.g. `hidden lg:block`) never runs the
+      // animation, so no animationend comes; finish on time regardless.
+      const fallback = window.setTimeout(finish, (0.1 + drawDuration) * 1000 + 100);
       return () => {
-        tween.kill();
+        window.clearTimeout(fallback);
+        el.removeEventListener("animationend", onEnd);
       };
       // Runs once: the draw-in is a mount effect, later `path` changes just move the line.
       // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -320,7 +348,7 @@ export const FlowConnection = forwardRef<SVGPathElement, FlowConnectionProps>(
           stroke="currentColor"
           strokeWidth="1.5"
           className={cn(
-            "text-zinc-200 dark:text-zinc-800/80 transition-colors duration-500",
+            "text-border transition-colors duration-500",
             className,
           )}
           {...props}
@@ -351,6 +379,7 @@ export const FlowConnection = forwardRef<SVGPathElement, FlowConnectionProps>(
           </>
         )}
 
+        <style>{FLOWCHART_CSS}</style>
         <style>{`
           @keyframes flow-dash {
             to { stroke-dashoffset: calc(-1 * var(--flow-cycle, 16px)); }

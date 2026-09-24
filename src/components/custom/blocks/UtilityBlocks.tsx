@@ -3,11 +3,11 @@ import { ComponentCard } from "../ui/base";
 
 export function TeamMembersBlock() {
   return (
-    <ComponentCard className="flex flex-col items-center justify-center text-center p-8 border-dashed border-2 dark:border-zinc-800 dark:bg-zinc-950/30">
+    <ComponentCard className="flex flex-col items-center justify-center text-center p-8 border-dashed border-2">
       <div className="flex -space-x-3 mb-4">
-        <div className="size-10 rounded-full border-2 border-white dark:border-[#09090b] bg-muted"></div>
-        <div className="size-10 rounded-full border-2 border-white dark:border-[#09090b] bg-muted"></div>
-        <div className="size-10 rounded-full border-2 border-white dark:border-[#09090b] bg-zinc-400 dark:bg-zinc-600"></div>
+        <div className="size-10 rounded-full border-2 border-card bg-muted"></div>
+        <div className="size-10 rounded-full border-2 border-card bg-muted"></div>
+        <div className="size-10 rounded-full border-2 border-card bg-muted-foreground/40"></div>
       </div>
       <h3 className="font-semibold text-sm mb-1">No Team Members</h3>
       <p className="text-xs text-muted-foreground mb-4 max-w-[200px]">Invite your team to collaborate on this project.</p>
@@ -22,7 +22,7 @@ export function CommandSearchBlock() {
   return (
     <ComponentCard>
       <div className="p-2 cursor-text">
-        <div className="flex items-center px-3 py-2 bg-muted rounded-md group focus-within:ring-2 ring-zinc-400 dark:ring-zinc-600 transition-shadow">
+        <div className="flex items-center px-3 py-2 bg-muted rounded-md group focus-within:ring-2 ring-ring transition-shadow">
           <svg className="size-4 text-muted-foreground mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
           </svg>

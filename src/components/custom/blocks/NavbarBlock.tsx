@@ -1,9 +1,8 @@
 "use client";
 
 import { cn } from "@/lib/utils";
-import gsap from "gsap";
 import { ArrowRight, ChevronDown, Command, Menu, X } from "lucide-react";
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useState } from "react";
 import Button from "./Button";
 import { getThemeStyles } from "./navbar-theme";
 
@@ -40,6 +39,39 @@ const NAV_LINKS = [
   { name: "Resources", href: "#", hasDropdown: true },
   { name: "Pricing", href: "#", hasDropdown: false },
 ];
+
+// Mobile menu motion. Opening fades the overlay in (0.3s power2.out) and
+// slides the menu in from the right (0.4s power3.out); closing reverses both in
+// 0.3s (power2.in / power3.in). A transition takes its timing from the state it
+// is heading to, so each state carries its own; @starting-style is where the
+// layer starts when it stops being display:none.
+const POWER3_OUT =
+  "linear(0, .1268, .2412, .3439, .4358, .5177, .5904, .6545, .7108, .7599, .8025, .8391, .8704, .8969, .9191, .9375, .9526, .9647, .9744, .9819, .9877, .9919, .9949, .997, .9984, .9992, .9997, .9999, 1, 1, 1)";
+const POWER3_IN =
+  "linear(0, 0, 0, .0001, .0003, .0008, .0016, .003, .0051, .0081, .0123, .0181, .0256, .0353, .0474, .0625, .0809, .1031, .1296, .1609, .1975, .2401, .2892, .3455, .4096, .4823, .5642, .6561, .7588, .8732, 1)";
+
+const MOBILE_MENU_CSS = `
+.navbar-mobile-overlay {
+  opacity: 0;
+  transition: opacity 0.3s cubic-bezier(0.3333, 0, 0.6667, 0);
+}
+.navbar-mobile-overlay[data-open="true"] {
+  opacity: 1;
+  transition: opacity 0.3s cubic-bezier(0.3333, 1, 0.6667, 1);
+}
+.navbar-mobile-menu {
+  transform: translateX(100%);
+  transition: transform 0.3s ${POWER3_IN};
+}
+.navbar-mobile-menu[data-open="true"] {
+  transform: none;
+  transition: transform 0.4s ${POWER3_OUT};
+}
+@starting-style {
+  .navbar-mobile-overlay[data-open="true"] { opacity: 0; }
+  .navbar-mobile-menu[data-open="true"] { transform: translateX(100%); }
+}
+`;
 
 /**
  * These three are defined at module scope on purpose. Declaring them inside
@@ -91,7 +123,7 @@ function DesktopLinks({
             className={cn(
               "flex items-center gap-1 px-4 py-2 text-sm font-semibold text-muted-foreground hover:text-foreground rounded-full transition-colors",
               isGlass
-                ? "hover:bg-white/20 dark:hover:bg-white/10"
+                ? "hover:bg-foreground/5"
                 : "hover:bg-muted",
             )}
           >
@@ -106,8 +138,8 @@ function DesktopLinks({
                 className={cn(
                   "w-48 rounded-xl shadow-xl p-2 flex flex-col gap-1",
                   isGlass
-                    ? "bg-white/60 dark:bg-black/40 backdrop-blur-2xl border border-white/20 dark:border-white/10"
-                    : "bg-background border border-border",
+                    ? "bg-popover/60 text-popover-foreground backdrop-blur-2xl border border-foreground/10"
+                    : "bg-popover text-popover-foreground border border-border",
                 )}
               >
                 {["Overview", "Features", "Integrations"].map((sub) => (
@@ -117,7 +149,7 @@ function DesktopLinks({
                     className={cn(
                       "px-4 py-2 text-sm font-medium text-muted-foreground hover:text-foreground rounded-lg transition-colors",
                       isGlass
-                        ? "hover:bg-white/20 dark:hover:bg-white/10"
+                        ? "hover:bg-foreground/5"
                         : "hover:bg-muted",
                     )}
                   >
@@ -171,8 +203,6 @@ export function NavbarBlock({
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [renderLayer, setRenderLayer] = useState(false);
   const { theme, style } = getThemeStyles(color);
-  const mobileMenuRef = useRef<HTMLDivElement>(null);
-  const overlayRef = useRef<HTMLDivElement>(null);
 
   const isGlass = variant === "glass";
 
@@ -191,34 +221,12 @@ export function NavbarBlock({
     return () => clearTimeout(t);
   }, [mobileMenuOpen]);
 
-  useEffect(() => {
-    if (!renderLayer) return;
-    const menu = mobileMenuRef.current;
-    const overlay = overlayRef.current;
-    if (!menu || !overlay) return;
-    if (mobileMenuOpen) {
-      gsap.fromTo(
-        overlay,
-        { opacity: 0 },
-        { opacity: 1, duration: 0.3, ease: "power2.out" },
-      );
-      gsap.fromTo(
-        menu,
-        { x: "100%" },
-        { x: "0%", duration: 0.4, ease: "power3.out" },
-      );
-    } else {
-      gsap.to(overlay, { opacity: 0, duration: 0.3, ease: "power2.in" });
-      gsap.to(menu, { x: "100%", duration: 0.3, ease: "power3.in" });
-    }
-  }, [mobileMenuOpen, renderLayer]);
-
   const getContainerStyles = () => {
     switch (variant) {
       case "floating":
-        return "max-w-5xl mx-auto top-6 rounded-full bg-white/80 dark:bg-zinc-950/80 backdrop-blur-lg border border-border shadow-lg px-6";
+        return "max-w-5xl mx-auto top-6 rounded-full bg-background/80 backdrop-blur-lg border border-border shadow-lg px-6";
       case "glass":
-        return "w-full bg-white/40 dark:bg-black/20 backdrop-blur-xl border-b border-white/20 dark:border-white/10 shadow-sm px-6 lg:px-12";
+        return "w-full bg-background/40 backdrop-blur-xl border-b border-foreground/10 shadow-sm px-6 lg:px-12";
       case "minimal":
         return "w-full bg-transparent px-6 lg:px-12 pt-6";
       case "centered":
@@ -230,6 +238,7 @@ export function NavbarBlock({
 
   return (
     <div className="relative w-full z-50" style={style}>
+      <style>{MOBILE_MENU_CSS}</style>
       <nav
         className={cn(
           "absolute left-0 right-0 h-16 flex items-center transition-all duration-300",
@@ -287,16 +296,16 @@ export function NavbarBlock({
         )}
       >
         <div
-          ref={overlayRef}
           onClick={() => setMobileMenuOpen(false)}
-          className="absolute inset-0 bg-black/40 backdrop-blur-sm pointer-events-auto"
+          data-open={mobileMenuOpen}
+          className="navbar-mobile-overlay absolute inset-0 bg-black/40 backdrop-blur-sm pointer-events-auto"
         />
         <div
-          ref={mobileMenuRef}
+          data-open={mobileMenuOpen}
           className={cn(
-            "absolute right-0 top-0 bottom-0 w-full max-w-sm shadow-2xl pointer-events-auto flex flex-col",
+            "navbar-mobile-menu absolute right-0 top-0 bottom-0 w-full max-w-sm shadow-2xl pointer-events-auto flex flex-col",
             isGlass
-              ? "bg-white/70 dark:bg-zinc-950/70 backdrop-blur-2xl border-l border-white/20 dark:border-white/10"
+              ? "bg-background/70 backdrop-blur-2xl border-l border-foreground/10"
               : "bg-background border-l border-border",
           )}
         >
@@ -304,7 +313,7 @@ export function NavbarBlock({
             className={cn(
               "flex items-center justify-between p-6 border-b",
               isGlass
-                ? "border-white/10"
+                ? "border-foreground/10"
                 : "border-border",
             )}
           >
@@ -318,7 +327,7 @@ export function NavbarBlock({
               className={cn(
                 "-mr-2 rounded-full text-muted-foreground shadow-none hover:text-foreground",
                 isGlass
-                  ? "hover:bg-white/20 dark:hover:bg-white/10"
+                  ? "hover:bg-foreground/5"
                   : "bg-muted",
               )}
             />
@@ -340,7 +349,7 @@ export function NavbarBlock({
                     className={cn(
                       "flex flex-col gap-3 pl-4 border-l-2",
                       isGlass
-                        ? "border-white/10"
+                        ? "border-foreground/10"
                         : "border-border",
                     )}
                   >
@@ -362,7 +371,7 @@ export function NavbarBlock({
             className={cn(
               "p-6 flex flex-col gap-3 border-t",
               isGlass
-                ? "bg-white/10 dark:bg-white/5 border-white/10"
+                ? "bg-foreground/5 border-foreground/10"
                 : "bg-muted border-border",
             )}
           >
@@ -371,7 +380,7 @@ export function NavbarBlock({
               className={cn(
                 "w-full py-3 px-4 text-center font-semibold text-foreground border rounded-xl transition-colors",
                 isGlass
-                  ? "border-white/20 dark:border-white/10 hover:bg-white/20 dark:hover:bg-white/10"
+                  ? "border-foreground/10 hover:bg-foreground/5"
                   : "border-border hover:bg-muted",
               )}
             >

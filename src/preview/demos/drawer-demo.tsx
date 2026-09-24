@@ -60,7 +60,7 @@ export default function DrawerDemo({
 
   if (showAll === "sides") {
     return (
-      <div className="w-full flex flex-wrap items-center justify-center gap-4 min-h-[400px] bg-white dark:bg-transparent transition-colors duration-300">
+      <div className="w-full flex flex-wrap items-center justify-center gap-4 min-h-[400px] bg-background transition-colors duration-300">
         {(["top", "right", "bottom", "left"] as Side[]).map((s) => (
           <DrawerTile key={s} side={s} />
         ))}
@@ -69,7 +69,7 @@ export default function DrawerDemo({
   }
 
   return (
-    <div className="w-full flex items-center justify-center min-h-[500px] py-8 px-4 bg-white dark:bg-transparent transition-colors duration-300">
+    <div className="w-full flex items-center justify-center min-h-[500px] py-8 px-4 bg-background transition-colors duration-300">
       <Button onClick={() => setIsOpen(true)}>Open Drawer ({side})</Button>
 
       <Drawer open={isOpen} onOpenChange={setIsOpen} side={side}>
@@ -78,25 +78,25 @@ export default function DrawerDemo({
           <DrawerHeader>
             <DrawerTitle>Interactive Drawer</DrawerTitle>
             <DrawerDescription>
-              This drawer slides in from the {side}. It uses GSAP for
+              This drawer slides in from the {side}. It uses CSS transitions for
               butter-smooth easing and handles its own unmount lifecycles.
             </DrawerDescription>
           </DrawerHeader>
 
           <div className="p-6 flex-1 overflow-y-auto">
             <div className="flex flex-col gap-4">
-              <div className="p-4 rounded-xl border border-zinc-200 dark:border-zinc-800 bg-zinc-50 dark:bg-zinc-900/50">
-                <p className="text-sm font-medium text-zinc-700 dark:text-zinc-300">
+              <div className="p-4 rounded-xl border border-border bg-muted/50">
+                <p className="text-sm font-medium text-foreground/80">
                   Put your navigation links, forms, or detailed information
                   inside this content area. Scroll works perfectly without
                   pushing the header off screen.
                 </p>
               </div>
-              <div className="h-8 w-3/4 bg-zinc-100 dark:bg-zinc-800 rounded-md animate-pulse" />
-              <div className="h-8 w-1/2 bg-zinc-100 dark:bg-zinc-800 rounded-md animate-pulse" />
-              <div className="h-8 w-full bg-zinc-100 dark:bg-zinc-800 rounded-md animate-pulse" />
-              <div className="h-8 w-2/3 bg-zinc-100 dark:bg-zinc-800 rounded-md animate-pulse" />
-              <div className="h-8 w-full bg-zinc-100 dark:bg-zinc-800 rounded-md animate-pulse" />
+              <div className="h-8 w-3/4 bg-muted rounded-md animate-pulse" />
+              <div className="h-8 w-1/2 bg-muted rounded-md animate-pulse" />
+              <div className="h-8 w-full bg-muted rounded-md animate-pulse" />
+              <div className="h-8 w-2/3 bg-muted rounded-md animate-pulse" />
+              <div className="h-8 w-full bg-muted rounded-md animate-pulse" />
             </div>
           </div>
 

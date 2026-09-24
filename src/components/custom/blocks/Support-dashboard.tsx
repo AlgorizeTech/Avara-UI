@@ -522,7 +522,7 @@ export default function SupportDashboard({
                         className={`flex flex-col gap-1 min-w-0 max-w-[85%] ${isAgent ? "items-end" : "items-start"}`}
                       >
                         <div className="flex items-baseline gap-2 px-1">
-                          <span className="text-[11px] font-semibold text-zinc-700 dark:text-zinc-400">
+                          <span className="text-[11px] font-semibold text-foreground/70">
                             {msg.sender}
                           </span>
                           <span className="text-[10px] font-medium text-muted-foreground">
@@ -558,13 +558,13 @@ export default function SupportDashboard({
                 "border rounded-xl flex flex-col overflow-hidden shadow-sm transition-all m-0 p-0",
                 variant === "glass"
                   ? "bg-white/40 dark:bg-black/40 backdrop-blur-md border-white/20 dark:border-white/10"
-                  : "bg-white dark:bg-[#121217] border-border"
+                  : "bg-card border-border"
               )}>
                 <div className={cn(
                   "flex border-b m-0 p-0",
                   variant === "glass"
                     ? "border-white/10 dark:border-white/10 bg-white/20 dark:bg-black/20"
-                    : "border-border bg-muted/50 dark:bg-[#121217]"
+                    : "border-border bg-muted/50"
                 )}>
                   {data.replySection.tabs.map((tab) => (
                     <button
@@ -576,7 +576,7 @@ export default function SupportDashboard({
                           ? cn(
                               variant === "glass"
                                 ? "bg-white/40 dark:bg-black/40"
-                                : "bg-white dark:bg-[#121217]",
+                                : "bg-card",
                               theme.text,
                               theme.activeBorder,
                             )
@@ -810,7 +810,7 @@ export default function SupportDashboard({
             "flex flex-1 flex-col overflow-y-auto p-4 sm:p-6 lg:p-8 gap-6 m-0 [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]",
             variant === "glass"
               ? "bg-transparent"
-              : "bg-muted dark:bg-[#09090b]",
+              : "bg-muted",
           )}
         >
           {/* Metrics Row */}
@@ -971,7 +971,7 @@ export default function SupportDashboard({
             "flex flex-1 overflow-hidden min-h-0 m-0 p-0",
             variant === "glass"
               ? "bg-transparent"
-              : "bg-muted dark:bg-[#09090b]",
+              : "bg-muted",
           )}
         >
           <aside
@@ -1174,7 +1174,7 @@ export default function SupportDashboard({
                     "flex-1 flex flex-col min-w-0 animate-in fade-in slide-in-from-right-4 duration-300 m-0 p-0",
                     variant === "glass"
                       ? "bg-transparent"
-                      : "bg-white dark:bg-[#09090b]",
+                      : "bg-background",
                   )}
                 >
                   <div
@@ -1235,7 +1235,7 @@ export default function SupportDashboard({
                               className={`flex flex-col gap-1 min-w-0 max-w-[85%] sm:max-w-[80%] m-0 p-0 ${isAgent ? "items-end" : "items-start"}`}
                             >
                               <div className="flex items-baseline gap-2 px-1 m-0 p-0">
-                                <span className="text-[11px] font-semibold text-zinc-700 dark:text-zinc-400 m-0 p-0">
+                                <span className="text-[11px] font-semibold text-foreground/70 m-0 p-0">
                                   {msg.sender}
                                 </span>
                                 <span className="text-[10px] font-medium text-muted-foreground m-0 p-0">
@@ -1272,13 +1272,13 @@ export default function SupportDashboard({
                       "max-w-3xl mx-auto rounded-xl flex flex-col overflow-hidden shadow-sm transition-all m-0 p-0 border",
                       variant === "glass"
                         ? "bg-white/40 dark:bg-black/40 backdrop-blur-md border-white/20 dark:border-white/10"
-                        : "bg-white dark:bg-[#121217] border-border"
+                        : "bg-card border-border"
                     )}>
                       <div className={cn(
                         "flex border-b m-0 p-0",
                         variant === "glass"
                           ? "border-white/10 dark:border-white/10 bg-white/20 dark:bg-black/20"
-                          : "border-border bg-muted/50 dark:bg-[#121217]"
+                          : "border-border bg-muted/50"
                       )}>
                         {data.replySection.tabs.map((tab) => (
                           <button
@@ -1290,7 +1290,7 @@ export default function SupportDashboard({
                                 ? cn(
                                     variant === "glass"
                                       ? "bg-white/40 dark:bg-black/40"
-                                      : "bg-white dark:bg-[#121217]",
+                                      : "bg-card",
                                     theme.text,
                                     theme.activeBorder,
                                   )
@@ -1320,7 +1320,7 @@ export default function SupportDashboard({
                         "flex items-center justify-between p-3 border-t m-0",
                         variant === "glass"
                           ? "border-white/10 dark:border-white/10 bg-white/20 dark:bg-black/20"
-                          : "border-border bg-muted/50 dark:bg-[#121217]"
+                          : "border-border bg-muted/50"
                       )}>
                         <div className="flex gap-1 text-muted-foreground m-0 p-0">
                           <button

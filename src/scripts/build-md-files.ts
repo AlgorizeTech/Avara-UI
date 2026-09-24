@@ -4,6 +4,15 @@ import { glob } from "glob";
 import { BUILT_FRAMEWORKS } from "../lib/framework";
 import { REGISTRY_ADD_ARGS, REGISTRY_NAMESPACE, addArgsFor, resolveAddArg } from "../lib/registry";
 import { stripUseClient } from "../lib/snippet";
+import registry from "../../registry.json";
+
+/** Items that ship a Framer Motion twin beside their GSAP default. */
+const MOTION_TWINS = new Set(
+  (registry.items as { name: string }[])
+    .map((item) => item.name)
+    .filter((name) => name.endsWith("-framer"))
+    .map((name) => name.replace(/-framer$/, "")),
+);
 
 /** The dynamic route segment, as it appears on disk. */
 const FRAMEWORK_SEGMENT = "[framework]";
@@ -158,7 +167,14 @@ function convertMdxToMd(content: string, componentPath: string): string {
       '```bash\n' +
       `npx shadcn@latest ${REGISTRY_ADD_ARGS}\n` +
       `npx shadcn@latest ${addArgsFor(name)}\n` +
-      '```'
+      '```' +
+      // Dual components: the same file, built on Framer Motion instead of GSAP.
+      (MOTION_TWINS.has(name)
+        ? '\n\nOr the Framer Motion build (same props, same file — install one):\n\n' +
+          '```bash\n' +
+          `npx shadcn@latest ${addArgsFor(`${name}-framer`)}\n` +
+          '```'
+        : '')
   );
   // <InstallGroup> only wraps several <Installation>s; drop the wrapper.
   mdContent = mdContent.replace(/<\/?InstallGroup>/g, '');

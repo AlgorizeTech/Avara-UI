@@ -10,7 +10,7 @@ import React, { createContext, useContext } from "react";
 // Card all build on this pair; it has no opinion about what the page is.
 /**
  * The page's surface treatment. `glass` is frosted panels over an aurora;
- * `solid` is plain white cards with an ordinary shadow on a flat ground.
+ * `solid` is plain theme cards with an ordinary shadow on a flat ground.
  */
 export type SurfaceVariant = "glass" | "solid";
 
@@ -43,7 +43,7 @@ export function GlassBackdrop({
     <SurfaceContext.Provider value={variant}>
       <div
         className={cn(
-          "relative isolate w-full overflow-hidden bg-[#f5f5f7] text-[#1d1d1f] dark:bg-[#0b0b0f] dark:text-[#f5f5f7]",
+          "relative isolate w-full overflow-hidden bg-background text-foreground",
           className,
         )}
         {...props}
@@ -105,14 +105,14 @@ export interface GlassPanelProps extends React.HTMLAttributes<HTMLDivElement> {
 const SURFACES: Record<SurfaceVariant, { base: string; hover: string }> = {
   glass: {
     base:
-      "border border-white/70 bg-white/55 shadow-[inset_0_1px_0_rgba(255,255,255,0.75),0_24px_48px_-28px_rgba(15,23,42,0.35)] backdrop-blur-2xl " +
-      "dark:border-white/10 dark:bg-white/[0.06] dark:shadow-[inset_0_1px_0_rgba(255,255,255,0.08),0_24px_48px_-28px_rgba(0,0,0,0.9)]",
-    hover: "hover:bg-white/70 dark:hover:bg-white/[0.09]",
+      "border border-card/70 bg-card/55 shadow-[inset_0_1px_0_rgba(255,255,255,0.75),0_24px_48px_-28px_rgba(15,23,42,0.35)] backdrop-blur-2xl " +
+      "dark:border-foreground/10 dark:bg-foreground/[0.06] dark:shadow-[inset_0_1px_0_rgba(255,255,255,0.08),0_24px_48px_-28px_rgba(0,0,0,0.9)]",
+    hover: "hover:bg-card/70 dark:hover:bg-foreground/[0.09]",
   },
   solid: {
     base:
-      "border border-black/[0.06] bg-white shadow-[0_1px_2px_rgba(0,0,0,0.04),0_16px_40px_-20px_rgba(15,23,42,0.25)] " +
-      "dark:border-white/10 dark:bg-[#151518] dark:shadow-[0_1px_2px_rgba(0,0,0,0.4),0_16px_40px_-20px_rgba(0,0,0,0.9)]",
+      "border border-border bg-card shadow-[0_1px_2px_rgba(0,0,0,0.04),0_16px_40px_-20px_rgba(15,23,42,0.25)] " +
+      "dark:shadow-[0_1px_2px_rgba(0,0,0,0.4),0_16px_40px_-20px_rgba(0,0,0,0.9)]",
     hover:
       "hover:shadow-[0_1px_2px_rgba(0,0,0,0.04),0_24px_48px_-20px_rgba(15,23,42,0.3)]",
   },

@@ -6,18 +6,18 @@ import {
 } from "@/components/custom/blocks/ConversationTimelineBlock";
 import { useEffect, useRef, useState } from "react";
 
-// "Default" on the page's colour picker means the component's own sky accent.
+// "Default" on the page's colour picker means the theme's primary.
 const getAccent = (c: string) => {
   if (c.startsWith("#")) return c;
   const map: Record<string, string> = {
-    primary: "#0ea5e9",
-    default: "#0ea5e9",
+    primary: "var(--primary)",
+    default: "var(--primary)",
     indigo: "#6366f1",
     rose: "#f43f5e",
     emerald: "#10b981",
     lavender: "#9b8afb",
   };
-  return map[c] || "#0ea5e9";
+  return map[c] || "var(--primary)";
 };
 
 const CONVERSATION: Array<TimelineCheckpoint & { body: string }> = [
@@ -38,9 +38,9 @@ const CONVERSATION: Array<TimelineCheckpoint & { body: string }> = [
 ];
 
 const ROLE_STYLE: Record<string, string> = {
-  user: "self-end bg-zinc-900 text-white dark:bg-white dark:text-zinc-900",
-  assistant: "self-start bg-zinc-100 text-zinc-900 dark:bg-zinc-800 dark:text-zinc-100",
-  system: "self-center bg-transparent text-[11px] font-mono uppercase tracking-wider text-zinc-400",
+  user: "self-end bg-foreground text-background",
+  assistant: "self-start bg-muted text-foreground",
+  system: "self-center bg-transparent text-[11px] font-mono uppercase tracking-wider text-muted-foreground",
 };
 
 function PairedWithChat({ accent }: { accent: string }) {
@@ -53,7 +53,7 @@ function PairedWithChat({ accent }: { accent: string }) {
   }, [activeId]);
 
   return (
-    <div className="flex w-full max-w-2xl items-start gap-6 rounded-2xl border border-zinc-200 bg-white p-5 dark:border-zinc-800 dark:bg-zinc-950">
+    <div className="flex w-full max-w-2xl items-start gap-6 rounded-2xl border border-border bg-card p-5">
       <ConversationTimeline
         checkpoints={CONVERSATION}
         activeId={activeId}

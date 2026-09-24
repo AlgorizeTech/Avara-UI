@@ -73,7 +73,7 @@ const ACTIVITY = [
 ];
 
 const focusRing =
-  "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-white dark:focus-visible:ring-offset-[#0b0b0f]";
+  "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background";
 
 export default function ProfilePageDemo() {
   const [following, setFollowing] = useState(false);
@@ -86,7 +86,7 @@ export default function ProfilePageDemo() {
           <a
             href="#"
             className={cn(
-              "inline-flex items-center gap-1.5 rounded-full text-sm text-black/60 transition-colors hover:text-black dark:text-white/60 dark:hover:text-white",
+              "inline-flex items-center gap-1.5 rounded-full text-sm text-foreground/60 transition-colors hover:text-foreground",
               focusRing,
             )}
           >
@@ -95,7 +95,7 @@ export default function ProfilePageDemo() {
           <button
             type="button"
             className={cn(
-              "inline-flex size-10 items-center justify-center rounded-full border border-black/10 bg-black/[0.03] text-black/70 transition-colors hover:bg-black/[0.06] dark:border-white/15 dark:bg-white/5 dark:text-white/70 dark:hover:bg-white/10",
+              "inline-flex size-10 items-center justify-center rounded-full border border-foreground/10 bg-foreground/[0.04] text-foreground/70 transition-colors hover:bg-foreground/[0.08]",
               focusRing,
             )}
             aria-label="Share profile"
@@ -117,10 +117,10 @@ export default function ProfilePageDemo() {
               Ayesha Karim
               <VerifyBadge size="lg" aria-label="Verified" />
             </h1>
-            <p className="mt-2 text-base text-black/60 dark:text-white/60">
+            <p className="mt-2 text-base text-foreground/60">
               Design engineer at Northwind
             </p>
-            <ul className="mt-3 flex flex-wrap gap-x-4 gap-y-1 text-sm text-black/60 dark:text-white/60">
+            <ul className="mt-3 flex flex-wrap gap-x-4 gap-y-1 text-sm text-foreground/60">
               <li className="flex items-center gap-1.5">
                 <MapPin className="size-3.5" /> Dhaka
               </li>
@@ -153,7 +153,7 @@ export default function ProfilePageDemo() {
             className={cn(
               "inline-flex h-11 items-center gap-2 rounded-full px-5 text-sm font-medium transition-colors",
               following
-                ? "border border-black/10 bg-black/[0.03] text-black hover:bg-black/[0.06] dark:border-white/15 dark:bg-white/5 dark:text-white dark:hover:bg-white/10"
+                ? "border border-foreground/10 bg-foreground/[0.04] text-foreground hover:bg-foreground/[0.08]"
                 : "bg-primary text-primary-foreground hover:bg-primary/90",
               focusRing,
             )}
@@ -164,7 +164,7 @@ export default function ProfilePageDemo() {
           <button
             type="button"
             className={cn(
-              "inline-flex h-11 items-center gap-2 rounded-full border border-black/10 bg-black/[0.03] px-5 text-sm font-medium transition-colors hover:bg-black/[0.06] dark:border-white/15 dark:bg-white/5 dark:hover:bg-white/10",
+              "inline-flex h-11 items-center gap-2 rounded-full border border-foreground/10 bg-foreground/[0.04] px-5 text-sm font-medium transition-colors hover:bg-foreground/[0.08]",
               focusRing,
             )}
           >
@@ -177,7 +177,7 @@ export default function ProfilePageDemo() {
       <GlassPanel shape="slab" className="flex flex-col p-6 md:col-span-6 lg:col-span-4">
         <div className="flex items-baseline justify-between">
           <h2 className="text-sm font-semibold">Her day</h2>
-          <p className="text-xs text-black/50 dark:text-white/50">UTC+6</p>
+          <p className="text-xs text-foreground/50">UTC+6</p>
         </div>
         <div className="my-auto py-4">
           <WorkdayDial
@@ -189,7 +189,7 @@ export default function ProfilePageDemo() {
             note="Replies within the day"
           />
         </div>
-        <p className="text-center text-sm text-black/60 dark:text-white/60">
+        <p className="text-center text-sm text-foreground/60">
           Hover the ring for her hours in your time
         </p>
       </GlassPanel>
@@ -200,7 +200,7 @@ export default function ProfilePageDemo() {
           <GlassPanel key={s.label} shape="disc" className="grid place-items-center text-center">
             <div>
               <p className="text-2xl font-semibold tabular-nums tracking-tight sm:text-3xl">{s.value}</p>
-              <p className="mt-0.5 text-[11px] text-black/55 dark:text-white/55 sm:text-xs">{s.label}</p>
+              <p className="mt-0.5 text-[11px] text-foreground/55 sm:text-xs">{s.label}</p>
             </div>
           </GlassPanel>
         ))}
@@ -209,7 +209,7 @@ export default function ProfilePageDemo() {
       {/* About */}
       <GlassPanel className="flex flex-col gap-4 p-6 md:col-span-6 lg:col-span-8">
         <h2 className="text-sm font-semibold">About</h2>
-        <p className="max-w-prose text-[15px] leading-relaxed text-black/70 dark:text-white/70">
+        <p className="max-w-prose text-[15px] leading-relaxed text-foreground/70">
           Builds the component library three product teams ship on. Currently
           rewriting the motion primitives so a modal, a drawer and a toast all
           ease the same way. Happiest when a design decision becomes one variable.
@@ -218,7 +218,7 @@ export default function ProfilePageDemo() {
           {SKILLS.map((skill) => (
             <li
               key={skill}
-              className="rounded-full border border-black/10 bg-black/[0.03] px-3 py-1 text-xs dark:border-white/15 dark:bg-white/5"
+              className="rounded-full border border-foreground/10 bg-foreground/[0.04] px-3 py-1 text-xs"
             >
               {skill}
             </li>
@@ -231,7 +231,7 @@ export default function ProfilePageDemo() {
         <GlassPanel key={item.title} className="flex flex-col gap-3 p-5 md:col-span-2 lg:col-span-4">
           <div className="space-y-1">
             <p className="text-sm font-semibold leading-snug">{item.title}</p>
-            <p className="text-xs leading-relaxed text-black/60 dark:text-white/60">{item.summary}</p>
+            <p className="text-xs leading-relaxed text-foreground/60">{item.summary}</p>
           </div>
           <div className="mt-auto space-y-2">
             {item.progress !== undefined && (
@@ -241,7 +241,7 @@ export default function ProfilePageDemo() {
                 aria-valuemin={0}
                 aria-valuemax={100}
                 aria-label={\`\${item.title} progress\`}
-                className="h-1.5 overflow-hidden rounded-full bg-black/10 dark:bg-white/10"
+                className="h-1.5 overflow-hidden rounded-full bg-foreground/10"
               >
                 <div
                   className="h-full rounded-full bg-primary"
@@ -254,7 +254,7 @@ export default function ProfilePageDemo() {
                 "text-xs font-medium",
                 item.progress !== undefined
                   ? "text-primary"
-                  : "text-black/50 dark:text-white/50",
+                  : "text-foreground/50",
               )}
             >
               {item.status}
@@ -274,9 +274,9 @@ export default function ProfilePageDemo() {
               </span>
               <div className="min-w-0 flex-1">
                 <p className="truncate text-sm font-medium">{m.name}</p>
-                <p className="truncate text-xs text-black/55 dark:text-white/55">{m.role}</p>
+                <p className="truncate text-xs text-foreground/55">{m.role}</p>
               </div>
-              <span className="shrink-0 text-xs text-black/50 dark:text-white/50">{m.zone}</span>
+              <span className="shrink-0 text-xs text-foreground/50">{m.zone}</span>
             </li>
           ))}
         </ul>
@@ -285,14 +285,14 @@ export default function ProfilePageDemo() {
       {/* Activity */}
       <GlassPanel className="flex flex-col gap-4 p-6 md:col-span-3 lg:col-span-7">
         <h2 className="text-sm font-semibold">Recent activity</h2>
-        <ol className="flex flex-col divide-y divide-black/[0.06] dark:divide-white/[0.08]">
+        <ol className="flex flex-col divide-y divide-foreground/[0.07]">
           {ACTIVITY.map((a) => (
             <li key={a.text} className="flex items-center gap-3 py-2.5 first:pt-0 last:pb-0">
-              <span className="grid size-8 shrink-0 place-items-center rounded-full bg-black/[0.05] text-black/60 dark:bg-white/[0.07] dark:text-white/60">
+              <span className="grid size-8 shrink-0 place-items-center rounded-full bg-foreground/[0.06] text-foreground/60">
                 <a.icon className="size-3.5" />
               </span>
               <p className="min-w-0 flex-1 truncate text-sm">{a.text}</p>
-              <span className="shrink-0 text-xs text-black/50 dark:text-white/50">{a.when}</span>
+              <span className="shrink-0 text-xs text-foreground/50">{a.when}</span>
             </li>
           ))}
         </ol>
@@ -368,7 +368,7 @@ const ACTIVITY = [
 ];
 
 const focusRing =
-  "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-white dark:focus-visible:ring-offset-[#0b0b0f]";
+  "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background";
 
 export default function ProfilePageDemo() {
   const [following, setFollowing] = useState(false);
@@ -381,7 +381,7 @@ export default function ProfilePageDemo() {
           <a
             href="#"
             className={cn(
-              "inline-flex items-center gap-1.5 rounded-full text-sm text-black/60 transition-colors hover:text-black dark:text-white/60 dark:hover:text-white",
+              "inline-flex items-center gap-1.5 rounded-full text-sm text-foreground/60 transition-colors hover:text-foreground",
               focusRing,
             )}
           >
@@ -390,7 +390,7 @@ export default function ProfilePageDemo() {
           <button
             type="button"
             className={cn(
-              "inline-flex size-10 items-center justify-center rounded-full border border-black/10 bg-black/[0.03] text-black/70 transition-colors hover:bg-black/[0.06] dark:border-white/15 dark:bg-white/5 dark:text-white/70 dark:hover:bg-white/10",
+              "inline-flex size-10 items-center justify-center rounded-full border border-foreground/10 bg-foreground/[0.04] text-foreground/70 transition-colors hover:bg-foreground/[0.08]",
               focusRing,
             )}
             aria-label="Share profile"
@@ -412,10 +412,10 @@ export default function ProfilePageDemo() {
               Ayesha Karim
               <VerifyBadge size="lg" aria-label="Verified" />
             </h1>
-            <p className="mt-2 text-base text-black/60 dark:text-white/60">
+            <p className="mt-2 text-base text-foreground/60">
               Design engineer at Northwind
             </p>
-            <ul className="mt-3 flex flex-wrap gap-x-4 gap-y-1 text-sm text-black/60 dark:text-white/60">
+            <ul className="mt-3 flex flex-wrap gap-x-4 gap-y-1 text-sm text-foreground/60">
               <li className="flex items-center gap-1.5">
                 <MapPin className="size-3.5" /> Dhaka
               </li>
@@ -448,7 +448,7 @@ export default function ProfilePageDemo() {
             className={cn(
               "inline-flex h-11 items-center gap-2 rounded-full px-5 text-sm font-medium transition-colors",
               following
-                ? "border border-black/10 bg-black/[0.03] text-black hover:bg-black/[0.06] dark:border-white/15 dark:bg-white/5 dark:text-white dark:hover:bg-white/10"
+                ? "border border-foreground/10 bg-foreground/[0.04] text-foreground hover:bg-foreground/[0.08]"
                 : "bg-primary text-primary-foreground hover:bg-primary/90",
               focusRing,
             )}
@@ -459,7 +459,7 @@ export default function ProfilePageDemo() {
           <button
             type="button"
             className={cn(
-              "inline-flex h-11 items-center gap-2 rounded-full border border-black/10 bg-black/[0.03] px-5 text-sm font-medium transition-colors hover:bg-black/[0.06] dark:border-white/15 dark:bg-white/5 dark:hover:bg-white/10",
+              "inline-flex h-11 items-center gap-2 rounded-full border border-foreground/10 bg-foreground/[0.04] px-5 text-sm font-medium transition-colors hover:bg-foreground/[0.08]",
               focusRing,
             )}
           >
@@ -472,7 +472,7 @@ export default function ProfilePageDemo() {
       <GlassPanel shape="slab" className="flex flex-col p-6 md:col-span-6 lg:col-span-4">
         <div className="flex items-baseline justify-between">
           <h2 className="text-sm font-semibold">Her day</h2>
-          <p className="text-xs text-black/50 dark:text-white/50">UTC+6</p>
+          <p className="text-xs text-foreground/50">UTC+6</p>
         </div>
         <div className="my-auto py-4">
           <WorkdayDial
@@ -484,7 +484,7 @@ export default function ProfilePageDemo() {
             note="Replies within the day"
           />
         </div>
-        <p className="text-center text-sm text-black/60 dark:text-white/60">
+        <p className="text-center text-sm text-foreground/60">
           Hover the ring for her hours in your time
         </p>
       </GlassPanel>
@@ -495,7 +495,7 @@ export default function ProfilePageDemo() {
           <GlassPanel key={s.label} shape="disc" className="grid place-items-center text-center">
             <div>
               <p className="text-2xl font-semibold tabular-nums tracking-tight sm:text-3xl">{s.value}</p>
-              <p className="mt-0.5 text-[11px] text-black/55 dark:text-white/55 sm:text-xs">{s.label}</p>
+              <p className="mt-0.5 text-[11px] text-foreground/55 sm:text-xs">{s.label}</p>
             </div>
           </GlassPanel>
         ))}
@@ -504,7 +504,7 @@ export default function ProfilePageDemo() {
       {/* About */}
       <GlassPanel className="flex flex-col gap-4 p-6 md:col-span-6 lg:col-span-8">
         <h2 className="text-sm font-semibold">About</h2>
-        <p className="max-w-prose text-[15px] leading-relaxed text-black/70 dark:text-white/70">
+        <p className="max-w-prose text-[15px] leading-relaxed text-foreground/70">
           Builds the component library three product teams ship on. Currently
           rewriting the motion primitives so a modal, a drawer and a toast all
           ease the same way. Happiest when a design decision becomes one variable.
@@ -513,7 +513,7 @@ export default function ProfilePageDemo() {
           {SKILLS.map((skill) => (
             <li
               key={skill}
-              className="rounded-full border border-black/10 bg-black/[0.03] px-3 py-1 text-xs dark:border-white/15 dark:bg-white/5"
+              className="rounded-full border border-foreground/10 bg-foreground/[0.04] px-3 py-1 text-xs"
             >
               {skill}
             </li>
@@ -526,7 +526,7 @@ export default function ProfilePageDemo() {
         <GlassPanel key={item.title} className="flex flex-col gap-3 p-5 md:col-span-2 lg:col-span-4">
           <div className="space-y-1">
             <p className="text-sm font-semibold leading-snug">{item.title}</p>
-            <p className="text-xs leading-relaxed text-black/60 dark:text-white/60">{item.summary}</p>
+            <p className="text-xs leading-relaxed text-foreground/60">{item.summary}</p>
           </div>
           <div className="mt-auto space-y-2">
             {item.progress !== undefined && (
@@ -536,7 +536,7 @@ export default function ProfilePageDemo() {
                 aria-valuemin={0}
                 aria-valuemax={100}
                 aria-label={\`\${item.title} progress\`}
-                className="h-1.5 overflow-hidden rounded-full bg-black/10 dark:bg-white/10"
+                className="h-1.5 overflow-hidden rounded-full bg-foreground/10"
               >
                 <div
                   className="h-full rounded-full bg-primary"
@@ -549,7 +549,7 @@ export default function ProfilePageDemo() {
                 "text-xs font-medium",
                 item.progress !== undefined
                   ? "text-primary"
-                  : "text-black/50 dark:text-white/50",
+                  : "text-foreground/50",
               )}
             >
               {item.status}
@@ -569,9 +569,9 @@ export default function ProfilePageDemo() {
               </span>
               <div className="min-w-0 flex-1">
                 <p className="truncate text-sm font-medium">{m.name}</p>
-                <p className="truncate text-xs text-black/55 dark:text-white/55">{m.role}</p>
+                <p className="truncate text-xs text-foreground/55">{m.role}</p>
               </div>
-              <span className="shrink-0 text-xs text-black/50 dark:text-white/50">{m.zone}</span>
+              <span className="shrink-0 text-xs text-foreground/50">{m.zone}</span>
             </li>
           ))}
         </ul>
@@ -580,14 +580,14 @@ export default function ProfilePageDemo() {
       {/* Activity */}
       <GlassPanel className="flex flex-col gap-4 p-6 md:col-span-3 lg:col-span-7">
         <h2 className="text-sm font-semibold">Recent activity</h2>
-        <ol className="flex flex-col divide-y divide-black/[0.06] dark:divide-white/[0.08]">
+        <ol className="flex flex-col divide-y divide-foreground/[0.07]">
           {ACTIVITY.map((a) => (
             <li key={a.text} className="flex items-center gap-3 py-2.5 first:pt-0 last:pb-0">
-              <span className="grid size-8 shrink-0 place-items-center rounded-full bg-black/[0.05] text-black/60 dark:bg-white/[0.07] dark:text-white/60">
+              <span className="grid size-8 shrink-0 place-items-center rounded-full bg-foreground/[0.06] text-foreground/60">
                 <a.icon className="size-3.5" />
               </span>
               <p className="min-w-0 flex-1 truncate text-sm">{a.text}</p>
-              <span className="shrink-0 text-xs text-black/50 dark:text-white/50">{a.when}</span>
+              <span className="shrink-0 text-xs text-foreground/50">{a.when}</span>
             </li>
           ))}
         </ol>
@@ -666,7 +666,7 @@ export default function Minimal() {
     <ProfilePage className="rounded-[36px]" aurora={["#f9a8d4", "#a5b4fc", "#fde68a"]}>
       <GlassPanel shape="slab" className="p-8 lg:col-span-8">
         <h1 className="text-3xl font-semibold tracking-tight">Ayesha Karim</h1>
-        <p className="mt-2 text-black/60 dark:text-white/60">Design engineer at Northwind</p>
+        <p className="mt-2 text-foreground/60">Design engineer at Northwind</p>
       </GlassPanel>
 
       <GlassPanel shape="slab" className="p-6 lg:col-span-4">
@@ -686,25 +686,25 @@ Grid spans are plain Tailwind: the grid is `grid-cols-1 md:grid-cols-6 lg:grid-c
 ## Features
 
 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 my-6 not-prose">
-  <div className="p-6 rounded-2xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900">
-    <h3 className="text-lg font-semibold text-zinc-900 dark:text-zinc-50 mb-2">One glass, four shapes</h3>
-    <p className="text-zinc-600 dark:text-zinc-400 text-sm">Every panel shares a single recipe. Slab, tile, disc and capsule differ only in corners, so the page reads as one material rather than a kit of cards.</p>
+  <div className="p-6 rounded-2xl border border-border bg-card">
+    <h3 className="text-lg font-semibold text-card-foreground mb-2">One glass, four shapes</h3>
+    <p className="text-muted-foreground text-sm">Every panel shares a single recipe. Slab, tile, disc and capsule differ only in corners, so the page reads as one material rather than a kit of cards.</p>
   </div>
-  <div className="p-6 rounded-2xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900">
-    <h3 className="text-lg font-semibold text-zinc-900 dark:text-zinc-50 mb-2">A live dial, not a status dot</h3>
-    <p className="text-zinc-600 dark:text-zinc-400 text-sm">The 24-hour ring shows the working window and where the day is right now, computed in the person's own time zone with Intl.DateTimeFormat — no library.</p>
+  <div className="p-6 rounded-2xl border border-border bg-card">
+    <h3 className="text-lg font-semibold text-card-foreground mb-2">A live dial, not a status dot</h3>
+    <p className="text-muted-foreground text-sm">The 24-hour ring shows the working window and where the day is right now, computed in the person's own time zone with Intl.DateTimeFormat — no library.</p>
   </div>
-  <div className="p-6 rounded-2xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900">
-    <h3 className="text-lg font-semibold text-zinc-900 dark:text-zinc-50 mb-2">Light and dark by construction</h3>
-    <p className="text-zinc-600 dark:text-zinc-400 text-sm">Panels are translucent white over the aurora in light mode and over near-black in dark mode. The blobs dim, the text flips, nothing else has to change.</p>
+  <div className="p-6 rounded-2xl border border-border bg-card">
+    <h3 className="text-lg font-semibold text-card-foreground mb-2">Light and dark by construction</h3>
+    <p className="text-muted-foreground text-sm">Panels are translucent white over the aurora in light mode and over near-black in dark mode. The blobs dim, the text flips, nothing else has to change.</p>
   </div>
-  <div className="p-6 rounded-2xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900">
-    <h3 className="text-lg font-semibold text-zinc-900 dark:text-zinc-50 mb-2">Theme colours</h3>
-    <p className="text-zinc-600 dark:text-zinc-400 text-sm">The dial's arc and marker, the Follow button, the progress bars and the avatar are all written against <code>primary</code> and <code>ring</code>, so the page follows your theme preset — and the colour picker above — with no prop. Pass <code>var(--primary)</code> into <code>aurora</code> and the backdrop follows too.</p>
+  <div className="p-6 rounded-2xl border border-border bg-card">
+    <h3 className="text-lg font-semibold text-card-foreground mb-2">Theme colours</h3>
+    <p className="text-muted-foreground text-sm">The dial's arc and marker, the Follow button, the progress bars and the avatar are all written against <code>primary</code> and <code>ring</code>, so the page follows your theme preset — and the colour picker above — with no prop. Pass <code>var(--primary)</code> into <code>aurora</code> and the backdrop follows too.</p>
   </div>
-  <div className="p-6 rounded-2xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900">
-    <h3 className="text-lg font-semibold text-zinc-900 dark:text-zinc-50 mb-2">Still, on purpose</h3>
-    <p className="text-zinc-600 dark:text-zinc-400 text-sm">Nothing animates on load. The only motion is the marker on the dial and a lift on panels you mark interactive — and both hold still under prefers-reduced-motion.</p>
+  <div className="p-6 rounded-2xl border border-border bg-card">
+    <h3 className="text-lg font-semibold text-card-foreground mb-2">Still, on purpose</h3>
+    <p className="text-muted-foreground text-sm">Nothing animates on load. The only motion is the marker on the dial and a lift on panels you mark interactive — and both hold still under prefers-reduced-motion.</p>
   </div>
 </div>
 

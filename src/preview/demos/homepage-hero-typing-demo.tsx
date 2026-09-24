@@ -8,7 +8,7 @@ export default function HomepageHeroTypingDemo({
   color?: string;
 }) {
   return (
-    <div className="w-full flex flex-col justify-center items-center rounded-2xl border border-zinc-200 dark:border-zinc-800 overflow-hidden bg-white dark:bg-[#09090b]">
+    <div className="w-full flex flex-col justify-center items-center rounded-2xl border border-border overflow-hidden bg-background">
       <HeroBlock
         variant="typing"
         color={color}

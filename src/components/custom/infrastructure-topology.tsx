@@ -273,7 +273,7 @@ export function InfrastructureTopology({
         <div
             className={cn(
                 "w-full max-w-5xl mx-auto rounded-3xl border border-border/80 bg-background/95 backdrop-blur-2xl p-4 sm:p-6 md:p-8 shadow-none relative overflow-hidden select-none",
-                "bg-[radial-gradient(#e2e8f0_1.2px,transparent_1.2px)] dark:bg-[radial-gradient(#27272a_1.2px,transparent_1.2px)] [background-size:20px_20px]",
+                "bg-[radial-gradient(var(--border)_1.2px,transparent_1.2px)] [background-size:20px_20px]",
                 className
             )}
         >
@@ -399,7 +399,7 @@ export function InfrastructureTopology({
                         <div className={cn("absolute w-32 h-32 lg:w-36 lg:h-36 rounded-full border animate-ping opacity-40 pointer-events-none", centerTheme.ringOuter)} />
                         <div className={cn("absolute w-40 h-40 lg:w-44 lg:h-44 rounded-full border animate-pulse pointer-events-none", centerTheme.ringInner)} />
 
-                        <div className={cn("w-24 h-24 lg:w-28 lg:h-28 rounded-full bg-card text-card-foreground dark:bg-zinc-950 dark:text-white border-2 shadow-none flex flex-col items-center justify-center p-2.5 lg:p-3 relative cursor-pointer backdrop-blur-xl transition-colors", centerTheme.border)}>
+                        <div className={cn("w-24 h-24 lg:w-28 lg:h-28 rounded-full bg-card text-card-foreground border-2 shadow-none flex flex-col items-center justify-center p-2.5 lg:p-3 relative cursor-pointer backdrop-blur-xl transition-colors", centerTheme.border)}>
                             <div className={cn("p-1.5 lg:p-2 rounded-xl border mb-1 transition-colors", centerTheme.iconBg)}>
                                 <Zap className="w-5 h-5 lg:w-6 lg:h-6 animate-pulse" />
                             </div>
@@ -446,7 +446,7 @@ export function InfrastructureTopology({
                                 onMouseEnter={() => interactive && setHoveredNodeId(node.id)}
                                 onMouseLeave={() => interactive && setHoveredNodeId(null)}
                                 className={cn(
-                                    "absolute pointer-events-auto w-40 md:w-44 lg:w-48 rounded-2xl border bg-card/95 dark:bg-zinc-900/90 backdrop-blur-xl p-3 md:p-3.5 lg:p-4 shadow-none transition-all duration-300 flex flex-col items-center text-center gap-1.5 md:gap-2 cursor-pointer hover:scale-[1.03]",
+                                    "absolute pointer-events-auto w-40 md:w-44 lg:w-48 rounded-2xl border bg-card/95 backdrop-blur-xl p-3 md:p-3.5 lg:p-4 shadow-none transition-all duration-300 flex flex-col items-center text-center gap-1.5 md:gap-2 cursor-pointer hover:scale-[1.03]",
                                     getNodeBorderStyle(node.color, isHovered),
                                     posClasses
                                 )}
@@ -485,7 +485,7 @@ export function InfrastructureTopology({
                 <div className="flex flex-col items-center justify-center text-center py-2 cursor-pointer">
                     <div className="relative flex items-center justify-center">
                         <div className={cn("absolute w-28 h-28 rounded-full border animate-ping opacity-40 pointer-events-none", centerTheme.ringOuter)} />
-                        <div className={cn("w-20 h-20 rounded-full bg-card text-card-foreground dark:bg-zinc-950 dark:text-white border-2 flex flex-col items-center justify-center p-2 backdrop-blur-xl", centerTheme.border)}>
+                        <div className={cn("w-20 h-20 rounded-full bg-card text-card-foreground border-2 flex flex-col items-center justify-center p-2 backdrop-blur-xl", centerTheme.border)}>
                             <Zap className={cn("w-5 h-5 animate-pulse", centerTheme.text)} />
                         </div>
                     </div>
@@ -503,7 +503,7 @@ export function InfrastructureTopology({
                         <div
                             key={node.id}
                             className={cn(
-                                "rounded-2xl border bg-card/95 dark:bg-zinc-900/90 p-3.5 flex items-center gap-3 transition-all cursor-pointer hover:scale-[1.02]",
+                                "rounded-2xl border bg-card/95 p-3.5 flex items-center gap-3 transition-all cursor-pointer hover:scale-[1.02]",
                                 getNodeBorderStyle(node.color, false)
                             )}
                         >

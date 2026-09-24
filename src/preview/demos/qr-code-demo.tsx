@@ -156,7 +156,7 @@ export default function QrCodeDemo({
       { size: 200, level: "H" as const },
     ];
     return (
-      <div className="w-full flex flex-wrap items-end justify-center gap-10 min-h-[400px] bg-white dark:bg-black p-8 md:p-12 border border-zinc-200 dark:border-zinc-800 rounded-2xl">
+      <div className="w-full flex flex-wrap items-end justify-center gap-10 min-h-[400px] bg-background p-8 md:p-12 border border-border rounded-2xl">
         {swatches.map((s) => (
           <div key={s.size} className="flex flex-col items-center gap-3">
             <QrCodeGenerator
@@ -168,7 +168,7 @@ export default function QrCodeDemo({
               style={theme.textStyle}
               className={theme.text}
             />
-            <span className="text-xs font-semibold text-zinc-500">
+            <span className="text-xs font-semibold text-muted-foreground">
               size={s.size} · level=&quot;{s.level}&quot;
             </span>
           </div>
@@ -178,17 +178,17 @@ export default function QrCodeDemo({
   }
 
   return activeTab === "generator" ? (
-    <div className="w-full flex flex-col lg:flex-row gap-8 min-h-[400px] bg-white dark:bg-black p-8 md:p-12 border border-zinc-200 dark:border-zinc-800 rounded-2xl">
+    <div className="w-full flex flex-col lg:flex-row gap-8 min-h-[400px] bg-background p-8 md:p-12 border border-border rounded-2xl">
       {/* Left Column */}
       <div className="flex-1 flex flex-col gap-6">
-        <h3 className="text-lg font-medium text-slate-600 dark:text-slate-300">
+        <h3 className="text-lg font-medium text-muted-foreground">
           Generate QR codes from text or URLs.
         </h3>
 
         <div className="flex flex-col gap-2">
           <label
             htmlFor="qr-input"
-            className="block text-sm font-semibold text-slate-700 dark:text-slate-200">
+            className="block text-sm font-semibold text-foreground">
             Value:
           </label>
           <input
@@ -196,26 +196,26 @@ export default function QrCodeDemo({
             type="text"
             value={value}
             onChange={(e) => setValue(e.target.value)}
-            className="w-full px-4 py-3 border border-slate-200 dark:border-slate-800 rounded-xl bg-slate-50 dark:bg-slate-900 focus:outline-none focus:ring-2 focus:ring-blue-500/20 text-sm transition-colors"
+            className="w-full px-4 py-3 border border-input rounded-xl bg-muted focus:outline-none focus:ring-2 focus:ring-primary/20 text-sm transition-colors"
             placeholder="https://algorizetech.com"
           />
         </div>
 
         <div className="flex flex-col gap-2 mt-2">
-          <label className="block text-sm font-semibold text-slate-700 dark:text-slate-200 mb-1">
+          <label className="block text-sm font-semibold text-foreground mb-1">
             Correction Level:
           </label>
-          <div className="grid grid-cols-4 sm:inline-flex rounded-xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-black overflow-hidden w-full sm:w-max">
+          <div className="grid grid-cols-4 sm:inline-flex rounded-xl border border-border bg-background overflow-hidden w-full sm:w-max">
             {(["L", "M", "Q", "H"] as const).map((lvl) => (
               <button
                 key={lvl}
                 type="button"
                 onClick={() => setLevel(lvl)}
                 style={level === lvl ? theme.textStyle : undefined}
-                className={`flex-1 cursor-pointer px-3 sm:px-4 py-2 text-sm font-medium transition-colors border-r border-slate-200 dark:border-slate-800 last:border-r-0 text-center flex items-center justify-center ${
+                className={`flex-1 cursor-pointer px-3 sm:px-4 py-2 text-sm font-medium transition-colors border-r border-border last:border-r-0 text-center flex items-center justify-center ${
                   level === lvl
-                    ? `bg-slate-50 dark:bg-slate-900 ${theme.text}`
-                    : "text-slate-500 hover:text-slate-700 hover:bg-slate-50 dark:hover:bg-slate-800 dark:text-slate-400"
+                    ? `bg-muted ${theme.text}`
+                    : "text-muted-foreground hover:text-foreground hover:bg-muted"
                 }`}>
                 {lvl}
               </button>
@@ -226,7 +226,7 @@ export default function QrCodeDemo({
 
       {/* Right Column */}
       <div className="flex-1 flex flex-col gap-6">
-        <div className="flex items-center justify-center bg-slate-50 dark:bg-slate-900/50 rounded-2xl border border-slate-100 dark:border-slate-800/50 p-8 min-h-[300px] gap-6">
+        <div className="flex items-center justify-center bg-muted/50 rounded-2xl border border-border p-8 min-h-[300px] gap-6">
           <QrCodeGenerator
             id="qr-wrapper"
             value={value}
@@ -248,7 +248,7 @@ export default function QrCodeDemo({
           </button>
           <button
             onClick={handleDownloadPDF}
-            className="flex-1 cursor-pointer flex items-center justify-center gap-2 px-4 py-2.5 text-sm font-medium text-zinc-700 bg-white border border-zinc-200 hover:bg-zinc-50 dark:text-zinc-300 dark:bg-zinc-900 dark:border-zinc-800 dark:hover:bg-zinc-800 rounded-xl transition-colors">
+            className="flex-1 cursor-pointer flex items-center justify-center gap-2 px-4 py-2.5 text-sm font-medium text-foreground bg-card border border-border hover:bg-muted rounded-xl transition-colors">
             <FileText className="w-4 h-4" />
             Save as PDF
           </button>
@@ -256,7 +256,7 @@ export default function QrCodeDemo({
       </div>
     </div>
   ) : (
-    <div className="w-full flex items-center justify-center min-h-[400px] bg-zinc-50 dark:bg-zinc-950 p-8 md:p-12 border border-zinc-200 dark:border-zinc-800 rounded-2xl">
+    <div className="w-full flex items-center justify-center min-h-[400px] bg-background p-8 md:p-12 border border-border rounded-2xl">
       <QrCodeReader onRead={(data) => console.log("Scanned QR:", data)} />
     </div>
   );

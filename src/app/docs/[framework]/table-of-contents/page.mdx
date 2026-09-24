@@ -5,7 +5,7 @@ import { extractCode } from "@/lib/code";
 
 An interactive, responsive **Table of Contents** navigation block engineered to sit on the left side of long documents, articles, or documentation pages.
 
-Features a real-time scroll-spy, animated Framer Motion section indicator, scroll progress bar, section search filter, and mobile navigation drawer.
+Features a real-time scroll-spy, spring-animated section indicator, scroll progress bar, section search filter, and mobile navigation drawer.
 
 export const usageExample = `"use client";
 
@@ -17,7 +17,7 @@ const previewItems: TOCItem[] = [
     title: "Overview & Features",
     level: 1,
     description:
-      "The Table of Contents component is a powerful, production-grade navigation system designed specifically for content-heavy documentation, technical blogs, and long-form articles. It dynamically monitors viewport scroll position using high-performance IntersectionObserver and scroll-spy events to highlight the active section instantly. Engineered with smooth Framer Motion spring physics, the active indicator pill glides fluidly across navigation items without causing layout shifts.",
+      "The Table of Contents component is a powerful, production-grade navigation system designed specifically for content-heavy documentation, technical blogs, and long-form articles. It dynamically monitors viewport scroll position using high-performance IntersectionObserver and scroll-spy events to highlight the active section instantly. On a spring curve with no animation library behind it, the active indicator pill glides fluidly across navigation items without causing layout shifts.",
   },
   {
     id: "installation",
@@ -106,21 +106,21 @@ export default function TableOfContentsDemo() {
 ## Features
 
 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 my-6 not-prose">
-  <div className="p-6 rounded-2xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900">
-    <h3 className="text-lg font-semibold text-zinc-900 dark:text-zinc-50 mb-2">Right-Side Sticky Panel</h3>
-    <p className="text-zinc-600 dark:text-zinc-400 text-sm">Positions the TOC navigation cleanly on the right column while main content flows on the left.</p>
+  <div className="p-6 rounded-2xl border border-border bg-card">
+    <h3 className="text-lg font-semibold text-card-foreground mb-2">Right-Side Sticky Panel</h3>
+    <p className="text-muted-foreground text-sm">Positions the TOC navigation cleanly on the right column while main content flows on the left.</p>
   </div>
-  <div className="p-6 rounded-2xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900">
-    <h3 className="text-lg font-semibold text-zinc-900 dark:text-zinc-50 mb-2">Scroll-Spy Tracking</h3>
-    <p className="text-zinc-600 dark:text-zinc-400 text-sm">Automatically detects active viewport headings and animates the active indicator smoothly using Framer Motion.</p>
+  <div className="p-6 rounded-2xl border border-border bg-card">
+    <h3 className="text-lg font-semibold text-card-foreground mb-2">Scroll-Spy Tracking</h3>
+    <p className="text-muted-foreground text-sm">Automatically detects active viewport headings and animates the active indicator smoothly along a spring curve, with no animation library.</p>
   </div>
-  <div className="p-6 rounded-2xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900">
-    <h3 className="text-lg font-semibold text-zinc-900 dark:text-zinc-50 mb-2">Section Search Filter</h3>
-    <p className="text-zinc-600 dark:text-zinc-400 text-sm">Filter long document section headers instantly with an embedded search input.</p>
+  <div className="p-6 rounded-2xl border border-border bg-card">
+    <h3 className="text-lg font-semibold text-card-foreground mb-2">Section Search Filter</h3>
+    <p className="text-muted-foreground text-sm">Filter long document section headers instantly with an embedded search input.</p>
   </div>
-  <div className="p-6 rounded-2xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900">
-    <h3 className="text-lg font-semibold text-zinc-900 dark:text-zinc-50 mb-2">Mobile Dropdown Menu</h3>
-    <p className="text-zinc-600 dark:text-zinc-400 text-sm">Collapses into a sticky mobile bar with drawer navigation on smaller devices.</p>
+  <div className="p-6 rounded-2xl border border-border bg-card">
+    <h3 className="text-lg font-semibold text-card-foreground mb-2">Mobile Dropdown Menu</h3>
+    <p className="text-muted-foreground text-sm">Collapses into a sticky mobile bar with drawer navigation on smaller devices.</p>
   </div>
 </div>
 

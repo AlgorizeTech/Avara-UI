@@ -301,7 +301,7 @@ export function ContextMenuContent({
   const variantClasses: Record<ContextMenuVariant, string> = {
     default: "border-border bg-popover text-popover-foreground shadow-md",
     minimal: "border-border/50 bg-popover/95 text-popover-foreground shadow-sm backdrop-blur-xs",
-    glass: "border-white/20 dark:border-white/10 bg-white/80 dark:bg-zinc-950/80 backdrop-blur-xl shadow-xl",
+    glass: "border-foreground/10 bg-popover/80 text-popover-foreground backdrop-blur-xl shadow-xl",
   };
 
   if (!portalTarget || !open) {

@@ -27,7 +27,7 @@ export default function Bento() {
     <GlassBackdrop className="rounded-[36px]" aurora={["#f9a8d4", "#a5b4fc", "#fde68a"]}>
       <GlassPanel shape="slab" className="p-8 lg:col-span-8">
         <h2 className="text-2xl font-semibold tracking-tight">The hero surface</h2>
-        <p className="mt-2 text-sm text-black/60 dark:text-white/60">One recipe, four shapes.</p>
+        <p className="mt-2 text-sm text-foreground/60">One recipe, four shapes.</p>
       </GlassPanel>
 
       <GlassPanel shape="tile" interactive className="p-6 lg:col-span-4">
@@ -145,21 +145,21 @@ export default function Solid() {
 ## Features
 
 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 my-6 not-prose">
-  <div className="p-6 rounded-2xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900">
-    <h3 className="text-lg font-semibold text-zinc-900 dark:text-zinc-50 mb-2">One recipe, four shapes</h3>
-    <p className="text-zinc-600 dark:text-zinc-400 text-sm">Blur, hairline border and inset highlight are identical on every panel. Only the radius changes, so shape carries meaning instead of decoration.</p>
+  <div className="p-6 rounded-2xl border border-border bg-card">
+    <h3 className="text-lg font-semibold text-card-foreground mb-2">One recipe, four shapes</h3>
+    <p className="text-muted-foreground text-sm">Blur, hairline border and inset highlight are identical on every panel. Only the radius changes, so shape carries meaning instead of decoration.</p>
   </div>
-  <div className="p-6 rounded-2xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900">
-    <h3 className="text-lg font-semibold text-zinc-900 dark:text-zinc-50 mb-2">Glass or solid, by context</h3>
-    <p className="text-zinc-600 dark:text-zinc-400 text-sm">The backdrop sets the surface once and every panel reads it. Flip a whole page from frosted to flat with one prop; override a single panel when needed.</p>
+  <div className="p-6 rounded-2xl border border-border bg-card">
+    <h3 className="text-lg font-semibold text-card-foreground mb-2">Glass or solid, by context</h3>
+    <p className="text-muted-foreground text-sm">The backdrop sets the surface once and every panel reads it. Flip a whole page from frosted to flat with one prop; override a single panel when needed.</p>
   </div>
-  <div className="p-6 rounded-2xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900">
-    <h3 className="text-lg font-semibold text-zinc-900 dark:text-zinc-50 mb-2">Dark mode built in</h3>
-    <p className="text-zinc-600 dark:text-zinc-400 text-sm">The aurora dims and the glass darkens under the dark class; the hairline and highlight keep their contrast on both.</p>
+  <div className="p-6 rounded-2xl border border-border bg-card">
+    <h3 className="text-lg font-semibold text-card-foreground mb-2">Dark mode built in</h3>
+    <p className="text-muted-foreground text-sm">The aurora dims and the glass darkens under the dark class; the hairline and highlight keep their contrast on both.</p>
   </div>
-  <div className="p-6 rounded-2xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900">
-    <h3 className="text-lg font-semibold text-zinc-900 dark:text-zinc-50 mb-2">Nothing but Tailwind</h3>
-    <p className="text-zinc-600 dark:text-zinc-400 text-sm">No animation library, no portal. Spans, padding and inner layout are ordinary utility classes on the panel.</p>
+  <div className="p-6 rounded-2xl border border-border bg-card">
+    <h3 className="text-lg font-semibold text-card-foreground mb-2">Nothing but Tailwind</h3>
+    <p className="text-muted-foreground text-sm">No animation library, no portal. Spans, padding and inner layout are ordinary utility classes on the panel.</p>
   </div>
 </div>
 

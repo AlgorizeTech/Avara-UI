@@ -170,15 +170,15 @@ export default function SupportPage() {
   );
 
   return (
-    <div className="min-h-screen font-sans bg-muted dark:bg-[#09090b] flex flex-col items-center pt-8 pb-10 transition-colors duration-200">
+    <div className="min-h-screen font-sans bg-background flex flex-col items-center pt-8 pb-10 transition-colors duration-200">
       <main className="w-full px-4 md:px-8 max-w-[1600px] h-[90vh] flex flex-col">
-        <div className="bg-[#f9fbff] dark:bg-[#121217] border border-[#dcedff] dark:border-zinc-800 rounded-lg shadow-sm flex flex-col flex-1 overflow-hidden transition-colors">
+        <div className="bg-card border border-border rounded-lg shadow-sm flex flex-col flex-1 overflow-hidden transition-colors">
           {/* ==========================================
               HEADER
               ========================================== */}
-          <div className="flex items-center gap-3 p-4 border-b border-[#dcedff] dark:border-zinc-800 bg-white dark:bg-[#121217] shrink-0 transition-colors">
-            <List className="w-5 h-5 text-[#0070e0] dark:text-[#3b82f6]" />
-            <h2 className="text-base font-medium text-[#031849] dark:text-zinc-100">
+          <div className="flex items-center gap-3 p-4 border-b border-border bg-card shrink-0 transition-colors">
+            <List className="w-5 h-5 text-primary" />
+            <h2 className="text-base font-medium text-foreground">
               {DASHBOARD_DATA.header.title}:{" "}
               <span className="text-muted-foreground font-normal">
                 {DASHBOARD_DATA.header.subtitle}
@@ -190,14 +190,14 @@ export default function SupportPage() {
             {/* ==========================================
                 LEFT COLUMN: TICKET LIST
                 ========================================== */}
-            <div className="w-full md:w-[35%] lg:w-[25%] flex flex-col border-r border-[#dcedff] dark:border-zinc-800 bg-white dark:bg-[#121217] shrink-0 transition-colors">
-              <div className="flex items-center border-b border-[#dcedff] dark:border-zinc-800 bg-white dark:bg-[#121217] divide-x divide-[#dcedff] dark:divide-zinc-800 shrink-0 transition-colors">
+            <div className="w-full md:w-[35%] lg:w-[25%] flex flex-col border-r border-border bg-card shrink-0 transition-colors">
+              <div className="flex items-center border-b border-border bg-card divide-x divide-border shrink-0 transition-colors">
                 {DASHBOARD_DATA.filters.map((filter) => {
                   const Icon = filter.icon;
                   return (
                     <button
                       key={filter.id}
-                      className="flex items-center gap-2 px-4 py-3 text-sm text-[#4f4f4f] dark:text-zinc-300 hover:bg-muted flex-1 justify-center transition-colors"
+                      className="flex items-center gap-2 px-4 py-3 text-sm text-foreground/80 hover:bg-muted flex-1 justify-center transition-colors"
                     >
                       <Icon className="w-4 h-4 text-muted-foreground" />
                       {filter.label}{" "}
@@ -217,11 +217,11 @@ export default function SupportPage() {
                       onClick={() => setSelectedTicketId(ticket.id)}
                       className={`flex items-start p-4 border-b border-border cursor-pointer transition-colors ${
                         isActive
-                          ? "bg-[#eff5ff] dark:bg-[#3b82f6]/10 border-l-4 border-l-[#0070e0] dark:border-l-[#3b82f6]"
+                          ? "bg-primary/10 border-l-4 border-l-primary"
                           : "hover:bg-muted border-l-4 border-l-transparent"
                       }`}
                     >
-                      <div className="w-10 h-10 rounded bg-[#0070e0] dark:bg-[#3b82f6] text-white flex items-center justify-center font-semibold mr-3 shrink-0 mt-1">
+                      <div className="w-10 h-10 rounded bg-primary text-primary-foreground flex items-center justify-center font-semibold mr-3 shrink-0 mt-1">
                         {ticket.initials}
                       </div>
                       <div className="flex-1 min-w-0">
@@ -229,8 +229,8 @@ export default function SupportPage() {
                           <div
                             className={`text-sm truncate pr-2 ${
                               isActive
-                                ? "font-semibold text-[#0070e0] dark:text-[#3b82f6]"
-                                : "font-medium text-[#031849] dark:text-zinc-100"
+                                ? "font-semibold text-primary"
+                                : "font-medium text-foreground"
                             }`}
                           >
                             {ticket.title}
@@ -239,10 +239,10 @@ export default function SupportPage() {
                             {ticket.time}
                           </span>
                         </div>
-                        <div className="text-xs text-[#0070e0] dark:text-[#3b82f6] font-medium mb-1 truncate">
+                        <div className="text-xs text-primary font-medium mb-1 truncate">
                           {ticket.id}
                         </div>
-                        <div className="text-xs text-[#68708c] dark:text-zinc-400 truncate">
+                        <div className="text-xs text-muted-foreground truncate">
                           {ticket.author} • {ticket.company}
                         </div>
                       </div>
@@ -255,19 +255,19 @@ export default function SupportPage() {
             {/* ==========================================
                 MIDDLE & RIGHT COLUMNS (WRAPPER)
                 ========================================== */}
-            <div className="hidden md:flex flex-1 overflow-hidden bg-[#eff5ff] dark:bg-[#09090b] transition-colors">
+            <div className="hidden md:flex flex-1 overflow-hidden bg-muted transition-colors">
               {!selectedTicket ? (
                 // EMPTY STATE (NO TICKET SELECTED)
                 <div className="flex-1 flex flex-col items-center justify-center p-8 text-center">
                   <div className="max-w-md flex flex-col items-center">
-                    <div className="w-24 h-24 bg-card rounded-full flex items-center justify-center shadow-sm mb-6 text-[#0070e0] dark:text-[#3b82f6] transition-colors">
+                    <div className="w-24 h-24 bg-card rounded-full flex items-center justify-center shadow-sm mb-6 text-primary transition-colors">
                       <LifeBuoy className="w-12 h-12" strokeWidth={1.5} />
                     </div>
-                    <h2 className="text-3xl font-normal text-[#031849] dark:text-zinc-100 mb-3">
+                    <h2 className="text-3xl font-normal text-foreground mb-3">
                       {DASHBOARD_DATA.emptyState.greetingPrefix}{" "}
                       {DASHBOARD_DATA.emptyState.userName}!
                     </h2>
-                    <p className="text-lg text-[#68708c] dark:text-zinc-400 italic">
+                    <p className="text-lg text-muted-foreground italic">
                       {DASHBOARD_DATA.emptyState.message}
                     </p>
                   </div>
@@ -280,11 +280,11 @@ export default function SupportPage() {
                       ========================================== */}
                   <div className="flex-1 flex flex-col min-w-0 h-full animate-in fade-in duration-300">
                     {/* Chat Header */}
-                    <div className="flex items-center p-4 border-b border-[#e0e0e0] dark:border-zinc-800 bg-white dark:bg-[#121217] shrink-0 transition-colors">
-                      <div className="w-10 h-10 rounded bg-[#0070e0] dark:bg-[#3b82f6] text-white flex items-center justify-center font-semibold mr-3 shrink-0">
+                    <div className="flex items-center p-4 border-b border-border bg-card shrink-0 transition-colors">
+                      <div className="w-10 h-10 rounded bg-primary text-primary-foreground flex items-center justify-center font-semibold mr-3 shrink-0">
                         {selectedTicket.initials}
                       </div>
-                      <div className="text-base font-medium text-[#0070e0] dark:text-[#3b82f6]">
+                      <div className="text-base font-medium text-primary">
                         {selectedTicket.author}
                       </div>
                     </div>
@@ -302,7 +302,7 @@ export default function SupportPage() {
                             >
                               {!isSent && (
                                 <div
-                                  className={`w-10 h-10 rounded bg-[#0070e0] dark:bg-[#3b82f6] text-white flex items-center justify-center font-semibold mr-3 shrink-0 ${
+                                  className={`w-10 h-10 rounded bg-primary text-primary-foreground flex items-center justify-center font-semibold mr-3 shrink-0 ${
                                     !msg.showAvatar ? "invisible" : ""
                                   }`}
                                 >
@@ -312,15 +312,15 @@ export default function SupportPage() {
                               <div
                                 className={`px-4 py-3 rounded-lg max-w-[80%] text-sm ${
                                   isSent
-                                    ? "bg-card text-[#4f4f4f] dark:text-zinc-200 border border-[#e0e0e0] dark:border-zinc-700"
-                                    : "bg-[#0070e0] dark:bg-[#3b82f6] text-white border border-transparent"
+                                    ? "bg-card text-card-foreground border border-border"
+                                    : "bg-primary text-primary-foreground border border-transparent"
                                 } transition-colors`}
                               >
                                 {msg.message}
                               </div>
                             </div>
                             <div
-                              className={`text-xs text-[#65676b] dark:text-zinc-500 mt-1 ${
+                              className={`text-xs text-muted-foreground mt-1 ${
                                 isSent ? "text-right" : "text-left ml-[52px]"
                               }`}
                             >
@@ -333,16 +333,16 @@ export default function SupportPage() {
 
                     {/* Reply Section */}
                     <div className="p-3 bg-transparent shrink-0">
-                      <div className="bg-white dark:bg-[#121217] border border-[#e0e0e0] dark:border-zinc-800 rounded-lg flex flex-col overflow-hidden transition-colors">
-                        <div className="flex border-b border-[#e0e0e0] dark:border-zinc-800">
+                      <div className="bg-card border border-border rounded-lg flex flex-col overflow-hidden transition-colors">
+                        <div className="flex border-b border-border">
                           {DASHBOARD_DATA.replySection.tabs.map((tab) => (
                             <button
                               key={tab}
                               onClick={() => setActiveReplyTab(tab)}
                               className={`px-4 py-2.5 text-sm font-medium transition-colors ${
                                 activeReplyTab === tab
-                                  ? "text-[#2c3e50] dark:text-zinc-100 border-b-2 border-[#2c3e50] dark:border-zinc-100"
-                                  : "text-[#888] dark:text-zinc-500 hover:text-[#2c3e50] dark:hover:text-zinc-300"
+                                  ? "text-foreground border-b-2 border-primary"
+                                  : "text-muted-foreground hover:text-foreground"
                               }`}
                             >
                               {tab}
@@ -352,15 +352,15 @@ export default function SupportPage() {
                         <textarea
                           rows={2}
                           placeholder={DASHBOARD_DATA.replySection.placeholder}
-                          className="w-full p-3 text-sm text-[#333] dark:text-zinc-200 bg-transparent resize-none outline-none placeholder-gray-400 dark:placeholder-zinc-600"
+                          className="w-full p-3 text-sm text-foreground bg-transparent resize-none outline-none placeholder:text-muted-foreground"
                         ></textarea>
-                        <div className="flex items-center justify-between p-2 pl-4 border-t border-[#e0e0e0] dark:border-zinc-800">
-                          <div className="flex gap-4 text-[#888] dark:text-zinc-500">
-                            <Smile className="w-5 h-5 cursor-pointer hover:text-[#0070e0] dark:hover:text-[#3b82f6] transition-colors" />
-                            <ImageIcon className="w-5 h-5 cursor-pointer hover:text-[#0070e0] dark:hover:text-[#3b82f6] transition-colors" />
-                            <Paperclip className="w-5 h-5 cursor-pointer hover:text-[#0070e0] dark:hover:text-[#3b82f6] transition-colors" />
+                        <div className="flex items-center justify-between p-2 pl-4 border-t border-border">
+                          <div className="flex gap-4 text-muted-foreground">
+                            <Smile className="w-5 h-5 cursor-pointer hover:text-primary transition-colors" />
+                            <ImageIcon className="w-5 h-5 cursor-pointer hover:text-primary transition-colors" />
+                            <Paperclip className="w-5 h-5 cursor-pointer hover:text-primary transition-colors" />
                           </div>
-                          <button className="px-5 py-2 bg-[#0070e0] dark:bg-[#3b82f6] hover:bg-blue-700 dark:hover:bg-blue-500 text-white text-sm font-medium rounded transition-colors">
+                          <button className="px-5 py-2 bg-primary hover:bg-primary/90 text-primary-foreground text-sm font-medium rounded transition-colors">
                             {DASHBOARD_DATA.replySection.buttonText}
                           </button>
                         </div>
@@ -371,8 +371,8 @@ export default function SupportPage() {
                   {/* ==========================================
                       RIGHT COLUMN: DETAILS BOX
                       ========================================== */}
-                  <div className="w-[300px] lg:w-[350px] shrink-0 border-l border-[#dcedff] dark:border-zinc-800 bg-white dark:bg-[#121217] flex flex-col h-full animate-in slide-in-from-right-8 duration-300 transition-colors">
-                    <div className="flex items-center justify-between px-3 border-b border-[#dcedff] dark:border-zinc-800 shrink-0">
+                  <div className="w-[300px] lg:w-[350px] shrink-0 border-l border-border bg-card flex flex-col h-full animate-in slide-in-from-right-8 duration-300 transition-colors">
+                    <div className="flex items-center justify-between px-3 border-b border-border shrink-0">
                       <div className="flex">
                         {DASHBOARD_DATA.detailsSection.tabs.map((tab) => (
                           <button
@@ -380,18 +380,18 @@ export default function SupportPage() {
                             onClick={() => setActiveDetailsTab(tab)}
                             className={`px-3 py-4 text-xs font-medium transition-colors ${
                               activeDetailsTab === tab
-                                ? "text-[#333] dark:text-zinc-100 border-b-2 border-[#333] dark:border-zinc-100"
-                                : "text-[#888] dark:text-zinc-500 hover:text-[#333] dark:hover:text-zinc-300"
+                                ? "text-foreground border-b-2 border-primary"
+                                : "text-muted-foreground hover:text-foreground"
                             }`}
                           >
                             {tab}
                           </button>
                         ))}
                       </div>
-                      <div className="flex gap-3 text-[#888] dark:text-zinc-500">
-                        <Edit className="w-4 h-4 cursor-pointer hover:text-[#333] dark:hover:text-zinc-200" />
+                      <div className="flex gap-3 text-muted-foreground">
+                        <Edit className="w-4 h-4 cursor-pointer hover:text-foreground" />
                         <X
-                          className="w-4 h-4 cursor-pointer hover:text-[#333] dark:hover:text-zinc-200"
+                          className="w-4 h-4 cursor-pointer hover:text-foreground"
                           onClick={() => setSelectedTicketId(null)}
                         />
                       </div>
@@ -399,8 +399,8 @@ export default function SupportPage() {
 
                     <div className="flex-1 overflow-y-auto p-4 custom-scrollbar flex flex-col gap-4">
                       {/* Contact Details Panel */}
-                      <div className="border border-[#dcedff] dark:border-zinc-800 rounded-sm bg-card transition-colors">
-                        <div className="bg-[#0070e0] dark:bg-[#1e1e24] text-white dark:text-zinc-200 p-2.5 text-sm flex justify-between items-center rounded-t-sm border-b border-transparent dark:border-zinc-800">
+                      <div className="border border-border rounded-sm bg-card transition-colors">
+                        <div className="bg-primary text-primary-foreground p-2.5 text-sm flex justify-between items-center rounded-t-sm border-b border-transparent">
                           Contact Details
                           <span>📋</span>
                         </div>
@@ -421,10 +421,10 @@ export default function SupportPage() {
                             },
                           ].map((field) => (
                             <div key={field.label}>
-                              <div className="text-xs text-[#68708c] dark:text-zinc-400">
+                              <div className="text-xs text-muted-foreground">
                                 {field.label}
                               </div>
-                              <div className="text-xs text-[#001635] dark:text-zinc-100 mt-0.5">
+                              <div className="text-xs text-foreground mt-0.5">
                                 {field.val}
                               </div>
                             </div>
@@ -433,29 +433,29 @@ export default function SupportPage() {
                       </div>
 
                       {/* SLA Panel */}
-                      <div className="border border-[#dcedff] dark:border-zinc-800 rounded-sm bg-card transition-colors">
-                        <div className="bg-[#0070e0] dark:bg-[#1e1e24] text-white dark:text-zinc-200 p-2.5 text-sm flex justify-between items-center rounded-t-sm border-b border-transparent dark:border-zinc-800">
+                      <div className="border border-border rounded-sm bg-card transition-colors">
+                        <div className="bg-primary text-primary-foreground p-2.5 text-sm flex justify-between items-center rounded-t-sm border-b border-transparent">
                           SLA
                         </div>
                         <div className="p-3 flex flex-col gap-3">
                           <div>
-                            <div className="text-xs text-[#68708c] dark:text-zinc-400">
+                            <div className="text-xs text-muted-foreground">
                               First Response Due
                             </div>
                             <div className="flex items-center gap-1.5 mt-0.5">
                               <span className="w-2 h-2 rounded-full bg-[#28a745]" />
-                              <div className="text-xs text-[#0070e0] dark:text-[#3b82f6]">
+                              <div className="text-xs text-primary">
                                 {selectedTicket.sla.firstResponse}
                               </div>
                             </div>
                           </div>
                           <div>
-                            <div className="text-xs text-[#68708c] dark:text-zinc-400">
+                            <div className="text-xs text-muted-foreground">
                               Resolution Due
                             </div>
                             <div className="flex items-center gap-1.5 mt-0.5">
                               <span className="w-2 h-2 rounded-full bg-[#28a745]" />
-                              <div className="text-xs text-[#0070e0] dark:text-[#3b82f6]">
+                              <div className="text-xs text-primary">
                                 {selectedTicket.sla.resolution}
                               </div>
                             </div>
@@ -464,8 +464,8 @@ export default function SupportPage() {
                       </div>
 
                       {/* Ticket Properties Panel */}
-                      <div className="border border-[#dcedff] dark:border-zinc-800 rounded-sm bg-card transition-colors">
-                        <div className="bg-[#0070e0] dark:bg-[#1e1e24] text-white dark:text-zinc-200 p-2.5 text-sm flex justify-between items-center rounded-t-sm border-b border-transparent dark:border-zinc-800">
+                      <div className="border border-border rounded-sm bg-card transition-colors">
+                        <div className="bg-primary text-primary-foreground p-2.5 text-sm flex justify-between items-center rounded-t-sm border-b border-transparent">
                           Tickets
                         </div>
                         <div className="p-3 flex flex-col gap-3">
@@ -473,7 +473,7 @@ export default function SupportPage() {
                             DASHBOARD_DATA.detailsSection.dropdownOptions,
                           ).map(([key, options]) => (
                             <div key={key} className="flex flex-col">
-                              <label className="text-xs text-[#68708c] dark:text-zinc-400 capitalize mb-1">
+                              <label className="text-xs text-muted-foreground capitalize mb-1">
                                 {key.replace(/([A-Z])/g, " $1")}
                               </label>
                               <SelectBlock
@@ -497,7 +497,7 @@ export default function SupportPage() {
                                       : v,
                                   }))
                                 }
-                                color="#0070e0"
+                                color="primary"
                                 inputSize="sm"
                               />
                             </div>
@@ -525,19 +525,11 @@ export default function SupportPage() {
           background: transparent;
         }
         .custom-scrollbar::-webkit-scrollbar-thumb {
-          background-color: #dcedff;
+          background-color: var(--border);
           border-radius: 10px;
         }
         .custom-scrollbar::-webkit-scrollbar-thumb:hover {
-          background-color: #bbdbff;
-        }
-        @media (prefers-color-scheme: dark) {
-          .custom-scrollbar::-webkit-scrollbar-thumb {
-            background-color: #27272a;
-          }
-          .custom-scrollbar::-webkit-scrollbar-thumb:hover {
-            background-color: #3f3f46;
-          }
+          background-color: color-mix(in oklab, var(--muted-foreground) 50%, transparent);
         }
       `,
         }}

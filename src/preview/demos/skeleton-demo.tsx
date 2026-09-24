@@ -50,7 +50,7 @@ export default function SkeletonDemo({
       className="w-full flex items-center justify-center min-h-[400px] relative z-10"
     >
       {variant === "custom" ? (
-        <div className="flex gap-4 p-6 border border-zinc-200 dark:border-zinc-800 rounded-xl bg-white dark:bg-zinc-950 text-foreground shadow-sm w-full max-w-sm">
+        <div className="flex gap-4 p-6 border border-border rounded-xl bg-card text-foreground shadow-sm w-full max-w-sm">
           <SkeletonBlock
             width={width ?? 64}
             height={height ?? 64}

@@ -1,7 +1,6 @@
 "use client";
 
 import React, { forwardRef, useCallback, useEffect, useLayoutEffect, useRef, useState } from "react";
-import gsap from "gsap";
 import { ChevronLeft, ChevronRight, Compass } from "lucide-react";
 import { cn } from "@/lib/utils";
 
@@ -128,6 +127,53 @@ const prefersReducedMotion = () =>
   typeof window !== "undefined" && window.matchMedia?.("(prefers-reduced-motion: reduce)").matches;
 
 // ------------------------------------------
+// Motion. GSAP's power3.inOut for the cells; power2.inOut for the background,
+// run as its two exact halves (power2.in, then power2.out).
+// ------------------------------------------
+const EASE_TRAVEL =
+  "linear(0, 0, .0002, .0012, .0039, .0094, .0195, .0361, .0617, .0988, .1505, .2204, .3121, .4299, .5701, .6879, .7796, .8495, .9012, .9383, .9639, .9805, .9906, .9961, .9988, .9998, 1, 1)";
+const EASE_IN_HALF = "cubic-bezier(0.3333, 0, 0.6667, 0)";
+const EASE_OUT_HALF = "cubic-bezier(0.3333, 1, 0.6667, 1)";
+
+type StyleTarget = Record<string, string>;
+
+/**
+ * Take `el` from wherever it is on screen to `to`. A move already running is
+ * dropped where it stands and the new one starts from there and runs its full
+ * length — what GSAP's `killTweensOf` / `overwrite: "auto"` do. (A CSS
+ * transition would shorten a move that reverses back to where it started.)
+ * During `delay` the element holds its current place. Without `options` the
+ * values are simply set.
+ */
+function moveTo(
+  el: HTMLElement,
+  running: WeakMap<HTMLElement, Animation>,
+  to: StyleTarget,
+  options?: KeyframeAnimationOptions & { keyframes?: (from: StyleTarget) => Keyframe[] },
+) {
+  const current = running.get(el);
+  running.delete(el);
+  if (!options || typeof el.animate !== "function") {
+    current?.cancel();
+    Object.assign(el.style, to);
+    return;
+  }
+  // Read the on-screen values before the running move is dropped.
+  const cs = getComputedStyle(el);
+  const from: StyleTarget = {};
+  for (const key of Object.keys(to)) from[key] = cs.getPropertyValue(key);
+  current?.cancel();
+  Object.assign(el.style, to);
+  if (!current && Object.keys(to).every((key) => from[key] === to[key])) return;
+  const { keyframes, ...timing } = options;
+  try {
+    running.set(el, el.animate(keyframes ? keyframes(from) : [from, to], { fill: "backwards", ...timing }));
+  } catch {
+    // An engine without `linear()` easing: the element just takes its place.
+  }
+}
+
+// ------------------------------------------
 // Defaults — Lofoten and the fjords, from Unsplash, each with a deep tone
 // drawn from the photograph, so the ground shifts colour as the queue turns.
 // ------------------------------------------
@@ -185,6 +231,7 @@ export const HoneycombHero = forwardRef<HTMLElement, HoneycombHeroProps>(
     const cellRefs = useRef<(HTMLDivElement | null)[]>([]);
     const bgRefs = useRef<(HTMLDivElement | null)[]>([]);
     const placedRef = useRef(false);
+    const movesRef = useRef(new WeakMap<HTMLElement, Animation>());
 
     // Nine cells; each carries one photograph for good. Fewer photographs
     // than cells are repeated around the ring.
@@ -219,16 +266,16 @@ export const HoneycombHero = forwardRef<HTMLElement, HoneycombHeroProps>(
         const el = cellRefs.current[i];
         if (!el) return;
         const k = slotOf(i, offset);
-        const target = SLOTS[k];
+        const target = { ...SLOTS[k] };
         el.style.zIndex = String(k === 0 ? 30 : k === CELLS - 1 ? 5 : 20 - k);
-        if (!animate) {
-          gsap.set(el, target);
-        } else {
-          // A step taken mid-tween must not let the old tween run on through
-          // the new one's stagger delay, so the old one is dropped first.
-          gsap.killTweensOf(el);
-          gsap.to(el, { ...target, duration: 1.15, ease: "power3.inOut", delay: k * 0.045 });
-        }
+        // A step taken mid-move drops the old move where it stands, so it
+        // never runs on through the new one's stagger delay.
+        moveTo(
+          el,
+          movesRef.current,
+          target,
+          animate ? { duration: 1150, easing: EASE_TRAVEL, delay: k * 45 } : undefined,
+        );
       });
       placedRef.current = true;
       // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -239,7 +286,25 @@ export const HoneycombHero = forwardRef<HTMLElement, HoneycombHeroProps>(
       const reduced = prefersReducedMotion();
       bgRefs.current.forEach((el, i) => {
         if (!el) return;
-        gsap.to(el, { opacity: i === featureIndex ? 1 : 0, duration: reduced ? 0 : 1.4, ease: "power2.inOut", overwrite: "auto" });
+        const to = i === featureIndex ? 1 : 0;
+        moveTo(
+          el,
+          movesRef.current,
+          { opacity: String(to) },
+          reduced
+            ? undefined
+            : {
+                duration: 1400,
+                keyframes: (from) => {
+                  const start = parseFloat(from.opacity);
+                  return [
+                    { opacity: start, easing: EASE_IN_HALF },
+                    { opacity: (start + to) / 2, offset: 0.5, easing: EASE_OUT_HALF },
+                    { opacity: to },
+                  ];
+                },
+              },
+        );
       });
     }, [featureIndex]);
 

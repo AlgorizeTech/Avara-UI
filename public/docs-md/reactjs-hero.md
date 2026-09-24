@@ -47,7 +47,7 @@ npx shadcn@latest add @algorize-ui/honeycomb-hero
 ### Features
 
     A honeycomb that turns
-    The nine cells sit on a real hexagonal lattice, and the queue snakes around it so every step is a hop between neighbours. GSAP moves each cell to its next place with a short stagger — the one heading for the feature spot leads, the one leaving it follows last.
+    The nine cells sit on a real hexagonal lattice, and the queue snakes around it so every step is a hop between neighbours. Each cell glides to its next place with a short stagger — the one heading for the feature spot leads, the one leaving it follows last.
 
     The feature is the background
     Whatever photograph is in the large hexagon also fills the section behind everything, tinted with its own tone and darkened towards the copy. Photograph and colour crossfade together as the honeycomb turns — deep green behind the gorge, indigo behind the cabins, night blue behind the snow.
@@ -124,7 +124,7 @@ npx shadcn@latest add @algorize-ui/honeycomb-hero
 
 A full-bleed photo hero for a place worth travelling to: an eyebrow pill, a large light headline, a glass panel with the faces of the people who came before you and a call to action, and — the thing that moves — a queue of cards. The front card is the slide on screen; the ones behind it are what comes next. Every five seconds, or when a card is clicked, the queue slides forward, the photograph behind everything crossfades, and the headline and caption follow it.
 
-`HeroCarousel` composes the library: the faces are an AvatarStack. The colours come from the photographs; the theme's `--primary` (pin it with `accent`) is used only for the eyebrow pip and the focus rings.
+`HeroCarousel` composes the library: the faces are an AvatarStack. The colours come from the photographs; the theme's `--primary` (pin it with `accent`) is used for the eyebrow pip, the arrow on the call to action, the progress line and the focus rings.
 
 export const usageHeroCarousel = `const SLIDES = [
   {
@@ -186,10 +186,10 @@ The section takes the height its content needs — about 44rem on a desktop — 
 ### Features
 
     A queue, not a slider
-    Cards tween between their places in the queue with GSAP; the one sent to the back appears where it belongs instead of flying across the others. The background crossfades, settles and then drifts slowly until the next slide.
+    Cards glide between their places in the queue; the one sent to the back appears where it belongs instead of flying across the others. The background crossfades, settles and then drifts slowly until the next slide.
 
     The clock is the progress line
-    One tween fills the line under the front card and moves the queue when it completes. Pausing the line pauses the clock, so a hover never throws away the time already spent.
+    One CSS animation fills the line under the front card and moves the queue when it completes. Pausing the line pauses the clock, so a hover never throws away the time already spent.
 
     Every device
     The rail measures itself and picks card sizes from its own width, not the viewport. Desktop puts the panel beside the rail; tablets stack them; phones give the front card most of the row and keep the rest of the queue peeking in.
@@ -571,7 +571,7 @@ A GlassPanel that takes part in the reveal: shape="tile", interactive, three col
 
 A hero for a place that is warm and busy — a kindergarten here, but any studio, school or workshop: a badge whose name turns slowly around a mark, a serif headline with two words in colour, three hashtag pills, a collage of seven photographs in five staggered columns, and a footer with a quote, a scroll-down pill and a watch-video trigger. When it first appears the headline rises out of a blur, the pills pop in with a twist and the photographs come up one after another; after that the badge keeps turning and the pointer does the rest — photographs lift and zoom a touch, pills straighten, the arrow nods.
 
-`CollageHero` is built from library pieces: the scroll pill is Button, the video opens in a Dialog. The colours come from the theme — the violet is `--primary` (pin it with `accent`) and the second colour is `highlight`.
+`CollageHero` is built from library pieces: the scroll pill is Button, the video opens in a Dialog. The colours come from the theme — the accent is `--primary` (pin it with `accent`) and the second colour is `highlight`.
 
 export const usageCollage = `const PHOTOS = [
   { src: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_700,c_limit/v1790148862/pexels-photo-3661193-1790148865106.jpg", alt: "Wooden dinosaurs on a stack of books" },
@@ -736,7 +736,7 @@ npx shadcn@latest add @algorize-ui/collage-hero
 
 ## Hero Block
 
-A collection of modern hero layouts in one component, built with Tailwind CSS and Framer Motion: rotating word spring bounce, character typewriter effect, continuous thumbnail slider marquee, a CLI copy button and call-to-action buttons. One registry item, five variants.
+A collection of modern hero layouts in one component, built with Tailwind CSS and plain CSS animations, no animation library: rotating word spring bounce, character typewriter effect, continuous thumbnail slider marquee, a CLI copy button and call-to-action buttons. One registry item, five variants.
 
 export const usageWordBounce = `import { HeroBlock } from "@/components/custom/blocks/HeroBlock";
 
@@ -778,6 +778,14 @@ export default function Page() {
   );
 }`;
 
+export const usageFacility = `import { HeroBlock } from "@/components/custom/blocks/HeroBlock";
+
+export default function Page() {
+  return (
+    
+  );
+}`;
+
 ### Installation
 
 Register the @algorize-ui registry once per project, then add the component:
@@ -796,11 +804,11 @@ npx shadcn@latest add @algorize-ui/hero
 
           variant
 
-          "bounce" | "typing" | "slider" | "glow-arc" | "pet-shop" | "doctor"
+          "bounce" | "typing" | "slider" | "glow-arc" | "pet-shop" | "doctor" | "facility"
 
           "bounce"
 
-          The layout & animation style. "bounce" uses spring word motion; "typing" uses typewriter effect; "slider" renders split 2-column hero with continuous marquee; "glow-arc" renders centered radial glow arc. The hexagonal mosaic hero is Honeycomb Hero, further up this page; the screenshot wall and the revolving ring are their own sections, Component Wall and Orbit Gallery.
+          The layout & animation style. "bounce" uses spring word motion; "typing" uses typewriter effect; "slider" renders split 2-column hero with continuous marquee; "glow-arc" / "pet-shop" renders pet care hero; "doctor" renders medical test kits hero; "facility" renders architectural CAD blueprint grid hero with interactive morphing shape. The hexagonal mosaic hero is Honeycomb Hero, further up this page; the screenshot wall and the revolving ring are their own sections, Component Wall and Orbit Gallery.
 
           typingWords
 

@@ -3,7 +3,7 @@ import { extractCode } from "@/lib/code";
 
 # Theme Switcher
 
-A premium, GSAP-powered dark mode toggle component built specifically for Next.js applications using `next-themes`.
+A premium, animated dark mode toggle component built specifically for Next.js applications using `next-themes`.
 
 It includes three distinct layout variants (Icon, Pill, and Dropdown) to match different areas of your application, from compact navigation bars to sprawling settings menus. It safely handles React hydration to prevent the dreaded "dark mode flash" on initial load.
 
@@ -45,7 +45,7 @@ export default function DropdownSwitcher() {
   examples={[
     {
       title: "Icon",
-      subheading: "One button that flips between light and dark, with a GSAP micro-interaction on the icon and the circular reveal growing out of it.",
+      subheading: "One button that flips between light and dark, with a spin micro-interaction on the icon and the circular reveal growing out of it.",
       propNotes: [
         {
           prop: "variant",
@@ -130,32 +130,32 @@ export default function RootLayout({
 
 ## Features
 
-Explore the Theme Switcher's dark mode capabilities, featuring the circular reveal, hydration-safe rendering and GSAP-powered layout transitions.
+Explore the Theme Switcher's dark mode capabilities, featuring the circular reveal, hydration-safe rendering and smooth layout transitions.
 
 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 my-6 not-prose">
-  <div className="p-6 rounded-2xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900">
-    <h3 className="text-lg font-semibold text-zinc-900 dark:text-zinc-50 mb-2">Circular Reveal</h3>
-    <p className="text-zinc-600 dark:text-zinc-400 text-sm">The new theme sweeps out from whichever control was clicked, via the View Transitions API. The `::view-transition` rules it needs ship inside the component, so nothing has to be added to your global stylesheet. Set <code>reveal={false}</code> for an instant switch.</p>
+  <div className="p-6 rounded-2xl border border-border bg-card">
+    <h3 className="text-lg font-semibold text-card-foreground mb-2">Circular Reveal</h3>
+    <p className="text-muted-foreground text-sm">The new theme sweeps out from whichever control was clicked, via the View Transitions API. The `::view-transition` rules it needs ship inside the component, so nothing has to be added to your global stylesheet. Set <code>reveal={false}</code> for an instant switch.</p>
   </div>
-  <div className="p-6 rounded-2xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900">
-    <h3 className="text-lg font-semibold text-zinc-900 dark:text-zinc-50 mb-2">Self-contained</h3>
-    <p className="text-zinc-600 dark:text-zinc-400 text-sm">Every style the switcher relies on is in <code>ThemeSwitcherBlock.tsx</code>: Tailwind classes for the controls, and the reveal CSS injected once into <code>&lt;head&gt;</code>. Install it and it works; nothing to copy into <code>globals.css</code>.</p>
+  <div className="p-6 rounded-2xl border border-border bg-card">
+    <h3 className="text-lg font-semibold text-card-foreground mb-2">Self-contained</h3>
+    <p className="text-muted-foreground text-sm">Every style the switcher relies on is in <code>ThemeSwitcherBlock.tsx</code>: Tailwind classes for the controls, and the reveal CSS injected once into <code>&lt;head&gt;</code>. Install it and it works; nothing to copy into <code>globals.css</code>.</p>
   </div>
-  <div className="p-6 rounded-2xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900">
-    <h3 className="text-lg font-semibold text-zinc-900 dark:text-zinc-50 mb-2">Hydration Safe</h3>
-    <p className="text-zinc-600 dark:text-zinc-400 text-sm">Safely checks if the component is mounted on the client to completely eliminate the infamous React hydration mismatch errors.</p>
+  <div className="p-6 rounded-2xl border border-border bg-card">
+    <h3 className="text-lg font-semibold text-card-foreground mb-2">Hydration Safe</h3>
+    <p className="text-muted-foreground text-sm">Safely checks if the component is mounted on the client to completely eliminate the infamous React hydration mismatch errors.</p>
   </div>
-  <div className="p-6 rounded-2xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900">
-    <h3 className="text-lg font-semibold text-zinc-900 dark:text-zinc-50 mb-2">GSAP Animations</h3>
-    <p className="text-zinc-600 dark:text-zinc-400 text-sm">Uses GSAP for premium layout transitions and smooth sliding animations that feel completely native.</p>
+  <div className="p-6 rounded-2xl border border-border bg-card">
+    <h3 className="text-lg font-semibold text-card-foreground mb-2">No Animation Library</h3>
+    <p className="text-muted-foreground text-sm">The sliding pill, the icon spin and the dropdown run on the browser's built-in Web Animations API, so they feel completely native and add no dependency.</p>
   </div>
-  <div className="p-6 rounded-2xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900">
-    <h3 className="text-lg font-semibold text-zinc-900 dark:text-zinc-50 mb-2">3 Layout Variants</h3>
-    <p className="text-zinc-600 dark:text-zinc-400 text-sm">Ships with a compact Icon toggle, a sliding Pill control, and a classic Dropdown menu to fit any UI design.</p>
+  <div className="p-6 rounded-2xl border border-border bg-card">
+    <h3 className="text-lg font-semibold text-card-foreground mb-2">3 Layout Variants</h3>
+    <p className="text-muted-foreground text-sm">Ships with a compact Icon toggle, a sliding Pill control, and a classic Dropdown menu to fit any UI design.</p>
   </div>
-  <div className="p-6 rounded-2xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900">
-    <h3 className="text-lg font-semibold text-zinc-900 dark:text-zinc-50 mb-2">System Sync</h3>
-    <p className="text-zinc-600 dark:text-zinc-400 text-sm">Automatically syncs with the user's OS-level dark mode preferences if the "system" theme is selected.</p>
+  <div className="p-6 rounded-2xl border border-border bg-card">
+    <h3 className="text-lg font-semibold text-card-foreground mb-2">System Sync</h3>
+    <p className="text-muted-foreground text-sm">Automatically syncs with the user's OS-level dark mode preferences if the "system" theme is selected.</p>
   </div>
 </div>
 
@@ -196,7 +196,7 @@ Explore the Theme Switcher's dark mode capabilities, featuring the circular reve
           <code>"icon"</code>
         </td>
         <td>
-          Determines the structural layout and specific GSAP animations applied
+          Determines the structural layout and specific animations applied
           to the toggler.
           <ul>
             <li>

@@ -382,7 +382,7 @@ export const JwPlayer = React.forwardRef<HTMLDivElement, JwPlayerProps>(
     return (
       <div ref={ref} className={cn("relative w-full", className)} {...props}>
         {enableGlow && (
-          <div className="pointer-events-none absolute -inset-4 z-0 rounded-3xl bg-gradient-to-tr from-indigo-500/20 via-purple-500/20 to-pink-500/10 opacity-80 blur-3xl transition-opacity duration-500 dark:opacity-50" />
+          <div className="pointer-events-none absolute -inset-4 z-0 rounded-3xl bg-gradient-to-tr from-primary/20 via-primary/15 to-primary/5 opacity-80 blur-3xl transition-opacity duration-500 dark:opacity-50" />
         )}
 
         <div className="relative z-10 flex w-full flex-col overflow-hidden rounded-xl border border-border/80 bg-zinc-900 shadow-2xl sm:rounded-2xl md:rounded-3xl">

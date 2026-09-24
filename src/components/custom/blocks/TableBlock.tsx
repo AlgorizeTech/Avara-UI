@@ -1,7 +1,6 @@
 "use client";
 
 import { cn } from "@/lib/utils";
-import gsap from "gsap";
 import {
   Check,
   ChevronDown,
@@ -61,34 +60,34 @@ interface VariantSkin {
 
 const variantClasses: Record<TableVariant, VariantSkin> = {
   default: {
-    wrapper: "w-full bg-white dark:bg-zinc-950 border rounded-xl shadow-sm overflow-hidden",
-    heading: "border-b bg-white dark:bg-zinc-950",
-    footer: "border-t bg-white dark:bg-zinc-950",
-    headerRow: "bg-zinc-50/80 dark:bg-zinc-900/80 border-b",
-    row: "group border-b last:border-0 transition-colors bg-white dark:bg-zinc-950 hover:bg-zinc-50/80 dark:hover:bg-zinc-900/60",
-    selectedRow: "bg-zinc-100/80 dark:bg-zinc-900",
-    expanded: "bg-zinc-50/50 dark:bg-zinc-900/40 border-b",
+    wrapper: "w-full bg-card text-card-foreground border rounded-xl shadow-sm overflow-hidden",
+    heading: "border-b bg-card",
+    footer: "border-t bg-card",
+    headerRow: "bg-muted/80 border-b",
+    row: "group border-b last:border-0 transition-colors bg-card hover:bg-muted/60",
+    selectedRow: "bg-muted",
+    expanded: "bg-muted/50 border-b",
   },
   minimal: {
     wrapper: "w-full bg-transparent",
     heading: "border-b",
     footer: "border-t",
     headerRow: "border-b-2",
-    row: "group border-b last:border-0 transition-colors bg-transparent hover:bg-zinc-50/80 dark:hover:bg-zinc-900/60",
-    selectedRow: "bg-zinc-100/80 dark:bg-zinc-900/80",
-    expanded: "bg-zinc-50/50 dark:bg-zinc-900/40 border-b",
+    row: "group border-b last:border-0 transition-colors bg-transparent hover:bg-muted/60",
+    selectedRow: "bg-muted/80",
+    expanded: "bg-muted/50 border-b",
   },
   glass: {
     wrapper:
-      "w-full bg-white/40 dark:bg-black/40 backdrop-blur-xl border border-white/20 dark:border-white/10 rounded-xl shadow-xl overflow-hidden",
-    heading: "border-b border-white/20 dark:border-white/10",
-    footer: "border-t border-white/20 dark:border-white/10",
+      "w-full bg-card/40 text-card-foreground backdrop-blur-xl border border-foreground/10 rounded-xl shadow-xl overflow-hidden",
+    heading: "border-b border-foreground/10",
+    footer: "border-t border-foreground/10",
     headerRow:
-      "bg-white/20 dark:bg-white/5 border-b border-white/20 dark:border-white/10",
-    row: "group border-b border-white/10 dark:border-white/5 last:border-0 transition-colors hover:bg-white/10 dark:hover:bg-white/5",
-    selectedRow: "bg-white/20 dark:bg-white/10",
+      "bg-foreground/[0.04] border-b border-foreground/10",
+    row: "group border-b border-foreground/5 last:border-0 transition-colors hover:bg-foreground/5",
+    selectedRow: "bg-foreground/10",
     expanded:
-      "bg-black/5 dark:bg-white/5 border-b border-white/10 dark:border-white/5",
+      "bg-foreground/5 border-b border-foreground/5",
   },
 };
 
@@ -223,7 +222,7 @@ TableHeader.displayName = "TableHeader";
 
 export interface TableBodyProps
   extends React.HTMLAttributes<HTMLTableSectionElement> {
-  /** Staggered GSAP entrance for direct child rows. */
+  /** Staggered entrance for direct child rows. */
   animate?: boolean;
   /** Change this to replay the entrance — e.g. on sort or page change. */
   animateKey?: React.Key;
@@ -239,22 +238,30 @@ export const TableBody = forwardRef<HTMLTableSectionElement, TableBodyProps>(
 
     useEffect(() => {
       if (!animate || !innerRef.current) return;
-      const rows = innerRef.current.querySelectorAll(":scope > tr");
+      const rows = innerRef.current.querySelectorAll<HTMLTableRowElement>(
+        ":scope > tr",
+      );
       if (!rows.length) return;
-      const tween = gsap.fromTo(
-        rows,
-        { opacity: 0, y: 15 },
-        {
-          opacity: 1,
-          y: 0,
-          duration: 0.4,
-          stagger: 0.05,
-          ease: "power2.out",
-          clearProps: "all",
-        },
+      // `backwards` holds each row hidden through its stagger delay. The
+      // animation never writes the row's own style, and cancelling it (a new
+      // key mid-stagger, unmount) drops every row straight back to rest.
+      const animations = Array.from(rows, (row, index) =>
+        row.animate(
+          [
+            { opacity: 0, transform: "translateY(15px)" },
+            { opacity: 1, transform: "translateY(0px)" },
+          ],
+          {
+            duration: 400,
+            delay: index * 50,
+            // power2.out, exact
+            easing: "cubic-bezier(0.3333, 1, 0.6667, 1)",
+            fill: "backwards",
+          },
+        ),
       );
       return () => {
-        tween.kill();
+        animations.forEach((animation) => animation.cancel());
       };
     }, [animate, animateKey]);
 
@@ -869,7 +876,7 @@ export const DataTableSearch = forwardRef<
         placeholder={placeholder}
         style={themeStyle}
         className={cn(
-          "w-full h-9 pl-9 pr-3 py-1.5 text-[13px] bg-white dark:bg-zinc-950 text-foreground border rounded-lg outline-none transition-all shadow-sm focus:border-primary/30",
+          "w-full h-9 pl-9 pr-3 py-1.5 text-[13px] bg-background text-foreground border rounded-lg outline-none transition-all shadow-sm focus:border-primary/30",
           theme.borderSoft || "border-border",
           theme.hoverBorder,
           theme.focusRing,
@@ -926,7 +933,7 @@ export const DataTablePageSize = forwardRef<
           aria-haspopup="listbox"
           style={themeStyle}
           className={cn(
-            "h-9 pl-3 pr-2.5 text-xs font-semibold bg-white dark:bg-zinc-950 text-foreground border rounded-lg flex items-center gap-2 outline-none cursor-pointer transition-all shadow-sm",
+            "h-9 pl-3 pr-2.5 text-xs font-semibold bg-background text-foreground border rounded-lg flex items-center gap-2 outline-none cursor-pointer transition-all shadow-sm",
             theme.borderSoft || "border-border",
             theme.hoverBorder,
             theme.focusRing,
@@ -943,7 +950,7 @@ export const DataTablePageSize = forwardRef<
         </button>
 
         {isOpen && (
-          <div className="absolute left-0 mt-1.5 min-w-[70px] rounded-xl border border-border bg-white dark:bg-zinc-950 text-popover-foreground shadow-lg ring-1 ring-black/5 z-50 py-1 focus:outline-none animate-in fade-in-50 zoom-in-95 duration-100">
+          <div className="absolute left-0 mt-1.5 min-w-[70px] rounded-xl border border-border bg-popover text-popover-foreground shadow-lg ring-1 ring-black/5 z-50 py-1 focus:outline-none animate-in fade-in-50 zoom-in-95 duration-100">
             {pageSizeOptions.map((opt) => {
               const isSelected = pageSize === opt;
               return (
@@ -1133,7 +1140,7 @@ export function DataTableExport<T = unknown>({
         aria-haspopup="true"
         style={style}
         className={cn(
-          "inline-flex items-center gap-1.5 h-9 px-3 text-xs font-semibold rounded-lg border bg-white dark:bg-zinc-950 text-foreground transition-all duration-150 shadow-sm disabled:opacity-40 disabled:cursor-not-allowed cursor-pointer",
+          "inline-flex items-center gap-1.5 h-9 px-3 text-xs font-semibold rounded-lg border bg-background text-foreground transition-all duration-150 shadow-sm disabled:opacity-40 disabled:cursor-not-allowed cursor-pointer",
           theme.borderSoft || "border-border",
           theme.hoverBorder,
           theme.focusRing,

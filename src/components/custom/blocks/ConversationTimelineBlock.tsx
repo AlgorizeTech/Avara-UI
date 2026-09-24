@@ -1,8 +1,21 @@
 "use client";
 
 import { cn } from "@/lib/utils";
-import { useReducedMotion } from "framer-motion";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState, useSyncExternalStore } from "react";
+
+const REDUCED_MOTION = "(prefers-reduced-motion: reduce)";
+const subscribeReducedMotion = (onChange: () => void) => {
+  const mq = window.matchMedia(REDUCED_MOTION);
+  mq.addEventListener("change", onChange);
+  return () => mq.removeEventListener("change", onChange);
+};
+/** The visitor's reduced-motion preference; false while server-rendering. */
+const useReducedMotion = () =>
+  useSyncExternalStore(
+    subscribeReducedMotion,
+    () => window.matchMedia(REDUCED_MOTION).matches,
+    () => false,
+  );
 
 const TRANSITION_MS = 300;
 const MARK_WIDTH = 28;
@@ -29,7 +42,7 @@ export interface ConversationTimelineProps {
   visibleCount?: number;
   /** Fixed label column width (px) — labels truncate past this. Default 240. */
   labelWidth?: number;
-  /** Accent colour for the active row's line. Default a sky tone. */
+  /** Accent colour for the active row's line. Defaults to the theme's primary. */
   accent?: string;
   className?: string;
 }
@@ -49,7 +62,7 @@ export function ConversationTimeline({
   collapsedRowHeight = 10,
   visibleCount = 10,
   labelWidth = 240,
-  accent = "#0ea5e9",
+  accent = "var(--primary)",
   className,
 }: ConversationTimelineProps) {
   const [hoveredId, setHoveredId] = useState<string | null>(null);
@@ -176,7 +189,7 @@ export function ConversationTimeline({
             className={cn(
               "group flex items-center outline-none cursor-pointer shrink-0 active:scale-[0.96] transition-transform",
               "focus-visible:outline-2 focus-visible:outline-offset-2",
-              "focus-visible:outline-sky-600 dark:focus-visible:outline-sky-400",
+              "focus-visible:outline-ring",
               isRight ? "flex-row" : "flex-row-reverse",
             )}
             style={{
@@ -208,10 +221,10 @@ export function ConversationTimeline({
                 isRight ? "text-left origin-left" : "text-right origin-right",
                 isActive ? "font-medium" : "font-normal",
                 isHovered
-                  ? "text-zinc-900 dark:text-white"
+                  ? "text-foreground"
                   : isActive
-                    ? "text-zinc-800 dark:text-zinc-100"
-                    : "text-zinc-600 dark:text-zinc-400",
+                    ? "text-foreground/90"
+                    : "text-muted-foreground",
               )}
               style={{
                 width: labelWidth,

@@ -60,7 +60,7 @@
         "communication"
       ],
       "dependencies": [
-        "framer-motion",
+        "gsap",
         "lucide-react"
       ],
       "registryDependencies": [
@@ -71,9 +71,44 @@
           "path": "src/components/custom/blocks/Ai-chat.tsx",
           "type": "registry:component",
           "target": "components/custom/blocks/Ai-chat.tsx"
+        },
+        {
+          "path": "src/components/custom/blocks/gsap-motion.ts",
+          "type": "registry:component",
+          "target": "components/custom/blocks/gsap-motion.ts"
+        },
+        {
+          "path": "src/components/custom/blocks/motion-curves.ts",
+          "type": "registry:component",
+          "target": "components/custom/blocks/motion-curves.ts"
         }
       ],
       "docs": "Named exports: AIChat, plus ChatThread, Message, ChatModel, EffortOption, ComposerTool, SendPayload and UploadHandler types. Responses are mocked — wire `onSend` ({ content, attachments, model, effort, tools }) to your endpoint and `uploadFile` (file, onProgress, signal) to your storage. The composer ships with a + menu (`tools`: one upload row opens the picker, the rest insert @Label mentions), drag-and-drop attachments (rocket progress indicator), a `models` picker, a Faster↔Smarter `efforts` slider that lights the prompt bar at the top level, and mic dictation via getUserMedia + the Web Speech API with graceful fallbacks. Variants: default | minimal | glass | compact (no history sidebar — opens as a hero with `heroTitle` over the prompt bar until the first message; `showSidebar={false}` does the same for any variant)."
+    },
+    {
+      "name": "ai-chat-framer",
+      "type": "registry:component",
+      "title": "AI Chat (Framer Motion)",
+      "author": "AlgorizeTech",
+      "description": "An AI assistant interface with thread history sidebar, streaming-style responses and a prompt composer. Use it as the front end for an LLM feature.",
+      "categories": [
+        "communication"
+      ],
+      "dependencies": [
+        "framer-motion",
+        "lucide-react"
+      ],
+      "registryDependencies": [
+        "utils"
+      ],
+      "files": [
+        {
+          "path": "src/components/custom/blocks/framer/Ai-chat.tsx",
+          "type": "registry:component",
+          "target": "components/custom/blocks/Ai-chat.tsx"
+        }
+      ],
+      "docs": "Framer Motion build of `ai-chat` — same props, markup and install path; install one or the other. Named exports: AIChat, plus ChatThread, Message, ChatModel, EffortOption, ComposerTool, SendPayload and UploadHandler types. Responses are mocked — wire `onSend` ({ content, attachments, model, effort, tools }) to your endpoint and `uploadFile` (file, onProgress, signal) to your storage. The composer ships with a + menu (`tools`: one upload row opens the picker, the rest insert @Label mentions), drag-and-drop attachments (rocket progress indicator), a `models` picker, a Faster↔Smarter `efforts` slider that lights the prompt bar at the top level, and mic dictation via getUserMedia + the Web Speech API with graceful fallbacks. Variants: default | minimal | glass | compact (no history sidebar — opens as a hero with `heroTitle` over the prompt bar until the first message; `showSidebar={false}` does the same for any variant)."
     },
     {
       "name": "alert",
@@ -104,11 +139,13 @@
       "type": "registry:component",
       "title": "Animated Faq",
       "author": "AlgorizeTech",
-      "description": "TODO: describe animated-faq. Generated placeholder.",
-      "categories": [],
+      "description": "An FAQ section pairing an accordion of questions with a picture canvas that resizes and crossfades to each open answer. Use it for landing-page FAQs that should feel editorial rather than list-like.",
+      "categories": [
+        "marketing",
+        "layout"
+      ],
       "dependencies": [
-        "lucide-react",
-        "motion"
+        "lucide-react"
       ],
       "registryDependencies": [
         "utils"
@@ -119,7 +156,8 @@
           "type": "registry:component",
           "target": "components/custom/blocks/AnimatedFAQBlock.tsx"
         }
-      ]
+      ],
+      "docs": "Named export: AnimatedFAQBlock (also the default export); `FAQ_ITEMS` holds the sample data. All motion is CSS — no animation library."
     },
     {
       "name": "animated-list",
@@ -131,9 +169,7 @@
         "media",
         "scroll"
       ],
-      "dependencies": [
-        "gsap"
-      ],
+      "dependencies": [],
       "registryDependencies": [
         "utils"
       ],
@@ -184,9 +220,7 @@
         "typography",
         "marketing"
       ],
-      "dependencies": [
-        "framer-motion"
-      ],
+      "dependencies": [],
       "registryDependencies": [
         "utils"
       ],
@@ -399,7 +433,6 @@
         "dates"
       ],
       "dependencies": [
-        "framer-motion",
         "lucide-react"
       ],
       "registryDependencies": [
@@ -412,7 +445,7 @@
           "target": "components/custom/blocks/BookingCardBlock.tsx"
         }
       ],
-      "docs": "Named export: BookingCard (plus the BookingSlot and Booking types). `BookingCard` is a compound component — put `BookingCard.Days`, `BookingCard.Slots`, `BookingCard.Submit` and `BookingCard.Confirmation` inside it in any layout; it holds the chosen day and slot and calls `onBook`. It draws no surface of its own: make it the padded inside of whatever panel it sits in so the confirmation reaches the edges. The submit button, check mark and focus rings use the `--primary` token."
+      "docs": "Named export: BookingCard (plus the BookingSlot and Booking types). `BookingCard` is a compound component — put `BookingCard.Days`, `BookingCard.Slots`, `BookingCard.Submit` and `BookingCard.Confirmation` inside it in any layout; it holds the chosen day and slot and calls `onBook`. It draws no surface of its own: make it the padded inside of whatever panel it sits in so the confirmation reaches the edges. The selected day and slot, the submit and 'Add to calendar' buttons, the check mark and the focus rings use the `--primary` token."
     },
     {
       "name": "breadcrumb",
@@ -534,7 +567,6 @@
         "navigation"
       ],
       "dependencies": [
-        "gsap",
         "lucide-react"
       ],
       "registryDependencies": [
@@ -560,7 +592,7 @@
         "marketing"
       ],
       "dependencies": [
-        "framer-motion",
+        "gsap",
         "lucide-react"
       ],
       "registryDependencies": [
@@ -571,9 +603,45 @@
           "path": "src/components/custom/blocks/ThreeDCarouselBlock.tsx",
           "type": "registry:component",
           "target": "components/custom/blocks/ThreeDCarouselBlock.tsx"
+        },
+        {
+          "path": "src/components/custom/blocks/gsap-motion.ts",
+          "type": "registry:component",
+          "target": "components/custom/blocks/gsap-motion.ts"
+        },
+        {
+          "path": "src/components/custom/blocks/motion-curves.ts",
+          "type": "registry:component",
+          "target": "components/custom/blocks/motion-curves.ts"
         }
       ],
       "docs": "Named exports: ThreeDCarousel, CarouselItem. `items` take { id, title, category, image, description? }. `autoPlay` with `autoPlayInterval` advances it; dragging pauses. Renders a plain <img>, so it works outside Next.js."
+    },
+    {
+      "name": "carousel-3d-framer",
+      "type": "registry:component",
+      "title": "Carousel 3D (Framer Motion)",
+      "author": "AlgorizeTech",
+      "description": "A perspective carousel where cards rotate through depth, with drag and autoplay. Use it for portfolio and gallery sections that need presence.",
+      "categories": [
+        "media",
+        "marketing"
+      ],
+      "dependencies": [
+        "framer-motion",
+        "lucide-react"
+      ],
+      "registryDependencies": [
+        "utils"
+      ],
+      "files": [
+        {
+          "path": "src/components/custom/blocks/framer/ThreeDCarouselBlock.tsx",
+          "type": "registry:component",
+          "target": "components/custom/blocks/ThreeDCarouselBlock.tsx"
+        }
+      ],
+      "docs": "Framer Motion build of `carousel-3d` — same props, markup and install path; install one or the other. Named exports: ThreeDCarousel, CarouselItem. `items` take { id, title, category, image, description? }. `autoPlay` with `autoPlayInterval` advances it; dragging pauses. Renders a plain <img>, so it works outside Next.js."
     },
     {
       "name": "cart",
@@ -585,7 +653,6 @@
         "commerce"
       ],
       "dependencies": [
-        "gsap",
         "lucide-react"
       ],
       "registryDependencies": [
@@ -661,7 +728,6 @@
         "communication"
       ],
       "dependencies": [
-        "gsap",
         "lucide-react"
       ],
       "registryDependencies": [
@@ -709,7 +775,6 @@
         "layout"
       ],
       "dependencies": [
-        "gsap",
         "lucide-react"
       ],
       "registryDependencies": [
@@ -810,7 +875,6 @@
         "layout"
       ],
       "dependencies": [
-        "framer-motion",
         "lucide-react"
       ],
       "registryDependencies": [
@@ -886,9 +950,7 @@
         "navigation",
         "communication"
       ],
-      "dependencies": [
-        "framer-motion"
-      ],
+      "dependencies": [],
       "registryDependencies": [
         "utils"
       ],
@@ -937,7 +999,6 @@
         "forms"
       ],
       "dependencies": [
-        "gsap",
         "lucide-react"
       ],
       "registryDependencies": [
@@ -968,7 +1029,6 @@
         "data-display"
       ],
       "dependencies": [
-        "framer-motion",
         "lucide-react"
       ],
       "registryDependencies": [
@@ -1065,9 +1125,7 @@
         "marketing",
         "data-display"
       ],
-      "dependencies": [
-        "gsap"
-      ],
+      "dependencies": [],
       "registryDependencies": [
         "https://algorize-ui.vercel.app/r/apple-select.json",
         "https://algorize-ui.vercel.app/r/flowchart.json",
@@ -1150,7 +1208,6 @@
         "dates"
       ],
       "dependencies": [
-        "framer-motion",
         "lucide-react"
       ],
       "registryDependencies": [
@@ -1167,6 +1224,11 @@
           "path": "src/components/custom/blocks/date-picker-theme.ts",
           "type": "registry:component",
           "target": "components/custom/blocks/date-picker-theme.ts"
+        },
+        {
+          "path": "src/components/custom/blocks/motion-curves.ts",
+          "type": "registry:component",
+          "target": "components/custom/blocks/motion-curves.ts"
         }
       ],
       "docs": "Named exports: DatePickerBlock, getThemeStyles. Controlled via `value: Date | null` and `onChange`. Shares the variant, color and size vocabulary of the `input` item, so the two line up visually in the same form. For month grids or event display, use `calendar` instead."
@@ -1182,7 +1244,6 @@
         "marketing"
       ],
       "dependencies": [
-        "framer-motion",
         "lucide-react"
       ],
       "registryDependencies": [
@@ -1193,6 +1254,11 @@
           "path": "src/components/custom/blocks/DesignComponentsFolder.tsx",
           "type": "registry:component",
           "target": "components/custom/blocks/DesignComponentsFolder.tsx"
+        },
+        {
+          "path": "src/components/custom/blocks/motion-curves.ts",
+          "type": "registry:component",
+          "target": "components/custom/blocks/motion-curves.ts"
         }
       ],
       "docs": "Named export: DesignComponentsFolder. Framer Motion drives the open and card-fan animation; `color` tints the folder. Uses next/image, so it needs edits outside Next.js. For the empty folder shape, use `design-folder-box`."
@@ -1259,7 +1325,7 @@
         "navigation"
       ],
       "dependencies": [
-        "framer-motion"
+        "gsap"
       ],
       "registryDependencies": [
         "utils"
@@ -1269,14 +1335,84 @@
           "path": "src/components/custom/blocks/DockBlock.tsx",
           "type": "registry:component",
           "target": "components/custom/blocks/DockBlock.tsx"
+        },
+        {
+          "path": "src/components/custom/blocks/gsap-motion.ts",
+          "type": "registry:component",
+          "target": "components/custom/blocks/gsap-motion.ts"
+        },
+        {
+          "path": "src/components/custom/blocks/motion-curves.ts",
+          "type": "registry:component",
+          "target": "components/custom/blocks/motion-curves.ts"
         }
       ],
       "docs": "Named exports: Dock, DockItem. `items` take { id, label, icon, onClick?, isActive?, badge? }. `magnification` sets peak scale and `distance` the falloff radius. Pointer-driven — on touch devices it degrades to a plain icon row."
     },
     {
+      "name": "dock-framer",
+      "type": "registry:component",
+      "title": "Dock (Framer Motion)",
+      "author": "AlgorizeTech",
+      "description": "A macOS-style dock where icons magnify as the pointer approaches. Use it for app launchers and playful navigation bars.",
+      "categories": [
+        "navigation"
+      ],
+      "dependencies": [
+        "framer-motion"
+      ],
+      "registryDependencies": [
+        "utils"
+      ],
+      "files": [
+        {
+          "path": "src/components/custom/blocks/framer/DockBlock.tsx",
+          "type": "registry:component",
+          "target": "components/custom/blocks/DockBlock.tsx"
+        }
+      ],
+      "docs": "Framer Motion build of `dock` — same props, markup and install path; install one or the other. Named exports: Dock, DockItem. `items` take { id, label, icon, onClick?, isActive?, badge? }. `magnification` sets peak scale and `distance` the falloff radius. Pointer-driven — on touch devices it degrades to a plain icon row."
+    },
+    {
       "name": "draggable-card-list",
       "type": "registry:component",
       "title": "Draggable Card List",
+      "author": "AlgorizeTech",
+      "description": "An interactive reorderable card list with 60fps Framer Motion spring physics, right-side grip handles, and custom card metadata.",
+      "categories": [
+        "data-display",
+        "layout"
+      ],
+      "dependencies": [
+        "gsap",
+        "lucide-react"
+      ],
+      "registryDependencies": [
+        "utils"
+      ],
+      "files": [
+        {
+          "path": "src/components/custom/draggable-card-list.tsx",
+          "type": "registry:component",
+          "target": "components/custom/draggable-card-list.tsx"
+        },
+        {
+          "path": "src/components/custom/blocks/gsap-motion.ts",
+          "type": "registry:component",
+          "target": "components/custom/blocks/gsap-motion.ts"
+        },
+        {
+          "path": "src/components/custom/blocks/motion-curves.ts",
+          "type": "registry:component",
+          "target": "components/custom/blocks/motion-curves.ts"
+        }
+      ],
+      "docs": "Named exports: DraggableCardList, DraggableCardItem. Accepts `items` ({ id, title, description, date, badge, linkText, linkUrl, completed }), `onReorder`, `title`, `dragHandlePosition` ('right' | 'left'), `enableCheckboxes`, and `enableBadges`."
+    },
+    {
+      "name": "draggable-card-list-framer",
+      "type": "registry:component",
+      "title": "Draggable Card List (Framer Motion)",
       "author": "AlgorizeTech",
       "description": "An interactive reorderable card list with 60fps Framer Motion spring physics, right-side grip handles, and custom card metadata.",
       "categories": [
@@ -1292,12 +1428,12 @@
       ],
       "files": [
         {
-          "path": "src/components/custom/draggable-card-list.tsx",
+          "path": "src/components/custom/framer/draggable-card-list.tsx",
           "type": "registry:component",
           "target": "components/custom/draggable-card-list.tsx"
         }
       ],
-      "docs": "Named exports: DraggableCardList, DraggableCardItem. Accepts `items` ({ id, title, description, date, badge, linkText, linkUrl, completed }), `onReorder`, `title`, `dragHandlePosition` ('right' | 'left'), `enableCheckboxes`, and `enableBadges`."
+      "docs": "Framer Motion build of `draggable-card-list` — same props, markup and install path; install one or the other. Named exports: DraggableCardList, DraggableCardItem. Accepts `items` ({ id, title, description, date, badge, linkText, linkUrl, completed }), `onReorder`, `title`, `dragHandlePosition` ('right' | 'left'), `enableCheckboxes`, and `enableBadges`."
     },
     {
       "name": "drawer",
@@ -1309,7 +1445,6 @@
         "overlays"
       ],
       "dependencies": [
-        "gsap",
         "lucide-react"
       ],
       "registryDependencies": [
@@ -1359,7 +1494,6 @@
         "layout"
       ],
       "dependencies": [
-        "gsap",
         "lucide-react"
       ],
       "registryDependencies": [
@@ -1391,7 +1525,6 @@
         "media"
       ],
       "dependencies": [
-        "framer-motion",
         "lucide-react"
       ],
       "registryDependencies": [
@@ -1403,6 +1536,11 @@
           "path": "src/components/custom/blocks/FlavourCarouselBlock.tsx",
           "type": "registry:component",
           "target": "components/custom/blocks/FlavourCarouselBlock.tsx"
+        },
+        {
+          "path": "src/components/custom/blocks/motion-curves.ts",
+          "type": "registry:component",
+          "target": "components/custom/blocks/motion-curves.ts"
         }
       ],
       "docs": "Named export: FlavourCarousel. Composed from the button item, which installs alongside it. Pass `flavours` ({ name, price?, tint?, product, tile }[] — every product image must share the same crop), `heading`, `interval` in ms (0 turns autoplay off), `initial`, `reveal` (in-view, immediate or none), `onChange` and `onAdd` (omit it to hide the cart button) with `addLabel`. `backgroundImage` is the backdrop and `foregroundImage` the transparent powder cutout laid in front of the cup (`foregroundHeight` of the stage tall); without them the scene is drawn from `background`, `mound` ([light, dark]) and `paper`."
@@ -1448,7 +1586,6 @@
         "marketing"
       ],
       "dependencies": [
-        "framer-motion",
         "lucide-react"
       ],
       "registryDependencies": [
@@ -1459,6 +1596,11 @@
           "path": "src/components/custom/blocks/FloatingContactButtonBlock.tsx",
           "type": "registry:component",
           "target": "components/custom/blocks/FloatingContactButtonBlock.tsx"
+        },
+        {
+          "path": "src/components/custom/blocks/motion-curves.ts",
+          "type": "registry:component",
+          "target": "components/custom/blocks/motion-curves.ts"
         }
       ],
       "docs": "Named export: FloatingContactButtonBlock. `position` is bottom-right | bottom-left; `containerMode` fixed pins it to the viewport while absolute scopes it to a parent. Open state survives reloads via `localStorageKey`. Messages are local — connect your own backend."
@@ -1497,9 +1639,7 @@
       "categories": [
         "data-display"
       ],
-      "dependencies": [
-        "gsap"
-      ],
+      "dependencies": [],
       "registryDependencies": [
         "utils"
       ],
@@ -1527,7 +1667,7 @@
         "data-display"
       ],
       "dependencies": [
-        "framer-motion",
+        "gsap",
         "lucide-react"
       ],
       "registryDependencies": [
@@ -1539,9 +1679,45 @@
           "path": "src/components/custom/blocks/FolderBlock.tsx",
           "type": "registry:component",
           "target": "components/custom/blocks/FolderBlock.tsx"
+        },
+        {
+          "path": "src/components/custom/blocks/gsap-motion.ts",
+          "type": "registry:component",
+          "target": "components/custom/blocks/gsap-motion.ts"
+        },
+        {
+          "path": "src/components/custom/blocks/motion-curves.ts",
+          "type": "registry:component",
+          "target": "components/custom/blocks/motion-curves.ts"
         }
       ],
       "docs": "Named exports: Folder, SkeletonCard (plus FolderFile / FolderProps types). `files` is { thumb?, name?, progress? }[]; without files, `peek` skeleton cards show. `color` tints body, pocket, icon and cards via OKLCH; `icon` is a lucide component. Hover, tap or focus opens the fan; past five files it pages with arrows or by dragging a card. `interactive` adds drag-and-drop + click-to-browse with `onFiles`, `progress` and `onRemoveFile`. Pulls in `tooltip` for file-name hovers."
+    },
+    {
+      "name": "folder-framer",
+      "type": "registry:component",
+      "title": "Folder (Framer Motion)",
+      "author": "AlgorizeTech",
+      "description": "A tactile folder — skeleton cards or your own photos tuck behind a frosted-glass pocket and fan out into an arc on hover. Use it for file groups, galleries and drag-and-drop upload targets.",
+      "categories": [
+        "data-display"
+      ],
+      "dependencies": [
+        "framer-motion",
+        "lucide-react"
+      ],
+      "registryDependencies": [
+        "https://algorize-ui.vercel.app/r/tooltip.json",
+        "utils"
+      ],
+      "files": [
+        {
+          "path": "src/components/custom/blocks/framer/FolderBlock.tsx",
+          "type": "registry:component",
+          "target": "components/custom/blocks/FolderBlock.tsx"
+        }
+      ],
+      "docs": "Framer Motion build of `folder` — same props, markup and install path; install one or the other. Named exports: Folder, SkeletonCard (plus FolderFile / FolderProps types). `files` is { thumb?, name?, progress? }[]; without files, `peek` skeleton cards show. `color` tints body, pocket, icon and cards via OKLCH; `icon` is a lucide component. Hover, tap or focus opens the fan; past five files it pages with arrows or by dragging a card. `interactive` adds drag-and-drop + click-to-browse with `onFiles`, `progress` and `onRemoveFile`. Pulls in `tooltip` for file-name hovers."
     },
     {
       "name": "footer",
@@ -1695,12 +1871,11 @@
       "type": "registry:component",
       "title": "Hero",
       "author": "AlgorizeTech",
-      "description": "A prop-driven hero section supporting spring word bounce, character typewriter, 3D split marquee slider, pet-shop and doctor variants.",
+      "description": "A prop-driven hero section supporting spring word bounce, character typewriter, 3D split marquee slider, pet-shop, doctor, and facility CAD grid variants.",
       "categories": [
         "marketing"
       ],
       "dependencies": [
-        "framer-motion",
         "lucide-react"
       ],
       "registryDependencies": [
@@ -1713,7 +1888,7 @@
           "target": "components/custom/blocks/HeroBlock.tsx"
         }
       ],
-      "docs": "Named export: HeroBlock. Everything is a prop — `variant` switches between 'bounce', 'typing', and 'slider', `typingWords` cycles between `titlePrefix` and `titleSuffix`, `cliCommand` renders a copyable install line, and `sliderImages` / `mainImage` customize the 3D marquee visual."
+      "docs": "Named export: HeroBlock. Everything is a prop — `variant` switches between 'bounce', 'typing', 'slider', 'pet-shop', 'doctor', and 'facility', with interactive animations, theme color support, and responsive layouts."
     },
     {
       "name": "hero-carousel",
@@ -1726,7 +1901,6 @@
         "layout"
       ],
       "dependencies": [
-        "gsap",
         "lucide-react"
       ],
       "registryDependencies": [
@@ -1753,7 +1927,6 @@
         "layout"
       ],
       "dependencies": [
-        "framer-motion",
         "lucide-react"
       ],
       "registryDependencies": [
@@ -1778,7 +1951,6 @@
         "layout"
       ],
       "dependencies": [
-        "gsap",
         "lucide-react"
       ],
       "registryDependencies": [
@@ -1804,9 +1976,7 @@
         "scroll",
         "media"
       ],
-      "dependencies": [
-        "framer-motion"
-      ],
+      "dependencies": [],
       "registryDependencies": [
         "utils"
       ],
@@ -1815,6 +1985,11 @@
           "path": "src/components/custom/blocks/HorizontalRailBlock.tsx",
           "type": "registry:component",
           "target": "components/custom/blocks/HorizontalRailBlock.tsx"
+        },
+        {
+          "path": "src/components/custom/blocks/motion-curves.ts",
+          "type": "registry:component",
+          "target": "components/custom/blocks/motion-curves.ts"
         }
       ]
     },
@@ -1828,9 +2003,7 @@
         "scroll",
         "marketing"
       ],
-      "dependencies": [
-        "framer-motion"
-      ],
+      "dependencies": [],
       "registryDependencies": [
         "utils"
       ],
@@ -1839,6 +2012,11 @@
           "path": "src/components/custom/blocks/HorizontalScrollStackBlock.tsx",
           "type": "registry:component",
           "target": "components/custom/blocks/HorizontalScrollStackBlock.tsx"
+        },
+        {
+          "path": "src/components/custom/blocks/motion-curves.ts",
+          "type": "registry:component",
+          "target": "components/custom/blocks/motion-curves.ts"
         }
       ],
       "docs": "Named export: HorizontalScrollStack. Items take { id, number, title, description, icon? }. Pins the section and maps scroll progress to horizontal travel, so it needs enough page height to complete — and it takes over scrolling while pinned, which is worth testing on touch."
@@ -1924,9 +2102,7 @@
         "media",
         "marketing"
       ],
-      "dependencies": [
-        "gsap"
-      ],
+      "dependencies": [],
       "registryDependencies": [
         "utils"
       ],
@@ -2138,9 +2314,7 @@
         "layout",
         "marketing"
       ],
-      "dependencies": [
-        "framer-motion"
-      ],
+      "dependencies": [],
       "registryDependencies": [
         "utils"
       ],
@@ -2186,7 +2360,7 @@
         "media"
       ],
       "dependencies": [
-        "framer-motion"
+        "gsap"
       ],
       "registryDependencies": [
         "utils"
@@ -2196,14 +2370,85 @@
           "path": "src/components/custom/blocks/MasonryGridBlock.tsx",
           "type": "registry:component",
           "target": "components/custom/blocks/MasonryGridBlock.tsx"
+        },
+        {
+          "path": "src/components/custom/blocks/gsap-motion.ts",
+          "type": "registry:component",
+          "target": "components/custom/blocks/gsap-motion.ts"
+        },
+        {
+          "path": "src/components/custom/blocks/motion-curves.ts",
+          "type": "registry:component",
+          "target": "components/custom/blocks/motion-curves.ts"
         }
       ],
       "docs": "Named export: MasonryGrid. Generic over your item type — pass `items` and a `renderItem` callback. Column count and gaps come from `columnsClassName` and `gapClassName`, so responsive behaviour is plain Tailwind. CSS columns fill top-to-bottom per column, so visual order differs from DOM order."
     },
     {
+      "name": "masonry-grid-framer",
+      "type": "registry:component",
+      "title": "Masonry Grid (Framer Motion)",
+      "author": "AlgorizeTech",
+      "description": "A CSS-column masonry layout with staggered entrance animation. Use it for image galleries and card walls of uneven height.",
+      "categories": [
+        "layout",
+        "media"
+      ],
+      "dependencies": [
+        "framer-motion"
+      ],
+      "registryDependencies": [
+        "utils"
+      ],
+      "files": [
+        {
+          "path": "src/components/custom/blocks/framer/MasonryGridBlock.tsx",
+          "type": "registry:component",
+          "target": "components/custom/blocks/MasonryGridBlock.tsx"
+        }
+      ],
+      "docs": "Framer Motion build of `masonry-grid` — same props, markup and install path; install one or the other. Named export: MasonryGrid. Generic over your item type — pass `items` and a `renderItem` callback. Column count and gaps come from `columnsClassName` and `gapClassName`, so responsive behaviour is plain Tailwind. CSS columns fill top-to-bottom per column, so visual order differs from DOM order."
+    },
+    {
       "name": "memories-card",
       "type": "registry:component",
       "title": "Memories Card",
+      "author": "AlgorizeTech",
+      "description": "A swipeable stack of photo cards with location, date and tag metadata. Use it for travel, gallery and testimonial carousels.",
+      "categories": [
+        "media",
+        "marketing"
+      ],
+      "dependencies": [
+        "gsap",
+        "lucide-react"
+      ],
+      "registryDependencies": [
+        "utils"
+      ],
+      "files": [
+        {
+          "path": "src/components/custom/blocks/MemoriesCardBlock.tsx",
+          "type": "registry:component",
+          "target": "components/custom/blocks/MemoriesCardBlock.tsx"
+        },
+        {
+          "path": "src/components/custom/blocks/gsap-motion.ts",
+          "type": "registry:component",
+          "target": "components/custom/blocks/gsap-motion.ts"
+        },
+        {
+          "path": "src/components/custom/blocks/motion-curves.ts",
+          "type": "registry:component",
+          "target": "components/custom/blocks/motion-curves.ts"
+        }
+      ],
+      "docs": "Named export: MemoriesCard. `items` take { id, title, location, date, image, description?, tag? }; `onCardChange` reports the active index. Drag or click to advance the stack."
+    },
+    {
+      "name": "memories-card-framer",
+      "type": "registry:component",
+      "title": "Memories Card (Framer Motion)",
       "author": "AlgorizeTech",
       "description": "A swipeable stack of photo cards with location, date and tag metadata. Use it for travel, gallery and testimonial carousels.",
       "categories": [
@@ -2219,12 +2464,12 @@
       ],
       "files": [
         {
-          "path": "src/components/custom/blocks/MemoriesCardBlock.tsx",
+          "path": "src/components/custom/blocks/framer/MemoriesCardBlock.tsx",
           "type": "registry:component",
           "target": "components/custom/blocks/MemoriesCardBlock.tsx"
         }
       ],
-      "docs": "Named export: MemoriesCard. `items` take { id, title, location, date, image, description?, tag? }; `onCardChange` reports the active index. Drag or click to advance the stack."
+      "docs": "Framer Motion build of `memories-card` — same props, markup and install path; install one or the other. Named export: MemoriesCard. `items` take { id, title, location, date, image, description?, tag? }; `onCardChange` reports the active index. Drag or click to advance the stack."
     },
     {
       "name": "menubar",
@@ -2307,7 +2552,6 @@
         "marketing"
       ],
       "dependencies": [
-        "gsap",
         "lucide-react"
       ],
       "registryDependencies": [
@@ -2367,9 +2611,7 @@
         "data-display",
         "marketing"
       ],
-      "dependencies": [
-        "framer-motion"
-      ],
+      "dependencies": [],
       "registryDependencies": [
         "utils"
       ],
@@ -2378,6 +2620,11 @@
           "path": "src/components/custom/blocks/NetworkGraphBlock.tsx",
           "type": "registry:component",
           "target": "components/custom/blocks/NetworkGraphBlock.tsx"
+        },
+        {
+          "path": "src/components/custom/blocks/motion-curves.ts",
+          "type": "registry:component",
+          "target": "components/custom/blocks/motion-curves.ts"
         }
       ],
       "docs": "Named export: NetworkGraph. `nodes` take { id, ring, image?, fallback?, label?, size? } — `ring` assigns the orbit. Tune spacing with `ringCount`, `baseRadius` and `ringGap`; `animateIn` staggers the reveal. Positions are computed by ring, not by force simulation."
@@ -2386,6 +2633,46 @@
       "name": "newsletter",
       "type": "registry:component",
       "title": "Newsletter",
+      "author": "AlgorizeTech",
+      "description": "A sign-up section in three layouts: readers' faces drifting around a centred form, a panel with a pointer glow and a ticker of who just joined, or the form beside a fanned stack of recent issues. The form becomes a thank-you when your promise resolves.",
+      "categories": [
+        "marketing",
+        "forms"
+      ],
+      "dependencies": [
+        "gsap",
+        "lucide-react"
+      ],
+      "registryDependencies": [
+        "https://algorize-ui.vercel.app/r/button.json",
+        "https://algorize-ui.vercel.app/r/input.json",
+        "https://algorize-ui.vercel.app/r/marquee.json",
+        "https://algorize-ui.vercel.app/r/tilted-card.json",
+        "utils"
+      ],
+      "files": [
+        {
+          "path": "src/components/custom/blocks/NewsletterBlock.tsx",
+          "type": "registry:component",
+          "target": "components/custom/blocks/NewsletterBlock.tsx"
+        },
+        {
+          "path": "src/components/custom/blocks/gsap-motion.ts",
+          "type": "registry:component",
+          "target": "components/custom/blocks/gsap-motion.ts"
+        },
+        {
+          "path": "src/components/custom/blocks/motion-curves.ts",
+          "type": "registry:component",
+          "target": "components/custom/blocks/motion-curves.ts"
+        }
+      ],
+      "docs": "Named export: Newsletter, with parts Heading, Intro, Form, Proof, Ticker and Issues. Composed from the input, button, marquee and tilted-card items, which install alongside it. `variant` is portraits | spotlight | issues, each styled for light and dark mode; `portraits` takes up to four faces; `Form` takes `onSubscribe(email)` (a promise holds the busy state), `action`, `successTitle`/`successText`; `accent` pins the glow and button colour; `reveal` is in-view or immediate."
+    },
+    {
+      "name": "newsletter-framer",
+      "type": "registry:component",
+      "title": "Newsletter (Framer Motion)",
       "author": "AlgorizeTech",
       "description": "A sign-up section in three layouts: readers' faces drifting around a centred form, a panel with a pointer glow and a ticker of who just joined, or the form beside a fanned stack of recent issues. The form becomes a thank-you when your promise resolves.",
       "categories": [
@@ -2405,12 +2692,12 @@
       ],
       "files": [
         {
-          "path": "src/components/custom/blocks/NewsletterBlock.tsx",
+          "path": "src/components/custom/blocks/framer/NewsletterBlock.tsx",
           "type": "registry:component",
           "target": "components/custom/blocks/NewsletterBlock.tsx"
         }
       ],
-      "docs": "Named export: Newsletter, with parts Heading, Intro, Form, Proof, Ticker and Issues. Composed from the input, button, marquee and tilted-card items, which install alongside it. `variant` is portraits | spotlight | issues, each styled for light and dark mode; `portraits` takes up to four faces; `Form` takes `onSubscribe(email)` (a promise holds the busy state), `action`, `successTitle`/`successText`; `accent` pins the glow and button colour; `reveal` is in-view or immediate."
+      "docs": "Framer Motion build of `newsletter` — same props, markup and install path; install one or the other. Named export: Newsletter, with parts Heading, Intro, Form, Proof, Ticker and Issues. Composed from the input, button, marquee and tilted-card items, which install alongside it. `variant` is portraits | spotlight | issues, each styled for light and dark mode; `portraits` takes up to four faces; `Form` takes `onSubscribe(email)` (a promise holds the busy state), `action`, `successTitle`/`successText`; `accent` pins the glow and button colour; `reveal` is in-view or immediate."
     },
     {
       "name": "orbit-gallery",
@@ -2572,9 +2859,7 @@
         "marketing",
         "navigation"
       ],
-      "dependencies": [
-        "gsap"
-      ],
+      "dependencies": [],
       "registryDependencies": [
         "https://algorize-ui.vercel.app/r/tilted-card.json",
         "utils"
@@ -2621,7 +2906,6 @@
         "marketing"
       ],
       "dependencies": [
-        "gsap",
         "lucide-react"
       ],
       "registryDependencies": [
@@ -2682,7 +2966,6 @@
         "marketing"
       ],
       "dependencies": [
-        "gsap",
         "lucide-react"
       ],
       "registryDependencies": [],
@@ -2908,7 +3191,6 @@
         "utilities"
       ],
       "dependencies": [
-        "framer-motion",
         "lucide-react"
       ],
       "registryDependencies": [
@@ -2920,6 +3202,11 @@
           "path": "src/components/custom/range-date-picker.tsx",
           "type": "registry:component",
           "target": "components/custom/range-date-picker.tsx"
+        },
+        {
+          "path": "src/components/custom/blocks/motion-curves.ts",
+          "type": "registry:component",
+          "target": "components/custom/blocks/motion-curves.ts"
         }
       ],
       "docs": "Named export: RangeDatePicker. Supports variant=('single' | 'dual' | 'priced-single' | 'priced-dual'), getPrice, color, value={from, to}, onChange, disablePast / minDate / maxDate. `showTime` adds Start / End time columns: the card opens as a bare calendar (empty when uncontrolled) and a time rail unfolds beside it on the first pick — under it when narrow — and folds away on Clear; `timeFormat` (12h | 24h) and `minuteStep` tune the columns. Installs time-picker alongside."
@@ -2992,7 +3279,6 @@
         "data-display"
       ],
       "dependencies": [
-        "framer-motion",
         "lucide-react"
       ],
       "registryDependencies": [
@@ -3004,6 +3290,11 @@
           "path": "src/components/custom/blocks/ReviewsBlock.tsx",
           "type": "registry:component",
           "target": "components/custom/blocks/ReviewsBlock.tsx"
+        },
+        {
+          "path": "src/components/custom/blocks/motion-curves.ts",
+          "type": "registry:component",
+          "target": "components/custom/blocks/motion-curves.ts"
         }
       ]
     },
@@ -3018,7 +3309,6 @@
         "marketing"
       ],
       "dependencies": [
-        "framer-motion",
         "lucide-react"
       ],
       "registryDependencies": [
@@ -3122,9 +3412,7 @@
       "categories": [
         "typography"
       ],
-      "dependencies": [
-        "framer-motion"
-      ],
+      "dependencies": [],
       "registryDependencies": [
         "utils"
       ],
@@ -3133,6 +3421,11 @@
           "path": "src/components/custom/blocks/SelectionFrameBlock.tsx",
           "type": "registry:component",
           "target": "components/custom/blocks/SelectionFrameBlock.tsx"
+        },
+        {
+          "path": "src/components/custom/blocks/motion-curves.ts",
+          "type": "registry:component",
+          "target": "components/custom/blocks/motion-curves.ts"
         }
       ],
       "docs": "Named export: SelectionFrame (also exports the FrameHandles and FrameLine types). Wrap any child; it is measured live with a ResizeObserver. `handles` is square | circle, `line` is solid | dashed | long, `dash` overrides the [dash, gap] pair, `animated` marches dashed/long strokes and pops the handles in, `color` is any CSS colour (Figma blue default), `radius` and `padding` are pixels, and `inline={false}` makes it block-level. Respects prefers-reduced-motion."
@@ -3202,7 +3495,6 @@
         "forms"
       ],
       "dependencies": [
-        "framer-motion",
         "lucide-react"
       ],
       "registryDependencies": [
@@ -3213,6 +3505,11 @@
           "path": "src/components/custom/blocks/SignupForm.tsx",
           "type": "registry:component",
           "target": "components/custom/blocks/SignupForm.tsx"
+        },
+        {
+          "path": "src/components/custom/blocks/motion-curves.ts",
+          "type": "registry:component",
+          "target": "components/custom/blocks/motion-curves.ts"
         }
       ],
       "docs": "Named export: SignupForm. Uses Framer Motion for field-level error transitions. Validation is client-side presentation only — enforce it again on your server."
@@ -3304,7 +3601,6 @@
         "marketing"
       ],
       "dependencies": [
-        "gsap",
         "lucide-react"
       ],
       "registryDependencies": [
@@ -3331,7 +3627,6 @@
         "marketing"
       ],
       "dependencies": [
-        "gsap",
         "lucide-react"
       ],
       "registryDependencies": [
@@ -3382,7 +3677,6 @@
         "forms"
       ],
       "dependencies": [
-        "gsap",
         "lucide-react"
       ],
       "registryDependencies": [
@@ -3408,7 +3702,7 @@
         "marketing"
       ],
       "dependencies": [
-        "framer-motion",
+        "gsap",
         "lucide-react"
       ],
       "registryDependencies": [
@@ -3422,6 +3716,32 @@
         }
       ],
       "docs": "Named export: StickyScrollStack. Each item sets `contentType` (list | image | split | custom) so steps need not share a shape. Uses next/image, so it needs edits outside Next.js."
+    },
+    {
+      "name": "sticky-scroll-stack-framer",
+      "type": "registry:component",
+      "title": "Sticky Scroll Stack (Framer Motion)",
+      "author": "AlgorizeTech",
+      "description": "A sticky section whose panels swap content as you scroll, supporting list, image, split and custom layouts. Use it for feature sections with varied content per step.",
+      "categories": [
+        "scroll",
+        "marketing"
+      ],
+      "dependencies": [
+        "framer-motion",
+        "lucide-react"
+      ],
+      "registryDependencies": [
+        "utils"
+      ],
+      "files": [
+        {
+          "path": "src/components/custom/blocks/framer/StickyScrollStackBlock.tsx",
+          "type": "registry:component",
+          "target": "components/custom/blocks/StickyScrollStackBlock.tsx"
+        }
+      ],
+      "docs": "Framer Motion build of `sticky-scroll-stack` — same props, markup and install path; install one or the other. Named export: StickyScrollStack. Each item sets `contentType` (list | image | split | custom) so steps need not share a shape. Uses next/image, so it needs edits outside Next.js."
     },
     {
       "name": "support-container",
@@ -3483,7 +3803,6 @@
         "layout"
       ],
       "dependencies": [
-        "gsap",
         "lucide-react"
       ],
       "registryDependencies": [
@@ -3536,7 +3855,6 @@
         "data-display"
       ],
       "dependencies": [
-        "gsap",
         "lucide-react"
       ],
       "registryDependencies": [
@@ -3567,7 +3885,6 @@
         "scroll"
       ],
       "dependencies": [
-        "framer-motion",
         "lucide-react"
       ],
       "registryDependencies": [
@@ -3579,6 +3896,11 @@
           "path": "src/components/custom/blocks/TableOfContentsBlock.tsx",
           "type": "registry:component",
           "target": "components/custom/blocks/TableOfContentsBlock.tsx"
+        },
+        {
+          "path": "src/components/custom/blocks/motion-curves.ts",
+          "type": "registry:component",
+          "target": "components/custom/blocks/motion-curves.ts"
         }
       ],
       "docs": "Named export: TableOfContentsBlock. Accepts `headings` array of ({ id, title, level }) objects, `showProgress`, `showSearch`, and `color` props. Wraps document content on the left while keeping the TOC sticky on the right."
@@ -3622,9 +3944,7 @@
         "typography",
         "marketing"
       ],
-      "dependencies": [
-        "framer-motion"
-      ],
+      "dependencies": [],
       "registryDependencies": [
         "utils"
       ],
@@ -3633,6 +3953,11 @@
           "path": "src/components/custom/blocks/TextAnimationBlock.tsx",
           "type": "registry:component",
           "target": "components/custom/blocks/TextAnimationBlock.tsx"
+        },
+        {
+          "path": "src/components/custom/blocks/motion-curves.ts",
+          "type": "registry:component",
+          "target": "components/custom/blocks/motion-curves.ts"
         }
       ],
       "docs": "Named export: TextAnimation. `text` is a plain string it splits internally; `as` sets the rendered element and `delay` / `duration` control timing; `renderWord(word, index)` swaps what a word renders as on the word-level variants (pop-in, flip, blur-in-up) while keeping its entrance. For dependency-free effects, use `animated-typography`."
@@ -3648,7 +3973,6 @@
         "actions"
       ],
       "dependencies": [
-        "gsap",
         "lucide-react",
         "next-themes"
       ],
@@ -3674,9 +3998,7 @@
         "media",
         "marketing"
       ],
-      "dependencies": [
-        "framer-motion"
-      ],
+      "dependencies": [],
       "registryDependencies": [
         "utils"
       ],
@@ -3685,6 +4007,11 @@
           "path": "src/components/custom/blocks/TiltedCardBlock.tsx",
           "type": "registry:component",
           "target": "components/custom/blocks/TiltedCardBlock.tsx"
+        },
+        {
+          "path": "src/components/custom/blocks/motion-curves.ts",
+          "type": "registry:component",
+          "target": "components/custom/blocks/motion-curves.ts"
         }
       ],
       "docs": "Named export: TiltedCard. Wraps arbitrary children; tune `tiltIntensity`, `glareOpacity` and `scaleOnHover`. Pointer-driven, so it is inert on touch — keep the content readable without the effect."
@@ -3727,7 +4054,6 @@
         "data-display"
       ],
       "dependencies": [
-        "gsap",
         "lucide-react"
       ],
       "registryDependencies": [
@@ -3757,7 +4083,6 @@
         "feedback"
       ],
       "dependencies": [
-        "gsap",
         "lucide-react"
       ],
       "registryDependencies": [
@@ -4061,9 +4386,7 @@
       "categories": [
         "media"
       ],
-      "dependencies": [
-        "gsap"
-      ],
+      "dependencies": [],
       "registryDependencies": [],
       "files": [
         {
@@ -4159,7 +4482,6 @@
         "feedback"
       ],
       "dependencies": [
-        "gsap",
         "lucide-react"
       ],
       "registryDependencies": [
@@ -4262,9 +4584,7 @@
         "navigation",
         "layout"
       ],
-      "dependencies": [
-        "gsap"
-      ],
+      "dependencies": [],
       "registryDependencies": [
         "utils"
       ],
@@ -4292,9 +4612,7 @@
         "media",
         "marketing"
       ],
-      "dependencies": [
-        "gsap"
-      ],
+      "dependencies": [],
       "registryDependencies": [
         "utils"
       ],
@@ -4318,7 +4636,6 @@
         "media"
       ],
       "dependencies": [
-        "framer-motion",
         "lucide-react"
       ],
       "registryDependencies": [
@@ -4329,6 +4646,11 @@
           "path": "src/components/custom/blocks/VideoPlayerBlock.tsx",
           "type": "registry:component",
           "target": "components/custom/blocks/VideoPlayerBlock.tsx"
+        },
+        {
+          "path": "src/components/custom/blocks/motion-curves.ts",
+          "type": "registry:component",
+          "target": "components/custom/blocks/motion-curves.ts"
         }
       ],
       "docs": "Named export: VideoPlayer. `videoUrl` and `thumbnailUrl` drive it; `playbackMode` is modal | inline | direct and `source` is youtube | video (a native <video>). `aspectRatio` is 16/9 | 21/9 | 4/3 | 1/1 and `modalSize` is md | lg | xl | full. `onPlay` and `onClose` hook into analytics. In modal and inline the media only loads on click, so it stays off the initial page weight; `direct` renders it immediately and honours `autoPlay` / `muted` / `loop`."
@@ -4392,7 +4714,6 @@
         "forms"
       ],
       "dependencies": [
-        "framer-motion",
         "lucide-react"
       ],
       "registryDependencies": [
@@ -4425,7 +4746,6 @@
         "actions"
       ],
       "dependencies": [
-        "framer-motion",
         "lucide-react"
       ],
       "registryDependencies": [
@@ -4436,6 +4756,11 @@
           "path": "src/components/custom/blocks/WalletBlock.tsx",
           "type": "registry:component",
           "target": "components/custom/blocks/WalletBlock.tsx"
+        },
+        {
+          "path": "src/components/custom/blocks/motion-curves.ts",
+          "type": "registry:component",
+          "target": "components/custom/blocks/motion-curves.ts"
         }
       ],
       "docs": "Named export: Wallet. Accepts cards array, overallBalance, allowReveal, and autoRevealOnHover."
@@ -4450,9 +4775,7 @@
         "forms",
         "navigation"
       ],
-      "dependencies": [
-        "gsap"
-      ],
+      "dependencies": [],
       "registryDependencies": [
         "utils"
       ],

@@ -44,7 +44,7 @@ export default function FashionHeroDemo({
         author: "Rafi H.",
       }}
       teaser={{ index: "01", label: "Lifestyle", title: "Set Up Your Fashion With The Latest Trends", href: "#stories" }}
-      className={cn("max-w-6xl", rounded && "rounded-[28px] border border-black/[0.06] dark:border-white/10")}
+      className={cn("max-w-6xl", rounded && "rounded-[28px] border border-border")}
     />
   );
 }

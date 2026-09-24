@@ -42,9 +42,10 @@ export default function OtpInputDemo({
   const [lengthValues, setLengthValues] = useState<Record<number, string>>({});
 
   const activeColor = getThemeColor(color);
-  const containerStyle = activeColor
-    ? ({ "--primary": activeColor } as React.CSSProperties)
-    : undefined;
+  const containerStyle =
+    color && color !== "primary" && color !== "default"
+      ? ({ "--primary": activeColor } as React.CSSProperties)
+      : undefined;
 
   const handleComplete = (_val: string) => {
     setIsComplete(true);
@@ -63,7 +64,7 @@ export default function OtpInputDemo({
         <div className="flex w-full max-w-sm flex-col items-center gap-8">
           {[4, 6, 8].map((len) => (
             <div key={len} className="flex w-full flex-col items-center gap-2">
-              <span className="text-xs font-medium uppercase tracking-wide text-zinc-500 dark:text-zinc-400">
+              <span className="text-xs font-medium uppercase tracking-wide text-muted-foreground">
                 {len} digits
               </span>
               <OtpInputBlock
@@ -89,13 +90,13 @@ export default function OtpInputDemo({
     >
       <div className="flex flex-col items-center max-w-sm w-full text-center gap-8">
         <div className="flex flex-col items-center gap-3">
-          <div className="w-12 h-12 rounded-full bg-zinc-100 dark:bg-zinc-900 flex items-center justify-center mb-2 text-zinc-900 dark:text-white">
+          <div className="w-12 h-12 rounded-full bg-muted flex items-center justify-center mb-2 text-foreground">
             <KeyRound className="w-6 h-6" />
           </div>
-          <h3 className="text-xl font-semibold text-zinc-900 dark:text-white tracking-tight">
+          <h3 className="text-xl font-semibold text-foreground tracking-tight">
             Two-Step Verification
           </h3>
-          <p className="text-sm text-zinc-500 dark:text-zinc-400">
+          <p className="text-sm text-muted-foreground">
             Please enter the {length}-digit code sent to your email address.
             <br />
             <span className="opacity-60 text-xs mt-1 block">

@@ -108,7 +108,7 @@ const dashboardVariants: Record<CalendarVariant, Record<string, string>> = {
     gridHeader:
       "bg-card/95 border-b border-border",
     cellBg:
-      "bg-card hover:bg-accent/50 text-card-foreground",
+      "bg-card hover:bg-muted/50 text-card-foreground",
   },
   minimal: {
     wrapper: "bg-transparent border-none",
@@ -119,7 +119,7 @@ const dashboardVariants: Record<CalendarVariant, Record<string, string>> = {
     gridGap: "gap-2 sm:gap-3",
     gridHeader: "bg-transparent border-none pb-2",
     cellBg:
-      "bg-muted rounded-2xl border border-border hover:border-gray-300 dark:hover:border-gray-600 hover:shadow-sm",
+      "bg-muted rounded-2xl border border-border hover:border-foreground/20 hover:shadow-sm",
   },
   glass: {
     wrapper:
@@ -280,13 +280,13 @@ function Calendar({
           defaultClassNames.day,
         ),
         range_start: cn(
-          "rounded-l-md bg-accent",
+          "rounded-l-md bg-muted",
           defaultClassNames.range_start,
         ),
         range_middle: cn("rounded-none", defaultClassNames.range_middle),
-        range_end: cn("rounded-r-md bg-accent", defaultClassNames.range_end),
+        range_end: cn("rounded-r-md bg-muted", defaultClassNames.range_end),
         today: cn(
-          "bg-accent text-accent-foreground rounded-md data-[selected=true]:rounded-none",
+          "bg-muted text-foreground rounded-md data-[selected=true]:rounded-none",
           defaultClassNames.today,
         ),
         outside: cn(
@@ -373,7 +373,7 @@ function CalendarDayButton({
       data-range-end={modifiers.range_end}
       data-range-middle={modifiers.range_middle}
       className={cn(
-        "data-[selected-single=true]:bg-primary data-[selected-single=true]:text-primary-foreground data-[range-middle=true]:bg-accent data-[range-middle=true]:text-accent-foreground data-[range-start=true]:bg-primary data-[range-start=true]:text-primary-foreground data-[range-end=true]:bg-primary data-[range-end=true]:text-primary-foreground group-data-[focused=true]/day:border-ring group-data-[focused=true]/day:ring-ring/50 dark:hover:text-accent-foreground flex aspect-square size-auto w-full min-w-(--cell-size) flex-col gap-1 leading-none font-normal cursor-pointer group-data-[focused=true]/day:relative group-data-[focused=true]/day:z-10 group-data-[focused=true]/day:ring-[3px] data-[range-end=true]:rounded-md data-[range-end=true]:rounded-r-md data-[range-middle=true]:rounded-none data-[range-start=true]:rounded-md data-[range-start=true]:rounded-l-md [&>span]:text-xs [&>span]:opacity-70",
+        "data-[selected-single=true]:bg-primary data-[selected-single=true]:text-primary-foreground data-[range-middle=true]:bg-muted data-[range-middle=true]:text-foreground data-[range-start=true]:bg-primary data-[range-start=true]:text-primary-foreground data-[range-end=true]:bg-primary data-[range-end=true]:text-primary-foreground group-data-[focused=true]/day:border-ring group-data-[focused=true]/day:ring-ring/50 flex aspect-square size-auto w-full min-w-(--cell-size) flex-col gap-1 leading-none font-normal cursor-pointer group-data-[focused=true]/day:relative group-data-[focused=true]/day:z-10 group-data-[focused=true]/day:ring-[3px] data-[range-end=true]:rounded-md data-[range-end=true]:rounded-r-md data-[range-middle=true]:rounded-none data-[range-start=true]:rounded-md data-[range-start=true]:rounded-l-md [&>span]:text-xs [&>span]:opacity-70",
         defaultClassNames.day,
         className,
       )}
@@ -1066,7 +1066,7 @@ function CalendarDashboard({
 
               <button
                 onClick={handleExportCSV}
-                className="hidden sm:flex items-center cursor-pointer gap-2 px-3 sm:px-4 py-1.5 sm:py-2 border border-border rounded-md text-xs sm:text-sm font-medium hover:bg-black/5 dark:hover:bg-white/5 transition-colors"
+                className="hidden sm:flex items-center cursor-pointer gap-2 px-3 sm:px-4 py-1.5 sm:py-2 border border-border rounded-md text-xs sm:text-sm font-medium hover:bg-foreground/5 transition-colors"
               >
                 Export <Download className="w-3.5 h-3.5 sm:w-4 sm:h-4 cursor-pointer" />
               </button>
@@ -1291,7 +1291,12 @@ function CalendarDashboard({
               </h3>
               <button
                 onClick={closeModal}
-                className="text-gray-400 hover:text-gray-600 dark:hover:text-gray-200 cursor-pointer"
+                className={cn(
+                  "cursor-pointer",
+                  variant === "glass"
+                    ? "text-gray-400 hover:text-gray-600 dark:hover:text-gray-200"
+                    : "text-muted-foreground hover:text-foreground",
+                )}
               >
                 <X className="w-5 h-5 cursor-pointer" />
               </button>
@@ -1311,7 +1316,7 @@ function CalendarDashboard({
                     "w-full cursor-text border rounded-md px-3 py-2 text-sm bg-transparent focus:ring-2 focus:outline-none transition-shadow",
                     variant === "glass"
                       ? "border-white/20 text-white placeholder:text-white/50 bg-white/10"
-                      : "border-border dark:text-white",
+                      : "border-input text-foreground",
                     theme.focusRing,
                   )}
                 />
@@ -1335,7 +1340,7 @@ function CalendarDashboard({
                       "w-full cursor-pointer border rounded-md px-3 py-2 text-sm bg-transparent focus:ring-2 focus:outline-none transition-shadow",
                       variant === "glass"
                         ? "border-white/20 text-white [color-scheme:dark] bg-white/10"
-                        : "border-border dark:text-white [color-scheme:light] dark:[color-scheme:dark]",
+                        : "border-input text-foreground [color-scheme:light] dark:[color-scheme:dark]",
                       theme.focusRing,
                     )}
                   />
@@ -1353,7 +1358,7 @@ function CalendarDashboard({
                       "w-full cursor-pointer border rounded-md px-3 py-2 text-sm bg-transparent focus:ring-2 focus:outline-none transition-shadow",
                       variant === "glass"
                         ? "border-white/20 text-white [color-scheme:dark] bg-white/10"
-                        : "border-border dark:text-white [color-scheme:light] dark:[color-scheme:dark]",
+                        : "border-input text-foreground [color-scheme:light] dark:[color-scheme:dark]",
                       theme.focusRing,
                     )}
                   />
@@ -1470,7 +1475,7 @@ function CalendarCell({
     <div
       onClick={onClickCell}
       className={cn(
-        `relative flex flex-col p-1.5 sm:p-2 h-full transition-colors cursor-pointer ${isAnyPopupOpen ? "z-30" : "z-10 hover:z-20"} ${isGray ? "text-gray-400 dark:text-gray-600 opacity-60" : "text-gray-900 dark:text-gray-100"}`,
+        `relative flex flex-col p-1.5 sm:p-2 h-full transition-colors cursor-pointer ${isAnyPopupOpen ? "z-30" : "z-10 hover:z-20"} ${isGray ? "text-muted-foreground opacity-60" : "text-foreground"}`,
         cellClass,
       )}
     >
@@ -1485,7 +1490,7 @@ function CalendarCell({
           const isPopupOpen = activePopupEventId === event.id;
           const isPentest = event.type === "pentest";
           const borderClass = isGray
-            ? "border-border bg-muted text-gray-400 dark:text-gray-600"
+            ? "border-border bg-muted text-muted-foreground"
             : isPentest
               ? "border-yellow-200 bg-yellow-50 text-yellow-800 dark:border-yellow-800/50 dark:bg-yellow-900/30 dark:text-yellow-400"
               : "border-green-200 bg-green-50 text-green-800 dark:border-green-800/50 dark:bg-green-900/30 dark:text-green-400";
@@ -1555,7 +1560,7 @@ function CalendarCell({
               className={`fixed sm:absolute z-50 top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[90vw] max-w-[320px] sm:top-auto sm:left-auto sm:translate-x-0 sm:translate-y-0 sm:w-72 ${popupXClass} ${popupYClass} ${
                 variant === "glass"
                   ? "bg-white/30 dark:bg-black/40 backdrop-blur-2xl border-white/30 dark:border-white/10 text-white shadow-2xl"
-                  : "bg-white dark:bg-gray-900 border-gray-100 dark:border-gray-800"
+                  : "bg-popover text-popover-foreground border-border"
               } rounded-xl shadow-2xl border p-4 cursor-default animate-in fade-in zoom-in-95 duration-150`}
               onClick={(e) => e.stopPropagation()}
             >

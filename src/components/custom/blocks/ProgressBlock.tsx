@@ -225,7 +225,7 @@ const GLOW_BLEED = 14;
 const trackStyles: Record<ProgressVariant, string> = {
   default: "bg-muted border-none",
   glass:
-    "bg-white/20 dark:bg-white/5 backdrop-blur-md border border-white/20 dark:border-white/10 shadow-inner",
+    "bg-foreground/5 backdrop-blur-md border border-foreground/10 shadow-inner",
   glow: "bg-muted border-none",
   minimal: "bg-transparent border border-border",
 };
@@ -685,7 +685,7 @@ export const CircularProgress = forwardRef<
 
     const trackStroke: Record<ProgressVariant, string> = {
       default: "text-muted",
-      glass: "text-white/40 dark:text-white/10",
+      glass: "text-foreground/10",
       glow: "text-muted",
       minimal: "text-border",
     };

@@ -28,10 +28,10 @@ export const usageDefault = `import { VerifyBadge } from "@/components/custom/bl
 export default function ProfileName() {
   return (
     <div className="flex items-center gap-2">
-      <span className="font-semibold text-zinc-900 dark:text-zinc-50 text-[15px] tracking-tight">
+      <span className="font-semibold text-foreground text-[15px] tracking-tight">
         AlgorizeSystem
       </span>
-      <VerifyBadge color="#1d9bf0" size="md" animate />
+      <VerifyBadge size="md" animate />
     </div>
   );
 }`;
@@ -54,10 +54,10 @@ export const usageStatic = `import { VerifyBadge } from "@/components/custom/blo
 export default function StaticBadge() {
   return (
     <div className="flex items-center gap-2">
-      <span className="font-semibold text-zinc-900 dark:text-zinc-50 text-[15px] tracking-tight">
+      <span className="font-semibold text-foreground text-[15px] tracking-tight">
         AlgorizeSystem
       </span>
-      <VerifyBadge color="#1d9bf0" size="md" animate={false} />
+      <VerifyBadge size="md" animate={false} />
     </div>
   );
 }`;
@@ -90,10 +90,10 @@ function BotAvatar({ className }: { className?: string }) {
 
 export default function NotificationCard() {
   return (
-    <div className="w-full max-w-md bg-white dark:bg-zinc-950 rounded-2xl border border-zinc-200 dark:border-zinc-800 p-4 sm:p-5 flex flex-col sm:flex-row items-start gap-3 sm:gap-4 transition-colors hover:bg-zinc-50/80 dark:hover:bg-zinc-900/50 min-w-0">
+    <div className="w-full max-w-md bg-card text-card-foreground rounded-2xl border border-border p-4 sm:p-5 flex flex-col sm:flex-row items-start gap-3 sm:gap-4 transition-colors hover:bg-muted/50 min-w-0">
       <div className="hidden sm:flex flex-shrink-0 mt-0.5">
         <div
-          className="w-11 h-11 rounded-2xl flex items-center justify-center text-primary-foreground dark:text-zinc-900"
+          className="w-11 h-11 rounded-2xl flex items-center justify-center text-primary-foreground"
           style={{ backgroundColor: accent }}
         >
           <BotAvatar className="w-5 h-5" />
@@ -103,12 +103,12 @@ export default function NotificationCard() {
       <div className="flex flex-col w-full min-w-0">
         <div className="flex items-center gap-2 flex-wrap min-w-0 w-full">
           <div
-            className="sm:hidden w-7 h-7 rounded-lg flex items-center justify-center text-primary-foreground dark:text-zinc-900 shrink-0"
+            className="sm:hidden w-7 h-7 rounded-lg flex items-center justify-center text-primary-foreground shrink-0"
             style={{ backgroundColor: accent }}
           >
             <BotAvatar className="w-3.5 h-3.5" />
           </div>
-          <span className="font-semibold text-zinc-900 dark:text-zinc-50 text-sm sm:text-[15px] tracking-tight truncate">
+          <span className="font-semibold text-foreground text-sm sm:text-[15px] tracking-tight truncate">
             AlgorizeSystem
           </span>
           <VerifyBadge color={accent} size="md" animate />
@@ -122,12 +122,12 @@ export default function NotificationCard() {
           >
             Bot
           </span>
-          <span className="text-xs sm:text-[13px] text-zinc-500 dark:text-zinc-400 font-medium shrink-0">
+          <span className="text-xs sm:text-[13px] text-muted-foreground font-medium shrink-0">
             Today at 2:34 PM
           </span>
         </div>
 
-        <p className="mt-2 sm:mt-1 text-zinc-800 dark:text-zinc-200 text-xs sm:text-[15px] leading-relaxed break-words">
+        <p className="mt-2 sm:mt-1 text-foreground/90 text-xs sm:text-[15px] leading-relaxed break-words">
           Deployment{" "}
           <span
             className="font-semibold hover:underline cursor-pointer"
@@ -138,16 +138,16 @@ export default function NotificationCard() {
           to <strong>production</strong> completed successfully.
         </p>
 
-        <div className="mt-3 w-full rounded-xl border border-zinc-200 dark:border-zinc-800 bg-zinc-50 dark:bg-zinc-900/50 p-3 sm:p-3.5 flex items-start gap-2.5 sm:gap-3 relative overflow-hidden min-w-0">
+        <div className="mt-3 w-full rounded-xl border border-border bg-muted/60 p-3 sm:p-3.5 flex items-start gap-2.5 sm:gap-3 relative overflow-hidden min-w-0">
           <div
             className="absolute left-0 top-0 bottom-0 w-1"
             style={{ backgroundColor: accent }}
           />
           <div className="flex flex-col gap-1 ml-1 min-w-0 flex-1">
-            <span className="font-semibold text-xs sm:text-[14px] text-zinc-900 dark:text-zinc-50 tracking-tight">
+            <span className="font-semibold text-xs sm:text-[14px] text-foreground tracking-tight">
               Build Passed 🚀
             </span>
-            <span className="text-xs sm:text-[13px] text-zinc-500 dark:text-zinc-400 leading-snug break-words">
+            <span className="text-xs sm:text-[13px] text-muted-foreground leading-snug break-words">
               All 142 tests passed in 12s. The latest preview is now live on
               Vercel.
             </span>
@@ -170,7 +170,7 @@ export default function NotificationCard() {
         {
           prop: "color",
           effect:
-            "is the badge fill — any hex or CSS colour. Defaults to the familiar `#1d9bf0`.",
+            "is the badge fill — any hex or CSS colour. Defaults to the theme primary.",
         },
       ],
       props: { showAll: "badge" },
@@ -238,21 +238,21 @@ export default function NotificationCard() {
 Explore the Verify Badge's authentic design features, providing recognizable trust signals with subtle animated glows.
 
 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 my-6 not-prose">
-  <div className="p-6 rounded-2xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900">
-    <h3 className="text-lg font-semibold text-zinc-900 dark:text-zinc-50 mb-2">SVG Based</h3>
-    <p className="text-zinc-600 dark:text-zinc-400 text-sm">Uses standard SVG elements that scale perfectly to any size without losing quality.</p>
+  <div className="p-6 rounded-2xl border border-border bg-card">
+    <h3 className="text-lg font-semibold text-card-foreground mb-2">SVG Based</h3>
+    <p className="text-muted-foreground text-sm">Uses standard SVG elements that scale perfectly to any size without losing quality.</p>
   </div>
-  <div className="p-6 rounded-2xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900">
-    <h3 className="text-lg font-semibold text-zinc-900 dark:text-zinc-50 mb-2">Custom Themes</h3>
-    <p className="text-zinc-600 dark:text-zinc-400 text-sm">Easily pass any custom hex color or use predefined themes to match your branding.</p>
+  <div className="p-6 rounded-2xl border border-border bg-card">
+    <h3 className="text-lg font-semibold text-card-foreground mb-2">Custom Themes</h3>
+    <p className="text-muted-foreground text-sm">Easily pass any custom hex color or use predefined themes to match your branding.</p>
   </div>
-  <div className="p-6 rounded-2xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900">
-    <h3 className="text-lg font-semibold text-zinc-900 dark:text-zinc-50 mb-2">Micro-Animations</h3>
-    <p className="text-zinc-600 dark:text-zinc-400 text-sm">Built-in optional subtle pulse animations to draw attention to verified status.</p>
+  <div className="p-6 rounded-2xl border border-border bg-card">
+    <h3 className="text-lg font-semibold text-card-foreground mb-2">Micro-Animations</h3>
+    <p className="text-muted-foreground text-sm">Built-in optional subtle pulse animations to draw attention to verified status.</p>
   </div>
-  <div className="p-6 rounded-2xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900">
-    <h3 className="text-lg font-semibold text-zinc-900 dark:text-zinc-50 mb-2">Flexible Sizing</h3>
-    <p className="text-zinc-600 dark:text-zinc-400 text-sm">Comes with 4 preset sizes (sm, md, lg, xl) that integrate seamlessly into any layout.</p>
+  <div className="p-6 rounded-2xl border border-border bg-card">
+    <h3 className="text-lg font-semibold text-card-foreground mb-2">Flexible Sizing</h3>
+    <p className="text-muted-foreground text-sm">Comes with 4 preset sizes (sm, md, lg, xl) that integrate seamlessly into any layout.</p>
   </div>
 </div>
 
@@ -294,7 +294,7 @@ Explore the Verify Badge's authentic design features, providing recognizable tru
           <code>string (hex/css color)</code>
         </td>
         <td>
-          <code>"#1d9bf0"</code>
+          <code>"var(--primary)"</code>
         </td>
         <td>
           The theme color of the badge.

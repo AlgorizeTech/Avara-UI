@@ -157,14 +157,14 @@ export function ProductDetails({
                   20% OFF
                 </span>
 
-                <button onClick={(e) => { e.stopPropagation(); setLiked(!liked); }} className="absolute top-4 right-4 p-3 rounded-full bg-white/80 dark:bg-slate-900/80 backdrop-blur-md border border-border text-foreground hover:text-rose-500 transition-all z-20">
+                <button onClick={(e) => { e.stopPropagation(); setLiked(!liked); }} className="absolute top-4 right-4 p-3 rounded-full bg-card/80 backdrop-blur-md border border-border text-foreground hover:text-rose-500 transition-all z-20">
                   <Heart className={cn("size-5", liked && "fill-rose-500 text-rose-500")} />
                 </button>
 
                 {/* Left & Right Slider Arrow Buttons */}
                 <button
                   onClick={(e) => { e.stopPropagation(); setSelectedImage((prev) => (prev === 0 ? images.length - 1 : prev - 1)); }}
-                  className="absolute left-4 top-1/2 -translate-y-1/2 p-3 rounded-full bg-white/90 dark:bg-slate-900/90 border border-border text-foreground hover:scale-110 transition-all backdrop-blur-md z-20"
+                  className="absolute left-4 top-1/2 -translate-y-1/2 p-3 rounded-full bg-card/90 border border-border text-foreground hover:scale-110 transition-all backdrop-blur-md z-20"
                   aria-label="Previous Image"
                 >
                   <ChevronLeft className="size-5" />
@@ -172,7 +172,7 @@ export function ProductDetails({
 
                 <button
                   onClick={(e) => { e.stopPropagation(); setSelectedImage((prev) => (prev === images.length - 1 ? 0 : prev + 1)); }}
-                  className="absolute right-4 top-1/2 -translate-y-1/2 p-3 rounded-full bg-white/90 dark:bg-slate-900/90 border border-border text-foreground hover:scale-110 transition-all backdrop-blur-md z-20"
+                  className="absolute right-4 top-1/2 -translate-y-1/2 p-3 rounded-full bg-card/90 border border-border text-foreground hover:scale-110 transition-all backdrop-blur-md z-20"
                   aria-label="Next Image"
                 >
                   <ChevronRight className="size-5" />
@@ -220,7 +220,7 @@ export function ProductDetails({
                 </div>
                 <div className="flex flex-wrap gap-3">
                   {colors.map((c, idx) => (
-                    <button key={idx} onClick={() => setSelectedColor(idx)} className={cn("size-9 rounded-full transition-all border-2 flex items-center justify-center shrink-0", c.class, selectedColor === idx ? "ring-2 ring-primary/30 ring-offset-2 ring-offset-white dark:ring-offset-slate-950 scale-110" : "opacity-80")}>
+                    <button key={idx} onClick={() => setSelectedColor(idx)} className={cn("size-9 rounded-full transition-all border-2 flex items-center justify-center shrink-0", c.class, selectedColor === idx ? "ring-2 ring-primary/30 ring-offset-2 ring-offset-background scale-110" : "opacity-80")}>
                       {selectedColor === idx && <Check className={cn("size-4", idx === 3 ? "text-foreground" : "text-white")} />}
                     </button>
                   ))}
@@ -926,7 +926,7 @@ export function ProductDetails({
       {/* FULL SCREEN IMAGE LIGHTBOX MODAL */}
       {isModalOpen && (
         <div
-          className="fixed inset-0 z-50 bg-background/60 dark:bg-black/60 backdrop-blur-md flex items-center justify-center p-4 sm:p-8 animate-in fade-in duration-200"
+          className="fixed inset-0 z-50 bg-background/60 backdrop-blur-md flex items-center justify-center p-4 sm:p-8 animate-in fade-in duration-200"
           onClick={() => setIsModalOpen(false)}
         >
           {/* Close button */}

@@ -16,12 +16,12 @@ const PHOTOS = [
 export default function CollageHeroDemo({
   reveal = "immediate",
   rounded = true,
-  accent = "#5b4bf0",
+  accent,
 }: {
   /** In the docs the section is already on screen, so play at once. */
   reveal?: "in-view" | "immediate";
   rounded?: boolean;
-  /** The violet of the badge, the first coloured word and the pills. */
+  /** Pins the accent (badge, first coloured word, pills); the theme's primary by default. */
   accent?: string;
 }) {
   return (
@@ -47,7 +47,7 @@ export default function CollageHeroDemo({
         url: "https://www.youtube.com/embed/LXb3EKWsInQ?autoplay=1",
         title: "A day at KinderNest",
       }}
-      className={cn("max-w-6xl", rounded && "rounded-[28px] border border-black/[0.06] dark:border-white/10")}
+      className={cn("max-w-6xl", rounded && "rounded-[28px] border border-border")}
     />
   );
 }

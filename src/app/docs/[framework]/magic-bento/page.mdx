@@ -5,11 +5,11 @@ import { extractCode } from "@/lib/code";
 
 A premium grid layout system featuring CSS masking, continuously spinning gradient borders, and a real-time mouse-tracking spotlight effect.
 
-This component uses **Framer Motion**'s `useMotionTemplate` and `useMotionValue`
-to track pointer coordinates without triggering heavy React state re-renders,
-ensuring the volumetric glows remain silky smooth.
+This component writes pointer coordinates straight into CSS variables
+without triggering heavy React state re-renders, ensuring the volumetric
+glows remain silky smooth — no animation library needed.
 
-Move your cursor over a card: `MagicBentoCard` tracks the pointer with Framer Motion motion values — not React state — so the 1px border track and inner glow stay smooth.
+Move your cursor over a card: `MagicBentoCard` tracks the pointer with CSS variables — not React state — so the 1px border track and inner glow stay smooth.
 
 export const usageDefault = `import {
   MagicBento,
@@ -28,30 +28,30 @@ export default function FeatureGrid() {
   return (
     <MagicBento className="auto-rows-[220px]">
       <MagicBentoCard className="col-span-1 lg:row-span-1 flex flex-col justify-between">
-        <div className="flex items-center gap-2 text-zinc-500 dark:text-zinc-400 text-sm font-semibold">
+        <div className="flex items-center gap-2 text-muted-foreground text-sm font-semibold">
           <Activity className="w-4 h-4" />
           Insights
         </div>
         <div className="mt-auto">
-          <h3 className="text-lg font-semibold text-zinc-900 dark:text-white tracking-tight">
+          <h3 className="text-lg font-semibold text-foreground tracking-tight">
             Analytics
           </h3>
-          <p className="text-sm text-zinc-600 dark:text-zinc-400 mt-1">
+          <p className="text-sm text-muted-foreground mt-1">
             Track user behavior
           </p>
         </div>
       </MagicBentoCard>
 
       <MagicBentoCard className="col-span-1 lg:row-span-1 flex flex-col justify-between">
-        <div className="flex items-center gap-2 text-zinc-500 dark:text-zinc-400 text-sm font-semibold">
+        <div className="flex items-center gap-2 text-muted-foreground text-sm font-semibold">
           <Globe2 className="w-4 h-4" />
           Overview
         </div>
         <div className="mt-auto">
-          <h3 className="text-lg font-semibold text-zinc-900 dark:text-white tracking-tight">
+          <h3 className="text-lg font-semibold text-foreground tracking-tight">
             Dashboard
           </h3>
-          <p className="text-sm text-zinc-600 dark:text-zinc-400 mt-1">
+          <p className="text-sm text-muted-foreground mt-1">
             Centralized data view
           </p>
         </div>
@@ -59,60 +59,60 @@ export default function FeatureGrid() {
 
       {/* highlight keeps a conic gradient spinning behind the mask */}
       <MagicBentoCard highlight className="col-span-1 row-span-2 md:col-span-2 flex flex-col justify-between">
-        <div className="flex items-center gap-2 text-zinc-500 dark:text-zinc-400 text-sm font-semibold">
+        <div className="flex items-center gap-2 text-muted-foreground text-sm font-semibold">
           <Users className="w-4 h-4" />
           Teamwork
         </div>
         <div className="mt-auto">
-          <h3 className="text-2xl font-semibold text-zinc-900 dark:text-white tracking-tight">
+          <h3 className="text-2xl font-semibold text-foreground tracking-tight">
             Collaboration
           </h3>
-          <p className="text-base text-zinc-600 dark:text-zinc-400 mt-1">
+          <p className="text-base text-muted-foreground mt-1">
             Work together seamlessly across the globe
           </p>
         </div>
       </MagicBentoCard>
 
       <MagicBentoCard className="col-span-1 row-span-2 md:col-span-2 flex flex-col justify-between">
-        <div className="flex items-center gap-2 text-zinc-500 dark:text-zinc-400 text-sm font-semibold">
+        <div className="flex items-center gap-2 text-muted-foreground text-sm font-semibold">
           <Workflow className="w-4 h-4" />
           Efficiency
         </div>
         <div className="mt-auto">
-          <h3 className="text-2xl font-semibold text-zinc-900 dark:text-white tracking-tight">
+          <h3 className="text-2xl font-semibold text-foreground tracking-tight">
             Automation
           </h3>
-          <p className="text-base text-zinc-600 dark:text-zinc-400 mt-1">
+          <p className="text-base text-muted-foreground mt-1">
             Streamline workflows and save thousands of hours
           </p>
         </div>
       </MagicBentoCard>
 
       <MagicBentoCard className="col-span-1 lg:row-span-1 flex flex-col justify-between">
-        <div className="flex items-center gap-2 text-zinc-500 dark:text-zinc-400 text-sm font-semibold">
+        <div className="flex items-center gap-2 text-muted-foreground text-sm font-semibold">
           <Network className="w-4 h-4" />
           Connectivity
         </div>
         <div className="mt-auto">
-          <h3 className="text-lg font-semibold text-zinc-900 dark:text-white tracking-tight">
+          <h3 className="text-lg font-semibold text-foreground tracking-tight">
             Integration
           </h3>
-          <p className="text-sm text-zinc-600 dark:text-zinc-400 mt-1">
+          <p className="text-sm text-muted-foreground mt-1">
             Connect favorite tools
           </p>
         </div>
       </MagicBentoCard>
 
       <MagicBentoCard className="col-span-1 lg:row-span-1 flex flex-col justify-between">
-        <div className="flex items-center gap-2 text-zinc-500 dark:text-zinc-400 text-sm font-semibold">
+        <div className="flex items-center gap-2 text-muted-foreground text-sm font-semibold">
           <LockKeyhole className="w-4 h-4" />
           Protection
         </div>
         <div className="mt-auto">
-          <h3 className="text-lg font-semibold text-zinc-900 dark:text-white tracking-tight">
+          <h3 className="text-lg font-semibold text-foreground tracking-tight">
             Security
           </h3>
-          <p className="text-sm text-zinc-600 dark:text-zinc-400 mt-1">
+          <p className="text-sm text-muted-foreground mt-1">
             Enterprise-grade protection
           </p>
         </div>
@@ -131,21 +131,21 @@ export default function HighlightedBento() {
   return (
     <MagicBento className="lg:grid-cols-2 auto-rows-[240px] max-w-3xl">
       <MagicBentoCard className="flex flex-col justify-between">
-        <div className="flex items-center gap-2 text-zinc-500 dark:text-zinc-400 text-sm font-semibold">
+        <div className="flex items-center gap-2 text-muted-foreground text-sm font-semibold">
           <Activity className="w-4 h-4" />
           Default card
         </div>
-        <p className="text-sm text-zinc-600 dark:text-zinc-400">
+        <p className="text-sm text-muted-foreground">
           The border track and inner glow follow the cursor.
         </p>
       </MagicBentoCard>
 
       <MagicBentoCard highlight className="flex flex-col justify-between">
-        <div className="flex items-center gap-2 text-zinc-500 dark:text-zinc-400 text-sm font-semibold">
+        <div className="flex items-center gap-2 text-muted-foreground text-sm font-semibold">
           <Sparkles className="w-4 h-4" />
           highlight
         </div>
-        <p className="text-sm text-zinc-600 dark:text-zinc-400">
+        <p className="text-sm text-muted-foreground">
           Adds a conic gradient that keeps spinning behind the mask,
           cursor or not.
         </p>
@@ -229,21 +229,21 @@ Every effect — the spinning `highlight` border, the pointer-tracked border and
 Discover the key capabilities that make this component an excellent choice for modern, animated user interfaces.
 
 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 my-6 not-prose">
-  <div className="p-6 rounded-2xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900">
-    <h3 className="text-lg font-semibold text-zinc-900 dark:text-zinc-50 mb-2">Fluid Animations</h3>
-    <p className="text-zinc-600 dark:text-zinc-400 text-sm">Hardware-accelerated transitions that ensure smooth 60fps performance across devices.</p>
+  <div className="p-6 rounded-2xl border border-border bg-card">
+    <h3 className="text-lg font-semibold text-card-foreground mb-2">Fluid Animations</h3>
+    <p className="text-muted-foreground text-sm">Hardware-accelerated transitions that ensure smooth 60fps performance across devices.</p>
   </div>
-  <div className="p-6 rounded-2xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900">
-    <h3 className="text-lg font-semibold text-zinc-900 dark:text-zinc-50 mb-2">Highly Customizable</h3>
-    <p className="text-zinc-600 dark:text-zinc-400 text-sm">Exposes intuitive props for tailoring colors, sizes, and animation speeds to fit your brand.</p>
+  <div className="p-6 rounded-2xl border border-border bg-card">
+    <h3 className="text-lg font-semibold text-card-foreground mb-2">Highly Customizable</h3>
+    <p className="text-muted-foreground text-sm">Exposes intuitive props for tailoring colors, sizes, and animation speeds to fit your brand.</p>
   </div>
-  <div className="p-6 rounded-2xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900">
-    <h3 className="text-lg font-semibold text-zinc-900 dark:text-zinc-50 mb-2">Responsive Design</h3>
-    <p className="text-zinc-600 dark:text-zinc-400 text-sm">Automatically adapts to mobile, tablet, and desktop viewports without horizontal scrolling issues.</p>
+  <div className="p-6 rounded-2xl border border-border bg-card">
+    <h3 className="text-lg font-semibold text-card-foreground mb-2">Responsive Design</h3>
+    <p className="text-muted-foreground text-sm">Automatically adapts to mobile, tablet, and desktop viewports without horizontal scrolling issues.</p>
   </div>
-  <div className="p-6 rounded-2xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900">
-    <h3 className="text-lg font-semibold text-zinc-900 dark:text-zinc-50 mb-2">Accessible</h3>
-    <p className="text-zinc-600 dark:text-zinc-400 text-sm">Built with semantic HTML and ARIA labels where necessary to support screen readers and keyboard navigation.</p>
+  <div className="p-6 rounded-2xl border border-border bg-card">
+    <h3 className="text-lg font-semibold text-card-foreground mb-2">Accessible</h3>
+    <p className="text-muted-foreground text-sm">Built with semantic HTML and ARIA labels where necessary to support screen readers and keyboard navigation.</p>
   </div>
 </div>
 

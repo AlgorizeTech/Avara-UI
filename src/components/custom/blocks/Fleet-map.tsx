@@ -51,9 +51,9 @@ export interface FleetTrackerProps {
 const fleetVariants: Record<FleetVariant, Record<string, string>> = {
   default: {
     wrapper:
-      "flex flex-col md:flex-row bg-white dark:bg-[#09090b] border border-border/80 shadow-xl rounded-2xl overflow-hidden relative [&_.leaflet-control-attribution]:hidden",
+      "flex flex-col md:flex-row bg-card border border-border/80 shadow-xl rounded-2xl overflow-hidden relative [&_.leaflet-control-attribution]:hidden",
     sidebar:
-      "w-full md:w-[320px] lg:w-[380px] bg-muted dark:bg-[#121217] border-r border-border/80 shrink-0 flex flex-col h-full z-20",
+      "w-full md:w-[320px] lg:w-[380px] bg-muted border-r border-border/80 shrink-0 flex flex-col h-full z-20",
     mapContainer: "flex-1 w-full h-full relative z-10 min-w-0 overflow-hidden",
     itemActive: "bg-card border-l-[3px] shadow-sm",
     itemInactive:
@@ -67,7 +67,7 @@ const fleetVariants: Record<FleetVariant, Record<string, string>> = {
     // Mobile: a plain full-width panel in normal flow (same as `default`).
     // md+: the floating glass panel this variant is known for.
     sidebar:
-      "w-full h-full rounded-none border-0 shadow-none md:absolute md:top-4 md:left-4 md:bottom-4 md:h-auto md:w-[300px] lg:w-[340px] md:rounded-xl md:border md:shadow-2xl bg-white/95 dark:bg-zinc-950/95 backdrop-blur-md border-border/80 z-20 shrink-0 flex flex-col overflow-hidden",
+      "w-full h-full rounded-none border-0 shadow-none md:absolute md:top-4 md:left-4 md:bottom-4 md:h-auto md:w-[300px] lg:w-[340px] md:rounded-xl md:border md:shadow-2xl bg-background/95 backdrop-blur-md border-border/80 z-20 shrink-0 flex flex-col overflow-hidden",
     mapContainer: "flex-1 w-full h-full relative z-0 min-w-0 overflow-hidden rounded-2xl",
     itemActive: "bg-muted rounded-lg mx-3 my-1",
     itemInactive:
@@ -76,20 +76,20 @@ const fleetVariants: Record<FleetVariant, Record<string, string>> = {
     search: "shadow-sm bg-card border border-border",
   },
   // The same frosted recipe as GlassPanel in ProfilePageBlock: translucent
-  // white, hairline border, inset top highlight, over an aurora the wrapper
-  // draws. Kept inline so this block installs on its own.
+  // card surface, hairline border, inset top highlight, over an aurora the
+  // wrapper draws. Kept inline so this block installs on its own.
   modern: {
     wrapper:
-      "flex flex-col md:flex-row relative isolate overflow-hidden rounded-[28px] p-3 gap-3 bg-[#f5f5f7] dark:bg-[#0b0b0f] border border-black/[0.06] dark:border-white/10 shadow-xl [&_.leaflet-control-attribution]:hidden",
+      "flex flex-col md:flex-row relative isolate overflow-hidden rounded-[28px] p-3 gap-3 bg-muted border border-foreground/10 shadow-xl [&_.leaflet-control-attribution]:hidden",
     sidebar:
-      "w-full md:w-[320px] lg:w-[360px] shrink-0 flex flex-col h-full z-20 overflow-hidden rounded-[24px] border border-white/70 bg-white/55 backdrop-blur-2xl shadow-[inset_0_1px_0_rgba(255,255,255,0.75),0_24px_48px_-28px_rgba(15,23,42,0.35)] dark:border-white/10 dark:bg-white/[0.06] dark:shadow-[inset_0_1px_0_rgba(255,255,255,0.08),0_24px_48px_-28px_rgba(0,0,0,0.9)]",
+      "w-full md:w-[320px] lg:w-[360px] shrink-0 flex flex-col h-full z-20 overflow-hidden rounded-[24px] border border-foreground/10 bg-card/55 backdrop-blur-2xl shadow-[inset_0_1px_0_rgba(255,255,255,0.75),0_24px_48px_-28px_rgba(15,23,42,0.35)] dark:shadow-[inset_0_1px_0_rgba(255,255,255,0.08),0_24px_48px_-28px_rgba(0,0,0,0.9)]",
     mapContainer:
-      "flex-1 w-full h-full relative z-10 min-w-0 rounded-[24px] overflow-hidden bg-[#e9e9ee] dark:bg-[#121216] border border-white/70 dark:border-white/10 shadow-[0_24px_48px_-28px_rgba(15,23,42,0.35)] dark:shadow-[0_24px_48px_-28px_rgba(0,0,0,0.9)]",
-    itemActive: "bg-white/70 dark:bg-white/10 rounded-2xl mx-3 my-1 shadow-sm",
+      "flex-1 w-full h-full relative z-10 min-w-0 rounded-[24px] overflow-hidden bg-muted border border-foreground/10 shadow-[0_24px_48px_-28px_rgba(15,23,42,0.35)] dark:shadow-[0_24px_48px_-28px_rgba(0,0,0,0.9)]",
+    itemActive: "bg-card/80 rounded-2xl mx-3 my-1 shadow-sm",
     itemInactive:
-      "hover:bg-white/50 dark:hover:bg-white/[0.06] rounded-2xl mx-3 my-1 border border-transparent transition-colors",
-    header: "border-white/60 dark:border-white/10",
-    search: "border border-white/70 bg-white/50 dark:border-white/10 dark:bg-white/5",
+      "hover:bg-card/50 rounded-2xl mx-3 my-1 border border-transparent transition-colors",
+    header: "border-foreground/10",
+    search: "border border-foreground/10 bg-card/50",
   },
 };
 
@@ -105,7 +105,7 @@ const colorThemes: Record<string, Record<string, string>> = {
     focusRing:
       "focus-within:ring-primary/20 focus-within:border-primary/50",
     marker: "violet",
-    glow: "rgba(139, 92, 246, 0.75)",
+    glow: "color-mix(in srgb, var(--primary) 75%, transparent)",
   },
   indigo: {
     text: "text-indigo-600 dark:text-indigo-400",
@@ -241,24 +241,28 @@ const MAP_STYLES = `
   }
 }
 
-/* Popups are hard-coded white, down to the tip. */
+/* Popups are hard-coded white, down to the tip; repaint them from the theme. */
+.fleet-map-root .leaflet-popup-content-wrapper {
+  background: var(--popover);
+  color: var(--popover-foreground);
+  border: 1px solid var(--border);
+}
 .fleet-map-root[data-fleet-theme="dark"] .leaflet-popup-content-wrapper {
-  background: #17181d;
-  color: #e4e4e7;
-  border: 1px solid #2c2e36;
   box-shadow: 0 12px 32px -10px rgba(0, 0, 0, 0.85);
 }
+.fleet-map-root .leaflet-popup-tip {
+  background: var(--popover);
+  border: 1px solid var(--border);
+}
 .fleet-map-root[data-fleet-theme="dark"] .leaflet-popup-tip {
-  background: #17181d;
-  border: 1px solid #2c2e36;
   box-shadow: none;
 }
-.fleet-map-root[data-fleet-theme="dark"] .leaflet-popup-close-button,
-.fleet-map-root[data-fleet-theme="dark"] .leaflet-popup-close-button span {
-  color: #71717a;
+.fleet-map-root .leaflet-popup-close-button,
+.fleet-map-root .leaflet-popup-close-button span {
+  color: var(--muted-foreground);
 }
-.fleet-map-root[data-fleet-theme="dark"] .leaflet-popup-close-button:hover {
-  color: #e4e4e7;
+.fleet-map-root .leaflet-popup-close-button:hover {
+  color: var(--foreground);
 }
 `;
 
@@ -607,7 +611,7 @@ export default function FleetTracker({
                     isActive
                       ? theme.bg
                       : variant === "modern"
-                        ? "bg-white/60 border border-white/70 dark:bg-white/5 dark:border-white/10"
+                        ? "bg-card/60 border border-foreground/10"
                         : "bg-card border border-border",
                   )}
                 >

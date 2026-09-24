@@ -1,6 +1,6 @@
 {
-  "generatedAt": "2026-09-23T13:48:14.864Z",
-  "totalFiles": 285,
+  "generatedAt": "2026-09-24T16:07:15.091Z",
+  "totalFiles": 289,
   "files": [
     {
       "name": "nextjs/3d-carousel",
@@ -205,6 +205,12 @@
       "path": "/docs/nextjs-counter.md",
       "url": "/docs/nextjs/counter",
       "originalMdx": "[framework]\\counter\\page.mdx"
+    },
+    {
+      "name": "nextjs/counter-section",
+      "path": "/docs/nextjs-counter-section.md",
+      "url": "/docs/nextjs/counter-section",
+      "originalMdx": "[framework]\\counter-section\\page.mdx"
     },
     {
       "name": "nextjs/cursor-animation",
@@ -849,6 +855,12 @@
       "originalMdx": "[framework]\\waitlist\\page.mdx"
     },
     {
+      "name": "nextjs/wallet",
+      "path": "/docs/nextjs-wallet.md",
+      "url": "/docs/nextjs/wallet",
+      "originalMdx": "[framework]\\wallet\\page.mdx"
+    },
+    {
       "name": "nextjs/wizard",
       "path": "/docs/nextjs-wizard.md",
       "url": "/docs/nextjs/wizard",
@@ -1063,6 +1075,12 @@
       "path": "/docs/reactjs-counter.md",
       "url": "/docs/reactjs/counter",
       "originalMdx": "[framework]\\counter\\page.mdx"
+    },
+    {
+      "name": "reactjs/counter-section",
+      "path": "/docs/reactjs-counter-section.md",
+      "url": "/docs/reactjs/counter-section",
+      "originalMdx": "[framework]\\counter-section\\page.mdx"
     },
     {
       "name": "reactjs/cursor-animation",
@@ -1705,6 +1723,12 @@
       "path": "/docs/reactjs-waitlist.md",
       "url": "/docs/reactjs/waitlist",
       "originalMdx": "[framework]\\waitlist\\page.mdx"
+    },
+    {
+      "name": "reactjs/wallet",
+      "path": "/docs/reactjs-wallet.md",
+      "url": "/docs/reactjs/wallet",
+      "originalMdx": "[framework]\\wallet\\page.mdx"
     },
     {
       "name": "reactjs/wizard",

@@ -1,6 +1,6 @@
 # Premium Animated List
 
-A hyper-polished list component that staggers its children into view using GSAP 3D perspective transforms, complete with a mouse-tracking glassmorphic spotlight hover effect.
+A hyper-polished list component that staggers its children into view using 3D perspective transforms (no animation library), complete with a mouse-tracking glassmorphic spotlight hover effect.
 
 Standard list animations often feel rigid. By wrapping your notification or activity feeds in the `AnimatedList` container, the engine forces a `perspective` boundary and applies a high-end 3D flip-in sequence (`back.out` easing) to every direct child. Furthermore, the `AnimatedListItem` wrapper brings the component to life _after_ entry by tracking the user's cursor to render a subtle spotlight gradient glow.
 
@@ -217,7 +217,7 @@ Discover the key capabilities that make this component an excellent choice for m
 
           0.8
 
-          The total duration (in seconds) of the GSAP entry animation for a
+          The total duration (in seconds) of the entry animation for a
           single list item.
 
           AnimatedList
@@ -228,8 +228,10 @@ Discover the key capabilities that make this component an excellent choice for m
 
           "back.out(1.5)"
 
-          The specific GSAP easing function to apply to the entrance animation.
-          Determines the spring physics of the 3D rotation and scale.
+          The easing applied to the entrance animation, named the GSAP way
+          ("power4.out", "elastic.out(1, 0.5)") and
+          evaluated without the library; CSS keywords and{" "}
+          cubic-bezier() work too.
 
           AnimatedListItem
 

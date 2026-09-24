@@ -335,7 +335,7 @@ const ColorPickerPopover: React.FC<{
           onClose();
         }}
       />
-      <div className="absolute left-0 right-0 top-full mt-1.5 z-50 p-3 rounded-2xl border border-border/80 dark:border-white/10 bg-background dark:bg-[#18181b] shadow-lg flex flex-col gap-3 animate-in fade-in-0 zoom-in-95 duration-150 custom-control-interactive">
+      <div className="absolute left-0 right-0 top-full mt-1.5 z-50 p-3 rounded-2xl border border-border/80 bg-popover text-popover-foreground shadow-lg flex flex-col gap-3 animate-in fade-in-0 zoom-in-95 duration-150 custom-control-interactive">
         {/* 1. Interactive 2D Color Spectrum Field Box */}
         <div
           ref={canvasRef}
@@ -415,7 +415,7 @@ const ColorPickerPopover: React.FC<{
                 e.stopPropagation();
                 onChange(hex);
               }}
-              className="w-5 h-5 rounded-md transition-transform hover:scale-110 active:scale-95 border border-black/15 dark:border-white/20 shadow-xs cursor-pointer"
+              className="w-5 h-5 rounded-md transition-transform hover:scale-110 active:scale-95 border border-foreground/15 shadow-xs cursor-pointer"
               style={{ backgroundColor: hex }}
             />
           ))}
@@ -692,16 +692,16 @@ const ShardsControlTile = ({
             onTouchStart={handleTouchStart}
             className={cn(
               "relative z-10 flex items-center justify-between w-full h-12 px-4 rounded-xl border select-none group cursor-pointer overflow-hidden transition-all duration-200",
-              "bg-background/90 dark:bg-[#16161d]",
+              "bg-background/90 dark:bg-card/90",
               isAtMax
-                ? "border-primary/50 shadow-[0_0_12px_rgba(var(--primary),0.2)]"
-                : "border-border/80 dark:border-white/10",
+                ? "border-primary/50 shadow-[0_0_12px_color-mix(in_oklab,var(--primary)_20%,transparent)]"
+                : "border-border/80",
               className
             )}
           >
             {/* Filled Active Drag Pill Surface with vertical border line & handle cursor */}
             <div
-              className="absolute left-0 top-0 bottom-0 bg-primary/15 dark:bg-white/10 rounded-xl transition-all duration-75 pointer-events-none border-r-2 border-primary/30 dark:border-zinc-300/80"
+              className="absolute left-0 top-0 bottom-0 bg-primary/15 rounded-xl transition-all duration-75 pointer-events-none border-r-2 border-primary/30"
               style={{ width: `${percentage}%` }}
             >
               {/* Invisible Edge Drag Indicator with cursor-ew-resize */}
@@ -709,12 +709,12 @@ const ShardsControlTile = ({
             </div>
 
             {/* Label on Left */}
-            <span className="relative z-10 text-foreground dark:text-zinc-200 font-semibold text-xs tracking-wide pointer-events-none">
+            <span className="relative z-10 text-foreground font-semibold text-xs tracking-wide pointer-events-none">
               {displayLabel}
             </span>
 
             {/* Value Display on Right */}
-            <span className="relative z-10 font-mono text-xs font-semibold text-foreground dark:text-zinc-100 pointer-events-none">
+            <span className="relative z-10 font-mono text-xs font-semibold text-foreground pointer-events-none">
               {displayValue}
             </span>
           </div>
@@ -736,7 +736,7 @@ const ShardsControlTile = ({
         className={cn(
           "relative flex items-center justify-between w-full h-12 px-4 py-2.5 rounded-xl border backdrop-blur-md text-xs font-semibold select-none group cursor-pointer transition-colors duration-200",
           (isSelectOpen || isColorOpen) ? "z-30" : "z-10",
-          "bg-background/90 text-foreground border-border/80 dark:bg-card/90 dark:border-white/10",
+          "bg-background/90 text-foreground border-border/80 dark:bg-card/90",
           className
         )}
         style={style}
@@ -852,7 +852,7 @@ const ShardsControlTile = ({
         )}
 
         {/* Label on Left */}
-        <span className="relative z-10 text-foreground/90 dark:text-zinc-200 font-semibold tracking-wide truncate max-w-[45%] transition-colors duration-200 pointer-events-none">
+        <span className="relative z-10 text-foreground/90 font-semibold tracking-wide truncate max-w-[45%] transition-colors duration-200 pointer-events-none">
           {displayLabel}
         </span>
 
@@ -873,7 +873,7 @@ const ShardsControlTile = ({
                   className="w-5 h-5 rounded-md shadow-xs border-0 transition-transform duration-200 hover:scale-105"
                   style={{ backgroundColor: displayColor }}
                 />
-                <span className="font-mono text-xs text-foreground dark:text-zinc-200 font-medium px-2.5 py-1.5 rounded-lg bg-black/5 dark:bg-white/10 border-0">
+                <span className="font-mono text-xs text-foreground font-medium px-2.5 py-1.5 rounded-lg bg-muted border-0">
                   {displayColor}
                 </span>
               </button>
@@ -889,10 +889,10 @@ const ShardsControlTile = ({
                   e.stopPropagation();
                   setIsSelectOpen(!isSelectOpen);
                 }}
-                className="flex items-center gap-1.5 text-foreground/90 dark:text-zinc-200 text-xs font-semibold px-2 py-1 rounded-md transition-all duration-200 hover:text-primary active:scale-95 cursor-pointer"
+                className="flex items-center gap-1.5 text-foreground/90 text-xs font-semibold px-2 py-1 rounded-md transition-all duration-200 hover:text-primary active:scale-95 cursor-pointer"
               >
                 <span className="truncate">{displayValue || "Select"}</span>
-                <span className={cn("text-foreground/70 dark:text-zinc-400 text-[10px] transition-transform duration-200", isSelectOpen && "rotate-180")}>
+                <span className={cn("text-foreground/70 text-[10px] transition-transform duration-200", isSelectOpen && "rotate-180")}>
                   ▲
                 </span>
               </button>
@@ -913,13 +913,15 @@ const ShardsControlTile = ({
               }}
               className={cn(
                 "relative inline-flex h-5 w-9 shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-300 ease-in-out focus:outline-none focus:ring-2 focus:ring-primary/40 custom-control-interactive",
-                displayChecked ? "bg-primary" : "bg-muted dark:bg-zinc-800"
+                displayChecked ? "bg-primary" : "bg-muted"
               )}
             >
               <span
                 className={cn(
-                  "pointer-events-none inline-block h-4 w-4 transform rounded-full bg-white dark:bg-zinc-100 shadow-md ring-0 transition duration-300 ease-in-out",
-                  displayChecked ? "translate-x-4" : "translate-x-0"
+                  "pointer-events-none inline-block h-4 w-4 transform rounded-full shadow-md ring-0 transition duration-300 ease-in-out",
+                  displayChecked
+                    ? "translate-x-4 bg-primary-foreground"
+                    : "translate-x-0 bg-background dark:bg-foreground"
                 )}
               />
             </button>
@@ -947,7 +949,7 @@ const ShardsControlTile = ({
                 setIsSelectOpen(false);
               }}
             />
-            <div className="absolute left-0 right-0 top-full mt-1 z-50 py-2 px-1 rounded-2xl border border-border/80 dark:border-white/10 bg-background dark:bg-[#16161d] shadow-lg flex flex-col gap-1 overflow-hidden animate-in fade-in-0 zoom-in-95 duration-150 custom-control-interactive">
+            <div className="absolute left-0 right-0 top-full mt-1 z-50 py-2 px-1 rounded-2xl border border-border/80 bg-popover text-popover-foreground shadow-lg flex flex-col gap-1 overflow-hidden animate-in fade-in-0 zoom-in-95 duration-150 custom-control-interactive">
               {(options.length > 0 ? options : ["Right", "Left", "Center", "Full"]).map((opt) => (
                 <button
                   key={opt}
@@ -959,10 +961,10 @@ const ShardsControlTile = ({
                     setIsSelectOpen(false);
                   }}
                   className={cn(
-                    "w-full text-left px-4 py-2 text-xs font-medium transition-colors duration-150 rounded-xl hover:bg-muted/80 dark:hover:bg-white/5 cursor-pointer",
+                    "w-full text-left px-4 py-2 text-xs font-medium transition-colors duration-150 rounded-xl hover:bg-muted/80 cursor-pointer",
                     displayValue === opt
-                      ? "text-foreground dark:text-white font-semibold"
-                      : "text-muted-foreground dark:text-zinc-400"
+                      ? "text-foreground font-semibold"
+                      : "text-muted-foreground"
                   )}
                 >
                   {opt}
@@ -1680,7 +1682,7 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
           className={cn(
             baseClasses,
             sizeClasses[size],
-            "relative z-10 w-max px-5 py-2.5 transition-all duration-300 hover:ring-2 hover:ring-primary/30 hover:ring-offset-2 dark:hover:ring-offset-black",
+            "relative z-10 w-max px-5 py-2.5 transition-all duration-300 hover:ring-2 hover:ring-primary/30 hover:ring-offset-2 hover:ring-offset-background",
             className,
           )}
           onClick={createRipple}
@@ -2242,7 +2244,7 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
           className={cn(
             baseClasses,
             sizeClasses[size],
-            "relative z-10 w-max px-5 py-2.5 bg-primary text-primary-foreground border-b-4 border-blue-700 active:border-b-0 active:translate-y-1 transition-all duration-100",
+            "relative z-10 w-max px-5 py-2.5 bg-primary text-primary-foreground border-b-4 border-[color:color-mix(in_oklab,var(--primary)_70%,black)] active:border-b-0 active:translate-y-1 transition-all duration-100",
             className,
           )}
           onClick={createRipple}

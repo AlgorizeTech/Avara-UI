@@ -1,7 +1,6 @@
 "use client";
 
 import React, { useEffect, useRef, useState } from "react";
-import gsap from "gsap";
 import { ArrowRight, ArrowUpRight, Play, Plus } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { AvatarStack, type StackAvatar } from "./AvatarStackBlock";
@@ -50,12 +49,34 @@ export interface FashionHeroProps extends React.HTMLAttributes<HTMLElement> {
   quote?: { text: string; author: string };
   /** The next story: a number, a category and a title. */
   teaser?: { index: string; label: string; title: string; href: string };
-  /** Sets `--primary` for the section; the theme's primary by default. Used by the button, arrows and rings. */
+  /** Sets `--primary` for the section; the theme's primary by default. Used by the play badge, the plus, the button, the teaser arrow and the rings. */
   accent?: string;
   reveal?: "in-view" | "immediate";
   /** Anchor or router link for the hrefs. */
   linkComponent?: React.ElementType;
 }
+
+// ------------------------------------------
+// The reveal, as keyframes. GSAP's power3.out, back.out(1.6) and back.out(1.8)
+// as CSS easings; each keyframe is only the start pose.
+// ------------------------------------------
+const EASE_OUT =
+  "linear(0, .1945, .3591, .4971, .6115, .7052, .7808, .8409, .8877, .9233, .9497, .9686, .9816, .9901, .9952, .998, .9994, .9999, 1, 1)";
+const EASE_SETTLE =
+  "linear(0, .2148, .4006, .5593, .6928, .8031, .8922, .962, 1.0144, 1.0514, 1.075, 1.0871, 1.0896, 1.0845, 1.0738, 1.0594, 1.0432, 1.0272, 1.0134, 1.0037, 1)";
+const EASE_LAND =
+  "linear(0, .2239, .4168, .581, .7184, .8313, .9216, .9916, 1.0432, 1.0787, 1.1, 1.1094, 1.1088, 1.1004, 1.0864, 1.0688, 1.0496, 1.0311, 1.0152, 1.0042, 1)";
+
+const REVEAL_CSS = `
+@keyframes lb-side-in { from { opacity: 0; transform: scale(0.8); } }
+@keyframes lb-col-in { from { opacity: 0; transform: translateY(48px); } }
+@keyframes lb-cta-in { from { opacity: 0; transform: translateY(14px) scale(0.9); } }
+@keyframes lb-foot-in { from { opacity: 0; transform: translateY(14px); } }
+[data-lb-reveal] [data-lb-side] { animation: lb-side-in 0.7s ${EASE_SETTLE} var(--lb-at, 0s) backwards; }
+[data-lb-reveal] [data-lb-col] { animation: lb-col-in 0.9s ${EASE_OUT} var(--lb-at, 0s) backwards; }
+[data-lb-reveal] [data-lb-cta] { animation: lb-cta-in 0.5s ${EASE_LAND} var(--lb-at, 0s) backwards; }
+[data-lb-reveal] [data-lb-foot] { animation: lb-foot-in 0.6s ${EASE_OUT} var(--lb-at, 0s) backwards; }
+`;
 
 // ------------------------------------------
 // One look: a person on a flat colour, tilting under the pointer
@@ -103,6 +124,7 @@ function FashionHeroRoot({
 }: FashionHeroProps) {
   const rootRef = useRef<HTMLElement>(null);
   const [inView, setInView] = useState(reveal === "immediate");
+  const [playing, setPlaying] = useState(false);
   const [l0, l1, l2, l3, l4, l5, l6] = looks;
 
   useEffect(() => {
@@ -129,6 +151,8 @@ function FashionHeroRoot({
   // middle column outward, the button lands on its look, the footer last.
   // (The headline animates itself, word by word.) Everything renders opaque on
   // the server; this only plays once the page is live.
+  // Each element gets its start time as `--lb-at` and the keyframes in
+  // REVEAL_CSS hold its start pose until then.
   useEffect(() => {
     if (!inView) return;
     const root = rootRef.current;
@@ -136,27 +160,16 @@ function FashionHeroRoot({
     const reduced =
       typeof window !== "undefined" && window.matchMedia?.("(prefers-reduced-motion: reduce)").matches;
     if (reduced) return;
-    const sides = root.querySelectorAll("[data-lb-side]");
-    const cols = Array.from(root.querySelectorAll<HTMLElement>("[data-lb-col]"));
-    const cta = root.querySelectorAll("[data-lb-cta]");
-    const foot = root.querySelectorAll("[data-lb-foot]");
-    const tl = gsap.timeline({ defaults: { ease: "power3.out" } });
-    tl.fromTo(sides, { opacity: 0, scale: 0.8 }, { opacity: 1, scale: 1, duration: 0.7, ease: "back.out(1.6)" }, 0.1);
-    cols.forEach((col) => {
+    const at = (el: HTMLElement, seconds: number) => el.style.setProperty("--lb-at", `${seconds}s`);
+    root.querySelectorAll<HTMLElement>("[data-lb-side]").forEach((el) => at(el, 0.1));
+    root.querySelectorAll<HTMLElement>("[data-lb-col]").forEach((col) => {
       // Distance from the middle column sets the delay, so the collage opens outward.
       const order = Number(col.getAttribute("data-lb-col") ?? 0);
-      tl.fromTo(
-        col,
-        { opacity: 0, y: 48 },
-        { opacity: 1, y: 0, duration: 0.9, clearProps: "transform" },
-        0.25 + Math.abs(order - 2) * 0.12,
-      );
+      at(col, 0.25 + Math.abs(order - 2) * 0.12);
     });
-    tl.fromTo(cta, { opacity: 0, y: 14, scale: 0.9 }, { opacity: 1, y: 0, scale: 1, duration: 0.5, ease: "back.out(1.8)" }, 0.95)
-      .fromTo(foot, { opacity: 0, y: 14 }, { opacity: 1, y: 0, duration: 0.6, stagger: 0.12 }, 1.05);
-    return () => {
-      tl.kill();
-    };
+    root.querySelectorAll<HTMLElement>("[data-lb-cta]").forEach((el) => at(el, 0.95));
+    root.querySelectorAll<HTMLElement>("[data-lb-foot]").forEach((el, i) => at(el, 1.05 + i * 0.12));
+    setPlaying(true);
   }, [inView]);
 
   const vars = (accent ? { "--primary": accent } : {}) as React.CSSProperties;
@@ -164,10 +177,12 @@ function FashionHeroRoot({
   return (
     <section
       ref={rootRef}
-      className={cn("relative w-full overflow-hidden bg-white text-[#111] dark:bg-[#0c0c0e] dark:text-white", className)}
+      data-lb-reveal={playing ? "" : undefined}
+      className={cn("relative w-full overflow-hidden bg-background text-foreground", className)}
       style={{ ...vars, ...style }}
       {...props}
     >
+      <style>{REVEAL_CSS}</style>
       <div className="mx-auto max-w-6xl px-5 pb-10 pt-8 sm:px-8 sm:pt-10">
         {/* ---- Header: badge / headline / faces ---- */}
         <div className="grid grid-cols-2 items-start gap-y-6 lg:grid-cols-[8rem_1fr_8rem] lg:items-center">
@@ -178,8 +193,8 @@ function FashionHeroRoot({
                   aria-label={video.badge}
                   className="group/badge rounded-full outline-none focus-visible:ring-2 focus-visible:ring-primary/50"
                 >
-                  <CircularText text={video.badge} size={100} speed={20} fontSize={10} tracking={0.12} color="currentColor" className="text-[#111] dark:text-white">
-                    <span className="grid size-9 place-items-center rounded-full bg-[#111] text-white transition-transform duration-300 group-hover/badge:scale-110 dark:bg-white dark:text-[#111]">
+                  <CircularText text={video.badge} size={100} speed={20} fontSize={10} tracking={0.12} color="currentColor" className="text-foreground">
+                    <span className="grid size-9 place-items-center rounded-full bg-primary text-primary-foreground transition-transform duration-300 group-hover/badge:scale-110">
                       <Play size={12} className="ml-0.5 fill-current" />
                     </span>
                   </CircularText>
@@ -207,12 +222,13 @@ function FashionHeroRoot({
                 avatars={avatars}
                 size="md"
                 max={3}
+                ringClassName="ring-background"
                 action={
                   avatarsHref ? (
                     <Link
                       href={avatarsHref}
                       aria-label={avatarsLabel}
-                      className="group/plus grid size-9 place-items-center rounded-full bg-[#111] text-white ring-2 ring-white transition-transform duration-300 hover:scale-110 dark:bg-white dark:text-[#111] dark:ring-zinc-950"
+                      className="group/plus grid size-9 place-items-center rounded-full bg-primary text-primary-foreground ring-2 ring-background transition-transform duration-300 hover:scale-110"
                     >
                       <Plus size={16} className="transition-transform duration-300 group-hover/plus:rotate-90" />
                     </Link>
@@ -263,7 +279,7 @@ function FashionHeroRoot({
               <div data-lb-cta="" className="absolute inset-x-0 -bottom-4 flex justify-center">
                 <Link
                   href={cta.href}
-                  className="group/cta inline-flex h-10 items-center gap-2 rounded-full bg-[#111] pl-5 pr-4 text-[13px] font-semibold text-white shadow-[0_10px_24px_-10px_rgba(0,0,0,0.5)] outline-none transition-transform duration-300 hover:scale-[1.04] focus-visible:ring-2 focus-visible:ring-primary/60 active:scale-[0.98] dark:bg-white dark:text-[#111]"
+                  className="group/cta inline-flex h-10 items-center gap-2 rounded-full bg-primary pl-5 pr-4 text-[13px] font-semibold text-primary-foreground shadow-[0_10px_24px_-10px_color-mix(in_oklab,var(--primary)_70%,transparent)] outline-none transition-transform duration-300 hover:scale-[1.04] focus-visible:ring-2 focus-visible:ring-primary/60 active:scale-[0.98]"
                 >
                   {cta.label}
                   <ArrowUpRight size={14} className="transition-transform duration-300 group-hover/cta:-translate-y-0.5 group-hover/cta:translate-x-0.5" />
@@ -286,10 +302,10 @@ function FashionHeroRoot({
             <div data-lb-foot="" className="max-w-xs">
               {quote && (
                 <>
-                  <span className="block font-serif text-4xl leading-none text-black/25 dark:text-white/30" aria-hidden>
+                  <span className="block font-serif text-4xl leading-none text-foreground/30" aria-hidden>
                     &ldquo;
                   </span>
-                  <p className="mt-1 text-[12.5px] leading-relaxed text-black/70 dark:text-white/70">{quote.text}</p>
+                  <p className="mt-1 text-[12.5px] leading-relaxed text-foreground/70">{quote.text}</p>
                   <p className="relative mt-3 inline-block font-serif text-2xl italic leading-none">
                     {/* A highlighter stroke under the name. */}
                     <span className="absolute inset-x-0 bottom-0 -z-10 h-[0.45em] bg-primary/35" aria-hidden />
@@ -308,9 +324,9 @@ function FashionHeroRoot({
                 <span className="flex items-center justify-between gap-6">
                   <span className="flex items-baseline gap-2.5">
                     <span className="font-sans text-[2rem] font-light leading-none tracking-tight">{teaser.index}</span>
-                    <span className="text-[11px] text-black/55 dark:text-white/55">{teaser.label}</span>
+                    <span className="text-[11px] text-foreground/55">{teaser.label}</span>
                   </span>
-                  <span className="grid size-8 place-items-center rounded-full transition-all duration-300 group-hover/teaser:bg-[#111] group-hover/teaser:text-white dark:group-hover/teaser:bg-white dark:group-hover/teaser:text-[#111]">
+                  <span className="grid size-8 place-items-center rounded-full transition-all duration-300 group-hover/teaser:bg-primary group-hover/teaser:text-primary-foreground">
                     <ArrowRight size={18} className="transition-transform duration-300 group-hover/teaser:translate-x-0.5" />
                   </span>
                 </span>

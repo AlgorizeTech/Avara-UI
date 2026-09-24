@@ -1,10 +1,16 @@
 "use client";
 
 import { cn } from "@/lib/utils";
-import gsap from "gsap";
 import { Monitor, Moon, Sun } from "lucide-react";
 import { useTheme } from "next-themes";
-import React, { useCallback, useEffect, useRef, useState, useSyncExternalStore } from "react";
+import React, {
+  useCallback,
+  useEffect,
+  useLayoutEffect,
+  useRef,
+  useState,
+  useSyncExternalStore,
+} from "react";
 import { flushSync } from "react-dom";
 
 /**
@@ -106,6 +112,20 @@ function revealFrom(origin: Element, apply: () => void, duration: number) {
   transition.finished.then(done, done);
 }
 
+
+// ==========================================
+// MOTION
+// Everything below runs on the Web Animations API rather than CSS
+// transitions: the reveal above switches every transition off while it runs
+// (`html.theme-transitioning`), and a theme change is exactly when these move.
+// ==========================================
+const POWER3_OUT =
+  "linear(0, .1268, .2412, .3439, .4358, .5177, .5904, .6545, .7108, .7599, .8025, .8391, .8704, .8969, .9191, .9375, .9526, .9647, .9744, .9819, .9877, .9919, .9949, .997, .9984, .9992, .9997, .9999, 1, 1, 1)";
+const BACK_OUT_2 =
+  "linear(0, .159, .3031, .433, .5493, .6528, .744, .8237, .8924, .951, 1, 1.0401, 1.072, 1.0963, 1.1138, 1.125, 1.1307, 1.1314, 1.128, 1.121, 1.1111, 1.099, 1.0853, 1.0708, 1.056, 1.0417, 1.0284, 1.017, 1.008, 1.0021, 1)";
+// power2.in / power2.out; back to back they make power2.inOut exactly.
+const POWER2_IN = "cubic-bezier(0.3333, 0, 0.6667, 0)";
+const POWER2_OUT = "cubic-bezier(0.3333, 1, 0.6667, 1)";
 
 export type ThemeVariant = "icon" | "pill" | "dropdown";
 
@@ -242,6 +262,7 @@ const ThemeSwitcherPill = React.forwardRef<HTMLDivElement, ThemeSwitcherVariantP
     const containerRef = useRef<HTMLDivElement>(null);
     const indicatorRef = useRef<HTMLDivElement>(null);
     const buttonsRef = useRef<(HTMLButtonElement | null)[]>([]);
+    const slideRef = useRef<Animation | null>(null);
 
     React.useImperativeHandle(
       ref,
@@ -260,11 +281,20 @@ const ThemeSwitcherPill = React.forwardRef<HTMLDivElement, ThemeSwitcherVariantP
       const indicator = indicatorRef.current;
 
       if (activeBtn && indicator) {
-        gsap.to(indicator, {
-          x: activeBtn.offsetLeft,
-          width: activeBtn.offsetWidth,
-          duration: 0.4,
-          ease: "power3.out",
+        // Slide from wherever the indicator is right now: mid-slide, or on
+        // mount from its unsized spot at the left edge.
+        const now = getComputedStyle(indicator);
+        const from = { transform: now.transform, width: now.width };
+        const to = {
+          transform: `translateX(${activeBtn.offsetLeft}px)`,
+          width: `${activeBtn.offsetWidth}px`,
+        };
+        slideRef.current?.cancel();
+        indicator.style.transform = to.transform;
+        indicator.style.width = to.width;
+        slideRef.current = indicator.animate([from, to], {
+          duration: 400,
+          easing: POWER3_OUT,
         });
       }
     }, [theme]);
@@ -316,20 +346,35 @@ ThemeSwitcherPill.displayName = "ThemeSwitcherPill";
 const ThemeSwitcherIcon = React.forwardRef<HTMLDivElement, ThemeSwitcherVariantProps>(
   ({ resolvedTheme, setTheme, className, ...props }, ref) => {
     const iconRef = useRef<HTMLDivElement>(null);
+    const spinRef = useRef<Animation | null>(null);
 
     const toggleTheme = (e: React.MouseEvent<HTMLButtonElement>) => {
       const isDark = resolvedTheme === "dark";
 
-      // GSAP spin animation
-      if (iconRef.current) {
-        gsap.to(iconRef.current, {
-          rotation: "+=180",
-          scale: 0.8,
-          duration: 0.15,
-          yoyo: true,
-          repeat: 1,
-          ease: "power2.inOut",
-        });
+      // Spin: a half turn while shrinking to 0.8, then back (0.15s each way,
+      // power2.inOut). A click mid-spin picks up from the current angle and
+      // still comes to rest upright.
+      const icon = iconRef.current;
+      if (icon) {
+        const now = getComputedStyle(icon);
+        const angle = parseFloat(now.rotate) || 0;
+        const size = parseFloat(now.scale);
+        const scale = Number.isNaN(size) ? 1 : size;
+        spinRef.current?.cancel();
+        spinRef.current = icon.animate(
+          [
+            { rotate: `${angle}deg`, scale, easing: POWER2_IN },
+            {
+              rotate: `${(angle + 180) / 2}deg`,
+              scale: (scale + 0.8) / 2,
+              easing: POWER2_OUT,
+            },
+            { rotate: "180deg", scale: 0.8, easing: POWER2_IN },
+            { rotate: "90deg", scale: 0.9, easing: POWER2_OUT },
+            { rotate: "0deg", scale: 1 },
+          ],
+          { duration: 300 },
+        );
       }
 
       setTheme(isDark ? "light" : "dark", e.currentTarget);
@@ -347,7 +392,7 @@ const ThemeSwitcherIcon = React.forwardRef<HTMLDivElement, ThemeSwitcherVariantP
             className="relative flex items-center justify-center w-full h-full"
           >
             {resolvedTheme === "dark" ? (
-              <Moon className="w-[18px] h-[18px] text-zinc-100" />
+              <Moon className="w-[18px] h-[18px] text-foreground" />
             ) : (
               <Sun className="w-[18px] h-[18px] text-foreground" />
             )}
@@ -365,8 +410,20 @@ ThemeSwitcherIcon.displayName = "ThemeSwitcherIcon";
 const ThemeSwitcherDropdown = React.forwardRef<HTMLDivElement, ThemeSwitcherVariantProps>(
   ({ theme, resolvedTheme, setTheme, className, ...props }, ref) => {
     const [isOpen, setIsOpen] = useState(false);
+    // Whether the menu is displayed at all: true while open and while the
+    // close animation plays, then false (display: none).
+    const [menuShown, setMenuShown] = useState(false);
     const containerRef = useRef<HTMLDivElement>(null);
     const menuRef = useRef<HTMLDivElement>(null);
+    const menuMotionRef = useRef<Animation | null>(null);
+
+    // Opening displays the menu in the same render, so the entrance can start
+    // from its first frame.
+    const [prevOpen, setPrevOpen] = useState(isOpen);
+    if (prevOpen !== isOpen) {
+      setPrevOpen(isOpen);
+      if (isOpen) setMenuShown(true);
+    }
 
     React.useImperativeHandle(
       ref,
@@ -386,36 +443,35 @@ const ThemeSwitcherDropdown = React.forwardRef<HTMLDivElement, ThemeSwitcherVari
       return () => document.removeEventListener("mousedown", handleClickOutside);
     }, []);
 
-    useEffect(() => {
-      if (!menuRef.current) return;
+    // Open: 0.2s back.out(2) from 10px up at 95%. Close: 0.15s power2.in to
+    // 5px up at 95% from wherever it is, then display: none. The animated
+    // `transform` composes with the menu's own centring `translate` class
+    // instead of replacing it.
+    useLayoutEffect(() => {
+      const menu = menuRef.current;
+      if (!menu || !menuShown) return;
       if (isOpen) {
-        gsap.fromTo(
-          menuRef.current,
-          { opacity: 0, y: -10, scale: 0.95 },
-          {
-            opacity: 1,
-            y: 0,
-            scale: 1,
-            duration: 0.2,
-            ease: "back.out(2)",
-            display: "block",
-          },
+        menuMotionRef.current?.cancel();
+        menuMotionRef.current = menu.animate(
+          [
+            { opacity: 0, transform: "translateY(-10px) scale(0.95)" },
+            { opacity: 1, transform: "translateY(0px) scale(1)" },
+          ],
+          { duration: 200, easing: BACK_OUT_2 },
         );
-      } else {
-        gsap.to(menuRef.current, {
-          opacity: 0,
-          y: -5,
-          scale: 0.95,
-          duration: 0.15,
-          ease: "power2.in",
-          onComplete: () => {
-            if (menuRef.current) {
-              gsap.set(menuRef.current, { display: "none" });
-            }
-          },
-        });
+        return;
       }
-    }, [isOpen]);
+      const now = getComputedStyle(menu);
+      const from = { opacity: now.opacity, transform: now.transform };
+      menuMotionRef.current?.cancel();
+      const close = menu.animate(
+        [from, { opacity: 0, transform: "translateY(-5px) scale(0.95)" }],
+        { duration: 150, easing: POWER2_IN, fill: "forwards" },
+      );
+      menuMotionRef.current = close;
+      // Reopening cancels this animation, and a cancelled one never finishes.
+      close.onfinish = () => setMenuShown(false);
+    }, [isOpen, menuShown]);
 
     return (
       <div
@@ -437,7 +493,10 @@ const ThemeSwitcherDropdown = React.forwardRef<HTMLDivElement, ThemeSwitcherVari
 
         <div
           ref={menuRef}
-          className="absolute left-1/2 -translate-x-1/2 sm:left-auto sm:right-0 sm:translate-x-0 top-full mt-2 w-36 p-1 bg-background border border-border rounded-xl shadow-xl z-50 hidden"
+          className={cn(
+            "absolute left-1/2 -translate-x-1/2 sm:left-auto sm:right-0 sm:translate-x-0 top-full mt-2 w-36 p-1 bg-popover text-popover-foreground border border-border rounded-xl shadow-xl z-50",
+            !menuShown && "hidden",
+          )}
         >
           {[
             { id: "light", icon: Sun, label: "Light" },

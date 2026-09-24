@@ -3,11 +3,11 @@ import { extractCode } from "@/lib/code";
 
 # Split-Stack Stepper
 
-A high-impact, interactive split-screen layout engineered exclusively with **GSAP**. One side renders a narrative sequence of feature cards with glowing pill badges, while the opposite side maintains a sticky visual showcase container.
+A high-impact, interactive split-screen layout animated with plain **CSS transitions** — no animation library. One side renders a narrative sequence of feature cards with glowing pill badges, while the opposite side maintains a sticky visual showcase container.
 
 Unlike basic tab replacements, this engine applies dynamic mathematical depth tweens via GreenSock to **stack previous visual cards on top of each other in a 3D deck format** as the user progresses through the narrative.
 
-`SplitStepper` orchestrates the responsive grid itself — you supply the narrative sequence and a JSX payload per card, and GSAP handles the stacking. Click any step in the scrolling column to watch the deck restack.
+`SplitStepper` orchestrates the responsive grid itself — you supply the narrative sequence and a JSX payload per card, and CSS transitions handle the stacking. Click any step in the scrolling column to watch the deck restack.
 
 export const splitSteps = `// Card bodies — these are the four screens the preview renders.
 const MockLandingView = () => (
@@ -182,7 +182,7 @@ ${splitSteps}
 
 export default function ServicesSectionMirrored() {
   // stickySide moves the sticky card deck to the other column.
-  return <SplitStepper steps={steps} stickySide="left" color="#FFAB1D" />;
+  return <SplitStepper steps={steps} stickySide="left" />;
 }`;
 
 export const usageDepth = `import { SplitStepper, type SplitStep } from "@/components/custom/blocks/SplitStepperBlock";
@@ -377,7 +377,7 @@ export default function BrandedSplitStepper() {
         </td>
         <td>
           The absolute pixel distance applied to the vertical Y-axis translation
-          of stacked background cards via GSAP, creating the staggered deck
+          of stacked background cards, creating the staggered deck
           effect.
         </td>
       </tr>
@@ -392,7 +392,7 @@ export default function BrandedSplitStepper() {
           <code>string</code>
         </td>
         <td>
-          <code>"#FFAB1D"</code>
+          <code>theme primary</code>
         </td>
         <td>
           The global theme color applied to active card borders, step index
@@ -450,8 +450,7 @@ export default function BrandedSplitStepper() {
           <strong>Required</strong>
         </td>
         <td>
-          A unique identifier string required for safe React list rendering and
-          GSAP key mapping.
+          A unique identifier string required for safe React list rendering.
         </td>
       </tr>
       <tr>

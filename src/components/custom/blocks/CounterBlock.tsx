@@ -1,7 +1,6 @@
 "use client";
 
 import { cn } from "@/lib/utils";
-import gsap from "gsap";
 import { Clock, Minus, Plus } from "lucide-react";
 import React, { useEffect, useRef, useState } from "react";
 import { getThemeStyles, type CounterTheme } from "./counter-theme";
@@ -29,6 +28,34 @@ const KEYFRAMES = `
   from { transform: none; opacity: 1; }
   to { transform: translateY(-0.7em); opacity: 0; }
 }`;
+
+// ==========================================
+// MOTION
+// ==========================================
+
+/** GSAP's `back.out(2)` — a cubic, so this cubic-bezier is exact. */
+const POP_EASE = "cubic-bezier(0.3333, 1.6667, 0.6667, 1)";
+
+/** GSAP's `power3.out`. */
+const power3Out = (p: number) => 1 - Math.pow(1 - p, 4);
+
+/**
+ * Tweens 0 → `to` over `duration` ms on requestAnimationFrame, calling
+ * `onUpdate` every frame with the eased value. Returns a cancel function.
+ */
+function tweenNumber(
+  to: number,
+  duration: number,
+  onUpdate: (value: number) => void,
+) {
+  const start = performance.now();
+  let frame = requestAnimationFrame(function tick(now) {
+    const p = Math.min(Math.max((now - start) / duration, 0), 1);
+    onUpdate(power3Out(p) * to);
+    if (p < 1) frame = requestAnimationFrame(tick);
+  });
+  return () => cancelAnimationFrame(frame);
+}
 
 // ==========================================
 // INTERNAL SUB-COMPONENTS
@@ -85,12 +112,16 @@ const StepperCounter = ({
 }: StepperCounterProps) => {
   const [count, setCount] = useState(initialValue);
   const containerRef = useRef<HTMLDivElement>(null);
+  const popRef = useRef<Animation | null>(null);
 
+  // Each step restarts the pop from 0.95.
   const animatePop = () => {
-    gsap.fromTo(
-      containerRef.current,
-      { scale: 0.95 },
-      { scale: 1, duration: 0.2, ease: "back.out(2)" },
+    const el = containerRef.current;
+    if (!el?.animate) return;
+    popRef.current?.cancel();
+    popRef.current = el.animate(
+      [{ transform: "scale(0.95)" }, { transform: "scale(1)" }],
+      { duration: 200, easing: POP_EASE },
     );
   };
 
@@ -221,7 +252,7 @@ const StepperCounter = ({
               onClick={handleDec}
               disabled={count <= min}
               className={cn(
-                "w-10 h-10 flex items-center justify-center rounded-lg transition-colors active:scale-95 disabled:opacity-50 border border-black/10 dark:border-white/10 shadow-sm",
+                "w-10 h-10 flex items-center justify-center rounded-lg transition-colors active:scale-95 disabled:opacity-50 border border-foreground/10 shadow-sm",
                 theme.bg,
               )}
             >
@@ -234,7 +265,7 @@ const StepperCounter = ({
               onClick={handleInc}
               disabled={count >= max}
               className={cn(
-                "w-10 h-10 flex items-center justify-center rounded-lg transition-colors active:scale-95 disabled:opacity-50 border border-black/10 dark:border-white/10 shadow-sm",
+                "w-10 h-10 flex items-center justify-center rounded-lg transition-colors active:scale-95 disabled:opacity-50 border border-foreground/10 shadow-sm",
                 theme.bg,
               )}
             >
@@ -303,16 +334,7 @@ const AnimatedCounter = ({
       setDisplayVal(targetValue);
       return;
     }
-    const obj = { val: 0 };
-    const tween = gsap.to(obj, {
-      val: targetValue,
-      duration: 2,
-      ease: "power3.out",
-      onUpdate: () => setDisplayVal(obj.val),
-    });
-    return () => {
-      tween.kill();
-    };
+    return tweenNumber(targetValue, 2000, setDisplayVal);
   }, [armed, targetValue]);
 
   const formatted = displayVal.toLocaleString(undefined, {
@@ -370,19 +392,13 @@ const CircularCounter = ({
   const circumference = radius * 2 * Math.PI;
 
   useEffect(() => {
-    const obj = { val: 0 };
-    gsap.to(obj, {
-      val: targetValue,
-      duration: 2.5,
-      ease: "power3.out",
-      onUpdate: () => {
-        setDisplayVal(Math.floor(obj.val));
-        if (circleRef.current) {
-          const percent = Math.min(100, Math.max(0, obj.val));
-          const offset = circumference - (percent / 100) * circumference;
-          circleRef.current.style.strokeDashoffset = offset.toString();
-        }
-      },
+    return tweenNumber(targetValue, 2500, (val) => {
+      setDisplayVal(Math.floor(val));
+      if (circleRef.current) {
+        const percent = Math.min(100, Math.max(0, val));
+        const offset = circumference - (percent / 100) * circumference;
+        circleRef.current.style.strokeDashoffset = offset.toString();
+      }
     });
   }, [targetValue, circumference]);
 
@@ -401,7 +417,7 @@ const CircularCounter = ({
             cx={size / 2}
             cy={size / 2}
             r={radius}
-            className="fill-none stroke-zinc-100 dark:stroke-zinc-800"
+            className="fill-none stroke-muted"
             strokeWidth={strokeWidth}
           />
           <circle
@@ -596,7 +612,7 @@ function SlideFigure({
   if (shown.current !== text) setShown({ current: text, previous: shown.current });
 
   return (
-    <div className="flex min-w-[3.75rem] flex-col items-center rounded-xl bg-black/[0.045] px-3 py-2.5 dark:bg-white/[0.07]">
+    <div className="flex min-w-[3.75rem] flex-col items-center rounded-xl bg-foreground/[0.06] px-3 py-2.5">
       <span
         className={cn(
           "relative block h-[1.75rem] overflow-hidden text-[1.5rem] font-semibold leading-[1.75rem] tabular-nums tracking-[-0.03em]",

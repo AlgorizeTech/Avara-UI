@@ -43,11 +43,11 @@ export const Toggle = forwardRef<HTMLButtonElement, ToggleProps>(
 
     const variants = {
       default:
-        "bg-transparent hover:bg-muted text-zinc-700 dark:text-zinc-300 data-[state=on]:bg-muted dark:data-[state=on]:bg-zinc-700 data-[state=on]:text-zinc-900 dark:data-[state=on]:text-zinc-50",
+        "bg-transparent hover:bg-muted text-foreground/80 data-[state=on]:bg-foreground/10 data-[state=on]:text-foreground",
       outline:
-        "border border-border bg-transparent hover:bg-muted text-zinc-700 dark:text-zinc-300 data-[state=on]:bg-muted dark:data-[state=on]:bg-zinc-800 data-[state=on]:text-zinc-900 dark:data-[state=on]:text-zinc-50",
+        "border border-border bg-transparent hover:bg-muted text-foreground/80 data-[state=on]:bg-muted data-[state=on]:text-foreground",
       ghost:
-        "bg-transparent hover:bg-muted/50 text-zinc-700 dark:text-zinc-300 data-[state=on]:bg-muted/50 dark:data-[state=on]:bg-zinc-800/50 data-[state=on]:text-zinc-900 dark:data-[state=on]:text-zinc-50",
+        "bg-transparent hover:bg-muted/50 text-foreground/80 data-[state=on]:bg-muted/50 data-[state=on]:text-foreground",
     };
 
     const sizes = {
@@ -64,7 +64,7 @@ export const Toggle = forwardRef<HTMLButtonElement, ToggleProps>(
         data-state={isPressed ? "on" : "off"}
         onClick={handleClick}
         className={cn(
-          "inline-flex items-center justify-center rounded-md font-medium transition-colors outline-none focus-visible:ring-2 focus-visible:ring-indigo-500 disabled:pointer-events-none disabled:opacity-50",
+          "inline-flex items-center justify-center rounded-md font-medium transition-colors outline-none focus-visible:ring-2 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50",
           variants[variant],
           sizes[size],
           className,

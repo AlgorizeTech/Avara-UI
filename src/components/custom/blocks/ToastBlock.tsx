@@ -1,7 +1,6 @@
 "use client";
 
 import { cn } from "@/lib/utils";
-import gsap from "gsap";
 import { AlertCircle, AlertTriangle, BadgeCheck, CheckCircle2, Info, X } from "lucide-react";
 import React, { useCallback, useEffect, useLayoutEffect, useRef, useState } from "react";
 import { ToastContext, type ToastProps } from "./toast-context";
@@ -19,8 +18,16 @@ const STACK_SCALE = 0.05;
 const STACK_VISIBLE = 3;
 const STACK_GAP = 12;
 
+// Entrance: 0.4s back.out(1.5) from 30px off the edge at 90% scale. Exit:
+// 0.3s power2.in back out to the same spot, from wherever the card is.
+const BACK_OUT =
+  "linear(0, .1434, .2741, .3925, .4993, .5949, .68, .7551, .8207, .8775, .9259, .9666, 1, 1.0268, 1.0474, 1.0625, 1.0726, 1.0782, 1.08, 1.0784, 1.0741, 1.0675, 1.0593, 1.0499, 1.04, 1.0301, 1.0207, 1.0125, 1.0059, 1.0016, 1)";
+const POWER2_IN = "cubic-bezier(0.3333, 0, 0.6667, 0)";
+const ENTER_MS = 400;
+const EXIT_MS = 300;
+
 // ==========================================
-// INDIVIDUAL TOAST COMPONENT (With GSAP)
+// INDIVIDUAL TOAST COMPONENT (Web Animations API)
 // ==========================================
 interface ToastItemProps extends ToastProps {
   onRemove: (id: string) => void;
@@ -33,34 +40,62 @@ interface ToastItemProps extends ToastProps {
 const ToastItem = ({ id, title, description, type = "default", duration = 5000, action, onRemove, variant, position, paused = false }: ToastItemProps) => {
   const toastRef = useRef<HTMLDivElement>(null);
   const [hovered, setHovered] = useState(false);
+  // Set once the exit starts: the close button, the action and the timer can
+  // all ask for it, and only the first request counts.
+  const closing = useRef(false);
+  const enterRef = useRef<Animation | null>(null);
+  const removeTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   // Determine entrance direction based on position
   const isTop = position.includes("top");
   const yOffset = isTop ? -30 : 30;
 
-  // Handle Exit
+  // Handle Exit — starts from the card's current look, so closing during the
+  // entrance carries on from mid-flight instead of jumping to the end first.
   const handleClose = useCallback(() => {
-    if (!toastRef.current) return;
-    gsap.to(toastRef.current, {
-      opacity: 0,
-      scale: 0.9,
-      y: yOffset,
-      duration: 0.3,
-      ease: "power2.in",
-      onComplete: () => onRemove(id)
-    });
+    const el = toastRef.current;
+    if (!el || closing.current) return;
+    closing.current = true;
+    const now = getComputedStyle(el);
+    const from = { opacity: now.opacity, transform: now.transform };
+    enterRef.current?.cancel();
+    let removed = false;
+    const remove = () => {
+      if (removed) return;
+      removed = true;
+      if (removeTimer.current) clearTimeout(removeTimer.current);
+      onRemove(id);
+    };
+    el.animate(
+      [from, { opacity: 0, transform: `translateY(${yOffset}px) scale(0.9)` }],
+      { duration: EXIT_MS, easing: POWER2_IN, fill: "forwards" },
+    ).finished.then(remove, () => {});
+    // Finish events can lag in a background tab; removal must not.
+    removeTimer.current = setTimeout(remove, EXIT_MS + 50);
   }, [id, onRemove, yOffset]);
 
   // Handle Entrance
   useEffect(() => {
     const el = toastRef.current;
-    if (!el) return;
-    gsap.fromTo(
-      el,
-      { opacity: 0, y: yOffset, scale: 0.9 },
-      { opacity: 1, y: 0, scale: 1, duration: 0.4, ease: "back.out(1.5)" }
-    );
+    if (!el || closing.current) return;
+    const enter = (enterRef.current = el.animate(
+      [
+        { opacity: 0, transform: `translateY(${yOffset}px) scale(0.9)` },
+        { opacity: 1, transform: "translateY(0px) scale(1)" },
+      ],
+      { duration: ENTER_MS, easing: BACK_OUT },
+    ));
+    return () => {
+      if (!closing.current) enter.cancel();
+    };
   }, [yOffset]);
+
+  useEffect(
+    () => () => {
+      if (removeTimer.current) clearTimeout(removeTimer.current);
+    },
+    [],
+  );
 
   // Auto-dismiss with a pausable timer: hovering the card (or the expanded
   // stack) stops the clock and resumes from where it left off.
@@ -130,11 +165,11 @@ const ToastItem = ({ id, title, description, type = "default", duration = 5000, 
   const variantStyles = {
     default: "bg-background border border-border shadow-xl",
     glow: cn(
-      "bg-white dark:bg-[#09090b] shadow-lg border text-foreground",
+      "bg-background shadow-lg border text-foreground",
       currentType.glowBorder,
       currentType.glowShadow
     ),
-    glass: "rounded-2xl border border-white/30 dark:border-white/10 bg-white/70 dark:bg-zinc-900/70 backdrop-blur-xl shadow-2xl shadow-black/10 dark:shadow-black/40",
+    glass: "rounded-2xl border border-foreground/10 bg-card/70 backdrop-blur-xl shadow-2xl shadow-black/10 dark:shadow-black/40",
     minimal: cn("border-l-4 rounded-l-none bg-background shadow-md", currentType.minimalBorder),
   };
 
@@ -157,7 +192,7 @@ const ToastItem = ({ id, title, description, type = "default", duration = 5000, 
             "mt-0.5 w-5 h-5 shrink-0",
             iconColor,
             // Glass icons are solid badges: fill with the accent, cut the glyph out in the card colour.
-            isGlass && "w-6 h-6 fill-current stroke-white dark:stroke-zinc-950",
+            isGlass && "w-6 h-6 fill-current stroke-card",
           )}
         />
       )}

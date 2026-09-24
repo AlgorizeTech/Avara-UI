@@ -2,8 +2,8 @@
 
 This directory contains auto-generated Markdown versions of all MDX documentation pages.
 
-**Generated at:** 2026-09-23T13:48:15.146Z
-**Total files:** 285
+**Generated at:** 2026-09-24T16:07:15.101Z
+**Total files:** 289
 
 ## Available Files
 
@@ -41,6 +41,7 @@ This directory contains auto-generated Markdown versions of all MDX documentatio
 - [nextjs/conversation-timeline](/docs/nextjs-conversation-timeline.md) - Source: `[framework]\conversation-timeline\page.mdx`
 - [nextjs/copy-button](/docs/nextjs-copy-button.md) - Source: `[framework]\copy-button\page.mdx`
 - [nextjs/counter](/docs/nextjs-counter.md) - Source: `[framework]\counter\page.mdx`
+- [nextjs/counter-section](/docs/nextjs-counter-section.md) - Source: `[framework]\counter-section\page.mdx`
 - [nextjs/cursor-animation](/docs/nextjs-cursor-animation.md) - Source: `[framework]\cursor-animation\page.mdx`
 - [nextjs/curved-carousel](/docs/nextjs-curved-carousel.md) - Source: `[framework]\curved-carousel\page.mdx`
 - [nextjs/custom-code-block](/docs/nextjs-custom-code-block.md) - Source: `[framework]\custom-code-block\page.mdx`
@@ -148,6 +149,7 @@ This directory contains auto-generated Markdown versions of all MDX documentatio
 - [nextjs/video-accordion](/docs/nextjs-video-accordion.md) - Source: `[framework]\video-accordion\page.mdx`
 - [nextjs/video-player](/docs/nextjs-video-player.md) - Source: `[framework]\video-player\page.mdx`
 - [nextjs/waitlist](/docs/nextjs-waitlist.md) - Source: `[framework]\waitlist\page.mdx`
+- [nextjs/wallet](/docs/nextjs-wallet.md) - Source: `[framework]\wallet\page.mdx`
 - [nextjs/wizard](/docs/nextjs-wizard.md) - Source: `[framework]\wizard\page.mdx`
 - [page.mdx](/docs/page.mdx.md) - Source: `page.mdx`
 - [reactjs/3d-carousel](/docs/reactjs-3d-carousel.md) - Source: `[framework]\3d-carousel\page.mdx`
@@ -184,6 +186,7 @@ This directory contains auto-generated Markdown versions of all MDX documentatio
 - [reactjs/conversation-timeline](/docs/reactjs-conversation-timeline.md) - Source: `[framework]\conversation-timeline\page.mdx`
 - [reactjs/copy-button](/docs/reactjs-copy-button.md) - Source: `[framework]\copy-button\page.mdx`
 - [reactjs/counter](/docs/reactjs-counter.md) - Source: `[framework]\counter\page.mdx`
+- [reactjs/counter-section](/docs/reactjs-counter-section.md) - Source: `[framework]\counter-section\page.mdx`
 - [reactjs/cursor-animation](/docs/reactjs-cursor-animation.md) - Source: `[framework]\cursor-animation\page.mdx`
 - [reactjs/curved-carousel](/docs/reactjs-curved-carousel.md) - Source: `[framework]\curved-carousel\page.mdx`
 - [reactjs/custom-code-block](/docs/reactjs-custom-code-block.md) - Source: `[framework]\custom-code-block\page.mdx`
@@ -291,6 +294,7 @@ This directory contains auto-generated Markdown versions of all MDX documentatio
 - [reactjs/video-accordion](/docs/reactjs-video-accordion.md) - Source: `[framework]\video-accordion\page.mdx`
 - [reactjs/video-player](/docs/reactjs-video-player.md) - Source: `[framework]\video-player\page.mdx`
 - [reactjs/waitlist](/docs/reactjs-waitlist.md) - Source: `[framework]\waitlist\page.mdx`
+- [reactjs/wallet](/docs/reactjs-wallet.md) - Source: `[framework]\wallet\page.mdx`
 - [reactjs/wizard](/docs/reactjs-wizard.md) - Source: `[framework]\wizard\page.mdx`
 
 ## Usage

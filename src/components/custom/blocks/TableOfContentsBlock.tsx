@@ -2,7 +2,6 @@
 
 import { CodeBlocks } from "@/components/custom/ui/codeblocks";
 import { cn } from "@/lib/utils";
-import { motion } from "framer-motion";
 import {
 	ArrowUp,
 	Bookmark,
@@ -11,7 +10,18 @@ import {
 	Sparkles,
 	X,
 } from "lucide-react";
-import React, { useEffect, useMemo, useRef, useState } from "react";
+import React, {
+	useEffect,
+	useLayoutEffect,
+	useMemo,
+	useRef,
+	useState,
+} from "react";
+import { springLinear } from "./motion-curves";
+
+// The active pill glides between rows on a spring (stiffness 350, damping 30),
+// as a CSS `linear()` curve generated from the same numbers.
+const PILL_SPRING = springLinear({ stiffness: 350, damping: 30 });
 
 export interface TOCHeading {
 	id: string;
@@ -70,7 +80,7 @@ const DEFAULT_ITEMS: TOCItem[] = [
 		title: "Overview & Features",
 		level: 1,
 		description: [
-			"The Table of Contents component parses document structure and renders a sticky navigation panel with real-time active section indicators. Engineered with Framer Motion spring physics, the active indicator pill glides fluidly across items as you scroll. Includes a top scroll progress bar and section search filter out of the box.",
+			"The Table of Contents component parses document structure and renders a sticky navigation panel with real-time active section indicators. The active indicator pill glides across items on a spring as you scroll, with no animation library behind it. Includes a top scroll progress bar and section search filter out of the box.",
 			"Long-form pages — documentation, changelogs, legal text, knowledge-base articles — are hard to navigate once they pass a couple of screens. The reader loses track of where they are and how much is left. A persistent outline solves both: the highlighted entry answers \"where am I\", the progress bar answers \"how far to go\", and every entry is a one-click jump.",
 			"The component is deliberately layout-agnostic. It works against the window scroll on a normal page, but it also detects the nearest scrollable ancestor, so it behaves identically inside a dashboard pane, a modal body, or a documentation preview with its own overflow container.",
 		],
@@ -80,7 +90,7 @@ const DEFAULT_ITEMS: TOCItem[] = [
 		title: "Installation & Setup",
 		level: 1,
 		description: [
-			"Integrate the component into your Next.js App Router or React application in seconds using the shadcn CLI registry command below. All required peer dependencies (Framer Motion & Lucide React) are handled automatically during installation.",
+			"Integrate the component into your Next.js App Router or React application in seconds using the shadcn CLI registry command below. The one peer dependency, Lucide React, is handled automatically during installation.",
 			"The CLI copies the source into your project rather than adding a package, so the block is yours to edit. Rename the sidebar title, swap the icons, or change the spacing scale — nothing is hidden behind an abstraction you cannot reach.",
 		],
 	},
@@ -89,7 +99,7 @@ const DEFAULT_ITEMS: TOCItem[] = [
 		title: "Prerequisites",
 		level: 2,
 		description: [
-			"Requires Node.js 18+, React 18 or 19, Next.js 14+ (App Router), Tailwind CSS v4, and Framer Motion for spring physics animations.",
+			"Requires Node.js 18+, React 18 or 19, Next.js 14+ (App Router), and Tailwind CSS v4. No animation library is needed.",
 			"The block is a client component: it reads scroll position and element geometry, neither of which exists on the server. Keep it out of server-only files and give it a \"use client\" boundary — the shipped file already declares one.",
 		],
 	},
@@ -184,7 +194,7 @@ const DEFAULT_ITEMS: TOCItem[] = [
 		level: 1,
 		description: [
 			"The block adds a single scroll listener, registered as passive so it never blocks the compositor, and the listener does nothing more than a handful of getBoundingClientRect reads and one state update. Heading elements are looked up by id on each pass, which keeps the component correct when content is added or removed at runtime without requiring a resize observer.",
-			"Framer Motion is the only runtime dependency of note. It is tree-shaken down to the layout-animation primitives the indicator pill uses; if your project does not already ship it, expect roughly 30 kB gzipped, and swap the pill for a CSS transition if that is too much.",
+			"There is no animation library to ship. The indicator pill's glide is a single Web Animations API call per move, eased along a spring curve precomputed as CSS linear(), so the block costs nothing beyond its own code and Lucide's icons.",
 		],
 	},
 	{
@@ -407,6 +417,66 @@ export function TableOfContentsBlock({
 		);
 	}, [headings, searchQuery]);
 
+	// The pill lives in the active row, so it is always where it belongs; when
+	// that row changes (or moves, as the filter adds and removes rows) it is
+	// drawn from where it was and springs home. Positions are in px from the top
+	// of the nav's scroll content, which scrolling never changes.
+	const pillRef = useRef<HTMLDivElement>(null);
+	// Where the pill last came to rest — the "from" of the next move.
+	const pillRestRef = useRef<number | null>(null);
+	const pillMotionRef = useRef<{ animation: Animation; offset: number } | null>(
+		null,
+	);
+	useLayoutEffect(() => {
+		const pill = pillRef.current;
+		const row = pill?.parentElement;
+		if (!pill || !row) {
+			// Filtered out: the pill reappears in place, without a glide.
+			pillRestRef.current = null;
+			pillMotionRef.current = null;
+			return;
+		}
+		const restingTop = () => row.offsetTop + pill.offsetTop;
+		const rest = restingTop();
+		const before = pillRestRef.current;
+		pillRestRef.current = rest;
+
+		if (before !== null) {
+			// Where the pill is on screen right now: its last resting place,
+			// plus whatever is left of a glide still in flight.
+			let shown = before;
+			const inFlight = pillMotionRef.current;
+			if (inFlight) {
+				const progress = inFlight.animation.effect?.getComputedTiming().progress;
+				if (progress != null) shown += inFlight.offset * (1 - progress);
+				inFlight.animation.cancel();
+			}
+			const offset = shown - rest;
+			pillMotionRef.current =
+				Math.abs(offset) < 0.5
+					? null
+					: {
+							animation: pill.animate(
+								[
+									{ transform: `translateY(${offset}px)` },
+									{ transform: "translateY(0px)" },
+								],
+								{ duration: PILL_SPRING.duration, easing: PILL_SPRING.easing },
+							),
+							offset,
+						};
+		}
+
+		// Layout can also move without a render — the sidebar appearing at the
+		// lg breakpoint, a web font swapping in. Keep the resting place current.
+		const observer = new ResizeObserver(() => {
+			pillRestRef.current = restingTop();
+		});
+		if (navRef.current) observer.observe(navRef.current);
+		observer.observe(row);
+		return () => observer.disconnect();
+	}, [activeId, filteredHeadings]);
+
 	// Smooth scroll to heading (handles both Window & Container Scroll)
 	const scrollToHeading = (id: string) => {
 		setActiveId(id);
@@ -530,13 +600,12 @@ export function TableOfContentsBlock({
 
 						{showProgress && (
 							<div className="w-full h-1.5 rounded-full bg-muted overflow-hidden relative">
-								<motion.div
+								<div
 									className="h-full rounded-full origin-left"
 									style={{
 										width: `${scrollProgress}%`,
 										backgroundColor: "var(--toc-primary)",
 									}}
-									transition={{ duration: 0.1 }}
 								/>
 							</div>
 						)}
@@ -580,15 +649,10 @@ export function TableOfContentsBlock({
 								>
 									{/* Active Indicator Pill */}
 									{isActive && (
-										<motion.div
-											layoutId="active-toc-pill-left"
+										<div
+											ref={pillRef}
 											className="absolute left-[10px] w-1 h-5 rounded-full z-20"
 											style={{ backgroundColor: "var(--toc-primary)" }}
-											transition={{
-												type: "spring",
-												stiffness: 350,
-												damping: 30,
-											}}
 										/>
 									)}
 
@@ -700,7 +764,7 @@ export function TableOfContentsBlock({
 										))}
 
 									{item.codeSnippet && (
-										<div className="rounded-2xl border border-border bg-zinc-100/70 dark:bg-black overflow-hidden shadow-xs [&>div]:border-t-0">
+										<div className="rounded-2xl border border-border bg-muted/70 overflow-hidden shadow-xs [&>div]:border-t-0">
 											<CodeBlocks code={item.codeSnippet} language="bash" />
 										</div>
 									)}

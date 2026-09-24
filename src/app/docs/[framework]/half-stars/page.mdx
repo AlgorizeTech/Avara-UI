@@ -184,21 +184,21 @@ export default function TenStarRating() {
 Discover the Half Stars rating component's precise visual feedback, supporting fractional SVG rendering for accurate reviews.
 
 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 my-6 not-prose">
-  <div className="p-6 rounded-2xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900">
-    <h3 className="text-lg font-semibold text-zinc-900 dark:text-zinc-50 mb-2">High Precision</h3>
-    <p className="text-zinc-600 dark:text-zinc-400 text-sm">Supports exact decimal ratings (e.g., 4.2 or 3.7) by dynamically calculating SVG clip paths for pixel-perfect fills.</p>
+  <div className="p-6 rounded-2xl border border-border bg-card">
+    <h3 className="text-lg font-semibold text-card-foreground mb-2">High Precision</h3>
+    <p className="text-muted-foreground text-sm">Supports exact decimal ratings (e.g., 4.2 or 3.7) by dynamically calculating SVG clip paths for pixel-perfect fills.</p>
   </div>
-  <div className="p-6 rounded-2xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900">
-    <h3 className="text-lg font-semibold text-zinc-900 dark:text-zinc-50 mb-2">Interactive Mode</h3>
-    <p className="text-zinc-600 dark:text-zinc-400 text-sm">Allow users to hover and click to submit their own ratings. Includes smooth animations and fractional steps.</p>
+  <div className="p-6 rounded-2xl border border-border bg-card">
+    <h3 className="text-lg font-semibold text-card-foreground mb-2">Interactive Mode</h3>
+    <p className="text-muted-foreground text-sm">Allow users to hover and click to submit their own ratings. Includes smooth animations and fractional steps.</p>
   </div>
-  <div className="p-6 rounded-2xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900">
-    <h3 className="text-lg font-semibold text-zinc-900 dark:text-zinc-50 mb-2">Fully Custom</h3>
-    <p className="text-zinc-600 dark:text-zinc-400 text-sm">Easily change colors, sizes, and the maximum number of stars using standard Tailwind CSS utility classes.</p>
+  <div className="p-6 rounded-2xl border border-border bg-card">
+    <h3 className="text-lg font-semibold text-card-foreground mb-2">Fully Custom</h3>
+    <p className="text-muted-foreground text-sm">Easily change colors, sizes, and the maximum number of stars using standard Tailwind CSS utility classes.</p>
   </div>
-  <div className="p-6 rounded-2xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900">
-    <h3 className="text-lg font-semibold text-zinc-900 dark:text-zinc-50 mb-2">Zero Dependencies</h3>
-    <p className="text-zinc-600 dark:text-zinc-400 text-sm">Built entirely with React and raw SVGs. No heavy external rating libraries required.</p>
+  <div className="p-6 rounded-2xl border border-border bg-card">
+    <h3 className="text-lg font-semibold text-card-foreground mb-2">Zero Dependencies</h3>
+    <p className="text-muted-foreground text-sm">Built entirely with React and raw SVGs. No heavy external rating libraries required.</p>
   </div>
 </div>
 
@@ -211,7 +211,7 @@ Discover the Half Stars rating component's precise visual feedback, supporting f
   </div>
   <div className="rounded-xl border border-primary/15 bg-primary/5 p-4">
     <h4 className="font-sans text-[14px] font-semibold text-primary mb-1">Color Contrast</h4>
-    <p className="text-[13px] leading-relaxed text-foreground/50">Ensure your <code>inactiveColor</code> provides enough contrast against your background so users can clearly see the empty stars. By default, <code>text-slate-200</code> works well on white backgrounds.</p>
+    <p className="text-[13px] leading-relaxed text-foreground/50">Ensure your <code>inactiveColor</code> provides enough contrast against your background so users can clearly see the empty stars. The default, <code>text-foreground/15</code>, follows the theme in light and dark mode.</p>
   </div>
 </div>
 
@@ -254,14 +254,14 @@ Discover the Half Stars rating component's precise visual feedback, supporting f
         <td><code>HalfStars</code></td>
         <td><code>activeColor</code></td>
         <td><code>string</code></td>
-        <td><code>"text-yellow-400"</code></td>
+        <td><code>"text-primary"</code></td>
         <td>Tailwind text color class for the filled (active) portion of the stars.</td>
       </tr>
       <tr>
         <td><code>HalfStars</code></td>
         <td><code>inactiveColor</code></td>
         <td><code>string</code></td>
-        <td><code>"text-slate-200 dark:text-slate-700"</code></td>
+        <td><code>"text-foreground/15"</code></td>
         <td>Tailwind text color class for the empty (inactive) portion of the stars.</td>
       </tr>
       <tr>

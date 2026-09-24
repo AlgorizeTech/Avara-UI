@@ -50,7 +50,7 @@ export default function DocumentMenu() {
 
         {/* className restyles a single destructive row */}
          run("Delete")}
-          className="text-red-600 focus:bg-red-50 dark:focus:bg-red-950 focus:text-red-700"
+          className="text-destructive focus:bg-destructive/10 focus:text-destructive"
         >
           
           Delete

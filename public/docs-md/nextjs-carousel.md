@@ -2,7 +2,7 @@
 
 A collection of highly interactive carousel components for image galleries, hero sections, and fluid presentations.
 
-Four independent components live on this page — four in `carousel.tsx` (`ImageCarousel`, `HeroCarousel`, `CustomCarousel`, `RadialCarousel`) and the GSAP-powered `FluidGlassSlider`, which installs on its own.
+Four independent components live on this page — four in `carousel.tsx` (`ImageCarousel`, `HeroCarousel`, `CustomCarousel`, `RadialCarousel`) and the `FluidGlassSlider`, which installs on its own.
 
 ## Carousels
 

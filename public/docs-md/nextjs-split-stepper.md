@@ -1,10 +1,10 @@
 # Split-Stack Stepper
 
-A high-impact, interactive split-screen layout engineered exclusively with **GSAP**. One side renders a narrative sequence of feature cards with glowing pill badges, while the opposite side maintains a sticky visual showcase container.
+A high-impact, interactive split-screen layout animated with plain **CSS transitions** — no animation library. One side renders a narrative sequence of feature cards with glowing pill badges, while the opposite side maintains a sticky visual showcase container.
 
 Unlike basic tab replacements, this engine applies dynamic mathematical depth tweens via GreenSock to **stack previous visual cards on top of each other in a 3D deck format** as the user progresses through the narrative.
 
-`SplitStepper` orchestrates the responsive grid itself — you supply the narrative sequence and a JSX payload per card, and GSAP handles the stacking. Click any step in the scrolling column to watch the deck restack.
+`SplitStepper` orchestrates the responsive grid itself — you supply the narrative sequence and a JSX payload per card, and CSS transitions handle the stacking. Click any step in the scrolling column to watch the deck restack.
 
 export const splitSteps = `// Card bodies — these are the four screens the preview renders.
 const MockLandingView = () => (
@@ -205,7 +205,7 @@ npx shadcn@latest add @algorize-ui/split-stepper
           16
 
           The absolute pixel distance applied to the vertical Y-axis translation
-          of stacked background cards via GSAP, creating the staggered deck
+          of stacked background cards, creating the staggered deck
           effect.
 
           SplitStepper
@@ -214,7 +214,7 @@ npx shadcn@latest add @algorize-ui/split-stepper
 
           string
 
-          "#FFAB1D"
+          theme primary
 
           The global theme color applied to active card borders, step index
           badges, glowing pill tags, and indicator arrows. Accepts hex codes or
@@ -250,8 +250,7 @@ npx shadcn@latest add @algorize-ui/split-stepper
 
           Required
 
-          A unique identifier string required for safe React list rendering and
-          GSAP key mapping.
+          A unique identifier string required for safe React list rendering.
 
           SplitStep
 

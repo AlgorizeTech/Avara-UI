@@ -74,9 +74,8 @@ const subAgents: SubAgent[] = [
 
 export default function UserGraphDemo() {
   return (
-    <div className="w-full p-4 sm:p-8 bg-slate-50 dark:bg-zinc-950 flex justify-center">
+    <div className="w-full p-4 sm:p-8 bg-background flex justify-center">
       <UserGraph
-        color="indigo"
         orchestrator={orchestrator}
         orbitTools={orbitTools}
         subAgents={subAgents}
@@ -117,21 +116,21 @@ export default function UserGraphDemo() {
 Discover the key capabilities of the User Graph hierarchy tree:
 
 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 my-6 not-prose">
-  <div className="p-6 rounded-2xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900">
-    <h3 className="text-lg font-semibold text-zinc-900 dark:text-zinc-50 mb-2">Orbit Tool Cluster</h3>
-    <p className="text-zinc-600 dark:text-zinc-400 text-sm">Interactive orbiting ring featuring 10 integrated channels including Voice, Telegram, Email, and MCP plugins.</p>
+  <div className="p-6 rounded-2xl border border-border bg-card">
+    <h3 className="text-lg font-semibold text-card-foreground mb-2">Orbit Tool Cluster</h3>
+    <p className="text-muted-foreground text-sm">Interactive orbiting ring featuring 10 integrated channels including Voice, Telegram, Email, and MCP plugins.</p>
   </div>
-  <div className="p-6 rounded-2xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900">
-    <h3 className="text-lg font-semibold text-zinc-900 dark:text-zinc-50 mb-2">Dynamic SVG Curves</h3>
-    <p className="text-zinc-600 dark:text-zinc-400 text-sm">Cubic bezier SVG connecting paths with glowing animated pulses highlighting selected agent hierarchy paths.</p>
+  <div className="p-6 rounded-2xl border border-border bg-card">
+    <h3 className="text-lg font-semibold text-card-foreground mb-2">Dynamic SVG Curves</h3>
+    <p className="text-muted-foreground text-sm">Cubic bezier SVG connecting paths with glowing animated pulses highlighting selected agent hierarchy paths.</p>
   </div>
-  <div className="p-6 rounded-2xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900">
-    <h3 className="text-lg font-semibold text-zinc-900 dark:text-zinc-50 mb-2">Specialized Sub-Agents</h3>
-    <p className="text-zinc-600 dark:text-zinc-400 text-sm">Dedicated team nodes for Sales, Marketing, Support, Accounting, and Data Analytics with online status badges.</p>
+  <div className="p-6 rounded-2xl border border-border bg-card">
+    <h3 className="text-lg font-semibold text-card-foreground mb-2">Specialized Sub-Agents</h3>
+    <p className="text-muted-foreground text-sm">Dedicated team nodes for Sales, Marketing, Support, Accounting, and Data Analytics with online status badges.</p>
   </div>
-  <div className="p-6 rounded-2xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900">
-    <h3 className="text-lg font-semibold text-zinc-900 dark:text-zinc-50 mb-2">Light Mode First</h3>
-    <p className="text-zinc-600 dark:text-zinc-400 text-sm">Crafted with high-contrast slate and white light theme aesthetics, full dark mode support, and smooth responsiveness.</p>
+  <div className="p-6 rounded-2xl border border-border bg-card">
+    <h3 className="text-lg font-semibold text-card-foreground mb-2">Light Mode First</h3>
+    <p className="text-muted-foreground text-sm">Crafted with high-contrast slate and white light theme aesthetics, full dark mode support, and smooth responsiveness.</p>
   </div>
 </div>
 

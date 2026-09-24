@@ -227,12 +227,7 @@ export function FlowGallery({
                 </>
             ) : (
                 <div
-                    className={cn(
-                        "absolute inset-0 pointer-events-none z-20 transition-opacity",
-                        isDark
-                            ? "bg-[radial-gradient(ellipse_at_center,transparent_55%,rgba(5,5,7,0.85)_100%)]"
-                            : "bg-[radial-gradient(ellipse_at_center,transparent_55%,rgba(255,255,255,0.85)_100%)]"
-                    )}
+                    className="absolute inset-0 pointer-events-none z-20 transition-opacity bg-[radial-gradient(ellipse_at_center,transparent_55%,color-mix(in_oklab,var(--background)_85%,transparent)_100%)]"
                 />
             )}
 
@@ -272,9 +267,8 @@ export function FlowGallery({
                                             key={rowIdx}
                                             className={cn(
                                                 "relative rounded-[22px] overflow-hidden border shadow-md transition-all duration-200 flex-shrink-0 group",
-                                                isDark
-                                                    ? "border-slate-800/80 bg-slate-900 shadow-black/60"
-                                                    : "border-slate-200 bg-white shadow-slate-300/50"
+                                                "border-border bg-card",
+                                                isDark ? "shadow-black/60" : "shadow-slate-300/50"
                                             )}
                                             style={{
                                                 width: `${cardWidth}px`,

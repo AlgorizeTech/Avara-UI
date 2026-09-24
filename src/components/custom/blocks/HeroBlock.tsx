@@ -1,9 +1,8 @@
 "use client";
 
-import React, { forwardRef, useEffect, useState } from "react";
+import React, { forwardRef, useEffect, useLayoutEffect, useRef, useState } from "react";
 import { cn } from "@/lib/utils";
 import { ArrowRight, ArrowUpRight, Check, Copy, Sparkles, Terminal, Star, Code, Mail, FileText, Heart, ShieldCheck, ShoppingBag, Package } from "lucide-react";
-import { motion, AnimatePresence } from "framer-motion";
 
 /* ═══════════════════════════════════════════════
    SELF-CONTAINED SVG BRAND ICONS
@@ -29,8 +28,8 @@ const GitHubIcon = (props: React.SVGProps<SVGSVGElement>) => (
    ═══════════════════════════════════════════════ */
 
 export interface HeroBlockProps extends React.HTMLAttributes<HTMLElement> {
-  /** Animation variant: "bounce", "typing", "slider", "glow-arc", "pet-shop", "doctor" */
-  variant?: "bounce" | "typing" | "slider" | "glow-arc" | "pet-shop" | "doctor";
+  /** Animation variant: "bounce", "typing", "slider", "glow-arc", "pet-shop", "doctor", "facility", "geometric" */
+  variant?: "bounce" | "typing" | "slider" | "glow-arc" | "pet-shop" | "doctor" | "facility" | "geometric";
   /** Optional badge text displayed inside the top pill badge */
   badgeText?: string;
   /** Badge link URL */
@@ -124,6 +123,11 @@ const ensureContrast = (rgb: Rgb, surfaceLum: number, target: 0 | 255): Rgb => {
 
 const toCss = ([r, g, b]: Rgb) => `rgb(${r}, ${g}, ${b})`;
 
+const getAccentForeground = (rgb: Rgb | null): string => {
+  if (!rgb) return "var(--primary-foreground)";
+  return relLuminance(rgb) > 0.45 ? "#09090b" : "#ffffff";
+};
+
 /* ═══════════════════════════════════════════════
    DEFAULT DEVELOPER-FIRST RENDER & CODE IMAGES
    ═══════════════════════════════════════════════ */
@@ -139,6 +143,93 @@ const DEFAULT_SLIDER_IMAGES = [
 
 const DEFAULT_MAIN_IMAGE =
   "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_1200,c_limit/v1790150482/photo-1524504388940-b1c1722653e1-1790150482279.jpg";
+
+/* ═══════════════════════════════════════════════
+   MOTION (CSS keyframes, no animation library)
+   ═══════════════════════════════════════════════ */
+
+/** A tween given only a duration eases out: cubic-bezier(0, 0, 0.58, 1). */
+const EASE_OUT = "cubic-bezier(0, 0, 0.58, 1)";
+/** The quick fade used for a word's opacity: 0.3s. */
+const FADE_EASE = "cubic-bezier(0.25, 0.1, 0.35, 1)";
+/** A spring of stiffness 350, damping 25, as a CSS easing; it settles in 558ms. */
+const BOUNCE_SPRING =
+  "linear(0, 0.041, 0.1419, 0.2747, 0.4185, 0.5586, 0.6853, 0.7936, 0.8813, 0.9485, 0.9971, 1.0295, 1.0488, 1.0578, 1.0594, 1.0558, 1.0492, 1.041, 1.0324, 1.0243, 1.017, 1.0108, 1.0059, 1.0022, 0.9996, 0.9979, 0.9969, 0.9965, 0.9965, 0.9968, 0.9972, 0.9977, 0.9982, 0.9987, 1)";
+const BOUNCE_SPRING_MS = 558;
+/** When that spring counts as at rest (within half a pixel), and the next word may come in. */
+const BOUNCE_REST_MS = 450;
+/** The blueprint grid's lines and shape glide between hover zones. */
+const GLIDE = { duration: 900, easing: "cubic-bezier(0.16, 1, 0.3, 1)" };
+
+const HERO_CSS = `
+@keyframes hero-rise-30 { from { opacity: 0; transform: translateY(30px); } }
+@keyframes hero-rise-20 { from { opacity: 0; transform: translateY(20px); } }
+@keyframes hero-grow { from { opacity: 0; transform: scale(0.95); } }
+@keyframes hero-word-in { from { opacity: 0; } }
+@keyframes hero-word-out { to { opacity: 0; } }
+@keyframes hero-char-in { from { opacity: 0; transform: translateY(24px) scale(0.5); } }
+@keyframes hero-char-out { to { opacity: 0; transform: translateY(-24px) scale(0.5); } }
+`;
+
+/** Where the blueprint's four grid lines and the shape sit for each hover zone. */
+type ShapeZone = "idle" | "left" | "right" | "center";
+const shapeTargets = (zone: ShapeZone): Record<string, string>[] => {
+  const pick = (right: string, left: string, rest: string) => (zone === "right" ? right : zone === "left" ? left : rest);
+  return [
+    { top: pick("26%", "30%", "28%") }, // top line
+    { top: pick("74%", "70%", "72%") }, // bottom line
+    { left: pick("23%", "29%", "26%") }, // left line
+    { left: pick("77%", "71%", "74%") }, // right line
+    // the shape, bounded by all four
+    { left: pick("23%", "29%", "26%"), width: pick("54%", "42%", "48%"), top: pick("26%", "30%", "28%"), height: pick("48%", "40%", "44%") },
+  ];
+};
+
+/**
+ * The bounce variant's rotating word. The word on screen leaves letter by
+ * letter; the next one comes in only once the last letter has settled.
+ */
+function BounceWord({ word }: { word: string }) {
+  const [shown, setShown] = useState(word);
+  const latest = useRef(word);
+  latest.current = word;
+  const leaving = shown !== word;
+
+  useEffect(() => {
+    if (!leaving) return;
+    const t = window.setTimeout(
+      () => setShown(latest.current),
+      Math.max(300, (shown.length - 1) * 20 + BOUNCE_REST_MS),
+    );
+    return () => window.clearTimeout(t);
+  }, [leaving, shown]);
+
+  return (
+    <span
+      key={shown}
+      className="text-foreground inline-flex text-left whitespace-nowrap"
+      style={{
+        animation: leaving
+          ? `hero-word-out 0.3s ${FADE_EASE} forwards`
+          : `hero-word-in 0.3s ${FADE_EASE} backwards`,
+      }}
+    >
+      {shown.split("").map((char, index) => (
+        <span
+          key={index}
+          className="inline-block"
+          style={{
+            animation: leaving
+              ? `hero-char-out ${BOUNCE_SPRING_MS}ms ${BOUNCE_SPRING} ${index * 20}ms both`
+              : `hero-char-in ${BOUNCE_SPRING_MS}ms ${BOUNCE_SPRING} ${index * 40}ms backwards`,
+          }}
+        >
+          {char}
+        </span>
+      ))}
+    </span>
+  );
+}
 
 /* ═══════════════════════════════════════════════
    MAIN HERO BLOCK COMPONENT
@@ -183,6 +274,9 @@ export const HeroBlock = forwardRef<HTMLElement, HeroBlockProps>(
     const [copied, setCopied] = useState(false);
     const [currentWordIndex, setCurrentWordIndex] = useState(0);
 
+    // Shape hover zone state (used when variant === "facility" || variant === "geometric")
+    const [shapeHoverZone, setShapeHoverZone] = useState<ShapeZone>("idle");
+
     // Typing effect state (used when variant === "typing")
     const [currentText, setCurrentText] = useState("");
     const [isDeleting, setIsDeleting] = useState(false);
@@ -221,15 +315,36 @@ export const HeroBlock = forwardRef<HTMLElement, HeroBlockProps>(
       return () => clearTimeout(timer);
     }, [currentText, isDeleting, currentWordIndex, typingWords, variant]);
 
-    // 3D Perspective Word Flip effect interval (used when variant === "slider")
-    useEffect(() => {
-      if (variant !== "slider" || !typingWords || typingWords.length === 0) return;
-      const interval = setInterval(() => {
-        setCurrentWordIndex((prev) => (prev + 1) % typingWords.length);
-      }, 2200);
-
-      return () => clearInterval(interval);
-    }, [typingWords, variant]);
+    // Blueprint grid (used when variant === "facility" || "geometric"): the
+    // lines and the shape render at their zone's place; on a zone change each
+    // glides there from wherever it is on screen, the full 0.9s every time.
+    const shapeRefs = useRef<(HTMLDivElement | null)[]>([]);
+    const shapeAnims = useRef<(Animation | null)[]>([]);
+    const shapePlaced = useRef<Record<string, string>[] | null>(null);
+    const isBlueprint = variant === "facility" || variant === "geometric";
+    useLayoutEffect(() => {
+      if (!isBlueprint) {
+        shapePlaced.current = null;
+        return;
+      }
+      const targets = shapeTargets(shapeHoverZone);
+      const previous = shapePlaced.current;
+      shapePlaced.current = targets;
+      if (!previous) return;
+      targets.forEach((to, i) => {
+        const el = shapeRefs.current[i];
+        const before = previous[i];
+        if (!el || Object.keys(to).every((key) => to[key] === before[key])) return;
+        const running = shapeAnims.current[i];
+        let from = before;
+        if (running && running.playState === "running") {
+          const cs = getComputedStyle(el);
+          from = Object.fromEntries(Object.keys(to).map((key) => [key, cs.getPropertyValue(key)]));
+          running.cancel();
+        }
+        shapeAnims.current[i] = typeof el.animate === "function" ? el.animate([from, to], GLIDE) : null;
+      });
+    }, [shapeHoverZone, isBlueprint]);
 
     const handleCopy = () => {
       if (typeof window !== "undefined" && navigator.clipboard) {
@@ -242,6 +357,7 @@ export const HeroBlock = forwardRef<HTMLElement, HeroBlockProps>(
     const getAccentColor = (col?: string) => {
       if (!col || col === "primary" || col === "default") return undefined;
       const presets: Record<string, string> = {
+        lavender: "#9b8afb",
         indigo: "#6366f1",
         rose: "#f43f5e",
         emerald: "#10b981",
@@ -262,8 +378,7 @@ export const HeroBlock = forwardRef<HTMLElement, HeroBlockProps>(
       ...(resolvedColor ? { "--primary": resolvedColor } : {}),
       ...(accentRgb
         ? {
-            "--primary-foreground":
-              relLuminance(accentRgb) > 0.45 ? "#09090b" : "#ffffff",
+            "--primary-foreground": getAccentForeground(accentRgb),
           }
         : {}),
     } as React.CSSProperties;
@@ -368,7 +483,7 @@ export const HeroBlock = forwardRef<HTMLElement, HeroBlockProps>(
                 {/* Category Pills Header */}
                 <div className="flex flex-wrap items-center gap-2">
                   {badgeTags?.[0] && (
-                    <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full border text-xs font-semibold" style={{ backgroundColor: "rgba(16, 185, 129, 0.08)", borderColor: "rgba(16, 185, 129, 0.25)", color: "var(--hero-accent-text)" }}>
+                    <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full border text-xs font-semibold" style={{ backgroundColor: "color-mix(in oklab, var(--hero-accent-text) 8%, transparent)", borderColor: "color-mix(in oklab, var(--hero-accent-text) 25%, transparent)", color: "var(--hero-accent-text)" }}>
                       <ShieldCheck className="size-3.5 shrink-0" style={{ color: "var(--hero-accent-text)" }} />
                       <span>{badgeTags[0]}</span>
                     </div>
@@ -425,7 +540,7 @@ export const HeroBlock = forwardRef<HTMLElement, HeroBlockProps>(
 
                   <Link
                     href={secondaryActionHref}
-                    className="inline-flex items-center justify-center gap-2.5 px-6 py-4 rounded-2xl border border-border bg-card hover:bg-accent text-foreground font-semibold text-sm sm:text-base transition-all active:scale-95 text-center"
+                    className="inline-flex items-center justify-center gap-2.5 px-6 py-4 rounded-2xl border border-border bg-card hover:bg-muted text-foreground font-semibold text-sm sm:text-base transition-all active:scale-95 text-center"
                   >
                     <span>{petSecondaryAction}</span>
                     <ArrowUpRight className="size-4 shrink-0" style={{ color: "var(--hero-accent-text)" }} />
@@ -502,11 +617,12 @@ export const HeroBlock = forwardRef<HTMLElement, HeroBlockProps>(
           ref={ref}
           style={customStyle}
           className={cn(
-            "relative w-full overflow-hidden bg-white dark:bg-zinc-950 text-foreground transition-colors duration-300 min-h-[620px]",
+            "relative w-full overflow-hidden bg-background text-foreground transition-colors duration-300 min-h-[620px]",
             className,
           )}
           {...props}
         >
+          <style>{HERO_CSS}</style>
           <div className="w-full max-w-[1440px] mx-auto min-h-[620px] grid grid-cols-1 lg:grid-cols-12 items-stretch">
             
             {/* LEFT COLUMN: Title, Subtitle, CTA & Stats */}
@@ -514,7 +630,7 @@ export const HeroBlock = forwardRef<HTMLElement, HeroBlockProps>(
               
               {/* Heading Section */}
               <div className="space-y-1.5 sm:space-y-2">
-                <h1 className="text-2xl sm:text-4xl lg:text-7xl font-light tracking-tight text-zinc-600 dark:text-zinc-300 font-sans leading-tight">
+                <h1 className="text-2xl sm:text-4xl lg:text-7xl font-light tracking-tight text-foreground/70 font-sans leading-tight">
                   {docTitlePrefix}
                 </h1>
                 <div className="flex flex-wrap items-center gap-2 sm:gap-3 pt-0.5 sm:pt-1">
@@ -543,7 +659,7 @@ export const HeroBlock = forwardRef<HTMLElement, HeroBlockProps>(
                   className="border-l-2 pl-3 sm:pl-4 py-0.5"
                   style={{ borderColor: "var(--hero-accent-text)" }}
                 >
-                  <p className="text-zinc-500 dark:text-zinc-400 text-xs sm:text-base leading-relaxed font-medium max-w-lg">
+                  <p className="text-muted-foreground text-xs sm:text-base leading-relaxed font-medium max-w-lg">
                     {docSubtitle}
                   </p>
                 </div>
@@ -575,20 +691,20 @@ export const HeroBlock = forwardRef<HTMLElement, HeroBlockProps>(
               {/* Stats Footer Row */}
               <div className="flex flex-wrap items-center gap-6 sm:gap-14 pt-1 sm:pt-4">
                 <div className="space-y-0.5 sm:space-y-1">
-                  <p className="text-xl sm:text-3xl lg:text-4xl font-extrabold text-zinc-900 dark:text-white">
+                  <p className="text-xl sm:text-3xl lg:text-4xl font-extrabold text-foreground">
                     {stat1Val}
                   </p>
-                  <div className="flex items-center gap-1.5 text-[11px] sm:text-xs font-semibold text-zinc-500 dark:text-zinc-400">
+                  <div className="flex items-center gap-1.5 text-[11px] sm:text-xs font-semibold text-muted-foreground">
                     <ShieldCheck className="size-3.5 shrink-0" style={{ color: "var(--hero-accent-text)" }} />
                     <span>{stat1Label}</span>
                   </div>
                 </div>
 
                 <div className="space-y-0.5 sm:space-y-1">
-                  <p className="text-xl sm:text-3xl lg:text-4xl font-extrabold text-zinc-900 dark:text-white">
+                  <p className="text-xl sm:text-3xl lg:text-4xl font-extrabold text-foreground">
                     {stat2Val}
                   </p>
-                  <div className="flex items-center gap-1.5 text-[11px] sm:text-xs font-semibold text-zinc-500 dark:text-zinc-400">
+                  <div className="flex items-center gap-1.5 text-[11px] sm:text-xs font-semibold text-muted-foreground">
                     <Heart className="size-3.5 text-rose-500 shrink-0" />
                     <span>{stat2Label}</span>
                   </div>
@@ -600,13 +716,13 @@ export const HeroBlock = forwardRef<HTMLElement, HeroBlockProps>(
             {/* RIGHT COLUMN: Dark Container with Images Grid & Floating Cards */}
             <div className="col-span-1 lg:col-span-6 relative flex flex-col justify-center px-3 sm:px-8 lg:px-12 py-6 sm:py-10 lg:py-12 min-h-[380px] sm:min-h-[480px] lg:min-h-0 mt-4 lg:mt-0">
               
-              {/* Dark Green / Dynamic Accent Panel */}
+              {/* Dark Accent Panel (a deep shade of the accent) */}
               <div 
                 className="absolute inset-y-0 right-0 left-0 sm:left-20 lg:left-36 rounded-[20px] sm:rounded-[28px] lg:rounded-l-[48px] lg:rounded-r-none z-0 transition-colors duration-300"
                 style={{
                   backgroundColor: accentRgb
                     ? `rgb(${Math.max(5, Math.round(accentRgb[0] * 0.12))}, ${Math.max(15, Math.round(accentRgb[1] * 0.22))}, ${Math.max(15, Math.round(accentRgb[2] * 0.22))})`
-                    : "#0a271d",
+                    : "color-mix(in oklab, var(--primary) 22%, black)",
                 }}
               />
 
@@ -614,29 +730,25 @@ export const HeroBlock = forwardRef<HTMLElement, HeroBlockProps>(
               <div className="relative w-full h-full grid grid-cols-12 gap-2.5 sm:gap-4 items-center z-10 my-auto p-2 sm:p-0">
                 
                 {/* Doctor Consultation Portrait Card */}
-                <motion.div 
-                  initial={{ opacity: 0, y: 30 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 0.6 }}
+                <div
                   className="col-span-6 ml-0 lg:-ml-10 relative z-20"
+                  style={{ animation: `hero-rise-30 0.6s ${EASE_OUT} backwards` }}
                 >
-                  <div className="relative aspect-[3/4] w-full rounded-[18px] sm:rounded-[32px] overflow-hidden border-2 sm:border-4 border-white dark:border-zinc-900 bg-zinc-800">
+                  <div className="relative aspect-[3/4] w-full rounded-[18px] sm:rounded-[32px] overflow-hidden border-2 sm:border-4 border-background bg-zinc-800">
                     <img
                       src={doctorMainImage}
                       alt="Doctor Consultation"
                       className="w-full h-full object-cover"
                     />
                   </div>
-                </motion.div>
+                </div>
 
                 {/* Right Stacked Images inside Dark Panel */}
                 <div className="col-span-6 space-y-2.5 sm:space-y-4 relative z-10">
                   
                   {/* Top Right Patient Care Portrait Image */}
-                  <motion.div 
-                    initial={{ opacity: 0, scale: 0.95 }}
-                    animate={{ opacity: 1, scale: 1 }}
-                    transition={{ delay: 0.2, duration: 0.5 }}
+                  <div
+                    style={{ animation: `hero-grow 0.5s ${EASE_OUT} 0.2s backwards` }}
                     className="relative aspect-[4/3] sm:aspect-square w-full rounded-[16px] sm:rounded-[28px] overflow-hidden bg-zinc-800 border border-white/10"
                   >
                     <img
@@ -644,13 +756,11 @@ export const HeroBlock = forwardRef<HTMLElement, HeroBlockProps>(
                       alt="Patient Care"
                       className="w-full h-full object-cover"
                     />
-                  </motion.div>
+                  </div>
 
                   {/* Bottom Right Lab Kit Test Image */}
-                  <motion.div 
-                    initial={{ opacity: 0, scale: 0.95 }}
-                    animate={{ opacity: 1, scale: 1 }}
-                    transition={{ delay: 0.3, duration: 0.5 }}
+                  <div
+                    style={{ animation: `hero-grow 0.5s ${EASE_OUT} 0.3s backwards` }}
                     className="relative aspect-[4/3] w-full rounded-[16px] sm:rounded-[28px] overflow-hidden bg-zinc-800 border border-white/10 group"
                   >
                     <img
@@ -663,19 +773,17 @@ export const HeroBlock = forwardRef<HTMLElement, HeroBlockProps>(
                         Lab-Trusted. <br /> Doorstep Delivered.
                       </p>
                     </div>
-                  </motion.div>
+                  </div>
 
                 </div>
 
               </div>
 
               {/* Bottom Floating Delivery Card */}
-              <motion.div 
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.4, duration: 0.5 }}
+              <div
                 className="relative lg:absolute mt-3 lg:mt-0 bottom-0 lg:bottom-6 left-0 lg:-left-6 lg:-ml-24 z-30 w-full lg:w-auto min-w-0 sm:min-w-[320px] p-3 sm:p-4 lg:p-5 rounded-[16px] sm:rounded-[24px] shadow-2xl border-2 backdrop-blur-xl transition-colors duration-300 bg-card text-card-foreground"
                 style={{
+                  animation: `hero-rise-20 0.5s ${EASE_OUT} 0.4s backwards`,
                   backgroundColor: accentRgb
                     ? `rgba(${accentRgb[0]}, ${accentRgb[1]}, ${accentRgb[2]}, 0.18)`
                     : undefined,
@@ -719,12 +827,12 @@ export const HeroBlock = forwardRef<HTMLElement, HeroBlockProps>(
                         key={i}
                         src={imgSrc}
                         alt={`User avatar ${i + 1}`}
-                        className="size-5 sm:size-8 rounded-md sm:rounded-lg border border-white/60 object-cover shadow-sm"
+                        className="size-5 sm:size-8 rounded-md sm:rounded-lg border border-card/60 object-cover shadow-sm"
                       />
                     ))}
                   </div>
                 </div>
-              </motion.div>
+              </div>
 
             </div>
 
@@ -801,7 +909,7 @@ export const HeroBlock = forwardRef<HTMLElement, HeroBlockProps>(
           `}</style>
 
           {/* Grid Background Overlay */}
-          <div className="absolute inset-0 bg-[linear-gradient(to_right,rgba(0,0,0,0.03)_1px,transparent_1px),linear-gradient(to_bottom,rgba(0,0,0,0.03)_1px,transparent_1px)] dark:bg-[linear-gradient(to_right,rgba(255,255,255,0.025)_1px,transparent_1px),linear-gradient(to_bottom,rgba(255,255,255,0.025)_1px,transparent_1px)] bg-[size:32px_32px] [mask-image:radial-gradient(ellipse_80%_80%_at_50%_50%,black_30%,transparent_100%)] pointer-events-none" />
+          <div className="absolute inset-0 bg-[linear-gradient(to_right,color-mix(in_oklab,var(--foreground)_3%,transparent)_1px,transparent_1px),linear-gradient(to_bottom,color-mix(in_oklab,var(--foreground)_3%,transparent)_1px,transparent_1px)] bg-[size:32px_32px] [mask-image:radial-gradient(ellipse_80%_80%_at_50%_50%,black_30%,transparent_100%)] pointer-events-none" />
 
           <div className="relative z-10 max-w-[1320px] mx-auto w-full px-4 sm:px-6 md:px-8">
             <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 lg:gap-12 items-stretch">
@@ -850,14 +958,14 @@ export const HeroBlock = forwardRef<HTMLElement, HeroBlockProps>(
                     {sliderSecondaryActionLabel && (
                       <Link
                         href={sliderSecondaryActionHref}
-                        className="inline-flex items-center justify-center gap-2 px-4 sm:px-5 py-3 sm:py-3.5 rounded-2xl border border-zinc-200 dark:border-zinc-800 bg-zinc-100/70 dark:bg-zinc-900 hover:bg-zinc-200/80 dark:hover:bg-zinc-800 text-xs sm:text-sm font-semibold transition-all cursor-pointer text-foreground active:scale-95 w-full sm:w-auto text-center"
+                        className="inline-flex items-center justify-center gap-2 px-4 sm:px-5 py-3 sm:py-3.5 rounded-2xl border border-border bg-muted hover:bg-foreground/10 text-xs sm:text-sm font-semibold transition-all cursor-pointer text-foreground active:scale-95 w-full sm:w-auto text-center"
                       >
                         {sliderSecondaryActionLabel.toLowerCase().includes("github") ? (
                           <GitHubIcon className="size-4 shrink-0 text-foreground" />
                         ) : sliderSecondaryActionLabel.toLowerCase().includes("resume") || sliderSecondaryActionLabel.toLowerCase().includes("cv") ? (
-                          <FileText className="size-4 text-zinc-700 dark:text-[var(--hero-accent-text)] shrink-0" />
+                          <FileText className="size-4 text-[var(--hero-accent-text)] shrink-0" />
                         ) : (
-                          <Mail className="size-4 text-zinc-700 dark:text-[var(--hero-accent-text)] shrink-0" />
+                          <Mail className="size-4 text-[var(--hero-accent-text)] shrink-0" />
                         )}
                         <span>{sliderSecondaryActionLabel}</span>
                       </Link>
@@ -934,6 +1042,193 @@ export const HeroBlock = forwardRef<HTMLElement, HeroBlockProps>(
     }
 
     /* ═══════════════════════════════════════════════
+       VARIANT 6: PRECISION FACILITY & CAD BLUEPRINT GRID HERO (INTERACTIVE MORPHING SHAPE)
+       ═══════════════════════════════════════════════ */
+    if (variant === "facility" || variant === "geometric") {
+      const isDefaultFacilityTitle =
+        !titlePrefix ||
+        titlePrefix === "Build " ||
+        titlePrefix.includes("Precision facility");
+
+      const facilityTitleLines: string[] = isDefaultFacilityTitle
+        ? [
+            "Precision facility",
+            "services. Certified. For",
+            "environments that can't fail.",
+          ]
+        : (titlePrefix + (titleSuffix ? ` ${titleSuffix}` : "")).includes("\n")
+        ? (titlePrefix + (titleSuffix ? ` ${titleSuffix}` : "")).split("\n")
+        : [
+            "Precision facility",
+            "services. Certified. For",
+            "environments that can't fail.",
+          ];
+
+      const facSubtitle =
+        subtitle ===
+        "A meticulous library of React components & interactive blocks, engineered for seamless performance with Tailwind CSS, TypeScript, GSAP, and Framer Motion."
+          ? "Certified, data-driven facility services across mission-critical environments."
+          : subtitle;
+
+      const facPrimaryAction =
+        primaryActionLabel === "Browse Components"
+          ? "Request a facility audit"
+          : primaryActionLabel;
+
+      // Where the grid lines and the shape rest for the current hover zone;
+      // the glide between zones is `GLIDE`, run by the layout effect above.
+      const shape = shapeTargets(shapeHoverZone) as React.CSSProperties[];
+
+      return (
+        <section
+          ref={ref}
+          style={customStyle}
+          className={cn(
+            "relative w-full overflow-hidden bg-background text-foreground transition-colors duration-300 border-y border-neutral-200/80 dark:border-neutral-800/80",
+            className,
+          )}
+          {...props}
+        >
+          <div className="w-full max-w-[1440px] mx-auto grid grid-cols-1 lg:grid-cols-12 items-stretch min-h-[460px] sm:min-h-[520px]">
+            {/* LEFT COLUMN: Heading at top, Subtitle + CTA button at bottom */}
+            <div className="col-span-1 lg:col-span-7 flex flex-col justify-between p-6 sm:p-10 lg:p-14 z-10 border-b lg:border-b-0 border-neutral-200/80 dark:border-neutral-800/80">
+              {/* Heading: Always structured in exact 3 lines */}
+              <div className="pt-2 sm:pt-4">
+                <h1 className="text-2xl xs:text-3xl sm:text-4xl md:text-[42px] lg:text-[44px] xl:text-[48px] font-normal sm:font-medium tracking-tight text-neutral-900 dark:text-neutral-100 font-sans leading-[1.12] max-w-xl">
+                  {facilityTitleLines.map((line, idx) => (
+                    <span
+                      key={idx}
+                      className="block whitespace-normal sm:whitespace-nowrap"
+                    >
+                      {line}
+                    </span>
+                  ))}
+                </h1>
+              </div>
+
+              {/* Subtitle & CTA button */}
+              <div className="pt-10 sm:pt-16 mt-auto">
+                <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-6 sm:gap-8">
+                  {facSubtitle && (
+                    <p className="text-xs sm:text-sm text-neutral-600 dark:text-neutral-400 leading-relaxed max-w-[340px]">
+                      {facSubtitle}
+                    </p>
+                  )}
+
+                  {facPrimaryAction && (
+                    <Link
+                      href={primaryActionHref || "#"}
+                      className="inline-flex items-center group overflow-hidden shadow-xs shrink-0 self-start sm:self-end border border-primary/20 transition-all hover:shadow-md active:scale-[0.98]"
+                      style={{
+                        backgroundColor: "var(--primary)",
+                        color: "var(--primary-foreground)",
+                      }}
+                    >
+                      <span className="text-xs sm:text-sm font-medium px-4 sm:px-5 py-2.5 sm:py-3 tracking-wide transition-colors">
+                        {facPrimaryAction}
+                      </span>
+                      <span className="p-2.5 sm:p-3 flex items-center justify-center border-l border-primary-foreground/20 bg-black/10 dark:bg-white/10 transition-colors group-hover:bg-black/20 dark:group-hover:bg-white/20">
+                        <ArrowRight className="w-3.5 h-3.5 sm:w-4 sm:h-4 transition-transform group-hover:translate-x-0.5" />
+                      </span>
+                    </Link>
+                  )}
+                </div>
+              </div>
+            </div>
+
+            {/* RIGHT COLUMN: Interactive Box Grid with Morphing Polygon locked to Border */}
+            <div
+              className="col-span-1 lg:col-span-5 relative flex items-center justify-center min-h-[360px] sm:min-h-[420px] lg:min-h-[520px] overflow-hidden lg:border-l border-neutral-200/80 dark:border-neutral-800/80 select-none"
+              onMouseLeave={() => setShapeHoverZone("idle")}
+            >
+              {/* Interactive Hover Trigger Zones across 3 columns (No background color change) */}
+              <div className="absolute inset-0 grid grid-cols-3 z-30">
+                {/* Left Column (Left Box): Hovering here slightly shrinks the shape and its border */}
+                <div
+                  className="h-full cursor-pointer"
+                  onMouseEnter={() => setShapeHoverZone("left")}
+                  title="Hover left box to contract"
+                />
+                {/* Center Column (Center Box): Hovering here returns shape and border to resting state */}
+                <div
+                  className="h-full cursor-pointer"
+                  onMouseEnter={() => setShapeHoverZone("center")}
+                  title="Resting state"
+                />
+                {/* Right Column (Right Box): Hovering here slightly expands shape width and height */}
+                <div
+                  className="h-full cursor-pointer"
+                  onMouseEnter={() => setShapeHoverZone("right")}
+                  title="Hover right box to expand"
+                />
+              </div>
+
+              {/* Grid Lines — each sits at its hover zone's place (see `shapeTargets`) */}
+              {/* Top horizontal grid line - moves symmetrically with shape top */}
+              <div
+                ref={(el) => {
+                  shapeRefs.current[0] = el;
+                }}
+                className="absolute left-0 right-0 h-px bg-neutral-200/80 dark:bg-neutral-800/80 z-10 pointer-events-none"
+                style={shape[0]}
+              />
+              {/* Bottom horizontal grid line - moves symmetrically with shape bottom */}
+              <div
+                ref={(el) => {
+                  shapeRefs.current[1] = el;
+                }}
+                className="absolute left-0 right-0 h-px bg-neutral-200/80 dark:bg-neutral-800/80 z-10 pointer-events-none"
+                style={shape[1]}
+              />
+
+              {/* Moving Left Vertical Grid Line - attached to shape left, moves in 4-way symmetry */}
+              <div
+                ref={(el) => {
+                  shapeRefs.current[2] = el;
+                }}
+                className="absolute top-0 bottom-0 w-px bg-neutral-200/80 dark:bg-neutral-800/80 z-10 pointer-events-none"
+                style={shape[2]}
+              />
+
+              {/* Moving Right Vertical Grid Line - attached to shape right, moves in 4-way symmetry */}
+              <div
+                ref={(el) => {
+                  shapeRefs.current[3] = el;
+                }}
+                className="absolute top-0 bottom-0 w-px bg-neutral-200/80 dark:bg-neutral-800/80 z-10 pointer-events-none"
+                style={shape[3]}
+              />
+
+              {/* Animated Central Morphing Shape - strictly bounded between all 4 moving grid lines */}
+              <div
+                ref={(el) => {
+                  shapeRefs.current[4] = el;
+                }}
+                className="absolute z-10 pointer-events-none"
+                style={shape[4]}
+              >
+                {/* Geometric chamfered polygon */}
+                <div
+                  className="w-full h-full bg-[#eaedf3] dark:bg-zinc-800/90 transition-colors duration-300 drop-shadow-xs"
+                  style={{
+                    clipPath:
+                      "polygon(clamp(24px, 15%, 52px) 0, 100% 0, 100% calc(100% - clamp(20px, 14%, 44px)), calc(100% - clamp(24px, 15%, 52px)) 100%, 0 100%, 0 clamp(20px, 14%, 44px))",
+                  }}
+                />
+
+                {/* Top-Right Control Anchor Square - exactly on (xRight, top) */}
+                <div className="absolute top-0 right-0 w-2 h-2 sm:w-2.5 sm:h-2.5 bg-neutral-400 dark:bg-neutral-500 translate-x-1/2 -translate-y-1/2 shadow-xs" />
+
+                {/* Bottom-Left Control Anchor Square - exactly on (24%, bottom) */}
+                <div className="absolute bottom-0 left-0 w-2 h-2 sm:w-2.5 sm:h-2.5 bg-neutral-400 dark:bg-neutral-500 -translate-x-1/2 translate-y-1/2 shadow-xs" />
+              </div>
+            </div>
+          </div>
+        </section>
+      );
+    }
+
+    /* ═══════════════════════════════════════════════
        VARIANTS 1 & 2: BOUNCE & TYPING (CENTERED HERO)
        ═══════════════════════════════════════════════ */
     return (
@@ -946,6 +1241,7 @@ export const HeroBlock = forwardRef<HTMLElement, HeroBlockProps>(
         )}
         {...props}
       >
+        <style>{HERO_CSS}</style>
         {/* Radial Background Glow */}
         <div
           className="absolute inset-0 pointer-events-none"
@@ -956,7 +1252,7 @@ export const HeroBlock = forwardRef<HTMLElement, HeroBlockProps>(
           }}
         />
         {/* Grid Mask Background */}
-        <div className="absolute inset-0 bg-[linear-gradient(to_right,rgba(0,0,0,0.03)_1px,transparent_1px),linear-gradient(to_bottom,rgba(0,0,0,0.03)_1px,transparent_1px)] dark:bg-[linear-gradient(to_right,rgba(255,255,255,0.025)_1px,transparent_1px),linear-gradient(to_bottom,rgba(255,255,255,0.025)_1px,transparent_1px)] bg-[size:24px_24px] sm:bg-[size:36px_36px] [mask-image:radial-gradient(ellipse_70%_60%_at_50%_40%,black_40%,transparent_100%)]" />
+        <div className="absolute inset-0 bg-[linear-gradient(to_right,color-mix(in_oklab,var(--foreground)_3%,transparent)_1px,transparent_1px),linear-gradient(to_bottom,color-mix(in_oklab,var(--foreground)_3%,transparent)_1px,transparent_1px)] bg-[size:24px_24px] sm:bg-[size:36px_36px] [mask-image:radial-gradient(ellipse_70%_60%_at_50%_40%,black_40%,transparent_100%)]" />
 
         <div className="relative z-10 max-w-[1320px] mx-auto w-full px-5 sm:px-6 md:px-8 flex flex-col justify-center items-center">
           <div className="flex flex-col items-center text-center max-w-[1320px] mx-auto space-y-3.5 sm:space-y-6 md:space-y-7 my-auto">
@@ -992,39 +1288,7 @@ export const HeroBlock = forwardRef<HTMLElement, HeroBlockProps>(
                 </span>
               ) : (
                 <span className="relative inline-flex items-center justify-start overflow-hidden py-0.5 h-[1.3em] w-[140px] xs:w-[165px] sm:w-[170px] md:w-[210px] lg:w-[270px] xl:w-[330px] shrink-0">
-                  <AnimatePresence mode="wait">
-                    <motion.span
-                      key={currentWord}
-                      initial="initial"
-                      animate="animate"
-                      exit="exit"
-                      variants={{
-                        initial: { opacity: 0 },
-                        animate: { opacity: 1, transition: { staggerChildren: 0.04 } },
-                        exit: { opacity: 0, transition: { staggerChildren: 0.02 } },
-                      }}
-                      className="text-foreground inline-flex text-left whitespace-nowrap"
-                    >
-                      {currentWord.split("").map((char, index) => (
-                        <motion.span
-                          key={index}
-                          variants={{
-                            initial: { y: 24, opacity: 0, scale: 0.5 },
-                            animate: { y: 0, opacity: 1, scale: 1 },
-                            exit: { y: -24, opacity: 0, scale: 0.5 },
-                          }}
-                          transition={{
-                            type: "spring",
-                            stiffness: 350,
-                            damping: 25,
-                          }}
-                          className="inline-block"
-                        >
-                          {char}
-                        </motion.span>
-                      ))}
-                    </motion.span>
-                  </AnimatePresence>
+                  <BounceWord word={currentWord} />
                 </span>
               )}
 
@@ -1044,9 +1308,9 @@ export const HeroBlock = forwardRef<HTMLElement, HeroBlockProps>(
                 <button
                   type="button"
                   onClick={handleCopy}
-                  className="group flex items-center gap-2 sm:gap-3.5 px-2.5 sm:px-5 h-8 xs:h-9 sm:h-[58px] rounded-lg sm:rounded-2xl border border-zinc-200 dark:border-border bg-zinc-100/70 dark:bg-card cursor-pointer w-full max-w-[220px] xs:max-w-[250px] sm:max-w-md hover:border-zinc-300 dark:hover:border-primary/50 transition-all"
+                  className="group flex items-center gap-2 sm:gap-3.5 px-2.5 sm:px-5 h-8 xs:h-9 sm:h-[58px] rounded-lg sm:rounded-2xl border border-border bg-muted/70 cursor-pointer w-full max-w-[220px] xs:max-w-[250px] sm:max-w-md hover:border-primary/50 transition-all"
                 >
-                  <Terminal className="size-3 xs:size-3.5 sm:size-5 text-zinc-700 dark:text-[var(--hero-accent-text)] shrink-0" />
+                  <Terminal className="size-3 xs:size-3.5 sm:size-5 text-[var(--hero-accent-text)] shrink-0" />
                   <code className="text-[9px] xs:text-[10px] sm:text-sm md:text-base font-mono text-foreground flex-1 text-left font-semibold truncate !bg-transparent !border-none !outline-none !shadow-none !p-0">
                     {cliCommand}
                   </code>

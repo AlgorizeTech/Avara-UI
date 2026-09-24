@@ -266,7 +266,7 @@ export const AudioPlayer = React.forwardRef<
           type="button"
           onClick={toggle}
           style={{ background: accent }}
-          className="flex h-12 w-12 shrink-0 cursor-pointer items-center justify-center rounded-full text-primary-foreground shadow-lg transition-transform duration-200 hover:scale-105 focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-zinc-900 focus-visible:outline-none active:scale-95 sm:h-14 sm:w-14 dark:text-zinc-900"
+          className="flex h-12 w-12 shrink-0 cursor-pointer items-center justify-center rounded-full text-primary-foreground shadow-lg transition-transform duration-200 hover:scale-105 focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-zinc-900 focus-visible:outline-none active:scale-95 sm:h-14 sm:w-14"
           aria-label={isPlaying ? "Pause" : "Play"}
         >
           {isPlaying ? (

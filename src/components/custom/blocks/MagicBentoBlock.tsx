@@ -1,7 +1,6 @@
 "use client";
 
 import { cn } from "@/lib/utils";
-import { motion, useMotionTemplate, useMotionValue } from "framer-motion";
 import React from "react";
 import type { ReactNode } from "react";
 
@@ -52,18 +51,22 @@ export const MagicBentoCard = React.forwardRef<
   HTMLDivElement,
   MagicBentoCardProps
 >(({ children, className, highlight = false, style, ...props }, ref) => {
-  const mouseX = useMotionValue(0);
-  const mouseY = useMotionValue(0);
+  const spotlightRef = React.useRef<HTMLDivElement>(null);
+  const glowRef = React.useRef<HTMLDivElement>(null);
 
-  // Track mouse position relative to the card
+  // Track mouse position relative to the card. It goes straight into the
+  // `--mb-x` / `--mb-y` variables of the two layers that read it — no React
+  // state, so a mouse move never re-renders.
   function handleMouseMove({
     currentTarget,
     clientX,
     clientY,
   }: React.MouseEvent) {
     const { left, top } = currentTarget.getBoundingClientRect();
-    mouseX.set(clientX - left);
-    mouseY.set(clientY - top);
+    for (const layer of [spotlightRef.current, glowRef.current]) {
+      layer?.style.setProperty("--mb-x", `${clientX - left}px`);
+      layer?.style.setProperty("--mb-y", `${clientY - top}px`);
+    }
   }
 
   return (
@@ -86,34 +89,28 @@ export const MagicBentoCard = React.forwardRef<
       )}
 
       {/* 3. Hover: Mouse-Tracking Border Spotlight */}
-      <motion.div
+      <div
+        ref={spotlightRef}
         className="absolute inset-0 rounded-3xl opacity-0 transition-opacity duration-300 group-hover:opacity-100"
         style={{
-          background: useMotionTemplate`
-              radial-gradient(
-                600px circle at ${mouseX}px ${mouseY}px,
-                var(--mb-color),
-                transparent 40%
-              )
-            `,
-        }}
+          "--mb-x": "0px",
+          "--mb-y": "0px",
+          background: `radial-gradient(600px circle at var(--mb-x) var(--mb-y), var(--mb-color), transparent 40%)`,
+        } as React.CSSProperties}
       />
 
       {/* 4. Content Mask (Creates the 1px border effect) */}
-      <div className="absolute inset-[1px] rounded-[23px] bg-white dark:bg-[#0a0a0a] transition-colors z-0" />
+      <div className="absolute inset-[1px] rounded-[23px] bg-card transition-colors z-0" />
 
       {/* 5. Hover: Inner Card Soft Glow (FIXED: mix-blend-normal in light mode so white background can be tinted!) */}
-      <motion.div
+      <div
+        ref={glowRef}
         className="absolute inset-0 z-10 opacity-0 transition-opacity duration-300 group-hover:opacity-100 pointer-events-none mix-blend-normal dark:mix-blend-screen"
         style={{
-          background: useMotionTemplate`
-              radial-gradient(
-                600px circle at ${mouseX}px ${mouseY}px,
-                var(--mb-glow),
-                transparent 40%
-              )
-            `,
-        }}
+          "--mb-x": "0px",
+          "--mb-y": "0px",
+          background: `radial-gradient(600px circle at var(--mb-x) var(--mb-y), var(--mb-glow), transparent 40%)`,
+        } as React.CSSProperties}
       />
 
       {/* 6. Actual Content Area */}

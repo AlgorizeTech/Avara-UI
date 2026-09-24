@@ -2,7 +2,6 @@
 
 import React, { useCallback, useEffect, useRef, useState } from "react";
 import { ArrowLeft, ArrowRight, Hand } from "lucide-react";
-import gsap from "gsap";
 import { cn } from "@/lib/utils";
 
 /**
@@ -45,7 +44,7 @@ export function ImageCarousel({
   images = [],
   rootClassName = "relative h-60 w-full min-w-80 overflow-hidden rounded-lg md:h-[470px] md:rounded-xl lg:h-[540px]",
   slideClassName = "h-60 min-w-full bg-black/20 object-cover sm:h-96 md:h-[540px]",
-  arrowClassName = "absolute top-1/2 z-50 flex h-7 w-7 items-center justify-center rounded-full bg-white/80 hover:bg-card dark:bg-zinc-900/80 shadow-md md:h-9 md:w-9 transition-all cursor-pointer",
+  arrowClassName = "absolute top-1/2 z-50 flex h-7 w-7 items-center justify-center rounded-full bg-card/80 hover:bg-card shadow-md md:h-9 md:w-9 transition-all cursor-pointer",
   dotClassName = "rounded-full bg-white duration-500 h-2",
   activeDotClassName = "w-8",
   prevIcon,
@@ -313,7 +312,7 @@ export function CustomCarousel({
   titleClassName = "mb-3 text-xl font-semibold lg:text-3xl",
   descClassName = "text-sm md:text-base lg:text-lg",
   thumbClassName = "h-6 w-10 shrink-0 overflow-hidden bg-black/20 sm:h-8 md:h-12 md:w-20 cursor-pointer rounded-md md:rounded-lg",
-  activeThumbClassName = "outline-2 outline-offset-2 outline-black",
+  activeThumbClassName = "outline-2 outline-offset-2 outline-primary",
   autoPlay = true,
   interval = 5000,
   imageButtonPosition = "bottom",
@@ -650,7 +649,7 @@ export function RadialCarousel({
               }}
               className={`absolute w-[110px] sm:w-[170px] md:w-[220px] h-[150px] sm:h-[230px] md:h-[300px] rounded-[14px] sm:rounded-[20px] md:rounded-[24px] overflow-hidden border-2 border-black/80 dark:border-black shadow-2xl cursor-grab active:cursor-grabbing ${
                 isCenter
-                  ? "ring-2 ring-black dark:ring-zinc-700 shadow-black/60 brightness-105"
+                  ? "ring-2 ring-primary shadow-black/60 brightness-105"
                   : "hover:brightness-95"
               }`}
             >
@@ -720,7 +719,7 @@ export function RadialCarousel({
                   className={`h-2 rounded-full transition-all duration-300 ${
                     positiveModulo(current, items.length) === idx
                       ? "w-6 bg-primary"
-                      : "w-2 bg-zinc-300 dark:bg-zinc-700"
+                      : "w-2 bg-foreground/20"
                   }`}
                   aria-label={`Go to slide ${idx + 1}`}
                 />
@@ -917,7 +916,7 @@ export function FanCarousel({
               }}
               className={`absolute w-[110px] sm:w-[170px] md:w-[220px] h-[150px] sm:h-[230px] md:h-[300px] rounded-[14px] sm:rounded-[20px] md:rounded-[24px] overflow-hidden border-2 border-black/80 dark:border-black shadow-2xl cursor-grab active:cursor-grabbing ${
                 isCenter
-                  ? "ring-2 ring-black dark:ring-zinc-700 shadow-black/60 brightness-105"
+                  ? "ring-2 ring-primary shadow-black/60 brightness-105"
                   : "hover:brightness-95"
               }`}
             >
@@ -1002,8 +1001,8 @@ export function FanCarousel({
               className={cn(
                 "h-2 rounded-full transition-all",
                 positiveModulo(current, total) === index
-                  ? "w-6 bg-zinc-900 dark:bg-zinc-200"
-                  : "w-2 bg-zinc-400/60 dark:bg-zinc-600",
+                  ? "w-6 bg-primary"
+                  : "w-2 bg-foreground/20",
               )}
             />
           ))}
@@ -1014,8 +1013,36 @@ export function FanCarousel({
 }
 
 /* ============================================================================
-   FLUID GLASS SLIDER COMPONENT (GSAP Liquid Distortion Slider)
+   FLUID GLASS SLIDER COMPONENT (Liquid Distortion Slider)
    ============================================================================ */
+
+// ==========================================
+// MOTION — Web Animations and CSS, no library
+// ==========================================
+// GSAP's power4.inOut (sampled, max error 0.15%), power2.out and power1.out.
+const POWER4_IN_OUT =
+  "linear(0, .0005 12.5%, .0037 18.75%, .008 21.875%, .0156 25%, .0282 28.125%, .0477 31.25%, .0768 34.375%, .0959 35.938%, .1187 37.5%, .1455 39.063%, .177 40.625%, .2138 42.188%, .2565 43.75%, .3056 45.313%, .3621 46.875%, .4266 48.438%, .5 50%, .5734 51.563%, .6379 53.125%, .6944 54.688%, .7435 56.25%, .7862 57.813%, .823 59.375%, .8545 60.938%, .8813 62.5%, .9041 64.063%, .9232 65.625%, .9523 68.75%, .9718 71.875%, .9844 75%, .992 78.125%, .9963 81.25%, .9995 87.5%, 1)";
+const POWER2_OUT = "cubic-bezier(.3333, 1, .6667, 1)";
+const POWER1_OUT = "cubic-bezier(.3333, .6667, .6667, 1)";
+
+const tweens = new WeakMap<HTMLElement, Animation>();
+
+/**
+ * Tween `el` to `to` from wherever it is right now (mid-flight included), so a
+ * new target takes over a running tween with the full duration. The end values
+ * are written inline, so nothing is held by a fill.
+ */
+function tweenTo(el: HTMLElement, to: Record<string, string>, duration: number, easing: string) {
+  const computed = getComputedStyle(el);
+  const from: Record<string, string> = {};
+  for (const key of Object.keys(to)) from[key] = computed.getPropertyValue(key);
+  tweens.get(el)?.cancel();
+  for (const [key, value] of Object.entries(to)) el.style.setProperty(key, value);
+  if (typeof el.animate !== "function") return null;
+  const animation = el.animate([from, to], { duration: duration * 1000, easing });
+  tweens.set(el, animation);
+  return animation;
+}
 
 export type FluidGlassSlide = {
   id: number;
@@ -1068,32 +1095,44 @@ export function FluidGlassSlider({ slides, className }: FluidGlassSliderProps) {
   useEffect(() => {
     if (!sliderRef.current) return;
 
-    gsap.to(sliderRef.current, {
-      x: `-${currentIndex * (100 / slidesData.length)}%`,
-      duration: 1.2,
-      ease: "power4.inOut",
-    });
-
-    if (!progressRef.current) return;
-
-    const progressTween = gsap.fromTo(
-      progressRef.current,
-      { width: "0%" },
-      {
-        width: "100%",
-        duration: 5,
-        ease: "none",
-        onComplete: () => {
-          setCurrentIndex((prev) =>
-            prev < slidesData.length - 1 ? prev + 1 : 0,
-          );
-        },
-      },
+    // Slide animation
+    const slide = tweenTo(
+      sliderRef.current,
+      { translate: `-${currentIndex * (100 / slidesData.length)}% 0px` },
+      1.2,
+      POWER4_IN_OUT,
     );
 
+    if (!progressRef.current || typeof progressRef.current.animate !== "function") return;
+
+    // Auto-play progress bar (Infinite Loop)
+    const progress = progressRef.current.animate(
+      [{ width: "0%" }, { width: "100%" }],
+      { duration: 5000, easing: "linear", fill: "forwards" },
+    );
+    progress.onfinish = () => {
+      // Auto-play continues infinitely
+      setCurrentIndex((prev) =>
+        prev < slidesData.length - 1 ? prev + 1 : 0,
+      );
+    };
+
+    // A hidden tab holds both where they are, as it always has: the timer
+    // must not run on and flip slides nobody is watching.
+    const onVisibility = () => {
+      for (const animation of [slide, progress]) {
+        if (!animation || animation.playState === "finished") continue;
+        if (document.hidden) animation.pause();
+        else animation.play();
+      }
+    };
+    document.addEventListener("visibilitychange", onVisibility);
+    onVisibility();
+
     return () => {
-      if (progressTween && typeof progressTween.kill === "function")
-        progressTween.kill();
+      document.removeEventListener("visibilitychange", onVisibility);
+      progress.onfinish = null;
+      progress.cancel();
     };
   }, [currentIndex, slidesData.length]);
 
@@ -1102,14 +1141,11 @@ export function FluidGlassSlider({ slides, className }: FluidGlassSliderProps) {
     const cursor = cursorRef.current;
     if (!container || !cursor) return;
 
+    // Follows the pointer through a 0.1s transition on `translate` (see the
+    // cursor's style).
     const onMouseMove = (e: MouseEvent) => {
       if (!cursor) return;
-      gsap.to(cursor, {
-        x: (e.clientX || 0) + 15,
-        y: (e.clientY || 0) + 15,
-        duration: 0.1,
-        ease: "power2.out",
-      });
+      cursor.style.translate = `${(e.clientX || 0) + 15}px ${(e.clientY || 0) + 15}px`;
     };
 
     container.addEventListener("mousemove", onMouseMove);
@@ -1126,11 +1162,11 @@ export function FluidGlassSlider({ slides, className }: FluidGlassSliderProps) {
 
   const showCursor = () => {
     if (!cursorRef.current) return;
-    gsap.to(cursorRef.current, { opacity: 1, duration: 0.2, scale: 1 });
+    tweenTo(cursorRef.current, { opacity: "1", scale: "1" }, 0.2, POWER1_OUT);
   };
   const hideCursor = () => {
     if (!cursorRef.current) return;
-    gsap.to(cursorRef.current, { opacity: 0, duration: 0.2, scale: 0.8 });
+    tweenTo(cursorRef.current, { opacity: "0", scale: "0.8" }, 0.2, POWER1_OUT);
   };
 
   return (
@@ -1146,6 +1182,7 @@ export function FluidGlassSlider({ slides, className }: FluidGlassSliderProps) {
       <div
         ref={cursorRef}
         className="fixed top-0 left-0 px-3 py-1.5 bg-white/20 backdrop-blur-md border border-white/30 text-white text-[10px] font-semibold tracking-widest uppercase flex items-center justify-center opacity-0 z-[100] pointer-events-none scale-80"
+        style={{ transition: `translate 0.1s ${POWER2_OUT}` }}
       >
         VIEW
       </div>

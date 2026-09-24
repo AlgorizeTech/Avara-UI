@@ -179,7 +179,7 @@ The accent is resolved at runtime, so it adopts your site's primary color with n
 
           string
 
-          "#FFAB1D"
+          "var(--primary)"
 
           The fallback hex color string applied automatically if no valid hex or
           rgb color value is detected in localStorage or CSS root
@@ -217,7 +217,7 @@ The accent is resolved at runtime, so it adopts your site's primary color with n
           Required
 
           A unique string identifier required for safe React list rendering and
-          Framer Motion layout animations.
+          for swapping the showcase image when the active step changes.
 
           AccordionShowcaseItem
 
@@ -251,7 +251,7 @@ The accent is resolved at runtime, so it adopts your site's primary color with n
           Required
 
           The detailed paragraph text explaining the specific step or service,
-          which smoothly expands via Framer Motion when the card becomes active.
+          which smoothly expands when the card becomes active.
 
           AccordionShowcaseItem
 

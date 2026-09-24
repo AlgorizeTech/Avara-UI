@@ -79,7 +79,7 @@ const ROLE_STYLES: Record<string, string> = {
   Manager: "bg-[#dbeafe] text-[#1e40af] dark:bg-blue-500/10 dark:text-blue-400",
   Developer: "bg-[#d1fae5] text-[#065f46] dark:bg-emerald-500/10 dark:text-emerald-400",
   Editor: "bg-[#fef3c7] text-[#92400e] dark:bg-amber-500/10 dark:text-amber-400",
-  Viewer: "bg-zinc-100 text-zinc-600 dark:bg-zinc-800 dark:text-zinc-300",
+  Viewer: "bg-muted text-muted-foreground",
 };
 
 const STATUS_STYLES: Record<string, string> = {
@@ -105,7 +105,7 @@ const getDotClass = (ts: number) => {
   if (diff < 60) return "bg-[#22c55e]";
   if (diff < 60 * 24) return "bg-[#f59e0b]";
   if (diff < 60 * 24 * 7) return "bg-[#ef4444]";
-  return "bg-[#9ca3af]";
+  return "bg-muted-foreground";
 };
 
 export default function AdvancedTableDemo({
@@ -272,13 +272,13 @@ export default function AdvancedTableDemo({
                     onClick={() =>
                       console.log("Exporting", selectedIds.length, "rows")
                     }
-                    className="px-2.5 py-1 rounded-lg text-[12px] font-semibold bg-white/20 hover:bg-white/30 text-white transition-colors cursor-pointer"
+                    className="px-2.5 py-1 rounded-lg text-[12px] font-semibold bg-current/20 hover:bg-current/30 transition-colors cursor-pointer"
                   >
                     Export CSV
                   </button>
                   <button
                     onClick={clearSelection}
-                    className="px-2.5 py-1 rounded-lg text-[12px] font-semibold bg-white/20 hover:bg-white/30 text-white transition-colors cursor-pointer"
+                    className="px-2.5 py-1 rounded-lg text-[12px] font-semibold bg-current/20 hover:bg-current/30 transition-colors cursor-pointer"
                   >
                     Clear
                   </button>
@@ -287,7 +287,7 @@ export default function AdvancedTableDemo({
                 <div className="flex items-center gap-1">
                   <button
                     onClick={() => handleOpenEditModal(selectedIds)}
-                    className="flex items-center gap-1 px-2 py-1 rounded-md text-[11px] sm:text-[12px] font-semibold bg-white/20 hover:bg-white text-white hover:text-black transition-all whitespace-nowrap active:scale-95 cursor-pointer"
+                    className="flex items-center gap-1 px-2 py-1 rounded-md text-[11px] sm:text-[12px] font-semibold bg-current/20 hover:bg-current/30 transition-all whitespace-nowrap active:scale-95 cursor-pointer"
                   >
                     <Edit2 className="w-3 h-3" />
                     <span className="hidden sm:inline">Edit</span>
@@ -297,7 +297,7 @@ export default function AdvancedTableDemo({
                       handleBatchDelete(selectedIds);
                       clearSelection();
                     }}
-                    className="flex items-center gap-1 px-2 py-1 rounded-md text-[11px] sm:text-[12px] font-semibold bg-black/20 hover:bg-black/30 text-white transition-colors whitespace-nowrap active:scale-95 cursor-pointer"
+                    className="flex items-center gap-1 px-2 py-1 rounded-md text-[11px] sm:text-[12px] font-semibold bg-black/20 hover:bg-black/30 transition-colors whitespace-nowrap active:scale-95 cursor-pointer"
                   >
                     <Trash2 className="w-3 h-3" />
                     <span className="hidden sm:inline">Delete</span>
@@ -323,47 +323,45 @@ export default function AdvancedTableDemo({
       >
         <div
           className={cn(
-            "bg-white dark:bg-zinc-900 rounded-[18px] p-7 w-[420px] max-w-[90vw] shadow-[0_20px_60px_rgba(0,0,0,0.2)] transition-transform duration-200",
+            "bg-card text-card-foreground rounded-[18px] p-7 w-[420px] max-w-[90vw] shadow-[0_20px_60px_rgba(0,0,0,0.2)] transition-transform duration-200",
             isEditModalOpen ? "translate-y-0 scale-100" : "translate-y-3 scale-95",
           )}
         >
           <div className="flex items-start justify-between mb-5">
             <div>
-              <div className="text-base font-semibold text-[#111827] dark:text-white">
+              <div className="text-base font-semibold text-foreground">
                 Edit Selected Users
               </div>
-              <div className="text-xs text-[#9ca3af] mt-0.5">{subtitleText}</div>
+              <div className="text-xs text-muted-foreground mt-0.5">{subtitleText}</div>
             </div>
             <button
               onClick={() => setIsEditModalOpen(false)}
-              className="w-7 h-7 rounded-lg bg-[#f3f4f6] dark:bg-zinc-800 text-[#6b7280] dark:text-zinc-400 hover:bg-[#e5e7eb] dark:hover:bg-zinc-700 flex items-center justify-center transition-colors"
+              className="w-7 h-7 rounded-lg bg-muted text-muted-foreground hover:bg-foreground/10 flex items-center justify-center transition-colors"
             >
               <X className="w-4 h-4" />
             </button>
           </div>
 
           <div className="mb-3.5">
-            <label className="block text-[12px] font-semibold text-[#374151] dark:text-zinc-300 mb-[5px] uppercase tracking-[0.04em]">
+            <label className="block text-[12px] font-semibold text-foreground/80 mb-[5px] uppercase tracking-[0.04em]">
               Role
             </label>
             <SelectBlock
               options={ROLE_OPTIONS}
               value={editRole}
               onChange={setEditRole}
-              color="indigo"
               inputSize="sm"
             />
           </div>
 
           <div className="mb-3.5">
-            <label className="block text-[12px] font-semibold text-[#374151] dark:text-zinc-300 mb-[5px] uppercase tracking-[0.04em]">
+            <label className="block text-[12px] font-semibold text-foreground/80 mb-[5px] uppercase tracking-[0.04em]">
               Status
             </label>
             <SelectBlock
               options={STATUS_OPTIONS}
               value={editStatus}
               onChange={setEditStatus}
-              color="indigo"
               inputSize="sm"
             />
           </div>
@@ -371,13 +369,13 @@ export default function AdvancedTableDemo({
           <div className="flex gap-2.5 mt-[22px]">
             <button
               onClick={() => setIsEditModalOpen(false)}
-              className="flex-1 p-[10px] rounded-[10px] text-[13px] font-semibold bg-[#f3f4f6] dark:bg-zinc-800 text-[#374151] dark:text-zinc-300 hover:bg-[#e5e7eb] dark:hover:bg-zinc-700 transition-colors active:scale-95"
+              className="flex-1 p-[10px] rounded-[10px] text-[13px] font-semibold bg-muted text-foreground hover:bg-foreground/10 transition-colors active:scale-95"
             >
               Cancel
             </button>
             <button
               onClick={applyEdits}
-              className="flex-1 p-[10px] rounded-[10px] text-[13px] font-semibold bg-indigo-600 text-white hover:bg-indigo-700 transition-colors active:scale-95"
+              className="flex-1 p-[10px] rounded-[10px] text-[13px] font-semibold bg-primary text-primary-foreground hover:bg-primary/90 transition-colors active:scale-95"
             >
               Apply Changes
             </button>

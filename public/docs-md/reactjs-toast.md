@@ -2,7 +2,7 @@
 
 A robust, highly-animated notification system. Popups and alerts are essential for user feedback, but most libraries are heavy, difficult to style, or lack smooth animations.
 
-This headless-style Toast component handles its own global state via Context, uses **GSAP** for elastic entrance/exit animations, automatically handles stacking, and integrates flawlessly with your dynamic theme engine.
+This headless-style Toast component handles its own global state via Context, uses the browser's built-in Web Animations API for elastic entrance/exit animations (no animation library), automatically handles stacking, and integrates flawlessly with your dynamic theme engine.
 
 Click the trigger buttons in each preview to fire a toast. Toasts auto-dismiss after 5 seconds — hover to pause the timer, or click the `X` to dismiss it manually. Turn on `stack` to pile them up like a notification centre instead of listing them.
 
@@ -16,7 +16,7 @@ export const usageDefault = `function Triggers() {
             description: "We'll let you know as soon as they reply.",
           })
         }
-        className="px-6 py-2.5 bg-zinc-900 dark:bg-white text-white dark:text-zinc-900 text-sm font-semibold rounded-xl transition-colors shadow-sm"
+        className="px-6 py-2.5 bg-primary text-primary-foreground text-sm font-semibold rounded-xl transition-colors shadow-sm hover:opacity-90 cursor-pointer"
       >
         Show toast
 
@@ -33,17 +33,17 @@ export default function SendMessage() {
 }`;
 
 export const usageTypes = `const TRIGGER =
-  "px-6 py-2.5 text-white text-sm font-semibold rounded-xl transition-colors shadow-sm";
+  "px-6 py-2.5 text-sm font-semibold rounded-xl transition-colors shadow-sm";
 
 function Triggers() {
   const { toast } = useToast();
 
   const types = [
-    { type: "success", label: "Success", title: "Action completed", description: "Your file has been uploaded successfully.", className: "bg-emerald-600 hover:bg-emerald-700" },
-    { type: "error", label: "Error", title: "Connection failed", description: "Could not connect to the database.", className: "bg-red-600 hover:bg-red-700" },
-    { type: "warning", label: "Warning", title: "Storage almost full", description: "You've used 92% of your quota.", className: "bg-amber-500 hover:bg-amber-600" },
-    { type: "info", label: "Update available", title: "Update available", description: "A new version is ready to install.", className: "bg-blue-600 hover:bg-blue-700" },
-    { type: "default", label: "Default", title: "Message sent", description: undefined, className: "bg-zinc-700 hover:bg-zinc-800" },
+    { type: "success", label: "Success", title: "Action completed", description: "Your file has been uploaded successfully.", className: "text-white bg-emerald-600 hover:bg-emerald-700" },
+    { type: "error", label: "Error", title: "Connection failed", description: "Could not connect to the database.", className: "text-white bg-red-600 hover:bg-red-700" },
+    { type: "warning", label: "Warning", title: "Storage almost full", description: "You've used 92% of your quota.", className: "text-white bg-amber-500 hover:bg-amber-600" },
+    { type: "info", label: "Update available", title: "Update available", description: "A new version is ready to install.", className: "text-white bg-blue-600 hover:bg-blue-700" },
+    { type: "default", label: "Default", title: "Message sent", description: undefined, className: "bg-primary text-primary-foreground hover:bg-primary/90" },
   ] as const;
 
   return (
@@ -102,7 +102,7 @@ export default function ToastWithAction() {
 }`;
 
 export const usageDuration = `const TRIGGER =
-  "px-6 py-2.5 text-white text-sm font-semibold rounded-xl transition-colors shadow-sm";
+  "px-6 py-2.5 text-sm font-semibold rounded-xl transition-colors shadow-sm";
 
 function Triggers() {
   const { toast } = useToast();
@@ -127,7 +127,7 @@ function Triggers() {
             duration: 1500,
           })
         }
-        className={\`\${TRIGGER} bg-emerald-600 hover:bg-emerald-700\`}
+        className={\`\${TRIGGER} text-white bg-emerald-600 hover:bg-emerald-700\`}
       >
         Quick toast
 
@@ -144,17 +144,17 @@ export default function ToastDuration() {
 }`;
 
 export const usageGlow = `const TRIGGER =
-  "px-6 py-2.5 text-white text-sm font-semibold rounded-xl transition-colors shadow-sm";
+  "px-6 py-2.5 text-sm font-semibold rounded-xl transition-colors shadow-sm";
 
 function Triggers() {
   const { toast } = useToast();
 
   const types = [
-    { type: "success", label: "Success", title: "Action completed", description: "Your file has been uploaded successfully.", className: "bg-emerald-600 hover:bg-emerald-700" },
-    { type: "error", label: "Error", title: "Connection failed", description: "Could not connect to the database.", className: "bg-red-600 hover:bg-red-700" },
-    { type: "warning", label: "Warning", title: "Storage almost full", description: "You've used 92% of your quota.", className: "bg-amber-500 hover:bg-amber-600" },
-    { type: "info", label: "Update available", title: "Update available", description: "A new version is ready to install.", className: "bg-blue-600 hover:bg-blue-700" },
-    { type: "default", label: "Default", title: "Message sent", description: undefined, className: "bg-zinc-700 hover:bg-zinc-800" },
+    { type: "success", label: "Success", title: "Action completed", description: "Your file has been uploaded successfully.", className: "text-white bg-emerald-600 hover:bg-emerald-700" },
+    { type: "error", label: "Error", title: "Connection failed", description: "Could not connect to the database.", className: "text-white bg-red-600 hover:bg-red-700" },
+    { type: "warning", label: "Warning", title: "Storage almost full", description: "You've used 92% of your quota.", className: "text-white bg-amber-500 hover:bg-amber-600" },
+    { type: "info", label: "Update available", title: "Update available", description: "A new version is ready to install.", className: "text-white bg-blue-600 hover:bg-blue-700" },
+    { type: "default", label: "Default", title: "Message sent", description: undefined, className: "bg-primary text-primary-foreground hover:bg-primary/90" },
   ] as const;
 
   return (
@@ -183,17 +183,17 @@ export default function GlowToasts() {
 }`;
 
 export const usageGlass = `const TRIGGER =
-  "px-6 py-2.5 text-white text-sm font-semibold rounded-xl transition-colors shadow-sm";
+  "px-6 py-2.5 text-sm font-semibold rounded-xl transition-colors shadow-sm";
 
 function Triggers() {
   const { toast } = useToast();
 
   const types = [
-    { type: "success", label: "Success", title: "Changes saved", description: "Your profile has been updated.", className: "bg-emerald-600 hover:bg-emerald-700" },
-    { type: "error", label: "Error", title: "Connection failed", description: "Could not connect to the database.", className: "bg-red-600 hover:bg-red-700" },
-    { type: "warning", label: "Warning", title: "Storage almost full", description: "You've used 92% of your quota.", className: "bg-amber-500 hover:bg-amber-600" },
-    { type: "info", label: "Info", title: "Update available", description: "A new version is ready to install.", className: "bg-blue-600 hover:bg-blue-700" },
-    { type: "default", label: "Default", title: "Message sent", description: undefined, className: "bg-zinc-700 hover:bg-zinc-800" },
+    { type: "success", label: "Success", title: "Changes saved", description: "Your profile has been updated.", className: "text-white bg-emerald-600 hover:bg-emerald-700" },
+    { type: "error", label: "Error", title: "Connection failed", description: "Could not connect to the database.", className: "text-white bg-red-600 hover:bg-red-700" },
+    { type: "warning", label: "Warning", title: "Storage almost full", description: "You've used 92% of your quota.", className: "text-white bg-amber-500 hover:bg-amber-600" },
+    { type: "info", label: "Info", title: "Update available", description: "A new version is ready to install.", className: "text-white bg-blue-600 hover:bg-blue-700" },
+    { type: "default", label: "Default", title: "Message sent", description: undefined, className: "bg-primary text-primary-foreground hover:bg-primary/90" },
   ] as const;
 
   return (
@@ -222,16 +222,16 @@ export default function GlassToasts() {
 }`;
 
 export const usageStack = `const TRIGGER =
-  "px-6 py-2.5 text-white text-sm font-semibold rounded-xl transition-colors shadow-sm";
+  "px-6 py-2.5 text-sm font-semibold rounded-xl transition-colors shadow-sm";
 
 function Triggers() {
   const { toast } = useToast();
 
   const types = [
-    { type: "success", label: "Success", title: "Changes saved", description: "Your profile has been updated.", className: "bg-emerald-600 hover:bg-emerald-700" },
-    { type: "warning", label: "Warning", title: "Storage almost full", description: "You've used 92% of your quota.", className: "bg-amber-500 hover:bg-amber-600" },
-    { type: "error", label: "Error", title: "Connection failed", description: "Could not connect to the database.", className: "bg-red-600 hover:bg-red-700" },
-    { type: "info", label: "Info", title: "Update available", description: "A new version is ready to install.", className: "bg-blue-600 hover:bg-blue-700" },
+    { type: "success", label: "Success", title: "Changes saved", description: "Your profile has been updated.", className: "text-white bg-emerald-600 hover:bg-emerald-700" },
+    { type: "warning", label: "Warning", title: "Storage almost full", description: "You've used 92% of your quota.", className: "text-white bg-amber-500 hover:bg-amber-600" },
+    { type: "error", label: "Error", title: "Connection failed", description: "Could not connect to the database.", className: "text-white bg-red-600 hover:bg-red-700" },
+    { type: "info", label: "Info", title: "Update available", description: "A new version is ready to install.", className: "text-white bg-blue-600 hover:bg-blue-700" },
   ] as const;
 
   return (
@@ -260,17 +260,17 @@ export default function StackedToasts() {
 }`;
 
 export const usageMinimal = `const TRIGGER =
-  "px-6 py-2.5 text-white text-sm font-semibold rounded-xl transition-colors shadow-sm";
+  "px-6 py-2.5 text-sm font-semibold rounded-xl transition-colors shadow-sm";
 
 function Triggers() {
   const { toast } = useToast();
 
   const types = [
-    { type: "success", label: "Success", title: "Action completed", description: "Your file has been uploaded successfully.", className: "bg-emerald-600 hover:bg-emerald-700" },
-    { type: "error", label: "Error", title: "Connection failed", description: "Could not connect to the database.", className: "bg-red-600 hover:bg-red-700" },
-    { type: "warning", label: "Warning", title: "Storage almost full", description: "You've used 92% of your quota.", className: "bg-amber-500 hover:bg-amber-600" },
-    { type: "info", label: "Update available", title: "Update available", description: "A new version is ready to install.", className: "bg-blue-600 hover:bg-blue-700" },
-    { type: "default", label: "Default", title: "Message sent", description: undefined, className: "bg-zinc-700 hover:bg-zinc-800" },
+    { type: "success", label: "Success", title: "Action completed", description: "Your file has been uploaded successfully.", className: "text-white bg-emerald-600 hover:bg-emerald-700" },
+    { type: "error", label: "Error", title: "Connection failed", description: "Could not connect to the database.", className: "text-white bg-red-600 hover:bg-red-700" },
+    { type: "warning", label: "Warning", title: "Storage almost full", description: "You've used 92% of your quota.", className: "text-white bg-amber-500 hover:bg-amber-600" },
+    { type: "info", label: "Update available", title: "Update available", description: "A new version is ready to install.", className: "text-white bg-blue-600 hover:bg-blue-700" },
+    { type: "default", label: "Default", title: "Message sent", description: undefined, className: "bg-primary text-primary-foreground hover:bg-primary/90" },
   ] as const;
 
   return (

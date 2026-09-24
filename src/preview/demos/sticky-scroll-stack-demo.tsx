@@ -89,7 +89,7 @@ export default function StickyScrollStackDemo({
   ];
 
   return (
-    <div className="w-full relative overflow-hidden rounded-2xl border border-zinc-200 dark:border-zinc-800 bg-zinc-50/50 dark:bg-zinc-900/50">
+    <div className="w-full relative overflow-hidden rounded-2xl border border-border bg-muted/50">
 
       <div className="relative z-10 max-h-[750px] overflow-y-auto scrollbar-thin scrollbar-thumb-zinc-300 dark:scrollbar-thumb-zinc-700">
         <StickyScrollStack

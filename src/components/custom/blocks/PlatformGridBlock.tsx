@@ -1,7 +1,6 @@
 "use client";
 
 import React, { useEffect, useRef, useState } from "react";
-import gsap from "gsap";
 import { cn } from "@/lib/utils";
 import { TiltedCard } from "./TiltedCardBlock";
 
@@ -33,15 +32,15 @@ function Tile({ icon, label, href, linkComponent, className, ...props }: Platfor
       data-tile=""
       {...(href ? { href } : {})}
       className={cn(
-        "group relative flex aspect-square flex-col items-center justify-center gap-2.5 border-b border-r border-black/[0.06] px-2 text-center outline-none transition-colors duration-300 hover:bg-black/[0.025] focus-visible:bg-black/[0.03] dark:border-white/10 dark:hover:bg-white/[0.04]",
+        "group relative flex aspect-square flex-col items-center justify-center gap-2.5 border-b border-r border-foreground/[0.08] px-2 text-center outline-none transition-colors duration-300 hover:bg-foreground/[0.03] focus-visible:bg-foreground/[0.03]",
         className,
       )}
       {...props}
     >
-      <span className="grid h-6 w-6 place-items-center text-black/40 transition-all duration-300 ease-out [&>svg]:h-[18px] [&>svg]:w-[18px] group-hover:-translate-y-0.5 group-hover:scale-110 group-hover:text-primary group-focus-visible:text-primary dark:text-white/40">
+      <span className="grid h-6 w-6 place-items-center text-foreground/40 transition-all duration-300 ease-out [&>svg]:h-[18px] [&>svg]:w-[18px] group-hover:-translate-y-0.5 group-hover:scale-110 group-hover:text-primary group-focus-visible:text-primary">
         {icon}
       </span>
-      <span className="text-[11px] font-medium leading-tight text-black/50 transition-colors duration-300 group-hover:text-[#141414] dark:text-white/50 dark:group-hover:text-white">
+      <span className="text-[11px] font-medium leading-tight text-foreground/50 transition-colors duration-300 group-hover:text-foreground">
         {label}
       </span>
     </Comp>
@@ -67,7 +66,7 @@ function Feature({ icon, label, href, linkComponent, className, children, ...pro
       data-tile=""
       {...(href ? { href } : {})}
       className={cn(
-        "group relative col-span-2 row-span-2 flex aspect-square flex-col items-center justify-between border-b border-r border-black/[0.06] bg-gradient-to-b from-[#fbf8f3] to-white px-2 pb-4 pt-6 outline-none transition-colors duration-300 dark:border-white/10 dark:from-zinc-900 dark:to-[#0b0b0c]",
+        "group relative col-span-2 row-span-2 flex aspect-square flex-col items-center justify-between border-b border-r border-foreground/[0.08] bg-gradient-to-b from-muted to-background px-2 pb-4 pt-6 outline-none transition-colors duration-300",
         className,
       )}
       {...props}
@@ -80,7 +79,7 @@ function Feature({ icon, label, href, linkComponent, className, children, ...pro
           </TiltedCard>
         </div>
       </div>
-      <span className="flex items-center gap-2.5 text-[15px] font-semibold tracking-tight text-[#141414] dark:text-white">
+      <span className="flex items-center gap-2.5 text-[15px] font-semibold tracking-tight text-foreground">
         <span className="grid h-6 w-fit place-items-center [&>svg]:h-5 [&>svg]:w-5">{icon}</span>
         {label}
       </span>
@@ -95,7 +94,7 @@ function Mock({ className, children, ...props }: React.HTMLAttributes<HTMLDivEle
   return (
     <div
       className={cn(
-        "space-y-1.5 rounded-xl border border-black/[0.06] bg-white p-3 text-left text-[#141414] dark:border-white/10 dark:bg-zinc-800 dark:text-white",
+        "space-y-1.5 rounded-xl border border-foreground/[0.08] bg-card p-3 text-left text-card-foreground",
         className,
       )}
       {...props}
@@ -115,9 +114,9 @@ function Pill({
     <span
       className={cn(
         "inline-flex shrink-0 items-center rounded-full px-1.5 py-[3px] text-[7.5px] font-semibold leading-none",
-        tone === "ink" && "bg-[#141414] text-white dark:bg-white dark:text-[#141414]",
+        tone === "ink" && "bg-foreground text-background",
         tone === "accent" && "bg-primary text-primary-foreground",
-        tone === "soft" && "bg-black/[0.06] font-medium text-black/60 dark:bg-white/10 dark:text-white/60",
+        tone === "soft" && "bg-foreground/[0.08] font-medium text-foreground/60",
         className,
       )}
       {...props}
@@ -125,6 +124,42 @@ function Pill({
       {children}
     </span>
   );
+}
+
+// ------------------------------------------
+// The reveal: each tile rises in after its own delay (`--tile-at`), with
+// GSAP's power3.out as a CSS easing.
+// ------------------------------------------
+const EASE_OUT =
+  "linear(0, .1945, .3591, .4971, .6115, .7052, .7808, .8409, .8877, .9233, .9497, .9686, .9816, .9901, .9952, .998, .9994, .9999, 1, 1)";
+
+const REVEAL_CSS = `
+@keyframes platform-tile-in { from { opacity: 0; transform: translateY(10px) scale(0.9); } }
+[data-tile-reveal] [data-tile] { animation: platform-tile-in 0.7s ${EASE_OUT} var(--tile-at, 0s) backwards; }
+`;
+
+/**
+ * Delays for a wave from the centre of a grid, `each` seconds apart: GSAP's
+ * `stagger: { each, grid: "auto", from: "center" }`, step for step. The
+ * column count is read from where the tiles sit — the first tile that is not
+ * further right than the one before it starts the second row.
+ */
+function centreWave(tiles: HTMLElement[], each: number) {
+  const l = tiles.length;
+  if (!l) return [];
+  let w = 0;
+  let max = -Infinity;
+  while (max < (max = tiles[w++].getBoundingClientRect().left) && w < l) {
+    // walk along the first row
+  }
+  if (w < l) w--;
+  const originX = Math.min(w, l) * 0.5 - 0.5;
+  const originY = (l * 0.5) / w - 0.5;
+  const d = tiles.map((_, j) => Math.hypot((j % w) - originX, originY - Math.floor(j / w)));
+  const min = Math.min(...d);
+  const range = Math.max(...d) - min;
+  const total = each * (w > l ? l - 1 : Math.max(w, l / w));
+  return d.map((dist) => Math.round((((dist - min) / range || 0) * total) * 1e7) / 1e7);
 }
 
 // ------------------------------------------
@@ -158,6 +193,7 @@ function PlatformGridRoot({
   const sectionRef = useRef<HTMLElement>(null);
   const gridRef = useRef<HTMLDivElement>(null);
   const [inView, setInView] = useState(reveal === "immediate");
+  const [playing, setPlaying] = useState(false);
 
   useEffect(() => {
     if (inView) return;
@@ -188,25 +224,10 @@ function PlatformGridRoot({
     const reduced =
       typeof window !== "undefined" && window.matchMedia?.("(prefers-reduced-motion: reduce)").matches;
     if (reduced) return;
-    const tiles = grid.querySelectorAll("[data-tile]");
-    // fromTo, not from: an effect that re-runs (StrictMode) must not read the
-    // half-hidden tiles as the end state.
-    const tween = gsap.fromTo(
-      tiles,
-      { opacity: 0, scale: 0.9, y: 10 },
-      {
-        opacity: 1,
-        scale: 1,
-        y: 0,
-        duration: 0.7,
-        ease: "power3.out",
-        stagger: { each: 0.08, grid: "auto", from: "center" },
-        clearProps: "transform",
-      },
-    );
-    return () => {
-      tween.kill();
-    };
+    const tiles = Array.from(grid.querySelectorAll<HTMLElement>("[data-tile]"));
+    const delays = centreWave(tiles, 0.08);
+    tiles.forEach((tile, i) => tile.style.setProperty("--tile-at", `${delays[i]}s`));
+    setPlaying(true);
   }, [inView]);
 
   // The spotlight is driven by CSS variables written straight to the grid, so
@@ -225,20 +246,20 @@ function PlatformGridRoot({
   return (
     <section
       ref={sectionRef}
-      className={cn("w-full bg-white text-[#141414] dark:bg-[#0b0b0c] dark:text-white", className)}
+      className={cn("w-full bg-background text-foreground", className)}
       style={accent ? ({ ...style, "--primary": accent } as React.CSSProperties) : style}
       {...props}
     >
       {(eyebrow || heading || intro) && (
         <header className="mx-auto max-w-2xl px-6 pb-10 pt-14 text-center sm:pb-12 sm:pt-16">
           {eyebrow && (
-            <p className="text-[13px] font-medium uppercase tracking-[0.12em] text-black/55 dark:text-white/55">{eyebrow}</p>
+            <p className="text-[13px] font-medium uppercase tracking-[0.12em] text-foreground/55">{eyebrow}</p>
           )}
           <h2 className="mt-3 font-sans text-[2rem] font-medium leading-[1.1] tracking-[-0.03em] sm:text-[2.5rem]">
             {heading}
           </h2>
           {intro && (
-            <p className="mx-auto mt-4 max-w-[30rem] text-[15px] leading-[1.7] text-black/60 dark:text-white/60">{intro}</p>
+            <p className="mx-auto mt-4 max-w-[30rem] text-[15px] leading-[1.7] text-foreground/60">{intro}</p>
           )}
         </header>
       )}
@@ -250,11 +271,13 @@ function PlatformGridRoot({
             "lg:[mask-image:linear-gradient(to_right,transparent,black_12%,black_88%,transparent)] lg:[-webkit-mask-image:linear-gradient(to_right,transparent,black_12%,black_88%,transparent)]",
         )}
       >
+        <style>{REVEAL_CSS}</style>
         <div
           ref={gridRef}
+          data-tile-reveal={playing ? "" : undefined}
           onMouseMove={onMove}
           onMouseLeave={onLeave}
-          className="relative grid grid-cols-2 border-l border-t border-black/[0.06] [grid-auto-flow:dense] sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-8 xl:grid-cols-8 dark:border-white/10"
+          className="relative grid grid-cols-2 border-l border-t border-foreground/[0.08] [grid-auto-flow:dense] sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-8 xl:grid-cols-8"
         >
           {/* The spotlight: a soft disc of the accent under the pointer. */}
           <div

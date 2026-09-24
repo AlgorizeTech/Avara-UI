@@ -1,7 +1,6 @@
 "use client";
 
 import { cn } from "@/lib/utils";
-import gsap from "gsap";
 import React, {
   useEffect,
   useId,
@@ -60,6 +59,12 @@ const prefersReducedMotion = () =>
   typeof window !== "undefined" &&
   window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
+/** GSAP's power3.out, sampled into a CSS `linear()` curve. */
+const EASE_POWER3_OUT =
+  "linear(0, .0963, .1855, .2679, .3439, .4138, .478, .5367, .5904, .6392, .6836, .7237, .7599, .7924, .8215, .8474, .8704, .8907, .9085, .924, .9375, .9491, .959, .9674, .9744, .9802, .985, .9888, .9919, .9943, .9961, .9974, .9984, .9991, .9995, .9998, .9999, 1, 1, 1, 1)";
+/** GSAP's power1.out, exact. */
+const EASE_POWER1_OUT = "cubic-bezier(0.3333, 0.6667, 0.6667, 1)";
+
 /** Box of the active tab inside the rail, in the rail's own coordinates. */
 type Rect = { x: number; y: number; w: number; h: number };
 
@@ -97,9 +102,9 @@ export function VerticalTabs({
       default: {
         container: "gap-6",
         menuBox:
-          "bg-muted dark:bg-[#121212] rounded-2xl p-3 border border-border shadow-sm",
+          "bg-card rounded-2xl p-3 border border-border shadow-sm",
         contentBox:
-          "bg-muted dark:bg-[#121212] rounded-2xl p-8 md:p-10 border border-border shadow-sm",
+          "bg-card rounded-2xl p-8 md:p-10 border border-border shadow-sm",
         activeTab: cn(theme.bg, theme.shadow),
         inactiveTab: "hover:bg-muted text-muted-foreground",
         tabExtra: "",
@@ -109,11 +114,11 @@ export function VerticalTabs({
       glass: {
         container: "gap-6",
         menuBox:
-          "bg-white/70 dark:bg-zinc-900/60 backdrop-blur-xl rounded-2xl p-3 border border-white/40 dark:border-white/10 shadow-xl",
+          "bg-card/70 backdrop-blur-xl rounded-2xl p-3 border border-white/40 dark:border-white/10 shadow-xl",
         contentBox:
-          "bg-white/70 dark:bg-zinc-900/60 backdrop-blur-xl rounded-2xl p-6 md:p-10 border border-white/40 dark:border-white/10 shadow-xl",
+          "bg-card/70 backdrop-blur-xl rounded-2xl p-6 md:p-10 border border-white/40 dark:border-white/10 shadow-xl",
         activeTab: cn("backdrop-blur-md", theme.bg, theme.shadow),
-        inactiveTab: "hover:bg-white/40 dark:hover:bg-white/10 text-foreground",
+        inactiveTab: "hover:bg-foreground/[0.06] text-foreground",
         tabExtra: "",
         indicator: "",
         indicatorMode: null as null | "fill" | "bar",
@@ -130,11 +135,11 @@ export function VerticalTabs({
       },
       bordered: {
         container:
-          "gap-0 rounded-2xl border border-border overflow-hidden bg-white dark:bg-[#09090b] shadow-sm",
+          "gap-0 rounded-2xl border border-border overflow-hidden bg-card shadow-sm",
         // The divider follows the rail: it separates rail from pane, so it sits
         // on the bottom edge when the rail runs across the top.
         menuBox: cn(
-          "bg-muted dark:bg-[#121212] p-4 border-border rounded-none",
+          "bg-muted p-4 border-border rounded-none",
           isHorizontal ? "border-b" : "border-r",
         ),
         contentBox: "p-8 md:p-10 bg-transparent rounded-none border-none",
@@ -172,14 +177,14 @@ export function VerticalTabs({
       segmented: {
         container: "gap-6",
         menuBox:
-          "bg-muted dark:bg-[#151515] rounded-2xl p-1.5 border border-border gap-1",
+          "bg-muted rounded-2xl p-1.5 border border-border gap-1",
         contentBox: "bg-transparent rounded-2xl p-6 md:p-8 border border-border",
         activeTab: cn("bg-transparent", theme.text),
         inactiveTab:
           "bg-transparent text-muted-foreground hover:text-foreground",
         tabExtra: isHorizontal ? "grow" : "",
         indicator: cn(
-          "rounded-[10px] bg-white dark:bg-zinc-800 shadow-sm ring-1",
+          "rounded-[10px] bg-card shadow-sm ring-1",
           theme.ring,
         ),
         indicatorMode: "fill" as null | "fill" | "bar",
@@ -190,7 +195,7 @@ export function VerticalTabs({
         container: "gap-6",
         menuBox: "bg-transparent p-0 border-none gap-2",
         contentBox:
-          "bg-muted/40 dark:bg-white/[0.03] rounded-3xl p-6 md:p-10 border border-border/60",
+          "bg-muted/40 rounded-3xl p-6 md:p-10 border border-border/60",
         activeTab: cn("rounded-full", theme.soft),
         inactiveTab:
           "rounded-full text-muted-foreground hover:bg-muted hover:text-foreground",
@@ -206,14 +211,14 @@ export function VerticalTabs({
         container: "gap-6",
         menuBox: "bg-transparent p-0 border-none gap-2.5",
         contentBox:
-          "bg-white dark:bg-[#0d0d0d] rounded-2xl p-8 md:p-10 border border-border shadow-[0_18px_40px_-24px_rgba(0,0,0,0.45)]",
+          "bg-card rounded-2xl p-8 md:p-10 border border-border shadow-[0_18px_40px_-24px_rgba(0,0,0,0.45)]",
         activeTab: cn(
           "rounded-2xl border border-transparent",
           theme.bg,
           theme.shadow,
         ),
         inactiveTab: cn(
-          "rounded-2xl border border-border bg-white dark:bg-[#0d0d0d] text-muted-foreground shadow-sm hover:text-foreground",
+          "rounded-2xl border border-border bg-card text-muted-foreground shadow-sm hover:text-foreground",
           theme.hoverBorder,
         ),
         tabExtra: "",
@@ -267,19 +272,27 @@ export function VerticalTabs({
     return { left: r.x, top: r.y, width: r.w, height: r.h };
   };
 
-  const placed = useRef(false);
+  // The element last placed — a fresh indicator (the variant switched away
+  // and back) is placed, not animated, like the first one.
+  const placed = useRef<HTMLSpanElement | null>(null);
   useIsoLayoutEffect(() => {
     const el = indicatorRef.current;
     if (!el || !rect) return;
     const target = geometry(rect);
     // The first placement is not a movement, so it is not animated — nothing
     // in this block moves on load, only in answer to a click or a keypress.
-    if (!placed.current || prefersReducedMotion()) {
-      gsap.set(el, { ...target, opacity: 1 });
-      placed.current = true;
-      return;
-    }
-    gsap.to(el, { ...target, duration: 0.34, ease: "power3.out" });
+    const animate = placed.current === el && !prefersReducedMotion();
+    el.style.transition = animate
+      ? ["left", "top", "width", "height"]
+          .map((property) => `${property} 0.34s ${EASE_POWER3_OUT}`)
+          .join(", ")
+      : "none";
+    el.style.left = `${target.left}px`;
+    el.style.top = `${target.top}px`;
+    el.style.width = `${target.width}px`;
+    el.style.height = `${target.height}px`;
+    el.style.opacity = "1";
+    placed.current = el;
   }, [rect, isHorizontal, indicatorMode]);
 
   // ---- The panel transition ------------------------------------------------
@@ -287,6 +300,7 @@ export function VerticalTabs({
   // rather than decorating it.
   const prevIndex = useRef(activeIndex);
   const mounted = useRef(false);
+  const panelAnimation = useRef<Animation | null>(null);
   useEffect(() => {
     const el = contentRef.current;
     const direction = Math.sign(activeIndex - prevIndex.current) || 1;
@@ -296,17 +310,23 @@ export function VerticalTabs({
       mounted.current = true;
       return;
     }
+    panelAnimation.current?.cancel();
     if (prefersReducedMotion()) {
-      gsap.fromTo(el, { opacity: 0 }, { opacity: 1, duration: 0.2 });
+      panelAnimation.current = el.animate([{ opacity: 0 }, { opacity: 1 }], {
+        duration: 200,
+        easing: EASE_POWER1_OUT,
+      });
       return;
     }
     const from = isHorizontal
       ? { x: direction * 18, y: 0 }
       : { x: 0, y: direction * 14 };
-    gsap.fromTo(
-      el,
-      { opacity: 0, ...from },
-      { opacity: 1, x: 0, y: 0, duration: 0.34, ease: "power3.out" },
+    panelAnimation.current = el.animate(
+      [
+        { opacity: 0, transform: `translate(${from.x}px, ${from.y}px)` },
+        { opacity: 1, transform: "translate(0px, 0px)" },
+      ],
+      { duration: 340, easing: EASE_POWER3_OUT },
     );
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [activeId]);

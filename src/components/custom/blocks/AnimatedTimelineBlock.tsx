@@ -123,7 +123,7 @@ function AnimatedTimelineNode({
       {/* Node Dot / Icon Container */}
       <div
         className={cn(
-          "absolute z-10 flex items-center justify-center rounded-full border-2 bg-white dark:bg-[#09090b] transition-all duration-500 delay-200",
+          "absolute z-10 flex items-center justify-center rounded-full border-2 bg-background transition-all duration-500 delay-200",
           "w-10 h-10 left-0 sm:left-auto",
           layout === "left" && "sm:left-0",
           layout === "right" && "sm:right-0",
@@ -137,7 +137,7 @@ function AnimatedTimelineNode({
           <Icon
             className={cn(
               "w-4 h-4 transition-colors duration-500 delay-300",
-              isVisible ? theme.text : "text-zinc-400 dark:text-zinc-600",
+              isVisible ? theme.text : "text-muted-foreground",
             )}
           />
         ) : (
@@ -165,7 +165,7 @@ function AnimatedTimelineNode({
       >
         <div
           className={cn(
-            "flex flex-col gap-2 p-5 rounded-2xl bg-white dark:bg-[#09090b] border border-border shadow-sm hover:border-border",
+            "flex flex-col gap-2 p-5 rounded-2xl bg-card text-card-foreground border border-border shadow-sm",
             getAnimationClasses(),
           )}
           style={{ transitionDelay: "100ms" }}

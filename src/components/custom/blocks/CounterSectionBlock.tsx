@@ -7,14 +7,34 @@ import {
   ShieldCheck,
   Sparkles,
   Zap,
-  ArrowUpRight,
   RotateCcw,
-  Activity,
   Star,
   Globe,
 } from "lucide-react";
-import { useInView } from "framer-motion";
 import { cn } from "@/lib/utils";
+
+/**
+ * True while the element is on screen, false again once it has fully left.
+ * It flips on when a quarter of it has scrolled in — or when it is already
+ * partly showing as the page loads — and off only when none of it shows.
+ */
+function useInView(ref: React.RefObject<Element | null>, amount: number) {
+  const [inView, setInView] = useState(false);
+  useEffect(() => {
+    const el = ref.current;
+    if (!el || typeof IntersectionObserver === "undefined") return;
+    const io = new IntersectionObserver(
+      (entries) => {
+        const entry = entries[entries.length - 1];
+        if (entry) setInView(entry.isIntersecting);
+      },
+      { threshold: amount },
+    );
+    io.observe(el);
+    return () => io.disconnect();
+  }, [ref, amount]);
+  return inView;
+}
 
 // ==========================================
 // TYPES & DATA STRUCTURES
@@ -203,6 +223,7 @@ export function AnimatedNumber({
     }
 
     const startTime = performance.now();
+    let animId = 0;
 
     const animate = (currentTime: number) => {
       const elapsed = currentTime - startTime;
@@ -215,13 +236,15 @@ export function AnimatedNumber({
       setCurrent(val);
 
       if (progress < 1) {
-        requestAnimationFrame(animate);
+        animId = requestAnimationFrame(animate);
       } else {
         setCurrent(value);
       }
     };
 
-    const animId = requestAnimationFrame(animate);
+    // The latest frame is the one to cancel, so a re-trigger mid-count stops
+    // the old loop instead of leaving two fighting over the number.
+    animId = requestAnimationFrame(animate);
     return () => cancelAnimationFrame(animId);
   }, [value, duration, trigger]);
 
@@ -261,7 +284,7 @@ function ScrambleCounter({
       setDisplay(
         finalStr
           .split("")
-          .map((char, index) => {
+          .map((_, index) => {
             if (index < (iteration / totalIterations) * finalStr.length) {
               return finalStr[index];
             }
@@ -315,7 +338,7 @@ function MinimalSlashSection({
             {/* Top row: Slash Index + Badge */}
             <div className="flex items-center justify-between gap-2 mb-4">
               <span className="inline-flex items-center gap-1 font-mono text-xs font-bold text-muted-foreground/70 group-hover:text-primary transition-colors">
-                <span className="text-primary font-black">//</span> 0{idx + 1}
+                <span className="text-primary font-black">{"//"}</span> 0{idx + 1}
               </span>
               {stat.tag && (
                 <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-[10px] font-mono font-medium tracking-tight bg-primary/10 text-primary border border-primary/20 group-hover:border-primary/40 transition-colors">
@@ -734,7 +757,7 @@ export function CounterSection({
   ...props
 }: CounterSectionProps) {
   const containerRef = useRef<HTMLDivElement>(null);
-  const isInView = useInView(containerRef, { once: false, amount: 0.25 });
+  const isInView = useInView(containerRef, 0.25);
   const [triggerKey, setTriggerKey] = useState(0);
 
   const activeStats = stats || DEFAULT_STATS[variant];

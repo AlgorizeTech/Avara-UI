@@ -1,9 +1,15 @@
 "use client";
 
-import React, { forwardRef, useEffect, useState } from "react";
+import React, { forwardRef, useEffect, useRef, useState } from "react";
 import { cn } from "@/lib/utils";
 import { ArrowRight, Check, Copy, Sparkles, Terminal } from "lucide-react";
-import { motion, AnimatePresence } from "framer-motion";
+
+// The word flip, as keyframes: out upwards, in from below, 0.45s each.
+const FLIP_EASE = "cubic-bezier(0.16, 1, 0.3, 1)";
+const FLIP_CSS = `
+@keyframes homepage-hero-word-out { to { transform: translateY(-100%); opacity: 0; } }
+@keyframes homepage-hero-word-in { from { transform: translateY(100%); opacity: 0; } }
+`;
 
 const GitHubIcon = (props: React.SVGProps<SVGSVGElement>) => (
   <svg
@@ -83,6 +89,25 @@ export const HomepageHeroBlock = forwardRef<HTMLElement, HomepageHeroBlockProps>
 
     const currentWord = typingWords?.[currentWordIndex] || "";
 
+    // The word flip: the word on screen slides up and out, and only then does
+    // the next one slide up in. The first word is simply there.
+    const [shownWord, setShownWord] = useState(currentWord);
+    const [swapped, setSwapped] = useState(false);
+    const latestWord = useRef(currentWord);
+    latestWord.current = currentWord;
+    const leaving = shownWord !== currentWord;
+    const swapIn = () => {
+      setShownWord(latestWord.current);
+      setSwapped(true);
+    };
+
+    // In case the leaving word's animationend never arrives.
+    useEffect(() => {
+      if (!leaving) return;
+      const t = window.setTimeout(swapIn, 600);
+      return () => window.clearTimeout(t);
+    }, [leaving]);
+
     return (
       <section
         ref={ref}
@@ -92,6 +117,7 @@ export const HomepageHeroBlock = forwardRef<HTMLElement, HomepageHeroBlockProps>
         )}
         {...props}
       >
+        <style>{FLIP_CSS}</style>
         {/* Radial Background Glow */}
         <div
           className="absolute inset-0 pointer-events-none"
@@ -102,7 +128,7 @@ export const HomepageHeroBlock = forwardRef<HTMLElement, HomepageHeroBlockProps>
           }}
         />
         {/* Grid Mask Background */}
-        <div className="absolute inset-0 bg-[linear-gradient(to_right,rgba(0,0,0,0.03)_1px,transparent_1px),linear-gradient(to_bottom,rgba(0,0,0,0.03)_1px,transparent_1px)] dark:bg-[linear-gradient(to_right,rgba(255,255,255,0.025)_1px,transparent_1px),linear-gradient(to_bottom,rgba(255,255,255,0.025)_1px,transparent_1px)] bg-[size:24px_24px] sm:bg-[size:36px_36px] [mask-image:radial-gradient(ellipse_70%_60%_at_50%_40%,black_40%,transparent_100%)]" />
+        <div className="absolute inset-0 bg-[linear-gradient(to_right,color-mix(in_oklab,var(--foreground)_3%,transparent)_1px,transparent_1px),linear-gradient(to_bottom,color-mix(in_oklab,var(--foreground)_3%,transparent)_1px,transparent_1px)] bg-[size:24px_24px] sm:bg-[size:36px_36px] [mask-image:radial-gradient(ellipse_70%_60%_at_50%_40%,black_40%,transparent_100%)]" />
 
         <div className="relative z-10 max-w-[1320px] mx-auto w-full px-5 sm:px-6 md:px-8 flex flex-col justify-center items-center">
           <div className="flex flex-col items-center text-center max-w-[1320px] mx-auto space-y-3.5 sm:space-y-6 md:space-y-7 my-auto">
@@ -126,21 +152,22 @@ export const HomepageHeroBlock = forwardRef<HTMLElement, HomepageHeroBlockProps>
               </span>
 
               <span className="relative inline-flex items-center justify-start overflow-hidden py-1 h-[1.3em] shrink-0 min-w-[150px] xs:min-w-[170px] sm:min-w-[210px] md:min-w-[250px] lg:min-w-[300px]">
-                <AnimatePresence mode="wait" initial={false}>
-                  <motion.span
-                    key={currentWord}
-                    initial={{ y: "100%", opacity: 0 }}
-                    animate={{ y: "0%", opacity: 1 }}
-                    exit={{ y: "-100%", opacity: 0 }}
-                    transition={{
-                      duration: 0.45,
-                      ease: [0.16, 1, 0.3, 1],
-                    }}
-                    className="text-foreground font-medium inline-block whitespace-nowrap text-left"
-                  >
-                    {currentWord}
-                  </motion.span>
-                </AnimatePresence>
+                <span
+                  key={shownWord}
+                  onAnimationEnd={(e) => {
+                    if (leaving && e.target === e.currentTarget) swapIn();
+                  }}
+                  className="text-foreground font-medium inline-block whitespace-nowrap text-left"
+                  style={
+                    leaving
+                      ? { animation: `homepage-hero-word-out 0.45s ${FLIP_EASE} forwards` }
+                      : swapped
+                        ? { animation: `homepage-hero-word-in 0.45s ${FLIP_EASE} backwards` }
+                        : undefined
+                  }
+                >
+                  {shownWord}
+                </span>
               </span>
 
               {titleSuffix && <span className="shrink-0">{titleSuffix}</span>}
@@ -159,9 +186,9 @@ export const HomepageHeroBlock = forwardRef<HTMLElement, HomepageHeroBlockProps>
                 <button
                   type="button"
                   onClick={handleCopy}
-                  className="group flex items-center gap-2 sm:gap-3.5 px-2.5 sm:px-5 h-8 xs:h-9 sm:h-[58px] rounded-lg sm:rounded-2xl border border-zinc-200 dark:border-border bg-zinc-100/70 dark:bg-card cursor-pointer w-full max-w-[220px] xs:max-w-[250px] sm:max-w-md hover:border-zinc-300 dark:hover:border-primary/50 transition-all"
+                  className="group flex items-center gap-2 sm:gap-3.5 px-2.5 sm:px-5 h-8 xs:h-9 sm:h-[58px] rounded-lg sm:rounded-2xl border border-border bg-muted/70 cursor-pointer w-full max-w-[220px] xs:max-w-[250px] sm:max-w-md hover:border-primary/50 transition-all"
                 >
-                  <Terminal className="size-3 xs:size-3.5 sm:size-5 text-zinc-700 dark:text-primary shrink-0" />
+                  <Terminal className="size-3 xs:size-3.5 sm:size-5 text-primary shrink-0" />
                   <code className="text-[9px] xs:text-[10px] sm:text-sm md:text-base font-mono text-foreground flex-1 text-left font-semibold truncate !bg-transparent !border-none !outline-none !shadow-none !p-0">
                     {cliCommand}
                   </code>

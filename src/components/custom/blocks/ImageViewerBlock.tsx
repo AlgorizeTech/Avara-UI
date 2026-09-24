@@ -536,7 +536,7 @@ export function ImageViewer({
           role="dialog"
           aria-modal="true"
           onClick={() => setIsModalOpen(false)}
-          className="fixed inset-0 z-50 bg-background/60 dark:bg-black/60 backdrop-blur-md flex items-center justify-center p-4 sm:p-8 animate-in fade-in duration-200"
+          className="fixed inset-0 z-50 bg-background/60 backdrop-blur-md flex items-center justify-center p-4 sm:p-8 animate-in fade-in duration-200"
         >
           {/* Close Button */}
           <button

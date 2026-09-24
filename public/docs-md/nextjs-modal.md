@@ -188,7 +188,7 @@ export default function GlassModal() {
       {/* Same markup as the standard modal — only these two class props differ. */}
        setIsOpen(false)}
         overlayClassName="bg-black/50 backdrop-blur-md"
-        contentClassName="max-w-md bg-white/75 dark:bg-zinc-900/80 backdrop-blur-2xl backdrop-saturate-200 rounded-3xl shadow-[0_25px_60px_rgba(0,0,0,0.35)] border border-white/60 dark:border-white/20 text-foreground"
+        contentClassName="max-w-md bg-card/80 backdrop-blur-2xl backdrop-saturate-200 rounded-3xl shadow-[0_25px_60px_rgba(0,0,0,0.35)] border border-white/60 dark:border-white/20 text-foreground"
       >
 
                     System Update Available

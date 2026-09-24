@@ -208,7 +208,7 @@ export function WorkdayDial({
           key={l.text}
           aria-hidden
           className={cn(
-            "absolute text-[10px] font-medium tabular-nums text-black/45 dark:text-white/45",
+            "absolute text-[10px] font-medium tabular-nums text-foreground/45",
             l.className,
           )}
         >
@@ -224,7 +224,7 @@ export function WorkdayDial({
           r={R}
           fill="none"
           strokeWidth="6"
-          className="stroke-black/[0.07] dark:stroke-white/10"
+          className="stroke-foreground/[0.08]"
         />
         {/* Working window */}
         <circle
@@ -250,7 +250,7 @@ export function WorkdayDial({
               y2={50 + 49.5 * Math.sin(a)}
               strokeWidth="1.5"
               strokeLinecap="round"
-              className="stroke-black/25 dark:stroke-white/30"
+              className="stroke-foreground/25"
             />
           );
         })}
@@ -261,7 +261,7 @@ export function WorkdayDial({
               cx={marker.x}
               cy={marker.y}
               r="5"
-              className="fill-white dark:fill-[#0b0b0f]"
+              className="fill-background"
             />
             <circle
               cx={marker.x}
@@ -270,7 +270,7 @@ export function WorkdayDial({
               className={cn(
                 working
                   ? "fill-primary"
-                  : "fill-zinc-400 dark:fill-zinc-500",
+                  : "fill-muted-foreground",
               )}
             />
           </g>
@@ -282,7 +282,7 @@ export function WorkdayDial({
           <p className="text-3xl font-semibold tabular-nums tracking-tight">
             {time ? time.label : "--:--"}
           </p>
-          <p className="mt-0.5 text-sm text-black/60 dark:text-white/60">
+          <p className="mt-0.5 text-sm text-foreground/60">
             {place}
           </p>
           <p
@@ -290,7 +290,7 @@ export function WorkdayDial({
               "mt-2 text-xs font-medium",
               working
                 ? "text-primary"
-                : "text-black/50 dark:text-white/50",
+                : "text-foreground/50",
             )}
           >
             {working ? "Working now" : "Off hours"}
@@ -314,12 +314,12 @@ export function WorkdayDial({
                 }
               : { left: "50%", top: 0, width: TIP_WIDTH }
           }
-          className="pointer-events-none absolute z-10 -translate-x-1/2 -translate-y-full rounded-2xl border border-white/70 bg-white/85 p-3 text-left text-xs leading-relaxed shadow-[0_16px_40px_-16px_rgba(15,23,42,0.35)] backdrop-blur-xl dark:border-white/10 dark:bg-[#151518]/90 dark:shadow-[0_16px_40px_-16px_rgba(0,0,0,0.9)]"
+          className="pointer-events-none absolute z-10 -translate-x-1/2 -translate-y-full rounded-2xl border border-popover/70 bg-popover/85 p-3 text-left text-xs leading-relaxed text-popover-foreground shadow-[0_16px_40px_-16px_rgba(15,23,42,0.35)] backdrop-blur-xl dark:border-foreground/10 dark:bg-popover/90 dark:shadow-[0_16px_40px_-16px_rgba(0,0,0,0.9)]"
         >
           <p className="font-semibold">
             {time.label} in {place}
           </p>
-          <p className="mt-1 text-black/70 dark:text-white/70">
+          <p className="mt-1 text-popover-foreground/70">
             Works {clock(start)} to {clock(end)}
             {sameClock ? "" : `, ${viewerStart} to ${viewerEnd} your time`}
           </p>
@@ -328,13 +328,13 @@ export function WorkdayDial({
               "mt-1 font-medium",
               working
                 ? "text-primary"
-                : "text-black/60 dark:text-white/60",
+                : "text-popover-foreground/60",
             )}
           >
             {untilChange}
           </p>
           {note && (
-            <p className="mt-1 text-black/60 dark:text-white/60">{note}</p>
+            <p className="mt-1 text-popover-foreground/60">{note}</p>
           )}
         </div>
       )}

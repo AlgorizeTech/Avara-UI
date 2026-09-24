@@ -78,12 +78,11 @@ export default function ScrollAccordionDemo({
   defaultIndex?: number;
 }) {
   return (
-    <div className="w-full bg-zinc-50 dark:bg-[#0a0a0a] py-8 px-2 sm:px-8 relative rounded-3xl border border-zinc-200 dark:border-white/10 transition-colors duration-300">
+    <div className="w-full bg-background py-8 px-2 sm:px-8 relative rounded-3xl border border-border transition-colors duration-300">
       <ScrollAccordionShowcase
         items={showcaseItems}
         displayMode={displayMode}
         defaultIndex={defaultIndex}
-        defaultAccentColor="#FFAB1D"
         localStorageKey="primaryColor"
       />
     </div>

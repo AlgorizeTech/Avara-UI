@@ -8,9 +8,16 @@ import {
   ChevronRight,
   Clock,
 } from "lucide-react";
-import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
-import React, { forwardRef, useEffect, useRef, useState } from "react";
+import React, {
+  forwardRef,
+  useEffect,
+  useLayoutEffect,
+  useRef,
+  useState,
+  useSyncExternalStore,
+} from "react";
 import { getThemeStyles } from "./date-picker-theme";
+import { springLinear } from "./motion-curves";
 import {
   formatTime,
   roundToStep,
@@ -56,6 +63,108 @@ const DAY_NAMES = ["Su", "Mo", "Tu", "We", "Th", "Fr", "Sa"];
  */
 const POPOVER_PX = 288;
 const WIDE_POPOVER_PX = 480;
+
+/** The time rail beside the calendar: its w-44 column plus the ml-4 gutter. */
+const RAIL_PX = 192;
+
+// ==========================================
+// MOTION
+// Same curves as RangeDatePicker so both pickers unfold identically: panels
+// unfold on a spring (stiffness 240, damping 30, mass 0.9, drawn as a CSS
+// `linear()` curve) and fold away on a short ease. Reduced motion: instant.
+// ==========================================
+const UNFOLD = springLinear({ stiffness: 240, damping: 30, mass: 0.9 });
+const unfoldOn = (property: string) => `${property} ${UNFOLD.duration}ms ${UNFOLD.easing}`;
+const settleOn = (property: string) => `${property} 0.28s cubic-bezier(0.22, 1, 0.36, 1)`;
+const popOn = (property: string) => `${property} 0.2s cubic-bezier(0, 0, 0.58, 1)`;
+
+const REDUCED_MOTION = "(prefers-reduced-motion: reduce)";
+const subscribeReducedMotion = (onChange: () => void) => {
+  const mq = window.matchMedia(REDUCED_MOTION);
+  mq.addEventListener("change", onChange);
+  return () => mq.removeEventListener("change", onChange);
+};
+/** The visitor's reduced-motion setting; false while server-rendering. */
+function useReducedMotion() {
+  return useSyncExternalStore(
+    subscribeReducedMotion,
+    () => window.matchMedia(REDUCED_MOTION).matches,
+    () => false,
+  );
+}
+
+type FoldPhase = "closed" | "entering" | "open" | "closing";
+
+/**
+ * A panel that unfolds when `show` turns on and folds away before it leaves:
+ * open on the spring, closed on the ease, already open if shown from the
+ * start, and still showing what it last showed while it folds. `axis="x"`
+ * unfolds its width to `size`; `axis="y"` its height to whatever it holds.
+ */
+function Fold({
+  show,
+  axis,
+  size,
+  instant,
+  className,
+  children,
+}: {
+  show: boolean;
+  axis: "x" | "y";
+  size?: number | string;
+  instant: boolean;
+  className?: string;
+  children: React.ReactNode;
+}) {
+  const [phase, setPhase] = useState<FoldPhase>(show ? "open" : "closed");
+  const ref = useRef<HTMLDivElement>(null);
+  const shown = useRef(children);
+  if (show) shown.current = children;
+
+  useLayoutEffect(() => {
+    if (show && phase === "closed") setPhase(instant ? "open" : "entering");
+    else if (show && phase === "closing") setPhase("open");
+    else if (!show && (phase === "open" || phase === "entering")) setPhase(instant ? "closed" : "closing");
+  }, [show, phase, instant]);
+
+  // Entering: commit the folded look, then transition to the open one.
+  useLayoutEffect(() => {
+    if (phase !== "entering") return;
+    void ref.current?.offsetWidth;
+    setPhase("open");
+  }, [phase]);
+
+  // In case the fold never reports its end (a hidden tab, `display: none`).
+  useEffect(() => {
+    if (phase !== "closing") return;
+    const t = window.setTimeout(() => setPhase("closed"), 400);
+    return () => window.clearTimeout(t);
+  }, [phase]);
+
+  if (phase === "closed") return null;
+
+  const open = phase === "open";
+  const dimension = axis === "x" ? "width" : "grid-template-rows";
+  const on = phase === "closing" ? settleOn : unfoldOn;
+  return (
+    <div
+      ref={ref}
+      className={className}
+      style={{
+        ...(axis === "x"
+          ? { width: open ? size : 0 }
+          : { display: "grid", gridTemplateRows: open ? "1fr" : "0fr" }),
+        opacity: open ? 1 : 0,
+        transition: instant ? "none" : `${on(dimension)}, ${on("opacity")}`,
+      }}
+      onTransitionEnd={(e) => {
+        if (phase === "closing" && e.target === e.currentTarget && e.propertyName === dimension) setPhase("closed");
+      }}
+    >
+      {axis === "x" ? shown.current : <div className="min-h-0">{shown.current}</div>}
+    </div>
+  );
+}
 
 const startOfDay = (d: Date) => new Date(d.getFullYear(), d.getMonth(), d.getDate());
 const endOfDay = (d: Date) => new Date(d.getFullYear(), d.getMonth(), d.getDate(), 23, 59, 59, 999);
@@ -148,14 +257,6 @@ export const DatePickerBlock = forwardRef<HTMLDivElement, DatePickerBlockProps>(
     // calendar alone, unfolds on the first pick, and folds away again if the
     // date is cleared. Mirrors `railOpen` in RangeDatePicker.
     const railOpen = showTime && Boolean(value);
-
-    // Same curves as RangeDatePicker so both pickers unfold identically.
-    const unfold = reduceMotion
-      ? { duration: 0 }
-      : { type: "spring" as const, stiffness: 240, damping: 30, mass: 0.9 };
-    const settle = reduceMotion
-      ? { duration: 0 }
-      : { duration: 0.28, ease: [0.22, 1, 0.36, 1] as const };
 
     // Close on click outside
     useEffect(() => {
@@ -314,7 +415,7 @@ export const DatePickerBlock = forwardRef<HTMLDivElement, DatePickerBlockProps>(
         return {
           wrapper: cn(
             baseWrapper,
-            "border border-red-500 bg-white dark:bg-[#09090b]",
+            "border border-red-500 bg-background",
             variant === "underlined" && "border-0 border-b-2 rounded-none",
             variant !== "underlined" && "rounded-xl",
           ),
@@ -342,7 +443,7 @@ export const DatePickerBlock = forwardRef<HTMLDivElement, DatePickerBlockProps>(
           return {
             wrapper: cn(
               baseWrapper,
-              "bg-white dark:bg-[#09090b] border border-border rounded-xl shadow-sm",
+              "bg-background border border-border rounded-xl shadow-sm",
             ),
             active: theme.glow,
           };
@@ -351,7 +452,7 @@ export const DatePickerBlock = forwardRef<HTMLDivElement, DatePickerBlockProps>(
           return {
             wrapper: cn(
               baseWrapper,
-              "bg-white dark:bg-[#09090b] border border-border rounded-xl shadow-sm",
+              "bg-background border border-border rounded-xl shadow-sm",
             ),
             active: cn("ring-4", theme.ring),
           };
@@ -419,7 +520,7 @@ export const DatePickerBlock = forwardRef<HTMLDivElement, DatePickerBlockProps>(
                 "truncate",
                 s.text,
                 !value
-                  ? "text-zinc-400 dark:text-zinc-600"
+                  ? "text-muted-foreground"
                   : "text-foreground",
               )}
             >
@@ -432,23 +533,21 @@ export const DatePickerBlock = forwardRef<HTMLDivElement, DatePickerBlockProps>(
           </div>
         </button>
 
-        {/* Calendar Popover — grows in step with the time rail beside it. */}
-        <motion.div
-          initial={false}
-          animate={{
+        {/* Calendar Popover — grows in step with the time rail beside it.
+            Closed, it is out of the tab order as well as out of sight. */}
+        <div
+          inert={!isOpen}
+          style={{
             width: popoverWidth,
             opacity: isOpen ? 1 : 0,
-            scaleY: isOpen ? 1 : 0.95,
-            y: isOpen ? 0 : -8,
-          }}
-          transition={{
-            width: unfold,
-            default: reduceMotion
-              ? { duration: 0 }
-              : { duration: 0.2, ease: "easeOut" as const },
+            scale: `1 ${isOpen ? 1 : 0.95}`,
+            translate: `0 ${isOpen ? 0 : -8}px`,
+            transition: reduceMotion
+              ? "none"
+              : [unfoldOn("width"), popOn("opacity"), popOn("scale"), popOn("translate")].join(", "),
           }}
           className={cn(
-            "absolute z-50 overflow-hidden bg-background border border-border rounded-xl shadow-xl origin-top",
+            "absolute z-50 overflow-hidden bg-popover text-popover-foreground border border-border rounded-xl shadow-xl origin-top",
             alignRight ? "right-0" : "left-0",
             // Never wider than the viewport minus a margin, so a phone still
             // sees the whole thing.
@@ -539,51 +638,19 @@ export const DatePickerBlock = forwardRef<HTMLDivElement, DatePickerBlockProps>(
                   inner column is a fixed width so the lists are never squeezed
                   mid-unfold, and its margin rides along so the calendar holds
                   still. */}
-              <AnimatePresence initial={false}>
-                {railOpen && sideLayout && (
-                  <motion.div
-                    key="time-side"
-                    initial={{ width: 0, opacity: 0 }}
-                    animate={{ width: "auto", opacity: 1 }}
-                    exit={{ width: 0, opacity: 0, transition: settle }}
-                    transition={unfold}
-                    className="shrink-0 overflow-hidden"
-                  >
-                    <div className="flex h-full w-44 ml-4 flex-col border-l border-border pl-4">
-                      {timeHeader}
-                      {/* The picker fills whatever height the calendar gives
-                          the row — absolutely positioned so its long lists
-                          never stretch the popover themselves. */}
-                      <div className="relative flex-1 min-h-32">
-                        <TimePicker
-                          value={timeSource}
-                          onChange={handleTimeChange}
-                          format={timeFormat}
-                          minuteStep={minuteStep}
-                          minTime={minTime}
-                          maxTime={maxTime}
-                          color={color}
-                          className="absolute inset-0 h-auto"
-                        />
-                      </div>
-                    </div>
-                  </motion.div>
-                )}
-              </AnimatePresence>
-            </div>
-
-            <AnimatePresence initial={false}>
-              {railOpen && !sideLayout && (
-                <motion.div
-                  key="time-stacked"
-                  initial={{ height: 0, opacity: 0 }}
-                  animate={{ height: "auto", opacity: 1 }}
-                  exit={{ height: 0, opacity: 0, transition: settle }}
-                  transition={unfold}
-                  className="overflow-hidden"
-                >
-                  <div className="mt-4 pt-4 border-t border-border">
-                    {timeHeader}
+              <Fold
+                show={railOpen && sideLayout}
+                axis="x"
+                size={RAIL_PX}
+                instant={reduceMotion}
+                className="shrink-0 overflow-hidden"
+              >
+                <div className="flex h-full w-44 ml-4 flex-col border-l border-border pl-4">
+                  {timeHeader}
+                  {/* The picker fills whatever height the calendar gives
+                      the row — absolutely positioned so its long lists
+                      never stretch the popover themselves. */}
+                  <div className="relative flex-1 min-h-32">
                     <TimePicker
                       value={timeSource}
                       onChange={handleTimeChange}
@@ -592,42 +659,47 @@ export const DatePickerBlock = forwardRef<HTMLDivElement, DatePickerBlockProps>(
                       minTime={minTime}
                       maxTime={maxTime}
                       color={color}
+                      className="absolute inset-0 h-auto"
                     />
                   </div>
-                </motion.div>
-              )}
-            </AnimatePresence>
+                </div>
+              </Fold>
+            </div>
+
+            <Fold show={railOpen && !sideLayout} axis="y" instant={reduceMotion} className="overflow-hidden">
+              <div className="mt-4 pt-4 border-t border-border">
+                {timeHeader}
+                <TimePicker
+                  value={timeSource}
+                  onChange={handleTimeChange}
+                  format={timeFormat}
+                  minuteStep={minuteStep}
+                  minTime={minTime}
+                  maxTime={maxTime}
+                  color={color}
+                />
+              </div>
+            </Fold>
 
             {/* Done confirms the day and its time, so it rides in with the
                 panel rather than sitting under an empty calendar. */}
-            <AnimatePresence initial={false}>
-              {railOpen && (
-                <motion.div
-                  key="done"
-                  initial={{ height: 0, opacity: 0 }}
-                  animate={{ height: "auto", opacity: 1 }}
-                  exit={{ height: 0, opacity: 0, transition: settle }}
-                  transition={unfold}
-                  className="overflow-hidden"
-                >
-                  <button
-                    type="button"
-                    onClick={(e) => {
-                      e.stopPropagation();
-                      setIsOpen(false);
-                    }}
-                    className={cn(
-                      "mt-3 w-full h-9 rounded-lg text-sm font-semibold transition-colors",
-                      theme.bg,
-                    )}
-                  >
-                    Done
-                  </button>
-                </motion.div>
-              )}
-            </AnimatePresence>
+            <Fold show={railOpen} axis="y" instant={reduceMotion} className="overflow-hidden">
+              <button
+                type="button"
+                onClick={(e) => {
+                  e.stopPropagation();
+                  setIsOpen(false);
+                }}
+                className={cn(
+                  "mt-3 w-full h-9 rounded-lg text-sm font-semibold transition-colors",
+                  theme.bg,
+                )}
+              >
+                Done
+              </button>
+            </Fold>
           </div>
-        </motion.div>
+        </div>
 
         {/* Helper & Error Text */}
         {error && (

@@ -253,7 +253,7 @@ export default function NestedDialog() {
                   setCustomer(option);
                   setPickerOpen(false); // closes the picker only
                 }}
-                className="w-full px-2 py-2 text-left text-sm rounded-md hover:bg-zinc-100"
+                className="w-full px-2 py-2 text-left text-sm rounded-md hover:bg-primary/10"
               >
                 {option.name}
               

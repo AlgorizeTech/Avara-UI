@@ -107,11 +107,11 @@ export const usageBlock = `import { SelectionFrame } from "@/components/custom/b
 export default function FramedCard() {
   return (
     <SelectionFrame inline={false} radius={8} padding={8} className="w-full max-w-xs">
-      <div className="rounded-xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-950 p-5 space-y-3">
+      <div className="rounded-xl border border-border bg-card text-card-foreground p-5 space-y-3">
         <div className="h-24 rounded-lg bg-gradient-to-br from-sky-400/70 to-indigo-500/70" />
         <div className="space-y-1.5">
           <p className="text-sm font-semibold">Hero / Cover</p>
-          <p className="text-xs text-zinc-500">1440 × 720 · Auto layout</p>
+          <p className="text-xs text-muted-foreground">1440 × 720 · Auto layout</p>
         </div>
       </div>
     </SelectionFrame>
@@ -249,21 +249,21 @@ export default function FramedCard() {
 Discover the Selection Frame's capabilities for putting a design-tool spotlight on any element.
 
 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 my-6 not-prose">
-  <div className="p-6 rounded-2xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900">
-    <h3 className="text-lg font-semibold text-zinc-900 dark:text-zinc-50 mb-2">Measures live</h3>
-    <p className="text-zinc-600 dark:text-zinc-400 text-sm">A <code>ResizeObserver</code> tracks the child, so the frame re-fits when text reflows, fonts load or the content changes.</p>
+  <div className="p-6 rounded-2xl border border-border bg-card">
+    <h3 className="text-lg font-semibold text-card-foreground mb-2">Measures live</h3>
+    <p className="text-muted-foreground text-sm">A <code>ResizeObserver</code> tracks the child, so the frame re-fits when text reflows, fonts load or the content changes.</p>
   </div>
-  <div className="p-6 rounded-2xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900">
-    <h3 className="text-lg font-semibold text-zinc-900 dark:text-zinc-50 mb-2">Pixel-accurate</h3>
-    <p className="text-zinc-600 dark:text-zinc-400 text-sm">The stroke is centred on the frame edge and each handle is centred on the true corner point, so nothing sits a fraction of a pixel off.</p>
+  <div className="p-6 rounded-2xl border border-border bg-card">
+    <h3 className="text-lg font-semibold text-card-foreground mb-2">Pixel-accurate</h3>
+    <p className="text-muted-foreground text-sm">The stroke is centred on the frame edge and each handle is centred on the true corner point, so nothing sits a fraction of a pixel off.</p>
   </div>
-  <div className="p-6 rounded-2xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900">
-    <h3 className="text-lg font-semibold text-zinc-900 dark:text-zinc-50 mb-2">Respects reduced motion</h3>
-    <p className="text-zinc-600 dark:text-zinc-400 text-sm">Marching ants are an indefinite loop, so both the march and the handle spring are disabled when the visitor prefers reduced motion.</p>
+  <div className="p-6 rounded-2xl border border-border bg-card">
+    <h3 className="text-lg font-semibold text-card-foreground mb-2">Respects reduced motion</h3>
+    <p className="text-muted-foreground text-sm">Marching ants are an indefinite loop, so both the march and the handle spring are disabled when the visitor prefers reduced motion.</p>
   </div>
-  <div className="p-6 rounded-2xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900">
-    <h3 className="text-lg font-semibold text-zinc-900 dark:text-zinc-50 mb-2">Decorative only</h3>
-    <p className="text-zinc-600 dark:text-zinc-400 text-sm">The SVG and handles are <code>aria-hidden</code> and ignore pointer events — your content stays exactly as readable and clickable as before.</p>
+  <div className="p-6 rounded-2xl border border-border bg-card">
+    <h3 className="text-lg font-semibold text-card-foreground mb-2">Decorative only</h3>
+    <p className="text-muted-foreground text-sm">The SVG and handles are <code>aria-hidden</code> and ignore pointer events — your content stays exactly as readable and clickable as before.</p>
   </div>
 </div>
 

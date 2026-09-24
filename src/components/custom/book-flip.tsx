@@ -614,13 +614,13 @@ export const BookFlip = forwardRef<BookFlipHandle, BookFlipProps>(({
 
             {/* Minimal Shadowless Icon-Only Controls Toolbar */}
             {showControls && (
-                <div className="flex items-center justify-center gap-2 mt-5 p-1.5 rounded-full bg-muted/60 dark:bg-zinc-900/60 border border-border/70 backdrop-blur-md z-50 select-none shadow-none">
+                <div className="flex items-center justify-center gap-2 mt-5 p-1.5 rounded-full bg-muted/60 border border-border/70 backdrop-blur-md z-50 select-none shadow-none">
                     {/* Prev Button (Icon Only) */}
                     <button
                         onClick={flipPrev}
                         disabled={currentTurned === 0}
                         aria-label="Previous Page"
-                        className="p-2.5 rounded-full flex items-center justify-center bg-background hover:bg-accent text-foreground border border-border/60 active:scale-90 disabled:opacity-30 disabled:pointer-events-none transition-all cursor-pointer shadow-none"
+                        className="p-2.5 rounded-full flex items-center justify-center bg-background hover:bg-muted text-foreground border border-border/60 active:scale-90 disabled:opacity-30 disabled:pointer-events-none transition-all cursor-pointer shadow-none"
                     >
                         <ChevronLeft className="w-4 h-4" />
                     </button>
@@ -630,14 +630,14 @@ export const BookFlip = forwardRef<BookFlipHandle, BookFlipProps>(({
                         onClick={resetBook}
                         disabled={currentTurned === 0}
                         aria-label="Reset Book"
-                        className="p-2.5 rounded-full flex items-center justify-center bg-background hover:bg-accent text-muted-foreground hover:text-foreground border border-border/60 active:scale-90 disabled:opacity-30 disabled:pointer-events-none transition-all cursor-pointer group shadow-none"
+                        className="p-2.5 rounded-full flex items-center justify-center bg-background hover:bg-muted text-muted-foreground hover:text-foreground border border-border/60 active:scale-90 disabled:opacity-30 disabled:pointer-events-none transition-all cursor-pointer group shadow-none"
                     >
                         <RotateCcw className="w-4 h-4 group-hover:-rotate-90 transition-transform duration-300" />
                     </button>
 
                     {/* Page Leaves Counter Badge */}
                     <div className="px-3.5 py-1.5 rounded-full bg-background border border-border/60 text-xs font-mono font-semibold text-foreground flex items-center gap-1.5 shadow-none">
-                        <span className="text-emerald-600 dark:text-emerald-400 font-extrabold">{currentTurned}</span>
+                        <span className="text-primary font-extrabold">{currentTurned}</span>
                         <span className="text-muted-foreground/60 font-normal">/</span>
                         <span>{totalLeaves}</span>
                     </div>

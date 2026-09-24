@@ -1,7 +1,6 @@
 "use client";
 
 import React, { useEffect, useRef, useState } from "react";
-import gsap from "gsap";
 import { ChevronRight } from "lucide-react";
 import { cn } from "@/lib/utils";
 import Button from "./Button";
@@ -57,7 +56,7 @@ function Integrations({ icons, title, text, className, ...props }: SupportHeroIn
             key={i}
             // Each tile rises a touch on hover, one after the other.
             style={{ transitionDelay: `${i * 60}ms` }}
-            className="grid h-11 w-11 place-items-center rounded-xl border border-white/80 bg-white shadow-[0_6px_16px_-8px_rgba(15,23,42,0.35)] transition-transform duration-300 ease-out group-hover:-translate-y-1 dark:border-white/10 dark:bg-white/10 [&>svg]:h-5 [&>svg]:w-5"
+            className="grid h-11 w-11 place-items-center rounded-xl border border-foreground/[0.06] bg-card shadow-[0_6px_16px_-8px_rgba(15,23,42,0.35)] transition-transform duration-300 ease-out group-hover:-translate-y-1 [&>svg]:h-5 [&>svg]:w-5"
           >
             {icon}
           </span>
@@ -65,7 +64,7 @@ function Integrations({ icons, title, text, className, ...props }: SupportHeroIn
       </div>
       <div>
         <p className="text-[1.35rem] font-semibold leading-none tracking-tight">{title}</p>
-        {text && <p className="mt-2 max-w-[15rem] text-[11px] leading-snug text-black/55 dark:text-white/55">{text}</p>}
+        {text && <p className="mt-2 max-w-[15rem] text-[11px] leading-snug text-foreground/55">{text}</p>}
       </div>
     </Card>
   );
@@ -128,7 +127,7 @@ function Stat({
               "absolute inset-0 bg-gradient-to-tr from-32% via-50% to-72%",
               accent
                 ? "from-primary via-primary/80 to-transparent"
-                : "from-white via-white/85 to-transparent dark:from-zinc-900 dark:via-zinc-900/85",
+                : "from-background via-background/85 to-transparent",
             )}
           />
         </>
@@ -145,7 +144,7 @@ function Stat({
           color="zinc"
         />
       </p>
-      <p className={cn("relative z-10 mt-3 max-w-[11rem] text-[11px] leading-snug", accent ? "text-primary-foreground/80" : "text-black/55 dark:text-white/55")}>
+      <p className={cn("relative z-10 mt-3 max-w-[11rem] text-[11px] leading-snug", accent ? "text-primary-foreground/80" : "text-foreground/55")}>
         {caption}
       </p>
     </Card>
@@ -208,7 +207,7 @@ function Team({ title, avatars, className, ...props }: SupportHeroTeamProps) {
       {/* A field of dots that fades in from the right, for the faces to sit over. */}
       <span
         aria-hidden
-        className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle,rgba(15,23,42,0.14)_1px,transparent_1.2px)] bg-[size:14px_14px] [mask-image:radial-gradient(60%_90%_at_75%_50%,black,transparent)] dark:bg-[radial-gradient(circle,rgba(255,255,255,0.18)_1px,transparent_1.2px)]"
+        className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle,color-mix(in_oklab,var(--foreground)_16%,transparent)_1px,transparent_1.2px)] bg-[size:14px_14px] [mask-image:radial-gradient(60%_90%_at_75%_50%,black,transparent)]"
       />
       <h3 className="relative z-10 max-w-[11rem] font-sans text-[1.35rem] font-medium leading-[1.15] tracking-tight">{title}</h3>
       <div className="absolute inset-y-0 right-0 w-[52%]">
@@ -230,7 +229,7 @@ function Team({ title, avatars, className, ...props }: SupportHeroTeamProps) {
                   "--dy": `${s.dy}px`,
                 } as React.CSSProperties
               }
-              className="absolute rounded-full border-2 border-white object-cover shadow-[0_8px_20px_-8px_rgba(15,23,42,0.5)] transition-transform duration-500 ease-out group-hover:[transform:translate(var(--dx),var(--dy))] dark:border-zinc-800"
+              className="absolute rounded-full border-2 border-background object-cover shadow-[0_8px_20px_-8px_rgba(15,23,42,0.5)] transition-transform duration-500 ease-out group-hover:[transform:translate(var(--dx),var(--dy))]"
             />
           );
         })}
@@ -240,13 +239,33 @@ function Team({ title, avatars, className, ...props }: SupportHeroTeamProps) {
 }
 
 // ------------------------------------------
+// The reveal, as keyframes: GSAP's power3.out and back.out(1.8) as CSS
+// easings, each keyframe only the start pose. Cards move on `transform`, which
+// leaves the panel's hover lift (`translate`) alone; faces grow on `scale`,
+// which leaves their hover drift (`transform`) alone.
+// ------------------------------------------
+const EASE_OUT =
+  "linear(0, .1945, .3591, .4971, .6115, .7052, .7808, .8409, .8877, .9233, .9497, .9686, .9816, .9901, .9952, .998, .9994, .9999, 1, 1)";
+const EASE_POP =
+  "linear(0, .2239, .4168, .581, .7184, .8313, .9216, .9916, 1.0432, 1.0787, 1.1, 1.1094, 1.1088, 1.1004, 1.0864, 1.0688, 1.0496, 1.0311, 1.0152, 1.0042, 1)";
+
+const REVEAL_CSS = `
+@keyframes support-hero-lead-in { from { opacity: 0; transform: translateY(12px); } }
+@keyframes support-hero-card-in { from { opacity: 0; transform: translateY(28px) scale(0.97); } }
+@keyframes support-hero-face-in { from { opacity: 0; scale: 0.6; } }
+[data-hero-reveal] [data-hero-lead] { animation: support-hero-lead-in 0.6s ${EASE_OUT} var(--hero-at, 0s) backwards; }
+[data-hero-reveal] [data-hero-card] { animation: support-hero-card-in 0.8s ${EASE_OUT} var(--hero-at, 0s) backwards; }
+[data-hero-reveal] [data-hero-avatar] { animation: support-hero-face-in 0.5s ${EASE_POP} var(--hero-at, 0s) backwards; }
+`;
+
+// ------------------------------------------
 // Root
 // ------------------------------------------
 export interface SupportHeroProps extends React.HTMLAttributes<HTMLDivElement> {
   heading: string;
   subtitle?: React.ReactNode;
   cta?: { label: string; href?: string; onClick?: () => void };
-  /** The three colours washed behind the glass. Greys by default, so the ground reads as soft stone. */
+  /** The three colours washed behind the glass. By default a soft wash of the theme's primary over its muted surface, so the ground follows the theme. */
   aurora?: [string, string, string];
   /** Play the reveal when the section enters the viewport (default) or immediately. */
   reveal?: "in-view" | "immediate";
@@ -257,7 +276,11 @@ function SupportHeroRoot({
   heading,
   subtitle,
   cta,
-  aurora = ["#dde2ea", "#f7f8fa", "#d5dbe5"],
+  aurora = [
+    "color-mix(in oklab, var(--primary) 22%, var(--muted))",
+    "var(--muted)",
+    "color-mix(in oklab, var(--primary) 14%, var(--muted))",
+  ],
   reveal = "in-view",
   className,
   children,
@@ -265,6 +288,7 @@ function SupportHeroRoot({
 }: SupportHeroProps) {
   const rootRef = useRef<HTMLDivElement>(null);
   const [inView, setInView] = useState(reveal === "immediate");
+  const [playing, setPlaying] = useState(false);
 
   useEffect(() => {
     if (inView) return;
@@ -296,21 +320,16 @@ function SupportHeroRoot({
     const reduced =
       typeof window !== "undefined" && window.matchMedia?.("(prefers-reduced-motion: reduce)").matches;
     if (reduced) return;
-    const lead = root.querySelectorAll("[data-hero-lead]");
-    const cards = root.querySelectorAll("[data-hero-card]");
-    const faces = root.querySelectorAll("[data-hero-avatar]");
-    const tl = gsap.timeline({ defaults: { ease: "power3.out" } });
-    tl.fromTo(lead, { opacity: 0, y: 12 }, { opacity: 1, y: 0, duration: 0.6, stagger: 0.12 }, 0.5)
-      .fromTo(
-        cards,
-        { opacity: 0, y: 28, scale: 0.97 },
-        { opacity: 1, y: 0, scale: 1, duration: 0.8, stagger: 0.09, clearProps: "transform" },
-        0.7,
-      )
-      .fromTo(faces, { opacity: 0, scale: 0.6 }, { opacity: 1, scale: 1, duration: 0.5, stagger: 0.07, ease: "back.out(1.8)", clearProps: "transform" }, 1.4);
-    return () => {
-      tl.kill();
-    };
+    // Each element gets its start time as `--hero-at`; the keyframes in
+    // REVEAL_CSS hold its start pose until then.
+    const stagger = (selector: string, start: number, each: number) =>
+      root
+        .querySelectorAll<HTMLElement>(selector)
+        .forEach((el, i) => el.style.setProperty("--hero-at", `${start + i * each}s`));
+    stagger("[data-hero-lead]", 0.5, 0.12);
+    stagger("[data-hero-card]", 0.7, 0.09);
+    stagger("[data-hero-avatar]", 1.4, 0.07);
+    setPlaying(true);
   }, [inView]);
 
   const onCta = () => {
@@ -319,10 +338,11 @@ function SupportHeroRoot({
   };
 
   return (
-    <div ref={rootRef} className={cn("w-full", className)} {...props}>
+    <div ref={rootRef} data-hero-reveal={playing ? "" : undefined} className={cn("w-full", className)} {...props}>
+      <style>{REVEAL_CSS}</style>
       <GlassBackdrop
         aurora={aurora}
-        className="text-[#1a1f2e] dark:text-white"
+        className="bg-background text-foreground dark:bg-background dark:text-foreground"
         gridClassName="mx-auto max-w-6xl gap-4 px-5 pb-10 pt-0 sm:px-8 sm:pb-12"
       >
       <header className="col-span-full flex flex-col items-center px-2 pb-8 pt-14 text-center sm:pb-10 sm:pt-16">
@@ -333,7 +353,7 @@ function SupportHeroRoot({
           className="mx-auto max-w-[22ch] justify-center font-sans text-[2.3rem] font-semibold leading-[1.06] tracking-[-0.035em] sm:max-w-[26ch] sm:text-[3.4rem]"
         />
         {subtitle && (
-          <p data-hero-lead="" className="mx-auto mt-5 max-w-[34rem] text-[12.5px] leading-[1.7] text-black/55 dark:text-white/55">
+          <p data-hero-lead="" className="mx-auto mt-5 max-w-[34rem] text-[12.5px] leading-[1.7] text-foreground/55">
             {subtitle}
           </p>
         )}
@@ -342,7 +362,7 @@ function SupportHeroRoot({
             <Button
               variant="default"
               iconRight={<ChevronRight size={14} strokeWidth={2.5} />}
-              className="h-11 rounded-full px-6 text-[13px] shadow-[0_16px_32px_-14px_rgba(15,23,42,0.7)]"
+              className="h-11 rounded-full px-6 text-[13px] shadow-[0_16px_32px_-14px_color-mix(in_oklab,var(--primary)_70%,transparent)]"
               onClick={onCta}
             >
               {cta.label}

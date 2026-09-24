@@ -1,6 +1,6 @@
 # Stepper
 
-A production-grade, highly animated multi-step wizard component engineered exclusively with **GSAP**. It splits the layout into two decoupled blocks: the visual progress tracker and the bidirectional sliding content payload.
+A production-grade, highly animated multi-step wizard component built on plain **CSS transitions and the Web Animations API** — no animation library. It splits the layout into two decoupled blocks: the visual progress tracker and the bidirectional sliding content payload.
 
 Unlike basic UI placeholders, this engine is designed to handle **real form state, per-step input validation, and asynchronous API submission handling** (including error states) with silky 60fps transitions.
 
@@ -52,7 +52,7 @@ const PRIMARY_ROLE_OPTIONS = [
 ].map((r) => ({ label: r, value: r }));
 
 const BACK_BTN =
-  "flex items-center gap-1.5 px-4 py-2.5 rounded-xl border border-border bg-secondary text-secondary-foreground font-semibold text-sm disabled:opacity-40 disabled:cursor-not-allowed hover:bg-secondary/80 transition-all active:scale-95 cursor-pointer";
+  "flex items-center gap-1.5 px-4 py-2.5 rounded-xl border border-border bg-muted text-foreground font-semibold text-sm disabled:opacity-40 disabled:cursor-not-allowed hover:bg-muted/80 transition-all active:scale-95 cursor-pointer";
 const NEXT_BTN =
   "flex items-center gap-1.5 px-6 py-2.5 rounded-xl text-primary-foreground font-semibold text-sm shadow-md transition-all hover:brightness-110 active:scale-95 cursor-pointer bg-primary";
 
@@ -316,7 +316,7 @@ Learn about the Stepper component's linear progression features, providing clear
 
 ### Stepper
 
-The visual navigation header component that renders step indicators and the animated GSAP progress fill line.
+The visual navigation header component that renders step indicators and the animated progress fill line.
 
         Prop
         Type
@@ -337,7 +337,7 @@ The visual navigation header component that renders step indicators and the anim
 
           Required
 
-          The active zero-indexed step of the sequence. Controls the GSAP progress line fill and active/completed indicator states.
+          The active zero-indexed step of the sequence. Controls the progress line fill and active/completed indicator states.
 
           onStepChange
 
@@ -365,7 +365,7 @@ The visual navigation header component that renders step indicators and the anim
 
 ### StepperContent
 
-The sliding content container component that handles animated GSAP entrance and exit transitions for step payloads.
+The sliding content container component that handles the animated sliding entrance of each step payload.
 
         Prop
         Type
@@ -411,7 +411,7 @@ The TypeScript interface defining the structure of each object in the steps arra
 
           Yes
 
-          A unique identifier string required for safe React list rendering and GSAP key mapping.
+          A unique identifier string required for safe React list rendering.
 
           title
 
