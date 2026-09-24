@@ -59,11 +59,11 @@ const sampleTabs = [
 ];
 
 /**
- * Canvas behind the block. `elevated` paints its own white card, so on a white
+ * Canvas behind the block. `elevated` paints its own card, so on a same-coloured
  * page the lift has nothing to lift off — it gets a tinted stage instead.
  */
 const CANVAS: Partial<Record<TabsVariant, string>> = {
-  elevated: "bg-zinc-100 dark:bg-[#050505]",
+  elevated: "bg-muted",
 };
 
 export default function VerticalTabsDemo({
@@ -84,7 +84,7 @@ export default function VerticalTabsDemo({
       className={`w-full max-w-full overflow-hidden flex items-center justify-center min-h-[450px] sm:min-h-[500px] transition-colors duration-300 ${
         variant === "glass"
           ? "p-3 sm:p-8 bg-cover bg-center rounded-2xl relative"
-          : `${CANVAS[variant] ?? "bg-white dark:bg-black"} p-2 sm:p-6`
+          : `${CANVAS[variant] ?? "bg-background"} p-2 sm:p-6`
       }`}
       style={
         variant === "glass"

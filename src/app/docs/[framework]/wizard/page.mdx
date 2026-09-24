@@ -40,7 +40,7 @@ export const wizardSteps = `        <WizardStep index={0}>
             </WizardDescription>
             <button
               onClick={() => setRunKey((prev) => prev + 1)}
-              className="mt-8 px-8 py-3.5 rounded-full bg-zinc-900 text-white dark:bg-white dark:text-zinc-900 font-semibold hover:scale-105 transition-transform"
+              className="mt-8 px-8 py-3.5 rounded-full bg-primary text-primary-foreground font-semibold hover:scale-105 transition-transform"
             >
               Finish & Restart
             </button>
@@ -111,7 +111,7 @@ ${wizardPreamble}
 
   return (
     // Open on step 2 — useful when you persist progress between sessions.
-    <Wizard key={runKey} initialStep={1} color="rose">
+    <Wizard key={runKey} initialStep={1}>
       {/* Top progress bar — reads totalSteps from context */}
       <WizardProgress />
 
@@ -143,7 +143,7 @@ ${wizardPreamble}
   return (
     // WizardProgress is an independent child — omit it entirely and the
     // steps still animate and navigate exactly the same.
-    <Wizard key={runKey} color="emerald">
+    <Wizard key={runKey}>
       {/* Overflow-hidden container the GSAP slide happens inside */}
       <WizardContainer>
 ${wizardSteps}

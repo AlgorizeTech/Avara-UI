@@ -22,7 +22,7 @@ export default function Community() {
       avatars={PEOPLE}
       size="md"
       action={
-        <a href="/join" aria-label="Join the community" className="grid size-full place-items-center rounded-full bg-[#111] text-white ring-2 ring-white">
+        <a href="/join" aria-label="Join the community" className="grid size-full place-items-center rounded-full bg-primary text-primary-foreground ring-2 ring-background">
           <Plus size={16} />
         </a>
       }
@@ -105,7 +105,7 @@ export default function JoinedThisMonth({ people }: { people: { src: string; alt
         {
           prop: "ringClassName",
           effect:
-            "is the gap colour between faces (`ring-white` by default, `ring-zinc-950` in dark). Match it to the surface the stack sits on.",
+            "is the gap colour between faces (`ring-background` by default). Match it to the surface the stack sits on.",
         },
       ],
       props: { example: "sizes" },
@@ -148,7 +148,7 @@ export default function JoinedThisMonth({ people }: { people: { src: string; alt
       <tr>
         <td><code>ringClassName</code></td>
         <td><code>string</code></td>
-        <td><code>"ring-white dark:ring-zinc-950"</code></td>
+        <td><code>"ring-background"</code></td>
         <td>Colour of the gap between faces.</td>
       </tr>
       <tr>

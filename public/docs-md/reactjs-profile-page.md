@@ -48,7 +48,7 @@ const ACTIVITY = [
 ];
 
 const focusRing =
-  "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-white dark:focus-visible:ring-offset-[#0b0b0f]";
+  "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background";
 
 export default function ProfilePageDemo() {
   const [following, setFollowing] = useState(false);
@@ -80,7 +80,7 @@ export default function ProfilePageDemo() {
             className={cn(
               "inline-flex h-11 items-center gap-2 rounded-full px-5 text-sm font-medium transition-colors",
               following
-                ? "border border-black/10 bg-black/[0.03] text-black hover:bg-black/[0.06] dark:border-white/15 dark:bg-white/5 dark:text-white dark:hover:bg-white/10"
+                ? "border border-foreground/10 bg-foreground/[0.04] text-foreground hover:bg-foreground/[0.08]"
                 : "bg-primary text-primary-foreground hover:bg-primary/90",
               focusRing,
             )}
@@ -208,7 +208,7 @@ const ACTIVITY = [
 ];
 
 const focusRing =
-  "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-white dark:focus-visible:ring-offset-[#0b0b0f]";
+  "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background";
 
 export default function ProfilePageDemo() {
   const [following, setFollowing] = useState(false);
@@ -240,7 +240,7 @@ export default function ProfilePageDemo() {
             className={cn(
               "inline-flex h-11 items-center gap-2 rounded-full px-5 text-sm font-medium transition-colors",
               following
-                ? "border border-black/10 bg-black/[0.03] text-black hover:bg-black/[0.06] dark:border-white/15 dark:bg-white/5 dark:text-white dark:hover:bg-white/10"
+                ? "border border-foreground/10 bg-foreground/[0.04] text-foreground hover:bg-foreground/[0.08]"
                 : "bg-primary text-primary-foreground hover:bg-primary/90",
               focusRing,
             )}

@@ -446,7 +446,7 @@ Explore the Scroll Area's custom scrollbar features, providing a unified, styliz
 
           "indigo" | "rose" | "emerald" | "zinc" | string
 
-          "zinc"
+          "primary"
 
           The color of the scrollbar thumb and hover states. Fully supports
           dynamic custom hex codes.

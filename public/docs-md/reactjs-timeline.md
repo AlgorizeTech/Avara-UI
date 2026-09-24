@@ -195,7 +195,7 @@ The breakpoints are **container queries** (`@container/timeline`, `@container/tl
 
           "indigo" | "rose" | "emerald" | "zinc" | string
 
-          "indigo"
+          "primary"
 
           The dynamic accent color applied to completed/current tracking lines,
           glowing nodes, and hover states. Fully supports custom hex codes.

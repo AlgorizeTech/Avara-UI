@@ -289,7 +289,7 @@ const items: ScrollStackItem[] = [
     description:
       "Most landing pages fail quietly. Traffic comes in, nothing happens. We engineer high-converting layouts with scroll-triggered GSAP animations that capture attention.",
     tags: ["Conversion Focused", "Figma To Code", "Mobile First"],
-    color: "bg-white dark:bg-zinc-900 border-zinc-200 dark:border-zinc-800 text-zinc-900 dark:text-white",
+    color: "bg-card border-border text-card-foreground",
     cardContent: ,
   },
   {
@@ -303,7 +303,7 @@ const items: ScrollStackItem[] = [
       "Stripe Integration",
       "Real-Time Sync",
     ],
-    color: "bg-white dark:bg-zinc-900 border-zinc-200 dark:border-zinc-800 text-zinc-900 dark:text-white",
+    color: "bg-card border-border text-card-foreground",
     cardContent: ,
   },
   {
@@ -317,7 +317,7 @@ const items: ScrollStackItem[] = [
       "Vector RAG Setup",
       "Custom Model Training",
     ],
-    color: "bg-white dark:bg-zinc-900 border-zinc-200 dark:border-zinc-800 text-zinc-900 dark:text-white",
+    color: "bg-card border-border text-card-foreground",
     cardContent: ,
   },
   {
@@ -327,7 +327,7 @@ const items: ScrollStackItem[] = [
     description:
       "Building a mobile app shouldn't mean managing two separate codebases. We deploy unified architectures with silky native device performance.",
     tags: ["iOS & Android", "Single Codebase Build", "App Store Submission"],
-    color: "bg-white dark:bg-zinc-900 border-zinc-200 dark:border-zinc-800 text-zinc-900 dark:text-white",
+    color: "bg-card border-border text-card-foreground",
     cardContent: ,
   },
 ];`;
@@ -603,7 +603,7 @@ Discover the key capabilities that make this component an excellent choice for m
 
           string
 
-          "bg-white dark:bg-zinc-900..."
+          "bg-card border-border..."
 
           Optional Tailwind background, text, and border classes applied to the
           card surface (e.g., "bg-indigo-600 text-white"). Omitting

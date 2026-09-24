@@ -671,7 +671,7 @@ function MiniatureIllustration({
 						<div className="relative w-full h-full flex items-center justify-center scale-90">
 							<div className="w-8 h-12 rounded-lg bg-emerald-500/20 border border-emerald-500/40 -rotate-25 -translate-x-12 translate-y-3 opacity-60 shadow-xs" />
 							<div className="w-9 h-14 rounded-lg bg-orange-500/20 border border-orange-500/40 -rotate-12 -translate-x-6 translate-y-1 shadow-md" />
-							<div className="w-10 h-16 rounded-xl bg-primary text-primary-foreground font-mono text-[5px] flex flex-col justify-between p-1 z-10 shadow-xl border border-white/20">
+							<div className="w-10 h-16 rounded-xl bg-primary text-primary-foreground font-mono text-[5px] flex flex-col justify-between p-1 z-10 shadow-xl border border-primary-foreground/20">
 								<span className="font-semibold">Violet</span>
 								<span className="self-end text-[4px]">004</span>
 							</div>
@@ -1816,8 +1816,8 @@ function MiniatureIllustration({
 
 						<div className="flex flex-col items-center justify-between h-full w-full py-1 z-10">
 							{/* Root Node (Top Admin) */}
-							<div className="flex items-center gap-1 px-2 py-0.5 rounded-full bg-primary text-primary-foreground text-[6px] font-bold shadow-md border border-white/20">
-								<span className="size-1.5 rounded-full bg-white animate-ping" />
+							<div className="flex items-center gap-1 px-2 py-0.5 rounded-full bg-primary text-primary-foreground text-[6px] font-bold shadow-md border border-primary-foreground/20">
+								<span className="size-1.5 rounded-full bg-primary-foreground animate-ping" />
 								<span>You (Admin)</span>
 							</div>
 

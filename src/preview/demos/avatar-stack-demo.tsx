@@ -56,7 +56,7 @@ export default function AvatarStackDemo({
           <a
             href="#join"
             aria-label="Join the community"
-            className="group grid size-full place-items-center rounded-full bg-[#111] text-white ring-2 ring-white transition-transform duration-300 hover:scale-110 dark:bg-white dark:text-[#111] dark:ring-zinc-950"
+            className="group grid size-full place-items-center rounded-full bg-primary text-primary-foreground ring-2 ring-background transition-transform duration-300 hover:scale-110"
           >
             <Plus size={16} className="transition-transform duration-300 group-hover:rotate-90" />
           </a>

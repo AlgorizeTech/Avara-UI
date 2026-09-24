@@ -81,7 +81,7 @@ export default function ToggleDemo({
   if (example === "toolbar") {
     return (
       <div className="w-full flex items-center justify-center min-h-[300px] relative z-10">
-        <div className="flex items-center p-1 rounded-lg border border-zinc-200 dark:border-zinc-800 bg-zinc-50 dark:bg-[#0a0a0a] shadow-sm">
+        <div className="flex items-center p-1 rounded-lg border border-border bg-card shadow-sm">
           <Toggle
             variant={variant}
             size={size}
@@ -118,10 +118,10 @@ export default function ToggleDemo({
     <div className="w-full flex flex-col items-center justify-center min-h-[300px] gap-12 relative z-10">
       {/* Group 1: Editor Toolbar Example */}
       <div className="flex flex-col items-center gap-3">
-        <p className="text-sm font-medium text-zinc-500">
+        <p className="text-sm font-medium text-muted-foreground">
           Rich Text Formatting
         </p>
-        <div className="flex items-center p-1 rounded-lg border border-zinc-200 dark:border-zinc-800 bg-zinc-50 dark:bg-[#0a0a0a] shadow-sm">
+        <div className="flex items-center p-1 rounded-lg border border-border bg-card shadow-sm">
           <Toggle
             variant={variant}
             size={size}
@@ -154,7 +154,7 @@ export default function ToggleDemo({
 
       {/* Group 2: Independent Action Example */}
       <div className="flex flex-col items-center gap-3">
-        <p className="text-sm font-medium text-zinc-500">
+        <p className="text-sm font-medium text-muted-foreground">
           State Toggle (with text)
         </p>
         <Toggle

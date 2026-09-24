@@ -52,7 +52,7 @@ export default function Still() {
   return (
     <>
       <ImageWall items={ITEMS} interval={0} zoom={1.2} onFocus={setCurrent} className="h-96" />
-      <p className="mt-2 text-sm text-neutral-500">{ITEMS[current].title}</p>
+      <p className="mt-2 text-sm text-muted-foreground">{ITEMS[current].title}</p>
     </>
   );
 }

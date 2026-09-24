@@ -184,14 +184,14 @@ export default function ScrollAreaDemo({
           orientation={orientation}
           hideTrack={hideTrack}
           autoHide={autoHide}
-          className={`rounded-2xl border ${variant === "glass" ? "bg-white/10 dark:bg-black/20 backdrop-blur-xl border-white/20 dark:border-white/10 shadow-2xl" : "bg-white dark:bg-zinc-950 border-zinc-200 dark:border-zinc-800 shadow-sm"} ${orientation === "horizontal" ? "w-full max-w-[650px] p-3 sm:p-6" : orientation === "both" ? "h-[450px] sm:h-[500px] w-full max-w-full p-3 sm:p-6" : "h-[450px] sm:h-[500px] w-full max-w-md sm:max-w-lg pl-3.5 sm:pl-4 pt-3.5 sm:pt-4 pb-3.5 sm:pb-4 pr-1"}`}
+          className={`rounded-2xl border ${variant === "glass" ? "bg-white/10 dark:bg-black/20 backdrop-blur-xl border-white/20 dark:border-white/10 shadow-2xl" : "bg-card text-card-foreground border-border shadow-sm"} ${orientation === "horizontal" ? "w-full max-w-[650px] p-3 sm:p-6" : orientation === "both" ? "h-[450px] sm:h-[500px] w-full max-w-full p-3 sm:p-6" : "h-[450px] sm:h-[500px] w-full max-w-md sm:max-w-lg pl-3.5 sm:pl-4 pt-3.5 sm:pt-4 pb-3.5 sm:pb-4 pr-1"}`}
         >
         {/* Conditional Content based on Orientation */}
         {orientation === "vertical" && (
           <div className="pr-2 flex flex-col gap-2">
-            <div className="flex items-center justify-between pb-2 mb-1 border-b border-zinc-100 dark:border-zinc-800/80">
+            <div className="flex items-center justify-between pb-2 mb-1 border-b border-border">
               <h4
-                className={`text-sm font-semibold leading-none ${variant === "glass" ? "text-white" : "text-zinc-900 dark:text-white"}`}
+                className={`text-sm font-semibold leading-none ${variant === "glass" ? "text-white" : "text-foreground"}`}
               >
                 Direct Messages
               </h4>
@@ -212,7 +212,7 @@ export default function ScrollAreaDemo({
                 className={`group p-3 rounded-xl border cursor-pointer transition-all duration-200 shadow-none flex items-start gap-3 ${
                   variant === "glass"
                     ? "bg-white/15 border-white/20 hover:border-white/50 text-white"
-                    : "bg-zinc-50/70 dark:bg-zinc-900/60 border-zinc-200/80 dark:border-zinc-800/80 hover:border-zinc-300 dark:hover:border-zinc-700"
+                    : "bg-muted/60 border-border hover:border-foreground/20"
                 }`}
               >
                 {/* Avatar with status dot */}
@@ -220,11 +220,11 @@ export default function ScrollAreaDemo({
                   <img
                     src={item.avatar}
                     alt={item.name}
-                    className="w-9 h-9 rounded-full object-cover border border-zinc-200 dark:border-zinc-700"
+                    className="w-9 h-9 rounded-full object-cover border border-border"
                   />
                   <span
-                    className={`absolute bottom-0 right-0 w-2.5 h-2.5 rounded-full border-2 border-white dark:border-zinc-900 ${
-                      item.status === "online" ? "bg-emerald-500" : "bg-zinc-400"
+                    className={`absolute bottom-0 right-0 w-2.5 h-2.5 rounded-full border-2 border-card ${
+                      item.status === "online" ? "bg-emerald-500" : "bg-muted-foreground"
                     }`}
                   />
                 </div>
@@ -235,11 +235,11 @@ export default function ScrollAreaDemo({
                     <span className="text-xs font-semibold truncate">
                       {item.name}
                     </span>
-                    <span className={`text-[10px] whitespace-nowrap ${variant === "glass" ? "text-white/70" : "text-zinc-400 dark:text-zinc-500"}`}>
+                    <span className={`text-[10px] whitespace-nowrap ${variant === "glass" ? "text-white/70" : "text-muted-foreground/70"}`}>
                       {item.time}
                     </span>
                   </div>
-                  <p className={`text-xs truncate leading-snug ${variant === "glass" ? "text-white/90" : "text-zinc-500 dark:text-zinc-400"}`}>
+                  <p className={`text-xs truncate leading-snug ${variant === "glass" ? "text-white/90" : "text-muted-foreground"}`}>
                     {item.message}
                   </p>
                 </div>
@@ -312,11 +312,11 @@ export default function ScrollAreaDemo({
                 className={`group relative w-[200px] sm:w-[230px] shrink-0 rounded-2xl overflow-hidden border cursor-pointer transition-all duration-200 shadow-none ${
                   variant === "glass"
                     ? "bg-white/15 dark:bg-black/30 border-white/20 hover:border-white/60 text-white"
-                    : "bg-white dark:bg-zinc-900 border-zinc-200 dark:border-zinc-800 hover:border-zinc-400 dark:hover:border-zinc-600"
+                    : "bg-card border-border hover:border-foreground/30"
                 }`}
               >
                 {/* Thumbnail Image */}
-                <div className="relative h-[160px] sm:h-[190px] w-full overflow-hidden bg-zinc-100 dark:bg-zinc-800">
+                <div className="relative h-[160px] sm:h-[190px] w-full overflow-hidden bg-muted">
                   <img
                     src={art.image}
                     alt={art.title}
@@ -333,13 +333,13 @@ export default function ScrollAreaDemo({
                   <h4 className="text-sm font-semibold truncate leading-snug">
                     {art.title}
                   </h4>
-                  <div className="flex items-center gap-2 pt-1 border-t border-zinc-100 dark:border-zinc-800/80">
+                  <div className="flex items-center gap-2 pt-1 border-t border-border">
                     <img
                       src={art.avatar}
                       alt={art.author}
-                      className="w-5 h-5 rounded-full object-cover border border-zinc-200 dark:border-zinc-700"
+                      className="w-5 h-5 rounded-full object-cover border border-border"
                     />
-                    <span className={`text-xs truncate ${variant === "glass" ? "text-white/80" : "text-zinc-500 dark:text-zinc-400"}`}>
+                    <span className={`text-xs truncate ${variant === "glass" ? "text-white/80" : "text-muted-foreground"}`}>
                       {art.author}
                     </span>
                   </div>
@@ -444,14 +444,14 @@ export default function ScrollAreaDemo({
                     className={`p-3.5 rounded-xl border cursor-pointer transition-all duration-200 shadow-none flex flex-col gap-2 ${
                       variant === "glass"
                         ? "bg-white/15 border-white/20 hover:border-white/50 text-white"
-                        : "bg-zinc-50/70 dark:bg-zinc-900/60 border-zinc-200/80 dark:border-zinc-800/80 hover:border-zinc-300 dark:hover:border-zinc-700 text-zinc-900 dark:text-zinc-100"
+                        : "bg-muted/60 border-border hover:border-foreground/20 text-foreground"
                     }`}
                   >
                     <div className="flex items-center justify-between">
-                      <span className={`text-[10px] font-semibold uppercase tracking-wider ${variant === "glass" ? "text-white/70" : "text-zinc-400 dark:text-zinc-500"}`}>
+                      <span className={`text-[10px] font-semibold uppercase tracking-wider ${variant === "glass" ? "text-white/70" : "text-muted-foreground/70"}`}>
                         {task.tag}
                       </span>
-                      <span className={`text-[10px] ${variant === "glass" ? "text-white/70" : "text-zinc-400 dark:text-zinc-500"}`}>
+                      <span className={`text-[10px] ${variant === "glass" ? "text-white/70" : "text-muted-foreground/70"}`}>
                         {task.size}
                       </span>
                     </div>

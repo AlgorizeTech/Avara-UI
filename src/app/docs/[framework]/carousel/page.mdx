@@ -36,7 +36,7 @@ export default function FluidGlassSliderDemo() {
   return (
     <FluidGlassSlider
       slides={customSlides}
-      className="w-full rounded-xl border dark:border-zinc-800 shadow-sm"
+      className="w-full rounded-xl border border-border shadow-sm"
     />
   );
 }`;
@@ -51,7 +51,7 @@ const sampleImages = [
 
 export default function ImageCarouselDemo() {
   return (
-    <div className="w-full rounded-xl overflow-hidden border dark:border-zinc-800 shadow-sm">
+    <div className="w-full rounded-xl overflow-hidden border border-border shadow-sm">
       <ImageCarousel
         images={sampleImages}
         autoPlay={true}
@@ -91,7 +91,7 @@ const customItems: RadialCarouselItem[] = [
 
 export default function RadialCarouselDemo() {
   return (
-    <div className="w-full rounded-xl overflow-hidden border dark:border-zinc-800 shadow-sm bg-zinc-950/5 dark:bg-zinc-900/30">
+    <div className="w-full rounded-xl overflow-hidden border border-border shadow-sm bg-foreground/5">
       <RadialCarousel
         items={customItems}
         autoPlay={true}
@@ -123,7 +123,7 @@ const sampleSlides: HeroSlide[] = [
 
 export default function HeroCarouselDemo() {
   return (
-    <div className="w-full rounded-xl overflow-hidden border dark:border-zinc-800 shadow-sm">
+    <div className="w-full rounded-xl overflow-hidden border border-border shadow-sm">
       <HeroCarousel slides={sampleSlides} autoPlay={true} autoPlayInterval={3000} />
     </div>
   );
@@ -151,7 +151,7 @@ const sampleSlides: CustomItem[] = [
 
 export default function CustomCarouselDemo() {
   return (
-    <div className="w-full rounded-xl overflow-hidden border dark:border-zinc-800 shadow-sm">
+    <div className="w-full rounded-xl overflow-hidden border border-border shadow-sm">
       <CustomCarousel items={sampleSlides} imageButtonPosition="bottom" autoPlay={true} />
     </div>
   );
@@ -179,7 +179,7 @@ const sampleSlides: CustomItem[] = [
 
 export default function SideThumbnailsCarouselDemo() {
   return (
-    <div className="w-full rounded-xl overflow-hidden border dark:border-zinc-800 shadow-sm">
+    <div className="w-full rounded-xl overflow-hidden border border-border shadow-sm">
       <CustomCarousel items={sampleSlides} imageButtonPosition="left" autoPlay={true} />
     </div>
   );

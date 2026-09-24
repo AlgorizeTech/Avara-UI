@@ -128,7 +128,7 @@ Discover the key capabilities that make this component an excellent choice for m
 
             defaultAccentColor
             string
-            "#6366f1"
+            "var(--primary)"
             The fallback hex color applied to the header, user message bubbles, and trigger button if no key is found in storage.
 
             initialMessages

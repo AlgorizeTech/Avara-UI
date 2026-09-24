@@ -56,7 +56,7 @@ export default function DesignAssets() {
 
         {ICONS.map(({ id, icon: I }) => (
            setIconId(id)}
-            className={iconId === id ? "flex size-8 items-center justify-center rounded-full bg-zinc-900 text-white" : "flex size-8 items-center justify-center rounded-full text-zinc-500 hover:bg-zinc-100"}
+            className={iconId === id ? "flex size-8 items-center justify-center rounded-full bg-primary text-primary-foreground" : "flex size-8 items-center justify-center rounded-full text-muted-foreground hover:bg-muted"}
           >
 
         ))}

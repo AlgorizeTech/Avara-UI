@@ -127,12 +127,12 @@ export const usagePixel10 = `import { GooglePixel10Mockup } from "@/components/c
 // Any React tree works inside the frame — swap this for your own screen.
 function YourApp() {
   return (
-    <div className="min-h-full bg-white dark:bg-zinc-950 p-5 space-y-3">
-      <h1 className="text-lg font-semibold text-zinc-900 dark:text-zinc-50">Today</h1>
+    <div className="min-h-full bg-background p-5 space-y-3">
+      <h1 className="text-lg font-semibold text-foreground">Today</h1>
       {["Stand-up at 9:30", "Design review", "Ship the release"].map((task) => (
         <div
           key={task}
-          className="rounded-xl border border-zinc-200 dark:border-zinc-800 p-3 text-sm text-zinc-600 dark:text-zinc-400"
+          className="rounded-xl border border-border p-3 text-sm text-muted-foreground"
         >
           {task}
         </div>

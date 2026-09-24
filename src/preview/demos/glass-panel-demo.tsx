@@ -27,15 +27,15 @@ export default function GlassPanelDemo({
         className={cn("w-full max-w-4xl", rounded && "rounded-[36px]")}
       >
         <GlassPanel shape="slab" className="p-8 md:col-span-4 lg:col-span-8">
-          <p className="text-xs font-medium text-black/50 dark:text-white/50">Slab</p>
+          <p className="text-xs font-medium text-foreground/50">Slab</p>
           <h2 className="mt-1 text-2xl font-semibold tracking-tight">The hero surface</h2>
-          <p className="mt-2 max-w-md text-sm text-black/60 dark:text-white/60">
+          <p className="mt-2 max-w-md text-sm text-foreground/60">
             One glass recipe — blur, hairline border, inset highlight — in four shapes. The radius tells the reader what
             level a panel is.
           </p>
         </GlassPanel>
         <GlassPanel shape="tile" interactive className="p-6 md:col-span-2 lg:col-span-4">
-          <p className="text-xs font-medium text-black/50 dark:text-white/50">Tile, interactive</p>
+          <p className="text-xs font-medium text-foreground/50">Tile, interactive</p>
           <p className="mt-2 text-sm">Lifts on hover and shows a pointer.</p>
         </GlassPanel>
         <div className="grid grid-cols-3 gap-4 md:col-span-3 lg:col-span-6">
@@ -47,7 +47,7 @@ export default function GlassPanelDemo({
             <GlassPanel key={label} shape="disc" className="grid place-items-center text-center">
               <div>
                 <p className="text-2xl font-semibold tabular-nums">{value}</p>
-                <p className="text-[11px] text-black/50 dark:text-white/50">{label}</p>
+                <p className="text-[11px] text-foreground/50">{label}</p>
               </div>
             </GlassPanel>
           ))}

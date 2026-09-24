@@ -34,7 +34,7 @@ export default function VerifyBadgeDemo({
     return (
       <div className="w-full min-h-[380px] flex items-center justify-center">
         <div className="flex items-center gap-2">
-          <span className="font-semibold text-zinc-900 dark:text-zinc-50 text-[15px] tracking-tight">
+          <span className="font-semibold text-foreground text-[15px] tracking-tight">
             AlgorizeSystem
           </span>
           <VerifyBadge color={activeHex} size={size} animate={animate} />
@@ -57,12 +57,12 @@ export default function VerifyBadgeDemo({
   return (
     <div className="w-full min-h-[380px] flex flex-col items-center justify-center overflow-hidden">
       {/* Chat Notification Card */}
-      <div className="w-full max-w-md bg-white dark:bg-zinc-950 rounded-2xl border border-zinc-200 dark:border-zinc-800 p-4 sm:p-5 flex flex-col sm:flex-row items-start gap-3 sm:gap-4 transition-colors hover:bg-zinc-50/80 dark:hover:bg-zinc-900/50 min-w-0">
+      <div className="w-full max-w-md bg-card text-card-foreground rounded-2xl border border-border p-4 sm:p-5 flex flex-col sm:flex-row items-start gap-3 sm:gap-4 transition-colors hover:bg-muted/50 min-w-0">
         
         {/* Desktop Bot Avatar */}
         <div className="hidden sm:flex flex-shrink-0 mt-0.5">
           <div
-            className="w-11 h-11 rounded-2xl flex items-center justify-center text-primary-foreground dark:text-zinc-900 transition-colors"
+            className="w-11 h-11 rounded-2xl flex items-center justify-center text-primary-foreground transition-colors"
             style={{ backgroundColor: activeHex }}
           >
             <svg
@@ -90,7 +90,7 @@ export default function VerifyBadgeDemo({
           <div className="flex items-center gap-2 flex-wrap min-w-0 w-full">
             {/* Mobile Bot Avatar */}
             <div
-              className="sm:hidden w-7 h-7 rounded-lg flex items-center justify-center text-primary-foreground dark:text-zinc-900 shrink-0"
+              className="sm:hidden w-7 h-7 rounded-lg flex items-center justify-center text-primary-foreground shrink-0"
               style={{ backgroundColor: activeHex }}
             >
               <svg
@@ -109,7 +109,7 @@ export default function VerifyBadgeDemo({
                 <line x1="16" y1="16" x2="16" y2="16" />
               </svg>
             </div>
-            <span className="font-semibold text-zinc-900 dark:text-zinc-50 text-sm sm:text-[15px] tracking-tight truncate">
+            <span className="font-semibold text-foreground text-sm sm:text-[15px] tracking-tight truncate">
               AlgorizeSystem
             </span>
             <VerifyBadge color={activeHex} size={size} animate={animate} />
@@ -127,13 +127,13 @@ export default function VerifyBadgeDemo({
             >
               Bot
             </span>
-            <span className="text-xs sm:text-[13px] text-zinc-500 dark:text-zinc-400 font-medium shrink-0">
+            <span className="text-xs sm:text-[13px] text-muted-foreground font-medium shrink-0">
               Today at 2:34 PM
             </span>
           </div>
 
           {/* Text */}
-          <p className="mt-2 sm:mt-1 text-zinc-800 dark:text-zinc-200 text-xs sm:text-[15px] leading-relaxed break-words">
+          <p className="mt-2 sm:mt-1 text-foreground/90 text-xs sm:text-[15px] leading-relaxed break-words">
             Deployment{" "}
             <span
               className="font-semibold hover:underline cursor-pointer"
@@ -145,16 +145,16 @@ export default function VerifyBadgeDemo({
           </p>
 
           {/* Embed Box */}
-          <div className="mt-3 w-full rounded-xl border border-zinc-200 dark:border-zinc-800 bg-zinc-50 dark:bg-zinc-900/50 p-3 sm:p-3.5 flex items-start gap-2.5 sm:gap-3 relative overflow-hidden min-w-0">
+          <div className="mt-3 w-full rounded-xl border border-border bg-muted/60 p-3 sm:p-3.5 flex items-start gap-2.5 sm:gap-3 relative overflow-hidden min-w-0">
             <div
               className="absolute left-0 top-0 bottom-0 w-1"
               style={{ backgroundColor: activeHex }}
             ></div>
             <div className="flex flex-col gap-1 ml-1 min-w-0 flex-1">
-              <span className="font-semibold text-xs sm:text-[14px] text-zinc-900 dark:text-zinc-50 tracking-tight">
+              <span className="font-semibold text-xs sm:text-[14px] text-foreground tracking-tight">
                 Build Passed 🚀
               </span>
-              <span className="text-xs sm:text-[13px] text-zinc-500 dark:text-zinc-400 leading-snug break-words">
+              <span className="text-xs sm:text-[13px] text-muted-foreground leading-snug break-words">
                 All 142 tests passed in 12s. The latest preview is now live on
                 Vercel.
               </span>

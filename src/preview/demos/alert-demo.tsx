@@ -182,7 +182,7 @@ export default function AlertDemo({
                       (alertEl as HTMLElement).style.display = 'none';
                     }
                   }}
-                  className="px-4 py-1.5 bg-zinc-200 dark:bg-zinc-800 text-zinc-900 dark:text-white rounded-md text-sm font-medium hover:bg-zinc-300 dark:hover:bg-zinc-700 transition cursor-pointer"
+                  className="px-4 py-1.5 bg-muted text-foreground rounded-md text-sm font-medium hover:bg-muted/80 transition cursor-pointer"
                 >
                   Cancel
                 </button>

@@ -30,7 +30,7 @@ const OthersButton = () => {
           {/* Status Buttons */}
           <div className="flex flex-col gap-4">
             <div className="flex flex-wrap items-center justify-center gap-4">
-                <Button className="bg-green-500 dark:bg-green-500 dark:text-white dark:hover:bg-green-800" variant="default" iconLeft={<CheckIcon />}>
+                <Button className="bg-green-500 text-white hover:bg-green-600 dark:bg-green-500 dark:text-white dark:hover:bg-green-800" variant="default" iconLeft={<CheckIcon />}>
                     Success
                 </Button>
                 <Button variant="destructive" iconLeft={<XIcon />}>

@@ -17,7 +17,7 @@ export default function ComponentWallDemo({
   layout?: "split" | "center";
 }) {
   return (
-    <div className="w-full overflow-hidden rounded-2xl border border-zinc-200 dark:border-zinc-800">
+    <div className="w-full overflow-hidden rounded-2xl border border-border">
       <ComponentWall
         badge={{ label: "Next-gen React components", href: "#" }}
         heading="Build interactive {word}."

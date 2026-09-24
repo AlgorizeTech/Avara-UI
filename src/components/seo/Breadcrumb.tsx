@@ -15,7 +15,7 @@ interface BreadcrumbProps {
 export function Breadcrumb({ items, className = '' }: BreadcrumbProps) {
   return (
     <nav 
-      className={`flex items-center space-x-2 text-sm text-zinc-600 dark:text-zinc-400 ${className}`}
+      className={`flex items-center space-x-2 text-sm text-muted-foreground ${className}`}
       aria-label="Breadcrumb"
     >
       <ol className="flex items-center space-x-2" itemScope itemType="https://schema.org/BreadcrumbList">
@@ -35,7 +35,7 @@ export function Breadcrumb({ items, className = '' }: BreadcrumbProps) {
             
             {item.current ? (
               <span 
-                className="font-medium text-zinc-900 dark:text-zinc-100"
+                className="font-medium text-foreground"
                 itemProp="name"
                 aria-current="page"
               >
@@ -44,7 +44,7 @@ export function Breadcrumb({ items, className = '' }: BreadcrumbProps) {
             ) : (
               <Link
                 href={item.url}
-                className="hover:text-zinc-900 dark:hover:text-zinc-100 transition-colors"
+                className="hover:text-foreground transition-colors"
                 itemProp="item"
               >
                 <span itemProp="name">{item.name}</span>
@@ -53,7 +53,7 @@ export function Breadcrumb({ items, className = '' }: BreadcrumbProps) {
             
             {index < items.length - 1 && (
               <ChevronRight 
-                className="w-4 h-4 mx-2 text-zinc-400" 
+                className="w-4 h-4 mx-2 text-muted-foreground/60" 
                 aria-hidden="true" 
               />
             )}

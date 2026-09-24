@@ -78,7 +78,7 @@ function HeroScreen({ homeIndicator = true }: { homeIndicator?: boolean }) {
           opacity: 0.14,
         }}
       />
-      <div className="absolute inset-0 pointer-events-none bg-[linear-gradient(to_right,rgba(0,0,0,0.03)_1px,transparent_1px),linear-gradient(to_bottom,rgba(0,0,0,0.03)_1px,transparent_1px)] dark:bg-[linear-gradient(to_right,rgba(255,255,255,0.03)_1px,transparent_1px),linear-gradient(to_bottom,rgba(255,255,255,0.03)_1px,transparent_1px)] bg-[size:22px_22px] [mask-image:radial-gradient(ellipse_75%_60%_at_50%_40%,black_40%,transparent_100%)]" />
+      <div className="absolute inset-0 pointer-events-none bg-[linear-gradient(to_right,color-mix(in_srgb,var(--foreground)_3%,transparent)_1px,transparent_1px),linear-gradient(to_bottom,color-mix(in_srgb,var(--foreground)_3%,transparent)_1px,transparent_1px)] bg-[size:22px_22px] [mask-image:radial-gradient(ellipse_75%_60%_at_50%_40%,black_40%,transparent_100%)]" />
 
       {/* Status bar. Time left, radios right — the gap clears the notch or
           island on the frames that have one. */}
@@ -123,9 +123,9 @@ function HeroScreen({ homeIndicator = true }: { homeIndicator?: boolean }) {
         <button
           type="button"
           onClick={handleCopy}
-          className="group flex items-center gap-2 w-full max-w-[230px] h-9 px-2.5 rounded-xl border border-zinc-200 dark:border-border bg-zinc-100/70 dark:bg-card cursor-pointer hover:border-zinc-300 dark:hover:border-primary/50 transition-colors"
+          className="group flex items-center gap-2 w-full max-w-[230px] h-9 px-2.5 rounded-xl border border-border bg-muted/70 cursor-pointer hover:border-primary/50 transition-colors"
         >
-          <Terminal className="size-3 text-zinc-700 dark:text-primary shrink-0" />
+          <Terminal className="size-3 text-primary shrink-0" />
           <code className="flex-1 text-left text-[9px] font-mono font-semibold text-foreground truncate !bg-transparent !border-none !p-0 !shadow-none">
             {CLI_COMMAND}
           </code>

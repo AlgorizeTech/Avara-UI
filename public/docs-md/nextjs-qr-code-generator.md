@@ -26,7 +26,7 @@ export default function GeneratorExample() {
           
            setValue(e.target.value)}
             placeholder="https://algorizetech.com"
-            className="w-full px-4 py-3 border border-slate-200 dark:border-slate-800 rounded-xl bg-slate-50 dark:bg-slate-900 focus:outline-none focus:ring-2 focus:ring-blue-500/20 text-sm transition-colors"
+            className="w-full px-4 py-3 border border-input rounded-xl bg-muted focus:outline-none focus:ring-2 focus:ring-primary/20 text-sm transition-colors"
           />
 
             Correction Level:
@@ -34,10 +34,10 @@ export default function GeneratorExample() {
             {(["L", "M", "Q", "H"] as const).map((lvl) => (
                setLevel(lvl)}
                 className={
-                  "flex-1 cursor-pointer px-3 sm:px-4 py-2 text-sm font-medium transition-colors border-r border-slate-200 dark:border-slate-800 last:border-r-0 text-center " +
+                  "flex-1 cursor-pointer px-3 sm:px-4 py-2 text-sm font-medium transition-colors border-r border-border last:border-r-0 text-center " +
                   (level === lvl
-                    ? "bg-slate-50 dark:bg-slate-900 text-zinc-900 dark:text-white"
-                    : "text-slate-500 hover:text-slate-700 dark:text-slate-400")
+                    ? "bg-muted text-primary"
+                    : "text-muted-foreground hover:text-foreground hover:bg-muted")
                 }
               >
                 {lvl}

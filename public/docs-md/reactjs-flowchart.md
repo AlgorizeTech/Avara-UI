@@ -115,8 +115,8 @@ npx shadcn@latest add @algorize-ui/flowchart
 
         Flowchart
         color
-        "blue" | "indigo" | "rose" | "emerald" | "zinc"
-        "indigo"
+        "primary" | "blue" | "indigo" | "rose" | "emerald" | "zinc"
+        "primary"
         Accent applied to the active stream, node ports and focus rings.
 
         Flowchart

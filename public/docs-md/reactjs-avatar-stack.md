@@ -65,7 +65,7 @@ npx shadcn@latest add @algorize-ui/avatar-stack
 
         ringClassName
         string
-        "ring-white dark:ring-zinc-950"
+        "ring-background"
         Colour of the gap between faces.
 
         action

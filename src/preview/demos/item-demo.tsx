@@ -57,7 +57,7 @@ export default function ItemDemo({
         <div className="w-full max-w-xl flex flex-col gap-5">
           {variants.map((v) => (
             <div key={v} className="flex flex-col gap-1.5">
-              <span className="text-xs font-mono text-zinc-400">
+              <span className="text-xs font-mono text-muted-foreground">
                 variant=&quot;{v}&quot;
               </span>
               <ItemBlock

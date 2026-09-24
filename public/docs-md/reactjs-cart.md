@@ -130,7 +130,7 @@ Learn about the Cart component's e-commerce capabilities, including item quantit
 
           "indigo" | "rose" | "emerald" | "zinc" | string
 
-          "indigo"
+          "primary"
 
           Applies global color themes to the primary buttons, focus rings,
           badges, and icons. Accepts preset theme names or valid custom hex codes (e.g.{" "}

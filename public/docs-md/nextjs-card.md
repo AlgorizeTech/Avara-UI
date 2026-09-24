@@ -8,10 +8,10 @@ export const usageEcommerce = `"use client";
 
 export default function EcommerceProductCardsDemo() {
   const [sneakerBg, setSneakerBg] = useState(
-    "bg-gradient-to-br from-amber-500/15 via-orange-500/10 to-amber-500/5 dark:from-amber-500/20 dark:to-zinc-900 border-amber-500/30"
+    "bg-gradient-to-br from-amber-500/15 via-orange-500/10 to-amber-500/5 dark:from-amber-500/20 dark:to-card border-amber-500/30"
   );
   const [watchBg, setWatchBg] = useState(
-    "bg-gradient-to-br from-indigo-500/15 via-purple-500/10 to-indigo-500/5 dark:from-indigo-500/20 dark:to-zinc-900 border-indigo-500/30"
+    "bg-gradient-to-br from-indigo-500/15 via-purple-500/10 to-indigo-500/5 dark:from-indigo-500/20 dark:to-card border-indigo-500/30"
   );
 
   return (
@@ -33,17 +33,17 @@ export default function EcommerceProductCardsDemo() {
           {
             name: "Amber",
             value:
-              "bg-amber-600 border-amber-500|bg-gradient-to-br from-amber-500/15 via-orange-500/10 to-amber-500/5 dark:from-amber-500/20 dark:to-zinc-900 border-amber-500/30",
+              "bg-amber-600 border-amber-500|bg-gradient-to-br from-amber-500/15 via-orange-500/10 to-amber-500/5 dark:from-amber-500/20 dark:to-card border-amber-500/30",
           },
           {
             name: "Rose",
             value:
-              "bg-rose-600 border-rose-500|bg-gradient-to-br from-rose-500/15 via-pink-500/10 to-rose-500/5 dark:from-rose-500/20 dark:to-zinc-900 border-rose-500/30",
+              "bg-rose-600 border-rose-500|bg-gradient-to-br from-rose-500/15 via-pink-500/10 to-rose-500/5 dark:from-rose-500/20 dark:to-card border-rose-500/30",
           },
           {
             name: "Emerald",
             value:
-              "bg-emerald-600 border-emerald-500|bg-gradient-to-br from-emerald-500/15 via-teal-500/10 to-emerald-500/5 dark:from-emerald-500/20 dark:to-zinc-900 border-emerald-500/30",
+              "bg-emerald-600 border-emerald-500|bg-gradient-to-br from-emerald-500/15 via-teal-500/10 to-emerald-500/5 dark:from-emerald-500/20 dark:to-card border-emerald-500/30",
           },
         ]}
         onColorChange={(col: ProductColorOption) => setSneakerBg(col.value.split("|")[1])}
@@ -59,12 +59,12 @@ export default function EcommerceProductCardsDemo() {
           {
             name: "Indigo",
             value:
-              "bg-indigo-600 border-indigo-500|bg-gradient-to-br from-indigo-500/15 via-purple-500/10 to-indigo-500/5 dark:from-indigo-500/20 dark:to-zinc-900 border-indigo-500/30",
+              "bg-indigo-600 border-indigo-500|bg-gradient-to-br from-indigo-500/15 via-purple-500/10 to-indigo-500/5 dark:from-indigo-500/20 dark:to-card border-indigo-500/30",
           },
           {
             name: "Emerald",
             value:
-              "bg-emerald-600 border-emerald-500|bg-gradient-to-br from-emerald-500/15 via-teal-500/10 to-emerald-500/5 dark:from-emerald-500/20 dark:to-zinc-900 border-emerald-500/30",
+              "bg-emerald-600 border-emerald-500|bg-gradient-to-br from-emerald-500/15 via-teal-500/10 to-emerald-500/5 dark:from-emerald-500/20 dark:to-card border-emerald-500/30",
           },
         ]}
         onColorChange={(col: ProductColorOption) => setWatchBg(col.value.split("|")[1])}
@@ -313,7 +313,7 @@ export default function ShopCards() {
 
             {item.price}
              e.stopPropagation()}
-              className="grid size-11 place-items-center rounded-full bg-[#0f172a] text-white transition-colors hover:bg-[#1e293b] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#0f172a] focus-visible:ring-offset-2 focus-visible:ring-offset-white"
+              className="grid size-11 place-items-center rounded-full bg-primary text-primary-foreground transition-opacity hover:opacity-90 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 focus-visible:ring-offset-white"
             >
 
       ))}
@@ -392,7 +392,7 @@ export default function NowPlayingCard() {
           {formatTime(TRACK_LENGTH)}
 
            setPlaying((v) => !v)}
-            className="grid size-11 place-items-center rounded-full bg-indigo-600 text-white hover:bg-indigo-500"
+            className="grid size-11 place-items-center rounded-full bg-primary text-primary-foreground hover:bg-primary/90"
           >
             {playing ?  : }
 
@@ -457,10 +457,10 @@ export default function ProfileCards({ interactive }: { interactive: boolean }) 
 
            setFollowing((v) => !v)}
             className={cn(
-              "inline-flex flex-1 items-center justify-center gap-2 rounded-full border px-4 py-2.5 text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-violet-500 focus-visible:ring-offset-2 focus-visible:ring-offset-background",
+              "inline-flex flex-1 items-center justify-center gap-2 rounded-full border px-4 py-2.5 text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 focus-visible:ring-offset-background",
               following
                 ? "border-border text-foreground hover:bg-muted"
-                : "border-violet-600 bg-violet-600 text-white hover:border-violet-500 hover:bg-violet-500",
+                : "border-primary bg-primary text-primary-foreground hover:border-primary/90 hover:bg-primary/90",
             )}
           >
             {following ? (

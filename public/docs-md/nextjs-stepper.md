@@ -54,7 +54,7 @@ const PRIMARY_ROLE_OPTIONS = [
 ].map((r) => ({ label: r, value: r }));
 
 const BACK_BTN =
-  "flex items-center gap-1.5 px-4 py-2.5 rounded-xl border border-border bg-secondary text-secondary-foreground font-semibold text-sm disabled:opacity-40 disabled:cursor-not-allowed hover:bg-secondary/80 transition-all active:scale-95 cursor-pointer";
+  "flex items-center gap-1.5 px-4 py-2.5 rounded-xl border border-border bg-muted text-foreground font-semibold text-sm disabled:opacity-40 disabled:cursor-not-allowed hover:bg-muted/80 transition-all active:scale-95 cursor-pointer";
 const NEXT_BTN =
   "flex items-center gap-1.5 px-6 py-2.5 rounded-xl text-primary-foreground font-semibold text-sm shadow-md transition-all hover:brightness-110 active:scale-95 cursor-pointer bg-primary";
 

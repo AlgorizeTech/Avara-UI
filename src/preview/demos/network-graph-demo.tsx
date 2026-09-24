@@ -134,7 +134,7 @@ export default function NetworkGraphDemo({
     // No `overflow-hidden` here: the outer ring sits on the container edge, so a
     // hovered node at the bottom of its orbit would have its tooltip sliced off.
     // The grid layer carries its own radius instead, which is all the clip was for.
-    <div className="w-full relative rounded-2xl bg-white dark:bg-[#0a0a0a] border border-zinc-200 dark:border-zinc-800 overflow-hidden">
+    <div className="w-full relative rounded-2xl bg-background border border-border overflow-hidden">
       <div className="absolute inset-0 rounded-2xl bg-[linear-gradient(to_right,#80808012_1px,transparent_1px),linear-gradient(to_bottom,#80808012_1px,transparent_1px)] bg-[size:24px_24px] pointer-events-none" />
 
       <div className="p-4 sm:p-8 md:p-12 flex items-center justify-center">

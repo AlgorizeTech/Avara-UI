@@ -364,7 +364,7 @@ export default function StepperDemo({
               <button
                 type="button"
                 onClick={resetWizard}
-                className="mt-2 flex items-center gap-2 px-6 py-2.5 rounded-xl bg-secondary hover:bg-secondary/80 text-secondary-foreground font-semibold text-xs uppercase tracking-wider transition-all"
+                className="mt-2 flex items-center gap-2 px-6 py-2.5 rounded-xl bg-muted hover:bg-muted/80 text-foreground font-semibold text-xs uppercase tracking-wider transition-all"
               >
                 <RefreshCw className="w-3.5 h-3.5" /> Reset Demo Wizard
               </button>
@@ -478,7 +478,7 @@ export default function StepperDemo({
               type="button"
               onClick={handlePrev}
               disabled={currentStep === 0 || isSubmitting}
-              className="flex items-center gap-1.5 px-4 py-2.5 rounded-xl border border-border bg-secondary text-secondary-foreground font-semibold text-sm disabled:opacity-40 disabled:cursor-not-allowed hover:bg-secondary/80 transition-all active:scale-95 cursor-pointer"
+              className="flex items-center gap-1.5 px-4 py-2.5 rounded-xl border border-border bg-muted text-foreground font-semibold text-sm disabled:opacity-40 disabled:cursor-not-allowed hover:bg-muted/80 transition-all active:scale-95 cursor-pointer"
             >
               <ChevronLeft className="w-4 h-4" />
               Back

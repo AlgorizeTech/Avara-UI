@@ -3721,14 +3721,6 @@ function CTASection() {
 									</button>
 								</div>
 							</div>
-							<p className="mt-2.5 text-[12px] text-foreground/40">
-								New project? Register the registry once with{" "}
-								<Link
-									href="/docs/nextjs/installation#step-2-register-the-registry"
-									className="font-mono text-primary hover:underline">
-									shadcn registry add @algorize-ui=…
-								</Link>
-							</p>
 						</div>
 
 						{/* Feature Badges Strip */}
