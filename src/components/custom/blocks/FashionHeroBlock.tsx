@@ -50,7 +50,7 @@ export interface FashionHeroProps extends React.HTMLAttributes<HTMLElement> {
   quote?: { text: string; author: string };
   /** The next story: a number, a category and a title. */
   teaser?: { index: string; label: string; title: string; href: string };
-  /** Sets `--primary` for the section; the theme's primary by default. Used by the button, arrows and rings. */
+  /** Sets `--primary` for the section; the theme's primary by default. Used by the play badge, the plus, the button, the teaser arrow and the rings. */
   accent?: string;
   reveal?: "in-view" | "immediate";
   /** Anchor or router link for the hrefs. */
@@ -164,7 +164,7 @@ function FashionHeroRoot({
   return (
     <section
       ref={rootRef}
-      className={cn("relative w-full overflow-hidden bg-white text-[#111] dark:bg-[#0c0c0e] dark:text-white", className)}
+      className={cn("relative w-full overflow-hidden bg-background text-foreground", className)}
       style={{ ...vars, ...style }}
       {...props}
     >
@@ -178,8 +178,8 @@ function FashionHeroRoot({
                   aria-label={video.badge}
                   className="group/badge rounded-full outline-none focus-visible:ring-2 focus-visible:ring-primary/50"
                 >
-                  <CircularText text={video.badge} size={100} speed={20} fontSize={10} tracking={0.12} color="currentColor" className="text-[#111] dark:text-white">
-                    <span className="grid size-9 place-items-center rounded-full bg-[#111] text-white transition-transform duration-300 group-hover/badge:scale-110 dark:bg-white dark:text-[#111]">
+                  <CircularText text={video.badge} size={100} speed={20} fontSize={10} tracking={0.12} color="currentColor" className="text-foreground">
+                    <span className="grid size-9 place-items-center rounded-full bg-primary text-primary-foreground transition-transform duration-300 group-hover/badge:scale-110">
                       <Play size={12} className="ml-0.5 fill-current" />
                     </span>
                   </CircularText>
@@ -207,12 +207,13 @@ function FashionHeroRoot({
                 avatars={avatars}
                 size="md"
                 max={3}
+                ringClassName="ring-background"
                 action={
                   avatarsHref ? (
                     <Link
                       href={avatarsHref}
                       aria-label={avatarsLabel}
-                      className="group/plus grid size-9 place-items-center rounded-full bg-[#111] text-white ring-2 ring-white transition-transform duration-300 hover:scale-110 dark:bg-white dark:text-[#111] dark:ring-zinc-950"
+                      className="group/plus grid size-9 place-items-center rounded-full bg-primary text-primary-foreground ring-2 ring-background transition-transform duration-300 hover:scale-110"
                     >
                       <Plus size={16} className="transition-transform duration-300 group-hover/plus:rotate-90" />
                     </Link>
@@ -263,7 +264,7 @@ function FashionHeroRoot({
               <div data-lb-cta="" className="absolute inset-x-0 -bottom-4 flex justify-center">
                 <Link
                   href={cta.href}
-                  className="group/cta inline-flex h-10 items-center gap-2 rounded-full bg-[#111] pl-5 pr-4 text-[13px] font-semibold text-white shadow-[0_10px_24px_-10px_rgba(0,0,0,0.5)] outline-none transition-transform duration-300 hover:scale-[1.04] focus-visible:ring-2 focus-visible:ring-primary/60 active:scale-[0.98] dark:bg-white dark:text-[#111]"
+                  className="group/cta inline-flex h-10 items-center gap-2 rounded-full bg-primary pl-5 pr-4 text-[13px] font-semibold text-primary-foreground shadow-[0_10px_24px_-10px_color-mix(in_oklab,var(--primary)_70%,transparent)] outline-none transition-transform duration-300 hover:scale-[1.04] focus-visible:ring-2 focus-visible:ring-primary/60 active:scale-[0.98]"
                 >
                   {cta.label}
                   <ArrowUpRight size={14} className="transition-transform duration-300 group-hover/cta:-translate-y-0.5 group-hover/cta:translate-x-0.5" />
@@ -286,10 +287,10 @@ function FashionHeroRoot({
             <div data-lb-foot="" className="max-w-xs">
               {quote && (
                 <>
-                  <span className="block font-serif text-4xl leading-none text-black/25 dark:text-white/30" aria-hidden>
+                  <span className="block font-serif text-4xl leading-none text-foreground/30" aria-hidden>
                     &ldquo;
                   </span>
-                  <p className="mt-1 text-[12.5px] leading-relaxed text-black/70 dark:text-white/70">{quote.text}</p>
+                  <p className="mt-1 text-[12.5px] leading-relaxed text-foreground/70">{quote.text}</p>
                   <p className="relative mt-3 inline-block font-serif text-2xl italic leading-none">
                     {/* A highlighter stroke under the name. */}
                     <span className="absolute inset-x-0 bottom-0 -z-10 h-[0.45em] bg-primary/35" aria-hidden />
@@ -308,9 +309,9 @@ function FashionHeroRoot({
                 <span className="flex items-center justify-between gap-6">
                   <span className="flex items-baseline gap-2.5">
                     <span className="font-sans text-[2rem] font-light leading-none tracking-tight">{teaser.index}</span>
-                    <span className="text-[11px] text-black/55 dark:text-white/55">{teaser.label}</span>
+                    <span className="text-[11px] text-foreground/55">{teaser.label}</span>
                   </span>
-                  <span className="grid size-8 place-items-center rounded-full transition-all duration-300 group-hover/teaser:bg-[#111] group-hover/teaser:text-white dark:group-hover/teaser:bg-white dark:group-hover/teaser:text-[#111]">
+                  <span className="grid size-8 place-items-center rounded-full transition-all duration-300 group-hover/teaser:bg-primary group-hover/teaser:text-primary-foreground">
                     <ArrowRight size={18} className="transition-transform duration-300 group-hover/teaser:translate-x-0.5" />
                   </span>
                 </span>

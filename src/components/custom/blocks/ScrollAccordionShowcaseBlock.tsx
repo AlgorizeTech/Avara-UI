@@ -38,7 +38,8 @@ function hexToRgba(hex: string, alpha: number): string {
     const packed = parseInt(digits, 16);
     return `rgba(${(packed >> 16) & 255},${(packed >> 8) & 255},${packed & 255},${alpha})`;
   }
-  return hex;
+  // Any other CSS colour (the theme's `var(--primary)`, rgb(), hsl()…).
+  return `color-mix(in oklab, ${hex} ${alpha * 100}%, transparent)`;
 }
 
 export const ScrollAccordionShowcase = React.forwardRef<
@@ -51,7 +52,7 @@ export const ScrollAccordionShowcase = React.forwardRef<
       defaultIndex = 0,
       displayMode = "both",
       localStorageKey = "primaryColor",
-      defaultAccentColor = "#FFAB1D",
+      defaultAccentColor = "var(--primary)",
       scrollerRef,
       className,
       ...props
@@ -333,7 +334,7 @@ export const ScrollAccordionShowcase = React.forwardRef<
                     "inline-flex items-center gap-2 px-3.5 sm:px-4 py-1.5 sm:py-2 rounded-full text-[11px] sm:text-xs font-mono font-semibold uppercase transition-all duration-300 border shrink-0 cursor-pointer outline-none",
                     isActive
                       ? "shadow-sm scale-105"
-                      : "bg-muted dark:bg-white/5 border-border text-muted-foreground hover:border-border",
+                      : "bg-muted border-border text-muted-foreground hover:border-border",
                   )}
                 >
                   <span>{item.stepNumber}</span>
@@ -385,7 +386,7 @@ export const ScrollAccordionShowcase = React.forwardRef<
                       className={cn(
                         "group relative flex flex-col justify-between p-5 sm:p-8 rounded-2xl sm:rounded-3xl border transition-all duration-500 cursor-pointer overflow-hidden bg-card outline-none",
                         isActive
-                          ? "shadow-2xl ring-1 ring-black/5 dark:ring-white/5"
+                          ? "shadow-2xl ring-1 ring-foreground/5"
                           : "border-border/80 opacity-85 hover:opacity-100 hover:border-border",
                       )}
                     >
@@ -412,7 +413,7 @@ export const ScrollAccordionShowcase = React.forwardRef<
                             className={cn(
                               "font-mono text-xs sm:text-sm font-semibold px-2.5 sm:px-3 py-1 sm:py-1.5 rounded-lg sm:rounded-xl border transition-all duration-300 shrink-0 mt-0.5 sm:mt-0",
                               !isActive &&
-                                "bg-muted dark:bg-white/5 border-border text-muted-foreground",
+                                "bg-muted border-border text-muted-foreground",
                             )}
                           >
                             {item.stepNumber}
@@ -431,13 +432,17 @@ export const ScrollAccordionShowcase = React.forwardRef<
                         <div
                           style={{
                             backgroundColor: isActive ? accentColor : undefined,
-                            color: isActive ? "#000000" : undefined,
+                            color: isActive
+                              ? accentColor === "var(--primary)"
+                                ? "var(--primary-foreground)"
+                                : "#000000"
+                              : undefined,
                           }}
                           className={cn(
                             "w-8 h-8 sm:w-9 sm:h-9 rounded-full flex items-center justify-center shrink-0 transition-all duration-300 mt-0.5 sm:mt-0 self-start sm:self-center",
                             isActive
                               ? "rotate-0 shadow-md font-semibold"
-                              : "bg-muted dark:bg-white/5 text-muted-foreground -rotate-45 group-hover:bg-muted dark:group-hover:bg-white/10 group-hover:text-foreground",
+                              : "bg-muted text-muted-foreground -rotate-45 group-hover:bg-foreground/10 group-hover:text-foreground",
                           )}
                         >
                           <ArrowRight className="w-3.5 h-3.5 sm:w-4 sm:h-4 stroke-[2.5]" />
@@ -547,7 +552,7 @@ export const ScrollAccordionShowcase = React.forwardRef<
                     </motion.div>
                   </AnimatePresence>
                   <div className="absolute bottom-4 sm:bottom-6 left-4 sm:left-6 right-4 sm:right-6 z-10 flex items-end justify-between pointer-events-none">
-                    <div className="flex flex-col gap-1 sm:gap-1.5 p-3.5 sm:p-5 rounded-xl sm:rounded-2xl bg-white/90 dark:bg-zinc-900/90 backdrop-blur-md border border-border/80 shadow-2xl max-w-sm">
+                    <div className="flex flex-col gap-1 sm:gap-1.5 p-3.5 sm:p-5 rounded-xl sm:rounded-2xl bg-card/90 backdrop-blur-md border border-border/80 shadow-2xl max-w-sm">
                       <div className="inline-flex items-center gap-2">
                         <Sparkles
                           style={{ color: accentColor }}

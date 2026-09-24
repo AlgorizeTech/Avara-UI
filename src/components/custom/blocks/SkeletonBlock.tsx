@@ -129,7 +129,7 @@ export function SkeletonBlock({
     return (
       <div
         className={cn(
-          "flex flex-col gap-3 w-full p-4 border border-zinc-200 dark:border-zinc-800 rounded-2xl bg-white dark:bg-zinc-950 text-foreground shadow-sm",
+          "flex flex-col gap-3 w-full p-4 border border-border rounded-2xl bg-card text-card-foreground shadow-sm",
           width === undefined && "max-w-sm",
           className,
         )}

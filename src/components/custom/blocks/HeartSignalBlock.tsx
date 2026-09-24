@@ -55,6 +55,7 @@ export function HeartSignal({
   const { resolvedTheme } = useTheme();
   const mounted = useIsMounted();
   const [themePrimaryColor, setThemePrimaryColor] = useState<string>("currentColor");
+  const [themeTrackColor, setThemeTrackColor] = useState<string | null>(null);
 
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
   const containerRef = useRef<HTMLDivElement | null>(null);
@@ -105,6 +106,17 @@ export function HeartSignal({
     const updateThemeColor = () => {
       const activeColor = getActivePrimaryColor();
       setThemePrimaryColor(activeColor);
+
+      // The unlit track follows the theme's --muted surface.
+      const probe = document.createElement("div");
+      probe.style.color = "var(--muted)";
+      probe.style.position = "absolute";
+      probe.style.visibility = "hidden";
+      probe.style.pointerEvents = "none";
+      document.body.appendChild(probe);
+      const muted = window.getComputedStyle(probe).color;
+      document.body.removeChild(probe);
+      setThemeTrackColor(muted && muted !== "rgba(0, 0, 0, 0)" && muted !== "transparent" ? muted : null);
     };
 
     updateThemeColor();
@@ -251,8 +263,9 @@ export function HeartSignal({
       const isDark = resolvedTheme === "dark";
       const currentBaselineY = height / 2;
 
-      // 100% Solid Opaque Base Hex Colors (Zero Alpha Overlap Seams)
-      const baseSolidColor = isDark ? "#27272a" : "#e4e4e7";
+      // 100% Solid Opaque Base Colors (Zero Alpha Overlap Seams): the theme's
+      // --muted, with neutral hex fallbacks until it resolves.
+      const baseSolidColor = themeTrackColor ?? (isDark ? "#27272a" : "#e4e4e7");
 
       const pulseFrequency = (bpm / 120) * speed * 0.35;
       time += 0.004 * pulseFrequency * 60;
@@ -566,13 +579,13 @@ export function HeartSignal({
       }
       resizeObserver.disconnect();
     };
-  }, [variant, bpm, speed, effectiveColor, showGrid, resolvedTheme]);
+  }, [variant, bpm, speed, effectiveColor, themeTrackColor, showGrid, resolvedTheme]);
 
   return (
     <div
       ref={containerRef}
       className={cn(
-        "relative w-full h-full min-h-[450px] sm:min-h-[540px] lg:min-h-[640px] flex items-center justify-center select-none overflow-hidden rounded-2xl bg-zinc-50 dark:bg-zinc-950 border border-zinc-200 dark:border-zinc-800 p-3 sm:p-5 md:p-6",
+        "relative w-full h-full min-h-[450px] sm:min-h-[540px] lg:min-h-[640px] flex items-center justify-center select-none overflow-hidden rounded-2xl bg-card text-card-foreground border border-border p-3 sm:p-5 md:p-6",
         className
       )}
       {...props}
@@ -582,7 +595,7 @@ export function HeartSignal({
 
       {/* Floating BPM Vital Telemetry Badge */}
       {showBPM && (
-        <div className="absolute top-4 left-4 sm:top-5 sm:left-5 flex items-center gap-2 px-3 py-1.5 sm:px-4 sm:py-2 rounded-xl bg-white/90 dark:bg-zinc-900/90 backdrop-blur-md border border-zinc-200/80 dark:border-zinc-800 shadow-sm pointer-events-none z-10">
+        <div className="absolute top-4 left-4 sm:top-5 sm:left-5 flex items-center gap-2 px-3 py-1.5 sm:px-4 sm:py-2 rounded-xl bg-background/90 backdrop-blur-md border border-border shadow-sm pointer-events-none z-10">
           <div className="relative flex items-center justify-center">
             <span
               className="w-2.5 h-2.5 rounded-full animate-ping absolute"
@@ -594,10 +607,10 @@ export function HeartSignal({
             />
           </div>
           <div className="flex items-baseline gap-1">
-            <span className="text-sm sm:text-base font-semibold tracking-tight text-zinc-900 dark:text-zinc-50 leading-none">
+            <span className="text-sm sm:text-base font-semibold tracking-tight text-foreground leading-none">
               {bpm}
             </span>
-            <span className="text-[9px] sm:text-[10px] font-semibold text-zinc-500 dark:text-zinc-400 uppercase leading-none">
+            <span className="text-[9px] sm:text-[10px] font-semibold text-muted-foreground uppercase leading-none">
               BPM
             </span>
           </div>

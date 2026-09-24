@@ -91,7 +91,7 @@ function DesktopLinks({
             className={cn(
               "flex items-center gap-1 px-4 py-2 text-sm font-semibold text-muted-foreground hover:text-foreground rounded-full transition-colors",
               isGlass
-                ? "hover:bg-white/20 dark:hover:bg-white/10"
+                ? "hover:bg-foreground/5"
                 : "hover:bg-muted",
             )}
           >
@@ -106,8 +106,8 @@ function DesktopLinks({
                 className={cn(
                   "w-48 rounded-xl shadow-xl p-2 flex flex-col gap-1",
                   isGlass
-                    ? "bg-white/60 dark:bg-black/40 backdrop-blur-2xl border border-white/20 dark:border-white/10"
-                    : "bg-background border border-border",
+                    ? "bg-popover/60 text-popover-foreground backdrop-blur-2xl border border-foreground/10"
+                    : "bg-popover text-popover-foreground border border-border",
                 )}
               >
                 {["Overview", "Features", "Integrations"].map((sub) => (
@@ -117,7 +117,7 @@ function DesktopLinks({
                     className={cn(
                       "px-4 py-2 text-sm font-medium text-muted-foreground hover:text-foreground rounded-lg transition-colors",
                       isGlass
-                        ? "hover:bg-white/20 dark:hover:bg-white/10"
+                        ? "hover:bg-foreground/5"
                         : "hover:bg-muted",
                     )}
                   >
@@ -216,9 +216,9 @@ export function NavbarBlock({
   const getContainerStyles = () => {
     switch (variant) {
       case "floating":
-        return "max-w-5xl mx-auto top-6 rounded-full bg-white/80 dark:bg-zinc-950/80 backdrop-blur-lg border border-border shadow-lg px-6";
+        return "max-w-5xl mx-auto top-6 rounded-full bg-background/80 backdrop-blur-lg border border-border shadow-lg px-6";
       case "glass":
-        return "w-full bg-white/40 dark:bg-black/20 backdrop-blur-xl border-b border-white/20 dark:border-white/10 shadow-sm px-6 lg:px-12";
+        return "w-full bg-background/40 backdrop-blur-xl border-b border-foreground/10 shadow-sm px-6 lg:px-12";
       case "minimal":
         return "w-full bg-transparent px-6 lg:px-12 pt-6";
       case "centered":
@@ -296,7 +296,7 @@ export function NavbarBlock({
           className={cn(
             "absolute right-0 top-0 bottom-0 w-full max-w-sm shadow-2xl pointer-events-auto flex flex-col",
             isGlass
-              ? "bg-white/70 dark:bg-zinc-950/70 backdrop-blur-2xl border-l border-white/20 dark:border-white/10"
+              ? "bg-background/70 backdrop-blur-2xl border-l border-foreground/10"
               : "bg-background border-l border-border",
           )}
         >
@@ -304,7 +304,7 @@ export function NavbarBlock({
             className={cn(
               "flex items-center justify-between p-6 border-b",
               isGlass
-                ? "border-white/10"
+                ? "border-foreground/10"
                 : "border-border",
             )}
           >
@@ -318,7 +318,7 @@ export function NavbarBlock({
               className={cn(
                 "-mr-2 rounded-full text-muted-foreground shadow-none hover:text-foreground",
                 isGlass
-                  ? "hover:bg-white/20 dark:hover:bg-white/10"
+                  ? "hover:bg-foreground/5"
                   : "bg-muted",
               )}
             />
@@ -340,7 +340,7 @@ export function NavbarBlock({
                     className={cn(
                       "flex flex-col gap-3 pl-4 border-l-2",
                       isGlass
-                        ? "border-white/10"
+                        ? "border-foreground/10"
                         : "border-border",
                     )}
                   >
@@ -362,7 +362,7 @@ export function NavbarBlock({
             className={cn(
               "p-6 flex flex-col gap-3 border-t",
               isGlass
-                ? "bg-white/10 dark:bg-white/5 border-white/10"
+                ? "bg-foreground/5 border-foreground/10"
                 : "bg-muted border-border",
             )}
           >
@@ -371,7 +371,7 @@ export function NavbarBlock({
               className={cn(
                 "w-full py-3 px-4 text-center font-semibold text-foreground border rounded-xl transition-colors",
                 isGlass
-                  ? "border-white/20 dark:border-white/10 hover:bg-white/20 dark:hover:bg-white/10"
+                  ? "border-foreground/10 hover:bg-foreground/5"
                   : "border-border hover:bg-muted",
               )}
             >

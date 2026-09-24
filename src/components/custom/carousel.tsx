@@ -45,7 +45,7 @@ export function ImageCarousel({
   images = [],
   rootClassName = "relative h-60 w-full min-w-80 overflow-hidden rounded-lg md:h-[470px] md:rounded-xl lg:h-[540px]",
   slideClassName = "h-60 min-w-full bg-black/20 object-cover sm:h-96 md:h-[540px]",
-  arrowClassName = "absolute top-1/2 z-50 flex h-7 w-7 items-center justify-center rounded-full bg-white/80 hover:bg-card dark:bg-zinc-900/80 shadow-md md:h-9 md:w-9 transition-all cursor-pointer",
+  arrowClassName = "absolute top-1/2 z-50 flex h-7 w-7 items-center justify-center rounded-full bg-card/80 hover:bg-card shadow-md md:h-9 md:w-9 transition-all cursor-pointer",
   dotClassName = "rounded-full bg-white duration-500 h-2",
   activeDotClassName = "w-8",
   prevIcon,
@@ -313,7 +313,7 @@ export function CustomCarousel({
   titleClassName = "mb-3 text-xl font-semibold lg:text-3xl",
   descClassName = "text-sm md:text-base lg:text-lg",
   thumbClassName = "h-6 w-10 shrink-0 overflow-hidden bg-black/20 sm:h-8 md:h-12 md:w-20 cursor-pointer rounded-md md:rounded-lg",
-  activeThumbClassName = "outline-2 outline-offset-2 outline-black",
+  activeThumbClassName = "outline-2 outline-offset-2 outline-primary",
   autoPlay = true,
   interval = 5000,
   imageButtonPosition = "bottom",
@@ -650,7 +650,7 @@ export function RadialCarousel({
               }}
               className={`absolute w-[110px] sm:w-[170px] md:w-[220px] h-[150px] sm:h-[230px] md:h-[300px] rounded-[14px] sm:rounded-[20px] md:rounded-[24px] overflow-hidden border-2 border-black/80 dark:border-black shadow-2xl cursor-grab active:cursor-grabbing ${
                 isCenter
-                  ? "ring-2 ring-black dark:ring-zinc-700 shadow-black/60 brightness-105"
+                  ? "ring-2 ring-primary shadow-black/60 brightness-105"
                   : "hover:brightness-95"
               }`}
             >
@@ -720,7 +720,7 @@ export function RadialCarousel({
                   className={`h-2 rounded-full transition-all duration-300 ${
                     positiveModulo(current, items.length) === idx
                       ? "w-6 bg-primary"
-                      : "w-2 bg-zinc-300 dark:bg-zinc-700"
+                      : "w-2 bg-foreground/20"
                   }`}
                   aria-label={`Go to slide ${idx + 1}`}
                 />
@@ -917,7 +917,7 @@ export function FanCarousel({
               }}
               className={`absolute w-[110px] sm:w-[170px] md:w-[220px] h-[150px] sm:h-[230px] md:h-[300px] rounded-[14px] sm:rounded-[20px] md:rounded-[24px] overflow-hidden border-2 border-black/80 dark:border-black shadow-2xl cursor-grab active:cursor-grabbing ${
                 isCenter
-                  ? "ring-2 ring-black dark:ring-zinc-700 shadow-black/60 brightness-105"
+                  ? "ring-2 ring-primary shadow-black/60 brightness-105"
                   : "hover:brightness-95"
               }`}
             >
@@ -1002,8 +1002,8 @@ export function FanCarousel({
               className={cn(
                 "h-2 rounded-full transition-all",
                 positiveModulo(current, total) === index
-                  ? "w-6 bg-zinc-900 dark:bg-zinc-200"
-                  : "w-2 bg-zinc-400/60 dark:bg-zinc-600",
+                  ? "w-6 bg-primary"
+                  : "w-2 bg-foreground/20",
               )}
             />
           ))}

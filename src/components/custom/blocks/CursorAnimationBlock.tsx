@@ -260,8 +260,8 @@ export function CursorAnimation({
             <div
               className="w-14 h-14 rounded-2xl flex items-center justify-center shadow-sm border mx-auto"
               style={{
-                backgroundColor: isPrimary ? "hsl(var(--primary) / 0.12)" : `rgba(${activeRgb}, 0.12)`,
-                borderColor: isPrimary ? "hsl(var(--primary) / 0.3)" : `rgba(${activeRgb}, 0.3)`,
+                backgroundColor: isPrimary ? "color-mix(in oklab, var(--primary) 12%, transparent)" : `rgba(${activeRgb}, 0.12)`,
+                borderColor: isPrimary ? "color-mix(in oklab, var(--primary) 30%, transparent)" : `rgba(${activeRgb}, 0.3)`,
                 color: activeColor,
               }}
             >
@@ -303,8 +303,8 @@ export function CursorAnimation({
                   top: `${mousePos.y}px`,
                   width: isClicking ? "24px" : "36px",
                   height: isClicking ? "24px" : "36px",
-                  borderColor: isPrimary ? "hsl(var(--primary) / 0.5)" : `rgba(${activeRgb}, 0.5)`,
-                  backgroundColor: isPrimary ? "hsl(var(--primary) / 0.15)" : `rgba(${activeRgb}, 0.15)`,
+                  borderColor: isPrimary ? "color-mix(in oklab, var(--primary) 50%, transparent)" : `rgba(${activeRgb}, 0.5)`,
+                  backgroundColor: isPrimary ? "color-mix(in oklab, var(--primary) 15%, transparent)" : `rgba(${activeRgb}, 0.15)`,
                 }}
               />
               <div
@@ -429,7 +429,7 @@ export function CursorAnimation({
                   width: isClicking ? "64px" : "40px",
                   height: isClicking ? "64px" : "40px",
                   borderColor: activeColor,
-                  backgroundColor: isPrimary ? "hsl(var(--primary) / 0.15)" : `rgba(${activeRgb}, 0.15)`,
+                  backgroundColor: isPrimary ? "color-mix(in oklab, var(--primary) 15%, transparent)" : `rgba(${activeRgb}, 0.15)`,
                 }}
               />
               <div
@@ -450,14 +450,14 @@ export function CursorAnimation({
                 className="pointer-events-none absolute top-0 bottom-0 w-[1px]"
                 style={{
                   left: `${mousePos.x}px`,
-                  backgroundColor: isPrimary ? "hsl(var(--primary) / 0.4)" : `rgba(${activeRgb}, 0.4)`,
+                  backgroundColor: isPrimary ? "color-mix(in oklab, var(--primary) 40%, transparent)" : `rgba(${activeRgb}, 0.4)`,
                 }}
               />
               <div
                 className="pointer-events-none absolute left-0 right-0 h-[1px]"
                 style={{
                   top: `${mousePos.y}px`,
-                  backgroundColor: isPrimary ? "hsl(var(--primary) / 0.4)" : `rgba(${activeRgb}, 0.4)`,
+                  backgroundColor: isPrimary ? "color-mix(in oklab, var(--primary) 40%, transparent)" : `rgba(${activeRgb}, 0.4)`,
                 }}
               />
               <div
@@ -510,7 +510,7 @@ export function CursorAnimation({
                   top: `${mousePos.y}px`,
                   width: "36px",
                   height: "36px",
-                  backgroundColor: isPrimary ? "hsl(var(--primary) / 0.25)" : `rgba(${activeRgb}, 0.25)`,
+                  backgroundColor: isPrimary ? "color-mix(in oklab, var(--primary) 25%, transparent)" : `rgba(${activeRgb}, 0.25)`,
                 }}
               />
               <div

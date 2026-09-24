@@ -100,7 +100,7 @@ export const MagicBentoCard = React.forwardRef<
       />
 
       {/* 4. Content Mask (Creates the 1px border effect) */}
-      <div className="absolute inset-[1px] rounded-[23px] bg-white dark:bg-[#0a0a0a] transition-colors z-0" />
+      <div className="absolute inset-[1px] rounded-[23px] bg-card transition-colors z-0" />
 
       {/* 5. Hover: Inner Card Soft Glow (FIXED: mix-blend-normal in light mode so white background can be tinted!) */}
       <motion.div

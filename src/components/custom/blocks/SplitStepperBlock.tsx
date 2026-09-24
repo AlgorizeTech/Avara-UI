@@ -21,6 +21,7 @@ export interface SplitStepperProps
   stickySide?: "left" | "right";
   cardDepthScale?: number;
   cardOffset?: number;
+  /** Hex accent for the active step. Defaults to the theme's primary. */
   color?: string;
   onStepChange?: (index: number) => void;
 }
@@ -32,7 +33,7 @@ export const SplitStepper = React.forwardRef<HTMLDivElement, SplitStepperProps>(
       stickySide = "right",
       cardDepthScale = 0.05,
       cardOffset = 16,
-      color = "#FFAB1D",
+      color,
       className,
       onStepChange,
       ...props
@@ -42,7 +43,8 @@ export const SplitStepper = React.forwardRef<HTMLDivElement, SplitStepperProps>(
     const [activeStep, setActiveStep] = useState(0);
     const cardRefs = useRef<(HTMLDivElement | null)[]>([]);
     const listRefs = useRef<(HTMLDivElement | null)[]>([]);
-    const isHex = color.startsWith("#");
+    const accent = color ?? "var(--primary)";
+    const isHex = !color || color.startsWith("#");
 
     const handleStepSelect = (index: number) => {
       setActiveStep(index);
@@ -128,13 +130,13 @@ export const SplitStepper = React.forwardRef<HTMLDivElement, SplitStepperProps>(
                     : "bg-muted/60 border-border/80 hover:bg-card hover:border-border",
                 )}
                 style={{
-                  borderColor: isActive && isHex ? color : undefined,
+                  borderColor: isActive && isHex ? accent : undefined,
                 }}
               >
                 {isActive && (
                   <div
                     className="absolute top-0 bottom-0 left-0 w-1.5 transition-colors duration-300"
-                    style={{ backgroundColor: isHex ? color : undefined }}
+                    style={{ backgroundColor: isHex ? accent : undefined }}
                   />
                 )}
 
@@ -144,13 +146,13 @@ export const SplitStepper = React.forwardRef<HTMLDivElement, SplitStepperProps>(
                       className={cn(
                         "w-9 h-9 sm:w-10 sm:h-10 rounded-xl flex items-center justify-center font-mono font-semibold text-sm border transition-colors duration-300",
                         isActive
-                          ? "text-white border-transparent shadow-md"
+                          ? cn(color ? "text-white" : "text-primary-foreground", "border-transparent shadow-md")
                           : isCompleted
                             ? "bg-muted text-foreground border-transparent"
                             : "bg-muted text-muted-foreground border-border",
                       )}
                       style={{
-                        backgroundColor: isActive && isHex ? color : undefined,
+                        backgroundColor: isActive && isHex ? accent : undefined,
                       }}
                     >
                       {isCompleted ? (
@@ -180,8 +182,8 @@ export const SplitStepper = React.forwardRef<HTMLDivElement, SplitStepperProps>(
                         : "-translate-x-2 opacity-0 group-hover:translate-x-0 group-hover:opacity-40",
                     )}
                     style={{
-                      backgroundColor: isActive ? `${color}15` : "transparent",
-                      color: isActive ? color : "currentColor",
+                      backgroundColor: isActive ? `color-mix(in oklab, ${accent} 8%, transparent)` : "transparent",
+                      color: isActive ? accent : "currentColor",
                     }}
                   >
                     <ArrowRight className="w-4 h-4 sm:w-5 sm:h-5" />
@@ -208,11 +210,11 @@ export const SplitStepper = React.forwardRef<HTMLDivElement, SplitStepperProps>(
                           "px-3 py-1 rounded-lg text-[11px] sm:text-xs font-semibold uppercase tracking-wider border transition-all duration-300",
                           isActive
                             ? "border-transparent shadow-xs"
-                            : "bg-transparent border-border text-zinc-400 dark:text-zinc-600",
+                            : "bg-transparent border-border text-muted-foreground/70",
                         )}
                         style={{
-                          backgroundColor: isActive ? `${color}12` : undefined,
-                          color: isActive ? color : undefined,
+                          backgroundColor: isActive ? `color-mix(in oklab, ${accent} 7%, transparent)` : undefined,
+                          color: isActive ? accent : undefined,
                         }}
                       >
                         {tag}
@@ -260,7 +262,7 @@ export const SplitStepper = React.forwardRef<HTMLDivElement, SplitStepperProps>(
                     </span>
                     <div
                       className="w-2.5 h-2.5 rounded-full animate-ping"
-                      style={{ backgroundColor: color }}
+                      style={{ backgroundColor: accent }}
                     />
                   </div>
 

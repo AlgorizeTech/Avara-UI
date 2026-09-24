@@ -330,8 +330,8 @@ export function CurvedCarousel({
                   ...activeColorStyle,
                 }}
                 className={cn(
-                  "absolute h-[200px] sm:h-[280px] md:h-[350px] rounded-2xl overflow-hidden cursor-default shadow-xl pointer-events-none border border-black/80 dark:border-white/80",
-                  "bg-zinc-900"
+                  "absolute h-[200px] sm:h-[280px] md:h-[350px] rounded-2xl overflow-hidden cursor-default shadow-xl pointer-events-none border border-foreground/80",
+                  "bg-muted"
                 )}
               >
                 <img
@@ -394,7 +394,7 @@ export function CurvedCarousel({
               }}
               className={cn(
                 "absolute w-[150px] sm:w-[210px] md:w-[280px] h-[210px] sm:h-[300px] md:h-[410px] rounded-xl sm:rounded-2xl overflow-hidden cursor-default shadow-none transition-none",
-                "bg-zinc-900 border border-black/80 dark:border-white/80"
+                "bg-muted border border-foreground/80"
               )}
             >
               {/* Pure Image Only */}

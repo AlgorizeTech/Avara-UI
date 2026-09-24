@@ -79,8 +79,8 @@ export const Dock = React.forwardRef<HTMLDivElement, DockProps>(
         }}
         className={cn(
           "mx-auto flex items-end justify-center rounded-2xl px-2 sm:px-4 pt-1 sm:pt-2.5 pb-0.5 sm:pb-2.5 shadow-2xl transition-all duration-300",
-          "bg-white/70 dark:bg-zinc-900/70 backdrop-blur-xl border border-border/80",
-          "ring-1 ring-black/5 dark:ring-white/5",
+          "bg-card/70 backdrop-blur-xl border border-border/80",
+          "ring-1 ring-foreground/5",
           "w-fit max-w-[calc(100vw-1.5rem)] overflow-visible",
           className,
         )}
@@ -153,7 +153,7 @@ const DockIcon: React.FC<DockIconProps> = ({
             animate={{ opacity: 1, y: 0, scale: 1 }}
             exit={{ opacity: 0, y: 5, scale: 0.8 }}
             transition={{ duration: 0.15 }}
-            className="absolute -top-6 sm:-top-9 px-1.5 py-0.5 rounded text-[8px] sm:text-xs font-semibold whitespace-nowrap pointer-events-none shadow-md bg-primary text-primary-foreground border border-zinc-800 dark:border-zinc-200 z-50"
+            className="absolute -top-6 sm:-top-9 px-1.5 py-0.5 rounded text-[8px] sm:text-xs font-semibold whitespace-nowrap pointer-events-none shadow-md bg-primary text-primary-foreground border border-foreground z-50"
           >
             {item.label}
           </motion.div>
@@ -173,14 +173,14 @@ const DockIcon: React.FC<DockIconProps> = ({
         aria-label={item.label}
         className={cn(
           "relative flex items-center justify-center rounded-xl shadow-lg transition-colors cursor-pointer select-none shrink-0",
-          "bg-gradient-to-t from-zinc-100 to-white dark:from-zinc-800 dark:to-zinc-700/80",
-          "border border-border/80 hover:border-zinc-400 dark:hover:border-white/30",
+          "bg-gradient-to-t from-muted to-card",
+          "border border-border/80 hover:border-foreground/30",
           "text-foreground active:scale-95",
         )}
       >
         {/* Notification Badge */}
         {item.badge && (
-          <span className="absolute -top-1 -right-1 flex h-3.5 w-3.5 sm:h-4 sm:min-w-4 items-center justify-center rounded-full bg-rose-500 px-1 text-[9px] sm:text-[10px] font-semibold text-white shadow-sm border border-white dark:border-zinc-900 animate-pulse">
+          <span className="absolute -top-1 -right-1 flex h-3.5 w-3.5 sm:h-4 sm:min-w-4 items-center justify-center rounded-full bg-rose-500 px-1 text-[9px] sm:text-[10px] font-semibold text-white shadow-sm border border-card animate-pulse">
             {item.badge}
           </span>
         )}

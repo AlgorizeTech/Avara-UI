@@ -347,21 +347,15 @@ export const DataMaps = React.forwardRef<HTMLDivElement, DataMapsProps>(
         <div ref={(node) => { wrapperRef.current = node; if (typeof ref === 'function') ref(node); else if (ref) ref.current = node; }} className={cn("relative w-full h-full min-h-[250px] sm:min-h-[400px] overflow-hidden rounded-lg bg-muted map-wrapper", className)} {...props}>
         <style dangerouslySetInnerHTML={{__html: `
           .map-wrapper {
-            --map-default-fill: #e2e8f0;
-          }
-          .dark .map-wrapper {
-            --map-default-fill: #1e293b;
+            --map-default-fill: color-mix(in oklab, var(--foreground) 12%, var(--muted));
           }
           path.leaflet-interactive:focus {
             outline: none;
           }
           .map-stroke {
-            stroke: #ffffff;
+            stroke: var(--background);
             stroke-width: 0.5;
             transition: fill 0.2s ease, fill-opacity 0.2s ease;
-          }
-          .dark .map-stroke {
-            stroke: #0f172a;
           }
           .custom-leaflet-tooltip {
             background: transparent !important;
@@ -534,7 +528,7 @@ export const DataMaps = React.forwardRef<HTMLDivElement, DataMapsProps>(
         </div>
         
         {variant === "dots" && (
-          <div className="absolute bottom-4 right-4 bg-white/90 dark:bg-slate-900/90 backdrop-blur-sm border border-border px-3 py-2 rounded-full shadow-sm z-[400] flex items-center gap-1.5">
+          <div className="absolute bottom-4 right-4 bg-card/90 backdrop-blur-sm border border-border px-3 py-2 rounded-full shadow-sm z-[400] flex items-center gap-1.5">
             <svg 
               xmlns="http://www.w3.org/2000/svg" 
               width="14" 

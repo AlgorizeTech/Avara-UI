@@ -154,7 +154,7 @@ export function Piano({
   return (
     <article
       className={cn(
-        "w-full max-w-5xl p-5 sm:p-8 rounded-3xl bg-zinc-900 border border-zinc-800 shadow-2xl flex flex-col gap-6 text-white select-none transition-all duration-300 origin-center max-sm:rotate-90 max-sm:w-[88vh] max-sm:h-[88vw] max-sm:max-w-none max-sm:my-16",
+        "w-full max-w-5xl p-5 sm:p-8 rounded-3xl bg-card border border-border shadow-2xl flex flex-col gap-6 text-card-foreground select-none transition-all duration-300 origin-center max-sm:rotate-90 max-sm:w-[88vh] max-sm:h-[88vw] max-sm:max-w-none max-sm:my-16",
         isRotated && "sm:rotate-90 sm:w-[88vh] sm:h-[88vw] sm:max-w-none sm:my-16",
         className
       )}
@@ -163,8 +163,8 @@ export function Piano({
       <header className="flex flex-row items-center justify-between gap-2 sm:gap-4 w-full">
         {/* Title */}
         <div className="flex items-center gap-2 sm:gap-2.5 shrink-0">
-          <div className="size-7 sm:size-9 rounded-2xl bg-white border border-zinc-200 flex items-center justify-center shadow-sm">
-            <Music className="size-3.5 sm:size-4 text-zinc-900" />
+          <div className="size-7 sm:size-9 rounded-2xl bg-primary border border-primary flex items-center justify-center shadow-sm">
+            <Music className="size-3.5 sm:size-4 text-primary-foreground" />
           </div>
           <h2 className="text-sm sm:text-lg font-bold tracking-widest text-primary uppercase">
             PIANO
@@ -177,7 +177,7 @@ export function Piano({
           <div className="flex items-center gap-2">
             <button
               onClick={() => setVolume(volume > 0 ? 0 : 0.8)}
-              className="text-zinc-400 hover:text-zinc-200 transition-colors"
+              className="text-muted-foreground hover:text-foreground transition-colors"
               title="Toggle Mute"
             >
               {volume > 0 ? (
@@ -186,11 +186,11 @@ export function Piano({
                 <VolumeX className="size-4 text-red-400" />
               )}
             </button>
-            <span className="text-[10px] sm:text-xs font-semibold uppercase text-zinc-400">
+            <span className="text-[10px] sm:text-xs font-semibold uppercase text-muted-foreground">
               Volume
             </span>
             <div className="relative w-20 sm:w-28 h-4 flex items-center shrink-0">
-              <div className="w-full h-2.5 rounded-full bg-zinc-800 border border-zinc-700 overflow-hidden relative">
+              <div className="w-full h-2.5 rounded-full bg-muted border border-border overflow-hidden relative">
                 <div
                   className="h-full bg-primary"
                   style={{ width: `${volume * 100}%` }}
@@ -206,7 +206,7 @@ export function Piano({
                 className="absolute inset-0 w-full h-full opacity-0 cursor-pointer z-10"
               />
               <div
-                className="absolute size-4 rounded-full bg-white border border-zinc-300 ring-2 ring-black/20 pointer-events-none -translate-x-1/2 shadow-sm"
+                className="absolute size-4 rounded-full bg-background border border-border ring-2 ring-foreground/20 pointer-events-none -translate-x-1/2 shadow-sm"
                 style={{ left: `${volume * 100}%` }}
               />
             </div>
@@ -214,22 +214,22 @@ export function Piano({
 
           {/* Show Keys Toggle Switch (Height Matched to Volume Slider) */}
           <div className="flex items-center gap-2">
-            <span className="text-[10px] sm:text-xs font-semibold uppercase text-zinc-400">
+            <span className="text-[10px] sm:text-xs font-semibold uppercase text-muted-foreground">
               Show Keys
             </span>
             <div className="h-4 flex items-center">
               <button
                 onClick={() => setShowKeys(!showKeys)}
                 className={cn(
-                  "relative inline-flex h-4 w-9 shrink-0 cursor-pointer rounded-full border border-zinc-700/80 p-0.5 transition-colors duration-200 ease-in-out focus:outline-none items-center",
-                  showKeys ? "bg-primary" : "bg-zinc-800"
+                  "relative inline-flex h-4 w-9 shrink-0 cursor-pointer rounded-full border border-border p-0.5 transition-colors duration-200 ease-in-out focus:outline-none items-center",
+                  showKeys ? "bg-primary" : "bg-muted"
                 )}
                 role="switch"
                 aria-checked={showKeys}
               >
                 <span
                   className={cn(
-                    "pointer-events-none inline-block size-3 rounded-full bg-white shadow-sm ring-0 transition-transform duration-200 ease-in-out",
+                    "pointer-events-none inline-block size-3 rounded-full bg-background shadow-sm ring-0 transition-transform duration-200 ease-in-out",
                     showKeys ? "translate-x-4" : "translate-x-0"
                   )}
                 />
@@ -242,7 +242,7 @@ export function Piano({
             onClick={() => setIsRotated((prev) => !prev)}
             className={cn(
               "transition-colors",
-              isRotated ? "text-primary" : "text-zinc-400 hover:text-zinc-200",
+              isRotated ? "text-primary" : "text-muted-foreground hover:text-foreground",
             )}
             title="Rotate keyboard"
             aria-pressed={isRotated}

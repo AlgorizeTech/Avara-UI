@@ -335,7 +335,7 @@ export const ApiPlaygroundBlock = forwardRef<
               onChange={(e) =>
                 handleUpdatePair(setter, item.id, "enabled", e.target.checked)
               }
-              className="w-4 h-4 rounded border-border text-foreground focus:ring-zinc-900 shrink-0 cursor-pointer"
+              className="w-4 h-4 rounded border-input text-foreground focus:ring-ring shrink-0 cursor-pointer"
             />
             <input
               type="text"
@@ -344,7 +344,7 @@ export const ApiPlaygroundBlock = forwardRef<
               onChange={(e) =>
                 handleUpdatePair(setter, item.id, "key", e.target.value)
               }
-              className="w-1/2 min-w-0 px-2 sm:px-3 py-1.5 text-xs sm:text-sm bg-background border border-border rounded-md outline-none focus:border-zinc-400 dark:focus:border-zinc-600 font-mono transition-colors"
+              className="w-1/2 min-w-0 px-2 sm:px-3 py-1.5 text-xs sm:text-sm bg-background border border-input rounded-md outline-none focus:border-ring font-mono transition-colors"
               disabled={!item.enabled}
             />
             <input
@@ -354,12 +354,12 @@ export const ApiPlaygroundBlock = forwardRef<
               onChange={(e) =>
                 handleUpdatePair(setter, item.id, "value", e.target.value)
               }
-              className="w-1/2 min-w-0 px-2 sm:px-3 py-1.5 text-xs sm:text-sm bg-background border border-border rounded-md outline-none focus:border-zinc-400 dark:focus:border-zinc-600 font-mono transition-colors"
+              className="w-1/2 min-w-0 px-2 sm:px-3 py-1.5 text-xs sm:text-sm bg-background border border-input rounded-md outline-none focus:border-ring font-mono transition-colors"
               disabled={!item.enabled}
             />
             <button
               onClick={() => handleRemovePair(setter, item.id)}
-              className="p-1.5 text-zinc-400 hover:text-red-500 opacity-100 sm:opacity-0 sm:group-hover:opacity-100 transition-all rounded-md hover:bg-red-50 dark:hover:bg-red-500/10 shrink-0 cursor-pointer"
+              className="p-1.5 text-muted-foreground hover:text-red-500 opacity-100 sm:opacity-0 sm:group-hover:opacity-100 transition-all rounded-md hover:bg-red-50 dark:hover:bg-red-500/10 shrink-0 cursor-pointer"
               title="Remove pair"
             >
               <Trash2 className="w-4 h-4" />
@@ -466,7 +466,7 @@ export const ApiPlaygroundBlock = forwardRef<
               {activeTab === "body" && (
                 <div className="w-full h-full flex flex-col relative group">
                   {method === "GET" && (
-                    <div className="absolute inset-0 bg-white/80 dark:bg-zinc-900/80 backdrop-blur-[1px] z-10 flex items-center justify-center rounded-lg p-4 text-center">
+                    <div className="absolute inset-0 bg-card/80 backdrop-blur-[1px] z-10 flex items-center justify-center rounded-lg p-4 text-center">
                       <p className="text-xs sm:text-sm font-medium text-muted-foreground">
                         GET requests typically do not have a body.
                       </p>
@@ -475,7 +475,7 @@ export const ApiPlaygroundBlock = forwardRef<
                   <textarea
                     value={body}
                     onChange={(e) => setBody(e.target.value)}
-                    className="w-full h-full min-h-[150px] p-3 text-xs sm:text-sm font-mono bg-muted border border-border rounded-lg outline-none focus:border-zinc-400 dark:focus:border-zinc-600 resize-none transition-colors"
+                    className="w-full h-full min-h-[150px] p-3 text-xs sm:text-sm font-mono bg-muted border border-input rounded-lg outline-none focus:border-ring resize-none transition-colors"
                     spellCheck={false}
                   />
                 </div>
@@ -485,7 +485,7 @@ export const ApiPlaygroundBlock = forwardRef<
         </div>
 
         {/* RIGHT PANE: RESPONSE VIEWER */}
-        <div className="flex flex-col bg-white dark:bg-[#09090b] rounded-xl overflow-hidden border border-border min-h-[300px] min-w-0">
+        <div className="flex flex-col bg-card rounded-xl overflow-hidden border border-border min-h-[300px] min-w-0">
           {/* ── RESPONSIVE TERMINAL HEADER ──────────────────────────────── */}
           <div className="flex flex-wrap items-center justify-between gap-2 px-3 sm:px-4 py-2.5 bg-muted/80 border-b border-border">
             <div className="flex items-center gap-2">
@@ -523,7 +523,7 @@ export const ApiPlaygroundBlock = forwardRef<
           {/* Terminal Body */}
           <div className="relative flex-1 p-3 sm:p-4 overflow-y-auto overflow-x-auto">
             {isLoading ? (
-              <div className="absolute inset-0 flex flex-col items-center justify-center gap-3 bg-white/80 dark:bg-zinc-950/80">
+              <div className="absolute inset-0 flex flex-col items-center justify-center gap-3 bg-card/80">
                 <Activity className={cn("w-6 h-6 animate-pulse", theme.text)} />
                 <span className="text-xs font-mono text-muted-foreground animate-pulse">
                   Awaiting response...

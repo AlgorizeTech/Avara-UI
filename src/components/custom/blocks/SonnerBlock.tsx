@@ -105,7 +105,7 @@ function ToastCard({
 
   const typeStyles = {
     default:
-      "bg-white dark:bg-zinc-950 text-foreground border-primary/20 dark:border-primary/30 shadow-lg",
+      "bg-popover text-popover-foreground border-primary/20 dark:border-primary/30 shadow-lg",
     success:
       "bg-emerald-50 dark:bg-emerald-500/10 text-emerald-900 dark:text-emerald-100 border-emerald-200 dark:border-emerald-500/20",
     error:
@@ -156,7 +156,7 @@ function ToastCard({
 
       <button
         onClick={onDismiss}
-        className="shrink-0 p-1 rounded-md opacity-0 group-hover:opacity-100 hover:bg-black/5 dark:hover:bg-white/10 transition-all absolute right-2 top-2"
+        className="shrink-0 p-1 rounded-md opacity-0 group-hover:opacity-100 hover:bg-foreground/10 transition-all absolute right-2 top-2"
         aria-label="Close"
       >
         <X className="w-4 h-4 opacity-70" />

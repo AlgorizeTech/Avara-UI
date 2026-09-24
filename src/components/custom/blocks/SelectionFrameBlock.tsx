@@ -134,7 +134,7 @@ export function SelectionFrame({
             <motion.span
               key={key}
               aria-hidden
-              className="absolute pointer-events-none bg-white dark:bg-zinc-950"
+              className="absolute pointer-events-none bg-background"
               initial={animateHandles ? { scale: 0, opacity: 0 } : false}
               animate={animateHandles ? { scale: 1, opacity: 1 } : undefined}
               transition={{

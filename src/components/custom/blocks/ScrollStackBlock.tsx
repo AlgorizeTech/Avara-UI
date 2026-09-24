@@ -136,7 +136,7 @@ export const ScrollStack = ({
             )}
           >
             {/* Subtle Glass Noise Overlay */}
-            <div className="absolute inset-0 bg-primary/[0.02]/[0.03] pointer-events-none" />
+            <div className="absolute inset-0 bg-foreground/[0.02] pointer-events-none" />
 
             <div className="flex-1 flex flex-col justify-center relative z-10">
               {item.icon && (
@@ -152,7 +152,7 @@ export const ScrollStack = ({
                   "text-base sm:text-lg font-medium leading-relaxed max-w-lg transition-colors",
                   item.color
                     ? "text-white/80"
-                    : "text-muted-foreground dark:text-white/70",
+                    : "text-muted-foreground",
                 )}
               >
                 {item.description}
@@ -161,7 +161,7 @@ export const ScrollStack = ({
 
             {/* Right-Side Content Payload */}
             {item.content && (
-              <div className="flex-1 relative z-10 rounded-2xl overflow-hidden bg-muted/80 dark:bg-black/20 border border-border/80 hidden md:flex items-center justify-center transition-colors">
+              <div className="flex-1 relative z-10 rounded-2xl overflow-hidden bg-muted/80 border border-border/80 hidden md:flex items-center justify-center transition-colors">
                 {item.content}
               </div>
             )}

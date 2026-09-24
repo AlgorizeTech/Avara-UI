@@ -347,7 +347,7 @@ const ThemeSwitcherIcon = React.forwardRef<HTMLDivElement, ThemeSwitcherVariantP
             className="relative flex items-center justify-center w-full h-full"
           >
             {resolvedTheme === "dark" ? (
-              <Moon className="w-[18px] h-[18px] text-zinc-100" />
+              <Moon className="w-[18px] h-[18px] text-foreground" />
             ) : (
               <Sun className="w-[18px] h-[18px] text-foreground" />
             )}
@@ -437,7 +437,7 @@ const ThemeSwitcherDropdown = React.forwardRef<HTMLDivElement, ThemeSwitcherVari
 
         <div
           ref={menuRef}
-          className="absolute left-1/2 -translate-x-1/2 sm:left-auto sm:right-0 sm:translate-x-0 top-full mt-2 w-36 p-1 bg-background border border-border rounded-xl shadow-xl z-50 hidden"
+          className="absolute left-1/2 -translate-x-1/2 sm:left-auto sm:right-0 sm:translate-x-0 top-full mt-2 w-36 p-1 bg-popover text-popover-foreground border border-border rounded-xl shadow-xl z-50 hidden"
         >
           {[
             { id: "light", icon: Sun, label: "Light" },

@@ -125,7 +125,7 @@ export const Dropzone = forwardRef<HTMLDivElement, DropzoneProps>(
         onClick={() => fileInputRef.current?.click()}
         data-dragging={isDragging || undefined}
         className={cn(
-          "relative w-full rounded-2xl border-2 border-dashed border-border flex flex-col items-center justify-center py-12 px-6 cursor-pointer overflow-hidden group bg-white/50 dark:bg-transparent",
+          "relative w-full rounded-2xl border-2 border-dashed border-border flex flex-col items-center justify-center py-12 px-6 cursor-pointer overflow-hidden group bg-card/50",
           "transition-[border-color,background-color,box-shadow] duration-300",
           "data-[dragging]:border-primary/30 data-[dragging]:bg-primary/5 data-[dragging]:shadow-[0_0_30px_-5px_color-mix(in_oklab,var(--primary)_20%,transparent)]",
           className,
@@ -252,7 +252,7 @@ export const UploadItem = forwardRef<HTMLDivElement, UploadItemProps>(
         onMouseMove={handleMouseMove}
         onMouseLeave={handleMouseLeave}
         className={cn(
-          "w-full bg-white dark:bg-[#0d0d12] border rounded-2xl p-4 flex flex-col gap-4 relative overflow-hidden transition-colors duration-300 shadow-[0_2px_12px_rgba(0,0,0,0.03)] dark:shadow-[0_2px_20px_rgba(0,0,0,0.2)] group",
+          "w-full bg-card text-card-foreground border rounded-2xl p-4 flex flex-col gap-4 relative overflow-hidden transition-colors duration-300 shadow-[0_2px_12px_rgba(0,0,0,0.03)] dark:shadow-[0_2px_20px_rgba(0,0,0,0.2)] group",
           isError
             ? "border-rose-200 dark:border-rose-900/50"
             : isSuccess

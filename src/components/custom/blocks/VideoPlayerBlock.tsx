@@ -356,7 +356,7 @@ export const VideoPlayer = React.forwardRef<
     );
 
     const glow = enableGlow ? (
-      <div className="pointer-events-none absolute -inset-4 z-0 rounded-3xl bg-gradient-to-tr from-indigo-500/20 via-purple-500/20 to-pink-500/10 opacity-80 blur-3xl transition-opacity duration-500 dark:opacity-50" />
+      <div className="pointer-events-none absolute -inset-4 z-0 rounded-3xl bg-gradient-to-tr from-primary/20 via-primary/20 to-primary/10 opacity-80 blur-3xl transition-opacity duration-500 dark:opacity-50" />
     ) : null;
 
     const badgePill = badge ? (
@@ -470,7 +470,7 @@ export const VideoPlayer = React.forwardRef<
                     className="group/btn relative flex transform cursor-pointer items-center gap-2.5 rounded-2xl border border-white/30 bg-white/15 px-5 py-3 shadow-[0_8px_32px_rgba(0,0,0,0.3)] backdrop-blur-xl transition-all duration-300 group-hover:scale-105 hover:bg-white/25 focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-black focus-visible:outline-none sm:gap-4 sm:px-7 sm:py-4 dark:border-white/15 dark:bg-black/30 dark:hover:bg-black/50"
                   >
                     <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-xl bg-[var(--theme-color,var(--primary))] shadow-lg transition-colors duration-200 sm:h-12 sm:w-12">
-                      <Play className="ml-0.5 h-3.5 w-3.5 fill-primary-foreground text-primary-foreground sm:h-5 sm:w-5 dark:fill-zinc-900 dark:text-zinc-900" />
+                      <Play className="ml-0.5 h-3.5 w-3.5 fill-primary-foreground text-primary-foreground sm:h-5 sm:w-5" />
                     </span>
                     <span className="pr-1 text-xs font-extrabold tracking-tight text-white sm:pr-2 sm:text-base md:text-lg">
                       {playButtonLabel}

@@ -253,7 +253,7 @@ export function DialogContent({
           // `size="full"`, or a height passed through className — the default
           // `align-content: stretch` inflates every auto row to fill it, and a
           // footer button stretches along with the row holding it.
-          "relative z-50 w-full grid content-start gap-4 border border-border bg-white dark:bg-[#050505] text-foreground p-6 shadow-lg rounded-xl max-h-[85vh] overflow-y-auto",
+          "relative z-50 w-full grid content-start gap-4 border border-border bg-card text-card-foreground p-6 shadow-lg rounded-xl max-h-[85vh] overflow-y-auto",
           DIALOG_SIZES[size],
           "animate-in fade-in zoom-in-95 slide-in-from-top-[5%] duration-200",
           className,
@@ -265,7 +265,7 @@ export function DialogContent({
         {!hideCloseButton && (
           <button
             onClick={() => setOpen(false)}
-            className="absolute right-4 top-4 rounded-sm opacity-70 ring-offset-white transition-opacity hover:opacity-100 focus:outline-none focus:ring-2 focus:ring-zinc-950 focus:ring-offset-2 disabled:pointer-events-none data-[state=open]:bg-muted data-[state=open]:text-zinc-500 dark:ring-offset-zinc-950 dark:focus:ring-zinc-300 dark:data-[state=open]:bg-zinc-800 dark:data-[state=open]:text-zinc-400"
+            className="absolute right-4 top-4 rounded-sm opacity-70 ring-offset-card transition-opacity hover:opacity-100 focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 disabled:pointer-events-none data-[state=open]:bg-muted data-[state=open]:text-muted-foreground"
           >
             <X className="h-4 w-4" />
             <span className="sr-only">Close</span>

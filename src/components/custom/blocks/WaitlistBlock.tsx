@@ -52,9 +52,9 @@ function Reveal({ className, children }: { className?: string; children: React.R
 
 /** The ring colour between stacked faces, matched to each layout's surface. */
 const RING: Record<WaitlistVariant, string> = {
-  card: "ring-white dark:ring-zinc-900",
-  launch: "ring-white dark:ring-[#0b0b0c]",
-  queue: "ring-[#f4f4f4] dark:ring-[#0b0b0c]",
+  card: "ring-card",
+  launch: "ring-card",
+  queue: "ring-background",
 };
 
 // ------------------------------------------
@@ -238,10 +238,10 @@ function Form({
             animate={{ opacity: 1, y: 0, scale: 1 }}
             transition={{ duration: 0.5, ease: EASE }}
             className={cn(
-              "rounded-2xl bg-white p-5 text-left text-[#141414] dark:bg-white/[0.08] dark:text-white",
+              "rounded-2xl bg-card p-5 text-left text-card-foreground",
               stacked
-                ? "border border-black/[0.06] dark:border-white/10"
-                : "shadow-[0_1px_2px_rgba(0,0,0,0.05),0_12px_32px_-16px_rgba(0,0,0,0.25)] dark:shadow-none dark:ring-1 dark:ring-white/10",
+                ? "border border-border"
+                : "shadow-[0_1px_2px_rgba(0,0,0,0.05),0_12px_32px_-16px_rgba(0,0,0,0.25)] dark:shadow-none dark:ring-1 dark:ring-foreground/10",
             )}
           >
             <p className="flex items-center gap-2.5 text-[15px] font-semibold leading-tight">
@@ -277,9 +277,9 @@ function Form({
                 <>
                   <div
                     className={cn(
-                      "flex items-center gap-1 rounded-full bg-white p-1.5 transition-shadow duration-300",
+                      "flex items-center gap-1 rounded-full bg-card p-1.5 transition-shadow duration-300",
                       "shadow-[0_1px_2px_rgba(0,0,0,0.05),0_8px_24px_-12px_rgba(0,0,0,0.2)] focus-within:shadow-[0_1px_2px_rgba(0,0,0,0.05),0_12px_32px_-12px_rgba(0,0,0,0.28)]",
-                      "dark:bg-white/10 dark:shadow-none dark:ring-1 dark:ring-white/15 dark:backdrop-blur dark:focus-within:shadow-none dark:focus-within:ring-white/30",
+                      "dark:shadow-none dark:ring-1 dark:ring-foreground/15 dark:backdrop-blur dark:focus-within:shadow-none dark:focus-within:ring-foreground/30",
                       error && "ring-1 ring-red-500/60 dark:ring-red-400/60",
                     )}
                   >
@@ -295,7 +295,7 @@ function Form({
                       aria-label="Email address"
                       aria-invalid={error ? true : undefined}
                       autoComplete="email"
-                      className="min-w-0 flex-1 gap-0 [&>div>div]:h-10 [&>div>div]:rounded-full [&>div>div]:border-0 [&>div>div]:bg-transparent [&>div>div]:px-2 [&>div>div]:shadow-none [&>div>div]:focus-within:bg-transparent [&>div>div]:focus-within:ring-0 dark:[&_input]:text-white dark:[&_input]:placeholder:text-white/45"
+                      className="min-w-0 flex-1 gap-0 [&>div>div]:h-10 [&>div>div]:rounded-full [&>div>div]:border-0 [&>div>div]:bg-transparent [&>div>div]:px-2 [&>div>div]:shadow-none [&>div>div]:focus-within:bg-transparent [&>div>div]:focus-within:ring-0 dark:[&_input]:placeholder:text-foreground/45"
                     />
                     <Button
                       type="submit"
@@ -363,7 +363,7 @@ function Proof({ avatars, className, children, ...props }: WaitlistProofProps) {
     <Reveal>
       <div
         className={cn(
-          "flex items-center justify-center gap-3 text-[13px] font-medium text-black/65 dark:text-white/70",
+          "flex items-center justify-center gap-3 text-[13px] font-medium text-foreground/65",
           variant === "card" ? "mt-5" : "mt-7",
           className,
         )}
@@ -449,10 +449,10 @@ function WaitlistRoot({
     <WaitlistContext.Provider value={{ variant, reduced }}>
       <section
         className={cn(
-          "relative isolate w-full text-[#141414] dark:text-white",
+          "relative isolate w-full text-foreground",
           // `queue` paints its own soft ground; the other two are a card or a
           // panel on whatever the page provides.
-          variant === "queue" && "overflow-hidden bg-[#f4f4f4] dark:bg-[#0b0b0c]",
+          variant === "queue" && "overflow-hidden bg-background",
           className,
         )}
         style={accent ? ({ ...style, "--primary": accent } as React.CSSProperties) : style}
@@ -464,9 +464,9 @@ function WaitlistRoot({
           className={cn(
             "mx-auto flex flex-col items-stretch",
             variant === "card" &&
-              "max-w-sm rounded-2xl border border-black/[0.06] bg-white p-6 shadow-[0_1px_2px_rgba(0,0,0,0.04),0_10px_30px_-18px_rgba(0,0,0,0.25)] dark:border-white/10 dark:bg-zinc-900 dark:shadow-none sm:p-7",
+              "max-w-sm rounded-2xl border border-border bg-card p-6 shadow-[0_1px_2px_rgba(0,0,0,0.04),0_10px_30px_-18px_rgba(0,0,0,0.25)] dark:shadow-none sm:p-7",
             variant === "launch" &&
-              "max-w-4xl rounded-[28px] border border-black/[0.06] bg-white px-6 py-12 dark:border-white/10 dark:bg-[#0b0b0c] sm:px-12 sm:py-16",
+              "max-w-4xl rounded-[28px] border border-border bg-card px-6 py-12 sm:px-12 sm:py-16",
             variant === "queue" && "max-w-xl px-6 py-16 sm:py-24",
           )}
         >

@@ -317,8 +317,8 @@ export const ChatTypingIndicator = forwardRef<
           className={cn(
             "w-1.5 h-1.5 rounded-full",
             variant === "sent"
-              ? "bg-white/70 dark:bg-black/70"
-              : "bg-zinc-400 dark:bg-zinc-500",
+              ? "bg-primary-foreground/70"
+              : "bg-muted-foreground",
           )}
         />
       ))}

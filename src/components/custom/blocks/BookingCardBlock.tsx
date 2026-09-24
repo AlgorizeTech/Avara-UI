@@ -170,7 +170,7 @@ function BookingCardDays({ days: daysProp, count = 7, horizon = 90, unavailable,
               onClick={() => setPage((p) => Math.min(Math.max(p + step, 0), pageCount - 1))}
               className={cn(
                 "grid size-7 place-items-center rounded-full transition-colors",
-                "hover:bg-black/[0.05] disabled:cursor-not-allowed disabled:opacity-30 disabled:hover:bg-transparent dark:hover:bg-white/10",
+                "hover:bg-foreground/5 disabled:cursor-not-allowed disabled:opacity-30 disabled:hover:bg-transparent",
                 "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary",
               )}
             >
@@ -196,13 +196,13 @@ function BookingCardDays({ days: daysProp, count = 7, horizon = 90, unavailable,
                 "flex flex-col items-center gap-1 rounded-2xl py-2 text-xs transition-colors",
                 "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary",
                 selected
-                  ? "bg-[#1d1d1f] text-white dark:bg-white dark:text-[#1d1d1f]"
+                  ? "bg-primary text-primary-foreground"
                   : off
-                    ? "text-black/30 line-through dark:text-white/30"
-                    : "hover:bg-black/[0.05] dark:hover:bg-white/10",
+                    ? "text-foreground/30 line-through"
+                    : "hover:bg-foreground/5",
               )}
             >
-              <span className={cn("text-[10px] uppercase", selected ? "opacity-70" : "text-black/50 dark:text-white/50")}>
+              <span className={cn("text-[10px] uppercase", selected ? "opacity-70" : "text-foreground/50")}>
                 {WEEKDAY.format(d).slice(0, 3)}
               </span>
               <span className="text-sm font-semibold tabular-nums">{d.getDate()}</span>
@@ -225,7 +225,7 @@ function BookingCardSlots({ label, slots, className }: BookingCardSlotsProps) {
   const { day, slot, setSlot } = useBookingCard("Slots");
   return (
     <div className={className}>
-      <p className="text-xs text-black/50 dark:text-white/50">{label}</p>
+      <p className="text-xs text-foreground/50">{label}</p>
       <div role="radiogroup" aria-label={`${label} times`} className="mt-2 flex flex-wrap gap-2">
         {slots.map((s) => {
           const selected = slot === s.label;
@@ -241,10 +241,10 @@ function BookingCardSlots({ label, slots, className }: BookingCardSlotsProps) {
                 "h-9 rounded-full border px-3.5 text-xs font-medium tabular-nums transition-colors",
                 "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary",
                 selected
-                  ? "border-transparent bg-[#1d1d1f] text-white dark:bg-white dark:text-[#1d1d1f]"
+                  ? "border-transparent bg-primary text-primary-foreground"
                   : s.taken
-                    ? "border-transparent text-black/30 line-through dark:text-white/30"
-                    : "border-black/10 bg-black/[0.03] hover:bg-black/[0.06] disabled:opacity-50 dark:border-white/15 dark:bg-white/5 dark:hover:bg-white/10",
+                    ? "border-transparent text-foreground/30 line-through"
+                    : "border-foreground/10 bg-foreground/[0.03] hover:bg-foreground/[0.06] disabled:opacity-50",
               )}
             >
               {s.label}
@@ -273,7 +273,7 @@ function BookingCardSubmit({ children = "Book now", className }: BookingCardSubm
       onClick={submit}
       className={cn(
         "inline-flex h-11 w-full items-center justify-center gap-2 rounded-full bg-primary px-5 text-sm font-medium text-primary-foreground transition-[background-color,transform] hover:bg-primary/90 active:scale-[0.98] disabled:cursor-not-allowed disabled:opacity-40 disabled:active:scale-100",
-        "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 focus-visible:ring-offset-white dark:focus-visible:ring-offset-[#0b0b0f]",
+        "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 focus-visible:ring-offset-background",
         className,
       )}
     >
@@ -318,7 +318,7 @@ function BookingCardConfirmation({ withName, place, className }: BookingCardConf
           exit={{ opacity: 0 }}
           transition={{ duration: 0.25 }}
           className={cn(
-            "absolute inset-0 z-10 flex flex-col items-center justify-center gap-4 rounded-[inherit] bg-white/85 p-6 text-center backdrop-blur-xl dark:bg-[#0b0b0f]/85",
+            "absolute inset-0 z-10 flex flex-col items-center justify-center gap-4 rounded-[inherit] bg-card/85 p-6 text-center backdrop-blur-xl",
             className,
           )}
         >
@@ -357,10 +357,10 @@ function BookingCardConfirmation({ withName, place, className }: BookingCardConf
             transition={{ delay: 0.7, duration: 0.35, ease: "easeOut" }}
           >
             <p className="text-lg font-semibold">Booked</p>
-            <p className="mt-1 text-sm text-black/70 dark:text-white/70">
+            <p className="mt-1 text-sm text-foreground/70">
               {LONG_DATE.format(day)} at {slot}
             </p>
-            <p className="mt-0.5 text-sm text-black/60 dark:text-white/60">
+            <p className="mt-0.5 text-sm text-foreground/60">
               with {withName}
               {place ? `, ${place}` : ""}
             </p>
@@ -374,14 +374,14 @@ function BookingCardConfirmation({ withName, place, className }: BookingCardConf
           >
             <button
               type="button"
-              className="h-10 rounded-full bg-[#1d1d1f] px-4 text-sm font-medium text-white hover:bg-black focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary dark:bg-white dark:text-[#1d1d1f] dark:hover:bg-white/90"
+              className="h-10 rounded-full bg-primary px-4 text-sm font-medium text-primary-foreground hover:bg-primary/90 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary"
             >
               Add to calendar
             </button>
             <button
               type="button"
               onClick={reset}
-              className="h-10 rounded-full border border-black/10 px-4 text-sm font-medium hover:bg-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary dark:border-white/15 dark:hover:bg-white/10"
+              className="h-10 rounded-full border border-foreground/10 px-4 text-sm font-medium hover:bg-foreground/5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary"
             >
               Book another
             </button>

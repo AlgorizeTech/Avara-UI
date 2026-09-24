@@ -65,5 +65,5 @@ export const getThemeStyles = (color: string) => {
       } as React.CSSProperties,
     };
   }
-  return { theme: colorThemes[color] || colorThemes.zinc, style: {} };
+  return { theme: colorThemes[color] || colorThemes.primary, style: {} };
 };

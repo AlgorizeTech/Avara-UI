@@ -77,10 +77,10 @@ export const Alert: React.FC<AlertProps> = ({
       outline:
         "bg-background border-border text-foreground",
       modern:
-        "bg-card border-0 border-l-4 border-l-zinc-500 shadow-xl shadow-zinc-500/10 text-foreground",
+        "bg-card border-0 border-l-4 border-l-muted-foreground shadow-xl shadow-zinc-500/10 text-foreground",
       glass:
         "bg-white/20 dark:bg-black/30 backdrop-blur-md border border-white/30 dark:border-white/10 text-white shadow-xl ring-1 ring-white/20",
-      glow: "bg-background border border-zinc-400/40 dark:border-zinc-500/50 shadow-[0_0_20px_rgba(113,113,122,0.15)] dark:shadow-[0_0_20px_rgba(113,113,122,0.3)] text-foreground",
+      glow: "bg-background border border-muted-foreground/40 shadow-[0_0_20px_rgba(113,113,122,0.15)] dark:shadow-[0_0_20px_rgba(113,113,122,0.3)] text-foreground",
     },
     success: {
       solid:
@@ -130,12 +130,12 @@ export const Alert: React.FC<AlertProps> = ({
       solid:
         "bg-zinc-800 border-zinc-700 text-zinc-100 dark:bg-zinc-900 dark:border-zinc-700 dark:text-zinc-100",
       outline:
-        "bg-background border-zinc-400 text-foreground dark:border-zinc-700",
+        "bg-background border-foreground/30 text-foreground",
       modern:
-        "bg-card border-0 border-l-4 border-l-zinc-800 dark:border-l-zinc-100 shadow-xl shadow-zinc-900/10 text-foreground",
+        "bg-card border-0 border-l-4 border-l-foreground shadow-xl shadow-zinc-900/10 text-foreground",
       glass:
         "bg-black/30 dark:bg-black/40 backdrop-blur-md border border-white/20 text-white shadow-xl ring-1 ring-white/10",
-      glow: "bg-background border border-zinc-800/40 dark:border-zinc-500/50 shadow-[0_0_20px_rgba(0,0,0,0.1)] dark:shadow-[0_0_20px_rgba(255,255,255,0.15)] text-foreground",
+      glow: "bg-background border border-foreground/40 shadow-[0_0_20px_rgba(0,0,0,0.1)] dark:shadow-[0_0_20px_rgba(255,255,255,0.15)] text-foreground",
     },
   };
 
@@ -226,7 +226,7 @@ export const Alert: React.FC<AlertProps> = ({
         <button
           onClick={handleDismiss}
           className={cn(
-            `absolute top-3 right-3 p-1 rounded-md cursor-pointer opacity-70 hover:opacity-100 hover:bg-black/5 dark:hover:bg-white/10 transition-all z-10 active:scale-90`,
+            `absolute top-3 right-3 p-1 rounded-md cursor-pointer opacity-70 hover:opacity-100 hover:bg-current/10 transition-all z-10 active:scale-90`,
             dismissIconClassName,
           )}
           aria-label="Dismiss alert"

@@ -121,7 +121,7 @@ export const NavigationMenuList = forwardRef<
     default:
       "bg-background border border-border shadow-sm",
     glass:
-      "bg-white/60 dark:bg-black/60 backdrop-blur-xl border border-white/20 dark:border-white/10 shadow-lg",
+      "bg-background/60 backdrop-blur-xl border border-foreground/10 shadow-lg",
     minimal: "bg-transparent border-none",
   };
 
@@ -261,11 +261,11 @@ export const NavigationMenuContent = forwardRef<
 
   const variantStyles = {
     default:
-      "bg-background border border-border shadow-xl",
+      "bg-popover text-popover-foreground border border-border shadow-xl",
     glass:
-      "bg-white/80 dark:bg-black/80 backdrop-blur-2xl border border-white/20 dark:border-white/10 shadow-2xl",
+      "bg-popover/80 text-popover-foreground backdrop-blur-2xl border border-foreground/10 shadow-2xl",
     minimal:
-      "bg-background border border-border shadow-lg",
+      "bg-popover text-popover-foreground border border-border shadow-lg",
   };
 
   return (
@@ -313,7 +313,7 @@ export const NavigationMenuLink = forwardRef<
         active &&
           (theme?.bgSoft
             ? cn(theme.bgSoft, theme?.text || "text-primary", "font-semibold")
-            : "bg-accent text-accent-foreground font-semibold"),
+            : "bg-primary/10 text-primary font-semibold"),
       )}
       {...props}
     >

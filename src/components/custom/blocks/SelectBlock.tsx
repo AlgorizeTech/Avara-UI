@@ -253,7 +253,7 @@ const SelectBlockImpl = forwardRef<HTMLDivElement, SelectBlockImplProps>(
         return {
           wrapper: cn(
             baseWrapper,
-            "border border-red-500 bg-white dark:bg-[#09090b]",
+            "border border-red-500 bg-background",
             variant === "underlined" && "border-0 border-b-2 rounded-none",
             variant !== "underlined" && "rounded-xl",
           ),
@@ -281,7 +281,7 @@ const SelectBlockImpl = forwardRef<HTMLDivElement, SelectBlockImplProps>(
           return {
             wrapper: cn(
               baseWrapper,
-              "bg-white dark:bg-[#09090b] border border-border rounded-xl shadow-sm",
+              "bg-background border border-border rounded-xl shadow-sm",
             ),
             active: theme.glow,
           };
@@ -298,7 +298,7 @@ const SelectBlockImpl = forwardRef<HTMLDivElement, SelectBlockImplProps>(
           return {
             wrapper: cn(
               baseWrapper,
-              "bg-white dark:bg-[#09090b] border border-border rounded-xl shadow-sm",
+              "bg-background border border-border rounded-xl shadow-sm",
             ),
             active: cn("ring-4", theme.ring),
           };
@@ -344,7 +344,7 @@ const SelectBlockImpl = forwardRef<HTMLDivElement, SelectBlockImplProps>(
             "truncate pr-6",
             s.text,
             !singleOption
-              ? variant === "glass" ? "text-white/60" : "text-zinc-400 dark:text-zinc-600"
+              ? variant === "glass" ? "text-white/60" : "text-muted-foreground"
               : variant === "glass" ? "text-white font-medium" : "text-foreground",
           )}
         >
@@ -417,7 +417,7 @@ const SelectBlockImpl = forwardRef<HTMLDivElement, SelectBlockImplProps>(
             "absolute left-0 right-0 z-50 overflow-hidden border rounded-xl shadow-2xl transition-all duration-200 ease-out",
             variant === "glass"
               ? "bg-white/40 dark:bg-black/50 backdrop-blur-2xl border-white/30 text-white shadow-2xl"
-              : "bg-background border-border",
+              : "bg-popover text-popover-foreground border-border",
             dropUp
               ? cn(
                   "origin-bottom",
@@ -456,7 +456,7 @@ const SelectBlockImpl = forwardRef<HTMLDivElement, SelectBlockImplProps>(
             </div>
           )}
 
-          <div className="max-h-60 overflow-y-auto p-1 flex flex-col gap-0.5 scrollbar-thin scrollbar-thumb-zinc-200 dark:scrollbar-thumb-zinc-800">
+          <div className="max-h-60 overflow-y-auto p-1 flex flex-col gap-0.5 scrollbar-thin scrollbar-thumb-border">
             {Object.keys(groupedOptions).length === 0 ? (
               <div className="px-4 py-3 text-sm text-muted-foreground text-center">
                 No results found
@@ -501,7 +501,7 @@ const SelectBlockImpl = forwardRef<HTMLDivElement, SelectBlockImplProps>(
                                 "w-4 h-4 rounded-[4px] border flex items-center justify-center transition-colors",
                                 isSelected
                                   ? cn(theme.bg, "border-transparent")
-                                  : "border-zinc-300 dark:border-zinc-600 bg-card",
+                                  : "border-input bg-card",
                               )}
                             >
                               {/* No hardcoded colour: theme.bg already carries the

@@ -97,9 +97,9 @@ export function VerticalTabs({
       default: {
         container: "gap-6",
         menuBox:
-          "bg-muted dark:bg-[#121212] rounded-2xl p-3 border border-border shadow-sm",
+          "bg-card rounded-2xl p-3 border border-border shadow-sm",
         contentBox:
-          "bg-muted dark:bg-[#121212] rounded-2xl p-8 md:p-10 border border-border shadow-sm",
+          "bg-card rounded-2xl p-8 md:p-10 border border-border shadow-sm",
         activeTab: cn(theme.bg, theme.shadow),
         inactiveTab: "hover:bg-muted text-muted-foreground",
         tabExtra: "",
@@ -109,11 +109,11 @@ export function VerticalTabs({
       glass: {
         container: "gap-6",
         menuBox:
-          "bg-white/70 dark:bg-zinc-900/60 backdrop-blur-xl rounded-2xl p-3 border border-white/40 dark:border-white/10 shadow-xl",
+          "bg-card/70 backdrop-blur-xl rounded-2xl p-3 border border-white/40 dark:border-white/10 shadow-xl",
         contentBox:
-          "bg-white/70 dark:bg-zinc-900/60 backdrop-blur-xl rounded-2xl p-6 md:p-10 border border-white/40 dark:border-white/10 shadow-xl",
+          "bg-card/70 backdrop-blur-xl rounded-2xl p-6 md:p-10 border border-white/40 dark:border-white/10 shadow-xl",
         activeTab: cn("backdrop-blur-md", theme.bg, theme.shadow),
-        inactiveTab: "hover:bg-white/40 dark:hover:bg-white/10 text-foreground",
+        inactiveTab: "hover:bg-foreground/[0.06] text-foreground",
         tabExtra: "",
         indicator: "",
         indicatorMode: null as null | "fill" | "bar",
@@ -130,11 +130,11 @@ export function VerticalTabs({
       },
       bordered: {
         container:
-          "gap-0 rounded-2xl border border-border overflow-hidden bg-white dark:bg-[#09090b] shadow-sm",
+          "gap-0 rounded-2xl border border-border overflow-hidden bg-card shadow-sm",
         // The divider follows the rail: it separates rail from pane, so it sits
         // on the bottom edge when the rail runs across the top.
         menuBox: cn(
-          "bg-muted dark:bg-[#121212] p-4 border-border rounded-none",
+          "bg-muted p-4 border-border rounded-none",
           isHorizontal ? "border-b" : "border-r",
         ),
         contentBox: "p-8 md:p-10 bg-transparent rounded-none border-none",
@@ -172,14 +172,14 @@ export function VerticalTabs({
       segmented: {
         container: "gap-6",
         menuBox:
-          "bg-muted dark:bg-[#151515] rounded-2xl p-1.5 border border-border gap-1",
+          "bg-muted rounded-2xl p-1.5 border border-border gap-1",
         contentBox: "bg-transparent rounded-2xl p-6 md:p-8 border border-border",
         activeTab: cn("bg-transparent", theme.text),
         inactiveTab:
           "bg-transparent text-muted-foreground hover:text-foreground",
         tabExtra: isHorizontal ? "grow" : "",
         indicator: cn(
-          "rounded-[10px] bg-white dark:bg-zinc-800 shadow-sm ring-1",
+          "rounded-[10px] bg-card shadow-sm ring-1",
           theme.ring,
         ),
         indicatorMode: "fill" as null | "fill" | "bar",
@@ -190,7 +190,7 @@ export function VerticalTabs({
         container: "gap-6",
         menuBox: "bg-transparent p-0 border-none gap-2",
         contentBox:
-          "bg-muted/40 dark:bg-white/[0.03] rounded-3xl p-6 md:p-10 border border-border/60",
+          "bg-muted/40 rounded-3xl p-6 md:p-10 border border-border/60",
         activeTab: cn("rounded-full", theme.soft),
         inactiveTab:
           "rounded-full text-muted-foreground hover:bg-muted hover:text-foreground",
@@ -206,14 +206,14 @@ export function VerticalTabs({
         container: "gap-6",
         menuBox: "bg-transparent p-0 border-none gap-2.5",
         contentBox:
-          "bg-white dark:bg-[#0d0d0d] rounded-2xl p-8 md:p-10 border border-border shadow-[0_18px_40px_-24px_rgba(0,0,0,0.45)]",
+          "bg-card rounded-2xl p-8 md:p-10 border border-border shadow-[0_18px_40px_-24px_rgba(0,0,0,0.45)]",
         activeTab: cn(
           "rounded-2xl border border-transparent",
           theme.bg,
           theme.shadow,
         ),
         inactiveTab: cn(
-          "rounded-2xl border border-border bg-white dark:bg-[#0d0d0d] text-muted-foreground shadow-sm hover:text-foreground",
+          "rounded-2xl border border-border bg-card text-muted-foreground shadow-sm hover:text-foreground",
           theme.hoverBorder,
         ),
         tabExtra: "",

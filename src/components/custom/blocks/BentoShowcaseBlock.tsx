@@ -15,8 +15,8 @@ import { Iphone17ProMaxMockup } from "./MobileMockupBlock";
 // laptop, a headline, numbers that scroll up, a phone with the plans, and a
 // team strip that scrolls left. Every card is a named part of
 // `BentoShowcase`, so a page can drop one, reorder them, or add its own with
-// `BentoShowcase.Card`. The section follows the site theme: pastels on white
-// in light mode, the same hues deepened on black in dark mode.
+// `BentoShowcase.Card`. The section follows the site theme: pastels on the
+// theme background in light mode, the same hues deepened in dark mode.
 // ==========================================
 
 export type BentoTone = "cream" | "ice" | "lilac" | "sky" | "butter" | "ink";
@@ -24,7 +24,8 @@ export type BentoTone = "cream" | "ice" | "lilac" | "sky" | "butter" | "ink";
 // Flat tones, no border or shadow — colour is the only thing separating a
 // card from the ground and from its neighbours. Each pastel has a deep
 // counterpart for dark mode; `ink` is the contrast card and flips (dark on
-// light, light on dark); `butter` is the accent and stays yellow on both.
+// light, light on dark, from the theme ink); `butter` is the accent and stays
+// yellow on both.
 // Secondary text inside a card uses `text-current/…` so it follows the tone.
 const TONES: Record<BentoTone, string> = {
   cream: "bg-[#f2eee3] text-[#141414] dark:bg-[#1f1c17] dark:text-white",
@@ -32,7 +33,7 @@ const TONES: Record<BentoTone, string> = {
   lilac: "bg-[#e9e5f5] text-[#141414] dark:bg-[#221d31] dark:text-white",
   sky: "bg-[#d6e6f6] text-[#141414] dark:bg-[#172336] dark:text-white",
   butter: "bg-[#fbe9a6] text-[#141414]",
-  ink: "bg-[#161616] text-white dark:bg-[#f2eee3] dark:text-[#141414]",
+  ink: "bg-foreground text-background",
 };
 
 // ------------------------------------------
@@ -44,7 +45,7 @@ export interface BentoShowcaseProps extends React.HTMLAttributes<HTMLElement> {
 
 function BentoShowcaseRoot({ className, children, ...props }: BentoShowcaseProps) {
   return (
-    <section className={cn("w-full bg-white p-3 dark:bg-black", className)} {...props}>
+    <section className={cn("w-full bg-background p-3", className)} {...props}>
       {/* Three rows of 15rem at lg; the tall cards span two of them. At md the
           layout folds to two columns and four rows; on phones every card
           stacks and sizes itself. */}
@@ -142,17 +143,17 @@ function Hero({
 
       {/* Call bar: two actions, the status, and a close. */}
       <div className="absolute left-[22%] right-[16%] top-[5.25rem] flex items-center gap-2">
-        <span className="grid h-8 w-8 place-items-center rounded-full bg-[#c9c0f0] text-[#3b2f6b]">
+        <span className="grid h-8 w-8 place-items-center rounded-full bg-primary/15 text-primary">
           <Phone size={14} strokeWidth={2.25} aria-hidden />
         </span>
-        <span className="grid h-8 w-8 place-items-center rounded-full bg-[#c9c0f0] text-[#3b2f6b]">
+        <span className="grid h-8 w-8 place-items-center rounded-full bg-primary/15 text-primary">
           <MessageCircle size={14} strokeWidth={2.25} aria-hidden />
         </span>
-        <span className="ml-3 inline-flex items-center gap-1.5 rounded-full bg-white px-2.5 py-1 text-[10px] font-semibold dark:bg-white/10">
+        <span className="ml-3 inline-flex items-center gap-1.5 rounded-full bg-card px-2.5 py-1 text-[10px] font-semibold text-card-foreground">
           <span className="h-1.5 w-1.5 rounded-full bg-emerald-500" aria-hidden />
           Online
         </span>
-        <span className="ml-auto grid h-8 w-8 place-items-center rounded-full bg-white text-black/60 dark:bg-white/10 dark:text-white/60">
+        <span className="ml-auto grid h-8 w-8 place-items-center rounded-full bg-card text-muted-foreground">
           <X size={14} aria-hidden />
         </span>
       </div>
@@ -160,12 +161,12 @@ function Hero({
       {/* The customer, on the left. */}
       <div className="absolute left-[9%] top-[8.5rem] w-[52%]">
         <ChatBubble variant="received">
-          <ChatMessage className="border-0 bg-white px-3 py-2 text-[10px] leading-[1.3] text-[#141414] shadow-sm dark:bg-[#2b2822] dark:text-white dark:shadow-none">
+          <ChatMessage className="border-0 bg-card px-3 py-2 text-[10px] leading-[1.3] text-card-foreground shadow-sm">
             <span className="mb-1 flex items-center gap-1.5">
               <ChatAvatar
                 {...(chat.avatar ? { src: chat.avatar } : {})}
                 fallback={chat.from.slice(0, 1)}
-                className="order-none mt-0 h-4 w-4 bg-[#f2eee3] text-[8px] dark:bg-white/15"
+                className="order-none mt-0 h-4 w-4 bg-muted text-[8px]"
               />
               <span className="text-[8.5px] font-semibold leading-none">{chat.from}</span>
               {chat.fromRole && <span className="text-[7.5px] leading-none text-current/45">{chat.fromRole}</span>}
@@ -183,7 +184,7 @@ function Hero({
               {chat.as}
               <svg viewBox="0 0 12 12" className="h-2.5 w-2.5" fill="currentColor" aria-hidden>
                 <path d="M6 0l1.4 1.9 2.3-.5.3 2.3 2 1.3-1.5 1.8.6 2.3-2.3.6-1 2.2L6 12l-1.8-1.1-2.3-.6.6-2.3L1 6.2 3 4.9l.3-2.3 2.3.5z" />
-                <path d="M4 6l1.4 1.4L8.2 4.6" stroke="#f2eee3" strokeWidth="1.2" fill="none" strokeLinecap="round" strokeLinejoin="round" />
+                <path d="M4 6l1.4 1.4L8.2 4.6" stroke="var(--primary)" strokeWidth="1.2" fill="none" strokeLinecap="round" strokeLinejoin="round" />
               </svg>
             </span>
             {chat.reply}
@@ -243,14 +244,14 @@ export interface BentoCaseStudiesProps extends React.HTMLAttributes<HTMLDivEleme
   title?: string;
   rating?: number;
   reviews?: number;
-  /** Mark before the stars — a black disc by default. */
+  /** Mark before the stars — a disc in the theme ink by default. */
   logo?: React.ReactNode;
   items: BentoCaseStudy[];
 }
 
 function DefaultLogo() {
   return (
-    <span className="grid h-5 w-5 place-items-center rounded-full bg-[#141414] text-white dark:bg-white dark:text-[#141414]" aria-hidden>
+    <span className="grid h-5 w-5 place-items-center rounded-full bg-foreground text-background" aria-hidden>
       <svg viewBox="0 0 12 12" className="h-3 w-3" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round">
         <path d="M9 3.5A3.6 3.6 0 1 0 9 8.5" />
       </svg>

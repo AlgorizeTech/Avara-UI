@@ -6,18 +6,18 @@ import {
 } from "@/components/custom/blocks/ConversationTimelineBlock";
 import { useEffect, useRef, useState } from "react";
 
-// "Default" on the page's colour picker means the component's own sky accent.
+// "Default" on the page's colour picker means the theme's primary.
 const getAccent = (c: string) => {
   if (c.startsWith("#")) return c;
   const map: Record<string, string> = {
-    primary: "#0ea5e9",
-    default: "#0ea5e9",
+    primary: "var(--primary)",
+    default: "var(--primary)",
     indigo: "#6366f1",
     rose: "#f43f5e",
     emerald: "#10b981",
     lavender: "#9b8afb",
   };
-  return map[c] || "#0ea5e9";
+  return map[c] || "var(--primary)";
 };
 
 const CONVERSATION: Array<TimelineCheckpoint & { body: string }> = [

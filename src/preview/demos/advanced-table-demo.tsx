@@ -350,7 +350,6 @@ export default function AdvancedTableDemo({
               options={ROLE_OPTIONS}
               value={editRole}
               onChange={setEditRole}
-              color="indigo"
               inputSize="sm"
             />
           </div>
@@ -363,7 +362,6 @@ export default function AdvancedTableDemo({
               options={STATUS_OPTIONS}
               value={editStatus}
               onChange={setEditStatus}
-              color="indigo"
               inputSize="sm"
             />
           </div>
@@ -377,7 +375,7 @@ export default function AdvancedTableDemo({
             </button>
             <button
               onClick={applyEdits}
-              className="flex-1 p-[10px] rounded-[10px] text-[13px] font-semibold bg-indigo-600 text-white hover:bg-indigo-700 transition-colors active:scale-95"
+              className="flex-1 p-[10px] rounded-[10px] text-[13px] font-semibold bg-primary text-primary-foreground hover:bg-primary/90 transition-colors active:scale-95"
             >
               Apply Changes
             </button>

@@ -46,7 +46,7 @@ export interface HeroCarouselProps extends Omit<React.HTMLAttributes<HTMLElement
   interval?: number;
   defaultIndex?: number;
   onChange?: (index: number) => void;
-  /** Sets `--primary` for the section (focus rings and the eyebrow pip). */
+  /** Sets `--primary` for the section: the eyebrow pip, the arrow on the call to action, the progress line, the focus rings and a tint in the ground. */
   accent?: string;
   reveal?: "in-view" | "immediate";
   /** Pass `next/link` to keep client-side navigation on the CTA. */
@@ -270,9 +270,13 @@ function HeroCarouselRoot({
 
   // ---- The reveal: eyebrow and headline out of a blur, the panel up, the
   // cards one after another. Plays once, the first time the section is seen.
+  // Keyed on booleans, not on `metrics` (a fresh object every render): any
+  // re-render — a resize, a hover, props arriving — would otherwise run the
+  // cleanup and kill the timeline mid-play, leaving everything blurred out.
+  const measured = metrics !== null;
   const revealed = useRef(false);
   useEffect(() => {
-    if (!inView || !metrics || revealed.current) return;
+    if (!inView || !measured || revealed.current) return;
     revealed.current = true;
     const root = rootRef.current;
     if (!root || prefersReducedMotion()) return;
@@ -286,9 +290,12 @@ function HeroCarouselRoot({
       .fromTo(caption, { opacity: 0, y: 10 }, { opacity: 1, y: 0, duration: 0.6 }, 0.8)
       .fromTo(panel, { opacity: 0, y: 18 }, { opacity: 1, y: 0, duration: 0.8 }, 0.55);
     return () => {
+      // Reached on unmount, a StrictMode remount, or the rail measuring 0 while
+      // hidden. An entrance cut short replays next time rather than staying frozen.
+      if (tl.progress() < 1) revealed.current = false;
       tl.kill();
     };
-  }, [inView, metrics]);
+  }, [inView, measured]);
 
   // ---- Keyboard and touch: arrows walk the queue, a swipe on the rail too.
   const onKeyDown = (e: React.KeyboardEvent) => {
@@ -323,7 +330,7 @@ function HeroCarouselRoot({
   return (
     <section
       ref={rootRef}
-      className={cn("relative isolate w-full overflow-hidden bg-[#0f1013] text-white", className)}
+      className={cn("relative isolate w-full overflow-hidden bg-[color-mix(in_oklab,var(--primary)_12%,#0b0c0f)] text-white", className)}
       style={{ ...vars, ...style }}
       {...props}
     >
@@ -409,7 +416,7 @@ function HeroCarouselRoot({
                 className="group/cta mt-5 inline-flex h-11 items-center gap-3 rounded-full border border-white/25 bg-white/10 py-1 pl-5 pr-1.5 text-[14px] font-semibold text-white outline-none backdrop-blur-md transition-[background-color,transform] duration-300 hover:bg-white/20 focus-visible:ring-2 focus-visible:ring-primary/70 active:scale-[0.98]"
               >
                 {cta.label}
-                <span className="grid size-8 place-items-center rounded-full bg-white text-[#111] transition-transform duration-300 group-hover/cta:rotate-45">
+                <span className="grid size-8 place-items-center rounded-full bg-primary text-primary-foreground transition-transform duration-300 group-hover/cta:rotate-45">
                   <ArrowUpRight size={15} />
                 </span>
               </Link>
@@ -485,7 +492,7 @@ function HeroCarouselRoot({
                   <span aria-hidden className="absolute inset-0 rounded-[inherit] ring-1 ring-inset ring-white/20" />
                   {isFront && interval > 0 && n > 1 && (
                     <span aria-hidden className="absolute inset-x-4 bottom-3 h-[3px] overflow-hidden rounded-full bg-white/30">
-                      <span ref={barRef} className="block h-full w-full origin-left rounded-full bg-white" style={{ transform: "scaleX(0)" }} />
+                      <span ref={barRef} className="block h-full w-full origin-left rounded-full bg-primary" style={{ transform: "scaleX(0)" }} />
                     </span>
                   )}
                 </button>

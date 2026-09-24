@@ -55,16 +55,6 @@ const Header = () => {
   const pathname = usePathname() || "";
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [searchOpen, setSearchOpen] = useState(false);
-  const [isScrolled, setIsScrolled] = useState(false);
-
-  // Monitor scroll for border state transition
-  useEffect(() => {
-    const handleScroll = () => {
-      setIsScrolled(window.scrollY > 15);
-    };
-    window.addEventListener("scroll", handleScroll);
-    return () => window.removeEventListener("scroll", handleScroll);
-  }, []);
 
   // Universal Cmd+K / Ctrl+K Palette Interceptor
   useEffect(() => {

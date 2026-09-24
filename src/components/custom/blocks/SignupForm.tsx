@@ -26,7 +26,7 @@ const PremiumInput = React.forwardRef<HTMLInputElement, PremiumInputProps>(
     return (
       <div className="flex flex-col gap-1.5 w-full">
         <label className="text-[13px] font-semibold text-foreground ml-1">
-          {label} {required && <span className="text-indigo-500">*</span>}
+          {label} {required && <span className="text-primary">*</span>}
         </label>
 
         <div className="relative group">
@@ -40,7 +40,7 @@ const PremiumInput = React.forwardRef<HTMLInputElement, PremiumInputProps>(
             transition={{ duration: 0.2 }}
             className={cn(
               "absolute -inset-[2px] rounded-lg blur-[4px] -z-10 transition-colors",
-              error ? "bg-rose-500/40" : "bg-indigo-500/30",
+              error ? "bg-rose-500/40" : "bg-primary/30",
             )}
           />
 
@@ -50,12 +50,12 @@ const PremiumInput = React.forwardRef<HTMLInputElement, PremiumInputProps>(
               error
                 ? "border-rose-500/50"
                 : isFocused
-                  ? "border-indigo-500/50"
+                  ? "border-primary/50"
                   : "border-border hover:border-border",
             )}
           >
             {Icon && (
-              <div className="pl-3.5 text-muted-foreground flex-shrink-0 transition-colors group-focus-within:text-indigo-500">
+              <div className="pl-3.5 text-muted-foreground flex-shrink-0 transition-colors group-focus-within:text-primary">
                 <Icon className="w-4 h-4" />
               </div>
             )}
@@ -72,7 +72,7 @@ const PremiumInput = React.forwardRef<HTMLInputElement, PremiumInputProps>(
                 props.onBlur?.(e);
               }}
               className={cn(
-                "flex h-11 w-full bg-transparent px-3 py-2 text-sm font-medium placeholder:text-zinc-400 focus:outline-none disabled:cursor-not-allowed disabled:opacity-50 dark:text-zinc-100",
+                "flex h-11 w-full bg-transparent px-3 py-2 text-sm font-medium text-foreground placeholder:text-muted-foreground focus:outline-none disabled:cursor-not-allowed disabled:opacity-50",
                 className,
               )}
               {...props}
@@ -82,7 +82,7 @@ const PremiumInput = React.forwardRef<HTMLInputElement, PremiumInputProps>(
               <button
                 type="button"
                 onClick={() => setShowPassword(!showPassword)}
-                className="pr-3.5 text-muted-foreground hover:text-muted-foreground transition-colors focus:outline-none"
+                className="pr-3.5 text-muted-foreground hover:text-foreground transition-colors focus:outline-none"
               >
                 {showPassword ? (
                   <EyeOff className="w-4 h-4" />
@@ -148,10 +148,10 @@ const PremiumCheckbox = ({
             className={cn(
               "w-5 h-5 rounded border transition-colors flex items-center justify-center",
               checked
-                ? "bg-indigo-500 border-indigo-500"
+                ? "bg-primary border-primary"
                 : error
                   ? "border-rose-500 bg-rose-50 dark:bg-rose-500/10"
-                  : "border-border bg-card group-hover:border-indigo-400",
+                  : "border-border bg-card group-hover:border-primary/60",
             )}
           >
             <AnimatePresence>
@@ -163,11 +163,11 @@ const PremiumCheckbox = ({
                   transition={{ type: "spring", bounce: 0.5 }}
                   viewBox="0 0 24 24"
                   fill="none"
-                  stroke="white"
+                  stroke="currentColor"
                   strokeWidth="3"
                   strokeLinecap="round"
                   strokeLinejoin="round"
-                  className="w-3.5 h-3.5"
+                  className="w-3.5 h-3.5 text-primary-foreground"
                 >
                   <motion.polyline
                     initial={{ pathLength: 0 }}
@@ -181,7 +181,7 @@ const PremiumCheckbox = ({
           </div>
         </div>
         <span className="text-[13px] font-medium text-foreground leading-snug">
-          {label} {required && <span className="text-indigo-500">*</span>}
+          {label} {required && <span className="text-primary">*</span>}
         </span>
       </label>
       <AnimatePresence>
@@ -367,11 +367,11 @@ export const SignupForm = () => {
   };
 
   return (
-    <div className="max-w-md mx-auto relative overflow-hidden bg-white dark:bg-[#0a0a0a] rounded-3xl shadow-[0_8px_40px_rgba(0,0,0,0.08)] dark:shadow-[0_8px_40px_rgba(0,0,0,0.4)] border border-border w-full">
+    <div className="max-w-md mx-auto relative overflow-hidden bg-card text-card-foreground rounded-3xl shadow-[0_8px_40px_rgba(0,0,0,0.08)] dark:shadow-[0_8px_40px_rgba(0,0,0,0.4)] border border-border w-full">
       {/* Top Completion Progress Bar */}
       <div className="absolute top-0 left-0 right-0 h-1.5 bg-muted">
         <motion.div
-          className="h-full bg-indigo-500"
+          className="h-full bg-primary"
           initial={{ width: 0 }}
           animate={{ width: `${getProgress()}%` }}
           transition={{ ease: "circOut", duration: 0.5 }}
@@ -384,8 +384,8 @@ export const SignupForm = () => {
           animate={{ opacity: 1, y: 0 }}
           className="text-center mb-8"
         >
-          <div className="w-12 h-12 bg-indigo-50 dark:bg-indigo-500/10 rounded-2xl flex items-center justify-center mx-auto mb-4 border border-indigo-100 dark:border-indigo-500/20">
-            <User className="w-6 h-6 text-indigo-600 dark:text-indigo-400" />
+          <div className="w-12 h-12 bg-primary/10 rounded-2xl flex items-center justify-center mx-auto mb-4 border border-primary/20">
+            <User className="w-6 h-6 text-primary" />
           </div>
           <h2 className="text-2xl font-bold text-foreground tracking-tight">
             Create Account
@@ -487,12 +487,12 @@ export const SignupForm = () => {
               className="relative w-full h-12 rounded-xl bg-primary text-primary-foreground font-semibold text-[15px] overflow-hidden group disabled:opacity-70 disabled:cursor-not-allowed transition-transform active:scale-[0.98]"
             >
               {/* Button Hover Shine */}
-              <div className="absolute inset-0 -translate-x-full bg-gradient-to-r from-transparent via-white/20 dark:via-black/10 to-transparent group-hover:animate-[shimmer_1.5s_infinite]" />
+              <div className="absolute inset-0 -translate-x-full bg-gradient-to-r from-transparent via-primary-foreground/20 to-transparent group-hover:animate-[shimmer_1.5s_infinite]" />
 
               <div className="relative flex items-center justify-center gap-2">
                 {loading ? (
                   <>
-                    <div className="w-5 h-5 border-2 border-zinc-400 dark:border-zinc-500 border-t-white dark:border-t-zinc-900 rounded-full animate-spin" />
+                    <div className="w-5 h-5 border-2 border-primary-foreground/40 border-t-primary-foreground rounded-full animate-spin" />
                     <span>Processing...</span>
                   </>
                 ) : (
@@ -513,7 +513,7 @@ export const SignupForm = () => {
             Already have an account?{" "}
             <a
               href="#"
-              className="text-indigo-600 dark:text-indigo-400 hover:text-indigo-700 dark:hover:text-indigo-300 font-semibold transition-colors"
+              className="text-primary hover:text-primary/80 font-semibold transition-colors"
             >
               Sign in
             </a>

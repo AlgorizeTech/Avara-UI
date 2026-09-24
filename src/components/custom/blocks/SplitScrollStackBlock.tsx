@@ -30,7 +30,7 @@ export interface SplitScrollStackProps
   stickySide?: "left" | "right"; // Swaps sticky card deck vs scrolling text
   cardDepthScale?: number; // Shrink rate of stacked background cards (default: 0.05)
   cardOffset?: number; // Vertical pixel distance between stacked cards (default: 16)
-  color?: string; // Global active theme color (default: #FFAB1D)
+  color?: string; // Global active accent colour (default: the theme's primary)
   scroller?: string | Element | null; // Optional direct element scroller target
   scrollerRef?: React.RefObject<HTMLElement | null>; // CRITICAL: Ref object for React containers
   onActiveIndexChange?: (index: number) => void;
@@ -49,7 +49,7 @@ export const SplitScrollStack = React.forwardRef<
       stickySide = "right",
       cardDepthScale = 0.05,
       cardOffset = 16,
-      color = "#FFAB1D",
+      color = "var(--primary)",
       scroller,
       scrollerRef,
       className,
@@ -209,7 +209,7 @@ export const SplitScrollStack = React.forwardRef<
                       className={cn(
                         "w-11 h-11 rounded-xl flex items-center justify-center font-mono font-semibold text-sm border transition-all duration-300 shadow-sm",
                         isActive
-                          ? "text-primary-foreground dark:text-zinc-900 border-transparent scale-110"
+                          ? "text-primary-foreground border-transparent scale-110"
                           : isPassed
                             ? "bg-muted text-foreground border-transparent"
                             : "bg-muted text-muted-foreground border-border",
@@ -276,7 +276,7 @@ export const SplitScrollStack = React.forwardRef<
                           "px-3.5 py-1.5 rounded-xl text-xs font-semibold uppercase tracking-wider border transition-all duration-300",
                           isActive
                             ? "border-transparent shadow-xs font-extrabold"
-                            : "bg-transparent border-border text-zinc-400 dark:text-zinc-600",
+                            : "bg-transparent border-border text-muted-foreground/70",
                         )}
                         style={{
                           backgroundColor: isActive ? (color.startsWith('#') ? `${color}15` : `color-mix(in srgb, ${color} 15%, transparent)`) : undefined,
@@ -327,7 +327,7 @@ export const SplitScrollStack = React.forwardRef<
 
                     {/* Card Header */}
                     <div className="flex items-center justify-between relative z-10 mb-4">
-                      <span className="px-3.5 py-1 rounded-full bg-muted dark:bg-white/10 text-[11px] font-mono font-semibold tracking-widest uppercase border border-border flex items-center gap-2 text-foreground">
+                      <span className="px-3.5 py-1 rounded-full bg-muted text-[11px] font-mono font-semibold tracking-widest uppercase border border-border flex items-center gap-2 text-foreground">
                         <Layers className="w-3.5 h-3.5" /> DECK //{" "}
                         {item.stepNumber}
                       </span>
@@ -343,11 +343,11 @@ export const SplitScrollStack = React.forwardRef<
                     </div>
 
                     {/* Card Footer */}
-                    <div className="relative z-10 pt-4 border-t border-border flex items-center justify-between text-xs text-muted-foreground dark:text-white/60 font-medium">
-                      <span className="truncate pr-2 font-semibold text-foreground dark:text-white/90">
+                    <div className="relative z-10 pt-4 border-t border-border flex items-center justify-between text-xs text-muted-foreground font-medium">
+                      <span className="truncate pr-2 font-semibold text-foreground">
                         {item.title}
                       </span>
-                      <span className="font-mono text-[10px] uppercase tracking-wider text-muted-foreground dark:text-white/40 flex-shrink-0">
+                      <span className="font-mono text-[10px] uppercase tracking-wider text-muted-foreground/70 flex-shrink-0">
                         SCROLL DRIVEN
                       </span>
                     </div>

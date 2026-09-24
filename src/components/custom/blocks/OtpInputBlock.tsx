@@ -155,7 +155,7 @@ export const OtpInputBlock = forwardRef<HTMLDivElement, OtpInputProps>(
       // a phone and small boxes don't read as pills. Both cap at the values the
       // 48px box used, leaving 4/6 digits looking exactly as before.
       const base =
-        "min-w-0 flex-1 basis-0 max-w-12 aspect-[5/6] px-0 text-center text-[clamp(0.8125rem,calc(38cqw/var(--otp-len,6)),1.25rem)] rounded-[clamp(0.375rem,calc(20cqw/var(--otp-len,6)),0.75rem)] font-semibold transition-all duration-200 outline-none placeholder:text-zinc-300 dark:placeholder:text-zinc-700";
+        "min-w-0 flex-1 basis-0 max-w-12 aspect-[5/6] px-0 text-center text-[clamp(0.8125rem,calc(38cqw/var(--otp-len,6)),1.25rem)] rounded-[clamp(0.375rem,calc(20cqw/var(--otp-len,6)),0.75rem)] font-semibold transition-all duration-200 outline-none placeholder:text-muted-foreground/40";
 
       switch (variant) {
         case "filled":

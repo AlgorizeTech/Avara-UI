@@ -59,7 +59,7 @@ export default function InputDemo({
   isDisabled = false,
   isMultiple = true,
   isImageOnly = false,
-  color = "indigo",
+  color = "primary",
   showAll,
   example,
 }: {

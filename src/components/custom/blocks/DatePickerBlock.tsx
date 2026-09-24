@@ -314,7 +314,7 @@ export const DatePickerBlock = forwardRef<HTMLDivElement, DatePickerBlockProps>(
         return {
           wrapper: cn(
             baseWrapper,
-            "border border-red-500 bg-white dark:bg-[#09090b]",
+            "border border-red-500 bg-background",
             variant === "underlined" && "border-0 border-b-2 rounded-none",
             variant !== "underlined" && "rounded-xl",
           ),
@@ -342,7 +342,7 @@ export const DatePickerBlock = forwardRef<HTMLDivElement, DatePickerBlockProps>(
           return {
             wrapper: cn(
               baseWrapper,
-              "bg-white dark:bg-[#09090b] border border-border rounded-xl shadow-sm",
+              "bg-background border border-border rounded-xl shadow-sm",
             ),
             active: theme.glow,
           };
@@ -351,7 +351,7 @@ export const DatePickerBlock = forwardRef<HTMLDivElement, DatePickerBlockProps>(
           return {
             wrapper: cn(
               baseWrapper,
-              "bg-white dark:bg-[#09090b] border border-border rounded-xl shadow-sm",
+              "bg-background border border-border rounded-xl shadow-sm",
             ),
             active: cn("ring-4", theme.ring),
           };
@@ -419,7 +419,7 @@ export const DatePickerBlock = forwardRef<HTMLDivElement, DatePickerBlockProps>(
                 "truncate",
                 s.text,
                 !value
-                  ? "text-zinc-400 dark:text-zinc-600"
+                  ? "text-muted-foreground"
                   : "text-foreground",
               )}
             >
@@ -448,7 +448,7 @@ export const DatePickerBlock = forwardRef<HTMLDivElement, DatePickerBlockProps>(
               : { duration: 0.2, ease: "easeOut" as const },
           }}
           className={cn(
-            "absolute z-50 overflow-hidden bg-background border border-border rounded-xl shadow-xl origin-top",
+            "absolute z-50 overflow-hidden bg-popover text-popover-foreground border border-border rounded-xl shadow-xl origin-top",
             alignRight ? "right-0" : "left-0",
             // Never wider than the viewport minus a margin, so a phone still
             // sees the whole thing.

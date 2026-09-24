@@ -34,6 +34,7 @@
     "src/components/custom/blocks/AdvancedTableBlock.tsx",
     "src/components/custom/blocks/Ai-chat.tsx",
     "src/components/custom/blocks/Alerts.tsx",
+    "src/components/custom/blocks/AnimatedFAQBlock.tsx",
     "src/components/custom/blocks/AnimatedListBlock.tsx",
     "src/components/custom/blocks/AnimatedTimelineBlock.tsx",
     "src/components/custom/blocks/AnimatedTypographyBlock.tsx",

@@ -85,7 +85,10 @@ const Checkbox = ({
         <Check
           size={12}
           strokeWidth={3}
-          className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 text-white pointer-events-none opacity-0 peer-checked:opacity-100 transition-opacity"
+          className={cn(
+            "absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 pointer-events-none opacity-0 peer-checked:opacity-100 transition-opacity",
+            theme.panelFg,
+          )}
         />
       </div>
       <label
@@ -171,7 +174,7 @@ export default function LoginForm({
           color={color}
           onClick={() => onSocialSignIn?.("github")}
           iconLeft={<GitHubIcon size={18} />}
-          className="w-full h-11 border border-border/80 bg-white/70 backdrop-blur-md hover:bg-card hover:text-foreground dark:bg-zinc-900/80"
+          className="w-full h-11 border border-border/80 bg-card/70 backdrop-blur-md hover:bg-card hover:text-foreground"
         >
           GitHub
         </Button>
@@ -181,7 +184,7 @@ export default function LoginForm({
           color={color}
           onClick={() => onSocialSignIn?.("google")}
           iconLeft={<GoogleIcon size={18} />}
-          className="w-full h-11 border border-border/80 bg-white/70 backdrop-blur-md hover:bg-card hover:text-foreground dark:bg-zinc-900/80"
+          className="w-full h-11 border border-border/80 bg-card/70 backdrop-blur-md hover:bg-card hover:text-foreground"
         >
           Google
         </Button>
@@ -502,7 +505,7 @@ export default function LoginForm({
     variant === "default" &&
       "bg-background rounded-3xl shadow-xl border border-border",
     variant === "glass" &&
-      "bg-white/65 dark:bg-zinc-950/65 backdrop-blur-xl rounded-3xl shadow-2xl border border-white/40 dark:border-zinc-700/50",
+      "bg-background/65 backdrop-blur-xl rounded-3xl shadow-2xl border border-foreground/10",
     variant === "minimal" && "bg-transparent",
   );
 

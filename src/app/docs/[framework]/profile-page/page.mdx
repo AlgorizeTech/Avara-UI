@@ -686,25 +686,25 @@ Grid spans are plain Tailwind: the grid is `grid-cols-1 md:grid-cols-6 lg:grid-c
 ## Features
 
 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 my-6 not-prose">
-  <div className="p-6 rounded-2xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900">
-    <h3 className="text-lg font-semibold text-zinc-900 dark:text-zinc-50 mb-2">One glass, four shapes</h3>
-    <p className="text-zinc-600 dark:text-zinc-400 text-sm">Every panel shares a single recipe. Slab, tile, disc and capsule differ only in corners, so the page reads as one material rather than a kit of cards.</p>
+  <div className="p-6 rounded-2xl border border-border bg-card">
+    <h3 className="text-lg font-semibold text-card-foreground mb-2">One glass, four shapes</h3>
+    <p className="text-muted-foreground text-sm">Every panel shares a single recipe. Slab, tile, disc and capsule differ only in corners, so the page reads as one material rather than a kit of cards.</p>
   </div>
-  <div className="p-6 rounded-2xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900">
-    <h3 className="text-lg font-semibold text-zinc-900 dark:text-zinc-50 mb-2">A live dial, not a status dot</h3>
-    <p className="text-zinc-600 dark:text-zinc-400 text-sm">The 24-hour ring shows the working window and where the day is right now, computed in the person's own time zone with Intl.DateTimeFormat — no library.</p>
+  <div className="p-6 rounded-2xl border border-border bg-card">
+    <h3 className="text-lg font-semibold text-card-foreground mb-2">A live dial, not a status dot</h3>
+    <p className="text-muted-foreground text-sm">The 24-hour ring shows the working window and where the day is right now, computed in the person's own time zone with Intl.DateTimeFormat — no library.</p>
   </div>
-  <div className="p-6 rounded-2xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900">
-    <h3 className="text-lg font-semibold text-zinc-900 dark:text-zinc-50 mb-2">Light and dark by construction</h3>
-    <p className="text-zinc-600 dark:text-zinc-400 text-sm">Panels are translucent white over the aurora in light mode and over near-black in dark mode. The blobs dim, the text flips, nothing else has to change.</p>
+  <div className="p-6 rounded-2xl border border-border bg-card">
+    <h3 className="text-lg font-semibold text-card-foreground mb-2">Light and dark by construction</h3>
+    <p className="text-muted-foreground text-sm">Panels are translucent white over the aurora in light mode and over near-black in dark mode. The blobs dim, the text flips, nothing else has to change.</p>
   </div>
-  <div className="p-6 rounded-2xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900">
-    <h3 className="text-lg font-semibold text-zinc-900 dark:text-zinc-50 mb-2">Theme colours</h3>
-    <p className="text-zinc-600 dark:text-zinc-400 text-sm">The dial's arc and marker, the Follow button, the progress bars and the avatar are all written against <code>primary</code> and <code>ring</code>, so the page follows your theme preset — and the colour picker above — with no prop. Pass <code>var(--primary)</code> into <code>aurora</code> and the backdrop follows too.</p>
+  <div className="p-6 rounded-2xl border border-border bg-card">
+    <h3 className="text-lg font-semibold text-card-foreground mb-2">Theme colours</h3>
+    <p className="text-muted-foreground text-sm">The dial's arc and marker, the Follow button, the progress bars and the avatar are all written against <code>primary</code> and <code>ring</code>, so the page follows your theme preset — and the colour picker above — with no prop. Pass <code>var(--primary)</code> into <code>aurora</code> and the backdrop follows too.</p>
   </div>
-  <div className="p-6 rounded-2xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900">
-    <h3 className="text-lg font-semibold text-zinc-900 dark:text-zinc-50 mb-2">Still, on purpose</h3>
-    <p className="text-zinc-600 dark:text-zinc-400 text-sm">Nothing animates on load. The only motion is the marker on the dial and a lift on panels you mark interactive — and both hold still under prefers-reduced-motion.</p>
+  <div className="p-6 rounded-2xl border border-border bg-card">
+    <h3 className="text-lg font-semibold text-card-foreground mb-2">Still, on purpose</h3>
+    <p className="text-muted-foreground text-sm">Nothing animates on load. The only motion is the marker on the dial and a lift on panels you mark interactive — and both hold still under prefers-reduced-motion.</p>
   </div>
 </div>
 

@@ -368,7 +368,7 @@ export const HeroBlock = forwardRef<HTMLElement, HeroBlockProps>(
                 {/* Category Pills Header */}
                 <div className="flex flex-wrap items-center gap-2">
                   {badgeTags?.[0] && (
-                    <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full border text-xs font-semibold" style={{ backgroundColor: "rgba(16, 185, 129, 0.08)", borderColor: "rgba(16, 185, 129, 0.25)", color: "var(--hero-accent-text)" }}>
+                    <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full border text-xs font-semibold" style={{ backgroundColor: "color-mix(in oklab, var(--hero-accent-text) 8%, transparent)", borderColor: "color-mix(in oklab, var(--hero-accent-text) 25%, transparent)", color: "var(--hero-accent-text)" }}>
                       <ShieldCheck className="size-3.5 shrink-0" style={{ color: "var(--hero-accent-text)" }} />
                       <span>{badgeTags[0]}</span>
                     </div>
@@ -425,7 +425,7 @@ export const HeroBlock = forwardRef<HTMLElement, HeroBlockProps>(
 
                   <Link
                     href={secondaryActionHref}
-                    className="inline-flex items-center justify-center gap-2.5 px-6 py-4 rounded-2xl border border-border bg-card hover:bg-accent text-foreground font-semibold text-sm sm:text-base transition-all active:scale-95 text-center"
+                    className="inline-flex items-center justify-center gap-2.5 px-6 py-4 rounded-2xl border border-border bg-card hover:bg-muted text-foreground font-semibold text-sm sm:text-base transition-all active:scale-95 text-center"
                   >
                     <span>{petSecondaryAction}</span>
                     <ArrowUpRight className="size-4 shrink-0" style={{ color: "var(--hero-accent-text)" }} />
@@ -502,7 +502,7 @@ export const HeroBlock = forwardRef<HTMLElement, HeroBlockProps>(
           ref={ref}
           style={customStyle}
           className={cn(
-            "relative w-full overflow-hidden bg-white dark:bg-zinc-950 text-foreground transition-colors duration-300 min-h-[620px]",
+            "relative w-full overflow-hidden bg-background text-foreground transition-colors duration-300 min-h-[620px]",
             className,
           )}
           {...props}
@@ -514,7 +514,7 @@ export const HeroBlock = forwardRef<HTMLElement, HeroBlockProps>(
               
               {/* Heading Section */}
               <div className="space-y-1.5 sm:space-y-2">
-                <h1 className="text-2xl sm:text-4xl lg:text-7xl font-light tracking-tight text-zinc-600 dark:text-zinc-300 font-sans leading-tight">
+                <h1 className="text-2xl sm:text-4xl lg:text-7xl font-light tracking-tight text-foreground/70 font-sans leading-tight">
                   {docTitlePrefix}
                 </h1>
                 <div className="flex flex-wrap items-center gap-2 sm:gap-3 pt-0.5 sm:pt-1">
@@ -543,7 +543,7 @@ export const HeroBlock = forwardRef<HTMLElement, HeroBlockProps>(
                   className="border-l-2 pl-3 sm:pl-4 py-0.5"
                   style={{ borderColor: "var(--hero-accent-text)" }}
                 >
-                  <p className="text-zinc-500 dark:text-zinc-400 text-xs sm:text-base leading-relaxed font-medium max-w-lg">
+                  <p className="text-muted-foreground text-xs sm:text-base leading-relaxed font-medium max-w-lg">
                     {docSubtitle}
                   </p>
                 </div>
@@ -575,20 +575,20 @@ export const HeroBlock = forwardRef<HTMLElement, HeroBlockProps>(
               {/* Stats Footer Row */}
               <div className="flex flex-wrap items-center gap-6 sm:gap-14 pt-1 sm:pt-4">
                 <div className="space-y-0.5 sm:space-y-1">
-                  <p className="text-xl sm:text-3xl lg:text-4xl font-extrabold text-zinc-900 dark:text-white">
+                  <p className="text-xl sm:text-3xl lg:text-4xl font-extrabold text-foreground">
                     {stat1Val}
                   </p>
-                  <div className="flex items-center gap-1.5 text-[11px] sm:text-xs font-semibold text-zinc-500 dark:text-zinc-400">
+                  <div className="flex items-center gap-1.5 text-[11px] sm:text-xs font-semibold text-muted-foreground">
                     <ShieldCheck className="size-3.5 shrink-0" style={{ color: "var(--hero-accent-text)" }} />
                     <span>{stat1Label}</span>
                   </div>
                 </div>
 
                 <div className="space-y-0.5 sm:space-y-1">
-                  <p className="text-xl sm:text-3xl lg:text-4xl font-extrabold text-zinc-900 dark:text-white">
+                  <p className="text-xl sm:text-3xl lg:text-4xl font-extrabold text-foreground">
                     {stat2Val}
                   </p>
-                  <div className="flex items-center gap-1.5 text-[11px] sm:text-xs font-semibold text-zinc-500 dark:text-zinc-400">
+                  <div className="flex items-center gap-1.5 text-[11px] sm:text-xs font-semibold text-muted-foreground">
                     <Heart className="size-3.5 text-rose-500 shrink-0" />
                     <span>{stat2Label}</span>
                   </div>
@@ -600,13 +600,13 @@ export const HeroBlock = forwardRef<HTMLElement, HeroBlockProps>(
             {/* RIGHT COLUMN: Dark Container with Images Grid & Floating Cards */}
             <div className="col-span-1 lg:col-span-6 relative flex flex-col justify-center px-3 sm:px-8 lg:px-12 py-6 sm:py-10 lg:py-12 min-h-[380px] sm:min-h-[480px] lg:min-h-0 mt-4 lg:mt-0">
               
-              {/* Dark Green / Dynamic Accent Panel */}
+              {/* Dark Accent Panel (a deep shade of the accent) */}
               <div 
                 className="absolute inset-y-0 right-0 left-0 sm:left-20 lg:left-36 rounded-[20px] sm:rounded-[28px] lg:rounded-l-[48px] lg:rounded-r-none z-0 transition-colors duration-300"
                 style={{
                   backgroundColor: accentRgb
                     ? `rgb(${Math.max(5, Math.round(accentRgb[0] * 0.12))}, ${Math.max(15, Math.round(accentRgb[1] * 0.22))}, ${Math.max(15, Math.round(accentRgb[2] * 0.22))})`
-                    : "#0a271d",
+                    : "color-mix(in oklab, var(--primary) 22%, black)",
                 }}
               />
 
@@ -620,7 +620,7 @@ export const HeroBlock = forwardRef<HTMLElement, HeroBlockProps>(
                   transition={{ duration: 0.6 }}
                   className="col-span-6 ml-0 lg:-ml-10 relative z-20"
                 >
-                  <div className="relative aspect-[3/4] w-full rounded-[18px] sm:rounded-[32px] overflow-hidden border-2 sm:border-4 border-white dark:border-zinc-900 bg-zinc-800">
+                  <div className="relative aspect-[3/4] w-full rounded-[18px] sm:rounded-[32px] overflow-hidden border-2 sm:border-4 border-background bg-zinc-800">
                     <img
                       src={doctorMainImage}
                       alt="Doctor Consultation"
@@ -719,7 +719,7 @@ export const HeroBlock = forwardRef<HTMLElement, HeroBlockProps>(
                         key={i}
                         src={imgSrc}
                         alt={`User avatar ${i + 1}`}
-                        className="size-5 sm:size-8 rounded-md sm:rounded-lg border border-white/60 object-cover shadow-sm"
+                        className="size-5 sm:size-8 rounded-md sm:rounded-lg border border-card/60 object-cover shadow-sm"
                       />
                     ))}
                   </div>
@@ -801,7 +801,7 @@ export const HeroBlock = forwardRef<HTMLElement, HeroBlockProps>(
           `}</style>
 
           {/* Grid Background Overlay */}
-          <div className="absolute inset-0 bg-[linear-gradient(to_right,rgba(0,0,0,0.03)_1px,transparent_1px),linear-gradient(to_bottom,rgba(0,0,0,0.03)_1px,transparent_1px)] dark:bg-[linear-gradient(to_right,rgba(255,255,255,0.025)_1px,transparent_1px),linear-gradient(to_bottom,rgba(255,255,255,0.025)_1px,transparent_1px)] bg-[size:32px_32px] [mask-image:radial-gradient(ellipse_80%_80%_at_50%_50%,black_30%,transparent_100%)] pointer-events-none" />
+          <div className="absolute inset-0 bg-[linear-gradient(to_right,color-mix(in_oklab,var(--foreground)_3%,transparent)_1px,transparent_1px),linear-gradient(to_bottom,color-mix(in_oklab,var(--foreground)_3%,transparent)_1px,transparent_1px)] bg-[size:32px_32px] [mask-image:radial-gradient(ellipse_80%_80%_at_50%_50%,black_30%,transparent_100%)] pointer-events-none" />
 
           <div className="relative z-10 max-w-[1320px] mx-auto w-full px-4 sm:px-6 md:px-8">
             <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 lg:gap-12 items-stretch">
@@ -850,14 +850,14 @@ export const HeroBlock = forwardRef<HTMLElement, HeroBlockProps>(
                     {sliderSecondaryActionLabel && (
                       <Link
                         href={sliderSecondaryActionHref}
-                        className="inline-flex items-center justify-center gap-2 px-4 sm:px-5 py-3 sm:py-3.5 rounded-2xl border border-zinc-200 dark:border-zinc-800 bg-zinc-100/70 dark:bg-zinc-900 hover:bg-zinc-200/80 dark:hover:bg-zinc-800 text-xs sm:text-sm font-semibold transition-all cursor-pointer text-foreground active:scale-95 w-full sm:w-auto text-center"
+                        className="inline-flex items-center justify-center gap-2 px-4 sm:px-5 py-3 sm:py-3.5 rounded-2xl border border-border bg-muted hover:bg-foreground/10 text-xs sm:text-sm font-semibold transition-all cursor-pointer text-foreground active:scale-95 w-full sm:w-auto text-center"
                       >
                         {sliderSecondaryActionLabel.toLowerCase().includes("github") ? (
                           <GitHubIcon className="size-4 shrink-0 text-foreground" />
                         ) : sliderSecondaryActionLabel.toLowerCase().includes("resume") || sliderSecondaryActionLabel.toLowerCase().includes("cv") ? (
-                          <FileText className="size-4 text-zinc-700 dark:text-[var(--hero-accent-text)] shrink-0" />
+                          <FileText className="size-4 text-[var(--hero-accent-text)] shrink-0" />
                         ) : (
-                          <Mail className="size-4 text-zinc-700 dark:text-[var(--hero-accent-text)] shrink-0" />
+                          <Mail className="size-4 text-[var(--hero-accent-text)] shrink-0" />
                         )}
                         <span>{sliderSecondaryActionLabel}</span>
                       </Link>
@@ -956,7 +956,7 @@ export const HeroBlock = forwardRef<HTMLElement, HeroBlockProps>(
           }}
         />
         {/* Grid Mask Background */}
-        <div className="absolute inset-0 bg-[linear-gradient(to_right,rgba(0,0,0,0.03)_1px,transparent_1px),linear-gradient(to_bottom,rgba(0,0,0,0.03)_1px,transparent_1px)] dark:bg-[linear-gradient(to_right,rgba(255,255,255,0.025)_1px,transparent_1px),linear-gradient(to_bottom,rgba(255,255,255,0.025)_1px,transparent_1px)] bg-[size:24px_24px] sm:bg-[size:36px_36px] [mask-image:radial-gradient(ellipse_70%_60%_at_50%_40%,black_40%,transparent_100%)]" />
+        <div className="absolute inset-0 bg-[linear-gradient(to_right,color-mix(in_oklab,var(--foreground)_3%,transparent)_1px,transparent_1px),linear-gradient(to_bottom,color-mix(in_oklab,var(--foreground)_3%,transparent)_1px,transparent_1px)] bg-[size:24px_24px] sm:bg-[size:36px_36px] [mask-image:radial-gradient(ellipse_70%_60%_at_50%_40%,black_40%,transparent_100%)]" />
 
         <div className="relative z-10 max-w-[1320px] mx-auto w-full px-5 sm:px-6 md:px-8 flex flex-col justify-center items-center">
           <div className="flex flex-col items-center text-center max-w-[1320px] mx-auto space-y-3.5 sm:space-y-6 md:space-y-7 my-auto">
@@ -1044,9 +1044,9 @@ export const HeroBlock = forwardRef<HTMLElement, HeroBlockProps>(
                 <button
                   type="button"
                   onClick={handleCopy}
-                  className="group flex items-center gap-2 sm:gap-3.5 px-2.5 sm:px-5 h-8 xs:h-9 sm:h-[58px] rounded-lg sm:rounded-2xl border border-zinc-200 dark:border-border bg-zinc-100/70 dark:bg-card cursor-pointer w-full max-w-[220px] xs:max-w-[250px] sm:max-w-md hover:border-zinc-300 dark:hover:border-primary/50 transition-all"
+                  className="group flex items-center gap-2 sm:gap-3.5 px-2.5 sm:px-5 h-8 xs:h-9 sm:h-[58px] rounded-lg sm:rounded-2xl border border-border bg-muted/70 cursor-pointer w-full max-w-[220px] xs:max-w-[250px] sm:max-w-md hover:border-primary/50 transition-all"
                 >
-                  <Terminal className="size-3 xs:size-3.5 sm:size-5 text-zinc-700 dark:text-[var(--hero-accent-text)] shrink-0" />
+                  <Terminal className="size-3 xs:size-3.5 sm:size-5 text-[var(--hero-accent-text)] shrink-0" />
                   <code className="text-[9px] xs:text-[10px] sm:text-sm md:text-base font-mono text-foreground flex-1 text-left font-semibold truncate !bg-transparent !border-none !outline-none !shadow-none !p-0">
                     {cliCommand}
                   </code>

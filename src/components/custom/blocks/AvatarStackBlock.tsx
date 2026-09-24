@@ -49,7 +49,7 @@ export const AvatarStack = React.forwardRef<HTMLDivElement, AvatarStackProps>(
       avatars,
       size = "md",
       max = 4,
-      ringClassName = "ring-white dark:ring-zinc-950",
+      ringClassName = "ring-background",
       action,
       spreadOnHover = true,
       liftOnHover = true,
@@ -80,7 +80,7 @@ export const AvatarStack = React.forwardRef<HTMLDivElement, AvatarStackProps>(
           const avatarElement = (
             <span
               key={a.src}
-              className={cn(disc, "bg-black/5")}
+              className={cn(disc, "bg-muted")}
               // Each face slides a touch further than the last, so the row fans out.
               style={{ "--as-shift": `${i * 3}px`, "--as-z": shown.length - i } as React.CSSProperties}
             >
@@ -101,7 +101,7 @@ export const AvatarStack = React.forwardRef<HTMLDivElement, AvatarStackProps>(
         })}
         {rest > 0 && (
           <span
-            className={cn(disc, "bg-[#141414] font-semibold text-white dark:bg-white dark:text-[#141414]", s.text)}
+            className={cn(disc, "bg-primary font-semibold text-primary-foreground", s.text)}
             style={{ "--as-shift": `${shown.length * 3}px`, "--as-z": 0 } as React.CSSProperties}
           >
             +{rest}

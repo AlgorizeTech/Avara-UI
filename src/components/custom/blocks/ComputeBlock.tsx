@@ -13,18 +13,18 @@ export function ComputeBlock() {
         <p className="text-xs text-muted-foreground mt-1">Select the compute environment for your cluster.</p>
       </div>
       <div className="px-6 pb-6 space-y-3">
-        <div onClick={() => setComputeEnv("kubernetes")} className={`flex items-start justify-between p-3 rounded-lg border cursor-pointer transition-colors ${computeEnv === "kubernetes" ? "border-zinc-900 dark:border-zinc-50 bg-background" : "border-zinc-200 dark:border-zinc-800 bg-transparent hover:border-border"}`}>
+        <div onClick={() => setComputeEnv("kubernetes")} className={`flex items-start justify-between p-3 rounded-lg border cursor-pointer transition-colors ${computeEnv === "kubernetes" ? "border-primary bg-background" : "border-border bg-transparent hover:border-border"}`}>
           <div className="flex items-center gap-3">
-            <div className={`size-4 rounded-full border-4 flex items-center justify-center transition-colors ${computeEnv === "kubernetes" ? "border-zinc-900 dark:border-zinc-50" : "border-zinc-300 dark:border-zinc-700"}`}></div>
+            <div className={`size-4 rounded-full border-4 flex items-center justify-center transition-colors ${computeEnv === "kubernetes" ? "border-primary" : "border-input"}`}></div>
             <div>
               <p className="text-sm font-medium">Kubernetes</p>
               <p className="text-xs text-muted-foreground">Run workloads on a K8s cluster.</p>
             </div>
           </div>
         </div>
-        <div onClick={() => setComputeEnv("vm")} className={`flex items-start justify-between p-3 rounded-lg border cursor-pointer transition-colors ${computeEnv === "vm" ? "border-zinc-900 dark:border-zinc-50 bg-background" : "border-zinc-200 dark:border-zinc-800 bg-transparent hover:border-border"}`}>
+        <div onClick={() => setComputeEnv("vm")} className={`flex items-start justify-between p-3 rounded-lg border cursor-pointer transition-colors ${computeEnv === "vm" ? "border-primary bg-background" : "border-border bg-transparent hover:border-border"}`}>
           <div className="flex items-center gap-3">
-            <div className={`size-4 rounded-full border-4 flex items-center justify-center transition-colors ${computeEnv === "vm" ? "border-zinc-900 dark:border-zinc-50" : "border-zinc-300 dark:border-zinc-700"}`}></div>
+            <div className={`size-4 rounded-full border-4 flex items-center justify-center transition-colors ${computeEnv === "vm" ? "border-primary" : "border-input"}`}></div>
             <div>
               <p className="text-sm font-medium">Virtual Machine</p>
               <p className="text-xs text-muted-foreground">Access a VM configured cluster.</p>

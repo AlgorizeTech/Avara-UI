@@ -168,7 +168,7 @@ export default function SplitStepperDemo({
   stickySide = "right",
   cardDepthScale = 0.06,
   cardOffset = 20,
-  color = "#FFAB1D",
+  color,
 }: {
   stickySide?: "left" | "right";
   cardDepthScale?: number;

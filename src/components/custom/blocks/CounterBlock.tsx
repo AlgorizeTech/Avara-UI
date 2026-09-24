@@ -221,7 +221,7 @@ const StepperCounter = ({
               onClick={handleDec}
               disabled={count <= min}
               className={cn(
-                "w-10 h-10 flex items-center justify-center rounded-lg transition-colors active:scale-95 disabled:opacity-50 border border-black/10 dark:border-white/10 shadow-sm",
+                "w-10 h-10 flex items-center justify-center rounded-lg transition-colors active:scale-95 disabled:opacity-50 border border-foreground/10 shadow-sm",
                 theme.bg,
               )}
             >
@@ -234,7 +234,7 @@ const StepperCounter = ({
               onClick={handleInc}
               disabled={count >= max}
               className={cn(
-                "w-10 h-10 flex items-center justify-center rounded-lg transition-colors active:scale-95 disabled:opacity-50 border border-black/10 dark:border-white/10 shadow-sm",
+                "w-10 h-10 flex items-center justify-center rounded-lg transition-colors active:scale-95 disabled:opacity-50 border border-foreground/10 shadow-sm",
                 theme.bg,
               )}
             >
@@ -401,7 +401,7 @@ const CircularCounter = ({
             cx={size / 2}
             cy={size / 2}
             r={radius}
-            className="fill-none stroke-zinc-100 dark:stroke-zinc-800"
+            className="fill-none stroke-muted"
             strokeWidth={strokeWidth}
           />
           <circle
@@ -596,7 +596,7 @@ function SlideFigure({
   if (shown.current !== text) setShown({ current: text, previous: shown.current });
 
   return (
-    <div className="flex min-w-[3.75rem] flex-col items-center rounded-xl bg-black/[0.045] px-3 py-2.5 dark:bg-white/[0.07]">
+    <div className="flex min-w-[3.75rem] flex-col items-center rounded-xl bg-foreground/[0.06] px-3 py-2.5">
       <span
         className={cn(
           "relative block h-[1.75rem] overflow-hidden text-[1.5rem] font-semibold leading-[1.75rem] tabular-nums tracking-[-0.03em]",

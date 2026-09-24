@@ -700,7 +700,7 @@ export function TableOfContentsBlock({
 										))}
 
 									{item.codeSnippet && (
-										<div className="rounded-2xl border border-border bg-zinc-100/70 dark:bg-black overflow-hidden shadow-xs [&>div]:border-t-0">
+										<div className="rounded-2xl border border-border bg-muted/70 overflow-hidden shadow-xs [&>div]:border-t-0">
 											<CodeBlocks code={item.codeSnippet} language="bash" />
 										</div>
 									)}
