@@ -214,7 +214,7 @@ npx shadcn@latest add @algorize-ui/split-stepper
 
           string
 
-          "#FFAB1D"
+          theme primary
 
           The global theme color applied to active card borders, step index
           badges, glowing pill tags, and indicator arrows. Accepts hex codes or
