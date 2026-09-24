@@ -73,9 +73,16 @@ export const NAME_OVERRIDES: Record<string, string> = {
   "Support-dashboard.tsx": "support-dashboard",
   "DesignComponentsFolder.tsx": "design-components-folder",
   "DesignFolderBox.tsx": "design-folder-box",
+  "CounterSectionBlock.tsx": "counter-section",
 };
 
 export const META: Record<string, ItemMeta> = {
+  "counter-section": {
+    description:
+      "A collection of 4 animated high-impact Counter and Stats Sections with viewport-triggered count-up easing, zero shadows, and full adaptive styling.",
+    categories: ["marketing", "data-display"],
+    docs: "Named export: CounterSection. Accepts variant ('cyber-hud' | 'minimal-slash' | 'halftone-cinema' | 'spotlight-gradient') and custom stats array with value, prefix, suffix, decimals, label, sublabel, and tag.",
+  },
   globe: {
     description:
       "An interactive 3D WebGL globe visualization with location markers, arc curves, and rotation controls. Use it for global presence and location showcases.",

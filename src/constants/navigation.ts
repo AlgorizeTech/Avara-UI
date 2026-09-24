@@ -290,6 +290,17 @@ const rawNavigation: NavigationItem[] = [
         keywords: ["hero", "wall", "screenshots", "camera", "zoom", "library", "landing", "showcase", "grid"],
       },
       {
+        label: "Counter Section",
+        slug: "counter-section",
+        badge: "New",
+        addedOn: "2026-09-24",
+        keywords: [
+          "counter", "stats", "metrics", "numbers", "kpi",
+          "revenue", "satisfaction", "odometer", "ticker", "bento",
+          "social proof", "halftone", "hud", "spotlight", "scramble",
+        ],
+      },
+      {
         label: "Flavour Carousel",
         slug: "flavour-carousel",
         badge: "New",
