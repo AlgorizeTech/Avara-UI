@@ -270,9 +270,13 @@ function HeroCarouselRoot({
 
   // ---- The reveal: eyebrow and headline out of a blur, the panel up, the
   // cards one after another. Plays once, the first time the section is seen.
+  // Keyed on booleans, not on `metrics` (a fresh object every render): any
+  // re-render — a resize, a hover, props arriving — would otherwise run the
+  // cleanup and kill the timeline mid-play, leaving everything blurred out.
+  const measured = metrics !== null;
   const revealed = useRef(false);
   useEffect(() => {
-    if (!inView || !metrics || revealed.current) return;
+    if (!inView || !measured || revealed.current) return;
     revealed.current = true;
     const root = rootRef.current;
     if (!root || prefersReducedMotion()) return;
@@ -286,9 +290,12 @@ function HeroCarouselRoot({
       .fromTo(caption, { opacity: 0, y: 10 }, { opacity: 1, y: 0, duration: 0.6 }, 0.8)
       .fromTo(panel, { opacity: 0, y: 18 }, { opacity: 1, y: 0, duration: 0.8 }, 0.55);
     return () => {
+      // Reached on unmount, a StrictMode remount, or the rail measuring 0 while
+      // hidden. An entrance cut short replays next time rather than staying frozen.
+      if (tl.progress() < 1) revealed.current = false;
       tl.kill();
     };
-  }, [inView, metrics]);
+  }, [inView, measured]);
 
   // ---- Keyboard and touch: arrows walk the queue, a swipe on the rail too.
   const onKeyDown = (e: React.KeyboardEvent) => {
