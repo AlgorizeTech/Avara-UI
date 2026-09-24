@@ -1,0 +1,564 @@
+import { ExampleShowcase } from "@/components/site/Sandbox";
+import { Installation } from "@/components/site/installation";
+import { extractCode } from "@/lib/code";
+
+# Counter Section
+
+A collection of 4 animated high-impact Counter and Stats Sections designed for modern landing pages, SaaS platforms, agency portfolios, and enterprise portals. From high-tech telemetry HUDs to clean agency minimalism with monospace slash labels, architectural halftone strips, and interactive cursor spotlights. All variants are built with viewport-triggered count-up animations, zero shadows, clean flat borders, and full adaptive styling for both Light and Dark modes.
+
+export const cyberHudStats = [
+  {
+    value: 2.4,
+    decimals: 1,
+    prefix: "$",
+    suffix: "B",
+    label: "LIQUIDITY POOL RESERVE",
+    sublabel: "VERIFIED MULTI-SIG ON-CHAIN VAULT",
+    tag: "SEC-L3",
+  },
+  {
+    value: 99.999,
+    decimals: 3,
+    suffix: "%",
+    label: "CONSENSUS SYNCHRONIZATION",
+    sublabel: "ZERO DIVERGENCE EPOCH ROUNDS",
+    tag: "BFT-PASS",
+  },
+  {
+    value: 180,
+    suffix: "+",
+    label: "VALIDATOR EDGE NODES",
+    sublabel: "DISTRIBUTED GEOGRAPHIC SHARDING",
+    tag: "ACTIVE",
+  },
+  {
+    value: 4.8,
+    decimals: 1,
+    suffix: "ms",
+    label: "GLOBAL BLOCK FINALITY",
+    sublabel: "SUB-5MS DETERMINISTIC LATENCY",
+    tag: "OPTIMAL",
+  },
+];
+
+export const minimalSlashStats = [
+  {
+    value: 130,
+    prefix: "$",
+    suffix: "M",
+    label: "/REVENUE UNLOCKED",
+    sublabel: "Processed securely across global commerce partners",
+    tag: "+42% YoY",
+  },
+  {
+    value: 98,
+    suffix: "%",
+    label: "/CLIENT SATISFACTION",
+    sublabel: "Verified feedback score from over 1,200 enterprises",
+    tag: "Top 1%",
+  },
+  {
+    value: 90,
+    suffix: "+",
+    label: "/INDUSTRIES SERVED",
+    sublabel: "From fintech innovators to deep-tech logistics",
+    tag: "Global",
+  },
+  {
+    value: 4.9,
+    decimals: 1,
+    suffix: "★",
+    label: "/GLOBAL RATING",
+    sublabel: "Independent peer review score on Gartner & G2",
+    tag: "Leader",
+  },
+];
+
+export const halftoneCinemaStats = [
+  {
+    value: 60,
+    suffix: "+",
+    label: "Years of experience",
+    sublabel: "Pioneering architectural and computational design",
+  },
+  {
+    value: 97,
+    suffix: "%",
+    label: "Client retention rate",
+    sublabel: "Long-term partnership contracts spanning multiple decades",
+  },
+  {
+    value: 100,
+    suffix: "+m",
+    label: "Sq. Ft. currently managed",
+    sublabel: "Sustainable grade-A commercial real estate and facilities",
+  },
+  {
+    value: 98,
+    suffix: "%",
+    label: "Quality audit score",
+    sublabel: "Zero non-compliance marks on international safety audits",
+  },
+];
+
+export const spotlightStats = [
+  {
+    value: 850,
+    suffix: "K+",
+    label: "Daily Active Sessions",
+    sublabel: "Powering modern user experiences on web and mobile",
+    tag: "Fast",
+  },
+  {
+    value: 12,
+    suffix: "ms",
+    label: "Median Edge Latency",
+    sublabel: "Global compute routing under sub-15 millisecond target",
+    tag: "Ultra Low",
+  },
+  {
+    value: 99.9,
+    decimals: 1,
+    suffix: "%",
+    label: "Security Audit Grade",
+    sublabel: "SOC2 Type II, ISO 27001, and HIPAA compliance verified",
+    tag: "Certified",
+  },
+  {
+    value: 3.2,
+    decimals: 1,
+    suffix: "x",
+    label: "Efficiency Acceleration",
+    sublabel: "Average engineering velocity increase reported by engineering teams",
+    tag: "Productivity",
+  },
+];
+
+export const usageCyberHud = `"use client";
+
+import { CounterSection } from "@/components/custom/blocks/CounterSectionBlock";
+
+// 1. Define custom telemetry stats data
+const stats = [
+  {
+    value: 2.4,
+    decimals: 1,
+    prefix: "$",
+    suffix: "B",
+    label: "LIQUIDITY POOL RESERVE",
+    sublabel: "VERIFIED MULTI-SIG ON-CHAIN VAULT",
+    tag: "SEC-L3",
+  },
+  {
+    value: 99.999,
+    decimals: 3,
+    suffix: "%",
+    label: "CONSENSUS SYNCHRONIZATION",
+    sublabel: "ZERO DIVERGENCE EPOCH ROUNDS",
+    tag: "BFT-PASS",
+  },
+  {
+    value: 180,
+    suffix: "+",
+    label: "VALIDATOR EDGE NODES",
+    sublabel: "DISTRIBUTED GEOGRAPHIC SHARDING",
+    tag: "ACTIVE",
+  },
+  {
+    value: 4.8,
+    decimals: 1,
+    suffix: "ms",
+    label: "GLOBAL BLOCK FINALITY",
+    sublabel: "SUB-5MS DETERMINISTIC LATENCY",
+    tag: "OPTIMAL",
+  },
+];
+
+export default function CyberHudCounter() {
+  return (
+    <CounterSection
+      variant="cyber-hud"
+      stats={stats}
+    />
+  );
+}
+`;
+
+export const usageMinimalSlash = `"use client";
+
+import { CounterSection } from "@/components/custom/blocks/CounterSectionBlock";
+
+// 1. Define custom agency stats data
+const stats = [
+  {
+    value: 130,
+    prefix: "$",
+    suffix: "M",
+    label: "/REVENUE UNLOCKED",
+    sublabel: "Processed securely across global commerce partners",
+    tag: "+42% YoY",
+  },
+  {
+    value: 98,
+    suffix: "%",
+    label: "/CLIENT SATISFACTION",
+    sublabel: "Verified feedback score from over 1,200 enterprises",
+    tag: "Top 1%",
+  },
+  {
+    value: 90,
+    suffix: "+",
+    label: "/INDUSTRIES SERVED",
+    sublabel: "From fintech innovators to deep-tech logistics",
+    tag: "Global",
+  },
+  {
+    value: 4.9,
+    decimals: 1,
+    suffix: "★",
+    label: "/GLOBAL RATING",
+    sublabel: "Independent peer review score on Gartner & G2",
+    tag: "Leader",
+  },
+];
+
+export default function MinimalSlashCounter() {
+  return (
+    <CounterSection
+      variant="minimal-slash"
+      stats={stats}
+    />
+  );
+}
+`;
+
+export const usageHalftoneCinema = `"use client";
+
+import { CounterSection } from "@/components/custom/blocks/CounterSectionBlock";
+
+// 1. Define custom architectural stats data
+const stats = [
+  {
+    value: 60,
+    suffix: "+",
+    label: "Years of experience",
+    sublabel: "Pioneering architectural and computational design",
+  },
+  {
+    value: 97,
+    suffix: "%",
+    label: "Client retention rate",
+    sublabel: "Long-term partnership contracts spanning multiple decades",
+  },
+  {
+    value: 100,
+    suffix: "+m",
+    label: "Sq. Ft. currently managed",
+    sublabel: "Sustainable grade-A commercial real estate and facilities",
+  },
+  {
+    value: 98,
+    suffix: "%",
+    label: "Quality audit score",
+    sublabel: "Zero non-compliance marks on international safety audits",
+  },
+];
+
+export default function HalftoneCinemaCounter() {
+  return (
+    <CounterSection
+      variant="halftone-cinema"
+      stats={stats}
+    />
+  );
+}
+`;
+
+export const usageSpotlightGradient = `"use client";
+
+import { CounterSection } from "@/components/custom/blocks/CounterSectionBlock";
+
+// 1. Define custom telemetry & performance stats data
+const stats = [
+  {
+    value: 850,
+    suffix: "K+",
+    label: "Daily Active Sessions",
+    sublabel: "Powering modern user experiences on web and mobile",
+    tag: "Fast",
+  },
+  {
+    value: 12,
+    suffix: "ms",
+    label: "Median Edge Latency",
+    sublabel: "Global compute routing under sub-15 millisecond target",
+    tag: "Ultra Low",
+  },
+  {
+    value: 99.9,
+    decimals: 1,
+    suffix: "%",
+    label: "Security Audit Grade",
+    sublabel: "SOC2 Type II, ISO 27001, and HIPAA compliance verified",
+    tag: "Certified",
+  },
+  {
+    value: 3.2,
+    decimals: 1,
+    suffix: "x",
+    label: "Efficiency Acceleration",
+    sublabel: "Average engineering velocity increase reported by engineering teams",
+    tag: "Productivity",
+  },
+];
+
+export default function SpotlightGradientCounter() {
+  return (
+    <CounterSection
+      variant="spotlight-gradient"
+      stats={stats}
+    />
+  );
+}
+`;
+
+<ExampleShowcase
+  name="counter-section"
+  columns={1}
+  examples={[
+    {
+      title: "1. Cyber HUD (Terminal & Telemetry)",
+      subheading: "Developer and fintech terminal HUD with bracket corner crosshairs [+], subtle scanlines, live status LEDs, and character scramble decryption on reveal.",
+      propNotes: [
+        {
+          lead: "Set",
+          prop: "variant",
+          value: '"cyber-hud"',
+          effect: "to activate the cyber terminal layout. Pass custom metrics through the stats prop.",
+        },
+      ],
+      props: { variant: "cyber-hud", stats: cyberHudStats },
+      usage: usageCyberHud,
+      code: extractCode("src/components/custom/blocks/CounterSectionBlock.tsx"),
+      minHeight: 280,
+    },
+    {
+      title: "2. Minimal Slash (Agency / Studio)",
+      subheading: "Clean, high-impact typographic layout with floating Swiss modular cards, giant watermark numerals, monospace uppercase /LABELS, and interactive expanding accents.",
+      propNotes: [
+        {
+          lead: "Set",
+          prop: "variant",
+          value: '"minimal-slash"',
+          effect: "to activate floating Swiss cards with watermark numbers. Pass custom stats through the stats prop.",
+        },
+      ],
+      props: { variant: "minimal-slash", stats: minimalSlashStats },
+      usage: usageMinimalSlash,
+      minHeight: 280,
+    },
+    {
+      title: "3. Halftone Cinema (Architectural)",
+      subheading: "Atmospheric architectural strip featuring an authentic dot-matrix halftone texture, hairline vertical column dividers, and multi-line descriptions. Adapts cleanly to light and dark modes.",
+      propNotes: [
+        {
+          lead: "Set",
+          prop: "variant",
+          value: '"halftone-cinema"',
+          effect: "to activate the halftone dot-matrix strip. Pass custom stats through the stats prop.",
+        },
+      ],
+      props: { variant: "halftone-cinema", stats: halftoneCinemaStats },
+      usage: usageHalftoneCinema,
+      minHeight: 280,
+    },
+    {
+      title: "4. Spotlight Gradient (Interactive Pointer)",
+      subheading: "Interactive radial spotlight that tracks the cursor across modern floating cards, highlighting gradient accents, category icon badges, and micro-metric trends with zero box shadows.",
+      propNotes: [
+        {
+          lead: "Set",
+          prop: "variant",
+          value: '"spotlight-gradient"',
+          effect: "to activate the cursor-tracking spotlight cards. Pass custom stats through the stats prop.",
+        },
+      ],
+      props: { variant: "spotlight-gradient", stats: spotlightStats },
+      usage: usageSpotlightGradient,
+      minHeight: 280,
+    },
+  ]}
+/>
+
+## Installation
+
+<Installation name="counter-section" />
+
+## Features
+
+<div className="grid grid-cols-1 sm:grid-cols-2 gap-4 my-6 not-prose">
+  <div className="p-6 rounded-2xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900">
+    <h3 className="text-lg font-semibold text-zinc-900 dark:text-zinc-50 mb-2">4 Production Variants</h3>
+    <p className="text-zinc-600 dark:text-zinc-400 text-sm">Cyber HUD for fintech & developer tools, Minimal Slash for agencies, Halftone Cinema for architecture, and Spotlight Gradient for modern tech.</p>
+  </div>
+  <div className="p-6 rounded-2xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900">
+    <h3 className="text-lg font-semibold text-zinc-900 dark:text-zinc-50 mb-2">100% Reusable with Custom Datasets</h3>
+    <p className="text-zinc-600 dark:text-zinc-400 text-sm">Every variant accepts a typed stats array prop with value, prefix, suffix, label, sublabel, and tag for complete customization.</p>
+  </div>
+  <div className="p-6 rounded-2xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900">
+    <h3 className="text-lg font-semibold text-zinc-900 dark:text-zinc-50 mb-2">No Shadows, Pure Flat Design</h3>
+    <p className="text-zinc-600 dark:text-zinc-400 text-sm">Engineered with clean, crisp borders and zero box-shadows for a modern, sleek aesthetic that blends into any layout.</p>
+  </div>
+  <div className="p-6 rounded-2xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900">
+    <h3 className="text-lg font-semibold text-zinc-900 dark:text-zinc-50 mb-2">100% Theme Adaptive</h3>
+    <p className="text-zinc-600 dark:text-zinc-400 text-sm">Every variant—including Halftone and Cyber HUD—renders completely light in Light Mode and deep dark in Dark Mode.</p>
+  </div>
+</div>
+
+## Best Practices & Guidelines
+
+<div className="flex flex-col gap-4 my-6 not-prose">
+  <div className="rounded-xl border border-foreground/[0.06] bg-foreground/[0.03] p-4">
+    <h4 className="font-sans text-[14px] font-semibold text-foreground mb-1">Layout & Placement</h4>
+    <p className="text-[13px] leading-relaxed text-foreground/50">Place counter sections below the hero fold or immediately after high-level feature highlights. The animated count-up runs automatically when the section intersects the viewport (using <code>useInView</code>), making it ideal for social proof and conversion trust anchors.</p>
+  </div>
+  <div className="rounded-xl border border-foreground/[0.06] bg-foreground/[0.03] p-4">
+    <h4 className="font-sans text-[14px] font-semibold text-foreground mb-1">Variant Selection</h4>
+    <p className="text-[13px] leading-relaxed text-foreground/50">Choose <code>variant="cyber-hud"</code> for developer tools, Web3, security, and fintech telemetry; <code>variant="minimal-slash"</code> for modern agencies, SaaS, and portfolios; <code>variant="halftone-cinema"</code> for architecture and editorial brands; and <code>variant="spotlight-gradient"</code> for interactive consumer tech and modern AI applications.</p>
+  </div>
+  <div className="rounded-xl border border-foreground/[0.06] bg-foreground/[0.03] p-4">
+    <h4 className="font-sans text-[14px] font-semibold text-foreground mb-1">Custom Data & Precision</h4>
+    <p className="text-[13px] leading-relaxed text-foreground/50">Always specify the <code>decimals</code> prop on stats when dealing with floating-point metrics (e.g., <code>decimals: 1</code> for <code>2.4</code> or <code>decimals: 3</code> for <code>99.999</code>). This prevents awkward integer rounding during the count-up animation.</p>
+  </div>
+</div>
+
+## Props Reference
+
+<div className="overflow-x-auto mb-8">
+  <table>
+    <thead>
+      <tr>
+        <th>Prop</th>
+        <th>Type</th>
+        <th>Default</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><code>variant</code></td>
+        <td><code>"cyber-hud" | "minimal-slash" | "halftone-cinema" | "spotlight-gradient"</code></td>
+        <td><code>"cyber-hud"</code></td>
+        <td>Design aesthetic variant to render.</td>
+      </tr>
+      <tr>
+        <td><code>stats</code></td>
+        <td><code>StatItem[]</code></td>
+        <td><code>DEFAULT_STATS[variant]</code></td>
+        <td>Array of numerical metrics to animate and display.</td>
+      </tr>
+      <tr>
+        <td><code>eyebrow</code></td>
+        <td><code>string</code></td>
+        <td><code>undefined</code></td>
+        <td>Optional pill or category badge rendered above the header.</td>
+      </tr>
+      <tr>
+        <td><code>heading</code></td>
+        <td><code>string</code></td>
+        <td><code>undefined</code></td>
+        <td>Main title copy for the counter section.</td>
+      </tr>
+      <tr>
+        <td><code>description</code></td>
+        <td><code>string</code></td>
+        <td><code>undefined</code></td>
+        <td>Supporting paragraph copy below the main heading.</td>
+      </tr>
+      <tr>
+        <td><code>allowReplay</code></td>
+        <td><code>boolean</code></td>
+        <td><code>true</code></td>
+        <td>Enables or disables the interactive replay trigger button.</td>
+      </tr>
+      <tr>
+        <td><code>className</code></td>
+        <td><code>string</code></td>
+        <td><code>undefined</code></td>
+        <td>Custom CSS classes for outer container styling.</td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+### StatItem Object
+
+<div className="overflow-x-auto">
+  <table>
+    <thead>
+      <tr>
+        <th>Property</th>
+        <th>Type</th>
+        <th>Default</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><code>value</code></td>
+        <td><code>number</code></td>
+        <td><strong>Required</strong></td>
+        <td>Target numerical value to interpolate and display.</td>
+      </tr>
+      <tr>
+        <td><code>label</code></td>
+        <td><code>string</code></td>
+        <td><strong>Required</strong></td>
+        <td>Primary metric title (e.g., "/REVENUE UNLOCKED").</td>
+      </tr>
+      <tr>
+        <td><code>prefix</code></td>
+        <td><code>string</code></td>
+        <td><code>""</code></td>
+        <td>Text placed before the count-up number (e.g., "$").</td>
+      </tr>
+      <tr>
+        <td><code>suffix</code></td>
+        <td><code>string</code></td>
+        <td><code>""</code></td>
+        <td>Text placed after the count-up number (e.g., "%", "+", "M").</td>
+      </tr>
+      <tr>
+        <td><code>decimals</code></td>
+        <td><code>number</code></td>
+        <td><code>0</code></td>
+        <td>Number of decimal places to format during the count-up.</td>
+      </tr>
+      <tr>
+        <td><code>sublabel</code></td>
+        <td><code>string</code></td>
+        <td><code>undefined</code></td>
+        <td>Secondary descriptive copy rendered beneath the metric.</td>
+      </tr>
+      <tr>
+        <td><code>tag</code></td>
+        <td><code>string</code></td>
+        <td><code>undefined</code></td>
+        <td>Status badge or delta indicator pill.</td>
+      </tr>
+      <tr>
+        <td><code>trend</code></td>
+        <td><code>string</code></td>
+        <td><code>undefined</code></td>
+        <td>Percentage or trend delta string.</td>
+      </tr>
+      <tr>
+        <td><code>icon</code></td>
+        <td><code>React.ReactNode</code></td>
+        <td><code>undefined</code></td>
+        <td>Optional Lucide icon or custom SVG graphic element.</td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+

@@ -3576,7 +3576,7 @@ function AnimatedFAQSection() {
 		<section
 			ref={ref}
 			id="faq"
-			className="py-20 md:py-28 relative overflow-hidden bg-background border-t border-border/40">
+			className="py-13 md:py-16 relative overflow-hidden bg-background border-t border-border/40">
 			{/* Ambient background glows */}
 			<div className="pointer-events-none absolute top-10 left-1/4 -translate-x-1/2 w-[600px] h-[300px] bg-primary/5 rounded-full blur-3xl opacity-60" />
 			<div className="pointer-events-none absolute bottom-10 right-1/4 w-[500px] h-[300px] bg-primary/5 rounded-full blur-3xl opacity-50" />
@@ -3587,17 +3587,17 @@ function AnimatedFAQSection() {
 					initial={{ opacity: 0, y: 20 }}
 					animate={isInView ? { opacity: 1, y: 0 } : {}}
 					transition={{ duration: 0.6 }}
-					className="text-center max-w-2xl mx-auto mb-12 sm:mb-16 space-y-4">
-					<div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-primary/10 border border-primary/20 text-xs font-semibold text-primary shadow-xs">
-						<Sparkles className="size-3.5" />
-						<span>Got Questions?</span>
+					className="text-center max-w-3xl mx-auto mb-10 sm:mb-12">
+					<div className={cn(EYEBROW_PILL, "mb-4")}>
+						<Sparkles className="size-3.5 text-primary" />
+						Common Queries
 					</div>
 
-					<h2 className="text-3xl sm:text-4xl lg:text-5xl font-semibold tracking-tight text-foreground">
+					<h2 className={SECTION_H2}>
 						Frequently Asked Questions
 					</h2>
 
-					<p className="text-sm sm:text-base text-muted-foreground leading-relaxed">
+					<p className={cn(SECTION_SUB, "mx-auto")}>
 						Everything you need to know about using Docs UI, component integration,
 						licensing, and custom styling.
 					</p>

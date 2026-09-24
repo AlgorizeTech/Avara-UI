@@ -853,7 +853,8 @@ const slugify = (value?: string) =>
  * the small slice of markdown that prose actually uses — `code` and **bold** —
  * so a prop name reads as a prop name.
  */
-function renderInline(text: string): React.ReactNode {
+function renderInline(text?: string): React.ReactNode {
+  if (!text) return null;
   return text.split(/(`[^`]+`|\*\*[^*]+\*\*)/g).map((part, i) => {
     if (part.length > 2 && part.startsWith("`") && part.endsWith("`")) {
       return (
@@ -925,7 +926,7 @@ function PropNotes({ notes }: { notes: PropNote[] }) {
               </>
             )}
           </dt>
-          <dd className="inline">{renderInline(note.effect)}</dd>
+          <dd className="inline">{renderInline(note.effect || (note as any).note || "")}</dd>
         </div>
       ))}
     </dl>

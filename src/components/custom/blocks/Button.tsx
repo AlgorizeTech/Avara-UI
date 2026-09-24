@@ -522,6 +522,24 @@ const ShardsControlTile = ({
     const numVal = Number(displayValue) !== undefined && !isNaN(Number(displayValue)) ? Number(displayValue) : min;
     const percentage = Math.max(0, Math.min(100, ((numVal - min) / (max - min)) * 100));
 
+    // Ref to track if slider was already at 100% so pulse triggers exactly ONCE per 100% arrival
+    const wasAt100Ref = React.useRef(percentage >= 99.5 || numVal >= max);
+    const [sliderPulseKey, setSliderPulseKey] = useState(0);
+
+    // Watch percentage to trigger pulse on 100% arrival
+    useEffect(() => {
+      if (controlType !== "slider") return;
+      const isAt100 = percentage >= 99.5 || numVal >= max;
+      if (isAt100) {
+        if (!wasAt100Ref.current) {
+          setSliderPulseKey((k) => k + 1);
+          wasAt100Ref.current = true;
+        }
+      } else {
+        wasAt100Ref.current = false;
+      }
+    }, [percentage, numVal, max, controlType]);
+
     // Dragging logic for full-tile slider
     const handleSliderMove = React.useCallback(
       (clientX: number) => {
@@ -551,18 +569,34 @@ const ShardsControlTile = ({
       handleSliderMove(e.clientX);
     };
 
+    const handleTouchStart = (e: React.TouchEvent<HTMLDivElement>) => {
+      if (controlType !== "slider") return;
+      if (e.touches[0]) {
+        setIsDraggingSlider(true);
+        handleSliderMove(e.touches[0].clientX);
+      }
+    };
+
     useEffect(() => {
       if (!isDraggingSlider) return;
 
       const onMouseMove = (e: MouseEvent) => handleSliderMove(e.clientX);
       const onMouseUp = () => setIsDraggingSlider(false);
+      const onTouchMove = (e: TouchEvent) => {
+        if (e.touches[0]) handleSliderMove(e.touches[0].clientX);
+      };
+      const onTouchEnd = () => setIsDraggingSlider(false);
 
       window.addEventListener("mousemove", onMouseMove);
       window.addEventListener("mouseup", onMouseUp);
+      window.addEventListener("touchmove", onTouchMove, { passive: true });
+      window.addEventListener("touchend", onTouchEnd);
 
       return () => {
         window.removeEventListener("mousemove", onMouseMove);
         window.removeEventListener("mouseup", onMouseUp);
+        window.removeEventListener("touchmove", onTouchMove);
+        window.removeEventListener("touchend", onTouchEnd);
       };
     }, [isDraggingSlider, handleSliderMove]);
 
@@ -585,35 +619,105 @@ const ShardsControlTile = ({
 
     /* SPECIAL RENDER FOR FULL TILE RANGE SLIDER BUTTON */
     if (controlType === "slider") {
+      const isAtMax = percentage >= 99.5 || numVal >= max;
+
       return (
-        <div
-          ref={sliderRef}
-          onMouseDown={handleMouseDown}
-          className={cn(
-            "relative flex items-center justify-between w-full h-12 px-4 rounded-xl border select-none group cursor-pointer overflow-hidden transition-all duration-200",
-            "bg-background/90 border-border/80 dark:bg-card/90",
-            className
+        <div className="relative w-full rounded-xl isolation-auto" style={style}>
+          {/* Keyframes for Beacon Radar Pulse when reaching 100% */}
+          <style
+            dangerouslySetInnerHTML={{
+              __html: `
+                @keyframes beacon-ping-once {
+                  0% {
+                    transform: scale(1);
+                    opacity: 0.85;
+                  }
+                  70%, 100% {
+                    transform: scale(1.18, 1.55);
+                    opacity: 0;
+                  }
+                }
+                @keyframes beacon-aura-once {
+                  0% {
+                    opacity: 0.95;
+                  }
+                  45% {
+                    opacity: 0.6;
+                  }
+                  100% {
+                    opacity: 0;
+                  }
+                }
+              `,
+            }}
+          />
+
+          {/* Smooth Soft Aura Beacon Ring & Ping Wave on reaching 100% (Identical to Beacon Pulse button variant) */}
+          {sliderPulseKey > 0 && (
+            <div key={`beacon-pulse-${sliderPulseKey}`} className="absolute inset-0 z-0 pointer-events-none">
+              {/* Primary Ping Expanding Radar Ring */}
+              <span
+                className="absolute inset-0 rounded-xl bg-primary/40 pointer-events-none"
+                style={{
+                  animation: "beacon-ping-once 1.8s cubic-bezier(0, 0, 0.2, 1) forwards",
+                }}
+              />
+              {/* Secondary Offset Border Ping Ring */}
+              <span
+                className="absolute inset-0 rounded-xl border-2 border-primary/50 pointer-events-none"
+                style={{
+                  animation: "beacon-ping-once 1.8s cubic-bezier(0, 0, 0.2, 1) 0.15s forwards",
+                }}
+              />
+              {/* Soft Aura Glow */}
+              <span
+                className="absolute -inset-1.5 rounded-xl bg-primary/25 blur-md pointer-events-none"
+                style={{
+                  animation: "beacon-aura-once 1.8s ease-out forwards",
+                }}
+              />
+            </div>
           )}
-          style={style}
-        >
-          {/* Filled Active Drag Pill Surface with vertical border line & handle cursor */}
+
           <div
-            className="absolute left-0 top-0 bottom-0 bg-primary/15 rounded-xl transition-all duration-75 pointer-events-none border-r-2 border-primary/30"
-            style={{ width: `${percentage}%` }}
+            ref={(node) => {
+              sliderRef.current = node;
+              if (typeof forwardedRef === "function") {
+                forwardedRef(node as unknown as HTMLButtonElement);
+              } else if (forwardedRef) {
+                (forwardedRef as React.MutableRefObject<HTMLButtonElement | null>).current = node as unknown as HTMLButtonElement;
+              }
+            }}
+            onMouseDown={handleMouseDown}
+            onTouchStart={handleTouchStart}
+            className={cn(
+              "relative z-10 flex items-center justify-between w-full h-12 px-4 rounded-xl border select-none group cursor-pointer overflow-hidden transition-all duration-200",
+              "bg-background/90 dark:bg-[#16161d]",
+              isAtMax
+                ? "border-primary/50 shadow-[0_0_12px_rgba(var(--primary),0.2)]"
+                : "border-border/80 dark:border-white/10",
+              className
+            )}
           >
-            {/* Invisible Edge Drag Indicator with cursor-ew-resize */}
-            <span className="absolute right-0 top-0 bottom-0 w-3 -mr-1.5 cursor-ew-resize pointer-events-auto" />
+            {/* Filled Active Drag Pill Surface with vertical border line & handle cursor */}
+            <div
+              className="absolute left-0 top-0 bottom-0 bg-primary/15 dark:bg-white/10 rounded-xl transition-all duration-75 pointer-events-none border-r-2 border-primary/30 dark:border-zinc-300/80"
+              style={{ width: `${percentage}%` }}
+            >
+              {/* Invisible Edge Drag Indicator with cursor-ew-resize */}
+              <span className="absolute right-0 top-0 bottom-0 w-3 -mr-1.5 cursor-ew-resize pointer-events-auto" />
+            </div>
+
+            {/* Label on Left */}
+            <span className="relative z-10 text-foreground dark:text-zinc-200 font-semibold text-xs tracking-wide pointer-events-none">
+              {displayLabel}
+            </span>
+
+            {/* Value Display on Right */}
+            <span className="relative z-10 font-mono text-xs font-semibold text-foreground dark:text-zinc-100 pointer-events-none">
+              {displayValue}
+            </span>
           </div>
-
-          {/* Label on Left */}
-          <span className="relative z-10 text-foreground font-semibold text-xs tracking-wide pointer-events-none">
-            {displayLabel}
-          </span>
-
-          {/* Value Display on Right */}
-          <span className="relative z-10 font-mono text-xs font-semibold text-foreground pointer-events-none">
-            {displayValue}
-          </span>
         </div>
       );
     }
