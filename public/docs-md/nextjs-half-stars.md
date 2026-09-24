@@ -115,7 +115,7 @@ Discover the Half Stars rating component's precise visual feedback, supporting f
         HalfStars
         inactiveColor
         string
-        "text-slate-200 dark:text-slate-700"
+        "text-foreground/15"
         Tailwind text color class for the empty (inactive) portion of the stars.
 
         HalfStars

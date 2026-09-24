@@ -157,7 +157,7 @@ Discover the Conversation Timeline's capabilities as a minimap for long conversa
 
         accent
         string
-        "#0ea5e9"
+        "var(--primary)"
         Colour of the active row's line. Any CSS colour.
 
         className

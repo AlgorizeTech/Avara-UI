@@ -179,7 +179,7 @@ The accent is resolved at runtime, so it adopts your site's primary color with n
 
           string
 
-          "#FFAB1D"
+          "var(--primary)"
 
           The fallback hex color string applied automatically if no valid hex or
           rgb color value is detected in localStorage or CSS root
