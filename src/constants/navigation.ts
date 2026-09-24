@@ -245,6 +245,17 @@ const rawNavigation: NavigationItem[] = [
       { label: "Verify Badge", slug: "verify-badge" },
       { label: "Video Accordion", slug: "video-accordion" },
       { label: "Video Player", slug: "video-player" },
+      {
+        label: "Wallet",
+        slug: "wallet",
+        badge: "New",
+        addedOn: "2026-09-24",
+        keywords: [
+          "wallet", "cards", "credit card", "fintech", "payment",
+          "staggered", "scoop", "reveal balance", "euros", "pounds",
+          "emv chip", "interactive", "hover animation",
+        ],
+      },
       { label: "Wizard", slug: "wizard" },
     ],
   },
@@ -288,6 +299,17 @@ const rawNavigation: NavigationItem[] = [
         badge: "New",
         addedOn: "2026-09-20",
         keywords: ["hero", "wall", "screenshots", "camera", "zoom", "library", "landing", "showcase", "grid"],
+      },
+      {
+        label: "Counter Section",
+        slug: "counter-section",
+        badge: "New",
+        addedOn: "2026-09-24",
+        keywords: [
+          "counter", "stats", "metrics", "numbers", "kpi",
+          "revenue", "satisfaction", "odometer", "ticker", "bento",
+          "social proof", "halftone", "hud", "spotlight", "scramble",
+        ],
       },
       {
         label: "Flavour Carousel",
