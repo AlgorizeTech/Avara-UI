@@ -7,9 +7,7 @@ import {
   ShieldCheck,
   Sparkles,
   Zap,
-  ArrowUpRight,
   RotateCcw,
-  Activity,
   Star,
   Globe,
 } from "lucide-react";
@@ -261,7 +259,7 @@ function ScrambleCounter({
       setDisplay(
         finalStr
           .split("")
-          .map((char, index) => {
+          .map((_, index) => {
             if (index < (iteration / totalIterations) * finalStr.length) {
               return finalStr[index];
             }
@@ -315,7 +313,7 @@ function MinimalSlashSection({
             {/* Top row: Slash Index + Badge */}
             <div className="flex items-center justify-between gap-2 mb-4">
               <span className="inline-flex items-center gap-1 font-mono text-xs font-bold text-muted-foreground/70 group-hover:text-primary transition-colors">
-                <span className="text-primary font-black">//</span> 0{idx + 1}
+                <span className="text-primary font-black">{"//"}</span> 0{idx + 1}
               </span>
               {stat.tag && (
                 <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-[10px] font-mono font-medium tracking-tight bg-primary/10 text-primary border border-primary/20 group-hover:border-primary/40 transition-colors">

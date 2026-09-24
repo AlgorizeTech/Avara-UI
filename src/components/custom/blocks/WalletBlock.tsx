@@ -2,7 +2,7 @@
 
 import React, { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { Eye, EyeOff, Nfc, Sparkles } from "lucide-react";
+import { Eye, EyeOff, Nfc } from "lucide-react";
 import { cn } from "@/lib/utils";
 
 // ==========================================
