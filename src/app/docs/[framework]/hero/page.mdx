@@ -1391,6 +1391,41 @@ export default function Page() {
   ]}
 />
 
+export const usageFacility = `import { HeroBlock } from "@/components/custom/blocks/HeroBlock";
+
+export default function Page() {
+  return (
+    <HeroBlock
+      variant="facility"
+      titlePrefix="Precision facility services. Certified. For environments that can't fail."
+      subtitle="Certified, data-driven facility services across mission-critical environments."
+      primaryActionLabel="Request a facility audit"
+      primaryActionHref="#audit"
+    />
+  );
+}`;
+
+<ExampleShowcase
+  name="hero-facility"
+  colorControl
+  columns={1}
+  minHeight={500}
+  examples={[
+    {
+      title: "Precision Facility & CAD Grid Hero",
+      propNotes: [
+        {
+          lead: "Set",
+          prop: "variant",
+          value: '"facility"',
+          effect: "for an architectural CAD blueprint grid hero with interactive morphing shape responding to left and right grid hover zones.",
+        },
+      ],
+      usage: usageFacility,
+    },
+  ]}
+/>
+
 ### Installation
 
 <Installation name="hero" showSetupPath={false} />
@@ -1413,13 +1448,13 @@ export default function Page() {
           <code>variant</code>
         </td>
         <td>
-          <code>"bounce" | "typing" | "slider" | "glow-arc" | "pet-shop" | "doctor"</code>
+          <code>"bounce" | "typing" | "slider" | "glow-arc" | "pet-shop" | "doctor" | "facility"</code>
         </td>
         <td>
           <code>"bounce"</code>
         </td>
         <td>
-          The layout & animation style. <code>"bounce"</code> uses spring word motion; <code>"typing"</code> uses typewriter effect; <code>"slider"</code> renders split 2-column hero with continuous marquee; <code>"glow-arc"</code> renders centered radial glow arc. The hexagonal mosaic hero is <DocLink href="#honeycomb-hero">Honeycomb Hero</DocLink>, further up this page; the screenshot wall and the revolving ring are their own sections, <DocLink to="component-wall">Component Wall</DocLink> and <DocLink to="orbit-gallery">Orbit Gallery</DocLink>.
+          The layout & animation style. <code>"bounce"</code> uses spring word motion; <code>"typing"</code> uses typewriter effect; <code>"slider"</code> renders split 2-column hero with continuous marquee; <code>"glow-arc"</code> / <code>"pet-shop"</code> renders pet care hero; <code>"doctor"</code> renders medical test kits hero; <code>"facility"</code> renders architectural CAD blueprint grid hero with interactive morphing shape. The hexagonal mosaic hero is <DocLink href="#honeycomb-hero">Honeycomb Hero</DocLink>, further up this page; the screenshot wall and the revolving ring are their own sections, <DocLink to="component-wall">Component Wall</DocLink> and <DocLink to="orbit-gallery">Orbit Gallery</DocLink>.
         </td>
       </tr>
       <tr>

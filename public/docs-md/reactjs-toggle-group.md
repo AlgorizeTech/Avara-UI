@@ -155,7 +155,7 @@ export default function TextEditor() {
 
           "primary" | "indigo" | "rose" | "emerald" | "zinc" | string
 
-          "zinc"
+          "primary"
 
           The dynamic accent color applied to active items. "primary" follows your theme's --primary token; custom hex codes are fully supported.
 

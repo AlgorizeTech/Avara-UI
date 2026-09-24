@@ -69,6 +69,7 @@ export const sandboxNames = [
   "hero-data",
   "hero",
   "hero-doctor",
+  "hero-facility",
   "hero-minimal",
   "hero-saas",
   "homepage-hero",

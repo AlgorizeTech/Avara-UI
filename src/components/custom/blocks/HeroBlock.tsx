@@ -29,8 +29,8 @@ const GitHubIcon = (props: React.SVGProps<SVGSVGElement>) => (
    ═══════════════════════════════════════════════ */
 
 export interface HeroBlockProps extends React.HTMLAttributes<HTMLElement> {
-  /** Animation variant: "bounce", "typing", "slider", "glow-arc", "pet-shop", "doctor" */
-  variant?: "bounce" | "typing" | "slider" | "glow-arc" | "pet-shop" | "doctor";
+  /** Animation variant: "bounce", "typing", "slider", "glow-arc", "pet-shop", "doctor", "facility", "geometric" */
+  variant?: "bounce" | "typing" | "slider" | "glow-arc" | "pet-shop" | "doctor" | "facility" | "geometric";
   /** Optional badge text displayed inside the top pill badge */
   badgeText?: string;
   /** Badge link URL */
@@ -124,6 +124,11 @@ const ensureContrast = (rgb: Rgb, surfaceLum: number, target: 0 | 255): Rgb => {
 
 const toCss = ([r, g, b]: Rgb) => `rgb(${r}, ${g}, ${b})`;
 
+const getAccentForeground = (rgb: Rgb | null): string => {
+  if (!rgb) return "var(--primary-foreground)";
+  return relLuminance(rgb) > 0.45 ? "#09090b" : "#ffffff";
+};
+
 /* ═══════════════════════════════════════════════
    DEFAULT DEVELOPER-FIRST RENDER & CODE IMAGES
    ═══════════════════════════════════════════════ */
@@ -182,6 +187,9 @@ export const HeroBlock = forwardRef<HTMLElement, HeroBlockProps>(
   ) => {
     const [copied, setCopied] = useState(false);
     const [currentWordIndex, setCurrentWordIndex] = useState(0);
+
+    // Shape hover zone state (used when variant === "facility" || variant === "geometric")
+    const [shapeHoverZone, setShapeHoverZone] = useState<"idle" | "left" | "right" | "center">("idle");
 
     // Typing effect state (used when variant === "typing")
     const [currentText, setCurrentText] = useState("");
@@ -242,6 +250,7 @@ export const HeroBlock = forwardRef<HTMLElement, HeroBlockProps>(
     const getAccentColor = (col?: string) => {
       if (!col || col === "primary" || col === "default") return undefined;
       const presets: Record<string, string> = {
+        lavender: "#9b8afb",
         indigo: "#6366f1",
         rose: "#f43f5e",
         emerald: "#10b981",
@@ -262,8 +271,7 @@ export const HeroBlock = forwardRef<HTMLElement, HeroBlockProps>(
       ...(resolvedColor ? { "--primary": resolvedColor } : {}),
       ...(accentRgb
         ? {
-            "--primary-foreground":
-              relLuminance(accentRgb) > 0.45 ? "#09090b" : "#ffffff",
+            "--primary-foreground": getAccentForeground(accentRgb),
           }
         : {}),
     } as React.CSSProperties;
@@ -927,6 +935,237 @@ export const HeroBlock = forwardRef<HTMLElement, HeroBlockProps>(
                 </div>
               </div>
 
+            </div>
+          </div>
+        </section>
+      );
+    }
+
+    /* ═══════════════════════════════════════════════
+       VARIANT 6: PRECISION FACILITY & CAD BLUEPRINT GRID HERO (INTERACTIVE MORPHING SHAPE)
+       ═══════════════════════════════════════════════ */
+    if (variant === "facility" || variant === "geometric") {
+      const isDefaultFacilityTitle =
+        !titlePrefix ||
+        titlePrefix === "Build " ||
+        titlePrefix.includes("Precision facility");
+
+      const facilityTitleLines: string[] = isDefaultFacilityTitle
+        ? [
+            "Precision facility",
+            "services. Certified. For",
+            "environments that can't fail.",
+          ]
+        : (titlePrefix + (titleSuffix ? ` ${titleSuffix}` : "")).includes("\n")
+        ? (titlePrefix + (titleSuffix ? ` ${titleSuffix}` : "")).split("\n")
+        : [
+            "Precision facility",
+            "services. Certified. For",
+            "environments that can't fail.",
+          ];
+
+      const facSubtitle =
+        subtitle ===
+        "A meticulous library of React components & interactive blocks, engineered for seamless performance with Tailwind CSS, TypeScript, GSAP, and Framer Motion."
+          ? "Certified, data-driven facility services across mission-critical environments."
+          : subtitle;
+
+      const facPrimaryAction =
+        primaryActionLabel === "Browse Components"
+          ? "Request a facility audit"
+          : primaryActionLabel;
+
+      const slowTransition = {
+        duration: 0.9,
+        ease: [0.16, 1, 0.3, 1] as const,
+      };
+
+      return (
+        <section
+          ref={ref}
+          style={customStyle}
+          className={cn(
+            "relative w-full overflow-hidden bg-background text-foreground transition-colors duration-300 border-y border-neutral-200/80 dark:border-neutral-800/80",
+            className,
+          )}
+          {...props}
+        >
+          <div className="w-full max-w-[1440px] mx-auto grid grid-cols-1 lg:grid-cols-12 items-stretch min-h-[460px] sm:min-h-[520px]">
+            {/* LEFT COLUMN: Heading at top, Subtitle + CTA button at bottom */}
+            <div className="col-span-1 lg:col-span-7 flex flex-col justify-between p-6 sm:p-10 lg:p-14 z-10 border-b lg:border-b-0 border-neutral-200/80 dark:border-neutral-800/80">
+              {/* Heading: Always structured in exact 3 lines */}
+              <div className="pt-2 sm:pt-4">
+                <h1 className="text-2xl xs:text-3xl sm:text-4xl md:text-[42px] lg:text-[44px] xl:text-[48px] font-normal sm:font-medium tracking-tight text-neutral-900 dark:text-neutral-100 font-sans leading-[1.12] max-w-xl">
+                  {facilityTitleLines.map((line, idx) => (
+                    <span
+                      key={idx}
+                      className="block whitespace-normal sm:whitespace-nowrap"
+                    >
+                      {line}
+                    </span>
+                  ))}
+                </h1>
+              </div>
+
+              {/* Subtitle & CTA button */}
+              <div className="pt-10 sm:pt-16 mt-auto">
+                <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-6 sm:gap-8">
+                  {facSubtitle && (
+                    <p className="text-xs sm:text-sm text-neutral-600 dark:text-neutral-400 leading-relaxed max-w-[340px]">
+                      {facSubtitle}
+                    </p>
+                  )}
+
+                  {facPrimaryAction && (
+                    <Link
+                      href={primaryActionHref || "#"}
+                      className="inline-flex items-center group overflow-hidden shadow-xs shrink-0 self-start sm:self-end border border-primary/20 transition-all hover:shadow-md active:scale-[0.98]"
+                      style={{
+                        backgroundColor: "var(--primary)",
+                        color: "var(--primary-foreground)",
+                      }}
+                    >
+                      <span className="text-xs sm:text-sm font-medium px-4 sm:px-5 py-2.5 sm:py-3 tracking-wide transition-colors">
+                        {facPrimaryAction}
+                      </span>
+                      <span className="p-2.5 sm:p-3 flex items-center justify-center border-l border-primary-foreground/20 bg-black/10 dark:bg-white/10 transition-colors group-hover:bg-black/20 dark:group-hover:bg-white/20">
+                        <ArrowRight className="w-3.5 h-3.5 sm:w-4 sm:h-4 transition-transform group-hover:translate-x-0.5" />
+                      </span>
+                    </Link>
+                  )}
+                </div>
+              </div>
+            </div>
+
+            {/* RIGHT COLUMN: Interactive Box Grid with Morphing Polygon locked to Border */}
+            <div
+              className="col-span-1 lg:col-span-5 relative flex items-center justify-center min-h-[360px] sm:min-h-[420px] lg:min-h-[520px] overflow-hidden lg:border-l border-neutral-200/80 dark:border-neutral-800/80 select-none"
+              onMouseLeave={() => setShapeHoverZone("idle")}
+            >
+              {/* Interactive Hover Trigger Zones across 3 columns (No background color change) */}
+              <div className="absolute inset-0 grid grid-cols-3 z-30">
+                {/* Left Column (Left Box): Hovering here slightly shrinks the shape and its border */}
+                <div
+                  className="h-full cursor-pointer"
+                  onMouseEnter={() => setShapeHoverZone("left")}
+                  title="Hover left box to contract"
+                />
+                {/* Center Column (Center Box): Hovering here returns shape and border to resting state */}
+                <div
+                  className="h-full cursor-pointer"
+                  onMouseEnter={() => setShapeHoverZone("center")}
+                  title="Resting state"
+                />
+                {/* Right Column (Right Box): Hovering here slightly expands shape width and height */}
+                <div
+                  className="h-full cursor-pointer"
+                  onMouseEnter={() => setShapeHoverZone("right")}
+                  title="Hover right box to expand"
+                />
+              </div>
+
+              {/* Grid Lines */}
+              {/* Top horizontal grid line - moves symmetrically with shape top */}
+              <motion.div
+                className="absolute left-0 right-0 h-px bg-neutral-200/80 dark:bg-neutral-800/80 z-10 pointer-events-none"
+                animate={{
+                  top:
+                    shapeHoverZone === "right"
+                      ? "26%"
+                      : shapeHoverZone === "left"
+                      ? "30%"
+                      : "28%",
+                }}
+                transition={slowTransition}
+              />
+              {/* Bottom horizontal grid line - moves symmetrically with shape bottom */}
+              <motion.div
+                className="absolute left-0 right-0 h-px bg-neutral-200/80 dark:bg-neutral-800/80 z-10 pointer-events-none"
+                animate={{
+                  top:
+                    shapeHoverZone === "right"
+                      ? "74%"
+                      : shapeHoverZone === "left"
+                      ? "70%"
+                      : "72%",
+                }}
+                transition={slowTransition}
+              />
+
+              {/* Moving Left Vertical Grid Line - attached to shape left, moves in 4-way symmetry */}
+              <motion.div
+                className="absolute top-0 bottom-0 w-px bg-neutral-200/80 dark:bg-neutral-800/80 z-10 pointer-events-none"
+                animate={{
+                  left:
+                    shapeHoverZone === "right"
+                      ? "23%"
+                      : shapeHoverZone === "left"
+                      ? "29%"
+                      : "26%",
+                }}
+                transition={slowTransition}
+              />
+
+              {/* Moving Right Vertical Grid Line - attached to shape right, moves in 4-way symmetry */}
+              <motion.div
+                className="absolute top-0 bottom-0 w-px bg-neutral-200/80 dark:bg-neutral-800/80 z-10 pointer-events-none"
+                animate={{
+                  left:
+                    shapeHoverZone === "right"
+                      ? "77%"
+                      : shapeHoverZone === "left"
+                      ? "71%"
+                      : "74%",
+                }}
+                transition={slowTransition}
+              />
+
+              {/* Animated Central Morphing Shape - strictly bounded between all 4 moving grid lines */}
+              <motion.div
+                className="absolute z-10 pointer-events-none"
+                animate={{
+                  left:
+                    shapeHoverZone === "right"
+                      ? "23%"
+                      : shapeHoverZone === "left"
+                      ? "29%"
+                      : "26%",
+                  width:
+                    shapeHoverZone === "right"
+                      ? "54%"
+                      : shapeHoverZone === "left"
+                      ? "42%"
+                      : "48%",
+                  top:
+                    shapeHoverZone === "right"
+                      ? "26%"
+                      : shapeHoverZone === "left"
+                      ? "30%"
+                      : "28%",
+                  height:
+                    shapeHoverZone === "right"
+                      ? "48%"
+                      : shapeHoverZone === "left"
+                      ? "40%"
+                      : "44%",
+                }}
+                transition={slowTransition}
+              >
+                {/* Geometric chamfered polygon */}
+                <div
+                  className="w-full h-full bg-[#eaedf3] dark:bg-zinc-800/90 transition-colors duration-300 drop-shadow-xs"
+                  style={{
+                    clipPath:
+                      "polygon(clamp(24px, 15%, 52px) 0, 100% 0, 100% calc(100% - clamp(20px, 14%, 44px)), calc(100% - clamp(24px, 15%, 52px)) 100%, 0 100%, 0 clamp(20px, 14%, 44px))",
+                  }}
+                />
+
+                {/* Top-Right Control Anchor Square - exactly on (xRight, top) */}
+                <div className="absolute top-0 right-0 w-2 h-2 sm:w-2.5 sm:h-2.5 bg-neutral-400 dark:bg-neutral-500 translate-x-1/2 -translate-y-1/2 shadow-xs" />
+
+                {/* Bottom-Left Control Anchor Square - exactly on (24%, bottom) */}
+                <div className="absolute bottom-0 left-0 w-2 h-2 sm:w-2.5 sm:h-2.5 bg-neutral-400 dark:bg-neutral-500 -translate-x-1/2 translate-y-1/2 shadow-xs" />
+              </motion.div>
             </div>
           </div>
         </section>

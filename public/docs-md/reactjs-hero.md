@@ -124,7 +124,7 @@ npx shadcn@latest add @algorize-ui/honeycomb-hero
 
 A full-bleed photo hero for a place worth travelling to: an eyebrow pill, a large light headline, a glass panel with the faces of the people who came before you and a call to action, and — the thing that moves — a queue of cards. The front card is the slide on screen; the ones behind it are what comes next. Every five seconds, or when a card is clicked, the queue slides forward, the photograph behind everything crossfades, and the headline and caption follow it.
 
-`HeroCarousel` composes the library: the faces are an AvatarStack. The colours come from the photographs; the theme's `--primary` (pin it with `accent`) is used only for the eyebrow pip and the focus rings.
+`HeroCarousel` composes the library: the faces are an AvatarStack. The colours come from the photographs; the theme's `--primary` (pin it with `accent`) is used for the eyebrow pip, the arrow on the call to action, the progress line and the focus rings.
 
 export const usageHeroCarousel = `const SLIDES = [
   {
@@ -571,7 +571,7 @@ A GlassPanel that takes part in the reveal: shape="tile", interactive, three col
 
 A hero for a place that is warm and busy — a kindergarten here, but any studio, school or workshop: a badge whose name turns slowly around a mark, a serif headline with two words in colour, three hashtag pills, a collage of seven photographs in five staggered columns, and a footer with a quote, a scroll-down pill and a watch-video trigger. When it first appears the headline rises out of a blur, the pills pop in with a twist and the photographs come up one after another; after that the badge keeps turning and the pointer does the rest — photographs lift and zoom a touch, pills straighten, the arrow nods.
 
-`CollageHero` is built from library pieces: the scroll pill is Button, the video opens in a Dialog. The colours come from the theme — the violet is `--primary` (pin it with `accent`) and the second colour is `highlight`.
+`CollageHero` is built from library pieces: the scroll pill is Button, the video opens in a Dialog. The colours come from the theme — the accent is `--primary` (pin it with `accent`) and the second colour is `highlight`.
 
 export const usageCollage = `const PHOTOS = [
   { src: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_700,c_limit/v1790148862/pexels-photo-3661193-1790148865106.jpg", alt: "Wooden dinosaurs on a stack of books" },
@@ -778,6 +778,14 @@ export default function Page() {
   );
 }`;
 
+export const usageFacility = `import { HeroBlock } from "@/components/custom/blocks/HeroBlock";
+
+export default function Page() {
+  return (
+    
+  );
+}`;
+
 ### Installation
 
 Register the @algorize-ui registry once per project, then add the component:
@@ -796,11 +804,11 @@ npx shadcn@latest add @algorize-ui/hero
 
           variant
 
-          "bounce" | "typing" | "slider" | "glow-arc" | "pet-shop" | "doctor"
+          "bounce" | "typing" | "slider" | "glow-arc" | "pet-shop" | "doctor" | "facility"
 
           "bounce"
 
-          The layout & animation style. "bounce" uses spring word motion; "typing" uses typewriter effect; "slider" renders split 2-column hero with continuous marquee; "glow-arc" renders centered radial glow arc. The hexagonal mosaic hero is Honeycomb Hero, further up this page; the screenshot wall and the revolving ring are their own sections, Component Wall and Orbit Gallery.
+          The layout & animation style. "bounce" uses spring word motion; "typing" uses typewriter effect; "slider" renders split 2-column hero with continuous marquee; "glow-arc" / "pet-shop" renders pet care hero; "doctor" renders medical test kits hero; "facility" renders architectural CAD blueprint grid hero with interactive morphing shape. The hexagonal mosaic hero is Honeycomb Hero, further up this page; the screenshot wall and the revolving ring are their own sections, Component Wall and Orbit Gallery.
 
           typingWords
 

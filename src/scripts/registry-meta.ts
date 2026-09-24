@@ -813,9 +813,9 @@ export const META: Record<string, ItemMeta> = {
   // ---- Phase 4E: marketing & landing blocks ----
   hero: {
     description:
-      "A prop-driven hero section supporting spring word bounce, character typewriter, 3D split marquee slider, pet-shop and doctor variants.",
+      "A prop-driven hero section supporting spring word bounce, character typewriter, 3D split marquee slider, pet-shop, doctor, and facility CAD grid variants.",
     categories: ["marketing"],
-    docs: "Named export: HeroBlock. Everything is a prop — `variant` switches between 'bounce', 'typing', and 'slider', `typingWords` cycles between `titlePrefix` and `titleSuffix`, `cliCommand` renders a copyable install line, and `sliderImages` / `mainImage` customize the 3D marquee visual.",
+    docs: "Named export: HeroBlock. Everything is a prop — `variant` switches between 'bounce', 'typing', 'slider', 'pet-shop', 'doctor', and 'facility', with interactive animations, theme color support, and responsive layouts.",
   },
   "video-player": {
     description:
