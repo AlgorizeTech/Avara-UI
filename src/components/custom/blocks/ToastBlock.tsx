@@ -130,11 +130,11 @@ const ToastItem = ({ id, title, description, type = "default", duration = 5000, 
   const variantStyles = {
     default: "bg-background border border-border shadow-xl",
     glow: cn(
-      "bg-white dark:bg-[#09090b] shadow-lg border text-foreground",
+      "bg-background shadow-lg border text-foreground",
       currentType.glowBorder,
       currentType.glowShadow
     ),
-    glass: "rounded-2xl border border-white/30 dark:border-white/10 bg-white/70 dark:bg-zinc-900/70 backdrop-blur-xl shadow-2xl shadow-black/10 dark:shadow-black/40",
+    glass: "rounded-2xl border border-foreground/10 bg-card/70 backdrop-blur-xl shadow-2xl shadow-black/10 dark:shadow-black/40",
     minimal: cn("border-l-4 rounded-l-none bg-background shadow-md", currentType.minimalBorder),
   };
 
@@ -157,7 +157,7 @@ const ToastItem = ({ id, title, description, type = "default", duration = 5000, 
             "mt-0.5 w-5 h-5 shrink-0",
             iconColor,
             // Glass icons are solid badges: fill with the accent, cut the glyph out in the card colour.
-            isGlass && "w-6 h-6 fill-current stroke-white dark:stroke-zinc-950",
+            isGlass && "w-6 h-6 fill-current stroke-card",
           )}
         />
       )}

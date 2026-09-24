@@ -177,17 +177,17 @@ export const TerminalBlock = forwardRef<HTMLDivElement, TerminalBlockProps>(
 
     const variantStyles = {
       default:
-        "bg-white dark:bg-[#0d1117] border border-border shadow-xl",
+        "bg-card text-card-foreground border border-border shadow-xl",
       glass:
-        "bg-white/80 dark:bg-[#0d1117]/80 backdrop-blur-xl border border-border/80 shadow-2xl",
+        "bg-card/80 text-card-foreground backdrop-blur-xl border border-border/80 shadow-2xl",
       minimal: "bg-transparent border border-border",
     };
 
     const headerStyles = {
       default:
-        "bg-zinc-100/80 dark:bg-white/5 border-b border-border",
+        "bg-muted/80 border-b border-border",
       glass:
-        "bg-zinc-100/60 dark:bg-white/5 border-b border-border/80",
+        "bg-muted/60 border-b border-border/80",
       minimal:
         "bg-muted border-b border-border",
     };
@@ -220,7 +220,7 @@ export const TerminalBlock = forwardRef<HTMLDivElement, TerminalBlockProps>(
                 <div className="w-3 h-3 rounded-full bg-[#27c93f]" />
               </div>
             ) : (
-              <TerminalIcon className="w-4 h-4 text-zinc-500" />
+              <TerminalIcon className="w-4 h-4 text-muted-foreground" />
             )}
           </div>
 
@@ -248,7 +248,7 @@ export const TerminalBlock = forwardRef<HTMLDivElement, TerminalBlockProps>(
             {copyable && (
               <button
                 onClick={handleCopy}
-                className="flex items-center justify-center w-8 h-8 rounded-lg transition-all hover:bg-zinc-200 dark:hover:bg-white/10 text-muted-foreground"
+                className="flex items-center justify-center w-8 h-8 rounded-lg transition-all hover:bg-foreground/10 text-muted-foreground"
                 title="Copy code"
               >
                 {copied ? (

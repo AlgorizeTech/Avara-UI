@@ -33,15 +33,15 @@ function Tile({ icon, label, href, linkComponent, className, ...props }: Platfor
       data-tile=""
       {...(href ? { href } : {})}
       className={cn(
-        "group relative flex aspect-square flex-col items-center justify-center gap-2.5 border-b border-r border-black/[0.06] px-2 text-center outline-none transition-colors duration-300 hover:bg-black/[0.025] focus-visible:bg-black/[0.03] dark:border-white/10 dark:hover:bg-white/[0.04]",
+        "group relative flex aspect-square flex-col items-center justify-center gap-2.5 border-b border-r border-foreground/[0.08] px-2 text-center outline-none transition-colors duration-300 hover:bg-foreground/[0.03] focus-visible:bg-foreground/[0.03]",
         className,
       )}
       {...props}
     >
-      <span className="grid h-6 w-6 place-items-center text-black/40 transition-all duration-300 ease-out [&>svg]:h-[18px] [&>svg]:w-[18px] group-hover:-translate-y-0.5 group-hover:scale-110 group-hover:text-primary group-focus-visible:text-primary dark:text-white/40">
+      <span className="grid h-6 w-6 place-items-center text-foreground/40 transition-all duration-300 ease-out [&>svg]:h-[18px] [&>svg]:w-[18px] group-hover:-translate-y-0.5 group-hover:scale-110 group-hover:text-primary group-focus-visible:text-primary">
         {icon}
       </span>
-      <span className="text-[11px] font-medium leading-tight text-black/50 transition-colors duration-300 group-hover:text-[#141414] dark:text-white/50 dark:group-hover:text-white">
+      <span className="text-[11px] font-medium leading-tight text-foreground/50 transition-colors duration-300 group-hover:text-foreground">
         {label}
       </span>
     </Comp>
@@ -67,7 +67,7 @@ function Feature({ icon, label, href, linkComponent, className, children, ...pro
       data-tile=""
       {...(href ? { href } : {})}
       className={cn(
-        "group relative col-span-2 row-span-2 flex aspect-square flex-col items-center justify-between border-b border-r border-black/[0.06] bg-gradient-to-b from-[#fbf8f3] to-white px-2 pb-4 pt-6 outline-none transition-colors duration-300 dark:border-white/10 dark:from-zinc-900 dark:to-[#0b0b0c]",
+        "group relative col-span-2 row-span-2 flex aspect-square flex-col items-center justify-between border-b border-r border-foreground/[0.08] bg-gradient-to-b from-muted to-background px-2 pb-4 pt-6 outline-none transition-colors duration-300",
         className,
       )}
       {...props}
@@ -80,7 +80,7 @@ function Feature({ icon, label, href, linkComponent, className, children, ...pro
           </TiltedCard>
         </div>
       </div>
-      <span className="flex items-center gap-2.5 text-[15px] font-semibold tracking-tight text-[#141414] dark:text-white">
+      <span className="flex items-center gap-2.5 text-[15px] font-semibold tracking-tight text-foreground">
         <span className="grid h-6 w-fit place-items-center [&>svg]:h-5 [&>svg]:w-5">{icon}</span>
         {label}
       </span>
@@ -95,7 +95,7 @@ function Mock({ className, children, ...props }: React.HTMLAttributes<HTMLDivEle
   return (
     <div
       className={cn(
-        "space-y-1.5 rounded-xl border border-black/[0.06] bg-white p-3 text-left text-[#141414] dark:border-white/10 dark:bg-zinc-800 dark:text-white",
+        "space-y-1.5 rounded-xl border border-foreground/[0.08] bg-card p-3 text-left text-card-foreground",
         className,
       )}
       {...props}
@@ -115,9 +115,9 @@ function Pill({
     <span
       className={cn(
         "inline-flex shrink-0 items-center rounded-full px-1.5 py-[3px] text-[7.5px] font-semibold leading-none",
-        tone === "ink" && "bg-[#141414] text-white dark:bg-white dark:text-[#141414]",
+        tone === "ink" && "bg-foreground text-background",
         tone === "accent" && "bg-primary text-primary-foreground",
-        tone === "soft" && "bg-black/[0.06] font-medium text-black/60 dark:bg-white/10 dark:text-white/60",
+        tone === "soft" && "bg-foreground/[0.08] font-medium text-foreground/60",
         className,
       )}
       {...props}
@@ -225,20 +225,20 @@ function PlatformGridRoot({
   return (
     <section
       ref={sectionRef}
-      className={cn("w-full bg-white text-[#141414] dark:bg-[#0b0b0c] dark:text-white", className)}
+      className={cn("w-full bg-background text-foreground", className)}
       style={accent ? ({ ...style, "--primary": accent } as React.CSSProperties) : style}
       {...props}
     >
       {(eyebrow || heading || intro) && (
         <header className="mx-auto max-w-2xl px-6 pb-10 pt-14 text-center sm:pb-12 sm:pt-16">
           {eyebrow && (
-            <p className="text-[13px] font-medium uppercase tracking-[0.12em] text-black/55 dark:text-white/55">{eyebrow}</p>
+            <p className="text-[13px] font-medium uppercase tracking-[0.12em] text-foreground/55">{eyebrow}</p>
           )}
           <h2 className="mt-3 font-sans text-[2rem] font-medium leading-[1.1] tracking-[-0.03em] sm:text-[2.5rem]">
             {heading}
           </h2>
           {intro && (
-            <p className="mx-auto mt-4 max-w-[30rem] text-[15px] leading-[1.7] text-black/60 dark:text-white/60">{intro}</p>
+            <p className="mx-auto mt-4 max-w-[30rem] text-[15px] leading-[1.7] text-foreground/60">{intro}</p>
           )}
         </header>
       )}
@@ -254,7 +254,7 @@ function PlatformGridRoot({
           ref={gridRef}
           onMouseMove={onMove}
           onMouseLeave={onLeave}
-          className="relative grid grid-cols-2 border-l border-t border-black/[0.06] [grid-auto-flow:dense] sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-8 xl:grid-cols-8 dark:border-white/10"
+          className="relative grid grid-cols-2 border-l border-t border-foreground/[0.08] [grid-auto-flow:dense] sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-8 xl:grid-cols-8"
         >
           {/* The spotlight: a soft disc of the accent under the pointer. */}
           <div

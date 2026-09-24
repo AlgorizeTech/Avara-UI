@@ -148,7 +148,7 @@ function Form({
             initial={reduced ? false : { opacity: 0, scale: 0.96 }}
             animate={{ opacity: 1, scale: 1 }}
             transition={{ duration: 0.45, ease: [0.16, 1, 0.3, 1] }}
-            className="flex items-center gap-3 rounded-full bg-white py-2 pl-2 pr-5 text-[#141414] shadow-[0_1px_2px_rgba(0,0,0,0.05),0_8px_24px_-12px_rgba(0,0,0,0.2)] dark:bg-white/10 dark:text-white dark:shadow-none"
+            className="flex items-center gap-3 rounded-full bg-card py-2 pl-2 pr-5 text-card-foreground shadow-[0_1px_2px_rgba(0,0,0,0.05),0_8px_24px_-12px_rgba(0,0,0,0.2)] dark:shadow-none dark:ring-1 dark:ring-border"
           >
             <span className="grid h-10 w-10 shrink-0 place-items-center rounded-full bg-emerald-500 text-white">
               <motion.svg viewBox="0 0 24 24" className="h-5 w-5" fill="none" stroke="currentColor" strokeWidth={2.5} strokeLinecap="round" strokeLinejoin="round">
@@ -162,7 +162,7 @@ function Form({
             </span>
             <span className="min-w-0 text-left">
               <span className="block text-[14px] font-semibold leading-tight">{successTitle}</span>
-              <span className="block text-[12px] leading-tight text-black/55 dark:text-white/60">{successText}</span>
+              <span className="block text-[12px] leading-tight text-muted-foreground">{successText}</span>
             </span>
           </motion.div>
         ) : (
@@ -175,8 +175,8 @@ function Form({
             onSubmit={submit}
             className={cn(
               "flex items-center gap-1 rounded-full p-1.5 transition-shadow duration-300",
-              "bg-white shadow-[0_1px_2px_rgba(0,0,0,0.05),0_8px_24px_-12px_rgba(0,0,0,0.2)] focus-within:shadow-[0_1px_2px_rgba(0,0,0,0.05),0_12px_32px_-12px_rgba(0,0,0,0.28)]",
-              "dark:bg-white/10 dark:shadow-none dark:ring-1 dark:ring-white/15 dark:backdrop-blur dark:focus-within:shadow-none dark:focus-within:ring-white/30",
+              "bg-card shadow-[0_1px_2px_rgba(0,0,0,0.05),0_8px_24px_-12px_rgba(0,0,0,0.2)] focus-within:shadow-[0_1px_2px_rgba(0,0,0,0.05),0_12px_32px_-12px_rgba(0,0,0,0.28)]",
+              "dark:shadow-none dark:ring-1 dark:ring-foreground/15 dark:backdrop-blur dark:focus-within:shadow-none dark:focus-within:ring-foreground/30",
               className,
             )}
             {...props}
@@ -192,7 +192,7 @@ function Form({
               placeholder={placeholder}
               aria-label="Email address"
               autoComplete="email"
-              className="min-w-0 flex-1 gap-0 [&>div>div]:h-10 [&>div>div]:rounded-full [&>div>div]:border-0 [&>div>div]:bg-transparent [&>div>div]:px-4 [&>div>div]:shadow-none [&>div>div]:focus-within:bg-transparent [&>div>div]:focus-within:ring-0 dark:[&_input]:text-white dark:[&_input]:placeholder:text-white/45"
+              className="min-w-0 flex-1 gap-0 [&>div>div]:h-10 [&>div>div]:rounded-full [&>div>div]:border-0 [&>div>div]:bg-transparent [&>div>div]:px-4 [&>div>div]:shadow-none [&>div>div]:focus-within:bg-transparent [&>div>div]:focus-within:ring-0 [&_input]:text-foreground [&_input]:placeholder:text-muted-foreground"
             />
             <Button
               type="submit"
@@ -225,7 +225,7 @@ function Proof({ avatars, className, children, ...props }: NewsletterProofProps)
     <Reveal>
       <div
         className={cn(
-          "mt-7 flex items-center gap-3 text-[13px] font-medium text-black/65 dark:text-white/70",
+          "mt-7 flex items-center gap-3 text-[13px] font-medium text-foreground/65",
           variant !== "issues" && "justify-center",
           className,
         )}
@@ -238,12 +238,12 @@ function Proof({ avatars, className, children, ...props }: NewsletterProofProps)
                 key={src + i}
                 src={src}
                 alt=""
-                className="h-7 w-7 rounded-full object-cover ring-2 ring-white dark:ring-zinc-900"
+                className="h-7 w-7 rounded-full object-cover ring-2 ring-background"
               />
             ))}
           </span>
           <span
-            className="-ml-1 grid h-7 w-7 place-items-center rounded-full bg-[#141414] text-[11px] font-semibold text-white ring-2 ring-white dark:bg-white/15 dark:ring-zinc-900"
+            className="-ml-1 grid h-7 w-7 place-items-center rounded-full bg-foreground text-[11px] font-semibold text-background ring-2 ring-background"
             aria-hidden
           >
             +
@@ -271,17 +271,17 @@ function Ticker({ items, className }: { items: NewsletterTickerItem[]; className
         {items.map((it, i) => (
           <span
             key={it.name + i}
-            className="inline-flex shrink-0 items-center gap-2 rounded-full bg-white py-1.5 pl-1.5 pr-3.5 text-[12px] text-black/70 shadow-[0_1px_2px_rgba(0,0,0,0.04),0_6px_16px_-10px_rgba(0,0,0,0.2)] ring-1 ring-black/[0.06] dark:bg-white/[0.07] dark:text-white/80 dark:shadow-none dark:ring-white/10"
+            className="inline-flex shrink-0 items-center gap-2 rounded-full bg-card py-1.5 pl-1.5 pr-3.5 text-[12px] text-foreground/75 shadow-[0_1px_2px_rgba(0,0,0,0.04),0_6px_16px_-10px_rgba(0,0,0,0.2)] ring-1 ring-foreground/[0.08] dark:shadow-none"
           >
             {it.avatar ? (
               <img src={it.avatar} alt="" className="h-6 w-6 rounded-full object-cover" />
             ) : (
-              <span className="grid h-6 w-6 place-items-center rounded-full bg-black/10 text-[10px] font-semibold dark:bg-white/15">
+              <span className="grid h-6 w-6 place-items-center rounded-full bg-foreground/10 text-[10px] font-semibold">
                 {it.name.slice(0, 1)}
               </span>
             )}
-            <span className="font-semibold text-[#141414] dark:text-white">{it.name}</span> joined
-            <span className="text-black/40 dark:text-white/45">· {it.when}</span>
+            <span className="font-semibold text-foreground">{it.name}</span> joined
+            <span className="text-foreground/45">· {it.when}</span>
           </span>
         ))}
       </MarqueeBlock>
@@ -313,7 +313,7 @@ function Issues({ items, className }: { items: NewsletterIssue[]; className?: st
             key={issue.title}
             aria-hidden
             className={cn(
-              "absolute inset-x-0 top-0 rounded-2xl border border-black/[0.06] bg-white p-5 shadow-[0_8px_24px_-14px_rgba(0,0,0,0.25)] transition-transform duration-500 ease-out dark:border-white/10 dark:bg-zinc-900",
+              "absolute inset-x-0 top-0 rounded-2xl border border-border bg-card p-5 text-card-foreground shadow-[0_8px_24px_-14px_rgba(0,0,0,0.25)] transition-transform duration-500 ease-out",
               i === 0
                 ? "-translate-y-4 scale-[0.94] rotate-[-4deg] group-hover:-translate-y-7 group-hover:rotate-[-7deg]"
                 : "-translate-y-8 scale-[0.88] rotate-[3deg] group-hover:-translate-y-12 group-hover:rotate-[6deg]",
@@ -324,7 +324,7 @@ function Issues({ items, className }: { items: NewsletterIssue[]; className?: st
           </div>
         ))}
         <TiltedCard tiltIntensity={7} glareOpacity={0.1} scaleOnHover={1.02} className="h-auto">
-          <article className="rounded-2xl border border-black/[0.06] bg-white p-5 text-left dark:border-white/10 dark:bg-zinc-900">
+          <article className="rounded-2xl border border-border bg-card p-5 text-left text-card-foreground">
             {top.cover && (
               <div className="mb-4 h-32 overflow-hidden rounded-xl">
                 <img src={top.cover} alt="" className="h-full w-full object-cover" />
@@ -472,9 +472,9 @@ function NewsletterRoot({
         onMouseMove={onMove}
         onMouseLeave={onLeave}
         className={cn(
-          "relative isolate w-full overflow-hidden text-[#141414] dark:text-white",
-          // Every layout follows the site's colour scheme: a soft or white ground by day, near-black by night.
-          variant === "issues" ? "bg-white dark:bg-[#0b0b0c]" : "bg-[#f4f4f4] dark:bg-[#0b0b0c]",
+          "relative isolate w-full overflow-hidden text-foreground",
+          // Every layout follows the site's theme: a muted or plain ground by day, the page ground by night.
+          variant === "issues" ? "bg-background" : "bg-muted dark:bg-background",
           className,
         )}
         style={accent ? ({ ...style, "--primary": accent } as React.CSSProperties) : style}
@@ -502,7 +502,7 @@ function NewsletterRoot({
             {variant === "portraits" && portraits.length > 0 && (
               <Reveal className="mb-6 flex -space-x-3 md:hidden">
                 {portraits.slice(0, 4).map((p) => (
-                  <img key={p.src} src={p.src} alt={p.alt ?? ""} className="h-12 w-12 rounded-full object-cover ring-2 ring-[#f4f4f4] dark:ring-[#0b0b0c]" />
+                  <img key={p.src} src={p.src} alt={p.alt ?? ""} className="h-12 w-12 rounded-full object-cover ring-2 ring-muted dark:ring-background" />
                 ))}
               </Reveal>
             )}

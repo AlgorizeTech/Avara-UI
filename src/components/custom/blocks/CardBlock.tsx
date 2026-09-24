@@ -19,16 +19,16 @@ export function Card({
   ...props
 }: CardProps) {
   const variants = {
-    default: "bg-white dark:bg-[#050505] shadow-sm border border-primary/10",
+    default: "bg-card shadow-sm border border-primary/10",
     bordered:
-      "bg-white dark:bg-[#050505] border border-primary/25 shadow-sm",
+      "bg-card border border-primary/25 shadow-sm",
     flat: "bg-muted border border-primary/20",
   };
 
   return (
     <div
       className={cn(
-        "rounded-xl text-foreground flex flex-col transition-all duration-200",
+        "rounded-xl text-card-foreground flex flex-col transition-all duration-200",
         variants[variant],
         interactive &&
           "hover:shadow-md hover:-translate-y-0.5 cursor-pointer hover:border-primary/50 active:scale-[0.98]",

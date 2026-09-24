@@ -115,7 +115,7 @@ export default function PricingSectionV4({ packages, counting = true, linkCompon
   if (!packages) {
     return (
       <section id="pricing" className="py-32 bg-background flex justify-center items-center min-h-[500px] transition-colors duration-300">
-        <div className="w-8 h-8 border-4 border-lime-500 dark:border-[#CCFF00] border-t-transparent dark:border-t-transparent rounded-full animate-spin" />
+        <div className="w-8 h-8 border-4 border-primary border-t-transparent rounded-full animate-spin" />
       </section>
     );
   }
@@ -129,23 +129,17 @@ export default function PricingSectionV4({ packages, counting = true, linkCompon
   }
 
   return (
-    <section id="pricing" className="py-6 md:py-12 bg-background text-foreground font-sans antialiased overflow-hidden selection:bg-lime-400 dark:selection:bg-[#CCFF00] selection:text-black transition-colors duration-300 relative">
+    <section id="pricing" className="py-6 md:py-12 bg-background text-foreground font-sans antialiased overflow-hidden selection:bg-primary selection:text-primary-foreground transition-colors duration-300 relative">
       <style
         dangerouslySetInnerHTML={{
           __html: `
           .outline-text {
             color: transparent;
-            -webkit-text-stroke: 1px rgba(0, 0, 0, 0.25);
+            -webkit-text-stroke: 1px color-mix(in srgb, var(--foreground) 25%, transparent);
             transition: -webkit-text-stroke 0.3s ease;
           }
           .group:hover .outline-text {
-            -webkit-text-stroke: 1px rgba(0, 0, 0, 0.7);
-          }
-          .dark .outline-text {
-            -webkit-text-stroke: 1px rgba(255, 255, 255, 0.25);
-          }
-          .dark .group:hover .outline-text {
-            -webkit-text-stroke: 1px rgba(255, 255, 255, 0.7);
+            -webkit-text-stroke: 1px color-mix(in srgb, var(--foreground) 70%, transparent);
           }
         `,
         }}
@@ -154,9 +148,9 @@ export default function PricingSectionV4({ packages, counting = true, linkCompon
       <div className="max-w-[1300px] mx-auto px-6">
         <div className="flex flex-col md:flex-row justify-between items-start md:items-end gap-8 mb-16 lg:mb-20">
           <div className="max-w-xl">
-            <h2 className="text-xs font-mono text-lime-600 dark:text-[#CCFF00] mb-4">
+            <h2 className="text-xs font-mono text-primary mb-4">
               <span className="flex items-center gap-3 justify-center md:justify-start">
-                <span className="w-2 h-2 rounded-full bg-lime-500 dark:bg-[#CCFF00] animate-pulse mb-6" />
+                <span className="w-2 h-2 rounded-full bg-primary animate-pulse mb-6" />
               </span>
             </h2>
             <h3 className="text-4xl md:text-5xl lg:text-6xl font-bold tracking-tighter leading-none mb-5 text-foreground">
@@ -175,8 +169,8 @@ export default function PricingSectionV4({ packages, counting = true, linkCompon
                   onClick={() => handleToggleCycle(cycle)}
                   className={`text-sm font-semibold uppercase tracking-widest pb-1 border-b-2 transition-all duration-300 ${
                     billingCycle === cycle
-                      ? "text-lime-600 border-lime-600 dark:text-[#CCFF00] dark:border-[#CCFF00]"
-                      : "text-zinc-400 border-transparent hover:text-foreground dark:text-zinc-600"
+                      ? "text-primary border-primary"
+                      : "text-muted-foreground border-transparent hover:text-foreground"
                   }`}
                 >
                   {cycle}
@@ -198,11 +192,11 @@ export default function PricingSectionV4({ packages, counting = true, linkCompon
                   className="group flex flex-col items-start text-left w-full py-4 pr-4"
                 >
                   {plan.isFeatured && (
-                    <span className={`text-[10px] font-mono tracking-widest uppercase mb-2 transition-colors duration-300 ${isActive ? "text-lime-600 dark:text-[#CCFF00]" : "text-muted-foreground group-hover:text-lime-600 dark:group-hover:text-[#CCFF00]"}`}>
+                    <span className={`text-[10px] font-mono tracking-widest uppercase mb-2 transition-colors duration-300 ${isActive ? "text-primary" : "text-muted-foreground group-hover:text-primary"}`}>
                       [ Most Popular ]
                     </span>
                   )}
-                  <span className={`text-4xl lg:text-5xl xl:text-[4rem] font-bold uppercase tracking-tighter leading-[0.85] break-words whitespace-normal inline-block transition-all duration-500 ease-out ${isActive ? "text-lime-500 dark:text-[#CCFF00] translate-x-4" : "outline-text group-hover:translate-x-2"}`}>
+                  <span className={`text-4xl lg:text-5xl xl:text-[4rem] font-bold uppercase tracking-tighter leading-[0.85] break-words whitespace-normal inline-block transition-all duration-500 ease-out ${isActive ? "text-primary translate-x-4" : "outline-text group-hover:translate-x-2"}`}>
                     {plan.name}
                   </span>
                 </button>
@@ -214,22 +208,22 @@ export default function PricingSectionV4({ packages, counting = true, linkCompon
             {activePlan && (
               <div key={activePlan.id} className="animate-in fade-in slide-in-from-right-8 duration-700 fill-mode-both flex flex-col h-full z-10 relative">
                 {activePlan.isFeatured && (
-                  <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[400px] h-[400px] bg-lime-500/10 dark:bg-[#CCFF00]/5 blur-[100px] rounded-full pointer-events-none" />
+                  <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[400px] h-[400px] bg-primary/10 blur-[100px] rounded-full pointer-events-none" />
                 )}
 
-                <div className="absolute -right-4 -top-8 text-[150px] xl:text-[200px] font-bold text-foreground/[0.03]/[0.02] pointer-events-none select-none tracking-tighter leading-none transition-colors duration-300">
+                <div className="absolute -right-4 -top-8 text-[150px] xl:text-[200px] font-bold text-foreground/[0.03] pointer-events-none select-none tracking-tighter leading-none transition-colors duration-300">
                   ${activePlan.price}
                 </div>
 
                 <div className="mb-12 relative z-10">
                   {activePlan.isFeatured && (
-                    <div className="inline-flex items-center gap-1.5 px-3 py-1 bg-lime-100 border border-lime-200 text-lime-700 dark:bg-[#CCFF00]/10 dark:border-[#CCFF00]/20 dark:text-[#CCFF00] text-[10px] font-semibold uppercase tracking-widest ml-35 mb-4 rounded-full">
-                      <Star className="w-3 h-3 fill-lime-600 dark:fill-[#CCFF00]" /> Recommended
+                    <div className="inline-flex items-center gap-1.5 px-3 py-1 bg-primary/10 border border-primary/20 text-primary text-[10px] font-semibold uppercase tracking-widest ml-35 mb-4 rounded-full">
+                      <Star className="w-3 h-3 fill-primary" /> Recommended
                     </div>
                   )}
 
                   <div className="flex items-end gap-2 mb-4">
-                    <span className="text-3xl font-semibold text-zinc-400 dark:text-zinc-600 mb-2">$</span>
+                    <span className="text-3xl font-semibold text-muted-foreground mb-2">$</span>
                     <span className="text-[70px] xl:text-[90px] leading-none font-bold tracking-tighter text-foreground">
                       <AnimatedPrice value={activePlan.price} counting={counting} />
                     </span>
@@ -242,8 +236,8 @@ export default function PricingSectionV4({ packages, counting = true, linkCompon
                 <div className="grid grid-cols-2 gap-x-10 gap-y-5 mb-14 relative z-10">
                   {activePlan.features?.map((feature: string, i: number) => (
                     <div key={i} className="flex items-center gap-3 border-b border-border pb-3 group/feat transition-colors duration-300">
-                      <div className="w-1.5 h-1.5 bg-zinc-300 dark:bg-white/20 group-hover/feat:bg-lime-500 dark:group-hover/feat:bg-[#CCFF00] rounded-full transition-colors shrink-0" />
-                      <span className="text-sm lg:text-base text-muted-foreground group-hover/feat:text-foreground dark:group-hover/feat:text-white transition-colors">
+                      <div className="w-1.5 h-1.5 bg-foreground/20 group-hover/feat:bg-primary rounded-full transition-colors shrink-0" />
+                      <span className="text-sm lg:text-base text-muted-foreground group-hover/feat:text-foreground transition-colors">
                         {feature}
                       </span>
                     </div>
@@ -252,9 +246,9 @@ export default function PricingSectionV4({ packages, counting = true, linkCompon
 
                 <Link
                   href="#"
-                  className={`group mt-auto w-max py-4 px-8 rounded-full text-sm font-semibold uppercase tracking-widest flex items-center justify-center gap-3 relative overflow-hidden ${activePlan.isFeatured ? "bg-lime-400 text-black dark:bg-[#CCFF00]" : "bg-muted text-zinc-900 dark:bg-white dark:text-black"}`}
+                  className={`group mt-auto w-max py-4 px-8 rounded-full text-sm font-semibold uppercase tracking-widest flex items-center justify-center gap-3 relative overflow-hidden ${activePlan.isFeatured ? "bg-primary text-primary-foreground hover:text-primary" : "bg-muted text-foreground hover:text-primary-foreground"}`}
                 >
-                  <div className={`absolute inset-0 translate-y-[100%] rounded-full group-hover:translate-y-0 transition-transform duration-500 ease-[cubic-bezier(0.19,1,0.22,1)] ${activePlan.isFeatured ? "bg-white" : "bg-lime-500 dark:bg-[#CCFF00]"}`} />
+                  <div className={`absolute inset-0 translate-y-[100%] rounded-full group-hover:translate-y-0 transition-transform duration-500 ease-[cubic-bezier(0.19,1,0.22,1)] ${activePlan.isFeatured ? "bg-primary-foreground" : "bg-primary"}`} />
                   <span className="relative z-10 transition-colors duration-500">Initiate Project</span>
                   <div className="relative z-10 w-4 h-4 overflow-hidden flex items-center">
                     <ArrowRight className="absolute w-4 h-4 -translate-x-full group-hover:translate-x-0 transition-transform duration-500 ease-[cubic-bezier(0.19,1,0.22,1)]" />
@@ -275,15 +269,15 @@ export default function PricingSectionV4({ packages, counting = true, linkCompon
                 <button onClick={() => setSelectedPlanId(isActive ? null : plan.id)} className="w-full py-6 md:py-8 flex justify-between items-center text-left">
                   <div className="flex flex-col pr-4">
                     {plan.isFeatured && (
-                      <span className={`text-[9px] font-mono tracking-widest uppercase mb-1 transition-colors duration-300 ${isActive ? "text-lime-600 dark:text-[#CCFF00]" : "text-muted-foreground"}`}>
+                      <span className={`text-[9px] font-mono tracking-widest uppercase mb-1 transition-colors duration-300 ${isActive ? "text-primary" : "text-muted-foreground"}`}>
                         [ Most Popular ]
                       </span>
                     )}
-                    <span className={`text-3xl md:text-4xl font-bold uppercase tracking-tighter leading-[0.9] break-words whitespace-normal transition-colors duration-300 ${isActive ? "text-lime-500 dark:text-[#CCFF00]" : "outline-text"}`}>
+                    <span className={`text-3xl md:text-4xl font-bold uppercase tracking-tighter leading-[0.9] break-words whitespace-normal transition-colors duration-300 ${isActive ? "text-primary" : "outline-text"}`}>
                       {plan.name}
                     </span>
                   </div>
-                  <div className={`transition-transform duration-500 shrink-0 ${isActive ? "rotate-90 text-lime-500 dark:text-[#CCFF00]" : "text-zinc-300 dark:text-white/30"}`}>
+                  <div className={`transition-transform duration-500 shrink-0 ${isActive ? "rotate-90 text-primary" : "text-foreground/30"}`}>
                     <ArrowRight size={24} strokeWidth={2} />
                   </div>
                 </button>
@@ -291,9 +285,9 @@ export default function PricingSectionV4({ packages, counting = true, linkCompon
                 <div className={`grid transition-all duration-500 ease-[cubic-bezier(0.16,1,0.3,1)] ${isActive ? "grid-rows-[1fr] opacity-100" : "grid-rows-[0fr] opacity-0"}`}>
                   <div className="overflow-hidden">
                     <div className="pb-8 pt-2 flex flex-col relative">
-                      {plan.isFeatured && <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full h-[200px] bg-lime-500/10 dark:bg-[#CCFF00]/5 blur-[80px] rounded-full pointer-events-none" />}
+                      {plan.isFeatured && <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full h-[200px] bg-primary/10 blur-[80px] rounded-full pointer-events-none" />}
                       <div className="flex items-end gap-1.5 mb-3 relative z-10">
-                        <span className="text-xl font-semibold text-zinc-400 dark:text-zinc-600 mb-1.5">$</span>
+                        <span className="text-xl font-semibold text-muted-foreground mb-1.5">$</span>
                         <span className="text-5xl md:text-6xl font-bold tracking-tighter text-foreground">
                           <AnimatedPrice value={plan.price} counting={counting} />
                         </span>
@@ -302,13 +296,13 @@ export default function PricingSectionV4({ packages, counting = true, linkCompon
                       <div className="flex flex-col gap-3 mb-8 relative z-10">
                         {plan.features?.map((feature: string, i: number) => (
                           <div key={i} className="flex items-start gap-3 border-b border-border pb-3">
-                            <div className="w-1.5 h-1.5 bg-lime-500 dark:bg-[#CCFF00] rounded-full mt-1.5 shrink-0" />
+                            <div className="w-1.5 h-1.5 bg-primary rounded-full mt-1.5 shrink-0" />
                             <span className="text-sm md:text-base text-foreground">{feature}</span>
                           </div>
                         ))}
                       </div>
-                      <Link href="#" className={`group w-full py-4 rounded-xl text-sm font-semibold uppercase tracking-widest flex items-center justify-center gap-3 relative overflow-hidden z-10 ${plan.isFeatured ? "bg-lime-400 text-black dark:bg-[#CCFF00]" : "bg-muted text-zinc-900 dark:bg-white dark:text-black"}`}>
-                        <div className={`absolute inset-0 translate-y-[100%] rounded-xl group-hover:translate-y-0 transition-transform duration-500 ease-[cubic-bezier(0.19,1,0.22,1)] ${plan.isFeatured ? "bg-white" : "bg-lime-500 dark:bg-[#CCFF00]"}`} />
+                      <Link href="#" className={`group w-full py-4 rounded-xl text-sm font-semibold uppercase tracking-widest flex items-center justify-center gap-3 relative overflow-hidden z-10 ${plan.isFeatured ? "bg-primary text-primary-foreground hover:text-primary" : "bg-muted text-foreground hover:text-primary-foreground"}`}>
+                        <div className={`absolute inset-0 translate-y-[100%] rounded-xl group-hover:translate-y-0 transition-transform duration-500 ease-[cubic-bezier(0.19,1,0.22,1)] ${plan.isFeatured ? "bg-primary-foreground" : "bg-primary"}`} />
                         <span className="relative z-10 transition-colors duration-500">Initiate Project</span>
                         <div className="relative z-10 w-4 h-4 overflow-hidden flex items-center">
                           <ArrowRight className="absolute w-4 h-4 -translate-x-full group-hover:translate-x-0 transition-transform duration-500 ease-[cubic-bezier(0.19,1,0.22,1)]" />

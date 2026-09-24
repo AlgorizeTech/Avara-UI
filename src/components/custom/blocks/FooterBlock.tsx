@@ -238,11 +238,11 @@ export function Footer({
 
       {/* 3. NEON GLOW PULSE (Supports both Day Mode & Night Mode Theme Adaptively) */}
       {variant === "neon-glow-pulse" && (
-        <div className="w-full bg-purple-50/50 dark:bg-slate-950 text-foreground py-16 sm:py-24 px-4 border-t border-purple-300/60 dark:border-purple-500/30 transition-colors">
-          <div className="max-w-7xl mx-auto p-8 sm:p-12 rounded-3xl bg-white/90 dark:bg-slate-900/80 border border-purple-300 dark:border-purple-500/40 shadow-[0_0_40px_rgba(168,85,247,0.15)] dark:shadow-[0_0_50px_rgba(168,85,247,0.2)] space-y-10">
-            <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-6 pb-6 border-b border-purple-200/80 dark:border-slate-800">
+        <div className="w-full bg-primary/5 text-foreground py-16 sm:py-24 px-4 border-t border-primary/30 transition-colors">
+          <div className="max-w-7xl mx-auto p-8 sm:p-12 rounded-3xl bg-card/90 border border-primary/40 shadow-[0_0_40px_color-mix(in_oklab,var(--primary)_15%,transparent)] dark:shadow-[0_0_50px_color-mix(in_oklab,var(--primary)_20%,transparent)] space-y-10">
+            <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-6 pb-6 border-b border-primary/20">
               <BrandLogo logo={logo} brandName={brandName} />
-              <div className="flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-purple-500/10 text-purple-600 dark:text-purple-400 border border-purple-500/30 text-xs font-mono animate-pulse">
+              <div className="flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-primary/10 text-primary border border-primary/30 text-xs font-mono animate-pulse">
                 <Cpu className="size-4" /> NEON MATRIX ONLINE (60 FPS)
               </div>
             </div>
@@ -250,12 +250,12 @@ export function Footer({
             <div className="grid grid-cols-2 sm:grid-cols-4 gap-6 sm:gap-8 text-xs sm:text-sm">
               {linkSections.map((col, idx) => (
                 <div key={idx} className="space-y-3">
-                  <h4 className="font-semibold text-purple-600 dark:text-purple-400 uppercase tracking-wider text-xs">{col.title}</h4>
+                  <h4 className="font-semibold text-primary uppercase tracking-wider text-xs">{col.title}</h4>
                   <ul className="space-y-2 text-xs text-muted-foreground">
                     {col.links.map((link, lIdx) => (
                       <li key={lIdx}>
-                        <a href={link.href} className="hover:text-purple-700 dark:hover:text-purple-300 transition-colors flex items-center gap-1.5 group">
-                          <Zap className="size-3 text-purple-500 dark:text-purple-400 group-hover:scale-125 transition-transform shrink-0" />
+                        <a href={link.href} className="hover:text-primary transition-colors flex items-center gap-1.5 group">
+                          <Zap className="size-3 text-primary group-hover:scale-125 transition-transform shrink-0" />
                           <span>{link.label}</span>
                         </a>
                       </li>
@@ -265,7 +265,7 @@ export function Footer({
               ))}
             </div>
 
-            <div className="border-t border-purple-200/80 dark:border-slate-800 pt-6 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-slate-500 dark:text-slate-500 text-center sm:text-left">
+            <div className="border-t border-primary/20 pt-6 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-muted-foreground text-center sm:text-left">
               <span>{copyright}</span>
               <SocialLinks links={socialLinks} className="justify-center sm:justify-start" />
             </div>

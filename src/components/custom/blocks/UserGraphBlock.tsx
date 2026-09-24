@@ -201,7 +201,7 @@ const DEFAULT_SUB_AGENTS: SubAgent[] = [
     apps: [
       { id: "drive", name: "Drive", icon: Database, bgColor: "bg-amber-50 dark:bg-amber-950/80", textColor: "text-amber-600 dark:text-amber-400", borderColor: "border-amber-300 dark:border-amber-700" },
       { id: "sheets", name: "Sheets", icon: BarChart3, bgColor: "bg-emerald-50 dark:bg-emerald-950/80", textColor: "text-emerald-600 dark:text-emerald-400", borderColor: "border-emerald-300 dark:border-emerald-700" },
-      { id: "github", name: "GitHub", icon: GitHubIcon, bgColor: "bg-muted dark:bg-blue-950/80", textColor: "text-slate-800 dark:text-blue-400", borderColor: "border-border dark:border-blue-700" },
+      { id: "github", name: "GitHub", icon: GitHubIcon, bgColor: "bg-muted", textColor: "text-foreground", borderColor: "border-border" },
     ],
   },
 ];
@@ -345,7 +345,7 @@ export function UserGraph({
       `}</style>
 
       {/* Theme Dynamic Canvas */}
-      <div className="relative w-full rounded-none bg-muted dark:bg-[#0c0e1a] p-3 sm:p-6 overflow-hidden shadow-xs border border-border flex flex-col items-center justify-center transition-colors [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]">
+      <div className="relative w-full rounded-none bg-muted p-3 sm:p-6 overflow-hidden shadow-xs border border-border flex flex-col items-center justify-center transition-colors [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]">
         {/* Ambient Dynamic Theme Glow */}
         <div
           className={cn(
@@ -377,10 +377,10 @@ export function UserGraph({
             </svg>
 
             {/* Outer Dashed Orbit Circle */}
-            <div className="absolute size-[230px] sm:size-[280px] rounded-full border border-dashed border-slate-300 dark:border-zinc-700" />
+            <div className="absolute size-[230px] sm:size-[280px] rounded-full border border-dashed border-foreground/20" />
 
             {/* Concentric Outer Solid Circle */}
-            <div className="absolute size-[140px] sm:size-[170px] rounded-full border border-slate-300 dark:border-zinc-700 flex items-center justify-center" />
+            <div className="absolute size-[140px] sm:size-[170px] rounded-full border border-foreground/20 flex items-center justify-center" />
 
             {/* Concentric Inner Ring */}
             <div
@@ -440,8 +440,8 @@ export function UserGraph({
                     className={cn(
                       "size-7 sm:size-9 rounded-full border flex items-center justify-center transition-all duration-200 cursor-pointer shadow-sm group",
                       isSelected
-                        ? cn("shadow-md ring-2 sm:ring-3 ring-offset-1 dark:ring-offset-zinc-900 scale-110", accentColor.bgClass, accentColor.borderClass, accentColor.ringClass)
-                        : "bg-white dark:bg-[#181c2b] border-border text-muted-foreground hover:border-slate-400 dark:hover:border-zinc-500"
+                        ? cn("shadow-md ring-2 sm:ring-3 ring-offset-1 ring-offset-muted scale-110", accentColor.bgClass, accentColor.borderClass, accentColor.ringClass)
+                        : "bg-card border-border text-muted-foreground hover:border-foreground/30"
                     )}
                   >
                     <tool.icon className="size-3.5 sm:size-4" />
@@ -519,10 +519,10 @@ export function UserGraph({
                   <path
                     d="M 100 272 C 220 5, 780 5, 900 272"
                     fill="none"
-                    stroke="#94a3b8"
+                    stroke="currentColor"
                     strokeWidth="1.0"
                     strokeLinecap="round"
-                    className="opacity-60 dark:opacity-75 dark:stroke-zinc-500"
+                    className="text-muted-foreground opacity-60 dark:opacity-75"
                   />
                   <path
                     d="M 100 272 C 220 5, 780 5, 900 272"
@@ -542,10 +542,10 @@ export function UserGraph({
                   <path
                     d="M 300 272 C 380 5, 620 5, 700 272"
                     fill="none"
-                    stroke="#94a3b8"
+                    stroke="currentColor"
                     strokeWidth="1.0"
                     strokeLinecap="round"
-                    className="opacity-60 dark:opacity-75 dark:stroke-zinc-500"
+                    className="text-muted-foreground opacity-60 dark:opacity-75"
                   />
                   <path
                     d="M 300 272 C 380 5, 620 5, 700 272"
@@ -566,10 +566,10 @@ export function UserGraph({
                   <path
                     d="M 500 5 L 500 272"
                     fill="none"
-                    stroke="#94a3b8"
+                    stroke="currentColor"
                     strokeWidth="1.0"
                     strokeLinecap="round"
-                    className="opacity-60 dark:opacity-75 dark:stroke-zinc-500"
+                    className="text-muted-foreground opacity-60 dark:opacity-75"
                   />
                   <path
                     d="M 500 5 L 500 272"
@@ -594,27 +594,27 @@ export function UserGraph({
                       y1={272}
                       x2={agent.svgX - 60}
                       y2={340}
-                      stroke="#94a3b8"
+                      stroke="currentColor"
                       strokeWidth="1.0"
-                      className="opacity-60 dark:opacity-75 dark:stroke-zinc-500"
+                      className="text-muted-foreground opacity-60 dark:opacity-75"
                     />
                     <line
                       x1={agent.svgX}
                       y1={272}
                       x2={agent.svgX}
                       y2={340}
-                      stroke="#94a3b8"
+                      stroke="currentColor"
                       strokeWidth="1.0"
-                      className="opacity-60 dark:opacity-75 dark:stroke-zinc-500"
+                      className="text-muted-foreground opacity-60 dark:opacity-75"
                     />
                     <line
                       x1={agent.svgX}
                       y1={272}
                       x2={agent.svgX + 60}
                       y2={340}
-                      stroke="#94a3b8"
+                      stroke="currentColor"
                       strokeWidth="1.0"
-                      className="opacity-60 dark:opacity-75 dark:stroke-zinc-500"
+                      className="text-muted-foreground opacity-60 dark:opacity-75"
                     />
 
                     {/* Animated Flowing Pulse Lines */}
@@ -668,7 +668,7 @@ export function UserGraph({
               <div className="absolute top-[35px] left-1/2 -translate-x-1/2 flex flex-col items-center z-20">
                 <div
                   className={cn(
-                    "relative size-16 rounded-full ring-2 p-0.5 bg-white dark:bg-[#181c2b] shadow-md transition-colors",
+                    "relative size-16 rounded-full ring-2 p-0.5 bg-card shadow-md transition-colors",
                     accentColor.ringClass
                   )}
                 >
@@ -677,7 +677,7 @@ export function UserGraph({
                     alt={orchestrator.name}
                     className="size-full rounded-full object-cover"
                   />
-                  <span className="absolute bottom-0 right-0.5 size-3 rounded-full bg-emerald-500 ring-2 ring-slate-50 dark:ring-[#0c0e1a]" />
+                  <span className="absolute bottom-0 right-0.5 size-3 rounded-full bg-emerald-500 ring-2 ring-muted" />
                 </div>
                 <div className="mt-1 text-center">
                   <h4 className="text-xs font-semibold text-foreground tracking-wide whitespace-nowrap">{orchestrator.name}</h4>
@@ -711,10 +711,10 @@ export function UserGraph({
                       {/* Sub-Agent Avatar Circle (Only Avatar Zooms Slightly on Hover with Theme Border) */}
                       <div
                         className={cn(
-                          "relative size-13 rounded-full p-0.5 bg-white dark:bg-[#181c2b] shadow-sm mb-10 transition-all duration-300",
+                          "relative size-13 rounded-full p-0.5 bg-card shadow-sm mb-10 transition-all duration-300",
                           isHovered
                             ? cn("scale-105 shadow-md ring-2", accentColor.ringClass)
-                            : "ring-1 ring-slate-300 dark:ring-zinc-700/80"
+                            : "ring-1 ring-foreground/20"
                         )}
                       >
                         <img
@@ -724,7 +724,7 @@ export function UserGraph({
                         />
                         <span
                           className={cn(
-                            "absolute bottom-0 right-0 size-3 rounded-full ring-2 ring-slate-50 dark:ring-[#0c0e1a]",
+                            "absolute bottom-0 right-0 size-3 rounded-full ring-2 ring-muted",
                             agent.status === "online"
                               ? "bg-emerald-500"
                               : agent.status === "idle"
@@ -764,7 +764,6 @@ export function UserGraph({
                                     color === "rose" ? "border-b-rose-600 dark:border-b-rose-500" :
                                     color === "emerald" ? "border-b-emerald-600 dark:border-b-emerald-500" :
                                     color === "indigo" ? "border-b-indigo-600 dark:border-b-indigo-500" :
-                                    color === "zinc" ? "border-b-zinc-800 dark:border-b-zinc-200" :
                                     "border-b-primary"
                                   )}
                                 />
@@ -787,17 +786,17 @@ export function UserGraph({
               {/* Orchestrator Item: Horizontally Centered Avatar & Card */}
               <div className="w-full flex flex-col items-center gap-2 z-10">
                 {/* Horizontally Centered Avatar Image */}
-                <div className={cn("relative size-14 rounded-md p-0.5 bg-white dark:bg-[#181c2b] shadow-md ring-2 mx-auto", accentColor.ringClass)}>
+                <div className={cn("relative size-14 rounded-md p-0.5 bg-card shadow-md ring-2 mx-auto", accentColor.ringClass)}>
                   <img
                     src={orchestrator.avatarUrl}
                     alt={orchestrator.name}
                     className="size-full rounded-sm object-cover"
                   />
-                  <span className="absolute -bottom-1 -right-1 size-3.5 rounded-xs bg-emerald-500 ring-2 ring-white dark:ring-[#181c2b]" />
+                  <span className="absolute -bottom-1 -right-1 size-3.5 rounded-xs bg-emerald-500 ring-2 ring-card" />
                 </div>
 
                 {/* Horizontally Centered Info Card */}
-                <div className="w-full flex items-center justify-between p-3.5 rounded-xl bg-white dark:bg-[#181c2b] border-2 border-transparent shadow-xs">
+                <div className="w-full flex items-center justify-between p-3.5 rounded-xl bg-card border-2 border-transparent shadow-xs">
                   <div className="min-w-0 pr-2">
                     <h4 className="text-xs sm:text-sm font-semibold text-foreground truncate">{orchestrator.name}</h4>
                     <p className="text-[10px] sm:text-xs font-medium text-muted-foreground truncate">{orchestrator.role}</p>
@@ -811,7 +810,7 @@ export function UserGraph({
               {/* Sub-Agents Vertical Timeline Container */}
               <div className="relative w-full flex flex-col gap-4 pl-1">
                 {/* Continuous Vertical Line passing straight through sub-agent avatars */}
-                <div className="absolute left-[24px] top-4 bottom-6 w-0.5 bg-slate-300 dark:bg-zinc-700 z-0" />
+                <div className="absolute left-[24px] top-4 bottom-6 w-0.5 bg-foreground/20 z-0" />
 
                 {/* Sub-Agent Timeline Items */}
                 {subAgents.map((agent, idx) => {
@@ -823,20 +822,20 @@ export function UserGraph({
                       onClick={() => setSelectedAgentId(agent.id)}
                       className="relative z-10 flex items-start gap-4 cursor-pointer group"
                     >
-                      {/* Left Avatar Column with Red Numbered Badge */}
+                      {/* Left Avatar Column with Numbered Badge */}
                       <div className="relative flex-shrink-0">
-                        {/* Red Numbered Badge */}
-                        <div className="absolute -top-1 -left-1 size-4 bg-rose-600 text-white font-semibold text-[9px] rounded-xs flex items-center justify-center z-20 shadow-xs">
+                        {/* Numbered Badge */}
+                        <div className="absolute -top-1 -left-1 size-4 bg-primary text-primary-foreground font-semibold text-[9px] rounded-xs flex items-center justify-center z-20 shadow-xs">
                           {idx + 1}
                         </div>
 
                         {/* Avatar Image Frame */}
                         <div
                           className={cn(
-                            "relative size-12 rounded-md p-0.5 bg-white dark:bg-[#181c2b] shadow-xs transition-all",
+                            "relative size-12 rounded-md p-0.5 bg-card shadow-xs transition-all",
                             isActive
                               ? cn("ring-2 scale-105", accentColor.ringClass)
-                              : "ring-1 ring-slate-300 dark:ring-zinc-700/80 group-hover:scale-105"
+                              : "ring-1 ring-foreground/20 group-hover:scale-105"
                           )}
                         >
                           <img
@@ -846,7 +845,7 @@ export function UserGraph({
                           />
                           <span
                             className={cn(
-                              "absolute -bottom-1 -right-1 size-2.5 rounded-xs ring-2 ring-white dark:ring-[#181c2b]",
+                              "absolute -bottom-1 -right-1 size-2.5 rounded-xs ring-2 ring-card",
                               agent.status === "online"
                                 ? "bg-emerald-500"
                                 : agent.status === "idle"
@@ -860,10 +859,10 @@ export function UserGraph({
                       {/* Right Sub-Agent Content Card (Constant border-2 to prevent jumping) */}
                       <div
                         className={cn(
-                          "flex-1 min-w-0 p-3.5 rounded-xl border-2 shadow-xs transition-colors duration-200 bg-white dark:bg-[#181c2b]",
+                          "flex-1 min-w-0 p-3.5 rounded-xl border-2 shadow-xs transition-colors duration-200 bg-card",
                           isActive
                             ? accentColor.borderClass
-                            : "border-transparent dark:border-zinc-800/40 group-hover:border-slate-300"
+                            : "border-transparent group-hover:border-foreground/20"
                         )}
                       >
                         {/* Card Header Row */}

@@ -40,7 +40,7 @@ export function FormWrapper({
       </div>
 
       {/* Inner Container */}
-      <div className="relative bg-white dark:bg-[#050505] border border-border rounded-2xl p-6 sm:p-10 h-full w-full z-10">
+      <div className="relative bg-card text-card-foreground border border-border rounded-2xl p-6 sm:p-10 h-full w-full z-10">
         {/* Header */}
         {(title || description) && (
           <div className="mb-8 border-b border-border pb-6">

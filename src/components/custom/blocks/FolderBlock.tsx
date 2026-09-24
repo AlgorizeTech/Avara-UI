@@ -220,10 +220,9 @@ function FanNav({
       }}
       className={cn(
         "absolute flex h-7 w-7 items-center justify-center rounded-full",
-        "bg-white/90 text-zinc-600 shadow-[0_2px_8px_rgba(0,0,0,0.14)] backdrop-blur",
-        "dark:bg-zinc-800/90 dark:text-zinc-300",
+        "bg-card/90 text-foreground/70 shadow-[0_2px_8px_rgba(0,0,0,0.14)] backdrop-blur",
         "transition-colors duration-150",
-        "hover:bg-white dark:hover:bg-zinc-700",
+        "hover:bg-card hover:text-foreground",
       )}
       style={style}
       initial={{ opacity: 0, scale: 0.8 }}
@@ -528,7 +527,7 @@ export function Folder({
           "relative select-none rounded-[30px] outline-none",
           (interactive || tappable) && "cursor-pointer",
           (interactive || tappable || focusable) &&
-            "focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-zinc-500",
+            "focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-ring",
         )}
         style={{ width: w, height: h, perspective: 900 }}
         role={interactive || tappable ? "button" : undefined}
@@ -635,9 +634,9 @@ export function Folder({
                 {/* per-file progress — same bar language as the pocket's
                     overall one, just small enough to sit on a peeking card */}
                 {cardUploading && (
-                  <div className="absolute inset-x-[10%] bottom-[8%] h-[2.5px] overflow-hidden rounded-full bg-black/15 dark:bg-white/15">
+                  <div className="absolute inset-x-[10%] bottom-[8%] h-[2.5px] overflow-hidden rounded-full bg-foreground/15">
                     <motion.span
-                      className="block h-full rounded-full bg-zinc-800 dark:bg-white"
+                      className="block h-full rounded-full bg-primary"
                       initial={{ width: 0 }}
                       animate={{ width: `${f.progress}%` }}
                       transition={{ ease: "linear", duration: reduce ? 0 : 0.3 }}
@@ -821,9 +820,9 @@ export function Folder({
             )}
 
             {uploading && (
-              <div className="absolute inset-x-4 bottom-3 h-[3px] overflow-hidden rounded-full bg-black/12 dark:bg-white/12">
+              <div className="absolute inset-x-4 bottom-3 h-[3px] overflow-hidden rounded-full bg-foreground/10">
                 <motion.span
-                  className="block h-full rounded-full bg-zinc-800 dark:bg-white"
+                  className="block h-full rounded-full bg-primary"
                   initial={{ width: 0 }}
                   animate={{ width: `${progress}%` }}
                   transition={{ ease: "linear", duration: 0.3 }}
@@ -836,7 +835,7 @@ export function Folder({
         {interactive && (
           <motion.div
             aria-hidden
-            className="pointer-events-none absolute -inset-2 rounded-[30px] border-2 border-dashed border-zinc-400 dark:border-zinc-500"
+            className="pointer-events-none absolute -inset-2 rounded-[30px] border-2 border-dashed border-primary/60"
             style={{ zIndex: 6 }}
             initial={false}
             animate={{ opacity: dragging ? 1 : 0, scale: dragging ? 1 : 0.98 }}
@@ -848,10 +847,10 @@ export function Folder({
       {((showLabel && label) || (showCount && metaText)) && (
         <div className="flex flex-col items-center gap-1.5 text-center">
           {showLabel && label && (
-            <span className="text-[15px] font-semibold tracking-[-0.02em] text-zinc-800 dark:text-zinc-100">{label}</span>
+            <span className="text-[15px] font-semibold tracking-[-0.02em] text-foreground">{label}</span>
           )}
           {showCount && metaText && (
-            <span className="rounded-full bg-zinc-100 px-2.5 py-0.5 text-[12px] font-medium text-zinc-500 dark:bg-zinc-800 dark:text-zinc-400">
+            <span className="rounded-full bg-muted px-2.5 py-0.5 text-[12px] font-medium text-muted-foreground">
               {metaText}
             </span>
           )}

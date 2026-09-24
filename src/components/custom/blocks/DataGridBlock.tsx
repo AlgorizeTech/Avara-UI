@@ -244,7 +244,7 @@ const DataGridBlockImpl = forwardRef<HTMLDivElement, DataGridBlockProps>(
     return (
       <div
         className={cn(
-          "w-full overflow-hidden border border-border rounded-xl bg-white dark:bg-[#09090b]",
+          "w-full overflow-hidden border border-border rounded-xl bg-card text-card-foreground",
           className,
         )}
         style={style}
@@ -373,7 +373,7 @@ const DataGridBlockImpl = forwardRef<HTMLDivElement, DataGridBlockProps>(
                         {isActive && !isEditingThis && (
                           <div
                             className={cn(
-                              "absolute bottom-[-3px] right-[-3px] w-1.5 h-1.5 z-20 border border-white dark:border-black rounded-[1px]",
+                              "absolute bottom-[-3px] right-[-3px] w-1.5 h-1.5 z-20 border border-card rounded-[1px]",
                               theme.handle,
                             )}
                           />

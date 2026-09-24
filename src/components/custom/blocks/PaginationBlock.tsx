@@ -280,7 +280,7 @@ export function PaginationPrevious({
         className={cn(
           "flex h-9 items-center justify-center gap-1 rounded-md text-sm font-medium transition-colors outline-none focus-visible:ring-2 focus-visible:ring-[var(--theme-color,var(--primary))] pl-2.5 pr-3",
           disabled
-            ? "pointer-events-none opacity-50 text-zinc-400 dark:text-zinc-600"
+            ? "pointer-events-none opacity-50 text-muted-foreground"
             : "text-foreground hover:bg-muted hover:text-foreground",
           className,
         )}
@@ -307,7 +307,7 @@ export function PaginationNext({
         className={cn(
           "flex h-9 items-center justify-center gap-1 rounded-md text-sm font-medium transition-colors outline-none focus-visible:ring-2 focus-visible:ring-[var(--theme-color,var(--primary))] pl-3 pr-2.5",
           disabled
-            ? "pointer-events-none opacity-50 text-zinc-400 dark:text-zinc-600"
+            ? "pointer-events-none opacity-50 text-muted-foreground"
             : "text-foreground hover:bg-muted hover:text-foreground",
           className,
         )}
@@ -347,7 +347,7 @@ export function PaginationEllipsis({
 const controlLabel =
   "flex items-center gap-2 text-xs font-medium text-muted-foreground whitespace-nowrap";
 const controlField =
-  "h-8 text-xs font-semibold bg-background text-foreground border border-border rounded-md outline-none transition-colors focus:border-[var(--theme-color,var(--primary))] focus:ring-2 focus:ring-[var(--theme-color,var(--primary))]/25";
+  "h-8 text-xs font-semibold bg-background text-foreground border border-input rounded-md outline-none transition-colors focus:border-[var(--theme-color,var(--primary))] focus:ring-2 focus:ring-[var(--theme-color,var(--primary))]/25";
 
 function PaginationSelect({
   className,

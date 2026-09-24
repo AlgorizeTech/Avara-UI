@@ -36,17 +36,17 @@ export type EmailColor = "indigo" | "rose" | "emerald" | "zinc" | (string & {});
 const emailVariants: Record<EmailVariant, Record<string, string>> = {
   default: {
     wrapper:
-      "bg-muted dark:bg-[#09090b] border border-border shadow-xl rounded-2xl",
+      "bg-background border border-border shadow-xl rounded-2xl",
     sidebar:
-      "bg-white/90 dark:bg-[#121217]/90 backdrop-blur-xl border-r border-border",
-    main: "bg-white dark:bg-[#09090b]",
+      "bg-card/90 backdrop-blur-xl border-r border-border",
+    main: "bg-background",
     header:
-      "bg-white/80 dark:bg-[#09090b]/80 border-b border-border backdrop-blur-xl",
+      "bg-background/80 border-b border-border backdrop-blur-xl",
     searchBg: "bg-muted border border-transparent",
     emailItem:
-      "bg-white dark:bg-[#09090b] hover:bg-muted border-b border-border",
+      "bg-background hover:bg-muted border-b border-border",
     composeModal:
-      "bg-white dark:bg-[#121217] border border-border shadow-2xl",
+      "bg-card text-card-foreground border border-border shadow-2xl",
   },
   minimal: {
     wrapper: "bg-transparent border-none shadow-none rounded-none",
@@ -60,7 +60,7 @@ const emailVariants: Record<EmailVariant, Record<string, string>> = {
     emailItem:
       "bg-transparent hover:bg-muted/50 border-b border-border rounded-xl my-1",
     composeModal:
-      "bg-white dark:bg-[#121217] border border-border shadow-2xl",
+      "bg-card text-card-foreground border border-border shadow-2xl",
   },
   glass: {
     wrapper:
@@ -447,7 +447,7 @@ export default function EmailApp({
                   {unreadCount > 0 && (
                     <span
                       className={cn(
-                        "text-white text-[10px] font-semibold px-2 py-0.5 rounded-full shadow-sm",
+                        "text-[10px] font-semibold px-2 py-0.5 rounded-full shadow-sm",
                         theme.bg,
                       )}
                     >
@@ -472,7 +472,7 @@ export default function EmailApp({
                 <div
                   key={label.id}
                   onClick={() => handleNavClick("inbox", label.id)}
-                  className={`flex items-center gap-3 text-sm cursor-pointer px-3 py-2 rounded-lg transition-all font-medium ${activeLabel === label.id ? "bg-muted text-zinc-900 dark:text-zinc-100" : "text-zinc-600 dark:text-zinc-400 hover:bg-muted hover:text-foreground"}`}
+                  className={`flex items-center gap-3 text-sm cursor-pointer px-3 py-2 rounded-lg transition-all font-medium ${activeLabel === label.id ? "bg-muted text-foreground" : "text-muted-foreground hover:bg-muted hover:text-foreground"}`}
                 >
                   <div
                     className={`w-2.5 h-2.5 rounded-full shadow-sm ${label.color}`}
@@ -545,7 +545,7 @@ export default function EmailApp({
                 <div className="flex items-center gap-2 shrink-0">
                   <input
                     type="checkbox"
-                    className="w-4 h-4 rounded border-border text-indigo-500 focus:ring-indigo-500 cursor-pointer"
+                    className="w-4 h-4 rounded border-border text-primary focus:ring-primary cursor-pointer"
                     checked={
                       selectedEmails.length > 0 &&
                       selectedEmails.length === filteredEmails.length
@@ -566,14 +566,14 @@ export default function EmailApp({
                   <div className="flex items-center gap-1 border-l border-border pl-3 animate-in fade-in zoom-in-95 duration-200">
                     <button
                       onClick={() => moveSelectedToFolder("trash")}
-                      className="p-1.5 sm:p-2 text-zinc-500 hover:text-rose-500 hover:bg-rose-50 dark:hover:bg-rose-500/10 rounded-md transition-colors cursor-pointer"
+                      className="p-1.5 sm:p-2 text-muted-foreground hover:text-rose-500 hover:bg-rose-50 dark:hover:bg-rose-500/10 rounded-md transition-colors cursor-pointer"
                       title="Delete Selected"
                     >
                       <Trash2 className="w-4 h-4" />
                     </button>
                     <button
                       onClick={() => moveSelectedToFolder("archive")}
-                      className="p-1.5 sm:p-2 text-zinc-500 hover:text-amber-500 hover:bg-amber-50 dark:hover:bg-amber-500/10 rounded-md transition-colors cursor-pointer"
+                      className="p-1.5 sm:p-2 text-muted-foreground hover:text-amber-500 hover:bg-amber-50 dark:hover:bg-amber-500/10 rounded-md transition-colors cursor-pointer"
                       title="Archive Selected"
                     >
                       <Archive className="w-4 h-4" />
@@ -620,12 +620,12 @@ export default function EmailApp({
                           type="checkbox"
                           checked={selectedEmails.includes(email.id)}
                           onChange={() => toggleSelect(email.id)}
-                          className="w-4 h-4 rounded border-border text-indigo-500 focus:ring-indigo-500 cursor-pointer shrink-0"
+                          className="w-4 h-4 rounded border-border text-primary focus:ring-primary cursor-pointer shrink-0"
                         />
                         {/* Desktop Star Button */}
                         <button
                           onClick={() => toggleStar(email.id)}
-                          className="hidden sm:block cursor-pointer text-zinc-300 dark:text-zinc-600 hover:text-amber-400 transition-colors"
+                          className="hidden sm:block cursor-pointer text-foreground/25 hover:text-amber-400 transition-colors"
                         >
                           <Star
                             className={`w-[18px] h-[18px] ${email.isStarred ? "fill-amber-400 text-amber-400" : ""}`}
@@ -644,7 +644,7 @@ export default function EmailApp({
                       <div className="flex-1 min-w-0 flex flex-col sm:flex-row sm:items-center gap-1 sm:gap-4 pr-8 sm:pr-0">
                         <div className="flex items-center justify-between sm:w-48 shrink-0">
                           <span
-                            className={`text-[15px] truncate ${!email.isRead ? "font-semibold text-zinc-900 dark:text-white" : "font-medium text-zinc-700 dark:text-zinc-300"}`}
+                            className={`text-[15px] truncate ${!email.isRead ? "font-semibold text-foreground" : "font-medium text-foreground/80"}`}
                           >
                             {email.sender}
                           </span>
@@ -662,10 +662,10 @@ export default function EmailApp({
                             />
                           )}
                           <span
-                            className={`text-sm truncate ${!email.isRead ? "font-semibold text-zinc-800 dark:text-zinc-100" : "text-zinc-500 dark:text-zinc-400"}`}
+                            className={`text-sm truncate ${!email.isRead ? "font-semibold text-foreground" : "text-muted-foreground"}`}
                           >
                             {email.subject}{" "}
-                            <span className="text-zinc-400 dark:text-zinc-600 font-normal ml-1 hidden lg:inline-block">
+                            <span className="text-muted-foreground/70 font-normal ml-1 hidden lg:inline-block">
                               - {email.body.substring(0, 40)}...
                             </span>
                           </span>
@@ -683,7 +683,7 @@ export default function EmailApp({
                               e.stopPropagation();
                               deleteEmail(email.id);
                             }}
-                            className="p-2 hover:bg-rose-50 dark:hover:bg-rose-500/10 text-zinc-400 hover:text-rose-500 rounded-md transition-colors shadow-sm bg-card border border-border cursor-pointer"
+                            className="p-2 hover:bg-rose-50 dark:hover:bg-rose-500/10 text-muted-foreground hover:text-rose-500 rounded-md transition-colors shadow-sm bg-card border border-border cursor-pointer"
                           >
                             <Trash2 className="w-4 h-4" />
                           </button>
@@ -712,7 +712,7 @@ export default function EmailApp({
                           e.stopPropagation();
                           toggleStar(email.id);
                         }}
-                        className="sm:hidden absolute bottom-3 right-4 cursor-pointer text-zinc-300 dark:text-zinc-600 hover:text-amber-400 transition-colors p-1"
+                        className="sm:hidden absolute bottom-3 right-4 cursor-pointer text-foreground/25 hover:text-amber-400 transition-colors p-1"
                         title="Star email"
                       >
                         <Star
@@ -725,7 +725,7 @@ export default function EmailApp({
               ) : (
                 <div className="flex flex-col items-center justify-center h-full text-center p-8">
                   <div className="w-16 h-16 bg-muted rounded-full flex items-center justify-center mb-4">
-                    <Mail className="w-8 h-8 text-zinc-400 dark:text-zinc-600" />
+                    <Mail className="w-8 h-8 text-muted-foreground" />
                   </div>
                   <h3 className="text-lg font-semibold text-foreground mb-1">
                     Nothing to see here
@@ -866,7 +866,7 @@ export default function EmailApp({
                       </h3>
                       <p className="text-xs sm:text-sm text-muted-foreground font-medium truncate">
                         to me{" "}
-                        <span className="text-zinc-300 dark:text-zinc-700 mx-1">
+                        <span className="text-foreground/20 mx-1">
                           •
                         </span>{" "}
                         <span className="font-normal text-muted-foreground">
@@ -1007,7 +1007,7 @@ export default function EmailApp({
                   required
                   type="email"
                   name="to"
-                  className="flex-1 bg-transparent text-sm font-medium outline-none text-foreground placeholder:text-zinc-300 dark:placeholder:text-zinc-700"
+                  className="flex-1 bg-transparent text-sm font-medium outline-none text-foreground placeholder:text-muted-foreground/50"
                 />
               </div>
               <div
@@ -1025,7 +1025,7 @@ export default function EmailApp({
                   required
                   type="text"
                   name="subject"
-                  className="flex-1 bg-transparent text-sm font-semibold outline-none text-foreground placeholder:text-zinc-300 dark:placeholder:text-zinc-700"
+                  className="flex-1 bg-transparent text-sm font-semibold outline-none text-foreground placeholder:text-muted-foreground/50"
                 />
               </div>
 
@@ -1034,7 +1034,7 @@ export default function EmailApp({
                   required
                   name="message"
                   placeholder="Type your message here..."
-                  className="w-full h-full bg-transparent text-[15px] outline-none resize-none text-foreground font-medium placeholder:text-zinc-400 dark:placeholder:text-zinc-600"
+                  className="w-full h-full bg-transparent text-[15px] outline-none resize-none text-foreground font-medium placeholder:text-muted-foreground"
                 ></textarea>
               </div>
 

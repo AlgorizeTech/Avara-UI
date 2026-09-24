@@ -51,7 +51,7 @@ export const Flowchart = forwardRef<HTMLDivElement, FlowchartProps>(
         <div
           ref={ref}
           className={cn(
-            "w-full overflow-x-auto bg-[#fafafa] dark:bg-[#050505] border border-border/80 rounded-2xl select-none shadow-inner custom-scrollbar",
+            "w-full overflow-x-auto bg-background border border-border/80 rounded-2xl select-none shadow-inner custom-scrollbar",
             className,
           )}
           {...props}
@@ -162,11 +162,11 @@ export const FlowNode = forwardRef<HTMLDivElement, FlowNodeProps>(
           "absolute w-[240px] h-[68px] p-3 rounded-xl transition-all duration-300 cursor-pointer opacity-0 flex items-center gap-3 backdrop-blur-xl select-none",
           isActiveNode
             ? cn(
-                "bg-white/95 dark:bg-zinc-900/95 scale-[1.02] ring-2 z-30",
+                "bg-card/95 scale-[1.02] ring-2 z-30",
                 currentTheme.ring,
                 currentTheme.glow,
               )
-            : "bg-white/50 dark:bg-zinc-900/40 border border-border/80 hover:bg-white/80 dark:hover:bg-zinc-900/80 hover:scale-[1.01] shadow-sm z-20",
+            : "bg-card/50 border border-border/80 hover:bg-card/80 hover:scale-[1.01] shadow-sm z-20",
           className,
         )}
         {...props}
@@ -320,7 +320,7 @@ export const FlowConnection = forwardRef<SVGPathElement, FlowConnectionProps>(
           stroke="currentColor"
           strokeWidth="1.5"
           className={cn(
-            "text-zinc-200 dark:text-zinc-800/80 transition-colors duration-500",
+            "text-border transition-colors duration-500",
             className,
           )}
           {...props}

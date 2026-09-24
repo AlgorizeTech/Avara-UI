@@ -484,7 +484,7 @@ export function CartBlock({
 
         {items.length === 0 ? (
           <div className="flex flex-col items-center justify-center py-24 bg-background border border-border rounded-3xl">
-            <ShoppingBag className="w-16 h-16 text-zinc-300 dark:text-zinc-700 mb-4" />
+            <ShoppingBag className="w-16 h-16 text-muted-foreground/40 mb-4" />
             <h3 className="text-xl font-semibold text-foreground mb-2">
               Your cart is empty
             </h3>

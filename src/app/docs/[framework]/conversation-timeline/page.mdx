@@ -218,21 +218,21 @@ export default function ChatWithMinimap() {
 Discover the Conversation Timeline's capabilities as a minimap for long conversations.
 
 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 my-6 not-prose">
-  <div className="p-6 rounded-2xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900">
-    <h3 className="text-lg font-semibold text-zinc-900 dark:text-zinc-50 mb-2">One property animates</h3>
-    <p className="text-zinc-600 dark:text-zinc-400 text-sm">Only row <code>height</code> transitions; the mark length, gap and label width are fixed, so the rail never shifts sideways and hover can never nudge the marks.</p>
+  <div className="p-6 rounded-2xl border border-border bg-card">
+    <h3 className="text-lg font-semibold text-card-foreground mb-2">One property animates</h3>
+    <p className="text-muted-foreground text-sm">Only row <code>height</code> transitions; the mark length, gap and label width are fixed, so the rail never shifts sideways and hover can never nudge the marks.</p>
   </div>
-  <div className="p-6 rounded-2xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900">
-    <h3 className="text-lg font-semibold text-zinc-900 dark:text-zinc-50 mb-2">Scroll stays put</h3>
-    <p className="text-zinc-600 dark:text-zinc-400 text-sm">While rows grow from 10px to 24px the rail re-anchors to the row at the top every frame, so a scrolled list expands in place instead of jumping.</p>
+  <div className="p-6 rounded-2xl border border-border bg-card">
+    <h3 className="text-lg font-semibold text-card-foreground mb-2">Scroll stays put</h3>
+    <p className="text-muted-foreground text-sm">While rows grow from 10px to 24px the rail re-anchors to the row at the top every frame, so a scrolled list expands in place instead of jumping.</p>
   </div>
-  <div className="p-6 rounded-2xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900">
-    <h3 className="text-lg font-semibold text-zinc-900 dark:text-zinc-50 mb-2">Touch and keyboard</h3>
-    <p className="text-zinc-600 dark:text-zinc-400 text-sm">Without hover the rail stays expanded so labels remain reachable; focus expands it too, and every mark is a real button with an accessible name.</p>
+  <div className="p-6 rounded-2xl border border-border bg-card">
+    <h3 className="text-lg font-semibold text-card-foreground mb-2">Touch and keyboard</h3>
+    <p className="text-muted-foreground text-sm">Without hover the rail stays expanded so labels remain reachable; focus expands it too, and every mark is a real button with an accessible name.</p>
   </div>
-  <div className="p-6 rounded-2xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900">
-    <h3 className="text-lg font-semibold text-zinc-900 dark:text-zinc-50 mb-2">Respects reduced motion</h3>
-    <p className="text-zinc-600 dark:text-zinc-400 text-sm">Every transition is dropped under <code>prefers-reduced-motion</code>; the rail simply snaps between its two states.</p>
+  <div className="p-6 rounded-2xl border border-border bg-card">
+    <h3 className="text-lg font-semibold text-card-foreground mb-2">Respects reduced motion</h3>
+    <p className="text-muted-foreground text-sm">Every transition is dropped under <code>prefers-reduced-motion</code>; the rail simply snaps between its two states.</p>
   </div>
 </div>
 
@@ -315,7 +315,7 @@ Discover the Conversation Timeline's capabilities as a minimap for long conversa
       <tr>
         <td><code>accent</code></td>
         <td><code>string</code></td>
-        <td><code>"#0ea5e9"</code></td>
+        <td><code>"var(--primary)"</code></td>
         <td>Colour of the active row's line. Any CSS colour.</td>
       </tr>
       <tr>

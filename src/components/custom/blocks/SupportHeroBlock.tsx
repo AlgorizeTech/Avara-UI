@@ -57,7 +57,7 @@ function Integrations({ icons, title, text, className, ...props }: SupportHeroIn
             key={i}
             // Each tile rises a touch on hover, one after the other.
             style={{ transitionDelay: `${i * 60}ms` }}
-            className="grid h-11 w-11 place-items-center rounded-xl border border-white/80 bg-white shadow-[0_6px_16px_-8px_rgba(15,23,42,0.35)] transition-transform duration-300 ease-out group-hover:-translate-y-1 dark:border-white/10 dark:bg-white/10 [&>svg]:h-5 [&>svg]:w-5"
+            className="grid h-11 w-11 place-items-center rounded-xl border border-foreground/[0.06] bg-card shadow-[0_6px_16px_-8px_rgba(15,23,42,0.35)] transition-transform duration-300 ease-out group-hover:-translate-y-1 [&>svg]:h-5 [&>svg]:w-5"
           >
             {icon}
           </span>
@@ -65,7 +65,7 @@ function Integrations({ icons, title, text, className, ...props }: SupportHeroIn
       </div>
       <div>
         <p className="text-[1.35rem] font-semibold leading-none tracking-tight">{title}</p>
-        {text && <p className="mt-2 max-w-[15rem] text-[11px] leading-snug text-black/55 dark:text-white/55">{text}</p>}
+        {text && <p className="mt-2 max-w-[15rem] text-[11px] leading-snug text-foreground/55">{text}</p>}
       </div>
     </Card>
   );
@@ -128,7 +128,7 @@ function Stat({
               "absolute inset-0 bg-gradient-to-tr from-32% via-50% to-72%",
               accent
                 ? "from-primary via-primary/80 to-transparent"
-                : "from-white via-white/85 to-transparent dark:from-zinc-900 dark:via-zinc-900/85",
+                : "from-background via-background/85 to-transparent",
             )}
           />
         </>
@@ -145,7 +145,7 @@ function Stat({
           color="zinc"
         />
       </p>
-      <p className={cn("relative z-10 mt-3 max-w-[11rem] text-[11px] leading-snug", accent ? "text-primary-foreground/80" : "text-black/55 dark:text-white/55")}>
+      <p className={cn("relative z-10 mt-3 max-w-[11rem] text-[11px] leading-snug", accent ? "text-primary-foreground/80" : "text-foreground/55")}>
         {caption}
       </p>
     </Card>
@@ -208,7 +208,7 @@ function Team({ title, avatars, className, ...props }: SupportHeroTeamProps) {
       {/* A field of dots that fades in from the right, for the faces to sit over. */}
       <span
         aria-hidden
-        className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle,rgba(15,23,42,0.14)_1px,transparent_1.2px)] bg-[size:14px_14px] [mask-image:radial-gradient(60%_90%_at_75%_50%,black,transparent)] dark:bg-[radial-gradient(circle,rgba(255,255,255,0.18)_1px,transparent_1.2px)]"
+        className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle,color-mix(in_oklab,var(--foreground)_16%,transparent)_1px,transparent_1.2px)] bg-[size:14px_14px] [mask-image:radial-gradient(60%_90%_at_75%_50%,black,transparent)]"
       />
       <h3 className="relative z-10 max-w-[11rem] font-sans text-[1.35rem] font-medium leading-[1.15] tracking-tight">{title}</h3>
       <div className="absolute inset-y-0 right-0 w-[52%]">
@@ -230,7 +230,7 @@ function Team({ title, avatars, className, ...props }: SupportHeroTeamProps) {
                   "--dy": `${s.dy}px`,
                 } as React.CSSProperties
               }
-              className="absolute rounded-full border-2 border-white object-cover shadow-[0_8px_20px_-8px_rgba(15,23,42,0.5)] transition-transform duration-500 ease-out group-hover:[transform:translate(var(--dx),var(--dy))] dark:border-zinc-800"
+              className="absolute rounded-full border-2 border-background object-cover shadow-[0_8px_20px_-8px_rgba(15,23,42,0.5)] transition-transform duration-500 ease-out group-hover:[transform:translate(var(--dx),var(--dy))]"
             />
           );
         })}
@@ -246,7 +246,7 @@ export interface SupportHeroProps extends React.HTMLAttributes<HTMLDivElement> {
   heading: string;
   subtitle?: React.ReactNode;
   cta?: { label: string; href?: string; onClick?: () => void };
-  /** The three colours washed behind the glass. Greys by default, so the ground reads as soft stone. */
+  /** The three colours washed behind the glass. By default a soft wash of the theme's primary over its muted surface, so the ground follows the theme. */
   aurora?: [string, string, string];
   /** Play the reveal when the section enters the viewport (default) or immediately. */
   reveal?: "in-view" | "immediate";
@@ -257,7 +257,11 @@ function SupportHeroRoot({
   heading,
   subtitle,
   cta,
-  aurora = ["#dde2ea", "#f7f8fa", "#d5dbe5"],
+  aurora = [
+    "color-mix(in oklab, var(--primary) 22%, var(--muted))",
+    "var(--muted)",
+    "color-mix(in oklab, var(--primary) 14%, var(--muted))",
+  ],
   reveal = "in-view",
   className,
   children,
@@ -322,7 +326,7 @@ function SupportHeroRoot({
     <div ref={rootRef} className={cn("w-full", className)} {...props}>
       <GlassBackdrop
         aurora={aurora}
-        className="text-[#1a1f2e] dark:text-white"
+        className="bg-background text-foreground dark:bg-background dark:text-foreground"
         gridClassName="mx-auto max-w-6xl gap-4 px-5 pb-10 pt-0 sm:px-8 sm:pb-12"
       >
       <header className="col-span-full flex flex-col items-center px-2 pb-8 pt-14 text-center sm:pb-10 sm:pt-16">
@@ -333,7 +337,7 @@ function SupportHeroRoot({
           className="mx-auto max-w-[22ch] justify-center font-sans text-[2.3rem] font-semibold leading-[1.06] tracking-[-0.035em] sm:max-w-[26ch] sm:text-[3.4rem]"
         />
         {subtitle && (
-          <p data-hero-lead="" className="mx-auto mt-5 max-w-[34rem] text-[12.5px] leading-[1.7] text-black/55 dark:text-white/55">
+          <p data-hero-lead="" className="mx-auto mt-5 max-w-[34rem] text-[12.5px] leading-[1.7] text-foreground/55">
             {subtitle}
           </p>
         )}
@@ -342,7 +346,7 @@ function SupportHeroRoot({
             <Button
               variant="default"
               iconRight={<ChevronRight size={14} strokeWidth={2.5} />}
-              className="h-11 rounded-full px-6 text-[13px] shadow-[0_16px_32px_-14px_rgba(15,23,42,0.7)]"
+              className="h-11 rounded-full px-6 text-[13px] shadow-[0_16px_32px_-14px_color-mix(in_oklab,var(--primary)_70%,transparent)]"
               onClick={onCta}
             >
               {cta.label}

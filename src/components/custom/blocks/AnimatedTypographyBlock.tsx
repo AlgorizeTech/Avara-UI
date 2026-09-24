@@ -234,7 +234,7 @@ export const AnimatedTypographyBlock = forwardRef<
                       return (
                         <span
                           key={idx}
-                          className="inline-block text-slate-400 dark:text-zinc-600 animate-[typo-color-reveal_0.7s_cubic-bezier(0.16,1,0.3,1)_both]"
+                          className="inline-block text-muted-foreground animate-[typo-color-reveal_0.7s_cubic-bezier(0.16,1,0.3,1)_both]"
                           style={{
                             animationDelay: `${delay + idx * 45 * speed}ms`,
                           }}
@@ -393,7 +393,7 @@ export const AnimatedTypographyBlock = forwardRef<
         <style>{`
           @keyframes typo-color-reveal {
             0% {
-              color: rgb(148 163 184 / 0.4);
+              color: color-mix(in oklab, var(--muted-foreground) 40%, transparent);
               opacity: 0.5;
             }
             100% {

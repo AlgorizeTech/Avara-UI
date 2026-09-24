@@ -192,7 +192,7 @@ function TimelineNode({
           // Styling based on status & variant
           isGlass
             ? "bg-black/50 backdrop-blur-md"
-            : "bg-white dark:bg-[#09090b]",
+            : "bg-background",
           isCompleted || isCurrent
             ? theme.border
             : isGlass
@@ -209,7 +209,7 @@ function TimelineNode({
               "w-4 h-4 transition-colors",
               isCompleted || isCurrent
                 ? theme.text
-                : "text-zinc-400 dark:text-zinc-600",
+                : "text-muted-foreground",
             )}
           />
         ) : (
@@ -252,7 +252,7 @@ function TimelineNode({
             !isMinimal && "p-5 border shadow-sm",
             !isMinimal &&
               !isGlass &&
-              "bg-white dark:bg-[#09090b] border-border hover:border-border",
+              "bg-card text-card-foreground border-border",
             isGlass &&
               "bg-white/5 backdrop-blur-xl border-white/10 hover:bg-white/10",
             isMinimal && "p-1 hover:-translate-y-1",

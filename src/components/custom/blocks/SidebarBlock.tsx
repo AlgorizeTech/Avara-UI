@@ -85,8 +85,8 @@ export function Sidebar({
           expanded ? "w-64" : "w-16",
           isMobileOpen ? "translate-x-0" : "-translate-x-full",
           variant === "attached"
-            ? "border-r border-border bg-white dark:bg-[#050505]"
-            : "m-4 h-[calc(100vh-2rem)] rounded-2xl border border-border bg-white dark:bg-[#050505] shadow-sm",
+            ? "border-r border-border bg-card text-card-foreground"
+            : "m-4 h-[calc(100vh-2rem)] rounded-2xl border border-border bg-card text-card-foreground shadow-sm",
           // Lifted off the backdrop while it is an open drawer (mobile only state)
           isMobileOpen && "shadow-2xl",
           className,

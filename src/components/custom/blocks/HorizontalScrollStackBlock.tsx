@@ -71,16 +71,16 @@ function StackCard({
         zIndex: index + 1,
       }}
       className={cn(
-        "shrink-0 p-6 sm:p-8 md:p-10 rounded-3xl bg-white/95 dark:bg-zinc-900/95 backdrop-blur-xl border border-border/80 flex flex-col justify-between group hover:border-[var(--theme-color,var(--primary))] dark:hover:border-[var(--theme-color,var(--primary))] transition-all duration-300 relative",
+        "shrink-0 p-6 sm:p-8 md:p-10 rounded-3xl bg-card/95 backdrop-blur-xl border border-border/80 flex flex-col justify-between group hover:border-[var(--theme-color,var(--primary))] transition-all duration-300 relative",
         isMobile ? "w-full" : "",
       )}
     >
       <div>
         <div className="flex items-center justify-between mb-6 sm:mb-8">
-          <div className="w-12 h-12 rounded-2xl flex items-center justify-center border transition-all duration-300 bg-[var(--theme-color,var(--primary))]/10 border-[var(--theme-color,var(--primary))]/20 text-[var(--theme-color,var(--primary))] group-hover:scale-110 group-hover:!bg-[var(--theme-color,var(--primary))] group-hover:!border-[var(--theme-color,var(--primary))] group-hover:!text-primary-foreground dark:group-hover:!text-zinc-900 group-hover:[&_svg]:!text-primary-foreground dark:group-hover:[&_svg]:!text-zinc-900">
+          <div className="w-12 h-12 rounded-2xl flex items-center justify-center border transition-all duration-300 bg-[var(--theme-color,var(--primary))]/10 border-[var(--theme-color,var(--primary))]/20 text-[var(--theme-color,var(--primary))] group-hover:scale-110 group-hover:!bg-[var(--theme-color,var(--primary))] group-hover:!border-[var(--theme-color,var(--primary))] group-hover:!text-primary-foreground group-hover:[&_svg]:!text-primary-foreground">
             {item.icon}
           </div>
-          <span className="text-4xl sm:text-5xl font-bold text-slate-200 dark:text-zinc-800/80 tracking-tighter select-none group-hover:text-[var(--theme-color,var(--primary))]/25 transition-colors duration-300">
+          <span className="text-4xl sm:text-5xl font-bold text-foreground/10 tracking-tighter select-none group-hover:text-[var(--theme-color,var(--primary))]/25 transition-colors duration-300">
             {displayNum}
           </span>
         </div>
@@ -123,7 +123,7 @@ function ProgressBarItem({
   );
 
   return (
-    <div className="h-2 flex-1 bg-zinc-200 dark:bg-zinc-800 rounded-full overflow-hidden relative">
+    <div className="h-2 flex-1 bg-muted rounded-full overflow-hidden relative">
       <motion.div
         className="h-full bg-[var(--theme-color,var(--primary))]"
         style={{ scaleX, transformOrigin: "left" }}

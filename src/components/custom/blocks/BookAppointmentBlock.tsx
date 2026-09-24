@@ -118,7 +118,7 @@ export function BookAppointment({
             <ul className="space-y-2.5 text-sm">
               {contact.map(({ Icon, value, href }) => (
                 <li key={value} className="flex items-center gap-2.5">
-                  <Icon className="size-4 shrink-0 text-black/50 dark:text-white/50" aria-hidden />
+                  <Icon className="size-4 shrink-0 text-foreground/50" aria-hidden />
                   {href ? (
                     <a href={href} className="hover:underline">{value}</a>
                   ) : (
@@ -136,7 +136,7 @@ export function BookAppointment({
         <GlassPanel shape="slab" className="flex flex-col gap-5 p-6">
           <div>
             <h1 className="text-2xl font-semibold tracking-tight sm:text-3xl">{practitioner.name}</h1>
-            <p className="mt-1 text-sm text-black/60 dark:text-white/60">{practitioner.specialties}</p>
+            <p className="mt-1 text-sm text-foreground/60">{practitioner.specialties}</p>
           </div>
 
           <div className="flex gap-4">
@@ -148,8 +148,8 @@ export function BookAppointment({
               </div>
             </div>
             <div className="min-w-0">
-              <p className="text-xs font-medium text-black/50 dark:text-white/50">Patients say</p>
-              <p className="mt-1 text-sm leading-relaxed text-black/70 dark:text-white/70">{practitioner.summary}</p>
+              <p className="text-xs font-medium text-foreground/50">Patients say</p>
+              <p className="mt-1 text-sm leading-relaxed text-foreground/70">{practitioner.summary}</p>
             </div>
           </div>
 
@@ -157,14 +157,14 @@ export function BookAppointment({
             <div className="flex flex-wrap gap-x-6 gap-y-3">
               {scores.map((s) => (
                 <div key={s.label} className="shrink-0">
-                  <p className="text-xs text-black/50 dark:text-white/50">{s.label}</p>
+                  <p className="text-xs text-foreground/50">{s.label}</p>
                   <div className="mt-1 flex items-center gap-2">
                     <HalfStars
                       rating={s.value}
                       size={14}
                       showText={false}
                       activeColor="text-amber-500"
-                      inactiveColor="text-black/15 dark:text-white/20"
+                      inactiveColor="text-foreground/20"
                       role="img"
                       aria-label={`${s.label}: ${s.value.toFixed(2)} out of 5`}
                     />

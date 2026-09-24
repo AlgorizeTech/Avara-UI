@@ -8,7 +8,7 @@ const colorThemes: Record<string, Record<string, string>> = {
     on: "text-primary-foreground",
     text: "text-primary",
     border: "border-primary/30",
-    glow: "shadow-[0_0_15px_rgba(var(--primary),0.5)]",
+    glow: "shadow-[0_0_15px_color-mix(in_oklab,var(--primary)_50%,transparent)]",
   },
   indigo: {
     bg: "bg-indigo-600",

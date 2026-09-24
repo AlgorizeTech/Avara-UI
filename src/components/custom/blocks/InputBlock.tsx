@@ -299,7 +299,7 @@ export const InputBlock = forwardRef<HTMLInputElement, InputBlockProps>(
         return {
           wrapper: cn(
             baseWrapper,
-            "border border-red-500 bg-white dark:bg-[#09090b]",
+            "border border-red-500 bg-background",
             variant === "underlined" && "border-0 border-b-2 rounded-none",
             variant !== "underlined" && "rounded-xl",
           ),
@@ -330,7 +330,7 @@ export const InputBlock = forwardRef<HTMLInputElement, InputBlockProps>(
           return {
             wrapper: cn(
               baseWrapper,
-              "bg-white dark:bg-[#09090b] border border-border rounded-xl shadow-sm",
+              "bg-background border border-border rounded-xl shadow-sm",
             ),
             active: theme.glow,
           };
@@ -339,7 +339,7 @@ export const InputBlock = forwardRef<HTMLInputElement, InputBlockProps>(
           return {
             wrapper: cn(
               baseWrapper,
-              "bg-white dark:bg-[#09090b] border border-border rounded-xl shadow-sm",
+              "bg-background border border-border rounded-xl shadow-sm",
             ),
             active: cn("focus-within:ring-4", theme.ring),
           };
@@ -454,7 +454,7 @@ export const InputBlock = forwardRef<HTMLInputElement, InputBlockProps>(
                   ? "border-red-400 bg-red-50/50 dark:bg-red-500/5"
                   : isDragging
                     ? theme.dragActive
-                    : "border-border bg-muted/50 dark:bg-[#09090b] hover:bg-muted",
+                    : "border-border bg-muted/50 hover:bg-muted",
             )}
           >
             <input
@@ -478,7 +478,7 @@ export const InputBlock = forwardRef<HTMLInputElement, InputBlockProps>(
               <UploadCloud
                 className={cn(
                   "w-6 h-6",
-                  isDragging ? "text-white" : theme.text,
+                  !isDragging && theme.text,
                 )}
               />
             </div>
@@ -501,7 +501,7 @@ export const InputBlock = forwardRef<HTMLInputElement, InputBlockProps>(
               {selectedFiles.map((file) => (
                 <div
                   key={file.name}
-                  className="flex items-center justify-between p-3 bg-white dark:bg-[#09090b] border border-border rounded-lg shadow-sm group"
+                  className="flex items-center justify-between p-3 bg-card border border-border rounded-lg shadow-sm group"
                 >
                   <div className="flex items-center gap-3 overflow-hidden">
                     {previews[file.name] ? (
@@ -541,7 +541,7 @@ export const InputBlock = forwardRef<HTMLInputElement, InputBlockProps>(
                   <button
                     type="button"
                     onClick={(e) => removeFile(file.name, e)}
-                    className="p-2 shrink-0 rounded-md text-zinc-400 hover:bg-red-50 hover:text-red-500 dark:hover:bg-red-500/10 transition-colors"
+                    className="p-2 shrink-0 rounded-md text-muted-foreground hover:bg-red-50 hover:text-red-500 dark:hover:bg-red-500/10 transition-colors"
                   >
                     <X className="w-4 h-4" />
                   </button>
@@ -608,7 +608,7 @@ export const InputBlock = forwardRef<HTMLInputElement, InputBlockProps>(
             type={inputType}
             disabled={disabled}
             className={cn(
-              "w-full h-full bg-transparent border-none outline-none text-foreground placeholder:text-zinc-400 dark:placeholder:text-zinc-600 transition-colors",
+              "w-full h-full bg-transparent border-none outline-none text-foreground placeholder:text-muted-foreground/70 transition-colors",
               s.text,
               leftIcon && variant !== "underlined" ? "pl-2.5" : "pl-0",
               variant === "underlined" && !leftIcon && "pl-0",
@@ -679,7 +679,7 @@ export const InputBlock = forwardRef<HTMLInputElement, InputBlockProps>(
             role="listbox"
             aria-label={label ? `${label} suggestions` : "Suggestions"}
             className={cn(
-              "absolute left-0 right-0 z-50 max-h-[18.5rem] overflow-y-auto p-1 border border-border bg-background rounded-xl shadow-lg",
+              "absolute left-0 right-0 z-50 max-h-[18.5rem] overflow-y-auto p-1 border border-border bg-popover text-popover-foreground rounded-xl shadow-lg",
               "animate-in fade-in duration-150",
               listUp
                 ? cn(

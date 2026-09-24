@@ -378,7 +378,7 @@ export function StandaloneColorPicker({
   return (
     <article
       className={cn(
-        "w-full max-w-5xl p-4 sm:p-8 rounded-3xl bg-white dark:bg-zinc-900 border border-zinc-200/80 dark:border-zinc-800 flex flex-col lg:flex-row gap-8 text-zinc-900 dark:text-zinc-100 select-none backdrop-blur-xl",
+        "w-full max-w-5xl p-4 sm:p-8 rounded-3xl bg-card border border-border flex flex-col lg:flex-row gap-8 text-card-foreground select-none backdrop-blur-xl",
         className
       )}
     >
@@ -390,7 +390,7 @@ export function StandaloneColorPicker({
             ref={wheelContainerRef}
             onMouseDown={handleWheelStart}
             onTouchStart={handleWheelStart}
-            className="relative w-[270px] h-[270px] sm:w-[285px] sm:h-[285px] rounded-full p-2 bg-zinc-50 dark:bg-zinc-800/60 flex items-center justify-center cursor-crosshair overflow-hidden ring-8 ring-zinc-100 dark:ring-zinc-800/80 border border-zinc-200 dark:border-zinc-700/60"
+            className="relative w-[270px] h-[270px] sm:w-[285px] sm:h-[285px] rounded-full p-2 bg-muted/60 flex items-center justify-center cursor-crosshair overflow-hidden ring-8 ring-muted border border-border"
           >
             <canvas
               ref={wheelCanvasRef}
@@ -401,7 +401,7 @@ export function StandaloneColorPicker({
 
             {/* Center Orb Preview Eye */}
             <div
-              className="absolute size-32 rounded-full overflow-hidden border-4 border-white dark:border-zinc-800 flex flex-col items-center justify-center p-2 text-center transition-all duration-200 pointer-events-none group z-10"
+              className="absolute size-32 rounded-full overflow-hidden border-4 border-card flex flex-col items-center justify-center p-2 text-center transition-all duration-200 pointer-events-none group z-10"
               style={{ backgroundColor: hex, borderRadius: "50%" }}
             >
               <span className="font-mono text-sm font-bold text-white drop-shadow-[0_1px_3px_rgba(0,0,0,0.9)] uppercase tracking-wider">
@@ -429,11 +429,11 @@ export function StandaloneColorPicker({
         <fieldset className="w-full space-y-3 p-0 border-0 m-0">
           {/* Lightness Slider */}
           <div className="space-y-1">
-            <div className="flex items-center justify-between text-[10px] font-extrabold text-zinc-400 uppercase tracking-wider">
+            <div className="flex items-center justify-between text-[10px] font-extrabold text-muted-foreground uppercase tracking-wider">
               <span>Lightness / Brightness</span>
               <span>{colorHsl.l}%</span>
             </div>
-            <div className="relative w-full h-4.5 rounded-full overflow-hidden border border-black/10 dark:border-white/10">
+            <div className="relative w-full h-4.5 rounded-full overflow-hidden border border-foreground/10">
               <div
                 className="absolute inset-0 rounded-full"
                 style={{
@@ -459,11 +459,11 @@ export function StandaloneColorPicker({
           {/* Opacity Slider */}
           {showAlpha && (
             <div className="space-y-1">
-              <div className="flex items-center justify-between text-[10px] font-extrabold text-zinc-400 uppercase tracking-wider">
+              <div className="flex items-center justify-between text-[10px] font-extrabold text-muted-foreground uppercase tracking-wider">
                 <span>Opacity Channel</span>
                 <span>{Math.round(colorHsl.a * 100)}%</span>
               </div>
-              <div className="relative w-full h-4.5 rounded-full overflow-hidden border border-black/10 dark:border-white/10">
+              <div className="relative w-full h-4.5 rounded-full overflow-hidden border border-foreground/10">
                 <div
                   className="absolute inset-0 rounded-full opacity-60"
                   style={{
@@ -499,20 +499,20 @@ export function StandaloneColorPicker({
         {/* Row 1: Swatch Indicator & Code Text Input */}
         <div className="w-full flex items-center gap-2">
           <div
-            className="size-10 rounded-2xl border-2 border-white dark:border-zinc-800 shrink-0 transition-all"
+            className="size-10 rounded-2xl border-2 border-card shrink-0 transition-all"
             style={{ backgroundColor: hex }}
           />
 
-          <div className="relative flex-1 flex items-center bg-zinc-100 dark:bg-zinc-800/90 rounded-2xl px-3.5 py-2 border border-zinc-200 dark:border-zinc-700/60">
+          <div className="relative flex-1 flex items-center bg-muted rounded-2xl px-3.5 py-2 border border-border">
             <input
               type="text"
               value={getFormattedValue()}
               onChange={handleHexInputChange}
-              className="w-full bg-transparent font-mono text-xs font-bold text-zinc-900 dark:text-zinc-100 outline-none uppercase tracking-wider"
+              className="w-full bg-transparent font-mono text-xs font-bold text-foreground outline-none uppercase tracking-wider"
             />
             <button
               onClick={handleCopy}
-              className="p-1 rounded-lg hover:bg-zinc-200 dark:hover:bg-zinc-700 text-zinc-500 hover:text-zinc-800 dark:hover:text-zinc-200 transition-colors"
+              className="p-1 rounded-lg hover:bg-foreground/10 text-muted-foreground hover:text-foreground transition-colors"
               title="Copy color code"
             >
               {copied ? (
@@ -526,7 +526,7 @@ export function StandaloneColorPicker({
 
         {/* Row 2: Full-Width Format Selector (HEX / RGB / HSL) & EyeDropper */}
         <div className="w-full flex items-center gap-2">
-          <nav className="flex-1 flex items-center justify-between bg-zinc-100 dark:bg-zinc-800/90 p-1 rounded-2xl border border-zinc-200 dark:border-zinc-700/60 text-[10px] font-extrabold gap-1">
+          <nav className="flex-1 flex items-center justify-between bg-muted p-1 rounded-2xl border border-border text-[10px] font-extrabold gap-1">
             {(["hex", "rgb", "hsl"] as ColorFormat[]).map((fmt) => (
               <button
                 key={fmt}
@@ -534,8 +534,8 @@ export function StandaloneColorPicker({
                 className={cn(
                   "flex-1 py-1.5 rounded-xl uppercase transition-all text-center",
                   selectedFormat === fmt
-                    ? "bg-white dark:bg-zinc-700 text-zinc-900 dark:text-zinc-100 shadow-sm"
-                    : "text-zinc-400 hover:text-zinc-600 dark:hover:text-zinc-300"
+                    ? "bg-card text-foreground shadow-sm"
+                    : "text-muted-foreground hover:text-foreground"
                 )}
               >
                 {fmt}
@@ -546,7 +546,7 @@ export function StandaloneColorPicker({
           {showEyeDropper && typeof window !== "undefined" && "EyeDropper" in window && (
             <button
               onClick={handleEyeDropper}
-              className="size-10 rounded-2xl bg-zinc-100 dark:bg-zinc-800 hover:bg-zinc-200 dark:hover:bg-zinc-700 border border-zinc-200 dark:border-zinc-700/60 flex items-center justify-center text-zinc-600 dark:text-zinc-300 transition-colors shrink-0"
+              className="size-10 rounded-2xl bg-muted hover:bg-foreground/10 border border-border flex items-center justify-center text-foreground/70 transition-colors shrink-0"
               title="Pick color from screen"
             >
               <Pipette className="size-4" />
@@ -556,17 +556,17 @@ export function StandaloneColorPicker({
       </aside>
 
       {/* RIGHT MAIN SECTION: EXPANDED PALETTES & SPECTRUM STUDIO */}
-      <main className="flex-1 flex flex-col gap-6 border-t lg:border-t-0 lg:border-l border-zinc-100 dark:border-zinc-800/80 pt-6 lg:pt-0 lg:pl-8 min-w-0">
+      <main className="flex-1 flex flex-col gap-6 border-t lg:border-t-0 lg:border-l border-border pt-6 lg:pt-0 lg:pl-8 min-w-0">
         {/* 10-Step Lightness Spectrum */}
         {showShades && (
           <section className="space-y-2">
             <header className="flex items-center justify-between gap-2">
-              <div className="flex items-center gap-1.5 text-xs font-semibold text-zinc-500 uppercase tracking-wider min-w-0 truncate">
+              <div className="flex items-center gap-1.5 text-xs font-semibold text-muted-foreground uppercase tracking-wider min-w-0 truncate">
                 <Layers className="size-4 text-indigo-500 shrink-0" />
                 <span className="truncate">Lightness Spectrum</span>
-                <span className="hidden sm:inline text-zinc-400 font-normal">(10-Step)</span>
+                <span className="hidden sm:inline text-muted-foreground/70 font-normal">(10-Step)</span>
               </div>
-              <span className="text-[10px] font-mono font-semibold text-zinc-400 shrink-0">10% — 95%</span>
+              <span className="text-[10px] font-mono font-semibold text-muted-foreground/70 shrink-0">10% — 95%</span>
             </header>
 
             <div className="grid grid-cols-5 sm:grid-cols-10 gap-1.5">
@@ -577,7 +577,7 @@ export function StandaloneColorPicker({
                     setColorHsl(parseColorToState(shadeHex));
                     onChange?.(shadeHex);
                   }}
-                  className="h-10 rounded-xl border border-black/10 dark:border-white/10 transition-transform hover:scale-110 flex flex-col justify-end p-1 group"
+                  className="h-10 rounded-xl border border-foreground/10 transition-transform hover:scale-110 flex flex-col justify-end p-1 group"
                   style={{ backgroundColor: shadeHex }}
                   title={shadeHex}
                 >
@@ -593,11 +593,11 @@ export function StandaloneColorPicker({
         {/* 10-Step Saturation Spectrum */}
         <section className="space-y-2">
           <header className="flex items-center justify-between gap-2">
-            <div className="flex items-center gap-1.5 text-xs font-semibold text-zinc-500 uppercase tracking-wider min-w-0 truncate">
+            <div className="flex items-center gap-1.5 text-xs font-semibold text-muted-foreground uppercase tracking-wider min-w-0 truncate">
               <Sliders className="size-4 text-purple-500 shrink-0" />
               <span className="truncate">Saturation Spectrum</span>
             </div>
-            <span className="text-[10px] font-mono font-semibold text-zinc-400 shrink-0">10% — 100%</span>
+            <span className="text-[10px] font-mono font-semibold text-muted-foreground/70 shrink-0">10% — 100%</span>
           </header>
 
           <div className="grid grid-cols-5 sm:grid-cols-10 gap-1.5">
@@ -610,7 +610,7 @@ export function StandaloneColorPicker({
                     setColorHsl(parseColorToState(satHex));
                     onChange?.(satHex);
                   }}
-                  className="h-10 rounded-xl border border-black/10 dark:border-white/10 transition-transform hover:scale-110 flex flex-col justify-end p-1 group"
+                  className="h-10 rounded-xl border border-foreground/10 transition-transform hover:scale-110 flex flex-col justify-end p-1 group"
                   style={{ backgroundColor: satHex }}
                   title={`${sat}% Saturation: ${satHex}`}
                 >
@@ -626,7 +626,7 @@ export function StandaloneColorPicker({
         {/* Curated Theme Collections / Color Harmonies */}
         {showHarmonies && (
           <section className="space-y-2">
-            <header className="flex items-center gap-1.5 text-xs font-semibold text-zinc-500 uppercase tracking-wider min-w-0 truncate">
+            <header className="flex items-center gap-1.5 text-xs font-semibold text-muted-foreground uppercase tracking-wider min-w-0 truncate">
               <Palette className="size-4 text-emerald-500 shrink-0" />
               <span className="truncate">Curated Theme Collections</span>
             </header>
@@ -640,9 +640,9 @@ export function StandaloneColorPicker({
               ].map((theme, idx) => (
                 <figure
                   key={idx}
-                  className="p-2 rounded-2xl bg-zinc-100/80 dark:bg-zinc-800/60 border border-zinc-200/60 dark:border-zinc-700/60 flex flex-col gap-1.5 m-0"
+                  className="p-2 rounded-2xl bg-muted/80 border border-border/60 flex flex-col gap-1.5 m-0"
                 >
-                  <figcaption className="text-[10px] font-extrabold text-zinc-600 dark:text-zinc-300 truncate">
+                  <figcaption className="text-[10px] font-extrabold text-foreground/70 truncate">
                     {theme.name}
                   </figcaption>
                   <div className="flex gap-1">
@@ -653,7 +653,7 @@ export function StandaloneColorPicker({
                           setColorHsl(parseColorToState(c));
                           onChange?.(c);
                         }}
-                        className="flex-1 h-5 rounded-lg border border-black/10 dark:border-white/10 transition-transform hover:scale-110"
+                        className="flex-1 h-5 rounded-lg border border-foreground/10 transition-transform hover:scale-110"
                         style={{ backgroundColor: c }}
                         title={c}
                       />
@@ -668,10 +668,10 @@ export function StandaloneColorPicker({
         {/* 48 Expanded Preset Palette Swatches */}
         {showPresets && (
           <section className="space-y-2">
-            <header className="flex items-center gap-1.5 text-xs font-semibold text-zinc-500 uppercase tracking-wider min-w-0 truncate">
+            <header className="flex items-center gap-1.5 text-xs font-semibold text-muted-foreground uppercase tracking-wider min-w-0 truncate">
               <Sparkles className="size-4 text-amber-500 shrink-0" />
               <span className="truncate">Preset Palette</span>
-              <span className="hidden sm:inline text-zinc-400 font-normal">(48 Swatches)</span>
+              <span className="hidden sm:inline text-muted-foreground/70 font-normal">(48 Swatches)</span>
             </header>
 
             <div className="grid grid-cols-6 sm:grid-cols-12 gap-2">
@@ -683,9 +683,9 @@ export function StandaloneColorPicker({
                     onChange?.(presetHex);
                   }}
                   className={cn(
-                    "size-7 sm:size-8 rounded-full border-2 border-white dark:border-zinc-800 transition-transform hover:scale-115 active:scale-95",
+                    "size-7 sm:size-8 rounded-full border-2 border-card transition-transform hover:scale-115 active:scale-95",
                     hex.toLowerCase() === presetHex.toLowerCase() &&
-                      "ring-2 ring-zinc-900 dark:ring-white scale-110"
+                      "ring-2 ring-foreground scale-110"
                   )}
                   style={{ backgroundColor: presetHex }}
                   title={presetHex}
@@ -766,13 +766,13 @@ export function GradientColorPicker({
   return (
     <article
       className={cn(
-        "w-full max-w-5xl p-4 sm:p-8 rounded-3xl bg-white dark:bg-zinc-900 border border-zinc-200/80 dark:border-zinc-800 flex flex-col gap-6 text-zinc-900 dark:text-zinc-100 select-none",
+        "w-full max-w-5xl p-4 sm:p-8 rounded-3xl bg-card border border-border flex flex-col gap-6 text-card-foreground select-none",
         className
       )}
     >
       {/* Full-Width Wide Live Gradient Banner */}
       <figure
-        className="relative w-full h-48 sm:h-56 rounded-3xl border border-black/10 dark:border-white/10 flex flex-col justify-between p-4 sm:p-6 transition-all duration-200 overflow-hidden group m-0"
+        className="relative w-full h-48 sm:h-56 rounded-3xl border border-foreground/10 flex flex-col justify-between p-4 sm:p-6 transition-all duration-200 overflow-hidden group m-0"
         style={{ background: gradientCss }}
       >
         <header className="flex flex-wrap items-center justify-between gap-2 z-10">
@@ -827,10 +827,10 @@ export function GradientColorPicker({
       <section className="grid grid-cols-1 md:grid-cols-3 gap-4 items-center">
         {/* Style Tabs */}
         <div className="flex flex-col gap-1.5">
-          <label className="text-xs font-semibold text-zinc-400 uppercase tracking-wider">
+          <label className="text-xs font-semibold text-muted-foreground uppercase tracking-wider">
             Gradient Style
           </label>
-          <nav className="flex items-center justify-between gap-1 bg-zinc-100 dark:bg-zinc-800/80 p-1.5 rounded-2xl border border-zinc-200/60 dark:border-zinc-700/60 text-xs font-semibold">
+          <nav className="flex items-center justify-between gap-1 bg-muted p-1.5 rounded-2xl border border-border/60 text-xs font-semibold">
             {(["linear", "radial", "conic"] as const).map((type) => (
               <button
                 key={type}
@@ -838,8 +838,8 @@ export function GradientColorPicker({
                 className={cn(
                   "flex-1 py-1.5 rounded-xl capitalize text-xs transition-all",
                   gradientType === type
-                    ? "bg-white dark:bg-zinc-700 text-zinc-900 dark:text-zinc-100 shadow-sm"
-                    : "text-zinc-400 hover:text-zinc-600 dark:hover:text-zinc-300"
+                    ? "bg-card text-foreground shadow-sm"
+                    : "text-muted-foreground hover:text-foreground"
                 )}
               >
                 {type}
@@ -850,17 +850,17 @@ export function GradientColorPicker({
 
         {/* Color Stops Selector */}
         <div className="flex flex-col gap-1.5">
-          <label className="text-xs font-semibold text-zinc-400 uppercase tracking-wider">
+          <label className="text-xs font-semibold text-muted-foreground uppercase tracking-wider">
             Color Stops
           </label>
-          <nav className="flex items-center justify-between gap-1 bg-zinc-100 dark:bg-zinc-800/80 p-1.5 rounded-2xl border border-zinc-200/60 dark:border-zinc-700/60 text-xs font-semibold">
+          <nav className="flex items-center justify-between gap-1 bg-muted p-1.5 rounded-2xl border border-border/60 text-xs font-semibold">
             <button
               onClick={() => setStopCount(2)}
               className={cn(
                 "flex-1 py-1.5 rounded-xl transition-all",
                 stopCount === 2
-                  ? "bg-purple-600 text-white font-semibold shadow-sm"
-                  : "text-zinc-400 hover:text-zinc-600"
+                  ? "bg-primary text-primary-foreground font-semibold shadow-sm"
+                  : "text-muted-foreground hover:text-foreground"
               )}
             >
               2 Color Stops
@@ -870,8 +870,8 @@ export function GradientColorPicker({
               className={cn(
                 "flex-1 py-1.5 rounded-xl transition-all",
                 stopCount === 3
-                  ? "bg-purple-600 text-white font-semibold shadow-sm"
-                  : "text-zinc-400 hover:text-zinc-600"
+                  ? "bg-primary text-primary-foreground font-semibold shadow-sm"
+                  : "text-muted-foreground hover:text-foreground"
               )}
             >
               3 Color Stops
@@ -881,19 +881,19 @@ export function GradientColorPicker({
 
         {/* Angle Slider & Swap */}
         <div className="flex flex-col gap-1.5">
-          <label className="text-xs font-semibold text-zinc-400 uppercase tracking-wider">
+          <label className="text-xs font-semibold text-muted-foreground uppercase tracking-wider">
             Angle & Direction ({angle}°)
           </label>
-          <div className="flex items-center gap-3 bg-zinc-100 dark:bg-zinc-800/80 px-3.5 py-2 rounded-2xl border border-zinc-200/60 dark:border-zinc-700/60">
+          <div className="flex items-center gap-3 bg-muted px-3.5 py-2 rounded-2xl border border-border/60">
             <button
               onClick={handleSwap}
-              className="p-1.5 rounded-xl bg-white dark:bg-zinc-700 hover:bg-zinc-200 dark:hover:bg-zinc-600 text-zinc-700 dark:text-zinc-200 shadow-sm transition-colors"
+              className="p-1.5 rounded-xl bg-card hover:bg-foreground/10 text-foreground/80 shadow-sm transition-colors"
               title="Swap Stop 1 & Stop 2"
             >
               <ArrowLeftRight className="size-4" />
             </button>
             <div className="flex-1 flex items-center gap-2">
-              <Compass className="size-4 text-zinc-400" />
+              <Compass className="size-4 text-muted-foreground" />
               <input
                 type="range"
                 min={0}
@@ -902,7 +902,7 @@ export function GradientColorPicker({
                 value={angle}
                 disabled={gradientType === "radial"}
                 onChange={(e) => setAngle(parseInt(e.target.value))}
-                className="w-full accent-purple-600 cursor-pointer disabled:opacity-40"
+                className="w-full accent-primary cursor-pointer disabled:opacity-40"
               />
             </div>
           </div>
@@ -912,7 +912,7 @@ export function GradientColorPicker({
       {/* Color Stop Inputs Row */}
       <fieldset className={cn("grid gap-3 items-center p-0 border-0 m-0", stopCount === 3 ? "grid-cols-1 sm:grid-cols-3" : "grid-cols-1 sm:grid-cols-2")}>
         {/* Stop 1 */}
-        <div className="flex items-center gap-3 bg-zinc-100 dark:bg-zinc-800/80 p-2.5 rounded-2xl border border-zinc-200/60 dark:border-zinc-700/60">
+        <div className="flex items-center gap-3 bg-muted p-2.5 rounded-2xl border border-border/60">
           <input
             type="color"
             value={color1}
@@ -920,15 +920,15 @@ export function GradientColorPicker({
             className="size-8 rounded-xl cursor-pointer border-0 p-0 bg-transparent shrink-0"
           />
           <div className="min-w-0 flex-1">
-            <div className="text-[10px] font-semibold text-zinc-400 uppercase">Stop 1 Color</div>
-            <div className="text-xs font-mono font-semibold text-zinc-800 dark:text-zinc-200 uppercase truncate">
+            <div className="text-[10px] font-semibold text-muted-foreground uppercase">Stop 1 Color</div>
+            <div className="text-xs font-mono font-semibold text-foreground uppercase truncate">
               {color1}
             </div>
           </div>
         </div>
 
         {/* Stop 2 */}
-        <div className="flex items-center gap-3 bg-zinc-100 dark:bg-zinc-800/80 p-2.5 rounded-2xl border border-zinc-200/60 dark:border-zinc-700/60">
+        <div className="flex items-center gap-3 bg-muted p-2.5 rounded-2xl border border-border/60">
           <input
             type="color"
             value={color2}
@@ -936,8 +936,8 @@ export function GradientColorPicker({
             className="size-8 rounded-xl cursor-pointer border-0 p-0 bg-transparent shrink-0"
           />
           <div className="min-w-0 flex-1">
-            <div className="text-[10px] font-semibold text-zinc-400 uppercase">Stop 2 Color</div>
-            <div className="text-xs font-mono font-semibold text-zinc-800 dark:text-zinc-200 uppercase truncate">
+            <div className="text-[10px] font-semibold text-muted-foreground uppercase">Stop 2 Color</div>
+            <div className="text-xs font-mono font-semibold text-foreground uppercase truncate">
               {color2}
             </div>
           </div>
@@ -945,7 +945,7 @@ export function GradientColorPicker({
 
         {/* Stop 3 */}
         {stopCount === 3 && (
-          <div className="flex items-center gap-3 bg-zinc-100 dark:bg-zinc-800/80 p-2.5 rounded-2xl border border-zinc-200/60 dark:border-zinc-700/60">
+          <div className="flex items-center gap-3 bg-muted p-2.5 rounded-2xl border border-border/60">
             <input
               type="color"
               value={color3}
@@ -953,8 +953,8 @@ export function GradientColorPicker({
               className="size-8 rounded-xl cursor-pointer border-0 p-0 bg-transparent shrink-0"
             />
             <div className="min-w-0 flex-1">
-              <div className="text-[10px] font-semibold text-zinc-400 uppercase">Stop 3 Color</div>
-              <div className="text-xs font-mono font-semibold text-zinc-800 dark:text-zinc-200 uppercase truncate">
+              <div className="text-[10px] font-semibold text-muted-foreground uppercase">Stop 3 Color</div>
+              <div className="text-xs font-mono font-semibold text-foreground uppercase truncate">
                 {color3}
               </div>
             </div>
@@ -963,8 +963,8 @@ export function GradientColorPicker({
       </fieldset>
 
       {/* Preset Gradients Gallery Grid */}
-      <section className="pt-3 border-t border-zinc-100 dark:border-zinc-800/80 space-y-3">
-        <header className="flex items-center gap-1.5 text-xs font-semibold text-zinc-500 uppercase tracking-wider min-w-0 truncate">
+      <section className="pt-3 border-t border-border space-y-3">
+        <header className="flex items-center gap-1.5 text-xs font-semibold text-muted-foreground uppercase tracking-wider min-w-0 truncate">
           <Sparkles className="size-4 text-amber-500 shrink-0" />
           <span className="truncate">Curated Gradient Presets Gallery</span>
         </header>
@@ -979,7 +979,7 @@ export function GradientColorPicker({
                 if (p.color3) setColor3(p.color3);
                 setAngle(p.angle);
               }}
-              className="h-14 rounded-2xl border border-black/10 dark:border-white/10 shadow-sm hover:scale-105 transition-transform flex flex-col justify-end p-2 relative overflow-hidden group"
+              className="h-14 rounded-2xl border border-foreground/10 shadow-sm hover:scale-105 transition-transform flex flex-col justify-end p-2 relative overflow-hidden group"
               style={{
                 background: `linear-gradient(${p.angle}deg, ${p.color1}, ${p.color2}${p.color3 ? `, ${p.color3}` : ""})`,
               }}

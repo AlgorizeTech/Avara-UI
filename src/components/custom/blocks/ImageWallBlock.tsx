@@ -116,7 +116,7 @@ const WallCard = React.memo(function WallCard({
   return (
     <figure
       aria-hidden={copy || undefined}
-      className="absolute flex flex-col gap-1.5 overflow-hidden rounded-xl border border-black/10 bg-gray-50 p-1.5 shadow-sm transition-[opacity,transform] duration-500 ease-out dark:border-white/10 dark:bg-neutral-900"
+      className="absolute flex flex-col gap-1.5 overflow-hidden rounded-xl border border-foreground/10 bg-muted p-1.5 shadow-sm transition-[opacity,transform] duration-500 ease-out"
       style={{
         left,
         top,
@@ -126,11 +126,11 @@ const WallCard = React.memo(function WallCard({
         transform: isFocus ? "scale(1.012)" : "none",
       }}
     >
-      <figcaption className="flex h-4 shrink-0 items-center px-1 font-mono text-[9px] leading-none text-neutral-600 dark:text-neutral-400">
+      <figcaption className="flex h-4 shrink-0 items-center px-1 font-mono text-[9px] leading-none text-muted-foreground">
         {card.title}
       </figcaption>
       <div
-        className="relative min-h-0 overflow-hidden rounded-lg border border-black/10 bg-white dark:border-white/10 dark:bg-neutral-950"
+        className="relative min-h-0 overflow-hidden rounded-lg border border-foreground/10 bg-card"
         style={{ height: FRAME_H }}
       >
         <img

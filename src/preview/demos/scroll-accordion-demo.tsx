@@ -83,7 +83,6 @@ export default function ScrollAccordionDemo({
         items={showcaseItems}
         displayMode={displayMode}
         defaultIndex={defaultIndex}
-        defaultAccentColor="#FFAB1D"
         localStorageKey="primaryColor"
       />
     </div>

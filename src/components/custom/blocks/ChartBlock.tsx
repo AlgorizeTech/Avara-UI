@@ -38,6 +38,9 @@ const getThemeColor = (color: string) => {
   return colorMap[color] || "var(--primary)";
 };
 
+const inkOn = (color: string) =>
+  color === "var(--primary)" ? "text-primary-foreground" : "text-white";
+
 /**
  * Categorical palette for the legend charts, where every share needs its own
  * hue rather than a shade of one. The theme accent leads; the grey at the end
@@ -225,10 +228,10 @@ function BarChart({
             {/* Tooltip */}
             <div className="absolute -top-12 opacity-0 scale-95 group-hover:opacity-100 group-hover:scale-100 transition-all duration-200 pointer-events-none z-50 flex flex-col items-center">
               <div
-                className="text-white px-3 py-1.5 rounded-lg shadow-xl text-xs font-semibold whitespace-nowrap text-center"
+                className={cn(inkOn(color), "px-3 py-1.5 rounded-lg shadow-xl text-xs font-semibold whitespace-nowrap text-center")}
                 style={{ backgroundColor: color }}
               >
-                <div className="text-[10px] text-white/80 uppercase tracking-wider font-semibold">
+                <div className="text-[10px] opacity-80 uppercase tracking-wider font-semibold">
                   {d.label}
                 </div>
                 <div>
@@ -411,10 +414,10 @@ function SmoothLineChart({
                 )}
               >
                 <div
-                  className="text-white px-3 py-1.5 rounded-lg shadow-xl text-xs font-semibold whitespace-nowrap text-center"
+                  className={cn(inkOn(color), "px-3 py-1.5 rounded-lg shadow-xl text-xs font-semibold whitespace-nowrap text-center")}
                   style={{ backgroundColor: color }}
                 >
-                  <div className="text-[10px] text-white/80 uppercase tracking-wider font-semibold">
+                  <div className="text-[10px] opacity-80 uppercase tracking-wider font-semibold">
                     {p.label}
                   </div>
                   <div>
@@ -547,7 +550,7 @@ function CircularChart({
               fill="none"
               stroke="currentColor"
               strokeWidth="0.5"
-              className="text-zinc-200 dark:text-zinc-800 pointer-events-none"
+              className="text-border pointer-events-none"
             />
           )}
         </svg>
@@ -563,10 +566,10 @@ function CircularChart({
             }}
           >
             <div
-              className="text-white px-3 py-1.5 rounded-lg shadow-xl text-xs font-semibold whitespace-nowrap text-center"
+              className={cn(inkOn(color), "px-3 py-1.5 rounded-lg shadow-xl text-xs font-semibold whitespace-nowrap text-center")}
               style={{ backgroundColor: color }}
             >
-              <div className="text-[10px] text-white/80 uppercase tracking-wider font-semibold">
+              <div className="text-[10px] opacity-80 uppercase tracking-wider font-semibold">
                 {hovered.label}
               </div>
               <div>

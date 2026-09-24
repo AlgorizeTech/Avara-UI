@@ -368,7 +368,7 @@ export function PopoverContent({
         // padding buy back the height that would otherwise have to be scrolled.
         // Width stays a single class so an overriding `className="w-48"` wins at
         // every breakpoint instead of only below lg.
-        "absolute z-[9999] w-72 max-w-[calc(100vw-1rem)] p-3 lg:p-4 text-sm lg:text-base outline-none text-zinc-900 dark:text-white bg-white dark:bg-[#050505] border border-zinc-200 dark:border-zinc-800 rounded-xl shadow-lg",
+        "absolute z-[9999] w-72 max-w-[calc(100vw-1rem)] p-3 lg:p-4 text-sm lg:text-base outline-none text-popover-foreground bg-popover border border-border rounded-xl shadow-lg",
         // `duration-200` sets transition-duration as well as the animation
         // length, and the browser's default transition-property is `all` — so
         // without `transition-none` the panel would tween its top/left from

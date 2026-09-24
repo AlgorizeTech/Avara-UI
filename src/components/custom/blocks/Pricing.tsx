@@ -39,7 +39,7 @@ const SproutIcon = ({ className }: { className?: string }) => (
     {/* Central Trunk */}
     <path
       d="M12 21V11"
-      stroke="#1E293B"
+      stroke="currentColor"
       strokeWidth="2"
       strokeLinecap="round"
     />
@@ -459,7 +459,7 @@ export function PricingBuilder({
                         : "border-muted-foreground/40",
                     )}
                   >
-                    {isSelected && <Check className="w-3.5 h-3.5 text-white" />}
+                    {isSelected && <Check className="w-3.5 h-3.5 text-[var(--pricing-on,white)]" />}
                   </div>
                   <span className="font-semibold text-sm sm:text-base text-foreground">
                     {mod.name}
@@ -544,7 +544,7 @@ export function PricingTable({
       return <Check className={cn("w-5 h-5 mx-auto", theme.text)} />;
     if (value === false)
       return (
-        <Minus className="w-5 h-5 text-zinc-300 dark:text-zinc-700 mx-auto" />
+        <Minus className="w-5 h-5 text-muted-foreground/40 mx-auto" />
       );
     return (
       <span className="text-sm font-medium text-foreground">
@@ -559,7 +559,7 @@ export function PricingTable({
       {feature.helpText && (
         <span className="group relative cursor-help">
           <HelpCircle className="w-3.5 h-3.5 text-muted-foreground" />
-          <span className="absolute left-1/2 -translate-x-1/2 bottom-full mb-2 w-48 p-2 bg-zinc-900 text-white text-xs rounded-md opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all z-10 text-center block">
+          <span className="absolute left-1/2 -translate-x-1/2 bottom-full mb-2 w-48 p-2 bg-popover text-popover-foreground border border-border shadow-md text-xs rounded-md opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all z-10 text-center block">
             {feature.helpText}
           </span>
         </span>
@@ -572,7 +572,7 @@ export function PricingTable({
       "w-full py-2.5 rounded-xl font-semibold transition-all text-sm cursor-pointer",
       featured
         ? cn(theme.bg, theme.shadow)
-        : "border border-border dark:bg-zinc-800 text-foreground",
+        : "border border-border bg-background text-foreground",
     );
 
   return (
@@ -784,7 +784,7 @@ export function PricingSlider({
         {/* Modern Custom Range Slider */}
         <div className="relative flex items-center h-8 w-full group touch-none">
           {/* Custom Track Background */}
-          <div className="absolute inset-x-0 h-3 rounded-full bg-zinc-200/80 dark:bg-zinc-800 overflow-hidden pointer-events-none">
+          <div className="absolute inset-x-0 h-3 rounded-full bg-muted overflow-hidden pointer-events-none">
             <div
               className={cn("h-full transition-all duration-75 rounded-full", theme.bg)}
               style={{ width: `${percentage}%` }}
@@ -960,17 +960,11 @@ export function PricingTypographic({
           __html: `
         .outline-text {
           color: transparent;
-          -webkit-text-stroke: 1px rgba(0, 0, 0, 0.25);
+          -webkit-text-stroke: 1px color-mix(in srgb, var(--foreground) 25%, transparent);
           transition: -webkit-text-stroke 0.3s ease;
         }
         .group:hover .outline-text {
-          -webkit-text-stroke: 1px rgba(0, 0, 0, 0.7);
-        }
-        .dark .outline-text {
-          -webkit-text-stroke: 1px rgba(255, 255, 255, 0.25);
-        }
-        .dark .group:hover .outline-text {
-          -webkit-text-stroke: 1px rgba(255, 255, 255, 0.7);
+          -webkit-text-stroke: 1px color-mix(in srgb, var(--foreground) 70%, transparent);
         }
       `,
         }}
@@ -1109,7 +1103,7 @@ export function PricingTypographic({
                   )}
 
                   <div className="flex items-end gap-2 mb-4">
-                    <span className="text-3xl font-semibold text-zinc-400 dark:text-zinc-600 mb-2">
+                    <span className="text-3xl font-semibold text-muted-foreground mb-2">
                       $
                     </span>
                     <span className="text-[70px] xl:text-[90px] leading-none font-bold tracking-tighter text-foreground">
@@ -1129,11 +1123,11 @@ export function PricingTypographic({
                     >
                       <div
                         className={cn(
-                          "w-1.5 h-1.5 bg-zinc-300 dark:bg-white/20 rounded-full transition-colors shrink-0",
+                          "w-1.5 h-1.5 bg-foreground/20 rounded-full transition-colors shrink-0",
                           "group-hover/feat:bg-[var(--pricing-accent)]",
                         )}
                       />
-                      <span className="text-sm lg:text-base text-muted-foreground group-hover/feat:text-foreground dark:group-hover/feat:text-white transition-colors">
+                      <span className="text-sm lg:text-base text-muted-foreground group-hover/feat:text-foreground transition-colors">
                         {feature}
                       </span>
                     </div>
@@ -1146,7 +1140,7 @@ export function PricingTypographic({
                     "group mt-auto w-max py-4 px-8 rounded-full text-sm font-semibold uppercase tracking-widest flex items-center justify-center gap-3 relative overflow-hidden z-10",
                     activePlan.isFeatured
                       ? theme.bg
-                      : "bg-muted text-zinc-900 dark:bg-white dark:text-black",
+                      : "bg-muted text-foreground",
                   )}
                 >
                   <div
@@ -1226,7 +1220,7 @@ export function PricingTypographic({
                       "transition-transform duration-500 shrink-0",
                       isActive
                         ? cn("rotate-90", theme.text)
-                        : "text-zinc-300 dark:text-white/30",
+                        : "text-foreground/30",
                     )}
                   >
                     <ArrowRight size={24} strokeWidth={2} />
@@ -1252,7 +1246,7 @@ export function PricingTypographic({
                       )}
 
                       <div className="flex items-end gap-1.5 mb-3 relative z-10">
-                        <span className="text-xl font-semibold text-zinc-400 dark:text-zinc-600 mb-1.5">
+                        <span className="text-xl font-semibold text-muted-foreground mb-1.5">
                           $
                         </span>
                         <span className="text-5xl md:text-6xl font-bold tracking-tighter text-foreground">
@@ -1289,7 +1283,7 @@ export function PricingTypographic({
                           "group w-full py-4 rounded-xl text-sm font-semibold uppercase tracking-widest flex items-center justify-center gap-3 relative overflow-hidden z-10",
                           plan.isFeatured
                             ? theme.bg
-                            : "bg-muted text-zinc-900 dark:bg-white dark:text-black",
+                            : "bg-muted text-foreground",
                         )}
                       >
                         <div
@@ -1543,12 +1537,12 @@ export function PricingPlans({
                       onClick={() => togglePlan(service.id)}
                       className={cn(
                         "cursor-pointer w-12 h-7 sm:w-14 sm:h-8 flex items-center rounded-full p-1 transition-colors duration-300 shrink-0",
-                        isActive ? theme.bg : "bg-zinc-200 dark:bg-zinc-700",
+                        isActive ? theme.bg : "bg-foreground/15",
                       )}
                     >
                       <div
                         className={cn(
-                          "w-5 h-5 sm:w-6 sm:h-6 bg-white dark:bg-zinc-200 rounded-full shadow-md transform transition-transform duration-300",
+                          "w-5 h-5 sm:w-6 sm:h-6 bg-background rounded-full shadow-md transform transition-transform duration-300",
                           isActive
                             ? "translate-x-5 sm:translate-x-6"
                             : "translate-x-0",
@@ -1584,7 +1578,7 @@ export function PricingPlans({
                 <span
                   className={cn(
                     "text-5xl sm:text-6xl md:text-7xl lg:text-[80px] font-extrabold tracking-tight leading-none break-all transition-colors duration-300",
-                    hasSelection ? theme.text : "text-muted-foreground/30 dark:text-muted-foreground/30",
+                    hasSelection ? theme.text : "text-muted-foreground/30",
                   )}
                 >
                   $<AnimatedPrice value={cardData.price} counting={counting} />
@@ -1768,26 +1762,26 @@ export function PricingScale({
   const currentPlans = plans[billingCycle] || plans.monthly;
 
   return (
-    <section className="w-full bg-slate-50/60 dark:bg-zinc-950/60 py-10 sm:py-16 px-4 sm:px-6 font-sans transition-colors duration-300" style={style}>
+    <section className="w-full bg-background py-10 sm:py-16 px-4 sm:px-6 font-sans transition-colors duration-300" style={style}>
       <div className="max-w-4xl mx-auto space-y-10 sm:space-y-12">
         {/* Header */}
         <div className="text-center space-y-3 sm:space-y-4 max-w-2xl mx-auto">
           {badgeText && (
-            <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full border border-slate-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 text-[11px] font-semibold tracking-wider text-slate-600 dark:text-zinc-400 uppercase shadow-2xs">
+            <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full border border-border bg-card text-[11px] font-semibold tracking-wider text-muted-foreground uppercase shadow-2xs">
               <span className={cn("w-1.5 h-1.5 rounded-full bg-current", theme.text)} />
               {badgeText}
             </div>
           )}
-          <h2 className="text-3xl sm:text-4xl md:text-5xl font-semibold tracking-tight text-slate-900 dark:text-white">
+          <h2 className="text-3xl sm:text-4xl md:text-5xl font-semibold tracking-tight text-foreground">
             {title}
           </h2>
-          <p className="text-sm sm:text-base text-slate-500 dark:text-zinc-400 max-w-lg mx-auto leading-relaxed">
+          <p className="text-sm sm:text-base text-muted-foreground max-w-lg mx-auto leading-relaxed">
             {subtitle}
           </p>
 
           {/* Toggle switch */}
           <div className="pt-3 flex items-center justify-center gap-3">
-            <span className={cn("text-xs font-semibold tracking-wider transition-colors", billingCycle === "monthly" ? "text-slate-900 dark:text-white" : "text-slate-400 dark:text-zinc-500")}>
+            <span className={cn("text-xs font-semibold tracking-wider transition-colors", billingCycle === "monthly" ? "text-foreground" : "text-muted-foreground")}>
               {monthlyLabel}
             </span>
             <button
@@ -1795,26 +1789,26 @@ export function PricingScale({
               onClick={() => setBillingCycle((prev) => (prev === "monthly" ? "annually" : "monthly"))}
               className={cn(
                 "relative inline-flex h-6 w-11 shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out focus:outline-none",
-                billingCycle === "annually" ? theme.bg : "bg-slate-200 dark:bg-zinc-800"
+                billingCycle === "annually" ? theme.bg : "bg-muted"
               )}
               role="switch"
               aria-checked={billingCycle === "annually"}
             >
               <span
                 className={cn(
-                  "pointer-events-none inline-block h-5 w-5 transform rounded-full bg-white dark:bg-zinc-200 shadow-sm ring-0 transition duration-200 ease-in-out",
+                  "pointer-events-none inline-block h-5 w-5 transform rounded-full bg-background shadow-sm ring-0 transition duration-200 ease-in-out",
                   billingCycle === "annually" ? "translate-x-5" : "translate-x-0"
                 )}
               />
             </button>
-            <span className={cn("text-xs font-semibold tracking-wider transition-colors", billingCycle === "annually" ? "text-slate-900 dark:text-white" : "text-slate-400 dark:text-zinc-500")}>
-              {annuallyLabel} <span className="text-slate-400 dark:text-zinc-500 font-medium">{annualDiscountText}</span>
+            <span className={cn("text-xs font-semibold tracking-wider transition-colors", billingCycle === "annually" ? "text-foreground" : "text-muted-foreground")}>
+              {annuallyLabel} <span className="text-muted-foreground font-medium">{annualDiscountText}</span>
             </span>
           </div>
         </div>
 
         {/* Card Container Grid */}
-        <div className="bg-slate-100/70 dark:bg-zinc-900/60 p-3 sm:p-4 rounded-[32px] border border-slate-200/80 dark:border-zinc-800/80 grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-6 shadow-xs">
+        <div className="bg-muted/70 p-3 sm:p-4 rounded-[32px] border border-border grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-6 shadow-xs">
           {currentPlans.map((plan) => {
             const isPopular = plan.popular;
             return (
@@ -1823,8 +1817,8 @@ export function PricingScale({
                 className={cn(
                   "relative rounded-[24px] p-6 sm:p-8 flex flex-col justify-between transition-all duration-300",
                   isPopular
-                    ? cn("bg-white dark:bg-zinc-900 ring-2 shadow-lg shadow-slate-200/50 dark:shadow-none", theme.ring)
-                    : "bg-slate-100/60 dark:bg-zinc-900/40 border-0 shadow-none"
+                    ? cn("bg-card ring-2 shadow-lg shadow-slate-200/50 dark:shadow-none", theme.ring)
+                    : "bg-muted/60 border-0 shadow-none"
                 )}
               >
                 {/* Top header area */}
@@ -1833,37 +1827,37 @@ export function PricingScale({
                     <div className={cn(
                       "w-10 h-10 rounded-xl flex items-center justify-center border shadow-2xs",
                       isPopular
-                        ? "bg-slate-50 dark:bg-zinc-800 border-slate-200/60 dark:border-zinc-700/60"
-                        : "bg-white dark:bg-zinc-800 border-white dark:border-zinc-700"
+                        ? "bg-muted border-border"
+                        : "bg-card border-border"
                     )}>
                       {plan.icon === "Sprout" ? (
                         <SproutIcon />
                       ) : (
-                        <Rocket className={cn("w-5 h-5", isPopular ? theme.text : "text-slate-700 dark:text-zinc-300")} />
+                        <Rocket className={cn("w-5 h-5", isPopular ? theme.text : "text-foreground")} />
                       )}
                     </div>
 
                     {isPopular && (
-                      <div className="inline-flex items-center gap-1 px-3 py-1 rounded-full border border-slate-200 dark:border-zinc-700 bg-slate-50 dark:bg-zinc-800 text-xs font-semibold text-slate-700 dark:text-zinc-300 shadow-2xs">
+                      <div className="inline-flex items-center gap-1 px-3 py-1 rounded-full border border-border bg-muted text-xs font-semibold text-foreground shadow-2xs">
                         <Star className={cn("w-3.5 h-3.5 fill-current", theme.text)} />
                         <span>{plan.popularBadgeText || "Most Popular"}</span>
                       </div>
                     )}
                   </div>
 
-                  <h3 className="text-xl sm:text-2xl font-semibold text-slate-900 dark:text-white mb-1">
+                  <h3 className="text-xl sm:text-2xl font-semibold text-foreground mb-1">
                     {plan.title}
                   </h3>
-                  <p className="text-xs sm:text-sm text-slate-500 dark:text-zinc-400 mb-6">
+                  <p className="text-xs sm:text-sm text-muted-foreground mb-6">
                     {plan.subtitle}
                   </p>
 
-                  <div className="flex items-baseline gap-1 pb-6 mb-6 border-b border-slate-100 dark:border-zinc-800">
-                    <span className="text-3xl sm:text-4xl md:text-[40px] font-extrabold tracking-tight text-slate-900 dark:text-white">
+                  <div className="flex items-baseline gap-1 pb-6 mb-6 border-b border-border">
+                    <span className="text-3xl sm:text-4xl md:text-[40px] font-extrabold tracking-tight text-foreground">
                       <AnimatedPrice value={plan.price} counting={counting} />
                     </span>
                     {plan.period && (
-                      <span className="text-xs sm:text-sm text-slate-400 dark:text-zinc-500 font-medium">
+                      <span className="text-xs sm:text-sm text-muted-foreground font-medium">
                         {plan.period}
                       </span>
                     )}
@@ -1871,14 +1865,14 @@ export function PricingScale({
 
                   {/* Features list */}
                   {plan.featuresTitle && (
-                    <h4 className="text-[11px] font-semibold tracking-wider text-slate-900 dark:text-white uppercase mb-4">
+                    <h4 className="text-[11px] font-semibold tracking-wider text-foreground uppercase mb-4">
                       {plan.featuresTitle}
                     </h4>
                   )}
 
                   <ul className="space-y-3 mb-8">
                     {plan.features.map((feature, idx) => (
-                      <li key={idx} className="flex items-start gap-2.5 text-xs sm:text-sm text-slate-600 dark:text-zinc-300">
+                      <li key={idx} className="flex items-start gap-2.5 text-xs sm:text-sm text-foreground/80">
                         <Check className={cn("w-4 h-4 shrink-0 mt-0.5", theme.text)} />
                         <span>{feature}</span>
                       </li>
@@ -1893,7 +1887,7 @@ export function PricingScale({
                     "w-full py-3.5 px-4 rounded-full text-xs sm:text-sm font-semibold text-center shadow-md hover:opacity-95 transition-all duration-200 cursor-pointer block",
                     isPopular
                       ? theme.bg
-                      : "text-white bg-gradient-to-b from-zinc-800 to-zinc-950 dark:from-zinc-100 dark:to-zinc-300 dark:text-zinc-900"
+                      : "bg-gradient-to-b from-foreground/85 to-foreground text-background"
                   )}
                 >
                   {plan.buttonText}
@@ -1904,12 +1898,12 @@ export function PricingScale({
         </div>
 
         {/* Footer Banner */}
-        <div className="bg-slate-100/80 dark:bg-zinc-900/80 border border-slate-200/80 dark:border-zinc-800/80 rounded-[24px] p-6 sm:p-8 flex flex-col sm:flex-row items-center justify-between gap-4 shadow-xs">
+        <div className="bg-muted/80 border border-border rounded-[24px] p-6 sm:p-8 flex flex-col sm:flex-row items-center justify-between gap-4 shadow-xs">
           <div className="text-center sm:text-left">
-            <h4 className="text-base sm:text-lg font-semibold text-slate-900 dark:text-white">
+            <h4 className="text-base sm:text-lg font-semibold text-foreground">
               {footerTitle}
             </h4>
-            <p className="text-xs sm:text-sm text-slate-500 dark:text-zinc-400 mt-0.5">
+            <p className="text-xs sm:text-sm text-muted-foreground mt-0.5">
               {footerSubtitle}
             </p>
           </div>
@@ -2019,7 +2013,7 @@ export function PricingDotPattern({
 
   return (
     <section
-      className="w-full bg-slate-50/70 dark:bg-zinc-950/70 py-12 sm:py-20 px-4 sm:px-6 font-sans transition-colors duration-300"
+      className="w-full bg-background py-12 sm:py-20 px-4 sm:px-6 font-sans transition-colors duration-300"
       style={style}
     >
       <div className="max-w-6xl mx-auto space-y-12 sm:space-y-16">
@@ -2031,10 +2025,10 @@ export function PricingDotPattern({
               <span>{badgeText}</span>
             </div>
           )}
-          <h2 className="text-3xl sm:text-4xl md:text-5xl font-semibold tracking-tight text-slate-900 dark:text-white leading-[1.15]">
+          <h2 className="text-3xl sm:text-4xl md:text-5xl font-semibold tracking-tight text-foreground leading-[1.15]">
             {title}
           </h2>
-          <p className="text-sm sm:text-base text-slate-500 dark:text-zinc-400 max-w-md mx-auto leading-relaxed">
+          <p className="text-sm sm:text-base text-muted-foreground max-w-md mx-auto leading-relaxed">
             {subtitle}
           </p>
         </div>
@@ -2047,10 +2041,10 @@ export function PricingDotPattern({
               <div
                 key={plan.id}
                 className={cn(
-                  "relative rounded-2xl p-6 sm:p-8 flex flex-col justify-between transition-all duration-300 bg-white/60 dark:bg-zinc-900/50 backdrop-blur-xs shadow-none overflow-hidden",
+                  "relative rounded-2xl p-6 sm:p-8 flex flex-col justify-between transition-all duration-300 bg-card/60 backdrop-blur-xs shadow-none overflow-hidden",
                   isFeatured
                     ? cn("border", theme.border)
-                    : "border border-slate-200/90 dark:border-zinc-800/90"
+                    : "border border-border"
                 )}
                 style={isFeatured ? { borderColor: "color-mix(in srgb, var(--pricing-accent, currentColor) 10%, transparent)" } : undefined}
               >
@@ -2060,7 +2054,7 @@ export function PricingDotPattern({
                     "absolute top-0 left-0 right-0 h-48 pointer-events-none transition-opacity",
                     isFeatured
                       ? cn("opacity-75 dark:opacity-55", theme.text)
-                      : "opacity-35 dark:opacity-20 text-slate-400 dark:text-zinc-600"
+                      : "opacity-35 dark:opacity-20 text-muted-foreground"
                   )}
                   style={{
                     backgroundImage: `radial-gradient(currentColor 1.5px, transparent 1.5px)`,
@@ -2074,25 +2068,25 @@ export function PricingDotPattern({
                 <div
                   className={cn(
                     "absolute top-0 left-0 w-3.5 h-3.5 border-t-2 border-l-2 rounded-tl-xl pointer-events-none transition-colors",
-                    isFeatured ? "border-[var(--pricing-accent)]" : "border-slate-400/80 dark:border-zinc-600"
+                    isFeatured ? "border-[var(--pricing-accent)]" : "border-foreground/30"
                   )}
                 />
                 <div
                   className={cn(
                     "absolute top-0 right-0 w-3.5 h-3.5 border-t-2 border-r-2 rounded-tr-xl pointer-events-none transition-colors",
-                    isFeatured ? "border-[var(--pricing-accent)]" : "border-slate-400/80 dark:border-zinc-600"
+                    isFeatured ? "border-[var(--pricing-accent)]" : "border-foreground/30"
                   )}
                 />
                 <div
                   className={cn(
                     "absolute bottom-0 left-0 w-3.5 h-3.5 border-b-2 border-l-2 rounded-bl-xl pointer-events-none transition-colors",
-                    isFeatured ? "border-[var(--pricing-accent)]" : "border-slate-400/80 dark:border-zinc-600"
+                    isFeatured ? "border-[var(--pricing-accent)]" : "border-foreground/30"
                   )}
                 />
                 <div
                   className={cn(
                     "absolute bottom-0 right-0 w-3.5 h-3.5 border-b-2 border-r-2 rounded-br-xl pointer-events-none transition-colors",
-                    isFeatured ? "border-[var(--pricing-accent)]" : "border-slate-400/80 dark:border-zinc-600"
+                    isFeatured ? "border-[var(--pricing-accent)]" : "border-foreground/30"
                   )}
                 />
 
@@ -2103,7 +2097,7 @@ export function PricingDotPattern({
                     <span
                       className={cn(
                         "text-[12px] font-semibold tracking-widest uppercase block mb-5",
-                        isFeatured ? theme.text : "text-slate-800 dark:text-zinc-200"
+                        isFeatured ? theme.text : "text-foreground"
                       )}
                     >
                       {plan.badgeTag}
@@ -2111,18 +2105,18 @@ export function PricingDotPattern({
 
                     {/* Price */}
                     <div className="flex items-baseline gap-1 mb-3">
-                      <span className="text-4xl sm:text-5xl font-semibold tracking-tight text-slate-900 dark:text-white">
+                      <span className="text-4xl sm:text-5xl font-semibold tracking-tight text-foreground">
                         <AnimatedPrice value={plan.price} counting={counting} />
                       </span>
                       {plan.period && (
-                        <span className="text-xs sm:text-sm text-slate-500 dark:text-zinc-400 font-medium">
+                        <span className="text-xs sm:text-sm text-muted-foreground font-medium">
                           {plan.period}
                         </span>
                       )}
                     </div>
 
                     {/* Description */}
-                    <p className="text-xs sm:text-sm text-slate-600 dark:text-zinc-400 leading-relaxed mb-8 min-h-[44px]">
+                    <p className="text-xs sm:text-sm text-muted-foreground leading-relaxed mb-8 min-h-[44px]">
                       {plan.description}
                     </p>
 
@@ -2130,10 +2124,10 @@ export function PricingDotPattern({
                     <LinkComp
                       href={plan.ctaHref || "#"}
                       className={cn(
-                        "w-full py-3.5 px-4 rounded-xl text-xs sm:text-sm font-semibold flex items-center justify-center gap-2 shadow-md hover:opacity-95 transition-all duration-200 cursor-pointer mb-10 text-white",
+                        "w-full py-3.5 px-4 rounded-xl text-xs sm:text-sm font-semibold flex items-center justify-center gap-2 shadow-md hover:opacity-95 transition-all duration-200 cursor-pointer mb-10",
                         isFeatured
                           ? theme.bg
-                          : "bg-gradient-to-b from-slate-700 to-slate-800 dark:from-zinc-700 dark:to-zinc-800"
+                          : "bg-gradient-to-b from-foreground/85 to-foreground text-background"
                       )}
                     >
                       <span>{plan.buttonText}</span>
@@ -2142,7 +2136,7 @@ export function PricingDotPattern({
 
                     {/* Features List Header */}
                     {plan.featuresTitle && (
-                      <h4 className="text-[11px] font-semibold tracking-wider text-slate-900 dark:text-white uppercase mb-4">
+                      <h4 className="text-[11px] font-semibold tracking-wider text-foreground uppercase mb-4">
                         {plan.featuresTitle}
                       </h4>
                     )}
@@ -2150,11 +2144,11 @@ export function PricingDotPattern({
                     {/* Features Item */}
                     <ul className="space-y-3.5">
                       {plan.features.map((feature, idx) => (
-                        <li key={idx} className="flex items-center gap-3 text-xs sm:text-sm text-slate-600 dark:text-zinc-300">
+                        <li key={idx} className="flex items-center gap-3 text-xs sm:text-sm text-foreground/80">
                           <CheckCircle2
                             className={cn(
                               "w-4 h-4 shrink-0 fill-current",
-                              isFeatured ? theme.text : "text-slate-700 dark:text-zinc-400"
+                              isFeatured ? theme.text : "text-foreground/70"
                             )}
                           />
                           <span>{feature}</span>

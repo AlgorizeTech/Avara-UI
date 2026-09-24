@@ -51,12 +51,12 @@ export type AIChatColor =
 const chatVariants: Record<AIChatVariant, Record<string, string>> = {
   default: {
     wrapper:
-      "bg-muted dark:bg-[#09090b] border border-border shadow-none rounded-2xl",
+      "bg-background border border-border shadow-none rounded-2xl",
     sidebar:
-      "bg-white/90 dark:bg-[#121217]/90 backdrop-blur-xl border-r border-border",
-    main: "bg-white dark:bg-[#09090b]",
+      "bg-card/90 backdrop-blur-xl border-r border-border",
+    main: "bg-background",
     header:
-      "bg-white/80 dark:bg-[#09090b]/80 border-b border-border backdrop-blur-xl",
+      "bg-background/80 border-b border-border backdrop-blur-xl",
     input: "bg-muted border border-border",
     msgUser: "text-white rounded-2xl rounded-tr-sm shadow-sm",
     msgAi:
@@ -73,11 +73,11 @@ const chatVariants: Record<AIChatVariant, Record<string, string>> = {
   },
   compact: {
     wrapper:
-      "bg-white dark:bg-[#09090b] border border-border shadow-none rounded-2xl",
+      "bg-background border border-border shadow-none rounded-2xl",
     sidebar: "",
-    main: "bg-white dark:bg-[#09090b]",
+    main: "bg-background",
     header:
-      "bg-white/80 dark:bg-[#09090b]/80 border-b border-border backdrop-blur-xl",
+      "bg-background/80 border-b border-border backdrop-blur-xl",
     input: "bg-muted border border-border",
     msgUser: "text-white rounded-2xl rounded-tr-sm shadow-sm",
     msgAi:
@@ -462,6 +462,14 @@ export default function AIChat({
     : colorThemes[color] || colorThemes["primary"];
 
   const styles = chatVariants[variant];
+
+  // Ink for the accent-gradient tiles, read off `theme.primaryBg` so it matches
+  // the button text: `primary` pairs with primary-foreground, not white.
+  const onAccentText =
+    theme.primaryBg
+      .split(" ")
+      .filter((c) => c.startsWith("text-") || c.startsWith("dark:text-"))
+      .join(" ") || "text-primary-foreground";
 
   // Without a sidebar there is nothing to pick a thread from, so an empty
   // history starts one conversation seeded with `initialMessages`.
@@ -1286,7 +1294,7 @@ export default function AIChat({
                             <>
                               <div className="flex items-center gap-3 truncate pr-2 min-w-0">
                                 <MessageSquare
-                                  className={`w-4 h-4 shrink-0 ${isActive ? theme.primaryText : "text-zinc-400 group-hover:text-zinc-600 dark:group-hover:text-zinc-200"}`}
+                                  className={`w-4 h-4 shrink-0 ${isActive ? theme.primaryText : "text-muted-foreground group-hover:text-foreground"}`}
                                 />
                                 <span className="truncate">{chat.title}</span>
                               </div>
@@ -1302,7 +1310,7 @@ export default function AIChat({
                                 </button>
                                 <button
                                   onClick={(e) => handleDeleteChat(chat.id, e)}
-                                  className="p-1.5 text-zinc-400 hover:text-rose-500 hover:bg-rose-50 dark:hover:bg-rose-500/20 rounded-md transition-colors cursor-pointer"
+                                  className="p-1.5 text-muted-foreground hover:text-rose-500 hover:bg-rose-50 dark:hover:bg-rose-500/20 rounded-md transition-colors cursor-pointer"
                                 >
                                   <Trash2 className="w-3.5 h-3.5" />
                                 </button>
@@ -1362,12 +1370,13 @@ export default function AIChat({
           <div className="flex-1 flex flex-col items-center justify-center p-6 text-center">
             <div
               className={cn(
-                "w-24 h-24 bg-gradient-to-tr rounded-3xl flex items-center justify-center mb-6 border border-white dark:border-zinc-800 rotate-3 shrink-0 shadow-xl",
+                "w-24 h-24 bg-gradient-to-tr rounded-3xl flex items-center justify-center mb-6 border border-border rotate-3 shrink-0 shadow-xl",
                 theme.gradient,
                 theme.shadow,
+                onAccentText,
               )}
             >
-              <Bot className="w-10 h-10 text-white -rotate-3" />
+              <Bot className="w-10 h-10 -rotate-3" />
             </div>
             <h2 className="text-2xl font-semibold text-foreground mb-2">
               How can I help you today?
@@ -1575,7 +1584,7 @@ export default function AIChat({
                               ) : (
                                 <div
                                   key={file.id}
-                                  className="flex items-center gap-2 rounded-xl bg-black/10 dark:bg-white/10 px-3 py-2 text-xs max-w-[220px]"
+                                  className="flex items-center gap-2 rounded-xl bg-current/10 px-3 py-2 text-xs max-w-[220px]"
                                 >
                                   <FileText className="w-4 h-4 shrink-0 opacity-80" />
                                   <span className="truncate font-semibold">
@@ -1627,8 +1636,9 @@ export default function AIChat({
                   <div className="flex gap-4 flex-row items-end animate-in fade-in slide-in-from-bottom-2 duration-300">
                     <div
                       className={cn(
-                        "shrink-0 w-8 h-8 bg-gradient-to-br rounded-lg flex items-center justify-center text-white shadow-sm mb-5",
+                        "shrink-0 w-8 h-8 bg-gradient-to-br rounded-lg flex items-center justify-center shadow-sm mb-5",
                         theme.gradient,
+                        onAccentText,
                       )}
                     >
                       <Bot className="w-5 h-5" />
@@ -1639,9 +1649,9 @@ export default function AIChat({
                         styles.msgAi,
                       )}
                     >
-                      <span className="w-1.5 h-1.5 bg-zinc-400 dark:bg-zinc-500 rounded-full animate-bounce [animation-delay:-0.3s]" />
-                      <span className="w-1.5 h-1.5 bg-zinc-400 dark:bg-zinc-500 rounded-full animate-bounce [animation-delay:-0.15s]" />
-                      <span className="w-1.5 h-1.5 bg-zinc-400 dark:bg-zinc-500 rounded-full animate-bounce" />
+                      <span className="w-1.5 h-1.5 bg-muted-foreground rounded-full animate-bounce [animation-delay:-0.3s]" />
+                      <span className="w-1.5 h-1.5 bg-muted-foreground rounded-full animate-bounce [animation-delay:-0.15s]" />
+                      <span className="w-1.5 h-1.5 bg-muted-foreground rounded-full animate-bounce" />
                     </div>
                   </div>
                 )}
@@ -1931,7 +1941,7 @@ function EffortSlider({
           key={effort.id}
           className={cn(
             "absolute top-1/2 size-[5px] -translate-x-1/2 -translate-y-1/2 rounded-full transition-colors duration-300",
-            i <= index ? "bg-white/80" : "bg-foreground/20",
+            i <= index ? "bg-background/80" : "bg-foreground/20",
           )}
           style={{ left: stopLeft(i) }}
         />

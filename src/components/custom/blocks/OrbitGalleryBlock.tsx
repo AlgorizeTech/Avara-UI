@@ -221,7 +221,7 @@ export const OrbitGallery = forwardRef<HTMLElement, OrbitGalleryProps>(
         onMouseLeave={handleMouseLeave}
         style={{ ...accentStyle(color), ...style }}
         className={cn(
-          "relative flex min-h-[580px] w-full select-none items-center overflow-hidden bg-white py-12 text-foreground transition-colors duration-300 dark:bg-black sm:py-16 lg:py-24",
+          "relative flex min-h-[580px] w-full select-none items-center overflow-hidden bg-background py-12 text-foreground transition-colors duration-300 sm:py-16 lg:py-24",
           className,
         )}
         {...props}
@@ -324,7 +324,7 @@ export const OrbitGallery = forwardRef<HTMLElement, OrbitGalleryProps>(
                 {secondaryActionLabel && (
                   <Link
                     href={secondaryActionHref}
-                    className="inline-flex items-center justify-center gap-2 rounded-2xl border border-zinc-200 bg-white px-6 py-3.5 text-sm font-semibold text-foreground shadow-sm transition-all duration-300 hover:-translate-y-0.5 hover:bg-zinc-100 active:translate-y-0 dark:border-zinc-800 dark:bg-zinc-900/80 dark:hover:bg-zinc-800 sm:py-4 sm:text-base"
+                    className="inline-flex items-center justify-center gap-2 rounded-2xl border border-border bg-card px-6 py-3.5 text-sm font-semibold text-foreground shadow-sm transition-all duration-300 hover:-translate-y-0.5 hover:bg-muted active:translate-y-0 sm:py-4 sm:text-base"
                   >
                     <span>{secondaryActionLabel}</span>
                     <ArrowUpRight className="size-4 shrink-0 text-muted-foreground" />
@@ -350,7 +350,7 @@ export const OrbitGallery = forwardRef<HTMLElement, OrbitGalleryProps>(
                 className="orbit-gallery-ring pointer-events-auto relative flex size-[340px] cursor-pointer items-center justify-center overflow-visible rounded-full sm:size-[440px] lg:size-[480px]"
                 style={{ "--orbit-duration": `${duration}s` } as React.CSSProperties}
               >
-                <div className="pointer-events-none absolute inset-0 rounded-full border border-border/30 dark:border-white/10" aria-hidden />
+                <div className="pointer-events-none absolute inset-0 rounded-full border border-foreground/10" aria-hidden />
 
                 {images.map((src, i) => (
                   <div
@@ -359,7 +359,7 @@ export const OrbitGallery = forwardRef<HTMLElement, OrbitGalleryProps>(
                     className="orbit-gallery-card pointer-events-auto absolute left-1/2 top-1/2 -ml-[38px] -mt-[48px] h-[96px] w-[76px] sm:-ml-[62px] sm:-mt-[77px] sm:h-[155px] sm:w-[125px] lg:-ml-[75px] lg:-mt-[90px] lg:h-[180px] lg:w-[150px]"
                     style={{ animationDelay: `${-((i / count) * duration)}s` }}
                   >
-                    <div className="group h-full w-full overflow-hidden rounded-[22px] border-2 border-background/90 bg-card shadow-2xl transition-all duration-300 hover:scale-110 dark:border-zinc-800 sm:rounded-[28px]">
+                    <div className="group h-full w-full overflow-hidden rounded-[22px] border-2 border-card bg-card shadow-2xl transition-all duration-300 hover:scale-110 sm:rounded-[28px]">
                       <img src={src} alt="" className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105" />
                     </div>
                   </div>

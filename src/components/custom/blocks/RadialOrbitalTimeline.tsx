@@ -421,16 +421,16 @@ export default function RadialOrbitalTimeline({
       case "in-progress":
         return "text-emerald-700 bg-emerald-100 border-emerald-300 dark:text-emerald-300 dark:bg-emerald-950/60 dark:border-emerald-800";
       case "pending":
-        return "text-zinc-600 bg-zinc-100 border-zinc-300 dark:text-zinc-300 dark:bg-zinc-800 dark:border-zinc-700";
+        return "text-muted-foreground bg-muted border-border";
       default:
-        return "text-zinc-600 bg-zinc-100 border-zinc-300 dark:text-zinc-300 dark:bg-zinc-800 dark:border-zinc-700";
+        return "text-muted-foreground bg-muted border-border";
     }
   };
 
   return (
     <div
       className={cn(
-        "w-full h-[650px] sm:h-[720px] flex flex-col items-center justify-center bg-white text-zinc-900 dark:bg-black dark:text-white overflow-hidden rounded-3xl border border-zinc-200 dark:border-white/10 relative selection:bg-primary/20",
+        "w-full h-[650px] sm:h-[720px] flex flex-col items-center justify-center bg-background text-foreground overflow-hidden rounded-3xl border border-border relative selection:bg-primary/20",
         className,
       )}
       ref={containerRef}
@@ -465,7 +465,7 @@ export default function RadialOrbitalTimeline({
 
           {/* Outer Orbital Circle Line (ONLY line is kept 100% rounded circle at all times) */}
           <div
-            className="keep-rounded rounded-full absolute border border-zinc-300/80 dark:border-white/10 pointer-events-none transition-all duration-300"
+            className="keep-rounded rounded-full absolute border border-foreground/15 pointer-events-none transition-all duration-300"
             style={{
               width: isMobile ? "230px" : "420px",
               height: isMobile ? "230px" : "420px",
@@ -475,7 +475,7 @@ export default function RadialOrbitalTimeline({
           {/* Inner Orbital Circle Line (Only shown when effectiveOrbitCount === 2) */}
           {effectiveOrbitCount === 2 && (
             <div
-              className="keep-rounded rounded-full absolute border border-dashed border-zinc-400/50 dark:border-white/20 pointer-events-none transition-all duration-300"
+              className="keep-rounded rounded-full absolute border border-dashed border-foreground/20 pointer-events-none transition-all duration-300"
               style={{
                 width: isMobile ? "140px" : "260px",
                 height: isMobile ? "140px" : "260px",
@@ -533,7 +533,7 @@ export default function RadialOrbitalTimeline({
                     isPulsing ? "animate-pulse duration-1000" : ""
                   }`}
                   style={{
-                    background: `radial-gradient(circle, rgba(var(--primary),0.25) 0%, rgba(var(--primary),0) 70%)`,
+                    background: `radial-gradient(circle, color-mix(in oklab, var(--primary) 25%, transparent) 0%, transparent 70%)`,
                     width: isMobile ? `${item.energy * 0.35 + 28}px` : `${item.energy * 0.5 + 40}px`,
                     height: isMobile ? `${item.energy * 0.35 + 28}px` : `${item.energy * 0.5 + 40}px`,
                   }}
@@ -560,7 +560,7 @@ export default function RadialOrbitalTimeline({
                   ${
                     isExpanded
                       ? isMobile ? "top-5 text-primary font-semibold scale-105" : "top-10 text-primary font-semibold scale-110"
-                      : isMobile ? "top-4 text-zinc-600 dark:text-white/70" : "top-7 text-zinc-600 dark:text-white/70"
+                      : isMobile ? "top-4 text-muted-foreground" : "top-7 text-muted-foreground"
                   }
                 `}
                 >
@@ -569,7 +569,7 @@ export default function RadialOrbitalTimeline({
 
                 {/* Expanded Card Popover */}
                 {isExpanded && (
-                  <Card className="absolute top-16 left-1/2 -translate-x-1/2 w-64 bg-white/95 dark:bg-black/90 backdrop-blur-lg border-zinc-200 dark:border-white/30 shadow-2xl shadow-zinc-900/10 dark:shadow-white/10 overflow-visible text-zinc-900 dark:text-white z-50">
+                  <Card className="absolute top-16 left-1/2 -translate-x-1/2 w-64 bg-popover/95 backdrop-blur-lg border-border shadow-2xl shadow-zinc-900/10 dark:shadow-white/10 overflow-visible text-popover-foreground z-50">
                     <div className="absolute -top-3 left-1/2 -translate-x-1/2 w-px h-3 bg-primary/80"></div>
                     <CardHeader className="pb-2">
                       <div className="flex justify-between items-center">
@@ -584,26 +584,26 @@ export default function RadialOrbitalTimeline({
                             ? "IN PROGRESS"
                             : "PENDING"}
                         </Badge>
-                        <span className="text-xs font-mono text-zinc-500 dark:text-white/50">
+                        <span className="text-xs font-mono text-muted-foreground">
                           {item.date}
                         </span>
                       </div>
-                      <CardTitle className="text-sm mt-2 font-semibold text-zinc-900 dark:text-white">
+                      <CardTitle className="text-sm mt-2 font-semibold text-popover-foreground">
                         {item.title}
                       </CardTitle>
                     </CardHeader>
-                    <CardContent className="text-xs text-zinc-600 dark:text-white/80">
+                    <CardContent className="text-xs text-muted-foreground">
                       <p>{item.content}</p>
 
-                      <div className="mt-4 pt-3 border-t border-zinc-200 dark:border-white/10">
+                      <div className="mt-4 pt-3 border-t border-border">
                         <div className="flex justify-between items-center text-xs mb-1">
-                          <span className="flex items-center text-zinc-800 dark:text-white/90">
+                          <span className="flex items-center text-foreground/90">
                             <Zap size={10} className="mr-1 text-primary" />
                             Energy Level
                           </span>
-                          <span className="font-mono font-semibold text-zinc-900 dark:text-white">{item.energy}%</span>
+                          <span className="font-mono font-semibold text-foreground">{item.energy}%</span>
                         </div>
-                        <div className="w-full h-1 bg-zinc-200 dark:bg-white/10 rounded-full overflow-hidden">
+                        <div className="w-full h-1 bg-muted rounded-full overflow-hidden">
                           <div
                             className="h-full bg-primary"
                             style={{ width: `${item.energy}%` }}
@@ -612,10 +612,10 @@ export default function RadialOrbitalTimeline({
                       </div>
 
                       {item.relatedIds.length > 0 && (
-                        <div className="mt-4 pt-3 border-t border-zinc-200 dark:border-white/10">
+                        <div className="mt-4 pt-3 border-t border-border">
                           <div className="flex items-center mb-2">
-                            <LinkIcon size={10} className="text-zinc-500 dark:text-white/70 mr-1" />
-                            <h4 className="text-xs uppercase tracking-wider font-medium text-zinc-500 dark:text-white/70">
+                            <LinkIcon size={10} className="text-muted-foreground mr-1" />
+                            <h4 className="text-xs uppercase tracking-wider font-medium text-muted-foreground">
                               Connected Nodes
                             </h4>
                           </div>
@@ -629,7 +629,7 @@ export default function RadialOrbitalTimeline({
                                   key={relatedId}
                                   variant="outline"
                                   size="sm"
-                                  className="flex items-center h-6 px-2 py-0 text-xs rounded-none border-zinc-300 dark:border-white/20 bg-zinc-100 dark:bg-transparent hover:bg-primary/10 hover:border-primary/40 hover:text-primary text-zinc-800 dark:text-white/80 transition-all"
+                                  className="flex items-center h-6 px-2 py-0 text-xs rounded-none border-border bg-muted hover:bg-primary/10 hover:border-primary/40 hover:text-primary text-foreground/80 transition-all"
                                   onClick={(e) => {
                                     e.stopPropagation();
                                     toggleItem(relatedId);

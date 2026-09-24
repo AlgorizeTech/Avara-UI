@@ -18,18 +18,18 @@ import { FlowCanvas, Flowchart, FlowConnection } from "./FlowchartBlock";
 type Point = { x: number; y: number };
 
 const cardSurface =
-  "rounded-2xl border border-black/[0.06] bg-white shadow-[0_1px_2px_rgba(0,0,0,0.04),0_10px_28px_-14px_rgba(0,0,0,0.16)] dark:border-white/10 dark:bg-zinc-900";
+  "rounded-2xl border border-border bg-card text-card-foreground shadow-[0_1px_2px_rgba(0,0,0,0.04),0_10px_28px_-14px_rgba(0,0,0,0.16)]";
 
 // ------------------------------------------
 // Small pieces the cards are made of
 // ------------------------------------------
 
-/** A solid black pill — counts and scores. */
+/** A solid pill in the theme ink — counts and scores. */
 function Pill({ className, children, ...props }: React.HTMLAttributes<HTMLSpanElement>) {
   return (
     <span
       className={cn(
-        "inline-flex shrink-0 items-center rounded-full bg-[#141414] px-2.5 py-1 text-[10.5px] font-semibold leading-none tracking-tight text-white dark:bg-white dark:text-[#141414]",
+        "inline-flex shrink-0 items-center rounded-full bg-foreground px-2.5 py-1 text-[10.5px] font-semibold leading-none tracking-tight text-background",
         className,
       )}
       {...props}
@@ -44,7 +44,7 @@ function Tag({ className, children, ...props }: React.HTMLAttributes<HTMLSpanEle
   return (
     <span
       className={cn(
-        "inline-flex items-center rounded-full border border-black/10 bg-white px-2.5 py-1 text-[10px] font-medium leading-none text-black/70 dark:border-white/15 dark:bg-transparent dark:text-white/70",
+        "inline-flex items-center rounded-full border border-foreground/10 bg-card px-2.5 py-1 text-[10px] font-medium leading-none text-foreground/70",
         className,
       )}
       {...props}
@@ -59,7 +59,7 @@ function Row({ className, children, ...props }: React.HTMLAttributes<HTMLDivElem
   return (
     <div
       className={cn(
-        "flex items-center justify-between gap-3 rounded-lg bg-black/[0.035] px-3 py-2 text-[11px] font-medium text-[#141414] dark:bg-white/[0.06] dark:text-white",
+        "flex items-center justify-between gap-3 rounded-lg bg-foreground/[0.04] px-3 py-2 text-[11px] font-medium text-foreground",
         className,
       )}
       {...props}
@@ -88,14 +88,14 @@ function Source({ title, count, items, className, ...props }: DataFlowSourceProp
   return (
     <div data-flow="source" className={cn(cardSurface, "p-4", className)} {...props}>
       <div className="flex items-center justify-between gap-3">
-        <p className="text-[10px] font-semibold uppercase tracking-[0.14em] text-black/45 dark:text-white/45">{title}</p>
+        <p className="text-[10px] font-semibold uppercase tracking-[0.14em] text-muted-foreground">{title}</p>
         {count && <Pill>{count}</Pill>}
       </div>
       <ul className="mt-3 flex flex-wrap gap-2">
         {items.map((item) => (
           <li
             key={item.label}
-            className="inline-flex items-center gap-2 rounded-xl border border-black/[0.06] bg-white py-1.5 pl-1.5 pr-3.5 text-[13px] font-semibold text-[#141414] shadow-[0_1px_2px_rgba(0,0,0,0.05),0_4px_12px_-6px_rgba(0,0,0,0.12)] dark:border-white/10 dark:bg-zinc-800 dark:text-white"
+            className="inline-flex items-center gap-2 rounded-xl border border-border bg-card py-1.5 pl-1.5 pr-3.5 text-[13px] font-semibold text-foreground shadow-[0_1px_2px_rgba(0,0,0,0.05),0_4px_12px_-6px_rgba(0,0,0,0.12)]"
           >
             {item.icon && <span className="grid h-6 w-6 shrink-0 place-items-center [&>svg]:h-full [&>svg]:w-full">{item.icon}</span>}
             {item.label}
@@ -121,9 +121,9 @@ function Core({ title, subtitle, className, ...props }: DataFlowCoreProps) {
       className={cn(cardSurface, "flex flex-col items-center justify-center px-6 py-9 text-center", className)}
       {...props}
     >
-      <p className="text-[1.5rem] font-semibold leading-none tracking-tight text-[#141414] dark:text-white">{title}</p>
+      <p className="text-[1.5rem] font-semibold leading-none tracking-tight text-foreground">{title}</p>
       {subtitle && (
-        <p className="mt-2.5 text-[9.5px] font-semibold uppercase tracking-[0.16em] text-black/45 dark:text-white/45">{subtitle}</p>
+        <p className="mt-2.5 text-[9.5px] font-semibold uppercase tracking-[0.16em] text-muted-foreground">{subtitle}</p>
       )}
     </div>
   );
@@ -143,7 +143,7 @@ function Output({ title, badge, className, children, ...props }: DataFlowOutputP
   return (
     <div data-flow="output" className={cn(cardSurface, "p-4", className)} {...props}>
       <div className="flex items-center justify-between gap-3">
-        <p className="text-[13px] font-semibold tracking-tight text-[#141414] dark:text-white">{title}</p>
+        <p className="text-[13px] font-semibold tracking-tight text-foreground">{title}</p>
         {badge && <Pill>{badge}</Pill>}
       </div>
       {children && <div className="mt-2.5 space-y-2">{children}</div>}
@@ -322,14 +322,14 @@ function DataFlowRoot({
   return (
     <section
       ref={sectionRef}
-      className={cn("w-full bg-white text-[#141414] dark:bg-[#0b0b0c] dark:text-white", className)}
+      className={cn("w-full bg-background text-foreground", className)}
       style={accent ? ({ ...style, "--primary": accent } as React.CSSProperties) : style}
       {...props}
     >
       {(eyebrow || heading || intro) && (
         <header className="mx-auto max-w-2xl px-6 pb-12 pt-14 text-center sm:pb-14 sm:pt-16">
           {eyebrow && (
-            <p className="text-[13px] font-medium uppercase tracking-[0.12em] text-black/55 dark:text-white/55">{eyebrow}</p>
+            <p className="text-[13px] font-medium uppercase tracking-[0.12em] text-muted-foreground">{eyebrow}</p>
           )}
           <h2 className="mt-3 font-sans text-[2.25rem] font-medium leading-[1.05] tracking-[-0.03em] sm:text-[2.75rem]">
             {heading}
@@ -339,14 +339,14 @@ function DataFlowRoot({
               text={intro}
               selection={ranges}
               animate={inView}
-              className="mx-auto mt-5 max-w-[38rem] text-[17px] leading-[1.85] text-black/65 dark:text-white/65 [&_mark]:font-semibold [&_mark]:text-[#141414] dark:[&_mark]:text-white"
+              className="mx-auto mt-5 max-w-[38rem] text-[17px] leading-[1.85] text-foreground/65 [&_mark]:font-semibold [&_mark]:text-foreground"
             />
           )}
         </header>
       )}
 
       {/* A hairline with a soft shadow under it, so the board reads as a stage. */}
-      <div className="h-px w-full bg-black/[0.07] shadow-[0_6px_18px_-6px_rgba(0,0,0,0.12)] dark:bg-white/10" aria-hidden />
+      <div className="h-px w-full bg-border shadow-[0_6px_18px_-6px_rgba(0,0,0,0.12)]" aria-hidden />
 
       <div className="mx-auto max-w-7xl px-4 py-12 sm:px-8 sm:py-16">
         <Flowchart layout="fluid" initialActivePath="flow" color="primary">
@@ -372,7 +372,7 @@ function DataFlowRoot({
                     flowDash="14 46"
                     glow={false}
                     drawDuration={i < sourceCount ? 0.9 : 1.1}
-                    className="text-black/[0.14] dark:text-white/20"
+                    className="text-foreground/15"
                   />
                 ))}
               </FlowCanvas>
@@ -382,9 +382,9 @@ function DataFlowRoot({
 
             {/* Below lg the columns stack; short dashed spines stand in for the curves. */}
             <div className="relative z-10 flex flex-col items-center justify-center gap-3">
-              <span className="h-7 w-px border-l border-dashed border-black/25 lg:hidden dark:border-white/25" aria-hidden />
+              <span className="h-7 w-px border-l border-dashed border-foreground/25 lg:hidden" aria-hidden />
               <div className="w-full max-w-[15.5rem]">{core}</div>
-              <span className="h-7 w-px border-l border-dashed border-black/25 lg:hidden dark:border-white/25" aria-hidden />
+              <span className="h-7 w-px border-l border-dashed border-foreground/25 lg:hidden" aria-hidden />
             </div>
 
             <div className="relative z-10 flex flex-col justify-center gap-4">{outputs}</div>

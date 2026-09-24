@@ -27,7 +27,8 @@ export interface PlyrPlayerProps
   aspectRatio?: "16/9" | "21/9" | "4/3" | "1/1";
   /**
    * Drives Plyr's `--plyr-color-main`, which is what actually skins the
-   * control bar, the progress fill and the focus ring.
+   * control bar, the progress fill and the focus ring. Defaults to the theme's
+   * primary colour.
    */
   accentColor?: string;
   /** Plyr control names in bar order. Omit for Plyr's own default set. */
@@ -278,14 +279,14 @@ export const PlyrPlayer = React.forwardRef<
         // Plyr is skinned entirely through CSS custom properties, so the accent
         // is set on the wrapper rather than through a stylesheet override.
         style={
-          accentColor
-            ? ({ "--plyr-color-main": accentColor } as React.CSSProperties)
-            : undefined
+          {
+            "--plyr-color-main": accentColor ?? "var(--primary)",
+          } as React.CSSProperties
         }
         {...props}
       >
         {enableGlow && (
-          <div className="pointer-events-none absolute -inset-4 z-0 rounded-3xl bg-gradient-to-tr from-indigo-500/20 via-purple-500/20 to-pink-500/10 opacity-80 blur-3xl transition-opacity duration-500 dark:opacity-50" />
+          <div className="pointer-events-none absolute -inset-4 z-0 rounded-3xl bg-gradient-to-tr from-primary/20 via-primary/20 to-primary/10 opacity-80 blur-3xl transition-opacity duration-500 dark:opacity-50" />
         )}
 
         <div className="relative z-10 flex w-full flex-col overflow-hidden rounded-xl border border-border/80 bg-zinc-900 shadow-2xl sm:rounded-2xl md:rounded-3xl">

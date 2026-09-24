@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import { useState } from "react";
 import { motion, AnimatePresence } from "motion/react";
 import { ChevronDown, MapPin, Compass } from "lucide-react";
 import { cn } from "@/lib/utils";
@@ -163,32 +163,32 @@ export function AnimatedFAQBlock({
               ═══════════════════════════════════════════════════════════ */}
 
           {/* Extended Horizontal Guide: Top */}
-          <div className="pointer-events-none absolute -top-[1px] -left-10 -right-10 h-[1px] bg-zinc-300/80 dark:bg-zinc-800/80" />
+          <div className="pointer-events-none absolute -top-[1px] -left-10 -right-10 h-[1px] bg-border" />
 
           {/* Extended Horizontal Guide: Bottom */}
-          <div className="pointer-events-none absolute -bottom-[1px] -left-10 -right-10 h-[1px] bg-zinc-300/80 dark:bg-zinc-800/80" />
+          <div className="pointer-events-none absolute -bottom-[1px] -left-10 -right-10 h-[1px] bg-border" />
 
           {/* Extended Vertical Guide: Left */}
-          <div className="pointer-events-none absolute -left-[1px] -top-10 -bottom-10 w-[1px] bg-zinc-300/80 dark:bg-zinc-800/80" />
+          <div className="pointer-events-none absolute -left-[1px] -top-10 -bottom-10 w-[1px] bg-border" />
 
           {/* Extended Vertical Guide: Right */}
-          <div className="pointer-events-none absolute -right-[1px] -top-10 -bottom-10 w-[1px] bg-zinc-300/80 dark:bg-zinc-800/80" />
+          <div className="pointer-events-none absolute -right-[1px] -top-10 -bottom-10 w-[1px] bg-border" />
 
           {/* 4 Corner Square Dots / Registration Markers */}
           <div
-            className="pointer-events-none absolute -top-1 -left-1 size-2 bg-zinc-400 dark:bg-zinc-500 border border-zinc-300 dark:border-zinc-700 rounded-[1px] shadow-xs z-20"
+            className="pointer-events-none absolute -top-1 -left-1 size-2 bg-muted-foreground border border-border rounded-[1px] shadow-xs z-20"
             title="Top Left Anchor"
           />
           <div
-            className="pointer-events-none absolute -top-1 -right-1 size-2 bg-zinc-400 dark:bg-zinc-500 border border-zinc-300 dark:border-zinc-700 rounded-[1px] shadow-xs z-20"
+            className="pointer-events-none absolute -top-1 -right-1 size-2 bg-muted-foreground border border-border rounded-[1px] shadow-xs z-20"
             title="Top Right Anchor"
           />
           <div
-            className="pointer-events-none absolute -bottom-1 -left-1 size-2 bg-zinc-400 dark:bg-zinc-500 border border-zinc-300 dark:border-zinc-700 rounded-[1px] shadow-xs z-20"
+            className="pointer-events-none absolute -bottom-1 -left-1 size-2 bg-muted-foreground border border-border rounded-[1px] shadow-xs z-20"
             title="Bottom Left Anchor"
           />
           <div
-            className="pointer-events-none absolute -bottom-1 -right-1 size-2 bg-zinc-400 dark:bg-zinc-500 border border-zinc-300 dark:border-zinc-700 rounded-[1px] shadow-xs z-20"
+            className="pointer-events-none absolute -bottom-1 -right-1 size-2 bg-muted-foreground border border-border rounded-[1px] shadow-xs z-20"
             title="Bottom Right Anchor"
           />
 
@@ -200,7 +200,7 @@ export function AnimatedFAQBlock({
               Theme-Aware Light Background in Light Mode, Dark in Dark Mode
               ═══════════════════════════════════════════════════════════ */}
           <div
-            className="relative w-full h-full overflow-hidden bg-zinc-100/90 dark:bg-zinc-900/90 shadow-xl dark:shadow-2xl border border-zinc-200/70 dark:border-white/10 transition-all"
+            className="relative w-full h-full overflow-hidden bg-muted/90 shadow-xl dark:shadow-2xl border border-border/70 transition-all"
             style={{
               clipPath: `polygon(${activeItem.clipCut} 0%, 100% 0%, 100% calc(100% - ${activeItem.clipCut}), calc(100% - ${activeItem.clipCut}) 100%, 0% 100%, 0% ${activeItem.clipCut})`,
             }}
@@ -229,19 +229,19 @@ export function AnimatedFAQBlock({
 
                 {/* Top Corner Watermark Tag */}
                 <div className="absolute top-4 left-5 right-5 flex items-center justify-between text-xs pointer-events-none">
-                  <div className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-white/85 dark:bg-black/60 backdrop-blur-md border border-zinc-200/70 dark:border-white/15 text-[11px] font-mono tracking-wider text-zinc-900 dark:text-white shadow-xs">
+                  <div className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-background/85 backdrop-blur-md border border-border/70 text-[11px] font-mono tracking-wider text-foreground shadow-xs">
                     <Compass className="size-3 text-primary" />
                     <span>{activeItem.category}</span>
                   </div>
 
-                  <span className="font-mono text-[10px] text-zinc-700 dark:text-white/70 tracking-widest uppercase bg-white/75 dark:bg-black/50 border border-zinc-200/50 dark:border-white/10 px-2 py-0.5 rounded backdrop-blur-xs shadow-xs">
+                  <span className="font-mono text-[10px] text-muted-foreground tracking-widest uppercase bg-background/75 border border-border/50 px-2 py-0.5 rounded backdrop-blur-xs shadow-xs">
                     {activeItem.coordinates}
                   </span>
                 </div>
 
                 {/* Bottom Nature Caption & Location */}
                 <div className="absolute bottom-4 left-5 right-5 pointer-events-none">
-                  <div className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-white/90 dark:bg-black/70 backdrop-blur-md border border-zinc-200/80 dark:border-white/15 text-xs text-zinc-900 dark:text-white font-medium shadow-sm">
+                  <div className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-background/90 backdrop-blur-md border border-border/80 text-xs text-foreground font-medium shadow-sm">
                     <MapPin className="size-3.5 text-primary shrink-0" />
                     <span className="truncate">{activeItem.location}</span>
                   </div>
@@ -251,7 +251,7 @@ export function AnimatedFAQBlock({
 
             {/* Chamfered Border Outline via SVG to preserve crisp angle */}
             <svg
-              className="pointer-events-none absolute inset-0 w-full h-full text-zinc-400/30 dark:text-white/20"
+              className="pointer-events-none absolute inset-0 w-full h-full text-foreground/20"
               fill="none"
               preserveAspectRatio="none"
               viewBox="0 0 100 100"
@@ -295,8 +295,8 @@ export function AnimatedFAQBlock({
               className={cn(
                 "rounded-2xl border transition-all duration-300 overflow-hidden",
                 isActive
-                  ? "border-primary/50 bg-card shadow-lg ring-1 ring-primary/20 dark:bg-zinc-900/60"
-                  : "border-border/60 bg-card/40 hover:border-border hover:bg-card/80 dark:bg-zinc-900/20",
+                  ? "border-primary/50 bg-card shadow-lg ring-1 ring-primary/20"
+                  : "border-border/60 bg-card/40 hover:border-border hover:bg-card/80",
               )}
             >
               <button
@@ -372,7 +372,7 @@ export function AnimatedFAQBlock({
                     transition={{ duration: 0.25, ease: [0.16, 1, 0.3, 1] }}
                   >
                     <div className="px-4 pb-4 sm:px-5 sm:pb-5 pt-0 border-t border-border/40 text-sm text-muted-foreground leading-relaxed">
-                      <p className="pt-3 text-[13px] sm:text-sm text-foreground/80 dark:text-zinc-300">
+                      <p className="pt-3 text-[13px] sm:text-sm text-foreground/80">
                         {item.answer}
                       </p>
 

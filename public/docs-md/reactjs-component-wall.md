@@ -1,6 +1,6 @@
 # Component Wall
 
-A landing hero for a component library. In the middle, the copy — a small badge, a headline that blurs in word by word and keeps one word changing, a lead, an install command, two actions, a line of trust and, closing the column, the tools it is built with: a label, then two rows of marks — an odd batch staggers as three over four — one batch of related tools at a time. On either side, a wall of screenshots that never ends: a camera hangs over each, zoomed in on one card, and every few seconds pulls back, glides to the next card and settles on it — the left camera resting high, the right one low. On phones the walls become bands above and below the copy. A second layout puts the copy on the left and a single wall on the right, with the tools over its lower edge.
+A landing hero for a component library. In the middle, the copy — a small badge, a headline that blurs in word by word and keeps one word changing, a lead, an install command, two actions, a line of trust and, closing the column, the tools it is built with: a label, then two rows of marks — an odd batch staggers as three over four — one batch of related tools at a time. On either side, a wall of screenshots that never ends: a camera hangs over each, zoomed in on one card, and every few seconds pulls back, glides to the next card and settles on it — the left camera resting high, the right one low. On phones there is a single wall instead: a band of every card between the copy and the tools. A second layout puts the copy on the left and a single wall on the right, with the tools over its lower edge.
 
 The copy and the walls talk to each other. The install line ends in the name of the card a camera has just landed on, and slides to the next name as the next camera lands — so the hero is always showing something the reader can paste into a terminal. The walls are Image Walls, the headline a Text Animation, the copy control a Copy Button, the faces an Avatar Stack and the stars Half Stars. The headline is set in your theme's `font-serif`, the rest in `font-sans`; every colour is a theme token.
 
@@ -182,7 +182,7 @@ npx shadcn@latest add @algorize-ui/component-wall
         layout
         "split" | "center"
         "split"
-        The copy on the left and the wall on the right, or the copy centred between two walls — the left camera resting high, the right one low — with the tools under the copy. Below lg the two walls are bands above and below.
+        The copy on the left and the wall on the right, or the copy centred between two walls — the left camera resting high, the right one low — with the tools under the copy. Below lg a single band of every card sits between the copy and the tools.
 
         linkComponent
         ElementType

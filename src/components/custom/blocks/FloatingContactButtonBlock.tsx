@@ -305,7 +305,7 @@ export const FloatingContactButtonBlock = React.forwardRef<
             >
               <div
                 style={{ backgroundColor: resolveColor(accentColor) }}
-                className="p-4 sm:p-5 text-primary-foreground dark:text-zinc-900 flex items-center justify-between relative overflow-hidden shrink-0 transition-colors duration-300"
+                className="p-4 sm:p-5 text-primary-foreground flex items-center justify-between relative overflow-hidden shrink-0 transition-colors duration-300"
               >
                 <div className="absolute -right-10 -top-10 w-32 h-32 rounded-full bg-white/10 blur-xl pointer-events-none" />
                 <div className="flex items-center gap-3 z-10 min-w-0">
@@ -315,16 +315,16 @@ export const FloatingContactButtonBlock = React.forwardRef<
                       alt="Support Avatar"
                       className="w-9 h-9 sm:w-10 sm:h-10 rounded-full object-cover border-2 border-white/20 shadow-md"
                     />
-                    <span className="absolute bottom-0 right-0 w-2.5 h-2.5 sm:w-3 sm:h-3 rounded-full bg-emerald-400 border-2 border-white dark:border-zinc-900" />
+                    <span className="absolute bottom-0 right-0 w-2.5 h-2.5 sm:w-3 sm:h-3 rounded-full bg-emerald-400 border-2 border-primary-foreground" />
                   </div>
                   <div className="flex flex-col min-w-0">
                     <div className="flex items-center gap-1.5">
-                      <h3 className="font-semibold text-xs sm:text-sm tracking-tight truncate text-primary-foreground dark:text-zinc-900">
+                      <h3 className="font-semibold text-xs sm:text-sm tracking-tight truncate text-primary-foreground">
                         {title}
                       </h3>
-                      <Sparkles className="w-3.5 h-3.5 opacity-80 shrink-0 animate-pulse text-primary-foreground dark:text-zinc-900" />
+                      <Sparkles className="w-3.5 h-3.5 opacity-80 shrink-0 animate-pulse text-primary-foreground" />
                     </div>
-                    <p className="text-[10px] sm:text-[11px] opacity-90 truncate font-medium text-primary-foreground dark:text-zinc-900">
+                    <p className="text-[10px] sm:text-[11px] opacity-90 truncate font-medium text-primary-foreground">
                       {subtitle}
                     </p>
                   </div>
@@ -332,7 +332,7 @@ export const FloatingContactButtonBlock = React.forwardRef<
                 <button
                   type="button"
                   onClick={() => setIsOpen(false)}
-                  className="w-7 h-7 sm:w-8 sm:h-8 rounded-full bg-black/10 hover:bg-black/20 flex items-center justify-center text-primary-foreground dark:text-zinc-900 transition-colors cursor-pointer shrink-0 z-10"
+                  className="w-7 h-7 sm:w-8 sm:h-8 rounded-full bg-black/10 hover:bg-black/20 flex items-center justify-center text-primary-foreground transition-colors cursor-pointer shrink-0 z-10"
                 >
                   <X className="w-4 h-4 stroke-[2.5]" />
                 </button>
@@ -372,7 +372,7 @@ export const FloatingContactButtonBlock = React.forwardRef<
                         className={cn(
                           "px-3.5 py-2 sm:px-4 sm:py-2.5 rounded-2xl text-xs sm:text-sm leading-relaxed shadow-sm transition-colors duration-300 break-words whitespace-pre-wrap max-w-full",
                           isUser
-                            ? "rounded-br-xs font-medium text-primary-foreground dark:text-zinc-900"
+                            ? "rounded-br-xs font-medium text-primary-foreground"
                             : "bg-card border border-border/80 text-foreground rounded-bl-xs",
                         )}
                       >
@@ -398,9 +398,9 @@ export const FloatingContactButtonBlock = React.forwardRef<
                   >
                     <Bot className="w-4 h-4 text-muted-foreground animate-bounce shrink-0" />
                     <div className="flex items-center gap-1">
-                      <span className="w-1.5 h-1.5 rounded-full bg-zinc-400 animate-pulse" />
-                      <span className="w-1.5 h-1.5 rounded-full bg-zinc-400 animate-pulse delay-75" />
-                      <span className="w-1.5 h-1.5 rounded-full bg-zinc-400 animate-pulse delay-150" />
+                      <span className="w-1.5 h-1.5 rounded-full bg-muted-foreground animate-pulse" />
+                      <span className="w-1.5 h-1.5 rounded-full bg-muted-foreground animate-pulse delay-75" />
+                      <span className="w-1.5 h-1.5 rounded-full bg-muted-foreground animate-pulse delay-150" />
                     </div>
                   </motion.div>
                 )}
@@ -428,8 +428,8 @@ export const FloatingContactButtonBlock = React.forwardRef<
                   className={cn(
                     "w-9 h-9 sm:w-10 sm:h-10 rounded-xl flex items-center justify-center transition-all duration-200 cursor-pointer shrink-0",
                     inputValue.trim()
-                      ? "text-primary-foreground dark:text-zinc-900 shadow-md hover:opacity-90 scale-105"
-                      : "bg-muted text-zinc-400 dark:text-zinc-600 cursor-not-allowed",
+                      ? "text-primary-foreground shadow-md hover:opacity-90 scale-105"
+                      : "bg-muted text-muted-foreground/60 cursor-not-allowed",
                   )}
                 >
                   <Send className="w-3.5 h-3.5 sm:w-4 sm:h-4 stroke-[2.5]" />
@@ -446,7 +446,7 @@ export const FloatingContactButtonBlock = React.forwardRef<
           whileTap={{ scale: 0.95 }}
           style={{ backgroundColor: resolveColor(accentColor) }}
           className={cn(
-            "pointer-events-auto absolute inset-0 flex items-center justify-center rounded-full text-primary-foreground dark:text-zinc-900 shadow-2xl transition-colors duration-300 cursor-pointer outline-none",
+            "pointer-events-auto absolute inset-0 flex items-center justify-center rounded-full text-primary-foreground shadow-2xl transition-colors duration-300 cursor-pointer outline-none",
           )}
         >
           <div
@@ -475,7 +475,7 @@ export const FloatingContactButtonBlock = React.forwardRef<
                 className="relative"
               >
                 <MessageSquare className="w-6 h-6 sm:w-7 sm:h-7 stroke-[2.2]" />
-                <span className="absolute -top-1 -right-1 w-3 h-3 rounded-full bg-rose-500 ring-2 ring-white dark:ring-zinc-900 animate-pulse" />
+                <span className="absolute -top-1 -right-1 w-3 h-3 rounded-full bg-rose-500 ring-2 ring-primary-foreground animate-pulse" />
               </motion.div>
             )}
           </AnimatePresence>

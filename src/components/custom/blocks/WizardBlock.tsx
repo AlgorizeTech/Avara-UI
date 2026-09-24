@@ -116,7 +116,7 @@ export const WizardProgress = forwardRef<
     >
       <div
         ref={progressRef}
-        className={cn("h-full w-0", !isHex && (colorMap[color] || colorMap.primary || colorMap.indigo))}
+        className={cn("h-full w-0", !isHex && (colorMap[color] || colorMap.primary))}
         style={isHex ? { backgroundColor: color } : undefined}
       />
     </div>
@@ -144,7 +144,7 @@ export const WizardContainer = forwardRef<
     <div
       ref={ref}
       className={cn(
-        "relative w-full h-[500px] overflow-hidden bg-white dark:bg-[#09090b]",
+        "relative w-full h-[500px] overflow-hidden bg-background",
         className,
       )}
       {...props}
@@ -263,8 +263,8 @@ export const WizardInput = forwardRef<
     <input
       ref={ref}
       className={cn(
-        "w-full bg-transparent border-b-2 border-border py-4 text-2xl sm:text-3xl text-foreground placeholder:text-zinc-300 dark:placeholder:text-zinc-700 focus:outline-none transition-colors",
-        !isHex && (focusColors[color] || focusColors.indigo),
+        "w-full bg-transparent border-b-2 border-border py-4 text-2xl sm:text-3xl text-foreground placeholder:text-muted-foreground/50 focus:outline-none transition-colors",
+        !isHex && (focusColors[color] || focusColors.primary),
         className,
       )}
       style={isHex ? { borderColor: color } : undefined}
@@ -301,7 +301,7 @@ export const WizardNavigation = forwardRef<
         onClick={nextStep}
         className={cn(
           "px-6 py-3 rounded-xl font-semibold text-sm sm:text-base flex items-center gap-2 transition-all active:scale-95 shadow-sm",
-          !isHex && (btnColors[color] || btnColors.indigo),
+          !isHex && (btnColors[color] || btnColors.primary),
         )}
         style={isHex ? { backgroundColor: color, color: "#ffffff" } : undefined}
       >

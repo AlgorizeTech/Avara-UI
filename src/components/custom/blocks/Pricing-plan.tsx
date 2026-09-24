@@ -153,25 +153,25 @@ export interface SliderPricingPlanProps {
 const pricingVariants: Record<string, Record<string, string>> = {
   default: {
     container: "w-full p-6",
-    card: "relative transition-all duration-200 hover:shadow-lg dark:hover:shadow-xl dark:bg-slate-900 dark:border-slate-700",
+    card: "relative transition-all duration-200 hover:shadow-lg dark:hover:shadow-xl",
     cardPopular:
-      "border-primary/30 shadow-lg scale-105 dark:border-primary/30 dark:shadow-primary/20",
+      "border-primary/30 shadow-lg scale-105 dark:shadow-primary/20",
     cardHeader: "text-center pb-4",
-    price: "text-3xl font-semibold dark:text-white",
+    price: "text-3xl font-semibold text-foreground",
     button: "w-full mb-6",
     buttonPopular:
-      "bg-primary hover:bg-primary/90 dark:bg-primary dark:hover:bg-primary/90",
+      "bg-primary hover:bg-primary/90",
     featuresTitle:
-      "font-semibold text-sm text-muted-foreground uppercase tracking-wide dark:text-slate-400",
+      "font-semibold text-sm text-muted-foreground uppercase tracking-wide",
     featureIcon: "rounded-full p-0.5 mr-3 mt-0.5",
-    featureIconPopular: "bg-primary dark:bg-primary",
-    featureIconDefault: "bg-muted dark:bg-slate-700",
+    featureIconPopular: "bg-primary",
+    featureIconDefault: "bg-muted",
   },
   premium: {
     container: "w-full p-8",
-    card: "relative transition-all duration-300 hover:shadow-2xl border-2 dark:bg-slate-900 dark:border-slate-700 dark:hover:shadow-2xl dark:hover:shadow-slate-900/50",
+    card: "relative transition-all duration-300 hover:shadow-2xl border-2 dark:hover:shadow-2xl dark:hover:shadow-slate-900/50",
     cardPopular:
-      "border-gradient-to-r from-primary to-primary/70 shadow-2xl scale-110 bg-gradient-to-br from-background to-primary/5 dark:from-slate-900 dark:to-primary/10 dark:border-primary/30 dark:shadow-primary/20",
+      "border-gradient-to-r from-primary to-primary/70 shadow-2xl scale-110 bg-gradient-to-br from-background to-primary/5 dark:to-primary/10 dark:border-primary/30 dark:shadow-primary/20",
     cardHeader: "text-center pb-6",
     price:
       "text-4xl font-extrabold bg-gradient-to-r from-primary to-primary/70 bg-clip-text text-transparent dark:from-primary dark:to-primary/80",
@@ -179,31 +179,31 @@ const pricingVariants: Record<string, Record<string, string>> = {
     buttonPopular:
       "bg-gradient-to-r from-primary to-primary/80 hover:from-primary/90 hover:to-primary/70 shadow-lg dark:from-primary dark:to-primary/80 dark:hover:from-primary/90 dark:hover:to-primary/70",
     featuresTitle:
-      "font-semibold text-sm text-foreground uppercase tracking-wide border-b border-border pb-2 dark:text-white dark:border-slate-700",
+      "font-semibold text-sm text-foreground uppercase tracking-wide border-b border-border pb-2",
     featureIcon: "rounded-lg p-1 mr-3 mt-0.5 shadow-sm dark:shadow-slate-800",
     featureIconPopular:
       "bg-gradient-to-br from-primary to-primary/80 dark:from-primary dark:to-primary/80",
     featureIconDefault:
-      "bg-gradient-to-br from-muted to-muted/70 dark:from-slate-700 dark:to-slate-600",
+      "bg-gradient-to-br from-muted to-muted/70",
   },
   elegant: {
     container: "w-full p-8",
-    card: "relative transition-all duration-500 bg-gradient-to-b from-slate-50 to-white border border-border/60 hover:shadow-xl hover:shadow-slate-200/40 hover:-translate-y-1 dark:from-slate-800 dark:to-slate-900 dark:hover:shadow-xl dark:hover:shadow-slate-900/40",
+    card: "relative transition-all duration-500 bg-gradient-to-b from-muted/50 to-card border border-border/60 hover:shadow-xl hover:shadow-slate-200/40 hover:-translate-y-1 dark:hover:shadow-xl dark:hover:shadow-slate-900/40",
     cardPopular:
-      "border-slate-300 shadow-xl shadow-slate-200/60 scale-105 bg-gradient-to-b from-slate-100 to-white dark:border-slate-600 dark:shadow-slate-900/60 dark:from-slate-700 dark:to-slate-800",
+      "border-foreground/20 shadow-xl shadow-slate-200/60 scale-105 bg-gradient-to-b from-muted to-card dark:shadow-slate-900/60",
     cardHeader:
       "text-center pb-6 border-b border-border/60 mb-6",
     price:
       "text-3xl font-light text-foreground tracking-tight",
     button: "w-full mb-8 font-medium tracking-wide transition-all duration-300",
     buttonPopular:
-      "bg-slate-800 hover:bg-slate-700 text-white shadow-lg hover:shadow-xl dark:bg-slate-700 dark:hover:bg-slate-600",
+      "bg-primary hover:bg-primary/90 text-primary-foreground shadow-lg hover:shadow-xl",
     featuresTitle:
       "font-medium text-xs text-muted-foreground uppercase tracking-[0.1em] border-b border-border/60 pb-3 mb-4",
     featureIcon: "rounded-full p-1 mr-3 mt-0.5 transition-all duration-200",
     featureIconPopular:
-      "bg-slate-800 shadow-sm dark:bg-slate-700 dark:shadow-slate-800",
-    featureIconDefault: "bg-slate-200 dark:bg-slate-600",
+      "bg-primary shadow-sm dark:shadow-slate-800",
+    featureIconDefault: "bg-muted",
   },
 };
 
@@ -459,7 +459,7 @@ export function BasicPricingPlan({
                               "w-3 h-3",
                               variant === "elegant"
                                 ? plan.popular
-                                  ? "text-white"
+                                  ? "text-primary-foreground"
                                   : "text-muted-foreground"
                                 : plan.popular
                                   ? "text-primary-foreground"
@@ -736,7 +736,7 @@ export function SliderPricingPlan({
   return (
     <div
       className={cn(
-        "w-full max-w-2xl mx-auto p-6 bg-muted dark:bg-transparent",
+        "w-full max-w-2xl mx-auto p-6 bg-muted",
         classNames.container,
         className,
       )}
@@ -745,7 +745,7 @@ export function SliderPricingPlan({
         <div className="flex justify-center mb-6">
           <div
             className={cn(
-              "bg-primary text-white dark:text-gray-700 px-4 py-2 rounded-lg text-sm font-medium",
+              "bg-primary text-primary-foreground px-4 py-2 rounded-lg text-sm font-medium",
               classNames.eventBadge,
             )}
           >
@@ -771,7 +771,7 @@ export function SliderPricingPlan({
               max={sliderConfig.max}
               step={sliderConfig.step}
               className={cn(
-                "w-full [&_[role=slider]]:h-6 [&_[role=slider]]:w-6 [&_[role=slider]]:border-4 [&_[role=slider]]:border-white [&_[role=slider]]:bg-gray-800 [&_[role=slider]]:shadow-lg [&>.relative]:bg-gray-300 dark:[&>.relative]:bg-gray-600 [&_[role=slider]]:ring-2 [&_[role=slider]]:ring-white",
+                "w-full [&_[role=slider]]:h-6 [&_[role=slider]]:w-6 [&_[role=slider]]:border-4 [&_[role=slider]]:border-background [&_[role=slider]]:bg-primary [&_[role=slider]]:shadow-lg [&>.relative]:bg-foreground/20 [&_[role=slider]]:ring-2 [&_[role=slider]]:ring-background",
                 classNames.slider,
               )}
             />
@@ -814,7 +814,7 @@ export function SliderPricingPlan({
                   {period.badgeText && (
                     <Badge
                       className={cn(
-                        "ml-2 text-white text-xs px-2 py-0.5 rounded-md",
+                        "ml-2 text-primary-foreground text-xs px-2 py-0.5 rounded-md",
                         period.badgeClassName || "bg-primary",
                       )}
                     >
@@ -874,7 +874,7 @@ export function SliderPricingPlan({
                     classNames.featureIcon,
                   )}
                 >
-                  <Check className="w-3 h-3 text-white" />
+                  <Check className="w-3 h-3 text-primary-foreground" />
                 </div>
                 <span
                   className={cn(
@@ -891,7 +891,7 @@ export function SliderPricingPlan({
           <Button
             onClick={handleCtaClick}
             className={cn(
-              "w-full bg-primary hover:bg-primary/90 text-white font-medium py-4 rounded-xl text-base mb-4 transition-colors",
+              "w-full bg-primary hover:bg-primary/90 text-primary-foreground font-medium py-4 rounded-xl text-base mb-4 transition-colors",
               classNames.ctaButton,
             )}
           >

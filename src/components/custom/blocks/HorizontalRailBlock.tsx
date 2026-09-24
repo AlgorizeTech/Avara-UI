@@ -43,7 +43,7 @@ function RailCard({
       className={cn(
         "rounded-2xl p-6 sm:p-8 flex flex-col justify-between shrink-0 shadow-lg border transition-all duration-300 relative overflow-hidden group select-none",
         item.color ||
-          "bg-white dark:bg-zinc-900/90 border-zinc-200 dark:border-zinc-800 text-zinc-900 dark:text-white"
+          "bg-card border-border text-card-foreground"
       )}
     >
       <div>
@@ -51,7 +51,7 @@ function RailCard({
           <div className="w-12 h-12 rounded-xl bg-[var(--theme-color,var(--primary))]/10 border border-[var(--theme-color,var(--primary))]/20 flex items-center justify-center text-[var(--theme-color,var(--primary))] font-semibold shadow-xs">
             {item.icon}
           </div>
-          <span className="text-4xl sm:text-5xl font-bold text-slate-200 dark:text-zinc-800/80 tracking-tighter select-none group-hover:text-[var(--theme-color,var(--primary))]/25 transition-colors duration-300">
+          <span className="text-4xl sm:text-5xl font-bold text-foreground/10 tracking-tighter select-none group-hover:text-[var(--theme-color,var(--primary))]/25 transition-colors duration-300">
             {displayNum}
           </span>
         </div>
@@ -94,7 +94,7 @@ function ProgressBarItem({
   );
 
   return (
-    <div className="h-2 flex-1 bg-zinc-200 dark:bg-zinc-800 rounded-full overflow-hidden relative">
+    <div className="h-2 flex-1 bg-muted rounded-full overflow-hidden relative">
       <motion.div
         className="h-full bg-[var(--theme-color,var(--primary))]"
         style={{ scaleX, transformOrigin: "left" }}

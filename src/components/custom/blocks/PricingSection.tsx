@@ -18,7 +18,7 @@ const getIcon = (index: number) => ICON_POOL[index % ICON_POOL.length];
 
 const FeatureItem = ({ text }: { text: string }) => (
   <li className="flex items-start gap-3 text-sm text-muted-foreground">
-    <div className="mt-0.5 flex-shrink-0 rounded-full bg-muted dark:bg-white/10 p-1">
+    <div className="mt-0.5 flex-shrink-0 rounded-full bg-muted p-1">
       <Check className="h-3 w-3 text-foreground" />
     </div>
     <span className="leading-relaxed">{text}</span>
@@ -124,13 +124,13 @@ const PricingSection = ({
           </p>
 
           <div className="pricing-header-el mt-8 flex justify-center">
-            <div className="relative flex rounded-full bg-muted dark:bg-white/5 p-1 ring-1 ring-zinc-200 dark:ring-white/10">
+            <div className="relative flex rounded-full bg-muted p-1 ring-1 ring-border">
               <button
                 onClick={() => setPricingMode("subscription")}
                 className={`relative z-10 rounded-full px-6 py-2 text-sm font-semibold transition ${
                   pricingMode === "subscription"
-                    ? "text-black"
-                    : "text-zinc-500 dark:text-gray-400 hover:text-foreground"
+                    ? "text-primary-foreground"
+                    : "text-muted-foreground hover:text-foreground"
                 }`}
               >
                 Subscriptions
@@ -139,14 +139,14 @@ const PricingSection = ({
                 onClick={() => setPricingMode("product")}
                 className={`relative z-10 rounded-full px-6 py-2 text-sm font-semibold transition ${
                   pricingMode === "product"
-                    ? "text-black"
-                    : "text-zinc-500 dark:text-gray-400 hover:text-foreground"
+                    ? "text-primary-foreground"
+                    : "text-muted-foreground hover:text-foreground"
                 }`}
               >
                 Project Based
               </button>
               <div
-                className={`absolute inset-y-1 w-1/2 rounded-full bg-lime-400 dark:bg-[#CCFF00] transition-transform duration-300 ${
+                className={`absolute inset-y-1 w-1/2 rounded-full bg-primary transition-transform duration-300 ${
                   pricingMode === "product"
                     ? "translate-x-full"
                     : "translate-x-0"
@@ -168,9 +168,9 @@ const PricingSection = ({
               return (
                 <div
                   key={plan.id}
-                  className={`pricing-card-anim flex flex-col justify-between rounded-3xl bg-muted dark:bg-white/5 p-8 ring-1 ring-zinc-200 dark:ring-white/10 transition-all duration-300 ${
+                  className={`pricing-card-anim flex flex-col justify-between rounded-3xl bg-card p-8 ring-1 ring-border transition-all duration-300 ${
                     plan.isFeatured
-                      ? "lg:z-10 lg:scale-[1.08] ring-2 ring-lime-500 dark:ring-[#CCFF00] shadow-xl shadow-lime-500/20 dark:shadow-[0_0_60px_-15px_rgba(204,255,0,0.4)] bg-gradient-to-b from-lime-100/50 to-zinc-50 dark:from-[#CCFF00]/10 dark:to-white/5"
+                      ? "lg:z-10 lg:scale-[1.08] ring-2 ring-primary shadow-xl shadow-primary/20 dark:shadow-[0_0_60px_-15px_color-mix(in_oklab,var(--primary)_40%,transparent)] bg-gradient-to-b from-primary/10 to-card"
                       : ""
                   }`}
                 >
@@ -180,14 +180,14 @@ const PricingSection = ({
                         <Icon
                           className={`h-6 w-6 ${
                             plan.isFeatured
-                              ? "text-lime-600 dark:text-[#CCFF00]"
+                              ? "text-primary"
                               : "text-muted-foreground"
                           }`}
                         />
                         <h3
                           className={`text-lg font-semibold ${
                             plan.isFeatured
-                              ? "text-lime-600 dark:text-[#CCFF00]"
+                              ? "text-primary"
                               : "text-foreground"
                           }`}
                         >
@@ -195,7 +195,7 @@ const PricingSection = ({
                         </h3>
                       </div>
                       {plan.isFeatured && (
-                        <span className="rounded-full bg-lime-400 dark:bg-[#CCFF00] px-3 py-1 text-xs font-semibold text-black uppercase">
+                        <span className="rounded-full bg-primary px-3 py-1 text-xs font-semibold text-primary-foreground uppercase">
                           Popular
                         </span>
                       )}
@@ -227,8 +227,8 @@ const PricingSection = ({
                       href="#"
                       className={`group mt-6 flex w-full items-center justify-center gap-2 rounded-xl py-3 px-4 text-sm font-semibold transition ${
                         plan.isFeatured
-                          ? "bg-lime-400 dark:bg-[#CCFF00] text-black hover:bg-lime-500 dark:hover:bg-[#b3e600]"
-                          : "bg-zinc-200 dark:bg-gray-300 text-zinc-900 dark:text-black hover:bg-zinc-300 dark:hover:bg-gray-400"
+                          ? "bg-primary text-primary-foreground hover:bg-primary/90"
+                          : "bg-muted text-foreground hover:bg-muted/70"
                       }`}
                     >
                       {price === 0
@@ -239,7 +239,7 @@ const PricingSection = ({
                       <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" />
                     </Link>
 
-                    <div className="mt-8 h-px w-full bg-muted dark:bg-white/10" />
+                    <div className="mt-8 h-px w-full bg-border" />
 
                     <ul className="mt-8 space-y-3">
                       {plan.features?.map((feature: string, i: number) => (

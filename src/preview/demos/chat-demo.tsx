@@ -50,7 +50,7 @@ const sampleContactsData = [
 
 export default function ChatDemo({
   variant = "default",
-  color = "indigo",
+  color = "primary",
 }: {
   variant?: string;
   color?: string;

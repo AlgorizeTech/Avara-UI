@@ -69,13 +69,13 @@ const AVATARS = [
 export default function HeroCarouselDemo({
   reveal = "immediate",
   interval = 5000,
-  accent = "#f2c14e",
+  accent,
 }: {
   /** In the docs the section is already on screen, so play at once. */
   reveal?: "in-view" | "immediate";
   /** Milliseconds between slides; 0 turns autoplay off. */
   interval?: number;
-  /** The colour of the eyebrow pip and the focus rings. */
+  /** Pins the accent; the theme's primary by default. */
   accent?: string;
 }) {
   return (

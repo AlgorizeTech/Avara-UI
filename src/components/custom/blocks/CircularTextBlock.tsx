@@ -100,7 +100,7 @@ export const CircularText = React.forwardRef<HTMLDivElement, CircularTextProps>(
         </svg>
         {innerRing && (
           <span
-            className="absolute rounded-full border border-black/10 dark:border-white/15"
+            className="absolute rounded-full border border-foreground/15"
             style={{ inset: `${49 - radius}%` }}
             aria-hidden
           />

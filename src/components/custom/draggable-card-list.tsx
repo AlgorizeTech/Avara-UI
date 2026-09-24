@@ -121,7 +121,7 @@ function SingleCardItem({
             aria-label="Drag to reorder"
             className={cn(
                 "p-2.5 rounded-2xl text-muted-foreground/60 hover:text-foreground hover:bg-muted/80 cursor-grab active:cursor-grabbing transition-colors shrink-0 group-hover:text-foreground/90",
-                variant === "modern" && "bg-muted/60 dark:bg-zinc-800/80 border border-border/50 hover:bg-primary hover:text-primary-foreground hover:border-primary/30 transition-all duration-200"
+                variant === "modern" && "bg-muted/60 border border-border/50 hover:bg-primary hover:text-primary-foreground hover:border-primary/30 transition-all duration-200"
             )}
         >
             <GripVertical className="w-5 h-5" />
@@ -142,7 +142,7 @@ function SingleCardItem({
                 }}
                 transition={{ type: "spring", stiffness: 350, damping: 25 }}
                 className={cn(
-                    "relative w-full overflow-hidden rounded-2xl border border-border/80 bg-gradient-to-r from-card via-card to-primary/5 dark:from-zinc-900 dark:via-zinc-900/90 dark:to-primary/10 backdrop-blur-2xl p-4 sm:p-5 shadow-none transition-colors select-none group flex items-start justify-between gap-3",
+                    "relative w-full overflow-hidden rounded-2xl border border-border/80 bg-gradient-to-r from-card via-card to-primary/5 dark:to-primary/10 backdrop-blur-2xl p-4 sm:p-5 shadow-none transition-colors select-none group flex items-start justify-between gap-3",
                     item.hoverBorderColor || "hover:border-primary/80",
                     item.completed && "opacity-60 bg-muted/40",
                     cardClassName
@@ -239,7 +239,7 @@ function SingleCardItem({
             }}
             transition={{ type: "spring", stiffness: 350, damping: 25 }}
             className={cn(
-                "relative w-full rounded-2xl border border-border/80 bg-card dark:bg-zinc-900/90 backdrop-blur-xl p-4 sm:p-5 shadow-none transition-colors select-none group flex items-start justify-between gap-3 cursor-grab active:cursor-grabbing",
+                "relative w-full rounded-2xl border border-border/80 bg-card backdrop-blur-xl p-4 sm:p-5 shadow-none transition-colors select-none group flex items-start justify-between gap-3 cursor-grab active:cursor-grabbing",
                 item.hoverBorderColor || "hover:border-primary/80",
                 item.completed && "opacity-60 bg-muted/40",
                 cardClassName

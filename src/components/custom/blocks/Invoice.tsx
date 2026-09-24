@@ -33,32 +33,32 @@ const invoiceVariants: Record<InvoiceVariant, Record<string, string>> = {
   corporate: {
     wrapper: "bg-transparent",
     invoicePanel:
-      "bg-white dark:bg-zinc-950 border-2 border-zinc-800 dark:border-zinc-700 shadow-2xl rounded-2xl overflow-hidden p-0",
+      "bg-card border-2 border-foreground/80 dark:border-foreground/20 shadow-2xl rounded-2xl overflow-hidden p-0",
     sidebarCard:
-      "bg-white dark:bg-zinc-950 border border-border shadow-sm rounded-2xl",
+      "bg-card border border-border shadow-sm rounded-2xl",
     tableHeader:
-      "bg-zinc-900 text-white dark:bg-zinc-800 font-semibold uppercase text-xs tracking-wider",
+      "bg-foreground text-background dark:bg-muted dark:text-foreground font-semibold uppercase text-xs tracking-wider",
     tableRow:
-      "divide-border hover:bg-zinc-100 dark:hover:bg-zinc-900",
+      "divide-border hover:bg-muted",
     inputBg:
-      "bg-zinc-100 dark:bg-zinc-900 border border-zinc-300 dark:border-zinc-700",
+      "bg-muted border border-input",
     blockBg:
-      "bg-zinc-100 dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 rounded-xl",
+      "bg-muted border border-border rounded-xl",
   },
   brutalist: {
     wrapper: "bg-transparent",
     invoicePanel:
-      "bg-white dark:bg-zinc-950 border-4 border-black dark:border-white shadow-[6px_6px_0px_0px_rgba(0,0,0,1)] sm:shadow-[10px_10px_0px_0px_rgba(0,0,0,1)] dark:shadow-[6px_6px_0px_0px_rgba(255,255,255,1)] rounded-none p-4 sm:p-8 md:p-10 font-mono",
+      "bg-card border-4 border-foreground shadow-[6px_6px_0px_0px_rgba(0,0,0,1)] sm:shadow-[10px_10px_0px_0px_rgba(0,0,0,1)] dark:shadow-[6px_6px_0px_0px_rgba(255,255,255,1)] rounded-none p-4 sm:p-8 md:p-10 font-mono",
     sidebarCard:
-      "bg-white dark:bg-zinc-950 border-4 border-black dark:border-white shadow-[6px_6px_0px_0px_rgba(0,0,0,1)] dark:shadow-[6px_6px_0px_0px_rgba(255,255,255,1)] rounded-none",
+      "bg-card border-4 border-foreground shadow-[6px_6px_0px_0px_rgba(0,0,0,1)] dark:shadow-[6px_6px_0px_0px_rgba(255,255,255,1)] rounded-none",
     tableHeader:
-      "bg-black text-white dark:bg-white dark:text-black font-bold uppercase border-b-4 border-black",
+      "bg-foreground text-background font-bold uppercase border-b-4 border-foreground",
     tableRow:
-      "divide-y-4 divide-black dark:divide-white hover:bg-yellow-200 dark:hover:bg-zinc-800 font-mono",
+      "divide-y-4 divide-foreground hover:bg-yellow-200 dark:hover:bg-muted font-mono",
     inputBg:
-      "bg-white dark:bg-zinc-900 border-2 border-black dark:border-white font-mono",
+      "bg-card border-2 border-foreground font-mono",
     blockBg:
-      "bg-yellow-100 dark:bg-zinc-900 border-4 border-black dark:border-white p-4",
+      "bg-yellow-100 dark:bg-muted border-4 border-foreground p-4",
   },
 };
 
@@ -204,9 +204,9 @@ export default function Invoice({
       {/* 1. CORPORATE EXECUTIVE VARIANT */}
       {/* ========================================================================= */}
       {variant === "corporate" && (
-        <div className="bg-white dark:bg-zinc-950 border-2 border-zinc-800 dark:border-zinc-700 shadow-2xl rounded-2xl overflow-hidden w-full">
+        <div className="bg-card border-2 border-foreground/80 dark:border-foreground/20 shadow-2xl rounded-2xl overflow-hidden w-full">
           {/* Action Toolbar */}
-          <div className="bg-zinc-950 text-white p-3 sm:px-6 sm:py-2.5 border-b border-zinc-800/80 flex items-center justify-end print:hidden">
+          <div className="bg-foreground text-background dark:bg-muted dark:text-foreground p-3 sm:px-6 sm:py-2.5 border-b border-border flex items-center justify-end print:hidden">
             <div className="flex items-center gap-1.5 sm:gap-2">
               <button
                 onClick={() => setIsEditing(!isEditing)}
@@ -221,7 +221,7 @@ export default function Invoice({
               </button>
               <button
                 onClick={handlePrint}
-                className="px-2.5 py-1.5 sm:px-3 sm:py-1.5 rounded-xl bg-zinc-900 hover:bg-zinc-800 text-zinc-200 font-semibold text-xs flex items-center justify-center gap-1.5 transition-all cursor-pointer border border-zinc-800"
+                className="px-2.5 py-1.5 sm:px-3 sm:py-1.5 rounded-xl bg-background/10 hover:bg-background/20 text-background/85 border-background/15 dark:bg-card dark:hover:bg-background dark:text-foreground dark:border-border font-semibold text-xs flex items-center justify-center gap-1.5 transition-all cursor-pointer border"
                 title="Print PDF"
               >
                 <Printer className="w-3.5 h-3.5" />
@@ -229,7 +229,7 @@ export default function Invoice({
               </button>
               <button
                 onClick={handleDownload}
-                className="px-2.5 py-1.5 sm:px-3 sm:py-1.5 rounded-xl bg-zinc-900 hover:bg-zinc-800 text-zinc-200 font-semibold text-xs flex items-center justify-center gap-1.5 transition-all cursor-pointer border border-zinc-800"
+                className="px-2.5 py-1.5 sm:px-3 sm:py-1.5 rounded-xl bg-background/10 hover:bg-background/20 text-background/85 border-background/15 dark:bg-card dark:hover:bg-background dark:text-foreground dark:border-border font-semibold text-xs flex items-center justify-center gap-1.5 transition-all cursor-pointer border"
                 title="Export JSON"
               >
                 <Download className="w-3.5 h-3.5" />
@@ -269,20 +269,20 @@ export default function Invoice({
           </div>
 
           {/* Metadata Strip */}
-          <div className="p-4 sm:p-8 grid grid-cols-1 md:grid-cols-3 gap-4 sm:gap-6 bg-zinc-50 dark:bg-zinc-900 border-b border-border">
-            <div className="p-4 rounded-xl bg-white dark:bg-zinc-950 border border-border shadow-sm space-y-1">
+          <div className="p-4 sm:p-8 grid grid-cols-1 md:grid-cols-3 gap-4 sm:gap-6 bg-muted border-b border-border">
+            <div className="p-4 rounded-xl bg-card border border-border shadow-sm space-y-1">
               <span className="text-[10px] font-semibold uppercase tracking-wider text-muted-foreground block mb-2">Invoice To</span>
               <EditableInput isEditing={isEditing} value={data.invoiceTo.name} onChange={(e) => handleNestedChange("invoiceTo", "name", e.target.value)} className="font-semibold text-foreground text-sm" />
               <EditableInput isEditing={isEditing} value={data.invoiceTo.company} onChange={(e) => handleNestedChange("invoiceTo", "company", e.target.value)} className="text-xs text-muted-foreground" />
               <EditableInput isEditing={isEditing} value={data.invoiceTo.email} onChange={(e) => handleNestedChange("invoiceTo", "email", e.target.value)} className="text-xs text-muted-foreground break-all" />
             </div>
-            <div className="p-4 rounded-xl bg-white dark:bg-zinc-950 border border-border shadow-sm space-y-1">
+            <div className="p-4 rounded-xl bg-card border border-border shadow-sm space-y-1">
               <span className="text-[10px] font-semibold uppercase tracking-wider text-muted-foreground block mb-2">Schedule & Due</span>
               <p className="text-xs text-muted-foreground flex items-center justify-between">Issued: <EditableInput isEditing={isEditing} value={data.dateIssued} onChange={(e) => handleMainChange("dateIssued", e.target.value)} className="font-semibold text-foreground" /></p>
               <p className="text-xs text-muted-foreground flex items-center justify-between">Due Date: <EditableInput isEditing={isEditing} value={data.dateDue} onChange={(e) => handleMainChange("dateDue", e.target.value)} className="font-semibold text-foreground" /></p>
               <p className="text-xs text-muted-foreground flex items-center justify-between">Rep: <EditableInput isEditing={isEditing} value={data.salesPerson} onChange={(e) => handleMainChange("salesPerson", e.target.value)} className="font-semibold text-foreground" /></p>
             </div>
-            <div className="p-4 rounded-xl bg-white dark:bg-zinc-950 border border-border shadow-sm space-y-1">
+            <div className="p-4 rounded-xl bg-card border border-border shadow-sm space-y-1">
               <span className="text-[10px] font-semibold uppercase tracking-wider text-muted-foreground block mb-2">Settlement Account</span>
               <EditableInput isEditing={isEditing} value={data.billTo.bankName} onChange={(e) => handleNestedChange("billTo", "bankName", e.target.value)} className="text-xs text-muted-foreground font-semibold" />
               <EditableInput isEditing={isEditing} value={data.billTo.iban} onChange={(e) => handleNestedChange("billTo", "iban", e.target.value)} className="text-xs font-mono text-muted-foreground break-all" />
@@ -297,7 +297,7 @@ export default function Invoice({
               {data.items.map((item, idx) => (
                 <div
                   key={idx}
-                  className="p-4 rounded-2xl bg-zinc-50 dark:bg-zinc-900/60 border border-zinc-200 dark:border-zinc-800 space-y-3 shadow-sm"
+                  className="p-4 rounded-2xl bg-muted/60 border border-border space-y-3 shadow-sm"
                 >
                   <div className="flex items-center justify-between gap-2">
                     <span className={cn("text-[10px] font-mono font-semibold tracking-wider uppercase px-2.5 py-1 rounded-md shadow-sm", theme.bg)}>
@@ -320,47 +320,47 @@ export default function Invoice({
                       isEditing={isEditing}
                       value={item.item}
                       onChange={(e) => handleItemChange(idx, "item", e.target.value)}
-                      inputBg="bg-white dark:bg-zinc-950 text-foreground border border-border font-semibold text-xs"
+                      inputBg="bg-card text-foreground border border-border font-semibold text-xs"
                       className="font-semibold text-foreground text-sm"
                     />
                     <EditableInput
                       isEditing={isEditing}
                       value={item.description}
                       onChange={(e) => handleItemChange(idx, "description", e.target.value)}
-                      inputBg="bg-white dark:bg-zinc-950 text-foreground border border-border text-xs"
+                      inputBg="bg-card text-foreground border border-border text-xs"
                       className="text-xs text-muted-foreground"
                     />
                   </div>
 
-                  <div className="grid grid-cols-3 gap-2 pt-2 border-t border-zinc-200 dark:border-zinc-800 text-xs">
-                    <div className="bg-white dark:bg-zinc-950 p-2.5 rounded-xl border border-zinc-200 dark:border-zinc-800">
+                  <div className="grid grid-cols-3 gap-2 pt-2 border-t border-border text-xs">
+                    <div className="bg-card p-2.5 rounded-xl border border-border">
                       <span className="text-[9px] font-semibold text-muted-foreground block uppercase mb-0.5">Hours</span>
                       <EditableInput
                         isEditing={isEditing}
                         value={item.hours}
                         onChange={(e) => handleItemChange(idx, "hours", e.target.value)}
-                        inputBg="bg-zinc-100 dark:bg-zinc-900 text-foreground border border-border text-xs"
+                        inputBg="bg-muted text-foreground border border-border text-xs"
                         className="font-semibold text-foreground text-xs"
                       />
                     </div>
-                    <div className="bg-white dark:bg-zinc-950 p-2.5 rounded-xl border border-zinc-200 dark:border-zinc-800">
+                    <div className="bg-card p-2.5 rounded-xl border border-border">
                       <span className="text-[9px] font-semibold text-muted-foreground block uppercase mb-0.5">Qty</span>
                       <EditableInput
                         isEditing={isEditing}
                         value={item.qty}
                         onChange={(e) => handleItemChange(idx, "qty", e.target.value)}
-                        inputBg="bg-zinc-100 dark:bg-zinc-900 text-foreground border border-border text-xs"
+                        inputBg="bg-muted text-foreground border border-border text-xs"
                         className="font-semibold text-foreground text-xs"
                       />
                     </div>
-                    <div className="bg-white dark:bg-zinc-950 p-2.5 rounded-xl border border-zinc-200 dark:border-zinc-800">
+                    <div className="bg-card p-2.5 rounded-xl border border-border">
                       <span className="text-[9px] font-semibold text-muted-foreground block uppercase mb-0.5">Amount</span>
                       <EditableInput
                         isEditing={isEditing}
                         value={item.total}
                         onChange={(e) => handleItemChange(idx, "total", e.target.value)}
                         align="right"
-                        inputBg="bg-zinc-100 dark:bg-zinc-900 text-foreground border border-border text-xs font-semibold"
+                        inputBg="bg-muted text-foreground border border-border text-xs font-semibold"
                         className="font-semibold text-foreground text-xs"
                       />
                     </div>
@@ -372,7 +372,7 @@ export default function Invoice({
             {/* Desktop Table View (>= sm) */}
             <div className="hidden sm:block rounded-xl border border-border mb-6 overflow-hidden">
               <table className="w-full text-left text-xs sm:text-sm border-collapse">
-                <thead className="bg-zinc-900 text-white dark:bg-zinc-800 text-xs uppercase tracking-wider font-semibold">
+                <thead className="bg-foreground text-background dark:bg-muted dark:text-foreground text-xs uppercase tracking-wider font-semibold">
                   <tr>
                     <th className="p-3.5 w-10">#</th>
                     <th className="p-3.5">Service Description</th>
@@ -383,7 +383,7 @@ export default function Invoice({
                 </thead>
                 <tbody className="divide-y divide-border">
                   {data.items.map((item, idx) => (
-                    <tr key={idx} className="hover:bg-zinc-50 dark:hover:bg-zinc-900">
+                    <tr key={idx} className="hover:bg-muted">
                       <td className="p-3.5 font-mono text-xs text-muted-foreground">{idx + 1}</td>
                       <td className="p-3.5 space-y-1">
                         <EditableInput isEditing={isEditing} value={item.item} onChange={(e) => handleItemChange(idx, "item", e.target.value)} className="font-semibold text-foreground" />
@@ -407,15 +407,15 @@ export default function Invoice({
             </div>
 
             {isEditing && (
-              <button onClick={addItem} className={cn("flex items-center gap-2 text-xs font-semibold mb-6 px-3.5 py-2 rounded-xl border border-border bg-zinc-50 dark:bg-zinc-900 hover:bg-zinc-100 dark:hover:bg-zinc-800 transition-all cursor-pointer shadow-sm", theme.text)}>
+              <button onClick={addItem} className={cn("flex items-center gap-2 text-xs font-semibold mb-6 px-3.5 py-2 rounded-xl border border-border bg-muted/60 hover:bg-muted transition-all cursor-pointer shadow-sm", theme.text)}>
                 <Plus className="w-4 h-4" /> Add Service Item
               </button>
             )}
 
             {/* Footer Summary */}
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6 items-center pt-6 border-t border-border">
-              <div className="p-4 rounded-xl bg-zinc-100 dark:bg-zinc-900 border border-border flex items-center gap-4">
-                <QrCode className="w-10 h-10 text-zinc-900 dark:text-white shrink-0" />
+              <div className="p-4 rounded-xl bg-muted border border-border flex items-center gap-4">
+                <QrCode className="w-10 h-10 text-foreground shrink-0" />
                 <div>
                   <p className="font-semibold text-xs text-foreground">Mobile Bank Scan & Pay</p>
                   <p className="text-[11px] text-muted-foreground">Scan with corporate banking app to settle instantly.</p>
@@ -440,21 +440,21 @@ export default function Invoice({
       {variant === "brutalist" && (
         <div className="space-y-6 font-mono w-full">
           {/* Action Bar */}
-          <div className={cn("p-4 border-4 border-black dark:border-white shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] sm:shadow-[6px_6px_0px_0px_rgba(0,0,0,1)] flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 print:hidden", theme.bg)}>
+          <div className={cn("p-4 border-4 border-foreground shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] sm:shadow-[6px_6px_0px_0px_rgba(0,0,0,1)] flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 print:hidden", theme.bg)}>
             <span className={cn("font-bold uppercase text-xs sm:text-sm", theme.fg)}>[ACTION_PANEL // NEO_BRUTAL]</span>
             <div className="flex flex-wrap items-center gap-2.5 w-full sm:w-auto">
-              <button onClick={() => setIsEditing(!isEditing)} className="flex-1 sm:flex-initial px-3.5 py-2 bg-black text-white font-bold text-xs uppercase border-2 border-black shadow-[2px_2px_0px_0px_rgba(255,255,255,1)] hover:bg-zinc-800 cursor-pointer">
+              <button onClick={() => setIsEditing(!isEditing)} className="flex-1 sm:flex-initial px-3.5 py-2 bg-foreground text-background font-bold text-xs uppercase border-2 border-foreground shadow-[2px_2px_0px_0px_rgba(255,255,255,1)] hover:bg-foreground/85 cursor-pointer">
                 {isEditing ? "SAVE_DATA" : "EDIT_INVOICE"}
               </button>
-              <button onClick={handlePrint} className="flex-1 sm:flex-initial px-3.5 py-2 bg-white text-black font-bold text-xs uppercase border-2 border-black shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] hover:bg-zinc-100 cursor-pointer">PRINT_PDF</button>
-              <button onClick={handleDownload} className="flex-1 sm:flex-initial px-3.5 py-2 bg-white text-black font-bold text-xs uppercase border-2 border-black shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] hover:bg-zinc-100 cursor-pointer">GET_JSON</button>
+              <button onClick={handlePrint} className="flex-1 sm:flex-initial px-3.5 py-2 bg-background text-foreground font-bold text-xs uppercase border-2 border-foreground shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] hover:bg-muted cursor-pointer">PRINT_PDF</button>
+              <button onClick={handleDownload} className="flex-1 sm:flex-initial px-3.5 py-2 bg-background text-foreground font-bold text-xs uppercase border-2 border-foreground shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] hover:bg-muted cursor-pointer">GET_JSON</button>
             </div>
           </div>
 
-          <div className="bg-white dark:bg-zinc-950 border-4 border-black dark:border-white shadow-[6px_6px_0px_0px_rgba(0,0,0,1)] sm:shadow-[10px_10px_0px_0px_rgba(0,0,0,1)] p-4 sm:p-8 md:p-10 space-y-6 sm:space-y-8">
-            <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 pb-6 border-b-4 border-black dark:border-white">
+          <div className="bg-card border-4 border-foreground shadow-[6px_6px_0px_0px_rgba(0,0,0,1)] sm:shadow-[10px_10px_0px_0px_rgba(0,0,0,1)] p-4 sm:p-8 md:p-10 space-y-6 sm:space-y-8">
+            <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 pb-6 border-b-4 border-foreground">
               <div>
-                <span className={cn("border-2 border-black font-bold px-2.5 py-1 text-xs uppercase tracking-wider", theme.bg)}>STATEMENT // OFFICIAL</span>
+                <span className={cn("border-2 border-foreground font-bold px-2.5 py-1 text-xs uppercase tracking-wider", theme.bg)}>STATEMENT // OFFICIAL</span>
                 <h1 className="text-2xl sm:text-3xl font-bold uppercase text-foreground mt-3">ALGORIZE_UI</h1>
               </div>
               <div className="text-left sm:text-right">
@@ -464,13 +464,13 @@ export default function Invoice({
             </div>
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-6">
-              <div className="p-4 border-4 border-black dark:border-white shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] bg-white dark:bg-zinc-900 space-y-1">
+              <div className="p-4 border-4 border-foreground shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] bg-card space-y-1">
                 <span className="font-bold uppercase text-xs block mb-1">BILL_TO:</span>
                 <EditableInput isEditing={isEditing} value={data.invoiceTo.name} onChange={(e) => handleNestedChange("invoiceTo", "name", e.target.value)} className="font-semibold text-base sm:text-lg" />
                 <EditableInput isEditing={isEditing} value={data.invoiceTo.company} onChange={(e) => handleNestedChange("invoiceTo", "company", e.target.value)} className="text-xs" />
                 <EditableInput isEditing={isEditing} value={data.invoiceTo.email} onChange={(e) => handleNestedChange("invoiceTo", "email", e.target.value)} className="text-xs break-all" />
               </div>
-              <div className={cn("p-4 border-4 border-black dark:border-white shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] text-foreground space-y-1", theme.lightBg)}>
+              <div className={cn("p-4 border-4 border-foreground shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] text-foreground space-y-1", theme.lightBg)}>
                 <span className="font-bold uppercase text-xs block mb-1">PAYMENT_TERMS:</span>
                 <p className="text-xs font-semibold">DUE: <EditableInput isEditing={isEditing} value={data.dateDue} onChange={(e) => handleMainChange("dateDue", e.target.value)} /></p>
                 <p className="text-xs">BANK: <EditableInput isEditing={isEditing} value={data.billTo.bankName} onChange={(e) => handleNestedChange("billTo", "bankName", e.target.value)} /></p>
@@ -479,30 +479,30 @@ export default function Invoice({
             </div>
 
             {/* Brutalist Table */}
-            <div className="border-4 border-black dark:border-white overflow-hidden">
+            <div className="border-4 border-foreground overflow-hidden">
               <table className="w-full text-left text-xs sm:text-sm">
-                <thead className="bg-black text-white dark:bg-white dark:text-black font-bold uppercase text-xs">
+                <thead className="bg-foreground text-background font-bold uppercase text-xs">
                   <tr>
-                    <th className="p-3 border-r-2 border-black dark:border-white">ITEM</th>
-                    <th className="p-3 text-right border-r-2 border-black dark:border-white w-16">QTY</th>
+                    <th className="p-3 border-r-2 border-foreground">ITEM</th>
+                    <th className="p-3 text-right border-r-2 border-foreground w-16">QTY</th>
                     <th className="p-3 text-right w-28">TOTAL</th>
-                    {isEditing && <th className="p-3 text-center w-12 border-l-2 border-black">ACT</th>}
+                    {isEditing && <th className="p-3 text-center w-12 border-l-2 border-foreground">ACT</th>}
                   </tr>
                 </thead>
-                <tbody className="divide-y-2 divide-black dark:divide-white">
+                <tbody className="divide-y-2 divide-foreground">
                   {data.items.map((item, idx) => (
-                    <tr key={idx} className="hover:bg-zinc-100 dark:hover:bg-zinc-800">
-                      <td className="p-3 border-r-2 border-black dark:border-white font-semibold">
+                    <tr key={idx} className="hover:bg-muted">
+                      <td className="p-3 border-r-2 border-foreground font-semibold">
                         <EditableInput isEditing={isEditing} value={item.item} onChange={(e) => handleItemChange(idx, "item", e.target.value)} />
                       </td>
-                      <td className="p-3 text-right border-r-2 border-black dark:border-white">
+                      <td className="p-3 text-right border-r-2 border-foreground">
                         <EditableInput isEditing={isEditing} value={item.qty} onChange={(e) => handleItemChange(idx, "qty", e.target.value)} align="right" />
                       </td>
                       <td className={cn("p-3 text-right font-bold", theme.text)}>
                         <EditableInput isEditing={isEditing} value={item.total} onChange={(e) => handleItemChange(idx, "total", e.target.value)} align="right" />
                       </td>
                       {isEditing && (
-                        <td className="p-3 text-center border-l-2 border-black">
+                        <td className="p-3 text-center border-l-2 border-foreground">
                           <button onClick={() => removeItem(idx)} className="text-rose-600 font-semibold p-1"><Trash2 className="w-4 h-4" /></button>
                         </td>
                       )}
@@ -513,13 +513,13 @@ export default function Invoice({
             </div>
 
             {isEditing && (
-              <button onClick={addItem} className="px-4 py-2 bg-black text-white font-bold text-xs uppercase border-2 border-black shadow-[2px_2px_0px_0px_rgba(0,0,0,1)]">
+              <button onClick={addItem} className="px-4 py-2 bg-foreground text-background font-bold text-xs uppercase border-2 border-foreground shadow-[2px_2px_0px_0px_rgba(0,0,0,1)]">
                 + ADD_ITEM
               </button>
             )}
 
             <div className="flex justify-end pt-4">
-              <div className={cn("p-4 sm:p-6 border-4 border-black dark:border-white shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] sm:shadow-[6px_6px_0px_0px_rgba(0,0,0,1)] text-right space-y-1 w-full sm:w-auto", theme.bg)}>
+              <div className={cn("p-4 sm:p-6 border-4 border-foreground shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] sm:shadow-[6px_6px_0px_0px_rgba(0,0,0,1)] text-right space-y-1 w-full sm:w-auto", theme.bg)}>
                 <span className={cn("font-bold text-xs uppercase block", theme.fg)}>AMOUNT DUE NOW</span>
                 <EditableInput
                   isEditing={isEditing}

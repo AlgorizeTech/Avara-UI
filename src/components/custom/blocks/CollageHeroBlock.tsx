@@ -87,7 +87,7 @@ function Photo({ photo, className }: { photo: CollagePhoto; className?: string }
     <figure
       data-kg-photo=""
       className={cn(
-        "group relative overflow-hidden rounded-[22px] bg-black/[0.04] transition-transform duration-500 ease-out hover:-translate-y-1",
+        "group relative overflow-hidden rounded-[22px] bg-foreground/[0.04] transition-transform duration-500 ease-out hover:-translate-y-1",
         className,
       )}
     >
@@ -186,7 +186,7 @@ function CollageHeroRoot({
   return (
     <section
       ref={rootRef}
-      className={cn("relative w-full overflow-hidden bg-white text-[#1a1a1a] dark:bg-[#0f0e14] dark:text-white", className)}
+      className={cn("relative w-full overflow-hidden bg-background text-foreground", className)}
       style={{ ...vars, ...style }}
       {...props}
     >
@@ -272,7 +272,7 @@ function CollageHeroRoot({
         <div className="mt-8 grid grid-cols-2 gap-3 sm:grid-cols-3 sm:gap-4 lg:mt-6 lg:grid-cols-[1fr_1fr_1.15fr_1fr_1fr]">
           <div className="flex flex-col justify-start gap-4 sm:col-span-1 lg:pt-4">
             {caption && (
-              <p data-kg-lead="" className="text-[11px] font-semibold uppercase leading-[1.5] tracking-[0.12em] text-black/80 dark:text-white/80">
+              <p data-kg-lead="" className="text-[11px] font-semibold uppercase leading-[1.5] tracking-[0.12em] text-foreground/80">
                 {caption}
               </p>
             )}
@@ -300,7 +300,7 @@ function CollageHeroRoot({
                 <span className="block font-serif text-4xl leading-none text-primary" aria-hidden>
                   &ldquo;
                 </span>
-                <p className="-mt-1 text-[12.5px] leading-relaxed text-black/75 dark:text-white/75">{quote}</p>
+                <p className="-mt-1 text-[12.5px] leading-relaxed text-foreground/75">{quote}</p>
               </>
             )}
           </div>
@@ -324,7 +324,7 @@ function CollageHeroRoot({
                     <Play size={16} className="ml-0.5 fill-current" />
                   </span>
                   <span className="text-left">
-                    {video.eyebrow && <span className="block text-[11px] text-black/50 dark:text-white/50">{video.eyebrow}</span>}
+                    {video.eyebrow && <span className="block text-[11px] text-foreground/50">{video.eyebrow}</span>}
                     <span className="block max-w-[15rem] text-[13px] font-medium leading-snug">{video.text}</span>
                   </span>
                 </DialogTrigger>

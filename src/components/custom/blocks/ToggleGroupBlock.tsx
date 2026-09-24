@@ -92,7 +92,7 @@ const ToggleGroupImpl = forwardRef<HTMLDivElement, ToggleGroupImplProps>(
       defaultValue,
       onValueChange,
       variant = "default",
-      color = "zinc",
+      color = "primary",
       size = "md",
       disabled = false,
       className,

@@ -62,14 +62,14 @@ export function BreadcrumbBlock({
   const Separator = () => {
     if (variant === "slash")
       return (
-        <Slash className="w-3.5 h-3.5 text-zinc-300 dark:text-zinc-600 shrink-0 -rotate-12 mx-1" />
+        <Slash className="w-3.5 h-3.5 text-muted-foreground/50 shrink-0 -rotate-12 mx-1" />
       );
     if (variant === "solid")
       return (
-        <ChevronRight className="w-4 h-4 text-zinc-300 dark:text-zinc-600 shrink-0 mx-1" />
+        <ChevronRight className="w-4 h-4 text-muted-foreground/50 shrink-0 mx-1" />
       );
     return (
-      <ChevronRight className="w-4 h-4 text-zinc-400 dark:text-zinc-600 shrink-0 mx-1" />
+      <ChevronRight className="w-4 h-4 text-muted-foreground/70 shrink-0 mx-1" />
     );
   };
 
