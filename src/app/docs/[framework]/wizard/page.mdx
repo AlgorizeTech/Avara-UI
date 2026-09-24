@@ -3,7 +3,7 @@ import { extractCode } from "@/lib/code";
 
 # Progress Wizard
 
-A "Typeform" style multi-step wizard featuring buttery smooth vertical slide transitions powered by GSAP, native keyboard navigation, and an interactive progress bar.
+A "Typeform" style multi-step wizard featuring buttery smooth vertical slide transitions powered by plain CSS transitions, native keyboard navigation, and an interactive progress bar.
 
 This component relies on the **Compound Component** pattern using React Context. This allows you to place the `WizardProgress` bar independently of the main `WizardContainer`, and nest complex forms inside the `WizardStep` blocks without passing deep props.
 
@@ -83,7 +83,7 @@ ${wizardPreamble}
       {/* Top progress bar — reads totalSteps from context */}
       <WizardProgress />
 
-      {/* Overflow-hidden container the GSAP slide happens inside */}
+      {/* Overflow-hidden container the slide happens inside */}
       <WizardContainer>
 ${wizardSteps}
       </WizardContainer>
@@ -115,7 +115,7 @@ ${wizardPreamble}
       {/* Top progress bar — reads totalSteps from context */}
       <WizardProgress />
 
-      {/* Overflow-hidden container the GSAP slide happens inside */}
+      {/* Overflow-hidden container the slide happens inside */}
       <WizardContainer>
 ${wizardSteps}
       </WizardContainer>
@@ -144,7 +144,7 @@ ${wizardPreamble}
     // WizardProgress is an independent child — omit it entirely and the
     // steps still animate and navigate exactly the same.
     <Wizard key={runKey}>
-      {/* Overflow-hidden container the GSAP slide happens inside */}
+      {/* Overflow-hidden container the slide happens inside */}
       <WizardContainer>
 ${wizardSteps}
       </WizardContainer>
@@ -234,8 +234,8 @@ Learn about the Wizard component's multi-step capabilities, providing state mana
     <p className="text-muted-foreground text-sm">Uses React Context to share state across child components, preventing messy prop drilling and enabling flexible layouts.</p>
   </div>
   <div className="p-6 rounded-2xl border border-border bg-card">
-    <h3 className="text-lg font-semibold text-card-foreground mb-2">GSAP Animations</h3>
-    <p className="text-muted-foreground text-sm">Features premium, buttery smooth vertical sliding transitions engineered with GSAP.</p>
+    <h3 className="text-lg font-semibold text-card-foreground mb-2">Library-free Animations</h3>
+    <p className="text-muted-foreground text-sm">Features premium, buttery smooth vertical sliding transitions built on CSS transitions — no animation library to install.</p>
   </div>
   <div className="p-6 rounded-2xl border border-border bg-card">
     <h3 className="text-lg font-semibold text-card-foreground mb-2">Keyboard Navigation</h3>
@@ -335,7 +335,7 @@ Learn about the Wizard component's multi-step capabilities, providing state mana
           <strong>Required</strong>
         </td>
         <td>
-          The 0-based index of this specific step. Used by the GSAP animation
+          The 0-based index of this specific step. Used by the animation
           engine to calculate the vertical Y-offset relative to the{" "}
           <code>currentStep</code>.
         </td>

@@ -1,5 +1,5 @@
 import { ExampleShowcase } from "@/components/site/Sandbox";
-import { extractCode } from "@/lib/code";
+import { extractMotionCode } from "@/lib/code";
 
 # Memories Card
 
@@ -94,7 +94,7 @@ export default function TravelDeck() {
       ],
       props: { showIndex: true },
       usage: usageOnChange,
-      code: extractCode("src/components/custom/blocks/MemoriesCardBlock.tsx"),
+      code: extractMotionCode("src/components/custom/blocks/MemoriesCardBlock.tsx"),
     },
   ]}
 />
@@ -220,7 +220,7 @@ Discover the key capabilities that make this component an excellent choice for m
         </td>
         <td>
           A unique identifier string required for safe React list rendering and
-          Framer Motion layout transitions.
+          for tracking each card as the deck reorders.
         </td>
       </tr>
       <tr>

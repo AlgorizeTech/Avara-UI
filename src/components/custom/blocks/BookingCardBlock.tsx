@@ -1,7 +1,6 @@
 "use client";
 
 import { cn } from "@/lib/utils";
-import { AnimatePresence, motion } from "framer-motion";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import React, { createContext, useContext, useEffect, useState } from "react";
 
@@ -299,6 +298,29 @@ export interface BookingCardConfirmationProps {
   className?: string;
 }
 
+// The cover fades in and out over 0.25s. Inside it the ring draws (0.5s), the
+// check follows (0.35s from 0.45s), the details rise 12px (0.35s from 0.7s)
+// and the actions fade in (0.3s from 1s) — all ease-out. The strokes draw the
+// way Framer Motion's `pathLength` does: `pathLength="1"` on the shape and
+// a dash array growing from "0 1" to "1 1".
+const CONFIRMATION_CSS = `
+.booking-card-confirmation { transition: opacity 0.25s cubic-bezier(0, 0, 0.58, 1); }
+.booking-card-confirmation[data-state="closed"] { opacity: 0; }
+@starting-style {
+  .booking-card-confirmation[data-state="open"] { opacity: 0; }
+}
+@keyframes booking-card-draw {
+  from { stroke-dasharray: 0px 1px; }
+  to { stroke-dasharray: 1px 1px; }
+}
+@keyframes booking-card-rise { from { opacity: 0; translate: 0 12px; } }
+@keyframes booking-card-fade { from { opacity: 0; } }
+.booking-card-ring { animation: booking-card-draw 0.5s cubic-bezier(0, 0, 0.58, 1) both; }
+.booking-card-check { animation: booking-card-draw 0.35s cubic-bezier(0, 0, 0.58, 1) 0.45s both; }
+.booking-card-details { animation: booking-card-rise 0.35s cubic-bezier(0, 0, 0.58, 1) 0.7s backwards; }
+.booking-card-actions { animation: booking-card-fade 0.3s cubic-bezier(0, 0, 0.58, 1) 1s backwards; }
+`;
+
 /**
  * Covers the card once a booking is made: the check draws itself, then the
  * details rise in. "Book another" clears it.
@@ -307,71 +329,72 @@ function BookingCardConfirmation({ withName, place, className }: BookingCardConf
   const { day, slot, status, reset } = useBookingCard("Confirmation");
   const open = status === "booked" && day !== null && slot !== null;
 
+  // "Book another" clears the day and slot straight away, but the cover is
+  // still fading out: it keeps showing the booking it opened with.
+  const [booked, setBooked] = useState<Booking | null>(null);
+  if (open && (booked?.day !== day || booked?.slot !== slot)) setBooked({ day, slot });
+  const [mounted, setMounted] = useState(open);
+  if (open && !mounted) setMounted(true);
+
+  useEffect(() => {
+    if (open || !mounted) return;
+    // Backstop for when no transitionend arrives (e.g. a hidden tab).
+    const timer = setTimeout(() => setMounted(false), 300);
+    return () => clearTimeout(timer);
+  }, [open, mounted]);
+
+  const shown = open ? { day, slot } : booked;
+
   return (
-    <AnimatePresence>
-      {open && (
-        <motion.div
-          key="confirmation"
+    <>
+      {mounted && shown && (
+        <div
           role="status"
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          exit={{ opacity: 0 }}
-          transition={{ duration: 0.25 }}
+          data-state={open ? "open" : "closed"}
+          onTransitionEnd={(e) => {
+            if (e.target === e.currentTarget && e.propertyName === "opacity" && !open) {
+              setMounted(false);
+            }
+          }}
           className={cn(
-            "absolute inset-0 z-10 flex flex-col items-center justify-center gap-4 rounded-[inherit] bg-card/85 p-6 text-center backdrop-blur-xl",
+            "booking-card-confirmation absolute inset-0 z-10 flex flex-col items-center justify-center gap-4 rounded-[inherit] bg-card/85 p-6 text-center backdrop-blur-xl",
             className,
           )}
         >
-          <motion.svg
-            viewBox="0 0 64 64"
-            className="size-20"
-            initial="hidden"
-            animate="shown"
-            aria-hidden
-          >
-            <motion.circle
+          <style>{CONFIRMATION_CSS}</style>
+          <svg viewBox="0 0 64 64" className="size-20" aria-hidden>
+            <circle
               cx="32"
               cy="32"
               r="28"
               fill="none"
               strokeWidth="3"
-              className="stroke-primary"
-              variants={{ hidden: { pathLength: 0 }, shown: { pathLength: 1 } }}
-              transition={{ duration: 0.5, ease: "easeOut" }}
+              pathLength={1}
+              className="booking-card-ring stroke-primary"
             />
-            <motion.path
+            <path
               d="M20 33 L28 41 L44 24"
               fill="none"
               strokeWidth="3.5"
               strokeLinecap="round"
               strokeLinejoin="round"
-              className="stroke-primary"
-              variants={{ hidden: { pathLength: 0 }, shown: { pathLength: 1 } }}
-              transition={{ duration: 0.35, delay: 0.45, ease: "easeOut" }}
+              pathLength={1}
+              className="booking-card-check stroke-primary"
             />
-          </motion.svg>
+          </svg>
 
-          <motion.div
-            initial={{ opacity: 0, y: 12 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.7, duration: 0.35, ease: "easeOut" }}
-          >
+          <div className="booking-card-details">
             <p className="text-lg font-semibold">Booked</p>
             <p className="mt-1 text-sm text-foreground/70">
-              {LONG_DATE.format(day)} at {slot}
+              {LONG_DATE.format(shown.day)} at {shown.slot}
             </p>
             <p className="mt-0.5 text-sm text-foreground/60">
               with {withName}
               {place ? `, ${place}` : ""}
             </p>
-          </motion.div>
+          </div>
 
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ delay: 1, duration: 0.3 }}
-            className="flex w-full max-w-[240px] flex-col gap-2"
-          >
+          <div className="booking-card-actions flex w-full max-w-[240px] flex-col gap-2">
             <button
               type="button"
               className="h-10 rounded-full bg-primary px-4 text-sm font-medium text-primary-foreground hover:bg-primary/90 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary"
@@ -385,10 +408,10 @@ function BookingCardConfirmation({ withName, place, className }: BookingCardConf
             >
               Book another
             </button>
-          </motion.div>
-        </motion.div>
+          </div>
+        </div>
       )}
-    </AnimatePresence>
+    </>
   );
 }
 

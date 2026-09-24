@@ -1,7 +1,6 @@
 "use client";
 
 import React, { forwardRef, useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState } from "react";
-import gsap from "gsap";
 import { cn } from "@/lib/utils";
 
 // ==========================================
@@ -91,6 +90,177 @@ function layout(items: WallItem[], columns: number) {
   return { placed, width: columns * COL_W, height: Math.max(...bottoms) };
 }
 
+// ------------------------------------------
+// Camera flights, on the Web Animations API. The canvas's `translate` and
+// `scale` run as two animations; a frame loop only reads the camera back out
+// (same curves, in JS) so the copies of the tile can be culled.
+// ------------------------------------------
+interface Camera {
+  x: number;
+  y: number;
+  s: number;
+}
+
+type Ease = "linear" | "in1" | "out1" | "in2" | "out2";
+// power1 / power2 in and out, exact as cubic-beziers and as functions.
+const EASE_CSS: Record<Ease, string> = {
+  linear: "linear",
+  in1: "cubic-bezier(0.33333, 0, 0.66667, 0.33333)",
+  out1: "cubic-bezier(0.33333, 0.66667, 0.66667, 1)",
+  in2: "cubic-bezier(0.33333, 0, 0.66667, 0)",
+  out2: "cubic-bezier(0.33333, 1, 0.66667, 1)",
+};
+const EASE_FN: Record<Ease, (p: number) => number> = {
+  linear: (p) => p,
+  in1: (p) => p * p,
+  out1: (p) => 1 - (1 - p) * (1 - p),
+  in2: (p) => p * p * p,
+  out2: (p) => 1 - (1 - p) * (1 - p) * (1 - p),
+};
+
+/** A value's path through a flight: stops (in seconds), each easing to the next. */
+interface Stop {
+  at: number;
+  value: number;
+  ease: Ease;
+}
+
+/**
+ * An `inOut` ease from `from` to `to` over [t0, t1], as an ease-in half and an
+ * ease-out half meeting at the midpoint — which is exactly how GSAP's
+ * power1.inOut / power2.inOut are defined.
+ */
+function inOut(from: number, to: number, t0: number, t1: number, power: 1 | 2): Stop[] {
+  return [
+    { at: t0, value: from, ease: power === 1 ? "in1" : "in2" },
+    { at: (t0 + t1) / 2, value: (from + to) / 2, ease: power === 1 ? "out1" : "out2" },
+    { at: t1, value: to, ease: "linear" },
+  ];
+}
+
+function valueAt(stops: Stop[], t: number) {
+  for (let i = 0; i < stops.length - 1; i++) {
+    const a = stops[i];
+    const b = stops[i + 1];
+    if (t < a.at) return a.value;
+    if (t < b.at) return a.value + (b.value - a.value) * EASE_FN[a.ease]((t - a.at) / (b.at - a.at));
+  }
+  return stops[stops.length - 1].value;
+}
+
+interface FlightPath {
+  x: Stop[];
+  /** Same stops as `x` (times and eases), other values. */
+  y: Stop[];
+  s: Stop[];
+  /** Seconds. */
+  duration: number;
+}
+
+interface Flight {
+  /** Playing: not paused and not over. */
+  isActive: () => boolean;
+  paused: () => boolean;
+  pause: () => void;
+  resume: () => void;
+  /** Stop where it is, leaving the camera there. */
+  kill: () => void;
+}
+
+function fly(
+  canvas: HTMLElement,
+  path: FlightPath,
+  on: {
+    /** Every frame (and on pause): the camera, which the animations paint. */
+    update: (camera: Camera) => void;
+    /** On kill: the camera, to be painted before the animations let go. */
+    freeze: (camera: Camera) => void;
+    complete: () => void;
+  },
+): Flight {
+  const ms = path.duration * 1000;
+  const cameraAt = (time: number) => ({
+    x: valueAt(path.x, time / 1000),
+    y: valueAt(path.y, time / 1000),
+    s: valueAt(path.s, time / 1000),
+  });
+  const frames = (stops: Stop[], value: (stop: Stop, i: number) => Keyframe) =>
+    stops.map((stop, i) => ({
+      offset: stop.at / path.duration,
+      easing: EASE_CSS[stop.ease],
+      ...value(stop, i),
+    }));
+  // Held at the end until `complete` has painted the landing.
+  const options: KeyframeAnimationOptions = { duration: ms, fill: "forwards" };
+  const animations =
+    typeof canvas.animate === "function"
+      ? [
+          canvas.animate(
+            frames(path.x, (stop, i) => ({ translate: `${stop.value}px ${path.y[i]?.value ?? 0}px` })),
+            options,
+          ),
+          canvas.animate(
+            frames(path.s, (stop) => ({ scale: String(stop.value) })),
+            options,
+          ),
+        ]
+      : [];
+
+  let state: "running" | "paused" | "over" = "running";
+  let frame = 0;
+  const time = () => Math.min((animations[0]?.currentTime as number | null) ?? ms, ms);
+  const tick = () => {
+    if (state !== "running") return;
+    on.update(cameraAt(time()));
+    frame = requestAnimationFrame(tick);
+  };
+  const release = () => {
+    state = "over";
+    cancelAnimationFrame(frame);
+    for (const animation of animations) animation.cancel();
+  };
+
+  if (animations.length === 0) {
+    state = "over";
+    on.update(cameraAt(ms));
+    on.complete();
+  } else {
+    frame = requestAnimationFrame(tick);
+    Promise.all(animations.map((animation) => animation.finished)).then(
+      () => {
+        if (state === "over") return;
+        on.complete();
+        release();
+      },
+      // Cancelled: killed, or torn down.
+      () => {},
+    );
+  }
+
+  return {
+    isActive: () => state === "running",
+    paused: () => state === "paused",
+    pause: () => {
+      if (state !== "running") return;
+      state = "paused";
+      cancelAnimationFrame(frame);
+      for (const animation of animations) animation.pause();
+      on.update(cameraAt(time()));
+    },
+    resume: () => {
+      if (state !== "paused") return;
+      state = "running";
+      for (const animation of animations) animation.play();
+      frame = requestAnimationFrame(tick);
+    },
+    kill: () => {
+      if (state === "over") return;
+      on.freeze(cameraAt(time()));
+      release();
+    },
+  };
+}
+
 const prefersReducedMotion = () =>
   typeof window !== "undefined" && window.matchMedia?.("(prefers-reduced-motion: reduce)").matches;
 
@@ -171,7 +341,7 @@ const ImageWallInner = forwardRef<HTMLDivElement, ImageWallProps>(
     const wrapRef = useRef<HTMLDivElement | null>(null);
     const canvasRef = useRef<HTMLDivElement>(null);
     const cameraRef = useRef({ x: 0, y: 0, s: zoom });
-    const flightRef = useRef<gsap.core.Timeline | null>(null);
+    const flightRef = useRef<Flight | null>(null);
 
     const { placed, width, height } = useMemo(() => layout(items, columns), [items, columns]);
     const n = placed.length;
@@ -244,11 +414,32 @@ const ImageWallInner = forwardRef<HTMLDivElement, ImageWallProps>(
       const el = canvasRef.current;
       if (!el) return;
       const { x, y, s } = cameraRef.current;
-      el.style.transform = `translate3d(${x}px, ${y}px, 0) scale(${s})`;
+      // `translate` then `scale`, about the top-left corner — the transform
+      // translate3d(x, y, 0) scale(s), split into the two properties the
+      // flights animate.
+      el.style.translate = `${x}px ${y}px`;
+      el.style.scale = String(s);
       // The server renders the canvas invisible: it has no camera until now.
       el.style.opacity = "1";
       cull();
     }, [cull]);
+
+    // A flight's callbacks: follow the camera for culling (the animations
+    // paint it), or paint it where a killed flight stops.
+    const flightHooks = useCallback(
+      (complete: () => void) => ({
+        update: (camera: Camera) => {
+          cameraRef.current = camera;
+          cull();
+        },
+        freeze: (camera: Camera) => {
+          cameraRef.current = camera;
+          paint();
+        },
+        complete,
+      }),
+      [cull, paint],
+    );
 
     // Where the camera rests to hold card `i` at the anchor — the middle of the window by default.
     const restFor = useCallback(
@@ -294,18 +485,27 @@ const ImageWallInner = forwardRef<HTMLDivElement, ImageWallProps>(
         cam.y = target.y - wrap.clientHeight * 0.2;
         paint();
         setFlying(true);
-        flightRef.current = gsap
-          .timeline({
-            onUpdate: paint,
-            onComplete: () => {
-              introLive = false;
-              cameraRef.current = restFor(focusRef.current);
-              paint();
-              setFlying(false);
-            },
-          })
-          .to(cam, { x: target.x, y: target.y, duration: intro / 1000 + 1, ease: "power1.inOut" }, 0)
-          .to(cam, { s: target.s, duration: 1, ease: "power2.inOut" }, intro / 1000);
+        // x and y drift over the whole intro plus a second (power1.inOut);
+        // the scale holds, then settles in over that last second (power2.inOut).
+        const drift = intro / 1000;
+        const duration = drift + 1;
+        flightRef.current = canvasRef.current
+          ? fly(
+              canvasRef.current,
+              {
+                x: inOut(cam.x, target.x, 0, duration, 1),
+                y: inOut(cam.y, target.y, 0, duration, 1),
+                s: [{ at: 0, value: cam.s, ease: "linear" }, ...inOut(cam.s, target.s, drift, duration, 2)],
+                duration,
+              },
+              flightHooks(() => {
+                introLive = false;
+                cameraRef.current = restFor(focusRef.current);
+                paint();
+                setFlying(false);
+              }),
+            )
+          : null;
       } else {
         introDone.current = true;
         snap();
@@ -324,7 +524,7 @@ const ImageWallInner = forwardRef<HTMLDivElement, ImageWallProps>(
           setFlying(false);
         }
       };
-    }, [restFor, paint, intro, n]);
+    }, [restFor, paint, flightHooks, intro, n]);
 
     // ---- The flight: pull back while gliding, then settle in.
     const flyTo = useCallback(
@@ -337,24 +537,31 @@ const ImageWallInner = forwardRef<HTMLDivElement, ImageWallProps>(
           setFocus(i);
           return;
         }
+        const canvas = canvasRef.current;
+        if (!canvas) return;
         setFlying(true);
         const cam = cameraRef.current;
-        flightRef.current = gsap
-          .timeline({
-            onUpdate: paint,
-            onComplete: () => {
-              // Land where the card is *now*: the box may have resized mid-flight.
-              cameraRef.current = restFor(i);
-              paint();
-              setFlying(false);
-              setFocus(i);
-            },
-          })
-          .to(cam, { s: target.s * FLIGHT_PULL, duration: 1, ease: "power2.inOut" }, 0)
-          .to(cam, { x: target.x, y: target.y, duration: 2, ease: "power2.inOut" }, 0)
-          .to(cam, { s: target.s, duration: 1, ease: "power2.inOut" }, 1);
+        const pull = target.s * FLIGHT_PULL;
+        // Two seconds, power2.inOut throughout: x and y glide the whole way,
+        // the scale pulls back over the first second and settles over the second.
+        flightRef.current = fly(
+          canvas,
+          {
+            x: inOut(cam.x, target.x, 0, 2, 2),
+            y: inOut(cam.y, target.y, 0, 2, 2),
+            s: [...inOut(cam.s, pull, 0, 1, 2).slice(0, -1), ...inOut(pull, target.s, 1, 2, 2)],
+            duration: 2,
+          },
+          flightHooks(() => {
+            // Land where the card is *now*: the box may have resized mid-flight.
+            cameraRef.current = restFor(i);
+            paint();
+            setFlying(false);
+            setFocus(i);
+          }),
+        );
       },
-      [restFor, paint],
+      [restFor, paint, flightHooks],
     );
 
     useEffect(() => {
@@ -407,12 +614,15 @@ const ImageWallInner = forwardRef<HTMLDivElement, ImageWallProps>(
         window.clearTimeout(settle);
       };
     }, []);
+    // A hidden tab holds a flight as well; it carries on from where it
+    // stopped once the tab is back.
+    const holdFlight = scrolling || hidden;
     useEffect(() => {
       const flight = flightRef.current;
       if (!flight) return;
-      if (scrolling) flight.pause();
+      if (holdFlight) flight.pause();
       else if (flight.paused()) flight.resume();
-    }, [scrolling]);
+    }, [holdFlight]);
 
     const paused = hover || hidden || !onScreen || scrolling;
     useEffect(() => {

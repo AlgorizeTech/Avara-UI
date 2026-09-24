@@ -1,7 +1,6 @@
 "use client";
 
 import React, { useEffect, useRef, useState } from "react";
-import gsap from "gsap";
 import { ChevronRight } from "lucide-react";
 import { cn } from "@/lib/utils";
 import Button from "./Button";
@@ -240,6 +239,26 @@ function Team({ title, avatars, className, ...props }: SupportHeroTeamProps) {
 }
 
 // ------------------------------------------
+// The reveal, as keyframes: GSAP's power3.out and back.out(1.8) as CSS
+// easings, each keyframe only the start pose. Cards move on `transform`, which
+// leaves the panel's hover lift (`translate`) alone; faces grow on `scale`,
+// which leaves their hover drift (`transform`) alone.
+// ------------------------------------------
+const EASE_OUT =
+  "linear(0, .1945, .3591, .4971, .6115, .7052, .7808, .8409, .8877, .9233, .9497, .9686, .9816, .9901, .9952, .998, .9994, .9999, 1, 1)";
+const EASE_POP =
+  "linear(0, .2239, .4168, .581, .7184, .8313, .9216, .9916, 1.0432, 1.0787, 1.1, 1.1094, 1.1088, 1.1004, 1.0864, 1.0688, 1.0496, 1.0311, 1.0152, 1.0042, 1)";
+
+const REVEAL_CSS = `
+@keyframes support-hero-lead-in { from { opacity: 0; transform: translateY(12px); } }
+@keyframes support-hero-card-in { from { opacity: 0; transform: translateY(28px) scale(0.97); } }
+@keyframes support-hero-face-in { from { opacity: 0; scale: 0.6; } }
+[data-hero-reveal] [data-hero-lead] { animation: support-hero-lead-in 0.6s ${EASE_OUT} var(--hero-at, 0s) backwards; }
+[data-hero-reveal] [data-hero-card] { animation: support-hero-card-in 0.8s ${EASE_OUT} var(--hero-at, 0s) backwards; }
+[data-hero-reveal] [data-hero-avatar] { animation: support-hero-face-in 0.5s ${EASE_POP} var(--hero-at, 0s) backwards; }
+`;
+
+// ------------------------------------------
 // Root
 // ------------------------------------------
 export interface SupportHeroProps extends React.HTMLAttributes<HTMLDivElement> {
@@ -269,6 +288,7 @@ function SupportHeroRoot({
 }: SupportHeroProps) {
   const rootRef = useRef<HTMLDivElement>(null);
   const [inView, setInView] = useState(reveal === "immediate");
+  const [playing, setPlaying] = useState(false);
 
   useEffect(() => {
     if (inView) return;
@@ -300,21 +320,16 @@ function SupportHeroRoot({
     const reduced =
       typeof window !== "undefined" && window.matchMedia?.("(prefers-reduced-motion: reduce)").matches;
     if (reduced) return;
-    const lead = root.querySelectorAll("[data-hero-lead]");
-    const cards = root.querySelectorAll("[data-hero-card]");
-    const faces = root.querySelectorAll("[data-hero-avatar]");
-    const tl = gsap.timeline({ defaults: { ease: "power3.out" } });
-    tl.fromTo(lead, { opacity: 0, y: 12 }, { opacity: 1, y: 0, duration: 0.6, stagger: 0.12 }, 0.5)
-      .fromTo(
-        cards,
-        { opacity: 0, y: 28, scale: 0.97 },
-        { opacity: 1, y: 0, scale: 1, duration: 0.8, stagger: 0.09, clearProps: "transform" },
-        0.7,
-      )
-      .fromTo(faces, { opacity: 0, scale: 0.6 }, { opacity: 1, scale: 1, duration: 0.5, stagger: 0.07, ease: "back.out(1.8)", clearProps: "transform" }, 1.4);
-    return () => {
-      tl.kill();
-    };
+    // Each element gets its start time as `--hero-at`; the keyframes in
+    // REVEAL_CSS hold its start pose until then.
+    const stagger = (selector: string, start: number, each: number) =>
+      root
+        .querySelectorAll<HTMLElement>(selector)
+        .forEach((el, i) => el.style.setProperty("--hero-at", `${start + i * each}s`));
+    stagger("[data-hero-lead]", 0.5, 0.12);
+    stagger("[data-hero-card]", 0.7, 0.09);
+    stagger("[data-hero-avatar]", 1.4, 0.07);
+    setPlaying(true);
   }, [inView]);
 
   const onCta = () => {
@@ -323,7 +338,8 @@ function SupportHeroRoot({
   };
 
   return (
-    <div ref={rootRef} className={cn("w-full", className)} {...props}>
+    <div ref={rootRef} data-hero-reveal={playing ? "" : undefined} className={cn("w-full", className)} {...props}>
+      <style>{REVEAL_CSS}</style>
       <GlassBackdrop
         aurora={aurora}
         className="bg-background text-foreground dark:bg-background dark:text-foreground"

@@ -5,11 +5,11 @@ import { extractCode } from "@/lib/code";
 
 A premium grid layout system featuring CSS masking, continuously spinning gradient borders, and a real-time mouse-tracking spotlight effect.
 
-This component uses **Framer Motion**'s `useMotionTemplate` and `useMotionValue`
-to track pointer coordinates without triggering heavy React state re-renders,
-ensuring the volumetric glows remain silky smooth.
+This component writes pointer coordinates straight into CSS variables
+without triggering heavy React state re-renders, ensuring the volumetric
+glows remain silky smooth — no animation library needed.
 
-Move your cursor over a card: `MagicBentoCard` tracks the pointer with Framer Motion motion values — not React state — so the 1px border track and inner glow stay smooth.
+Move your cursor over a card: `MagicBentoCard` tracks the pointer with CSS variables — not React state — so the 1px border track and inner glow stay smooth.
 
 export const usageDefault = `import {
   MagicBento,

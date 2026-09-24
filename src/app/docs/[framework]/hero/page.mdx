@@ -104,7 +104,7 @@ export default function Hero() {
 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 my-6 not-prose">
   <div className="p-6 rounded-2xl border border-border bg-card">
     <h3 className="text-lg font-semibold text-card-foreground mb-2">A honeycomb that turns</h3>
-    <p className="text-muted-foreground text-sm">The nine cells sit on a real hexagonal lattice, and the queue snakes around it so every step is a hop between neighbours. GSAP moves each cell to its next place with a short stagger — the one heading for the feature spot leads, the one leaving it follows last.</p>
+    <p className="text-muted-foreground text-sm">The nine cells sit on a real hexagonal lattice, and the queue snakes around it so every step is a hop between neighbours. Each cell glides to its next place with a short stagger — the one heading for the feature spot leads, the one leaving it follows last.</p>
   </div>
   <div className="p-6 rounded-2xl border border-border bg-card">
     <h3 className="text-lg font-semibold text-card-foreground mb-2">The feature is the background</h3>
@@ -314,11 +314,11 @@ The section takes the height its content needs — about 44rem on a desktop — 
 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 my-6 not-prose">
   <div className="p-6 rounded-2xl border border-border bg-card">
     <h3 className="text-lg font-semibold text-card-foreground mb-2">A queue, not a slider</h3>
-    <p className="text-muted-foreground text-sm">Cards tween between their places in the queue with GSAP; the one sent to the back appears where it belongs instead of flying across the others. The background crossfades, settles and then drifts slowly until the next slide.</p>
+    <p className="text-muted-foreground text-sm">Cards glide between their places in the queue; the one sent to the back appears where it belongs instead of flying across the others. The background crossfades, settles and then drifts slowly until the next slide.</p>
   </div>
   <div className="p-6 rounded-2xl border border-border bg-card">
     <h3 className="text-lg font-semibold text-card-foreground mb-2">The clock is the progress line</h3>
-    <p className="text-muted-foreground text-sm">One tween fills the line under the front card and moves the queue when it completes. Pausing the line pauses the clock, so a hover never throws away the time already spent.</p>
+    <p className="text-muted-foreground text-sm">One CSS animation fills the line under the front card and moves the queue when it completes. Pausing the line pauses the clock, so a hover never throws away the time already spent.</p>
   </div>
   <div className="p-6 rounded-2xl border border-border bg-card">
     <h3 className="text-lg font-semibold text-card-foreground mb-2">Every device</h3>
@@ -1167,7 +1167,7 @@ import { Sparkles } from "lucide-react";
 
 ## Hero Block
 
-A collection of modern hero layouts in one component, built with Tailwind CSS and Framer Motion: rotating word spring bounce, character typewriter effect, continuous thumbnail slider marquee, a CLI copy button and call-to-action buttons. One registry item, five variants.
+A collection of modern hero layouts in one component, built with Tailwind CSS and plain CSS animations, no animation library: rotating word spring bounce, character typewriter effect, continuous thumbnail slider marquee, a CLI copy button and call-to-action buttons. One registry item, five variants.
 
 
 export const usageWordBounce = `import { HeroBlock } from "@/components/custom/blocks/HeroBlock";

@@ -128,7 +128,7 @@ export const usageNoAnimation = `import {
 ${timelineEvents}
 
 export default function StaticTimeline() {
-  // Renders in place — no staggered GSAP entrance.
+  // Renders in place — no staggered entrance.
   return ;
 }`;
 
@@ -209,7 +209,7 @@ The breakpoints are **container queries** (`@container/timeline`, `@container/tl
           true
 
           If true, the timeline nodes will execute a staggered fade-and-slide
-          entry animation powered by GSAP when the component mounts.
+          entry animation (Web Animations API, no library) when the component mounts.
 
 ### TimelineItemType Object
 

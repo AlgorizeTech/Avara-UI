@@ -1,14 +1,14 @@
 "use client";
 
 import { cn } from "@/lib/utils";
-import {
-  animate,
-  motion,
-  MotionValue,
-  useMotionValue,
-  useTransform,
-} from "framer-motion";
 import React, { useEffect, useRef, useState } from "react";
+import { cubicBezier } from "./motion-curves";
+
+// Stack progress (0 → 1) lives in this custom property on the container,
+// written once per frame by the tween below; cards and bars derive from it.
+const PROGRESS_VAR = "--horizontal-scroll-stack-progress";
+const PROGRESS_EASE = cubicBezier(0.25, 1, 0.5, 1);
+const PROGRESS_DURATION = 600;
 
 export type ScrollStackItem = {
   id: string | number;
@@ -30,7 +30,6 @@ function StackCard({
   item,
   index,
   total,
-  progress,
   cardWidth,
   gap,
   stackOffset,
@@ -39,7 +38,6 @@ function StackCard({
   item: ScrollStackItem;
   index: number;
   total: number;
-  progress: MotionValue<number>;
   cardWidth: number;
   gap: number;
   stackOffset: number;
@@ -55,19 +53,18 @@ function StackCard({
 
   // Linear shift from 0 to lockProgress; stays locked at finalTranslation afterwards.
   // All unstacked cards shift together, keeping equal gap between them to the right.
-  const x = useTransform(
-    progress,
-    [0, lockProgress, 1],
-    [0, finalTranslation, finalTranslation]
-  );
+  const x =
+    isMobile || index === 0
+      ? undefined
+      : `translateX(calc(min(var(${PROGRESS_VAR}, 0), ${lockProgress}) / ${lockProgress} * ${finalTranslation}px))`;
 
   const displayNum = item.number || `0${index + 1}`;
 
   return (
-    <motion.div
+    <div
       style={{
         width: isMobile ? "100%" : `${cardWidth}px`,
-        x: isMobile ? 0 : (index === 0 ? 0 : x),
+        transform: x,
         zIndex: index + 1,
       }}
       className={cn(
@@ -96,7 +93,7 @@ function StackCard({
       <div className="mt-8 w-full h-1 bg-muted rounded-full overflow-hidden">
         <div className="h-full bg-[var(--theme-color,var(--primary))] w-0 group-hover:w-full transition-all duration-500 ease-out" />
       </div>
-    </motion.div>
+    </div>
   );
 }
 
@@ -104,29 +101,24 @@ function StackCard({
 function ProgressBarItem({
   index,
   total,
-  progress,
 }: {
   index: number;
   total: number;
-  progress: MotionValue<number>;
 }) {
   const steps = Math.max(1, total - 1);
-  const stepSize = 1 / steps;
 
-  const start = index === 0 ? 0 : (index - 1) * stepSize;
-  const end = index === 0 ? 0 : index * stepSize;
-
-  const scaleX = useTransform(
-    progress,
-    index === 0 ? [0, 1] : [0, start, end, 1],
-    index === 0 ? [1, 1] : [0, 0, 1, 1]
-  );
+  // Bar `index` fills while progress runs from (index - 1) / steps to
+  // index / steps; the first bar is always full.
+  const scaleX =
+    index === 0
+      ? undefined
+      : `scaleX(clamp(0, var(${PROGRESS_VAR}, 0) * ${steps} - ${index - 1}, 1))`;
 
   return (
     <div className="h-2 flex-1 bg-muted rounded-full overflow-hidden relative">
-      <motion.div
+      <div
         className="h-full bg-[var(--theme-color,var(--primary))]"
-        style={{ scaleX, transformOrigin: "left" }}
+        style={{ transform: scaleX, transformOrigin: "left" }}
       />
     </div>
   );
@@ -144,20 +136,34 @@ export function HorizontalScrollStack({
   const containerRef = useRef<HTMLDivElement>(null);
 
   const [activeStep, setActiveStep] = useState(0);
-  const progress = useMotionValue(0);
+  const progressRef = useRef(0);
   const lastScrollTimeRef = useRef(0);
 
   const steps = Math.max(1, items.length - 1);
 
-  // Smoothly animate progress whenever activeStep changes
+  // Smoothly animate progress whenever activeStep changes, always from where
+  // it is now, so a new step mid-glide picks up without a jump. Written inline
+  // each frame on purpose: the cards' `transition-all` then trails the glide
+  // slightly, which is the look the section has always had.
   useEffect(() => {
+    const container = containerRef.current;
     const targetProgress = activeStep / steps;
-    const controls = animate(progress, targetProgress, {
-      duration: 0.6,
-      ease: [0.25, 1, 0.5, 1],
-    });
-    return () => controls.stop();
-  }, [activeStep, steps, progress]);
+    const from = progressRef.current;
+    if (!container || from === targetProgress) return;
+
+    let frame = 0;
+    let startTime = 0;
+    const tick = (now: number) => {
+      if (!startTime) startTime = now;
+      const t = Math.min((now - startTime) / PROGRESS_DURATION, 1);
+      const value = from + (targetProgress - from) * PROGRESS_EASE(t);
+      progressRef.current = value;
+      container.style.setProperty(PROGRESS_VAR, String(value));
+      if (t < 1) frame = requestAnimationFrame(tick);
+    };
+    frame = requestAnimationFrame(tick);
+    return () => cancelAnimationFrame(frame);
+  }, [activeStep, steps]);
 
   const [layout, setLayout] = useState({
     cardWidth: 440,
@@ -269,7 +275,6 @@ export function HorizontalScrollStack({
                 item={item}
                 index={index}
                 total={items.length}
-                progress={progress}
                 cardWidth={0}
                 gap={0}
                 stackOffset={0}
@@ -306,7 +311,6 @@ export function HorizontalScrollStack({
                   item={item}
                   index={index}
                   total={items.length}
-                  progress={progress}
                   cardWidth={layout.cardWidth}
                   gap={layout.gap}
                   stackOffset={layout.stackOffset}
@@ -322,7 +326,6 @@ export function HorizontalScrollStack({
                 key={i}
                 index={i}
                 total={items.length}
-                progress={progress}
               />
             ))}
           </div>

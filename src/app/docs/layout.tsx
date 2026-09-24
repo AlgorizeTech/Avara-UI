@@ -1,5 +1,6 @@
 import { ReactNode } from "react";
 import { TOCProvider } from "@/contexts/toc-context";
+import { MotionLibraryProvider } from "@/contexts/motion-library-context";
 import { DocsLayoutContent } from "@/components/site/docs-layout-content";
 import { ShowcaseColorProvider } from "@/components/site/showcase-color";
 
@@ -10,7 +11,9 @@ export default function DocsLayout({ children }: { children: ReactNode }) {
   return (
     <TOCProvider>
       <DocsLayoutContent>
-        <ShowcaseColorProvider>{children}</ShowcaseColorProvider>
+        <MotionLibraryProvider>
+          <ShowcaseColorProvider>{children}</ShowcaseColorProvider>
+        </MotionLibraryProvider>
       </DocsLayoutContent>
     </TOCProvider>
   );

@@ -6,9 +6,78 @@ import {
   UploadItem,
 } from "@/components/custom/blocks/UploadBlock";
 import { Folder, type FolderFile } from "@/components/custom/blocks/FolderBlock";
-import { AnimatePresence, motion } from "framer-motion";
 import { Image as ImageIcon } from "lucide-react";
-import { useCallback, useEffect, useRef, useState } from "react";
+import { type ReactNode, useCallback, useEffect, useRef, useState } from "react";
+
+type QueueVariant = "slide-right" | "slide-up" | "pop" | "flip";
+
+/**
+ * The queue's rows, in CSS. A row grows open (grid rows 0fr → 1fr and its
+ * 12px top margin) while it fades and moves in, and closes the same way on
+ * its way out, so the rows under it follow. One spring for all of it: 0.4s
+ * with a 0.25 bounce, sampled to `linear()`.
+ */
+const QUEUE_SPRING =
+  "linear(0, .0026 0.781%, .01 1.563%, .0216 2.344%, .037 3.125%, .0557 3.906%, .0773 4.688%, .1013 5.469%, .1273 6.25%, .1843 7.813%, .2457 9.375%, .374 12.5%, .4999 15.625%, .5593 17.188%, .6155 18.75%, .668 20.313%, .7165 21.875%, .7609 23.438%, .8012 25%, .8373 26.563%, .8694 28.125%, .8977 29.688%, .9224 31.25%, .9437 32.813%, .9619 34.375%, .9772 35.938%, .99 37.5%, 1.0004 39.063%, 1.0088 40.625%, 1.0203 43.75%, 1.0263 46.875%, 1.0283 50%, 1.0254 56.25%, 1.0185 62.5%, 1.0116 68.75%, 1.0061 75%, 1.0025 81.25%, 1.0004 87.5%, .9995 93.75%, 1)";
+
+/** Where each variant comes in from and goes out to. */
+const QUEUE_MOVES: Record<QueueVariant, { enter: string; exit: string }> = {
+  "slide-right": { enter: "translateX(-40px)", exit: "translateX(40px)" },
+  pop: { enter: "scale(0.8)", exit: "scale(0.8)" },
+  flip: { enter: "rotateX(90deg)", exit: "rotateX(-90deg)" },
+  "slide-up": { enter: "translateY(40px)", exit: "translateY(-40px)" },
+};
+
+const QUEUE_CSS = [
+  `.upload-queue-row { display: grid; grid-template-rows: 1fr; margin-top: 12px; }`,
+  `.upload-queue-row > * { min-height: 0; }`,
+  ...Object.entries(QUEUE_MOVES).map(
+    ([name, { enter, exit }]) => `
+@keyframes upload-queue-in-${name} {
+  from { grid-template-rows: 0fr; margin-top: 0; opacity: 0; transform: ${enter}; }
+}
+@keyframes upload-queue-out-${name} {
+  to { grid-template-rows: 0fr; margin-top: 0; opacity: 0; transform: ${exit}; }
+}
+.upload-queue-row[data-variant="${name}"] { animation: upload-queue-in-${name} 0.4s ${QUEUE_SPRING} backwards; }
+.upload-queue-row[data-variant="${name}"][data-leaving] { animation: upload-queue-out-${name} 0.4s ${QUEUE_SPRING} forwards; }`,
+  ),
+].join("\n");
+
+/** One row of the queue. A leaving row plays its exit, then reports it is gone. */
+function QueueRow({
+  id,
+  variant,
+  leaving,
+  onGone,
+  children,
+}: {
+  id: string;
+  variant: QueueVariant;
+  leaving: boolean;
+  onGone: (id: string) => void;
+  children: ReactNode;
+}) {
+  // In case no animationend comes (the tab hidden, the row not rendered).
+  useEffect(() => {
+    if (!leaving) return;
+    const t = setTimeout(() => onGone(id), 500);
+    return () => clearTimeout(t);
+  }, [leaving, id, onGone]);
+
+  return (
+    <div
+      className="upload-queue-row"
+      data-variant={variant}
+      data-leaving={leaving || undefined}
+      onAnimationEnd={(e) => {
+        if (leaving && e.target === e.currentTarget) onGone(id);
+      }}
+    >
+      <div>{children}</div>
+    </div>
+  );
+}
 
 /** Static queue used by the `showAll: "states"` preview — one row per status. */
 const STATIC_STATES: FileUploadState[] = [
@@ -46,7 +115,7 @@ export default function UploadDemo({
   layout,
   showAll,
 }: {
-  variant?: "slide-right" | "slide-up" | "pop" | "flip";
+  variant?: QueueVariant;
   /** "dropzone" renders the Dropzone on its own; "folder" the Folder drop
    *  target. Omitted = previous behavior. */
   layout?: "dropzone" | "folder";
@@ -162,47 +231,55 @@ export default function UploadDemo({
     [simulateUpload],
   );
 
+  // A removed row stays in `files`, marked leaving, until its exit has played.
+  const [leaving, setLeaving] = useState<ReadonlySet<string>>(() => new Set());
+
   const handleRemove = useCallback((id: string) => {
     if (activeSimulations.current[id]) {
       clearInterval(activeSimulations.current[id]);
       delete activeSimulations.current[id];
     }
-    setFiles((prev) => prev.filter((f) => f.id !== id));
+    setLeaving((prev) => new Set(prev).add(id));
   }, []);
 
-  // Framer Motion Map for Queue Entrances
-  const getVariants = () => {
-    switch (variant) {
-      case "slide-right":
-        return {
-          initial: { opacity: 0, x: -40, height: 0, marginTop: 0 },
-          animate: { opacity: 1, x: 0, height: "auto", marginTop: 12 },
-          exit: { opacity: 0, x: 40, height: 0, marginTop: 0 },
-        };
-      case "pop":
-        return {
-          initial: { opacity: 0, scale: 0.8, height: 0, marginTop: 0 },
-          animate: { opacity: 1, scale: 1, height: "auto", marginTop: 12 },
-          exit: { opacity: 0, scale: 0.8, height: 0, marginTop: 0 },
-        };
-      case "flip":
-        return {
-          initial: { opacity: 0, rotateX: 90, height: 0, marginTop: 0 },
-          animate: { opacity: 1, rotateX: 0, height: "auto", marginTop: 12 },
-          exit: { opacity: 0, rotateX: -90, height: 0, marginTop: 0 },
-        };
-      case "slide-up":
-      default:
-        return {
-          initial: { opacity: 0, y: 40, height: 0, marginTop: 0 },
-          animate: { opacity: 1, y: 0, height: "auto", marginTop: 12 },
-          exit: { opacity: 0, y: -40, height: 0, marginTop: 0 },
-        };
-    }
-  };
+  const handleGone = useCallback((id: string) => {
+    setFiles((prev) => prev.filter((f) => f.id !== id));
+    setLeaving((prev) => {
+      if (!prev.has(id)) return prev;
+      const next = new Set(prev);
+      next.delete(id);
+      return next;
+    });
+  }, []);
 
-  const doneCount = files.filter((f) => f.status === "success").length;
-  const totalCount = files.length;
+  const queued = files.filter((f) => !leaving.has(f.id));
+  // The list shows only while something is queued: removing the last row
+  // takes the whole list away at once, with no exit, as it always has.
+  const listed = queued.length > 0;
+  useEffect(() => {
+    if (!listed && files.length > 0) {
+      setFiles([]);
+      setLeaving(new Set());
+    }
+  }, [listed, files.length]);
+  const doneCount = queued.filter((f) => f.status === "success").length;
+  const totalCount = queued.length;
+
+  const queue = files.map((item) => (
+    <QueueRow
+      key={item.id}
+      id={item.id}
+      variant={variant}
+      leaving={leaving.has(item.id)}
+      onGone={handleGone}
+    >
+      <UploadItem
+        item={item}
+        onRetry={handleRetry}
+        onRemove={handleRemove}
+      />
+    </QueueRow>
+  ));
 
   if (layout === "folder") {
     // Extra room above: the cards fan up out of the folder on hover, so the
@@ -226,8 +303,9 @@ export default function UploadDemo({
             maxSize={5}
           />
 
-          {files.length > 0 && (
+          {listed && (
             <div className="flex flex-col">
+              <style>{QUEUE_CSS}</style>
               <div className="flex items-center justify-between text-xs font-semibold uppercase tracking-wider text-muted-foreground mb-2 px-1">
                 <span>Uploading {totalCount} files</span>
                 <span>
@@ -235,28 +313,7 @@ export default function UploadDemo({
                 </span>
               </div>
 
-              <AnimatePresence mode="popLayout">
-                {files.map((item) => (
-                  <motion.div
-                    key={item.id}
-                    layout
-                    initial={getVariants().initial}
-                    animate={getVariants().animate}
-                    exit={getVariants().exit}
-                    transition={{
-                      duration: 0.4,
-                      type: "spring",
-                      bounce: 0.25,
-                    }}
-                  >
-                    <UploadItem
-                      item={item}
-                      onRetry={handleRetry}
-                      onRemove={handleRemove}
-                    />
-                  </motion.div>
-                ))}
-              </AnimatePresence>
+              {queue}
             </div>
           )}
         </div>
@@ -294,8 +351,9 @@ export default function UploadDemo({
           accept="image/*,application/pdf,video/mp4"
         />
 
-        {files.length > 0 && (
+        {listed && (
           <div className="flex flex-col">
+            <style>{QUEUE_CSS}</style>
             <div className="flex items-center justify-between text-xs font-semibold uppercase tracking-wider text-muted-foreground mb-2 px-1">
               <span>Uploading {totalCount} files</span>
               <span>
@@ -304,28 +362,7 @@ export default function UploadDemo({
             </div>
 
             {/* Independent Queue Rendering (Notification Style) */}
-            <AnimatePresence mode="popLayout">
-              {files.map((item) => (
-                <motion.div
-                  key={item.id}
-                  layout
-                  initial={getVariants().initial}
-                  animate={getVariants().animate}
-                  exit={getVariants().exit}
-                  transition={{
-                    duration: 0.4,
-                    type: "spring",
-                    bounce: 0.25,
-                  }}
-                >
-                  <UploadItem
-                    item={item}
-                    onRetry={handleRetry}
-                    onRemove={handleRemove}
-                  />
-                </motion.div>
-              ))}
-            </AnimatePresence>
+            {queue}
           </div>
         )}
       </div>

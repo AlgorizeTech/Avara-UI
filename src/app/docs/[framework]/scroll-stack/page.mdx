@@ -1,5 +1,5 @@
 import { ExampleShowcase } from "@/components/site/Sandbox";
-import { extractCode } from "@/lib/code";
+import { extractCode, extractMotionCode } from "@/lib/code";
 
 # Scroll Stack
 
@@ -355,7 +355,7 @@ export default function TunedStickyStack() {
       ],
       props: { headerMode: "text-button" },
       usage: usageSticky,
-      code: extractCode("src/components/custom/blocks/StickyScrollStackBlock.tsx"),
+      code: extractMotionCode("src/components/custom/blocks/StickyScrollStackBlock.tsx"),
     },
   ]}
 />

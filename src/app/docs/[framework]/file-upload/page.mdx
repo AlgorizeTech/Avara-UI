@@ -1,11 +1,11 @@
 import { ExampleShowcase } from "@/components/site/Sandbox";
-import { extractCode } from "@/lib/code";
+import { extractCode, extractMotionCode } from "@/lib/code";
 
 # UX Engineered Upload Flow
 
 A highly-orchestrated, premium file upload component suite based on modern UX engineering principles. It goes far beyond a native `<input type="file">` by addressing five distinct user feedback signals.
 
-1. **Drag Feedback:** The dropzone reacts physically (glow, border shift, icon scale) to drag events via GSAP.
+1. **Drag Feedback:** The dropzone reacts physically (glow, border shift, icon scale) to drag events.
 2. **Honest Progress:** Replaces mystery spinners with exact percentage tracking, dynamic time estimations, and file metadata.
 3. **Inline Retry:** Files that fail mid-upload do not reset. They halt their state, turn red, and offer an inline 1-click retry button to resume.
 4. **Upload Preview:** Extracts visual proof (thumbnails) of the file instantly on the client side before upload completes.
@@ -22,11 +22,24 @@ import {
   UploadItem,
   type FileUploadState,
 } from "@/components/custom/blocks/UploadBlock";
-import { AnimatePresence, motion } from "framer-motion";
 import { useState } from "react";
+
+// Rows fade up in; a removed row fades up out and closes its gap, so the
+// rows under it slide up. \`animationend\` then drops it from state.
+const queueCss = \`
+.upload-row { display: grid; grid-template-rows: 1fr; margin-top: 8px;
+  animation: upload-row-in 0.3s cubic-bezier(0, 0, 0.58, 1) backwards; }
+.upload-row > * { min-height: 0; }
+.upload-row[data-leaving] { animation: upload-row-out 0.3s cubic-bezier(0, 0, 0.58, 1) forwards; }
+@keyframes upload-row-in { from { opacity: 0; transform: translateY(20px); } }
+@keyframes upload-row-out {
+  to { opacity: 0; transform: translateY(-20px); grid-template-rows: 0fr; margin-top: 0; }
+}
+\`;
 
 export default function FileUploader() {
   const [files, setFiles] = useState<FileUploadState[]>([]);
+  const [leaving, setLeaving] = useState<string[]>([]);
 
   const handleFilesDrop = (droppedFiles: File[]) => {
     const newItems: FileUploadState[] = droppedFiles.map((file) => ({
@@ -42,7 +55,12 @@ export default function FileUploader() {
   };
 
   const handleRemove = (id: string) => {
+    setLeaving((prev) => [...prev, id]);
+  };
+
+  const handleGone = (id: string) => {
     setFiles((prev) => prev.filter((f) => f.id !== id));
+    setLeaving((prev) => prev.filter((l) => l !== id));
   };
 
   return (
@@ -54,25 +72,26 @@ export default function FileUploader() {
       />
 
       {files.length > 0 && (
-        <div className="flex flex-col gap-2">
+        <div className="flex flex-col">
+          <style>{queueCss}</style>
           <div className="flex items-center justify-between text-xs font-semibold uppercase tracking-wider text-muted-foreground px-1">
-            <span>Uploaded Files ({files.length})</span>
+            <span>Uploaded Files ({files.length - leaving.length})</span>
           </div>
 
-          <AnimatePresence mode="popLayout">
-            {files.map((item) => (
-              <motion.div
-                key={item.id}
-                layout
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                exit={{ opacity: 0, y: -20 }}
-                transition={{ duration: 0.3 }}
-              >
+          {files.map((item) => (
+            <div
+              key={item.id}
+              className="upload-row"
+              data-leaving={leaving.includes(item.id) || undefined}
+              onAnimationEnd={(e) => {
+                if (e.target === e.currentTarget && leaving.includes(item.id)) handleGone(item.id);
+              }}
+            >
+              <div>
                 <UploadItem item={item} onRemove={handleRemove} />
-              </motion.div>
-            ))}
-          </AnimatePresence>
+              </div>
+            </div>
+          ))}
         </div>
       )}
     </div>
@@ -186,9 +205,7 @@ The full suite: a `Dropzone` that hands you `File[]`, and an `UploadItem` for ea
 
 <Installation name="upload" />
 
-The dropzone example animates its queue with `framer-motion`. It is optional — `UploadItem` renders fine without it.
-
-<Cli command={`install framer-motion`} />
+The dropzone example animates its queue with a few lines of CSS in the example itself — no extra package. It is optional; `UploadItem` renders fine without it.
 
 export const usageFileInput = `"use client";
 
@@ -337,7 +354,7 @@ The `Folder` block as an upload surface — a playful alternative to a dropzone 
       ],
       props: { layout: "folder" },
       usage: usageFolder,
-      code: extractCode("src/components/custom/blocks/FolderBlock.tsx"),
+      code: extractMotionCode("src/components/custom/blocks/FolderBlock.tsx"),
     },
   ]}
 />

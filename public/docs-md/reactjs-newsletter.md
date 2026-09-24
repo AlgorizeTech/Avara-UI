@@ -82,6 +82,12 @@ npx shadcn@latest registry add @algorize-ui=https://algorize-ui.vercel.app/r/{na
 npx shadcn@latest add @algorize-ui/newsletter
 ```
 
+Or the Framer Motion build (same props, same file — install one):
+
+```bash
+npx shadcn@latest add @algorize-ui/newsletter-framer
+```
+
 ## Examples
 
 ## Features

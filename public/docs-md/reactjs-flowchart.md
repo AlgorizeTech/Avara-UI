@@ -1,10 +1,10 @@
 # Flowchart / Node Builder
 
-A declarative, highly sleek flowchart engine complete with custom responsive column channels, node action anchors, and custom vector streaming lines animated smoothly via GSAP.
+A declarative, highly sleek flowchart engine complete with custom responsive column channels, node action anchors, and custom vector streaming lines that draw themselves in with plain CSS animation.
 
 This engine separates data flow layout orchestration from canvas tracking. By combining declarative standard layout structures with pre-set micro connection vectors, pipelines render cross-device flawlessly without heavy calculations crashing client frame updates.
 
-Click any node that sits on a route to make that route the active one — GSAP redraws the stream along the SVG path.
+Click any node that sits on a route to make that route the active one — the moving stream switches to that SVG path.
 
 export const pipelineNodes = `function PipelineNodes() {
   return (

@@ -1,9 +1,9 @@
 "use client";
 
 import { cn } from "@/lib/utils";
-import { AnimatePresence, motion } from "framer-motion";
 import { Play, Sparkles, X } from "lucide-react";
 import React, { useCallback, useEffect, useRef, useState } from "react";
+import { springLinear } from "./motion-curves";
 
 /** Which player renders `videoUrl`. */
 export type VideoSource = "youtube" | "video";
@@ -80,6 +80,33 @@ const modalSizes = {
   xl: "max-w-6xl",
   full: "max-w-[95vw] h-[90vh]",
 };
+
+// Modal motion: the backdrop fades over 0.2s (ease-out); the dialog springs
+// (stiffness 300, damping 25) between 90% scale, 20px low and transparent and
+// its resting place — the same spring both ways, as a CSS `linear()` curve.
+// @starting-style is where a freshly mounted modal starts from.
+const DIALOG_SPRING = springLinear({ stiffness: 300, damping: 25 });
+
+const MODAL_CSS = `
+.video-player-backdrop { transition: opacity 0.2s cubic-bezier(0, 0, 0.58, 1); }
+.video-player-backdrop[data-state="closed"] { opacity: 0; }
+.video-player-dialog {
+  transition:
+    transform ${DIALOG_SPRING.duration}ms ${DIALOG_SPRING.easing},
+    opacity ${DIALOG_SPRING.duration}ms ${DIALOG_SPRING.easing};
+}
+.video-player-dialog[data-state="closed"] {
+  opacity: 0;
+  transform: translateY(20px) scale(0.9);
+}
+@starting-style {
+  .video-player-backdrop[data-state="open"] { opacity: 0; }
+  .video-player-dialog[data-state="open"] {
+    opacity: 0;
+    transform: translateY(20px) scale(0.9);
+  }
+}
+`;
 
 /**
  * Sets or clears `autoplay=1` on an embed URL.
@@ -301,6 +328,21 @@ export const VideoPlayer = React.forwardRef<
 
     const isDirect = playbackMode === "direct";
 
+    // The modal stays mounted after closing until its exit has played.
+    const modalOpen = playbackMode === "modal" && isOpen;
+    const [modalMounted, setModalMounted] = useState(modalOpen);
+    if (modalOpen && !modalMounted) setModalMounted(true);
+
+    useEffect(() => {
+      if (modalOpen || !modalMounted) return;
+      // Backstop for when no transitionend arrives (e.g. a hidden tab).
+      const timer = setTimeout(
+        () => setModalMounted(false),
+        DIALOG_SPRING.duration + 100,
+      );
+      return () => clearTimeout(timer);
+    }, [modalOpen, modalMounted]);
+
     const handleOpen = () => {
       if (isDirect) return;
       setIsOpen(true);
@@ -415,8 +457,7 @@ export const VideoPlayer = React.forwardRef<
         {glow}
 
         {/* Hero Card Container with Fluid Mobile Min-Height */}
-        <motion.div
-          transition={{ duration: 0.4, ease: "easeOut" }}
+        <div
           className={cn(
             "group relative z-10 flex min-h-[220px] w-full flex-col justify-between overflow-hidden rounded-xl border border-border/80 bg-zinc-900 shadow-2xl sm:min-h-[280px] sm:rounded-2xl md:rounded-3xl lg:min-h-0",
             aspectRatios[aspectRatio],
@@ -494,30 +535,30 @@ export const VideoPlayer = React.forwardRef<
               </div>
             </>
           )}
-        </motion.div>
+        </div>
 
         {/* Modal Dialog */}
-        <AnimatePresence>
-          {playbackMode === "modal" && isOpen && (
-            <motion.div
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
-              transition={{ duration: 0.2 }}
-              className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 p-3 backdrop-blur-sm sm:p-6 md:p-10"
+        {modalMounted && (
+          <>
+            <style>{MODAL_CSS}</style>
+            <div
+              data-state={modalOpen ? "open" : "closed"}
+              className="video-player-backdrop fixed inset-0 z-50 flex items-center justify-center bg-black/40 p-3 backdrop-blur-sm sm:p-6 md:p-10"
               onClick={handleClose}
             >
               {/* Modal Content Box */}
-              <motion.div
+              <div
                 role="dialog"
                 aria-modal="true"
                 aria-label={title || "Video player"}
-                initial={{ scale: 0.9, opacity: 0, y: 20 }}
-                animate={{ scale: 1, opacity: 1, y: 0 }}
-                exit={{ scale: 0.9, opacity: 0, y: 20 }}
-                transition={{ type: "spring", damping: 25, stiffness: 300 }}
+                data-state={modalOpen ? "open" : "closed"}
+                onTransitionEnd={(e) => {
+                  if (e.target === e.currentTarget && !modalOpen) {
+                    setModalMounted(false);
+                  }
+                }}
                 className={cn(
-                  "relative z-50 flex min-h-[220px] w-full flex-col overflow-hidden rounded-xl border border-zinc-800 bg-zinc-950 shadow-2xl sm:min-h-0 sm:rounded-2xl md:rounded-3xl",
+                  "video-player-dialog relative z-50 flex min-h-[220px] w-full flex-col overflow-hidden rounded-xl border border-zinc-800 bg-zinc-950 shadow-2xl sm:min-h-0 sm:rounded-2xl md:rounded-3xl",
                   modalSizes[modalSize],
                   modalSize === "full" ? "h-[90vh]" : aspectRatios[aspectRatio],
                 )}
@@ -536,10 +577,10 @@ export const VideoPlayer = React.forwardRef<
                 <div className="relative h-full w-full flex-1 bg-black">
                   {frame}
                 </div>
-              </motion.div>
-            </motion.div>
-          )}
-        </AnimatePresence>
+              </div>
+            </div>
+          </>
+        )}
       </div>
     );
   },

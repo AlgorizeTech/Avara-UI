@@ -1,6 +1,6 @@
 # Theme Switcher
 
-A premium, GSAP-powered dark mode toggle component built specifically for Next.js applications using `next-themes`.
+A premium, animated dark mode toggle component built specifically for Next.js applications using `next-themes`.
 
 It includes three distinct layout variants (Icon, Pill, and Dropdown) to match different areas of your application, from compact navigation bars to sprawling settings menus. It safely handles React hydration to prevent the dreaded "dark mode flash" on initial load.
 
@@ -67,7 +67,7 @@ export default function RootLayout({
 
 ## Features
 
-Explore the Theme Switcher's dark mode capabilities, featuring the circular reveal, hydration-safe rendering and GSAP-powered layout transitions.
+Explore the Theme Switcher's dark mode capabilities, featuring the circular reveal, hydration-safe rendering and smooth layout transitions.
 
     Circular Reveal
     The new theme sweeps out from whichever control was clicked, via the View Transitions API. The `::view-transition` rules it needs ship inside the component, so nothing has to be added to your global stylesheet. Set reveal={false} for an instant switch.
@@ -78,8 +78,8 @@ Explore the Theme Switcher's dark mode capabilities, featuring the circular reve
     Hydration Safe
     Safely checks if the component is mounted on the client to completely eliminate the infamous React hydration mismatch errors.
 
-    GSAP Animations
-    Uses GSAP for premium layout transitions and smooth sliding animations that feel completely native.
+    No Animation Library
+    The sliding pill, the icon spin and the dropdown run on the browser's built-in Web Animations API, so they feel completely native and add no dependency.
 
     3 Layout Variants
     Ships with a compact Icon toggle, a sliding Pill control, and a classic Dropdown menu to fit any UI design.
@@ -108,7 +108,7 @@ Explore the Theme Switcher's dark mode capabilities, featuring the circular reve
 
           "icon"
 
-          Determines the structural layout and specific GSAP animations applied
+          Determines the structural layout and specific animations applied
           to the toggler.
 
               icon: A simple, rotating toggle button.

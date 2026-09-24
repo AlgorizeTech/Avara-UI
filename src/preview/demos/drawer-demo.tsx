@@ -78,7 +78,7 @@ export default function DrawerDemo({
           <DrawerHeader>
             <DrawerTitle>Interactive Drawer</DrawerTitle>
             <DrawerDescription>
-              This drawer slides in from the {side}. It uses GSAP for
+              This drawer slides in from the {side}. It uses CSS transitions for
               butter-smooth easing and handles its own unmount lifecycles.
             </DrawerDescription>
           </DrawerHeader>

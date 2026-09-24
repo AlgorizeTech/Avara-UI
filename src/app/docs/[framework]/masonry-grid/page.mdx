@@ -1,11 +1,11 @@
 import { ExampleShowcase } from "@/components/site/Sandbox";
-import { extractCode } from "@/lib/code";
+import { extractMotionCode } from "@/lib/code";
 
 # Masonry Grid
 
 A high-performance masonry layout that tightly packs items of varying heights. Rather than relying on heavy JavaScript calculations or absolute positioning frameworks, this component utilizes standard CSS multi-column layout (`columns-N`) to flow items naturally.
 
-This premium iteration includes hardware-accelerated blur-fade entrances, `layout` animations for dynamic content reflows, and a scroll-triggered `whileInView` sequence for high-end aesthetic presentation.
+This premium iteration includes hardware-accelerated blur-fade entrances, layout animations for dynamic content reflows, and a scroll-triggered entrance sequence for high-end aesthetic presentation. It ships as a GSAP build and a Framer Motion build with the same motion.
 
 ---
 
@@ -251,7 +251,7 @@ export default function StaticWall() {
       ],
       props: {},
       usage: usageDefault,
-      code: extractCode("src/components/custom/blocks/MasonryGridBlock.tsx"),
+      code: extractMotionCode("src/components/custom/blocks/MasonryGridBlock.tsx"),
     },
   ]}
 />
@@ -337,7 +337,7 @@ Discover the Masonry Grid's dynamic layout features, seamlessly arranging varyin
   </div>
   <div className="p-6 rounded-2xl border border-border bg-card">
     <h3 className="text-lg font-semibold text-card-foreground mb-2">Staggered Entrances</h3>
-    <p className="text-muted-foreground text-sm">Powered by Framer Motion to deliver beautiful, Apple-style staggered blur-fade entrances on scroll.</p>
+    <p className="text-muted-foreground text-sm">Apple-style staggered blur-fade entrances on scroll, in a GSAP build and a Framer Motion build that move the same way.</p>
   </div>
   <div className="p-6 rounded-2xl border border-border bg-card">
     <h3 className="text-lg font-semibold text-card-foreground mb-2">Fluid Resizing</h3>
@@ -440,7 +440,7 @@ Discover the Masonry Grid's dynamic layout features, seamlessly arranging varyin
         </td>
         <td>
           Toggles the staggered, hardware-accelerated blur-fade entrance
-          sequence via Framer Motion.
+          sequence.
         </td>
       </tr>
       <tr>
@@ -477,14 +477,15 @@ Discover the Masonry Grid's dynamic layout features, seamlessly arranging varyin
           <code>...props</code>
         </td>
         <td>
-          <code>HTMLMotionProps</code>
+          <code>HTMLAttributes</code>
         </td>
         <td>
           <code>undefined</code>
         </td>
         <td>
-          Accepts all standard HTML <code>&lt;div&gt;</code> attributes and
-          Framer Motion props, excluding <code>children</code>.
+          Accepts all standard HTML <code>&lt;div&gt;</code> attributes,
+          excluding <code>children</code>. The Framer Motion build also takes
+          Framer Motion props (<code>HTMLMotionProps</code>).
         </td>
       </tr>
     </tbody>

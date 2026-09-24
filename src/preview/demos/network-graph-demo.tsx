@@ -142,8 +142,8 @@ export default function NetworkGraphDemo({
           // `ringCount` and `orbitSpeed` are deliberately NOT in the key: both
           // are slider-driven, and remounting on every step would restart the
           // entrance animation mid-drag. A newly revealed ring mounts on its
-          // own and animates in anyway, and framer-motion picks up the new
-          // orbit duration in place, so nothing is lost.
+          // own and animates in anyway, and the orbit loop picks up the new
+          // speed in place, so nothing is lost.
           key={`${triggerKey}-${nodeSet}-${animateOrbit}-${showCenter}`}
           nodes={nodes}
           ringCount={ringCount}

@@ -1,7 +1,6 @@
 "use client";
 
 import React, { useEffect, useRef, useState } from "react";
-import gsap from "gsap";
 import { ArrowRight, ArrowUpRight, Play, Plus } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { AvatarStack, type StackAvatar } from "./AvatarStackBlock";
@@ -58,6 +57,28 @@ export interface FashionHeroProps extends React.HTMLAttributes<HTMLElement> {
 }
 
 // ------------------------------------------
+// The reveal, as keyframes. GSAP's power3.out, back.out(1.6) and back.out(1.8)
+// as CSS easings; each keyframe is only the start pose.
+// ------------------------------------------
+const EASE_OUT =
+  "linear(0, .1945, .3591, .4971, .6115, .7052, .7808, .8409, .8877, .9233, .9497, .9686, .9816, .9901, .9952, .998, .9994, .9999, 1, 1)";
+const EASE_SETTLE =
+  "linear(0, .2148, .4006, .5593, .6928, .8031, .8922, .962, 1.0144, 1.0514, 1.075, 1.0871, 1.0896, 1.0845, 1.0738, 1.0594, 1.0432, 1.0272, 1.0134, 1.0037, 1)";
+const EASE_LAND =
+  "linear(0, .2239, .4168, .581, .7184, .8313, .9216, .9916, 1.0432, 1.0787, 1.1, 1.1094, 1.1088, 1.1004, 1.0864, 1.0688, 1.0496, 1.0311, 1.0152, 1.0042, 1)";
+
+const REVEAL_CSS = `
+@keyframes lb-side-in { from { opacity: 0; transform: scale(0.8); } }
+@keyframes lb-col-in { from { opacity: 0; transform: translateY(48px); } }
+@keyframes lb-cta-in { from { opacity: 0; transform: translateY(14px) scale(0.9); } }
+@keyframes lb-foot-in { from { opacity: 0; transform: translateY(14px); } }
+[data-lb-reveal] [data-lb-side] { animation: lb-side-in 0.7s ${EASE_SETTLE} var(--lb-at, 0s) backwards; }
+[data-lb-reveal] [data-lb-col] { animation: lb-col-in 0.9s ${EASE_OUT} var(--lb-at, 0s) backwards; }
+[data-lb-reveal] [data-lb-cta] { animation: lb-cta-in 0.5s ${EASE_LAND} var(--lb-at, 0s) backwards; }
+[data-lb-reveal] [data-lb-foot] { animation: lb-foot-in 0.6s ${EASE_OUT} var(--lb-at, 0s) backwards; }
+`;
+
+// ------------------------------------------
 // One look: a person on a flat colour, tilting under the pointer
 // ------------------------------------------
 function LookCard({ look, className }: { look: Look; className?: string }) {
@@ -103,6 +124,7 @@ function FashionHeroRoot({
 }: FashionHeroProps) {
   const rootRef = useRef<HTMLElement>(null);
   const [inView, setInView] = useState(reveal === "immediate");
+  const [playing, setPlaying] = useState(false);
   const [l0, l1, l2, l3, l4, l5, l6] = looks;
 
   useEffect(() => {
@@ -129,6 +151,8 @@ function FashionHeroRoot({
   // middle column outward, the button lands on its look, the footer last.
   // (The headline animates itself, word by word.) Everything renders opaque on
   // the server; this only plays once the page is live.
+  // Each element gets its start time as `--lb-at` and the keyframes in
+  // REVEAL_CSS hold its start pose until then.
   useEffect(() => {
     if (!inView) return;
     const root = rootRef.current;
@@ -136,27 +160,16 @@ function FashionHeroRoot({
     const reduced =
       typeof window !== "undefined" && window.matchMedia?.("(prefers-reduced-motion: reduce)").matches;
     if (reduced) return;
-    const sides = root.querySelectorAll("[data-lb-side]");
-    const cols = Array.from(root.querySelectorAll<HTMLElement>("[data-lb-col]"));
-    const cta = root.querySelectorAll("[data-lb-cta]");
-    const foot = root.querySelectorAll("[data-lb-foot]");
-    const tl = gsap.timeline({ defaults: { ease: "power3.out" } });
-    tl.fromTo(sides, { opacity: 0, scale: 0.8 }, { opacity: 1, scale: 1, duration: 0.7, ease: "back.out(1.6)" }, 0.1);
-    cols.forEach((col) => {
+    const at = (el: HTMLElement, seconds: number) => el.style.setProperty("--lb-at", `${seconds}s`);
+    root.querySelectorAll<HTMLElement>("[data-lb-side]").forEach((el) => at(el, 0.1));
+    root.querySelectorAll<HTMLElement>("[data-lb-col]").forEach((col) => {
       // Distance from the middle column sets the delay, so the collage opens outward.
       const order = Number(col.getAttribute("data-lb-col") ?? 0);
-      tl.fromTo(
-        col,
-        { opacity: 0, y: 48 },
-        { opacity: 1, y: 0, duration: 0.9, clearProps: "transform" },
-        0.25 + Math.abs(order - 2) * 0.12,
-      );
+      at(col, 0.25 + Math.abs(order - 2) * 0.12);
     });
-    tl.fromTo(cta, { opacity: 0, y: 14, scale: 0.9 }, { opacity: 1, y: 0, scale: 1, duration: 0.5, ease: "back.out(1.8)" }, 0.95)
-      .fromTo(foot, { opacity: 0, y: 14 }, { opacity: 1, y: 0, duration: 0.6, stagger: 0.12 }, 1.05);
-    return () => {
-      tl.kill();
-    };
+    root.querySelectorAll<HTMLElement>("[data-lb-cta]").forEach((el) => at(el, 0.95));
+    root.querySelectorAll<HTMLElement>("[data-lb-foot]").forEach((el, i) => at(el, 1.05 + i * 0.12));
+    setPlaying(true);
   }, [inView]);
 
   const vars = (accent ? { "--primary": accent } : {}) as React.CSSProperties;
@@ -164,10 +177,12 @@ function FashionHeroRoot({
   return (
     <section
       ref={rootRef}
+      data-lb-reveal={playing ? "" : undefined}
       className={cn("relative w-full overflow-hidden bg-background text-foreground", className)}
       style={{ ...vars, ...style }}
       {...props}
     >
+      <style>{REVEAL_CSS}</style>
       <div className="mx-auto max-w-6xl px-5 pb-10 pt-8 sm:px-8 sm:pt-10">
         {/* ---- Header: badge / headline / faces ---- */}
         <div className="grid grid-cols-2 items-start gap-y-6 lg:grid-cols-[8rem_1fr_8rem] lg:items-center">

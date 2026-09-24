@@ -1,9 +1,8 @@
 "use client";
 
 import { cn } from "@/lib/utils";
-import gsap from "gsap";
 import { ArrowRight, ChevronDown, Command, Menu, X } from "lucide-react";
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useState } from "react";
 import Button from "./Button";
 import { getThemeStyles } from "./navbar-theme";
 
@@ -40,6 +39,39 @@ const NAV_LINKS = [
   { name: "Resources", href: "#", hasDropdown: true },
   { name: "Pricing", href: "#", hasDropdown: false },
 ];
+
+// Mobile menu motion. Opening fades the overlay in (0.3s power2.out) and
+// slides the menu in from the right (0.4s power3.out); closing reverses both in
+// 0.3s (power2.in / power3.in). A transition takes its timing from the state it
+// is heading to, so each state carries its own; @starting-style is where the
+// layer starts when it stops being display:none.
+const POWER3_OUT =
+  "linear(0, .1268, .2412, .3439, .4358, .5177, .5904, .6545, .7108, .7599, .8025, .8391, .8704, .8969, .9191, .9375, .9526, .9647, .9744, .9819, .9877, .9919, .9949, .997, .9984, .9992, .9997, .9999, 1, 1, 1)";
+const POWER3_IN =
+  "linear(0, 0, 0, .0001, .0003, .0008, .0016, .003, .0051, .0081, .0123, .0181, .0256, .0353, .0474, .0625, .0809, .1031, .1296, .1609, .1975, .2401, .2892, .3455, .4096, .4823, .5642, .6561, .7588, .8732, 1)";
+
+const MOBILE_MENU_CSS = `
+.navbar-mobile-overlay {
+  opacity: 0;
+  transition: opacity 0.3s cubic-bezier(0.3333, 0, 0.6667, 0);
+}
+.navbar-mobile-overlay[data-open="true"] {
+  opacity: 1;
+  transition: opacity 0.3s cubic-bezier(0.3333, 1, 0.6667, 1);
+}
+.navbar-mobile-menu {
+  transform: translateX(100%);
+  transition: transform 0.3s ${POWER3_IN};
+}
+.navbar-mobile-menu[data-open="true"] {
+  transform: none;
+  transition: transform 0.4s ${POWER3_OUT};
+}
+@starting-style {
+  .navbar-mobile-overlay[data-open="true"] { opacity: 0; }
+  .navbar-mobile-menu[data-open="true"] { transform: translateX(100%); }
+}
+`;
 
 /**
  * These three are defined at module scope on purpose. Declaring them inside
@@ -171,8 +203,6 @@ export function NavbarBlock({
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [renderLayer, setRenderLayer] = useState(false);
   const { theme, style } = getThemeStyles(color);
-  const mobileMenuRef = useRef<HTMLDivElement>(null);
-  const overlayRef = useRef<HTMLDivElement>(null);
 
   const isGlass = variant === "glass";
 
@@ -191,28 +221,6 @@ export function NavbarBlock({
     return () => clearTimeout(t);
   }, [mobileMenuOpen]);
 
-  useEffect(() => {
-    if (!renderLayer) return;
-    const menu = mobileMenuRef.current;
-    const overlay = overlayRef.current;
-    if (!menu || !overlay) return;
-    if (mobileMenuOpen) {
-      gsap.fromTo(
-        overlay,
-        { opacity: 0 },
-        { opacity: 1, duration: 0.3, ease: "power2.out" },
-      );
-      gsap.fromTo(
-        menu,
-        { x: "100%" },
-        { x: "0%", duration: 0.4, ease: "power3.out" },
-      );
-    } else {
-      gsap.to(overlay, { opacity: 0, duration: 0.3, ease: "power2.in" });
-      gsap.to(menu, { x: "100%", duration: 0.3, ease: "power3.in" });
-    }
-  }, [mobileMenuOpen, renderLayer]);
-
   const getContainerStyles = () => {
     switch (variant) {
       case "floating":
@@ -230,6 +238,7 @@ export function NavbarBlock({
 
   return (
     <div className="relative w-full z-50" style={style}>
+      <style>{MOBILE_MENU_CSS}</style>
       <nav
         className={cn(
           "absolute left-0 right-0 h-16 flex items-center transition-all duration-300",
@@ -287,14 +296,14 @@ export function NavbarBlock({
         )}
       >
         <div
-          ref={overlayRef}
           onClick={() => setMobileMenuOpen(false)}
-          className="absolute inset-0 bg-black/40 backdrop-blur-sm pointer-events-auto"
+          data-open={mobileMenuOpen}
+          className="navbar-mobile-overlay absolute inset-0 bg-black/40 backdrop-blur-sm pointer-events-auto"
         />
         <div
-          ref={mobileMenuRef}
+          data-open={mobileMenuOpen}
           className={cn(
-            "absolute right-0 top-0 bottom-0 w-full max-w-sm shadow-2xl pointer-events-auto flex flex-col",
+            "navbar-mobile-menu absolute right-0 top-0 bottom-0 w-full max-w-sm shadow-2xl pointer-events-auto flex flex-col",
             isGlass
               ? "bg-background/70 backdrop-blur-2xl border-l border-foreground/10"
               : "bg-background border-l border-border",

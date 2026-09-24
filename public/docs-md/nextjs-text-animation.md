@@ -1,10 +1,10 @@
 # Text Animation
 
-A powerful typography component that breathes life into your text using Framer Motion. It supports multiple animation variants like typewriter effects, focus reveals, 3D flips, and more.
+A powerful typography component that breathes life into your text with plain CSS keyframes — no animation library. It supports multiple animation variants like typewriter effects, focus reveals, 3D flips, and more.
 
 It is perfect for hero sections, landing page headers, and grabbing user attention.
 
-Each effect fires when it scrolls into view (`whileInView`, once), so scroll a preview back into frame — or hit its reload button — to replay.
+Each effect fires when it scrolls into view (once, via an `IntersectionObserver`), so scroll a preview back into frame — or hit its reload button — to replay.
 
 export const usageDefault = `import { TextAnimation } from "@/components/custom/blocks/TextAnimationBlock";
 

@@ -1,13 +1,8 @@
 "use client";
 
 import { cn } from "@/lib/utils";
-import {
-  motion,
-  useAnimationFrame,
-  useMotionValue,
-  useTransform,
-} from "framer-motion";
 import React, { useEffect, useMemo, useRef } from "react";
+import { springLinear } from "./motion-curves";
 
 export type NetworkNode = {
   id: string;
@@ -33,6 +28,16 @@ export interface NetworkGraphProps
   animateOrbit?: boolean; // Toggles planetary orbital motion
   orbitSpeed?: number; // Speed multiplier (1 = default, 2 = twice as fast)
 }
+
+// The entrance springs as CSS `linear()` curves, generated from the same
+// stiffness/damping the springs had, so they settle exactly as before.
+const CENTER_SPRING = springLinear({ stiffness: 200, damping: 20 });
+const NODE_SPRING = springLinear({ stiffness: 260, damping: 20 });
+
+const keyframes = `
+@keyframes network-graph-ring-in { from { opacity: 0; scale: 0.8; } }
+@keyframes network-graph-pop-in { from { opacity: 0; scale: 0; } }
+`;
 
 const sizeMap = {
   sm: "w-6 h-6 sm:w-9 sm:h-9",
@@ -77,24 +82,22 @@ export const NetworkGraph = React.forwardRef<HTMLDivElement, NetworkGraphProps>(
         )}
         {...props}
       >
+        <style>{keyframes}</style>
+
         {/* Render Rings */}
         <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
           {rings.map((ring) => {
             const radius = baseRadius + (ring - 1) * ringGap;
             return (
-              <motion.div
+              <div
                 key={`ring-${ring}`}
-                initial={animateIn ? { opacity: 0, scale: 0.8 } : false}
-                animate={{ opacity: 1, scale: 1 }}
-                transition={{
-                  duration: 0.8,
-                  delay: ring * 0.1,
-                  ease: "easeOut",
-                }}
                 className="absolute rounded-full border border-primary/[0.08]/[0.08]"
                 style={{
                   width: `${radius * 2}%`,
                   height: `${radius * 2}%`,
+                  animation: animateIn
+                    ? `network-graph-ring-in 0.8s cubic-bezier(0, 0, 0.58, 1) ${ring * 0.1}s backwards`
+                    : undefined,
                 }}
               />
             );
@@ -117,11 +120,13 @@ export const NetworkGraph = React.forwardRef<HTMLDivElement, NetworkGraphProps>(
         {/* Center Node */}
         {centerNode && (
           <div className="absolute z-20 w-0 h-0 flex items-center justify-center left-1/2 top-1/2">
-            <motion.div
-              initial={animateIn ? { scale: 0, opacity: 0 } : false}
-              animate={{ scale: 1, opacity: 1 }}
-              transition={{ type: "spring", stiffness: 200, damping: 20 }}
+            <div
               className="relative group cursor-pointer"
+              style={{
+                animation: animateIn
+                  ? `network-graph-pop-in ${CENTER_SPRING.duration}ms ${CENTER_SPRING.easing} backwards`
+                  : undefined,
+              }}
             >
               <div className="w-12 h-12 sm:w-16 sm:h-16 md:w-20 md:h-20 rounded-full border-[3px] sm:border-[5px] border-white dark:border-[#0a0a0a] shadow-xl overflow-hidden bg-card flex items-center justify-center transition-transform duration-300 group-hover:scale-105">
                 {centerNode.image ? (
@@ -141,7 +146,7 @@ export const NetworkGraph = React.forwardRef<HTMLDivElement, NetworkGraphProps>(
                   {centerNode.label}
                 </div>
               )}
-            </motion.div>
+            </div>
           </div>
         )}
       </div>
@@ -175,10 +180,7 @@ function OrbitRing({
   animateOrbit: boolean;
   orbitSpeed: number;
 }) {
-  const rotate = useMotionValue(0);
-  // Every avatar on the ring shares one counter-rotation, which is what keeps
-  // faces upright while the ring itself turns.
-  const counterRotate = useTransform(rotate, (value) => -value);
+  const ringRef = useRef<HTMLDivElement>(null);
 
   // Outer rings take longer per lap, and even rings run backwards for depth.
   const baseDuration = (35 + ringIndex * 10) / (orbitSpeed || 1);
@@ -192,20 +194,62 @@ function OrbitRing({
     speedRef.current = degreesPerSecond;
   });
 
-  useAnimationFrame((_, delta) => {
-    const speed = speedRef.current;
-    if (!speed) return;
-    // Wrapped at a full turn so the value stays small over a long session.
-    rotate.set((rotate.get() + (speed * delta) / 1000) % 360);
-  });
+  // The ring's angle lives outside React so a speed change carries on from
+  // wherever the ring is.
+  const angleRef = useRef(0);
+  const orbiting = degreesPerSecond !== 0;
+
+  useEffect(() => {
+    const el = ringRef.current;
+    if (!el || !orbiting) return;
+
+    let frame = 0;
+    let last = 0;
+    const tick = (now: number) => {
+      // Same frame delta as a motion frame loop: 1/60s on the first frame,
+      // then the real gap clamped to 1–40ms so a stalled tab doesn't jump.
+      const delta = last ? Math.min(Math.max(now - last, 1), 40) : 1000 / 60;
+      last = now;
+      const speed = speedRef.current;
+      // Wrapped at a full turn so the value stays small over a long session.
+      const angle = (angleRef.current + (speed * delta) / 1000) % 360;
+      angleRef.current = angle;
+      el.style.transform = `rotate(${angle}deg)`;
+      // Every avatar on the ring shares one counter-rotation, which is what
+      // keeps faces upright while the ring itself turns.
+      el.style.setProperty("--network-graph-counter", `rotate(${-angle}deg)`);
+      frame = requestAnimationFrame(tick);
+    };
+    const start = () => {
+      if (frame) return;
+      last = 0;
+      frame = requestAnimationFrame(tick);
+    };
+    const stop = () => {
+      cancelAnimationFrame(frame);
+      frame = 0;
+    };
+
+    // Nobody sees a ring turning off screen, so the loop only runs on screen.
+    if (typeof IntersectionObserver === "undefined") {
+      start();
+      return stop;
+    }
+    const observer = new IntersectionObserver(([entry]) => {
+      if (entry.isIntersecting) start();
+      else stop();
+    });
+    observer.observe(el);
+    return () => {
+      observer.disconnect();
+      stop();
+    };
+  }, [orbiting]);
 
   const angleStep = 360 / nodes.length;
 
   return (
-    <motion.div
-      className="absolute inset-0 pointer-events-none"
-      style={{ rotate }}
-    >
+    <div ref={ringRef} className="absolute inset-0 pointer-events-none">
       {nodes.map((node, index) => {
         const angle = angleStep * index - 90;
         const radian = (angle * Math.PI) / 180;
@@ -219,20 +263,17 @@ function OrbitRing({
             style={{ left: x, top: y }}
           >
             {/* 1. Entrance Scale & Opacity Wrapper */}
-            <motion.div
-              initial={animateIn ? { opacity: 0, scale: 0 } : false}
-              animate={{ opacity: 1, scale: 1 }}
-              transition={{
-                type: "spring",
-                stiffness: 260,
-                damping: 20,
-                delay: 0.2 + ringIndex * 0.1 + index * 0.05,
+            <div
+              style={{
+                animation: animateIn
+                  ? `network-graph-pop-in ${NODE_SPRING.duration}ms ${NODE_SPRING.easing} ${0.2 + ringIndex * 0.1 + index * 0.05}s backwards`
+                  : undefined,
               }}
             >
               {/* 2. Counter-Rotation Wrapper (Keeps Avatars Upright!) */}
-              <motion.div
+              <div
                 className="relative group cursor-pointer"
-                style={{ rotate: counterRotate }}
+                style={{ transform: "var(--network-graph-counter, none)" }}
               >
                 <div
                   className={cn(
@@ -258,11 +299,11 @@ function OrbitRing({
                     {node.label}
                   </div>
                 )}
-              </motion.div>
-            </motion.div>
+              </div>
+            </div>
           </div>
         );
       })}
-    </motion.div>
+    </div>
   );
 }

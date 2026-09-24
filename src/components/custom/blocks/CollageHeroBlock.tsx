@@ -1,7 +1,6 @@
 "use client";
 
 import React, { useEffect, useRef, useState } from "react";
-import gsap from "gsap";
 import { ArrowDown, Play } from "lucide-react";
 import { cn } from "@/lib/utils";
 import Button from "./Button";
@@ -81,6 +80,25 @@ const TAG_TONES: Record<NonNullable<CollageTag["tone"]>, string> = {
   soft: "bg-primary/15 text-primary",
 };
 
+// GSAP's power3.out and back.out(2), as CSS easings.
+const EASE_OUT =
+  "linear(0, .1945, .3591, .4971, .6115, .7052, .7808, .8409, .8877, .9233, .9497, .9686, .9816, .9901, .9952, .998, .9994, .9999, 1, 1)";
+const EASE_POP =
+  "linear(0, .2225, .4153, .5802, .7191, .8341, .9271, 1, 1.0547, 1.0933, 1.1176, 1.1296, 1.1312, 1.1244, 1.1111, 1.0933, 1.0729, 1.0518, 1.0321, 1.0155, 1.0042, 1)";
+
+// The reveal. Each keyframe is only the start pose; the element's own style
+// is where it lands.
+const REVEAL_CSS = `
+@keyframes kg-lead-in { from { opacity: 0; transform: translateY(18px); filter: blur(8px); } }
+@keyframes kg-tag-in { from { opacity: 0; transform: rotate(-12deg) scale(0.6); } }
+@keyframes kg-photo-in { from { opacity: 0; transform: translateY(32px) scale(0.96); } }
+@keyframes kg-foot-in { from { opacity: 0; transform: translateY(12px); } }
+[data-kg-reveal] [data-kg-lead] { animation: kg-lead-in 0.8s ${EASE_OUT} var(--kg-at, 0s) backwards; }
+[data-kg-reveal] [data-kg-tag] { animation: kg-tag-in 0.5s ${EASE_POP} var(--kg-at, 0s) backwards; }
+[data-kg-reveal] [data-kg-photo] { animation: kg-photo-in 0.8s ${EASE_OUT} var(--kg-at, 0s) backwards; }
+[data-kg-reveal] [data-kg-foot] { animation: kg-foot-in 0.6s ${EASE_OUT} var(--kg-at, 0s) backwards; }
+`;
+
 // A photo card: rounded, lifts and zooms a touch on hover.
 function Photo({ photo, className }: { photo: CollagePhoto; className?: string }) {
   return (
@@ -121,6 +139,7 @@ function CollageHeroRoot({
 }: CollageHeroProps) {
   const rootRef = useRef<HTMLElement>(null);
   const [inView, setInView] = useState(reveal === "immediate");
+  const [phase, setPhase] = useState<"idle" | "play" | "done">("idle");
   const [p0, p1, p2, p3, p4, p5, p6] = photos;
 
   useEffect(() => {
@@ -145,7 +164,10 @@ function CollageHeroRoot({
 
   // The reveal: headline up out of a blur, the pills pop in with a twist, the
   // photographs rise one after another, the footer last. Everything renders
-  // opaque on the server; this only plays once the page is live.
+  // opaque on the server; this only plays once the page is live. Each element
+  // gets its start time as `--kg-at` (lead from 0 every 0.12s, pills from
+  // 0.35 every 0.08s, photos from 0.5 every 0.07s, footer from 1.1 every 0.1s)
+  // and the keyframes in REVEAL_CSS hold its start pose until then.
   useEffect(() => {
     if (!inView) return;
     const root = rootRef.current;
@@ -153,23 +175,19 @@ function CollageHeroRoot({
     const reduced =
       typeof window !== "undefined" && window.matchMedia?.("(prefers-reduced-motion: reduce)").matches;
     if (reduced) return;
-    const lead = root.querySelectorAll("[data-kg-lead]");
-    const tagEls = root.querySelectorAll("[data-kg-tag]");
-    const shots = root.querySelectorAll("[data-kg-photo]");
-    const foot = root.querySelectorAll("[data-kg-foot]");
-    const tl = gsap.timeline({ defaults: { ease: "power3.out" } });
-    tl.fromTo(lead, { opacity: 0, y: 18, filter: "blur(8px)" }, { opacity: 1, y: 0, filter: "blur(0px)", duration: 0.8, stagger: 0.12 }, 0)
-      .fromTo(
-        tagEls,
-        { opacity: 0, scale: 0.6, rotate: -12 },
-        { opacity: 1, scale: 1, rotate: (i) => [-8, 6, -4][i % 3] ?? 0, duration: 0.5, stagger: 0.08, ease: "back.out(2)" },
-        0.35,
-      )
-      .fromTo(shots, { opacity: 0, y: 32, scale: 0.96 }, { opacity: 1, y: 0, scale: 1, duration: 0.8, stagger: 0.07, clearProps: "transform" }, 0.5)
-      .fromTo(foot, { opacity: 0, y: 12 }, { opacity: 1, y: 0, duration: 0.6, stagger: 0.1 }, 1.1);
-    return () => {
-      tl.kill();
-    };
+    const stagger = (selector: string, start: number, each: number) =>
+      root
+        .querySelectorAll<HTMLElement>(selector)
+        .forEach((el, i) => el.style.setProperty("--kg-at", `${start + i * each}s`));
+    stagger("[data-kg-lead]", 0, 0.12);
+    stagger("[data-kg-tag]", 0.35, 0.08);
+    stagger("[data-kg-photo]", 0.5, 0.07);
+    stagger("[data-kg-foot]", 1.1, 0.1);
+    setPhase("play");
+    // Once the footer has landed the keyframes come off, so pills that were
+    // display:none below lg do not replay them when the window widens.
+    const t = window.setTimeout(() => setPhase("done"), 2000);
+    return () => window.clearTimeout(t);
   }, [inView]);
 
   const onScroll = () => {
@@ -186,10 +204,12 @@ function CollageHeroRoot({
   return (
     <section
       ref={rootRef}
+      data-kg-reveal={phase === "play" ? "" : undefined}
       className={cn("relative w-full overflow-hidden bg-background text-foreground", className)}
       style={{ ...vars, ...style }}
       {...props}
     >
+      <style>{REVEAL_CSS}</style>
       <div className="mx-auto max-w-6xl px-5 pb-8 pt-8 sm:px-8 sm:pt-10">
         {/* ---- Header: badge / headline / pills ---- */}
         <div className="grid grid-cols-1 items-center gap-6 lg:grid-cols-[10rem_1fr_12rem]">
@@ -225,7 +245,13 @@ function CollageHeroRoot({
               <span
                 key={t.label}
                 data-kg-tag=""
-                style={{ rotate: `${[-8, 6, -4][i]}deg` }}
+                // After the reveal the tilt sits in `transform`, where the pop-in
+                // ends, with `rotate` and `scale` pinned to none.
+                style={
+                  phase === "idle"
+                    ? { rotate: `${[-8, 6, -4][i]}deg` }
+                    : { rotate: "none", scale: "none", transform: `rotate(${[-8, 6, -4][i]}deg) scale(1)` }
+                }
                 className={cn(
                   "absolute rounded-full px-4 py-1.5 text-[13px] font-semibold shadow-[0_8px_20px_-12px_rgba(0,0,0,0.35)] transition-transform duration-300 hover:scale-110 hover:!rotate-0",
                   i === 0 && "left-2 top-1",
