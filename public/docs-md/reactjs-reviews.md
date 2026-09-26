@@ -131,7 +131,7 @@ npx shadcn@latest add @algorize-ui/reviews
 Discover the key capabilities of the `ReviewsBlock` component:
 
 - **UpDown Vertical Marquee**: 4 infinite scrolling columns moving continuously (Column 1 Up, Column 2 Down, Column 3 Up, Column 4 Down) with hover-to-pause interaction.
-- **3D Stacked Portrait Carousel**: Interactive 3-card stacked portrait layout with Framer Motion spring physics, rolling 3D card rotation, and circular arrow buttons.
+- **3D Stacked Portrait Carousel**: Interactive 3-card stacked portrait layout with spring-eased CSS transitions, rolling 3D card rotation, and circular arrow buttons.
 - **Interactive Brand Logo Carousel**: Split card layout with company logo tabs, quote transition animations, author portrait, indicator dots, and round navigation controls.
 - **Modern Review Cards**: Avatar image, name, role, 5-star rating, and clean typography in a modern card container.
 - **Dynamic Site Theme Accent**: Automatically binds to site CSS variables (`var(--primary)`) with live color preset support.

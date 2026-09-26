@@ -1,7 +1,6 @@
 "use client";
 
 import { cn } from "@/lib/utils";
-import gsap from "gsap";
 import { ChevronDown } from "lucide-react";
 import React, { forwardRef, useEffect, useRef, useState } from "react";
 import { getThemeStyles } from "./timeline-theme";
@@ -17,6 +16,10 @@ export type TimelineColor =
   | (string & {});
 export type TimelineVariant = "default" | "glass" | "minimal";
 export type TimelineLayout = "left" | "center" | "right";
+
+/** GSAP's power3.out, sampled into a CSS `linear()` curve. */
+const EASE_POWER3_OUT =
+  "linear(0, .0963, .1855, .2679, .3439, .4138, .478, .5367, .5904, .6392, .6836, .7237, .7599, .7924, .8215, .8474, .8704, .8907, .9085, .924, .9375, .9491, .959, .9674, .9744, .9802, .985, .9888, .9919, .9943, .9961, .9974, .9984, .9991, .9995, .9998, .9999, 1, 1, 1, 1)";
 
 // ==========================================
 // INTERFACES
@@ -67,23 +70,28 @@ export const TimelineBlock = forwardRef<HTMLDivElement, TimelineBlockProps>(
     const containerRef = useRef<HTMLDivElement>(null);
 
     useEffect(() => {
-      if (animate && containerRef.current) {
-        const elements = containerRef.current.querySelectorAll(
-          ".timeline-item-anim",
-        );
-        gsap.fromTo(
-          elements,
-          { opacity: 0, y: 20 },
+      if (!animate || !containerRef.current) return;
+      const elements = containerRef.current.querySelectorAll<HTMLElement>(
+        ".timeline-item-anim",
+      );
+      // Staggered entrance, replayed from the start whenever the deps change.
+      // `backwards` holds each item hidden through its delay; once done the
+      // effect is dropped and the item rests on its own styles.
+      const animations = Array.from(elements, (el, index) =>
+        el.animate(
+          [
+            { opacity: 0, transform: "translateY(20px)" },
+            { opacity: 1, transform: "translateY(0px)" },
+          ],
           {
-            opacity: 1,
-            y: 0,
-            duration: 0.5,
-            stagger: 0.15,
-            ease: "power3.out",
-            clearProps: "all",
+            duration: 500,
+            delay: index * 150,
+            easing: EASE_POWER3_OUT,
+            fill: "backwards",
           },
-        );
-      }
+        ),
+      );
+      return () => animations.forEach((animation) => animation.cancel());
     }, [animate, items, variant, layout, color]);
 
     return (

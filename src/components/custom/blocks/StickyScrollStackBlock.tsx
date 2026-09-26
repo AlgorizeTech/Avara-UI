@@ -1,7 +1,8 @@
 "use client";
 
 import { cn } from "@/lib/utils";
-import { motion, useScroll, useTransform } from "framer-motion";
+import gsap from "gsap";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
 import {
   ArrowRight,
   CheckCircle2,
@@ -12,7 +13,27 @@ import {
   Sparkles,
   TrendingUp,
 } from "lucide-react";
-import React, { useRef } from "react";
+import React, { useLayoutEffect, useRef } from "react";
+
+if (typeof window !== "undefined") {
+  gsap.registerPlugin(ScrollTrigger);
+}
+
+/**
+ * The element's offset from the top of the document, summed up the
+ * offsetParent chain — what Framer's `useScroll` measures on every scroll.
+ * A pinned (sticky) element reports where it is stuck, not where it sits.
+ */
+function documentOffsetTop(element: HTMLElement) {
+  let top = 0;
+  let current: Element | null = element;
+  while (current && current !== document.documentElement) {
+    if (!(current instanceof HTMLElement)) break;
+    top += current.offsetTop;
+    current = current.offsetParent;
+  }
+  return top;
+}
 
 export interface ScrollStackItem {
   id: string;
@@ -144,24 +165,41 @@ const StackCard: React.FC<{
   scaleStep: number;
 }> = ({ item, index, total, stackOffsetStep, scaleStep }) => {
   const cardRef = useRef<HTMLDivElement>(null);
-
-  // PRECISION FIX: Track scroll progress relative to this specific card's top edge hitting the sticky boundary.
-  // This guarantees the card NEVER scales down or dims while moving up the screen before pinning.
-  const { scrollYProgress } = useScroll({
-    target: cardRef,
-    offset: ["start start", "end start"],
-  });
+  const faceRef = useRef<HTMLDivElement>(null);
 
   const isLast = index === total - 1;
   const targetScale = isLast ? 1 : 1 - (total - index - 1) * scaleStep;
   const targetOpacity = isLast ? 1 : 0.4;
+  const endScale = Math.max(0.85, targetScale);
 
-  const scale = useTransform(
-    scrollYProgress,
-    [0, 1],
-    [1, Math.max(0.85, targetScale)],
-  );
-  const opacity = useTransform(scrollYProgress, [0, 1], [1, targetOpacity]);
+  // PRECISION FIX: Track scroll progress relative to this specific card's top edge hitting the sticky boundary.
+  // Progress runs 0 → 1 from the card's top ("start start") to its bottom
+  // ("end start") meeting the top of the viewport, re-measured on every
+  // scroll, and drives scale and opacity linearly with no smoothing.
+  useLayoutEffect(() => {
+    const card = cardRef.current;
+    const face = faceRef.current;
+    if (!card || !face) return;
+    const update = () => {
+      const start = documentOffsetTop(card);
+      const length = card.clientHeight;
+      const scrolled = document.documentElement.scrollTop - start;
+      const progress = length > 0 ? Math.min(1, Math.max(0, scrolled / length)) : scrolled >= 0 ? 1 : 0;
+      const scale = 1 + (endScale - 1) * progress;
+      face.style.transform = scale !== 1 ? `scale(${scale})` : "none";
+      face.style.opacity = String(1 + (targetOpacity - 1) * progress);
+    };
+    const ctx = gsap.context(() => {
+      ScrollTrigger.create({
+        start: 0,
+        end: "max",
+        onUpdate: update,
+        onRefresh: update,
+      });
+    });
+    update();
+    return () => ctx.revert();
+  }, [endScale, targetOpacity]);
 
   return (
     <div
@@ -169,8 +207,8 @@ const StackCard: React.FC<{
       className="sticky w-full flex items-center justify-center"
       style={{ top: `calc(5rem + ${index * stackOffsetStep}px)` }}
     >
-      <motion.div
-        style={{ scale, opacity }}
+      <div
+        ref={faceRef}
         className="w-full origin-top rounded-2xl md:rounded-3xl bg-card border border-border/80 p-5 sm:p-6 md:p-7 shadow-xl shadow-zinc-200/50 dark:shadow-black/50 transition-colors duration-300 mt-5"
       >
         <div className="flex items-center justify-between gap-3 mb-4 pb-4 border-b border-border">
@@ -296,7 +334,7 @@ const StackCard: React.FC<{
             </button>
           </div>
         )}
-      </motion.div>
+      </div>
     </div>
   );
 };

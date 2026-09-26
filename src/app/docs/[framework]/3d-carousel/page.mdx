@@ -1,5 +1,5 @@
 import { ExampleShowcase } from "@/components/site/Sandbox";
-import { extractCode } from "@/lib/code";
+import { extractMotionCode } from "@/lib/code";
 
 # 3D Carousel
 
@@ -94,7 +94,7 @@ export default function ShortDeckCarousel() {
       ],
       props: {},
       usage: usageDefault,
-      code: extractCode("src/components/custom/blocks/ThreeDCarouselBlock.tsx"),
+      code: extractMotionCode("src/components/custom/blocks/ThreeDCarouselBlock.tsx"),
     },
   ]}
 />
@@ -260,7 +260,7 @@ Discover the key capabilities that make this component an excellent choice for m
         </td>
         <td>
           A unique identifier string required for safe React list rendering and
-          Framer Motion layout animation.
+          for tracking each card as the fan turns.
         </td>
       </tr>
       <tr>

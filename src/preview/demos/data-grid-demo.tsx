@@ -130,10 +130,10 @@ export default function DataGridDemo({
       <div className="w-full flex flex-col gap-2">
         <div className="flex items-center justify-between px-2 mb-2">
           <div className="flex flex-col">
-            <h3 className="font-semibold text-lg text-zinc-900 dark:text-zinc-100">
+            <h3 className="font-semibold text-lg text-foreground">
               {preset.title}
             </h3>
-            <p className="text-sm text-zinc-500">
+            <p className="text-sm text-muted-foreground">
               {readOnly
                 ? "View mode only."
                 : "Double-click any cell or press Enter to edit."}

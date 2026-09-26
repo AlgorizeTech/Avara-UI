@@ -78,6 +78,12 @@ export const NAME_OVERRIDES: Record<string, string> = {
 };
 
 export const META: Record<string, ItemMeta> = {
+  "animated-faq": {
+    description:
+      "An FAQ section pairing an accordion of questions with a picture canvas that resizes and crossfades to each open answer. Use it for landing-page FAQs that should feel editorial rather than list-like.",
+    categories: ["marketing", "layout"],
+    docs: "Named export: AnimatedFAQBlock (also the default export); `FAQ_ITEMS` holds the sample data. All motion is CSS — no animation library.",
+  },
   wallet: {
     description:
       "An interactive fintech cardholder wallet component featuring 3 serially staggered cards, curved pocket scoop, bottom thumb cutout, and light/dark mode styling.",

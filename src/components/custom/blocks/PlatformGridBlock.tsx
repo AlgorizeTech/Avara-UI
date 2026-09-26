@@ -1,7 +1,6 @@
 "use client";
 
 import React, { useEffect, useRef, useState } from "react";
-import gsap from "gsap";
 import { cn } from "@/lib/utils";
 import { TiltedCard } from "./TiltedCardBlock";
 
@@ -128,6 +127,42 @@ function Pill({
 }
 
 // ------------------------------------------
+// The reveal: each tile rises in after its own delay (`--tile-at`), with
+// GSAP's power3.out as a CSS easing.
+// ------------------------------------------
+const EASE_OUT =
+  "linear(0, .1945, .3591, .4971, .6115, .7052, .7808, .8409, .8877, .9233, .9497, .9686, .9816, .9901, .9952, .998, .9994, .9999, 1, 1)";
+
+const REVEAL_CSS = `
+@keyframes platform-tile-in { from { opacity: 0; transform: translateY(10px) scale(0.9); } }
+[data-tile-reveal] [data-tile] { animation: platform-tile-in 0.7s ${EASE_OUT} var(--tile-at, 0s) backwards; }
+`;
+
+/**
+ * Delays for a wave from the centre of a grid, `each` seconds apart: GSAP's
+ * `stagger: { each, grid: "auto", from: "center" }`, step for step. The
+ * column count is read from where the tiles sit — the first tile that is not
+ * further right than the one before it starts the second row.
+ */
+function centreWave(tiles: HTMLElement[], each: number) {
+  const l = tiles.length;
+  if (!l) return [];
+  let w = 0;
+  let max = -Infinity;
+  while (max < (max = tiles[w++].getBoundingClientRect().left) && w < l) {
+    // walk along the first row
+  }
+  if (w < l) w--;
+  const originX = Math.min(w, l) * 0.5 - 0.5;
+  const originY = (l * 0.5) / w - 0.5;
+  const d = tiles.map((_, j) => Math.hypot((j % w) - originX, originY - Math.floor(j / w)));
+  const min = Math.min(...d);
+  const range = Math.max(...d) - min;
+  const total = each * (w > l ? l - 1 : Math.max(w, l / w));
+  return d.map((dist) => Math.round((((dist - min) / range || 0) * total) * 1e7) / 1e7);
+}
+
+// ------------------------------------------
 // Root
 // ------------------------------------------
 export interface PlatformGridProps extends React.HTMLAttributes<HTMLElement> {
@@ -158,6 +193,7 @@ function PlatformGridRoot({
   const sectionRef = useRef<HTMLElement>(null);
   const gridRef = useRef<HTMLDivElement>(null);
   const [inView, setInView] = useState(reveal === "immediate");
+  const [playing, setPlaying] = useState(false);
 
   useEffect(() => {
     if (inView) return;
@@ -188,25 +224,10 @@ function PlatformGridRoot({
     const reduced =
       typeof window !== "undefined" && window.matchMedia?.("(prefers-reduced-motion: reduce)").matches;
     if (reduced) return;
-    const tiles = grid.querySelectorAll("[data-tile]");
-    // fromTo, not from: an effect that re-runs (StrictMode) must not read the
-    // half-hidden tiles as the end state.
-    const tween = gsap.fromTo(
-      tiles,
-      { opacity: 0, scale: 0.9, y: 10 },
-      {
-        opacity: 1,
-        scale: 1,
-        y: 0,
-        duration: 0.7,
-        ease: "power3.out",
-        stagger: { each: 0.08, grid: "auto", from: "center" },
-        clearProps: "transform",
-      },
-    );
-    return () => {
-      tween.kill();
-    };
+    const tiles = Array.from(grid.querySelectorAll<HTMLElement>("[data-tile]"));
+    const delays = centreWave(tiles, 0.08);
+    tiles.forEach((tile, i) => tile.style.setProperty("--tile-at", `${delays[i]}s`));
+    setPlaying(true);
   }, [inView]);
 
   // The spotlight is driven by CSS variables written straight to the grid, so
@@ -250,8 +271,10 @@ function PlatformGridRoot({
             "lg:[mask-image:linear-gradient(to_right,transparent,black_12%,black_88%,transparent)] lg:[-webkit-mask-image:linear-gradient(to_right,transparent,black_12%,black_88%,transparent)]",
         )}
       >
+        <style>{REVEAL_CSS}</style>
         <div
           ref={gridRef}
+          data-tile-reveal={playing ? "" : undefined}
           onMouseMove={onMove}
           onMouseLeave={onLeave}
           className="relative grid grid-cols-2 border-l border-t border-foreground/[0.08] [grid-auto-flow:dense] sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-8 xl:grid-cols-8"

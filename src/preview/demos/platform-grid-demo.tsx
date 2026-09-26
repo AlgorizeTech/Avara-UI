@@ -52,7 +52,7 @@ import { cn } from "@/lib/utils";
 
 // A small mark on a dark tile, the way store badges are drawn.
 const Badge = ({ children }: { children: React.ReactNode }) => (
-  <span className="grid h-4 w-4 place-items-center rounded-[4px] bg-[#141414] text-white dark:bg-white dark:text-[#141414]">
+  <span className="grid h-4 w-4 place-items-center rounded-[4px] bg-foreground text-background">
     {children}
   </span>
 );
@@ -93,7 +93,7 @@ const CELLS: Cell[] = [
           <span className="text-[9px] font-semibold">Email Client</span>
           <PlatformGrid.Pill>Gap: 8.5</PlatformGrid.Pill>
         </div>
-        <p className="truncate text-[7px] text-black/50 dark:text-white/50">Sync failures dominate 1,412 negative reviews</p>
+        <p className="truncate text-[7px] text-foreground/50">Sync failures dominate 1,412 negative reviews</p>
         <div className="flex items-center justify-between pt-0.5">
           <PlatformGrid.Pill tone="soft">26 companies</PlatformGrid.Pill>
           <PlatformGrid.Pill tone="accent">↓ Export</PlatformGrid.Pill>
@@ -111,7 +111,7 @@ const CELLS: Cell[] = [
           <span className="text-[9px] font-semibold">360 Degree Feedback</span>
           <PlatformGrid.Pill>Gap: 8.0</PlatformGrid.Pill>
         </div>
-        <p className="truncate text-[7px] text-black/50 dark:text-white/50">Integration issues with meeting link systems</p>
+        <p className="truncate text-[7px] text-foreground/50">Integration issues with meeting link systems</p>
         <div className="flex items-center gap-1 pt-0.5">
           <PlatformGrid.Pill tone="soft">55 companies</PlatformGrid.Pill>
           <PlatformGrid.Pill tone="soft">2,761 reviews</PlatformGrid.Pill>
@@ -133,7 +133,7 @@ const CELLS: Cell[] = [
     icon: <RedditIcon />,
     card: (
       <PlatformGrid.Mock>
-        <p className="text-[8px] italic leading-snug text-black/70 dark:text-white/70">
+        <p className="text-[8px] italic leading-snug text-foreground/70">
           &ldquo;Honestly so frustrated with juggling three tools for one client&rdquo;
         </p>
         <div className="flex flex-wrap gap-1">
@@ -160,7 +160,7 @@ const CELLS: Cell[] = [
           </span>
           <span className="text-[9px] font-semibold">MealPrepPro Planner</span>
         </div>
-        <p className="text-[7px] text-black/50 dark:text-white/50">
+        <p className="text-[7px] text-foreground/50">
           <span className="text-primary">★</span> 4.2 · 15 reviews · Paid
         </p>
         <div className="flex items-center justify-between pt-0.5">
@@ -217,7 +217,7 @@ export default function PlatformGridDemo({
         </>
       }
       intro="40+ databases, pipelines, and tools to find, validate, and build your next product."
-      className={cn("max-w-6xl pb-10", rounded && "overflow-hidden rounded-[28px] border border-black/[0.06] dark:border-white/10")}
+      className={cn("max-w-6xl pb-10", rounded && "overflow-hidden rounded-[28px] border border-border")}
     >
       {CELLS.map((c) =>
         c.kind === "tile" ? (

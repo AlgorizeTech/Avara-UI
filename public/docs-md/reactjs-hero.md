@@ -47,7 +47,7 @@ npx shadcn@latest add @algorize-ui/honeycomb-hero
 ### Features
 
     A honeycomb that turns
-    The nine cells sit on a real hexagonal lattice, and the queue snakes around it so every step is a hop between neighbours. GSAP moves each cell to its next place with a short stagger — the one heading for the feature spot leads, the one leaving it follows last.
+    The nine cells sit on a real hexagonal lattice, and the queue snakes around it so every step is a hop between neighbours. Each cell glides to its next place with a short stagger — the one heading for the feature spot leads, the one leaving it follows last.
 
     The feature is the background
     Whatever photograph is in the large hexagon also fills the section behind everything, tinted with its own tone and darkened towards the copy. Photograph and colour crossfade together as the honeycomb turns — deep green behind the gorge, indigo behind the cabins, night blue behind the snow.
@@ -186,10 +186,10 @@ The section takes the height its content needs — about 44rem on a desktop — 
 ### Features
 
     A queue, not a slider
-    Cards tween between their places in the queue with GSAP; the one sent to the back appears where it belongs instead of flying across the others. The background crossfades, settles and then drifts slowly until the next slide.
+    Cards glide between their places in the queue; the one sent to the back appears where it belongs instead of flying across the others. The background crossfades, settles and then drifts slowly until the next slide.
 
     The clock is the progress line
-    One tween fills the line under the front card and moves the queue when it completes. Pausing the line pauses the clock, so a hover never throws away the time already spent.
+    One CSS animation fills the line under the front card and moves the queue when it completes. Pausing the line pauses the clock, so a hover never throws away the time already spent.
 
     Every device
     The rail measures itself and picks card sizes from its own width, not the viewport. Desktop puts the panel beside the rail; tablets stack them; phones give the front card most of the row and keep the rest of the queue peeking in.
@@ -736,7 +736,7 @@ npx shadcn@latest add @algorize-ui/collage-hero
 
 ## Hero Block
 
-A collection of modern hero layouts in one component, built with Tailwind CSS and Framer Motion: rotating word spring bounce, character typewriter effect, continuous thumbnail slider marquee, a CLI copy button and call-to-action buttons. One registry item, five variants.
+A collection of modern hero layouts in one component, built with Tailwind CSS and plain CSS animations, no animation library: rotating word spring bounce, character typewriter effect, continuous thumbnail slider marquee, a CLI copy button and call-to-action buttons. One registry item, five variants.
 
 export const usageWordBounce = `import { HeroBlock } from "@/components/custom/blocks/HeroBlock";
 

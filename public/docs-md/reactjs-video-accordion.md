@@ -1,10 +1,10 @@
 # Video Accordion
 
-A cinematic, expanding gallery component built with **GSAP**. It keeps one panel visually dominant and plays its assigned video, while the rest seamlessly compress into an obscured track-rail and pause.
+A cinematic, expanding gallery component animated with plain **CSS transitions** — no animation library. It keeps one panel visually dominant and plays its assigned video, while the rest seamlessly compress into an obscured track-rail and pause.
 
 This layout is incredibly useful for portfolio reels, storytelling feature sections, and high-impact editorial landing pages. On mobile viewports, it intelligently re-flows into a vertically expanding stack automatically.
 
-Hover a compressed panel to expand it — GSAP interpolates the flex-basis of every sibling and the newly dominant panel starts playing while the others pause.
+Hover a compressed panel to expand it — a CSS transition interpolates the flex-grow of every sibling and the newly dominant panel starts playing while the others pause.
 
 export const accordionPanels = `const panels: AccordionPanel[] = [
   {
@@ -154,7 +154,7 @@ Discover the key capabilities that make this component an excellent choice for m
           Required
 
           A unique identifier string required for safe React list rendering and
-          GSAP state tracking.
+          active-panel tracking.
 
           AccordionPanel
 

@@ -1,15 +1,10 @@
 "use client";
 
 import { cn } from "@/lib/utils";
-import {
-  AnimatePresence,
-  motion,
-  useMotionValue,
-  type MotionValue,
-  useSpring,
-  useTransform,
-} from "framer-motion";
-import React, { useEffect, useRef, useState } from "react";
+import gsap from "gsap";
+import React, { useEffect, useLayoutEffect, useRef, useState } from "react";
+import { bezierEase, gsapTicker } from "./gsap-motion";
+import { createSpringFollower, FRAMER_EASE, LAYOUT_TRANSITION } from "./motion-curves";
 
 export interface DockItem {
   id: string;
@@ -29,6 +24,25 @@ export interface DockProps extends React.HTMLAttributes<HTMLDivElement> {
   gap?: number;
 }
 
+/** Magnification spring — the same constants the Framer Motion build uses. */
+const SIZE_SPRING = { mass: 0.1, stiffness: 150, damping: 12 };
+
+/**
+ * Tooltip in/out: 0.15s tweens with no ease given, which Framer resolves to
+ * `easeOut` for every value (animateMotionValue's default).
+ */
+const TOOLTIP_EASE = bezierEase(FRAMER_EASE.easeOut);
+const DOT_EASE = bezierEase(LAYOUT_TRANSITION.ease);
+
+/** Pointer position shared by every icon; `Infinity` while the pointer is away. */
+type PointerBus = {
+  x: number;
+  listeners: Set<(x: number) => void>;
+};
+
+/** Where the active dot last sat, so the next one can fly in from there. */
+type DotMemory = { rect: DOMRect | null };
+
 export const Dock = React.forwardRef<HTMLDivElement, DockProps>(
   (
     {
@@ -40,11 +54,14 @@ export const Dock = React.forwardRef<HTMLDivElement, DockProps>(
       gap = 12,
       className,
       style,
+      onMouseMove,
+      onMouseLeave,
       ...props
     },
     ref,
   ) => {
-    const mouseX = useMotionValue(Infinity);
+    const bus = useRef<PointerBus>({ x: Infinity, listeners: new Set() });
+    const dot = useRef<DotMemory>({ rect: null });
     const [isMobile, setIsMobile] = useState(false);
 
     // Automatically detect small screens to scale down physics on touch devices
@@ -67,11 +84,22 @@ export const Dock = React.forwardRef<HTMLDivElement, DockProps>(
       ? `${isMobile ? Math.min(containerHeight, 45) : containerHeight}px`
       : containerHeight;
 
+    const publish = (x: number) => {
+      bus.current.x = x;
+      bus.current.listeners.forEach((listener) => listener(x));
+    };
+
     return (
       <div
         ref={ref}
-        onMouseMove={(e) => mouseX.set(e.pageX)}
-        onMouseLeave={() => mouseX.set(Infinity)}
+        onMouseMove={(e) => {
+          publish(e.clientX);
+          onMouseMove?.(e);
+        }}
+        onMouseLeave={(e) => {
+          publish(Infinity);
+          onMouseLeave?.(e);
+        }}
         style={{
           height: dynamicHeight,
           gap: `${effectiveGap}px`,
@@ -90,11 +118,11 @@ export const Dock = React.forwardRef<HTMLDivElement, DockProps>(
           <DockIcon
             key={item.id}
             item={item}
-            mouseX={mouseX}
+            bus={bus.current}
+            dot={dot.current}
             baseSize={effectiveBaseSize}
             magnification={effectiveMagnification}
             distance={effectiveDistance}
-            isMobile={isMobile}
           />
         ))}
       </div>
@@ -106,64 +134,101 @@ Dock.displayName = "Dock";
 
 interface DockIconProps {
   item: DockItem;
-  mouseX: MotionValue<number>;
+  bus: PointerBus;
+  dot: DotMemory;
   baseSize: number;
   magnification: number;
   distance: number;
-  isMobile: boolean;
 }
 
 const DockIcon: React.FC<DockIconProps> = ({
   item,
-  mouseX,
+  bus,
+  dot,
   baseSize,
   magnification,
   distance,
 }) => {
   const iconRef = useRef<HTMLButtonElement>(null);
+  const tooltipRef = useRef<HTMLDivElement>(null);
   const [isHovered, setIsHovered] = useState(false);
 
-  const distanceFromMouse = useTransform(mouseX, (val: number) => {
-    const bounds = iconRef.current?.getBoundingClientRect() ?? {
-      x: 0,
-      width: 0,
+  // Size follows the pointer through a spring, every frame, without React:
+  // distance from the icon's centre maps [-distance, 0, distance] onto
+  // [base, magnified, base] (clamped), and the spring chases that target.
+  const sizing = useRef({ baseSize, magnification, distance });
+  sizing.current = { baseSize, magnification, distance };
+  const retarget = useRef<() => void>(() => {});
+
+  useLayoutEffect(() => {
+    const icon = iconRef.current;
+    if (!icon) return;
+
+    const apply = (size: number) => {
+      icon.style.width = `${size}px`;
+      icon.style.height = `${size}px`;
     };
-    return val - bounds.x - bounds.width / 2;
-  });
+    const target = (x: number) => {
+      const { baseSize: base, magnification: peak, distance: reach } = sizing.current;
+      if (!Number.isFinite(x)) return base;
+      const bounds = icon.getBoundingClientRect();
+      const offset = Math.abs(x - bounds.x - bounds.width / 2);
+      if (offset >= reach) return base;
+      return peak + (base - peak) * (offset / reach);
+    };
 
-  const widthSync = useTransform(
-    distanceFromMouse,
-    [-distance, 0, distance],
-    [baseSize, magnification, baseSize],
-  );
+    const spring = createSpringFollower(target(bus.x), apply, {
+      ...SIZE_SPRING,
+      ticker: gsapTicker,
+    });
+    apply(spring.get());
 
-  const width = useSpring(widthSync, {
-    mass: 0.1,
-    stiffness: 150,
-    damping: 12,
-  });
+    const listener = (x: number) => spring.set(target(x));
+    retarget.current = () => listener(bus.x);
+    bus.listeners.add(listener);
+    return () => {
+      bus.listeners.delete(listener);
+      spring.destroy();
+    };
+  }, [bus]);
+
+  // New sizes (the mobile fallbacks kicking in) spring over from where it is.
+  useEffect(() => {
+    retarget.current();
+  }, [baseSize, magnification, distance]);
+
+  // Tooltip: stays mounted, so its exit can play before it hides.
+  useLayoutEffect(() => {
+    const tip = tooltipRef.current;
+    if (!tip) return;
+    gsap.killTweensOf(tip);
+    if (isHovered) {
+      gsap.fromTo(
+        tip,
+        { autoAlpha: 0, y: 10, scale: 0.8 },
+        { autoAlpha: 1, y: 0, scale: 1, duration: 0.15, ease: TOOLTIP_EASE },
+      );
+    } else if (gsap.getProperty(tip, "opacity") !== 0) {
+      gsap.to(tip, { autoAlpha: 0, y: 5, scale: 0.8, duration: 0.15, ease: TOOLTIP_EASE });
+    }
+  }, [isHovered]);
 
   return (
     <div className="relative flex flex-col items-center shrink-0">
       {/* Floating Tooltip (Renders on all devices on hover/touch) */}
-      <AnimatePresence>
-        {isHovered && (
-          <motion.div
-            initial={{ opacity: 0, y: 10, scale: 0.8 }}
-            animate={{ opacity: 1, y: 0, scale: 1 }}
-            exit={{ opacity: 0, y: 5, scale: 0.8 }}
-            transition={{ duration: 0.15 }}
-            className="absolute -top-6 sm:-top-9 px-1.5 py-0.5 rounded text-[8px] sm:text-xs font-semibold whitespace-nowrap pointer-events-none shadow-md bg-primary text-primary-foreground border border-foreground z-50"
-          >
-            {item.label}
-          </motion.div>
-        )}
-      </AnimatePresence>
+      <div
+        ref={tooltipRef}
+        aria-hidden={!isHovered}
+        style={{ opacity: 0, visibility: "hidden" }}
+        className="absolute -top-6 sm:-top-9 px-1.5 py-0.5 rounded text-[8px] sm:text-xs font-semibold whitespace-nowrap pointer-events-none shadow-md bg-primary text-primary-foreground border border-foreground z-50"
+      >
+        {item.label}
+      </div>
 
       {/* Interactive Dock Button */}
-      <motion.button
+      <button
         ref={iconRef}
-        style={{ width, height: width }}
+        style={{ width: baseSize, height: baseSize }}
         onMouseEnter={() => setIsHovered(true)}
         onMouseLeave={() => setIsHovered(false)}
         onClick={() => {
@@ -189,17 +254,47 @@ const DockIcon: React.FC<DockIconProps> = ({
         <div className="flex items-center justify-center w-3/5 h-3/5 pointer-events-none">
           {item.icon}
         </div>
-      </motion.button>
+      </button>
 
       {/* Active Dot Indicator */}
       <div className="h-1 sm:h-1.5 w-full flex items-center justify-center mt-1">
-        {item.isActive && (
-          <motion.div
-            layoutId="active-dot"
-            className="w-1 h-1 sm:w-1.5 sm:h-1.5 rounded-full bg-primary shadow-sm"
-          />
-        )}
+        {item.isActive && <ActiveDot memory={dot} />}
       </div>
     </div>
   );
 };
+
+/**
+ * The running-app dot. Only the active icon renders one, so when the active
+ * app changes the new dot flies in from where the old one sat — the shared
+ * layout animation, on Framer's default layout curve (0.45s, [0.4, 0, 0.1, 1]).
+ */
+function ActiveDot({ memory }: { memory: DotMemory }) {
+  const ref = useRef<HTMLDivElement>(null);
+
+  useLayoutEffect(() => {
+    const el = ref.current;
+    if (!el) return;
+    const rect = el.getBoundingClientRect();
+    const from = memory.rect;
+    if (from && (from.x !== rect.x || from.y !== rect.y)) {
+      gsap.fromTo(
+        el,
+        { x: from.x - rect.x, y: from.y - rect.y },
+        { x: 0, y: 0, duration: LAYOUT_TRANSITION.duration, ease: DOT_EASE },
+      );
+    }
+    memory.rect = rect;
+    return () => {
+      // Remember where it left from, including mid-flight, for the next dot.
+      memory.rect = el.getBoundingClientRect();
+    };
+  }, [memory]);
+
+  return (
+    <div
+      ref={ref}
+      className="w-1 h-1 sm:w-1.5 sm:h-1.5 rounded-full bg-primary shadow-sm"
+    />
+  );
+}

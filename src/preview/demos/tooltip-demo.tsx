@@ -12,7 +12,7 @@ type Side = "top" | "right" | "bottom" | "left";
 type Align = "start" | "center" | "end";
 
 const TILE =
-  "w-16 h-16 flex items-center justify-center bg-zinc-100 dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 rounded-2xl hover:scale-105 transition-transform cursor-pointer shadow-sm text-sm font-medium text-zinc-700 dark:text-zinc-300";
+  "w-16 h-16 flex items-center justify-center bg-muted border border-border rounded-2xl hover:scale-105 transition-transform cursor-pointer shadow-sm text-sm font-medium text-foreground/80";
 
 export default function TooltipDemo({
   side = "top",
@@ -64,7 +64,7 @@ export default function TooltipDemo({
               {(["start", "center", "end"] as Align[]).map((a) => (
                 <Tooltip key={a} delayDuration={delay}>
                   <TooltipTrigger>
-                    <div className="w-56 h-12 flex items-center justify-center bg-zinc-100 dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 rounded-xl hover:scale-[1.02] transition-transform cursor-pointer text-sm font-medium text-zinc-700 dark:text-zinc-300">
+                    <div className="w-56 h-12 flex items-center justify-center bg-muted border border-border rounded-xl hover:scale-[1.02] transition-transform cursor-pointer text-sm font-medium text-foreground/80">
                       align=&quot;{a}&quot;
                     </div>
                   </TooltipTrigger>
@@ -96,7 +96,7 @@ export default function TooltipDemo({
           {example === "rich" && (
             <Tooltip delayDuration={delay}>
               <TooltipTrigger>
-                <button className="p-3 text-zinc-500 hover:bg-zinc-100 dark:hover:bg-zinc-800 rounded-full transition-colors">
+                <button className="p-3 text-muted-foreground hover:bg-muted rounded-full transition-colors">
                   <Settings className="w-6 h-6" />
                 </button>
               </TooltipTrigger>
@@ -119,8 +119,8 @@ export default function TooltipDemo({
         {/* Main Demo Tooltip */}
         <Tooltip delayDuration={delay}>
           <TooltipTrigger>
-            <div className="w-16 h-16 flex items-center justify-center bg-zinc-100 dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 rounded-2xl hover:scale-105 transition-transform cursor-pointer shadow-sm">
-              <Plus className="w-6 h-6 text-zinc-700 dark:text-zinc-300" />
+            <div className="w-16 h-16 flex items-center justify-center bg-muted border border-border rounded-2xl hover:scale-105 transition-transform cursor-pointer shadow-sm">
+              <Plus className="w-6 h-6 text-foreground/80" />
             </div>
           </TooltipTrigger>
           <TooltipContent side={side} align={align}>
@@ -132,7 +132,7 @@ export default function TooltipDemo({
         <div className="absolute top-6 right-6 flex gap-2">
           <Tooltip delayDuration={delay}>
             <TooltipTrigger>
-              <button className="p-2 text-zinc-500 hover:bg-zinc-100 dark:hover:bg-zinc-800 rounded-full transition-colors">
+              <button className="p-2 text-muted-foreground hover:bg-muted rounded-full transition-colors">
                 <Heart className="w-5 h-5" />
               </button>
             </TooltipTrigger>
@@ -143,7 +143,7 @@ export default function TooltipDemo({
 
           <Tooltip delayDuration={delay}>
             <TooltipTrigger>
-              <button className="p-2 text-zinc-500 hover:bg-zinc-100 dark:hover:bg-zinc-800 rounded-full transition-colors">
+              <button className="p-2 text-muted-foreground hover:bg-muted rounded-full transition-colors">
                 <Settings className="w-5 h-5" />
               </button>
             </TooltipTrigger>

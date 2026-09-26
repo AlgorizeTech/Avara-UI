@@ -2,7 +2,6 @@
 
 import { cn } from "@/lib/utils";
 import React, { forwardRef, useEffect, useState } from "react";
-import { motion } from "framer-motion";
 import { getThemeStyles } from "./animated-typography-theme";
 
 // ==========================================
@@ -365,18 +364,19 @@ export const AnimatedTypographyBlock = forwardRef<
                 viewBox="0 0 100 12"
                 preserveAspectRatio="none"
               >
-                <motion.path
+                {/* Draws itself in: `pathLength="1"` makes the dash pattern
+                    a fraction of the curve, so a dash growing 0 → 1 traces it. */}
+                <path
                   d="M0,5 Q50,12 100,5"
                   fill="none"
                   stroke="currentColor"
                   strokeWidth="3.5"
                   strokeLinecap="round"
-                  initial={{ pathLength: 0, opacity: 0 }}
-                  animate={{ pathLength: 1, opacity: 1 }}
-                  transition={{
-                    duration: 0.9 * speed,
-                    delay: delay / 1000 + 0.2,
-                    ease: "easeOut",
+                  pathLength={1}
+                  className="animate-[typo-underline-draw_0.9s_cubic-bezier(0,0,0.58,1)_backwards]"
+                  style={{
+                    animationDuration: `${0.9 * speed}s`,
+                    animationDelay: `${delay / 1000 + 0.2}s`,
                   }}
                 />
               </svg>
@@ -425,6 +425,10 @@ export const AnimatedTypographyBlock = forwardRef<
           @keyframes typo-split-bottom {
             0% { opacity: 0; transform: translateY(100%); }
             100% { opacity: 1; transform: translateY(0); }
+          }
+          @keyframes typo-underline-draw {
+            0% { stroke-dasharray: 0px 1px; opacity: 0; }
+            100% { stroke-dasharray: 1px 1px; opacity: 1; }
           }
           @keyframes typo-fade {
             0% { opacity: 0; transform: translateY(4px); }

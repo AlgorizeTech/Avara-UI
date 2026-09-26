@@ -54,13 +54,13 @@ export default function NavigationMenuDemo({
                 <li className="hidden lg:block lg:row-span-3">
                   <NavigationMenuLink
                     href="#"
-                    className="flex h-full w-full select-none flex-col justify-end rounded-xl bg-gradient-to-b from-zinc-100/50 to-zinc-100 dark:from-zinc-900/50 dark:to-zinc-900 p-3 sm:p-6 no-underline outline-none focus:shadow-md"
+                    className="flex h-full w-full select-none flex-col justify-end rounded-xl bg-gradient-to-b from-muted/50 to-muted p-3 sm:p-6 no-underline outline-none focus:shadow-md"
                   >
-                    <Zap className="h-4 w-4 sm:h-6 sm:w-6 text-zinc-900 dark:text-zinc-100 mb-2 sm:mb-4" />
-                    <div className="mb-1 sm:mb-2 mt-1 sm:mt-4 text-sm sm:text-lg font-semibold text-zinc-900 dark:text-zinc-100">
+                    <Zap className="h-4 w-4 sm:h-6 sm:w-6 text-foreground mb-2 sm:mb-4" />
+                    <div className="mb-1 sm:mb-2 mt-1 sm:mt-4 text-sm sm:text-lg font-semibold text-foreground">
                       Lightning Fast
                     </div>
-                    <p className="text-[11px] sm:text-sm leading-snug sm:leading-tight text-zinc-500 dark:text-zinc-400">
+                    <p className="text-[11px] sm:text-sm leading-snug sm:leading-tight text-muted-foreground">
                       Experience uncompromised performance with our edge-first
                       architecture.
                     </p>
@@ -98,7 +98,7 @@ export default function NavigationMenuDemo({
             {/* Standard link wrapped in trigger-like styles without the chevron */}
             <a
               href="#"
-              className="relative z-10 flex items-center justify-center gap-0.5 sm:gap-1.5 rounded-full px-2 sm:px-4 py-1 sm:py-2 text-[11px] sm:text-sm font-semibold text-zinc-600 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-zinc-50 transition-colors outline-none whitespace-nowrap"
+              className="relative z-10 flex items-center justify-center gap-0.5 sm:gap-1.5 rounded-full px-2 sm:px-4 py-1 sm:py-2 text-[11px] sm:text-sm font-semibold text-muted-foreground hover:text-foreground transition-colors outline-none whitespace-nowrap"
             >
               Pricing
             </a>

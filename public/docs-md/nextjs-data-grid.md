@@ -144,7 +144,7 @@ Explore the Data Grid's powerful features for displaying complex datasets, inclu
 
           "blue" | "indigo" | "emerald" | "rose" | "zinc" | string
 
-          "blue"
+          "primary"
 
           The accent color applied to the active cell's focus ring and the
           interactive drag handle. Fully supports custom hex codes.

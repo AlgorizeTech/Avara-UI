@@ -1,7 +1,14 @@
 "use client";
 
-import React, { createContext, useContext, useState } from "react";
-import { AnimatePresence, motion, useReducedMotion, type Variants } from "framer-motion";
+import React, {
+  createContext,
+  useContext,
+  useEffect,
+  useLayoutEffect,
+  useRef,
+  useState,
+  useSyncExternalStore,
+} from "react";
 import { AlertCircle, ArrowRight, Mail } from "lucide-react";
 import { cn } from "@/lib/utils";
 import Button from "./Button";
@@ -33,20 +40,46 @@ interface WaitlistContextValue {
 
 const WaitlistContext = createContext<WaitlistContextValue>({ variant: "card", reduced: false });
 
-const EASE = [0.16, 1, 0.3, 1] as const;
+// Every Reveal rises in turn — 0.05s in, then 0.1s apart, `--waitlist-i` being
+// its place in line — once the section is shown. The form gives way to the
+// thank-you, whose tick then draws itself. With reduced motion nothing moves.
+const STYLES = `
+@keyframes waitlist-rise { from { opacity: 0; transform: translateY(16px); } }
+@keyframes waitlist-form-out { to { opacity: 0; transform: translateY(-6px); } }
+@keyframes waitlist-done-in { from { opacity: 0; transform: translateY(8px) scale(0.98); } }
+@keyframes waitlist-check { from { stroke-dasharray: 0 1; } to { stroke-dasharray: 1 1; } }
+@media (prefers-reduced-motion: no-preference) {
+  .waitlist-reveal:not([data-shown]) [data-reveal] { opacity: 0; transform: translateY(16px); }
+  .waitlist-reveal[data-shown] [data-reveal] {
+    animation: waitlist-rise 0.65s cubic-bezier(0.16, 1, 0.3, 1) calc(0.05s + var(--waitlist-i, 0) * 0.1s) backwards;
+  }
+}
+.waitlist-form-out { animation: waitlist-form-out 0.2s cubic-bezier(0, 0, 0.58, 1) forwards; }
+.waitlist-done-in { animation: waitlist-done-in 0.5s cubic-bezier(0.16, 1, 0.3, 1) backwards; }
+.waitlist-check { animation: waitlist-check 0.45s cubic-bezier(0, 0, 0.58, 1) 0.2s backwards; }
+`;
 
-const rise: Variants = {
-  hidden: { opacity: 0, y: 16 },
-  visible: { opacity: 1, y: 0, transition: { duration: 0.65, ease: EASE } },
+const REDUCED_MOTION = "(prefers-reduced-motion: reduce)";
+const subscribeReducedMotion = (onChange: () => void) => {
+  const mq = window.matchMedia(REDUCED_MOTION);
+  mq.addEventListener("change", onChange);
+  return () => mq.removeEventListener("change", onChange);
 };
+/** The visitor's reduced-motion setting; false while server-rendering. */
+function useReducedMotion() {
+  return useSyncExternalStore(
+    subscribeReducedMotion,
+    () => window.matchMedia(REDUCED_MOTION).matches,
+    () => false,
+  );
+}
 
 /** Animates as one child of the section's staggered reveal. */
 function Reveal({ className, children }: { className?: string; children: React.ReactNode }) {
-  const { reduced } = useContext(WaitlistContext);
   return (
-    <motion.div className={className} {...(reduced ? {} : { variants: rise })}>
+    <div className={className} data-reveal="">
       {children}
-    </motion.div>
+    </div>
   );
 }
 
@@ -199,6 +232,14 @@ function Form({
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState<string | undefined>();
   const [done, setDone] = useState<{ position?: number } | null>(null);
+  // The form plays its way out before the thank-you comes in.
+  const [formGone, setFormGone] = useState(false);
+  const leaving = done !== null && !formGone && !reduced;
+  useEffect(() => {
+    if (!leaving) return;
+    const t = window.setTimeout(() => setFormGone(true), 300);
+    return () => window.clearTimeout(t);
+  }, [leaving]);
 
   const submit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -229,123 +270,116 @@ function Form({
 
   return (
     <Reveal className={cn("mx-auto w-full", stacked ? "mt-6" : "mt-8 max-w-[28rem]")}>
-      <AnimatePresence mode="wait" initial={false}>
-        {done ? (
-          <motion.div
-            key="done"
-            role="status"
-            initial={reduced ? false : { opacity: 0, y: 8, scale: 0.98 }}
-            animate={{ opacity: 1, y: 0, scale: 1 }}
-            transition={{ duration: 0.5, ease: EASE }}
-            className={cn(
-              "rounded-2xl bg-card p-5 text-left text-card-foreground",
-              stacked
-                ? "border border-border"
-                : "shadow-[0_1px_2px_rgba(0,0,0,0.05),0_12px_32px_-16px_rgba(0,0,0,0.25)] dark:shadow-none dark:ring-1 dark:ring-foreground/10",
-            )}
-          >
-            <p className="flex items-center gap-2.5 text-[15px] font-semibold leading-tight">
-              <span className="grid size-6 shrink-0 place-items-center rounded-full bg-emerald-500 text-white">
-                <motion.svg viewBox="0 0 24 24" className="size-3.5" fill="none" stroke="currentColor" strokeWidth={3} strokeLinecap="round" strokeLinejoin="round">
-                  <motion.path
-                    d="M5 12.5l4.5 4.5L19 7.5"
-                    initial={reduced ? false : { pathLength: 0 }}
-                    animate={{ pathLength: 1 }}
-                    transition={{ duration: 0.45, delay: 0.2, ease: "easeOut" }}
-                  />
-                </motion.svg>
-              </span>
-              {successTitle}
-            </p>
-            {done.position !== undefined && <Position value={done.position} label={positionLabel} />}
-            <p className="mt-2 text-[13px] leading-relaxed opacity-60">{successText}</p>
-            {shareUrl && (
-              <div className="mt-4 flex flex-wrap items-center gap-x-3 gap-y-2">
-                <CopyButton value={shareUrl} label={shareLabel} copiedLabel="Link copied" variant="soft" size="sm" />
-                <span className="text-[12px] opacity-55">{shareHint}</span>
-              </div>
-            )}
-          </motion.div>
-        ) : (
-          <motion.div
-            key="form"
-            initial={false}
-            {...(reduced ? {} : { exit: { opacity: 0, y: -6, transition: { duration: 0.2 } } })}
-          >
-            <form onSubmit={submit} noValidate className={className} {...props}>
-              {pill ? (
-                <>
-                  <div
-                    className={cn(
-                      "flex items-center gap-1 rounded-full bg-card p-1.5 transition-shadow duration-300",
-                      "shadow-[0_1px_2px_rgba(0,0,0,0.05),0_8px_24px_-12px_rgba(0,0,0,0.2)] focus-within:shadow-[0_1px_2px_rgba(0,0,0,0.05),0_12px_32px_-12px_rgba(0,0,0,0.28)]",
-                      "dark:shadow-none dark:ring-1 dark:ring-foreground/15 dark:backdrop-blur dark:focus-within:shadow-none dark:focus-within:ring-foreground/30",
-                      error && "ring-1 ring-red-500/60 dark:ring-red-400/60",
-                    )}
-                  >
-                    <Mail size={16} className="ml-3 shrink-0 opacity-40" aria-hidden />
-                    {/* The library input with its own box made invisible, so the pill is the field. */}
-                    <InputBlock
-                      type="email"
-                      variant="filled"
-                      inputSize="md"
-                      value={email}
-                      onChange={onChange}
-                      placeholder={placeholder}
-                      aria-label="Email address"
-                      aria-invalid={error ? true : undefined}
-                      autoComplete="email"
-                      className="min-w-0 flex-1 gap-0 [&>div>div]:h-10 [&>div>div]:rounded-full [&>div>div]:border-0 [&>div>div]:bg-transparent [&>div>div]:px-2 [&>div>div]:shadow-none [&>div>div]:focus-within:bg-transparent [&>div>div]:focus-within:ring-0 dark:[&_input]:placeholder:text-foreground/45"
-                    />
-                    <Button
-                      type="submit"
-                      variant="default"
-                      size="sm"
-                      loading={busy}
-                      iconRight={<ArrowRight size={14} />}
-                      className="h-10 shrink-0 rounded-full px-4 text-[13px] shadow-none"
-                    >
-                      {action}
-                    </Button>
-                  </div>
-                  {error && (
-                    <p role="alert" className="mt-2 flex items-center justify-center gap-1.5 text-[12px] text-red-600 dark:text-red-400">
-                      <AlertCircle size={13} /> {error}
-                    </p>
+      {done && !leaving ? (
+        <div
+          key="done"
+          role="status"
+          className={cn(
+            !reduced && "waitlist-done-in",
+            "rounded-2xl bg-card p-5 text-left text-card-foreground",
+            stacked
+              ? "border border-border"
+              : "shadow-[0_1px_2px_rgba(0,0,0,0.05),0_12px_32px_-16px_rgba(0,0,0,0.25)] dark:shadow-none dark:ring-1 dark:ring-foreground/10",
+          )}
+        >
+          <p className="flex items-center gap-2.5 text-[15px] font-semibold leading-tight">
+            <span className="grid size-6 shrink-0 place-items-center rounded-full bg-emerald-500 text-white">
+              <svg viewBox="0 0 24 24" className="size-3.5" fill="none" stroke="currentColor" strokeWidth={3} strokeLinecap="round" strokeLinejoin="round">
+                <path d="M5 12.5l4.5 4.5L19 7.5" pathLength={1} className={reduced ? undefined : "waitlist-check"} />
+              </svg>
+            </span>
+            {successTitle}
+          </p>
+          {done.position !== undefined && <Position value={done.position} label={positionLabel} />}
+          <p className="mt-2 text-[13px] leading-relaxed opacity-60">{successText}</p>
+          {shareUrl && (
+            <div className="mt-4 flex flex-wrap items-center gap-x-3 gap-y-2">
+              <CopyButton value={shareUrl} label={shareLabel} copiedLabel="Link copied" variant="soft" size="sm" />
+              <span className="text-[12px] opacity-55">{shareHint}</span>
+            </div>
+          )}
+        </div>
+      ) : (
+        <div
+          key="form"
+          className={leaving ? "waitlist-form-out" : undefined}
+          onAnimationEnd={(e) => {
+            if (leaving && e.target === e.currentTarget) setFormGone(true);
+          }}
+        >
+          <form onSubmit={submit} noValidate className={className} {...props}>
+            {pill ? (
+              <>
+                <div
+                  className={cn(
+                    "flex items-center gap-1 rounded-full bg-card p-1.5 transition-shadow duration-300",
+                    "shadow-[0_1px_2px_rgba(0,0,0,0.05),0_8px_24px_-12px_rgba(0,0,0,0.2)] focus-within:shadow-[0_1px_2px_rgba(0,0,0,0.05),0_12px_32px_-12px_rgba(0,0,0,0.28)]",
+                    "dark:shadow-none dark:ring-1 dark:ring-foreground/15 dark:backdrop-blur dark:focus-within:shadow-none dark:focus-within:ring-foreground/30",
+                    error && "ring-1 ring-red-500/60 dark:ring-red-400/60",
                   )}
-                </>
-              ) : (
-                <div className={cn("flex gap-3", stacked ? "flex-col" : "flex-col sm:flex-row sm:items-start")}>
-                  {/* The library input owns the error line, so a wrong address is reported beside the field. */}
+                >
+                  <Mail size={16} className="ml-3 shrink-0 opacity-40" aria-hidden />
+                  {/* The library input with its own box made invisible, so the pill is the field. */}
                   <InputBlock
                     type="email"
+                    variant="filled"
                     inputSize="md"
                     value={email}
                     onChange={onChange}
                     placeholder={placeholder}
-                    error={error}
-                    disabled={busy}
                     aria-label="Email address"
+                    aria-invalid={error ? true : undefined}
                     autoComplete="email"
-                    className={cn("min-w-0", stacked ? "w-full" : "flex-1")}
+                    className="min-w-0 flex-1 gap-0 [&>div>div]:h-10 [&>div>div]:rounded-full [&>div>div]:border-0 [&>div>div]:bg-transparent [&>div>div]:px-2 [&>div>div]:shadow-none [&>div>div]:focus-within:bg-transparent [&>div>div]:focus-within:ring-0 dark:[&_input]:placeholder:text-foreground/45"
                   />
                   <Button
                     type="submit"
                     variant="default"
-                    size="default"
+                    size="sm"
                     loading={busy}
-                    iconRight={<ArrowRight size={15} />}
-                    className={cn("h-11 shrink-0", stacked ? "w-full" : "w-full sm:w-auto")}
+                    iconRight={<ArrowRight size={14} />}
+                    className="h-10 shrink-0 rounded-full px-4 text-[13px] shadow-none"
                   >
                     {action}
                   </Button>
                 </div>
-              )}
-              {note && <p className="mt-3 text-center text-[12px] leading-relaxed opacity-50">{note}</p>}
-            </form>
-          </motion.div>
-        )}
-      </AnimatePresence>
+                {error && (
+                  <p role="alert" className="mt-2 flex items-center justify-center gap-1.5 text-[12px] text-red-600 dark:text-red-400">
+                    <AlertCircle size={13} /> {error}
+                  </p>
+                )}
+              </>
+            ) : (
+              <div className={cn("flex gap-3", stacked ? "flex-col" : "flex-col sm:flex-row sm:items-start")}>
+                {/* The library input owns the error line, so a wrong address is reported beside the field. */}
+                <InputBlock
+                  type="email"
+                  inputSize="md"
+                  value={email}
+                  onChange={onChange}
+                  placeholder={placeholder}
+                  error={error}
+                  disabled={busy}
+                  aria-label="Email address"
+                  autoComplete="email"
+                  className={cn("min-w-0", stacked ? "w-full" : "flex-1")}
+                />
+                <Button
+                  type="submit"
+                  variant="default"
+                  size="default"
+                  loading={busy}
+                  iconRight={<ArrowRight size={15} />}
+                  className={cn("h-11 shrink-0", stacked ? "w-full" : "w-full sm:w-auto")}
+                >
+                  {action}
+                </Button>
+              </div>
+            )}
+            {note && <p className="mt-3 text-center text-[12px] leading-relaxed opacity-50">{note}</p>}
+          </form>
+        </div>
+      )}
     </Reveal>
   );
 }
@@ -434,16 +468,36 @@ function WaitlistRoot({
   children,
   ...props
 }: WaitlistProps) {
-  const reduced = useReducedMotion() ?? false;
+  const reduced = useReducedMotion();
+  const containerRef = useRef<HTMLDivElement>(null);
+  const [shown, setShown] = useState(false);
 
-  const container: Variants = {
-    hidden: {},
-    visible: { transition: { staggerChildren: reduced ? 0 : 0.1, delayChildren: reduced ? 0 : 0.05 } },
-  };
-  const revealProps =
-    reveal === "immediate"
-      ? { initial: "hidden" as const, animate: "visible" as const }
-      : { initial: "hidden" as const, whileInView: "visible" as const, viewport: { once: true, amount: 0.3 } };
+  // Each Reveal's place in line, in the order they are on the page — the
+  // parts can come in any order.
+  useLayoutEffect(() => {
+    containerRef.current?.querySelectorAll<HTMLElement>("[data-reveal]").forEach((el, i) => {
+      el.style.setProperty("--waitlist-i", String(i));
+    });
+  });
+
+  // Shown on mount, or the first time 30% of it is in view.
+  useLayoutEffect(() => {
+    if (reveal === "immediate") setShown(true);
+  }, [reveal]);
+  useEffect(() => {
+    const el = containerRef.current;
+    if (reveal === "immediate" || shown || !el) return;
+    const io = new IntersectionObserver(
+      ([entry]) => {
+        if (!entry?.isIntersecting) return;
+        setShown(true);
+        io.disconnect();
+      },
+      { threshold: 0.3 },
+    );
+    io.observe(el);
+    return () => io.disconnect();
+  }, [reveal, shown]);
 
   return (
     <WaitlistContext.Provider value={{ variant, reduced }}>
@@ -458,11 +512,12 @@ function WaitlistRoot({
         style={accent ? ({ ...style, "--primary": accent } as React.CSSProperties) : style}
         {...props}
       >
-        <motion.div
-          variants={container}
-          {...revealProps}
+        <style>{STYLES}</style>
+        <div
+          ref={containerRef}
+          data-shown={shown || undefined}
           className={cn(
-            "mx-auto flex flex-col items-stretch",
+            "waitlist-reveal mx-auto flex flex-col items-stretch",
             variant === "card" &&
               "max-w-sm rounded-2xl border border-border bg-card p-6 shadow-[0_1px_2px_rgba(0,0,0,0.04),0_10px_30px_-18px_rgba(0,0,0,0.25)] dark:shadow-none sm:p-7",
             variant === "launch" &&
@@ -471,7 +526,7 @@ function WaitlistRoot({
           )}
         >
           {variant === "launch" ? <div className="mx-auto flex w-full max-w-xl flex-col items-stretch">{children}</div> : children}
-        </motion.div>
+        </div>
       </section>
     </WaitlistContext.Provider>
   );

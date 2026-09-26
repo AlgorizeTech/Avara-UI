@@ -3,7 +3,7 @@ import { extractCode } from "@/lib/code";
 
 # Theme Switcher
 
-A premium, GSAP-powered dark mode toggle component built specifically for Next.js applications using `next-themes`.
+A premium, animated dark mode toggle component built specifically for Next.js applications using `next-themes`.
 
 It includes three distinct layout variants (Icon, Pill, and Dropdown) to match different areas of your application, from compact navigation bars to sprawling settings menus. It safely handles React hydration to prevent the dreaded "dark mode flash" on initial load.
 
@@ -45,7 +45,7 @@ export default function DropdownSwitcher() {
   examples={[
     {
       title: "Icon",
-      subheading: "One button that flips between light and dark, with a GSAP micro-interaction on the icon and the circular reveal growing out of it.",
+      subheading: "One button that flips between light and dark, with a spin micro-interaction on the icon and the circular reveal growing out of it.",
       propNotes: [
         {
           prop: "variant",
@@ -130,7 +130,7 @@ export default function RootLayout({
 
 ## Features
 
-Explore the Theme Switcher's dark mode capabilities, featuring the circular reveal, hydration-safe rendering and GSAP-powered layout transitions.
+Explore the Theme Switcher's dark mode capabilities, featuring the circular reveal, hydration-safe rendering and smooth layout transitions.
 
 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 my-6 not-prose">
   <div className="p-6 rounded-2xl border border-border bg-card">
@@ -146,8 +146,8 @@ Explore the Theme Switcher's dark mode capabilities, featuring the circular reve
     <p className="text-muted-foreground text-sm">Safely checks if the component is mounted on the client to completely eliminate the infamous React hydration mismatch errors.</p>
   </div>
   <div className="p-6 rounded-2xl border border-border bg-card">
-    <h3 className="text-lg font-semibold text-card-foreground mb-2">GSAP Animations</h3>
-    <p className="text-muted-foreground text-sm">Uses GSAP for premium layout transitions and smooth sliding animations that feel completely native.</p>
+    <h3 className="text-lg font-semibold text-card-foreground mb-2">No Animation Library</h3>
+    <p className="text-muted-foreground text-sm">The sliding pill, the icon spin and the dropdown run on the browser's built-in Web Animations API, so they feel completely native and add no dependency.</p>
   </div>
   <div className="p-6 rounded-2xl border border-border bg-card">
     <h3 className="text-lg font-semibold text-card-foreground mb-2">3 Layout Variants</h3>
@@ -196,7 +196,7 @@ Explore the Theme Switcher's dark mode capabilities, featuring the circular reve
           <code>"icon"</code>
         </td>
         <td>
-          Determines the structural layout and specific GSAP animations applied
+          Determines the structural layout and specific animations applied
           to the toggler.
           <ul>
             <li>

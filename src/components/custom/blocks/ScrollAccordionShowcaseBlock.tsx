@@ -1,9 +1,8 @@
 "use client";
 
 import { cn } from "@/lib/utils";
-import { AnimatePresence, motion } from "framer-motion";
 import { ArrowRight, CheckCircle2, Sparkles } from "lucide-react";
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useLayoutEffect, useRef, useState } from "react";
 
 export interface AccordionShowcaseItem {
   id: string;
@@ -25,6 +24,146 @@ export interface ScrollAccordionShowcaseProps
   localStorageKey?: string;
   defaultAccentColor?: string;
   scrollerRef?: React.RefObject<HTMLElement | null>;
+}
+
+const EASE_IN_OUT = "cubic-bezier(0.42, 0, 0.58, 1)";
+const EASE_OUT = "cubic-bezier(0, 0, 0.58, 1)";
+const BODY_EASE = "cubic-bezier(0.16, 1, 0.3, 1)";
+
+const keyframes = `
+@keyframes scroll-accordion-image-in { from { opacity: 0; scale: 1.04; } }
+@keyframes scroll-accordion-title-in { from { opacity: 0; translate: 0 5px; } }
+`;
+
+type SwapFrom = { opacity: string; scale: string; translate: string };
+
+/**
+ * One element swapped in "wait" order: when `itemKey` changes, the element on
+ * screen plays `exit` from wherever it is, and only once that ends is the
+ * latest item rendered (it enters with its own CSS animation). If the key
+ * comes back mid-exit, `back` settles the element from where it got to.
+ */
+function useWaitSwap<T, E extends HTMLElement>(
+  item: T,
+  itemKey: string,
+  exit: (el: E, from: SwapFrom) => Animation[],
+  back: (el: E, from: SwapFrom) => void,
+) {
+  const ref = useRef<E>(null);
+  const [shownKey, setShownKey] = useState(itemKey);
+  const leaving = shownKey !== itemKey;
+
+  // The leaving element keeps showing the item it had; otherwise it follows
+  // the current one.
+  const lastShown = useRef(item);
+  const latestKey = useRef(itemKey);
+  const handlers = useRef({ exit, back });
+  useEffect(() => {
+    if (!leaving) lastShown.current = item;
+    latestKey.current = itemKey;
+    handlers.current = { exit, back };
+  });
+
+  useEffect(() => {
+    if (!leaving) return;
+    const el = ref.current;
+    if (!el) {
+      setShownKey(latestKey.current);
+      return;
+    }
+    let done = false;
+    const animations = handlers.current.exit(el, readSwapFrom(el));
+    Promise.all(animations.map((a) => a.finished))
+      .then(() => {
+        done = true;
+        setShownKey(latestKey.current);
+      })
+      .catch(() => {});
+    return () => {
+      if (done) return;
+      // The key came back before the exit finished: settle back from here.
+      const from = readSwapFrom(el);
+      animations.forEach((a) => a.cancel());
+      handlers.current.back(el, from);
+    };
+  }, [leaving]);
+
+  return { ref, shown: leaving ? lastShown.current : item, shownKey };
+}
+
+function readSwapFrom(el: Element): SwapFrom {
+  const style = getComputedStyle(el);
+  return {
+    opacity: style.opacity,
+    scale: style.scale === "none" ? "1" : style.scale,
+    translate: style.translate === "none" ? "0px 0px" : style.translate,
+  };
+}
+
+/**
+ * Keeps an accordion body mounted while it closes: `open` drives the
+ * transition, `mounted` drops once the closing transition ends. A body that
+ * is open on the first render is simply there.
+ */
+function usePresence<E extends HTMLElement>(show: boolean, exitMs: number) {
+  const ref = useRef<E>(null);
+  const [mounted, setMounted] = useState(show);
+  const [open, setOpen] = useState(show);
+
+  useLayoutEffect(() => {
+    if (!show) {
+      setOpen(false);
+      return;
+    }
+    if (!mounted) {
+      setMounted(true);
+      return;
+    }
+    // Resolve the closed styles before opening, or nothing transitions.
+    ref.current?.getBoundingClientRect();
+    setOpen(true);
+  }, [show, mounted]);
+
+  useEffect(() => {
+    if (show || !mounted) return;
+    const timer = window.setTimeout(() => setMounted(false), exitMs + 100);
+    return () => window.clearTimeout(timer);
+  }, [show, mounted, exitMs]);
+
+  const onTransitionEnd = (e: React.TransitionEvent) => {
+    if (e.target === e.currentTarget && e.propertyName === "opacity" && !show) {
+      setMounted(false);
+    }
+  };
+
+  return { ref, mounted, open, onTransitionEnd };
+}
+
+/** An accordion body that opens to its content height and closes to nothing. */
+function AccordionBody({
+  isActive,
+  children,
+}: {
+  isActive: boolean;
+  children: React.ReactNode;
+}) {
+  const presence = usePresence<HTMLDivElement>(isActive, 350);
+  if (!presence.mounted) return null;
+  return (
+    <div
+      ref={presence.ref}
+      onTransitionEnd={presence.onTransitionEnd}
+      className="overflow-hidden z-10"
+      style={{
+        display: "grid",
+        gridTemplateRows: presence.open ? "1fr" : "0fr",
+        opacity: presence.open ? 1 : 0,
+        transition: `grid-template-rows 0.35s ${BODY_EASE}, opacity 0.35s ${BODY_EASE}`,
+      }}
+    >
+      <div className="min-h-0 overflow-hidden">{children}</div>
+    </div>
+  );
 }
 
 function hexToRgba(hex: string, alpha: number): string {
@@ -304,6 +443,48 @@ export const ScrollAccordionShowcase = React.forwardRef<
     };
 
     const activeItem = items[activeIndex] || items[0] || {};
+
+    // The mockup image and its caption each swap in "wait" order: the old one
+    // leaves completely before the new one comes in.
+    const image = useWaitSwap<typeof activeItem, HTMLDivElement>(
+      activeItem,
+      activeItem.id || "default",
+      (el, from) => [
+        el.animate(
+          { opacity: [from.opacity, "0"], scale: [from.scale, "0.96"] },
+          { duration: 400, easing: EASE_IN_OUT, fill: "forwards" },
+        ),
+      ],
+      (el, from) => {
+        el.animate(
+          { opacity: [from.opacity, "1"], scale: [from.scale, "1"] },
+          { duration: 400, easing: EASE_IN_OUT },
+        );
+      },
+    );
+    const caption = useWaitSwap<typeof activeItem, HTMLParagraphElement>(
+      activeItem,
+      activeItem.title || "default-title",
+      (el, from) => [
+        el.animate(
+          {
+            opacity: [from.opacity, "0"],
+            translate: [from.translate, "0 -5px"],
+          },
+          { duration: 200, easing: EASE_OUT, fill: "forwards" },
+        ),
+      ],
+      (el, from) => {
+        el.animate(
+          {
+            opacity: [from.opacity, "1"],
+            translate: [from.translate, "0px 0px"],
+          },
+          { duration: 200, easing: EASE_OUT },
+        );
+      },
+    );
+
     const activeBgGlow = hexToRgba(accentColor, 0.12);
     const activeBadgeBg = hexToRgba(accentColor, 0.1);
     const activeBadgeBorder = hexToRgba(accentColor, 0.3);
@@ -317,6 +498,8 @@ export const ScrollAccordionShowcase = React.forwardRef<
         )}
         {...props}
       >
+        <style>{keyframes}</style>
+
         {displayMode === "image-only" && (
           <div className="flex items-center justify-start sm:justify-center gap-2 sm:gap-3 overflow-x-auto pb-4 sm:pb-6 mb-4 sm:mb-8 border-b border-border no-scrollbar px-1">
             {items.map((item, index) => {
@@ -450,57 +633,44 @@ export const ScrollAccordionShowcase = React.forwardRef<
                       </div>
 
                       {/* Accordion Body */}
-                      <AnimatePresence initial={false}>
-                        {isActive && (
-                          <motion.div
-                            initial={{ height: 0, opacity: 0 }}
-                            animate={{ height: "auto", opacity: 1 }}
-                            exit={{ height: 0, opacity: 0 }}
-                            transition={{
-                              duration: 0.35,
-                              ease: [0.16, 1, 0.3, 1],
-                            }}
-                            className="overflow-hidden z-10"
-                          >
-                            <div className="pt-4 sm:pt-6 mt-4 sm:mt-6 border-t border-border flex flex-col gap-4 sm:gap-6">
-                              {/* Inline Mobile Image for 'both' mode */}
-                              {displayMode === "both" && (
-                                <div className="block lg:hidden w-full relative rounded-xl overflow-hidden aspect-[16/10] border border-border/80 shadow-sm mt-2">
-                                  <img
-                                    src={item.image}
-                                    alt={item.title}
-                                    className="w-full h-full object-cover object-top"
-                                  />
-                                </div>
-                              )}
-                              <p className="text-muted-foreground text-[13px] sm:text-base leading-relaxed">
-                                {item.description}
-                              </p>
-                              {item.tags && item.tags.length > 0 && (
-                                <div className="flex flex-wrap gap-1.5 sm:gap-2 pt-1">
-                                  {item.tags.map((tag, tagIdx) => (
-                                    <span
-                                      key={tagIdx}
-                                      style={{
-                                        backgroundColor: activeBadgeBg,
-                                        borderColor: activeBadgeBorder,
-                                        color: accentColor,
-                                      }}
-                                      className="inline-flex items-center gap-1 sm:gap-1.5 px-2.5 sm:px-3 py-1 rounded-full text-[10px] sm:text-[11px] font-semibold uppercase tracking-wider border transition-colors duration-300"
-                                    >
-                                      <CheckCircle2
-                                        style={{ color: accentColor }}
-                                        className="w-3 h-3 sm:w-3.5 sm:h-3.5"
-                                      />
-                                      {tag}
-                                    </span>
-                                  ))}
-                                </div>
-                              )}
+                      <AccordionBody isActive={isActive}>
+                        <div className="pt-4 sm:pt-6 mt-4 sm:mt-6 border-t border-border flex flex-col gap-4 sm:gap-6">
+                          {/* Inline Mobile Image for 'both' mode */}
+                          {displayMode === "both" && (
+                            <div className="block lg:hidden w-full relative rounded-xl overflow-hidden aspect-[16/10] border border-border/80 shadow-sm mt-2">
+                              <img
+                                src={item.image}
+                                alt={item.title}
+                                className="w-full h-full object-cover object-top"
+                              />
                             </div>
-                          </motion.div>
-                        )}
-                      </AnimatePresence>
+                          )}
+                          <p className="text-muted-foreground text-[13px] sm:text-base leading-relaxed">
+                            {item.description}
+                          </p>
+                          {item.tags && item.tags.length > 0 && (
+                            <div className="flex flex-wrap gap-1.5 sm:gap-2 pt-1">
+                              {item.tags.map((tag, tagIdx) => (
+                                <span
+                                  key={tagIdx}
+                                  style={{
+                                    backgroundColor: activeBadgeBg,
+                                    borderColor: activeBadgeBorder,
+                                    color: accentColor,
+                                  }}
+                                  className="inline-flex items-center gap-1 sm:gap-1.5 px-2.5 sm:px-3 py-1 rounded-full text-[10px] sm:text-[11px] font-semibold uppercase tracking-wider border transition-colors duration-300"
+                                >
+                                  <CheckCircle2
+                                    style={{ color: accentColor }}
+                                    className="w-3 h-3 sm:w-3.5 sm:h-3.5"
+                                  />
+                                  {tag}
+                                </span>
+                              ))}
+                            </div>
+                          )}
+                        </div>
+                      </AccordionBody>
                     </div>
                   </div>
                 );
@@ -534,23 +704,21 @@ export const ScrollAccordionShowcase = React.forwardRef<
                       : "aspect-video md:aspect-[16/9]",
                   )}
                 >
-                  <AnimatePresence mode="wait">
-                    <motion.div
-                      key={activeItem.id || "default"}
-                      initial={{ opacity: 0, scale: 1.04 }}
-                      animate={{ opacity: 1, scale: 1 }}
-                      exit={{ opacity: 0, scale: 0.96 }}
-                      transition={{ duration: 0.4, ease: "easeInOut" }}
-                      className="absolute inset-0 w-full h-full"
-                    >
-                      <img
-                        src={activeItem.image}
-                        alt={activeItem.title}
-                        className="w-full h-full object-cover object-top"
-                      />
-                      <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent dark:from-black/90" />
-                    </motion.div>
-                  </AnimatePresence>
+                  <div
+                    key={image.shownKey}
+                    ref={image.ref}
+                    className="absolute inset-0 w-full h-full"
+                    style={{
+                      animation: `scroll-accordion-image-in 0.4s ${EASE_IN_OUT} backwards`,
+                    }}
+                  >
+                    <img
+                      src={image.shown.image}
+                      alt={image.shown.title}
+                      className="w-full h-full object-cover object-top"
+                    />
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent dark:from-black/90" />
+                  </div>
                   <div className="absolute bottom-4 sm:bottom-6 left-4 sm:left-6 right-4 sm:right-6 z-10 flex items-end justify-between pointer-events-none">
                     <div className="flex flex-col gap-1 sm:gap-1.5 p-3.5 sm:p-5 rounded-xl sm:rounded-2xl bg-card/90 backdrop-blur-md border border-border/80 shadow-2xl max-w-sm">
                       <div className="inline-flex items-center gap-2">
@@ -565,18 +733,16 @@ export const ScrollAccordionShowcase = React.forwardRef<
                           {activeItem.badgeText || "Selected Service"}
                         </span>
                       </div>
-                      <AnimatePresence mode="wait">
-                        <motion.p
-                          key={activeItem.title || "default-title"}
-                          initial={{ opacity: 0, y: 5 }}
-                          animate={{ opacity: 1, y: 0 }}
-                          exit={{ opacity: 0, y: -5 }}
-                          transition={{ duration: 0.2 }}
-                          className="text-sm sm:text-lg font-semibold text-foreground tracking-tight leading-snug truncate"
-                        >
-                          {activeItem.title}
-                        </motion.p>
-                      </AnimatePresence>
+                      <p
+                        key={caption.shownKey}
+                        ref={caption.ref}
+                        className="text-sm sm:text-lg font-semibold text-foreground tracking-tight leading-snug truncate"
+                        style={{
+                          animation: `scroll-accordion-title-in 0.2s ${EASE_OUT} backwards`,
+                        }}
+                      >
+                        {caption.shown.title}
+                      </p>
                     </div>
                   </div>
                 </div>

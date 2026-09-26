@@ -3,7 +3,7 @@ import { extractCode } from "@/lib/code";
 
 # Drawer
 
-A highly animated, responsive drawer component. Built entirely from scratch using `gsap` for butter-smooth entering and exiting animations. It supports sliding in from all four screen edges (top, bottom, left, right) and safely locks the background document from scrolling while open.
+A highly animated, responsive drawer component. Built entirely from scratch, with plain CSS transitions for butter-smooth entering and exiting animations — no animation library. It supports sliding in from all four screen edges (top, bottom, left, right) and safely locks the background document from scrolling while open.
 
 The drawer is always controlled — you own `open` and pass `onOpenChange`.
 
@@ -34,7 +34,7 @@ export default function DrawerDemo() {
           <DrawerHeader>
             <DrawerTitle>Interactive Drawer</DrawerTitle>
             <DrawerDescription>
-              This drawer slides in from the right. It uses GSAP for
+              This drawer slides in from the right. It uses CSS transitions for
               butter-smooth easing and handles its own unmount lifecycles.
             </DrawerDescription>
           </DrawerHeader>
@@ -135,7 +135,7 @@ export default function OnboardingDrawer() {
           </DrawerHeader>
 
           <div className="p-6 flex-1 overflow-y-auto">
-            <p className="text-sm text-zinc-600 dark:text-zinc-400">
+            <p className="text-sm text-muted-foreground">
               You can use this for onboarding flows, announcements, or cookie consent banners.
             </p>
           </div>
@@ -274,7 +274,7 @@ Learn about the Drawer component's touch-friendly swiping gestures, snap points,
         </td>
         <td>
           Controls the visible state of the drawer. When true, the component
-          mounts via React Portals and GSAP animates it into view.
+          mounts via React Portals and a CSS transition slides it into view.
         </td>
       </tr>
       <tr>

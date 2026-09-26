@@ -1,7 +1,7 @@
 "use client";
 
 import { cn } from "@/lib/utils";
-import { AnimatePresence, motion } from "framer-motion";
+import gsap from "gsap";
 import {
   Bot,
   Calendar,
@@ -32,7 +32,16 @@ import {
   Trash2,
   X,
 } from "lucide-react";
-import { useCallback, useEffect, useRef, useState } from "react";
+import {
+  useCallback,
+  useEffect,
+  useLayoutEffect,
+  useReducer,
+  useRef,
+  useState,
+} from "react";
+import { bezierEase } from "./gsap-motion";
+import { FRAMER_EASE, springEase, springLinear } from "./motion-curves";
 
 // ==========================================
 // VARIANT & COLOR CONFIGURATION
@@ -886,12 +895,16 @@ export default function AIChat({
           />
 
           {/* Drop hint */}
-          <AnimatePresence>
-            {isDragging && (
-              <motion.div
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                exit={{ opacity: 0 }}
+          <Presence
+            show={isDragging}
+            hidden={{ opacity: 0 }}
+            shown={{ opacity: 1 }}
+            {...FADE}
+          >
+            {(ref, style) => (
+              <div
+                ref={ref}
+                style={style}
                 className={cn(
                   "absolute inset-0 z-20 rounded-2xl border-2 border-dashed flex items-center justify-center gap-2 text-sm font-semibold bg-background/80 backdrop-blur-sm pointer-events-none",
                   theme.inputBorder,
@@ -899,36 +912,29 @@ export default function AIChat({
                 )}
               >
                 <Paperclip className="w-4 h-4" /> Drop files to attach
-              </motion.div>
+              </div>
             )}
-          </AnimatePresence>
+          </Presence>
 
           {/* Attachments */}
-          <AnimatePresence initial={false}>
-            {attachments.length > 0 && (
-              <motion.div
-                key="attachments"
-                initial={{ opacity: 0, height: 0 }}
-                animate={{ opacity: 1, height: "auto" }}
-                exit={{ opacity: 0, height: 0 }}
-                transition={{ duration: 0.25, ease: "easeOut" }}
-                className="overflow-hidden"
-              >
-                <div className="flex flex-wrap gap-2 px-1 pt-1.5 pb-1">
-                  <AnimatePresence initial={false}>
-                    {attachments.map((att) => (
-                      <AttachmentChip
-                        key={att.id}
-                        attachment={att}
-                        theme={theme}
-                        onRemove={() => removeAttachment(att.id)}
-                      />
-                    ))}
-                  </AnimatePresence>
-                </div>
-              </motion.div>
+          <Presence
+            show={attachments.length > 0}
+            appear={false}
+            hidden={{ opacity: 0, height: 0 }}
+            shown={{ opacity: 1, height: "auto" }}
+            duration={0.25}
+            ease={EASE_OUT}
+          >
+            {(ref, style) => (
+              <div ref={ref} style={style} className="overflow-hidden">
+                <AttachmentChips
+                  attachments={attachments}
+                  theme={theme}
+                  onRemove={removeAttachment}
+                />
+              </div>
             )}
-          </AnimatePresence>
+          </Presence>
 
           {/* Prompt / listening surface */}
           <div className="relative">
@@ -947,13 +953,17 @@ export default function AIChat({
               rows={1}
               style={{ minHeight: "48px" }}
             />
-            <AnimatePresence>
-              {voice.isListening && (
-                <motion.div
-                  initial={{ opacity: 0, y: 4 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  exit={{ opacity: 0, y: 4 }}
-                  transition={{ duration: 0.2 }}
+            <Presence
+              show={voice.isListening}
+              hidden={{ opacity: 0, y: 4 }}
+              shown={{ opacity: 1, y: 0 }}
+              duration={0.2}
+              ease={EASE_OUT}
+            >
+              {(ref, style) => (
+                <div
+                  ref={ref}
+                  style={style}
                   className="absolute inset-0 flex items-center gap-3 px-2"
                 >
                   <ListeningWave
@@ -978,9 +988,9 @@ export default function AIChat({
                           : "Dictation isn't available in this browser"}
                     </p>
                   </div>
-                </motion.div>
+                </div>
               )}
-            </AnimatePresence>
+            </Presence>
           </div>
 
           {/* Toolbar */}
@@ -1194,6 +1204,7 @@ export default function AIChat({
         styles.wrapper,
       )}
     >
+      <style>{MOTION_CSS}</style>
       {/* === LEFT SIDEBAR === */}
       {showSidebar && (
         <aside
@@ -1409,12 +1420,7 @@ export default function AIChat({
           </div>
         ) : isHero ? (
           <div className="flex-1 flex flex-col items-center justify-center min-h-0">
-            <motion.div
-              initial={{ opacity: 0, y: 10 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.4, ease: "easeOut" }}
-              className="w-full max-w-3xl px-4 sm:px-6 text-center"
-            >
+            <div className="aichat-rise-10 w-full max-w-3xl px-4 sm:px-6 text-center">
               <h2 className="text-2xl sm:text-4xl font-semibold tracking-tight text-foreground">
                 {heroTitle}
               </h2>
@@ -1423,15 +1429,8 @@ export default function AIChat({
                   {heroSubtitle}
                 </p>
               )}
-            </motion.div>
-            <motion.div
-              initial={{ opacity: 0, y: 14 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.4, ease: "easeOut", delay: 0.08 }}
-              className="w-full"
-            >
-              {composer}
-            </motion.div>
+            </div>
+            <div className="aichat-rise-14 w-full">{composer}</div>
           </div>
         ) : (
           <>
@@ -1671,6 +1670,289 @@ export default function AIChat({
 // ==========================================
 type Theme = Record<string, string>;
 
+// ==========================================
+// MOTION
+// ==========================================
+/** Framer's named eases, for the tweens below. */
+const EASE_OUT = bezierEase(FRAMER_EASE.easeOut);
+const EASE_IN = bezierEase(FRAMER_EASE.easeIn);
+/** Framer's default fade: 0.3s on cubic-bezier(0.25, 0.1, 0.35, 1). */
+const FADE = { duration: 0.3, ease: bezierEase([0.25, 0.1, 0.35, 1]) };
+/** The rocket's launch. */
+const ROCKET_SPRING = springEase({ stiffness: 260, damping: 16 });
+/** Attachment chips: in, out, and the glide of the others into a gap. */
+const CHIP_SPRING = springEase({ stiffness: 320, damping: 24 });
+/**
+ * When a removed chip is taken out of the tray: the moment its fade-out
+ * spring counts as settled (Framer rests an opacity spring once it is within
+ * 0.005 and slower than 0.01/s), a little after the motion itself ends.
+ */
+const CHIP_EXIT_SETTLE = 0.65;
+/** The effort slider's thumb and fill. */
+const SLIDER_SPRING = springEase({ stiffness: 400, damping: 30 });
+
+const CHECK_SPRING = springLinear({ stiffness: 380, damping: 14 });
+const FAIL_SPRING = springLinear({ stiffness: 550, damping: 30 });
+const EASE_IN_OUT_CSS = "cubic-bezier(0.42, 0, 0.58, 1)";
+const EASE_OUT_CSS = "cubic-bezier(0, 0, 0.58, 1)";
+
+/**
+ * The fixed, self-running animations — entrances that play once on mount and
+ * the loops — as plain CSS. Rendered once by AIChat.
+ */
+const MOTION_CSS = `
+@keyframes aichat-rise-10 { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: none; } }
+@keyframes aichat-rise-14 { from { opacity: 0; transform: translateY(14px); } to { opacity: 1; transform: none; } }
+.aichat-rise-10 { animation: aichat-rise-10 0.4s ${EASE_OUT_CSS} backwards; }
+.aichat-rise-14 { animation: aichat-rise-14 0.4s ${EASE_OUT_CSS} 0.08s backwards; }
+
+@keyframes aichat-rocket-bob {
+  0%, 50%, 100% { transform: translateY(0); }
+  25% { transform: translateY(-1.5px); }
+  75% { transform: translateY(1.5px); }
+}
+.aichat-rocket-bob { animation: aichat-rocket-bob 1.4s ${EASE_IN_OUT_CSS} infinite; }
+@keyframes aichat-exhaust {
+  0%, 100% { transform: scaleX(0.6) rotate(-45deg); opacity: 0.7; }
+  25% { transform: scaleX(1.3) rotate(-45deg); opacity: 1; }
+  50% { transform: scaleX(0.8) rotate(-45deg); opacity: 0.8; }
+  75% { transform: scaleX(1.1) rotate(-45deg); opacity: 1; }
+}
+.aichat-exhaust { animation: aichat-exhaust 0.35s ${EASE_IN_OUT_CSS} infinite; }
+
+@keyframes aichat-ring { from { transform: scale(0.4); opacity: 0.9; } to { transform: scale(2.6); opacity: 0; } }
+.aichat-ring { animation: aichat-ring 0.6s ${EASE_OUT_CSS} both; }
+@keyframes aichat-check { from { transform: scale(0) rotate(-90deg); } to { transform: scale(1) rotate(0deg); } }
+.aichat-check { animation: aichat-check ${CHECK_SPRING.duration}ms ${CHECK_SPRING.easing} 0.15s both; }
+@keyframes aichat-pop { from { transform: scale(0); } to { transform: scale(1); } }
+.aichat-pop { animation: aichat-pop ${FAIL_SPRING.duration}ms ${FAIL_SPRING.easing} both; }
+
+@keyframes aichat-glow-pulse { 0%, 100% { opacity: 0.12; } 50% { opacity: 0.26; } }
+.aichat-glow-pulse { animation: aichat-glow-pulse 3.2s ${EASE_IN_OUT_CSS} infinite; }
+@keyframes aichat-speck {
+  0% { opacity: 0; transform: translateY(0) scale(0.4); }
+  50% { opacity: 0.9; transform: translateY(-6px) scale(1.3); }
+  100% { opacity: 0; transform: translateY(-12px) scale(0.4); }
+}
+.aichat-speck { animation: aichat-speck 1s ${EASE_IN_OUT_CSS} infinite backwards; }
+
+@keyframes aichat-wave {
+  0%, 100% { transform: scaleY(0.15); }
+  25% { transform: scaleY(var(--aichat-wave-peak)); }
+  50% { transform: scaleY(0.3); }
+  75% { transform: scaleY(var(--aichat-wave-echo)); }
+}
+.aichat-wave { animation: aichat-wave 1s ${EASE_IN_OUT_CSS} infinite backwards; }
+`;
+
+type PresencePose = { opacity?: number; y?: number; scale?: number; height?: number | "auto" };
+
+/** A pose as inline style, for the first frame before any tween runs. */
+const poseStyle = ({ opacity, y, scale, height }: PresencePose): React.CSSProperties => ({
+  opacity,
+  height,
+  transform: y !== undefined || scale !== undefined ? `translateY(${y ?? 0}px) scale(${scale ?? 1})` : undefined,
+});
+
+/**
+ * Mounts its child while `show` is on, and keeps it mounted — frozen as it
+ * last rendered — while it animates out: in from `hidden` to `shown`, back to
+ * `hidden` on the way out. Turning `show` back on mid-exit reverses from
+ * wherever the child is. With `appear={false}`, a child present on the first
+ * render starts shown.
+ */
+function Presence({
+  show,
+  appear = true,
+  hidden,
+  shown,
+  duration,
+  ease,
+  children,
+}: {
+  show: boolean;
+  appear?: boolean;
+  hidden: PresencePose;
+  shown: PresencePose;
+  duration: number;
+  ease: (progress: number) => number;
+  children: (
+    ref: React.RefObject<HTMLDivElement | null>,
+    style: React.CSSProperties | undefined,
+  ) => React.ReactNode;
+}) {
+  const ref = useRef<HTMLDivElement>(null);
+  const [mounted, setMounted] = useState(show);
+  if (show && !mounted) setMounted(true);
+  // Server render and first frame: the entry pose, when the child enters.
+  const [mountStyle] = useState(() => (show && appear ? poseStyle(hidden) : undefined));
+  const firstRun = useRef(true);
+  const seen = useRef<HTMLDivElement | null>(null);
+  useLayoutEffect(() => {
+    const first = firstRun.current;
+    firstRun.current = false;
+    const el = ref.current;
+    if (!el) return;
+    const fresh = el !== seen.current;
+    seen.current = el;
+    gsap.killTweensOf(el);
+    if (show) {
+      if (!fresh) gsap.to(el, { ...shown, duration, ease });
+      else if (!first || appear) gsap.fromTo(el, { ...hidden }, { ...shown, duration, ease });
+      return;
+    }
+    gsap.to(el, { ...hidden, duration, ease, onComplete: () => setMounted(false) });
+    // The poses are fixed per call site.
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [show, mounted]);
+  useEffect(
+    () => () => {
+      if (seen.current) gsap.killTweensOf(seen.current);
+    },
+    [],
+  );
+
+  const last = useRef<React.ReactNode>(null);
+  if (show) last.current = children(ref, mountStyle);
+  return mounted ? last.current : null;
+}
+
+/** A chip's motion: its entry/exit pose and any glide towards its new slot. */
+interface ChipMotion {
+  el: HTMLDivElement;
+  opacity: number;
+  scale: number;
+  y: number;
+  glideX: number;
+  glideY: number;
+}
+
+function paintChip(m: ChipMotion) {
+  const x = m.glideX;
+  const y = m.glideY + m.y;
+  m.el.style.transform = x || y || m.scale !== 1 ? `translate(${x}px, ${y}px) scale(${m.scale})` : "none";
+  m.el.style.opacity = String(m.opacity);
+}
+
+/**
+ * The attachment chips. A new chip springs in; a removed one springs out in
+ * place, and once it has gone the chips after it glide into the gap on the
+ * same spring. Chips already there when the tray opens don't animate.
+ */
+function AttachmentChips({
+  attachments,
+  theme,
+  onRemove,
+}: {
+  attachments: PendingAttachment[];
+  theme: Theme;
+  onRemove: (id: string) => void;
+}) {
+  const chips = useRef(new Map<string, ChipMotion>());
+  const [, rerender] = useReducer((n: number) => n + 1, 0);
+  const firstIds = useRef<Set<string> | null>(null);
+  if (!firstIds.current) firstIds.current = new Set(attachments.map((a) => a.id));
+  // Chips that have finished leaving, and what was on screen last commit.
+  const gone = useRef(new Set<string>());
+  const onScreen = useRef<PendingAttachment[]>(attachments);
+
+  // Removed chips stay where they were, in their old slot, until they're out.
+  const present = new Set(attachments.map((a) => a.id));
+  const rendered = [...attachments];
+  onScreen.current.forEach((att, i) => {
+    if (!present.has(att.id) && !gone.current.has(att.id)) rendered.splice(i, 0, att);
+  });
+
+  // Where each chip's layout box sat before this render commits.
+  const before = new Map(
+    Array.from(chips.current, ([id, m]) => [id, { x: m.el.offsetLeft, y: m.el.offsetTop }] as const),
+  );
+
+  const leaving = useRef(new Map<string, gsap.core.Tween>());
+  useLayoutEffect(() => {
+    onScreen.current = rendered;
+    const stillShown = new Set(rendered.map((a) => a.id));
+    gone.current.forEach((id) => {
+      if (!stillShown.has(id)) gone.current.delete(id);
+    });
+
+    chips.current.forEach((m, id) => {
+      // Out: fade and shrink in place, then drop it.
+      if (!present.has(id) && !leaving.current.has(id)) {
+        gsap.killTweensOf(m, "opacity,scale,y");
+        gsap.to(m, { opacity: 0, scale: 0.85, y: 6, ...CHIP_SPRING, onUpdate: () => paintChip(m) });
+        leaving.current.set(
+          id,
+          gsap.delayedCall(CHIP_EXIT_SETTLE, () => {
+            leaving.current.delete(id);
+            gone.current.add(id);
+            rerender();
+          }),
+        );
+        return;
+      }
+      // Glide: the chips after a removed one move up from where they were.
+      const was = before.get(id);
+      if (!was) return;
+      const dx = was.x - m.el.offsetLeft;
+      const dy = was.y - m.el.offsetTop;
+      if (!dx && !dy) return;
+      gsap.killTweensOf(m, "glideX,glideY");
+      m.glideX += dx;
+      m.glideY += dy;
+      paintChip(m);
+      gsap.to(m, { glideX: 0, glideY: 0, ...CHIP_SPRING, onUpdate: () => paintChip(m) });
+    });
+  });
+
+  const register = useCallback((id: string, el: HTMLDivElement | null) => {
+    const old = chips.current.get(id);
+    if (old && old.el === el) return;
+    if (old) {
+      gsap.killTweensOf(old);
+      leaving.current.get(id)?.kill();
+      leaving.current.delete(id);
+      chips.current.delete(id);
+    }
+    if (!el) return;
+    const m: ChipMotion = { el, opacity: 1, scale: 1, y: 0, glideX: 0, glideY: 0 };
+    chips.current.set(id, m);
+    if (firstIds.current?.has(id)) return;
+    // In: springs up from slightly below, small and transparent.
+    m.opacity = 0;
+    m.scale = 0.85;
+    m.y = 6;
+    paintChip(m);
+    gsap.to(m, { opacity: 1, scale: 1, y: 0, ...CHIP_SPRING, onUpdate: () => paintChip(m) });
+  }, []);
+  const refs = useRef(new Map<string, (el: HTMLDivElement | null) => void>());
+  const refFor = (id: string) => {
+    let ref = refs.current.get(id);
+    if (!ref) {
+      ref = (el) => {
+        register(id, el);
+        if (!el) refs.current.delete(id);
+      };
+      refs.current.set(id, ref);
+    }
+    return ref;
+  };
+
+  return (
+    <div className="flex flex-wrap gap-2 px-1 pt-1.5 pb-1">
+      {rendered.map((att) => (
+        <AttachmentChip
+          key={att.id}
+          chipRef={refFor(att.id)}
+          attachment={att}
+          theme={theme}
+          onRemove={() => onRemove(att.id)}
+        />
+      ))}
+    </div>
+  );
+}
+
 /**
  * The upload indicator: a rocket that launches from the left, rides the
  * progress along the track with a flickering exhaust, then blasts off the end
@@ -1690,6 +1972,54 @@ function RocketProgress({
   // Position and fill are CSS transitions: they keep gliding between progress
   // events even when the page's JS frame budget is tight.
   const glide = "left 450ms cubic-bezier(0.22, 1, 0.36, 1)";
+
+  // The rocket stays mounted after the upload ends, long enough to blast off.
+  const flying = !done && !failed;
+  const [rocketMounted, setRocketMounted] = useState(flying);
+  if (flying && !rocketMounted) setRocketMounted(true);
+  // While it leaves, it keeps the position it launched from.
+  const launchedFrom = useRef(progress);
+  if (flying) launchedFrom.current = progress;
+  const rocketRef = useRef<HTMLDivElement>(null);
+  const craftRef = useRef<HTMLDivElement>(null);
+  useLayoutEffect(() => {
+    const rocket = rocketRef.current;
+    const craft = craftRef.current;
+    if (!rocket || !craft) return;
+    gsap.killTweensOf([rocket, craft]);
+    if (flying) {
+      // Launch: pops up from below, tilting from 60deg to its 45deg cruise.
+      // The -50%/-50% is the element's own Tailwind centring, which GSAP's
+      // transform would otherwise replace.
+      gsap.fromTo(
+        craft,
+        { xPercent: -50, yPercent: -50, x: 0, y: 8, scale: 0, rotation: 60, opacity: 0 },
+        { y: 0, scale: 1, rotation: 45, opacity: 1, ...ROCKET_SPRING },
+      );
+      return;
+    }
+    // Blast-off: the rocket shoots to the end of the track while the craft
+    // climbs away and fades; it unmounts once both are done.
+    gsap.to(rocket, { left: "100%", duration: 0.2, ease: EASE_OUT });
+    gsap.to(craft, {
+      x: 14,
+      y: -18,
+      scale: 0.4,
+      opacity: 0,
+      rotation: 20,
+      duration: 0.35,
+      ease: EASE_IN,
+      onComplete: () => setRocketMounted(false),
+    });
+  }, [flying, rocketMounted]);
+  useEffect(() => {
+    const rocket = rocketRef;
+    const craft = craftRef;
+    return () => {
+      const targets = [rocket.current, craft.current].filter(Boolean);
+      if (targets.length) gsap.killTweensOf(targets);
+    };
+  }, []);
 
   return (
     <div className="relative h-5 w-full">
@@ -1712,98 +2042,37 @@ function RocketProgress({
       </div>
 
       {/* Rocket */}
-      <AnimatePresence>
-        {!done && !failed && (
-          <motion.div
-            key="rocket"
-            className={cn("absolute top-1/2 z-10", theme.primaryText)}
-            style={{ left: `${progress}%`, transition: glide }}
-            exit={{ left: "100%", transition: { duration: 0.2 } }}
-          >
-            <motion.div
-              className="relative -translate-x-1/2 -translate-y-1/2"
-              initial={{ scale: 0, y: 8, opacity: 0, rotate: 60 }}
-              animate={{ scale: 1, y: 0, opacity: 1, rotate: 45 }}
-              exit={{
-                x: 14,
-                y: -18,
-                scale: 0.4,
-                opacity: 0,
-                rotate: 20,
-                transition: { duration: 0.35, ease: "easeIn" },
-              }}
-              transition={{ type: "spring", stiffness: 260, damping: 16 }}
-            >
-              {/* Bob while in flight */}
-              <motion.div
-                animate={{ y: [0, -1.5, 0, 1.5, 0] }}
-                transition={{
-                  duration: 1.4,
-                  repeat: Infinity,
-                  ease: "easeInOut",
-                }}
-                className="relative"
-              >
-                {/* Exhaust: sits behind the tail (bottom-left of the rotated icon) */}
-                <motion.span
-                  className="absolute left-[-9px] top-[9px] h-[3px] w-3 rounded-full bg-gradient-to-l from-orange-400 via-amber-300 to-transparent origin-right"
-                  style={{ rotate: -45 }}
-                  animate={{
-                    scaleX: [0.6, 1.3, 0.8, 1.1, 0.6],
-                    opacity: [0.7, 1, 0.8, 1, 0.7],
-                  }}
-                  transition={{
-                    duration: 0.35,
-                    repeat: Infinity,
-                    ease: "easeInOut",
-                  }}
-                />
-                <Rocket className="w-3.5 h-3.5 drop-shadow-sm" />
-              </motion.div>
-            </motion.div>
-          </motion.div>
-        )}
-      </AnimatePresence>
+      {rocketMounted && (
+        <div
+          ref={rocketRef}
+          className={cn("absolute top-1/2 z-10", theme.primaryText)}
+          style={{ left: `${flying ? progress : launchedFrom.current}%`, transition: glide }}
+        >
+          <div ref={craftRef} className="relative -translate-x-1/2 -translate-y-1/2">
+            {/* Bob while in flight */}
+            <div className="aichat-rocket-bob relative">
+              {/* Exhaust: sits behind the tail (bottom-left of the rotated icon) */}
+              <span className="aichat-exhaust absolute left-[-9px] top-[9px] h-[3px] w-3 rounded-full bg-gradient-to-l from-orange-400 via-amber-300 to-transparent origin-right" />
+              <Rocket className="w-3.5 h-3.5 drop-shadow-sm" />
+            </div>
+          </div>
+        </div>
+      )}
 
       {/* Landing */}
-      <AnimatePresence>
-        {done && (
-          <motion.span
-            key="landed"
-            className="absolute right-0 top-1/2 -translate-y-1/2 translate-x-1/2 z-10 flex items-center justify-center"
-          >
-            <motion.span
-              className="absolute size-4 rounded-full bg-emerald-500/40"
-              initial={{ scale: 0.4, opacity: 0.9 }}
-              animate={{ scale: 2.6, opacity: 0 }}
-              transition={{ duration: 0.6, ease: "easeOut" }}
-            />
-            <motion.span
-              className="relative size-4 rounded-full bg-emerald-500 text-white flex items-center justify-center shadow-sm"
-              initial={{ scale: 0, rotate: -90 }}
-              animate={{ scale: 1, rotate: 0 }}
-              transition={{
-                type: "spring",
-                stiffness: 380,
-                damping: 14,
-                delay: 0.15,
-              }}
-            >
-              <Check className="w-2.5 h-2.5" strokeWidth={3.5} />
-            </motion.span>
-          </motion.span>
-        )}
-        {failed && (
-          <motion.span
-            key="failed"
-            initial={{ scale: 0 }}
-            animate={{ scale: 1 }}
-            className="absolute right-0 top-1/2 -translate-y-1/2 translate-x-1/2 z-10 size-4 rounded-full bg-rose-500 text-white flex items-center justify-center"
-          >
-            <X className="w-2.5 h-2.5" strokeWidth={3.5} />
-          </motion.span>
-        )}
-      </AnimatePresence>
+      {done && (
+        <span className="absolute right-0 top-1/2 -translate-y-1/2 translate-x-1/2 z-10 flex items-center justify-center">
+          <span className="aichat-ring absolute size-4 rounded-full bg-emerald-500/40" />
+          <span className="aichat-check relative size-4 rounded-full bg-emerald-500 text-white flex items-center justify-center shadow-sm">
+            <Check className="w-2.5 h-2.5" strokeWidth={3.5} />
+          </span>
+        </span>
+      )}
+      {failed && (
+        <span className="aichat-pop absolute right-0 top-1/2 -translate-y-1/2 translate-x-1/2 z-10 size-4 rounded-full bg-rose-500 text-white flex items-center justify-center">
+          <X className="w-2.5 h-2.5" strokeWidth={3.5} />
+        </span>
+      )}
     </div>
   );
 }
@@ -1812,10 +2081,13 @@ function AttachmentChip({
   attachment,
   theme,
   onRemove,
+  chipRef,
 }: {
   attachment: PendingAttachment;
   theme: Theme;
   onRemove: () => void;
+  /** The chip's root element, for the tray to animate. */
+  chipRef?: (el: HTMLDivElement | null) => void;
 }) {
   const isImage = attachment.type.startsWith("image/");
   const statusText =
@@ -1826,12 +2098,8 @@ function AttachmentChip({
         : `${attachment.progress}%`;
 
   return (
-    <motion.div
-      layout
-      initial={{ opacity: 0, scale: 0.85, y: 6 }}
-      animate={{ opacity: 1, scale: 1, y: 0 }}
-      exit={{ opacity: 0, scale: 0.85, y: 6 }}
-      transition={{ type: "spring", stiffness: 320, damping: 24 }}
+    <div
+      ref={chipRef}
       className="group relative flex items-center gap-2.5 rounded-xl border border-border bg-card/90 pl-2 pr-3 py-2 w-[232px] max-w-full shadow-sm"
     >
       <div
@@ -1889,7 +2157,7 @@ function AttachmentChip({
       >
         <X className="w-3 h-3" strokeWidth={3} />
       </button>
-    </motion.div>
+    </div>
   );
 }
 
@@ -1921,20 +2189,48 @@ function EffortSlider({
     return `calc(${edge}px + ${p} * (100% - ${edge * 2}px))`;
   };
   const thumbLeft = stopLeft(index);
-  const spring = { type: "spring" as const, stiffness: 400, damping: 30 };
+  const fillWidth = (left: string) => `calc(${left} + ${THUMB_WIDTH / 2 - TRACK_INSET}px)`;
+
+  // Thumb and fill share one spring on the stop position, from wherever they
+  // are when the value changes; they mount in place.
+  const thumbRef = useRef<HTMLDivElement>(null);
+  const fillRef = useRef<HTMLDivElement>(null);
+  const [mounted] = useState(() => ({ left: thumbLeft, width: fillWidth(thumbLeft) }));
+  const shown = useRef({ stop: index / last });
+  useLayoutEffect(() => {
+    const thumb = thumbRef.current;
+    const fill = fillRef.current;
+    if (!thumb || !fill) return;
+    const at = shown.current;
+    const paint = () => {
+      const left = stopLeft(at.stop * last);
+      thumb.style.left = left;
+      fill.style.width = fillWidth(left);
+    };
+    const to = index / last;
+    if (at.stop === to) {
+      paint();
+      return;
+    }
+    gsap.to(at, { stop: to, ...SLIDER_SPRING, overwrite: true, onUpdate: paint });
+    // stopLeft is rebuilt each render from `last`; the tween only needs the fraction.
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [index, last]);
+  useEffect(() => {
+    const at = shown.current;
+    return () => {
+      gsap.killTweensOf(at);
+    };
+  }, []);
 
   return (
     <div className={cn("relative h-8 w-full select-none", theme.primaryText)}>
       <div className="absolute inset-0 rounded-full bg-muted" />
       {/* Fill runs from the track's start to the thumb's trailing edge */}
-      <motion.div
+      <div
+        ref={fillRef}
         className="absolute rounded-full bg-current opacity-40"
-        style={{ top: TRACK_INSET, bottom: TRACK_INSET, left: TRACK_INSET }}
-        initial={false}
-        animate={{
-          width: `calc(${thumbLeft} + ${THUMB_WIDTH / 2 - TRACK_INSET}px)`,
-        }}
-        transition={spring}
+        style={{ top: TRACK_INSET, bottom: TRACK_INSET, left: TRACK_INSET, width: mounted.width }}
       />
       {efforts.map((effort, i) => (
         <span
@@ -1946,15 +2242,14 @@ function EffortSlider({
           style={{ left: stopLeft(i) }}
         />
       ))}
-      <motion.div
+      <div
+        ref={thumbRef}
         className="absolute top-1/2 -translate-x-1/2 -translate-y-1/2 rounded-full bg-current shadow-sm"
         style={{
           width: THUMB_WIDTH,
           height: `calc(100% - ${TRACK_INSET * 2}px)`,
+          left: mounted.left,
         }}
-        initial={false}
-        animate={{ left: thumbLeft }}
-        transition={spring}
       />
       <input
         type="range"
@@ -1992,14 +2287,17 @@ function MaxEffortGlow({
   className?: string;
 }) {
   return (
-    <AnimatePresence>
-      {active && (
-        <motion.div
-          key="max-glow"
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          exit={{ opacity: 0 }}
-          transition={{ duration: 0.5 }}
+    <Presence
+      show={active}
+      hidden={{ opacity: 0 }}
+      shown={{ opacity: 1 }}
+      duration={0.5}
+      ease={EASE_OUT}
+    >
+      {(ref, style) => (
+        <div
+          ref={ref}
+          style={style}
           aria-hidden
           className={cn(
             "pointer-events-none absolute inset-0 overflow-hidden rounded-2xl",
@@ -2007,11 +2305,7 @@ function MaxEffortGlow({
           )}
         >
           <div className="absolute inset-x-0 bottom-0 h-3/4 bg-[radial-gradient(ellipse_at_bottom,currentColor,transparent_65%)] opacity-15" />
-          <motion.div
-            className="absolute inset-x-6 bottom-0 h-1/2 bg-[radial-gradient(ellipse_at_bottom,currentColor,transparent_60%)] opacity-20 blur-xl"
-            animate={{ opacity: [0.12, 0.26, 0.12] }}
-            transition={{ duration: 3.2, repeat: Infinity, ease: "easeInOut" }}
-          />
+          <div className="aichat-glow-pulse absolute inset-x-6 bottom-0 h-1/2 bg-[radial-gradient(ellipse_at_bottom,currentColor,transparent_60%)] opacity-20 blur-xl" />
           {Array.from({ length: PARTICLE_COUNT }).map((_, i) => {
             const x = noise(i, 1) * 100;
             // Square the vertical noise so most specks sit low, like the reference.
@@ -2020,33 +2314,24 @@ function MaxEffortGlow({
             const duration = 1.8 + noise(i, 4) * 2.4;
             const delay = noise(i, 5) * 3;
             return (
-              <motion.span
+              <span
                 key={i}
-                className="absolute rounded-full bg-current"
+                className="aichat-speck absolute rounded-full bg-current"
                 style={{
                   left: `${x}%`,
                   top: `${y}%`,
                   width: size,
                   height: size,
                   boxShadow: "0 0 6px 1px currentColor",
-                }}
-                animate={{
-                  opacity: [0, 0.9, 0],
-                  scale: [0.4, 1.3, 0.4],
-                  y: [0, -6, -12],
-                }}
-                transition={{
-                  duration,
-                  delay,
-                  repeat: Infinity,
-                  ease: "easeInOut",
+                  animationDuration: `${duration}s`,
+                  animationDelay: `${delay}s`,
                 }}
               />
             );
           })}
-        </motion.div>
+        </div>
       )}
-    </AnimatePresence>
+    </Presence>
   );
 }
 
@@ -2085,18 +2370,17 @@ function ListeningWave({
             style={{ transform: "scaleY(0.15)" }}
           />
         ) : (
-          <motion.span
+          <span
             key={i}
-            className="w-[3px] h-full rounded-full bg-current origin-center"
-            animate={{
-              scaleY: [0.15, envelope, 0.3, envelope * 0.8, 0.15],
-            }}
-            transition={{
-              duration: 0.9 + (i % 5) * 0.12,
-              repeat: Infinity,
-              ease: "easeInOut",
-              delay: (i % 7) * 0.07,
-            }}
+            className="aichat-wave w-[3px] h-full rounded-full bg-current origin-center"
+            style={
+              {
+                "--aichat-wave-peak": envelope,
+                "--aichat-wave-echo": envelope * 0.8,
+                animationDuration: `${0.9 + (i % 5) * 0.12}s`,
+                animationDelay: `${(i % 7) * 0.07}s`,
+              } as React.CSSProperties
+            }
           />
         );
       })}
@@ -2183,15 +2467,18 @@ function ComposerMenu({
         )}
       </button>
 
-      <AnimatePresence>
-        {open && (
-          <motion.div
+      <Presence
+        show={open}
+        hidden={{ opacity: 0, y: 6, scale: 0.96 }}
+        shown={{ opacity: 1, y: 0, scale: 1 }}
+        duration={0.16}
+        ease={EASE_OUT}
+      >
+        {(ref, style) => (
+          <div
+            ref={ref}
             role="menu"
-            initial={{ opacity: 0, y: 6, scale: 0.96 }}
-            animate={{ opacity: 1, y: 0, scale: 1 }}
-            exit={{ opacity: 0, y: 6, scale: 0.96 }}
-            transition={{ duration: 0.16, ease: "easeOut" }}
-            style={{ transformOrigin: "bottom left" }}
+            style={{ transformOrigin: "bottom left", ...style }}
             className={cn(
               "absolute bottom-full left-0 mb-2 rounded-xl border border-border bg-popover text-popover-foreground shadow-xl p-1 z-50",
               width,
@@ -2203,9 +2490,9 @@ function ComposerMenu({
               </p>
             )}
             {children}
-          </motion.div>
+          </div>
         )}
-      </AnimatePresence>
+      </Presence>
     </div>
   );
 }

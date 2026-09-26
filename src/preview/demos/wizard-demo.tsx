@@ -87,7 +87,7 @@ export default function WizardDemo({
               </WizardDescription>
               <button
                 onClick={() => setLocalKey((prev) => prev + 1)}
-                className="mt-8 px-8 py-3.5 rounded-full bg-zinc-900 text-white dark:bg-white dark:text-zinc-900 font-semibold hover:scale-105 transition-transform"
+                className="mt-8 px-8 py-3.5 rounded-full bg-primary text-primary-foreground font-semibold hover:scale-105 transition-transform"
               >
                 Finish & Restart
               </button>

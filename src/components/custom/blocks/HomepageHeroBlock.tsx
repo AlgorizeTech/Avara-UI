@@ -1,9 +1,15 @@
 "use client";
 
-import React, { forwardRef, useEffect, useState } from "react";
+import React, { forwardRef, useEffect, useRef, useState } from "react";
 import { cn } from "@/lib/utils";
 import { ArrowRight, Check, Copy, Sparkles, Terminal } from "lucide-react";
-import { motion, AnimatePresence } from "framer-motion";
+
+// The word flip, as keyframes: out upwards, in from below, 0.45s each.
+const FLIP_EASE = "cubic-bezier(0.16, 1, 0.3, 1)";
+const FLIP_CSS = `
+@keyframes homepage-hero-word-out { to { transform: translateY(-100%); opacity: 0; } }
+@keyframes homepage-hero-word-in { from { transform: translateY(100%); opacity: 0; } }
+`;
 
 const GitHubIcon = (props: React.SVGProps<SVGSVGElement>) => (
   <svg
@@ -83,6 +89,25 @@ export const HomepageHeroBlock = forwardRef<HTMLElement, HomepageHeroBlockProps>
 
     const currentWord = typingWords?.[currentWordIndex] || "";
 
+    // The word flip: the word on screen slides up and out, and only then does
+    // the next one slide up in. The first word is simply there.
+    const [shownWord, setShownWord] = useState(currentWord);
+    const [swapped, setSwapped] = useState(false);
+    const latestWord = useRef(currentWord);
+    latestWord.current = currentWord;
+    const leaving = shownWord !== currentWord;
+    const swapIn = () => {
+      setShownWord(latestWord.current);
+      setSwapped(true);
+    };
+
+    // In case the leaving word's animationend never arrives.
+    useEffect(() => {
+      if (!leaving) return;
+      const t = window.setTimeout(swapIn, 600);
+      return () => window.clearTimeout(t);
+    }, [leaving]);
+
     return (
       <section
         ref={ref}
@@ -92,6 +117,7 @@ export const HomepageHeroBlock = forwardRef<HTMLElement, HomepageHeroBlockProps>
         )}
         {...props}
       >
+        <style>{FLIP_CSS}</style>
         {/* Radial Background Glow */}
         <div
           className="absolute inset-0 pointer-events-none"
@@ -126,21 +152,22 @@ export const HomepageHeroBlock = forwardRef<HTMLElement, HomepageHeroBlockProps>
               </span>
 
               <span className="relative inline-flex items-center justify-start overflow-hidden py-1 h-[1.3em] shrink-0 min-w-[150px] xs:min-w-[170px] sm:min-w-[210px] md:min-w-[250px] lg:min-w-[300px]">
-                <AnimatePresence mode="wait" initial={false}>
-                  <motion.span
-                    key={currentWord}
-                    initial={{ y: "100%", opacity: 0 }}
-                    animate={{ y: "0%", opacity: 1 }}
-                    exit={{ y: "-100%", opacity: 0 }}
-                    transition={{
-                      duration: 0.45,
-                      ease: [0.16, 1, 0.3, 1],
-                    }}
-                    className="text-foreground font-medium inline-block whitespace-nowrap text-left"
-                  >
-                    {currentWord}
-                  </motion.span>
-                </AnimatePresence>
+                <span
+                  key={shownWord}
+                  onAnimationEnd={(e) => {
+                    if (leaving && e.target === e.currentTarget) swapIn();
+                  }}
+                  className="text-foreground font-medium inline-block whitespace-nowrap text-left"
+                  style={
+                    leaving
+                      ? { animation: `homepage-hero-word-out 0.45s ${FLIP_EASE} forwards` }
+                      : swapped
+                        ? { animation: `homepage-hero-word-in 0.45s ${FLIP_EASE} backwards` }
+                        : undefined
+                  }
+                >
+                  {shownWord}
+                </span>
               </span>
 
               {titleSuffix && <span className="shrink-0">{titleSuffix}</span>}

@@ -45,7 +45,7 @@ export default function CarouselDemo({
   return (
     <div className="w-full">
       {carouselType === "image" && (
-        <div className="w-full rounded-xl overflow-hidden border dark:border-zinc-800 shadow-sm">
+        <div className="w-full rounded-xl overflow-hidden border border-border shadow-sm">
           <ImageCarousel
             images={sampleImages}
             autoPlay={true}
@@ -55,23 +55,23 @@ export default function CarouselDemo({
       )}
 
       {carouselType === "hero" && (
-        <div className="w-full rounded-xl overflow-hidden border dark:border-zinc-800 shadow-sm">
+        <div className="w-full rounded-xl overflow-hidden border border-border shadow-sm">
           <HeroCarousel slides={sampleSlides} autoPlay={true} />
         </div>
       )}
 
       {carouselType === "thumbnails" && (
-        <div className="w-full rounded-xl overflow-hidden border dark:border-zinc-800 shadow-sm">
+        <div className="w-full rounded-xl overflow-hidden border border-border shadow-sm">
           <CustomCarousel items={sampleSlides} imageButtonPosition={thumbPosition} />
         </div>
       )}
 
       {carouselType === "fluid" && (
-        <FluidGlassSlider className="rounded-xl border dark:border-zinc-800 shadow-sm w-full" />
+        <FluidGlassSlider className="rounded-xl border border-border shadow-sm w-full" />
       )}
 
       {carouselType === "radial" && (
-        <div className="w-full rounded-xl overflow-hidden border dark:border-zinc-800 shadow-sm bg-zinc-950/5 dark:bg-zinc-900/30">
+        <div className="w-full rounded-xl overflow-hidden border border-border shadow-sm bg-foreground/5">
           <RadialCarousel autoPlay={true} autoPlayInterval={3500} />
         </div>
       )}

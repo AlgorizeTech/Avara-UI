@@ -1,11 +1,32 @@
 "use client";
 
 import React, { useState, useEffect } from "react";
-import { motion } from "framer-motion";
 import {
   ArrowRight,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { springLinear } from "./motion-curves";
+
+// Springs, drawn as CSS `linear()` curves: the fan-out, the retract into the
+// folder, and the lift under the pointer (the move and the scale).
+const FAN_OUT = springLinear({ stiffness: 90, damping: 14 });
+const RETRACT = springLinear({ stiffness: 110, damping: 15 });
+const HOVER_MOVE = springLinear({ stiffness: 500, damping: 25 });
+const HOVER_SCALE = springLinear({ stiffness: 550, damping: 30 });
+const HOVER_LAYER = "0.3s cubic-bezier(0.25, 0.1, 0.35, 1)";
+const timing = (spring: { duration: number; easing: string }, delay = 0) =>
+  `${spring.duration}ms ${spring.easing}${delay ? ` ${delay}s` : ""}`;
+
+/** Where a card starts (tucked in the folder), where it fans out to, and how it lifts. */
+interface FanCard {
+  initX: number;
+  initY: number;
+  rotate: number;
+  delay: number;
+  zIndex: number;
+  hoverScale: number;
+  hoverRotate: number;
+}
 
 // Folder silhouette in the 660×310 viewBox: tab on the left, body below.
 const FOLDER_PATH = `
@@ -95,43 +116,55 @@ export function DesignComponentsFolder({
     };
   }, [isInView, onScreen]);
 
-  // Fan-out animation variants
-  const fanOutVariants = {
-    hidden: (custom: { initX: number; initY: number; zIndex?: number }) => ({
-      x: custom.initX,
-      y: custom.initY,
-      scale: 0.2,
-      opacity: 0,
-      rotate: 0,
-      zIndex: custom.zIndex ?? 10,
-    }),
-    visible: (custom: { rotate: number; delay: number; zIndex?: number }) => ({
-      x: 0,
-      y: 0,
-      scale: 1,
-      opacity: 1,
-      rotate: custom.rotate,
-      zIndex: custom.zIndex ?? 10,
-      transition: {
-        type: "spring" as const,
-        stiffness: 90,
-        damping: 14,
-        delay: custom.delay,
+  // The stage reports when it is on screen; the first time also starts the fan-out.
+  const stageRef = React.useRef<HTMLDivElement>(null);
+  useEffect(() => {
+    const el = stageRef.current;
+    if (!el) return;
+    const io = new IntersectionObserver(([entry]) => {
+      if (!entry) return;
+      if (entry.isIntersecting) {
+        setIsInView(true);
+        setOnScreen(true);
+      } else setOnScreen(false);
+    });
+    io.observe(el);
+    return () => io.disconnect();
+  }, []);
+
+  // The card under a (non-touch) pointer lifts, turns and rises above the rest.
+  const [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
+
+  // Fan-out: each card starts small and hidden down in the folder and springs
+  // out to its place after its own delay; the retract loop springs one back
+  // in. A lifted card springs to its hover pose, and settles back the way it
+  // fanned out — its delay included.
+  const cardMotion = (index: number, card: FanCard) => {
+    const state = !isInView ? "hidden" : retractedIndex === index ? "retracted" : "visible";
+    const tucked = state !== "visible";
+    const hovered = hoveredIndex === index;
+    const settle = state === "visible" ? timing(FAN_OUT, card.delay) : timing(RETRACT);
+    const move = hovered ? timing(HOVER_MOVE) : settle;
+    return {
+      style: {
+        translate: `${tucked ? card.initX : 0}px ${hovered ? -10 : tucked ? card.initY : 0}px`,
+        scale: hovered ? card.hoverScale : tucked ? 0.2 : 1,
+        rotate: `${hovered ? card.hoverRotate : tucked ? 0 : card.rotate}deg`,
+        opacity: tucked ? 0 : 1,
+        zIndex: hovered ? 40 : card.zIndex,
+        transition: [
+          `translate ${move}`,
+          `rotate ${move}`,
+          `scale ${hovered ? timing(HOVER_SCALE) : settle}`,
+          `opacity ${settle}`,
+          `z-index ${hovered ? HOVER_LAYER : settle}`,
+        ].join(", "),
+      } as React.CSSProperties,
+      onPointerEnter: (e: React.PointerEvent) => {
+        if (e.pointerType !== "touch") setHoveredIndex(index);
       },
-    }),
-    retracted: (custom: { initX: number; initY: number; zIndex?: number }) => ({
-      x: custom.initX,
-      y: custom.initY,
-      scale: 0.2,
-      opacity: 0,
-      rotate: 0,
-      zIndex: custom.zIndex ?? 10,
-      transition: {
-        type: "spring" as const,
-        stiffness: 110,
-        damping: 15,
-      },
-    }),
+      onPointerLeave: () => setHoveredIndex((current) => (current === index ? null : current)),
+    };
   };
 
   return (
@@ -140,12 +173,8 @@ export function DesignComponentsFolder({
         Full Width Responsive Stage with Scale Wrapper to ensure cards shrink smoothly on mobile/small screens
       */}
       <div className="w-full flex justify-center items-center px-1 sm:px-0">
-        <motion.div 
-          onViewportEnter={() => {
-            setIsInView(true);
-            setOnScreen(true);
-          }}
-          onViewportLeave={() => setOnScreen(false)}
+        <div
+          ref={stageRef}
           className="relative w-full min-[494px]:w-[70%] sm:w-full max-w-[960px] mx-auto h-[380px] min-[450px]:h-[440px] min-[550px]:h-[500px] min-[620px]:h-[540px] sm:h-[580px] md:h-[660px] lg:h-[700px] flex items-end justify-center origin-bottom scale-[0.88] min-[400px]:scale-[0.94] min-[500px]:scale-[0.98] sm:scale-100 transition-all duration-300"
         >
           {/* CARDS FANNING OUT & AUTOMATIC SEQUENTIAL RETRACTING LOOP */}
@@ -153,12 +182,8 @@ export function DesignComponentsFolder({
             <div className="relative w-full h-full pointer-events-auto">
 
             {/* Card 0: Calendar (calendar.tsx) -> Indigo/Purple Tint */}
-            <motion.div
-              custom={{ initX: 240, initY: 340, rotate: -8, delay: 0.1, zIndex: 11 }}
-              variants={fanOutVariants}
-              initial="hidden"
-              animate={!isInView ? "hidden" : retractedIndex === 0 ? "retracted" : "visible"}
-              whileHover={{ scale: 1.06, rotate: -3, y: -10, zIndex: 40 }}
+            <div
+              {...cardMotion(0, { initX: 240, initY: 340, rotate: -8, delay: 0.1, zIndex: 11, hoverScale: 1.06, hoverRotate: -3 })}
               className="absolute top-[26%] sm:top-[6%] left-[6%] sm:left-[10%] md:left-[14%] lg:left-[16%] w-[130px] sm:w-[210px] md:w-[280px] lg:w-[320px] h-[105px] sm:h-[165px] md:h-[210px] lg:h-[235px] rounded-2xl overflow-hidden shadow-2xl border border-indigo-500/30 cursor-pointer group bg-gradient-to-br from-indigo-500/10 via-card to-purple-500/10 p-2.5 sm:p-4 flex flex-col justify-between"
             >
               <Link href={disableLinks ? "#" : "/docs/nextjs/calendar"} onClick={disableLinks ? (e: React.MouseEvent) => e.preventDefault() : undefined} className="w-full h-full flex flex-col justify-between">
@@ -221,15 +246,11 @@ export function DesignComponentsFolder({
                   </div>
                 </div>
               </Link>
-            </motion.div>
+            </div>
 
             {/* Card 1: Data Table (data-table.tsx) -> Emerald/Teal Tint */}
-            <motion.div
-              custom={{ initX: 60, initY: 350, rotate: 2, delay: 0.22, zIndex: 14 }}
-              variants={fanOutVariants}
-              initial="hidden"
-              animate={!isInView ? "hidden" : retractedIndex === 1 ? "retracted" : "visible"}
-              whileHover={{ scale: 1.06, rotate: 0, y: -10, zIndex: 40 }}
+            <div
+              {...cardMotion(1, { initX: 60, initY: 350, rotate: 2, delay: 0.22, zIndex: 14, hoverScale: 1.06, hoverRotate: 0 })}
               className="absolute top-[24%] sm:top-[4%] left-[30%] sm:left-[34%] md:left-[38%] lg:left-[40%] w-[135px] sm:w-[215px] md:w-[290px] lg:w-[330px] h-[110px] sm:h-[170px] md:h-[215px] lg:h-[240px] rounded-2xl overflow-hidden shadow-2xl border border-emerald-500/30 cursor-pointer group bg-gradient-to-br from-emerald-500/10 via-card to-teal-500/10 p-2.5 sm:p-4 flex flex-col justify-between"
             >
               <Link href={disableLinks ? "#" : "/docs/nextjs/data-table"} onClick={disableLinks ? (e: React.MouseEvent) => e.preventDefault() : undefined} className="w-full h-full flex flex-col justify-between">
@@ -281,15 +302,11 @@ export function DesignComponentsFolder({
                   </div>
                 </div>
               </Link>
-            </motion.div>
+            </div>
 
             {/* Card 2: Map (fleet-tracker.tsx) -> Blue/Sky Tint */}
-            <motion.div
-              custom={{ initX: -240, initY: 340, rotate: 12, delay: 0.34, zIndex: 11 }}
-              variants={fanOutVariants}
-              initial="hidden"
-              animate={!isInView ? "hidden" : retractedIndex === 2 ? "retracted" : "visible"}
-              whileHover={{ scale: 1.06, rotate: 4, y: -10, zIndex: 40 }}
+            <div
+              {...cardMotion(2, { initX: -240, initY: 340, rotate: 12, delay: 0.34, zIndex: 11, hoverScale: 1.06, hoverRotate: 4 })}
               className="absolute top-[24%] sm:top-[4%] right-[4%] sm:right-[7%] md:right-[10%] lg:right-[12%] w-[125px] sm:w-[195px] md:w-[260px] lg:w-[290px] h-[105px] sm:h-[165px] md:h-[210px] lg:h-[235px] rounded-2xl overflow-hidden shadow-2xl border border-sky-500/30 cursor-pointer group bg-gradient-to-br from-sky-500/10 via-card to-blue-500/10 p-2.5 sm:p-4 flex flex-col justify-between"
             >
               <Link href={disableLinks ? "#" : "/docs/nextjs/fleet-tracker"} onClick={disableLinks ? (e: React.MouseEvent) => e.preventDefault() : undefined} className="w-full h-full flex flex-col justify-between">
@@ -334,15 +351,11 @@ export function DesignComponentsFolder({
                   </div>
                 </div>
               </Link>
-            </motion.div>
+            </div>
 
             {/* Card 3: Breadcrumb (breadcrumb.tsx) -> Violet/Fuchsia Tint */}
-            <motion.div
-              custom={{ initX: 180, initY: 280, rotate: -4, delay: 0.46, zIndex: 16 }}
-              variants={fanOutVariants}
-              initial="hidden"
-              animate={!isInView ? "hidden" : retractedIndex === 3 ? "retracted" : "visible"}
-              whileHover={{ scale: 1.05, rotate: -1, y: -10, zIndex: 40 }}
+            <div
+              {...cardMotion(3, { initX: 180, initY: 280, rotate: -4, delay: 0.46, zIndex: 16, hoverScale: 1.05, hoverRotate: -1 })}
               className="absolute top-[28%] sm:top-[18%] left-[12%] sm:left-[16%] md:left-[20%] lg:left-[23%] w-[145px] sm:w-[230px] md:w-[310px] lg:w-[350px] h-[125px] sm:h-[205px] md:h-[265px] lg:h-[295px] rounded-2xl overflow-hidden shadow-2xl border border-violet-500/30 cursor-pointer group bg-gradient-to-br from-violet-500/10 via-card to-fuchsia-500/10 p-2.5 sm:p-4 flex flex-col justify-between"
             >
               <Link href={disableLinks ? "#" : "/docs/nextjs/breadcrumb"} onClick={disableLinks ? (e: React.MouseEvent) => e.preventDefault() : undefined} className="w-full h-full flex flex-col justify-between">
@@ -384,15 +397,11 @@ export function DesignComponentsFolder({
                   </div>
                 </div>
               </Link>
-            </motion.div>
+            </div>
 
             {/* Card 4: Dock (dock.tsx) -> Amber/Orange Tint */}
-            <motion.div
-              custom={{ initX: -180, initY: 260, rotate: 4, delay: 0.7, zIndex: 18 }}
-              variants={fanOutVariants}
-              initial="hidden"
-              animate={!isInView ? "hidden" : retractedIndex === 4 ? "retracted" : "visible"}
-              whileHover={{ scale: 1.05, rotate: 1, y: -10, zIndex: 40 }}
+            <div
+              {...cardMotion(4, { initX: -180, initY: 260, rotate: 4, delay: 0.7, zIndex: 18, hoverScale: 1.05, hoverRotate: 1 })}
               className="absolute top-[30%] sm:top-[20%] right-[7%] sm:right-[11%] md:right-[15%] lg:right-[18%] w-[145px] sm:w-[230px] md:w-[310px] lg:w-[350px] h-[155px] sm:h-[285px] md:h-[380px] lg:h-[420px] rounded-2xl overflow-hidden shadow-2xl border border-amber-500/30 cursor-pointer group bg-gradient-to-br from-amber-500/10 via-card to-orange-500/10 p-2.5 sm:p-4 flex flex-col justify-between"
             >
               <Link href={disableLinks ? "#" : "/docs/nextjs/dock"} onClick={disableLinks ? (e: React.MouseEvent) => e.preventDefault() : undefined} className="w-full h-full flex flex-col justify-between">
@@ -437,15 +446,11 @@ export function DesignComponentsFolder({
                   </div>
                 </div>
               </Link>
-            </motion.div>
+            </div>
 
             {/* Card 5: File Upload (file-upload.tsx) -> Rose/Pink Tint */}
-            <motion.div
-              custom={{ initX: 260, initY: 250, rotate: -12, delay: 0.82, zIndex: 10 }}
-              variants={fanOutVariants}
-              initial="hidden"
-              animate={!isInView ? "hidden" : retractedIndex === 5 ? "retracted" : "visible"}
-              whileHover={{ scale: 1.05, rotate: -6, y: -10, zIndex: 40 }}
+            <div
+              {...cardMotion(5, { initX: 260, initY: 250, rotate: -12, delay: 0.82, zIndex: 10, hoverScale: 1.05, hoverRotate: -6 })}
               className="absolute top-[38%] sm:top-[28%] left-[2%] sm:left-[4%] md:left-[7%] lg:left-[9%] w-[125px] sm:w-[195px] md:w-[260px] lg:w-[290px] h-[145px] sm:h-[255px] md:h-[345px] lg:h-[385px] rounded-2xl overflow-hidden shadow-2xl border border-rose-500/30 cursor-pointer group bg-gradient-to-br from-rose-500/10 via-card to-pink-500/10 p-2.5 sm:p-4 flex flex-col justify-between"
             >
               <Link href={disableLinks ? "#" : "/docs/nextjs/file-upload"} onClick={disableLinks ? (e: React.MouseEvent) => e.preventDefault() : undefined} className="w-full h-full flex flex-col justify-between">
@@ -482,15 +487,11 @@ export function DesignComponentsFolder({
                   </div>
                 </div>
               </Link>
-            </motion.div>
+            </div>
 
             {/* Card 6: Network Graph (network-graph.tsx) -> Cyan/Blue Tint */}
-            <motion.div
-              custom={{ initX: -260, initY: 250, rotate: 12, delay: 0.94, zIndex: 10 }}
-              variants={fanOutVariants}
-              initial="hidden"
-              animate={!isInView ? "hidden" : retractedIndex === 6 ? "retracted" : "visible"}
-              whileHover={{ scale: 1.05, rotate: 6, y: -10, zIndex: 40 }}
+            <div
+              {...cardMotion(6, { initX: -260, initY: 250, rotate: 12, delay: 0.94, zIndex: 10, hoverScale: 1.05, hoverRotate: 6 })}
               className="absolute top-[38%] sm:top-[28%] right-[1%] sm:right-[2%] md:right-[4%] lg:right-[5%] w-[125px] sm:w-[195px] md:w-[260px] lg:w-[290px] h-[145px] sm:h-[255px] md:h-[345px] lg:h-[385px] rounded-2xl overflow-hidden shadow-2xl border border-cyan-500/30 cursor-pointer group bg-gradient-to-br from-cyan-500/10 via-card to-blue-500/10 p-2.5 sm:p-4 flex flex-col justify-between"
             >
               <Link href={disableLinks ? "#" : "/docs/nextjs/network-graph"} onClick={disableLinks ? (e: React.MouseEvent) => e.preventDefault() : undefined} className="w-full h-full flex flex-col justify-between">
@@ -534,15 +535,11 @@ export function DesignComponentsFolder({
                   </div>
                 </div>
               </Link>
-            </motion.div>
+            </div>
 
             {/* Card 7: Navbar (navbar.tsx) -> Purple/Primary Tint */}
-            <motion.div
-              custom={{ initX: 60, initY: 250, rotate: 1, delay: 0.58, zIndex: 28 }}
-              variants={fanOutVariants}
-              initial="hidden"
-              animate={!isInView ? "hidden" : retractedIndex === 7 ? "retracted" : "visible"}
-              whileHover={{ scale: 1.06, rotate: 0, y: -10, zIndex: 40 }}
+            <div
+              {...cardMotion(7, { initX: 60, initY: 250, rotate: 1, delay: 0.58, zIndex: 28, hoverScale: 1.06, hoverRotate: 0 })}
               className="absolute top-[36%] sm:top-[28%] left-[24%] sm:left-[28%] md:left-[33%] lg:left-[36%] w-[135px] sm:w-[215px] md:w-[290px] lg:w-[330px] h-[125px] sm:h-[205px] md:h-[265px] lg:h-[295px] rounded-2xl overflow-hidden shadow-2xl border border-purple-500/30 cursor-pointer group bg-gradient-to-br from-purple-500/10 via-card to-indigo-500/10 p-2.5 sm:p-4 flex flex-col justify-between"
             >
               <Link href={disableLinks ? "#" : "/docs/nextjs/navbar"} onClick={disableLinks ? (e: React.MouseEvent) => e.preventDefault() : undefined} className="w-full h-full flex flex-col justify-between">
@@ -591,7 +588,7 @@ export function DesignComponentsFolder({
                   </div>
                 </div>
               </Link>
-            </motion.div>
+            </div>
 
           </div>
         </div>
@@ -639,7 +636,7 @@ export function DesignComponentsFolder({
           </div>
         </div>
 
-      </motion.div>
+      </div>
       </div>
     </section>
   );

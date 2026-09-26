@@ -1,13 +1,11 @@
 "use client";
 
 import { cn } from "@/lib/utils";
-import gsap from "gsap";
 import { Check, CheckCheck } from "lucide-react";
 import React, {
   createContext,
   forwardRef,
   useContext,
-  useEffect,
   useRef,
 } from "react";
 
@@ -37,6 +35,53 @@ function useChat() {
 }
 
 // ==========================================
+// MOTION
+// ==========================================
+// Plain CSS, shipped inline by every ChatBubble row so the block stays
+// self-contained. The pop-ins are GSAP's back.out(1.7) / back.out(1.5) — cubics,
+// so the cubic-beziers are exact. The typing dots are one 0.7s staggered
+// rise (0.4s each, 0.15s apart) played forward then back, forever, every move
+// on sine.inOut. All of it is skipped under prefers-reduced-motion; the
+// resting state is fully visible, so a skipped animation leaves nothing hidden.
+const SINE_IN_OUT =
+  "linear(0, 0.0024, 0.0096, 0.0215, 0.0381, 0.059, 0.0843, 0.1135, 0.1464, 0.1828, 0.2222, 0.2643, 0.3087, 0.3549, 0.4025, 0.451, 0.5, 0.549, 0.5975, 0.6451, 0.6913, 0.7357, 0.7778, 0.8172, 0.8536, 0.8865, 0.9157, 0.941, 0.9619, 0.9785, 0.9904, 0.9976, 1)";
+
+const KEYFRAMES = `
+@keyframes chat-bubble-message-in {
+  from { opacity: 0; transform: translateY(10px) scale(0.95); }
+  to { opacity: 1; transform: translateY(0px) scale(1); }
+}
+@keyframes chat-bubble-typing-in {
+  from { opacity: 0; transform: scale(0.9); }
+  to { opacity: 1; transform: scale(1); }
+}
+@keyframes chat-bubble-dot-0 {
+  0% { transform: translateY(0px); }
+  28.5714% { transform: translateY(-4px); }
+  71.4286% { transform: translateY(-4px); }
+  100% { transform: translateY(0px); }
+}
+@keyframes chat-bubble-dot-1 {
+  0%, 10.7143% { transform: translateY(0px); }
+  39.2857% { transform: translateY(-4px); }
+  60.7143% { transform: translateY(-4px); }
+  89.2857%, 100% { transform: translateY(0px); }
+}
+@keyframes chat-bubble-dot-2 {
+  0%, 21.4286% { transform: translateY(0px); }
+  50% { transform: translateY(-4px); }
+  78.5714%, 100% { transform: translateY(0px); }
+}
+@media (prefers-reduced-motion: no-preference) {
+  .chat-bubble-message { animation: chat-bubble-message-in 0.4s cubic-bezier(0.3333, 1.5667, 0.6667, 1) backwards; }
+  .chat-bubble-typing { animation: chat-bubble-typing-in 0.3s cubic-bezier(0.3333, 1.5, 0.6667, 1) backwards; }
+  .chat-bubble-dot { animation: 1.4s ${SINE_IN_OUT} infinite; }
+  .chat-bubble-dot:nth-child(1) { animation-name: chat-bubble-dot-0; }
+  .chat-bubble-dot:nth-child(2) { animation-name: chat-bubble-dot-1; }
+  .chat-bubble-dot:nth-child(3) { animation-name: chat-bubble-dot-2; }
+}`;
+
+// ==========================================
 // COMPONENTS
 // ==========================================
 
@@ -62,6 +107,7 @@ export const ChatBubble = forwardRef<HTMLDivElement, ChatBubbleProps>(
           {...props}
         >
           {children}
+          <style>{KEYFRAMES}</style>
         </div>
       </ChatContext.Provider>
     );
@@ -134,26 +180,13 @@ export const ChatMessage = forwardRef<HTMLDivElement, ChatMessageProps>(
     const { variant, layout } = useChat();
     const nodeRef = useRef<HTMLDivElement>(null);
 
-    // Forward ref manually while keeping local ref for GSAP
+    // Forward ref manually while keeping a local ref
     React.useImperativeHandle(ref, () => nodeRef.current as HTMLDivElement);
 
-    // The pop-in is an enhancement, never a prerequisite for being visible. The bubble
-    // renders opaque by default and GSAP animates *from* transparent, so a blocked or
-    // failed animation leaves a readable message rather than a blank row.
-    useEffect(() => {
-      if (!nodeRef.current) return;
-      if (
-        typeof window !== "undefined" &&
-        window.matchMedia?.("(prefers-reduced-motion: reduce)").matches
-      ) {
-        return;
-      }
-      gsap.fromTo(
-        nodeRef.current,
-        { opacity: 0, scale: 0.95, y: 10 },
-        { opacity: 1, scale: 1, y: 0, duration: 0.4, ease: "back.out(1.7)" },
-      );
-    }, []);
+    // The pop-in (`chat-bubble-message`) is an enhancement, never a prerequisite
+    // for being visible. The bubble renders opaque by default and the keyframes
+    // animate *from* transparent, so a blocked or skipped animation leaves a
+    // readable message rather than a blank row.
 
     // Theming logic for sent messages
     const sentColors: Record<string, string> = {
@@ -195,7 +228,7 @@ export const ChatMessage = forwardRef<HTMLDivElement, ChatMessageProps>(
         <div
           ref={nodeRef}
           className={cn(
-            "px-4 py-2.5 text-[15px] leading-relaxed shadow-sm",
+            "chat-bubble-message px-4 py-2.5 text-[15px] leading-relaxed shadow-sm",
             getBorderRadius(),
             isSent
               ? sentColors[color] || sentColors["default"]
@@ -254,50 +287,15 @@ export const ChatTypingIndicator = forwardRef<
   React.HTMLAttributes<HTMLDivElement>
 >(({ className, ...props }, ref) => {
   const { variant } = useChat();
-  const containerRef = useRef<HTMLDivElement>(null);
-  const dotsRef = useRef<(HTMLDivElement | null)[]>([]);
 
-  React.useImperativeHandle(ref, () => containerRef.current as HTMLDivElement);
-
-  useEffect(() => {
-    if (
-      typeof window !== "undefined" &&
-      window.matchMedia?.("(prefers-reduced-motion: reduce)").matches
-    ) {
-      return;
-    }
-
-    // Pop-in animation for the bubble. It animates *from* transparent; the resting state
-    // is opaque, so a failed animation still leaves the dots visible.
-    if (containerRef.current) {
-      gsap.fromTo(
-        containerRef.current,
-        { opacity: 0, scale: 0.9 },
-        { opacity: 1, scale: 1, duration: 0.3, ease: "back.out(1.5)" },
-      );
-    }
-
-    // Staggered bounce for the dots
-    const dots = dotsRef.current.filter(Boolean);
-    if (!dots.length) return;
-    const bounce = gsap.to(dots, {
-      y: -4,
-      duration: 0.4,
-      stagger: 0.15,
-      yoyo: true,
-      repeat: -1,
-      ease: "sine.inOut",
-    });
-    return () => {
-      bounce.kill();
-    };
-  }, []);
-
+  // Pop-in (`chat-bubble-typing`) and the staggered dot bounce
+  // (`chat-bubble-dot`) are CSS. The bubble animates *from* transparent; the
+  // resting state is opaque, so a skipped animation still leaves the dots visible.
   return (
     <div
-      ref={containerRef}
+      ref={ref}
       className={cn(
-        "flex items-center gap-1 px-4 py-3.5 rounded-2xl w-max shadow-sm",
+        "chat-bubble-typing flex items-center gap-1 px-4 py-3.5 rounded-2xl w-max shadow-sm",
         // Matches ChatMessage. Without an explicit order the indicator defaults to
         // order-0 and sorts *before* the avatar's order-1, flipping a received row.
         variant === "sent" ? "order-1" : "order-2",
@@ -311,11 +309,8 @@ export const ChatTypingIndicator = forwardRef<
       {[0, 1, 2].map((i) => (
         <div
           key={i}
-          ref={(el) => {
-            dotsRef.current[i] = el;
-          }}
           className={cn(
-            "w-1.5 h-1.5 rounded-full",
+            "chat-bubble-dot w-1.5 h-1.5 rounded-full",
             variant === "sent"
               ? "bg-primary-foreground/70"
               : "bg-muted-foreground",

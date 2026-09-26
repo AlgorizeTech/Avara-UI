@@ -1,7 +1,15 @@
 "use client";
 
-import React, { forwardRef, useCallback, useEffect, useMemo, useRef, useState } from "react";
-import { AnimatePresence, motion, useReducedMotion, type Variants } from "framer-motion";
+import React, {
+  forwardRef,
+  useCallback,
+  useEffect,
+  useLayoutEffect,
+  useMemo,
+  useRef,
+  useState,
+  useSyncExternalStore,
+} from "react";
 import { Terminal } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { AvatarStack, type StackAvatar } from "./AvatarStackBlock";
@@ -98,21 +106,29 @@ const ITEM_TOKEN = "{item}";
 const WORD_TOKEN = "{word}";
 const bare = (w: string) => w.replace(/[^\p{L}\p{N}]/gu, "").toLowerCase();
 
-// The same entrance as the headline's blur-in-up, replayed each time the word changes.
-const wordIn = { opacity: 0, y: 20, filter: "blur(8px)" };
-const wordAt = { opacity: 1, y: 0, filter: "blur(0px)" };
-const wordOut = { opacity: 0, y: -20, filter: "blur(8px)" };
-
-// The lead, the install line, the actions and the trust line rise once, in
-// order, starting the moment the headline does.
-const riseGroup: Variants = {
-  hidden: {},
-  visible: { transition: { staggerChildren: 0.1 } },
-};
-const rise: Variants = {
-  hidden: { opacity: 0, y: 14 },
-  visible: { opacity: 1, y: 0, transition: { duration: 0.6, ease: [0.22, 1, 0.36, 1] } },
-};
+// The same entrance as the headline's blur-in-up, replayed each time the word
+// changes (`cw-word-in` / `cw-word-out`). The lead, the install line, the
+// actions and the trust line rise once, in order, 0.1s apart, starting the
+// moment the headline does (`cw-rise`, `--cw-i` is each one's place in line).
+// With reduced motion nothing moves and the swaps are instant.
+const STYLES = `
+@keyframes cw-rise { from { opacity: 0; transform: translateY(14px); } }
+@keyframes cw-word-in { from { opacity: 0; transform: translateY(20px); filter: blur(8px); } }
+@keyframes cw-word-out { to { opacity: 0; transform: translateY(-20px); filter: blur(8px); } }
+@keyframes cw-name-in { from { opacity: 0; transform: translateY(110%); } }
+@keyframes cw-name-out { to { opacity: 0; transform: translateY(-110%); } }
+@media (prefers-reduced-motion: no-preference) {
+  .cw-rise-group:not([data-in-view]) .cw-rise { opacity: 0; transform: translateY(14px); }
+  .cw-rise-group[data-in-view] .cw-rise { animation: cw-rise 0.6s cubic-bezier(0.22, 1, 0.36, 1) calc(var(--cw-i) * 0.1s) backwards; }
+  .cw-tools-in { animation: cw-rise 0.6s cubic-bezier(0.22, 1, 0.36, 1) 0.5s backwards; }
+}
+.cw-word-in { animation: cw-word-in 0.6s cubic-bezier(0, 0, 0.58, 1) backwards; }
+.cw-word-out { animation: cw-word-out 0.6s cubic-bezier(0, 0, 0.58, 1) forwards; }
+.cw-name-in { animation: cw-name-in 0.45s cubic-bezier(0.22, 1, 0.36, 1) backwards; }
+.cw-name-out { animation: cw-name-out 0.45s cubic-bezier(0.22, 1, 0.36, 1) forwards; }
+.cw-tools-enter > li { animation: cw-word-in 0.6s cubic-bezier(0, 0, 0.58, 1) calc(var(--cw-i) * 0.05s) backwards; }
+.cw-tools-leave > li { animation: cw-word-out 0.4s cubic-bezier(0.42, 0, 1, 1) calc(var(--cw-i) * 0.03s) forwards; }
+`;
 
 // Where each camera rests in the centred layout, from `lg` up: the left one
 // high and towards the outside, the right one low, so the two cards never
@@ -136,6 +152,159 @@ function useMinWidth(px: number) {
   return matches;
 }
 
+const REDUCED_MOTION = "(prefers-reduced-motion: reduce)";
+const subscribeReducedMotion = (onChange: () => void) => {
+  const mq = window.matchMedia(REDUCED_MOTION);
+  mq.addEventListener("change", onChange);
+  return () => mq.removeEventListener("change", onChange);
+};
+/** The visitor's reduced-motion setting; false while server-rendering. */
+function useReducedMotion() {
+  return useSyncExternalStore(
+    subscribeReducedMotion,
+    () => window.matchMedia(REDUCED_MOTION).matches,
+    () => false,
+  );
+}
+
+/** True from the first time 30% of the element is in view, and for good. */
+function useInViewOnce<T extends Element>() {
+  const ref = useRef<T>(null);
+  const [inView, setInView] = useState(false);
+  useEffect(() => {
+    const el = ref.current;
+    if (!el || inView) return;
+    const io = new IntersectionObserver(
+      ([entry]) => {
+        if (!entry?.isIntersecting) return;
+        setInView(true);
+        io.disconnect();
+      },
+      { threshold: 0.3 },
+    );
+    io.observe(el);
+    return () => io.disconnect();
+  }, [inView]);
+  return [ref, inView] as const;
+}
+
+interface SwapLayer<T> {
+  id: number;
+  key: React.Key;
+  value: T;
+  /** Plays the way in — every layer but the first. */
+  enter: boolean;
+  leaving: boolean;
+  /** Where a leaving layer was, pinned there out of the flow. */
+  pop?: React.CSSProperties;
+}
+
+/**
+ * One value that gives way to the next: the new one comes in while the old one
+ * plays its way out on top of where it was, lifted out of the flow so the
+ * space closes up to the new one at once. `drop` removes a layer once it has
+ * gone; a timer does it too, in case its animation never ends. With reduced
+ * motion the swap is instant.
+ */
+function useSwap<T>(key: React.Key, value: T, reduceMotion: boolean, exitMs: number) {
+  const [layers, setLayers] = useState<SwapLayer<T>[]>(() => [{ id: 0, key, value, enter: false, leaving: false }]);
+  const nodes = useRef(new Map<number, HTMLElement>());
+  const timers = useRef(new Map<number, number>());
+  const nextId = useRef(1);
+
+  const drop = useCallback((id: number) => {
+    window.clearTimeout(timers.current.get(id));
+    timers.current.delete(id);
+    setLayers((current) => current.filter((layer) => layer.id !== id));
+  }, []);
+
+  useLayoutEffect(() => {
+    if (layers[layers.length - 1]?.key === key) return;
+    const next = { id: nextId.current++, key, value, enter: !reduceMotion, leaving: false };
+    if (reduceMotion) {
+      setLayers([next]);
+      return;
+    }
+    setLayers([
+      ...layers.map((layer) => {
+        if (layer.leaving) return layer;
+        const node = nodes.current.get(layer.id);
+        const pop: React.CSSProperties | undefined = node && {
+          position: "absolute",
+          top: node.offsetTop,
+          left: node.offsetLeft,
+          width: node.offsetWidth,
+          height: node.offsetHeight,
+        };
+        return { ...layer, leaving: true, pop };
+      }),
+      next,
+    ]);
+  }, [key, value, layers, reduceMotion]);
+
+  useEffect(() => {
+    for (const layer of layers) {
+      if (layer.leaving && !timers.current.has(layer.id)) {
+        timers.current.set(layer.id, window.setTimeout(() => drop(layer.id), exitMs + 100));
+      }
+    }
+  }, [layers, exitMs, drop]);
+  useEffect(() => {
+    const pending = timers.current;
+    return () => pending.forEach((t) => window.clearTimeout(t));
+  }, []);
+
+  const register = useCallback(
+    (id: number) => (node: HTMLElement | null) => {
+      if (node) nodes.current.set(id, node);
+      else nodes.current.delete(id);
+    },
+    [],
+  );
+
+  /** What a layer shows: the current value, or what it showed when it started leaving. */
+  const valueOf = (layer: SwapLayer<T>) => (!layer.leaving && layer.key === key ? value : layer.value);
+
+  return { layers, drop, register, valueOf };
+}
+
+/** A word or a name that swaps in place — `cw-word-*` or `cw-name-*`. */
+function SwapText({
+  text,
+  motion,
+  exitMs,
+  reduceMotion,
+  className,
+}: {
+  text: string;
+  motion: "word" | "name";
+  exitMs: number;
+  reduceMotion: boolean;
+  className?: string;
+}) {
+  const { layers, drop, register, valueOf } = useSwap(text, text, reduceMotion, exitMs);
+  return (
+    <>
+      {layers.map((layer) => (
+        <span
+          key={layer.id}
+          ref={register(layer.id)}
+          style={layer.pop}
+          onAnimationEnd={(e) => {
+            if (layer.leaving && e.target === e.currentTarget) drop(layer.id);
+          }}
+          className={cn(
+            className,
+            layer.leaving ? `cw-${motion}-out` : layer.enter && `cw-${motion}-in`,
+          )}
+        >
+          {valueOf(layer)}
+        </span>
+      ))}
+    </>
+  );
+}
+
 // ------------------------------------------
 // The tools: a label, then one batch in two rows — an odd batch as three over
 // four — each mark blurring in the way the headline word does.
@@ -151,8 +320,10 @@ function ToolStrip({
   group: StackTool[];
   groupIndex: number;
   centered?: boolean;
-  reduceMotion: boolean | null;
+  reduceMotion: boolean;
 }) {
+  // Each mark leaves 0.03s after the one before it, taking 0.4s.
+  const { layers, drop, register, valueOf } = useSwap(groupIndex, group, reduceMotion, 400 + 30 * group.length);
   return (
     <>
       {label &&
@@ -165,44 +336,47 @@ function ToolStrip({
         ) : (
           <span className="text-[13px] font-semibold leading-tight text-muted-foreground">{label}</span>
         ))}
-      <div className="grid w-full min-w-0" aria-live="polite">
-        <AnimatePresence initial={false} mode="popLayout">
-          <motion.ul
-            key={groupIndex}
-            initial={reduceMotion ? false : "hidden"}
-            animate="visible"
-            exit={reduceMotion ? undefined : "gone"}
-            variants={{
-              hidden: {},
-              visible: { transition: { staggerChildren: 0.05 } },
-              gone: { transition: { staggerChildren: 0.03 } },
-            }}
-            // Two rows, two columns per tool. An odd batch puts the smaller
-            // row on top, starting one column in, so it sits between the
-            // tools below (three over four); an even batch lines up.
-            className="col-start-1 row-start-1 grid gap-x-2 gap-y-[22px] sm:gap-x-3"
-            style={{ gridTemplateColumns: `repeat(${2 * Math.ceil(group.length / 2)}, minmax(0, 1fr))` }}
-          >
-            {group.map((tool, i) => (
-              <motion.li
-                key={tool.name}
-                title={centered ? tool.name : undefined}
-                variants={{ hidden: wordIn, visible: { ...wordAt, transition: { duration: 0.6, ease: "easeOut" } }, gone: { ...wordOut, transition: { duration: 0.4, ease: "easeIn" } } }}
-                className={cn(
-                  "col-span-2 flex min-w-0 items-center justify-center gap-2.5 text-foreground [&>img]:shrink-0 [&>img]:object-contain [&>svg]:shrink-0",
-                  // The centred column is narrow for names: marks only, a touch larger.
-                  centered
-                    ? "[&>img]:size-7 [&>svg]:size-6"
-                    : "[&>img]:size-8 xl:[&>img]:size-6 [&>svg]:size-7 xl:[&>svg]:size-5",
-                  i === 0 && group.length % 2 === 1 && "col-start-2",
-                )}
-              >
-                {tool.icon}
-                <span className={cn("truncate text-[13px] font-medium", centered ? "sr-only" : "hidden xl:inline")}>{tool.name}</span>
-              </motion.li>
-            ))}
-          </motion.ul>
-        </AnimatePresence>
+      <div className="relative grid w-full min-w-0" aria-live="polite">
+        {layers.map((layer) => {
+          const tools = valueOf(layer);
+          return (
+            <ul
+              key={layer.id}
+              ref={register(layer.id)}
+              // Gone once the last mark has.
+              onAnimationEnd={(e) => {
+                if (layer.leaving && e.target === e.currentTarget.lastElementChild) drop(layer.id);
+              }}
+              // Two rows, two columns per tool. An odd batch puts the smaller
+              // row on top, starting one column in, so it sits between the
+              // tools below (three over four); an even batch lines up.
+              className={cn(
+                "col-start-1 row-start-1 grid gap-x-2 gap-y-[22px] sm:gap-x-3",
+                layer.leaving ? "cw-tools-leave" : layer.enter && "cw-tools-enter",
+              )}
+              style={{ gridTemplateColumns: `repeat(${2 * Math.ceil(tools.length / 2)}, minmax(0, 1fr))`, ...layer.pop }}
+            >
+              {tools.map((tool, i) => (
+                <li
+                  key={tool.name}
+                  title={centered ? tool.name : undefined}
+                  style={{ "--cw-i": i } as React.CSSProperties}
+                  className={cn(
+                    "col-span-2 flex min-w-0 items-center justify-center gap-2.5 text-foreground [&>img]:shrink-0 [&>img]:object-contain [&>svg]:shrink-0",
+                    // The centred column is narrow for names: marks only, a touch larger.
+                    centered
+                      ? "[&>img]:size-7 [&>svg]:size-6"
+                      : "[&>img]:size-8 xl:[&>img]:size-6 [&>svg]:size-7 xl:[&>svg]:size-5",
+                    i === 0 && tools.length % 2 === 1 && "col-start-2",
+                  )}
+                >
+                  {tool.icon}
+                  <span className={cn("truncate text-[13px] font-medium", centered ? "sr-only" : "hidden xl:inline")}>{tool.name}</span>
+                </li>
+              ))}
+            </ul>
+          );
+        })}
       </div>
     </>
   );
@@ -261,19 +435,14 @@ export const ComponentWall = forwardRef<HTMLElement, ComponentWallProps>(
           return (
             <>
               {word.slice(0, at)}
-              <span className="inline-grid align-baseline">
-                <AnimatePresence initial={false} mode="popLayout">
-                  <motion.span
-                    key={currentWord}
-                    initial={reduceMotion ? false : wordIn}
-                    animate={wordAt}
-                    exit={reduceMotion ? undefined : wordOut}
-                    transition={{ duration: 0.6, ease: "easeOut" }}
-                    className="col-start-1 row-start-1 inline-block"
-                  >
-                    {currentWord}
-                  </motion.span>
-                </AnimatePresence>
+              <span className="relative inline-grid align-baseline">
+                <SwapText
+                  text={currentWord}
+                  motion="word"
+                  exitMs={600}
+                  reduceMotion={reduceMotion}
+                  className="col-start-1 row-start-1 inline-block"
+                />
               </span>
               {word.slice(at + WORD_TOKEN.length)}
             </>
@@ -356,21 +525,24 @@ export const ComponentWall = forwardRef<HTMLElement, ComponentWallProps>(
 
     const wallProps = { columns, interval, order, zoom: zoom ?? (centered ? CENTER_ZOOM : undefined) };
 
+    // Each line that rises takes the next place in line, skipping the absent ones.
+    let risen = 0;
+    const riseAt = () => ({ "--cw-i": risen++ }) as React.CSSProperties;
+    const [copyRef, copyInView] = useInViewOnce<HTMLDivElement>();
+
     const copy = (
-      <motion.div
-        variants={riseGroup}
-        initial={reduceMotion ? false : "hidden"}
-        whileInView="visible"
-        viewport={{ once: true, amount: 0.3 }}
+      <div
+        ref={copyRef}
+        data-in-view={copyInView || undefined}
         className={cn(
-          "pointer-events-auto relative flex w-full flex-col",
+          "cw-rise-group pointer-events-auto relative flex w-full flex-col",
           centered
             ? "max-w-[34rem] items-center py-10 text-center lg:max-w-[30rem] lg:py-20 xl:max-w-[36rem]"
             : "items-start py-12 lg:w-[46%] lg:py-20 xl:w-[44%]",
         )}
       >
         {badge && (
-          <motion.div variants={rise} className="mb-6">
+          <div style={riseAt()} className="cw-rise mb-6">
             <Link
               href={badge.href ?? "#"}
               className="inline-flex items-center gap-2 rounded-full border border-border bg-background/70 py-1 pl-2.5 pr-3 text-[13px] font-medium text-muted-foreground outline-none backdrop-blur transition-colors hover:border-foreground/30 hover:text-foreground focus-visible:ring-2 focus-visible:ring-primary/50"
@@ -378,7 +550,7 @@ export const ComponentWall = forwardRef<HTMLElement, ComponentWallProps>(
               <span className="size-1.5 rounded-full bg-primary" aria-hidden />
               {badge.label}
             </Link>
-          </motion.div>
+          </div>
         )}
 
         <TextAnimation
@@ -394,13 +566,13 @@ export const ComponentWall = forwardRef<HTMLElement, ComponentWallProps>(
         />
 
         {description && (
-          <motion.p variants={rise} className="mt-6 max-w-[52ch] text-pretty text-[15px] leading-[1.65] text-muted-foreground sm:text-base">
+          <p style={riseAt()} className="cw-rise mt-6 max-w-[52ch] text-pretty text-[15px] leading-[1.65] text-muted-foreground sm:text-base">
             {description}
-          </motion.p>
+          </p>
         )}
 
         {command && (
-          <motion.div variants={rise} className="mt-8 w-full max-w-xl text-left">
+          <div style={riseAt()} className="cw-rise mt-8 w-full max-w-xl text-left">
             <div className="flex h-12 items-center gap-3 rounded-xl border border-border bg-muted/40 pl-3.5 pr-1.5 shadow-[inset_0_1px_0_0_rgba(255,255,255,0.6)] dark:shadow-[inset_0_1px_0_0_rgba(255,255,255,0.06)]">
               <Terminal size={15} className="shrink-0 text-muted-foreground" aria-hidden />
               <span className="min-w-0 flex-1 overflow-hidden whitespace-nowrap font-mono text-[13px] leading-none text-foreground sm:text-sm">
@@ -408,31 +580,26 @@ export const ComponentWall = forwardRef<HTMLElement, ComponentWallProps>(
                 <span className="text-muted-foreground">{command.tail}</span>
                 {command.name && (
                   <span className="relative inline-grid overflow-hidden align-bottom font-semibold" aria-live="polite">
-                    <AnimatePresence initial={false} mode="popLayout">
-                      <motion.span
-                        key={command.name}
-                        initial={reduceMotion ? false : { y: "110%", opacity: 0 }}
-                        animate={{ y: 0, opacity: 1 }}
-                        exit={reduceMotion ? undefined : { y: "-110%", opacity: 0 }}
-                        transition={{ duration: 0.45, ease: [0.22, 1, 0.36, 1] }}
-                        className="col-start-1 row-start-1 inline-block"
-                      >
-                        {command.name}
-                      </motion.span>
-                    </AnimatePresence>
+                    <SwapText
+                      text={command.name}
+                      motion="name"
+                      exitMs={450}
+                      reduceMotion={reduceMotion}
+                      className="col-start-1 row-start-1 inline-block"
+                    />
                   </span>
                 )}
                 {command.after && <span className="text-muted-foreground">{command.after}</span>}
               </span>
               <CopyButton value={command.full} iconOnly variant="ghost" size="sm" className="rounded-lg" />
             </div>
-          </motion.div>
+          </div>
         )}
 
         {(primaryAction || secondaryAction) && (
-          <motion.div
-            variants={rise}
-            className={cn("mt-5 flex w-full flex-col gap-2.5 sm:flex-row sm:items-center", centered && "sm:justify-center")}
+          <div
+            style={riseAt()}
+            className={cn("cw-rise mt-5 flex w-full flex-col gap-2.5 sm:flex-row sm:items-center", centered && "sm:justify-center")}
           >
             {primaryAction && (
               <Link
@@ -452,14 +619,14 @@ export const ComponentWall = forwardRef<HTMLElement, ComponentWallProps>(
                 {secondaryAction.label}
               </Link>
             )}
-          </motion.div>
+          </div>
         )}
 
         {trust && (
-          <motion.div
-            variants={rise}
+          <div
+            style={riseAt()}
             className={cn(
-              "mt-10 flex flex-col gap-3 sm:flex-row sm:items-center sm:gap-5",
+              "cw-rise mt-10 flex flex-col gap-3 sm:flex-row sm:items-center sm:gap-5",
               centered ? "items-center" : "items-start",
             )}
           >
@@ -475,7 +642,7 @@ export const ComponentWall = forwardRef<HTMLElement, ComponentWallProps>(
               )}
               <p className={cn("max-w-[36ch] text-[13px] leading-snug text-muted-foreground", centered && "text-balance")}>{trust.text}</p>
             </div>
-          </motion.div>
+          </div>
         )}
 
         {/* ---- Centred, below `lg`: the one wall, a full-width band between the
@@ -502,11 +669,11 @@ export const ComponentWall = forwardRef<HTMLElement, ComponentWallProps>(
 
         {/* ---- Centred: the tools close the column, rising after the trust line ---- */}
         {centered && stack && group && (
-          <motion.div variants={rise} className="mt-8 flex w-full max-w-md flex-col items-center gap-5 lg:mt-12">
+          <div style={riseAt()} className="cw-rise mt-8 flex w-full max-w-md flex-col items-center gap-5 lg:mt-12">
             <ToolStrip label={stack.label} group={group} groupIndex={groupIndex} centered reduceMotion={reduceMotion} />
-          </motion.div>
+          </div>
         )}
-      </motion.div>
+      </div>
     );
 
     if (centered) {
@@ -516,6 +683,7 @@ export const ComponentWall = forwardRef<HTMLElement, ComponentWallProps>(
           className={cn("relative w-full overflow-hidden bg-background text-foreground", className)}
           {...props}
         >
+          <style>{STYLES}</style>
           <div className="relative flex w-full flex-col items-center lg:min-h-[46rem] lg:justify-center">
             {/* ---- From `lg`: the left wall, its camera resting high. (Below
                 `lg` a single band sits in the copy, over the tools.) ---- */}
@@ -561,6 +729,7 @@ export const ComponentWall = forwardRef<HTMLElement, ComponentWallProps>(
         className={cn("relative w-full overflow-hidden bg-background text-foreground", className)}
         {...props}
       >
+        <style>{STYLES}</style>
         <div className="relative flex w-full flex-col lg:min-h-[44rem] lg:flex-row lg:items-center">
           {/* ---- Copy ---- */}
           <div className="relative z-30 mx-auto flex w-full max-w-[98rem] items-center px-6 md:px-10 xl:pl-20">{copy}</div>
@@ -585,15 +754,12 @@ export const ComponentWall = forwardRef<HTMLElement, ComponentWallProps>(
               {/* On desktop it sits a little way up the wall, in view under the copy —
                   the padding is a share of the strip's width, which is proportional
                   to the wall's height. */}
-              <motion.div
+              <div
                 // Arrives with the last of the copy, so nothing shows ahead of the headline.
-                initial={reduceMotion ? false : { opacity: 0, y: 14 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.6, delay: 0.5, ease: [0.22, 1, 0.36, 1] }}
-                className="pointer-events-auto relative flex w-full flex-col items-start justify-center gap-3 py-7 px-6 md:pr-0 md:pl-10 lg:pb-[7%] lg:pl-12 lg:pt-0 xl:pl-24"
+                className="cw-tools-in pointer-events-auto relative flex w-full flex-col items-start justify-center gap-3 py-7 px-6 md:pr-0 md:pl-10 lg:pb-[7%] lg:pl-12 lg:pt-0 xl:pl-24"
               >
                 <ToolStrip label={stack.label} group={group} groupIndex={groupIndex} reduceMotion={reduceMotion} />
-              </motion.div>
+              </div>
             </div>
           )}
         </div>

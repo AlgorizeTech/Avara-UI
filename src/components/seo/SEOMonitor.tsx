@@ -97,8 +97,8 @@ export function SEOMonitor() {
   const formatCLS = (cls: number) => (cls * 1000).toFixed(0)
 
   return (
-    <div className="fixed bottom-4 right-4 bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 rounded-lg p-4 shadow-lg max-w-sm z-50">
-      <h3 className="text-sm font-semibold mb-3 text-zinc-900 dark:text-zinc-100">
+    <div className="fixed bottom-4 right-4 bg-popover text-popover-foreground border border-border rounded-lg p-4 shadow-lg max-w-sm z-50">
+      <h3 className="text-sm font-semibold mb-3 text-foreground">
         SEO Metrics
       </h3>
       
@@ -139,8 +139,8 @@ export function SEOMonitor() {
         </div>
       </div>
       
-      <div className="mt-3 pt-2 border-t border-zinc-200 dark:border-zinc-800">
-        <div className="text-xs text-zinc-600 dark:text-zinc-400">
+      <div className="mt-3 pt-2 border-t border-border">
+        <div className="text-xs text-muted-foreground">
           Core Web Vitals Status
         </div>
         <div className="flex space-x-2 mt-1">

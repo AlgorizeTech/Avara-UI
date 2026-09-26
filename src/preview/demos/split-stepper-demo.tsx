@@ -176,7 +176,7 @@ export default function SplitStepperDemo({
   color?: string;
 }) {
   return (
-    <div className="w-full rounded-3xl border border-zinc-200 dark:border-zinc-800/80 bg-zinc-100/50 dark:bg-[#040406] relative overflow-hidden transition-colors">
+    <div className="w-full rounded-3xl border border-border bg-muted/50 relative overflow-hidden transition-colors">
       {/* Internal Scrollable Viewport for easy previewing */}
       <div className="w-full h-[650px] overflow-y-auto overflow-x-hidden custom-scrollbar p-6 sm:p-10 relative">
         <SplitStepper

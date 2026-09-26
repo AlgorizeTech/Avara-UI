@@ -1,10 +1,10 @@
 "use client";
 
-import { useEffect, useState, useCallback } from "react";
+import { useEffect, useRef, useState, useCallback } from "react";
 import { cn } from "@/lib/utils";
 import { Star, ArrowLeft, ArrowRight } from "lucide-react";
 import { HalfStars } from "@/components/custom/blocks/HalfStarsBlock";
-import { motion, AnimatePresence } from "framer-motion";
+import { springLinear } from "./motion-curves";
 
 export type ReviewsVariant =
 	| "up-down-vertical-marquee"
@@ -118,6 +118,150 @@ const DEFAULT_REVIEWS: ReviewItem[] = [
 ];
 
 // ==========================================
+// MOTION
+// ==========================================
+// Stacked cards glide between slots on this spring.
+const CARD_SPRING = springLinear({ stiffness: 170, damping: 22, mass: 0.8 });
+const EASE_OUT = "cubic-bezier(0, 0, 0.58, 1)";
+const EXPO_OUT = "cubic-bezier(0.16, 1, 0.3, 1)";
+
+// How each swapping piece of text or image comes in (CSS) and goes out (WAAPI).
+const SWAP_KEYFRAMES = `
+	@keyframes reviews-rating-in { from { opacity: 0; translate: 0 8px; filter: blur(4px); } }
+	@keyframes reviews-name-in { from { opacity: 0; translate: 0 12px; filter: blur(4px); } }
+	@keyframes reviews-role-in { from { opacity: 0; translate: 0 10px; filter: blur(4px); } }
+	@keyframes reviews-quote-in { from { opacity: 0; translate: 0 14px; filter: blur(6px); } }
+	@keyframes reviews-logo-quote-in { from { opacity: 0; translate: 0 28px; } }
+	@keyframes reviews-logo-image-in { from { opacity: 0; scale: 1.08; } }
+`;
+
+type SwapMotion = {
+	/** Values the element rests at once it has come in. */
+	rest: Record<string, string>;
+	/** Values the leaving element animates to. */
+	exit: Record<string, string>;
+	/** ms */
+	duration: number;
+	/** ms, applied to the way out as well as the way in */
+	delay?: number;
+	easing: string;
+};
+
+/** From the element's current computed values to `to`, as WAAPI keyframes. */
+function fromCurrent(el: Element, to: Record<string, string>) {
+	const style = getComputedStyle(el);
+	const frames: Record<string, string[]> = {};
+	for (const key of Object.keys(to)) {
+		frames[key] = [style.getPropertyValue(key), to[key]];
+	}
+	return frames;
+}
+
+/**
+ * One element swapped in "wait" order: when `itemKey` changes, the element on
+ * screen animates out from wherever it is, and only once that ends is the
+ * latest item rendered (it comes in with its own CSS animation). If the key
+ * comes back mid-exit, the element settles back to rest from where it got to.
+ */
+function useWaitSwap<T, E extends HTMLElement>(
+	item: T,
+	itemKey: string,
+	motion: SwapMotion,
+) {
+	const ref = useRef<E>(null);
+	const [shownKey, setShownKey] = useState(itemKey);
+	const leaving = shownKey !== itemKey;
+
+	// The leaving element keeps showing the item it had; otherwise it follows
+	// the current one.
+	const lastShown = useRef(item);
+	const latestKey = useRef(itemKey);
+	const motionRef = useRef(motion);
+	useEffect(() => {
+		if (!leaving) lastShown.current = item;
+		latestKey.current = itemKey;
+		motionRef.current = motion;
+	});
+
+	useEffect(() => {
+		if (!leaving) return;
+		const el = ref.current;
+		if (!el) {
+			setShownKey(latestKey.current);
+			return;
+		}
+		const { exit, duration, delay = 0, easing } = motionRef.current;
+		let done = false;
+		const animation = el.animate(fromCurrent(el, exit), {
+			duration,
+			delay,
+			easing,
+			fill: "both",
+		});
+		animation.finished
+			.then(() => {
+				done = true;
+				setShownKey(latestKey.current);
+			})
+			.catch(() => {});
+		return () => {
+			if (done) return;
+			// The key came back before the exit finished: settle back from here.
+			const { rest } = motionRef.current;
+			el.animate(fromCurrent(el, rest), {
+				duration,
+				delay,
+				easing,
+				fill: "backwards",
+			});
+			animation.cancel();
+		};
+	}, [leaving]);
+
+	return { ref, shown: leaving ? lastShown.current : item, shownKey };
+}
+
+const TEXT_REST = { opacity: "1", translate: "0px 0px", filter: "blur(0px)" };
+const RATING_SWAP: SwapMotion = {
+	rest: TEXT_REST,
+	exit: { opacity: "0", translate: "0px -8px", filter: "blur(4px)" },
+	duration: 250,
+	easing: EASE_OUT,
+};
+const NAME_SWAP: SwapMotion = {
+	rest: TEXT_REST,
+	exit: { opacity: "0", translate: "0px -12px", filter: "blur(4px)" },
+	duration: 300,
+	easing: EASE_OUT,
+};
+const ROLE_SWAP: SwapMotion = {
+	rest: TEXT_REST,
+	exit: { opacity: "0", translate: "0px -10px", filter: "blur(4px)" },
+	duration: 300,
+	delay: 50,
+	easing: EASE_OUT,
+};
+const QUOTE_SWAP: SwapMotion = {
+	rest: TEXT_REST,
+	exit: { opacity: "0", translate: "0px -14px", filter: "blur(6px)" },
+	duration: 350,
+	delay: 80,
+	easing: EASE_OUT,
+};
+const LOGO_QUOTE_SWAP: SwapMotion = {
+	rest: { opacity: "1", translate: "0px 0px" },
+	exit: { opacity: "0", translate: "0px -16px" },
+	duration: 400,
+	easing: EXPO_OUT,
+};
+const LOGO_IMAGE_SWAP: SwapMotion = {
+	rest: { opacity: "1", scale: "1" },
+	exit: { opacity: "0", scale: "0.95" },
+	duration: 450,
+	easing: EXPO_OUT,
+};
+
+// ==========================================
 // ULTRA-REALISTIC COBE WEBGL 3D GLOBE
 // ==========================================
 
@@ -169,6 +313,27 @@ function StackedCardsCarousel({
 	}, [autoSlide, autoSlideInterval, isHovered, total, handleNext]);
 
 	const activeReview = reviews[activeIndex] || reviews[0];
+
+	const rating = useWaitSwap<ReviewItem, HTMLDivElement>(
+		activeReview,
+		activeReview.id + "-rating",
+		RATING_SWAP,
+	);
+	const name = useWaitSwap<ReviewItem, HTMLHeadingElement>(
+		activeReview,
+		activeReview.id + "-name",
+		NAME_SWAP,
+	);
+	const role = useWaitSwap<ReviewItem, HTMLParagraphElement>(
+		activeReview,
+		activeReview.id + "-role",
+		ROLE_SWAP,
+	);
+	const quote = useWaitSwap<ReviewItem, HTMLParagraphElement>(
+		activeReview,
+		activeReview.id + "-content",
+		QUOTE_SWAP,
+	);
 
 	// Responsive peek offset distances based on screen width
 	const peekDistance = isSmallScreen ? 48 : 85;
@@ -252,23 +417,13 @@ function StackedCardsCarousel({
 					}
 
 					return (
-						<motion.div
+						<div
 							key={review.id}
-							initial={false}
-							animate={{
-								x: xOffset,
-								y: yOffset,
-								rotateY: rotateY,
-								rotateZ: rotateZ,
-								scale: scale,
-								zIndex: zIndex,
-								opacity: opacity,
-							}}
-							transition={{
-								type: "spring",
-								stiffness: 170,
-								damping: 22,
-								mass: 0.8,
+							style={{
+								transform: `translateX(${xOffset}px) translateY(${yOffset}px) scale(${scale}) rotateY(${rotateY}deg) rotateZ(${rotateZ}deg)`,
+								zIndex,
+								opacity,
+								transition: `transform ${CARD_SPRING.duration}ms ${CARD_SPRING.easing}, opacity ${CARD_SPRING.duration}ms ${CARD_SPRING.easing}, z-index ${CARD_SPRING.duration}ms ${CARD_SPRING.easing}`,
 							}}
 							className="absolute w-[140px] h-[215px] xs:w-[170px] xs:h-[255px] sm:w-[230px] sm:h-[350px] md:w-[250px] md:h-[375px] rounded-[24px] sm:rounded-[28px] overflow-hidden border border-border shadow-none bg-card cursor-pointer transform-gpu"
 							onClick={() => {
@@ -281,7 +436,7 @@ function StackedCardsCarousel({
 								alt={review.name}
 								className="w-full h-full object-cover rounded-[24px] sm:rounded-[28px] pointer-events-none"
 							/>
-						</motion.div>
+						</div>
 					);
 				})}
 			</div>
@@ -289,72 +444,56 @@ function StackedCardsCarousel({
 			{/* Right Column: Animated Review Content & Navigation Controls */}
 			<div className="lg:col-span-6 flex flex-col justify-center items-start space-y-3 sm:space-y-4 font-sans text-left px-2 sm:px-4">
 				{/* Rating Stars */}
-				<AnimatePresence mode="wait">
-					<motion.div
-						key={activeReview.id + "-rating"}
-						initial={{ opacity: 0, y: 8, filter: "blur(4px)" }}
-						animate={{ opacity: 1, y: 0, filter: "blur(0px)" }}
-						exit={{ opacity: 0, y: -8, filter: "blur(4px)" }}
-						transition={{ duration: 0.25 }}
-						className="flex items-center gap-1.5"
-					>
-						<HalfStars
-							rating={activeReview.rating}
-							size={16}
-							showText={false}
-							activeColor="text-amber-500"
-							inactiveColor="text-amber-500/20"
-							role="img"
-							aria-label={`Rated ${activeReview.rating.toFixed(1)} out of 5`}
-						/>
-						<span className="text-xs font-semibold text-foreground">
-							{activeReview.rating.toFixed(1)}
-						</span>
-					</motion.div>
-				</AnimatePresence>
+				<div
+					key={rating.shownKey}
+					ref={rating.ref}
+					className="flex items-center gap-1.5"
+					style={{ animation: `reviews-rating-in 0.25s ${EASE_OUT} backwards` }}
+				>
+					<HalfStars
+						rating={rating.shown.rating}
+						size={16}
+						showText={false}
+						activeColor="text-amber-500"
+						inactiveColor="text-amber-500/20"
+						role="img"
+						aria-label={`Rated ${rating.shown.rating.toFixed(1)} out of 5`}
+					/>
+					<span className="text-xs font-semibold text-foreground">
+						{rating.shown.rating.toFixed(1)}
+					</span>
+				</div>
 
 				{/* Reviewer Info */}
 				<div className="space-y-0.5 sm:space-y-1">
-					<AnimatePresence mode="wait">
-						<motion.h3
-							key={activeReview.id + "-name"}
-							initial={{ opacity: 0, y: 12, filter: "blur(4px)" }}
-							animate={{ opacity: 1, y: 0, filter: "blur(0px)" }}
-							exit={{ opacity: 0, y: -12, filter: "blur(4px)" }}
-							transition={{ duration: 0.3 }}
-							className="text-xl xs:text-2xl sm:text-3xl md:text-4xl font-extrabold text-foreground tracking-tight"
-						>
-							{activeReview.name}
-						</motion.h3>
-					</AnimatePresence>
+					<h3
+						key={name.shownKey}
+						ref={name.ref}
+						className="text-xl xs:text-2xl sm:text-3xl md:text-4xl font-extrabold text-foreground tracking-tight"
+						style={{ animation: `reviews-name-in 0.3s ${EASE_OUT} backwards` }}
+					>
+						{name.shown.name}
+					</h3>
 
-					<AnimatePresence mode="wait">
-						<motion.p
-							key={activeReview.id + "-role"}
-							initial={{ opacity: 0, y: 10, filter: "blur(4px)" }}
-							animate={{ opacity: 1, y: 0, filter: "blur(0px)" }}
-							exit={{ opacity: 0, y: -10, filter: "blur(4px)" }}
-							transition={{ duration: 0.3, delay: 0.05 }}
-							className="text-xs sm:text-base font-medium text-muted-foreground"
-						>
-							{activeReview.role}
-						</motion.p>
-					</AnimatePresence>
+					<p
+						key={role.shownKey}
+						ref={role.ref}
+						className="text-xs sm:text-base font-medium text-muted-foreground"
+						style={{ animation: `reviews-role-in 0.3s ${EASE_OUT} 0.05s backwards` }}
+					>
+						{role.shown.role}
+					</p>
 				</div>
 
 				{/* Review Quote Text */}
-				<AnimatePresence mode="wait">
-					<motion.p
-						key={activeReview.id + "-content"}
-						initial={{ opacity: 0, y: 14, filter: "blur(6px)" }}
-						animate={{ opacity: 1, y: 0, filter: "blur(0px)" }}
-						exit={{ opacity: 0, y: -14, filter: "blur(6px)" }}
-						transition={{ duration: 0.35, delay: 0.08 }}
-						className="text-sm xs:text-base sm:text-lg md:text-xl text-foreground/90 leading-relaxed font-normal pt-1 sm:pt-2 pb-2 sm:pb-4 max-w-xl min-h-[90px] sm:min-h-[120px]"
-					>
-						"{activeReview.content}"
-					</motion.p>
-				</AnimatePresence>
+				<p
+					key={quote.shownKey}
+					ref={quote.ref}
+					className="text-sm xs:text-base sm:text-lg md:text-xl text-foreground/90 leading-relaxed font-normal pt-1 sm:pt-2 pb-2 sm:pb-4 max-w-xl min-h-[90px] sm:min-h-[120px]"
+					style={{ animation: `reviews-quote-in 0.35s ${EASE_OUT} 0.08s backwards` }}
+				>
+					"{quote.shown.content}"
+				</p>
 
 				{/* Circular Arrow Navigation Buttons */}
 				<div className="flex items-center gap-3 pt-1 sm:pt-2">
@@ -581,6 +720,17 @@ function LogoCarouselVariant({
 	const items = reviews.length > 0 ? reviews : DEFAULT_REVIEWS;
 	const activeItem = items[activeIndex] || items[0];
 
+	const quote = useWaitSwap<ReviewItem, HTMLDivElement>(
+		activeItem,
+		String(activeItem.id || activeIndex),
+		LOGO_QUOTE_SWAP,
+	);
+	const portrait = useWaitSwap<ReviewItem, HTMLImageElement>(
+		activeItem,
+		String(activeItem.id || activeIndex),
+		LOGO_IMAGE_SWAP,
+	);
+
 	const handlePrev = () => {
 		setActiveIndex((prev) => (prev - 1 + items.length) % items.length);
 	};
@@ -666,20 +816,17 @@ function LogoCarouselVariant({
 			<div className="w-full max-w-4xl rounded-2xl border border-border/80 bg-background dark:bg-card text-foreground shadow-none overflow-hidden grid grid-cols-1 md:grid-cols-12 transition-all duration-300">
 				{/* Quote & Author Info (Left Column) */}
 				<div className="md:col-span-7 p-8 sm:p-12 flex flex-col justify-between space-y-6 overflow-hidden">
-					<AnimatePresence mode="wait">
-						<motion.div
-							key={activeItem.id || activeIndex}
-							initial={{ opacity: 0, y: 28 }}
-							animate={{ opacity: 1, y: 0 }}
-							exit={{ opacity: 0, y: -16 }}
-							transition={{ duration: 0.4, ease: [0.16, 1, 0.3, 1] }}
-							className="space-y-6"
-						>
+					<div
+						key={quote.shownKey}
+						ref={quote.ref}
+						className="space-y-6"
+						style={{ animation: `reviews-logo-quote-in 0.4s ${EXPO_OUT} backwards` }}
+					>
 							<p className="text-lg sm:text-2xl font-medium text-foreground leading-relaxed tracking-tight">
 								{(() => {
-									const quoteText = activeItem.content.startsWith('"')
-										? activeItem.content
-										: `"${activeItem.content}"`;
+									const quoteText = quote.shown.content.startsWith('"')
+										? quote.shown.content
+										: `"${quote.shown.content}"`;
 									const words = quoteText.split(" ");
 									let globalCharIdx = 0;
 									return (
@@ -714,35 +861,30 @@ function LogoCarouselVariant({
 
 							<div className="pt-4 border-t border-border/40">
 								<h3 className="text-lg sm:text-xl font-semibold font-serif text-foreground">
-									{activeItem.name}
+									{quote.shown.name}
 								</h3>
 								<p className="text-xs sm:text-sm text-muted-foreground mt-0.5">
-									{activeItem.role}
-									{activeItem.company ? `, ${activeItem.company}` : ""}
+									{quote.shown.role}
+									{quote.shown.company ? `, ${quote.shown.company}` : ""}
 								</p>
 							</div>
-						</motion.div>
-					</AnimatePresence>
+					</div>
 				</div>
 
 				{/* Author Portrait Image (Right Column with 4px Padding) */}
 				<div className="md:col-span-5 relative min-h-[280px] sm:min-h-[360px] p-1 sm:p-1.5">
 					<div className="relative w-full h-full rounded-xl sm:rounded-2xl overflow-hidden bg-muted/20">
-						<AnimatePresence mode="wait">
-							<motion.img
-								key={activeItem.id || activeIndex}
-								src={
-									activeItem.avatar ||
-									"https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_800,c_limit/v1790150483/photo-1534528741775-53994a69daeb-1790150482280.jpg"
-								}
-								alt={activeItem.name}
-								initial={{ opacity: 0, scale: 1.08 }}
-								animate={{ opacity: 1, scale: 1 }}
-								exit={{ opacity: 0, scale: 0.95 }}
-								transition={{ duration: 0.45, ease: [0.16, 1, 0.3, 1] }}
-								className="absolute inset-0 w-full h-full object-cover object-center rounded-xl sm:rounded-2xl"
-							/>
-						</AnimatePresence>
+						<img
+							key={portrait.shownKey}
+							ref={portrait.ref}
+							src={
+								portrait.shown.avatar ||
+								"https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_800,c_limit/v1790150483/photo-1534528741775-53994a69daeb-1790150482280.jpg"
+							}
+							alt={portrait.shown.name}
+							style={{ animation: `reviews-logo-image-in 0.45s ${EXPO_OUT} backwards` }}
+							className="absolute inset-0 w-full h-full object-cover object-center rounded-xl sm:rounded-2xl"
+						/>
 					</div>
 				</div>
 			</div>
@@ -812,6 +954,7 @@ export function ReviewsBlock({
 					.reviews-hmarquee-left:hover {
 						animation-play-state: paused;
 					}
+					${SWAP_KEYFRAMES}
 				`}</style>
 				<LogoCarouselVariant
 					reviews={reviews}
@@ -874,6 +1017,7 @@ export function ReviewsBlock({
 				.reviews-vmarquee-down:hover {
 					animation-play-state: paused;
 				}
+				${SWAP_KEYFRAMES}
 			`}</style>
 
 			{/* Header Info */}

@@ -20,10 +20,10 @@ const getThemeColor = (c: string) => {
   return colorMap[c] || "var(--primary)";
 };
 
-const HEADLINE = "text-[28px] font-semibold text-zinc-900 dark:text-zinc-50";
+const HEADLINE = "text-[28px] font-semibold text-foreground";
 
 const Label = ({ children }: { children: React.ReactNode }) => (
-  <span className="text-[11px] font-mono uppercase tracking-wider text-zinc-500">
+  <span className="text-[11px] font-mono uppercase tracking-wider text-muted-foreground">
     {children}
   </span>
 );
@@ -106,7 +106,7 @@ export default function SelectionFrameDemo({
   if (example === "usage") {
     return (
       <div className="w-full flex items-center justify-center min-h-[300px] px-6 relative z-10">
-        <span className="text-[42px] font-semibold leading-tight text-center text-zinc-900 dark:text-zinc-50">
+        <span className="text-[42px] font-semibold leading-tight text-center text-foreground">
           Draw attention to what{" "}
           <SelectionFrame animated line="dashed" padding={4} handles="circle" color={accent}>
             matters
@@ -129,11 +129,11 @@ export default function SelectionFrameDemo({
           animated={animated}
           className="w-full max-w-xs"
         >
-          <div className="rounded-xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-950 p-5 space-y-3">
+          <div className="rounded-xl border border-border bg-card text-card-foreground p-5 space-y-3">
             <div className="h-24 rounded-lg bg-gradient-to-br from-sky-400/70 to-indigo-500/70" />
             <div className="space-y-1.5">
-              <p className="text-sm font-semibold text-zinc-900 dark:text-zinc-50">Hero / Cover</p>
-              <p className="text-xs text-zinc-500">1440 × 720 · Auto layout</p>
+              <p className="text-sm font-semibold text-foreground">Hero / Cover</p>
+              <p className="text-xs text-muted-foreground">1440 × 720 · Auto layout</p>
             </div>
           </div>
         </SelectionFrame>

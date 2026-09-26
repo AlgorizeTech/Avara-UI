@@ -58,7 +58,7 @@ function IconPicker() {
     <div className="flex flex-col items-center gap-8">
       <Folder icon={icon} label="Design assets" count="24 files" />
 
-      <div className="flex items-center gap-1.5 rounded-full border border-zinc-200 bg-white p-1 dark:border-zinc-800 dark:bg-zinc-900">
+      <div className="flex items-center gap-1.5 rounded-full border border-border bg-card p-1">
         {ICONS.map(({ id, icon: I }) => (
           <button
             key={id}
@@ -67,8 +67,8 @@ function IconPicker() {
             onClick={() => setIconId(id)}
             className={`flex size-8 items-center justify-center rounded-full transition-colors ${
               iconId === id
-                ? "bg-zinc-900 text-white dark:bg-white dark:text-zinc-900"
-                : "text-zinc-500 hover:bg-zinc-100 dark:hover:bg-zinc-800"
+                ? "bg-primary text-primary-foreground"
+                : "text-muted-foreground hover:bg-muted"
             }`}
           >
             <I size={16} strokeWidth={1.8} />

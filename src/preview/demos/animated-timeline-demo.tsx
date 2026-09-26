@@ -83,15 +83,15 @@ export default function AnimatedTimelineDemo({
   resetKey?: number;
 }) {
   return (
-    <div className="w-full flex items-center justify-center transition-colors duration-300 rounded-2xl border border-zinc-200 dark:border-zinc-800 bg-zinc-50 dark:bg-[#050505] overflow-hidden">
+    <div className="w-full flex items-center justify-center transition-colors duration-300 rounded-2xl border border-border bg-muted/40 overflow-hidden">
       {/* Scrollable container to demonstrate the intersection observer */}
       <div className="w-full h-[600px] overflow-y-auto overflow-x-hidden p-6 sm:p-12 relative custom-scrollbar">
         <div className="w-full max-w-3xl mx-auto pt-32 pb-48">
           <div className="text-center mb-16 opacity-50 select-none">
-            <p className="text-sm font-medium uppercase tracking-widest text-zinc-500">
+            <p className="text-sm font-medium uppercase tracking-widest text-muted-foreground">
               Scroll Down
             </p>
-            <div className="w-px h-12 bg-zinc-300 dark:bg-zinc-700 mx-auto mt-4 animate-bounce" />
+            <div className="w-px h-12 bg-border mx-auto mt-4 animate-bounce" />
           </div>
 
           {/* The key prop forces React to remount, resetting the observers if you change layout */}

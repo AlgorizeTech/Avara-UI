@@ -55,7 +55,7 @@ export default function ImageWallDemo({
   example?: "window" | "band";
 }) {
   return (
-    <div className="w-full overflow-hidden rounded-2xl border border-zinc-200 bg-white dark:border-zinc-800 dark:bg-neutral-950">
+    <div className="w-full overflow-hidden rounded-2xl border border-border bg-background">
       <ImageWall
         items={ITEMS}
         interval={interval}

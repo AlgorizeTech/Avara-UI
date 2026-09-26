@@ -56,7 +56,7 @@ export const usageCustom = `import { SkeletonBlock } from "@/components/custom/b
 // Custom atomic composition with explicit width, height and radius props
 export default function CustomSkeleton() {
   return (
-    <div className="flex gap-4 p-6 border border-zinc-200 dark:border-zinc-800 rounded-xl w-full max-w-sm">
+    <div className="flex gap-4 p-6 border border-border rounded-xl w-full max-w-sm">
       <SkeletonBlock variant="custom" width={64} height={64} radius="1rem" />
       <div className="flex flex-col gap-2 flex-1 pt-1">
         <SkeletonBlock variant="custom" width="100%" height={16} radius="4px" />

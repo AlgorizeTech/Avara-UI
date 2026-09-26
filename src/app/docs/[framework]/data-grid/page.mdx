@@ -47,10 +47,10 @@ export default function Ledger() {
     <div className="w-full flex flex-col gap-2">
       <div className="flex items-center justify-between px-2 mb-2">
         <div className="flex flex-col">
-          <h3 className="font-semibold text-lg text-zinc-900 dark:text-zinc-100">
+          <h3 className="font-semibold text-lg text-foreground">
             Financial Ledger
           </h3>
-          <p className="text-sm text-zinc-500">Double-click any cell or press Enter to edit.</p>
+          <p className="text-sm text-muted-foreground">Double-click any cell or press Enter to edit.</p>
         </div>
         <button className="hidden sm:flex items-center gap-2 px-3 py-1.5 text-xs font-semibold rounded-lg bg-primary text-primary-foreground hover:opacity-90 transition-all shadow-xs">
           <Download className="w-3.5 h-3.5" />
@@ -74,10 +74,10 @@ export default function ReadOnlyGrid() {
     <div className="w-full flex flex-col gap-2">
       <div className="flex items-center justify-between px-2 mb-2">
         <div className="flex flex-col">
-          <h3 className="font-semibold text-lg text-zinc-900 dark:text-zinc-100">
+          <h3 className="font-semibold text-lg text-foreground">
             Financial Ledger
           </h3>
-          <p className="text-sm text-zinc-500">View mode only.</p>
+          <p className="text-sm text-muted-foreground">View mode only.</p>
         </div>
         <button className="hidden sm:flex items-center gap-2 px-3 py-1.5 text-xs font-semibold rounded-lg bg-primary text-primary-foreground hover:opacity-90 transition-all shadow-xs">
           <Download className="w-3.5 h-3.5" />
@@ -263,7 +263,7 @@ Explore the Data Grid's powerful features for displaying complex datasets, inclu
           <code>"blue" | "indigo" | "emerald" | "rose" | "zinc" | string</code>
         </td>
         <td>
-          <code>"blue"</code>
+          <code>"primary"</code>
         </td>
         <td>
           The accent color applied to the active cell's focus ring and the

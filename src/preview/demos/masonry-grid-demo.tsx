@@ -139,7 +139,7 @@ export default function MasonryGridDemo({
             return (
               <div
                 className={cn(
-                  "w-full rounded-2xl overflow-hidden relative group cursor-pointer border border-black/[0.04] dark:border-white/[0.04] shadow-sm",
+                  "w-full rounded-2xl overflow-hidden relative group cursor-pointer border border-foreground/[0.04] shadow-sm",
                   item.height,
                 )}
               >
@@ -163,7 +163,7 @@ export default function MasonryGridDemo({
             return (
               <div
                 className={cn(
-                  "w-full p-5 sm:p-6 md:p-8 rounded-2xl relative group cursor-pointer overflow-hidden border border-zinc-200/80 dark:border-white/10 bg-white dark:bg-zinc-900 shadow-sm",
+                  "w-full p-5 sm:p-6 md:p-8 rounded-2xl relative group cursor-pointer overflow-hidden border border-border bg-card shadow-sm",
                   item.height,
                 )}
               >
@@ -174,10 +174,10 @@ export default function MasonryGridDemo({
                     {item.icon}
                   </div>
                   <div className="w-full">
-                    <h3 className="text-lg sm:text-xl font-semibold tracking-tight text-zinc-900 dark:text-white mb-1 leading-snug">
+                    <h3 className="text-lg sm:text-xl font-semibold tracking-tight text-card-foreground mb-1 leading-snug">
                       {item.title}
                     </h3>
-                    <p className="text-xs sm:text-sm text-zinc-600 dark:text-zinc-400 leading-normal">
+                    <p className="text-xs sm:text-sm text-muted-foreground leading-normal">
                       {item.desc}
                     </p>
                   </div>
@@ -189,7 +189,7 @@ export default function MasonryGridDemo({
           return (
             <div
               className={cn(
-                "w-full p-5 sm:p-6 md:p-8 rounded-2xl bg-white dark:bg-zinc-900 border border-zinc-200/80 dark:border-white/10 shadow-sm transition-all duration-500 hover:shadow-md hover:-translate-y-1 flex flex-col items-start justify-between cursor-pointer group relative overflow-hidden",
+                "w-full p-5 sm:p-6 md:p-8 rounded-2xl bg-card border border-border shadow-sm transition-all duration-500 hover:shadow-md hover:-translate-y-1 flex flex-col items-start justify-between cursor-pointer group relative overflow-hidden",
                 item.height,
               )}
             >
@@ -199,14 +199,14 @@ export default function MasonryGridDemo({
                 {item.icon}
               </div>
               <div className="w-full pr-6">
-                <h3 className="text-lg sm:text-xl font-semibold tracking-tight text-zinc-900 dark:text-zinc-100 mb-1.5 leading-snug">
+                <h3 className="text-lg sm:text-xl font-semibold tracking-tight text-card-foreground mb-1.5 leading-snug">
                   {item.title}
                 </h3>
-                <p className="text-xs sm:text-sm text-zinc-500 dark:text-zinc-400 leading-relaxed">
+                <p className="text-xs sm:text-sm text-muted-foreground leading-relaxed">
                   {item.desc}
                 </p>
               </div>
-              <div className="absolute top-5 right-5 sm:top-8 sm:right-8 w-8 h-8 sm:w-10 sm:h-10 rounded-full bg-zinc-100 dark:bg-zinc-800/80 flex items-center justify-center opacity-0 scale-75 group-hover:opacity-100 group-hover:scale-100 group-hover:bg-primary group-hover:text-primary-foreground transition-all duration-500 cubic-bezier(0.4, 0, 0.2, 1)">
+              <div className="absolute top-5 right-5 sm:top-8 sm:right-8 w-8 h-8 sm:w-10 sm:h-10 rounded-full bg-muted flex items-center justify-center opacity-0 scale-75 group-hover:opacity-100 group-hover:scale-100 group-hover:bg-primary group-hover:text-primary-foreground transition-all duration-500 cubic-bezier(0.4, 0, 0.2, 1)">
                 <ArrowUpRight className="w-4 h-4" />
               </div>
             </div>

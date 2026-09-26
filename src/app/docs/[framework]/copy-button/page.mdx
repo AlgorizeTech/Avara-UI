@@ -96,9 +96,9 @@ const SNIPPET = "npx shadcn@latest add @algorize-ui/copy-button";
 
 export default function CommandBlock() {
   return (
-    <div className="w-full max-w-lg overflow-hidden rounded-xl border border-zinc-200 bg-zinc-50 dark:border-zinc-800 dark:bg-zinc-950">
-      <div className="flex items-center justify-between border-b border-zinc-200 px-4 py-2 dark:border-white/10">
-        <span className="flex items-center gap-2 text-xs font-medium text-zinc-500 dark:text-zinc-400">
+    <div className="w-full max-w-lg overflow-hidden rounded-xl border border-border bg-muted">
+      <div className="flex items-center justify-between border-b border-border px-4 py-2">
+        <span className="flex items-center gap-2 text-xs font-medium text-muted-foreground">
           <Terminal className="h-3.5 w-3.5" /> Terminal
         </span>
         {/* ghost + a custom className blends it into the toolbar in both themes */}
@@ -106,10 +106,10 @@ export default function CommandBlock() {
           value={SNIPPET}
           size="sm"
           variant="ghost"
-          className="text-zinc-600 hover:bg-zinc-200/70 hover:text-zinc-900 dark:text-zinc-300 dark:hover:bg-white/10 dark:hover:text-white"
+          className="text-muted-foreground hover:bg-foreground/10 hover:text-foreground"
         />
       </div>
-      <pre className="overflow-auto px-4 py-4 text-[13px] leading-relaxed text-zinc-800 dark:text-zinc-100">
+      <pre className="overflow-auto px-4 py-4 text-[13px] leading-relaxed text-foreground">
         <code>{SNIPPET}</code>
       </pre>
     </div>

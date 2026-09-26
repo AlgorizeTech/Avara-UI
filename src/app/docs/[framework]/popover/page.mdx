@@ -30,19 +30,19 @@ export default function AccountMenu() {
       {/* className overrides the default w-72 */}
       <PopoverContent side="bottom" align="end" className="w-64">
         <div className="flex flex-col gap-3">
-          <div className="flex items-center gap-3 border-b border-zinc-100 dark:border-zinc-800/50 pb-3">
+          <div className="flex items-center gap-3 border-b border-border pb-3">
             <div className="w-10 h-10 rounded-full bg-primary/20 text-primary flex items-center justify-center font-semibold text-sm shrink-0">
               AB
             </div>
             <div className="flex flex-col">
               <span className="text-sm font-semibold">Andy Bernard</span>
-              <span className="text-xs text-zinc-500">andy@dundermifflin.com</span>
+              <span className="text-xs text-muted-foreground">andy@dundermifflin.com</span>
             </div>
           </div>
-          <button className="text-left text-sm text-zinc-600 dark:text-zinc-300 hover:text-zinc-900 dark:hover:text-white">
+          <button className="text-left text-sm text-muted-foreground hover:text-foreground">
             View Profile
           </button>
-          <button className="text-left text-sm text-zinc-600 dark:text-zinc-300 hover:text-zinc-900 dark:hover:text-white">
+          <button className="text-left text-sm text-muted-foreground hover:text-foreground">
             Billing Settings
           </button>
           <button className="text-left text-sm text-rose-600 hover:text-rose-700 mt-2 font-medium">
@@ -60,7 +60,7 @@ function DimensionsPanel() {
     <div className="flex flex-col gap-3">
       <div>
         <h4 className="text-sm font-semibold">Dimensions</h4>
-        <p className="text-xs text-zinc-500">Set the size of the layer.</p>
+        <p className="text-xs text-muted-foreground">Set the size of the layer.</p>
       </div>
       {[
         { label: "Width", value: "100%" },
@@ -68,10 +68,10 @@ function DimensionsPanel() {
         { label: "Height", value: "auto" },
       ].map((row) => (
         <div key={row.label} className="grid grid-cols-3 items-center gap-3">
-          <label className="text-sm text-zinc-600 dark:text-zinc-400">{row.label}</label>
+          <label className="text-sm text-muted-foreground">{row.label}</label>
           <input
             defaultValue={row.value}
-            className="col-span-2 h-8 rounded-md border border-zinc-200 dark:border-zinc-800 bg-transparent px-2 text-sm focus:outline-none focus:ring-2 focus:ring-primary"
+            className="col-span-2 h-8 rounded-md border border-input bg-transparent px-2 text-sm focus:outline-none focus:ring-2 focus:ring-primary"
           />
         </div>
       ))}

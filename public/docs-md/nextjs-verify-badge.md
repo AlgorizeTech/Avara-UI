@@ -117,7 +117,7 @@ Explore the Verify Badge's authentic design features, providing recognizable tru
 
           string (hex/css color)
 
-          "#1d9bf0"
+          "var(--primary)"
 
           The theme color of the badge.
 

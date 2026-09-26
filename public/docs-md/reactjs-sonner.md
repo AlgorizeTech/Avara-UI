@@ -179,7 +179,7 @@ export default function PositionDemo() {
               "px-2 py-2 rounded-lg text-xs sm:text-sm font-medium transition-colors",
               position === p.value
                 ? "bg-primary/10 text-primary ring-1 ring-primary/30"
-                : "bg-zinc-100 dark:bg-zinc-800 text-zinc-900 dark:text-white hover:bg-zinc-200 dark:hover:bg-zinc-700",
+                : "bg-muted text-foreground hover:bg-foreground/10",
             )}
           >
             {p.label}

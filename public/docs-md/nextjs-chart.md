@@ -173,7 +173,7 @@ Explore the Chart component's data visualization capabilities, featuring respons
 
             "indigo" | "rose" | "emerald" | "amber" | "blue" | "zinc" | string
 
-          "indigo"
+          "var(--primary)"
 
           Applies the active color theme to the bars, strokes, gradients, pie
           slices, and tooltips. Accepts hex codes.

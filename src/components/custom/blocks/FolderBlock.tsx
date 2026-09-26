@@ -1,7 +1,7 @@
 "use client";
 
 import { cn } from "@/lib/utils";
-import { AnimatePresence, motion, type PanInfo, useReducedMotion } from "framer-motion";
+import gsap from "gsap";
 import { ChevronLeft, ChevronRight, type LucideIcon, X } from "lucide-react";
 import React, {
   type ChangeEvent,
@@ -9,10 +9,13 @@ import React, {
   type ReactNode,
   useCallback,
   useEffect,
+  useLayoutEffect,
   useMemo,
   useRef,
   useState,
 } from "react";
+import { bezierEase, gsapTicker, prefersReducedMotion } from "./gsap-motion";
+import { createSpringFollower, FRAMER_EASE, type SpringFollower } from "./motion-curves";
 import { Tooltip, TooltipContent, TooltipTrigger } from "./TooltipBlock";
 
 export interface FolderFile {
@@ -85,10 +88,36 @@ export interface FolderProps {
 
 /** Surface open/close — one spring for every part of the folder so the tilt,
  *  the lift and the ground shadow all settle on the same beat. */
-const SPRING = { type: "spring", stiffness: 260, damping: 24 } as const;
+const SPRING = { stiffness: 260, damping: 24 } as const;
 /** Cards travel further than the pocket tilts, so they get a slightly softer,
  *  heavier spring — snappy enough to feel direct, damped enough not to wobble. */
-const CARD_SPRING = { type: "spring", stiffness: 230, damping: 26, mass: 0.9 } as const;
+const CARD_SPRING = { stiffness: 230, damping: 26, mass: 0.9 } as const;
+/** Paging arrows: in, out and the press, all 0.15s on this curve. */
+const NAV_EASE = bezierEase([0.22, 1, 0.36, 1]);
+/** A bare `{ duration }` transition — Framer runs it on `easeOut`. */
+const EASE_OUT = bezierEase(FRAMER_EASE.easeOut);
+
+/** Framer's drag and press gestures only answer the primary pointer. */
+const isPrimaryPointer = (e: PointerEvent) =>
+  e.pointerType === "mouse" ? e.button === 0 : e.isPrimary !== false;
+
+/**
+ * Pointer velocity (px/s) over the last 100ms of a drag — the same window and
+ * sampling Framer's pan gesture reports as `info.velocity`.
+ */
+function panVelocity(history: { x: number; t: number }[]) {
+  if (history.length < 2) return 0;
+  const last = history[history.length - 1];
+  let from = history[0];
+  for (let i = history.length - 1; i >= 0; i--) {
+    from = history[i];
+    if (last.t - from.t > 100) break;
+  }
+  const time = (last.t - from.t) / 1000;
+  if (time === 0) return 0;
+  const v = (last.x - from.x) / time;
+  return Number.isFinite(v) ? v : 0;
+}
 
 /** How many cards the fan shows at once before paging kicks in. */
 const FAN_MAX = 5;
@@ -188,16 +217,41 @@ function FanNav({
   onClick,
   onEngage,
   style,
+  leaving,
 }: {
   dir: "prev" | "next";
   onClick: () => void;
   onEngage: () => void;
   style: React.CSSProperties;
+  /** Set while the arrows fade out; a press can no longer scale them back. */
+  leaving: boolean;
 }) {
   const Icon = dir === "prev" ? ChevronLeft : ChevronRight;
+  const ref = useRef<HTMLButtonElement>(null);
+  const leavingRef = useRef(leaving);
+  leavingRef.current = leaving;
+  // Mounts at the entry pose; the folder fades both arrows in from here.
+  const [enterStyle] = useState<React.CSSProperties>({ opacity: 0, transform: "scale(0.8)" });
+
+  // Press feedback: squeeze to 0.92 while held, back to 1 on release,
+  // wherever the pointer is let go (or on Enter, like a keyboard press).
+  const pressed = useRef(false);
+  const release = useRef<() => void>(() => {});
+  const press = (down: boolean) => {
+    const el = ref.current;
+    if (!el || pressed.current === down) return;
+    pressed.current = down;
+    if (leavingRef.current) return;
+    gsap.killTweensOf(el, "scale");
+    gsap.to(el, { scale: down ? 0.92 : 1, duration: 0.15, ease: NAV_EASE });
+  };
+  useEffect(() => () => release.current(), []);
+
   return (
-    <motion.button
+    <button
+      ref={ref}
       type="button"
+      tabIndex={0}
       aria-label={dir === "prev" ? "Previous files" : "Next files"}
       // the fan lives inside the folder's own click target (browse files) —
       // paging must not also open the file picker
@@ -217,23 +271,282 @@ function FanNav({
       onPointerDown={(e) => {
         e.stopPropagation();
         onEngage();
+        if (!isPrimaryPointer(e.nativeEvent)) return;
+        press(true);
+        release.current();
+        const up = () => {
+          release.current();
+          press(false);
+        };
+        window.addEventListener("pointerup", up);
+        window.addEventListener("pointercancel", up);
+        release.current = () => {
+          window.removeEventListener("pointerup", up);
+          window.removeEventListener("pointercancel", up);
+          release.current = () => {};
+        };
       }}
+      onKeyDown={(e) => {
+        if (e.key === "Enter" && !e.repeat) press(true);
+      }}
+      onKeyUp={(e) => {
+        if (e.key === "Enter") press(false);
+      }}
+      onBlur={() => press(false)}
       className={cn(
         "absolute flex h-7 w-7 items-center justify-center rounded-full",
         "bg-card/90 text-foreground/70 shadow-[0_2px_8px_rgba(0,0,0,0.14)] backdrop-blur",
         "transition-colors duration-150",
         "hover:bg-card hover:text-foreground",
       )}
-      style={style}
-      initial={{ opacity: 0, scale: 0.8 }}
-      animate={{ opacity: 1, scale: 1 }}
-      exit={{ opacity: 0, scale: 0.8 }}
-      whileTap={{ scale: 0.92 }}
-      transition={{ duration: 0.15, ease: [0.22, 1, 0.36, 1] }}
+      style={{ ...style, ...enterStyle }}
     >
       <Icon size={15} strokeWidth={2} />
-    </motion.button>
+    </button>
   );
+}
+
+/** Where a card sits and how it looks: the values its springs chase. */
+type CardPose = { x: number; y: number; rotate: number; scale: number; opacity: number };
+const POSE_KEYS = ["x", "y", "rotate", "scale", "opacity"] as const;
+
+const poseTransform = (p: CardPose) =>
+  `translateX(${p.x}px) translateY(${p.y}px) scale(${p.scale}) rotate(${p.rotate}deg)`;
+
+/**
+ * One card of the fan. Each of its five values follows its target through
+ * the card spring, keeping its velocity when a new target arrives mid-flight
+ * (a fast hover in-and-out, paging while the fan is still opening). A target
+ * change can wait out a `delay` first, holding the value where it is, as a
+ * delayed Framer transition does.
+ *
+ * With `draggable`, the card follows the pointer sideways and reports the
+ * swipe; one that doesn't page is sprung back to its slot.
+ */
+function FanCard({
+  pose,
+  enterFrom,
+  delay,
+  reduce,
+  draggable,
+  onDragStart,
+  onSwipe,
+  className,
+  style,
+  children,
+}: {
+  pose: CardPose;
+  /** Mount at this pose and spring into `pose`; `null` mounts in place. */
+  enterFrom: CardPose | null;
+  delay: number;
+  reduce: boolean;
+  draggable: boolean;
+  onDragStart: () => void;
+  /** Offset and velocity (px, px/s) of a finished swipe; true if it paged. */
+  onSwipe: (offset: number, velocity: number) => boolean;
+  className: string;
+  style: React.CSSProperties;
+  children: ReactNode;
+}) {
+  const ref = useRef<HTMLDivElement>(null);
+  const [mountPose] = useState(() => enterFrom ?? pose);
+  const [mountStyle] = useState<React.CSSProperties>(() => ({
+    transform: poseTransform(mountPose),
+    opacity: mountPose.opacity,
+  }));
+  const springs = useRef<Record<keyof CardPose, SpringFollower> | null>(null);
+  const waits = useRef<Partial<Record<keyof CardPose, gsap.core.Tween>>>({});
+  const target = useRef<CardPose>(mountPose);
+  const dragging = useRef(false);
+
+  useLayoutEffect(() => {
+    const el = ref.current;
+    if (!el) return;
+    const now = { ...mountPose };
+    const paint = () => {
+      el.style.transform = poseTransform(now);
+      el.style.opacity = String(now.opacity);
+    };
+    const all = {} as Record<keyof CardPose, SpringFollower>;
+    for (const key of POSE_KEYS) {
+      all[key] = createSpringFollower(
+        now[key],
+        (v) => {
+          now[key] = v;
+          paint();
+        },
+        { ...CARD_SPRING, ticker: gsapTicker },
+      );
+    }
+    springs.current = all;
+    const pending = waits.current;
+    return () => {
+      for (const key of POSE_KEYS) {
+        all[key].destroy();
+        pending[key]?.kill();
+      }
+      springs.current = null;
+      // A remount (Strict Mode) starts over from the mount pose.
+      target.current = mountPose;
+    };
+  }, [mountPose]);
+
+  // Chase each value whose target moved, after this render's delay. A
+  // value being dragged is left to the pointer; release sends it on.
+  useLayoutEffect(() => {
+    const all = springs.current;
+    if (!all) return;
+    const prev = target.current;
+    target.current = pose;
+    for (const key of POSE_KEYS) {
+      if (prev[key] === pose[key]) continue;
+      if (key === "x" && dragging.current) continue;
+      const spring = all[key];
+      waits.current[key]?.kill();
+      delete waits.current[key];
+      if (reduce) {
+        spring.jump(pose[key]);
+      } else if (delay > 0) {
+        spring.jump(spring.get());
+        const to = pose[key];
+        waits.current[key] = gsap.delayedCall(delay, () => {
+          delete waits.current[key];
+          spring.set(to);
+        });
+      } else {
+        spring.set(pose[key]);
+      }
+    }
+  });
+
+  // Sideways drag, on the same terms as Framer's `drag="x"`: pressing stops
+  // the card where it is, it starts moving once the pointer has travelled
+  // 3px, then follows it 1:1 with no constraints or momentum.
+  const swipe = useRef({ onDragStart, onSwipe });
+  swipe.current = { onDragStart, onSwipe };
+  useEffect(() => {
+    const el = ref.current;
+    if (!draggable || !el) return;
+    let session: {
+      id: number;
+      startX: number;
+      startY: number;
+      origin: number;
+      started: boolean;
+      history: { x: number; t: number }[];
+    } | null = null;
+
+    const settle = () => {
+      const x = springs.current?.x;
+      if (x) x.set(target.current.x);
+    };
+    const end = (e: PointerEvent) => {
+      if (!session || e.pointerId !== session.id) return;
+      const { started, startX, history } = session;
+      session = null;
+      detach();
+      if (!started) {
+        settle();
+        return;
+      }
+      dragging.current = false;
+      el.style.cursor = "grab";
+      const offset = (e.type === "pointercancel" ? history[history.length - 1].x : e.pageX) - startX;
+      if (!swipe.current.onSwipe(offset, panVelocity(history))) settle();
+    };
+    const move = (e: PointerEvent) => {
+      if (!session || e.pointerId !== session.id) return;
+      session.history.push({ x: e.pageX, t: performance.now() });
+      const dx = e.pageX - session.startX;
+      if (!session.started) {
+        if (Math.hypot(dx, e.pageY - session.startY) < 3) return;
+        session.started = true;
+        session.origin = springs.current?.x.get() ?? 0;
+        dragging.current = true;
+        el.style.cursor = "grabbing";
+        swipe.current.onDragStart();
+      }
+      springs.current?.x.jump(session.origin + dx);
+    };
+    const detach = () => {
+      window.removeEventListener("pointermove", move);
+      window.removeEventListener("pointerup", end);
+      window.removeEventListener("pointercancel", end);
+    };
+    const down = (e: PointerEvent) => {
+      if (!isPrimaryPointer(e)) return;
+      const x = springs.current?.x;
+      waits.current.x?.kill();
+      delete waits.current.x;
+      x?.jump(x.get());
+      detach();
+      session = {
+        id: e.pointerId,
+        startX: e.pageX,
+        startY: e.pageY,
+        origin: 0,
+        started: false,
+        history: [{ x: e.pageX, t: performance.now() }],
+      };
+      window.addEventListener("pointermove", move);
+      window.addEventListener("pointerup", end);
+      window.addEventListener("pointercancel", end);
+    };
+
+    el.addEventListener("pointerdown", down);
+    return () => {
+      el.removeEventListener("pointerdown", down);
+      detach();
+      if (dragging.current) {
+        dragging.current = false;
+        el.style.cursor = "";
+        settle();
+      }
+    };
+  }, [draggable]);
+
+  return (
+    <div
+      ref={ref}
+      className={className}
+      draggable={draggable ? false : undefined}
+      style={{
+        ...style,
+        ...mountStyle,
+        // What Framer puts on a `drag="x"` element: no text selection or
+        // ghost image, and vertical touch pans still scroll the page.
+        ...(draggable && {
+          userSelect: "none",
+          WebkitUserSelect: "none",
+          WebkitTouchCallout: "none",
+          touchAction: "pan-y",
+        }),
+      }}
+    >
+      {children}
+    </div>
+  );
+}
+
+/**
+ * A progress fill that grows from 0 to `value`% on mount and glides to each
+ * new value on a 0.3s linear tween.
+ */
+function ProgressFill({ value, instant = false }: { value: number; instant?: boolean }) {
+  const ref = useRef<HTMLSpanElement>(null);
+  const [mountStyle] = useState<React.CSSProperties>({ width: 0 });
+  useLayoutEffect(() => {
+    const el = ref.current;
+    if (!el) return;
+    gsap.to(el, { width: `${value}%`, duration: instant ? 0 : 0.3, ease: "none", overwrite: true });
+  }, [value, instant]);
+  useEffect(() => {
+    const el = ref.current;
+    return () => {
+      if (el) gsap.killTweensOf(el);
+    };
+  }, []);
+  return <span ref={ref} className="block h-full rounded-full bg-primary" style={mountStyle} />;
 }
 
 export function Folder({
@@ -286,7 +599,8 @@ export function Folder({
   // No rate limit. Cards have no exit animation for a fast second page to
   // interrupt, so holding an arrow pages as fast as the springs follow.
   const page = (dir: 1 | -1) => setFanStart((s) => s + dir);
-  const reduce = useReducedMotion();
+  // Read once per mount, as Framer's useReducedMotion does.
+  const [reduce] = useState(prefersReducedMotion);
 
   const items: FolderFile[] = files?.length ? files : Array.from({ length: peek }, () => ({}));
   // A hover-only reveal is unreachable on touch (no hover at all) and by
@@ -420,6 +734,125 @@ export function Folder({
   const canPage = n > 1;
   const mid = (windowed.length - 1) / 2;
   const halfSpan = mid * fanGap + halfCard;
+
+  /* ── surface motion: pocket tilt + ground shadow ─────────────────────── */
+  // Both mount at their resting pose for `open` (no entry animation) and
+  // follow it through the surface spring from then on, keeping their
+  // velocity when a hover flickers in and out.
+  const pocketRef = useRef<HTMLDivElement>(null);
+  const shadowRef = useRef<HTMLDivElement>(null);
+  const shadowScaleFor = (o: boolean) => (reduce ? 1 : o ? 1.1 : 1);
+  const [surfaceStyle] = useState(() => ({
+    pocket: { transform: open ? "rotateX(-34deg)" : "none" } as React.CSSProperties,
+    shadow: {
+      transform: `translateX(-50%) scale(${shadowScaleFor(open)})`,
+      opacity: open ? 0.9 : 0.6,
+    } as React.CSSProperties,
+  }));
+  const surface = useRef<{ tilt: SpringFollower; scale: SpringFollower; fade: SpringFollower } | null>(null);
+  useLayoutEffect(() => {
+    const pocket = pocketRef.current;
+    const shadow = shadowRef.current;
+    if (!pocket || !shadow) return;
+    const pose = {
+      scale: shadowScaleFor(open),
+      opacity: open ? 0.9 : 0.6,
+    };
+    const paintShadow = () => {
+      shadow.style.transform = `translateX(-50%) scale(${pose.scale})`;
+      shadow.style.opacity = String(pose.opacity);
+    };
+    const options = { ...SPRING, ticker: gsapTicker };
+    const springs = {
+      tilt: createSpringFollower(
+        open ? -34 : 0,
+        (v) => {
+          pocket.style.transform = v ? `rotateX(${v}deg)` : "none";
+        },
+        options,
+      ),
+      scale: createSpringFollower(pose.scale, (v) => {
+        pose.scale = v;
+        paintShadow();
+      }, options),
+      fade: createSpringFollower(pose.opacity, (v) => {
+        pose.opacity = v;
+        paintShadow();
+      }, options),
+    };
+    surface.current = springs;
+    return () => {
+      springs.tilt.destroy();
+      springs.scale.destroy();
+      springs.fade.destroy();
+      gsap.killTweensOf(shadow);
+      surface.current = null;
+    };
+    // Built once; the effect below retargets it.
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+  useLayoutEffect(() => {
+    const springs = surface.current;
+    const shadow = shadowRef.current;
+    if (!springs || !shadow) return;
+    if (reduce) {
+      // Reduced motion: the pocket snaps and the shadow only fades, 0.15s.
+      springs.tilt.jump(open ? -34 : 0);
+      gsap.to(shadow, { opacity: open ? 0.9 : 0.6, duration: 0.15, ease: EASE_OUT, overwrite: true });
+      return;
+    }
+    springs.tilt.set(open ? -34 : 0);
+    springs.scale.set(open ? 1.1 : 1);
+    springs.fade.set(open ? 0.9 : 0.6);
+  }, [open, reduce]);
+
+  /* ── paging arrows: fade/scale in, and out before they unmount ───────── */
+  const navShown = fanned && canPage;
+  const [navMounted, setNavMounted] = useState(navShown);
+  if (navShown && !navMounted) setNavMounted(true);
+  const navRef = useRef<HTMLDivElement>(null);
+  useLayoutEffect(() => {
+    const buttons = navRef.current?.querySelectorAll("button");
+    if (!buttons?.length) return;
+    gsap.killTweensOf(buttons);
+    if (navShown) {
+      gsap.to(buttons, { opacity: 1, scale: 1, duration: 0.15, ease: NAV_EASE });
+    } else {
+      gsap.to(buttons, {
+        opacity: 0,
+        scale: 0.8,
+        duration: 0.15,
+        ease: NAV_EASE,
+        onComplete: () => setNavMounted(false),
+      });
+    }
+  }, [navShown, navMounted]);
+  useEffect(() => {
+    const nav = navRef;
+    return () => {
+      const buttons = nav.current?.querySelectorAll("button");
+      if (buttons?.length) gsap.killTweensOf(buttons);
+    };
+  }, []);
+
+  /* ── drop ring: 0.15s fade + scale while files hover the folder ──────── */
+  const ringRef = useRef<HTMLDivElement>(null);
+  const [ringStyle] = useState<React.CSSProperties>(() => ({
+    opacity: dragging ? 1 : 0,
+    transform: `scale(${dragging ? 1 : 0.98})`,
+  }));
+  useLayoutEffect(() => {
+    const ring = ringRef.current;
+    if (!ring) return;
+    // On mount this tweens to where the ring already is — a no-op.
+    gsap.to(ring, {
+      opacity: dragging ? 1 : 0,
+      scale: dragging ? 1 : 0.98,
+      duration: 0.15,
+      ease: EASE_OUT,
+      overwrite: true,
+    });
+  }, [dragging]);
 
   const cardAt = (i: number) => {
     if (!fanned) {
@@ -578,12 +1011,11 @@ export function Folder({
         )}
 
         {/* ground shadow */}
-        <motion.div
+        <div
+          ref={shadowRef}
           aria-hidden
           className="absolute left-1/2 rounded-[50%] bg-black/25 blur-xl dark:bg-black/60"
-          style={{ bottom: -h * 0.05, width: w * 0.82, height: h * 0.13, zIndex: 0 }}
-          animate={{ x: "-50%", scale: reduce ? 1 : open ? 1.1 : 1, opacity: open ? 0.9 : 0.6 }}
-          transition={reduce ? { duration: 0.15 } : SPRING}
+          style={{ bottom: -h * 0.05, width: w * 0.82, height: h * 0.13, zIndex: 0, ...surfaceStyle.shadow }}
         />
 
         {/* back panel + tab — one continuous silhouette, no seam to notch */}
@@ -600,16 +1032,15 @@ export function Folder({
 
         {/* the cards — below the pocket at rest, lifted clear of it when fanned */}
         <div className="absolute inset-0" style={{ zIndex: 2 }}>
-          {/* Deliberately NOT wrapped in AnimatePresence. AnimatePresence keeps
-              an exiting child rendered by splicing it back into the new child
-              array at the index it used to occupy. Paging left removes the LAST
-              key, and that splice inserts the exiting node *before* the final
-              surviving card — reordering it, so React moves that card's DOM
-              node and it ends up stranded at its tucked-stack transform, never
-              animating to its fan slot. Cards therefore mount/unmount plainly:
-              `initial` still gives each new card its enter animation, and the
-              one card leaving at the far edge of the fan pops rather than
-              fading. */}
+          {/* Deliberately no exit animation. Keeping an exiting card rendered
+              means splicing it back into the new child array at the index it
+              used to occupy. Paging left removes the LAST key, and that splice
+              inserts the exiting node *before* the final surviving card —
+              reordering it, so React moves that card's DOM node and it ends up
+              stranded at its tucked-stack transform, never animating to its
+              fan slot. Cards therefore mount/unmount plainly: `enterFrom`
+              still gives each new card its enter animation, and the one card
+              leaving at the far edge of the fan pops rather than fading. */}
           {slots.map(({ rawKey, idx, file: f }, i) => {
             const c = cardAt(i);
             const off = i - mid;
@@ -635,12 +1066,7 @@ export function Folder({
                     overall one, just small enough to sit on a peeking card */}
                 {cardUploading && (
                   <div className="absolute inset-x-[10%] bottom-[8%] h-[2.5px] overflow-hidden rounded-full bg-foreground/15">
-                    <motion.span
-                      className="block h-full rounded-full bg-primary"
-                      initial={{ width: 0 }}
-                      animate={{ width: `${f.progress}%` }}
-                      transition={{ ease: "linear", duration: reduce ? 0 : 0.3 }}
-                    />
+                    <ProgressFill value={f.progress ?? 0} instant={reduce} />
                   </div>
                 )}
                 {/* remove — only once the fan is open (a tucked stack has no
@@ -668,29 +1094,12 @@ export function Folder({
               </div>
             );
             // Dragging any fanned card left/right pages the whole fan, same as
-            // the chevrons. No `dragConstraints`: the card is free to follow
-            // the pointer, and once released, `animate.x` (still targeting
-            // `c.x`) pulls it straight back with the same spring.
-            const dragProps =
-              !reduce && fanned && canPage
-                ? {
-                    drag: "x" as const,
-                    dragMomentum: false,
-                    dragElastic: 0.35,
-                    whileDrag: { cursor: "grabbing" },
-                    onDragStart: () => {
-                      draggedRef.current = true;
-                    },
-                    onDragEnd: (e: MouseEvent | TouchEvent | PointerEvent, info: PanInfo) => {
-                      e.stopPropagation();
-                      const { offset, velocity } = info;
-                      if (offset.x < -36 || velocity.x < -350) page(1);
-                      else if (offset.x > 36 || velocity.x > 350) page(-1);
-                    },
-                  }
-                : {};
+            // the chevrons. No constraints: the card is free to follow the
+            // pointer. A swipe past the threshold pages, which moves every
+            // card's slot; a shorter one springs the card back to its slot.
+            const at = { x: c.x, y: topBase + c.y, rotate: c.rot };
             return (
-              <motion.div
+              <FanCard
                 key={rawKey}
                 className="absolute left-1/2 top-0 overflow-hidden"
                 style={{
@@ -702,32 +1111,29 @@ export function Folder({
                   boxShadow: "inset 0 0 0 1px rgba(0,0,0,0.04), 0 5px 16px -6px rgba(0,0,0,0.28)",
                   cursor: fanned && canPage ? "grab" : undefined,
                 }}
-                initial={
+                enterFrom={
                   firstPaint.current
-                    ? false
+                    ? null
                     : reduce
-                      ? { opacity: 0, x: c.x, y: topBase + c.y, rotate: c.rot, scale: 1 }
-                      : { opacity: 0, x: c.x, y: topBase + c.y + h * 0.14, rotate: c.rot, scale: 0.86 }
+                      ? { ...at, opacity: 0, scale: 1 }
+                      : { ...at, opacity: 0, y: at.y + h * 0.14, scale: 0.86 }
                 }
-                animate={{
-                  opacity: c.op,
-                  x: c.x,
-                  y: topBase + c.y,
-                  rotate: c.rot,
-                  scale: fanned ? fanScale : 1,
+                pose={{ ...at, opacity: c.op, scale: fanned ? fanScale : 1 }}
+                reduce={reduce}
+                // a fresh batch ripples in per-item; opening spreads outward
+                // from the middle; a close never waits — dismissal has to
+                // feel immediate
+                delay={entryDelay(rawKey) ?? (fanned ? Math.abs(off) * 0.03 : 0)}
+                draggable={!reduce && fanned && canPage}
+                onDragStart={() => {
+                  draggedRef.current = true;
                 }}
-                transition={
-                  reduce
-                    ? { duration: 0 }
-                    : {
-                        ...CARD_SPRING,
-                        // a fresh batch ripples in per-item; opening spreads
-                        // outward from the middle; a close never waits —
-                        // dismissal has to feel immediate
-                        delay: entryDelay(rawKey) ?? (fanned ? Math.abs(off) * 0.03 : 0),
-                      }
-                }
-                {...dragProps}
+                onSwipe={(offset, velocity) => {
+                  if (offset < -36 || velocity < -350) page(1);
+                  else if (offset > 36 || velocity > 350) page(-1);
+                  else return false;
+                  return true;
+                }}
               >
                 {fanned && f.name ? (
                   <Tooltip>
@@ -737,34 +1143,35 @@ export function Folder({
                 ) : (
                   cardEl
                 )}
-              </motion.div>
+              </FanCard>
             );
           })}
         </div>
 
         {/* paging — always available once there's more than one file to
             browse; the window wraps, so the arrows never disable */}
-        <AnimatePresence>
-          {fanned && canPage && (
-            <div className="absolute inset-0" style={{ zIndex: 12 }} key="nav">
-              <FanNav
-                dir="prev"
-                onClick={() => page(-1)}
-                onEngage={engage}
-                style={{ left: w / 2 - halfSpan - 34, top: topBase + fanLift + cardH / 2 - 14 }}
-              />
-              <FanNav
-                dir="next"
-                onClick={() => page(1)}
-                onEngage={engage}
-                style={{ left: w / 2 + halfSpan + 6, top: topBase + fanLift + cardH / 2 - 14 }}
-              />
-            </div>
-          )}
-        </AnimatePresence>
+        {navMounted && (
+          <div ref={navRef} className="absolute inset-0" style={{ zIndex: 12 }}>
+            <FanNav
+              dir="prev"
+              onClick={() => page(-1)}
+              onEngage={engage}
+              leaving={!navShown}
+              style={{ left: w / 2 - halfSpan - 34, top: topBase + fanLift + cardH / 2 - 14 }}
+            />
+            <FanNav
+              dir="next"
+              onClick={() => page(1)}
+              onEngage={engage}
+              leaving={!navShown}
+              style={{ left: w / 2 + halfSpan + 6, top: topBase + fanLift + cardH / 2 - 14 }}
+            />
+          </div>
+        )}
 
         {/* front pocket — frosted glass, tilts open, sits ABOVE the files */}
-        <motion.div
+        <div
+          ref={pocketRef}
           className="absolute inset-x-0 bottom-0 origin-bottom"
           // No `transformStyle: preserve-3d` here: inside a 3D rendering
           // context Chrome samples a backdrop-filter's backdrop per composited
@@ -776,10 +1183,8 @@ export function Folder({
             zIndex: 5,
             borderRadius: r,
             boxShadow: "0 -2px 10px rgba(0,0,0,0.05)",
+            ...surfaceStyle.pocket,
           }}
-          initial={false}
-          animate={{ rotateX: open ? -34 : 0 }}
-          transition={reduce ? { duration: 0 } : SPRING}
         >
           <div
             className="relative overflow-hidden"
@@ -821,25 +1226,18 @@ export function Folder({
 
             {uploading && (
               <div className="absolute inset-x-4 bottom-3 h-[3px] overflow-hidden rounded-full bg-foreground/10">
-                <motion.span
-                  className="block h-full rounded-full bg-primary"
-                  initial={{ width: 0 }}
-                  animate={{ width: `${progress}%` }}
-                  transition={{ ease: "linear", duration: 0.3 }}
-                />
+                <ProgressFill value={progress} />
               </div>
             )}
           </div>
-        </motion.div>
+        </div>
 
         {interactive && (
-          <motion.div
+          <div
+            ref={ringRef}
             aria-hidden
             className="pointer-events-none absolute -inset-2 rounded-[30px] border-2 border-dashed border-primary/60"
-            style={{ zIndex: 6 }}
-            initial={false}
-            animate={{ opacity: dragging ? 1 : 0, scale: dragging ? 1 : 0.98 }}
-            transition={{ duration: 0.15 }}
+            style={{ zIndex: 6, ...ringStyle }}
           />
         )}
       </div>

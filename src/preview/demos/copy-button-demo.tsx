@@ -33,7 +33,7 @@ export default function CopyButtonDemo({
         {VARIANTS.map((v) => (
           <div key={v} className="flex flex-col items-center gap-3">
             <CopyButton value={`variant="${v}"`} variant={v} color={color} size={size} />
-            <span className="text-[11px] font-mono uppercase tracking-wider text-zinc-500">{v}</span>
+            <span className="text-[11px] font-mono uppercase tracking-wider text-muted-foreground">{v}</span>
           </div>
         ))}
       </div>
@@ -51,7 +51,7 @@ export default function CopyButtonDemo({
         {SIZES.map((s) => (
           <div key={s} className="flex flex-col items-center gap-3">
             <CopyButton value={`size="${s}"`} size={s} variant={variant} color={color} />
-            <span className="text-[11px] font-mono uppercase tracking-wider text-zinc-500">{s}</span>
+            <span className="text-[11px] font-mono uppercase tracking-wider text-muted-foreground">{s}</span>
           </div>
         ))}
       </div>
@@ -102,9 +102,9 @@ export default function CopyButtonDemo({
   if (example === "code") {
     return (
       <div className={frame}>
-        <div className="w-full max-w-lg overflow-hidden rounded-xl border border-zinc-200 bg-zinc-50 dark:border-zinc-800 dark:bg-zinc-950">
-          <div className="flex items-center justify-between border-b border-zinc-200 px-4 py-2 dark:border-white/10">
-            <span className="flex items-center gap-2 text-xs font-medium text-zinc-500 dark:text-zinc-400">
+        <div className="w-full max-w-lg overflow-hidden rounded-xl border border-border bg-muted">
+          <div className="flex items-center justify-between border-b border-border px-4 py-2">
+            <span className="flex items-center gap-2 text-xs font-medium text-muted-foreground">
               <Terminal className="h-3.5 w-3.5" /> Terminal
             </span>
             <CopyButton
@@ -112,13 +112,13 @@ export default function CopyButtonDemo({
               size="sm"
               variant="ghost"
               color={color}
-              className="text-zinc-600 hover:bg-zinc-200/70 hover:text-zinc-900 dark:text-zinc-300 dark:hover:bg-white/10 dark:hover:text-white"
+              className="text-muted-foreground hover:bg-foreground/10 hover:text-foreground"
             />
           </div>
           {/* `overflow-auto`, not `overflow-x-auto`: globals.css zeroes the
               padding of every bare `.overflow-x-auto` (it is the docs table
               wrapper class), which would strip this block's gutter. */}
-          <pre className="overflow-auto px-4 py-4 text-[13px] leading-relaxed text-zinc-800 [scrollbar-width:none] dark:text-zinc-100">
+          <pre className="overflow-auto px-4 py-4 text-[13px] leading-relaxed text-foreground [scrollbar-width:none]">
             <code>{SNIPPET}</code>
           </pre>
         </div>

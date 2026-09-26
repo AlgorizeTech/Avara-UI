@@ -1,9 +1,70 @@
 "use client";
 
-import React, { useState } from "react";
-import { motion, AnimatePresence } from "framer-motion";
-import { Eye, EyeOff, Nfc, Sparkles } from "lucide-react";
+import React, { useEffect, useLayoutEffect, useRef, useState } from "react";
+import { Eye, EyeOff, Nfc } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { springLinear } from "./motion-curves";
+
+// The cards move on a spring (stiffness 280, damping 22, mass 0.8) drawn as a
+// CSS `linear()` curve; the flip and the balance swap are plain eases.
+const CARD_SPRING = springLinear({ stiffness: 280, damping: 22, mass: 0.8 });
+const FLIP_TRANSITION = "transform 0.55s cubic-bezier(0.23, 1, 0.32, 1)";
+const EASE_OUT = "cubic-bezier(0, 0, 0.58, 1)";
+const BALANCE_TRANSITION = `opacity 0.2s ${EASE_OUT}, transform 0.2s ${EASE_OUT}, filter 0.2s ${EASE_OUT}`;
+
+type BalancePhase = "from" | "shown" | "leaving";
+
+/**
+ * The balance swaps one way at a time: the showing one fades out upwards,
+ * then the other comes in from below. The first one comes in on mount.
+ * Changing back while one is leaving brings it back from where it is.
+ */
+function useBalanceSwap(masked: boolean) {
+  const [shownMasked, setShownMasked] = useState(masked);
+  const [phase, setPhase] = useState<BalancePhase>("from");
+  const ref = useRef<HTMLDivElement>(null);
+  const wanted = useRef(masked);
+
+  useEffect(() => {
+    wanted.current = masked;
+    if (masked !== shownMasked) setPhase("leaving");
+    else setPhase((p) => (p === "leaving" ? "shown" : p));
+  }, [masked, shownMasked]);
+
+  // Coming in: commit the starting look, then transition to the resting one.
+  useLayoutEffect(() => {
+    if (phase !== "from") return;
+    void ref.current?.offsetWidth;
+    setPhase("shown");
+  }, [phase, shownMasked]);
+
+  const settle = useRef(() => {});
+  settle.current = () => {
+    if (phase !== "leaving") return;
+    setShownMasked(wanted.current);
+    setPhase("from");
+  };
+
+  // In case the transition never ends (a hidden tab, `display: none`).
+  useEffect(() => {
+    if (phase !== "leaving") return;
+    const t = window.setTimeout(() => settle.current(), 250);
+    return () => window.clearTimeout(t);
+  }, [phase]);
+
+  const y = phase === "from" ? 4 : phase === "leaving" ? -4 : 0;
+  const style: React.CSSProperties = {
+    opacity: phase === "shown" ? 1 : 0,
+    transform: y ? `translateY(${y}px)` : "none",
+    // Only the revealed balance blurs.
+    filter: shownMasked ? undefined : `blur(${phase === "shown" ? 0 : 4}px)`,
+    transition: phase === "from" ? "none" : BALANCE_TRANSITION,
+  };
+  const onTransitionEnd = (e: React.TransitionEvent<HTMLDivElement>) => {
+    if (e.target === e.currentTarget && e.propertyName === "opacity") settle.current();
+  };
+  return { shownMasked, ref, style, onTransitionEnd };
+}
 
 // ==========================================
 // TYPES & DATA STRUCTURES
@@ -145,6 +206,7 @@ export function Wallet({
   const [isFlipped, setIsFlipped] = useState(false);
 
   const shouldShowBalance = isRevealed || (autoRevealOnHover && isHovered);
+  const balance = useBalanceSwap(!shouldShowBalance);
 
   // Stagger offsets for the 3 cards when hovered:
   // Card 0 (back, Amber) -> y: -130px
@@ -252,43 +314,32 @@ export function Wallet({
 
           // Z-index: elevated card has top priority (50), higher than front flap (40)
           const zIndex = isElevated ? 50 : 10 + idx * 10;
+          const delay = isElevated ? 0 : isHovered ? stagger.delay : (2 - idx) * 0.04;
 
           return (
-            <motion.div
+            <div
               key={card.id || `card-${idx}`}
               className="absolute bottom-[35px] left-[5%] w-[90%] h-[195px] cursor-pointer"
               style={{
                 zIndex,
                 perspective: 1200,
                 transformOrigin: "bottom center",
-              }}
-              initial={false}
-              animate={{
-                y: targetY,
+                translate: `0 ${targetY}px`,
                 scale: targetScale,
-                rotate: targetRotate,
-              }}
-              transition={{
-                type: "spring",
-                stiffness: 280,
-                damping: 22,
-                mass: 0.8,
-                delay: isElevated ? 0 : isHovered ? stagger.delay : (2 - idx) * 0.04,
+                rotate: `${targetRotate}deg`,
+                transition: ["translate", "scale", "rotate"]
+                  .map((property) => `${property} ${CARD_SPRING.duration}ms ${CARD_SPRING.easing} ${delay}s`)
+                  .join(", "),
               }}
               onClick={(e) => handleCardClick(idx, e)}
             >
               {/* 3D Rotator for Card Flip */}
-              <motion.div
+              <div
                 className="w-full h-full relative"
                 style={{
                   transformStyle: "preserve-3d",
-                }}
-                animate={{
-                  rotateY: isCardFlippedNow ? 180 : 0,
-                }}
-                transition={{
-                  duration: 0.55,
-                  ease: [0.23, 1, 0.32, 1],
+                  transform: `rotateY(${isCardFlippedNow ? 180 : 0}deg)`,
+                  transition: FLIP_TRANSITION,
                 }}
               >
                 {/* =================================================== */}
@@ -462,8 +513,8 @@ export function Wallet({
                     </span>
                   </div>
                 </div>
-              </motion.div>
-            </motion.div>
+              </div>
+            </div>
           );
         })}
 
@@ -531,31 +582,27 @@ export function Wallet({
 
             {/* Middle: Masked vs Unmasked Balance */}
             <div className="flex flex-col items-center justify-center my-auto">
-              <AnimatePresence mode="wait">
-                {shouldShowBalance ? (
-                  <motion.div
-                    key="unmasked"
-                    initial={{ opacity: 0, y: 4, filter: "blur(4px)" }}
-                    animate={{ opacity: 1, y: 0, filter: "blur(0px)" }}
-                    exit={{ opacity: 0, y: -4, filter: "blur(4px)" }}
-                    transition={{ duration: 0.2 }}
-                    className="text-2xl sm:text-3xl font-extrabold tracking-tight font-sans transition-colors text-white drop-shadow-sm"
-                  >
-                    {overallBalance}
-                  </motion.div>
-                ) : (
-                  <motion.div
-                    key="masked"
-                    initial={{ opacity: 0, y: 4 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    exit={{ opacity: 0, y: -4 }}
-                    transition={{ duration: 0.2 }}
-                    className="text-xl sm:text-2xl font-mono font-bold tracking-[0.35em] transition-colors text-white"
-                  >
-                    {maskedBalance}
-                  </motion.div>
-                )}
-              </AnimatePresence>
+              {!balance.shownMasked ? (
+                <div
+                  key="unmasked"
+                  ref={balance.ref}
+                  style={balance.style}
+                  onTransitionEnd={balance.onTransitionEnd}
+                  className="text-2xl sm:text-3xl font-extrabold tracking-tight font-sans transition-colors text-white drop-shadow-sm"
+                >
+                  {overallBalance}
+                </div>
+              ) : (
+                <div
+                  key="masked"
+                  ref={balance.ref}
+                  style={balance.style}
+                  onTransitionEnd={balance.onTransitionEnd}
+                  className="text-xl sm:text-2xl font-mono font-bold tracking-[0.35em] transition-colors text-white"
+                >
+                  {maskedBalance}
+                </div>
+              )}
 
               {/* Subtitle */}
               <span className="text-[11px] sm:text-xs font-semibold tracking-wider mt-1 uppercase transition-colors text-white/80">

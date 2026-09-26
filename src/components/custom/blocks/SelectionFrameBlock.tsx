@@ -1,8 +1,8 @@
 "use client";
 
 import { cn } from "@/lib/utils";
-import { motion, useReducedMotion } from "framer-motion";
 import React, { useLayoutEffect, useRef, useState } from "react";
+import { springLinear } from "./motion-curves";
 
 export type FrameHandles = "square" | "circle";
 export type FrameLine = "solid" | "dashed" | "long";
@@ -37,6 +37,25 @@ const LINE_DASH: Record<FrameLine, [number, number] | undefined> = {
   long: [10, 6],
 };
 
+/** Handle pop-in: a stiffness 600 / damping 24 spring, as a CSS easing. */
+const HANDLE_SPRING = springLinear({ stiffness: 600, damping: 24 }, 120);
+
+// Plain CSS. Both loops sit behind prefers-reduced-motion: the march is an
+// indefinite loop, and the handles then simply start in place.
+const KEYFRAMES = `
+@keyframes selection-frame-march {
+  from { stroke-dashoffset: 0px; }
+  to { stroke-dashoffset: calc(var(--selection-frame-period) * -1); }
+}
+@keyframes selection-frame-handle {
+  from { opacity: 0; transform: scale(0); }
+  to { opacity: 1; transform: scale(1); }
+}
+@media (prefers-reduced-motion: no-preference) {
+  .selection-frame-march { animation: selection-frame-march 1s linear infinite; }
+  .selection-frame-handle { animation: selection-frame-handle ${HANDLE_SPRING.duration}ms ${HANDLE_SPRING.easing} backwards; }
+}`;
+
 export function SelectionFrame({
   children,
   handles = "square",
@@ -51,7 +70,6 @@ export function SelectionFrame({
 }: SelectionFrameProps) {
   const ref = useRef<HTMLSpanElement>(null);
   const [size, setSize] = useState({ w: 0, h: 0 });
-  const reduceMotion = useReducedMotion();
 
   useLayoutEffect(() => {
     const el = ref.current;
@@ -70,9 +88,9 @@ export function SelectionFrame({
 
   // Marching ants need a dash pattern, so `animated` with a solid stroke is
   // just a static frame with animated corner handles. Reduced motion disables
-  // it as well, since the march is an indefinite loop.
-  const marching = animated && !!resolvedDash && !reduceMotion;
-  const animateHandles = animated && !reduceMotion;
+  // both (in the stylesheet above), since the march is an indefinite loop.
+  const marching = animated && !!resolvedDash;
+  const animateHandles = animated;
 
   // The rect is drawn inset by STROKE/2 so its stroke centres inside the SVG
   // box — its visible corner tip is at (STROKE/2, STROKE/2), not (0, 0). Place
@@ -107,7 +125,7 @@ export function SelectionFrame({
             style={{ left: -padding, top: -padding }}
             aria-hidden
           >
-            <motion.rect
+            <rect
               x={STROKE / 2}
               y={STROKE / 2}
               width={Math.max(0, fw - STROKE)}
@@ -119,8 +137,11 @@ export function SelectionFrame({
               strokeDasharray={resolvedDash ? `${resolvedDash[0]} ${resolvedDash[1]}` : undefined}
               {...(marching
                 ? {
-                    animate: { strokeDashoffset: [0, -period] },
-                    transition: { duration: period * 0.075, repeat: Infinity, ease: "linear" },
+                    className: "selection-frame-march",
+                    style: {
+                      "--selection-frame-period": `${period}px`,
+                      animationDuration: `${period * 0.075}s`,
+                    } as React.CSSProperties,
                   }
                 : {})}
             />
@@ -131,18 +152,10 @@ export function SelectionFrame({
               width/height, so the -handleSize/2 margin offset undershoots and the
               handle renders visibly off-centre from the true corner. */}
           {corners.map(([key, cx, cy], i) => (
-            <motion.span
+            <FrameHandle
               key={key}
-              aria-hidden
-              className="absolute pointer-events-none bg-background"
-              initial={animateHandles ? { scale: 0, opacity: 0 } : false}
-              animate={animateHandles ? { scale: 1, opacity: 1 } : undefined}
-              transition={{
-                type: "spring",
-                stiffness: 600,
-                damping: 24,
-                delay: animateHandles ? 0.28 + i * 0.05 : 0,
-              }}
+              pop={animateHandles}
+              delay={0.28 + i * 0.05}
               style={{
                 left: cx - padding,
                 top: cy - padding,
@@ -159,6 +172,34 @@ export function SelectionFrame({
           ))}
         </>
       )}
+      <style>{KEYFRAMES}</style>
     </span>
+  );
+}
+
+/**
+ * One corner handle. Whether it pops in is settled when it mounts: switching
+ * `animated` on later leaves a handle that is already on screen in place.
+ */
+function FrameHandle({
+  pop,
+  delay,
+  style,
+}: {
+  pop: boolean;
+  /** Seconds. */
+  delay: number;
+  style: React.CSSProperties;
+}) {
+  const [popIn] = useState(pop);
+  return (
+    <span
+      aria-hidden
+      className={cn(
+        "absolute pointer-events-none bg-background",
+        popIn && "selection-frame-handle",
+      )}
+      style={{ animationDelay: popIn ? `${delay}s` : undefined, ...style }}
+    />
   );
 }

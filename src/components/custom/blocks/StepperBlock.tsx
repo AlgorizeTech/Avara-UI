@@ -1,7 +1,6 @@
 "use client";
 
 import { cn } from "@/lib/utils";
-import gsap from "gsap";
 import { Check } from "lucide-react";
 import React, { useEffect, useRef } from "react";
 
@@ -34,7 +33,21 @@ const isCssColorValue = (color: string) =>
   /^(#|rgb|hsl|oklch|lab|lch|color\(|var\()/.test(color.trim());
 
 // ==========================================
-// STEPPER NAVIGATION HEADER (GSAP)
+// MOTION CURVES (CSS easings)
+// ==========================================
+/** power3.inOut, sampled into a CSS `linear()` curve. */
+const EASE_POWER3_IN_OUT =
+  "linear(0, 0, 0, .0001, .0002, .0004, .0008, .0015, .0025, .0041, .0062, .009, .0128, .0176, .0237, .0313, .0405, .0516, .0648, .0804, .0988, .12, .1446, .1727, .2048, .2411, .2821, .3281, .3794, .4366, .5, .5634, .6206, .672, .7179, .7589, .7952, .8273, .8554, .88, .9012, .9196, .9352, .9484, .9595, .9688, .9763, .9824, .9872, .991, .9938, .996, .9975, .9985, .9992, .9996, .9998, 1, 1, 1, 1)";
+/** power3.out, sampled into a CSS `linear()` curve. */
+const EASE_POWER3_OUT =
+  "linear(0, .0963, .1855, .2679, .3439, .4138, .478, .5367, .5904, .6392, .6836, .7237, .7599, .7924, .8215, .8474, .8704, .8907, .9085, .924, .9375, .9491, .959, .9674, .9744, .9802, .985, .9888, .9919, .9943, .9961, .9974, .9984, .9991, .9995, .9998, .9999, 1, 1, 1, 1)";
+/** back.out(2.5) is a cubic, so this bezier is exact. */
+const EASE_BACK_OUT = "cubic-bezier(0.3333, 1.8333, 0.6667, 1)";
+/** power2.out, exact. */
+const EASE_POWER2_OUT = "cubic-bezier(0.3333, 1, 0.6667, 1)";
+
+// ==========================================
+// STEPPER NAVIGATION HEADER (CSS transitions)
 // ==========================================
 export const Stepper = React.forwardRef<HTMLDivElement, StepperProps>(
   (
@@ -49,22 +62,34 @@ export const Stepper = React.forwardRef<HTMLDivElement, StepperProps>(
     ref,
   ) => {
     const progressRef = useRef<HTMLDivElement>(null);
-    const progress = currentStep / (steps.length - 1);
+    const progressPlaced = useRef(false);
+    // A single step has no line to fill (and would divide by zero).
+    const progress = steps.length > 1 ? currentStep / (steps.length - 1) : 0;
     const isCssColor = isCssColorValue(color);
 
-    // GSAP Progress Line Animation
+    // Progress Line Animation — grows from the `scale-x-0` rest state on
+    // mount, then from wherever it is to each new step.
     useEffect(() => {
-      if (!progressRef.current) return;
-      gsap.to(progressRef.current, {
-        scaleX: progress,
-        duration: 0.5,
-        ease: "power3.inOut",
-        overwrite: "auto",
-      });
+      const el = progressRef.current;
+      if (!el) return;
+      // Settle the starting style first so the very first change transitions.
+      if (!progressPlaced.current) {
+        void el.offsetWidth;
+        progressPlaced.current = true;
+      }
+      el.style.transition = `scale 0.5s ${EASE_POWER3_IN_OUT}`;
+      el.style.scale = `${progress} 1`;
     }, [progress]);
 
     return (
       <div ref={ref} className={cn("relative w-full", className)} {...props}>
+        <style>{`
+          @keyframes stepper-pulse-ring {
+            from { transform: scale(1); opacity: 0.8; }
+            to { transform: scale(1.45); opacity: 0; }
+          }
+        `}</style>
+
         {/* Background Track Line — sits on the circle centre (16px on mobile, 20px from sm up) */}
         <div className="absolute top-4 sm:top-5 left-0 w-full h-[2px] bg-muted -translate-y-1/2 z-0 rounded-full overflow-hidden">
           {/* Animated Foreground Progress Line */}
@@ -111,7 +136,7 @@ export const Stepper = React.forwardRef<HTMLDivElement, StepperProps>(
                         : undefined,
                   }}
                 >
-                  {/* Dynamic Inner Content with GSAP Pop */}
+                  {/* Dynamic Inner Content with Pop */}
                   <StepIndicatorContent
                     isCompleted={isCompleted}
                     isActive={isActive}
@@ -119,7 +144,7 @@ export const Stepper = React.forwardRef<HTMLDivElement, StepperProps>(
                     icon={step.icon}
                   />
 
-                  {/* Active Ring Pulse Effect (GSAP Timeline) */}
+                  {/* Active Ring Pulse Effect (CSS keyframes) */}
                   {isActive && isCssColor && <PulseRing color={color} />}
                 </button>
 
@@ -152,7 +177,7 @@ export const Stepper = React.forwardRef<HTMLDivElement, StepperProps>(
 Stepper.displayName = "Stepper";
 
 // ==========================================
-// GSAP HELPER: STEP ICON POP ANIMATION
+// HELPER: STEP ICON POP ANIMATION
 // ==========================================
 interface StepIndicatorContentProps {
   isCompleted: boolean;
@@ -168,19 +193,18 @@ const StepIndicatorContent = ({
   icon: Icon,
 }: StepIndicatorContentProps) => {
   const contentRef = useRef<HTMLDivElement>(null);
+  const popRef = useRef<Animation | null>(null);
 
   useEffect(() => {
-    if (!contentRef.current) return;
-    gsap.fromTo(
-      contentRef.current,
-      { scale: 0.3, opacity: 0 },
-      {
-        scale: 1,
-        opacity: 1,
-        duration: 0.4,
-        ease: "back.out(2.5)",
-        overwrite: "auto",
-      },
+    const el = contentRef.current;
+    if (!el) return;
+    popRef.current?.cancel();
+    popRef.current = el.animate(
+      [
+        { transform: "scale(0.3)", opacity: 0 },
+        { transform: "scale(1)", opacity: 1 },
+      ],
+      { duration: 400, easing: EASE_BACK_OUT },
     );
   }, [isCompleted, isActive]);
 
@@ -203,41 +227,22 @@ const StepIndicatorContent = ({
 };
 
 // ==========================================
-// GSAP HELPER: CONTINUOUS RING PULSE
+// HELPER: CONTINUOUS RING PULSE
 // ==========================================
 const PulseRing = ({ color }: { color: string }) => {
-  const ringRef = useRef<HTMLDivElement>(null);
-
-  useEffect(() => {
-    if (!ringRef.current) return;
-    const tween = gsap.fromTo(
-      ringRef.current,
-      { scale: 1, opacity: 0.8 },
-      {
-        scale: 1.45,
-        opacity: 0,
-        duration: 1.5,
-        repeat: -1,
-        ease: "power2.out",
-      },
-    );
-
-    return () => {
-      tween.kill();
-    };
-  }, []);
-
   return (
     <div
-      ref={ringRef}
       className="absolute inset-0 rounded-full border-2 pointer-events-none"
-      style={{ borderColor: color }}
+      style={{
+        borderColor: color,
+        animation: `stepper-pulse-ring 1.5s ${EASE_POWER2_OUT} infinite`,
+      }}
     />
   );
 };
 
 // ==========================================
-// STEPPER CONTENT VIEW (GSAP Sliding Transitions)
+// STEPPER CONTENT VIEW (Sliding Transitions)
 // ==========================================
 export interface StepperContentProps
   extends React.HTMLAttributes<HTMLDivElement> {
@@ -259,19 +264,17 @@ export const StepperContent = React.forwardRef<
     const dir = currentStep >= prevStepRef.current ? 1 : -1;
     prevStepRef.current = currentStep;
 
-    // Animate slide-in with GSAP
-    gsap.fromTo(
-      containerRef.current.children,
-      { x: 45 * dir, opacity: 0, scale: 0.98 },
-      {
-        x: 0,
-        opacity: 1,
-        scale: 1,
-        duration: 0.45,
-        ease: "power3.out",
-        overwrite: "auto",
-      },
+    // Animate slide-in
+    const animations = Array.from(containerRef.current.children, (child) =>
+      child.animate(
+        [
+          { transform: `translateX(${45 * dir}px) scale(0.98)`, opacity: 0 },
+          { transform: "translateX(0px) scale(1)", opacity: 1 },
+        ],
+        { duration: 450, easing: EASE_POWER3_OUT },
+      ),
     );
+    return () => animations.forEach((animation) => animation.cancel());
   }, [currentStep]);
 
   return (
@@ -280,7 +283,7 @@ export const StepperContent = React.forwardRef<
       className={cn("relative w-full overflow-hidden", className)}
       {...props}
     >
-      {/* Key change triggers React to swap DOM nodes cleanly for the GSAP tween */}
+      {/* Key change triggers React to swap DOM nodes cleanly for the slide-in */}
       <div key={currentStep} className="w-full">
         {steps[currentStep]?.content}
       </div>

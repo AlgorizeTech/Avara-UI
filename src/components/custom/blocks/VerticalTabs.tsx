@@ -1,7 +1,6 @@
 "use client";
 
 import { cn } from "@/lib/utils";
-import gsap from "gsap";
 import React, {
   useEffect,
   useId,
@@ -59,6 +58,12 @@ const useIsoLayoutEffect =
 const prefersReducedMotion = () =>
   typeof window !== "undefined" &&
   window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+/** GSAP's power3.out, sampled into a CSS `linear()` curve. */
+const EASE_POWER3_OUT =
+  "linear(0, .0963, .1855, .2679, .3439, .4138, .478, .5367, .5904, .6392, .6836, .7237, .7599, .7924, .8215, .8474, .8704, .8907, .9085, .924, .9375, .9491, .959, .9674, .9744, .9802, .985, .9888, .9919, .9943, .9961, .9974, .9984, .9991, .9995, .9998, .9999, 1, 1, 1, 1)";
+/** GSAP's power1.out, exact. */
+const EASE_POWER1_OUT = "cubic-bezier(0.3333, 0.6667, 0.6667, 1)";
 
 /** Box of the active tab inside the rail, in the rail's own coordinates. */
 type Rect = { x: number; y: number; w: number; h: number };
@@ -267,19 +272,27 @@ export function VerticalTabs({
     return { left: r.x, top: r.y, width: r.w, height: r.h };
   };
 
-  const placed = useRef(false);
+  // The element last placed — a fresh indicator (the variant switched away
+  // and back) is placed, not animated, like the first one.
+  const placed = useRef<HTMLSpanElement | null>(null);
   useIsoLayoutEffect(() => {
     const el = indicatorRef.current;
     if (!el || !rect) return;
     const target = geometry(rect);
     // The first placement is not a movement, so it is not animated — nothing
     // in this block moves on load, only in answer to a click or a keypress.
-    if (!placed.current || prefersReducedMotion()) {
-      gsap.set(el, { ...target, opacity: 1 });
-      placed.current = true;
-      return;
-    }
-    gsap.to(el, { ...target, duration: 0.34, ease: "power3.out" });
+    const animate = placed.current === el && !prefersReducedMotion();
+    el.style.transition = animate
+      ? ["left", "top", "width", "height"]
+          .map((property) => `${property} 0.34s ${EASE_POWER3_OUT}`)
+          .join(", ")
+      : "none";
+    el.style.left = `${target.left}px`;
+    el.style.top = `${target.top}px`;
+    el.style.width = `${target.width}px`;
+    el.style.height = `${target.height}px`;
+    el.style.opacity = "1";
+    placed.current = el;
   }, [rect, isHorizontal, indicatorMode]);
 
   // ---- The panel transition ------------------------------------------------
@@ -287,6 +300,7 @@ export function VerticalTabs({
   // rather than decorating it.
   const prevIndex = useRef(activeIndex);
   const mounted = useRef(false);
+  const panelAnimation = useRef<Animation | null>(null);
   useEffect(() => {
     const el = contentRef.current;
     const direction = Math.sign(activeIndex - prevIndex.current) || 1;
@@ -296,17 +310,23 @@ export function VerticalTabs({
       mounted.current = true;
       return;
     }
+    panelAnimation.current?.cancel();
     if (prefersReducedMotion()) {
-      gsap.fromTo(el, { opacity: 0 }, { opacity: 1, duration: 0.2 });
+      panelAnimation.current = el.animate([{ opacity: 0 }, { opacity: 1 }], {
+        duration: 200,
+        easing: EASE_POWER1_OUT,
+      });
       return;
     }
     const from = isHorizontal
       ? { x: direction * 18, y: 0 }
       : { x: 0, y: direction * 14 };
-    gsap.fromTo(
-      el,
-      { opacity: 0, ...from },
-      { opacity: 1, x: 0, y: 0, duration: 0.34, ease: "power3.out" },
+    panelAnimation.current = el.animate(
+      [
+        { opacity: 0, transform: `translate(${from.x}px, ${from.y}px)` },
+        { opacity: 1, transform: "translate(0px, 0px)" },
+      ],
+      { duration: 340, easing: EASE_POWER3_OUT },
     );
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [activeId]);

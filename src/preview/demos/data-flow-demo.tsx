@@ -72,7 +72,7 @@ export default function DataFlowDemo({
       heading="From Data to Opportunities"
       intro="We scraped 10 platforms and analyzed millions of complaints, reviews, and revenue signals to hand you validated startup opportunities."
       highlights={["10 platforms", "millions of complaints", "validated startup opportunities"]}
-      className={cn("max-w-6xl", rounded && "overflow-hidden rounded-[28px] border border-black/[0.06] dark:border-white/10")}
+      className={cn("max-w-6xl", rounded && "overflow-hidden rounded-[28px] border border-border")}
     >
       {SOURCES.map((s) => (
         <DataFlow.Source key={s.title} title={s.title} count={s.count} items={s.items} />
@@ -118,12 +118,12 @@ export default function DataFlowDemo({
       <DataFlow.Output title="Individual Reviews" badge="1M+ analyzed">
         <DataFlow.Row className="flex-col items-stretch gap-1.5">
           <span className="flex items-center justify-between">
-            <HalfStars rating={2} size={10} showText={false} activeColor="text-primary" inactiveColor="text-black/15 dark:text-white/20" className="gap-0" role="img" aria-label="2 out of 5" />
-            <a href="#" className="inline-flex items-center gap-0.5 text-[10px] font-medium text-black/60 hover:text-black dark:text-white/60">
+            <HalfStars rating={2} size={10} showText={false} activeColor="text-primary" inactiveColor="text-foreground/15" className="gap-0" role="img" aria-label="2 out of 5" />
+            <a href="#" className="inline-flex items-center gap-0.5 text-[10px] font-medium text-foreground/60 hover:text-foreground">
               View on G2 <ArrowUpRight size={10} />
             </a>
           </span>
-          <span className="text-[11px] italic text-black/70 dark:text-white/70">
+          <span className="text-[11px] italic text-foreground/70">
             &ldquo;No calendar integration at all, so I still live in Outlook&hellip;&rdquo;
           </span>
         </DataFlow.Row>

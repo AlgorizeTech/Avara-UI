@@ -3,11 +3,11 @@ import { extractCode } from "@/lib/code";
 
 # Flowchart / Node Builder
 
-A declarative, highly sleek flowchart engine complete with custom responsive column channels, node action anchors, and custom vector streaming lines animated smoothly via GSAP.
+A declarative, highly sleek flowchart engine complete with custom responsive column channels, node action anchors, and custom vector streaming lines that draw themselves in with plain CSS animation.
 
 This engine separates data flow layout orchestration from canvas tracking. By combining declarative standard layout structures with pre-set micro connection vectors, pipelines render cross-device flawlessly without heavy calculations crashing client frame updates.
 
-Click any node that sits on a route to make that route the active one — GSAP redraws the stream along the SVG path.
+Click any node that sits on a route to make that route the active one — the moving stream switches to that SVG path.
 
 export const pipelineNodes = `function PipelineNodes() {
   return (
@@ -75,7 +75,7 @@ import { AlertCircle, CheckCircle2, Cpu, Terminal, Webhook } from "lucide-react"
 
 export default function AutomationMap() {
   return (
-    <Flowchart initialActivePath="success-path" color="indigo">
+    <Flowchart initialActivePath="success-path">
       {/* Routes first: plain SVG path data, M/L for right angles, C for curves */}
       <FlowCanvas>
         <FlowConnection id="success-path" path="M 280 200 L 310 200 L 310 114 L 340 114" />
@@ -329,8 +329,8 @@ export default function AccentedPipeline() {
       <tr>
         <td><code>Flowchart</code></td>
         <td><code>color</code></td>
-        <td><code>"blue" | "indigo" | "rose" | "emerald" | "zinc"</code></td>
-        <td><code>"indigo"</code></td>
+        <td><code>"primary" | "blue" | "indigo" | "rose" | "emerald" | "zinc"</code></td>
+        <td><code>"primary"</code></td>
         <td>Accent applied to the active stream, node ports and focus rings.</td>
       </tr>
       <tr>

@@ -1,9 +1,9 @@
 import { ExampleShowcase } from "@/components/site/Sandbox";
-import { extractCode } from "@/lib/code";
+import { extractMotionCode } from "@/lib/code";
 
 # Draggable Card List
 
-An interactive, fluid **Draggable Card List** component featuring 60fps Framer Motion spring reordering physics, right-side grip handles, light pastel badges with borders, left accent bars, and dynamic hover border color shifts.
+An interactive, fluid **Draggable Card List** component featuring spring-driven reordering (in a GSAP build and a Framer Motion build that move identically), right-side grip handles, light pastel badges with borders, left accent bars, and dynamic hover border color shifts.
 
 ## Variations
 
@@ -124,14 +124,14 @@ export default function DraggableCardListModernDemo() {
       subheading: "Reorderable cards with right-side drag grip handles, dynamic border hover color shift, and pastel bordered badges.",
       props: { variant: "classic" },
       usage: usageClassic,
-      code: extractCode("src/components/custom/draggable-card-list.tsx"),
+      code: extractMotionCode("src/components/custom/draggable-card-list.tsx"),
     },
     {
       title: "Modern Ambient Tint Card List",
       subheading: "Reorderable cards with subtle ambient gradient tones, glowing left accent bar, separated footer, floating grip handles, and dynamic hover border color shift.",
       props: { variant: "modern" },
       usage: usageModern,
-      code: extractCode("src/components/custom/draggable-card-list.tsx"),
+      code: extractMotionCode("src/components/custom/draggable-card-list.tsx"),
     },
   ]}
 />
@@ -142,7 +142,7 @@ export default function DraggableCardListModernDemo() {
 
 ## Features
 
-- **Butter-Smooth Spring Reordering**: Powered by Framer Motion's `Reorder` engine with 60fps spring physics.
+- **Butter-Smooth Spring Reordering**: Cards lift, swap and glide into place on springs. Ships as a GSAP build (the default) and a Framer Motion build on its `Reorder` engine — pick either from the Code tab; both reorder on the same rules with the same springs.
 - **2 Distinct Card Variants**: Supports `"classic"` (clean cards with border hover shift) and `"modern"` (ambient gradient tone with glowing accent strip & separated footer).
 - **Dynamic Hover Border Shift**: Automatically highlights each card's border matching its individual accent color upon hover.
 - **Subtle Pastel Badges**: Lightweight semi-transparent badge backgrounds with subtle borders (`bg-amber-500/10 text-amber-700 border border-amber-500/30`).

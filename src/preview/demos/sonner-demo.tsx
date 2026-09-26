@@ -171,7 +171,7 @@ export default function SonnerDemo({
                     "px-2 py-2 rounded-lg text-xs sm:text-sm font-medium transition-colors cursor-pointer",
                     activePosition === p.value
                       ? "bg-primary text-primary-foreground shadow-sm"
-                      : "bg-zinc-100 dark:bg-zinc-800 text-zinc-900 dark:text-white hover:bg-zinc-200 dark:hover:bg-zinc-700",
+                      : "bg-muted text-foreground hover:bg-foreground/10",
                   )}
                 >
                   {p.label}

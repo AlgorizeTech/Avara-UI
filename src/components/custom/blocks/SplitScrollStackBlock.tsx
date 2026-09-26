@@ -1,14 +1,74 @@
 "use client";
 
 import { cn } from "@/lib/utils";
-import gsap from "gsap";
-import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { ArrowDownRight, CheckCircle2, Layers } from "lucide-react";
 import React, { useEffect, useRef, useState } from "react";
 
-// Register ScrollTrigger safely
-if (typeof window !== "undefined") {
-  gsap.registerPlugin(ScrollTrigger);
+// ==========================================
+// CARD DECK MOTION (CSS transitions)
+// ==========================================
+/** GSAP's power3.out, sampled into a CSS `linear()` curve. */
+const EASE_POWER3_OUT =
+  "linear(0, .0963, .1855, .2679, .3439, .4138, .478, .5367, .5904, .6392, .6836, .7237, .7599, .7924, .8215, .8474, .8704, .8907, .9085, .924, .9375, .9491, .959, .9674, .9744, .9802, .985, .9888, .9919, .9943, .9961, .9974, .9984, .9991, .9995, .9998, .9999, 1, 1, 1, 1)";
+
+/** The card also carries `transition-colors`; its transition is kept alongside the deck motion. */
+const CARD_CLASS_TRANSITION = ["color", "background-color", "border-color", "outline-color", "text-decoration-color", "fill", "stroke", "--tw-gradient-from", "--tw-gradient-via", "--tw-gradient-to"];
+
+/**
+ * Where a card sits in the deck — stacked behind the active card, at the
+ * front, or waiting below — as a style that transitions there from wherever
+ * the card is now.
+ */
+function deckCardStyle(
+  idx: number,
+  active: number,
+  count: number,
+  cardOffset: number,
+  cardDepthScale: number,
+  upcomingY: number,
+): React.CSSProperties {
+  let y = 0;
+  let scale = 1;
+  let opacity = 1;
+  let zIndex = count + 10;
+  let duration = 0.6;
+
+  if (idx < active) {
+    // Stacked behind in the deck
+    const depth = active - idx;
+    y = -depth * cardOffset;
+    scale = 1 - depth * cardDepthScale;
+    opacity = Math.max(0.2, 1 - depth * 0.25);
+    zIndex = idx;
+  } else if (idx > active) {
+    // Upcoming, hidden below
+    y = upcomingY;
+    scale = 0.95;
+    opacity = 0;
+    zIndex = idx;
+    duration = 0.5;
+  }
+
+  const deck = ["transform", "opacity", "z-index"];
+  return {
+    transform: `translateY(${y}px) scale(${scale})`,
+    opacity,
+    zIndex,
+    transitionProperty: [...deck, ...CARD_CLASS_TRANSITION].join(", "),
+    transitionDuration: [
+      ...deck.map(() => `${duration}s`),
+      ...CARD_CLASS_TRANSITION.map(
+        () => "var(--tw-duration, var(--default-transition-duration, 150ms))",
+      ),
+    ].join(", "),
+    transitionTimingFunction: [
+      ...deck.map(() => EASE_POWER3_OUT),
+      ...CARD_CLASS_TRANSITION.map(
+        () =>
+          "var(--tw-ease, var(--default-transition-timing-function, cubic-bezier(0.4, 0, 0.2, 1)))",
+      ),
+    ].join(", "),
+  };
 }
 
 // ==========================================
@@ -37,7 +97,7 @@ export interface SplitScrollStackProps
 }
 
 // ==========================================
-// GSAP SPLIT-SCROLLSTACK ENGINE
+// SPLIT-SCROLLSTACK ENGINE
 // ==========================================
 export const SplitScrollStack = React.forwardRef<
   HTMLDivElement,
@@ -60,7 +120,6 @@ export const SplitScrollStack = React.forwardRef<
   ) => {
     const [activeIndex, setActiveIndex] = useState(0);
     const containerRef = useRef<HTMLDivElement>(null);
-    const cardRefs = useRef<(HTMLDivElement | null)[]>([]);
     const sectionRefs = useRef<(HTMLDivElement | null)[]>([]);
 
     // Keep callback fresh without triggering useEffect re-runs
@@ -74,87 +133,70 @@ export const SplitScrollStack = React.forwardRef<
       () => containerRef.current as HTMLDivElement,
     );
 
-    // GSAP ScrollTrigger Integration
+    // Scroll Tracking — a section is active while it spans the band between
+    // 40% and 60% of the scroller's viewport (its top above the 40% line,
+    // its bottom below the 60% line).
     useEffect(() => {
       if (!containerRef.current) return;
 
       // CRITICAL FIX: Resolve scroller target AFTER mount guaranteed by useEffect
-      const targetScroller = scrollerRef?.current || scroller || window;
-      const triggers: ScrollTrigger[] = [];
+      const resolved = scrollerRef?.current || scroller || window;
+      const target: HTMLElement | Window | null =
+        typeof resolved === "string"
+          ? document.querySelector<HTMLElement>(resolved)
+          : (resolved as HTMLElement | Window);
+      if (!target) return;
 
-      sectionRefs.current.forEach((section, idx) => {
-        if (!section) return;
+      const wasActive: boolean[] = [];
 
-        const trigger = ScrollTrigger.create({
-          trigger: section,
-          scroller: targetScroller,
-          start: "top 40%",
-          end: "bottom 60%",
-          // onToggle with isActive prevents skipping/dead zones on fast scrolling
-          onToggle: (self) => {
-            if (self.isActive) {
-              setActiveIndex(idx);
-              onActiveIndexChangeRef.current?.(idx);
-            }
-          },
+      const check = () => {
+        let viewportTop = 0;
+        let viewportHeight = window.innerHeight;
+        if (target !== window) {
+          const el = target as HTMLElement;
+          viewportTop = el.getBoundingClientRect().top + el.clientTop;
+          viewportHeight = el.clientHeight;
+        }
+
+        sectionRefs.current.forEach((section, idx) => {
+          if (!section) return;
+          const rect = section.getBoundingClientRect();
+          const isActive =
+            rect.top - viewportTop < viewportHeight * 0.4 &&
+            rect.bottom - viewportTop > viewportHeight * 0.6;
+          // Fire only on becoming active, which prevents skipping/dead zones
+          // on fast scrolling — the last active section stays active.
+          if (isActive && !wasActive[idx]) {
+            setActiveIndex(idx);
+            onActiveIndexChangeRef.current?.(idx);
+          }
+          wasActive[idx] = isActive;
         });
+      };
 
-        triggers.push(trigger);
-      });
+      let frame = 0;
+      const onScroll = () => {
+        if (frame) return;
+        frame = requestAnimationFrame(() => {
+          frame = 0;
+          check();
+        });
+      };
 
-      // Refresh triggers after layout calculation
-      const timer = setTimeout(() => {
-        ScrollTrigger.refresh();
-      }, 150);
+      check();
+      target.addEventListener("scroll", onScroll, { passive: true });
+      window.addEventListener("resize", onScroll);
+
+      // Re-check after layout settles
+      const timer = setTimeout(check, 150);
 
       return () => {
         clearTimeout(timer);
-        triggers.forEach((t) => t.kill());
+        cancelAnimationFrame(frame);
+        target.removeEventListener("scroll", onScroll);
+        window.removeEventListener("resize", onScroll);
       };
     }, [scroller, scrollerRef, items.length]);
-
-    // GSAP Card Stacking & Depth Animation
-    useEffect(() => {
-      cardRefs.current.forEach((card, idx) => {
-        if (!card) return;
-
-        if (idx < activeIndex) {
-          // ── Stacked Behind in the Deck ──
-          const depth = activeIndex - idx;
-          gsap.to(card, {
-            y: -depth * cardOffset,
-            scale: 1 - depth * cardDepthScale,
-            opacity: Math.max(0.2, 1 - depth * 0.25),
-            zIndex: idx,
-            duration: 0.6,
-            ease: "power3.out",
-            overwrite: "auto",
-          });
-        } else if (idx === activeIndex) {
-          // ── Active Card at Front of Deck ──
-          gsap.to(card, {
-            y: 0,
-            scale: 1,
-            opacity: 1,
-            zIndex: items.length + 10,
-            duration: 0.6,
-            ease: "power3.out",
-            overwrite: "auto",
-          });
-        } else {
-          // ── Upcoming Cards Hidden Below Viewport ──
-          gsap.to(card, {
-            y: 140,
-            scale: 0.95,
-            opacity: 0,
-            zIndex: idx,
-            duration: 0.5,
-            ease: "power3.out",
-            overwrite: "auto",
-          });
-        }
-      });
-    }, [activeIndex, cardDepthScale, cardOffset, items.length]);
 
     return (
       <div
@@ -309,18 +351,19 @@ export const SplitScrollStack = React.forwardRef<
                 return (
                   <div
                     key={item.id}
-                    ref={(el) => {
-                      cardRefs.current[index] = el;
-                    }}
                     className={cn(
                       "absolute inset-0 w-full h-full rounded-2xl p-6 sm:p-8 border overflow-hidden shadow-xl dark:shadow-2xl flex flex-col justify-between origin-top transition-colors",
                       item.color ||
                         "bg-card text-foreground border-border",
                     )}
-                    style={{
-                      opacity: index === 0 ? 1 : 0,
-                      zIndex: index === 0 ? 10 : 0,
-                    }}
+                    style={deckCardStyle(
+                      index,
+                      activeIndex,
+                      items.length,
+                      cardOffset,
+                      cardDepthScale,
+                      140,
+                    )}
                   >
                     {/* Glassmorphic Top Highlight */}
                     <div className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-white/30 to-transparent pointer-events-none" />

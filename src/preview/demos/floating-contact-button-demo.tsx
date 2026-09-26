@@ -22,7 +22,7 @@ export default function FloatingContactButtonDemo({
   return (
     <div className="w-full relative flex items-center justify-center overflow-hidden min-h-[640px]">
       <div className="absolute top-8 left-8 right-8 text-center max-w-sm mx-auto pointer-events-none opacity-40">
-        <p className="text-xs font-mono uppercase tracking-widest text-zinc-500 dark:text-zinc-400">
+        <p className="text-xs font-mono uppercase tracking-widest text-muted-foreground">
           Interactive Preview Container
         </p>
       </div>

@@ -1,7 +1,6 @@
 "use client";
 
 import React, { useEffect, useRef, useState } from "react";
-import gsap from "gsap";
 import { cn } from "@/lib/utils";
 import { AppleSelect } from "./AppleSelectBlock";
 import { FlowCanvas, Flowchart, FlowConnection } from "./FlowchartBlock";
@@ -16,6 +15,11 @@ import { FlowCanvas, Flowchart, FlowConnection } from "./FlowchartBlock";
 // ==========================================
 
 type Point = { x: number; y: number };
+
+// GSAP's power3.out (sampled) and back.out(1.6) (exact), for Web Animations.
+const POWER3_OUT =
+  "linear(0, .1945, .3591, .4971, .6115, .7052, .7808, .8409, .8877, .9233, .9497, .9686, .9816, .9901, .9952, .998, .9994, .9999, 1, 1)";
+const BACK_OUT_1_6 = "cubic-bezier(0.33333, 1.53333, 0.66667, 1)";
 
 const cardSurface =
   "rounded-2xl border border-border bg-card text-card-foreground shadow-[0_1px_2px_rgba(0,0,0,0.04),0_10px_28px_-14px_rgba(0,0,0,0.16)]";
@@ -287,20 +291,34 @@ function DataFlowRoot({
     if (!board) return;
     const reduced =
       typeof window !== "undefined" && window.matchMedia?.("(prefers-reduced-motion: reduce)").matches;
-    const src = board.querySelectorAll('[data-flow="source"]');
-    const coreEl = board.querySelector('[data-flow="core"]');
-    const out = board.querySelectorAll('[data-flow="output"]');
+    const src = board.querySelectorAll<HTMLElement>('[data-flow="source"]');
+    const coreEl = board.querySelector<HTMLElement>('[data-flow="core"]');
+    const out = board.querySelectorAll<HTMLElement>('[data-flow="output"]');
     if (reduced) {
       setLinesReady(true);
       return;
     }
-    const tl = gsap.timeline({ defaults: { ease: "power3.out" } });
-    tl.fromTo(src, { opacity: 0, x: -28 }, { opacity: 1, x: 0, duration: 0.7, stagger: 0.09 }, 0)
-      .call(() => setLinesReady(true), [], 0.35)
-      .fromTo(coreEl, { opacity: 0, scale: 0.92 }, { opacity: 1, scale: 1, duration: 0.6, ease: "back.out(1.6)" }, 0.75)
-      .fromTo(out, { opacity: 0, x: 28 }, { opacity: 1, x: 0, duration: 0.7, stagger: 0.09 }, 1.35);
+    // One timeline, as Web Animations sharing a start: each card waits out its
+    // delay already at its starting pose (`backwards`), then eases home.
+    const animations: Animation[] = [];
+    const play = (el: HTMLElement | null, from: Keyframe, delay: number, duration: number, easing: string) => {
+      if (!el || typeof el.animate !== "function") return;
+      animations.push(
+        el.animate([from, { opacity: 1, transform: "none" }], {
+          delay: delay * 1000,
+          duration: duration * 1000,
+          easing,
+          fill: "backwards",
+        }),
+      );
+    };
+    src.forEach((el, i) => play(el, { opacity: 0, transform: "translateX(-28px)" }, i * 0.09, 0.7, POWER3_OUT));
+    const lines = window.setTimeout(() => setLinesReady(true), 350);
+    play(coreEl, { opacity: 0, transform: "scale(0.92)" }, 0.75, 0.6, BACK_OUT_1_6);
+    out.forEach((el, i) => play(el, { opacity: 0, transform: "translateX(28px)" }, 1.35 + i * 0.09, 0.7, POWER3_OUT));
     return () => {
-      tl.kill();
+      window.clearTimeout(lines);
+      animations.forEach((a) => a.cancel());
     };
   }, [inView]);
 

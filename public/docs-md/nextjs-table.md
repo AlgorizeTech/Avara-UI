@@ -234,7 +234,7 @@ npx shadcn@latest add @algorize-ui/table
       TableRowisHeaderbooleanApplies header styling instead of body row styling.
       TableRowselectedbooleanApplies the selected background and sets data-selected.
       TableCellalign"left" | "center" | "right"Text alignment.
-      TableBodyanimatebooleanStaggered GSAP entrance for direct child rows. Off by default.
+      TableBodyanimatebooleanStaggered entrance (Web Animations API) for direct child rows. Off by default.
       TableBodyanimateKeyReact.KeyChange it to replay the entrance — e.g. on sort or page change.
 
 ### `TableExpandedRow`, `TableEmpty`, `TableRowActions`

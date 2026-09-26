@@ -56,7 +56,7 @@ export default function DesignAssets() {
 
         {ICONS.map(({ id, icon: I }) => (
            setIconId(id)}
-            className={iconId === id ? "flex size-8 items-center justify-center rounded-full bg-zinc-900 text-white" : "flex size-8 items-center justify-center rounded-full text-zinc-500 hover:bg-zinc-100"}
+            className={iconId === id ? "flex size-8 items-center justify-center rounded-full bg-primary text-primary-foreground" : "flex size-8 items-center justify-center rounded-full text-muted-foreground hover:bg-muted"}
           >
 
         ))}
@@ -87,6 +87,12 @@ Register the @algorize-ui registry once per project, then add the component:
 ```bash
 npx shadcn@latest registry add @algorize-ui=https://algorize-ui.vercel.app/r/{name}.json
 npx shadcn@latest add @algorize-ui/folder
+```
+
+Or the Framer Motion build (same props, same file — install one):
+
+```bash
+npx shadcn@latest add @algorize-ui/folder-framer
 ```
 
 ## Examples

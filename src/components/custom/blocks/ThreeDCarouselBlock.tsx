@@ -1,16 +1,11 @@
 "use client";
 
 import { cn } from "@/lib/utils";
-import {
-  AnimatePresence,
-  motion,
-  useMotionValue,
-  useSpring,
-  useTransform,
-} from "framer-motion";
-import type { PanInfo } from "framer-motion";
+import gsap from "gsap";
 import { ChevronLeft, ChevronRight, Pause, Play } from "lucide-react";
-import React, { useCallback, useEffect, useRef, useState } from "react";
+import React, { useCallback, useEffect, useLayoutEffect, useRef, useState } from "react";
+import { bezierEase, gsapTicker } from "./gsap-motion";
+import { createSpringFollower, FRAMER_EASE, springEase } from "./motion-curves";
 
 export interface CarouselItem {
   id: string;
@@ -27,14 +22,120 @@ export interface ThreeDCarouselProps
   autoPlayInterval?: number;
 }
 
-// Sub-component for individual cards to cleanly manage 3D tilt hooks without loop issues
+// ------------------------------------------
+// Motion — the same numbers as the Framer Motion build
+// ------------------------------------------
+
+/** Fan slot of the outer card, written as one transform in Framer's order. */
+type Slot = { x: number; z: number; scale: number; rotateY: number; zIndex: number; opacity: number };
+type SlotKey = keyof Slot;
+
+/** Fanning between slots. */
+const SLOT_SPRING = { stiffness: 280, damping: 28 };
+/** Hover tilt of the inner face. */
+const TILT_SPRING = { stiffness: 300, damping: 25 };
+/** The spring that pulls a released card back inside its 0/0 drag constraints. */
+const BOUNCE_SPRING = { stiffness: 200, damping: 40 };
+/** Framer's default spring for a scale returning to 1 once hover ends. */
+const HOVER_OUT_SPRING = { stiffness: 550, damping: 30 };
+/** Hover in: a 0.2s tween on Framer's default `easeOut`. */
+const HOVER_EASE = bezierEase(FRAMER_EASE.easeOut);
+const DRAG_ELASTIC = 0.2;
+
+/** Drag styles Framer puts on an element while `drag="x"` is on. */
+const DRAG_STYLE = {
+  userSelect: "none",
+  WebkitUserSelect: "none",
+  WebkitTouchCallout: "none",
+  touchAction: "pan-y",
+} as React.CSSProperties;
+
+/** While a card is being dragged, hover starts and ends are ignored (as in Framer). */
+let dragActive = false;
+
+interface Run {
+  tween: gsap.core.Tween;
+  from: number;
+  to: number;
+  duration: number;
+  ease: (progress: number) => number;
+}
+
+/** Speed of a running animation right now, so a new target keeps its momentum. */
+function velocityOf(run: Run | undefined) {
+  if (!run) return 0;
+  const p = run.tween.progress();
+  if (p >= 1) return 0;
+  const a = Math.max(0, p - 0.001);
+  const b = Math.min(1, p + 0.001);
+  return (((run.ease(b) - run.ease(a)) / (b - a)) * (run.to - run.from)) / run.duration;
+}
+
+/** Spring (or tween) one numeric property of `state`, carrying over the velocity of the last run. */
+function animateKey<T extends Record<string, number>>(
+  state: T,
+  runs: Partial<Record<keyof T, Run>>,
+  key: keyof T,
+  to: number,
+  render: () => void,
+  tween?: { duration: number; ease: (progress: number) => number },
+  spring: { stiffness: number; damping: number } = SLOT_SPRING,
+) {
+  const velocity = velocityOf(runs[key]);
+  runs[key]?.tween.kill();
+  delete runs[key];
+  const from = state[key];
+  if (from === to) return;
+  const { duration, ease } =
+    tween ?? springEase({ ...spring, velocity: velocity / (to - from) });
+  const run = gsap.to(state, { [key]: to, duration, ease, onUpdate: render });
+  runs[key] = { tween: run, from, to, duration, ease };
+}
+
+function outerTransform(s: Slot) {
+  let t = "";
+  if (s.x) t += `translateX(${s.x}px) `;
+  if (s.z) t += `translateZ(${s.z}px) `;
+  if (s.scale !== 1) t += `scale(${s.scale}) `;
+  if (s.rotateY) t += `rotateY(${s.rotateY}deg) `;
+  return t ? t.trim() : "none";
+}
+
+function innerTransform(scale: number, rotateX: number, rotateY: number) {
+  let t = "";
+  if (scale !== 1) t += `scale(${scale}) `;
+  if (rotateX) t += `rotateX(${rotateX}deg) `;
+  if (rotateY) t += `rotateY(${rotateY}deg) `;
+  return t ? t.trim() : "none";
+}
+
+function slotFor(offset: number, spacing: number): Slot {
+  const isCenter = offset === 0;
+  return {
+    x: offset * spacing,
+    scale: isCenter ? 1 : Math.max(0.7, 1 - Math.abs(offset) * 0.15),
+    rotateY: offset * -22,
+    z: -Math.abs(offset) * 140,
+    zIndex: 30 - Math.abs(offset) * 10,
+    opacity: isCenter ? 1 : Math.max(0.3, 1 - Math.abs(offset) * 0.35),
+  };
+}
+
+/** Card spacing: tighter under 640px. Read on the client only. */
+const spacingNow = () => (window.innerWidth < 640 ? 120 : 220);
+
+/** Tilt range: pointer offset ±150px maps onto ±14deg, clamped. */
+const tiltFrom = (offset: number) =>
+  Math.max(-14, Math.min(14, (offset / 150) * 14));
+
+// Sub-component for individual cards to cleanly manage 3D tilt without loop issues
 interface CarouselCardProps {
   item: CarouselItem;
   index: number;
   activeIndex: number;
   total: number;
   onClick: () => void;
-  onDragEnd: (_: MouseEvent | TouchEvent, info: PanInfo) => void;
+  onDragEnd: (offsetX: number) => void;
 }
 
 function CarouselCard({
@@ -52,61 +153,216 @@ function CarouselCard({
 
   const offset = diff;
   const isCenter = offset === 0;
+  const hidden = Math.abs(offset) > 2;
 
-  // 3D Tilt Motion Values for interactive hover
-  const x = useMotionValue(0);
-  const y = useMotionValue(0);
+  const outerRef = useRef<HTMLDivElement>(null);
+  const innerRef = useRef<HTMLDivElement>(null);
 
-  const rotateX = useSpring(useTransform(y, [-150, 150], [14, -14]), {
-    stiffness: 300,
-    damping: 25,
+  // The server has no window, so markup always starts from the desktop
+  // spacing; the real spacing is applied before the first paint.
+  const [serverStyle] = useState(() => {
+    const slot = slotFor(offset, 220);
+    return { transform: outerTransform(slot), zIndex: slot.zIndex, opacity: slot.opacity };
   });
-  const rotateY = useSpring(useTransform(x, [-150, 150], [-14, 14]), {
-    stiffness: 300,
-    damping: 25,
+
+  const outer = useRef({
+    el: null as HTMLDivElement | null,
+    slot: slotFor(offset, 220),
+    targets: slotFor(offset, 220),
+    runs: {} as Partial<Record<SlotKey, Run>>,
+  });
+  const inner = useRef({
+    el: null as HTMLDivElement | null,
+    pose: { scale: 1, rotateX: 0, rotateY: 0 },
+    runs: {} as Partial<Record<"scale", Run>>,
+    hovered: false,
+    hoverScale: 1,
+  });
+  const tilt = useRef<{ set: (x: number, y: number) => void } | null>(null);
+  const endDrag = useRef<(() => void) | null>(null);
+  const dragEnd = useRef(onDragEnd);
+  dragEnd.current = onDragEnd;
+
+  const renderOuter = () => {
+    const { el, slot } = outer.current;
+    if (!el) return;
+    el.style.transform = outerTransform(slot);
+    el.style.zIndex = String(Math.round(slot.zIndex));
+    el.style.opacity = String(slot.opacity);
+  };
+  const renderInner = () => {
+    const { el, pose } = inner.current;
+    if (el) el.style.transform = innerTransform(pose.scale, pose.rotateX, pose.rotateY);
+  };
+
+  // 3D Tilt springs for interactive hover; they outlive the card's DOM while
+  // it is out of the fan, exactly like the hooks they replace.
+  useLayoutEffect(() => {
+    const rotateX = createSpringFollower(
+      0,
+      (v) => {
+        inner.current.pose.rotateX = v;
+        renderInner();
+      },
+      { ...TILT_SPRING, ticker: gsapTicker },
+    );
+    const rotateY = createSpringFollower(
+      0,
+      (v) => {
+        inner.current.pose.rotateY = v;
+        renderInner();
+      },
+      { ...TILT_SPRING, ticker: gsapTicker },
+    );
+    tilt.current = {
+      set: (x, y) => {
+        rotateX.set(-tiltFrom(y));
+        rotateY.set(tiltFrom(x));
+      },
+    };
+    const outerMotion = outer.current;
+    const innerMotion = inner.current;
+    return () => {
+      rotateX.destroy();
+      rotateY.destroy();
+      tilt.current = null;
+      endDrag.current?.();
+      Object.values(outerMotion.runs).forEach((run) => run?.tween.kill());
+      outerMotion.runs = {};
+      outerMotion.el = null;
+      innerMotion.runs.scale?.tween.kill();
+      innerMotion.runs = {};
+      innerMotion.el = null;
+    };
+  }, []);
+
+  // Fan into the slot for this offset on every render (initial={false}: a
+  // card entering the fan appears in place).
+  useLayoutEffect(() => {
+    const o = outer.current;
+    const i = inner.current;
+    const el = outerRef.current;
+    if (!el) {
+      if (o.el) {
+        Object.values(o.runs).forEach((run) => run?.tween.kill());
+        o.runs = {};
+        o.el = null;
+        i.runs.scale?.tween.kill();
+        i.runs = {};
+        i.el = null;
+      }
+      return;
+    }
+    const target = slotFor(offset, spacingNow());
+    if (o.el !== el) {
+      o.el = el;
+      o.slot = { ...target };
+      o.targets = { ...target };
+      renderOuter();
+      // A fresh face: no hover yet, but the tilt springs carry on.
+      i.el = innerRef.current;
+      i.pose.scale = 1;
+      i.hovered = false;
+      renderInner();
+      return;
+    }
+    (Object.keys(target) as SlotKey[]).forEach((key) => {
+      if (o.targets[key] === target[key]) return;
+      o.targets[key] = target[key];
+      animateKey(o.slot, o.runs, key, target[key], renderOuter);
+    });
+    // Hovered while the card changes role: move to the new hover scale.
+    const hoverScale = isCenter ? 1.02 : 1.05;
+    if (i.hovered && i.hoverScale !== hoverScale) {
+      i.hoverScale = hoverScale;
+      animateKey(i.pose, i.runs, "scale", hoverScale, renderInner, { duration: 0.2, ease: HOVER_EASE });
+    }
   });
 
   const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
     const rect = e.currentTarget.getBoundingClientRect();
     const centerX = rect.left + rect.width / 2;
     const centerY = rect.top + rect.height / 2;
-    x.set(e.clientX - centerX);
-    y.set(e.clientY - centerY);
+    tilt.current?.set(e.clientX - centerX, e.clientY - centerY);
   };
 
   const handleMouseLeave = () => {
-    x.set(0);
-    y.set(0);
+    tilt.current?.set(0, 0);
+  };
+
+  const handlePointerEnter = (e: React.PointerEvent<HTMLDivElement>) => {
+    if (e.pointerType === "touch" || dragActive) return;
+    const i = inner.current;
+    i.hovered = true;
+    i.hoverScale = isCenter ? 1.02 : 1.05;
+    animateKey(i.pose, i.runs, "scale", i.hoverScale, renderInner, { duration: 0.2, ease: HOVER_EASE });
+  };
+
+  const handlePointerLeave = (e: React.PointerEvent<HTMLDivElement>) => {
+    const i = inner.current;
+    if (e.pointerType === "touch" || dragActive || !i.hovered) return;
+    i.hovered = false;
+    animateKey(i.pose, i.runs, "scale", 1, renderInner, undefined, HOVER_OUT_SPRING);
+  };
+
+  // Horizontal drag of the centre card: 0/0 constraints with 0.2 elastic, so
+  // it trails the pointer at 0.2x and springs home on release.
+  const handlePointerDown = (e: React.PointerEvent<HTMLDivElement>) => {
+    if (e.pointerType === "mouse" ? e.button > 0 : e.isPrimary === false) return;
+    const o = outer.current;
+    endDrag.current?.();
+    // Grabbing the card stops whatever its x was doing.
+    o.runs.x?.tween.kill();
+    delete o.runs.x;
+
+    const startX = e.pageX;
+    const startY = e.pageY;
+    let lastX = startX;
+    let originX = 0;
+    let dragging = false;
+
+    const move = (ev: PointerEvent) => {
+      lastX = ev.pageX;
+      const offsetX = ev.pageX - startX;
+      if (!dragging) {
+        if (Math.hypot(offsetX, ev.pageY - startY) < 3) return;
+        dragging = true;
+        dragActive = true;
+        originX = o.slot.x;
+      }
+      o.slot.x = (originX + offsetX) * DRAG_ELASTIC;
+      renderOuter();
+    };
+    const up = (ev: PointerEvent) => {
+      remove();
+      if (!dragging) return;
+      const offsetX = (ev.type === "pointercancel" ? lastX : ev.pageX) - startX;
+      animateKey(o.slot, o.runs, "x", 0, renderOuter, undefined, BOUNCE_SPRING);
+      requestAnimationFrame(() => dragEnd.current(offsetX));
+    };
+    const remove = () => {
+      window.removeEventListener("pointermove", move);
+      window.removeEventListener("pointerup", up);
+      window.removeEventListener("pointercancel", up);
+      if (dragging) dragActive = false;
+      endDrag.current = null;
+    };
+    window.addEventListener("pointermove", move);
+    window.addEventListener("pointerup", up);
+    window.addEventListener("pointercancel", up);
+    endDrag.current = remove;
   };
 
   // Do not render cards that are too far out of the fan view
-  if (Math.abs(offset) > 2) return null;
+  if (hidden) return null;
 
   return (
-    <motion.div
+    <div
+      ref={outerRef}
       onClick={onClick}
-      drag={isCenter ? "x" : false}
-      dragConstraints={{ left: 0, right: 0 }}
-      dragElastic={0.2}
-      onDragEnd={onDragEnd}
-      initial={false}
-      animate={{
-        x:
-          offset *
-          (typeof window !== "undefined" && window.innerWidth < 640
-            ? 120
-            : 220),
-        scale: isCenter ? 1 : Math.max(0.7, 1 - Math.abs(offset) * 0.15),
-        rotateY: offset * -22,
-        z: -Math.abs(offset) * 140,
-        zIndex: 30 - Math.abs(offset) * 10,
-        opacity: isCenter ? 1 : Math.max(0.3, 1 - Math.abs(offset) * 0.35),
-      }}
-      transition={{
-        type: "spring",
-        stiffness: 280,
-        damping: 28,
-      }}
+      onPointerDown={isCenter ? handlePointerDown : undefined}
+      draggable={isCenter ? false : undefined}
+      style={isCenter ? { ...serverStyle, ...DRAG_STYLE } : serverStyle}
       className={cn(
         "absolute w-[280px] sm:w-[320px] md:w-[360px] h-[360px] sm:h-[400px] md:h-[420px] rounded-3xl",
         isCenter
@@ -115,14 +371,12 @@ function CarouselCard({
       )}
     >
       {/* Inner wrapper separates hover tilt transforms from outer fanned layout transforms */}
-      <motion.div
-        style={{ rotateX, rotateY }}
+      <div
+        ref={innerRef}
         onMouseMove={handleMouseMove}
         onMouseLeave={handleMouseLeave}
-        whileHover={{
-          scale: isCenter ? 1.02 : 1.05,
-          transition: { duration: 0.2 },
-        }}
+        onPointerEnter={handlePointerEnter}
+        onPointerLeave={handlePointerLeave}
         className={cn(
           "w-full h-full rounded-3xl overflow-hidden shadow-2xl transition-shadow duration-300",
           "bg-card border border-border",
@@ -157,8 +411,8 @@ function CarouselCard({
             )}
           </div>
         </div>
-      </motion.div>
-    </motion.div>
+      </div>
+    </div>
   );
 }
 
@@ -208,11 +462,11 @@ export const ThreeDCarousel = React.forwardRef<
     }, [isPlaying, isHovered, handleNext, autoPlayInterval]);
 
     // Drag / Swipe Interaction
-    const handleDragEnd = (_: MouseEvent | TouchEvent, info: PanInfo) => {
+    const handleDragEnd = (offsetX: number) => {
       const threshold = 50;
-      if (info.offset.x < -threshold) {
+      if (offsetX < -threshold) {
         handleNext();
-      } else if (info.offset.x > threshold) {
+      } else if (offsetX > threshold) {
         handlePrev();
       }
     };
@@ -230,19 +484,17 @@ export const ThreeDCarousel = React.forwardRef<
       >
         {/* 3D Fanned Cards Container */}
         <div className="relative w-full max-w-4xl h-[360px] md:h-[420px] flex items-center justify-center perspective-[1200px]">
-          <AnimatePresence initial={false}>
-            {items.map((item, index) => (
-              <CarouselCard
-                key={item.id}
-                item={item}
-                index={index}
-                activeIndex={activeIndex}
-                total={total}
-                onClick={() => index !== activeIndex && setActiveIndex(index)}
-                onDragEnd={handleDragEnd}
-              />
-            ))}
-          </AnimatePresence>
+          {items.map((item, index) => (
+            <CarouselCard
+              key={item.id}
+              item={item}
+              index={index}
+              activeIndex={activeIndex}
+              total={total}
+              onClick={() => index !== activeIndex && setActiveIndex(index)}
+              onDragEnd={handleDragEnd}
+            />
+          ))}
         </div>
 
         {/* Navigation Controls Bar */}

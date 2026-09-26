@@ -38,7 +38,7 @@ export default function ThemeSwitcherDemo({
 
         {/* Helper text for the dropdown specifically */}
         {variant === "dropdown" && (
-          <span className="text-xs text-zinc-400 font-medium">
+          <span className="text-xs text-muted-foreground font-medium">
             Click to open menu
           </span>
         )}

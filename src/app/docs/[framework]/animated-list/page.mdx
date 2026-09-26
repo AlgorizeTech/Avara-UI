@@ -3,7 +3,7 @@ import { extractCode } from "@/lib/code";
 
 # Premium Animated List
 
-A hyper-polished list component that staggers its children into view using GSAP 3D perspective transforms, complete with a mouse-tracking glassmorphic spotlight hover effect.
+A hyper-polished list component that staggers its children into view using 3D perspective transforms (no animation library), complete with a mouse-tracking glassmorphic spotlight hover effect.
 
 Standard list animations often feel rigid. By wrapping your notification or activity feeds in the `AnimatedList` container, the engine forces a `perspective` boundary and applies a high-end 3D flip-in sequence (`back.out` easing) to every direct child. Furthermore, the `AnimatedListItem` wrapper brings the component to life _after_ entry by tracking the user's cursor to render a subtle spotlight gradient glow.
 
@@ -64,14 +64,14 @@ function NotificationRow({ notif }: { notif: (typeof notifications)[number] }) {
 
       <div className="flex-1 min-w-0 flex flex-col justify-center">
         <div className="flex items-center justify-between gap-2">
-          <h4 className="text-[13px] sm:text-[13.5px] font-semibold text-zinc-900 dark:text-zinc-100 truncate">
+          <h4 className="text-[13px] sm:text-[13.5px] font-semibold text-foreground truncate">
             {notif.title}
           </h4>
-          <span className="text-[10px] sm:text-[10.5px] font-semibold text-zinc-400 dark:text-zinc-500 flex-shrink-0">
+          <span className="text-[10px] sm:text-[10.5px] font-semibold text-muted-foreground flex-shrink-0">
             {notif.time}
           </span>
         </div>
-        <p className="text-[11.5px] sm:text-[12px] font-medium text-zinc-500 dark:text-zinc-400 leading-snug break-words line-clamp-2 mt-[1px]">
+        <p className="text-[11.5px] sm:text-[12px] font-medium text-muted-foreground leading-snug break-words line-clamp-2 mt-[1px]">
           {notif.desc}
         </p>
       </div>
@@ -278,7 +278,7 @@ export default function TimedFeed() {
         {
           prop: "ease",
           value: '"power4.out"',
-          effect: "takes any GSAP easing string.",
+          effect: "takes any GSAP-style ease name — no GSAP needed.",
         },
       ],
       props: {
@@ -392,7 +392,7 @@ Discover the key capabilities that make this component an excellent choice for m
           <code>0.8</code>
         </td>
         <td>
-          The total duration (in seconds) of the GSAP entry animation for a
+          The total duration (in seconds) of the entry animation for a
           single list item.
         </td>
       </tr>
@@ -410,8 +410,10 @@ Discover the key capabilities that make this component an excellent choice for m
           <code>"back.out(1.5)"</code>
         </td>
         <td>
-          The specific GSAP easing function to apply to the entrance animation.
-          Determines the spring physics of the 3D rotation and scale.
+          The easing applied to the entrance animation, named the GSAP way
+          (<code>"power4.out"</code>, <code>"elastic.out(1, 0.5)"</code>) and
+          evaluated without the library; CSS keywords and{" "}
+          <code>cubic-bezier()</code> work too.
         </td>
       </tr>
       <tr>

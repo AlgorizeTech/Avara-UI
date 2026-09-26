@@ -1,9 +1,75 @@
 "use client";
 
 import { cn } from "@/lib/utils";
-import gsap from "gsap";
 import { ArrowRight, CheckCircle2 } from "lucide-react";
-import React, { useEffect, useRef, useState } from "react";
+import React, { useRef, useState } from "react";
+
+// ==========================================
+// CARD DECK MOTION (CSS transitions)
+// ==========================================
+/** GSAP's power3.out, sampled into a CSS `linear()` curve. */
+const EASE_POWER3_OUT =
+  "linear(0, .0963, .1855, .2679, .3439, .4138, .478, .5367, .5904, .6392, .6836, .7237, .7599, .7924, .8215, .8474, .8704, .8907, .9085, .924, .9375, .9491, .959, .9674, .9744, .9802, .985, .9888, .9919, .9943, .9961, .9974, .9984, .9991, .9995, .9998, .9999, 1, 1, 1, 1)";
+
+/** The card also carries `transition-shadow`; its transition is kept alongside the deck motion. */
+const CARD_CLASS_TRANSITION = ["box-shadow"];
+
+/**
+ * Where a card sits in the deck — stacked behind the active card, at the
+ * front, or waiting below — as a style that transitions there from wherever
+ * the card is now.
+ */
+function deckCardStyle(
+  idx: number,
+  active: number,
+  count: number,
+  cardOffset: number,
+  cardDepthScale: number,
+  upcomingY: number,
+): React.CSSProperties {
+  let y = 0;
+  let scale = 1;
+  let opacity = 1;
+  let zIndex = count + 10;
+  let duration = 0.6;
+
+  if (idx < active) {
+    // Stacked behind in the deck
+    const depth = active - idx;
+    y = -depth * cardOffset;
+    scale = 1 - depth * cardDepthScale;
+    opacity = Math.max(0.2, 1 - depth * 0.25);
+    zIndex = idx;
+  } else if (idx > active) {
+    // Upcoming, hidden below
+    y = upcomingY;
+    scale = 0.95;
+    opacity = 0;
+    zIndex = idx;
+    duration = 0.5;
+  }
+
+  const deck = ["transform", "opacity", "z-index"];
+  return {
+    transform: `translateY(${y}px) scale(${scale})`,
+    opacity,
+    zIndex,
+    transitionProperty: [...deck, ...CARD_CLASS_TRANSITION].join(", "),
+    transitionDuration: [
+      ...deck.map(() => `${duration}s`),
+      ...CARD_CLASS_TRANSITION.map(
+        () => "var(--tw-duration, var(--default-transition-duration, 150ms))",
+      ),
+    ].join(", "),
+    transitionTimingFunction: [
+      ...deck.map(() => EASE_POWER3_OUT),
+      ...CARD_CLASS_TRANSITION.map(
+        () =>
+          "var(--tw-ease, var(--default-transition-timing-function, cubic-bezier(0.4, 0, 0.2, 1)))",
+      ),
+    ].join(", "),
+  };
+}
 
 export interface SplitStep {
   id: string;
@@ -41,7 +107,6 @@ export const SplitStepper = React.forwardRef<HTMLDivElement, SplitStepperProps>(
     ref,
   ) => {
     const [activeStep, setActiveStep] = useState(0);
-    const cardRefs = useRef<(HTMLDivElement | null)[]>([]);
     const listRefs = useRef<(HTMLDivElement | null)[]>([]);
     const accent = color ?? "var(--primary)";
     const isHex = !color || color.startsWith("#");
@@ -54,45 +119,6 @@ export const SplitStepper = React.forwardRef<HTMLDivElement, SplitStepperProps>(
         block: "nearest",
       });
     };
-
-    useEffect(() => {
-      cardRefs.current.forEach((card, idx) => {
-        if (!card) return;
-
-        if (idx < activeStep) {
-          const depth = activeStep - idx;
-          gsap.to(card, {
-            y: -depth * cardOffset,
-            scale: 1 - depth * cardDepthScale,
-            opacity: Math.max(0.2, 1 - depth * 0.25),
-            zIndex: idx,
-            duration: 0.6,
-            ease: "power3.out",
-            overwrite: "auto",
-          });
-        } else if (idx === activeStep) {
-          gsap.to(card, {
-            y: 0,
-            scale: 1,
-            opacity: 1,
-            zIndex: steps.length + 10,
-            duration: 0.6,
-            ease: "power3.out",
-            overwrite: "auto",
-          });
-        } else {
-          gsap.to(card, {
-            y: 120,
-            scale: 0.95,
-            opacity: 0,
-            zIndex: idx,
-            duration: 0.5,
-            ease: "power3.out",
-            overwrite: "auto",
-          });
-        }
-      });
-    }, [activeStep, cardDepthScale, cardOffset, steps.length]);
 
     return (
       <div
@@ -241,18 +267,19 @@ export const SplitStepper = React.forwardRef<HTMLDivElement, SplitStepperProps>(
               return (
                 <div
                   key={step.id}
-                  ref={(el) => {
-                    cardRefs.current[index] = el;
-                  }}
                   className={cn(
                     "absolute inset-0 w-full h-full rounded-[2.5rem] p-8 border overflow-hidden shadow-2xl flex flex-col justify-between origin-top transition-shadow",
                     step.color ||
                       "bg-zinc-900 text-white border-white/10 dark:border-zinc-800",
                   )}
-                  style={{
-                    opacity: index === 0 ? 1 : 0,
-                    zIndex: index === 0 ? 10 : 0,
-                  }}
+                  style={deckCardStyle(
+                    index,
+                    activeStep,
+                    steps.length,
+                    cardOffset,
+                    cardDepthScale,
+                    120,
+                  )}
                 >
                   <div className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-white/30 to-transparent pointer-events-none" />
 
