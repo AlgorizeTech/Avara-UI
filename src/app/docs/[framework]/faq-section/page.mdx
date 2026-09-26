@@ -1,0 +1,209 @@
+import { ExampleShowcase } from "@/components/site/Sandbox";
+import { Installation } from "@/components/site/installation";
+import { extractCode } from "@/lib/code";
+
+export const metadata = {
+  title: "FAQ Section - Algorize UI",
+  description:
+    "An animated, editorial FAQ website section pairing a responsive section header with an interactive nature photography canvas and an expandable question accordion.",
+};
+
+# FAQ Section
+
+An animated, editorial FAQ section designed for modern landing pages, SaaS platforms, and digital agencies. Pairs a centered section header with an interactive nature photography canvas that dynamically morphs its height and width and crossfades photos with each active question, alongside a keyboard-accessible, smooth accordion list.
+
+Built with pure CSS keyframes and transitions — zero third-party animation library runtime dependencies, guaranteed 60fps performance, and full adaptive styling for both Light and Dark themes.
+
+export const usageDefault = `"use client";
+
+import { FAQSection } from "@/components/custom/blocks/FAQSectionBlock";
+
+export default function FAQExample() {
+  return (
+    <FAQSection
+      eyebrow="Common Queries"
+      title="Frequently Asked Questions"
+      description="Everything you need to know about using Docs UI, component integration, licensing, and custom styling."
+    />
+  );
+}
+`;
+
+<ExampleShowcase
+  name="faq-section"
+  columns={1}
+  examples={[
+    {
+      title: "1. Homepage FAQ Section",
+      subheading:
+        "The complete homepage FAQ section. Features a centered header, ambient background glows, an architectural nature photography canvas that morphs dynamically with each open question, and an accessible accordion list.",
+      propNotes: [
+        {
+          lead: "Pass",
+          prop: "eyebrow",
+          value: '"Common Queries"',
+          effect: "to customize the pill badge text displayed above the title.",
+        },
+        {
+          lead: "Set",
+          prop: "title",
+          value: '"Frequently Asked Questions"',
+          effect: "for the primary section headline.",
+        },
+        {
+          lead: "Provide",
+          prop: "description",
+          value: '"..."',
+          effect: "to customize the section summary paragraph beneath the title.",
+        },
+      ],
+      props: {
+        eyebrow: "Common Queries",
+        title: "Frequently Asked Questions",
+        description:
+          "Everything you need to know about using Docs UI, component integration, licensing, and custom styling.",
+        showGlows: true,
+      },
+      usage: usageDefault,
+      code: extractCode("src/components/custom/blocks/FAQSectionBlock.tsx"),
+      minHeight: 650,
+    },
+  ]}
+/>
+
+## Installation
+
+<Installation name="faq-section" />
+
+## Props Reference
+
+### FAQSection
+
+<div className="overflow-x-auto my-4">
+  <table>
+    <thead>
+      <tr>
+        <th>Prop</th>
+        <th>Type</th>
+        <th>Default</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><code>eyebrow</code></td>
+        <td><code>string</code></td>
+        <td><code>"Common Queries"</code></td>
+        <td>The pill badge text displayed above the title with a sparkles icon. Pass empty string or null to omit.</td>
+      </tr>
+      <tr>
+        <td><code>title</code></td>
+        <td><code>string</code></td>
+        <td><code>"Frequently Asked Questions"</code></td>
+        <td>The primary headline string rendered in editorial serif styling.</td>
+      </tr>
+      <tr>
+        <td><code>description</code></td>
+        <td><code>string</code></td>
+        <td><code>"Everything you need to know..."</code></td>
+        <td>The subtitle paragraph explaining the section context.</td>
+      </tr>
+      <tr>
+        <td><code>items</code></td>
+        <td><code>FAQItem[]</code></td>
+        <td><code>FAQ_ITEMS</code></td>
+        <td>Array of FAQ questions, answers, nature photography URLs, and coordinate metadata.</td>
+      </tr>
+      <tr>
+        <td><code>showGlows</code></td>
+        <td><code>boolean</code></td>
+        <td><code>true</code></td>
+        <td>Whether to render ambient background blur glow orbs behind the section.</td>
+      </tr>
+      <tr>
+        <td><code>defaultActiveId</code></td>
+        <td><code>string</code></td>
+        <td><code>"installation"</code></td>
+        <td>The ID of the question that opens expanded on initial render.</td>
+      </tr>
+      <tr>
+        <td><code>id</code></td>
+        <td><code>string</code></td>
+        <td><code>"faq"</code></td>
+        <td>HTML section element id for anchor linking (e.g. <code>#faq</code>).</td>
+      </tr>
+      <tr>
+        <td><code>className</code></td>
+        <td><code>string</code></td>
+        <td><code>undefined</code></td>
+        <td>Additional Tailwind CSS classes for the root <code>&lt;section&gt;</code> container.</td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+### FAQItem Data Structure
+
+<div className="overflow-x-auto my-4">
+  <table>
+    <thead>
+      <tr>
+        <th>Field</th>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><code>id</code></td>
+        <td><code>string</code></td>
+        <td>Unique identifier for the item used for active state tracking.</td>
+      </tr>
+      <tr>
+        <td><code>question</code></td>
+        <td><code>string</code></td>
+        <td>The question headline displayed in the accordion button.</td>
+      </tr>
+      <tr>
+        <td><code>category</code></td>
+        <td><code>string</code></td>
+        <td>Category badge string (e.g. <code>"CLI & Setup"</code>, <code>"Tailwind & Theming"</code>).</td>
+      </tr>
+      <tr>
+        <td><code>answer</code></td>
+        <td><code>string</code></td>
+        <td>The detailed answer body revealed inside the accordion panel.</td>
+      </tr>
+      <tr>
+        <td><code>image</code></td>
+        <td><code>string</code></td>
+        <td>High-resolution photo URL rendered on the interactive nature canvas.</td>
+      </tr>
+      <tr>
+        <td><code>location</code></td>
+        <td><code>string</code></td>
+        <td>Geographic location label displayed in the bottom caption badge.</td>
+      </tr>
+      <tr>
+        <td><code>coordinates</code></td>
+        <td><code>string</code></td>
+        <td>Latitude/longitude coordinates displayed in the top-right watermark badge.</td>
+      </tr>
+      <tr>
+        <td><code>height</code></td>
+        <td><code>number</code></td>
+        <td>Target canvas height in pixels for dynamic morphing transitions.</td>
+      </tr>
+      <tr>
+        <td><code>maxWidth</code></td>
+        <td><code>number</code></td>
+        <td>Target canvas maximum width in pixels for dynamic morphing transitions.</td>
+      </tr>
+      <tr>
+        <td><code>clipCut</code></td>
+        <td><code>string</code></td>
+        <td>Chamfer corner cut size (e.g. <code>"2.5rem"</code>) for the polygon clip-path.</td>
+      </tr>
+    </tbody>
+  </table>
+</div>

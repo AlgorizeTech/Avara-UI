@@ -64,6 +64,7 @@ export const sandboxRegistry: Record<string, LazyExoticComponent<ComponentType<a
   "draggable-card-list-modern-framer": lazyRetry(() => import("./demos/draggable-card-list-modern-framer-demo")),
   "drawer": lazyRetry(() => import("./demos/drawer-demo")),
   "email": lazyRetry(() => import("./demos/email-demo")),
+  "faq-section": lazyRetry(() => import("./demos/faq-section-demo")),
   "fashion-hero": lazyRetry(() => import("./demos/fashion-hero-demo")),
   "flavour-carousel": lazyRetry(() => import("./demos/flavour-carousel-demo")),
   "fleet": lazyRetry(() => import("./demos/fleet-demo")),

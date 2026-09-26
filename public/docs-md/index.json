@@ -1,6 +1,6 @@
 {
-  "generatedAt": "2026-09-26T04:23:34.444Z",
-  "totalFiles": 291,
+  "generatedAt": "2026-09-26T19:53:46.192Z",
+  "totalFiles": 293,
   "files": [
     {
       "name": "nextjs/3d-carousel",
@@ -325,6 +325,12 @@
       "path": "/docs/nextjs-examples-video-text.md",
       "url": "/docs/nextjs/examples/video-text",
       "originalMdx": "[framework]\\examples\\video-text\\page.mdx"
+    },
+    {
+      "name": "nextjs/faq-section",
+      "path": "/docs/nextjs-faq-section.md",
+      "url": "/docs/nextjs/faq-section",
+      "originalMdx": "[framework]\\faq-section\\page.mdx"
     },
     {
       "name": "nextjs/file-upload",
@@ -1201,6 +1207,12 @@
       "path": "/docs/reactjs-examples-video-text.md",
       "url": "/docs/reactjs/examples/video-text",
       "originalMdx": "[framework]\\examples\\video-text\\page.mdx"
+    },
+    {
+      "name": "reactjs/faq-section",
+      "path": "/docs/reactjs-faq-section.md",
+      "url": "/docs/reactjs/faq-section",
+      "originalMdx": "[framework]\\faq-section\\page.mdx"
     },
     {
       "name": "reactjs/file-upload",

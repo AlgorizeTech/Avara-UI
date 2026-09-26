@@ -1511,6 +1511,31 @@
       "docs": "Named exports: EmailApp, plus Email, EmailLabel and Attachment types. The largest block in the registry — a complete application layout with demo data to replace, not a single element. Variants: default | minimal | glass."
     },
     {
+      "name": "faq-section",
+      "type": "registry:component",
+      "title": "Faq Section",
+      "author": "AlgorizeTech",
+      "description": "A complete animated FAQ website section pairing an editorial header with a dynamic morphing nature photography canvas and an expandable question accordion.",
+      "categories": [
+        "marketing",
+        "layout"
+      ],
+      "dependencies": [
+        "lucide-react"
+      ],
+      "registryDependencies": [
+        "utils"
+      ],
+      "files": [
+        {
+          "path": "src/components/custom/blocks/FAQSectionBlock.tsx",
+          "type": "registry:component",
+          "target": "components/custom/blocks/FAQSectionBlock.tsx"
+        }
+      ],
+      "docs": "Named export: FAQSection (also default export); AnimatedFAQBlock and FAQ_ITEMS are also exported."
+    },
+    {
       "name": "fashion-hero",
       "type": "registry:component",
       "title": "Fashion Hero",

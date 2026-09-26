@@ -88,7 +88,7 @@ export const FAQ_ITEMS: FAQItem[] = [
     answer:
       "Installing components takes seconds using the official shadcn CLI. The code drops straight into your repository as pure TypeScript and Tailwind CSS — with zero third-party wrapper dependencies or build configuration headaches.",
     image:
-      "https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?w=1400&auto=format&fit=crop&q=85",
+      "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto/v1790224284/photo-1464822759023-fed622ff2c3b-1790145143491-1790224284663.webp",
     location: "Mount Rainier National Park, Washington",
     coordinates: "46.8523° N, 121.7603° W",
     height: 420,
@@ -102,7 +102,7 @@ export const FAQ_ITEMS: FAQItem[] = [
     answer:
       "Yes, absolutely. All components are architected around standard Tailwind CSS variables and OKLCH design tokens. Modifying your primary color, font family, or container radius automatically updates every component across both light and dark themes.",
     image:
-      "https://images.unsplash.com/photo-1448375240586-882707db888b?w=1400&auto=format&fit=crop&q=85",
+      "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto/v1790224284/photo-1448375240586-882707db888b-1790145143491-1790224284683.webp",
     location: "Cascades Redwood Rainforest, Oregon",
     coordinates: "43.7694° N, 122.5694° W",
     height: 340,
@@ -116,7 +116,7 @@ export const FAQ_ITEMS: FAQItem[] = [
     answer:
       "Docs UI is 100% free and open-source under the permissive MIT license. You can use it in personal side projects, client portals, venture-backed SaaS applications, or commercial products with zero royalty fees or attribution requirements.",
     image:
-      "https://images.unsplash.com/photo-1507525428034-b723cf961d3e?w=1400&auto=format&fit=crop&q=85",
+      "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto/v1790224285/photo-1507525428034-b723cf961d3e-1790146212208-1790224284653.webp",
     location: "Big Sur Pacific Coastline, California",
     coordinates: "36.2704° N, 121.8081° W",
     height: 390,
@@ -130,7 +130,7 @@ export const FAQ_ITEMS: FAQItem[] = [
     answer:
       "Our motion components rely exclusively on GPU-accelerated CSS properties (translate3d, scale, opacity) and spring curves rendered as native CSS easing. We avoid animating height or layout reflow properties whenever possible, guaranteeing zero CLS and a 100% Lighthouse score.",
     image:
-      "https://images.unsplash.com/photo-1519681393784-d120267933ba?w=1400&auto=format&fit=crop&q=85",
+      "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto/v1790224284/photo-1506744038136-46273834b3fb-1790146212208-1790224284681.webp",
     location: "Tre Cime di Lavaredo, Italian Dolomites",
     coordinates: "46.6186° N, 12.3028° E",
     height: 330,
@@ -144,7 +144,7 @@ export const FAQ_ITEMS: FAQItem[] = [
     answer:
       "Accessibility is deeply integrated from day one. Headless primitives are powered by Radix UI, providing full WAI-ARIA 1.2 compliance, focus rings, roving tab indices, screen-reader announcements, and native support for reduced-motion preferences.",
     image:
-      "https://images.unsplash.com/photo-1509316975850-ff9c5deb0cd9?w=1400&auto=format&fit=crop&q=85",
+      "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto/v1790224284/photo-1473448912268-2022ce9509d8-1790148865110-1790224284673.webp",
     location: "Sahara Golden Dunes, Merzouga",
     coordinates: "31.0802° N, 4.0134° W",
     height: 440,
@@ -158,7 +158,7 @@ export const FAQ_ITEMS: FAQItem[] = [
     answer:
       "Monolithic packages bundle unnecessary styles, risk breaking on major version upgrades, and limit deep customization. By placing the component directly inside your codebase, you retain 100% code ownership, zero bloat, and infinite freedom to adapt it as you see fit.",
     image:
-      "https://images.unsplash.com/photo-1470071459604-3b5ec3a7fe05?w=1400&auto=format&fit=crop&q=85",
+      "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto/v1790224415/photo-1470071459604-3b5ec3a7fe05-1790146212205-1790224416316.webp",
     location: "Lake Moraine Alpine Valley, Alberta",
     coordinates: "51.3276° N, 116.1822° W",
     height: 360,

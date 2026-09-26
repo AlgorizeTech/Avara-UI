@@ -75,9 +75,16 @@ export const NAME_OVERRIDES: Record<string, string> = {
   "DesignFolderBox.tsx": "design-folder-box",
   "CounterSectionBlock.tsx": "counter-section",
   "WalletBlock.tsx": "wallet",
+  "FAQSectionBlock.tsx": "faq-section",
 };
 
 export const META: Record<string, ItemMeta> = {
+  "faq-section": {
+    description:
+      "A complete animated FAQ website section pairing an editorial header with a dynamic morphing nature photography canvas and an expandable question accordion.",
+    categories: ["marketing", "layout"],
+    docs: "Named export: FAQSection (also default export); AnimatedFAQBlock and FAQ_ITEMS are also exported.",
+  },
   "animated-faq": {
     description:
       "An FAQ section pairing an accordion of questions with a picture canvas that resizes and crossfades to each open answer. Use it for landing-page FAQs that should feel editorial rather than list-like.",

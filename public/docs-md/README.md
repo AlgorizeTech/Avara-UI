@@ -2,8 +2,8 @@
 
 This directory contains auto-generated Markdown versions of all MDX documentation pages.
 
-**Generated at:** 2026-09-26T04:23:34.721Z
-**Total files:** 291
+**Generated at:** 2026-09-26T19:53:46.244Z
+**Total files:** 293
 
 ## Available Files
 
@@ -61,6 +61,7 @@ This directory contains auto-generated Markdown versions of all MDX documentatio
 - [nextjs/examples/button](/docs/nextjs-examples-button.md) - Source: `[framework]\examples\button\page.mdx`
 - [nextjs/examples/counter](/docs/nextjs-examples-counter.md) - Source: `[framework]\examples\counter\page.mdx`
 - [nextjs/examples/video-text](/docs/nextjs-examples-video-text.md) - Source: `[framework]\examples\video-text\page.mdx`
+- [nextjs/faq-section](/docs/nextjs-faq-section.md) - Source: `[framework]\faq-section\page.mdx`
 - [nextjs/file-upload](/docs/nextjs-file-upload.md) - Source: `[framework]\file-upload\page.mdx`
 - [nextjs/first-app](/docs/nextjs-first-app.md) - Source: `[framework]\first-app\_content\nextjs.mdx`
 - [nextjs/flavour-carousel](/docs/nextjs-flavour-carousel.md) - Source: `[framework]\flavour-carousel\page.mdx`
@@ -207,6 +208,7 @@ This directory contains auto-generated Markdown versions of all MDX documentatio
 - [reactjs/examples/button](/docs/reactjs-examples-button.md) - Source: `[framework]\examples\button\page.mdx`
 - [reactjs/examples/counter](/docs/reactjs-examples-counter.md) - Source: `[framework]\examples\counter\page.mdx`
 - [reactjs/examples/video-text](/docs/reactjs-examples-video-text.md) - Source: `[framework]\examples\video-text\page.mdx`
+- [reactjs/faq-section](/docs/reactjs-faq-section.md) - Source: `[framework]\faq-section\page.mdx`
 - [reactjs/file-upload](/docs/reactjs-file-upload.md) - Source: `[framework]\file-upload\page.mdx`
 - [reactjs/first-app](/docs/reactjs-first-app.md) - Source: `[framework]\first-app\_content\reactjs.mdx`
 - [reactjs/flavour-carousel](/docs/reactjs-flavour-carousel.md) - Source: `[framework]\flavour-carousel\page.mdx`
