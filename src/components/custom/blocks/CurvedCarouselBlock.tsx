@@ -133,7 +133,7 @@ const CAROUSEL_ITEMS: CurvedCarouselCard[] = [
     id: "card-19",
     title: "Fjords Ocean Horizon",
     code: "019",
-    image: "https://images.unsplash.com/photo-1476514525535-ce74f4526d6b?w=800&auto=format&fit=crop&q=80",
+    image: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto/v1790224415/photo-1472214103451-9374bd1c798e-1790146212205-1790224416318.webp",
   },
   {
     id: "card-20",
@@ -145,7 +145,7 @@ const CAROUSEL_ITEMS: CurvedCarouselCard[] = [
     id: "card-21",
     title: "Sunburst Cypress River",
     code: "021",
-    image: "https://images.unsplash.com/photo-1511497584788-8767611136f6?w=800&auto=format&fit=crop&q=80",
+    image: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto/v1790224415/photo-1441974231531-c6227db76b6e-1790146212212-1790224416317.webp",
   },
   {
     id: "card-22",

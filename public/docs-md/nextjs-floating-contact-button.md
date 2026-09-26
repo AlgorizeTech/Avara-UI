@@ -113,7 +113,7 @@ Discover the key capabilities that make this component an excellent choice for m
 
             avatarUrl
             string
-            "https://images.unsplash.com/..."
+            "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto/v1790224285/photo-1469474968028-56623f02e42e-1790146212205-1790224284635.webp"
             Image URL for the support agent avatar rendered in the header with an online status badge.
 
             defaultOpen

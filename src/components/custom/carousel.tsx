@@ -814,7 +814,7 @@ const defaultFanDeckItems: FanCarouselItem[] = [
     title: "SKATEBOARD PRO",
     price: "$129.00",
     rating: "4.6",
-    img: "https://images.unsplash.com/photo-1520040245346-76e79acb253d?w=800&fit=crop",
+    img: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto/v1790224415/photo-1501785888041-af3ef285b470-1790146212207-1790224416318.jpg",
   },
   {
     title: "CYBER CITY",
