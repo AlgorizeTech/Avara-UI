@@ -144,9 +144,10 @@ export const CodeBlockClient = ({
   const [displayLang, setDisplayLang] = useState<BuiltinLanguage>(lang);
   const [isTransforming, setIsTransforming] = useState(false);
 
-  // Stripping types runs Babel + Prettier in the browser, so the result is
-  // cached and flipping back to JS is instant.
-  const jsxCache = useRef<{ source: string; output: string } | null>(null);
+  // Stripping types runs Babel + Prettier in the browser, so results are
+  // cached per source: flipping back to JS, or back to a file of a
+  // multi-file Code tab, is instant.
+  const jsxCache = useRef(new Map<string, string>());
 
   const showJsx = canToggle && selectedLanguage === 'jsx';
 
@@ -161,8 +162,9 @@ export const CodeBlockClient = ({
 
     const jsLang = JS_EQUIVALENT[lang] ?? 'jsx';
 
-    if (jsxCache.current?.source === code) {
-      setTransformedCode(jsxCache.current.output);
+    const cached = jsxCache.current.get(code);
+    if (cached !== undefined) {
+      setTransformedCode(cached);
       setDisplayLang(jsLang);
       return;
     }
@@ -173,7 +175,7 @@ export const CodeBlockClient = ({
     transformTsxToJsx(code)
       .then((output) => {
         if (cancelled) return;
-        jsxCache.current = { source: code, output };
+        jsxCache.current.set(code, output);
         setTransformedCode(output);
         setDisplayLang(jsLang);
       })

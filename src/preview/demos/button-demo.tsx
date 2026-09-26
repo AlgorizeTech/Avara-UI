@@ -1,6 +1,9 @@
 "use client";
 
-import Button, { getButtonThemeStyle } from "@/components/custom/blocks/Button";
+import Button, {
+  getButtonThemeStyle,
+  type ShardsEffectMode,
+} from "@/components/custom/blocks/Button";
 import {
   AppleIcon,
   ArrowRightIcon,
@@ -25,6 +28,13 @@ import {
   XIcon,
   XIcon2,
 } from "@/components/custom/blocks/Icons";
+import { useState } from "react";
+
+/** The mode picker's labels, mapped to `effectMode`. */
+const EFFECT_MODES: Record<string, ShardsEffectMode> = {
+  "One time": "once",
+  Continuous: "continuous",
+};
 
 export default function ButtonDemo({
   layout = "basic",
@@ -34,6 +44,7 @@ export default function ButtonDemo({
   color?: string;
 }) {
   const themeStyle = getButtonThemeStyle(color);
+  const [effectMode, setEffectMode] = useState<ShardsEffectMode>("once");
 
   return (
     <div
@@ -42,12 +53,26 @@ export default function ButtonDemo({
     >
       {layout === "shards-panel" && (
         <div className="w-full max-w-4xl mx-auto grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 font-sans py-4 pb-[200px]">
+          {/* 0. Effect mode picker — drives the four tiles below */}
+          <Button
+            variant="shards-control"
+            controlType="select"
+            label="Animation"
+            value="One time"
+            options={Object.keys(EFFECT_MODES)}
+            onValueChange={(label) => setEffectMode(EFFECT_MODES[label])}
+            className="sm:col-span-2 lg:col-span-1"
+          />
+          <div className="hidden lg:block lg:col-span-3" />
+
           {/* 1. Color Picker Button */}
           <Button
             variant="shards-control"
             controlType="color"
             label="Shards"
             colorHex="#a855f7"
+            effect="shimmer"
+            effectMode={effectMode}
           />
 
           {/* 2. Dropdown Select Button */}
@@ -57,6 +82,8 @@ export default function ButtonDemo({
             label="Placement"
             value="Full"
             options={["Full", "Center", "Top", "Bottom"]}
+            effect="orbit"
+            effectMode={effectMode}
           />
 
           {/* 3. Range Slider Button */}
@@ -68,6 +95,8 @@ export default function ButtonDemo({
             min={0}
             max={3}
             step={0.1}
+            effect="sparkle"
+            effectMode={effectMode}
           />
 
           {/* 4. Toggle Switch Button */}
@@ -76,6 +105,8 @@ export default function ButtonDemo({
             controlType="toggle"
             label="Hold to Gather"
             checked={true}
+            effect="beacon"
+            effectMode={effectMode}
           />
         </div>
       )}
