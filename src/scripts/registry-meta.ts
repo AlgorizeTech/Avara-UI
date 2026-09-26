@@ -570,7 +570,7 @@ export const META: Record<string, ItemMeta> = {
     description:
       "A row of overlapping faces that folds the rest into a +N disc and takes a trailing action. Use it as the social-proof cue under a headline or beside a count.",
     categories: ["data-display"],
-    docs: "Named export: AvatarStack. `avatars` are { src, alt? }; `size` sm | md | lg; `max` faces before the +N disc; `ringClassName` is the gap colour; `action` renders last at face size; `spreadOnHover` fans the faces apart under the pointer; `liftOnHover` raises the hovered face above its neighbours.",
+    docs: "Named export: AvatarStack. `avatars` are { src, alt? }; `size` sm | md | lg; `max` faces before the +N disc; `ringClassName` is the gap colour; `action` renders last at face size; `spreadOnHover` fans the faces apart under the pointer; `liftOnHover` raises the hovered face above its neighbours; `showTooltip` controls hover tooltips.",
   },
   "fashion-hero": {
     description:

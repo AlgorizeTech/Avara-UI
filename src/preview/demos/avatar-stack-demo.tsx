@@ -13,23 +13,39 @@ const PEOPLE = [
 ];
 
 export default function AvatarStackDemo({
-  example = "action",
+  example = "default",
   size = "md",
-  max = 3,
+  max = 4,
   spreadOnHover = true,
+  showTooltip,
 }: {
-  /** `action` adds a "+" button; `count` folds the rest into "+N"; `sizes` shows all three sizes. */
-  example?: "action" | "count" | "sizes";
+  /** `default` shows a clean stack without tooltips; `action` adds a "+" button; `count` folds the rest into "+N"; `sizes` shows all three sizes. */
+  example?: "default" | "action" | "count" | "sizes";
   size?: AvatarStackSize;
   max?: number;
   spreadOnHover?: boolean;
+  showTooltip?: boolean;
 }) {
+  if (example === "default") {
+    return (
+      <div className="flex min-h-[220px] w-full items-center justify-center px-6">
+        <AvatarStack
+          avatars={PEOPLE}
+          size={size}
+          max={max}
+          spreadOnHover={spreadOnHover}
+          showTooltip={showTooltip ?? false}
+        />
+      </div>
+    );
+  }
+
   if (example === "sizes") {
     return (
       <div className="flex min-h-[220px] w-full flex-col items-center justify-center gap-6 px-6">
-        {(["sm", "md", "lg"] as const).map((s) => (
-          <AvatarStack key={s} avatars={PEOPLE} size={s} max={4} spreadOnHover={spreadOnHover} />
-        ))}
+        <AvatarStack avatars={PEOPLE} size="sm" max={4} spreadOnHover={spreadOnHover} />
+        <AvatarStack avatars={PEOPLE} size="md" max={4} spreadOnHover={spreadOnHover} showTooltip={false} />
+        <AvatarStack avatars={PEOPLE} size="lg" max={4} spreadOnHover={spreadOnHover} />
       </div>
     );
   }
@@ -37,7 +53,13 @@ export default function AvatarStackDemo({
   if (example === "count") {
     return (
       <div className="flex min-h-[220px] w-full items-center justify-center gap-3 px-6">
-        <AvatarStack avatars={PEOPLE} size={size} max={max} spreadOnHover={spreadOnHover} />
+        <AvatarStack
+          avatars={PEOPLE}
+          size={size}
+          max={max}
+          spreadOnHover={spreadOnHover}
+          showTooltip={showTooltip}
+        />
         <p className="text-sm text-muted-foreground">
           <span className="font-semibold text-foreground">2,400+</span> people joined this month
         </p>
@@ -52,11 +74,12 @@ export default function AvatarStackDemo({
         size={size}
         max={max}
         spreadOnHover={spreadOnHover}
+        showTooltip={showTooltip}
         action={
           <a
             href="#join"
             aria-label="Join the community"
-            className="group grid size-full place-items-center rounded-full bg-[#111] text-white ring-2 ring-white transition-transform duration-300 hover:scale-110 dark:bg-white dark:text-[#111] dark:ring-zinc-950"
+            className="group grid size-full place-items-center rounded-full bg-primary text-primary-foreground ring-2 ring-background transition-transform duration-300 hover:scale-110"
           >
             <Plus size={16} className="transition-transform duration-300 group-hover:rotate-90" />
           </a>
