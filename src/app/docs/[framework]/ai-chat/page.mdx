@@ -260,7 +260,7 @@ export default function GlassAssistant() {
         {
           prop: "models",
           effect:
-            "fills the picker with your own `{ id, name, description?, badge? }[]`; `defaultModelId` chooses the initial one.",
+            "fills the picker with your own `{ id, name, description?, badge?, premium? }[]`; `defaultModelId` chooses the initial one.",
         },
       ],
       props: { variant: "default" },
@@ -308,7 +308,7 @@ Everything under the prompt is built in and works without any props:
 
 - **The + menu** — six rows by default: *Photos & files* opens the file picker; *Web search*, *Sales data*, *Documents*, *Mail* and *Calendar* each write `@Label` into the prompt at the caret (once — picking it again just refocuses). Supply your own rows with `tools`; the ones a prompt names arrive in `onSend` as `tools`, in the order they appear.
 - **Attachments** — from the + menu, and files can also be dropped anywhere on the composer. Each file becomes a chip with a rocket that launches from the left, rides the progress track with a flickering exhaust, then blasts off the end as a check bursts in at 100%. Images show a thumbnail; the send button waits until every upload has landed. Uploads are simulated until you pass `uploadFile`.
-- **Model picker** — a popover listing `models` (four demo models by default). The chosen model is stamped on each reply's timestamp.
+- **Model picker** — a popover listing `models` (four demo models by default). The chosen model is stamped on each reply's timestamp. A model with `premium: true` wears a gold *Premium* badge after its name; switching to it turns the pill gold with a crown, pings a ring and a glint across the pill, and sends two gold beams once around the prompt bar's edge while a sheen crosses it — a single play, unlike Max effort's standing glow.
 - **Effort** — a Faster ↔ Smarter slider with one stop per level. At the highest level the pill switches to a sparkle and the prompt bar glows with a scatter of twinkling specks. The simulated reply also takes a little longer the higher you go.
 - **Dictation** — the mic opens the microphone and drives a 22-bar waveform from the live audio level, while the Web Speech API writes what you say into the prompt. Without mic permission the wave runs an idle animation; without speech recognition the wave still shows so the button visibly responds. Tap again (or press Escape) to stop.
 
@@ -475,7 +475,7 @@ Explore the Ai-Chat interface features, including message streaming, typing indi
           <code>defaultModels</code>
         </td>
         <td>
-          Models offered in the composer's picker: <code>{"{ id, name, description?, badge? }"}</code>.
+          Models offered in the composer's picker: <code>{"{ id, name, description?, badge?, premium? }"}</code>. <code>premium</code> adds the gold badge and plays a one-off flourish when the model is chosen.
         </td>
       </tr>
       <tr>
