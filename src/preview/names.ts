@@ -59,6 +59,7 @@ export const sandboxNames = [
   "draggable-card-list-modern-framer",
   "drawer",
   "email",
+  "faq-section",
   "fashion-hero",
   "flavour-carousel",
   "fleet",

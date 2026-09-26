@@ -78,6 +78,7 @@
     "src/components/custom/blocks/DockBlock.tsx",
     "src/components/custom/blocks/Drawer.tsx",
     "src/components/custom/blocks/Email.tsx",
+    "src/components/custom/blocks/FAQSectionBlock.tsx",
     "src/components/custom/blocks/FashionHeroBlock.tsx",
     "src/components/custom/blocks/FlavourCarouselBlock.tsx",
     "src/components/custom/blocks/Fleet-map.tsx",
