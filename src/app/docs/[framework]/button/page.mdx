@@ -154,29 +154,55 @@ export default function SocialButtonDemo() {
   );
 }`;
 
-export const usageShardsPanel = `import Button from "@/components/custom/blocks/Button";
+export const usageShardsPanel = `"use client";
+
+import { useState } from "react";
+import Button, { type ShardsEffectMode } from "@/components/custom/blocks/Button";
+
+const EFFECT_MODES: Record<string, ShardsEffectMode> = {
+  "One time": "once",
+  Continuous: "continuous",
+};
 
 export default function ControlButtonsDemo() {
+  const [effectMode, setEffectMode] = useState<ShardsEffectMode>("once");
+
   return (
     <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-      {/* 1. Color Picker Button */}
+      {/* 0. Effect mode picker: one-time plays or continuous loops */}
+      <Button
+        variant="shards-control"
+        controlType="select"
+        label="Animation"
+        value="One time"
+        options={Object.keys(EFFECT_MODES)}
+        onValueChange={(label) => setEffectMode(EFFECT_MODES[label])}
+        className="sm:col-span-2 lg:col-span-1"
+      />
+      <div className="hidden lg:block lg:col-span-3" />
+
+      {/* 1. Color Picker Button - shimmer on every pick, tinted with the colour */}
       <Button
         variant="shards-control"
         controlType="color"
         label="Shards"
         colorHex="#a855f7"
+        effect="shimmer"
+        effectMode={effectMode}
       />
 
-      {/* 2. Dropdown Select Button */}
+      {/* 2. Dropdown Select Button - beams orbit the edge on a new pick */}
       <Button
         variant="shards-control"
         controlType="select"
         label="Placement"
         value="Full"
         options={["Full", "Center", "Top", "Bottom"]}
+        effect="orbit"
+        effectMode={effectMode}
       />
 
-      {/* 3. Range Slider Button */}
+      {/* 3. Range Slider Button - sparkles when dragged to full */}
       <Button
         variant="shards-control"
         controlType="slider"
@@ -185,14 +211,18 @@ export default function ControlButtonsDemo() {
         min={0}
         max={3}
         step={0.1}
+        effect="sparkle"
+        effectMode={effectMode}
       />
 
-      {/* 4. Toggle Switch Button */}
+      {/* 4. Toggle Switch Button - beacon pings when switched on */}
       <Button
         variant="shards-control"
         controlType="toggle"
         label="Hold to Gather"
         checked={true}
+        effect="beacon"
+        effectMode={effectMode}
       />
     </div>
   );
@@ -213,7 +243,11 @@ export default function ControlButtonsDemo() {
     {
       title: "Dark Glass Parameter Control Panel Tiles",
       description: "Interactive dark glass control tiles for parameter panels (Color pickers, dropdown selects, sliders, and toggle switches).",
-      propNotes: [{ lead: "Shards Control", prop: "variant", value: '"shards-control"', effect: "renders a dark glass control tile tile supporting `controlType='color' | 'select' | 'slider' | 'toggle'`." }],
+      propNotes: [
+        { lead: "Shards Control", prop: "variant", value: '"shards-control"', effect: "renders a dark glass control tile supporting `controlType='color' | 'select' | 'slider' | 'toggle'`." },
+        { lead: "Effect", prop: "effect", value: '"sparkle" | "orbit" | "beacon" | "shimmer"', effect: "plays when the tile lands on something: a slider reaching full, a toggle switching on, or a new select / colour pick. Any tile can take any effect; the colour tile tints its effect with the picked colour." },
+        { lead: "Mode", prop: "effectMode", value: '"once" | "continuous"', effect: "`once` plays a single time per landing; `continuous` loops while the tile stays active and fades out when it no longer is. Override when it counts as active with `effectActive`. Skipped under `prefers-reduced-motion`." },
+      ],
       props: { layout: "shards-panel" },
       usage: usageShardsPanel,
       code: extractCode("src/components/custom/blocks/Button.tsx"),
@@ -312,6 +346,48 @@ export default function ControlButtonsDemo() {
           <code>—</code>
         </td>
         <td>Label title, active value, and option choices for control tiles.</td>
+      </tr>
+      <tr>
+        <td>
+          <code>effect</code>
+        </td>
+        <td>
+          <code>"none" | "sparkle" | "orbit" | "beacon" | "shimmer"</code>
+        </td>
+        <td>
+          <code>undefined</code>
+        </td>
+        <td>
+          Effect a control tile plays when a slider reaches full, a toggle switches on, or a select / colour pick changes. <code>sparkle</code> is a floor glow with twinkling specks, <code>orbit</code> runs two beams around the edge, <code>beacon</code> pings rings outward, <code>shimmer</code> wipes a bright band across. Unset keeps the built-in feedback (slider beacon at full, colour burst); <code>"none"</code> turns all of it off.
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <code>effectMode</code>
+        </td>
+        <td>
+          <code>"once" | "continuous"</code>
+        </td>
+        <td>
+          <code>"once"</code>
+        </td>
+        <td>
+          <code>once</code> plays a single time per change; <code>continuous</code> loops while the tile is active.
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <code>effectActive</code>
+        </td>
+        <td>
+          <code>boolean</code>
+        </td>
+        <td>
+          <code>—</code>
+        </td>
+        <td>
+          Forces a <code>continuous</code> effect on or off. By default it runs while the slider is full, the toggle is on, or once a select / colour tile has been picked.
+        </td>
       </tr>
       <tr>
         <td>
