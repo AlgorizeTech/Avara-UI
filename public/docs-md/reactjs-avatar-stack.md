@@ -4,6 +4,21 @@ A row of overlapping faces — the "people who…" cue under a headline, beside 
 
 Several sections used to hand-roll this row; Fashion Hero uses this one.
 
+export const usageDefault = `import { AvatarStack } from "@/components/custom/blocks/AvatarStackBlock";
+
+const PEOPLE = [
+  { src: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_120,h_120,c_fill/v1790145139/pexels-photo-1036623-1790145143487.jpg", alt: "Ana" },
+  { src: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_120,h_120,c_fill/v1790145142/pexels-photo-2043590-1790145143488.jpg", alt: "Tom" },
+  { src: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_120,h_120,c_fill/v1790145139/pexels-photo-1587009-1790145143488.jpg", alt: "Mara" },
+  { src: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_120,h_120,c_fill/v1790145139/pexels-photo-3775534-1790145143488.jpg", alt: "Leo" },
+];
+
+export default function BasicAvatarStack() {
+  return (
+    
+  );
+}`;
+
 export const usageAction = `import { Plus } from "lucide-react";
 
 const PEOPLE = [
@@ -30,6 +45,27 @@ export default function JoinedThisMonth({ people }: { people: { src: string; alt
   );
 }`;
 
+export const usageSizes = `import { AvatarStack } from "@/components/custom/blocks/AvatarStackBlock";
+
+const PEOPLE = [
+  { src: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_120,h_120,c_fill/v1790145139/pexels-photo-1036623-1790145143487.jpg", alt: "Ana" },
+  { src: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_120,h_120,c_fill/v1790145142/pexels-photo-2043590-1790145143488.jpg", alt: "Tom" },
+  { src: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_120,h_120,c_fill/v1790145139/pexels-photo-1587009-1790145143488.jpg", alt: "Mara" },
+  { src: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_120,h_120,c_fill/v1790145139/pexels-photo-3775534-1790145143488.jpg", alt: "Leo" },
+];
+
+export default function SizesDemo() {
+  return (
+    
+      {/* Small with tooltip */}
+
+      {/* Medium without tooltip */}
+
+      {/* Large with tooltip */}
+
+  );
+}`;
+
 ## Installation
 
 Register the @algorize-ui registry once per project, then add the component:
@@ -51,37 +87,42 @@ npx shadcn@latest add @algorize-ui/avatar-stack
         avatars
         &#123; src: string; alt?: string &#125;[]
         Required
-        The faces, in order.
+        The list of faces in order. The alt text is displayed inside the hover tooltip.
 
         size
         "sm" | "md" | "lg"
         "md"
-        28, 36 or 44 pixels per face.
+        Avatar diameter: sm (28px), md (36px), or lg (44px).
 
         max
         number
         4
-        Faces shown before the rest fold into a +N disc.
+        Maximum faces shown before the rest fold into a +N count disc.
 
         ringClassName
         string
         "ring-background"
-        Colour of the gap between faces.
+        Border/gap colour between overlapping faces. Defaults to theme background.
 
         action
         ReactNode
         —
-        A trailing element at the same size as a face.
+        A trailing element (such as an add/join button) rendered at the same size as an avatar.
 
         spreadOnHover
         boolean
         true
-        Faces fan apart a little while the row is hovered.
+        Whether faces smoothly fan apart slightly when the stack is hovered.
 
         liftOnHover
         boolean
         true
-        The hovered face rises above its neighbours and scales up slightly.
+        Whether the hovered face rises above neighbours and scales up slightly.
+
+        showTooltip
+        boolean
+        true
+        Whether hover reveals the avatar's alt text in a tooltip. Set to false to disable tooltips. (Alias: tooltip).
 
 ---
 

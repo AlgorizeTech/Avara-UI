@@ -35,6 +35,10 @@ export interface AvatarStackProps extends React.HTMLAttributes<HTMLDivElement> {
   spreadOnHover?: boolean;
   /** A hovered face rises above its neighbours and grows a touch, so it can be seen whole. */
   liftOnHover?: boolean;
+  /** Whether to show a tooltip with the avatar's alt text on hover. Defaults to true. */
+  showTooltip?: boolean;
+  /** Alias for showTooltip. */
+  tooltip?: boolean;
 }
 
 const SIZES: Record<AvatarStackSize, { box: string; overlap: string; text: string }> = {
@@ -53,6 +57,8 @@ export const AvatarStack = React.forwardRef<HTMLDivElement, AvatarStackProps>(
       action,
       spreadOnHover = true,
       liftOnHover = true,
+      showTooltip = true,
+      tooltip = true,
       className,
       ...props
     },
@@ -61,6 +67,7 @@ export const AvatarStack = React.forwardRef<HTMLDivElement, AvatarStackProps>(
     const s = SIZES[size];
     const shown = avatars.slice(0, max);
     const rest = avatars.length - shown.length;
+    const enableTooltip = showTooltip && tooltip;
     // Layering comes from `--as-z` so a hover class can still win over it.
     const disc = cn(
       "relative z-[var(--as-z)] grid shrink-0 place-items-center overflow-hidden rounded-full ring-2 transition-transform duration-300 ease-out cursor-pointer",
@@ -88,7 +95,7 @@ export const AvatarStack = React.forwardRef<HTMLDivElement, AvatarStackProps>(
             </span>
           );
 
-          if (a.alt) {
+          if (enableTooltip && a.alt) {
             return (
               <Tooltip key={a.src}>
                 <TooltipTrigger asChild>{avatarElement}</TooltipTrigger>
