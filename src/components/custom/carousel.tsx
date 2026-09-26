@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useCallback, useEffect, useRef, useState } from "react";
-import { ArrowLeft, ArrowRight, Hand } from "lucide-react";
+import { ArrowLeft, ArrowRight, Hand, Pause, Play } from "lucide-react";
 import { cn } from "@/lib/utils";
 
 /**
@@ -541,6 +541,12 @@ export function RadialCarousel({
   const [isDragging, setIsDragging] = useState(false);
   const [dragStartX, setDragStartX] = useState(0);
   const [dragOffset, setDragOffset] = useState(0);
+  // `autoPlay` sets the starting state; the hub button toggles it from there.
+  const [isPlaying, setIsPlaying] = useState(autoPlay);
+
+  useEffect(() => {
+    setIsPlaying(autoPlay);
+  }, [autoPlay]);
 
   const displayItems = React.useMemo(() => {
     if (!items || !items.length) return [];
@@ -561,10 +567,10 @@ export function RadialCarousel({
   }, []);
 
   useEffect(() => {
-    if (!autoPlay || total <= 1 || isDragging) return;
+    if (!isPlaying || total <= 1 || isDragging) return;
     const interval = setInterval(nextSlide, autoPlayInterval);
     return () => clearInterval(interval);
-  }, [autoPlay, autoPlayInterval, nextSlide, total, current, isDragging]);
+  }, [isPlaying, autoPlayInterval, nextSlide, total, current, isDragging]);
 
   if (!total) return null;
 
@@ -597,6 +603,7 @@ export function RadialCarousel({
   const positiveModulo = (n: number, m: number) => ((n % m) + m) % m;
 
   const wheelRotation = -current * angleStep + dragAngle;
+  const activeIndex = positiveModulo(current, items.length);
 
   return (
     <div
@@ -605,91 +612,133 @@ export function RadialCarousel({
       onMouseLeave={handleMouseUp}
       onTouchMove={handleMouseMove}
       onTouchEnd={handleMouseUp}
+      role="region"
+      aria-roledescription="carousel"
+      aria-label="Image carousel"
       className={`relative w-full max-w-full overflow-hidden py-4 flex flex-col items-center justify-center select-none ${className}`}
     >
-      <div className="relative w-full max-w-3xl h-[520px] sm:h-[600px] md:h-[680px] flex items-center justify-center">
-        {displayItems.map((item, index) => {
-          const cardBaseAngle = index * angleStep;
-          const totalAngle = cardBaseAngle + wheelRotation;
+      <p className="sr-only" aria-live={isPlaying ? "off" : "polite"}>
+        {items[activeIndex]?.title}
+      </p>
 
-          let normAngle = positiveModulo(totalAngle, 360);
-          if (normAngle > 180) normAngle -= 360;
+      <div className="relative w-full max-w-3xl h-[360px] sm:h-[540px] md:h-[660px]">
+        {/* The axle: a zero-size point every card pivots around. It sits below
+            the stage's middle because the top card is lifted and scaled up
+            while the bottom cards shrink, so the wheel is taller above it. */}
+        <div className="absolute left-1/2 top-[calc(50%+25px)] sm:top-[calc(50%+37px)] md:top-[calc(50%+45px)] w-0 h-0">
+          {displayItems.map((item, index) => {
+            const cardBaseAngle = index * angleStep;
+            const totalAngle = cardBaseAngle + wheelRotation;
 
-          const distRatio = Math.abs(normAngle) / 180;
-          const isCenter = Math.abs(normAngle) < 1.5;
+            let normAngle = positiveModulo(totalAngle, 360);
+            if (normAngle > 180) normAngle -= 360;
 
-          const zIndex = Math.round(60 - distRatio * 40);
-          const scale = isCenter ? 1.05 : Math.max(0.72, 1 - distRatio * 0.28);
-          const translateY = isCenter ? -10 : 0;
-          const opacity = isCenter ? 1 : Math.max(0.7, 1 - distRatio * 0.32);
-          const brightness = isCenter ? 1 : Math.max(0.55, 1 - distRatio * 0.42);
+            const distRatio = Math.abs(normAngle) / 180;
+            const isCenter = Math.abs(normAngle) < 1.5;
 
-          return (
-            <div
-              key={index}
-              onMouseDown={(e) => handleMouseDown(e, isCenter)}
-              onTouchStart={(e) => handleMouseDown(e, isCenter)}
-              onClick={(e) => {
-                e.stopPropagation();
-                if (!isCenter) return; // Clicks on non-active background cards do NOTHING!
-                if (Math.abs(dragOffset) > 5) return;
-                nextSlide();
-              }}
-              style={{
-                top: "50%",
-                left: "50%",
-                transformOrigin: "50% 105%",
-                transform: `translate(-50%, -100%) rotate(${totalAngle}deg) translateY(${translateY}px) scale(${scale})`,
-                zIndex,
-                opacity,
-                filter: `brightness(${brightness})`,
-                transition: isDragging
-                  ? "none"
-                  : "transform 0.85s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.85s cubic-bezier(0.16, 1, 0.3, 1), filter 0.85s cubic-bezier(0.16, 1, 0.3, 1)",
-              }}
-              className={`absolute w-[110px] sm:w-[170px] md:w-[220px] h-[150px] sm:h-[230px] md:h-[300px] rounded-[14px] sm:rounded-[20px] md:rounded-[24px] overflow-hidden border-2 border-black/80 dark:border-black shadow-2xl cursor-grab active:cursor-grabbing ${
-                isCenter
-                  ? "ring-2 ring-primary shadow-black/60 brightness-105"
-                  : "hover:brightness-95"
-              }`}
-            >
-              <div className="relative w-full h-full">
-                <Image
-                  src={item.img}
-                  alt={item.title}
-                  width={600}
-                  height={800}
-                  className="w-full h-full object-cover pointer-events-none"
-                />
+            const zIndex = Math.round(60 - distRatio * 40);
+            const scale = isCenter ? 1.05 : Math.max(0.8, 1 - distRatio * 0.2);
+            const translateY = isCenter ? -10 : 0;
+            // Cards stay opaque and wash toward the page colour with distance,
+            // so overlapping cards never show through each other.
+            const fade = isCenter ? 0 : Math.min(0.62, 0.12 + distRatio * 0.55);
+            const saturation = isCenter ? 1 : 1 - distRatio * 0.45;
 
-                <div className="absolute inset-0 bg-gradient-to-t from-black/95 via-black/40 to-transparent" />
+            return (
+              <div
+                key={index}
+                onMouseDown={(e) => handleMouseDown(e, isCenter)}
+                onTouchStart={(e) => handleMouseDown(e, isCenter)}
+                onClick={(e) => {
+                  e.stopPropagation();
+                  if (!isCenter) return; // Clicks on non-active background cards do NOTHING!
+                  if (Math.abs(dragOffset) > 5) return;
+                  nextSlide();
+                }}
+                style={{
+                  top: 0,
+                  left: 0,
+                  // Pivoting 18% of the card height below its bottom edge
+                  // leaves an open ring at the centre for the hub.
+                  transformOrigin: "50% 118%",
+                  transform: `translate(-50%, -118%) rotate(${totalAngle}deg) translateY(${translateY}px) scale(${scale})`,
+                  zIndex,
+                  filter: `saturate(${saturation})`,
+                }}
+                className={`absolute w-[104px] sm:w-[160px] md:w-[200px] h-[140px] sm:h-[216px] md:h-[272px] rounded-[14px] sm:rounded-[18px] md:rounded-[22px] overflow-hidden cursor-grab active:cursor-grabbing ${
+                  isDragging
+                    ? "transition-none"
+                    : "transition-[transform,filter,box-shadow] duration-[850ms] ease-[cubic-bezier(0.16,1,0.3,1)] motion-reduce:transition-none"
+                } ${
+                  isCenter
+                    ? "ring-2 ring-primary ring-offset-2 ring-offset-background shadow-[0_28px_48px_-20px_rgb(0_0_0/0.55)]"
+                    : "ring-1 ring-black/10 dark:ring-white/10 shadow-[0_6px_18px_-10px_rgb(0_0_0/0.35)]"
+                }`}
+              >
+                <div className="relative w-full h-full">
+                  <Image
+                    src={item.img}
+                    alt={item.title}
+                    width={600}
+                    height={800}
+                    className="w-full h-full object-cover pointer-events-none"
+                  />
 
-                <div className="absolute inset-x-0 bottom-0 p-2 sm:p-3.5 md:p-5 flex flex-col justify-end text-white">
-                  <h3 className="text-[11px] sm:text-base md:text-lg font-extrabold tracking-wide uppercase drop-shadow-md line-clamp-1">
-                    {item.title}
-                  </h3>
+                  <div
+                    aria-hidden
+                    style={{ opacity: fade }}
+                    className="absolute inset-0 bg-background transition-opacity duration-[850ms] ease-[cubic-bezier(0.16,1,0.3,1)] motion-reduce:transition-none"
+                  />
 
-                  <div className="flex items-center justify-between mt-0.5 text-[9px] sm:text-xs md:text-sm">
-                    {item.price ? (
-                      <span className="font-semibold text-zinc-200">{item.price}</span>
-                    ) : item.category ? (
-                      <span className="text-[8px] sm:text-[10px] md:text-xs uppercase font-semibold text-zinc-300 px-1.5 py-0.5 rounded-full bg-white/10 backdrop-blur-sm truncate max-w-[60px] sm:max-w-none">
-                        {item.category}
-                      </span>
-                    ) : null}
+                  <div
+                    aria-hidden={!isCenter}
+                    className={`absolute inset-0 flex flex-col justify-end p-2.5 sm:p-4 md:p-5 text-white bg-gradient-to-t from-black/80 via-black/25 via-45% to-transparent transition-opacity duration-500 motion-reduce:transition-none ${
+                      isCenter ? "opacity-100" : "opacity-0"
+                    }`}
+                  >
+                    <h3 className="font-serif font-medium text-[13px] sm:text-lg md:text-[22px] leading-[1.1] tracking-[-0.01em] text-balance line-clamp-2 [text-shadow:0_1px_12px_rgb(0_0_0/0.35)]">
+                      {item.title}
+                    </h3>
 
-                    {item.rating && (
-                      <div className="flex items-center gap-0.5 bg-black/50 backdrop-blur-md px-1 sm:px-1.5 py-0.5 rounded-full text-[9px] sm:text-xs font-semibold text-amber-400 border border-white/10">
-                        <span>★</span>
-                        <span className="text-white">{item.rating}</span>
-                      </div>
-                    )}
+                    <div className="flex items-center justify-between gap-2 mt-1.5 sm:mt-2 text-[10px] sm:text-xs md:text-[13px] text-white/75">
+                      {item.price ? (
+                        <span className="font-medium text-white/90 tabular-nums">{item.price}</span>
+                      ) : item.category ? (
+                        <span className="truncate">{item.category}</span>
+                      ) : (
+                        <span />
+                      )}
+
+                      {item.rating && (
+                        <span className="flex items-center gap-1 shrink-0 font-medium text-white tabular-nums">
+                          <span aria-hidden className="text-amber-300">★</span>
+                          {item.rating}
+                        </span>
+                      )}
+                    </div>
                   </div>
                 </div>
               </div>
-            </div>
-          );
-        })}
+            );
+          })}
+
+          {/* Hub: centred on the axle (the wheel's exact centre); starts and
+              stops autoplay. */}
+          <button
+            type="button"
+            onClick={() => setIsPlaying((p) => !p)}
+            onMouseDown={(e) => e.stopPropagation()}
+            onTouchStart={(e) => e.stopPropagation()}
+            aria-label={isPlaying ? "Pause autoplay" : "Play autoplay"}
+            className="absolute left-0 top-0 z-[70] -translate-x-1/2 -translate-y-1/2 size-11 sm:size-16 md:size-[76px] rounded-full bg-background text-foreground ring-1 ring-black/10 dark:ring-white/15 shadow-[0_10px_30px_-12px_rgb(0_0_0/0.45),inset_0_1px_0_rgb(255_255_255/0.6)] dark:shadow-[0_10px_30px_-12px_rgb(0_0_0/0.8),inset_0_1px_0_rgb(255_255_255/0.08)] grid place-items-center cursor-pointer transition-transform duration-200 hover:scale-105 active:scale-95 motion-reduce:transition-none focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary"
+          >
+            {isPlaying ? (
+              <Pause aria-hidden className="block size-4 sm:size-5 md:size-6" fill="currentColor" strokeWidth={0} />
+            ) : (
+              <Play aria-hidden className="block size-4 sm:size-5 md:size-6" fill="currentColor" strokeWidth={0} />
+            )}
+          </button>
+        </div>
       </div>
 
       {(showArrows || showDots) && (
