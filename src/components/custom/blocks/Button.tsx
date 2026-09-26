@@ -105,6 +105,14 @@ type ButtonVariant =
 type ButtonSize = "default" | "sm" | "lg";
 
 /**
+ * Decoration a "shards-control" tile plays when it lands on something: a
+ * slider reaching full, a toggle switching on, or a new select / colour pick.
+ */
+export type ShardsEffect = "none" | "sparkle" | "orbit" | "beacon" | "shimmer";
+/** `once` plays per landing; `continuous` loops for as long as the tile stays active. */
+export type ShardsEffectMode = "once" | "continuous";
+
+/**
  * The plain variants, styled from theme tokens so they follow whatever palette
  * the consumer has in globals.css.
  *
@@ -172,6 +180,17 @@ export interface ButtonProps
   max?: number;
   step?: number;
   onValueChange?: (value: number | string) => void;
+  /**
+   * Effect played by a "shards-control" tile. Left unset, the tile keeps its
+   * built-in feedback (slider beacon at full, colour burst on a pick).
+   */
+  effect?: ShardsEffect;
+  effectMode?: ShardsEffectMode;
+  /**
+   * Whether a `continuous` effect is running. Defaults to: slider at full,
+   * toggle on, select / colour once something has been picked.
+   */
+  effectActive?: boolean;
 }
 
 interface Ripple {
@@ -425,6 +444,256 @@ const ColorPickerPopover: React.FC<{
   );
 };
 
+type PlayableShardsEffect = Exclude<ShardsEffect, "none">;
+
+/** Length of one `once` play, per effect, in seconds. */
+const FX_ONCE_S: Record<PlayableShardsEffect, number> = {
+  sparkle: 2.2,
+  orbit: 1.6,
+  beacon: 2,
+  shimmer: 1.2,
+};
+const FX_SPECKS = 16;
+
+/** Deterministic 0–1 noise so server and client scatter the specks alike. */
+const fxNoise = (i: number, salt: number) => {
+  const x = Math.sin(i * 12.9898 + salt * 78.233) * 43758.5453;
+  return x - Math.floor(x);
+};
+
+/** Shows only a 2px ring at the padding edge — the track the orbit beams run in. */
+const FX_RING_MASK: React.CSSProperties = {
+  WebkitMask: "linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0)",
+  WebkitMaskComposite: "xor",
+  mask: "linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0)",
+  maskComposite: "exclude",
+};
+
+const SHARDS_FX_CSS = `
+@keyframes shards-fx-life { 0% { opacity: 0; } 8%, 75% { opacity: 1; } 100% { opacity: 0; } }
+@keyframes shards-fx-in { from { opacity: 0; } to { opacity: 1; } }
+@keyframes shards-fx-out { from { opacity: 1; } to { opacity: 0; } }
+@keyframes shards-fx-breathe { 0%, 100% { opacity: 0.25; } 50% { opacity: 0.75; } }
+@keyframes shards-fx-flash { 0% { opacity: 0; } 25% { opacity: 1; } 100% { opacity: 0; } }
+@keyframes shards-fx-speck {
+  0% { opacity: 0; transform: translateY(0) scale(0.4); }
+  50% { opacity: 0.9; transform: translateY(-6px) scale(1.3); }
+  100% { opacity: 0; transform: translateY(-12px) scale(0.4); }
+}
+@keyframes shards-fx-orbit {
+  from { transform: translate(-50%, -50%) rotate(0deg); }
+  to { transform: translate(-50%, -50%) rotate(360deg); }
+}
+@keyframes shards-fx-sheen {
+  from { transform: translateX(-120%) skewX(-20deg); }
+  to { transform: translateX(420%) skewX(-20deg); }
+}
+@keyframes shards-fx-sheen-loop {
+  0% { transform: translateX(-120%) skewX(-20deg); }
+  40%, 100% { transform: translateX(420%) skewX(-20deg); }
+}
+@keyframes shards-fx-bloom {
+  0% { opacity: 0; transform: scale(0.98); }
+  35% { opacity: 0.6; }
+  100% { opacity: 0; transform: scale(1.04); }
+}
+@keyframes shards-fx-ping {
+  0% { transform: scale(1); opacity: 0.85; }
+  70%, 100% { transform: scale(1.18, 1.55); opacity: 0; }
+}
+@keyframes shards-fx-aura { 0% { opacity: 0.95; } 45% { opacity: 0.6; } 100% { opacity: 0; } }
+`;
+
+/**
+ * One effect layer over a control tile, tinted by `color` (the theme primary
+ * when omitted). `once` runs its single play and calls `onDone`; `continuous`
+ * fades in, loops, and fades out when `leaving` turns on, then calls `onDone`.
+ */
+function ShardsEffectLayer({
+  effect,
+  mode,
+  leaving = false,
+  color,
+  onDone,
+}: {
+  effect: PlayableShardsEffect;
+  mode: ShardsEffectMode;
+  leaving?: boolean;
+  color?: string;
+  onDone: () => void;
+}) {
+  const loop = mode === "continuous";
+  // The same layers serve both modes: once they play a single time, looped
+  // they repeat forever while the wrapper holds them on screen.
+  const run = (name: string, seconds: number, ease: string, delay = 0): React.CSSProperties => ({
+    animation: `${name} ${seconds}s ${ease} ${delay}s ${loop ? "infinite" : 1} both`,
+  });
+  const life = loop
+    ? `${leaving ? "shards-fx-out" : "shards-fx-in"} 0.4s ease-out both`
+    : `shards-fx-life ${FX_ONCE_S[effect]}s linear both`;
+
+  return (
+    <span
+      aria-hidden
+      onAnimationEnd={(e) => {
+        if (e.target === e.currentTarget && (!loop || leaving)) onDone();
+      }}
+      className="pointer-events-none absolute inset-0 z-0 rounded-xl text-primary"
+      style={{ animation: life, color }}
+    >
+      <style dangerouslySetInnerHTML={{ __html: SHARDS_FX_CSS }} />
+
+      {/* Max-effort sky: a glow rising from the floor and twinkling specks. */}
+      {effect === "sparkle" && (
+        <span className="absolute inset-0 overflow-hidden rounded-xl">
+          <span className="absolute inset-0 bg-[radial-gradient(ellipse_at_bottom,currentColor,transparent_70%)] opacity-20" />
+          <span className="absolute inset-0 opacity-40">
+            <span
+              className="absolute inset-x-4 bottom-0 h-full bg-[radial-gradient(ellipse_at_bottom,currentColor,transparent_60%)] blur-md"
+              style={run("shards-fx-breathe", loop ? 3.2 : 1.1, "ease-in-out")}
+            />
+          </span>
+          {Array.from({ length: FX_SPECKS }).map((_, i) => {
+            const size = 1.5 + fxNoise(i, 3) * 2;
+            return (
+              <span
+                key={i}
+                className="absolute rounded-full bg-current"
+                style={{
+                  left: `${fxNoise(i, 1) * 100}%`,
+                  top: `${100 - Math.pow(fxNoise(i, 2), 2) * 85}%`,
+                  width: size,
+                  height: size,
+                  boxShadow: "0 0 6px 1px currentColor",
+                  // A single play squeezes the twinkles into its window.
+                  ...run(
+                    "shards-fx-speck",
+                    loop ? 1.8 + fxNoise(i, 4) * 2.4 : 1 + fxNoise(i, 4) * 0.8,
+                    "ease-in-out",
+                    fxNoise(i, 5) * (loop ? 3 : 0.9),
+                  ),
+                }}
+              />
+            );
+          })}
+        </span>
+      )}
+
+      {/* Premium lap: two beams run the edge, a sheen crosses, a halo blooms. */}
+      {effect === "orbit" && (
+        <>
+          <span className="absolute inset-0 opacity-70">
+            <span
+              className="absolute inset-0 rounded-xl"
+              style={{
+                boxShadow: "0 0 18px 4px currentColor",
+                ...(loop
+                  ? run("shards-fx-breathe", 2.8, "ease-in-out")
+                  : run("shards-fx-bloom", 1.1, "cubic-bezier(0, 0, 0.58, 1)", 0.1)),
+              }}
+            />
+          </span>
+          <span className="absolute inset-0 overflow-hidden rounded-xl">
+            <span
+              className="absolute inset-y-0 left-0 w-1/4 bg-gradient-to-r from-transparent via-current to-transparent opacity-25"
+              style={
+                loop
+                  ? run("shards-fx-sheen-loop", 2.8, "cubic-bezier(0.42, 0, 0.58, 1)")
+                  : run("shards-fx-sheen", 1, "cubic-bezier(0.42, 0, 0.58, 1)", 0.15)
+              }
+            />
+          </span>
+          <span className="absolute inset-0 overflow-hidden rounded-xl p-[2px]" style={FX_RING_MASK}>
+            <span
+              className="absolute left-1/2 top-1/2 aspect-square w-[150%]"
+              style={{
+                background:
+                  "conic-gradient(from 0deg, transparent 0deg, currentColor 50deg, transparent 90deg, transparent 180deg, currentColor 230deg, transparent 270deg)",
+                ...(loop
+                  ? run("shards-fx-orbit", 2.8, "linear")
+                  : run("shards-fx-orbit", FX_ONCE_S.orbit, "cubic-bezier(0.45, 0, 0.2, 1)")),
+              }}
+            />
+          </span>
+        </>
+      )}
+
+      {/* Beacon: a filled ping, a trailing border ping and a soft aura. */}
+      {effect === "beacon" && (
+        <>
+          <span
+            className="absolute inset-0 rounded-xl bg-current/25"
+            style={run("shards-fx-ping", loop ? 2.2 : 1.8, "cubic-bezier(0, 0, 0.2, 1)")}
+          />
+          <span
+            className="absolute inset-0 rounded-xl border-2 border-current/50"
+            style={run("shards-fx-ping", loop ? 2.2 : 1.8, "cubic-bezier(0, 0, 0.2, 1)", 0.15)}
+          />
+          <span
+            className="absolute -inset-1.5 rounded-xl bg-current/25 blur-md"
+            style={run("shards-fx-aura", loop ? 2.2 : 1.8, "ease-out")}
+          />
+        </>
+      )}
+
+      {/* Shimmer: a bright band wipes across while the tile and its edge flash. */}
+      {effect === "shimmer" && (
+        <>
+          <span
+            className="absolute inset-0 rounded-xl bg-current/15"
+            style={loop ? run("shards-fx-breathe", 2.4, "ease-in-out") : run("shards-fx-flash", 1.1, "ease-out")}
+          />
+          <span className="absolute inset-0 overflow-hidden rounded-xl">
+            <span
+              className="absolute inset-y-0 left-0 w-1/2 bg-gradient-to-r from-transparent via-current to-transparent opacity-40"
+              style={
+                loop
+                  ? run("shards-fx-sheen-loop", 2.4, "cubic-bezier(0.42, 0, 0.58, 1)")
+                  : run("shards-fx-sheen", 1, "cubic-bezier(0.16, 1, 0.3, 1)")
+              }
+            />
+          </span>
+          <span className="absolute inset-0 opacity-70">
+            <span
+              className="absolute inset-0 rounded-xl"
+              style={{
+                boxShadow: "0 0 0 1.5px currentColor, 0 0 16px 2px currentColor",
+                ...(loop ? run("shards-fx-breathe", 2.4, "ease-in-out") : run("shards-fx-flash", 1.1, "ease-out")),
+              }}
+            />
+          </span>
+        </>
+      )}
+    </span>
+  );
+}
+
+function usePrefersReducedMotion() {
+  const [reduce, setReduce] = useState(false);
+  useEffect(() => {
+    const query = window.matchMedia("(prefers-reduced-motion: reduce)");
+    const sync = () => setReduce(query.matches);
+    sync();
+    query.addEventListener("change", sync);
+    return () => query.removeEventListener("change", sync);
+  }, []);
+  return reduce;
+}
+
+/**
+ * Keeps something mounted while `active`, and on through its exit: `leaving`
+ * is on between `active` turning off and the caller reporting `done`.
+ */
+function useLinger(active: boolean) {
+  const [mounted, setMounted] = useState(active);
+  if (active && !mounted) setMounted(true);
+  return {
+    mounted,
+    leaving: mounted && !active,
+    done: React.useCallback(() => setMounted(false), []),
+  };
+}
+
 /**
  * The "shards-control" variant is a whole control tile — select, toggle,
  * colour and slider — with state of its own. It lives in its own component so
@@ -444,6 +713,9 @@ type ShardsControlTileProps = Pick<
   | "max"
   | "step"
   | "onValueChange"
+  | "effect"
+  | "effectMode"
+  | "effectActive"
   | "className"
   | "children"
 > & {
@@ -464,6 +736,9 @@ const ShardsControlTile = ({
   max = 10,
   step = 0.1,
   onValueChange,
+  effect,
+  effectMode = "once",
+  effectActive,
   className,
   children,
   style,
@@ -539,6 +814,66 @@ const ShardsControlTile = ({
         wasAt100Ref.current = false;
       }
     }, [percentage, numVal, max, controlType]);
+
+    // ── Effects ──────────────────────────────────────────────
+    // What an effect reacts to: a slider at full, a toggle that is on, or
+    // the current pick of a select / colour tile.
+    const isAtMax = percentage >= 99.5 || numVal >= max;
+    const fxSignal =
+      controlType === "slider"
+        ? isAtMax
+        : controlType === "toggle"
+          ? displayChecked
+          : controlType === "color"
+            ? displayColor
+            : displayValue;
+    const playable = effect && effect !== "none" ? effect : null;
+    const reduceMotion = usePrefersReducedMotion();
+    // The running `once` play (0 = idle). A landing while one is still
+    // playing is folded into it, so dragging a colour doesn't restart it.
+    const [fxPlay, setFxPlay] = useState(0);
+    const fxSeq = React.useRef(0);
+    const [hasPicked, setHasPicked] = useState(false);
+    const lastSignal = React.useRef(fxSignal);
+    useEffect(() => {
+      if (lastSignal.current === fxSignal) return;
+      lastSignal.current = fxSignal;
+      // Booleans land on the way up only: filling the slider, switching on.
+      if (fxSignal === false) return;
+      if (typeof fxSignal !== "boolean") setHasPicked(true);
+      if (playable && effectMode === "once" && !reduceMotion)
+        setFxPlay((k) => k || ++fxSeq.current);
+    }, [fxSignal, playable, effectMode, reduceMotion]);
+
+    const loopOn =
+      Boolean(playable) &&
+      effectMode === "continuous" &&
+      !reduceMotion &&
+      (effectActive ?? (typeof fxSignal === "boolean" ? fxSignal : hasPicked));
+    const loopLayer = useLinger(loopOn);
+    const fxTint = controlType === "color" ? displayColor : undefined;
+    const effectLayers = playable && (
+      <>
+        {loopLayer.mounted && (
+          <ShardsEffectLayer
+            effect={playable}
+            mode="continuous"
+            leaving={loopLayer.leaving}
+            color={fxTint}
+            onDone={loopLayer.done}
+          />
+        )}
+        {fxPlay > 0 && (
+          <ShardsEffectLayer
+            key={fxPlay}
+            effect={playable}
+            mode="once"
+            color={fxTint}
+            onDone={() => setFxPlay(0)}
+          />
+        )}
+      </>
+    );
 
     // Dragging logic for full-tile slider
     const handleSliderMove = React.useCallback(
@@ -619,8 +954,6 @@ const ShardsControlTile = ({
 
     /* SPECIAL RENDER FOR FULL TILE RANGE SLIDER BUTTON */
     if (controlType === "slider") {
-      const isAtMax = percentage >= 99.5 || numVal >= max;
-
       return (
         <div className="relative w-full rounded-xl isolation-auto" style={style}>
           {/* Keyframes for Beacon Radar Pulse when reaching 100% */}
@@ -653,7 +986,7 @@ const ShardsControlTile = ({
           />
 
           {/* Smooth Soft Aura Beacon Ring & Ping Wave on reaching 100% (Identical to Beacon Pulse button variant) */}
-          {sliderPulseKey > 0 && (
+          {effect === undefined && sliderPulseKey > 0 && (
             <div key={`beacon-pulse-${sliderPulseKey}`} className="absolute inset-0 z-0 pointer-events-none">
               {/* Primary Ping Expanding Radar Ring */}
               <span
@@ -691,7 +1024,7 @@ const ShardsControlTile = ({
             onMouseDown={handleMouseDown}
             onTouchStart={handleTouchStart}
             className={cn(
-              "relative z-10 flex items-center justify-between w-full h-12 px-4 rounded-xl border select-none group cursor-pointer overflow-hidden transition-all duration-200",
+              "relative z-10 flex items-center justify-between w-full h-12 px-4 rounded-xl border select-none group cursor-pointer transition-all duration-200",
               "bg-background/90 dark:bg-card/90",
               isAtMax
                 ? "border-primary/50 shadow-[0_0_12px_color-mix(in_oklab,var(--primary)_20%,transparent)]"
@@ -707,6 +1040,8 @@ const ShardsControlTile = ({
               {/* Invisible Edge Drag Indicator with cursor-ew-resize */}
               <span className="absolute right-0 top-0 bottom-0 w-3 -mr-1.5 cursor-ew-resize pointer-events-auto" />
             </div>
+
+            {effectLayers}
 
             {/* Label on Left */}
             <span className="relative z-10 text-foreground font-semibold text-xs tracking-wide pointer-events-none">
@@ -804,7 +1139,7 @@ const ShardsControlTile = ({
         />
 
         {/* Dynamic Animated Background Effect on Color Change */}
-        {controlType === "color" && colorKey > 0 && (
+        {effect === undefined && controlType === "color" && colorKey > 0 && (
           <div
             key={`shards-color-anim-${colorKey}`}
             className="absolute inset-0 rounded-xl overflow-hidden pointer-events-none z-0"
@@ -850,6 +1185,8 @@ const ShardsControlTile = ({
             />
           </div>
         )}
+
+        {effectLayers}
 
         {/* Label on Left */}
         <span className="relative z-10 text-foreground/90 font-semibold tracking-wide truncate max-w-[45%] transition-colors duration-200 pointer-events-none">
@@ -1002,6 +1339,9 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
       max = 10,
       step = 0.1,
       onValueChange,
+      effect,
+      effectMode,
+      effectActive,
       ...props
     },
     ref,
@@ -1145,6 +1485,9 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
           max={max}
           step={step}
           onValueChange={onValueChange}
+          effect={effect}
+          effectMode={effectMode}
+          effectActive={effectActive}
           className={className}
           style={combinedStyle}
           forwardedRef={ref}
