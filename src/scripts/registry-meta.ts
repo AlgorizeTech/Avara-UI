@@ -84,6 +84,12 @@ export const META: Record<string, ItemMeta> = {
     categories: ["marketing", "layout"],
     docs: "Named export: AnimatedFAQBlock (also the default export); `FAQ_ITEMS` holds the sample data. All motion is CSS — no animation library.",
   },
+  "card-stack": {
+    description:
+      "A layered deck of cards featuring fluid drag-to-discard gestures, button-driven directional slide animations, and realistic depth perspective.",
+    categories: ["data-display", "marketing", "actions"],
+    docs: "Named export: CardStack (also default). Accepts items, visibleCards, swipeToDismiss, canDismissLastCard, loop, showHeader, and showNavigation.",
+  },
   wallet: {
     description:
       "An interactive fintech cardholder wallet component featuring 3 serially staggered cards, curved pocket scoop, bottom thumb cutout, and light/dark mode styling.",

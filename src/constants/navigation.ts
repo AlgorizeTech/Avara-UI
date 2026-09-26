@@ -136,6 +136,13 @@ const rawNavigation: NavigationItem[] = [
       { label: "Buttons", slug: "button" },
       { label: "Calendar", slug: "calendar" },
       { label: "Card", slug: "card" },
+      {
+        label: "Card Stack",
+        slug: "card-stack",
+        badge: "New",
+        addedOn: "2026-09-26",
+        keywords: ["card stack", "cards", "swipe", "drag", "stack", "discard", "deck", "layered"],
+      },
       { label: "Carousel", slug: "carousel" },
       { label: "Cart", slug: "cart" },
       { label: "Chart", slug: "chart" },

@@ -2,8 +2,8 @@
 
 This directory contains auto-generated Markdown versions of all MDX documentation pages.
 
-**Generated at:** 2026-09-24T16:07:15.101Z
-**Total files:** 289
+**Generated at:** 2026-09-26T04:23:34.721Z
+**Total files:** 291
 
 ## Available Files
 
@@ -27,6 +27,7 @@ This directory contains auto-generated Markdown versions of all MDX documentatio
 - [nextjs/button](/docs/nextjs-button.md) - Source: `[framework]\button\page.mdx`
 - [nextjs/calendar](/docs/nextjs-calendar.md) - Source: `[framework]\calendar\page.mdx`
 - [nextjs/card](/docs/nextjs-card.md) - Source: `[framework]\card\page.mdx`
+- [nextjs/card-stack](/docs/nextjs-card-stack.md) - Source: `[framework]\card-stack\page.mdx`
 - [nextjs/carousel](/docs/nextjs-carousel.md) - Source: `[framework]\carousel\page.mdx`
 - [nextjs/cart](/docs/nextjs-cart.md) - Source: `[framework]\cart\page.mdx`
 - [nextjs/chart](/docs/nextjs-chart.md) - Source: `[framework]\chart\page.mdx`
@@ -172,6 +173,7 @@ This directory contains auto-generated Markdown versions of all MDX documentatio
 - [reactjs/button](/docs/reactjs-button.md) - Source: `[framework]\button\page.mdx`
 - [reactjs/calendar](/docs/reactjs-calendar.md) - Source: `[framework]\calendar\page.mdx`
 - [reactjs/card](/docs/reactjs-card.md) - Source: `[framework]\card\page.mdx`
+- [reactjs/card-stack](/docs/reactjs-card-stack.md) - Source: `[framework]\card-stack\page.mdx`
 - [reactjs/carousel](/docs/reactjs-carousel.md) - Source: `[framework]\carousel\page.mdx`
 - [reactjs/cart](/docs/reactjs-cart.md) - Source: `[framework]\cart\page.mdx`
 - [reactjs/chart](/docs/reactjs-chart.md) - Source: `[framework]\chart\page.mdx`

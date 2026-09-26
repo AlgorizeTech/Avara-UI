@@ -557,6 +557,33 @@
       "docs": "Named exports: Card, CardHeader, CardTitle, CardDescription, CardContent, CardFooter. Compose them rather than passing props to a single element."
     },
     {
+      "name": "card-stack",
+      "type": "registry:component",
+      "title": "Card Stack",
+      "author": "AlgorizeTech",
+      "description": "A layered deck of cards featuring fluid drag-to-discard gestures, button-driven directional slide animations, and realistic depth perspective.",
+      "categories": [
+        "data-display",
+        "marketing",
+        "actions"
+      ],
+      "dependencies": [
+        "framer-motion",
+        "lucide-react"
+      ],
+      "registryDependencies": [
+        "utils"
+      ],
+      "files": [
+        {
+          "path": "src/components/custom/blocks/CardStackBlock.tsx",
+          "type": "registry:component",
+          "target": "components/custom/blocks/CardStackBlock.tsx"
+        }
+      ],
+      "docs": "Named export: CardStack (also default). Accepts items, visibleCards, swipeToDismiss, canDismissLastCard, loop, showHeader, and showNavigation."
+    },
+    {
       "name": "carousel",
       "type": "registry:component",
       "title": "Carousel",
