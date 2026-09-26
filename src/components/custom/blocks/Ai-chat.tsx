@@ -11,6 +11,7 @@ import {
   CircleHelp,
   Copy,
   Cpu,
+  Crown,
   Edit2,
   FileText,
   Gauge,
@@ -218,6 +219,12 @@ export type ChatModel = {
   description?: string;
   /** Small tag beside the name, e.g. "Pro" or "New". */
   badge?: string;
+  /**
+   * Marks a paid tier: a gold "Premium" badge follows the name, the picker
+   * pill turns gold while it is chosen, and choosing it plays a one-off
+   * flourish on the pill and the prompt bar.
+   */
+  premium?: boolean;
 };
 
 export type EffortLevel = "low" | "medium" | "high" | "max" | (string & {});
@@ -277,7 +284,7 @@ export const defaultModels: ChatModel[] = [
     id: "nova-ultra",
     name: "Nova Ultra",
     description: "Deepest reasoning for hard problems",
-    badge: "Pro",
+    premium: true,
   },
   {
     id: "nova-pro",
@@ -534,7 +541,11 @@ export default function AIChat({
   const [openMenu, setOpenMenu] = useState<"tools" | "model" | "effort" | null>(
     null,
   );
+  // Counts premium picks while the flourish plays (0 = idle); each new value
+  // remounts the flourish so a quick re-pick replays it from the start.
+  const [premiumFx, setPremiumFx] = useState(0);
 
+  const composerRef = useRef<HTMLFormElement>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
   const textareaRef = useRef<HTMLTextAreaElement>(null);
   const abortControllers = useRef(new Map<string, AbortController>());
@@ -650,6 +661,12 @@ export default function AIChat({
   };
 
   const selectModel = (model: ChatModel) => {
+    const switchedToPremium = model.premium && model.id !== selectedModel.id;
+    if (
+      switchedToPremium &&
+      !window.matchMedia("(prefers-reduced-motion: reduce)").matches
+    )
+      setPremiumFx((n) => n + 1);
     setSelectedModelId(model.id);
     setOpenMenu(null);
     onModelChange?.(model);
@@ -858,6 +875,7 @@ export default function AIChat({
     <div className="p-4 sm:p-6 bg-transparent shrink-0 z-10">
       <div className="max-w-3xl mx-auto">
         <form
+          ref={composerRef}
           onSubmit={handleSendMessage}
           onDragOver={(e) => {
             e.preventDefault();
@@ -881,6 +899,9 @@ export default function AIChat({
           )}
         >
           <MaxEffortGlow active={isMaxEffort} className={theme.primaryText} />
+          {premiumFx > 0 && (
+            <PremiumSweep key={premiumFx} onDone={() => setPremiumFx(0)} />
+          )}
 
           <input
             ref={fileInputRef}
@@ -994,8 +1015,8 @@ export default function AIChat({
           </div>
 
           {/* Toolbar */}
-          <div className="flex items-center justify-between gap-2 flex-wrap">
-            <div className="flex items-center gap-1 min-w-0">
+          <div className="flex items-center justify-between gap-2">
+            <div className="flex items-center gap-0.5 sm:gap-1 min-w-0">
               <ComposerMenu
                 open={openMenu === "tools"}
                 onOpenChange={(open) => setOpenMenu(open ? "tools" : null)}
@@ -1010,7 +1031,8 @@ export default function AIChat({
                 }
                 label="Add files or tools"
                 iconOnly
-                width="w-[340px] max-w-[calc(100vw-2rem)]"
+                width="w-[280px] sm:w-[340px]"
+                boundaryRef={composerRef}
               >
                 <div className="p-1">
                   {tools.map((tool) => {
@@ -1023,7 +1045,7 @@ export default function AIChat({
                         role="menuitem"
                         disabled={full}
                         onClick={() => runTool(tool)}
-                        className="w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-left transition-colors hover:bg-muted disabled:opacity-40 cursor-pointer disabled:cursor-not-allowed"
+                        className="w-full flex items-center gap-3 px-2.5 sm:px-3 py-2 sm:py-2.5 rounded-lg text-left transition-colors hover:bg-muted disabled:opacity-40 cursor-pointer disabled:cursor-not-allowed"
                       >
                         <span className="shrink-0 text-muted-foreground">
                           {tool.icon ?? <Plus className="w-4 h-4" />}
@@ -1048,9 +1070,25 @@ export default function AIChat({
                 open={openMenu === "model"}
                 onOpenChange={(open) => setOpenMenu(open ? "model" : null)}
                 theme={theme}
-                icon={<Cpu className="w-3.5 h-3.5 mb-0.25" />}
+                icon={
+                  selectedModel.premium ? (
+                    <Crown
+                      key={premiumFx}
+                      className={cn(
+                        "w-3.5 h-3.5 mb-0.25",
+                        premiumFx > 0 && "aichat-crown-pop",
+                      )}
+                    />
+                  ) : (
+                    <Cpu className="w-3.5 h-3.5 mb-0.25" />
+                  )
+                }
                 label={selectedModel.name}
                 heading="Model"
+                highlighted={!!selectedModel.premium}
+                highlightClassName={PREMIUM.pill}
+                flourish={premiumFx > 0 && <PremiumPillFlash key={premiumFx} />}
+                boundaryRef={composerRef}
               >
                 {models.map((model) => {
                   const active = model.id === selectedModel.id;
@@ -1076,6 +1114,7 @@ export default function AIChat({
                               {model.badge}
                             </span>
                           )}
+                          {model.premium && <PremiumBadge />}
                         </div>
                         {model.description && (
                           <p className="text-xs text-muted-foreground truncate">
@@ -1101,11 +1140,12 @@ export default function AIChat({
                 }
                 label={selectedEffort.label}
                 highlighted={isMaxEffort}
-                width="w-72"
+                width="w-60 sm:w-72"
+                boundaryRef={composerRef}
               >
-                <div className="p-3">
+                <div className="p-2.5 sm:p-3">
                   <div className="flex items-center justify-between gap-3">
-                    <p className="text-sm font-medium text-muted-foreground leading-none">
+                    <p className="text-xs sm:text-sm font-medium text-muted-foreground leading-none">
                       Effort
                       <span className="ml-2 font-semibold text-foreground">
                         {selectedEffort.label}
@@ -1118,10 +1158,10 @@ export default function AIChat({
                       }
                       className="p-0.5 -mr-0.5 rounded-full text-muted-foreground/70 hover:text-foreground cursor-help"
                     >
-                      <CircleHelp className="w-4 h-4" />
+                      <CircleHelp className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
                     </span>
                   </div>
-                  <div className="mt-4 mb-2 flex items-center justify-between text-xs font-medium text-muted-foreground leading-none">
+                  <div className="mt-3 sm:mt-4 mb-1.5 sm:mb-2 flex items-center justify-between text-[11px] sm:text-xs font-medium text-muted-foreground leading-none">
                     <span>Faster</span>
                     <span>Smarter</span>
                   </div>
@@ -1145,7 +1185,7 @@ export default function AIChat({
                 title={voice.isListening ? "Stop listening" : "Dictate"}
                 aria-pressed={voice.isListening}
                 className={cn(
-                  "relative p-2 rounded-xl transition-colors cursor-pointer",
+                  "relative p-1.5 sm:p-2 rounded-xl transition-colors cursor-pointer",
                   voice.isListening
                     ? cn("text-white shadow-md", theme.primaryBg)
                     : cn("text-muted-foreground", theme.primaryHover),
@@ -1167,7 +1207,7 @@ export default function AIChat({
                     />
                   </>
                 )}
-                <Mic className="relative w-5 h-5" />
+                <Mic className="relative w-4 h-4 sm:w-5 sm:h-5" />
               </button>
               <button
                 type="submit"
@@ -1177,7 +1217,7 @@ export default function AIChat({
                   voice.isListening
                 }
                 className={cn(
-                  "p-2.5 rounded-xl hover:scale-105 active:scale-95 disabled:opacity-50 disabled:hover:scale-100 transition-all shadow-sm cursor-pointer disabled:cursor-not-allowed",
+                  "p-2 sm:p-2.5 rounded-xl hover:scale-105 active:scale-95 disabled:opacity-50 disabled:hover:scale-100 transition-all shadow-sm cursor-pointer disabled:cursor-not-allowed",
                   theme.primaryBg,
                 )}
                 title={
@@ -1695,6 +1735,9 @@ const CHECK_SPRING = springLinear({ stiffness: 380, damping: 14 });
 const FAIL_SPRING = springLinear({ stiffness: 550, damping: 30 });
 const EASE_IN_OUT_CSS = "cubic-bezier(0.42, 0, 0.58, 1)";
 const EASE_OUT_CSS = "cubic-bezier(0, 0, 0.58, 1)";
+/** The premium flourish on the prompt bar: one lap of the edge beam. */
+const PREMIUM_SWEEP_S = 1.6;
+const PREMIUM_ORBIT_CSS = "cubic-bezier(0.45, 0, 0.2, 1)";
 
 /**
  * The fixed, self-running animations — entrances that play once on mount and
@@ -1735,6 +1778,35 @@ const MOTION_CSS = `
   100% { opacity: 0; transform: translateY(-12px) scale(0.4); }
 }
 .aichat-speck { animation: aichat-speck 1s ${EASE_IN_OUT_CSS} infinite backwards; }
+
+@keyframes aichat-premium-life { 0% { opacity: 0; } 10%, 70% { opacity: 1; } 100% { opacity: 0; } }
+.aichat-premium-life { animation: aichat-premium-life ${PREMIUM_SWEEP_S}s linear both; }
+@keyframes aichat-premium-orbit {
+  from { transform: translate(-50%, -50%) rotate(0deg); }
+  to { transform: translate(-50%, -50%) rotate(360deg); }
+}
+.aichat-premium-orbit { animation: aichat-premium-orbit ${PREMIUM_SWEEP_S}s ${PREMIUM_ORBIT_CSS} both; }
+@keyframes aichat-premium-sheen {
+  from { transform: translateX(-120%) skewX(-20deg); }
+  to { transform: translateX(420%) skewX(-20deg); }
+}
+.aichat-premium-sheen { animation: aichat-premium-sheen 1s ${EASE_IN_OUT_CSS} 0.15s both; }
+@keyframes aichat-premium-bloom {
+  0% { opacity: 0; transform: scale(0.98); }
+  35% { opacity: 0.6; }
+  100% { opacity: 0; transform: scale(1.03); }
+}
+.aichat-premium-bloom { animation: aichat-premium-bloom 1.1s ${EASE_OUT_CSS} 0.1s both; }
+@keyframes aichat-premium-ping { from { opacity: 0.8; transform: none; } to { opacity: 0; transform: scale(1.12, 1.45); } }
+.aichat-premium-ping { animation: aichat-premium-ping 0.6s ${EASE_OUT_CSS} both; }
+@keyframes aichat-premium-shine { from { transform: translateX(-100%) skewX(-20deg); } to { transform: translateX(320%) skewX(-20deg); } }
+.aichat-premium-shine { animation: aichat-premium-shine 0.7s ${EASE_IN_OUT_CSS} 0.1s both; }
+@keyframes aichat-crown-pop {
+  0% { transform: scale(0) rotate(-45deg); }
+  60% { transform: scale(1.3) rotate(12deg); }
+  100% { transform: none; }
+}
+.aichat-crown-pop { animation: aichat-crown-pop 0.55s ${EASE_OUT_CSS} both; }
 
 @keyframes aichat-wave {
   0%, 100% { transform: scaleY(0.15); }
@@ -2224,7 +2296,7 @@ function EffortSlider({
   }, []);
 
   return (
-    <div className={cn("relative h-8 w-full select-none", theme.primaryText)}>
+    <div className={cn("relative h-7 sm:h-8 w-full select-none", theme.primaryText)}>
       <div className="absolute inset-0 rounded-full bg-muted" />
       {/* Fill runs from the track's start to the thumb's trailing edge */}
       <div
@@ -2335,6 +2407,93 @@ function MaxEffortGlow({
   );
 }
 
+/**
+ * Premium models wear gold whatever the accent colour, so choosing one reads
+ * apart from the accent-tinted Max-effort glow.
+ */
+const PREMIUM = {
+  badge:
+    "bg-gradient-to-r from-amber-300 to-yellow-200 text-amber-900 dark:from-amber-400/25 dark:to-yellow-300/15 dark:text-amber-200",
+  pill: "bg-amber-500/10 text-amber-600 dark:text-amber-300",
+  /** `currentColor` for the flourishes. */
+  ink: "text-amber-400",
+};
+
+/** Shows only a 2px ring at the padding edge — the track the beam runs in. */
+const RING_MASK: React.CSSProperties = {
+  WebkitMask: "linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0)",
+  WebkitMaskComposite: "xor",
+  mask: "linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0)",
+  maskComposite: "exclude",
+};
+
+/** Two gold comets on opposite sides of the lap. */
+const BEAM_GRADIENT =
+  "conic-gradient(from 0deg, transparent 0deg, currentColor 50deg, transparent 90deg, transparent 180deg, currentColor 230deg, transparent 270deg)";
+
+function PremiumBadge() {
+  return (
+    <span
+      className={cn(
+        "inline-flex items-center gap-0.5 shrink-0 text-[9px] font-semibold uppercase tracking-wide px-1.5 py-px rounded-full",
+        PREMIUM.badge,
+      )}
+    >
+      <Crown className="w-2.5 h-2.5" strokeWidth={2.5} />
+      Premium
+    </span>
+  );
+}
+
+/**
+ * The prompt bar's premium hand-off, played once per pick: two gold beams run
+ * one lap of the edge, a sheen crosses the bar and a halo blooms out behind
+ * it. Calls `onDone` when the lap ends so the caller can unmount it.
+ */
+function PremiumSweep({ onDone }: { onDone: () => void }) {
+  return (
+    <div
+      aria-hidden
+      onAnimationEnd={(e) => {
+        if (e.target === e.currentTarget) onDone();
+      }}
+      className={cn(
+        "aichat-premium-life pointer-events-none absolute inset-0 rounded-2xl",
+        PREMIUM.ink,
+      )}
+    >
+      <span className="aichat-premium-bloom absolute inset-0 rounded-2xl shadow-[0_0_24px_6px_currentColor]" />
+      <span className="absolute inset-0 overflow-hidden rounded-2xl">
+        <span className="aichat-premium-sheen absolute inset-y-0 left-0 w-1/4 bg-gradient-to-r from-transparent via-current to-transparent opacity-25" />
+      </span>
+      <span
+        className="absolute inset-0 overflow-hidden rounded-2xl p-[2px]"
+        style={RING_MASK}
+      >
+        <span
+          className="aichat-premium-orbit absolute left-1/2 top-1/2 aspect-square w-[150%]"
+          style={{ background: BEAM_GRADIENT }}
+        />
+      </span>
+    </div>
+  );
+}
+
+/** The model pill's side of the flourish: a gold ring pings out and a glint crosses it. */
+function PremiumPillFlash() {
+  return (
+    <span
+      aria-hidden
+      className={cn("pointer-events-none absolute inset-0", PREMIUM.ink)}
+    >
+      <span className="aichat-premium-ping absolute inset-0 rounded-lg border-2 border-current" />
+      <span className="absolute inset-0 overflow-hidden rounded-lg">
+        <span className="aichat-premium-shine absolute inset-y-0 left-0 w-1/3 bg-gradient-to-r from-transparent via-white/80 to-transparent dark:via-white/40" />
+      </span>
+    </span>
+  );
+}
+
 const BAR_COUNT = 22;
 
 /**
@@ -2395,8 +2554,11 @@ function ComposerMenu({
   label,
   heading,
   highlighted = false,
+  highlightClassName,
+  flourish,
   iconOnly = false,
-  width = "w-64",
+  width = "w-60 sm:w-64",
+  boundaryRef,
   theme,
   children,
 }: {
@@ -2408,13 +2570,38 @@ function ComposerMenu({
   heading?: string;
   /** Tints the trigger even while closed — used when effort is at Max. */
   highlighted?: boolean;
+  /** The tint `highlighted` applies; the accent colour when omitted. */
+  highlightClassName?: string;
+  /** Decoration layered over the trigger, e.g. a one-off flash. */
+  flourish?: React.ReactNode;
   /** Square icon trigger with `label` as its accessible name — the "+" button. */
   iconOnly?: boolean;
   width?: string;
+  /** The panel is nudged left and narrowed to stay inside this element. */
+  boundaryRef?: React.RefObject<HTMLElement | null>;
   theme: Theme;
   children: React.ReactNode;
 }) {
   const ref = useRef<HTMLDivElement>(null);
+
+  // A trigger near the right of a narrow composer would push its panel past
+  // the edge, so the panel is slid back (and capped) to fit the boundary.
+  useLayoutEffect(() => {
+    if (!open || !boundaryRef) return;
+    const place = () => {
+      const wrap = ref.current;
+      const panel = wrap?.querySelector<HTMLElement>('[role="menu"]');
+      const bounds = boundaryRef.current?.getBoundingClientRect();
+      if (!wrap || !panel || !bounds) return;
+      panel.style.maxWidth = `${bounds.width}px`;
+      const from = wrap.getBoundingClientRect().left;
+      const overflow = from + panel.offsetWidth - bounds.right;
+      panel.style.left = `${Math.max(-Math.max(overflow, 0), bounds.left - from)}px`;
+    };
+    place();
+    window.addEventListener("resize", place);
+    return () => window.removeEventListener("resize", place);
+  }, [open, boundaryRef]);
 
   useEffect(() => {
     if (!open) return;
@@ -2435,7 +2622,7 @@ function ComposerMenu({
   }, [open, onOpenChange]);
 
   return (
-    <div ref={ref} className="relative">
+    <div ref={ref} className={cn("relative", iconOnly ? "shrink-0" : "min-w-0")}>
       <button
         type="button"
         onClick={() => onOpenChange(!open)}
@@ -2444,22 +2631,25 @@ function ComposerMenu({
         title={iconOnly && typeof label === "string" ? label : undefined}
         aria-label={iconOnly && typeof label === "string" ? label : undefined}
         className={cn(
-          "flex items-center rounded-lg text-xs font-semibold transition-colors cursor-pointer",
+          "relative flex items-center rounded-lg text-xs font-semibold transition-colors cursor-pointer",
           iconOnly
-            ? "size-8 justify-center"
-            : "gap-1.5 h-8 pl-2 pr-1.5 max-w-[160px]",
-          open || highlighted
-            ? cn(theme.lightBg, highlighted && theme.primaryText)
-            : cn("text-muted-foreground", theme.primaryHover),
+            ? "size-7 sm:size-8 justify-center"
+            : "gap-1 sm:gap-1.5 h-7 sm:h-8 px-1.5 sm:pl-2 max-w-full sm:max-w-[160px] text-[11px] sm:text-xs",
+          highlighted
+            ? (highlightClassName ?? cn(theme.lightBg, theme.primaryText))
+            : open
+              ? theme.lightBg
+              : cn("text-muted-foreground", theme.primaryHover),
         )}
       >
+        {flourish}
         <span className="shrink-0">{icon}</span>
         {!iconOnly && (
           <>
             <span className="truncate">{label}</span>
             <ChevronDown
               className={cn(
-                "w-3.5 h-3.5 shrink-0 transition-transform duration-200",
+                "hidden sm:block w-3.5 h-3.5 shrink-0 transition-transform duration-200",
                 open && "rotate-180",
               )}
             />
@@ -2515,7 +2705,7 @@ function MenuItem({
       aria-checked={active}
       onClick={onClick}
       className={cn(
-        "w-full flex items-center gap-2.5 px-2.5 py-2 rounded-lg text-left transition-colors cursor-pointer",
+        "w-full flex items-center gap-2.5 px-2.5 py-1.5 sm:py-2 rounded-lg text-left transition-colors cursor-pointer",
         active ? theme.lightBg : "hover:bg-muted",
       )}
     >
