@@ -1,6 +1,6 @@
 {
-  "generatedAt": "2026-09-24T16:07:15.091Z",
-  "totalFiles": 289,
+  "generatedAt": "2026-09-26T04:23:34.444Z",
+  "totalFiles": 291,
   "files": [
     {
       "name": "nextjs/3d-carousel",
@@ -121,6 +121,12 @@
       "path": "/docs/nextjs-card.md",
       "url": "/docs/nextjs/card",
       "originalMdx": "[framework]\\card\\page.mdx"
+    },
+    {
+      "name": "nextjs/card-stack",
+      "path": "/docs/nextjs-card-stack.md",
+      "url": "/docs/nextjs/card-stack",
+      "originalMdx": "[framework]\\card-stack\\page.mdx"
     },
     {
       "name": "nextjs/carousel",
@@ -991,6 +997,12 @@
       "path": "/docs/reactjs-card.md",
       "url": "/docs/reactjs/card",
       "originalMdx": "[framework]\\card\\page.mdx"
+    },
+    {
+      "name": "reactjs/card-stack",
+      "path": "/docs/reactjs-card-stack.md",
+      "url": "/docs/reactjs/card-stack",
+      "originalMdx": "[framework]\\card-stack\\page.mdx"
     },
     {
       "name": "reactjs/carousel",
