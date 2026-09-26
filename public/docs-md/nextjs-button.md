@@ -116,18 +116,30 @@ export default function SocialButtonDemo() {
   );
 }`;
 
-export const usageShardsPanel = `import Button from "@/components/custom/blocks/Button";
+export const usageShardsPanel = `"use client";
+
+const EFFECT_MODES: Record = {
+  "One time": "once",
+  Continuous: "continuous",
+};
 
 export default function ControlButtonsDemo() {
+  const [effectMode, setEffectMode] = useState("once");
+
   return (
     
-      {/* 1. Color Picker Button */}
+      {/* 0. Effect mode picker: one-time plays or continuous loops */}
+       setEffectMode(EFFECT_MODES[label])}
+        className="sm:col-span-2 lg:col-span-1"
+      />
 
-      {/* 2. Dropdown Select Button */}
+      {/* 1. Color Picker Button - shimmer on every pick, tinted with the colour */}
 
-      {/* 3. Range Slider Button */}
+      {/* 2. Dropdown Select Button - beams orbit the edge on a new pick */}
 
-      {/* 4. Toggle Switch Button */}
+      {/* 3. Range Slider Button - sparkles when dragged to full */}
+
+      {/* 4. Toggle Switch Button - beacon pings when switched on */}
 
   );
 }`;
@@ -182,6 +194,30 @@ npx shadcn@latest add @algorize-ui/button
           —
         
         Label title, active value, and option choices for control tiles.
+
+          effect
+
+          "none" | "sparkle" | "orbit" | "beacon" | "shimmer"
+
+          undefined
+
+          Effect a control tile plays when a slider reaches full, a toggle switches on, or a select / colour pick changes. sparkle is a floor glow with twinkling specks, orbit runs two beams around the edge, beacon pings rings outward, shimmer wipes a bright band across. Unset keeps the built-in feedback (slider beacon at full, colour burst); "none" turns all of it off.
+
+          effectMode
+
+          "once" | "continuous"
+
+          "once"
+
+          once plays a single time per change; continuous loops while the tile is active.
+
+          effectActive
+
+          boolean
+
+          —
+
+          Forces a continuous effect on or off. By default it runs while the slider is full, the toggle is on, or once a select / colour tile has been picked.
 
           size
 
