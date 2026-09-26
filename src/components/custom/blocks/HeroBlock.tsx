@@ -1,9 +1,8 @@
 "use client";
 
-import React, { forwardRef, useEffect, useState } from "react";
+import React, { forwardRef, useEffect, useLayoutEffect, useRef, useState } from "react";
 import { cn } from "@/lib/utils";
 import { ArrowRight, ArrowUpRight, Check, Copy, Sparkles, Terminal, Star, Code, Mail, FileText, Heart, ShieldCheck, ShoppingBag, Package } from "lucide-react";
-import { motion, AnimatePresence } from "framer-motion";
 
 /* ═══════════════════════════════════════════════
    SELF-CONTAINED SVG BRAND ICONS
@@ -146,6 +145,93 @@ const DEFAULT_MAIN_IMAGE =
   "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_1200,c_limit/v1790150482/photo-1524504388940-b1c1722653e1-1790150482279.jpg";
 
 /* ═══════════════════════════════════════════════
+   MOTION (CSS keyframes, no animation library)
+   ═══════════════════════════════════════════════ */
+
+/** A tween given only a duration eases out: cubic-bezier(0, 0, 0.58, 1). */
+const EASE_OUT = "cubic-bezier(0, 0, 0.58, 1)";
+/** The quick fade used for a word's opacity: 0.3s. */
+const FADE_EASE = "cubic-bezier(0.25, 0.1, 0.35, 1)";
+/** A spring of stiffness 350, damping 25, as a CSS easing; it settles in 558ms. */
+const BOUNCE_SPRING =
+  "linear(0, 0.041, 0.1419, 0.2747, 0.4185, 0.5586, 0.6853, 0.7936, 0.8813, 0.9485, 0.9971, 1.0295, 1.0488, 1.0578, 1.0594, 1.0558, 1.0492, 1.041, 1.0324, 1.0243, 1.017, 1.0108, 1.0059, 1.0022, 0.9996, 0.9979, 0.9969, 0.9965, 0.9965, 0.9968, 0.9972, 0.9977, 0.9982, 0.9987, 1)";
+const BOUNCE_SPRING_MS = 558;
+/** When that spring counts as at rest (within half a pixel), and the next word may come in. */
+const BOUNCE_REST_MS = 450;
+/** The blueprint grid's lines and shape glide between hover zones. */
+const GLIDE = { duration: 900, easing: "cubic-bezier(0.16, 1, 0.3, 1)" };
+
+const HERO_CSS = `
+@keyframes hero-rise-30 { from { opacity: 0; transform: translateY(30px); } }
+@keyframes hero-rise-20 { from { opacity: 0; transform: translateY(20px); } }
+@keyframes hero-grow { from { opacity: 0; transform: scale(0.95); } }
+@keyframes hero-word-in { from { opacity: 0; } }
+@keyframes hero-word-out { to { opacity: 0; } }
+@keyframes hero-char-in { from { opacity: 0; transform: translateY(24px) scale(0.5); } }
+@keyframes hero-char-out { to { opacity: 0; transform: translateY(-24px) scale(0.5); } }
+`;
+
+/** Where the blueprint's four grid lines and the shape sit for each hover zone. */
+type ShapeZone = "idle" | "left" | "right" | "center";
+const shapeTargets = (zone: ShapeZone): Record<string, string>[] => {
+  const pick = (right: string, left: string, rest: string) => (zone === "right" ? right : zone === "left" ? left : rest);
+  return [
+    { top: pick("26%", "30%", "28%") }, // top line
+    { top: pick("74%", "70%", "72%") }, // bottom line
+    { left: pick("23%", "29%", "26%") }, // left line
+    { left: pick("77%", "71%", "74%") }, // right line
+    // the shape, bounded by all four
+    { left: pick("23%", "29%", "26%"), width: pick("54%", "42%", "48%"), top: pick("26%", "30%", "28%"), height: pick("48%", "40%", "44%") },
+  ];
+};
+
+/**
+ * The bounce variant's rotating word. The word on screen leaves letter by
+ * letter; the next one comes in only once the last letter has settled.
+ */
+function BounceWord({ word }: { word: string }) {
+  const [shown, setShown] = useState(word);
+  const latest = useRef(word);
+  latest.current = word;
+  const leaving = shown !== word;
+
+  useEffect(() => {
+    if (!leaving) return;
+    const t = window.setTimeout(
+      () => setShown(latest.current),
+      Math.max(300, (shown.length - 1) * 20 + BOUNCE_REST_MS),
+    );
+    return () => window.clearTimeout(t);
+  }, [leaving, shown]);
+
+  return (
+    <span
+      key={shown}
+      className="text-foreground inline-flex text-left whitespace-nowrap"
+      style={{
+        animation: leaving
+          ? `hero-word-out 0.3s ${FADE_EASE} forwards`
+          : `hero-word-in 0.3s ${FADE_EASE} backwards`,
+      }}
+    >
+      {shown.split("").map((char, index) => (
+        <span
+          key={index}
+          className="inline-block"
+          style={{
+            animation: leaving
+              ? `hero-char-out ${BOUNCE_SPRING_MS}ms ${BOUNCE_SPRING} ${index * 20}ms both`
+              : `hero-char-in ${BOUNCE_SPRING_MS}ms ${BOUNCE_SPRING} ${index * 40}ms backwards`,
+          }}
+        >
+          {char}
+        </span>
+      ))}
+    </span>
+  );
+}
+
+/* ═══════════════════════════════════════════════
    MAIN HERO BLOCK COMPONENT
    ═══════════════════════════════════════════════ */
 
@@ -189,7 +275,7 @@ export const HeroBlock = forwardRef<HTMLElement, HeroBlockProps>(
     const [currentWordIndex, setCurrentWordIndex] = useState(0);
 
     // Shape hover zone state (used when variant === "facility" || variant === "geometric")
-    const [shapeHoverZone, setShapeHoverZone] = useState<"idle" | "left" | "right" | "center">("idle");
+    const [shapeHoverZone, setShapeHoverZone] = useState<ShapeZone>("idle");
 
     // Typing effect state (used when variant === "typing")
     const [currentText, setCurrentText] = useState("");
@@ -229,15 +315,36 @@ export const HeroBlock = forwardRef<HTMLElement, HeroBlockProps>(
       return () => clearTimeout(timer);
     }, [currentText, isDeleting, currentWordIndex, typingWords, variant]);
 
-    // 3D Perspective Word Flip effect interval (used when variant === "slider")
-    useEffect(() => {
-      if (variant !== "slider" || !typingWords || typingWords.length === 0) return;
-      const interval = setInterval(() => {
-        setCurrentWordIndex((prev) => (prev + 1) % typingWords.length);
-      }, 2200);
-
-      return () => clearInterval(interval);
-    }, [typingWords, variant]);
+    // Blueprint grid (used when variant === "facility" || "geometric"): the
+    // lines and the shape render at their zone's place; on a zone change each
+    // glides there from wherever it is on screen, the full 0.9s every time.
+    const shapeRefs = useRef<(HTMLDivElement | null)[]>([]);
+    const shapeAnims = useRef<(Animation | null)[]>([]);
+    const shapePlaced = useRef<Record<string, string>[] | null>(null);
+    const isBlueprint = variant === "facility" || variant === "geometric";
+    useLayoutEffect(() => {
+      if (!isBlueprint) {
+        shapePlaced.current = null;
+        return;
+      }
+      const targets = shapeTargets(shapeHoverZone);
+      const previous = shapePlaced.current;
+      shapePlaced.current = targets;
+      if (!previous) return;
+      targets.forEach((to, i) => {
+        const el = shapeRefs.current[i];
+        const before = previous[i];
+        if (!el || Object.keys(to).every((key) => to[key] === before[key])) return;
+        const running = shapeAnims.current[i];
+        let from = before;
+        if (running && running.playState === "running") {
+          const cs = getComputedStyle(el);
+          from = Object.fromEntries(Object.keys(to).map((key) => [key, cs.getPropertyValue(key)]));
+          running.cancel();
+        }
+        shapeAnims.current[i] = typeof el.animate === "function" ? el.animate([from, to], GLIDE) : null;
+      });
+    }, [shapeHoverZone, isBlueprint]);
 
     const handleCopy = () => {
       if (typeof window !== "undefined" && navigator.clipboard) {
@@ -515,6 +622,7 @@ export const HeroBlock = forwardRef<HTMLElement, HeroBlockProps>(
           )}
           {...props}
         >
+          <style>{HERO_CSS}</style>
           <div className="w-full max-w-[1440px] mx-auto min-h-[620px] grid grid-cols-1 lg:grid-cols-12 items-stretch">
             
             {/* LEFT COLUMN: Title, Subtitle, CTA & Stats */}
@@ -622,11 +730,9 @@ export const HeroBlock = forwardRef<HTMLElement, HeroBlockProps>(
               <div className="relative w-full h-full grid grid-cols-12 gap-2.5 sm:gap-4 items-center z-10 my-auto p-2 sm:p-0">
                 
                 {/* Doctor Consultation Portrait Card */}
-                <motion.div 
-                  initial={{ opacity: 0, y: 30 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 0.6 }}
+                <div
                   className="col-span-6 ml-0 lg:-ml-10 relative z-20"
+                  style={{ animation: `hero-rise-30 0.6s ${EASE_OUT} backwards` }}
                 >
                   <div className="relative aspect-[3/4] w-full rounded-[18px] sm:rounded-[32px] overflow-hidden border-2 sm:border-4 border-background bg-zinc-800">
                     <img
@@ -635,16 +741,14 @@ export const HeroBlock = forwardRef<HTMLElement, HeroBlockProps>(
                       className="w-full h-full object-cover"
                     />
                   </div>
-                </motion.div>
+                </div>
 
                 {/* Right Stacked Images inside Dark Panel */}
                 <div className="col-span-6 space-y-2.5 sm:space-y-4 relative z-10">
                   
                   {/* Top Right Patient Care Portrait Image */}
-                  <motion.div 
-                    initial={{ opacity: 0, scale: 0.95 }}
-                    animate={{ opacity: 1, scale: 1 }}
-                    transition={{ delay: 0.2, duration: 0.5 }}
+                  <div
+                    style={{ animation: `hero-grow 0.5s ${EASE_OUT} 0.2s backwards` }}
                     className="relative aspect-[4/3] sm:aspect-square w-full rounded-[16px] sm:rounded-[28px] overflow-hidden bg-zinc-800 border border-white/10"
                   >
                     <img
@@ -652,13 +756,11 @@ export const HeroBlock = forwardRef<HTMLElement, HeroBlockProps>(
                       alt="Patient Care"
                       className="w-full h-full object-cover"
                     />
-                  </motion.div>
+                  </div>
 
                   {/* Bottom Right Lab Kit Test Image */}
-                  <motion.div 
-                    initial={{ opacity: 0, scale: 0.95 }}
-                    animate={{ opacity: 1, scale: 1 }}
-                    transition={{ delay: 0.3, duration: 0.5 }}
+                  <div
+                    style={{ animation: `hero-grow 0.5s ${EASE_OUT} 0.3s backwards` }}
                     className="relative aspect-[4/3] w-full rounded-[16px] sm:rounded-[28px] overflow-hidden bg-zinc-800 border border-white/10 group"
                   >
                     <img
@@ -671,19 +773,17 @@ export const HeroBlock = forwardRef<HTMLElement, HeroBlockProps>(
                         Lab-Trusted. <br /> Doorstep Delivered.
                       </p>
                     </div>
-                  </motion.div>
+                  </div>
 
                 </div>
 
               </div>
 
               {/* Bottom Floating Delivery Card */}
-              <motion.div 
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.4, duration: 0.5 }}
+              <div
                 className="relative lg:absolute mt-3 lg:mt-0 bottom-0 lg:bottom-6 left-0 lg:-left-6 lg:-ml-24 z-30 w-full lg:w-auto min-w-0 sm:min-w-[320px] p-3 sm:p-4 lg:p-5 rounded-[16px] sm:rounded-[24px] shadow-2xl border-2 backdrop-blur-xl transition-colors duration-300 bg-card text-card-foreground"
                 style={{
+                  animation: `hero-rise-20 0.5s ${EASE_OUT} 0.4s backwards`,
                   backgroundColor: accentRgb
                     ? `rgba(${accentRgb[0]}, ${accentRgb[1]}, ${accentRgb[2]}, 0.18)`
                     : undefined,
@@ -732,7 +832,7 @@ export const HeroBlock = forwardRef<HTMLElement, HeroBlockProps>(
                     ))}
                   </div>
                 </div>
-              </motion.div>
+              </div>
 
             </div>
 
@@ -975,10 +1075,9 @@ export const HeroBlock = forwardRef<HTMLElement, HeroBlockProps>(
           ? "Request a facility audit"
           : primaryActionLabel;
 
-      const slowTransition = {
-        duration: 0.9,
-        ease: [0.16, 1, 0.3, 1] as const,
-      };
+      // Where the grid lines and the shape rest for the current hover zone;
+      // the glide between zones is `GLIDE`, run by the layout effect above.
+      const shape = shapeTargets(shapeHoverZone) as React.CSSProperties[];
 
       return (
         <section
@@ -1064,92 +1163,49 @@ export const HeroBlock = forwardRef<HTMLElement, HeroBlockProps>(
                 />
               </div>
 
-              {/* Grid Lines */}
+              {/* Grid Lines — each sits at its hover zone's place (see `shapeTargets`) */}
               {/* Top horizontal grid line - moves symmetrically with shape top */}
-              <motion.div
-                className="absolute left-0 right-0 h-px bg-neutral-200/80 dark:bg-neutral-800/80 z-10 pointer-events-none"
-                animate={{
-                  top:
-                    shapeHoverZone === "right"
-                      ? "26%"
-                      : shapeHoverZone === "left"
-                      ? "30%"
-                      : "28%",
+              <div
+                ref={(el) => {
+                  shapeRefs.current[0] = el;
                 }}
-                transition={slowTransition}
+                className="absolute left-0 right-0 h-px bg-neutral-200/80 dark:bg-neutral-800/80 z-10 pointer-events-none"
+                style={shape[0]}
               />
               {/* Bottom horizontal grid line - moves symmetrically with shape bottom */}
-              <motion.div
-                className="absolute left-0 right-0 h-px bg-neutral-200/80 dark:bg-neutral-800/80 z-10 pointer-events-none"
-                animate={{
-                  top:
-                    shapeHoverZone === "right"
-                      ? "74%"
-                      : shapeHoverZone === "left"
-                      ? "70%"
-                      : "72%",
+              <div
+                ref={(el) => {
+                  shapeRefs.current[1] = el;
                 }}
-                transition={slowTransition}
+                className="absolute left-0 right-0 h-px bg-neutral-200/80 dark:bg-neutral-800/80 z-10 pointer-events-none"
+                style={shape[1]}
               />
 
               {/* Moving Left Vertical Grid Line - attached to shape left, moves in 4-way symmetry */}
-              <motion.div
-                className="absolute top-0 bottom-0 w-px bg-neutral-200/80 dark:bg-neutral-800/80 z-10 pointer-events-none"
-                animate={{
-                  left:
-                    shapeHoverZone === "right"
-                      ? "23%"
-                      : shapeHoverZone === "left"
-                      ? "29%"
-                      : "26%",
+              <div
+                ref={(el) => {
+                  shapeRefs.current[2] = el;
                 }}
-                transition={slowTransition}
+                className="absolute top-0 bottom-0 w-px bg-neutral-200/80 dark:bg-neutral-800/80 z-10 pointer-events-none"
+                style={shape[2]}
               />
 
               {/* Moving Right Vertical Grid Line - attached to shape right, moves in 4-way symmetry */}
-              <motion.div
-                className="absolute top-0 bottom-0 w-px bg-neutral-200/80 dark:bg-neutral-800/80 z-10 pointer-events-none"
-                animate={{
-                  left:
-                    shapeHoverZone === "right"
-                      ? "77%"
-                      : shapeHoverZone === "left"
-                      ? "71%"
-                      : "74%",
+              <div
+                ref={(el) => {
+                  shapeRefs.current[3] = el;
                 }}
-                transition={slowTransition}
+                className="absolute top-0 bottom-0 w-px bg-neutral-200/80 dark:bg-neutral-800/80 z-10 pointer-events-none"
+                style={shape[3]}
               />
 
               {/* Animated Central Morphing Shape - strictly bounded between all 4 moving grid lines */}
-              <motion.div
-                className="absolute z-10 pointer-events-none"
-                animate={{
-                  left:
-                    shapeHoverZone === "right"
-                      ? "23%"
-                      : shapeHoverZone === "left"
-                      ? "29%"
-                      : "26%",
-                  width:
-                    shapeHoverZone === "right"
-                      ? "54%"
-                      : shapeHoverZone === "left"
-                      ? "42%"
-                      : "48%",
-                  top:
-                    shapeHoverZone === "right"
-                      ? "26%"
-                      : shapeHoverZone === "left"
-                      ? "30%"
-                      : "28%",
-                  height:
-                    shapeHoverZone === "right"
-                      ? "48%"
-                      : shapeHoverZone === "left"
-                      ? "40%"
-                      : "44%",
+              <div
+                ref={(el) => {
+                  shapeRefs.current[4] = el;
                 }}
-                transition={slowTransition}
+                className="absolute z-10 pointer-events-none"
+                style={shape[4]}
               >
                 {/* Geometric chamfered polygon */}
                 <div
@@ -1165,7 +1221,7 @@ export const HeroBlock = forwardRef<HTMLElement, HeroBlockProps>(
 
                 {/* Bottom-Left Control Anchor Square - exactly on (24%, bottom) */}
                 <div className="absolute bottom-0 left-0 w-2 h-2 sm:w-2.5 sm:h-2.5 bg-neutral-400 dark:bg-neutral-500 -translate-x-1/2 translate-y-1/2 shadow-xs" />
-              </motion.div>
+              </div>
             </div>
           </div>
         </section>
@@ -1185,6 +1241,7 @@ export const HeroBlock = forwardRef<HTMLElement, HeroBlockProps>(
         )}
         {...props}
       >
+        <style>{HERO_CSS}</style>
         {/* Radial Background Glow */}
         <div
           className="absolute inset-0 pointer-events-none"
@@ -1231,39 +1288,7 @@ export const HeroBlock = forwardRef<HTMLElement, HeroBlockProps>(
                 </span>
               ) : (
                 <span className="relative inline-flex items-center justify-start overflow-hidden py-0.5 h-[1.3em] w-[140px] xs:w-[165px] sm:w-[170px] md:w-[210px] lg:w-[270px] xl:w-[330px] shrink-0">
-                  <AnimatePresence mode="wait">
-                    <motion.span
-                      key={currentWord}
-                      initial="initial"
-                      animate="animate"
-                      exit="exit"
-                      variants={{
-                        initial: { opacity: 0 },
-                        animate: { opacity: 1, transition: { staggerChildren: 0.04 } },
-                        exit: { opacity: 0, transition: { staggerChildren: 0.02 } },
-                      }}
-                      className="text-foreground inline-flex text-left whitespace-nowrap"
-                    >
-                      {currentWord.split("").map((char, index) => (
-                        <motion.span
-                          key={index}
-                          variants={{
-                            initial: { y: 24, opacity: 0, scale: 0.5 },
-                            animate: { y: 0, opacity: 1, scale: 1 },
-                            exit: { y: -24, opacity: 0, scale: 0.5 },
-                          }}
-                          transition={{
-                            type: "spring",
-                            stiffness: 350,
-                            damping: 25,
-                          }}
-                          className="inline-block"
-                        >
-                          {char}
-                        </motion.span>
-                      ))}
-                    </motion.span>
-                  </AnimatePresence>
+                  <BounceWord word={currentWord} />
                 </span>
               )}
 

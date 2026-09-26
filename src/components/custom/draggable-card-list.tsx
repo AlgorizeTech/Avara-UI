@@ -1,9 +1,12 @@
 "use client";
 
-import { useState } from "react";
-import { Reorder, useDragControls } from "framer-motion";
+import { useCallback, useEffect, useLayoutEffect, useRef, useState } from "react";
+import { flushSync } from "react-dom";
+import gsap from "gsap";
 import { cn } from "@/lib/utils";
 import { GripVertical, Calendar, ExternalLink, CheckCircle2, Circle } from "lucide-react";
+import { gsapTicker } from "@/components/custom/blocks/gsap-motion";
+import { createSpringFollower, springEase, type SpringFollower } from "@/components/custom/blocks/motion-curves";
 
 export interface DraggableCardItem {
     id: string | number;
@@ -94,7 +97,66 @@ const DEFAULT_ITEMS: DraggableCardItem[] = [
     },
 ];
 
+/** Lift while dragging, and the glide of cards moving out of the way. */
+const CARD_SPRING = { stiffness: 350, damping: 25 };
+const LAYOUT = springEase(CARD_SPRING);
+/** The spring that pulls a released card home. */
+const RETURN_SPRING = { stiffness: 200, damping: 40 };
+
+/** Drag and reorder only answer the primary pointer. */
+const isPrimaryPointer = (e: PointerEvent) =>
+    e.pointerType === "mouse" ? e.button === 0 : e.isPrimary !== false;
+
+/** Pointer velocity (px/s) over the last 100ms, sampled like Framer's pan gesture. */
+function panVelocity(history: { y: number; t: number }[]) {
+    if (history.length < 2) return 0;
+    const last = history[history.length - 1];
+    let from = history[0];
+    for (let i = history.length - 1; i >= 0; i--) {
+        from = history[i];
+        if (last.t - from.t > 100) break;
+    }
+    const time = (last.t - from.t) / 1000;
+    if (time === 0) return 0;
+    const v = (last.y - from.y) / time;
+    return Number.isFinite(v) ? v : 0;
+}
+
+/** What each card element needs from the list: to be known, and to start a drag. */
+interface Reorderer {
+    register: (id: string, el: HTMLLIElement | null) => void;
+    press: (id: string, e: PointerEvent) => void;
+}
+
+/** A card's motion: drag offset, layout-glide offset and lift, painted as one transform. */
+interface CardMotion {
+    el: HTMLLIElement;
+    y: number;
+    layoutY: number;
+    scale: number;
+    lift: SpringFollower;
+}
+
+function paintCard(m: CardMotion) {
+    const offset = m.y + m.layoutY;
+    m.el.style.transform = offset || m.scale !== 1 ? `translateY(${offset}px) scale(${m.scale})` : "none";
+    // Above its neighbours while displaced by a drag, as Reorder.Item does.
+    m.el.style.zIndex = m.y ? "1" : "unset";
+}
+
+/** Styles every card carries; a card that drags from anywhere also blocks
+ *  text selection and the ghost image, and leaves horizontal pans to the page. */
+const CARD_STYLE: React.CSSProperties = { zIndex: "unset" };
+const WHOLE_CARD_DRAG_STYLE: React.CSSProperties = {
+    ...CARD_STYLE,
+    userSelect: "none",
+    WebkitUserSelect: "none",
+    WebkitTouchCallout: "none",
+    touchAction: "pan-x",
+};
+
 interface SingleCardItemProps {
+    reorder: Reorderer;
     item: DraggableCardItem;
     variant: "classic" | "modern";
     dragHandlePosition: "right" | "left";
@@ -105,6 +167,7 @@ interface SingleCardItemProps {
 }
 
 function SingleCardItem({
+    reorder,
     item,
     variant,
     dragHandlePosition,
@@ -113,14 +176,16 @@ function SingleCardItem({
     cardClassName,
     onToggle,
 }: SingleCardItemProps) {
-    const controls = useDragControls();
+    const id = String(item.id);
+    const ref = useCallback((el: HTMLLIElement | null) => reorder.register(id, el), [reorder, id]);
 
     const renderDragHandle = () => (
         <div
-            onPointerDown={(e) => controls.start(e)}
+            onPointerDown={(e) => reorder.press(id, e.nativeEvent)}
             aria-label="Drag to reorder"
             className={cn(
-                "p-2.5 rounded-2xl text-muted-foreground/60 hover:text-foreground hover:bg-muted/80 cursor-grab active:cursor-grabbing transition-colors shrink-0 group-hover:text-foreground/90",
+                // touch-none: the handle's vertical drag must not scroll the page instead.
+                "p-2.5 rounded-2xl text-muted-foreground/60 hover:text-foreground hover:bg-muted/80 cursor-grab active:cursor-grabbing transition-colors shrink-0 group-hover:text-foreground/90 touch-none",
                 variant === "modern" && "bg-muted/60 border border-border/50 hover:bg-primary hover:text-primary-foreground hover:border-primary/30 transition-all duration-200"
             )}
         >
@@ -131,16 +196,10 @@ function SingleCardItem({
     // VARIANT 1: Modern (Glass-Glow Card + Left Accent Color Border Shift on Hover)
     if (variant === "modern") {
         return (
-            <Reorder.Item
-                value={item}
-                id={String(item.id)}
-                dragControls={controls}
-                dragListener={false}
-                whileDrag={{
-                    scale: 1.02,
-                    zIndex: 50,
-                }}
-                transition={{ type: "spring", stiffness: 350, damping: 25 }}
+            <li
+                ref={ref}
+                id={id}
+                style={CARD_STYLE}
                 className={cn(
                     "relative w-full overflow-hidden rounded-2xl border border-border/80 bg-gradient-to-r from-card via-card to-primary/5 dark:to-primary/10 backdrop-blur-2xl p-4 sm:p-5 shadow-none transition-colors select-none group flex items-start justify-between gap-3",
                     item.hoverBorderColor || "hover:border-primary/80",
@@ -224,20 +283,18 @@ function SingleCardItem({
                 </div>
 
                 {dragHandlePosition === "right" && renderDragHandle()}
-            </Reorder.Item>
+            </li>
         );
     }
 
     // VARIANT 2: Classic (Left Accent Color Border Shift on Hover, Zero Shadow)
     return (
-        <Reorder.Item
-            value={item}
-            id={String(item.id)}
-            whileDrag={{
-                scale: 1.02,
-                zIndex: 50,
-            }}
-            transition={{ type: "spring", stiffness: 350, damping: 25 }}
+        <li
+            ref={ref}
+            id={id}
+            draggable={false}
+            style={WHOLE_CARD_DRAG_STYLE}
+            onPointerDown={(e) => reorder.press(id, e.nativeEvent)}
             className={cn(
                 "relative w-full rounded-2xl border border-border/80 bg-card backdrop-blur-xl p-4 sm:p-5 shadow-none transition-colors select-none group flex items-start justify-between gap-3 cursor-grab active:cursor-grabbing",
                 item.hoverBorderColor || "hover:border-primary/80",
@@ -309,8 +366,165 @@ function SingleCardItem({
             </div>
 
             {dragHandlePosition === "right" && renderDragHandle()}
-        </Reorder.Item>
+        </li>
     );
+}
+
+interface DragSession {
+    id: string;
+    event: PointerEvent;
+    pointerId: number;
+    startX: number;
+    startY: number;
+    /** The card's drag offset when the drag began (plus any layout jump since). */
+    origin: number;
+    started: boolean;
+    history: { y: number; t: number }[];
+}
+
+/**
+ * Vertical drag-to-reorder, on the rules Framer's Reorder uses: a press stops
+ * the card where it is; it starts following the pointer 1:1 once the pointer
+ * has moved 3px; while moving down it swaps with the next card as soon as its
+ * bottom edge passes that card's middle (moving up: its top edge, the previous
+ * card's middle), one swap per move. The dragged card keeps its place under
+ * the pointer across a swap, the others glide to their new slots, and on
+ * release it springs home.
+ */
+function createReorderer(refs: {
+    cards: React.MutableRefObject<Map<string, CardMotion>>;
+    drag: React.MutableRefObject<DragSession | null>;
+    list: React.MutableRefObject<DraggableCardItem[]>;
+    reorder: React.MutableRefObject<(items: DraggableCardItem[]) => void>;
+}) {
+    const { cards, drag, list, reorder } = refs;
+
+    const goHome = (m: CardMotion) => {
+        gsap.killTweensOf(m, "y");
+        const from = m.y;
+        if (!from) return;
+        // Settles once within 1px of home, where Framer's release spring stops.
+        if (Math.abs(from) <= 1) {
+            m.y = 0;
+            paintCard(m);
+            return;
+        }
+        const { duration, ease } = springEase({ ...RETURN_SPRING, restDelta: 1 / Math.abs(from) });
+        gsap.to(m, { y: 0, duration, ease, onUpdate: () => paintCard(m) });
+    };
+
+    const swapIfPast = (id: string, offset: number, velocity: number) => {
+        const items = list.current;
+        const index = items.findIndex((i) => String(i.id) === id);
+        if (index === -1) return;
+        const dir = velocity > 0 ? 1 : -1;
+        const next = items[index + dir];
+        const card = cards.current.get(id)?.el;
+        const other = next && cards.current.get(String(next.id))?.el;
+        if (!card || !other) return;
+        const otherCentre = other.offsetTop + other.offsetHeight / 2;
+        const past =
+            dir === 1
+                ? card.offsetTop + card.offsetHeight + offset > otherCentre
+                : card.offsetTop + offset < otherCentre;
+        if (!past) return;
+        const reordered = [...items];
+        const [moved] = reordered.splice(index, 1);
+        reordered.splice(index + dir, 0, moved);
+        // Commit now, so the layout effect re-anchors the dragged card before
+        // the next frame paints it one slot off.
+        flushSync(() => reorder.current(reordered));
+    };
+
+    const move = (e: PointerEvent) => {
+        const s = drag.current;
+        if (!s || e.pointerId !== s.pointerId) return;
+        const m = cards.current.get(s.id);
+        if (!m) return;
+        s.history.push({ y: e.pageY, t: performance.now() });
+        const dy = e.pageY - s.startY;
+        if (!s.started) {
+            if (Math.hypot(e.pageX - s.startX, dy) < 3) return;
+            s.started = true;
+            s.origin = m.y;
+            m.lift.set(1.02);
+        }
+        m.y = s.origin + dy;
+        paintCard(m);
+        const velocity = panVelocity(s.history);
+        if (velocity) swapIfPast(s.id, m.y, velocity);
+    };
+
+    const end = (e: PointerEvent) => {
+        const s = drag.current;
+        if (!s || e.pointerId !== s.pointerId) return;
+        finish();
+    };
+
+    const detach = () => {
+        window.removeEventListener("pointermove", move);
+        window.removeEventListener("pointerup", end);
+        window.removeEventListener("pointercancel", end);
+    };
+
+    const finish = () => {
+        const s = drag.current;
+        drag.current = null;
+        detach();
+        const m = s && cards.current.get(s.id);
+        if (!s || !m) return;
+        if (s.started) m.lift.set(1);
+        goHome(m);
+    };
+
+    const reorderer: Reorderer & { destroy: () => void } = {
+        register(id, el) {
+            const old = cards.current.get(id);
+            if (old && old.el === el) return;
+            if (old) {
+                old.lift.destroy();
+                gsap.killTweensOf(old);
+                cards.current.delete(id);
+            }
+            if (!el) return;
+            const m: CardMotion = { el, y: 0, layoutY: 0, scale: 1, lift: null as unknown as SpringFollower };
+            m.lift = createSpringFollower(
+                1,
+                (v) => {
+                    m.scale = v;
+                    paintCard(m);
+                },
+                { ...CARD_SPRING, ticker: gsapTicker },
+            );
+            cards.current.set(id, m);
+        },
+        press(id, e) {
+            // The modern handle and the card both report the same press.
+            if (drag.current?.event === e || !isPrimaryPointer(e)) return;
+            if (drag.current) finish();
+            const m = cards.current.get(id);
+            if (!m) return;
+            gsap.killTweensOf(m, "y");
+            drag.current = {
+                id,
+                event: e,
+                pointerId: e.pointerId,
+                startX: e.pageX,
+                startY: e.pageY,
+                origin: m.y,
+                started: false,
+                history: [{ y: e.pageY, t: performance.now() }],
+            };
+            window.addEventListener("pointermove", move);
+            window.addEventListener("pointerup", end);
+            window.addEventListener("pointercancel", end);
+        },
+        destroy() {
+            drag.current = null;
+            detach();
+        },
+    };
+    return reorderer;
 }
 
 export function DraggableCardList({
@@ -342,6 +556,52 @@ export function DraggableCardList({
         }
     };
 
+    // ── Drag-to-reorder ──────────────────────────────────────────────────
+    const cards = useRef(new Map<string, CardMotion>());
+    const drag = useRef<DragSession | null>(null);
+    const listRef = useRef(itemList);
+    listRef.current = itemList;
+    const reorderRef = useRef(handleReorder);
+    reorderRef.current = handleReorder;
+    const [reorder] = useState(() =>
+        createReorderer({ cards, drag, list: listRef, reorder: reorderRef }),
+    );
+    useEffect(() => () => reorder.destroy(), [reorder]);
+
+    // Where each card's layout box sat before this render commits — the
+    // snapshot a layout animation starts from.
+    const before = useRef(new Map<string, number>());
+    before.current = new Map(
+        Array.from(cards.current, ([id, m]) => [id, m.el.offsetTop] as const),
+    );
+    useLayoutEffect(() => {
+        cards.current.forEach((m, id) => {
+            const was = before.current.get(id);
+            if (was === undefined) return;
+            const delta = was - m.el.offsetTop;
+            if (!delta) return;
+            const s = drag.current;
+            if (s?.started && s.id === id) {
+                // The dragged card stays under the pointer: its jump to the
+                // new slot is folded into the drag offset.
+                s.origin += delta;
+                m.y += delta;
+                paintCard(m);
+                return;
+            }
+            // Everyone else glides from where they were to their new slot.
+            gsap.killTweensOf(m, "layoutY");
+            m.layoutY += delta;
+            paintCard(m);
+            gsap.to(m, {
+                layoutY: 0,
+                duration: LAYOUT.duration,
+                ease: LAYOUT.ease,
+                onUpdate: () => paintCard(m),
+            });
+        });
+    });
+
     const handleToggleComplete = (id: string | number) => {
         const updated = itemList.map((item) =>
             item.id === id ? { ...item, completed: !item.completed } : item
@@ -370,15 +630,11 @@ export function DraggableCardList({
             )}
 
             {/* Reorder Group Container */}
-            <Reorder.Group
-                axis="y"
-                values={itemList}
-                onReorder={handleReorder}
-                className="space-y-3"
-            >
+            <ul className="space-y-3">
                 {itemList.map((item) => (
                     <SingleCardItem
                         key={item.id}
+                        reorder={reorder}
                         item={item}
                         variant={variant}
                         dragHandlePosition={dragHandlePosition}
@@ -388,7 +644,7 @@ export function DraggableCardList({
                         onToggle={handleToggleComplete}
                     />
                 ))}
-            </Reorder.Group>
+            </ul>
         </div>
     );
 }

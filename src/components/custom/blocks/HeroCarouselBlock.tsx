@@ -1,7 +1,6 @@
 "use client";
 
 import React, { useCallback, useEffect, useLayoutEffect, useRef, useState } from "react";
-import gsap from "gsap";
 import { ArrowUpRight } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { AvatarStack, type StackAvatar } from "./AvatarStackBlock";
@@ -89,6 +88,30 @@ const prefersReducedMotion = () =>
   typeof window !== "undefined" && window.matchMedia?.("(prefers-reduced-motion: reduce)").matches;
 
 // ------------------------------------------
+// Motion, with no library: GSAP's power3.out, power3.inOut and power2.out as
+// CSS easings, run through the Web Animations API so a move can be dropped
+// where it stands and the next one start from there.
+// ------------------------------------------
+const EASE_OUT =
+  "linear(0, .1945, .3591, .4971, .6115, .7052, .7808, .8409, .8877, .9233, .9497, .9686, .9816, .9901, .9952, .998, .9994, .9999, 1, 1)";
+const EASE_TRAVEL =
+  "linear(0, 0, .0002, .0012, .0039, .0094, .0195, .0361, .0617, .0988, .1505, .2204, .3121, .4299, .5701, .6879, .7796, .8495, .9012, .9383, .9639, .9805, .9906, .9961, .9988, .9998, 1, 1)";
+const EASE_SETTLE = "cubic-bezier(0.3333, 1, 0.6667, 1)";
+
+/** `el.animate`, or nothing where the engine cannot run these easings. */
+function play(el: Element, keyframes: Keyframe[], options: KeyframeAnimationOptions) {
+  if (typeof el.animate !== "function") return null;
+  try {
+    return el.animate(keyframes, options);
+  } catch {
+    return null;
+  }
+}
+
+// The progress line fills once per slide; its end moves the queue.
+const PROGRESS_CSS = "@keyframes hc-progress { from { transform: scaleX(0); } to { transform: scaleX(1); } }";
+
+// ------------------------------------------
 // Root
 // ------------------------------------------
 function HeroCarouselRoot({
@@ -114,9 +137,10 @@ function HeroCarouselRoot({
   const railRef = useRef<HTMLDivElement>(null);
   const cardRefs = useRef<(HTMLButtonElement | null)[]>([]);
   const bgRefs = useRef<(HTMLDivElement | null)[]>([]);
-  const barRef = useRef<HTMLSpanElement>(null);
-  const progressRef = useRef<gsap.core.Tween | null>(null);
-  const driftRef = useRef<gsap.core.Timeline | null>(null);
+  const movesRef = useRef(new WeakMap<Element, Animation>());
+  const fadesRef = useRef(new WeakMap<Element, Animation>());
+  const driftsRef = useRef(new WeakMap<Element, Animation>());
+  const driftRef = useRef<Animation | null>(null);
   const queueRef = useRef<number[]>([]);
   const swipe = useRef<{ x: number; moved: boolean } | null>(null);
 
@@ -162,7 +186,9 @@ function HeroCarouselRoot({
 
   // ---- Lay the queue out. The front card is `active`; the rest follow in order.
   // A card that moves backwards in the queue slides there; one sent to the back
-  // appears at its new place instead of flying across the others.
+  // appears at its new place instead of flying across the others. The queue
+  // position is the card's `translate`, so it never meets the reveal's
+  // `transform`.
   useLayoutEffect(() => {
     if (!metrics) return;
     const reduced = prefersReducedMotion();
@@ -171,19 +197,36 @@ function HeroCarouselRoot({
       const el = cardRefs.current[i];
       if (!el) return;
       const k = (i - active + n) % n;
-      const target =
-        k === 0
-          ? { x: 0, width: metrics.bigW, height: metrics.bigH }
-          : { x: metrics.bigW + metrics.gap + (k - 1) * (metrics.smallW + metrics.gap), width: metrics.smallW, height: metrics.smallH };
+      const x = k === 0 ? 0 : metrics.bigW + metrics.gap + (k - 1) * (metrics.smallW + metrics.gap);
+      const target = {
+        translate: `${x}px 0px`,
+        width: `${k === 0 ? metrics.bigW : metrics.smallW}px`,
+        height: `${k === 0 ? metrics.bigH : metrics.smallH}px`,
+      };
       el.style.zIndex = String(n - k);
       const prevK = queueRef.current[i];
+      // Placing a card always drops a slide still running on it; left to run,
+      // the old slide would carry the card back to where it was heading (a
+      // card could stay stuck at the front after quick clicks).
+      const running = movesRef.current.get(el);
+      movesRef.current.delete(el);
       if (first || reduced || prevK === k) {
-        gsap.set(el, target);
+        running?.cancel();
+        Object.assign(el.style, target);
       } else if (k > prevK) {
-        gsap.set(el, { ...target, opacity: 0 });
-        gsap.to(el, { opacity: 1, duration: 0.6, delay: 0.35, ease: "power2.out", overwrite: "auto" });
+        running?.cancel();
+        Object.assign(el.style, target);
+        fadesRef.current.get(el)?.cancel();
+        const fade = play(el, [{ opacity: 0 }, { opacity: 1 }], { duration: 600, delay: 350, easing: EASE_SETTLE, fill: "backwards" });
+        if (fade) fadesRef.current.set(el, fade);
       } else {
-        gsap.to(el, { ...target, duration: 0.95, ease: "power3.inOut", overwrite: "auto" });
+        // From wherever the card is on screen, the full length again.
+        const cs = getComputedStyle(el);
+        const from = { translate: cs.translate, width: cs.width, height: cs.height };
+        running?.cancel();
+        Object.assign(el.style, target);
+        const move = play(el, [from, target], { duration: 950, easing: EASE_TRAVEL });
+        if (move) movesRef.current.set(el, move);
       }
       queueRef.current[i] = k;
     });
@@ -191,25 +234,47 @@ function HeroCarouselRoot({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [active, railWidth, n]);
 
-  // ---- The photograph behind everything: crossfade, settle, then drift.
+  // ---- The photograph behind everything: swap, settle, then drift. The
+  // layers' opacity comes straight from render, so the swap is a cut.
   useEffect(() => {
     const incoming = bgRefs.current[active];
     if (!incoming) return;
     const img = incoming.querySelector("img");
     const reduced = prefersReducedMotion();
-    driftRef.current?.kill();
-    bgRefs.current.forEach((el, i) => {
-      if (!el || i === active) return;
-      gsap.to(el, { opacity: 0, duration: reduced ? 0 : 1.2, ease: "power2.inOut", overwrite: "auto" });
-    });
-    gsap.to(incoming, { opacity: 1, duration: reduced ? 0 : 1.2, ease: "power2.inOut", overwrite: "auto" });
-    if (img && !reduced) {
-      driftRef.current = gsap
-        .timeline()
-        .fromTo(img, { scale: 1.08 }, { scale: 1, duration: 1.6, ease: "power2.out" })
-        .to(img, { scale: 1.05, duration: Math.max(interval / 1000, 4) + 3, ease: "none" });
-    } else if (img) {
-      gsap.set(img, { scale: 1 });
+    // The drift that was running stops where it is: its photograph keeps
+    // that scale.
+    const previous = driftRef.current;
+    driftRef.current = null;
+    if (previous) {
+      try {
+        previous.commitStyles();
+        previous.cancel();
+      } catch {
+        previous.pause();
+      }
+    }
+    if (!img) return;
+    driftsRef.current.get(img)?.cancel();
+    driftsRef.current.delete(img);
+    if (reduced) {
+      img.style.transform = "scale(1)";
+      return;
+    }
+    // Settle from 1.08 to 1 over 1.6s, then creep to 1.05 until well past the next slide.
+    const drift = Math.max(interval / 1000, 4) + 3;
+    const total = 1.6 + drift;
+    const anim = play(
+      img,
+      [
+        { transform: "scale(1.08)", easing: EASE_SETTLE },
+        { transform: "scale(1)", offset: 1.6 / total, easing: "linear" },
+        { transform: "scale(1.05)" },
+      ],
+      { duration: total * 1000, fill: "forwards" },
+    );
+    if (anim) {
+      driftRef.current = anim;
+      driftsRef.current.set(img, anim);
     }
   }, [active, interval]);
 
@@ -223,29 +288,11 @@ function HeroCarouselRoot({
 
   // ---- Autoplay is the progress line: when it fills, the queue moves. Pausing
   // the line pauses the clock, so a hover never loses the time already spent.
+  // (The line is a CSS animation on the front card; see `onProgressEnd`.)
   const paused = hover || hidden || !onScreen || !inView;
-  useEffect(() => {
-    progressRef.current?.kill();
-    const bar = barRef.current;
-    if (!bar || interval <= 0 || n < 2) return;
-    progressRef.current = gsap.fromTo(
-      bar,
-      { scaleX: 0 },
-      { scaleX: 1, duration: interval / 1000, ease: "none", paused, onComplete: () => go(active + 1) },
-    );
-    return () => {
-      progressRef.current?.kill();
-    };
-    // `paused` is applied by the effect below rather than restarting the tween.
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [active, interval, n, go]);
-
-  useEffect(() => {
-    const tween = progressRef.current;
-    if (!tween) return;
-    if (paused) tween.pause();
-    else tween.resume();
-  }, [paused]);
+  const onProgressEnd = (e: React.AnimationEvent<HTMLSpanElement>) => {
+    if (e.target === e.currentTarget && e.animationName === "hc-progress") go(active + 1);
+  };
 
   useEffect(() => {
     const onVisibility = () => setHidden(document.hidden);
@@ -275,25 +322,39 @@ function HeroCarouselRoot({
   // cleanup and kill the timeline mid-play, leaving everything blurred out.
   const measured = metrics !== null;
   const revealed = useRef(false);
+  const revealAnims = useRef<Animation[]>([]);
   useEffect(() => {
     if (!inView || !measured || revealed.current) return;
     revealed.current = true;
     const root = rootRef.current;
     if (!root || prefersReducedMotion()) return;
-    const lead = root.querySelectorAll("[data-hc-lead]");
-    const panel = root.querySelectorAll("[data-hc-panel]");
-    const cards = root.querySelectorAll("[data-hc-card]");
-    const caption = root.querySelectorAll("[data-hc-captions]");
-    const tl = gsap.timeline({ defaults: { ease: "power3.out" } });
-    tl.fromTo(lead, { opacity: 0, y: 22, filter: "blur(10px)" }, { opacity: 1, y: 0, filter: "blur(0px)", duration: 0.9, stagger: 0.12 }, 0)
-      .fromTo(cards, { opacity: 0, y: 28 }, { opacity: 1, y: 0, duration: 0.9, stagger: 0.08 }, 0.35)
-      .fromTo(caption, { opacity: 0, y: 10 }, { opacity: 1, y: 0, duration: 0.6 }, 0.8)
-      .fromTo(panel, { opacity: 0, y: 18 }, { opacity: 1, y: 0, duration: 0.8 }, 0.55);
+    // A reveal cut short earlier is still frozen where it stopped.
+    revealAnims.current.forEach((a) => a.cancel());
+    const anims: Animation[] = [];
+    // Each element starts `start + i * each` seconds in, held at its start pose until then.
+    const rise = (selector: string, from: Keyframe, to: Keyframe, duration: number, start: number, each = 0) =>
+      root.querySelectorAll(selector).forEach((el, i) => {
+        const a = play(el, [from, to], {
+          duration: duration * 1000,
+          delay: (start + i * each) * 1000,
+          easing: EASE_OUT,
+          fill: "backwards",
+        });
+        if (a) anims.push(a);
+      });
+    const shown = { opacity: 1, transform: "translateY(0px)" };
+    rise("[data-hc-lead]", { opacity: 0, transform: "translateY(22px)", filter: "blur(10px)" }, { ...shown, filter: "blur(0px)" }, 0.9, 0, 0.12);
+    rise("[data-hc-card]", { opacity: 0, transform: "translateY(28px)" }, shown, 0.9, 0.35, 0.08);
+    rise("[data-hc-captions]", { opacity: 0, transform: "translateY(10px)" }, shown, 0.6, 0.8);
+    rise("[data-hc-panel]", { opacity: 0, transform: "translateY(18px)" }, shown, 0.8, 0.55);
+    revealAnims.current = anims;
     return () => {
       // Reached on unmount, a StrictMode remount, or the rail measuring 0 while
       // hidden. An entrance cut short replays next time rather than staying frozen.
-      if (tl.progress() < 1) revealed.current = false;
-      tl.kill();
+      if (anims.some((a) => a.playState !== "finished")) {
+        revealed.current = false;
+        anims.forEach((a) => a.pause());
+      }
     };
   }, [inView, measured]);
 
@@ -334,6 +395,7 @@ function HeroCarouselRoot({
       style={{ ...vars, ...style }}
       {...props}
     >
+      <style>{PROGRESS_CSS}</style>
       {/* ---- The photographs, one on top of the other; the front slide's is opaque. */}
       <div className="absolute inset-0" aria-hidden>
         {slides.map((s, i) => (
@@ -492,7 +554,21 @@ function HeroCarouselRoot({
                   <span aria-hidden className="absolute inset-0 rounded-[inherit] ring-1 ring-inset ring-white/20" />
                   {isFront && interval > 0 && n > 1 && (
                     <span aria-hidden className="absolute inset-x-4 bottom-3 h-[3px] overflow-hidden rounded-full bg-white/30">
-                      <span ref={barRef} className="block h-full w-full origin-left rounded-full bg-primary" style={{ transform: "scaleX(0)" }} />
+                      <span
+                        // A new interval or queue length starts the line again.
+                        key={`${interval}:${n}`}
+                        onAnimationEnd={onProgressEnd}
+                        className="block h-full w-full origin-left rounded-full bg-primary"
+                        // Held until the rail is measured, which only happens once the page is live.
+                        style={{
+                          transform: "scaleX(0)",
+                          animationName: "hc-progress",
+                          animationDuration: `${interval}ms`,
+                          animationTimingFunction: "linear",
+                          animationFillMode: "forwards",
+                          animationPlayState: paused || !metrics ? "paused" : "running",
+                        }}
+                      />
                     </span>
                   )}
                 </button>

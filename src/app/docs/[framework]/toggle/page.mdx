@@ -55,7 +55,7 @@ export default function FormattingToolbar() {
   const [format, setFormat] = useState({ bold: false, italic: true, underline: false });
 
   return (
-    <div className="flex items-center p-1 rounded-lg border border-zinc-200 dark:border-zinc-800">
+    <div className="flex items-center p-1 rounded-lg border border-border">
       <Toggle
         pressed={format.bold}
         onPressedChange={(v) => setFormat({ ...format, bold: v })}

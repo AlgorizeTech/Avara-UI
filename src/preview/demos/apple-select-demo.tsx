@@ -22,7 +22,7 @@ const QUOTE =
   "Design is not just what it looks like and feels like. Design is how it works. Simplicity is the ultimate sophistication, and it takes a lot of hard work to make something simple.";
 
 const PROSE =
-  "text-xl sm:text-2xl font-medium tracking-tight leading-relaxed text-zinc-900 dark:text-zinc-50";
+  "text-xl sm:text-2xl font-medium tracking-tight leading-relaxed text-foreground";
 
 export default function AppleSelectDemo({
   color = "primary",

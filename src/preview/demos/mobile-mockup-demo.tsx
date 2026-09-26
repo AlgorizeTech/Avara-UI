@@ -1,7 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
-import { AnimatePresence, motion } from "framer-motion";
+import { useEffect, useRef, useState } from "react";
 import {
   ArrowRight,
   BatteryFull,
@@ -34,6 +33,13 @@ const TYPING_WORDS = [
 const CLI_COMMAND =
   "npx shadcn@latest add @algorize-ui/mobile-mockup";
 
+// The word flip, as keyframes: out upwards, in from below, 0.45s each.
+const FLIP_EASE = "cubic-bezier(0.16, 1, 0.3, 1)";
+const FLIP_CSS = `
+@keyframes mockup-hero-word-out { to { transform: translateY(-100%); opacity: 0; } }
+@keyframes mockup-hero-word-in { from { transform: translateY(100%); opacity: 0; } }
+`;
+
 /** The strip that follows the hero on the homepage, at phone width. */
 const TECH_STACK = ["React JS", "Next.js", "TypeScript", "Tailwind CSS"];
 
@@ -59,6 +65,26 @@ function HeroScreen({ homeIndicator = true }: { homeIndicator?: boolean }) {
     return () => clearInterval(interval);
   }, []);
 
+  // The word flip, as on the homepage: the word on screen slides up and out,
+  // and only then does the next one slide up in. The first word is simply there.
+  const word = TYPING_WORDS[wordIndex];
+  const [shownWord, setShownWord] = useState(word);
+  const [swapped, setSwapped] = useState(false);
+  const latestWord = useRef(word);
+  latestWord.current = word;
+  const leaving = shownWord !== word;
+  const swapIn = () => {
+    setShownWord(latestWord.current);
+    setSwapped(true);
+  };
+
+  // In case the leaving word's animationend never arrives.
+  useEffect(() => {
+    if (!leaving) return;
+    const t = window.setTimeout(swapIn, 600);
+    return () => window.clearTimeout(t);
+  }, [leaving]);
+
   const handleCopy = () => {
     if (typeof window !== "undefined" && navigator.clipboard) {
       navigator.clipboard.writeText(CLI_COMMAND);
@@ -69,6 +95,7 @@ function HeroScreen({ homeIndicator = true }: { homeIndicator?: boolean }) {
 
   return (
     <div className="relative w-full h-full bg-background overflow-hidden flex flex-col">
+      <style>{FLIP_CSS}</style>
       {/* Radial glow + grid, matching the real hero's backdrop. */}
       <div
         className="absolute inset-0 pointer-events-none"
@@ -78,7 +105,7 @@ function HeroScreen({ homeIndicator = true }: { homeIndicator?: boolean }) {
           opacity: 0.14,
         }}
       />
-      <div className="absolute inset-0 pointer-events-none bg-[linear-gradient(to_right,rgba(0,0,0,0.03)_1px,transparent_1px),linear-gradient(to_bottom,rgba(0,0,0,0.03)_1px,transparent_1px)] dark:bg-[linear-gradient(to_right,rgba(255,255,255,0.03)_1px,transparent_1px),linear-gradient(to_bottom,rgba(255,255,255,0.03)_1px,transparent_1px)] bg-[size:22px_22px] [mask-image:radial-gradient(ellipse_75%_60%_at_50%_40%,black_40%,transparent_100%)]" />
+      <div className="absolute inset-0 pointer-events-none bg-[linear-gradient(to_right,color-mix(in_srgb,var(--foreground)_3%,transparent)_1px,transparent_1px),linear-gradient(to_bottom,color-mix(in_srgb,var(--foreground)_3%,transparent)_1px,transparent_1px)] bg-[size:22px_22px] [mask-image:radial-gradient(ellipse_75%_60%_at_50%_40%,black_40%,transparent_100%)]" />
 
       {/* Status bar. Time left, radios right — the gap clears the notch or
           island on the frames that have one. */}
@@ -100,18 +127,22 @@ function HeroScreen({ homeIndicator = true }: { homeIndicator?: boolean }) {
         <h1 className="text-[19px] font-bold tracking-tight leading-tight text-foreground">
           Build <span className="text-primary">Interactive</span>
           <span className="block relative h-[1.3em] overflow-hidden">
-            <AnimatePresence mode="wait" initial={false}>
-              <motion.span
-                key={TYPING_WORDS[wordIndex]}
-                initial={{ y: "100%", opacity: 0 }}
-                animate={{ y: "0%", opacity: 1 }}
-                exit={{ y: "-100%", opacity: 0 }}
-                transition={{ duration: 0.45, ease: [0.16, 1, 0.3, 1] }}
-                className="absolute inset-x-0 whitespace-nowrap"
-              >
-                {TYPING_WORDS[wordIndex]}
-              </motion.span>
-            </AnimatePresence>
+            <span
+              key={shownWord}
+              onAnimationEnd={(e) => {
+                if (leaving && e.target === e.currentTarget) swapIn();
+              }}
+              className="absolute inset-x-0 whitespace-nowrap"
+              style={
+                leaving
+                  ? { animation: `mockup-hero-word-out 0.45s ${FLIP_EASE} forwards` }
+                  : swapped
+                    ? { animation: `mockup-hero-word-in 0.45s ${FLIP_EASE} backwards` }
+                    : undefined
+              }
+            >
+              {shownWord}
+            </span>
           </span>
         </h1>
 
@@ -123,9 +154,9 @@ function HeroScreen({ homeIndicator = true }: { homeIndicator?: boolean }) {
         <button
           type="button"
           onClick={handleCopy}
-          className="group flex items-center gap-2 w-full max-w-[230px] h-9 px-2.5 rounded-xl border border-zinc-200 dark:border-border bg-zinc-100/70 dark:bg-card cursor-pointer hover:border-zinc-300 dark:hover:border-primary/50 transition-colors"
+          className="group flex items-center gap-2 w-full max-w-[230px] h-9 px-2.5 rounded-xl border border-border bg-muted/70 cursor-pointer hover:border-primary/50 transition-colors"
         >
-          <Terminal className="size-3 text-zinc-700 dark:text-primary shrink-0" />
+          <Terminal className="size-3 text-primary shrink-0" />
           <code className="flex-1 text-left text-[9px] font-mono font-semibold text-foreground truncate !bg-transparent !border-none !p-0 !shadow-none">
             {CLI_COMMAND}
           </code>

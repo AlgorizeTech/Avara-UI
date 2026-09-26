@@ -36,7 +36,7 @@ export const usageLoginSplit = `import LoginForm from "@/components/custom/block
 
 export default function SplitLoginPage() {
   // "split" pairs the form with a full-height marketing panel on large screens.
-  return <LoginForm variant="split" color="rose" signupHref="/register" />;
+  return <LoginForm variant="split" signupHref="/register" />;
 }`;
 
 export const usageLoginGlass = `import LoginForm from "@/components/custom/blocks/LoginForm";
@@ -54,7 +54,7 @@ export default function GlassLoginPage() {
         <div className="absolute inset-0 bg-black/45 backdrop-blur-[1px]" />
       </div>
       <div className="relative z-10 w-full flex justify-center">
-        <LoginForm variant="glass" color="emerald" />
+        <LoginForm variant="glass" />
       </div>
     </div>
   );
@@ -64,7 +64,7 @@ export const usageLoginMinimal = `import LoginForm from "@/components/custom/blo
 
 export default function MinimalLoginPage() {
   // "minimal" strips the card, leaving just the fields on your own background.
-  return <LoginForm variant="minimal" color="zinc" />;
+  return <LoginForm variant="minimal" />;
 }`;
 
 <ExampleShowcase
@@ -186,7 +186,7 @@ export const usageRegisterSplit = `import RegisterForm from "@/components/custom
 
 export default function SplitRegisterPage() {
   // "split" pairs the form with a full-height marketing panel on large screens.
-  return <RegisterForm variant="split" color="rose" loginHref="/login" />;
+  return <RegisterForm variant="split" loginHref="/login" />;
 }`;
 
 export const usageRegisterGlass = `import RegisterForm from "@/components/custom/blocks/RegisterForm";
@@ -204,7 +204,7 @@ export default function GlassRegisterPage() {
         <div className="absolute inset-0 bg-black/45 backdrop-blur-[1px]" />
       </div>
       <div className="relative z-10 w-full flex justify-center">
-        <RegisterForm variant="glass" color="emerald" />
+        <RegisterForm variant="glass" />
       </div>
     </div>
   );
@@ -214,7 +214,7 @@ export const usageRegisterMinimal = `import RegisterForm from "@/components/cust
 
 export default function MinimalRegisterPage() {
   // "minimal" strips the card, leaving just the fields on your own background.
-  return <RegisterForm variant="minimal" color="zinc" />;
+  return <RegisterForm variant="minimal" />;
 }`;
 
 <ExampleShowcase

@@ -1,7 +1,15 @@
 "use client";
 
 import { useFramework } from "@/hooks/use-framework";
-import { resolveSnippet, resolveUsage, type Snippet } from "@/lib/snippet";
+import {
+  resolveMotion,
+  resolveSnippet,
+  resolveUsage,
+  type ShowcaseSnippet,
+} from "@/lib/snippet";
+import { useMotionLibrary } from "@/contexts/motion-library-context";
+import { MotionLibraryTabs } from "@/components/site/motion-library-tabs";
+import { sandboxNames } from "@/preview/names";
 import { cn } from "@/lib/utils";
 import type { BuiltinLanguage } from "shiki";
 import {
@@ -189,6 +197,7 @@ export function Sandbox({
   options = {},
   minHeight = 550,
   maxHeight = 820,
+  motionSwitch = false,
 }: {
   /** Registry name of the demo (src/preview/registry.tsx). */
   name: string;
@@ -200,6 +209,12 @@ export function Sandbox({
   options?: SandboxOptions;
   minHeight?: number;
   maxHeight?: number;
+  /**
+   * Draws the GSAP / Framer Motion switch in the bar, for a component that
+   * ships both builds. The caller swaps `name` and the code tabs; the switch
+   * only writes the page-wide pick.
+   */
+  motionSwitch?: boolean;
 }) {
   const {
     fullscreen: fullscreenOption = true,
@@ -451,11 +466,14 @@ export function Sandbox({
           })}
         </div>
 
-        {/* Right: the code tabs get the TS/JS switch in the same slot the
-            preview tab gets its device controls. */}
+        {/* Right: the build switch on every tab of a dual component (it drives
+            the preview AND the code), then the code tabs' TS/JS switch in the
+            same slot the preview tab gets its device controls. */}
+        <div className="ml-auto flex flex-wrap items-center justify-end gap-2 sm:gap-3">
+        {motionSwitch && <MotionLibraryTabs compact />}
+
         {showLanguageSwitch && (
           <CodeCopy
-            className="ml-auto"
             selectedLanguage={codeLanguage}
             onLanguageChange={setCodeLanguage}
           />
@@ -463,7 +481,7 @@ export function Sandbox({
 
         {/* Right: preview controls */}
         {isPreviewActive && (
-          <div className="flex items-center gap-2 sm:gap-3 ml-auto">
+          <div className="flex items-center gap-2 sm:gap-3">
             {/* True viewport width, plus how far it was shrunk to fit the
                 column, which the Fit button snaps back to 100%. */}
             <span className="flex items-baseline gap-1.5 font-mono text-[11px] text-foreground/50 min-w-[48px] justify-end tabular-nums whitespace-nowrap">
@@ -573,6 +591,7 @@ export function Sandbox({
             )}
           </div>
         )}
+        </div>
       </div>
 
       {/* Main Content Area — an inset panel inside the shell. Not clipped:
@@ -819,9 +838,13 @@ export interface ShowcaseExample {
    * A plain string is identical in every framework. Pass `{ nextjs, reactjs }`
    * only when the code genuinely differs — see src/lib/snippet.ts.
    */
-  usage?: Snippet;
-  /** Optional source snippet — adds a Code tab. Same string-or-map rule. */
-  code?: Snippet;
+  usage?: ShowcaseSnippet;
+  /**
+   * Component source — adds a Code tab. Same string-or-map rule; a component
+   * with a Framer Motion twin passes `{ gsap, framer }` (`extractMotionCode`)
+   * so the tab follows the build switch.
+   */
+  code?: ShowcaseSnippet;
   /** Per-example overrides for the Sandbox. */
   options?: SandboxOptions;
   minHeight?: number;
@@ -966,6 +989,13 @@ export default function ${cleanTitle}Demo() {
 }`;
 };
 
+/** Demos that have a Framer Motion twin (`<name>-framer`). */
+const DUAL_DEMOS = new Set(
+  sandboxNames
+    .filter((demo) => demo.endsWith("-framer"))
+    .map((demo) => demo.replace(/-framer$/, "")),
+);
+
 /** Re-exported so docs pages can keep importing it from the showcase module. */
 export type { SliderControl };
 
@@ -982,6 +1012,7 @@ export function ExampleShowcase({
   colorProp = "color",
   colorLabel = "Active Color",
   controls = [],
+  motionVariants,
 }: {
   /** Registry name of the demo (src/preview/registry.tsx). */
   name: string;
@@ -1008,6 +1039,13 @@ export function ExampleShowcase({
   colorLabel?: string;
   /** Optional numerical range sliders for interactive property tuning. */
   controls?: SliderControl[];
+  /**
+   * The component ships a GSAP default and a Framer Motion twin: the previews
+   * get the build switch, and follow it to the `<name>-framer` demo. Detected
+   * from the preview registry when omitted — a `<name>-framer` demo is exactly
+   * what makes a component dual.
+   */
+  motionVariants?: boolean;
 }) {
   const shared = useShowcaseColorContext();
   const instanceId = useId();
@@ -1034,9 +1072,22 @@ export function ExampleShowcase({
   // the TSX→JS transform needed no changes at all.
   const framework = useFramework();
 
-  // Find component source code fallback from any example that explicitly provides it
+  // Dual components resolve the build first, then the framework — so a build
+  // can still differ per framework — then the TSX/JS toggle further down.
+  const { library } = useMotionLibrary();
+  const isDual = motionVariants ?? DUAL_DEMOS.has(name);
+  const activeLibrary = isDual ? library : "gsap";
+  const previewName = isDual && library === "framer" ? `${name}-framer` : name;
+  const pick = (snippet: ShowcaseSnippet | undefined) =>
+    resolveMotion(snippet, activeLibrary);
+
+  // Find component source code fallback from any example that explicitly
+  // provides it — or, failing that, from another showcase of the same demo
+  // higher up the page, so every preview of a component gets its Code tab.
+  const ownCode = examples.find((ex) => ex.code)?.code;
+  if (ownCode !== undefined) shared?.sharedCode.set(name, ownCode);
   const fallbackCode = resolveSnippet(
-    examples.find((ex) => ex.code)?.code,
+    pick(ownCode ?? (shared?.sharedCode.get(name) as ShowcaseSnippet | undefined)),
     framework,
   );
 
@@ -1097,7 +1148,7 @@ export function ExampleShowcase({
           // The demos know the picker's "lavender" id, the blocks don't — so the
           // snippet a reader copies spells it as the hex it stands for.
           const effectiveUsage =
-            resolveUsage(example.usage, framework) ??
+            resolveUsage(pick(example.usage), framework) ??
             generateFallbackUsage(
               name,
               example.title,
@@ -1106,12 +1157,13 @@ export function ExampleShowcase({
                 : effectiveProps,
             );
 
-          const effectiveCode = resolveSnippet(example.code, framework) ?? fallbackCode;
+          const effectiveCode = resolveSnippet(pick(example.code), framework) ?? fallbackCode;
 
           return (
             <ExampleCard
               key={example.id ?? slugify(example.title)}
-              name={name}
+              name={previewName}
+              motionSwitch={isDual}
               example={{
                 ...example,
                 props: effectiveProps,
@@ -1133,6 +1185,7 @@ export function ExampleShowcase({
 
 function ExampleCard({
   name,
+  motionSwitch,
   example,
   controlCard,
   accent,
@@ -1141,6 +1194,8 @@ function ExampleCard({
   maxHeight,
 }: {
   name: string;
+  /** Draw the GSAP / Framer Motion switch in the preview bar. */
+  motionSwitch?: boolean;
   example: ResolvedShowcaseExample;
   /** The gallery's live-control card, drawn just above this preview. */
   controlCard?: React.ReactNode;
@@ -1150,7 +1205,7 @@ function ExampleCard({
   minHeight: number;
   maxHeight: number;
 }) {
-  const { title, subheading, propNotes, props, usage } = example;
+  const { title, subheading, propNotes, props, usage, code } = example;
   const anchor = example.id ?? slugify(title);
 
   // The Sandbox (and its iframe) mounts only once the card nears the viewport.
@@ -1183,9 +1238,11 @@ function ExampleCard({
   if (usage) {
     tabs.push({ id: "usage", label: "Usage", code: usage, lang: "tsx" });
   }
-  // if (code) {
-  //   tabs.push({ id: "component", label: "Component", code, lang: "tsx" });
-  // }
+  // The source `shadcn add` writes — for a dual component, the build the
+  // switch has picked.
+  if (code) {
+    tabs.push({ id: "component", label: "Code", code, lang: "tsx" });
+  }
 
   return (
     <section ref={rootRef} aria-labelledby={anchor} className="flex flex-col min-w-0">
@@ -1221,6 +1278,7 @@ function ExampleCard({
             options={options}
             minHeight={minHeight}
             maxHeight={maxHeight}
+            motionSwitch={motionSwitch}
           />
         ) : (
           <div

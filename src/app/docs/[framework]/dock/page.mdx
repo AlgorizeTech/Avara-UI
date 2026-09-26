@@ -1,5 +1,5 @@
 import { ExampleShowcase } from "@/components/site/Sandbox";
-import { extractCode } from "@/lib/code";
+import { extractMotionCode } from "@/lib/code";
 
 # Dock
 
@@ -30,9 +30,9 @@ export default function BottomNav() {
 
   return (
     <div className="relative w-full flex flex-col items-center justify-end min-h-[420px]">
-      <div className="absolute top-6 left-6 text-xs font-mono text-zinc-400 dark:text-zinc-600">
+      <div className="absolute top-6 left-6 text-xs font-mono text-muted-foreground">
         Active App:{" "}
-        <span className="text-zinc-800 dark:text-zinc-300 uppercase font-semibold">
+        <span className="text-foreground uppercase font-semibold">
           {active}
         </span>
       </div>
@@ -61,9 +61,9 @@ export default function CompactNav() {
 
   return (
     <div className="relative w-full flex flex-col items-center justify-end min-h-[420px]">
-      <div className="absolute top-6 left-6 text-xs font-mono text-zinc-400 dark:text-zinc-600">
+      <div className="absolute top-6 left-6 text-xs font-mono text-muted-foreground">
         Active App:{" "}
-        <span className="text-zinc-800 dark:text-zinc-300 uppercase font-semibold">
+        <span className="text-foreground uppercase font-semibold">
           {active}
         </span>
       </div>
@@ -95,7 +95,7 @@ export default function CompactNav() {
       ],
       props: { itemSet: "full" },
       usage: usageDefault,
-      code: extractCode("src/components/custom/blocks/DockBlock.tsx"),
+      code: extractMotionCode("src/components/custom/blocks/DockBlock.tsx"),
     },
   ]}
 />

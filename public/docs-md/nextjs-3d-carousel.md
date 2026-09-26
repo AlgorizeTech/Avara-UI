@@ -79,6 +79,12 @@ npx shadcn@latest registry add @algorize-ui=https://algorize-ui.vercel.app/r/{na
 npx shadcn@latest add @algorize-ui/carousel-3d
 ```
 
+Or the Framer Motion build (same props, same file — install one):
+
+```bash
+npx shadcn@latest add @algorize-ui/carousel-3d-framer
+```
+
 ## Examples
 
 ## Features
@@ -164,7 +170,7 @@ Discover the key capabilities that make this component an excellent choice for m
           Required
 
           A unique identifier string required for safe React list rendering and
-          Framer Motion layout animation.
+          for tracking each card as the fan turns.
 
           CarouselItem
 

@@ -5,7 +5,7 @@ import { extractCode } from "@/lib/code";
 
 A collection of highly interactive carousel components for image galleries, hero sections, and fluid presentations.
 
-Four independent components live on this page — four in `carousel.tsx` (`ImageCarousel`, `HeroCarousel`, `CustomCarousel`, `RadialCarousel`) and the GSAP-powered `FluidGlassSlider`, which installs on its own.
+Four independent components live on this page — four in `carousel.tsx` (`ImageCarousel`, `HeroCarousel`, `CustomCarousel`, `RadialCarousel`) and the `FluidGlassSlider`, which installs on its own.
 
 ## Carousels
 
@@ -36,7 +36,7 @@ export default function FluidGlassSliderDemo() {
   return (
     <FluidGlassSlider
       slides={customSlides}
-      className="w-full rounded-xl border dark:border-zinc-800 shadow-sm"
+      className="w-full rounded-xl border border-border shadow-sm"
     />
   );
 }`;
@@ -51,7 +51,7 @@ const sampleImages = [
 
 export default function ImageCarouselDemo() {
   return (
-    <div className="w-full rounded-xl overflow-hidden border dark:border-zinc-800 shadow-sm">
+    <div className="w-full rounded-xl overflow-hidden border border-border shadow-sm">
       <ImageCarousel
         images={sampleImages}
         autoPlay={true}
@@ -91,7 +91,7 @@ const customItems: RadialCarouselItem[] = [
 
 export default function RadialCarouselDemo() {
   return (
-    <div className="w-full rounded-xl overflow-hidden border dark:border-zinc-800 shadow-sm bg-zinc-950/5 dark:bg-zinc-900/30">
+    <div className="w-full rounded-xl overflow-hidden border border-border shadow-sm bg-foreground/5">
       <RadialCarousel
         items={customItems}
         autoPlay={true}
@@ -123,7 +123,7 @@ const sampleSlides: HeroSlide[] = [
 
 export default function HeroCarouselDemo() {
   return (
-    <div className="w-full rounded-xl overflow-hidden border dark:border-zinc-800 shadow-sm">
+    <div className="w-full rounded-xl overflow-hidden border border-border shadow-sm">
       <HeroCarousel slides={sampleSlides} autoPlay={true} autoPlayInterval={3000} />
     </div>
   );
@@ -151,7 +151,7 @@ const sampleSlides: CustomItem[] = [
 
 export default function CustomCarouselDemo() {
   return (
-    <div className="w-full rounded-xl overflow-hidden border dark:border-zinc-800 shadow-sm">
+    <div className="w-full rounded-xl overflow-hidden border border-border shadow-sm">
       <CustomCarousel items={sampleSlides} imageButtonPosition="bottom" autoPlay={true} />
     </div>
   );
@@ -179,7 +179,7 @@ const sampleSlides: CustomItem[] = [
 
 export default function SideThumbnailsCarouselDemo() {
   return (
-    <div className="w-full rounded-xl overflow-hidden border dark:border-zinc-800 shadow-sm">
+    <div className="w-full rounded-xl overflow-hidden border border-border shadow-sm">
       <CustomCarousel items={sampleSlides} imageButtonPosition="left" autoPlay={true} />
     </div>
   );
@@ -224,7 +224,7 @@ All five carousels (`RadialCarousel`, `FluidGlassSlider`, `ImageCarousel`, `Hero
   examples={[
     {
       title: "Fluid glass slider",
-      subheading: "`FluidGlassSlider` is a GSAP-powered liquid glass distortion slider featuring dynamic cursor tracking, glassmorphism overlays, and smooth progress tracking.",
+      subheading: "`FluidGlassSlider` is a liquid glass distortion slider featuring dynamic cursor tracking, glassmorphism overlays, and smooth progress tracking.",
       propNotes: [
         {
           lead: "Pass",

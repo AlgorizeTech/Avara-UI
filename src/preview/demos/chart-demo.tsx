@@ -79,10 +79,10 @@ export default function ChartDemo({
     <div className="w-full flex flex-col items-start justify-center min-h-[500px] relative z-10">
       <div className="w-full max-w-4xl mx-auto">
         <div className="mb-8">
-          <h3 className="text-xl font-bold text-zinc-900 dark:text-white">
+          <h3 className="text-xl font-bold text-foreground">
             Annual Revenue Overview
           </h3>
-          <p className="text-sm font-medium text-zinc-500 dark:text-zinc-400 mt-1">
+          <p className="text-sm font-medium text-muted-foreground mt-1">
             Fiscal year 2023 performance metrics.
           </p>
         </div>

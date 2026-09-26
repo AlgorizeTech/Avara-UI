@@ -6,7 +6,7 @@ import { toBlockColor } from "@/lib/accent";
 export default function OrbitGalleryDemo({ color: pickedColor = "primary" }: { color?: string }) {
   const color = toBlockColor(pickedColor);
   return (
-    <div className="w-full overflow-hidden rounded-2xl border border-zinc-200 bg-white dark:border-zinc-800 dark:bg-black">
+    <div className="w-full overflow-hidden rounded-2xl border border-border bg-background">
       <OrbitGallery
         color={color}
         badgeText="Brand & motion studio"

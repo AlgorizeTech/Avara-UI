@@ -1,7 +1,6 @@
 "use client";
 
 import { cn } from "@/lib/utils";
-import gsap from "gsap";
 import {
   AlertTriangle,
   Check,
@@ -34,6 +33,32 @@ export interface FileUploadState {
   previewUrl?: string;
 }
 
+// ==========================================
+// MOTION (library-free)
+// ==========================================
+// GSAP's back.out(2), power2.out and power1.out as CSS easings.
+const BACK_OUT_2 =
+  "linear(0, .2225, .4153, .5802, .7191, .8341, .9271, 1, 1.0547, 1.0933, 1.1176, 1.1296, 1.1312, 1.1244, 1.1111, 1.0933, 1.0729, 1.0518, 1.0321, 1.0155, 1.0042, 1)";
+const POWER2_OUT = "cubic-bezier(.3333, 1, .6667, 1)";
+const POWER1_OUT = "cubic-bezier(.3333, .6667, .6667, 1)";
+
+const running = new WeakMap<HTMLElement, Animation>();
+
+/**
+ * Tween `el` to `to` from wherever it is right now (mid-flight included), so a
+ * new target takes over a running tween with the full duration and its own
+ * ease. The end values are written inline, so nothing is held by a fill.
+ */
+function tweenTo(el: HTMLElement, to: Record<string, string>, duration: number, easing: string) {
+  const computed = getComputedStyle(el);
+  const from: Record<string, string> = {};
+  for (const key of Object.keys(to)) from[key] = computed.getPropertyValue(key);
+  running.get(el)?.cancel();
+  for (const [key, value] of Object.entries(to)) el.style.setProperty(key, value);
+  if (typeof el.animate !== "function") return;
+  running.set(el, el.animate([from, to], { duration: duration * 1000, easing }));
+}
+
 // Accent colour comes from the `--primary` theme token (`border-primary/30`,
 // `bg-primary`, `text-primary`), so the dropzone and the progress bar follow
 // the site theme and the docs colour picker with no prop and no polling.
@@ -60,18 +85,18 @@ export const Dropzone = forwardRef<HTMLDivElement, DropzoneProps>(
 
     React.useImperativeHandle(ref, () => internalRef.current as HTMLDivElement);
 
-    // GSAP moves the icon and text on drag; the colours (border, tint, glow,
-    // icon) are Tailwind `data-[dragging]` classes on the token, since GSAP
-    // cannot tween an oklch/var() colour.
+    // The icon and text lift on drag (Web Animations on `translate`/`scale`);
+    // the colours (border, tint, glow, icon) are Tailwind `data-[dragging]`
+    // classes on the token.
     useEffect(() => {
       if (!iconRef.current || !textRef.current) return;
 
       if (isDragging) {
-        gsap.to(iconRef.current, { y: -8, scale: 1.1, duration: 0.4, ease: "back.out(2)" });
-        gsap.to(textRef.current, { y: -4, duration: 0.4, ease: "back.out(2)" });
+        tweenTo(iconRef.current, { translate: "0px -8px", scale: "1.1" }, 0.4, BACK_OUT_2);
+        tweenTo(textRef.current, { translate: "0px -4px" }, 0.4, BACK_OUT_2);
       } else {
-        gsap.to(iconRef.current, { y: 0, scale: 1, duration: 0.4, ease: "power2.out" });
-        gsap.to(textRef.current, { y: 0, duration: 0.4, ease: "power2.out" });
+        tweenTo(iconRef.current, { translate: "0px 0px", scale: "1" }, 0.4, POWER2_OUT);
+        tweenTo(textRef.current, { translate: "0px 0px" }, 0.4, POWER2_OUT);
       }
     }, [isDragging]);
 
@@ -171,6 +196,13 @@ Dropzone.displayName = "Dropzone";
 // ==========================================
 // 2. UPLOAD ITEM (Notification Style + Spotlight)
 // ==========================================
+// Registered so the spotlight's position and colour interpolate.
+const SPOTLIGHT_CSS = `
+@property --upload-spot-x { syntax: "<length-percentage>"; inherits: false; initial-value: 50%; }
+@property --upload-spot-y { syntax: "<length-percentage>"; inherits: false; initial-value: 50%; }
+@property --upload-spot-color { syntax: "<color>"; inherits: false; initial-value: rgba(0, 0, 0, 0); }
+`;
+
 export interface UploadItemProps {
   item: FileUploadState;
   onRetry?: (id: string) => void;
@@ -191,15 +223,27 @@ export const UploadItem = forwardRef<HTMLDivElement, UploadItemProps>(
     // Smooth Progress Bar Animation
     useEffect(() => {
       if (progressRef.current) {
-        gsap.to(progressRef.current, {
-          width: `${progress}%`,
-          duration: 0.3,
-          ease: "power2.out",
-        });
+        tweenTo(progressRef.current, { width: `${progress}%` }, 0.3, POWER2_OUT);
       }
     }, [progress]);
 
-    // Mouse-tracking Spotlight Effect (Adaptive for Light/Dark Mode)
+    // Mouse-tracking Spotlight Effect (Adaptive for Light/Dark Mode). The
+    // gradient reads registered custom properties (see SPOTLIGHT_CSS), which
+    // CSS can transition where it cannot transition a gradient itself.
+    const moveSpotlight = (x: string, y: string, color: string, duration: number) => {
+      const glow = glowRef.current;
+      if (!glow) return;
+      glow.style.transition = [
+        "opacity 300ms cubic-bezier(0.4, 0, 0.2, 1)",
+        ...["--upload-spot-x", "--upload-spot-y", "--upload-spot-color"].map(
+          (property) => `${property} ${duration}s ${POWER1_OUT}`,
+        ),
+      ].join(", ");
+      glow.style.setProperty("--upload-spot-x", x);
+      glow.style.setProperty("--upload-spot-y", y);
+      glow.style.setProperty("--upload-spot-color", color);
+    };
+
     const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
       if (!cardRef.current || !glowRef.current) return;
       const rect = cardRef.current.getBoundingClientRect();
@@ -211,18 +255,11 @@ export const UploadItem = forwardRef<HTMLDivElement, UploadItemProps>(
         ? "rgba(255,255,255,0.06)"
         : "rgba(0,0,0,0.04)";
 
-      gsap.to(glowRef.current, {
-        background: `radial-gradient(600px circle at ${x}px ${y}px, ${spotlightColor}, transparent 40%)`,
-        duration: 0.1,
-      });
+      moveSpotlight(`${x}px`, `${y}px`, spotlightColor, 0.1);
     };
 
     const handleMouseLeave = () => {
-      if (!glowRef.current) return;
-      gsap.to(glowRef.current, {
-        background: `radial-gradient(600px circle at 50% 50%, rgba(0,0,0,0), transparent 40%)`,
-        duration: 0.5,
-      });
+      moveSpotlight("50%", "50%", "rgba(0,0,0,0)", 0.5);
     };
 
     const isImage = file.type.startsWith("image/");
@@ -261,9 +298,14 @@ export const UploadItem = forwardRef<HTMLDivElement, UploadItemProps>(
         )}
       >
         {/* Spotlight Overlay Layer */}
+        <style>{SPOTLIGHT_CSS}</style>
         <div
           ref={glowRef}
           className="absolute inset-0 z-0 pointer-events-none transition-opacity duration-300 opacity-0 group-hover:opacity-100"
+          style={{
+            background:
+              "radial-gradient(600px circle at var(--upload-spot-x) var(--upload-spot-y), var(--upload-spot-color), transparent 40%)",
+          }}
         />
 
         <div className="flex items-start gap-4 relative z-10">

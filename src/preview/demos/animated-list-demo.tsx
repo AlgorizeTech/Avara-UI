@@ -63,7 +63,7 @@ export default function AnimatedListDemo({
   animationDelay?: number;
 }) {
   return (
-    <div className="w-full flex justify-center items-center bg-white dark:bg-[#050505] rounded-2xl border border-zinc-200 dark:border-zinc-800 py-6 px-4 relative overflow-hidden">
+    <div className="w-full flex justify-center items-center bg-background rounded-2xl border border-border py-6 px-4 relative overflow-hidden">
       {/* Toast Notification Container */}
       <div className="w-full max-w-md relative z-10">
         <AnimatedList
@@ -90,14 +90,14 @@ export default function AnimatedListDemo({
 
                 <div className="flex-1 min-w-0 flex flex-col justify-center">
                   <div className="flex items-center justify-between gap-2">
-                    <h4 className="text-[13px] sm:text-[13.5px] font-semibold text-zinc-900 dark:text-zinc-100 truncate">
+                    <h4 className="text-[13px] sm:text-[13.5px] font-semibold text-foreground truncate">
                       {notif.title}
                     </h4>
-                    <span className="text-[10px] sm:text-[10.5px] font-semibold text-zinc-400 dark:text-zinc-500 flex-shrink-0">
+                    <span className="text-[10px] sm:text-[10.5px] font-semibold text-muted-foreground flex-shrink-0">
                       {notif.time}
                     </span>
                   </div>
-                  <p className="text-[11.5px] sm:text-[12px] font-medium text-zinc-500 dark:text-zinc-400 leading-snug break-words line-clamp-2 mt-[1px]">
+                  <p className="text-[11.5px] sm:text-[12px] font-medium text-muted-foreground leading-snug break-words line-clamp-2 mt-[1px]">
                     {notif.desc}
                   </p>
                 </div>

@@ -33,7 +33,7 @@ export default function ShareDialog() {
   return (
     <Dialog>
       <DialogTrigger>
-        <button className="flex items-center gap-2 px-4 py-2 bg-zinc-900 text-white text-sm font-semibold rounded-md">
+        <button className="flex items-center gap-2 px-4 py-2 bg-primary text-primary-foreground text-sm font-semibold rounded-md">
           <UserPlus className="w-4 h-4" /> Share Profile
         </button>
       </DialogTrigger>
@@ -51,12 +51,11 @@ export default function ShareDialog() {
         <CopyField
           className="my-4"
           value="https://nexus.dev/u/johndoe"
-          color="zinc"
           buttonProps={{ label: "Copy Link", copiedLabel: "Copied!" }}
         />
 
         <DialogFooter>
-          <p className="text-xs text-zinc-500">Your profile is currently public.</p>
+          <p className="text-xs text-muted-foreground">Your profile is currently public.</p>
         </DialogFooter>
       </DialogContent>
     </Dialog>
@@ -107,10 +106,10 @@ export default function EditProfileDialog() {
         {/* DialogClose dismisses the modal without wiring up state */}
         <DialogFooter>
           <div className="flex w-full sm:w-auto gap-2">
-            <DialogClose className="flex-1 sm:flex-none px-4 py-2 bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 hover:bg-zinc-50 dark:hover:bg-zinc-800 text-zinc-900 dark:text-white text-sm font-medium rounded-md shadow-sm">
+            <DialogClose className="flex-1 sm:flex-none px-4 py-2 bg-card border border-border hover:bg-muted text-foreground text-sm font-medium rounded-md shadow-sm">
               Cancel
             </DialogClose>
-            <DialogClose className="flex-1 sm:flex-none px-4 py-2 bg-zinc-900 dark:bg-white text-white dark:text-zinc-900 text-sm font-medium rounded-md shadow-sm">
+            <DialogClose className="flex-1 sm:flex-none px-4 py-2 bg-primary text-primary-foreground hover:bg-primary/90 text-sm font-medium rounded-md shadow-sm">
               Save changes
             </DialogClose>
           </div>
@@ -180,7 +179,7 @@ export default function TermsDialog() {
   return (
     <Dialog>
       <DialogTrigger>
-        <button className="px-4 py-2 bg-zinc-900 text-white text-sm font-semibold rounded-md">
+        <button className="px-4 py-2 bg-primary text-primary-foreground text-sm font-semibold rounded-md">
           Accept terms
         </button>
       </DialogTrigger>
@@ -198,7 +197,7 @@ export default function TermsDialog() {
         <DialogFooter>
           <div className="flex gap-2">
             <button className="px-4 py-2 border text-sm font-medium rounded-md">Decline</button>
-            <button className="px-4 py-2 bg-zinc-900 text-white text-sm font-medium rounded-md">Accept</button>
+            <button className="px-4 py-2 bg-primary text-primary-foreground text-sm font-medium rounded-md">Accept</button>
           </div>
         </DialogFooter>
       </DialogContent>
@@ -236,7 +235,7 @@ export default function ControlledDialog() {
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger>
-        <button className="px-4 py-2 bg-zinc-900 text-white text-sm font-semibold rounded-md">
+        <button className="px-4 py-2 bg-primary text-primary-foreground text-sm font-semibold rounded-md">
           Save settings
         </button>
       </DialogTrigger>
@@ -250,7 +249,7 @@ export default function ControlledDialog() {
         </DialogHeader>
 
         <DialogFooter>
-          <button onClick={handleSave} disabled={saving} className="px-4 py-2 bg-zinc-900 text-white text-sm font-medium rounded-md disabled:opacity-60">
+          <button onClick={handleSave} disabled={saving} className="px-4 py-2 bg-primary text-primary-foreground text-sm font-medium rounded-md disabled:opacity-60">
             {saving ? "Saving…" : "Save changes"}
           </button>
         </DialogFooter>
@@ -291,7 +290,7 @@ export default function DialogSizes() {
               </DialogDescription>
             </DialogHeader>
 
-            <DialogClose className="px-4 py-2 bg-zinc-900 text-white text-sm font-medium rounded-md">
+            <DialogClose className="px-4 py-2 bg-primary text-primary-foreground text-sm font-medium rounded-md">
               Close
             </DialogClose>
           </DialogContent>
@@ -414,7 +413,7 @@ export default function NestedDialog() {
   return (
     <Dialog>
       <DialogTrigger>
-        <button className="px-4 py-2 bg-zinc-900 text-white text-sm font-semibold rounded-md">
+        <button className="px-4 py-2 bg-primary text-primary-foreground text-sm font-semibold rounded-md">
           New invoice
         </button>
       </DialogTrigger>
@@ -450,7 +449,7 @@ export default function NestedDialog() {
                   setCustomer(option);
                   setPickerOpen(false); // closes the picker only
                 }}
-                className="w-full px-2 py-2 text-left text-sm rounded-md hover:bg-zinc-100"
+                className="w-full px-2 py-2 text-left text-sm rounded-md hover:bg-primary/10"
               >
                 {option.name}
               </button>
@@ -465,7 +464,7 @@ export default function NestedDialog() {
         </Dialog>
 
         <DialogFooter>
-          <DialogClose className="px-4 py-2 bg-zinc-900 text-white text-sm font-medium rounded-md">
+          <DialogClose className="px-4 py-2 bg-primary text-primary-foreground text-sm font-medium rounded-md">
             Create invoice
           </DialogClose>
         </DialogFooter>

@@ -41,7 +41,7 @@ import React, { useState } from "react";
 /** Every row carries one, so no row needs `inset` to fake the gutter. */
 const icon = "w-4 h-4 mr-2 shrink-0";
 /** Replaces the old "Active" text — a badge that can't wrap the row. */
-const activeMark = "ml-auto w-4 h-4 shrink-0 text-indigo-500";
+const activeMark = "ml-auto w-4 h-4 shrink-0 text-primary";
 
 /** A bare bar on a plain surface — used by the focused examples. */
 function BareBar({ children }: { children: React.ReactNode }) {
@@ -181,9 +181,9 @@ export default function MenubarDemo({
     <div className="w-full flex flex-col items-center justify-center min-h-[400px] relative z-10">
       {/* No overflow-hidden on the frame: it would crop any menu taller or
           wider than the window. The header rounds its own top corners instead. */}
-      <div className="w-full max-w-2xl bg-white dark:bg-zinc-950 border border-zinc-200 dark:border-zinc-800 rounded-xl flex flex-col h-[280px]">
+      <div className="w-full max-w-2xl bg-background border border-border rounded-xl flex flex-col h-[280px]">
         {/* Native OS-style Application Header */}
-        <div className="w-full border-b border-zinc-200 dark:border-zinc-800 bg-zinc-50/50 dark:bg-zinc-900/20 rounded-t-xl px-2 py-1 flex items-center justify-between">
+        <div className="w-full border-b border-border bg-muted/50 rounded-t-xl px-2 py-1 flex items-center justify-between">
           <Menubar className="border-none bg-transparent shadow-none w-full justify-start min-h-8 p-0">
             {/* 1. FILE MENU */}
             <MenubarMenu value="file">
@@ -293,13 +293,13 @@ export default function MenubarDemo({
 
         {/* Fake App Body */}
         <div className="flex-1 flex flex-col items-center justify-center text-center p-6 opacity-50">
-          <div className="w-16 h-16 bg-zinc-100 dark:bg-zinc-800 rounded-2xl mb-4 flex items-center justify-center border border-zinc-200 dark:border-zinc-700 shadow-sm">
-            <Laptop className="w-8 h-8 text-zinc-400" />
+          <div className="w-16 h-16 bg-muted rounded-2xl mb-4 flex items-center justify-center border border-border shadow-sm">
+            <Laptop className="w-8 h-8 text-muted-foreground" />
           </div>
-          <h4 className="text-sm font-semibold text-zinc-900 dark:text-zinc-100">
+          <h4 className="text-sm font-semibold text-foreground">
             Application Canvas
           </h4>
-          <p className="text-xs text-zinc-500 mt-1 max-w-[250px]">
+          <p className="text-xs text-muted-foreground mt-1 max-w-[250px]">
             Click the menus at the top to test the interaction states and
             cross-menu hover switching.
           </p>

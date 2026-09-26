@@ -50,10 +50,10 @@ export default function CardDemo({
     | "shop";
 }) {
   const [sneakerBg, setSneakerBg] = useState(
-    "bg-gradient-to-br from-amber-500/15 via-orange-500/10 to-amber-500/5 dark:from-amber-500/20 dark:to-zinc-900 border-amber-500/30"
+    "bg-gradient-to-br from-amber-500/15 via-orange-500/10 to-amber-500/5 dark:from-amber-500/20 dark:to-card border-amber-500/30"
   );
   const [watchBg, setWatchBg] = useState(
-    "bg-gradient-to-br from-indigo-500/15 via-purple-500/10 to-indigo-500/5 dark:from-indigo-500/20 dark:to-zinc-900 border-indigo-500/30"
+    "bg-gradient-to-br from-indigo-500/15 via-purple-500/10 to-indigo-500/5 dark:from-indigo-500/20 dark:to-card border-indigo-500/30"
   );
 
   return (
@@ -121,10 +121,10 @@ export default function CardDemo({
         <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 w-full max-w-4xl">
           <Card variant={variant} interactive={interactive}>
             <CardHeader className="flex flex-row items-center justify-between pb-2">
-              <CardTitle className="text-sm font-medium text-zinc-500">
+              <CardTitle className="text-sm font-medium text-muted-foreground">
                 Total Revenue
               </CardTitle>
-              <CreditCard className="h-4 w-4 text-zinc-400" />
+              <CreditCard className="h-4 w-4 text-muted-foreground" />
             </CardHeader>
             <CardContent>
               <div className="text-2xl font-semibold">$45,231.89</div>
@@ -135,10 +135,10 @@ export default function CardDemo({
           </Card>
           <Card variant={variant} interactive={interactive}>
             <CardHeader className="flex flex-row items-center justify-between pb-2">
-              <CardTitle className="text-sm font-medium text-zinc-500">
+              <CardTitle className="text-sm font-medium text-muted-foreground">
                 Subscriptions
               </CardTitle>
-              <Bell className="h-4 w-4 text-zinc-400" />
+              <Bell className="h-4 w-4 text-muted-foreground" />
             </CardHeader>
             <CardContent>
               <div className="text-2xl font-semibold">+2350</div>
@@ -149,14 +149,14 @@ export default function CardDemo({
           </Card>
           <Card variant={variant} interactive={interactive}>
             <CardHeader className="flex flex-row items-center justify-between pb-2">
-              <CardTitle className="text-sm font-medium text-zinc-500">
+              <CardTitle className="text-sm font-medium text-muted-foreground">
                 Active Now
               </CardTitle>
-              <Settings className="h-4 w-4 text-zinc-400" />
+              <Settings className="h-4 w-4 text-muted-foreground" />
             </CardHeader>
             <CardContent>
               <div className="text-2xl font-semibold">+573</div>
-              <p className="text-xs text-zinc-500 font-medium mt-1">
+              <p className="text-xs text-muted-foreground font-medium mt-1">
                 +201 since last hour
               </p>
             </CardContent>
@@ -178,7 +178,7 @@ export default function CardDemo({
             badge="Best Seller"
             badgeVariant="emerald"
             image={
-              <div className="w-full h-full bg-gradient-to-br from-primary/20 via-primary/10 to-primary/5 dark:from-primary/20 dark:to-zinc-900 flex items-center justify-center">
+              <div className="w-full h-full bg-gradient-to-br from-primary/20 via-primary/10 to-primary/5 dark:from-primary/20 dark:to-card flex items-center justify-center">
                 <span className="text-5xl drop-shadow-md group-hover:scale-110 transition-transform duration-300">🎧</span>
               </div>
             }
@@ -205,22 +205,22 @@ export default function CardDemo({
               {
                 name: "Amber",
                 value:
-                  "bg-amber-600 border-amber-500|bg-gradient-to-br from-amber-500/15 via-orange-500/10 to-amber-500/5 dark:from-amber-500/20 dark:to-zinc-900 border-amber-500/30",
+                  "bg-amber-600 border-amber-500|bg-gradient-to-br from-amber-500/15 via-orange-500/10 to-amber-500/5 dark:from-amber-500/20 dark:to-card border-amber-500/30",
               },
               {
                 name: "Rose",
                 value:
-                  "bg-rose-600 border-rose-500|bg-gradient-to-br from-rose-500/15 via-pink-500/10 to-rose-500/5 dark:from-rose-500/20 dark:to-zinc-900 border-rose-500/30",
+                  "bg-rose-600 border-rose-500|bg-gradient-to-br from-rose-500/15 via-pink-500/10 to-rose-500/5 dark:from-rose-500/20 dark:to-card border-rose-500/30",
               },
               {
                 name: "Emerald",
                 value:
-                  "bg-emerald-600 border-emerald-500|bg-gradient-to-br from-emerald-500/15 via-teal-500/10 to-emerald-500/5 dark:from-emerald-500/20 dark:to-zinc-900 border-emerald-500/30",
+                  "bg-emerald-600 border-emerald-500|bg-gradient-to-br from-emerald-500/15 via-teal-500/10 to-emerald-500/5 dark:from-emerald-500/20 dark:to-card border-emerald-500/30",
               },
               {
                 name: "Dark",
                 value:
-                  "bg-zinc-900 border-zinc-700|bg-gradient-to-br from-zinc-500/15 via-zinc-400/10 to-zinc-500/5 dark:from-zinc-800/30 dark:to-zinc-900 border-zinc-500/30",
+                  "bg-zinc-900 border-zinc-700|bg-gradient-to-br from-zinc-500/15 via-zinc-400/10 to-zinc-500/5 dark:from-zinc-800/30 dark:to-card border-zinc-500/30",
               },
             ]}
             onColorChange={(col: ProductColorOption) => setSneakerBg(col.value.split("|")[1])}
@@ -247,22 +247,22 @@ export default function CardDemo({
               {
                 name: "Indigo",
                 value:
-                  "bg-indigo-600 border-indigo-500|bg-gradient-to-br from-indigo-500/15 via-purple-500/10 to-indigo-500/5 dark:from-indigo-500/20 dark:to-zinc-900 border-indigo-500/30",
+                  "bg-indigo-600 border-indigo-500|bg-gradient-to-br from-indigo-500/15 via-purple-500/10 to-indigo-500/5 dark:from-indigo-500/20 dark:to-card border-indigo-500/30",
               },
               {
                 name: "Emerald",
                 value:
-                  "bg-emerald-600 border-emerald-500|bg-gradient-to-br from-emerald-500/15 via-teal-500/10 to-emerald-500/5 dark:from-emerald-500/20 dark:to-zinc-900 border-emerald-500/30",
+                  "bg-emerald-600 border-emerald-500|bg-gradient-to-br from-emerald-500/15 via-teal-500/10 to-emerald-500/5 dark:from-emerald-500/20 dark:to-card border-emerald-500/30",
               },
               {
                 name: "Rose",
                 value:
-                  "bg-rose-600 border-rose-500|bg-gradient-to-br from-rose-500/15 via-pink-500/10 to-rose-500/5 dark:from-rose-500/20 dark:to-zinc-900 border-rose-500/30",
+                  "bg-rose-600 border-rose-500|bg-gradient-to-br from-rose-500/15 via-pink-500/10 to-rose-500/5 dark:from-rose-500/20 dark:to-card border-rose-500/30",
               },
               {
                 name: "Amber",
                 value:
-                  "bg-amber-600 border-amber-500|bg-gradient-to-br from-amber-500/15 via-orange-500/10 to-amber-500/5 dark:from-amber-500/20 dark:to-zinc-900 border-amber-500/30",
+                  "bg-amber-600 border-amber-500|bg-gradient-to-br from-amber-500/15 via-orange-500/10 to-amber-500/5 dark:from-amber-500/20 dark:to-card border-amber-500/30",
               },
             ]}
             onColorChange={(col: ProductColorOption) => setWatchBg(col.value.split("|")[1])}
@@ -670,10 +670,10 @@ function ProfileCards({ interactive }: { interactive: boolean }) {
         <CardHeader className="gap-3 px-6 pb-0 pt-0">
           <div className="-mt-11 flex items-end justify-between gap-3">
             <div className="relative">
-              <span className="grid size-20 place-items-center rounded-full bg-primary/15 text-xl font-semibold text-primary ring-4 ring-white dark:ring-[#050505]">
+              <span className="grid size-20 place-items-center rounded-full bg-primary/15 text-xl font-semibold text-primary ring-4 ring-card">
                 AK
               </span>
-              <span className="absolute bottom-1 right-1 size-3.5 rounded-full bg-primary ring-2 ring-white dark:ring-[#050505]" />
+              <span className="absolute bottom-1 right-1 size-3.5 rounded-full bg-primary ring-2 ring-card" />
             </div>
             <span className="mb-1 rounded-full border border-primary/30 bg-primary/10 px-2.5 py-1 text-xs font-medium text-primary">
               Open to projects
@@ -812,7 +812,7 @@ function BoardingPassCard() {
                 Flight MR 214, Saturday 12 April
               </p>
             </div>
-            <span className="shrink-0 rounded-full bg-teal-500/10 px-3 py-1 text-xs font-medium text-teal-700 dark:text-teal-300">
+            <span className="shrink-0 rounded-full bg-primary/10 px-3 py-1 text-xs font-medium text-primary">
               Boards 09:05
             </span>
           </div>
@@ -827,11 +827,11 @@ function BoardingPassCard() {
             </div>
             <div className="flex-1 pt-3">
               <div className="flex items-center">
-                <span className="flex-1 border-t border-dashed border-teal-500/50" />
-                <span className="mx-2 grid size-7 place-items-center rounded-full border border-teal-500/30 bg-teal-500/10 text-teal-600 dark:text-teal-400">
+                <span className="flex-1 border-t border-dashed border-primary/50" />
+                <span className="mx-2 grid size-7 place-items-center rounded-full border border-primary/30 bg-primary/10 text-primary">
                   <Plane className="size-3.5 rotate-90" />
                 </span>
-                <span className="flex-1 border-t border-dashed border-teal-500/50" />
+                <span className="flex-1 border-t border-dashed border-primary/50" />
               </div>
               <p className="mt-2 text-center text-[11px] text-muted-foreground">
                 5 h 25 m, nonstop

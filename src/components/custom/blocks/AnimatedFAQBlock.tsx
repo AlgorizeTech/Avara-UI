@@ -1,9 +1,65 @@
 "use client";
 
-import { useState } from "react";
-import { motion, AnimatePresence } from "motion/react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { ChevronDown, MapPin, Compass } from "lucide-react";
 import { cn } from "@/lib/utils";
+
+// ==========================================
+// MOTION
+// The canvas eases to each item's size; the photos crossfade, the new one
+// settling from a touch larger while the old one shrinks away; the answer
+// panels open and close to their own height; the chevron turns over.
+// ==========================================
+const EASE = "cubic-bezier(0.16, 1, 0.3, 1)";
+
+const STYLES = `
+@keyframes animated-faq-photo-in { from { opacity: 0; transform: scale(1.04); } }
+@keyframes animated-faq-photo-out { to { opacity: 0; transform: scale(0.98); } }
+.animated-faq-photo-in { animation: animated-faq-photo-in 0.4s ${EASE} backwards; }
+.animated-faq-photo-out { animation: animated-faq-photo-out 0.4s ${EASE} forwards; }
+`;
+
+interface PhotoLayer {
+  key: number;
+  item: FAQItem;
+  leaving: boolean;
+}
+
+/**
+ * The photos on the canvas: the active item's on top, coming in, over any
+ * still fading out. Each leaving photo keeps the item it showed.
+ */
+function usePhotoLayers(item: FAQItem) {
+  const [layers, setLayers] = useState<PhotoLayer[]>(() => [{ key: 0, item, leaving: false }]);
+  const nextKey = useRef(1);
+
+  // A new item: every photo showing starts to leave, and the new one comes in on top.
+  const top = layers[layers.length - 1];
+  if (top.item.id !== item.id) {
+    setLayers([
+      ...layers.map((layer) => (layer.leaving ? layer : { ...layer, leaving: true })),
+      { key: nextKey.current++, item, leaving: false },
+    ]);
+  } else if (top.item !== item) {
+    setLayers([...layers.slice(0, -1), { ...top, item }]);
+  }
+
+  const drop = useCallback((key: number) => {
+    setLayers((current) => current.filter((layer) => layer.key !== key));
+  }, []);
+
+  // In case a photo's animation never ends (a hidden tab, `display: none`).
+  const leavingKeys = layers.filter((layer) => layer.leaving).map((layer) => layer.key).join();
+  useEffect(() => {
+    if (!leavingKeys) return;
+    const t = window.setTimeout(() => {
+      setLayers((current) => current.filter((layer) => !layer.leaving || !leavingKeys.split(",").includes(String(layer.key))));
+    }, 500);
+    return () => window.clearTimeout(t);
+  }, [leavingKeys]);
+
+  return { layers, drop };
+}
 
 // ==========================================
 // FAQ DATA TYPES & SUNLIT NATURE ITEMS
@@ -72,7 +128,7 @@ export const FAQ_ITEMS: FAQItem[] = [
     category: "Performance & FPS",
     question: "How do you achieve 60fps animations with zero layout shift?",
     answer:
-      "Our motion components rely exclusively on GPU-accelerated CSS properties (translate3d, scale, opacity) and Framer Motion spring physics. We avoid animating height or layout reflow properties whenever possible, guaranteeing zero CLS and a 100% Lighthouse score.",
+      "Our motion components rely exclusively on GPU-accelerated CSS properties (translate3d, scale, opacity) and spring curves rendered as native CSS easing. We avoid animating height or layout reflow properties whenever possible, guaranteeing zero CLS and a 100% Lighthouse score.",
     image:
       "https://images.unsplash.com/photo-1519681393784-d120267933ba?w=1400&auto=format&fit=crop&q=85",
     location: "Tre Cime di Lavaredo, Italian Dolomites",
@@ -128,6 +184,7 @@ export function AnimatedFAQBlock({
 }: AnimatedFAQBlockProps) {
   const [activeId, setActiveId] = useState<string>(defaultActiveId);
   const activeItem = items.find((i) => i.id === activeId) || items[0];
+  const photos = usePhotoLayers(activeItem);
 
   const handleToggle = (id: string) => {
     setActiveId(id);
@@ -140,22 +197,19 @@ export function AnimatedFAQBlock({
         className,
       )}
     >
+      <style>{STYLES}</style>
       {/* ───────────────────────────────────────────────────────────
           LEFT COLUMN: VERTICALLY CENTERED UNISERVE NATURE CANVAS
           ─────────────────────────────────────────────────────────── */}
       <div className="lg:col-span-6 w-full lg:sticky lg:top-24 self-center flex flex-col items-center justify-center min-h-[480px] py-6">
         {/* Dynamic morphing canvas container — fast & snappy width and height animation */}
-        <motion.div
-          layout
-          animate={{
+        <div
+          style={{
             height: activeItem.height,
             maxWidth: activeItem.maxWidth,
+            transition: `height 0.45s ${EASE}, max-width 0.45s ${EASE}`,
           }}
-          transition={{
-            duration: 0.45,
-            ease: [0.16, 1, 0.3, 1],
-          }}
-          className="relative w-full transition-all flex items-center justify-center"
+          className="relative w-full flex items-center justify-center"
         >
           {/* ═══════════════════════════════════════════════════════════
               ARCHITECTURAL CROSSHAIR GUIDES & CORNER REGISTRATION DOTS
@@ -205,22 +259,21 @@ export function AnimatedFAQBlock({
               clipPath: `polygon(${activeItem.clipCut} 0%, 100% 0%, 100% calc(100% - ${activeItem.clipCut}), calc(100% - ${activeItem.clipCut}) 100%, 0% 100%, 0% ${activeItem.clipCut})`,
             }}
           >
-            {/* Instant Simultaneous Crossfade Nature Image via AnimatePresence */}
-            <AnimatePresence>
-              <motion.div
-                key={activeItem.id}
-                initial={{ opacity: 0, scale: 1.04 }}
-                animate={{ opacity: 1, scale: 1 }}
-                exit={{ opacity: 0, scale: 0.98 }}
-                transition={{
-                  duration: 0.4,
-                  ease: [0.16, 1, 0.3, 1],
+            {/* Instant Simultaneous Crossfade Nature Image */}
+            {photos.layers.map(({ key, item: photo, leaving }) => (
+              <div
+                key={key}
+                onAnimationEnd={(e) => {
+                  if (leaving && e.target === e.currentTarget) photos.drop(key);
                 }}
-                className="absolute inset-0 w-full h-full"
+                className={cn(
+                  "absolute inset-0 w-full h-full",
+                  leaving ? "animated-faq-photo-out" : "animated-faq-photo-in",
+                )}
               >
                 <img
-                  src={activeItem.image}
-                  alt={activeItem.question}
+                  src={photo.image}
+                  alt={photo.question}
                   className="w-full h-full object-cover object-center filter brightness-[0.97] contrast-[1.03]"
                 />
 
@@ -231,11 +284,11 @@ export function AnimatedFAQBlock({
                 <div className="absolute top-4 left-5 right-5 flex items-center justify-between text-xs pointer-events-none">
                   <div className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-background/85 backdrop-blur-md border border-border/70 text-[11px] font-mono tracking-wider text-foreground shadow-xs">
                     <Compass className="size-3 text-primary" />
-                    <span>{activeItem.category}</span>
+                    <span>{photo.category}</span>
                   </div>
 
                   <span className="font-mono text-[10px] text-muted-foreground tracking-widest uppercase bg-background/75 border border-border/50 px-2 py-0.5 rounded backdrop-blur-xs shadow-xs">
-                    {activeItem.coordinates}
+                    {photo.coordinates}
                   </span>
                 </div>
 
@@ -243,11 +296,11 @@ export function AnimatedFAQBlock({
                 <div className="absolute bottom-4 left-5 right-5 pointer-events-none">
                   <div className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-background/90 backdrop-blur-md border border-border/80 text-xs text-foreground font-medium shadow-sm">
                     <MapPin className="size-3.5 text-primary shrink-0" />
-                    <span className="truncate">{activeItem.location}</span>
+                    <span className="truncate">{photo.location}</span>
                   </div>
                 </div>
-              </motion.div>
-            </AnimatePresence>
+              </div>
+            ))}
 
             {/* Chamfered Border Outline via SVG to preserve crisp angle */}
             <svg
@@ -264,7 +317,7 @@ export function AnimatedFAQBlock({
               />
             </svg>
           </div>
-        </motion.div>
+        </div>
 
         {/* Dimension indicator tag below */}
         <div className="mt-6 flex items-center gap-4 text-[11px] font-mono text-muted-foreground/80">
@@ -289,9 +342,8 @@ export function AnimatedFAQBlock({
           const num = String(idx + 1).padStart(2, "0");
 
           return (
-            <motion.div
+            <div
               key={item.id}
-              initial={false}
               className={cn(
                 "rounded-2xl border transition-all duration-300 overflow-hidden",
                 isActive
@@ -347,10 +399,13 @@ export function AnimatedFAQBlock({
                   </div>
                 </div>
 
-                {/* Animated Expand Chevron */}
-                <motion.div
-                  animate={{ rotate: isActive ? 180 : 0 }}
-                  transition={{ duration: 0.25, ease: "easeInOut" }}
+                {/* Animated Expand Chevron — turns over alongside its colour change. */}
+                <div
+                  style={{
+                    rotate: isActive ? "180deg" : "0deg",
+                    transition:
+                      "rotate 0.25s cubic-bezier(0.42, 0, 0.58, 1), color 150ms cubic-bezier(0.4, 0, 0.2, 1), background-color 150ms cubic-bezier(0.4, 0, 0.2, 1), border-color 150ms cubic-bezier(0.4, 0, 0.2, 1)",
+                  }}
                   className={cn(
                     "shrink-0 size-7 rounded-full flex items-center justify-center border transition-colors mt-0.5",
                     isActive
@@ -359,37 +414,39 @@ export function AnimatedFAQBlock({
                   )}
                 >
                   <ChevronDown className="size-4" />
-                </motion.div>
+                </div>
               </button>
 
-              {/* Accordion Expandable Answer */}
-              <AnimatePresence initial={false}>
-                {isActive && (
-                  <motion.div
-                    initial={{ height: 0, opacity: 0 }}
-                    animate={{ height: "auto", opacity: 1 }}
-                    exit={{ height: 0, opacity: 0 }}
-                    transition={{ duration: 0.25, ease: [0.16, 1, 0.3, 1] }}
-                  >
-                    <div className="px-4 pb-4 sm:px-5 sm:pb-5 pt-0 border-t border-border/40 text-sm text-muted-foreground leading-relaxed">
-                      <p className="pt-3 text-[13px] sm:text-sm text-foreground/80">
-                        {item.answer}
-                      </p>
+              {/* Accordion Expandable Answer — opens to its own height; closed,
+                  it is out of the way of the keyboard and screen readers too. */}
+              <div
+                inert={!isActive}
+                style={{
+                  display: "grid",
+                  gridTemplateRows: isActive ? "1fr" : "0fr",
+                  opacity: isActive ? 1 : 0,
+                  transition: `grid-template-rows 0.25s ${EASE}, opacity 0.25s ${EASE}`,
+                }}
+              >
+                <div className="min-h-0 overflow-hidden">
+                  <div className="px-4 pb-4 sm:px-5 sm:pb-5 pt-0 border-t border-border/40 text-sm text-muted-foreground leading-relaxed">
+                    <p className="pt-3 text-[13px] sm:text-sm text-foreground/80">
+                      {item.answer}
+                    </p>
 
-                      <div className="mt-3.5 flex items-center justify-between gap-2 pt-3 border-t border-border/30 text-xs">
-                        <span className="text-xs text-muted-foreground/80 flex items-center gap-1.5">
-                          <MapPin className="size-3 text-primary" />
-                          <span>{item.location}</span>
-                        </span>
-                        <span className="font-mono text-[11px] text-primary/90">
-                          {item.maxWidth}×{item.height}px
-                        </span>
-                      </div>
+                    <div className="mt-3.5 flex items-center justify-between gap-2 pt-3 border-t border-border/30 text-xs">
+                      <span className="text-xs text-muted-foreground/80 flex items-center gap-1.5">
+                        <MapPin className="size-3 text-primary" />
+                        <span>{item.location}</span>
+                      </span>
+                      <span className="font-mono text-[11px] text-primary/90">
+                        {item.maxWidth}×{item.height}px
+                      </span>
                     </div>
-                  </motion.div>
-                )}
-              </AnimatePresence>
-            </motion.div>
+                  </div>
+                </div>
+              </div>
+            </div>
           );
         })}
       </div>

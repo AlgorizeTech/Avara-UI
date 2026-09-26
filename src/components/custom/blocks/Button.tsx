@@ -692,16 +692,16 @@ const ShardsControlTile = ({
             onTouchStart={handleTouchStart}
             className={cn(
               "relative z-10 flex items-center justify-between w-full h-12 px-4 rounded-xl border select-none group cursor-pointer overflow-hidden transition-all duration-200",
-              "bg-background/90 dark:bg-[#16161d]",
+              "bg-background/90 dark:bg-card/90",
               isAtMax
-                ? "border-primary/50 shadow-[0_0_12px_rgba(var(--primary),0.2)]"
-                : "border-border/80 dark:border-white/10",
+                ? "border-primary/50 shadow-[0_0_12px_color-mix(in_oklab,var(--primary)_20%,transparent)]"
+                : "border-border/80",
               className
             )}
           >
             {/* Filled Active Drag Pill Surface with vertical border line & handle cursor */}
             <div
-              className="absolute left-0 top-0 bottom-0 bg-primary/15 dark:bg-white/10 rounded-xl transition-all duration-75 pointer-events-none border-r-2 border-primary/30 dark:border-zinc-300/80"
+              className="absolute left-0 top-0 bottom-0 bg-primary/15 rounded-xl transition-all duration-75 pointer-events-none border-r-2 border-primary/30"
               style={{ width: `${percentage}%` }}
             >
               {/* Invisible Edge Drag Indicator with cursor-ew-resize */}
@@ -709,12 +709,12 @@ const ShardsControlTile = ({
             </div>
 
             {/* Label on Left */}
-            <span className="relative z-10 text-foreground dark:text-zinc-200 font-semibold text-xs tracking-wide pointer-events-none">
+            <span className="relative z-10 text-foreground font-semibold text-xs tracking-wide pointer-events-none">
               {displayLabel}
             </span>
 
             {/* Value Display on Right */}
-            <span className="relative z-10 font-mono text-xs font-semibold text-foreground dark:text-zinc-100 pointer-events-none">
+            <span className="relative z-10 font-mono text-xs font-semibold text-foreground pointer-events-none">
               {displayValue}
             </span>
           </div>

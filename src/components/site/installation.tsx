@@ -1,6 +1,7 @@
 import React from "react";
 import { Cli } from "./cli";
 import { SetupPath } from "./setup-path";
+import { MotionInstallSwitch } from "./motion-install-switch";
 import registry from "../../../registry.json";
 
 /**
@@ -253,6 +254,34 @@ export function Installation({
   name,
   showSetupPath = true,
 }: InstallationProps) {
+  // A component with a Framer Motion twin gets both install sequences behind
+  // the GSAP / Framer Motion switch; GSAP, the default build, shows first.
+  const twin = `${name}-framer`;
+  const isDual = ITEMS.some((entry) => entry.name === twin);
+
+  return (
+    // data-toc-skip: the step headings are structure inside the Installation
+    // section, not navigation targets. A page documenting four components would
+    // otherwise put four identical "2. Install dependencies" in the sidebar.
+    // not-prose: every element here sets its own type, and the prose-code
+    // modifiers on the docs wrapper would otherwise outrank the chips.
+    <div className="not-prose my-6" data-toc-skip>
+      {showSetupPath && <SetupPath />}
+
+      {isDual ? (
+        <MotionInstallSwitch
+          gsap={<InstallationSteps name={name} />}
+          framer={<InstallationSteps name={twin} />}
+        />
+      ) : (
+        <InstallationSteps name={name} />
+      )}
+    </div>
+  );
+}
+
+/** Steps 1 and 2 for one registry item. */
+function InstallationSteps({ name }: { name: string }) {
   const item = ITEMS.find((entry) => entry.name === name);
 
   // Fail at build time rather than shipping a page whose install command is a
@@ -284,18 +313,10 @@ export function Installation({
       (item.dependencies?.length ?? 0) > 0);
 
   return (
-    // data-toc-skip: the step headings are structure inside the Installation
-    // section, not navigation targets. A page documenting four components would
-    // otherwise put four identical "2. Install dependencies" in the sidebar.
-    // not-prose: every element here sets its own type, and the prose-code
-    // modifiers on the docs wrapper would otherwise outrank the chips.
-    <div className="not-prose my-6" data-toc-skip>
-      {showSetupPath && <SetupPath />}
-
-      {/* The left border is the rail the step discs sit on. It runs to the end
-          of the last step's content rather than stopping at its disc: a rail
-          that ends mid-step looks like the step was cut off. */}
-      <div className="ml-3.5 space-y-10 border-l border-foreground/[0.08] pl-8">
+    // The left border is the rail the step discs sit on. It runs to the end of
+    // the last step's content rather than stopping at its disc: a rail that
+    // ends mid-step looks like the step was cut off.
+    <div className="ml-3.5 space-y-10 border-l border-foreground/[0.08] pl-8">
         <Step number={1} id={`install-${name}`} title={<>Install {title}</>}>
           <Cli command={`add ${name}.json`} />
           <p className={BODY}>
@@ -384,7 +405,6 @@ export function Installation({
             </>
           )}
         </Step>
-      </div>
     </div>
   );
 }

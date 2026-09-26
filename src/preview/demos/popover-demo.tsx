@@ -29,9 +29,9 @@ const TRIGGER =
 
 const DimensionsForm = () => (
   <div className="space-y-4">
-    <div className="space-y-1 text-sm border-b border-zinc-100 dark:border-zinc-800/50 pb-3">
-      <h4 className="font-semibold text-zinc-900 dark:text-white">Dimensions</h4>
-      <p className="text-zinc-500 text-xs">Set the dimensions for the layer.</p>
+    <div className="space-y-1 text-sm border-b border-border pb-3">
+      <h4 className="font-semibold text-foreground">Dimensions</h4>
+      <p className="text-muted-foreground text-xs">Set the dimensions for the layer.</p>
     </div>
     <div className="grid gap-3">
       {[
@@ -45,14 +45,14 @@ const DimensionsForm = () => (
         >
           <label
             htmlFor={field.id}
-            className="text-zinc-600 dark:text-zinc-400 font-medium"
+            className="text-muted-foreground font-medium"
           >
             {field.label}
           </label>
           <input
             id={field.id}
             defaultValue={field.value}
-            className="col-span-2 h-8 rounded-md border border-zinc-200 dark:border-zinc-800 bg-transparent px-3 text-zinc-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-primary"
+            className="col-span-2 h-8 rounded-md border border-input bg-transparent px-3 text-foreground focus:outline-none focus:ring-2 focus:ring-primary"
           />
         </div>
       ))}
@@ -69,19 +69,19 @@ const AccountMenu = ({ align = "end" }: { align?: Align }) => (
     </PopoverTrigger>
     <PopoverContent side="bottom" align={align} className="w-64">
       <div className="flex flex-col gap-3">
-        <div className="flex items-center gap-3 border-b border-zinc-100 dark:border-zinc-800/50 pb-3">
+        <div className="flex items-center gap-3 border-b border-border pb-3">
           <div className="w-10 h-10 rounded-full bg-primary/20 text-primary flex items-center justify-center font-semibold text-sm shrink-0">
             AB
           </div>
           <div className="flex flex-col">
             <span className="text-sm font-semibold">Andy Bernard</span>
-            <span className="text-xs text-zinc-500">andy@dundermifflin.com</span>
+            <span className="text-xs text-muted-foreground">andy@dundermifflin.com</span>
           </div>
         </div>
-        <button className="text-left text-sm text-zinc-600 dark:text-zinc-300 hover:text-zinc-900 dark:hover:text-white">
+        <button className="text-left text-sm text-muted-foreground hover:text-foreground">
           View Profile
         </button>
-        <button className="text-left text-sm text-zinc-600 dark:text-zinc-300 hover:text-zinc-900 dark:hover:text-white">
+        <button className="text-left text-sm text-muted-foreground hover:text-foreground">
           Billing Settings
         </button>
         <button className="text-left text-sm text-rose-600 hover:text-rose-700 mt-2 font-medium">
@@ -181,7 +181,7 @@ export default function PopoverDemo({
       <Popover>
         <PopoverTrigger>
           <div className={TRIGGER}>
-            <Settings2 className="w-4 h-4 text-muted-foreground" />
+            <Settings2 className="w-4 h-4" />
             Configure Settings
           </div>
         </PopoverTrigger>

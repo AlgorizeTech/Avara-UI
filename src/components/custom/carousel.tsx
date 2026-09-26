@@ -2,7 +2,6 @@
 
 import React, { useCallback, useEffect, useRef, useState } from "react";
 import { ArrowLeft, ArrowRight, Hand } from "lucide-react";
-import gsap from "gsap";
 import { cn } from "@/lib/utils";
 
 /**
@@ -1014,8 +1013,36 @@ export function FanCarousel({
 }
 
 /* ============================================================================
-   FLUID GLASS SLIDER COMPONENT (GSAP Liquid Distortion Slider)
+   FLUID GLASS SLIDER COMPONENT (Liquid Distortion Slider)
    ============================================================================ */
+
+// ==========================================
+// MOTION — Web Animations and CSS, no library
+// ==========================================
+// GSAP's power4.inOut (sampled, max error 0.15%), power2.out and power1.out.
+const POWER4_IN_OUT =
+  "linear(0, .0005 12.5%, .0037 18.75%, .008 21.875%, .0156 25%, .0282 28.125%, .0477 31.25%, .0768 34.375%, .0959 35.938%, .1187 37.5%, .1455 39.063%, .177 40.625%, .2138 42.188%, .2565 43.75%, .3056 45.313%, .3621 46.875%, .4266 48.438%, .5 50%, .5734 51.563%, .6379 53.125%, .6944 54.688%, .7435 56.25%, .7862 57.813%, .823 59.375%, .8545 60.938%, .8813 62.5%, .9041 64.063%, .9232 65.625%, .9523 68.75%, .9718 71.875%, .9844 75%, .992 78.125%, .9963 81.25%, .9995 87.5%, 1)";
+const POWER2_OUT = "cubic-bezier(.3333, 1, .6667, 1)";
+const POWER1_OUT = "cubic-bezier(.3333, .6667, .6667, 1)";
+
+const tweens = new WeakMap<HTMLElement, Animation>();
+
+/**
+ * Tween `el` to `to` from wherever it is right now (mid-flight included), so a
+ * new target takes over a running tween with the full duration. The end values
+ * are written inline, so nothing is held by a fill.
+ */
+function tweenTo(el: HTMLElement, to: Record<string, string>, duration: number, easing: string) {
+  const computed = getComputedStyle(el);
+  const from: Record<string, string> = {};
+  for (const key of Object.keys(to)) from[key] = computed.getPropertyValue(key);
+  tweens.get(el)?.cancel();
+  for (const [key, value] of Object.entries(to)) el.style.setProperty(key, value);
+  if (typeof el.animate !== "function") return null;
+  const animation = el.animate([from, to], { duration: duration * 1000, easing });
+  tweens.set(el, animation);
+  return animation;
+}
 
 export type FluidGlassSlide = {
   id: number;
@@ -1068,32 +1095,44 @@ export function FluidGlassSlider({ slides, className }: FluidGlassSliderProps) {
   useEffect(() => {
     if (!sliderRef.current) return;
 
-    gsap.to(sliderRef.current, {
-      x: `-${currentIndex * (100 / slidesData.length)}%`,
-      duration: 1.2,
-      ease: "power4.inOut",
-    });
-
-    if (!progressRef.current) return;
-
-    const progressTween = gsap.fromTo(
-      progressRef.current,
-      { width: "0%" },
-      {
-        width: "100%",
-        duration: 5,
-        ease: "none",
-        onComplete: () => {
-          setCurrentIndex((prev) =>
-            prev < slidesData.length - 1 ? prev + 1 : 0,
-          );
-        },
-      },
+    // Slide animation
+    const slide = tweenTo(
+      sliderRef.current,
+      { translate: `-${currentIndex * (100 / slidesData.length)}% 0px` },
+      1.2,
+      POWER4_IN_OUT,
     );
 
+    if (!progressRef.current || typeof progressRef.current.animate !== "function") return;
+
+    // Auto-play progress bar (Infinite Loop)
+    const progress = progressRef.current.animate(
+      [{ width: "0%" }, { width: "100%" }],
+      { duration: 5000, easing: "linear", fill: "forwards" },
+    );
+    progress.onfinish = () => {
+      // Auto-play continues infinitely
+      setCurrentIndex((prev) =>
+        prev < slidesData.length - 1 ? prev + 1 : 0,
+      );
+    };
+
+    // A hidden tab holds both where they are, as it always has: the timer
+    // must not run on and flip slides nobody is watching.
+    const onVisibility = () => {
+      for (const animation of [slide, progress]) {
+        if (!animation || animation.playState === "finished") continue;
+        if (document.hidden) animation.pause();
+        else animation.play();
+      }
+    };
+    document.addEventListener("visibilitychange", onVisibility);
+    onVisibility();
+
     return () => {
-      if (progressTween && typeof progressTween.kill === "function")
-        progressTween.kill();
+      document.removeEventListener("visibilitychange", onVisibility);
+      progress.onfinish = null;
+      progress.cancel();
     };
   }, [currentIndex, slidesData.length]);
 
@@ -1102,14 +1141,11 @@ export function FluidGlassSlider({ slides, className }: FluidGlassSliderProps) {
     const cursor = cursorRef.current;
     if (!container || !cursor) return;
 
+    // Follows the pointer through a 0.1s transition on `translate` (see the
+    // cursor's style).
     const onMouseMove = (e: MouseEvent) => {
       if (!cursor) return;
-      gsap.to(cursor, {
-        x: (e.clientX || 0) + 15,
-        y: (e.clientY || 0) + 15,
-        duration: 0.1,
-        ease: "power2.out",
-      });
+      cursor.style.translate = `${(e.clientX || 0) + 15}px ${(e.clientY || 0) + 15}px`;
     };
 
     container.addEventListener("mousemove", onMouseMove);
@@ -1126,11 +1162,11 @@ export function FluidGlassSlider({ slides, className }: FluidGlassSliderProps) {
 
   const showCursor = () => {
     if (!cursorRef.current) return;
-    gsap.to(cursorRef.current, { opacity: 1, duration: 0.2, scale: 1 });
+    tweenTo(cursorRef.current, { opacity: "1", scale: "1" }, 0.2, POWER1_OUT);
   };
   const hideCursor = () => {
     if (!cursorRef.current) return;
-    gsap.to(cursorRef.current, { opacity: 0, duration: 0.2, scale: 0.8 });
+    tweenTo(cursorRef.current, { opacity: "0", scale: "0.8" }, 0.2, POWER1_OUT);
   };
 
   return (
@@ -1146,6 +1182,7 @@ export function FluidGlassSlider({ slides, className }: FluidGlassSliderProps) {
       <div
         ref={cursorRef}
         className="fixed top-0 left-0 px-3 py-1.5 bg-white/20 backdrop-blur-md border border-white/30 text-white text-[10px] font-semibold tracking-widest uppercase flex items-center justify-center opacity-0 z-[100] pointer-events-none scale-80"
+        style={{ transition: `translate 0.1s ${POWER2_OUT}` }}
       >
         VIEW
       </div>

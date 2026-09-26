@@ -12,39 +12,39 @@ export function Table({ headers, rows, className = "", variant = 'default' }: Ta
     switch (variant) {
       case 'striped':
         return {
-          table: "w-full border-collapse rounded-xl overflow-hidden shadow-lg bg-white dark:bg-gray-900",
-          thead: "bg-gradient-to-r from-blue-600 to-purple-600 text-white",
+          table: "w-full border-collapse rounded-xl overflow-hidden shadow-lg bg-card",
+          thead: "bg-primary text-primary-foreground",
           th: "px-6 py-4 text-left text-sm font-semibold uppercase tracking-wider",
-          tbody: "divide-y divide-gray-100 dark:divide-gray-800",
-          tr: "even:bg-gray-50 dark:even:bg-gray-800/50 hover:bg-blue-50 dark:hover:bg-blue-900/20 transition-all duration-200",
-          td: "px-6 py-4 text-sm text-gray-900 dark:text-gray-100"
+          tbody: "divide-y divide-border",
+          tr: "even:bg-muted/50 hover:bg-primary/5 transition-all duration-200",
+          td: "px-6 py-4 text-sm text-foreground"
         };
       case 'bordered':
         return {
-          table: "w-full border-collapse border-2 border-gray-300 dark:border-gray-600 rounded-lg overflow-hidden shadow-md",
-          thead: "bg-gray-100 dark:bg-gray-800 border-b-2 border-gray-300 dark:border-gray-600",
-          th: "border-r border-gray-300 dark:border-gray-600 px-6 py-3 text-left text-xs font-semibold text-gray-700 dark:text-gray-300 uppercase tracking-wider last:border-r-0",
-          tbody: "bg-white dark:bg-gray-900",
-          tr: "border-b border-gray-200 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors",
-          td: "border-r border-gray-200 dark:border-gray-700 px-6 py-4 text-sm text-gray-900 dark:text-gray-100 last:border-r-0"
+          table: "w-full border-collapse border-2 border-border rounded-lg overflow-hidden shadow-md",
+          thead: "bg-muted border-b-2 border-border",
+          th: "border-r border-border px-6 py-3 text-left text-xs font-semibold text-foreground/80 uppercase tracking-wider last:border-r-0",
+          tbody: "bg-card",
+          tr: "border-b border-border hover:bg-muted transition-colors",
+          td: "border-r border-border px-6 py-4 text-sm text-foreground last:border-r-0"
         };
       case 'minimal':
         return {
           table: "w-full border-collapse",
-          thead: "border-b-2 border-gray-200 dark:border-gray-700",
-          th: "px-4 py-3 text-left text-sm font-semibold text-gray-900 dark:text-gray-100",
+          thead: "border-b-2 border-border",
+          th: "px-4 py-3 text-left text-sm font-semibold text-foreground",
           tbody: "",
-          tr: "border-b border-gray-100 dark:border-gray-800 hover:bg-gray-50 dark:hover:bg-gray-800/30 transition-colors",
-          td: "px-4 py-3 text-sm text-gray-700 dark:text-gray-300"
+          tr: "border-b border-border hover:bg-muted/50 transition-colors",
+          td: "px-4 py-3 text-sm text-foreground/80"
         };
       default:
         return {
-          table: "w-full border-collapse rounded-lg overflow-hidden shadow-sm border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-900",
-          thead: "bg-gradient-to-r from-gray-50 to-gray-100 dark:from-gray-800 dark:to-gray-700",
-          th: "px-6 py-4 text-left text-xs font-semibold text-gray-600 dark:text-gray-300 uppercase tracking-wider border-b border-gray-200 dark:border-gray-600",
-          tbody: "divide-y divide-gray-100 dark:divide-gray-800",
-          tr: "hover:bg-gray-50 dark:hover:bg-gray-800/50 transition-all duration-150 hover:shadow-sm",
-          td: "px-6 py-4 text-sm text-gray-900 dark:text-gray-100"
+          table: "w-full border-collapse rounded-lg overflow-hidden shadow-sm border border-border bg-card",
+          thead: "bg-muted",
+          th: "px-6 py-4 text-left text-xs font-semibold text-muted-foreground uppercase tracking-wider border-b border-border",
+          tbody: "divide-y divide-border",
+          tr: "hover:bg-muted/50 transition-all duration-150 hover:shadow-sm",
+          td: "px-6 py-4 text-sm text-foreground"
         };
     }
   };
@@ -89,13 +89,13 @@ export function MarkdownTable({ children, variant = 'default' }: MarkdownTablePr
   const getTableStyles = () => {
     switch (variant) {
       case 'striped':
-        return "w-full border-collapse rounded-xl overflow-hidden shadow-lg bg-white dark:bg-gray-900";
+        return "w-full border-collapse rounded-xl overflow-hidden shadow-lg bg-card";
       case 'bordered':
-        return "w-full border-collapse border-2 border-gray-300 dark:border-gray-600 rounded-lg overflow-hidden shadow-md";
+        return "w-full border-collapse border-2 border-border rounded-lg overflow-hidden shadow-md";
       case 'minimal':
         return "w-full border-collapse";
       default:
-        return "w-full border-collapse rounded-lg overflow-hidden shadow-sm border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-900";
+        return "w-full border-collapse rounded-lg overflow-hidden shadow-sm border border-border bg-card";
     }
   };
 
@@ -112,13 +112,13 @@ export function TableHead({ children, variant = 'default' }: { children: React.R
   const getHeadStyles = () => {
     switch (variant) {
       case 'striped':
-        return "bg-gradient-to-r from-blue-600 to-purple-600 text-white";
+        return "bg-primary text-primary-foreground";
       case 'bordered':
-        return "bg-gray-100 dark:bg-gray-800 border-b-2 border-gray-300 dark:border-gray-600";
+        return "bg-muted border-b-2 border-border";
       case 'minimal':
-        return "border-b-2 border-gray-200 dark:border-gray-700";
+        return "border-b-2 border-border";
       default:
-        return "bg-gradient-to-r from-gray-50 to-gray-100 dark:from-gray-800 dark:to-gray-700";
+        return "bg-muted";
     }
   };
 
@@ -133,13 +133,13 @@ export function TableBody({ children, variant = 'default' }: { children: React.R
   const getBodyStyles = () => {
     switch (variant) {
       case 'striped':
-        return "divide-y divide-gray-100 dark:divide-gray-800";
+        return "divide-y divide-border";
       case 'bordered':
-        return "bg-white dark:bg-gray-900";
+        return "bg-card";
       case 'minimal':
         return "";
       default:
-        return "divide-y divide-gray-100 dark:divide-gray-800";
+        return "divide-y divide-border";
     }
   };
 
@@ -154,13 +154,13 @@ export function TableRow({ children, variant = 'default' }: { children: React.Re
   const getRowStyles = () => {
     switch (variant) {
       case 'striped':
-        return "even:bg-gray-50 dark:even:bg-gray-800/50 hover:bg-blue-50 dark:hover:bg-blue-900/20 transition-all duration-200";
+        return "even:bg-muted/50 hover:bg-primary/5 transition-all duration-200";
       case 'bordered':
-        return "border-b border-gray-200 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors";
+        return "border-b border-border hover:bg-muted transition-colors";
       case 'minimal':
-        return "border-b border-gray-100 dark:border-gray-800 hover:bg-gray-50 dark:hover:bg-gray-800/30 transition-colors";
+        return "border-b border-border hover:bg-muted/50 transition-colors";
       default:
-        return "hover:bg-gray-50 dark:hover:bg-gray-800/50 transition-all duration-150 hover:shadow-sm";
+        return "hover:bg-muted/50 transition-all duration-150 hover:shadow-sm";
     }
   };
 
@@ -177,11 +177,11 @@ export function TableHeader({ children, variant = 'default' }: { children: React
       case 'striped':
         return "px-6 py-4 text-left text-sm font-semibold uppercase tracking-wider";
       case 'bordered':
-        return "border-r border-gray-300 dark:border-gray-600 px-6 py-3 text-left text-xs font-semibold text-gray-700 dark:text-gray-300 uppercase tracking-wider last:border-r-0";
+        return "border-r border-border px-6 py-3 text-left text-xs font-semibold text-foreground/80 uppercase tracking-wider last:border-r-0";
       case 'minimal':
-        return "px-4 py-3 text-left text-sm font-semibold text-gray-900 dark:text-gray-100";
+        return "px-4 py-3 text-left text-sm font-semibold text-foreground";
       default:
-        return "px-6 py-4 text-left text-xs font-semibold text-gray-600 dark:text-gray-300 uppercase tracking-wider border-b border-gray-200 dark:border-gray-600";
+        return "px-6 py-4 text-left text-xs font-semibold text-muted-foreground uppercase tracking-wider border-b border-border";
     }
   };
 
@@ -196,13 +196,13 @@ export function TableCell({ children, variant = 'default' }: { children: React.R
   const getCellStyles = () => {
     switch (variant) {
       case 'striped':
-        return "px-6 py-4 text-sm text-gray-900 dark:text-gray-100";
+        return "px-6 py-4 text-sm text-foreground";
       case 'bordered':
-        return "border-r border-gray-200 dark:border-gray-700 px-6 py-4 text-sm text-gray-900 dark:text-gray-100 last:border-r-0";
+        return "border-r border-border px-6 py-4 text-sm text-foreground last:border-r-0";
       case 'minimal':
-        return "px-4 py-3 text-sm text-gray-700 dark:text-gray-300";
+        return "px-4 py-3 text-sm text-foreground/80";
       default:
-        return "px-6 py-4 text-sm text-gray-900 dark:text-gray-100";
+        return "px-6 py-4 text-sm text-foreground";
     }
   };
 
@@ -226,7 +226,7 @@ export function StatusBadge({ status, children }: { status: 'success' | 'warning
       case 'info':
         return "bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-200";
       default:
-        return "bg-gray-100 text-gray-800 dark:bg-gray-900 dark:text-gray-200";
+        return "bg-muted text-muted-foreground";
     }
   };
 

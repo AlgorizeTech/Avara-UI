@@ -142,6 +142,12 @@ npx shadcn@latest registry add @algorize-ui=https://algorize-ui.vercel.app/r/{na
 npx shadcn@latest add @algorize-ui/ai-chat
 ```
 
+Or the Framer Motion build (same props, same file — install one):
+
+```bash
+npx shadcn@latest add @algorize-ui/ai-chat-framer
+```
+
 ## Examples
 
  Promise` to replace the simulated upload — the rocket follows whatever percentage you report, and the chip turns green when the promise resolves or red when it rejects.",

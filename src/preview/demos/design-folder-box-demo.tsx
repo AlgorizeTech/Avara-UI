@@ -12,7 +12,7 @@ export default function DesignFolderBoxDemo({
   subtitle?: string;
 }) {
   return (
-    <div className="w-full p-2 sm:p-6 overflow-hidden flex flex-col justify-center items-center rounded-2xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-[#09090b]">
+    <div className="w-full p-2 sm:p-6 overflow-hidden flex flex-col justify-center items-center rounded-2xl border border-border bg-background">
       {/* `title`/`subtitle` left undefined so the block's own defaults apply. */}
       <DesignFolderBox color={color} title={title} subtitle={subtitle} />
     </div>

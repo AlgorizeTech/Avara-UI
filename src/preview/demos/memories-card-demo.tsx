@@ -78,7 +78,7 @@ export default function MemoriesCardDemo({
     // date/location icons, reset button), so repointing the token recolours it.
     <div
       style={accentStyle(color)}
-      className="w-full flex flex-col items-center justify-center bg-zinc-50 dark:bg-[#0a0a0a] py-8 sm:py-12 px-4 md:px-8 relative overflow-hidden min-h-[600px] rounded-3xl border border-zinc-200 dark:border-white/10 transition-colors duration-300"
+      className="w-full flex flex-col items-center justify-center bg-muted/40 py-8 sm:py-12 px-4 md:px-8 relative overflow-hidden min-h-[600px] rounded-3xl border border-border transition-colors duration-300"
     >
       {/* Ambient Radial Backglow */}
       <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-2/3 h-2/3 bg-primary/5 dark:bg-primary/10 blur-[130px] rounded-full pointer-events-none" />
@@ -92,7 +92,7 @@ export default function MemoriesCardDemo({
       </div>
 
       {showIndex && (
-        <p className="relative z-10 mt-6 text-sm font-semibold text-zinc-500 dark:text-zinc-400 tabular-nums">
+        <p className="relative z-10 mt-6 text-sm font-semibold text-muted-foreground tabular-nums">
           onCardChange → index {activeIndex+1}
         </p>
       )}

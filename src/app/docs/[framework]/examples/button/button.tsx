@@ -102,25 +102,27 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
     };
 
     const rippleColor =
-      variant === "default" || variant === "destructive"
-        ? "bg-white/30 dark:bg-slate-900/20"
-        : "bg-slate-900/10 dark:bg-white/10";
+      variant === "default"
+        ? "bg-primary-foreground/30"
+        : variant === "destructive"
+          ? "bg-white/30"
+          : "bg-foreground/10";
 
     const baseClasses =
       "relative inline-flex items-center justify-center rounded-md text-sm font-medium transition-transform duration-75 focus:outline-none disabled:opacity-50 disabled:pointer-events-none overflow-hidden active:scale-[0.97] cursor-pointer";
 
     const variantClasses = {
       default:
-        "bg-slate-900 text-slate-50 hover:bg-slate-900/90 dark:bg-slate-50 dark:text-slate-900 dark:hover:bg-slate-50/90",
+        "bg-primary text-primary-foreground hover:bg-primary/90",
       destructive:
         "bg-red-500 text-white hover:bg-red-600 dark:bg-red-600 dark:text-white dark:hover:bg-red-700",
       outline:
-        "border border-slate-200 bg-transparent hover:bg-slate-100 text-slate-900 dark:border-slate-800 dark:hover:bg-slate-800 dark:text-slate-50",
+        "border border-input bg-transparent hover:bg-muted text-foreground",
       secondary:
-        "bg-slate-100 text-slate-900 hover:bg-slate-200 dark:bg-slate-800 dark:text-slate-50 dark:hover:bg-slate-700",
+        "bg-muted text-foreground hover:bg-foreground/10",
       ghost:
-        "hover:bg-slate-100 text-slate-900 dark:hover:bg-slate-800 dark:text-slate-50",
-      link: "text-slate-900 underline-offset-4 hover:underline dark:text-slate-50",
+        "hover:bg-muted text-foreground",
+      link: "text-primary underline-offset-4 hover:underline",
     };
 
     const sizeClasses = {

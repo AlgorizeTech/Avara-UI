@@ -491,26 +491,26 @@ User question: ${prompt}`;
                     setAiResponse("");
                     setAiConversation([]);
                   }}
-                  className={`relative inline-flex h-6 w-11 items-center rounded-full transition-colors focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 ${
-                    isAIMode ? 'bg-blue-600' : 'bg-zinc-300 dark:bg-zinc-700'
+                  className={`relative inline-flex h-6 w-11 items-center rounded-full transition-colors focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 ${
+                    isAIMode ? 'bg-primary' : 'bg-foreground/15'
                   }`}
                   role="switch"
                   aria-checked={isAIMode}
                   aria-label="Toggle AI search mode"
                 >
                   <span
-                    className={`inline-block h-4 w-4 transform rounded-full bg-white transition-transform ${
+                    className={`inline-block h-4 w-4 transform rounded-full bg-background transition-transform ${
                       isAIMode ? 'translate-x-6' : 'translate-x-1'
                     } flex items-center justify-center`}
                   >
                     {isAIMode ? (
-                      <div className="m-1 w-2 h-2 bg-blue-600 rounded-full" />
+                      <div className="m-1 w-2 h-2 bg-primary rounded-full" />
                     ) : (
-                      <div className="m-1 w-2 h-2 bg-zinc-400 rounded-full" />
+                      <div className="m-1 w-2 h-2 bg-foreground/40 rounded-full" />
                     )}
                   </span>
                 </button>
-                <span className="text-xs text-zinc-500 dark:text-zinc-400">
+                <span className="text-xs text-muted-foreground">
                   {isAIMode ? 'AI' : 'Search'}
                 </span>
               </div> */}

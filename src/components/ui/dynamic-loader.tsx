@@ -4,7 +4,7 @@ import { ComponentType } from "react";
 // Loading skeleton component
 const LoadingSkeleton = ({ height = "200px" }: { height?: string }) => (
   <div
-    className="animate-pulse bg-gray-200 dark:bg-gray-800 rounded-lg"
+    className="animate-pulse bg-muted rounded-lg"
     style={{ height }}
   />
 );

@@ -85,7 +85,7 @@ export default function DialogDemo({
               buttonProps={{ label: "Copy Link", copiedLabel: "Copied!" }}
             />
             <DialogFooter>
-              <p className="text-xs text-zinc-500 text-left w-full sm:text-right mt-2 sm:mt-0 pt-2 border-t dark:border-zinc-800">
+              <p className="text-xs text-muted-foreground text-left w-full sm:text-right mt-2 sm:mt-0 pt-2 border-t border-border">
                 Your profile is currently public.
               </p>
             </DialogFooter>
@@ -96,8 +96,8 @@ export default function DialogDemo({
       {layout === "form" && (
         <Dialog>
           <DialogTrigger>
-            <button className="flex items-center gap-2 px-4 py-2 bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 hover:bg-primary/5 hover:border-primary/40 text-zinc-900 dark:text-white hover:text-primary text-sm font-semibold rounded-md shadow-sm transition-colors cursor-pointer">
-              <Settings className="w-4 h-4 text-zinc-500" /> Edit Profile
+            <button className="flex items-center gap-2 px-4 py-2 bg-card border border-border hover:bg-primary/5 hover:border-primary/40 text-foreground hover:text-primary text-sm font-semibold rounded-md shadow-sm transition-colors cursor-pointer">
+              <Settings className="w-4 h-4 text-muted-foreground" /> Edit Profile
             </button>
           </DialogTrigger>
           <DialogContent className="sm:max-w-[425px]">
@@ -119,7 +119,7 @@ export default function DialogDemo({
                 <input
                   id="name"
                   defaultValue="John Doe"
-                  className="col-span-3 h-10 rounded-md border border-zinc-200 dark:border-zinc-800 bg-transparent px-3 text-sm focus:outline-none focus:ring-2 focus:ring-primary"
+                  className="col-span-3 h-10 rounded-md border border-input bg-transparent px-3 text-sm focus:outline-none focus:ring-2 focus:ring-primary"
                 />
               </div>
               <div className="grid grid-cols-4 items-center gap-4">
@@ -132,13 +132,13 @@ export default function DialogDemo({
                 <input
                   id="username"
                   defaultValue="@johndoe"
-                  className="col-span-3 h-10 rounded-md border border-zinc-200 dark:border-zinc-800 bg-transparent px-3 text-sm focus:outline-none focus:ring-2 focus:ring-primary"
+                  className="col-span-3 h-10 rounded-md border border-input bg-transparent px-3 text-sm focus:outline-none focus:ring-2 focus:ring-primary"
                 />
               </div>
             </div>
             <DialogFooter>
               <div className="flex w-full sm:w-auto gap-2">
-                <DialogClose className="flex-1 sm:flex-none px-4 py-2 bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 hover:bg-zinc-50 dark:hover:bg-zinc-800 text-zinc-900 dark:text-white text-sm font-medium rounded-md shadow-sm cursor-pointer">
+                <DialogClose className="flex-1 sm:flex-none px-4 py-2 bg-card border border-border hover:bg-muted text-foreground text-sm font-medium rounded-md shadow-sm cursor-pointer">
                   Cancel
                 </DialogClose>
                 <DialogClose className="flex-1 sm:flex-none px-4 py-2 bg-primary text-primary-foreground hover:bg-primary/90 text-sm font-medium rounded-md shadow-sm cursor-pointer">
@@ -169,7 +169,7 @@ export default function DialogDemo({
             </DialogHeader>
             <DialogFooter>
               <div className="flex w-full sm:w-auto gap-2">
-                <DialogClose className="flex-1 sm:flex-none px-4 py-2 bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 hover:bg-zinc-50 dark:hover:bg-zinc-800 text-zinc-900 dark:text-white text-sm font-medium rounded-md shadow-sm cursor-pointer">
+                <DialogClose className="flex-1 sm:flex-none px-4 py-2 bg-card border border-border hover:bg-muted text-foreground text-sm font-medium rounded-md shadow-sm cursor-pointer">
                   Cancel
                 </DialogClose>
                 <DialogClose className="flex-1 sm:flex-none px-4 py-2 bg-rose-600 hover:bg-rose-700 text-white text-sm font-medium rounded-md shadow-sm cursor-pointer">
@@ -198,7 +198,7 @@ export default function DialogDemo({
             </DialogHeader>
             <DialogFooter>
               <div className="flex w-full sm:w-auto gap-2">
-                <DialogClose className="flex-1 sm:flex-none px-4 py-2 bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 hover:bg-zinc-50 dark:hover:bg-zinc-800 text-zinc-900 dark:text-white text-sm font-medium rounded-md shadow-sm cursor-pointer">
+                <DialogClose className="flex-1 sm:flex-none px-4 py-2 bg-card border border-border hover:bg-muted text-foreground text-sm font-medium rounded-md shadow-sm cursor-pointer">
                   Decline
                 </DialogClose>
                 <DialogClose className="flex-1 sm:flex-none px-4 py-2 bg-primary text-primary-foreground hover:bg-primary/90 text-sm font-medium rounded-md shadow-sm cursor-pointer">
@@ -255,7 +255,7 @@ function ControlledDialog() {
               type="button"
               onClick={() => setOpen(false)}
               disabled={saving}
-              className="flex-1 sm:flex-none px-4 py-2 bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 hover:bg-zinc-50 dark:hover:bg-zinc-800 text-zinc-900 dark:text-white text-sm font-medium rounded-md shadow-sm disabled:opacity-60 cursor-pointer"
+              className="flex-1 sm:flex-none px-4 py-2 bg-card border border-border hover:bg-muted text-foreground text-sm font-medium rounded-md shadow-sm disabled:opacity-60 cursor-pointer"
             >
               Cancel
             </button>
@@ -310,14 +310,14 @@ const DIALOG_SIZES = [
 function SizeScaleDialogs() {
   return (
     <div className="flex flex-col items-center gap-3">
-      <p className="text-xs font-medium text-zinc-500 dark:text-zinc-400">
+      <p className="text-xs font-medium text-muted-foreground">
         Open one to compare the widths
       </p>
       <div className="flex flex-wrap items-center justify-center gap-2">
         {DIALOG_SIZES.map(({ size, label, title, body }) => (
           <Dialog key={size}>
             <DialogTrigger>
-              <button className="px-3 py-1.5 bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 hover:bg-primary/10 hover:border-primary/40 hover:text-primary text-zinc-900 dark:text-white text-sm font-mono font-medium rounded-md shadow-sm transition-colors cursor-pointer">
+              <button className="px-3 py-1.5 bg-card border border-border hover:bg-primary/10 hover:border-primary/40 hover:text-primary text-foreground text-sm font-mono font-medium rounded-md shadow-sm transition-colors cursor-pointer">
                 {label}
               </button>
             </DialogTrigger>
@@ -326,8 +326,8 @@ function SizeScaleDialogs() {
                 <DialogTitle>{title}</DialogTitle>
                 <DialogDescription>{body}</DialogDescription>
               </DialogHeader>
-              <div className="rounded-lg border border-dashed border-zinc-300 dark:border-zinc-700 px-4 py-6 text-center">
-                <span className="text-sm font-mono text-zinc-500 dark:text-zinc-400">
+              <div className="rounded-lg border border-dashed border-border px-4 py-6 text-center">
+                <span className="text-sm font-mono text-muted-foreground">
                   size=&quot;{size}&quot;
                 </span>
               </div>
@@ -375,16 +375,16 @@ function DeleteConfirmationDialog() {
 
   return (
     <div className="w-full max-w-md">
-      <div className="rounded-xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 divide-y divide-zinc-100 dark:divide-zinc-800 shadow-sm overflow-hidden">
+      <div className="rounded-xl border border-border bg-card text-card-foreground divide-y divide-border shadow-sm overflow-hidden">
         <div className="px-4 py-3 flex items-center justify-between">
-          <h3 className="text-sm font-semibold text-zinc-900 dark:text-white">
+          <h3 className="text-sm font-semibold text-foreground">
             Projects
           </h3>
           {projects.length < INITIAL_PROJECTS.length && (
             <button
               type="button"
               onClick={() => setProjects(INITIAL_PROJECTS)}
-              className="flex items-center gap-1.5 text-xs font-medium text-zinc-500 hover:text-primary transition-colors cursor-pointer"
+              className="flex items-center gap-1.5 text-xs font-medium text-muted-foreground hover:text-primary transition-colors cursor-pointer"
             >
               <Undo2 className="w-3.5 h-3.5" /> Restore
             </button>
@@ -392,7 +392,7 @@ function DeleteConfirmationDialog() {
         </div>
 
         {projects.length === 0 ? (
-          <p className="px-4 py-8 text-center text-sm text-zinc-500">
+          <p className="px-4 py-8 text-center text-sm text-muted-foreground">
             No projects left.
           </p>
         ) : (
@@ -402,16 +402,16 @@ function DeleteConfirmationDialog() {
               className="px-4 py-3 flex items-center justify-between gap-3"
             >
               <div className="min-w-0">
-                <p className="text-sm font-medium text-zinc-900 dark:text-white truncate">
+                <p className="text-sm font-medium text-foreground truncate">
                   {project.name}
                 </p>
-                <p className="text-xs text-zinc-500 truncate">{project.meta}</p>
+                <p className="text-xs text-muted-foreground truncate">{project.meta}</p>
               </div>
               <button
                 type="button"
                 aria-label={"Delete " + project.name}
                 onClick={() => setPending(project)}
-                className="shrink-0 p-2 rounded-md text-zinc-400 hover:text-rose-600 hover:bg-rose-50 dark:hover:bg-rose-500/10 transition-colors cursor-pointer"
+                className="shrink-0 p-2 rounded-md text-muted-foreground hover:text-rose-600 hover:bg-rose-50 dark:hover:bg-rose-500/10 transition-colors cursor-pointer"
               >
                 <Trash2 className="w-4 h-4" />
               </button>
@@ -446,7 +446,7 @@ function DeleteConfirmationDialog() {
                 type="button"
                 onClick={() => setPending(null)}
                 disabled={deleting}
-                className="flex-1 sm:flex-none px-4 py-2 bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 hover:bg-zinc-50 dark:hover:bg-zinc-800 text-zinc-900 dark:text-white text-sm font-medium rounded-md shadow-sm disabled:opacity-60 cursor-pointer"
+                className="flex-1 sm:flex-none px-4 py-2 bg-card border border-border hover:bg-muted text-foreground text-sm font-medium rounded-md shadow-sm disabled:opacity-60 cursor-pointer"
               >
                 Cancel
               </button>
@@ -504,21 +504,21 @@ function NestedDialogs() {
           <div className="grid gap-1.5">
             <label className="text-sm font-medium">Bill to</label>
             <div className="flex items-center gap-2">
-              <div className="flex-1 min-w-0 h-10 flex items-center rounded-md border border-zinc-200 dark:border-zinc-800 px-3 text-sm">
+              <div className="flex-1 min-w-0 h-10 flex items-center rounded-md border border-input px-3 text-sm">
                 {customer ? (
                   <span className="truncate">
                     {customer.name}
-                    <span className="text-zinc-500"> · {customer.email}</span>
+                    <span className="text-muted-foreground"> · {customer.email}</span>
                   </span>
                 ) : (
-                  <span className="text-zinc-400">No customer selected</span>
+                  <span className="text-muted-foreground">No customer selected</span>
                 )}
               </div>
 
               {/* The nested dialog. Its own root, rendered inside the outer content. */}
               <Dialog open={pickerOpen} onOpenChange={setPickerOpen}>
                 <DialogTrigger>
-                  <button className="h-10 px-3 shrink-0 flex items-center gap-1.5 bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 hover:bg-primary/5 hover:border-primary/40 hover:text-primary text-sm font-medium rounded-md shadow-sm transition-colors cursor-pointer">
+                  <button className="h-10 px-3 shrink-0 flex items-center gap-1.5 bg-card border border-border hover:bg-primary/5 hover:border-primary/40 hover:text-primary text-sm font-medium rounded-md shadow-sm transition-colors cursor-pointer">
                     <Search className="w-3.5 h-3.5" /> Choose
                   </button>
                 </DialogTrigger>
@@ -548,7 +548,7 @@ function NestedDialogs() {
                           <span className="block text-sm font-medium truncate">
                             {option.name}
                           </span>
-                          <span className="block text-xs text-zinc-500 truncate">
+                          <span className="block text-xs text-muted-foreground truncate">
                             {option.email}
                           </span>
                         </span>
@@ -560,7 +560,7 @@ function NestedDialogs() {
                   </div>
 
                   <DialogFooter>
-                    <DialogClose className="w-full sm:w-auto flex items-center justify-center gap-1.5 px-4 py-2 bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 hover:bg-zinc-50 dark:hover:bg-zinc-800 text-zinc-900 dark:text-white text-sm font-medium rounded-md shadow-sm cursor-pointer">
+                    <DialogClose className="w-full sm:w-auto flex items-center justify-center gap-1.5 px-4 py-2 bg-card border border-border hover:bg-muted text-foreground text-sm font-medium rounded-md shadow-sm cursor-pointer">
                       <ArrowLeft className="w-3.5 h-3.5" /> Back to invoice
                     </DialogClose>
                   </DialogFooter>
@@ -576,14 +576,14 @@ function NestedDialogs() {
             <input
               id="amount"
               defaultValue="1,250.00"
-              className="h-10 rounded-md border border-zinc-200 dark:border-zinc-800 bg-transparent px-3 text-sm focus:outline-none focus:ring-2 focus:ring-primary"
+              className="h-10 rounded-md border border-input bg-transparent px-3 text-sm focus:outline-none focus:ring-2 focus:ring-primary"
             />
           </div>
         </div>
 
         <DialogFooter>
           <div className="flex w-full sm:w-auto gap-2">
-            <DialogClose className="flex-1 sm:flex-none px-4 py-2 bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 hover:bg-zinc-50 dark:hover:bg-zinc-800 text-zinc-900 dark:text-white text-sm font-medium rounded-md shadow-sm cursor-pointer">
+            <DialogClose className="flex-1 sm:flex-none px-4 py-2 bg-card border border-border hover:bg-muted text-foreground text-sm font-medium rounded-md shadow-sm cursor-pointer">
               Cancel
             </DialogClose>
             <DialogClose

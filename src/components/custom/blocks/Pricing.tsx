@@ -1,6 +1,5 @@
 "use client";
 
-import gsap from "gsap";
 import { cn } from "@/lib/utils";
 import {
   ArrowRight,
@@ -368,7 +367,7 @@ export function PricingCards({
 }
 
 // ==========================================
-// 2. PRICING BUILDER (GSAP QUOTE BUILDER)
+// 2. PRICING BUILDER (QUOTE BUILDER)
 // ==========================================
 export interface PricingBuilderModule {
   id: string;
@@ -1440,6 +1439,10 @@ const computeCardData = (services: PricingServiceOption[], activeIds: string[]) 
   };
 };
 
+/** GSAP's power3.out, sampled for CSS / WAAPI. */
+const POWER3_OUT =
+  "linear(0, .1945, .3591, .4971, .6115, .7052, .7808, .8409, .8877, .9233, .9497, .9686, .9816, .9901, .9952, .998, .9994, .9999, 1, 1)";
+
 export function PricingPlans({
   title = "Pricing Plans",
   subtitle = "For each plan we",
@@ -1469,13 +1472,16 @@ export function PricingPlans({
   };
 
   useEffect(() => {
-    if (cardContentRef.current) {
-      gsap.fromTo(
-        cardContentRef.current,
-        { opacity: 0, y: 15 },
-        { opacity: 1, y: 0, duration: 0.4, ease: "power3.out" },
-      );
-    }
+    const el = cardContentRef.current;
+    if (!el || typeof el.animate !== "function") return;
+    const animation = el.animate(
+      [
+        { opacity: 0, transform: "translateY(15px)" },
+        { opacity: 1, transform: "translateY(0px)" },
+      ],
+      { duration: 400, easing: POWER3_OUT },
+    );
+    return () => animation.cancel();
   }, [activePlans]);
 
   return (

@@ -52,7 +52,7 @@ export default function Still() {
   return (
     <>
       <ImageWall items={ITEMS} interval={0} zoom={1.2} onFocus={setCurrent} className="h-96" />
-      <p className="mt-2 text-sm text-neutral-500">{ITEMS[current].title}</p>
+      <p className="mt-2 text-sm text-muted-foreground">{ITEMS[current].title}</p>
     </>
   );
 }
@@ -159,7 +159,7 @@ export default function Still() {
 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 my-6 not-prose">
   <div className="p-6 rounded-2xl border border-border bg-card">
     <h3 className="text-lg font-semibold text-card-foreground mb-2">A camera, not a slider</h3>
-    <p className="text-muted-foreground text-sm">One GSAP timeline moves the whole wall: it pulls the camera back to 0.64 of its resting scale while gliding to the next card, then settles back in. Nothing inside the wall moves on its own, so it stays cheap however many cards you give it.</p>
+    <p className="text-muted-foreground text-sm">One animation of the canvas moves the whole wall: it pulls the camera back to 0.64 of its resting scale while gliding to the next card, then settles back in. Nothing inside the wall moves on its own, so it stays cheap however many cards you give it.</p>
   </div>
   <div className="p-6 rounded-2xl border border-border bg-card">
     <h3 className="text-lg font-semibold text-card-foreground mb-2">A wall without edges</h3>

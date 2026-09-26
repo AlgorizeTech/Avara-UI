@@ -1,6 +1,6 @@
 "use client";
 
-import { useLayoutEffect, useRef, useState, useSyncExternalStore } from "react";
+import { useEffect, useLayoutEffect, useRef, useState, useSyncExternalStore } from "react";
 
 /**
  * False while server-rendering and during hydration, true afterwards — without
@@ -15,7 +15,6 @@ const useIsMounted = () =>
   );
 
 import { cn } from "@/lib/utils";
-import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
 import {
   CalendarDays,
   ChevronLeft,
@@ -30,6 +29,7 @@ import {
   type TimeFormat,
   TimePicker,
 } from "./blocks/TimePickerBlock";
+import { springLinear } from "./blocks/motion-curves";
 
 export type RangeDatePickerColor =
   | "primary"
@@ -237,6 +237,199 @@ const DUAL_WIDTH = "42rem";
 const CALENDAR_WITH_RAIL_WIDTH = "37.75rem";
 /** Below this much room the rail unfolds under the calendar instead of beside it. */
 const SIDE_RAIL_MIN_PX = 512;
+/** The side rail: its w-44 column (the pl-5 divider padding included) plus the ml-6 gap. */
+const SIDE_RAIL_WIDTH = "12.5rem";
+
+// ------------------------------------------
+// Motion — the same curves as DatePicker so both pickers unfold identically:
+// panels (and the card) unfold on a spring (stiffness 240, damping 30, mass
+// 0.9, drawn as a CSS `linear()` curve) and fold away on a short ease, which
+// also carries the time columns in and the picker / hint swap. Reduced
+// motion: instant.
+// ------------------------------------------
+const UNFOLD = springLinear({ stiffness: 240, damping: 30, mass: 0.9 });
+const SETTLE_EASE = "cubic-bezier(0.22, 1, 0.36, 1)";
+const unfoldOn = (property: string) => `${property} ${UNFOLD.duration}ms ${UNFOLD.easing}`;
+const settleOn = (property: string) => `${property} 0.28s ${SETTLE_EASE}`;
+
+const STYLES = `
+@keyframes range-picker-col-side { from { opacity: 0; transform: translateX(-12px); } }
+@keyframes range-picker-col-under { from { opacity: 0; transform: translateY(8px); } }
+[data-fold-in] .range-picker-cols > * {
+  animation: 0.28s ${SETTLE_EASE} calc(0.12s + var(--range-picker-i) * 0.07s) backwards;
+}
+[data-fold-in] .range-picker-cols[data-side] > * { animation-name: range-picker-col-side; }
+[data-fold-in] .range-picker-cols:not([data-side]) > * { animation-name: range-picker-col-under; }
+`;
+
+const REDUCED_MOTION = "(prefers-reduced-motion: reduce)";
+const subscribeReducedMotion = (onChange: () => void) => {
+  const mq = window.matchMedia(REDUCED_MOTION);
+  mq.addEventListener("change", onChange);
+  return () => mq.removeEventListener("change", onChange);
+};
+/** The visitor's reduced-motion setting; false while server-rendering. */
+function useReducedMotion() {
+  return useSyncExternalStore(
+    subscribeReducedMotion,
+    () => window.matchMedia(REDUCED_MOTION).matches,
+    () => false,
+  );
+}
+
+type FoldPhase = "closed" | "entering" | "open" | "closing";
+
+/**
+ * A panel that unfolds when `show` turns on and folds away before it leaves:
+ * open on the spring, closed on the ease, already open if shown from the
+ * start, and still showing what it last showed while it folds. `axis="x"`
+ * unfolds its width to `size`; `axis="y"` its height to whatever it holds.
+ * Once it has unfolded with motion it carries `data-fold-in`, which is what
+ * brings the time columns in after it.
+ */
+function Fold({
+  show,
+  axis,
+  size,
+  instant,
+  className,
+  children,
+}: {
+  show: boolean;
+  axis: "x" | "y";
+  size?: number | string;
+  instant: boolean;
+  className?: string;
+  children: React.ReactNode;
+}) {
+  const [phase, setPhase] = useState<FoldPhase>(show ? "open" : "closed");
+  const [cameIn, setCameIn] = useState(false);
+  const ref = useRef<HTMLDivElement>(null);
+  const shown = useRef(children);
+  if (show) shown.current = children;
+
+  useLayoutEffect(() => {
+    if (show && phase === "closed") {
+      setPhase(instant ? "open" : "entering");
+      setCameIn(!instant);
+    } else if (show && phase === "closing") setPhase("open");
+    else if (!show && (phase === "open" || phase === "entering")) setPhase(instant ? "closed" : "closing");
+  }, [show, phase, instant]);
+
+  // Entering: commit the folded look, then transition to the open one.
+  useLayoutEffect(() => {
+    if (phase !== "entering") return;
+    void ref.current?.offsetWidth;
+    setPhase("open");
+  }, [phase]);
+
+  // In case the fold never reports its end (a hidden tab, `display: none`).
+  useEffect(() => {
+    if (phase !== "closing") return;
+    const t = window.setTimeout(() => setPhase("closed"), 400);
+    return () => window.clearTimeout(t);
+  }, [phase]);
+
+  if (phase === "closed") return null;
+
+  const open = phase === "open";
+  const dimension = axis === "x" ? "width" : "grid-template-rows";
+  const on = phase === "closing" ? settleOn : unfoldOn;
+  return (
+    <div
+      ref={ref}
+      data-fold-in={cameIn || undefined}
+      className={className}
+      style={{
+        ...(axis === "x"
+          ? { width: open ? size : 0 }
+          : { display: "grid", gridTemplateRows: open ? "1fr" : "0fr" }),
+        opacity: open ? 1 : 0,
+        transition: instant ? "none" : `${on(dimension)}, ${on("opacity")}`,
+      }}
+      onTransitionEnd={(e) => {
+        if (phase === "closing" && e.target === e.currentTarget && e.propertyName === dimension) setPhase("closed");
+      }}
+    >
+      {axis === "x" ? shown.current : <div className="min-h-0">{shown.current}</div>}
+    </div>
+  );
+}
+
+type SwapPhase = "from" | "shown" | "leaving";
+
+/**
+ * One thing that gives way to another, one at a time: the showing one fades
+ * up and out, then the next fades up in — the leaving one keeps what it
+ * showed. Starts shown, without motion.
+ */
+function WaitSwap({
+  swapKey,
+  instant,
+  classNames,
+  children,
+}: {
+  swapKey: string;
+  instant: boolean;
+  classNames?: Record<string, string>;
+  children: React.ReactNode;
+}) {
+  const [shownKey, setShownKey] = useState(swapKey);
+  const [phase, setPhase] = useState<SwapPhase>("shown");
+  const ref = useRef<HTMLDivElement>(null);
+  const shown = useRef(children);
+  if (shownKey === swapKey) shown.current = children;
+  const wanted = useRef(swapKey);
+
+  useLayoutEffect(() => {
+    wanted.current = swapKey;
+    if (swapKey === shownKey) setPhase((p) => (p === "leaving" ? "shown" : p));
+    else if (instant) {
+      setShownKey(swapKey);
+      setPhase("shown");
+    } else setPhase("leaving");
+  }, [swapKey, shownKey, instant]);
+
+  // Coming in: commit the starting look, then transition to the resting one.
+  useLayoutEffect(() => {
+    if (phase !== "from") return;
+    void ref.current?.offsetWidth;
+    setPhase("shown");
+  }, [phase]);
+
+  const settle = useRef(() => {});
+  settle.current = () => {
+    if (phase !== "leaving") return;
+    setShownKey(wanted.current);
+    setPhase("from");
+  };
+
+  // In case the transition never ends (a hidden tab, `display: none`).
+  useEffect(() => {
+    if (phase !== "leaving") return;
+    const t = window.setTimeout(() => settle.current(), 400);
+    return () => window.clearTimeout(t);
+  }, [phase]);
+
+  const y = phase === "from" ? 6 : phase === "leaving" ? -6 : 0;
+  return (
+    <div
+      key={shownKey}
+      ref={ref}
+      className={classNames?.[shownKey]}
+      style={{
+        opacity: phase === "shown" ? 1 : 0,
+        transform: y ? `translateY(${y}px)` : "none",
+        transition: phase === "from" || instant ? "none" : `${settleOn("opacity")}, ${settleOn("transform")}`,
+      }}
+      onTransitionEnd={(e) => {
+        if (e.target === e.currentTarget && e.propertyName === "opacity") settle.current();
+      }}
+    >
+      {shown.current}
+    </div>
+  );
+}
 
 /**
  * Width of the element, kept current through a ResizeObserver. Drives the
@@ -314,13 +507,6 @@ export function RangeDatePicker({
   const sideTimes = showTime && !isDual && frameWidth >= SIDE_RAIL_MIN_PX;
   // The rail exists once a start day is chosen and folds away on Clear.
   const railOpen = showTime && selectingFrom !== null;
-
-  const unfold = reduceMotion
-    ? { duration: 0 }
-    : { type: "spring" as const, stiffness: 240, damping: 30, mass: 0.9 };
-  const settle = reduceMotion
-    ? { duration: 0 }
-    : { duration: 0.28, ease: [0.22, 1, 0.36, 1] as const };
 
   const formatStamp = (date: Date | null) =>
     !date
@@ -655,89 +841,73 @@ export function RangeDatePicker({
           {end.date ? formatTime(end.date, timeFormat) : "--:--"}
         </span>
       </div>
-      <AnimatePresence mode="wait" initial={false}>
+      <WaitSwap
+        swapKey={end.date ? "picker" : "hint"}
+        instant={reduceMotion}
+        classNames={{
+          hint: "h-28 rounded-xl border border-dashed border-border/80 flex flex-col items-center justify-center gap-1.5 px-3 text-center",
+        }}
+      >
         {end.date ? (
-          <motion.div
-            key="picker"
-            initial={{ opacity: 0, y: 6 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: -6 }}
-            transition={settle}
-          >
-            <TimePicker
-              value={end.date}
-              onChange={end.onChange}
-              format={timeFormat}
-              minuteStep={minuteStep}
-              minTime={end.min}
-              maxTime={null}
-              color={color}
-              disabled={disabled}
-              className="h-28"
-            />
-          </motion.div>
+          <TimePicker
+            value={end.date}
+            onChange={end.onChange}
+            format={timeFormat}
+            minuteStep={minuteStep}
+            minTime={end.min}
+            maxTime={null}
+            color={color}
+            disabled={disabled}
+            className="h-28"
+          />
         ) : (
-          <motion.div
-            key="hint"
-            initial={{ opacity: 0, y: 6 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: -6 }}
-            transition={settle}
-            className="h-28 rounded-xl border border-dashed border-border/80 flex flex-col items-center justify-center gap-1.5 px-3 text-center"
-          >
+          <>
             <CalendarDays className="size-4 text-muted-foreground/70" />
             <span className="text-[11px] font-medium leading-snug text-muted-foreground">
               Pick an end day on the calendar
             </span>
-          </motion.div>
+          </>
         )}
-      </AnimatePresence>
+      </WaitSwap>
     </div>
   );
 
   /** The two columns, stacked in the rail or side by side under the calendar. */
   const timeColumns = (stacked: boolean) => (
+    // Each column comes in after the rail has started to unfold (see STYLES).
     <div
+      data-side={stacked || undefined}
       className={cn(
-        "grid gap-4",
+        "range-picker-cols grid gap-4",
         stacked ? "grid-cols-1" : "grid-cols-1 sm:grid-cols-2",
       )}
     >
       {timeEnds.map((end, i) => (
-        <motion.div
-          key={end.key}
-          initial={{ opacity: 0, x: stacked ? -12 : 0, y: stacked ? 0 : 8 }}
-          animate={{ opacity: 1, x: 0, y: 0 }}
-          transition={
-            reduceMotion
-              ? { duration: 0 }
-              : { ...settle, delay: 0.12 + i * 0.07 }
-          }
-        >
+        <div key={end.key} style={{ "--range-picker-i": i } as React.CSSProperties}>
           {renderTimeColumn(end)}
-        </motion.div>
+        </div>
       ))}
     </div>
   );
 
   return (
     <div ref={frameRef} className={frameClass}>
-      <motion.article
-        initial={false}
-        animate={{
+      <article
+        style={{
           maxWidth: isDual
             ? DUAL_WIDTH
             : sideTimes && railOpen
               ? CALENDAR_WITH_RAIL_WIDTH
               : CALENDAR_WIDTH,
+          transition: reduceMotion ? "none" : unfoldOn("max-width"),
         }}
-        transition={unfold}
         className={cn(
           "w-full rounded-2xl bg-card border border-border/80 p-5 flex flex-col gap-4 text-foreground select-none overflow-hidden shadow-none mx-auto my-auto",
           disabled && "opacity-60 pointer-events-none",
           className,
         )}
       >
+        <style>{STYLES}</style>
         {/* Calendar + time rail: the rail unfolds to the RIGHT of a single month
           when there is room, and DOWN from under the calendar otherwise. */}
         <div className={cn("w-full flex", sideTimes ? "flex-row" : "flex-col")}>
@@ -760,37 +930,23 @@ export function RangeDatePicker({
           </div>
 
           {/* Start / End time rail */}
-          <AnimatePresence initial={false}>
-            {railOpen && sideTimes && (
-              <motion.div
-                key="rail-side"
-                initial={{ width: 0, opacity: 0 }}
-                animate={{ width: "auto", opacity: 1 }}
-                exit={{ width: 0, opacity: 0, transition: settle }}
-                transition={unfold}
-                className="shrink-0 overflow-hidden"
-              >
-                {/* Fixed-width column so the lists are never squeezed mid-unfold. */}
-                <div className="w-44 ml-6 pl-5 border-l border-border/60 h-full">
-                  {timeColumns(true)}
-                </div>
-              </motion.div>
-            )}
-            {railOpen && !sideTimes && (
-              <motion.div
-                key="rail-stacked"
-                initial={{ height: 0, opacity: 0 }}
-                animate={{ height: "auto", opacity: 1 }}
-                exit={{ height: 0, opacity: 0, transition: settle }}
-                transition={unfold}
-                className="overflow-hidden"
-              >
-                <div className="pt-4 mt-6 border-t border-border/60">
-                  {timeColumns(false)}
-                </div>
-              </motion.div>
-            )}
-          </AnimatePresence>
+          <Fold
+            show={railOpen && sideTimes}
+            axis="x"
+            size={SIDE_RAIL_WIDTH}
+            instant={reduceMotion}
+            className="shrink-0 overflow-hidden"
+          >
+            {/* Fixed-width column so the lists are never squeezed mid-unfold. */}
+            <div className="w-44 ml-6 pl-5 border-l border-border/60 h-full">
+              {timeColumns(true)}
+            </div>
+          </Fold>
+          <Fold show={railOpen && !sideTimes} axis="y" instant={reduceMotion} className="overflow-hidden">
+            <div className="pt-4 mt-6 border-t border-border/60">
+              {timeColumns(false)}
+            </div>
+          </Fold>
         </div>
 
         {/* Bottom Footer Status Bar */}
@@ -835,7 +991,7 @@ export function RangeDatePicker({
             </button>
           )}
         </footer>
-      </motion.article>
+      </article>
     </div>
   );
 }

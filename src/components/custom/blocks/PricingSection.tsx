@@ -1,7 +1,5 @@
 "use client";
 
-import gsap from "gsap";
-import { ScrollTrigger } from "gsap/ScrollTrigger";
 import {
   ArrowRight,
   Check,
@@ -11,7 +9,7 @@ import {
   TrendingUp,
   Zap,
 } from "lucide-react";
-import { useEffect, useLayoutEffect, useMemo, useRef, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 
 const ICON_POOL = [Zap, TrendingUp, Sparkles, Star, Shield];
 const getIcon = (index: number) => ICON_POOL[index % ICON_POOL.length];
@@ -103,10 +101,6 @@ const PricingSection = ({
       ) || []
     );
   }, [pricingMode, packages]);
-
-  useLayoutEffect(() => {
-    gsap.registerPlugin(ScrollTrigger);
-  }, []);
 
   return (
     <section

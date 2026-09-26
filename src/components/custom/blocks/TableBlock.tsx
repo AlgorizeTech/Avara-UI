@@ -1,7 +1,6 @@
 "use client";
 
 import { cn } from "@/lib/utils";
-import gsap from "gsap";
 import {
   Check,
   ChevronDown,
@@ -223,7 +222,7 @@ TableHeader.displayName = "TableHeader";
 
 export interface TableBodyProps
   extends React.HTMLAttributes<HTMLTableSectionElement> {
-  /** Staggered GSAP entrance for direct child rows. */
+  /** Staggered entrance for direct child rows. */
   animate?: boolean;
   /** Change this to replay the entrance — e.g. on sort or page change. */
   animateKey?: React.Key;
@@ -239,22 +238,30 @@ export const TableBody = forwardRef<HTMLTableSectionElement, TableBodyProps>(
 
     useEffect(() => {
       if (!animate || !innerRef.current) return;
-      const rows = innerRef.current.querySelectorAll(":scope > tr");
+      const rows = innerRef.current.querySelectorAll<HTMLTableRowElement>(
+        ":scope > tr",
+      );
       if (!rows.length) return;
-      const tween = gsap.fromTo(
-        rows,
-        { opacity: 0, y: 15 },
-        {
-          opacity: 1,
-          y: 0,
-          duration: 0.4,
-          stagger: 0.05,
-          ease: "power2.out",
-          clearProps: "all",
-        },
+      // `backwards` holds each row hidden through its stagger delay. The
+      // animation never writes the row's own style, and cancelling it (a new
+      // key mid-stagger, unmount) drops every row straight back to rest.
+      const animations = Array.from(rows, (row, index) =>
+        row.animate(
+          [
+            { opacity: 0, transform: "translateY(15px)" },
+            { opacity: 1, transform: "translateY(0px)" },
+          ],
+          {
+            duration: 400,
+            delay: index * 50,
+            // power2.out, exact
+            easing: "cubic-bezier(0.3333, 1, 0.6667, 1)",
+            fill: "backwards",
+          },
+        ),
       );
       return () => {
-        tween.kill();
+        animations.forEach((animation) => animation.cancel());
       };
     }, [animate, animateKey]);
 
