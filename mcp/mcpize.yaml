@@ -1,0 +1,22 @@
+# MCPize deploy manifest (mcp-guide.md section 0.5). Deploy-only config — the
+# server itself (src/entry/http.ts) has no MCPize-specific code, so it runs
+# unmodified on any Node host.
+#
+# UNVERIFIED: this file's exact schema is copied from MCPize's own published
+# examples (see mcp-guide.md section 0.5) and has not yet been run through a
+# real `mcpize deploy`. Confirm field names against MCPize's current docs
+# before relying on this for the first real deploy.
+version: 1
+name: algorize-ui-mcp
+runtime: typescript
+entry: dist/entry/http.js
+build:
+  install: npm install
+  command: npm run build
+startCommand:
+  type: http
+  command: node dist/entry/http.js
+env:
+  # UI_REGISTRY_URL defaults to the current live registry (see src/config.ts)
+  # if unset. Only set it here once a different base URL is decided.
+  PORT: "3000"
