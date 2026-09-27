@@ -13,12 +13,12 @@ export interface InputTheme {
 }
 
 const PRIMARY: InputTheme = {
-  ring: "focus-within:ring-primary/30 focus-within:border-primary/30",
+  ring: "focus-within:ring-primary/25 focus-within:border-primary",
   text: "text-primary",
   bg: "bg-primary text-primary-foreground",
   bgSoft: "bg-primary/10 text-foreground",
-  glow: "focus-within:shadow-[0_0_20px_var(--primary)] focus-within:border-primary/30",
-  dragActive: "border-primary/30 bg-primary/10",
+  glow: "focus-within:shadow-[0_0_20px_var(--primary)] focus-within:border-primary",
+  dragActive: "border-primary bg-primary/10",
 };
 
 const colorThemes: Record<string, InputTheme> = {

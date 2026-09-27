@@ -1,6 +1,6 @@
 {
-  "generatedAt": "2026-09-26T19:53:46.192Z",
-  "totalFiles": 293,
+  "generatedAt": "2026-09-27T11:37:29.010Z",
+  "totalFiles": 295,
   "files": [
     {
       "name": "nextjs/3d-carousel",
@@ -697,6 +697,12 @@
       "path": "/docs/nextjs-sonner.md",
       "url": "/docs/nextjs/sonner",
       "originalMdx": "[framework]\\sonner\\page.mdx"
+    },
+    {
+      "name": "nextjs/split-flap",
+      "path": "/docs/nextjs-split-flap.md",
+      "url": "/docs/nextjs/split-flap",
+      "originalMdx": "[framework]\\split-flap\\page.mdx"
     },
     {
       "name": "nextjs/split-scroll-stepper",
@@ -1579,6 +1585,12 @@
       "path": "/docs/reactjs-sonner.md",
       "url": "/docs/reactjs/sonner",
       "originalMdx": "[framework]\\sonner\\page.mdx"
+    },
+    {
+      "name": "reactjs/split-flap",
+      "path": "/docs/reactjs-split-flap.md",
+      "url": "/docs/reactjs/split-flap",
+      "originalMdx": "[framework]\\split-flap\\page.mdx"
     },
     {
       "name": "reactjs/split-scroll-stepper",

@@ -3766,9 +3766,9 @@ function CTASection() {
 					<div className="flex flex-wrap items-center justify-between gap-3 px-6 py-3.5 border-b border-border bg-muted/20 font-mono text-xs text-muted-foreground">
 						<div className="flex items-center gap-2">
 							<span className="size-2 rounded-full bg-emerald-500" />
-							<span className="font-semibold text-foreground/80">algorize-ui</span>
+							<span className="font-semibold text-foreground/80">Docs-UI</span>
 							<span className="text-border">/</span>
-							<span>production-ready</span>
+							<span>Production-Ready</span>
 						</div>
 						<div className="flex items-center gap-4 text-[11px]">
 							<span>180+ Components</span>

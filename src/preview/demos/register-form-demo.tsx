@@ -12,9 +12,18 @@ export default function RegisterFormDemo({
   variant?: RegisterVariant;
   color?: RegisterColor;
 }) {
+  const isScenic =
+    variant === "scenic" || variant === "nature" || variant === "landscape";
+
   return (
     <div
-      className={`w-full flex items-center justify-center min-h-[600px] transition-colors duration-300 relative overflow-hidden rounded-2xl ${variant === "glass" ? "p-4 sm:p-8" : "bg-muted/40 py-12"}`}
+      className={`w-full flex items-center justify-center min-h-[600px] transition-colors duration-300 relative overflow-hidden rounded-2xl ${
+        isScenic
+          ? "p-0"
+          : variant === "glass"
+            ? "p-4 sm:p-8"
+            : "bg-muted/40 py-12"
+      }`}
     >
       {variant === "glass" && (
         <div className="absolute inset-0 z-0">
