@@ -3550,6 +3550,7 @@
         "lucide-react"
       ],
       "registryDependencies": [
+        "https://algorize-ui.vercel.app/r/icons.json",
         "utils"
       ],
       "files": [
@@ -3562,6 +3563,11 @@
           "path": "src/components/custom/blocks/motion-curves.ts",
           "type": "registry:component",
           "target": "components/custom/blocks/motion-curves.ts"
+        },
+        {
+          "path": "src/components/custom/blocks/register-form-theme.ts",
+          "type": "registry:component",
+          "target": "components/custom/blocks/register-form-theme.ts"
         }
       ],
       "docs": "Named export: SignupForm. Uses Framer Motion for field-level error transitions. Validation is client-side presentation only — enforce it again on your server."

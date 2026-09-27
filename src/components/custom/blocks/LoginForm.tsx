@@ -1,7 +1,7 @@
 "use client";
 
 import { cn } from "@/lib/utils";
-import { Check } from "lucide-react";
+import { ArrowLeft, Check } from "lucide-react";
 import Button from "./Button";
 import { GitHubIcon, GoogleIcon } from "./Icons";
 import { InputBlock } from "./InputBlock";
@@ -18,7 +18,14 @@ export type LoginColor =
   | "emerald"
   | "zinc"
   | (string & {});
-export type LoginVariant = "default" | "split" | "glass" | "minimal";
+export type LoginVariant =
+  | "default"
+  | "split"
+  | "glass"
+  | "minimal"
+  | "scenic"
+  | "nature"
+  | "landscape";
 export type LoginProvider = "github" | "google";
 
 export type LoginFormValues = {
@@ -40,6 +47,22 @@ export interface LoginFormProps {
    */
   onSubmit?: (values: LoginFormValues) => void | Promise<void>;
   onSocialSignIn?: (provider: LoginProvider) => void;
+  /** Brand display name shown on scenic variant */
+  brandName?: string;
+  /** Custom logo icon */
+  brandIcon?: React.ReactNode;
+  /** Primary headline for the scenic card */
+  title?: string;
+  /** Subtitle / description for the scenic card */
+  subtitle?: string;
+  /** Label for primary get started / sign in button */
+  loginLabel?: string;
+  /** Label for secondary create account button */
+  createAccountLabel?: string;
+  /** Scenic background image URL (e.g. Cloudinary) */
+  bgImage?: string;
+  /** Initial step for scenic mode ("welcome" or "form") */
+  initialStep?: "welcome" | "form";
 }
 
 // --- INLINE UI COMPONENTS ---
@@ -104,6 +127,59 @@ const Checkbox = ({
   </div>
 );
 
+// --- BRAND ICON ---
+export const DocsUiIcon = ({
+  className = "w-5 h-5",
+  size = 20,
+}: {
+  className?: string;
+  size?: number;
+}) => (
+  <svg
+    width={size}
+    height={size}
+    viewBox="0 0 24 24"
+    fill="none"
+    xmlns="http://www.w3.org/2000/svg"
+    className={className}
+  >
+    <rect
+      x="3"
+      y="3"
+      width="7"
+      height="7"
+      rx="1.5"
+      className="fill-foreground dark:fill-white"
+    />
+    <rect
+      x="14"
+      y="3"
+      width="7"
+      height="7"
+      rx="1.5"
+      className="fill-primary"
+    />
+    <rect
+      x="14"
+      y="14"
+      width="7"
+      height="7"
+      rx="1.5"
+      className="fill-foreground dark:fill-white"
+    />
+    <rect
+      x="3"
+      y="14"
+      width="7"
+      height="7"
+      rx="1.5"
+      className="fill-primary"
+    />
+  </svg>
+);
+
+const AvyroIcon = DocsUiIcon;
+
 // --- MAIN COMPONENT ---
 export default function LoginForm({
   variant = "default",
@@ -112,8 +188,22 @@ export default function LoginForm({
   forgotPasswordHref = "#",
   onSubmit,
   onSocialSignIn,
+  brandName = "Docs UI",
+  brandIcon,
+  title = "Take control of your financial wellbeing",
+  subtitle = "Understand your money, build healthier habits, and make confident financial decisions",
+  loginLabel = "Sign In",
+  createAccountLabel = "Create an account",
+  bgImage = "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_1600,c_limit/v1790145140/photo-1426604966848-d7adac402bff-1790145143490.jpg",
+  initialStep = "welcome",
 }: LoginFormProps) {
   const { theme, style } = getThemeStyles(color);
+  const focusButtonClasses = cn(
+    "outline-none transition-all duration-200 focus-visible:outline-none",
+    theme.focusBorder,
+    theme.focusRing
+  );
+  const [scenicStep, setScenicStep] = useState<"welcome" | "form">(initialStep);
 
   const [formData, setFormData] = useState<LoginFormValues>({
     email: "",
@@ -493,6 +583,205 @@ export default function LoginForm({
         </div>
         <div className="w-full lg:w-1/2 p-4 xs:p-6 sm:p-12 xl:p-16 flex items-center justify-center">
           {FormContent}
+        </div>
+      </div>
+    );
+  }
+
+  if (
+    variant === "scenic" ||
+    variant === "nature" ||
+    variant === "landscape"
+  ) {
+    return (
+      <div
+        className="relative w-full min-h-[580px] sm:min-h-[640px] flex items-center justify-center overflow-hidden rounded-3xl p-4 sm:p-6 md:p-8"
+        style={style}
+      >
+        {/* Full-bleed scenic nature background */}
+        <img
+          src={bgImage}
+          alt="Scenic nature landscape background"
+          className="absolute inset-0 w-full h-full object-cover select-none pointer-events-none"
+        />
+
+        {/* Soft atmospheric overlay */}
+        <div className="absolute inset-0 bg-gradient-to-b from-black/20 via-transparent to-black/35 pointer-events-none" />
+
+        {/* Floating Card */}
+        <div
+          className={cn(
+            "relative z-10 w-full max-w-[440px] rounded-[28px] p-6 sm:p-8 md:p-9 transition-all duration-300",
+            // Light mode: clean frosted white card, crisp dark text, delicate border, deep ambient shadow
+            "bg-white/95 text-zinc-900 border border-zinc-200/80 shadow-[0_20px_50px_rgba(0,0,0,0.18)] backdrop-blur-xl",
+            // Dark mode: deep charcoal card matching screenshot, crisp white text, subtle translucent border
+            "dark:bg-[#131415]/95 dark:text-white dark:border-white/10 dark:shadow-[0_25px_60px_-15px_rgba(0,0,0,0.7)]"
+          )}
+        >
+          {scenicStep === "welcome" ? (
+            <div className="flex flex-col items-center text-center">
+              {/* Brand Header */}
+              <div className="flex items-center gap-2 mb-6">
+                {brandIcon || (
+                  <DocsUiIcon className="w-5 h-5 text-zinc-900 dark:text-white" />
+                )}
+                <span className="font-semibold text-lg tracking-tight text-zinc-900 dark:text-white">
+                  {brandName}
+                </span>
+              </div>
+
+              {/* Title */}
+              <h2 className="text-2xl sm:text-[28px] font-medium tracking-tight text-zinc-900 dark:text-white mb-3 leading-snug">
+                {title}
+              </h2>
+
+              {/* Subtitle */}
+              <p className="text-xs sm:text-sm text-zinc-600 dark:text-white/70 max-w-[340px] mb-8 leading-relaxed">
+                {subtitle}
+              </p>
+
+              {/* Actions */}
+              <div className="w-full flex flex-col gap-3">
+                {/* Primary Button */}
+                <button
+                  type="button"
+                  onClick={() => setScenicStep("form")}
+                  className={cn(
+                    "w-full h-12 rounded-xl sm:rounded-2xl font-semibold text-sm sm:text-base transition-all duration-200 active:scale-[0.98] shadow-sm",
+                    "bg-zinc-900 text-white hover:bg-zinc-800",
+                    "dark:bg-white dark:text-zinc-950 dark:hover:bg-zinc-100",
+                    focusButtonClasses
+                  )}
+                >
+                  {loginLabel}
+                </button>
+
+                {/* Secondary Button */}
+                <a
+                  href={signupHref}
+                  className={cn(
+                    "w-full h-11 flex items-center justify-center rounded-xl sm:rounded-2xl text-xs sm:text-sm font-medium transition-all duration-200 active:scale-[0.98]",
+                    "bg-zinc-100/90 text-zinc-700 hover:bg-zinc-200/90 border border-zinc-200/60",
+                    "dark:bg-white/[0.08] dark:text-white/85 dark:hover:bg-white/[0.14] dark:border-white/5",
+                    focusButtonClasses
+                  )}
+                >
+                  {createAccountLabel}
+                </a>
+              </div>
+            </div>
+          ) : (
+            <div>
+              {/* Header with Back button */}
+              <div className="flex items-center justify-between mb-4 pb-3 border-b border-zinc-200/60 dark:border-white/10">
+                <button
+                  type="button"
+                  onClick={() => setScenicStep("welcome")}
+                  className="inline-flex items-center gap-1.5 text-xs font-medium text-zinc-500 hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-white transition-colors"
+                >
+                  <ArrowLeft size={14} />
+                  <span>Back</span>
+                </button>
+                <div className="flex items-center gap-1.5">
+                  {brandIcon || (
+                    <DocsUiIcon className="w-4 h-4 text-zinc-900 dark:text-white" />
+                  )}
+                  <span className="font-semibold text-xs text-zinc-900 dark:text-white">
+                    {brandName}
+                  </span>
+                </div>
+              </div>
+
+              {/* Form Heading */}
+              <div className="mb-4">
+                <h3 className="text-xl font-bold tracking-tight text-zinc-900 dark:text-white mb-1">
+                  Sign in
+                </h3>
+                <p className="text-xs text-zinc-500 dark:text-zinc-400">
+                  Welcome back! Please enter your details.
+                </p>
+              </div>
+
+              <form onSubmit={handleSubmit} className="space-y-3.5">
+                <InputBlock
+                  label="Email Address"
+                  id="login-scenic-email"
+                  name="email"
+                  type="email"
+                  autoComplete="email"
+                  placeholder="name@company.com"
+                  value={formData.email}
+                  onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+                    handleChange("email", e.target.value)
+                  }
+                  error={errors.email}
+                  color={color}
+                />
+
+                <InputBlock
+                  label="Password"
+                  id="login-scenic-password"
+                  name="password"
+                  type="password"
+                  autoComplete="current-password"
+                  placeholder="••••••••"
+                  value={formData.password}
+                  onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+                    handleChange("password", e.target.value)
+                  }
+                  error={errors.password}
+                  color={color}
+                />
+
+                <div className="flex items-center justify-between text-xs pt-0.5">
+                  <Checkbox
+                    id="login-scenic-remember"
+                    label="Remember me"
+                    checked={formData.remember}
+                    onCheckedChange={(checked) =>
+                      handleChange("remember", checked)
+                    }
+                    theme={theme}
+                  />
+                  <a
+                    href={forgotPasswordHref}
+                    className="font-medium text-zinc-600 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-white transition-colors"
+                  >
+                    Forgot password?
+                  </a>
+                </div>
+
+                <button
+                  type="submit"
+                  disabled={loading}
+                  className={cn(
+                    "w-full h-11 rounded-xl font-semibold text-sm transition-all duration-200 active:scale-[0.98] shadow-sm flex items-center justify-center gap-2 mt-2",
+                    "bg-zinc-900 text-white hover:bg-zinc-800 disabled:opacity-60",
+                    "dark:bg-white dark:text-zinc-950 dark:hover:bg-zinc-100",
+                    focusButtonClasses
+                  )}
+                >
+                  {loading ? (
+                    <span className="inline-block w-4 h-4 border-2 border-current border-t-transparent rounded-full animate-spin" />
+                  ) : (
+                    "Sign in"
+                  )}
+                </button>
+              </form>
+
+              <div className="mt-4 text-center">
+                <p className="text-xs text-zinc-500 dark:text-zinc-400">
+                  Don't have an account?{" "}
+                  <a
+                    href={signupHref}
+                    className="font-semibold text-zinc-900 dark:text-white hover:underline"
+                  >
+                    Sign up
+                  </a>
+                </p>
+              </div>
+            </div>
+          )}
         </div>
       </div>
     );
