@@ -28,12 +28,25 @@ const GitHubIcon = (props: React.SVGProps<SVGSVGElement>) => (
    ═══════════════════════════════════════════════ */
 
 export interface HeroBlockProps extends React.HTMLAttributes<HTMLElement> {
-  /** Animation variant: "bounce", "typing", "slider", "glow-arc", "pet-shop", "doctor", "facility", "geometric" */
-  variant?: "bounce" | "typing" | "slider" | "glow-arc" | "pet-shop" | "doctor" | "facility" | "geometric";
+  /** Animation variant: "bounce", "typing", "slider", "glow-arc", "pet-shop", "doctor", "facility", "geometric", "vortex", "radar" */
+  variant?:
+    | "bounce"
+    | "typing"
+    | "slider"
+    | "glow-arc"
+    | "pet-shop"
+    | "doctor"
+    | "facility"
+    | "geometric"
+    | "vortex"
+    | "radar"
+    | "cyclone";
   /** Optional badge text displayed inside the top pill badge */
   badgeText?: string;
   /** Badge link URL */
   badgeHref?: string;
+  /** Optional monospace eyebrow text above the main title (used in "vortex" variant) */
+  eyebrow?: string;
   /** Main static title text prefix */
   titlePrefix?: string;
   /** Words to animate in the bounce, typing, or flip effect */
@@ -74,6 +87,16 @@ export interface HeroBlockProps extends React.HTMLAttributes<HTMLElement> {
   petImage?: string;
   /** Secondary pet avatar image URL (used in "pet-shop" variant) */
   secondaryPetImage?: string;
+  /** Key statistics / metrics shown at the bottom (used in "vortex" variant) */
+  metrics?: Array<{ value: string; label: string }>;
+  /** Radar/cyclone HUD card title (used in "vortex" variant) */
+  hudTitle?: string;
+  /** Radar/cyclone HUD timestamp/status (used in "vortex" variant) */
+  hudTime?: string;
+  /** Radar/cyclone HUD telemetry items (used in "vortex" variant) */
+  hudMetrics?: Array<{ label: string; value: string }>;
+  /** Speed of the rotating vortex in radians per frame (default: 0.014) */
+  rotationSpeed?: number;
   /** Custom accent color (CSS color or tailwind var) */
   color?: string;
 }
@@ -232,6 +255,242 @@ function BounceWord({ word }: { word: string }) {
 }
 
 /* ═══════════════════════════════════════════════
+   VORTEX RADAR CYCLONE DEFAULTS & EXACT RADAR CANVAS
+   ═══════════════════════════════════════════════ */
+
+const DEFAULT_VORTEX_METRICS = [
+  { value: "134M", label: "PARCELS COVERED" },
+  { value: "412K", label: "SCORES A DAY" },
+  { value: "180ms", label: "P95 RESPONSE" },
+];
+
+const DEFAULT_HUD_METRICS = [
+  { label: "SUSTAINED", value: "129 kt" },
+  { label: "CENTRAL", value: "959 mb" },
+  { label: "EYE", value: "50 km" },
+  { label: "TRACK", value: "W 271°" },
+  { label: "SWATH Ø", value: "16 km" },
+];
+
+// Exact dot-for-dot coordinates extracted from the climate risk radar reference image (804 points)
+const VORTEX_COORDS_B64 = "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";
+
+function decodeVortexCoords(b64: string): Array<[number, number]> {
+  if (typeof window === "undefined") return [];
+  try {
+    const bin = atob(b64);
+    const bytes = new Uint8Array(bin.length);
+    for (let i = 0; i < bin.length; i++) bytes[i] = bin.charCodeAt(i);
+    const int16 = new Int16Array(bytes.buffer);
+    const result: Array<[number, number]> = [];
+    for (let i = 0; i < int16.length; i += 2) {
+      result.push([int16[i] / 10, int16[i + 1] / 10]);
+    }
+    return result;
+  } catch {
+    return [];
+  }
+}
+
+function VortexCanvas({
+  speed = 0.010,
+  className,
+}: {
+  speed?: number;
+  className?: string;
+}) {
+  const canvasRef = useRef<HTMLCanvasElement | null>(null);
+  const angleRef = useRef(0);
+  const gridRef = useRef<Array<{ x: number; y: number; r: number }>>([]);
+  const scaleRef = useRef<number>(1);
+
+  // Pre-rasterized 2D spatial hitmap of the cyclone shape (804 points), spanning 560x560 to cover all 360deg rotations:
+  const hitmapData = React.useMemo(() => {
+    const pts = decodeVortexCoords(VORTEX_COORDS_B64);
+    const CELL_SIZE = 2.5;
+    const ORIGIN_X = 280;
+    const ORIGIN_Y = 280;
+    const GRID_W = Math.ceil(560 / CELL_SIZE);
+    const GRID_H = Math.ceil(560 / CELL_SIZE);
+    const hitmap = new Uint8Array(GRID_W * GRID_H);
+    const R_HIT = 4.2;
+    const rCells = Math.ceil(R_HIT / CELL_SIZE);
+
+    for (let i = 0; i < pts.length; i++) {
+      const [px, py] = pts[i];
+      const cx = Math.round((px + ORIGIN_X) / CELL_SIZE);
+      const cy = Math.round((py + ORIGIN_Y) / CELL_SIZE);
+      for (let dy = -rCells; dy <= rCells; dy++) {
+        for (let dx = -rCells; dx <= rCells; dx++) {
+          if (dx * dx + dy * dy <= rCells * rCells) {
+            const gx = cx + dx;
+            const gy = cy + dy;
+            if (gx >= 0 && gx < GRID_W && gy >= 0 && gy < GRID_H) {
+              hitmap[gy * GRID_W + gx] = 1;
+            }
+          }
+        }
+      }
+    }
+
+    return { hitmap, CELL_SIZE, ORIGIN_X, ORIGIN_Y, GRID_W, GRID_H };
+  }, []);
+
+  useEffect(() => {
+    const canvas = canvasRef.current;
+    if (!canvas) return;
+
+    let animId: number;
+    let isReducedMotion = false;
+    if (typeof window !== "undefined") {
+      isReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    }
+
+    const updateCanvasSize = () => {
+      if (!canvas) return;
+      const parent = canvas.parentElement;
+      const rect = parent ? parent.getBoundingClientRect() : canvas.getBoundingClientRect();
+      const dpr = Math.min(window.devicePixelRatio || 1, 2);
+      const width = Math.max(rect.width, 300);
+      const height = Math.max(rect.height, 300);
+
+      canvas.width = width * dpr;
+      canvas.height = height * dpr;
+      canvas.style.width = width + "px";
+      canvas.style.height = height + "px";
+
+      // Scale cyclone to fit comfortably within radar frame (eye at center, arms sweeping outward)
+      const scale = Math.min(width, height) / 460;
+      scaleRef.current = scale;
+
+      // Fill entire radar frame right up to all 4 borders (top, bottom, left, right):
+      const halfW = (width / 2) / scale;
+      const halfH = (height / 2) / scale;
+      const step = 6.4;
+
+      const xStart = -Math.ceil(halfW / step) * step;
+      const xEnd = Math.ceil(halfW / step) * step;
+      const yStart = -Math.ceil(halfH / step) * step;
+      const yEnd = Math.ceil(halfH / step) * step;
+
+      const dots: Array<{ x: number; y: number; r: number }> = [];
+      for (let y = yStart; y <= yEnd; y += step) {
+        for (let x = xStart; x <= xEnd; x += step) {
+          dots.push({
+            x: Number(x.toFixed(1)),
+            y: Number(y.toFixed(1)),
+            r: Number(Math.hypot(x, y).toFixed(1)),
+          });
+        }
+      }
+      gridRef.current = dots;
+    };
+
+    updateCanvasSize();
+
+    const resizeObserver = new ResizeObserver(() => {
+      updateCanvasSize();
+    });
+    if (canvas.parentElement) {
+      resizeObserver.observe(canvas.parentElement);
+    }
+
+    const render = () => {
+      if (!canvas) return;
+      const ctx = canvas.getContext("2d");
+      if (!ctx) return;
+
+      const dpr = Math.min(window.devicePixelRatio || 1, 2);
+      const w = canvas.width / dpr;
+      const h = canvas.height / dpr;
+      const cx = w / 2;
+      const cy = h / 2;
+
+      const scale = scaleRef.current || Math.min(w, h) / 460;
+      const dotRadiusDim = Math.max(1.0, 1.25 * scale);
+      const dotRadiusLit = Math.max(1.85, 2.15 * scale);
+
+      const staticGrid = gridRef.current;
+      if (staticGrid.length === 0) {
+        animId = requestAnimationFrame(render);
+        return;
+      }
+
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      ctx.save();
+      ctx.scale(dpr, dpr);
+      ctx.translate(cx, cy);
+      ctx.scale(scale, scale);
+
+      // Pass 1: Render ALL stationary grid dots in faint, translucent white
+      // IMPORTANT: Dots NEVER change physical positions! They remain fixed in their matrix.
+      ctx.fillStyle = "rgba(255, 255, 255, 0.14)";
+      ctx.beginPath();
+      for (let i = 0; i < staticGrid.length; i++) {
+        const d = staticGrid[i];
+        ctx.moveTo(d.x + dotRadiusDim, d.y);
+        ctx.arc(d.x, d.y, dotRadiusDim, 0, Math.PI * 2);
+      }
+      ctx.fill();
+
+      // Pass 2: Render illuminated white dots where the cyclone vortex sweeps over them
+      // Coherent rotation preserves the EXACT shape from the reference image without shearing.
+      // Clockwise rotation unwinds counter-clockwise spiral arms so they propagate outward from the eye.
+      // Outward radial pulse wave: Radiates concentric ripples of luminous intensity from center out.
+      const { hitmap, CELL_SIZE, ORIGIN_X, ORIGIN_Y, GRID_W, GRID_H } = hitmapData;
+      const angle = angleRef.current;
+      const cos = Math.cos(angle);
+      const sin = Math.sin(angle);
+
+      ctx.fillStyle = "#ffffff";
+      ctx.beginPath();
+      for (let i = 0; i < staticGrid.length; i++) {
+        const d = staticGrid[i];
+
+        // Clockwise sampling unwinds spiral arms outward from center:
+        const rx = d.x * cos - d.y * sin;
+        const ry = d.x * sin + d.y * cos;
+
+        const gx = Math.round((rx + ORIGIN_X) / CELL_SIZE);
+        const gy = Math.round((ry + ORIGIN_Y) / CELL_SIZE);
+        const isLit =
+          gx >= 0 && gx < GRID_W && gy >= 0 && gy < GRID_H && hitmap[gy * GRID_W + gx] === 1;
+
+        if (isLit) {
+          // Outward radial wave pulse: travels continuously from center eye to outer edge
+          const radialWave = Math.sin(d.r * 0.05 - angle * 3.5);
+          const rLit = dotRadiusLit * (0.95 + 0.12 * Math.max(0, radialWave));
+          ctx.moveTo(d.x + rLit, d.y);
+          ctx.arc(d.x, d.y, rLit, 0, Math.PI * 2);
+        }
+      }
+      ctx.fill();
+
+      ctx.restore();
+
+      if (!isReducedMotion) {
+        angleRef.current += speed;
+        animId = requestAnimationFrame(render);
+      }
+    };
+
+    render();
+
+    return () => {
+      if (animId) cancelAnimationFrame(animId);
+      resizeObserver.disconnect();
+    };
+  }, [hitmapData, speed]);
+
+  return (
+    <canvas
+      ref={canvasRef}
+      className={cn("w-full h-full block pointer-events-none select-none", className)}
+    />
+  );
+}
+
+/* ═══════════════════════════════════════════════
    MAIN HERO BLOCK COMPONENT
    ═══════════════════════════════════════════════ */
 
@@ -242,6 +501,7 @@ export const HeroBlock = forwardRef<HTMLElement, HeroBlockProps>(
       linkComponent: Link = "a",
       badgeText = "Next-Gen React Components",
       badgeHref = "/docs",
+      eyebrow,
       titlePrefix = "Build ",
       typingWords = [
         "Interfaces",
@@ -265,6 +525,11 @@ export const HeroBlock = forwardRef<HTMLElement, HeroBlockProps>(
       ratingText = "4.9 ★ Rated",
       featurePillText = "24/7 Vet Care",
       badgeTags = ["Certified Organic & Vet Approved", "4.9 Star Rated"],
+      metrics,
+      hudTitle,
+      hudTime,
+      hudMetrics,
+      rotationSpeed,
       color,
       className,
       ...props
@@ -1221,6 +1486,154 @@ export const HeroBlock = forwardRef<HTMLElement, HeroBlockProps>(
 
                 {/* Bottom-Left Control Anchor Square - exactly on (24%, bottom) */}
                 <div className="absolute bottom-0 left-0 w-2 h-2 sm:w-2.5 sm:h-2.5 bg-neutral-400 dark:bg-neutral-500 -translate-x-1/2 translate-y-1/2 shadow-xs" />
+              </div>
+            </div>
+          </div>
+        </section>
+      );
+    }
+
+    /* ═══════════════════════════════════════════════
+       VARIANT 7: ATMOSPHERIC CYCLONE / RADAR VORTEX HERO (MATCHES CLIMATE RISK REFERENCE)
+       ═══════════════════════════════════════════════ */
+    if (variant === "vortex" || variant === "radar" || variant === "cyclone") {
+      const vortexEyebrow = eyebrow || "CLIMATE RISK, PER PARCEL";
+      const vortexTitle =
+        titlePrefix === "Build "
+          ? "One street,\none storm,\ntwo prices"
+          : titlePrefix + (titleSuffix ? ` ${titleSuffix}` : "");
+      const vortexSubtitle =
+        subtitle ===
+        "A meticulous library of React components & interactive blocks, engineered for seamless performance with Tailwind CSS, TypeScript, GSAP, and Framer Motion."
+          ? "Flood, wildfire and wind priced for one\naddress, not the postcode around it"
+          : subtitle;
+      const vortexPrimaryAction =
+        primaryActionLabel === "Browse Components"
+          ? "Score an address"
+          : primaryActionLabel;
+      const activeMetrics = metrics || DEFAULT_VORTEX_METRICS;
+      const vortexHudTitle = hudTitle || "GUST FIELD";
+      const vortexHudTime = hudTime || "T+36:25";
+      const activeHudMetrics = hudMetrics || DEFAULT_HUD_METRICS;
+      const vortexBg = resolvedColor || "var(--primary)";
+
+      return (
+        <section
+          ref={ref}
+          style={{
+            backgroundColor: vortexBg,
+            ...customStyle,
+          }}
+          className={cn(
+            "relative w-full overflow-hidden text-white transition-colors duration-300 select-none",
+            className,
+          )}
+          {...props}
+        >
+          <div className="w-full max-w-[1440px] mx-auto grid grid-cols-1 lg:grid-cols-12 min-h-[580px] lg:min-h-[660px] items-stretch">
+            {/* LEFT COLUMN: Monospace Eyebrow, Main 3-line Headline, Subtitle, CTA Button & Bottom 3 Metrics */}
+            <div className="col-span-1 lg:col-span-6 flex flex-col justify-between p-6 sm:p-10 lg:p-16 z-10 space-y-8">
+              <div className="space-y-6 sm:space-y-8">
+                {/* Eyebrow */}
+                {vortexEyebrow && (
+                  <p className="font-mono text-[10px] sm:text-xs tracking-[0.24em] uppercase text-white/60 font-normal">
+                    {vortexEyebrow}
+                  </p>
+                )}
+
+                {/* Main Headline */}
+                <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-[52px] font-mono font-normal tracking-tight leading-[1.12] text-white whitespace-pre-line">
+                  {vortexTitle}
+                </h1>
+
+                {/* Subtitle */}
+                {vortexSubtitle && (
+                  <p className="text-xs sm:text-sm md:text-base text-white/70 font-mono font-normal leading-relaxed whitespace-pre-line max-w-md">
+                    {vortexSubtitle}
+                  </p>
+                )}
+
+                {/* Actions */}
+                <div className="flex flex-wrap items-center gap-3 pt-2">
+                  <Link
+                    href={primaryActionHref}
+                    className="inline-flex items-center justify-center px-6 py-3 rounded-[2px] bg-white font-mono text-xs sm:text-sm font-normal hover:bg-white/95 active:scale-95 transition-all text-center"
+                    style={{ color: vortexBg }}
+                  >
+                    <span>{vortexPrimaryAction}</span>
+                  </Link>
+
+                  {secondaryActionLabel && (
+                    <Link
+                      href={secondaryActionHref}
+                      className="inline-flex items-center justify-center px-6 py-3 rounded-[2px] border border-white/20 bg-white/10 hover:bg-white/15 active:scale-95 text-white font-mono text-xs sm:text-sm font-normal transition-all backdrop-blur-sm"
+                    >
+                      <span>{secondaryActionLabel}</span>
+                    </Link>
+                  )}
+                </div>
+              </div>
+
+              {/* Bottom 3 Metrics Grid */}
+              <div className="grid grid-cols-3 gap-4 sm:gap-6 pt-10 sm:pt-12 border-t border-white/10 mt-auto">
+                {activeMetrics.map((item, idx) => (
+                  <div key={idx} className="space-y-1">
+                    <p className="text-xl sm:text-2xl lg:text-3xl font-mono font-normal text-white tracking-tight">
+                      {item.value}
+                    </p>
+                    <p className="text-[9px] sm:text-[10px] lg:text-[11px] font-mono font-normal tracking-[0.16em] text-white/50 uppercase leading-snug">
+                      {item.label}
+                    </p>
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            {/* RIGHT COLUMN: Rotating Cyclone Vortex Radar & Corner Reticle & Telemetry HUD */}
+            <div className="col-span-1 lg:col-span-6 relative flex items-center justify-center p-3 sm:p-6 lg:p-8 border-t lg:border-t-0 lg:border-l border-white/10 min-h-[460px] sm:min-h-[520px] lg:min-h-[660px] overflow-hidden">
+              {/* Radar Screen Frame */}
+              <div className="relative w-full h-full min-h-[440px] sm:min-h-[500px] lg:min-h-[600px] flex items-center justify-center overflow-hidden border border-white/15">
+                {/* Top-Left HUD Targeting Crosshair Reticle */}
+                <div className="absolute top-3 left-3 sm:top-4 sm:left-4 z-20 pointer-events-none select-none text-white/90">
+                  <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                    <path d="M2 7V2H7" strokeWidth="1.5" strokeLinecap="square" />
+                    <path d="M22 17V22H17" strokeWidth="1.5" strokeLinecap="square" />
+                    <path d="M17 2H22V7" strokeWidth="1.5" strokeLinecap="square" strokeOpacity="0.4" />
+                    <path d="M7 22H2V17" strokeWidth="1.5" strokeLinecap="square" strokeOpacity="0.4" />
+                    <circle cx="12" cy="12" r="3" strokeWidth="1.2" />
+                    <circle cx="12" cy="12" r="1" fill="currentColor" />
+                  </svg>
+                </div>
+
+                {/* Rotating Vortex Canvas */}
+                <div className="absolute inset-0 flex items-center justify-center">
+                  <VortexCanvas speed={rotationSpeed ?? 0.010} />
+                </div>
+
+                {/* Bottom-Right Telemetry HUD Card */}
+                <div className="absolute bottom-3 right-3 sm:bottom-5 sm:right-5 z-30 w-[230px] sm:w-[260px] border border-white/25 bg-white/[0.03] backdrop-blur-[2px] rounded-[2px] p-3 sm:p-3.5 text-white font-mono pointer-events-auto select-none">
+                  <div className="flex items-center justify-between text-[10px] sm:text-[11px] pb-2 border-b border-white/20">
+                    <div className="flex items-center gap-2 font-normal tracking-wider">
+                      <span className="size-1.5 sm:size-2 bg-white inline-block shrink-0" />
+                      <span className="tracking-widest">{vortexHudTitle}</span>
+                    </div>
+                    <span className="text-white/70 text-[9px] sm:text-[10px] font-normal tracking-wider">
+                      {vortexHudTime}
+                    </span>
+                  </div>
+                  <div className="pt-2.5 space-y-1.5 text-[10px] sm:text-[11px]">
+                    {activeHudMetrics.map((item, idx) => (
+                      <div key={idx} className="flex items-center justify-between">
+                        <span className="text-white/60 tracking-wider text-[9px] sm:text-[10px] uppercase font-normal">
+                          {item.label}
+                        </span>
+                        <span className="text-white font-normal tracking-wide text-[10px] sm:text-[11px]">
+                          {item.value}
+                        </span>
+                      </div>
+                    ))}
+                  </div>
+                </div>
               </div>
             </div>
           </div>
