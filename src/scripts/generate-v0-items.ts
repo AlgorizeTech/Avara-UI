@@ -30,10 +30,23 @@ import { resolveMotion, resolveUsage, type ShowcaseSnippet } from "../lib/snippe
 import { slugify } from "../lib/open-in-v0";
 
 /**
- * Docs pages whose examples open in v0. Rolled out page by page: each one is
- * checked in v0 before it joins the list.
+ * Every docs page with an example gallery, as its path under the docs route
+ * (`accordion`, `third-party/gallery`).
  */
-const V0_PAGES = ["accordion"];
+function galleryPages(): string[] {
+  const pages: string[] = [];
+  const walk = (dir: string) => {
+    for (const entry of fs.readdirSync(dir, { withFileTypes: true })) {
+      const full = path.join(dir, entry.name);
+      if (entry.isDirectory()) walk(full);
+      else if (entry.name === "page.mdx" && fs.readFileSync(full, "utf8").includes("<ExampleShowcase")) {
+        pages.push(path.relative(DOCS_DIR, dir).split(path.sep).join("/"));
+      }
+    }
+  };
+  walk(DOCS_DIR);
+  return pages.sort();
+}
 
 const ROOT = path.resolve(__dirname, "../..");
 const DOCS_DIR = path.join(ROOT, "src/app/docs/[framework]");
@@ -141,6 +154,15 @@ function flatten(key: string, title: string, description: string, usage: string)
       if (!file.content || !file.target) {
         throw new Error(`[${key}] ${name} ships ${file.path} without content or target.`);
       }
+      // A shared helper (motion-curves.ts, button-variants.ts…) ships inside
+      // every item that uses it — the same file, so it is written once.
+      const existing = files.find((f) => f.target === file.target);
+      if (existing) {
+        if (existing.content !== file.content) {
+          throw new Error(`[${key}] two different files target ${file.target}.`);
+        }
+        continue;
+      }
       files.push({ path: file.target, type: file.type, target: file.target, content: file.content });
     }
     for (const dep of item.registryDependencies ?? []) {
@@ -151,27 +173,50 @@ function flatten(key: string, title: string, description: string, usage: string)
     }
   };
 
-  for (const specifier of importsOf(usage)) {
-    if (specifier.startsWith("@/")) {
-      const source = `src/${specifier.slice(2)}`;
-      const owner = itemBySource.get(source);
-      if (owner) visit(owner);
-      else if (specifier !== "@/lib/utils") {
-        throw new Error(`[${key}] usage imports ${specifier}, which no registry item ships.`);
-      }
-    } else if (!specifier.startsWith(".")) {
-      const pkg = packageOf(specifier);
-      if (!PROVIDED.has(pkg)) dependencies.add(pkg);
-    } else {
-      throw new Error(`[${key}] usage has a relative import (${specifier}).`);
-    }
-  }
+  const shippedSources = new Set<string>();
 
-  // Two items shipping the same target would overwrite each other in v0.
-  const targets = new Set<string>();
+  /**
+   * Resolves one file's imports. `@/` paths go to the registry item that ships
+   * them; a project file no item ships (a docs helper like lib/chart-tokens)
+   * travels as-is, along with whatever it imports in turn.
+   */
+  const resolveImports = (code: string, from: string) => {
+    for (const specifier of importsOf(code)) {
+      if (specifier.startsWith("@/")) {
+        const source = `src/${specifier.slice(2)}`;
+        const owner = itemBySource.get(source);
+        if (owner) visit(owner);
+        else if (specifier !== "@/lib/utils") shipSource(source, from, specifier);
+      } else if (!specifier.startsWith(".")) {
+        const pkg = packageOf(specifier);
+        if (!PROVIDED.has(pkg)) dependencies.add(pkg);
+      } else {
+        throw new Error(`[${key}] ${from} has a relative import (${specifier}).`);
+      }
+    }
+  };
+
+  const shipSource = (source: string, from: string, specifier: string) => {
+    const file = [".ts", ".tsx"].map((ext) => source + ext).find((f) => fs.existsSync(path.join(ROOT, f)));
+    if (!file) throw new Error(`[${key}] ${from} imports ${specifier}, which does not exist.`);
+    if (shippedSources.has(file)) return;
+    shippedSources.add(file);
+    const content = fs.readFileSync(path.join(ROOT, file), "utf8").replace(/\r\n/g, "\n");
+    const target = file.replace(/^src\//, "");
+    files.push({ path: target, type: "registry:lib", target, content });
+    resolveImports(content, target);
+  };
+
+  resolveImports(usage, "usage");
+
+  // `/assets/shoe.jpg` resolves against the docs site, not the v0 project —
+  // point every path to a file in our public/ at the deployed copy.
   for (const file of files) {
-    if (targets.has(file.target!)) throw new Error(`[${key}] two files target ${file.target}.`);
-    targets.add(file.target!);
+    file.content = file.content!.replace(
+      /(["'`])(\/[\w./-]+\.[a-z0-9]+)\1/gi,
+      (match, quote: string, asset: string) =>
+        fs.existsSync(path.join(ROOT, "public", asset)) ? `${quote}${HOMEPAGE}${asset}${quote}` : match,
+    );
   }
 
   return {
@@ -260,7 +305,7 @@ async function readShowcases(page: string): Promise<CapturedShowcase[]> {
   });
 
   fs.mkdirSync(CACHE_DIR, { recursive: true });
-  const bundlePath = path.join(CACHE_DIR, `${page}-${Date.now()}.mjs`);
+  const bundlePath = path.join(CACHE_DIR, `${page.replace(/\//g, "--")}-${Date.now()}.mjs`);
   fs.writeFileSync(bundlePath, bundle.outputFiles[0].text);
 
   try {
@@ -279,57 +324,95 @@ async function readShowcases(page: string): Promise<CapturedShowcase[]> {
 
 // ─── Main ───────────────────────────────────────────────────────
 
+/** The page's `# Heading` — the name for demos with no registry item of their own. */
+const pageHeading = (page: string) =>
+  fs
+    .readFileSync(path.join(DOCS_DIR, page, "page.mdx"), "utf8")
+    .match(/^# (.+)$/m)?.[1]
+    .trim();
+
 async function main() {
   fs.rmSync(OUT_DIR, { recursive: true, force: true });
   const manifest: Record<string, Record<string, string>> = {};
+  const pages = galleryPages();
+  // An example that cannot be packaged is skipped (its preview simply gets no
+  // button) rather than failing the site build; every skip is listed below.
+  const skipped: string[] = [];
   let written = 0;
 
-  for (const page of V0_PAGES) {
-    const showcases = await readShowcases(page);
-    if (showcases.length === 0) throw new Error(`[${page}] no ExampleShowcase found.`);
+  for (const page of pages) {
+    let showcases: CapturedShowcase[];
+    try {
+      showcases = await readShowcases(page);
+    } catch (err) {
+      skipped.push(`[${page}] page could not be read: ${err instanceof Error ? err.message : err}`);
+      continue;
+    }
 
     for (const { name, examples, motionVariants } of showcases) {
       const isDual = motionVariants ?? DUAL.has(name);
+      const componentTitle =
+        (registry.items as { name: string; title?: string }[]).find(
+          (item) => item.name === name,
+        )?.title ??
+        pageHeading(page) ??
+        name;
+
       for (const library of isDual ? (["gsap", "framer"] as const) : (["gsap"] as const)) {
         const previewName = library === "framer" ? `${name}-framer` : name;
         for (const example of examples) {
-          const usage = resolveUsage(resolveMotion(example.usage, library), "nextjs");
-          // No authored usage means the preview has nothing faithful to open.
-          if (!usage) continue;
           const id = example.id ?? slugify(example.title);
           const key = `${previewName}/${id}`;
+          const usage = resolveUsage(resolveMotion(example.usage, library), "nextjs");
+          // No authored usage means the preview has nothing faithful to open.
+          if (!usage) {
+            skipped.push(`[${key}] has no usage snippet.`);
+            continue;
+          }
+          // A fragment (just the JSX that differs) has nothing for v0 to render.
+          if (!/\bexport\s+default\b/.test(usage)) {
+            skipped.push(`[${key}] usage is a fragment, not a page (no default export).`);
+            continue;
+          }
           if (manifest[previewName]?.[id]) {
-            throw new Error(`[${page}] two examples share the id ${key}.`);
+            skipped.push(`[${key}] shares its id with another example on the page.`);
+            continue;
           }
 
-          const componentTitle =
-            (registry.items as { name: string; title?: string }[]).find(
-              (item) => item.name === name,
-            )?.title ?? name;
           // Names the v0 chat: the component, then the example when it adds
           // anything ("Accordion — FAQ section", but plain "Accordion").
           const title =
             example.title.toLowerCase() === componentTitle.toLowerCase()
               ? componentTitle
               : `${componentTitle} — ${example.title}`;
-          const item = flatten(
-            key,
-            title,
-            example.subheading ?? `The "${example.title}" example from the Algorize UI docs.`,
-            usage,
-          );
-          const out = path.join(OUT_DIR, `${key}.json`);
-          fs.mkdirSync(path.dirname(out), { recursive: true });
-          fs.writeFileSync(out, JSON.stringify(item, null, 2) + "\n");
-          (manifest[previewName] ??= {})[id] = title;
-          written++;
+          try {
+            const item = flatten(
+              key,
+              title,
+              example.subheading ?? `The "${example.title}" example from the Algorize UI docs.`,
+              usage,
+            );
+            const out = path.join(OUT_DIR, `${key}.json`);
+            fs.mkdirSync(path.dirname(out), { recursive: true });
+            fs.writeFileSync(out, JSON.stringify(item, null, 2) + "\n");
+            (manifest[previewName] ??= {})[id] = title;
+            written++;
+          } catch (err) {
+            skipped.push(err instanceof Error ? err.message : String(err));
+          }
         }
       }
     }
   }
 
   fs.writeFileSync(MANIFEST, JSON.stringify(manifest, null, 2) + "\n");
-  console.log(`Open in v0: wrote ${written} items for ${V0_PAGES.length} page(s).`);
+  console.log(
+    `Open in v0: wrote ${written} items for ${Object.keys(manifest).length} previews across ${pages.length} pages.`,
+  );
+  if (skipped.length > 0) {
+    console.warn(`Open in v0: skipped ${skipped.length} example(s):`);
+    for (const line of skipped) console.warn(`  ${line}`);
+  }
 }
 
 main().catch((err) => {
