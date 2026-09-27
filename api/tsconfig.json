@@ -1,0 +1,15 @@
+{
+  "//": "Vercel compiles api/ (and everything it imports) with the nearest tsconfig. The root one targets ESM for Next, but package.json has no \"type\": \"module\", so the function must be CommonJS or Node refuses to load it.",
+  "compilerOptions": {
+    "target": "ES2021",
+    "lib": ["ES2022", "DOM"],
+    "module": "CommonJS",
+    "moduleResolution": "Node",
+    "esModuleInterop": true,
+    "resolveJsonModule": true,
+    "strict": true,
+    "skipLibCheck": true,
+    "noEmit": true
+  },
+  "include": ["./**/*.ts"]
+}
