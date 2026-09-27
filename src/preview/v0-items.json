@@ -1,0 +1,11 @@
+{
+  "accordion": {
+    "accordion": "Accordion",
+    "faq-section": "Accordion — FAQ section",
+    "multiple-open": "Accordion — Multiple open",
+    "always-one-open": "Accordion — Always one open",
+    "multiple-permanent-open": "Accordion — Multiple permanent open",
+    "stack-entrance": "Accordion — Stack entrance",
+    "all-variants": "Accordion — All variants"
+  }
+}

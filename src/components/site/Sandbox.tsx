@@ -38,6 +38,8 @@ import { SandboxFrame } from "@/components/site/SandboxFrame";
 import { prefetchHighlight, warmHighlighter } from "@/components/custom/ui/code-renderer-core";
 import { ThemeColorPicker } from "@/components/site/ThemeColorPicker";
 import { toBlockColor } from "@/lib/accent";
+import { slugify } from "@/lib/open-in-v0";
+import { OpenInV0Button, v0ItemFor } from "@/components/site/open-in-v0-button";
 import {
   ShowcaseControlCard,
   ShowcaseSliders,
@@ -120,6 +122,8 @@ export interface SandboxOptions {
   fullscreen?: boolean;
   deviceSwitcher?: boolean;
   reset?: boolean;
+  /** Open-in-v0 button — shown only for examples with a built v0 item. */
+  openInV0?: boolean;
 }
 
 /**
@@ -198,11 +202,17 @@ export function Sandbox({
   minHeight = 550,
   maxHeight = 820,
   motionSwitch = false,
+  v0Item,
 }: {
   /** Registry name of the demo (src/preview/registry.tsx). */
   name: string;
   /** JSON-serializable props bridged into the demo, live. */
   sandboxProps?: Record<string, unknown>;
+  /**
+   * This preview's example as a v0 item (`<name>/<example id>`, see
+   * src/lib/open-in-v0.ts). Draws the Open-in-v0 button after fullscreen.
+   */
+  v0Item?: string;
   /** Page colour-picker value, applied as theme tokens inside the frame. */
   accent?: string;
   tabs: SandboxTab[];
@@ -220,6 +230,7 @@ export function Sandbox({
     fullscreen: fullscreenOption = true,
     deviceSwitcher = true,
     reset = true,
+    openInV0 = true,
   } = options;
 
   const previewTab = tabs.find((t) => t.resizable) ?? tabs[0];
@@ -579,6 +590,16 @@ export function Sandbox({
               </button>
             )}
 
+            {/* Open in v0: this example's code, props and variant, in the
+                reader's current theme — a new chat in a new tab. */}
+            {openInV0 && v0Item && (
+              <OpenInV0Button
+                item={v0Item}
+                accent={accent}
+                className="h-8 w-8 flex items-center justify-center rounded-lg transition-colors active:scale-95 cursor-pointer text-foreground/45 hover:text-foreground hover:bg-foreground/[0.06]"
+              />
+            )}
+
             {reset && (
               <button
                 onClick={() => setResetKey((k) => k + 1)}
@@ -862,13 +883,6 @@ export type ResolvedShowcaseExample = Omit<ShowcaseExample, "usage" | "code"> & 
   usage?: string;
   code?: string;
 };
-
-const slugify = (value?: string) =>
-  (value || "")
-    .toLowerCase()
-    .trim()
-    .replace(/[^a-z0-9]+/g, "-")
-    .replace(/(^-|-$)/g, "");
 
 /**
  * Example prose is authored as plain strings inside a JS array, so MDX never
@@ -1279,6 +1293,7 @@ function ExampleCard({
             minHeight={minHeight}
             maxHeight={maxHeight}
             motionSwitch={motionSwitch}
+            v0Item={v0ItemFor(name, anchor)}
           />
         ) : (
           <div
