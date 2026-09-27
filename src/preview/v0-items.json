@@ -427,6 +427,9 @@
   "hero-facility": {
     "precision-facility-cad-grid-hero": "Hero — Precision Facility & CAD Grid Hero"
   },
+  "hero-vortex": {
+    "atmospheric-cyclone-radar-hero": "Hero — Atmospheric Cyclone Radar Hero"
+  },
   "image-compare": {
     "classic-slider": "Image Compare — Classic Slider",
     "split-handle": "Image Compare — Split Handle",
@@ -684,6 +687,7 @@
   },
   "register-form": {
     "register": "Register Form — Register",
+    "register-scenic": "Register Form — Register — scenic",
     "register-split": "Register Form — Register — split",
     "register-glass": "Register Form — Register — glass",
     "register-minimal": "Register Form — Register — minimal"
@@ -713,6 +717,10 @@
     "always-expanded": "Sonner — Always expanded",
     "duration": "Sonner — Duration",
     "position": "Sonner — Position"
+  },
+  "split-flap": {
+    "split-flap-ivory": "Split-Flap Display — Split-Flap — Ivory (Classic Mechanical)",
+    "split-flap-minimalist": "Split-Flap Display — Split-Flap — Minimalist Architectural"
   },
   "scroll-accordion": {
     "scroll-accordion-showcase": "Scroll Accordion Showcase",

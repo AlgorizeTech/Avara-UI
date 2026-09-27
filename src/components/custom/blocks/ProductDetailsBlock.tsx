@@ -51,10 +51,10 @@ export interface ProductDetailsProps {
 }
 
 const DEFAULT_IMAGES = [
-  "/assets/red-shows.jpg",
-  "/assets/purple-shows.jpg",
-  "/assets/blue-shows.jpg",
-  "/assets/baby-pink-shows.jpg",
+  "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto/v1790516400/red-shows-1790516403807.jpg",
+  "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto/v1790516403/purple-shows-1790516403806.jpg",
+  "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto/v1790516399/blue-shows-1790516403806.jpg",
+  "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto/v1790516397/baby-pink-shows-1790516403806.jpg",
 ];
 
 const ITEM_BG_CLASSES = [

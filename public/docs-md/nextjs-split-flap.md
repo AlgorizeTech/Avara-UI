@@ -110,6 +110,14 @@ npx shadcn@latest add @algorize-ui/split-flap
 
           Whether to play realistic mechanical split-flap click sounds via Web Audio API. Can also be toggled interactively in the toolbar.
 
+          color
+
+          string
+
+          theme default
+
+          Text accent color applied to characters and numbers. Supports preset theme names ("lavender", "indigo", "rose", "emerald"), custom hex codes, or "default" to reset to variant default.
+
           speed
 
           number
@@ -117,22 +125,6 @@ npx shadcn@latest add @algorize-ui/split-flap
           1
 
           Speed multiplier for the flip cascade animation (1 = normal, 1.5 = fast).
-
-          header
-
-          string
-
-          undefined
-
-          Board title or status badge rendered at the top of the chassis.
-
-          footer
-
-          string
-
-          undefined
-
-          Subtext or informational hint displayed at the bottom of the board.
 
 ---
 

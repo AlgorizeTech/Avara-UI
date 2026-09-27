@@ -15,7 +15,7 @@
       "path": "app/page.tsx",
       "type": "registry:page",
       "target": "app/page.tsx",
-      "content": "import { GooglePixel8Mockup } from \"@/components/custom/blocks/MobileMockupBlock\";\n\nexport default function Pixel8Showcase() {\n  return (\n    <GooglePixel8Mockup>\n      <img src=\"https://algorize-ui.vercel.app/assets/mockups/dashboard_light.png\" alt=\"\" className=\"w-full h-full object-cover\" />\n    </GooglePixel8Mockup>\n  );\n}"
+      "content": "import { GooglePixel8Mockup } from \"@/components/custom/blocks/MobileMockupBlock\";\n\nexport default function Pixel8Showcase() {\n  return (\n    <GooglePixel8Mockup>\n      <img src=\"https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto/v1790516348/dashboard_light-1790516355268.png\" alt=\"\" className=\"w-full h-full object-cover\" />\n    </GooglePixel8Mockup>\n  );\n}"
     },
     {
       "path": "components/custom/blocks/MobileMockupBlock.tsx",

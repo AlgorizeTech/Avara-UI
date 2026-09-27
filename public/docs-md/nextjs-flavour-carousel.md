@@ -9,7 +9,28 @@ When the section first appears only the cup is there; the ring rises from behind
 export const usageSection = `"use client";
 
 // Every product image must share the same crop, so only the contents appear to change.
-const asset = (name: string) => "https://algorize-ui.vercel.app/assets/matcha/" + name + ".webp";
+const ASSETS: Record = {
+  "cup-berry": "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto/v1790509366/cup-berry-1790509374064.webp",
+  "cup-chocolate": "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto/v1790509366/cup-chocolate-1790509374067.webp",
+  "cup-cookie": "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto/v1790509366/cup-cookie-1790509374068.webp",
+  "cup-grape": "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto/v1790509367/cup-grape-1790509374068.webp",
+  "cup-mango": "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto/v1790509366/cup-mango-1790509374068.webp",
+  "cup-passion": "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto/v1790509366/cup-passion-1790509374069.webp",
+  "cup-strawberry": "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto/v1790509367/cup-strawberry-1790509374069.webp",
+  "cup-ube": "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto/v1790509367/cup-ube-1790509374069.webp",
+  "flavour-berry": "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto/v1790509367/flavour-berry-1790509374070.webp",
+  "flavour-chocolate": "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto/v1790509367/flavour-chocolate-1790509374070.webp",
+  "flavour-cookie": "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto/v1790509368/flavour-cookie-1790509374071.webp",
+  "flavour-grape": "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto/v1790509367/flavour-grape-1790509374071.webp",
+  "flavour-mango": "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto/v1790509367/flavour-mango-1790509374071.webp",
+  "flavour-passion": "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto/v1790509368/flavour-passion-1790509374072.webp",
+  "flavour-strawberry": "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto/v1790509368/flavour-strawberry-1790509374072.webp",
+  "flavour-ube": "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto/v1790509368/flavour-ube-1790509374072.webp",
+  "green-background-matcha": "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto/v1790509368/green-background-matcha-1790509374073.webp",
+  "matcha-powder": "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto/v1790509369/matcha-powder-1790509374074.png",
+};
+
+const asset = (name: string) => ASSETS[name];
 
 const FLAVOURS = [
   { name: "Strawberry", price: "$6.50", tint: "#e5394a", product: asset("cup-strawberry"), tile: asset("flavour-strawberry") },

@@ -15,7 +15,7 @@
       "path": "app/page.tsx",
       "type": "registry:page",
       "target": "app/page.tsx",
-      "content": "import { Iphone5Mockup } from \"@/components/custom/blocks/MobileMockupBlock\";\n\n// The shortest screen in the set — keep embedded hero copy to a couple of lines.\nexport default function Iphone5Showcase() {\n  return (\n    <Iphone5Mockup>\n      <img\n        src=\"https://algorize-ui.vercel.app/assets/mockups/dashboard_light.png\"\n        alt=\"Light Dashboard\"\n        className=\"dark:hidden w-full h-full object-cover\"\n      />\n      <img\n        src=\"https://algorize-ui.vercel.app/assets/mockups/dashboard_dark.png\"\n        alt=\"Dark Dashboard\"\n        className=\"hidden dark:block w-full h-full object-cover\"\n      />\n    </Iphone5Mockup>\n  );\n}"
+      "content": "import { Iphone5Mockup } from \"@/components/custom/blocks/MobileMockupBlock\";\n\n// The shortest screen in the set — keep embedded hero copy to a couple of lines.\nexport default function Iphone5Showcase() {\n  return (\n    <Iphone5Mockup>\n      <img\n        src=\"https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto/v1790516348/dashboard_light-1790516355268.png\"\n        alt=\"Light Dashboard\"\n        className=\"dark:hidden w-full h-full object-cover\"\n      />\n      <img\n        src=\"https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto/v1790516348/dashboard_dark-1790516355267.png\"\n        alt=\"Dark Dashboard\"\n        className=\"hidden dark:block w-full h-full object-cover\"\n      />\n    </Iphone5Mockup>\n  );\n}"
     },
     {
       "path": "components/custom/blocks/MobileMockupBlock.tsx",

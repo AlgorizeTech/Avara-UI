@@ -275,7 +275,7 @@ export const TableOfContents: React.FC = () => {
             className="group block relative overflow-hidden rounded-xl border border-foreground/[0.06] hover:border-primary/30 transition-colors duration-200 shadow-none cursor-pointer"
           >
             <img
-              src="/assets/algorizetech-banner.png"
+              src="https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto/v1790516395/algorizetech-banner-1790516403805.png"
               alt="AlgorizeTech - Engineering scalable SaaS & AI products"
               className="w-full h-auto object-cover rounded-xl transition-transform duration-300 group-hover:scale-[1.03]"
             />

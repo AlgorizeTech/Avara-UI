@@ -15,7 +15,7 @@
       "path": "app/page.tsx",
       "type": "registry:page",
       "target": "app/page.tsx",
-      "content": "import { Iphone12ProMaxMockup } from \"@/components/custom/blocks/MobileMockupBlock\";\n\nexport default function Iphone12Showcase() {\n  return (\n    <Iphone12ProMaxMockup>\n      <img src=\"https://algorize-ui.vercel.app/assets/mockups/dashboard_light.png\" alt=\"\" className=\"w-full h-full object-cover\" />\n    </Iphone12ProMaxMockup>\n  );\n}"
+      "content": "import { Iphone12ProMaxMockup } from \"@/components/custom/blocks/MobileMockupBlock\";\n\nexport default function Iphone12Showcase() {\n  return (\n    <Iphone12ProMaxMockup>\n      <img src=\"https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto/v1790516348/dashboard_light-1790516355268.png\" alt=\"\" className=\"w-full h-full object-cover\" />\n    </Iphone12ProMaxMockup>\n  );\n}"
     },
     {
       "path": "components/custom/blocks/MobileMockupBlock.tsx",

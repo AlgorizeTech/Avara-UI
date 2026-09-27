@@ -15,7 +15,7 @@
       "path": "app/page.tsx",
       "type": "registry:page",
       "target": "app/page.tsx",
-      "content": "import { SamsungS24UltraMockup } from \"@/components/custom/blocks/MobileMockupBlock\";\n\nexport default function SamsungShowcase() {\n  return (\n    <SamsungS24UltraMockup>\n      <img src=\"https://algorize-ui.vercel.app/assets/mockups/dashboard_light.png\" alt=\"\" className=\"w-full h-full object-cover\" />\n    </SamsungS24UltraMockup>\n  );\n}"
+      "content": "import { SamsungS24UltraMockup } from \"@/components/custom/blocks/MobileMockupBlock\";\n\nexport default function SamsungShowcase() {\n  return (\n    <SamsungS24UltraMockup>\n      <img src=\"https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto/v1790516348/dashboard_light-1790516355268.png\" alt=\"\" className=\"w-full h-full object-cover\" />\n    </SamsungS24UltraMockup>\n  );\n}"
     },
     {
       "path": "components/custom/blocks/MobileMockupBlock.tsx",
