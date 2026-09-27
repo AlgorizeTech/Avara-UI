@@ -2,8 +2,8 @@
 
 This directory contains auto-generated Markdown versions of all MDX documentation pages.
 
-**Generated at:** 2026-09-26T19:53:46.244Z
-**Total files:** 293
+**Generated at:** 2026-09-27T11:37:29.063Z
+**Total files:** 295
 
 ## Available Files
 
@@ -123,6 +123,7 @@ This directory contains auto-generated Markdown versions of all MDX documentatio
 - [nextjs/skeleton](/docs/nextjs-skeleton.md) - Source: `[framework]\skeleton\page.mdx`
 - [nextjs/social-links](/docs/nextjs-social-links.md) - Source: `[framework]\social-links\page.mdx`
 - [nextjs/sonner](/docs/nextjs-sonner.md) - Source: `[framework]\sonner\page.mdx`
+- [nextjs/split-flap](/docs/nextjs-split-flap.md) - Source: `[framework]\split-flap\page.mdx`
 - [nextjs/split-scroll-stepper](/docs/nextjs-split-scroll-stepper.md) - Source: `[framework]\split-scroll-stepper\page.mdx`
 - [nextjs/split-stepper](/docs/nextjs-split-stepper.md) - Source: `[framework]\split-stepper\page.mdx`
 - [nextjs/squircle-carousel](/docs/nextjs-squircle-carousel.md) - Source: `[framework]\squircle-carousel\page.mdx`
@@ -270,6 +271,7 @@ This directory contains auto-generated Markdown versions of all MDX documentatio
 - [reactjs/skeleton](/docs/reactjs-skeleton.md) - Source: `[framework]\skeleton\page.mdx`
 - [reactjs/social-links](/docs/reactjs-social-links.md) - Source: `[framework]\social-links\page.mdx`
 - [reactjs/sonner](/docs/reactjs-sonner.md) - Source: `[framework]\sonner\page.mdx`
+- [reactjs/split-flap](/docs/reactjs-split-flap.md) - Source: `[framework]\split-flap\page.mdx`
 - [reactjs/split-scroll-stepper](/docs/reactjs-split-scroll-stepper.md) - Source: `[framework]\split-scroll-stepper\page.mdx`
 - [reactjs/split-stepper](/docs/reactjs-split-stepper.md) - Source: `[framework]\split-stepper\page.mdx`
 - [reactjs/squircle-carousel](/docs/reactjs-squircle-carousel.md) - Source: `[framework]\squircle-carousel\page.mdx`

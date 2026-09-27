@@ -3649,6 +3649,31 @@
       "docs": "Named exports: Toaster, toast, toastState. Mount Toaster once, then call `toast()` from anywhere — including non-React code — since state lives in a module singleton. Set `expand` to fan the stack apart on hover. For a context-based API, use `toast`."
     },
     {
+      "name": "split-flap",
+      "type": "registry:component",
+      "title": "Split-Flap Display",
+      "author": "AlgorizeTech",
+      "description": "An authentic, physics-driven Split-Flap Display component simulating retro-mechanical flap cards, 3D perspective flips, and synthesized click sounds with ivory and minimalist variants.",
+      "categories": [
+        "data-display",
+        "media"
+      ],
+      "dependencies": [
+        "gsap"
+      ],
+      "registryDependencies": [
+        "utils"
+      ],
+      "files": [
+        {
+          "path": "src/components/custom/split-flap.tsx",
+          "type": "registry:component",
+          "target": "components/custom/split-flap.tsx"
+        }
+      ],
+      "docs": "Named exports: SplitFlap, SPLIT_FLAP_CHARSET. Default export: SplitFlap. Variants: ivory | minimalist. Features 3D mechanical rotateX animation, Web Audio API sound generator, and responsive size presets."
+    },
+    {
       "name": "split-scroll-stack",
       "type": "registry:component",
       "title": "Split Scroll Stack",

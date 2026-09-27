@@ -7,7 +7,7 @@ Every hero section in the library, on one page. Each is its own registry item wi
   Fashion HeroStaggered columns of looks on flat colour — lookbook, store, editorial.
   Support HeroA frosted bento of cards and counting figures — SaaS and AI products.
   Collage HeroA photo collage under a turning badge — school, studio, workshop.
-  Hero BlockFive marketing variants from one component — bounce, typing, slider, pet shop, doctor.
+  Hero BlockComprehensive variants from one component — bounce, typing, slider, pet shop, doctor, facility, and rotating vortex cyclone radar.
 
 ## Honeycomb Hero
 
@@ -786,6 +786,12 @@ export default function Page() {
   );
 }`;
 
+export const usageVortex = `export default function VortexHeroExample() {
+  return (
+    
+  );
+}`;
+
 ### Installation
 
 Register the @algorize-ui registry once per project, then add the component:
@@ -804,11 +810,11 @@ npx shadcn@latest add @algorize-ui/hero
 
           variant
 
-          "bounce" | "typing" | "slider" | "glow-arc" | "pet-shop" | "doctor" | "facility"
+          "bounce" | "typing" | "slider" | "glow-arc" | "pet-shop" | "doctor" | "facility" | "vortex"
 
           "bounce"
 
-          The layout & animation style. "bounce" uses spring word motion; "typing" uses typewriter effect; "slider" renders split 2-column hero with continuous marquee; "glow-arc" / "pet-shop" renders pet care hero; "doctor" renders medical test kits hero; "facility" renders architectural CAD blueprint grid hero with interactive morphing shape. The hexagonal mosaic hero is Honeycomb Hero, further up this page; the screenshot wall and the revolving ring are their own sections, Component Wall and Orbit Gallery.
+          The layout & animation style. "bounce" uses spring word motion; "typing" uses typewriter effect; "slider" renders split 2-column hero with continuous marquee; "glow-arc" / "pet-shop" renders pet care hero; "doctor" renders medical test kits hero; "facility" renders architectural CAD blueprint grid hero with interactive morphing shape; "vortex" renders atmospheric cyclone radar simulation with animated rotating canvas and telemetry HUD.
 
           typingWords
 
@@ -857,6 +863,38 @@ npx shadcn@latest add @algorize-ui/hero
           —
         
         Label and destination for each of the two call-to-action buttons.
+
+          eyebrow
+
+          string
+
+          "CLIMATE RISK, PER PARCEL"
+
+          Monospace uppercase eyebrow text shown above the main title (used in variant="vortex").
+
+          metrics
+
+          {"Array"}
+
+          134M / 412K / 180ms
+
+          Array of 3 summary metrics shown at the bottom of the left column (used in variant="vortex").
+
+          hudTitle · hudTime · hudMetrics
+
+          string / Array
+
+          "GUST FIELD" / "T+36:30" / […]
+
+          Telemetry HUD card header and data points displayed in the bottom-right corner of the radar panel (used in variant="vortex").
+
+          rotationSpeed
+
+          number
+
+          0.0025
+
+          Angular rotation speed in radians per frame for the animated cyclone vortex canvas (used in variant="vortex").
 
           color
 

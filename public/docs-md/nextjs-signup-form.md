@@ -78,6 +78,16 @@ export default function RegisterPage() {
   );
 }`;
 
+export const usageRegisterScenic = `import RegisterForm from "@/components/custom/blocks/RegisterForm";
+
+export default function ScenicRegisterPage() {
+  // "scenic" renders a floating onboarding card over a nature landscape backdrop.
+  // Seamlessly adapts between light mode (frosted card) and dark mode (dark charcoal card).
+  return (
+    
+  );
+}`;
+
 export const usageRegisterSplit = `import RegisterForm from "@/components/custom/blocks/RegisterForm";
 
 export default function SplitRegisterPage() {
@@ -188,12 +198,11 @@ Every example below is the same `RegisterForm` you just installed — only the p
 
           variant
 
-          "default" | "split" | "glass" | "minimal"
+          "scenic" | "default" | "split" | "glass" | "minimal"
 
           "default"
 
-          Same four layouts as LoginForm, so a matched pair of
-          pages needs no extra styling.
+          Five distinct presentation presets. "scenic" renders a floating onboarding card over a landscape backdrop with interactive welcome and registration steps, adapting smoothly to light and dark modes.
 
           color
 
@@ -204,6 +213,54 @@ Every example below is the same `RegisterForm` you just installed — only the p
           Applies global color themes to the primary button, focus rings, the
           terms checkbox and the policy links. Accepts valid hex codes (e.g.{" "}
           "#8b5cf6").
+
+          brandName
+
+          string
+
+          "Docs UI"
+
+          Brand name text displayed in the header of the scenic variant card.
+
+          title / subtitle
+
+          string
+
+          See defaults
+
+          Customizable headline and description displayed on the scenic onboarding card.
+
+          getStartedLabel
+
+          string
+
+          "Get Started"
+
+          Label on the primary CTA button in the scenic welcome card.
+
+          alreadyAccountLabel
+
+          string
+
+          "I already have an account"
+
+          Label on the secondary action button linking to loginHref.
+
+          bgImage
+
+          string
+
+          Cloudinary landscape
+
+          Custom background image URL for the scenic variant.
+
+          initialStep
+
+          "welcome" | "options" | "email" | "otp" | "onboarding-intro" | "goals" | "finances" | "confidence" | "emergency-fund" | "first-goal" | "summary"
+
+          "welcome"
+
+          Starting view for the scenic variant: "welcome" (intro CTA), "options" (auth methods), "email" (registration form), "otp" (6-digit verification), "onboarding-intro" (picture overview), "goals" (area focus), "finances" (income &amp; expenses), "confidence" (rating scales), "emergency-fund" (preparation status), "first-goal" (target planner), or "summary" (financial overview).
 
           loginHref
 

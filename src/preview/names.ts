@@ -138,6 +138,7 @@ export const sandboxNames = [
   "skeleton",
   "social-links",
   "sonner",
+  "split-flap",
   "split-scroll-stack",
   "split-stepper",
   "squircle-carousel",

@@ -235,6 +235,7 @@
     "src/components/custom/infrastructure-topology.tsx",
     "src/components/custom/piano.tsx",
     "src/components/custom/range-date-picker.tsx",
+    "src/components/custom/split-flap.tsx",
     "src/components/custom/squircle-carousel.tsx",
     "src/components/custom/ui/FluidGlassSlider.tsx",
     "src/components/custom/ui/accordion.tsx",

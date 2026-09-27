@@ -1144,4 +1144,12 @@ export const META: Record<string, ItemMeta> = {
       "A high-performance HTML Canvas component that converts text or images into thousands of animated particles with multiple visual variants and interactive mouse mechanics.",
     categories: ["media", "data-display"],
   },
+  "split-flap": {
+    title: "Split-Flap Display",
+    description:
+      "An authentic, physics-driven Split-Flap Display component simulating retro-mechanical flap cards, 3D perspective flips, and synthesized click sounds with ivory and minimalist variants.",
+    categories: ["data-display", "media"],
+    docs: "Named exports: SplitFlap, SPLIT_FLAP_CHARSET. Default export: SplitFlap. Variants: ivory | minimalist. Features 3D mechanical rotateX animation, Web Audio API sound generator, and responsive size presets.",
+  },
 };
+
