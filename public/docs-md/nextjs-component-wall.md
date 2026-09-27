@@ -8,14 +8,14 @@ export const usage = `"use client";
 
 // slug is what the install line calls the card; it defaults to the title in kebab-case.
 const ITEMS = [
-  { slug: "hero", title: "Word bounce hero", image: "https://algorize-ui.vercel.app/assets/wall/hero.jpg" },
-  { slug: "pricing", title: "Pricing plans", image: "https://algorize-ui.vercel.app/assets/wall/pricing.jpg" },
-  { slug: "bento-showcase", title: "Bento showcase", image: "https://algorize-ui.vercel.app/assets/wall/bento-showcase.jpg" },
-  { slug: "book-appointment", title: "Book appointment", image: "https://algorize-ui.vercel.app/assets/wall/book-appointment.jpg" },
-  { slug: "collage-hero", title: "Collage hero", image: "https://algorize-ui.vercel.app/assets/wall/collage-hero.jpg" },
-  { slug: "fashion-hero", title: "Fashion hero", image: "https://algorize-ui.vercel.app/assets/wall/fashion-hero.jpg" },
-  { slug: "hero-carousel", title: "Hero carousel", image: "https://algorize-ui.vercel.app/assets/wall/hero-carousel.jpg" },
-  { slug: "honeycomb-hero", title: "Honeycomb hero", image: "https://algorize-ui.vercel.app/assets/wall/honeycomb-hero.jpg" },
+  { slug: "hero", title: "Word bounce hero", image: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto/v1790516057/hero-1790516064495.jpg" },
+  { slug: "pricing", title: "Pricing plans", image: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto/v1790516058/pricing-1790516064500.jpg" },
+  { slug: "bento-showcase", title: "Bento showcase", image: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto/v1790516057/bento-showcase-1790516064489.jpg" },
+  { slug: "book-appointment", title: "Book appointment", image: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto/v1790516057/book-appointment-1790516064490.jpg" },
+  { slug: "collage-hero", title: "Collage hero", image: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto/v1790516057/collage-hero-1790516064493.jpg" },
+  { slug: "fashion-hero", title: "Fashion hero", image: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto/v1790516058/fashion-hero-1790516064495.jpg" },
+  { slug: "hero-carousel", title: "Hero carousel", image: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto/v1790516059/hero-carousel-1790516064496.jpg" },
+  { slug: "honeycomb-hero", title: "Honeycomb hero", image: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto/v1790516059/honeycomb-hero-1790516064497.jpg" },
   // … as many as you like; four columns of six reads well
 ];
 

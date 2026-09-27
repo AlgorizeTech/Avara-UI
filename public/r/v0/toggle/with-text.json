@@ -1,0 +1,28 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "toggle-with-text",
+  "type": "registry:block",
+  "title": "Toggle — With text",
+  "description": "The \"With text\" example from the Algorize UI docs.",
+  "dependencies": [
+    "lucide-react",
+    "tw-animate-css"
+  ],
+  "registryDependencies": [
+    "utils"
+  ],
+  "files": [
+    {
+      "path": "app/page.tsx",
+      "type": "registry:page",
+      "target": "app/page.tsx",
+      "content": "\"use client\";\n\nimport { Toggle } from \"@/components/custom/blocks/ToggleBlock\";\nimport { Mic, MicOff } from \"lucide-react\";\nimport { useState } from \"react\";\n\nexport default function MuteToggle() {\n  const [muted, setMuted] = useState(false);\n\n  return (\n    <Toggle pressed={muted} onPressedChange={setMuted}>\n      {muted ? <MicOff className=\"w-4 h-4 mr-2\" /> : <Mic className=\"w-4 h-4 mr-2\" />}\n      {muted ? \"Unmute\" : \"Mute\"}\n    </Toggle>\n  );\n}"
+    },
+    {
+      "path": "components/custom/blocks/ToggleBlock.tsx",
+      "type": "registry:component",
+      "target": "components/custom/blocks/ToggleBlock.tsx",
+      "content": "\"use client\";\n\nimport { cn } from \"@/lib/utils\";\nimport React, { forwardRef, useState } from \"react\";\n\nexport interface ToggleProps\n  extends React.ButtonHTMLAttributes<HTMLButtonElement> {\n  pressed?: boolean;\n  defaultPressed?: boolean;\n  onPressedChange?: (pressed: boolean) => void;\n  variant?: \"default\" | \"outline\" | \"ghost\";\n  size?: \"sm\" | \"md\" | \"lg\";\n}\n\n// Ensure this export keyword is here!\nexport const Toggle = forwardRef<HTMLButtonElement, ToggleProps>(\n  (\n    {\n      className,\n      variant = \"default\",\n      size = \"md\",\n      pressed: controlledPressed,\n      defaultPressed = false,\n      onPressedChange,\n      ...props\n    },\n    ref,\n  ) => {\n    // Manage state internally if not controlled by the parent\n    const isControlled = controlledPressed !== undefined;\n    const [uncontrolledPressed, setUncontrolledPressed] =\n      useState(defaultPressed);\n    const isPressed = isControlled ? controlledPressed : uncontrolledPressed;\n\n    const handleClick = (e: React.MouseEvent<HTMLButtonElement>) => {\n      const newState = !isPressed;\n      if (!isControlled) {\n        setUncontrolledPressed(newState);\n      }\n      onPressedChange?.(newState);\n      props.onClick?.(e);\n    };\n\n    const variants = {\n      default:\n        \"bg-transparent hover:bg-muted text-foreground/80 data-[state=on]:bg-foreground/10 data-[state=on]:text-foreground\",\n      outline:\n        \"border border-border bg-transparent hover:bg-muted text-foreground/80 data-[state=on]:bg-muted data-[state=on]:text-foreground\",\n      ghost:\n        \"bg-transparent hover:bg-muted/50 text-foreground/80 data-[state=on]:bg-muted/50 data-[state=on]:text-foreground\",\n    };\n\n    const sizes = {\n      sm: \"h-8 px-2.5 text-xs\",\n      md: \"h-9 px-3 text-sm\",\n      lg: \"h-10 px-4 text-sm\",\n    };\n\n    return (\n      <button\n        type=\"button\"\n        ref={ref}\n        aria-pressed={isPressed}\n        data-state={isPressed ? \"on\" : \"off\"}\n        onClick={handleClick}\n        className={cn(\n          \"inline-flex items-center justify-center rounded-md font-medium transition-colors outline-none focus-visible:ring-2 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50\",\n          variants[variant],\n          sizes[size],\n          className,\n        )}\n        {...props}\n      />\n    );\n  },\n);\nToggle.displayName = \"Toggle\";\n"
+    }
+  ]
+}
