@@ -126,7 +126,7 @@ function parseCustomColors(encoded: string): ThemeCssInput["colors"] {
 export function themeFromParams(params: URLSearchParams): V0Theme {
   const preset = params.get("preset") ?? DEFAULT_PRESET;
   const colorsParam = params.get("colors");
-  const radius = Number(params.get("radius"));
+  const radius = Number(params.get("radius") ?? DEFAULT_RADIUS);
   const accent = params.get("accent") ?? undefined;
   const font = params.get("font") ?? undefined;
   return {
@@ -223,6 +223,18 @@ export function themedItemUrl(origin: string, item: string, theme: V0Theme): str
   return `${origin}/r/v0-themed/${item}/item.json?${themeToParams(theme)}`;
 }
 
-export function openInV0Url(origin: string, item: string, theme: V0Theme): string {
-  return `${V0_OPEN_URL}?url=${encodeURIComponent(themedItemUrl(origin, item, theme))}`;
+/**
+ * `title` names the new chat — otherwise v0 calls every one "Open in v0". It
+ * is not in shadcn's Open-in-v0 docs; Vercel's own registry-starter passes it.
+ */
+export function openInV0Url(
+  origin: string,
+  item: string,
+  theme: V0Theme,
+  title?: string,
+): string {
+  const params = new URLSearchParams();
+  if (title) params.set("title", title);
+  params.set("url", themedItemUrl(origin, item, theme));
+  return `${V0_OPEN_URL}?${params}`;
 }

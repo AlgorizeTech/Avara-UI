@@ -2,7 +2,7 @@
   "$schema": "https://ui.shadcn.com/schema/registry-item.json",
   "name": "accordion-accordion",
   "type": "registry:block",
-  "title": "Accordion — Accordion",
+  "title": "Accordion",
   "description": "The \"Accordion\" example from the Algorize UI docs.",
   "dependencies": [
     "@radix-ui/react-accordion",

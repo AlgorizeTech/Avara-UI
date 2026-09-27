@@ -2,7 +2,8 @@
  * Builds the static half of Open in v0: one registry item per docs example.
  *
  *   public/r/v0/<preview name>/<example id>.json
- *   src/preview/v0-items.json   — which examples have one (the button reads it)
+ *   src/preview/v0-items.json   — which examples have one, and each one's v0
+ *                                 chat title (the button reads it)
  *
  * Each item is the example exactly as its preview shows it: the example's
  * Next.js usage snippet becomes app/page.tsx, and every registry file that
@@ -280,7 +281,7 @@ async function readShowcases(page: string): Promise<CapturedShowcase[]> {
 
 async function main() {
   fs.rmSync(OUT_DIR, { recursive: true, force: true });
-  const manifest: Record<string, string[]> = {};
+  const manifest: Record<string, Record<string, string>> = {};
   let written = 0;
 
   for (const page of V0_PAGES) {
@@ -297,7 +298,7 @@ async function main() {
           if (!usage) continue;
           const id = example.id ?? slugify(example.title);
           const key = `${previewName}/${id}`;
-          if (manifest[previewName]?.includes(id)) {
+          if (manifest[previewName]?.[id]) {
             throw new Error(`[${page}] two examples share the id ${key}.`);
           }
 
@@ -305,16 +306,22 @@ async function main() {
             (registry.items as { name: string; title?: string }[]).find(
               (item) => item.name === name,
             )?.title ?? name;
+          // Names the v0 chat: the component, then the example when it adds
+          // anything ("Accordion — FAQ section", but plain "Accordion").
+          const title =
+            example.title.toLowerCase() === componentTitle.toLowerCase()
+              ? componentTitle
+              : `${componentTitle} — ${example.title}`;
           const item = flatten(
             key,
-            `${example.title} — ${componentTitle}`,
+            title,
             example.subheading ?? `The "${example.title}" example from the Algorize UI docs.`,
             usage,
           );
           const out = path.join(OUT_DIR, `${key}.json`);
           fs.mkdirSync(path.dirname(out), { recursive: true });
           fs.writeFileSync(out, JSON.stringify(item, null, 2) + "\n");
-          (manifest[previewName] ??= []).push(id);
+          (manifest[previewName] ??= {})[id] = title;
           written++;
         }
       }

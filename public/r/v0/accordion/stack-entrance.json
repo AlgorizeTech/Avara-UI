@@ -2,7 +2,7 @@
   "$schema": "https://ui.shadcn.com/schema/registry-item.json",
   "name": "accordion-stack-entrance",
   "type": "registry:block",
-  "title": "Stack entrance — Accordion",
+  "title": "Accordion — Stack entrance",
   "description": "The deal-out entrance on the `elevated` variant. It works with all five.",
   "dependencies": [
     "@radix-ui/react-accordion",

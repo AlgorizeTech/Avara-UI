@@ -2,7 +2,7 @@
   "$schema": "https://ui.shadcn.com/schema/registry-item.json",
   "name": "accordion-always-one-open",
   "type": "registry:block",
-  "title": "Always one open — Accordion",
+  "title": "Accordion — Always one open",
   "description": "The \"Always one open\" example from the Algorize UI docs.",
   "dependencies": [
     "@radix-ui/react-accordion",

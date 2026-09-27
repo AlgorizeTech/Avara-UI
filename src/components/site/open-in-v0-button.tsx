@@ -7,11 +7,12 @@ import { isDefaultAccent } from "@/lib/accent";
 import { V0_FALLBACK_ORIGIN, openInV0Url, type V0Theme } from "@/lib/open-in-v0";
 import v0Items from "@/preview/v0-items.json";
 
-const ITEMS = v0Items as Record<string, string[]>;
+/** Preview name → example id → the v0 chat title. */
+const ITEMS = v0Items as Record<string, Record<string, string>>;
 
 /** The v0 item key for one showcase example, or undefined when none was built. */
 export function v0ItemFor(previewName: string, exampleId: string): string | undefined {
-  return ITEMS[previewName]?.includes(exampleId) ? `${previewName}/${exampleId}` : undefined;
+  return ITEMS[previewName]?.[exampleId] ? `${previewName}/${exampleId}` : undefined;
 }
 
 /** The endpoint lives on the deployment; a local page borrows production's. */
@@ -60,6 +61,8 @@ export function OpenInV0Button({
   const { state, currentMode } = useThemeCustomizer();
   const origin = useEndpointOrigin();
   const font = useFontOverride();
+  const [previewName, exampleId] = item.split("/");
+  const title = ITEMS[previewName]?.[exampleId];
 
   const theme: V0Theme = {
     preset: state.activePreset || DEFAULT_PRESET,
@@ -72,7 +75,7 @@ export function OpenInV0Button({
 
   return (
     <a
-      href={openInV0Url(origin, item, theme)}
+      href={openInV0Url(origin, item, theme, title)}
       target="_blank"
       rel="noopener noreferrer"
       className={className}

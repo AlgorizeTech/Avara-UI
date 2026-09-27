@@ -2,7 +2,7 @@
   "$schema": "https://ui.shadcn.com/schema/registry-item.json",
   "name": "accordion-all-variants",
   "type": "registry:block",
-  "title": "All variants — Accordion",
+  "title": "Accordion — All variants",
   "description": "Same data, five looks. Pick by how much the accordion should stand out from what surrounds it.",
   "dependencies": [
     "@radix-ui/react-accordion",

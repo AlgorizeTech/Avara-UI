@@ -2,7 +2,7 @@
   "$schema": "https://ui.shadcn.com/schema/registry-item.json",
   "name": "accordion-faq-section",
   "type": "registry:block",
-  "title": "FAQ section — Accordion",
+  "title": "Accordion — FAQ section",
   "description": "A two-column section: sticky heading and a support card on the left, the accordion on the right.",
   "dependencies": [
     "@radix-ui/react-accordion",

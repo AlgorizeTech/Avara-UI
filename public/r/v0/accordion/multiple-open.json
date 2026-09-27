@@ -2,7 +2,7 @@
   "$schema": "https://ui.shadcn.com/schema/registry-item.json",
   "name": "accordion-multiple-open",
   "type": "registry:block",
-  "title": "Multiple open — Accordion",
+  "title": "Accordion — Multiple open",
   "description": "The \"Multiple open\" example from the Algorize UI docs.",
   "dependencies": [
     "@radix-ui/react-accordion",
