@@ -2,6 +2,7 @@
 
 import {
   AnimatedTypographyBlock,
+  PrefixPosition,
   TypographyAlign,
   TypographyColor,
   TypographyTag,
@@ -26,6 +27,7 @@ export default function AnimatedTypographyDemo({
   singleVariant,
   titlePrefix,
   words,
+  prefixPosition,
 }: {
   tag?: TypographyTag;
   variant?: TypographyVariant;
@@ -41,6 +43,8 @@ export default function AnimatedTypographyDemo({
   titlePrefix?: string;
   /** The words the rotating variants cycle through. */
   words?: string[];
+  /** Whether the prefix holds still or re-centres as the rotating word changes. */
+  prefixPosition?: PrefixPosition;
 }) {
   if (singleVariant) {
     const tags: TypographyTag[] = ["h3", "h4", "p"];
@@ -56,6 +60,7 @@ export default function AnimatedTypographyDemo({
               text={customText}
               titlePrefix={titlePrefix}
               words={words}
+              prefixPosition={prefixPosition}
               color={color}
             />
           ))}

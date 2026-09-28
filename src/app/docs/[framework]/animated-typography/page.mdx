@@ -66,14 +66,14 @@ export default function ElasticSpringShowcase() {
   columns={1}
   examples={[
     {
-      title: "Matrix Scramble Decryption",
-      subheading: "Cyberpunk symbol scrambling effect resolving to crisp text.",
+      title: "Typewriter",
+      subheading: "Types each word, holds it, deletes it and moves on behind a blinking caret, as in the Hero's typing title. The prefix re-centres as the word changes, just like the hero.",
       propNotes: [
-        { prop: "variant", value: '"matrix-scramble"', effect: "scrambles text through glyphs before resolving." },
-        { prop: "align", value: '"center"', effect: "centers the text aligned to the middle." },
+        { prop: "variant", value: '"typewriter"', effect: "types and deletes each word in turn." },
+        { prop: "prefixPosition", value: '"fluid"', effect: "the default here: the text before the word re-centres as it types and deletes." },
       ],
-      props: { singleVariant: "matrix-scramble" },
-      usage: usageMatrix,
+      props: { singleVariant: "typewriter", titlePrefix: "Build ", customText: "Interfaces", words: ["Interfaces", "Components", "Experiences"] },
+      usage: usageTypewriter,
       code: extractCode("src/components/custom/blocks/AnimatedTypographyBlock.tsx"),
     },
   ]}
@@ -161,6 +161,20 @@ export default function TypewriterShowcase() {
   );
 }`;
 
+export const usageTypewriterFixed = `import { AnimatedTypographyBlock } from "@/components/custom/blocks/AnimatedTypographyBlock";
+
+const words = ["Interfaces", "Components", "Experiences"];
+
+export default function TypewriterFixedShowcase() {
+  return (
+    <div className="flex flex-col gap-6 items-center text-center">
+      <AnimatedTypographyBlock as="h3" variant="typewriter" prefixPosition="fixed" align="center" titlePrefix="Build " text="Interfaces" words={words} />
+      <AnimatedTypographyBlock as="h4" variant="typewriter" prefixPosition="fixed" align="center" titlePrefix="Build " text="Interfaces" words={words} />
+      <AnimatedTypographyBlock as="p" variant="typewriter" prefixPosition="fixed" align="center" titlePrefix="Build " text="Interfaces" words={words} />
+    </div>
+  );
+}`;
+
 export const usageWordFlip = `import { AnimatedTypographyBlock } from "@/components/custom/blocks/AnimatedTypographyBlock";
 
 const words = ["Interfaces", "Components", "Experiences"];
@@ -220,6 +234,16 @@ export default function ColorWipeShowcase() {
   columns={1}
   examples={[
     {
+      title: "Typewriter, Fixed Prefix",
+      subheading: "The same typewriter with the prefix held in place: the line keeps the longest word's width, so only the typed word moves.",
+      propNotes: [
+        { prop: "prefixPosition", value: '"fixed"', effect: "reserves the longest word's width, so the text before it never moves." },
+        { prop: "variant", value: '"typewriter"', effect: "types and deletes each word in turn." },
+      ],
+      props: { singleVariant: "typewriter", titlePrefix: "Build ", customText: "Interfaces", words: ["Interfaces", "Components", "Experiences"], prefixPosition: "fixed" },
+      usage: usageTypewriterFixed,
+    },
+    {
       title: "Letter Bounce Word Rotator",
       subheading: "The word leaves letter by letter; the next springs in one letter at a time, as in the Hero's bounce title.",
       propNotes: [
@@ -228,16 +252,6 @@ export default function ColorWipeShowcase() {
       ],
       props: { singleVariant: "letter-bounce", titlePrefix: "Build ", customText: "Interfaces", words: ["Interfaces", "Components", "Experiences"] },
       usage: usageLetterBounce,
-    },
-    {
-      title: "Typewriter",
-      subheading: "Types each word, holds it, deletes it and moves on behind a blinking caret, as in the Hero's typing title.",
-      propNotes: [
-        { prop: "variant", value: '"typewriter"', effect: "types and deletes each word in turn." },
-        { prop: "interval", value: "1800", effect: "how long a finished word is held before deleting." },
-      ],
-      props: { singleVariant: "typewriter", titlePrefix: "Build ", customText: "Interfaces", words: ["Interfaces", "Components", "Experiences"] },
-      usage: usageTypewriter,
     },
     {
       title: "Word Flip",
@@ -349,6 +363,16 @@ export default function ColorWipeShowcase() {
       props: { singleVariant: "underline-draw", customText: "Creative Typography Design" },
       usage: usageUnderline,
     },
+    {
+      title: "Matrix Scramble Decryption",
+      subheading: "Cyberpunk symbol scrambling effect resolving to crisp text.",
+      propNotes: [
+        { prop: "variant", value: '"matrix-scramble"', effect: "scrambles text through glyphs before resolving." },
+        { prop: "align", value: '"center"', effect: "centers the text aligned to the middle." },
+      ],
+      props: { singleVariant: "matrix-scramble" },
+      usage: usageMatrix,
+    },
   ]}
 />
 
@@ -398,11 +422,9 @@ Discover the key capabilities that make this component an excellent choice for m
         <td>
           <code>string</code>
         </td>
+        <td>—</td>
         <td>
-          <strong>Required</strong>
-        </td>
-        <td>
-          The text content to render. Staggered variants split this string to animate word-by-word or character-by-character.
+          The text content to render, and what screen readers announce. Staggered variants split this string to animate word-by-word or character-by-character.
         </td>
       </tr>
       <tr>
@@ -454,13 +476,13 @@ Discover the key capabilities that make this component an excellent choice for m
           <code>words</code>
         </td>
         <td>
-          <code>string[]</code>
+          <code>ReactNode[]</code>
         </td>
         <td>
           <code>[text]</code>
         </td>
         <td>
-          The words the rotating variants cycle through. <code>text</code> is still what screen readers announce, so set it to the first word.
+          The words the rotating variants cycle through. Plain strings animate letter by letter; other nodes move whole. <code>text</code> is still what screen readers announce, so set it to the first word.
         </td>
       </tr>
       <tr>
@@ -478,6 +500,91 @@ Discover the key capabilities that make this component an excellent choice for m
         </td>
         <td>
           Milliseconds each word stays on the rotating variants. The typewriter holds a finished word this long instead, <code>1800</code> by default.
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <code>AnimatedTypographyBlock</code>
+        </td>
+        <td>
+          <code>prefixPosition</code>
+        </td>
+        <td>
+          <code>"fixed" | "fluid"</code>
+        </td>
+        <td>
+          <code>"fluid"</code> for typewriter, <code>"fixed"</code> otherwise
+        </td>
+        <td>
+          Whether the text before the rotating words holds still. <code>fixed</code> reserves the longest word's width; <code>fluid</code> follows the word on show, so a centred line re-centres as the word types, deletes or swaps.
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <code>AnimatedTypographyBlock</code>
+        </td>
+        <td>
+          <code>index</code>
+        </td>
+        <td>
+          <code>number</code>
+        </td>
+        <td>
+          —
+        </td>
+        <td>
+          Shows <code>words[index]</code> instead of stepping on a timer — for words kept in step with something else, like a carousel's slides. The typewriter keeps its own time.
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <code>AnimatedTypographyBlock</code>
+        </td>
+        <td>
+          <code>children</code>
+        </td>
+        <td>
+          <code>ReactNode</code>
+        </td>
+        <td>
+          —
+        </td>
+        <td>
+          Rich content for <code>blur-rise</code> and <code>color-wipe</code> in place of <code>text</code>, such as a heading with an <code>&lt;em&gt;</code> in it.
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <code>AnimatedTypographyBlock</code>
+        </td>
+        <td>
+          <code>play</code>
+        </td>
+        <td>
+          <code>boolean</code>
+        </td>
+        <td>
+          <code>true</code>
+        </td>
+        <td>
+          <code>false</code> renders the text at rest; the animation starts when it turns <code>true</code>. For reveals that wait on scrolling into view.
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <code>AnimatedTypographyBlock</code>
+        </td>
+        <td>
+          <code>bare</code>
+        </td>
+        <td>
+          <code>boolean</code>
+        </td>
+        <td>
+          <code>false</code>
+        </td>
+        <td>
+          Drops the block's own weight, size, colour, alignment and padding, so <code>className</code> and the parent set the type — for composing it into a section heading.
         </td>
       </tr>
       <tr>

@@ -1,7 +1,7 @@
 "use client";
 
 import { cn } from "@/lib/utils";
-import React, { forwardRef, useEffect, useRef, useState } from "react";
+import React, { forwardRef, useEffect, useLayoutEffect, useRef, useState } from "react";
 import { getThemeStyles } from "./animated-typography-theme";
 
 // ==========================================
@@ -162,81 +162,146 @@ const SWAP_EASE = "cubic-bezier(0.22, 1, 0.36, 1)";
 const RISE_EASE =
   "linear(0, .1945, .3591, .4971, .6115, .7052, .7808, .8409, .8877, .9233, .9497, .9686, .9816, .9901, .9952, .998, .9994, .9999, 1, 1)";
 
-/** The index of the word on show, stepping through `count` words every `interval` ms. */
-function useWordIndex(count: number, interval: number) {
-  const [index, setIndex] = useState(0);
-  useEffect(() => {
-    if (count < 2) return;
-    const id = setInterval(() => setIndex((i) => (i + 1) % count), interval);
-    return () => clearInterval(id);
-  }, [count, interval]);
-  return index % Math.max(count, 1);
-}
+/** A rotating word: plain text animates letter by letter; any other node moves whole. */
+type Word = React.ReactNode;
+const asString = (w: Word) =>
+  typeof w === "string" || typeof w === "number" ? String(w) : null;
 
 /**
- * An inline slot as wide as the longest word, so the rest of the line holds
- * still while the words change. `clip` cuts off words sliding above or below.
+ * `fixed` reserves the longest word's width, so the text around the words
+ * holds still; `fluid` follows the word on show, so a centred line re-centres.
  */
+export type PrefixPosition = "fixed" | "fluid";
+
+/** The word on show: `index` when controlled, otherwise one every `interval` ms. */
+function useActiveIndex(count: number, interval: number, index?: number) {
+  const [auto, setAuto] = useState(0);
+  const controlled = index !== undefined;
+  useEffect(() => {
+    if (controlled || count < 2) return;
+    const id = setInterval(() => setAuto((i) => (i + 1) % count), interval);
+    return () => clearInterval(id);
+  }, [controlled, count, interval]);
+  const n = Math.max(count, 1);
+  return (((controlled ? index : auto) % n) + n) % n;
+}
+
+/** "start" when the words sit in a line of text; "inherit" when they are the whole line. */
+type WordAlign = "start" | "inherit";
+
+const clipLine = (clip?: boolean): React.CSSProperties | undefined =>
+  clip ? { clipPath: "inset(0 -100vw)" } : undefined;
+
+/** Where the rotating words sit; see `PrefixPosition`. `clip` cuts off words sliding above or below the line. */
 function WordSlot({
   words,
+  position,
+  align,
   clip,
   children,
 }: {
-  words: string[];
+  words: Word[];
+  position: PrefixPosition;
+  align: WordAlign;
   clip?: boolean;
   children: React.ReactNode;
 }) {
+  const alignClass = align === "start" ? "text-start" : undefined;
+  if (position === "fluid") {
+    return (
+      <FluidWidth className={alignClass} style={clipLine(clip)}>
+        {children}
+      </FluidWidth>
+    );
+  }
   return (
-    <span
-      className="relative inline-grid text-left mr-[0.2em]"
-      style={clip ? { clipPath: "inset(0 -0.5em)" } : undefined}
-    >
+    <span className={cn("relative inline-grid", alignClass)} style={clipLine(clip)}>
       {words.map((w, i) => (
-        <span key={i} className="invisible col-start-1 row-start-1 whitespace-pre">
+        <span key={i} className="invisible col-start-1 row-start-1">
           {w}
         </span>
       ))}
-      <span className="col-start-1 row-start-1 whitespace-pre">{children}</span>
+      <span className="col-start-1 row-start-1">{children}</span>
     </span>
   );
+}
+
+/**
+ * As wide as its content, easing between widths as the content changes, so
+ * the text beside it glides to its new place rather than jumping there.
+ */
+function FluidWidth({
+  className,
+  style,
+  children,
+}: {
+  className?: string;
+  style?: React.CSSProperties;
+  children: React.ReactNode;
+}) {
+  const inner = useRef<HTMLSpanElement>(null);
+  const [width, setWidth] = useState<number>();
+  useLayoutEffect(() => {
+    const el = inner.current;
+    if (!el) return;
+    const measure = () => setWidth(el.getBoundingClientRect().width);
+    measure();
+    if (typeof ResizeObserver === "undefined") return;
+    const ro = new ResizeObserver(measure);
+    ro.observe(el);
+    return () => ro.disconnect();
+  }, []);
+  return (
+    <span
+      className={cn("relative inline-block", className)}
+      style={{ ...style, width, transition: `width 0.45s ${FLIP_EASE}` }}
+    >
+      {/* max-content, so the box narrowing around it never wraps what it measures */}
+      <span ref={inner} className="relative inline-block w-max">
+        {children}
+      </span>
+    </span>
+  );
+}
+
+interface RotatorProps {
+  words: Word[];
+  interval: number;
+  index?: number;
+  speed: number;
+  delay: number;
+  position: PrefixPosition;
+  align: WordAlign;
 }
 
 /**
  * The word on screen leaves letter by letter; the next one comes in only
  * once the last letter has settled.
  */
-function LetterBounceWords({
-  words,
-  interval,
-  speed,
-  delay,
-}: {
-  words: string[];
-  interval: number;
-  speed: number;
-  delay: number;
-}) {
-  const word = words[useWordIndex(words.length, interval)];
-  const [shown, setShown] = useState(word);
-  const latest = useRef(word);
-  latest.current = word;
-  const leaving = shown !== word;
+function LetterBounceWords({ words, interval, index, speed, delay, position, align }: RotatorProps) {
+  const active = useActiveIndex(words.length, interval, index);
+  const [shown, setShown] = useState(active);
+  const latest = useRef(active);
+  latest.current = active;
+  const leaving = shown !== active;
   // Only the first word waits for `delay`.
   const cycled = useRef(false);
   if (leaving) cycled.current = true;
   const lead = cycled.current ? 0 : delay;
+  const word = words[shown] ?? words[0];
+  const text = asString(word);
 
   useEffect(() => {
     if (!leaving) return;
     const t = window.setTimeout(
       () => setShown(latest.current),
-      Math.max(300, (shown.length - 1) * 20 * speed + BOUNCE_REST_MS),
+      Math.max(300, ((text?.length ?? 1) - 1) * 20 * speed + BOUNCE_REST_MS),
     );
     return () => window.clearTimeout(t);
-  }, [leaving, shown, speed]);
+  }, [leaving, text, speed]);
 
   return (
-    <WordSlot words={words} clip>
+    <WordSlot words={words} position={position} align={align} clip>
       <span
         key={shown}
         className="inline-flex"
@@ -246,23 +311,35 @@ function LetterBounceWords({
             : `typo-word-in 0.3s ${FADE_EASE} ${lead}ms backwards`,
         }}
       >
-        {shown.split("").map((char, i) => (
-          <span
-            key={i}
-            className="inline-block whitespace-pre"
-            style={{
-              animation: leaving
-                ? `typo-char-out ${BOUNCE_SPRING_MS}ms ${BOUNCE_SPRING} ${i * 20 * speed}ms both`
-                : `typo-char-in ${BOUNCE_SPRING_MS}ms ${BOUNCE_SPRING} ${lead + i * 40 * speed}ms backwards`,
-            }}
-          >
-            {char}
-          </span>
-        ))}
+        {text === null
+          ? word
+          : text.split("").map((char, i) => (
+              <span
+                key={i}
+                className="inline-block whitespace-pre"
+                style={{
+                  animation: leaving
+                    ? `typo-char-out ${BOUNCE_SPRING_MS}ms ${BOUNCE_SPRING} ${i * 20 * speed}ms both`
+                    : `typo-char-in ${BOUNCE_SPRING_MS}ms ${BOUNCE_SPRING} ${lead + i * 40 * speed}ms backwards`,
+                }}
+              >
+                {char}
+              </span>
+            ))}
       </span>
     </WordSlot>
   );
 }
+
+/** Coloured by `--typo-caret` when set, otherwise the text colour. */
+const Caret = () => (
+  <span
+    className="animate-pulse font-mono font-light ml-px"
+    style={{ color: "var(--typo-caret, currentColor)" }}
+  >
+    |
+  </span>
+);
 
 /** Types each word, holds it, deletes it, and moves on, behind a blinking caret. */
 function TypewriterWords({
@@ -270,17 +347,17 @@ function TypewriterWords({
   hold,
   speed,
   delay,
-}: {
-  words: string[];
-  hold: number;
-  speed: number;
-  delay: number;
-}) {
+  position,
+  align,
+}: Omit<RotatorProps, "interval" | "index"> & { hold: number }) {
   const [started, setStarted] = useState(delay <= 0);
   const [index, setIndex] = useState(0);
   const [count, setCount] = useState(0);
   const [deleting, setDeleting] = useState(false);
   const word = words[index % words.length];
+  const text = asString(word);
+  // A node that is not text types as a single stroke.
+  const length = text === null ? 1 : text.length;
 
   useEffect(() => {
     if (!started) {
@@ -292,9 +369,9 @@ function TypewriterWords({
 
     let wait: number;
     let next: () => void;
-    if (!deleting && count < word.length) {
+    if (!deleting && count < length) {
       wait = whole ? 0 : 100 * speed;
-      next = () => setCount(whole ? word.length : count + 1);
+      next = () => setCount(whole ? length : count + 1);
     } else if (!deleting) {
       wait = hold;
       next = () => setDeleting(true);
@@ -311,32 +388,49 @@ function TypewriterWords({
     }
     const t = setTimeout(next, wait);
     return () => clearTimeout(t);
-  }, [started, delay, count, deleting, word, words.length, hold, speed]);
+  }, [started, delay, count, deleting, length, words.length, hold, speed]);
 
+  const typed =
+    text === null ? (
+      count > 0 ? word : null
+    ) : (
+      <span className="whitespace-pre">{text.slice(0, count)}</span>
+    );
+
+  // Fluid is the typed text's own width, so a centred line re-centres a
+  // letter at a time.
+  if (position === "fluid") {
+    return (
+      <span className="inline-flex items-baseline">
+        {typed}
+        <Caret />
+      </span>
+    );
+  }
   return (
-    <span className="inline-flex items-baseline whitespace-pre mr-[0.2em]">
-      {word.slice(0, count)}
-      <span className="animate-pulse font-mono font-light ml-px">|</span>
+    <span className={cn("relative inline-grid", align === "start" && "text-start")}>
+      {words.map((w, i) => (
+        <span key={i} className="invisible col-start-1 row-start-1">
+          {w}
+          <Caret />
+        </span>
+      ))}
+      <span className="col-start-1 row-start-1">
+        {typed}
+        <Caret />
+      </span>
     </span>
   );
 }
 
 /** The word on screen slides up and out, and only then does the next one slide up in. */
-function WordFlipWords({
-  words,
-  interval,
-  speed,
-}: {
-  words: string[];
-  interval: number;
-  speed: number;
-}) {
-  const word = words[useWordIndex(words.length, interval)];
-  const [shown, setShown] = useState(word);
+function WordFlipWords({ words, interval, index, speed, position, align }: RotatorProps) {
+  const active = useActiveIndex(words.length, interval, index);
+  const [shown, setShown] = useState(active);
   const [swapped, setSwapped] = useState(false);
-  const latest = useRef(word);
-  latest.current = word;
-  const leaving = shown !== word;
+  const latest = useRef(active);
+  latest.current = active;
+  const leaving = shown !== active;
   const duration = 0.45 * speed;
   const swapIn = () => {
     setShown(latest.current);
@@ -351,13 +445,13 @@ function WordFlipWords({
   }, [leaving, duration]);
 
   return (
-    <WordSlot words={words} clip>
+    <WordSlot words={words} position={position} align={align} clip>
       <span
         key={shown}
         onAnimationEnd={(e) => {
           if (leaving && e.target === e.currentTarget) swapIn();
         }}
-        className="inline-block whitespace-pre"
+        className="inline-block"
         style={
           leaving
             ? { animation: `typo-flip-out ${duration}s ${FLIP_EASE} forwards` }
@@ -366,81 +460,71 @@ function WordFlipWords({
               : undefined
         }
       >
-        {shown}
+        {words[shown] ?? words[0]}
       </span>
     </WordSlot>
   );
 }
 
 /**
- * Every word sits in the same cell; the incoming one sharpens out of a blur
- * as the outgoing one lifts away into one.
+ * The incoming word sharpens out of a blur as the outgoing one lifts away
+ * into one.
  */
-function BlurSwapWords({
-  words,
-  interval,
-  speed,
-}: {
-  words: string[];
-  interval: number;
-  speed: number;
-}) {
-  const [{ active, leaving }, setState] = useState<{
-    active: number;
-    leaving: number | null;
-  }>({ active: 0, leaving: null });
+function BlurSwapWords({ words, interval, index, speed, position, align }: RotatorProps) {
+  const active = useActiveIndex(words.length, interval, index);
+  const [track, setTrack] = useState<{ active: number; leaving: number | null }>({
+    active,
+    leaving: null,
+  });
+  if (track.active !== active) setTrack({ active, leaving: track.active });
+  const leaving = track.leaving;
   const duration = 700 * speed;
-
-  useEffect(() => {
-    if (words.length < 2) return;
-    const id = setInterval(
-      () =>
-        setState((s) => ({
-          active: (s.active + 1) % words.length,
-          leaving: s.active,
-        })),
-      interval,
-    );
-    return () => clearInterval(id);
-  }, [words.length, interval]);
 
   // The word that just left keeps its "leaving" pose until it has faded.
   useEffect(() => {
     if (leaving === null) return;
-    const t = window.setTimeout(
-      () => setState((s) => ({ ...s, leaving: null })),
-      duration,
-    );
+    const t = window.setTimeout(() => setTrack((s) => ({ ...s, leaving: null })), duration);
     return () => window.clearTimeout(t);
-  }, [leaving, active, duration]);
+  }, [leaving, duration]);
 
   const transition = (lag: number) =>
     ["opacity", "transform", "filter"]
       .map((p) => `${p} ${duration}ms ${SWAP_EASE} ${lag}ms`)
       .join(", ");
+  const fluid = position === "fluid";
 
-  return (
-    <span className="inline-grid text-left mr-[0.2em]">
-      {words.map((w, i) => {
-        const state =
-          i === active % words.length ? "active" : i === leaving ? "leaving" : "idle";
-        return (
-          <span
-            key={i}
-            className="col-start-1 row-start-1 whitespace-pre"
-            style={
-              state === "active"
-                ? { opacity: 1, transform: "none", filter: "blur(0)", transition: transition(150) }
-                : state === "leaving"
-                  ? { opacity: 0, transform: "translateY(-12px)", filter: "blur(6px)", transition: transition(0) }
-                  : { opacity: 0, transform: "translateY(16px)", filter: "blur(8px)", transition: "none" }
-            }
-          >
-            {w}
-          </span>
-        );
-      })}
-    </span>
+  const cells = words.map((w, i) => {
+    const state = i === active ? "active" : i === leaving ? "leaving" : "idle";
+    return (
+      <span
+        key={i}
+        // Fixed stacks every word in one cell, so the widest sizes it; fluid
+        // keeps only the word on show in the flow.
+        className={
+          fluid
+            ? state === "active"
+              ? "inline-block"
+              : "absolute left-0 top-0"
+            : "col-start-1 row-start-1"
+        }
+        style={
+          state === "active"
+            ? { opacity: 1, transform: "none", filter: "blur(0)", transition: transition(150) }
+            : state === "leaving"
+              ? { opacity: 0, transform: "translateY(-12px)", filter: "blur(6px)", transition: transition(0) }
+              : { opacity: 0, transform: "translateY(16px)", filter: "blur(8px)", transition: "none" }
+        }
+      >
+        {w}
+      </span>
+    );
+  });
+
+  const alignClass = align === "start" ? "text-start" : undefined;
+  return fluid ? (
+    <FluidWidth className={alignClass}>{cells}</FluidWidth>
+  ) : (
+    <span className={cn("inline-grid", alignClass)}>{cells}</span>
   );
 }
 
@@ -451,7 +535,16 @@ export interface AnimatedTypographyProps
   extends React.HTMLAttributes<HTMLElement> {
   as?: TypographyTag;
   variant?: TypographyVariant;
-  text: string;
+  /**
+   * The text to animate, and what screen readers announce. The rotating
+   * variants announce it in place of the word on show.
+   */
+  text?: string;
+  /**
+   * Rich content for the variants that move the text whole (blur-rise,
+   * color-wipe), in place of `text` — a heading with an `<em>` in it, say.
+   */
+  children?: React.ReactNode;
   titlePrefix?: string;
   titleSuffix?: string;
   color?: TypographyColor;
@@ -462,14 +555,40 @@ export interface AnimatedTypographyProps
   /**
    * The words the rotating variants (letter-bounce, typewriter, word-flip,
    * blur-swap) cycle through, between `titlePrefix` and `titleSuffix`.
-   * Defaults to `[text]`; `text` stays what screen readers announce.
+   * Plain strings animate letter by letter; other nodes move whole.
+   * Defaults to `[text]`.
    */
-  words?: string[];
+  words?: React.ReactNode[];
   /**
    * Milliseconds each word stays before the next comes in (2400). The
    * typewriter holds a finished word this long instead (1800).
    */
   interval?: number;
+  /**
+   * Whether the text before the rotating words holds still. `fixed` reserves
+   * the longest word's width; `fluid` follows the word on show, so a centred
+   * line re-centres as it changes. Defaults to `fluid` for the typewriter and
+   * `fixed` for the others.
+   */
+  prefixPosition?: PrefixPosition;
+  /**
+   * Shows `words[index]` instead of stepping on a timer, for rotating words
+   * kept in step with something else, like a carousel's slides. Not the
+   * typewriter, which keeps its own time.
+   */
+  index?: number;
+  /**
+   * `false` renders the text at rest, without animating; the animation
+   * starts when it turns `true`. For reveals that wait on something, like
+   * scrolling into view.
+   */
+  play?: boolean;
+  /**
+   * Leaves the typography to `className` and the parent: no weight, size,
+   * colour, alignment or padding of its own unless those props are given.
+   * For composing it into a section's heading.
+   */
+  bare?: boolean;
 }
 
 // ==========================================
@@ -483,17 +602,23 @@ export const AnimatedTypographyBlock = forwardRef<
     {
       as: Tag = "p",
       variant = "matrix-scramble",
-      text,
+      text: textProp,
+      children,
       titlePrefix,
       titleSuffix,
-      color = "primary",
-      align = "left",
+      color: colorProp,
+      align: alignProp,
       size,
       delay = 0,
       speed = 1,
       words: wordList,
       interval,
+      prefixPosition,
+      index,
+      play = true,
+      bare = false,
       className,
+      style,
       ...props
     },
     ref,
@@ -505,9 +630,11 @@ export const AnimatedTypographyBlock = forwardRef<
       React.HTMLAttributes<HTMLElement> & React.RefAttributes<HTMLElement>
     >;
 
-    const { className: colorClass, style: colorStyle } = getThemeStyles(
-      color as string,
-    );
+    const color = colorProp ?? (bare ? undefined : "primary");
+    const align = alignProp ?? (bare ? undefined : "left");
+    const { className: colorClass, style: colorStyle } = color
+      ? getThemeStyles(color as string)
+      : { className: undefined, style: {} };
 
     // Responsive Sizing (small on mobile so text fits on 1 line)
     let sizeClass = "";
@@ -519,7 +646,7 @@ export const AnimatedTypographyBlock = forwardRef<
       } else {
         customSizeStyle = { fontSize: `clamp(10px, 3.2vw, ${size})` };
       }
-    } else {
+    } else if (!bare) {
       const defaultSizeMap: Record<TypographyTag, string> = {
         h1: "text-base sm:text-2xl md:text-4xl lg:text-5xl",
         h2: "text-sm sm:text-xl md:text-3xl lg:text-4xl",
@@ -534,11 +661,33 @@ export const AnimatedTypographyBlock = forwardRef<
       sizeClass = defaultSizeMap[Tag];
     }
 
+    const text = textProp ?? "";
     const words = text.split(" ");
-    const rotating = wordList?.length ? wordList : [text];
+    const rotating: React.ReactNode[] = wordList?.length ? wordList : [textProp ?? children];
+    const isRotating =
+      variant === "letter-bounce" ||
+      variant === "typewriter" ||
+      variant === "word-flip" ||
+      variant === "blur-swap";
+    const rotator = {
+      words: rotating,
+      interval: interval ?? WORD_INTERVAL_MS,
+      index,
+      speed,
+      delay,
+      position: prefixPosition ?? (variant === "typewriter" ? "fluid" : "fixed"),
+      // Words inside a line start where the line leaves off; words that are
+      // the whole line align like it.
+      align: titlePrefix || titleSuffix || Tag === "span" ? "start" : "inherit",
+    } satisfies React.ComponentProps<typeof LetterBounceWords>;
+    // What the text is at rest, and what screen readers hear.
+    const still = isRotating
+      ? (textProp ?? rotating[index ?? 0])
+      : (children ?? text);
 
     // Render logic based on variant
     const renderContent = () => {
+      if (!play) return still;
       switch (variant) {
         case "matrix-scramble":
           return <MatrixScrambleText text={text} speed={speed} delay={delay} />;
@@ -707,52 +856,28 @@ export const AnimatedTypographyBlock = forwardRef<
           );
 
         case "letter-bounce":
-          return (
-            <LetterBounceWords
-              words={rotating}
-              interval={interval ?? WORD_INTERVAL_MS}
-              speed={speed}
-              delay={delay}
-            />
-          );
+          return <LetterBounceWords {...rotator} />;
 
-        case "typewriter":
-          return (
-            <TypewriterWords
-              words={rotating}
-              hold={interval ?? TYPEWRITER_HOLD_MS}
-              speed={speed}
-              delay={delay}
-            />
-          );
+        case "typewriter": {
+          const { interval: _interval, index: _index, ...rest } = rotator;
+          return <TypewriterWords {...rest} hold={interval ?? TYPEWRITER_HOLD_MS} />;
+        }
 
         case "word-flip":
-          return (
-            <WordFlipWords
-              words={rotating}
-              interval={interval ?? WORD_INTERVAL_MS}
-              speed={speed}
-            />
-          );
+          return <WordFlipWords {...rotator} />;
 
         case "blur-swap":
-          return (
-            <BlurSwapWords
-              words={rotating}
-              interval={interval ?? WORD_INTERVAL_MS}
-              speed={speed}
-            />
-          );
+          return <BlurSwapWords {...rotator} />;
 
         case "blur-rise":
           return (
             <span
-              className="inline-block whitespace-nowrap"
+              className="inline-block"
               style={{
                 animation: `typo-blur-rise ${0.8 * speed}s ${RISE_EASE} ${delay}ms backwards`,
               }}
             >
-              {text}
+              {children ?? text}
             </span>
           );
 
@@ -761,14 +886,14 @@ export const AnimatedTypographyBlock = forwardRef<
           // uncovered from the left as the foreground one is cut away, so the
           // two never stack and only the coloured copy is left at the end.
           return (
-            <span className="relative inline-block whitespace-nowrap">
+            <span className="relative inline-block">
               <span
                 className="inline-block"
                 style={{
                   animation: `typo-wipe-in ${1.4 * speed}s ease-in-out ${delay}ms both`,
                 }}
               >
-                {text}
+                {children ?? text}
               </span>
               <span
                 className="absolute inset-0 text-foreground"
@@ -776,13 +901,13 @@ export const AnimatedTypographyBlock = forwardRef<
                   animation: `typo-wipe-out ${1.4 * speed}s ease-in-out ${delay}ms both`,
                 }}
               >
-                {text}
+                {children ?? text}
               </span>
             </span>
           );
 
         default:
-          return text;
+          return still;
       }
     };
 
@@ -862,21 +987,28 @@ export const AnimatedTypographyBlock = forwardRef<
           ref={ref}
           data-typo-root=""
           className={cn(
-            baseStyles[Tag],
-            alignStyles[align],
+            !bare && baseStyles[Tag],
+            align && alignStyles[align],
             sizeClass,
             colorClass,
             className,
           )}
-          style={{ ...colorStyle, ...customSizeStyle }}
+          style={{ ...colorStyle, ...customSizeStyle, ...style }}
           {...props}
         >
           <span className="sr-only">
             {titlePrefix}
-            {text}
+            {still}
             {titleSuffix}
           </span>
-          <span aria-hidden="true" className="inline-block w-full max-w-full whitespace-nowrap overflow-visible py-2">
+          <span
+            aria-hidden="true"
+            className={
+              bare
+                ? undefined
+                : "inline-block w-full max-w-full whitespace-nowrap overflow-visible py-2"
+            }
+          >
             {titlePrefix}
             {renderContent()}
             {titleSuffix}

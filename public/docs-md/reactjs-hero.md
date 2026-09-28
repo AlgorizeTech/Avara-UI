@@ -754,6 +754,14 @@ export default function Page() {
   );
 }`;
 
+export const usageTypingFixed = `import { HeroBlock } from "@/components/custom/blocks/HeroBlock";
+
+export default function Page() {
+  return (
+    
+  );
+}`;
+
 export const usageSlider = `import { HeroBlock } from "@/components/custom/blocks/HeroBlock";
 
 export default function Page() {
@@ -823,6 +831,14 @@ npx shadcn@latest add @algorize-ui/hero
           ["Interfaces", "Components", …]
 
           The rotating words between titlePrefix and titleSuffix.
+
+          prefixPosition
+
+          "fixed" | "fluid"
+
+          "fluid" for typing, "fixed" for bounce
+
+          Whether the title before the rotating word holds still ("fixed", keeping the longest word's width) or re-centres as the word types, deletes or swaps ("fluid"). The word itself is an AnimatedTypographyBlock.
 
           petImage · secondaryPetImage
 

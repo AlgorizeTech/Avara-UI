@@ -3,6 +3,7 @@
 import React, { useCallback, useEffect, useLayoutEffect, useRef, useState } from "react";
 import { ArrowUpRight } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { AnimatedTypographyBlock } from "./AnimatedTypographyBlock";
 import { AvatarStack, type StackAvatar } from "./AvatarStackBlock";
 
 // ==========================================
@@ -278,7 +279,7 @@ function HeroCarouselRoot({
     }
   }, [active, interval]);
 
-  // ---- The headline that just left keeps its "leaving" state until its
+  // ---- The slide that just left keeps its "leaving" state until its
   // transition has run, then goes back to idle.
   useEffect(() => {
     if (leaving === null) return;
@@ -435,25 +436,15 @@ function HeroCarouselRoot({
             </span>
           )}
           <div data-hc-lead="" className="mx-auto mt-5 grid max-w-[46rem] sm:mt-6">
-            {slides.map((s, i) => {
-              const state = i === active ? "active" : i === leaving ? "leaving" : "idle";
-              return (
-                <h1
-                  key={s.image + i}
-                  data-state={state}
-                  aria-hidden={i !== active}
-                  className={cn(
-                    "col-start-1 row-start-1 text-balance font-sans text-[2.35rem] font-light leading-[1.04] tracking-[-0.025em] [text-shadow:0_2px_24px_rgba(0,0,0,0.35)] sm:text-[3.3rem] lg:text-[4.2rem] xl:text-[4.6rem]",
-                    "transition-[opacity,transform,filter] duration-700 ease-[cubic-bezier(0.22,1,0.36,1)] motion-reduce:transition-none",
-                    state === "active" && "opacity-100 blur-0 delay-150",
-                    state === "leaving" && "-translate-y-3 opacity-0 blur-[6px]",
-                    state === "idle" && "translate-y-4 opacity-0 blur-[8px] transition-none",
-                  )}
-                >
-                  {s.heading ?? heading}
-                </h1>
-              );
-            })}
+            {/* The headline follows the front slide, blurring across. */}
+            <AnimatedTypographyBlock
+              as="h1"
+              bare
+              variant="blur-swap"
+              index={active}
+              words={slides.map((s) => s.heading ?? heading)}
+              className="text-balance font-sans text-[2.35rem] font-light leading-[1.04] tracking-[-0.025em] [text-shadow:0_2px_24px_rgba(0,0,0,0.35)] sm:text-[3.3rem] lg:text-[4.2rem] xl:text-[4.6rem]"
+            />
           </div>
         </div>
 

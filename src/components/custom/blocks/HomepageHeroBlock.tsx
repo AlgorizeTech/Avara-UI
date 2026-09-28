@@ -1,15 +1,9 @@
 "use client";
 
-import React, { forwardRef, useEffect, useRef, useState } from "react";
+import React, { forwardRef, useState } from "react";
 import { cn } from "@/lib/utils";
+import { AnimatedTypographyBlock, type PrefixPosition } from "./AnimatedTypographyBlock";
 import { ArrowRight, Check, Copy, Sparkles, Terminal } from "lucide-react";
-
-// The word flip, as keyframes: out upwards, in from below, 0.45s each.
-const FLIP_EASE = "cubic-bezier(0.16, 1, 0.3, 1)";
-const FLIP_CSS = `
-@keyframes homepage-hero-word-out { to { transform: translateY(-100%); opacity: 0; } }
-@keyframes homepage-hero-word-in { from { transform: translateY(100%); opacity: 0; } }
-`;
 
 const GitHubIcon = (props: React.SVGProps<SVGSVGElement>) => (
   <svg
@@ -32,6 +26,11 @@ export interface HomepageHeroBlockProps extends React.HTMLAttributes<HTMLElement
   titlePrefix?: string;
   typingWords?: string[];
   titleSuffix?: string;
+  /**
+   * Whether the title text before the flipping word holds still ("fixed",
+   * the default) or re-centres as the word changes width ("fluid").
+   */
+  prefixPosition?: PrefixPosition;
   subtitle?: string;
   cliCommand?: string;
   linkComponent?: React.ElementType;
@@ -56,6 +55,7 @@ export const HomepageHeroBlock = forwardRef<HTMLElement, HomepageHeroBlockProps>
         "Dashboards",
       ],
       titleSuffix = "",
+      prefixPosition,
       subtitle = "A meticulous library of React components & interactive blocks, engineered for seamless performance with Tailwind CSS, TypeScript, GSAP, and Motion.",
       cliCommand = "npx shadcn@latest add @algorize-ui/button",
       primaryActionLabel = "Browse Components",
@@ -68,17 +68,6 @@ export const HomepageHeroBlock = forwardRef<HTMLElement, HomepageHeroBlockProps>
     ref,
   ) => {
     const [copied, setCopied] = useState(false);
-    const [currentWordIndex, setCurrentWordIndex] = useState(0);
-
-    useEffect(() => {
-      if (!typingWords || typingWords.length === 0) return;
-      const interval = setInterval(() => {
-        setCurrentWordIndex((prev) => (prev + 1) % typingWords.length);
-      }, 2400);
-
-      return () => clearInterval(interval);
-    }, [typingWords]);
-
     const handleCopy = () => {
       if (typeof window !== "undefined" && navigator.clipboard) {
         navigator.clipboard.writeText(cliCommand);
@@ -86,27 +75,6 @@ export const HomepageHeroBlock = forwardRef<HTMLElement, HomepageHeroBlockProps>
         setTimeout(() => setCopied(false), 2000);
       }
     };
-
-    const currentWord = typingWords?.[currentWordIndex] || "";
-
-    // The word flip: the word on screen slides up and out, and only then does
-    // the next one slide up in. The first word is simply there.
-    const [shownWord, setShownWord] = useState(currentWord);
-    const [swapped, setSwapped] = useState(false);
-    const latestWord = useRef(currentWord);
-    latestWord.current = currentWord;
-    const leaving = shownWord !== currentWord;
-    const swapIn = () => {
-      setShownWord(latestWord.current);
-      setSwapped(true);
-    };
-
-    // In case the leaving word's animationend never arrives.
-    useEffect(() => {
-      if (!leaving) return;
-      const t = window.setTimeout(swapIn, 600);
-      return () => window.clearTimeout(t);
-    }, [leaving]);
 
     return (
       <section
@@ -117,7 +85,6 @@ export const HomepageHeroBlock = forwardRef<HTMLElement, HomepageHeroBlockProps>
         )}
         {...props}
       >
-        <style>{FLIP_CSS}</style>
         {/* Radial Background Glow */}
         <div
           className="absolute inset-0 pointer-events-none"
@@ -151,24 +118,14 @@ export const HomepageHeroBlock = forwardRef<HTMLElement, HomepageHeroBlockProps>
                 <span className="text-primary">Interactive</span>
               </span>
 
-              <span className="relative inline-flex items-center justify-start overflow-hidden py-1 h-[1.3em] shrink-0 min-w-[150px] xs:min-w-[170px] sm:min-w-[210px] md:min-w-[250px] lg:min-w-[300px]">
-                <span
-                  key={shownWord}
-                  onAnimationEnd={(e) => {
-                    if (leaving && e.target === e.currentTarget) swapIn();
-                  }}
-                  className="text-foreground font-medium inline-block whitespace-nowrap text-left"
-                  style={
-                    leaving
-                      ? { animation: `homepage-hero-word-out 0.45s ${FLIP_EASE} forwards` }
-                      : swapped
-                        ? { animation: `homepage-hero-word-in 0.45s ${FLIP_EASE} backwards` }
-                        : undefined
-                  }
-                >
-                  {shownWord}
-                </span>
-              </span>
+              <AnimatedTypographyBlock
+                as="span"
+                bare
+                variant="word-flip"
+                words={typingWords}
+                prefixPosition={prefixPosition}
+                className="shrink-0 text-foreground font-medium"
+              />
 
               {titleSuffix && <span className="shrink-0">{titleSuffix}</span>}
             </h1>

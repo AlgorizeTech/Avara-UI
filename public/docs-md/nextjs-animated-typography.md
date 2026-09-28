@@ -103,6 +103,16 @@ export default function TypewriterShowcase() {
   );
 }`;
 
+export const usageTypewriterFixed = `import { AnimatedTypographyBlock } from "@/components/custom/blocks/AnimatedTypographyBlock";
+
+const words = ["Interfaces", "Components", "Experiences"];
+
+export default function TypewriterFixedShowcase() {
+  return (
+
+  );
+}`;
+
 export const usageWordFlip = `import { AnimatedTypographyBlock } from "@/components/custom/blocks/AnimatedTypographyBlock";
 
 const words = ["Interfaces", "Components", "Experiences"];
@@ -167,10 +177,10 @@ Discover the key capabilities that make this component an excellent choice for m
           text
 
           string
-
-          Required
-
-          The text content to render. Staggered variants split this string to animate word-by-word or character-by-character.
+        
+        —
+        
+          The text content to render, and what screen readers announce. Staggered variants split this string to animate word-by-word or character-by-character.
 
           AnimatedTypographyBlock
 
@@ -201,11 +211,11 @@ Discover the key capabilities that make this component an excellent choice for m
 
           words
 
-          string[]
+          ReactNode[]
 
           [text]
 
-          The words the rotating variants cycle through. text is still what screen readers announce, so set it to the first word.
+          The words the rotating variants cycle through. Plain strings animate letter by letter; other nodes move whole. text is still what screen readers announce, so set it to the first word.
 
           AnimatedTypographyBlock
 
@@ -216,6 +226,56 @@ Discover the key capabilities that make this component an excellent choice for m
           2400
 
           Milliseconds each word stays on the rotating variants. The typewriter holds a finished word this long instead, 1800 by default.
+
+          AnimatedTypographyBlock
+
+          prefixPosition
+
+          "fixed" | "fluid"
+
+          "fluid" for typewriter, "fixed" otherwise
+
+          Whether the text before the rotating words holds still. fixed reserves the longest word's width; fluid follows the word on show, so a centred line re-centres as the word types, deletes or swaps.
+
+          AnimatedTypographyBlock
+
+          index
+
+          number
+
+          —
+
+          Shows words[index] instead of stepping on a timer — for words kept in step with something else, like a carousel's slides. The typewriter keeps its own time.
+
+          AnimatedTypographyBlock
+
+          children
+
+          ReactNode
+
+          —
+
+          Rich content for blur-rise and color-wipe in place of text, such as a heading with an &lt;em&gt; in it.
+
+          AnimatedTypographyBlock
+
+          play
+
+          boolean
+
+          true
+
+          false renders the text at rest; the animation starts when it turns true. For reveals that wait on scrolling into view.
+
+          AnimatedTypographyBlock
+
+          bare
+
+          boolean
+
+          false
+
+          Drops the block's own weight, size, colour, alignment and padding, so className and the parent set the type — for composing it into a section heading.
 
           AnimatedTypographyBlock
 
