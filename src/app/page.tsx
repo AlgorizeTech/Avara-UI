@@ -10,23 +10,23 @@ import {
 } from "@/components/custom/blocks/FolderBlock";
 import { DesignComponentsFolder } from "@/components/custom/blocks/DesignComponentsFolder";
 import { Dock, DockItem } from "@/components/custom/blocks/DockBlock";
+import { Wallet } from "@/components/custom/blocks/WalletBlock";
 import {
-	ChatAvatar,
-	ChatBubble,
-	ChatMessage,
-	ChatTimestamp,
-	ChatTypingIndicator,
-} from "@/components/custom/blocks/ChatBubbleBlock";
+	CardStack,
+	type CardStackItem,
+} from "@/components/custom/blocks/CardStackBlock";
 import {
 	ThreeDCarousel,
 	CarouselItem,
 } from "@/components/custom/blocks/ThreeDCarouselBlock";
 import { CommandSearchBlock } from "@/components/custom/blocks/UtilityBlocks";
+import { AppleSelect } from "@/components/custom/blocks/AppleSelectBlock";
+import { Avatar } from "@/components/custom/blocks/AvatarStackBlock";
 import { ComponentWall } from "@/components/custom/blocks/ComponentWallBlock";
 import { MarqueeBlock } from "@/components/custom/blocks/MarqueeBlock";
 import { AnimatedFAQBlock } from "@/components/custom/blocks/AnimatedFAQBlock";
 import { GitHubIcon } from "@/components/custom/blocks/Icons";
-import { WALL_ITEMS, WALL_STACK } from "@/constants/component-wall";
+import { WALL_ITEMS, WallStack } from "@/constants/component-wall";
 import { cn } from "@/lib/utils";
 import {
 	ArrowRight,
@@ -55,12 +55,20 @@ import {
 	Send,
 	GitPullRequest,
 	GripVertical,
-	Image as ImageIcon,
-	SmilePlus,
+	CreditCard,
+	GalleryVerticalEnd,
 } from "lucide-react";
 import { motion, useInView } from "motion/react";
+// The framer demos (CardStack) read their config from framer-motion's context.
+import { MotionConfig } from "framer-motion";
 import Link from "next/link";
-import { memo, useRef, useState } from "react";
+import {
+	memo,
+	useLayoutEffect,
+	useRef,
+	useState,
+	type ReactNode,
+} from "react";
 import { links } from "@/config/site";
 
 /* ═══════════════════════════════════════════════
@@ -199,6 +207,69 @@ const sampleCarouselItems: CarouselItem[] = [
 		image:
 			"https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_800,c_limit/v1790146211/photo-1441974231531-c6227db76b6e-1790146212212.jpg",
 		description: "Golden foliage covering quiet forest trails in peak autumn.",
+	},
+];
+
+/* Layout widths for the showcase demos that size themselves by viewport
+   breakpoints. Below each breakpoint the demo is already in its compact
+   mobile form, so it lays out at the column width instead of being shrunk
+   a second time. */
+const CAROUSEL_WIDTH = (vw: number) => (vw < 640 ? 460 : 720);
+const DESIGN_FOLDER_WIDTH = (vw: number) =>
+	vw < 640 ? 420 : vw < 768 ? undefined : vw < 1024 ? 760 : 840;
+const DOCK_WIDTH = (vw: number) => (vw < 640 ? 300 : 380);
+
+const STACK_ICON =
+	"size-11 rounded-2xl flex items-center justify-center text-white shadow-xs";
+
+const sampleStackItems: CardStackItem[] = [
+	{
+		id: "ai-chat",
+		title: "AI Chat",
+		description: "Streaming replies, model picker and a composer that grows.",
+		category: "Blocks",
+		date: "New",
+		icon: (
+			<div className={cn(STACK_ICON, "bg-violet-600")}>
+				<Bot className="size-5" />
+			</div>
+		),
+	},
+	{
+		id: "analytics",
+		title: "Analytics",
+		description: "Animated bar, line and area charts on theme tokens.",
+		category: "Data",
+		date: "2d ago",
+		icon: (
+			<div className={cn(STACK_ICON, "bg-emerald-600")}>
+				<BarChart3 className="size-5" />
+			</div>
+		),
+	},
+	{
+		id: "terminal",
+		title: "Terminal",
+		description: "Typed command output with copy and a success trail.",
+		category: "Developer",
+		date: "4d ago",
+		icon: (
+			<div className={cn(STACK_ICON, "bg-zinc-800")}>
+				<Terminal className="size-5" />
+			</div>
+		),
+	},
+	{
+		id: "theming",
+		title: "Theming",
+		description: "One preset re-skins every block, light and dark.",
+		category: "Design",
+		date: "1w ago",
+		icon: (
+			<div className={cn(STACK_ICON, "bg-amber-600")}>
+				<Paintbrush className="size-5" />
+			</div>
+		),
 	},
 ];
 
@@ -545,7 +616,7 @@ const CARD_SURFACE = "border border-foreground/[0.06] bg-card";
 const EYEBROW_PILL =
 	"inline-flex items-center gap-1.5 rounded-full bg-foreground/[0.04] backdrop-blur px-3 py-1 text-[12px] text-foreground/90";
 const CHIP =
-	"text-[9px] font-bold uppercase tracking-wider leading-none px-1.5 py-0.5 rounded-md bg-primary/15 text-primary border border-primary/30";
+	"shrink-0 whitespace-nowrap text-[9px] font-bold uppercase tracking-wider leading-none px-1.5 py-0.5 rounded-md bg-primary/15 text-primary border border-primary/30";
 const BTN_CLAY =
 	"inline-flex items-center justify-center gap-2 rounded-full bg-foreground text-background text-[14px] font-semibold tracking-[0.3px] px-7 py-3 hover:bg-foreground/90 transition-colors";
 const BTN_SOFT =
@@ -572,9 +643,12 @@ const HERO_TYPE = [
 	"[&_h1~div>a:first-child]:h-11 [&_h1~div>a:first-child]:rounded-full [&_h1~div>a:first-child]:bg-foreground [&_h1~div>a:first-child]:px-7 [&_h1~div>a:first-child]:text-[14px] [&_h1~div>a:first-child]:font-semibold [&_h1~div>a:first-child]:tracking-[0.3px] [&_h1~div>a:first-child]:text-background [&_h1~div>a:first-child]:hover:bg-foreground/90",
 	// Secondary action: an ink-tint pill
 	"[&_h1~div>a:nth-child(2)]:h-11 [&_h1~div>a:nth-child(2)]:rounded-full [&_h1~div>a:nth-child(2)]:border-transparent [&_h1~div>a:nth-child(2)]:bg-foreground/[0.04] [&_h1~div>a:nth-child(2)]:px-7 [&_h1~div>a:nth-child(2)]:text-[14px] [&_h1~div>a:nth-child(2)]:font-medium [&_h1~div>a:nth-child(2)]:text-foreground [&_h1~div>a:nth-child(2)]:hover:bg-foreground/10",
-	// "Built with" label over the tool strip
-	"[&_h1~div>span:first-child]:text-[11px] [&_h1~div>span:first-child]:uppercase [&_h1~div>span:first-child]:tracking-[0.12em] [&_h1~div>span:first-child]:text-foreground/40",
 ].join(" ");
+
+/* The "Built with" label over the tool strip, in the section eyebrow's voice. */
+const STACK_LABEL = (
+	<span className="text-[11px] uppercase tracking-[0.12em] text-foreground/40">Built with</span>
+);
 
 function HeroSection() {
 	return (
@@ -592,12 +666,36 @@ function HeroSection() {
 				heading="Build interactive {word}."
 				headingWords={["interfaces", "components", "experiences", "animations", "dashboards"]}
 				accent="interactive"
-				description="A meticulous library of React components and interactive blocks, engineered for seamless performance with Tailwind CSS, TypeScript, GSAP and Framer Motion — delivered through the shadcn CLI."
+				description={
+					<>
+						A meticulous library of React components and interactive blocks, engineered for seamless
+						performance with Tailwind CSS, TypeScript, GSAP and Motion — delivered through the{" "}
+						{/* The one phrase a reader should leave with: shadcn's own face,
+						    then the words picked out as an iOS selection. Kept on one line
+						    so the avatar, the handles and the full stop never wrap apart. */}
+						<span className="whitespace-nowrap">
+							<Avatar
+								src="/assets/tech-icons/shadcn-avatar.jpg"
+								size="md"
+								ringClassName="ring-background"
+								className="mr-2 align-middle shadow-sm"
+							/>
+							<AppleSelect
+								as="span"
+								text="shadcn CLI"
+								selection={[0, 10]}
+								animate
+								className="font-medium text-foreground"
+							/>
+							.
+						</span>
+					</>
+				}
 				install={{ command: "npx shadcn@latest add @algorize-ui/{item}" }}
 				primaryAction={{ label: "Browse components", href: "/docs/nextjs/all-components" }}
 				secondaryAction={{ label: "Star on GitHub", href: links.github, icon: <GitHubIcon size={16} /> }}
 				items={WALL_ITEMS}
-				stack={{ label: "Built with", groups: WALL_STACK }}
+				stack={<WallStack variant="compact" label={STACK_LABEL} />}
 				interval={4500}
 				linkComponent={Link}
 				className={HERO_TYPE}
@@ -609,6 +707,72 @@ function HeroSection() {
 /* ═══════════════════════════════════════════════
    SECTION 3: REAL COMPONENT SHOWCASE
    ═══════════════════════════════════════════════ */
+
+/** Shrinks a demo to the column and takes the scaled height, so it is never
+    cropped at its edges. With `width`, the demo lays out at that natural
+    width and scales down (never up) to fit; pass a function of the viewport
+    width for demos that size themselves by viewport breakpoints, returning
+    undefined where the demo already fits the column as it is. With `scale`,
+    it fills the column at a fixed smaller size: laid out at column width ÷
+    scale, drawn at scale. */
+function FitToWidth({
+	width,
+	scale: fixedScale,
+	children,
+}: {
+	width?: number | ((viewportWidth: number) => number | undefined);
+	scale?: number;
+	children: ReactNode;
+}) {
+	const outerRef = useRef<HTMLDivElement>(null);
+	const innerRef = useRef<HTMLDivElement>(null);
+	const [fit, setFit] = useState({ scale: fixedScale ?? 1, width: 0, height: 0 });
+
+	useLayoutEffect(() => {
+		const outer = outerRef.current;
+		const inner = innerRef.current;
+		if (!outer || !inner) return;
+		const measure = () => {
+			const columnWidth = outer.clientWidth;
+			const natural =
+				(typeof width === "function" ? width(window.innerWidth) : width) ?? columnWidth;
+			const scale = fixedScale ?? Math.min(1, columnWidth / natural);
+			const layoutWidth = fixedScale ? Math.floor(columnWidth / fixedScale) : natural;
+			// offsetHeight ignores the transform, so this is the natural height.
+			const height = Math.ceil(inner.offsetHeight * scale);
+			setFit((f) =>
+				f.scale === scale && f.width === layoutWidth && f.height === height
+					? f
+					: { scale, width: layoutWidth, height },
+			);
+		};
+		measure();
+		const observer = new ResizeObserver(measure);
+		observer.observe(outer);
+		observer.observe(inner);
+		return () => observer.disconnect();
+	}, [width, fixedScale]);
+
+	return (
+		<div ref={outerRef} className="relative w-full" style={{ height: fit.height }}>
+			<div
+				ref={innerRef}
+				className="absolute left-1/2 top-0 origin-top"
+				style={{
+					width: fit.width || undefined,
+					transform: `translateX(-50%) scale(${fit.scale})`,
+				}}>
+				{/* Pointer moves are in page pixels but a drag moves the element in
+				    its own, scaled ones: map the pointer into them so framer drags
+				    (the stack swipe) keep up with the pointer. */}
+				<MotionConfig
+					transformPagePoint={(p) => ({ x: p.x / fit.scale, y: p.y / fit.scale })}>
+					{children}
+				</MotionConfig>
+			</div>
+		</div>
+	);
+}
 
 function ComponentShowcase() {
 	const ref = useRef(null);
@@ -631,7 +795,7 @@ function ComponentShowcase() {
 							Real Motion &amp; Interactive Blocks
 						</h2>
 						<p className={SECTION_SUB}>
-							Featuring Chat Bubbles, Magnifying Dock, and 3D Motion Carousel.
+							Featuring Wallet, Card Stack, Magnifying Dock, and 3D Motion Carousel.
 						</p>
 					</div>
 					<Link
@@ -650,95 +814,48 @@ function ComponentShowcase() {
 						animate={isInView ? { opacity: 1, y: 0 } : {}}
 						transition={{ duration: 0.5, delay: 0.1 }}
 						className="flex flex-col gap-6">
-						<div className="showcase-card rounded-2xl border border-foreground/[0.06] bg-card p-4 overflow-hidden">
-							<div className="px-2 pb-3 border-b border-foreground/[0.06] flex items-center justify-between text-[14px] text-foreground/40 font-medium mb-3">
-								<span className="flex items-center gap-1.5 text-foreground font-semibold">
-									<MessageCircle className="size-3.5 text-primary" />
-									Chat Bubbles
+						<div className="showcase-card rounded-2xl border border-foreground/[0.06] bg-card p-5 overflow-hidden">
+							<div className="flex items-center justify-between gap-3 mb-4">
+								<span className="flex min-w-0 items-center gap-1.5 text-[14px] font-semibold text-foreground">
+									<CreditCard className="size-3.5 shrink-0 text-primary" />
+									<span className="truncate">Wallet</span>
 								</span>
 								<span className={CHIP}>
-									Compound
+									Hover &amp; Flip
 								</span>
 							</div>
-							<div className="rounded-xl border border-border bg-background overflow-hidden flex flex-col">
-								{/* Header */}
-								<div className="px-4 py-3 border-b border-border flex items-center gap-3 bg-card/80 backdrop-blur-md">
-									<div className="w-8 h-8 rounded-full bg-gradient-to-tr from-rose-400 to-orange-300 shadow-inner" />
-									<div>
-										<h3 className="font-sans text-sm font-semibold text-foreground leading-none">
-											Sarah Jenkins
-										</h3>
-										<span className="text-[11px] text-foreground/40">
-											Online
-										</span>
-									</div>
-								</div>
+							<FitToWidth width={380}>
+								<Wallet className="p-0 sm:p-0" />
+							</FitToWidth>
+						</div>
 
-								{/* Chat Area */}
-								<div className="p-4 flex flex-col space-y-1">
-									<ChatBubble variant="received" layout="group-top">
-										<ChatAvatar fallback="SJ" />
-										<ChatMessage>
-											Why does everyone pick this library for chat UIs?
-										</ChatMessage>
-									</ChatBubble>
-									<ChatBubble variant="received" layout="group-bottom">
-										<ChatAvatar fallback="SJ" />
-										<ChatMessage>
-											Every other kit made me hand-roll the bubble corners.
-											<ChatTimestamp time="10:24 AM" />
-										</ChatMessage>
-									</ChatBubble>
-
-									<div className="h-4" />
-
-									<ChatBubble variant="sent" layout="group-top">
-										<ChatAvatar fallback="ME" />
-										<ChatMessage color="primary">
-											It&apos;s compound: avatar, message, timestamp — compose
-											them, no config objects.
-										</ChatMessage>
-									</ChatBubble>
-									<ChatBubble variant="sent" layout="group-bottom">
-										<ChatAvatar fallback="ME" />
-										<ChatMessage color="primary">
-											Grouping, read receipts and the pop-in animation are
-											built in and theme-aware.
-											<ChatTimestamp time="10:25 AM" status="read" />
-										</ChatMessage>
-									</ChatBubble>
-
-									<div className="h-4" />
-
-									<ChatBubble variant="received">
-										<ChatAvatar fallback="SJ" />
-										<ChatMessage className="px-0 py-0 bg-transparent border-0 shadow-none dark:bg-transparent">
-											<ChatTypingIndicator />
-										</ChatMessage>
-									</ChatBubble>
-								</div>
-
-								{/* Input Mock */}
-								<div className="p-4 bg-foreground/[0.03] border-t border-border">
-									<div className="flex items-center gap-3 px-3 py-2 bg-card border border-border rounded-full shadow-sm">
-										<ImageIcon className="w-5 h-5 text-foreground/40" />
-										<span className="flex-1 text-[13px] text-foreground/40">
-											Type a message...
-										</span>
-										<SmilePlus className="w-5 h-5 text-foreground/40" />
-										<div className="w-7 h-7 rounded-full bg-primary flex items-center justify-center ml-1">
-											<Send className="w-3.5 h-3.5 text-primary-foreground -ml-0.5" />
-										</div>
-									</div>
-								</div>
+						<div className="showcase-card rounded-2xl border border-foreground/[0.06] bg-card p-5 overflow-hidden">
+							<div className="flex items-center justify-between gap-3 mb-2">
+								<span className="flex min-w-0 items-center gap-1.5 text-[14px] font-semibold text-foreground">
+									<GalleryVerticalEnd className="size-3.5 shrink-0 text-primary" />
+									<span className="truncate">Card Stack</span>
+								</span>
+								<span className={CHIP}>
+									Swipe to Discard
+								</span>
 							</div>
+							<FitToWidth scale={0.7}>
+								<CardStack
+									items={sampleStackItems}
+									loop
+									swipeToDismiss
+									showNavigation={false}
+									showHeader={false}
+									className="max-w-none"
+								/>
+							</FitToWidth>
 						</div>
 
 						<div className="showcase-card rounded-2xl border border-foreground/[0.06] bg-card p-2 overflow-hidden">
-							<div className="px-3 py-2 border-b border-foreground/[0.06] flex items-center justify-between text-[14px] text-foreground/40 font-medium">
-								<span className="flex items-center gap-1.5 text-foreground font-semibold">
-									<Terminal className="size-3.5 text-primary" />
-									Command Launcher
+							<div className="px-3 py-2 border-b border-foreground/[0.06] flex items-center justify-between gap-3 text-[14px] text-foreground/40 font-medium">
+								<span className="flex min-w-0 items-center gap-1.5 text-foreground font-semibold">
+									<Terminal className="size-3.5 shrink-0 text-primary" />
+									<span className="truncate">Command Launcher</span>
 								</span>
 							</div>
 							<CommandSearchBlock />
@@ -752,66 +869,61 @@ function ComponentShowcase() {
 						transition={{ duration: 0.5, delay: 0.2 }}
 						className="flex flex-col gap-6">
 						<div className="showcase-card rounded-2xl border border-foreground/[0.06] bg-card p-5 overflow-hidden">
-							<div className="flex items-center justify-between mb-4">
-								<span className="flex items-center gap-1.5 text-[14px] font-semibold text-foreground">
-									<Layers className="size-3.5 text-primary" />
-									3D Fanned Carousel
+							<div className="flex items-center justify-between gap-3 mb-4">
+								<span className="flex min-w-0 items-center gap-1.5 text-[14px] font-semibold text-foreground">
+									<Layers className="size-3.5 shrink-0 text-primary" />
+									<span className="truncate">3D Fanned Carousel</span>
 								</span>
 								<span className={CHIP}>
 									Interactive
 								</span>
 							</div>
-							{/* The carousel lays out at a fixed 840px wide / 580px tall so the
-							    fanned side cards fit, then is scaled to half so the whole fan
-							    shows inside the column. */}
-							<div className="relative h-[250px] md:h-[290px] overflow-hidden">
-								<div className="absolute left-1/2 top-0 w-[840px] -translate-x-1/2 scale-50 origin-top">
-									<ThreeDCarousel
-										items={sampleCarouselItems}
-										autoPlay={false}
-									/>
-								</div>
-							</div>
+							{/* The carousel lays out wide enough for the fanned side cards,
+							    then scales down to the column. */}
+							<FitToWidth width={CAROUSEL_WIDTH}>
+								<ThreeDCarousel items={sampleCarouselItems} autoPlay={false} />
+							</FitToWidth>
 						</div>
 
 						<div className="showcase-card rounded-2xl border border-foreground/[0.06] bg-card p-5 overflow-hidden">
-							<div className="flex items-center justify-between mb-4">
-								<span className="flex items-center gap-1.5 text-[14px] font-semibold text-foreground">
-									<FolderOpen className="size-3.5 text-primary" />
-									Design Components Folder
+							<div className="flex items-center justify-between gap-3 mb-4">
+								<span className="flex min-w-0 items-center gap-1.5 text-[14px] font-semibold text-foreground">
+									<FolderOpen className="size-3.5 shrink-0 text-primary" />
+									<span className="truncate">Design Components Folder</span>
 								</span>
 								<span className={CHIP}>
 									Auto Loop
 								</span>
 							</div>
-							{/* Same trick as the carousel above: the stage is sized by viewport
-							    breakpoints (up to 960×700), so it is laid out at 840px wide and
-							    scaled to half to fit the column. */}
-							<div className="relative h-[290px] md:h-[330px] lg:h-[350px] overflow-hidden">
-								<div className="absolute left-1/2 top-0 w-[840px] -translate-x-1/2 scale-50 origin-top">
-									<DesignComponentsFolder disableLinks className="py-0 md:py-0" />
-								</div>
-							</div>
+							{/* The stage is sized by viewport breakpoints (up to 960×700), so it
+							    is laid out at 840px wide and scaled down to the column. */}
+							<FitToWidth width={DESIGN_FOLDER_WIDTH}>
+								<DesignComponentsFolder disableLinks className="py-0 md:py-0" />
+							</FitToWidth>
 						</div>
 
-						<div className="showcase-card rounded-2xl border border-foreground/[0.06] bg-card p-6 overflow-hidden flex flex-col items-center justify-center min-h-[220px]">
-							<div className="w-full flex items-center justify-between text-[14px] font-medium mb-6">
-								<span className="flex items-center gap-1.5 text-foreground font-semibold">
-									<Compass className="size-3.5 text-primary" />
-									Magnifying macOS Dock
+						<div className="showcase-card rounded-2xl border border-foreground/[0.06] bg-card p-6 overflow-hidden">
+							<div className="w-full flex items-center justify-between gap-3 text-[14px] font-medium mb-6">
+								<span className="flex min-w-0 items-center gap-1.5 text-foreground font-semibold">
+									<Compass className="size-3.5 shrink-0 text-primary" />
+									<span className="truncate">Magnifying macOS Dock</span>
 								</span>
 								<span className={CHIP}>
 									Interactive Hover
 								</span>
 							</div>
-							<div className="py-4 w-full flex justify-center items-center">
-								<Dock
-									items={sampleDockItems}
-									baseSize={44}
-									magnification={68}
-									distance={130}
-									containerHeight={84}
-								/>
+							{/* Laid out wide enough for the dock at full magnification, so
+							    a narrow column scales it rather than clipping its ends. */}
+							<div className="py-4 w-full">
+								<FitToWidth width={DOCK_WIDTH}>
+									<Dock
+										items={sampleDockItems}
+										baseSize={44}
+										magnification={68}
+										distance={130}
+										containerHeight={84}
+									/>
+								</FitToWidth>
 							</div>
 						</div>
 					</motion.div>
@@ -823,10 +935,10 @@ function ComponentShowcase() {
 						transition={{ duration: 0.5, delay: 0.3 }}
 						className="flex flex-col gap-6">
 						<div className="showcase-card rounded-2xl border border-foreground/[0.06] bg-card p-5 overflow-hidden">
-							<div className="flex items-center justify-between mb-4">
-								<span className="flex items-center gap-1.5 text-[14px] font-semibold text-foreground">
-									<FolderOpen className="size-3.5 text-primary" />
-									Folder
+							<div className="flex items-center justify-between gap-3 mb-4">
+								<span className="flex min-w-0 items-center gap-1.5 text-[14px] font-semibold text-foreground">
+									<FolderOpen className="size-3.5 shrink-0 text-primary" />
+									<span className="truncate">Folder</span>
 								</span>
 								<span className={CHIP}>
 									Fan on Hover
@@ -845,17 +957,19 @@ function ComponentShowcase() {
 						</div>
 
 						<div className="showcase-card rounded-2xl border border-foreground/[0.06] bg-card p-2 overflow-hidden">
-							<div className="px-3 py-2 border-b border-foreground/[0.06] flex items-center justify-between text-[14px] text-foreground/40 font-medium">
-								<span className="flex items-center gap-1.5 text-foreground font-semibold">
-									<GripVertical className="size-3.5 text-primary" />
-									Draggable Card List
+							<div className="px-3 py-2 border-b border-foreground/[0.06] flex items-center justify-between gap-3 text-[14px] text-foreground/40 font-medium">
+								<span className="flex min-w-0 items-center gap-1.5 text-foreground font-semibold">
+									<GripVertical className="size-3.5 shrink-0 text-primary" />
+									<span className="truncate">Draggable Card List</span>
 								</span>
 								<span className={CHIP}>
 									Drag to Reorder
 								</span>
 							</div>
 							<div className="p-3">
-								<DraggableCardList variant="classic" items={sampleTasks} />
+								<FitToWidth scale={0.85}>
+									<DraggableCardList variant="classic" items={sampleTasks} />
+								</FitToWidth>
 							</div>
 						</div>
 					</motion.div>
@@ -973,7 +1087,7 @@ function WhyChooseUsSection() {
 										icon: <Paintbrush className="size-5 sm:size-6" />,
 									},
 									{
-										name: "Framer",
+										name: "Motion",
 										icon: <Sparkles className="size-5 sm:size-6" />,
 									},
 									{
@@ -3903,7 +4017,7 @@ function CTASection() {
 								Hardware Accelerated
 							</h4>
 							<p className="text-xs text-muted-foreground mt-1.5 leading-relaxed">
-								Silky 60 FPS transitions powered by Framer Motion springs and native
+								Silky 60 FPS transitions powered by Motion springs and native
 								Tailwind CSS transforms.
 							</p>
 						</div>

@@ -91,34 +91,6 @@ export const FAQ_ITEMS: FAQItem[] = [
     maxWidth: 540,
     clipCut: "2rem",
   },
-  {
-    id: "accessibility",
-    category: "Accessibility",
-    question: "Are the components accessible and keyboard navigable?",
-    answer:
-      "Accessibility is deeply integrated from day one. Headless primitives are powered by Radix UI, providing full WAI-ARIA 1.2 compliance, focus rings, roving tab indices, screen-reader announcements, and native support for reduced-motion preferences.",
-    image:
-      "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto/v1790224284/photo-1473448912268-2022ce9509d8-1790148865110-1790224284673.webp",
-    location: "Sahara Golden Dunes, Merzouga",
-    coordinates: "31.0802° N, 4.0134° W",
-    height: 440,
-    maxWidth: 440,
-    clipCut: "3rem",
-  },
-  {
-    id: "code-ownership",
-    category: "Code Ownership",
-    question: "Why copy-paste code instead of a giant monolithic NPM package?",
-    answer:
-      "Monolithic packages bundle unnecessary styles, risk breaking on major version upgrades, and limit deep customization. By placing the component directly inside your codebase, you retain 100% code ownership, zero bloat, and infinite freedom to adapt it as you see fit.",
-    image:
-      "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto/v1790224415/photo-1470071459604-3b5ec3a7fe05-1790146212205-1790224416316.webp",
-    location: "Lake Moraine Alpine Valley, Alberta",
-    coordinates: "51.3276° N, 116.1822° W",
-    height: 360,
-    maxWidth: 510,
-    clipCut: "2.25rem",
-  },
 ];
 
 interface PhotoLayer {

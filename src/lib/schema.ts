@@ -60,7 +60,7 @@ export const softwareApplicationSchema = {
     "priceCurrency": "USD",
     "availability": "https://schema.org/InStock"
   },
-  "keywords": "React components, UI library, Tailwind CSS, Framer Motion, TypeScript, animated components, open source, free",
+  "keywords": "React components, UI library, Tailwind CSS, Motion, TypeScript, animated components, open source, free",
   "programmingLanguage": ["TypeScript", "JavaScript", "CSS"],
   "runtimePlatform": "Web Browser",
   "downloadUrl": "https://github.com/AlgorizeTech",
@@ -172,5 +172,5 @@ export const componentSchema = (componentName: string, description: string, cate
     "name": "Algorize UI"
   },
   "applicationCategory": category,
-  "keywords": `${componentName}, React component, Tailwind CSS, Framer Motion, UI component`
+  "keywords": `${componentName}, React component, Tailwind CSS, Motion, UI component`
 })

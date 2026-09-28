@@ -7,7 +7,7 @@ const coreKeywords = [
   "UI library",
   "React component library",
   "Tailwind CSS components",
-  "Framer Motion components",
+  "Motion components",
   "Next.js components",
   "Modern UI library",
   "Web components",
@@ -101,7 +101,7 @@ const longTailKeywords = [
   "Production-ready UI library",
   "React TypeScript components",
   "Accessible web components",
-  "Framer Motion examples",
+  "Motion examples",
   "JavaScript UI library",
   "Headless component library",
   "React UI patterns",
@@ -128,7 +128,7 @@ export const metadata: Metadata = {
   title:
     "Algorize UI | React Component Library",
   description:
-    "A React component library of 120+ animated, accessible components built with Tailwind CSS, TypeScript, GSAP and Framer Motion. Installed by the shadcn CLI straight into your project — no wrapper package, no lock-in.",
+    "A React component library of 120+ animated, accessible components built with Tailwind CSS, TypeScript, GSAP and Motion. Installed by the shadcn CLI straight into your project — no wrapper package, no lock-in.",
   keywords: allKeywords,
   authors: [{ name: "AlgorizeTech", url: "https://github.com/AlgorizeTech" }],
   creator: "Algorize UI",
@@ -175,7 +175,7 @@ export const metadata: Metadata = {
     title:
       "Algorize UI | React Component Library",
     description:
-      "A React component library of 120+ animated, accessible components built with Tailwind CSS, TypeScript, GSAP and Framer Motion. Installed by the shadcn CLI straight into your project — no wrapper package, no lock-in.",
+      "A React component library of 120+ animated, accessible components built with Tailwind CSS, TypeScript, GSAP and Motion. Installed by the shadcn CLI straight into your project — no wrapper package, no lock-in.",
     url: SITE_URL,
     siteName: "Algorize UI",
     images: [

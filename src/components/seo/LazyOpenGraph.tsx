@@ -18,7 +18,7 @@ export function LazyOpenGraph() {
         {
           property: "og:description",
           content:
-            "A React component library of 120+ animated, accessible components built with Tailwind CSS, TypeScript, GSAP and Framer Motion. Installed by the shadcn CLI straight into your project — no wrapper package, no lock-in.",
+            "A React component library of 120+ animated, accessible components built with Tailwind CSS, TypeScript, GSAP and Motion. Installed by the shadcn CLI straight into your project — no wrapper package, no lock-in.",
         },
         { property: "og:url", content: SITE_URL },
         {

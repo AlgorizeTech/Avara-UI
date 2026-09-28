@@ -614,9 +614,11 @@ export function DesignComponentsFolder({
                     <stop offset="100%" stopColor="#ffffff" stopOpacity="0" />
                   </linearGradient>
                 </defs>
+                {/* A soft tint of the colour, not the colour itself — the same
+                    OKLCH recipe as Folder, so every theme reads light and calm. */}
                 <path
                   d={FOLDER_PATH}
-                  fill="var(--primary)"
+                  fill="oklch(from var(--primary) 0.88 calc(c * 0.4) h)"
                   stroke="rgba(255, 255, 255, 0.45)"
                   strokeWidth="2"
                 />
@@ -627,7 +629,11 @@ export function DesignComponentsFolder({
             {/* Folder Text Content Overlay */}
             <div className="absolute inset-0 p-8 sm:p-12 md:p-16 lg:p-20 flex flex-col justify-end pointer-events-auto">
               <div className="relative z-10">
-                <h3 className="text-3xl sm:text-5xl md:text-6xl lg:text-7xl font-semibold text-primary-foreground tracking-tight leading-[1.05]">
+                <h3
+                  className="text-3xl sm:text-5xl md:text-6xl lg:text-7xl font-semibold tracking-tight leading-[1.05]"
+                  // Deep ink of the same hue, readable on the light tint.
+                  style={{ color: "oklch(from var(--primary) 0.32 calc(c * 0.6) h)" }}
+                >
                   Design<br />Components
                 </h3>
               </div>

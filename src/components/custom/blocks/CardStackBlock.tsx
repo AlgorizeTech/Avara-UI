@@ -154,7 +154,7 @@ function StackCardItem({
         ...(isDraggable ? { x, rotate: dragRotate } : {}),
       }}
       className={cn(
-        "absolute inset-x-0 bottom-0 top-0 rounded-[26px] border border-border/80 bg-card p-6 shadow-[0_10px_25px_-5px_rgba(0,0,0,0.06),0_2px_6px_-2px_rgba(0,0,0,0.04)] dark:shadow-none flex flex-col justify-between overflow-hidden",
+        "absolute inset-x-0 bottom-0 top-0 rounded-[26px] border border-foreground/10 dark:border-foreground/15 bg-card p-6 shadow-[0_10px_25px_-5px_rgba(0,0,0,0.06),0_2px_6px_-2px_rgba(0,0,0,0.04)] dark:shadow-[0_12px_28px_-6px_rgba(0,0,0,0.6),0_2px_6px_-2px_rgba(0,0,0,0.4)] flex flex-col justify-between overflow-hidden",
         isDraggable
           ? "cursor-grab active:cursor-grabbing touch-none select-none"
           : isTop
@@ -343,7 +343,7 @@ export const CardStack = React.forwardRef<HTMLDivElement, CardStackProps>(
                     onClick={handlePrev}
                     disabled={!canPrev}
                     aria-label="Previous card"
-                    className="size-9 rounded-xl border border-border/80 bg-card hover:bg-muted active:scale-95 transition-all flex items-center justify-center text-foreground disabled:opacity-30 disabled:pointer-events-none shadow-xs"
+                    className="size-9 rounded-xl border border-foreground/10 dark:border-foreground/15 bg-card hover:bg-muted active:scale-95 transition-all flex items-center justify-center text-foreground disabled:opacity-30 disabled:pointer-events-none shadow-xs"
                   >
                     <ArrowLeft className="size-4" />
                   </button>
@@ -352,7 +352,7 @@ export const CardStack = React.forwardRef<HTMLDivElement, CardStackProps>(
                     onClick={handleNext}
                     disabled={!canNext}
                     aria-label="Next card"
-                    className="size-9 rounded-xl border border-border/80 bg-card hover:bg-muted active:scale-95 transition-all flex items-center justify-center text-foreground disabled:opacity-30 disabled:pointer-events-none shadow-xs"
+                    className="size-9 rounded-xl border border-foreground/10 dark:border-foreground/15 bg-card hover:bg-muted active:scale-95 transition-all flex items-center justify-center text-foreground disabled:opacity-30 disabled:pointer-events-none shadow-xs"
                   >
                     <ArrowRight className="size-4" />
                   </button>
@@ -366,7 +366,7 @@ export const CardStack = React.forwardRef<HTMLDivElement, CardStackProps>(
         <div className="relative w-full overflow-hidden pt-7 pr-12 pb-8 pl-2">
           <div className="relative h-[195px] sm:h-[200px] w-full">
             {isCompleted ? (
-              <div className="size-full rounded-[26px] border border-dashed border-border/90 flex flex-col items-center justify-center gap-3 p-6 text-center bg-muted/20">
+              <div className="size-full rounded-[26px] border border-dashed border-foreground/15 dark:border-foreground/20 flex flex-col items-center justify-center gap-3 p-6 text-center bg-muted/20">
                 <p className="text-sm font-medium text-muted-foreground">
                   All cards have been reviewed!
                 </p>

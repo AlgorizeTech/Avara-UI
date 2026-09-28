@@ -373,8 +373,8 @@ function metaFor(s: Source): ItemMeta | undefined {
   if (!base) return undefined;
   return {
     ...base,
-    title: `${base.title ?? titleFor(baseName)} (Framer Motion)`,
-    docs: `Framer Motion build of \`${baseName}\` — same props, markup and install path; install one or the other.${base.docs ? ` ${base.docs}` : ""}`,
+    title: `${base.title ?? titleFor(baseName)} (Motion)`,
+    docs: `Motion build of \`${baseName}\` — same props, markup and install path; install one or the other.${base.docs ? ` ${base.docs}` : ""}`,
   };
 }
 

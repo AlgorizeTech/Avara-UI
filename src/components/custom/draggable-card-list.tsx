@@ -380,6 +380,10 @@ interface DragSession {
     origin: number;
     started: boolean;
     history: { y: number; t: number }[];
+    /** Rendered size over layout size, so a list inside a scaled parent still
+     *  follows the pointer 1:1 (pointer moves are in page pixels, the card
+     *  moves in its own). */
+    scale: number;
 }
 
 /**
@@ -442,7 +446,7 @@ function createReorderer(refs: {
         const m = cards.current.get(s.id);
         if (!m) return;
         s.history.push({ y: e.pageY, t: performance.now() });
-        const dy = e.pageY - s.startY;
+        const dy = (e.pageY - s.startY) / s.scale;
         if (!s.started) {
             if (Math.hypot(e.pageX - s.startX, dy) < 3) return;
             s.started = true;
@@ -505,6 +509,7 @@ function createReorderer(refs: {
             const m = cards.current.get(id);
             if (!m) return;
             gsap.killTweensOf(m, "y");
+            const scale = m.el.offsetHeight ? m.el.getBoundingClientRect().height / m.el.offsetHeight : 1;
             drag.current = {
                 id,
                 event: e,
@@ -514,6 +519,7 @@ function createReorderer(refs: {
                 origin: m.y,
                 started: false,
                 history: [{ y: e.pageY, t: performance.now() }],
+                scale: scale || 1,
             };
             window.addEventListener("pointermove", move);
             window.addEventListener("pointerup", end);

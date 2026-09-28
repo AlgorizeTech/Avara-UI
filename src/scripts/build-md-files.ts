@@ -170,7 +170,7 @@ function convertMdxToMd(content: string, componentPath: string): string {
       '```' +
       // Dual components: the same file, built on Framer Motion instead of GSAP.
       (MOTION_TWINS.has(name)
-        ? '\n\nOr the Framer Motion build (same props, same file — install one):\n\n' +
+        ? '\n\nOr the Motion build (same props, same file — install one):\n\n' +
           '```bash\n' +
           `npx shadcn@latest ${addArgsFor(`${name}-framer`)}\n` +
           '```'

@@ -2,7 +2,7 @@
 
 A high-performance masonry layout that tightly packs items of varying heights. Rather than relying on heavy JavaScript calculations or absolute positioning frameworks, this component utilizes standard CSS multi-column layout (`columns-N`) to flow items naturally.
 
-This premium iteration includes hardware-accelerated blur-fade entrances, layout animations for dynamic content reflows, and a scroll-triggered entrance sequence for high-end aesthetic presentation. It ships as a GSAP build and a Framer Motion build with the same motion.
+This premium iteration includes hardware-accelerated blur-fade entrances, layout animations for dynamic content reflows, and a scroll-triggered entrance sequence for high-end aesthetic presentation. It ships as a GSAP build and a Motion build with the same motion.
 
 ---
 
@@ -175,7 +175,7 @@ npx shadcn@latest registry add @algorize-ui=https://algorize-ui.vercel.app/r/{na
 npx shadcn@latest add @algorize-ui/masonry-grid
 ```
 
-Or the Framer Motion build (same props, same file — install one):
+Or the Motion build (same props, same file — install one):
 
 ```bash
 npx shadcn@latest add @algorize-ui/masonry-grid-framer
@@ -194,7 +194,7 @@ Discover the Masonry Grid's dynamic layout features, seamlessly arranging varyin
     Total control over your UI. Just pass the raw data and a render function, and the grid handles the complex layout.
 
     Staggered Entrances
-    Apple-style staggered blur-fade entrances on scroll, in a GSAP build and a Framer Motion build that move the same way.
+    Apple-style staggered blur-fade entrances on scroll, in a GSAP build and a Motion build that move the same way.
 
     Fluid Resizing
     Automatically reflows into the correct number of columns using Tailwind responsive utility classes.
@@ -281,8 +281,8 @@ Discover the Masonry Grid's dynamic layout features, seamlessly arranging varyin
           undefined
 
           Accepts all standard HTML &lt;div&gt; attributes,
-          excluding children. The Framer Motion build also takes
-          Framer Motion props (HTMLMotionProps).
+          excluding children. The Motion build also takes
+          Motion props (HTMLMotionProps).
 
 ---
 

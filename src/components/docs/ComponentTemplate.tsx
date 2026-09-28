@@ -79,7 +79,7 @@ export function ComponentTemplate({
             </span>
             <span className={TAG}>React</span>
             <span className={TAG}>Tailwind CSS</span>
-            <span className={TAG}>Framer Motion</span>
+            <span className={TAG}>Motion</span>
           </div>
         </header>
 

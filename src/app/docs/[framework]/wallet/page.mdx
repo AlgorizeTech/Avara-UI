@@ -253,7 +253,31 @@ export default function CustomWalletExample() {
         <td><code>walletColor</code></td>
         <td><code>string</code></td>
         <td><code>"var(--primary)"</code></td>
-        <td>Custom color or CSS variable for the wallet sleeve and pocket.</td>
+        <td>Base color or CSS variable. The sleeve and pocket wear a soft tint of it, with text in a deep shade of the same hue.</td>
+      </tr>
+      <tr>
+        <td><code>hint</code></td>
+        <td><code>string</code></td>
+        <td><code>"Hover to view cards"</code></td>
+        <td>Prompt shown above the closed wallet on pointer devices. Pass <code>""</code> to hide.</td>
+      </tr>
+      <tr>
+        <td><code>touchHint</code></td>
+        <td><code>string</code></td>
+        <td><code>"Tap to view cards"</code></td>
+        <td>The same prompt on touch screens, where the wallet opens on tap.</td>
+      </tr>
+      <tr>
+        <td><code>openHint</code></td>
+        <td><code>string</code></td>
+        <td><code>"Click a card to view details"</code></td>
+        <td>Prompt shown while the cards are out, on pointer devices. Pass <code>""</code> to hide.</td>
+      </tr>
+      <tr>
+        <td><code>touchOpenHint</code></td>
+        <td><code>string</code></td>
+        <td><code>"Tap a card to view details"</code></td>
+        <td>The open prompt on touch screens.</td>
       </tr>
       <tr>
         <td><code>className</code></td>

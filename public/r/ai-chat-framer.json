@@ -1,7 +1,7 @@
 {
   "$schema": "https://ui.shadcn.com/schema/registry-item.json",
   "name": "ai-chat-framer",
-  "title": "AI Chat (Framer Motion)",
+  "title": "AI Chat (Motion)",
   "author": "AlgorizeTech",
   "description": "An AI assistant interface with thread history sidebar, streaming-style responses and a prompt composer. Use it as the front end for an LLM feature.",
   "dependencies": [
@@ -19,7 +19,7 @@
       "target": "components/custom/blocks/Ai-chat.tsx"
     }
   ],
-  "docs": "Framer Motion build of `ai-chat` — same props, markup and install path; install one or the other. Named exports: AIChat, plus ChatThread, Message, ChatModel, EffortOption, ComposerTool, SendPayload and UploadHandler types. Responses are mocked — wire `onSend` ({ content, attachments, model, effort, tools }) to your endpoint and `uploadFile` (file, onProgress, signal) to your storage. The composer ships with a + menu (`tools`: one upload row opens the picker, the rest insert @Label mentions), drag-and-drop attachments (rocket progress indicator), a `models` picker, a Faster↔Smarter `efforts` slider that lights the prompt bar at the top level, and mic dictation via getUserMedia + the Web Speech API with graceful fallbacks. Variants: default | minimal | glass | compact (no history sidebar — opens as a hero with `heroTitle` over the prompt bar until the first message; `showSidebar={false}` does the same for any variant).",
+  "docs": "Motion build of `ai-chat` — same props, markup and install path; install one or the other. Named exports: AIChat, plus ChatThread, Message, ChatModel, EffortOption, ComposerTool, SendPayload and UploadHandler types. Responses are mocked — wire `onSend` ({ content, attachments, model, effort, tools }) to your endpoint and `uploadFile` (file, onProgress, signal) to your storage. The composer ships with a + menu (`tools`: one upload row opens the picker, the rest insert @Label mentions), drag-and-drop attachments (rocket progress indicator), a `models` picker, a Faster↔Smarter `efforts` slider that lights the prompt bar at the top level, and mic dictation via getUserMedia + the Web Speech API with graceful fallbacks. Variants: default | minimal | glass | compact (no history sidebar — opens as a hero with `heroTitle` over the prompt bar until the first message; `showSidebar={false}` does the same for any variant).",
   "categories": [
     "communication"
   ],

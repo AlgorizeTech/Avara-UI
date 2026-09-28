@@ -590,16 +590,6 @@ export function Sandbox({
               </button>
             )}
 
-            {/* Open in v0: this example's code, props and variant, in the
-                reader's current theme — a new chat in a new tab. */}
-            {openInV0 && v0Item && (
-              <OpenInV0Button
-                item={v0Item}
-                accent={accent}
-                className="h-8 w-8 flex items-center justify-center rounded-lg transition-colors active:scale-95 cursor-pointer text-foreground/45 hover:text-foreground hover:bg-foreground/[0.06]"
-              />
-            )}
-
             {reset && (
               <button
                 onClick={() => setResetKey((k) => k + 1)}
@@ -716,6 +706,19 @@ export function Sandbox({
                   className={isFullscreen ? "h-full" : undefined}
                 />
               </div>
+
+              {/* Open in v0: this example's code, props and variant, in the
+                  reader's current theme — a new chat in a new tab. A glass
+                  pill on the stage's corner; transform-gpu lifts it over an
+                  iframe whose document composites, like the fullscreen close. */}
+              {openInV0 && v0Item && !isFullscreen && (
+                <OpenInV0Button
+                  item={v0Item}
+                  accent={accent}
+                  showLabel
+                  className="absolute bottom-3 right-3 z-10 transform-gpu flex h-8 items-center gap-1.5 rounded-full px-3 text-[12px] font-medium whitespace-nowrap text-foreground/70 hover:text-foreground bg-background/60 backdrop-blur-md backdrop-saturate-150 ring-1 ring-foreground/10 shadow-[0_2px_12px_rgb(0_0_0/0.08)] transition-colors active:scale-95 cursor-pointer"
+                />
+              )}
 
               {/* The only chrome in fullscreen. transform-gpu gives it its own
                   compositing layer, which an iframe whose document composites
@@ -1219,7 +1222,8 @@ function ExampleCard({
   minHeight: number;
   maxHeight: number;
 }) {
-  const { title, subheading, propNotes, props, usage, code } = example;
+  // `code` feeds the Code tab below, hidden for now — rename back to `code` with it.
+  const { title, subheading, propNotes, props, usage, code: _code } = example;
   const anchor = example.id ?? slugify(title);
 
   // The Sandbox (and its iframe) mounts only once the card nears the viewport.
@@ -1253,10 +1257,11 @@ function ExampleCard({
     tabs.push({ id: "usage", label: "Usage", code: usage, lang: "tsx" });
   }
   // The source `shadcn add` writes — for a dual component, the build the
-  // switch has picked.
-  if (code) {
-    tabs.push({ id: "component", label: "Code", code, lang: "tsx" });
-  }
+  // switch has picked. Hidden for now; uncomment (and restore `code` in the
+  // destructure above) to bring the Code tab back.
+  // if (code) {
+  //   tabs.push({ id: "component", label: "Code", code, lang: "tsx" });
+  // }
 
   return (
     <section ref={rootRef} aria-labelledby={anchor} className="flex flex-col min-w-0">

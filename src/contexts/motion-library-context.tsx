@@ -22,7 +22,7 @@ export const DEFAULT_MOTION_LIBRARY: MotionLibrary = "gsap";
 
 export const MOTION_LIBRARY_LABEL: Record<MotionLibrary, string> = {
   gsap: "GSAP",
-  framer: "Framer Motion",
+  framer: "Motion",
 };
 
 const STORAGE_KEY = "motion-library";

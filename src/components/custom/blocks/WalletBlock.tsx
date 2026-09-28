@@ -102,6 +102,14 @@ export interface WalletProps extends React.HTMLAttributes<HTMLDivElement> {
   defaultRevealed?: boolean;
   autoRevealOnHover?: boolean;
   walletColor?: string;
+  /** Prompt shown above the closed wallet on pointer devices. Pass "" to hide. */
+  hint?: string;
+  /** The same prompt on touch screens, where the wallet opens on tap. */
+  touchHint?: string;
+  /** Prompt shown once the cards are out, on pointer devices. Pass "" to hide. */
+  openHint?: string;
+  /** The open prompt on touch screens. */
+  touchOpenHint?: string;
 }
 
 // 3 authentic cards matching the reference design
@@ -195,11 +203,21 @@ export function Wallet({
   defaultRevealed = false,
   autoRevealOnHover = false,
   walletColor,
+  hint = "Hover to view cards",
+  touchHint = "Tap to view cards",
+  openHint = "Click a card to view details",
+  touchOpenHint = "Tap a card to view details",
   className,
   ...props
 }: WalletProps) {
   const activeCards = cards.length > 0 ? cards : DEFAULT_WALLET_CARDS;
   const baseColor = walletColor || "var(--primary, #6366f1)";
+  // The wallet wears a soft tint of the colour rather than the colour itself
+  // (the same OKLCH recipe as Folder), with a deep ink of the same hue on it.
+  const flapColor = `oklch(from ${baseColor} 0.88 calc(c * 0.4) h)`;
+  const plateColor = `oklch(from ${baseColor} 0.8 calc(c * 0.5) h)`;
+  const ink = `oklch(from ${baseColor} 0.32 calc(c * 0.6) h)`;
+  const inkAlpha = (a: number) => `oklch(from ${baseColor} 0.32 calc(c * 0.6) h / ${a})`;
   const [isHovered, setIsHovered] = useState(false);
   const [isRevealed, setIsRevealed] = useState(defaultRevealed);
   const [elevatedCardIdx, setElevatedCardIdx] = useState<number | null>(null);
@@ -217,6 +235,12 @@ export function Wallet({
     { y: -75, scale: 0.98, delay: 0.06, rotate: 0.8 },
     { y: -20, scale: 1.0, delay: 0.0, rotate: 0 },
   ];
+
+  // At rest each card peeks the same strip above the one in front of it, so
+  // the closed wallet reads as a stack. The scale shrinks a card from its
+  // bottom edge, so the back cards rise a little further to keep the strips
+  // even (16px each).
+  const restY = [-54, -34, -14];
 
   const handleCardClick = (idx: number, e: React.MouseEvent) => {
     e.stopPropagation();
@@ -257,6 +281,25 @@ export function Wallet({
           }
         }}
       >
+        {/* Prompts in the space the cards rise into: one while closed, one
+            while the cards are out, and none once a card is lifted over it. */}
+        {[
+          { key: "closed", shown: !isHovered && elevatedCardIdx === null, text: hint, touch: touchHint },
+          { key: "open", shown: isHovered && elevatedCardIdx === null, text: openHint, touch: touchOpenHint },
+        ].map(({ key, shown, text, touch }) =>
+          text || touch ? (
+            <p
+              key={key}
+              aria-hidden="true"
+              className="absolute inset-x-0 top-[17%] text-center text-[13px] font-medium text-muted-foreground pointer-events-none transition-[opacity,translate] duration-300"
+              style={{ opacity: shown ? 1 : 0, translate: shown ? "0 0" : "0 -6px" }}
+            >
+              <span className="[@media(hover:none)]:hidden">{text}</span>
+              <span className="hidden [@media(hover:none)]:inline">{touch}</span>
+            </p>
+          ) : null
+        )}
+
         {/* ========================================================= */}
         {/* LAYER 1: BACK PLATE (Nicher Pit - Rear Sleeve)            */}
         {/* Height is 242px with matching 28px rounded corners        */}
@@ -281,7 +324,7 @@ export function Wallet({
             "
             className="transition-colors duration-300"
             style={{
-              fill: `color-mix(in srgb, ${baseColor} 85%, #000000)`,
+              fill: plateColor,
               stroke: "rgba(255, 255, 255, 0.2)",
             }}
             strokeWidth="1.5"
@@ -300,8 +343,8 @@ export function Wallet({
           // Target Y:
           // If elevated: rises high up (-230px)
           // Else if hovered: normal stagger position
-          // Else: tucked inside wallet (0)
-          let targetY = 0;
+          // Else: tucked inside wallet, peeking as a stack
+          let targetY = restY[idx] ?? 0;
           if (isElevated) {
             targetY = -230;
           } else if (isHovered) {
@@ -550,8 +593,8 @@ export function Wallet({
               "
               className="transition-colors duration-300"
               style={{
-                fill: baseColor,
-                stroke: "rgba(255, 255, 255, 0.25)",
+                fill: flapColor,
+                stroke: "rgba(255, 255, 255, 0.55)",
               }}
               strokeWidth="1.5"
             />
@@ -568,7 +611,8 @@ export function Wallet({
                     e.stopPropagation();
                     setIsRevealed((prev) => !prev);
                   }}
-                  className="flex items-center gap-1.5 text-xs font-medium px-3 py-1 rounded-full transition-all duration-200 cursor-pointer border bg-white/20 hover:bg-white/30 text-white border-white/25 backdrop-blur-sm"
+                  className="flex items-center gap-1.5 text-xs font-medium px-3 py-1 rounded-full transition-all duration-200 cursor-pointer border bg-white/40 hover:bg-white/60 backdrop-blur-sm"
+                  style={{ color: ink, borderColor: inkAlpha(0.15) }}
                 >
                   <span>{shouldShowBalance ? concealText : revealText}</span>
                   {shouldShowBalance ? (
@@ -581,14 +625,14 @@ export function Wallet({
             </div>
 
             {/* Middle: Masked vs Unmasked Balance */}
-            <div className="flex flex-col items-center justify-center my-auto">
+            <div className="flex flex-col items-center justify-center my-auto" style={{ color: ink }}>
               {!balance.shownMasked ? (
                 <div
                   key="unmasked"
                   ref={balance.ref}
                   style={balance.style}
                   onTransitionEnd={balance.onTransitionEnd}
-                  className="text-2xl sm:text-3xl font-extrabold tracking-tight font-sans transition-colors text-white drop-shadow-sm"
+                  className="text-2xl sm:text-3xl font-extrabold tracking-tight font-sans transition-colors"
                 >
                   {overallBalance}
                 </div>
@@ -598,20 +642,24 @@ export function Wallet({
                   ref={balance.ref}
                   style={balance.style}
                   onTransitionEnd={balance.onTransitionEnd}
-                  className="text-xl sm:text-2xl font-mono font-bold tracking-[0.35em] transition-colors text-white"
+                  className="text-xl sm:text-2xl font-mono font-bold tracking-[0.35em] transition-colors"
                 >
                   {maskedBalance}
                 </div>
               )}
 
               {/* Subtitle */}
-              <span className="text-[11px] sm:text-xs font-semibold tracking-wider mt-1 uppercase transition-colors text-white/80">
+              <span className="text-[11px] sm:text-xs font-semibold tracking-wider mt-1 uppercase transition-colors"
+                style={{ color: inkAlpha(0.7) }}>
                 {overallLabel}
               </span>
             </div>
 
             {/* Bottom: Solid decorative thumb notch accent on full color face */}
-            <div className="w-11 h-4 rounded-t-full transition-colors border-t border-x bg-black/25 border-white/20" />
+            <div
+              className="w-11 h-4 rounded-t-full transition-colors border-t border-x"
+              style={{ background: inkAlpha(0.14), borderColor: inkAlpha(0.1) }}
+            />
           </div>
         </div>
       </div>

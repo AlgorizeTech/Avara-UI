@@ -2,8 +2,8 @@
 
 This directory contains auto-generated Markdown versions of all MDX documentation pages.
 
-**Generated at:** 2026-09-27T13:49:35.470Z
-**Total files:** 295
+**Generated at:** 2026-09-28T06:41:51.495Z
+**Total files:** 297
 
 ## Available Files
 
@@ -131,6 +131,7 @@ This directory contains auto-generated Markdown versions of all MDX documentatio
 - [nextjs/support-dashboard](/docs/nextjs-support-dashboard.md) - Source: `[framework]\support-dashboard\page.mdx`
 - [nextjs/table](/docs/nextjs-table.md) - Source: `[framework]\table\page.mdx`
 - [nextjs/table-of-contents](/docs/nextjs-table-of-contents.md) - Source: `[framework]\table-of-contents\page.mdx`
+- [nextjs/tech-stack](/docs/nextjs-tech-stack.md) - Source: `[framework]\tech-stack\page.mdx`
 - [nextjs/terminal](/docs/nextjs-terminal.md) - Source: `[framework]\terminal\page.mdx`
 - [nextjs/text-animation](/docs/nextjs-text-animation.md) - Source: `[framework]\text-animation\page.mdx`
 - [nextjs/theme-switcher](/docs/nextjs-theme-switcher.md) - Source: `[framework]\theme-switcher\page.mdx`
@@ -279,6 +280,7 @@ This directory contains auto-generated Markdown versions of all MDX documentatio
 - [reactjs/support-dashboard](/docs/reactjs-support-dashboard.md) - Source: `[framework]\support-dashboard\page.mdx`
 - [reactjs/table](/docs/reactjs-table.md) - Source: `[framework]\table\page.mdx`
 - [reactjs/table-of-contents](/docs/reactjs-table-of-contents.md) - Source: `[framework]\table-of-contents\page.mdx`
+- [reactjs/tech-stack](/docs/reactjs-tech-stack.md) - Source: `[framework]\tech-stack\page.mdx`
 - [reactjs/terminal](/docs/reactjs-terminal.md) - Source: `[framework]\terminal\page.mdx`
 - [reactjs/text-animation](/docs/reactjs-text-animation.md) - Source: `[framework]\text-animation\page.mdx`
 - [reactjs/theme-switcher](/docs/reactjs-theme-switcher.md) - Source: `[framework]\theme-switcher\page.mdx`

@@ -2,7 +2,7 @@
 
 Recreates the iOS text-selection look — a translucent highlight with a lollipop handle on either end — over any string you give it.
 
-The range is chosen by the author, not the reader: pass the full `text` and a `[start, end]` character range, and the component splits the string around it. That makes it ideal for docs, onboarding tips and marketing copy where you want to point at *part* of a sentence without a screenshot. The handles are purely decorative and are hidden from assistive tech; the text itself stays one uninterrupted string. It renders as a ``, and any other HTML attribute (`className`, `style`, `id`…) is forwarded to it.
+The range is chosen by the author, not the reader: pass the full `text` and a `[start, end]` character range, and the component splits the string around it. That makes it ideal for docs, onboarding tips and marketing copy where you want to point at *part* of a sentence without a screenshot. The handles are purely decorative and are hidden from assistive tech; the text itself stays one uninterrupted string. It renders as a `` — or, with `as="span"`, inline inside a paragraph of your own — and any other HTML attribute (`className`, `style`, `id`…) is forwarded to it.
 
 Explore the different variations of the Apple Select component — each example shows a live preview with the exact code to copy.
 
@@ -109,6 +109,11 @@ Discover the Apple Select component's capabilities for pointing at part of a sen
         boolean
         false
         Fade the highlight in and pop the handles when the component mounts.
+
+        as
+        "p" | "span"
+        "p"
+        The element to render. Use "span" to highlight a phrase inside a paragraph of your own; inline, it takes the surrounding line height.
 
 ---
 

@@ -1,9 +1,9 @@
 {
   "$schema": "https://ui.shadcn.com/schema/registry-item.json",
   "name": "draggable-card-list-framer",
-  "title": "Draggable Card List (Framer Motion)",
+  "title": "Draggable Card List (Motion)",
   "author": "AlgorizeTech",
-  "description": "An interactive reorderable card list with 60fps Framer Motion spring physics, right-side grip handles, and custom card metadata.",
+  "description": "An interactive reorderable card list with 60fps Motion spring physics, right-side grip handles, and custom card metadata.",
   "dependencies": [
     "framer-motion",
     "lucide-react"
@@ -19,7 +19,7 @@
       "target": "components/custom/draggable-card-list.tsx"
     }
   ],
-  "docs": "Framer Motion build of `draggable-card-list` — same props, markup and install path; install one or the other. Named exports: DraggableCardList, DraggableCardItem. Accepts `items` ({ id, title, description, date, badge, linkText, linkUrl, completed }), `onReorder`, `title`, `dragHandlePosition` ('right' | 'left'), `enableCheckboxes`, and `enableBadges`.",
+  "docs": "Motion build of `draggable-card-list` — same props, markup and install path; install one or the other. Named exports: DraggableCardList, DraggableCardItem. Accepts `items` ({ id, title, description, date, badge, linkText, linkUrl, completed }), `onReorder`, `title`, `dragHandlePosition` ('right' | 'left'), `enableCheckboxes`, and `enableBadges`.",
   "categories": [
     "data-display",
     "layout"

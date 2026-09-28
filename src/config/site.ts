@@ -87,7 +87,7 @@ export const siteConfig = {
   title: `${SITE_NAME} | React Component Library`,
   description:
     `A React component library of ${COMPONENT_COUNT} animated, accessible components ` +
-    "built with Tailwind CSS, TypeScript, GSAP and Framer Motion. Installed by the " +
+    "built with Tailwind CSS, TypeScript, GSAP and Motion. Installed by the " +
     "shadcn CLI straight into your project — no wrapper package, no lock-in.",
   /** One line, for cards and social summaries. */
   tagline: `${COMPONENT_COUNT} React components you install into your own codebase.`,

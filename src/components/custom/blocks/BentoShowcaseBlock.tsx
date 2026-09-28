@@ -359,7 +359,7 @@ function Headline({
       <div className="absolute left-6 top-4 h-[4.25rem] w-[8.5rem] overflow-hidden rounded-full">
         <img src={photo} alt={photoAlt} className="h-full w-full object-cover" />
       </div>
-      <h3 className="absolute inset-x-6 bottom-5 font-sans text-[2.15rem] lg:text-[2.75rem] font-medium leading-[0.98] tracking-[-0.03em] [&_em]:relative [&_em]:block [&_em]:font-serif [&_em]:text-[2.3rem] lg:[&_em]:text-[2.8rem] [&_em]:font-normal [&_em]:italic [&_em]:tracking-normal">
+      <h3 className="absolute inset-x-6 bottom-5 font-sans text-[2.05rem] lg:text-[2.3rem] font-medium leading-[0.98] tracking-[-0.03em] [&_em]:relative [&_em]:block [&_em]:font-serif [&_em]:text-[2.2rem] lg:[&_em]:text-[2.25rem] [&_em]:font-normal [&_em]:italic [&_em]:tracking-normal">
         {children}
       </h3>
       {/* A looping stroke under the serif line. */}
