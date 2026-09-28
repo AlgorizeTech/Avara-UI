@@ -178,7 +178,6 @@ export const DocsUiIcon = ({
   </svg>
 );
 
-const AvyroIcon = DocsUiIcon;
 
 // --- MAIN COMPONENT ---
 export default function LoginForm({
