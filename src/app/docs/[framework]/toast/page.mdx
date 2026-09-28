@@ -5,16 +5,14 @@ import { extractCode } from "@/lib/code";
 
 A robust, highly-animated notification system. Popups and alerts are essential for user feedback, but most libraries are heavy, difficult to style, or lack smooth animations.
 
-This headless-style Toast component handles its own global state via Context, uses **GSAP** for elastic entrance/exit animations, automatically handles stacking, and integrates flawlessly with your dynamic theme engine.
+This headless-style Toast component handles its own global state via Context, uses the browser's built-in Web Animations API for elastic entrance/exit animations (no animation library), automatically handles stacking, and integrates flawlessly with your dynamic theme engine.
 
-Click the trigger buttons in each preview to fire a toast. Toasts auto-dismiss after 5 seconds — hover to keep one open, or click the `X` to dismiss it manually.
+Click the trigger buttons in each preview to fire a toast. Toasts auto-dismiss after 5 seconds — hover to pause the timer, or click the `X` to dismiss it manually. Turn on `stack` to pile them up like a notification centre instead of listing them.
 
 export const usageDefault = `"use client";
 
-import {
-  ToastProvider,
-  useToast,
-} from "@/components/custom/blocks/ToastBlock";
+import { ToastProvider } from "@/components/custom/blocks/ToastBlock";
+import { useToast } from "@/components/custom/blocks/toast-context";
 
 function Triggers() {
   const { toast } = useToast();
@@ -28,7 +26,7 @@ function Triggers() {
             description: "We'll let you know as soon as they reply.",
           })
         }
-        className="px-6 py-2.5 bg-zinc-900 dark:bg-white text-white dark:text-zinc-900 text-sm font-bold rounded-xl transition-colors shadow-sm"
+        className="px-6 py-2.5 bg-primary text-primary-foreground text-sm font-semibold rounded-xl transition-colors shadow-sm hover:opacity-90 cursor-pointer"
       >
         Show toast
       </button>
@@ -49,23 +47,21 @@ export default function SendMessage() {
 
 export const usageTypes = `"use client";
 
-import {
-  ToastProvider,
-  useToast,
-} from "@/components/custom/blocks/ToastBlock";
+import { ToastProvider } from "@/components/custom/blocks/ToastBlock";
+import { useToast } from "@/components/custom/blocks/toast-context";
 
 const TRIGGER =
-  "px-6 py-2.5 text-white text-sm font-bold rounded-xl transition-colors shadow-sm";
+  "px-6 py-2.5 text-sm font-semibold rounded-xl transition-colors shadow-sm";
 
 function Triggers() {
   const { toast } = useToast();
 
   const types = [
-    { type: "success", label: "Success", title: "Action completed", description: "Your file has been uploaded successfully.", className: "bg-emerald-600 hover:bg-emerald-700" },
-    { type: "error", label: "Error", title: "Connection failed", description: "Could not connect to the database.", className: "bg-red-600 hover:bg-red-700" },
-    { type: "warning", label: "Warning", title: "Storage almost full", description: "You've used 92% of your quota.", className: "bg-amber-500 hover:bg-amber-600" },
-    { type: "info", label: "Update available", title: "Update available", description: "A new version is ready to install.", className: "bg-blue-600 hover:bg-blue-700" },
-    { type: "default", label: "Default", title: "Message sent", description: undefined, className: "bg-zinc-700 hover:bg-zinc-800" },
+    { type: "success", label: "Success", title: "Action completed", description: "Your file has been uploaded successfully.", className: "text-white bg-emerald-600 hover:bg-emerald-700" },
+    { type: "error", label: "Error", title: "Connection failed", description: "Could not connect to the database.", className: "text-white bg-red-600 hover:bg-red-700" },
+    { type: "warning", label: "Warning", title: "Storage almost full", description: "You've used 92% of your quota.", className: "text-white bg-amber-500 hover:bg-amber-600" },
+    { type: "info", label: "Update available", title: "Update available", description: "A new version is ready to install.", className: "text-white bg-blue-600 hover:bg-blue-700" },
+    { type: "default", label: "Default", title: "Message sent", description: undefined, className: "bg-primary text-primary-foreground hover:bg-primary/90" },
   ] as const;
 
   return (
@@ -98,13 +94,8 @@ export default function ToastTypes() {
 
 export const usageAction = `"use client";
 
-import {
-  ToastProvider,
-  useToast,
-} from "@/components/custom/blocks/ToastBlock";
-
-const TRIGGER =
-  "px-6 py-2.5 text-white text-sm font-bold rounded-xl transition-colors shadow-sm";
+import { ToastProvider } from "@/components/custom/blocks/ToastBlock";
+import { useToast } from "@/components/custom/blocks/toast-context";
 
 function Triggers() {
   const { toast } = useToast();
@@ -123,7 +114,7 @@ function Triggers() {
             },
           })
         }
-        className={\`\${TRIGGER} bg-blue-600 hover:bg-blue-700\`}
+        className="px-6 py-2.5 bg-primary text-primary-foreground text-sm font-semibold rounded-xl transition-colors shadow-sm hover:opacity-90 cursor-pointer"
       >
         Toast with action
       </button>
@@ -144,13 +135,11 @@ export default function ToastWithAction() {
 
 export const usageDuration = `"use client";
 
-import {
-  ToastProvider,
-  useToast,
-} from "@/components/custom/blocks/ToastBlock";
+import { ToastProvider } from "@/components/custom/blocks/ToastBlock";
+import { useToast } from "@/components/custom/blocks/toast-context";
 
 const TRIGGER =
-  "px-6 py-2.5 text-white text-sm font-bold rounded-xl transition-colors shadow-sm";
+  "px-6 py-2.5 text-sm font-semibold rounded-xl transition-colors shadow-sm";
 
 function Triggers() {
   const { toast } = useToast();
@@ -166,7 +155,7 @@ function Triggers() {
             duration: 0,
           })
         }
-        className={\`\${TRIGGER} bg-blue-600 hover:bg-blue-700\`}
+        className="px-6 py-2.5 bg-primary text-primary-foreground text-sm font-semibold rounded-xl transition-colors shadow-sm hover:opacity-90 cursor-pointer"
       >
         Persistent toast
       </button>
@@ -179,7 +168,7 @@ function Triggers() {
             duration: 1500,
           })
         }
-        className={\`\${TRIGGER} bg-emerald-600 hover:bg-emerald-700\`}
+        className={\`\${TRIGGER} text-white bg-emerald-600 hover:bg-emerald-700\`}
       >
         Quick toast
       </button>
@@ -200,23 +189,21 @@ export default function ToastDuration() {
 
 export const usageGlow = `"use client";
 
-import {
-  ToastProvider,
-  useToast,
-} from "@/components/custom/blocks/ToastBlock";
+import { ToastProvider } from "@/components/custom/blocks/ToastBlock";
+import { useToast } from "@/components/custom/blocks/toast-context";
 
 const TRIGGER =
-  "px-6 py-2.5 text-white text-sm font-bold rounded-xl transition-colors shadow-sm";
+  "px-6 py-2.5 text-sm font-semibold rounded-xl transition-colors shadow-sm";
 
 function Triggers() {
   const { toast } = useToast();
 
   const types = [
-    { type: "success", label: "Success", title: "Action completed", description: "Your file has been uploaded successfully.", className: "bg-emerald-600 hover:bg-emerald-700" },
-    { type: "error", label: "Error", title: "Connection failed", description: "Could not connect to the database.", className: "bg-red-600 hover:bg-red-700" },
-    { type: "warning", label: "Warning", title: "Storage almost full", description: "You've used 92% of your quota.", className: "bg-amber-500 hover:bg-amber-600" },
-    { type: "info", label: "Update available", title: "Update available", description: "A new version is ready to install.", className: "bg-blue-600 hover:bg-blue-700" },
-    { type: "default", label: "Default", title: "Message sent", description: undefined, className: "bg-zinc-700 hover:bg-zinc-800" },
+    { type: "success", label: "Success", title: "Action completed", description: "Your file has been uploaded successfully.", className: "text-white bg-emerald-600 hover:bg-emerald-700" },
+    { type: "error", label: "Error", title: "Connection failed", description: "Could not connect to the database.", className: "text-white bg-red-600 hover:bg-red-700" },
+    { type: "warning", label: "Warning", title: "Storage almost full", description: "You've used 92% of your quota.", className: "text-white bg-amber-500 hover:bg-amber-600" },
+    { type: "info", label: "Update available", title: "Update available", description: "A new version is ready to install.", className: "text-white bg-blue-600 hover:bg-blue-700" },
+    { type: "default", label: "Default", title: "Message sent", description: undefined, className: "bg-primary text-primary-foreground hover:bg-primary/90" },
   ] as const;
 
   return (
@@ -248,25 +235,118 @@ export default function GlowToasts() {
   );
 }`;
 
-export const usageMinimal = `"use client";
+export const usageGlass = `"use client";
 
-import {
-  ToastProvider,
-  useToast,
-} from "@/components/custom/blocks/ToastBlock";
+import { ToastProvider } from "@/components/custom/blocks/ToastBlock";
+import { useToast } from "@/components/custom/blocks/toast-context";
 
 const TRIGGER =
-  "px-6 py-2.5 text-white text-sm font-bold rounded-xl transition-colors shadow-sm";
+  "px-6 py-2.5 text-sm font-semibold rounded-xl transition-colors shadow-sm";
 
 function Triggers() {
   const { toast } = useToast();
 
   const types = [
-    { type: "success", label: "Success", title: "Action completed", description: "Your file has been uploaded successfully.", className: "bg-emerald-600 hover:bg-emerald-700" },
-    { type: "error", label: "Error", title: "Connection failed", description: "Could not connect to the database.", className: "bg-red-600 hover:bg-red-700" },
-    { type: "warning", label: "Warning", title: "Storage almost full", description: "You've used 92% of your quota.", className: "bg-amber-500 hover:bg-amber-600" },
-    { type: "info", label: "Update available", title: "Update available", description: "A new version is ready to install.", className: "bg-blue-600 hover:bg-blue-700" },
-    { type: "default", label: "Default", title: "Message sent", description: undefined, className: "bg-zinc-700 hover:bg-zinc-800" },
+    { type: "success", label: "Success", title: "Changes saved", description: "Your profile has been updated.", className: "text-white bg-emerald-600 hover:bg-emerald-700" },
+    { type: "error", label: "Error", title: "Connection failed", description: "Could not connect to the database.", className: "text-white bg-red-600 hover:bg-red-700" },
+    { type: "warning", label: "Warning", title: "Storage almost full", description: "You've used 92% of your quota.", className: "text-white bg-amber-500 hover:bg-amber-600" },
+    { type: "info", label: "Info", title: "Update available", description: "A new version is ready to install.", className: "text-white bg-blue-600 hover:bg-blue-700" },
+    { type: "default", label: "Default", title: "Message sent", description: undefined, className: "bg-primary text-primary-foreground hover:bg-primary/90" },
+  ] as const;
+
+  return (
+    <div className="flex flex-wrap items-center justify-center gap-3">
+      {types.map((t) => (
+        <button
+          key={t.type}
+          onClick={() =>
+            toast({ title: t.title, description: t.description, type: t.type })
+          }
+          className={\`\${TRIGGER} \${t.className}\`}
+        >
+          {t.label}
+        </button>
+      ))}
+    </div>
+  );
+}
+
+// useToast() reads the provider context, so a trigger has to render INSIDE
+// <ToastProvider> — calling it outside throws. In a real app the provider
+// wraps your whole tree once, in layout.tsx.
+export default function GlassToasts() {
+  return (
+    // variant lives on the provider, so every toast it renders picks it up.
+    <ToastProvider variant="glass" position="bottom-right">
+      <Triggers />
+    </ToastProvider>
+  );
+}`;
+
+export const usageStack = `"use client";
+
+import { ToastProvider } from "@/components/custom/blocks/ToastBlock";
+import { useToast } from "@/components/custom/blocks/toast-context";
+
+const TRIGGER =
+  "px-6 py-2.5 text-sm font-semibold rounded-xl transition-colors shadow-sm";
+
+function Triggers() {
+  const { toast } = useToast();
+
+  const types = [
+    { type: "success", label: "Success", title: "Changes saved", description: "Your profile has been updated.", className: "text-white bg-emerald-600 hover:bg-emerald-700" },
+    { type: "warning", label: "Warning", title: "Storage almost full", description: "You've used 92% of your quota.", className: "text-white bg-amber-500 hover:bg-amber-600" },
+    { type: "error", label: "Error", title: "Connection failed", description: "Could not connect to the database.", className: "text-white bg-red-600 hover:bg-red-700" },
+    { type: "info", label: "Info", title: "Update available", description: "A new version is ready to install.", className: "text-white bg-blue-600 hover:bg-blue-700" },
+  ] as const;
+
+  return (
+    <div className="flex flex-wrap items-center justify-center gap-3">
+      {types.map((t) => (
+        <button
+          key={t.type}
+          onClick={() =>
+            toast({ title: t.title, description: t.description, type: t.type })
+          }
+          className={\`\${TRIGGER} \${t.className}\`}
+        >
+          {t.label}
+        </button>
+      ))}
+    </div>
+  );
+}
+
+// useToast() reads the provider context, so a trigger has to render INSIDE
+// <ToastProvider> — calling it outside throws. In a real app the provider
+// wraps your whole tree once, in layout.tsx.
+export default function StackedToasts() {
+  return (
+    // stack piles toasts behind the newest one; hover the pile to fan it out.
+    <ToastProvider variant="glass" stack position="bottom-right">
+      <Triggers />
+    </ToastProvider>
+  );
+}`;
+
+export const usageMinimal = `"use client";
+
+import { ToastProvider } from "@/components/custom/blocks/ToastBlock";
+import { useToast } from "@/components/custom/blocks/toast-context";
+
+const TRIGGER =
+  "px-6 py-2.5 text-sm font-semibold rounded-xl transition-colors shadow-sm";
+
+function Triggers() {
+  const { toast } = useToast();
+
+  const types = [
+    { type: "success", label: "Success", title: "Action completed", description: "Your file has been uploaded successfully.", className: "text-white bg-emerald-600 hover:bg-emerald-700" },
+    { type: "error", label: "Error", title: "Connection failed", description: "Could not connect to the database.", className: "text-white bg-red-600 hover:bg-red-700" },
+    { type: "warning", label: "Warning", title: "Storage almost full", description: "You've used 92% of your quota.", className: "text-white bg-amber-500 hover:bg-amber-600" },
+    { type: "info", label: "Update available", title: "Update available", description: "A new version is ready to install.", className: "text-white bg-blue-600 hover:bg-blue-700" },
+    { type: "default", label: "Default", title: "Message sent", description: undefined, className: "bg-primary text-primary-foreground hover:bg-primary/90" },
   ] as const;
 
   return (
@@ -300,7 +380,7 @@ export default function MinimalToasts() {
 
 <ExampleShowcase
   name="toast"
-  colorControl
+  colorControl={false}
   columns={1}
   examples={[
     {
@@ -326,13 +406,13 @@ export default function MinimalToasts() {
 
 ### Wrap your app
 
-`ToastProvider` owns the queue, so it has to sit above anything that calls `useToast` — usually `app/layout.tsx`. The global `variant`, `color` and `position` are set there, and the first example's **Usage** tab shows the whole wiring.
+`ToastProvider` owns the queue, so it has to sit above anything that calls `useToast` — usually `app/layout.tsx`. The global `variant` and `position` are set there, and the first example's **Usage** tab shows the whole wiring.
 
 ## Examples
 
 <ExampleShowcase
   name="toast"
-  colorControl
+  colorControl={false}
   columns={1}
   examples={[
     {
@@ -387,6 +467,34 @@ export default function MinimalToasts() {
       usage: usageGlow,
     },
     {
+      title: "Glass",
+      propNotes: [
+        {
+          lead: "Set",
+          prop: "variant",
+          value: '"glass"',
+          effect:
+            "for a frosted card with the type accent bleeding in from the icon corner — solid badge icons, centred close button.",
+        },
+      ],
+      props: { variant: "glass", example: "types" },
+      usage: usageGlass,
+    },
+    {
+      title: "Stacked",
+      subheading: "Fire a few in a row, then hover the pile to fan it out.",
+      propNotes: [
+        {
+          lead: "Set",
+          prop: "stack",
+          effect:
+            "on the provider to pile toasts behind the newest one instead of listing them. Hovering expands the pile and pauses every timer in it; `stack` works with any `variant`.",
+        },
+      ],
+      props: { variant: "glass", stack: true, example: "stack" },
+      usage: usageStack,
+    },
+    {
       title: "Minimal",
       propNotes: [
         {
@@ -407,30 +515,30 @@ export default function MinimalToasts() {
 Discover the Toast component's notification features, including auto-dismissal, action buttons, and accessible screen reader announcements.
 
 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 my-6 not-prose">
-  <div className="p-6 rounded-2xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900">
-    <h3 className="text-lg font-semibold text-zinc-900 dark:text-zinc-50 mb-2">Customizable</h3>
-    <p className="text-zinc-600 dark:text-zinc-400 text-sm">Easily adapt the component's styling and behavior to fit your application's unique design system.</p>
+  <div className="p-6 rounded-2xl border border-border bg-card">
+    <h3 className="text-lg font-semibold text-card-foreground mb-2">Customizable</h3>
+    <p className="text-muted-foreground text-sm">Easily adapt the component's styling and behavior to fit your application's unique design system.</p>
   </div>
-  <div className="p-6 rounded-2xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900">
-    <h3 className="text-lg font-semibold text-zinc-900 dark:text-zinc-50 mb-2">Accessible</h3>
-    <p className="text-zinc-600 dark:text-zinc-400 text-sm">Built with accessibility in mind, ensuring all users can interact with your application effectively.</p>
+  <div className="p-6 rounded-2xl border border-border bg-card">
+    <h3 className="text-lg font-semibold text-card-foreground mb-2">Accessible</h3>
+    <p className="text-muted-foreground text-sm">Built with accessibility in mind, ensuring all users can interact with your application effectively.</p>
   </div>
-  <div className="p-6 rounded-2xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900">
-    <h3 className="text-lg font-semibold text-zinc-900 dark:text-zinc-50 mb-2">Responsive</h3>
-    <p className="text-zinc-600 dark:text-zinc-400 text-sm">Fully responsive design that looks and works great across desktop, tablet, and mobile devices.</p>
+  <div className="p-6 rounded-2xl border border-border bg-card">
+    <h3 className="text-lg font-semibold text-card-foreground mb-2">Responsive</h3>
+    <p className="text-muted-foreground text-sm">Fully responsive design that looks and works great across desktop, tablet, and mobile devices.</p>
   </div>
-  <div className="p-6 rounded-2xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900">
-    <h3 className="text-lg font-semibold text-zinc-900 dark:text-zinc-50 mb-2">Performant</h3>
-    <p className="text-zinc-600 dark:text-zinc-400 text-sm">Optimized for maximum performance with minimal re-renders and efficient state management.</p>
+  <div className="p-6 rounded-2xl border border-border bg-card">
+    <h3 className="text-lg font-semibold text-card-foreground mb-2">Performant</h3>
+    <p className="text-muted-foreground text-sm">Optimized for maximum performance with minimal re-renders and efficient state management.</p>
   </div>
 </div>
 
 ## Best Practices & Guidelines
 
 <div className="flex flex-col gap-4 my-6 not-prose">
-  <div className="p-5 rounded-xl border border-blue-200 dark:border-blue-900/50 bg-blue-50/50 dark:bg-blue-950/20">
-    <h4 className="text-base font-semibold text-blue-900 dark:text-blue-300 mb-1">Usage Guidelines</h4>
-    <p className="text-blue-800 dark:text-blue-400/80 text-sm">Follow standard design principles when implementing this component. Ensure proper contrast, spacing, and context within your layout.</p>
+  <div className="rounded-xl border border-foreground/[0.06] bg-foreground/[0.03] p-4">
+    <h4 className="font-sans text-[14px] font-semibold text-foreground mb-1">Usage Guidelines</h4>
+    <p className="text-[13px] leading-relaxed text-foreground/50">Follow standard design principles when implementing this component. Ensure proper contrast, spacing, and context within your layout.</p>
   </div>
 </div>
 
@@ -474,21 +582,26 @@ Discover the Toast component's notification features, including auto-dismissal, 
         <td>
           <code>"default"</code>
         </td>
-        <td>Determines the global visual styling of the toast cards.</td>
+        <td>
+          Determines the global visual styling of the toast cards.{" "}
+          <code>glow</code> adds a coloured halo, <code>glass</code> a frosted,
+          type-tinted card, <code>minimal</code> a thin accent bar.
+        </td>
       </tr>
       <tr>
         <td>
-          <code>color</code>
+          <code>stack</code>
         </td>
         <td>
-          <code>"indigo" | "rose" | "emerald" | "zinc" | string</code>
+          <code>boolean</code>
         </td>
         <td>
-          <code>"indigo"</code>
+          <code>false</code>
         </td>
         <td>
-          Applies the global color theme to the glow shadows and border accents.
-          Accepts hex codes.
+          Piles toasts on top of each other with the newest in front and older
+          ones peeking out behind it. Hovering the pile fans it out into a list
+          and pauses auto-dismiss until the pointer leaves.
         </td>
       </tr>
     </tbody>

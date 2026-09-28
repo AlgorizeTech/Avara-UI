@@ -8,7 +8,7 @@
       "type": "registry:component",
       "title": "Accordion",
       "author": "AlgorizeTech",
-      "description": "A data-driven accordion taking an array of items, with single or multiple open sections. Use it for FAQs and any list of collapsible sections.",
+      "description": "A data-driven accordion taking an array of items, with five distinct variants and an optional stack entrance that deals the items into place. Use it for FAQs and any list of collapsible sections.",
       "categories": [
         "layout"
       ],
@@ -26,7 +26,7 @@
           "target": "components/custom/blocks/Accordion.tsx"
         }
       ],
-      "docs": "Named export: Accordion. Pass `accordionData` as { value, title, icon?, content } — content accepts a string array or a node. `type` is single | multiple; set `collapsible` to let the last open section close. Variants: default | bordered | filled | ghost. Wraps the `ui-accordion` Radix primitive. For a single section, `collapsible` is lighter."
+      "docs": "Named export: Accordion. Pass `accordionData` as { value, title, icon?, content } — content accepts a string array or a node. `type` is single | multiple; set `collapsible` to let the last open section close. Variants: default (open row lifts out as a card) | bordered (rail on the open row) | filled (open row inverts to primary) | elevated (cards, open one on a ring) | ghost (type and hairlines). `animation=\"stack\"` piles the items and deals them out on scroll-in via the Web Animations API; skipped under reduced motion. Wraps the `ui-accordion` Radix primitive. For a single section, `collapsible` is lighter."
     },
     {
       "name": "advanced-table",
@@ -37,13 +37,9 @@
       "categories": [
         "data-display"
       ],
-      "dependencies": [
-        "lucide-react"
-      ],
+      "dependencies": [],
       "registryDependencies": [
-        "https://algorize-ui.vercel.app/r/select.json",
-        "https://algorize-ui.vercel.app/r/table.json",
-        "utils"
+        "https://algorize-ui.vercel.app/r/table.json"
       ],
       "files": [
         {
@@ -64,6 +60,7 @@
         "communication"
       ],
       "dependencies": [
+        "gsap",
         "lucide-react"
       ],
       "registryDependencies": [
@@ -74,9 +71,44 @@
           "path": "src/components/custom/blocks/Ai-chat.tsx",
           "type": "registry:component",
           "target": "components/custom/blocks/Ai-chat.tsx"
+        },
+        {
+          "path": "src/components/custom/blocks/gsap-motion.ts",
+          "type": "registry:component",
+          "target": "components/custom/blocks/gsap-motion.ts"
+        },
+        {
+          "path": "src/components/custom/blocks/motion-curves.ts",
+          "type": "registry:component",
+          "target": "components/custom/blocks/motion-curves.ts"
         }
       ],
-      "docs": "Named exports: AIChat, plus ChatThread and Message types. Presentation only — responses are mocked, so wire it to your own model endpoint. Variants: default | minimal | glass. Handles thread switching and message rendering; streaming and persistence are yours."
+      "docs": "Named exports: AIChat, plus ChatThread, Message, ChatModel, EffortOption, ComposerTool, SendPayload and UploadHandler types. Responses are mocked — wire `onSend` ({ content, attachments, model, effort, tools }) to your endpoint and `uploadFile` (file, onProgress, signal) to your storage. The composer ships with a + menu (`tools`: one upload row opens the picker, the rest insert @Label mentions), drag-and-drop attachments (rocket progress indicator), a `models` picker, a Faster↔Smarter `efforts` slider that lights the prompt bar at the top level, and mic dictation via getUserMedia + the Web Speech API with graceful fallbacks. Variants: default | minimal | glass | compact (no history sidebar — opens as a hero with `heroTitle` over the prompt bar until the first message; `showSidebar={false}` does the same for any variant)."
+    },
+    {
+      "name": "ai-chat-framer",
+      "type": "registry:component",
+      "title": "AI Chat (Motion)",
+      "author": "AlgorizeTech",
+      "description": "An AI assistant interface with thread history sidebar, streaming-style responses and a prompt composer. Use it as the front end for an LLM feature.",
+      "categories": [
+        "communication"
+      ],
+      "dependencies": [
+        "framer-motion",
+        "lucide-react"
+      ],
+      "registryDependencies": [
+        "utils"
+      ],
+      "files": [
+        {
+          "path": "src/components/custom/blocks/framer/Ai-chat.tsx",
+          "type": "registry:component",
+          "target": "components/custom/blocks/Ai-chat.tsx"
+        }
+      ],
+      "docs": "Motion build of `ai-chat` — same props, markup and install path; install one or the other. Named exports: AIChat, plus ChatThread, Message, ChatModel, EffortOption, ComposerTool, SendPayload and UploadHandler types. Responses are mocked — wire `onSend` ({ content, attachments, model, effort, tools }) to your endpoint and `uploadFile` (file, onProgress, signal) to your storage. The composer ships with a + menu (`tools`: one upload row opens the picker, the rest insert @Label mentions), drag-and-drop attachments (rocket progress indicator), a `models` picker, a Faster↔Smarter `efforts` slider that lights the prompt bar at the top level, and mic dictation via getUserMedia + the Web Speech API with graceful fallbacks. Variants: default | minimal | glass | compact (no history sidebar — opens as a hero with `heroTitle` over the prompt bar until the first message; `showSidebar={false}` does the same for any variant)."
     },
     {
       "name": "alert",
@@ -103,17 +135,41 @@
       "docs": "Named export: Alert. `type` is primary | secondary | success | danger | warning | info | dark; `variant` is solid | outline | modern | glass | glow. Set `dismissible` with `onDismiss` to make it closable. For transient messages, use `toast` or `sonner`."
     },
     {
+      "name": "animated-faq",
+      "type": "registry:component",
+      "title": "Animated Faq",
+      "author": "AlgorizeTech",
+      "description": "An FAQ section pairing an accordion of questions with a picture canvas that resizes and crossfades to each open answer. Use it for landing-page FAQs that should feel editorial rather than list-like.",
+      "categories": [
+        "marketing",
+        "layout"
+      ],
+      "dependencies": [
+        "lucide-react"
+      ],
+      "registryDependencies": [
+        "utils"
+      ],
+      "files": [
+        {
+          "path": "src/components/custom/blocks/AnimatedFAQBlock.tsx",
+          "type": "registry:component",
+          "target": "components/custom/blocks/AnimatedFAQBlock.tsx"
+        }
+      ],
+      "docs": "Named export: AnimatedFAQBlock (also the default export); `FAQ_ITEMS` holds the sample data. All motion is CSS — no animation library."
+    },
+    {
       "name": "animated-list",
       "type": "registry:component",
       "title": "Animated List",
       "author": "AlgorizeTech",
-      "description": "A list wrapper that staggers its children in with five entrance styles. Use it to bring feature lists and search results in gracefully.",
+      "description": "A container component for rendering lists with animated item insertions, reorders, or removals. Ideal for dynamic notifications or feeds.",
       "categories": [
-        "utilities"
+        "media",
+        "scroll"
       ],
-      "dependencies": [
-        "gsap"
-      ],
+      "dependencies": [],
       "registryDependencies": [
         "utils"
       ],
@@ -124,7 +180,7 @@
           "target": "components/custom/blocks/AnimatedListBlock.tsx"
         }
       ],
-      "docs": "Named exports: AnimatedList, AnimatedListItem. `variant` is flip | slide-right | slide-left | slide-up | pop; tune with `staggerDelay`, `duration` and a GSAP `ease` string. Wrap AnimatedListItem children — the parent orchestrates the timeline."
+      "docs": "Renders animated lists with smooth insertion and deletion transitions."
     },
     {
       "name": "animated-timeline",
@@ -145,6 +201,11 @@
           "path": "src/components/custom/blocks/AnimatedTimelineBlock.tsx",
           "type": "registry:component",
           "target": "components/custom/blocks/AnimatedTimelineBlock.tsx"
+        },
+        {
+          "path": "src/components/custom/blocks/animated-timeline-theme.ts",
+          "type": "registry:component",
+          "target": "components/custom/blocks/animated-timeline-theme.ts"
         }
       ],
       "docs": "Named exports: AnimatedTimelineBlock, getThemeStyles. `animation` is fade-up | slide-in | zoom-in | flip-up | blur-in; `layout` is left | right | center. Uses IntersectionObserver rather than a motion library, so it has no runtime dependencies. For status-driven progress, use `timeline`."
@@ -154,14 +215,12 @@
       "type": "registry:component",
       "title": "Animated Typography",
       "author": "AlgorizeTech",
-      "description": "Headings and paragraphs that animate in with typewriter, glitch, blur and reveal effects. Use it for section titles that should draw the eye once.",
+      "description": "Headings and paragraphs that animate in with scramble, typewriter, rotating-word, blur and reveal effects. Use it for section titles that should draw the eye once.",
       "categories": [
         "typography",
         "marketing"
       ],
-      "dependencies": [
-        "framer-motion"
-      ],
+      "dependencies": [],
       "registryDependencies": [
         "utils"
       ],
@@ -170,9 +229,14 @@
           "path": "src/components/custom/blocks/AnimatedTypographyBlock.tsx",
           "type": "registry:component",
           "target": "components/custom/blocks/AnimatedTypographyBlock.tsx"
+        },
+        {
+          "path": "src/components/custom/blocks/animated-typography-theme.ts",
+          "type": "registry:component",
+          "target": "components/custom/blocks/animated-typography-theme.ts"
         }
       ],
-      "docs": "Named exports: AnimatedTypographyBlock, getThemeStyles. `as` picks the tag (h1-h6, p, span, blockquote) so semantics stay correct whatever the effect. No runtime dependencies — CSS and timers only. For per-character motion, use `text-animation`."
+      "docs": "Named exports: AnimatedTypographyBlock, getThemeStyles. `as` picks the tag (h1-h6, p, span, blockquote) so semantics stay correct whatever the effect. The rotating variants (letter-bounce, typewriter, word-flip, blur-swap) cycle `words` between `titlePrefix` and `titleSuffix`, one every `interval` ms (or `index`, when something else keeps time); `text` stays what screen readers announce. `prefixPosition` is fixed (the text before the words holds still) or fluid (it re-centres as the word changes). `bare` hands the type to `className` for composing into a section heading, and `play={false}` holds a reveal until it is wanted. No runtime dependencies — CSS and timers only. For per-character motion, use `text-animation`."
     },
     {
       "name": "api-playground",
@@ -196,9 +260,192 @@
           "path": "src/components/custom/blocks/ApiPlaygroundBlock.tsx",
           "type": "registry:component",
           "target": "components/custom/blocks/ApiPlaygroundBlock.tsx"
+        },
+        {
+          "path": "src/components/custom/blocks/api-playground-theme.ts",
+          "type": "registry:component",
+          "target": "components/custom/blocks/api-playground-theme.ts"
         }
       ],
       "docs": "Named exports: ApiPlaygroundBlock, getThemeStyles, and the types ApiPlaygroundRequest, ApiMockHandler, ApiResponse. Methods GET | POST | PUT | PATCH | DELETE are colour-coded. Ships a mock response by default — pass a `mockHandler`, or wire it to a real fetch. Depends on `select`. Sending real requests from the browser is subject to CORS."
+    },
+    {
+      "name": "apple-select",
+      "type": "registry:component",
+      "title": "Apple Select",
+      "author": "AlgorizeTech",
+      "description": "An iOS-style text selection rendered from a fixed character range — translucent highlight with lollipop handles on either end. Use it in docs, tutorials and marketing copy to point at part of a sentence.",
+      "categories": [
+        "typography"
+      ],
+      "dependencies": [],
+      "registryDependencies": [
+        "utils"
+      ],
+      "files": [
+        {
+          "path": "src/components/custom/blocks/AppleSelectBlock.tsx",
+          "type": "registry:component",
+          "target": "components/custom/blocks/AppleSelectBlock.tsx"
+        }
+      ],
+      "docs": "Named export: AppleSelect. `text` is the full string and `selection` is a `[start, end]` character range (end exclusive, like String.slice) or an array of them for several phrases. The range is fixed by the author, not draggable. `color` takes any CSS colour, `handles={false}` drops the lollipops, and `animate` fades the highlight in on mount. Renders a <p> by default; `as=\"span\"` sets it inline inside your own paragraph. Other HTML attributes are forwarded to it."
+    },
+    {
+      "name": "audio-player",
+      "type": "registry:component",
+      "title": "Audio Player",
+      "author": "AlgorizeTech",
+      "description": "An audio player with artwork, transport, scrubber and volume, in a hero card, a compact bar, or wrapped around the browser's native controls.",
+      "categories": [
+        "marketing",
+        "media"
+      ],
+      "dependencies": [
+        "lucide-react"
+      ],
+      "registryDependencies": [
+        "utils"
+      ],
+      "files": [
+        {
+          "path": "src/components/custom/blocks/AudioPlayerBlock.tsx",
+          "type": "registry:component",
+          "target": "components/custom/blocks/AudioPlayerBlock.tsx"
+        }
+      ],
+      "docs": "Named export: AudioPlayer. `audioUrl` and `artworkUrl` drive it; `variant` is hero | bar | native. Built on a plain <audio> element with no player library, so it adds no npm weight beyond the icons. Playback state mirrors the element's own events, which keeps it correct when a media key or the native controls change it. `skipSeconds` sizes the jump buttons (0 hides them) and the accent follows `--theme-color`."
+    },
+    {
+      "name": "avatar-stack",
+      "type": "registry:component",
+      "title": "Avatar Stack",
+      "author": "AlgorizeTech",
+      "description": "A row of overlapping faces that folds the rest into a +N disc and takes a trailing action. Use it as the social-proof cue under a headline or beside a count.",
+      "categories": [
+        "data-display"
+      ],
+      "dependencies": [],
+      "registryDependencies": [
+        "https://algorize-ui.vercel.app/r/tooltip.json",
+        "utils"
+      ],
+      "files": [
+        {
+          "path": "src/components/custom/blocks/AvatarStackBlock.tsx",
+          "type": "registry:component",
+          "target": "components/custom/blocks/AvatarStackBlock.tsx"
+        }
+      ],
+      "docs": "Named export: AvatarStack. `avatars` are { src, alt? }; `size` sm | md | lg; `max` faces before the +N disc; `ringClassName` is the gap colour; `action` renders last at face size; `spreadOnHover` fans the faces apart under the pointer; `liftOnHover` raises the hovered face above its neighbours; `showTooltip` controls hover tooltips."
+    },
+    {
+      "name": "bento-showcase",
+      "type": "registry:component",
+      "title": "Bento Showcase",
+      "author": "AlgorizeTech",
+      "description": "A six-card marketing bento on black: a hero with a live chat, a case-studies laptop, a headline, figures that scroll up, the plans on a phone, and a team strip that scrolls left. Use it as the showcase section of an agency or services landing page.",
+      "categories": [
+        "marketing",
+        "layout"
+      ],
+      "dependencies": [
+        "lucide-react"
+      ],
+      "registryDependencies": [
+        "https://algorize-ui.vercel.app/r/button.json",
+        "https://algorize-ui.vercel.app/r/chat-bubble.json",
+        "https://algorize-ui.vercel.app/r/half-stars.json",
+        "https://algorize-ui.vercel.app/r/marquee.json",
+        "https://algorize-ui.vercel.app/r/mobile-mockup.json",
+        "utils"
+      ],
+      "files": [
+        {
+          "path": "src/components/custom/blocks/BentoShowcaseBlock.tsx",
+          "type": "registry:component",
+          "target": "components/custom/blocks/BentoShowcaseBlock.tsx"
+        }
+      ],
+      "docs": "Named export: BentoShowcase, with parts Card, Hero, CaseStudies, Headline, Stats, Phone and Team. Composed from the marquee, chat-bubble, half-stars, mobile-mockup and button items, which install alongside it. Headlines are children — wrap the display phrase in <em> for the serif italic; `Card` takes a `tone` and grid placement via className."
+    },
+    {
+      "name": "book-appointment",
+      "type": "registry:component",
+      "title": "Book Appointment",
+      "author": "AlgorizeTech",
+      "description": "A practitioner's page that ends in an appointment: portrait and contact, scores as stars, two small charts, and a booking panel — glass or solid. Use it for clinics, salons, consultations.",
+      "categories": [
+        "forms",
+        "marketing"
+      ],
+      "dependencies": [
+        "lucide-react"
+      ],
+      "registryDependencies": [
+        "https://algorize-ui.vercel.app/r/booking-card.json",
+        "https://algorize-ui.vercel.app/r/chart.json",
+        "https://algorize-ui.vercel.app/r/glass-panel.json",
+        "https://algorize-ui.vercel.app/r/half-stars.json"
+      ],
+      "files": [
+        {
+          "path": "src/components/custom/blocks/BookAppointmentBlock.tsx",
+          "type": "registry:component",
+          "target": "components/custom/blocks/BookAppointmentBlock.tsx"
+        }
+      ],
+      "docs": "Named export: BookAppointment. Composed from the booking-card, glass-panel, half-stars and chart items, which install alongside it. Pass `practitioner`, `slotGroups` and `onBook`; `scores`, `visitReasons` and `activities` fill the stars, donut and bar; `variant` switches glass to solid."
+    },
+    {
+      "name": "book-flip",
+      "type": "registry:component",
+      "title": "Book Flip",
+      "author": "AlgorizeTech",
+      "description": "An interactive 3D Book Flip / Leaf Carousel component simulating realistic book page turns, open spreads, spine folds, and bottom leaf navigation controls.",
+      "categories": [
+        "data-display",
+        "utilities"
+      ],
+      "dependencies": [
+        "lucide-react"
+      ],
+      "registryDependencies": [
+        "utils"
+      ],
+      "files": [
+        {
+          "path": "src/components/custom/book-flip.tsx",
+          "type": "registry:component",
+          "target": "components/custom/book-flip.tsx"
+        }
+      ],
+      "docs": "Supports leaves array prop, controlled currentIndex, keyboard navigation, and custom aspect ratios."
+    },
+    {
+      "name": "booking-card",
+      "type": "registry:component",
+      "title": "Booking Card",
+      "author": "AlgorizeTech",
+      "description": "A booking panel for any card: a day strip paged a week at a time, time slots in groups, a button that reads back the choice, and a confirmation that draws itself in. Use it wherever a page ends in an appointment.",
+      "categories": [
+        "forms",
+        "dates"
+      ],
+      "dependencies": [
+        "lucide-react"
+      ],
+      "registryDependencies": [
+        "utils"
+      ],
+      "files": [
+        {
+          "path": "src/components/custom/blocks/BookingCardBlock.tsx",
+          "type": "registry:component",
+          "target": "components/custom/blocks/BookingCardBlock.tsx"
+        }
+      ],
+      "docs": "Named export: BookingCard (plus the BookingSlot and Booking types). `BookingCard` is a compound component — put `BookingCard.Days`, `BookingCard.Slots`, `BookingCard.Submit` and `BookingCard.Confirmation` inside it in any layout; it holds the chosen day and slot and calls `onBook`. It draws no surface of its own: make it the padded inside of whatever panel it sits in so the confirmation reaches the edges. The selected day and slot, the submit and 'Add to calendar' buttons, the check mark and the focus rings use the `--primary` token."
     },
     {
       "name": "breadcrumb",
@@ -220,6 +467,11 @@
           "path": "src/components/custom/blocks/BreadcrumbBlock.tsx",
           "type": "registry:component",
           "target": "components/custom/blocks/BreadcrumbBlock.tsx"
+        },
+        {
+          "path": "src/components/custom/blocks/breadcrumb-theme.ts",
+          "type": "registry:component",
+          "target": "components/custom/blocks/breadcrumb-theme.ts"
         }
       ],
       "docs": "Named exports: BreadcrumbBlock, getThemeStyles. `items` take { label, href?, icon? }; `maxItems` collapses the middle into an ellipsis past that count. Separator styles: classic | slash | solid | ghost. Renders next/link, so it needs edits outside Next.js."
@@ -258,6 +510,7 @@
         "dates"
       ],
       "dependencies": [
+        "class-variance-authority",
         "lucide-react",
         "react-day-picker"
       ],
@@ -271,6 +524,11 @@
           "path": "src/components/custom/blocks/Calendar.tsx",
           "type": "registry:component",
           "target": "components/custom/blocks/Calendar.tsx"
+        },
+        {
+          "path": "src/components/custom/ui/button-variants.ts",
+          "type": "registry:component",
+          "target": "components/custom/ui/button-variants.ts"
         }
       ],
       "docs": "Named exports: Calendar, CalendarDashboard, CalendarDayButton. Built on react-day-picker; variants are default | minimal | glass. `mockEvents` is a Record<string, string[]> keyed by date for the event dots. Pulls in `select` and `ui-button` as registry dependencies. For a plain date field, use `date-picker`."
@@ -286,6 +544,7 @@
       ],
       "dependencies": [],
       "registryDependencies": [
+        "https://algorize-ui.vercel.app/r/product-card.json",
         "utils"
       ],
       "files": [
@@ -296,6 +555,33 @@
         }
       ],
       "docs": "Named exports: Card, CardHeader, CardTitle, CardDescription, CardContent, CardFooter. Compose them rather than passing props to a single element."
+    },
+    {
+      "name": "card-stack",
+      "type": "registry:component",
+      "title": "Card Stack",
+      "author": "AlgorizeTech",
+      "description": "A layered deck of cards featuring fluid drag-to-discard gestures, button-driven directional slide animations, and realistic depth perspective.",
+      "categories": [
+        "data-display",
+        "marketing",
+        "actions"
+      ],
+      "dependencies": [
+        "framer-motion",
+        "lucide-react"
+      ],
+      "registryDependencies": [
+        "utils"
+      ],
+      "files": [
+        {
+          "path": "src/components/custom/blocks/CardStackBlock.tsx",
+          "type": "registry:component",
+          "target": "components/custom/blocks/CardStackBlock.tsx"
+        }
+      ],
+      "docs": "Named export: CardStack (also default). Accepts items, visibleCards, swipeToDismiss, canDismissLastCard, loop, showHeader, and showNavigation."
     },
     {
       "name": "carousel",
@@ -310,7 +596,9 @@
       "dependencies": [
         "lucide-react"
       ],
-      "registryDependencies": [],
+      "registryDependencies": [
+        "utils"
+      ],
       "files": [
         {
           "path": "src/components/custom/carousel.tsx",
@@ -331,7 +619,7 @@
         "marketing"
       ],
       "dependencies": [
-        "framer-motion",
+        "gsap",
         "lucide-react"
       ],
       "registryDependencies": [
@@ -342,9 +630,45 @@
           "path": "src/components/custom/blocks/ThreeDCarouselBlock.tsx",
           "type": "registry:component",
           "target": "components/custom/blocks/ThreeDCarouselBlock.tsx"
+        },
+        {
+          "path": "src/components/custom/blocks/gsap-motion.ts",
+          "type": "registry:component",
+          "target": "components/custom/blocks/gsap-motion.ts"
+        },
+        {
+          "path": "src/components/custom/blocks/motion-curves.ts",
+          "type": "registry:component",
+          "target": "components/custom/blocks/motion-curves.ts"
         }
       ],
       "docs": "Named exports: ThreeDCarousel, CarouselItem. `items` take { id, title, category, image, description? }. `autoPlay` with `autoPlayInterval` advances it; dragging pauses. Renders a plain <img>, so it works outside Next.js."
+    },
+    {
+      "name": "carousel-3d-framer",
+      "type": "registry:component",
+      "title": "Carousel 3D (Motion)",
+      "author": "AlgorizeTech",
+      "description": "A perspective carousel where cards rotate through depth, with drag and autoplay. Use it for portfolio and gallery sections that need presence.",
+      "categories": [
+        "media",
+        "marketing"
+      ],
+      "dependencies": [
+        "framer-motion",
+        "lucide-react"
+      ],
+      "registryDependencies": [
+        "utils"
+      ],
+      "files": [
+        {
+          "path": "src/components/custom/blocks/framer/ThreeDCarouselBlock.tsx",
+          "type": "registry:component",
+          "target": "components/custom/blocks/ThreeDCarouselBlock.tsx"
+        }
+      ],
+      "docs": "Motion build of `carousel-3d` — same props, markup and install path; install one or the other. Named exports: ThreeDCarousel, CarouselItem. `items` take { id, title, category, image, description? }. `autoPlay` with `autoPlayInterval` advances it; dragging pauses. Renders a plain <img>, so it works outside Next.js."
     },
     {
       "name": "cart",
@@ -356,7 +680,6 @@
         "commerce"
       ],
       "dependencies": [
-        "gsap",
         "lucide-react"
       ],
       "registryDependencies": [
@@ -367,9 +690,14 @@
           "path": "src/components/custom/blocks/CartBlock.tsx",
           "type": "registry:component",
           "target": "components/custom/blocks/CartBlock.tsx"
+        },
+        {
+          "path": "src/components/custom/blocks/cart-theme.ts",
+          "type": "registry:component",
+          "target": "components/custom/blocks/cart-theme.ts"
         }
       ],
-      "docs": "Named exports: CartBlock, getThemeStyles, and the CartItem type. Switch presentation with `type` (drawer | modal | popover | page) without changing the item data. Pass the products in from the parent via `initialItems` — the component ships no sample data and renders its empty state without them. Items carry { id, name, price, quantity, gradient, size?, color? }; quantity and removal are handled internally."
+      "docs": "Named exports: CartBlock, getThemeStyles, and the CartItem type. Switch presentation with `type` (drawer | modal | popover | page) without changing the item data. Pass the products in from the parent via `initialItems` — the component ships no sample data and renders its empty state without them. Items carry { id, name, price, quantity, gradient, size?, color? }; quantity and removal are handled internally. The trigger animates itself: a periodic tilt-and-ring nudge while the cart has items and has never been opened, a spring on press, and a badge pop whenever the count grows — all skipped under prefers-reduced-motion."
     },
     {
       "name": "chart",
@@ -391,7 +719,7 @@
           "target": "components/custom/blocks/ChartBlock.tsx"
         }
       ],
-      "docs": "Named exports: ChartBlock. `data` takes { label, value }; switch presentation with `type` (bar | line | pie | donut) and set `height` in pixels. Hand-drawn SVG with no chart library, so bundle cost is nil — but there are no axes, tooltips or scales beyond what is drawn. Use a real charting library for analytical work."
+      "docs": "Named exports: ChartBlock. `data` takes { label, value, color? }; switch presentation with `type` (bar | line | pie | donut | donut-legend | stacked-bar) and set `height` in pixels for the axis charts. The two legend types colour each share from `colors` (theme accent first) and take `centerLabel` / `hoverLabel`. Hand-drawn SVG with no chart library, so bundle cost is nil — but there are no axes or scales beyond what is drawn. Use a real charting library for analytical work."
     },
     {
       "name": "chat",
@@ -427,7 +755,6 @@
         "communication"
       ],
       "dependencies": [
-        "gsap",
         "lucide-react"
       ],
       "registryDependencies": [
@@ -441,6 +768,57 @@
         }
       ],
       "docs": "Named exports: ChatBubble, ChatAvatar, ChatMessage, ChatTimestamp. `layout` is default | group-top | group-middle | group-bottom and adjusts the corner radii so consecutive messages from one sender read as a block. `status` renders sent | delivered | read ticks. These are the pieces `chat` assembles."
+    },
+    {
+      "name": "circular-text",
+      "type": "registry:component",
+      "title": "Circular Text",
+      "author": "AlgorizeTech",
+      "description": "Words set on a circle, turning slowly, with room in the middle for a mark, a play button or a link. Use it for video badges, stamps and 'see the work' links.",
+      "categories": [
+        "typography"
+      ],
+      "dependencies": [],
+      "registryDependencies": [
+        "utils"
+      ],
+      "files": [
+        {
+          "path": "src/components/custom/blocks/CircularTextBlock.tsx",
+          "type": "registry:component",
+          "target": "components/custom/blocks/CircularTextBlock.tsx"
+        }
+      ],
+      "docs": "Named export: CircularText. `text` repeats to fill the ring (or `repeat` times), `size` in px, `speed` seconds per turn (0 holds still), `direction`, `fontSize`/`tracking` in units of a 100-wide circle, `color` (currentColor follows the parent), `innerRing`. Children sit in the middle. Holds still under prefers-reduced-motion."
+    },
+    {
+      "name": "collage-hero",
+      "type": "registry:component",
+      "title": "Collage Hero",
+      "author": "AlgorizeTech",
+      "description": "A playful hero: a badge whose name turns around a mark, a serif headline with two coloured words, hashtag pills, a five-column photo collage and a footer with a quote, a scroll pill and a watch-video trigger. Use it for a kindergarten, studio, school or any warm, busy place.",
+      "categories": [
+        "marketing",
+        "layout"
+      ],
+      "dependencies": [
+        "lucide-react"
+      ],
+      "registryDependencies": [
+        "https://algorize-ui.vercel.app/r/animated-typography.json",
+        "https://algorize-ui.vercel.app/r/button.json",
+        "https://algorize-ui.vercel.app/r/circular-text.json",
+        "https://algorize-ui.vercel.app/r/dialog.json",
+        "utils"
+      ],
+      "files": [
+        {
+          "path": "src/components/custom/blocks/CollageHeroBlock.tsx",
+          "type": "registry:component",
+          "target": "components/custom/blocks/CollageHeroBlock.tsx"
+        }
+      ],
+      "docs": "Named export: CollageHero (plus CollageHero.Badge and CollageHero.Photo). Composed from the button, circular-text and dialog items, which install alongside it. Pass `brand`, `heading` (with <em> for the coloured words), `tags`, `caption`, seven `photos`, `quote`, `scrollLabel`/`scrollTo` and `video` ({ text, url }). `accent` sets --primary for the section, `highlight` the second colour; `reveal` is in-view or immediate."
     },
     {
       "name": "collapsible",
@@ -463,6 +841,31 @@
         }
       ],
       "docs": "Named exports: Collapsible, CollapsibleTrigger, CollapsibleContent. Use `defaultOpen` for uncontrolled, or `open` with `onOpenChange` to drive it yourself. For several linked sections, use `accordion`."
+    },
+    {
+      "name": "color-picker",
+      "type": "registry:component",
+      "title": "Color Picker",
+      "author": "AlgorizeTech",
+      "description": "An interactive 360° Color Spectrum Wheel and Color Palette component featuring 2D color picking, lightness & alpha sliders, format toggles (HEX, RGB, HSL), one-click copy, and EyeDropper API support.",
+      "categories": [
+        "forms",
+        "utilities"
+      ],
+      "dependencies": [
+        "lucide-react"
+      ],
+      "registryDependencies": [
+        "utils"
+      ],
+      "files": [
+        {
+          "path": "src/components/custom/color-picker.tsx",
+          "type": "registry:component",
+          "target": "components/custom/color-picker.tsx"
+        }
+      ],
+      "docs": "Named export: ColorPicker. Pass `value` and `onChange`. Set `variant` to 'standalone' for full card or 'popover' for trigger dropdown. Supports `showPresets`, `showAlpha`, and `showEyeDropper`."
     },
     {
       "name": "command",
@@ -488,6 +891,37 @@
         }
       ],
       "docs": "Named exports: Command, CommandDialog, CommandInput, CommandList, CommandEmpty, CommandGroup, CommandItem, CommandSeparator. Use CommandDialog with `open` / `onOpenChange` for the overlay form, or Command inline. Set `shouldFilter` false to filter server-side yourself. Bind your own ⌘K listener — no global shortcut is registered for you."
+    },
+    {
+      "name": "component-wall",
+      "type": "registry:component",
+      "title": "Component Wall",
+      "author": "AlgorizeTech",
+      "description": "A landing hero for a component library: a headline that blurs in word by word and keeps one word turning, a lead, an install command that names whichever card a camera has just landed on, two actions, a line of trust and the tools it is built with in batches — centred between two walls of screenshots that never end, one camera resting high and the other low, or on the left of a single wall.",
+      "categories": [
+        "marketing",
+        "layout"
+      ],
+      "dependencies": [
+        "lucide-react"
+      ],
+      "registryDependencies": [
+        "https://algorize-ui.vercel.app/r/avatar-stack.json",
+        "https://algorize-ui.vercel.app/r/copy-button.json",
+        "https://algorize-ui.vercel.app/r/half-stars.json",
+        "https://algorize-ui.vercel.app/r/image-wall.json",
+        "https://algorize-ui.vercel.app/r/tech-stack.json",
+        "https://algorize-ui.vercel.app/r/text-animation.json",
+        "utils"
+      ],
+      "files": [
+        {
+          "path": "src/components/custom/blocks/ComponentWallBlock.tsx",
+          "type": "registry:component",
+          "target": "components/custom/blocks/ComponentWallBlock.tsx"
+        }
+      ],
+      "docs": "Named export: ComponentWall (plus the ComponentWallItem type). Composed from the image-wall, text-animation, copy-button, avatar-stack and half-stars items, which install alongside it, and takes a tech-stack in its `stack` slot. Pass `badge` ({ label, href? }), `heading` (a string, revealed word by word; write `{word}` where `headingWords` take turns every `wordInterval` ms, and name one word in `accent` for the primary colour), `description` (a string or inline JSX — it renders inside a <p>), `install` ({ command } — write `{item}` where the focused card's `slug` goes, e.g. `npx shadcn@latest add @algorize-ui/{item}`), `primaryAction`/`secondaryAction` ({ label, href, icon? }), `trust` ({ text, avatars?, rating? }), `items` ({ title, image, slug? }[] — every screenshot sits in the same 493:332 frame; slug defaults to the title in kebab-case) and `stack` (a node — a <TechStack> of <TechStackGroup>s of <TechStackTool name icon />: the tools over the lower wall on desktop and under the band on phones; in the centred layout it closes the copy column, where the compact variant fits). `columns`, `interval` (ms the camera rests; 0 holds still), `order` (serial | shuffle), `zoom`, `intro` (ms the camera drifts with nothing in focus while the copy arrives; default 1800) and `onFocus` pass straight to the wall; `layout` is split (copy left, wall right) or center (copy between two walls — the left camera resting high, the right low, taking turns, the second wall dealing the same items from halfway through; the tools sit under the copy; zoom defaults to 0.9; below lg a single band of every card sits between the copy and the tools); `linkComponent` takes next/link. The headline uses your theme's font-serif, the command font-mono; colours are theme tokens."
     },
     {
       "name": "compute",
@@ -536,6 +970,54 @@
       "docs": "Named exports: ContextMenu, ContextMenuTrigger, ContextMenuContent, ContextMenuItem, ContextMenuSeparator, ContextMenuShortcut. The trigger suppresses the native browser menu inside its bounds. Positioned from pointer coordinates, so it opens where the user clicked rather than anchored to an element."
     },
     {
+      "name": "conversation-timeline",
+      "type": "registry:component",
+      "title": "Conversation Timeline",
+      "author": "AlgorizeTech",
+      "description": "A dense rail of thin marks, one per message, that expands into a labelled list on hover — a minimap for long chats. Use it beside a conversation to jump between messages.",
+      "categories": [
+        "navigation",
+        "communication"
+      ],
+      "dependencies": [],
+      "registryDependencies": [
+        "utils"
+      ],
+      "files": [
+        {
+          "path": "src/components/custom/blocks/ConversationTimelineBlock.tsx",
+          "type": "registry:component",
+          "target": "components/custom/blocks/ConversationTimelineBlock.tsx"
+        }
+      ],
+      "docs": "Named export: ConversationTimeline (plus the TimelineCheckpoint type). `checkpoints` is `{ id, label, sublabel?, role? }[]`, `activeId` marks the selected row with `accent` and `onSelect` receives a clicked id. `side` puts labels left or right; `rowHeight` / `collapsedRowHeight` set the expanded and resting row sizes, `visibleCount` caps rows before scrolling and `labelWidth` fixes the label column. Hover or focus expands it; touch devices stay expanded; respects prefers-reduced-motion."
+    },
+    {
+      "name": "copy-button",
+      "type": "registry:component",
+      "title": "Copy Button",
+      "author": "AlgorizeTech",
+      "description": "A clipboard button that confirms the copy in place — the icon pops to a check and the label swaps to \"Copied!\" — plus a read-only Copy Field for links, tokens and commands. Use it anywhere a value needs to be copied without a toast.",
+      "categories": [
+        "actions",
+        "forms"
+      ],
+      "dependencies": [
+        "lucide-react"
+      ],
+      "registryDependencies": [
+        "utils"
+      ],
+      "files": [
+        {
+          "path": "src/components/custom/blocks/CopyButtonBlock.tsx",
+          "type": "registry:component",
+          "target": "components/custom/blocks/CopyButtonBlock.tsx"
+        }
+      ],
+      "docs": "Named exports: CopyButton, CopyField, useCopyToClipboard. `value` is the text copied; `label` / `copiedLabel` / `errorLabel` set the three states, `timeout` how long the confirmation lingers, `iconOnly` drops the label. Variants are solid | soft | outline | ghost, sizes sm | md | lg, `color` a preset or hex. CopyField wraps a read-only input with the button beside it (or `inset` inside it) and forwards `buttonProps`. Falls back to execCommand where the Clipboard API is unavailable."
+    },
+    {
       "name": "counter",
       "type": "registry:component",
       "title": "Counter",
@@ -546,7 +1028,6 @@
         "forms"
       ],
       "dependencies": [
-        "gsap",
         "lucide-react"
       ],
       "registryDependencies": [
@@ -557,9 +1038,39 @@
           "path": "src/components/custom/blocks/CounterBlock.tsx",
           "type": "registry:component",
           "target": "components/custom/blocks/CounterBlock.tsx"
+        },
+        {
+          "path": "src/components/custom/blocks/counter-theme.ts",
+          "type": "registry:component",
+          "target": "components/custom/blocks/counter-theme.ts"
         }
       ],
-      "docs": "Named exports: CounterBlock, getThemeStyles. `type` is stepper | animated | circular | countdown — stepper is an input with min/max, the others are display-only. Variants: default | outline | soft | vertical."
+      "docs": "Named exports: CounterBlock, getThemeStyles. `type` is stepper | animated | circular | countdown — stepper is an input with min/max, the others are display-only. Variants: default | outline | soft | vertical for the stepper; `slide` for the countdown (soft tiles, only the figure that changed slides — the same countdown the waitlist item uses). The countdown takes `targetDate` (Date, ISO string or timestamp) and `doneLabel`. The animated type also takes `bare` (just the figure, no card), `decimals`, `startOnView` (count once visible) and `className`. `color` accepts a theme name, a hex code or `inherit`."
+    },
+    {
+      "name": "counter-section",
+      "type": "registry:component",
+      "title": "Counter Section",
+      "author": "AlgorizeTech",
+      "description": "A collection of 4 animated high-impact Counter and Stats Sections with viewport-triggered count-up easing, zero shadows, and full adaptive styling.",
+      "categories": [
+        "marketing",
+        "data-display"
+      ],
+      "dependencies": [
+        "lucide-react"
+      ],
+      "registryDependencies": [
+        "utils"
+      ],
+      "files": [
+        {
+          "path": "src/components/custom/blocks/CounterSectionBlock.tsx",
+          "type": "registry:component",
+          "target": "components/custom/blocks/CounterSectionBlock.tsx"
+        }
+      ],
+      "docs": "Named export: CounterSection. Accepts variant ('cyber-hud' | 'minimal-slash' | 'halftone-cinema' | 'spotlight-gradient') and custom stats array with value, prefix, suffix, decimals, label, sublabel, and tag."
     },
     {
       "name": "cursor-animation",
@@ -619,8 +1130,7 @@
         "code"
       ],
       "dependencies": [
-        "lucide-react",
-        "react-icons"
+        "lucide-react"
       ],
       "registryDependencies": [
         "utils"
@@ -632,7 +1142,32 @@
           "target": "components/custom/blocks/CustomCodeBlock.tsx"
         }
       ],
-      "docs": "Named exports: CustomCodeBlock, CodeTab. `tabs` take { code, language, fileName }; a single tab renders without the tab strip. Pulls in `react-icons` as well as `lucide-react` for file-type icons. Highlighting is a built-in regex tokenizer, not Shiki or Prism — good for snippets, not a full editor."
+      "docs": "Named exports: CustomCodeBlock, CodeTab. `tabs` take { code, language, fileName }; a single tab renders without the tab strip. Uses `lucide-react` for file-type icons. Highlighting is a built-in regex tokenizer, not Shiki or Prism — good for snippets, not a full editor."
+    },
+    {
+      "name": "data-flow",
+      "type": "registry:component",
+      "title": "Data Flow",
+      "author": "AlgorizeTech",
+      "description": "A sources → core → outputs section: platform cards on the left feed one node in the middle, which fans out to result cards on the right, with curved connectors that draw in on first view and then carry a moving dash. Use it to explain a pipeline, an integration, or where an AI product's data comes from.",
+      "categories": [
+        "marketing",
+        "data-display"
+      ],
+      "dependencies": [],
+      "registryDependencies": [
+        "https://algorize-ui.vercel.app/r/apple-select.json",
+        "https://algorize-ui.vercel.app/r/flowchart.json",
+        "utils"
+      ],
+      "files": [
+        {
+          "path": "src/components/custom/blocks/DataFlowBlock.tsx",
+          "type": "registry:component",
+          "target": "components/custom/blocks/DataFlowBlock.tsx"
+        }
+      ],
+      "docs": "Named export: DataFlow, with parts Source, Core, Output, Pill, Tag and Row. Composed from the flowchart and apple-select items, which install alongside it (`intro` + `highlights` render through AppleSelect); the docs example also uses half-stars and button inside its output cards. Connectors are measured from the cards at runtime (ResizeObserver), hidden below lg; `reveal` is in-view or immediate; `accent` pins the dash colour, otherwise it follows --primary. Wrap intro phrases in <mark> for black pills."
     },
     {
       "name": "data-grid",
@@ -652,6 +1187,11 @@
           "path": "src/components/custom/blocks/DataGridBlock.tsx",
           "type": "registry:component",
           "target": "components/custom/blocks/DataGridBlock.tsx"
+        },
+        {
+          "path": "src/components/custom/blocks/data-grid-theme.ts",
+          "type": "registry:component",
+          "target": "components/custom/blocks/data-grid-theme.ts"
         }
       ],
       "docs": "Named exports: DataGridBlock, getThemeStyles. `columns` take { field, headerName, width?, type?, readOnly? } — `type` number constrains input. Editing is local to the component, so persist changes through your own handler. Zero runtime dependencies."
@@ -667,6 +1207,7 @@
         "data-display"
       ],
       "dependencies": [
+        "geojson",
         "leaflet",
         "react-leaflet"
       ],
@@ -699,6 +1240,7 @@
         "lucide-react"
       ],
       "registryDependencies": [
+        "https://algorize-ui.vercel.app/r/time-picker.json",
         "utils"
       ],
       "files": [
@@ -706,6 +1248,16 @@
           "path": "src/components/custom/blocks/DatePickerBlock.tsx",
           "type": "registry:component",
           "target": "components/custom/blocks/DatePickerBlock.tsx"
+        },
+        {
+          "path": "src/components/custom/blocks/date-picker-theme.ts",
+          "type": "registry:component",
+          "target": "components/custom/blocks/date-picker-theme.ts"
+        },
+        {
+          "path": "src/components/custom/blocks/motion-curves.ts",
+          "type": "registry:component",
+          "target": "components/custom/blocks/motion-curves.ts"
         }
       ],
       "docs": "Named exports: DatePickerBlock, getThemeStyles. Controlled via `value: Date | null` and `onChange`. Shares the variant, color and size vocabulary of the `input` item, so the two line up visually in the same form. For month grids or event display, use `calendar` instead."
@@ -721,7 +1273,6 @@
         "marketing"
       ],
       "dependencies": [
-        "framer-motion",
         "lucide-react"
       ],
       "registryDependencies": [
@@ -732,9 +1283,14 @@
           "path": "src/components/custom/blocks/DesignComponentsFolder.tsx",
           "type": "registry:component",
           "target": "components/custom/blocks/DesignComponentsFolder.tsx"
+        },
+        {
+          "path": "src/components/custom/blocks/motion-curves.ts",
+          "type": "registry:component",
+          "target": "components/custom/blocks/motion-curves.ts"
         }
       ],
-      "docs": "Named export: DesignComponentsFolder. Framer Motion drives the open and card-fan animation; `color` tints the folder. Uses next/image, so it needs edits outside Next.js. For the empty folder shape, use `design-folder-box`."
+      "docs": "Named export: DesignComponentsFolder. Motion drives the open and card-fan animation; `color` tints the folder. Uses next/image, so it needs edits outside Next.js. For the empty folder shape, use `design-folder-box`."
     },
     {
       "name": "design-folder-box",
@@ -779,14 +1335,53 @@
           "path": "src/components/custom/blocks/DialogBlock.tsx",
           "type": "registry:component",
           "target": "components/custom/blocks/DialogBlock.tsx"
+        },
+        {
+          "path": "src/components/custom/blocks/dialog-context.ts",
+          "type": "registry:component",
+          "target": "components/custom/blocks/dialog-context.ts"
         }
       ],
-      "docs": "Named exports: Dialog, DialogTrigger, DialogContent, DialogHeader, DialogFooter, DialogTitle, useDialog. Use `defaultOpen` for uncontrolled, or `open` with `onOpenChange` to drive it. `asChild` on the trigger merges props into your own element instead of rendering a button. For preset confirmation and fullscreen layouts, use `modal`."
+      "docs": "Named exports: Dialog, DialogTrigger, DialogClose, DialogContent, DialogHeader, DialogFooter, DialogTitle, DialogDescription, useDialog, plus the DialogSize type. Use `defaultOpen` for uncontrolled, or `open` with `onOpenChange` to drive it — `onOpenChange` also fires on Escape and backdrop clicks, which is where you refuse a dismissal while async work is in flight. Size the panel with `size`: sm | md | lg | xl | full, where full fills the viewport and drops the rounding, border and height cap; `className` is merged after it and wins. `hideCloseButton` drops the built-in X. Dialogs nest — render one inside another's content and the inner one portals above its parent, with Escape and backdrop clicks reaching only the topmost. For a controlled overlay you drive entirely from your own state, use `modal`."
     },
     {
       "name": "dock",
       "type": "registry:component",
       "title": "Dock",
+      "author": "AlgorizeTech",
+      "description": "A macOS-style dock where icons magnify as the pointer approaches. Use it for app launchers and playful navigation bars.",
+      "categories": [
+        "navigation"
+      ],
+      "dependencies": [
+        "gsap"
+      ],
+      "registryDependencies": [
+        "utils"
+      ],
+      "files": [
+        {
+          "path": "src/components/custom/blocks/DockBlock.tsx",
+          "type": "registry:component",
+          "target": "components/custom/blocks/DockBlock.tsx"
+        },
+        {
+          "path": "src/components/custom/blocks/gsap-motion.ts",
+          "type": "registry:component",
+          "target": "components/custom/blocks/gsap-motion.ts"
+        },
+        {
+          "path": "src/components/custom/blocks/motion-curves.ts",
+          "type": "registry:component",
+          "target": "components/custom/blocks/motion-curves.ts"
+        }
+      ],
+      "docs": "Named exports: Dock, DockItem. `items` take { id, label, icon, onClick?, isActive?, badge? }. `magnification` sets peak scale and `distance` the falloff radius. Pointer-driven — on touch devices it degrades to a plain icon row."
+    },
+    {
+      "name": "dock-framer",
+      "type": "registry:component",
+      "title": "Dock (Motion)",
       "author": "AlgorizeTech",
       "description": "A macOS-style dock where icons magnify as the pointer approaches. Use it for app launchers and playful navigation bars.",
       "categories": [
@@ -800,12 +1395,74 @@
       ],
       "files": [
         {
-          "path": "src/components/custom/blocks/DockBlock.tsx",
+          "path": "src/components/custom/blocks/framer/DockBlock.tsx",
           "type": "registry:component",
           "target": "components/custom/blocks/DockBlock.tsx"
         }
       ],
-      "docs": "Named exports: Dock, DockItem. `items` take { id, label, icon, onClick?, isActive?, badge? }. `magnification` sets peak scale and `distance` the falloff radius. Pointer-driven — on touch devices it degrades to a plain icon row."
+      "docs": "Motion build of `dock` — same props, markup and install path; install one or the other. Named exports: Dock, DockItem. `items` take { id, label, icon, onClick?, isActive?, badge? }. `magnification` sets peak scale and `distance` the falloff radius. Pointer-driven — on touch devices it degrades to a plain icon row."
+    },
+    {
+      "name": "draggable-card-list",
+      "type": "registry:component",
+      "title": "Draggable Card List",
+      "author": "AlgorizeTech",
+      "description": "An interactive reorderable card list with 60fps Motion spring physics, right-side grip handles, and custom card metadata.",
+      "categories": [
+        "data-display",
+        "layout"
+      ],
+      "dependencies": [
+        "gsap",
+        "lucide-react"
+      ],
+      "registryDependencies": [
+        "utils"
+      ],
+      "files": [
+        {
+          "path": "src/components/custom/draggable-card-list.tsx",
+          "type": "registry:component",
+          "target": "components/custom/draggable-card-list.tsx"
+        },
+        {
+          "path": "src/components/custom/blocks/gsap-motion.ts",
+          "type": "registry:component",
+          "target": "components/custom/blocks/gsap-motion.ts"
+        },
+        {
+          "path": "src/components/custom/blocks/motion-curves.ts",
+          "type": "registry:component",
+          "target": "components/custom/blocks/motion-curves.ts"
+        }
+      ],
+      "docs": "Named exports: DraggableCardList, DraggableCardItem. Accepts `items` ({ id, title, description, date, badge, linkText, linkUrl, completed }), `onReorder`, `title`, `dragHandlePosition` ('right' | 'left'), `enableCheckboxes`, and `enableBadges`."
+    },
+    {
+      "name": "draggable-card-list-framer",
+      "type": "registry:component",
+      "title": "Draggable Card List (Motion)",
+      "author": "AlgorizeTech",
+      "description": "An interactive reorderable card list with 60fps Motion spring physics, right-side grip handles, and custom card metadata.",
+      "categories": [
+        "data-display",
+        "layout"
+      ],
+      "dependencies": [
+        "framer-motion",
+        "lucide-react"
+      ],
+      "registryDependencies": [
+        "utils"
+      ],
+      "files": [
+        {
+          "path": "src/components/custom/framer/draggable-card-list.tsx",
+          "type": "registry:component",
+          "target": "components/custom/draggable-card-list.tsx"
+        }
+      ],
+      "docs": "Motion build of `draggable-card-list` — same props, markup and install path; install one or the other. Named exports: DraggableCardList, DraggableCardItem. Accepts `items` ({ id, title, description, date, badge, linkText, linkUrl, completed }), `onReorder`, `title`, `dragHandlePosition` ('right' | 'left'), `enableCheckboxes`, and `enableBadges`."
     },
     {
       "name": "drawer",
@@ -817,7 +1474,6 @@
         "overlays"
       ],
       "dependencies": [
-        "gsap",
         "lucide-react"
       ],
       "registryDependencies": [
@@ -855,6 +1511,93 @@
         }
       ],
       "docs": "Named exports: EmailApp, plus Email, EmailLabel and Attachment types. The largest block in the registry — a complete application layout with demo data to replace, not a single element. Variants: default | minimal | glass."
+    },
+    {
+      "name": "faq-section",
+      "type": "registry:component",
+      "title": "Faq Section",
+      "author": "AlgorizeTech",
+      "description": "A complete animated FAQ website section pairing an editorial header with a dynamic morphing nature photography canvas and an expandable question accordion.",
+      "categories": [
+        "marketing",
+        "layout"
+      ],
+      "dependencies": [
+        "lucide-react"
+      ],
+      "registryDependencies": [
+        "utils"
+      ],
+      "files": [
+        {
+          "path": "src/components/custom/blocks/FAQSectionBlock.tsx",
+          "type": "registry:component",
+          "target": "components/custom/blocks/FAQSectionBlock.tsx"
+        }
+      ],
+      "docs": "Named export: FAQSection (also default export); AnimatedFAQBlock and FAQ_ITEMS are also exported."
+    },
+    {
+      "name": "fashion-hero",
+      "type": "registry:component",
+      "title": "Fashion Hero",
+      "author": "AlgorizeTech",
+      "description": "A fashion hero: a bold headline between a turning video badge and a stack of faces, five staggered columns of looks on flat colour that tilt under the pointer, a call to action on the middle look, and a footer with a quote and the next story. Use it for a clothing store, a lookbook or an editorial landing page.",
+      "categories": [
+        "marketing",
+        "layout"
+      ],
+      "dependencies": [
+        "lucide-react"
+      ],
+      "registryDependencies": [
+        "https://algorize-ui.vercel.app/r/avatar-stack.json",
+        "https://algorize-ui.vercel.app/r/circular-text.json",
+        "https://algorize-ui.vercel.app/r/dialog.json",
+        "https://algorize-ui.vercel.app/r/text-animation.json",
+        "https://algorize-ui.vercel.app/r/tilted-card.json",
+        "utils"
+      ],
+      "files": [
+        {
+          "path": "src/components/custom/blocks/FashionHeroBlock.tsx",
+          "type": "registry:component",
+          "target": "components/custom/blocks/FashionHeroBlock.tsx"
+        }
+      ],
+      "docs": "Named export: FashionHero (plus FashionHero.Look). Composed from the circular-text, avatar-stack, text-animation, tilted-card and dialog items, which install alongside it. Pass `heading`, up to seven `looks` ({ src, alt, tone, blend?, position? }), `video` ({ badge, url }), `avatars` + `avatarsHref`, `cta`, `quote`, `teaser` and `linkComponent`; `accent` sets --primary, `reveal` is in-view or immediate."
+    },
+    {
+      "name": "flavour-carousel",
+      "type": "registry:component",
+      "title": "Flavour Carousel",
+      "author": "AlgorizeTech",
+      "description": "A product hero for anything that comes in flavours: the product stands in a mountain of powder against a moss backdrop and its flavours flank it on four tilted cream tiles. It rises from behind the powder spinning and settles; then every five seconds, or on a click, the chosen tile slides into the cup and the cup cross-fades to that flavour without moving; a glow takes the flavour's colour, a price pill and add-to-cart hang under the cup. One component for both themes: in dark mode the tiles go translucent black.",
+      "categories": [
+        "marketing",
+        "commerce",
+        "media"
+      ],
+      "dependencies": [
+        "lucide-react"
+      ],
+      "registryDependencies": [
+        "https://algorize-ui.vercel.app/r/button.json",
+        "utils"
+      ],
+      "files": [
+        {
+          "path": "src/components/custom/blocks/FlavourCarouselBlock.tsx",
+          "type": "registry:component",
+          "target": "components/custom/blocks/FlavourCarouselBlock.tsx"
+        },
+        {
+          "path": "src/components/custom/blocks/motion-curves.ts",
+          "type": "registry:component",
+          "target": "components/custom/blocks/motion-curves.ts"
+        }
+      ],
+      "docs": "Named export: FlavourCarousel. Composed from the button item, which installs alongside it. Pass `flavours` ({ name, price?, tint?, product, tile }[] — every product image must share the same crop), `heading`, `interval` in ms (0 turns autoplay off), `initial`, `reveal` (in-view, immediate or none), `onChange` and `onAdd` (omit it to hide the cart button) with `addLabel`. `backgroundImage` is the backdrop and `foregroundImage` the transparent powder cutout laid in front of the cup (`foregroundHeight` of the stage tall); without them the scene is drawn from `background`, `mound` ([light, dark]) and `paper`."
     },
     {
       "name": "fleet-map",
@@ -897,7 +1640,6 @@
         "marketing"
       ],
       "dependencies": [
-        "framer-motion",
         "lucide-react"
       ],
       "registryDependencies": [
@@ -908,9 +1650,39 @@
           "path": "src/components/custom/blocks/FloatingContactButtonBlock.tsx",
           "type": "registry:component",
           "target": "components/custom/blocks/FloatingContactButtonBlock.tsx"
+        },
+        {
+          "path": "src/components/custom/blocks/motion-curves.ts",
+          "type": "registry:component",
+          "target": "components/custom/blocks/motion-curves.ts"
         }
       ],
       "docs": "Named export: FloatingContactButtonBlock. `position` is bottom-right | bottom-left; `containerMode` fixed pins it to the viewport while absolute scopes it to a parent. Open state survives reloads via `localStorageKey`. Messages are local — connect your own backend."
+    },
+    {
+      "name": "flow-gallery",
+      "type": "registry:component",
+      "title": "Flow Gallery",
+      "author": "AlgorizeTech",
+      "description": "Horizontal and diagonal 3D cascading gallery stream with continuous downward auto-flow motion, drag inertia physics, and isometric perspective depth.",
+      "categories": [
+        "media",
+        "scroll"
+      ],
+      "dependencies": [
+        "next-themes"
+      ],
+      "registryDependencies": [
+        "utils"
+      ],
+      "files": [
+        {
+          "path": "src/components/custom/flow-gallery.tsx",
+          "type": "registry:component",
+          "target": "components/custom/flow-gallery.tsx"
+        }
+      ],
+      "docs": "Named export: FlowGallery. Interactive drag with grab cursor, continuous downward auto-flow, 3D isometric plane, and Next Themes adaptation."
     },
     {
       "name": "flowchart",
@@ -921,9 +1693,7 @@
       "categories": [
         "data-display"
       ],
-      "dependencies": [
-        "gsap"
-      ],
+      "dependencies": [],
       "registryDependencies": [
         "utils"
       ],
@@ -932,9 +1702,76 @@
           "path": "src/components/custom/blocks/FlowchartBlock.tsx",
           "type": "registry:component",
           "target": "components/custom/blocks/FlowchartBlock.tsx"
+        },
+        {
+          "path": "src/components/custom/blocks/flowchart-context.ts",
+          "type": "registry:component",
+          "target": "components/custom/blocks/flowchart-context.ts"
         }
       ],
-      "docs": "Named exports: Flowchart, FlowCanvas, FlowNode, FlowConnection, useFlowchart. Nodes declare `connectedPaths`; setting the active path highlights every node and connection on it. Positions are authored by you — there is no auto-layout."
+      "docs": "Named exports: Flowchart, FlowCanvas, FlowNode, FlowConnection, useFlowchart. Nodes declare `connectedPaths`; setting the active path highlights every node and connection on it. Positions are authored by you — there is no auto-layout. `layout=\"fluid\"` drops the fixed canvas so connections can be drawn over your own layout; `FlowConnection` takes `dashed`, `flowDash`, `glow` and `drawDuration`."
+    },
+    {
+      "name": "folder",
+      "type": "registry:component",
+      "title": "Folder",
+      "author": "AlgorizeTech",
+      "description": "A tactile folder — skeleton cards or your own photos tuck behind a frosted-glass pocket and fan out into an arc on hover. Use it for file groups, galleries and drag-and-drop upload targets.",
+      "categories": [
+        "data-display"
+      ],
+      "dependencies": [
+        "gsap",
+        "lucide-react"
+      ],
+      "registryDependencies": [
+        "https://algorize-ui.vercel.app/r/tooltip.json",
+        "utils"
+      ],
+      "files": [
+        {
+          "path": "src/components/custom/blocks/FolderBlock.tsx",
+          "type": "registry:component",
+          "target": "components/custom/blocks/FolderBlock.tsx"
+        },
+        {
+          "path": "src/components/custom/blocks/gsap-motion.ts",
+          "type": "registry:component",
+          "target": "components/custom/blocks/gsap-motion.ts"
+        },
+        {
+          "path": "src/components/custom/blocks/motion-curves.ts",
+          "type": "registry:component",
+          "target": "components/custom/blocks/motion-curves.ts"
+        }
+      ],
+      "docs": "Named exports: Folder, SkeletonCard (plus FolderFile / FolderProps types). `files` is { thumb?, name?, progress? }[]; without files, `peek` skeleton cards show. `color` tints body, pocket, icon and cards via OKLCH; `icon` is a lucide component. Hover, tap or focus opens the fan; past five files it pages with arrows or by dragging a card. `interactive` adds drag-and-drop + click-to-browse with `onFiles`, `progress` and `onRemoveFile`. Pulls in `tooltip` for file-name hovers."
+    },
+    {
+      "name": "folder-framer",
+      "type": "registry:component",
+      "title": "Folder (Motion)",
+      "author": "AlgorizeTech",
+      "description": "A tactile folder — skeleton cards or your own photos tuck behind a frosted-glass pocket and fan out into an arc on hover. Use it for file groups, galleries and drag-and-drop upload targets.",
+      "categories": [
+        "data-display"
+      ],
+      "dependencies": [
+        "framer-motion",
+        "lucide-react"
+      ],
+      "registryDependencies": [
+        "https://algorize-ui.vercel.app/r/tooltip.json",
+        "utils"
+      ],
+      "files": [
+        {
+          "path": "src/components/custom/blocks/framer/FolderBlock.tsx",
+          "type": "registry:component",
+          "target": "components/custom/blocks/FolderBlock.tsx"
+        }
+      ],
+      "docs": "Motion build of `folder` — same props, markup and install path; install one or the other. Named exports: Folder, SkeletonCard (plus FolderFile / FolderProps types). `files` is { thumb?, name?, progress? }[]; without files, `peek` skeleton cards show. `color` tints body, pocket, icon and cards via OKLCH; `icon` is a lucide component. Hover, tap or focus opens the fan; past five files it pages with arrows or by dragging a card. `interactive` adds drag-and-drop + click-to-browse with `onFiles`, `progress` and `onRemoveFile`. Pulls in `tooltip` for file-name hovers."
     },
     {
       "name": "footer",
@@ -951,6 +1788,7 @@
         "lucide-react"
       ],
       "registryDependencies": [
+        "https://algorize-ui.vercel.app/r/social-links.json",
         "utils"
       ],
       "files": [
@@ -960,7 +1798,7 @@
           "target": "components/custom/blocks/FooterBlock.tsx"
         }
       ],
-      "docs": "Named export: Footer. Accepts `variant` (4 responsive variants: simple-centered, glass-dock, neon-glow-pulse, quantum-particle-beam), `brandName`, `tagline`, `logo`, `className`. All variants adapt across mobile, tablet, and desktop screens."
+      "docs": "Named export: Footer. Accepts `variant` (4 responsive variants: simple-centered, glass-dock, neon-glow-pulse, quantum-particle-beam), `brandName`, `tagline`, `logo`, `socialLinks`, `className`. The social row is the `social-links` item, which installs alongside. All variants adapt across mobile, tablet, and desktop screens."
     },
     {
       "name": "form",
@@ -981,20 +1819,46 @@
           "path": "src/components/custom/blocks/FormBlock.tsx",
           "type": "registry:component",
           "target": "components/custom/blocks/FormBlock.tsx"
+        },
+        {
+          "path": "src/components/custom/blocks/form-theme.ts",
+          "type": "registry:component",
+          "target": "components/custom/blocks/form-theme.ts"
         }
       ],
       "docs": "Named exports: FormWrapper, FormField, FormError, FormSubmit, getThemeStyles. Layout and styling only — bring your own state, via react-hook-form or otherwise. FormSubmit takes `isSubmitting` to render its pending state."
+    },
+    {
+      "name": "glass-panel",
+      "type": "registry:component",
+      "title": "Glass Panel",
+      "author": "AlgorizeTech",
+      "description": "A frosted surface in four shapes and the aurora ground it sits on. Use it for glass bento layouts, profile and booking pages — or flip it to solid cards with one prop.",
+      "categories": [
+        "layout"
+      ],
+      "dependencies": [],
+      "registryDependencies": [
+        "utils"
+      ],
+      "files": [
+        {
+          "path": "src/components/custom/blocks/GlassPanelBlock.tsx",
+          "type": "registry:component",
+          "target": "components/custom/blocks/GlassPanelBlock.tsx"
+        }
+      ],
+      "docs": "Named exports: GlassBackdrop, GlassPanel, useSurface (plus SurfaceVariant, GlassShape types). `GlassBackdrop` washes three `aurora` colours behind a 12-column grid (`gridClassName` for row heights and gaps) and sets `variant` (glass | solid) for every `GlassPanel` inside; panels take `shape` (slab, tile, disc, capsule), `interactive`, and Tailwind column spans."
     },
     {
       "name": "globe",
       "type": "registry:component",
       "title": "Globe",
       "author": "AlgorizeTech",
-      "description": "An interactive 3D Globe with 9 animation variants matching site theme colors, including dotted matrix, wireframe hologram, digital matrix, energy shield, minimal flat 3D, activity heatmap, cyber hex, tactical radar sweep, and galaxy spiral.",
+      "description": "An interactive 3D WebGL globe visualization with location markers, arc curves, and rotation controls. Use it for global presence and location showcases.",
       "categories": [
         "data-display",
-        "marketing",
-        "maps"
+        "marketing"
       ],
       "dependencies": [],
       "registryDependencies": [
@@ -1006,8 +1870,7 @@
           "type": "registry:component",
           "target": "components/custom/blocks/GlobeBlock.tsx"
         }
-      ],
-      "docs": "Named export: Globe. Accepts `variant` (9 variants), `size`, `speed`, `interactive`, `glowColor`, `primaryColor`, `markers`, `arcs`. Dynamically adapts to site `var(--primary)` theme color."
+      ]
     },
     {
       "name": "half-stars",
@@ -1033,17 +1896,44 @@
       "docs": "Named export: HalfStars. Set `interactive` to let users pick a rating and `allowHalf` for half-star steps. `onHoverChange` fires during hover so you can preview the value before commit. Leave `interactive` off to render a static score."
     },
     {
+      "name": "heart-signal",
+      "type": "registry:component",
+      "title": "Heart Signal",
+      "author": "AlgorizeTech",
+      "description": "A slow, ultra-smooth cardiac heart signal waveform component with 2 visual variants (realtime EKG line trace and fluid multi-lead cardiac wave).",
+      "categories": [
+        "data-display",
+        "media"
+      ],
+      "dependencies": [
+        "next-themes"
+      ],
+      "registryDependencies": [
+        "utils"
+      ],
+      "files": [
+        {
+          "path": "src/components/custom/blocks/HeartSignalBlock.tsx",
+          "type": "registry:component",
+          "target": "components/custom/blocks/HeartSignalBlock.tsx"
+        }
+      ],
+      "docs": "Named export: HeartSignal. Supports 2 smooth variants (ecg-line and cardiac-wave), live BPM telemetry badge, speed control, and active theme color integration."
+    },
+    {
       "name": "hero",
       "type": "registry:component",
       "title": "Hero",
       "author": "AlgorizeTech",
-      "description": "A composable hero section with centre or split layouts, background patterns and a badge slot. Use it as the opening section of a landing page.",
+      "description": "A prop-driven hero section supporting spring word bounce, character typewriter, 3D split marquee slider, pet-shop, doctor, and facility CAD grid variants.",
       "categories": [
-        "marketing",
-        "layout"
+        "marketing"
       ],
-      "dependencies": [],
+      "dependencies": [
+        "lucide-react"
+      ],
       "registryDependencies": [
+        "https://algorize-ui.vercel.app/r/animated-typography.json",
         "utils"
       ],
       "files": [
@@ -1053,49 +1943,50 @@
           "target": "components/custom/blocks/HeroBlock.tsx"
         }
       ],
-      "docs": "Named exports: Hero, HeroContent, HeroBadge, HeroBadgeText, getThemeStyles. `layout` is center | left | split-right | split-left; `pattern` adds a grid or dot backdrop; variants are default | glass | glow. Composable and content-agnostic — no runtime dependencies. For ready-made copy and CTAs, use `homepage-hero`."
+      "docs": "Named export: HeroBlock. Everything is a prop — `variant` switches between 'bounce', 'typing', 'slider', 'pet-shop', 'doctor', and 'facility', with interactive animations, theme color support, and responsive layouts."
     },
     {
-      "name": "hero-video-player",
+      "name": "hero-carousel",
       "type": "registry:component",
-      "title": "Hero Video Player",
+      "title": "Hero Carousel",
       "author": "AlgorizeTech",
-      "description": "A video hero with thumbnail, glow and a modal player that opens on click. Use it for product demo sections that should not autoplay.",
+      "description": "A full-bleed photo hero with a queue of cards: the front card is the slide on screen, the ones behind it are what comes next. Every five seconds or on a click the queue slides forward, the photograph behind crossfades and the headline and caption follow. A glass panel carries the faces of past guests, an intro and the call to action.",
       "categories": [
         "marketing",
-        "media"
+        "layout"
       ],
       "dependencies": [
-        "framer-motion",
         "lucide-react"
       ],
       "registryDependencies": [
+        "https://algorize-ui.vercel.app/r/animated-typography.json",
+        "https://algorize-ui.vercel.app/r/avatar-stack.json",
         "utils"
       ],
       "files": [
         {
-          "path": "src/components/custom/blocks/HeroVideoPlayerBlock.tsx",
+          "path": "src/components/custom/blocks/HeroCarouselBlock.tsx",
           "type": "registry:component",
-          "target": "components/custom/blocks/HeroVideoPlayerBlock.tsx"
+          "target": "components/custom/blocks/HeroCarouselBlock.tsx"
         }
       ],
-      "docs": "Named export: HeroVideoPlayer. `videoUrl` and `thumbnailUrl` drive it; `aspectRatio` is 16/9 | 21/9 | 4/3 | 1/1 and `modalSize` is md | lg | xl | full. `onPlay` and `onClose` hook into analytics. Loading the video only on open keeps it off the initial page weight."
+      "docs": "Named export: HeroCarousel. Composed from the avatar-stack item, which installs alongside it. Pass `slides` ({ image, alt, title, description?, heading?, position? }), `eyebrow`, `heading`, `intro`, `avatars` + `avatarsLabel`, `cta` ({ label, href }) and `linkComponent`. `interval` is the autoplay gap in ms (0 turns it off), `accent` sets --primary, `reveal` is in-view or immediate, `onChange` reports the front slide."
     },
     {
       "name": "homepage-hero",
       "type": "registry:component",
       "title": "Homepage Hero",
       "author": "AlgorizeTech",
-      "description": "A prop-driven hero with rotating typed words, badge link, CLI command and two CTAs. Use it as a complete above-the-fold section without composing parts.",
+      "description": "A feature-rich hero section with animated typing text, interactive CLI copy badge, gradient action buttons, and feature list.",
       "categories": [
-        "marketing"
+        "marketing",
+        "layout"
       ],
       "dependencies": [
-        "framer-motion",
         "lucide-react"
       ],
       "registryDependencies": [
-        "https://algorize-ui.vercel.app/r/icons.json",
+        "https://algorize-ui.vercel.app/r/animated-typography.json",
         "utils"
       ],
       "files": [
@@ -1104,33 +1995,60 @@
           "type": "registry:component",
           "target": "components/custom/blocks/HomepageHeroBlock.tsx"
         }
-      ],
-      "docs": "Named export: HomepageHeroBlock. Everything is a prop — `typingWords` cycles between `titlePrefix` and `titleSuffix`, and `cliCommand` renders a copyable install line. Animated with Motion; uses next/link, so it needs edits outside Next.js. `homepage-hero-typing` is the same layout without the motion dependency."
+      ]
     },
     {
-      "name": "homepage-hero-typing",
+      "name": "honeycomb-hero",
       "type": "registry:component",
-      "title": "Homepage Hero Typing",
+      "title": "Honeycomb Hero",
       "author": "AlgorizeTech",
-      "description": "The homepage hero with a hand-rolled typing effect and no motion library. Use it when you want the same layout without the extra dependency.",
+      "description": "A travel hero on a dark ground that shifts colour: a light line over a huge white word whose letters turn the theme's primary where they cross the photographs, and a honeycomb of hexagonal photographs with a primary hexagonal call to action set among them. The large hexagon is the slide on screen; its photograph fills the background, tinted with that photograph's own tone, so the whole section changes colour as, every four seconds or on the arrows at the foot, every hexagon moves one step along the ring, endlessly.",
       "categories": [
-        "marketing"
+        "marketing",
+        "layout"
       ],
       "dependencies": [
         "lucide-react"
       ],
       "registryDependencies": [
-        "https://algorize-ui.vercel.app/r/icons.json",
         "utils"
       ],
       "files": [
         {
-          "path": "src/components/custom/blocks/HomepageHeroTypingBlock.tsx",
+          "path": "src/components/custom/blocks/HoneycombHeroBlock.tsx",
           "type": "registry:component",
-          "target": "components/custom/blocks/HomepageHeroTypingBlock.tsx"
+          "target": "components/custom/blocks/HoneycombHeroBlock.tsx"
         }
       ],
-      "docs": "Named export: HomepageHeroTypingBlock. Identical prop surface to `homepage-hero`, but the typing runs on timers instead of Motion — lighter, with less entrance animation. Uses next/link, so it needs edits outside Next.js."
+      "docs": "Named export: HoneycombHero. Pass `title` and `titleAccent` (its letters that cross the photographs take `titleOverlapColor`, the primary by default), `subtitle`, `primaryActionLabel` (a \\n breaks the line; a compass sits above it in the hexagon) and `primaryActionHref`, `images` ({ src, alt, tone? }[] in queue order — nine cells are visible; tone is the deep colour behind everything while that photograph is featured), `socialLinks`, `interval` in ms (0 turns autoplay off) and `onChange`. The overlapping letters, rule, arrows and call to action follow the theme's primary (the hexagon's compass and label primary-foreground); `accent` sets --primary for the section, `background` is the tone for photographs without one (a deep shade of the primary by default); `linkComponent` takes next/link."
+    },
+    {
+      "name": "horizontal-rail",
+      "type": "registry:component",
+      "title": "Horizontal Rail",
+      "author": "AlgorizeTech",
+      "description": "A horizontal sliding rail layout with smooth drag inertia, snapping cards, and navigation controls. Use it for showcasing products, media cards, or horizontal content.",
+      "categories": [
+        "layout",
+        "scroll",
+        "media"
+      ],
+      "dependencies": [],
+      "registryDependencies": [
+        "utils"
+      ],
+      "files": [
+        {
+          "path": "src/components/custom/blocks/HorizontalRailBlock.tsx",
+          "type": "registry:component",
+          "target": "components/custom/blocks/HorizontalRailBlock.tsx"
+        },
+        {
+          "path": "src/components/custom/blocks/motion-curves.ts",
+          "type": "registry:component",
+          "target": "components/custom/blocks/motion-curves.ts"
+        }
+      ]
     },
     {
       "name": "horizontal-scroll-stack",
@@ -1142,9 +2060,7 @@
         "scroll",
         "marketing"
       ],
-      "dependencies": [
-        "framer-motion"
-      ],
+      "dependencies": [],
       "registryDependencies": [
         "utils"
       ],
@@ -1153,6 +2069,11 @@
           "path": "src/components/custom/blocks/HorizontalScrollStackBlock.tsx",
           "type": "registry:component",
           "target": "components/custom/blocks/HorizontalScrollStackBlock.tsx"
+        },
+        {
+          "path": "src/components/custom/blocks/motion-curves.ts",
+          "type": "registry:component",
+          "target": "components/custom/blocks/motion-curves.ts"
         }
       ],
       "docs": "Named export: HorizontalScrollStack. Items take { id, number, title, description, icon? }. Pins the section and maps scroll progress to horizontal travel, so it needs enough page height to complete — and it takes over scrolling while pinned, which is worth testing on touch."
@@ -1203,6 +2124,80 @@
       "docs": "Named export: ImageCompare. `beforeImage` and `afterImage` take URLs, with `beforeLabel` / `afterLabel` for the badges and `initialPosition` as a 0-100 percentage. Variants: classic-slider | split-handle | glowing-divider | badge-overlay | minimal. Both images should share an aspect ratio or the reveal will misalign."
     },
     {
+      "name": "image-viewer",
+      "type": "registry:component",
+      "title": "Image Viewer",
+      "author": "AlgorizeTech",
+      "description": "A collection of 4 responsive E-commerce Image Viewer components featuring inner lens magnifying zoom, HD side portal projection, carousel sliders, and interactive thumbnail strips.",
+      "categories": [
+        "media",
+        "commerce",
+        "data-display"
+      ],
+      "dependencies": [
+        "lucide-react"
+      ],
+      "registryDependencies": [
+        "utils"
+      ],
+      "files": [
+        {
+          "path": "src/components/custom/blocks/ImageViewerBlock.tsx",
+          "type": "registry:component",
+          "target": "components/custom/blocks/ImageViewerBlock.tsx"
+        }
+      ],
+      "docs": "Named export: ImageViewer. Accepts `variant` (4 variants: inner-zoom, side-zoom, slider, thumbnails), `thumbnailPosition` (left, right, bottom), `images`, `colors`, `badge`, `showWishlist`, `enableLightbox`, `className`. Includes built-in fullscreen lightbox modal with keyboard and arrow controls."
+    },
+    {
+      "name": "image-wall",
+      "type": "registry:component",
+      "title": "Image Wall",
+      "author": "AlgorizeTech",
+      "description": "A wall of screenshots that never ends, and a camera hanging over it: it rests zoomed in on one card, then every few seconds pulls back, glides to the next and settles on it. Use it wherever a set of images should keep showing itself — a hero, a gallery band, a showcase.",
+      "categories": [
+        "media",
+        "marketing"
+      ],
+      "dependencies": [],
+      "registryDependencies": [
+        "utils"
+      ],
+      "files": [
+        {
+          "path": "src/components/custom/blocks/ImageWallBlock.tsx",
+          "type": "registry:component",
+          "target": "components/custom/blocks/ImageWallBlock.tsx"
+        }
+      ],
+      "docs": "Named export: ImageWall (plus the WallItem type). Pass `items` ({ title, image }[] — every image is cropped from its top edge into the same 493:332 frame) and give it a height with `className`; it fills its box. `columns` sets the tile, `interval` the rest between flights in ms (0 holds still), `order` is serial (card by card) or shuffle (every card once per round, at random), `zoom` the resting scale — a box under 420px tall eases it down to 0.72 so a few cards fit, one under 640px wide to 0.5 so the flight between cards stays visible on a phone; `intro` (ms) drifts the camera, pulled back with nothing in focus, before its first landing; `anchor` ({ x?, y? }, shares of the box, default the middle) is where the resting card sits; `onFocus` reports the card in view. The camera holds while hovered, while the tab is hidden and while off screen; under prefers-reduced-motion it cuts instead of flying."
+    },
+    {
+      "name": "infrastructure-topology",
+      "type": "registry:component",
+      "title": "Infrastructure Topology",
+      "author": "AlgorizeTech",
+      "description": "An interactive live data flow infrastructure topology graph with animated SVG beams, central neural mesh hub, service cards, and metrics.",
+      "categories": [
+        "data-display",
+        "layout"
+      ],
+      "dependencies": [
+        "lucide-react"
+      ],
+      "registryDependencies": [
+        "utils"
+      ],
+      "files": [
+        {
+          "path": "src/components/custom/infrastructure-topology.tsx",
+          "type": "registry:component",
+          "target": "components/custom/infrastructure-topology.tsx"
+        }
+      ],
+      "docs": "Named export: InfrastructureTopology. Accepts `headerTitle`, `headerSubtitle`, `statusBadge`, `bandwidthBadge`, `centerTitle`, `nodes`, `metrics`, `animated`, `interactive`."
+    },
+    {
       "name": "input",
       "type": "registry:component",
       "title": "Input",
@@ -1222,6 +2217,11 @@
           "path": "src/components/custom/blocks/InputBlock.tsx",
           "type": "registry:component",
           "target": "components/custom/blocks/InputBlock.tsx"
+        },
+        {
+          "path": "src/components/custom/blocks/input-theme.ts",
+          "type": "registry:component",
+          "target": "components/custom/blocks/input-theme.ts"
         }
       ],
       "docs": "Named exports: InputBlock, getThemeStyles. Accepts type (text | password | email | number | file), variant (default | filled | underlined | glow), inputSize, and a color token (indigo | rose | emerald | zinc, or your own). Pass `error` to switch it into the invalid state; `helperText` renders below when there is no error."
@@ -1247,6 +2247,11 @@
           "path": "src/components/custom/blocks/Invoice.tsx",
           "type": "registry:component",
           "target": "components/custom/blocks/Invoice.tsx"
+        },
+        {
+          "path": "src/components/custom/blocks/invoice-theme.ts",
+          "type": "registry:component",
+          "target": "components/custom/blocks/invoice-theme.ts"
         }
       ],
       "docs": "Named exports: Invoice, getThemeStyles. `InvoiceData` carries invoiceNumber, parties, dates and an `items` array of { item, description?, hours|qty, rate }. Totals are computed for you. Variants: default | minimal | glass."
@@ -1314,6 +2319,11 @@
           "path": "src/components/custom/blocks/LoaderBlock.tsx",
           "type": "registry:component",
           "target": "components/custom/blocks/LoaderBlock.tsx"
+        },
+        {
+          "path": "src/components/custom/blocks/loader-theme.ts",
+          "type": "registry:component",
+          "target": "components/custom/blocks/loader-theme.ts"
         }
       ],
       "docs": "Named exports: LoaderBlock, getThemeColor. `variant` picks the shape, `size` is sm | md | lg | xl, and `text` renders a caption beneath. Pure CSS animation with no runtime dependencies. For content-shaped placeholders, use `skeleton`."
@@ -1332,7 +2342,9 @@
         "lucide-react"
       ],
       "registryDependencies": [
+        "https://algorize-ui.vercel.app/r/button.json",
         "https://algorize-ui.vercel.app/r/icons.json",
+        "https://algorize-ui.vercel.app/r/input.json",
         "utils"
       ],
       "files": [
@@ -1340,9 +2352,14 @@
           "path": "src/components/custom/blocks/LoginForm.tsx",
           "type": "registry:component",
           "target": "components/custom/blocks/LoginForm.tsx"
+        },
+        {
+          "path": "src/components/custom/blocks/login-form-theme.ts",
+          "type": "registry:component",
+          "target": "components/custom/blocks/login-form-theme.ts"
         }
       ],
-      "docs": "Default export: LoginForm. Also exports getThemeStyles and the LoginFormValues type. `variant` is default | split | glass | minimal — split renders a gradient side panel. `onSubmit` receives the validated credentials; without it the form simulates a round trip. `signupHref` points at the matching `register-form` page. Validation is client-side presentation only — enforce it again on your server."
+      "docs": "Default export: LoginForm. Also exports getThemeStyles and the LoginFormValues type. Fields and buttons are the library's input and button items, which install alongside it. `variant` is default | split | glass | minimal — split renders a gradient side panel. `onSubmit` receives the validated credentials; without it the form simulates a round trip. `signupHref` points at the matching `register-form` page. Validation is client-side presentation only — enforce it again on your server."
     },
     {
       "name": "magic-bento",
@@ -1354,9 +2371,7 @@
         "layout",
         "marketing"
       ],
-      "dependencies": [
-        "framer-motion"
-      ],
+      "dependencies": [],
       "registryDependencies": [
         "utils"
       ],
@@ -1402,7 +2417,7 @@
         "media"
       ],
       "dependencies": [
-        "framer-motion"
+        "gsap"
       ],
       "registryDependencies": [
         "utils"
@@ -1412,14 +2427,85 @@
           "path": "src/components/custom/blocks/MasonryGridBlock.tsx",
           "type": "registry:component",
           "target": "components/custom/blocks/MasonryGridBlock.tsx"
+        },
+        {
+          "path": "src/components/custom/blocks/gsap-motion.ts",
+          "type": "registry:component",
+          "target": "components/custom/blocks/gsap-motion.ts"
+        },
+        {
+          "path": "src/components/custom/blocks/motion-curves.ts",
+          "type": "registry:component",
+          "target": "components/custom/blocks/motion-curves.ts"
         }
       ],
       "docs": "Named export: MasonryGrid. Generic over your item type — pass `items` and a `renderItem` callback. Column count and gaps come from `columnsClassName` and `gapClassName`, so responsive behaviour is plain Tailwind. CSS columns fill top-to-bottom per column, so visual order differs from DOM order."
     },
     {
+      "name": "masonry-grid-framer",
+      "type": "registry:component",
+      "title": "Masonry Grid (Motion)",
+      "author": "AlgorizeTech",
+      "description": "A CSS-column masonry layout with staggered entrance animation. Use it for image galleries and card walls of uneven height.",
+      "categories": [
+        "layout",
+        "media"
+      ],
+      "dependencies": [
+        "framer-motion"
+      ],
+      "registryDependencies": [
+        "utils"
+      ],
+      "files": [
+        {
+          "path": "src/components/custom/blocks/framer/MasonryGridBlock.tsx",
+          "type": "registry:component",
+          "target": "components/custom/blocks/MasonryGridBlock.tsx"
+        }
+      ],
+      "docs": "Motion build of `masonry-grid` — same props, markup and install path; install one or the other. Named export: MasonryGrid. Generic over your item type — pass `items` and a `renderItem` callback. Column count and gaps come from `columnsClassName` and `gapClassName`, so responsive behaviour is plain Tailwind. CSS columns fill top-to-bottom per column, so visual order differs from DOM order."
+    },
+    {
       "name": "memories-card",
       "type": "registry:component",
       "title": "Memories Card",
+      "author": "AlgorizeTech",
+      "description": "A swipeable stack of photo cards with location, date and tag metadata. Use it for travel, gallery and testimonial carousels.",
+      "categories": [
+        "media",
+        "marketing"
+      ],
+      "dependencies": [
+        "gsap",
+        "lucide-react"
+      ],
+      "registryDependencies": [
+        "utils"
+      ],
+      "files": [
+        {
+          "path": "src/components/custom/blocks/MemoriesCardBlock.tsx",
+          "type": "registry:component",
+          "target": "components/custom/blocks/MemoriesCardBlock.tsx"
+        },
+        {
+          "path": "src/components/custom/blocks/gsap-motion.ts",
+          "type": "registry:component",
+          "target": "components/custom/blocks/gsap-motion.ts"
+        },
+        {
+          "path": "src/components/custom/blocks/motion-curves.ts",
+          "type": "registry:component",
+          "target": "components/custom/blocks/motion-curves.ts"
+        }
+      ],
+      "docs": "Named export: MemoriesCard. `items` take { id, title, location, date, image, description?, tag? }; `onCardChange` reports the active index. Drag or click to advance the stack."
+    },
+    {
+      "name": "memories-card-framer",
+      "type": "registry:component",
+      "title": "Memories Card (Motion)",
       "author": "AlgorizeTech",
       "description": "A swipeable stack of photo cards with location, date and tag metadata. Use it for travel, gallery and testimonial carousels.",
       "categories": [
@@ -1435,12 +2521,12 @@
       ],
       "files": [
         {
-          "path": "src/components/custom/blocks/MemoriesCardBlock.tsx",
+          "path": "src/components/custom/blocks/framer/MemoriesCardBlock.tsx",
           "type": "registry:component",
           "target": "components/custom/blocks/MemoriesCardBlock.tsx"
         }
       ],
-      "docs": "Named export: MemoriesCard. `items` take { id, title, location, date, image, description?, tag? }; `onCardChange` reports the active index. Drag or click to advance the stack."
+      "docs": "Motion build of `memories-card` — same props, markup and install path; install one or the other. Named export: MemoriesCard. `items` take { id, title, location, date, image, description?, tag? }; `onCardChange` reports the active index. Drag or click to advance the stack."
     },
     {
       "name": "menubar",
@@ -1469,7 +2555,7 @@
       "type": "registry:component",
       "title": "Mobile Mockup",
       "author": "AlgorizeTech",
-      "description": "Device frames for iPhone, Samsung and Pixel that wrap a screenshot, video or live children. Use them to present an app on a marketing page.",
+      "description": "Device frames for iPhone (5 through 17 Pro Max), Samsung and Pixel that wrap a screenshot, video or live children. Use them to present an app on a marketing page.",
       "categories": [
         "media",
         "marketing"
@@ -1485,14 +2571,14 @@
           "target": "components/custom/blocks/MobileMockupBlock.tsx"
         }
       ],
-      "docs": "Named exports: Iphone14ProMaxMockup, Iphone12ProMaxMockup, Iphone5Mockup, SamsungS24UltraMockup, GooglePixel8Mockup, GooglePixel10Mockup. Each takes `src`, `videoSrc`, or arbitrary children rendered inside the screen. Pure CSS and SVG — no images to ship."
+      "docs": "Named exports: Iphone17ProMaxMockup, Iphone14ProMaxMockup, Iphone12ProMaxMockup, Iphone5Mockup, SamsungS24UltraMockup, GooglePixel8Mockup, GooglePixel10Mockup. Each takes `src`, `videoSrc`, or arbitrary children rendered inside the screen. Pure CSS and SVG — no images to ship."
     },
     {
       "name": "modal",
       "type": "registry:component",
       "title": "Modal",
       "author": "AlgorizeTech",
-      "description": "A themed modal with standard, form, fullscreen and confirmation presets and GSAP transitions. Use it when you want a ready-made layout rather than composing a dialog.",
+      "description": "A composable overlay handling the portal, backdrop, scroll lock, Escape and backdrop dismissal, with no preset layout of its own. Use it when you hold the open state and want the panel to render your own markup.",
       "categories": [
         "overlays"
       ],
@@ -1510,7 +2596,7 @@
           "target": "components/custom/blocks/ModalBlock.tsx"
         }
       ],
-      "docs": "Named exports: ModalBlock, getThemeStyles. `type` is standard | form | fullscreen | confirmation; variants are default | glass | minimal | bordered. Depends on `select` for the form preset. For an unopinionated primitive, use `dialog`."
+      "docs": "Named exports: Modal, ModalHeader, ModalBody, ModalFooter, plus the ModalProps and ModalSectionProps types. Modal is controlled — pass `isOpen` and `onClose`; there is no trigger and no `type` or `variant`. Size and skin the panel with `contentClassName` and the backdrop with `overlayClassName`; `hideCloseButton` drops the built-in X and `primaryCloseButton` tints it. Pass `ariaLabel` whenever the heading is not inside ModalHeader. Every slot is optional. The documented form example uses `select`. For a trigger-driven dialog with uncontrolled open state, use `dialog`."
     },
     {
       "name": "navbar",
@@ -1523,10 +2609,10 @@
         "marketing"
       ],
       "dependencies": [
-        "gsap",
         "lucide-react"
       ],
       "registryDependencies": [
+        "https://algorize-ui.vercel.app/r/button.json",
         "utils"
       ],
       "files": [
@@ -1534,9 +2620,14 @@
           "path": "src/components/custom/blocks/NavbarBlock.tsx",
           "type": "registry:component",
           "target": "components/custom/blocks/NavbarBlock.tsx"
+        },
+        {
+          "path": "src/components/custom/blocks/navbar-theme.ts",
+          "type": "registry:component",
+          "target": "components/custom/blocks/navbar-theme.ts"
         }
       ],
-      "docs": "Named exports: NavbarBlock, getThemeStyles. Variants: default | floating | centered | minimal | glass. Uses next/link, so it needs edits outside Next.js. For app chrome with dropdown panels, use `navigation-menu`."
+      "docs": "Named exports: NavbarBlock, getThemeStyles. Variants: default | floating | centered | minimal | glass. Links render through `linkComponent` (a plain `a` by default; pass next/link in Next.js). The mobile menu toggles are the `button` item, which installs alongside. For app chrome with dropdown panels, use `navigation-menu`."
     },
     {
       "name": "navigation-menu",
@@ -1558,6 +2649,11 @@
           "path": "src/components/custom/blocks/NavigationMenu.tsx",
           "type": "registry:component",
           "target": "components/custom/blocks/NavigationMenu.tsx"
+        },
+        {
+          "path": "src/components/custom/blocks/navigation-menu-theme.ts",
+          "type": "registry:component",
+          "target": "components/custom/blocks/navigation-menu-theme.ts"
         }
       ],
       "docs": "Named exports: NavigationMenu, NavigationMenuList, NavigationMenuItem, NavigationMenuTrigger, NavigationMenuContent, NavigationMenuLink, getThemeStyles. Compose the parts; the root tracks active and hovered state and animates the indicator between triggers. Variants: default | minimal | glass."
@@ -1572,9 +2668,7 @@
         "data-display",
         "marketing"
       ],
-      "dependencies": [
-        "framer-motion"
-      ],
+      "dependencies": [],
       "registryDependencies": [
         "utils"
       ],
@@ -1583,9 +2677,109 @@
           "path": "src/components/custom/blocks/NetworkGraphBlock.tsx",
           "type": "registry:component",
           "target": "components/custom/blocks/NetworkGraphBlock.tsx"
+        },
+        {
+          "path": "src/components/custom/blocks/motion-curves.ts",
+          "type": "registry:component",
+          "target": "components/custom/blocks/motion-curves.ts"
         }
       ],
       "docs": "Named export: NetworkGraph. `nodes` take { id, ring, image?, fallback?, label?, size? } — `ring` assigns the orbit. Tune spacing with `ringCount`, `baseRadius` and `ringGap`; `animateIn` staggers the reveal. Positions are computed by ring, not by force simulation."
+    },
+    {
+      "name": "newsletter",
+      "type": "registry:component",
+      "title": "Newsletter",
+      "author": "AlgorizeTech",
+      "description": "A sign-up section in three layouts: readers' faces drifting around a centred form, a panel with a pointer glow and a ticker of who just joined, or the form beside a fanned stack of recent issues. The form becomes a thank-you when your promise resolves.",
+      "categories": [
+        "marketing",
+        "forms"
+      ],
+      "dependencies": [
+        "gsap",
+        "lucide-react"
+      ],
+      "registryDependencies": [
+        "https://algorize-ui.vercel.app/r/button.json",
+        "https://algorize-ui.vercel.app/r/input.json",
+        "https://algorize-ui.vercel.app/r/marquee.json",
+        "https://algorize-ui.vercel.app/r/tilted-card.json",
+        "utils"
+      ],
+      "files": [
+        {
+          "path": "src/components/custom/blocks/NewsletterBlock.tsx",
+          "type": "registry:component",
+          "target": "components/custom/blocks/NewsletterBlock.tsx"
+        },
+        {
+          "path": "src/components/custom/blocks/gsap-motion.ts",
+          "type": "registry:component",
+          "target": "components/custom/blocks/gsap-motion.ts"
+        },
+        {
+          "path": "src/components/custom/blocks/motion-curves.ts",
+          "type": "registry:component",
+          "target": "components/custom/blocks/motion-curves.ts"
+        }
+      ],
+      "docs": "Named export: Newsletter, with parts Heading, Intro, Form, Proof, Ticker and Issues. Composed from the input, button, marquee and tilted-card items, which install alongside it. `variant` is portraits | spotlight | issues, each styled for light and dark mode; `portraits` takes up to four faces; `Form` takes `onSubscribe(email)` (a promise holds the busy state), `action`, `successTitle`/`successText`; `accent` pins the glow and button colour; `reveal` is in-view or immediate."
+    },
+    {
+      "name": "newsletter-framer",
+      "type": "registry:component",
+      "title": "Newsletter (Motion)",
+      "author": "AlgorizeTech",
+      "description": "A sign-up section in three layouts: readers' faces drifting around a centred form, a panel with a pointer glow and a ticker of who just joined, or the form beside a fanned stack of recent issues. The form becomes a thank-you when your promise resolves.",
+      "categories": [
+        "marketing",
+        "forms"
+      ],
+      "dependencies": [
+        "framer-motion",
+        "lucide-react"
+      ],
+      "registryDependencies": [
+        "https://algorize-ui.vercel.app/r/button.json",
+        "https://algorize-ui.vercel.app/r/input.json",
+        "https://algorize-ui.vercel.app/r/marquee.json",
+        "https://algorize-ui.vercel.app/r/tilted-card.json",
+        "utils"
+      ],
+      "files": [
+        {
+          "path": "src/components/custom/blocks/framer/NewsletterBlock.tsx",
+          "type": "registry:component",
+          "target": "components/custom/blocks/NewsletterBlock.tsx"
+        }
+      ],
+      "docs": "Motion build of `newsletter` — same props, markup and install path; install one or the other. Named export: Newsletter, with parts Heading, Intro, Form, Proof, Ticker and Issues. Composed from the input, button, marquee and tilted-card items, which install alongside it. `variant` is portraits | spotlight | issues, each styled for light and dark mode; `portraits` takes up to four faces; `Form` takes `onSubscribe(email)` (a promise holds the busy state), `action`, `successTitle`/`successText`; `accent` pins the glow and button colour; `reveal` is in-view or immediate."
+    },
+    {
+      "name": "orbit-gallery",
+      "type": "registry:component",
+      "title": "Orbit Gallery",
+      "author": "AlgorizeTech",
+      "description": "A two-column hero with a ring of photo cards revolving on the right, each card staying upright as it travels. Hovering the ring holds it still; moving the pointer over the section leaves a trail of dots in the accent colour. Use it for an agency, studio or gallery.",
+      "categories": [
+        "marketing",
+        "layout"
+      ],
+      "dependencies": [
+        "lucide-react"
+      ],
+      "registryDependencies": [
+        "utils"
+      ],
+      "files": [
+        {
+          "path": "src/components/custom/blocks/OrbitGalleryBlock.tsx",
+          "type": "registry:component",
+          "target": "components/custom/blocks/OrbitGalleryBlock.tsx"
+        }
+      ],
+      "docs": "Named export: OrbitGallery. Pass `badgeText`/`badgeHref`, `title` and `titleAccent`, `subtitle`, primary and secondary actions, `images` (any count — they space themselves evenly), `duration` in seconds for one revolution and `highlights` for the dotted facts row. `color` is a preset name or any CSS colour; `linkComponent` takes next/link."
     },
     {
       "name": "otp-input",
@@ -1606,6 +2800,11 @@
           "path": "src/components/custom/blocks/OtpInputBlock.tsx",
           "type": "registry:component",
           "target": "components/custom/blocks/OtpInputBlock.tsx"
+        },
+        {
+          "path": "src/components/custom/blocks/otp-input-theme.ts",
+          "type": "registry:component",
+          "target": "components/custom/blocks/otp-input-theme.ts"
         }
       ],
       "docs": "Pasting a full code into any cell distributes the digits across all cells."
@@ -1635,6 +2834,30 @@
       "docs": "Renders framework-agnostic buttons, not router links, so wire navigation through your own handler."
     },
     {
+      "name": "particle-canvas",
+      "type": "registry:component",
+      "title": "Particle Canvas",
+      "author": "AlgorizeTech",
+      "description": "A high-performance HTML Canvas component that converts text or images into thousands of animated particles with multiple visual variants and interactive mouse mechanics.",
+      "categories": [
+        "media",
+        "data-display"
+      ],
+      "dependencies": [
+        "next-themes"
+      ],
+      "registryDependencies": [
+        "utils"
+      ],
+      "files": [
+        {
+          "path": "src/components/custom/blocks/ParticleCanvasBlock.tsx",
+          "type": "registry:component",
+          "target": "components/custom/blocks/ParticleCanvasBlock.tsx"
+        }
+      ]
+    },
+    {
       "name": "payment",
       "type": "registry:component",
       "title": "Payment",
@@ -1657,6 +2880,55 @@
         }
       ],
       "docs": "Named export: PaymentBlock. A self-contained example with hardcoded month and year options and a mocked submit — adapt it rather than configuring through props. Depends on `select` and `ui-base`. No payment provider is wired in; never handle raw card numbers without a PCI-compliant processor such as Stripe Elements."
+    },
+    {
+      "name": "piano",
+      "type": "registry:component",
+      "title": "Piano",
+      "author": "AlgorizeTech",
+      "description": "An interactive Playable Piano component featuring Web Audio API synthesizers, physical keyboard keybindings (A-S-D-F-G-H-J-K-L-; and W-E-T-Y-U-O-P), master volume slider, and toggleable key indicators.",
+      "categories": [
+        "media",
+        "utilities"
+      ],
+      "dependencies": [
+        "lucide-react"
+      ],
+      "registryDependencies": [
+        "utils"
+      ],
+      "files": [
+        {
+          "path": "src/components/custom/piano.tsx",
+          "type": "registry:component",
+          "target": "components/custom/piano.tsx"
+        }
+      ],
+      "docs": "Named export: Piano. Supports `defaultVolume` (0 to 1), `defaultShowKeys` (boolean), and `className`. Synthesizes real acoustic piano notes using native Web Audio API."
+    },
+    {
+      "name": "platform-grid",
+      "type": "registry:component",
+      "title": "Platform Grid",
+      "author": "AlgorizeTech",
+      "description": "Everything a product offers as one hairline grid: small icon-and-name tiles and a few 2×2 features that show a piece of the product on a tilting card. Reveals as a wave from the centre, then a spotlight follows the pointer. Use it as the 'full platform' section of a product site.",
+      "categories": [
+        "marketing",
+        "navigation"
+      ],
+      "dependencies": [],
+      "registryDependencies": [
+        "https://algorize-ui.vercel.app/r/tilted-card.json",
+        "utils"
+      ],
+      "files": [
+        {
+          "path": "src/components/custom/blocks/PlatformGridBlock.tsx",
+          "type": "registry:component",
+          "target": "components/custom/blocks/PlatformGridBlock.tsx"
+        }
+      ],
+      "docs": "Named export: PlatformGrid, with parts Tile, Feature, Mock and Pill. Composed from the tilted-card item, which installs alongside it. Cells pack densely (grid-auto-flow: dense) so features stay square at 8, 6, 4, 3 or 2 columns; `reveal` is in-view or immediate; `fadeEdges` masks the outer columns; `accent` pins the hover/spotlight colour, otherwise it follows --primary. Tiles with `href` are links (`linkComponent` for a router Link)."
     },
     {
       "name": "popover",
@@ -1685,16 +2957,16 @@
       "type": "registry:component",
       "title": "Pricing",
       "author": "AlgorizeTech",
-      "description": "A complete pricing system with plan cards, a comparison table and an interactive plan builder. Use it as the full pricing page rather than a single section.",
+      "description": "A complete pricing system with plan cards, a comparison table, an interactive plan builder and an interactive service checklist.",
       "categories": [
         "commerce",
         "marketing"
       ],
       "dependencies": [
-        "gsap",
         "lucide-react"
       ],
       "registryDependencies": [
+        "https://algorize-ui.vercel.app/r/toggle-group.json",
         "utils"
       ],
       "files": [
@@ -1702,9 +2974,14 @@
           "path": "src/components/custom/blocks/Pricing.tsx",
           "type": "registry:component",
           "target": "components/custom/blocks/Pricing.tsx"
+        },
+        {
+          "path": "src/components/custom/blocks/pricing-theme.ts",
+          "type": "registry:component",
+          "target": "components/custom/blocks/pricing-theme.ts"
         }
       ],
-      "docs": "Named exports: PricingCards, PricingBuilder, getThemeStyles, plus Plan, PricingData, TableFeature, TableSection and PricingTableData types. The largest pricing item — variants are default | premium | elegant | minimal | bordered. Uses next/link, so it needs edits outside Next.js. For a single card row, use `pricing-plans` or `pricing-section`."
+      "docs": "Named exports: PricingCards, PricingBuilder, PricingTable, PricingSlider, PricingTypographic, PricingPlans. The largest pricing item — variants include cards, builder, table, slider, typographic, and interactive service checklist. The typographic billing switch is the `toggle-group` item, which installs alongside."
     },
     {
       "name": "pricing-plan",
@@ -1736,30 +3013,6 @@
       "docs": "Named exports: BasicPricingPlan, TablePricingPlan, SliderPricingPlan. The heaviest dependency graph in the registry: pulls `ui-badge`, `ui-button`, `ui-card` and `ui-slider`. Note `ui-card` installs to components/ui/card.tsx and will overwrite an existing shadcn card — review before adding to an established project."
     },
     {
-      "name": "pricing-plans",
-      "type": "registry:component",
-      "title": "Pricing Plans",
-      "author": "AlgorizeTech",
-      "description": "A three-tier pricing card row with a highlighted recommended plan and GSAP entrance. Use it as a self-contained pricing section on a landing page.",
-      "categories": [
-        "commerce",
-        "marketing"
-      ],
-      "dependencies": [
-        "gsap",
-        "lucide-react"
-      ],
-      "registryDependencies": [],
-      "files": [
-        {
-          "path": "src/components/custom/blocks/PricingPlans.tsx",
-          "type": "registry:component",
-          "target": "components/custom/blocks/PricingPlans.tsx"
-        }
-      ],
-      "docs": "Named export: PricingPlans. Self-contained with its own plan content — copy and adapt rather than configuring through props. Uses next/link, so it needs edits outside Next.js. Installs with no registry dependencies, not even `utils`."
-    },
-    {
       "name": "pricing-section",
       "type": "registry:component",
       "title": "Pricing Section",
@@ -1770,7 +3023,6 @@
         "marketing"
       ],
       "dependencies": [
-        "gsap",
         "lucide-react"
       ],
       "registryDependencies": [],
@@ -1807,6 +3059,31 @@
       "docs": "Named export: PricingSectionV4. Self-contained with hardcoded plans — copy and adapt. Uses next/link, so it needs edits outside Next.js. No GSAP, so it is the lightest of the pricing items."
     },
     {
+      "name": "product-card",
+      "type": "registry:component",
+      "title": "Product Card",
+      "author": "AlgorizeTech",
+      "description": "A reusable, prop-driven E-commerce Product Card supporting color swatches, badges, ratings, quick view, and action buttons.",
+      "categories": [
+        "data-display",
+        "commerce"
+      ],
+      "dependencies": [
+        "lucide-react"
+      ],
+      "registryDependencies": [
+        "utils"
+      ],
+      "files": [
+        {
+          "path": "src/components/custom/blocks/ProductCardBlock.tsx",
+          "type": "registry:component",
+          "target": "components/custom/blocks/ProductCardBlock.tsx"
+        }
+      ],
+      "docs": "Supports variant=('standard' | 'compact' | 'horizontal'), title, price, colors, badge, rating, onAddToCart, onBuyNow, and onQuickView."
+    },
+    {
       "name": "product-details",
       "type": "registry:component",
       "title": "Product Details",
@@ -1833,15 +3110,41 @@
       "docs": "Named export: ProductDetails. Accepts `variant` (4 variants: modern-split-gallery, floating-card-glass, bento-editorial-showcase, color-sync-gallery), `title`, `price`, `originalPrice`, `description`, `className`. Adaptable across mobile, tablet, and desktop viewports."
     },
     {
+      "name": "profile-page",
+      "type": "registry:component",
+      "title": "Profile Page",
+      "author": "AlgorizeTech",
+      "description": "A person's profile as a glass bento page: an aurora backdrop, frosted panels, and a 24-hour dial that shows their working window live. Use it for team directories, member pages and public profiles.",
+      "categories": [
+        "layout",
+        "marketing"
+      ],
+      "dependencies": [],
+      "registryDependencies": [
+        "https://algorize-ui.vercel.app/r/glass-panel.json",
+        "utils"
+      ],
+      "files": [
+        {
+          "path": "src/components/custom/blocks/ProfilePageBlock.tsx",
+          "type": "registry:component",
+          "target": "components/custom/blocks/ProfilePageBlock.tsx"
+        }
+      ],
+      "docs": "Named exports: ProfilePage, WorkdayDial, useLocalTime (GlassPanel and useSurface are re-exported from the glass-panel item, which installs alongside). `ProfilePage` is the glass backdrop and 12-column grid; place `GlassPanel`s inside with `shape` and column spans. `WorkdayDial` takes `timeZone`, `start`, `end`, `place`, `name`."
+    },
+    {
       "name": "progress",
       "type": "registry:component",
       "title": "Progress",
       "author": "AlgorizeTech",
-      "description": "A themeable progress bar with an optional labelled field wrapper. Use it for determinate operations where percentage complete is known.",
+      "description": "A themeable progress bar in three forms — a single bar, a multi-segment track, and a ring — with an optional labelled field wrapper. Use it for determinate operations where percentage complete is known.",
       "categories": [
         "feedback"
       ],
-      "dependencies": [],
+      "dependencies": [
+        "lucide-react"
+      ],
       "registryDependencies": [
         "utils"
       ],
@@ -1850,9 +3153,14 @@
           "path": "src/components/custom/blocks/ProgressBlock.tsx",
           "type": "registry:component",
           "target": "components/custom/blocks/ProgressBlock.tsx"
+        },
+        {
+          "path": "src/components/custom/blocks/progress-theme.ts",
+          "type": "registry:component",
+          "target": "components/custom/blocks/progress-theme.ts"
         }
       ],
-      "docs": "Named exports: Progress, ProgressField, getThemeStyles. Use ProgressField when you need a label and value readout; use Progress bare inside your own layout."
+      "docs": "Named exports: Progress, ProgressField, MultiProgress, ProgressSegment, CircularProgress, getThemeStyles. Use ProgressField when you need a label and value readout; use Progress bare inside your own layout. MultiProgress holds ProgressSegment children that share its `max`, each with its own `color`, for breakdowns across one track. CircularProgress draws the same value as a ring — `circleSize` is the diameter, `barSize` the stroke, and children replace the centred percentage (a function child receives the counting value). Everything fills from zero on mount and tweens later changes via the exported useCountUp hook; `animate={false}` opts out and `duration` sets the mount run."
     },
     {
       "name": "qr-code-generator",
@@ -1904,6 +3212,63 @@
       "docs": "Named export: QrCodeReader. `onRead` fires with the decoded string. Requires camera permission **and a secure context** — it works on HTTPS and localhost, and silently fails on plain HTTP. Decoding runs on the main thread via jsQR, so expect load on low-end devices. Handle permission denial in your own UI."
     },
     {
+      "name": "radial-orbital-timeline",
+      "type": "registry:component",
+      "title": "Radial Orbital Timeline",
+      "author": "AlgorizeTech",
+      "description": "A dynamic orbital visualization component that displays nodes in a circular pattern around a central point. Each node represents a data point with title, status, and energy level.",
+      "categories": [
+        "data-display",
+        "marketing"
+      ],
+      "dependencies": [
+        "lucide-react"
+      ],
+      "registryDependencies": [
+        "https://algorize-ui.vercel.app/r/ui-card.json",
+        "utils"
+      ],
+      "files": [
+        {
+          "path": "src/components/custom/blocks/RadialOrbitalTimeline.tsx",
+          "type": "registry:component",
+          "target": "components/custom/blocks/RadialOrbitalTimeline.tsx"
+        }
+      ],
+      "docs": "Named export: RadialOrbitalTimeline. `nodes` take { id, title, date, status, energyLevel, description, icon?, connectedNodes? }. Click or hover nodes to reveal inspector popover card. Supports `autoRotate`, `rotationSpeed`, and custom accent colors."
+    },
+    {
+      "name": "range-date-picker",
+      "type": "registry:component",
+      "title": "Range Date Picker",
+      "author": "AlgorizeTech",
+      "description": "An interactive Range Date Picker featuring single month, dual-month, and rate-priced calendar layouts with customizable theme colors.",
+      "categories": [
+        "forms",
+        "utilities"
+      ],
+      "dependencies": [
+        "lucide-react"
+      ],
+      "registryDependencies": [
+        "https://algorize-ui.vercel.app/r/time-picker.json",
+        "utils"
+      ],
+      "files": [
+        {
+          "path": "src/components/custom/range-date-picker.tsx",
+          "type": "registry:component",
+          "target": "components/custom/range-date-picker.tsx"
+        },
+        {
+          "path": "src/components/custom/blocks/motion-curves.ts",
+          "type": "registry:component",
+          "target": "components/custom/blocks/motion-curves.ts"
+        }
+      ],
+      "docs": "Named export: RangeDatePicker. Supports variant=('single' | 'dual' | 'priced-single' | 'priced-dual'), getPrice, color, value={from, to}, onChange, disablePast / minDate / maxDate. `showTime` adds Start / End time columns: the card opens as a bare calendar (empty when uncontrolled) and a time rail unfolds beside it on the first pick — under it when narrow — and folds away on Clear; `timeFormat` (12h | 24h) and `minuteStep` tune the columns. Installs time-picker alongside."
+    },
+    {
       "name": "register-form",
       "type": "registry:component",
       "title": "Register Form",
@@ -1917,7 +3282,9 @@
         "lucide-react"
       ],
       "registryDependencies": [
+        "https://algorize-ui.vercel.app/r/button.json",
         "https://algorize-ui.vercel.app/r/icons.json",
+        "https://algorize-ui.vercel.app/r/input.json",
         "utils"
       ],
       "files": [
@@ -1925,9 +3292,14 @@
           "path": "src/components/custom/blocks/RegisterForm.tsx",
           "type": "registry:component",
           "target": "components/custom/blocks/RegisterForm.tsx"
+        },
+        {
+          "path": "src/components/custom/blocks/register-form-theme.ts",
+          "type": "registry:component",
+          "target": "components/custom/blocks/register-form-theme.ts"
         }
       ],
-      "docs": "Default export: RegisterForm. Also exports getThemeStyles and the RegisterFormValues type. `variant` is default | split | glass | minimal — split renders a gradient side panel. `onSubmit` receives the validated fields; without it the form simulates a round trip. `loginHref` points at the matching `login-form` page, and `minPasswordLength` sets the client-side minimum. Validation is client-side presentation only — enforce it again on your server."
+      "docs": "Default export: RegisterForm. Also exports getThemeStyles and the RegisterFormValues type. Fields and buttons are the library's input and button items, which install alongside it. `variant` is default | split | glass | minimal — split renders a gradient side panel. `onSubmit` receives the validated fields; without it the form simulates a round trip. `loginHref` points at the matching `login-form` page, and `minPasswordLength` sets the client-side minimum. Validation is client-side presentation only — enforce it again on your server."
     },
     {
       "name": "resizable",
@@ -1964,11 +3336,10 @@
         "data-display"
       ],
       "dependencies": [
-        "cobe",
-        "lucide-react",
-        "next-themes"
+        "lucide-react"
       ],
       "registryDependencies": [
+        "https://algorize-ui.vercel.app/r/half-stars.json",
         "utils"
       ],
       "files": [
@@ -1976,6 +3347,11 @@
           "path": "src/components/custom/blocks/ReviewsBlock.tsx",
           "type": "registry:component",
           "target": "components/custom/blocks/ReviewsBlock.tsx"
+        },
+        {
+          "path": "src/components/custom/blocks/motion-curves.ts",
+          "type": "registry:component",
+          "target": "components/custom/blocks/motion-curves.ts"
         }
       ]
     },
@@ -1990,7 +3366,6 @@
         "marketing"
       ],
       "dependencies": [
-        "framer-motion",
         "lucide-react"
       ],
       "registryDependencies": [
@@ -2024,6 +3399,11 @@
           "path": "src/components/custom/blocks/ScrollAreaBlock.tsx",
           "type": "registry:component",
           "target": "components/custom/blocks/ScrollAreaBlock.tsx"
+        },
+        {
+          "path": "src/components/custom/blocks/scroll-area-theme.ts",
+          "type": "registry:component",
+          "target": "components/custom/blocks/scroll-area-theme.ts"
         }
       ],
       "docs": "Named exports: ScrollAreaBlock, getThemeStyles. `orientation` is vertical | horizontal | both; `autoHide` fades the bar when idle and `hideTrack` drops the track entirely. Needs a bounded height to scroll — give it an explicit height or a flex parent."
@@ -2071,9 +3451,41 @@
           "path": "src/components/custom/blocks/SelectBlock.tsx",
           "type": "registry:component",
           "target": "components/custom/blocks/SelectBlock.tsx"
+        },
+        {
+          "path": "src/components/custom/blocks/select-theme.ts",
+          "type": "registry:component",
+          "target": "components/custom/blocks/select-theme.ts"
         }
       ],
       "docs": "Named exports: SelectBlock, getThemeStyles. `options` take { label, value, icon?, group? } — supplying `group` renders grouped headings. `value` accepts a string, or an array when multiple selection is enabled. Several other blocks depend on this one."
+    },
+    {
+      "name": "selection-frame",
+      "type": "registry:component",
+      "title": "Selection Frame",
+      "author": "AlgorizeTech",
+      "description": "That box Figma draws around a selected layer — corner handles and a crisp accent stroke — around any text span or block. Use it to spotlight a word, a card or a screenshot region in docs and marketing.",
+      "categories": [
+        "typography"
+      ],
+      "dependencies": [],
+      "registryDependencies": [
+        "utils"
+      ],
+      "files": [
+        {
+          "path": "src/components/custom/blocks/SelectionFrameBlock.tsx",
+          "type": "registry:component",
+          "target": "components/custom/blocks/SelectionFrameBlock.tsx"
+        },
+        {
+          "path": "src/components/custom/blocks/motion-curves.ts",
+          "type": "registry:component",
+          "target": "components/custom/blocks/motion-curves.ts"
+        }
+      ],
+      "docs": "Named export: SelectionFrame (also exports the FrameHandles and FrameLine types). Wrap any child; it is measured live with a ResizeObserver. `handles` is square | circle, `line` is solid | dashed | long, `dash` overrides the [dash, gap] pair, `animated` marches dashed/long strokes and pops the handles in, `color` is any CSS colour (Figma blue default), `radius` and `padding` are pixels, and `inline={false}` makes it block-level. Respects prefers-reduced-motion."
     },
     {
       "name": "settings",
@@ -2112,6 +3524,7 @@
         "lucide-react"
       ],
       "registryDependencies": [
+        "https://algorize-ui.vercel.app/r/tooltip.json",
         "utils"
       ],
       "files": [
@@ -2119,9 +3532,14 @@
           "path": "src/components/custom/blocks/SidebarBlock.tsx",
           "type": "registry:component",
           "target": "components/custom/blocks/SidebarBlock.tsx"
+        },
+        {
+          "path": "src/components/custom/blocks/sidebar-context.ts",
+          "type": "registry:component",
+          "target": "components/custom/blocks/sidebar-context.ts"
         }
       ],
-      "docs": "Named exports: SidebarProvider, Sidebar, SidebarHeader, SidebarBrand, SidebarContent, SidebarGroup, SidebarFooter, useSidebar. Wrap your app in SidebarProvider; read `expanded` and `isMobileOpen` from useSidebar to drive your own toggle. Variants: attached | floating."
+      "docs": "Named exports: SidebarProvider, Sidebar, SidebarHeader, SidebarBrand, SidebarContent, SidebarGroup, SidebarFooter, useSidebar. Wrap your app in SidebarProvider; read `expanded` and `isMobileOpen` from useSidebar to drive your own toggle. Variants: attached | floating. Collapsed item labels show in the `tooltip` item, which installs alongside."
     },
     {
       "name": "signup-form",
@@ -2134,10 +3552,10 @@
         "forms"
       ],
       "dependencies": [
-        "framer-motion",
         "lucide-react"
       ],
       "registryDependencies": [
+        "https://algorize-ui.vercel.app/r/icons.json",
         "utils"
       ],
       "files": [
@@ -2145,9 +3563,19 @@
           "path": "src/components/custom/blocks/SignupForm.tsx",
           "type": "registry:component",
           "target": "components/custom/blocks/SignupForm.tsx"
+        },
+        {
+          "path": "src/components/custom/blocks/motion-curves.ts",
+          "type": "registry:component",
+          "target": "components/custom/blocks/motion-curves.ts"
+        },
+        {
+          "path": "src/components/custom/blocks/register-form-theme.ts",
+          "type": "registry:component",
+          "target": "components/custom/blocks/register-form-theme.ts"
         }
       ],
-      "docs": "Named export: SignupForm. Uses Framer Motion for field-level error transitions. Validation is client-side presentation only — enforce it again on your server."
+      "docs": "Named export: SignupForm. Uses Motion for field-level error transitions. Validation is client-side presentation only — enforce it again on your server."
     },
     {
       "name": "skeleton",
@@ -2172,6 +3600,31 @@
       "docs": "Shimmer keyframes ship inline in a scoped <style> block — no global CSS or Tailwind config changes required."
     },
     {
+      "name": "social-links",
+      "type": "registry:component",
+      "title": "Social Links",
+      "author": "AlgorizeTech",
+      "description": "A row of brand marks that link out — X, GitHub, LinkedIn, YouTube, Instagram, Facebook, Discord, Dribbble, email. Use it in footers, profile cards and author bylines.",
+      "categories": [
+        "navigation",
+        "marketing"
+      ],
+      "dependencies": [
+        "lucide-react"
+      ],
+      "registryDependencies": [
+        "utils"
+      ],
+      "files": [
+        {
+          "path": "src/components/custom/blocks/SocialLinksBlock.tsx",
+          "type": "registry:component",
+          "target": "components/custom/blocks/SocialLinksBlock.tsx"
+        }
+      ],
+      "docs": "Named export: SocialLinks (plus the SocialLink and SocialNetwork types). `links` is { network, href, label? }[]; `variant` is tile | outline | ghost, `size` is sm | md | lg. Links open in a new tab unless `external` is false; mailto links never do. Brand marks are inline SVG, so no icon package is needed."
+    },
+    {
       "name": "sonner",
       "type": "registry:component",
       "title": "Sonner",
@@ -2191,9 +3644,39 @@
           "path": "src/components/custom/blocks/SonnerBlock.tsx",
           "type": "registry:component",
           "target": "components/custom/blocks/SonnerBlock.tsx"
+        },
+        {
+          "path": "src/components/custom/blocks/sonner-store.ts",
+          "type": "registry:component",
+          "target": "components/custom/blocks/sonner-store.ts"
         }
       ],
       "docs": "Named exports: Toaster, toast, toastState. Mount Toaster once, then call `toast()` from anywhere — including non-React code — since state lives in a module singleton. Set `expand` to fan the stack apart on hover. For a context-based API, use `toast`."
+    },
+    {
+      "name": "split-flap",
+      "type": "registry:component",
+      "title": "Split-Flap Display",
+      "author": "AlgorizeTech",
+      "description": "An authentic, physics-driven Split-Flap Display component simulating retro-mechanical flap cards, 3D perspective flips, and synthesized click sounds with ivory and minimalist variants.",
+      "categories": [
+        "data-display",
+        "media"
+      ],
+      "dependencies": [
+        "gsap"
+      ],
+      "registryDependencies": [
+        "utils"
+      ],
+      "files": [
+        {
+          "path": "src/components/custom/split-flap.tsx",
+          "type": "registry:component",
+          "target": "components/custom/split-flap.tsx"
+        }
+      ],
+      "docs": "Named exports: SplitFlap, SPLIT_FLAP_CHARSET. Default export: SplitFlap. Variants: ivory | minimalist. Features 3D mechanical rotateX animation, Web Audio API sound generator, and responsive size presets."
     },
     {
       "name": "split-scroll-stack",
@@ -2206,7 +3689,6 @@
         "marketing"
       ],
       "dependencies": [
-        "gsap",
         "lucide-react"
       ],
       "registryDependencies": [
@@ -2233,7 +3715,6 @@
         "marketing"
       ],
       "dependencies": [
-        "gsap",
         "lucide-react"
       ],
       "registryDependencies": [
@@ -2249,6 +3730,31 @@
       "docs": "Named export: SplitStepper. `stickySide` places the pinned column left or right; `cardDepthScale` and `cardOffset` tune the stacked-card depth effect. Needs real page height to scroll through — it will look inert inside a short container."
     },
     {
+      "name": "squircle-carousel",
+      "type": "registry:component",
+      "title": "Squircle Carousel",
+      "author": "AlgorizeTech",
+      "description": "Horizontal flowing carousel where images are masked behind a barrel-distorted grid of rounded cubes with snap physics and smooth inertia.",
+      "categories": [
+        "media",
+        "scroll"
+      ],
+      "dependencies": [
+        "next-themes"
+      ],
+      "registryDependencies": [
+        "utils"
+      ],
+      "files": [
+        {
+          "path": "src/components/custom/squircle-carousel.tsx",
+          "type": "registry:component",
+          "target": "components/custom/squircle-carousel.tsx"
+        }
+      ],
+      "docs": "Named export: SquircleCarousel. Interactive drag with grab cursor, momentum physics, barrel fisheye distortion, and squircle grid masking."
+    },
+    {
       "name": "stepper",
       "type": "registry:component",
       "title": "Stepper",
@@ -2259,7 +3765,6 @@
         "forms"
       ],
       "dependencies": [
-        "gsap",
         "lucide-react"
       ],
       "registryDependencies": [
@@ -2285,7 +3790,7 @@
         "marketing"
       ],
       "dependencies": [
-        "framer-motion",
+        "gsap",
         "lucide-react"
       ],
       "registryDependencies": [
@@ -2299,6 +3804,32 @@
         }
       ],
       "docs": "Named export: StickyScrollStack. Each item sets `contentType` (list | image | split | custom) so steps need not share a shape. Uses next/image, so it needs edits outside Next.js."
+    },
+    {
+      "name": "sticky-scroll-stack-framer",
+      "type": "registry:component",
+      "title": "Sticky Scroll Stack (Motion)",
+      "author": "AlgorizeTech",
+      "description": "A sticky section whose panels swap content as you scroll, supporting list, image, split and custom layouts. Use it for feature sections with varied content per step.",
+      "categories": [
+        "scroll",
+        "marketing"
+      ],
+      "dependencies": [
+        "framer-motion",
+        "lucide-react"
+      ],
+      "registryDependencies": [
+        "utils"
+      ],
+      "files": [
+        {
+          "path": "src/components/custom/blocks/framer/StickyScrollStackBlock.tsx",
+          "type": "registry:component",
+          "target": "components/custom/blocks/StickyScrollStackBlock.tsx"
+        }
+      ],
+      "docs": "Motion build of `sticky-scroll-stack` — same props, markup and install path; install one or the other. Named export: StickyScrollStack. Each item sets `contentType` (list | image | split | custom) so steps need not share a shape. Uses next/image, so it needs edits outside Next.js."
     },
     {
       "name": "support-container",
@@ -2350,6 +3881,35 @@
       "docs": "Named exports: SupportDashboard, plus Ticket, TicketContact, TicketSLA, TicketMessage and SupportData types. `layout` switches between chat and table views over the same ticket data. Depends on `select`. The most feature-complete block in the registry — expect to replace its demo data wholesale."
     },
     {
+      "name": "support-hero",
+      "type": "registry:component",
+      "title": "Support Hero",
+      "author": "AlgorizeTech",
+      "description": "A product hero on a soft grey ground: a headline that rises in word by word, one line and one call to action, then a bento of frosted cards — integrations, two figures that count up, two portraits and a team card with faces scattered over it. Use it as the opening section of a SaaS or AI product site.",
+      "categories": [
+        "marketing",
+        "layout"
+      ],
+      "dependencies": [
+        "lucide-react"
+      ],
+      "registryDependencies": [
+        "https://algorize-ui.vercel.app/r/button.json",
+        "https://algorize-ui.vercel.app/r/counter.json",
+        "https://algorize-ui.vercel.app/r/glass-panel.json",
+        "https://algorize-ui.vercel.app/r/text-animation.json",
+        "utils"
+      ],
+      "files": [
+        {
+          "path": "src/components/custom/blocks/SupportHeroBlock.tsx",
+          "type": "registry:component",
+          "target": "components/custom/blocks/SupportHeroBlock.tsx"
+        }
+      ],
+      "docs": "Named export: SupportHero, with parts Card, Integrations, Stat, Photo and Team. Composed from the glass-panel, text-animation, counter and button items, which install alongside it. Cards land in one staggered pass after the headline (`reveal` in-view or immediate); Stats count up when on screen; hover lifts cards, zooms portraits and drifts the faces. `cta` takes a label plus `onClick` or `href`."
+    },
+    {
       "name": "support-page",
       "type": "registry:component",
       "title": "Support Page",
@@ -2383,7 +3943,6 @@
         "data-display"
       ],
       "dependencies": [
-        "gsap",
         "lucide-react"
       ],
       "registryDependencies": [
@@ -2394,9 +3953,68 @@
           "path": "src/components/custom/blocks/TableBlock.tsx",
           "type": "registry:component",
           "target": "components/custom/blocks/TableBlock.tsx"
+        },
+        {
+          "path": "src/components/custom/blocks/table-core.ts",
+          "type": "registry:component",
+          "target": "components/custom/blocks/table-core.ts"
         }
       ],
       "docs": "Named exports: Table, TableHeading, TableContent, TableHeader, TableBody, TableRow, TableHead, TableCell, TableFooter, TableEmpty, TableExpandedRow, TableExpandToggle, TableRowActions, useTableStyles, getThemeStyles. Each primitive renders its native element and forwards refs, so `colSpan` and aria attributes pass through. Variant (default | minimal | glass), size (sm | md | lg) and color are set once on `Table` and read from context. Sorting and expansion are controlled props — the component never reorders your data. For search, paging, selection and batch actions wired up for you, use `advanced-table`."
+    },
+    {
+      "name": "table-of-contents",
+      "type": "registry:component",
+      "title": "Table Of Contents",
+      "author": "AlgorizeTech",
+      "description": "An interactive Table of Contents navigation block with sticky right-side positioning, real-time scroll-spy, animated Motion indicators, and section search filtering.",
+      "categories": [
+        "navigation",
+        "scroll"
+      ],
+      "dependencies": [
+        "lucide-react"
+      ],
+      "registryDependencies": [
+        "https://algorize-ui.vercel.app/r/ui-codeblocks.json",
+        "utils"
+      ],
+      "files": [
+        {
+          "path": "src/components/custom/blocks/TableOfContentsBlock.tsx",
+          "type": "registry:component",
+          "target": "components/custom/blocks/TableOfContentsBlock.tsx"
+        },
+        {
+          "path": "src/components/custom/blocks/motion-curves.ts",
+          "type": "registry:component",
+          "target": "components/custom/blocks/motion-curves.ts"
+        }
+      ],
+      "docs": "Named export: TableOfContentsBlock. Accepts `headings` array of ({ id, title, level }) objects, `showProgress`, `showSearch`, and `color` props. Wraps document content on the left while keeping the TOC sticky on the right."
+    },
+    {
+      "name": "tech-stack",
+      "type": "registry:component",
+      "title": "Tech Stack",
+      "author": "AlgorizeTech",
+      "description": "The tools a product is built with: a label, then one group of marks at a time in two rows — an odd group as three over four — each mark blurring out and the next group blurring in. Use it as the \"Built with\" line in a hero or footer.",
+      "categories": [
+        "marketing",
+        "data-display"
+      ],
+      "dependencies": [],
+      "registryDependencies": [
+        "utils"
+      ],
+      "files": [
+        {
+          "path": "src/components/custom/blocks/TechStackBlock.tsx",
+          "type": "registry:component",
+          "target": "components/custom/blocks/TechStackBlock.tsx"
+        }
+      ],
+      "docs": "Named exports: TechStack, TechStackGroup and TechStackTool. Compose it: <TechStack label interval variant> holds <TechStackGroup> children, each holding <TechStackTool name icon /> (icon is any node — an inline SVG or an <img>). One group shows at a time and gives way to the next every `interval` ms (default 3600; 0 holds the first), only while on screen; with prefers-reduced-motion the swap is a cut. `variant` is labelled (label on the left, names beside marks from xl up) or compact (label centred between hairlines, marks only, names as tooltips and screen-reader text). `label` takes any node. Four to eight tools per group read well. Colours are theme tokens."
     },
     {
       "name": "terminal",
@@ -2418,6 +4036,11 @@
           "path": "src/components/custom/blocks/TerminalBlock.tsx",
           "type": "registry:component",
           "target": "components/custom/blocks/TerminalBlock.tsx"
+        },
+        {
+          "path": "src/components/custom/blocks/terminal-theme.ts",
+          "type": "registry:component",
+          "target": "components/custom/blocks/terminal-theme.ts"
         }
       ],
       "docs": "Named exports: TerminalBlock, getThemeStyles. `code` is the only required prop; `language` defaults to bash and also understands sh, shell, terminal, html, xml, css and a generic JS/TS fallback. `filename` fills the title bar and `copyable` toggles the copy button. Variants: default | glass | minimal. Highlighting is a built-in regex tokenizer, not Shiki or Prism — good for snippets, not a full editor. For several files behind tabs, use `custom-code-block`."
@@ -2427,14 +4050,12 @@
       "type": "registry:component",
       "title": "Text Animation",
       "author": "AlgorizeTech",
-      "description": "Character and word-level text motion driven by Framer Motion. Use it for hero headlines that need finer control than a whole-block fade.",
+      "description": "Character and word-level text motion driven by Motion. Use it for hero headlines that need finer control than a whole-block fade.",
       "categories": [
         "typography",
         "marketing"
       ],
-      "dependencies": [
-        "framer-motion"
-      ],
+      "dependencies": [],
       "registryDependencies": [
         "utils"
       ],
@@ -2443,22 +4064,26 @@
           "path": "src/components/custom/blocks/TextAnimationBlock.tsx",
           "type": "registry:component",
           "target": "components/custom/blocks/TextAnimationBlock.tsx"
+        },
+        {
+          "path": "src/components/custom/blocks/motion-curves.ts",
+          "type": "registry:component",
+          "target": "components/custom/blocks/motion-curves.ts"
         }
       ],
-      "docs": "Named export: TextAnimation. `text` is a plain string it splits internally; `as` sets the rendered element and `delay` / `duration` control timing. For dependency-free effects, use `animated-typography`."
+      "docs": "Named export: TextAnimation. `text` is a plain string it splits internally; `as` sets the rendered element and `delay` / `duration` control timing; `renderWord(word, index)` swaps what a word renders as on the word-level variants (pop-in, flip, blur-in-up) while keeping its entrance. For dependency-free effects, use `animated-typography`."
     },
     {
       "name": "theme-switcher",
       "type": "registry:component",
       "title": "Theme Switcher",
       "author": "AlgorizeTech",
-      "description": "A light/dark toggle in icon, pill or dropdown form, with a GSAP icon transition. Use it in a navbar or settings panel.",
+      "description": "A light/dark toggle in icon, pill or dropdown form, with a circular reveal that grows out of the control and a GSAP icon transition. Use it in a navbar or settings panel.",
       "categories": [
         "utilities",
         "actions"
       ],
       "dependencies": [
-        "gsap",
         "lucide-react",
         "next-themes"
       ],
@@ -2472,7 +4097,7 @@
           "target": "components/custom/blocks/ThemeSwitcherBlock.tsx"
         }
       ],
-      "docs": "Named export: ThemeSwitcher. Variants: icon | pill | dropdown — dropdown includes a system option. Requires `next-themes` with a ThemeProvider mounted above it; without one it renders but will not change the theme."
+      "docs": "Named export: ThemeSwitcher. Variants: icon | pill | dropdown — dropdown includes a system option. Switching runs a circular View-Transition reveal from the clicked control; the CSS it needs is injected by the component, so nothing goes in globals.css. `reveal={false}` for an instant switch. Requires `next-themes` with a ThemeProvider mounted above it; without one it renders but will not change the theme."
     },
     {
       "name": "tilted-card",
@@ -2484,9 +4109,7 @@
         "media",
         "marketing"
       ],
-      "dependencies": [
-        "framer-motion"
-      ],
+      "dependencies": [],
       "registryDependencies": [
         "utils"
       ],
@@ -2495,9 +4118,42 @@
           "path": "src/components/custom/blocks/TiltedCardBlock.tsx",
           "type": "registry:component",
           "target": "components/custom/blocks/TiltedCardBlock.tsx"
+        },
+        {
+          "path": "src/components/custom/blocks/motion-curves.ts",
+          "type": "registry:component",
+          "target": "components/custom/blocks/motion-curves.ts"
         }
       ],
       "docs": "Named export: TiltedCard. Wraps arbitrary children; tune `tiltIntensity`, `glareOpacity` and `scaleOnHover`. Pointer-driven, so it is inert on touch — keep the content readable without the effect."
+    },
+    {
+      "name": "time-picker",
+      "type": "registry:component",
+      "title": "Time Picker",
+      "author": "AlgorizeTech",
+      "description": "Scrollable hour / minute / AM-PM columns for choosing a time of day, with themed selection and disabled ranges. The building block behind the date pickers' time mode.",
+      "categories": [
+        "dates",
+        "forms"
+      ],
+      "dependencies": [],
+      "registryDependencies": [
+        "utils"
+      ],
+      "files": [
+        {
+          "path": "src/components/custom/blocks/TimePickerBlock.tsx",
+          "type": "registry:component",
+          "target": "components/custom/blocks/TimePickerBlock.tsx"
+        },
+        {
+          "path": "src/components/custom/blocks/date-picker-theme.ts",
+          "type": "registry:component",
+          "target": "components/custom/blocks/date-picker-theme.ts"
+        }
+      ],
+      "docs": "Named exports: TimePicker plus the setTime, roundToStep and formatTime helpers. `value` is a Date whose day is preserved on change; `format` is 12h | 24h, `minuteStep` sets granularity, and `minTime` / `maxTime` disable times outside a window on that day. Used by `date-picker` and `range-date-picker` when `showTime` is on."
     },
     {
       "name": "timeline",
@@ -2509,7 +4165,6 @@
         "data-display"
       ],
       "dependencies": [
-        "gsap",
         "lucide-react"
       ],
       "registryDependencies": [
@@ -2520,6 +4175,11 @@
           "path": "src/components/custom/blocks/TimelineBlock.tsx",
           "type": "registry:component",
           "target": "components/custom/blocks/TimelineBlock.tsx"
+        },
+        {
+          "path": "src/components/custom/blocks/timeline-theme.ts",
+          "type": "registry:component",
+          "target": "components/custom/blocks/timeline-theme.ts"
         }
       ],
       "docs": "Named exports: TimelineBlock, getThemeStyles. Items take { id, title, date, description?, icon?, status } where status is completed | current | upcoming and drives the colour. `layout` places entries left | center | right. For entrance animation variety without status semantics, use `animated-timeline`."
@@ -2534,7 +4194,6 @@
         "feedback"
       ],
       "dependencies": [
-        "gsap",
         "lucide-react"
       ],
       "registryDependencies": [
@@ -2545,9 +4204,14 @@
           "path": "src/components/custom/blocks/ToastBlock.tsx",
           "type": "registry:component",
           "target": "components/custom/blocks/ToastBlock.tsx"
+        },
+        {
+          "path": "src/components/custom/blocks/toast-context.ts",
+          "type": "registry:component",
+          "target": "components/custom/blocks/toast-context.ts"
         }
       ],
-      "docs": "Named exports: ToastProvider, useToast, getThemeStyles. Wrap your app in ToastProvider, then call `toast()` from useToast. Types: success | error | info | warning | default. Set `duration` to 0 to require manual dismissal. `sonner` does the same job with a stacked look and no provider."
+      "docs": "Named exports: ToastProvider, useToast, getThemeStyles. Wrap your app in ToastProvider, then call `toast()` from useToast. Types: success | error | info | warning | default; `variant` is default | glow | glass | minimal. Set `stack` on the provider to pile toasts behind the newest one (hover fans them out). Set `duration` to 0 to require manual dismissal; hovering pauses the timer. `sonner` does the same job with a module-level API and no provider."
     },
     {
       "name": "toggle",
@@ -2590,9 +4254,14 @@
           "path": "src/components/custom/blocks/ToggleGroupBlock.tsx",
           "type": "registry:component",
           "target": "components/custom/blocks/ToggleGroupBlock.tsx"
+        },
+        {
+          "path": "src/components/custom/blocks/toggle-group-theme.ts",
+          "type": "registry:component",
+          "target": "components/custom/blocks/toggle-group-theme.ts"
         }
       ],
-      "docs": "Named exports: ToggleGroup, ToggleGroupItem, getThemeStyles. Set `type` to single or multiple — `value` is a string for single, an array for multiple. Compose ToggleGroupItem children; the group passes theme and size down."
+      "docs": "Named exports: ToggleGroup, ToggleGroupItem, getThemeStyles. Set `type` to single or multiple — `value` is a string for single, an array for multiple. Compose ToggleGroupItem children; the group passes theme and size down. `color` accepts primary (the theme token), indigo, rose, emerald, zinc or a hex."
     },
     {
       "name": "tooltip",
@@ -2686,6 +4355,11 @@
           "path": "src/components/custom/ui/badge.tsx",
           "type": "registry:ui",
           "target": "components/custom/ui/badge.tsx"
+        },
+        {
+          "path": "src/components/custom/ui/badge-variants.ts",
+          "type": "registry:ui",
+          "target": "components/custom/ui/badge-variants.ts"
         }
       ],
       "docs": "Derived from shadcn/ui (MIT, Copyright (c) 2023 shadcn)."
@@ -2731,6 +4405,11 @@
           "path": "src/components/custom/ui/button.tsx",
           "type": "registry:ui",
           "target": "components/custom/ui/button.tsx"
+        },
+        {
+          "path": "src/components/custom/ui/button-variants.ts",
+          "type": "registry:ui",
+          "target": "components/custom/ui/button-variants.ts"
         }
       ],
       "docs": "This is the internal primitive, not the main `button` item. Prefer `button` unless you specifically need the Slot-based base. Derived from shadcn/ui (MIT, Copyright (c) 2023 shadcn)."
@@ -2775,6 +4454,11 @@
           "path": "src/components/custom/ui/code-renderer.tsx",
           "type": "registry:ui",
           "target": "components/custom/ui/code-renderer.tsx"
+        },
+        {
+          "path": "src/components/custom/ui/code-renderer-core.ts",
+          "type": "registry:ui",
+          "target": "components/custom/ui/code-renderer-core.ts"
         }
       ],
       "docs": "Named export: CodeRenderer, plus `warmHighlighter` and `prefetchHighlight` for callers that know a snippet before it is shown — prefetching one makes its first paint already highlighted, with no unstyled flash. Takes `code` and a Shiki `lang`. One Shiki instance and one markup cache are shared by every block on the page. A snippet that is still cold renders inside `pre.shiki-pending`; style that class to match your `.shiki` metrics so the swap does not shift the page. Pulled in automatically by `ui-codeblocks` — install it directly only if you are building your own code surface."
@@ -2789,7 +4473,8 @@
         "code"
       ],
       "dependencies": [
-        "lucide-react"
+        "lucide-react",
+        "shiki"
       ],
       "registryDependencies": [
         "https://algorize-ui.vercel.app/r/ui-code-renderer.json"
@@ -2812,9 +4497,7 @@
       "categories": [
         "media"
       ],
-      "dependencies": [
-        "gsap"
-      ],
+      "dependencies": [],
       "registryDependencies": [],
       "files": [
         {
@@ -2910,7 +4593,6 @@
         "feedback"
       ],
       "dependencies": [
-        "gsap",
         "lucide-react"
       ],
       "registryDependencies": [
@@ -2921,6 +4603,11 @@
           "path": "src/components/custom/blocks/UploadBlock.tsx",
           "type": "registry:component",
           "target": "components/custom/blocks/UploadBlock.tsx"
+        },
+        {
+          "path": "src/components/custom/blocks/upload-format.ts",
+          "type": "registry:component",
+          "target": "components/custom/blocks/upload-format.ts"
         }
       ],
       "docs": "Named exports: Dropzone, UploadItem, formatBytes, formatTimeLeft. Dropzone handles the drop target and reports via `onFilesDrop`; render an UploadItem per file and drive its `status` and `progress` yourself. No transport is included — wire it to your own upload call."
@@ -3001,16 +4688,14 @@
     {
       "name": "vertical-tabs",
       "type": "registry:component",
-      "title": "Vertical Tabs",
+      "title": "Tabs",
       "author": "AlgorizeTech",
-      "description": "A tab panel that stacks vertically or horizontally, with GSAP transitions between panels. Use it for settings and documentation sections with long content.",
+      "description": "A tab panel whose rail runs across the top or down the side, with GSAP transitions between panels. Use it for settings and documentation sections with long content.",
       "categories": [
         "navigation",
         "layout"
       ],
-      "dependencies": [
-        "gsap"
-      ],
+      "dependencies": [],
       "registryDependencies": [
         "utils"
       ],
@@ -3019,9 +4704,14 @@
           "path": "src/components/custom/blocks/VerticalTabs.tsx",
           "type": "registry:component",
           "target": "components/custom/blocks/VerticalTabs.tsx"
+        },
+        {
+          "path": "src/components/custom/blocks/vertical-tabs-theme.ts",
+          "type": "registry:component",
+          "target": "components/custom/blocks/vertical-tabs-theme.ts"
         }
       ],
-      "docs": "Named exports: VerticalTabs, getThemeStyles. `tabs` take { id, label, icon?, content }. `orientation` switches between vertical and horizontal without changing the API. Variants: default | glass | minimal | bordered."
+      "docs": "Named exports: VerticalTabs, getThemeStyles. `tabs` take { id, label, icon?, content }. `orientation` defaults to horizontal and switches to vertical without changing the API. Variants: default | glass | minimal | bordered | underline | segmented | soft | elevated — every one renders in both orientations. Ships full tablist semantics: arrow keys along the rail, Home/End, and a focus ring drawn in your accent. `underline` and `segmented` move a single measured indicator between tabs; motion is skipped under prefers-reduced-motion."
     },
     {
       "name": "video-accordion",
@@ -3033,9 +4723,7 @@
         "media",
         "marketing"
       ],
-      "dependencies": [
-        "gsap"
-      ],
+      "dependencies": [],
       "registryDependencies": [
         "utils"
       ],
@@ -3049,6 +4737,146 @@
       "docs": "Named exports: VideoAccordion, AccordionPanel. Panels take { id, title, description?, videoSrc, posterUrl? }; `defaultActiveId` sets the initially open one. Videos load per panel — keep them short and muted, since autoplay with sound is blocked by browsers."
     },
     {
+      "name": "video-player",
+      "type": "registry:component",
+      "title": "Video Player",
+      "author": "AlgorizeTech",
+      "description": "A video hero with thumbnail and glow that plays in a modal, inline in the card, or directly on load — behind a YouTube embed or a native HTML5 video.",
+      "categories": [
+        "marketing",
+        "media"
+      ],
+      "dependencies": [
+        "lucide-react"
+      ],
+      "registryDependencies": [
+        "utils"
+      ],
+      "files": [
+        {
+          "path": "src/components/custom/blocks/VideoPlayerBlock.tsx",
+          "type": "registry:component",
+          "target": "components/custom/blocks/VideoPlayerBlock.tsx"
+        },
+        {
+          "path": "src/components/custom/blocks/motion-curves.ts",
+          "type": "registry:component",
+          "target": "components/custom/blocks/motion-curves.ts"
+        }
+      ],
+      "docs": "Named export: VideoPlayer. `videoUrl` and `thumbnailUrl` drive it; `playbackMode` is modal | inline | direct and `source` is youtube | video (a native <video>). `aspectRatio` is 16/9 | 21/9 | 4/3 | 1/1 and `modalSize` is md | lg | xl | full. `onPlay` and `onClose` hook into analytics. In modal and inline the media only loads on click, so it stays off the initial page weight; `direct` renders it immediately and honours `autoPlay` / `muted` / `loop`."
+    },
+    {
+      "name": "video-player-jw",
+      "type": "registry:component",
+      "title": "Video Player (JW Player)",
+      "author": "AlgorizeTech",
+      "description": "A hero video player built on JW Player, with colour skin presets and a native fallback for when the licensed library is unavailable.",
+      "categories": [
+        "media"
+      ],
+      "dependencies": [
+        "lucide-react"
+      ],
+      "registryDependencies": [
+        "utils"
+      ],
+      "files": [
+        {
+          "path": "src/components/custom/blocks/VideoPlayerJwBlock.tsx",
+          "type": "registry:component",
+          "target": "components/custom/blocks/VideoPlayerJwBlock.tsx"
+        }
+      ],
+      "docs": "Named exports: JwPlayer, JW_DEMO_LIBRARY_URL, plus the JwSkinConfig and JwSkinPreset types. No npm dependency — the JW library is a licensed remote script loaded from `libraryUrl`. It defaults to JW's public documentation library, which is fine to evaluate against but must be replaced with your own `https://cdn.jwplayer.com/libraries/<PLAYER_ID>.js` before shipping; a self-hosted build also needs `licenseKey`. `skin` picks a colour preset (default | midnight | neon | sunset | minimal), `skinConfig` takes a raw JW skin object, and `skinUrl` / `skinName` point at a custom stylesheet. If the library fails to load the component falls back to a native <video> rather than a black box."
+    },
+    {
+      "name": "video-player-plyr",
+      "type": "registry:component",
+      "title": "Video Player (Plyr)",
+      "author": "AlgorizeTech",
+      "description": "A hero video player built on Plyr — one accessible, skinnable control bar in front of HTML5 files, YouTube and Vimeo alike.",
+      "categories": [
+        "media"
+      ],
+      "dependencies": [
+        "plyr"
+      ],
+      "registryDependencies": [
+        "utils"
+      ],
+      "files": [
+        {
+          "path": "src/components/custom/blocks/VideoPlayerPlyrBlock.tsx",
+          "type": "registry:component",
+          "target": "components/custom/blocks/VideoPlayerPlyrBlock.tsx"
+        }
+      ],
+      "docs": "Named export: PlyrPlayer. Requires the `plyr` package, which the CLI installs. `provider` is html5 | youtube | vimeo and `mediaType` is video | audio; `accentColor` sets Plyr's `--plyr-color-main`, and `controls` takes Plyr's control-name array. Plyr is imported dynamically inside an effect, so the component server-renders cleanly. Its control icons come from Plyr's CDN sprite by default — set `iconUrl` to a self-hosted `plyr.svg` if the page must not reach a third-party host."
+    },
+    {
+      "name": "waitlist",
+      "type": "registry:component",
+      "title": "Waitlist",
+      "author": "AlgorizeTech",
+      "description": "A pre-launch sign-up in three layouts: a compact card, a brand mark with a live countdown over the form, or a pill on a soft ground with the faces already in and a bar of the spots claimed. The form becomes the reader's place in line — a number that counts up, and an invite link to copy — when your promise resolves.",
+      "categories": [
+        "marketing",
+        "forms"
+      ],
+      "dependencies": [
+        "lucide-react"
+      ],
+      "registryDependencies": [
+        "https://algorize-ui.vercel.app/r/avatar-stack.json",
+        "https://algorize-ui.vercel.app/r/button.json",
+        "https://algorize-ui.vercel.app/r/copy-button.json",
+        "https://algorize-ui.vercel.app/r/counter.json",
+        "https://algorize-ui.vercel.app/r/input.json",
+        "https://algorize-ui.vercel.app/r/progress.json",
+        "utils"
+      ],
+      "files": [
+        {
+          "path": "src/components/custom/blocks/WaitlistBlock.tsx",
+          "type": "registry:component",
+          "target": "components/custom/blocks/WaitlistBlock.tsx"
+        }
+      ],
+      "docs": "Named export: Waitlist, with parts Mark, Countdown, Heading, Intro, Form, Proof and Spots. Composed from the counter, input, button, avatar-stack, progress and copy-button items, which install alongside it. `variant` is card | launch | queue, each styled for light and dark mode; `Countdown` takes a `date` and is the counter's slide countdown; `Form` takes `onJoin(email)` — resolve a number to show it as the place in line, throw an Error to show its message — plus `action`, `shareUrl`, `note` and the success copy; `Spots` takes `claimed` and `total`; `accent` pins the colour; `reveal` is in-view or immediate."
+    },
+    {
+      "name": "wallet",
+      "type": "registry:component",
+      "title": "Wallet",
+      "author": "AlgorizeTech",
+      "description": "An interactive fintech cardholder wallet component featuring 3 serially staggered cards, curved pocket scoop, bottom thumb cutout, and light/dark mode styling.",
+      "categories": [
+        "data-display",
+        "marketing",
+        "actions"
+      ],
+      "dependencies": [
+        "lucide-react"
+      ],
+      "registryDependencies": [
+        "utils"
+      ],
+      "files": [
+        {
+          "path": "src/components/custom/blocks/WalletBlock.tsx",
+          "type": "registry:component",
+          "target": "components/custom/blocks/WalletBlock.tsx"
+        },
+        {
+          "path": "src/components/custom/blocks/motion-curves.ts",
+          "type": "registry:component",
+          "target": "components/custom/blocks/motion-curves.ts"
+        }
+      ],
+      "docs": "Named export: Wallet. Accepts cards array, overallBalance, allowReveal, and autoRevealOnHover."
+    },
+    {
       "name": "wizard",
       "type": "registry:component",
       "title": "Wizard",
@@ -3058,9 +4886,7 @@
         "forms",
         "navigation"
       ],
-      "dependencies": [
-        "gsap"
-      ],
+      "dependencies": [],
       "registryDependencies": [
         "utils"
       ],
@@ -3069,6 +4895,11 @@
           "path": "src/components/custom/blocks/WizardBlock.tsx",
           "type": "registry:component",
           "target": "components/custom/blocks/WizardBlock.tsx"
+        },
+        {
+          "path": "src/components/custom/blocks/wizard-context.ts",
+          "type": "registry:component",
+          "target": "components/custom/blocks/wizard-context.ts"
         }
       ],
       "docs": "Named exports: Wizard, WizardProgress, WizardContainer, WizardStep, WizardTitle, WizardDescription, useWizard. Wizard owns the step state; children read `currentStep`, `nextStep` and `prevStep` from the useWizard hook. `onComplete` fires on the final step. Unlike `stepper`, this manages navigation for you."

@@ -54,6 +54,19 @@ export default function CompactNav() {
 
 ## Installation
 
+Register the @algorize-ui registry once per project, then add the component:
+
+```bash
+npx shadcn@latest registry add @algorize-ui=https://algorize-ui.vercel.app/r/{name}.json
+npx shadcn@latest add @algorize-ui/dock
+```
+
+Or the Motion build (same props, same file — install one):
+
+```bash
+npx shadcn@latest add @algorize-ui/dock-framer
+```
+
 ## Examples
 
 ## Features

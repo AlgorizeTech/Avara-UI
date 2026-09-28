@@ -35,7 +35,7 @@ export function StructuredData() {
               url: links.github,
             },
             keywords:
-              "React components, UI library, Tailwind CSS, Framer Motion, TypeScript, shadcn registry",
+              "React components, UI library, Tailwind CSS, Motion, TypeScript, shadcn registry",
             programmingLanguage: ["TypeScript", "JavaScript", "CSS"],
             downloadUrl: links.github,
             license: "https://opensource.org/licenses/MIT",

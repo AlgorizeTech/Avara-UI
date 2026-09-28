@@ -1,0 +1,27 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "kbd-kbd",
+  "type": "registry:block",
+  "title": "Kbd",
+  "description": "A single key, rendered as a semantic `<kbd>` element.",
+  "dependencies": [
+    "tw-animate-css"
+  ],
+  "registryDependencies": [
+    "utils"
+  ],
+  "files": [
+    {
+      "path": "app/page.tsx",
+      "type": "registry:page",
+      "target": "app/page.tsx",
+      "content": "import { Kbd } from \"@/components/custom/blocks/KbdBlock\";\n\nexport default function BasicKbd() {\n  return <Kbd>⌘</Kbd>;\n}"
+    },
+    {
+      "path": "components/custom/blocks/KbdBlock.tsx",
+      "type": "registry:component",
+      "target": "components/custom/blocks/KbdBlock.tsx",
+      "content": "\"use client\";\n\nimport { cn } from \"@/lib/utils\";\nimport React from \"react\";\n\nexport interface KbdProps extends React.HTMLAttributes<HTMLElement> {\n  size?: \"sm\" | \"md\" | \"lg\";\n}\n\nexport const Kbd = React.forwardRef<HTMLElement, KbdProps>(\n  ({ className, size = \"sm\", ...props }, ref) => {\n    const sizeStyles = {\n      sm: \"h-5 px-1.5 text-[10px]\",\n      md: \"h-6 px-2 text-xs\",\n      lg: \"h-8 px-3 text-sm\",\n    };\n\n    return (\n      <kbd\n        ref={ref}\n        className={cn(\n          \"pointer-events-none inline-flex select-none items-center gap-1 rounded border font-mono font-medium\",\n          // Theme-token surface (both modes)\n          \"border-border bg-muted text-muted-foreground shadow-[0_1px_0_rgba(0,0,0,0.05)]\",\n          // Dark mode edge highlight\n          \"dark:shadow-[0_1px_0_rgba(255,255,255,0.05)]\",\n          sizeStyles[size],\n          className,\n        )}\n        {...props}\n      />\n    );\n  },\n);\nKbd.displayName = \"Kbd\";\n"
+    }
+  ]
+}

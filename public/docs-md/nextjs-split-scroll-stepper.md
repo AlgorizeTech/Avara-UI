@@ -4,7 +4,7 @@ A high-impact, scroll-driven interactive section built with full dark/light mode
 
 Scroll the preview and each row expands as it reaches the reading line, driving the sticky image card beside it. `displayMode` decides which halves of that pairing are rendered.
 
-export const showcaseItems = `const items = [
+export const showcaseItems = `const items: AccordionShowcaseItem[] = [
   {
     id: "landing-page",
     stepNumber: "01",
@@ -16,7 +16,7 @@ export const showcaseItems = `const items = [
       "FIGMA TO CODE CONVERSION",
       "MOBILE FIRST RESPONSIVE",
     ],
-    image: "https://images.unsplash.com/photo-1460925895917-afdab827c52f?q=80&w=1200&auto=format&fit=crop",
+    image: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_1200,c_limit/v1790146209/photo-1460925895917-afdab827c52f-1790146212204.jpg",
     badgeText: "SELECTED SERVICE",
   },
   {
@@ -30,7 +30,7 @@ export const showcaseItems = `const items = [
       "REAL-TIME SYNC",
       "EDGE COMPUTED API",
     ],
-    image: "https://images.unsplash.com/photo-1551288049-bebda4e38f71?q=80&w=1200&auto=format&fit=crop",
+    image: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_1200,c_limit/v1790146211/photo-1551288049-bebda4e38f71-1790146212211.jpg",
     badgeText: "SELECTED SERVICE",
   },
   {
@@ -44,7 +44,7 @@ export const showcaseItems = `const items = [
       "STREAMING RESPONSES",
       "VECTOR DATABASE SETUP",
     ],
-    image: "https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?q=80&w=1200&auto=format&fit=crop",
+    image: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_1200,c_limit/v1790148864/photo-1618005182384-a83a8bd57fbe-1790148865111.jpg",
     badgeText: "SELECTED SERVICE",
   },
   {
@@ -58,12 +58,12 @@ export const showcaseItems = `const items = [
       "ROLE-BASED ACCESS CONTROL",
       "REAL-TIME NOTIFICATIONS",
     ],
-    image: "https://images.unsplash.com/photo-1504639725590-34d0984388bd?q=80&w=1200&auto=format&fit=crop",
+    image: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_1200,c_limit/v1790146210/photo-1504639725590-34d0984388bd-1790146212207.jpg",
     badgeText: "SELECTED SERVICE",
   },
 ];`;
 
-export const usageDefault = `import { ScrollAccordionShowcase } from "@/components/custom/blocks/ScrollAccordionShowcaseBlock";
+export const usageDefault = `import { ScrollAccordionShowcase, type AccordionShowcaseItem } from "@/components/custom/blocks/ScrollAccordionShowcaseBlock";
 
 ${showcaseItems}
 
@@ -73,7 +73,7 @@ export default function ServicesShowcase() {
   );
 }`;
 
-export const usageTextOnly = `import { ScrollAccordionShowcase } from "@/components/custom/blocks/ScrollAccordionShowcaseBlock";
+export const usageTextOnly = `import { ScrollAccordionShowcase, type AccordionShowcaseItem } from "@/components/custom/blocks/ScrollAccordionShowcaseBlock";
 
 ${showcaseItems}
 
@@ -83,7 +83,7 @@ export default function TextOnlyShowcase() {
   return ;
 }`;
 
-export const usageImageOnly = `import { ScrollAccordionShowcase } from "@/components/custom/blocks/ScrollAccordionShowcaseBlock";
+export const usageImageOnly = `import { ScrollAccordionShowcase, type AccordionShowcaseItem } from "@/components/custom/blocks/ScrollAccordionShowcaseBlock";
 
 ${showcaseItems}
 
@@ -92,7 +92,7 @@ export default function ImageOnlyShowcase() {
   return ;
 }`;
 
-export const usageDefaultIndex = `import { ScrollAccordionShowcase } from "@/components/custom/blocks/ScrollAccordionShowcaseBlock";
+export const usageDefaultIndex = `import { ScrollAccordionShowcase, type AccordionShowcaseItem } from "@/components/custom/blocks/ScrollAccordionShowcaseBlock";
 
 ${showcaseItems}
 
@@ -102,6 +102,13 @@ export default function ShowcaseStartingOnThird() {
 }`;
 
 ## Installation
+
+Register the @algorize-ui registry once per project, then add the component:
+
+```bash
+npx shadcn@latest registry add @algorize-ui=https://algorize-ui.vercel.app/r/{name}.json
+npx shadcn@latest add @algorize-ui/scroll-accordion-showcase
+```
 
 ### Accent color
 
@@ -172,7 +179,7 @@ The accent is resolved at runtime, so it adopts your site's primary color with n
 
           string
 
-          "#FFAB1D"
+          "var(--primary)"
 
           The fallback hex color string applied automatically if no valid hex or
           rgb color value is detected in localStorage or CSS root
@@ -210,7 +217,7 @@ The accent is resolved at runtime, so it adopts your site's primary color with n
           Required
 
           A unique string identifier required for safe React list rendering and
-          Framer Motion layout animations.
+          for swapping the showcase image when the active step changes.
 
           AccordionShowcaseItem
 
@@ -244,7 +251,7 @@ The accent is resolved at runtime, so it adopts your site's primary color with n
           Required
 
           The detailed paragraph text explaining the specific step or service,
-          which smoothly expands via Framer Motion when the card becomes active.
+          which smoothly expands when the card becomes active.
 
           AccordionShowcaseItem
 

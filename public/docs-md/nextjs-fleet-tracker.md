@@ -76,6 +76,13 @@ export default function ModernFleet() {
 
 ## Installation
 
+Register the @algorize-ui registry once per project, then add the component:
+
+```bash
+npx shadcn@latest registry add @algorize-ui=https://algorize-ui.vercel.app/r/{name}.json
+npx shadcn@latest add @algorize-ui/fleet-map
+```
+
 ## Examples
 
 ## Features
@@ -123,8 +130,9 @@ Explore the Fleet Tracker map features, including live marker positioning, custo
 
           "default"
 
-          Applies overarching structural layouts, including floating sidebars
-          versus split-views.
+          default is a split view, minimal floats
+          the list over the map, modern is the glass treatment
+          from Profile Page: an aurora behind, a frosted list, a glass-edged map.
 
           color
 
@@ -134,6 +142,38 @@ Explore the Fleet Tracker map features, including live marker positioning, custo
 
           Applies global color themes to the active map markers, sidebar icons,
           and focus rings.
+
+          zoom
+
+          number
+
+          15
+
+          Initial zoom level and active vehicle focus zoom level. Defaults to 15 for street/neighborhood detail.
+
+          tileApiKey
+
+          string
+
+          undefined
+
+          Optional CARTO API key if you choose to use CARTO Basemaps. By default, OpenStreetMap tiles are used with zero API key required.
+
+          tileUrl
+
+          string
+
+          OpenStreetMap tile URL
+
+          Custom basemap raster tile URL template for light mode (e.g., https://&#123;s&#125;.tile.openstreetmap.org/&#123;z&#125;/&#123;x&#125;/&#123;y&#125;.png).
+
+          darkTileUrl
+
+          string
+
+          undefined
+
+          Custom raster tile URL template for dark mode. If omitted, standard OpenStreetMap tiles are dynamically dark-graded.
 
 ---
 

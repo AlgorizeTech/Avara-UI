@@ -73,9 +73,57 @@ export const NAME_OVERRIDES: Record<string, string> = {
   "Support-dashboard.tsx": "support-dashboard",
   "DesignComponentsFolder.tsx": "design-components-folder",
   "DesignFolderBox.tsx": "design-folder-box",
+  "CounterSectionBlock.tsx": "counter-section",
+  "WalletBlock.tsx": "wallet",
+  "FAQSectionBlock.tsx": "faq-section",
 };
 
 export const META: Record<string, ItemMeta> = {
+  "faq-section": {
+    description:
+      "A complete animated FAQ website section pairing an editorial header with a dynamic morphing nature photography canvas and an expandable question accordion.",
+    categories: ["marketing", "layout"],
+    docs: "Named export: FAQSection (also default export); AnimatedFAQBlock and FAQ_ITEMS are also exported.",
+  },
+  "animated-faq": {
+    description:
+      "An FAQ section pairing an accordion of questions with a picture canvas that resizes and crossfades to each open answer. Use it for landing-page FAQs that should feel editorial rather than list-like.",
+    categories: ["marketing", "layout"],
+    docs: "Named export: AnimatedFAQBlock (also the default export); `FAQ_ITEMS` holds the sample data. All motion is CSS — no animation library.",
+  },
+  "card-stack": {
+    description:
+      "A layered deck of cards featuring fluid drag-to-discard gestures, button-driven directional slide animations, and realistic depth perspective.",
+    categories: ["data-display", "marketing", "actions"],
+    docs: "Named export: CardStack (also default). Accepts items, visibleCards, swipeToDismiss, canDismissLastCard, loop, showHeader, and showNavigation.",
+  },
+  wallet: {
+    description:
+      "An interactive fintech cardholder wallet component featuring 3 serially staggered cards, curved pocket scoop, bottom thumb cutout, and light/dark mode styling.",
+    categories: ["data-display", "marketing", "actions"],
+    docs: "Named export: Wallet. Accepts cards array, overallBalance, allowReveal, and autoRevealOnHover.",
+  },
+  "counter-section": {
+    description:
+      "A collection of 4 animated high-impact Counter and Stats Sections with viewport-triggered count-up easing, zero shadows, and full adaptive styling.",
+    categories: ["marketing", "data-display"],
+    docs: "Named export: CounterSection. Accepts variant ('cyber-hud' | 'minimal-slash' | 'halftone-cinema' | 'spotlight-gradient') and custom stats array with value, prefix, suffix, decimals, label, sublabel, and tag.",
+  },
+  globe: {
+    description:
+      "An interactive 3D WebGL globe visualization with location markers, arc curves, and rotation controls. Use it for global presence and location showcases.",
+    categories: ["data-display", "marketing"],
+  },
+  "homepage-hero": {
+    description:
+      "A feature-rich hero section with animated typing text, interactive CLI copy badge, gradient action buttons, and feature list.",
+    categories: ["marketing", "layout"],
+  },
+  "horizontal-rail": {
+    description:
+      "A horizontal sliding rail layout with smooth drag inertia, snapping cards, and navigation controls. Use it for showcasing products, media cards, or horizontal content.",
+    categories: ["layout", "scroll", "media"],
+  },
   // ---- Curated in Phase 3. Verified against source. ----
   button: {
     usageDependencies: ["icons"],
@@ -85,6 +133,7 @@ export const META: Record<string, ItemMeta> = {
     docs: "Default export. Supports variant (default | destructive | outline | secondary | ghost | link), size (sm | lg), and a `loading` prop. Ripple keyframes are injected into document.head on mount, so no Tailwind config or global CSS changes are needed.",
   },
   card: {
+    usageDependencies: ["product-card"],
     description:
       "A composable surface with header, title, description, content, and footer slots. Use it to group related content into a bounded block.",
     categories: ["layout"],
@@ -102,11 +151,17 @@ export const META: Record<string, ItemMeta> = {
     categories: ["feedback"],
     docs: "Shimmer keyframes ship inline in a scoped <style> block — no global CSS or Tailwind config changes required.",
   },
+  "social-links": {
+    description:
+      "A row of brand marks that link out — X, GitHub, LinkedIn, YouTube, Instagram, Facebook, Discord, Dribbble, email. Use it in footers, profile cards and author bylines.",
+    categories: ["navigation", "marketing"],
+    docs: "Named export: SocialLinks (plus the SocialLink and SocialNetwork types). `links` is { network, href, label? }[]; `variant` is tile | outline | ghost, `size` is sm | md | lg. Links open in a new tab unless `external` is false; mailto links never do. Brand marks are inline SVG, so no icon package is needed.",
+  },
   progress: {
     description:
-      "A themeable progress bar with an optional labelled field wrapper. Use it for determinate operations where percentage complete is known.",
+      "A themeable progress bar in three forms — a single bar, a multi-segment track, and a ring — with an optional labelled field wrapper. Use it for determinate operations where percentage complete is known.",
     categories: ["feedback"],
-    docs: "Named exports: Progress, ProgressField, getThemeStyles. Use ProgressField when you need a label and value readout; use Progress bare inside your own layout.",
+    docs: "Named exports: Progress, ProgressField, MultiProgress, ProgressSegment, CircularProgress, getThemeStyles. Use ProgressField when you need a label and value readout; use Progress bare inside your own layout. MultiProgress holds ProgressSegment children that share its `max`, each with its own `color`, for breakdowns across one track. CircularProgress draws the same value as a ring — `circleSize` is the diameter, `barSize` the stroke, and children replace the centred percentage (a function child receives the counting value). Everything fills from zero on mount and tweens later changes via the exported useCountUp hook; `animate={false}` opts out and `duration` sets the mount run.",
   },
   toggle: {
     description:
@@ -114,11 +169,65 @@ export const META: Record<string, ItemMeta> = {
     categories: ["forms"],
     docs: "Named export: Toggle. Forwards a ref and accepts `checked` / `onCheckedChange` for controlled use, or `defaultChecked` for uncontrolled.",
   },
+  "book-flip": {
+    description:
+      "An interactive 3D Book Flip / Leaf Carousel component simulating realistic book page turns, open spreads, spine folds, and bottom leaf navigation controls.",
+    categories: ["data-display", "utilities"],
+    docs: "Supports leaves array prop, controlled currentIndex, keyboard navigation, and custom aspect ratios.",
+  },
+  "product-card": {
+    description:
+      "A reusable, prop-driven E-commerce Product Card supporting color swatches, badges, ratings, quick view, and action buttons.",
+    categories: ["data-display", "commerce"],
+    docs: "Supports variant=('standard' | 'compact' | 'horizontal'), title, price, colors, badge, rating, onAddToCart, onBuyNow, and onQuickView.",
+  },
+  "range-date-picker": {
+    description:
+      "An interactive Range Date Picker featuring single month, dual-month, and rate-priced calendar layouts with customizable theme colors.",
+    categories: ["forms", "utilities"],
+    docs: "Named export: RangeDatePicker. Supports variant=('single' | 'dual' | 'priced-single' | 'priced-dual'), getPrice, color, value={from, to}, onChange, disablePast / minDate / maxDate. `showTime` adds Start / End time columns: the card opens as a bare calendar (empty when uncontrolled) and a time rail unfolds beside it on the first pick — under it when narrow — and folds away on Clear; `timeFormat` (12h | 24h) and `minuteStep` tune the columns. Installs time-picker alongside.",
+  },
   "otp-input": {
     description:
       "A segmented one-time-passcode field with auto-advance, paste handling, and backspace navigation. Use it for email or SMS verification steps.",
     categories: ["forms", "authentication"],
     docs: "Pasting a full code into any cell distributes the digits across all cells.",
+  },
+  folder: {
+    description:
+      "A tactile folder — skeleton cards or your own photos tuck behind a frosted-glass pocket and fan out into an arc on hover. Use it for file groups, galleries and drag-and-drop upload targets.",
+    categories: ["data-display"],
+    docs: "Named exports: Folder, SkeletonCard (plus FolderFile / FolderProps types). `files` is { thumb?, name?, progress? }[]; without files, `peek` skeleton cards show. `color` tints body, pocket, icon and cards via OKLCH; `icon` is a lucide component. Hover, tap or focus opens the fan; past five files it pages with arrows or by dragging a card. `interactive` adds drag-and-drop + click-to-browse with `onFiles`, `progress` and `onRemoveFile`. Pulls in `tooltip` for file-name hovers.",
+  },
+  "conversation-timeline": {
+    description:
+      "A dense rail of thin marks, one per message, that expands into a labelled list on hover — a minimap for long chats. Use it beside a conversation to jump between messages.",
+    categories: ["navigation", "communication"],
+    docs: "Named export: ConversationTimeline (plus the TimelineCheckpoint type). `checkpoints` is `{ id, label, sublabel?, role? }[]`, `activeId` marks the selected row with `accent` and `onSelect` receives a clicked id. `side` puts labels left or right; `rowHeight` / `collapsedRowHeight` set the expanded and resting row sizes, `visibleCount` caps rows before scrolling and `labelWidth` fixes the label column. Hover or focus expands it; touch devices stay expanded; respects prefers-reduced-motion.",
+  },
+  "copy-button": {
+    description:
+      "A clipboard button that confirms the copy in place — the icon pops to a check and the label swaps to \"Copied!\" — plus a read-only Copy Field for links, tokens and commands. Use it anywhere a value needs to be copied without a toast.",
+    categories: ["actions", "forms"],
+    docs: "Named exports: CopyButton, CopyField, useCopyToClipboard. `value` is the text copied; `label` / `copiedLabel` / `errorLabel` set the three states, `timeout` how long the confirmation lingers, `iconOnly` drops the label. Variants are solid | soft | outline | ghost, sizes sm | md | lg, `color` a preset or hex. CopyField wraps a read-only input with the button beside it (or `inset` inside it) and forwards `buttonProps`. Falls back to execCommand where the Clipboard API is unavailable.",
+  },
+  "time-picker": {
+    description:
+      "Scrollable hour / minute / AM-PM columns for choosing a time of day, with themed selection and disabled ranges. The building block behind the date pickers' time mode.",
+    categories: ["dates", "forms"],
+    docs: "Named exports: TimePicker plus the setTime, roundToStep and formatTime helpers. `value` is a Date whose day is preserved on change; `format` is 12h | 24h, `minuteStep` sets granularity, and `minTime` / `maxTime` disable times outside a window on that day. Used by `date-picker` and `range-date-picker` when `showTime` is on.",
+  },
+  "selection-frame": {
+    description:
+      "That box Figma draws around a selected layer — corner handles and a crisp accent stroke — around any text span or block. Use it to spotlight a word, a card or a screenshot region in docs and marketing.",
+    categories: ["typography"],
+    docs: "Named export: SelectionFrame (also exports the FrameHandles and FrameLine types). Wrap any child; it is measured live with a ResizeObserver. `handles` is square | circle, `line` is solid | dashed | long, `dash` overrides the [dash, gap] pair, `animated` marches dashed/long strokes and pops the handles in, `color` is any CSS colour (Figma blue default), `radius` and `padding` are pixels, and `inline={false}` makes it block-level. Respects prefers-reduced-motion.",
+  },
+  "apple-select": {
+    description:
+      "An iOS-style text selection rendered from a fixed character range — translucent highlight with lollipop handles on either end. Use it in docs, tutorials and marketing copy to point at part of a sentence.",
+    categories: ["typography"],
+    docs: "Named export: AppleSelect. `text` is the full string and `selection` is a `[start, end]` character range (end exclusive, like String.slice) or an array of them for several phrases. The range is fixed by the author, not draggable. `color` takes any CSS colour, `handles={false}` drops the lollipops, and `animate` fades the highlight in on mount. Renders a <p> by default; `as=\"span\"` sets it inline inside your own paragraph. Other HTML attributes are forwarded to it.",
   },
   kbd: {
     description:
@@ -175,7 +284,7 @@ export const META: Record<string, ItemMeta> = {
     description:
       "A set of toggle buttons behaving as either radio group or checkbox group. Use it for view switches and filter bars where all options should stay visible.",
     categories: ["forms", "actions"],
-    docs: "Named exports: ToggleGroup, ToggleGroupItem, getThemeStyles. Set `type` to single or multiple — `value` is a string for single, an array for multiple. Compose ToggleGroupItem children; the group passes theme and size down.",
+    docs: "Named exports: ToggleGroup, ToggleGroupItem, getThemeStyles. Set `type` to single or multiple — `value` is a string for single, an array for multiple. Compose ToggleGroupItem children; the group passes theme and size down. `color` accepts primary (the theme token), indigo, rose, emerald, zinc or a hex.",
   },
   "ui-multi-select": {
     description:
@@ -194,6 +303,24 @@ export const META: Record<string, ItemMeta> = {
       "A star rating supporting half-star precision, in read-only or interactive mode. Use it for reviews and any score shown out of five.",
     categories: ["forms", "data-display"],
     docs: "Named export: HalfStars. Set `interactive` to let users pick a rating and `allowHalf` for half-star steps. `onHoverChange` fires during hover so you can preview the value before commit. Leave `interactive` off to render a static score.",
+  },
+  "heart-signal": {
+    description:
+      "A slow, ultra-smooth cardiac heart signal waveform component with 2 visual variants (realtime EKG line trace and fluid multi-lead cardiac wave).",
+    categories: ["data-display", "media"],
+    docs: "Named export: HeartSignal. Supports 2 smooth variants (ecg-line and cardiac-wave), live BPM telemetry badge, speed control, and active theme color integration.",
+  },
+  "squircle-carousel": {
+    description:
+      "Horizontal flowing carousel where images are masked behind a barrel-distorted grid of rounded cubes with snap physics and smooth inertia.",
+    categories: ["media", "scroll"],
+    docs: "Named export: SquircleCarousel. Interactive drag with grab cursor, momentum physics, barrel fisheye distortion, and squircle grid masking.",
+  },
+  "flow-gallery": {
+    description:
+      "Horizontal and diagonal 3D cascading gallery stream with continuous downward auto-flow motion, drag inertia physics, and isometric perspective depth.",
+    categories: ["media", "scroll"],
+    docs: "Named export: FlowGallery. Interactive drag with grab cursor, continuous downward auto-flow, 3D isometric plane, and Next Themes adaptation.",
   },
   stepper: {
     description:
@@ -217,19 +344,19 @@ export const META: Record<string, ItemMeta> = {
     description:
       "A sign-in form with social buttons, password reveal, remember-me and four layout variants. Use it as the entry point of an authenticated app.",
     categories: ["authentication", "forms"],
-    docs: "Default export: LoginForm. Also exports getThemeStyles and the LoginFormValues type. `variant` is default | split | glass | minimal — split renders a gradient side panel. `onSubmit` receives the validated credentials; without it the form simulates a round trip. `signupHref` points at the matching `register-form` page. Validation is client-side presentation only — enforce it again on your server.",
+    docs: "Default export: LoginForm. Also exports getThemeStyles and the LoginFormValues type. Fields and buttons are the library's input and button items, which install alongside it. `variant` is default | split | glass | minimal — split renders a gradient side panel. `onSubmit` receives the validated credentials; without it the form simulates a round trip. `signupHref` points at the matching `register-form` page. Validation is client-side presentation only — enforce it again on your server.",
   },
   "register-form": {
     description:
       "A sign-up form with paired name fields, password confirmation, a terms checkbox and four layout variants. Use it wherever new accounts are created.",
     categories: ["authentication", "forms"],
-    docs: "Default export: RegisterForm. Also exports getThemeStyles and the RegisterFormValues type. `variant` is default | split | glass | minimal — split renders a gradient side panel. `onSubmit` receives the validated fields; without it the form simulates a round trip. `loginHref` points at the matching `login-form` page, and `minPasswordLength` sets the client-side minimum. Validation is client-side presentation only — enforce it again on your server.",
+    docs: "Default export: RegisterForm. Also exports getThemeStyles and the RegisterFormValues type. Fields and buttons are the library's input and button items, which install alongside it. `variant` is default | split | glass | minimal — split renders a gradient side panel. `onSubmit` receives the validated fields; without it the form simulates a round trip. `loginHref` points at the matching `login-form` page, and `minPasswordLength` sets the client-side minimum. Validation is client-side presentation only — enforce it again on your server.",
   },
   "signup-form": {
     description:
       "A standalone registration form with inline field validation and animated error states. Use it where sign-up is its own page rather than a tab beside sign-in.",
     categories: ["authentication", "forms"],
-    docs: "Named export: SignupForm. Uses Framer Motion for field-level error transitions. Validation is client-side presentation only — enforce it again on your server.",
+    docs: "Named export: SignupForm. Uses Motion for field-level error transitions. Validation is client-side presentation only — enforce it again on your server.",
   },
   "verify-badge": {
     description:
@@ -253,9 +380,9 @@ export const META: Record<string, ItemMeta> = {
   // ---- Phase 4B: navigation & structure ----
   accordion: {
     description:
-      "A data-driven accordion taking an array of items, with single or multiple open sections. Use it for FAQs and any list of collapsible sections.",
+      "A data-driven accordion taking an array of items, with five distinct variants and an optional stack entrance that deals the items into place. Use it for FAQs and any list of collapsible sections.",
     categories: ["layout"],
-    docs: "Named export: Accordion. Pass `accordionData` as { value, title, icon?, content } — content accepts a string array or a node. `type` is single | multiple; set `collapsible` to let the last open section close. Variants: default | bordered | filled | ghost. Wraps the `ui-accordion` Radix primitive. For a single section, `collapsible` is lighter.",
+    docs: "Named export: Accordion. Pass `accordionData` as { value, title, icon?, content } — content accepts a string array or a node. `type` is single | multiple; set `collapsible` to let the last open section close. Variants: default (open row lifts out as a card) | bordered (rail on the open row) | filled (open row inverts to primary) | elevated (cards, open one on a ring) | ghost (type and hairlines). `animation=\"stack\"` piles the items and deals them out on scroll-in via the Web Animations API; skipped under reduced motion. Wraps the `ui-accordion` Radix primitive. For a single section, `collapsible` is lighter.",
   },
   breadcrumb: {
     description:
@@ -279,13 +406,13 @@ export const META: Record<string, ItemMeta> = {
     description:
       "A collapsible application sidebar with grouped items, brand header, footer and a mobile drawer. Use it as the primary shell for a dashboard.",
     categories: ["navigation", "layout"],
-    docs: "Named exports: SidebarProvider, Sidebar, SidebarHeader, SidebarBrand, SidebarContent, SidebarGroup, SidebarFooter, useSidebar. Wrap your app in SidebarProvider; read `expanded` and `isMobileOpen` from useSidebar to drive your own toggle. Variants: attached | floating.",
+    docs: "Named exports: SidebarProvider, Sidebar, SidebarHeader, SidebarBrand, SidebarContent, SidebarGroup, SidebarFooter, useSidebar. Wrap your app in SidebarProvider; read `expanded` and `isMobileOpen` from useSidebar to drive your own toggle. Variants: attached | floating. Collapsed item labels show in the `tooltip` item, which installs alongside.",
   },
   navbar: {
     description:
       "A responsive marketing navbar with logo, links, mobile menu and GSAP entrance animation. Use it as the top bar of a landing page.",
     categories: ["navigation", "marketing"],
-    docs: "Named exports: NavbarBlock, getThemeStyles. Variants: default | floating | centered | minimal | glass. Uses next/link, so it needs edits outside Next.js. For app chrome with dropdown panels, use `navigation-menu`.",
+    docs: "Named exports: NavbarBlock, getThemeStyles. Variants: default | floating | centered | minimal | glass. Links render through `linkComponent` (a plain `a` by default; pass next/link in Next.js). The mobile menu toggles are the `button` item, which installs alongside. For app chrome with dropdown panels, use `navigation-menu`.",
   },
   command: {
     description:
@@ -305,6 +432,18 @@ export const META: Record<string, ItemMeta> = {
     categories: ["layout"],
     docs: "Named exports: Collapsible, CollapsibleTrigger, CollapsibleContent. Use `defaultOpen` for uncontrolled, or `open` with `onOpenChange` to drive it yourself. For several linked sections, use `accordion`.",
   },
+  "color-picker": {
+    description:
+      "An interactive 360° Color Spectrum Wheel and Color Palette component featuring 2D color picking, lightness & alpha sliders, format toggles (HEX, RGB, HSL), one-click copy, and EyeDropper API support.",
+    categories: ["forms", "utilities"],
+    docs: "Named export: ColorPicker. Pass `value` and `onChange`. Set `variant` to 'standalone' for full card or 'popover' for trigger dropdown. Supports `showPresets`, `showAlpha`, and `showEyeDropper`.",
+  },
+  piano: {
+    description:
+      "An interactive Playable Piano component featuring Web Audio API synthesizers, physical keyboard keybindings (A-S-D-F-G-H-J-K-L-; and W-E-T-Y-U-O-P), master volume slider, and toggleable key indicators.",
+    categories: ["media", "utilities"],
+    docs: "Named export: Piano. Supports `defaultVolume` (0 to 1), `defaultShowKeys` (boolean), and `className`. Synthesizes real acoustic piano notes using native Web Audio API.",
+  },
   resizable: {
     description:
       "Draggable split panes in horizontal or vertical layout, with min and max size constraints. Use it for editor and preview layouts users can rebalance.",
@@ -318,10 +457,11 @@ export const META: Record<string, ItemMeta> = {
     docs: "Named exports: ScrollAreaBlock, getThemeStyles. `orientation` is vertical | horizontal | both; `autoHide` fades the bar when idle and `hideTrack` drops the track entirely. Needs a bounded height to scroll — give it an explicit height or a flex parent.",
   },
   "vertical-tabs": {
+    title: "Tabs",
     description:
-      "A tab panel that stacks vertically or horizontally, with GSAP transitions between panels. Use it for settings and documentation sections with long content.",
+      "A tab panel whose rail runs across the top or down the side, with GSAP transitions between panels. Use it for settings and documentation sections with long content.",
     categories: ["navigation", "layout"],
-    docs: "Named exports: VerticalTabs, getThemeStyles. `tabs` take { id, label, icon?, content }. `orientation` switches between vertical and horizontal without changing the API. Variants: default | glass | minimal | bordered.",
+    docs: "Named exports: VerticalTabs, getThemeStyles. `tabs` take { id, label, icon?, content }. `orientation` defaults to horizontal and switches to vertical without changing the API. Variants: default | glass | minimal | bordered | underline | segmented | soft | elevated — every one renders in both orientations. Ships full tablist semantics: arrow keys along the rail, Home/End, and a focus ring drawn in your accent. `underline` and `segmented` move a single measured indicator between tabs; motion is skipped under prefers-reduced-motion.",
   },
   item: {
     description:
@@ -365,7 +505,7 @@ export const META: Record<string, ItemMeta> = {
     description:
       "A dependency-free chart rendering bar, line, pie and donut from a single data array. Use it for simple dashboard visuals without pulling in a charting library.",
     categories: ["data-display"],
-    docs: "Named exports: ChartBlock. `data` takes { label, value }; switch presentation with `type` (bar | line | pie | donut) and set `height` in pixels. Hand-drawn SVG with no chart library, so bundle cost is nil — but there are no axes, tooltips or scales beyond what is drawn. Use a real charting library for analytical work.",
+    docs: "Named exports: ChartBlock. `data` takes { label, value, color? }; switch presentation with `type` (bar | line | pie | donut | donut-legend | stacked-bar) and set `height` in pixels for the axis charts. The two legend types colour each share from `colors` (theme accent first) and take `centerLabel` / `hoverLabel`. Hand-drawn SVG with no chart library, so bundle cost is nil — but there are no axes or scales beyond what is drawn. Use a real charting library for analytical work.",
   },
   timeline: {
     description:
@@ -379,6 +519,12 @@ export const META: Record<string, ItemMeta> = {
     categories: ["data-display", "marketing"],
     docs: "Named exports: AnimatedTimelineBlock, getThemeStyles. `animation` is fade-up | slide-in | zoom-in | flip-up | blur-in; `layout` is left | right | center. Uses IntersectionObserver rather than a motion library, so it has no runtime dependencies. For status-driven progress, use `timeline`.",
   },
+  "radial-orbital-timeline": {
+    description:
+      "A dynamic orbital visualization component that displays nodes in a circular pattern around a central point. Each node represents a data point with title, status, and energy level.",
+    categories: ["data-display", "marketing"],
+    docs: "Named export: RadialOrbitalTimeline. `nodes` take { id, title, date, status, energyLevel, description, icon?, connectedNodes? }. Click or hover nodes to reveal inspector popover card. Supports `autoRotate`, `rotationSpeed`, and custom accent colors.",
+  },
   "user-graph": {
     description:
       "An orbital diagram placing a user at the centre with tools and sub-agents circling around. Use it to illustrate an AI agent or integration ecosystem.",
@@ -391,17 +537,126 @@ export const META: Record<string, ItemMeta> = {
     categories: ["data-display", "marketing"],
     docs: "Named export: NetworkGraph. `nodes` take { id, ring, image?, fallback?, label?, size? } — `ring` assigns the orbit. Tune spacing with `ringCount`, `baseRadius` and `ringGap`; `animateIn` staggers the reveal. Positions are computed by ring, not by force simulation.",
   },
-  globe: {
-    description:
-      "An interactive 3D Globe with 9 animation variants matching site theme colors, including dotted matrix, wireframe hologram, digital matrix, energy shield, minimal flat 3D, activity heatmap, cyber hex, tactical radar sweep, and galaxy spiral.",
-    categories: ["data-display", "marketing", "maps"],
-    docs: "Named export: Globe. Accepts `variant` (9 variants), `size`, `speed`, `interactive`, `glowColor`, `primaryColor`, `markers`, `arcs`. Dynamically adapts to site `var(--primary)` theme color.",
-  },
   footer: {
     description:
       "A collection of 4 modern, animated, fully responsive Footer components for web applications, SaaS platforms, and marketing landing pages.",
     categories: ["marketing", "navigation", "layout"],
-    docs: "Named export: Footer. Accepts `variant` (4 responsive variants: simple-centered, glass-dock, neon-glow-pulse, quantum-particle-beam), `brandName`, `tagline`, `logo`, `className`. All variants adapt across mobile, tablet, and desktop screens.",
+    docs: "Named export: Footer. Accepts `variant` (4 responsive variants: simple-centered, glass-dock, neon-glow-pulse, quantum-particle-beam), `brandName`, `tagline`, `logo`, `socialLinks`, `className`. The social row is the `social-links` item, which installs alongside. All variants adapt across mobile, tablet, and desktop screens.",
+  },
+  "booking-card": {
+    description:
+      "A booking panel for any card: a day strip paged a week at a time, time slots in groups, a button that reads back the choice, and a confirmation that draws itself in. Use it wherever a page ends in an appointment.",
+    categories: ["forms", "dates"],
+    docs: "Named export: BookingCard (plus the BookingSlot and Booking types). `BookingCard` is a compound component — put `BookingCard.Days`, `BookingCard.Slots`, `BookingCard.Submit` and `BookingCard.Confirmation` inside it in any layout; it holds the chosen day and slot and calls `onBook`. It draws no surface of its own: make it the padded inside of whatever panel it sits in so the confirmation reaches the edges. The selected day and slot, the submit and 'Add to calendar' buttons, the check mark and the focus rings use the `--primary` token.",
+  },
+  "bento-showcase": {
+    description:
+      "A six-card marketing bento on black: a hero with a live chat, a case-studies laptop, a headline, figures that scroll up, the plans on a phone, and a team strip that scrolls left. Use it as the showcase section of an agency or services landing page.",
+    categories: ["marketing", "layout"],
+    docs: "Named export: BentoShowcase, with parts Card, Hero, CaseStudies, Headline, Stats, Phone and Team. Composed from the marquee, chat-bubble, half-stars, mobile-mockup and button items, which install alongside it. Headlines are children — wrap the display phrase in <em> for the serif italic; `Card` takes a `tone` and grid placement via className.",
+  },
+  "book-appointment": {
+    description:
+      "A practitioner's page that ends in an appointment: portrait and contact, scores as stars, two small charts, and a booking panel — glass or solid. Use it for clinics, salons, consultations.",
+    categories: ["forms", "marketing"],
+    docs: "Named export: BookAppointment. Composed from the booking-card, glass-panel, half-stars and chart items, which install alongside it. Pass `practitioner`, `slotGroups` and `onBook`; `scores`, `visitReasons` and `activities` fill the stars, donut and bar; `variant` switches glass to solid.",
+  },
+  "data-flow": {
+    description:
+      "A sources → core → outputs section: platform cards on the left feed one node in the middle, which fans out to result cards on the right, with curved connectors that draw in on first view and then carry a moving dash. Use it to explain a pipeline, an integration, or where an AI product's data comes from.",
+    categories: ["marketing", "data-display"],
+    docs: "Named export: DataFlow, with parts Source, Core, Output, Pill, Tag and Row. Composed from the flowchart and apple-select items, which install alongside it (`intro` + `highlights` render through AppleSelect); the docs example also uses half-stars and button inside its output cards. Connectors are measured from the cards at runtime (ResizeObserver), hidden below lg; `reveal` is in-view or immediate; `accent` pins the dash colour, otherwise it follows --primary. Wrap intro phrases in <mark> for black pills.",
+  },
+  "platform-grid": {
+    description:
+      "Everything a product offers as one hairline grid: small icon-and-name tiles and a few 2×2 features that show a piece of the product on a tilting card. Reveals as a wave from the centre, then a spotlight follows the pointer. Use it as the 'full platform' section of a product site.",
+    categories: ["marketing", "navigation"],
+    docs: "Named export: PlatformGrid, with parts Tile, Feature, Mock and Pill. Composed from the tilted-card item, which installs alongside it. Cells pack densely (grid-auto-flow: dense) so features stay square at 8, 6, 4, 3 or 2 columns; `reveal` is in-view or immediate; `fadeEdges` masks the outer columns; `accent` pins the hover/spotlight colour, otherwise it follows --primary. Tiles with `href` are links (`linkComponent` for a router Link).",
+  },
+  "support-hero": {
+    description:
+      "A product hero on a soft grey ground: a headline that rises in word by word, one line and one call to action, then a bento of frosted cards — integrations, two figures that count up, two portraits and a team card with faces scattered over it. Use it as the opening section of a SaaS or AI product site.",
+    categories: ["marketing", "layout"],
+    docs: "Named export: SupportHero, with parts Card, Integrations, Stat, Photo and Team. Composed from the glass-panel, text-animation, counter and button items, which install alongside it. Cards land in one staggered pass after the headline (`reveal` in-view or immediate); Stats count up when on screen; hover lifts cards, zooms portraits and drifts the faces. `cta` takes a label plus `onClick` or `href`.",
+  },
+  "circular-text": {
+    description:
+      "Words set on a circle, turning slowly, with room in the middle for a mark, a play button or a link. Use it for video badges, stamps and 'see the work' links.",
+    categories: ["typography"],
+    docs: "Named export: CircularText. `text` repeats to fill the ring (or `repeat` times), `size` in px, `speed` seconds per turn (0 holds still), `direction`, `fontSize`/`tracking` in units of a 100-wide circle, `color` (currentColor follows the parent), `innerRing`. Children sit in the middle. Holds still under prefers-reduced-motion.",
+  },
+  "avatar-stack": {
+    description:
+      "A row of overlapping faces that folds the rest into a +N disc and takes a trailing action. Use it as the social-proof cue under a headline or beside a count.",
+    categories: ["data-display"],
+    docs: "Named export: AvatarStack. `avatars` are { src, alt? }; `size` sm | md | lg; `max` faces before the +N disc; `ringClassName` is the gap colour; `action` renders last at face size; `spreadOnHover` fans the faces apart under the pointer; `liftOnHover` raises the hovered face above its neighbours; `showTooltip` controls hover tooltips.",
+  },
+  "fashion-hero": {
+    description:
+      "A fashion hero: a bold headline between a turning video badge and a stack of faces, five staggered columns of looks on flat colour that tilt under the pointer, a call to action on the middle look, and a footer with a quote and the next story. Use it for a clothing store, a lookbook or an editorial landing page.",
+    categories: ["marketing", "layout"],
+    docs: "Named export: FashionHero (plus FashionHero.Look). Composed from the circular-text, avatar-stack, text-animation, tilted-card and dialog items, which install alongside it. Pass `heading`, up to seven `looks` ({ src, alt, tone, blend?, position? }), `video` ({ badge, url }), `avatars` + `avatarsHref`, `cta`, `quote`, `teaser` and `linkComponent`; `accent` sets --primary, `reveal` is in-view or immediate.",
+  },
+  "component-wall": {
+    description:
+      "A landing hero for a component library: a headline that blurs in word by word and keeps one word turning, a lead, an install command that names whichever card a camera has just landed on, two actions, a line of trust and the tools it is built with in batches — centred between two walls of screenshots that never end, one camera resting high and the other low, or on the left of a single wall.",
+    categories: ["marketing", "layout"],
+    usageDependencies: ["tech-stack"],
+    docs: "Named export: ComponentWall (plus the ComponentWallItem type). Composed from the image-wall, text-animation, copy-button, avatar-stack and half-stars items, which install alongside it, and takes a tech-stack in its `stack` slot. Pass `badge` ({ label, href? }), `heading` (a string, revealed word by word; write `{word}` where `headingWords` take turns every `wordInterval` ms, and name one word in `accent` for the primary colour), `description` (a string or inline JSX — it renders inside a <p>), `install` ({ command } — write `{item}` where the focused card's `slug` goes, e.g. `npx shadcn@latest add @algorize-ui/{item}`), `primaryAction`/`secondaryAction` ({ label, href, icon? }), `trust` ({ text, avatars?, rating? }), `items` ({ title, image, slug? }[] — every screenshot sits in the same 493:332 frame; slug defaults to the title in kebab-case) and `stack` (a node — a <TechStack> of <TechStackGroup>s of <TechStackTool name icon />: the tools over the lower wall on desktop and under the band on phones; in the centred layout it closes the copy column, where the compact variant fits). `columns`, `interval` (ms the camera rests; 0 holds still), `order` (serial | shuffle), `zoom`, `intro` (ms the camera drifts with nothing in focus while the copy arrives; default 1800) and `onFocus` pass straight to the wall; `layout` is split (copy left, wall right) or center (copy between two walls — the left camera resting high, the right low, taking turns, the second wall dealing the same items from halfway through; the tools sit under the copy; zoom defaults to 0.9; below lg a single band of every card sits between the copy and the tools); `linkComponent` takes next/link. The headline uses your theme's font-serif, the command font-mono; colours are theme tokens.",
+  },
+  "collage-hero": {
+    description:
+      "A playful hero: a badge whose name turns around a mark, a serif headline with two coloured words, hashtag pills, a five-column photo collage and a footer with a quote, a scroll pill and a watch-video trigger. Use it for a kindergarten, studio, school or any warm, busy place.",
+    categories: ["marketing", "layout"],
+    docs: "Named export: CollageHero (plus CollageHero.Badge and CollageHero.Photo). Composed from the button, circular-text and dialog items, which install alongside it. Pass `brand`, `heading` (with <em> for the coloured words), `tags`, `caption`, seven `photos`, `quote`, `scrollLabel`/`scrollTo` and `video` ({ text, url }). `accent` sets --primary for the section, `highlight` the second colour; `reveal` is in-view or immediate.",
+  },
+  "flavour-carousel": {
+    description:
+      "A product hero for anything that comes in flavours: the product stands in a mountain of powder against a moss backdrop and its flavours flank it on four tilted cream tiles. It rises from behind the powder spinning and settles; then every five seconds, or on a click, the chosen tile slides into the cup and the cup cross-fades to that flavour without moving; a glow takes the flavour's colour, a price pill and add-to-cart hang under the cup. One component for both themes: in dark mode the tiles go translucent black.",
+    categories: ["marketing", "commerce", "media"],
+    docs: "Named export: FlavourCarousel. Composed from the button item, which installs alongside it. Pass `flavours` ({ name, price?, tint?, product, tile }[] — every product image must share the same crop), `heading`, `interval` in ms (0 turns autoplay off), `initial`, `reveal` (in-view, immediate or none), `onChange` and `onAdd` (omit it to hide the cart button) with `addLabel`. `backgroundImage` is the backdrop and `foregroundImage` the transparent powder cutout laid in front of the cup (`foregroundHeight` of the stage tall); without them the scene is drawn from `background`, `mound` ([light, dark]) and `paper`.",
+  },
+  "honeycomb-hero": {
+    description:
+      "A travel hero on a dark ground that shifts colour: a light line over a huge white word whose letters turn the theme's primary where they cross the photographs, and a honeycomb of hexagonal photographs with a primary hexagonal call to action set among them. The large hexagon is the slide on screen; its photograph fills the background, tinted with that photograph's own tone, so the whole section changes colour as, every four seconds or on the arrows at the foot, every hexagon moves one step along the ring, endlessly.",
+    categories: ["marketing", "layout"],
+    docs: "Named export: HoneycombHero. Pass `title` and `titleAccent` (its letters that cross the photographs take `titleOverlapColor`, the primary by default), `subtitle`, `primaryActionLabel` (a \\n breaks the line; a compass sits above it in the hexagon) and `primaryActionHref`, `images` ({ src, alt, tone? }[] in queue order — nine cells are visible; tone is the deep colour behind everything while that photograph is featured), `socialLinks`, `interval` in ms (0 turns autoplay off) and `onChange`. The overlapping letters, rule, arrows and call to action follow the theme's primary (the hexagon's compass and label primary-foreground); `accent` sets --primary for the section, `background` is the tone for photographs without one (a deep shade of the primary by default); `linkComponent` takes next/link.",
+  },
+  "orbit-gallery": {
+    description:
+      "A two-column hero with a ring of photo cards revolving on the right, each card staying upright as it travels. Hovering the ring holds it still; moving the pointer over the section leaves a trail of dots in the accent colour. Use it for an agency, studio or gallery.",
+    categories: ["marketing", "layout"],
+    docs: "Named export: OrbitGallery. Pass `badgeText`/`badgeHref`, `title` and `titleAccent`, `subtitle`, primary and secondary actions, `images` (any count — they space themselves evenly), `duration` in seconds for one revolution and `highlights` for the dotted facts row. `color` is a preset name or any CSS colour; `linkComponent` takes next/link.",
+  },
+  "hero-carousel": {
+    description:
+      "A full-bleed photo hero with a queue of cards: the front card is the slide on screen, the ones behind it are what comes next. Every five seconds or on a click the queue slides forward, the photograph behind crossfades and the headline and caption follow. A glass panel carries the faces of past guests, an intro and the call to action.",
+    categories: ["marketing", "layout"],
+    docs: "Named export: HeroCarousel. Composed from the avatar-stack item, which installs alongside it. Pass `slides` ({ image, alt, title, description?, heading?, position? }), `eyebrow`, `heading`, `intro`, `avatars` + `avatarsLabel`, `cta` ({ label, href }) and `linkComponent`. `interval` is the autoplay gap in ms (0 turns it off), `accent` sets --primary, `reveal` is in-view or immediate, `onChange` reports the front slide.",
+  },
+  newsletter: {
+    description:
+      "A sign-up section in three layouts: readers' faces drifting around a centred form, a panel with a pointer glow and a ticker of who just joined, or the form beside a fanned stack of recent issues. The form becomes a thank-you when your promise resolves.",
+    categories: ["marketing", "forms"],
+    docs: "Named export: Newsletter, with parts Heading, Intro, Form, Proof, Ticker and Issues. Composed from the input, button, marquee and tilted-card items, which install alongside it. `variant` is portraits | spotlight | issues, each styled for light and dark mode; `portraits` takes up to four faces; `Form` takes `onSubscribe(email)` (a promise holds the busy state), `action`, `successTitle`/`successText`; `accent` pins the glow and button colour; `reveal` is in-view or immediate.",
+  },
+  waitlist: {
+    description:
+      "A pre-launch sign-up in three layouts: a compact card, a brand mark with a live countdown over the form, or a pill on a soft ground with the faces already in and a bar of the spots claimed. The form becomes the reader's place in line — a number that counts up, and an invite link to copy — when your promise resolves.",
+    categories: ["marketing", "forms"],
+    docs: "Named export: Waitlist, with parts Mark, Countdown, Heading, Intro, Form, Proof and Spots. Composed from the counter, input, button, avatar-stack, progress and copy-button items, which install alongside it. `variant` is card | launch | queue, each styled for light and dark mode; `Countdown` takes a `date` and is the counter's slide countdown; `Form` takes `onJoin(email)` — resolve a number to show it as the place in line, throw an Error to show its message — plus `action`, `shareUrl`, `note` and the success copy; `Spots` takes `claimed` and `total`; `accent` pins the colour; `reveal` is in-view or immediate.",
+  },
+  "glass-panel": {
+    description:
+      "A frosted surface in four shapes and the aurora ground it sits on. Use it for glass bento layouts, profile and booking pages — or flip it to solid cards with one prop.",
+    categories: ["layout"],
+    docs: "Named exports: GlassBackdrop, GlassPanel, useSurface (plus SurfaceVariant, GlassShape types). `GlassBackdrop` washes three `aurora` colours behind a 12-column grid (`gridClassName` for row heights and gaps) and sets `variant` (glass | solid) for every `GlassPanel` inside; panels take `shape` (slab, tile, disc, capsule), `interactive`, and Tailwind column spans.",
+  },
+  "profile-page": {
+    description:
+      "A person's profile as a glass bento page: an aurora backdrop, frosted panels, and a 24-hour dial that shows their working window live. Use it for team directories, member pages and public profiles.",
+    categories: ["layout", "marketing"],
+    docs: "Named exports: ProfilePage, WorkdayDial, useLocalTime (GlassPanel and useSurface are re-exported from the glass-panel item, which installs alongside). `ProfilePage` is the glass backdrop and 12-column grid; place `GlassPanel`s inside with `shape` and column spans. `WorkdayDial` takes `timeZone`, `start`, `end`, `place`, `name`.",
   },
   "product-details": {
     description:
@@ -409,11 +664,17 @@ export const META: Record<string, ItemMeta> = {
     categories: ["commerce", "marketing", "layout"],
     docs: "Named export: ProductDetails. Accepts `variant` (4 variants: modern-split-gallery, floating-card-glass, bento-editorial-showcase, color-sync-gallery), `title`, `price`, `originalPrice`, `description`, `className`. Adaptable across mobile, tablet, and desktop viewports.",
   },
+  "image-viewer": {
+    description:
+      "A collection of 4 responsive E-commerce Image Viewer components featuring inner lens magnifying zoom, HD side portal projection, carousel sliders, and interactive thumbnail strips.",
+    categories: ["media", "commerce", "data-display"],
+    docs: "Named export: ImageViewer. Accepts `variant` (4 variants: inner-zoom, side-zoom, slider, thumbnails), `thumbnailPosition` (left, right, bottom), `images`, `colors`, `badge`, `showWishlist`, `enableLightbox`, `className`. Includes built-in fullscreen lightbox modal with keyboard and arrow controls.",
+  },
   flowchart: {
     description:
       "A node-and-connector flow diagram with highlightable paths and GSAP transitions. Use it to explain a pipeline or decision flow.",
     categories: ["data-display"],
-    docs: "Named exports: Flowchart, FlowCanvas, FlowNode, FlowConnection, useFlowchart. Nodes declare `connectedPaths`; setting the active path highlights every node and connection on it. Positions are authored by you — there is no auto-layout.",
+    docs: "Named exports: Flowchart, FlowCanvas, FlowNode, FlowConnection, useFlowchart. Nodes declare `connectedPaths`; setting the active path highlights every node and connection on it. Positions are authored by you — there is no auto-layout. `layout=\"fluid\"` drops the fixed canvas so connections can be drawn over your own layout; `FlowConnection` takes `dashed`, `flowDash`, `glow` and `drawDuration`.",
   },
   invoice: {
     description:
@@ -425,7 +686,7 @@ export const META: Record<string, ItemMeta> = {
     description:
       "A shopping cart with quantity controls, variant details and totals, rendered as drawer, modal, popover or full page. Use it for the cart step of a storefront.",
     categories: ["commerce"],
-    docs: "Named exports: CartBlock, getThemeStyles, and the CartItem type. Switch presentation with `type` (drawer | modal | popover | page) without changing the item data. Pass the products in from the parent via `initialItems` — the component ships no sample data and renders its empty state without them. Items carry { id, name, price, quantity, gradient, size?, color? }; quantity and removal are handled internally.",
+    docs: "Named exports: CartBlock, getThemeStyles, and the CartItem type. Switch presentation with `type` (drawer | modal | popover | page) without changing the item data. Pass the products in from the parent via `initialItems` — the component ships no sample data and renders its empty state without them. Items carry { id, name, price, quantity, gradient, size?, color? }; quantity and removal are handled internally. The trigger animates itself: a periodic tilt-and-ring nudge while the cart has items and has never been opened, a spring on press, and a badge pop whenever the count grows — all skipped under prefers-reduced-motion.",
   },
   "api-playground": {
     description:
@@ -447,9 +708,15 @@ export const META: Record<string, ItemMeta> = {
   },
   "mobile-mockup": {
     description:
-      "Device frames for iPhone, Samsung and Pixel that wrap a screenshot, video or live children. Use them to present an app on a marketing page.",
+      "Device frames for iPhone (5 through 17 Pro Max), Samsung and Pixel that wrap a screenshot, video or live children. Use them to present an app on a marketing page.",
     categories: ["media", "marketing"],
-    docs: "Named exports: Iphone14ProMaxMockup, Iphone12ProMaxMockup, Iphone5Mockup, SamsungS24UltraMockup, GooglePixel8Mockup, GooglePixel10Mockup. Each takes `src`, `videoSrc`, or arbitrary children rendered inside the screen. Pure CSS and SVG — no images to ship.",
+    docs: "Named exports: Iphone17ProMaxMockup, Iphone14ProMaxMockup, Iphone12ProMaxMockup, Iphone5Mockup, SamsungS24UltraMockup, GooglePixel8Mockup, GooglePixel10Mockup. Each takes `src`, `videoSrc`, or arbitrary children rendered inside the screen. Pure CSS and SVG — no images to ship.",
+  },
+  "image-wall": {
+    description:
+      "A wall of screenshots that never ends, and a camera hanging over it: it rests zoomed in on one card, then every few seconds pulls back, glides to the next and settles on it. Use it wherever a set of images should keep showing itself — a hero, a gallery band, a showcase.",
+    categories: ["media", "marketing"],
+    docs: "Named export: ImageWall (plus the WallItem type). Pass `items` ({ title, image }[] — every image is cropped from its top edge into the same 493:332 frame) and give it a height with `className`; it fills its box. `columns` sets the tile, `interval` the rest between flights in ms (0 holds still), `order` is serial (card by card) or shuffle (every card once per round, at random), `zoom` the resting scale — a box under 420px tall eases it down to 0.72 so a few cards fit, one under 640px wide to 0.5 so the flight between cards stays visible on a phone; `intro` (ms) drifts the camera, pulled back with nothing in focus, before its first landing; `anchor` ({ x?, y? }, shares of the box, default the middle) is where the resting card sits; `onFocus` reports the card in view. The camera holds while hovered, while the tab is hidden and while off screen; under prefers-reduced-motion it cuts instead of flying.",
   },
   "image-compare": {
     description:
@@ -457,19 +724,32 @@ export const META: Record<string, ItemMeta> = {
     categories: ["media"],
     docs: "Named export: ImageCompare. `beforeImage` and `afterImage` take URLs, with `beforeLabel` / `afterLabel` for the badges and `initialPosition` as a 0-100 percentage. Variants: classic-slider | split-handle | glowing-divider | badge-overlay | minimal. Both images should share an aspect ratio or the reveal will misalign.",
   },
+  "tech-stack": {
+    description:
+      "The tools a product is built with: a label, then one group of marks at a time in two rows — an odd group as three over four — each mark blurring out and the next group blurring in. Use it as the \"Built with\" line in a hero or footer.",
+    categories: ["marketing", "data-display"],
+    docs: "Named exports: TechStack, TechStackGroup and TechStackTool. Compose it: <TechStack label interval variant> holds <TechStackGroup> children, each holding <TechStackTool name icon /> (icon is any node — an inline SVG or an <img>). One group shows at a time and gives way to the next every `interval` ms (default 3600; 0 holds the first), only while on screen; with prefers-reduced-motion the swap is a cut. `variant` is labelled (label on the left, names beside marks from xl up) or compact (label centred between hairlines, marks only, names as tooltips and screen-reader text). `label` takes any node. Four to eight tools per group read well. Colours are theme tokens.",
+  },
+  "table-of-contents": {
+    description:
+      "An interactive Table of Contents navigation block with sticky right-side positioning, real-time scroll-spy, animated Motion indicators, and section search filtering.",
+    categories: ["navigation", "scroll"],
+    docs: "Named export: TableOfContentsBlock. Accepts `headings` array of ({ id, title, level }) objects, `showProgress`, `showSearch`, and `color` props. Wraps document content on the left while keeping the TOC sticky on the right.",
+  },
 
   // ---- Phase 4D: overlays, feedback & messaging ----
   dialog: {
     description:
       "A composable modal dialog with focus trapping, overlay and controlled or uncontrolled open state. Use it as the general-purpose dialog primitive.",
     categories: ["overlays"],
-    docs: "Named exports: Dialog, DialogTrigger, DialogContent, DialogHeader, DialogFooter, DialogTitle, useDialog. Use `defaultOpen` for uncontrolled, or `open` with `onOpenChange` to drive it. `asChild` on the trigger merges props into your own element instead of rendering a button. For preset confirmation and fullscreen layouts, use `modal`.",
+    docs: "Named exports: Dialog, DialogTrigger, DialogClose, DialogContent, DialogHeader, DialogFooter, DialogTitle, DialogDescription, useDialog, plus the DialogSize type. Use `defaultOpen` for uncontrolled, or `open` with `onOpenChange` to drive it — `onOpenChange` also fires on Escape and backdrop clicks, which is where you refuse a dismissal while async work is in flight. Size the panel with `size`: sm | md | lg | xl | full, where full fills the viewport and drops the rounding, border and height cap; `className` is merged after it and wins. `hideCloseButton` drops the built-in X. Dialogs nest — render one inside another's content and the inner one portals above its parent, with Escape and backdrop clicks reaching only the topmost. For a controlled overlay you drive entirely from your own state, use `modal`.",
   },
   modal: {
     description:
-      "A themed modal with standard, form, fullscreen and confirmation presets and GSAP transitions. Use it when you want a ready-made layout rather than composing a dialog.",
+      "A composable overlay handling the portal, backdrop, scroll lock, Escape and backdrop dismissal, with no preset layout of its own. Use it when you hold the open state and want the panel to render your own markup.",
     categories: ["overlays"],
-    docs: "Named exports: ModalBlock, getThemeStyles. `type` is standard | form | fullscreen | confirmation; variants are default | glass | minimal | bordered. Depends on `select` for the form preset. For an unopinionated primitive, use `dialog`.",
+    docs: "Named exports: Modal, ModalHeader, ModalBody, ModalFooter, plus the ModalProps and ModalSectionProps types. Modal is controlled — pass `isOpen` and `onClose`; there is no trigger and no `type` or `variant`. Size and skin the panel with `contentClassName` and the backdrop with `overlayClassName`; `hideCloseButton` drops the built-in X and `primaryCloseButton` tints it. Pass `ariaLabel` whenever the heading is not inside ModalHeader. Every slot is optional. The documented form example uses `select`. For a trigger-driven dialog with uncontrolled open state, use `dialog`.",
+    usageDependencies: ["select"],
   },
   drawer: {
     description:
@@ -493,7 +773,7 @@ export const META: Record<string, ItemMeta> = {
     description:
       "A provider-based toast system with six screen positions, action buttons and auto-dismiss. Use it for transient confirmations triggered from anywhere in the tree.",
     categories: ["feedback"],
-    docs: "Named exports: ToastProvider, useToast, getThemeStyles. Wrap your app in ToastProvider, then call `toast()` from useToast. Types: success | error | info | warning | default. Set `duration` to 0 to require manual dismissal. `sonner` does the same job with a stacked look and no provider.",
+    docs: "Named exports: ToastProvider, useToast, getThemeStyles. Wrap your app in ToastProvider, then call `toast()` from useToast. Types: success | error | info | warning | default; `variant` is default | glow | glass | minimal. Set `stack` on the provider to pile toasts behind the newest one (hover fans them out). Set `duration` to 0 to require manual dismissal; hovering pauses the timer. `sonner` does the same job with a module-level API and no provider.",
   },
   sonner: {
     description:
@@ -523,7 +803,7 @@ export const META: Record<string, ItemMeta> = {
     description:
       "A tabbed code viewer with filenames, language badges and per-tab copy. Use it in documentation to show the same example across several files.",
     categories: ["code"],
-    docs: "Named exports: CustomCodeBlock, CodeTab. `tabs` take { code, language, fileName }; a single tab renders without the tab strip. Pulls in `react-icons` as well as `lucide-react` for file-type icons. Highlighting is a built-in regex tokenizer, not Shiki or Prism — good for snippets, not a full editor.",
+    docs: "Named exports: CustomCodeBlock, CodeTab. `tabs` take { code, language, fileName }; a single tab renders without the tab strip. Uses `lucide-react` for file-type icons. Highlighting is a built-in regex tokenizer, not Shiki or Prism — good for snippets, not a full editor.",
   },
   terminal: {
     description:
@@ -547,7 +827,7 @@ export const META: Record<string, ItemMeta> = {
     description:
       "An AI assistant interface with thread history sidebar, streaming-style responses and a prompt composer. Use it as the front end for an LLM feature.",
     categories: ["communication"],
-    docs: "Named exports: AIChat, plus ChatThread and Message types. Presentation only — responses are mocked, so wire it to your own model endpoint. Variants: default | minimal | glass. Handles thread switching and message rendering; streaming and persistence are yours.",
+    docs: "Named exports: AIChat, plus ChatThread, Message, ChatModel, EffortOption, ComposerTool, SendPayload and UploadHandler types. Responses are mocked — wire `onSend` ({ content, attachments, model, effort, tools }) to your endpoint and `uploadFile` (file, onProgress, signal) to your storage. The composer ships with a + menu (`tools`: one upload row opens the picker, the rest insert @Label mentions), drag-and-drop attachments (rocket progress indicator), a `models` picker, a Faster↔Smarter `efforts` slider that lights the prompt bar at the top level, and mic dictation via getUserMedia + the Web Speech API with graceful fallbacks. Variants: default | minimal | glass | compact (no history sidebar — opens as a hero with `heroTitle` over the prompt bar until the first message; `showSidebar={false}` does the same for any variant).",
   },
   email: {
     description:
@@ -559,45 +839,48 @@ export const META: Record<string, ItemMeta> = {
   // ---- Phase 4E: marketing & landing blocks ----
   hero: {
     description:
-      "A composable hero section with centre or split layouts, background patterns and a badge slot. Use it as the opening section of a landing page.",
-    categories: ["marketing", "layout"],
-    docs: "Named exports: Hero, HeroContent, HeroBadge, HeroBadgeText, getThemeStyles. `layout` is center | left | split-right | split-left; `pattern` adds a grid or dot backdrop; variants are default | glass | glow. Composable and content-agnostic — no runtime dependencies. For ready-made copy and CTAs, use `homepage-hero`.",
-  },
-  "homepage-hero": {
-    description:
-      "A prop-driven hero with rotating typed words, badge link, CLI command and two CTAs. Use it as a complete above-the-fold section without composing parts.",
+      "A prop-driven hero section supporting spring word bounce, character typewriter, 3D split marquee slider, pet-shop, doctor, and facility CAD grid variants.",
     categories: ["marketing"],
-    docs: "Named export: HomepageHeroBlock. Everything is a prop — `typingWords` cycles between `titlePrefix` and `titleSuffix`, and `cliCommand` renders a copyable install line. Animated with Motion; uses next/link, so it needs edits outside Next.js. `homepage-hero-typing` is the same layout without the motion dependency.",
+    docs: "Named export: HeroBlock. Everything is a prop — `variant` switches between 'bounce', 'typing', 'slider', 'pet-shop', 'doctor', and 'facility', with interactive animations, theme color support, and responsive layouts.",
   },
-  "homepage-hero-typing": {
+  "video-player": {
     description:
-      "The homepage hero with a hand-rolled typing effect and no motion library. Use it when you want the same layout without the extra dependency.",
-    categories: ["marketing"],
-    docs: "Named export: HomepageHeroTypingBlock. Identical prop surface to `homepage-hero`, but the typing runs on timers instead of Motion — lighter, with less entrance animation. Uses next/link, so it needs edits outside Next.js.",
-  },
-  "hero-video-player": {
-    description:
-      "A video hero with thumbnail, glow and a modal player that opens on click. Use it for product demo sections that should not autoplay.",
+      "A video hero with thumbnail and glow that plays in a modal, inline in the card, or directly on load — behind a YouTube embed or a native HTML5 video.",
     categories: ["marketing", "media"],
-    docs: "Named export: HeroVideoPlayer. `videoUrl` and `thumbnailUrl` drive it; `aspectRatio` is 16/9 | 21/9 | 4/3 | 1/1 and `modalSize` is md | lg | xl | full. `onPlay` and `onClose` hook into analytics. Loading the video only on open keeps it off the initial page weight.",
+    docs: "Named export: VideoPlayer. `videoUrl` and `thumbnailUrl` drive it; `playbackMode` is modal | inline | direct and `source` is youtube | video (a native <video>). `aspectRatio` is 16/9 | 21/9 | 4/3 | 1/1 and `modalSize` is md | lg | xl | full. `onPlay` and `onClose` hook into analytics. In modal and inline the media only loads on click, so it stays off the initial page weight; `direct` renders it immediately and honours `autoPlay` / `muted` / `loop`.",
+  },
+  "audio-player": {
+    title: "Audio Player",
+    description:
+      "An audio player with artwork, transport, scrubber and volume, in a hero card, a compact bar, or wrapped around the browser's native controls.",
+    categories: ["marketing", "media"],
+    docs: "Named export: AudioPlayer. `audioUrl` and `artworkUrl` drive it; `variant` is hero | bar | native. Built on a plain <audio> element with no player library, so it adds no npm weight beyond the icons. Playback state mirrors the element's own events, which keeps it correct when a media key or the native controls change it. `skipSeconds` sizes the jump buttons (0 hides them) and the accent follows `--theme-color`.",
+  },
+  "video-player-plyr": {
+    title: "Video Player (Plyr)",
+    description:
+      "A hero video player built on Plyr — one accessible, skinnable control bar in front of HTML5 files, YouTube and Vimeo alike.",
+    categories: ["media"],
+    docs: "Named export: PlyrPlayer. Requires the `plyr` package, which the CLI installs. `provider` is html5 | youtube | vimeo and `mediaType` is video | audio; `accentColor` sets Plyr's `--plyr-color-main`, and `controls` takes Plyr's control-name array. Plyr is imported dynamically inside an effect, so the component server-renders cleanly. Its control icons come from Plyr's CDN sprite by default — set `iconUrl` to a self-hosted `plyr.svg` if the page must not reach a third-party host.",
+  },
+  "video-player-jw": {
+    title: "Video Player (JW Player)",
+    description:
+      "A hero video player built on JW Player, with colour skin presets and a native fallback for when the licensed library is unavailable.",
+    categories: ["media"],
+    docs: "Named exports: JwPlayer, JW_DEMO_LIBRARY_URL, plus the JwSkinConfig and JwSkinPreset types. No npm dependency — the JW library is a licensed remote script loaded from `libraryUrl`. It defaults to JW's public documentation library, which is fine to evaluate against but must be replaced with your own `https://cdn.jwplayer.com/libraries/<PLAYER_ID>.js` before shipping; a self-hosted build also needs `licenseKey`. `skin` picks a colour preset (default | midnight | neon | sunset | minimal), `skinConfig` takes a raw JW skin object, and `skinUrl` / `skinName` point at a custom stylesheet. If the library fails to load the component falls back to a native <video> rather than a black box.",
   },
   pricing: {
     description:
-      "A complete pricing system with plan cards, a comparison table and an interactive plan builder. Use it as the full pricing page rather than a single section.",
+      "A complete pricing system with plan cards, a comparison table, an interactive plan builder and an interactive service checklist.",
     categories: ["commerce", "marketing"],
-    docs: "Named exports: PricingCards, PricingBuilder, getThemeStyles, plus Plan, PricingData, TableFeature, TableSection and PricingTableData types. The largest pricing item — variants are default | premium | elegant | minimal | bordered. Uses next/link, so it needs edits outside Next.js. For a single card row, use `pricing-plans` or `pricing-section`.",
+    docs: "Named exports: PricingCards, PricingBuilder, PricingTable, PricingSlider, PricingTypographic, PricingPlans. The largest pricing item — variants include cards, builder, table, slider, typographic, and interactive service checklist. The typographic billing switch is the `toggle-group` item, which installs alongside.",
   },
   "pricing-plan": {
     description:
       "Three pricing layouts in one item — basic cards, a feature table and a usage slider that recalculates price. Use the slider variant for consumption-based products.",
     categories: ["commerce", "marketing"],
     docs: "Named exports: BasicPricingPlan, TablePricingPlan, SliderPricingPlan. The heaviest dependency graph in the registry: pulls `ui-badge`, `ui-button`, `ui-card` and `ui-slider`. Note `ui-card` installs to components/ui/card.tsx and will overwrite an existing shadcn card — review before adding to an established project.",
-  },
-  "pricing-plans": {
-    description:
-      "A three-tier pricing card row with a highlighted recommended plan and GSAP entrance. Use it as a self-contained pricing section on a landing page.",
-    categories: ["commerce", "marketing"],
-    docs: "Named export: PricingPlans. Self-contained with its own plan content — copy and adapt rather than configuring through props. Uses next/link, so it needs edits outside Next.js. Installs with no registry dependencies, not even `utils`.",
   },
   "pricing-section": {
     description:
@@ -619,15 +902,15 @@ export const META: Record<string, ItemMeta> = {
   },
   "theme-switcher": {
     description:
-      "A light/dark toggle in icon, pill or dropdown form, with a GSAP icon transition. Use it in a navbar or settings panel.",
+      "A light/dark toggle in icon, pill or dropdown form, with a circular reveal that grows out of the control and a GSAP icon transition. Use it in a navbar or settings panel.",
     categories: ["utilities", "actions"],
-    docs: "Named export: ThemeSwitcher. Variants: icon | pill | dropdown — dropdown includes a system option. Requires `next-themes` with a ThemeProvider mounted above it; without one it renders but will not change the theme.",
+    docs: "Named export: ThemeSwitcher. Variants: icon | pill | dropdown — dropdown includes a system option. Switching runs a circular View-Transition reveal from the clicked control; the CSS it needs is injected by the component, so nothing goes in globals.css. `reveal={false}` for an instant switch. Requires `next-themes` with a ThemeProvider mounted above it; without one it renders but will not change the theme.",
   },
   "design-components-folder": {
     description:
       "An animated folder that opens to fan out component preview cards. Use it on portfolio and feature pages to reveal a collection on interaction.",
     categories: ["media", "marketing"],
-    docs: "Named export: DesignComponentsFolder. Framer Motion drives the open and card-fan animation; `color` tints the folder. Uses next/image, so it needs edits outside Next.js. For the empty folder shape, use `design-folder-box`.",
+    docs: "Named export: DesignComponentsFolder. Motion drives the open and card-fan animation; `color` tints the folder. Uses next/image, so it needs edits outside Next.js. For the empty folder shape, use `design-folder-box`.",
   },
   "memories-card": {
     description:
@@ -653,31 +936,30 @@ export const META: Record<string, ItemMeta> = {
     categories: ["communication"],
     docs: "Named export: SupportPage. Configured through one nested content object covering header, filters, tickets, replySection and detailsSection. Depends on `select`. For the agent-side view with SLA tracking, use `support-dashboard`.",
   },
-
   // ---- Phase 4F: motion, scroll & domain-specific ----
   "animated-list": {
     description:
-      "A list wrapper that staggers its children in with five entrance styles. Use it to bring feature lists and search results in gracefully.",
-    categories: ["utilities"],
-    docs: "Named exports: AnimatedList, AnimatedListItem. `variant` is flip | slide-right | slide-left | slide-up | pop; tune with `staggerDelay`, `duration` and a GSAP `ease` string. Wrap AnimatedListItem children — the parent orchestrates the timeline.",
+      "A container component for rendering lists with animated item insertions, reorders, or removals. Ideal for dynamic notifications or feeds.",
+    categories: ["media", "scroll"],
+    docs: "Renders animated lists with smooth insertion and deletion transitions.",
   },
   "animated-typography": {
     description:
-      "Headings and paragraphs that animate in with typewriter, glitch, blur and reveal effects. Use it for section titles that should draw the eye once.",
+      "Headings and paragraphs that animate in with scramble, typewriter, rotating-word, blur and reveal effects. Use it for section titles that should draw the eye once.",
     categories: ["typography", "marketing"],
-    docs: "Named exports: AnimatedTypographyBlock, getThemeStyles. `as` picks the tag (h1-h6, p, span, blockquote) so semantics stay correct whatever the effect. No runtime dependencies — CSS and timers only. For per-character motion, use `text-animation`.",
+    docs: "Named exports: AnimatedTypographyBlock, getThemeStyles. `as` picks the tag (h1-h6, p, span, blockquote) so semantics stay correct whatever the effect. The rotating variants (letter-bounce, typewriter, word-flip, blur-swap) cycle `words` between `titlePrefix` and `titleSuffix`, one every `interval` ms (or `index`, when something else keeps time); `text` stays what screen readers announce. `prefixPosition` is fixed (the text before the words holds still) or fluid (it re-centres as the word changes). `bare` hands the type to `className` for composing into a section heading, and `play={false}` holds a reveal until it is wanted. No runtime dependencies — CSS and timers only. For per-character motion, use `text-animation`.",
   },
   "text-animation": {
     description:
-      "Character and word-level text motion driven by Framer Motion. Use it for hero headlines that need finer control than a whole-block fade.",
+      "Character and word-level text motion driven by Motion. Use it for hero headlines that need finer control than a whole-block fade.",
     categories: ["typography", "marketing"],
-    docs: "Named export: TextAnimation. `text` is a plain string it splits internally; `as` sets the rendered element and `delay` / `duration` control timing. For dependency-free effects, use `animated-typography`.",
+    docs: "Named export: TextAnimation. `text` is a plain string it splits internally; `as` sets the rendered element and `delay` / `duration` control timing; `renderWord(word, index)` swaps what a word renders as on the word-level variants (pop-in, flip, blur-in-up) while keeping its entrance. For dependency-free effects, use `animated-typography`.",
   },
   counter: {
     description:
       "A number component in four modes — stepper, count-up, circular progress and countdown. Use it for quantity inputs and animated statistics.",
     categories: ["data-display", "forms"],
-    docs: "Named exports: CounterBlock, getThemeStyles. `type` is stepper | animated | circular | countdown — stepper is an input with min/max, the others are display-only. Variants: default | outline | soft | vertical.",
+    docs: "Named exports: CounterBlock, getThemeStyles. `type` is stepper | animated | circular | countdown — stepper is an input with min/max, the others are display-only. Variants: default | outline | soft | vertical for the stepper; `slide` for the countdown (soft tiles, only the figure that changed slides — the same countdown the waitlist item uses). The countdown takes `targetDate` (Date, ISO string or timestamp) and `doneLabel`. The animated type also takes `bare` (just the figure, no card), `decimals`, `startOnView` (count once visible) and `className`. `color` accepts a theme name, a hex code or `inherit`.",
   },
   carousel: {
     description:
@@ -702,6 +984,18 @@ export const META: Record<string, ItemMeta> = {
       "A macOS-style dock where icons magnify as the pointer approaches. Use it for app launchers and playful navigation bars.",
     categories: ["navigation"],
     docs: "Named exports: Dock, DockItem. `items` take { id, label, icon, onClick?, isActive?, badge? }. `magnification` sets peak scale and `distance` the falloff radius. Pointer-driven — on touch devices it degrades to a plain icon row.",
+  },
+  "draggable-card-list": {
+    description:
+      "An interactive reorderable card list with 60fps Motion spring physics, right-side grip handles, and custom card metadata.",
+    categories: ["data-display", "layout"],
+    docs: "Named exports: DraggableCardList, DraggableCardItem. Accepts `items` ({ id, title, description, date, badge, linkText, linkUrl, completed }), `onReorder`, `title`, `dragHandlePosition` ('right' | 'left'), `enableCheckboxes`, and `enableBadges`.",
+  },
+  "infrastructure-topology": {
+    description:
+      "An interactive live data flow infrastructure topology graph with animated SVG beams, central neural mesh hub, service cards, and metrics.",
+    categories: ["data-display", "layout"],
+    docs: "Named export: InfrastructureTopology. Accepts `headerTitle`, `headerSubtitle`, `statusBadge`, `bandwidthBadge`, `centerTitle`, `nodes`, `metrics`, `animated`, `interactive`.",
   },
   "magic-bento": {
     description:
@@ -852,4 +1146,17 @@ export const META: Record<string, ItemMeta> = {
       "A high-converting Review and Testimonial section with a 3D rotating background globe, smooth right-to-left marquee cards, and client rating badges.",
     categories: ["marketing", "data-display"],
   },
+  "particle-canvas": {
+    description:
+      "A high-performance HTML Canvas component that converts text or images into thousands of animated particles with multiple visual variants and interactive mouse mechanics.",
+    categories: ["media", "data-display"],
+  },
+  "split-flap": {
+    title: "Split-Flap Display",
+    description:
+      "An authentic, physics-driven Split-Flap Display component simulating retro-mechanical flap cards, 3D perspective flips, and synthesized click sounds with ivory and minimalist variants.",
+    categories: ["data-display", "media"],
+    docs: "Named exports: SplitFlap, SPLIT_FLAP_CHARSET. Default export: SplitFlap. Variants: ivory | minimalist. Features 3D mechanical rotateX animation, Web Audio API sound generator, and responsive size presets.",
+  },
 };
+

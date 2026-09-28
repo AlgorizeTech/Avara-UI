@@ -15,7 +15,8 @@ const TabsList = React.forwardRef<
   <TabsPrimitive.List
     ref={ref}
     className={cn(
-      "inline-flex h-10 items-center border border-zinc-200 dark:border-zinc-800 bg-zinc-100 dark:bg-zinc-900 rounded-full p-1 gap-1 shadow-sm",
+      // Segmented control: separate pills, the selected one in the accent tint.
+      "inline-flex flex-wrap items-center gap-1.5",
       className
     )}
     {...props}
@@ -34,17 +35,17 @@ const TabsTrigger = React.forwardRef<
     <TabsPrimitive.Trigger
       ref={ref}
       className={cn(
-        "relative inline-flex h-8 items-center justify-center px-2 sm:px-5 py-1 text-sm font-medium whitespace-nowrap transition-all",
-        "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-zinc-400 focus-visible:ring-offset-2",
-        "rounded-full",
+        "relative inline-flex h-9 items-center justify-center px-3 py-2 text-[13px] font-medium whitespace-nowrap transition-colors",
+        "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/60 focus-visible:ring-offset-2 focus-visible:ring-offset-background",
+        "rounded-lg",
         "cursor-pointer select-none",
-        "data-[state=active]:bg-white dark:data-[state=active]:bg-zinc-800 data-[state=active]:text-zinc-900 dark:data-[state=active]:text-white data-[state=active]:shadow-sm",
-        "data-[state=inactive]:bg-transparent data-[state=inactive]:text-zinc-500 dark:data-[state=inactive]:text-zinc-400 hover:text-zinc-900 dark:hover:text-zinc-200",
+        "data-[state=active]:bg-primary/15 data-[state=active]:text-primary",
+        "data-[state=inactive]:bg-foreground/[0.05] data-[state=inactive]:text-foreground/40 data-[state=inactive]:hover:text-foreground/70",
         className
       )}
       {...props}
     >
-      {isPreviewTab && <Eye className="w-4 h-4 mr-2" />}
+      {isPreviewTab && <Eye className="size-3.5 mr-1.5" />}
       {children}
     </TabsPrimitive.Trigger>
   );
@@ -58,7 +59,9 @@ const TabsContent = React.forwardRef<
   <TabsPrimitive.Content
     ref={ref}
     className={cn(
-      "focus-visible:ring-ring relative mt-2 rounded-lg ring-offset-blue-50 focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-hidden border border-zinc-200 dark:border-zinc-700",
+      // No frame of its own: the panels hold code figures, previews and card
+      // grids that already carry one.
+      "relative mt-3 rounded-xl focus-visible:ring-2 focus-visible:ring-primary/60 focus-visible:ring-offset-2 focus-visible:ring-offset-background focus-visible:outline-hidden",
       className
     )}
     {...props}

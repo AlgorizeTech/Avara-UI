@@ -1,0 +1,318 @@
+import { ExampleShowcase } from "@/components/site/Sandbox";
+import { extractCode } from "@/lib/code";
+
+# Data Flow
+
+A section that shows where the data comes from and what comes out: source cards on the left feed one node in the middle, which fans out to result cards on the right. The connectors are real curves measured from the cards, so they hold at any width; when the section first scrolls into view the sources arrive, the lines draw themselves to the core, the core lands, the lines draw on and the results arrive — then a dash keeps moving along every line.
+
+`DataFlow` is built on <DocLink to="flowchart">Flowchart</DocLink> and <DocLink to="apple-select">Apple Select</DocLink>: the connectors are `FlowCanvas` and `FlowConnection` inside a fluid `Flowchart`, and the key phrases of the intro are selected iOS-style by `AppleSelect`; both install alongside. Every card is a named part — `Source`, `Core`, `Output` — with `Pill`, `Tag` and `Row` for the bits inside, so the content is entirely yours; the example below fills its output cards with <DocLink to="half-stars">Half Stars</DocLink> and <DocLink to="button">Button</DocLink>, which you add as you need them.
+
+export const usageSection = `"use client";
+
+import { ArrowUpRight, Download } from "lucide-react";
+import Button from "@/components/custom/blocks/Button";
+import { DataFlow } from "@/components/custom/blocks/DataFlowBlock";
+import { HalfStars } from "@/components/custom/blocks/HalfStarsBlock";
+import { AppStoreIcon, CapterraIcon, G2Icon, GooglePlayIcon, RedditIcon, UpworkIcon } from "@/components/custom/blocks/Icons";
+
+const APP_STORES = [
+  { label: "App Store", icon: <AppStoreIcon fill="currentColor" /> },
+  { label: "Google Play", icon: <GooglePlayIcon size={18} fill="currentColor" /> },
+];
+const REVIEW_SITES = [
+  { label: "G2", icon: <G2Icon /> },
+  { label: "Capterra", icon: <CapterraIcon /> },
+  { label: "Reddit", icon: <RedditIcon /> },
+  { label: "Upwork", icon: <UpworkIcon /> },
+];
+
+export default function Intelligence() {
+  return (
+    <DataFlow
+      eyebrow="Integrated intelligence"
+      heading="From Data to Opportunities"
+      intro="We scraped 10 platforms and analyzed millions of complaints, reviews, and revenue signals to hand you validated startup opportunities."
+      highlights={["10 platforms", "millions of complaints", "validated startup opportunities"]}
+    >
+      <DataFlow.Source title="App stores" count="2 sources" items={APP_STORES} />
+      <DataFlow.Source title="Review platforms" count="4 sources" items={REVIEW_SITES} />
+
+      <DataFlow.Core title="Deep Analysis" subtitle="AI-powered processing" />
+
+      <DataFlow.Output title="Market Analysis Reports" badge="3,432 categories">
+        <div className="flex flex-wrap gap-1.5">
+          <DataFlow.Tag>Maturity: Growing</DataFlow.Tag>
+          <DataFlow.Tag>Competition: High</DataFlow.Tag>
+        </div>
+        <Button variant="default" size="sm" iconLeft={<Download size={11} />} className="h-7 rounded-md px-2.5 text-[10.5px]">
+          Export data
+        </Button>
+      </DataFlow.Output>
+
+      <DataFlow.Output title="Ranked Pain Points" badge="200K+ found">
+        <DataFlow.Row>
+          Integration issues with HR systems
+          <DataFlow.Pill>Gap: 8.0</DataFlow.Pill>
+        </DataFlow.Row>
+      </DataFlow.Output>
+
+      <DataFlow.Output title="Individual Reviews" badge="1M+ analyzed">
+        <DataFlow.Row className="flex-col items-stretch gap-1.5">
+          <span className="flex items-center justify-between">
+            <HalfStars rating={2} size={10} showText={false} activeColor="text-primary" />
+            <a href="/reviews/1" className="inline-flex items-center gap-0.5 text-[10px]">
+              View on G2 <ArrowUpRight size={10} />
+            </a>
+          </span>
+          <span className="italic">“No calendar integration at all, so I still live in Outlook…”</span>
+        </DataFlow.Row>
+      </DataFlow.Output>
+    </DataFlow>
+  );
+}
+`;
+
+<ExampleShowcase
+  name="data-flow"
+  columns={1}
+  examples={[
+    {
+      title: "Sources, core, outputs",
+      subheading: "Three columns at desktop with the curves drawn between them; below that the columns stack and short dashed spines stand in. Reload the preview to watch the reveal again.",
+      propNotes: [
+        {
+          prop: "Source",
+          effect:
+            "is a group of platforms: a `title`, a `count` pill and `items` of `{ label, icon }` rendered as chips. The marks here come from the library's Icons item — App Store, Google Play, G2, Capterra, Reddit, Upwork, Stripe, Y Combinator — each in its brand colour.",
+        },
+        {
+          prop: "Core",
+          effect:
+            "is the node in the middle — `title` and a small `subtitle`. Every source line ends here and every output line starts here.",
+        },
+        {
+          prop: "Output",
+          effect:
+            "is a result card: `title`, a `badge` pill, and whatever you put inside. `DataFlow.Row`, `DataFlow.Tag` and `DataFlow.Pill` are the pieces the demo's four cards are made of.",
+        },
+        {
+          lead: "List phrases from the intro in",
+          prop: "highlights",
+          effect:
+            "and `AppleSelect` picks them out with a translucent tint and lollipop handles, fading in with the reveal. Each phrase is matched once, in order; one that is not in the text is skipped.",
+        },
+        {
+          prop: "reveal",
+          value: '"in-view"',
+          effect:
+            "(the default) plays the sequence the first time the section enters the viewport. The docs pass `\"immediate\"` because the preview is already on screen. Under prefers-reduced-motion the section renders finished, with the dash held still.",
+        },
+      ],
+      props: { rounded: true },
+      usage: usageSection,
+      code: extractCode("src/components/custom/blocks/DataFlowBlock.tsx"),
+      minHeight: 1080,
+    },
+  ]}
+/>
+
+## Installation
+
+<Installation name="data-flow" />
+
+## How the lines are drawn
+
+The section measures its cards after layout and lays a cubic curve from each source's right edge to the core's left edge, and from the core's right edge to each output's left edge. A `ResizeObserver` re-measures whenever the board changes size, so the lines follow the layout instead of being drawn for one width. Below `lg` the columns stack and the curves would have to cross the cards, so they are hidden and short dashed spines mark the flow instead.
+
+Each curve is a `FlowConnection` from <DocLink to="flowchart">Flowchart</DocLink>, in the fluid layout this section added to it: `dashed` gives the resting line its pattern, `flowDash` sets the moving dash, `glow={false}` keeps it flat, and the draw-in on mount is the same one the fixed canvas uses. The moving dash follows the theme's primary colour; pass `accent` to pin it.
+
+```tsx
+<DataFlow accent="#f26522" heading="From Data to Opportunities">
+  …
+</DataFlow>
+```
+
+## Features
+
+<div className="grid grid-cols-1 sm:grid-cols-2 gap-4 my-6 not-prose">
+  <div className="p-6 rounded-2xl border border-border bg-card">
+    <h3 className="text-lg font-semibold text-card-foreground mb-2">Built from the library</h3>
+    <p className="text-muted-foreground text-sm">Flowchart draws the connectors and Apple Select picks out the intro's phrases; both install with this item. The example's output cards use Half Stars and Button — add whichever pieces your own cards need.</p>
+  </div>
+  <div className="p-6 rounded-2xl border border-border bg-card">
+    <h3 className="text-lg font-semibold text-card-foreground mb-2">One reveal, then a pulse</h3>
+    <p className="text-muted-foreground text-sm">A single timeline plays when the section first appears: sources, lines, core, lines, outputs. After that the only motion is the dash travelling along each line — and it holds still under prefers-reduced-motion.</p>
+  </div>
+  <div className="p-6 rounded-2xl border border-border bg-card">
+    <h3 className="text-lg font-semibold text-card-foreground mb-2">Lines that follow the layout</h3>
+    <p className="text-muted-foreground text-sm">Curves are measured from the cards, not drawn for one width. Resize the window, add a fourth source, make an output taller — the connectors move with them.</p>
+  </div>
+  <div className="p-6 rounded-2xl border border-border bg-card">
+    <h3 className="text-lg font-semibold text-card-foreground mb-2">Compound, not configured</h3>
+    <p className="text-muted-foreground text-sm">Any number of sources and outputs, in any order; output cards take whatever you put inside. Cards render opaque on the server and only animate once the page is live.</p>
+  </div>
+</div>
+
+## Props Reference
+
+### DataFlow
+
+<div className="overflow-x-auto my-4">
+  <table>
+    <thead>
+      <tr>
+        <th>Prop</th>
+        <th>Type</th>
+        <th>Default</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><code>heading</code></td>
+        <td><code>ReactNode</code></td>
+        <td>—</td>
+        <td>The headline.</td>
+      </tr>
+      <tr>
+        <td><code>eyebrow</code></td>
+        <td><code>ReactNode</code></td>
+        <td>—</td>
+        <td>Small tracked line above the headline.</td>
+      </tr>
+      <tr>
+        <td><code>intro</code></td>
+        <td><code>string</code></td>
+        <td>—</td>
+        <td>Paragraph under the headline, rendered by <code>AppleSelect</code>.</td>
+      </tr>
+      <tr>
+        <td><code>highlights</code></td>
+        <td><code>string[]</code></td>
+        <td><code>[]</code></td>
+        <td>Phrases from <code>intro</code> to select, each matched once in order of appearance.</td>
+      </tr>
+      <tr>
+        <td><code>accent</code></td>
+        <td><code>string</code></td>
+        <td>theme primary</td>
+        <td>Colour of the moving dash and of any <code>bg-primary</code> inside the cards.</td>
+      </tr>
+      <tr>
+        <td><code>reveal</code></td>
+        <td><code>"in-view" | "immediate"</code></td>
+        <td><code>"in-view"</code></td>
+        <td>When the sequence plays.</td>
+      </tr>
+      <tr>
+        <td><code>children</code></td>
+        <td><code>ReactNode</code></td>
+        <td>—</td>
+        <td>Any number of <code>Source</code> and <code>Output</code> parts and one <code>Core</code>, in any order.</td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+### DataFlow.Source
+
+<div className="overflow-x-auto my-4">
+  <table>
+    <thead>
+      <tr>
+        <th>Prop</th>
+        <th>Type</th>
+        <th>Default</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><code>title</code></td>
+        <td><code>string</code></td>
+        <td>—</td>
+        <td>Group name, set small in caps.</td>
+      </tr>
+      <tr>
+        <td><code>count</code></td>
+        <td><code>string</code></td>
+        <td>—</td>
+        <td>Pill in the corner, e.g. <code>"4 sources"</code>.</td>
+      </tr>
+      <tr>
+        <td><code>items</code></td>
+        <td><code>&#123; label: string; icon?: ReactNode &#125;[]</code></td>
+        <td>—</td>
+        <td>The platforms, as chips.</td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+### DataFlow.Core
+
+<div className="overflow-x-auto my-4">
+  <table>
+    <thead>
+      <tr>
+        <th>Prop</th>
+        <th>Type</th>
+        <th>Default</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><code>title</code></td>
+        <td><code>string</code></td>
+        <td>—</td>
+        <td>The node's name.</td>
+      </tr>
+      <tr>
+        <td><code>subtitle</code></td>
+        <td><code>string</code></td>
+        <td>—</td>
+        <td>Small caps line under it.</td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+### DataFlow.Output
+
+<div className="overflow-x-auto my-4">
+  <table>
+    <thead>
+      <tr>
+        <th>Prop</th>
+        <th>Type</th>
+        <th>Default</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><code>title</code></td>
+        <td><code>string</code></td>
+        <td>—</td>
+        <td>Card heading.</td>
+      </tr>
+      <tr>
+        <td><code>badge</code></td>
+        <td><code>string</code></td>
+        <td>—</td>
+        <td>Pill in the corner, e.g. <code>"200K+ found"</code>.</td>
+      </tr>
+      <tr>
+        <td><code>children</code></td>
+        <td><code>ReactNode</code></td>
+        <td>—</td>
+        <td>The card body, stacked with a small gap.</td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+### DataFlow.Pill, DataFlow.Tag, DataFlow.Row
+
+Plain styled elements that take <code>className</code> and children: a solid black pill, a hairline chip, and a quiet grey row with its contents spaced apart. Use them inside <code>Output</code> so the cards share one vocabulary.

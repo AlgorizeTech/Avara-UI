@@ -17,16 +17,34 @@ export const usageDefault = `import {
 } from "@/components/custom/blocks/ApiPlaygroundBlock";
 
 export default function UsersEndpointDocs() {
-  // Decide how the playground responds to whatever the reader types. Typing the
-  // handler checks both the request it receives and the response it returns.
+  // Decide how the playground responds to whatever the reader types.
+  // This handler receives method, url, headers, params and body.
   const handleApiMock: ApiMockHandler = async (req) => {
-    await new Promise((resolve) => setTimeout(resolve, 500)); // latency
+    await new Promise((resolve) => setTimeout(resolve, 500)); // Latency
 
-    if (req.method === "POST") {
-      return { status: 201, timeMs: 120, data: { id: "cus_123", created: true } };
+    let parsedBody = null;
+    if (req.method !== "GET" && req.body) {
+      try {
+        parsedBody = JSON.parse(req.body);
+      } catch {
+        return {
+          status: 400,
+          timeMs: 15,
+          data: { error: "bad_request", message: "Invalid JSON in request body." },
+        };
+      }
     }
 
-    return { status: 200, timeMs: 80, data: { list: [], has_more: false } };
+    return {
+      status: req.method === "POST" ? 201 : 200,
+      timeMs: 120,
+      data: {
+        success: true,
+        resource: req.url.split("/").pop() || "unknown",
+        received_headers: req.headers.filter((h) => h.enabled).length,
+        payload: parsedBody || "No body provided",
+      },
+    };
   };
 
   return (
@@ -74,36 +92,112 @@ export default function UsersEndpointDocs() {
 Explore the interactive API Playground component capabilities designed to elevate API documentation:
 
 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 my-6 not-prose">
-  <div className="p-6 rounded-2xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900">
-    <h3 className="text-lg font-semibold text-zinc-900 dark:text-zinc-50 mb-2">Split-Pane Architecture</h3>
-    <p className="text-zinc-600 dark:text-zinc-400 text-sm">Interactive dual-panel interface with real-time HTTP Request Builder on the left and Live JSON Response Viewer on the right.</p>
+  <div className="p-6 rounded-xl bg-foreground/[0.03] border border-foreground/[0.06]">
+    <h3 className="text-[14px] font-semibold text-foreground mb-2">Split-Pane Architecture</h3>
+    <p className="text-[13px] leading-relaxed text-foreground/50">Interactive dual-panel interface with real-time HTTP Request Builder on the left and Live JSON Response Viewer on the right.</p>
   </div>
-  <div className="p-6 rounded-2xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900">
-    <h3 className="text-lg font-semibold text-zinc-900 dark:text-zinc-50 mb-2">CORS-Safe Mock Handler</h3>
-    <p className="text-zinc-600 dark:text-zinc-400 text-sm">Uses a client-side `mockHandler` async function to simulate network latency, dynamic endpoints, and custom status codes safely without CORS issues.</p>
+  <div className="p-6 rounded-xl bg-foreground/[0.03] border border-foreground/[0.06]">
+    <h3 className="text-[14px] font-semibold text-foreground mb-2">CORS-Safe Mock Handler</h3>
+    <p className="text-[13px] leading-relaxed text-foreground/50">Uses a client-side `mockHandler` async function to simulate network latency, dynamic endpoints, and custom status codes safely without CORS issues.</p>
   </div>
-  <div className="p-6 rounded-2xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900">
-    <h3 className="text-lg font-semibold text-zinc-900 dark:text-zinc-50 mb-2">Full Header & Query Params Editor</h3>
-    <p className="text-zinc-600 dark:text-zinc-400 text-sm">Add, enable/disable, or remove HTTP headers and query parameters dynamically before executing API calls.</p>
+  <div className="p-6 rounded-xl bg-foreground/[0.03] border border-foreground/[0.06]">
+    <h3 className="text-[14px] font-semibold text-foreground mb-2">Full Header & Query Params Editor</h3>
+    <p className="text-[13px] leading-relaxed text-foreground/50">Add, enable/disable, or remove HTTP headers and query parameters dynamically before executing API calls.</p>
   </div>
-  <div className="p-6 rounded-2xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900">
-    <h3 className="text-lg font-semibold text-zinc-900 dark:text-zinc-50 mb-2">JSON Body Payload & Syntax Highlighting</h3>
-    <p className="text-zinc-600 dark:text-zinc-400 text-sm">Built-in raw JSON request body editor with syntax highlighting, automatic JSON formatting, error handling, and response timing metrics.</p>
+  <div className="p-6 rounded-xl bg-foreground/[0.03] border border-foreground/[0.06]">
+    <h3 className="text-[14px] font-semibold text-foreground mb-2">JSON Body Payload & Syntax Highlighting</h3>
+    <p className="text-[13px] leading-relaxed text-foreground/50">Built-in raw JSON request body editor with syntax highlighting, automatic JSON formatting, error handling, and response timing metrics.</p>
   </div>
 </div>
 
 ## Best Practices & Guidelines
 
 <div className="flex flex-col gap-4 my-6 not-prose">
-  <div className="p-5 rounded-xl border border-blue-200 dark:border-blue-900/50 bg-blue-50/50 dark:bg-blue-950/20">
-    <h4 className="text-base font-semibold text-blue-900 dark:text-blue-300 mb-1">Usage Guidelines</h4>
-    <p className="text-blue-800 dark:text-blue-400/80 text-sm">Provide realistic mock handlers with simulated delays (e.g. 100ms - 500ms) to give users an authentic API testing experience directly inside your documentation.</p>
+  <div className="rounded-xl border border-foreground/[0.06] bg-foreground/[0.03] p-4">
+    <h4 className="font-sans text-[14px] font-semibold text-foreground mb-1">Usage Guidelines</h4>
+    <p className="text-[13px] leading-relaxed text-foreground/50">Provide realistic mock handlers with simulated delays (e.g. 100ms - 500ms) to give users an authentic API testing experience directly inside your documentation.</p>
   </div>
 </div>
 
 ## Props Reference
 
-mockHandler Object Signatures
+<div className="overflow-x-auto my-4">
+  <table>
+    <thead>
+      <tr>
+        <th>Prop</th>
+        <th>Type</th>
+        <th>Default</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>
+          <code>defaultUrl</code>
+        </td>
+        <td>
+          <code>string</code>
+        </td>
+        <td>
+          <code>"https://api.example.com/v1/users"</code>
+        </td>
+        <td>Initial API URL displayed in the request address bar.</td>
+      </tr>
+      <tr>
+        <td>
+          <code>defaultMethod</code>
+        </td>
+        <td>
+          <code>"GET" | "POST" | "PUT" | "PATCH" | "DELETE"</code>
+        </td>
+        <td>
+          <code>"GET"</code>
+        </td>
+        <td>Initial HTTP method selected in the method dropdown.</td>
+      </tr>
+      <tr>
+        <td>
+          <code>color</code>
+        </td>
+        <td>
+          <code>ApiColor</code>
+        </td>
+        <td>
+          <code>"primary"</code>
+        </td>
+        <td>Accent color theme (<code>"primary" | "indigo" | "rose" | "emerald" | "zinc"</code> or custom hex).</td>
+      </tr>
+      <tr>
+        <td>
+          <code>mockHandler</code>
+        </td>
+        <td>
+          <code>ApiMockHandler</code>
+        </td>
+        <td>
+          <code>undefined</code>
+        </td>
+        <td>Async function that receives request details and returns simulated API response data.</td>
+      </tr>
+      <tr>
+        <td>
+          <code>className</code>
+        </td>
+        <td>
+          <code>string</code>
+        </td>
+        <td>
+          <code>undefined</code>
+        </td>
+        <td>Additional CSS classes applied to the root container.</td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+### mockHandler Object Signatures
+
 When you provide a mockHandler, your function receives a Request object and must return a Promise that resolves to a Response object. Both shapes are exported, so annotate the whole handler and TypeScript infers the rest — no need to restate them:
 
 ```tsx
@@ -136,3 +230,4 @@ The Response Object — exported as `ApiResponse` (required return type):
   data: any; // A Javascript object or array. The component will format this as JSON automatically.
 }
 ```
+

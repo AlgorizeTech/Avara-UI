@@ -3,11 +3,11 @@ import { extractCode } from "@/lib/code";
 
 # Flowchart / Node Builder
 
-A declarative, highly sleek flowchart engine complete with custom responsive column channels, node action anchors, and custom vector streaming lines animated smoothly via GSAP.
+A declarative, highly sleek flowchart engine complete with custom responsive column channels, node action anchors, and custom vector streaming lines that draw themselves in with plain CSS animation.
 
 This engine separates data flow layout orchestration from canvas tracking. By combining declarative standard layout structures with pre-set micro connection vectors, pipelines render cross-device flawlessly without heavy calculations crashing client frame updates.
 
-Click any node that sits on a route to make that route the active one — GSAP redraws the stream along the SVG path.
+Click any node that sits on a route to make that route the active one — the moving stream switches to that SVG path.
 
 export const pipelineNodes = `function PipelineNodes() {
   return (
@@ -75,7 +75,7 @@ import { AlertCircle, CheckCircle2, Cpu, Terminal, Webhook } from "lucide-react"
 
 export default function AutomationMap() {
   return (
-    <Flowchart initialActivePath="success-path" color="indigo">
+    <Flowchart initialActivePath="success-path">
       {/* Routes first: plain SVG path data, M/L for right angles, C for curves */}
       <FlowCanvas>
         <FlowConnection id="success-path" path="M 280 200 L 310 200 L 310 114 L 340 114" />
@@ -295,13 +295,13 @@ export default function AccentedPipeline() {
 ## Best Practices & Guidelines
 
 <div className="flex flex-col gap-4 my-6 not-prose">
-  <div className="p-5 rounded-xl border border-blue-200 dark:border-blue-900/50 bg-blue-50/50 dark:bg-blue-950/20">
-    <h4 className="text-base font-semibold text-blue-900 dark:text-blue-300 mb-1">Keep ports and paths in sync</h4>
-    <p className="text-blue-800 dark:text-blue-400/80 text-sm">Node positions come from Tailwind <code>left-[…]</code> / <code>top-[…]</code> classes and the routes are raw SVG coordinates, so the two are only aligned because you made them align. When you move a node, move the matching <code>M</code>/<code>L</code> coordinates with it.</p>
+  <div className="rounded-xl border border-foreground/[0.06] bg-foreground/[0.03] p-4">
+    <h4 className="font-sans text-[14px] font-semibold text-foreground mb-1">Keep ports and paths in sync</h4>
+    <p className="text-[13px] leading-relaxed text-foreground/50">Node positions come from Tailwind <code>left-[…]</code> / <code>top-[…]</code> classes and the routes are raw SVG coordinates, so the two are only aligned because you made them align. When you move a node, move the matching <code>M</code>/<code>L</code> coordinates with it.</p>
   </div>
-  <div className="p-5 rounded-xl border border-amber-200 dark:border-amber-900/50 bg-amber-50/50 dark:bg-amber-950/20">
-    <h4 className="text-base font-semibold text-amber-900 dark:text-amber-300 mb-1">Split long routes into segments</h4>
-    <p className="text-amber-800 dark:text-amber-400/80 text-sm">Several <code>FlowConnection</code>s can share the same <code>id</code>. Splitting a branch into per-hop segments lets the stream animation restart at each node instead of sweeping the whole diagram at once.</p>
+  <div className="rounded-xl border border-primary/15 bg-primary/5 p-4">
+    <h4 className="font-sans text-[14px] font-semibold text-primary mb-1">Split long routes into segments</h4>
+    <p className="text-[13px] leading-relaxed text-foreground/50">Several <code>FlowConnection</code>s can share the same <code>id</code>. Splitting a branch into per-hop segments lets the stream animation restart at each node instead of sweeping the whole diagram at once.</p>
   </div>
 </div>
 
@@ -329,9 +329,16 @@ export default function AccentedPipeline() {
       <tr>
         <td><code>Flowchart</code></td>
         <td><code>color</code></td>
-        <td><code>"blue" | "indigo" | "rose" | "emerald" | "zinc"</code></td>
-        <td><code>"indigo"</code></td>
+        <td><code>"primary" | "blue" | "indigo" | "rose" | "emerald" | "zinc"</code></td>
+        <td><code>"primary"</code></td>
         <td>Accent applied to the active stream, node ports and focus rings.</td>
+      </tr>
+      <tr>
+        <td><code>Flowchart</code></td>
+        <td><code>layout</code></td>
+        <td><code>"fixed" | "fluid"</code></td>
+        <td><code>"fixed"</code></td>
+        <td><code>fixed</code> is the 900×400 blueprint canvas. <code>fluid</code> is only the context and a positioned box, for connectors drawn over ordinary layout — give <code>FlowCanvas</code> its own <code>viewBox</code>. This is how <DocLink to="data-flow">Data Flow</DocLink> draws its curves.</td>
       </tr>
       <tr>
         <td><code>FlowNode</code></td>
@@ -381,6 +388,34 @@ export default function AccentedPipeline() {
         <td><code>string</code></td>
         <td><strong>Required</strong></td>
         <td>SVG path data — <code>M</code>/<code>L</code> for right angles, <code>C</code> for curves.</td>
+      </tr>
+      <tr>
+        <td><code>FlowConnection</code></td>
+        <td><code>dashed</code></td>
+        <td><code>boolean | string</code></td>
+        <td><code>false</code></td>
+        <td>Draw the resting line dashed — <code>true</code> for <code>"4 6"</code>, or your own pattern. Applied once the draw-in finishes.</td>
+      </tr>
+      <tr>
+        <td><code>FlowConnection</code></td>
+        <td><code>flowDash</code></td>
+        <td><code>string</code></td>
+        <td><code>"6 10"</code></td>
+        <td>Dash pattern of the moving stream while the route is active. The loop length is one dash plus one gap, so any pattern cycles cleanly.</td>
+      </tr>
+      <tr>
+        <td><code>FlowConnection</code></td>
+        <td><code>glow</code></td>
+        <td><code>boolean</code></td>
+        <td><code>true</code></td>
+        <td>The soft blurred halo under the active stream.</td>
+      </tr>
+      <tr>
+        <td><code>FlowConnection</code></td>
+        <td><code>drawDuration</code></td>
+        <td><code>number</code></td>
+        <td><code>1.2</code></td>
+        <td>Seconds the draw-in takes on mount. The stream only starts once the line is drawn; under prefers-reduced-motion both are skipped.</td>
       </tr>
     </tbody>
   </table>

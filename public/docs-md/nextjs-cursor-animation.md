@@ -117,11 +117,11 @@ export default function SonarCursorDemo() {
 export const usageImageTrail = `import { CursorAnimation, MainContent } from "@/components/custom/blocks/CursorAnimationBlock";
 
 const sampleImages = [
-  "https://images.unsplash.com/photo-1506744038136-46273834b3fb?w=300&q=80",
-  "https://images.unsplash.com/photo-1511884642898-4c92249e20b6?w=300&q=80",
-  "https://images.unsplash.com/photo-1470071459604-3b5ec3a7fe05?w=300&q=80",
-  "https://images.unsplash.com/photo-1426604966848-d7adac402bff?w=300&q=80",
-  "https://images.unsplash.com/photo-1472214103451-9374bd1c798e?w=300&q=80",
+  "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_300,c_limit/v1790146210/photo-1506744038136-46273834b3fb-1790146212208.jpg",
+  "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_300,c_limit/v1790148864/photo-1511884642898-4c92249e20b6-1790148865110.jpg",
+  "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_300,c_limit/v1790146209/photo-1470071459604-3b5ec3a7fe05-1790146212205.jpg",
+  "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_300,c_limit/v1790145140/photo-1426604966848-d7adac402bff-1790145143490.jpg",
+  "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_300,c_limit/v1790146210/photo-1472214103451-9374bd1c798e-1790146212205.jpg",
 ];
 
 export default function ImageTrailCursorDemo() {
@@ -134,6 +134,13 @@ export default function ImageTrailCursorDemo() {
 }`;
 
 ## Installation
+
+Register the @algorize-ui registry once per project, then add the component:
+
+```bash
+npx shadcn@latest registry add @algorize-ui=https://algorize-ui.vercel.app/r/{name}.json
+npx shadcn@latest add @algorize-ui/cursor-animation
+```
 
 ## Examples
 

@@ -118,11 +118,11 @@ export function SystemStatus({ serverName, defaultStatus }: SystemStatusProps) {
   return (
     <div className="p-6 rounded-2xl bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800">
       <div className="flex justify-between items-center mb-6">
-        <h3 className="text-xl font-bold flex items-center gap-2 text-zinc-900 dark:text-white">
+        <h3 className="text-xl font-semibold flex items-center gap-2 text-zinc-900 dark:text-white">
           <Server className="w-5 h-5 text-indigo-500" />
           {serverName}
         </h3>
-        <span className="px-3 py-1 bg-emerald-100 dark:bg-emerald-500/10 text-emerald-700 dark:text-emerald-400 rounded-full text-xs font-bold uppercase tracking-wider">
+        <span className="px-3 py-1 bg-emerald-100 dark:bg-emerald-500/10 text-emerald-700 dark:text-emerald-400 rounded-full text-xs font-semibold uppercase tracking-wider">
           {status}
         </span>
       </div>
@@ -132,13 +132,13 @@ export function SystemStatus({ serverName, defaultStatus }: SystemStatusProps) {
           <div className="text-zinc-500 dark:text-zinc-400 text-sm mb-1 flex items-center gap-1">
             <Activity className="w-4 h-4"/> Ping
           </div>
-          <div className="text-2xl font-black text-zinc-900 dark:text-white">{metrics.ping}ms</div>
+          <div className="text-2xl font-bold text-zinc-900 dark:text-white">{metrics.ping}ms</div>
         </div>
         <div className="p-4 bg-zinc-50 dark:bg-zinc-800/50 rounded-xl">
           <div className="text-zinc-500 dark:text-zinc-400 text-sm mb-1 flex items-center gap-1">
             <Zap className="w-4 h-4"/> Load
           </div>
-          <div className="text-2xl font-black text-zinc-900 dark:text-white">{metrics.load}%</div>
+          <div className="text-2xl font-bold text-zinc-900 dark:text-white">{metrics.load}%</div>
         </div>
       </div>
     </div>
@@ -155,8 +155,9 @@ cd my-app
 npm install clsx tailwind-merge framer-motion lucide-react
 
 # Add Shadcn UI components for faster development
-npx shadcn-ui@latest init
-npx shadcn-ui@latest add button card dialog
+npx shadcn@latest init
+npx shadcn@latest registry add @algorize-ui=https://algorize-ui.vercel.app/r/{name}.json
+npx shadcn@latest add @algorize-ui/button @algorize-ui/card @algorize-ui/dialog
 
 # Start the development server on port 3000
 npm run dev
@@ -222,6 +223,7 @@ export default function MultiFileSnippet() {
 
 <ExampleShowcase
   name="custom-code-block"
+  colorControl={false}
   columns={1}
   examples={[
     {
@@ -254,6 +256,7 @@ export default function MultiFileSnippet() {
 
 <ExampleShowcase
   name="custom-code-block"
+  colorControl={false}
   columns={1}
   examples={[
     {
@@ -302,30 +305,30 @@ export default function MultiFileSnippet() {
 Explore the Custom Code Block's syntax highlighting features, complete with copy-to-clipboard functionality and line numbering.
 
 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 my-6 not-prose">
-  <div className="p-6 rounded-2xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900">
-    <h3 className="text-lg font-semibold text-zinc-900 dark:text-zinc-50 mb-2">No Highlighting Library</h3>
-    <p className="text-zinc-600 dark:text-zinc-400 text-sm">Uses a lightweight, custom regex engine for syntax highlighting. No need to install heavy libraries like PrismJS or Shiki.</p>
+  <div className="p-6 rounded-2xl border border-border bg-card">
+    <h3 className="text-lg font-semibold text-card-foreground mb-2">No Highlighting Library</h3>
+    <p className="text-muted-foreground text-sm">Uses a lightweight, custom regex engine for syntax highlighting. No need to install heavy libraries like PrismJS or Shiki.</p>
   </div>
-  <div className="p-6 rounded-2xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900">
-    <h3 className="text-lg font-semibold text-zinc-900 dark:text-zinc-50 mb-2">Language Badges</h3>
-    <p className="text-zinc-600 dark:text-zinc-400 text-sm">Automatically displays the correct language icon (React, JS, TS, HTML, CSS, Bash) in the macOS-style header.</p>
+  <div className="p-6 rounded-2xl border border-border bg-card">
+    <h3 className="text-lg font-semibold text-card-foreground mb-2">Language Badges</h3>
+    <p className="text-muted-foreground text-sm">Automatically displays the correct language icon (React, JS, TS, HTML, CSS, Bash) in the macOS-style header.</p>
   </div>
-  <div className="p-6 rounded-2xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900">
-    <h3 className="text-lg font-semibold text-zinc-900 dark:text-zinc-50 mb-2">Clipboard Copy</h3>
-    <p className="text-zinc-600 dark:text-zinc-400 text-sm">Includes a built-in copy button with a temporary success state (checkmark) for an excellent developer experience.</p>
+  <div className="p-6 rounded-2xl border border-border bg-card">
+    <h3 className="text-lg font-semibold text-card-foreground mb-2">Clipboard Copy</h3>
+    <p className="text-muted-foreground text-sm">Includes a built-in copy button with a temporary success state (checkmark) for an excellent developer experience.</p>
   </div>
-  <div className="p-6 rounded-2xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900">
-    <h3 className="text-lg font-semibold text-zinc-900 dark:text-zinc-50 mb-2">Dark Mode Ready</h3>
-    <p className="text-zinc-600 dark:text-zinc-400 text-sm">The syntax highlighter colors are carefully chosen to look gorgeous on both light and dark backgrounds.</p>
+  <div className="p-6 rounded-2xl border border-border bg-card">
+    <h3 className="text-lg font-semibold text-card-foreground mb-2">Dark Mode Ready</h3>
+    <p className="text-muted-foreground text-sm">The syntax highlighter colors are carefully chosen to look gorgeous on both light and dark backgrounds.</p>
   </div>
 </div>
 
 ## Best Practices & Guidelines
 
 <div className="flex flex-col gap-4 my-6 not-prose">
-  <div className="p-5 rounded-xl border border-blue-200 dark:border-blue-900/50 bg-blue-50/50 dark:bg-blue-950/20">
-    <h4 className="text-base font-semibold text-blue-900 dark:text-blue-300 mb-1">Language Prop Mapping</h4>
-    <p className="text-blue-800 dark:text-blue-400/80 text-sm">Make sure to pass the correct <code>language</code> prop (e.g., <code>"tsx"</code>, <code>"bash"</code>, <code>"css"</code>). This prop drives both the regex syntax highlighting engine and the language icon rendered in the header.</p>
+  <div className="rounded-xl border border-foreground/[0.06] bg-foreground/[0.03] p-4">
+    <h4 className="font-sans text-[14px] font-semibold text-foreground mb-1">Language Prop Mapping</h4>
+    <p className="text-[13px] leading-relaxed text-foreground/50">Make sure to pass the correct <code>language</code> prop (e.g., <code>"tsx"</code>, <code>"bash"</code>, <code>"css"</code>). This prop drives both the regex syntax highlighting engine and the language icon rendered in the header.</p>
   </div>
 </div>
 

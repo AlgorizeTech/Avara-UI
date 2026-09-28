@@ -6,7 +6,50 @@ import {
   InputSize,
   InputVariant,
 } from "@/components/custom/blocks/InputBlock";
-import { Mail } from "lucide-react";
+import { Mail, MapPin } from "lucide-react";
+import { useState } from "react";
+
+// Cities for the autocomplete example — enough that typing genuinely narrows
+// the list, with overlapping names ("San …", "New …") to show the matching.
+const CITIES = [
+  "Amsterdam", "Athens", "Auckland", "Bangkok", "Barcelona", "Berlin",
+  "Buenos Aires", "Cape Town", "Chicago", "Copenhagen", "Dhaka", "Dubai",
+  "Dublin", "Hong Kong", "Istanbul", "Kuala Lumpur", "Lisbon", "London",
+  "Los Angeles", "Madrid", "Melbourne", "Mexico City", "Mumbai", "New Delhi",
+  "New York", "Oslo", "Paris", "Prague", "Rome", "San Francisco", "Santiago",
+  "São Paulo", "Seoul", "Singapore", "Stockholm", "Sydney", "Tokyo", "Toronto",
+  "Vancouver", "Vienna", "Zurich",
+];
+
+function AutocompleteExample({
+  variant,
+  color,
+  inputSize,
+}: {
+  variant: InputVariant;
+  color: InputColor | string;
+  inputSize: InputSize;
+}) {
+  const [city, setCity] = useState("");
+  const iconClass =
+    inputSize === "sm" ? "w-3.5 h-3.5" : inputSize === "lg" ? "w-5 h-5" : "w-4 h-4";
+  return (
+    <InputBlock
+      variant={variant}
+      color={color}
+      inputSize={inputSize}
+      label="Destination"
+      placeholder="Type a city…"
+      leftIcon={<MapPin className={iconClass} />}
+      value={city}
+      onChange={(e) => setCity(e.target.value)}
+      suggestions={CITIES}
+      helperText={
+        city ? `Flights to ${city}` : "Pick a suggestion or type your own."
+      }
+    />
+  );
+}
 
 export default function InputDemo({
   inputType = "text",
@@ -16,8 +59,9 @@ export default function InputDemo({
   isDisabled = false,
   isMultiple = true,
   isImageOnly = false,
-  color = "indigo",
+  color = "primary",
   showAll,
+  example,
 }: {
   inputType?: "text" | "password" | "email" | "file";
   variant?: InputVariant;
@@ -29,7 +73,24 @@ export default function InputDemo({
   color?: InputColor | string;
   /** Render-all modes: every size, or the error/disabled states, in one frame. */
   showAll?: "sizes" | "states";
+  /** "autocomplete" renders the suggestion-list field. */
+  example?: "autocomplete";
 }) {
+  if (example === "autocomplete") {
+    return (
+      <div className="w-full flex flex-col items-center justify-start pt-10 min-h-[400px] relative z-10">
+        <div className="w-full max-w-sm">
+          <AutocompleteExample
+            key={`${variant}-${color}-${inputSize}`}
+            variant={variant}
+            color={color}
+            inputSize={inputSize}
+          />
+        </div>
+      </div>
+    );
+  }
+
   if (showAll) {
     const sizes: InputSize[] = ["sm", "md", "lg"];
     return (

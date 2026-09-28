@@ -1,9 +1,11 @@
 "use client";
 
-import Button from "@/components/custom/blocks/Button";
+import Button, {
+  getButtonThemeStyle,
+  type ShardsEffectMode,
+} from "@/components/custom/blocks/Button";
 import {
   AppleIcon,
-  ArrowLeftIcon,
   ArrowRightIcon,
   BellIcon,
   CheckIcon,
@@ -12,7 +14,6 @@ import {
   FacebookIcon,
   GitHubIcon,
   GoogleIcon,
-  HeartIcon,
   LinkedInIcon,
   MailIcon,
   MicrosoftIcon,
@@ -22,33 +23,93 @@ import {
   SearchIcon,
   SettingsIcon,
   ShareIcon,
-  ShoppingCartIcon,
   SlackIcon,
   StarIcon,
   XIcon,
   XIcon2,
 } from "@/components/custom/blocks/Icons";
+import { useState } from "react";
 
-type LayoutType =
-  | "basic"
-  | "default"
-  | "variants"
-  | "sizes"
-  | "loading"
-  | "with-icon"
-  | "commerce"
-  | "social"
-  | "icon-only"
-  | "right-icon"
-  | "others";
+/** The mode picker's labels, mapped to `effectMode`. */
+const EFFECT_MODES: Record<string, ShardsEffectMode> = {
+  "One time": "once",
+  Continuous: "continuous",
+};
 
 export default function ButtonDemo({
   layout = "basic",
+  color = "primary",
 }: {
-  layout?: "basic" | "slide-icon" | "slide-text";
+  layout?: "basic" | "slide-icon" | "slide-text" | "icon-only" | "social" | "shards-panel";
+  color?: string;
 }) {
+  const themeStyle = getButtonThemeStyle(color);
+  const [effectMode, setEffectMode] = useState<ShardsEffectMode>("once");
+
   return (
-    <div className="w-full min-h-[320px] h-full flex flex-col items-center justify-center p-8 m-0">
+    <div
+      className="w-full min-h-[460px] h-full flex flex-col items-center justify-center p-4 sm:p-8 m-0"
+      style={themeStyle}
+    >
+      {layout === "shards-panel" && (
+        <div className="w-full max-w-4xl mx-auto grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 font-sans py-4 pb-[200px]">
+          {/* 0. Effect mode picker — drives the four tiles below */}
+          <Button
+            variant="shards-control"
+            controlType="select"
+            label="Animation"
+            value="One time"
+            options={Object.keys(EFFECT_MODES)}
+            onValueChange={(label) => setEffectMode(EFFECT_MODES[label])}
+            className="sm:col-span-2 lg:col-span-1"
+          />
+          <div className="hidden lg:block lg:col-span-3" />
+
+          {/* 1. Color Picker Button */}
+          <Button
+            variant="shards-control"
+            controlType="color"
+            label="Shards"
+            colorHex="#a855f7"
+            effect="shimmer"
+            effectMode={effectMode}
+          />
+
+          {/* 2. Dropdown Select Button */}
+          <Button
+            variant="shards-control"
+            controlType="select"
+            label="Placement"
+            value="Full"
+            options={["Full", "Center", "Top", "Bottom"]}
+            effect="orbit"
+            effectMode={effectMode}
+          />
+
+          {/* 3. Range Slider Button */}
+          <Button
+            variant="shards-control"
+            controlType="slider"
+            label="Scale"
+            value={1}
+            min={0}
+            max={3}
+            step={0.1}
+            effect="sparkle"
+            effectMode={effectMode}
+          />
+
+          {/* 4. Toggle Switch Button */}
+          <Button
+            variant="shards-control"
+            controlType="toggle"
+            label="Hold to Gather"
+            checked={true}
+            effect="beacon"
+            effectMode={effectMode}
+          />
+        </div>
+      )}
       {layout === "basic" && (
         <div className="w-full h-full flex flex-wrap items-center justify-center gap-8 m-0 py-12">
           {/* 1. Single Conic Spinning Border */}
@@ -78,6 +139,16 @@ export default function ButtonDemo({
           {/* 2. Sliding Rounded Icon */}
           <Button variant="slide-icon" iconRight={<ArrowRightIcon />}>
             Sliding Icon
+          </Button>
+
+          {/* 2b. Looping Rounded Icon */}
+          <Button variant="slide-icon-loop" iconRight={<ArrowRightIcon />}>
+            Looping Icon
+          </Button>
+
+          {/* 2c. Raised 3D face that presses down */}
+          <Button variant="3d" iconRight={<ArrowRightIcon />}>
+            3D Press
           </Button>
 
           {/* 3. Horizontal Background Slide */}
@@ -153,6 +224,51 @@ export default function ButtonDemo({
           {/* 20. Liquid Wave Fill */}
           <Button variant="liquid-fill" iconLeft={<MailIcon />}>
             Liquid Fill
+          </Button>
+        </div>
+      )}
+
+      {layout === "icon-only" && (
+        <div className="flex flex-wrap items-center justify-center gap-3 max-w-4xl mx-auto py-2">
+          <Button variant="default" size="sm" className="bg-background text-foreground border border-border hover:bg-primary/10 hover:border-primary/30 hover:text-primary transition-colors duration-200" iconLeft={<SearchIcon />} />
+          <Button variant="default" size="sm" className="bg-background text-foreground border border-border hover:bg-primary/10 hover:border-primary/30 hover:text-primary transition-colors duration-200" iconLeft={<BellIcon />} />
+          <Button variant="default" size="sm" className="bg-background text-foreground border border-border hover:bg-primary/10 hover:border-primary/30 hover:text-primary transition-colors duration-200" iconLeft={<MailIcon />} />
+          <Button variant="default" size="sm" className="bg-background text-foreground border border-border hover:bg-primary/10 hover:border-primary/30 hover:text-primary transition-colors duration-200" iconLeft={<PhoneIcon />} />
+          <Button variant="default" size="sm" className="bg-background text-foreground border border-border hover:bg-primary/10 hover:border-primary/30 hover:text-primary transition-colors duration-200" iconLeft={<SettingsIcon />} />
+          <Button variant="default" size="sm" className="bg-background text-foreground border border-border hover:bg-primary/10 hover:border-primary/30 hover:text-primary transition-colors duration-200" iconLeft={<PlusIcon />} />
+          <Button variant="default" size="sm" className="bg-background text-foreground border border-border hover:bg-primary/10 hover:border-primary/30 hover:text-primary transition-colors duration-200" iconLeft={<MinusIcon />} />
+          <Button variant="default" size="sm" className="bg-background text-foreground border border-border hover:bg-primary/10 hover:border-primary/30 hover:text-primary transition-colors duration-200" iconLeft={<XIcon />} />
+        </div>
+      )}
+
+      {layout === "social" && (
+        <div className="flex flex-col sm:flex-row sm:flex-wrap items-center justify-center gap-3 w-full max-w-4xl mx-auto py-2">
+          <Button variant="default" className="w-full sm:w-auto justify-center bg-background text-foreground border border-border hover:bg-primary/10 hover:border-primary/30 hover:text-primary transition-colors duration-200" iconLeft={<EmailIcon />}>
+            Login with Email
+          </Button>
+          <Button variant="default" className="w-full sm:w-auto justify-center bg-background text-foreground border border-border hover:bg-primary/10 hover:border-primary/30 hover:text-primary transition-colors duration-200" iconLeft={<GoogleIcon />}>
+            Continue with Google
+          </Button>
+          <Button variant="default" className="w-full sm:w-auto justify-center bg-background text-foreground border border-border hover:bg-primary/10 hover:border-primary/30 hover:text-primary transition-colors duration-200" iconLeft={<GitHubIcon />}>
+            Continue with GitHub
+          </Button>
+          <Button variant="default" className="w-full sm:w-auto justify-center bg-background text-foreground border border-border hover:bg-primary/10 hover:border-primary/30 hover:text-primary transition-colors duration-200" iconLeft={<FacebookIcon />}>
+            Login with Facebook
+          </Button>
+          <Button variant="default" className="w-full sm:w-auto justify-center bg-background text-foreground border border-border hover:bg-primary/10 hover:border-primary/30 hover:text-primary transition-colors duration-200" iconLeft={<XIcon2 />}>
+            Login with X
+          </Button>
+          <Button variant="default" className="w-full sm:w-auto justify-center bg-background text-foreground border border-border hover:bg-primary/10 hover:border-primary/30 hover:text-primary transition-colors duration-200" iconLeft={<AppleIcon />}>
+            Login with Apple
+          </Button>
+          <Button variant="default" className="w-full sm:w-auto justify-center bg-background text-foreground border border-border hover:bg-primary/10 hover:border-primary/30 hover:text-primary transition-colors duration-200" iconLeft={<MicrosoftIcon />}>
+            Login with Microsoft
+          </Button>
+          <Button variant="default" className="w-full sm:w-auto justify-center bg-background text-foreground border border-border hover:bg-primary/10 hover:border-primary/30 hover:text-primary transition-colors duration-200" iconLeft={<SlackIcon />}>
+            Login with Slack
+          </Button>
+          <Button variant="default" className="w-full sm:w-auto justify-center bg-background text-foreground border border-border hover:bg-primary/10 hover:border-primary/30 hover:text-primary transition-colors duration-200" iconLeft={<LinkedInIcon />}>
+            Login with LinkedIn
           </Button>
         </div>
       )}

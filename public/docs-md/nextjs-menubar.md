@@ -39,7 +39,7 @@ export const usageApp = `"use client";
 /** Every row carries one, so no row needs \`inset\` to fake the gutter. */
 const icon = "w-4 h-4 mr-2 shrink-0";
 /** Marks the active theme; ml-auto keeps it clear of the label. */
-const activeMark = "ml-auto w-4 h-4 shrink-0 text-indigo-500";
+const activeMark = "ml-auto w-4 h-4 shrink-0 text-primary";
 
 export default function AppWindow() {
   const [theme, setTheme] = useState("System");
@@ -133,6 +133,13 @@ export default function AppWindow() {
 }`;
 
 ## Installation
+
+Register the @algorize-ui registry once per project, then add the component:
+
+```bash
+npx shadcn@latest registry add @algorize-ui=https://algorize-ui.vercel.app/r/{name}.json
+npx shadcn@latest add @algorize-ui/menubar
+```
 
 ## Examples
 

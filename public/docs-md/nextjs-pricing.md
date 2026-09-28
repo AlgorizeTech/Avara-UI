@@ -1,8 +1,8 @@
 # Pricing Components
 
-A collection of highly-converting, responsive pricing sections. Whether you need traditional tiered subscription cards, a detailed comparison table, or an interactive GSAP-powered quote builder, these components are designed to maximize conversions.
+A collection of highly-converting, responsive pricing sections. Whether you need traditional tiered subscription cards, a detailed comparison table, or an interactive quote builder, these components are designed to maximize conversions.
 
-`Pricing.tsx` exports five independent layouts — `PricingCards`, `PricingBuilder`, `PricingTable`, `PricingSlider` and `PricingTypographic` — that share one color engine. Pick the layout that matches your funnel, then use the theme control above the gallery to see the accent cascade through badges, gradients, glows and buttons.
+`Pricing.tsx` exports eight independent layouts — `PricingCards`, `PricingScale`, `PricingDotPattern`, `PricingBuilder`, `PricingTable`, `PricingSlider`, `PricingTypographic` and `PricingPlans` — that share one color engine. Pick the layout that matches your funnel, then use the theme control above the gallery to see the accent cascade through badges, gradients, glows and buttons.
 
 export const pricingData = `const data: PricingData = {
   tabs: [
@@ -125,15 +125,6 @@ export default function Pricing() {
   return ;
 }`;
 
-export const usagePremium = `import { PricingCards, type PricingData } from "@/components/custom/blocks/Pricing";
-
-${pricingData}
-
-export default function PremiumPricing() {
-  // Heavier shadows, gradient price text and a scaled-up popular card.
-  return ;
-}`;
-
 export const usageElegant = `import { PricingCards, type PricingData } from "@/components/custom/blocks/Pricing";
 
 ${pricingData}
@@ -161,12 +152,20 @@ export default function BorderedPricing() {
   return ;
 }`;
 
-export const usageBuilder = `import { PricingBuilder } from "@/components/custom/blocks/Pricing";
+export const usageBuilder = `import { PricingBuilder, type PricingBuilderModule } from "@/components/custom/blocks/Pricing";
 
-// Self-contained: the builder owns its own module list, totals and GSAP
-// timeline, so \`color\` is the only prop.
+const modules: PricingBuilderModule[] = [
+  { id: "auth", name: "User Authentication", price: 15 },
+  { id: "db", name: "Database Storage", price: 25 },
+  { id: "analytics", name: "Advanced Analytics", price: 35 },
+  { id: "support", name: "24/7 SLA Support", price: 50 },
+  { id: "domain", name: "Custom Domain & SSL", price: 10 },
+];
+
 export default function QuoteBuilder() {
-  return ;
+  return (
+    
+  );
 }`;
 
 export const usageTable = `import { PricingTable, type PricingTableData } from "@/components/custom/blocks/Pricing";
@@ -206,9 +205,10 @@ export default function ComparePlans() {
 
 export const usageSlider = `import { PricingSlider } from "@/components/custom/blocks/Pricing";
 
-// Usage-based pricing: the slider computes the tier and price internally.
 export default function UsagePricing() {
-  return ;
+  return (
+    
+  );
 }`;
 
 export const usageTypographic = `import { PricingTypographic } from "@/components/custom/blocks/Pricing";
@@ -295,7 +295,193 @@ export default function PricingMenu() {
   return ;
 }`;
 
+export const usagePlans = `import { PricingPlans, type PricingServiceOption } from "@/components/custom/blocks/Pricing";
+
+const services: PricingServiceOption[] = [
+  {
+    id: "design",
+    name: "Design",
+    description: "Top-notch custom design",
+    price: 300,
+    icon: "PenTool",
+    features: [
+      "Top-notch custom design",
+      "Figma design & interactive prototype",
+    ],
+  },
+  {
+    id: "development",
+    name: "Development",
+    description: "Full development solution",
+    price: 400,
+    icon: "Code2",
+    features: [
+      "Framer/Custom development",
+      "2 months of free support",
+    ],
+  },
+  {
+    id: "fast",
+    name: "Fast",
+    description: "Quick budget solution",
+    price: 100,
+    icon: "Zap",
+    tag: "Fast Track",
+    features: [
+      "Fast delivery (3X everything)",
+    ],
+  },
+];
+
+export default function InteractiveChecklistPricing() {
+  return (
+    
+  );
+}`;
+
+export const dotPatternData = `const dotPatternPlans = [
+  {
+    id: "basic",
+    badgeTag: "BASIC",
+    price: "$199",
+    period: "/month",
+    description: "Basic tools for content generation. Best for one just trying out.",
+    buttonText: "Get Started",
+    featured: false,
+    featuresTitle: "What's included:",
+    features: ["1 project", "Up to 3 pages", "Email support", "Basic analytics"],
+  },
+  {
+    id: "starter",
+    badgeTag: "STARTER",
+    price: "$299",
+    period: "/month",
+    description: "Advanced tools for consistent content generation. Best for one getting started.",
+    buttonText: "Get Started",
+    featured: true,
+    featuresTitle: "What's included:",
+    features: ["1 project", "Up to 3 pages", "Email support", "Basic analytics"],
+  },
+  {
+    id: "pro",
+    badgeTag: "PRO",
+    price: "$599",
+    period: "/month",
+    description: "Advanced tools for consistent content generation, unlimited credits. Best for teams",
+    buttonText: "Get Started",
+    featured: false,
+    featuresTitle: "What's included:",
+    features: ["1 project", "Up to 3 pages", "Email support", "Basic analytics"],
+  },
+];`;
+
+export const usageDotPattern = `import { PricingCards, type PricingData } from "@/components/custom/blocks/Pricing";
+
+${pricingData}
+
+export default function DotPatternPricing() {
+  // Use variant="dot-pattern" to enable the dot matrix layout
+  return ;
+}`;
+
+export const scaleData = `const scalePlansData = {
+  monthly: [
+    {
+      id: "launch",
+      title: "Launch Plan",
+      subtitle: "Ideal for startups and solo marketers",
+      price: "$299.00",
+      period: "/Month",
+      buttonText: "Start with Launch",
+      popular: false,
+      icon: "Rocket",
+      featuresTitle: "WHAT'S INCLUDED:",
+      features: [
+        "Up to 10,000 subscribers",
+        "5 automation workflows",
+        "Basic A/B testing",
+        "Email support",
+        "Drag-and-drop builder",
+      ],
+    },
+    {
+      id: "scale",
+      title: "Scale Plan",
+      subtitle: "For growing teams ready to accelerate",
+      price: "$899.00",
+      period: "/Month",
+      buttonText: "Upgrade to Scale",
+      popular: true,
+      popularBadgeText: "Most Popular",
+      icon: "Sprout",
+      featuresTitle: "INCLUDED EVERYTHING IN LAUNCH, PLUS:",
+      features: [
+        "Unlimited automation workflows",
+        "Advanced segmentation & analytics",
+        "Priority live chat support",
+        "Custom branded templates",
+        "Dedicated onboarding",
+      ],
+    },
+  ],
+  annually: [
+    {
+      id: "launch-annual",
+      title: "Launch Plan",
+      subtitle: "Ideal for startups and solo marketers",
+      price: "$269.00",
+      period: "/Month",
+      buttonText: "Start with Launch",
+      popular: false,
+      icon: "Rocket",
+      featuresTitle: "WHAT'S INCLUDED:",
+      features: [
+        "Up to 10,000 subscribers",
+        "5 automation workflows",
+        "Basic A/B testing",
+        "Email support",
+        "Drag-and-drop builder",
+      ],
+    },
+    {
+      id: "scale-annual",
+      title: "Scale Plan",
+      subtitle: "For growing teams ready to accelerate",
+      price: "$809.00",
+      period: "/Month",
+      buttonText: "Upgrade to Scale",
+      popular: true,
+      popularBadgeText: "Most Popular",
+      icon: "Sprout",
+      featuresTitle: "INCLUDED EVERYTHING IN LAUNCH, PLUS:",
+      features: [
+        "Unlimited automation workflows",
+        "Advanced segmentation & analytics",
+        "Priority live chat support",
+        "Custom branded templates",
+        "Dedicated onboarding",
+      ],
+    },
+  ],
+};`;
+
+export const usageScale = `import { PricingCards, type PricingData } from "@/components/custom/blocks/Pricing";
+
+${pricingData}
+
+export default function ScalablePricing() {
+  // Use variant="scale" to enable the interactive split layout
+  return ;
+}`;
+
 ## Installation
+
+Register the @algorize-ui registry once per project, then add the component:
+
+```bash
+npx shadcn@latest registry add @algorize-ui=https://algorize-ui.vercel.app/r/{name}.json
+npx shadcn@latest add @algorize-ui/pricing
+```
 
 ## Examples
 
@@ -318,13 +504,35 @@ export default function PricingMenu() {
 
           variant
 
-            "default" | "premium" | "elegant" | "minimal" | "bordered"
+            "default" | "dot-pattern" | "scale" | "elegant" | "minimal" | "bordered"
 
           "default"
 
-          Applies overarching structural layouts. premium adds
-          heavy shadows and gradients to popular cards, while{" "}
-          elegant uses soft border-top accents.
+          Applies structural card layouts. dot-pattern renders dot-matrix header cards, scale renders dual-panel scaling cards, bordered uses neo-brutalist edges, and elegant uses soft border-top accents.
+
+          title
+
+          string
+
+          undefined
+
+          Optional section header title text displayed above the pricing cards.
+
+          subtitle
+
+          string
+
+          undefined
+
+          Optional subheader text displayed underneath the main title.
+
+          badgeText
+
+          string
+
+          undefined
+
+          Optional top badge tag text rendered above the section title.
 
           color
 
@@ -336,6 +544,15 @@ export default function PricingMenu() {
           icons, primary buttons, and gradients. Any custom hex string is
           resolved through CSS variables.
 
+          counting
+
+          boolean
+
+          true
+
+          Toggles animated number count-up for price values across all plans.
+          When set to true, prices count up smoothly on mount or tab change; when false, prices display statically without animation.
+
 ## Props Reference: Other Layouts
 
         Component
@@ -346,14 +563,23 @@ export default function PricingMenu() {
 
           PricingBuilder
 
+          counting
+
+          boolean
+
+          true
+
+          Controls animated count-up for the calculated total price.
+
+          PricingBuilder
+
           color
 
           PricingColor
 
           "indigo"
 
-          Accent for the module toggles, animated total and call to action. The
-          builder supplies its own modules, so this is its only prop.
+          Accent for the module toggles, animated total and call to action.
 
           PricingTable
 
@@ -365,8 +591,17 @@ export default function PricingMenu() {
 
           plans become the columns (one may set{" "}
           featured) and sections group the feature
-          rows. Each feature's values array must line up with the
-          plan order.
+          rows.
+
+          PricingTable
+
+          counting
+
+          boolean
+
+          true
+
+          Toggles animated count-up for plan prices in column headers.
 
           PricingTable
 
@@ -380,14 +615,23 @@ export default function PricingMenu() {
 
           PricingSlider
 
+          counting
+
+          boolean
+
+          true
+
+          Controls animated count-up when dragging the usage volume slider.
+
+          PricingSlider
+
           color
 
           PricingColor
 
           "indigo"
 
-          Accent for the range track, thumb and computed price. Tiers are
-          defined inside the component.
+          Accent for the range track, thumb and computed price.
 
           PricingTypographic
 
@@ -397,10 +641,17 @@ export default function PricingMenu() {
 
           Required
 
-          A flat list of plans. Entries are split by{" "}
-          billingCycle ("monthly" /{" "}
-          "yearly") to feed the toggle, and{" "}
-          isFeatured highlights one row per cycle.
+          A flat list of plans split by billingCycle.
+
+          PricingTypographic
+
+          counting
+
+          boolean
+
+          true
+
+          Toggles animated count-up for active plan prices.
 
           PricingTypographic
 
@@ -411,6 +662,54 @@ export default function PricingMenu() {
           "indigo"
 
           Accent for the active row, price and underline treatment.
+
+          PricingPlans
+
+          services
+
+          PricingServiceOption[]
+
+          List of selectable service items with pricing, icons and feature bullet points.
+
+          PricingPlans
+
+          color
+
+          PricingColor
+
+          Accent theme color for selected checkboxes, total calculation and CTA button.
+
+          PricingScale
+
+          plans
+
+          {"{ monthly: ScalePlanItem[]; annually: ScalePlanItem[] }"}
+
+          Object containing monthly and annually arrays of pricing plan cards with titles, prices, icons and features.
+
+          PricingScale
+
+          badgeText / title / subtitle
+
+          string
+
+          Custom text props for top pill badge, section heading, and description paragraph.
+
+          PricingScale
+
+          footerTitle / footerSubtitle / footerCtaText / footerCtaHref
+
+          string
+
+          Configuration props for the bottom strategy call CTA banner.
+
+          PricingScale
+
+          color
+
+          PricingColor
+
+          Applies accent color to popular plan ring/badge, checkmarks, active toggle, and CTA buttons.
 
 ---
 

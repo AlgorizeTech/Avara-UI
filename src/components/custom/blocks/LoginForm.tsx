@@ -1,15 +1,31 @@
 "use client";
 
 import { cn } from "@/lib/utils";
-import { Check, Eye, EyeOff } from "lucide-react";
+import { ArrowLeft, Check } from "lucide-react";
+import Button from "./Button";
 import { GitHubIcon, GoogleIcon } from "./Icons";
+import { InputBlock } from "./InputBlock";
 import { useState } from "react";
+import { getThemeStyles } from "./login-form-theme";
 
 // ==========================================
 // DYNAMIC THEME ENGINE
 // ==========================================
-export type LoginColor = "indigo" | "rose" | "emerald" | "zinc" | string;
-export type LoginVariant = "default" | "split" | "glass" | "minimal";
+export type LoginColor =
+  | "primary"
+  | "indigo"
+  | "rose"
+  | "emerald"
+  | "zinc"
+  | (string & {});
+export type LoginVariant =
+  | "default"
+  | "split"
+  | "glass"
+  | "minimal"
+  | "scenic"
+  | "nature"
+  | "landscape";
 export type LoginProvider = "github" | "google";
 
 export type LoginFormValues = {
@@ -18,163 +34,48 @@ export type LoginFormValues = {
   remember: boolean;
 };
 
-// `panelFg` is the text colour for the split variant's gradient panel. It has
-// to be declared per theme rather than hardcoded to white: the zinc and primary
-// gradients both invert in dark mode, which would otherwise leave the whole
-// marketing panel white-on-white.
-const colorThemes: Record<string, Record<string, string>> = {
-  indigo: {
-    bg: "bg-indigo-600 hover:bg-indigo-700",
-    text: "text-indigo-600 dark:text-indigo-400",
-    border: "border-indigo-600",
-    ring: "focus:ring-indigo-600",
-    gradient: "from-indigo-600 to-violet-600",
-    panelFg: "text-white",
-  },
-  rose: {
-    bg: "bg-rose-600 hover:bg-rose-700",
-    text: "text-rose-600 dark:text-rose-400",
-    border: "border-rose-600",
-    ring: "focus:ring-rose-600",
-    gradient: "from-rose-600 to-orange-500",
-    panelFg: "text-white",
-  },
-  emerald: {
-    bg: "bg-emerald-600 hover:bg-emerald-700",
-    text: "text-emerald-600 dark:text-emerald-400",
-    border: "border-emerald-600",
-    ring: "focus:ring-emerald-600",
-    gradient: "from-emerald-600 to-teal-500",
-    panelFg: "text-white",
-  },
-  zinc: {
-    bg: "bg-zinc-900 hover:bg-zinc-800 dark:bg-zinc-100 dark:hover:bg-zinc-200 dark:text-zinc-900",
-    text: "text-zinc-900 dark:text-zinc-100",
-    border: "border-zinc-900 dark:border-zinc-100",
-    ring: "focus:ring-zinc-900 dark:focus:ring-zinc-100",
-    gradient: "from-zinc-800 to-zinc-600 dark:from-zinc-200 dark:to-zinc-400",
-    panelFg: "text-white dark:text-zinc-900",
-  },
-};
-
-/** Legible text colour to sit on a filled swatch of `rgb`. */
-const contrastingForeground = (rgb: string) => {
-  const [r, g, b] = rgb.split(",").map((v) => parseInt(v.trim(), 10));
-  const channel = (v: number) => {
-    const c = v / 255;
-    return c <= 0.03928 ? c / 12.92 : Math.pow((c + 0.055) / 1.055, 2.4);
-  };
-  const luminance =
-    0.2126 * channel(r) + 0.7152 * channel(g) + 0.0722 * channel(b);
-  return luminance > 0.45 ? "#09090b" : "#ffffff";
-};
-
-const hexToRgb = (hex: string) => {
-  let cleanHex = hex.replace(/^#/, "");
-  if (cleanHex.length === 3)
-    cleanHex = cleanHex
-      .split("")
-      .map((x) => x + x)
-      .join("");
-  const result = /^([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(cleanHex);
-  return result
-    ? `${parseInt(result[1], 16)}, ${parseInt(result[2], 16)}, ${parseInt(result[3], 16)}`
-    : "99, 102, 241";
-};
-
-export const getThemeStyles = (color: string) => {
-  if (color === "primary" || color === "default" || !colorThemes[color]) {
-    if (color && color.startsWith("#")) {
-      const rgb = hexToRgb(color);
-      return {
-        theme: {
-          bg: "bg-[var(--theme-color)] text-white hover:opacity-90",
-          text: "text-[var(--theme-color)]",
-          border: "border-[var(--theme-color)]",
-          ring: "focus:ring-[var(--theme-color)]",
-          gradient:
-            "from-[var(--theme-color)] to-[rgba(var(--theme-color-rgb),0.6)]",
-          panelFg: "text-[var(--panel-fg)]",
-        },
-        style: {
-          "--theme-color": color,
-          "--theme-color-rgb": rgb,
-          "--panel-fg": contrastingForeground(rgb),
-        } as React.CSSProperties,
-      };
-    }
-    return {
-      theme: {
-        bg: "bg-primary text-primary-foreground hover:bg-primary/90",
-        text: "text-primary",
-        border: "border-primary",
-        ring: "focus:ring-primary/40",
-        gradient: "from-primary to-primary/70",
-        // The token designed to be legible on --primary, which inverts by theme.
-        panelFg: "text-primary-foreground",
-      },
-      style: {} as React.CSSProperties,
-    };
-  }
-  return { theme: colorThemes[color], style: {} };
-};
+export interface LoginFormProps {
+  variant?: LoginVariant;
+  color?: LoginColor;
+  /** Where "Sign up" sends someone who does not have an account yet. */
+  signupHref?: string;
+  forgotPasswordHref?: string;
+  /**
+   * Called with the validated credentials. Without it the form simulates a
+   * round trip so the block stays demonstrable on its own — wire this up to
+   * your auth provider before shipping.
+   */
+  onSubmit?: (values: LoginFormValues) => void | Promise<void>;
+  onSocialSignIn?: (provider: LoginProvider) => void;
+  /** Brand display name shown on scenic variant */
+  brandName?: string;
+  /** Custom logo icon */
+  brandIcon?: React.ReactNode;
+  /** Primary headline for the scenic card */
+  title?: string;
+  /** Subtitle / description for the scenic card */
+  subtitle?: string;
+  /** Label for primary get started / sign in button */
+  loginLabel?: string;
+  /** Label for secondary create account button */
+  createAccountLabel?: string;
+  /** Scenic background image URL (e.g. Cloudinary) */
+  bgImage?: string;
+  /** Initial step for scenic mode ("welcome" or "form") */
+  initialStep?: "welcome" | "form";
+}
 
 // --- INLINE UI COMPONENTS ---
-const Input = ({
-  label,
-  id,
-  error,
-  description,
-  type = "text",
-  className,
-  ...props
-}: any) => {
-  const [showPassword, setShowPassword] = useState(false);
-  const isPassword = type === "password";
-  const inputType = isPassword ? (showPassword ? "text" : "password") : type;
-
-  return (
-    <div className="flex flex-col gap-1.5 w-full">
-      <label
-        htmlFor={id}
-        className="text-sm font-semibold text-foreground"
-      >
-        {label} {props.required && <span className="text-red-500">*</span>}
-      </label>
-      <div className="relative">
-        <input
-          id={id}
-          type={inputType}
-          className={cn(
-            "flex h-11 w-full rounded-lg border bg-white/80 dark:bg-zinc-950/70 backdrop-blur-md px-3 py-2 text-sm text-foreground placeholder:text-muted-foreground font-medium focus:outline-none focus:ring-2 focus:border-transparent transition-all shadow-sm",
-            error
-              ? "border-red-500 focus:ring-red-500"
-              : "border-border",
-            isPassword && "pr-10",
-            className,
-          )}
-          {...props}
-        />
-        {isPassword && (
-          <button
-            type="button"
-            aria-label={showPassword ? "Hide password" : "Show password"}
-            onClick={() => setShowPassword(!showPassword)}
-            className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground transition-colors"
-          >
-            {showPassword ? <EyeOff size={18} /> : <Eye size={18} />}
-          </button>
-        )}
-      </div>
-      {description && !error && (
-        <p className="text-[11px] text-muted-foreground">{description}</p>
-      )}
-      {error && (
-        <p className="text-[11px] text-red-500 font-semibold">{error}</p>
-      )}
-    </div>
-  );
-};
+// Text fields and buttons come from the library (InputBlock, Button); the
+// checkbox is the one control it does not have yet, so it stays inline.
+interface FieldCheckboxProps
+  extends Omit<React.InputHTMLAttributes<HTMLInputElement>, "onChange"> {
+  label?: React.ReactNode;
+  error?: string;
+  onCheckedChange: (checked: boolean) => void;
+  /** A row out of the block’s colour table. */
+  theme: Record<string, string>;
+}
 
 const Checkbox = ({
   label,
@@ -185,7 +86,7 @@ const Checkbox = ({
   className,
   theme,
   ...props
-}: any) => (
+}: FieldCheckboxProps) => (
   <div className="flex flex-col gap-1">
     <div className="flex items-start gap-2.5">
       <div className="relative flex items-center mt-0.5">
@@ -207,7 +108,10 @@ const Checkbox = ({
         <Check
           size={12}
           strokeWidth={3}
-          className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 text-white pointer-events-none opacity-0 peer-checked:opacity-100 transition-opacity"
+          className={cn(
+            "absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 pointer-events-none opacity-0 peer-checked:opacity-100 transition-opacity",
+            theme.panelFg,
+          )}
         />
       </div>
       <label
@@ -223,30 +127,57 @@ const Checkbox = ({
   </div>
 );
 
-const Button = ({
-  className,
-  variant = "default",
-  size = "default",
-  disabled,
-  theme,
-  children,
-  ...props
-}: any) => (
-  <button
-    disabled={disabled}
-    className={cn(
-      "inline-flex items-center justify-center rounded-lg text-sm font-bold transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 cursor-pointer active:scale-[0.98]",
-      variant === "default" && theme?.bg,
-      variant === "outline" &&
-        "border-2 border-border/80 bg-white/70 dark:bg-zinc-900/80 backdrop-blur-md hover:bg-card text-foreground shadow-xs",
-      size === "default" && "h-11 px-4 py-2",
-      className,
-    )}
-    {...props}
+// --- BRAND ICON ---
+export const DocsUiIcon = ({
+  className = "w-5 h-5",
+  size = 20,
+}: {
+  className?: string;
+  size?: number;
+}) => (
+  <svg
+    width={size}
+    height={size}
+    viewBox="0 0 24 24"
+    fill="none"
+    xmlns="http://www.w3.org/2000/svg"
+    className={className}
   >
-    {children}
-  </button>
+    <rect
+      x="3"
+      y="3"
+      width="7"
+      height="7"
+      rx="1.5"
+      className="fill-foreground dark:fill-white"
+    />
+    <rect
+      x="14"
+      y="3"
+      width="7"
+      height="7"
+      rx="1.5"
+      className="fill-primary"
+    />
+    <rect
+      x="14"
+      y="14"
+      width="7"
+      height="7"
+      rx="1.5"
+      className="fill-foreground dark:fill-white"
+    />
+    <rect
+      x="3"
+      y="14"
+      width="7"
+      height="7"
+      rx="1.5"
+      className="fill-primary"
+    />
+  </svg>
 );
+
 
 // --- MAIN COMPONENT ---
 export default function LoginForm({
@@ -256,21 +187,22 @@ export default function LoginForm({
   forgotPasswordHref = "#",
   onSubmit,
   onSocialSignIn,
-}: {
-  variant?: LoginVariant;
-  color?: LoginColor;
-  /** Where "Sign up" sends someone who does not have an account yet. */
-  signupHref?: string;
-  forgotPasswordHref?: string;
-  /**
-   * Called with the validated credentials. Without it the form simulates a
-   * round trip so the block stays demonstrable on its own — wire this up to
-   * your auth provider before shipping.
-   */
-  onSubmit?: (values: LoginFormValues) => void | Promise<void>;
-  onSocialSignIn?: (provider: LoginProvider) => void;
-}) {
+  brandName = "Docs UI",
+  brandIcon,
+  title = "Take control of your financial wellbeing",
+  subtitle = "Understand your money, build healthier habits, and make confident financial decisions",
+  loginLabel = "Sign In",
+  createAccountLabel = "Create an account",
+  bgImage = "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_1600,c_limit/v1790145140/photo-1426604966848-d7adac402bff-1790145143490.jpg",
+  initialStep = "welcome",
+}: LoginFormProps) {
   const { theme, style } = getThemeStyles(color);
+  const focusButtonClasses = cn(
+    "outline-none transition-all duration-200 focus-visible:outline-none",
+    theme.focusBorder,
+    theme.focusRing
+  );
+  const [scenicStep, setScenicStep] = useState<"welcome" | "form">(initialStep);
 
   const [formData, setFormData] = useState<LoginFormValues>({
     email: "",
@@ -316,7 +248,7 @@ export default function LoginForm({
   const FormContent = (
     <div className="w-full max-w-md mx-auto flex flex-col justify-center h-full">
       <div className="mb-8 text-center sm:text-left">
-        <h2 className="text-3xl font-black text-foreground tracking-tight mb-2">
+        <h2 className="text-3xl font-semibold text-foreground tracking-tight mb-2">
           Welcome back
         </h2>
         <p className="text-sm text-muted-foreground font-medium">
@@ -326,33 +258,37 @@ export default function LoginForm({
 
       <div className="grid grid-cols-1 xs:grid-cols-2 gap-2.5 sm:gap-3 mb-5 sm:mb-6">
         <Button
-          variant="outline"
+          variant="ghost"
           type="button"
+          color={color}
           onClick={() => onSocialSignIn?.("github")}
-          className="w-full flex items-center justify-center gap-2"
+          iconLeft={<GitHubIcon size={18} />}
+          className="w-full h-11 border border-border/80 bg-card/70 backdrop-blur-md hover:bg-card hover:text-foreground"
         >
-          <GitHubIcon size={18} /> <span>GitHub</span>
+          GitHub
         </Button>
         <Button
-          variant="outline"
+          variant="ghost"
           type="button"
+          color={color}
           onClick={() => onSocialSignIn?.("google")}
-          className="w-full flex items-center justify-center gap-2"
+          iconLeft={<GoogleIcon size={18} />}
+          className="w-full h-11 border border-border/80 bg-card/70 backdrop-blur-md hover:bg-card hover:text-foreground"
         >
-          <GoogleIcon size={18} /> <span>Google</span>
+          Google
         </Button>
       </div>
 
       <div className="relative flex items-center mb-5 sm:mb-6">
         <div className="flex-grow border-t border-border"></div>
-        <span className="flex-shrink-0 mx-3 sm:mx-4 text-muted-foreground text-[10px] sm:text-xs font-bold uppercase tracking-widest">
+        <span className="flex-shrink-0 mx-3 sm:mx-4 text-muted-foreground text-[10px] sm:text-xs font-semibold uppercase tracking-widest">
           Or continue with
         </span>
         <div className="flex-grow border-t border-border"></div>
       </div>
 
       <form onSubmit={handleSubmit} className="space-y-3.5 sm:space-y-4">
-        <Input
+        <InputBlock
           label="Email Address"
           id="login-email"
           name="email"
@@ -360,11 +296,11 @@ export default function LoginForm({
           autoComplete="email"
           placeholder="name@company.com"
           value={formData.email}
-          onChange={(e: any) => handleChange("email", e.target.value)}
+          onChange={(e: React.ChangeEvent<HTMLInputElement>) => handleChange("email", e.target.value)}
           error={errors.email}
-          className={theme.ring}
+          color={color}
         />
-        <Input
+        <InputBlock
           label="Password"
           id="login-password"
           name="password"
@@ -372,9 +308,9 @@ export default function LoginForm({
           autoComplete="current-password"
           placeholder="Enter your password"
           value={formData.password}
-          onChange={(e: any) => handleChange("password", e.target.value)}
+          onChange={(e: React.ChangeEvent<HTMLInputElement>) => handleChange("password", e.target.value)}
           error={errors.password}
-          className={theme.ring}
+          color={color}
         />
 
         <div className="flex items-center justify-between gap-3 pt-1">
@@ -388,7 +324,7 @@ export default function LoginForm({
           <a
             href={forgotPasswordHref}
             className={cn(
-              "text-xs font-bold hover:underline transition-all shrink-0",
+              "text-xs font-semibold hover:underline transition-all shrink-0",
               theme.text,
             )}
           >
@@ -398,9 +334,10 @@ export default function LoginForm({
 
         <Button
           type="submit"
-          theme={theme}
-          className="w-full mt-4 shadow-lg shadow-black/5"
-          disabled={loading}
+          variant="default"
+          color={color}
+          loading={loading}
+          className="w-full h-11 mt-4 shadow-lg shadow-black/5"
         >
           {loading ? "Please wait..." : "Sign In"}
         </Button>
@@ -412,7 +349,7 @@ export default function LoginForm({
           <a
             href={signupHref}
             className={cn(
-              "font-bold hover:underline transition-all",
+              "font-semibold hover:underline transition-all",
               theme.text,
             )}
           >
@@ -456,7 +393,7 @@ export default function LoginForm({
           />
 
           <div className="relative z-10">
-            <div className="flex items-center gap-2 font-black text-2xl tracking-tighter">
+            <div className="flex items-center gap-2 font-semibold text-2xl tracking-tighter">
               <div className="w-8 h-8 rounded-lg bg-current/20 flex items-center justify-center backdrop-blur-md">
                 ⚡
               </div>
@@ -634,7 +571,7 @@ export default function LoginForm({
           </div>
 
           <div className="relative z-10 max-w-sm">
-            <h1 className="text-4xl font-bold mb-4 leading-tight">
+            <h1 className="text-4xl font-semibold mb-4 leading-tight">
               Welcome back. Pick up where you left off.
             </h1>
             <p className="font-medium opacity-80">
@@ -650,6 +587,205 @@ export default function LoginForm({
     );
   }
 
+  if (
+    variant === "scenic" ||
+    variant === "nature" ||
+    variant === "landscape"
+  ) {
+    return (
+      <div
+        className="relative w-full min-h-[580px] sm:min-h-[640px] flex items-center justify-center overflow-hidden rounded-3xl p-4 sm:p-6 md:p-8"
+        style={style}
+      >
+        {/* Full-bleed scenic nature background */}
+        <img
+          src={bgImage}
+          alt="Scenic nature landscape background"
+          className="absolute inset-0 w-full h-full object-cover select-none pointer-events-none"
+        />
+
+        {/* Soft atmospheric overlay */}
+        <div className="absolute inset-0 bg-gradient-to-b from-black/20 via-transparent to-black/35 pointer-events-none" />
+
+        {/* Floating Card */}
+        <div
+          className={cn(
+            "relative z-10 w-full max-w-[440px] rounded-[28px] p-6 sm:p-8 md:p-9 transition-all duration-300",
+            // Light mode: clean frosted white card, crisp dark text, delicate border, deep ambient shadow
+            "bg-white/95 text-zinc-900 border border-zinc-200/80 shadow-[0_20px_50px_rgba(0,0,0,0.18)] backdrop-blur-xl",
+            // Dark mode: deep charcoal card matching screenshot, crisp white text, subtle translucent border
+            "dark:bg-[#131415]/95 dark:text-white dark:border-white/10 dark:shadow-[0_25px_60px_-15px_rgba(0,0,0,0.7)]"
+          )}
+        >
+          {scenicStep === "welcome" ? (
+            <div className="flex flex-col items-center text-center">
+              {/* Brand Header */}
+              <div className="flex items-center gap-2 mb-6">
+                {brandIcon || (
+                  <DocsUiIcon className="w-5 h-5 text-zinc-900 dark:text-white" />
+                )}
+                <span className="font-semibold text-lg tracking-tight text-zinc-900 dark:text-white">
+                  {brandName}
+                </span>
+              </div>
+
+              {/* Title */}
+              <h2 className="text-2xl sm:text-[28px] font-medium tracking-tight text-zinc-900 dark:text-white mb-3 leading-snug">
+                {title}
+              </h2>
+
+              {/* Subtitle */}
+              <p className="text-xs sm:text-sm text-zinc-600 dark:text-white/70 max-w-[340px] mb-8 leading-relaxed">
+                {subtitle}
+              </p>
+
+              {/* Actions */}
+              <div className="w-full flex flex-col gap-3">
+                {/* Primary Button */}
+                <button
+                  type="button"
+                  onClick={() => setScenicStep("form")}
+                  className={cn(
+                    "w-full h-12 rounded-xl sm:rounded-2xl font-semibold text-sm sm:text-base transition-all duration-200 active:scale-[0.98] shadow-sm",
+                    "bg-zinc-900 text-white hover:bg-zinc-800",
+                    "dark:bg-white dark:text-zinc-950 dark:hover:bg-zinc-100",
+                    focusButtonClasses
+                  )}
+                >
+                  {loginLabel}
+                </button>
+
+                {/* Secondary Button */}
+                <a
+                  href={signupHref}
+                  className={cn(
+                    "w-full h-11 flex items-center justify-center rounded-xl sm:rounded-2xl text-xs sm:text-sm font-medium transition-all duration-200 active:scale-[0.98]",
+                    "bg-zinc-100/90 text-zinc-700 hover:bg-zinc-200/90 border border-zinc-200/60",
+                    "dark:bg-white/[0.08] dark:text-white/85 dark:hover:bg-white/[0.14] dark:border-white/5",
+                    focusButtonClasses
+                  )}
+                >
+                  {createAccountLabel}
+                </a>
+              </div>
+            </div>
+          ) : (
+            <div>
+              {/* Header with Back button */}
+              <div className="flex items-center justify-between mb-4 pb-3 border-b border-zinc-200/60 dark:border-white/10">
+                <button
+                  type="button"
+                  onClick={() => setScenicStep("welcome")}
+                  className="inline-flex items-center gap-1.5 text-xs font-medium text-zinc-500 hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-white transition-colors"
+                >
+                  <ArrowLeft size={14} />
+                  <span>Back</span>
+                </button>
+                <div className="flex items-center gap-1.5">
+                  {brandIcon || (
+                    <DocsUiIcon className="w-4 h-4 text-zinc-900 dark:text-white" />
+                  )}
+                  <span className="font-semibold text-xs text-zinc-900 dark:text-white">
+                    {brandName}
+                  </span>
+                </div>
+              </div>
+
+              {/* Form Heading */}
+              <div className="mb-4">
+                <h3 className="text-xl font-bold tracking-tight text-zinc-900 dark:text-white mb-1">
+                  Sign in
+                </h3>
+                <p className="text-xs text-zinc-500 dark:text-zinc-400">
+                  Welcome back! Please enter your details.
+                </p>
+              </div>
+
+              <form onSubmit={handleSubmit} className="space-y-3.5">
+                <InputBlock
+                  label="Email Address"
+                  id="login-scenic-email"
+                  name="email"
+                  type="email"
+                  autoComplete="email"
+                  placeholder="name@company.com"
+                  value={formData.email}
+                  onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+                    handleChange("email", e.target.value)
+                  }
+                  error={errors.email}
+                  color={color}
+                />
+
+                <InputBlock
+                  label="Password"
+                  id="login-scenic-password"
+                  name="password"
+                  type="password"
+                  autoComplete="current-password"
+                  placeholder="••••••••"
+                  value={formData.password}
+                  onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+                    handleChange("password", e.target.value)
+                  }
+                  error={errors.password}
+                  color={color}
+                />
+
+                <div className="flex items-center justify-between text-xs pt-0.5">
+                  <Checkbox
+                    id="login-scenic-remember"
+                    label="Remember me"
+                    checked={formData.remember}
+                    onCheckedChange={(checked) =>
+                      handleChange("remember", checked)
+                    }
+                    theme={theme}
+                  />
+                  <a
+                    href={forgotPasswordHref}
+                    className="font-medium text-zinc-600 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-white transition-colors"
+                  >
+                    Forgot password?
+                  </a>
+                </div>
+
+                <button
+                  type="submit"
+                  disabled={loading}
+                  className={cn(
+                    "w-full h-11 rounded-xl font-semibold text-sm transition-all duration-200 active:scale-[0.98] shadow-sm flex items-center justify-center gap-2 mt-2",
+                    "bg-zinc-900 text-white hover:bg-zinc-800 disabled:opacity-60",
+                    "dark:bg-white dark:text-zinc-950 dark:hover:bg-zinc-100",
+                    focusButtonClasses
+                  )}
+                >
+                  {loading ? (
+                    <span className="inline-block w-4 h-4 border-2 border-current border-t-transparent rounded-full animate-spin" />
+                  ) : (
+                    "Sign in"
+                  )}
+                </button>
+              </form>
+
+              <div className="mt-4 text-center">
+                <p className="text-xs text-zinc-500 dark:text-zinc-400">
+                  Don't have an account?{" "}
+                  <a
+                    href={signupHref}
+                    className="font-semibold text-zinc-900 dark:text-white hover:underline"
+                  >
+                    Sign up
+                  </a>
+                </p>
+              </div>
+            </div>
+          )}
+        </div>
+      </div>
+    );
+  }
+
   const baseWrapper =
     "w-full max-w-[480px] mx-auto p-4 xs:p-6 sm:p-8 md:p-10 transition-colors duration-300";
   const wrapperClass = cn(
@@ -657,7 +793,7 @@ export default function LoginForm({
     variant === "default" &&
       "bg-background rounded-3xl shadow-xl border border-border",
     variant === "glass" &&
-      "bg-white/65 dark:bg-zinc-950/65 backdrop-blur-xl rounded-3xl shadow-2xl border border-white/40 dark:border-zinc-700/50",
+      "bg-background/65 backdrop-blur-xl rounded-3xl shadow-2xl border border-foreground/10",
     variant === "minimal" && "bg-transparent",
   );
 

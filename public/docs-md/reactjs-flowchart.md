@@ -1,10 +1,10 @@
 # Flowchart / Node Builder
 
-A declarative, highly sleek flowchart engine complete with custom responsive column channels, node action anchors, and custom vector streaming lines animated smoothly via GSAP.
+A declarative, highly sleek flowchart engine complete with custom responsive column channels, node action anchors, and custom vector streaming lines that draw themselves in with plain CSS animation.
 
 This engine separates data flow layout orchestration from canvas tracking. By combining declarative standard layout structures with pre-set micro connection vectors, pipelines render cross-device flawlessly without heavy calculations crashing client frame updates.
 
-Click any node that sits on a route to make that route the active one — GSAP redraws the stream along the SVG path.
+Click any node that sits on a route to make that route the active one — the moving stream switches to that SVG path.
 
 export const pipelineNodes = `function PipelineNodes() {
   return (
@@ -82,6 +82,13 @@ export default function AccentedPipeline() {
 
 ## Installation
 
+Register the @algorize-ui registry once per project, then add the component:
+
+```bash
+npx shadcn@latest registry add @algorize-ui=https://algorize-ui.vercel.app/r/{name}.json
+npx shadcn@latest add @algorize-ui/flowchart
+```
+
 ## Examples
 
 ## Best Practices & Guidelines
@@ -108,9 +115,15 @@ export default function AccentedPipeline() {
 
         Flowchart
         color
-        "blue" | "indigo" | "rose" | "emerald" | "zinc"
-        "indigo"
+        "primary" | "blue" | "indigo" | "rose" | "emerald" | "zinc"
+        "primary"
         Accent applied to the active stream, node ports and focus rings.
+
+        Flowchart
+        layout
+        "fixed" | "fluid"
+        "fixed"
+        fixed is the 900×400 blueprint canvas. fluid is only the context and a positioned box, for connectors drawn over ordinary layout — give FlowCanvas its own viewBox. This is how Data Flow draws its curves.
 
         FlowNode
         id
@@ -153,6 +166,30 @@ export default function AccentedPipeline() {
         string
         Required
         SVG path data — M/L for right angles, C for curves.
+
+        FlowConnection
+        dashed
+        boolean | string
+        false
+        Draw the resting line dashed — true for "4 6", or your own pattern. Applied once the draw-in finishes.
+
+        FlowConnection
+        flowDash
+        string
+        "6 10"
+        Dash pattern of the moving stream while the route is active. The loop length is one dash plus one gap, so any pattern cycles cleanly.
+
+        FlowConnection
+        glow
+        boolean
+        true
+        The soft blurred halo under the active stream.
+
+        FlowConnection
+        drawDuration
+        number
+        1.2
+        Seconds the draw-in takes on mount. The stream only starts once the line is drawn; under prefers-reduced-motion both are skipped.
 
 ---
 

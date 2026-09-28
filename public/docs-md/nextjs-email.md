@@ -4,7 +4,7 @@ A premium, fully interactive email client featuring a modern SaaS aesthetic. It 
 
 The client is fully encapsulated — hand it `initialEmails` and reading, starring, archiving, deleting and composing all work. Try searching for a sender, starring a message to watch it move to the Starred folder, or opening Compose.
 
-export const emailData = `const emails = [
+export const emailData = `const emails: Email[] = [
   {
     id: 1,
     sender: "Tommy Sicilia",
@@ -14,7 +14,7 @@ export const emailData = `const emails = [
     fullDate: "Dec 10, 2026, 01:46 PM",
     isStarred: false,
     isRead: false,
-    avatar: "https://i.pravatar.cc/150?u=tommy",
+    avatar: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto/v1790148864/80-2-1790148865112.jpg",
     labels: [
       {
         color: "bg-rose-500",
@@ -35,7 +35,7 @@ export const emailData = `const emails = [
     fullDate: "Dec 10, 2026, 01:55 PM",
     isStarred: true,
     isRead: true,
-    avatar: "https://i.pravatar.cc/150?u=tressa",
+    avatar: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto/v1790148865/80-4-1790148865113.jpg",
     labels: [
       {
         color: "bg-indigo-500",
@@ -73,7 +73,7 @@ export const emailData = `const emails = [
   },
 ];`;
 
-export const usageDefault = `import EmailApp from "@/components/custom/blocks/Email";
+export const usageDefault = `import EmailApp, { type Email } from "@/components/custom/blocks/Email";
 
 ${emailData}
 
@@ -81,7 +81,7 @@ export default function Mailbox() {
   return ;
 }`;
 
-export const usageMinimal = `import EmailApp from "@/components/custom/blocks/Email";
+export const usageMinimal = `import EmailApp, { type Email } from "@/components/custom/blocks/Email";
 
 ${emailData}
 
@@ -90,7 +90,7 @@ export default function MinimalMailbox() {
   return ;
 }`;
 
-export const usageGlass = `import EmailApp from "@/components/custom/blocks/Email";
+export const usageGlass = `import EmailApp, { type Email } from "@/components/custom/blocks/Email";
 
 ${emailData}
 
@@ -102,6 +102,13 @@ export default function GlassMailbox() {
 }`;
 
 ## Installation
+
+Register the @algorize-ui registry once per project, then add the component:
+
+```bash
+npx shadcn@latest registry add @algorize-ui=https://algorize-ui.vercel.app/r/{name}.json
+npx shadcn@latest add @algorize-ui/email
+```
 
 ## Examples
 

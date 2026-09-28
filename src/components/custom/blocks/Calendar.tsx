@@ -22,10 +22,11 @@ import {
 } from "lucide-react";
 import * as React from "react";
 import { useMemo, useState } from "react";
-import { DayPicker, getDefaultClassNames } from "react-day-picker";
+import { DayButton, DayPicker, getDefaultClassNames } from "react-day-picker";
 
 import { cn } from "@/lib/utils";
-import { Button, buttonVariants } from "../ui/button";
+import { Button } from "../ui/button";
+import { buttonVariants } from "../ui/button-variants";
 import { SelectBlock } from "./SelectBlock";
 
 const EVENT_TYPE_OPTIONS = [
@@ -107,7 +108,7 @@ const dashboardVariants: Record<CalendarVariant, Record<string, string>> = {
     gridHeader:
       "bg-card/95 border-b border-border",
     cellBg:
-      "bg-card hover:bg-accent/50 text-card-foreground",
+      "bg-card hover:bg-muted/50 text-card-foreground",
   },
   minimal: {
     wrapper: "bg-transparent border-none",
@@ -118,7 +119,7 @@ const dashboardVariants: Record<CalendarVariant, Record<string, string>> = {
     gridGap: "gap-2 sm:gap-3",
     gridHeader: "bg-transparent border-none pb-2",
     cellBg:
-      "bg-muted rounded-2xl border border-border hover:border-gray-300 dark:hover:border-gray-600 hover:shadow-sm",
+      "bg-muted rounded-2xl border border-border hover:border-foreground/20 hover:shadow-sm",
   },
   glass: {
     wrapper:
@@ -195,7 +196,10 @@ function Calendar({
   formatters,
   components,
   ...props
-}: any) {
+}: React.ComponentProps<typeof DayPicker> & {
+  /** Button style used for the nav and day cells. */
+  buttonVariant?: React.ComponentProps<typeof Button>["variant"];
+}) {
   const defaultClassNames = getDefaultClassNames();
   return (
     <DayPicker
@@ -256,7 +260,7 @@ function Calendar({
             : "rounded-md pl-2 pr-1 flex items-center gap-1 text-sm h-8 [&>svg]:text-muted-foreground [&>svg]:size-3.5",
           defaultClassNames.caption_label,
         ),
-        table: "w-full border-collapse",
+        ...({ table: "w-full border-collapse" } as Record<string, string>),
         weekdays: cn("flex", defaultClassNames.weekdays),
         weekday: cn(
           "text-muted-foreground rounded-md flex-1 font-normal text-[0.8rem] select-none",
@@ -276,13 +280,13 @@ function Calendar({
           defaultClassNames.day,
         ),
         range_start: cn(
-          "rounded-l-md bg-accent",
+          "rounded-l-md bg-muted",
           defaultClassNames.range_start,
         ),
         range_middle: cn("rounded-none", defaultClassNames.range_middle),
-        range_end: cn("rounded-r-md bg-accent", defaultClassNames.range_end),
+        range_end: cn("rounded-r-md bg-muted", defaultClassNames.range_end),
         today: cn(
-          "bg-accent text-accent-foreground rounded-md data-[selected=true]:rounded-none",
+          "bg-muted text-foreground rounded-md data-[selected=true]:rounded-none",
           defaultClassNames.today,
         ),
         outside: cn(
@@ -342,7 +346,12 @@ function Calendar({
   );
 }
 
-function CalendarDayButton({ className, day, modifiers, ...props }: any) {
+function CalendarDayButton({
+  className,
+  day,
+  modifiers,
+  ...props
+}: React.ComponentProps<typeof DayButton>) {
   const defaultClassNames = getDefaultClassNames();
   const ref = React.useRef<HTMLButtonElement>(null);
   React.useEffect(() => {
@@ -364,7 +373,7 @@ function CalendarDayButton({ className, day, modifiers, ...props }: any) {
       data-range-end={modifiers.range_end}
       data-range-middle={modifiers.range_middle}
       className={cn(
-        "data-[selected-single=true]:bg-primary data-[selected-single=true]:text-primary-foreground data-[range-middle=true]:bg-accent data-[range-middle=true]:text-accent-foreground data-[range-start=true]:bg-primary data-[range-start=true]:text-primary-foreground data-[range-end=true]:bg-primary data-[range-end=true]:text-primary-foreground group-data-[focused=true]/day:border-ring group-data-[focused=true]/day:ring-ring/50 dark:hover:text-accent-foreground flex aspect-square size-auto w-full min-w-(--cell-size) flex-col gap-1 leading-none font-normal cursor-pointer group-data-[focused=true]/day:relative group-data-[focused=true]/day:z-10 group-data-[focused=true]/day:ring-[3px] data-[range-end=true]:rounded-md data-[range-end=true]:rounded-r-md data-[range-middle=true]:rounded-none data-[range-start=true]:rounded-md data-[range-start=true]:rounded-l-md [&>span]:text-xs [&>span]:opacity-70",
+        "data-[selected-single=true]:bg-primary data-[selected-single=true]:text-primary-foreground data-[range-middle=true]:bg-muted data-[range-middle=true]:text-foreground data-[range-start=true]:bg-primary data-[range-start=true]:text-primary-foreground data-[range-end=true]:bg-primary data-[range-end=true]:text-primary-foreground group-data-[focused=true]/day:border-ring group-data-[focused=true]/day:ring-ring/50 flex aspect-square size-auto w-full min-w-(--cell-size) flex-col gap-1 leading-none font-normal cursor-pointer group-data-[focused=true]/day:relative group-data-[focused=true]/day:z-10 group-data-[focused=true]/day:ring-[3px] data-[range-end=true]:rounded-md data-[range-end=true]:rounded-r-md data-[range-middle=true]:rounded-none data-[range-start=true]:rounded-md data-[range-start=true]:rounded-l-md [&>span]:text-xs [&>span]:opacity-70",
         defaultClassNames.day,
         className,
       )}
@@ -380,7 +389,16 @@ const formatDateForInput = (dateKey: string) => {
   return `${y}-${String(m).padStart(2, "0")}-${String(d).padStart(2, "0")}`;
 };
 
-const DEFAULT_MOCK_EVENTS: Record<string, string[]> = {};
+const now = new Date();
+const currentYear = now.getFullYear();
+const currentMonth = now.getMonth() + 1;
+
+const DEFAULT_MOCK_EVENTS: Record<string, string[]> = {
+  [`${currentYear}-${currentMonth}-2`]: ["pentest", "kickoff"],
+  [`${currentYear}-${currentMonth}-10`]: ["pentest", "kickoff"],
+  [`${currentYear}-${currentMonth}-15`]: ["pentest", "kickoff"],
+  [`${currentYear}-${currentMonth}-24`]: ["kickoff", "pentest"],
+};
 
 type CalendarEvent = {
   id: string;
@@ -469,13 +487,16 @@ function CalendarDashboard({
   const [isAddModalOpen, setIsAddModalOpen] = useState(false);
   const [selectedDateKey, setSelectedDateKey] = useState("");
   const [selectedTime, setSelectedTime] = useState("12:00");
-  const [editingEvent, setEditingEvent] = useState<any | null>(null);
+  const [editingEvent, setEditingEvent] = useState<CalendarEvent | null>(null);
   const [eventType, setEventType] = useState("pentest");
   const [eventPlatform, setEventPlatform] = useState("meet");
   const [isMobileSidebarOpen, setIsMobileSidebarOpen] = useState(false);
 
   // Filter State
-  const [filters, setFilters] = useState({
+  const [filters, setFilters] = useState<{
+    types: Record<string, boolean>;
+    platforms: Record<string, boolean>;
+  }>({
     types: { pentest: true, kickoff: true },
     platforms: { meet: true, slack: true, discord: true },
   });
@@ -497,8 +518,6 @@ function CalendarDashboard({
     if (view === "week") setCurrentDate(new Date(year, month, date - 7));
     if (view === "day") setCurrentDate(new Date(year, month, date - 1));
   };
-
-  const goToToday = () => setCurrentDate(new Date());
 
   const generateCalendarDays = () => {
     const days = [];
@@ -564,13 +583,13 @@ function CalendarDashboard({
   const filteredEvents = useMemo(() => {
     return events.filter(
       (e) =>
-        (filters.types as any)[e.type] &&
-        (filters.platforms as any)[e.platform],
+        filters.types[e.type] &&
+        filters.platforms[e.platform],
     );
   }, [events, filters]);
 
   const toggleFilter = (category: "types" | "platforms", key: string) => {
-    setFilters((prev: any) => ({
+    setFilters((prev) => ({
       ...prev,
       [category]: { ...prev[category], [key]: !prev[category][key] },
     }));
@@ -620,7 +639,7 @@ function CalendarDashboard({
     setIsAddModalOpen(true);
   };
 
-  const openEditModal = (event: any) => {
+  const openEditModal = (event: CalendarEvent) => {
     setEditingEvent(event);
     setEventType(event.type ?? "pentest");
     setEventPlatform(event.platform ?? "meet");
@@ -1011,12 +1030,6 @@ function CalendarDashboard({
             <div className="flex items-center w-full lg:w-auto gap-2 sm:gap-4 justify-between lg:justify-end">
               <div className="flex bg-muted/60 p-1 rounded-lg text-xs sm:text-sm font-medium shrink-0 justify-start">
                 <button
-                  onClick={goToToday}
-                  className="px-3 sm:px-4 py-1.5 cursor-pointer hover:text-foreground text-muted-foreground transition-colors"
-                >
-                  Today
-                </button>
-                <button
                   onClick={() => setView("day")}
                   className={cn(
                     "px-3 sm:px-4 py-1.5 cursor-pointer rounded-md shadow-sm transition-colors",
@@ -1025,7 +1038,7 @@ function CalendarDashboard({
                       : "hover:text-foreground text-muted-foreground",
                   )}
                 >
-                  Day
+                  Today
                 </button>
                 <button
                   onClick={() => setView("week")}
@@ -1053,7 +1066,7 @@ function CalendarDashboard({
 
               <button
                 onClick={handleExportCSV}
-                className="hidden sm:flex items-center cursor-pointer gap-2 px-3 sm:px-4 py-1.5 sm:py-2 border border-border rounded-md text-xs sm:text-sm font-medium hover:bg-black/5 dark:hover:bg-white/5 transition-colors"
+                className="hidden sm:flex items-center cursor-pointer gap-2 px-3 sm:px-4 py-1.5 sm:py-2 border border-border rounded-md text-xs sm:text-sm font-medium hover:bg-foreground/5 transition-colors"
               >
                 Export <Download className="w-3.5 h-3.5 sm:w-4 sm:h-4 cursor-pointer" />
               </button>
@@ -1175,7 +1188,7 @@ function CalendarDashboard({
                           </span>
                           <span
                             className={cn(
-                              "text-xs sm:text-sm font-bold w-6 h-6 sm:w-7 sm:h-7 flex items-center justify-center rounded-full transition-colors",
+                              "text-xs sm:text-sm font-semibold w-6 h-6 sm:w-7 sm:h-7 flex items-center justify-center rounded-full transition-colors",
                               isToday
                                 ? theme.primaryBg
                                 : "text-foreground hover:bg-muted",
@@ -1278,7 +1291,12 @@ function CalendarDashboard({
               </h3>
               <button
                 onClick={closeModal}
-                className="text-gray-400 hover:text-gray-600 dark:hover:text-gray-200 cursor-pointer"
+                className={cn(
+                  "cursor-pointer",
+                  variant === "glass"
+                    ? "text-gray-400 hover:text-gray-600 dark:hover:text-gray-200"
+                    : "text-muted-foreground hover:text-foreground",
+                )}
               >
                 <X className="w-5 h-5 cursor-pointer" />
               </button>
@@ -1298,7 +1316,7 @@ function CalendarDashboard({
                     "w-full cursor-text border rounded-md px-3 py-2 text-sm bg-transparent focus:ring-2 focus:outline-none transition-shadow",
                     variant === "glass"
                       ? "border-white/20 text-white placeholder:text-white/50 bg-white/10"
-                      : "border-border dark:text-white",
+                      : "border-input text-foreground",
                     theme.focusRing,
                   )}
                 />
@@ -1322,7 +1340,7 @@ function CalendarDashboard({
                       "w-full cursor-pointer border rounded-md px-3 py-2 text-sm bg-transparent focus:ring-2 focus:outline-none transition-shadow",
                       variant === "glass"
                         ? "border-white/20 text-white [color-scheme:dark] bg-white/10"
-                        : "border-border dark:text-white [color-scheme:light] dark:[color-scheme:dark]",
+                        : "border-input text-foreground [color-scheme:light] dark:[color-scheme:dark]",
                       theme.focusRing,
                     )}
                   />
@@ -1340,7 +1358,7 @@ function CalendarDashboard({
                       "w-full cursor-pointer border rounded-md px-3 py-2 text-sm bg-transparent focus:ring-2 focus:outline-none transition-shadow",
                       variant === "glass"
                         ? "border-white/20 text-white [color-scheme:dark] bg-white/10"
-                        : "border-border dark:text-white [color-scheme:light] dark:[color-scheme:dark]",
+                        : "border-input text-foreground [color-scheme:light] dark:[color-scheme:dark]",
                       theme.focusRing,
                     )}
                   />
@@ -1409,6 +1427,29 @@ function CalendarDashboard({
   );
 }
 
+/** Shared by the month cell and the time-grid cell. */
+interface CalendarCellBaseProps {
+  events?: CalendarEvent[];
+  activePopupEventId: string | null;
+  setActivePopupEventId: (id: string | null) => void;
+  colIndex: number;
+  rowIndex: number;
+  dateStr: string;
+  onDeleteEvent: (id: string) => void;
+  onEditEvent: (event: CalendarEvent) => void;
+  onClickCell: () => void;
+  cellClass?: string;
+  theme: Record<string, string>;
+}
+
+interface CalendarCellProps extends CalendarCellBaseProps {
+  day: number | string;
+  isGray?: boolean;
+  variant?: CalendarVariant;
+}
+
+type TimeGridCellProps = CalendarCellBaseProps;
+
 // === Sub Component: CalendarCell ===
 function CalendarCell({
   day,
@@ -1424,17 +1465,17 @@ function CalendarCell({
   onClickCell,
   cellClass,
   theme,
-  variant
-}: any) {
+  variant,
+}: CalendarCellProps) {
   const popupXClass = colIndex >= 4 ? "sm:right-0" : "sm:left-0";
   const popupYClass = rowIndex >= 4 ? "sm:bottom-full sm:mb-2" : "sm:top-12";
-  const isAnyPopupOpen = events.some((e: any) => e.id === activePopupEventId);
+  const isAnyPopupOpen = events.some((e: CalendarEvent) => e.id === activePopupEventId);
 
   return (
     <div
       onClick={onClickCell}
       className={cn(
-        `relative flex flex-col p-1.5 sm:p-2 h-full transition-colors cursor-pointer ${isAnyPopupOpen ? "z-30" : "z-10 hover:z-20"} ${isGray ? "text-gray-400 dark:text-gray-600 opacity-60" : "text-gray-900 dark:text-gray-100"}`,
+        `relative flex flex-col p-1.5 sm:p-2 h-full transition-colors cursor-pointer ${isAnyPopupOpen ? "z-30" : "z-10 hover:z-20"} ${isGray ? "text-muted-foreground opacity-60" : "text-foreground"}`,
         cellClass,
       )}
     >
@@ -1445,11 +1486,11 @@ function CalendarCell({
       </div>
 
       <div className="flex-1 overflow-y-auto space-y-1 sm:space-y-1.5 pr-1 [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]">
-        {events.map((event: any) => {
+        {events.map((event: CalendarEvent) => {
           const isPopupOpen = activePopupEventId === event.id;
           const isPentest = event.type === "pentest";
           const borderClass = isGray
-            ? "border-border bg-muted text-gray-400 dark:text-gray-600"
+            ? "border-border bg-muted text-muted-foreground"
             : isPentest
               ? "border-yellow-200 bg-yellow-50 text-yellow-800 dark:border-yellow-800/50 dark:bg-yellow-900/30 dark:text-yellow-400"
               : "border-green-200 bg-green-50 text-green-800 dark:border-green-800/50 dark:bg-green-900/30 dark:text-green-400";
@@ -1489,7 +1530,7 @@ function CalendarCell({
         })}
       </div>
 
-      {events.map((event: any) => {
+      {events.map((event: CalendarEvent) => {
         const isPopupOpen = activePopupEventId === event.id;
         if (!isPopupOpen) return null;
 
@@ -1519,7 +1560,7 @@ function CalendarCell({
               className={`fixed sm:absolute z-50 top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[90vw] max-w-[320px] sm:top-auto sm:left-auto sm:translate-x-0 sm:translate-y-0 sm:w-72 ${popupXClass} ${popupYClass} ${
                 variant === "glass"
                   ? "bg-white/30 dark:bg-black/40 backdrop-blur-2xl border-white/30 dark:border-white/10 text-white shadow-2xl"
-                  : "bg-white dark:bg-gray-900 border-gray-100 dark:border-gray-800"
+                  : "bg-popover text-popover-foreground border-border"
               } rounded-xl shadow-2xl border p-4 cursor-default animate-in fade-in zoom-in-95 duration-150`}
               onClick={(e) => e.stopPropagation()}
             >
@@ -1595,10 +1636,10 @@ function TimeGridCell({
   onClickCell,
   cellClass,
   theme,
-}: any) {
+}: TimeGridCellProps) {
   const popupXClass = colIndex >= 4 ? "sm:right-0" : "sm:left-0";
   const popupYClass = rowIndex >= 6 ? "sm:bottom-full sm:mb-2" : "sm:top-10";
-  const isAnyPopupOpen = events.some((e: any) => e.id === activePopupEventId);
+  const isAnyPopupOpen = events.some((e: CalendarEvent) => e.id === activePopupEventId);
 
   return (
     <div
@@ -1609,7 +1650,7 @@ function TimeGridCell({
       )}
     >
       <div className="flex-1 overflow-y-auto space-y-1 pr-0.5 [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]">
-        {events.map((event: any) => {
+        {events.map((event: CalendarEvent) => {
           const isPopupOpen = activePopupEventId === event.id;
           const isPentest = event.type === "pentest";
           const borderClass = isPentest
@@ -1653,7 +1694,7 @@ function TimeGridCell({
         })}
       </div>
 
-      {events.map((event: any) => {
+      {events.map((event: CalendarEvent) => {
         const isPopupOpen = activePopupEventId === event.id;
         if (!isPopupOpen) return null;
 

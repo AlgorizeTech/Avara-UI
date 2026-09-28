@@ -1,13 +1,13 @@
 import { ExampleShowcase } from "@/components/site/Sandbox";
-import { extractCode } from "@/lib/code";
+import { extractMotionCode } from "@/lib/code";
 
 # AI Assistant Chat
 
-A premium, interactive LLM chat interface featuring conversation history management, real-time typing indicators, editable chat titles, and modern structural variants.
+A premium, interactive LLM chat interface featuring conversation history management, real-time typing indicators, editable chat titles, and a full prompt composer — a **+** menu for files and `@Mention` tools, a rocket upload indicator, a model picker, a Faster ↔ Smarter effort slider, and voice dictation with a live waveform.
 
-Every preview is live — send a prompt to see the simulated stream, rename a thread, or hit **New Chat**. `variant` changes the shell only; history management and the typing indicator behave identically in all three.
+Every preview is live — send a prompt to see the simulated stream, rename a thread, or hit **New Chat**. Try the composer too: press **+** and pick *Photos & files* (or drop a file on the bar) and watch the rocket carry it to 100%, pick *Documents* or *Mail* to drop an `@Documents` mention into the prompt, switch the model, slide effort up to **Max** for the glowing prompt bar, or tap the mic and talk. `variant` changes the shell only — `compact` also drops the history sidebar — and everything else behaves identically in all four.
 
-export const chatData = `const chatHistory = [
+export const chatData = `const chatHistory: ChatThread[] = [
   { id: 1, title: "Help with React Components", date: "Today" },
   { id: 2, title: "Write a python script for SEO", date: "Today" },
   { id: 3, title: "Ideas for marketing campaign", date: "Yesterday" },
@@ -15,7 +15,7 @@ export const chatData = `const chatHistory = [
   { id: 5, title: "Dinner recipes with chicken", date: "Previous 7 Days" },
 ];
 
-const initialMessages = [
+const initialMessages: Message[] = [
   {
     id: 1,
     role: "ai",
@@ -37,7 +37,7 @@ const initialMessages = [
   },
 ];`;
 
-export const usageDefault = `import AIChat from "@/components/custom/blocks/Ai-chat";
+export const usageDefault = `import AIChat, { type ChatThread, type Message } from "@/components/custom/blocks/Ai-chat";
 
 ${chatData}
 
@@ -49,7 +49,91 @@ export default function Assistant() {
   );
 }`;
 
-export const usageMinimal = `import AIChat from "@/components/custom/blocks/Ai-chat";
+export const usageComposer = `import AIChat, {
+  type ChatModel,
+  type ComposerTool,
+  type SendPayload,
+  type UploadHandler,
+} from "@/components/custom/blocks/Ai-chat";
+import { Database, Paperclip, Ticket } from "lucide-react";
+
+// One upload row, then whatever sources your assistant can reach. Picking a
+// mention row writes "@Label" into the prompt; \`onSend\` lists which were named.
+const tools: ComposerTool[] = [
+  { id: "files", label: "Photos & files", description: "Upload from this device", icon: <Paperclip className="w-4 h-4" />, action: "upload" },
+  { id: "crm", label: "CRM", description: "Accounts and deals", icon: <Database className="w-4 h-4" /> },
+  { id: "tickets", label: "Tickets", description: "Open support issues", icon: <Ticket className="w-4 h-4" /> },
+];
+
+const models: ChatModel[] = [
+  { id: "gpt-5", name: "GPT-5", description: "Flagship reasoning", badge: "New" },
+  { id: "claude-sonnet-5", name: "Claude Sonnet 5", description: "Fast and capable" },
+];
+
+// Stream a real upload and report progress as it goes. Reject to mark the chip failed;
+// \`signal\` aborts if the user removes the chip mid-flight.
+const uploadFile: UploadHandler = (file, onProgress, signal) =>
+  new Promise((resolve, reject) => {
+    const xhr = new XMLHttpRequest();
+    xhr.open("POST", "/api/upload");
+    xhr.upload.onprogress = (e) =>
+      e.lengthComputable && onProgress(Math.round((e.loaded / e.total) * 100));
+    xhr.onload = () => (xhr.status < 300 ? resolve() : reject(new Error(xhr.statusText)));
+    xhr.onerror = () => reject(new Error("Network error"));
+    signal.addEventListener("abort", () => xhr.abort());
+    const body = new FormData();
+    body.append("file", file);
+    xhr.send(body);
+  });
+
+export default function WiredAssistant() {
+  const handleSend = ({ content, attachments, model, effort, tools }: SendPayload) => {
+    // attachments are the finished uploads; tools are the "@" sources the prompt named
+    fetch("/api/chat", {
+      method: "POST",
+      body: JSON.stringify({
+        content,
+        files: attachments.map((a) => a.id),
+        model: model.id,
+        effort: effort.id,
+        sources: tools.map((t) => t.id),
+      }),
+    });
+  };
+
+  return (
+    <div className="w-full h-[600px]">
+      <AIChat
+        tools={tools}
+        models={models}
+        defaultModelId="claude-sonnet-5"
+        defaultEffort="high"
+        accept="image/*,.pdf,.md"
+        maxFiles={4}
+        uploadFile={uploadFile}
+        onSend={handleSend}
+      />
+    </div>
+  );
+}`;
+
+export const usageCompact = `import AIChat from "@/components/custom/blocks/Ai-chat";
+
+export default function CompactAssistant() {
+  return (
+    <div className="w-full h-[600px]">
+      {/* No sidebar and nothing said yet: just the title and the prompt bar, like a hero.
+          The first message swaps it for the conversation view. */}
+      <AIChat
+        variant="compact"
+        heroTitle="What can I help you with?"
+        heroSubtitle="Ask a question, attach a file, or pick a source with +"
+      />
+    </div>
+  );
+}`;
+
+export const usageMinimal = `import AIChat, { type ChatThread, type Message } from "@/components/custom/blocks/Ai-chat";
 
 ${chatData}
 
@@ -66,7 +150,7 @@ export default function MinimalAssistant() {
   );
 }`;
 
-export const usageGlass = `import AIChat from "@/components/custom/blocks/Ai-chat";
+export const usageGlass = `import AIChat, { type ChatThread, type Message } from "@/components/custom/blocks/Ai-chat";
 
 ${chatData}
 
@@ -77,7 +161,7 @@ export default function GlassAssistant() {
       className="p-8 bg-cover bg-center rounded-2xl relative overflow-hidden"
       style={{
         backgroundImage:
-          'url("https://images.unsplash.com/photo-1470071459604-3b5ec3a7fe05?auto=format&fit=crop&w=1600&q=80")',
+          'url("https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_1600,c_limit/v1790146209/photo-1470071459604-3b5ec3a7fe05-1790146212205.jpg")',
       }}
     >
       <AIChat
@@ -118,7 +202,7 @@ export default function GlassAssistant() {
       ],
       props: { variant: "default" },
       usage: usageDefault,
-      code: extractCode("src/components/custom/blocks/Ai-chat.tsx"),
+      code: extractMotionCode("src/components/custom/blocks/Ai-chat.tsx"),
     },
   ]}
 />
@@ -134,6 +218,54 @@ export default function GlassAssistant() {
   colorControl
   columns={1}
   examples={[
+    {
+      title: "Compact",
+      propNotes: [
+        {
+          lead: "Set",
+          prop: "variant",
+          value: '"compact"',
+          effect:
+            "for no history sidebar. While nothing has been said it is a hero — `heroTitle` over the prompt bar, no header, no messages. The first message you send swaps it for the conversation view, and **New chat** in that view brings the hero back.",
+        },
+        {
+          prop: "heroTitle",
+          effect:
+            "and `heroSubtitle` set the copy above the bar. Seed `initialMessages` instead and it opens on the conversation directly.",
+        },
+        {
+          prop: "showSidebar",
+          value: "false",
+          effect:
+            "does the same to any other variant, so a `glass` panel can open on its hero too.",
+        },
+      ],
+      props: { variant: "compact" },
+      usage: usageCompact,
+    },
+    {
+      title: "Wired to your backend",
+      propNotes: [
+        {
+          lead: "Pass",
+          prop: "uploadFile",
+          effect:
+            "as `(file, onProgress, signal) => Promise<void>` to replace the simulated upload — the rocket follows whatever percentage you report, and the chip turns green when the promise resolves or red when it rejects.",
+        },
+        {
+          prop: "onSend",
+          effect:
+            "receives `{ content, attachments, model, effort }` every time a prompt goes out, so the endpoint gets the model id, the effort id and the finished uploads in one call.",
+        },
+        {
+          prop: "models",
+          effect:
+            "fills the picker with your own `{ id, name, description?, badge?, premium? }[]`; `defaultModelId` chooses the initial one.",
+        },
+      ],
+      props: { variant: "default" },
+      usage: usageComposer,
+    },
     {
       title: "Minimal",
       propNotes: [
@@ -170,34 +302,44 @@ export default function GlassAssistant() {
   ]}
 />
 
+## The composer
+
+Everything under the prompt is built in and works without any props:
+
+- **The + menu** — six rows by default: *Photos & files* opens the file picker; *Web search*, *Sales data*, *Documents*, *Mail* and *Calendar* each write `@Label` into the prompt at the caret (once — picking it again just refocuses). Supply your own rows with `tools`; the ones a prompt names arrive in `onSend` as `tools`, in the order they appear.
+- **Attachments** — from the + menu, and files can also be dropped anywhere on the composer. Each file becomes a chip with a rocket that launches from the left, rides the progress track with a flickering exhaust, then blasts off the end as a check bursts in at 100%. Images show a thumbnail; the send button waits until every upload has landed. Uploads are simulated until you pass `uploadFile`.
+- **Model picker** — a popover listing `models` (four demo models by default). The chosen model is stamped on each reply's timestamp. A model with `premium: true` wears a gold *Premium* badge after its name; switching to it turns the pill gold with a crown, pings a ring and a glint across the pill, and sends two gold beams once around the prompt bar's edge while a sheen crosses it — a single play, unlike Max effort's standing glow.
+- **Effort** — a Faster ↔ Smarter slider with one stop per level. At the highest level the pill switches to a sparkle and the prompt bar glows with a scatter of twinkling specks. The simulated reply also takes a little longer the higher you go.
+- **Dictation** — the mic opens the microphone and drives a 22-bar waveform from the live audio level, while the Web Speech API writes what you say into the prompt. Without mic permission the wave runs an idle animation; without speech recognition the wave still shows so the button visibly responds. Tap again (or press Escape) to stop.
+
 ## Features
 Explore the Ai-Chat interface features, including message streaming, typing indicators, and seamless integration with AI models.
 
 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 my-6 not-prose">
-  <div className="p-6 rounded-2xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900">
-    <h3 className="text-lg font-semibold text-zinc-900 dark:text-zinc-50 mb-2">Customizable</h3>
-    <p className="text-zinc-600 dark:text-zinc-400 text-sm">Easily adapt the component's styling and behavior to fit your application's unique design system.</p>
+  <div className="p-6 rounded-2xl border border-border bg-card">
+    <h3 className="text-lg font-semibold text-card-foreground mb-2">Customizable</h3>
+    <p className="text-muted-foreground text-sm">Easily adapt the component's styling and behavior to fit your application's unique design system.</p>
   </div>
-  <div className="p-6 rounded-2xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900">
-    <h3 className="text-lg font-semibold text-zinc-900 dark:text-zinc-50 mb-2">Accessible</h3>
-    <p className="text-zinc-600 dark:text-zinc-400 text-sm">Built with accessibility in mind, ensuring all users can interact with your application effectively.</p>
+  <div className="p-6 rounded-2xl border border-border bg-card">
+    <h3 className="text-lg font-semibold text-card-foreground mb-2">Accessible</h3>
+    <p className="text-muted-foreground text-sm">Built with accessibility in mind, ensuring all users can interact with your application effectively.</p>
   </div>
-  <div className="p-6 rounded-2xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900">
-    <h3 className="text-lg font-semibold text-zinc-900 dark:text-zinc-50 mb-2">Responsive</h3>
-    <p className="text-zinc-600 dark:text-zinc-400 text-sm">Fully responsive design that looks and works great across desktop, tablet, and mobile devices.</p>
+  <div className="p-6 rounded-2xl border border-border bg-card">
+    <h3 className="text-lg font-semibold text-card-foreground mb-2">Responsive</h3>
+    <p className="text-muted-foreground text-sm">Fully responsive design that looks and works great across desktop, tablet, and mobile devices.</p>
   </div>
-  <div className="p-6 rounded-2xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900">
-    <h3 className="text-lg font-semibold text-zinc-900 dark:text-zinc-50 mb-2">Performant</h3>
-    <p className="text-zinc-600 dark:text-zinc-400 text-sm">Optimized for maximum performance with minimal re-renders and efficient state management.</p>
+  <div className="p-6 rounded-2xl border border-border bg-card">
+    <h3 className="text-lg font-semibold text-card-foreground mb-2">Performant</h3>
+    <p className="text-muted-foreground text-sm">Optimized for maximum performance with minimal re-renders and efficient state management.</p>
   </div>
 </div>
 
 ## Best Practices & Guidelines
 
 <div className="flex flex-col gap-4 my-6 not-prose">
-  <div className="p-5 rounded-xl border border-blue-200 dark:border-blue-900/50 bg-blue-50/50 dark:bg-blue-950/20">
-    <h4 className="text-base font-semibold text-blue-900 dark:text-blue-300 mb-1">Usage Guidelines</h4>
-    <p className="text-blue-800 dark:text-blue-400/80 text-sm">Follow standard design principles when implementing this component. Ensure proper contrast, spacing, and context within your layout.</p>
+  <div className="rounded-xl border border-foreground/[0.06] bg-foreground/[0.03] p-4">
+    <h4 className="font-sans text-[14px] font-semibold text-foreground mb-1">Usage Guidelines</h4>
+    <p className="text-[13px] leading-relaxed text-foreground/50">Follow standard design principles when implementing this component. Ensure proper contrast, spacing, and context within your layout.</p>
   </div>
 </div>
 
@@ -242,7 +384,9 @@ Explore the Ai-Chat interface features, including message streaming, typing indi
         <td>
           Array of initial message objects (<code>id</code>, <code>role</code>,{" "}
           <code>content</code>, <code>time</code>) to populate the active chat
-          window.
+          window. Optional <code>attachments</code>, <code>model</code> and{" "}
+          <code>effort</code> render file chips in the bubble and a model tag on
+          the timestamp.
         </td>
       </tr>
       <tr>
@@ -250,12 +394,58 @@ Explore the Ai-Chat interface features, including message streaming, typing indi
           <code>variant</code>
         </td>
         <td>
-          <code>"default" | "minimal" | "glass"</code>
+          <code>"default" | "minimal" | "glass" | "compact"</code>
         </td>
         <td>
           <code>"default"</code>
         </td>
-        <td>Applies overarching structural and aesthetic layout styling.</td>
+        <td>
+          Applies overarching structural and aesthetic layout styling.{" "}
+          <code>"compact"</code> is the default shell without the history
+          sidebar.
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <code>showSidebar</code>
+        </td>
+        <td>
+          <code>boolean</code>
+        </td>
+        <td>
+          <code>variant !== "compact"</code>
+        </td>
+        <td>
+          Renders the thread history beside the conversation. Pass{" "}
+          <code>false</code> to remove it from any variant; an empty thread
+          then shows the hero, and a <code>New chat</code> button appears in
+          the conversation header.
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <code>heroTitle</code>
+        </td>
+        <td>
+          <code>string</code>
+        </td>
+        <td>
+          <code>"What can I help you with?"</code>
+        </td>
+        <td>
+          Title above the prompt bar in the hero state (sidebar-less, nothing
+          said yet).
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <code>heroSubtitle</code>
+        </td>
+        <td>
+          <code>string</code>
+        </td>
+        <td>—</td>
+        <td>Optional line under the hero title.</td>
       </tr>
       <tr>
         <td>
@@ -273,6 +463,146 @@ Explore the Ai-Chat interface features, including message streaming, typing indi
           hex string (e.g. <code>"#8b5cf6"</code>) is injected as CSS variables.
           Unrecognised names fall back to <code>"primary"</code>.
         </td>
+      </tr>
+      <tr>
+        <td>
+          <code>models</code>
+        </td>
+        <td>
+          <code>ChatModel[]</code>
+        </td>
+        <td>
+          <code>defaultModels</code>
+        </td>
+        <td>
+          Models offered in the composer's picker: <code>{"{ id, name, description?, badge?, premium? }"}</code>. <code>premium</code> adds the gold badge and plays a one-off flourish when the model is chosen.
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <code>defaultModelId</code>
+        </td>
+        <td>
+          <code>string</code>
+        </td>
+        <td>first model</td>
+        <td>Which model is selected on mount.</td>
+      </tr>
+      <tr>
+        <td>
+          <code>onModelChange</code>
+        </td>
+        <td>
+          <code>(model: ChatModel) =&gt; void</code>
+        </td>
+        <td>—</td>
+        <td>Fires when a model is picked.</td>
+      </tr>
+      <tr>
+        <td>
+          <code>efforts</code>
+        </td>
+        <td>
+          <code>EffortOption[]</code>
+        </td>
+        <td>
+          <code>defaultEfforts</code>
+        </td>
+        <td>
+          Stops on the effort slider: <code>{"{ id, label, description?, level }"}</code>{" "}
+          with <code>level</code> from 1 upward. The highest level lights the
+          prompt bar.
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <code>defaultEffort</code>
+        </td>
+        <td>
+          <code>"low" | "medium" | "high" | "max" | string</code>
+        </td>
+        <td>
+          <code>"medium"</code>
+        </td>
+        <td>Which effort is selected on mount.</td>
+      </tr>
+      <tr>
+        <td>
+          <code>onEffortChange</code>
+        </td>
+        <td>
+          <code>(effort: EffortOption) =&gt; void</code>
+        </td>
+        <td>—</td>
+        <td>Fires as the slider moves.</td>
+      </tr>
+      <tr>
+        <td>
+          <code>onSend</code>
+        </td>
+        <td>
+          <code>(payload: SendPayload) =&gt; void</code>
+        </td>
+        <td>—</td>
+        <td>
+          Called with <code>{"{ content, attachments, model, effort, tools }"}</code>{" "}
+          whenever a prompt is sent — the hook for your own endpoint.
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <code>uploadFile</code>
+        </td>
+        <td>
+          <code>UploadHandler</code>
+        </td>
+        <td>simulated</td>
+        <td>
+          <code>(file, onProgress, signal) =&gt; Promise&lt;void&gt;</code>. Report
+          0–100 through <code>onProgress</code>; resolve when stored, reject to
+          mark the chip failed. <code>signal</code> aborts when the chip is
+          removed mid-upload.
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <code>tools</code>
+        </td>
+        <td>
+          <code>ComposerTool[]</code>
+        </td>
+        <td>
+          <code>defaultTools</code>
+        </td>
+        <td>
+          Rows of the + menu: <code>{"{ id, label, description?, icon?, action? }"}</code>.
+          <code>action: "upload"</code> opens the picker; the default,{" "}
+          <code>"mention"</code>, inserts <code>@Label</code> into the prompt.
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <code>accept</code>
+        </td>
+        <td>
+          <code>string</code>
+        </td>
+        <td>any file</td>
+        <td>
+          Forwarded to the file input, e.g. <code>"image/*,.pdf"</code>.
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <code>maxFiles</code>
+        </td>
+        <td>
+          <code>number</code>
+        </td>
+        <td>
+          <code>6</code>
+        </td>
+        <td>Maximum attachments on one message; the paperclip disables at the cap.</td>
       </tr>
     </tbody>
   </table>

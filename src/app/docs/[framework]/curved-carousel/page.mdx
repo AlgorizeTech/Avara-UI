@@ -3,32 +3,68 @@ import { extractCode } from "@/lib/code";
 
 # Curved Carousel
 
-An interactive, 100% full-width 3D curved arc carousel featuring left-to-right oscillating auto-sway motion, smooth Framer Motion spring physics, perspective depth cards, and dynamic site theme color binding.
+An interactive, 100% full-width 3D curved arc carousel featuring left-to-right oscillating auto-sway motion, smooth Motion spring physics, perspective depth cards, and dynamic site theme color binding.
 
 `CurvedCarousel` transforms standard image galleries into an immersive, fanned 3D arc deck with customizable speed, touch/drag controls, and dark mode support.
 
-export const usageArcSweep = `import { CurvedCarousel } from "@/components/custom/blocks/CurvedCarouselBlock";
+export const usageArcSweep = `import { CurvedCarousel, type CurvedCarouselCard } from "@/components/custom/blocks/CurvedCarouselBlock";
 
-const customItems = [
-  { id: "1", title: "Misty Pine Forest", code: "001", image: "https://images.unsplash.com/photo-1448375240586-882707db888b?w=800&auto=format&fit=crop&q=80" },
-  { id: "2", title: "Alpine Mountain Reflection", code: "002", image: "https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?w=800&auto=format&fit=crop&q=80" },
-  { id: "3", title: "Glacier Lake Wilderness", code: "003", image: "https://images.unsplash.com/photo-1506744038136-46273834b3fb?w=800&auto=format&fit=crop&q=80" },
+const items: CurvedCarouselCard[] = [
+  { id: "card-1", title: "Misty Pine Forest", code: "001", image: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_800,c_limit/v1790145141/photo-1448375240586-882707db888b-1790145143491.jpg" },
+  { id: "card-2", title: "Alpine Mountain Reflection", code: "002", image: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_800,c_limit/v1790145141/photo-1464822759023-fed622ff2c3b-1790145143491.jpg" },
+  { id: "card-3", title: "Glacier Lake Wilderness", code: "003", image: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_800,c_limit/v1790146210/photo-1506744038136-46273834b3fb-1790146212208.jpg" },
+  { id: "card-4", title: "Autumn Woodland River", code: "004", image: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_800,c_limit/v1790146209/photo-1470071459604-3b5ec3a7fe05-1790146212205.jpg" },
+  { id: "card-5", title: "Golden Hour Valley", code: "005", image: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_800,c_limit/v1790150481/photo-1507272931001-fc06c17e4f43-1790150482276.jpg" },
+  { id: "card-6", title: "Mountain Ridge Sunset", code: "006", image: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_800,c_limit/v1790146210/photo-1472214103451-9374bd1c798e-1790146212205.jpg" },
+  { id: "card-7", title: "Cascading Forest Waterfall", code: "007", image: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_800,c_limit/v1790145140/photo-1426604966848-d7adac402bff-1790145143490.jpg" },
+  { id: "card-8", title: "Deep Wilderness Forest", code: "008", image: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_800,c_limit/v1790146211/photo-1441974231531-c6227db76b6e-1790146212212.jpg" },
+  { id: "card-9", title: "Emerald Mountain Meadow", code: "009", image: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_800,c_limit/v1790146209/photo-1469474968028-56623f02e42e-1790146212205.jpg" },
+  { id: "card-10", title: "Serene Desert Canyon", code: "010", image: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_800,c_limit/v1790146210/photo-1509316975850-ff9c5deb0cd9-1790146212209.jpg" },
+  { id: "card-11", title: "Sunlit Pine Woods", code: "011", image: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_800,c_limit/v1790148863/photo-1473448912268-2022ce9509d8-1790148865110.jpg" },
+  { id: "card-12", title: "Mystic Fog Peak", code: "012", image: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_800,c_limit/v1790146211/photo-1519681393784-d120267933ba-1790146212210.jpg" },
 ];
 
 export default function CurvedCarouselDemo() {
-  return <CurvedCarousel variant="arc-sweep" items={customItems} className="w-full" />;
+  return (
+    <CurvedCarousel
+      variant="arc-sweep"
+      autoPlay={true}
+      speed={1}
+      color="primary"
+      items={items}
+      className="w-full"
+    />
+  );
 }`;
 
-export const usageInfiniteMarquee = `import { CurvedCarousel } from "@/components/custom/blocks/CurvedCarouselBlock";
+export const usageInfiniteMarquee = `import { CurvedCarousel, type CurvedCarouselCard } from "@/components/custom/blocks/CurvedCarouselBlock";
 
-const customItems = [
-  { id: "1", title: "Misty Pine Forest", code: "001", image: "https://images.unsplash.com/photo-1448375240586-882707db888b?w=800&auto=format&fit=crop&q=80" },
-  { id: "2", title: "Alpine Mountain Reflection", code: "002", image: "https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?w=800&auto=format&fit=crop&q=80" },
-  { id: "3", title: "Glacier Lake Wilderness", code: "003", image: "https://images.unsplash.com/photo-1506744038136-46273834b3fb?w=800&auto=format&fit=crop&q=80" },
+const items: CurvedCarouselCard[] = [
+  { id: "card-1", title: "Misty Pine Forest", code: "001", image: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_800,c_limit/v1790145141/photo-1448375240586-882707db888b-1790145143491.jpg" },
+  { id: "card-2", title: "Alpine Mountain Reflection", code: "002", image: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_800,c_limit/v1790145141/photo-1464822759023-fed622ff2c3b-1790145143491.jpg" },
+  { id: "card-3", title: "Glacier Lake Wilderness", code: "003", image: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_800,c_limit/v1790146210/photo-1506744038136-46273834b3fb-1790146212208.jpg" },
+  { id: "card-4", title: "Autumn Woodland River", code: "004", image: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_800,c_limit/v1790146209/photo-1470071459604-3b5ec3a7fe05-1790146212205.jpg" },
+  { id: "card-5", title: "Golden Hour Valley", code: "005", image: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_800,c_limit/v1790150481/photo-1507272931001-fc06c17e4f43-1790150482276.jpg" },
+  { id: "card-6", title: "Mountain Ridge Sunset", code: "006", image: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_800,c_limit/v1790146210/photo-1472214103451-9374bd1c798e-1790146212205.jpg" },
+  { id: "card-7", title: "Cascading Forest Waterfall", code: "007", image: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_800,c_limit/v1790145140/photo-1426604966848-d7adac402bff-1790145143490.jpg" },
+  { id: "card-8", title: "Deep Wilderness Forest", code: "008", image: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_800,c_limit/v1790146211/photo-1441974231531-c6227db76b6e-1790146212212.jpg" },
+  { id: "card-9", title: "Emerald Mountain Meadow", code: "009", image: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_800,c_limit/v1790146209/photo-1469474968028-56623f02e42e-1790146212205.jpg" },
+  { id: "card-10", title: "Serene Desert Canyon", code: "010", image: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_800,c_limit/v1790146210/photo-1509316975850-ff9c5deb0cd9-1790146212209.jpg" },
+  { id: "card-11", title: "Sunlit Pine Woods", code: "011", image: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_800,c_limit/v1790148863/photo-1473448912268-2022ce9509d8-1790148865110.jpg" },
+  { id: "card-12", title: "Mystic Fog Peak", code: "012", image: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_800,c_limit/v1790146211/photo-1519681393784-d120267933ba-1790146212210.jpg" },
 ];
 
 export default function InfiniteMarqueeDemo() {
-  return <CurvedCarousel variant="infinite-marquee" color="primary" items={customItems} className="w-full" />;
+  return (
+    <CurvedCarousel
+      variant="infinite-marquee"
+      autoPlay={true}
+      speed={1}
+      color="primary"
+      items={items}
+      className="w-full"
+    />
+  );
 }`;
 
 <ExampleShowcase
@@ -75,30 +111,30 @@ export default function InfiniteMarqueeDemo() {
 ## Features
 
 <div className="grid grid-cols-1 md:grid-cols-2 gap-4 my-6">
-  <div className="p-4 rounded-xl border border-zinc-200 dark:border-zinc-800 bg-zinc-50 dark:bg-zinc-900/50">
-    <h4 className="font-bold text-zinc-900 dark:text-white mb-1">Oscillating Auto-Sway</h4>
-    <p className="text-sm text-zinc-500 dark:text-zinc-400">Cards automatically sway left and right in a continuous, smooth oscillating loop.</p>
+  <div className="p-4 rounded-xl border border-border bg-muted/50">
+    <h4 className="font-semibold text-foreground mb-1">Oscillating Auto-Sway</h4>
+    <p className="text-sm text-muted-foreground">Cards automatically sway left and right in a continuous, smooth oscillating loop.</p>
   </div>
-  <div className="p-4 rounded-xl border border-zinc-200 dark:border-zinc-800 bg-zinc-50 dark:bg-zinc-900/50">
-    <h4 className="font-bold text-zinc-900 dark:text-white mb-1">3D Curved Arc Geometry</h4>
-    <p className="text-sm text-zinc-500 dark:text-zinc-400">Calculates precise 3D Y-rotation, Z-rotation, and Y-translation to form a realistic curved arc deck.</p>
+  <div className="p-4 rounded-xl border border-border bg-muted/50">
+    <h4 className="font-semibold text-foreground mb-1">3D Curved Arc Geometry</h4>
+    <p className="text-sm text-muted-foreground">Calculates precise 3D Y-rotation, Z-rotation, and Y-translation to form a realistic curved arc deck.</p>
   </div>
-  <div className="p-4 rounded-xl border border-zinc-200 dark:border-zinc-800 bg-zinc-50 dark:bg-zinc-900/50">
-    <h4 className="font-bold text-zinc-900 dark:text-white mb-1">100% Theme Color Engine</h4>
-    <p className="text-sm text-zinc-500 dark:text-zinc-400">Binds directly to site primary CSS variable <code>var(--primary)</code> or explicit color swatches.</p>
+  <div className="p-4 rounded-xl border border-border bg-muted/50">
+    <h4 className="font-semibold text-foreground mb-1">100% Theme Color Engine</h4>
+    <p className="text-sm text-muted-foreground">Binds directly to site primary CSS variable <code>var(--primary)</code> or explicit color swatches.</p>
   </div>
-  <div className="p-4 rounded-xl border border-zinc-200 dark:border-zinc-800 bg-zinc-50 dark:bg-zinc-900/50">
-    <h4 className="font-bold text-zinc-900 dark:text-white mb-1">Fluid Responsive & Touch</h4>
-    <p className="text-sm text-zinc-500 dark:text-zinc-400">Fully responsive container sizing with click-to-center navigation and hover pause controls.</p>
+  <div className="p-4 rounded-xl border border-border bg-muted/50">
+    <h4 className="font-semibold text-foreground mb-1">Fluid Responsive & Touch</h4>
+    <p className="text-sm text-muted-foreground">Fully responsive container sizing with click-to-center navigation and hover pause controls.</p>
   </div>
 </div>
 
 ## Best Practices & Guidelines
 
 <div className="space-y-3 my-6">
-  <div className="p-4 rounded-xl border border-emerald-500/20 bg-emerald-500/5">
-    <h4 className="text-base font-semibold text-emerald-900 dark:text-emerald-300 mb-1">When to Use</h4>
-    <p className="text-emerald-800 dark:text-emerald-400/80 text-sm">Use <code>CurvedCarousel</code> on hero sections, portfolio showcases, product galleries, or brand story cards to capture high user engagement with fluid 3D motion.</p>
+  <div className="rounded-xl border border-foreground/[0.06] bg-foreground/[0.03] p-4">
+    <h4 className="font-sans text-[14px] font-semibold text-foreground mb-1">When to Use</h4>
+    <p className="text-[13px] leading-relaxed text-foreground/50">Use <code>CurvedCarousel</code> on hero sections, portfolio showcases, product galleries, or brand story cards to capture high user engagement with fluid 3D motion.</p>
   </div>
 </div>
 
@@ -120,7 +156,7 @@ export default function InfiniteMarqueeDemo() {
           <code>variant</code>
         </td>
         <td>
-          <code>"arc-sweep" | "perspective-fan" | "floating-deck" | "glowing-orbit"</code>
+          <code>"arc-sweep" | "infinite-marquee"</code>
         </td>
         <td>
           <code>"arc-sweep"</code>
@@ -132,12 +168,12 @@ export default function InfiniteMarqueeDemo() {
           <code>items</code>
         </td>
         <td>
-          <code>CurvedCarouselItem[]</code>
+          <code>CurvedCarouselCard[]</code>
         </td>
         <td>
           <code>Preset Array</code>
         </td>
-        <td>Array of objects containing <code>id</code>, <code>title</code>, <code>image</code>, <code>subtitle</code>, and optional <code>tag</code>.</td>
+        <td>Array of objects containing <code>id</code>, <code>title</code>, <code>code</code>, and <code>image</code>.</td>
       </tr>
       <tr>
         <td>
@@ -159,16 +195,16 @@ export default function InfiniteMarqueeDemo() {
           <code>number</code>
         </td>
         <td>
-          <code>4</code>
+          <code>1</code>
         </td>
-        <td>Oscillation sway step speed interval in seconds.</td>
+        <td>Oscillation sway step speed multiplier.</td>
       </tr>
       <tr>
         <td>
           <code>color</code>
         </td>
         <td>
-          <code>CurvedCarouselColor | string</code>
+          <code>"primary" | "indigo" | "rose" | "emerald" | "zinc" | string</code>
         </td>
         <td>
           <code>"primary"</code>

@@ -9,36 +9,36 @@ Get started with Algorize UI in a React project built on Vite — either a fresh
 ## System Requirements & Compatibility
 
 <div className="grid grid-cols-1 sm:grid-cols-2 2xl:grid-cols-4 gap-4 my-6 not-prose">
-  <div className="p-4 sm:p-5 rounded-xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900/60 shadow-xs flex flex-col justify-between min-w-0">
+  <div className="p-4 sm:p-5 rounded-xl bg-foreground/[0.03] border border-foreground/[0.06] flex flex-col justify-between min-w-0">
     <div>
-      <div className="text-[11px] font-bold text-primary mb-1 uppercase tracking-wider">Build Tool</div>
-      <h4 className="text-sm font-bold text-zinc-900 dark:text-zinc-100 truncate">Vite 5 &ndash; 8</h4>
+      <div className="text-[11px] font-semibold uppercase tracking-[0.08em] text-foreground/35 mb-1">Build Tool</div>
+      <h4 className="text-[14px] font-semibold text-foreground truncate">Vite 5 &ndash; 8</h4>
     </div>
-    <p className="text-xs text-zinc-500 dark:text-zinc-400 mt-2 leading-relaxed">Also works with Create React App and React Router</p>
+    <p className="text-[13px] leading-relaxed text-foreground/50 mt-2">Also works with Create React App and React Router</p>
   </div>
 
-  <div className="p-4 sm:p-5 rounded-xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900/60 shadow-xs flex flex-col justify-between min-w-0">
+  <div className="p-4 sm:p-5 rounded-xl bg-foreground/[0.03] border border-foreground/[0.06] flex flex-col justify-between min-w-0">
     <div>
-      <div className="text-[11px] font-bold text-primary mb-1 uppercase tracking-wider">React Version</div>
-      <h4 className="text-sm font-bold text-zinc-900 dark:text-zinc-100 truncate">React 18 & React 19</h4>
+      <div className="text-[11px] font-semibold uppercase tracking-[0.08em] text-foreground/35 mb-1">React Version</div>
+      <h4 className="text-[14px] font-semibold text-foreground truncate">React 18 & React 19</h4>
     </div>
-    <p className="text-xs text-zinc-500 dark:text-zinc-400 mt-2 leading-relaxed">No server components required</p>
+    <p className="text-[13px] leading-relaxed text-foreground/50 mt-2">No server components required</p>
   </div>
 
-  <div className="p-4 sm:p-5 rounded-xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900/60 shadow-xs flex flex-col justify-between min-w-0">
+  <div className="p-4 sm:p-5 rounded-xl bg-foreground/[0.03] border border-foreground/[0.06] flex flex-col justify-between min-w-0">
     <div>
-      <div className="text-[11px] font-bold text-primary mb-1 uppercase tracking-wider">Styling</div>
-      <h4 className="text-sm font-bold text-zinc-900 dark:text-zinc-100 truncate">Tailwind CSS v4</h4>
+      <div className="text-[11px] font-semibold uppercase tracking-[0.08em] text-foreground/35 mb-1">Styling</div>
+      <h4 className="text-[14px] font-semibold text-foreground truncate">Tailwind CSS v4</h4>
     </div>
-    <p className="text-xs text-zinc-500 dark:text-zinc-400 mt-2 leading-relaxed">Utility-first CSS styling & design tokens</p>
+    <p className="text-[13px] leading-relaxed text-foreground/50 mt-2">Utility-first CSS styling & design tokens</p>
   </div>
 
-  <div className="p-4 sm:p-5 rounded-xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900/60 shadow-xs flex flex-col justify-between min-w-0">
+  <div className="p-4 sm:p-5 rounded-xl bg-foreground/[0.03] border border-foreground/[0.06] flex flex-col justify-between min-w-0">
     <div>
-      <div className="text-[11px] font-bold text-primary mb-1 uppercase tracking-wider">Language</div>
-      <h4 className="text-sm font-bold text-zinc-900 dark:text-zinc-100 truncate">TypeScript 5 & 6</h4>
+      <div className="text-[11px] font-semibold uppercase tracking-[0.08em] text-foreground/35 mb-1">Language</div>
+      <h4 className="text-[14px] font-semibold text-foreground truncate">TypeScript 5 & 6</h4>
     </div>
-    <p className="text-xs text-zinc-500 dark:text-zinc-400 mt-2 leading-relaxed">Strict type checking or pure JavaScript</p>
+    <p className="text-[13px] leading-relaxed text-foreground/50 mt-2">Strict type checking or pure JavaScript</p>
   </div>
 </div>
 
@@ -49,15 +49,15 @@ The components are plain React. **None of the 123 files this registry ships impo
 The dozen components that render links or images take an injectable element instead of importing one:
 
 <div className="not-prose my-6 overflow-x-auto">
-  <table className="w-full min-w-[32rem] border-collapse rounded-xl border border-zinc-200 dark:border-zinc-800 text-left text-sm overflow-hidden">
-    <thead className="border-b border-zinc-200 dark:border-zinc-800 text-[12px] font-bold uppercase tracking-wider">
+  <table className="w-full min-w-[32rem] border-collapse rounded-xl border border-foreground/[0.06] text-left text-[13px] text-foreground/55 overflow-hidden">
+    <thead className="border-b border-foreground/[0.06] bg-foreground/[0.07] text-[11px] font-semibold uppercase tracking-[0.06em] text-foreground/60">
       <tr>
         <th className="px-5 py-3">Prop</th>
         <th className="px-5 py-3">Default</th>
         <th className="px-5 py-3">Pass your own when…</th>
       </tr>
     </thead>
-    <tbody className="divide-y divide-zinc-200 dark:divide-zinc-800">
+    <tbody className="divide-y divide-foreground/[0.08]">
       <tr>
         <td className="px-5 py-3"><code>linkComponent</code></td>
         <td className="px-5 py-3"><code>&lt;a&gt;</code></td>
@@ -75,9 +75,9 @@ The dozen components that render links or images take an injectable element inst
 Components that depend on a browser-only library — the maps, which use Leaflet — defer that import until after mount on their own, so there is nothing for you to wrap.
 
 <div className="flex flex-col gap-4 my-6 not-prose">
-  <div className="p-5 rounded-xl border border-blue-200 dark:border-blue-900/50 bg-blue-50/50 dark:bg-blue-950/20">
-    <h4 className="text-base font-semibold text-blue-900 dark:text-blue-300 mb-1">About the <code>"use client"</code> directive</h4>
-    <p className="text-blue-800 dark:text-blue-400/80 text-sm">Most components start with <code>"use client"</code>. Under Vite that line is inert — it is just a string expression, and nothing reads it. Rollup may warn <em>"Module level directives cause errors when bundled"</em> during a production build; the warning is harmless and can be silenced in your Rollup config if it bothers you. Leaving the directive in place keeps the file identical to the one the registry publishes, so future updates apply cleanly.</p>
+  <div className="rounded-xl border border-foreground/[0.06] bg-foreground/[0.03] p-4">
+    <h4 className="font-sans text-[14px] font-semibold text-foreground mb-1">About the <code>"use client"</code> directive</h4>
+    <p className="text-[13px] leading-relaxed text-foreground/50">Most components start with <code>"use client"</code>. Under Vite that line is inert — it is just a string expression, and nothing reads it. Rollup may warn <em>"Module level directives cause errors when bundled"</em> during a production build; the warning is harmless and can be silenced in your Rollup config if it bothers you. Leaving the directive in place keeps the file identical to the one the registry publishes, so future updates apply cleanly.</p>
   </div>
 </div>
 
@@ -141,9 +141,9 @@ components rely on. **Replace the entire file** with:
 ```
 
 <div className="flex flex-col gap-4 my-6 not-prose">
-  <div className="p-5 rounded-xl border border-amber-200 dark:border-amber-900/50 bg-amber-50/50 dark:bg-amber-950/20">
-    <h4 className="text-base font-semibold text-amber-900 dark:text-amber-300 mb-1">Two things that make this line fail quietly</h4>
-    <ul className="text-amber-800 dark:text-amber-400/80 text-sm list-disc pl-5 space-y-1.5">
+  <div className="rounded-xl border border-primary/15 bg-primary/5 p-4">
+    <h4 className="font-sans text-[14px] font-semibold text-primary mb-1">Two things that make this line fail quietly</h4>
+    <ul className="text-[13px] leading-relaxed text-foreground/50 list-disc pl-5 space-y-1.5">
       <li><strong>It has to be the first rule in the file.</strong> CSS requires <code>@import</code> to come before every other rule, so an <code>@import</code> sitting underneath your own styles is discarded by the browser without an error.</li>
       <li><strong>Your entry file has to import that stylesheet.</strong> The Vite template's <code>src/main.tsx</code> already carries <code>import "./index.css";</code>. If you removed that line, or your project puts its global CSS somewhere else, Tailwind never reaches the page.</li>
     </ul>
@@ -159,7 +159,7 @@ While you are here, delete `src/App.css` along with the `import "./App.css";` li
 npm run dev
 ```
 
-Put the classes `text-3xl font-bold underline` on a heading in `src/App.tsx`. If it renders
+Put the classes `text-3xl font-semibold underline` on a heading in `src/App.tsx`. If it renders
 large, bold and underlined, Tailwind is compiling and you can move on to the path aliases. If it
 renders as plain text, step 3 is the thing to re-check.
 
@@ -218,7 +218,9 @@ Components are published as a [shadcn registry](https://ui.shadcn.com/docs/regis
 ### Step 1: Initialize your project
 
 Run this once per project. It creates `components.json`, writes `src/lib/utils.ts` with the
-`cn` helper, and confirms your path aliases.
+`cn` helper, installs `lucide-react` as the icon library, and confirms your path aliases.
+Every component imports those two, which is why no component page lists them again —
+each page's install step names only what that component adds on top.
 
 Algorize UI components are built on Radix primitives, so select the Radix base. Passing it
 on the command line also keeps the command usable in CI:
@@ -257,7 +259,29 @@ should read:
 
 Two fields differ from a Next.js setup: `rsc` is `false`, and `tailwind.css` points at `src/index.css` rather than `src/app/globals.css`.
 
-### Step 2: Pick a theme
+### Step 2: Register the registry
+
+Run this once per project. It adds an `@algorize-ui` entry to `components.json`, so every
+component can be installed by name instead of by URL:
+
+<Cli command={`registry add @algorize-ui=https://algorize-ui.vercel.app/r/{name}.json`} />
+
+Or write it into `components.json` by hand — the two are equivalent:
+
+```json
+{
+  "registries": {
+    "@algorize-ui": "https://algorize-ui.vercel.app/r/{name}.json"
+  }
+}
+```
+
+The CLI replaces `{name}` with the item you ask for, so `@algorize-ui/hero` resolves to
+`https://algorize-ui.vercel.app/r/hero.json`. Skipping this step is not fatal either: every
+command on this site has a **URL** toggle that prints the full address, which needs no setup.
+The shadcn MCP server reads the same entry, so AI-assisted installs resolve `@algorize-ui/…` too.
+
+### Step 3: Pick a theme
 
 Do this before you add anything. Every component reads its colours, radius and fonts from CSS
 variables rather than hard-coded classes, and `shadcn init` only wrote the default set.
@@ -269,11 +293,16 @@ Adding components first is not fatal; they render in the default palette until y
 own variables in. Doing it now just means the first component you install already looks like
 your product.
 
-### Step 3: Add a component
+### Step 4: Add a component
 
-Every component page carries its own command. Point the CLI at the component's URL in the registry:
+Every component page carries its own command. Name the component under the registry you
+registered in step 2:
 
 <Cli command={`add hero.json`} />
+
+Several at once work too — `add @algorize-ui/hero @algorize-ui/navbar` — and you can browse
+what is available from the terminal with `npx shadcn@latest list @algorize-ui` or
+`npx shadcn@latest search @algorize-ui --query pricing`.
 
 The CLI writes the source into your project, installs its npm dependencies and pulls in any other registry components it needs. You own the file from that point on — edit it freely.
 
@@ -318,24 +347,24 @@ the components are written against v4 tokens.
 ## Troubleshooting
 
 <div className="flex flex-col gap-4 my-6 not-prose">
-  <div className="p-5 rounded-xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900/60">
-    <h4 className="text-base font-semibold text-zinc-900 dark:text-zinc-100 mb-1">"Failed to resolve import <code>@/lib/utils</code>"</h4>
-    <p className="text-zinc-600 dark:text-zinc-400 text-sm">The alias is configured in TypeScript but not in Vite, or the reverse. Both files need it — <code>tsconfig.json</code> and <code>vite.config.ts</code>.</p>
+  <div className="p-5 rounded-xl bg-foreground/[0.03] border border-foreground/[0.06]">
+    <h4 className="text-[14px] font-semibold text-foreground mb-1">"Failed to resolve import <code>@/lib/utils</code>"</h4>
+    <p className="text-[13px] leading-relaxed text-foreground/50">The alias is configured in TypeScript but not in Vite, or the reverse. Both files need it — <code>tsconfig.json</code> and <code>vite.config.ts</code>.</p>
   </div>
 
-  <div className="p-5 rounded-xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900/60">
-    <h4 className="text-base font-semibold text-zinc-900 dark:text-zinc-100 mb-1">Components render completely unstyled</h4>
-    <p className="text-zinc-600 dark:text-zinc-400 text-sm">Almost always the missing <code>@import "tailwindcss";</code>. Check three things, in order: the line is the <em>first</em> rule in <code>src/index.css</code>; <code>src/main.tsx</code> imports that file; and <code>components.json</code> points <code>tailwind.css</code> at that same file. Installing <code>@tailwindcss/vite</code> alone generates nothing. <a href="#install-tailwind-css" className="text-blue-600 dark:text-blue-400 hover:underline font-medium">Install Tailwind CSS</a> walks through it, step by step.</p>
+  <div className="p-5 rounded-xl bg-foreground/[0.03] border border-foreground/[0.06]">
+    <h4 className="text-[14px] font-semibold text-foreground mb-1">Components render completely unstyled</h4>
+    <p className="text-[13px] leading-relaxed text-foreground/50">Almost always the missing <code>@import "tailwindcss";</code>. Check three things, in order: the line is the <em>first</em> rule in <code>src/index.css</code>; <code>src/main.tsx</code> imports that file; and <code>components.json</code> points <code>tailwind.css</code> at that same file. Installing <code>@tailwindcss/vite</code> alone generates nothing. <a href="#install-tailwind-css" className="text-primary hover:underline font-medium">Install Tailwind CSS</a> walks through it, step by step.</p>
   </div>
 
-  <div className="p-5 rounded-xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900/60">
-    <h4 className="text-base font-semibold text-zinc-900 dark:text-zinc-100 mb-1">"Module level directives cause errors when bundled"</h4>
-    <p className="text-zinc-600 dark:text-zinc-400 text-sm">A Rollup warning about <code>"use client"</code>. Harmless — the build succeeds and the component works. See the note above.</p>
+  <div className="p-5 rounded-xl bg-foreground/[0.03] border border-foreground/[0.06]">
+    <h4 className="text-[14px] font-semibold text-foreground mb-1">"Module level directives cause errors when bundled"</h4>
+    <p className="text-[13px] leading-relaxed text-foreground/50">A Rollup warning about <code>"use client"</code>. Harmless — the build succeeds and the component works. See the note above.</p>
   </div>
 
-  <div className="p-5 rounded-xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900/60">
-    <h4 className="text-base font-semibold text-zinc-900 dark:text-zinc-100 mb-1">Links do not navigate the way you expect</h4>
-    <p className="text-zinc-600 dark:text-zinc-400 text-sm">Components render a plain <code>&lt;a&gt;</code>, which does a full page load. If you use React Router, pass its <code>Link</code> as <code>linkComponent</code> to get client-side navigation.</p>
+  <div className="p-5 rounded-xl bg-foreground/[0.03] border border-foreground/[0.06]">
+    <h4 className="text-[14px] font-semibold text-foreground mb-1">Links do not navigate the way you expect</h4>
+    <p className="text-[13px] leading-relaxed text-foreground/50">Components render a plain <code>&lt;a&gt;</code>, which does a full page load. If you use React Router, pass its <code>Link</code> as <code>linkComponent</code> to get client-side navigation.</p>
   </div>
 </div>
 
@@ -351,27 +380,27 @@ This page covers only what Algorize UI needs. For the complete installation proc
 tool underneath it:
 
 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 my-6 not-prose">
-  <a href="https://vite.dev/guide/" target="_blank" rel="noreferrer" className="block p-4 sm:p-5 rounded-xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900/60 shadow-xs hover:border-zinc-300 dark:hover:border-zinc-700 transition-colors">
-    <div className="text-[11px] font-bold text-primary mb-1 uppercase tracking-wider">Vite</div>
-    <h4 className="text-sm font-bold text-zinc-900 dark:text-zinc-100">Getting Started</h4>
-    <p className="text-xs text-zinc-500 dark:text-zinc-400 mt-2 leading-relaxed">Scaffolding a project, every template, and the dev-server options</p>
+  <a href="https://vite.dev/guide/" target="_blank" rel="noreferrer" className="block p-4 sm:p-5 rounded-xl bg-foreground/[0.03] border border-foreground/[0.06] hover:bg-foreground/[0.05] hover:border-primary/30 transition-colors">
+    <div className="text-[11px] font-semibold uppercase tracking-[0.08em] text-foreground/35 mb-1">Vite</div>
+    <h4 className="text-[14px] font-semibold text-foreground">Getting Started</h4>
+    <p className="text-[13px] leading-relaxed text-foreground/50 mt-2">Scaffolding a project, every template, and the dev-server options</p>
   </a>
 
-  <a href="https://react.dev/learn/creating-a-react-app" target="_blank" rel="noreferrer" className="block p-4 sm:p-5 rounded-xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900/60 shadow-xs hover:border-zinc-300 dark:hover:border-zinc-700 transition-colors">
-    <div className="text-[11px] font-bold text-primary mb-1 uppercase tracking-wider">React</div>
-    <h4 className="text-sm font-bold text-zinc-900 dark:text-zinc-100">Creating a React App</h4>
-    <p className="text-xs text-zinc-500 dark:text-zinc-400 mt-2 leading-relaxed">How the React team recommends starting a new project</p>
+  <a href="https://react.dev/learn/creating-a-react-app" target="_blank" rel="noreferrer" className="block p-4 sm:p-5 rounded-xl bg-foreground/[0.03] border border-foreground/[0.06] hover:bg-foreground/[0.05] hover:border-primary/30 transition-colors">
+    <div className="text-[11px] font-semibold uppercase tracking-[0.08em] text-foreground/35 mb-1">React</div>
+    <h4 className="text-[14px] font-semibold text-foreground">Creating a React App</h4>
+    <p className="text-[13px] leading-relaxed text-foreground/50 mt-2">How the React team recommends starting a new project</p>
   </a>
 
-  <a href="https://tailwindcss.com/docs/installation/using-vite" target="_blank" rel="noreferrer" className="block p-4 sm:p-5 rounded-xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900/60 shadow-xs hover:border-zinc-300 dark:hover:border-zinc-700 transition-colors">
-    <div className="text-[11px] font-bold text-primary mb-1 uppercase tracking-wider">Tailwind CSS v4</div>
-    <h4 className="text-sm font-bold text-zinc-900 dark:text-zinc-100">Install with Vite</h4>
-    <p className="text-xs text-zinc-500 dark:text-zinc-400 mt-2 leading-relaxed">The five official steps, including the <code>@import "tailwindcss";</code> line</p>
+  <a href="https://tailwindcss.com/docs/installation/using-vite" target="_blank" rel="noreferrer" className="block p-4 sm:p-5 rounded-xl bg-foreground/[0.03] border border-foreground/[0.06] hover:bg-foreground/[0.05] hover:border-primary/30 transition-colors">
+    <div className="text-[11px] font-semibold uppercase tracking-[0.08em] text-foreground/35 mb-1">Tailwind CSS v4</div>
+    <h4 className="text-[14px] font-semibold text-foreground">Install with Vite</h4>
+    <p className="text-[13px] leading-relaxed text-foreground/50 mt-2">The five official steps, including the <code>@import "tailwindcss";</code> line</p>
   </a>
 
-  <a href="https://ui.shadcn.com/docs/cli" target="_blank" rel="noreferrer" className="block p-4 sm:p-5 rounded-xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900/60 shadow-xs hover:border-zinc-300 dark:hover:border-zinc-700 transition-colors">
-    <div className="text-[11px] font-bold text-primary mb-1 uppercase tracking-wider">shadcn</div>
-    <h4 className="text-sm font-bold text-zinc-900 dark:text-zinc-100">CLI reference</h4>
-    <p className="text-xs text-zinc-500 dark:text-zinc-400 mt-2 leading-relaxed">Every flag on <code>init</code> and <code>add</code>, and the <code>components.json</code> schema</p>
+  <a href="https://ui.shadcn.com/docs/cli" target="_blank" rel="noreferrer" className="block p-4 sm:p-5 rounded-xl bg-foreground/[0.03] border border-foreground/[0.06] hover:bg-foreground/[0.05] hover:border-primary/30 transition-colors">
+    <div className="text-[11px] font-semibold uppercase tracking-[0.08em] text-foreground/35 mb-1">shadcn</div>
+    <h4 className="text-[14px] font-semibold text-foreground">CLI reference</h4>
+    <p className="text-[13px] leading-relaxed text-foreground/50 mt-2">Every flag on <code>init</code> and <code>add</code>, and the <code>components.json</code> schema</p>
   </a>
 </div>

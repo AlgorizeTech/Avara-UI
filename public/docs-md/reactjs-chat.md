@@ -4,12 +4,12 @@ A fully interactive, encapsulated chat interface. Features include search filter
 
 Every preview is live — pick a contact, search the list, or send a message and watch the simulated reply come back. `variant` changes the shell only; the conversation state, search and typing simulation are identical across all three.
 
-export const chatData = `const currentUser = {
-  avatar: "https://i.pravatar.cc/150?u=current",
+export const chatData = `const currentUser: CurrentUser = {
+  avatar: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto/v1790148864/80-1-1790148865111.jpg",
   status: "online",
 };
 
-const contactsData = [
+const contactsData: Contact[] = [
   {
     id: 1,
     name: "Felecia Rower",
@@ -17,7 +17,7 @@ const contactsData = [
     date: "Mar 13",
     unread: 1,
     status: "offline",
-    avatar: "https://i.pravatar.cc/150?u=1",
+    avatar: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto/v1790148865/80-1790148865113.jpg",
   },
   {
     // No \`avatar\`? \`initials\` + \`color\` render the fallback tile instead.
@@ -47,11 +47,11 @@ const contactsData = [
     date: "Dec 11",
     unread: 0,
     status: "online",
-    avatar: "https://i.pravatar.cc/150?u=4",
+    avatar: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto/v1790148865/80-3-1790148865112.jpg",
   },
 ];`;
 
-export const usageDefault = `import ChatApp from "@/components/custom/blocks/Chat";
+export const usageDefault = `import ChatApp, { type Contact, type CurrentUser } from "@/components/custom/blocks/Chat";
 
 ${chatData}
 
@@ -59,18 +59,19 @@ export default function Messages() {
   return ;
 }`;
 
-export const usageMinimal = `import ChatApp from "@/components/custom/blocks/Chat";
+export const usageMinimal = `import ChatApp, { type Contact, type CurrentUser } from "@/components/custom/blocks/Chat";
 
 ${chatData}
 
 export default function MinimalChat() {
-  // Borders and shadows stripped back for embedding inside an existing panel.
+  // Two cards instead of one: the contact list and the thread are separate
+  // bordered cards with a gap between them, sitting directly on the page.
   return (
     
   );
 }`;
 
-export const usageGlass = `import ChatApp from "@/components/custom/blocks/Chat";
+export const usageGlass = `import ChatApp, { type Contact, type CurrentUser } from "@/components/custom/blocks/Chat";
 
 ${chatData}
 
@@ -82,6 +83,13 @@ export default function GlassChat() {
 };`;
 
 ## Installation
+
+Register the @algorize-ui registry once per project, then add the component:
+
+```bash
+npx shadcn@latest registry add @algorize-ui=https://algorize-ui.vercel.app/r/{name}.json
+npx shadcn@latest add @algorize-ui/chat
+```
 
 ## Examples
 
@@ -140,20 +148,21 @@ Explore the Chat component's robust features, including message grouping, timest
 
           "default"
 
-          Applies overarching structural layouts, including borders, backdrop
-          blurs, and shadows.
+          The shell. default is one card with the list and the
+          thread side by side; minimal is two separate cards —
+          the list and the thread — with a gap between them and no outer box;
+          glass is one translucent card over a photo. The
+          conversation is the same in all three.
 
           color
 
-          "primary" | "indigo" | "rose" | "emerald" | "zinc" | string
+          "indigo" | "rose" | "emerald" | "zinc" | string
 
-          "primary"
+          "indigo"
 
           Applies global color themes to the send button, typing indicators,
-          active contacts, and focus rings. "primary" follows your
-          theme tokens; a hex string (e.g. "#00FF00") is injected
-          as CSS variables. Unrecognised names fall back to{" "}
-          "primary".
+          active contacts, and focus rings. Accepts preset theme names or valid custom hex codes (e.g.{" "}
+          "#00FF00").
 
 ---
 

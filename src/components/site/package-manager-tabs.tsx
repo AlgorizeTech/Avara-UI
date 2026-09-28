@@ -3,8 +3,7 @@
 import React from "react";
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/site/tabs";
 import { usePackageManager, type PackageManager } from "@/contexts/package-manager-context";
-import { FaYarn } from "react-icons/fa";
-import { SiNpm, SiPnpm, SiBun } from "react-icons/si";
+import { PACKAGE_MANAGER_ICONS } from "./package-manager-icons";
 
 interface PackageManagerTabsProps {
   children: React.ReactNode;
@@ -32,16 +31,8 @@ export function PackageManagerTabs({ children, className }: PackageManagerTabsPr
   const packageManagers: PackageManager[] = ["npm", "pnpm", "yarn", "bun"];
 
   const getIcon = (pm: PackageManager) => {
-    switch (pm) {
-      case "npm":
-        return <SiNpm className="w-4 h-4" />;
-      case "pnpm":
-        return <SiPnpm className="w-4 h-4" />;
-      case "yarn":
-        return <FaYarn className="w-4 h-4" />;
-      case "bun":
-        return <SiBun className="w-4 h-4" />;
-    }
+    const Icon = PACKAGE_MANAGER_ICONS[pm].Icon;
+    return <Icon className="size-3.5" />;
   };
 
   return (
@@ -52,7 +43,7 @@ export function PackageManagerTabs({ children, className }: PackageManagerTabsPr
     >
       <TabsList>
         {packageManagers.map((pm) => (
-          <TabsTrigger key={pm} value={pm} className="flex items-center gap-2">
+          <TabsTrigger key={pm} value={pm} className="flex items-center gap-1.5">
             {getIcon(pm)}
             {pm}
           </TabsTrigger>

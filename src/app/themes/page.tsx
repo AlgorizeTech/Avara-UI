@@ -14,7 +14,7 @@ export default function ThemesPage() {
   return (
     <div className="flex min-h-[calc(100vh-52px)]">
       {/* Customizer Sidebar — sticky left panel */}
-      <aside className="hidden lg:flex lg:w-[380px] xl:w-[400px] flex-col border-r border-border bg-background/50 backdrop-blur-sm sticky top-[52px] h-[calc(100vh-52px)] shrink-0">
+      <aside className="hidden lg:flex lg:w-[380px] xl:w-[400px] flex-col border-r border-foreground/[0.06] bg-background sticky top-[52px] h-[calc(100vh-52px)] shrink-0">
         <ThemeCustomizerSidebar />
       </aside>
 
@@ -43,7 +43,7 @@ function MobileSidebar() {
       {/* Floating trigger button (mobile/tablet only) */}
       <button
         onClick={() => setOpen(true)}
-        className="fixed bottom-6 right-6 z-50 lg:hidden flex items-center gap-2 rounded-full bg-primary px-4 py-3 text-sm font-medium text-primary-foreground shadow-lg hover:opacity-90 transition-all active:scale-95"
+        className="fixed bottom-6 right-6 z-50 lg:hidden flex items-center gap-2 px-5 py-3 shadow-lg active:scale-95 rounded-full bg-foreground text-background text-[13px] font-semibold tracking-[0.3px] hover:opacity-90 transition-all cursor-pointer"
       >
         <SlidersHorizontal className="h-4 w-4" />
         Customize
@@ -58,22 +58,23 @@ function MobileSidebar() {
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
               onClick={() => setOpen(false)}
-              className="fixed inset-0 z-50 bg-black/40 backdrop-blur-sm lg:hidden"
+              className="fixed inset-0 z-50 bg-background/60 backdrop-blur-sm lg:hidden"
             />
             <motion.div
               initial={{ x: "-100%" }}
               animate={{ x: 0 }}
               exit={{ x: "-100%" }}
               transition={{ type: "spring", damping: 25, stiffness: 300 }}
-              className="fixed top-0 left-0 z-50 h-full w-[340px] bg-background border-r border-border shadow-2xl lg:hidden"
+              className="fixed top-0 left-0 z-50 h-full w-[340px] bg-background border-r border-foreground/[0.06] shadow-2xl lg:hidden"
             >
-              <div className="flex items-center justify-between px-5 h-14 border-b border-border">
-                <span className="font-semibold text-sm text-foreground">
+              <div className="flex items-center justify-between px-5 h-14 border-b border-foreground/[0.06]">
+                <span className="font-semibold text-[14px] text-foreground">
                   Theme Customizer
                 </span>
                 <button
                   onClick={() => setOpen(false)}
-                  className="p-1.5 rounded-md text-muted-foreground hover:text-foreground hover:bg-accent transition-colors"
+                  className="p-1.5 rounded-md text-foreground/50 hover:text-foreground hover:bg-foreground/[0.05] transition-colors"
+                  aria-label="Close theme customizer"
                 >
                   <X className="h-4 w-4" />
                 </button>

@@ -1,0 +1,180 @@
+import { ExampleShowcase } from "@/components/site/Sandbox";
+import { Installation } from "@/components/site/installation";
+import { extractCode } from "@/lib/code";
+
+# Heart Signal
+
+A slow, ultra-smooth cardiac telemetry and pulse visualization component with 3 distinct animation variants (`ecg-line`, `pulse-heart`, and `cardiac-wave`), live BPM badge, and active theme color integration.
+
+`HeartSignal` brings health monitoring, fitness tracking, medical telemetry, and energetic UI headers to life with 60fps HTML5 Canvas rendering.
+
+export const usageECG = `import { HeartSignal } from "@/components/custom/blocks/HeartSignalBlock";
+
+export default function ECGDemo() {
+  return (
+    <HeartSignal
+      variant="ecg-line"
+      bpm={75}
+      speed={0.25}
+      showBPM={true}
+      showGrid={true}
+    />
+  );
+}`;
+
+export const usagePulseHeart = `import { HeartSignal } from "@/components/custom/blocks/HeartSignalBlock";
+
+export default function PulseHeartDemo() {
+  return (
+    <HeartSignal
+      variant="pulse-heart"
+      bpm={75}
+      speed={0.25}
+      showBPM={true}
+      showGrid={true}
+    />
+  );
+}`;
+
+export const usageCardiacWave = `import { HeartSignal } from "@/components/custom/blocks/HeartSignalBlock";
+
+export default function CardiacWaveDemo() {
+  return (
+    <HeartSignal
+      variant="cardiac-wave"
+      bpm={75}
+      speed={0.25}
+      showBPM={true}
+      showGrid={true}
+    />
+  );
+}`;
+
+<ExampleShowcase
+  name="heart-signal"
+  colorControl
+  controls={[
+    { name: "speed", label: "Animation Speed", min: 0.05, max: 1, step: 0.05, defaultValue: 0.25 },
+    { name: "bpm", label: "Heart Rate (BPM)", min: 40, max: 180, step: 5, defaultValue: 75 },
+  ]}
+  columns={1}
+  examples={[
+    {
+      title: "Real-time EKG Waveform Monitor",
+      propNotes: [
+        { lead: "Use", prop: "variant", value: '"ecg-line"', effect: "for classic EKG P-Q-R-S-T heartbeat monitor waveform trace." },
+      ],
+      props: { variant: "ecg-line" },
+      usage: usageECG,
+      code: extractCode("src/components/custom/blocks/HeartSignalBlock.tsx"),
+    },
+  ]}
+/>
+
+## Installation
+
+<Installation name="heart-signal" />
+
+## Animation Variants
+
+<ExampleShowcase
+  name="heart-signal"
+  colorControl
+  controls={[
+    { name: "speed", label: "Animation Speed", min: 0.05, max: 1, step: 0.05, defaultValue: 0.25 },
+    { name: "bpm", label: "Heart Rate (BPM)", min: 40, max: 180, step: 5, defaultValue: 75 },
+  ]}
+  columns={1}
+  examples={[
+    {
+      title: "Anatomical Cardiac Heart Sweep",
+      propNotes: [
+        { lead: "Use", prop: "variant", value: '"pulse-heart"', effect: "for central cardiac heart silhouette with progressive left-to-right color sweep fill." },
+      ],
+      props: { variant: "pulse-heart" },
+      usage: usagePulseHeart,
+    },
+    {
+      title: "Fluid Cardiac Wave Visualizer",
+      propNotes: [
+        { lead: "Use", prop: "variant", value: '"cardiac-wave"', effect: "for multi-lead sine wave stream with audio-visual equalizer bars." },
+      ],
+      props: { variant: "cardiac-wave" },
+      usage: usageCardiacWave,
+    },
+  ]}
+/>
+
+## Features
+
+<div className="grid grid-cols-1 sm:grid-cols-2 gap-4 my-6 not-prose">
+  <div className="p-6 rounded-2xl border border-border bg-card">
+    <h3 className="text-lg font-semibold text-card-foreground mb-2">3 Ultra-Smooth Animation Variants</h3>
+    <p className="text-muted-foreground text-sm">Includes EKG Line Trace, Cardiac Heart Sweep, and Cardiac Wave visualizers.</p>
+  </div>
+  <div className="p-6 rounded-2xl border border-border bg-card">
+    <h3 className="text-lg font-semibold text-card-foreground mb-2">Slow & Calm Rhythm Flow</h3>
+    <p className="text-muted-foreground text-sm">Features a relaxed, smooth heartbeat waveform flow perfect for clean medical dashboards.</p>
+  </div>
+  <div className="p-6 rounded-2xl border border-border bg-card">
+    <h3 className="text-lg font-semibold text-card-foreground mb-2">Dynamic Theme Adaptive</h3>
+    <p className="text-muted-foreground text-sm">Automatically resolves active theme primary color (<code>bg-primary</code>) across Light and Dark modes.</p>
+  </div>
+  <div className="p-6 rounded-2xl border border-border bg-card">
+    <h3 className="text-lg font-semibold text-card-foreground mb-2">Full Width & Responsive Height</h3>
+    <p className="text-muted-foreground text-sm">Scales fluidly to fill 100% of parent container width and height without expanding overflow.</p>
+  </div>
+</div>
+
+## Props Reference
+
+<div className="overflow-x-auto mb-8">
+  <table>
+    <thead>
+      <tr>
+        <th>Prop</th>
+        <th>Type</th>
+        <th>Default</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><code>variant</code></td>
+        <td><code>HeartSignalVariant</code></td>
+        <td><code>"ecg-line"</code></td>
+        <td>Selects between <code>"ecg-line"</code>, <code>"pulse-heart"</code>, and <code>"cardiac-wave"</code> animation variants.</td>
+      </tr>
+      <tr>
+        <td><code>bpm</code></td>
+        <td><code>number</code></td>
+        <td><code>75</code></td>
+        <td>Heart rate pulse frequency in Beats Per Minute.</td>
+      </tr>
+      <tr>
+        <td><code>speed</code></td>
+        <td><code>number</code></td>
+        <td><code>0.25</code></td>
+        <td>Animation speed multiplier for ultra-smooth wave cycles.</td>
+      </tr>
+      <tr>
+        <td><code>showBPM</code></td>
+        <td><code>boolean</code></td>
+        <td><code>true</code></td>
+        <td>Displays floating vital statistics BPM badge overlay.</td>
+      </tr>
+      <tr>
+        <td><code>showGrid</code></td>
+        <td><code>boolean</code></td>
+        <td><code>true</code></td>
+        <td>Renders medical telemetry grid background lines.</td>
+      </tr>
+      <tr>
+        <td><code>color</code></td>
+        <td><code>string</code></td>
+        <td><code>adaptive</code></td>
+        <td>Optional custom stroke & glow color. Matches active theme primary color by default.</td>
+      </tr>
+    </tbody>
+  </table>
+</div>

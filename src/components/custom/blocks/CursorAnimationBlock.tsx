@@ -32,14 +32,14 @@ export type CursorVariant =
 export type CursorColor = "indigo" | "rose" | "emerald" | "zinc" | "primary" | (string & {});
 
 const defaultTrailImages = [
-  "https://images.unsplash.com/photo-1506744038136-46273834b3fb?w=300&q=80",
-  "https://images.unsplash.com/photo-1511884642898-4c92249e20b6?w=300&q=80",
-  "https://images.unsplash.com/photo-1470071459604-3b5ec3a7fe05?w=300&q=80",
-  "https://images.unsplash.com/photo-1426604966848-d7adac402bff?w=300&q=80",
-  "https://images.unsplash.com/photo-1472214103451-9374bd1c798e?w=300&q=80",
-  "https://images.unsplash.com/photo-1447752875215-b2761acb3c5d?w=300&q=80",
-  "https://images.unsplash.com/photo-1469474968028-56623f02e42e?w=300&q=80",
-  "https://images.unsplash.com/photo-1501785888041-af3ef285b470?w=300&q=80",
+  "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_300,c_limit/v1790146210/photo-1506744038136-46273834b3fb-1790146212208.jpg",
+  "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_300,c_limit/v1790148864/photo-1511884642898-4c92249e20b6-1790148865110.jpg",
+  "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_300,c_limit/v1790146209/photo-1470071459604-3b5ec3a7fe05-1790146212205.jpg",
+  "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_300,c_limit/v1790145140/photo-1426604966848-d7adac402bff-1790145143490.jpg",
+  "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_300,c_limit/v1790146210/photo-1472214103451-9374bd1c798e-1790146212205.jpg",
+  "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_300,c_limit/v1790148863/photo-1447752875215-b2761acb3c5d-1790148865109.jpg",
+  "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_300,c_limit/v1790146209/photo-1469474968028-56623f02e42e-1790146212205.jpg",
+  "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_300,c_limit/v1790146210/photo-1501785888041-af3ef285b470-1790146212207.jpg",
 ];
 
 export interface CursorAnimationProps extends React.HTMLAttributes<HTMLDivElement> {
@@ -260,15 +260,15 @@ export function CursorAnimation({
             <div
               className="w-14 h-14 rounded-2xl flex items-center justify-center shadow-sm border mx-auto"
               style={{
-                backgroundColor: isPrimary ? "hsl(var(--primary) / 0.12)" : `rgba(${activeRgb}, 0.12)`,
-                borderColor: isPrimary ? "hsl(var(--primary) / 0.3)" : `rgba(${activeRgb}, 0.3)`,
+                backgroundColor: isPrimary ? "color-mix(in oklab, var(--primary) 12%, transparent)" : `rgba(${activeRgb}, 0.12)`,
+                borderColor: isPrimary ? "color-mix(in oklab, var(--primary) 30%, transparent)" : `rgba(${activeRgb}, 0.3)`,
                 color: activeColor,
               }}
             >
               {getVariantIcon()}
             </div>
             <div>
-              <h3 className="text-xl font-bold text-foreground tracking-tight">
+              <h3 className="text-xl font-semibold text-foreground tracking-tight">
                 Hover & Move Cursor
               </h3>
               <p className="text-sm text-muted-foreground mt-1.5 leading-relaxed">
@@ -303,8 +303,8 @@ export function CursorAnimation({
                   top: `${mousePos.y}px`,
                   width: isClicking ? "24px" : "36px",
                   height: isClicking ? "24px" : "36px",
-                  borderColor: isPrimary ? "hsl(var(--primary) / 0.5)" : `rgba(${activeRgb}, 0.5)`,
-                  backgroundColor: isPrimary ? "hsl(var(--primary) / 0.15)" : `rgba(${activeRgb}, 0.15)`,
+                  borderColor: isPrimary ? "color-mix(in oklab, var(--primary) 50%, transparent)" : `rgba(${activeRgb}, 0.5)`,
+                  backgroundColor: isPrimary ? "color-mix(in oklab, var(--primary) 15%, transparent)" : `rgba(${activeRgb}, 0.15)`,
                 }}
               />
               <div
@@ -388,7 +388,7 @@ export function CursorAnimation({
               }}
             >
               <div
-                className="flex items-center gap-1.5 px-3 py-1.5 rounded-full text-white text-xs font-bold shadow-xl whitespace-nowrap"
+                className="flex items-center gap-1.5 px-3 py-1.5 rounded-full text-white text-xs font-semibold shadow-xl whitespace-nowrap"
                 style={{ backgroundColor: activeColor }}
               >
                 <span>{label}</span>
@@ -429,7 +429,7 @@ export function CursorAnimation({
                   width: isClicking ? "64px" : "40px",
                   height: isClicking ? "64px" : "40px",
                   borderColor: activeColor,
-                  backgroundColor: isPrimary ? "hsl(var(--primary) / 0.15)" : `rgba(${activeRgb}, 0.15)`,
+                  backgroundColor: isPrimary ? "color-mix(in oklab, var(--primary) 15%, transparent)" : `rgba(${activeRgb}, 0.15)`,
                 }}
               />
               <div
@@ -450,14 +450,14 @@ export function CursorAnimation({
                 className="pointer-events-none absolute top-0 bottom-0 w-[1px]"
                 style={{
                   left: `${mousePos.x}px`,
-                  backgroundColor: isPrimary ? "hsl(var(--primary) / 0.4)" : `rgba(${activeRgb}, 0.4)`,
+                  backgroundColor: isPrimary ? "color-mix(in oklab, var(--primary) 40%, transparent)" : `rgba(${activeRgb}, 0.4)`,
                 }}
               />
               <div
                 className="pointer-events-none absolute left-0 right-0 h-[1px]"
                 style={{
                   top: `${mousePos.y}px`,
-                  backgroundColor: isPrimary ? "hsl(var(--primary) / 0.4)" : `rgba(${activeRgb}, 0.4)`,
+                  backgroundColor: isPrimary ? "color-mix(in oklab, var(--primary) 40%, transparent)" : `rgba(${activeRgb}, 0.4)`,
                 }}
               />
               <div
@@ -510,7 +510,7 @@ export function CursorAnimation({
                   top: `${mousePos.y}px`,
                   width: "36px",
                   height: "36px",
-                  backgroundColor: isPrimary ? "hsl(var(--primary) / 0.25)" : `rgba(${activeRgb}, 0.25)`,
+                  backgroundColor: isPrimary ? "color-mix(in oklab, var(--primary) 25%, transparent)" : `rgba(${activeRgb}, 0.25)`,
                 }}
               />
               <div
@@ -598,7 +598,7 @@ export function CursorAnimation({
 
               {/* Minimalist Precision Reticle Cursor Pointer Centered in the Image */}
               <div
-                className="pointer-events-none absolute flex items-center justify-center rounded-full z-50 transition-transform duration-75 bg-background/30 backdrop-blur-xs border border-primary"
+                className="pointer-events-none absolute flex items-center justify-center rounded-full z-50 transition-transform duration-75 bg-background/30 backdrop-blur-xs border border-primary/30"
                 style={{
                   left: `${mousePos.x}px`,
                   top: `${mousePos.y}px`,

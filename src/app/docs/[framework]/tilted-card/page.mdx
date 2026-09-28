@@ -3,7 +3,7 @@ import { extractCode } from "@/lib/code";
 
 # Tilted Card
 
-A deeply interactive, parallax-driven 3D tilt component. It calculates the relative pointer coordinates via Framer Motion's `useMotionValue` to rotate the card along the X and Y axes, mimicking a physical object held in space.
+A deeply interactive, parallax-driven 3D tilt component. It calculates the relative pointer coordinates and eases the card toward them through a small spring of its own (no animation library) to rotate it along the X and Y axes, mimicking a physical object held in space.
 
 It automatically injects a dynamic, radial glare layer over the content that tracks the light source based on your mouse position to complete the tactile illusion.
 
@@ -14,7 +14,7 @@ const accent = "var(--primary)";
 const onAccent = "var(--primary-foreground)";
 
 const card = (
-  <div className="w-full h-full bg-gradient-to-br from-white via-zinc-50/90 to-zinc-100/80 dark:from-zinc-900 dark:via-zinc-900/80 dark:to-zinc-950/90 backdrop-blur-2xl border border-zinc-200/80 dark:border-white/10 rounded-2xl p-6 sm:p-8 flex flex-col justify-between overflow-hidden relative shadow-[inset_0_1px_0_rgba(255,255,255,0.8)] dark:shadow-[inset_0_1px_1px_rgba(255,255,255,0.1)]">
+  <div className="w-full h-full bg-gradient-to-br from-card via-card/90 to-muted/80 backdrop-blur-2xl border border-border/80 rounded-2xl p-6 sm:p-8 flex flex-col justify-between overflow-hidden relative shadow-[inset_0_1px_0_rgba(255,255,255,0.8)] dark:shadow-[inset_0_1px_1px_rgba(255,255,255,0.1)]">
     <div
       className="absolute -top-16 -right-16 w-40 h-40 rounded-full blur-[50px] opacity-20 dark:opacity-30 pointer-events-none"
       style={{ backgroundColor: accent }}
@@ -26,26 +26,26 @@ const card = (
 
     <div className="relative z-10 flex justify-between items-start">
       <div
-        className="w-10 h-10 sm:w-12 sm:h-12 rounded-xl flex items-center justify-center shadow-sm border border-zinc-200/60 dark:border-white/10"
+        className="w-10 h-10 sm:w-12 sm:h-12 rounded-xl flex items-center justify-center shadow-sm border border-border/60"
         style={{ backgroundColor: accent, color: onAccent }}
       >
         <Nfc className="w-5 h-5 sm:w-6 sm:h-6" />
       </div>
-      <Cpu className="w-6 h-6 sm:w-8 sm:h-8 text-zinc-400 dark:text-zinc-600" />
+      <Cpu className="w-6 h-6 sm:w-8 sm:h-8 text-muted-foreground/60" />
     </div>
 
     <div className="relative z-10 mt-auto">
       <div className="flex items-center gap-2 sm:gap-3 mb-4 sm:mb-6">
-        <Fingerprint className="w-5 h-5 sm:w-6 sm:h-6 text-zinc-500 dark:text-zinc-500" />
-        <div className="h-1.5 w-12 sm:w-16 bg-zinc-200/80 dark:bg-zinc-800 rounded-full overflow-hidden">
-          <div className="h-full w-full bg-gradient-to-r from-transparent via-zinc-400 dark:via-zinc-500 to-transparent animate-[shimmer_2s_infinite]" />
+        <Fingerprint className="w-5 h-5 sm:w-6 sm:h-6 text-muted-foreground" />
+        <div className="h-1.5 w-12 sm:w-16 bg-muted rounded-full overflow-hidden">
+          <div className="h-full w-full bg-gradient-to-r from-transparent via-muted-foreground to-transparent animate-[shimmer_2s_infinite]" />
         </div>
       </div>
 
-      <h3 className="text-xl sm:text-2xl font-black text-zinc-900 dark:text-white tracking-tight uppercase mb-1 drop-shadow-sm">
+      <h3 className="text-xl sm:text-2xl font-bold text-foreground tracking-tight uppercase mb-1 drop-shadow-sm">
         Access Key
       </h3>
-      <p className="text-xs sm:text-sm font-medium text-zinc-500 dark:text-zinc-400 font-mono tracking-widest">
+      <p className="text-xs sm:text-sm font-medium text-muted-foreground font-mono tracking-widest">
         ID // 0x8F92A
       </p>
     </div>
@@ -238,34 +238,34 @@ export default function LiftOnHover() {
 Discover the key capabilities that make this component an excellent choice for modern, animated user interfaces.
 
 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 my-6 not-prose">
-  <div className="p-6 rounded-2xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900">
-    <h3 className="text-lg font-semibold text-zinc-900 dark:text-zinc-50 mb-2">Fluid Animations</h3>
-    <p className="text-zinc-600 dark:text-zinc-400 text-sm">Hardware-accelerated transitions that ensure smooth 60fps performance across devices.</p>
+  <div className="p-6 rounded-2xl border border-border bg-card">
+    <h3 className="text-lg font-semibold text-card-foreground mb-2">Fluid Animations</h3>
+    <p className="text-muted-foreground text-sm">Hardware-accelerated transitions that ensure smooth 60fps performance across devices.</p>
   </div>
-  <div className="p-6 rounded-2xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900">
-    <h3 className="text-lg font-semibold text-zinc-900 dark:text-zinc-50 mb-2">Highly Customizable</h3>
-    <p className="text-zinc-600 dark:text-zinc-400 text-sm">Exposes intuitive props for tailoring colors, sizes, and animation speeds to fit your brand.</p>
+  <div className="p-6 rounded-2xl border border-border bg-card">
+    <h3 className="text-lg font-semibold text-card-foreground mb-2">Highly Customizable</h3>
+    <p className="text-muted-foreground text-sm">Exposes intuitive props for tailoring colors, sizes, and animation speeds to fit your brand.</p>
   </div>
-  <div className="p-6 rounded-2xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900">
-    <h3 className="text-lg font-semibold text-zinc-900 dark:text-zinc-50 mb-2">Responsive Design</h3>
-    <p className="text-zinc-600 dark:text-zinc-400 text-sm">Automatically adapts to mobile, tablet, and desktop viewports without horizontal scrolling issues.</p>
+  <div className="p-6 rounded-2xl border border-border bg-card">
+    <h3 className="text-lg font-semibold text-card-foreground mb-2">Responsive Design</h3>
+    <p className="text-muted-foreground text-sm">Automatically adapts to mobile, tablet, and desktop viewports without horizontal scrolling issues.</p>
   </div>
-  <div className="p-6 rounded-2xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900">
-    <h3 className="text-lg font-semibold text-zinc-900 dark:text-zinc-50 mb-2">Accessible</h3>
-    <p className="text-zinc-600 dark:text-zinc-400 text-sm">Built with semantic HTML and ARIA labels where necessary to support screen readers and keyboard navigation.</p>
+  <div className="p-6 rounded-2xl border border-border bg-card">
+    <h3 className="text-lg font-semibold text-card-foreground mb-2">Accessible</h3>
+    <p className="text-muted-foreground text-sm">Built with semantic HTML and ARIA labels where necessary to support screen readers and keyboard navigation.</p>
   </div>
 </div>
 
 ## Best Practices & Guidelines
 
 <div className="flex flex-col gap-4 my-6 not-prose">
-  <div className="p-5 rounded-xl border border-blue-200 dark:border-blue-900/50 bg-blue-50/50 dark:bg-blue-950/20">
-    <h4 className="text-base font-semibold text-blue-900 dark:text-blue-300 mb-1">Animation Performance</h4>
-    <p className="text-blue-800 dark:text-blue-400/80 text-sm">Avoid placing too many heavy animated components on a single screen to prevent layout thrashing and maintain 60fps performance. Use intersection observers to pause off-screen animations.</p>
+  <div className="rounded-xl border border-foreground/[0.06] bg-foreground/[0.03] p-4">
+    <h4 className="font-sans text-[14px] font-semibold text-foreground mb-1">Animation Performance</h4>
+    <p className="text-[13px] leading-relaxed text-foreground/50">Avoid placing too many heavy animated components on a single screen to prevent layout thrashing and maintain 60fps performance. Use intersection observers to pause off-screen animations.</p>
   </div>
-  <div className="p-5 rounded-xl border border-amber-200 dark:border-amber-900/50 bg-amber-50/50 dark:bg-amber-950/20">
-    <h4 className="text-base font-semibold text-amber-900 dark:text-amber-300 mb-1">State Management</h4>
-    <p className="text-amber-800 dark:text-amber-400/80 text-sm">When triggering animations via state changes, ensure you wrap state updates in <code>startTransition</code> or use lightweight stores to prevent React rendering bottlenecks during the animation tick.</p>
+  <div className="rounded-xl border border-primary/15 bg-primary/5 p-4">
+    <h4 className="font-sans text-[14px] font-semibold text-primary mb-1">State Management</h4>
+    <p className="text-[13px] leading-relaxed text-foreground/50">When triggering animations via state changes, ensure you wrap state updates in <code>startTransition</code> or use lightweight stores to prevent React rendering bottlenecks during the animation tick.</p>
   </div>
 </div>
 

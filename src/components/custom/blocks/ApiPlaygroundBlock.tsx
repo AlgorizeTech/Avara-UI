@@ -13,45 +13,13 @@ import {
   XCircle,
 } from "lucide-react";
 import React, { forwardRef, useState } from "react";
+import { getThemeStyles } from "./api-playground-theme";
 
 // ==========================================
 // THEME & CONFIGURATION
 // ==========================================
 export type ApiColor = "indigo" | "rose" | "emerald" | "zinc" | (string & {});
 export type HttpMethod = "GET" | "POST" | "PUT" | "PATCH" | "DELETE";
-
-const colorThemes: Record<string, Record<string, string>> = {
-  primary: {
-    bg: "bg-primary text-primary-foreground",
-    text: "text-primary",
-    border: "border-primary",
-    glow: "shadow-[0_0_15px_var(--primary)]",
-  },
-  indigo: {
-    bg: "bg-indigo-600 text-white",
-    text: "text-indigo-600 dark:text-indigo-400",
-    border: "border-indigo-500",
-    glow: "shadow-[0_0_15px_rgba(99,102,241,0.3)]",
-  },
-  rose: {
-    bg: "bg-rose-600 text-white",
-    text: "text-rose-600 dark:text-rose-400",
-    border: "border-rose-500",
-    glow: "shadow-[0_0_15px_rgba(225,29,72,0.3)]",
-  },
-  emerald: {
-    bg: "bg-emerald-600 text-white",
-    text: "text-emerald-600 dark:text-emerald-400",
-    border: "border-emerald-500",
-    glow: "shadow-[0_0_15px_rgba(16,185,129,0.3)]",
-  },
-  zinc: {
-    bg: "bg-zinc-900 text-white dark:bg-zinc-100 dark:text-zinc-900",
-    text: "text-zinc-900 dark:text-zinc-100",
-    border: "border-zinc-900 dark:border-zinc-100",
-    glow: "shadow-[0_0_15px_rgba(255,255,255,0.2)] dark:shadow-[0_0_15px_rgba(255,255,255,0.2)]",
-  },
-};
 
 // Theme colour fed to SelectBlock so the dropdown highlight, ring and chevron
 // keep the per-method colour coding of the old native <select>.
@@ -67,38 +35,6 @@ const METHOD_OPTIONS = (
   ["GET", "POST", "PUT", "PATCH", "DELETE"] as HttpMethod[]
 ).map((m) => ({ label: m, value: m }));
 
-const hexToRgb = (hex: string) => {
-  let cleanHex = hex.replace(/^#/, "");
-  if (cleanHex.length === 3)
-    cleanHex = cleanHex
-      .split("")
-      .map((x) => x + x)
-      .join("");
-  const result = /^([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(cleanHex);
-  return result
-    ? `${parseInt(result[1], 16)}, ${parseInt(result[2], 16)}, ${parseInt(result[3], 16)}`
-    : "99, 102, 241";
-};
-
-export const getThemeStyles = (color: string) => {
-  if (color && color.startsWith("#")) {
-    const rgb = hexToRgb(color);
-    return {
-      theme: {
-        bg: "bg-[var(--api-color)] text-white",
-        text: "text-[var(--api-color)]",
-        border: "border-[var(--api-color)]",
-        glow: "shadow-[0_0_15px_var(--api-glow)]",
-      },
-      style: {
-        "--api-color": color,
-        "--api-glow": `rgba(${rgb}, 0.3)`,
-      } as React.CSSProperties,
-    };
-  }
-  return { theme: colorThemes[color] || colorThemes.primary, style: {} };
-};
-
 // ==========================================
 // INTERFACES
 // ==========================================
@@ -112,7 +48,7 @@ export interface KeyValuePair {
 export interface ApiResponse {
   status: number;
   timeMs: number;
-  data: any;
+  data: unknown;
 }
 
 /** The request snapshot handed to `mockHandler` when the reader hits Send. */
@@ -315,15 +251,44 @@ export const ApiPlaygroundBlock = forwardRef<
 
       const executeRequest =
         mockHandler ||
-        (async () => {
-          await new Promise((resolve) => setTimeout(resolve, 800));
+        (async (req) => {
+          await new Promise((resolve) => setTimeout(resolve, 600));
+
+          let parsedBody: unknown = null;
+          if (req.method !== "GET" && req.body) {
+            try {
+              parsedBody = JSON.parse(req.body);
+            } catch {
+              parsedBody = req.body;
+            }
+          }
+
+          const activeHeaders = req.headers
+            .filter((h) => h.enabled && h.key)
+            .reduce<Record<string, string>>((acc, h) => {
+              acc[h.key] = h.value;
+              return acc;
+            }, {});
+
+          const activeParams = req.params
+            .filter((p) => p.enabled && p.key)
+            .reduce<Record<string, string>>((acc, p) => {
+              acc[p.key] = p.value;
+              return acc;
+            }, {});
+
           return {
-            status: 200,
-            timeMs: Math.floor(Math.random() * 200) + 50,
+            status: req.method === "POST" ? 201 : 200,
+            timeMs: Math.floor(Math.random() * 150) + 50,
             data: {
               message: "Success",
-              note: "This is a default mock response. Pass a 'mockHandler' prop to customize this output based on the request parameters.",
-              echo: { method, url },
+              echo: {
+                method: req.method,
+                url: req.url,
+                params: Object.keys(activeParams).length > 0 ? activeParams : undefined,
+                headers: Object.keys(activeHeaders).length > 0 ? activeHeaders : undefined,
+                payload: req.method !== "GET" ? (parsedBody ?? "No body provided") : undefined,
+              },
             },
           };
         });
@@ -337,11 +302,16 @@ export const ApiPlaygroundBlock = forwardRef<
           body,
         });
         setResponse(res);
-      } catch (error: any) {
+      } catch (error) {
         setResponse({
           status: 500,
           timeMs: 0,
-          data: { error: error.message || "Internal Server Error" },
+          data: {
+            error:
+              error instanceof Error && error.message
+                ? error.message
+                : "Internal Server Error",
+          },
         });
       } finally {
         setIsLoading(false);
@@ -365,7 +335,7 @@ export const ApiPlaygroundBlock = forwardRef<
               onChange={(e) =>
                 handleUpdatePair(setter, item.id, "enabled", e.target.checked)
               }
-              className="w-4 h-4 rounded border-border text-foreground focus:ring-zinc-900 shrink-0 cursor-pointer"
+              className="w-4 h-4 rounded border-input text-foreground focus:ring-ring shrink-0 cursor-pointer"
             />
             <input
               type="text"
@@ -374,7 +344,7 @@ export const ApiPlaygroundBlock = forwardRef<
               onChange={(e) =>
                 handleUpdatePair(setter, item.id, "key", e.target.value)
               }
-              className="w-1/2 min-w-0 px-2 sm:px-3 py-1.5 text-xs sm:text-sm bg-background border border-border rounded-md outline-none focus:border-zinc-400 dark:focus:border-zinc-600 font-mono transition-colors"
+              className="w-1/2 min-w-0 px-2 sm:px-3 py-1.5 text-xs sm:text-sm bg-background border border-input rounded-md outline-none focus:border-ring font-mono transition-colors"
               disabled={!item.enabled}
             />
             <input
@@ -384,12 +354,12 @@ export const ApiPlaygroundBlock = forwardRef<
               onChange={(e) =>
                 handleUpdatePair(setter, item.id, "value", e.target.value)
               }
-              className="w-1/2 min-w-0 px-2 sm:px-3 py-1.5 text-xs sm:text-sm bg-background border border-border rounded-md outline-none focus:border-zinc-400 dark:focus:border-zinc-600 font-mono transition-colors"
+              className="w-1/2 min-w-0 px-2 sm:px-3 py-1.5 text-xs sm:text-sm bg-background border border-input rounded-md outline-none focus:border-ring font-mono transition-colors"
               disabled={!item.enabled}
             />
             <button
               onClick={() => handleRemovePair(setter, item.id)}
-              className="p-1.5 text-zinc-400 hover:text-red-500 opacity-100 sm:opacity-0 sm:group-hover:opacity-100 transition-all rounded-md hover:bg-red-50 dark:hover:bg-red-500/10 shrink-0 cursor-pointer"
+              className="p-1.5 text-muted-foreground hover:text-red-500 opacity-100 sm:opacity-0 sm:group-hover:opacity-100 transition-all rounded-md hover:bg-red-50 dark:hover:bg-red-500/10 shrink-0 cursor-pointer"
               title="Remove pair"
             >
               <Trash2 className="w-4 h-4" />
@@ -444,7 +414,7 @@ export const ApiPlaygroundBlock = forwardRef<
               onClick={handleSend}
               disabled={isLoading}
               className={cn(
-                "flex items-center justify-center gap-2 h-9 px-4 rounded-lg text-sm font-bold transition-all disabled:opacity-50 shrink-0 w-full sm:w-auto cursor-pointer",
+                "flex items-center justify-center gap-2 h-9 px-4 rounded-lg text-sm font-semibold transition-all disabled:opacity-50 shrink-0 w-full sm:w-auto cursor-pointer",
                 theme.bg,
                 !isLoading && theme.glow,
               )}
@@ -469,7 +439,7 @@ export const ApiPlaygroundBlock = forwardRef<
                   key={tab}
                   onClick={() => setActiveTab(tab)}
                   className={cn(
-                    "px-3 sm:px-4 py-2 text-xs font-bold capitalize transition-all border-b-2 whitespace-nowrap shrink-0 cursor-pointer",
+                    "px-3 sm:px-4 py-2 text-xs font-semibold capitalize transition-all border-b-2 whitespace-nowrap shrink-0 cursor-pointer",
                     activeTab === tab
                       ? cn("border-[var(--api-color)]", theme.text)
                       : "border-transparent text-muted-foreground hover:text-foreground",
@@ -496,7 +466,7 @@ export const ApiPlaygroundBlock = forwardRef<
               {activeTab === "body" && (
                 <div className="w-full h-full flex flex-col relative group">
                   {method === "GET" && (
-                    <div className="absolute inset-0 bg-white/80 dark:bg-zinc-900/80 backdrop-blur-[1px] z-10 flex items-center justify-center rounded-lg p-4 text-center">
+                    <div className="absolute inset-0 bg-card/80 backdrop-blur-[1px] z-10 flex items-center justify-center rounded-lg p-4 text-center">
                       <p className="text-xs sm:text-sm font-medium text-muted-foreground">
                         GET requests typically do not have a body.
                       </p>
@@ -505,7 +475,7 @@ export const ApiPlaygroundBlock = forwardRef<
                   <textarea
                     value={body}
                     onChange={(e) => setBody(e.target.value)}
-                    className="w-full h-full min-h-[150px] p-3 text-xs sm:text-sm font-mono bg-muted border border-border rounded-lg outline-none focus:border-zinc-400 dark:focus:border-zinc-600 resize-none transition-colors"
+                    className="w-full h-full min-h-[150px] p-3 text-xs sm:text-sm font-mono bg-muted border border-input rounded-lg outline-none focus:border-ring resize-none transition-colors"
                     spellCheck={false}
                   />
                 </div>
@@ -515,7 +485,7 @@ export const ApiPlaygroundBlock = forwardRef<
         </div>
 
         {/* RIGHT PANE: RESPONSE VIEWER */}
-        <div className="flex flex-col bg-white dark:bg-[#09090b] rounded-xl overflow-hidden border border-border min-h-[300px] min-w-0">
+        <div className="flex flex-col bg-card rounded-xl overflow-hidden border border-border min-h-[300px] min-w-0">
           {/* ── RESPONSIVE TERMINAL HEADER ──────────────────────────────── */}
           <div className="flex flex-wrap items-center justify-between gap-2 px-3 sm:px-4 py-2.5 bg-muted/80 border-b border-border">
             <div className="flex items-center gap-2">
@@ -553,7 +523,7 @@ export const ApiPlaygroundBlock = forwardRef<
           {/* Terminal Body */}
           <div className="relative flex-1 p-3 sm:p-4 overflow-y-auto overflow-x-auto">
             {isLoading ? (
-              <div className="absolute inset-0 flex flex-col items-center justify-center gap-3 bg-white/80 dark:bg-zinc-950/80">
+              <div className="absolute inset-0 flex flex-col items-center justify-center gap-3 bg-card/80">
                 <Activity className={cn("w-6 h-6 animate-pulse", theme.text)} />
                 <span className="text-xs font-mono text-muted-foreground animate-pulse">
                   Awaiting response...

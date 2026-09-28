@@ -1,44 +1,61 @@
 # Navbar / Header
 
-A highly responsive, production-ready Navigation Bar. It manages pure CSS dropdowns for complex desktop menus, and uses GSAP to smoothly animate a beautiful slide-out drawer on mobile devices.
+A highly responsive, production-ready Navigation Bar. It manages pure CSS dropdowns for complex desktop menus, and uses CSS transitions to smoothly animate a beautiful slide-out drawer on mobile devices.
 
-Switch any preview to a mobile width with the device buttons to see the GSAP hamburger drawer.
+Switch any preview to a mobile width with the device buttons to see the hamburger drawer.
 
 export const usageDefault = `import { NavbarBlock } from "@/components/custom/blocks/NavbarBlock";
 
 export default function SiteHeader() {
-  return ;
+  return (
+    
+  );
 }`;
 
 export const usageFloating = `import { NavbarBlock } from "@/components/custom/blocks/NavbarBlock";
 
 export default function LandingHeader() {
   // A pill that floats over the hero — pair it with a colorful background.
-  return ;
+  return (
+    
+  );
 }`;
 
 export const usageCentered = `import { NavbarBlock } from "@/components/custom/blocks/NavbarBlock";
 
 export default function CenteredHeader() {
   // Logo in the middle, links split either side.
-  return ;
+  return (
+    
+  );
 }`;
 
 export const usageMinimal = `import { NavbarBlock } from "@/components/custom/blocks/NavbarBlock";
 
 export default function MinimalHeader() {
   // Borderless and transparent — lets the page behind it show through.
-  return ;
+  return (
+    
+  );
 }`;
 
 export const usageGlass = `import { NavbarBlock } from "@/components/custom/blocks/NavbarBlock";
 
 export default function GlassHeader() {
   // Full-width bar with a backdrop blur, so content scrolls under it.
-  return ;
+  return (
+    
+  );
 }`;
 
 ## Installation
+
+Register the @algorize-ui registry once per project, then add the component:
+
+```bash
+npx shadcn@latest registry add @algorize-ui=https://algorize-ui.vercel.app/r/{name}.json
+npx shadcn@latest add @algorize-ui/navbar
+```
 
 ## Examples
 
@@ -59,13 +76,13 @@ export default function GlassHeader() {
 
           color
 
-          "indigo" | "rose" | "emerald" | "zinc" | string
+          "primary" | "indigo" | "rose" | "emerald" | "zinc" | string
 
-          "indigo"
+          "primary"
 
           Applies global color themes to the logo icon and primary
-          Call-to-Action button. Accepts valid hex codes (e.g.{" "}
-          "#00FF00").
+          Call-to-Action button. Accepts named themes or valid hex codes (e.g.{" "}
+          "#8b5cf6").
 
           logoText
 
@@ -74,6 +91,15 @@ export default function GlassHeader() {
           "Nexus"
         
         The text displayed next to the logo mark.
+
+          linkComponent
+
+          React.ElementType
+
+          "a"
+
+          The React component used for internal links. In Next.js, pass{" "}
+          next/link to preserve client-side routing.
 
 ---
 

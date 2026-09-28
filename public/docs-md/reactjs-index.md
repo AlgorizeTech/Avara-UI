@@ -1,6 +1,6 @@
 # Introduction
 
-Algorize UI is a library of **{COMPONENT_COUNT} React components** — from buttons
+Algorize UI is a library of **176 React components** — from buttons
 and inputs to dashboards, carousels and scroll-driven marketing sections. Each
 one is animated, responsive, themeable and typed.
 
@@ -11,8 +11,12 @@ read it, edit it, delete half of it. There is no library version to track and
 nothing to fight when a design calls for something the props do not cover.
 
 ```bash
-npx shadcn@latest add button.json
+npx shadcn@latest add @algorize-ui/button
 ```
+
+The short `@algorize-ui/…` form needs the registry registered once per project — one
+command, covered in the installation
+guide. Toggle to **URL** above for the form that needs no setup.
 
 ## Component Philosophy
 

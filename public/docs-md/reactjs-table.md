@@ -6,18 +6,6 @@ There is **no column config and no required row shape**. Whatever your API retur
 
 Every example below is live. Click a sortable header, expand a row, or hover the right edge of a row to reveal its actions.
 
-## Anatomy
-
-```tsx
-
-        Customer
-
-        Alice Freeman
-
-  …
-
-```
-
 `Table` is the card. `TableContent` renders the scroll container and the `` element. Everything else maps one-to-one onto the HTML table tags, so `colSpan`, `scope` and any other native attribute pass straight through.
 
 export const invoiceType = `type Invoice = {
@@ -30,7 +18,24 @@ export const invoiceType = `type Invoice = {
 
 export const usageBasic = `${invoiceType}
 
-export default function InvoiceTable({ invoices }: { invoices: Invoice[] }) {
+const sampleInvoices: Invoice[] = [
+  {
+    reference: "INV-3021",
+    customer: { name: "Alice Freeman", email: "alice@example.com" },
+    amount: 3200,
+    status: "completed",
+    issuedAt: "2023-10-24",
+  },
+  {
+    reference: "INV-3022",
+    customer: { name: "Bob Smith", email: "bob@example.com" },
+    amount: 850.5,
+    status: "processing",
+    issuedAt: "2023-10-24",
+  },
+];
+
+export default function InvoiceTable({ invoices = sampleInvoices }: { invoices?: Invoice[] }) {
   return (
 
             Invoice
@@ -47,7 +52,7 @@ export default function InvoiceTable({ invoices }: { invoices: Invoice[] }) {
                   
                     {invoice.customer.email}
 
-              {invoice.amount}
+              \${invoice.amount}
             
           ))}
 
@@ -143,6 +148,13 @@ export const usageEmpty = `
 
 ## Installation
 
+Register the @algorize-ui registry once per project, then add the component:
+
+```bash
+npx shadcn@latest registry add @algorize-ui=https://algorize-ui.vercel.app/r/{name}.json
+npx shadcn@latest add @algorize-ui/table
+```
+
 ## Examples
 
 ## Density
@@ -220,7 +232,7 @@ export const usageEmpty = `
       TableRowisHeaderbooleanApplies header styling instead of body row styling.
       TableRowselectedbooleanApplies the selected background and sets data-selected.
       TableCellalign"left" | "center" | "right"Text alignment.
-      TableBodyanimatebooleanStaggered GSAP entrance for direct child rows. Off by default.
+      TableBodyanimatebooleanStaggered entrance (Web Animations API) for direct child rows. Off by default.
       TableBodyanimateKeyReact.KeyChange it to replay the entrance — e.g. on sort or page change.
 
 ### `TableExpandedRow`, `TableEmpty`, `TableRowActions`

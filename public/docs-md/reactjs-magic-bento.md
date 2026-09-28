@@ -2,11 +2,11 @@
 
 A premium grid layout system featuring CSS masking, continuously spinning gradient borders, and a real-time mouse-tracking spotlight effect.
 
-This component uses **Framer Motion**'s `useMotionTemplate` and `useMotionValue`
-to track pointer coordinates without triggering heavy React state re-renders,
-ensuring the volumetric glows remain silky smooth.
+This component writes pointer coordinates straight into CSS variables
+without triggering heavy React state re-renders, ensuring the volumetric
+glows remain silky smooth — no animation library needed.
 
-Move your cursor over a card: `MagicBentoCard` tracks the pointer with Framer Motion motion values — not React state — so the 1px border track and inner glow stay smooth.
+Move your cursor over a card: `MagicBentoCard` tracks the pointer with CSS variables — not React state — so the 1px border track and inner glow stay smooth.
 
 export const usageDefault = `import {
   MagicBento,
@@ -79,7 +79,26 @@ export default function HighlightedBento() {
 
 ## Installation
 
+Register the @algorize-ui registry once per project, then add the component:
+
+```bash
+npx shadcn@latest registry add @algorize-ui=https://algorize-ui.vercel.app/r/{name}.json
+npx shadcn@latest add @algorize-ui/magic-bento
+```
+
 ## Examples
+
+## Theming the glow
+
+Every effect — the spinning `highlight` border, the pointer-tracked border and the inner glow — reads one colour. Out of the box it is your shadcn `--primary`, so the component works with no extra setup. To re-tint a whole grid, set the two CSS variables on any ancestor:
+
+```tsx
+
+  …
+
+```
+
+`--magic-glow` is optional — when only `--magic-color` is set, the glow is derived from it at 15% opacity.
 
 ## Features
 Discover the key capabilities that make this component an excellent choice for modern, animated user interfaces.
@@ -168,6 +187,29 @@ Discover the key capabilities that make this component an excellent choice for m
 
           Used to control the grid spanning and dimensions of the specific card
           (e.g., col-span-1 md:col-span-2 lg:row-span-2).
+
+          CSS variable
+
+          --magic-color
+
+          &lt;color&gt;
+
+          var(--primary)
+
+          Colour of the spinning highlight border and the
+          pointer-tracked border. Set it on any ancestor to re-tint every card
+          below it.
+
+          CSS variable
+
+          --magic-glow
+
+          &lt;color&gt;
+
+          --magic-color at 15%
+
+          Colour of the soft inner glow that follows the cursor. Defaults to a
+          translucent version of --magic-color.
 
 ---
 

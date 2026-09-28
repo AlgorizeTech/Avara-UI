@@ -6,7 +6,7 @@ Four independent scroll-driven layouts share this page, each with its own block 
 
 ## Simple stack
 
-export const stackItems = `const items = [
+export const stackItems = `const items: StackItem[] = [
   {
     id: "1",
     title: "Real-time Synchronization",
@@ -113,7 +113,7 @@ export const stackItems = `const items = [
   },
 ];`;
 
-export const usageSimpleGap = `import { ScrollStack } from "@/components/custom/blocks/ScrollStackBlock";
+export const usageSimpleGap = `import { ScrollStack, type StackItem } from "@/components/custom/blocks/ScrollStackBlock";
 
 ${stackItems}
 
@@ -123,6 +123,13 @@ export default function GappedStack() {
 }`;
 
 ### Installation
+
+Register the @algorize-ui registry once per project, then add the component:
+
+```bash
+npx shadcn@latest registry add @algorize-ui=https://algorize-ui.vercel.app/r/{name}.json
+npx shadcn@latest add @algorize-ui/scroll-stack
+```
 
 ## Sticky stack
 
@@ -158,7 +165,7 @@ const items: ScrollStackItem[] = [
       "Color Palettes & Typography",
       "Brand Guidelines & Tone",
     ],
-    imageUrl: "https://images.unsplash.com/photo-1470071459604-3b5ec3a7fe05?auto=format&fit=crop&w=800&q=80",
+    imageUrl: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_800,c_limit/v1790146209/photo-1470071459604-3b5ec3a7fe05-1790146212205.jpg",
     imageAlt: "Misty mountain forest nature landscape",
     buttonText: "Explore Branding",
   },
@@ -170,7 +177,7 @@ const items: ScrollStackItem[] = [
     contentType: "image",
     description:
       "High-performance, scalable web applications built with Next.js, React, and Tailwind CSS.",
-    imageUrl: "https://images.unsplash.com/photo-1469474968028-56623f02e42e?auto=format&fit=crop&w=800&q=80",
+    imageUrl: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_800,c_limit/v1790146209/photo-1469474968028-56623f02e42e-1790146212205.jpg",
     imageAlt: "Golden mountain valley sunset nature landscape",
     buttonText: "Tech Stack Specs",
   },
@@ -182,7 +189,7 @@ const items: ScrollStackItem[] = [
     contentType: "image",
     description:
       "Resilient cloud architectures, serverless deployments, and real-time database indexing.",
-    imageUrl: "https://images.unsplash.com/photo-1447752875215-b2761acb3c5d?auto=format&fit=crop&w=800&q=80",
+    imageUrl: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_800,c_limit/v1790148863/photo-1447752875215-b2761acb3c5d-1790148865109.jpg",
     imageAlt: "Lush green forest nature landscape",
     buttonText: "View Cloud Specs",
   },
@@ -217,6 +224,19 @@ export default function TunedStickyStack() {
 }`;
 
 ### Installation
+
+Register the @algorize-ui registry once per project, then add the component:
+
+```bash
+npx shadcn@latest registry add @algorize-ui=https://algorize-ui.vercel.app/r/{name}.json
+npx shadcn@latest add @algorize-ui/sticky-scroll-stack
+```
+
+Or the Motion build (same props, same file — install one):
+
+```bash
+npx shadcn@latest add @algorize-ui/sticky-scroll-stack-framer
+```
 
 ### More examples
 
@@ -275,7 +295,7 @@ const items: ScrollStackItem[] = [
     description:
       "Most landing pages fail quietly. Traffic comes in, nothing happens. We engineer high-converting layouts with scroll-triggered GSAP animations that capture attention.",
     tags: ["Conversion Focused", "Figma To Code", "Mobile First"],
-    color: "bg-white dark:bg-zinc-900 border-zinc-200 dark:border-zinc-800 text-zinc-900 dark:text-white",
+    color: "bg-card border-border text-card-foreground",
     cardContent: ,
   },
   {
@@ -289,7 +309,7 @@ const items: ScrollStackItem[] = [
       "Stripe Integration",
       "Real-Time Sync",
     ],
-    color: "bg-white dark:bg-zinc-900 border-zinc-200 dark:border-zinc-800 text-zinc-900 dark:text-white",
+    color: "bg-card border-border text-card-foreground",
     cardContent: ,
   },
   {
@@ -303,7 +323,7 @@ const items: ScrollStackItem[] = [
       "Vector RAG Setup",
       "Custom Model Training",
     ],
-    color: "bg-white dark:bg-zinc-900 border-zinc-200 dark:border-zinc-800 text-zinc-900 dark:text-white",
+    color: "bg-card border-border text-card-foreground",
     cardContent: ,
   },
   {
@@ -313,7 +333,7 @@ const items: ScrollStackItem[] = [
     description:
       "Building a mobile app shouldn't mean managing two separate codebases. We deploy unified architectures with silky native device performance.",
     tags: ["iOS & Android", "Single Codebase Build", "App Store Submission"],
-    color: "bg-white dark:bg-zinc-900 border-zinc-200 dark:border-zinc-800 text-zinc-900 dark:text-white",
+    color: "bg-card border-border text-card-foreground",
     cardContent: ,
   },
 ];`;
@@ -344,9 +364,14 @@ export default function PinnedLeftStack() {
 
 ### Installation
 
-### More examples
+Register the @algorize-ui registry once per project, then add the component:
 
-## Horizontal stack
+```bash
+npx shadcn@latest registry add @algorize-ui=https://algorize-ui.vercel.app/r/{name}.json
+npx shadcn@latest add @algorize-ui/split-scroll-stack
+```
+
+### More examples
 
 export const railSteps = `import {
   Compass,
@@ -410,21 +435,26 @@ export const usageHorizontal = `import { HorizontalScrollStack } from "@/compone
 ${railSteps}
 
 export default function ProcessRail() {
-  return (
-    
-  );
-}`;
-
-export const usageHorizontalShort = `import { HorizontalScrollStack } from "@/components/custom/blocks/HorizontalScrollStackBlock";
-
-${railSteps}
-
-export default function ShortRail() {
-  // Fewer steps means a shorter pinned scroll distance.
   return ;
 }`;
 
 ### Installation
+
+Register the @algorize-ui registry once per project, then add the component:
+
+```bash
+npx shadcn@latest registry add @algorize-ui=https://algorize-ui.vercel.app/r/{name}.json
+npx shadcn@latest add @algorize-ui/horizontal-scroll-stack
+```
+
+export const usageHorizontalShort = `import { HorizontalRail } from "@/components/custom/blocks/HorizontalRailBlock";
+
+${railSteps}
+
+export default function ProcessRailTrack() {
+  // Items slide continuously across the viewport without stacking
+  return ;
+}`;
 
 ### More examples
 
@@ -579,7 +609,7 @@ Discover the key capabilities that make this component an excellent choice for m
 
           string
 
-          "bg-white dark:bg-zinc-900..."
+          "bg-card border-border..."
 
           Optional Tailwind background, text, and border classes applied to the
           card surface (e.g., "bg-indigo-600 text-white"). Omitting

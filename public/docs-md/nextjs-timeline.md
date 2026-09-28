@@ -128,11 +128,18 @@ export const usageNoAnimation = `import {
 ${timelineEvents}
 
 export default function StaticTimeline() {
-  // Renders in place — no staggered GSAP entrance.
+  // Renders in place — no staggered entrance.
   return ;
 }`;
 
 ## Installation
+
+Register the @algorize-ui registry once per project, then add the component:
+
+```bash
+npx shadcn@latest registry add @algorize-ui=https://algorize-ui.vercel.app/r/{name}.json
+npx shadcn@latest add @algorize-ui/timeline
+```
 
 ### Requires Tailwind CSS v4
 
@@ -188,7 +195,7 @@ The breakpoints are **container queries** (`@container/timeline`, `@container/tl
 
           "indigo" | "rose" | "emerald" | "zinc" | string
 
-          "indigo"
+          "primary"
 
           The dynamic accent color applied to completed/current tracking lines,
           glowing nodes, and hover states. Fully supports custom hex codes.
@@ -202,7 +209,7 @@ The breakpoints are **container queries** (`@container/timeline`, `@container/tl
           true
 
           If true, the timeline nodes will execute a staggered fade-and-slide
-          entry animation powered by GSAP when the component mounts.
+          entry animation (Web Animations API, no library) when the component mounts.
 
 ### TimelineItemType Object
 

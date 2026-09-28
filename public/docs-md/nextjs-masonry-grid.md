@@ -2,7 +2,7 @@
 
 A high-performance masonry layout that tightly packs items of varying heights. Rather than relying on heavy JavaScript calculations or absolute positioning frameworks, this component utilizes standard CSS multi-column layout (`columns-N`) to flow items naturally.
 
-This premium iteration includes hardware-accelerated blur-fade entrances, `layout` animations for dynamic content reflows, and a scroll-triggered `whileInView` sequence for high-end aesthetic presentation.
+This premium iteration includes hardware-accelerated blur-fade entrances, layout animations for dynamic content reflows, and a scroll-triggered entrance sequence for high-end aesthetic presentation. It ships as a GSAP build and a Motion build with the same motion.
 
 ---
 
@@ -69,12 +69,12 @@ ${masonryShared}
 
 const items: GridItem[] = [
   { id: "1", type: "card", height: "h-56", title: "Alpine Forest Research", desc: "Exploring ancient pine ecosystems.", icon: , theme: "blue" },
-  { id: "2", type: "image", height: "h-[28rem]", image: "https://images.unsplash.com/photo-1448375240586-882707db888b?q=80&w=800&auto=format&fit=crop" },
+  { id: "2", type: "image", height: "h-[28rem]", image: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_800,c_limit/v1790145141/photo-1448375240586-882707db888b-1790145143491.jpg" },
   { id: "3", type: "gradient", height: "h-48", title: "Mountain Ridge Wind", desc: "Atmospheric motion in high altitude.", icon: , theme: "purple" },
   { id: "4", type: "card", height: "h-72", title: "Emerald Canopy", desc: "Dense rainforest vegetation metrics.", icon: , theme: "emerald" },
-  { id: "5", type: "image", height: "h-52", image: "https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?q=80&w=800&auto=format&fit=crop" },
+  { id: "5", type: "image", height: "h-52", image: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_800,c_limit/v1790145141/photo-1464822759023-fed622ff2c3b-1790145143491.jpg" },
   { id: "6", type: "card", height: "h-60", title: "Wilderness Flora", desc: "Natural biological biodiversity.", icon: , theme: "rose" },
-  { id: "7", type: "image", height: "h-[22rem]", image: "https://images.unsplash.com/photo-1506744038136-46273834b3fb?q=80&w=800&auto=format&fit=crop" },
+  { id: "7", type: "image", height: "h-[22rem]", image: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_800,c_limit/v1790146210/photo-1506744038136-46273834b3fb-1790146212208.jpg" },
   { id: "8", type: "gradient", height: "h-48", title: "Cascading Waters", desc: "Glacial river flow dynamics.", icon: , theme: "blue" },
 ];
 
@@ -89,13 +89,13 @@ export const usageColumns = `import { MasonryGrid } from "@/components/custom/bl
 ${masonryShared}
 
 const items: GridItem[] = [
-  { id: "c1", type: "image", height: "h-[22rem]", image: "https://images.unsplash.com/photo-1470071459604-3b5ec3a7fe05?q=80&w=800&auto=format&fit=crop" },
+  { id: "c1", type: "image", height: "h-[22rem]", image: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_800,c_limit/v1790146209/photo-1470071459604-3b5ec3a7fe05-1790146212205.jpg" },
   { id: "c2", type: "card", height: "h-64", title: "Glacial Expedition", desc: "Tracking ice melt patterns across polar terrain.", icon: , theme: "emerald" },
-  { id: "c3", type: "image", height: "h-[30rem]", image: "https://images.unsplash.com/photo-1426604966848-d7adac402bff?q=80&w=800&auto=format&fit=crop" },
+  { id: "c3", type: "image", height: "h-[30rem]", image: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_800,c_limit/v1790145140/photo-1426604966848-d7adac402bff-1790145143490.jpg" },
   { id: "c4", type: "gradient", height: "h-52", title: "Sunset Horizon", desc: "Coastal light refraction studies.", icon: , theme: "purple" },
-  { id: "c5", type: "image", height: "h-[24rem]", image: "https://images.unsplash.com/photo-1441974231531-c6227db76b6e?q=80&w=800&auto=format&fit=crop" },
+  { id: "c5", type: "image", height: "h-[24rem]", image: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_800,c_limit/v1790146211/photo-1441974231531-c6227db76b6e-1790146212212.jpg" },
   { id: "c6", type: "card", height: "h-56", title: "Pine Forest Canopy", desc: "High resolution aerial drone mapping.", icon: , theme: "blue" },
-  { id: "c7", type: "image", height: "h-[28rem]", image: "https://images.unsplash.com/photo-1469474968028-56623f02e42e?q=80&w=800&auto=format&fit=crop" },
+  { id: "c7", type: "image", height: "h-[28rem]", image: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_800,c_limit/v1790146209/photo-1469474968028-56623f02e42e-1790146212205.jpg" },
   { id: "c8", type: "gradient", height: "h-48", title: "Lush River Flow", desc: "Freshwater aquatic ecosystem analytics.", icon: , theme: "rose" },
 ];
 
@@ -112,11 +112,11 @@ ${masonryShared}
 
 const items: GridItem[] = [
   { id: "g1", type: "card", height: "h-60", title: "Highland Sanctuary", desc: "Protected mountain valley reserves.", icon: , theme: "purple" },
-  { id: "g2", type: "image", height: "h-[26rem]", image: "https://images.unsplash.com/photo-1469474968028-56623f02e42e?q=80&w=800&auto=format&fit=crop" },
+  { id: "g2", type: "image", height: "h-[26rem]", image: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_800,c_limit/v1790146209/photo-1469474968028-56623f02e42e-1790146212205.jpg" },
   { id: "g3", type: "gradient", height: "h-48", title: "Forest Mist Stream", desc: "Hydrological condensation research.", icon: , theme: "emerald" },
-  { id: "g4", type: "image", height: "h-[22rem]", image: "https://images.unsplash.com/photo-1507525428034-b723cf961d3e?q=80&w=800&auto=format&fit=crop" },
+  { id: "g4", type: "image", height: "h-[22rem]", image: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_800,c_limit/v1790146210/photo-1507525428034-b723cf961d3e-1790146212208.jpg" },
   { id: "g5", type: "card", height: "h-52", title: "Volcanic Ridge", desc: "Thermal geological formations.", icon: , theme: "rose" },
-  { id: "g6", type: "image", height: "h-[28rem]", image: "https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?q=80&w=800&auto=format&fit=crop" },
+  { id: "g6", type: "image", height: "h-[28rem]", image: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_800,c_limit/v1790145141/photo-1464822759023-fed622ff2c3b-1790145143491.jpg" },
 ];
 
 export default function TighterWall() {
@@ -131,12 +131,12 @@ export const usageStagger = `import { MasonryGrid } from "@/components/custom/bl
 ${masonryShared}
 
 const items: GridItem[] = [
-  { id: "s1", type: "image", height: "h-[28rem]", image: "https://images.unsplash.com/photo-1506744038136-46273834b3fb?q=80&w=800&auto=format&fit=crop" },
+  { id: "s1", type: "image", height: "h-[28rem]", image: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_800,c_limit/v1790146210/photo-1506744038136-46273834b3fb-1790146212208.jpg" },
   { id: "s2", type: "gradient", height: "h-52", title: "Aurora Skyward", desc: "Staggered particle illumination.", icon: , theme: "blue" },
   { id: "s3", type: "card", height: "h-64", title: "Deep Woodland", desc: "Ancient oak and redwood groves.", icon: , theme: "emerald" },
-  { id: "s4", type: "image", height: "h-[24rem]", image: "https://images.unsplash.com/photo-1441974231531-c6227db76b6e?q=80&w=800&auto=format&fit=crop" },
+  { id: "s4", type: "image", height: "h-[24rem]", image: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_800,c_limit/v1790146211/photo-1441974231531-c6227db76b6e-1790146212212.jpg" },
   { id: "s5", type: "card", height: "h-56", title: "Coastal Breeze", desc: "Oceanic climate metrics.", icon: , theme: "rose" },
-  { id: "s6", type: "image", height: "h-[30rem]", image: "https://images.unsplash.com/photo-1448375240586-882707db888b?q=80&w=800&auto=format&fit=crop" },
+  { id: "s6", type: "image", height: "h-[30rem]", image: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_800,c_limit/v1790145141/photo-1448375240586-882707db888b-1790145143491.jpg" },
 ];
 
 export default function SlowStaggerWall() {
@@ -152,11 +152,11 @@ ${masonryShared}
 
 const items: GridItem[] = [
   { id: "st1", type: "card", height: "h-52", title: "Static Meadow", desc: "Instant zero-motion render view.", icon: , theme: "emerald" },
-  { id: "st2", type: "image", height: "h-[26rem]", image: "https://images.unsplash.com/photo-1426604966848-d7adac402bff?q=80&w=800&auto=format&fit=crop" },
+  { id: "st2", type: "image", height: "h-[26rem]", image: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_800,c_limit/v1790145140/photo-1426604966848-d7adac402bff-1790145143490.jpg" },
   { id: "st3", type: "gradient", height: "h-48", title: "Timberland Grove", desc: "Pure CSS column layout flow.", icon: , theme: "purple" },
-  { id: "st4", type: "image", height: "h-[24rem]", image: "https://images.unsplash.com/photo-1470071459604-3b5ec3a7fe05?q=80&w=800&auto=format&fit=crop" },
+  { id: "st4", type: "image", height: "h-[24rem]", image: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_800,c_limit/v1790146209/photo-1470071459604-3b5ec3a7fe05-1790146212205.jpg" },
   { id: "st5", type: "card", height: "h-60", title: "Glacial Basin", desc: "Sub-zero ice shelf monitoring.", icon: , theme: "blue" },
-  { id: "st6", type: "image", height: "h-[28rem]", image: "https://images.unsplash.com/photo-1469474968028-56623f02e42e?q=80&w=800&auto=format&fit=crop" },
+  { id: "st6", type: "image", height: "h-[28rem]", image: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_800,c_limit/v1790146209/photo-1469474968028-56623f02e42e-1790146212205.jpg" },
 ];
 
 export default function StaticWall() {
@@ -167,6 +167,19 @@ export default function StaticWall() {
 }`;
 
 ## Installation
+
+Register the @algorize-ui registry once per project, then add the component:
+
+```bash
+npx shadcn@latest registry add @algorize-ui=https://algorize-ui.vercel.app/r/{name}.json
+npx shadcn@latest add @algorize-ui/masonry-grid
+```
+
+Or the Motion build (same props, same file — install one):
+
+```bash
+npx shadcn@latest add @algorize-ui/masonry-grid-framer
+```
 
 ## Examples
 
@@ -181,7 +194,7 @@ Discover the Masonry Grid's dynamic layout features, seamlessly arranging varyin
     Total control over your UI. Just pass the raw data and a render function, and the grid handles the complex layout.
 
     Staggered Entrances
-    Powered by Framer Motion to deliver beautiful, Apple-style staggered blur-fade entrances on scroll.
+    Apple-style staggered blur-fade entrances on scroll, in a GSAP build and a Motion build that move the same way.
 
     Fluid Resizing
     Automatically reflows into the correct number of columns using Tailwind responsive utility classes.
@@ -242,7 +255,7 @@ Discover the Masonry Grid's dynamic layout features, seamlessly arranging varyin
           true
 
           Toggles the staggered, hardware-accelerated blur-fade entrance
-          sequence via Framer Motion.
+          sequence.
 
           staggerDelay
 
@@ -263,12 +276,13 @@ Discover the Masonry Grid's dynamic layout features, seamlessly arranging varyin
 
           ...props
 
-          HTMLMotionProps
+          HTMLAttributes
 
           undefined
 
-          Accepts all standard HTML &lt;div&gt; attributes and
-          Framer Motion props, excluding children.
+          Accepts all standard HTML &lt;div&gt; attributes,
+          excluding children. The Motion build also takes
+          Motion props (HTMLMotionProps).
 
 ---
 

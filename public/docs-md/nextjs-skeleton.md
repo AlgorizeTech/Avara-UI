@@ -50,6 +50,7 @@ export default function StaticSkeleton() {
 
 export const usageCustom = `import { SkeletonBlock } from "@/components/custom/blocks/SkeletonBlock";
 
+// Custom atomic composition with explicit width, height and radius props
 export default function CustomSkeleton() {
   return (
 
@@ -58,37 +59,14 @@ export default function CustomSkeleton() {
 
 ## Installation
 
+Register the @algorize-ui registry once per project, then add the component:
+
+```bash
+npx shadcn@latest registry add @algorize-ui=https://algorize-ui.vercel.app/r/{name}.json
+npx shadcn@latest add @algorize-ui/skeleton
+```
+
 ## Examples
-
-## Usage
-
-### Composite Use
-
-If you are loading standard layouts like a user profile or a product card, just use the built-in composite variants to save time.
-
-```tsx
-
-export default function FeedLoader() {
-  return (
-
-  );
-}
-```
-
-## Custom Skeletons
-
-For everything else, you can leverage explicit props to build perfect placeholder boundaries without wrestling with Tailwind class strings.
-
-```tsx
-
-export default function CustomDashboardLoader() {
-  return (
-    
-      {/* Build any layout using exact width/height/radius props */}
-
-  );
-}
-```
 
 ## Features
 Learn about the Skeleton component's loading placeholder features, featuring a subtle pulsing animation that reduces perceived wait times.

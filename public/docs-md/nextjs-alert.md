@@ -34,7 +34,7 @@ export const usageGlass = `import { Alert } from "@/components/custom/blocks/Ale
 
 export default function GlassAlert() {
   return (
-    // Glass needs something behind it — put it over an image or gradient.
+    // Glass needs something vibrant behind it — put it over an image or gradient.
 
   );
 }`;
@@ -87,6 +87,13 @@ export default function RichAlert() {
 }`;
 
 ## Installation
+
+Register the @algorize-ui registry once per project, then add the component:
+
+```bash
+npx shadcn@latest registry add @algorize-ui=https://algorize-ui.vercel.app/r/{name}.json
+npx shadcn@latest add @algorize-ui/alert
+```
 
 ## Examples
 

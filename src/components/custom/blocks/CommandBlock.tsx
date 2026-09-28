@@ -16,6 +16,8 @@ import { createPortal } from "react-dom";
 // 1. CONTEXT
 // ==========================================
 interface CommandContextType {
+  /** When false the caller owns filtering and every item stays visible. */
+  shouldFilter: boolean;
   search: string;
   setSearch: (search: string) => void;
   /**
@@ -43,7 +45,7 @@ export interface CommandProps extends React.HTMLAttributes<HTMLDivElement> {
 
 export function Command({
   className,
-  shouldFilter: _shouldFilter = true,
+  shouldFilter = true,
   children,
   ...props
 }: CommandProps) {
@@ -104,12 +106,12 @@ export function Command({
   }, [search, command]);
 
   return (
-    <CommandContext.Provider value={{ search, setSearch, command }}>
+    <CommandContext.Provider value={{ search, setSearch, command, shouldFilter }}>
       <div
         ref={setCommand}
         cmdk-root="true"
         className={cn(
-          "flex h-full w-full flex-col overflow-hidden rounded-xl bg-white dark:bg-[#050505] text-foreground border border-border shadow-sm",
+          "flex h-full w-full flex-col overflow-hidden rounded-xl bg-popover text-popover-foreground border border-border shadow-sm",
           className,
         )}
         {...props}
@@ -169,7 +171,7 @@ export function CommandDialog({
           <div className="z-50 w-full max-w-xl animate-in fade-in zoom-in-95 slide-in-from-top-[10%] duration-200 px-4 sm:px-0">
             <Command
               className={cn(
-                "shadow-2xl h-auto border-none ring-1 ring-zinc-200 dark:ring-zinc-800",
+                "shadow-2xl h-auto border-none ring-1 ring-border",
                 className,
               )}
               {...props}
@@ -333,13 +335,17 @@ export function CommandItem({
   children,
   ...props
 }: CommandItemProps) {
-  const { search, command } = useCommand();
+  const { search, command, shouldFilter } = useCommand();
   const itemRef = useRef<HTMLDivElement>(null);
 
   // Extract text content for fuzzy matching if no explicit value is provided
   const textValue = value || textFromChildren(children);
+  // With `shouldFilter={false}` the caller owns the list and every item
+  // stays visible, however the query reads.
   const isMatch =
-    !search || textValue.toLowerCase().includes(search.toLowerCase());
+    !shouldFilter ||
+    !search ||
+    textValue.toLowerCase().includes(search.toLowerCase());
 
   const handleSelect = () => {
     if (onSelect) onSelect(textValue);
@@ -361,8 +367,8 @@ export function CommandItem({
       onMouseEnter={handleMouseEnter}
       className={cn(
         "relative flex cursor-pointer select-none items-center rounded-md px-2 py-1.5 text-sm outline-none transition-colors",
-        "data-[selected=true]:bg-muted dark:data-[selected=true]:bg-zinc-800",
-        "data-[selected=true]:text-foreground dark:data-[selected=true]:text-zinc-50",
+        "data-[selected=true]:bg-muted",
+        "data-[selected=true]:text-foreground",
         "data-[disabled=true]:pointer-events-none data-[disabled=true]:opacity-50",
         className,
       )}

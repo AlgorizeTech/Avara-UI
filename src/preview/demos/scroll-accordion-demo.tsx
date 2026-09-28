@@ -19,7 +19,7 @@ const showcaseItems: AccordionShowcaseItem[] = [
       "MOBILE FIRST RESPONSIVE",
     ],
     image:
-      "https://images.unsplash.com/photo-1460925895917-afdab827c52f?q=80&w=1200&auto=format&fit=crop",
+      "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_1200,c_limit/v1790146209/photo-1460925895917-afdab827c52f-1790146212204.jpg",
     badgeText: "SELECTED SERVICE",
   },
   {
@@ -34,7 +34,7 @@ const showcaseItems: AccordionShowcaseItem[] = [
       "EDGE COMPUTED API",
     ],
     image:
-      "https://images.unsplash.com/photo-1551288049-bebda4e38f71?q=80&w=1200&auto=format&fit=crop",
+      "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_1200,c_limit/v1790146211/photo-1551288049-bebda4e38f71-1790146212211.jpg",
     badgeText: "SELECTED SERVICE",
   },
   {
@@ -49,7 +49,7 @@ const showcaseItems: AccordionShowcaseItem[] = [
       "VECTOR DATABASE SETUP",
     ],
     image:
-      "https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?q=80&w=1200&auto=format&fit=crop",
+      "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_1200,c_limit/v1790148864/photo-1618005182384-a83a8bd57fbe-1790148865111.jpg",
     badgeText: "SELECTED SERVICE",
   },
   {
@@ -64,7 +64,7 @@ const showcaseItems: AccordionShowcaseItem[] = [
       "REAL-TIME NOTIFICATIONS",
     ],
     image:
-      "https://images.unsplash.com/photo-1504639725590-34d0984388bd?q=80&w=1200&auto=format&fit=crop",
+      "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_1200,c_limit/v1790146210/photo-1504639725590-34d0984388bd-1790146212207.jpg",
     badgeText: "SELECTED SERVICE",
   },
 ];
@@ -78,12 +78,11 @@ export default function ScrollAccordionDemo({
   defaultIndex?: number;
 }) {
   return (
-    <div className="w-full bg-zinc-50 dark:bg-[#0a0a0a] py-8 px-2 sm:px-8 relative rounded-3xl border border-zinc-200 dark:border-white/10 transition-colors duration-300">
+    <div className="w-full bg-background py-8 px-2 sm:px-8 relative rounded-3xl border border-border transition-colors duration-300">
       <ScrollAccordionShowcase
         items={showcaseItems}
         displayMode={displayMode}
         defaultIndex={defaultIndex}
-        defaultAccentColor="#FFAB1D"
         localStorageKey="primaryColor"
       />
     </div>

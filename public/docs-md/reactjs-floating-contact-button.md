@@ -1,6 +1,6 @@
 # Floating Contact Button
 
-A high-converting, interactive floating support widget that anchors to any screen corner. Clicking the button expands a sleek glassmorphic chat interface powered by Framer Motion, featuring simulated agent replies, instantaneous `localStorage` theme coloring, and mobile-first responsiveness.
+A high-converting, interactive floating support widget that anchors to any screen corner. Clicking the button expands a sleek glassmorphic chat interface animated with plain CSS (no animation library), featuring simulated agent replies, instantaneous `localStorage` theme coloring, and mobile-first responsiveness.
 
 Type a message in any preview and hit Enter to see the typing indicator and simulated reply. The previews use `containerMode="absolute"` so the widget stays inside its frame — in your app you would leave it `fixed`.
 
@@ -45,6 +45,13 @@ export default function AccentedWidget() {
 }`;
 
 ## Installation
+
+Register the @algorize-ui registry once per project, then add the component:
+
+```bash
+npx shadcn@latest registry add @algorize-ui=https://algorize-ui.vercel.app/r/{name}.json
+npx shadcn@latest add @algorize-ui/floating-contact-button
+```
 
 ## Examples
 
@@ -104,7 +111,7 @@ Discover the key capabilities that make this component an excellent choice for m
 
             avatarUrl
             string
-            "https://images.unsplash.com/..."
+            "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto/v1790224285/photo-1469474968028-56623f02e42e-1790146212205-1790224284635.webp"
             Image URL for the support agent avatar rendered in the header with an online status badge.
 
             defaultOpen
@@ -119,7 +126,7 @@ Discover the key capabilities that make this component an excellent choice for m
 
             defaultAccentColor
             string
-            "#6366f1"
+            "var(--primary)"
             The fallback hex color applied to the header, user message bubbles, and trigger button if no key is found in storage.
 
             initialMessages
@@ -144,7 +151,7 @@ Discover the key capabilities that make this component an excellent choice for m
             id
             string
             Yes
-            A unique string identifier required for React list rendering and Framer Motion layout animations.
+            A unique string identifier required for React list rendering; each new message animates in once, when it mounts.
 
             text
             string

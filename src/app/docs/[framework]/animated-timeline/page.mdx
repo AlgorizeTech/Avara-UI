@@ -19,7 +19,7 @@ export const timelineEvents = `import {
   Zap,
 } from "lucide-react";
 
-const EVENTS = [
+const EVENTS: AnimatedTimelineItem[] = [
   {
     id: "1",
     title: "Project Initiation",
@@ -74,7 +74,7 @@ const EVENTS = [
   },
 ];`;
 
-export const usageDefault = `import { AnimatedTimelineBlock } from "@/components/custom/blocks/AnimatedTimelineBlock";
+export const usageDefault = `import { AnimatedTimelineBlock, type AnimatedTimelineItem } from "@/components/custom/blocks/AnimatedTimelineBlock";
 
 ${timelineEvents}
 
@@ -86,7 +86,7 @@ export default function CompanyHistory() {
   );
 }`;
 
-export const usageLeft = `import { AnimatedTimelineBlock } from "@/components/custom/blocks/AnimatedTimelineBlock";
+export const usageLeft = `import { AnimatedTimelineBlock, type AnimatedTimelineItem } from "@/components/custom/blocks/AnimatedTimelineBlock";
 
 ${timelineEvents}
 
@@ -100,7 +100,7 @@ export default function LeftTimeline() {
   );
 }`;
 
-export const usageRight = `import { AnimatedTimelineBlock } from "@/components/custom/blocks/AnimatedTimelineBlock";
+export const usageRight = `import { AnimatedTimelineBlock, type AnimatedTimelineItem } from "@/components/custom/blocks/AnimatedTimelineBlock";
 
 ${timelineEvents}
 
@@ -112,7 +112,7 @@ export default function RightTimeline() {
   );
 }`;
 
-export const usageFadeUp = `import { AnimatedTimelineBlock } from "@/components/custom/blocks/AnimatedTimelineBlock";
+export const usageFadeUp = `import { AnimatedTimelineBlock, type AnimatedTimelineItem } from "@/components/custom/blocks/AnimatedTimelineBlock";
 
 ${timelineEvents}
 
@@ -124,7 +124,7 @@ export default function FadeUpTimeline() {
   );
 }`;
 
-export const usageZoom = `import { AnimatedTimelineBlock } from "@/components/custom/blocks/AnimatedTimelineBlock";
+export const usageZoom = `import { AnimatedTimelineBlock, type AnimatedTimelineItem } from "@/components/custom/blocks/AnimatedTimelineBlock";
 
 ${timelineEvents}
 
@@ -136,7 +136,7 @@ export default function ZoomTimeline() {
   );
 }`;
 
-export const usageBlur = `import { AnimatedTimelineBlock } from "@/components/custom/blocks/AnimatedTimelineBlock";
+export const usageBlur = `import { AnimatedTimelineBlock, type AnimatedTimelineItem } from "@/components/custom/blocks/AnimatedTimelineBlock";
 
 ${timelineEvents}
 
@@ -268,30 +268,30 @@ export default function BlurTimeline() {
 Discover the key capabilities that make this component an excellent choice for modern, animated user interfaces.
 
 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 my-6 not-prose">
-  <div className="p-6 rounded-2xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900">
-    <h3 className="text-lg font-semibold text-zinc-900 dark:text-zinc-50 mb-2">Fluid Animations</h3>
-    <p className="text-zinc-600 dark:text-zinc-400 text-sm">Hardware-accelerated transitions that ensure smooth 60fps performance across devices.</p>
+  <div className="p-6 rounded-2xl border border-border bg-card">
+    <h3 className="text-lg font-semibold text-card-foreground mb-2">Fluid Animations</h3>
+    <p className="text-muted-foreground text-sm">Hardware-accelerated transitions that ensure smooth 60fps performance across devices.</p>
   </div>
-  <div className="p-6 rounded-2xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900">
-    <h3 className="text-lg font-semibold text-zinc-900 dark:text-zinc-50 mb-2">Highly Customizable</h3>
-    <p className="text-zinc-600 dark:text-zinc-400 text-sm">Exposes intuitive props for tailoring colors, sizes, and animation speeds to fit your brand.</p>
+  <div className="p-6 rounded-2xl border border-border bg-card">
+    <h3 className="text-lg font-semibold text-card-foreground mb-2">Highly Customizable</h3>
+    <p className="text-muted-foreground text-sm">Exposes intuitive props for tailoring colors, sizes, and animation speeds to fit your brand.</p>
   </div>
-  <div className="p-6 rounded-2xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900">
-    <h3 className="text-lg font-semibold text-zinc-900 dark:text-zinc-50 mb-2">Responsive Design</h3>
-    <p className="text-zinc-600 dark:text-zinc-400 text-sm">Automatically adapts to mobile, tablet, and desktop viewports without horizontal scrolling issues.</p>
+  <div className="p-6 rounded-2xl border border-border bg-card">
+    <h3 className="text-lg font-semibold text-card-foreground mb-2">Responsive Design</h3>
+    <p className="text-muted-foreground text-sm">Automatically adapts to mobile, tablet, and desktop viewports without horizontal scrolling issues.</p>
   </div>
-  <div className="p-6 rounded-2xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900">
-    <h3 className="text-lg font-semibold text-zinc-900 dark:text-zinc-50 mb-2">Accessible</h3>
-    <p className="text-zinc-600 dark:text-zinc-400 text-sm">Built with semantic HTML and ARIA labels where necessary to support screen readers and keyboard navigation.</p>
+  <div className="p-6 rounded-2xl border border-border bg-card">
+    <h3 className="text-lg font-semibold text-card-foreground mb-2">Accessible</h3>
+    <p className="text-muted-foreground text-sm">Built with semantic HTML and ARIA labels where necessary to support screen readers and keyboard navigation.</p>
   </div>
 </div>
 
 ## Best Practices & Guidelines
 
 <div className="flex flex-col gap-4 my-6 not-prose">
-  <div className="p-5 rounded-xl border border-blue-200 dark:border-blue-900/50 bg-blue-50/50 dark:bg-blue-950/20">
-    <h4 className="text-base font-semibold text-blue-900 dark:text-blue-300 mb-1">Usage Guidelines</h4>
-    <p className="text-blue-800 dark:text-blue-400/80 text-sm">Give the timeline room to breathe — the entrance only reads as an entrance when a node crosses the observer threshold mid-scroll, so avoid placing the whole list above the fold. On narrow columns prefer <code>layout="left"</code>; the centered rail needs roughly 640px to avoid cramped cards.</p>
+  <div className="rounded-xl border border-foreground/[0.06] bg-foreground/[0.03] p-4">
+    <h4 className="font-sans text-[14px] font-semibold text-foreground mb-1">Usage Guidelines</h4>
+    <p className="text-[13px] leading-relaxed text-foreground/50">Give the timeline room to breathe — the entrance only reads as an entrance when a node crosses the observer threshold mid-scroll, so avoid placing the whole list above the fold. On narrow columns prefer <code>layout="left"</code>; the centered rail needs roughly 640px to avoid cramped cards.</p>
   </div>
 </div>
 

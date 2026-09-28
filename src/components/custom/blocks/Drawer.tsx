@@ -1,7 +1,6 @@
 "use client";
 
 import { cn } from "@/lib/utils";
-import gsap from "gsap";
 import { X } from "lucide-react";
 import React, {
   createContext,
@@ -22,6 +21,46 @@ interface DrawerContextType {
 }
 
 const DrawerContext = createContext<DrawerContextType | null>(null);
+
+// ==========================================
+// MOTION
+// Opening fades the overlay in (0.3s power2.out) and slides the panel in from
+// its edge (0.4s power3.out); closing reverses both in 0.3s (power2.in /
+// power3.in). A transition takes its timing from the state it is heading to,
+// so each state carries its own. @starting-style is where a freshly mounted
+// layer starts from.
+// ==========================================
+const POWER3_OUT =
+  "linear(0, .1268, .2412, .3439, .4358, .5177, .5904, .6545, .7108, .7599, .8025, .8391, .8704, .8969, .9191, .9375, .9526, .9647, .9744, .9819, .9877, .9919, .9949, .997, .9984, .9992, .9997, .9999, 1, 1, 1)";
+const POWER3_IN =
+  "linear(0, 0, 0, .0001, .0003, .0008, .0016, .003, .0051, .0081, .0123, .0181, .0256, .0353, .0474, .0625, .0809, .1031, .1296, .1609, .1975, .2401, .2892, .3455, .4096, .4823, .5642, .6561, .7588, .8732, 1)";
+
+const DRAWER_CSS = `
+.drawer-overlay {
+  opacity: 0;
+  transition: opacity 0.3s cubic-bezier(0.3333, 0, 0.6667, 0);
+}
+.drawer-overlay[data-state="open"] {
+  opacity: 1;
+  transition: opacity 0.3s cubic-bezier(0.3333, 1, 0.6667, 1);
+}
+.drawer-content { transition: transform 0.3s ${POWER3_IN}; }
+.drawer-content[data-side="top"] { transform: translateY(-100%); }
+.drawer-content[data-side="bottom"] { transform: translateY(100%); }
+.drawer-content[data-side="left"] { transform: translateX(-100%); }
+.drawer-content[data-side="right"] { transform: translateX(100%); }
+.drawer-content[data-state="open"] {
+  transform: none;
+  transition: transform 0.4s ${POWER3_OUT};
+}
+@starting-style {
+  .drawer-overlay[data-state="open"] { opacity: 0; }
+  .drawer-content[data-state="open"][data-side="top"] { transform: translateY(-100%); }
+  .drawer-content[data-state="open"][data-side="bottom"] { transform: translateY(100%); }
+  .drawer-content[data-state="open"][data-side="left"] { transform: translateX(-100%); }
+  .drawer-content[data-state="open"][data-side="right"] { transform: translateX(100%); }
+}
+`;
 
 export const Drawer = ({
   open,
@@ -65,7 +104,7 @@ export const Drawer = ({
       };
     }
     doc.body.style.overflow = "";
-    // Match GSAP animation duration (300ms) before unmounting from DOM
+    // Match the closing transition (300ms) before unmounting from DOM
     const timer = setTimeout(() => setRenderLayer(false), 300);
     return () => clearTimeout(timer);
   }, [open, portalTarget]);
@@ -87,6 +126,7 @@ export const Drawer = ({
       {createPortal(
         <DrawerContext.Provider value={{ open, onOpenChange, side }}>
           <div ref={layerRef} className="fixed inset-0 z-50 pointer-events-none">
+            <style>{DRAWER_CSS}</style>
             {children}
           </div>
         </DrawerContext.Provider>,
@@ -98,35 +138,20 @@ export const Drawer = ({
 
 export const DrawerOverlay = ({
   className,
+  style,
   ...props
 }: React.HTMLAttributes<HTMLDivElement>) => {
   const { open, onOpenChange } = useContext(DrawerContext)!;
-  const overlayRef = useRef<HTMLDivElement>(null);
-
-  useEffect(() => {
-    if (open) {
-      gsap.fromTo(
-        overlayRef.current,
-        { opacity: 0 },
-        { opacity: 1, duration: 0.3, ease: "power2.out" },
-      );
-    } else {
-      gsap.to(overlayRef.current, {
-        opacity: 0,
-        duration: 0.3,
-        ease: "power2.in",
-      });
-    }
-  }, [open]);
 
   return (
     <div
-      ref={overlayRef}
       onClick={() => onOpenChange(false)}
+      data-state={open ? "open" : "closed"}
       className={cn(
-        "absolute inset-0 bg-black/60 backdrop-blur-sm pointer-events-auto",
+        "drawer-overlay absolute inset-0 bg-black/60 backdrop-blur-sm pointer-events-auto",
         className,
       )}
+      style={style}
       {...props}
     />
   );
@@ -135,66 +160,39 @@ export const DrawerOverlay = ({
 export const DrawerContent = React.forwardRef<
   HTMLDivElement,
   React.HTMLAttributes<HTMLDivElement>
->(({ className, children, ...props }, ref) => {
+>(({ className, children, style, ...props }, ref) => {
   const { open, side, onOpenChange } = useContext(DrawerContext)!;
-  const contentRef = useRef<HTMLDivElement>(null);
 
-  // Strict layout boundaries that prevent vertical/horizontal drift
+  // Strict layout boundaries that prevent vertical/horizontal drift. Where the
+  // panel hides off-screen for each side lives in DRAWER_CSS.
   const sideConfig = {
     top: {
       class: "top-0 left-0 right-0 w-full max-h-[85vh] sm:max-h-[80vh] rounded-b-2xl",
-      hidden: { y: "-100%", x: 0 },
     },
     bottom: {
       class: "bottom-0 left-0 right-0 w-full max-h-[85vh] sm:max-h-[80vh] rounded-t-2xl",
-      hidden: { y: "100%", x: 0 },
     },
     left: {
       class:
         "top-0 left-0 bottom-0 h-full w-[400px] max-w-[85vw] rounded-r-2xl",
-      hidden: { x: "-100%", y: 0 },
     },
     right: {
       class:
         "top-0 right-0 bottom-0 h-full w-[400px] max-w-[85vw] rounded-l-2xl",
-      hidden: { x: "100%", y: 0 },
     },
   };
 
-  useEffect(() => {
-    const el = contentRef.current;
-    if (!el) return;
-
-    if (open) {
-      gsap.fromTo(el, sideConfig[side].hidden, {
-        x: 0,
-        y: 0,
-        duration: 0.4,
-        ease: "power3.out",
-      });
-    } else {
-      gsap.to(el, {
-        ...sideConfig[side].hidden,
-        duration: 0.3,
-        ease: "power3.in",
-      });
-    }
-  }, [open, side]);
-
   return (
     <div
-      ref={(node) => {
-        // @ts-ignore
-        contentRef.current = node;
-        if (typeof ref === "function") ref(node);
-        else if (ref)
-          (ref as React.MutableRefObject<HTMLDivElement | null>).current = node;
-      }}
+      ref={ref}
+      data-state={open ? "open" : "closed"}
+      data-side={side}
       className={cn(
-        "absolute bg-background shadow-2xl pointer-events-auto flex flex-col overflow-hidden border border-border",
+        "drawer-content absolute bg-background shadow-2xl pointer-events-auto flex flex-col overflow-hidden border border-border",
         sideConfig[side].class,
         className,
       )}
+      style={style}
       {...props}
     >
       <button

@@ -1,10 +1,10 @@
 # Invoice Dashboard
 
-A complete, fully functional, and editable Invoice dashboard component. Includes built-in state management for editing line items, adjusting totals, printing, and downloading the invoice data as a JSON file.
+A complete, fully functional, and editable Invoice dashboard component featuring 3 distinct design variants: Default, Corporate Executive, and Neo-Brutalist.
 
 The component is fully encapsulated — hand it an `invoiceData` object and it owns the rest. Click **Edit** in the right sidebar of any preview to add items, change quantities and download the resulting JSON.
 
-export const invoiceSource = `const invoiceData = {
+export const invoiceSource = `const invoiceData: InvoiceData = {
   invoiceNumber: "#4987",
   dateIssued: "13 Mar 2026",
   dateDue: "23 Mar 2026",
@@ -46,7 +46,7 @@ export const invoiceSource = `const invoiceData = {
   note: "Note: It was a pleasure working with you and your team. We hope you will keep us in mind for future freelance projects. Thank You!",
 };`;
 
-export const usageDefault = `import Invoice from "@/components/custom/blocks/Invoice";
+export const usageDefault = `import Invoice, { type InvoiceData } from "@/components/custom/blocks/Invoice";
 
 ${invoiceSource}
 
@@ -54,49 +54,47 @@ export default function InvoicePage() {
   return ;
 }`;
 
-export const usageMinimal = `import Invoice from "@/components/custom/blocks/Invoice";
+export const usageCorporate = `import Invoice, { type InvoiceData } from "@/components/custom/blocks/Invoice";
 
 ${invoiceSource}
 
-export default function MinimalInvoice() {
-  // Strips the card chrome down to type and rules — the print-friendly layout.
+export default function CorporateInvoice() {
   return ;
 }`;
 
-export const usageGlass = `import Invoice from "@/components/custom/blocks/Invoice";
+export const usageBrutalist = `import Invoice, { type InvoiceData } from "@/components/custom/blocks/Invoice";
 
 ${invoiceSource}
 
-export default function GlassInvoice() {
-  return (
-    // Nature wallpaper backdrop for glass refraction
-
-  );
-};`;
+export default function BrutalistInvoice() {
+  return ;
+}`;
 
 ## Installation
 
-## Examples
+Register the @algorize-ui registry once per project, then add the component:
+
+```bash
+npx shadcn@latest registry add @algorize-ui=https://algorize-ui.vercel.app/r/{name}.json
+npx shadcn@latest add @algorize-ui/invoice
+```
+
+## Variations
 
 ## Features
 Explore the Invoice component's structured layout for displaying billing information, line items, and dynamic total calculations.
 
-    Customizable
-    Easily adapt the component's styling and behavior to fit your application's unique design system.
+    3 Design Variants
+    Choose from Default, Corporate Executive, and Neo-Brutalist layout variants.
 
-    Accessible
-    Built with accessibility in mind, ensuring all users can interact with your application effectively.
+    Interactive Edit & Export
+    Inline editing for item prices, descriptions, quantities, with instant recalculations and JSON export.
 
-    Responsive
-    Fully responsive design that looks and works great across desktop, tablet, and mobile devices.
+    Print & PDF Ready
+    Built-in browser print triggers that automatically hide control sidebars and format clean PDF pages.
 
-    Performant
-    Optimized for maximum performance with minimal re-renders and efficient state management.
-
-## Best Practices & Guidelines
-
-    Usage Guidelines
-    Follow standard design principles when implementing this component. Ensure proper contrast, spacing, and context within your layout.
+    Theme Integration
+    Seamless support for custom color themes across primary buttons, focus rings, and badges.
 
 ## Props Reference
 
@@ -112,12 +110,11 @@ Explore the Invoice component's structured layout for displaying billing informa
           Required
 
           The core data object containing all fields (dates, addresses, billing
-          details, array of items, totals, and notes). See usage example for
-          shape.
+          details, array of items, totals, and notes).
 
           variant
 
-          "default" | "minimal" | "glass"
+          "default" | "corporate" | "brutalist"
 
           "default"
 
@@ -126,12 +123,11 @@ Explore the Invoice component's structured layout for displaying billing informa
 
           color
 
-          "indigo" | "rose" | "emerald" | "zinc"
+          "primary" | "indigo" | "rose" | "emerald" | "zinc"
 
-          "indigo"
+          "primary"
 
-          Applies global color themes to the primary buttons, focus rings, and
-          heart icon.
+          Applies global color themes to buttons, focus rings, and highlights.
 
 ---
 

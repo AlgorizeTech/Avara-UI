@@ -318,7 +318,6 @@ export default function TextEditor() {
   return (
     <div className="w-full p-4 border rounded-xl">
       <ToggleGroup
-        color="#8B5CF6"
         onValueChange="{setFormat}"
         type="multiple"
         value="{format}"
@@ -446,13 +445,13 @@ export default function TextEditor() {
           <code>color</code>
         </td>
         <td>
-          <code>"indigo" | "rose" | "emerald" | "zinc" | string</code>
+          <code>"primary" | "indigo" | "rose" | "emerald" | "zinc" | string</code>
         </td>
         <td>
-          <code>"zinc"</code>
+          <code>"primary"</code>
         </td>
         <td>
-          The dynamic accent color applied to active items. Fully supports custom hex codes.
+          The dynamic accent color applied to active items. <code>"primary"</code> follows your theme's <code>--primary</code> token; custom hex codes are fully supported.
         </td>
       </tr>
       <tr>

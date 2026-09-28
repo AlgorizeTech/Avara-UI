@@ -25,15 +25,38 @@ export const usageSiblingCount = `export default function TightPagination() {
   );
 }`;
 
-export const usageTable = `const PER_PAGE = 5;
-
-export default function CustomerDirectory() {
+export const usageControls = `export default function ControlledPagination() {
   const [currentPage, setCurrentPage] = useState(1);
-  const totalItems = 50;
-  const totalPages = Math.ceil(totalItems / PER_PAGE);
+  const [pageSize, setPageSize] = useState(10);
+  const totalItems = 240;
+  const totalPages = Math.ceil(totalItems / pageSize);
 
-  const start = (currentPage - 1) * PER_PAGE + 1;
-  const end = Math.min(currentPage * PER_PAGE, totalItems);
+  return (
+     {
+        setPageSize(size);
+        setCurrentPage(1);
+      }}
+    />
+  );
+}`;
+
+export const usagePageSelect = `export default function DropdownJump() {
+  const [currentPage, setCurrentPage] = useState(7);
+
+  // Every page is listed in a ; best when totalPages stays modest.
+  return (
+    
+  );
+}`;
+
+export const usageTable = `export default function CustomerDirectory() {
+  const [currentPage, setCurrentPage] = useState(1);
+  const [pageSize, setPageSize] = useState(5);
+  const totalItems = 50;
+  const totalPages = Math.ceil(totalItems / pageSize);
+
+  const start = (currentPage - 1) * pageSize + 1;
+  const end = Math.min(currentPage * pageSize, totalItems);
 
   return (
 
@@ -41,10 +64,23 @@ export default function CustomerDirectory() {
           
             Showing {start} to {end} of {totalItems} entries
 
+       {
+          setPageSize(size);
+          setCurrentPage(1);
+        }}
+      />
+    
   );
 }`;
 
 ## Installation
+
+Register the @algorize-ui registry once per project, then add the component:
+
+```bash
+npx shadcn@latest registry add @algorize-ui=https://algorize-ui.vercel.app/r/{name}.json
+npx shadcn@latest add @algorize-ui/pagination
+```
 
 ## Examples
 
@@ -99,6 +135,60 @@ export default function CustomerDirectory() {
 
           If true, renders the "Previous" and "Next" control buttons on the
           extreme left and right of the pagination block.
+
+          showPageJump
+
+          boolean
+
+          false
+
+          Shows a "Go to page" control. Values outside{" "}
+          1..totalPages are clamped before{" "}
+          onPageChange fires.
+
+          pageJumpVariant
+
+          "input" | "select"
+
+          "input"
+
+          "input" is a number field with a Go button;{" "}
+          "select" is a dropdown listing every page.
+
+          showPageSize
+
+          boolean
+
+          false
+
+          Shows a "Rows per page" dropdown. Requires pageSize and{" "}
+          onPageSizeChange.
+
+          pageSize
+
+          number
+
+          10
+
+          The currently selected rows-per-page value. If it isn't in{" "}
+          pageSizeOptions it is added to the list.
+
+          pageSizeOptions
+
+          number[]
+
+          [10, 20, 50, 100]
+        
+        The choices offered in the rows-per-page dropdown.
+
+          onPageSizeChange
+
+          {`(pageSize: number) => void`}
+
+          undefined
+
+          Fired when the user picks a new rows-per-page value. Recompute{" "}
+          totalPages and usually reset currentPage to 1.
 
 ---
 

@@ -9,26 +9,6 @@ There is **no column config and no required row shape**. Whatever your API retur
 
 Every example below is live. Click a sortable header, expand a row, or hover the right edge of a row to reveal its actions.
 
-## Anatomy
-
-```tsx
-<Table>
-  <TableHeading title="Invoices" />
-  <TableContent>
-    <TableHeader>
-      <TableRow isHeader>
-        <TableHead>Customer</TableHead>
-      </TableRow>
-    </TableHeader>
-    <TableBody>
-      <TableRow>
-        <TableCell>Alice Freeman</TableCell>
-      </TableRow>
-    </TableBody>
-  </TableContent>
-  <TableFooter>…</TableFooter>
-</Table>
-```
 
 `Table` is the card. `TableContent` renders the scroll container and the `<table>` element. Everything else maps one-to-one onto the HTML table tags, so `colSpan`, `scope` and any other native attribute pass straight through.
 
@@ -55,7 +35,24 @@ import {
 
 ${invoiceType}
 
-export default function InvoiceTable({ invoices }: { invoices: Invoice[] }) {
+const sampleInvoices: Invoice[] = [
+  {
+    reference: "INV-3021",
+    customer: { name: "Alice Freeman", email: "alice@example.com" },
+    amount: 3200,
+    status: "completed",
+    issuedAt: "2023-10-24",
+  },
+  {
+    reference: "INV-3022",
+    customer: { name: "Bob Smith", email: "bob@example.com" },
+    amount: 850.5,
+    status: "processing",
+    issuedAt: "2023-10-24",
+  },
+];
+
+export default function InvoiceTable({ invoices = sampleInvoices }: { invoices?: Invoice[] }) {
   return (
     <Table>
       <TableHeading title="Invoices" description="Latest activity" />
@@ -84,7 +81,7 @@ export default function InvoiceTable({ invoices }: { invoices: Invoice[] }) {
                 </div>
               </TableCell>
 
-              <TableCell align="right">{invoice.amount}</TableCell>
+              <TableCell align="right">\${invoice.amount}</TableCell>
             </TableRow>
           ))}
         </TableBody>
@@ -202,7 +199,7 @@ export const usageEmpty = `<TableBody>
 
 <ExampleShowcase
   name="table"
-  colorControl
+  colorControl={false}
   columns={1}
   examples={[
     {
@@ -230,7 +227,7 @@ export const usageEmpty = `<TableBody>
 
 <ExampleShowcase
   name="table"
-  colorControl
+  colorControl={false}
   columns={1}
   examples={[
     {
@@ -310,7 +307,7 @@ export const usageEmpty = `<TableBody>
 
 <ExampleShowcase
   name="table"
-  colorControl
+  colorControl={false}
   columns={1}
   examples={[
     {
@@ -335,34 +332,34 @@ export const usageEmpty = `<TableBody>
 ## Features
 
 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 my-6 not-prose">
-  <div className="p-6 rounded-2xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900">
-    <h3 className="text-lg font-semibold text-zinc-900 dark:text-zinc-50 mb-2">Any data shape</h3>
-    <p className="text-zinc-600 dark:text-zinc-400 text-sm">No column config and no required row shape. Nested objects, unusual key names and computed cells all work without a transformation step.</p>
+  <div className="p-6 rounded-2xl border border-border bg-card">
+    <h3 className="text-lg font-semibold text-card-foreground mb-2">Any data shape</h3>
+    <p className="text-muted-foreground text-sm">No column config and no required row shape. Nested objects, unusual key names and computed cells all work without a transformation step.</p>
   </div>
-  <div className="p-6 rounded-2xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900">
-    <h3 className="text-lg font-semibold text-zinc-900 dark:text-zinc-50 mb-2">Real table markup</h3>
-    <p className="text-zinc-600 dark:text-zinc-400 text-sm">Each primitive renders its native element, so colSpan, scope and aria attributes pass straight through and screen readers get a genuine table.</p>
+  <div className="p-6 rounded-2xl border border-border bg-card">
+    <h3 className="text-lg font-semibold text-card-foreground mb-2">Real table markup</h3>
+    <p className="text-muted-foreground text-sm">Each primitive renders its native element, so colSpan, scope and aria attributes pass straight through and screen readers get a genuine table.</p>
   </div>
-  <div className="p-6 rounded-2xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900">
-    <h3 className="text-lg font-semibold text-zinc-900 dark:text-zinc-50 mb-2">Themed by context</h3>
-    <p className="text-zinc-600 dark:text-zinc-400 text-sm">Variant, size and colour are set once on Table and read by every descendant, so a cell dropped three levels deep still matches.</p>
+  <div className="p-6 rounded-2xl border border-border bg-card">
+    <h3 className="text-lg font-semibold text-card-foreground mb-2">Themed by context</h3>
+    <p className="text-muted-foreground text-sm">Variant, size and colour are set once on Table and read by every descendant, so a cell dropped three levels deep still matches.</p>
   </div>
-  <div className="p-6 rounded-2xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900">
-    <h3 className="text-lg font-semibold text-zinc-900 dark:text-zinc-50 mb-2">Stateless by default</h3>
-    <p className="text-zinc-600 dark:text-zinc-400 text-sm">Sorting and expansion are controlled props. The table never reorders or hides your data on its own, so server-side sorting and paging drop in unchanged.</p>
+  <div className="p-6 rounded-2xl border border-border bg-card">
+    <h3 className="text-lg font-semibold text-card-foreground mb-2">Stateless by default</h3>
+    <p className="text-muted-foreground text-sm">Sorting and expansion are controlled props. The table never reorders or hides your data on its own, so server-side sorting and paging drop in unchanged.</p>
   </div>
 </div>
 
 ## Best Practices & Guidelines
 
 <div className="flex flex-col gap-4 my-6 not-prose">
-  <div className="p-5 rounded-xl border border-blue-200 dark:border-blue-900/50 bg-blue-50/50 dark:bg-blue-950/20">
-    <h4 className="text-base font-semibold text-blue-900 dark:text-blue-300 mb-1">Reach for the Data Table instead</h4>
-    <p className="text-blue-800 dark:text-blue-400/80 text-sm">These primitives are deliberately stateless. If you need search, pagination, row selection and batch actions wired up for you, use the Data Table — it composes the very same primitives and adds a state provider.</p>
+  <div className="rounded-xl border border-foreground/[0.06] bg-foreground/[0.03] p-4">
+    <h4 className="font-sans text-[14px] font-semibold text-foreground mb-1">Reach for the Data Table instead</h4>
+    <p className="text-[13px] leading-relaxed text-foreground/50">These primitives are deliberately stateless. If you need search, pagination, row selection and batch actions wired up for you, use the Data Table — it composes the very same primitives and adds a state provider.</p>
   </div>
-  <div className="p-5 rounded-xl border border-amber-200 dark:border-amber-900/50 bg-amber-50/50 dark:bg-amber-950/20">
-    <h4 className="text-base font-semibold text-amber-900 dark:text-amber-300 mb-1">Keep colSpan honest</h4>
-    <p className="text-amber-800 dark:text-amber-400/80 text-sm">TableEmpty and TableExpandedRow both need a colSpan that matches your real column count. Derive it from a variable rather than hard-coding it, so conditional columns cannot drift out of sync.</p>
+  <div className="rounded-xl border border-primary/15 bg-primary/5 p-4">
+    <h4 className="font-sans text-[14px] font-semibold text-primary mb-1">Keep colSpan honest</h4>
+    <p className="text-[13px] leading-relaxed text-foreground/50">TableEmpty and TableExpandedRow both need a colSpan that matches your real column count. Derive it from a variable rather than hard-coding it, so conditional columns cannot drift out of sync.</p>
   </div>
 </div>
 
@@ -435,7 +432,7 @@ export const usageEmpty = `<TableBody>
       <tr><td><code>TableRow</code></td><td><code>isHeader</code></td><td><code>boolean</code></td><td>Applies header styling instead of body row styling.</td></tr>
       <tr><td><code>TableRow</code></td><td><code>selected</code></td><td><code>boolean</code></td><td>Applies the selected background and sets <code>data-selected</code>.</td></tr>
       <tr><td><code>TableCell</code></td><td><code>align</code></td><td><code>"left" | "center" | "right"</code></td><td>Text alignment.</td></tr>
-      <tr><td><code>TableBody</code></td><td><code>animate</code></td><td><code>boolean</code></td><td>Staggered GSAP entrance for direct child rows. Off by default.</td></tr>
+      <tr><td><code>TableBody</code></td><td><code>animate</code></td><td><code>boolean</code></td><td>Staggered entrance (Web Animations API) for direct child rows. Off by default.</td></tr>
       <tr><td><code>TableBody</code></td><td><code>animateKey</code></td><td><code>React.Key</code></td><td>Change it to replay the entrance — e.g. on sort or page change.</td></tr>
     </tbody>
   </table>

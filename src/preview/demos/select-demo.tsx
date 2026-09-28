@@ -120,12 +120,20 @@ export default function SelectDemo({
         <SelectBlock
           key={`${variant}-${color}-${inputSize}-${showError}-${isDisabled}-${isMultiple}-${isSearchable}-${isGrouped}`}
           options={isGrouped ? groupedOptions : standardOptions}
-          value={isMultiple ? multiValue : singleValue}
-          onChange={(isMultiple ? setMultiValue : setSingleValue) as any}
+          {...(isMultiple
+            ? ({
+                multiple: true,
+                value: multiValue,
+                onChange: setMultiValue,
+              } as const)
+            : ({
+                multiple: false,
+                value: singleValue,
+                onChange: setSingleValue,
+              } as const))}
           variant={variant}
           color={color}
           inputSize={inputSize}
-          multiple={isMultiple}
           searchable={isSearchable}
           disabled={isDisabled}
           icon={

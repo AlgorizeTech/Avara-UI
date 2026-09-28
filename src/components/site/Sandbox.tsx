@@ -1,13 +1,23 @@
 "use client";
 
 import { useFramework } from "@/hooks/use-framework";
-import { resolveSnippet, resolveUsage, type Snippet } from "@/lib/snippet";
+import {
+  resolveMotion,
+  resolveSnippet,
+  resolveUsage,
+  type ShowcaseSnippet,
+} from "@/lib/snippet";
+import { useMotionLibrary } from "@/contexts/motion-library-context";
+import { MotionLibraryTabs } from "@/components/site/motion-library-tabs";
+import { sandboxNames } from "@/preview/names";
 import { cn } from "@/lib/utils";
 import type { BuiltinLanguage } from "shiki";
 import {
+  CODE_SURFACE,
   CodeBlockClient,
   isTransformable,
 } from "@/components/site/code-block-client";
+import { motion, useReducedMotion } from "framer-motion";
 import CodeCopy, { type LanguageType } from "@/components/site/code-copy";
 import {
   Code2,
@@ -25,11 +35,16 @@ import {
   X,
 } from "lucide-react";
 import { SandboxFrame } from "@/components/site/SandboxFrame";
-import {
-  prefetchHighlight,
-  warmHighlighter,
-} from "@/components/custom/ui/code-renderer";
+import { prefetchHighlight, warmHighlighter } from "@/components/custom/ui/code-renderer-core";
 import { ThemeColorPicker } from "@/components/site/ThemeColorPicker";
+import { toBlockColor } from "@/lib/accent";
+import { slugify } from "@/lib/open-in-v0";
+import { OpenInV0Button, v0ItemFor } from "@/components/site/open-in-v0-button";
+import {
+  ShowcaseControlCard,
+  ShowcaseSliders,
+  type SliderControl,
+} from "@/components/site/ShowcaseSliders";
 import {
   DEFAULT_SHOWCASE_COLOR,
   useShowcaseColorContext,
@@ -107,6 +122,8 @@ export interface SandboxOptions {
   fullscreen?: boolean;
   deviceSwitcher?: boolean;
   reset?: boolean;
+  /** Open-in-v0 button — shown only for examples with a built v0 item. */
+  openInV0?: boolean;
 }
 
 /**
@@ -179,25 +196,41 @@ function useFullscreenOverlay(
 export function Sandbox({
   name,
   sandboxProps,
+  accent,
   tabs,
   options = {},
   minHeight = 550,
   maxHeight = 820,
+  motionSwitch = false,
+  v0Item,
 }: {
   /** Registry name of the demo (src/preview/registry.tsx). */
   name: string;
   /** JSON-serializable props bridged into the demo, live. */
   sandboxProps?: Record<string, unknown>;
+  /**
+   * This preview's example as a v0 item (`<name>/<example id>`, see
+   * src/lib/open-in-v0.ts). Draws the Open-in-v0 button after fullscreen.
+   */
+  v0Item?: string;
+  /** Page colour-picker value, applied as theme tokens inside the frame. */
+  accent?: string;
   tabs: SandboxTab[];
   options?: SandboxOptions;
   minHeight?: number;
   maxHeight?: number;
+  /**
+   * Draws the GSAP / Framer Motion switch in the bar, for a component that
+   * ships both builds. The caller swaps `name` and the code tabs; the switch
+   * only writes the page-wide pick.
+   */
+  motionSwitch?: boolean;
 }) {
   const {
-    fit: fitOption = options.zoom ?? true,
     fullscreen: fullscreenOption = true,
     deviceSwitcher = true,
     reset = true,
+    openInV0 = true,
   } = options;
 
   const previewTab = tabs.find((t) => t.resizable) ?? tabs[0];
@@ -220,6 +253,13 @@ export function Sandbox({
   const [isDragging, setIsDragging] = useState(false);
   const [resetKey, setResetKey] = useState(0);
   const [isFullscreen, setIsFullscreen] = useState(false);
+  // The active tab and device each get a pill that slides between options.
+  // A page shows several cards, so the layoutIds are scoped per instance.
+  const pillId = useId();
+  const reduceMotion = useReducedMotion();
+  const pillTransition = reduceMotion
+    ? { duration: 0 }
+    : { type: "spring" as const, stiffness: 420, damping: 34 };
   const areaRef = useRef<HTMLDivElement>(null);
   const closeFullscreenRef = useRef<HTMLButtonElement>(null);
 
@@ -393,32 +433,58 @@ export function Sandbox({
     isTransformable(currentLang);
 
   return (
-    <div className="w-full my-8 border border-zinc-200 dark:border-zinc-800 rounded-xl flex flex-col not-prose relative">
+    // The install box's anatomy — an ink-tint shell, a slim bar, the content
+    // on an inset panel — with its own accents: a hairline ring and a larger
+    // radius on the shell, a sliding pill (not an underline) for the tabs, and
+    // the active tab's icon in the primary colour.
+    <div className="w-full my-8 rounded-2xl bg-foreground/[0.03] ring-1 ring-inset ring-foreground/[0.05] flex flex-col not-prose relative">
       {/* Top Header Bar */}
-      <div className="flex flex-wrap items-center justify-between gap-3 px-4 py-3 border-b border-zinc-200 dark:border-zinc-800 bg-zinc-50 dark:bg-zinc-900/50 rounded-t-xl">
+      <div className="flex flex-wrap items-center justify-between gap-x-3 gap-y-2 min-h-12 py-2 pl-2 pr-2.5">
         {/* Left: tab pills */}
-        <div className="flex items-center gap-1 bg-zinc-200/50 dark:bg-zinc-800/50 p-1 rounded-lg">
-          {tabs.map((tab) => (
-            <button
-              key={tab.id}
-              onClick={() => setActiveTab(tab.id)}
-              className={cn(
-                "flex items-center gap-1.5 sm:gap-2 px-2 sm:px-3 py-1.5 text-xs sm:text-sm font-medium rounded-md transition-all cursor-pointer capitalize",
-                activeTab === tab.id
-                  ? "bg-white dark:bg-zinc-700 text-zinc-900 dark:text-white shadow-sm"
-                  : "text-zinc-500 hover:text-zinc-700 dark:text-zinc-400 dark:hover:text-zinc-200",
-              )}
-            >
-              {tab.icon ?? TAB_ICONS[tab.id]} {tab.label}
-            </button>
-          ))}
+        <div className="flex items-center gap-0.5">
+          {tabs.map((tab) => {
+            const isActive = activeTab === tab.id;
+            return (
+              <button
+                key={tab.id}
+                onClick={() => setActiveTab(tab.id)}
+                className={cn(
+                  "relative flex items-center gap-1.5 sm:gap-2 h-8 px-2.5 sm:px-3 text-[13px] font-medium rounded-lg transition-colors cursor-pointer capitalize",
+                  isActive
+                    ? "text-foreground"
+                    : "text-foreground/45 hover:text-foreground/80",
+                )}
+              >
+                {isActive && (
+                  <motion.span
+                    layoutId={`${pillId}-tab`}
+                    transition={pillTransition}
+                    aria-hidden
+                    className="absolute inset-0 rounded-lg bg-background shadow-[0_1px_2px_rgb(0_0_0/0.06)] ring-1 ring-foreground/[0.06]"
+                  />
+                )}
+                <span
+                  className={cn(
+                    "relative flex items-center [&_svg]:size-3.5 transition-colors",
+                    isActive && "text-primary",
+                  )}
+                >
+                  {tab.icon ?? TAB_ICONS[tab.id]}
+                </span>
+                <span className="relative">{tab.label}</span>
+              </button>
+            );
+          })}
         </div>
 
-        {/* Right: the code tabs get the TS/JS switch in the same slot the
-            preview tab gets its device controls. */}
+        {/* Right: the build switch on every tab of a dual component (it drives
+            the preview AND the code), then the code tabs' TS/JS switch in the
+            same slot the preview tab gets its device controls. */}
+        <div className="ml-auto flex flex-wrap items-center justify-end gap-2 sm:gap-3">
+        {motionSwitch && <MotionLibraryTabs compact />}
+
         {showLanguageSwitch && (
           <CodeCopy
-            className="ml-auto"
             selectedLanguage={codeLanguage}
             onLanguageChange={setCodeLanguage}
           />
@@ -426,10 +492,10 @@ export function Sandbox({
 
         {/* Right: preview controls */}
         {isPreviewActive && (
-          <div className="flex items-center gap-2 sm:gap-3 ml-auto">
+          <div className="flex items-center gap-2 sm:gap-3">
             {/* True viewport width, plus how far it was shrunk to fit the
                 column, which the Fit button snaps back to 100%. */}
-            <span className="flex items-baseline gap-1.5 text-xs font-medium text-zinc-500 dark:text-zinc-400 min-w-[48px] justify-end tabular-nums whitespace-nowrap">
+            <span className="flex items-baseline gap-1.5 font-mono text-[11px] text-foreground/50 min-w-[48px] justify-end tabular-nums whitespace-nowrap">
               <span>
                 {viewportWidth === null
                   ? "—"
@@ -439,8 +505,8 @@ export function Sandbox({
                 className={cn(
                   "text-[11px] hidden sm:inline-block",
                   fitScale < 1
-                    ? "text-zinc-400 dark:text-zinc-500"
-                    : "text-zinc-300 dark:text-zinc-600",
+                    ? "text-foreground/35"
+                    : "text-foreground/25",
                 )}
                 title={
                   fitScale < 1
@@ -453,22 +519,30 @@ export function Sandbox({
             </span>
 
             {deviceSwitcher && (
-              <div className="flex items-center gap-1 bg-zinc-200/50 dark:bg-zinc-800/50 p-1 rounded-lg border border-zinc-200/50 dark:border-zinc-700/50">
+              <div className="flex items-center gap-0.5 bg-foreground/[0.04] p-0.5 rounded-lg">
                 {deviceButtons.map(({ device, icon, label }) => (
                   <button
                     key={device}
                     onClick={() => setPreviewWidth(DEVICE_PRESETS[device])}
                     className={cn(
-                      "p-1.5 rounded-md transition-all cursor-pointer",
+                      "relative p-1.5 rounded-md transition-colors cursor-pointer",
                       activeDevice === device
-                        ? "bg-white dark:bg-zinc-700 shadow-sm text-zinc-900 dark:text-zinc-100"
-                        : "text-zinc-500 hover:text-zinc-700 dark:text-zinc-400 dark:hover:text-zinc-200",
+                        ? "text-foreground"
+                        : "text-foreground/45 hover:text-foreground/80",
                     )}
                     title={label}
                     aria-label={label}
                     aria-pressed={activeDevice === device}
                   >
-                    {icon}
+                    {activeDevice === device && (
+                      <motion.span
+                        layoutId={`${pillId}-device`}
+                        transition={pillTransition}
+                        aria-hidden
+                        className="absolute inset-0 rounded-md bg-background shadow-[0_1px_2px_rgb(0_0_0/0.06)] ring-1 ring-foreground/[0.06]"
+                      />
+                    )}
+                    <span className="relative flex">{icon}</span>
                   </button>
                 ))}
               </div>
@@ -483,8 +557,8 @@ export function Sandbox({
                 className={cn(
                   "h-8 w-8 flex items-center justify-center rounded-lg transition-all active:scale-95 cursor-pointer shadow-sm border",
                   isFitted
-                    ? "bg-zinc-100 dark:bg-zinc-700 text-zinc-900 dark:text-zinc-100 border-zinc-300 dark:border-zinc-600"
-                    : "bg-white dark:bg-zinc-800 hover:bg-zinc-100 dark:hover:bg-zinc-700 text-zinc-500 hover:text-zinc-700 dark:text-zinc-400 dark:hover:text-zinc-200 border-zinc-200 dark:border-zinc-700",
+                    ? "bg-foreground/[0.05] dark:bg-foreground/[0.12] text-foreground border-foreground/15 dark:border-foreground/20"
+                    : "bg-card dark:bg-foreground/[0.08] hover:bg-foreground/[0.05] dark:hover:bg-foreground/[0.12] text-foreground/55 hover:text-foreground/80 border-border dark:border-foreground/15",
                 )}
                 title={
                   fitLandsOnDesktopFloor
@@ -507,7 +581,7 @@ export function Sandbox({
             {fullscreenOption && (
               <button
                 onClick={openFullscreen}
-                className="h-8 w-8 flex items-center justify-center rounded-lg transition-all active:scale-95 cursor-pointer shadow-sm border bg-white dark:bg-zinc-800 hover:bg-zinc-100 dark:hover:bg-zinc-700 text-zinc-500 hover:text-zinc-700 dark:text-zinc-400 dark:hover:text-zinc-200 border-zinc-200 dark:border-zinc-700"
+                className="h-8 w-8 flex items-center justify-center rounded-lg transition-colors active:scale-95 cursor-pointer text-foreground/45 hover:text-foreground hover:bg-foreground/[0.06] [&_svg]:size-3.5"
                 title="Open fullscreen preview"
                 aria-label="Open fullscreen preview"
                 aria-haspopup="dialog"
@@ -519,7 +593,7 @@ export function Sandbox({
             {reset && (
               <button
                 onClick={() => setResetKey((k) => k + 1)}
-                className="h-8 w-8 flex items-center justify-center rounded-lg transition-all active:scale-95 cursor-pointer shadow-sm border bg-white dark:bg-zinc-800 hover:bg-zinc-100 dark:hover:bg-zinc-700 text-zinc-500 hover:text-zinc-700 dark:text-zinc-400 dark:hover:text-zinc-200 border-zinc-200 dark:border-zinc-700"
+                className="h-8 w-8 flex items-center justify-center rounded-lg transition-colors active:scale-95 cursor-pointer text-foreground/45 hover:text-foreground hover:bg-foreground/[0.06] [&_svg]:size-3.5"
                 title="Reload preview"
                 aria-label="Reload preview"
               >
@@ -528,17 +602,19 @@ export function Sandbox({
             )}
           </div>
         )}
+        </div>
       </div>
 
-      {/* Main Content Area */}
-      <div className="relative w-full bg-white dark:bg-[#09090b] rounded-b-xl">
+      {/* Main Content Area — an inset panel inside the shell. Not clipped:
+          the drag handle hangs over the stage's right edge. */}
+      <div className="relative w-full px-1.5 pb-1.5">
         {/* The preview stays MOUNTED across tab switches (hidden, not removed)
             so the sandbox iframe never reloads when returning to Preview. */}
         <div
           ref={areaRef}
           className={cn(
-            "flex items-stretch relative justify-start overflow-visible rounded-b-xl",
-            "bg-zinc-50/50 dark:bg-[#020202]",
+            "flex items-stretch relative justify-start overflow-visible rounded-xl ring-1 ring-foreground/[0.05]",
+            "bg-foreground/[0.015] dark:bg-background",
             !isPreviewActive && "hidden",
           )}
           style={{
@@ -546,7 +622,7 @@ export function Sandbox({
           }}
         >
             {/* Dashed Grid Background */}
-            <div className="absolute inset-0 pointer-events-none rounded-b-xl overflow-hidden">
+            <div className="absolute inset-0 pointer-events-none rounded-xl overflow-hidden">
               <svg width="100%" height="100%">
                 <defs>
                   <pattern
@@ -568,7 +644,7 @@ export function Sandbox({
                   width="100%"
                   height="100%"
                   fill="url(#sandbox-dashed-grid)"
-                  className="text-zinc-400/20 dark:text-white/10"
+                  className="text-foreground/[0.08] dark:text-foreground/10"
                 />
               </svg>
             </div>
@@ -595,14 +671,14 @@ export function Sandbox({
                     }
               }
               className={cn(
-                "flex justify-center bg-white dark:bg-[#09090b]",
+                "flex justify-center bg-card dark:bg-background",
                 isFullscreen
                   ? "fixed inset-0 z-[9999] items-stretch"
                   : [
                       "relative items-start transition-[width] ease-out",
                       isDragging ? "duration-0" : "duration-300",
-                      "border-r border-zinc-200 dark:border-zinc-800",
-                      isFitted ? "rounded-b-xl" : "rounded-bl-xl rounded-r-none",
+                      "border-r border-border",
+                      isFitted ? "rounded-xl" : "rounded-l-xl rounded-r-none",
                     ],
               )}
             >
@@ -612,7 +688,7 @@ export function Sandbox({
                   isFullscreen
                     ? "h-full"
                     : [
-                        isFitted ? "rounded-b-xl" : "rounded-bl-xl",
+                        isFitted ? "rounded-xl" : "rounded-l-xl",
                         isDragging && "pointer-events-none select-none",
                       ],
                 )}
@@ -620,6 +696,7 @@ export function Sandbox({
                 <SandboxFrame
                   name={name}
                   sandboxProps={sandboxProps}
+                  accent={accent}
                   viewportWidth={isFullscreen ? null : viewportWidth}
                   scale={isFullscreen ? 1 : visualScale}
                   resetKey={resetKey}
@@ -629,6 +706,19 @@ export function Sandbox({
                   className={isFullscreen ? "h-full" : undefined}
                 />
               </div>
+
+              {/* Open in v0: this example's code, props and variant, in the
+                  reader's current theme — a new chat in a new tab. A glass
+                  pill on the stage's corner; transform-gpu lifts it over an
+                  iframe whose document composites, like the fullscreen close. */}
+              {openInV0 && v0Item && !isFullscreen && (
+                <OpenInV0Button
+                  item={v0Item}
+                  accent={accent}
+                  showLabel
+                  className="absolute bottom-3 right-3 z-10 transform-gpu flex h-8 items-center gap-1.5 rounded-full px-3 text-[12px] font-medium whitespace-nowrap text-foreground/70 hover:text-foreground bg-background/60 backdrop-blur-md backdrop-saturate-150 ring-1 ring-foreground/10 shadow-[0_2px_12px_rgb(0_0_0/0.08)] transition-colors active:scale-95 cursor-pointer"
+                />
+              )}
 
               {/* The only chrome in fullscreen. transform-gpu gives it its own
                   compositing layer, which an iframe whose document composites
@@ -643,9 +733,9 @@ export function Sandbox({
                     // The stage behind is the demo's own surface — near-white
                     // or near-black — so the button carries its own contrast
                     // rather than borrowing any.
-                    "bg-zinc-100/90 border border-zinc-300 text-zinc-700 hover:bg-white hover:text-zinc-900",
-                    "dark:bg-zinc-800/90 dark:border-zinc-600 dark:text-zinc-200 dark:hover:bg-zinc-700 dark:hover:text-white",
-                    "focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-500",
+                    "bg-foreground/[0.045] border border-foreground/15 text-foreground/80 hover:bg-card hover:text-foreground",
+                    "dark:bg-foreground/[0.072] dark:border-foreground/20 dark:text-foreground/80 dark:hover:bg-foreground/[0.12] dark:hover:text-foreground",
+                    "focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary",
                   )}
                   title="Close fullscreen preview (Esc)"
                   aria-label="Close fullscreen preview"
@@ -669,9 +759,9 @@ export function Sandbox({
                   onPointerUp={handlePointerEnd}
                   onPointerCancel={handlePointerEnd}
                   onKeyDown={handleResizeKeyDown}
-                  className="absolute -right-2.5 top-1/2 -translate-y-1/2 w-5 h-8 bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 rounded-[3px] hidden sm:flex items-center justify-center cursor-ew-resize shadow-sm hover:shadow-md transition-shadow z-10 touch-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-500"
+                  className="absolute -right-2.5 top-1/2 -translate-y-1/2 w-5 h-8 bg-card dark:bg-foreground/[0.08] border border-border dark:border-foreground/15 rounded-[3px] hidden sm:flex items-center justify-center cursor-ew-resize shadow-sm hover:shadow-md transition-shadow z-10 touch-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary"
                 >
-                  <GripVertical className="w-3.5 h-3.5 text-zinc-400" />
+                  <GripVertical className="w-3.5 h-3.5 text-foreground/40" />
                 </div>
               )}
             </div>
@@ -682,7 +772,12 @@ export function Sandbox({
             /* No height cap here: CodeBlocks sizes itself to the lines it is
                showing, so the panel opens without a scrollbar and only gains
                one once Show More adds lines past that height. */
-            <div className="relative w-full overflow-hidden rounded-b-xl">
+            <div
+              className={cn(
+                "relative w-full overflow-hidden rounded-xl bg-background ring-1 ring-foreground/[0.05]",
+                CODE_SURFACE,
+              )}
+            >
               <CodeBlockClient
                 code={currentTab.code}
                 lang={currentLang}
@@ -691,7 +786,7 @@ export function Sandbox({
               />
             </div>
           ) : (
-            <div className="relative w-full rounded-b-xl">
+            <div className="relative w-full rounded-xl bg-background ring-1 ring-foreground/[0.05]">
               {currentTab?.content}
             </div>
           ))}
@@ -767,9 +862,13 @@ export interface ShowcaseExample {
    * A plain string is identical in every framework. Pass `{ nextjs, reactjs }`
    * only when the code genuinely differs — see src/lib/snippet.ts.
    */
-  usage?: Snippet;
-  /** Optional source snippet — adds a Code tab. Same string-or-map rule. */
-  code?: Snippet;
+  usage?: ShowcaseSnippet;
+  /**
+   * Component source — adds a Code tab. Same string-or-map rule; a component
+   * with a Framer Motion twin passes `{ gsap, framer }` (`extractMotionCode`)
+   * so the tab follows the build switch.
+   */
+  code?: ShowcaseSnippet;
   /** Per-example overrides for the Sandbox. */
   options?: SandboxOptions;
   minHeight?: number;
@@ -788,26 +887,20 @@ export type ResolvedShowcaseExample = Omit<ShowcaseExample, "usage" | "code"> & 
   code?: string;
 };
 
-const slugify = (value: string) =>
-  value
-    .toLowerCase()
-    .trim()
-    .replace(/[^a-z0-9]+/g, "-")
-    .replace(/(^-|-$)/g, "");
-
 /**
  * Example prose is authored as plain strings inside a JS array, so MDX never
  * parses it and its backticks used to reach the page literally. This renders
  * the small slice of markdown that prose actually uses — `code` and **bold** —
  * so a prop name reads as a prop name.
  */
-function renderInline(text: string): React.ReactNode {
+function renderInline(text?: string): React.ReactNode {
+  if (!text) return null;
   return text.split(/(`[^`]+`|\*\*[^*]+\*\*)/g).map((part, i) => {
     if (part.length > 2 && part.startsWith("`") && part.endsWith("`")) {
       return (
         <code
           key={i}
-          className="rounded bg-zinc-100 px-1.5 py-0.5 font-mono text-[0.85em] text-red-600 dark:bg-zinc-800 dark:text-red-400"
+          className="rounded bg-primary/10 px-1.5 py-0.5 font-mono text-[0.85em] text-primary"
         >
           {part.slice(1, -1)}
         </code>
@@ -815,7 +908,7 @@ function renderInline(text: string): React.ReactNode {
     }
     if (part.length > 4 && part.startsWith("**") && part.endsWith("**")) {
       return (
-        <strong key={i} className="font-semibold text-zinc-700 dark:text-zinc-200">
+        <strong key={i} className="font-semibold text-foreground/80">
           {part.slice(2, -2)}
         </strong>
       );
@@ -828,9 +921,14 @@ function renderInline(text: string): React.ReactNode {
  * Badge used for both halves of a prop reference — name and value alike.
  * Rendered with `data-badge`, which opts out of the global !important inline
  * <code> styling in globals.css; without it these classes never take effect.
+ *
+ * Inline rather than inline-block so a long badge wraps at word boundaries
+ * like the surrounding text; `box-decoration-break: clone` repeats the pill
+ * background and ring on each line it spans. Kept in step with BADGE in
+ * installation.tsx.
  */
 const PROP_BADGE =
-  "inline-block rounded-md bg-primary/10 px-1.5 py-0.5 font-mono text-xs font-medium text-primary ring-1 ring-primary/20 [overflow-wrap:anywhere]";
+  "inline rounded-md bg-primary/10 px-1.5 py-0.5 font-mono text-xs font-medium text-primary ring-1 ring-primary/20 [overflow-wrap:anywhere] [box-decoration-break:clone] [-webkit-box-decoration-break:clone]";
 
 /**
  * The prop cheat sheet. Runs on directly under the subheading — same text
@@ -845,16 +943,21 @@ function PropNotes({ notes }: { notes: PropNote[] }) {
       {notes.map((note, i) => (
         <div
           key={`${note.prop}-${note.value ?? i}`}
-          className="text-sm leading-6 text-zinc-500 dark:text-zinc-400"
+          className="text-sm leading-6 text-foreground/55"
         >
-          <dt className="mr-1.5 inline-flex items-center gap-1 align-middle">
-            {note.lead && <span className="mr-0.5">{note.lead}</span>}
+          {/* Inline, not flex: a long prop or value then wraps by word with the
+              prose instead of being squeezed and split mid-word on narrow screens. */}
+          <dt className="mr-1.5 inline">
+            {note.lead && <span className="mr-1">{note.lead}</span>}
             <code data-badge className={PROP_BADGE}>
               {note.prop}
             </code>
             {note.value !== undefined && (
               <>
-                <span aria-hidden className="font-mono text-xs text-zinc-400">
+                <span
+                  aria-hidden
+                  className="mx-1 font-mono text-xs text-foreground/40"
+                >
                   =
                 </span>
                 <code data-badge className={PROP_BADGE}>
@@ -863,7 +966,7 @@ function PropNotes({ notes }: { notes: PropNote[] }) {
               </>
             )}
           </dt>
-          <dd className="inline">{renderInline(note.effect)}</dd>
+          <dd className="inline">{renderInline(note.effect || (note as any).note || "")}</dd>
         </div>
       ))}
     </dl>
@@ -903,14 +1006,15 @@ export default function ${cleanTitle}Demo() {
 }`;
 };
 
-export interface SliderControl {
-  name: string;
-  label: string;
-  min: number;
-  max: number;
-  step?: number;
-  defaultValue: number;
-}
+/** Demos that have a Framer Motion twin (`<name>-framer`). */
+const DUAL_DEMOS = new Set(
+  sandboxNames
+    .filter((demo) => demo.endsWith("-framer"))
+    .map((demo) => demo.replace(/-framer$/, "")),
+);
+
+/** Re-exported so docs pages can keep importing it from the showcase module. */
+export type { SliderControl };
 
 export function ExampleShowcase({
   name,
@@ -920,11 +1024,12 @@ export function ExampleShowcase({
   minHeight = 550,
   maxHeight = 1400,
   className,
-  colorControl = false,
+  colorControl = true,
   defaultColor = DEFAULT_SHOWCASE_COLOR,
   colorProp = "color",
-  colorLabel = "Theme Color",
+  colorLabel = "Active Color",
   controls = [],
+  motionVariants,
 }: {
   /** Registry name of the demo (src/preview/registry.tsx). */
   name: string;
@@ -951,6 +1056,13 @@ export function ExampleShowcase({
   colorLabel?: string;
   /** Optional numerical range sliders for interactive property tuning. */
   controls?: SliderControl[];
+  /**
+   * The component ships a GSAP default and a Framer Motion twin: the previews
+   * get the build switch, and follow it to the `<name>-framer` demo. Detected
+   * from the preview registry when omitted — a `<name>-framer` demo is exactly
+   * what makes a component dual.
+   */
+  motionVariants?: boolean;
 }) {
   const shared = useShowcaseColorContext();
   const instanceId = useId();
@@ -977,9 +1089,22 @@ export function ExampleShowcase({
   // the TSX→JS transform needed no changes at all.
   const framework = useFramework();
 
-  // Find component source code fallback from any example that explicitly provides it
+  // Dual components resolve the build first, then the framework — so a build
+  // can still differ per framework — then the TSX/JS toggle further down.
+  const { library } = useMotionLibrary();
+  const isDual = motionVariants ?? DUAL_DEMOS.has(name);
+  const activeLibrary = isDual ? library : "gsap";
+  const previewName = isDual && library === "framer" ? `${name}-framer` : name;
+  const pick = (snippet: ShowcaseSnippet | undefined) =>
+    resolveMotion(snippet, activeLibrary);
+
+  // Find component source code fallback from any example that explicitly
+  // provides it — or, failing that, from another showcase of the same demo
+  // higher up the page, so every preview of a component gets its Code tab.
+  const ownCode = examples.find((ex) => ex.code)?.code;
+  if (ownCode !== undefined) shared?.sharedCode.set(name, ownCode);
   const fallbackCode = resolveSnippet(
-    examples.find((ex) => ex.code)?.code,
+    pick(ownCode ?? (shared?.sharedCode.get(name) as ShowcaseSnippet | undefined)),
     framework,
   );
 
@@ -996,106 +1121,74 @@ export function ExampleShowcase({
     setControlValues((prev) => ({ ...prev, [name]: value }));
   };
 
+  // Handed to the FIRST example so the card sits directly above its preview —
+  // the controls read as part of that demo rather than as page furniture.
+  const controlCard =
+    ownsPicker || controls.length > 0 ? (
+      <ShowcaseControlCard>
+        {ownsPicker && (
+          <ThemeColorPicker
+            color={color}
+            onChange={setColor}
+            label={colorLabel}
+            className="sm:max-w-sm"
+          />
+        )}
+
+        {controls.length > 0 && (
+          <ShowcaseSliders
+            controls={controls}
+            values={controlValues}
+            onChange={handleControlChange}
+            // One or two sliders fit the right half; more than that need the
+            // full width, so they take their own row under the picker.
+            className={cn(controls.length > 2 && "lg:col-span-2")}
+          />
+        )}
+      </ShowcaseControlCard>
+    ) : null;
+
   return (
     <div className={cn("not-prose my-8 flex flex-col gap-6", className)}>
-      {(ownsPicker || controls.length > 0) && (
-        <div className="flex flex-col gap-5 p-4 sm:p-5 bg-zinc-50 dark:bg-zinc-900/50 border border-zinc-200 dark:border-zinc-800 rounded-2xl">
-          {ownsPicker && (
-            <ThemeColorPicker
-              color={color}
-              onChange={setColor}
-              label={colorLabel}
-              className="sm:max-w-sm"
-            />
-          )}
-
-          {controls.length > 0 && (
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5 pt-3 border-t border-zinc-200/80 dark:border-zinc-800">
-              {controls.map((ctrl) => {
-                const val = controlValues[ctrl.name] ?? ctrl.defaultValue;
-                const percentage = Math.min(
-                  100,
-                  Math.max(0, ((val - ctrl.min) / (ctrl.max - ctrl.min)) * 100)
-                );
-                return (
-                  <div
-                    key={ctrl.name}
-                    className="flex flex-col gap-2 p-3 bg-white dark:bg-zinc-950/60 border border-zinc-200/80 dark:border-zinc-800/80 rounded-xl shadow-xs transition-shadow hover:shadow-sm"
-                  >
-                    <div className="flex justify-between items-center text-xs">
-                      <span className="font-semibold text-zinc-700 dark:text-zinc-300">
-                        {ctrl.label}
-                      </span>
-                      <span className="font-mono text-xs px-2 py-0.5 rounded-md bg-zinc-100 dark:bg-zinc-800 text-zinc-900 dark:text-zinc-100 font-medium border border-zinc-200/60 dark:border-zinc-700/50 shadow-2xs">
-                        {val}
-                      </span>
-                    </div>
-                    <div className="relative flex items-center h-6 w-full group touch-none">
-                      {/* Custom Track Background */}
-                      <div className="absolute inset-x-0 h-2 rounded-full bg-zinc-200 dark:bg-zinc-800 overflow-hidden pointer-events-none">
-                        <div
-                          className="h-full bg-primary transition-all duration-75"
-                          style={{ width: `${percentage}%` }}
-                        />
-                      </div>
-                      {/* Hidden Range Input overlay */}
-                      <input
-                        type="range"
-                        min={ctrl.min}
-                        max={ctrl.max}
-                        step={ctrl.step ?? 1}
-                        value={val}
-                        onChange={(e) =>
-                          handleControlChange(ctrl.name, parseFloat(e.target.value))
-                        }
-                        className="absolute inset-0 w-full h-full opacity-0 cursor-pointer z-10"
-                      />
-                      {/* Custom Thumb Circle with Theme Accent Ring Glow */}
-                      <div
-                        className="absolute w-5 h-5 rounded-full bg-white dark:bg-zinc-900 border-2 border-primary ring-4 ring-primary/25 shadow-md flex items-center justify-center pointer-events-none transition-transform duration-75 group-hover:scale-120 active:scale-125"
-                        style={{
-                          left: `calc(${percentage}% - ${(percentage / 100) * 20}px)`,
-                        }}
-                      >
-                        <div className="w-1.5 h-1.5 rounded-full bg-primary" />
-                      </div>
-                    </div>
-                  </div>
-                );
-              })}
-            </div>
-          )}
-        </div>
-      )}
-
       <div
         className={cn(
           "grid grid-cols-1 gap-10",
           columns === 2 && "lg:grid-cols-2 lg:gap-x-6",
         )}
       >
-        {examples.map((example) => {
+        {examples.map((example, index) => {
           const effectiveProps = { ...example.props, ...controlValues };
           if (colorControl) {
             effectiveProps[colorProp] = color;
           }
 
+          // The demos know the picker's "lavender" id, the blocks don't — so the
+          // snippet a reader copies spells it as the hex it stands for.
           const effectiveUsage =
-            resolveUsage(example.usage, framework) ??
-            generateFallbackUsage(name, example.title, effectiveProps);
+            resolveUsage(pick(example.usage), framework) ??
+            generateFallbackUsage(
+              name,
+              example.title,
+              colorControl
+                ? { ...effectiveProps, [colorProp]: toBlockColor(color) }
+                : effectiveProps,
+            );
 
-          const effectiveCode = resolveSnippet(example.code, framework) ?? fallbackCode;
+          const effectiveCode = resolveSnippet(pick(example.code), framework) ?? fallbackCode;
 
           return (
             <ExampleCard
               key={example.id ?? slugify(example.title)}
-              name={name}
+              name={previewName}
+              motionSwitch={isDual}
               example={{
                 ...example,
                 props: effectiveProps,
                 usage: effectiveUsage,
                 code: effectiveCode,
               }}
+              controlCard={index === 0 ? controlCard : null}
+              accent={colorControl ? color : undefined}
               options={example.options ?? options}
               minHeight={example.minHeight ?? minHeight}
               maxHeight={example.maxHeight ?? maxHeight}
@@ -1109,18 +1202,28 @@ export function ExampleShowcase({
 
 function ExampleCard({
   name,
+  motionSwitch,
   example,
+  controlCard,
+  accent,
   options,
   minHeight,
   maxHeight,
 }: {
   name: string;
+  /** Draw the GSAP / Framer Motion switch in the preview bar. */
+  motionSwitch?: boolean;
   example: ResolvedShowcaseExample;
+  /** The gallery's live-control card, drawn just above this preview. */
+  controlCard?: React.ReactNode;
+  /** The gallery's colour-picker value, applied as theme tokens in the frame. */
+  accent?: string;
   options?: SandboxOptions;
   minHeight: number;
   maxHeight: number;
 }) {
-  const { title, subheading, propNotes, props, usage } = example;
+  // `code` feeds the Code tab below, hidden for now — rename back to `code` with it.
+  const { title, subheading, propNotes, props, usage, code: _code } = example;
   const anchor = example.id ?? slugify(title);
 
   // The Sandbox (and its iframe) mounts only once the card nears the viewport.
@@ -1153,8 +1256,11 @@ function ExampleCard({
   if (usage) {
     tabs.push({ id: "usage", label: "Usage", code: usage, lang: "tsx" });
   }
+  // The source `shadcn add` writes — for a dual component, the build the
+  // switch has picked. Hidden for now; uncomment (and restore `code` in the
+  // destructure above) to bring the Code tab back.
   // if (code) {
-  //   tabs.push({ id: "component", label: "Component", code, lang: "tsx" });
+  //   tabs.push({ id: "component", label: "Code", code, lang: "tsx" });
   // }
 
   return (
@@ -1163,20 +1269,22 @@ function ExampleCard({
       <div>
         <h3
           id={anchor}
-          className="scroll-m-20 group text-lg font-semibold text-zinc-900 dark:text-zinc-50"
+          className="scroll-m-20 group text-lg font-semibold text-foreground"
         >
           <a href={`#${anchor}`} className="inline-flex items-center gap-2">
             {title}
-            <LinkIcon className="w-3.5 h-3.5 text-zinc-400 opacity-0 group-hover:opacity-100 transition-opacity" />
+            <LinkIcon className="w-3.5 h-3.5 text-foreground/40 opacity-0 group-hover:opacity-100 transition-opacity" />
           </a>
         </h3>
         {subheading && (
-          <p className="mt-1 text-sm text-zinc-500 dark:text-zinc-400">
+          <p className="mt-1 text-sm text-foreground/55">
             {renderInline(subheading)}
           </p>
         )}
         {propNotes && propNotes.length > 0 && <PropNotes notes={propNotes} />}
       </div>
+
+      {controlCard && <div className="mt-4">{controlCard}</div>}
 
       {/* Sandbox has its own my-8 — tighten it to the heading. */}
       <div className="flex-1 [&>div]:!my-4">
@@ -1184,17 +1292,20 @@ function ExampleCard({
           <Sandbox
             name={name}
             sandboxProps={props}
+            accent={accent}
             tabs={tabs}
             options={options}
             minHeight={minHeight}
             maxHeight={maxHeight}
+            motionSwitch={motionSwitch}
+            v0Item={v0ItemFor(name, anchor)}
           />
         ) : (
           <div
-            className="my-4 w-full border border-zinc-200 dark:border-zinc-800 rounded-xl flex items-center justify-center bg-zinc-50/50 dark:bg-[#020202]"
-            style={{ minHeight: minHeight + 58 /* header bar height */ }}
+            className="my-8 w-full rounded-2xl ring-1 ring-inset ring-foreground/[0.05] flex items-center justify-center bg-foreground/[0.03]"
+            style={{ minHeight: minHeight + 54 /* 48px bar + 6px inset */ }}
           >
-            <div className="h-5 w-5 rounded-full border-2 border-zinc-300 dark:border-zinc-700 border-t-transparent animate-spin" />
+            <div className="h-5 w-5 rounded-full border-2 border-foreground/15 border-t-transparent animate-spin" />
           </div>
         )}
       </div>

@@ -3,6 +3,7 @@
 import { cn } from "@/lib/utils";
 import { Check, Copy, Terminal as TerminalIcon } from "lucide-react";
 import React, { forwardRef, useState } from "react";
+import { getThemeStyles } from "./terminal-theme";
 
 // ==========================================
 // THEME & CONFIGURATION
@@ -14,65 +15,6 @@ export type TerminalColor =
   | "emerald"
   | "zinc"
   | (string & {});
-
-const colorThemes: Record<string, Record<string, string>> = {
-  primary: {
-    bg: "bg-primary/10 text-primary",
-    border: "border-primary/30",
-    text: "text-primary",
-  },
-  indigo: {
-    bg: "bg-indigo-500/10 text-indigo-400",
-    border: "border-indigo-500/30",
-    text: "text-indigo-400",
-  },
-  rose: {
-    bg: "bg-rose-500/10 text-rose-400",
-    border: "border-rose-500/30",
-    text: "text-rose-400",
-  },
-  emerald: {
-    bg: "bg-emerald-500/10 text-emerald-400",
-    border: "border-emerald-500/30",
-    text: "text-emerald-400",
-  },
-  zinc: {
-    bg: "bg-zinc-500/10 text-zinc-400",
-    border: "border-zinc-500/30",
-    text: "text-zinc-400",
-  },
-};
-
-const hexToRgb = (hex: string) => {
-  let cleanHex = hex.replace(/^#/, "");
-  if (cleanHex.length === 3)
-    cleanHex = cleanHex
-      .split("")
-      .map((x) => x + x)
-      .join("");
-  const result = /^([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(cleanHex);
-  return result
-    ? `${parseInt(result[1], 16)}, ${parseInt(result[2], 16)}, ${parseInt(result[3], 16)}`
-    : "99, 102, 241";
-};
-
-export const getThemeStyles = (color: string) => {
-  if (color && color.startsWith("#")) {
-    const rgb = hexToRgb(color);
-    return {
-      theme: {
-        bg: "bg-[rgba(var(--term-rgb),0.1)] text-[var(--term-color)]",
-        border: "border-[rgba(var(--term-rgb),0.3)]",
-        text: "text-[var(--term-color)]",
-      },
-      style: {
-        "--term-color": color,
-        "--term-rgb": rgb,
-      } as React.CSSProperties,
-    };
-  }
-  return { theme: colorThemes[color] || colorThemes.primary, style: {} };
-};
 
 // ==========================================
 // SYNTAX HIGHLIGHTER ENGINE
@@ -125,7 +67,7 @@ const highlightCode = (code: string, language: string) => {
 
   if (lang === "css") {
     return html.replace(
-      /(\/\*[\s\S]*?\*\/)|(@[a-zA-Z-]+)|([^\s{}\/;][^{}\/;]*?)(?=\s*\{)|([a-zA-Z-]+)(\s*:)([^;{}]+)(;?)|([{}])/g,
+      /(\/\*[\s\S]*?\*\/)|(@[a-zA-Z-]+)|([^\s{}/;][^{}/;]*?)(?=\s*\{)|([a-zA-Z-]+)(\s*:)([^;{}]+)(;?)|([{}])/g,
       (match, comment, atRule, selector, prop, colon, val, semi, brace) => {
         if (comment) return `<span class="${colors.comment}">${comment}</span>`;
         if (atRule) return `<span class="${colors.keyword}">${atRule}</span>`;
@@ -154,7 +96,7 @@ const highlightCode = (code: string, language: string) => {
 
   // JS / TS / Generic Code
   html = html.replace(
-    /(["'](?:\\.|[^\\])*?["']|`(?:\\`|[^`])*`)|(\/\/.*|\/\*[\s\S]*?\*\/)|(&lt;\/?[a-zA-Z0-9_-]+)|(\/&gt;|&gt;)|([a-zA-Z0-9_-]+)(?=\s*[:=])|(\b\d+\.?\d*\b)|(\b(?:const|let|var|function|return|if|else|for|while|import|export|from|default|class|extends|implements|new|this|typeof|instanceof|switch|case|break|continue|try|catch|finally|async|await|interface|type|public|private|protected|readonly)\b)|([a-zA-Z_$][a-zA-Z0-9_$]*)(?=\s*\()|(\b[A-Z][a-zA-Z0-9_$]*\b)|([=+\-*/!&|{}()\[\]]+)/g,
+    /(["'](?:\\.|[^\\])*?["']|`(?:\\`|[^`])*`)|(\/\/.*|\/\*[\s\S]*?\*\/)|(&lt;\/?[a-zA-Z0-9_-]+)|(\/&gt;|&gt;)|([a-zA-Z0-9_-]+)(?=\s*[:=])|(\b\d+\.?\d*\b)|(\b(?:const|let|var|function|return|if|else|for|while|import|export|from|default|class|extends|implements|new|this|typeof|instanceof|switch|case|break|continue|try|catch|finally|async|await|interface|type|public|private|protected|readonly)\b)|([a-zA-Z_$][a-zA-Z0-9_$]*)(?=\s*\()|(\b[A-Z][a-zA-Z0-9_$]*\b)|([=+\-*/!&|{}()[\]]+)/g,
     (_, str, comment, jsxTag, jsxBracket, attrKey, num, keyword, func, comp, operator) => {
       if (str) {
         const quote = str[0];
@@ -235,17 +177,17 @@ export const TerminalBlock = forwardRef<HTMLDivElement, TerminalBlockProps>(
 
     const variantStyles = {
       default:
-        "bg-white dark:bg-[#0d1117] border border-border shadow-xl",
+        "bg-card text-card-foreground border border-border shadow-xl",
       glass:
-        "bg-white/80 dark:bg-[#0d1117]/80 backdrop-blur-xl border border-border/80 shadow-2xl",
+        "bg-card/80 text-card-foreground backdrop-blur-xl border border-border/80 shadow-2xl",
       minimal: "bg-transparent border border-border",
     };
 
     const headerStyles = {
       default:
-        "bg-zinc-100/80 dark:bg-white/5 border-b border-border",
+        "bg-muted/80 border-b border-border",
       glass:
-        "bg-zinc-100/60 dark:bg-white/5 border-b border-border/80",
+        "bg-muted/60 border-b border-border/80",
       minimal:
         "bg-muted border-b border-border",
     };
@@ -278,7 +220,7 @@ export const TerminalBlock = forwardRef<HTMLDivElement, TerminalBlockProps>(
                 <div className="w-3 h-3 rounded-full bg-[#27c93f]" />
               </div>
             ) : (
-              <TerminalIcon className="w-4 h-4 text-zinc-500" />
+              <TerminalIcon className="w-4 h-4 text-muted-foreground" />
             )}
           </div>
 
@@ -294,7 +236,7 @@ export const TerminalBlock = forwardRef<HTMLDivElement, TerminalBlockProps>(
             {language && (
               <span
                 className={cn(
-                  "px-2 py-1 rounded-md text-[10px] font-bold uppercase tracking-wider",
+                  "px-2 py-1 rounded-md text-[10px] font-semibold uppercase tracking-wider",
                   theme.bg,
                   theme.border,
                   "border",
@@ -306,7 +248,7 @@ export const TerminalBlock = forwardRef<HTMLDivElement, TerminalBlockProps>(
             {copyable && (
               <button
                 onClick={handleCopy}
-                className="flex items-center justify-center w-8 h-8 rounded-lg transition-all hover:bg-zinc-200 dark:hover:bg-white/10 text-muted-foreground"
+                className="flex items-center justify-center w-8 h-8 rounded-lg transition-all hover:bg-foreground/10 text-muted-foreground"
                 title="Copy code"
               >
                 {copied ? (

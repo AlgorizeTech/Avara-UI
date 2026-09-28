@@ -1,8 +1,8 @@
 # Input
 
-A powerful, multi-purpose Input component that natively supports advanced File Uploading, Password toggles, and complex layout variants.
+A multi-purpose Input component with password toggles, autocomplete suggestions, and four layout variants.
 
-By passing `type="file"`, this component transforms from a standard text input into a full-featured Drag & Drop zone that automatically generates image previews, formats file sizes, and allows users to remove selections.
+Pass `suggestions` and the field lists them the way a select menu would — typing narrows the list, and choosing one writes the text straight into the field. The drag-and-drop file mode lives on its own page: see [File upload](/docs/nextjs/file-upload).
 
 Explore the different variations of the Input component — each example shows a live preview with the exact code to copy.
 
@@ -38,16 +38,37 @@ export default function PasswordInput() {
   );
 }`;
 
-export const usageFile = `"use client";
+export const usageAutocomplete = `"use client";
 
-export default function FileUploadInput() {
+const CITIES = [
+  "Amsterdam", "Berlin", "Dhaka", "London", "New York",
+  "San Francisco", "Santiago", "Singapore", "Tokyo",
+];
+
+export default function DestinationInput() {
+  const [city, setCity] = useState("");
+
+  // Focus lists every suggestion; typing narrows it. Choosing one writes
+  // the text into the field, so onChange fires exactly as if it were typed.
   return (
-     console.log("Uploaded files:", files)}
+    }
+      value={city}
+      onChange={(e) => setCity(e.target.value)}
+      suggestions={CITIES}
+      onSuggestionSelect={(value) => console.log("Picked", value)}
+      helperText="Pick a suggestion or type your own."
     />
   );
 }`;
 
 ## Installation
+
+Register the @algorize-ui registry once per project, then add the component:
+
+```bash
+npx shadcn@latest registry add @algorize-ui=https://algorize-ui.vercel.app/r/{name}.json
+npx shadcn@latest add @algorize-ui/input
+```
 
 ## Examples
 
@@ -87,36 +108,37 @@ This component extends `React.InputHTMLAttributes`, meaning you can pass any sta
           "text"
 
           Determines the behavior. "password" adds a visibility
-          toggle. "file" transforms the component into a
-          drag-and-drop zone.
+          toggle. "file" turns the field into a drag-and-drop
+          zone — documented on the{" "}
+          File upload page.
 
-          onFilesChange
+          suggestions
 
-          (files: File[]) =&gt; void
-
-          undefined
-
-          File Mode Only: Callback fired when files are
-          dropped, selected, or removed. Returns an array of native File
-          objects.
-
-          multiple
-
-          boolean
-
-          false
-
-          File Mode Only: If true, allows dropping or selecting
-          multiple files at once.
-
-          accept
-
-          string
+          string[]
 
           undefined
 
-          File Mode Only: Standard HTML accept attribute (e.g.,{" "}
-          "image/*" or ".pdf").
+          Autocomplete list. Focus shows it, typing filters it
+          (case-insensitive, matched letters highlighted), and a click or
+          Enter writes the suggestion into the field. Ignored for{" "}
+          "password" and "file".
+
+          onSuggestionSelect
+
+          (value: string) =&gt; void
+
+          undefined
+
+          Fired after a suggestion is written into the field. The regular{" "}
+          onChange fires as well.
+
+          maxSuggestions
+
+          number
+
+          8
+        
+        Maximum rows shown at once; further matches scroll.
 
           inputSize
 

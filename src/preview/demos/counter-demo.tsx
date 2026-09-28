@@ -4,6 +4,7 @@ import {
   CounterBlock,
   CounterColor,
   CounterType,
+  CounterVariant,
 } from "@/components/custom/blocks/CounterBlock";
 
 export default function CounterDemo({
@@ -12,7 +13,7 @@ export default function CounterDemo({
   color = "primary",
 }: {
   type?: CounterType;
-  variant?: "default" | "outline" | "soft" | "vertical";
+  variant?: CounterVariant;
   color?: CounterColor | string;
 }) {
   return (
@@ -38,7 +39,9 @@ export default function CounterDemo({
           targetValue: 78,
           suffix: "%",
         })}
-        {...(type === "countdown" && { label: "Next Product Launch" })}
+        {...(type === "countdown" && {
+          label: variant === "slide" ? "Launches in" : "Next Product Launch",
+        })}
       />
     </div>
   );

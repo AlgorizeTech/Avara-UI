@@ -11,7 +11,8 @@ import {
   CommandSeparator,
   CommandShortcut,
 } from "@/components/custom/blocks/CommandBlock";
-import { toast, Toaster } from "@/components/custom/blocks/SonnerBlock";
+import { Toaster } from "@/components/custom/blocks/SonnerBlock";
+import { toast } from "@/components/custom/blocks/sonner-store";
 import {
   Calculator,
   Calendar,
@@ -150,16 +151,16 @@ export default function CommandDemo({
           </div>
         ) : (
           <div className="flex flex-col items-center text-center">
-            <p className="text-sm text-zinc-500 mb-4">
+            <p className="text-sm text-muted-foreground mb-4">
               Press{" "}
-              <kbd className="pointer-events-none inline-flex h-5 select-none items-center gap-1 rounded border border-zinc-200 dark:border-zinc-800 bg-zinc-100 dark:bg-zinc-900 px-1.5 font-mono text-[10px] font-medium text-zinc-600 dark:text-zinc-400 opacity-100">
+              <kbd className="pointer-events-none inline-flex h-5 select-none items-center gap-1 rounded border border-border bg-muted px-1.5 font-mono text-[10px] font-medium text-muted-foreground opacity-100">
                 <span className="text-xs">⌘</span>K
               </kbd>{" "}
               or click the button to open the command menu.
             </p>
             <button
               onClick={() => setIsOpen(true)}
-              className="px-4 py-2 bg-zinc-900 dark:bg-white text-white dark:text-zinc-900 font-medium rounded-md shadow-sm hover:opacity-90 transition-opacity"
+              className="px-4 py-2 bg-primary text-primary-foreground font-medium rounded-md shadow-sm hover:opacity-90 transition-opacity"
             >
               Open Command Dialog
             </button>

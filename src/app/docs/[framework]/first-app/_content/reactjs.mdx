@@ -76,7 +76,13 @@ about React Server Components — a Vite app has none.
 
 <Cli command={`init`} />
 
-### 4. Add a component
+### 4. Register the registry
+
+Also once per project. It tells the CLI where `@algorize-ui/…` lives:
+
+<Cli command={`registry add @algorize-ui=https://algorize-ui.vercel.app/r/{name}.json`} />
+
+### 5. Add a component
 
 Every component page carries its own command — this one installs the card:
 
@@ -85,7 +91,7 @@ Every component page carries its own command — this one installs the card:
 The CLI writes `src/components/custom/blocks/CardBlock.tsx` and installs whatever
 that component needs.
 
-### 5. Use it
+### 6. Use it
 
 ```tsx
 // src/App.tsx
@@ -190,7 +196,7 @@ createRoot(document.getElementById("root")!).render(
 export default function App() {
   return (
     <main className="min-h-screen flex flex-col items-center justify-center gap-4">
-      <h1 className="text-4xl font-bold">Welcome</h1>
+      <h1 className="text-4xl font-semibold">Welcome</h1>
       <p className="text-xl">This is my first React app!</p>
     </main>
   );
@@ -231,7 +237,7 @@ createRoot(document.getElementById("root")!).render(
 export default function About() {
   return (
     <main className="p-24">
-      <h1 className="text-3xl font-bold">About</h1>
+      <h1 className="text-3xl font-semibold">About</h1>
     </main>
   );
 }

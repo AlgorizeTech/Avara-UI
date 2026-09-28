@@ -1,15 +1,10 @@
 import { notFound, redirect } from "next/navigation";
+import { BUILT_FRAMEWORKS, docsHref, isFramework } from "@/lib/framework";
 
-import { docsHref, isFramework } from "@/lib/framework";
+export function generateStaticParams() {
+  return BUILT_FRAMEWORKS.map((framework) => ({ framework }));
+}
 
-/**
- * Sends `/docs/<framework>` to that framework's Introduction.
- *
- * The segment root had no page before this migration, so `/docs/nextjs` was a
- * 404 — tolerable while nobody linked to it, but a bare `/docs/reactjs` is the
- * first thing someone will try after seeing the switcher, and a dead end there
- * reads as the new feature being broken.
- */
 export default async function FrameworkIndexPage({
   params,
 }: {

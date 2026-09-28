@@ -1,18 +1,17 @@
 "use client";
 
-import {
-  PricingBuilder,
-  PricingCards,
-  PricingColor,
-  PricingData,
-  PricingSlider,
-  PricingTable,
-  PricingTableData,
-  PricingTypographic,
-  PricingVariant,
-} from "@/components/custom/blocks/Pricing";
+import { PricingBuilder, PricingCards, PricingData, PricingDotPattern, PricingPlans, PricingScale, PricingSlider, PricingTable, PricingTableData, PricingTypographic, PricingVariant } from "@/components/custom/blocks/Pricing";
+import { PricingColor } from "@/components/custom/blocks/pricing-theme";
 
-type LayoutType = "cards" | "builder" | "table" | "slider" | "typographic";
+type LayoutType =
+  | "cards"
+  | "scale"
+  | "dot-pattern"
+  | "builder"
+  | "table"
+  | "slider"
+  | "typographic"
+  | "plans";
 
 const sampleCardsData: PricingData = {
   tabs: [
@@ -249,38 +248,54 @@ export default function PricingDemo({
   layout = "cards",
   variant = "default",
   color = "primary",
+  counting = true,
 }: {
   layout?: LayoutType;
   variant?: PricingVariant;
   color?: PricingColor;
+  counting?: boolean;
 }) {
   return (
     <div
-      className={`w-full py-12 md:py-24 transition-colors duration-300 ${layout === "typographic" ? "bg-transparent rounded-3xl" : "bg-zinc-50/50 dark:bg-transparent"}`}
+      className={`w-full py-4 md:py-8 transition-colors duration-300 ${layout === "typographic" ? "bg-transparent rounded-3xl" : "rounded-3xl"}`}
+      style={{
+        backgroundColor: layout === "typographic" ? "transparent" : "color-mix(in srgb, var(--pricing-accent, #6366f1) 3%, var(--background, transparent))",
+      }}
     >
       {layout === "cards" && (
         <PricingCards
-          key={`cards-${variant}-${color}`}
+          key={`cards-${variant}-${color}-${counting}`}
           variant={variant}
           color={color}
+          counting={counting}
           data={sampleCardsData}
         />
       )}
       {layout === "builder" && (
-        <PricingBuilder key={`builder-${color}`} color={color} />
+        <PricingBuilder key={`builder-${color}-${counting}`} color={color} counting={counting} />
       )}
       {layout === "table" && (
-        <PricingTable key={`table-${color}`} color={color} data={sampleTableData} />
+        <PricingTable key={`table-${color}-${counting}`} color={color} counting={counting} data={sampleTableData} />
       )}
       {layout === "slider" && (
-        <PricingSlider key={`slider-${color}`} color={color} />
+        <PricingSlider key={`slider-${color}-${counting}`} color={color} counting={counting} />
       )}
       {layout === "typographic" && (
         <PricingTypographic
-          key={`type-${color}`}
+          key={`type-${color}-${counting}`}
           packages={sampleTypographicData}
           color={color}
+          counting={counting}
         />
+      )}
+      {layout === "plans" && (
+        <PricingPlans key={`plans-${color}-${counting}`} color={color} counting={counting} />
+      )}
+      {layout === "scale" && (
+        <PricingScale key={`scale-${color}-${counting}`} color={color} counting={counting} />
+      )}
+      {layout === "dot-pattern" && (
+        <PricingDotPattern key={`dot-${color}-${counting}`} color={color} counting={counting} />
       )}
     </div>
   );

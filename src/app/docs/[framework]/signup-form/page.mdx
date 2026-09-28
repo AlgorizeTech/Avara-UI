@@ -7,7 +7,7 @@ Two production-ready authentication blocks: a **Login Form** for returning users
 
 They are separate components on purpose. Sign-in and sign-up are different pages with different fields, different validation rules and different autofill hints — a browser password manager cannot offer to save a new credential on a form it thinks might be a login. Install only the one a given route needs; each has its own install command, and each command sits with the block it installs.
 
-Both share the same `variant` and `color` surface, so a login page and a register page match without any extra work.
+Both share the same `variant` and `color` surface, so a login page and a register page match without any extra work. The fields are the library's <DocLink to="input">Input</DocLink> and the buttons its <DocLink to="button">Button</DocLink>, each handed the same `color`, so the whole form follows one accent and picks up any change you make to those components.
 
 ## Login form
 
@@ -18,6 +18,8 @@ export const usageLogin = `import LoginForm from "@/components/custom/blocks/Log
 export default function LoginPage() {
   return (
     <LoginForm
+      variant="default"
+      color="indigo"
       signupHref="/register"
       forgotPasswordHref="/forgot-password"
       onSubmit={async ({ email, password, remember }) => {
@@ -45,7 +47,7 @@ export default function GlassLoginPage() {
     <div className="w-full flex items-center justify-center min-h-[600px] relative overflow-hidden rounded-2xl p-4 sm:p-8">
       <div className="absolute inset-0 z-0">
         <img
-          src="https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=1600&q=80"
+          src="https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_1600,c_limit/v1790146210/photo-1506744038136-46273834b3fb-1790146212208.jpg"
           alt="Moody lake sunset landscape"
           className="w-full h-full object-cover"
         />
@@ -76,12 +78,19 @@ export default function MinimalLoginPage() {
         "Email and password with a remember-me checkbox and a forgot-password link, all validated on submit.",
       propNotes: [
         {
+          lead: "Set",
+          prop: "color",
+          value: '"indigo" | "rose" | "emerald" | "zinc" | "primary" | "#hex"',
+          effect:
+            "themes the primary submit button, input focus rings, and remember-me checkbox.",
+        },
+        {
           prop: "onSubmit",
           effect:
             "receives the validated credentials. Leave it off and the block simulates a round trip, so the preview works before any auth provider exists.",
         },
       ],
-      props: { variant: "default" },
+      props: { variant: "default", color: "indigo" },
       usage: usageLogin,
       code: extractCode("src/components/custom/blocks/LoginForm.tsx"),
     },
@@ -158,6 +167,8 @@ export const usageRegister = `import RegisterForm from "@/components/custom/bloc
 export default function RegisterPage() {
   return (
     <RegisterForm
+      variant="default"
+      color="indigo"
       loginHref="/login"
       termsHref="/legal/terms"
       privacyHref="/legal/privacy"
@@ -167,6 +178,24 @@ export default function RegisterPage() {
         await new Promise((resolve) => setTimeout(resolve, 600));
         console.log(values);
       }}
+    />
+  );
+}`;
+
+export const usageRegisterScenic = `import RegisterForm from "@/components/custom/blocks/RegisterForm";
+
+export default function ScenicRegisterPage() {
+  // "scenic" renders a floating onboarding card over a nature landscape backdrop.
+  // Seamlessly adapts between light mode (frosted card) and dark mode (dark charcoal card).
+  return (
+    <RegisterForm
+      variant="scenic"
+      brandName="Docs UI"
+      title="Take control of your financial wellbeing"
+      subtitle="Understand your money, build healthier habits, and make confident financial decisions"
+      getStartedLabel="Get Started"
+      alreadyAccountLabel="I already have an account"
+      loginHref="/login"
     />
   );
 }`;
@@ -186,7 +215,7 @@ export default function GlassRegisterPage() {
     <div className="w-full flex items-center justify-center min-h-[600px] relative overflow-hidden rounded-2xl p-4 sm:p-8">
       <div className="absolute inset-0 z-0">
         <img
-          src="https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=1600&q=80"
+          src="https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_1600,c_limit/v1790146210/photo-1506744038136-46273834b3fb-1790146212208.jpg"
           alt="Moody lake sunset landscape"
           className="w-full h-full object-cover"
         />
@@ -217,12 +246,19 @@ export default function MinimalRegisterPage() {
         "Name fields, a confirm-password field and a terms checkbox, all validated on submit.",
       propNotes: [
         {
+          lead: "Set",
+          prop: "color",
+          value: '"indigo" | "rose" | "emerald" | "zinc" | "primary" | "#hex"',
+          effect:
+            "themes the primary submit button, input focus rings, terms checkbox, and policy links.",
+        },
+        {
           prop: "minPasswordLength",
           effect:
             "sets the client-side minimum (8 by default). It stops an obviously-too-short password before a round trip — your server still enforces the real policy.",
         },
       ],
-      props: { variant: "default" },
+      props: { variant: "default", color: "indigo" },
       usage: usageRegister,
       code: extractCode("src/components/custom/blocks/RegisterForm.tsx"),
     },
@@ -242,6 +278,26 @@ Every example below is the same `RegisterForm` you just installed — only the p
   colorControl
   columns={1}
   examples={[
+    {
+      title: "Register — scenic",
+      id: "register-scenic",
+      propNotes: [
+        {
+          lead: "Set",
+          prop: "variant",
+          value: '"scenic"',
+          effect:
+            "to place a floating onboarding card with an interactive welcome and registration flow over a full-bleed scenic nature backdrop. Adapts smoothly between light mode (frosted card) and dark mode (dark charcoal card).",
+        },
+        {
+          prop: "bgImage",
+          effect:
+            "optional Cloudinary or CDN image URL for the scenic landscape backdrop.",
+        },
+      ],
+      props: { variant: "scenic" },
+      usage: usageRegisterScenic,
+    },
     {
       title: "Register — split",
       id: "register-split",
@@ -326,15 +382,15 @@ Every example below is the same `RegisterForm` you just installed — only the p
           <code>color</code>
         </td>
         <td>
-          <code>"indigo" | "rose" | "emerald" | "zinc" | string</code>
+          <code>"primary" | "indigo" | "rose" | "emerald" | "zinc" | string</code>
         </td>
         <td>
-          <code>"indigo"</code>
+          <code>"primary"</code>
         </td>
         <td>
           Applies global color themes to the primary button, focus rings and the
           remember-me checkbox. Accepts valid hex codes (e.g.{" "}
-          <code>"#00FF00"</code>).
+          <code>"#8b5cf6"</code>).
         </td>
       </tr>
       <tr>
@@ -419,14 +475,13 @@ Every example below is the same `RegisterForm` you just installed — only the p
           <code>variant</code>
         </td>
         <td>
-          <code>"default" | "split" | "glass" | "minimal"</code>
+          <code>"scenic" | "default" | "split" | "glass" | "minimal"</code>
         </td>
         <td>
           <code>"default"</code>
         </td>
         <td>
-          Same four layouts as <code>LoginForm</code>, so a matched pair of
-          pages needs no extra styling.
+          Five distinct presentation presets. <code>"scenic"</code> renders a floating onboarding card over a landscape backdrop with interactive welcome and registration steps, adapting smoothly to light and dark modes.
         </td>
       </tr>
       <tr>
@@ -434,14 +489,99 @@ Every example below is the same `RegisterForm` you just installed — only the p
           <code>color</code>
         </td>
         <td>
-          <code>"indigo" | "rose" | "emerald" | "zinc" | string</code>
+          <code>"primary" | "indigo" | "rose" | "emerald" | "zinc" | string</code>
         </td>
         <td>
-          <code>"indigo"</code>
+          <code>"primary"</code>
         </td>
         <td>
           Applies global color themes to the primary button, focus rings, the
-          terms checkbox and the policy links. Accepts valid hex codes.
+          terms checkbox and the policy links. Accepts valid hex codes (e.g.{" "}
+          <code>"#8b5cf6"</code>).
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <code>brandName</code>
+        </td>
+        <td>
+          <code>string</code>
+        </td>
+        <td>
+          <code>"Docs UI"</code>
+        </td>
+        <td>
+          Brand name text displayed in the header of the <code>scenic</code> variant card.
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <code>title</code> / <code>subtitle</code>
+        </td>
+        <td>
+          <code>string</code>
+        </td>
+        <td>
+          See defaults
+        </td>
+        <td>
+          Customizable headline and description displayed on the <code>scenic</code> onboarding card.
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <code>getStartedLabel</code>
+        </td>
+        <td>
+          <code>string</code>
+        </td>
+        <td>
+          <code>"Get Started"</code>
+        </td>
+        <td>
+          Label on the primary CTA button in the <code>scenic</code> welcome card.
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <code>alreadyAccountLabel</code>
+        </td>
+        <td>
+          <code>string</code>
+        </td>
+        <td>
+          <code>"I already have an account"</code>
+        </td>
+        <td>
+          Label on the secondary action button linking to <code>loginHref</code>.
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <code>bgImage</code>
+        </td>
+        <td>
+          <code>string</code>
+        </td>
+        <td>
+          Cloudinary landscape
+        </td>
+        <td>
+          Custom background image URL for the <code>scenic</code> variant.
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <code>initialStep</code>
+        </td>
+        <td>
+          <code>"welcome" | "options" | "email" | "otp" | "onboarding-intro" | "goals" | "finances" | "confidence" | "emergency-fund" | "first-goal" | "summary"</code>
+        </td>
+        <td>
+          <code>"welcome"</code>
+        </td>
+        <td>
+          Starting view for the <code>scenic</code> variant: <code>"welcome"</code> (intro CTA), <code>"options"</code> (auth methods), <code>"email"</code> (registration form), <code>"otp"</code> (6-digit verification), <code>"onboarding-intro"</code> (picture overview), <code>"goals"</code> (area focus), <code>"finances"</code> (income &amp; expenses), <code>"confidence"</code> (rating scales), <code>"emergency-fund"</code> (preparation status), <code>"first-goal"</code> (target planner), or <code>"summary"</code> (financial overview).
         </td>
       </tr>
       <tr>

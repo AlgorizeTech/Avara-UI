@@ -107,7 +107,7 @@ export function generateMetadata(config: SEOConfig): Metadata {
 // Component-specific metadata generator
 export function generateComponentMetadata(componentName: string, description: string, category: string = 'UI Components'): Metadata {
   const title = `${componentName} Component - React Tailwind CSS`
-  const enhancedDescription = `${description} Copy-paste React component built with Tailwind CSS and Framer Motion. Free, open-source, and production-ready.`
+  const enhancedDescription = `${description} Copy-paste React component built with Tailwind CSS and Motion. Free, open-source, and production-ready.`
   
   const keywords = [
     `${componentName} component`,
@@ -118,7 +118,7 @@ export function generateComponentMetadata(componentName: string, description: st
     `${componentName} UI component`,
     'React components',
     'Tailwind CSS components',
-    'Framer Motion',
+    'Motion',
     'TypeScript components',
     'copy paste components',
     'free React components',
@@ -246,7 +246,7 @@ export const defaultKeywords = [
   'React components',
   'UI library',
   'Tailwind CSS',
-  'Framer Motion',
+  'Motion',
   'TypeScript',
   'Next.js',
   'animated components',

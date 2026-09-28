@@ -52,11 +52,11 @@ const testimonials = [
 ];
 
 const images = [
-  "https://images.unsplash.com/photo-1469474968028-56623f02e42e?q=80&w=800&auto=format&fit=crop", // Mountain sunset
-  "https://images.unsplash.com/photo-1447752875215-b2761acb3c5d?q=80&w=800&auto=format&fit=crop", // Lush forest trees
-  "https://images.unsplash.com/photo-1507525428034-b723cf961d3e?q=80&w=800&auto=format&fit=crop", // Tropical beach ocean
-  "https://images.unsplash.com/photo-1519681393784-d120267933ba?q=80&w=800&auto=format&fit=crop", // Snowy mountain night star sky
-  "https://images.unsplash.com/photo-1470071459604-3b5ec3a7fe05?q=80&w=800&auto=format&fit=crop", // Foggy green valley mountain
+  "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_800,c_limit/v1790146209/photo-1469474968028-56623f02e42e-1790146212205.jpg", // Mountain sunset
+  "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_800,c_limit/v1790148863/photo-1447752875215-b2761acb3c5d-1790148865109.jpg", // Lush forest trees
+  "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_800,c_limit/v1790146210/photo-1507525428034-b723cf961d3e-1790146212208.jpg", // Tropical beach ocean
+  "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_800,c_limit/v1790146211/photo-1519681393784-d120267933ba-1790146212210.jpg", // Snowy mountain night star sky
+  "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_800,c_limit/v1790146209/photo-1470071459604-3b5ec3a7fe05-1790146212205.jpg", // Foggy green valley mountain
 ];
 
 export default function MarqueeDemo({
@@ -81,7 +81,7 @@ export default function MarqueeDemo({
       return logos.map((logo, i) => (
         <div
           key={i}
-          className="flex items-center gap-2 text-zinc-400 hover:text-zinc-900 dark:hover:text-zinc-100 transition-colors font-bold text-xl"
+          className="flex items-center gap-2 text-muted-foreground hover:text-foreground transition-colors font-semibold text-xl"
         >
           <logo.icon className="w-8 h-8" />
           {logo.name}
@@ -92,20 +92,20 @@ export default function MarqueeDemo({
       return testimonials.map((t, i) => (
         <div
           key={i}
-          className="w-[300px] shrink-0 p-6 rounded-2xl bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 shadow-sm flex flex-col gap-4"
+          className="w-[300px] shrink-0 p-6 rounded-2xl bg-card text-card-foreground border border-border shadow-sm flex flex-col gap-4"
         >
-          <p className="text-sm text-zinc-600 dark:text-zinc-400 leading-relaxed">
+          <p className="text-sm text-muted-foreground leading-relaxed">
             "{t.text}"
           </p>
           <div className="flex items-center gap-3">
-            <div className="w-10 h-10 rounded-full bg-zinc-200 dark:bg-zinc-800 flex items-center justify-center font-bold text-zinc-500">
+            <div className="w-10 h-10 rounded-full bg-muted flex items-center justify-center font-semibold text-muted-foreground">
               {t.name.charAt(0)}
             </div>
             <div>
-              <p className="text-sm font-bold text-zinc-900 dark:text-zinc-100">
+              <p className="text-sm font-semibold text-foreground">
                 {t.name}
               </p>
-              <p className="text-xs text-zinc-500">{t.role}</p>
+              <p className="text-xs text-muted-foreground">{t.role}</p>
             </div>
           </div>
         </div>
@@ -115,7 +115,7 @@ export default function MarqueeDemo({
       return images.map((src, i) => (
         <div
           key={i}
-          className="w-[220px] h-[160px] shrink-0 rounded-2xl overflow-hidden shadow-md border border-zinc-200/60 dark:border-zinc-800"
+          className="w-[220px] h-[160px] shrink-0 rounded-2xl overflow-hidden shadow-md border border-border"
         >
           <img src={src} alt="Nature landscape" className="w-full h-full object-cover" />
         </div>

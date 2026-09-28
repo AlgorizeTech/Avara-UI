@@ -38,14 +38,14 @@ export default function TextAnimationDemo({
   /** Renders every variant in one frame. */
   showAll?: "variants";
 }) {
-  const colorClass = textColor ? "" : "text-zinc-900 dark:text-white";
+  const colorClass = textColor ? "" : "text-foreground";
 
   if (showAll === "variants") {
     return (
-      <div className="w-full min-h-[300px] bg-white dark:bg-black rounded-2xl border border-slate-200 dark:border-slate-800 flex flex-col gap-8 p-8 overflow-hidden">
+      <div className="w-full min-h-[300px] bg-background rounded-2xl border border-border flex flex-col gap-8 p-8 overflow-hidden">
         {ALL_VARIANTS.map((v) => (
           <div key={v} className="flex flex-col gap-1">
-            <span className="text-[11px] font-bold uppercase tracking-wider text-zinc-500">
+            <span className="text-[11px] font-semibold uppercase tracking-wider text-muted-foreground">
               variant=&quot;{v}&quot;
             </span>
             <TextAnimation
@@ -61,7 +61,7 @@ export default function TextAnimationDemo({
   }
 
   return (
-    <div className="w-full min-h-[300px] bg-white dark:bg-black rounded-2xl border border-slate-200 dark:border-slate-800 flex flex-col items-center justify-center p-8 text-center overflow-hidden">
+    <div className="w-full min-h-[300px] bg-background rounded-2xl border border-border flex flex-col items-center justify-center p-8 text-center overflow-hidden">
       <TextAnimation
         key={animKey}
         as={as as React.ElementType | undefined}

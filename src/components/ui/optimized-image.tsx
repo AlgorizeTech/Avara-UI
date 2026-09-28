@@ -33,11 +33,11 @@ export function OptimizedImage({
   return (
     <div className={cn("relative overflow-hidden", className)}>
       {isLoading && (
-        <div className="absolute inset-0 bg-gray-200 dark:bg-gray-800 animate-pulse rounded" />
+        <div className="absolute inset-0 bg-muted animate-pulse rounded" />
       )}
 
       {hasError ? (
-        <div className="flex items-center justify-center h-full bg-gray-100 dark:bg-gray-900 text-gray-500">
+        <div className="flex items-center justify-center h-full bg-muted text-muted-foreground">
           Failed to load image
         </div>
       ) : (

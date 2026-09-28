@@ -8,41 +8,33 @@ It features a **Smart Sizing Engine**. You can maintain semantic SEO value (like
 
 Every example remounts when it scrolls into view, so the animation plays. Reach for the reload button in a preview's header to replay it.
 
-export const usageFlipUp = `import { AnimatedTypographyBlock } from "@/components/custom/blocks/AnimatedTypographyBlock";
+export const usageMatrix = `import { AnimatedTypographyBlock } from "@/components/custom/blocks/AnimatedTypographyBlock";
 
-export default function FlipUpShowcase() {
+export default function MatrixScrambleShowcase() {
   return (
 
   );
 }`;
 
-export const usageFadeUp = `import { AnimatedTypographyBlock } from "@/components/custom/blocks/AnimatedTypographyBlock";
+export const usageWavy = `import { AnimatedTypographyBlock } from "@/components/custom/blocks/AnimatedTypographyBlock";
 
-export default function FadeUpShowcase() {
+export default function WavyFloatShowcase() {
   return (
 
   );
 }`;
 
-export const usagePopIn = `import { AnimatedTypographyBlock } from "@/components/custom/blocks/AnimatedTypographyBlock";
+export const usagePerspective = `import { AnimatedTypographyBlock } from "@/components/custom/blocks/AnimatedTypographyBlock";
 
-export default function PopInShowcase() {
+export default function PerspectiveFlipShowcase() {
   return (
 
   );
 }`;
 
-export const usageBlurIn = `import { AnimatedTypographyBlock } from "@/components/custom/blocks/AnimatedTypographyBlock";
+export const usageElastic = `import { AnimatedTypographyBlock } from "@/components/custom/blocks/AnimatedTypographyBlock";
 
-export default function BlurInShowcase() {
-  return (
-
-  );
-}`;
-
-export const usageTypewriter = `import { AnimatedTypographyBlock } from "@/components/custom/blocks/AnimatedTypographyBlock";
-
-export default function TypewriterShowcase() {
+export default function ElasticSpringShowcase() {
   return (
 
   );
@@ -50,35 +42,108 @@ export default function TypewriterShowcase() {
 
 ## Installation
 
+Register the @algorize-ui registry once per project, then add the component:
+
+```bash
+npx shadcn@latest registry add @algorize-ui=https://algorize-ui.vercel.app/r/{name}.json
+npx shadcn@latest add @algorize-ui/animated-typography
+```
+
 ## Examples
 
-export const usageWordBounce = `import { AnimatedTypographyBlock } from "@/components/custom/blocks/AnimatedTypographyBlock";
+export const usageSpotlight = `import { AnimatedTypographyBlock } from "@/components/custom/blocks/AnimatedTypographyBlock";
 
-export default function WordBounceShowcase() {
+export default function SpotlightRevealShowcase() {
   return (
 
   );
 }`;
 
-export const usageWordZoom = `import { AnimatedTypographyBlock } from "@/components/custom/blocks/AnimatedTypographyBlock";
+export const usageSplit = `import { AnimatedTypographyBlock } from "@/components/custom/blocks/AnimatedTypographyBlock";
 
-export default function WordZoomShowcase() {
+export default function SplitStaggerShowcase() {
   return (
 
   );
 }`;
 
-export const usageWordSlide = `import { AnimatedTypographyBlock } from "@/components/custom/blocks/AnimatedTypographyBlock";
+export const usageUnderline = `import { AnimatedTypographyBlock } from "@/components/custom/blocks/AnimatedTypographyBlock";
 
-export default function WordSlideShowcase() {
+export default function UnderlineDrawShowcase() {
   return (
 
   );
 }`;
 
-export const usageCharWave = `import { AnimatedTypographyBlock } from "@/components/custom/blocks/AnimatedTypographyBlock";
+export const usageColorReveal = `import { AnimatedTypographyBlock } from "@/components/custom/blocks/AnimatedTypographyBlock";
 
-export default function CharWaveShowcase() {
+export default function ColorRevealShowcase() {
+  return (
+
+  );
+}`;
+
+export const usageLetterBounce = `import { AnimatedTypographyBlock } from "@/components/custom/blocks/AnimatedTypographyBlock";
+
+const words = ["Interfaces", "Components", "Experiences"];
+
+export default function LetterBounceShowcase() {
+  return (
+
+  );
+}`;
+
+export const usageTypewriter = `import { AnimatedTypographyBlock } from "@/components/custom/blocks/AnimatedTypographyBlock";
+
+const words = ["Interfaces", "Components", "Experiences"];
+
+export default function TypewriterShowcase() {
+  return (
+
+  );
+}`;
+
+export const usageTypewriterFixed = `import { AnimatedTypographyBlock } from "@/components/custom/blocks/AnimatedTypographyBlock";
+
+const words = ["Interfaces", "Components", "Experiences"];
+
+export default function TypewriterFixedShowcase() {
+  return (
+
+  );
+}`;
+
+export const usageWordFlip = `import { AnimatedTypographyBlock } from "@/components/custom/blocks/AnimatedTypographyBlock";
+
+const words = ["Interfaces", "Components", "Experiences"];
+
+export default function WordFlipShowcase() {
+  return (
+
+  );
+}`;
+
+export const usageBlurSwap = `import { AnimatedTypographyBlock } from "@/components/custom/blocks/AnimatedTypographyBlock";
+
+const words = ["Interfaces", "Components", "Experiences"];
+
+export default function BlurSwapShowcase() {
+  return (
+
+  );
+}`;
+
+export const usageBlurRise = `import { AnimatedTypographyBlock } from "@/components/custom/blocks/AnimatedTypographyBlock";
+
+export default function BlurRiseShowcase() {
+  return (
+
+  );
+}`;
+
+export const usageColorWipe = `import { AnimatedTypographyBlock } from "@/components/custom/blocks/AnimatedTypographyBlock";
+
+export default function ColorWipeShowcase() {
   return (
 
   );
@@ -87,25 +152,17 @@ export default function CharWaveShowcase() {
 ## Features
 Discover the key capabilities that make this component an excellent choice for modern, animated user interfaces.
 
-    Fluid Animations
-    Hardware-accelerated transitions that ensure smooth 60fps performance across devices.
+    14 Animation Patterns
+    From Matrix decryption to liquid underlines, plus every hero title effect — letter bounce, typewriter, word flip, blur swap, blur rise and color wipe.
 
-    Highly Customizable
-    Exposes intuitive props for tailoring colors, sizes, and animation speeds to fit your brand.
+    Highly Accessible
+    Automatically renders an sr-only version for screen readers while displaying child visual spans.
 
-    Responsive Design
-    Automatically adapts to mobile, tablet, and desktop viewports without horizontal scrolling issues.
+    Responsive Sizing
+    Supports semantic tags (h1-h6, p) with Tailwind size overrides and pixel/rem custom sizing.
 
-    Accessible
-    Built with semantic HTML and ARIA labels where necessary to support screen readers and keyboard navigation.
-
-## Best Practices & Guidelines
-
-    Animation Performance
-    Avoid placing too many heavy animated components on a single screen to prevent layout thrashing and maintain 60fps performance. Use intersection observers to pause off-screen animations.
-
-    State Management
-    When triggering animations via state changes, ensure you wrap state updates in startTransition or use lightweight stores to prevent React rendering bottlenecks during the animation tick.
+    Hardware Accelerated
+    GPU-optimized CSS keyframes and spring physics for smooth 60fps animations.
 
 ## Props Reference
 
@@ -120,12 +177,10 @@ Discover the key capabilities that make this component an excellent choice for m
           text
 
           string
-
-          Required
-
-          The text content to render. Staggered variants (like{" "}
-          fade-up or pop-in) automatically split this
-          string by spaces to animate word-by-word.
+        
+        —
+        
+          The text content to render, and what screen readers announce. Staggered variants split this string to animate word-by-word or character-by-character.
 
           AnimatedTypographyBlock
 
@@ -136,20 +191,101 @@ Discover the key capabilities that make this component an excellent choice for m
 
           "p"
 
-          The semantic HTML tag to render. Automatically applies sensible
-          responsive sizing based on the tag unless overridden by the{" "}
-          size prop.
+          The semantic HTML tag to render.
 
           AnimatedTypographyBlock
 
           variant
 
-            "fade-up" | "reveal" | "flip-up" | "blur-in" | "pop-in" |
-            "typewriter" | "glitch" | "glow" | "none"
+            "matrix-scramble" | "color-reveal" | "wavy-float" |
+            "3d-perspective-flip" | "elastic-spring" | "spotlight-reveal" |
+            "split-stagger" | "underline-draw" | "letter-bounce" |
+            "typewriter" | "word-flip" | "blur-swap" | "blur-rise" |
+            "color-wipe"
 
-          "fade-up"
+          "matrix-scramble"
         
-        The animation effect applied to the text.
+        The 14 animation patterns applied to the text. letter-bounce, typewriter, word-flip and blur-swap rotate through words.
+
+          AnimatedTypographyBlock
+
+          words
+
+          ReactNode[]
+
+          [text]
+
+          The words the rotating variants cycle through. Plain strings animate letter by letter; other nodes move whole. text is still what screen readers announce, so set it to the first word.
+
+          AnimatedTypographyBlock
+
+          interval
+
+          number
+
+          2400
+
+          Milliseconds each word stays on the rotating variants. The typewriter holds a finished word this long instead, 1800 by default.
+
+          AnimatedTypographyBlock
+
+          prefixPosition
+
+          "fixed" | "fluid"
+
+          "fluid" for typewriter, "fixed" otherwise
+
+          Whether the text before the rotating words holds still. fixed reserves the longest word's width; fluid follows the word on show, so a centred line re-centres as the word types, deletes or swaps.
+
+          AnimatedTypographyBlock
+
+          index
+
+          number
+
+          —
+
+          Shows words[index] instead of stepping on a timer — for words kept in step with something else, like a carousel's slides. The typewriter keeps its own time.
+
+          AnimatedTypographyBlock
+
+          children
+
+          ReactNode
+
+          —
+
+          Rich content for blur-rise and color-wipe in place of text, such as a heading with an &lt;em&gt; in it.
+
+          AnimatedTypographyBlock
+
+          play
+
+          boolean
+
+          true
+
+          false renders the text at rest; the animation starts when it turns true. For reveals that wait on scrolling into view.
+
+          AnimatedTypographyBlock
+
+          bare
+
+          boolean
+
+          false
+
+          Drops the block's own weight, size, colour, alignment and padding, so className and the parent set the type — for composing it into a section heading.
+
+          AnimatedTypographyBlock
+
+          titlePrefix / titleSuffix
+
+          string
+        
+        —
+        
+          Static text either side of the animated part, e.g. titlePrefix="Build " before a rotating word.
 
           AnimatedTypographyBlock
 
@@ -160,53 +296,6 @@ Discover the key capabilities that make this component an excellent choice for m
           "left"
         
         Controls the CSS text alignment of the underlying container.
-
-          AnimatedTypographyBlock
-
-          size
-
-          string
-
-          undefined
-
-          Overrides the default tag size. Supports Tailwind scale sizes (e.g.,{" "}
-          "sm", "3xl") OR standard CSS values (e.g.,{" "}
-          "24px", "2rem").
-
-          AnimatedTypographyBlock
-
-          color
-
-            "indigo" | "rose" | "emerald" | "zinc" | "default" | string
-
-          "default"
-
-          The text color. If "default", it inherits the parent
-          container's color. Fully supports custom hex codes.
-
-          AnimatedTypographyBlock
-
-          delay
-
-          number
-
-          0
-
-          The initial delay in milliseconds before the animation begins.
-          Essential for sequencing multiple typography blocks (e.g., fading a
-          subheadline in after the main headline).
-
-          AnimatedTypographyBlock
-
-          speed
-
-          number
-
-          1
-
-          A multiplier for the animation speed. Lower numbers mean faster
-          animations (e.g., 0.5 makes the staggered delays run
-          twice as fast).
 
 ---
 

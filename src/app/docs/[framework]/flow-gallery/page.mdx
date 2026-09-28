@@ -1,0 +1,314 @@
+import { ExampleShowcase } from "@/components/site/Sandbox";
+import { Installation } from "@/components/site/installation";
+import { extractCode } from "@/lib/code";
+
+# Flow Gallery
+
+Horizontal and diagonal 3D cascading gallery stream with continuous auto-flow motion, drag inertia physics, and isometric perspective options.
+
+Drag the stage or allow it to auto-flow continuously along the selected directional stream angle.
+
+export const itemsCode = `const items: FlowGalleryItem[] = [
+  {
+    id: "1",
+    title: "Cyberpunk Officer",
+    imageUrl: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_800,c_limit/v1790148864/photo-1618005182384-a83a8bd57fbe-1790148865111.jpg",
+  },
+  {
+    id: "2",
+    title: "Neon Cyberpunk Girl",
+    imageUrl: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_800,c_limit/v1790150483/photo-1578632767115-351597cf2477-1790150482281.jpg",
+  },
+  {
+    id: "3",
+    title: "Ramen Bowl Art",
+    imageUrl: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_800,c_limit/v1790148864/photo-1569718212165-3a8278d5f624-1790148865111.jpg",
+  },
+  {
+    id: "4",
+    title: "Suit Business Portrait",
+    imageUrl: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_800,c_limit/v1790150480/photo-1507003211169-0a1dd7228f2d-1790150482276.jpg",
+  },
+  {
+    id: "5",
+    title: "Grizzly Bear Wildlife",
+    imageUrl: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_800,c_limit/v1790150482/photo-1530595467537-0b5996c41f2d-1790150482280.jpg",
+  },
+  {
+    id: "6",
+    title: "Skateboard Graphic",
+    imageUrl: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_800,c_limit/v1790150482/photo-1520045892732-304bc3ac5d8e-1790150482278.jpg",
+  },
+  {
+    id: "7",
+    title: "Abstract Fluid Ink",
+    imageUrl: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_800,c_limit/v1790150483/photo-1541701494587-cb58502866ab-1790150482281.jpg",
+  },
+  {
+    id: "8",
+    title: "Deep Space Black Hole",
+    imageUrl: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_800,c_limit/v1790145141/photo-1451187580459-43490279c0fa-1790145143491.jpg",
+  },
+  {
+    id: "9",
+    title: "Misty Pine Forest",
+    imageUrl: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_800,c_limit/v1790146209/photo-1470071459604-3b5ec3a7fe05-1790146212205.jpg",
+  },
+  {
+    id: "10",
+    title: "Sunset Mountain Peak",
+    imageUrl: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_800,c_limit/v1790146210/photo-1506744038136-46273834b3fb-1790146212208.jpg",
+  },
+];`;
+
+export const usageTopLeft = `import { FlowGallery, type FlowGalleryItem } from "@/components/custom/flow-gallery";
+
+${itemsCode}
+
+export default function FlowGalleryTopLeftDemo() {
+  return (
+    <FlowGallery
+      items={items}
+      direction="top-left"
+      speed={3.5}
+      pauseOnHover={true}
+      columns={9}
+    />
+  );
+}`;
+
+export const usageTopRight = `import { FlowGallery, type FlowGalleryItem } from "@/components/custom/flow-gallery";
+
+${itemsCode}
+
+export default function FlowGalleryTopRightDemo() {
+  return (
+    <FlowGallery
+      items={items}
+      direction="top-right"
+      speed={3.5}
+      pauseOnHover={true}
+      columns={9}
+    />
+  );
+}`;
+
+export const usageVerticalUp = `import { FlowGallery, type FlowGalleryItem } from "@/components/custom/flow-gallery";
+
+${itemsCode}
+
+export default function FlowGalleryVerticalUpDemo() {
+  return (
+    <FlowGallery
+      items={items}
+      direction="vertical-up"
+      speed={3.5}
+      pauseOnHover={true}
+      columns={9}
+    />
+  );
+}`;
+
+export const usageVerticalDown = `import { FlowGallery, type FlowGalleryItem } from "@/components/custom/flow-gallery";
+
+${itemsCode}
+
+export default function FlowGalleryVerticalDownDemo() {
+  return (
+    <FlowGallery
+      items={items}
+      direction="vertical-down"
+      speed={3.5}
+      pauseOnHover={true}
+      columns={9}
+    />
+  );
+}`;
+
+<ExampleShowcase
+  name="flow-gallery"
+  colorControl={false}
+  columns={1}
+  examples={[
+    {
+      title: "Top-Left to Bottom-Right Flow Stream",
+      props: { direction: "top-left" },
+      usage: usageTopLeft,
+      code: extractCode("src/components/custom/flow-gallery.tsx"),
+    },
+    {
+      title: "Top-Right to Bottom-Left Flow Stream",
+      props: { direction: "top-right" },
+      usage: usageTopRight,
+    },
+    {
+      title: "Straight Upward Vertical Stream (Bottom to Top)",
+      props: { direction: "vertical-up" },
+      usage: usageVerticalUp,
+    },
+    {
+      title: "Straight Downward Vertical Stream (Top to Bottom)",
+      props: { direction: "vertical-down" },
+      usage: usageVerticalDown,
+    },
+  ]}
+/>
+
+## Installation
+
+<Installation name="flow-gallery" />
+
+## Features
+Discover the key capabilities that make this component an excellent choice for modern, animated user interfaces.
+
+<div className="grid grid-cols-1 sm:grid-cols-2 gap-4 my-6 not-prose">
+  <div className="p-6 rounded-2xl border border-border bg-card">
+    <h3 className="text-lg font-semibold text-card-foreground mb-2">4 Directional Stream Angles</h3>
+    <p className="text-muted-foreground text-sm">Supports <code>top-left</code>, <code>top-right</code>, <code>vertical-up</code>, and <code>vertical-down</code> directional angles via simple props.</p>
+  </div>
+  <div className="p-6 rounded-2xl border border-border bg-card">
+    <h3 className="text-lg font-semibold text-card-foreground mb-2">Continuous Infinite Auto-Flow</h3>
+    <p className="text-muted-foreground text-sm">Images cascade continuously with smooth velocity inertia and optional pause-on-hover.</p>
+  </div>
+  <div className="p-6 rounded-2xl border border-border bg-card">
+    <h3 className="text-lg font-semibold text-card-foreground mb-2">Drag & Inertia Physics</h3>
+    <p className="text-muted-foreground text-sm">Interactive mouse and touch drag gestures along the stream axis with grab cursor feedback.</p>
+  </div>
+  <div className="p-6 rounded-2xl border border-border bg-card">
+    <h3 className="text-lg font-semibold text-card-foreground mb-2">Light & Dark Theme Adaptation</h3>
+    <p className="text-muted-foreground text-sm">Supports Next Themes integration to transition stage background tones and radial depth vignette overlays.</p>
+  </div>
+</div>
+
+## Best Practices & Guidelines
+
+<div className="flex flex-col gap-4 my-6 not-prose">
+  <div className="rounded-xl border border-foreground/[0.06] bg-foreground/[0.03] p-4">
+    <h4 className="font-sans text-[14px] font-semibold text-foreground mb-1">Image Resolution & Aspect Ratios</h4>
+    <p className="text-[13px] leading-relaxed text-foreground/50">Use square or near-square images (800x800) so that card items maintain crisp aspect ratios when rendered in the 3D plane.</p>
+  </div>
+  <div className="rounded-xl border border-primary/15 bg-primary/5 p-4">
+    <h4 className="font-sans text-[14px] font-semibold text-primary mb-1">Performance & GPU Acceleration</h4>
+    <p className="text-[13px] leading-relaxed text-foreground/50">The stream plane uses hardware-accelerated <code>transform: translate3d()</code> properties to maintain 60fps performance across devices.</p>
+  </div>
+</div>
+
+## Props Reference
+
+<div className="overflow-x-auto mb-8">
+  <table>
+    <thead>
+      <tr>
+        <th>Component</th>
+        <th>Prop</th>
+        <th>Type</th>
+        <th>Default</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>
+          <code>FlowGallery</code>
+        </td>
+        <td>
+          <code>direction</code>
+        </td>
+        <td>
+          <code>"top-left" | "top-right" | "vertical-up" | "vertical-down"</code>
+        </td>
+        <td>
+          <code>"top-left"</code>
+        </td>
+        <td>
+          Directional angle of the stream. Use <code>"vertical-down"</code> for straight downward flow from top to bottom.
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <code>FlowGallery</code>
+        </td>
+        <td>
+          <code>items</code>
+        </td>
+        <td>
+          <code>FlowGalleryItem[]</code>
+        </td>
+        <td>
+          <code>DEFAULT_ITEMS</code>
+        </td>
+        <td>
+          Array of image objects containing <code>{`{ id, title, imageUrl }`}</code> to display in the stream.
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <code>FlowGallery</code>
+        </td>
+        <td>
+          <code>speed</code>
+        </td>
+        <td>
+          <code>number</code>
+        </td>
+        <td>
+          <code>3.5</code>
+        </td>
+        <td>
+          Continuous auto-flow speed in pixels per frame.
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <code>FlowGallery</code>
+        </td>
+        <td>
+          <code>pauseOnHover</code>
+        </td>
+        <td>
+          <code>boolean</code>
+        </td>
+        <td>
+          <code>true</code>
+        </td>
+        <td>
+          When set to true, automatically pauses the continuous auto-flow when hovering over the stage.
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <code>FlowGallery</code>
+        </td>
+        <td>
+          <code>columns</code>
+        </td>
+        <td>
+          <code>number</code>
+        </td>
+        <td>
+          <code>9</code>
+        </td>
+        <td>
+          Number of parallel columns flowing along the stream plane.
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <code>FlowGallery</code>
+        </td>
+        <td>
+          <code>className</code>
+        </td>
+        <td>
+          <code>string</code>
+        </td>
+        <td>
+          <code>undefined</code>
+        </td>
+        <td>
+          Custom Tailwind CSS classes to apply to the stage container.
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>

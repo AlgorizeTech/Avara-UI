@@ -4,6 +4,7 @@ import {
   HorizontalScrollStack,
   ScrollStackItem,
 } from "@/components/custom/blocks/HorizontalScrollStackBlock";
+import { HorizontalRail } from "@/components/custom/blocks/HorizontalRailBlock";
 import {
   Compass,
   Cpu,
@@ -63,7 +64,7 @@ const demoProcessItems: ScrollStackItem[] = [
 
 const getThemeColorHex = (c: string) => {
   if (c.startsWith("#")) return c;
-  const map: Record<string, string> = { primary: "var(--primary)", default: "var(--primary)", indigo: "#6366f1", rose: "#f43f5e", emerald: "#10b981", zinc: "#18181b" };
+  const map: Record<string, string> = { primary: "var(--primary)", default: "var(--primary)", indigo: "#6366f1", rose: "#f43f5e", emerald: "#10b981", lavender: "#9b8afb" };
   return map[c] || "var(--primary)";
 };
 
@@ -72,12 +73,14 @@ export default function HorizontalScrollStackDemo({
   subtitle,
   itemCount,
   color = "primary",
+  variant = "stack",
 }: {
   title?: string;
   subtitle?: string;
   /** Trims the rail so the pinned scroll distance shortens. */
   itemCount?: number;
   color?: string;
+  variant?: "stack" | "rail";
 }) {
   const items = itemCount
     ? demoProcessItems.slice(0, itemCount)
@@ -85,15 +88,24 @@ export default function HorizontalScrollStackDemo({
 
   return (
     <div
-      className="w-full relative rounded-2xl border border-zinc-200 dark:border-zinc-800 bg-zinc-50/50 dark:bg-zinc-900/50"
+      className="w-full relative"
       style={{ "--theme-color": getThemeColorHex(color) } as React.CSSProperties}
     >
-      <HorizontalScrollStack
-        key={`${items.length}-${title}-${subtitle}`}
-        items={items}
-        title={title}
-        subtitle={subtitle}
-      />
+      {variant === "rail" ? (
+        <HorizontalRail
+          key={`rail-${items.length}-${title}-${subtitle}`}
+          items={items}
+          title={title}
+          subtitle={subtitle}
+        />
+      ) : (
+        <HorizontalScrollStack
+          key={`stack-${items.length}-${title}-${subtitle}`}
+          items={items}
+          title={title}
+          subtitle={subtitle}
+        />
+      )}
     </div>
   );
 }

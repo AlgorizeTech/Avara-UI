@@ -8,7 +8,7 @@ import { Palette, Smartphone, Sparkles } from "lucide-react";
 
 const getThemeColorHex = (c: string) => {
   if (c.startsWith("#")) return c;
-  const map: Record<string, string> = { primary: "var(--primary)", default: "var(--primary)", indigo: "#6366f1", rose: "#f43f5e", emerald: "#10b981", zinc: "#18181b" };
+  const map: Record<string, string> = { primary: "var(--primary)", default: "var(--primary)", indigo: "#6366f1", rose: "#f43f5e", emerald: "#10b981", lavender: "#9b8afb" };
   return map[c] || "var(--primary)";
 };
 
@@ -56,7 +56,7 @@ export default function StickyScrollStackDemo({
         "Brand Guidelines & Tone",
       ],
       imageUrl:
-        "https://images.unsplash.com/photo-1470071459604-3b5ec3a7fe05?auto=format&fit=crop&w=800&q=80",
+        "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_800,c_limit/v1790146209/photo-1470071459604-3b5ec3a7fe05-1790146212205.jpg",
       imageAlt: "Misty mountain forest nature landscape",
       buttonText: "Explore Branding",
     },
@@ -69,7 +69,7 @@ export default function StickyScrollStackDemo({
       description:
         "High-performance, scalable web applications built with Next.js, React, and Tailwind CSS.",
       imageUrl:
-        "https://images.unsplash.com/photo-1469474968028-56623f02e42e?auto=format&fit=crop&w=800&q=80",
+        "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_800,c_limit/v1790146209/photo-1469474968028-56623f02e42e-1790146212205.jpg",
       imageAlt: "Golden mountain valley sunset nature landscape",
       buttonText: "Tech Stack Specs",
     },
@@ -82,14 +82,14 @@ export default function StickyScrollStackDemo({
       description:
         "Resilient cloud architectures, serverless deployments, and real-time database indexing.",
       imageUrl:
-        "https://images.unsplash.com/photo-1447752875215-b2761acb3c5d?auto=format&fit=crop&w=800&q=80",
+        "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_800,c_limit/v1790148863/photo-1447752875215-b2761acb3c5d-1790148865109.jpg",
       imageAlt: "Lush green forest nature landscape",
       buttonText: "View Cloud Specs",
     },
   ];
 
   return (
-    <div className="w-full relative overflow-hidden rounded-2xl border border-zinc-200 dark:border-zinc-800 bg-zinc-50/50 dark:bg-zinc-900/50">
+    <div className="w-full relative overflow-hidden rounded-2xl border border-border bg-muted/50">
 
       <div className="relative z-10 max-h-[750px] overflow-y-auto scrollbar-thin scrollbar-thumb-zinc-300 dark:scrollbar-thumb-zinc-700">
         <StickyScrollStack
@@ -100,7 +100,7 @@ export default function StickyScrollStackDemo({
           headerContentType={headerMode}
           headerImageUrl={
             headerMode === "image-button"
-              ? "https://images.unsplash.com/photo-1426604966848-d7adac402bff?auto=format&fit=crop&w=800&q=80"
+              ? "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_800,c_limit/v1790145140/photo-1426604966848-d7adac402bff-1790145143490.jpg"
               : undefined
           }
           headerTitle="Our Core Capabilities"

@@ -8,11 +8,19 @@ import {
   type ReactNode,
 } from "react";
 
-import { loadGoogleFont } from "@/hooks/use-google-fonts";
+import {
+  applyFontFamily,
+  FONT_FAMILY_STORAGE_KEY,
+} from "@/hooks/use-google-fonts";
 
 export const DEFAULT_PRIMARY_COLOR = "#6356d1";
 export const DEFAULT_FONT_SIZE = "100";
-export const DEFAULT_FONT_FAMILY = "Inter";
+/**
+ * The body font (see src/assets/fonts). Also a Google font, but the default is
+ * bundled via next/font, so picking it in the customizer clears the override
+ * rather than loading it again. Headings stay in Cooper regardless.
+ */
+export const DEFAULT_FONT_FAMILY = "DM Sans";
 
 type ThemeContextValue = {
   primaryColor: string;
@@ -37,7 +45,7 @@ export function ThemeContextProvider({ children }: { children: ReactNode }) {
 
   useEffect(() => {
     const storedFontSize = localStorage.getItem("fontSize");
-    const storedFontFamily = localStorage.getItem("fontFamily");
+    const storedFontFamily = localStorage.getItem(FONT_FAMILY_STORAGE_KEY);
     const storedDir = localStorage.getItem("dir") as "ltr" | "rtl" | null;
     const root = window.document.documentElement;
 
@@ -47,8 +55,7 @@ export function ThemeContextProvider({ children }: { children: ReactNode }) {
     }
     if (storedFontFamily) {
       setFontFamily(storedFontFamily);
-      loadGoogleFont(storedFontFamily);
-      document.body.style.fontFamily = `"${storedFontFamily}", sans-serif`;
+      applyFontFamily(storedFontFamily);
     }
     if (storedDir) {
       setDir(storedDir);

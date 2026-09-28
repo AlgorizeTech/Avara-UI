@@ -3,16 +3,16 @@ import { extractCode } from "@/lib/code";
 
 export const metadata = {
   title: "Text Animation - AlgorizeTech UI",
-  description: "A versatile text animation component powered by Framer Motion, featuring typewriter, fade, gradient shine, and blur reveal effects.",
+  description: "A versatile text animation component built on plain CSS keyframes, featuring typewriter, fade, gradient shine, and blur reveal effects.",
 };
 
 # Text Animation
 
-A powerful typography component that breathes life into your text using Framer Motion. It supports multiple animation variants like typewriter effects, focus reveals, 3D flips, and more.
+A powerful typography component that breathes life into your text with plain CSS keyframes — no animation library. It supports multiple animation variants like typewriter effects, focus reveals, 3D flips, and more.
 
 It is perfect for hero sections, landing page headers, and grabbing user attention.
 
-Each effect fires when it scrolls into view (`whileInView`, once), so scroll a preview back into frame — or hit its reload button — to replay.
+Each effect fires when it scrolls into view (once, via an `IntersectionObserver`), so scroll a preview back into frame — or hit its reload button — to replay.
 
 export const usageDefault = `import { TextAnimation } from "@/components/custom/blocks/TextAnimationBlock";
 
@@ -80,7 +80,7 @@ export default function HeadlineAnimation() {
   examples={[
     {
       title: "Text animation",
-      subheading: "The component splits the string and staggers each character with Framer Motion.",
+      subheading: "The component splits the string and staggers each character with CSS animation delays.",
       propNotes: [
         {
           lead: "Pass",
@@ -290,6 +290,23 @@ export default function HeadlineAnimation() {
         </td>
         <td>
           Accepts all native HTML attributes (e.g., <code>id</code>, <code>onClick</code>) which are seamlessly forwarded to the wrapper element.
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <code>TextAnimation</code>
+        </td>
+        <td>
+          <code>renderWord</code>
+        </td>
+        <td>
+          <code>(word: string, index: number) =&gt; ReactNode</code>
+        </td>
+        <td>
+          —
+        </td>
+        <td>
+          Swap what a word renders as while keeping its entrance — a coloured span, a word that later changes. Word-level variants only: <code>pop-in</code>, <code>flip</code>, <code>blur-in-up</code>. <DocLink to="component-wall">Component Wall</DocLink> uses it for its accent and turning word.
         </td>
       </tr>
     </tbody>

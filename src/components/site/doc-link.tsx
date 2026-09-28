@@ -57,9 +57,9 @@ export function DocLink({
 /**
  * The `a` override for MDX prose.
  *
- * Keeps the existing link styling and adds framework retargeting, so a markdown
- * link written as `[Hero](/docs/nextjs/hero)` resolves to the reader's framework
- * without the author having to think about it.
+ * Accent-coloured and underlined only on hover, with framework retargeting,
+ * so a markdown link written as `[Hero](/docs/nextjs/hero)` resolves to the
+ * reader's framework without the author having to think about it.
  */
 export function MdxLink({
   href,
@@ -72,7 +72,7 @@ export function MdxLink({
       href={href}
       className={
         className ??
-        "text-blue-600 dark:text-blue-400 hover:underline font-medium"
+        "text-primary no-underline hover:underline underline-offset-4"
       }
       {...rest}
     >

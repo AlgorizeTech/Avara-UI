@@ -4,7 +4,7 @@ A premium 3D carousel with a fanned layout, smooth interactive animations, and a
 
 Drag the center card left or right, use the arrow keys, or click a fanned neighbour to bring it forward. Autoplay pauses while the pointer is over the deck.
 
-export const carouselItems = `const items = [
+export const carouselItems = `const items: CarouselItem[] = [
   {
     id: "c1",
     category: "Nature",
@@ -12,7 +12,7 @@ export const carouselItems = `const items = [
     description:
       "Early morning fog weaving through dense evergreen woodland trees.",
     image:
-      "https://images.unsplash.com/photo-1470071459604-3b5ec3a7fe05?q=80&w=1200&auto=format&fit=crop",
+      "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_1200,c_limit/v1790146209/photo-1470071459604-3b5ec3a7fe05-1790146212205.jpg",
   },
   {
     id: "c2",
@@ -21,7 +21,7 @@ export const carouselItems = `const items = [
     description:
       "Sunbeams streaming through valley clouds onto pristine forest waters.",
     image:
-      "https://images.unsplash.com/photo-1426604966848-d7adac402bff?q=80&w=1200&auto=format&fit=crop",
+      "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_1200,c_limit/v1790145140/photo-1426604966848-d7adac402bff-1790145143490.jpg",
   },
   {
     id: "c3",
@@ -30,7 +30,7 @@ export const carouselItems = `const items = [
     description:
       "Vibrant golden foliage covering quiet forest trails in peak autumn.",
     image:
-      "https://images.unsplash.com/photo-1441974231531-c6227db76b6e?q=80&w=1200&auto=format&fit=crop",
+      "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_1200,c_limit/v1790146211/photo-1441974231531-c6227db76b6e-1790146212212.jpg",
   },
   {
     id: "c4",
@@ -39,7 +39,7 @@ export const carouselItems = `const items = [
     description:
       "Fresh mountain spring water cascading through untouched wilderness slopes.",
     image:
-      "https://images.unsplash.com/photo-1469474968028-56623f02e42e?q=80&w=1200&auto=format&fit=crop",
+      "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_1200,c_limit/v1790146209/photo-1469474968028-56623f02e42e-1790146212205.jpg",
   },
   {
     id: "c5",
@@ -48,11 +48,11 @@ export const carouselItems = `const items = [
     description:
       "Panoramic views of majestic mountain ridges rising into crisp morning skies.",
     image:
-      "https://images.unsplash.com/photo-1506744038136-46273834b3fb?q=80&w=1200&auto=format&fit=crop",
+      "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_1200,c_limit/v1790146210/photo-1506744038136-46273834b3fb-1790146212208.jpg",
   },
 ];`;
 
-export const usageDefault = `import { ThreeDCarousel } from "@/components/custom/blocks/ThreeDCarouselBlock";
+export const usageDefault = `import { ThreeDCarousel, type CarouselItem } from "@/components/custom/blocks/ThreeDCarouselBlock";
 
 ${carouselItems}
 
@@ -60,7 +60,7 @@ export default function ProductShowcase() {
   return ;
 }`;
 
-export const usageShortDeck = `import { ThreeDCarousel } from "@/components/custom/blocks/ThreeDCarouselBlock";
+export const usageShortDeck = `import { ThreeDCarousel, type CarouselItem } from "@/components/custom/blocks/ThreeDCarouselBlock";
 
 ${carouselItems}
 
@@ -71,6 +71,19 @@ export default function ShortDeckCarousel() {
 }`;
 
 ## Installation
+
+Register the @algorize-ui registry once per project, then add the component:
+
+```bash
+npx shadcn@latest registry add @algorize-ui=https://algorize-ui.vercel.app/r/{name}.json
+npx shadcn@latest add @algorize-ui/carousel-3d
+```
+
+Or the Motion build (same props, same file — install one):
+
+```bash
+npx shadcn@latest add @algorize-ui/carousel-3d-framer
+```
 
 ## Examples
 
@@ -157,7 +170,7 @@ Discover the key capabilities that make this component an excellent choice for m
           Required
 
           A unique identifier string required for safe React list rendering and
-          Framer Motion layout animation.
+          for tracking each card as the fan turns.
 
           CarouselItem
 

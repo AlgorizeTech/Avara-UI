@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect } from "react";
-import { SITE_URL } from "@/config/site";
+import { SITE_URL, siteConfig } from "@/config/site";
 
 // Lazy load Open Graph meta tags after initial render
 export function LazyOpenGraph() {
@@ -17,8 +17,7 @@ export function LazyOpenGraph() {
         },
         {
           property: "og:description",
-          content:
-            "A React component library of 120+ animated, accessible components built with Tailwind CSS, TypeScript, GSAP and Framer Motion. Installed by the shadcn CLI straight into your project — no wrapper package, no lock-in.",
+          content: siteConfig.description,
         },
         { property: "og:url", content: SITE_URL },
         {
@@ -43,8 +42,7 @@ export function LazyOpenGraph() {
         },
         {
           name: "twitter:description",
-          content:
-            "120+ React components you install into your own codebase.",
+          content: siteConfig.tagline,
         },
         {
           name: "twitter:image",

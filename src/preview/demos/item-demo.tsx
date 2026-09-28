@@ -22,7 +22,7 @@ export default function ItemDemo({
   // Mock Components for the Showcase
   const MockMedia = () => (
     <div
-      className={`flex items-center justify-center bg-indigo-50 dark:bg-indigo-500/10 text-indigo-600 dark:text-indigo-400 rounded-full ${variant === "compact" ? "w-8 h-8" : variant === "card" ? "w-14 h-14" : "w-10 h-10"}`}
+      className={`flex items-center justify-center bg-primary/10 text-primary rounded-full ${variant === "compact" ? "w-8 h-8" : variant === "card" ? "w-14 h-14" : "w-10 h-10"}`}
     >
       <Settings
         className={
@@ -38,11 +38,11 @@ export default function ItemDemo({
 
   const MockActions = () => (
     <>
-      <button className="p-2 text-zinc-400 hover:text-zinc-900 dark:hover:text-white hover:bg-zinc-100 dark:hover:bg-zinc-800 rounded-md transition-colors">
+      <button className="p-2 text-muted-foreground hover:text-foreground hover:bg-muted rounded-md transition-colors">
         <MoreVertical className="w-4 h-4" />
       </button>
       {variant === "card" && (
-        <button className="ml-auto px-4 py-1.5 bg-zinc-900 dark:bg-white text-white dark:text-zinc-900 text-sm font-medium rounded-lg hover:bg-zinc-800 dark:hover:bg-zinc-200 transition-colors">
+        <button className="ml-auto px-4 py-1.5 bg-primary text-primary-foreground text-sm font-medium rounded-lg hover:bg-primary/90 transition-colors">
           Configure
         </button>
       )}
@@ -57,7 +57,7 @@ export default function ItemDemo({
         <div className="w-full max-w-xl flex flex-col gap-5">
           {variants.map((v) => (
             <div key={v} className="flex flex-col gap-1.5">
-              <span className="text-xs font-mono text-zinc-400">
+              <span className="text-xs font-mono text-muted-foreground">
                 variant=&quot;{v}&quot;
               </span>
               <ItemBlock

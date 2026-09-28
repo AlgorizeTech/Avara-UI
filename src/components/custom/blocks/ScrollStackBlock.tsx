@@ -28,7 +28,7 @@ export interface ScrollStackProps extends React.HTMLAttributes<HTMLDivElement> {
 export const ScrollStack = ({
   items,
   depthScale = 0.05,
-  cardGap: _cardGap = 24,
+  cardGap = 24,
   scroller,
   className,
   ...props
@@ -120,7 +120,10 @@ export const ScrollStack = ({
       {items.map((item, index) => (
         <div
           key={item.id}
-          className="flex min-h-screen w-full items-center justify-center sticky top-0 sm:top-2"
+          className="flex min-h-screen w-full items-center justify-center sticky"
+          // Each card sticks a little lower than the one before, which is
+          // what makes the stack fan out rather than pile up exactly.
+          style={{ top: index * cardGap }}
         >
           <div
             ref={(el) => {
@@ -133,7 +136,7 @@ export const ScrollStack = ({
             )}
           >
             {/* Subtle Glass Noise Overlay */}
-            <div className="absolute inset-0 bg-primary/[0.02]/[0.03] pointer-events-none" />
+            <div className="absolute inset-0 bg-foreground/[0.02] pointer-events-none" />
 
             <div className="flex-1 flex flex-col justify-center relative z-10">
               {item.icon && (
@@ -149,7 +152,7 @@ export const ScrollStack = ({
                   "text-base sm:text-lg font-medium leading-relaxed max-w-lg transition-colors",
                   item.color
                     ? "text-white/80"
-                    : "text-muted-foreground dark:text-white/70",
+                    : "text-muted-foreground",
                 )}
               >
                 {item.description}
@@ -158,7 +161,7 @@ export const ScrollStack = ({
 
             {/* Right-Side Content Payload */}
             {item.content && (
-              <div className="flex-1 relative z-10 rounded-2xl overflow-hidden bg-muted/80 dark:bg-black/20 border border-border/80 hidden md:flex items-center justify-center transition-colors">
+              <div className="flex-1 relative z-10 rounded-2xl overflow-hidden bg-muted/80 border border-border/80 hidden md:flex items-center justify-center transition-colors">
                 {item.content}
               </div>
             )}

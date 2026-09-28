@@ -17,7 +17,7 @@ const sampleData: TimelineItemType[] = [
     icon: Package,
     status: "completed",
     action: (
-      <button className="flex items-center gap-2 text-xs font-bold px-3 py-1.5 rounded-lg border border-zinc-200 dark:border-zinc-700 bg-white dark:bg-zinc-800 hover:bg-zinc-50 dark:hover:bg-zinc-700 transition-colors">
+      <button className="flex items-center gap-2 text-xs font-semibold px-3 py-1.5 rounded-lg border border-border bg-card hover:bg-muted transition-colors">
         <Download className="w-3 h-3" />
         Receipt
       </button>
@@ -82,7 +82,7 @@ export default function TimelineDemo({
         variant === "glass"
           ? {
               backgroundImage:
-                'url("https://images.unsplash.com/photo-1470071459604-3b5ec3a7fe05?q=80&w=1200&auto=format&fit=crop")',
+                'url("https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_1200,c_limit/v1790146209/photo-1470071459604-3b5ec3a7fe05-1790146212205.jpg")',
             }
           : undefined
       }

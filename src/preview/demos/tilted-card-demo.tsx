@@ -27,7 +27,7 @@ export default function TiltedCardDemo({
   return (
     <div
       style={accentStyle(color)}
-      className="w-full flex items-center justify-center bg-zinc-50/50 dark:bg-zinc-900/50 rounded-2xl border border-zinc-200 dark:border-zinc-800 py-16 sm:py-24 px-4 relative overflow-hidden min-h-[500px] sm:min-h-[700px]"
+      className="w-full flex items-center justify-center bg-muted/50 rounded-2xl border border-border py-16 sm:py-24 px-4 relative overflow-hidden min-h-[500px] sm:min-h-[700px]"
     >
 
       <div className="w-full max-w-[340px] aspect-[3/4] relative z-10">
@@ -36,8 +36,8 @@ export default function TiltedCardDemo({
           glareOpacity={glareOpacity}
           scaleOnHover={scaleOnHover}
         >
-          {/* Back to the cleaner white surface for light mode! */}
-          <div className="w-full h-full bg-gradient-to-br from-white via-zinc-50/90 to-zinc-100/80 dark:from-zinc-900 dark:via-zinc-900/80 dark:to-zinc-950/90 backdrop-blur-2xl border border-zinc-200/80 dark:border-white/10 rounded-2xl p-6 sm:p-8 flex flex-col justify-between overflow-hidden relative shadow-[inset_0_1px_0_rgba(255,255,255,0.8)] dark:shadow-[inset_0_1px_1px_rgba(255,255,255,0.1)]">
+          {/* Card surface follows the theme's card colour. */}
+          <div className="w-full h-full bg-gradient-to-br from-card via-card/90 to-muted/80 backdrop-blur-2xl border border-border/80 rounded-2xl p-6 sm:p-8 flex flex-col justify-between overflow-hidden relative shadow-[inset_0_1px_0_rgba(255,255,255,0.8)] dark:shadow-[inset_0_1px_1px_rgba(255,255,255,0.1)]">
 
             <div
               className="absolute -top-16 -right-16 w-40 h-40 rounded-full blur-[50px] opacity-20 dark:opacity-30 pointer-events-none"
@@ -50,26 +50,26 @@ export default function TiltedCardDemo({
 
             <div className="relative z-10 flex justify-between items-start">
               <div
-                className="w-10 h-10 sm:w-12 sm:h-12 rounded-xl flex items-center justify-center shadow-sm border border-zinc-200/60 dark:border-white/10"
+                className="w-10 h-10 sm:w-12 sm:h-12 rounded-xl flex items-center justify-center shadow-sm border border-border/60"
                 style={{ backgroundColor: accent, color: onAccent }}
               >
                 <Nfc className="w-5 h-5 sm:w-6 sm:h-6" />
               </div>
-              <Cpu className="w-6 h-6 sm:w-8 sm:h-8 text-zinc-400 dark:text-zinc-600" />
+              <Cpu className="w-6 h-6 sm:w-8 sm:h-8 text-muted-foreground/60" />
             </div>
 
             <div className="relative z-10 mt-auto">
               <div className="flex items-center gap-2 sm:gap-3 mb-4 sm:mb-6">
-                <Fingerprint className="w-5 h-5 sm:w-6 sm:h-6 text-zinc-500 dark:text-zinc-500" />
-                <div className="h-1.5 w-12 sm:w-16 bg-zinc-200/80 dark:bg-zinc-800 rounded-full overflow-hidden">
-                  <div className="h-full w-full bg-gradient-to-r from-transparent via-zinc-400 dark:via-zinc-500 to-transparent animate-[shimmer_2s_infinite]" />
+                <Fingerprint className="w-5 h-5 sm:w-6 sm:h-6 text-muted-foreground" />
+                <div className="h-1.5 w-12 sm:w-16 bg-muted rounded-full overflow-hidden">
+                  <div className="h-full w-full bg-gradient-to-r from-transparent via-muted-foreground to-transparent animate-[shimmer_2s_infinite]" />
                 </div>
               </div>
 
-              <h3 className="text-xl sm:text-2xl font-black text-zinc-900 dark:text-white tracking-tight uppercase mb-1 drop-shadow-sm">
+              <h3 className="text-xl sm:text-2xl font-bold text-foreground tracking-tight uppercase mb-1 drop-shadow-sm">
                 Access Key
               </h3>
-              <p className="text-xs sm:text-sm font-medium text-zinc-500 dark:text-zinc-400 font-mono tracking-widest">
+              <p className="text-xs sm:text-sm font-medium text-muted-foreground font-mono tracking-widest">
                 ID // 0x8F92A
               </p>
             </div>

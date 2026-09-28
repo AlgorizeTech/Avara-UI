@@ -1,11 +1,9 @@
 "use client";
 
 import { AnimatePresence, motion } from "framer-motion";
-import { Check, ChevronsUpDown } from "lucide-react";
+import { Atom, Check, ChevronsUpDown, Triangle, type LucideIcon } from "lucide-react";
 import { usePathname, useRouter } from "next/navigation";
 import React, { useCallback, useEffect, useId, useRef, useState } from "react";
-import type { IconType } from "react-icons";
-import { SiNextdotjs, SiReact } from "react-icons/si";
 
 import { useFramework } from "@/hooks/use-framework";
 import {
@@ -27,10 +25,13 @@ import { cn } from "@/lib/utils";
  * atom reads as "this is the framework". `brand` is set only where a framework
  * owns a colour — Next.js is monochrome by design and inherits the theme, so
  * the two marks stay distinguishable in both light and dark.
+ *
+ * lucide has no brand logos, so these are the nearest generic marks: the atom
+ * for React, the Vercel-style triangle for Next.js.
  */
-const FRAMEWORK_BRAND: Record<Framework, { Icon: IconType; brand?: string }> = {
-  nextjs: { Icon: SiNextdotjs },
-  reactjs: { Icon: SiReact, brand: "text-[#0B93C4] dark:text-[#61DAFB]" },
+const FRAMEWORK_BRAND: Record<Framework, { Icon: LucideIcon; brand?: string }> = {
+  nextjs: { Icon: Triangle },
+  reactjs: { Icon: Atom, brand: "text-[#0B93C4] dark:text-[#61DAFB]" },
 };
 
 /** The tile the mark sits in — shared by the trigger and the options so the
@@ -48,14 +49,13 @@ function FrameworkMark({
     <span
       aria-hidden
       className={cn(
-        "grid size-7 shrink-0 place-items-center rounded-[9px]",
-        "bg-white ring-1 ring-inset ring-zinc-200",
-        "dark:bg-zinc-800 dark:ring-white/10",
+        "grid size-6 shrink-0 place-items-center rounded-[7px]",
+        "bg-background ring-1 ring-inset ring-foreground/[0.08]",
         className,
       )}
     >
       <Icon
-        className={cn("size-[15px]", brand ?? "text-zinc-900 dark:text-zinc-100")}
+        className={cn("size-[13px]", brand ?? "text-foreground")}
       />
     </span>
   );
@@ -201,29 +201,24 @@ export function FrameworkSwitcher({
         // "Next.js" tells a screen-reader user nothing about what it does.
         aria-label={`Framework: ${meta.label}. Switch documentation framework`}
         className={cn(
-          "group relative flex w-full items-center gap-2.5 rounded-lg py-[7px] pl-[7px] pr-2.5 text-left",
-          "border border-zinc-200/90 bg-zinc-50 shadow-[0_1px_2px_rgba(24,24,27,0.04)]",
-          "hover:border-zinc-300 hover:bg-white",
-          "dark:border-zinc-800 dark:bg-zinc-900/60 dark:shadow-none",
-          "dark:hover:border-zinc-700 dark:hover:bg-zinc-900",
+          "group relative flex w-full items-center gap-2.5 rounded-lg py-1.5 pl-1.5 pr-3 text-left",
+          "border border-foreground/10 bg-foreground/[0.03]",
+          "hover:border-foreground/15 hover:bg-foreground/[0.05]",
           "transition-[background-color,border-color] duration-150 ease-out motion-reduce:transition-none",
-          "outline-none focus-visible:ring-2 focus-visible:ring-zinc-400/70 dark:focus-visible:ring-zinc-500/70",
-          open && "border-zinc-300 bg-white dark:border-zinc-700 dark:bg-zinc-900",
+          "outline-none focus-visible:ring-2 focus-visible:ring-primary/40",
+          open && "border-foreground/15 bg-foreground/[0.05]",
         )}
       >
-        <FrameworkMark
-          framework={framework}
-          className="shadow-[0_1px_2px_rgba(24,24,27,0.06)] dark:shadow-none"
-        />
+        <FrameworkMark framework={framework} />
 
-        <span className="flex min-w-0 flex-1 flex-col gap-[4px]">
+        <span className="flex min-w-0 flex-1 flex-col gap-[3px]">
           {/* The subject of the control, said out loud. Without it the trigger
               is a bare noun, and the reader has to open the menu to learn what
               the menu changes. */}
-          <span className="text-[9px] font-semibold uppercase leading-none tracking-[0.11em] text-zinc-500 dark:text-zinc-500">
+          <span className="text-[10px] font-semibold uppercase leading-none tracking-[0.08em] text-foreground/35">
             Framework
           </span>
-          <span className="truncate text-[13.5px] font-semibold leading-none text-zinc-900 dark:text-zinc-100">
+          <span className="truncate text-[12px] font-medium leading-none text-foreground/80">
             {meta.label}
           </span>
         </span>
@@ -234,9 +229,9 @@ export function FrameworkSwitcher({
         <ChevronsUpDown
           aria-hidden
           className={cn(
-            "size-3.5 shrink-0 text-zinc-400 transition-colors duration-150 motion-reduce:transition-none",
-            "group-hover:text-zinc-600 dark:text-zinc-500 dark:group-hover:text-zinc-300",
-            open && "text-zinc-600 dark:text-zinc-300",
+            "size-3.5 shrink-0 text-foreground/35 transition-colors duration-150 motion-reduce:transition-none",
+            "group-hover:text-foreground/60",
+            open && "text-foreground/60",
           )}
         />
       </button>
@@ -252,15 +247,16 @@ export function FrameworkSwitcher({
             transition={{ duration: 0.16, ease: [0.16, 1, 0.3, 1] }}
             className={cn(
               "absolute left-0 right-0 top-[calc(100%+6px)] z-30 origin-top rounded-xl p-1.5",
-              "border border-zinc-200 bg-white shadow-[0_12px_32px_-12px_rgba(24,24,27,0.22)]",
-              "dark:border-zinc-800 dark:bg-zinc-900 dark:shadow-[0_16px_40px_-12px_rgba(0,0,0,0.7)]",
+              "border border-border bg-popover text-popover-foreground",
+              // Shadow depth is the one thing tokens can't express per theme.
+              "shadow-[0_12px_32px_-12px_rgba(24,24,27,0.22)] dark:shadow-[0_16px_40px_-12px_rgba(0,0,0,0.7)]",
             )}
           >
             {/* The menu says what it switches, so the list underneath is read as
                 two frameworks rather than two unexplained words. */}
             <p
               id={labelId}
-              className="px-1.5 pb-2 pt-1 text-[9px] font-semibold uppercase leading-none tracking-[0.11em] text-zinc-400 dark:text-zinc-500"
+              className="px-1.5 pb-2 pt-1 text-[10px] font-semibold uppercase leading-none tracking-[0.08em] text-foreground/35"
             >
               Switch framework
             </p>
@@ -282,30 +278,29 @@ export function FrameworkSwitcher({
                       onClick={() => select(option)}
                       onKeyDown={(event) => onOptionKeyDown(event, index)}
                       className={cn(
-                        "flex w-full items-center gap-2.5 rounded-lg py-[7px] pl-[7px] pr-2.5 text-left",
+                        "flex w-full items-center gap-2.5 rounded-lg py-1.5 pl-1.5 pr-2.5 text-left",
                         "transition-colors duration-150 ease-out motion-reduce:transition-none",
-                        "outline-none focus-visible:ring-2 focus-visible:ring-zinc-400/70 dark:focus-visible:ring-zinc-500/70",
+                        "outline-none focus-visible:ring-2 focus-visible:ring-primary/40",
                         isActive
-                          ? "bg-zinc-100 dark:bg-zinc-800/70"
-                          : "hover:bg-zinc-50 dark:hover:bg-zinc-800/40",
+                          ? "bg-foreground/[0.05]"
+                          : "hover:bg-foreground/[0.04]",
                       )}
                     >
                       <FrameworkMark
                         framework={option}
                         className={cn(
-                          !isActive &&
-                            "bg-zinc-50 ring-zinc-200/80 dark:bg-zinc-800/60 dark:ring-white/[0.07]",
+                          !isActive && "bg-foreground/[0.03] ring-foreground/[0.06]",
                         )}
                       />
 
                       <span className="flex min-w-0 flex-1 flex-col gap-[5px]">
-                        <span className="truncate text-[13px] font-semibold leading-none text-zinc-900 dark:text-zinc-100">
+                        <span className="truncate text-[13px] font-medium leading-none text-foreground">
                           {optionMeta.label}
                         </span>
                         {/* The tiebreaker. "Next.js" and "React" are close
                             enough that "App Router" versus "Vite" is what tells
                             a reader which one their own project is. */}
-                        <span className="truncate text-[10.5px] leading-none text-zinc-500 dark:text-zinc-400">
+                        <span className="truncate text-[11px] leading-none text-foreground/40">
                           {optionMeta.hint}
                         </span>
                       </span>
@@ -313,7 +308,7 @@ export function FrameworkSwitcher({
                       {isActive && (
                         <Check
                           aria-hidden
-                          className="size-3.5 shrink-0 text-zinc-900 dark:text-zinc-100"
+                          className="size-3.5 shrink-0 text-primary"
                         />
                       )}
                     </button>

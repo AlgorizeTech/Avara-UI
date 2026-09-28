@@ -9,7 +9,7 @@ import {
 function Pane({ label, muted }: { label: string; muted?: boolean }) {
   return (
     <div
-      className={`h-full w-full flex items-center justify-center text-[10px] sm:text-xs font-bold uppercase tracking-wider text-center p-2 ${
+      className={`h-full w-full flex items-center justify-center text-[10px] sm:text-xs font-semibold uppercase tracking-wider text-center p-2 ${
         muted ? "bg-muted/40 text-muted-foreground" : "text-foreground"
       }`}
     >
@@ -71,7 +71,7 @@ export default function ResizableDemo({
               <div className="w-2.5 h-2.5 rounded-full bg-amber-500/80" />
               <div className="w-2.5 h-2.5 rounded-full bg-emerald-500/80" />
             </div>
-            <span className="text-[11px] sm:text-xs font-bold text-foreground ml-2">
+            <span className="text-[11px] sm:text-xs font-semibold text-foreground ml-2">
               Nexus Studio
             </span>
           </div>
@@ -103,7 +103,7 @@ export default function ResizableDemo({
               {/* 2. Main Editor Panel (Mobile) */}
               <ResizablePanel defaultSize={75}>
                 <div className="p-3 flex flex-col h-full bg-background font-mono text-[11px] overflow-y-auto">
-                  <div className="text-foreground font-bold mb-2 border-b border-border/50 pb-1 flex items-center justify-between shrink-0">
+                  <div className="text-foreground font-semibold mb-2 border-b border-border/50 pb-1 flex items-center justify-between shrink-0">
                     <span>page.tsx</span>
                     <span className="text-[10px] text-primary font-mono bg-primary/10 px-1 py-0.5 rounded">Active</span>
                   </div>
@@ -111,7 +111,7 @@ export default function ResizableDemo({
                   <div className="space-y-1 font-mono text-[11px] flex-1">
                     <div>
                       <span className="text-[#d73a49] dark:text-[#f97583] font-semibold">export default function</span>{" "}
-                      <span className="text-[#6f42c1] dark:text-[#b392f0] font-bold">Page</span>() {"{"}
+                      <span className="text-[#6f42c1] dark:text-[#b392f0] font-semibold">Page</span>() {"{"}
                     </div>
                     <div className="pl-2 font-semibold text-[#d73a49] dark:text-[#f97583]">return (</div>
                     <div className="pl-4">
@@ -123,9 +123,9 @@ export default function ResizableDemo({
                     <div className="pl-6">
                       <span className="text-[#22863a] dark:text-[#85e89d]">&lt;h2</span>{" "}
                       <span className="text-[#6f42c1] dark:text-[#b392f0]">className</span>=
-                      <span className="text-[#032f62] dark:text-[#9ecbfc]">&quot;text-xl font-bold&quot;</span>
+                      <span className="text-[#032f62] dark:text-[#9ecbfc]">&quot;text-xl font-semibold&quot;</span>
                       <span className="text-[#22863a] dark:text-[#85e89d]">&gt;</span>
-                      <span className="text-foreground font-bold">John Doe</span>
+                      <span className="text-foreground font-semibold">John Doe</span>
                       <span className="text-[#22863a] dark:text-[#85e89d]">&lt;/h2&gt;</span>
                     </div>
                     <div className="pl-6 text-[#6a737d] dark:text-[#6a737d] italic text-[10px]">
@@ -171,14 +171,14 @@ export default function ResizableDemo({
                   {/* 2A. Editor Panel */}
                   <ResizablePanel defaultSize={70} minSize={30}>
                     <div className="p-4 flex flex-col h-full bg-background overflow-y-auto">
-                      <div className="text-xs font-bold text-foreground mb-4 border-b border-border/60 pb-2 flex items-center justify-between shrink-0">
+                      <div className="text-xs font-semibold text-foreground mb-4 border-b border-border/60 pb-2 flex items-center justify-between shrink-0">
                         <span>page.tsx</span>
                         <span className="text-[10px] text-primary font-mono bg-primary/10 px-1.5 py-0.5 rounded">Active</span>
                       </div>
                       <div className="space-y-2 font-mono text-xs flex-1">
                         <div>
                           <span className="text-[#d73a49] dark:text-[#f97583] font-semibold">export default function</span>{" "}
-                          <span className="text-[#6f42c1] dark:text-[#b392f0] font-bold">Page</span>() {"{"}
+                          <span className="text-[#6f42c1] dark:text-[#b392f0] font-semibold">Page</span>() {"{"}
                         </div>
                         <div className="pl-4 font-semibold text-[#d73a49] dark:text-[#f97583]">return (</div>
                         <div className="pl-8">
@@ -190,9 +190,9 @@ export default function ResizableDemo({
                         <div className="pl-12">
                           <span className="text-[#22863a] dark:text-[#85e89d]">&lt;h2</span>{" "}
                           <span className="text-[#6f42c1] dark:text-[#b392f0]">className</span>=
-                          <span className="text-[#032f62] dark:text-[#9ecbfc]">&quot;text-2xl font-bold&quot;</span>
+                          <span className="text-[#032f62] dark:text-[#9ecbfc]">&quot;text-2xl font-semibold&quot;</span>
                           <span className="text-[#22863a] dark:text-[#85e89d]">&gt;</span>
-                          <span className="text-foreground font-bold">John Doe</span>
+                          <span className="text-foreground font-semibold">John Doe</span>
                           <span className="text-[#22863a] dark:text-[#85e89d]">&lt;/h2&gt;</span>
                         </div>
                         <div className="pl-12 text-[#6a737d] dark:text-[#6a737d] italic">
@@ -210,12 +210,12 @@ export default function ResizableDemo({
                   {/* 2B. Terminal Panel */}
                   <ResizablePanel defaultSize={30} minSize={15}>
                     <div className="p-4 flex flex-col h-full bg-zinc-950 text-white border-t border-border/40">
-                      <div className="text-xs font-bold uppercase tracking-wider text-primary mb-2 flex items-center justify-between">
+                      <div className="text-xs font-semibold uppercase tracking-wider text-primary mb-2 flex items-center justify-between">
                         <span>Terminal</span>
                         <span className="text-[9px] text-muted-foreground">bash</span>
                       </div>
                       <div className="font-mono text-xs text-zinc-300">
-                        <span className="text-emerald-400 font-bold">
+                        <span className="text-emerald-400 font-semibold">
                           project@app:~$
                         </span>{" "}
                         npm run dev

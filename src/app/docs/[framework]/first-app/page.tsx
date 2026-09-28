@@ -1,10 +1,14 @@
 import { notFound } from "next/navigation";
 
 import { buildDocsMetadata } from "@/lib/docs-metadata";
-import { isFramework } from "@/lib/framework";
+import { BUILT_FRAMEWORKS, isFramework } from "@/lib/framework";
 
 import NextjsContent from "./_content/nextjs.mdx";
 import ReactjsContent from "./_content/reactjs.mdx";
+
+export function generateStaticParams() {
+  return BUILT_FRAMEWORKS.map((framework) => ({ framework }));
+}
 
 /** See the note in ../installation/page.tsx — same reasoning, same shape. */
 export async function generateMetadata({

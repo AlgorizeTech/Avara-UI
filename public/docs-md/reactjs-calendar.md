@@ -25,7 +25,12 @@ export const usageMinimal = `import { CalendarDashboard } from "@/components/cus
 
 const y = new Date().getFullYear();
 const m = new Date().getMonth() + 1;
-const events = { [\`\${y}-\${m}-10\`]: ["pentest", "kickoff"] };
+const events = {
+  [\`\${y}-\${m}-2\`]: ["pentest", "kickoff"],
+  [\`\${y}-\${m}-10\`]: ["pentest", "kickoff"],
+  [\`\${y}-\${m}-15\`]: ["pentest", "kickoff"],
+  [\`\${y}-\${m}-24\`]: ["kickoff", "pentest"],
+};
 
 export default function EmbeddedCalendar() {
   // "minimal" drops the card chrome so the dashboard sits flush inside your page.
@@ -36,7 +41,12 @@ export const usageGlass = `import { CalendarDashboard } from "@/components/custo
 
 const y = new Date().getFullYear();
 const m = new Date().getMonth() + 1;
-const events = { [\`\${y}-\${m}-10\`]: ["pentest", "kickoff"] };
+const events = {
+  [\`\${y}-\${m}-2\`]: ["pentest", "kickoff"],
+  [\`\${y}-\${m}-10\`]: ["pentest", "kickoff"],
+  [\`\${y}-\${m}-15\`]: ["pentest", "kickoff"],
+  [\`\${y}-\${m}-24\`]: ["kickoff", "pentest"],
+};
 
 export default function GlassCalendar() {
   // "glass" is translucent — intended to sit on a background image or rich pattern.
@@ -46,6 +56,13 @@ export default function GlassCalendar() {
 }`;
 
 ## Installation
+
+Register the @algorize-ui registry once per project, then add the component:
+
+```bash
+npx shadcn@latest registry add @algorize-ui=https://algorize-ui.vercel.app/r/{name}.json
+npx shadcn@latest add @algorize-ui/calendar
+```
 
 ## Examples
 

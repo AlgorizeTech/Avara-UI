@@ -30,6 +30,13 @@ export default function QuantumBeamFooterDemo() {
 
 ## Installation
 
+Register the @algorize-ui registry once per project, then add the component:
+
+```bash
+npx shadcn@latest registry add @algorize-ui=https://algorize-ui.vercel.app/r/{name}.json
+npx shadcn@latest add @algorize-ui/footer
+```
+
 ## Examples
 
 ## Features
@@ -68,6 +75,11 @@ Discover the key capabilities of the `Footer` component:
         React.ReactNode
         undefined
         Custom logo icon component.
+
+        socialLinks
+        SocialLink[]
+        X, GitHub, LinkedIn, YouTube, Instagram
+        The social row, rendered by Social Links. Each entry is &#123; network, href, label? &#125;; pass only the networks you have.
 
         className
         string

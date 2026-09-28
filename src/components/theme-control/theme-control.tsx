@@ -19,6 +19,10 @@ import {
   DEFAULT_FONT_SIZE,
   useThemeContext,
 } from "@/contexts/theme-context";
+import {
+  clearFontFamily,
+  FONT_FAMILY_STORAGE_KEY,
+} from "@/hooks/use-google-fonts";
 
 import { DarkModeControl } from "./darkmode-control";
 import { FontFamilyControl } from "./font-family-control";
@@ -33,21 +37,24 @@ export function ThemeControl() {
   const { setTheme } = useTheme();
   const pathname = usePathname();
 
-  if (pathname === "/themes" || pathname?.startsWith("/preview")) {
+  // The home page keeps its own fixed typography (see .font-site-sans), so the
+  // customizer tab is hidden there along with the pages that host their own.
+  if (
+    pathname === "/" ||
+    pathname === "/themes" ||
+    pathname?.startsWith("/preview")
+  ) {
     return null;
   }
 
   function resetThemeCustomization() {
     localStorage.removeItem("primaryColor");
     localStorage.removeItem("fontSize");
-    localStorage.removeItem("fontFamily");
+    localStorage.removeItem(FONT_FAMILY_STORAGE_KEY);
 
     const root = window.document.documentElement;
     root.style.fontSize = DEFAULT_FONT_SIZE + "%";
-    document.body.style.fontFamily = "";
-
-    const dynamicFontLink = document.getElementById("dynamic-google-font");
-    if (dynamicFontLink) dynamicFontLink.remove();
+    clearFontFamily();
 
     resetToDefaults();
     setFontSize(DEFAULT_FONT_SIZE);
@@ -72,9 +79,9 @@ export function ThemeControl() {
         {/* Added flex flex-col to ensure the footer button can push to the very bottom */}
         <SheetContent className="hide-scroll z-[101] overflow-y-auto flex flex-col justify-between">
           <div>
-            <SheetHeader className="border-b pb-4">
-              <SheetTitle>Customization</SheetTitle>
-              <SheetDescription>
+            <SheetHeader className="border-b border-foreground/[0.06] pb-4">
+              <SheetTitle className="font-serif text-lg font-normal">Customization</SheetTitle>
+              <SheetDescription className="text-[13px] text-foreground/50">
                 Customize and preview in real time
               </SheetDescription>
             </SheetHeader>
@@ -86,17 +93,17 @@ export function ThemeControl() {
               <FontFamilyControl />
             </div>
           {/* Theme Customizer Link + Reset Button Footer */}
-          <div className="mt-auto pt-4 pb-10 px-4 border-t border-border flex items-center justify-between gap-3">
+          <div className="mt-auto pt-4 pb-10 px-4 border-t border-foreground/[0.06] flex items-center justify-between gap-3">
             <Link
               href="/themes"
-              className="flex-1 flex items-center justify-center gap-2 h-9 px-3 text-xs font-medium text-primary-foreground bg-primary hover:opacity-90 active:scale-[0.98] transition-all rounded-lg shadow-sm cursor-pointer"
+              className="flex-1 flex items-center justify-center gap-2 h-9 px-4 active:scale-[0.98] rounded-full bg-foreground text-background text-[13px] font-semibold tracking-[0.3px] hover:opacity-90 transition-all cursor-pointer"
             >
               <Palette className="w-4 h-4" />
               <span>Theme Customizer</span>
             </Link>
             <button
               onClick={resetThemeCustomization}
-              className="flex items-center justify-center gap-1.5 h-9 px-3 text-xs font-medium text-muted-foreground hover:text-foreground bg-background hover:bg-accent border border-border transition-all rounded-lg shadow-sm cursor-pointer shrink-0"
+              className="flex items-center justify-center gap-1.5 h-9 px-4 shrink-0 rounded-full bg-foreground/[0.04] hover:bg-foreground/10 text-[13px] font-medium text-foreground/80 hover:text-foreground transition-colors cursor-pointer"
             >
               <TimerReset className="w-4 h-4" />
               <span>Reset</span>

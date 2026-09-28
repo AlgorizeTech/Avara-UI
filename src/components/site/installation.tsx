@@ -1,6 +1,7 @@
 import React from "react";
 import { Cli } from "./cli";
 import { SetupPath } from "./setup-path";
+import { MotionInstallSwitch } from "./motion-install-switch";
 import registry from "../../../registry.json";
 
 /**
@@ -81,9 +82,68 @@ function transitivePackages(name: string, seen = new Set<string>()): string[] {
  * without it those rules win and the badge renders as a plain slate chip.
  */
 const BADGE =
-  "inline-block rounded-md bg-primary/10 px-1.5 py-0.5 font-mono text-xs font-medium text-primary ring-1 ring-primary/20 [overflow-wrap:anywhere]";
+  "inline rounded-md border border-primary/25 bg-primary/15 px-[7px] py-[2px] font-mono text-[12px] leading-[1.55] text-primary [overflow-wrap:anywhere] [box-decoration-break:clone] [-webkit-box-decoration-break:clone]";
 
-const STEP_HEADING = "text-2xl font-semibold mb-3 mt-8 scroll-m-24";
+/**
+ * Plain inline code (a path, a package name in passing). Also `data-badge`,
+ * for the same reason as BADGE; the classes are the docs inline-code style.
+ */
+const CODE =
+  "rounded bg-foreground/[0.06] px-1.5 py-0.5 font-mono text-[12px] text-foreground/70 [overflow-wrap:anywhere]";
+
+/** Body copy on the docs ladder: 15px at the ink's 60% step. */
+const BODY = "text-[15px] leading-[1.8] text-foreground/60";
+/** The smaller aside under a command: 14px at 50%. */
+const SMALL = "text-[14px] leading-relaxed text-foreground/50";
+
+/**
+ * One numbered step on the install rail. The number sits in a disc centred on
+ * the rail (drawn as the parent's left border); the heading keeps its `id` so
+ * `#install-<name>` links still land on it.
+ */
+function Step({
+  number,
+  id,
+  title,
+  children,
+}: {
+  number: number;
+  id: string;
+  title: React.ReactNode;
+  children: React.ReactNode;
+}) {
+  return (
+    <section className="relative">
+      {/* Rail is 1px left of the parent's 2rem padding; the 1.75rem disc is
+          pulled back by half its width so it sits centred on the line. */}
+      <span
+        aria-hidden
+        className="absolute top-0 -left-[calc(2rem+0.875rem+1px)] flex size-7 items-center justify-center rounded-full border border-foreground/10 bg-background font-mono text-[12px] font-medium text-foreground/70"
+      >
+        {number}
+      </span>
+      <h3
+        id={id}
+        className="mt-0 mb-4 scroll-m-24 font-serif text-lg leading-7 font-normal text-foreground"
+      >
+        {title}
+      </h3>
+      <div className="space-y-3">{children}</div>
+    </section>
+  );
+}
+
+/**
+ * Dependencies every project already has once it has followed the installation
+ * guide: `shadcn init` writes `lib/utils.ts` (the `cn` helper) and installs
+ * `lucide-react` as the icon library. Almost every item in the registry lists
+ * both, so repeating them under ninety-odd components buried the dependency
+ * that was actually specific to a component — `leaflet`, `gsap`, `three` —
+ * in the same two lines every time. They are filtered out here and named once,
+ * in the SetupPath sentence above the command.
+ */
+const BASELINE_COMPONENTS = new Set(["utils"]);
+const BASELINE_PACKAGES = new Set(["lucide-react"]);
 
 /**
  * Separates two independent install blocks on a page that documents more than
@@ -93,17 +153,11 @@ const STEP_HEADING = "text-2xl font-semibold mb-3 mt-8 scroll-m-24";
 function InstallDivider() {
   return (
     <div className="my-14 flex items-center gap-4">
-      <span
-        aria-hidden
-        className="h-px flex-1 bg-zinc-200 dark:bg-zinc-800"
-      />
-      <span className="text-xs font-medium tracking-[0.2em] text-zinc-400 uppercase dark:text-zinc-500">
+      <span aria-hidden className="h-px flex-1 bg-foreground/[0.08]" />
+      <span className="text-[11px] font-semibold tracking-[0.08em] text-foreground/30 uppercase">
         or
       </span>
-      <span
-        aria-hidden
-        className="h-px flex-1 bg-zinc-200 dark:bg-zinc-800"
-      />
+      <span aria-hidden className="h-px flex-1 bg-foreground/[0.08]" />
     </div>
   );
 }
@@ -132,6 +186,29 @@ export function InstallGroup({ children }: { children: React.ReactNode }) {
           {i > 0 && React.isValidElement<InstallationProps>(block)
             ? React.cloneElement(block, { showSetupPath: false })
             : block}
+        </React.Fragment>
+      ))}
+    </>
+  );
+}
+
+/**
+ * A path with a break opportunity after every "/", so a long target like
+ * components/custom/blocks/CollageHeroBlock.tsx wraps at a segment boundary
+ * on narrow screens instead of wherever the column happens to end.
+ */
+function BreakablePath({ path }: { path: string }) {
+  const segments = path.split("/");
+  return (
+    <>
+      {segments.map((segment, i) => (
+        <React.Fragment key={i}>
+          {i > 0 && (
+            <>
+              /<wbr />
+            </>
+          )}
+          {segment}
         </React.Fragment>
       ))}
     </>
@@ -173,7 +250,38 @@ function BadgeList({ items }: { items: string[] }) {
  * in a provider, an optional extra package) write it as ordinary MDX after this
  * element, so those steps keep their own heading in the table of contents.
  */
-export function Installation({ name, showSetupPath = true }: InstallationProps) {
+export function Installation({
+  name,
+  showSetupPath = true,
+}: InstallationProps) {
+  // A component with a Framer Motion twin gets both install sequences behind
+  // the GSAP / Framer Motion switch; GSAP, the default build, shows first.
+  const twin = `${name}-framer`;
+  const isDual = ITEMS.some((entry) => entry.name === twin);
+
+  return (
+    // data-toc-skip: the step headings are structure inside the Installation
+    // section, not navigation targets. A page documenting four components would
+    // otherwise put four identical "2. Install dependencies" in the sidebar.
+    // not-prose: every element here sets its own type, and the prose-code
+    // modifiers on the docs wrapper would otherwise outrank the chips.
+    <div className="not-prose my-6" data-toc-skip>
+      {showSetupPath && <SetupPath />}
+
+      {isDual ? (
+        <MotionInstallSwitch
+          gsap={<InstallationSteps name={name} />}
+          framer={<InstallationSteps name={twin} />}
+        />
+      ) : (
+        <InstallationSteps name={name} />
+      )}
+    </div>
+  );
+}
+
+/** Steps 1 and 2 for one registry item. */
+function InstallationSteps({ name }: { name: string }) {
   const item = ITEMS.find((entry) => entry.name === name);
 
   // Fail at build time rather than shipping a page whose install command is a
@@ -188,88 +296,115 @@ export function Installation({ name, showSetupPath = true }: InstallationProps) 
   const title = item.title ?? name;
   const target = item.files?.[0]?.target;
   const direct = item.dependencies ?? [];
-  const components = item.registryDependencies ?? [];
+  const components = (item.registryDependencies ?? []).filter(
+    (dependency) => !BASELINE_COMPONENTS.has(label(dependency)),
+  );
   // Includes packages inherited through `components`; see transitivePackages.
-  const packages = [...new Set(transitivePackages(name))].sort();
+  const packages = [...new Set(transitivePackages(name))]
+    .filter((pkg) => !BASELINE_PACKAGES.has(pkg))
+    .sort();
   const inherited = packages.filter((pkg) => !direct.includes(pkg));
   const total = packages.length + components.length;
+  // True when the only things filtered out were the baseline ones — the reader
+  // should hear that the component still needs them, just not from this page.
+  const onlyBaseline =
+    total === 0 &&
+    ((item.registryDependencies?.length ?? 0) > 0 ||
+      (item.dependencies?.length ?? 0) > 0);
 
   return (
-    // data-toc-skip: the step headings are structure inside the Installation
-    // section, not navigation targets. A page documenting four components would
-    // otherwise put four identical "2. Install dependencies" in the sidebar.
-    <div className="my-6" data-toc-skip>
-      {showSetupPath && <SetupPath />}
-
-      <h3 id={`install-${name}`} className={`${STEP_HEADING} first:mt-0`}>
-        1. Install {title}
-      </h3>
-
-      <div className="space-y-3">
-        <Cli command={`add ${name}.json`} />
-        <p className="leading-7 text-gray-700 dark:text-gray-300">
-          {target ? <code>{target}</code> : <>The component</>} is written into
-          your project. Copy any snippet from a{" "}
-          <strong className="font-bold">Usage</strong> tab above and it runs.
-        </p>
-      </div>
-
-      {/* Step 2 always renders, even with nothing to install: every component
-          then reads the same way, and "no dependencies" is worth stating. */}
-      <h3 id={`install-${name}-dependencies`} className={STEP_HEADING}>
-        2. Install dependencies
-      </h3>
-
-      <div className="space-y-3">
-        {total === 0 ? (
-          <p className="leading-7 text-gray-700 dark:text-gray-300">
-            None — {title} has no npm packages or registry components to
-            install.
+    // The left border is the rail the step discs sit on. It runs to the end of
+    // the last step's content rather than stopping at its disc: a rail that
+    // ends mid-step looks like the step was cut off.
+    <div className="ml-3.5 space-y-10 border-l border-foreground/[0.08] pl-8">
+        <Step number={1} id={`install-${name}`} title={<>Install {title}</>}>
+          <Cli command={`add ${name}.json`} />
+          <p className={BODY}>
+            {target ? (
+              <code data-badge className={CODE}>
+                <BreakablePath path={target} />
+              </code>
+            ) : (
+              <>The component</>
+            )}{" "}
+            is written into your project. Copy any snippet from a{" "}
+            <strong className="font-semibold text-foreground">Usage</strong> tab above and it runs.
           </p>
-        ) : (
-          <>
-            <p className="leading-7 text-gray-700 dark:text-gray-300">
-              Step 1 installs {total > 1 ? "these" : "this"} for you. Run{" "}
-              {total > 1 ? "them" : "it"} yourself only if you are adding{" "}
-              {title} to an existing project by hand.
-              {inherited.length > 0 && (
+        </Step>
+
+        {/* Step 2 always renders, even with nothing to install: every component
+            then reads the same way, and "no dependencies" is worth stating. */}
+        <Step
+          number={2}
+          id={`install-${name}-dependencies`}
+          title="Install dependencies"
+        >
+          {total === 0 ? (
+            <p className={BODY}>
+              {onlyBaseline ? (
                 <>
-                  {" "}
-                  <BadgeList items={inherited} /> come{inherited.length > 1 ? "" : "s"} in
-                  with the component{components.length > 1 ? "s" : ""} above rather than
-                  from {title} directly.
+                  Nothing beyond the shared setup — {title} needs only the{" "}
+                  <code data-badge className={CODE}>cn</code> helper and{" "}
+                  <code data-badge className={CODE}>lucide-react</code>, which
+                  the installation guide already put in place.
+                </>
+              ) : (
+                <>
+                  None — {title} has no npm packages or registry components to
+                  install.
                 </>
               )}
             </p>
+          ) : (
+            <>
+              <p className={BODY}>
+                Step 1 installs {total > 1 ? "these" : "this"} for you. Run{" "}
+                {total > 1 ? "them" : "it"} yourself only if you are adding{" "}
+                {title} to an existing project by hand. The{" "}
+                <code data-badge className={CODE}>cn</code> helper and{" "}
+                <code data-badge className={CODE}>lucide-react</code> are not listed — the
+                installation guide covers them once for every component.
+                {inherited.length > 0 && (
+                  <>
+                    {" "}
+                    <BadgeList items={inherited} /> come
+                    {inherited.length > 1 ? "" : "s"} in with the component
+                    {components.length > 1 ? "s" : ""} above rather than from{" "}
+                    {title} directly.
+                  </>
+                )}
+              </p>
 
-            {components.length > 0 && (
-              <div className="space-y-2">
-                <p className="text-sm leading-6 text-zinc-600 dark:text-zinc-400">
-                  <BadgeList items={components.map(label)} />{" "}
-                  {components.length > 1 ? "are components" : "is a component"},
-                  not {components.length > 1 ? "packages" : "a package"} — the
-                  shadcn CLI installs {components.length > 1 ? "them" : "it"} as
-                  source files.
-                </p>
-                <Cli command={`add ${components.map(toAddArg).join(" ")}`} />
-              </div>
-            )}
+              {components.length > 0 && (
+                <div className="space-y-2">
+                  <p className={SMALL}>
+                    <BadgeList items={components.map(label)} />{" "}
+                    {components.length > 1
+                      ? "are components"
+                      : "is a component"}
+                    , not {components.length > 1 ? "packages" : "a package"} —
+                    the shadcn CLI installs{" "}
+                    {components.length > 1 ? "them" : "it"} as source files.
+                  </p>
+                  <Cli command={`add ${components.map(toAddArg).join(" ")}`} />
+                </div>
+              )}
 
-            {packages.length > 0 && (
-              <div className="space-y-2">
-                <p className="text-sm leading-6 text-zinc-600 dark:text-zinc-400">
-                  <BadgeList items={packages} />{" "}
-                  {packages.length > 1
-                    ? "are npm packages"
-                    : "is an npm package"}
-                  .
-                </p>
-                <Cli command={`install ${packages.join(" ")}`} />
-              </div>
-            )}
-          </>
-        )}
-      </div>
+              {packages.length > 0 && (
+                <div className="space-y-2">
+                  <p className={SMALL}>
+                    <BadgeList items={packages} />{" "}
+                    {packages.length > 1
+                      ? "are npm packages"
+                      : "is an npm package"}
+                    .
+                  </p>
+                  <Cli command={`install ${packages.join(" ")}`} />
+                </div>
+              )}
+            </>
+          )}
+        </Step>
     </div>
   );
 }

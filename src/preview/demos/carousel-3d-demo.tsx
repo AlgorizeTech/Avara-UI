@@ -14,7 +14,7 @@ const sampleItems: CarouselItem[] = [
     description:
       "Early morning fog weaving through dense evergreen woodland trees.",
     image:
-      "https://images.unsplash.com/photo-1470071459604-3b5ec3a7fe05?q=80&w=1200&auto=format&fit=crop",
+      "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_1200,c_limit/v1790146209/photo-1470071459604-3b5ec3a7fe05-1790146212205.jpg",
   },
   {
     id: "c2",
@@ -23,7 +23,7 @@ const sampleItems: CarouselItem[] = [
     description:
       "Sunbeams streaming through valley clouds onto pristine forest waters.",
     image:
-      "https://images.unsplash.com/photo-1426604966848-d7adac402bff?q=80&w=1200&auto=format&fit=crop",
+      "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_1200,c_limit/v1790145140/photo-1426604966848-d7adac402bff-1790145143490.jpg",
   },
   {
     id: "c3",
@@ -32,7 +32,7 @@ const sampleItems: CarouselItem[] = [
     description:
       "Vibrant golden foliage covering quiet forest trails in peak autumn.",
     image:
-      "https://images.unsplash.com/photo-1441974231531-c6227db76b6e?q=80&w=1200&auto=format&fit=crop",
+      "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_1200,c_limit/v1790146211/photo-1441974231531-c6227db76b6e-1790146212212.jpg",
   },
   {
     id: "c4",
@@ -41,7 +41,7 @@ const sampleItems: CarouselItem[] = [
     description:
       "Fresh mountain spring water cascading through untouched wilderness slopes.",
     image:
-      "https://images.unsplash.com/photo-1469474968028-56623f02e42e?q=80&w=1200&auto=format&fit=crop",
+      "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_1200,c_limit/v1790146209/photo-1469474968028-56623f02e42e-1790146212205.jpg",
   },
   {
     id: "c5",
@@ -50,7 +50,7 @@ const sampleItems: CarouselItem[] = [
     description:
       "Panoramic views of majestic mountain ridges rising into crisp morning skies.",
     image:
-      "https://images.unsplash.com/photo-1506744038136-46273834b3fb?q=80&w=1200&auto=format&fit=crop",
+      "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_1200,c_limit/v1790146210/photo-1506744038136-46273834b3fb-1790146212208.jpg",
   },
 ];
 
@@ -74,7 +74,7 @@ export default function Carousel3DDemo({
     // pill, arrows, dots), so repointing the token here recolours all of it.
     <div
       style={accentStyle(color)}
-      className="w-full flex items-center justify-center bg-zinc-50 dark:bg-[#0a0a0a] py-8 sm:py-12 px-4 md:px-8 relative overflow-hidden min-h-[600px] rounded-3xl border border-zinc-200 dark:border-white/10 transition-colors duration-300"
+      className="w-full flex items-center justify-center bg-muted/40 py-8 sm:py-12 px-4 md:px-8 relative overflow-hidden min-h-[600px] rounded-3xl border border-border transition-colors duration-300"
     >
       {/* Subtle Ambient Backglow */}
       <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-3/4 h-3/4 bg-primary/5 dark:bg-primary/10 blur-[140px] rounded-full pointer-events-none" />

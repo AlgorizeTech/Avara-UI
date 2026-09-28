@@ -2,29 +2,9 @@
 
 import { cn } from "@/lib/utils";
 import { Menu, X } from "lucide-react";
-import React, { createContext, useContext, useEffect, useState } from "react";
-
-// ==========================================
-// CONTEXT & STATE MANAGEMENT
-// ==========================================
-interface SidebarContextType {
-  expanded: boolean;
-  setExpanded: React.Dispatch<React.SetStateAction<boolean>>;
-  isMobileOpen: boolean;
-  setIsMobileOpen: React.Dispatch<React.SetStateAction<boolean>>;
-  color: string;
-}
-
-const SidebarContext = createContext<SidebarContextType | undefined>(undefined);
-
-export function useSidebar() {
-  const context = useContext(SidebarContext);
-  if (!context)
-    throw new Error(
-      "Sidebar components must be rendered within a SidebarProvider",
-    );
-  return context;
-}
+import React, { useEffect, useState } from "react";
+import { SidebarContext, useSidebar } from "./sidebar-context";
+import { Tooltip, TooltipContent, TooltipTrigger } from "./TooltipBlock";
 
 // ==========================================
 // 1. PROVIDER & ROOT LAYOUT
@@ -105,8 +85,8 @@ export function Sidebar({
           expanded ? "w-64" : "w-16",
           isMobileOpen ? "translate-x-0" : "-translate-x-full",
           variant === "attached"
-            ? "border-r border-border bg-white dark:bg-[#050505]"
-            : "m-4 h-[calc(100vh-2rem)] rounded-2xl border border-border bg-white dark:bg-[#050505] shadow-sm",
+            ? "border-r border-border bg-card text-card-foreground"
+            : "m-4 h-[calc(100vh-2rem)] rounded-2xl border border-border bg-card text-card-foreground shadow-sm",
           // Lifted off the backdrop while it is an open drawer (mobile only state)
           isMobileOpen && "shadow-2xl",
           className,
@@ -160,7 +140,7 @@ export function SidebarBrand({
   return (
     <div
       className={cn(
-        "flex items-center font-black text-xl text-foreground",
+        "flex items-center font-bold text-xl text-foreground",
         className,
       )}
       {...props}
@@ -206,7 +186,7 @@ export function SidebarContent({
   return (
     <div
       className={cn(
-        "flex-1 overflow-y-auto overflow-x-hidden p-3 space-y-4 scrollbar-hide",
+        "flex-1 overflow-y-auto overflow-x-hidden p-3 space-y-4 [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden",
         className,
       )}
       {...props}
@@ -232,7 +212,7 @@ export function SidebarGroup({
       {label && (
         <div
           className={cn(
-            "px-3 text-xs font-bold uppercase tracking-wider text-muted-foreground transition-all duration-300 overflow-hidden",
+            "px-3 text-xs font-semibold uppercase tracking-wider text-muted-foreground transition-all duration-300 overflow-hidden",
             expanded
               ? "max-h-[20px] opacity-100 mb-1"
               : "max-h-0 opacity-0 mb-0",
@@ -261,7 +241,7 @@ export function SidebarItem({
 }: SidebarItemProps) {
   const { expanded, color } = useSidebar();
 
-  return (
+  const item = (
     <button
       className={cn(
         "group relative flex w-full items-center rounded-lg px-3 py-2 text-sm font-medium transition-all duration-200 outline-none",
@@ -298,15 +278,23 @@ export function SidebarItem({
       >
         {children}
       </div>
-
-      {/* Pure CSS Native Tooltip (Shows only when collapsed on hover) */}
-      {!expanded && (
-        <div className="absolute left-full ml-4 hidden rounded-md bg-primary px-2 py-1 text-xs font-bold text-primary-foreground opacity-0 shadow-md group-hover:block group-hover:opacity-100 z-50">
-          {children}
-          <div className="absolute -left-1 top-1/2 h-2 w-2 -translate-y-1/2 rotate-45 bg-primary" />
-        </div>
-      )}
     </button>
+  );
+
+  // Collapsed rail: the label moves into a Tooltip. It portals to the body,
+  // so it is never clipped by the rail's overflow the way an absolutely
+  // positioned label would be.
+  if (expanded) return item;
+  return (
+    <Tooltip delayDuration={100}>
+      {/* The button is the tab stop; the trigger wrapper only listens. */}
+      <TooltipTrigger className="block w-full" tabIndex={-1}>
+        {item}
+      </TooltipTrigger>
+      <TooltipContent side="right" sideOffset={12} className="font-semibold">
+        {children}
+      </TooltipContent>
+    </Tooltip>
   );
 }
 

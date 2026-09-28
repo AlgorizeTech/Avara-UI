@@ -14,16 +14,34 @@ export const usageDefault = `import {
 } from "@/components/custom/blocks/ApiPlaygroundBlock";
 
 export default function UsersEndpointDocs() {
-  // Decide how the playground responds to whatever the reader types. Typing the
-  // handler checks both the request it receives and the response it returns.
+  // Decide how the playground responds to whatever the reader types.
+  // This handler receives method, url, headers, params and body.
   const handleApiMock: ApiMockHandler = async (req) => {
-    await new Promise((resolve) => setTimeout(resolve, 500)); // latency
+    await new Promise((resolve) => setTimeout(resolve, 500)); // Latency
 
-    if (req.method === "POST") {
-      return { status: 201, timeMs: 120, data: { id: "cus_123", created: true } };
+    let parsedBody = null;
+    if (req.method !== "GET" && req.body) {
+      try {
+        parsedBody = JSON.parse(req.body);
+      } catch {
+        return {
+          status: 400,
+          timeMs: 15,
+          data: { error: "bad_request", message: "Invalid JSON in request body." },
+        };
+      }
     }
 
-    return { status: 200, timeMs: 80, data: { list: [], has_more: false } };
+    return {
+      status: req.method === "POST" ? 201 : 200,
+      timeMs: 120,
+      data: {
+        success: true,
+        resource: req.url.split("/").pop() || "unknown",
+        received_headers: req.headers.filter((h) => h.enabled).length,
+        payload: parsedBody || "No body provided",
+      },
+    };
   };
 
   return (
@@ -32,6 +50,13 @@ export default function UsersEndpointDocs() {
 }`;
 
 ## Installation
+
+Register the @algorize-ui registry once per project, then add the component:
+
+```bash
+npx shadcn@latest registry add @algorize-ui=https://algorize-ui.vercel.app/r/{name}.json
+npx shadcn@latest add @algorize-ui/api-playground
+```
 
 ## Features & Core Capabilities
 Explore the interactive API Playground component capabilities designed to elevate API documentation:
@@ -55,7 +80,53 @@ Explore the interactive API Playground component capabilities designed to elevat
 
 ## Props Reference
 
-mockHandler Object Signatures
+        Prop
+        Type
+        Default
+        Description
+
+          defaultUrl
+
+          string
+
+          "https://api.example.com/v1/users"
+        
+        Initial API URL displayed in the request address bar.
+
+          defaultMethod
+
+          "GET" | "POST" | "PUT" | "PATCH" | "DELETE"
+
+          "GET"
+        
+        Initial HTTP method selected in the method dropdown.
+
+          color
+
+          ApiColor
+
+          "primary"
+        
+        Accent color theme ("primary" | "indigo" | "rose" | "emerald" | "zinc" or custom hex).
+
+          mockHandler
+
+          ApiMockHandler
+
+          undefined
+        
+        Async function that receives request details and returns simulated API response data.
+
+          className
+
+          string
+
+          undefined
+        
+        Additional CSS classes applied to the root container.
+
+### mockHandler Object Signatures
+
 When you provide a mockHandler, your function receives a Request object and must return a Promise that resolves to a Response object. Both shapes are exported, so annotate the whole handler and TypeScript infers the rest — no need to restate them:
 
 ```tsx

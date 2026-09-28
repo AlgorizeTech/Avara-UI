@@ -7,7 +7,9 @@ import {
   Map as MapIcon,
   MapPin,
   Menu,
+  Minus,
   Navigation2,
+  Plus,
   Search,
   Truck,
 } from "lucide-react";
@@ -43,6 +45,11 @@ export interface FleetTrackerProps {
   fleetData: Vehicle[];
   variant?: FleetVariant;
   color?: FleetColor;
+  zoom?: number;
+  tileApiKey?: string;
+  tileUrl?: string;
+  darkTileUrl?: string;
+  attribution?: string;
 }
 
 // ==========================================
@@ -51,13 +58,15 @@ export interface FleetTrackerProps {
 const fleetVariants: Record<FleetVariant, Record<string, string>> = {
   default: {
     wrapper:
-      "flex flex-col md:flex-row bg-white dark:bg-[#09090b] border border-border/80 shadow-xl rounded-2xl overflow-hidden relative [&_.leaflet-control-attribution]:hidden",
+      "flex flex-col md:flex-row bg-card border border-border/80 shadow-xl rounded-2xl overflow-hidden relative [&_.leaflet-control-attribution]:hidden",
     sidebar:
-      "w-full md:w-[320px] lg:w-[380px] bg-muted dark:bg-[#121217] border-r border-border/80 shrink-0 flex flex-col h-full z-20",
+      "w-full md:w-[320px] lg:w-[380px] bg-muted border-r border-border/80 shrink-0 flex flex-col h-full z-20",
     mapContainer: "flex-1 w-full h-full relative z-10 min-w-0 overflow-hidden",
     itemActive: "bg-card border-l-[3px] shadow-sm",
     itemInactive:
       "hover:bg-muted border-l-[3px] border-transparent",
+    header: "border-border",
+    search: "shadow-sm bg-card border border-border",
   },
   minimal: {
     wrapper:
@@ -65,35 +74,45 @@ const fleetVariants: Record<FleetVariant, Record<string, string>> = {
     // Mobile: a plain full-width panel in normal flow (same as `default`).
     // md+: the floating glass panel this variant is known for.
     sidebar:
-      "w-full h-full rounded-none border-0 shadow-none md:absolute md:top-4 md:left-4 md:bottom-4 md:h-auto md:w-[300px] lg:w-[340px] md:rounded-xl md:border md:shadow-2xl bg-white/95 dark:bg-zinc-950/95 backdrop-blur-md border-border/80 z-20 shrink-0 flex flex-col overflow-hidden",
+      "w-full h-full rounded-none border-0 shadow-none md:absolute md:top-4 md:left-4 md:bottom-4 md:h-auto md:w-[300px] lg:w-[340px] md:rounded-xl md:border md:shadow-2xl bg-background/95 backdrop-blur-md border-border/80 z-20 shrink-0 flex flex-col overflow-hidden",
     mapContainer: "flex-1 w-full h-full relative z-0 min-w-0 overflow-hidden rounded-2xl",
     itemActive: "bg-muted rounded-lg mx-3 my-1",
     itemInactive:
       "hover:bg-muted rounded-lg mx-3 my-1 border border-transparent",
+    header: "border-border",
+    search: "shadow-sm bg-card border border-border",
   },
+  // The same frosted recipe as GlassPanel in ProfilePageBlock: translucent
+  // card surface, hairline border, inset top highlight, over an aurora the
+  // wrapper draws. Kept inline so this block installs on its own.
   modern: {
     wrapper:
-      "flex flex-col md:flex-row bg-muted border border-border/80 shadow-xl rounded-2xl p-3 gap-3 relative overflow-hidden [&_.leaflet-control-attribution]:hidden",
+      "flex flex-col md:flex-row relative isolate overflow-hidden rounded-[28px] p-3 gap-3 bg-muted border border-foreground/10 shadow-xl [&_.leaflet-control-attribution]:hidden",
     sidebar:
-      "w-full md:w-[320px] lg:w-[360px] bg-white dark:bg-[#09090b] rounded-xl shadow-sm border border-border/80 shrink-0 flex flex-col h-full z-20 overflow-hidden",
+      "w-full md:w-[320px] lg:w-[360px] shrink-0 flex flex-col h-full z-20 overflow-hidden rounded-[24px] border border-foreground/10 bg-card/55 backdrop-blur-2xl shadow-[inset_0_1px_0_rgba(255,255,255,0.75),0_24px_48px_-28px_rgba(15,23,42,0.35)] dark:shadow-[inset_0_1px_0_rgba(255,255,255,0.08),0_24px_48px_-28px_rgba(0,0,0,0.9)]",
     mapContainer:
-      "flex-1 w-full h-full relative z-10 min-w-0 rounded-xl overflow-hidden border border-border/80 shadow-sm",
-    itemActive: "bg-muted border-l-[3px]",
+      "flex-1 w-full h-full relative z-10 min-w-0 rounded-[24px] overflow-hidden bg-muted border border-foreground/10 shadow-[0_24px_48px_-28px_rgba(15,23,42,0.35)] dark:shadow-[0_24px_48px_-28px_rgba(0,0,0,0.9)]",
+    itemActive: "bg-card/80 rounded-2xl mx-3 my-1 shadow-sm",
     itemInactive:
-      "hover:bg-muted/50 border-l-[3px] border-transparent transition-colors",
+      "hover:bg-card/50 rounded-2xl mx-3 my-1 border border-transparent transition-colors",
+    header: "border-foreground/10",
+    search: "border border-foreground/10 bg-card/50",
   },
 };
+
+/** Colours washed behind the modern variant's glass, top-left / top-right / bottom. */
+const AURORA = ["#a78bfa", "#7dd3fc", "#fdba74"];
 
 const colorThemes: Record<string, Record<string, string>> = {
   primary: {
     text: "text-primary",
     bg: "bg-primary hover:bg-primary/90 text-primary-foreground",
-    border: "border-primary",
+    border: "border-primary/30",
     lightBg: "bg-primary/10",
     focusRing:
       "focus-within:ring-primary/20 focus-within:border-primary/50",
     marker: "violet",
-    glow: "rgba(139, 92, 246, 0.75)",
+    glow: "color-mix(in srgb, var(--primary) 75%, transparent)",
   },
   indigo: {
     text: "text-indigo-600 dark:text-indigo-400",
@@ -138,38 +157,25 @@ const colorThemes: Record<string, Record<string, string>> = {
 // ==========================================
 // TILE SOURCES
 // ==========================================
-// Dark mode pulls the basemap as two layers rather than the combined
-// `dark_all` sheet. Carto renders geometry and labels as separate rasters, and
-// the two need opposite corrections (see MAP_STYLES) -- one flattened sheet
-// cannot be graded so that the ground reads dark and the type reads bright.
+// Uses OpenStreetMap tiles as the reliable, completely free default (no API key required).
+// Users can optionally provide `tileApiKey` (for CARTO basemaps) or custom `tileUrl` / `darkTileUrl`.
 const TILES = {
   light:
-    "https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png",
-  darkBase:
-    "https://{s}.basemaps.cartocdn.com/rastertiles/dark_nolabels/{z}/{x}/{y}{r}.png",
-  darkLabels:
-    "https://{s}.basemaps.cartocdn.com/rastertiles/dark_only_labels/{z}/{x}/{y}{r}.png",
+    "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
+  dark:
+    "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
 } as const;
 
-const TILE_ATTRIBUTION = '&copy; <a href="https://carto.com/">CartoDB</a>';
+const TILE_ATTRIBUTION =
+  '&copy; <a href="https://www.openstreetmap.org/copyright" target="_blank" rel="noopener noreferrer">OpenStreetMap</a> contributors';
 
 // ==========================================
 // DARK MAP GRADING
 // ==========================================
-// Carto's dark basemap is drawn almost entirely between #020202 and #262626:
-// land, water and roads all sit in the bottom 15% of the range, so against a
-// #09090b panel the map reads as an empty box -- land measured 1.31:1 against
-// the shell it sits in. The two rasters are therefore re-graded in the browser,
-// in opposite directions. Geometry is lifted off black and tinted slate
-// (land -> #3e4453, water -> #191b21, so land now separates from the panel at
-// 2.04:1 and from water at 1.77:1); labels are pushed the other way and land at
-// #bcc0cf, 5.37:1 against the ground they sit on, with their dark halo left
-// below the land tone so type keeps its outline.
-//
-// Leaflet's own chrome -- loading backdrop, pin art, popups -- ships light-only
-// and is restyled here as well. Everything is scoped to `.fleet-map-root` and
-// switched by the same `isDarkMode` value that picks the tiles, so the component
-// stays self-contained wherever it is dropped in.
+// When running in dark mode with the default tile provider, a CSS color-inversion
+// and hue-rotation filter transforms standard light tiles into a dark-themed map
+// without requiring specialized dark-tile accounts or paid APIs.
+// Marker layers and popups sit above this tile layer and preserve their true colors.
 const MAP_STYLES = `
 .fleet-map-root .leaflet-container {
   background: #e8eaed;
@@ -179,13 +185,8 @@ const MAP_STYLES = `
   background: #12151b;
 }
 
-.fleet-map-root[data-fleet-theme="dark"] .fleet-tiles-base {
-  filter: brightness(1.28) contrast(0.82) sepia(0.38) hue-rotate(186deg)
-    saturate(2.2);
-}
-.fleet-map-root[data-fleet-theme="dark"] .fleet-tiles-labels {
-  filter: brightness(1.6) contrast(1.1) sepia(0.2) hue-rotate(190deg)
-    saturate(1.3);
+.fleet-map-root[data-fleet-theme="dark"] .fleet-tiles-osm-dark {
+  filter: invert(100%) hue-rotate(180deg) brightness(95%) contrast(90%);
 }
 
 /* The pin art bakes in a black drop shadow that vanishes on a dark ground.
@@ -229,24 +230,28 @@ const MAP_STYLES = `
   }
 }
 
-/* Popups are hard-coded white, down to the tip. */
+/* Popups are hard-coded white, down to the tip; repaint them from the theme. */
+.fleet-map-root .leaflet-popup-content-wrapper {
+  background: var(--popover);
+  color: var(--popover-foreground);
+  border: 1px solid var(--border);
+}
 .fleet-map-root[data-fleet-theme="dark"] .leaflet-popup-content-wrapper {
-  background: #17181d;
-  color: #e4e4e7;
-  border: 1px solid #2c2e36;
   box-shadow: 0 12px 32px -10px rgba(0, 0, 0, 0.85);
 }
+.fleet-map-root .leaflet-popup-tip {
+  background: var(--popover);
+  border: 1px solid var(--border);
+}
 .fleet-map-root[data-fleet-theme="dark"] .leaflet-popup-tip {
-  background: #17181d;
-  border: 1px solid #2c2e36;
   box-shadow: none;
 }
-.fleet-map-root[data-fleet-theme="dark"] .leaflet-popup-close-button,
-.fleet-map-root[data-fleet-theme="dark"] .leaflet-popup-close-button span {
-  color: #71717a;
+.fleet-map-root .leaflet-popup-close-button,
+.fleet-map-root .leaflet-popup-close-button span {
+  color: var(--muted-foreground);
 }
-.fleet-map-root[data-fleet-theme="dark"] .leaflet-popup-close-button:hover {
-  color: #e4e4e7;
+.fleet-map-root .leaflet-popup-close-button:hover {
+  color: var(--foreground);
 }
 `;
 
@@ -296,7 +301,13 @@ const getIcon = (
   });
 };
 
-function MapController({ activeVehicle }: { activeVehicle: Vehicle | null }) {
+function MapController({
+  activeVehicle,
+  zoom = 15,
+}: {
+  activeVehicle: Vehicle | null;
+  zoom?: number;
+}) {
   const map = useMap();
   useEffect(() => {
     if (
@@ -315,13 +326,47 @@ function MapController({ activeVehicle }: { activeVehicle: Vehicle | null }) {
     map.invalidateSize({ animate: false, pan: false });
     const size = map.getSize();
     if (!size.x || !size.y) {
-      map.setView(target, 15, { animate: false });
+      map.setView(target, zoom, { animate: false });
       return;
     }
 
-    map.flyTo(target, 15, { duration: 1.5 });
-  }, [activeVehicle, map]);
+    map.flyTo(target, zoom, { duration: 1.5 });
+  }, [activeVehicle, map, zoom]);
   return null;
+}
+
+function ZoomControls() {
+  const map = useMap();
+  return (
+    <div className="leaflet-bottom leaflet-right z-[1000] m-4 flex flex-col gap-1.5 pointer-events-auto">
+      <button
+        type="button"
+        title="Zoom In"
+        aria-label="Zoom in"
+        onClick={(e) => {
+          e.stopPropagation();
+          map.zoomIn();
+        }}
+        onDoubleClick={(e) => e.stopPropagation()}
+        className="w-8 h-8 rounded-lg bg-card/90 hover:bg-card text-foreground border border-border/80 backdrop-blur-md flex items-center justify-center transition-colors shadow-md cursor-pointer"
+      >
+        <Plus className="w-4 h-4" />
+      </button>
+      <button
+        type="button"
+        title="Zoom Out"
+        aria-label="Zoom out"
+        onClick={(e) => {
+          e.stopPropagation();
+          map.zoomOut();
+        }}
+        onDoubleClick={(e) => e.stopPropagation()}
+        className="w-8 h-8 rounded-lg bg-card/90 hover:bg-card text-foreground border border-border/80 backdrop-blur-md flex items-center justify-center transition-colors shadow-md cursor-pointer"
+      >
+        <Minus className="w-4 h-4" />
+      </button>
+    </div>
+  );
 }
 
 // Leaflet only measures its container once; refit whenever the container
@@ -371,7 +416,28 @@ export default function FleetTracker({
   fleetData = [],
   variant = "default",
   color = "primary",
+  zoom = 15,
+  tileApiKey,
+  tileUrl,
+  darkTileUrl,
+  attribution,
 }: FleetTrackerProps) {
+  const isCustomDark = Boolean(darkTileUrl || tileApiKey);
+  const lightTileSource =
+    tileUrl ||
+    (tileApiKey
+      ? `https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png?key=${tileApiKey}`
+      : TILES.light);
+  const darkTileSource =
+    darkTileUrl ||
+    (tileApiKey
+      ? `https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png?key=${tileApiKey}`
+      : TILES.dark);
+  const tileAttribution =
+    attribution ||
+    (tileApiKey
+      ? '&copy; <a href="https://carto.com/">CartoDB</a>'
+      : TILE_ATTRIBUTION);
   // Custom hex injection logic
   const isCustomHex = color?.startsWith("#");
   const customVars = isCustomHex
@@ -479,6 +545,23 @@ export default function FleetTracker({
     >
       <style>{MAP_STYLES}</style>
 
+      {variant === "modern" && (
+        <div aria-hidden className="pointer-events-none absolute inset-0 -z-10">
+          <span
+            style={{ background: AURORA[0] }}
+            className="absolute -left-32 -top-32 size-[32rem] rounded-full opacity-80 blur-3xl dark:opacity-35"
+          />
+          <span
+            style={{ background: AURORA[1] }}
+            className="absolute -right-24 top-16 size-[28rem] rounded-full opacity-80 blur-3xl dark:opacity-35"
+          />
+          <span
+            style={{ background: AURORA[2] }}
+            className="absolute -bottom-40 left-1/3 size-[32rem] rounded-full opacity-70 blur-3xl dark:opacity-30"
+          />
+        </div>
+      )}
+
       {/* Mobile: jump back to the vehicle list while the map is showing */}
       {!isMobileSidebarOpen && (
         <button
@@ -501,7 +584,7 @@ export default function FleetTracker({
           isMobileSidebarOpen ? "flex" : "hidden md:flex",
         )}
       >
-        <div className="p-5 shrink-0 border-b border-border">
+        <div className={cn("p-5 shrink-0 border-b", styles.header)}>
           <div className="flex items-center justify-between mb-5">
             <div className="flex items-center gap-3">
               <div
@@ -513,7 +596,7 @@ export default function FleetTracker({
                 <Navigation2 className={cn("w-5 h-5", theme.bg.includes("text-") ? theme.bg.split(" ").filter(c => c.startsWith("text-") || c.startsWith("dark:text-")).join(" ") : "text-primary-foreground")} />
               </div>
               <div>
-                <h2 className="font-bold text-lg text-foreground leading-tight">
+                <h2 className="font-semibold text-lg text-foreground leading-tight">
                   Fleet Command
                 </h2>
                 <p className="text-xs font-medium text-muted-foreground">
@@ -534,7 +617,8 @@ export default function FleetTracker({
 
           <div
             className={cn(
-              "relative w-full rounded-xl flex items-center px-3 py-2.5 transition-all shadow-sm bg-card border border-border",
+              "relative w-full rounded-xl flex items-center px-3 py-2.5 transition-all",
+              styles.search,
               theme.focusRing,
             )}
           >
@@ -576,7 +660,9 @@ export default function FleetTracker({
                     "p-2.5 rounded-lg shrink-0 transition-colors shadow-sm",
                     isActive
                       ? theme.bg
-                      : "bg-card border border-border",
+                      : variant === "modern"
+                        ? "bg-card/60 border border-foreground/10"
+                        : "bg-card border border-border",
                   )}
                 >
                   <Truck
@@ -592,7 +678,7 @@ export default function FleetTracker({
                   <div className="flex justify-between items-start mb-1">
                     <h4
                       className={cn(
-                        "font-bold text-sm truncate",
+                        "font-semibold text-sm truncate",
                         isActive
                           ? variant === "default"
                             ? theme.text
@@ -604,7 +690,7 @@ export default function FleetTracker({
                     </h4>
                     <span
                       className={cn(
-                        "text-[10px] font-bold px-2 py-0.5 rounded-md uppercase tracking-wider",
+                        "text-[10px] font-semibold px-2 py-0.5 rounded-md uppercase tracking-wider",
                         getStatusStyle(vehicle.status),
                       )}
                     >
@@ -636,39 +722,41 @@ export default function FleetTracker({
       >
         {leaflet && rl && icons && (
           <rl.MapContainer
-            center={[40.75, -74.0]}
-            zoom={13}
+            center={
+              activeVehicle
+                ? [activeVehicle.lat, activeVehicle.lng]
+                : fleetData[0]
+                  ? [fleetData[0].lat, fleetData[0].lng]
+                  : [40.7465, -74.0014]
+            }
+            zoom={zoom}
             className="w-full h-full z-0"
             zoomControl={false}
             attributionControl={false}
           >
             {isDarkMode ? (
-              <>
-                <rl.TileLayer
-                  key="dark-base"
-                  className="fleet-tiles-base"
-                  attribution={TILE_ATTRIBUTION}
-                  url={TILES.darkBase}
-                  zIndex={1}
-                />
-                <rl.TileLayer
-                  key="dark-labels"
-                  className="fleet-tiles-labels"
-                  url={TILES.darkLabels}
-                  zIndex={2}
-                />
-              </>
+              <rl.TileLayer
+                key="dark"
+                className={cn(
+                  "fleet-tiles-base",
+                  !isCustomDark && "fleet-tiles-osm-dark",
+                )}
+                attribution={tileAttribution}
+                url={darkTileSource}
+                zIndex={1}
+              />
             ) : (
               <rl.TileLayer
                 key="light"
                 className="fleet-tiles-base"
-                attribution={TILE_ATTRIBUTION}
-                url={TILES.light}
+                attribution={tileAttribution}
+                url={lightTileSource}
                 zIndex={1}
               />
             )}
-            <MapController activeVehicle={activeVehicle} />
+            <MapController activeVehicle={activeVehicle} zoom={zoom} />
             <MapResizeHandler />
+            <ZoomControls />
             {fleetData.map((vehicle) => {
               const isActive = activeVehicle?.id === vehicle.id;
               return (
@@ -683,7 +771,7 @@ export default function FleetTracker({
                 >
                   <rl.Popup className="font-sans">
                     <div className="text-center">
-                      <h3 className="font-bold text-sm text-foreground m-0 leading-tight">
+                      <h3 className="font-semibold text-sm text-foreground m-0 leading-tight">
                         {vehicle.id}
                       </h3>
                       <p className="text-xs text-muted-foreground mt-1 m-0">

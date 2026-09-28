@@ -3,7 +3,7 @@ import { extractCode } from "@/lib/code";
 
 # Counter Block
 
-A multi-purpose, highly animated Counter component. Whether you need a user-interactive Stepper for e-commerce, an animated statistics ticker, a circular progress tracker, or a promotional countdown timer, this block handles it all with built-in GSAP fluid animations.
+A multi-purpose, highly animated Counter component. Whether you need a user-interactive Stepper for e-commerce, an animated statistics ticker, a circular progress tracker, or a promotional countdown timer, this block handles it all with built-in fluid animations. The countdown comes in two designs: framed figures under a pill, or `slide` — soft tiles where only the figure that changed slides, the same countdown the <DocLink to="waitlist">Waitlist</DocLink> launch panel uses.
 
 Explore the different variations of the Counter component — each example shows a live preview with the exact code to copy.
 
@@ -98,6 +98,57 @@ export default function LaunchCountdown() {
   return <CounterBlock type="countdown" label="Next Product Launch" />;
 }`;
 
+export const usageSlide = `import { CounterBlock } from "@/components/custom/blocks/CounterBlock";
+
+export default function OpensIn() {
+  return (
+    <CounterBlock
+      type="countdown"
+      variant="slide"
+      label="Launches in"
+      doneLabel="We're live"
+      targetDate="2026-11-01T09:00:00Z"
+    />
+  );
+}`;
+
+<ExampleShowcase
+  name="counter"
+  colorControl
+  columns={1}
+  examples={[
+    {
+      title: "Slide countdown",
+      subheading: "Days, hours, minutes and seconds to a date on soft tiles. Watch the seconds: only the figure that changed slides, the others hold still.",
+      propNotes: [
+        {
+          lead: "Set",
+          prop: "type",
+          value: '"countdown"',
+          effect: "with `variant=\"slide\"` for the tile design. The figures read `--` until the first tick, so server and client paint the same.",
+        },
+        {
+          prop: "targetDate",
+          effect: "is a `Date`, ISO string or timestamp; left out, it counts three days from mount.",
+        },
+        {
+          prop: "doneLabel",
+          effect: "replaces `label` once the date has passed, and the figures go away.",
+        },
+      ],
+      props: { type: "countdown", variant: "slide" },
+      usage: usageSlide,
+      code: extractCode("src/components/custom/blocks/CounterBlock.tsx"),
+    },
+  ]}
+/>
+
+## Installation
+
+<Installation name="counter" />
+
+## Examples
+
 <ExampleShowcase
   name="counter"
   colorControl
@@ -121,22 +172,7 @@ export default function LaunchCountdown() {
       ],
       props: { type: "stepper" },
       usage: usageStepper,
-      code: extractCode("src/components/custom/blocks/CounterBlock.tsx"),
     },
-  ]}
-/>
-
-## Installation
-
-<Installation name="counter" />
-
-## Examples
-
-<ExampleShowcase
-  name="counter"
-  colorControl
-  columns={1}
-  examples={[
     {
       title: "Outline stepper",
       propNotes: [
@@ -209,7 +245,7 @@ export default function LaunchCountdown() {
           lead: "Set",
           prop: "type",
           value: '"countdown"',
-          effect: "to tick down to a target date rather than counting up.",
+          effect: "to tick down to a target date rather than counting up. This is the default design — framed figures under a pill with a clock.",
         },
       ],
       props: { type: "countdown" },
@@ -222,30 +258,30 @@ export default function LaunchCountdown() {
 Explore the Counter component's number animation features, including customizable easing, duration, and formatting options.
 
 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 my-6 not-prose">
-  <div className="p-6 rounded-2xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900">
-    <h3 className="text-lg font-semibold text-zinc-900 dark:text-zinc-50 mb-2">Customizable</h3>
-    <p className="text-zinc-600 dark:text-zinc-400 text-sm">Easily adapt the component's styling and behavior to fit your application's unique design system.</p>
+  <div className="p-6 rounded-2xl border border-border bg-card">
+    <h3 className="text-lg font-semibold text-card-foreground mb-2">Customizable</h3>
+    <p className="text-muted-foreground text-sm">Easily adapt the component's styling and behavior to fit your application's unique design system.</p>
   </div>
-  <div className="p-6 rounded-2xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900">
-    <h3 className="text-lg font-semibold text-zinc-900 dark:text-zinc-50 mb-2">Accessible</h3>
-    <p className="text-zinc-600 dark:text-zinc-400 text-sm">Built with accessibility in mind, ensuring all users can interact with your application effectively.</p>
+  <div className="p-6 rounded-2xl border border-border bg-card">
+    <h3 className="text-lg font-semibold text-card-foreground mb-2">Accessible</h3>
+    <p className="text-muted-foreground text-sm">Built with accessibility in mind, ensuring all users can interact with your application effectively.</p>
   </div>
-  <div className="p-6 rounded-2xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900">
-    <h3 className="text-lg font-semibold text-zinc-900 dark:text-zinc-50 mb-2">Responsive</h3>
-    <p className="text-zinc-600 dark:text-zinc-400 text-sm">Fully responsive design that looks and works great across desktop, tablet, and mobile devices.</p>
+  <div className="p-6 rounded-2xl border border-border bg-card">
+    <h3 className="text-lg font-semibold text-card-foreground mb-2">Responsive</h3>
+    <p className="text-muted-foreground text-sm">Fully responsive design that looks and works great across desktop, tablet, and mobile devices.</p>
   </div>
-  <div className="p-6 rounded-2xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900">
-    <h3 className="text-lg font-semibold text-zinc-900 dark:text-zinc-50 mb-2">Performant</h3>
-    <p className="text-zinc-600 dark:text-zinc-400 text-sm">Optimized for maximum performance with minimal re-renders and efficient state management.</p>
+  <div className="p-6 rounded-2xl border border-border bg-card">
+    <h3 className="text-lg font-semibold text-card-foreground mb-2">Performant</h3>
+    <p className="text-muted-foreground text-sm">Optimized for maximum performance with minimal re-renders and efficient state management.</p>
   </div>
 </div>
 
 ## Best Practices & Guidelines
 
 <div className="flex flex-col gap-4 my-6 not-prose">
-  <div className="p-5 rounded-xl border border-blue-200 dark:border-blue-900/50 bg-blue-50/50 dark:bg-blue-950/20">
-    <h4 className="text-base font-semibold text-blue-900 dark:text-blue-300 mb-1">Usage Guidelines</h4>
-    <p className="text-blue-800 dark:text-blue-400/80 text-sm">Follow standard design principles when implementing this component. Ensure proper contrast, spacing, and context within your layout.</p>
+  <div className="rounded-xl border border-foreground/[0.06] bg-foreground/[0.03] p-4">
+    <h4 className="font-sans text-[14px] font-semibold text-foreground mb-1">Usage Guidelines</h4>
+    <p className="text-[13px] leading-relaxed text-foreground/50">Follow standard design principles when implementing this component. Ensure proper contrast, spacing, and context within your layout.</p>
   </div>
 </div>
 
@@ -279,17 +315,14 @@ Explore the Counter component's number animation features, including customizabl
           <code>variant</code>
         </td>
         <td>
-          <code>"default" | "outline" | "soft" | "vertical"</code>
+          <code>"default" | "outline" | "soft" | "vertical" | "slide"</code>
         </td>
         <td>
           <code>"default"</code>
         </td>
         <td>
-          Applies unique structural layouts{" "}
-          <strong>
-            only to the <code>stepper</code> type
-          </strong>
-          .
+          <code>outline</code>, <code>soft</code> and <code>vertical</code> are layouts for the{" "}
+          <code>stepper</code> type; <code>slide</code> is the <code>countdown</code>'s tile design, where a figure that changes slides out above as the new one comes up from below.
         </td>
       </tr>
       <tr>
@@ -297,14 +330,14 @@ Explore the Counter component's number animation features, including customizabl
           <code>color</code>
         </td>
         <td>
-          <code>"indigo" | "rose" | "emerald" | "zinc" | string</code>
+          <code>"primary" | "indigo" | "rose" | "emerald" | "zinc" | "inherit" | string</code>
         </td>
         <td>
-          <code>"indigo"</code>
+          <code>"primary"</code>
         </td>
         <td>
           Applies global color themes. Accepts valid hex codes (e.g.{" "}
-          <code>"#00FF00"</code>).
+          <code>"#00FF00"</code>). <code>inherit</code> takes the surrounding text colour, for a counter inside a section that sets its own.
         </td>
       </tr>
       <tr>
@@ -380,16 +413,84 @@ Explore the Counter component's number animation features, including customizabl
       </tr>
       <tr>
         <td>
+          <code>bare</code>
+        </td>
+        <td>
+          <code>boolean</code>
+        </td>
+        <td>
+          <code>false</code>
+        </td>
+        <td>
+          <strong>Animated only:</strong> render just the figure as a <code>span</code>, no card — it inherits the surrounding type. For a number inside your own layout.
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <code>decimals</code>
+        </td>
+        <td>
+          <code>number</code>
+        </td>
+        <td>
+          <code>0</code>
+        </td>
+        <td>
+          <strong>Animated only:</strong> decimal places shown while counting, e.g. <code>1</code> for 5.5.
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <code>startOnView</code>
+        </td>
+        <td>
+          <code>boolean</code>
+        </td>
+        <td>
+          <code>false</code>
+        </td>
+        <td>
+          <strong>Animated only:</strong> wait until the counter is on screen before counting, so a figure below the fold is seen counting. Under prefers-reduced-motion the target is shown at once.
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <code>className</code>
+        </td>
+        <td>
+          <code>string</code>
+        </td>
+        <td>—</td>
+        <td>
+          <strong>Animated only:</strong> classes for the figure (<code>bare</code>) or the card.
+        </td>
+      </tr>
+      <tr>
+        <td>
           <code>targetDate</code>
         </td>
         <td>
-          <code>Date</code>
+          <code>Date | string | number</code>
         </td>
         <td>
           <code>3 days from now</code>
         </td>
         <td>
-          The target expiration date for the <code>countdown</code> timer.
+          <strong>Countdown only:</strong> when the timer reaches zero — a <code>Date</code>, an ISO string or a timestamp.
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <code>doneLabel</code>
+        </td>
+        <td>
+          <code>string</code>
+        </td>
+        <td>
+          <code>"Time's up"</code>
+        </td>
+        <td>
+          <strong>Countdown only:</strong> what the label becomes once the date has passed. The <code>slide</code> variant also hides its figures then.
         </td>
       </tr>
     </tbody>

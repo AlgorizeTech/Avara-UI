@@ -18,6 +18,16 @@
  * on install would break those imports in the consumer's project. Item NAMES are
  * still kebab-case for clean install URLs; the name and the filename are
  * independent.
+ *
+ * MOTION-LIBRARY TWINS:
+ * A component whose animation needs a library ships two builds — GSAP (the
+ * default, in the parent folder) and Framer Motion (same basename, in a
+ * `framer/` subfolder). The twin is named `<name>-framer` and installs to the
+ * SAME target as the default, with the `framer/` segment removed, so a
+ * consumer picks one build at install time and every usage snippet reads the
+ * same for both. A framer file imports sibling twins relatively
+ * ("./TextAnimationBlock") and shared, library-free blocks by alias
+ * ("@/components/custom/blocks/HalfStarsBlock"); both forms survive install.
  */
 
 import fs from "fs";
@@ -83,7 +93,20 @@ type Source = {
   name: string;
   /** "block" | "primitive" | "site-ui" */
   kind: "block" | "primitive" | "site-ui" | "custom";
+  /** The Framer Motion twin of another item (lives in a `framer/` folder). */
+  framer: boolean;
 };
+
+/** Subfolder that holds the Framer Motion twin of a dual component. */
+const FRAMER_DIR = "framer";
+
+/** npm packages that carry each motion library. */
+const GSAP_PACKAGES = new Set(["gsap", "@gsap/react"]);
+const FRAMER_PACKAGES = new Set(["framer-motion", "motion"]);
+
+/** Drops the `framer/` folder from an install target: both builds share a path. */
+const stripFramerSegment = (target: string) =>
+  target.replace(new RegExp(`/${FRAMER_DIR}/`), "/");
 
 // ---------------------------------------------------------------------------
 // Name derivation
@@ -100,7 +123,12 @@ function toKebab(input: string): string {
     .replace(/^-|-$/g, "");
 }
 
-function deriveName(basename: string, kind: Source["kind"]): string {
+function deriveName(
+  basename: string,
+  kind: Source["kind"],
+  framer = false,
+): string {
+  if (framer) return `${deriveName(basename, kind)}-framer`;
   const override = NAME_OVERRIDES[basename];
   if (override) return override;
 
@@ -123,6 +151,14 @@ const IMPORT_RE =
   /^[ \t]*import\s+(?:type\s+)?(?:[\s\S]*?\s+from\s+)?["']([^"']+)["']/gm;
 
 /**
+ * `export * from "./TableBlock"` and friends. A re-export is a dependency as
+ * surely as an import: miss it and the item installs a file that re-exports a
+ * module the consumer was never given.
+ */
+const REEXPORT_RE =
+  /^[ \t]*export\s+(?:type\s+)?(?:\*(?:\s+as\s+\w+)?|\{[\s\S]*?\})\s+from\s+["']([^"']+)["']/gm;
+
+/**
  * `lazy(() => import("./Fleet-map"))` and friends. These resolve at runtime but
  * still have to ship: an item whose dynamic import is not counted installs
  * without the file it reaches for, and the consumer's build fails on a module
@@ -143,7 +179,7 @@ function parseImports(src: string): string[] {
     .join("\n");
 
   const specs: string[] = [];
-  for (const re of [IMPORT_RE, DYNAMIC_IMPORT_RE]) {
+  for (const re of [IMPORT_RE, REEXPORT_RE, DYNAMIC_IMPORT_RE]) {
     re.lastIndex = 0;
     let m: RegExpExecArray | null;
     while ((m = re.exec(code))) specs.push(m[1]);
@@ -198,7 +234,12 @@ function typesPackageFor(pkg: string): string | null {
 // Source discovery
 // ---------------------------------------------------------------------------
 
-function collect(dir: string, kind: Source["kind"], filter?: Set<string>): Source[] {
+function collect(
+  dir: string,
+  kind: Source["kind"],
+  filter?: Set<string>,
+  framer = false,
+): Source[] {
   if (!fs.existsSync(dir)) return [];
   return fs
     .readdirSync(dir)
@@ -208,29 +249,51 @@ function collect(dir: string, kind: Source["kind"], filter?: Set<string>): Sourc
     .map((basename) => {
       const abs = path.join(dir, basename);
       const rel = path.relative(ROOT, abs).split(path.sep).join("/");
-      const target = rel.replace(/^src\//, "");
+      const target = stripFramerSegment(rel.replace(/^src\//, ""));
       return {
         abs,
         rel,
         basename,
         target,
-        name: deriveName(basename, kind),
+        name: deriveName(basename, kind, framer),
         kind,
+        framer,
       };
     });
 }
 
 const sources: Source[] = [
   ...collect(BLOCKS_DIR, "block"),
+  ...collect(path.join(BLOCKS_DIR, FRAMER_DIR), "block", undefined, true),
   ...collect(PRIMITIVES_DIR, "primitive"),
+  ...collect(path.join(PRIMITIVES_DIR, FRAMER_DIR), "primitive", undefined, true),
   ...collect(SITE_UI_DIR, "site-ui", SITE_UI_ITEMS),
   // Non-recursive, so blocks/ and ui/ underneath are not collected twice.
   ...collect(CUSTOM_DIR, "custom"),
+  ...collect(path.join(CUSTOM_DIR, FRAMER_DIR), "custom", undefined, true),
 ];
 
 /** Resolve an import specifier to another item in this registry, if any. */
 const byAbsPath = new Map<string, Source>();
 for (const s of sources) byAbsPath.set(path.normalize(s.abs).toLowerCase(), s);
+
+/**
+ * A local import that is NOT its own registry item: a helper module living
+ * beside the component. Returns its absolute path so the item can ship it.
+ */
+function resolveCompanion(spec: string, fromFile: string): string | undefined {
+  let candidate: string | undefined;
+  if (spec.startsWith("@/")) candidate = path.join(ROOT, "src", spec.slice(2));
+  else if (spec.startsWith(".")) candidate = path.resolve(path.dirname(fromFile), spec);
+  if (!candidate) return undefined;
+
+  for (const ext of [".ts", ".tsx", "/index.ts", "/index.tsx"]) {
+    const full = candidate + ext;
+    if (byAbsPath.has(path.normalize(full).toLowerCase())) return undefined; // its own item
+    if (fs.existsSync(full)) return full;
+  }
+  return undefined;
+}
 
 function resolveLocal(spec: string, fromFile: string): Source | undefined {
   let candidate: string | undefined;
@@ -299,14 +362,37 @@ function titleFor(name: string, meta?: ItemMeta): string {
     .join(" ");
 }
 
-const items: BuiltItem[] = sources.map((s) => {
-  const src = fs.readFileSync(s.abs, "utf8");
-  const specs = parseImports(src);
+/**
+ * A Framer twin borrows its base item's prose unless it has its own entry, so
+ * adding a twin never needs a registry-meta edit — only its source file.
+ */
+function metaFor(s: Source): ItemMeta | undefined {
+  if (META[s.name] || !s.framer) return META[s.name];
+  const baseName = s.name.replace(/-framer$/, "");
+  const base = META[baseName];
+  if (!base) return undefined;
+  return {
+    ...base,
+    title: `${base.title ?? titleFor(baseName)} (Motion)`,
+    docs: `Motion build of \`${baseName}\` — same props, markup and install path; install one or the other.${base.docs ? ` ${base.docs}` : ""}`,
+  };
+}
 
+const items: BuiltItem[] = sources.map((s) => {
   const dependencies = new Set<string>();
   const devDependencies = new Set<string>();
   const registryDependencies = new Set<string>();
   let usesNext = false;
+
+  // Companion modules ship with this item, so their imports count as its own.
+  const companions: string[] = [];
+  const walked = new Set<string>([path.normalize(s.abs).toLowerCase()]);
+  const queue: string[] = [s.abs];
+
+  while (queue.length) {
+  const from = queue.shift() as string;
+  const src = fs.readFileSync(from, "utf8");
+  const specs = parseImports(src);
 
   for (const spec of specs) {
     if (spec.startsWith("@/") || spec.startsWith(".")) {
@@ -315,8 +401,18 @@ const items: BuiltItem[] = sources.map((s) => {
         registryDependencies.add("utils");
         continue;
       }
-      const local = resolveLocal(spec, s.abs);
+      const local = resolveLocal(spec, from);
       if (!local) {
+        const companion = resolveCompanion(spec, from);
+        if (companion) {
+          const key = path.normalize(companion).toLowerCase();
+          if (!walked.has(key)) {
+            walked.add(key);
+            companions.push(companion);
+            queue.push(companion);
+          }
+          continue;
+        }
         unresolvedLocal.push(`${s.basename} imports ${spec}`);
         continue;
       }
@@ -332,6 +428,7 @@ const items: BuiltItem[] = sources.map((s) => {
     const types = typesPackageFor(pkg);
     if (types) devDependencies.add(types);
   }
+  }
 
   if (usesNext) nextCoupled.push(s.name);
 
@@ -339,7 +436,7 @@ const items: BuiltItem[] = sources.map((s) => {
   if (prev) collisions.push(`${s.name}: ${prev} vs ${s.basename}`);
   else nameSeen.set(s.name, s.basename);
 
-  const meta = META[s.name];
+  const meta = metaFor(s);
   if (!meta) missingMeta.push(s.name);
   // Usage-only dependencies cannot be derived from the source's imports.
   for (const d of meta?.usageDependencies ?? []) registryDependencies.add(d);
@@ -367,11 +464,70 @@ const items: BuiltItem[] = sources.map((s) => {
       ? { devDependencies: [...devDependencies].sort() }
       : {}),
     registryDependencies: [...registryDependencies].sort().map(depRef),
-    files: [{ path: s.rel, type: fileType, target: s.target }],
+    files: [
+      { path: s.rel, type: fileType, target: s.target },
+      ...companions
+        .map((abs) => path.relative(ROOT, abs).split(path.sep).join("/"))
+        .sort()
+        .map((rel) => ({
+          path: rel,
+          type: fileType,
+          target: stripFramerSegment(rel.replace(/^src\//, "")),
+        })),
+    ],
   };
   if (meta?.docs) item.docs = meta.docs;
   return item;
 });
+
+// ---------------------------------------------------------------------------
+// One motion library per install
+// ---------------------------------------------------------------------------
+
+const itemByName = new Map(items.map((i) => [i.name, i]));
+const refName = (ref: string) => ref.match(/\/r\/([\w-]+)\.json$/)?.[1];
+
+/**
+ * Every npm package an item pulls in, following its registry dependencies —
+ * what `shadcn add` actually installs.
+ */
+function transitivePackages(name: string, seen = new Set<string>()): Set<string> {
+  const out = new Set<string>();
+  if (seen.has(name)) return out;
+  seen.add(name);
+  const item = itemByName.get(name);
+  if (!item) return out;
+  for (const d of item.dependencies) out.add(d);
+  for (const ref of item.registryDependencies) {
+    const dep = refName(ref);
+    if (dep) for (const d of transitivePackages(dep, seen)) out.add(d);
+  }
+  return out;
+}
+
+const pullsAny = (name: string, set: Set<string>) =>
+  [...transitivePackages(name)].some((p) => set.has(p));
+
+/**
+ * An install must carry ONE animation library. The usual way to break this is
+ * a GSAP section composing a Framer block (or the reverse), so the blocks that
+ * bring each library in are named — that is where the fix goes.
+ */
+const mixedMotion: string[] = [];
+for (const item of items) {
+  if (!pullsAny(item.name, GSAP_PACKAGES) || !pullsAny(item.name, FRAMER_PACKAGES)) continue;
+  const own = (set: Set<string>) => item.dependencies.some((d) => set.has(d));
+  const via = (set: Set<string>) =>
+    [
+      ...(own(set) ? [item.name] : []),
+      ...item.registryDependencies
+        .map(refName)
+        .filter((n): n is string => !!n && pullsAny(n, set)),
+    ].join(", ");
+  mixedMotion.push(
+    `${item.name}: gsap via ${via(GSAP_PACKAGES)}; framer via ${via(FRAMER_PACKAGES)}`,
+  );
+}
 
 // ---------------------------------------------------------------------------
 // Emit
@@ -420,6 +576,17 @@ if (unresolvedLocal.length) {
   );
   console.error(
     "Move the imported file into a scanned directory (blocks/, custom/, custom/ui/), add it to SITE_UI_ITEMS, or inline it."
+  );
+  process.exit(1);
+}
+
+if (mixedMotion.length) {
+  console.error(
+    `\nFATAL — items that install both GSAP and Framer Motion (${mixedMotion.length}):`
+  );
+  for (const m of mixedMotion) console.error(`  ${m}`);
+  console.error(
+    "An install must carry one animation library. Convert the named block to CSS, or compose the twin from the same camp (see animation-library-plan.md)."
   );
   process.exit(1);
 }

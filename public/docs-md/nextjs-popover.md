@@ -19,6 +19,8 @@ export default function AccountMenu() {
 
       {/* className overrides the default w-72 */}
 
+              AB
+
               Andy Bernard
               andy@dundermifflin.com
 
@@ -70,6 +72,13 @@ export default function OffsetPopover() {
 }`;
 
 ## Installation
+
+Register the @algorize-ui registry once per project, then add the component:
+
+```bash
+npx shadcn@latest registry add @algorize-ui=https://algorize-ui.vercel.app/r/{name}.json
+npx shadcn@latest add @algorize-ui/popover
+```
 
 ## Examples
 

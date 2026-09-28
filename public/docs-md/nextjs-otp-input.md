@@ -84,29 +84,14 @@ export default function UnderlinedOtp() {
 
 ## Installation
 
-## Examples
+Register the @algorize-ui registry once per project, then add the component:
 
-## Usage
-
-The component acts exactly like a standard controlled or uncontrolled React input. You can listen to every keystroke via `onChange`, or simply wait for the user to finish typing via `onComplete`.
-
-```tsx
-
-export default function VerificationForm() {
-  const [code, setCode] = useState("");
-
-  const handleVerify = (finalCode: string) => {
-    console.log("Submitting code to API:", finalCode);
-    // API logic here...
-  };
-
-  return (
-    
-      Enter Security Code
-
-  );
-}
+```bash
+npx shadcn@latest registry add @algorize-ui=https://algorize-ui.vercel.app/r/{name}.json
+npx shadcn@latest add @algorize-ui/otp-input
 ```
+
+## Examples
 
 ## Features
 Learn about the OTP Input's seamless user experience, featuring automatic focus advancing, paste support, and backspace handling.
@@ -196,7 +181,7 @@ Learn about the OTP Input's seamless user experience, featuring automatic focus 
 
           "indigo" | "rose" | "emerald" | "zinc" | string
 
-          "indigo"
+          "primary"
 
           The theme color applied to the borders, text, and focus rings. Fully
           supports custom hex codes.

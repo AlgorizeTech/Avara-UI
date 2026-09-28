@@ -48,7 +48,7 @@ export const usageFull = `export default function DocumentMenu() {
 
         {/* className restyles a single destructive row */}
          run("Delete")}
-          className="text-red-600 focus:bg-red-50 dark:focus:bg-red-950 focus:text-red-700"
+          className="text-destructive focus:bg-destructive/10 focus:text-destructive"
         >
           
           Delete
@@ -58,6 +58,13 @@ export const usageFull = `export default function DocumentMenu() {
 }`;
 
 ## Installation
+
+Register the @algorize-ui registry once per project, then add the component:
+
+```bash
+npx shadcn@latest registry add @algorize-ui=https://algorize-ui.vercel.app/r/{name}.json
+npx shadcn@latest add @algorize-ui/context-menu
+```
 
 ## Features
 Explore the ContextMenu's right-click features, including nested submenus, disabled states, and keyboard navigation.
@@ -86,6 +93,16 @@ Explore the ContextMenu's right-click features, including nested submenus, disab
         Type
         Default
         Description
+
+          ContextMenu
+
+          color
+
+          "primary" | "indigo" | "rose" | "emerald" | "blue" | "zinc" | string
+
+          "primary"
+
+          Applies theme accent color to item hover states and trigger container focus/hover borders. Accepts preset named themes or valid hex strings.
 
           ContextMenuTrigger
 

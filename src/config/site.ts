@@ -30,15 +30,14 @@ export const url = (pathname = "/") =>
   `${SITE_URL}${pathname.startsWith("/") ? pathname : `/${pathname}`}`;
 
 /**
- * How the component count is written in copy, from `NEXT_PUBLIC_COMPONENT_COUNT`.
+ * How many components the library ships — the real figure, not a hand-typed one.
  *
- * Deliberately a floor ("120+") rather than an exact figure, so adding a
- * component does not falsify every page. Keep it at or below the real count —
- * verify with:
- *   node -e "console.log(require('./registry.json').items.length)"
+ * `getComponentCount()` (src/lib/component-count.ts) counts registry.json at
+ * build time and next.config.ts stamps the result in here, so every build
+ * reports the registry it was built from. Use this everywhere a count is shown;
+ * never type the number into copy.
  */
-export const COMPONENT_COUNT =
-  env(process.env.NEXT_PUBLIC_COMPONENT_COUNT) ?? "120+";
+export const COMPONENT_COUNT = process.env.NEXT_PUBLIC_REGISTRY_COMPONENT_COUNT ?? "";
 
 export const SITE_NAME = env(process.env.NEXT_PUBLIC_SITE_NAME) ?? "Algorize UI";
 
@@ -87,7 +86,7 @@ export const siteConfig = {
   title: `${SITE_NAME} | React Component Library`,
   description:
     `A React component library of ${COMPONENT_COUNT} animated, accessible components ` +
-    "built with Tailwind CSS, TypeScript, GSAP and Framer Motion. Installed by the " +
+    "built with Tailwind CSS, TypeScript, GSAP and Motion. Installed by the " +
     "shadcn CLI straight into your project — no wrapper package, no lock-in.",
   /** One line, for cards and social summaries. */
   tagline: `${COMPONENT_COUNT} React components you install into your own codebase.`,

@@ -1,10 +1,10 @@
 # Split-Stack Stepper
 
-A high-impact, interactive split-screen layout engineered exclusively with **GSAP**. One side renders a narrative sequence of feature cards with glowing pill badges, while the opposite side maintains a sticky visual showcase container.
+A high-impact, interactive split-screen layout animated with plain **CSS transitions** — no animation library. One side renders a narrative sequence of feature cards with glowing pill badges, while the opposite side maintains a sticky visual showcase container.
 
 Unlike basic tab replacements, this engine applies dynamic mathematical depth tweens via GreenSock to **stack previous visual cards on top of each other in a 3D deck format** as the user progresses through the narrative.
 
-`SplitStepper` orchestrates the responsive grid itself — you supply the narrative sequence and a JSX payload per card, and GSAP handles the stacking. Click any step in the scrolling column to watch the deck restack.
+`SplitStepper` orchestrates the responsive grid itself — you supply the narrative sequence and a JSX payload per card, and CSS transitions handle the stacking. Click any step in the scrolling column to watch the deck restack.
 
 export const splitSteps = `// Card bodies — these are the four screens the preview renders.
 const MockLandingView = () => (
@@ -52,13 +52,13 @@ const MockMobileView = () => (
 
 );
 
-const steps = [
+const steps: SplitStep[] = [
   {
     id: "landing",
     stepNumber: "01",
     title: "Landing Page Design",
     description:
-      "Most landing pages fail quietly. Traffic comes in, nothing happens. We engineer high-converting layouts with engaging Framer & GSAP animations.",
+      "Most landing pages fail quietly. Traffic comes in, nothing happens. We engineer high-converting layouts with engaging Motion & GSAP animations.",
     tags: ["Conversion Focused", "Figma To Code", "Mobile First"],
     color: "bg-[#0c0c10] border-amber-500/20",
     cardContent: ,
@@ -103,7 +103,7 @@ const steps = [
   },
 ];`;
 
-export const usageDefault = `import { SplitStepper } from "@/components/custom/blocks/SplitStepperBlock";
+export const usageDefault = `import { SplitStepper, type SplitStep } from "@/components/custom/blocks/SplitStepperBlock";
 
 ${splitSteps}
 
@@ -113,7 +113,7 @@ export default function ServicesSection() {
   );
 }`;
 
-export const usageStickyLeft = `import { SplitStepper } from "@/components/custom/blocks/SplitStepperBlock";
+export const usageStickyLeft = `import { SplitStepper, type SplitStep } from "@/components/custom/blocks/SplitStepperBlock";
 
 ${splitSteps}
 
@@ -122,7 +122,7 @@ export default function ServicesSectionMirrored() {
   return ;
 }`;
 
-export const usageDepth = `import { SplitStepper } from "@/components/custom/blocks/SplitStepperBlock";
+export const usageDepth = `import { SplitStepper, type SplitStep } from "@/components/custom/blocks/SplitStepperBlock";
 
 ${splitSteps}
 
@@ -134,7 +134,7 @@ export default function DeepDeck() {
   );
 }`;
 
-export const usageColor = `import { SplitStepper } from "@/components/custom/blocks/SplitStepperBlock";
+export const usageColor = `import { SplitStepper, type SplitStep } from "@/components/custom/blocks/SplitStepperBlock";
 
 ${splitSteps}
 
@@ -144,6 +144,13 @@ export default function BrandedSplitStepper() {
 }`;
 
 ## Installation
+
+Register the @algorize-ui registry once per project, then add the component:
+
+```bash
+npx shadcn@latest registry add @algorize-ui=https://algorize-ui.vercel.app/r/{name}.json
+npx shadcn@latest add @algorize-ui/split-stepper
+```
 
 ## Examples
 
@@ -198,7 +205,7 @@ export default function BrandedSplitStepper() {
           16
 
           The absolute pixel distance applied to the vertical Y-axis translation
-          of stacked background cards via GSAP, creating the staggered deck
+          of stacked background cards, creating the staggered deck
           effect.
 
           SplitStepper
@@ -207,7 +214,7 @@ export default function BrandedSplitStepper() {
 
           string
 
-          "#FFAB1D"
+          theme primary
 
           The global theme color applied to active card borders, step index
           badges, glowing pill tags, and indicator arrows. Accepts hex codes or
@@ -243,8 +250,7 @@ export default function BrandedSplitStepper() {
 
           Required
 
-          A unique identifier string required for safe React list rendering and
-          GSAP key mapping.
+          A unique identifier string required for safe React list rendering.
 
           SplitStep
 

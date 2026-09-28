@@ -1,0 +1,365 @@
+import { ExampleShowcase } from "@/components/site/Sandbox";
+import { extractCode } from "@/lib/code";
+
+export const metadata = {
+  title: "Conversation Timeline - AlgorizeTech UI",
+  description: "A dense rail of thin marks, one per message, that expands into a labelled list on hover — a minimap for long chats.",
+};
+
+# Conversation Timeline
+
+A dense rail of thin marks, one per message, that expands into a labelled list on hover.
+
+At rest it is a compact stack of hairlines — a minimap of the whole conversation that takes almost no room beside a chat. Hover the rail (or Tab into it) and every row grows at once while the labels fade in; hover a specific row and it gets extra emphasis — a brighter mark, a darker label, a small nudge. Click any mark to select it. Only `height` animates, so the rail never resizes sideways, and it re-anchors its own scroll position while the rows grow so the list never jumps. On touch devices, where there is no hover, it stays expanded so the labels remain reachable.
+
+Explore the different variations of the Conversation Timeline — each example shows a live preview with the exact code to copy. Hover a rail to expand it.
+
+export const usageDefault = `"use client";
+
+import { ConversationTimeline } from "@/components/custom/blocks/ConversationTimelineBlock";
+import { useState } from "react";
+
+const checkpoints = [
+  { id: "1", role: "system",    label: "System prompt" },
+  { id: "2", role: "user",      label: "Can you help me set up auth?" },
+  { id: "3", role: "assistant", label: "Of course - let me walk you through it" },
+] as const;
+
+export default function ChatMinimap() {
+  const [activeId, setActiveId] = useState("2");
+
+  return (
+    <ConversationTimeline
+      checkpoints={checkpoints}
+      activeId={activeId}
+      onSelect={setActiveId}
+    />
+  );
+}`;
+
+export const usageLeft = `import { ConversationTimeline } from "@/components/custom/blocks/ConversationTimelineBlock";
+
+// Flip the labels to the left of the marks and recolour the active line
+// with accent.
+export default function LeftRail({ checkpoints }) {
+  return (
+    <ConversationTimeline
+      checkpoints={checkpoints}
+      side="left"
+      accent="#8b5cf6"
+    />
+  );
+}`;
+
+export const usageDensity = `import { ConversationTimeline } from "@/components/custom/blocks/ConversationTimelineBlock";
+
+// rowHeight / collapsedRowHeight set the expanded and resting row sizes;
+// visibleCount caps how many rows show before the rail scrolls, and
+// labelWidth is the fixed column labels truncate against.
+export default function DenseRail({ checkpoints }) {
+  return (
+    <ConversationTimeline
+      checkpoints={checkpoints}
+      rowHeight={28}
+      collapsedRowHeight={8}
+      visibleCount={8}
+      labelWidth={200}
+    />
+  );
+}`;
+
+export const usageChat = `"use client";
+
+import { ConversationTimeline } from "@/components/custom/blocks/ConversationTimelineBlock";
+import { useEffect, useRef, useState } from "react";
+
+const messages = [
+  { id: "1", role: "system",    label: "System prompt",            body: "You are a helpful engineering assistant." },
+  { id: "2", role: "user",      label: "Can you help me set up auth?", body: "Can you help me set up auth? I'm on Next.js 15." },
+  { id: "3", role: "assistant", label: "Of course - let me walk you through it", body: "Of course - first we'll pick a provider…" },
+  // …
+] as const;
+
+// The rail as a minimap: selecting a mark scrolls its message into view.
+export default function ChatWithMinimap() {
+  const [activeId, setActiveId] = useState("2");
+  const refs = useRef<Record<string, HTMLDivElement | null>>({});
+
+  useEffect(() => {
+    refs.current[activeId]?.scrollIntoView({ behavior: "smooth", block: "center" });
+  }, [activeId]);
+
+  return (
+    <div className="flex items-start gap-6">
+      <ConversationTimeline
+        checkpoints={messages}
+        activeId={activeId}
+        onSelect={setActiveId}
+        labelWidth={200}
+        className="shrink-0"
+      />
+      <div className="flex h-72 flex-1 flex-col gap-2 overflow-y-auto">
+        {messages.map((m) => (
+          <div key={m.id} ref={(el) => { refs.current[m.id] = el; }} onClick={() => setActiveId(m.id)}>
+            {m.body}
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+}`;
+
+<ExampleShowcase
+  name="conversation-timeline"
+  colorControl
+  columns={1}
+  examples={[
+    {
+      title: "Conversation Timeline",
+      subheading: "Hover the rail (or Tab into it) to expand every row at once. Then hover a specific row for its extra emphasis, and click a mark to select it.",
+      propNotes: [
+        {
+          prop: "checkpoints",
+          effect:
+            "is the list of `{ id, label, role? }` — one mark per entry, in order.",
+        },
+        {
+          prop: "activeId",
+          effect:
+            "is the selected checkpoint; its mark takes the accent colour. `onSelect` receives the id of a clicked mark.",
+        },
+      ],
+      props: { example: "default" },
+      usage: usageDefault,
+      code: extractCode("src/components/custom/blocks/ConversationTimelineBlock.tsx"),
+    },
+  ]}
+/>
+
+## Installation
+
+<Installation name="conversation-timeline" />
+
+## Examples
+
+<ExampleShowcase
+  name="conversation-timeline"
+  colorControl
+  columns={1}
+  examples={[
+    {
+      title: "Left side",
+      propNotes: [
+        {
+          lead: "Set",
+          prop: "side",
+          value: '"left"',
+          effect:
+            "to put the labels on the left of the marks — for a rail that hugs the right edge of a chat.",
+        },
+        {
+          prop: "accent",
+          effect:
+            "recolours the active row's line — any CSS colour. Here the violet from the original example; pick another theme colour above to override it.",
+        },
+      ],
+      props: { example: "left" },
+      usage: usageLeft,
+    },
+    {
+      title: "Paired with a chat",
+      subheading: "The rail as a minimap — clicking a mark scrolls that message into view, and clicking a message moves the mark.",
+      propNotes: [
+        {
+          prop: "onSelect",
+          effect:
+            "is where the rail earns its keep: wire it to scroll, highlight or load the message it points at.",
+        },
+      ],
+      props: { example: "chat" },
+      usage: usageChat,
+    },
+  ]}
+/>
+
+<ExampleShowcase
+  name="conversation-timeline"
+  colorControl
+  columns={1}
+  controls={[
+    { name: "rowHeight", label: "Row height (expanded)", min: 16, max: 40, step: 2, defaultValue: 24, unit: "px" },
+    { name: "collapsedRowHeight", label: "Row height (rest)", min: 4, max: 20, step: 1, defaultValue: 10, unit: "px" },
+    { name: "visibleCount", label: "Visible rows", min: 3, max: 14, step: 1, defaultValue: 10 },
+    { name: "labelWidth", label: "Label width", min: 120, max: 320, step: 10, defaultValue: 240, unit: "px" },
+  ]}
+  examples={[
+    {
+      title: "Density",
+      subheading: "Drag the sliders, then hover the rail to see the new sizes.",
+      propNotes: [
+        {
+          prop: "rowHeight",
+          effect:
+            "is each row's height once expanded (default `24`); `collapsedRowHeight` is its height at rest (default `10`).",
+        },
+        {
+          prop: "visibleCount",
+          effect:
+            "caps how many rows show before the rail scrolls (default `10`) — the faded edges appear only when there is more to scroll to. `labelWidth` is the fixed column labels truncate against (default `240`).",
+        },
+      ],
+      props: { example: "density" },
+      usage: usageDensity,
+    },
+  ]}
+/>
+
+## Features
+Discover the Conversation Timeline's capabilities as a minimap for long conversations.
+
+<div className="grid grid-cols-1 sm:grid-cols-2 gap-4 my-6 not-prose">
+  <div className="p-6 rounded-2xl border border-border bg-card">
+    <h3 className="text-lg font-semibold text-card-foreground mb-2">One property animates</h3>
+    <p className="text-muted-foreground text-sm">Only row <code>height</code> transitions; the mark length, gap and label width are fixed, so the rail never shifts sideways and hover can never nudge the marks.</p>
+  </div>
+  <div className="p-6 rounded-2xl border border-border bg-card">
+    <h3 className="text-lg font-semibold text-card-foreground mb-2">Scroll stays put</h3>
+    <p className="text-muted-foreground text-sm">While rows grow from 10px to 24px the rail re-anchors to the row at the top every frame, so a scrolled list expands in place instead of jumping.</p>
+  </div>
+  <div className="p-6 rounded-2xl border border-border bg-card">
+    <h3 className="text-lg font-semibold text-card-foreground mb-2">Touch and keyboard</h3>
+    <p className="text-muted-foreground text-sm">Without hover the rail stays expanded so labels remain reachable; focus expands it too, and every mark is a real button with an accessible name.</p>
+  </div>
+  <div className="p-6 rounded-2xl border border-border bg-card">
+    <h3 className="text-lg font-semibold text-card-foreground mb-2">Respects reduced motion</h3>
+    <p className="text-muted-foreground text-sm">Every transition is dropped under <code>prefers-reduced-motion</code>; the rail simply snaps between its two states.</p>
+  </div>
+</div>
+
+## Best Practices & Guidelines
+
+<div className="flex flex-col gap-4 my-6 not-prose">
+  <div className="rounded-xl border border-foreground/[0.06] bg-foreground/[0.03] p-4">
+    <h4 className="font-sans text-[14px] font-semibold text-foreground mb-1">Keep labels short</h4>
+    <p className="text-[13px] leading-relaxed text-foreground/50">Labels truncate at <code>labelWidth</code>. Use the first line of a message or a summary rather than the full text.</p>
+  </div>
+  <div className="rounded-xl border border-primary/15 bg-primary/5 p-4">
+    <h4 className="font-sans text-[14px] font-semibold text-primary mb-1">Leave room to expand</h4>
+    <p className="text-[13px] leading-relaxed text-foreground/50">The rail's height grows from <code>visibleCount × collapsedRowHeight</code> to <code>visibleCount × rowHeight</code> on hover. Place it where that growth won't push other content around.</p>
+  </div>
+</div>
+
+## Props Reference
+
+### `<ConversationTimeline>` Props
+
+<div className="overflow-x-auto">
+  <table>
+    <thead>
+      <tr>
+        <th>Prop</th>
+        <th>Type</th>
+        <th>Default</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><code>checkpoints</code></td>
+        <td><code>TimelineCheckpoint[]</code></td>
+        <td><strong>Required</strong></td>
+        <td>One mark per entry, in order.</td>
+      </tr>
+      <tr>
+        <td><code>activeId</code></td>
+        <td><code>string</code></td>
+        <td>—</td>
+        <td>Currently selected checkpoint id — its mark takes the accent colour.</td>
+      </tr>
+      <tr>
+        <td><code>onSelect</code></td>
+        <td><code>{"(id: string) => void"}</code></td>
+        <td>—</td>
+        <td>Fires with the id of a clicked mark.</td>
+      </tr>
+      <tr>
+        <td><code>side</code></td>
+        <td><code>"left" | "right"</code></td>
+        <td><code>"right"</code></td>
+        <td>Which side of the marks the labels sit on.</td>
+      </tr>
+      <tr>
+        <td><code>rowHeight</code></td>
+        <td><code>number</code></td>
+        <td><code>24</code></td>
+        <td>Per-row height once expanded (hovering / focusing the rail), in px.</td>
+      </tr>
+      <tr>
+        <td><code>collapsedRowHeight</code></td>
+        <td><code>number</code></td>
+        <td><code>10</code></td>
+        <td>Per-row height at rest — just the marks, tightly packed.</td>
+      </tr>
+      <tr>
+        <td><code>visibleCount</code></td>
+        <td><code>number</code></td>
+        <td><code>10</code></td>
+        <td>Rows visible before scrolling; the rail's height is <code>visibleCount × rowHeight</code>.</td>
+      </tr>
+      <tr>
+        <td><code>labelWidth</code></td>
+        <td><code>number</code></td>
+        <td><code>240</code></td>
+        <td>Fixed label column width in px — labels truncate past it.</td>
+      </tr>
+      <tr>
+        <td><code>accent</code></td>
+        <td><code>string</code></td>
+        <td><code>"var(--primary)"</code></td>
+        <td>Colour of the active row's line. Any CSS colour.</td>
+      </tr>
+      <tr>
+        <td><code>className</code></td>
+        <td><code>string</code></td>
+        <td>—</td>
+        <td>Merged onto the rail.</td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+### `TimelineCheckpoint`
+
+<div className="overflow-x-auto">
+  <table>
+    <thead>
+      <tr>
+        <th>Field</th>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><code>id</code></td>
+        <td><code>string</code></td>
+        <td>Unique identifier — also the React key.</td>
+      </tr>
+      <tr>
+        <td><code>label</code></td>
+        <td><code>string</code></td>
+        <td>Text revealed when the rail expands; also the mark's accessible name.</td>
+      </tr>
+      <tr>
+        <td><code>sublabel</code></td>
+        <td><code>string</code></td>
+        <td>Optional — reserved for richer labels.</td>
+      </tr>
+      <tr>
+        <td><code>role</code></td>
+        <td><code>"user" | "assistant" | "system"</code></td>
+        <td>Optional role tag, handy for styling the conversation the rail points at.</td>
+      </tr>
+    </tbody>
+  </table>
+</div>

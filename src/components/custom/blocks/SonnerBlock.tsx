@@ -3,83 +3,7 @@
 import { cn } from "@/lib/utils";
 import { AlertCircle, CheckCircle2, Info, X } from "lucide-react";
 import { useEffect, useState } from "react";
-
-// ==========================================
-// 1. GLOBAL STATE OBSERVER
-// ==========================================
-export type ToastType = "default" | "success" | "error" | "info";
-
-export interface ToastAction {
-  label: string;
-  onClick: () => void;
-}
-
-export interface ToastProps {
-  id: string;
-  title: string;
-  description?: string;
-  type?: ToastType;
-  duration?: number;
-  action?: ToastAction;
-}
-
-type ToastOptions = Omit<ToastProps, "id" | "title">;
-
-class ToastObserver {
-  private toasts: ToastProps[] = [];
-  private listeners: Set<(toasts: ToastProps[]) => void> = new Set();
-
-  subscribe(listener: (toasts: ToastProps[]) => void) {
-    this.listeners.add(listener);
-    return () => {
-      this.listeners.delete(listener);
-    };
-  }
-
-  private notify() {
-    this.listeners.forEach((listener) => listener([...this.toasts]));
-  }
-
-  add(title: string, options?: ToastOptions) {
-    const id = Math.random().toString(36).substring(2, 9);
-    const newToast: ToastProps = { id, title, duration: 4000, ...options };
-
-    // Add to front of array
-    this.toasts = [newToast, ...this.toasts].slice(0, 5); // Max 5 in stack
-    this.notify();
-
-    if (newToast.duration !== Infinity) {
-      setTimeout(() => this.dismiss(id), newToast.duration);
-    }
-    return id;
-  }
-
-  dismiss(id: string) {
-    this.toasts = this.toasts.filter((t) => t.id !== id);
-    this.notify();
-  }
-
-  clear() {
-    this.toasts = [];
-    this.notify();
-  }
-}
-
-export const toastState = new ToastObserver();
-
-// ==========================================
-// 2. EXPORTED TOAST API
-// ==========================================
-export const toast = (title: string, options?: ToastOptions) =>
-  toastState.add(title, options);
-toast.success = (title: string, options?: ToastOptions) =>
-  toastState.add(title, { ...options, type: "success" });
-toast.error = (title: string, options?: ToastOptions) =>
-  toastState.add(title, { ...options, type: "error" });
-toast.info = (title: string, options?: ToastOptions) =>
-  toastState.add(title, { ...options, type: "info" });
-toast.dismiss = (id: string) => toastState.dismiss(id);
-toast.clear = () => toastState.clear();
+import { type ToastProps, toast, toastState } from "./sonner-store";
 
 // ==========================================
 // 3. TOASTER COMPONENT (Mounts at App Root)
@@ -181,7 +105,7 @@ function ToastCard({
 
   const typeStyles = {
     default:
-      "bg-white dark:bg-[#050505] text-foreground border-border",
+      "bg-popover text-popover-foreground border-primary/20 dark:border-primary/30 shadow-lg",
     success:
       "bg-emerald-50 dark:bg-emerald-500/10 text-emerald-900 dark:text-emerald-100 border-emerald-200 dark:border-emerald-500/20",
     error:
@@ -223,7 +147,7 @@ function ToastCard({
               action.onClick();
               onDismiss();
             }}
-            className="mt-1 sm:mt-2 w-max px-2.5 py-1 text-[10px] sm:text-xs font-bold rounded-md bg-primary text-primary-foreground hover:opacity-90 transition-opacity"
+            className="mt-1 sm:mt-2 w-max px-2.5 py-1 text-[10px] sm:text-xs font-semibold rounded-md bg-primary text-primary-foreground hover:opacity-90 transition-opacity"
           >
             {action.label}
           </button>
@@ -232,7 +156,7 @@ function ToastCard({
 
       <button
         onClick={onDismiss}
-        className="shrink-0 p-1 rounded-md opacity-0 group-hover:opacity-100 hover:bg-black/5 dark:hover:bg-white/10 transition-all absolute right-2 top-2"
+        className="shrink-0 p-1 rounded-md opacity-0 group-hover:opacity-100 hover:bg-foreground/10 transition-all absolute right-2 top-2"
         aria-label="Close"
       >
         <X className="w-4 h-4 opacity-70" />

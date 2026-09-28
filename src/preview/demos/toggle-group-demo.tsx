@@ -16,11 +16,12 @@ import {
   Underline,
 } from "lucide-react";
 import { useState } from "react";
+import { toBlockColor } from "@/lib/accent";
 
 export default function ToggleGroupDemo({
   variant = "default",
   size = "md",
-  color = "indigo",
+  color: pickedColor = "primary",
   singleValue: initialSingleValue = "center",
   multipleValue: initialMultipleValue = ["bold"],
   example,
@@ -33,6 +34,7 @@ export default function ToggleGroupDemo({
   /** Single-example modes; omitted renders the full two-group demo. */
   example?: "single" | "multiple" | "sizes" | "disabled";
 }) {
+  const color = toBlockColor(pickedColor);
   // States for the interactive previews
   const [singleValue, setSingleValue] = useState(initialSingleValue);
   const [multipleValue, setMultipleValue] =
@@ -128,7 +130,7 @@ export default function ToggleGroupDemo({
     <div className="w-full flex flex-col items-center justify-center min-h-[400px] gap-12 relative z-10">
       {/* Example 1: Single Selection (Alignment) */}
       <div className="flex flex-col items-center gap-4">
-        <label className="text-sm font-bold text-zinc-500 uppercase tracking-widest">
+        <label className="text-sm font-semibold text-muted-foreground uppercase tracking-widest">
           Single Selection
         </label>
         <ToggleGroup
@@ -152,16 +154,16 @@ export default function ToggleGroupDemo({
             <AlignJustify className="w-4 h-4" />
           </ToggleGroupItem>
         </ToggleGroup>
-        <p className="text-xs font-mono text-zinc-400 mt-2">
+        <p className="text-xs font-mono text-muted-foreground mt-2">
           Value: "{singleValue}"
         </p>
       </div>
 
-      <div className="w-full max-w-sm h-px bg-zinc-200 dark:bg-zinc-800" />
+      <div className="w-full max-w-sm h-px bg-border" />
 
       {/* Example 2: Multiple Selection (Formatting) */}
       <div className="flex flex-col items-center gap-4">
-        <label className="text-sm font-bold text-zinc-500 uppercase tracking-widest">
+        <label className="text-sm font-semibold text-muted-foreground uppercase tracking-widest">
           Multiple Selection
         </label>
         <ToggleGroup
@@ -185,7 +187,7 @@ export default function ToggleGroupDemo({
             {size === "lg" && <span className="ml-1">Underline</span>}
           </ToggleGroupItem>
         </ToggleGroup>
-        <p className="text-xs font-mono text-zinc-400 mt-2">
+        <p className="text-xs font-mono text-muted-foreground mt-2">
           Value: [{multipleValue.map((v) => `"${v}"`).join(", ")}]
         </p>
       </div>

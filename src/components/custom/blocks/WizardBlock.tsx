@@ -1,45 +1,42 @@
 "use client";
 
 import { cn } from "@/lib/utils";
-import gsap from "gsap";
-import React, {
-  createContext,
-  forwardRef,
-  useContext,
-  useEffect,
-  useRef,
-  useState,
-} from "react";
+import React, { forwardRef, useEffect, useRef, useState } from "react";
+import { WizardContext, useWizard } from "./wizard-context";
 
 // ==========================================
-// CONTEXT
+// MOTION
 // ==========================================
-interface WizardContextType {
-  currentStep: number;
-  totalSteps: number;
-  nextStep: () => void;
-  prevStep: () => void;
-  setTotalSteps: (steps: number) => void;
-  color: string;
-}
+/** GSAP's power3.out, sampled into a CSS `linear()` curve. */
+const EASE_POWER3_OUT =
+  "linear(0, .0963, .1855, .2679, .3439, .4138, .478, .5367, .5904, .6392, .6836, .7237, .7599, .7924, .8215, .8474, .8704, .8907, .9085, .924, .9375, .9491, .959, .9674, .9744, .9802, .985, .9888, .9919, .9943, .9961, .9974, .9984, .9991, .9995, .9998, .9999, 1, 1, 1, 1)";
 
-const WizardContext = createContext<WizardContextType | null>(null);
-
-export function useWizard() {
-  const context = useContext(WizardContext);
-  if (!context) {
-    throw new Error("Wizard components must be used within a Wizard root.");
-  }
-  return context;
-}
+/**
+ * Settle an element's current style before its first change, so that change
+ * transitions from where the element was painted.
+ */
+const settle = (el: HTMLElement, done: { current: boolean }) => {
+  if (done.current) return;
+  void el.offsetWidth;
+  done.current = true;
+};
 
 // ==========================================
 // COMPONENTS
 // ==========================================
 
+export type WizardColor =
+  | "primary"
+  | "indigo"
+  | "blue"
+  | "rose"
+  | "emerald"
+  | "zinc"
+  | (string & {});
+
 export interface WizardProps extends React.HTMLAttributes<HTMLDivElement> {
   initialStep?: number;
-  color?: string;
+  color?: WizardColor;
   onComplete?: () => void;
 }
 
@@ -102,18 +99,17 @@ export const WizardProgress = forwardRef<
 >(({ className, ...props }, ref) => {
   const { currentStep, totalSteps, color } = useWizard();
   const progressRef = useRef<HTMLDivElement>(null);
+  const progressSettled = useRef(false);
 
   // Calculate percentage (avoid division by zero)
   const progress = totalSteps > 1 ? (currentStep / (totalSteps - 1)) * 100 : 0;
 
   useEffect(() => {
-    if (progressRef.current) {
-      gsap.to(progressRef.current, {
-        width: `${progress}%`,
-        duration: 0.6,
-        ease: "power3.out",
-      });
-    }
+    const el = progressRef.current;
+    if (!el) return;
+    settle(el, progressSettled);
+    el.style.transition = `width 0.6s ${EASE_POWER3_OUT}`;
+    el.style.width = `${progress}%`;
   }, [progress]);
 
   // Tailwind color mapping
@@ -135,7 +131,7 @@ export const WizardProgress = forwardRef<
     >
       <div
         ref={progressRef}
-        className={cn("h-full w-0", !isHex && (colorMap[color] || colorMap.primary || colorMap.indigo))}
+        className={cn("h-full w-0", !isHex && (colorMap[color] || colorMap.primary))}
         style={isHex ? { backgroundColor: color } : undefined}
       />
     </div>
@@ -154,7 +150,7 @@ export const WizardContainer = forwardRef<
     const stepCount = React.Children.toArray(children).filter(
       (child) =>
         React.isValidElement(child) &&
-        (child.type as any).displayName === "WizardStep",
+        (child.type as { displayName?: string }).displayName === "WizardStep",
     ).length;
     setTotalSteps(stepCount);
   }, [children, setTotalSteps]);
@@ -163,7 +159,7 @@ export const WizardContainer = forwardRef<
     <div
       ref={ref}
       className={cn(
-        "relative w-full h-[500px] overflow-hidden bg-white dark:bg-[#09090b]",
+        "relative w-full h-[500px] overflow-hidden bg-background",
         className,
       )}
       {...props}
@@ -182,11 +178,13 @@ export const WizardStep = forwardRef<HTMLDivElement, WizardStepProps>(
   ({ children, index, className, ...props }, ref) => {
     const { currentStep } = useWizard();
     const stepRef = useRef<HTMLDivElement>(null);
+    const stepSettled = useRef(false);
 
     React.useImperativeHandle(ref, () => stepRef.current as HTMLDivElement);
 
     useEffect(() => {
-      if (!stepRef.current) return;
+      const el = stepRef.current;
+      if (!el) return;
 
       const isActive = index === currentStep;
       const isPast = index < currentStep;
@@ -197,13 +195,12 @@ export const WizardStep = forwardRef<HTMLDivElement, WizardStepProps>(
         yOffset = -150; // Scrolled up
       else if (index > currentStep) yOffset = 150; // Waiting below
 
-      gsap.to(stepRef.current, {
-        y: yOffset,
-        opacity: isActive ? 1 : 0,
-        pointerEvents: isActive ? "auto" : "none",
-        duration: 0.7,
-        ease: "power3.out",
-      });
+      // Slides and fades from wherever it is; pointer-events flips at once.
+      settle(el, stepSettled);
+      el.style.transition = `transform 0.7s ${EASE_POWER3_OUT}, opacity 0.7s ${EASE_POWER3_OUT}`;
+      el.style.transform = `translateY(${yOffset}px)`;
+      el.style.opacity = isActive ? "1" : "0";
+      el.style.pointerEvents = isActive ? "auto" : "none";
     }, [currentStep, index]);
 
     return (
@@ -270,7 +267,7 @@ export const WizardInput = forwardRef<
 
   const isHex = color && color.startsWith("#");
   const focusColors: Record<string, string> = {
-    primary: "focus:border-primary",
+    primary: "focus:border-primary/30",
     indigo: "focus:border-indigo-500",
     blue: "focus:border-blue-500",
     rose: "focus:border-rose-500",
@@ -282,8 +279,8 @@ export const WizardInput = forwardRef<
     <input
       ref={ref}
       className={cn(
-        "w-full bg-transparent border-b-2 border-border py-4 text-2xl sm:text-3xl text-foreground placeholder:text-zinc-300 dark:placeholder:text-zinc-700 focus:outline-none transition-colors",
-        !isHex && (focusColors[color] || focusColors.indigo),
+        "w-full bg-transparent border-b-2 border-border py-4 text-2xl sm:text-3xl text-foreground placeholder:text-muted-foreground/50 focus:outline-none transition-colors",
+        !isHex && (focusColors[color] || focusColors.primary),
         className,
       )}
       style={isHex ? { borderColor: color } : undefined}
@@ -296,7 +293,7 @@ WizardInput.displayName = "WizardInput";
 export const WizardNavigation = forwardRef<
   HTMLDivElement,
   React.HTMLAttributes<HTMLDivElement>
->(({ children, className, ...props }, ref) => {
+>(({ className, ...props }, ref) => {
   const { currentStep, nextStep, prevStep, color } = useWizard();
 
   const isHex = color && color.startsWith("#");
@@ -319,8 +316,8 @@ export const WizardNavigation = forwardRef<
         type="button"
         onClick={nextStep}
         className={cn(
-          "px-6 py-3 rounded-xl font-bold text-sm sm:text-base flex items-center gap-2 transition-all active:scale-95 shadow-sm",
-          !isHex && (btnColors[color] || btnColors.indigo),
+          "px-6 py-3 rounded-xl font-semibold text-sm sm:text-base flex items-center gap-2 transition-all active:scale-95 shadow-sm",
+          !isHex && (btnColors[color] || btnColors.primary),
         )}
         style={isHex ? { backgroundColor: color, color: "#ffffff" } : undefined}
       >

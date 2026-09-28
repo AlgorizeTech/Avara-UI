@@ -13,7 +13,14 @@ export type NavigationChild = {
   /** Path below the framework segment, e.g. "accordion" or "examples/counter". */
   slug?: string;
   href?: string;
+  /**
+   * Small tag after the label. `"New"` is time-limited: pair it with `addedOn`
+   * and it disappears on its own after NEW_BADGE_DAYS. Every other badge
+   * ("Core", "Updated", …) stays until it is removed by hand.
+   */
   badge?: string;
+  /** The day the page shipped, "YYYY-MM-DD". Drives the `"New"` badge's expiry. */
+  addedOn?: string;
   /**
    * Extra search terms for the command palette, which otherwise indexes nothing
    * but the label. Needed where a page is known by names its label does not
@@ -45,7 +52,35 @@ export const navHref = (
   framework: Framework,
 ) => (item.slug ? docsHref(framework, item.slug) : (item.href ?? "#"));
 
-export const navigation: NavigationItem[] = [
+/** How long a page keeps its "New" badge after `addedOn`. */
+export const NEW_BADGE_DAYS = 2;
+
+/**
+ * The clock the "New" badges are judged against. The site is a static export
+ * and every consumer reads `navigation` at module scope, so this has to be one
+ * value shared by the server and the client bundle — the build time, stamped
+ * into NEXT_PUBLIC_BUILD_TIME by next.config.ts. A badge therefore expires at
+ * the first build after its window closes, and no reader ever sees a badge
+ * that the markup they were served did not have.
+ */
+const badgeClock =
+  Date.parse(process.env.NEXT_PUBLIC_BUILD_TIME ?? "") || Date.now();
+
+export const isFreshlyAdded = (addedOn?: string) =>
+  !!addedOn &&
+  badgeClock - Date.parse(addedOn) < NEW_BADGE_DAYS * 24 * 60 * 60 * 1000;
+
+const expireNewBadges = (items: NavigationItem[]): NavigationItem[] =>
+  items.map((group) => ({
+    ...group,
+    children: group.children.map((child) =>
+      child.badge === "New" && !isFreshlyAdded(child.addedOn)
+        ? { ...child, badge: undefined }
+        : child,
+    ),
+  }));
+
+const rawNavigation: NavigationItem[] = [
   {
     label: "Getting Started",
     children: [
@@ -72,90 +107,188 @@ export const navigation: NavigationItem[] = [
   {
     label: "Ui Components",
     children: [
+      { label: "3D Carousel", slug: "3d-carousel" },
       { label: "Accordion", slug: "accordion" },
       { label: "Ai-Chat", slug: "ai-chat" },
       { label: "Alert", slug: "alert" },
-      { label: "Api Playground", slug: "api-playground", badge: "New" },
+      { label: "Animated List", slug: "animated-list" },
+      { label: "Animated Timeline", slug: "animated-timeline" },
+      { label: "Animated Typography", slug: "animated-typography" },
+      { label: "Api Playground", slug: "api-playground" },
+      { label: "Apple Select", slug: "apple-select", badge: "New", addedOn: "2026-09-13" },
+      { label: "Audio Player", slug: "audio-player", badge: "New", addedOn: "2026-09-15" },
+      {
+        label: "Avatar Stack",
+        slug: "avatar-stack",
+        badge: "New",
+        addedOn: "2026-09-16",
+        keywords: ["avatar", "avatars", "faces", "group", "stack", "overlap", "social proof", "people"],
+      },
+      { label: "Book Flip", slug: "book-flip" },
+      {
+        label: "Booking Card",
+        slug: "booking-card",
+        badge: "New",
+        addedOn: "2026-09-16",
+        keywords: ["booking", "appointment", "schedule", "calendar", "slots", "time picker", "reservation"],
+      },
       { label: "Breadcrumb", slug: "breadcrumb" },
       { label: "Buttons", slug: "button" },
       { label: "Calendar", slug: "calendar" },
       { label: "Card", slug: "card" },
+      {
+        label: "Card Stack",
+        slug: "card-stack",
+        badge: "New",
+        addedOn: "2026-09-26",
+        keywords: ["card stack", "cards", "swipe", "drag", "stack", "discard", "deck", "layered"],
+      },
       { label: "Carousel", slug: "carousel" },
       { label: "Cart", slug: "cart" },
       { label: "Chart", slug: "chart" },
       { label: "Chat", slug: "chat" },
+      { label: "Chat Bubble", slug: "chat-bubble" },
+      {
+        label: "Circular Text",
+        slug: "circular-text",
+        badge: "New",
+        addedOn: "2026-09-16",
+        keywords: ["circular", "circle", "text", "rotating", "spinning", "badge", "stamp", "textpath", "ring"],
+      },
       { label: "Collapsible", slug: "collapsible" },
+      { label: "Color Picker", slug: "color-picker" },
       { label: "Command", slug: "command" },
+      { label: "Components Folder", slug: "design-components-folder" },
       { label: "ContextMenu", slug: "context-menu" },
+      { label: "Conversation Timeline", slug: "conversation-timeline", badge: "New", addedOn: "2026-09-15" },
+      { label: "Copy Button", slug: "copy-button", badge: "New", addedOn: "2026-09-14" },
       { label: "Counter", slug: "counter" },
-      { label: "Custom Code Block", slug: "custom-code-block", badge: "New" },
-      { label: "Data Grid", slug: "data-grid", badge: "New" },
-      { label: "Data Maps", slug: "data-maps", badge: "New" },
-      { label: "Data Table", slug: "data-table", badge: "New" },
+      { label: "Cursor Animation", slug: "cursor-animation" },
+      { label: "Curved Carousel", slug: "curved-carousel" },
+      { label: "Custom Code Block", slug: "custom-code-block" },
+      { label: "Data Grid", slug: "data-grid" },
+      { label: "Data Maps", slug: "data-maps" },
+      { label: "Data Table", slug: "data-table" },
       { label: "Date Picker", slug: "date-picker" },
       { label: "Dialog", slug: "dialog" },
+      { label: "Dock", slug: "dock" },
+      { label: "Draggable Card List", slug: "draggable-card-list" },
       { label: "Drawer", slug: "drawer" },
+      { label: "File Upload", slug: "file-upload" },
+      { label: "Floating ContactButton", slug: "floating-contact-button" },
+      { label: "Flow Gallery", slug: "flow-gallery" },
+      { label: "Folder", slug: "folder", badge: "New", addedOn: "2026-09-13" },
       { label: "Form", slug: "form" },
-      { label: "Half Stars", slug: "half-stars", badge: "New" },
-      { label: "Hero VideoPlayer", slug: "hero-video-player", badge: "New" },
-      { label: "Image Compare", slug: "image-compare", badge: "New" },
+      {
+        label: "Glass Panel",
+        slug: "glass-panel",
+        badge: "New",
+        addedOn: "2026-09-16",
+        keywords: ["glass", "glassmorphism", "frosted", "aurora", "bento", "panel", "card", "backdrop"],
+      },
+      { label: "Half Stars", slug: "half-stars" },
+      { label: "Heart Signal", slug: "heart-signal" },
+      { label: "Image Compare", slug: "image-compare" },
+      {
+        label: "Image Wall",
+        slug: "image-wall",
+        badge: "New",
+        addedOn: "2026-09-21",
+        keywords: ["image", "wall", "carousel", "screenshots", "camera", "zoom", "gallery", "grid", "masonry", "showcase"],
+      },
+      { label: "Infrastructure Topology", slug: "infrastructure-topology" },
       { label: "Input", slug: "input" },
       { label: "Invoice", slug: "invoice" },
       { label: "Item", slug: "item" },
       { label: "Kbd", slug: "kbd" },
       { label: "Loader", slug: "loader" },
+      { label: "Magic Bento", slug: "magic-bento" },
       { label: "Mails", slug: "email" },
       { label: "Map", slug: "fleet-tracker" },
-      { label: "Masonry Grid", slug: "masonry-grid", badge: "New" },
+      { label: "Marquee", slug: "marquee" },
+      { label: "Masonry Grid", slug: "masonry-grid" },
+      { label: "Memories Card", slug: "memories-card" },
       { label: "Menubar", slug: "menubar" },
-      { label: "Mobile Mockups", slug: "mobile-mockup", badge: "New" },
+      { label: "Mobile Mockups", slug: "mobile-mockup" },
       { label: "Modal", slug: "modal" },
       { label: "Navigation", slug: "navigation" },
+      { label: "Network Graph", slug: "network-graph" },
       { label: "OTP Input", slug: "otp-input" },
       { label: "Pagination", slug: "pagination" },
+      { label: "Particle Canvas", slug: "particle-canvas" },
+      { label: "Playable Piano", slug: "piano" },
       { label: "Popover", slug: "popover" },
       { label: "Progress", slug: "progress" },
-      { label: "QR Code", slug: "qr-code-generator", badge: "New" },
+      { label: "QR Code", slug: "qr-code-generator" },
+      { label: "Radial Orbital Timeline", slug: "radial-orbital-timeline" },
+      { label: "Range Date Picker", slug: "range-date-picker" },
       { label: "Resizable", slug: "resizable" },
       { label: "Scroll Area", slug: "scroll-area" },
+      { label: "Scroll Stack", slug: "scroll-stack" },
       { label: "Select", slug: "select" },
+      { label: "Selection Frame", slug: "selection-frame", badge: "New", addedOn: "2026-09-13" },
       { label: "Skeleton", slug: "skeleton" },
+      {
+        label: "Social Links",
+        slug: "social-links",
+        badge: "New",
+        addedOn: "2026-09-16",
+        keywords: ["social", "share", "follow", "github", "linkedin", "x", "twitter", "instagram", "youtube", "brand icons"],
+      },
       { label: "Sonner", slug: "sonner" },
+      { label: "Squircle Carousel", slug: "squircle-carousel" },
+      {
+        label: "Split-Flap Display",
+        slug: "split-flap",
+        badge: "New",
+        addedOn: "2026-09-27",
+        keywords: [
+          "split-flap",
+          "split flap",
+          "solari board",
+          "flip display",
+          "airport board",
+          "departure board",
+          "railway clock",
+          "mechanical flip",
+          "ticker",
+          "3d flip",
+        ],
+      },
       { label: "Stepper", slug: "stepper" },
       { label: "Table", slug: "table" },
+      { label: "Table of Contents", slug: "table-of-contents", badge: "New", addedOn: "2026-09-07" },
       { label: "Tabs", slug: "vertical-tabs" },
-      { label: "Theme Switcher", slug: "theme-switcher", badge: "New" },
+      {
+        label: "Tech Stack",
+        slug: "tech-stack",
+        badge: "New",
+        addedOn: "2026-09-28",
+        keywords: ["tech stack", "built with", "tools", "logos", "logo strip", "brands", "technologies", "powered by"],
+      },
+      { label: "Theme Switcher", slug: "theme-switcher" },
+      { label: "Tilted Card", slug: "tilted-card" },
       { label: "Timeline", slug: "timeline" },
       { label: "Toast", slug: "toast" },
       { label: "Toggle", slug: "toggle" },
       { label: "Toggle Group", slug: "toggle-group" },
       { label: "Tooltip", slug: "tooltip" },
-      { label: "User Graph", slug: "user-graph", badge: "New" },
-      { label: "Verify Badge", slug: "verify-badge", badge: "New" },
-      { label: "Wizard", slug: "wizard", badge: "New" },
-    ],
-  },
-  {
-    label: "Animated Ui Components",
-    children: [
-      { label: "3D Carousel", slug: "3d-carousel" },
-      { label: "Animated List", slug: "animated-list" },
-      { label: "Chat Bubble", slug: "chat-bubble" },
-      { label: "Components Folder", slug: "design-components-folder", badge: "New" },
-      { label: "Cursor Animation", slug: "cursor-animation", badge: "New" },
-      { label: "Curved Carousel", slug: "curved-carousel", badge: "New" },
-      { label: "Dock", slug: "dock", badge: "New" },
-      { label: "File Upload", slug: "file-upload" },
-      { label: "Floating ContactButton", slug: "floating-contact-button", badge: "New" },
-      { label: "Globe", slug: "globe", badge: "New" },
-      { label: "Magic Bento", slug: "magic-bento" },
-      { label: "Memories Card", slug: "memories-card" },
-      { label: "Network Graph", slug: "network-graph", badge: "New" },
-      { label: "Scroll Stack", slug: "scroll-stack" },
-      { label: "Tilted Card", slug: "tilted-card" },
-      { label: "Timeline", slug: "animated-timeline" },
-      { label: "Typography", slug: "animated-typography" },
+      { label: "User Graph", slug: "user-graph" },
+      { label: "Verify Badge", slug: "verify-badge" },
       { label: "Video Accordion", slug: "video-accordion" },
+      { label: "Video Player", slug: "video-player" },
+      {
+        label: "Wallet",
+        slug: "wallet",
+        badge: "New",
+        addedOn: "2026-09-24",
+        keywords: [
+          "wallet", "cards", "credit card", "fintech", "payment",
+          "staggered", "scoop", "reveal balance", "euros", "pounds",
+          "emv chip", "interactive", "hover animation",
+        ],
+      },
+      { label: "Wizard", slug: "wizard" },
     ],
   },
   {
@@ -178,15 +311,180 @@ export const navigation: NavigationItem[] = [
           "authentication",
         ],
       },
-      { label: "Footer", slug: "footer", badge: "New" },
-      { label: "Hero", slug: "hero", badge: "New" },
-      { label: "Marquee", slug: "marquee", badge: "New" },
+      {
+        label: "Bento Showcase",
+        slug: "bento-showcase",
+        badge: "New",
+        addedOn: "2026-09-16",
+        keywords: ["bento", "showcase", "marketing", "grid", "marquee", "scroll", "outsourcing", "agency", "landing"],
+      },
+      {
+        label: "Book Appointment",
+        slug: "book-appointment",
+        badge: "New",
+        addedOn: "2026-09-13",
+        keywords: ["booking", "appointment", "schedule", "calendar", "slots", "doctor", "clinic", "reservation"],
+      },
+      {
+        label: "Component Wall",
+        slug: "component-wall",
+        badge: "New",
+        addedOn: "2026-09-20",
+        keywords: ["hero", "wall", "screenshots", "camera", "zoom", "library", "landing", "showcase", "grid"],
+      },
+      {
+        label: "Counter Section",
+        slug: "counter-section",
+        badge: "New",
+        addedOn: "2026-09-24",
+        keywords: [
+          "counter", "stats", "metrics", "numbers", "kpi",
+          "revenue", "satisfaction", "odometer", "ticker", "bento",
+          "social proof", "halftone", "hud", "spotlight", "scramble",
+        ],
+      },
+      {
+        label: "Flavour Carousel",
+        slug: "flavour-carousel",
+        badge: "New",
+        addedOn: "2026-09-20",
+        keywords: ["carousel", "flavour", "flavor", "matcha", "product", "hero", "cup", "drink", "cart", "picker", "ring"],
+      },
+      {
+        label: "Data Flow",
+        slug: "data-flow",
+        badge: "New",
+        addedOn: "2026-09-16",
+        keywords: ["data", "flow", "pipeline", "sources", "diagram", "connectors", "ai", "intelligence", "process"],
+      },
+      { label: "Footer", slug: "footer" },
+      {
+        label: "FAQ Section",
+        slug: "faq-section",
+        badge: "New",
+        addedOn: "2026-09-27",
+        keywords: [
+          "faq",
+          "faq section",
+          "frequently asked questions",
+          "accordion",
+          "questions",
+          "answers",
+          "queries",
+          "help",
+          "support",
+          "nature",
+          "canvas",
+        ],
+      },
+      {
+        label: "Hero",
+        slug: "hero",
+        badge: "Updated",
+        keywords: [
+          "hero", "landing", "banner", "above the fold",
+          "honeycomb", "hexagon", "mosaic", "norway", "travel", "nature",
+          "carousel", "slider", "tour", "queue", "glass", "autoplay",
+          "fashion", "lookbook", "editorial", "clothing", "store", "tilt",
+          "support", "ai", "saas", "bento", "counter", "cta",
+          "collage", "kindergarten", "school", "photos", "badge", "video", "playful",
+          "typing", "typewriter", "bounce", "pet shop", "doctor", "healthcare",
+        ],
+      },
+      {
+        label: "Orbit Gallery",
+        slug: "orbit-gallery",
+        badge: "New",
+        addedOn: "2026-09-20",
+        keywords: ["hero", "orbit", "gallery", "revolving", "carousel", "cards", "ring", "agency", "studio"],
+      },
       { label: "Navbar", slug: "navbar", badge: "Core" },
-      { label: "Pricing Section", slug: "pricing", badge: "Core" },
-      { label: "Product Details", slug: "product-details", badge: "New" },
-      { label: "Review Section", slug: "reviews", badge: "New" },
-      { label: "Sidebar Section", slug: "sidebar", badge: "New" },
+      {
+        label: "Platform Grid",
+        slug: "platform-grid",
+        badge: "New",
+        addedOn: "2026-09-16",
+        keywords: ["platform", "grid", "features", "tiles", "bento", "tools", "catalog", "spotlight"],
+      },
+      { label: "Pricing Section", slug: "pricing" },
+      { label: "Product Details", slug: "product-details" },
+      {
+        label: "Image Viewer",
+        slug: "image-viewer",
+        badge: "New",
+        addedOn: "2026-09-23",
+        keywords: ["image", "viewer", "zoom", "magnifier", "gallery", "product", "e-commerce", "lens", "lightbox", "slider"],
+      },
+      {
+        label: "Profile Page",
+        slug: "profile-page",
+        badge: "New",
+        addedOn: "2026-09-13",
+        keywords: ["profile", "user profile", "member", "team", "bento", "glass", "glassmorphism"],
+      },
+      { label: "Review Section", slug: "reviews" },
+      { label: "Sidebar Section", slug: "sidebar" },
       { label: "Support Dashboard", slug: "support-dashboard", badge: "Core" },
+      {
+        label: "Newsletter",
+        slug: "newsletter",
+        badge: "New",
+        addedOn: "2026-09-15",
+        keywords: ["newsletter", "subscribe", "signup", "email", "mailing list"],
+      },
+      {
+        label: "Waitlist",
+        slug: "waitlist",
+        badge: "New",
+        addedOn: "2026-09-17",
+        keywords: ["waitlist", "early access", "coming soon", "launch", "countdown", "signup", "email", "pre-launch", "queue"],
+      },
+    ],
+  },
+  {
+    label: "Third Party Integration",
+    children: [
+      {
+        label: "Overview",
+        slug: "third-party",
+        badge: "New",
+        addedOn: "2026-09-09",
+        keywords: ["integration", "third party", "library", "ecosystem"],
+      },
+      {
+        label: "Carousels",
+        slug: "third-party/carousel",
+        keywords: ["embla", "swiper", "slider", "slideshow"],
+      },
+      {
+        label: "Charts",
+        slug: "third-party/charts",
+        keywords: ["recharts", "chart.js", "chartjs", "graph", "plot"],
+      },
+      {
+        label: "Data Tables",
+        slug: "third-party/tables",
+        keywords: ["tanstack", "react-table", "ag grid", "aggrid", "datagrid"],
+      },
+      {
+        label: "Gallery & Lightbox",
+        slug: "third-party/gallery",
+        keywords: [
+          "lightbox",
+          "photoswipe",
+          "react-photo-album",
+          "yet another react lightbox",
+          "masonry",
+        ],
+      },
+      {
+        label: "Select",
+        slug: "third-party/select",
+        keywords: ["react-select", "select2", "combobox", "autocomplete", "multiselect"],
+      },
     ],
   },
 ];
+
+/** The sidebar tree with time-limited badges already resolved. */
+export const navigation: NavigationItem[] = expireNewBadges(rawNavigation);

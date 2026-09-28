@@ -12,7 +12,7 @@ import { Image as ImageIcon, Send, SmilePlus } from "lucide-react";
 /** Plain surface used by the focused examples (grouping, receipts, typing). */
 function Panel({ children }: { children: React.ReactNode }) {
   return (
-    <div className="w-full flex items-center justify-center rounded-2xl border border-zinc-200 dark:border-zinc-800 bg-[#fbfbfb] dark:bg-[#050505] p-6 sm:p-10">
+    <div className="w-full flex items-center justify-center rounded-2xl border border-border bg-background p-6 sm:p-10">
       <div className="w-full max-w-md flex flex-col space-y-1">{children}</div>
     </div>
   );
@@ -115,17 +115,17 @@ export default function ChatBubbleDemo({
   }
 
   return (
-    <div className="w-full flex items-center justify-center transition-colors duration-300 rounded-2xl border border-zinc-200 dark:border-zinc-800 bg-[#fbfbfb] dark:bg-[#050505] p-0 overflow-hidden relative">
+    <div className="w-full flex items-center justify-center transition-colors duration-300 rounded-2xl border border-border bg-background p-0 overflow-hidden relative">
       {/* Mock Phone Container */}
-      <div className="w-full max-w-[400px] h-auto min-h-[500px] sm:h-[640px] bg-white dark:bg-[#09090b] border-x border-zinc-200 dark:border-zinc-800/50 shadow-2xl flex flex-col my-4 sm:my-0">
+      <div className="w-full max-w-[400px] h-auto min-h-[500px] sm:h-[640px] bg-card border-x border-border shadow-2xl flex flex-col my-4 sm:my-0">
         {/* Header */}
-        <div className="px-4 py-3 border-b border-zinc-200 dark:border-zinc-800 flex items-center gap-3 bg-white/80 dark:bg-[#09090b]/80 backdrop-blur-md sticky top-0 z-10">
+        <div className="px-4 py-3 border-b border-border flex items-center gap-3 bg-card/80 backdrop-blur-md sticky top-0 z-10">
           <div className="w-8 h-8 rounded-full bg-gradient-to-tr from-rose-400 to-orange-300 shadow-inner" />
           <div>
-            <h3 className="text-sm font-semibold text-zinc-900 dark:text-white leading-none">
+            <h3 className="text-sm font-semibold text-foreground leading-none">
               Sarah Jenkins
             </h3>
-            <span className="text-[11px] text-zinc-500 dark:text-zinc-400">
+            <span className="text-[11px] text-muted-foreground">
               Online
             </span>
           </div>
@@ -190,15 +190,15 @@ export default function ChatBubbleDemo({
         </div>
 
         {/* Input Mock */}
-        <div className="p-4 bg-zinc-50 dark:bg-zinc-900/30 border-t border-zinc-200 dark:border-zinc-800">
-          <div className="flex items-center gap-3 px-3 py-2 bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-700 rounded-full shadow-sm">
-            <ImageIcon className="w-5 h-5 text-zinc-400" />
-            <span className="flex-1 text-sm text-zinc-400">
+        <div className="p-4 bg-muted/40 border-t border-border">
+          <div className="flex items-center gap-3 px-3 py-2 bg-background border border-input rounded-full shadow-sm">
+            <ImageIcon className="w-5 h-5 text-muted-foreground" />
+            <span className="flex-1 text-sm text-muted-foreground">
               Type a message...
             </span>
-            <SmilePlus className="w-5 h-5 text-zinc-400" />
-            <div className="w-7 h-7 rounded-full bg-zinc-900 dark:bg-white flex items-center justify-center ml-1">
-              <Send className="w-3.5 h-3.5 text-white dark:text-zinc-900 -ml-0.5" />
+            <SmilePlus className="w-5 h-5 text-muted-foreground" />
+            <div className="w-7 h-7 rounded-full bg-primary flex items-center justify-center ml-1">
+              <Send className="w-3.5 h-3.5 text-primary-foreground -ml-0.5" />
             </div>
           </div>
         </div>

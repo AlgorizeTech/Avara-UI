@@ -117,7 +117,7 @@ export function QrCodeReader({ onRead, className, ...props }: QrCodeReaderProps)
   return (
     <div 
       className={cn(
-        "w-full max-w-md mx-auto flex flex-col items-center bg-card border dark:border-zinc-800 rounded-2xl shadow-sm p-6 overflow-hidden",
+        "w-full max-w-md mx-auto flex flex-col items-center bg-card text-card-foreground border border-border rounded-2xl shadow-sm p-6 overflow-hidden",
         className
       )}
       {...props}
@@ -130,8 +130,8 @@ export function QrCodeReader({ onRead, className, ...props }: QrCodeReaderProps)
           className={cn(
             "w-full h-64 border-2 border-dashed rounded-xl flex flex-col items-center justify-center p-6 text-center cursor-pointer transition-all duration-200",
             dragActive 
-              ? "border-blue-500 bg-blue-50 dark:bg-blue-900/10" 
-              : "border-border hover:border-zinc-400 dark:hover:border-zinc-600 hover:bg-muted"
+              ? "border-primary bg-primary/10" 
+              : "border-border hover:border-foreground/30 hover:bg-muted"
           )}
           onDragEnter={handleDrag}
           onDragLeave={handleDrag}
@@ -161,7 +161,7 @@ export function QrCodeReader({ onRead, className, ...props }: QrCodeReaderProps)
       {/* Image Preview & Results */}
       {imagePreview && (
         <div className="w-full flex flex-col gap-4">
-          <div className="relative w-full h-48 bg-muted rounded-xl overflow-hidden border dark:border-zinc-800 flex items-center justify-center p-4">
+          <div className="relative w-full h-48 bg-muted rounded-xl overflow-hidden border border-border flex items-center justify-center p-4">
             <img 
               src={imagePreview} 
               alt="Uploaded QR Code" 

@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { SITE_URL, integrations } from "@/config/site";
+import { SITE_URL, integrations, siteConfig } from "@/config/site";
 
 // Split keywords into chunks for better performance
 const coreKeywords = [
@@ -7,7 +7,7 @@ const coreKeywords = [
   "UI library",
   "React component library",
   "Tailwind CSS components",
-  "Framer Motion components",
+  "Motion components",
   "Next.js components",
   "Modern UI library",
   "Web components",
@@ -101,7 +101,7 @@ const longTailKeywords = [
   "Production-ready UI library",
   "React TypeScript components",
   "Accessible web components",
-  "Framer Motion examples",
+  "Motion examples",
   "JavaScript UI library",
   "Headless component library",
   "React UI patterns",
@@ -127,8 +127,7 @@ export const allKeywords = [
 export const metadata: Metadata = {
   title:
     "Algorize UI | React Component Library",
-  description:
-    "A React component library of 120+ animated, accessible components built with Tailwind CSS, TypeScript, GSAP and Framer Motion. Installed by the shadcn CLI straight into your project — no wrapper package, no lock-in.",
+  description: siteConfig.description,
   keywords: allKeywords,
   authors: [{ name: "AlgorizeTech", url: "https://github.com/AlgorizeTech" }],
   creator: "Algorize UI",
@@ -139,6 +138,27 @@ export const metadata: Metadata = {
     telephone: false,
   },
   metadataBase: new URL(SITE_URL),
+  manifest: "/manifest.json",
+  // Icons live in /public/favicon, except favicon.ico which is also mirrored at
+  // the web root: browsers and crawlers request GET /favicon.ico directly,
+  // without ever reading a <link>, so the root copy is not optional.
+  icons: {
+    icon: [
+      { url: "/favicon.ico", sizes: "any", type: "image/x-icon" },
+      { url: "/favicon/favicon-32x32.png", sizes: "32x32", type: "image/png" },
+      { url: "/favicon/favicon-16x16.png", sizes: "16x16", type: "image/png" },
+    ],
+    shortcut: ["/favicon.ico"],
+    // iOS ignores sizes it was not given and rescales, so the single 180x180
+    // is enough — it is the largest size any current iOS home screen asks for.
+    apple: [
+      {
+        url: "/favicon/apple-touch-icon.png",
+        sizes: "180x180",
+        type: "image/png",
+      },
+    ],
+  },
   // No `alternates.canonical` here, deliberately.
   //
   // Next.js inherits this object into every page that does not override it, so a
@@ -153,8 +173,7 @@ export const metadata: Metadata = {
   openGraph: {
     title:
       "Algorize UI | React Component Library",
-    description:
-      "A React component library of 120+ animated, accessible components built with Tailwind CSS, TypeScript, GSAP and Framer Motion. Installed by the shadcn CLI straight into your project — no wrapper package, no lock-in.",
+    description: siteConfig.description,
     url: SITE_URL,
     siteName: "Algorize UI",
     images: [
@@ -172,8 +191,7 @@ export const metadata: Metadata = {
   twitter: {
     card: "summary_large_image",
     title: "Algorize UI | React Component Library",
-    description:
-      "120+ React components you install into your own codebase.",
+    description: siteConfig.tagline,
     images: [`${SITE_URL}/og-image.png`],
   },
   robots: {

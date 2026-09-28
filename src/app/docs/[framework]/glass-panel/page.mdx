@@ -1,0 +1,252 @@
+import { ExampleShowcase } from "@/components/site/Sandbox";
+import { extractCode } from "@/lib/code";
+
+# Glass Panel
+
+A frosted surface in four shapes, and the aurora ground it sits on. `GlassBackdrop` washes three colours behind a 12-column bento grid and sets the surface for everything inside; `GlassPanel` is one glass recipe — blur, hairline border, inset highlight — whose `shape` encodes hierarchy: a `slab` for the hero, a `tile` for content, a `disc` for a single number, a `capsule` for chips.
+
+Switch the backdrop to `variant="solid"` and every panel becomes a plain card with an ordinary shadow — nothing inside them changes. <DocLink to="profile-page">Profile Page</DocLink>, <DocLink to="book-appointment">Book Appointment</DocLink> and <DocLink to="booking-card">Booking Card</DocLink> are all built on this pair.
+
+export const usageShapes = `import { GlassBackdrop, GlassPanel } from "@/components/custom/blocks/GlassPanelBlock";
+
+export default function Shapes() {
+  return (
+    <GlassBackdrop className="rounded-[36px]">
+      <GlassPanel shape="slab" className="h-28 lg:col-span-3">slab</GlassPanel>
+      <GlassPanel shape="tile" className="h-28 lg:col-span-3">tile</GlassPanel>
+      <GlassPanel shape="disc" className="w-28 lg:col-span-3">disc</GlassPanel>
+      <GlassPanel shape="capsule" className="h-12 lg:col-span-3">capsule</GlassPanel>
+    </GlassBackdrop>
+  );
+}`;
+
+export const usageBento = `import { GlassBackdrop, GlassPanel } from "@/components/custom/blocks/GlassPanelBlock";
+
+export default function Bento() {
+  return (
+    <GlassBackdrop className="rounded-[36px]" aurora={["#f9a8d4", "#a5b4fc", "#fde68a"]}>
+      <GlassPanel shape="slab" className="p-8 lg:col-span-8">
+        <h2 className="text-2xl font-semibold tracking-tight">The hero surface</h2>
+        <p className="mt-2 text-sm text-foreground/60">One recipe, four shapes.</p>
+      </GlassPanel>
+
+      <GlassPanel shape="tile" interactive className="p-6 lg:col-span-4">
+        Lifts on hover and shows a pointer.
+      </GlassPanel>
+
+      <div className="grid grid-cols-3 gap-4 lg:col-span-6">
+        <GlassPanel shape="disc" className="grid place-items-center text-2xl font-semibold">128</GlassPanel>
+        <GlassPanel shape="disc" className="grid place-items-center text-2xl font-semibold">4</GlassPanel>
+        <GlassPanel shape="disc" className="grid place-items-center text-2xl font-semibold">2</GlassPanel>
+      </div>
+
+      <div className="flex flex-wrap gap-2 lg:col-span-6">
+        <GlassPanel shape="capsule" className="px-4 py-2 text-sm">Design systems</GlassPanel>
+        <GlassPanel shape="capsule" className="px-4 py-2 text-sm">Motion</GlassPanel>
+      </div>
+    </GlassBackdrop>
+  );
+}`;
+
+export const usageSolid = `import { GlassBackdrop, GlassPanel } from "@/components/custom/blocks/GlassPanelBlock";
+
+export default function Solid() {
+  // No glass, no aurora: white cards with a shadow on a flat ground.
+  return (
+    <GlassBackdrop variant="solid" className="rounded-[36px]">
+      <GlassPanel shape="slab" className="p-8 lg:col-span-8">
+        <h2 className="text-2xl font-semibold tracking-tight">The hero surface</h2>
+      </GlassPanel>
+      <GlassPanel shape="tile" interactive className="p-6 lg:col-span-4">
+        Lifts on hover.
+      </GlassPanel>
+    </GlassBackdrop>
+  );
+}`;
+
+<ExampleShowcase
+  name="glass-panel"
+  colorControl={false}
+  columns={1}
+  examples={[
+    {
+      title: "Four shapes",
+      subheading: "The same recipe with four corner treatments. Radius is the only difference, so it reads as hierarchy.",
+      propNotes: [
+        {
+          prop: "shape",
+          value: '"slab" | "tile" | "disc" | "capsule"',
+          effect:
+            "on `GlassPanel` picks the corner treatment — 32px, 24px, a circle, a pill. `disc` also forces a square aspect so it stays round.",
+        },
+        {
+          prop: "GlassBackdrop",
+          effect:
+            "is the ground: three blurred blobs and a `grid-cols-1 md:grid-cols-6 lg:grid-cols-12` grid. Span panels with plain Tailwind (`lg:col-span-8`).",
+        },
+      ],
+      props: { example: "shapes" },
+      usage: usageShapes,
+      code: extractCode("src/components/custom/blocks/GlassPanelBlock.tsx"),
+      minHeight: 320,
+    },
+  ]}
+/>
+
+## Installation
+
+<Installation name="glass-panel" />
+
+## Examples
+
+<ExampleShowcase
+  name="glass-panel"
+  colorControl={false}
+  columns={1}
+  examples={[
+    {
+      title: "Bento layout",
+      subheading: "A slab, an interactive tile, three discs and a row of capsules on a custom aurora.",
+      propNotes: [
+        {
+          prop: "aurora",
+          effect:
+            "on `GlassBackdrop` takes three CSS colours for the blobs the glass blurs — top-left, top-right, bottom. The panels adapt because they are translucent.",
+        },
+        {
+          prop: "interactive",
+          effect:
+            "on a `GlassPanel` adds a pointer cursor and a small lift on hover — for panels that open something.",
+        },
+      ],
+      props: { example: "bento" },
+      usage: usageBento,
+      minHeight: 520,
+    },
+    {
+      title: "Solid",
+      subheading: "The same layout with variant=\"solid\": plain cards with a shadow, no aurora.",
+      propNotes: [
+        {
+          lead: "Set",
+          prop: "variant",
+          value: '"solid"',
+          effect:
+            "on `GlassBackdrop` and every panel inside reads it through context. A single `GlassPanel` can override with its own `variant`.",
+        },
+      ],
+      props: { example: "bento", variant: "solid" },
+      usage: usageSolid,
+      minHeight: 520,
+    },
+  ]}
+/>
+
+## Features
+
+<div className="grid grid-cols-1 sm:grid-cols-2 gap-4 my-6 not-prose">
+  <div className="p-6 rounded-2xl border border-border bg-card">
+    <h3 className="text-lg font-semibold text-card-foreground mb-2">One recipe, four shapes</h3>
+    <p className="text-muted-foreground text-sm">Blur, hairline border and inset highlight are identical on every panel. Only the radius changes, so shape carries meaning instead of decoration.</p>
+  </div>
+  <div className="p-6 rounded-2xl border border-border bg-card">
+    <h3 className="text-lg font-semibold text-card-foreground mb-2">Glass or solid, by context</h3>
+    <p className="text-muted-foreground text-sm">The backdrop sets the surface once and every panel reads it. Flip a whole page from frosted to flat with one prop; override a single panel when needed.</p>
+  </div>
+  <div className="p-6 rounded-2xl border border-border bg-card">
+    <h3 className="text-lg font-semibold text-card-foreground mb-2">Dark mode built in</h3>
+    <p className="text-muted-foreground text-sm">The aurora dims and the glass darkens under the dark class; the hairline and highlight keep their contrast on both.</p>
+  </div>
+  <div className="p-6 rounded-2xl border border-border bg-card">
+    <h3 className="text-lg font-semibold text-card-foreground mb-2">Nothing but Tailwind</h3>
+    <p className="text-muted-foreground text-sm">No animation library, no portal. Spans, padding and inner layout are ordinary utility classes on the panel.</p>
+  </div>
+</div>
+
+## Props Reference
+
+### GlassBackdrop
+
+<div className="overflow-x-auto my-4">
+  <table>
+    <thead>
+      <tr>
+        <th>Prop</th>
+        <th>Type</th>
+        <th>Default</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><code>variant</code></td>
+        <td><code>"glass" | "solid"</code></td>
+        <td><code>"glass"</code></td>
+        <td>Frosted panels over an aurora, or solid white cards with a shadow on a flat ground. Read by every <code>GlassPanel</code> inside.</td>
+      </tr>
+      <tr>
+        <td><code>aurora</code></td>
+        <td><code>[string, string, string]</code></td>
+        <td>violet, sky, peach</td>
+        <td>Colours of the three blobs behind the glass. Ignored by <code>solid</code>.</td>
+      </tr>
+      <tr>
+        <td><code>gridClassName</code></td>
+        <td><code>string</code></td>
+        <td>—</td>
+        <td>Classes for the inner grid — row heights (<code>lg:auto-rows-[13rem]</code>), gaps, a max width.</td>
+      </tr>
+      <tr>
+        <td><code>className</code></td>
+        <td><code>string</code></td>
+        <td>—</td>
+        <td>Add <code>rounded-[36px]</code> inside a container, <code>min-h-dvh</code> when it is the page.</td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+### GlassPanel
+
+<div className="overflow-x-auto my-4">
+  <table>
+    <thead>
+      <tr>
+        <th>Prop</th>
+        <th>Type</th>
+        <th>Default</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><code>shape</code></td>
+        <td><code>"slab" | "tile" | "disc" | "capsule"</code></td>
+        <td><code>"tile"</code></td>
+        <td>Corner treatment. <code>disc</code> also forces a square aspect.</td>
+      </tr>
+      <tr>
+        <td><code>variant</code></td>
+        <td><code>"glass" | "solid"</code></td>
+        <td>from <code>GlassBackdrop</code></td>
+        <td>Override the backdrop's surface for this one panel.</td>
+      </tr>
+      <tr>
+        <td><code>interactive</code></td>
+        <td><code>boolean</code></td>
+        <td><code>false</code></td>
+        <td>Pointer cursor and a small lift on hover.</td>
+      </tr>
+      <tr>
+        <td><code>className</code></td>
+        <td><code>string</code></td>
+        <td>—</td>
+        <td>Column span (<code>lg:col-span-8</code>), padding, and layout of the contents.</td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+### useSurface
+
+Returns the enclosing backdrop's `variant` (`"glass"` by default) so your own components can draw differently on each surface.

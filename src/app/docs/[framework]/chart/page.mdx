@@ -7,9 +7,9 @@ A beautiful, completely custom charting engine built from the ground up for mode
 
 This `ChartBlock` completely drops heavy dependencies (No `recharts`, No `chart.js`, No `gsap`). It leverages the power of **Responsive CSS Flexbox** for the Bar charts to ensure they anchor perfectly to the axis without squashing, uses **Smooth Bezier Curves** for the Line/Area SVG paths, and utilizes pure **SVG Stroke-Dasharray Math** for perfect Pie and Donut charts that never stretch into ovals.
 
-One `data` array of `{ label, value }` drives every chart type — the engine handles scaling, height distribution and polar math. Hover any bar, point or slice for its tooltip.
+One `data` array of `{ label, value }` drives every chart type — the engine handles scaling, height distribution and polar math. Hover any bar, point or slice for its tooltip. Two further types, `donut-legend` and `stacked-bar`, show shares of a whole with a legend, each share in its own colour — the charts on the <DocLink to="book-appointment">Book Appointment</DocLink> page.
 
-export const chartData = `const revenue = [
+export const chartData = `const revenue: ChartDataPoint[] = [
   { label: "Jan", value: 1200 },
   { label: "Feb", value: 1900 },
   { label: "Mar", value: 1500 },
@@ -25,15 +25,15 @@ export const chartData = `const revenue = [
 ];`;
 
 export const chartHeading = `<div className="mb-8">
-        <h3 className="text-xl font-black text-zinc-900 dark:text-white">
+        <h3 className="text-xl font-bold text-foreground">
           Annual Revenue Overview
         </h3>
-        <p className="text-sm font-medium text-zinc-500 dark:text-zinc-400 mt-1">
+        <p className="text-sm font-medium text-muted-foreground mt-1">
           Fiscal year 2023 performance metrics.
         </p>
       </div>`;
 
-export const usageBar = `import { ChartBlock } from "@/components/custom/blocks/ChartBlock";
+export const usageBar = `import { ChartBlock, type ChartDataPoint } from "@/components/custom/blocks/ChartBlock";
 
 ${chartData}
 
@@ -51,7 +51,7 @@ export default function RevenueChart() {
   );
 }`;
 
-export const usageLine = `import { ChartBlock } from "@/components/custom/blocks/ChartBlock";
+export const usageLine = `import { ChartBlock, type ChartDataPoint } from "@/components/custom/blocks/ChartBlock";
 
 ${chartData}
 
@@ -71,7 +71,7 @@ export default function RevenueLine() {
   );
 }`;
 
-export const usagePie = `import { ChartBlock } from "@/components/custom/blocks/ChartBlock";
+export const usagePie = `import { ChartBlock, type ChartDataPoint } from "@/components/custom/blocks/ChartBlock";
 
 ${chartData}
 
@@ -86,7 +86,7 @@ export default function RevenuePie() {
   );
 }`;
 
-export const usageDonut = `import { ChartBlock } from "@/components/custom/blocks/ChartBlock";
+export const usageDonut = `import { ChartBlock, type ChartDataPoint } from "@/components/custom/blocks/ChartBlock";
 
 ${chartData}
 
@@ -95,6 +95,50 @@ export default function RevenueDonut() {
     <div className="w-full max-w-4xl mx-auto">
       ${chartHeading}
       <ChartBlock data={revenue.slice(0, 5)} type="donut" valuePrefix="$" height={300} />
+    </div>
+  );
+}`;
+
+export const usageDonutLegend = `import { ChartBlock } from "@/components/custom/blocks/ChartBlock";
+
+const visitReasons = [
+  { label: "Hypertension management", value: 35 },
+  { label: "Preventive cardiology", value: 25 },
+  { label: "Heart failure monitoring", value: 22 },
+  { label: "Chest pain evaluation", value: 18 },
+];
+
+export default function VisitReasons() {
+  return (
+    <div className="max-w-md rounded-3xl border border-border bg-card p-6">
+      <h3 className="text-sm font-semibold">Top visit reasons</h3>
+      <ChartBlock
+        type="donut-legend"
+        data={visitReasons}
+        valueSuffix="%"
+        centerLabel="top reason"
+        hoverLabel="of visits"
+        className="mt-4"
+      />
+    </div>
+  );
+}`;
+
+export const usageStackedBar = `import { ChartBlock } from "@/components/custom/blocks/ChartBlock";
+
+const week = [
+  { label: "Clinical", value: 47 },
+  { label: "Research", value: 24 },
+  { label: "Teaching", value: 16 },
+  { label: "Admin", value: 10 },
+  { label: "Other", value: 3 },
+];
+
+export default function WeekSplit() {
+  return (
+    <div className="max-w-md rounded-3xl border border-border bg-card p-6">
+      <h3 className="text-sm font-semibold">Where the week goes</h3>
+      <ChartBlock type="stacked-bar" data={week} valueSuffix="%" className="mt-4" />
     </div>
   );
 }`;
@@ -189,6 +233,45 @@ export default function RevenueDonut() {
       props: { type: "donut" },
       usage: usageDonut,
     },
+    {
+      title: "Donut with legend",
+      propNotes: [
+        {
+          lead: "Set",
+          prop: "type",
+          value: '"donut-legend"',
+          effect:
+            "for categorical shares: every segment gets its own colour from `colors` (the theme accent first), with a legend beside it. Hover a segment or its row and the other shares fade.",
+        },
+        {
+          prop: "centerLabel",
+          effect:
+            "captions the centre at rest, where the largest share reads; `hoverLabel` replaces it while a share is hovered.",
+        },
+      ],
+      props: { type: "donut-legend" },
+      usage: usageDonutLegend,
+    },
+    {
+      title: "Stacked bar",
+      propNotes: [
+        {
+          lead: "Set",
+          prop: "type",
+          value: '"stacked-bar"',
+          effect:
+            "for one horizontal bar split by share, legend below. Both legend types size to their content, so `height` is only needed if you want a fixed box.",
+        },
+        {
+          lead: "Give a point its own",
+          prop: "color",
+          effect:
+            "to pin one share — an \"Other\" bucket to grey, say — while the rest follow the palette.",
+        },
+      ],
+      props: { type: "stacked-bar" },
+      usage: usageStackedBar,
+    },
   ]}
 />
 
@@ -196,30 +279,30 @@ export default function RevenueDonut() {
 Explore the Chart component's data visualization capabilities, featuring responsive resizing, interactive tooltips, and smooth rendering.
 
 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 my-6 not-prose">
-  <div className="p-6 rounded-2xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900">
-    <h3 className="text-lg font-semibold text-zinc-900 dark:text-zinc-50 mb-2">Customizable</h3>
-    <p className="text-zinc-600 dark:text-zinc-400 text-sm">Easily adapt the component's styling and behavior to fit your application's unique design system.</p>
+  <div className="p-6 rounded-2xl border border-border bg-card">
+    <h3 className="text-lg font-semibold text-card-foreground mb-2">Customizable</h3>
+    <p className="text-muted-foreground text-sm">Easily adapt the component's styling and behavior to fit your application's unique design system.</p>
   </div>
-  <div className="p-6 rounded-2xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900">
-    <h3 className="text-lg font-semibold text-zinc-900 dark:text-zinc-50 mb-2">Accessible</h3>
-    <p className="text-zinc-600 dark:text-zinc-400 text-sm">Built with accessibility in mind, ensuring all users can interact with your application effectively.</p>
+  <div className="p-6 rounded-2xl border border-border bg-card">
+    <h3 className="text-lg font-semibold text-card-foreground mb-2">Accessible</h3>
+    <p className="text-muted-foreground text-sm">Built with accessibility in mind, ensuring all users can interact with your application effectively.</p>
   </div>
-  <div className="p-6 rounded-2xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900">
-    <h3 className="text-lg font-semibold text-zinc-900 dark:text-zinc-50 mb-2">Responsive</h3>
-    <p className="text-zinc-600 dark:text-zinc-400 text-sm">Fully responsive design that looks and works great across desktop, tablet, and mobile devices.</p>
+  <div className="p-6 rounded-2xl border border-border bg-card">
+    <h3 className="text-lg font-semibold text-card-foreground mb-2">Responsive</h3>
+    <p className="text-muted-foreground text-sm">Fully responsive design that looks and works great across desktop, tablet, and mobile devices.</p>
   </div>
-  <div className="p-6 rounded-2xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900">
-    <h3 className="text-lg font-semibold text-zinc-900 dark:text-zinc-50 mb-2">Performant</h3>
-    <p className="text-zinc-600 dark:text-zinc-400 text-sm">Optimized for maximum performance with minimal re-renders and efficient state management.</p>
+  <div className="p-6 rounded-2xl border border-border bg-card">
+    <h3 className="text-lg font-semibold text-card-foreground mb-2">Performant</h3>
+    <p className="text-muted-foreground text-sm">Optimized for maximum performance with minimal re-renders and efficient state management.</p>
   </div>
 </div>
 
 ## Best Practices & Guidelines
 
 <div className="flex flex-col gap-4 my-6 not-prose">
-  <div className="p-5 rounded-xl border border-blue-200 dark:border-blue-900/50 bg-blue-50/50 dark:bg-blue-950/20">
-    <h4 className="text-base font-semibold text-blue-900 dark:text-blue-300 mb-1">Usage Guidelines</h4>
-    <p className="text-blue-800 dark:text-blue-400/80 text-sm">Follow standard design principles when implementing this component. Ensure proper contrast, spacing, and context within your layout.</p>
+  <div className="rounded-xl border border-foreground/[0.06] bg-foreground/[0.03] p-4">
+    <h4 className="font-sans text-[14px] font-semibold text-foreground mb-1">Usage Guidelines</h4>
+    <p className="text-[13px] leading-relaxed text-foreground/50">Follow standard design principles when implementing this component. Ensure proper contrast, spacing, and context within your layout.</p>
   </div>
 </div>
 
@@ -241,19 +324,19 @@ Explore the Chart component's data visualization capabilities, featuring respons
           <code>data</code>
         </td>
         <td>
-          <code>{`{ label: string, value: number }[]`}</code>
+          <code>{`{ label: string, value: number, color?: string }[]`}</code>
         </td>
         <td>
           <strong>Required</strong>
         </td>
-        <td>An array of objects mapping string labels to numerical values.</td>
+        <td>An array of objects mapping string labels to numerical values. <code>color</code> pins one share's colour in the legend charts.</td>
       </tr>
       <tr>
         <td>
           <code>type</code>
         </td>
         <td>
-          <code>"bar" | "line" | "pie" | "donut"</code>
+          <code>"bar" | "line" | "pie" | "donut" | "donut-legend" | "stacked-bar"</code>
         </td>
         <td>
           <code>"bar"</code>
@@ -270,7 +353,7 @@ Explore the Chart component's data visualization capabilities, featuring respons
           </code>
         </td>
         <td>
-          <code>"indigo"</code>
+          <code>"var(--primary)"</code>
         </td>
         <td>
           Applies the active color theme to the bars, strokes, gradients, pie
@@ -289,7 +372,52 @@ Explore the Chart component's data visualization capabilities, featuring respons
         </td>
         <td>
           Forces a fixed pixel height for the chart container to prevent layout
-          shifting. Width is always 100% responsive.
+          shifting. Width is always 100% responsive. The legend charts size to
+          their content unless it is set.
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <code>colors</code>
+        </td>
+        <td>
+          <code>string[]</code>
+        </td>
+        <td>accent, teal, amber, rose, grey</td>
+        <td>
+          <strong>Legend charts only:</strong> one colour per share, in order,
+          wrapping if there are more shares than colours. The first entry is
+          <code>var(--primary)</code>, so the lead share follows your theme.
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <code>centerLabel</code>
+        </td>
+        <td>
+          <code>string</code>
+        </td>
+        <td>
+          <code>"largest"</code>
+        </td>
+        <td>
+          <strong>Donut with legend only:</strong> caption under the centre
+          value at rest, where the largest share is shown.
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <code>hoverLabel</code>
+        </td>
+        <td>
+          <code>string</code>
+        </td>
+        <td>
+          <code>"share"</code>
+        </td>
+        <td>
+          <strong>Donut with legend only:</strong> caption while a share is
+          hovered.
         </td>
       </tr>
       <tr>

@@ -1,0 +1,225 @@
+import { ExampleShowcase } from "@/components/site/Sandbox";
+import { extractCode } from "@/lib/code";
+
+# Circular Text
+
+Words set on a circle, turning slowly, with room in the middle for a mark, a play button or a link. The ring is an SVG `textPath`, so it stays crisp at any size and the words are real text — screen readers get them once, from an sr-only copy, rather than letter by letter around the ring.
+
+The text repeats as many times as fit the circumference by default, so a short phrase fills the ring and a long one goes round once. Both <DocLink to="hero#collage-hero">Collage Hero</DocLink> and <DocLink to="hero#fashion-hero">Fashion Hero</DocLink> use it as their badge.
+
+export const usageBadge = `import { Play } from "lucide-react";
+import { CircularText } from "@/components/custom/blocks/CircularTextBlock";
+
+export default function VideoBadge() {
+  return (
+    // The ring is \`var(--primary)\` by default; the button uses the same tokens,
+    // so both follow the theme.
+    <CircularText text="Learn about us through this video" size={128} speed={20}>
+      <span className="grid size-11 place-items-center rounded-full bg-primary text-primary-foreground">
+        <Play size={14} className="ml-0.5 fill-current" />
+      </span>
+    </CircularText>
+  );
+}`;
+
+export const usageStamp = `import { CircularText } from "@/components/custom/blocks/CircularTextBlock";
+
+export default function Stamp() {
+  return (
+    <>
+      {/* Ring in the theme colour, mark in ink. */}
+      <CircularText text="Est. 2021" separator=" ✦ " size={140} fontSize={10} innerRing>
+        <span className="font-serif text-3xl italic text-foreground">tz</span>
+      </CircularText>
+      {/* The other way round: ring in ink, dot in the theme colour. */}
+      <CircularText text="Open studio" size={110} fontSize={11} tracking={0.22} color="currentColor" className="text-foreground">
+        <span className="size-3 rounded-full bg-primary" />
+      </CircularText>
+    </>
+  );
+}`;
+
+export const usageLink = `import { ArrowUpRight } from "lucide-react";
+import { CircularText } from "@/components/custom/blocks/CircularTextBlock";
+
+export default function SeeTheWork() {
+  return (
+    // \`currentColor\` takes the anchor's ink — \`text-primary\` here — so the
+    // ring, the border and the arrow all follow the theme.
+    <a href="/work" className="group rounded-full text-primary outline-none focus-visible:ring-2 focus-visible:ring-primary/50">
+      <CircularText text="See the work" size={128} color="currentColor">
+        <span className="grid size-12 place-items-center rounded-full border border-current transition-colors group-hover:bg-primary group-hover:text-primary-foreground">
+          <ArrowUpRight size={18} />
+        </span>
+      </CircularText>
+    </a>
+  );
+}`;
+
+<ExampleShowcase
+  name="circular-text"
+  colorControl
+  columns={1}
+  examples={[
+    {
+      title: "Video badge",
+      subheading: "A phrase on the ring and a play button in the middle, both in the theme colour. The ring turns once every 20 seconds and holds still under prefers-reduced-motion.",
+      propNotes: [
+        {
+          prop: "text",
+          effect:
+            "is the phrase on the ring; `separator` goes between repeats, and `repeat` pins how many times it goes round instead of filling by length.",
+        },
+        {
+          prop: "children",
+          effect:
+            "sit in the middle, centred. Anything goes — a button, a mark, a number.",
+        },
+        {
+          prop: "color",
+          effect:
+            "is `var(--primary)` by default, so the ring follows your theme preset and the colour picker above with no prop. Pass any CSS colour to pin it.",
+        },
+      ],
+      props: { example: "badge" },
+      usage: usageBadge,
+      code: extractCode("src/components/custom/blocks/CircularTextBlock.tsx"),
+      minHeight: 280,
+    },
+  ]}
+/>
+
+## Installation
+
+<Installation name="circular-text" />
+
+## Examples
+
+<ExampleShowcase
+  name="circular-text"
+  colorControl
+  columns={1}
+  examples={[
+    {
+      title: "Stamps",
+      subheading: "Two marks with their own separators, one with the inner ring — the first puts the theme colour on the ring, the second on the centre dot.",
+      propNotes: [
+        {
+          prop: "innerRing",
+          effect: "draws a hairline circle just inside the text, the way a rubber stamp has an edge.",
+        },
+        {
+          prop: "fontSize",
+          effect:
+            "and `tracking` size the ring text in units of a 100-wide circle — near enough percent of `size` — so the same values look the same at any size.",
+        },
+      ],
+      props: { example: "stamp" },
+      usage: usageStamp,
+      minHeight: 280,
+    },
+    {
+      title: "As a link",
+      subheading: "Wrapped in an anchor, with the centre reacting to hover through a Tailwind group.",
+      propNotes: [
+        {
+          lead: "Set",
+          prop: "color",
+          value: '"currentColor"',
+          effect: "and the ring takes the text colour of its parent — `text-primary` on the anchor here — so it follows the theme, a link's hover and dark-mode ink together.",
+        },
+        {
+          prop: "direction",
+          value: '"counterclockwise"',
+          effect: "turns the other way; `speed={0}` stops it.",
+        },
+      ],
+      props: { example: "link", direction: "counterclockwise" },
+      usage: usageLink,
+      minHeight: 280,
+    },
+  ]}
+/>
+
+## Props Reference
+
+<div className="overflow-x-auto my-4">
+  <table>
+    <thead>
+      <tr>
+        <th>Prop</th>
+        <th>Type</th>
+        <th>Default</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><code>text</code></td>
+        <td><code>string</code></td>
+        <td><strong>Required</strong></td>
+        <td>The words on the ring.</td>
+      </tr>
+      <tr>
+        <td><code>separator</code></td>
+        <td><code>string</code></td>
+        <td><code>" · "</code></td>
+        <td>Placed between repeats of <code>text</code>.</td>
+      </tr>
+      <tr>
+        <td><code>repeat</code></td>
+        <td><code>number</code></td>
+        <td>fill</td>
+        <td>How many times the text goes round. Unset, enough repeats to fill the circumference.</td>
+      </tr>
+      <tr>
+        <td><code>size</code></td>
+        <td><code>number</code></td>
+        <td><code>128</code></td>
+        <td>Outer size in pixels.</td>
+      </tr>
+      <tr>
+        <td><code>speed</code></td>
+        <td><code>number</code></td>
+        <td><code>22</code></td>
+        <td>Seconds per full turn; <code>0</code> holds still.</td>
+      </tr>
+      <tr>
+        <td><code>direction</code></td>
+        <td><code>"clockwise" | "counterclockwise"</code></td>
+        <td><code>"clockwise"</code></td>
+        <td>Which way it turns.</td>
+      </tr>
+      <tr>
+        <td><code>fontSize</code>, <code>tracking</code></td>
+        <td><code>number</code></td>
+        <td><code>9.5</code>, <code>0.18</code></td>
+        <td>Ring text size (units of a 100-wide circle) and letter spacing (em).</td>
+      </tr>
+      <tr>
+        <td><code>color</code></td>
+        <td><code>string</code></td>
+        <td><code>var(--primary)</code></td>
+        <td>Ring text colour. <code>"currentColor"</code> follows the parent's text.</td>
+      </tr>
+      <tr>
+        <td><code>radius</code></td>
+        <td><code>number</code></td>
+        <td><code>38</code></td>
+        <td>Radius of the text path, out of 50.</td>
+      </tr>
+      <tr>
+        <td><code>innerRing</code></td>
+        <td><code>boolean</code></td>
+        <td><code>false</code></td>
+        <td>A hairline circle just inside the text.</td>
+      </tr>
+      <tr>
+        <td><code>children</code></td>
+        <td><code>ReactNode</code></td>
+        <td>—</td>
+        <td>What sits in the middle.</td>
+      </tr>
+    </tbody>
+  </table>
+</div>

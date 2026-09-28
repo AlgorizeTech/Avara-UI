@@ -3,7 +3,7 @@ import { extractCode } from "@/lib/code";
 
 # Stepper
 
-A production-grade, highly animated multi-step wizard component engineered exclusively with **GSAP**. It splits the layout into two decoupled blocks: the visual progress tracker and the bidirectional sliding content payload.
+A production-grade, highly animated multi-step wizard component built on plain **CSS transitions and the Web Animations API** — no animation library. It splits the layout into two decoupled blocks: the visual progress tracker and the bidirectional sliding content payload.
 
 Unlike basic UI placeholders, this engine is designed to handle **real form state, per-step input validation, and asynchronous API submission handling** (including error states) with silky 60fps transitions.
 
@@ -19,10 +19,10 @@ function Field({
 }) {
   return (
     <label className="flex flex-col gap-1.5">
-      <span className="text-sm font-medium text-zinc-700 dark:text-zinc-300">{label}</span>
+      <span className="text-sm font-medium text-foreground/80">{label}</span>
       <input
         placeholder={placeholder}
-        className="h-10 rounded-lg border border-zinc-200 dark:border-zinc-800 bg-transparent px-3 text-sm"
+        className="h-10 rounded-lg border border-input bg-transparent px-3 text-sm"
       />
     </label>
   );
@@ -48,7 +48,7 @@ function WorkspaceForm() {
 
 function ReviewPanel() {
   return (
-    <div className="rounded-xl border border-zinc-200 dark:border-zinc-800 p-4 text-sm text-zinc-600 dark:text-zinc-400">
+    <div className="rounded-xl border border-border p-4 text-sm text-muted-foreground">
       Everything looks good — hit Submit to finish setting up your workspace.
     </div>
   );
@@ -78,7 +78,7 @@ import {
   StepperContent,
 } from "@/components/custom/blocks/StepperBlock";
 // The Workspace step picks a role with the Select block:
-//   npx shadcn@latest add https://algorize-ui.vercel.app/r/select.json
+//   npx shadcn@latest add @algorize-ui/select
 import { SelectBlock } from "@/components/custom/blocks/SelectBlock";
 
 const PRIMARY_ROLE_OPTIONS = [
@@ -89,11 +89,11 @@ const PRIMARY_ROLE_OPTIONS = [
 ].map((r) => ({ label: r, value: r }));
 
 const BACK_BTN =
-  "flex items-center gap-1.5 px-4 py-2.5 rounded-xl border border-zinc-200 dark:border-zinc-800 bg-zinc-100 dark:bg-zinc-900 text-zinc-700 dark:text-zinc-300 font-semibold text-sm disabled:opacity-40 disabled:cursor-not-allowed hover:bg-zinc-200/60 dark:hover:bg-zinc-800 transition-all active:scale-95 cursor-pointer";
+  "flex items-center gap-1.5 px-4 py-2.5 rounded-xl border border-border bg-muted text-foreground font-semibold text-sm disabled:opacity-40 disabled:cursor-not-allowed hover:bg-muted/80 transition-all active:scale-95 cursor-pointer";
 const NEXT_BTN =
-  "flex items-center gap-1.5 px-6 py-2.5 rounded-xl text-white font-bold text-sm shadow-md transition-all hover:brightness-110 active:scale-95 cursor-pointer bg-indigo-600";
+  "flex items-center gap-1.5 px-6 py-2.5 rounded-xl text-primary-foreground font-semibold text-sm shadow-md transition-all hover:brightness-110 active:scale-95 cursor-pointer bg-primary";
 
-// Controlled field. \`error\` is what makes a blocked Next visible to the reader.
+// Controlled field. 'error' is what makes a blocked Next visible to the reader.
 function Field({
   label,
   icon: Icon,
@@ -113,12 +113,12 @@ function Field({
 }) {
   return (
     <label className="flex flex-col gap-1.5 w-full">
-      <span className="text-xs font-bold text-zinc-700 dark:text-zinc-300 uppercase tracking-wider">
-        {label} <span className="text-rose-500">*</span>
+      <span className="text-xs font-semibold text-foreground uppercase tracking-wider">
+        {label} <span className="text-destructive">*</span>
       </span>
       <div className="relative flex items-center">
         {Icon && (
-          <div className="absolute left-3.5 text-zinc-400 dark:text-zinc-500 pointer-events-none">
+          <div className="absolute left-3.5 text-muted-foreground pointer-events-none">
             <Icon className="w-4 h-4" />
           </div>
         )}
@@ -128,16 +128,16 @@ function Field({
           onChange={(e) => onChange(e.target.value)}
           placeholder={placeholder}
           className={cn(
-            "w-full h-11 bg-zinc-50 dark:bg-zinc-900 border rounded-xl px-3.5 text-sm text-zinc-900 dark:text-white placeholder:text-zinc-400 focus:outline-none focus:ring-2 transition-all",
+            "w-full h-11 bg-background border rounded-xl px-3.5 text-sm text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 transition-all",
             Icon && "pl-10",
             error
-              ? "border-rose-500 focus:ring-rose-500/20"
-              : "border-zinc-200 dark:border-zinc-800 focus:border-zinc-400 dark:focus:border-zinc-600",
+              ? "border-destructive focus:ring-destructive/20"
+              : "border-input focus:border-ring",
           )}
         />
       </div>
       {error && (
-        <span className="flex items-center gap-1 text-xs font-semibold text-rose-500 mt-0.5">
+        <span className="flex items-center gap-1 text-xs font-semibold text-destructive mt-0.5">
           <AlertCircle className="w-3.5 h-3.5 flex-shrink-0" />
           {error}
         </span>
@@ -157,10 +157,10 @@ function StepCard({
   children: React.ReactNode;
 }) {
   return (
-    <div className="w-full p-6 sm:p-8 bg-white dark:bg-[#0a0a0a] rounded-2xl border border-zinc-200 dark:border-zinc-800 shadow-sm flex flex-col gap-5">
+    <div className="w-full p-6 sm:p-8 bg-card text-card-foreground rounded-2xl border border-border shadow-sm flex flex-col gap-5">
       <div>
-        <h3 className="text-lg font-bold text-zinc-900 dark:text-white">{title}</h3>
-        <p className="text-xs text-zinc-500">{subtitle}</p>
+        <h3 className="text-lg font-semibold text-foreground">{title}</h3>
+        <p className="text-xs text-muted-foreground">{subtitle}</p>
       </div>
       {children}
     </div>
@@ -273,7 +273,7 @@ export default function OnboardingWizard() {
               error={errors.company}
             />
             <div className="flex flex-col gap-1.5 w-full">
-              <label className="text-xs font-bold text-zinc-700 dark:text-zinc-300 uppercase tracking-wider">
+              <label className="text-xs font-semibold text-foreground uppercase tracking-wider">
                 Primary Role
               </label>
               <SelectBlock
@@ -324,46 +324,46 @@ export default function OnboardingWizard() {
       icon: CheckCircle2,
       content: (
         <StepCard title="Review Summary" subtitle="Please verify your details before submitting the onboarding payload.">
-          <div className="grid grid-cols-2 gap-4 bg-zinc-50 dark:bg-zinc-900/50 p-4 rounded-xl border border-zinc-200 dark:border-zinc-800 text-xs">
+          <div className="grid grid-cols-2 gap-4 bg-muted/50 p-4 rounded-xl border border-border text-xs">
             <div>
-              <span className="text-zinc-400 block font-semibold">Name:</span>
-              <span className="font-bold text-zinc-900 dark:text-white text-sm">{formData.fullName || "—"}</span>
+              <span className="text-muted-foreground block font-semibold">Name:</span>
+              <span className="font-semibold text-foreground text-sm">{formData.fullName || "—"}</span>
             </div>
             <div>
-              <span className="text-zinc-400 block font-semibold">Email:</span>
-              <span className="font-bold text-zinc-900 dark:text-white text-sm truncate block">{formData.email || "—"}</span>
+              <span className="text-muted-foreground block font-semibold">Email:</span>
+              <span className="font-semibold text-foreground text-sm truncate block">{formData.email || "—"}</span>
             </div>
             <div>
-              <span className="text-zinc-400 block font-semibold">Company:</span>
-              <span className="font-bold text-zinc-900 dark:text-white text-sm">{formData.company || "—"}</span>
+              <span className="text-muted-foreground block font-semibold">Company:</span>
+              <span className="font-semibold text-foreground text-sm">{formData.company || "—"}</span>
             </div>
             <div>
-              <span className="text-zinc-400 block font-semibold">Role:</span>
-              <span className="font-bold text-zinc-900 dark:text-white text-sm">{formData.role || "—"}</span>
+              <span className="text-muted-foreground block font-semibold">Role:</span>
+              <span className="font-semibold text-foreground text-sm">{formData.role || "—"}</span>
             </div>
           </div>
 
           {submitError && (
-            <div className="p-4 bg-rose-500/10 border border-rose-500/30 rounded-xl flex items-start gap-3 text-rose-500">
+            <div className="p-4 bg-destructive/10 border border-destructive/30 rounded-xl flex items-start gap-3 text-destructive">
               <XCircle className="w-5 h-5 flex-shrink-0 mt-0.5" />
               <div className="text-xs">
-                <strong className="font-bold block mb-0.5">Submission Failed</strong>
+                <strong className="font-semibold block mb-0.5">Submission Failed</strong>
                 <span>{submitError}</span>
               </div>
             </div>
           )}
 
-          <div className="pt-2 border-t border-zinc-100 dark:border-zinc-800/80 flex items-center justify-between">
-            <label className="flex items-center gap-2 cursor-pointer select-none text-xs font-semibold text-zinc-600 dark:text-zinc-400">
+          <div className="pt-2 border-t border-border flex items-center justify-between">
+            <label className="flex items-center gap-2 cursor-pointer select-none text-xs font-semibold text-muted-foreground">
               <input
                 type="checkbox"
                 checked={simulateError}
                 onChange={(e) => setSimulateError(e.target.checked)}
-                className="rounded border-zinc-300 dark:border-zinc-700 text-rose-500 focus:ring-rose-500"
+                className="rounded border-input text-primary focus:ring-primary"
               />
               Simulate Server Error on Submit
             </label>
-            <span className="text-[10px] text-zinc-400 font-mono">DEBUG_MODE</span>
+            <span className="text-[10px] text-muted-foreground font-mono">DEBUG_MODE</span>
           </div>
         </StepCard>
       ),
@@ -383,7 +383,7 @@ export default function OnboardingWizard() {
 
       <StepperContent steps={steps} currentStep={step} />
 
-      <div className="flex items-center justify-between pt-6 border-t border-zinc-100 dark:border-zinc-900">
+      <div className="flex items-center justify-between pt-6 border-t border-border">
         <button
           type="button"
           onClick={() => setStep((s) => s - 1)}
@@ -471,40 +471,43 @@ export default function OnboardingWizard() {
 Learn about the Stepper component's linear progression features, providing clear visual feedback for multi-step forms and processes.
 
 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 my-6 not-prose">
-  <div className="p-6 rounded-2xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900">
-    <h3 className="text-lg font-semibold text-zinc-900 dark:text-zinc-50 mb-2">Customizable</h3>
-    <p className="text-zinc-600 dark:text-zinc-400 text-sm">Easily adapt the component's styling and behavior to fit your application's unique design system.</p>
+  <div className="p-6 rounded-2xl border border-border bg-card">
+    <h3 className="text-lg font-semibold text-card-foreground mb-2">Customizable</h3>
+    <p className="text-muted-foreground text-sm">Easily adapt the component's styling and behavior to fit your application's unique design system.</p>
   </div>
-  <div className="p-6 rounded-2xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900">
-    <h3 className="text-lg font-semibold text-zinc-900 dark:text-zinc-50 mb-2">Accessible</h3>
-    <p className="text-zinc-600 dark:text-zinc-400 text-sm">Built with accessibility in mind, ensuring all users can interact with your application effectively.</p>
+  <div className="p-6 rounded-2xl border border-border bg-card">
+    <h3 className="text-lg font-semibold text-card-foreground mb-2">Accessible</h3>
+    <p className="text-muted-foreground text-sm">Built with accessibility in mind, ensuring all users can interact with your application effectively.</p>
   </div>
-  <div className="p-6 rounded-2xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900">
-    <h3 className="text-lg font-semibold text-zinc-900 dark:text-zinc-50 mb-2">Responsive</h3>
-    <p className="text-zinc-600 dark:text-zinc-400 text-sm">Fully responsive design that looks and works great across desktop, tablet, and mobile devices.</p>
+  <div className="p-6 rounded-2xl border border-border bg-card">
+    <h3 className="text-lg font-semibold text-card-foreground mb-2">Responsive</h3>
+    <p className="text-muted-foreground text-sm">Fully responsive design that looks and works great across desktop, tablet, and mobile devices.</p>
   </div>
-  <div className="p-6 rounded-2xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900">
-    <h3 className="text-lg font-semibold text-zinc-900 dark:text-zinc-50 mb-2">Performant</h3>
-    <p className="text-zinc-600 dark:text-zinc-400 text-sm">Optimized for maximum performance with minimal re-renders and efficient state management.</p>
+  <div className="p-6 rounded-2xl border border-border bg-card">
+    <h3 className="text-lg font-semibold text-card-foreground mb-2">Performant</h3>
+    <p className="text-muted-foreground text-sm">Optimized for maximum performance with minimal re-renders and efficient state management.</p>
   </div>
 </div>
 
 ## Best Practices & Guidelines
 
 <div className="flex flex-col gap-4 my-6 not-prose">
-  <div className="p-5 rounded-xl border border-blue-200 dark:border-blue-900/50 bg-blue-50/50 dark:bg-blue-950/20">
-    <h4 className="text-base font-semibold text-blue-900 dark:text-blue-300 mb-1">Usage Guidelines</h4>
-    <p className="text-blue-800 dark:text-blue-400/80 text-sm">Follow standard design principles when implementing this component. Ensure proper contrast, spacing, and context within your layout.</p>
+  <div className="rounded-xl border border-foreground/[0.06] bg-foreground/[0.03] p-4">
+    <h4 className="font-sans text-[14px] font-semibold text-foreground mb-1">Usage Guidelines</h4>
+    <p className="text-[13px] leading-relaxed text-foreground/50">Follow standard design principles when implementing this component. Ensure proper contrast, spacing, and context within your layout.</p>
   </div>
 </div>
 
 ## Props Reference
 
+### Stepper
+
+The visual navigation header component that renders step indicators and the animated progress fill line.
+
 <div className="overflow-x-auto mb-8">
   <table>
     <thead>
       <tr>
-        <th>Component / Interface</th>
         <th>Prop</th>
         <th>Type</th>
         <th>Default</th>
@@ -513,9 +516,6 @@ Learn about the Stepper component's linear progression features, providing clear
     </thead>
     <tbody>
       <tr>
-        <td>
-          <code>Stepper</code>
-        </td>
         <td>
           <code>steps</code>
         </td>
@@ -526,15 +526,10 @@ Learn about the Stepper component's linear progression features, providing clear
           <strong>Required</strong>
         </td>
         <td>
-          An array defining the wizard sequence. Each object requires an{" "}
-          <code>id</code> and <code>title</code>. <code>description</code>,{" "}
-          <code>icon</code>, and <code>content</code> are optional.
+          An array of step objects defining the sequence. Each object requires an <code>id</code> and <code>title</code>. <code>description</code>, <code>icon</code>, and <code>content</code> are optional.
         </td>
       </tr>
       <tr>
-        <td>
-          <code>Stepper</code>
-        </td>
         <td>
           <code>currentStep</code>
         </td>
@@ -545,14 +540,10 @@ Learn about the Stepper component's linear progression features, providing clear
           <strong>Required</strong>
         </td>
         <td>
-          The active zero-indexed step of the sequence. Controls the GSAP
-          progress line fill and active/completed indicator states.
+          The active zero-indexed step of the sequence. Controls the progress line fill and active/completed indicator states.
         </td>
       </tr>
       <tr>
-        <td>
-          <code>Stepper</code>
-        </td>
         <td>
           <code>onStepChange</code>
         </td>
@@ -563,15 +554,10 @@ Learn about the Stepper component's linear progression features, providing clear
           <code>undefined</code>
         </td>
         <td>
-          Callback fired when a user clicks directly on a step circle in the
-          header. If omitted, the steps become static visual indicators. When
-          provided, users can click any step to jump forward or backward freely.
+          Callback fired when a user clicks directly on a step circle in the header. If omitted, the steps become static visual indicators.
         </td>
       </tr>
       <tr>
-        <td>
-          <code>Stepper</code>
-        </td>
         <td>
           <code>color</code>
         </td>
@@ -579,23 +565,13 @@ Learn about the Stepper component's linear progression features, providing clear
           <code>string</code>
         </td>
         <td>
-          <code>"#FFAB1D"</code>
+          <code>"var(--primary)"</code>
         </td>
         <td>
-          The active theme color for the progress line, completed/active
-          circles and the pulse ring. Any CSS color value — hex,{" "}
-          <code>rgb()</code>, <code>hsl()</code>, <code>oklch()</code> or{" "}
-          <code>var(--token)</code> — is applied inline. A Tailwind background
-          class (e.g. <code>"bg-indigo-500"</code>) also works for the line and
-          circles, but the pulse ring is skipped: its border color would need a{" "}
-          <code>border-*</code> class built at runtime, which Tailwind's scanner
-          never sees.
+          The active theme color for the progress line, active/completed circles and pulse ring. Supports any CSS color value or Tailwind background class.
         </td>
       </tr>
       <tr>
-        <td>
-          <code>Stepper</code>
-        </td>
         <td>
           <code>className</code>
         </td>
@@ -606,14 +582,29 @@ Learn about the Stepper component's linear progression features, providing clear
           <code>undefined</code>
         </td>
         <td>
-          Custom Tailwind CSS classes to apply to the outermost navigation
-          header wrapper.
+          Custom Tailwind CSS classes to apply to the outermost navigation header wrapper.
         </td>
       </tr>
+    </tbody>
+  </table>
+</div>
+
+### StepperContent
+
+The sliding content container component that handles the animated sliding entrance of each step payload.
+
+<div className="overflow-x-auto mb-8">
+  <table>
+    <thead>
       <tr>
-        <td>
-          <code>StepperContent</code>
-        </td>
+        <th>Prop</th>
+        <th>Type</th>
+        <th>Default</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
         <td>
           <code>steps</code>
         </td>
@@ -624,15 +615,10 @@ Learn about the Stepper component's linear progression features, providing clear
           <strong>Required</strong>
         </td>
         <td>
-          The identical array passed to the header component. This engine
-          extracts the active step's <code>content</code> node and animates its
-          entrance/exit via GSAP.
+          The identical array passed to the header component. Renders the active step's <code>content</code> node.
         </td>
       </tr>
       <tr>
-        <td>
-          <code>StepperContent</code>
-        </td>
         <td>
           <code>currentStep</code>
         </td>
@@ -643,15 +629,10 @@ Learn about the Stepper component's linear progression features, providing clear
           <strong>Required</strong>
         </td>
         <td>
-          The active zero-indexed step used to identify which payload to render
-          and determine the direction (left/right) of the GSAP sliding
-          animation.
+          The active zero-indexed step used to identify which payload to render and determine the sliding transition direction.
         </td>
       </tr>
       <tr>
-        <td>
-          <code>StepperContent</code>
-        </td>
         <td>
           <code>className</code>
         </td>
@@ -662,14 +643,29 @@ Learn about the Stepper component's linear progression features, providing clear
           <code>undefined</code>
         </td>
         <td>
-          Custom Tailwind CSS classes applied to the sliding content wrapper
-          container.
+          Custom Tailwind CSS classes applied to the sliding content wrapper container.
         </td>
       </tr>
+    </tbody>
+  </table>
+</div>
+
+### Step (TypeScript Interface)
+
+The TypeScript interface defining the structure of each object in the <code>steps</code> array prop.
+
+<div className="overflow-x-auto mb-8">
+  <table>
+    <thead>
       <tr>
-        <td>
-          <code>Step</code>
-        </td>
+        <th>Property</th>
+        <th>Type</th>
+        <th>Required</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
         <td>
           <code>id</code>
         </td>
@@ -677,17 +673,13 @@ Learn about the Stepper component's linear progression features, providing clear
           <code>string</code>
         </td>
         <td>
-          <strong>Required</strong>
+          <strong>Yes</strong>
         </td>
         <td>
-          A unique identifier string required for safe React list rendering and
-          GSAP key mapping.
+          A unique identifier string required for safe React list rendering.
         </td>
       </tr>
       <tr>
-        <td>
-          <code>Step</code>
-        </td>
         <td>
           <code>title</code>
         </td>
@@ -695,17 +687,13 @@ Learn about the Stepper component's linear progression features, providing clear
           <code>string</code>
         </td>
         <td>
-          <strong>Required</strong>
+          <strong>Yes</strong>
         </td>
         <td>
-          Primary headline text displayed prominently below the step circle
-          indicator.
+          Primary headline text displayed prominently below the step circle indicator.
         </td>
       </tr>
       <tr>
-        <td>
-          <code>Step</code>
-        </td>
         <td>
           <code>description</code>
         </td>
@@ -713,17 +701,13 @@ Learn about the Stepper component's linear progression features, providing clear
           <code>string</code>
         </td>
         <td>
-          <code>undefined</code>
+          No
         </td>
         <td>
-          Optional secondary helper text displayed directly underneath the step
-          title on larger screens.
+          Optional secondary helper text displayed directly underneath the step title on larger screens.
         </td>
       </tr>
       <tr>
-        <td>
-          <code>Step</code>
-        </td>
         <td>
           <code>icon</code>
         </td>
@@ -731,17 +715,13 @@ Learn about the Stepper component's linear progression features, providing clear
           <code>React.ElementType</code>
         </td>
         <td>
-          <code>undefined</code>
+          No
         </td>
         <td>
-          Optional Lucide React icon or custom SVG component rendered inside the
-          step circle indicator instead of a default number.
+          Optional Lucide React icon or custom SVG component rendered inside the step circle indicator instead of a default number.
         </td>
       </tr>
       <tr>
-        <td>
-          <code>Step</code>
-        </td>
         <td>
           <code>content</code>
         </td>
@@ -749,12 +729,10 @@ Learn about the Stepper component's linear progression features, providing clear
           <code>React.ReactNode</code>
         </td>
         <td>
-          <code>undefined</code>
+          No
         </td>
         <td>
-          The actual JSX/UI payload (e.g., input forms, review summaries)
-          rendered inside the <code>StepperContent</code> container when this
-          step is active.
+          The JSX/UI payload (e.g., input forms, review summaries) rendered inside <code>StepperContent</code> when this step is active.
         </td>
       </tr>
     </tbody>

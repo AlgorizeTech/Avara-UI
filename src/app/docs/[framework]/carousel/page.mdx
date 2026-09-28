@@ -5,99 +5,236 @@ import { extractCode } from "@/lib/code";
 
 A collection of highly interactive carousel components for image galleries, hero sections, and fluid presentations.
 
-<InjectablePropNote prop="imageComponent" component="ImageCarousel" />
-
-Four independent components live on this page — three in `carousel.tsx` and the GSAP-powered `FluidGlassSlider`, which installs on its own.
+Four independent components live on this page — four in `carousel.tsx` (`ImageCarousel`, `HeroCarousel`, `CustomCarousel`, `RadialCarousel`) and the `FluidGlassSlider`, which installs on its own.
 
 ## Carousels
 
-export const usageImage = `import { ImageCarousel } from "@/components/custom/carousel";
+export const usageFluid = `import { FluidGlassSlider, type FluidGlassSlide } from "@/components/custom/carousel";
 
-const images = [
-  "https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=1920&h=1080&fit=crop",
-  "https://images.unsplash.com/photo-1441974231531-c6227db76b6e?w=1920&h=1080&fit=crop",
-  "https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?w=1920&h=1080&fit=crop",
+const customSlides: FluidGlassSlide[] = [
+  {
+    id: 1,
+    image: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_2574,c_limit/v1790146210/photo-1506905925346-21bda4d32df4-1790146212208.jpg",
+    title: "Discover pristine tropical beaches and crystal-clear waters",
+    subtitle: "TROPICAL PARADISE",
+  },
+  {
+    id: 2,
+    image: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_2574,c_limit/v1790146211/photo-1441974231531-c6227db76b6e-1790146212212.jpg",
+    title: "Escape to the serene mountain heights and wilderness trails",
+    subtitle: "MOUNTAIN ADVENTURES",
+  },
+  {
+    id: 3,
+    image: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_2574,c_limit/v1790145141/photo-1464822759023-fed622ff2c3b-1790145143491.jpg",
+    title: "Surround yourself with majestic peaks and alpine lakes",
+    subtitle: "ALPINE RETREAT",
+  },
 ];
 
-export default function Gallery() {
+export default function FluidGlassSliderDemo() {
   return (
-    <ImageCarousel
-      images={images}
-      autoPlay
-      autoPlayInterval={3000}
+    <FluidGlassSlider
+      slides={customSlides}
+      className="w-full rounded-xl border border-border shadow-sm"
     />
   );
 }`;
 
-export const carouselSlides = `const slides = [
+export const usageImage = `import { ImageCarousel } from "@/components/custom/carousel";
+
+const sampleImages = [
+  "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_1920,c_limit/v1790146210/photo-1506905925346-21bda4d32df4-1790146212208.jpg",
+  "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_1920,c_limit/v1790146211/photo-1441974231531-c6227db76b6e-1790146212212.jpg",
+  "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_1920,c_limit/v1790145141/photo-1464822759023-fed622ff2c3b-1790145143491.jpg",
+];
+
+export default function ImageCarouselDemo() {
+  return (
+    <div className="w-full rounded-xl overflow-hidden border border-border shadow-sm">
+      <ImageCarousel
+        images={sampleImages}
+        autoPlay={true}
+        autoPlayInterval={3000}
+        showArrows={true}
+        showDots={true}
+      />
+    </div>
+  );
+}`;
+
+export const usageRadial = `import { RadialCarousel, type RadialCarouselItem } from "@/components/custom/carousel";
+
+const customItems: RadialCarouselItem[] = [
   {
-    img: "https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=1920&h=1080&fit=crop",
+    title: "Misty Pine Forest",
+    category: "Nature",
+    rating: "4.9",
+    price: "$120",
+    img: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_800,c_limit/v1790145141/photo-1448375240586-882707db888b-1790145143491.jpg",
+  },
+  {
+    title: "Lush River Valley",
+    category: "Wilderness",
+    rating: "4.8",
+    price: "$150",
+    img: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_800,c_limit/v1790145140/photo-1426604966848-d7adac402bff-1790145143490.jpg",
+  },
+  {
+    title: "Autumn Woodland Path",
+    category: "Landscape",
+    rating: "4.9",
+    price: "$95",
+    img: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_800,c_limit/v1790146211/photo-1441974231531-c6227db76b6e-1790146212212.jpg",
+  },
+];
+
+export default function RadialCarouselDemo() {
+  return (
+    <div className="w-full rounded-xl overflow-hidden border border-border shadow-sm bg-foreground/5">
+      <RadialCarousel
+        items={customItems}
+        autoPlay={true}
+        autoPlayInterval={3500}
+      />
+    </div>
+  );
+}`;
+
+export const usageHero = `import { HeroCarousel, type HeroSlide } from "@/components/custom/carousel";
+
+const sampleSlides: HeroSlide[] = [
+  {
+    img: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_1920,c_limit/v1790146210/photo-1506905925346-21bda4d32df4-1790146212208.jpg",
     title: "Tropical Paradise",
     des: "Discover pristine beaches and crystal-clear waters.",
   },
   {
-    img: "https://images.unsplash.com/photo-1441974231531-c6227db76b6e?w=1920&h=1080&fit=crop",
+    img: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_1920,c_limit/v1790146211/photo-1441974231531-c6227db76b6e-1790146212212.jpg",
     title: "Peak Adventures",
     des: "Challenge yourself with epic mountain trails.",
   },
   {
-    img: "https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?w=1920&h=1080&fit=crop",
+    img: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_1920,c_limit/v1790145141/photo-1464822759023-fed622ff2c3b-1790145143491.jpg",
     title: "Mountain Retreat",
     des: "Escape to the serene heights and breathe fresh air.",
   },
-];`;
+];
 
-export const usageHero = `import { HeroCarousel } from "@/components/custom/carousel";
-
-${carouselSlides}
-
-export default function Hero() {
-  return <HeroCarousel slides={slides} autoPlay />;
+export default function HeroCarouselDemo() {
+  return (
+    <div className="w-full rounded-xl overflow-hidden border border-border shadow-sm">
+      <HeroCarousel slides={sampleSlides} autoPlay={true} autoPlayInterval={3000} />
+    </div>
+  );
 }`;
 
-export const usageThumbnails = `import { CustomCarousel } from "@/components/custom/carousel";
+export const usageThumbnails = `import { CustomCarousel, type CustomItem } from "@/components/custom/carousel";
 
-${carouselSlides}
+const sampleSlides: CustomItem[] = [
+  {
+    img: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_1920,c_limit/v1790146210/photo-1506905925346-21bda4d32df4-1790146212208.jpg",
+    title: "Tropical Paradise",
+    des: "Discover pristine beaches and crystal-clear waters.",
+  },
+  {
+    img: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_1920,c_limit/v1790146211/photo-1441974231531-c6227db76b6e-1790146212212.jpg",
+    title: "Peak Adventures",
+    des: "Challenge yourself with epic mountain trails.",
+  },
+  {
+    img: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_1920,c_limit/v1790145141/photo-1464822759023-fed622ff2c3b-1790145143491.jpg",
+    title: "Mountain Retreat",
+    des: "Escape to the serene heights and breathe fresh air.",
+  },
+];
 
-// \`imageButtonPosition\` moves the thumbnail rail: "bottom" | "left" | "right".
-export default function Showcase() {
-  return <CustomCarousel items={slides} imageButtonPosition="bottom" />;
+export default function CustomCarouselDemo() {
+  return (
+    <div className="w-full rounded-xl overflow-hidden border border-border shadow-sm">
+      <CustomCarousel items={sampleSlides} imageButtonPosition="bottom" autoPlay={true} />
+    </div>
+  );
 }`;
 
-export const usageThumbnailsSide = `import { CustomCarousel } from "@/components/custom/carousel";
+export const usageThumbnailsSide = `import { CustomCarousel, type CustomItem } from "@/components/custom/carousel";
 
-${carouselSlides}
+const sampleSlides: CustomItem[] = [
+  {
+    img: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_1920,c_limit/v1790146210/photo-1506905925346-21bda4d32df4-1790146212208.jpg",
+    title: "Tropical Paradise",
+    des: "Discover pristine beaches and crystal-clear waters.",
+  },
+  {
+    img: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_1920,c_limit/v1790146211/photo-1441974231531-c6227db76b6e-1790146212212.jpg",
+    title: "Peak Adventures",
+    des: "Challenge yourself with epic mountain trails.",
+  },
+  {
+    img: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_1920,c_limit/v1790145141/photo-1464822759023-fed622ff2c3b-1790145143491.jpg",
+    title: "Mountain Retreat",
+    des: "Escape to the serene heights and breathe fresh air.",
+  },
+];
 
-export default function SideThumbnails() {
-  return <CustomCarousel items={slides} imageButtonPosition="left" />;
+export default function SideThumbnailsCarouselDemo() {
+  return (
+    <div className="w-full rounded-xl overflow-hidden border border-border shadow-sm">
+      <CustomCarousel items={sampleSlides} imageButtonPosition="left" autoPlay={true} />
+    </div>
+  );
 }`;
-
-export const usageFluid = `import FluidGlassSlider from "@/components/custom/ui/FluidGlassSlider";
-
-// Requires GSAP — the liquid distortion tracks the pointer.
-export default function FluidShowcase() {
-  return <FluidGlassSlider className="w-full rounded-xl" />;
-}`;
-
-## Examples
 
 <ExampleShowcase
   name="carousel"
+  colorControl={false}
+  columns={1}
+  examples={[
+    {
+      title: "Radial carousel",
+      subheading: "`RadialCarousel` arranges cards in a full 360-degree 3D radial wheel radiating in all four directions around a central hub with smooth drag momentum. The hub at the exact centre is a play/pause button for autoplay (`autoPlay` sets whether it starts playing), and cards further from the top fade toward the page background so the wheel works in light and dark themes.",
+      propNotes: [
+        {
+          lead: "Pass",
+          prop: "items",
+          effect: "as `{ title, category, rating, img }[]` — cards radiate in 360 degrees around the center.",
+        },
+        {
+          prop: "stepAngle",
+          effect: "controls the rotation angle increment between cards (default is 360 / items.length).",
+        },
+      ],
+      props: { carouselType: "radial" },
+      usage: usageRadial,
+      code: extractCode("src/components/custom/carousel.tsx"),
+    },
+  ]}
+/>
+
+### Installation
+
+<Installation name="carousel" />
+
+All five carousels (`RadialCarousel`, `FluidGlassSlider`, `ImageCarousel`, `HeroCarousel`, `CustomCarousel`) ship together in a single self-contained `carousel.tsx` file when installing `carousel`. You can import components directly or pass `variant="radial" | "glass" | "image" | "hero" | "thumbnails"` into the default `Carousel` component.
+
+<ExampleShowcase
+  name="carousel"
+  colorControl={false}
   columns={1}
   examples={[
     {
       title: "Fluid glass slider",
-      subheading: "`FluidGlassSlider` is a GSAP-driven slider where liquid distortion tracks the pointer.",
+      subheading: "`FluidGlassSlider` is a liquid glass distortion slider featuring dynamic cursor tracking, glassmorphism overlays, and smooth progress tracking.",
       propNotes: [
         {
-          prop: "items",
-          effect:
-            "drives the glass panel that distorts and follows the cursor between slides.",
+          lead: "Pass",
+          prop: "className",
+          effect: "to customize container dimensions, borders, and shadows.",
         },
       ],
       props: { carouselType: "fluid" },
       usage: usageFluid,
-      code: extractCode("src/components/custom/ui/FluidGlassSlider.tsx"),
+      code: extractCode("src/components/custom/carousel.tsx"),
     },
     {
       title: "Image carousel",
@@ -168,48 +305,41 @@ export default function FluidShowcase() {
   ]}
 />
 
-### Installation
-
-<Installation name="carousel" />
-
-The three carousels above ship in one file. `FluidGlassSlider` is a separate
-item — installing `carousel` does not pull it in:
-
-<Installation name="ui-fluid-glass-slider" />
-
 ## Features
 Discover the Carousel's powerful features, including touch-swipe support, autoplay functionality, and accessible navigation controls.
 
 
 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 my-6 not-prose">
-  <div className="p-6 rounded-2xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900">
-    <h3 className="text-lg font-semibold text-zinc-900 dark:text-zinc-50 mb-2">Customizable</h3>
-    <p className="text-zinc-600 dark:text-zinc-400 text-sm">Easily adapt the component's styling and behavior to fit your application's unique design system.</p>
+  <div className="p-6 rounded-2xl border border-border bg-card">
+    <h3 className="text-lg font-semibold text-card-foreground mb-2">Customizable</h3>
+    <p className="text-muted-foreground text-sm">Easily adapt the component's styling and behavior to fit your application's unique design system.</p>
   </div>
-  <div className="p-6 rounded-2xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900">
-    <h3 className="text-lg font-semibold text-zinc-900 dark:text-zinc-50 mb-2">Accessible</h3>
-    <p className="text-zinc-600 dark:text-zinc-400 text-sm">Built with accessibility in mind, ensuring all users can interact with your application effectively.</p>
+  <div className="p-6 rounded-2xl border border-border bg-card">
+    <h3 className="text-lg font-semibold text-card-foreground mb-2">Accessible</h3>
+    <p className="text-muted-foreground text-sm">Built with accessibility in mind, ensuring all users can interact with your application effectively.</p>
   </div>
-  <div className="p-6 rounded-2xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900">
-    <h3 className="text-lg font-semibold text-zinc-900 dark:text-zinc-50 mb-2">Responsive</h3>
-    <p className="text-zinc-600 dark:text-zinc-400 text-sm">Fully responsive design that looks and works great across desktop, tablet, and mobile devices.</p>
+  <div className="p-6 rounded-2xl border border-border bg-card">
+    <h3 className="text-lg font-semibold text-card-foreground mb-2">Responsive</h3>
+    <p className="text-muted-foreground text-sm">Fully responsive design that looks and works great across desktop, tablet, and mobile devices.</p>
   </div>
-  <div className="p-6 rounded-2xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900">
-    <h3 className="text-lg font-semibold text-zinc-900 dark:text-zinc-50 mb-2">Performant</h3>
-    <p className="text-zinc-600 dark:text-zinc-400 text-sm">Optimized for maximum performance with minimal re-renders and efficient state management.</p>
+  <div className="p-6 rounded-2xl border border-border bg-card">
+    <h3 className="text-lg font-semibold text-card-foreground mb-2">Performant</h3>
+    <p className="text-muted-foreground text-sm">Optimized for maximum performance with minimal re-renders and efficient state management.</p>
   </div>
 </div>
 
 ## Best Practices & Guidelines
 
 <div className="flex flex-col gap-4 my-6 not-prose">
-  <div className="p-5 rounded-xl border border-blue-200 dark:border-blue-900/50 bg-blue-50/50 dark:bg-blue-950/20">
-    <h4 className="text-base font-semibold text-blue-900 dark:text-blue-300 mb-1">Usage Guidelines</h4>
-    <p className="text-blue-800 dark:text-blue-400/80 text-sm">Follow standard design principles when implementing this component. Ensure proper contrast, spacing, and context within your layout.</p>
+  <div className="rounded-xl border border-foreground/[0.06] bg-foreground/[0.03] p-4">
+    <h4 className="font-sans text-[14px] font-semibold text-foreground mb-1">Usage Guidelines</h4>
+    <p className="text-[13px] leading-relaxed text-foreground/50">Follow standard design principles when implementing this component. Ensure proper contrast, spacing, and context within your layout.</p>
   </div>
 </div>
 
-## Props Reference: ImageCarousel
+## Props Reference
+
+### Unified Carousel (Default Export)
 
 <div className="overflow-x-auto">
   <table>
@@ -223,65 +353,255 @@ Discover the Carousel's powerful features, including touch-swipe support, autopl
     </thead>
     <tbody>
       <tr>
-        <td>
-          <code>images</code>
-        </td>
-        <td>
-          <code>ImgSrc[]</code>
-        </td>
-        <td>
-          <code>[]</code>
-        </td>
-        <td>Array of string URLs or Next.js StaticImageData objects.</td>
+        <td><code>variant</code></td>
+        <td><code>"radial" | "glass" | "image" | "hero" | "thumbnails"</code></td>
+        <td><code>"image"</code></td>
+        <td>The layout variant to render.</td>
       </tr>
       <tr>
-        <td>
-          <code>autoPlay</code>
-        </td>
-        <td>
-          <code>boolean</code>
-        </td>
-        <td>
-          <code>false</code>
-        </td>
-        <td>If true, the carousel automatically cycles through images.</td>
+        <td><code>images</code></td>
+        <td><code>ImgSrc[]</code></td>
+        <td><code>[]</code></td>
+        <td>Array of image URLs or StaticImageData objects (for <code>"image"</code> variant).</td>
       </tr>
       <tr>
-        <td>
-          <code>autoPlayInterval</code>
-        </td>
-        <td>
-          <code>number</code>
-        </td>
-        <td>
-          <code>3000</code>
-        </td>
-        <td>Time (in ms) before automatically switching to the next slide.</td>
+        <td><code>slides</code></td>
+        <td><code>any[]</code></td>
+        <td><code>[]</code></td>
+        <td>Array of slide objects (for <code>"glass"</code> or <code>"hero"</code> variants).</td>
       </tr>
       <tr>
-        <td>
-          <code>showArrows</code>
-        </td>
-        <td>
-          <code>boolean</code>
-        </td>
-        <td>
-          <code>true</code>
-        </td>
-        <td>Whether to show the previous/next navigation buttons.</td>
+        <td><code>items</code></td>
+        <td><code>any[]</code></td>
+        <td><code>[]</code></td>
+        <td>Array of item objects (for <code>"radial"</code> or <code>"thumbnails"</code> variants).</td>
       </tr>
       <tr>
-        <td>
-          <code>showDots</code>
-        </td>
-        <td>
-          <code>boolean</code>
-        </td>
-        <td>
-          <code>true</code>
-        </td>
-        <td>Whether to show the bottom navigation dot indicators.</td>
+        <td><code>className</code></td>
+        <td><code>string</code></td>
+        <td><code>-</code></td>
+        <td>Custom CSS styling classes for the outer wrapper.</td>
       </tr>
     </tbody>
   </table>
 </div>
+
+### RadialCarousel
+
+<div className="overflow-x-auto">
+  <table>
+    <thead>
+      <tr>
+        <th>Prop</th>
+        <th>Type</th>
+        <th>Default</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><code>items</code></td>
+        <td><code>RadialCarouselItem[]</code></td>
+        <td><code>[]</code></td>
+        <td>Array of cards with <code>{`{ title, category, rating, price?, img }`}</code> radiating in 360 degrees.</td>
+      </tr>
+      <tr>
+        <td><code>autoPlay</code></td>
+        <td><code>boolean</code></td>
+        <td><code>false</code></td>
+        <td>If true, continuously rotates the 3D wheel.</td>
+      </tr>
+      <tr>
+        <td><code>autoPlayInterval</code></td>
+        <td><code>number</code></td>
+        <td><code>3500</code></td>
+        <td>Interval (in ms) between auto rotations.</td>
+      </tr>
+      <tr>
+        <td><code>stepAngle</code></td>
+        <td><code>number</code></td>
+        <td><code>360 / items.length</code></td>
+        <td>Rotation angle step per card in degrees.</td>
+      </tr>
+      <tr>
+        <td><code>className</code></td>
+        <td><code>string</code></td>
+        <td><code>-</code></td>
+        <td>Outer container styling.</td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+### FluidGlassSlider
+
+<div className="overflow-x-auto">
+  <table>
+    <thead>
+      <tr>
+        <th>Prop</th>
+        <th>Type</th>
+        <th>Default</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><code>slides</code></td>
+        <td><code>FluidGlassSlide[]</code></td>
+        <td><code>DEFAULT_SLIDES</code></td>
+        <td>Array of glass slides with <code>{`{ id, image, title, subtitle }`}</code>.</td>
+      </tr>
+      <tr>
+        <td><code>className</code></td>
+        <td><code>string</code></td>
+        <td><code>-</code></td>
+        <td>Container dimensions, borders, and shadows.</td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+### ImageCarousel
+
+<div className="overflow-x-auto">
+  <table>
+    <thead>
+      <tr>
+        <th>Prop</th>
+        <th>Type</th>
+        <th>Default</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><code>images</code></td>
+        <td><code>ImgSrc[]</code></td>
+        <td><code>[]</code></td>
+        <td>Array of string URLs or Next.js StaticImageData objects.</td>
+      </tr>
+      <tr>
+        <td><code>autoPlay</code></td>
+        <td><code>boolean</code></td>
+        <td><code>false</code></td>
+        <td>If true, automatically cycles through images.</td>
+      </tr>
+      <tr>
+        <td><code>autoPlayInterval</code></td>
+        <td><code>number</code></td>
+        <td><code>3000</code></td>
+        <td>Time (in ms) before automatically switching slides.</td>
+      </tr>
+      <tr>
+        <td><code>showArrows</code></td>
+        <td><code>boolean</code></td>
+        <td><code>true</code></td>
+        <td>Whether to show previous/next navigation buttons.</td>
+      </tr>
+      <tr>
+        <td><code>showDots</code></td>
+        <td><code>boolean</code></td>
+        <td><code>true</code></td>
+        <td>Whether to show bottom navigation dot indicators.</td>
+      </tr>
+      <tr>
+        <td><code>transitionDuration</code></td>
+        <td><code>number</code></td>
+        <td><code>500</code></td>
+        <td>Transition animation duration in milliseconds.</td>
+      </tr>
+      <tr>
+        <td><code>imageWidth</code></td>
+        <td><code>number</code></td>
+        <td><code>1200</code></td>
+        <td>Default image width in pixels.</td>
+      </tr>
+      <tr>
+        <td><code>imageHeight</code></td>
+        <td><code>number</code></td>
+        <td><code>540</code></td>
+        <td>Default image height in pixels.</td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+### HeroCarousel
+
+<div className="overflow-x-auto">
+  <table>
+    <thead>
+      <tr>
+        <th>Prop</th>
+        <th>Type</th>
+        <th>Default</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><code>slides</code></td>
+        <td><code>HeroSlide[]</code></td>
+        <td><code>[]</code></td>
+        <td>Array of full-bleed hero slides with <code>{`{ img, title, des }`}</code>.</td>
+      </tr>
+      <tr>
+        <td><code>autoPlay</code></td>
+        <td><code>boolean</code></td>
+        <td><code>false</code></td>
+        <td>If true, auto-advances the background hero slides.</td>
+      </tr>
+      <tr>
+        <td><code>autoPlayInterval</code></td>
+        <td><code>number</code></td>
+        <td><code>3000</code></td>
+        <td>Time (in ms) before advancing to the next hero slide.</td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+### CustomCarousel (Thumbnails)
+
+<div className="overflow-x-auto">
+  <table>
+    <thead>
+      <tr>
+        <th>Prop</th>
+        <th>Type</th>
+        <th>Default</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><code>items</code></td>
+        <td><code>CustomItem[]</code></td>
+        <td><code>[]</code></td>
+        <td>Array of thumbnail slides with <code>{`{ img, title, des }`}</code>.</td>
+      </tr>
+      <tr>
+        <td><code>imageButtonPosition</code></td>
+        <td><code>"bottom" | "left" | "right"</code></td>
+        <td><code>"bottom"</code></td>
+        <td>Placement of the thumbnail selector strip.</td>
+      </tr>
+      <tr>
+        <td><code>autoPlay</code></td>
+        <td><code>boolean</code></td>
+        <td><code>false</code></td>
+        <td>If true, auto-advances through thumbnail items.</td>
+      </tr>
+      <tr>
+        <td><code>autoPlayInterval</code></td>
+        <td><code>number</code></td>
+        <td><code>3000</code></td>
+        <td>Time (in ms) between slide changes.</td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+
+

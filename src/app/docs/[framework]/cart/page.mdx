@@ -5,7 +5,7 @@ import { extractCode } from "@/lib/code";
 
 A complete, production-ready Cart component designed for modern e-commerce applications. It comes with built-in item state management (increment, decrement, remove), automatic subtotal calculations, and three distinct structural layouts.
 
-One `type` prop switches the whole presentation — the cart state, quantity steppers and subtotal math are identical in all three. Click the bag trigger in the first two previews to play the GSAP entrance.
+One `type` prop switches the whole presentation — the cart state, quantity steppers and subtotal math are identical in all three. Leave the first two previews alone for a moment and the bag trigger tilts and rings to invite the click; press it and it squashes, springs back and pushes a ripple out as the panel arrives. Every one of those tweens is skipped under `prefers-reduced-motion: reduce`.
 
 export const cartItems = `const items: CartItem[] = [
   {
@@ -42,12 +42,10 @@ export const usageDrawer = `import {
   type CartItem,
 } from "@/components/custom/blocks/CartBlock";
 
-// The cart holds no data of its own. Keep the items in the parent, where the
-// rest of your app can reach them, and hand them over as initialItems.
 ${cartItems}
 
 export default function DrawerCart() {
-  return <CartBlock type="drawer" initialItems={items} />;
+  return <CartBlock type="drawer" color="primary" initialItems={items} />;
 }`;
 
 export const usageModal = `import {
@@ -58,8 +56,7 @@ export const usageModal = `import {
 ${cartItems}
 
 export default function ModalCart() {
-  // Centred dialog with a blurred backdrop - same trigger, same state.
-  return <CartBlock type="modal" initialItems={items} />;
+  return <CartBlock type="modal" color="primary" initialItems={items} />;
 }`;
 
 export const usagePage = `import {
@@ -69,10 +66,8 @@ export const usagePage = `import {
 
 ${cartItems}
 
-// Full-width two-column layout for a dedicated /cart route.
-// No trigger button - the cart is the page.
 export default function CartPage() {
-  return <CartBlock type="page" initialItems={items} />;
+  return <CartBlock type="page" color="primary" initialItems={items} />;
 }`;
 
 <ExampleShowcase
@@ -82,7 +77,8 @@ export default function CartPage() {
   examples={[
     {
       title: "Drawer",
-      subheading: "Click the bag icon to open it.",
+      subheading:
+        "Wait a beat and the bag nudges itself; click it to play the press and the slide-in.",
       propNotes: [
         {
           prop: "type",
@@ -98,7 +94,7 @@ export default function CartPage() {
         {
           prop: "color",
           effect:
-            "themes the primary buttons, focus rings, badges and icons. Takes `indigo`, `rose`, `emerald`, `zinc` or a hex; anything unrecognised — including the `primary` default — falls back to indigo.",
+            "themes the primary buttons, focus rings, badges and icons. Takes `primary`, `indigo`, `rose`, `emerald`, `zinc` or a hex.",
         },
       ],
       props: { type: "drawer" },
@@ -154,30 +150,30 @@ export default function CartPage() {
 Learn about the Cart component's e-commerce capabilities, including item quantity adjustments, total calculations, and slide-out panels.
 
 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 my-6 not-prose">
-  <div className="p-6 rounded-2xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900">
-    <h3 className="text-lg font-semibold text-zinc-900 dark:text-zinc-50 mb-2">Customizable</h3>
-    <p className="text-zinc-600 dark:text-zinc-400 text-sm">Easily adapt the component's styling and behavior to fit your application's unique design system.</p>
+  <div className="p-6 rounded-2xl border border-border bg-card">
+    <h3 className="text-lg font-semibold text-card-foreground mb-2">Customizable</h3>
+    <p className="text-muted-foreground text-sm">Easily adapt the component's styling and behavior to fit your application's unique design system.</p>
   </div>
-  <div className="p-6 rounded-2xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900">
-    <h3 className="text-lg font-semibold text-zinc-900 dark:text-zinc-50 mb-2">Accessible</h3>
-    <p className="text-zinc-600 dark:text-zinc-400 text-sm">Built with accessibility in mind, ensuring all users can interact with your application effectively.</p>
+  <div className="p-6 rounded-2xl border border-border bg-card">
+    <h3 className="text-lg font-semibold text-card-foreground mb-2">Accessible</h3>
+    <p className="text-muted-foreground text-sm">Built with accessibility in mind, ensuring all users can interact with your application effectively.</p>
   </div>
-  <div className="p-6 rounded-2xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900">
-    <h3 className="text-lg font-semibold text-zinc-900 dark:text-zinc-50 mb-2">Responsive</h3>
-    <p className="text-zinc-600 dark:text-zinc-400 text-sm">Fully responsive design that looks and works great across desktop, tablet, and mobile devices.</p>
+  <div className="p-6 rounded-2xl border border-border bg-card">
+    <h3 className="text-lg font-semibold text-card-foreground mb-2">Responsive</h3>
+    <p className="text-muted-foreground text-sm">Fully responsive design that looks and works great across desktop, tablet, and mobile devices.</p>
   </div>
-  <div className="p-6 rounded-2xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900">
-    <h3 className="text-lg font-semibold text-zinc-900 dark:text-zinc-50 mb-2">Performant</h3>
-    <p className="text-zinc-600 dark:text-zinc-400 text-sm">Optimized for maximum performance with minimal re-renders and efficient state management.</p>
+  <div className="p-6 rounded-2xl border border-border bg-card">
+    <h3 className="text-lg font-semibold text-card-foreground mb-2">Performant</h3>
+    <p className="text-muted-foreground text-sm">Optimized for maximum performance with minimal re-renders and efficient state management.</p>
   </div>
 </div>
 
 ## Best Practices & Guidelines
 
 <div className="flex flex-col gap-4 my-6 not-prose">
-  <div className="p-5 rounded-xl border border-blue-200 dark:border-blue-900/50 bg-blue-50/50 dark:bg-blue-950/20">
-    <h4 className="text-base font-semibold text-blue-900 dark:text-blue-300 mb-1">Usage Guidelines</h4>
-    <p className="text-blue-800 dark:text-blue-400/80 text-sm">Follow standard design principles when implementing this component. Ensure proper contrast, spacing, and context within your layout.</p>
+  <div className="rounded-xl border border-foreground/[0.06] bg-foreground/[0.03] p-4">
+    <h4 className="font-sans text-[14px] font-semibold text-foreground mb-1">Usage Guidelines</h4>
+    <p className="text-[13px] leading-relaxed text-foreground/50">Follow standard design principles when implementing this component. Ensure proper contrast, spacing, and context within your layout.</p>
   </div>
 </div>
 
@@ -239,9 +235,8 @@ Learn about the Cart component's e-commerce capabilities, including item quantit
         </td>
         <td>
           Applies global color themes to the primary buttons, focus rings,
-          badges, and icons. Accepts valid hex codes (e.g.{" "}
-          <code>"#00FF00"</code>). Any unrecognised name — including the{" "}
-          <code>"primary"</code> default — falls back to the indigo theme.
+          badges, and icons. Accepts preset theme names or valid custom hex codes (e.g.{" "}
+          <code>"#00FF00"</code>).
         </td>
       </tr>
     </tbody>

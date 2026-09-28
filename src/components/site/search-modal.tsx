@@ -139,25 +139,19 @@ const AIResponseRenderer: React.FC<AIResponseRendererProps> = ({ content, onLink
 
   return (
     <div
-      className="markdown-content prose prose-sm dark:prose-invert max-w-none text-zinc-700 dark:text-zinc-100"
+      className="markdown-content prose prose-sm max-w-none text-foreground/70"
       dangerouslySetInnerHTML={{ __html: renderedContent }}
       onClick={handleClick}
       style={{
-        // Custom styling for markdown elements
-        '--tw-prose-body': 'rgb(63 63 70)', // zinc-700 - light mode body text
-        '--tw-prose-headings': 'rgb(39 39 42)', // zinc-800 - light mode headings
-        '--tw-prose-links': 'rgb(37 99 235)', // blue-600 - light mode links
-        '--tw-prose-bold': 'rgb(39 39 42)', // zinc-800 - light mode bold
-        '--tw-prose-code': 'rgb(220 38 127)', // pink-600 - light mode code
-        '--tw-prose-pre-code': 'rgb(244 244 245)', // zinc-100 - light mode pre code
-        '--tw-prose-pre-bg': 'rgb(39 39 42)', // zinc-800 - light mode pre bg
-        '--tw-prose-invert-body': 'rgb(244 244 245)', // zinc-100 - dark mode body text (light)
-        '--tw-prose-invert-headings': 'rgb(255 255 255)', // white - dark mode headings
-        '--tw-prose-invert-links': 'rgb(96 165 250)', // blue-400 - dark mode links
-        '--tw-prose-invert-bold': 'rgb(255 255 255)', // white - dark mode bold
-        '--tw-prose-invert-code': 'rgb(251 113 133)', // rose-400 - dark mode code
-        '--tw-prose-invert-pre-code': 'rgb(244 244 245)', // zinc-100 - dark mode pre code
-        '--tw-prose-invert-pre-bg': 'rgb(24 24 27)', // zinc-900 - dark mode pre bg
+        // Prose colours resolve to the theme tokens, so one set serves both
+        // themes and every preset — no separate invert palette.
+        '--tw-prose-body': 'color-mix(in oklab, var(--foreground) 70%, transparent)',
+        '--tw-prose-headings': 'var(--foreground)',
+        '--tw-prose-links': 'var(--primary)',
+        '--tw-prose-bold': 'var(--foreground)',
+        '--tw-prose-code': 'color-mix(in oklab, var(--foreground) 70%, transparent)',
+        '--tw-prose-pre-code': 'color-mix(in oklab, var(--foreground) 80%, transparent)',
+        '--tw-prose-pre-bg': 'color-mix(in oklab, var(--foreground) 3%, transparent)',
       } as React.CSSProperties}
     />
   );
@@ -398,12 +392,9 @@ User question: ${prompt}`;
       {/* Custom styles for markdown content */}
       <style jsx global>{`
         .markdown-content {
-          font-size: 0.875rem;
-          line-height: 1.4;
-          color: rgb(63 63 70); /* zinc-700 for light mode */
-        }
-        .dark .markdown-content {
-          color: rgb(244 244 245); /* zinc-100 for dark mode */
+          font-size: 13px;
+          line-height: 1.65;
+          color: color-mix(in oklab, var(--foreground) 70%, transparent);
         }
         .markdown-content h1,
         .markdown-content h2,
@@ -413,15 +404,7 @@ User question: ${prompt}`;
         .markdown-content h6 {
           margin: 0.5em 0 0.25em 0;
           font-weight: 600;
-          color: rgb(39 39 42); /* zinc-800 for light mode */
-        }
-        .dark .markdown-content h1,
-        .dark .markdown-content h2,
-        .dark .markdown-content h3,
-        .dark .markdown-content h4,
-        .dark .markdown-content h5,
-        .dark .markdown-content h6 {
-          color: rgb(255 255 255); /* white for dark mode headings */
+          color: var(--foreground);
         }
         .markdown-content h1 { font-size: 1.1em; }
         .markdown-content h2 { font-size: 1.05em; }
@@ -441,64 +424,40 @@ User question: ${prompt}`;
           color: inherit;
         }
         .markdown-content code {
-          background-color: rgba(0, 0, 0, 0.1);
+          background-color: color-mix(in oklab, var(--foreground) 6%, transparent);
           border-radius: 0.25rem;
-          padding: 0.125rem 0.25rem;
-          font-size: 0.8em;
-        }
-        .dark .markdown-content code {
-          background-color: rgba(255, 255, 255, 0.1);
+          padding: 0.125rem 0.375rem;
+          font-size: 12px;
         }
         .markdown-content pre {
-          background-color: rgba(0, 0, 0, 0.05);
-          border-radius: 0.375rem;
+          background-color: color-mix(in oklab, var(--foreground) 3%, transparent);
+          border-radius: 0.75rem;
           padding: 0.75rem;
           margin: 0.5em 0;
           overflow-x: auto;
-        }
-        .dark .markdown-content pre {
-          background-color: rgba(255, 255, 255, 0.05);
         }
         .markdown-content pre code {
           background-color: transparent;
           padding: 0;
         }
         .markdown-content a {
-          color: rgb(37 99 235);
-          text-decoration: underline;
-          text-decoration-color: rgba(37, 99, 235, 0.3);
+          color: var(--primary);
+          text-decoration: none;
           transition: all 0.2s ease;
         }
         .markdown-content a:hover {
-          color: rgb(29 78 216);
-          text-decoration-color: rgba(29, 78, 216, 0.6);
-        }
-        .dark .markdown-content a {
-          color: rgb(96 165 250);
-          text-decoration-color: rgba(96, 165, 250, 0.3);
-        }
-        .dark .markdown-content a:hover {
-          color: rgb(147 197 253);
-          text-decoration-color: rgba(147, 197, 253, 0.6);
+          text-decoration: underline;
         }
         .markdown-content blockquote {
-          border-left: 3px solid rgba(37, 99, 235, 0.3);
+          border-left: 3px solid color-mix(in oklab, var(--primary) 30%, transparent);
           padding-left: 1rem;
           margin: 0.5em 0;
           font-style: italic;
-          opacity: 0.8;
-          color: inherit;
-        }
-        .dark .markdown-content blockquote {
-          border-left-color: rgba(96, 165, 250, 0.3);
-          color: rgb(212 212 216); /* zinc-300 for dark mode blockquotes */
+          color: color-mix(in oklab, var(--foreground) 50%, transparent);
         }
         .markdown-content strong {
           font-weight: 600;
-          color: rgb(39 39 42); /* zinc-800 for light mode */
-        }
-        .dark .markdown-content strong {
-          color: rgb(255 255 255); /* white for dark mode */
+          color: var(--foreground);
         }
         .markdown-content em {
           font-style: italic;
@@ -510,7 +469,7 @@ User question: ${prompt}`;
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         exit={{ opacity: 0 }}
-        className="fixed inset-0 z-99999 bg-black/40 backdrop-blur-md"
+        className="fixed inset-0 z-99999 bg-background/60 backdrop-blur-md"
       >
         <div className="flex items-center justify-center min-h-screen px-4">
           <motion.div
@@ -519,10 +478,10 @@ User question: ${prompt}`;
             animate={{ opacity: 1, scale: 1, y: 0 }}
             exit={{ opacity: 0, scale: 0.95, y: -20 }}
             transition={{ duration: 0.2, ease: "easeOut" }}
-            className="w-full max-w-2xl bg-white/80 dark:bg-black/80 backdrop-blur-xl rounded-xl shadow-2xl border border-white/20 dark:border-zinc-800/50 overflow-hidden"
+            className="w-full max-w-2xl bg-popover/95 text-popover-foreground backdrop-blur-xl rounded-2xl shadow-2xl border border-border overflow-hidden"
           >
             {/* Search Input */}
-            <div className="flex items-center gap-3 px-4 py-4 border-b border-white/20 dark:border-zinc-800/50 bg-white/50 dark:bg-black/50 backdrop-blur-sm">
+            <div className="flex items-center gap-3 px-4 h-14 border-b border-foreground/[0.06]">
               {/* AI Toggle Switch */}
               {/* <div className="flex items-center gap-2 mr-2">
                 <button
@@ -532,35 +491,35 @@ User question: ${prompt}`;
                     setAiResponse("");
                     setAiConversation([]);
                   }}
-                  className={`relative inline-flex h-6 w-11 items-center rounded-full transition-colors focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 ${
-                    isAIMode ? 'bg-blue-600' : 'bg-zinc-300 dark:bg-zinc-700'
+                  className={`relative inline-flex h-6 w-11 items-center rounded-full transition-colors focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 ${
+                    isAIMode ? 'bg-primary' : 'bg-foreground/15'
                   }`}
                   role="switch"
                   aria-checked={isAIMode}
                   aria-label="Toggle AI search mode"
                 >
                   <span
-                    className={`inline-block h-4 w-4 transform rounded-full bg-white transition-transform ${
+                    className={`inline-block h-4 w-4 transform rounded-full bg-background transition-transform ${
                       isAIMode ? 'translate-x-6' : 'translate-x-1'
                     } flex items-center justify-center`}
                   >
                     {isAIMode ? (
-                      <div className="m-1 w-2 h-2 bg-blue-600 rounded-full" />
+                      <div className="m-1 w-2 h-2 bg-primary rounded-full" />
                     ) : (
-                      <div className="m-1 w-2 h-2 bg-zinc-400 rounded-full" />
+                      <div className="m-1 w-2 h-2 bg-foreground/40 rounded-full" />
                     )}
                   </span>
                 </button>
-                <span className="text-xs text-zinc-500 dark:text-zinc-400">
+                <span className="text-xs text-muted-foreground">
                   {isAIMode ? 'AI' : 'Search'}
                 </span>
               </div> */}
 
               {/* Search Icon */}
               {isAIMode ? (
-                <Bot className="w-5 h-5 text-blue-600 dark:text-blue-400" />
+                <Bot className="w-4 h-4 text-primary" />
               ) : (
-                <Search className="w-5 h-5 text-zinc-600 dark:text-zinc-400" />
+                <Search className="w-4 h-4 text-foreground/40" />
               )}
 
               {/* Input Field */}
@@ -571,29 +530,29 @@ User question: ${prompt}`;
                   placeholder={isAIMode ? "Ask AI about components..." : "Search components and documentation..."}
                   value={query}
                   onChange={(e) => setQuery(e.target.value)}
-                  className="w-full bg-transparent text-zinc-900 dark:text-zinc-100 placeholder-zinc-500 outline-none text-lg"
+                  className="w-full bg-transparent text-[14px] text-foreground placeholder:text-foreground/40 outline-none"
                 />
               </form>
 
               {/* Results Counter / AI Status */}
-              <div className="flex items-center gap-2 text-xs text-zinc-500">
+              <div className="flex items-center gap-2 text-[12px] text-foreground/40">
                 {isAIMode ? (
-                  <span className="px-2 py-1 bg-blue-100 dark:bg-blue-900/50 backdrop-blur-sm rounded text-blue-600 dark:text-blue-400 border border-blue-200 dark:border-blue-700/50">
+                  <span className="px-2 py-0.5 rounded-md bg-primary/15 text-primary text-[11px] font-medium">
                     {isAILoading ? 'AI thinking...' : 'AI Ready'}
                   </span>
                 ) : (
-                  <span className="px-2 py-1 bg-white/70 dark:bg-zinc-900/70 backdrop-blur-sm rounded text-zinc-600 dark:text-zinc-400 border border-white/20 dark:border-zinc-700/50">
+                  <span className="tabular-nums">
                     {filteredItems.length} results
                   </span>
                 )}
-                <kbd className="px-2 py-1 bg-white/70 dark:bg-zinc-900/70 backdrop-blur-sm rounded text-zinc-600 dark:text-zinc-400 border border-white/20 dark:border-zinc-700/50">
-                  <Command className="w-3 h-3 inline mr-1" />K
+                <kbd className="flex items-center px-1.5 py-0.5 bg-foreground/[0.04] rounded-md border border-foreground/[0.08] font-mono text-[11px] text-foreground/50">
+                  <Command className="w-3 h-3 inline mr-0.5" />K
                 </kbd>
               </div>
             </div>
 
             {/* Results */}
-            <div ref={resultsRef} className="max-h-[500px] overflow-y-auto bg-white/30 dark:bg-black/30 backdrop-blur-sm">
+            <div ref={resultsRef} className="max-h-[500px] overflow-y-auto">
               {isAIMode ? (
                 /* AI Chat Interface */
                 <div className="p-4 space-y-4">
@@ -603,7 +562,7 @@ User question: ${prompt}`;
                       <div className={`flex gap-2 max-w-[80%] ${message.type === 'user' ? 'flex-row-reverse' : 'flex-row'}`}>
                         <div className="w-10 h-10 rounded-full flex items-center justify-center flex-shrink-0">
                           {message.type === 'user' ? (
-                            <div className="w-8 h-8 rounded-full bg-blue-600 text-white flex items-center justify-center">
+                            <div className="w-8 h-8 rounded-full bg-primary text-primary-foreground flex items-center justify-center">
                               <User className="w-4 h-4" />
                             </div>
                           ) : (
@@ -612,10 +571,10 @@ User question: ${prompt}`;
                         </div>
                         <div className={`rounded-2xl px-4 py-3 ${
                           message.type === 'user'
-                            ? 'bg-blue-600 text-white'
-                            : 'bg-white/70 dark:bg-zinc-800/70 backdrop-blur-sm border border-white/20 dark:border-zinc-700/50 text-zinc-900 dark:text-zinc-100'
+                            ? 'bg-primary text-primary-foreground'
+                            : 'bg-foreground/[0.04] border border-foreground/[0.06] text-foreground'
                         }`}>
-                          <div className="text-sm whitespace-pre-wrap">
+                          <div className="text-[13px] whitespace-pre-wrap">
                             {message.type === 'ai' ? (
                               <AIResponseRenderer content={message.content} onLinkClick={handleSelectAndClose} />
                             ) : (
@@ -634,14 +593,14 @@ User question: ${prompt}`;
                         <div className="w-10 h-10 rounded-full flex items-center justify-center flex-shrink-0">
                           <AILogo size="md" loading={isAILoading} />
                         </div>
-                        <div className="rounded-2xl px-4 py-3 bg-white/70 dark:bg-zinc-800/70 backdrop-blur-sm border border-white/20 dark:border-zinc-700/50 text-zinc-900 dark:text-zinc-100">
+                        <div className="rounded-2xl px-4 py-3 bg-foreground/[0.04] border border-foreground/[0.06] text-foreground">
                           {isAILoading && !aiResponse ? (
                             <div className="flex items-center gap-2">
-                              <div className="animate-spin w-4 h-4 border-2 border-blue-600 border-t-transparent rounded-full"></div>
-                              <span className="text-sm text-zinc-500">AI is thinking...</span>
+                              <div className="animate-spin w-4 h-4 border-2 border-primary border-t-transparent rounded-full"></div>
+                              <span className="text-[13px] text-foreground/50">AI is thinking...</span>
                             </div>
                           ) : (
-                            <div className="text-sm whitespace-pre-wrap">
+                            <div className="text-[13px] whitespace-pre-wrap">
                               <AIResponseRenderer content={aiResponse} onLinkClick={handleSelectAndClose} />
                             </div>
                           )}
@@ -656,8 +615,8 @@ User question: ${prompt}`;
                       <div className="w-20 h-20 mx-auto mb-4 rounded-full flex items-center justify-center">
                         <AILogo size="lg" />
                       </div>
-                      <h3 className="text-lg font-medium text-zinc-900 dark:text-zinc-100 mb-2">AI Assistant Ready</h3>
-                      <p className="text-sm text-zinc-500 dark:text-zinc-400 max-w-md mx-auto">
+                      <h3 className="text-[14px] font-semibold text-foreground mb-2">AI Assistant Ready</h3>
+                      <p className="text-[13px] leading-[1.65] text-foreground/50 max-w-md mx-auto">
                         Ask me anything about the Algorize UI components! I can help you find the right component, explain usage patterns, or provide implementation guidance.
                       </p>
                       <div className="mt-4 flex flex-wrap gap-2 justify-center">
@@ -675,7 +634,7 @@ User question: ${prompt}`;
                               fetchAIResponse(suggestion);
                               setQuery("");
                             }}
-                            className="px-3 py-1.5 text-xs bg-white/70 dark:bg-zinc-800/70 backdrop-blur-sm rounded-full text-zinc-600 dark:text-zinc-400 border border-white/20 dark:border-zinc-700/50 hover:bg-white/90 dark:hover:bg-zinc-700/90 transition-colors"
+                            className="px-3 py-1 text-[12px] bg-foreground/[0.04] rounded-full text-foreground/70 hover:bg-foreground/10 hover:text-foreground transition-colors"
                           >
                             {suggestion}
                           </button>
@@ -687,38 +646,48 @@ User question: ${prompt}`;
               ) : (
                 /* Regular Search Results */
                 filteredItems.length > 0 ? (
-                  <div className="py-2">
+                  <div className="p-2">
                     {filteredItems.map((item, index) => (
                       <Link
                         key={item.id}
                         href={navHref(item, framework)}
                         onClick={handleSelectAndClose}
-                        className={`flex items-center gap-3 px-4 py-3 hover:bg-white/50 dark:hover:bg-zinc-900/50 transition-colors ${
+                        className={`group flex items-center gap-3 px-3 py-2.5 rounded-lg transition-colors ${
                           index === selectedIndex
-                            ? "bg-white/50 dark:bg-zinc-900/50"
-                            : ""
+                            ? "bg-foreground/[0.05]"
+                            : "hover:bg-foreground/[0.04]"
                         }`}
                       >
-                        <div className="flex-shrink-0 text-zinc-600 dark:text-zinc-500">
+                        {/* The selected row carries the accent on its icon and
+                            title — the only place the palette uses colour. */}
+                        <div
+                          className={`flex-shrink-0 transition-colors ${
+                            index === selectedIndex ? "text-primary" : "text-foreground/35"
+                          }`}
+                        >
                           {getItemIcon(item)}
                         </div>
                         <div className="flex-1 min-w-0">
-                          <div className="font-medium text-zinc-900 dark:text-zinc-100 truncate">
+                          <div
+                            className={`text-[13px] font-medium truncate transition-colors ${
+                              index === selectedIndex ? "text-primary" : "text-foreground"
+                            }`}
+                          >
                             {item.title}
                           </div>
-                          <div className="text-sm text-zinc-500 dark:text-zinc-400 truncate">
+                          <div className="text-[12px] text-foreground/40 truncate">
                             {item.description}
                           </div>
                         </div>
-                        <div className="flex-shrink-0 text-xs text-zinc-400 bg-white/70 dark:bg-zinc-900/70 backdrop-blur-sm px-2 py-1 rounded border border-white/20 dark:border-zinc-700/50">
+                        <div className="flex-shrink-0 text-[11px] font-semibold uppercase tracking-[0.08em] text-foreground/35">
                           {item.category}
                         </div>
                       </Link>
                     ))}
                   </div>
                 ) : (
-                  <div className="py-8 text-center text-zinc-600 dark:text-zinc-500">
-                    <Search className="w-8 h-8 mx-auto mb-2 opacity-50" />
+                  <div className="py-10 text-center text-[13px] text-foreground/50">
+                    <Search className="w-6 h-6 mx-auto mb-2 text-foreground/30" />
                     <p>No results found for &quot;{query}&quot;</p>
                   </div>
                 )
@@ -726,33 +695,33 @@ User question: ${prompt}`;
             </div>
 
             {/* Footer */}
-            <div className="px-4 py-3 border-t border-white/20 dark:border-zinc-800/50 bg-white/50 dark:bg-black/50 backdrop-blur-sm">
-              <div className="flex items-center justify-between text-xs text-zinc-500">
+            <div className="px-4 py-2.5 border-t border-foreground/[0.06]">
+              <div className="flex items-center justify-between text-[12px] text-foreground/40">
                 <div className="flex items-center gap-4">
                   <span className="flex items-center gap-1">
-                    <kbd className="px-1.5 py-0.5 bg-white/70 dark:bg-zinc-900/70 backdrop-blur-sm rounded border border-white/20 dark:border-zinc-700/50">↑</kbd>
-                    <kbd className="px-1.5 py-0.5 bg-white/70 dark:bg-zinc-900/70 backdrop-blur-sm rounded border border-white/20 dark:border-zinc-700/50">↓</kbd>
+                    <kbd className="px-1.5 py-0.5 bg-foreground/[0.04] rounded-md border border-foreground/[0.08] font-mono text-[11px] text-foreground/50">↑</kbd>
+                    <kbd className="px-1.5 py-0.5 bg-foreground/[0.04] rounded-md border border-foreground/[0.08] font-mono text-[11px] text-foreground/50">↓</kbd>
                     to navigate
                   </span>
                   <span className="flex items-center gap-1">
-                    <kbd className="px-1.5 py-0.5 bg-white/70 dark:bg-zinc-900/70 backdrop-blur-sm rounded border border-white/20 dark:border-zinc-700/50">↵</kbd>
+                    <kbd className="px-1.5 py-0.5 bg-foreground/[0.04] rounded-md border border-foreground/[0.08] font-mono text-[11px] text-foreground/50">↵</kbd>
                     {isAIMode ? 'to send' : 'to select'}
                   </span>
                   {/* Clear Search Button */}
                   <button
                     onClick={handleClearSearch}
-                    className="flex items-center gap-1 px-2 py-1 bg-white/70 dark:bg-zinc-900/70 backdrop-blur-sm rounded border border-white/20 dark:border-zinc-700/50 hover:bg-white/90 dark:hover:bg-zinc-700/90 transition-colors text-zinc-600 dark:text-zinc-400 hover:text-zinc-800 dark:hover:text-zinc-200"
+                    className="flex items-center gap-1 px-2 py-0.5 rounded-md bg-foreground/[0.04] hover:bg-foreground/10 transition-colors text-foreground/50 hover:text-foreground"
                     title={isAIMode ? "Clear AI conversation (Ctrl+K)" : "Clear search (Ctrl+K)"}
                   >
                     <X className="w-3 h-3" />
                     <span>Clear</span>
-                    <kbd className="ml-1 px-1 py-0.5 bg-black/10 dark:bg-white/10 rounded text-xs">
+                    <kbd className="ml-1 px-1 py-0.5 bg-foreground/[0.06] rounded font-mono text-[11px]">
                       ⌘K
                     </kbd>
                   </button>
                 </div>
                 <span className="flex items-center gap-1">
-                  <kbd className="px-1.5 py-0.5 bg-white/70 dark:bg-zinc-900/70 backdrop-blur-sm rounded border border-white/20 dark:border-zinc-700/50">esc</kbd>
+                  <kbd className="px-1.5 py-0.5 bg-foreground/[0.04] rounded-md border border-foreground/[0.08] font-mono text-[11px] text-foreground/50">esc</kbd>
                   to close
                 </span>
               </div>

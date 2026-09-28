@@ -71,6 +71,13 @@ export default function NotificationCard() {
 
 ## Installation
 
+Register the @algorize-ui registry once per project, then add the component:
+
+```bash
+npx shadcn@latest registry add @algorize-ui=https://algorize-ui.vercel.app/r/{name}.json
+npx shadcn@latest add @algorize-ui/verify-badge
+```
+
 ## Examples
 
 ## Features
@@ -110,7 +117,7 @@ Explore the Verify Badge's authentic design features, providing recognizable tru
 
           string (hex/css color)
 
-          "#1d9bf0"
+          "var(--primary)"
 
           The theme color of the badge.
 

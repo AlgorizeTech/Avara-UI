@@ -1,10 +1,10 @@
 # Text Animation
 
-A powerful typography component that breathes life into your text using Framer Motion. It supports multiple animation variants like typewriter effects, focus reveals, 3D flips, and more.
+A powerful typography component that breathes life into your text with plain CSS keyframes — no animation library. It supports multiple animation variants like typewriter effects, focus reveals, 3D flips, and more.
 
 It is perfect for hero sections, landing page headers, and grabbing user attention.
 
-Each effect fires when it scrolls into view (`whileInView`, once), so scroll a preview back into frame — or hit its reload button — to replay.
+Each effect fires when it scrolls into view (once, via an `IntersectionObserver`), so scroll a preview back into frame — or hit its reload button — to replay.
 
 export const usageDefault = `import { TextAnimation } from "@/components/custom/blocks/TextAnimationBlock";
 
@@ -44,6 +44,13 @@ export default function HeadlineAnimation() {
 }`;
 
 ## Installation
+
+Register the @algorize-ui registry once per project, then add the component:
+
+```bash
+npx shadcn@latest registry add @algorize-ui=https://algorize-ui.vercel.app/r/{name}.json
+npx shadcn@latest add @algorize-ui/text-animation
+```
 
 ## Examples
 
@@ -124,6 +131,16 @@ export default function HeadlineAnimation() {
           undefined
 
           Accepts all native HTML attributes (e.g., id, onClick) which are seamlessly forwarded to the wrapper element.
+
+          TextAnimation
+
+          renderWord
+
+          (word: string, index: number) =&gt; ReactNode
+
+          —
+
+          Swap what a word renders as while keeping its entrance — a coloured span, a word that later changes. Word-level variants only: pop-in, flip, blur-in-up. Component Wall uses it for its accent and turning word.
 
 ---
 

@@ -138,7 +138,7 @@ export default function ModernFleet() {
           prop: "variant",
           value: '"modern"',
           effect:
-            "for a backdrop-blurred glass panel over a darker canvas.",
+            "for the Profile Page treatment: an aurora behind the whole tracker, the vehicle list as a frosted slab, and the map in a glass-edged panel.",
         },
       ],
       props: { variant: "modern" },
@@ -151,30 +151,30 @@ export default function ModernFleet() {
 Explore the Fleet Tracker map features, including live marker positioning, custom tooltips, and interactive geographic visualization.
 
 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 my-6 not-prose">
-  <div className="p-6 rounded-2xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900">
-    <h3 className="text-lg font-semibold text-zinc-900 dark:text-zinc-50 mb-2">Customizable</h3>
-    <p className="text-zinc-600 dark:text-zinc-400 text-sm">Easily adapt the component's styling and behavior to fit your application's unique design system.</p>
+  <div className="p-6 rounded-2xl border border-border bg-card">
+    <h3 className="text-lg font-semibold text-card-foreground mb-2">Customizable</h3>
+    <p className="text-muted-foreground text-sm">Easily adapt the component's styling and behavior to fit your application's unique design system.</p>
   </div>
-  <div className="p-6 rounded-2xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900">
-    <h3 className="text-lg font-semibold text-zinc-900 dark:text-zinc-50 mb-2">Accessible</h3>
-    <p className="text-zinc-600 dark:text-zinc-400 text-sm">Built with accessibility in mind, ensuring all users can interact with your application effectively.</p>
+  <div className="p-6 rounded-2xl border border-border bg-card">
+    <h3 className="text-lg font-semibold text-card-foreground mb-2">Accessible</h3>
+    <p className="text-muted-foreground text-sm">Built with accessibility in mind, ensuring all users can interact with your application effectively.</p>
   </div>
-  <div className="p-6 rounded-2xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900">
-    <h3 className="text-lg font-semibold text-zinc-900 dark:text-zinc-50 mb-2">Responsive</h3>
-    <p className="text-zinc-600 dark:text-zinc-400 text-sm">Fully responsive design that looks and works great across desktop, tablet, and mobile devices.</p>
+  <div className="p-6 rounded-2xl border border-border bg-card">
+    <h3 className="text-lg font-semibold text-card-foreground mb-2">Responsive</h3>
+    <p className="text-muted-foreground text-sm">Fully responsive design that looks and works great across desktop, tablet, and mobile devices.</p>
   </div>
-  <div className="p-6 rounded-2xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900">
-    <h3 className="text-lg font-semibold text-zinc-900 dark:text-zinc-50 mb-2">Performant</h3>
-    <p className="text-zinc-600 dark:text-zinc-400 text-sm">Optimized for maximum performance with minimal re-renders and efficient state management.</p>
+  <div className="p-6 rounded-2xl border border-border bg-card">
+    <h3 className="text-lg font-semibold text-card-foreground mb-2">Performant</h3>
+    <p className="text-muted-foreground text-sm">Optimized for maximum performance with minimal re-renders and efficient state management.</p>
   </div>
 </div>
 
 ## Best Practices & Guidelines
 
 <div className="flex flex-col gap-4 my-6 not-prose">
-  <div className="p-5 rounded-xl border border-blue-200 dark:border-blue-900/50 bg-blue-50/50 dark:bg-blue-950/20">
-    <h4 className="text-base font-semibold text-blue-900 dark:text-blue-300 mb-1">Usage Guidelines</h4>
-    <p className="text-blue-800 dark:text-blue-400/80 text-sm">Follow standard design principles when implementing this component. Ensure proper contrast, spacing, and context within your layout.</p>
+  <div className="rounded-xl border border-foreground/[0.06] bg-foreground/[0.03] p-4">
+    <h4 className="font-sans text-[14px] font-semibold text-foreground mb-1">Usage Guidelines</h4>
+    <p className="text-[13px] leading-relaxed text-foreground/50">Follow standard design principles when implementing this component. Ensure proper contrast, spacing, and context within your layout.</p>
   </div>
 </div>
 
@@ -220,8 +220,9 @@ Explore the Fleet Tracker map features, including live marker positioning, custo
           <code>"default"</code>
         </td>
         <td>
-          Applies overarching structural layouts, including floating sidebars
-          versus split-views.
+          <code>default</code> is a split view, <code>minimal</code> floats
+          the list over the map, <code>modern</code> is the glass treatment
+          from Profile Page: an aurora behind, a frosted list, a glass-edged map.
         </td>
       </tr>
       <tr>
@@ -239,6 +240,62 @@ Explore the Fleet Tracker map features, including live marker positioning, custo
         <td>
           Applies global color themes to the active map markers, sidebar icons,
           and focus rings.
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <code>zoom</code>
+        </td>
+        <td>
+          <code>number</code>
+        </td>
+        <td>
+          <code>15</code>
+        </td>
+        <td>
+          Initial zoom level and active vehicle focus zoom level. Defaults to <code>15</code> for street/neighborhood detail.
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <code>tileApiKey</code>
+        </td>
+        <td>
+          <code>string</code>
+        </td>
+        <td>
+          <code>undefined</code>
+        </td>
+        <td>
+          Optional CARTO API key if you choose to use CARTO Basemaps. By default, OpenStreetMap tiles are used with zero API key required.
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <code>tileUrl</code>
+        </td>
+        <td>
+          <code>string</code>
+        </td>
+        <td>
+          <code>OpenStreetMap tile URL</code>
+        </td>
+        <td>
+          Custom basemap raster tile URL template for light mode (e.g., <code>https://&#123;s&#125;.tile.openstreetmap.org/&#123;z&#125;/&#123;x&#125;/&#123;y&#125;.png</code>).
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <code>darkTileUrl</code>
+        </td>
+        <td>
+          <code>string</code>
+        </td>
+        <td>
+          <code>undefined</code>
+        </td>
+        <td>
+          Custom raster tile URL template for dark mode. If omitted, standard OpenStreetMap tiles are dynamically dark-graded.
         </td>
       </tr>
     </tbody>

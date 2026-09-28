@@ -28,7 +28,41 @@ export default function ValidatedDatePicker() {
   );
 }`;
 
+export const usageDisablePast = `"use client";
+
+export default function FutureOnlyPicker() {
+  const [date, setDate] = useState(null);
+
+  // Every day before today is greyed out and cannot be clicked.
+  // Use minDate / maxDate for an arbitrary window instead.
+  return (
+    
+  );
+}`;
+
+export const usageTime = `"use client";
+
+export default function DateTimePicker() {
+  const [date, setDate] = useState(null);
+
+  // showTime adds hour / minute / AM-PM columns — to the right of the
+  // calendar when the viewport has room, under it otherwise. Picking a
+  // day keeps the popover open until Done, and the Date you receive carries
+  // the time. Pair it with disablePast to also block times that have passed
+  // today.
+  return (
+    
+  );
+}`;
+
 ## Installation
+
+Register the @algorize-ui registry once per project, then add the component:
+
+```bash
+npx shadcn@latest registry add @algorize-ui=https://algorize-ui.vercel.app/r/{name}.json
+npx shadcn@latest add @algorize-ui/date-picker
+```
 
 ## Examples
 
@@ -142,6 +176,36 @@ Discover the Date Picker's flexible input formatting, popover calendar selection
           false
         
         Disables interactions and applies a faded, read-only style.
+
+        disablePast
+        boolean
+        false
+        Greys out every day before today so it cannot be picked. With showTime, times already passed today are disabled as well.
+
+        minDate
+        Date
+        undefined
+        Earliest selectable day (inclusive). Combined with disablePast, the later bound wins.
+
+        maxDate
+        Date
+        undefined
+        Latest selectable day (inclusive).
+
+        showTime
+        boolean
+        false
+        Adds hour / minute (and AM-PM) columns — to the right of the calendar when the viewport has room (the popover widens to 30rem), under it otherwise. The popover also flips to hang from the trigger's right edge when that is the side with space. Picking a day keeps the popover open until Done, and value carries the chosen time.
+
+        timeFormat
+        "12h" | "24h"
+        "12h"
+        12-hour clock with an AM / PM column, or a 24-hour one.
+
+        minuteStep
+        number
+        5
+        Minute granularity of the time columns.
 
 ---
 

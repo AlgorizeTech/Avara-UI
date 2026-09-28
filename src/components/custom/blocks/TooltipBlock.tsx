@@ -138,6 +138,15 @@ export interface TooltipContentProps
   sideOffset?: number;
 }
 
+// The entrance grows out of the trigger's edge: a tooltip above the trigger
+// scales from its own bottom edge and slides up a touch, and so on.
+const ENTER_FROM_SIDE: Record<NonNullable<TooltipContentProps["side"]>, string> = {
+  top: "origin-bottom slide-in-from-bottom-1",
+  bottom: "origin-top slide-in-from-top-1",
+  left: "origin-right slide-in-from-right-1",
+  right: "origin-left slide-in-from-left-1",
+};
+
 export function TooltipContent({
   side = "top",
   align = "center",
@@ -155,9 +164,13 @@ export function TooltipContent({
   const [positioned, setPositioned] = useState(false);
   const contentRef = useRef<HTMLDivElement>(null);
 
-  useEffect(() => {
+  // Forget the measurement on close, so the next open cannot flash at last
+  // time’s coordinates before the layout effect re-measures.
+  const [wasOpen, setWasOpen] = useState(open);
+  if (wasOpen !== open) {
+    setWasOpen(open);
     if (!open) setPositioned(false);
-  }, [open]);
+  }
 
   useIsomorphicLayoutEffect(() => {
     if (!open || !triggerEl || !contentRef.current) return;
@@ -169,7 +182,12 @@ export function TooltipContent({
 
     const updatePosition = () => {
       const trigger = triggerEl.getBoundingClientRect();
-      const content = contentRef.current!.getBoundingClientRect();
+      // offsetWidth/Height are the untransformed layout box; a bounding rect
+      // would report the shrunken size while the zoom-in entrance runs.
+      const content = {
+        width: contentRef.current!.offsetWidth,
+        height: contentRef.current!.offsetHeight,
+      };
       let top = 0;
       let left = 0;
 
@@ -218,7 +236,13 @@ export function TooltipContent({
       ref={contentRef}
       role="tooltip"
       className={cn(
-        "absolute z-[9999] px-3 py-1.5 text-xs font-medium text-primary-foreground bg-primary rounded-md shadow-md animate-in fade-in zoom-in-95 duration-150 pointer-events-none",
+        "absolute z-[9999] px-3 py-1.5 text-xs font-medium text-primary-foreground bg-primary rounded-md shadow-md pointer-events-none",
+        // `duration-150` sets transition-duration too, and the browser default
+        // transition-property is `all` — without `transition-none` top/left
+        // would tween from the placeholder coordinates, sliding the tooltip
+        // across the screen instead of opening in place.
+        "transition-none animate-in fade-in zoom-in-95 duration-150",
+        ENTER_FROM_SIDE[side],
         className,
       )}
       style={{

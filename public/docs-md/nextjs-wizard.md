@@ -1,10 +1,10 @@
 # Progress Wizard
 
-A "Typeform" style multi-step wizard featuring buttery smooth vertical slide transitions powered by GSAP, native keyboard navigation, and an interactive progress bar.
+A "Typeform" style multi-step wizard featuring buttery smooth vertical slide transitions powered by plain CSS transitions, native keyboard navigation, and an interactive progress bar.
 
 This component relies on the **Compound Component** pattern using React Context. This allows you to place the `WizardProgress` bar independently of the main `WizardContainer`, and nest complex forms inside the `WizardStep` blocks without passing deep props.
 
-Because every piece reads the wizard's state from context, you compose the flow yourself — drop the progress bar wherever you like, or leave it out. Press **Enter** inside any step to advance.
+Because every piece reads the wizard's state from context, you compose the flow yourself — drop the progress bar wherever you like, or leave it out. Press **Enter** inside any step to advance. It includes dynamic theme binding via the `color` prop (`"indigo"`, `"rose"`, `"emerald"`, `"zinc"`, `"blue"`, `"primary"`, or hex) to automatically style the progress bar, input focus rings, and action buttons.
 
 export const wizardSteps = `        
           1. What's your first name?
@@ -20,7 +20,7 @@ export const wizardSteps = `
               Your workspace has been successfully configured.
             
              setRunKey((prev) => prev + 1)}
-              className="mt-8 px-8 py-3.5 rounded-full bg-zinc-900 text-white dark:bg-white dark:text-zinc-900 font-bold hover:scale-105 transition-transform"
+              className="mt-8 px-8 py-3.5 rounded-full bg-primary text-primary-foreground font-semibold hover:scale-105 transition-transform"
             >
               Finish & Restart
 
@@ -48,7 +48,7 @@ ${wizardPreamble}
     
       {/* Top progress bar — reads totalSteps from context */}
 
-      {/* Overflow-hidden container the GSAP slide happens inside */}
+      {/* Overflow-hidden container the slide happens inside */}
       
 ${wizardSteps}
 
@@ -65,7 +65,7 @@ ${wizardPreamble}
     
       {/* Top progress bar — reads totalSteps from context */}
 
-      {/* Overflow-hidden container the GSAP slide happens inside */}
+      {/* Overflow-hidden container the slide happens inside */}
       
 ${wizardSteps}
 
@@ -81,7 +81,7 @@ ${wizardPreamble}
     // WizardProgress is an independent child — omit it entirely and the
     // steps still animate and navigate exactly the same.
     
-      {/* Overflow-hidden container the GSAP slide happens inside */}
+      {/* Overflow-hidden container the slide happens inside */}
       
 ${wizardSteps}
 
@@ -89,6 +89,13 @@ ${wizardSteps}
 }`;
 
 ## Installation
+
+Register the @algorize-ui registry once per project, then add the component:
+
+```bash
+npx shadcn@latest registry add @algorize-ui=https://algorize-ui.vercel.app/r/{name}.json
+npx shadcn@latest add @algorize-ui/wizard
+```
 
 ## Examples
 
@@ -98,8 +105,8 @@ Learn about the Wizard component's multi-step capabilities, providing state mana
     Compound Components
     Uses React Context to share state across child components, preventing messy prop drilling and enabling flexible layouts.
 
-    GSAP Animations
-    Features premium, buttery smooth vertical sliding transitions engineered with GSAP.
+    Library-free Animations
+    Features premium, buttery smooth vertical sliding transitions built on CSS transitions — no animation library to install.
 
     Keyboard Navigation
     Natively supports "Enter" key progression to submit forms and move to the next step instantly.
@@ -160,7 +167,7 @@ Learn about the Wizard component's multi-step capabilities, providing state mana
 
           Required
 
-          The 0-based index of this specific step. Used by the GSAP animation
+          The 0-based index of this specific step. Used by the animation
           engine to calculate the vertical Y-offset relative to the{" "}
           currentStep.
 

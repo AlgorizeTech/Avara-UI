@@ -38,25 +38,25 @@ export type SupportLayout = "chat" | "table";
 const supportVariants: Record<SupportVariant, Record<string, string>> = {
   default: {
     wrapper:
-      "bg-white dark:bg-[#09090b] border border-border shadow-xl",
+      "bg-background text-foreground border border-border shadow-xl",
     header:
       "bg-muted border-b border-border",
     sidebar:
-      "bg-white dark:bg-[#09090b] border-r border-border",
+      "bg-card text-card-foreground border-r border-border",
     filterBar:
       "bg-muted/50 border-b border-border",
-    main: "bg-white dark:bg-[#09090b]",
+    main: "bg-background text-foreground",
     chatHeader:
-      "bg-muted/50 dark:bg-[#121217]/50 backdrop-blur-md border-b border-border",
+      "bg-muted/50 backdrop-blur-md border-b border-border",
     chatFooter:
-      "bg-muted/50 dark:bg-[#121217] border-t border-border",
+      "bg-muted/50 border-t border-border",
     detailsPane:
-      "bg-muted/50 dark:bg-[#09090b] border-l border-border",
-    card: "bg-white dark:bg-[#121217] border border-border shadow-sm",
+      "bg-muted/50 border-l border-border",
+    card: "bg-card text-card-foreground border border-border shadow-sm",
     cardHeader:
       "bg-muted border-b border-border",
     input:
-      "bg-muted dark:bg-[#09090b] border border-border",
+      "bg-muted border border-border",
     chatBubbleReceived:
       "bg-muted text-foreground border border-border/50",
     tableRow:
@@ -131,9 +131,9 @@ const colorThemes: Record<SupportColor, Record<string, string>> = {
     text: "text-primary",
     bg: "bg-primary hover:bg-primary/90 text-primary-foreground shadow-primary/20",
     lightBg: "bg-primary/10 text-primary",
-    border: "border-primary",
-    activeBorder: "border-b-2 border-primary",
-    focusRing: "focus:ring-primary/20 focus:border-primary",
+    border: "border-primary/30",
+    activeBorder: "border-b-2 border-primary/30",
+    focusRing: "focus:ring-primary/20 focus:border-primary/30",
     iconBg: "bg-primary/10 text-primary",
   },
   indigo: {
@@ -233,7 +233,7 @@ const BulletproofAvatar = ({
   size?: number;
 }) => (
   <div
-    className={`relative shrink-0 flex-none rounded-full shadow-sm flex items-center justify-center font-bold text-white tracking-wider ${color}`}
+    className={`relative shrink-0 flex-none rounded-full shadow-sm flex items-center justify-center font-semibold text-white tracking-wider ${color}`}
     style={{ width: size, height: size, minWidth: size, minHeight: size }}
   >
     {initials}
@@ -481,7 +481,7 @@ export default function SupportDashboard({
                   size={40}
                 />
                 <div className="min-w-0">
-                  <div className="text-sm font-bold text-foreground truncate">
+                  <div className="text-sm font-semibold text-foreground truncate">
                     {modalTicket.title}
                   </div>
                   <div className="text-xs font-medium text-muted-foreground truncate">
@@ -522,7 +522,7 @@ export default function SupportDashboard({
                         className={`flex flex-col gap-1 min-w-0 max-w-[85%] ${isAgent ? "items-end" : "items-start"}`}
                       >
                         <div className="flex items-baseline gap-2 px-1">
-                          <span className="text-[11px] font-bold text-zinc-700 dark:text-zinc-400">
+                          <span className="text-[11px] font-semibold text-foreground/70">
                             {msg.sender}
                           </span>
                           <span className="text-[10px] font-medium text-muted-foreground">
@@ -558,25 +558,25 @@ export default function SupportDashboard({
                 "border rounded-xl flex flex-col overflow-hidden shadow-sm transition-all m-0 p-0",
                 variant === "glass"
                   ? "bg-white/40 dark:bg-black/40 backdrop-blur-md border-white/20 dark:border-white/10"
-                  : "bg-white dark:bg-[#121217] border-border"
+                  : "bg-card border-border"
               )}>
                 <div className={cn(
                   "flex border-b m-0 p-0",
                   variant === "glass"
                     ? "border-white/10 dark:border-white/10 bg-white/20 dark:bg-black/20"
-                    : "border-border bg-muted/50 dark:bg-[#121217]"
+                    : "border-border bg-muted/50"
                 )}>
                   {data.replySection.tabs.map((tab) => (
                     <button
                       key={tab}
                       onClick={() => setModalReplyTab(tab)}
                       className={cn(
-                        "px-5 py-2.5 text-[13px] font-bold transition-colors m-0 cursor-pointer",
+                        "px-5 py-2.5 text-[13px] font-semibold transition-colors m-0 cursor-pointer",
                         modalReplyTab === tab
                           ? cn(
                               variant === "glass"
                                 ? "bg-white/40 dark:bg-black/40"
-                                : "bg-white dark:bg-[#121217]",
+                                : "bg-card",
                               theme.text,
                               theme.activeBorder,
                             )
@@ -614,7 +614,7 @@ export default function SupportDashboard({
                   <div className="flex items-center gap-2">
                     <button
                       onClick={closeTicketModal}
-                      className="px-4 py-2 rounded-lg text-xs font-bold text-muted-foreground hover:bg-muted transition-colors cursor-pointer"
+                      className="px-4 py-2 rounded-lg text-xs font-semibold text-muted-foreground hover:bg-muted transition-colors cursor-pointer"
                     >
                       Close
                     </button>
@@ -622,7 +622,7 @@ export default function SupportDashboard({
                       onClick={handleSendModalReply}
                       disabled={!modalReplyText.trim()}
                       className={cn(
-                        "flex items-center gap-2 px-5 py-2 text-white text-xs font-bold rounded-lg transition-all active:scale-95 cursor-pointer shadow-sm disabled:opacity-50 disabled:cursor-not-allowed",
+                        "flex items-center gap-2 px-5 py-2 text-white text-xs font-semibold rounded-lg transition-all active:scale-95 cursor-pointer shadow-sm disabled:opacity-50 disabled:cursor-not-allowed",
                         modalReplyTab === "Reply"
                           ? theme.bg
                           : "bg-amber-500 hover:bg-amber-600 shadow-amber-500/20",
@@ -653,7 +653,7 @@ export default function SupportDashboard({
             )}
           >
             <div className="flex justify-between items-center">
-              <h3 className="text-lg font-bold text-foreground">
+              <h3 className="text-lg font-semibold text-foreground">
                 Create New Ticket
               </h3>
               <button
@@ -665,7 +665,7 @@ export default function SupportDashboard({
             </div>
             <form onSubmit={handleCreateTicket} className="flex flex-col gap-4">
               <div className="flex flex-col gap-1.5">
-                <label className="text-xs font-bold uppercase text-muted-foreground">
+                <label className="text-xs font-semibold uppercase text-muted-foreground">
                   Subject
                 </label>
                 <input
@@ -687,7 +687,7 @@ export default function SupportDashboard({
               </div>
               <div className="flex gap-4">
                 <div className="flex flex-col gap-1.5 flex-1">
-                  <label className="text-xs font-bold uppercase text-muted-foreground">
+                  <label className="text-xs font-semibold uppercase text-muted-foreground">
                     Customer Name
                   </label>
                   <input
@@ -708,7 +708,7 @@ export default function SupportDashboard({
                   />
                 </div>
                 <div className="flex flex-col gap-1.5 flex-1">
-                  <label className="text-xs font-bold uppercase text-muted-foreground">
+                  <label className="text-xs font-semibold uppercase text-muted-foreground">
                     Priority
                   </label>
                   <SelectBlock
@@ -717,7 +717,7 @@ export default function SupportDashboard({
                     onChange={(v) =>
                       setNewTicketForm({
                         ...newTicketForm,
-                        priority: v,
+                        priority: Array.isArray(v) ? (v[0] ?? "") : v,
                       })
                     }
                     color={color}
@@ -726,7 +726,7 @@ export default function SupportDashboard({
                 </div>
               </div>
               <div className="flex flex-col gap-1.5">
-                <label className="text-xs font-bold uppercase text-muted-foreground">
+                <label className="text-xs font-semibold uppercase text-muted-foreground">
                   Initial Message
                 </label>
                 <textarea
@@ -749,7 +749,7 @@ export default function SupportDashboard({
               <button
                 type="submit"
                 className={cn(
-                  "mt-2 py-3 rounded-xl font-bold text-white transition-transform active:scale-[0.98]",
+                  "mt-2 py-3 rounded-xl font-semibold text-white transition-transform active:scale-[0.98]",
                   theme.bg,
                 )}
               >
@@ -780,7 +780,7 @@ export default function SupportDashboard({
               <MessageSquare className="w-4 h-4" />
             )}
           </div>
-          <div className="text-sm font-bold text-foreground m-0 p-0 flex items-center flex-wrap">
+          <div className="text-sm font-semibold text-foreground m-0 p-0 flex items-center flex-wrap">
             {data.header.title}
             <span className="text-muted-foreground font-medium ml-2 border-l border-border pl-2">
               {layout === "table" ? "System Overview" : data.header.subtitle}
@@ -791,7 +791,7 @@ export default function SupportDashboard({
           <button
             onClick={() => setIsCreatingTicket(true)}
             className={cn(
-              "flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-bold transition-transform active:scale-95 shadow-sm",
+              "flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-semibold transition-transform active:scale-95 shadow-sm",
               theme.bg,
             )}
           >
@@ -810,7 +810,7 @@ export default function SupportDashboard({
             "flex flex-1 flex-col overflow-y-auto p-4 sm:p-6 lg:p-8 gap-6 m-0 [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]",
             variant === "glass"
               ? "bg-transparent"
-              : "bg-muted dark:bg-[#09090b]",
+              : "bg-muted",
           )}
         >
           {/* Metrics Row */}
@@ -821,10 +821,10 @@ export default function SupportDashboard({
                 styles.card,
               )}
             >
-              <div className="flex items-center gap-2 text-muted-foreground text-sm font-bold uppercase tracking-wider">
+              <div className="flex items-center gap-2 text-muted-foreground text-sm font-semibold uppercase tracking-wider">
                 <Inbox className="w-4 h-4" /> Total Tickets
               </div>
-              <div className="text-3xl font-black text-foreground">
+              <div className="text-3xl font-bold text-foreground">
                 {totalTickets}
               </div>
             </div>
@@ -834,10 +834,10 @@ export default function SupportDashboard({
                 styles.card,
               )}
             >
-              <div className="flex items-center gap-2 text-muted-foreground text-sm font-bold uppercase tracking-wider">
+              <div className="flex items-center gap-2 text-muted-foreground text-sm font-semibold uppercase tracking-wider">
                 <Clock className="w-4 h-4" /> Open Tickets
               </div>
-              <div className={cn("text-3xl font-black", theme.text)}>
+              <div className={cn("text-3xl font-bold", theme.text)}>
                 {openTickets}
               </div>
             </div>
@@ -847,10 +847,10 @@ export default function SupportDashboard({
                 styles.card,
               )}
             >
-              <div className="flex items-center gap-2 text-muted-foreground text-sm font-bold uppercase tracking-wider">
+              <div className="flex items-center gap-2 text-muted-foreground text-sm font-semibold uppercase tracking-wider">
                 <AlertCircle className="w-4 h-4" /> High Priority
               </div>
-              <div className="text-3xl font-black text-red-500 dark:text-red-400">
+              <div className="text-3xl font-bold text-red-500 dark:text-red-400">
                 {highPriority}
               </div>
             </div>
@@ -867,19 +867,19 @@ export default function SupportDashboard({
               <table className="w-full text-left border-collapse">
                 <thead>
                   <tr className={styles.tableHead}>
-                    <th className="px-6 py-4 text-xs font-bold uppercase tracking-wider">
+                    <th className="px-6 py-4 text-xs font-semibold uppercase tracking-wider">
                       Ticket ID
                     </th>
-                    <th className="px-6 py-4 text-xs font-bold uppercase tracking-wider">
+                    <th className="px-6 py-4 text-xs font-semibold uppercase tracking-wider">
                       Subject & Requester
                     </th>
-                    <th className="px-6 py-4 text-xs font-bold uppercase tracking-wider">
+                    <th className="px-6 py-4 text-xs font-semibold uppercase tracking-wider">
                       Priority
                     </th>
-                    <th className="px-6 py-4 text-xs font-bold uppercase tracking-wider">
+                    <th className="px-6 py-4 text-xs font-semibold uppercase tracking-wider">
                       Status
                     </th>
-                    <th className="px-6 py-4 text-xs font-bold uppercase tracking-wider text-right">
+                    <th className="px-6 py-4 text-xs font-semibold uppercase tracking-wider text-right">
                       Last Updated
                     </th>
                   </tr>
@@ -900,7 +900,7 @@ export default function SupportDashboard({
                     >
                       <td
                         className={cn(
-                          "px-6 py-4 text-sm font-bold whitespace-nowrap",
+                          "px-6 py-4 text-sm font-semibold whitespace-nowrap",
                           theme.text,
                         )}
                       >
@@ -908,12 +908,12 @@ export default function SupportDashboard({
                       </td>
                       <td className="px-6 py-4 min-w-[300px]">
                         <div className="flex flex-col gap-1">
-                          <span className="text-sm font-bold text-foreground truncate">
+                          <span className="text-sm font-semibold text-foreground truncate">
                             {ticket.title}
                           </span>
                           <div className="flex items-center gap-2 mt-1">
                             <div
-                              className={`w-5 h-5 rounded-full flex items-center justify-center text-[8px] font-bold text-white ${ticket.color}`}
+                              className={`w-5 h-5 rounded-full flex items-center justify-center text-[8px] font-semibold text-white ${ticket.color}`}
                             >
                               {ticket.initials}
                             </div>
@@ -926,11 +926,11 @@ export default function SupportDashboard({
                       <td className="px-6 py-4 whitespace-nowrap">
                         {ticket.properties.priority === "High" ||
                         ticket.properties.priority === "Urgent" ? (
-                          <span className="inline-flex px-2.5 py-1 rounded-md bg-red-50 dark:bg-red-500/10 text-red-600 dark:text-red-400 text-xs font-bold">
+                          <span className="inline-flex px-2.5 py-1 rounded-md bg-red-50 dark:bg-red-500/10 text-red-600 dark:text-red-400 text-xs font-semibold">
                             {ticket.properties.priority}
                           </span>
                         ) : (
-                          <span className="inline-flex px-2.5 py-1 rounded-md bg-muted text-muted-foreground text-xs font-bold">
+                          <span className="inline-flex px-2.5 py-1 rounded-md bg-muted text-muted-foreground text-xs font-semibold">
                             {ticket.properties.priority}
                           </span>
                         )}
@@ -939,7 +939,7 @@ export default function SupportDashboard({
                         {ticket.status.toLowerCase() === "open" ? (
                           <span
                             className={cn(
-                              "inline-flex px-2.5 py-1 rounded-md text-xs font-bold",
+                              "inline-flex px-2.5 py-1 rounded-md text-xs font-semibold",
                               theme.lightBg,
                               theme.text,
                             )}
@@ -947,7 +947,7 @@ export default function SupportDashboard({
                             Open
                           </span>
                         ) : (
-                          <span className="inline-flex px-2.5 py-1 rounded-md bg-emerald-50 dark:bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 text-xs font-bold">
+                          <span className="inline-flex px-2.5 py-1 rounded-md bg-emerald-50 dark:bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 text-xs font-semibold">
                             Resolved
                           </span>
                         )}
@@ -971,7 +971,7 @@ export default function SupportDashboard({
             "flex flex-1 overflow-hidden min-h-0 m-0 p-0",
             variant === "glass"
               ? "bg-transparent"
-              : "bg-muted dark:bg-[#09090b]",
+              : "bg-muted",
           )}
         >
           <aside
@@ -1122,7 +1122,7 @@ export default function SupportDashboard({
                             className={cn(
                               `text-sm truncate pr-2 m-0 p-0`,
                               isActive
-                                ? cn("font-bold", theme.text)
+                                ? cn("font-semibold", theme.text)
                                 : "font-semibold text-foreground",
                             )}
                           >
@@ -1160,7 +1160,7 @@ export default function SupportDashboard({
                     strokeWidth={1.5}
                   />
                 </div>
-                <div className="text-2xl font-bold text-foreground mb-2 m-0 p-0">
+                <div className="text-2xl font-semibold text-foreground mb-2 m-0 p-0">
                   {data.emptyState.greetingPrefix} {data.emptyState.userName}!
                 </div>
                 <div className="text-sm text-muted-foreground max-w-sm m-0 p-0">
@@ -1174,7 +1174,7 @@ export default function SupportDashboard({
                     "flex-1 flex flex-col min-w-0 animate-in fade-in slide-in-from-right-4 duration-300 m-0 p-0",
                     variant === "glass"
                       ? "bg-transparent"
-                      : "bg-white dark:bg-[#09090b]",
+                      : "bg-background",
                   )}
                 >
                   <div
@@ -1196,7 +1196,7 @@ export default function SupportDashboard({
                         size={32}
                       />
                       <div className="min-w-0 flex-1 m-0 p-0">
-                        <div className="text-sm font-bold text-foreground truncate m-0 p-0">
+                        <div className="text-sm font-semibold text-foreground truncate m-0 p-0">
                           {selectedTicket.author}
                         </div>
                         <div className="text-xs font-medium text-muted-foreground truncate m-0 p-0">
@@ -1235,7 +1235,7 @@ export default function SupportDashboard({
                               className={`flex flex-col gap-1 min-w-0 max-w-[85%] sm:max-w-[80%] m-0 p-0 ${isAgent ? "items-end" : "items-start"}`}
                             >
                               <div className="flex items-baseline gap-2 px-1 m-0 p-0">
-                                <span className="text-[11px] font-bold text-zinc-700 dark:text-zinc-400 m-0 p-0">
+                                <span className="text-[11px] font-semibold text-foreground/70 m-0 p-0">
                                   {msg.sender}
                                 </span>
                                 <span className="text-[10px] font-medium text-muted-foreground m-0 p-0">
@@ -1272,25 +1272,25 @@ export default function SupportDashboard({
                       "max-w-3xl mx-auto rounded-xl flex flex-col overflow-hidden shadow-sm transition-all m-0 p-0 border",
                       variant === "glass"
                         ? "bg-white/40 dark:bg-black/40 backdrop-blur-md border-white/20 dark:border-white/10"
-                        : "bg-white dark:bg-[#121217] border-border"
+                        : "bg-card border-border"
                     )}>
                       <div className={cn(
                         "flex border-b m-0 p-0",
                         variant === "glass"
                           ? "border-white/10 dark:border-white/10 bg-white/20 dark:bg-black/20"
-                          : "border-border bg-muted/50 dark:bg-[#121217]"
+                          : "border-border bg-muted/50"
                       )}>
                         {data.replySection.tabs.map((tab) => (
                           <button
                             key={tab}
                             onClick={() => setActiveReplyTab(tab)}
                             className={cn(
-                              "px-5 py-2.5 text-[13px] font-bold transition-colors m-0 cursor-pointer",
+                              "px-5 py-2.5 text-[13px] font-semibold transition-colors m-0 cursor-pointer",
                               activeReplyTab === tab
                                 ? cn(
                                     variant === "glass"
                                       ? "bg-white/40 dark:bg-black/40"
-                                      : "bg-white dark:bg-[#121217]",
+                                      : "bg-card",
                                     theme.text,
                                     theme.activeBorder,
                                   )
@@ -1320,7 +1320,7 @@ export default function SupportDashboard({
                         "flex items-center justify-between p-3 border-t m-0",
                         variant === "glass"
                           ? "border-white/10 dark:border-white/10 bg-white/20 dark:bg-black/20"
-                          : "border-border bg-muted/50 dark:bg-[#121217]"
+                          : "border-border bg-muted/50"
                       )}>
                         <div className="flex gap-1 text-muted-foreground m-0 p-0">
                           <button
@@ -1364,7 +1364,7 @@ export default function SupportDashboard({
                           onClick={handleSendReply}
                           disabled={!replyText.trim()}
                           className={cn(
-                            "flex items-center gap-2 px-5 py-2 text-white text-xs font-bold rounded-lg transition-all active:scale-95 m-0 cursor-pointer shadow-sm disabled:opacity-50 disabled:cursor-not-allowed",
+                            "flex items-center gap-2 px-5 py-2 text-white text-xs font-semibold rounded-lg transition-all active:scale-95 m-0 cursor-pointer shadow-sm disabled:opacity-50 disabled:cursor-not-allowed",
                             activeReplyTab === "Reply"
                               ? theme.bg
                               : "bg-amber-500 hover:bg-amber-600 shadow-amber-500/20",
@@ -1392,9 +1392,9 @@ export default function SupportDashboard({
                         key={tab}
                         onClick={() => setActiveDetailsTab(tab)}
                         className={cn(
-                          "px-4 py-3 text-[12px] font-bold transition-colors m-0 cursor-pointer",
+                          "px-4 py-3 text-[12px] font-semibold transition-colors m-0 cursor-pointer",
                           activeDetailsTab === tab
-                            ? "text-foreground border-b-2 border-primary"
+                            ? "text-foreground border-b-2 border-primary/30"
                             : "text-muted-foreground hover:text-foreground border-b-2 border-transparent",
                         )}
                       >
@@ -1406,7 +1406,7 @@ export default function SupportDashboard({
                     <div className={cn("m-0 p-0", styles.card)}>
                       <div
                         className={cn(
-                          "px-4 py-3 text-[11px] font-bold text-muted-foreground uppercase tracking-wider flex justify-between items-center m-0",
+                          "px-4 py-3 text-[11px] font-semibold text-muted-foreground uppercase tracking-wider flex justify-between items-center m-0",
                           styles.cardHeader,
                         )}
                       >
@@ -1424,7 +1424,7 @@ export default function SupportDashboard({
                           },
                         ].map((field) => (
                           <div key={field.label} className="m-0 p-0">
-                            <div className="text-[10px] font-bold uppercase tracking-wider text-muted-foreground mb-0.5 m-0 p-0">
+                            <div className="text-[10px] font-semibold uppercase tracking-wider text-muted-foreground mb-0.5 m-0 p-0">
                               {field.label}
                             </div>
                             <div className="text-xs font-semibold text-foreground truncate m-0 p-0">
@@ -1437,7 +1437,7 @@ export default function SupportDashboard({
                     <div className={cn("m-0 p-0", styles.card)}>
                       <div
                         className={cn(
-                          "px-4 py-3 text-[11px] font-bold text-muted-foreground uppercase tracking-wider flex justify-between items-center m-0",
+                          "px-4 py-3 text-[11px] font-semibold text-muted-foreground uppercase tracking-wider flex justify-between items-center m-0",
                           styles.cardHeader,
                         )}
                       >
@@ -1446,7 +1446,7 @@ export default function SupportDashboard({
                       </div>
                       <div className="p-4 flex flex-col gap-3 m-0">
                         <div className="m-0 p-0">
-                          <div className="text-[10px] font-bold uppercase tracking-wider text-muted-foreground mb-1 m-0 p-0">
+                          <div className="text-[10px] font-semibold uppercase tracking-wider text-muted-foreground mb-1 m-0 p-0">
                             First Response
                           </div>
                           <div className="flex items-center gap-2 m-0 p-0">
@@ -1461,7 +1461,7 @@ export default function SupportDashboard({
                           </div>
                         </div>
                         <div className="m-0 p-0">
-                          <div className="text-[10px] font-bold uppercase tracking-wider text-muted-foreground mb-1 m-0 p-0">
+                          <div className="text-[10px] font-semibold uppercase tracking-wider text-muted-foreground mb-1 m-0 p-0">
                             Resolution
                           </div>
                           <div className="flex items-center gap-2 m-0 p-0">
@@ -1483,7 +1483,7 @@ export default function SupportDashboard({
                     <div className={cn("m-0 p-0", styles.card)}>
                       <div
                         className={cn(
-                          "px-4 py-3 text-[11px] font-bold text-muted-foreground uppercase tracking-wider flex justify-between items-center m-0",
+                          "px-4 py-3 text-[11px] font-semibold text-muted-foreground uppercase tracking-wider flex justify-between items-center m-0",
                           styles.cardHeader,
                         )}
                       >
@@ -1495,7 +1495,7 @@ export default function SupportDashboard({
                           data.detailsSection.dropdownOptions,
                         ).map(([key, options]) => (
                           <div key={key} className="flex flex-col m-0 p-0">
-                            <label className="text-[10px] font-bold uppercase tracking-wider text-muted-foreground mb-1 m-0 p-0">
+                            <label className="text-[10px] font-semibold uppercase tracking-wider text-muted-foreground mb-1 m-0 p-0">
                               {key.replace(/([A-Z])/g, " $1")}
                             </label>
                             <SelectBlock
@@ -1511,7 +1511,9 @@ export default function SupportDashboard({
                               onChange={(v) =>
                                 setTicketProperties((prev) => ({
                                   ...prev,
-                                  [`${selectedTicket.id}-${key}`]: v,
+                                  [`${selectedTicket.id}-${key}`]: Array.isArray(v)
+                                    ? (v[0] ?? "")
+                                    : v,
                                 }))
                               }
                               color={color}

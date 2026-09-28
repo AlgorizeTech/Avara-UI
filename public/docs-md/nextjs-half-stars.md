@@ -48,6 +48,13 @@ export default function TenStarRating() {
 
 ## Installation
 
+Register the @algorize-ui registry once per project, then add the component:
+
+```bash
+npx shadcn@latest registry add @algorize-ui=https://algorize-ui.vercel.app/r/{name}.json
+npx shadcn@latest add @algorize-ui/half-stars
+```
+
 ## Examples
 
 ## Features
@@ -71,7 +78,7 @@ Discover the Half Stars rating component's precise visual feedback, supporting f
     If you are allowing user input via interactive={true}, it is recommended to set allowHalf={true} (step 0.5) or step={1} for standard reviews. Setting step={0.1} can make it difficult for users to intentionally click a precise score like 4.0 exactly.
 
     Color Contrast
-    Ensure your inactiveColor provides enough contrast against your background so users can clearly see the empty stars. By default, text-slate-200 works well on white backgrounds.
+    Ensure your inactiveColor provides enough contrast against your background so users can clearly see the empty stars. The default, text-foreground/15, follows the theme in light and dark mode.
 
 ## Props Reference
 
@@ -102,13 +109,13 @@ Discover the Half Stars rating component's precise visual feedback, supporting f
         HalfStars
         activeColor
         string
-        "text-yellow-400"
+        "text-primary"
         Tailwind text color class for the filled (active) portion of the stars.
 
         HalfStars
         inactiveColor
         string
-        "text-slate-200 dark:text-slate-700"
+        "text-foreground/15"
         Tailwind text color class for the empty (inactive) portion of the stars.
 
         HalfStars

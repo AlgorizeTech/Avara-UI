@@ -70,6 +70,7 @@ const getHexForColor = (c: string) => {
     default: "var(--primary)",
     blue: "#2563eb",
     emerald: "#10b981",
+    lavender: "#9b8afb",
     rose: "#e11d48",
     violet: "#7c3aed",
   };
@@ -88,7 +89,7 @@ export default function DataMapsDemo({
   mapId?: string;
 }) {
   return (
-    <div className="w-full min-h-[500px] bg-white dark:bg-black rounded-2xl border border-slate-100 dark:border-slate-800/50 relative flex flex-col overflow-hidden">
+    <div className="w-full min-h-[500px] bg-card rounded-2xl border border-border relative flex flex-col overflow-hidden">
       <DataMaps
         variant={variant}
         zoomable={zoomable}

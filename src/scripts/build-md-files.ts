@@ -2,10 +2,35 @@ import fs from "fs";
 import path from "path";
 import { glob } from "glob";
 import { BUILT_FRAMEWORKS } from "../lib/framework";
+import { REGISTRY_ADD_ARGS, REGISTRY_NAMESPACE, addArgsFor, resolveAddArg } from "../lib/registry";
 import { stripUseClient } from "../lib/snippet";
+import registry from "../../registry.json";
+import { countComponents } from "../lib/component-count";
+
+/** The `{COMPONENT_COUNT}` a page prints, resolved from the same registry. */
+const COMPONENT_COUNT = String(countComponents(registry.items as { name: string }[]));
+
+/** Items that ship a Framer Motion twin beside their GSAP default. */
+const MOTION_TWINS = new Set(
+  (registry.items as { name: string }[])
+    .map((item) => item.name)
+    .filter((name) => name.endsWith("-framer"))
+    .map((name) => name.replace(/-framer$/, "")),
+);
 
 /** The dynamic route segment, as it appears on disk. */
 const FRAMEWORK_SEGMENT = "[framework]";
+
+/**
+ * Mirrors `resolveSegments` in components/site/cli.tsx for the `add` case:
+ * `add button.json utils` → `add @algorize-ui/button utils`. Other commands
+ * (`init`, `registry add …`, `install gsap`) pass through untouched.
+ */
+const expandCliShorthand = (command: string) => {
+  const add = command.match(/^add\s+(.+)$/);
+  if (!add) return command;
+  return `add ${add[1].trim().split(/\s+/).map((arg) => resolveAddArg(arg)).join(" ")}`;
+};
 
 /**
  * Applies the page's React rule to a whole markdown document.
@@ -71,8 +96,11 @@ function convertMdxToMd(content: string, componentPath: string): string {
   // Remove JSX component imports that are on separate lines
   mdContent = mdContent.replace(/^import\s+.*?\{[\s\S]*?\}\s+from\s+.*?;?\s*$/gm, '');
   
+  // Resolve the component count the page prints as a JSX expression.
+  mdContent = mdContent.replace(/\{COMPONENT_COUNT\}/g, COMPONENT_COUNT);
+
   // Convert JSX components to markdown equivalents
-  
+
   // Convert <AI dir="left"/> to nothing (remove it)
   mdContent = mdContent.replace(/<AI\s+dir="[^"]*"\s*\/>/g, '');
   
@@ -128,11 +156,35 @@ function convertMdxToMd(content: string, componentPath: string): string {
     }
   );
   
-  // Convert <Cli> component to code block
+  // Convert <Cli> component to code block. The page writes `add foo.json` as
+  // shorthand for one of our items; expand it exactly as <Cli> does on the web,
+  // or the markdown would tell a reader to run a command the CLI rejects.
   mdContent = mdContent.replace(
     /<Cli\s+command=\{`([^`]+)`\}\s*\/>/g,
-    '```bash\nnpx shadcn@latest $1\n```'
+    (_, command: string) => '```bash\nnpx shadcn@latest ' + expandCliShorthand(command) + '\n```'
   );
+
+  // Convert <Installation name="…"> to the command it renders. The web
+  // component also lists dependencies read from registry.json; the CLI
+  // installs those itself, so the command alone is enough here.
+  mdContent = mdContent.replace(
+    /<Installation\s+name="([^"]+)"[^>]*\/>/g,
+    (_, name: string) =>
+      `Register the ${REGISTRY_NAMESPACE} registry once per project, then add the component:\n\n` +
+      '```bash\n' +
+      `npx shadcn@latest ${REGISTRY_ADD_ARGS}\n` +
+      `npx shadcn@latest ${addArgsFor(name)}\n` +
+      '```' +
+      // Dual components: the same file, built on Framer Motion instead of GSAP.
+      (MOTION_TWINS.has(name)
+        ? '\n\nOr the Motion build (same props, same file — install one):\n\n' +
+          '```bash\n' +
+          `npx shadcn@latest ${addArgsFor(`${name}-framer`)}\n` +
+          '```'
+        : '')
+  );
+  // <InstallGroup> only wraps several <Installation>s; drop the wrapper.
+  mdContent = mdContent.replace(/<\/?InstallGroup>/g, '');
   
   // Convert <CodeBlock> to a reference
   mdContent = mdContent.replace(

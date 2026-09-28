@@ -4,5 +4,11 @@
   "outputDirectory": "out",
   "installCommand": "npm install",
   "devCommand": "npm run dev",
-  "cleanUrls": true
+  "cleanUrls": true,
+  "rewrites": [
+    {
+      "source": "/r/v0-themed/:component/:example/item.json",
+      "destination": "/api/v0?item=:component/:example"
+    }
+  ]
 }

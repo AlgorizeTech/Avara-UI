@@ -3,7 +3,7 @@ import { extractCode } from "@/lib/code";
 
 # Drawer
 
-A highly animated, responsive drawer component. Built entirely from scratch using `gsap` for butter-smooth entering and exiting animations. It supports sliding in from all four screen edges (top, bottom, left, right) and safely locks the background document from scrolling while open.
+A highly animated, responsive drawer component. Built entirely from scratch, with plain CSS transitions for butter-smooth entering and exiting animations — no animation library. It supports sliding in from all four screen edges (top, bottom, left, right) and safely locks the background document from scrolling while open.
 
 The drawer is always controlled — you own `open` and pass `onOpenChange`.
 
@@ -34,7 +34,7 @@ export default function DrawerDemo() {
           <DrawerHeader>
             <DrawerTitle>Interactive Drawer</DrawerTitle>
             <DrawerDescription>
-              This drawer slides in from the right. It uses GSAP for
+              This drawer slides in from the right. It uses CSS transitions for
               butter-smooth easing and handles its own unmount lifecycles.
             </DrawerDescription>
           </DrawerHeader>
@@ -99,31 +99,56 @@ export const usageControlled = `"use client";
 
 import { useEffect, useState } from "react";
 import {
+  Button,
   Drawer,
   DrawerContent,
+  DrawerDescription,
+  DrawerFooter,
   DrawerHeader,
   DrawerOverlay,
   DrawerTitle,
 } from "@/components/custom/blocks/Drawer";
 
 export default function OnboardingDrawer() {
-  // Nothing says the state has to come from a button — open it yourself
-  // after a fetch, a route change, or on first mount.
+  // Open on mount by initializing state to true
   const [open, setOpen] = useState(true);
 
   useEffect(() => {
-    if (localStorage.getItem("onboarded")) setOpen(false);
+    // Optionally check if onboarded in browser
+    if (typeof window !== "undefined" && localStorage.getItem("onboarded")) {
+      setOpen(false);
+    }
   }, []);
 
   return (
-    <Drawer open={open} onOpenChange={setOpen} side="left">
-      <DrawerOverlay />
-      <DrawerContent>
-        <DrawerHeader>
-          <DrawerTitle>Welcome aboard</DrawerTitle>
-        </DrawerHeader>
-      </DrawerContent>
-    </Drawer>
+    <>
+      <Button onClick={() => setOpen(true)}>Open Drawer (left)</Button>
+
+      <Drawer open={open} onOpenChange={setOpen} side="left">
+        <DrawerOverlay />
+        <DrawerContent>
+          <DrawerHeader>
+            <DrawerTitle>Welcome aboard</DrawerTitle>
+            <DrawerDescription>
+              This drawer opens automatically on mount without needing a trigger click.
+            </DrawerDescription>
+          </DrawerHeader>
+
+          <div className="p-6 flex-1 overflow-y-auto">
+            <p className="text-sm text-muted-foreground">
+              You can use this for onboarding flows, announcements, or cookie consent banners.
+            </p>
+          </div>
+
+          <DrawerFooter>
+            <Button onClick={() => setOpen(false)}>Get Started</Button>
+            <Button variant="outline" onClick={() => setOpen(false)}>
+              Cancel
+            </Button>
+          </DrawerFooter>
+        </DrawerContent>
+      </Drawer>
+    </>
   );
 }`;
 
@@ -197,30 +222,30 @@ export default function OnboardingDrawer() {
 Learn about the Drawer component's touch-friendly swiping gestures, snap points, and smooth slide-in animations.
 
 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 my-6 not-prose">
-  <div className="p-6 rounded-2xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900">
-    <h3 className="text-lg font-semibold text-zinc-900 dark:text-zinc-50 mb-2">Customizable</h3>
-    <p className="text-zinc-600 dark:text-zinc-400 text-sm">Easily adapt the component's styling and behavior to fit your application's unique design system.</p>
+  <div className="p-6 rounded-2xl border border-border bg-card">
+    <h3 className="text-lg font-semibold text-card-foreground mb-2">Customizable</h3>
+    <p className="text-muted-foreground text-sm">Easily adapt the component's styling and behavior to fit your application's unique design system.</p>
   </div>
-  <div className="p-6 rounded-2xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900">
-    <h3 className="text-lg font-semibold text-zinc-900 dark:text-zinc-50 mb-2">Accessible</h3>
-    <p className="text-zinc-600 dark:text-zinc-400 text-sm">Built with accessibility in mind, ensuring all users can interact with your application effectively.</p>
+  <div className="p-6 rounded-2xl border border-border bg-card">
+    <h3 className="text-lg font-semibold text-card-foreground mb-2">Accessible</h3>
+    <p className="text-muted-foreground text-sm">Built with accessibility in mind, ensuring all users can interact with your application effectively.</p>
   </div>
-  <div className="p-6 rounded-2xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900">
-    <h3 className="text-lg font-semibold text-zinc-900 dark:text-zinc-50 mb-2">Responsive</h3>
-    <p className="text-zinc-600 dark:text-zinc-400 text-sm">Fully responsive design that looks and works great across desktop, tablet, and mobile devices.</p>
+  <div className="p-6 rounded-2xl border border-border bg-card">
+    <h3 className="text-lg font-semibold text-card-foreground mb-2">Responsive</h3>
+    <p className="text-muted-foreground text-sm">Fully responsive design that looks and works great across desktop, tablet, and mobile devices.</p>
   </div>
-  <div className="p-6 rounded-2xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900">
-    <h3 className="text-lg font-semibold text-zinc-900 dark:text-zinc-50 mb-2">Performant</h3>
-    <p className="text-zinc-600 dark:text-zinc-400 text-sm">Optimized for maximum performance with minimal re-renders and efficient state management.</p>
+  <div className="p-6 rounded-2xl border border-border bg-card">
+    <h3 className="text-lg font-semibold text-card-foreground mb-2">Performant</h3>
+    <p className="text-muted-foreground text-sm">Optimized for maximum performance with minimal re-renders and efficient state management.</p>
   </div>
 </div>
 
 ## Best Practices & Guidelines
 
 <div className="flex flex-col gap-4 my-6 not-prose">
-  <div className="p-5 rounded-xl border border-blue-200 dark:border-blue-900/50 bg-blue-50/50 dark:bg-blue-950/20">
-    <h4 className="text-base font-semibold text-blue-900 dark:text-blue-300 mb-1">Usage Guidelines</h4>
-    <p className="text-blue-800 dark:text-blue-400/80 text-sm">Follow standard design principles when implementing this component. Ensure proper contrast, spacing, and context within your layout.</p>
+  <div className="rounded-xl border border-foreground/[0.06] bg-foreground/[0.03] p-4">
+    <h4 className="font-sans text-[14px] font-semibold text-foreground mb-1">Usage Guidelines</h4>
+    <p className="text-[13px] leading-relaxed text-foreground/50">Follow standard design principles when implementing this component. Ensure proper contrast, spacing, and context within your layout.</p>
   </div>
 </div>
 
@@ -249,7 +274,7 @@ Learn about the Drawer component's touch-friendly swiping gestures, snap points,
         </td>
         <td>
           Controls the visible state of the drawer. When true, the component
-          mounts via React Portals and GSAP animates it into view.
+          mounts via React Portals and a CSS transition slides it into view.
         </td>
       </tr>
       <tr>

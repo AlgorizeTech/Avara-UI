@@ -3,7 +3,7 @@
 import ChatApp from "@/components/custom/blocks/Chat";
 
 const sampleCurrentUser = {
-  avatar: "https://i.pravatar.cc/150?u=current",
+  avatar: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto/v1790148864/80-1-1790148865111.jpg",
   status: "online",
 };
 
@@ -15,7 +15,7 @@ const sampleContactsData = [
     date: "Mar 13",
     unread: 1,
     status: "offline",
-    avatar: "https://i.pravatar.cc/150?u=1",
+    avatar: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto/v1790148865/80-1790148865113.jpg",
   },
   {
     id: 2,
@@ -44,17 +44,27 @@ const sampleContactsData = [
     date: "Dec 11",
     unread: 0,
     status: "online",
-    avatar: "https://i.pravatar.cc/150?u=4",
+    avatar: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto/v1790148865/80-3-1790148865112.jpg",
   },
 ] as any;
 
 export default function ChatDemo({
   variant = "default",
-  color = "indigo",
+  color = "primary",
 }: {
   variant?: string;
   color?: string;
 }) {
+  const chat = (
+    <ChatApp
+      key={`${variant}-${color}`}
+      variant={variant as any}
+      color={color as any}
+      currentUser={sampleCurrentUser}
+      contactsData={sampleContactsData}
+    />
+  );
+
   return (
     <div
       className={`w-full transition-all duration-500 rounded-2xl ${
@@ -64,18 +74,12 @@ export default function ChatDemo({
         variant === "glass"
           ? {
               backgroundImage:
-                "url('https://images.unsplash.com/photo-1470071459604-3b5ec3a7fe05?q=80&w=1200&auto=format&fit=crop')",
+                "url('https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_1200,c_limit/v1790146209/photo-1470071459604-3b5ec3a7fe05-1790146212205.jpg')",
             }
           : undefined
       }
     >
-      <ChatApp
-        key={`${variant}-${color}`}
-        variant={variant as any}
-        color={color as any}
-        currentUser={sampleCurrentUser}
-        contactsData={sampleContactsData}
-      />
+      {chat}
     </div>
   );
 }

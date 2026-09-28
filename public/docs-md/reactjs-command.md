@@ -63,7 +63,7 @@ export const usageDialog = `export default function QuickActions() {
           or click the button to open the command menu.
         
          setOpen(true)}
-          className="px-4 py-2 bg-zinc-900 dark:bg-white text-white dark:text-zinc-900 font-medium rounded-md shadow-sm hover:opacity-90 transition-opacity"
+          className="px-4 py-2 bg-primary text-primary-foreground font-medium rounded-md shadow-sm hover:opacity-90 transition-opacity"
         >
           Open Command Dialog
 
@@ -99,6 +99,13 @@ export const usageNoFilter = `export default function ExternalFiltering() {
 }`;
 
 ## Installation
+
+Register the @algorize-ui registry once per project, then add the component:
+
+```bash
+npx shadcn@latest registry add @algorize-ui=https://algorize-ui.vercel.app/r/{name}.json
+npx shadcn@latest add @algorize-ui/command
+```
 
 ## Examples
 

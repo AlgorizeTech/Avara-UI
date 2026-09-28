@@ -1,6 +1,6 @@
 # Stepper
 
-A production-grade, highly animated multi-step wizard component engineered exclusively with **GSAP**. It splits the layout into two decoupled blocks: the visual progress tracker and the bidirectional sliding content payload.
+A production-grade, highly animated multi-step wizard component built on plain **CSS transitions and the Web Animations API** — no animation library. It splits the layout into two decoupled blocks: the visual progress tracker and the bidirectional sliding content payload.
 
 Unlike basic UI placeholders, this engine is designed to handle **real form state, per-step input validation, and asynchronous API submission handling** (including error states) with silky 60fps transitions.
 
@@ -44,7 +44,7 @@ function ReviewPanel() {
 export const usageFlow = `"use client";
 
 // The Workspace step picks a role with the Select block:
-//   npx shadcn@latest add https://algorize-ui.vercel.app/r/select.json
+//   npx shadcn@latest add @algorize-ui/select
 
 const PRIMARY_ROLE_OPTIONS = [
   "Developer",
@@ -54,11 +54,11 @@ const PRIMARY_ROLE_OPTIONS = [
 ].map((r) => ({ label: r, value: r }));
 
 const BACK_BTN =
-  "flex items-center gap-1.5 px-4 py-2.5 rounded-xl border border-zinc-200 dark:border-zinc-800 bg-zinc-100 dark:bg-zinc-900 text-zinc-700 dark:text-zinc-300 font-semibold text-sm disabled:opacity-40 disabled:cursor-not-allowed hover:bg-zinc-200/60 dark:hover:bg-zinc-800 transition-all active:scale-95 cursor-pointer";
+  "flex items-center gap-1.5 px-4 py-2.5 rounded-xl border border-border bg-muted text-foreground font-semibold text-sm disabled:opacity-40 disabled:cursor-not-allowed hover:bg-muted/80 transition-all active:scale-95 cursor-pointer";
 const NEXT_BTN =
-  "flex items-center gap-1.5 px-6 py-2.5 rounded-xl text-white font-bold text-sm shadow-md transition-all hover:brightness-110 active:scale-95 cursor-pointer bg-indigo-600";
+  "flex items-center gap-1.5 px-6 py-2.5 rounded-xl text-primary-foreground font-semibold text-sm shadow-md transition-all hover:brightness-110 active:scale-95 cursor-pointer bg-primary";
 
-// Controlled field. \`error\` is what makes a blocked Next visible to the reader.
+// Controlled field. 'error' is what makes a blocked Next visible to the reader.
 function Field({
   label,
   icon: Icon,
@@ -86,11 +86,11 @@ function Field({
          onChange(e.target.value)}
           placeholder={placeholder}
           className={cn(
-            "w-full h-11 bg-zinc-50 dark:bg-zinc-900 border rounded-xl px-3.5 text-sm text-zinc-900 dark:text-white placeholder:text-zinc-400 focus:outline-none focus:ring-2 transition-all",
+            "w-full h-11 bg-background border rounded-xl px-3.5 text-sm text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 transition-all",
             Icon && "pl-10",
             error
-              ? "border-rose-500 focus:ring-rose-500/20"
-              : "border-zinc-200 dark:border-zinc-800 focus:border-zinc-400 dark:focus:border-zinc-600",
+              ? "border-destructive focus:ring-destructive/20"
+              : "border-input focus:border-ring",
           )}
         />
       
@@ -240,7 +240,7 @@ export default function OnboardingWizard() {
           )}
 
                setSimulateError(e.target.checked)}
-                className="rounded border-zinc-300 dark:border-zinc-700 text-rose-500 focus:ring-rose-500"
+                className="rounded border-input text-primary focus:ring-primary"
               />
               Simulate Server Error on Submit
             
@@ -287,6 +287,13 @@ export default function OnboardingWizard() {
 
 ## Installation
 
+Register the @algorize-ui registry once per project, then add the component:
+
+```bash
+npx shadcn@latest registry add @algorize-ui=https://algorize-ui.vercel.app/r/{name}.json
+npx shadcn@latest add @algorize-ui/stepper
+```
+
 ## Features
 Learn about the Stepper component's linear progression features, providing clear visual feedback for multi-step forms and processes.
 
@@ -309,13 +316,14 @@ Learn about the Stepper component's linear progression features, providing clear
 
 ## Props Reference
 
-        Component / Interface
+### Stepper
+
+The visual navigation header component that renders step indicators and the animated progress fill line.
+
         Prop
         Type
         Default
         Description
-
-          Stepper
 
           steps
 
@@ -323,11 +331,7 @@ Learn about the Stepper component's linear progression features, providing clear
 
           Required
 
-          An array defining the wizard sequence. Each object requires an{" "}
-          id and title. description,{" "}
-          icon, and content are optional.
-
-          Stepper
+          An array of step objects defining the sequence. Each object requires an id and title. description, icon, and content are optional.
 
           currentStep
 
@@ -335,10 +339,7 @@ Learn about the Stepper component's linear progression features, providing clear
 
           Required
 
-          The active zero-indexed step of the sequence. Controls the GSAP
-          progress line fill and active/completed indicator states.
-
-          Stepper
+          The active zero-indexed step of the sequence. Controls the progress line fill and active/completed indicator states.
 
           onStepChange
 
@@ -346,28 +347,15 @@ Learn about the Stepper component's linear progression features, providing clear
 
           undefined
 
-          Callback fired when a user clicks directly on a step circle in the
-          header. If omitted, the steps become static visual indicators. When
-          provided, users can click any step to jump forward or backward freely.
-
-          Stepper
+          Callback fired when a user clicks directly on a step circle in the header. If omitted, the steps become static visual indicators.
 
           color
 
           string
 
-          "#FFAB1D"
+          "var(--primary)"
 
-          The active theme color for the progress line, completed/active
-          circles and the pulse ring. Any CSS color value — hex,{" "}
-          rgb(), hsl(), oklch() or{" "}
-          var(--token) — is applied inline. A Tailwind background
-          class (e.g. "bg-indigo-500") also works for the line and
-          circles, but the pulse ring is skipped: its border color would need a{" "}
-          border-* class built at runtime, which Tailwind's scanner
-          never sees.
-
-          Stepper
+          The active theme color for the progress line, active/completed circles and pulse ring. Supports any CSS color value or Tailwind background class.
 
           className
 
@@ -375,10 +363,16 @@ Learn about the Stepper component's linear progression features, providing clear
 
           undefined
 
-          Custom Tailwind CSS classes to apply to the outermost navigation
-          header wrapper.
+          Custom Tailwind CSS classes to apply to the outermost navigation header wrapper.
 
-          StepperContent
+### StepperContent
+
+The sliding content container component that handles the animated sliding entrance of each step payload.
+
+        Prop
+        Type
+        Default
+        Description
 
           steps
 
@@ -386,11 +380,7 @@ Learn about the Stepper component's linear progression features, providing clear
 
           Required
 
-          The identical array passed to the header component. This engine
-          extracts the active step's content node and animates its
-          entrance/exit via GSAP.
-
-          StepperContent
+          The identical array passed to the header component. Renders the active step's content node.
 
           currentStep
 
@@ -398,11 +388,7 @@ Learn about the Stepper component's linear progression features, providing clear
 
           Required
 
-          The active zero-indexed step used to identify which payload to render
-          and determine the direction (left/right) of the GSAP sliding
-          animation.
-
-          StepperContent
+          The active zero-indexed step used to identify which payload to render and determine the sliding transition direction.
 
           className
 
@@ -410,64 +396,56 @@ Learn about the Stepper component's linear progression features, providing clear
 
           undefined
 
-          Custom Tailwind CSS classes applied to the sliding content wrapper
-          container.
+          Custom Tailwind CSS classes applied to the sliding content wrapper container.
 
-          Step
+### Step (TypeScript Interface)
+
+The TypeScript interface defining the structure of each object in the steps array prop.
+
+        Property
+        Type
+        Required
+        Description
 
           id
 
           string
 
-          Required
+          Yes
 
-          A unique identifier string required for safe React list rendering and
-          GSAP key mapping.
-
-          Step
+          A unique identifier string required for safe React list rendering.
 
           title
 
           string
 
-          Required
+          Yes
 
-          Primary headline text displayed prominently below the step circle
-          indicator.
-
-          Step
+          Primary headline text displayed prominently below the step circle indicator.
 
           description
 
           string
 
-          undefined
+          No
 
-          Optional secondary helper text displayed directly underneath the step
-          title on larger screens.
-
-          Step
+          Optional secondary helper text displayed directly underneath the step title on larger screens.
 
           icon
 
           React.ElementType
 
-          undefined
+          No
 
-          Optional Lucide React icon or custom SVG component rendered inside the
-          step circle indicator instead of a default number.
-
-          Step
+          Optional Lucide React icon or custom SVG component rendered inside the step circle indicator instead of a default number.
 
           content
 
           React.ReactNode
 
-          undefined
+          No
 
-          The actual JSX/UI payload (e.g., input forms, review summaries)
-          rendered inside the StepperContent container when this
-          step is active.
+          The JSX/UI payload (e.g., input forms, review summaries) rendered inside StepperContent when this step is active.
 
 ---
 

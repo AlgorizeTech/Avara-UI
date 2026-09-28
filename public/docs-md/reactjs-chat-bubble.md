@@ -1,8 +1,8 @@
 # Animated Chat Bubble
 
-A complete, GSAP-powered compound component system for building highly customized chat interfaces, messengers, and support widgets.
+A complete, CSS-animated compound component system for building highly customized chat interfaces, messengers, and support widgets.
 
-Building a polished chat interface requires handling complex edge cases: **message grouping** (dynamically adjusting border radiuses so stacked messages look connected), **typing indicators**, **read receipts**, and smooth entrance animations. This component abstracts all of that logic using React Context and high-performance GSAP animations.
+Building a polished chat interface requires handling complex edge cases: **message grouping** (dynamically adjusting border radiuses so stacked messages look connected), **typing indicators**, **read receipts**, and smooth entrance animations. This component abstracts all of that logic using React Context and lightweight CSS animations — no animation library.
 
 ---
 
@@ -111,6 +111,13 @@ export default function TypingIndicator() {
 }`;
 
 ## Installation
+
+Register the @algorize-ui registry once per project, then add the component:
+
+```bash
+npx shadcn@latest registry add @algorize-ui=https://algorize-ui.vercel.app/r/{name}.json
+npx shadcn@latest add @algorize-ui/chat-bubble
+```
 
 ## Examples
 

@@ -11,7 +11,7 @@ const STATIC_RESOURCES = [
   "/docs/card",
   "/docs/tabs",
   "/manifest.json",
-  "/logo.svg",
+  "/favicon/android-chrome-192x192.png",
 ];
 
 // API endpoints to cache

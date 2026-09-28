@@ -6,8 +6,25 @@ import {
   Calendar as CalendarIcon,
   ChevronLeft,
   ChevronRight,
+  Clock,
 } from "lucide-react";
-import React, { forwardRef, useEffect, useRef, useState } from "react";
+import React, {
+  forwardRef,
+  useEffect,
+  useLayoutEffect,
+  useRef,
+  useState,
+  useSyncExternalStore,
+} from "react";
+import { getThemeStyles } from "./date-picker-theme";
+import { springLinear } from "./motion-curves";
+import {
+  formatTime,
+  roundToStep,
+  setTime,
+  type TimeFormat,
+  TimePicker,
+} from "./TimePickerBlock";
 
 // ==========================================
 // DYNAMIC THEME ENGINE
@@ -15,83 +32,6 @@ import React, { forwardRef, useEffect, useRef, useState } from "react";
 export type DatePickerColor = "indigo" | "rose" | "emerald" | "zinc" | string;
 export type DatePickerVariant = "default" | "filled" | "underlined" | "glow";
 export type DatePickerSize = "sm" | "md" | "lg";
-
-const colorThemes: Record<string, Record<string, string>> = {
-  primary: {
-    ring: "focus-within:ring-primary/30 focus-within:border-primary",
-    text: "text-primary",
-    bg: "bg-primary text-primary-foreground hover:bg-primary/90",
-    bgSoft:
-      "bg-primary/10 text-foreground hover:bg-primary/20",
-    glow: "focus-within:shadow-[0_0_20px_var(--primary)] focus-within:border-primary",
-  },
-  indigo: {
-    ring: "focus-within:ring-indigo-500/30 focus-within:border-indigo-500",
-    text: "text-indigo-600 dark:text-indigo-400",
-    bg: "bg-indigo-600 text-white hover:bg-indigo-700",
-    bgSoft:
-      "bg-indigo-50 dark:bg-indigo-500/10 text-indigo-900 dark:text-indigo-100 hover:bg-indigo-100 dark:hover:bg-indigo-500/20",
-    glow: "focus-within:shadow-[0_0_20px_rgba(99,102,241,0.4)] focus-within:border-indigo-500",
-  },
-  rose: {
-    ring: "focus-within:ring-rose-500/30 focus-within:border-rose-500",
-    text: "text-rose-600 dark:text-rose-400",
-    bg: "bg-rose-600 text-white hover:bg-rose-700",
-    bgSoft:
-      "bg-rose-50 dark:bg-rose-500/10 text-rose-900 dark:text-rose-100 hover:bg-rose-100 dark:hover:bg-rose-500/20",
-    glow: "focus-within:shadow-[0_0_20px_rgba(244,63,94,0.4)] focus-within:border-rose-500",
-  },
-  emerald: {
-    ring: "focus-within:ring-emerald-500/30 focus-within:border-emerald-500",
-    text: "text-emerald-600 dark:text-emerald-400",
-    bg: "bg-emerald-600 text-white hover:bg-emerald-700",
-    bgSoft:
-      "bg-emerald-50 dark:bg-emerald-500/10 text-emerald-900 dark:text-emerald-100 hover:bg-emerald-100 dark:hover:bg-emerald-500/20",
-    glow: "focus-within:shadow-[0_0_20px_rgba(16,185,129,0.4)] focus-within:border-emerald-500",
-  },
-  zinc: {
-    ring: "focus-within:ring-zinc-500/30 focus-within:border-zinc-500 dark:focus-within:ring-white/20 dark:focus-within:border-white",
-    text: "text-zinc-900 dark:text-zinc-100",
-    bg: "bg-zinc-900 dark:bg-zinc-100 text-white dark:text-zinc-900 hover:bg-zinc-800 dark:hover:bg-zinc-200",
-    bgSoft:
-      "bg-zinc-100 dark:bg-zinc-800/50 text-zinc-900 dark:text-zinc-100 hover:bg-zinc-200 dark:hover:bg-zinc-800",
-    glow: "focus-within:shadow-[0_0_20px_rgba(255,255,255,0.15)] focus-within:border-zinc-900 dark:focus-within:border-white",
-  },
-};
-
-const hexToRgb = (hex: string) => {
-  let cleanHex = hex.replace(/^#/, "");
-  if (cleanHex.length === 3)
-    cleanHex = cleanHex
-      .split("")
-      .map((x) => x + x)
-      .join("");
-  const result = /^([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(cleanHex);
-  return result
-    ? `${parseInt(result[1], 16)}, ${parseInt(result[2], 16)}, ${parseInt(result[3], 16)}`
-    : "99, 102, 241";
-};
-
-export const getThemeStyles = (color: string) => {
-  if (color && color.startsWith("#")) {
-    const rgb = hexToRgb(color);
-    return {
-      theme: {
-        ring: "focus-within:ring-[var(--theme-color)]/30 focus-within:border-[var(--theme-color)]",
-        text: "text-[var(--theme-color)]",
-        bg: "bg-[var(--theme-color)] text-white hover:opacity-90",
-        bgSoft:
-          "bg-[rgba(var(--theme-color-rgb),0.1)] text-[var(--theme-color)] hover:bg-[rgba(var(--theme-color-rgb),0.2)]",
-        glow: "focus-within:shadow-[0_0_20px_rgba(var(--theme-color-rgb),0.5)] focus-within:border-[var(--theme-color)]",
-      },
-      style: {
-        "--theme-color": color,
-        "--theme-color-rgb": rgb,
-      } as React.CSSProperties,
-    };
-  }
-  return { theme: colorThemes[color] || colorThemes.primary, style: {} };
-};
 
 // ==========================================
 // CALENDAR MATH HELPERS
@@ -116,6 +56,123 @@ const MONTH_NAMES = [
 ];
 const DAY_NAMES = ["Su", "Mo", "Tu", "We", "Th", "Fr", "Sa"];
 
+/**
+ * Popover widths: the calendar alone (18rem) and the calendar with the time
+ * rail unfolded beside it (30rem). The 12rem difference is exactly the rail
+ * plus its gutter, so the calendar grid keeps its size while the rail opens.
+ */
+const POPOVER_PX = 288;
+const WIDE_POPOVER_PX = 480;
+
+/** The time rail beside the calendar: its w-44 column plus the ml-4 gutter. */
+const RAIL_PX = 192;
+
+// ==========================================
+// MOTION
+// Same curves as RangeDatePicker so both pickers unfold identically: panels
+// unfold on a spring (stiffness 240, damping 30, mass 0.9, drawn as a CSS
+// `linear()` curve) and fold away on a short ease. Reduced motion: instant.
+// ==========================================
+const UNFOLD = springLinear({ stiffness: 240, damping: 30, mass: 0.9 });
+const unfoldOn = (property: string) => `${property} ${UNFOLD.duration}ms ${UNFOLD.easing}`;
+const settleOn = (property: string) => `${property} 0.28s cubic-bezier(0.22, 1, 0.36, 1)`;
+const popOn = (property: string) => `${property} 0.2s cubic-bezier(0, 0, 0.58, 1)`;
+
+const REDUCED_MOTION = "(prefers-reduced-motion: reduce)";
+const subscribeReducedMotion = (onChange: () => void) => {
+  const mq = window.matchMedia(REDUCED_MOTION);
+  mq.addEventListener("change", onChange);
+  return () => mq.removeEventListener("change", onChange);
+};
+/** The visitor's reduced-motion setting; false while server-rendering. */
+function useReducedMotion() {
+  return useSyncExternalStore(
+    subscribeReducedMotion,
+    () => window.matchMedia(REDUCED_MOTION).matches,
+    () => false,
+  );
+}
+
+type FoldPhase = "closed" | "entering" | "open" | "closing";
+
+/**
+ * A panel that unfolds when `show` turns on and folds away before it leaves:
+ * open on the spring, closed on the ease, already open if shown from the
+ * start, and still showing what it last showed while it folds. `axis="x"`
+ * unfolds its width to `size`; `axis="y"` its height to whatever it holds.
+ */
+function Fold({
+  show,
+  axis,
+  size,
+  instant,
+  className,
+  children,
+}: {
+  show: boolean;
+  axis: "x" | "y";
+  size?: number | string;
+  instant: boolean;
+  className?: string;
+  children: React.ReactNode;
+}) {
+  const [phase, setPhase] = useState<FoldPhase>(show ? "open" : "closed");
+  const ref = useRef<HTMLDivElement>(null);
+  const shown = useRef(children);
+  if (show) shown.current = children;
+
+  useLayoutEffect(() => {
+    if (show && phase === "closed") setPhase(instant ? "open" : "entering");
+    else if (show && phase === "closing") setPhase("open");
+    else if (!show && (phase === "open" || phase === "entering")) setPhase(instant ? "closed" : "closing");
+  }, [show, phase, instant]);
+
+  // Entering: commit the folded look, then transition to the open one.
+  useLayoutEffect(() => {
+    if (phase !== "entering") return;
+    void ref.current?.offsetWidth;
+    setPhase("open");
+  }, [phase]);
+
+  // In case the fold never reports its end (a hidden tab, `display: none`).
+  useEffect(() => {
+    if (phase !== "closing") return;
+    const t = window.setTimeout(() => setPhase("closed"), 400);
+    return () => window.clearTimeout(t);
+  }, [phase]);
+
+  if (phase === "closed") return null;
+
+  const open = phase === "open";
+  const dimension = axis === "x" ? "width" : "grid-template-rows";
+  const on = phase === "closing" ? settleOn : unfoldOn;
+  return (
+    <div
+      ref={ref}
+      className={className}
+      style={{
+        ...(axis === "x"
+          ? { width: open ? size : 0 }
+          : { display: "grid", gridTemplateRows: open ? "1fr" : "0fr" }),
+        opacity: open ? 1 : 0,
+        transition: instant ? "none" : `${on(dimension)}, ${on("opacity")}`,
+      }}
+      onTransitionEnd={(e) => {
+        if (phase === "closing" && e.target === e.currentTarget && e.propertyName === dimension) setPhase("closed");
+      }}
+    >
+      {axis === "x" ? shown.current : <div className="min-h-0">{shown.current}</div>}
+    </div>
+  );
+}
+
+const startOfDay = (d: Date) => new Date(d.getFullYear(), d.getMonth(), d.getDate());
+const endOfDay = (d: Date) => new Date(d.getFullYear(), d.getMonth(), d.getDate(), 23, 59, 59, 999);
+const isSameDay = (d1: Date, d2: Date) =>
+  d1.getDate() === d2.getDate() &&
+  d1.getMonth() === d2.getMonth() &&
+  d1.getFullYear() === d2.getFullYear();
+
 // ==========================================
 // DATEPICKER COMPONENT
 // ==========================================
@@ -130,6 +187,23 @@ export interface DatePickerBlockProps {
   helperText?: string;
   error?: string;
   disabled?: boolean;
+  /** Greys out every day before today so it cannot be picked. */
+  disablePast?: boolean;
+  /** Earliest selectable day (inclusive). Combine with `disablePast` freely — the later bound wins. */
+  minDate?: Date;
+  /** Latest selectable day (inclusive). */
+  maxDate?: Date;
+  /**
+   * Adds hour / minute (and AM-PM) columns. The popover opens on the calendar
+   * alone and unfolds the columns — beside it when there is room, below it
+   * otherwise — as soon as a day is picked, staying open until Done. `value`
+   * then carries the time as well as the day.
+   */
+  showTime?: boolean;
+  /** 12-hour clock with AM / PM, or 24-hour. Default "12h". */
+  timeFormat?: TimeFormat;
+  /** Minute granularity of the time columns. Default 5. */
+  minuteStep?: number;
   className?: string;
 }
 
@@ -146,12 +220,29 @@ export const DatePickerBlock = forwardRef<HTMLDivElement, DatePickerBlockProps>(
       helperText,
       error,
       disabled = false,
+      disablePast = false,
+      minDate,
+      maxDate,
+      showTime = false,
+      timeFormat = "12h",
+      minuteStep = 5,
       className,
     },
     ref,
   ) => {
     const [isOpen, setIsOpen] = useState(false);
     const [viewDate, setViewDate] = useState(value || new Date());
+    // The time a freshly picked day receives — "now" rounded up to the step.
+    // The columns only exist once a day is chosen, so this seeds that first
+    // pick rather than being something the user edits beforehand.
+    const [pendingTime, setPendingTime] = useState(() => roundToStep(new Date(), minuteStep));
+    // With time columns the popover can go wide and put them to the right of
+    // the calendar — but only when the viewport has room for that width, so it
+    // never runs off-screen in a narrow column or on a phone. `alignRight`
+    // flips the popover to hang from the trigger's right edge when that is the
+    // side with space.
+    const [sideLayout, setSideLayout] = useState(false);
+    const [alignRight, setAlignRight] = useState(false);
     const containerRef = useRef<HTMLDivElement>(null);
     const { theme, style } = getThemeStyles(color);
 
@@ -160,6 +251,12 @@ export const DatePickerBlock = forwardRef<HTMLDivElement, DatePickerBlockProps>(
     React.useImperativeHandle(ref, () => containerRef.current as HTMLDivElement);
 
     const hasError = Boolean(error);
+
+    const reduceMotion = useReducedMotion();
+    // The time panel is absent until a day lands: the popover opens on the
+    // calendar alone, unfolds on the first pick, and folds away again if the
+    // date is cleared. Mirrors `railOpen` in RangeDatePicker.
+    const railOpen = showTime && Boolean(value);
 
     // Close on click outside
     useEffect(() => {
@@ -184,6 +281,30 @@ export const DatePickerBlock = forwardRef<HTMLDivElement, DatePickerBlockProps>(
       }
     }, [isOpen, value]);
 
+    // Measure the room on either side of the trigger whenever the popover opens
+    // or the window resizes, and pick the widest layout that fits on-screen.
+    useEffect(() => {
+      if (!isOpen) return;
+      const el = containerRef.current;
+      if (!el) return;
+      const win = el.ownerDocument.defaultView ?? window;
+      const MARGIN = 16;
+      const measure = () => {
+        const rect = el.getBoundingClientRect();
+        const roomRight = win.innerWidth - rect.left - MARGIN;
+        const roomLeft = rect.right - MARGIN;
+        const wide = showTime && (roomRight >= WIDE_POPOVER_PX || roomLeft >= WIDE_POPOVER_PX);
+        const need = wide ? WIDE_POPOVER_PX : POPOVER_PX;
+        setSideLayout(wide);
+        // Hang from the right edge only when the left-anchored popover would
+        // overflow the viewport and the other side actually has the room.
+        setAlignRight(roomRight < need && roomLeft >= need);
+      };
+      measure();
+      win.addEventListener("resize", measure);
+      return () => win.removeEventListener("resize", measure);
+    }, [showTime, isOpen]);
+
     // --- Calendar Generation ---
     const currentMonth = viewDate.getMonth();
     const currentYear = viewDate.getFullYear();
@@ -200,31 +321,64 @@ export const DatePickerBlock = forwardRef<HTMLDivElement, DatePickerBlockProps>(
       setViewDate(new Date(currentYear, currentMonth + 1, 1));
     };
 
+    // --- Bounds ---
+    // `disablePast` is sugar for minDate = today; whichever lower bound is
+    // later wins, so both can be passed together without surprises.
+    const today = new Date();
+    const lowerCandidates = [
+      disablePast ? startOfDay(today) : null,
+      minDate ? startOfDay(minDate) : null,
+    ].filter(Boolean) as Date[];
+    const lower = lowerCandidates.length
+      ? new Date(Math.max(...lowerCandidates.map((d) => d.getTime())))
+      : null;
+    const upper = maxDate ? endOfDay(maxDate) : null;
+    const isDayDisabled = (date: Date) =>
+      (lower !== null && endOfDay(date) < lower) ||
+      (upper !== null && startOfDay(date) > upper);
+
+    // Time bounds only bite on the boundary days themselves — any other day
+    // has every time available. On today, with `disablePast`, the floor is the
+    // current moment rather than midnight.
+    const timeSource = value ?? pendingTime;
+    const minTime =
+      lower && value && isSameDay(value, lower)
+        ? disablePast && isSameDay(lower, today)
+          ? today
+          : lower
+        : null;
+    const maxTime = upper && value && isSameDay(value, upper) ? upper : null;
+
     const handleSelectDate = (day: number, e: React.MouseEvent) => {
       e.stopPropagation();
-      const newDate = new Date(currentYear, currentMonth, day);
+      let newDate = new Date(currentYear, currentMonth, day);
+      if (isDayDisabled(newDate)) return;
+      if (showTime) {
+        newDate = setTime(newDate, timeSource.getHours(), timeSource.getMinutes());
+        // Landing on today with a time that has already passed: bump to now.
+        if (disablePast && isSameDay(newDate, today) && newDate < today) {
+          newDate = roundToStep(today, minuteStep);
+        }
+      }
       if (onChange) onChange(newDate);
-      setIsOpen(false);
+      // With time columns the popover stays open so the time can be set too.
+      if (!showTime) setIsOpen(false);
+    };
+
+    const handleTimeChange = (next: Date) => {
+      if (value) onChange?.(next);
+      else setPendingTime(next);
     };
 
     // --- Formatting ---
     const formatDate = (date: Date) => {
-      return new Intl.DateTimeFormat("en-US", {
+      const day = new Intl.DateTimeFormat("en-US", {
         month: "short",
         day: "numeric",
         year: "numeric",
       }).format(date);
+      return showTime ? `${day}, ${formatTime(date, timeFormat)}` : day;
     };
-
-    const isSameDay = (d1: Date, d2: Date) => {
-      return (
-        d1.getDate() === d2.getDate() &&
-        d1.getMonth() === d2.getMonth() &&
-        d1.getFullYear() === d2.getFullYear()
-      );
-    };
-
-    const today = new Date();
 
     // --- Size Classes ---
     const sizeClasses = {
@@ -261,7 +415,7 @@ export const DatePickerBlock = forwardRef<HTMLDivElement, DatePickerBlockProps>(
         return {
           wrapper: cn(
             baseWrapper,
-            "border border-red-500 bg-white dark:bg-[#09090b]",
+            "border border-red-500 bg-background",
             variant === "underlined" && "border-0 border-b-2 rounded-none",
             variant !== "underlined" && "rounded-xl",
           ),
@@ -289,7 +443,7 @@ export const DatePickerBlock = forwardRef<HTMLDivElement, DatePickerBlockProps>(
           return {
             wrapper: cn(
               baseWrapper,
-              "bg-white dark:bg-[#09090b] border border-border rounded-xl shadow-sm",
+              "bg-background border border-border rounded-xl shadow-sm",
             ),
             active: theme.glow,
           };
@@ -298,7 +452,7 @@ export const DatePickerBlock = forwardRef<HTMLDivElement, DatePickerBlockProps>(
           return {
             wrapper: cn(
               baseWrapper,
-              "bg-white dark:bg-[#09090b] border border-border rounded-xl shadow-sm",
+              "bg-background border border-border rounded-xl shadow-sm",
             ),
             active: cn("ring-4", theme.ring),
           };
@@ -306,6 +460,25 @@ export const DatePickerBlock = forwardRef<HTMLDivElement, DatePickerBlockProps>(
     };
 
     const styles = getVariantStyles();
+
+    // Only the side rail widens the popover; the stacked panel grows downward.
+    const popoverWidth = railOpen && sideLayout ? WIDE_POPOVER_PX : POPOVER_PX;
+
+    const timeHeader = (
+      <div className="flex items-center justify-between mb-2">
+        <span className="flex items-center gap-1.5 text-[10px] font-semibold uppercase tracking-wider text-muted-foreground">
+          <Clock className="w-3.5 h-3.5" /> Time
+        </span>
+        <span
+          className={cn(
+            "text-xs font-semibold tabular-nums",
+            value ? theme.text : "text-muted-foreground",
+          )}
+        >
+          {formatTime(timeSource, timeFormat)}
+        </span>
+      </div>
+    );
 
     return (
       <div
@@ -317,7 +490,7 @@ export const DatePickerBlock = forwardRef<HTMLDivElement, DatePickerBlockProps>(
         {label && (
           <label
             className={cn(
-              "text-sm font-bold",
+              "text-sm font-semibold",
               hasError ? "text-red-500" : "text-foreground",
               disabled && "opacity-50",
             )}
@@ -347,7 +520,7 @@ export const DatePickerBlock = forwardRef<HTMLDivElement, DatePickerBlockProps>(
                 "truncate",
                 s.text,
                 !value
-                  ? "text-zinc-400 dark:text-zinc-600"
+                  ? "text-muted-foreground"
                   : "text-foreground",
               )}
             >
@@ -360,83 +533,171 @@ export const DatePickerBlock = forwardRef<HTMLDivElement, DatePickerBlockProps>(
           </div>
         </button>
 
-        {/* Calendar Popover */}
+        {/* Calendar Popover — grows in step with the time rail beside it.
+            Closed, it is out of the tab order as well as out of sight. */}
         <div
+          inert={!isOpen}
+          style={{
+            width: popoverWidth,
+            opacity: isOpen ? 1 : 0,
+            scale: `1 ${isOpen ? 1 : 0.95}`,
+            translate: `0 ${isOpen ? 0 : -8}px`,
+            transition: reduceMotion
+              ? "none"
+              : [unfoldOn("width"), popOn("opacity"), popOn("scale"), popOn("translate")].join(", "),
+          }}
           className={cn(
-            "absolute left-0 z-50 overflow-hidden bg-background border border-border rounded-xl shadow-xl transition-all duration-200 ease-out origin-top w-72",
+            "absolute z-50 overflow-hidden bg-popover text-popover-foreground border border-border rounded-xl shadow-xl origin-top",
+            alignRight ? "right-0" : "left-0",
+            // Never wider than the viewport minus a margin, so a phone still
+            // sees the whole thing.
+            "max-w-[calc(100vw-2rem)]",
             variant === "underlined" ? "top-[100%]" : "top-[calc(100%+8px)]",
-            isOpen
-              ? "opacity-100 scale-y-100 translate-y-0 pointer-events-auto"
-              : "opacity-0 scale-y-95 -translate-y-2 pointer-events-none",
+            isOpen ? "pointer-events-auto" : "pointer-events-none",
           )}
         >
           <div className="p-4">
-            {/* Header */}
-            <div className="flex items-center justify-between mb-4">
-              <button
-                onClick={handlePrevMonth}
-                className="p-1.5 rounded-md text-muted-foreground hover:bg-muted transition-colors"
-              >
-                <ChevronLeft className="w-4 h-4" />
-              </button>
-              <div className="text-sm font-bold text-foreground">
-                {MONTH_NAMES[currentMonth]} {currentYear}
-              </div>
-              <button
-                onClick={handleNextMonth}
-                className="p-1.5 rounded-md text-muted-foreground hover:bg-muted transition-colors"
-              >
-                <ChevronRight className="w-4 h-4" />
-              </button>
-            </div>
-
-            {/* Days Header */}
-            <div className="grid grid-cols-7 mb-2">
-              {DAY_NAMES.map((day) => (
-                <div
-                  key={day}
-                  className="text-center text-[10px] font-bold uppercase tracking-wider text-muted-foreground"
-                >
-                  {day}
-                </div>
-              ))}
-            </div>
-
-            {/* Days Grid */}
-            <div className="grid grid-cols-7 gap-1">
-              {/* Empty slots for start of month */}
-              {Array.from({ length: firstDayIndex }).map((_, i) => (
-                <div key={`empty-${i}`} className="w-8 h-8" />
-              ))}
-
-              {/* Actual Days */}
-              {Array.from({ length: daysInMonth }).map((_, i) => {
-                const day = i + 1;
-                const thisDate = new Date(currentYear, currentMonth, day);
-                const isSelected = value && isSameDay(thisDate, value);
-                const isToday = isSameDay(thisDate, today);
-
-                return (
+            <div className={cn(showTime && sideLayout && "flex items-stretch")}>
+              <div className="min-w-0 flex-1">
+                {/* Header */}
+                <div className="flex items-center justify-between mb-4">
                   <button
-                    key={day}
-                    onClick={(e) => handleSelectDate(day, e)}
-                    className={cn(
-                      "w-8 h-8 flex items-center justify-center rounded-full text-sm transition-all duration-200 cursor-pointer mx-auto",
-                      isSelected
-                        ? cn(theme.bg, "font-bold shadow-sm scale-110")
-                        : isToday
-                          ? cn(
-                              "font-bold bg-muted",
-                              theme.text,
-                            )
-                          : "text-foreground font-medium hover:bg-muted",
-                    )}
+                    onClick={handlePrevMonth}
+                    className="p-1.5 rounded-md text-muted-foreground hover:bg-muted transition-colors"
                   >
-                    {day}
+                    <ChevronLeft className="w-4 h-4" />
                   </button>
-                );
-              })}
+                  <div className="text-sm font-semibold text-foreground">
+                    {MONTH_NAMES[currentMonth]} {currentYear}
+                  </div>
+                  <button
+                    onClick={handleNextMonth}
+                    className="p-1.5 rounded-md text-muted-foreground hover:bg-muted transition-colors"
+                  >
+                    <ChevronRight className="w-4 h-4" />
+                  </button>
+                </div>
+
+                {/* Days Header */}
+                <div className="grid grid-cols-7 mb-2">
+                  {DAY_NAMES.map((day) => (
+                    <div
+                      key={day}
+                      className="text-center text-[10px] font-semibold uppercase tracking-wider text-muted-foreground"
+                    >
+                      {day}
+                    </div>
+                  ))}
+                </div>
+
+                {/* Days Grid */}
+                <div className="grid grid-cols-7 gap-1">
+                  {/* Empty slots for start of month */}
+                  {Array.from({ length: firstDayIndex }).map((_, i) => (
+                    <div key={`empty-${i}`} className="w-8 h-8" />
+                  ))}
+
+                  {/* Actual Days */}
+                  {Array.from({ length: daysInMonth }).map((_, i) => {
+                    const day = i + 1;
+                    const thisDate = new Date(currentYear, currentMonth, day);
+                    const isSelected = value && isSameDay(thisDate, value);
+                    const isToday = isSameDay(thisDate, today);
+                    const isOff = isDayDisabled(thisDate);
+
+                    return (
+                      <button
+                        key={day}
+                        type="button"
+                        disabled={isOff}
+                        aria-disabled={isOff}
+                        onClick={(e) => handleSelectDate(day, e)}
+                        className={cn(
+                          "w-8 h-8 flex items-center justify-center rounded-full text-sm transition-all duration-200 cursor-pointer mx-auto",
+                          isSelected
+                            ? cn(theme.bg, "font-semibold shadow-sm scale-110")
+                            : isToday
+                              ? cn(
+                                  "font-semibold bg-muted",
+                                  theme.text,
+                                )
+                              : "text-foreground font-medium hover:bg-muted",
+                          isOff &&
+                            "text-muted-foreground/40 line-through cursor-not-allowed hover:bg-transparent font-normal",
+                        )}
+                      >
+                        {day}
+                      </button>
+                    );
+                  })}
+                </div>
+              </div>
+
+              {/* Time — unfolds to the RIGHT of the calendar on the first pick
+                  when there is room, and DOWN from under it otherwise. The
+                  inner column is a fixed width so the lists are never squeezed
+                  mid-unfold, and its margin rides along so the calendar holds
+                  still. */}
+              <Fold
+                show={railOpen && sideLayout}
+                axis="x"
+                size={RAIL_PX}
+                instant={reduceMotion}
+                className="shrink-0 overflow-hidden"
+              >
+                <div className="flex h-full w-44 ml-4 flex-col border-l border-border pl-4">
+                  {timeHeader}
+                  {/* The picker fills whatever height the calendar gives
+                      the row — absolutely positioned so its long lists
+                      never stretch the popover themselves. */}
+                  <div className="relative flex-1 min-h-32">
+                    <TimePicker
+                      value={timeSource}
+                      onChange={handleTimeChange}
+                      format={timeFormat}
+                      minuteStep={minuteStep}
+                      minTime={minTime}
+                      maxTime={maxTime}
+                      color={color}
+                      className="absolute inset-0 h-auto"
+                    />
+                  </div>
+                </div>
+              </Fold>
             </div>
+
+            <Fold show={railOpen && !sideLayout} axis="y" instant={reduceMotion} className="overflow-hidden">
+              <div className="mt-4 pt-4 border-t border-border">
+                {timeHeader}
+                <TimePicker
+                  value={timeSource}
+                  onChange={handleTimeChange}
+                  format={timeFormat}
+                  minuteStep={minuteStep}
+                  minTime={minTime}
+                  maxTime={maxTime}
+                  color={color}
+                />
+              </div>
+            </Fold>
+
+            {/* Done confirms the day and its time, so it rides in with the
+                panel rather than sitting under an empty calendar. */}
+            <Fold show={railOpen} axis="y" instant={reduceMotion} className="overflow-hidden">
+              <button
+                type="button"
+                onClick={(e) => {
+                  e.stopPropagation();
+                  setIsOpen(false);
+                }}
+                className={cn(
+                  "mt-3 w-full h-9 rounded-lg text-sm font-semibold transition-colors",
+                  theme.bg,
+                )}
+              >
+                Done
+              </button>
+            </Fold>
           </div>
         </div>
 

@@ -1,0 +1,40 @@
+"use client";
+
+import { AudioPlayer } from "@/components/custom/blocks/AudioPlayerBlock";
+
+export default function AudioPlayerDemo({
+  variant = "hero",
+  enableGlow = true,
+  skipSeconds = 10,
+  loop = false,
+  color = "primary",
+}: {
+  variant?: "hero" | "bar" | "native";
+  enableGlow?: boolean;
+  skipSeconds?: number;
+  loop?: boolean;
+  color?: string;
+}) {
+  return (
+    <div
+      style={{ "--theme-color": color.startsWith("#") ? color : `var(--${color},var(--primary))` } as React.CSSProperties}
+      className="w-full relative overflow-hidden flex items-center justify-center"
+    >
+      <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(0,0,0,0.05)_1px,transparent_1px)] dark:bg-[radial-gradient(circle_at_center,rgba(255,255,255,0.05)_1px,transparent_1px)] bg-[size:24px_24px] pointer-events-none" />
+
+      <div className="relative z-10 w-full max-w-5xl">
+        <AudioPlayer
+          variant={variant}
+          enableGlow={enableGlow}
+          skipSeconds={skipSeconds}
+          loop={loop}
+          badge="Now Playing"
+          title="It All Began With a Burst"
+          subtitle="Kishi Bashi — 151a"
+          artworkUrl="https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_1200,c_limit/v1790145142/photo-1511671782779-c97d3d27a1d4-1790145143493.jpg"
+          artworkAlt="Studio microphone in warm light"
+        />
+      </div>
+    </div>
+  );
+}

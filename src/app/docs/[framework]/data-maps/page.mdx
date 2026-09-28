@@ -59,7 +59,7 @@ export default function ZoomableMap() {
   return (
     <DataMaps
       dataPoints={mapData}
-      variant="dots"
+      variant="fill"
       zoomable
       scrollWheelZoom
       zoom={2}
@@ -164,30 +164,8 @@ export default function ColoredMap() {
           effect: "and `maxZoom` bound how far the reader can go; `zoom` is the starting level.",
         },
       ],
-      props: { variant: "dots", zoomable: true, mapId: "map-zoomable" },
+      props: { variant: "fill", zoomable: true, mapId: "map-zoomable" },
       usage: usageZoomable,
-    },
-    {
-      title: "Custom colors",
-      propNotes: [
-        {
-          prop: "highlightColor",
-          value: '"#10b981"',
-          effect: "is the global accent applied to countries that have data.",
-        },
-        {
-          prop: "defaultColor",
-          value: '"#cbd5e1"',
-          effect: "paints every country without data.",
-        },
-        {
-          prop: "color",
-          effect:
-            "on an individual entry in `dataPoints` overrides both for that country alone.",
-        },
-      ],
-      props: { variant: "fill", zoomable: false, color: "#10b981", mapId: "map-colors" },
-      usage: usageColors,
     },
   ]}
 />
@@ -196,34 +174,34 @@ export default function ColoredMap() {
 Learn about the Data Maps component's geographic visualization features, mapping interactive data points onto vector country paths.
 
 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 my-6 not-prose">
-  <div className="p-6 rounded-2xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900">
-    <h3 className="text-lg font-semibold text-zinc-900 dark:text-zinc-50 mb-2">SSR Compatible</h3>
-    <p className="text-zinc-600 dark:text-zinc-400 text-sm">Uses Next.js dynamic imports to safely load Leaflet client-side without hydration errors.</p>
+  <div className="p-6 rounded-2xl border border-border bg-card">
+    <h3 className="text-lg font-semibold text-card-foreground mb-2">SSR Compatible</h3>
+    <p className="text-muted-foreground text-sm">Uses Next.js dynamic imports to safely load Leaflet client-side without hydration errors.</p>
   </div>
-  <div className="p-6 rounded-2xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900">
-    <h3 className="text-lg font-semibold text-zinc-900 dark:text-zinc-50 mb-2">Lightweight Vectors</h3>
-    <p className="text-zinc-600 dark:text-zinc-400 text-sm">Fetches clean GeoJSON data on the fly instead of relying on heavy raster map tiles.</p>
+  <div className="p-6 rounded-2xl border border-border bg-card">
+    <h3 className="text-lg font-semibold text-card-foreground mb-2">Lightweight Vectors</h3>
+    <p className="text-muted-foreground text-sm">Fetches clean GeoJSON data on the fly instead of relying on heavy raster map tiles.</p>
   </div>
-  <div className="p-6 rounded-2xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900">
-    <h3 className="text-lg font-semibold text-zinc-900 dark:text-zinc-50 mb-2">Dual Variants</h3>
-    <p className="text-zinc-600 dark:text-zinc-400 text-sm">Supports both solid polygon fills and modern pulsing dots for geographic emphasis.</p>
+  <div className="p-6 rounded-2xl border border-border bg-card">
+    <h3 className="text-lg font-semibold text-card-foreground mb-2">Dual Variants</h3>
+    <p className="text-muted-foreground text-sm">Supports both solid polygon fills and modern pulsing dots for geographic emphasis.</p>
   </div>
-  <div className="p-6 rounded-2xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900">
-    <h3 className="text-lg font-semibold text-zinc-900 dark:text-zinc-50 mb-2">Rich Hover Cards</h3>
-    <p className="text-zinc-600 dark:text-zinc-400 text-sm">Elegant tooltips with country flags, data metrics, and up/down trend indicators.</p>
+  <div className="p-6 rounded-2xl border border-border bg-card">
+    <h3 className="text-lg font-semibold text-card-foreground mb-2">Rich Hover Cards</h3>
+    <p className="text-muted-foreground text-sm">Elegant tooltips with country flags, data metrics, and up/down trend indicators.</p>
   </div>
 </div>
 
 ## Best Practices & Guidelines
 
 <div className="flex flex-col gap-4 my-6 not-prose">
-  <div className="p-5 rounded-xl border border-blue-200 dark:border-blue-900/50 bg-blue-50/50 dark:bg-blue-950/20">
-    <h4 className="text-base font-semibold text-blue-900 dark:text-blue-300 mb-1">Dynamic Imports</h4>
-    <p className="text-blue-800 dark:text-blue-400/80 text-sm">Leaflet reads the browser's <code>window</code> at import time, so the component defers loading it until after mount. <ForFramework only="nextjs">That is why any component wrapping <code>react-leaflet</code> must stay off the server — this one already does, so you can render it directly without a <code>{"{ ssr: false }"}</code> wrapper of your own.</ForFramework><ForFramework only="reactjs">A Vite SPA has no server render, so there is nothing to opt out of — import and render it directly.</ForFramework></p>
+  <div className="rounded-xl border border-foreground/[0.06] bg-foreground/[0.03] p-4">
+    <h4 className="font-sans text-[14px] font-semibold text-foreground mb-1">Dynamic Imports</h4>
+    <p className="text-[13px] leading-relaxed text-foreground/50">Leaflet reads the browser's <code>window</code> at import time, so the component defers loading it until after mount. <ForFramework only="nextjs">That is why any component wrapping <code>react-leaflet</code> must stay off the server — this one already does, so you can render it directly without a <code>{"{ ssr: false }"}</code> wrapper of your own.</ForFramework><ForFramework only="reactjs">A Vite SPA has no server render, so there is nothing to opt out of — import and render it directly.</ForFramework></p>
   </div>
-  <div className="p-5 rounded-xl border border-amber-200 dark:border-amber-900/50 bg-amber-50/50 dark:bg-amber-950/20">
-    <h4 className="text-base font-semibold text-amber-900 dark:text-amber-300 mb-1">GeoJSON Caching</h4>
-    <p className="text-amber-800 dark:text-amber-400/80 text-sm">By default, the map fetches the world map GeoJSON from a remote CDN. For production environments, it is highly recommended to download the <code>custom.geo.json</code> file and host it locally in your <code>public</code> directory to reduce latency.</p>
+  <div className="rounded-xl border border-primary/15 bg-primary/5 p-4">
+    <h4 className="font-sans text-[14px] font-semibold text-primary mb-1">GeoJSON Caching</h4>
+    <p className="text-[13px] leading-relaxed text-foreground/50">By default, the map fetches the world map GeoJSON from a remote CDN. For production environments, it is highly recommended to download the <code>custom.geo.json</code> file and host it locally in your <code>public</code> directory to reduce latency.</p>
   </div>
 </div>
 

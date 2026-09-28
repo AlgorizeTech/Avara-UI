@@ -1,34 +1,63 @@
 # Curved Carousel
 
-An interactive, 100% full-width 3D curved arc carousel featuring left-to-right oscillating auto-sway motion, smooth Framer Motion spring physics, perspective depth cards, and dynamic site theme color binding.
+An interactive, 100% full-width 3D curved arc carousel featuring left-to-right oscillating auto-sway motion, smooth Motion spring physics, perspective depth cards, and dynamic site theme color binding.
 
 `CurvedCarousel` transforms standard image galleries into an immersive, fanned 3D arc deck with customizable speed, touch/drag controls, and dark mode support.
 
-export const usageArcSweep = `import { CurvedCarousel } from "@/components/custom/blocks/CurvedCarouselBlock";
+export const usageArcSweep = `import { CurvedCarousel, type CurvedCarouselCard } from "@/components/custom/blocks/CurvedCarouselBlock";
 
-const customItems = [
-  { id: "1", title: "Misty Pine Forest", code: "001", image: "https://images.unsplash.com/photo-1448375240586-882707db888b?w=800&auto=format&fit=crop&q=80" },
-  { id: "2", title: "Alpine Mountain Reflection", code: "002", image: "https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?w=800&auto=format&fit=crop&q=80" },
-  { id: "3", title: "Glacier Lake Wilderness", code: "003", image: "https://images.unsplash.com/photo-1506744038136-46273834b3fb?w=800&auto=format&fit=crop&q=80" },
+const items: CurvedCarouselCard[] = [
+  { id: "card-1", title: "Misty Pine Forest", code: "001", image: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_800,c_limit/v1790145141/photo-1448375240586-882707db888b-1790145143491.jpg" },
+  { id: "card-2", title: "Alpine Mountain Reflection", code: "002", image: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_800,c_limit/v1790145141/photo-1464822759023-fed622ff2c3b-1790145143491.jpg" },
+  { id: "card-3", title: "Glacier Lake Wilderness", code: "003", image: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_800,c_limit/v1790146210/photo-1506744038136-46273834b3fb-1790146212208.jpg" },
+  { id: "card-4", title: "Autumn Woodland River", code: "004", image: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_800,c_limit/v1790146209/photo-1470071459604-3b5ec3a7fe05-1790146212205.jpg" },
+  { id: "card-5", title: "Golden Hour Valley", code: "005", image: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_800,c_limit/v1790150481/photo-1507272931001-fc06c17e4f43-1790150482276.jpg" },
+  { id: "card-6", title: "Mountain Ridge Sunset", code: "006", image: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_800,c_limit/v1790146210/photo-1472214103451-9374bd1c798e-1790146212205.jpg" },
+  { id: "card-7", title: "Cascading Forest Waterfall", code: "007", image: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_800,c_limit/v1790145140/photo-1426604966848-d7adac402bff-1790145143490.jpg" },
+  { id: "card-8", title: "Deep Wilderness Forest", code: "008", image: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_800,c_limit/v1790146211/photo-1441974231531-c6227db76b6e-1790146212212.jpg" },
+  { id: "card-9", title: "Emerald Mountain Meadow", code: "009", image: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_800,c_limit/v1790146209/photo-1469474968028-56623f02e42e-1790146212205.jpg" },
+  { id: "card-10", title: "Serene Desert Canyon", code: "010", image: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_800,c_limit/v1790146210/photo-1509316975850-ff9c5deb0cd9-1790146212209.jpg" },
+  { id: "card-11", title: "Sunlit Pine Woods", code: "011", image: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_800,c_limit/v1790148863/photo-1473448912268-2022ce9509d8-1790148865110.jpg" },
+  { id: "card-12", title: "Mystic Fog Peak", code: "012", image: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_800,c_limit/v1790146211/photo-1519681393784-d120267933ba-1790146212210.jpg" },
 ];
 
 export default function CurvedCarouselDemo() {
-  return ;
+  return (
+    
+  );
 }`;
 
-export const usageInfiniteMarquee = `import { CurvedCarousel } from "@/components/custom/blocks/CurvedCarouselBlock";
+export const usageInfiniteMarquee = `import { CurvedCarousel, type CurvedCarouselCard } from "@/components/custom/blocks/CurvedCarouselBlock";
 
-const customItems = [
-  { id: "1", title: "Misty Pine Forest", code: "001", image: "https://images.unsplash.com/photo-1448375240586-882707db888b?w=800&auto=format&fit=crop&q=80" },
-  { id: "2", title: "Alpine Mountain Reflection", code: "002", image: "https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?w=800&auto=format&fit=crop&q=80" },
-  { id: "3", title: "Glacier Lake Wilderness", code: "003", image: "https://images.unsplash.com/photo-1506744038136-46273834b3fb?w=800&auto=format&fit=crop&q=80" },
+const items: CurvedCarouselCard[] = [
+  { id: "card-1", title: "Misty Pine Forest", code: "001", image: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_800,c_limit/v1790145141/photo-1448375240586-882707db888b-1790145143491.jpg" },
+  { id: "card-2", title: "Alpine Mountain Reflection", code: "002", image: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_800,c_limit/v1790145141/photo-1464822759023-fed622ff2c3b-1790145143491.jpg" },
+  { id: "card-3", title: "Glacier Lake Wilderness", code: "003", image: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_800,c_limit/v1790146210/photo-1506744038136-46273834b3fb-1790146212208.jpg" },
+  { id: "card-4", title: "Autumn Woodland River", code: "004", image: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_800,c_limit/v1790146209/photo-1470071459604-3b5ec3a7fe05-1790146212205.jpg" },
+  { id: "card-5", title: "Golden Hour Valley", code: "005", image: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_800,c_limit/v1790150481/photo-1507272931001-fc06c17e4f43-1790150482276.jpg" },
+  { id: "card-6", title: "Mountain Ridge Sunset", code: "006", image: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_800,c_limit/v1790146210/photo-1472214103451-9374bd1c798e-1790146212205.jpg" },
+  { id: "card-7", title: "Cascading Forest Waterfall", code: "007", image: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_800,c_limit/v1790145140/photo-1426604966848-d7adac402bff-1790145143490.jpg" },
+  { id: "card-8", title: "Deep Wilderness Forest", code: "008", image: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_800,c_limit/v1790146211/photo-1441974231531-c6227db76b6e-1790146212212.jpg" },
+  { id: "card-9", title: "Emerald Mountain Meadow", code: "009", image: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_800,c_limit/v1790146209/photo-1469474968028-56623f02e42e-1790146212205.jpg" },
+  { id: "card-10", title: "Serene Desert Canyon", code: "010", image: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_800,c_limit/v1790146210/photo-1509316975850-ff9c5deb0cd9-1790146212209.jpg" },
+  { id: "card-11", title: "Sunlit Pine Woods", code: "011", image: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_800,c_limit/v1790148863/photo-1473448912268-2022ce9509d8-1790148865110.jpg" },
+  { id: "card-12", title: "Mystic Fog Peak", code: "012", image: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_800,c_limit/v1790146211/photo-1519681393784-d120267933ba-1790146212210.jpg" },
 ];
 
 export default function InfiniteMarqueeDemo() {
-  return ;
+  return (
+    
+  );
 }`;
 
 ## Installation
+
+Register the @algorize-ui registry once per project, then add the component:
+
+```bash
+npx shadcn@latest registry add @algorize-ui=https://algorize-ui.vercel.app/r/{name}.json
+npx shadcn@latest add @algorize-ui/curved-carousel
+```
 
 ## Features
 
@@ -58,7 +87,7 @@ export default function InfiniteMarqueeDemo() {
 
           variant
 
-          "arc-sweep" | "perspective-fan" | "floating-deck" | "glowing-orbit"
+          "arc-sweep" | "infinite-marquee"
 
           "arc-sweep"
         
@@ -66,11 +95,11 @@ export default function InfiniteMarqueeDemo() {
 
           items
 
-          CurvedCarouselItem[]
+          CurvedCarouselCard[]
 
           Preset Array
         
-        Array of objects containing id, title, image, subtitle, and optional tag.
+        Array of objects containing id, title, code, and image.
 
           autoPlay
 
@@ -84,13 +113,13 @@ export default function InfiniteMarqueeDemo() {
 
           number
 
-          4
+          1
         
-        Oscillation sway step speed interval in seconds.
+        Oscillation sway step speed multiplier.
 
           color
 
-          CurvedCarouselColor | string
+          "primary" | "indigo" | "rose" | "emerald" | "zinc" | string
 
           "primary"
         

@@ -22,7 +22,7 @@ export default function AccountMenu() {
   return (
     <Popover>
       <PopoverTrigger>
-        <div className="w-10 h-10 rounded-full bg-indigo-100 text-indigo-600 dark:bg-indigo-500/20 dark:text-indigo-400 flex items-center justify-center cursor-pointer hover:bg-indigo-200 transition-colors">
+        <div className="w-10 h-10 rounded-full bg-primary/10 text-primary flex items-center justify-center cursor-pointer hover:bg-primary/20 transition-colors">
           <User className="w-5 h-5" />
         </div>
       </PopoverTrigger>
@@ -30,20 +30,22 @@ export default function AccountMenu() {
       {/* className overrides the default w-72 */}
       <PopoverContent side="bottom" align="end" className="w-64">
         <div className="flex flex-col gap-3">
-          <div className="flex items-center gap-3 border-b border-zinc-100 dark:border-zinc-800/50 pb-3">
-            <div className="w-10 h-10 rounded-full bg-zinc-200 dark:bg-zinc-800 flex shrink-0" />
+          <div className="flex items-center gap-3 border-b border-border pb-3">
+            <div className="w-10 h-10 rounded-full bg-primary/20 text-primary flex items-center justify-center font-semibold text-sm shrink-0">
+              AB
+            </div>
             <div className="flex flex-col">
-              <span className="text-sm font-bold">Andy Bernard</span>
-              <span className="text-xs text-zinc-500">andy@dundermifflin.com</span>
+              <span className="text-sm font-semibold">Andy Bernard</span>
+              <span className="text-xs text-muted-foreground">andy@dundermifflin.com</span>
             </div>
           </div>
-          <button className="text-left text-sm text-zinc-600 dark:text-zinc-300 hover:text-zinc-900 dark:hover:text-white">
+          <button className="text-left text-sm text-muted-foreground hover:text-foreground">
             View Profile
           </button>
-          <button className="text-left text-sm text-zinc-600 dark:text-zinc-300 hover:text-zinc-900 dark:hover:text-white">
+          <button className="text-left text-sm text-muted-foreground hover:text-foreground">
             Billing Settings
           </button>
-          <button className="text-left text-sm text-red-600 hover:text-red-700 mt-2">
+          <button className="text-left text-sm text-rose-600 hover:text-rose-700 mt-2 font-medium">
             Log out
           </button>
         </div>
@@ -58,7 +60,7 @@ function DimensionsPanel() {
     <div className="flex flex-col gap-3">
       <div>
         <h4 className="text-sm font-semibold">Dimensions</h4>
-        <p className="text-xs text-zinc-500">Set the size of the layer.</p>
+        <p className="text-xs text-muted-foreground">Set the size of the layer.</p>
       </div>
       {[
         { label: "Width", value: "100%" },
@@ -66,10 +68,10 @@ function DimensionsPanel() {
         { label: "Height", value: "auto" },
       ].map((row) => (
         <div key={row.label} className="grid grid-cols-3 items-center gap-3">
-          <label className="text-sm text-zinc-600 dark:text-zinc-400">{row.label}</label>
+          <label className="text-sm text-muted-foreground">{row.label}</label>
           <input
             defaultValue={row.value}
-            className="col-span-2 h-8 rounded-md border border-zinc-200 dark:border-zinc-800 bg-transparent px-2 text-sm"
+            className="col-span-2 h-8 rounded-md border border-input bg-transparent px-2 text-sm focus:outline-none focus:ring-2 focus:ring-primary"
           />
         </div>
       ))}
@@ -106,6 +108,7 @@ export default function OffsetPopover() {
 
 <ExampleShowcase
   name="popover"
+  colorControl
   columns={1}
   examples={[
     {
@@ -132,6 +135,7 @@ export default function OffsetPopover() {
 
 <ExampleShowcase
   name="popover"
+  colorControl
   columns={1}
   examples={[
     {
@@ -160,30 +164,30 @@ export default function OffsetPopover() {
 Discover the Popover's intelligent positioning engine that prevents collision with screen edges while displaying contextual content.
 
 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 my-6 not-prose">
-  <div className="p-6 rounded-2xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900">
-    <h3 className="text-lg font-semibold text-zinc-900 dark:text-zinc-50 mb-2">Customizable</h3>
-    <p className="text-zinc-600 dark:text-zinc-400 text-sm">Easily adapt the component's styling and behavior to fit your application's unique design system.</p>
+  <div className="p-6 rounded-2xl border border-border bg-card">
+    <h3 className="text-lg font-semibold text-card-foreground mb-2">Customizable</h3>
+    <p className="text-muted-foreground text-sm">Easily adapt the component's styling and behavior to fit your application's unique design system.</p>
   </div>
-  <div className="p-6 rounded-2xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900">
-    <h3 className="text-lg font-semibold text-zinc-900 dark:text-zinc-50 mb-2">Accessible</h3>
-    <p className="text-zinc-600 dark:text-zinc-400 text-sm">Built with accessibility in mind, ensuring all users can interact with your application effectively.</p>
+  <div className="p-6 rounded-2xl border border-border bg-card">
+    <h3 className="text-lg font-semibold text-card-foreground mb-2">Accessible</h3>
+    <p className="text-muted-foreground text-sm">Built with accessibility in mind, ensuring all users can interact with your application effectively.</p>
   </div>
-  <div className="p-6 rounded-2xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900">
-    <h3 className="text-lg font-semibold text-zinc-900 dark:text-zinc-50 mb-2">Responsive</h3>
-    <p className="text-zinc-600 dark:text-zinc-400 text-sm">Fully responsive design that looks and works great across desktop, tablet, and mobile devices.</p>
+  <div className="p-6 rounded-2xl border border-border bg-card">
+    <h3 className="text-lg font-semibold text-card-foreground mb-2">Responsive</h3>
+    <p className="text-muted-foreground text-sm">Fully responsive design that looks and works great across desktop, tablet, and mobile devices.</p>
   </div>
-  <div className="p-6 rounded-2xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900">
-    <h3 className="text-lg font-semibold text-zinc-900 dark:text-zinc-50 mb-2">Performant</h3>
-    <p className="text-zinc-600 dark:text-zinc-400 text-sm">Optimized for maximum performance with minimal re-renders and efficient state management.</p>
+  <div className="p-6 rounded-2xl border border-border bg-card">
+    <h3 className="text-lg font-semibold text-card-foreground mb-2">Performant</h3>
+    <p className="text-muted-foreground text-sm">Optimized for maximum performance with minimal re-renders and efficient state management.</p>
   </div>
 </div>
 
 ## Best Practices & Guidelines
 
 <div className="flex flex-col gap-4 my-6 not-prose">
-  <div className="p-5 rounded-xl border border-blue-200 dark:border-blue-900/50 bg-blue-50/50 dark:bg-blue-950/20">
-    <h4 className="text-base font-semibold text-blue-900 dark:text-blue-300 mb-1">Usage Guidelines</h4>
-    <p className="text-blue-800 dark:text-blue-400/80 text-sm">Follow standard design principles when implementing this component. Ensure proper contrast, spacing, and context within your layout.</p>
+  <div className="rounded-xl border border-foreground/[0.06] bg-foreground/[0.03] p-4">
+    <h4 className="font-sans text-[14px] font-semibold text-foreground mb-1">Usage Guidelines</h4>
+    <p className="text-[13px] leading-relaxed text-foreground/50">Follow standard design principles when implementing this component. Ensure proper contrast, spacing, and context within your layout.</p>
   </div>
 </div>
 

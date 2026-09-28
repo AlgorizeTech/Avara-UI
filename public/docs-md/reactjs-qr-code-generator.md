@@ -24,7 +24,7 @@ export default function GeneratorExample() {
           
            setValue(e.target.value)}
             placeholder="https://algorizetech.com"
-            className="w-full px-4 py-3 border border-slate-200 dark:border-slate-800 rounded-xl bg-slate-50 dark:bg-slate-900 focus:outline-none focus:ring-2 focus:ring-blue-500/20 text-sm transition-colors"
+            className="w-full px-4 py-3 border border-input rounded-xl bg-muted focus:outline-none focus:ring-2 focus:ring-primary/20 text-sm transition-colors"
           />
 
             Correction Level:
@@ -32,10 +32,10 @@ export default function GeneratorExample() {
             {(["L", "M", "Q", "H"] as const).map((lvl) => (
                setLevel(lvl)}
                 className={
-                  "flex-1 cursor-pointer px-3 sm:px-4 py-2 text-sm font-medium transition-colors border-r border-slate-200 dark:border-slate-800 last:border-r-0 text-center " +
+                  "flex-1 cursor-pointer px-3 sm:px-4 py-2 text-sm font-medium transition-colors border-r border-border last:border-r-0 text-center " +
                   (level === lvl
-                    ? "bg-slate-50 dark:bg-slate-900 text-zinc-900 dark:text-white"
-                    : "text-slate-500 hover:text-slate-700 dark:text-slate-400")
+                    ? "bg-muted text-primary"
+                    : "text-muted-foreground hover:text-foreground hover:bg-muted")
                 }
               >
                 {lvl}
@@ -52,9 +52,9 @@ export default function GeneratorExample() {
 export const usageGallery = `import { QrCodeGenerator } from "@/components/custom/blocks/QrCodeGeneratorBlock";
 
 const swatches = [
-  { size: 96, level: "L" as const, fgColor: "currentColor" },
-  { size: 140, level: "M" as const, fgColor: "#3b82f6" },
-  { size: 200, level: "H" as const, fgColor: "#10b981" },
+  { size: 96, level: "L" as const },
+  { size: 140, level: "M" as const },
+  { size: 200, level: "H" as const },
 ];
 
 export default function QrGallery() {
@@ -76,6 +76,13 @@ export const usageReader = `export default function ReaderExample() {
 
 ### Installation
 
+Register the @algorize-ui registry once per project, then add the component:
+
+```bash
+npx shadcn@latest registry add @algorize-ui=https://algorize-ui.vercel.app/r/{name}.json
+npx shadcn@latest add @algorize-ui/qr-code-generator
+```
+
 ### More examples
 
 ## QR reader
@@ -83,6 +90,13 @@ export const usageReader = `export default function ReaderExample() {
 A separate component with its own dependencies — decoding happens entirely in the browser.
 
 ### Installation
+
+Register the @algorize-ui registry once per project, then add the component:
+
+```bash
+npx shadcn@latest registry add @algorize-ui=https://algorize-ui.vercel.app/r/{name}.json
+npx shadcn@latest add @algorize-ui/qr-code-reader
+```
 
 ## Features
 Explore the QR Code Generator's customizable features, allowing for different colors, sizes, and embedded logos within the code.

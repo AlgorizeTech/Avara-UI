@@ -12,14 +12,23 @@ export default function LoginFormDemo({
   variant?: LoginVariant;
   color?: LoginColor;
 }) {
+  const isScenic =
+    variant === "scenic" || variant === "nature" || variant === "landscape";
+
   return (
     <div
-      className={`w-full flex items-center justify-center min-h-[600px] transition-colors duration-300 relative overflow-hidden rounded-2xl ${variant === "glass" ? "p-4 sm:p-8" : "bg-zinc-50/50 dark:bg-transparent py-12"}`}
+      className={`w-full flex items-center justify-center min-h-[600px] transition-colors duration-300 relative overflow-hidden rounded-2xl ${
+        isScenic
+          ? "p-0"
+          : variant === "glass"
+            ? "p-4 sm:p-8"
+            : "bg-muted/40 py-12"
+      }`}
     >
       {variant === "glass" && (
         <div className="absolute inset-0 z-0">
           <img
-            src="https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=1600&q=80"
+            src="https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_1600,c_limit/v1790146210/photo-1506744038136-46273834b3fb-1790146212208.jpg"
             alt="Moody lake sunset landscape"
             className="w-full h-full object-cover"
           />

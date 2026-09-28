@@ -1,0 +1,255 @@
+import { ExampleShowcase } from "@/components/site/Sandbox";
+import { extractCode } from "@/lib/code";
+
+# Avatar Stack
+
+A row of overlapping faces — the "people who…" cue under a headline, beside a count, or next to a join button. It shows up to `max` faces, folds the rest into a "+N" disc, and takes an optional trailing `action` that shares the stack's size. On hover the faces fan apart a little, so the row answers the pointer without turning into a carousel.
+
+Several sections used to hand-roll this row; <DocLink to="hero#fashion-hero">Fashion Hero</DocLink> uses this one.
+
+export const usageDefault = `import { AvatarStack } from "@/components/custom/blocks/AvatarStackBlock";
+
+const PEOPLE = [
+  { src: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_120,h_120,c_fill/v1790145139/pexels-photo-1036623-1790145143487.jpg", alt: "Ana" },
+  { src: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_120,h_120,c_fill/v1790145142/pexels-photo-2043590-1790145143488.jpg", alt: "Tom" },
+  { src: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_120,h_120,c_fill/v1790145139/pexels-photo-1587009-1790145143488.jpg", alt: "Mara" },
+  { src: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_120,h_120,c_fill/v1790145139/pexels-photo-3775534-1790145143488.jpg", alt: "Leo" },
+];
+
+export default function BasicAvatarStack() {
+  return (
+    <AvatarStack
+      avatars={PEOPLE}
+      size="md"
+      showTooltip={false}
+    />
+  );
+}`;
+
+export const usageAction = `import { Plus } from "lucide-react";
+import { AvatarStack } from "@/components/custom/blocks/AvatarStackBlock";
+
+const PEOPLE = [
+  { src: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_120,h_120,c_fill/v1790145139/pexels-photo-1036623-1790145143487.jpg", alt: "Ana" },
+  { src: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_120,h_120,c_fill/v1790145142/pexels-photo-2043590-1790145143488.jpg", alt: "Tom" },
+  { src: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_120,h_120,c_fill/v1790145139/pexels-photo-1587009-1790145143488.jpg", alt: "Mara" },
+];
+
+export default function Community() {
+  return (
+    <AvatarStack
+      avatars={PEOPLE}
+      size="md"
+      action={
+        <a href="/join" aria-label="Join the community" className="grid size-full place-items-center rounded-full bg-primary text-primary-foreground ring-2 ring-background">
+          <Plus size={16} />
+        </a>
+      }
+    />
+  );
+}`;
+
+export const usageCount = `import { AvatarStack } from "@/components/custom/blocks/AvatarStackBlock";
+
+export default function JoinedThisMonth({ people }: { people: { src: string; alt: string }[] }) {
+  return (
+    <div className="flex items-center gap-3">
+      <AvatarStack avatars={people} max={3} />
+      <p className="text-sm text-muted-foreground">
+        <span className="font-semibold text-foreground">2,400+</span> people joined this month
+      </p>
+    </div>
+  );
+}`;
+
+export const usageSizes = `import { AvatarStack } from "@/components/custom/blocks/AvatarStackBlock";
+
+const PEOPLE = [
+  { src: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_120,h_120,c_fill/v1790145139/pexels-photo-1036623-1790145143487.jpg", alt: "Ana" },
+  { src: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_120,h_120,c_fill/v1790145142/pexels-photo-2043590-1790145143488.jpg", alt: "Tom" },
+  { src: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_120,h_120,c_fill/v1790145139/pexels-photo-1587009-1790145143488.jpg", alt: "Mara" },
+  { src: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_120,h_120,c_fill/v1790145139/pexels-photo-3775534-1790145143488.jpg", alt: "Leo" },
+];
+
+export default function SizesDemo() {
+  return (
+    <div className="flex flex-col items-center gap-6">
+      {/* Small with tooltip */}
+      <AvatarStack avatars={PEOPLE} size="sm" max={4} />
+
+      {/* Medium without tooltip */}
+      <AvatarStack avatars={PEOPLE} size="md" max={4} showTooltip={false} />
+
+      {/* Large with tooltip */}
+      <AvatarStack avatars={PEOPLE} size="lg" max={4} />
+    </div>
+  );
+}`;
+
+<ExampleShowcase
+  name="avatar-stack"
+  colorControl={false}
+  columns={1}
+  examples={[
+    {
+      title: "Without tooltip",
+      subheading: "A clean row of overlapping faces. Hovering expands the stack smoothly without displaying tooltips.",
+      propNotes: [
+        {
+          prop: "showTooltip",
+          value: "false",
+          effect: "disables the hover tooltip completely so the avatars fan out without displaying name or info popups.",
+        },
+        {
+          prop: "spreadOnHover",
+          effect: "slides each face a few pixels further than the one before it while the row is hovered; set it to `false` for a still row.",
+        },
+        {
+          prop: "liftOnHover",
+          effect: "raises the face under the pointer above its neighbours and grows it a touch, so a half-covered face can be seen whole; `false` keeps the stacking order fixed.",
+        },
+      ],
+      props: { example: "default", showTooltip: false },
+      usage: usageDefault,
+      code: extractCode("src/components/custom/blocks/AvatarStackBlock.tsx"),
+      minHeight: 240,
+    },
+  ]}
+/>
+
+## Installation
+
+<Installation name="avatar-stack" />
+
+## Examples
+
+<ExampleShowcase
+  name="avatar-stack"
+  colorControl={false}
+  columns={1}
+  examples={[
+    {
+      title: "With an action",
+      subheading: "Three faces and a plus button that shares their size. Hover the row and the faces fan out.",
+      propNotes: [
+        {
+          prop: "action",
+          effect:
+            "is any element rendered last in the row at the same size as a face — give it `size-full` and its own ring. A link or a button both work.",
+        },
+        {
+          prop: "spreadOnHover",
+          effect: "slides each face a few pixels further than the one before it while the row is hovered; set it to `false` for a still row.",
+        },
+        {
+          prop: "liftOnHover",
+          effect: "raises the face under the pointer above its neighbours and grows it a touch, so a half-covered face can be seen whole; `false` keeps the stacking order fixed.",
+        },
+      ],
+      props: { example: "action" },
+      usage: usageAction,
+      minHeight: 240,
+    },
+    {
+      title: "Folded count",
+      subheading: "Six people, three shown — the rest become a +3 disc.",
+      propNotes: [
+        {
+          prop: "max",
+          effect: "is how many faces show before the rest fold into a count. The count disc is black, so it reads as a number, not a face.",
+        },
+      ],
+      props: { example: "count", max: 3 },
+      usage: usageCount,
+      minHeight: 240,
+    },
+    {
+      title: "Sizes",
+      subheading: "sm, md and lg — 28, 36 and 44 pixels. The middle stack shows without tooltip (showTooltip={false}), while the others display tooltips on hover.",
+      propNotes: [
+        {
+          prop: "size",
+          effect: "controls the avatar circle dimensions: sm (28px), md (36px), or lg (44px).",
+        },
+        {
+          prop: "showTooltip",
+          value: "false",
+          effect: "can be disabled individually per stack (as shown on the middle stack) or left enabled.",
+        },
+        {
+          prop: "ringClassName",
+          effect:
+            "is the gap colour between faces (`ring-background` by default). Match it to the surface the stack sits on.",
+        },
+      ],
+      props: { example: "sizes" },
+      usage: usageSizes,
+      minHeight: 260,
+    },
+  ]}
+/>
+
+## Props Reference
+
+<div className="overflow-x-auto my-4">
+  <table>
+    <thead>
+      <tr>
+        <th>Prop</th>
+        <th>Type</th>
+        <th>Default</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><code>avatars</code></td>
+        <td><code>&#123; src: string; alt?: string &#125;[]</code></td>
+        <td><strong>Required</strong></td>
+        <td>The list of faces in order. The <code>alt</code> text is displayed inside the hover tooltip.</td>
+      </tr>
+      <tr>
+        <td><code>size</code></td>
+        <td><code>"sm" | "md" | "lg"</code></td>
+        <td><code>"md"</code></td>
+        <td>Avatar diameter: <code>sm</code> (28px), <code>md</code> (36px), or <code>lg</code> (44px).</td>
+      </tr>
+      <tr>
+        <td><code>max</code></td>
+        <td><code>number</code></td>
+        <td><code>4</code></td>
+        <td>Maximum faces shown before the rest fold into a <code>+N</code> count disc.</td>
+      </tr>
+      <tr>
+        <td><code>ringClassName</code></td>
+        <td><code>string</code></td>
+        <td><code>"ring-background"</code></td>
+        <td>Border/gap colour between overlapping faces. Defaults to theme background.</td>
+      </tr>
+      <tr>
+        <td><code>action</code></td>
+        <td><code>ReactNode</code></td>
+        <td>—</td>
+        <td>A trailing element (such as an add/join button) rendered at the same size as an avatar.</td>
+      </tr>
+      <tr>
+        <td><code>spreadOnHover</code></td>
+        <td><code>boolean</code></td>
+        <td><code>true</code></td>
+        <td>Whether faces smoothly fan apart slightly when the stack is hovered.</td>
+      </tr>
+      <tr>
+        <td><code>liftOnHover</code></td>
+        <td><code>boolean</code></td>
+        <td><code>true</code></td>
+        <td>Whether the hovered face rises above neighbours and scales up slightly.</td>
+      </tr>
+      <tr>
+        <td><code>showTooltip</code></td>
+        <td><code>boolean</code></td>
+        <td><code>true</code></td>
+        <td>Whether hover reveals the avatar's <code>alt</code> text in a tooltip. Set to <code>false</code> to disable tooltips. (Alias: <code>tooltip</code>).</td>
+      </tr>
+    </tbody>
+  </table>
+</div>

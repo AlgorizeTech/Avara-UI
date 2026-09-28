@@ -8,7 +8,7 @@ Explore the different variations of the Select component — each example shows 
 
 export const selectOptions = `import { Box, Code, Database, Paintbrush } from "lucide-react";
 
-const options = [
+const options: SelectOption[] = [
   { label: "Engineering", value: "eng", icon: Code },
   { label: "Design", value: "design", icon: Paintbrush },
   { label: "Marketing", value: "mkt" },
@@ -65,6 +65,13 @@ export default function MultiSelect() {
 }`;
 
 ## Installation
+
+Register the @algorize-ui registry once per project, then add the component:
+
+```bash
+npx shadcn@latest registry add @algorize-ui=https://algorize-ui.vercel.app/r/{name}.json
+npx shadcn@latest add @algorize-ui/select
+```
 
 ## Examples
 

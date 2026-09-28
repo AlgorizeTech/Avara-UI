@@ -3,77 +3,82 @@ import { extractCode } from "@/lib/code";
 
 # Video Accordion
 
-A cinematic, expanding gallery component built with **GSAP**. It keeps one panel visually dominant and plays its assigned video, while the rest seamlessly compress into an obscured track-rail and pause.
+A cinematic, expanding gallery component animated with plain **CSS transitions** — no animation library. It keeps one panel visually dominant and plays its assigned video, while the rest seamlessly compress into an obscured track-rail and pause.
 
 This layout is incredibly useful for portfolio reels, storytelling feature sections, and high-impact editorial landing pages. On mobile viewports, it intelligently re-flows into a vertically expanding stack automatically.
 
-Hover a compressed panel to expand it — GSAP interpolates the flex-basis of every sibling and the newly dominant panel starts playing while the others pause.
+Hover a compressed panel to expand it — a CSS transition interpolates the flex-grow of every sibling and the newly dominant panel starts playing while the others pause.
 
-export const accordionPanels = `const panels = [
+export const accordionPanels = `const panels: AccordionPanel[] = [
   {
     id: "ocean",
     title: "Alpine Sanctuary",
     description:
       "Explore the tranquil turquoise waters of pristine high-altitude mountain lakes surrounded by majestic peaks.",
-    videoSrc:
-      "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerBlazes.mp4",
+    videoSrc: "https://vjs.zencdn.net/v/oceans.mp4",
     posterUrl:
-      "https://images.unsplash.com/photo-1506744038136-46273834b3fb?q=80&w=1200&auto=format&fit=crop",
+      "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_1200,c_limit/v1790146210/photo-1506744038136-46273834b3fb-1790146212208.jpg",
   },
   {
     id: "wildlife",
     title: "Emerald Rainforest",
     description:
       "Venture deep into lush, ancient pine groves and mist-shrouded woodland valleys untouched by time.",
-    videoSrc:
-      "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerEscapes.mp4",
+    videoSrc: "https://interactive-examples.mdn.mozilla.net/media/cc0-videos/flower.mp4",
     posterUrl:
-      "https://images.unsplash.com/photo-1448375240586-882707db888b?q=80&w=1200&auto=format&fit=crop",
+      "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_1200,c_limit/v1790159968/photo-1470058869958-2a77ade41c02-1790159970122.jpg",
   },
   {
     id: "soaring",
     title: "Highland Ridge",
     description:
       "Soar above golden sunset horizons, jagged rocky cliffs, and sweeping atmospheric cloudscapes.",
-    videoSrc:
-      "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerFun.mp4",
+    videoSrc: "https://interactive-examples.mdn.mozilla.net/media/cc0-videos/friday.mp4",
     posterUrl:
-      "https://images.unsplash.com/photo-1470071459604-3b5ec3a7fe05?q=80&w=1200&auto=format&fit=crop",
+      "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_1200,c_limit/v1790146209/photo-1470071459604-3b5ec3a7fe05-1790146212205.jpg",
   },
   {
     id: "nature",
     title: "Cascading Waterfalls",
     description:
       "Listen to the peaceful roar of crystal streams flowing through mossy granite boulders in deep wilderness.",
-    videoSrc:
-      "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerJoyrides.mp4",
+    videoSrc: "https://www.w3schools.com/html/mov_bbb.mp4",
     posterUrl:
-      "https://images.unsplash.com/photo-1426604966848-d7adac402bff?q=80&w=1200&auto=format&fit=crop",
+      "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_1200,c_limit/v1790159968/photo-1432405972618-c60b0225b8f9-1790159970121.jpg",
   },
 ];`;
 
-export const usageDefaultActive = `import { VideoAccordion } from "@/components/custom/blocks/VideoAccordionBlock";
+export const usageDefaultActive = `import { VideoAccordion, type AccordionPanel } from "@/components/custom/blocks/VideoAccordionBlock";
 
 ${accordionPanels}
 
 export default function OpenedOnLoad() {
   // Land with one panel already open — good for hero sections where the
   // first frame should not look inert.
-  return <VideoAccordion panels={panels} defaultActiveId="wildlife" />;
+  return (
+    <div className="w-full h-full min-h-[500px]">
+      <VideoAccordion panels={panels} defaultActiveId="wildlife" className="w-full h-full min-h-[500px]" />
+    </div>
+  );
 }`;
 
-export const usageShortRail = `import { VideoAccordion } from "@/components/custom/blocks/VideoAccordionBlock";
+export const usageShortRail = `import { VideoAccordion, type AccordionPanel } from "@/components/custom/blocks/VideoAccordionBlock";
 
 ${accordionPanels}
 
 export default function ShortReel() {
   // Fewer, wider panels. Each one keeps a legible title strip even when
   // compressed, so two or three read as well as five.
-  return <VideoAccordion panels={panels.slice(0, 2)} />;
+  return (
+    <div className="w-full h-full min-h-[500px]">
+      <VideoAccordion panels={panels.slice(0, 2)} className="w-full h-full min-h-[500px]" />
+    </div>
+  );
 }`;
 
 <ExampleShowcase
   name="video-accordion"
+  colorControl={false}
   columns={1}
   examples={[
     {
@@ -101,6 +106,7 @@ export default function ShortReel() {
 
 <ExampleShowcase
   name="video-accordion"
+  colorControl={false}
   columns={1}
   examples={[
     {
@@ -122,34 +128,34 @@ export default function ShortReel() {
 Discover the key capabilities that make this component an excellent choice for modern, animated user interfaces.
 
 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 my-6 not-prose">
-  <div className="p-6 rounded-2xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900">
-    <h3 className="text-lg font-semibold text-zinc-900 dark:text-zinc-50 mb-2">Fluid Animations</h3>
-    <p className="text-zinc-600 dark:text-zinc-400 text-sm">Hardware-accelerated transitions that ensure smooth 60fps performance across devices.</p>
+  <div className="p-6 rounded-2xl border border-border bg-card">
+    <h3 className="text-lg font-semibold text-card-foreground mb-2">Fluid Animations</h3>
+    <p className="text-muted-foreground text-sm">Hardware-accelerated transitions that ensure smooth 60fps performance across devices.</p>
   </div>
-  <div className="p-6 rounded-2xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900">
-    <h3 className="text-lg font-semibold text-zinc-900 dark:text-zinc-50 mb-2">Highly Customizable</h3>
-    <p className="text-zinc-600 dark:text-zinc-400 text-sm">Exposes intuitive props for tailoring colors, sizes, and animation speeds to fit your brand.</p>
+  <div className="p-6 rounded-2xl border border-border bg-card">
+    <h3 className="text-lg font-semibold text-card-foreground mb-2">Highly Customizable</h3>
+    <p className="text-muted-foreground text-sm">Exposes intuitive props for tailoring colors, sizes, and animation speeds to fit your brand.</p>
   </div>
-  <div className="p-6 rounded-2xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900">
-    <h3 className="text-lg font-semibold text-zinc-900 dark:text-zinc-50 mb-2">Responsive Design</h3>
-    <p className="text-zinc-600 dark:text-zinc-400 text-sm">Automatically adapts to mobile, tablet, and desktop viewports without horizontal scrolling issues.</p>
+  <div className="p-6 rounded-2xl border border-border bg-card">
+    <h3 className="text-lg font-semibold text-card-foreground mb-2">Responsive Design</h3>
+    <p className="text-muted-foreground text-sm">Automatically adapts to mobile, tablet, and desktop viewports without horizontal scrolling issues.</p>
   </div>
-  <div className="p-6 rounded-2xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900">
-    <h3 className="text-lg font-semibold text-zinc-900 dark:text-zinc-50 mb-2">Accessible</h3>
-    <p className="text-zinc-600 dark:text-zinc-400 text-sm">Built with semantic HTML and ARIA labels where necessary to support screen readers and keyboard navigation.</p>
+  <div className="p-6 rounded-2xl border border-border bg-card">
+    <h3 className="text-lg font-semibold text-card-foreground mb-2">Accessible</h3>
+    <p className="text-muted-foreground text-sm">Built with semantic HTML and ARIA labels where necessary to support screen readers and keyboard navigation.</p>
   </div>
 </div>
 
 ## Best Practices & Guidelines
 
 <div className="flex flex-col gap-4 my-6 not-prose">
-  <div className="p-5 rounded-xl border border-blue-200 dark:border-blue-900/50 bg-blue-50/50 dark:bg-blue-950/20">
-    <h4 className="text-base font-semibold text-blue-900 dark:text-blue-300 mb-1">Animation Performance</h4>
-    <p className="text-blue-800 dark:text-blue-400/80 text-sm">Avoid placing too many heavy animated components on a single screen to prevent layout thrashing and maintain 60fps performance. Use intersection observers to pause off-screen animations.</p>
+  <div className="rounded-xl border border-foreground/[0.06] bg-foreground/[0.03] p-4">
+    <h4 className="font-sans text-[14px] font-semibold text-foreground mb-1">Animation Performance</h4>
+    <p className="text-[13px] leading-relaxed text-foreground/50">Avoid placing too many heavy animated components on a single screen to prevent layout thrashing and maintain 60fps performance. Use intersection observers to pause off-screen animations.</p>
   </div>
-  <div className="p-5 rounded-xl border border-amber-200 dark:border-amber-900/50 bg-amber-50/50 dark:bg-amber-950/20">
-    <h4 className="text-base font-semibold text-amber-900 dark:text-amber-300 mb-1">State Management</h4>
-    <p className="text-amber-800 dark:text-amber-400/80 text-sm">When triggering animations via state changes, ensure you wrap state updates in <code>startTransition</code> or use lightweight stores to prevent React rendering bottlenecks during the animation tick.</p>
+  <div className="rounded-xl border border-primary/15 bg-primary/5 p-4">
+    <h4 className="font-sans text-[14px] font-semibold text-primary mb-1">State Management</h4>
+    <p className="text-[13px] leading-relaxed text-foreground/50">When triggering animations via state changes, ensure you wrap state updates in <code>startTransition</code> or use lightweight stores to prevent React rendering bottlenecks during the animation tick.</p>
   </div>
 </div>
 
@@ -237,7 +243,7 @@ Discover the key capabilities that make this component an excellent choice for m
         </td>
         <td>
           A unique identifier string required for safe React list rendering and
-          GSAP state tracking.
+          active-panel tracking.
         </td>
       </tr>
       <tr>

@@ -1,75 +1,82 @@
 # Video Accordion
 
-A cinematic, expanding gallery component built with **GSAP**. It keeps one panel visually dominant and plays its assigned video, while the rest seamlessly compress into an obscured track-rail and pause.
+A cinematic, expanding gallery component animated with plain **CSS transitions** — no animation library. It keeps one panel visually dominant and plays its assigned video, while the rest seamlessly compress into an obscured track-rail and pause.
 
 This layout is incredibly useful for portfolio reels, storytelling feature sections, and high-impact editorial landing pages. On mobile viewports, it intelligently re-flows into a vertically expanding stack automatically.
 
-Hover a compressed panel to expand it — GSAP interpolates the flex-basis of every sibling and the newly dominant panel starts playing while the others pause.
+Hover a compressed panel to expand it — a CSS transition interpolates the flex-grow of every sibling and the newly dominant panel starts playing while the others pause.
 
-export const accordionPanels = `const panels = [
+export const accordionPanels = `const panels: AccordionPanel[] = [
   {
     id: "ocean",
     title: "Alpine Sanctuary",
     description:
       "Explore the tranquil turquoise waters of pristine high-altitude mountain lakes surrounded by majestic peaks.",
-    videoSrc:
-      "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerBlazes.mp4",
+    videoSrc: "https://vjs.zencdn.net/v/oceans.mp4",
     posterUrl:
-      "https://images.unsplash.com/photo-1506744038136-46273834b3fb?q=80&w=1200&auto=format&fit=crop",
+      "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_1200,c_limit/v1790146210/photo-1506744038136-46273834b3fb-1790146212208.jpg",
   },
   {
     id: "wildlife",
     title: "Emerald Rainforest",
     description:
       "Venture deep into lush, ancient pine groves and mist-shrouded woodland valleys untouched by time.",
-    videoSrc:
-      "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerEscapes.mp4",
+    videoSrc: "https://interactive-examples.mdn.mozilla.net/media/cc0-videos/flower.mp4",
     posterUrl:
-      "https://images.unsplash.com/photo-1448375240586-882707db888b?q=80&w=1200&auto=format&fit=crop",
+      "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_1200,c_limit/v1790159968/photo-1470058869958-2a77ade41c02-1790159970122.jpg",
   },
   {
     id: "soaring",
     title: "Highland Ridge",
     description:
       "Soar above golden sunset horizons, jagged rocky cliffs, and sweeping atmospheric cloudscapes.",
-    videoSrc:
-      "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerFun.mp4",
+    videoSrc: "https://interactive-examples.mdn.mozilla.net/media/cc0-videos/friday.mp4",
     posterUrl:
-      "https://images.unsplash.com/photo-1470071459604-3b5ec3a7fe05?q=80&w=1200&auto=format&fit=crop",
+      "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_1200,c_limit/v1790146209/photo-1470071459604-3b5ec3a7fe05-1790146212205.jpg",
   },
   {
     id: "nature",
     title: "Cascading Waterfalls",
     description:
       "Listen to the peaceful roar of crystal streams flowing through mossy granite boulders in deep wilderness.",
-    videoSrc:
-      "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerJoyrides.mp4",
+    videoSrc: "https://www.w3schools.com/html/mov_bbb.mp4",
     posterUrl:
-      "https://images.unsplash.com/photo-1426604966848-d7adac402bff?q=80&w=1200&auto=format&fit=crop",
+      "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_1200,c_limit/v1790159968/photo-1432405972618-c60b0225b8f9-1790159970121.jpg",
   },
 ];`;
 
-export const usageDefaultActive = `import { VideoAccordion } from "@/components/custom/blocks/VideoAccordionBlock";
+export const usageDefaultActive = `import { VideoAccordion, type AccordionPanel } from "@/components/custom/blocks/VideoAccordionBlock";
 
 ${accordionPanels}
 
 export default function OpenedOnLoad() {
   // Land with one panel already open — good for hero sections where the
   // first frame should not look inert.
-  return ;
+  return (
+
+  );
 }`;
 
-export const usageShortRail = `import { VideoAccordion } from "@/components/custom/blocks/VideoAccordionBlock";
+export const usageShortRail = `import { VideoAccordion, type AccordionPanel } from "@/components/custom/blocks/VideoAccordionBlock";
 
 ${accordionPanels}
 
 export default function ShortReel() {
   // Fewer, wider panels. Each one keeps a legible title strip even when
   // compressed, so two or three read as well as five.
-  return ;
+  return (
+
+  );
 }`;
 
 ## Installation
+
+Register the @algorize-ui registry once per project, then add the component:
+
+```bash
+npx shadcn@latest registry add @algorize-ui=https://algorize-ui.vercel.app/r/{name}.json
+npx shadcn@latest add @algorize-ui/video-accordion
+```
 
 ## Examples
 
@@ -147,7 +154,7 @@ Discover the key capabilities that make this component an excellent choice for m
           Required
 
           A unique identifier string required for safe React list rendering and
-          GSAP state tracking.
+          active-panel tracking.
 
           AccordionPanel
 

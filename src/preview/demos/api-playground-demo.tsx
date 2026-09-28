@@ -66,7 +66,7 @@ export default function ApiPlaygroundDemo({
   };
 
   return (
-    <div className="w-full flex items-center justify-center transition-colors duration-300 rounded-2xl bg-white dark:bg-[#050505] py-[12px] px-0 min-w-0 overflow-hidden">
+    <div className="w-full flex items-center justify-center transition-colors duration-300 rounded-2xl bg-background py-[12px] px-0 min-w-0 overflow-hidden">
       <ApiPlaygroundBlock
         key={`${defaultMethod}-${color}-${simulateError}-${useMockHandler}`} // Force remount on config changes
         defaultUrl={defaultUrl}

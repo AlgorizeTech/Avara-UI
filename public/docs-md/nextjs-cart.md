@@ -2,7 +2,7 @@
 
 A complete, production-ready Cart component designed for modern e-commerce applications. It comes with built-in item state management (increment, decrement, remove), automatic subtotal calculations, and three distinct structural layouts.
 
-One `type` prop switches the whole presentation — the cart state, quantity steppers and subtotal math are identical in all three. Click the bag trigger in the first two previews to play the GSAP entrance.
+One `type` prop switches the whole presentation — the cart state, quantity steppers and subtotal math are identical in all three. Leave the first two previews alone for a moment and the bag trigger tilts and rings to invite the click; press it and it squashes, springs back and pushes a ripple out as the panel arrives. Every one of those tweens is skipped under `prefers-reduced-motion: reduce`.
 
 export const cartItems = `const items: CartItem[] = [
   {
@@ -39,8 +39,6 @@ export const usageDrawer = `import {
   type CartItem,
 } from "@/components/custom/blocks/CartBlock";
 
-// The cart holds no data of its own. Keep the items in the parent, where the
-// rest of your app can reach them, and hand them over as initialItems.
 ${cartItems}
 
 export default function DrawerCart() {
@@ -55,7 +53,6 @@ export const usageModal = `import {
 ${cartItems}
 
 export default function ModalCart() {
-  // Centred dialog with a blurred backdrop - same trigger, same state.
   return ;
 }`;
 
@@ -66,13 +63,18 @@ export const usagePage = `import {
 
 ${cartItems}
 
-// Full-width two-column layout for a dedicated /cart route.
-// No trigger button - the cart is the page.
 export default function CartPage() {
   return ;
 }`;
 
 ## Installation
+
+Register the @algorize-ui registry once per project, then add the component:
+
+```bash
+npx shadcn@latest registry add @algorize-ui=https://algorize-ui.vercel.app/r/{name}.json
+npx shadcn@latest add @algorize-ui/cart
+```
 
 ## Examples
 
@@ -131,9 +133,8 @@ Learn about the Cart component's e-commerce capabilities, including item quantit
           "primary"
 
           Applies global color themes to the primary buttons, focus rings,
-          badges, and icons. Accepts valid hex codes (e.g.{" "}
-          "#00FF00"). Any unrecognised name — including the{" "}
-          "primary" default — falls back to the indigo theme.
+          badges, and icons. Accepts preset theme names or valid custom hex codes (e.g.{" "}
+          "#00FF00").
 
 ---
 

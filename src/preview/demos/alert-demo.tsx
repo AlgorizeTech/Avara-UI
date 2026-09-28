@@ -5,6 +5,7 @@ import {
   AlertType,
   AlertVariant,
 } from "@/components/custom/blocks/Alerts";
+import { cn } from "@/lib/utils";
 
 type IconType = "none" | "lucide" | "emoji";
 
@@ -17,12 +18,6 @@ const TYPE_ICONS: Record<AlertType, string> = {
   info: "Info",
   dark: "Bell",
 };
-
-/** Backdrop the glass variant needs to read correctly. */
-const backdropFor = (variant: AlertVariant) =>
-  variant === "glass"
-    ? "bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-blue-100 via-zinc-100 to-zinc-50 dark:from-blue-900/40 dark:via-zinc-950 dark:to-black"
-    : "bg-transparent";
 
 export default function AlertDemo({
   type = "success",
@@ -134,45 +129,68 @@ export default function AlertDemo({
 
   return (
     <div
-      className={`w-full max-w-2xl mx-auto p-4 md:p-8 min-h-[300px] flex items-center justify-center rounded-2xl transition-colors duration-500 ${backdropFor(variant)}`}
+      className={cn(
+        "relative w-full h-full min-h-[600px] p-6 md:p-16 flex items-center justify-center rounded-2xl overflow-hidden transition-all duration-500",
+      )}
     >
-      <Alert
-        key={`${variant}-${type}-${iconType}-${showRichContent}-${resetKey}`}
-        type={type}
-        variant={variant}
-        dismissible={isDismissible}
-        title={title ?? getTitleString()}
-        icon={
-          iconType === "none"
-            ? null
-            : iconType === "emoji"
-              ? "🚀"
-              : getIconString().replace(/"/g, "")
-        }
-        message={
-          showRichContent
-            ? ""
-            : (message ??
-              "This is a dynamically generated alert message explaining the current state of the system.")
-        }
-      >
-        {showRichContent && (
-          <>
-            <p className="text-sm mb-3">
-              This is rich content rendered inside the alert as children. You
-              can put lists, buttons, or any valid HTML here.
-            </p>
-            <div className="flex gap-3">
-              <button className="px-4 py-1.5 bg-blue-600 text-white rounded-md text-sm font-medium hover:bg-blue-700 transition cursor-pointer shadow-sm">
-                Action
-              </button>
-              <button className="px-4 py-1.5 bg-zinc-200 dark:bg-zinc-800 text-zinc-900 dark:text-white rounded-md text-sm font-medium hover:bg-zinc-300 dark:hover:bg-zinc-700 transition cursor-pointer">
-                Cancel
-              </button>
-            </div>
-          </>
-        )}
-      </Alert>
+      {variant === "glass" && (
+        <img
+          src="https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_1200,c_limit/v1790148864/photo-1618005182384-a83a8bd57fbe-1790148865111.jpg"
+          alt="Glass background"
+          className="absolute inset-0 size-full object-cover"
+        />
+      )}
+      {variant === "glass" && (
+        <div className="absolute inset-0 bg-black/20 backdrop-brightness-95" />
+      )}
+      <div className="relative z-10 w-full max-w-2xl">
+        <Alert
+          key={`${variant}-${type}-${iconType}-${showRichContent}-${resetKey}`}
+          type={type}
+          variant={variant}
+          dismissible={isDismissible}
+          title={title ?? getTitleString()}
+          icon={
+            iconType === "none"
+              ? null
+              : iconType === "emoji"
+                ? "🚀"
+                : getIconString().replace(/"/g, "")
+          }
+          message={
+            showRichContent
+              ? ""
+              : (message ??
+                "This is a dynamically generated alert message explaining the current state of the system.")
+          }
+        >
+          {showRichContent && (
+            <>
+              <p className="text-sm mb-3">
+                This is rich content rendered inside the alert as children. You
+                can put lists, buttons, or any valid HTML here.
+              </p>
+              <div className="flex gap-3">
+                <button className="px-4 py-1.5 bg-primary text-primary-foreground rounded-md text-sm font-medium hover:opacity-90 transition cursor-pointer shadow-sm">
+                  Action
+                </button>
+                <button
+                  type="button"
+                  onClick={() => {
+                    const alertEl = document.querySelector('[role="alert"]');
+                    if (alertEl) {
+                      (alertEl as HTMLElement).style.display = 'none';
+                    }
+                  }}
+                  className="px-4 py-1.5 bg-muted text-foreground rounded-md text-sm font-medium hover:bg-muted/80 transition cursor-pointer"
+                >
+                  Cancel
+                </button>
+              </div>
+            </>
+          )}
+        </Alert>
+      </div>
     </div>
   );
 }

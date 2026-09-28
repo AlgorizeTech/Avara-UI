@@ -1,0 +1,240 @@
+import { ExampleShowcase } from "@/components/site/Sandbox";
+import { extractCode } from "@/lib/code";
+
+# Platform Grid
+
+Everything a product offers, as one hairline grid: small tiles with an icon and a name, and a few 2×2 features that show a piece of the product on a tilting card. Tiles pack densely, so the features stay square whether the grid has eight columns or two. When the section first scrolls into view the tiles rise in as a wave from the centre; after that a soft spotlight follows the pointer across the grid, and each tile answers hover on its own — the icon lifts and takes the accent, the name darkens, a feature's card straightens and tilts with the cursor.
+
+`PlatformGrid` is built on <DocLink to="tilted-card">Tilted Card</DocLink>, which installs alongside and gives the featured cards their tilt and glare; the example's platform marks come from the library's `icons` item (`G2Icon`, `RedditIcon`, `CapterraIcon`, `AppStoreIcon`…). Every cell is a named part — `Tile`, `Feature` — with `Mock` and `Pill` for what goes on a feature's card.
+
+export const usageSection = `"use client";
+
+import { BookOpen, Database, Flame, Lightbulb, Rocket, Search } from "lucide-react";
+import { PlatformGrid } from "@/components/custom/blocks/PlatformGridBlock";
+import { G2Icon, RedditIcon } from "@/components/custom/blocks/Icons";
+
+export default function Platform() {
+  return (
+    <PlatformGrid
+      eyebrow="The full platform"
+      heading={<>Everything You Need<br />in One Platform</>}
+      intro="40+ databases, pipelines, and tools to find, validate, and build your next product."
+    >
+      <PlatformGrid.Tile icon={<Rocket />} label="BuildGuide" href="/build" />
+      <PlatformGrid.Tile icon={<Database />} label="Problems DB" href="/problems" />
+
+      <PlatformGrid.Feature icon={<G2Icon />} label="G2 Analysis" href="/g2">
+        <PlatformGrid.Mock>
+          <div className="flex items-center justify-between">
+            <span className="text-[9px] font-semibold">Email Client</span>
+            <PlatformGrid.Pill>Gap: 8.5</PlatformGrid.Pill>
+          </div>
+          <p className="text-[7px] text-foreground/50">Sync failures dominate 1,412 negative reviews</p>
+          <div className="flex items-center justify-between">
+            <PlatformGrid.Pill tone="soft">26 companies</PlatformGrid.Pill>
+            <PlatformGrid.Pill tone="accent">Export</PlatformGrid.Pill>
+          </div>
+        </PlatformGrid.Mock>
+      </PlatformGrid.Feature>
+
+      <PlatformGrid.Feature icon={<RedditIcon />} label="Reddit Analysis" href="/reddit">
+        <PlatformGrid.Mock>
+          <p className="text-[8px] italic">“Honestly so frustrated with juggling three tools for one client”</p>
+          <PlatformGrid.Pill>Pain point</PlatformGrid.Pill>
+        </PlatformGrid.Mock>
+      </PlatformGrid.Feature>
+
+      <PlatformGrid.Tile icon={<Lightbulb />} label="Solutions DB" href="/solutions" />
+      <PlatformGrid.Tile icon={<Flame />} label="Pain Points" href="/pain-points" />
+      <PlatformGrid.Tile icon={<Search />} label="Keyword Generator" href="/keywords" />
+      <PlatformGrid.Tile icon={<BookOpen />} label="Docs" href="/docs" />
+    </PlatformGrid>
+  );
+}
+`;
+
+<ExampleShowcase
+  name="platform-grid"
+  columns={1}
+  examples={[
+    {
+      title: "Fifty-six cells, four features",
+      subheading: "Eight columns at desktop, six, four, three and two as the window narrows; the features stay 2×2 throughout. Move the pointer across the grid and hover a feature.",
+      propNotes: [
+        {
+          prop: "Tile",
+          effect:
+            "is an `icon` and a `label`, square, with hairlines on its right and bottom edge. Give it an `href` and it renders as a link; `linkComponent` swaps in your router's Link.",
+        },
+        {
+          prop: "Feature",
+          effect:
+            "spans two columns and two rows. Its children sit on a `TiltedCard` that leans 4° at rest and straightens under the pointer; the `icon` and `label` sit beneath.",
+        },
+        {
+          prop: "Mock",
+          effect:
+            "is the small white card the example puts on every feature — a frame with a little padding — and `Pill` (`ink`, `accent`, `soft`) is the vocabulary inside it. Put anything you like there instead.",
+        },
+        {
+          prop: "fadeEdges",
+          effect:
+            "masks the outer columns from `lg` up, so the grid reads as a window onto something larger. Turn it off for a plain grid.",
+        },
+        {
+          prop: "reveal",
+          value: '"in-view"',
+          effect:
+            "(the default) plays the wave the first time the section enters the viewport; the docs pass `\"immediate\"`. Under prefers-reduced-motion the tiles simply appear and the spotlight is off.",
+        },
+      ],
+      props: { rounded: true },
+      usage: usageSection,
+      code: extractCode("src/components/custom/blocks/PlatformGridBlock.tsx"),
+      minHeight: 1380,
+    },
+  ]}
+/>
+
+## Installation
+
+<Installation name="platform-grid" />
+
+## How the grid packs
+
+The grid is `grid-auto-flow: dense`: cells are placed in source order into the first slot they fit, and a 2×2 feature that will not fit on the current row is held until it does while smaller tiles fill in behind it. At eight columns the example's features land in the middle because they are listed after the second tile of the second row; at four columns they simply pack where they fit. Order your children for the widest layout and let the narrower ones sort themselves out.
+
+Every tile is `aspect-square`, so a feature spanning two columns is exactly two tiles tall and the rows stay even. Hairlines are drawn as each tile's right and bottom border, with the grid supplying the top and left edge, so there is one line between any two cells and never a double.
+
+## Features
+
+<div className="grid grid-cols-1 sm:grid-cols-2 gap-4 my-6 not-prose">
+  <div className="p-6 rounded-2xl border border-border bg-card">
+    <h3 className="text-lg font-semibold text-card-foreground mb-2">Built from the library</h3>
+    <p className="text-muted-foreground text-sm">Tilted Card gives the featured cards their tilt and glare and installs with this item; the platform marks are Icons. Everything else is Tailwind.</p>
+  </div>
+  <div className="p-6 rounded-2xl border border-border bg-card">
+    <h3 className="text-lg font-semibold text-card-foreground mb-2">One reveal, then the pointer</h3>
+    <p className="text-muted-foreground text-sm">A single wave from the centre when the section appears, then nothing moves unless you do: a spotlight tracks the pointer, tiles answer hover, features tilt. Reduced motion skips the wave and the spotlight.</p>
+  </div>
+  <div className="p-6 rounded-2xl border border-border bg-card">
+    <h3 className="text-lg font-semibold text-card-foreground mb-2">Cheap to move over</h3>
+    <p className="text-muted-foreground text-sm">The spotlight is two CSS variables written straight to the grid element, so moving the mouse never re-renders fifty tiles.</p>
+  </div>
+  <div className="p-6 rounded-2xl border border-border bg-card">
+    <h3 className="text-lg font-semibold text-card-foreground mb-2">Links, keyboard, dark mode</h3>
+    <p className="text-muted-foreground text-sm">Tiles with an href are real links with a visible focus state; hover and focus share the same treatment. Hairlines, tints and the feature gradient all have dark counterparts.</p>
+  </div>
+</div>
+
+## Props Reference
+
+### PlatformGrid
+
+<div className="overflow-x-auto my-4">
+  <table>
+    <thead>
+      <tr>
+        <th>Prop</th>
+        <th>Type</th>
+        <th>Default</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><code>heading</code></td>
+        <td><code>ReactNode</code></td>
+        <td>—</td>
+        <td>The headline; use <code>&lt;br /&gt;</code> for a deliberate break.</td>
+      </tr>
+      <tr>
+        <td><code>eyebrow</code></td>
+        <td><code>ReactNode</code></td>
+        <td>—</td>
+        <td>Small tracked line above the headline.</td>
+      </tr>
+      <tr>
+        <td><code>intro</code></td>
+        <td><code>ReactNode</code></td>
+        <td>—</td>
+        <td>Paragraph under the headline.</td>
+      </tr>
+      <tr>
+        <td><code>accent</code></td>
+        <td><code>string</code></td>
+        <td>theme primary</td>
+        <td>Colour of hovered icons, accent pills and the spotlight.</td>
+      </tr>
+      <tr>
+        <td><code>reveal</code></td>
+        <td><code>"in-view" | "immediate"</code></td>
+        <td><code>"in-view"</code></td>
+        <td>When the wave plays.</td>
+      </tr>
+      <tr>
+        <td><code>fadeEdges</code></td>
+        <td><code>boolean</code></td>
+        <td><code>true</code></td>
+        <td>Mask the outer columns from <code>lg</code> up.</td>
+      </tr>
+      <tr>
+        <td><code>children</code></td>
+        <td><code>ReactNode</code></td>
+        <td>—</td>
+        <td>Any number of <code>Tile</code> and <code>Feature</code> parts, in the order you want at the widest layout.</td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+### PlatformGrid.Tile and PlatformGrid.Feature
+
+<div className="overflow-x-auto my-4">
+  <table>
+    <thead>
+      <tr>
+        <th>Prop</th>
+        <th>Type</th>
+        <th>Default</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><code>icon</code></td>
+        <td><code>ReactNode</code></td>
+        <td>—</td>
+        <td>Any icon; sized to 18px in a tile, 20px in a feature.</td>
+      </tr>
+      <tr>
+        <td><code>label</code></td>
+        <td><code>string</code></td>
+        <td>—</td>
+        <td>The name.</td>
+      </tr>
+      <tr>
+        <td><code>href</code></td>
+        <td><code>string</code></td>
+        <td>—</td>
+        <td>Render as a link.</td>
+      </tr>
+      <tr>
+        <td><code>linkComponent</code></td>
+        <td><code>ElementType</code></td>
+        <td><code>"a"</code></td>
+        <td>Your router's Link, used when <code>href</code> is set.</td>
+      </tr>
+      <tr>
+        <td><code>children</code></td>
+        <td><code>ReactNode</code></td>
+        <td>—</td>
+        <td><strong>Feature only:</strong> what sits on the tilting card.</td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+### PlatformGrid.Mock and PlatformGrid.Pill
+
+<code>Mock</code> is a small white card with a little padding and a vertical gap between its children. <code>Pill</code> takes a <code>tone</code> — <code>"ink"</code> (default, solid black), <code>"accent"</code> (the primary colour) or <code>"soft"</code> (a grey chip) — and both accept <code>className</code>.

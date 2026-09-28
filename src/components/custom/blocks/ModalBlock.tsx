@@ -1,7 +1,7 @@
 "use client";
 
 import { cn } from "@/lib/utils";
-import { AlertCircle, X } from "lucide-react";
+import { X } from "lucide-react";
 import type * as React from "react";
 import {
   createContext,
@@ -13,7 +13,6 @@ import {
   useState,
 } from "react";
 import { createPortal } from "react-dom";
-import { SelectBlock } from "./SelectBlock";
 
 const ModalLabelContext = createContext<string | null>(null);
 
@@ -45,88 +44,24 @@ function unlockBodyScroll() {
   }
 }
 
-export type ModalColor = "indigo" | "rose" | "emerald" | "zinc" | string;
-export type ModalVariant = "default" | "glass" | "minimal" | "bordered";
-export type ModalType = "standard" | "form" | "fullscreen" | "confirmation";
-
-const colorThemes: Record<string, Record<string, string>> = {
-  primary: {
-    bg: "bg-primary hover:bg-primary/90 text-primary-foreground",
-    text: "text-primary",
-    border: "border-primary",
-    bgSoft: "bg-primary/10",
-    ring: "focus:ring-primary",
-  },
-  indigo: {
-    bg: "bg-indigo-600 hover:bg-indigo-700 text-white",
-    text: "text-indigo-600 dark:text-indigo-400",
-    border: "border-indigo-600",
-    bgSoft: "bg-indigo-50 dark:bg-indigo-500/10",
-    ring: "focus:ring-indigo-600",
-  },
-  rose: {
-    bg: "bg-rose-600 hover:bg-rose-700 text-white",
-    text: "text-rose-600 dark:text-rose-400",
-    border: "border-rose-600",
-    bgSoft: "bg-rose-50 dark:bg-rose-500/10",
-    ring: "focus:ring-rose-600",
-  },
-  emerald: {
-    bg: "bg-emerald-600 hover:bg-emerald-700 text-white",
-    text: "text-emerald-600 dark:text-emerald-400",
-    border: "border-emerald-600",
-    bgSoft: "bg-emerald-50 dark:bg-emerald-500/10",
-    ring: "focus:ring-emerald-600",
-  },
-  zinc: {
-    bg: "bg-zinc-900 hover:bg-zinc-800 dark:bg-zinc-100 dark:hover:bg-zinc-200 dark:text-zinc-900 text-white",
-    text: "text-zinc-900 dark:text-zinc-100",
-    border: "border-zinc-900 dark:border-zinc-100",
-    bgSoft: "bg-zinc-100 dark:bg-zinc-800/50",
-    ring: "focus:ring-zinc-900 dark:focus:ring-zinc-100",
-  },
-};
-
-const hexToRgb = (hex: string) => {
-  let cleanHex = hex.replace(/^#/, "");
-  if (cleanHex.length === 3)
-    cleanHex = cleanHex
-      .split("")
-      .map((x) => x + x)
-      .join("");
-  const result = /^([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(cleanHex);
-  return result
-    ? `${parseInt(result[1], 16)}, ${parseInt(result[2], 16)}, ${parseInt(result[3], 16)}`
-    : "99, 102, 241";
-};
-
-export const getThemeStyles = (color: string) => {
-  if (color && color.startsWith("#")) {
-    const rgb = hexToRgb(color);
-    return {
-      theme: {
-        bg: "bg-[var(--theme-color)] text-white hover:opacity-90",
-        text: "text-[var(--theme-color)]",
-        border: "border-[var(--theme-color)]",
-        bgSoft: "bg-[rgba(var(--theme-color-rgb),0.1)]",
-        ring: "focus:ring-[var(--theme-color)]",
-      },
-      style: {
-        "--theme-color": color,
-        "--theme-color-rgb": rgb,
-      } as React.CSSProperties,
-    };
-  }
-  return { theme: colorThemes[color] || colorThemes.primary, style: {} };
-};
-
 export type ModalProps = {
+  /** Controlled open state — the modal renders against it, it never owns it. */
   isOpen: boolean;
+  /** Called after the close transition, on the X, Escape and backdrop clicks. */
   onClose: () => void;
   children?: React.ReactNode;
+  /** Classes for the panel. This is where you size and restyle the modal. */
   contentClassName?: string;
+  /** Classes for the backdrop, e.g. a heavier blur behind a glass panel. */
   overlayClassName?: string;
+  /** Renders the close button as a tinted primary chip instead of a bare icon. */
   primaryCloseButton?: boolean;
+  /** Drops the built-in X, for flows where a choice has to be made explicitly. */
+  hideCloseButton?: boolean;
+  /**
+   * Labels the dialog directly. Use it whenever the title is not inside
+   * `ModalHeader` — otherwise the panel points `aria-labelledby` at the header.
+   */
   ariaLabel?: string;
 };
 
@@ -137,6 +72,7 @@ export function Modal({
   contentClassName,
   overlayClassName,
   primaryCloseButton = false,
+  hideCloseButton = false,
   ariaLabel,
 }: ModalProps) {
   const [isVisible, setIsVisible] = useState(false);
@@ -147,6 +83,8 @@ export function Modal({
   useEffect(() => {
     if (isOpen) {
       isClosingRef.current = false;
+      // Mount first, then animate: the element has to be in the DOM before
+      // the transition can run.
       setShouldRender(true);
       const timer = setTimeout(() => setIsVisible(true), 10);
       return () => clearTimeout(timer);
@@ -210,27 +148,28 @@ export function Modal({
         aria-modal="true"
         {...ariaProps}
       >
-        {primaryCloseButton ? (
-          <button
-            onClick={handleClose}
-            data-modal-close
-            type="button"
-            aria-label="Close"
-            className="bg-primary/10 p-1.5 rounded-md text-primary absolute top-4 right-4 cursor-pointer hover:bg-primary/20 transition-colors duration-200 z-10"
-          >
-            <X className="h-5 w-5 ml-[1px]" />
-          </button>
-        ) : (
-          <button
-            onClick={handleClose}
-            data-modal-close
-            type="button"
-            aria-label="Close"
-            className="text-muted-foreground hover:text-foreground absolute top-4 right-4 cursor-pointer transition-colors duration-200 z-10"
-          >
-            <X className="h-5 w-5" />
-          </button>
-        )}
+        {!hideCloseButton &&
+          (primaryCloseButton ? (
+            <button
+              onClick={handleClose}
+              data-modal-close
+              type="button"
+              aria-label="Close"
+              className="bg-primary/10 p-1.5 rounded-md text-primary absolute top-4 right-4 cursor-pointer hover:bg-primary/20 transition-colors duration-200 z-10"
+            >
+              <X className="h-5 w-5 ml-[1px]" />
+            </button>
+          ) : (
+            <button
+              onClick={handleClose}
+              data-modal-close
+              type="button"
+              aria-label="Close"
+              className="text-muted-foreground hover:text-foreground absolute top-4 right-4 cursor-pointer transition-colors duration-200 z-10"
+            >
+              <X className="h-5 w-5" />
+            </button>
+          ))}
         <ModalLabelContext.Provider value={labelId}>
           <div>{children}</div>
         </ModalLabelContext.Provider>
@@ -264,7 +203,12 @@ export function ModalHeader({
       )}
     >
       <div className="flex-1 flex items-center gap-3">
-        {children ?? title}
+        {title && typeof title === "string" ? (
+          <h2 className="text-lg font-semibold text-foreground">{title}</h2>
+        ) : (
+          title
+        )}
+        {children}
       </div>
     </div>
   );
@@ -282,282 +226,6 @@ export function ModalBody({ className, children }: ModalSectionProps) {
   return (
     <div className={cn("p-4 max-h-[calc(100vh-150px)] overflow-auto", className)}>
       {children}
-    </div>
-  );
-}
-
-// ==========================================
-// DEMO BLOCK COMPONENT (Documentation Interactive Showcase)
-// ==========================================
-export function ModalBlock({
-  type = "standard",
-  variant = "default",
-  color = "primary",
-}: {
-  type?: ModalType;
-  variant?: ModalVariant;
-  color?: ModalColor;
-}) {
-  const [isOpen, setIsOpen] = useState(false);
-  const [inviteRole, setInviteRole] = useState("Viewer");
-  const { theme, style } = getThemeStyles(color);
-
-  const variantContentStyles: Record<ModalVariant, string> = {
-    default: "bg-background rounded-2xl shadow-xl border border-border",
-    glass: "bg-white/75 dark:bg-zinc-900/80 backdrop-blur-2xl backdrop-saturate-200 rounded-3xl shadow-[0_25px_60px_rgba(0,0,0,0.35)] border border-white/60 dark:border-white/20 text-foreground",
-    minimal: "bg-card rounded-xl shadow-lg border-none",
-    bordered: "bg-background border-2 rounded-none shadow-[8px_8px_0px_0px_rgba(0,0,0,0.1)] dark:shadow-[8px_8px_0px_0px_rgba(255,255,255,0.05)] border-primary",
-  };
-
-  const variantOverlayStyles: Record<ModalVariant, string> = {
-    default: "",
-    glass: "bg-black/50 backdrop-blur-md",
-    minimal: "",
-    bordered: "",
-  };
-
-  const typeWidths: Record<ModalType, string> = {
-    standard: "max-w-md",
-    form: "max-w-lg",
-    fullscreen: "max-w-5xl h-[90vh]",
-    confirmation: "max-w-sm",
-  };
-
-  return (
-    <div className="w-full flex items-center justify-center" style={style}>
-      <button
-        onClick={() => setIsOpen(true)}
-        className={cn(
-          "px-6 py-3 rounded-lg font-bold transition-transform active:scale-95 shadow-md",
-          theme.bg,
-        )}
-      >
-        Open {type.charAt(0).toUpperCase() + type.slice(1)} Modal
-      </button>
-
-      <Modal
-        isOpen={isOpen}
-        onClose={() => setIsOpen(false)}
-        overlayClassName={variantOverlayStyles[variant]}
-        contentClassName={cn(typeWidths[type], variantContentStyles[variant])}
-      >
-        {/* --- STANDARD MODAL --- */}
-        {type === "standard" && (
-          <div className="p-2 sm:p-4">
-            <ModalHeader className="border-none p-4 pb-2 flex items-center justify-between">
-              <div
-                className={cn(
-                  "w-12 h-12 rounded-2xl flex items-center justify-center shrink-0 shadow-sm transition-all border",
-                  variant === "glass"
-                    ? "bg-white/50 dark:bg-white/10 border-white/40 dark:border-white/20 text-foreground"
-                    : cn(theme.bgSoft, theme.text, theme.border),
-                )}
-              >
-                <AlertCircle className="w-6 h-6" />
-              </div>
-              <span className="text-xs font-semibold px-3 py-1 rounded-full bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border border-emerald-500/20">
-                v2.4.0 Live
-              </span>
-            </ModalHeader>
-            <ModalBody className="p-4 pt-2 space-y-2">
-              <h2 className="text-2xl font-bold tracking-tight text-foreground">
-                System Update Available
-              </h2>
-              <p className="text-muted-foreground leading-relaxed text-sm sm:text-base font-normal">
-                A new software update is ready to be installed. This update
-                includes new features, performance improvements, and critical
-                security patches.
-              </p>
-            </ModalBody>
-            <ModalFooter className="border-none p-4 pt-4 flex flex-col-reverse sm:flex-row gap-2 sm:justify-end">
-              <button
-                onClick={() => setIsOpen(false)}
-                className="px-5 py-2.5 rounded-xl text-sm font-semibold text-muted-foreground hover:bg-muted transition-colors"
-              >
-                Remind Me Later
-              </button>
-              <button
-                onClick={() => setIsOpen(false)}
-                className={cn(
-                  "px-6 py-2.5 rounded-xl text-sm font-bold shadow-lg shadow-primary/20 active:scale-95 transition-all",
-                  theme.bg,
-                )}
-              >
-                Install Now
-              </button>
-            </ModalFooter>
-          </div>
-        )}
-
-        {/* --- FORM MODAL --- */}
-        {type === "form" && (
-          <div>
-            <ModalHeader className="border-b border-border/60">
-              <h2 className="text-lg font-bold text-foreground">
-                Invite Team Member
-              </h2>
-            </ModalHeader>
-            <ModalBody className="space-y-5">
-              <div className="space-y-1.5">
-                <label className="text-sm font-semibold text-foreground">
-                  Email Address
-                </label>
-                <input
-                  type="email"
-                  placeholder="colleague@company.com"
-                  className={cn(
-                    "w-full h-11 px-3 rounded-lg border bg-white/50 dark:bg-black/40 text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 border-border transition-shadow",
-                    theme.ring,
-                  )}
-                />
-              </div>
-              <div className="space-y-1.5">
-                <label className="text-sm font-semibold text-foreground">
-                  Role & Permissions
-                </label>
-                <SelectBlock
-                  options={[
-                    { label: "Viewer", value: "Viewer" },
-                    { label: "Editor", value: "Editor" },
-                    { label: "Administrator", value: "Administrator" },
-                  ]}
-                  value={inviteRole}
-                  onChange={setInviteRole}
-                  color={color}
-                  placeholder="Select a role"
-                />
-              </div>
-              <div className="space-y-1.5">
-                <label className="text-sm font-semibold text-foreground">
-                  Personal Message (Optional)
-                </label>
-                <textarea
-                  placeholder="Welcome to the team!"
-                  rows={3}
-                  className={cn(
-                    "w-full p-3 rounded-lg border bg-white/50 dark:bg-black/40 text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 border-border transition-shadow resize-none",
-                    theme.ring,
-                  )}
-                />
-              </div>
-            </ModalBody>
-            <ModalFooter className="border-t border-border bg-muted/50">
-              <button
-                onClick={() => setIsOpen(false)}
-                className="px-5 py-2.5 rounded-lg font-medium text-muted-foreground hover:bg-muted/50 transition-colors"
-              >
-                Cancel
-              </button>
-              <button
-                onClick={() => setIsOpen(false)}
-                className={cn(
-                  "px-5 py-2.5 rounded-lg font-bold shadow-sm transition-opacity",
-                  theme.bg,
-                )}
-              >
-                Send Invite
-              </button>
-            </ModalFooter>
-          </div>
-        )}
-
-        {/* --- FULLSCREEN SHEET MODAL --- */}
-        {type === "fullscreen" && (
-          <div className="flex flex-col h-full">
-            <ModalHeader className="border-b border-border pr-12">
-              <div className="min-w-0">
-                <h2 className="text-xl sm:text-2xl font-black text-foreground">
-                  Project Configuration
-                </h2>
-                <p className="text-sm text-muted-foreground mt-1 font-normal">
-                  Manage all global settings for your workspace.
-                </p>
-              </div>
-            </ModalHeader>
-            <ModalBody className="flex-1 max-h-none">
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-6 sm:gap-8 p-2">
-                <div className="space-y-6">
-                  <h3 className="text-sm font-bold uppercase tracking-widest text-muted-foreground">
-                    General
-                  </h3>
-                  <div className="h-12 w-full bg-muted rounded-lg animate-pulse" />
-                  <div className="h-24 w-full bg-muted rounded-lg animate-pulse" />
-                  <div className="h-12 w-3/4 bg-muted rounded-lg animate-pulse" />
-                </div>
-                <div className="space-y-6">
-                  <h3 className="text-sm font-bold uppercase tracking-widest text-muted-foreground">
-                    Security
-                  </h3>
-                  <div className="h-32 w-full bg-muted rounded-lg animate-pulse" />
-                  <div className="h-12 w-full bg-muted rounded-lg animate-pulse" />
-                </div>
-              </div>
-            </ModalBody>
-            <ModalFooter className="border-t border-border bg-muted flex flex-col-reverse sm:flex-row gap-3 sm:justify-between sm:items-center">
-              <button
-                onClick={() => setIsOpen(false)}
-                className="py-2 sm:py-0 text-sm font-bold text-red-500 hover:text-red-600 transition-colors"
-              >
-                Delete Project
-              </button>
-              <div className="flex flex-col-reverse sm:flex-row gap-3">
-                <button
-                  onClick={() => setIsOpen(false)}
-                  className="px-6 py-3 rounded-lg font-medium text-muted-foreground hover:bg-muted transition-colors"
-                >
-                  Discard Changes
-                </button>
-                <button
-                  onClick={() => setIsOpen(false)}
-                  className={cn(
-                    "px-6 py-3 rounded-lg font-bold shadow-md transition-opacity",
-                    theme.bg,
-                  )}
-                >
-                  Save Configuration
-                </button>
-              </div>
-            </ModalFooter>
-          </div>
-        )}
-
-        {/* --- CONFIRMATION MODAL --- */}
-        {type === "confirmation" && (
-          <ModalBody className="p-6 sm:p-8 text-center flex flex-col items-center">
-            <div
-              className={cn(
-                "w-16 h-16 rounded-2xl flex items-center justify-center mb-5 border shadow-sm transition-colors",
-                variant === "glass"
-                  ? "bg-rose-500/20 border-rose-500/30 text-rose-500"
-                  : "bg-rose-50 dark:bg-rose-500/10 border-rose-200 dark:border-rose-500/20 text-rose-600 dark:text-rose-400",
-              )}
-            >
-              <AlertCircle className="w-8 h-8" />
-            </div>
-            <h2 className="text-xl font-bold text-foreground mb-2">
-              Delete permanently?
-            </h2>
-            <p className="text-sm text-foreground font-medium leading-relaxed mb-8">
-              Are you sure you want to delete this item? This action cannot be
-              undone and all data will be lost.
-            </p>
-            <div className="flex gap-3 w-full">
-              <button
-                onClick={() => setIsOpen(false)}
-                className="flex-1 py-2.5 rounded-lg font-medium text-muted-foreground border border-border hover:bg-muted transition-colors"
-              >
-                Cancel
-              </button>
-              <button
-                onClick={() => setIsOpen(false)}
-                className="flex-1 py-2.5 rounded-lg font-bold bg-red-600 hover:bg-red-700 text-white shadow-sm transition-colors"
-              >
-                Delete
-              </button>
-            </div>
-          </ModalBody>
-        )}
-      </Modal>
     </div>
   );
 }

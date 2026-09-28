@@ -13,86 +13,91 @@ Assign each node a `ring` index and the component spaces that ring evenly across
 
 export const networkNodes = `const users: NetworkNode[] = [
   // Ring 1 (inner)
-  { id: "1", ring: 1, image: "https://i.pravatar.cc/150?u=1", label: "Sarah J." },
-  { id: "2", ring: 1, image: "https://i.pravatar.cc/150?u=2", label: "David B." },
+  { id: "1", ring: 1, image: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto/v1790148865/80-1790148865113.jpg", label: "Sarah J." },
+  { id: "2", ring: 1, image: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto/v1790148864/80-1-1790148865111.jpg", label: "David B." },
   // No image? \`fallback\` renders the initials tile instead.
   { id: "3", ring: 1, fallback: "JW", label: "James W." },
-  { id: "4", ring: 1, image: "https://i.pravatar.cc/150?u=4", label: "Lisa M." },
+  { id: "4", ring: 1, image: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto/v1790148865/80-3-1790148865112.jpg", label: "Lisa M." },
 
   // Ring 2 (outer)
-  { id: "5", ring: 2, image: "https://i.pravatar.cc/150?u=5", label: "Emma R." },
-  { id: "6", ring: 2, image: "https://i.pravatar.cc/150?u=6", label: "Noah P." },
+  { id: "5", ring: 2, image: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto/v1790148865/80-4-1790148865113.jpg", label: "Emma R." },
+  { id: "6", ring: 2, image: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_160,c_limit/v1790158813/photo-1494790108377-be9c29b29330-1790158812212.jpg", label: "Noah P." },
   { id: "7", ring: 2, fallback: "MK", label: "Mike K." },
-  { id: "8", ring: 2, image: "https://i.pravatar.cc/150?u=8", label: "Ava T.", size: "sm" },
-  { id: "9", ring: 2, image: "https://i.pravatar.cc/150?u=9", label: "Ethan C." },
-  { id: "10", ring: 2, image: "https://i.pravatar.cc/150?u=10", label: "Olivia S.", size: "lg" },
-  { id: "11", ring: 2, image: "https://i.pravatar.cc/150?u=11", label: "Liam H." },
+  { id: "8", ring: 2, image: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto/v1790148864/80-2-1790148865112.jpg", label: "Ava T.", size: "sm" },
+  { id: "9", ring: 2, image: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_160,c_limit/v1790150480/photo-1507003211169-0a1dd7228f2d-1790150482276.jpg", label: "Ethan C." },
+  { id: "10", ring: 2, image: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_160,c_limit/v1790150483/photo-1534528741775-53994a69daeb-1790150482280.jpg", label: "Olivia S.", size: "lg" },
+  { id: "11", ring: 2, image: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_160,c_limit/v1790158814/photo-1500648767791-00dcc994a43e-1790158812212.jpg", label: "Liam H." },
   { id: "12", ring: 2, fallback: "PL", label: "Priya L.", size: "sm" },
 
   // Ring 3 (outer)
-  { id: "13", ring: 3, image: "https://i.pravatar.cc/150?u=13", label: "Chloe D.", size: "sm" },
-  { id: "14", ring: 3, image: "https://i.pravatar.cc/150?u=14", label: "Marcus V.", size: "sm" },
-  { id: "15", ring: 3, image: "https://i.pravatar.cc/150?u=15", label: "Zoe N.", size: "md" },
+  { id: "13", ring: 3, image: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_160,c_limit/v1790158814/photo-1438761681033-6461ffad8d80-1790158812210.jpg", label: "Chloe D.", size: "sm" },
+  { id: "14", ring: 3, image: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_160,c_limit/v1790158813/photo-1472099645785-5658abf4ff4e-1790158812210.jpg", label: "Marcus V.", size: "sm" },
+  { id: "15", ring: 3, image: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_160,c_limit/v1790159965/photo-1519085360753-af0119f7cbe7-1790159970113.jpg", label: "Zoe N.", size: "md" },
   { id: "16", ring: 3, fallback: "AJ", label: "Aaron J.", size: "sm" },
-  { id: "17", ring: 3, image: "https://i.pravatar.cc/150?u=17", label: "Nina F.", size: "sm" },
-  { id: "18", ring: 3, image: "https://i.pravatar.cc/150?u=18", label: "Owen G.", size: "sm" },
+  { id: "17", ring: 3, image: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_160,c_limit/v1790150480/photo-1506794778202-cad84cf45f1d-1790150482275.jpg", label: "Nina F.", size: "sm" },
+  { id: "18", ring: 3, image: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_160,c_limit/v1790150482/photo-1524504388940-b1c1722653e1-1790150482279.jpg", label: "Owen G.", size: "sm" },
   { id: "19", ring: 3, fallback: "TR", label: "Tara R.", size: "sm" },
-  { id: "20", ring: 3, image: "https://i.pravatar.cc/150?u=21", label: "Felix Q.", size: "sm" },
+  { id: "20", ring: 3, image: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_160,c_limit/v1790158814/photo-1522075469751-3a6694fb2f61-1790158812213.jpg", label: "Felix Q.", size: "sm" },
 ];`;
 
-export const usageRings = `import {
+export const usageInteractive = `import {
   NetworkGraph,
   type NetworkNode,
 } from "@/components/custom/blocks/NetworkGraphBlock";
 
 ${networkNodes}
 
-export default function RingLayout() {
+export default function OrbitGraph() {
   // \`ringCount\` decides how many orbits render; \`baseRadius\` is the first
   // ring's radius and \`ringGap\` the distance to each next one — both as a
   // percentage of the square container, so the layout scales on any screen.
+  // \`orbitSpeed\` multiplies the rotation rate.
   return (
     <NetworkGraph
       nodes={users}
-      ringCount={2}
-      baseRadius={25}
-      ringGap={20}
-      centerNode={{ image: "/brand-logo.png", label: "Core Community" }}
+      ringCount={3}
+      baseRadius={18}
+      ringGap={16}
+      orbitSpeed={1}
+      centerNode={{ image: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_160,c_limit/v1790150481/photo-1517841905240-472988babdf9-1790150482277.jpg", label: "You" }}
     />
   );
-}`;
-
-export const usageStatic = `import {
-  NetworkGraph,
-  type NetworkNode,
-} from "@/components/custom/blocks/NetworkGraphBlock";
-
-${networkNodes}
-
-export default function StaticGraph() {
-  // Rings hold their position — the entrance animation still plays.
-  return <NetworkGraph nodes={users} animateOrbit={false} />;
-}`;
-
-export const usageSpeed = `import {
-  NetworkGraph,
-  type NetworkNode,
-} from "@/components/custom/blocks/NetworkGraphBlock";
-
-${networkNodes}
-
-export default function FastGraph() {
-  // Multiplier on the orbit duration: 2 is twice as fast, 0.5 half speed.
-  return <NetworkGraph nodes={users} orbitSpeed={3} />;
 }`;
 
 <ExampleShowcase
   name="network-graph"
   columns={1}
+  controls={[
+    { name: "ringCount", label: "Ring Count", min: 1, max: 3, step: 1, defaultValue: 3 },
+    { name: "baseRadius", label: "Base Radius", min: 8, max: 22, step: 1, defaultValue: 18, unit: "%" },
+    { name: "ringGap", label: "Ring Gap", min: 6, max: 16, step: 1, defaultValue: 16, unit: "%" },
+    { name: "orbitSpeed", label: "Orbit Speed", min: 0.25, max: 3, step: 0.25, defaultValue: 1, unit: "x" },
+  ]}
   examples={[
     {
-      title: "Static rings",
+      title: "Interactive rings",
+      subheading:
+        "Drag the sliders above to reshape the orbits live, then copy the numbers straight into your own `NetworkGraph`.",
       propNotes: [
+        {
+          prop: "ringCount",
+          effect:
+            "is how many orbits draw. A node whose `ring` exceeds this is **not rendered at all**.",
+        },
+        {
+          prop: "baseRadius",
+          effect:
+            "is the first ring's radius as a percentage of the square container, so it scales with the box.",
+        },
+        {
+          prop: "ringGap",
+          effect: "is the percentage added for each subsequent ring.",
+        },
+        {
+          prop: "orbitSpeed",
+          effect:
+            "multiplies the rotation rate — `2` is twice as fast, `0.5` half. Rings still alternate direction for depth.",
+        },
         {
           lead: "Set",
           prop: "animateOrbit",
@@ -101,8 +106,8 @@ export default function FastGraph() {
             "to stop the planetary motion. `animateIn` is separate, so the entrance still plays.",
         },
       ],
-      props: { animateOrbit: false },
-      usage: usageStatic,
+      props: { ringCount: 3, baseRadius: 18, ringGap: 16, orbitSpeed: 1 },
+      usage: usageInteractive,
       code: extractCode("src/components/custom/blocks/NetworkGraphBlock.tsx"),
     },
   ]}
@@ -112,81 +117,34 @@ export default function FastGraph() {
 
 <Installation name="network-graph" />
 
-## Examples
-
-<ExampleShowcase
-  name="network-graph"
-  columns={1}
-  examples={[
-    {
-      title: "Ring layout",
-      propNotes: [
-        {
-          prop: "ringCount",
-          value: '{2}',
-          effect:
-            "is how many orbits draw. A node whose `ring` exceeds this is **not rendered at all**.",
-        },
-        {
-          prop: "baseRadius",
-          value: '{25}',
-          effect:
-            "is the first ring's radius as a percentage of the square container, so it scales with the box.",
-        },
-        {
-          prop: "ringGap",
-          value: '{20}',
-          effect:
-            "is the percentage added for each subsequent ring.",
-        },
-      ],
-      props: { ringCount: 2, nodeSet: "compact", baseRadius: 25, ringGap: 20 },
-      usage: usageRings,
-    },
-    {
-      title: "Orbit speed",
-      propNotes: [
-        {
-          prop: "orbitSpeed",
-          value: '{3}',
-          effect:
-            "multiplies the rotation rate — `2` is twice as fast, `0.5` half. Rings still alternate direction for depth.",
-        },
-      ],
-      props: { orbitSpeed: 3 },
-      usage: usageSpeed,
-    },
-  ]}
-/>
-
 ## Features
 Discover the key capabilities that make this component an excellent choice for modern, animated user interfaces.
 
 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 my-6 not-prose">
-  <div className="p-6 rounded-2xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900">
-    <h3 className="text-lg font-semibold text-zinc-900 dark:text-zinc-50 mb-2">Fluid Animations</h3>
-    <p className="text-zinc-600 dark:text-zinc-400 text-sm">Hardware-accelerated transitions that ensure smooth 60fps performance across devices.</p>
+  <div className="p-6 rounded-2xl border border-border bg-card">
+    <h3 className="text-lg font-semibold text-card-foreground mb-2">Fluid Animations</h3>
+    <p className="text-muted-foreground text-sm">Hardware-accelerated transitions that ensure smooth 60fps performance across devices.</p>
   </div>
-  <div className="p-6 rounded-2xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900">
-    <h3 className="text-lg font-semibold text-zinc-900 dark:text-zinc-50 mb-2">Highly Customizable</h3>
-    <p className="text-zinc-600 dark:text-zinc-400 text-sm">Exposes intuitive props for tailoring colors, sizes, and animation speeds to fit your brand.</p>
+  <div className="p-6 rounded-2xl border border-border bg-card">
+    <h3 className="text-lg font-semibold text-card-foreground mb-2">Highly Customizable</h3>
+    <p className="text-muted-foreground text-sm">Exposes intuitive props for tailoring colors, sizes, and animation speeds to fit your brand.</p>
   </div>
-  <div className="p-6 rounded-2xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900">
-    <h3 className="text-lg font-semibold text-zinc-900 dark:text-zinc-50 mb-2">Responsive Design</h3>
-    <p className="text-zinc-600 dark:text-zinc-400 text-sm">Automatically adapts to mobile, tablet, and desktop viewports without horizontal scrolling issues.</p>
+  <div className="p-6 rounded-2xl border border-border bg-card">
+    <h3 className="text-lg font-semibold text-card-foreground mb-2">Responsive Design</h3>
+    <p className="text-muted-foreground text-sm">Automatically adapts to mobile, tablet, and desktop viewports without horizontal scrolling issues.</p>
   </div>
-  <div className="p-6 rounded-2xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900">
-    <h3 className="text-lg font-semibold text-zinc-900 dark:text-zinc-50 mb-2">Accessible</h3>
-    <p className="text-zinc-600 dark:text-zinc-400 text-sm">Built with semantic HTML and ARIA labels where necessary to support screen readers and keyboard navigation.</p>
+  <div className="p-6 rounded-2xl border border-border bg-card">
+    <h3 className="text-lg font-semibold text-card-foreground mb-2">Accessible</h3>
+    <p className="text-muted-foreground text-sm">Built with semantic HTML and ARIA labels where necessary to support screen readers and keyboard navigation.</p>
   </div>
 </div>
 
 ## Best Practices & Guidelines
 
 <div className="flex flex-col gap-4 my-6 not-prose">
-  <div className="p-5 rounded-xl border border-blue-200 dark:border-blue-900/50 bg-blue-50/50 dark:bg-blue-950/20">
-    <h4 className="text-base font-semibold text-blue-900 dark:text-blue-300 mb-1">Usage Guidelines</h4>
-    <p className="text-blue-800 dark:text-blue-400/80 text-sm">Keep outer rings denser than inner ones — nodes are spaced by count, so a ring holding two avatars leaves a large visual gap. Give distant rings <code>size="sm"</code> so the composition reads as depth rather than clutter.</p>
+  <div className="rounded-xl border border-foreground/[0.06] bg-foreground/[0.03] p-4">
+    <h4 className="font-sans text-[14px] font-semibold text-foreground mb-1">Usage Guidelines</h4>
+    <p className="text-[13px] leading-relaxed text-foreground/50">Keep outer rings denser than inner ones — nodes are spaced by count, so a ring holding two avatars leaves a large visual gap. Give distant rings <code>size="sm"</code> so the composition reads as depth rather than clutter.</p>
   </div>
 </div>
 

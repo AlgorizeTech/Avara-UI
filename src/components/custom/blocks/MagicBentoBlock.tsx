@@ -1,7 +1,6 @@
 "use client";
 
 import { cn } from "@/lib/utils";
-import { motion, useMotionTemplate, useMotionValue } from "framer-motion";
 import React from "react";
 import type { ReactNode } from "react";
 
@@ -39,22 +38,35 @@ export interface MagicBentoCardProps
   highlight?: boolean; // Activates the continuously spinning border
 }
 
+// Every glow reads from these two. They resolve on the card itself so the
+// component works with nothing but the shadcn theme, yet any ancestor can
+// still set `--magic-color` / `--magic-glow` to re-tint a whole grid.
+const magicVars = {
+  "--mb-color": "var(--magic-color, var(--primary, #6366f1))",
+  "--mb-glow":
+    "var(--magic-glow, color-mix(in srgb, var(--mb-color) 15%, transparent))",
+} as React.CSSProperties;
+
 export const MagicBentoCard = React.forwardRef<
   HTMLDivElement,
   MagicBentoCardProps
->(({ children, className, highlight = false, ...props }, ref) => {
-  const mouseX = useMotionValue(0);
-  const mouseY = useMotionValue(0);
+>(({ children, className, highlight = false, style, ...props }, ref) => {
+  const spotlightRef = React.useRef<HTMLDivElement>(null);
+  const glowRef = React.useRef<HTMLDivElement>(null);
 
-  // Track mouse position relative to the card
+  // Track mouse position relative to the card. It goes straight into the
+  // `--mb-x` / `--mb-y` variables of the two layers that read it — no React
+  // state, so a mouse move never re-renders.
   function handleMouseMove({
     currentTarget,
     clientX,
     clientY,
   }: React.MouseEvent) {
     const { left, top } = currentTarget.getBoundingClientRect();
-    mouseX.set(clientX - left);
-    mouseY.set(clientY - top);
+    for (const layer of [spotlightRef.current, glowRef.current]) {
+      layer?.style.setProperty("--mb-x", `${clientX - left}px`);
+      layer?.style.setProperty("--mb-y", `${clientY - top}px`);
+    }
   }
 
   return (
@@ -65,6 +77,7 @@ export const MagicBentoCard = React.forwardRef<
         "group relative flex flex-col overflow-hidden rounded-3xl bg-muted border border-transparent min-h-[200px] transition-transform duration-300 active:scale-[0.98]",
         className,
       )}
+      style={{ ...magicVars, ...style }}
       {...props}
     >
       {/* 1. Base Static Border */}
@@ -72,38 +85,32 @@ export const MagicBentoCard = React.forwardRef<
 
       {/* 2. Highlight: Continuously Spinning Conic Gradient */}
       {highlight && (
-        <div className="absolute inset-[-100%] animate-[spin_4s_linear_infinite] bg-[conic-gradient(from_90deg_at_50%_50%,transparent_0%,var(--magic-color)_50%,transparent_100%)] opacity-30 dark:opacity-50 group-hover:opacity-80 transition-opacity duration-500" />
+        <div className="absolute inset-[-100%] animate-[spin_4s_linear_infinite] bg-[conic-gradient(from_90deg_at_50%_50%,transparent_0%,var(--mb-color)_50%,transparent_100%)] opacity-70 dark:opacity-90 group-hover:opacity-100 transition-opacity duration-500" />
       )}
 
       {/* 3. Hover: Mouse-Tracking Border Spotlight */}
-      <motion.div
+      <div
+        ref={spotlightRef}
         className="absolute inset-0 rounded-3xl opacity-0 transition-opacity duration-300 group-hover:opacity-100"
         style={{
-          background: useMotionTemplate`
-              radial-gradient(
-                600px circle at ${mouseX}px ${mouseY}px,
-                var(--magic-color),
-                transparent 40%
-              )
-            `,
-        }}
+          "--mb-x": "0px",
+          "--mb-y": "0px",
+          background: `radial-gradient(600px circle at var(--mb-x) var(--mb-y), var(--mb-color), transparent 40%)`,
+        } as React.CSSProperties}
       />
 
       {/* 4. Content Mask (Creates the 1px border effect) */}
-      <div className="absolute inset-[1px] rounded-[23px] bg-white dark:bg-[#0a0a0a] transition-colors z-0" />
+      <div className="absolute inset-[1px] rounded-[23px] bg-card transition-colors z-0" />
 
       {/* 5. Hover: Inner Card Soft Glow (FIXED: mix-blend-normal in light mode so white background can be tinted!) */}
-      <motion.div
+      <div
+        ref={glowRef}
         className="absolute inset-0 z-10 opacity-0 transition-opacity duration-300 group-hover:opacity-100 pointer-events-none mix-blend-normal dark:mix-blend-screen"
         style={{
-          background: useMotionTemplate`
-              radial-gradient(
-                600px circle at ${mouseX}px ${mouseY}px,
-                var(--magic-glow),
-                transparent 40%
-              )
-            `,
-        }}
+          "--mb-x": "0px",
+          "--mb-y": "0px",
+          background: `radial-gradient(600px circle at var(--mb-x) var(--mb-y), var(--mb-glow), transparent 40%)`,
+        } as React.CSSProperties}
       />
 
       {/* 6. Actual Content Area */}

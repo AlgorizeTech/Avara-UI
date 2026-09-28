@@ -6,7 +6,7 @@ const COMPACT_ORCHESTRATOR = {
   name: "Alice Rahman",
   role: "Personal Assistant Orchestrator",
   avatarUrl:
-    "https://images.unsplash.com/photo-1544005313-94ddf0286df2?w=300&auto=format&fit=crop&q=80",
+    "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_300,c_limit/v1790150478/photo-1544005313-94ddf0286df2-1790150482273.jpg",
 };
 
 export default function UserGraphDemo({

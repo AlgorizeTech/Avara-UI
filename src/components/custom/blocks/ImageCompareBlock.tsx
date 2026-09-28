@@ -73,9 +73,9 @@ const hexToRgb = (hex: string) => {
 };
 
 const DEFAULT_BEFORE =
-  "https://images.unsplash.com/photo-1518709268805-4e9042af9f23?w=1200&auto=format&fit=crop&q=80";
+  "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_1200,c_limit/v1790146211/photo-1518709268805-4e9042af9f23-1790146212209.jpg";
 const DEFAULT_AFTER =
-  "https://images.unsplash.com/photo-1470071459604-3b5ec3a7fe05?w=1200&auto=format&fit=crop&q=80";
+  "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_1200,c_limit/v1790146209/photo-1470071459604-3b5ec3a7fe05-1790146212205.jpg";
 
 export function ImageCompare({
   variant = "classic-slider",
@@ -174,7 +174,7 @@ export function ImageCompare({
       onTouchStart={handleMouseDown}
       className={cn(
         "relative w-full h-[480px] sm:h-[560px] rounded-2xl overflow-hidden select-none border transition-all duration-300 cursor-ew-resize group",
-        "bg-zinc-950 border-border",
+        "bg-muted border-border",
         variant === "vertical-slide" && "cursor-ns-resize",
         variant === "circle-magnifier" && "cursor-crosshair",
         className
@@ -217,8 +217,8 @@ export function ImageCompare({
         <span
           className="px-3 py-1.5 rounded-full text-xs font-extrabold text-white backdrop-blur-md border shadow-md"
           style={{
-            backgroundColor: isPrimary ? "hsl(var(--primary) / 0.8)" : `rgba(${activeRgb}, 0.8)`,
-            borderColor: isPrimary ? "hsl(var(--primary) / 0.4)" : `rgba(${activeRgb}, 0.4)`,
+            backgroundColor: isPrimary ? "color-mix(in oklab, var(--primary) 80%, transparent)" : `rgba(${activeRgb}, 0.8)`,
+            borderColor: isPrimary ? "color-mix(in oklab, var(--primary) 40%, transparent)" : `rgba(${activeRgb}, 0.4)`,
           }}
         >
           {afterLabel}
@@ -247,7 +247,7 @@ export function ImageCompare({
           style={{ left: `${sliderPos}%` }}
         >
           <div
-            className="absolute top-1/2 -translate-x-1/2 -translate-y-1/2 px-3 py-1.5 rounded-xl border text-xs font-black tracking-wider uppercase shadow-xl flex items-center gap-1.5 pointer-events-auto text-primary-foreground dark:text-zinc-900"
+            className="absolute top-1/2 -translate-x-1/2 -translate-y-1/2 px-3 py-1.5 rounded-xl border text-xs font-bold tracking-wider uppercase shadow-xl flex items-center gap-1.5 pointer-events-auto text-primary-foreground"
             style={{
               backgroundColor: activeColor,
               borderColor: "rgba(255,255,255,0.4)",
@@ -266,7 +266,7 @@ export function ImageCompare({
           style={{ left: `${sliderPos}%`, backgroundColor: activeColor, color: activeColor }}
         >
           <div
-            className="absolute top-1/2 -translate-x-1/2 -translate-y-1/2 w-10 h-10 rounded-full flex items-center justify-center shadow-2xl text-primary-foreground dark:text-zinc-900"
+            className="absolute top-1/2 -translate-x-1/2 -translate-y-1/2 w-10 h-10 rounded-full flex items-center justify-center shadow-2xl text-primary-foreground"
             style={{ backgroundColor: activeColor }}
           >
             <Sparkles className="w-5 h-5" />
@@ -281,9 +281,9 @@ export function ImageCompare({
           style={{ left: `${sliderPos}%`, backgroundColor: activeColor }}
         >
           <div
-            className="absolute bottom-6 -translate-x-1/2 px-4 py-2 rounded-2xl backdrop-blur-md border shadow-2xl text-xs font-extrabold flex items-center gap-2 pointer-events-auto text-primary-foreground dark:text-zinc-900"
+            className="absolute bottom-6 -translate-x-1/2 px-4 py-2 rounded-2xl backdrop-blur-md border shadow-2xl text-xs font-extrabold flex items-center gap-2 pointer-events-auto text-primary-foreground"
             style={{
-              backgroundColor: isPrimary ? "hsl(var(--primary) / 0.85)" : `rgba(${activeRgb}, 0.85)`,
+              backgroundColor: isPrimary ? "color-mix(in oklab, var(--primary) 85%, transparent)" : `rgba(${activeRgb}, 0.85)`,
               borderColor: "rgba(255,255,255,0.3)",
             }}
           >
@@ -296,10 +296,13 @@ export function ImageCompare({
       {/* VARIANT 5: MINIMAL LINE */}
       {variant === "minimal-line" && (
         <div
-          className="absolute top-0 bottom-0 z-30 w-0.5 transition-all duration-75 pointer-events-none bg-white"
-          style={{ left: `${sliderPos}%` }}
+          className="absolute top-0 bottom-0 z-30 w-0.5 transition-all duration-75 pointer-events-none"
+          style={{ left: `${sliderPos}%`, backgroundColor: activeColor }}
         >
-          <div className="absolute top-1/2 -translate-x-1/2 -translate-y-1/2 w-4 h-4 rounded-full bg-white shadow-lg border border-black/20" />
+          <div
+            className="absolute top-1/2 -translate-x-1/2 -translate-y-1/2 w-4 h-4 rounded-full shadow-lg border border-black/20"
+            style={{ backgroundColor: activeColor }}
+          />
         </div>
       )}
 
@@ -310,7 +313,7 @@ export function ImageCompare({
           style={{ left: `${sliderPos}%`, backgroundColor: activeColor }}
         >
           <div
-            className="absolute top-6 -translate-x-1/2 px-3 py-1 rounded-full text-[10px] font-black uppercase shadow-lg text-primary-foreground dark:text-zinc-900"
+            className="absolute top-6 -translate-x-1/2 px-3 py-1 rounded-full text-[10px] font-bold uppercase shadow-lg text-primary-foreground"
             style={{ backgroundColor: activeColor }}
           >
             Hover Reveal
@@ -340,7 +343,7 @@ export function ImageCompare({
           style={{ left: `${sliderPos}%`, top: `${sliderPosY}%`, borderColor: activeColor }}
         >
           <div
-            className="absolute top-2 left-1/2 -translate-x-1/2 px-2.5 py-0.5 rounded-full text-[10px] font-black shadow-md text-primary-foreground dark:text-zinc-900"
+            className="absolute top-2 left-1/2 -translate-x-1/2 px-2.5 py-0.5 rounded-full text-[10px] font-bold shadow-md text-primary-foreground"
             style={{ backgroundColor: activeColor }}
           >
             Lens Scope
@@ -355,7 +358,7 @@ export function ImageCompare({
           style={{ left: `${sliderPos}%`, backgroundColor: activeColor }}
         >
           <div
-            className="absolute top-1/2 -translate-x-1/2 -translate-y-1/2 w-12 h-12 rounded-2xl bg-white/20 dark:bg-black/30 backdrop-blur-xl border-2 shadow-2xl flex items-center justify-center pointer-events-auto text-primary-foreground dark:text-zinc-900"
+            className="absolute top-1/2 -translate-x-1/2 -translate-y-1/2 w-12 h-12 rounded-2xl bg-white/20 dark:bg-black/30 backdrop-blur-xl border-2 shadow-2xl flex items-center justify-center pointer-events-auto text-white"
             style={{ borderColor: activeColor }}
           >
             <Layers className="w-5 h-5" />
@@ -370,7 +373,7 @@ export function ImageCompare({
           style={{ left: `${sliderPos}%`, backgroundColor: activeColor }}
         >
           <div
-            className="absolute top-1/2 -translate-x-1/2 -translate-y-1/2 w-10 h-10 rounded-xl rotate-45 shadow-2xl flex items-center justify-center pointer-events-auto text-primary-foreground dark:text-zinc-900"
+            className="absolute top-1/2 -translate-x-1/2 -translate-y-1/2 w-10 h-10 rounded-xl rotate-45 shadow-2xl flex items-center justify-center pointer-events-auto text-primary-foreground"
             style={{ backgroundColor: activeColor }}
           >
             <Scan className="w-5 h-5 -rotate-45" />

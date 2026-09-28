@@ -35,6 +35,13 @@ export default function FeatureCard() {
 
 ## Installation
 
+Register the @algorize-ui registry once per project, then add the component:
+
+```bash
+npx shadcn@latest registry add @algorize-ui=https://algorize-ui.vercel.app/r/{name}.json
+npx shadcn@latest add @algorize-ui/item
+```
+
 ## Examples
 
 ## Features
@@ -56,6 +63,69 @@ Discover the Item component's structural layout features, designed for lists, dr
 
     Usage Guidelines
     Follow standard design principles when implementing this component. Ensure proper contrast, spacing, and context within your layout.
+
+## Props Reference
+
+        Prop
+        Type
+        Default
+        Description
+
+          title
+
+          ReactNode
+
+          -
+        
+        The primary title text or element displayed in the item block (required).
+
+          description
+
+          ReactNode
+
+          undefined
+        
+        Secondary description text or content displayed below the title.
+
+          media
+
+          ReactNode
+
+          undefined
+        
+        Visual media element such as an icon, avatar, or thumbnail.
+
+          actions
+
+          ReactNode
+
+          undefined
+        
+        Action elements like buttons or icons placed on the trailing edge or bottom.
+
+          variant
+
+          "default" | "compact" | "card" | "bordered"
+
+          "default"
+        
+        Applies structural layout and visual styling variant.
+
+          onClick
+
+          () => void
+
+          undefined
+        
+        Optional click event handler. Transforms the container into an interactive button.
+
+          className
+
+          string
+
+          undefined
+        
+        Additional CSS class names to apply custom styles.
 
 ---
 

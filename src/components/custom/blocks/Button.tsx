@@ -36,6 +36,7 @@ type ButtonVariant =
   | "cyber-scan"
   | "expand-icon"
   | "slide-icon"
+  | "slide-icon-loop"
   | "slide-bg"
   | "slide-bg-top"
   | "slide-bg-bottom"
@@ -57,6 +58,7 @@ type ButtonVariant =
   | "floating-shadow"
   | "magnetic-pull"
   | "glitch-cyber"
+  | "3d"
   | "3d-press"
   | "liquid-fill"
   | "border-chase"
@@ -91,6 +93,7 @@ type ButtonVariant =
   | "glowing-line-trace"
   | "prism-reflection-shimmer"
   | "dual-spin-border"
+  | "shards-control"
   // The plain shadcn-style surfaces. Everything above is an animated
   // treatment; these five are the ordinary buttons most pages actually need,
   // and the docs have always advertised them.
@@ -100,6 +103,14 @@ type ButtonVariant =
   | "ghost"
   | "link";
 type ButtonSize = "default" | "sm" | "lg";
+
+/**
+ * Decoration a "shards-control" tile plays when it lands on something: a
+ * slider reaching full, a toggle switching on, or a new select / colour pick.
+ */
+export type ShardsEffect = "none" | "sparkle" | "orbit" | "beacon" | "shimmer";
+/** `once` plays per landing; `continuous` loops for as long as the tile stays active. */
+export type ShardsEffectMode = "once" | "continuous";
 
 /**
  * The plain variants, styled from theme tokens so they follow whatever palette
@@ -121,13 +132,65 @@ const PLAIN_VARIANTS: Record<string, string> = {
   link: "bg-transparent text-primary border-transparent shadow-none underline-offset-4 hover:underline",
 };
 
+export function getButtonThemeStyle(color?: string): React.CSSProperties {
+  if (!color || color === "default" || color === "primary") {
+    return {};
+  }
+
+  let primary = color;
+  let primaryForeground = "#ffffff";
+
+  if (color === "indigo") {
+    primary = "#6366f1";
+  } else if (color === "rose") {
+    primary = "#f43f5e";
+  } else if (color === "emerald") {
+    primary = "#10b981";
+  } else if (color === "zinc") {
+    primary = "#27272a";
+    primaryForeground = "#fafafa";
+  }
+
+  return {
+    "--primary": primary,
+    "--primary-foreground": primaryForeground,
+    "--ring": primary,
+  } as React.CSSProperties;
+}
+
 export interface ButtonProps
   extends React.ButtonHTMLAttributes<HTMLButtonElement> {
   variant?: ButtonVariant;
   size?: ButtonSize;
   loading?: boolean;
+  color?: string;
   iconLeft?: React.ReactNode;
   iconRight?: React.ReactNode;
+
+  /* Props for "shards-control" glass dark parameter tile variant */
+  controlType?: "color" | "select" | "slider" | "toggle";
+  label?: string;
+  value?: string | number;
+  options?: string[];
+  checked?: boolean;
+  onCheckedChange?: (checked: boolean) => void;
+  colorHex?: string;
+  onColorChange?: (color: string) => void;
+  min?: number;
+  max?: number;
+  step?: number;
+  onValueChange?: (value: number | string) => void;
+  /**
+   * Effect played by a "shards-control" tile. Left unset, the tile keeps its
+   * built-in feedback (slider beacon at full, colour burst on a pick).
+   */
+  effect?: ShardsEffect;
+  effectMode?: ShardsEffectMode;
+  /**
+   * Whether a `continuous` effect is running. Defaults to: slider at full,
+   * toggle on, select / colour once something has been picked.
+   */
+  effectActive?: boolean;
 }
 
 interface Ripple {
@@ -137,6 +200,1120 @@ interface Ripple {
   id: number;
 }
 
+/* Helper HSV/HSL conversion for full interactive Color Canvas and Hue Slider */
+function hsvToHex(h: number, s: number, v: number): string {
+  const f = (n: number, k = (n + h / 60) % 6) =>
+    v - v * s * Math.max(0, Math.min(k, 4 - k, 1));
+  const r = Math.round(f(5) * 255);
+  const g = Math.round(f(3) * 255);
+  const b = Math.round(f(1) * 255);
+  return `#${((1 << 24) + (r << 16) + (g << 8) + b).toString(16).slice(1)}`;
+}
+
+function hexToHsv(hex: string): { h: number; s: number; v: number } {
+  let c = hex.replace("#", "");
+  if (c.length === 3) {
+    c = c.split("").map((x) => x + x).join("");
+  }
+  const num = parseInt(c, 16);
+  if (isNaN(num)) return { h: 270, s: 0.7, v: 0.7 };
+  const r = ((num >> 16) & 255) / 255;
+  const g = ((num >> 8) & 255) / 255;
+  const b = (num & 255) / 255;
+
+  const max = Math.max(r, g, b);
+  const min = Math.min(r, g, b);
+  const d = max - min;
+  let h = 0;
+  const s = max === 0 ? 0 : d / max;
+  const v = max;
+
+  if (max !== min) {
+    switch (max) {
+      case r:
+        h = (g - b) / d + (g < b ? 6 : 0);
+        break;
+      case g:
+        h = (b - r) / d + 2;
+        break;
+      case b:
+        h = (r - g) / d + 4;
+        break;
+    }
+    h /= 6;
+  }
+  return { h: Math.round(h * 360), s, v };
+}
+
+function colorWithAlpha(color: string, alpha: number): string {
+  if (color.startsWith("#")) {
+    let hex = color.slice(1);
+    if (hex.length === 3) {
+      hex = hex.split("").map((x) => x + x).join("");
+    }
+    if (hex.length === 6) {
+      const r = parseInt(hex.slice(0, 2), 16);
+      const g = parseInt(hex.slice(2, 4), 16);
+      const b = parseInt(hex.slice(4, 6), 16);
+      return `rgba(${r}, ${g}, ${b}, ${alpha})`;
+    }
+  }
+  return color;
+}
+
+const ColorPickerPopover: React.FC<{
+  color: string;
+  onChange: (hex: string) => void;
+  onClose: () => void;
+}> = ({ color, onChange, onClose }) => {
+  const initialHsv = React.useMemo(() => hexToHsv(color), []);
+  const [hue, setHue] = useState(initialHsv.h);
+  const [sat, setSat] = useState(initialHsv.s);
+  const [val, setVal] = useState(initialHsv.v);
+
+  const canvasRef = React.useRef<HTMLDivElement>(null);
+  const hueRef = React.useRef<HTMLDivElement>(null);
+
+  const [isDraggingCanvas, setIsDraggingCanvas] = useState(false);
+  const [isDraggingHue, setIsDraggingHue] = useState(false);
+
+  // Sync internal state when external color changes (e.g. swatch click)
+  useEffect(() => {
+    if (!isDraggingCanvas && !isDraggingHue) {
+      const hsv = hexToHsv(color);
+      setSat(hsv.s);
+      setVal(hsv.v);
+      if (hsv.s > 0.05) {
+        setHue(hsv.h);
+      }
+    }
+  }, [color, isDraggingCanvas, isDraggingHue]);
+
+  const handleCanvasMove = React.useCallback(
+    (clientX: number, clientY: number) => {
+      if (!canvasRef.current) return;
+      const rect = canvasRef.current.getBoundingClientRect();
+      const x = Math.max(0, Math.min(rect.width, clientX - rect.left));
+      const y = Math.max(0, Math.min(rect.height, clientY - rect.top));
+
+      const newSat = x / rect.width;
+      const newVal = 1 - y / rect.height;
+
+      setSat(newSat);
+      setVal(newVal);
+      onChange(hsvToHex(hue, newSat, newVal));
+    },
+    [hue, onChange]
+  );
+
+  const handleHueMove = React.useCallback(
+    (clientX: number) => {
+      if (!hueRef.current) return;
+      const rect = hueRef.current.getBoundingClientRect();
+      const x = Math.max(0, Math.min(rect.width, clientX - rect.left));
+      const newHue = (x / rect.width) * 360;
+
+      setHue(newHue);
+      onChange(hsvToHex(newHue, sat, val));
+    },
+    [sat, val, onChange]
+  );
+
+  useEffect(() => {
+    if (!isDraggingCanvas) return;
+    const onMove = (e: MouseEvent) => handleCanvasMove(e.clientX, e.clientY);
+    const onUp = () => setIsDraggingCanvas(false);
+    window.addEventListener("mousemove", onMove);
+    window.addEventListener("mouseup", onUp);
+    return () => {
+      window.removeEventListener("mousemove", onMove);
+      window.removeEventListener("mouseup", onUp);
+    };
+  }, [isDraggingCanvas, handleCanvasMove]);
+
+  useEffect(() => {
+    if (!isDraggingHue) return;
+    const onMove = (e: MouseEvent) => handleHueMove(e.clientX);
+    const onUp = () => setIsDraggingHue(false);
+    window.addEventListener("mousemove", onMove);
+    window.addEventListener("mouseup", onUp);
+    return () => {
+      window.removeEventListener("mousemove", onMove);
+      window.removeEventListener("mouseup", onUp);
+    };
+  }, [isDraggingHue, handleHueMove]);
+
+  const hueColor = hsvToHex(hue, 1, 1);
+
+  return (
+    <>
+      <div
+        className="fixed inset-0 z-40"
+        onClick={(e) => {
+          e.stopPropagation();
+          onClose();
+        }}
+      />
+      <div className="absolute left-0 right-0 top-full mt-1.5 z-50 p-3 rounded-2xl border border-border/80 bg-popover text-popover-foreground shadow-lg flex flex-col gap-3 animate-in fade-in-0 zoom-in-95 duration-150 custom-control-interactive">
+        {/* 1. Interactive 2D Color Spectrum Field Box */}
+        <div
+          ref={canvasRef}
+          onMouseDown={(e) => {
+            e.stopPropagation();
+            setIsDraggingCanvas(true);
+            handleCanvasMove(e.clientX, e.clientY);
+          }}
+          className="relative w-full h-32 rounded-xl overflow-hidden cursor-crosshair select-none"
+          style={{
+            backgroundColor: hueColor,
+            backgroundImage:
+              "linear-gradient(to top, #000 0%, transparent 80%), linear-gradient(to right, #fff 0%, transparent 65%)",
+          }}
+        >
+          {/* Selector Pointer Circle */}
+          <div
+            className="absolute w-4 h-4 -ml-2 -mt-2 rounded-full border-2 border-white shadow-md pointer-events-none transition-transform active:scale-125"
+            style={{
+              left: `${sat * 100}%`,
+              top: `${(1 - val) * 100}%`,
+              backgroundColor: color,
+            }}
+          />
+        </div>
+
+        {/* 2. Rainbow Hue Spectrum Drag Bar */}
+        <div
+          ref={hueRef}
+          onMouseDown={(e) => {
+            e.stopPropagation();
+            setIsDraggingHue(true);
+            handleHueMove(e.clientX);
+          }}
+          className="relative w-full h-3.5 rounded-full cursor-pointer select-none"
+        >
+          <div
+            className="w-full h-full rounded-full"
+            style={{
+              background:
+                "linear-gradient(to right, #ff0000, #ffff00, #00ff00, #00ffff, #0000ff, #ff00ff, #ff0000)",
+            }}
+          />
+          {/* Slider Ring Handle */}
+          <div
+            className="absolute top-1/2 -translate-y-1/2 w-4 h-4 -ml-2 rounded-full border-2 border-white shadow-md pointer-events-none"
+            style={{
+              left: `${(hue / 360) * 100}%`,
+              backgroundColor: hueColor,
+            }}
+          />
+        </div>
+
+        {/* 3. Palette Color Swatches Grid */}
+        <div className="flex flex-wrap gap-2.5 pt-1">
+          {[
+            "#a855f7",
+            "#8b5cf6",
+            "#6366f1",
+            "#3b82f6",
+            "#06b6d4",
+            "#10b981",
+            "#84cc16",
+            "#eab308",
+            "#f97316",
+            "#ef4444",
+            "#ec4899",
+            "#f43f5e",
+            "#ffffff",
+            "#94a3b8",
+            "#000000",
+          ].map((hex) => (
+            <button
+              key={hex}
+              type="button"
+              onClick={(e) => {
+                e.stopPropagation();
+                onChange(hex);
+              }}
+              className="w-5 h-5 rounded-md transition-transform hover:scale-110 active:scale-95 border border-foreground/15 shadow-xs cursor-pointer"
+              style={{ backgroundColor: hex }}
+            />
+          ))}
+        </div>
+      </div>
+    </>
+  );
+};
+
+type PlayableShardsEffect = Exclude<ShardsEffect, "none">;
+
+/** Length of one `once` play, per effect, in seconds. */
+const FX_ONCE_S: Record<PlayableShardsEffect, number> = {
+  sparkle: 2.2,
+  orbit: 1.6,
+  beacon: 2,
+  shimmer: 1.2,
+};
+const FX_SPECKS = 16;
+
+/** Deterministic 0–1 noise so server and client scatter the specks alike. */
+const fxNoise = (i: number, salt: number) => {
+  const x = Math.sin(i * 12.9898 + salt * 78.233) * 43758.5453;
+  return x - Math.floor(x);
+};
+
+/** Shows only a 2px ring at the padding edge — the track the orbit beams run in. */
+const FX_RING_MASK: React.CSSProperties = {
+  WebkitMask: "linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0)",
+  WebkitMaskComposite: "xor",
+  mask: "linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0)",
+  maskComposite: "exclude",
+};
+
+const SHARDS_FX_CSS = `
+@keyframes shards-fx-life { 0% { opacity: 0; } 8%, 75% { opacity: 1; } 100% { opacity: 0; } }
+@keyframes shards-fx-in { from { opacity: 0; } to { opacity: 1; } }
+@keyframes shards-fx-out { from { opacity: 1; } to { opacity: 0; } }
+@keyframes shards-fx-breathe { 0%, 100% { opacity: 0.25; } 50% { opacity: 0.75; } }
+@keyframes shards-fx-flash { 0% { opacity: 0; } 25% { opacity: 1; } 100% { opacity: 0; } }
+@keyframes shards-fx-speck {
+  0% { opacity: 0; transform: translateY(0) scale(0.4); }
+  50% { opacity: 0.9; transform: translateY(-6px) scale(1.3); }
+  100% { opacity: 0; transform: translateY(-12px) scale(0.4); }
+}
+@keyframes shards-fx-orbit {
+  from { transform: translate(-50%, -50%) rotate(0deg); }
+  to { transform: translate(-50%, -50%) rotate(360deg); }
+}
+@keyframes shards-fx-sheen {
+  from { transform: translateX(-120%) skewX(-20deg); }
+  to { transform: translateX(420%) skewX(-20deg); }
+}
+@keyframes shards-fx-sheen-loop {
+  0% { transform: translateX(-120%) skewX(-20deg); }
+  40%, 100% { transform: translateX(420%) skewX(-20deg); }
+}
+@keyframes shards-fx-bloom {
+  0% { opacity: 0; transform: scale(0.98); }
+  35% { opacity: 0.6; }
+  100% { opacity: 0; transform: scale(1.04); }
+}
+@keyframes shards-fx-ping {
+  0% { transform: scale(1); opacity: 0.85; }
+  70%, 100% { transform: scale(1.18, 1.55); opacity: 0; }
+}
+@keyframes shards-fx-aura { 0% { opacity: 0.95; } 45% { opacity: 0.6; } 100% { opacity: 0; } }
+`;
+
+/**
+ * One effect layer over a control tile, tinted by `color` (the theme primary
+ * when omitted). `once` runs its single play and calls `onDone`; `continuous`
+ * fades in, loops, and fades out when `leaving` turns on, then calls `onDone`.
+ */
+function ShardsEffectLayer({
+  effect,
+  mode,
+  leaving = false,
+  color,
+  onDone,
+}: {
+  effect: PlayableShardsEffect;
+  mode: ShardsEffectMode;
+  leaving?: boolean;
+  color?: string;
+  onDone: () => void;
+}) {
+  const loop = mode === "continuous";
+  // The same layers serve both modes: once they play a single time, looped
+  // they repeat forever while the wrapper holds them on screen.
+  const run = (name: string, seconds: number, ease: string, delay = 0): React.CSSProperties => ({
+    animation: `${name} ${seconds}s ${ease} ${delay}s ${loop ? "infinite" : 1} both`,
+  });
+  const life = loop
+    ? `${leaving ? "shards-fx-out" : "shards-fx-in"} 0.4s ease-out both`
+    : `shards-fx-life ${FX_ONCE_S[effect]}s linear both`;
+
+  return (
+    <span
+      aria-hidden
+      onAnimationEnd={(e) => {
+        if (e.target === e.currentTarget && (!loop || leaving)) onDone();
+      }}
+      className="pointer-events-none absolute inset-0 z-0 rounded-xl text-primary"
+      style={{ animation: life, color }}
+    >
+      <style dangerouslySetInnerHTML={{ __html: SHARDS_FX_CSS }} />
+
+      {/* Max-effort sky: a glow rising from the floor and twinkling specks. */}
+      {effect === "sparkle" && (
+        <span className="absolute inset-0 overflow-hidden rounded-xl">
+          <span className="absolute inset-0 bg-[radial-gradient(ellipse_at_bottom,currentColor,transparent_70%)] opacity-20" />
+          <span className="absolute inset-0 opacity-40">
+            <span
+              className="absolute inset-x-4 bottom-0 h-full bg-[radial-gradient(ellipse_at_bottom,currentColor,transparent_60%)] blur-md"
+              style={run("shards-fx-breathe", loop ? 3.2 : 1.1, "ease-in-out")}
+            />
+          </span>
+          {Array.from({ length: FX_SPECKS }).map((_, i) => {
+            const size = 1.5 + fxNoise(i, 3) * 2;
+            return (
+              <span
+                key={i}
+                className="absolute rounded-full bg-current"
+                style={{
+                  left: `${fxNoise(i, 1) * 100}%`,
+                  top: `${100 - Math.pow(fxNoise(i, 2), 2) * 85}%`,
+                  width: size,
+                  height: size,
+                  boxShadow: "0 0 6px 1px currentColor",
+                  // A single play squeezes the twinkles into its window.
+                  ...run(
+                    "shards-fx-speck",
+                    loop ? 1.8 + fxNoise(i, 4) * 2.4 : 1 + fxNoise(i, 4) * 0.8,
+                    "ease-in-out",
+                    fxNoise(i, 5) * (loop ? 3 : 0.9),
+                  ),
+                }}
+              />
+            );
+          })}
+        </span>
+      )}
+
+      {/* Premium lap: two beams run the edge, a sheen crosses, a halo blooms. */}
+      {effect === "orbit" && (
+        <>
+          <span className="absolute inset-0 opacity-70">
+            <span
+              className="absolute inset-0 rounded-xl"
+              style={{
+                boxShadow: "0 0 18px 4px currentColor",
+                ...(loop
+                  ? run("shards-fx-breathe", 2.8, "ease-in-out")
+                  : run("shards-fx-bloom", 1.1, "cubic-bezier(0, 0, 0.58, 1)", 0.1)),
+              }}
+            />
+          </span>
+          <span className="absolute inset-0 overflow-hidden rounded-xl">
+            <span
+              className="absolute inset-y-0 left-0 w-1/4 bg-gradient-to-r from-transparent via-current to-transparent opacity-25"
+              style={
+                loop
+                  ? run("shards-fx-sheen-loop", 2.8, "cubic-bezier(0.42, 0, 0.58, 1)")
+                  : run("shards-fx-sheen", 1, "cubic-bezier(0.42, 0, 0.58, 1)", 0.15)
+              }
+            />
+          </span>
+          <span className="absolute inset-0 overflow-hidden rounded-xl p-[2px]" style={FX_RING_MASK}>
+            <span
+              className="absolute left-1/2 top-1/2 aspect-square w-[150%]"
+              style={{
+                background:
+                  "conic-gradient(from 0deg, transparent 0deg, currentColor 50deg, transparent 90deg, transparent 180deg, currentColor 230deg, transparent 270deg)",
+                ...(loop
+                  ? run("shards-fx-orbit", 2.8, "linear")
+                  : run("shards-fx-orbit", FX_ONCE_S.orbit, "cubic-bezier(0.45, 0, 0.2, 1)")),
+              }}
+            />
+          </span>
+        </>
+      )}
+
+      {/* Beacon: a filled ping, a trailing border ping and a soft aura. */}
+      {effect === "beacon" && (
+        <>
+          <span
+            className="absolute inset-0 rounded-xl bg-current/25"
+            style={run("shards-fx-ping", loop ? 2.2 : 1.8, "cubic-bezier(0, 0, 0.2, 1)")}
+          />
+          <span
+            className="absolute inset-0 rounded-xl border-2 border-current/50"
+            style={run("shards-fx-ping", loop ? 2.2 : 1.8, "cubic-bezier(0, 0, 0.2, 1)", 0.15)}
+          />
+          <span
+            className="absolute -inset-1.5 rounded-xl bg-current/25 blur-md"
+            style={run("shards-fx-aura", loop ? 2.2 : 1.8, "ease-out")}
+          />
+        </>
+      )}
+
+      {/* Shimmer: a bright band wipes across while the tile and its edge flash. */}
+      {effect === "shimmer" && (
+        <>
+          <span
+            className="absolute inset-0 rounded-xl bg-current/15"
+            style={loop ? run("shards-fx-breathe", 2.4, "ease-in-out") : run("shards-fx-flash", 1.1, "ease-out")}
+          />
+          <span className="absolute inset-0 overflow-hidden rounded-xl">
+            <span
+              className="absolute inset-y-0 left-0 w-1/2 bg-gradient-to-r from-transparent via-current to-transparent opacity-40"
+              style={
+                loop
+                  ? run("shards-fx-sheen-loop", 2.4, "cubic-bezier(0.42, 0, 0.58, 1)")
+                  : run("shards-fx-sheen", 1, "cubic-bezier(0.16, 1, 0.3, 1)")
+              }
+            />
+          </span>
+          <span className="absolute inset-0 opacity-70">
+            <span
+              className="absolute inset-0 rounded-xl"
+              style={{
+                boxShadow: "0 0 0 1.5px currentColor, 0 0 16px 2px currentColor",
+                ...(loop ? run("shards-fx-breathe", 2.4, "ease-in-out") : run("shards-fx-flash", 1.1, "ease-out")),
+              }}
+            />
+          </span>
+        </>
+      )}
+    </span>
+  );
+}
+
+function usePrefersReducedMotion() {
+  const [reduce, setReduce] = useState(false);
+  useEffect(() => {
+    const query = window.matchMedia("(prefers-reduced-motion: reduce)");
+    const sync = () => setReduce(query.matches);
+    sync();
+    query.addEventListener("change", sync);
+    return () => query.removeEventListener("change", sync);
+  }, []);
+  return reduce;
+}
+
+/**
+ * Keeps something mounted while `active`, and on through its exit: `leaving`
+ * is on between `active` turning off and the caller reporting `done`.
+ */
+function useLinger(active: boolean) {
+  const [mounted, setMounted] = useState(active);
+  if (active && !mounted) setMounted(true);
+  return {
+    mounted,
+    leaving: mounted && !active,
+    done: React.useCallback(() => setMounted(false), []),
+  };
+}
+
+/**
+ * The "shards-control" variant is a whole control tile — select, toggle,
+ * colour and slider — with state of its own. It lives in its own component so
+ * its hooks run unconditionally; `Button` hands off to it for that variant.
+ */
+type ShardsControlTileProps = Pick<
+  ButtonProps,
+  | "controlType"
+  | "label"
+  | "value"
+  | "options"
+  | "checked"
+  | "onCheckedChange"
+  | "colorHex"
+  | "onColorChange"
+  | "min"
+  | "max"
+  | "step"
+  | "onValueChange"
+  | "effect"
+  | "effectMode"
+  | "effectActive"
+  | "className"
+  | "children"
+> & {
+  style?: React.CSSProperties;
+  forwardedRef: React.ForwardedRef<HTMLButtonElement>;
+};
+
+const ShardsControlTile = ({
+  controlType = "select",
+  label,
+  value,
+  options = [],
+  checked = false,
+  onCheckedChange,
+  colorHex,
+  onColorChange,
+  min = 0,
+  max = 10,
+  step = 0.1,
+  onValueChange,
+  effect,
+  effectMode = "once",
+  effectActive,
+  className,
+  children,
+  style,
+  forwardedRef,
+}: ShardsControlTileProps) => {
+    const [internalColor, setInternalColor] = useState(colorHex || "#896abd");
+    const [internalVal, setInternalVal] = useState(value !== undefined ? String(value) : (options[0] || "1"));
+    const [internalChecked, setInternalChecked] = useState(Boolean(checked));
+    const [colorKey, setColorKey] = useState(0);
+
+    const [isSelectOpen, setIsSelectOpen] = useState(false);
+    const [isColorOpen, setIsColorOpen] = useState(false);
+    const [isDraggingSlider, setIsDraggingSlider] = useState(false);
+
+    const containerRef = React.useRef<HTMLDivElement>(null);
+    const sliderRef = React.useRef<HTMLDivElement>(null);
+
+    // Outside click listener to dismiss open popovers
+    useEffect(() => {
+      if (!isSelectOpen && !isColorOpen) return;
+      const handleOutsideClick = (e: MouseEvent) => {
+        if (containerRef.current && !containerRef.current.contains(e.target as Node)) {
+          setIsSelectOpen(false);
+          setIsColorOpen(false);
+        }
+      };
+      document.addEventListener("mousedown", handleOutsideClick);
+      return () => document.removeEventListener("mousedown", handleOutsideClick);
+    }, [isSelectOpen, isColorOpen]);
+
+    // Keep internal state updated if props change dynamically
+    useEffect(() => {
+      if (colorHex !== undefined) setInternalColor(colorHex);
+    }, [colorHex]);
+
+    useEffect(() => {
+      if (value !== undefined) setInternalVal(String(value));
+    }, [value]);
+
+    useEffect(() => {
+      if (checked !== undefined) setInternalChecked(Boolean(checked));
+    }, [checked]);
+
+    const displayLabel = label || children || "Shards";
+    const displayColor = internalColor;
+    const displayValue = internalVal;
+    const displayChecked = internalChecked;
+
+    const handleColorChange = (newHex: string) => {
+      setInternalColor(newHex);
+      setColorKey((prev) => prev + 1);
+      onColorChange?.(newHex);
+    };
+
+    // Calculate numeric percentage for slider fill (0% to 100%)
+    const numVal = Number(displayValue) !== undefined && !isNaN(Number(displayValue)) ? Number(displayValue) : min;
+    const percentage = Math.max(0, Math.min(100, ((numVal - min) / (max - min)) * 100));
+
+    // Ref to track if slider was already at 100% so pulse triggers exactly ONCE per 100% arrival
+    const wasAt100Ref = React.useRef(percentage >= 99.5 || numVal >= max);
+    const [sliderPulseKey, setSliderPulseKey] = useState(0);
+
+    // Watch percentage to trigger pulse on 100% arrival
+    useEffect(() => {
+      if (controlType !== "slider") return;
+      const isAt100 = percentage >= 99.5 || numVal >= max;
+      if (isAt100) {
+        if (!wasAt100Ref.current) {
+          setSliderPulseKey((k) => k + 1);
+          wasAt100Ref.current = true;
+        }
+      } else {
+        wasAt100Ref.current = false;
+      }
+    }, [percentage, numVal, max, controlType]);
+
+    // ── Effects ──────────────────────────────────────────────
+    // What an effect reacts to: a slider at full, a toggle that is on, or
+    // the current pick of a select / colour tile.
+    const isAtMax = percentage >= 99.5 || numVal >= max;
+    const fxSignal =
+      controlType === "slider"
+        ? isAtMax
+        : controlType === "toggle"
+          ? displayChecked
+          : controlType === "color"
+            ? displayColor
+            : displayValue;
+    const playable = effect && effect !== "none" ? effect : null;
+    const reduceMotion = usePrefersReducedMotion();
+    // The running `once` play (0 = idle). A landing while one is still
+    // playing is folded into it, so dragging a colour doesn't restart it.
+    const [fxPlay, setFxPlay] = useState(0);
+    const fxSeq = React.useRef(0);
+    const [hasPicked, setHasPicked] = useState(false);
+    const lastSignal = React.useRef(fxSignal);
+    useEffect(() => {
+      if (lastSignal.current === fxSignal) return;
+      lastSignal.current = fxSignal;
+      // Booleans land on the way up only: filling the slider, switching on.
+      if (fxSignal === false) return;
+      if (typeof fxSignal !== "boolean") setHasPicked(true);
+      if (playable && effectMode === "once" && !reduceMotion)
+        setFxPlay((k) => k || ++fxSeq.current);
+    }, [fxSignal, playable, effectMode, reduceMotion]);
+
+    const loopOn =
+      Boolean(playable) &&
+      effectMode === "continuous" &&
+      !reduceMotion &&
+      (effectActive ?? (typeof fxSignal === "boolean" ? fxSignal : hasPicked));
+    const loopLayer = useLinger(loopOn);
+    const fxTint = controlType === "color" ? displayColor : undefined;
+    const effectLayers = playable && (
+      <>
+        {loopLayer.mounted && (
+          <ShardsEffectLayer
+            effect={playable}
+            mode="continuous"
+            leaving={loopLayer.leaving}
+            color={fxTint}
+            onDone={loopLayer.done}
+          />
+        )}
+        {fxPlay > 0 && (
+          <ShardsEffectLayer
+            key={fxPlay}
+            effect={playable}
+            mode="once"
+            color={fxTint}
+            onDone={() => setFxPlay(0)}
+          />
+        )}
+      </>
+    );
+
+    // Dragging logic for full-tile slider
+    const handleSliderMove = React.useCallback(
+      (clientX: number) => {
+        if (!sliderRef.current) return;
+        const rect = sliderRef.current.getBoundingClientRect();
+        const offsetX = Math.max(0, Math.min(rect.width, clientX - rect.left));
+        const ratio = offsetX / rect.width;
+        let rawVal = min + ratio * (max - min);
+
+        // Round to step precision
+        if (step) {
+          const precision = (step.toString().split(".")[1] || "").length;
+          rawVal = Number(Math.round(Number(rawVal + "e" + precision)) + "e-" + precision);
+        }
+        const clampedVal = Math.max(min, Math.min(max, rawVal));
+        const valStr = step < 1 ? clampedVal.toFixed(1) : String(Math.round(clampedVal));
+
+        setInternalVal(valStr);
+        onValueChange?.(Number(valStr));
+      },
+      [min, max, step, onValueChange]
+    );
+
+    const handleMouseDown = (e: React.MouseEvent<HTMLDivElement>) => {
+      if (controlType !== "slider") return;
+      setIsDraggingSlider(true);
+      handleSliderMove(e.clientX);
+    };
+
+    const handleTouchStart = (e: React.TouchEvent<HTMLDivElement>) => {
+      if (controlType !== "slider") return;
+      if (e.touches[0]) {
+        setIsDraggingSlider(true);
+        handleSliderMove(e.touches[0].clientX);
+      }
+    };
+
+    useEffect(() => {
+      if (!isDraggingSlider) return;
+
+      const onMouseMove = (e: MouseEvent) => handleSliderMove(e.clientX);
+      const onMouseUp = () => setIsDraggingSlider(false);
+      const onTouchMove = (e: TouchEvent) => {
+        if (e.touches[0]) handleSliderMove(e.touches[0].clientX);
+      };
+      const onTouchEnd = () => setIsDraggingSlider(false);
+
+      window.addEventListener("mousemove", onMouseMove);
+      window.addEventListener("mouseup", onMouseUp);
+      window.addEventListener("touchmove", onTouchMove, { passive: true });
+      window.addEventListener("touchend", onTouchEnd);
+
+      return () => {
+        window.removeEventListener("mousemove", onMouseMove);
+        window.removeEventListener("mouseup", onMouseUp);
+        window.removeEventListener("touchmove", onTouchMove);
+        window.removeEventListener("touchend", onTouchEnd);
+      };
+    }, [isDraggingSlider, handleSliderMove]);
+
+    // Handle tile click for non-slider controls
+    const handleTileClick = (e: React.MouseEvent<HTMLDivElement>) => {
+      if (controlType === "slider") return;
+      // Prevent tile click when clicking directly inside interactive child controls
+      if ((e.target as HTMLElement).closest(".custom-control-interactive")) return;
+
+      if (controlType === "toggle") {
+        const next = !displayChecked;
+        setInternalChecked(next);
+        onCheckedChange?.(next);
+      } else if (controlType === "select") {
+        setIsSelectOpen((prev) => !prev);
+      } else if (controlType === "color") {
+        setIsColorOpen((prev) => !prev);
+      }
+    };
+
+    /* SPECIAL RENDER FOR FULL TILE RANGE SLIDER BUTTON */
+    if (controlType === "slider") {
+      return (
+        <div className="relative w-full rounded-xl isolation-auto" style={style}>
+          {/* Keyframes for Beacon Radar Pulse when reaching 100% */}
+          <style
+            dangerouslySetInnerHTML={{
+              __html: `
+                @keyframes beacon-ping-once {
+                  0% {
+                    transform: scale(1);
+                    opacity: 0.85;
+                  }
+                  70%, 100% {
+                    transform: scale(1.18, 1.55);
+                    opacity: 0;
+                  }
+                }
+                @keyframes beacon-aura-once {
+                  0% {
+                    opacity: 0.95;
+                  }
+                  45% {
+                    opacity: 0.6;
+                  }
+                  100% {
+                    opacity: 0;
+                  }
+                }
+              `,
+            }}
+          />
+
+          {/* Smooth Soft Aura Beacon Ring & Ping Wave on reaching 100% (Identical to Beacon Pulse button variant) */}
+          {effect === undefined && sliderPulseKey > 0 && (
+            <div key={`beacon-pulse-${sliderPulseKey}`} className="absolute inset-0 z-0 pointer-events-none">
+              {/* Primary Ping Expanding Radar Ring */}
+              <span
+                className="absolute inset-0 rounded-xl bg-primary/40 pointer-events-none"
+                style={{
+                  animation: "beacon-ping-once 1.8s cubic-bezier(0, 0, 0.2, 1) forwards",
+                }}
+              />
+              {/* Secondary Offset Border Ping Ring */}
+              <span
+                className="absolute inset-0 rounded-xl border-2 border-primary/50 pointer-events-none"
+                style={{
+                  animation: "beacon-ping-once 1.8s cubic-bezier(0, 0, 0.2, 1) 0.15s forwards",
+                }}
+              />
+              {/* Soft Aura Glow */}
+              <span
+                className="absolute -inset-1.5 rounded-xl bg-primary/25 blur-md pointer-events-none"
+                style={{
+                  animation: "beacon-aura-once 1.8s ease-out forwards",
+                }}
+              />
+            </div>
+          )}
+
+          <div
+            ref={(node) => {
+              sliderRef.current = node;
+              if (typeof forwardedRef === "function") {
+                forwardedRef(node as unknown as HTMLButtonElement);
+              } else if (forwardedRef) {
+                (forwardedRef as React.MutableRefObject<HTMLButtonElement | null>).current = node as unknown as HTMLButtonElement;
+              }
+            }}
+            onMouseDown={handleMouseDown}
+            onTouchStart={handleTouchStart}
+            className={cn(
+              "relative z-10 flex items-center justify-between w-full h-12 px-4 rounded-xl border select-none group cursor-pointer transition-all duration-200",
+              "bg-background/90 dark:bg-card/90",
+              isAtMax
+                ? "border-primary/50 shadow-[0_0_12px_color-mix(in_oklab,var(--primary)_20%,transparent)]"
+                : "border-border/80",
+              className
+            )}
+          >
+            {/* Filled Active Drag Pill Surface with vertical border line & handle cursor */}
+            <div
+              className="absolute left-0 top-0 bottom-0 bg-primary/15 rounded-xl transition-all duration-75 pointer-events-none border-r-2 border-primary/30"
+              style={{ width: `${percentage}%` }}
+            >
+              {/* Invisible Edge Drag Indicator with cursor-ew-resize */}
+              <span className="absolute right-0 top-0 bottom-0 w-3 -mr-1.5 cursor-ew-resize pointer-events-auto" />
+            </div>
+
+            {effectLayers}
+
+            {/* Label on Left */}
+            <span className="relative z-10 text-foreground font-semibold text-xs tracking-wide pointer-events-none">
+              {displayLabel}
+            </span>
+
+            {/* Value Display on Right */}
+            <span className="relative z-10 font-mono text-xs font-semibold text-foreground pointer-events-none">
+              {displayValue}
+            </span>
+          </div>
+        </div>
+      );
+    }
+
+    return (
+      <div
+        ref={(node) => {
+          containerRef.current = node;
+          if (typeof forwardedRef === "function") {
+            forwardedRef(node as unknown as HTMLButtonElement);
+          } else if (forwardedRef) {
+            (forwardedRef as React.MutableRefObject<HTMLButtonElement | null>).current = node as unknown as HTMLButtonElement;
+          }
+        }}
+        onClick={handleTileClick}
+        className={cn(
+          "relative flex items-center justify-between w-full h-12 px-4 py-2.5 rounded-xl border backdrop-blur-md text-xs font-semibold select-none group cursor-pointer transition-colors duration-200",
+          (isSelectOpen || isColorOpen) ? "z-30" : "z-10",
+          "bg-background/90 text-foreground border-border/80 dark:bg-card/90",
+          className
+        )}
+        style={style}
+      >
+        {/* Shards Color Animation Keyframes */}
+        <style
+          dangerouslySetInnerHTML={{
+            __html: `
+              @keyframes shards-sweep-anim {
+                0% {
+                  transform: translateX(-120%) skewX(-20deg);
+                  opacity: 0;
+                }
+                20% {
+                  opacity: 0.95;
+                }
+                75% {
+                  opacity: 0.95;
+                }
+                100% {
+                  transform: translateX(220%) skewX(-20deg);
+                  opacity: 0;
+                }
+              }
+              @keyframes shards-bg-pulse {
+                0% {
+                  opacity: 0;
+                }
+                25% {
+                  opacity: 0.45;
+                }
+                70% {
+                  opacity: 0.2;
+                }
+                100% {
+                  opacity: 0;
+                }
+              }
+              @keyframes shards-border-glow {
+                0% {
+                  opacity: 0;
+                }
+                25% {
+                  opacity: 1;
+                }
+                100% {
+                  opacity: 0;
+                }
+              }
+              @keyframes shards-radial-burst {
+                0% {
+                  transform: scale(0.1);
+                  opacity: 0.95;
+                }
+                50% {
+                  opacity: 0.6;
+                }
+                100% {
+                  transform: scale(4);
+                  opacity: 0;
+                }
+              }
+            `,
+          }}
+        />
+
+        {/* Dynamic Animated Background Effect on Color Change */}
+        {effect === undefined && controlType === "color" && colorKey > 0 && (
+          <div
+            key={`shards-color-anim-${colorKey}`}
+            className="absolute inset-0 rounded-xl overflow-hidden pointer-events-none z-0"
+            style={{ borderRadius: "inherit" }}
+          >
+            {/* Ambient Background Glow Flash */}
+            <div
+              className="absolute inset-0 rounded-xl pointer-events-none"
+              style={{
+                borderRadius: "inherit",
+                backgroundColor: displayColor,
+                animation: "shards-bg-pulse 0.85s cubic-bezier(0.16, 1, 0.3, 1) forwards",
+              }}
+            />
+
+            {/* Radial Color Shockwave Burst from the right (color indicator) */}
+            <div
+              className="absolute right-6 top-1/2 -translate-y-1/2 w-28 h-28 -mr-14 -mt-14 rounded-full pointer-events-none"
+              style={{
+                background: `radial-gradient(circle, ${colorWithAlpha(displayColor, 0.85)} 0%, ${colorWithAlpha(displayColor, 0.4)} 45%, transparent 70%)`,
+                animation: "shards-radial-burst 0.85s cubic-bezier(0.16, 1, 0.3, 1) forwards",
+              }}
+            />
+
+            {/* Luminous Wave Sweep */}
+            <div
+              className="absolute inset-0 w-full h-full pointer-events-none"
+              style={{
+                borderRadius: "inherit",
+                background: `linear-gradient(90deg, transparent 0%, ${colorWithAlpha(displayColor, 0.25)} 15%, ${colorWithAlpha(displayColor, 0.95)} 50%, ${colorWithAlpha(displayColor, 0.25)} 85%, transparent 100%)`,
+                animation: "shards-sweep-anim 0.85s cubic-bezier(0.16, 1, 0.3, 1) forwards",
+              }}
+            />
+
+            {/* Glowing Border Pulse Ring */}
+            <div
+              className="absolute inset-0 rounded-xl pointer-events-none"
+              style={{
+                borderRadius: "inherit",
+                boxShadow: `0 0 0 2px ${displayColor}, 0 0 20px 4px ${colorWithAlpha(displayColor, 0.6)}`,
+                animation: "shards-border-glow 0.85s cubic-bezier(0.16, 1, 0.3, 1) forwards",
+              }}
+            />
+          </div>
+        )}
+
+        {effectLayers}
+
+        {/* Label on Left */}
+        <span className="relative z-10 text-foreground/90 font-semibold tracking-wide truncate max-w-[45%] transition-colors duration-200 pointer-events-none">
+          {displayLabel}
+        </span>
+
+        {/* Right Control UI depending on controlType */}
+        <div className="flex items-center gap-2.5 shrink-0 relative z-20">
+          {/* 1. Custom Color Picker Trigger */}
+          {controlType === "color" && (
+            <div className="custom-control-interactive">
+              <button
+                type="button"
+                onClick={(e) => {
+                  e.stopPropagation();
+                  setIsColorOpen(!isColorOpen);
+                }}
+                className="flex items-center gap-2 transition-transform active:scale-95 cursor-pointer"
+              >
+                <span
+                  className="w-5 h-5 rounded-md shadow-xs border-0 transition-transform duration-200 hover:scale-105"
+                  style={{ backgroundColor: displayColor }}
+                />
+                <span className="font-mono text-xs text-foreground font-medium px-2.5 py-1.5 rounded-lg bg-muted border-0">
+                  {displayColor}
+                </span>
+              </button>
+            </div>
+          )}
+
+          {/* 2. Custom Animated Dropdown Select Trigger */}
+          {controlType === "select" && (
+            <div className="custom-control-interactive">
+              <button
+                type="button"
+                onClick={(e) => {
+                  e.stopPropagation();
+                  setIsSelectOpen(!isSelectOpen);
+                }}
+                className="flex items-center gap-1.5 text-foreground/90 text-xs font-semibold px-2 py-1 rounded-md transition-all duration-200 hover:text-primary active:scale-95 cursor-pointer"
+              >
+                <span className="truncate">{displayValue || "Select"}</span>
+                <span className={cn("text-foreground/70 text-[10px] transition-transform duration-200", isSelectOpen && "rotate-180")}>
+                  ▲
+                </span>
+              </button>
+            </div>
+          )}
+
+          {/* 3. Toggle Switch Control */}
+          {controlType === "toggle" && (
+            <button
+              type="button"
+              role="switch"
+              aria-checked={displayChecked}
+              onClick={(e) => {
+                e.stopPropagation();
+                const next = !displayChecked;
+                setInternalChecked(next);
+                onCheckedChange?.(next);
+              }}
+              className={cn(
+                "relative inline-flex h-5 w-9 shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-300 ease-in-out focus:outline-none focus:ring-2 focus:ring-primary/40 custom-control-interactive",
+                displayChecked ? "bg-primary" : "bg-muted"
+              )}
+            >
+              <span
+                className={cn(
+                  "pointer-events-none inline-block h-4 w-4 transform rounded-full shadow-md ring-0 transition duration-300 ease-in-out",
+                  displayChecked
+                    ? "translate-x-4 bg-primary-foreground"
+                    : "translate-x-0 bg-background dark:bg-foreground"
+                )}
+              />
+            </button>
+          )}
+        </div>
+
+        {/* Full-Width Floating Color Picker Modal (Matching user uploaded design) */}
+        {controlType === "color" && isColorOpen && (
+          <ColorPickerPopover
+            color={displayColor}
+            onChange={(newHex) => {
+              handleColorChange(newHex);
+            }}
+            onClose={() => setIsColorOpen(false)}
+          />
+        )}
+
+        {/* Full-Width Floating Dropdown Menu (Exact parent tile button width with tight mt-1 gap) */}
+        {controlType === "select" && isSelectOpen && (
+          <>
+            <div
+              className="fixed inset-0 z-40"
+              onClick={(e) => {
+                e.stopPropagation();
+                setIsSelectOpen(false);
+              }}
+            />
+            <div className="absolute left-0 right-0 top-full mt-1 z-50 py-2 px-1 rounded-2xl border border-border/80 bg-popover text-popover-foreground shadow-lg flex flex-col gap-1 overflow-hidden animate-in fade-in-0 zoom-in-95 duration-150 custom-control-interactive">
+              {(options.length > 0 ? options : ["Right", "Left", "Center", "Full"]).map((opt) => (
+                <button
+                  key={opt}
+                  type="button"
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    setInternalVal(opt);
+                    onValueChange?.(opt);
+                    setIsSelectOpen(false);
+                  }}
+                  className={cn(
+                    "w-full text-left px-4 py-2 text-xs font-medium transition-colors duration-150 rounded-xl hover:bg-muted/80 cursor-pointer",
+                    displayValue === opt
+                      ? "text-foreground font-semibold"
+                      : "text-muted-foreground"
+                  )}
+                >
+                  {opt}
+                </button>
+              ))}
+            </div>
+          </>
+        )}
+      </div>
+    );
+};
+
 const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
   (
     {
@@ -145,16 +1322,34 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
       size = "default",
       children,
       loading,
+      color,
       onClick,
       iconLeft,
       iconRight,
+      style,
+      controlType = "select",
+      label,
+      value,
+      options = [],
+      checked = false,
+      onCheckedChange,
+      colorHex,
+      onColorChange,
+      min = 0,
+      max = 10,
+      step = 0.1,
+      onValueChange,
+      effect,
+      effectMode,
+      effectActive,
       ...props
     },
     ref,
   ) => {
     const [ripples, setRipples] = useState<Ripple[]>([]);
 
-    const iconOnly = !Boolean(children) && Boolean(iconLeft || iconRight);
+    const iconOnly = !children && Boolean(iconLeft || iconRight);
+    const combinedStyle = { ...getButtonThemeStyle(color), ...style };
 
     useEffect(() => {
       const styleId = "ripple-animation-style";
@@ -202,6 +1397,7 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
 
     const baseClasses =
       variant === "slide-icon" ||
+      variant === "slide-icon-loop" ||
       variant === "slide-text" ||
       variant === "slide-text-down" ||
       variant === "slide-text-bounce"
@@ -236,6 +1432,7 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
           onClick={createRipple}
           disabled={loading}
           ref={ref}
+          style={combinedStyle}
           {...props}
         >
           <span className="relative z-10 inline-flex items-center justify-center gap-2">
@@ -272,6 +1469,34 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
       );
     }
 
+    // Variant: Animated Customizable Control Tile with Custom Popover Dropdown & Custom Color Picker Modal
+    if (variant === "shards-control") {
+      return (
+        <ShardsControlTile
+          controlType={controlType}
+          label={label}
+          value={value}
+          options={options}
+          checked={checked}
+          onCheckedChange={onCheckedChange}
+          colorHex={colorHex}
+          onColorChange={onColorChange}
+          min={min}
+          max={max}
+          step={step}
+          onValueChange={onValueChange}
+          effect={effect}
+          effectMode={effectMode}
+          effectActive={effectActive}
+          className={className}
+          style={combinedStyle}
+          forwardedRef={ref}
+        >
+          {children}
+        </ShardsControlTile>
+      );
+    }
+
     // Style 1: Upwards Text Roll (Initial text goes UP, duplicate comes from BOTTOM)
     if (variant === "slide-text") {
       return (
@@ -287,13 +1512,22 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
           ref={ref}
           {...props}
         >
-          <span className="inline-flex items-center justify-center gap-2 transition-transform duration-300 ease-out group-hover:-translate-y-[150%]">
+          {/* Invisible copy holds the width; both visible labels are absolute
+              and travel the button's full height, so the outgoing one clears
+              the top edge completely and both land on the same centre. */}
+          <span aria-hidden className="invisible inline-flex items-center gap-2">
             {loading && <Loader2 className="h-4 w-4" />}
             {!loading && iconLeft && <span>{iconLeft}</span>}
             {children}
             {!loading && iconRight && <span>{iconRight}</span>}
           </span>
-          <span className="absolute inset-0 inline-flex items-center justify-center gap-2 translate-y-[150%] transition-transform duration-300 ease-out group-hover:translate-y-0">
+          <span className="absolute inset-0 inline-flex items-center justify-center gap-2 transition-transform duration-300 ease-out group-hover:-translate-y-full">
+            {loading && <Loader2 className="h-4 w-4" />}
+            {!loading && iconLeft && <span>{iconLeft}</span>}
+            {children}
+            {!loading && iconRight && <span>{iconRight}</span>}
+          </span>
+          <span aria-hidden className="absolute inset-0 inline-flex items-center justify-center gap-2 translate-y-full transition-transform duration-300 ease-out group-hover:translate-y-0">
             {loading && <Loader2 className="h-4 w-4" />}
             {!loading && iconLeft && <span>{iconLeft}</span>}
             {children}
@@ -338,13 +1572,20 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
           ref={ref}
           {...props}
         >
-          <span className="inline-flex items-center justify-center gap-2 transition-transform duration-300 ease-out group-hover:translate-y-[150%]">
+          {/* Same construction as slide-text, mirrored - see the note there. */}
+          <span aria-hidden className="invisible inline-flex items-center gap-2">
             {loading && <Loader2 className="h-4 w-4" />}
             {!loading && iconLeft && <span>{iconLeft}</span>}
             {children}
             {!loading && iconRight && <span>{iconRight}</span>}
           </span>
-          <span className="absolute inset-0 inline-flex items-center justify-center gap-2 -translate-y-[150%] transition-transform duration-300 ease-out group-hover:translate-y-0">
+          <span className="absolute inset-0 inline-flex items-center justify-center gap-2 transition-transform duration-300 ease-out group-hover:translate-y-full">
+            {loading && <Loader2 className="h-4 w-4" />}
+            {!loading && iconLeft && <span>{iconLeft}</span>}
+            {children}
+            {!loading && iconRight && <span>{iconRight}</span>}
+          </span>
+          <span aria-hidden className="absolute inset-0 inline-flex items-center justify-center gap-2 -translate-y-full transition-transform duration-300 ease-out group-hover:translate-y-0">
             {loading && <Loader2 className="h-4 w-4" />}
             {!loading && iconLeft && <span>{iconLeft}</span>}
             {children}
@@ -467,41 +1708,41 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
           {/* Content Wrapper (Highest Z-index z-50 to guarantee text stays strictly on top of all bg layers) */}
           <span className="relative z-50 flex items-center justify-center gap-3">
             {iconLeft && (
-              <span className="relative flex items-center justify-center h-7 w-7 rounded-full text-white z-30 shrink-0 shadow-sm">
+              <span className="relative flex items-center justify-center h-7 w-7 rounded-full text-primary-foreground z-30 shrink-0 shadow-sm">
                 {/* Layer 1: Initial Icon BG (Fades out on hover) */}
                 <span className="absolute inset-0 rounded-full bg-primary/20 transition-opacity duration-700 ease-in-out group-hover:opacity-0 pointer-events-none z-0" />
 
-                {/* Layer 2: Hover Black Icon BG (Fades in to solid black on hover) */}
-                <span className="absolute inset-0 rounded-full bg-black dark:bg-black opacity-0 transition-opacity duration-700 ease-in-out group-hover:opacity-100 pointer-events-none z-10" />
+                {/* Layer 2: Hover Icon Circle BG (Fades in to theme primary-foreground on hover) */}
+                <span className="absolute inset-0 rounded-full bg-primary-foreground opacity-0 transition-opacity duration-700 ease-in-out group-hover:opacity-100 pointer-events-none z-10" />
 
                 {/* Layer 3: Ultra-Slow 1.6s Radial Primary Layer (Scales out slowly from icon center to fill entire button) */}
                 <span className="absolute inset-0 rounded-full bg-primary transition-transform duration-[1600ms] [transition-timing-function:cubic-bezier(0.25,1,0.5,1)] group-hover:scale-[30] pointer-events-none -z-10" />
 
-                {/* Standard White Icon Symbol */}
-                <span className="relative z-20 flex items-center justify-center text-white">
+                {/* Icon Symbol: text-primary-foreground initially, text-primary on hover */}
+                <span className="relative z-20 flex items-center justify-center text-primary-foreground group-hover:text-primary transition-colors duration-700">
                   {loading ? <Loader2 className="h-4 w-4 animate-spin" /> : iconLeft}
                 </span>
               </span>
             )}
 
-            {/* Main Label Text (Elevated Z-Index z-50 with guaranteed high contrast) */}
-            <span className="relative z-50 transition-colors duration-700 text-black dark:text-white group-hover:!text-white dark:group-hover:!text-white font-semibold">
+            {/* Main Label Text (Elevated Z-Index z-50; transitions to primary-foreground on hover) */}
+            <span className="relative z-50 transition-colors duration-700 text-foreground group-hover:!text-primary-foreground font-semibold">
               {children}
             </span>
 
             {iconRight && !iconLeft && (
-              <span className="relative flex items-center justify-center h-7 w-7 rounded-full text-white z-30 shrink-0 shadow-sm">
+              <span className="relative flex items-center justify-center h-7 w-7 rounded-full text-primary-foreground z-30 shrink-0 shadow-sm">
                 {/* Layer 1: Initial Icon BG (Fades out on hover) */}
                 <span className="absolute inset-0 rounded-full bg-primary/20 transition-opacity duration-700 ease-in-out group-hover:opacity-0 pointer-events-none z-0" />
 
-                {/* Layer 2: Hover Black Icon BG (Fades in to solid black on hover) */}
-                <span className="absolute inset-0 rounded-full bg-black dark:bg-black opacity-0 transition-opacity duration-700 ease-in-out group-hover:opacity-100 pointer-events-none z-10" />
+                {/* Layer 2: Hover Icon Circle BG (Fades in to theme primary-foreground on hover) */}
+                <span className="absolute inset-0 rounded-full bg-primary-foreground opacity-0 transition-opacity duration-700 ease-in-out group-hover:opacity-100 pointer-events-none z-10" />
 
                 {/* Layer 3: Ultra-Slow 1.6s Radial Primary Layer (Scales out slowly from icon center to fill entire button) */}
                 <span className="absolute inset-0 rounded-full bg-primary transition-transform duration-[1600ms] [transition-timing-function:cubic-bezier(0.25,1,0.5,1)] group-hover:scale-[30] pointer-events-none -z-10" />
 
-                {/* Standard White Icon Symbol */}
-                <span className="relative z-20 flex items-center justify-center text-white">
+                {/* Icon Symbol: text-primary-foreground initially, text-primary on hover */}
+                <span className="relative z-20 flex items-center justify-center text-primary-foreground group-hover:text-primary transition-colors duration-700">
                   {loading ? <Loader2 className="h-4 w-4 animate-spin" /> : iconRight}
                 </span>
               </span>
@@ -687,7 +1928,7 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
           className={cn(
             baseClasses,
             sizeClasses[size],
-            "relative z-10 w-max overflow-hidden px-6 py-2.5 bg-primary text-primary-foreground border-2 border-primary shadow-md",
+            "relative z-10 w-max overflow-hidden px-6 py-2.5 bg-primary text-primary-foreground border-2 border-primary/30 shadow-md",
             className,
           )}
           onClick={createRipple}
@@ -784,7 +2025,7 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
           className={cn(
             baseClasses,
             sizeClasses[size],
-            "relative z-10 w-max px-5 py-2.5 transition-all duration-300 hover:ring-2 hover:ring-primary hover:ring-offset-2 dark:hover:ring-offset-black",
+            "relative z-10 w-max px-5 py-2.5 transition-all duration-300 hover:ring-2 hover:ring-primary/30 hover:ring-offset-2 hover:ring-offset-background",
             className,
           )}
           onClick={createRipple}
@@ -986,7 +2227,7 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
           className={cn(
             baseClasses,
             sizeClasses[size],
-            "relative z-10 w-max px-5 py-2.5 bg-primary text-primary-foreground border-2 border-primary shadow-[0_0_15px_var(--primary,#3b82f6)] animate-bounce",
+            "relative z-10 w-max px-5 py-2.5 bg-primary text-primary-foreground border-2 border-primary/30 shadow-[0_0_15px_var(--primary,#3b82f6)] animate-bounce",
             className,
           )}
           onClick={createRipple}
@@ -1073,6 +2314,17 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
           ref={ref}
           {...props}
         >
+          {/* Keyframes travel with the variant so the animation survives a copy
+              into a project whose globals.css never defined `gradient`. */}
+          <style
+            dangerouslySetInnerHTML={{
+              __html: `@keyframes gradient {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}`,
+            }}
+          />
           <span className="relative z-10 flex items-center justify-center gap-2 font-semibold">
             {loading && <Loader2 className="h-4 w-4" />}
             {!loading && iconLeft && <span>{iconLeft}</span>}
@@ -1289,13 +2541,53 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
     }
 
     // Variant: 3D Press (Neumorphic 3D depth press)
+    // Variant: 3D (a raised face over a darker edge and a ground shadow; the
+    // face sinks toward the edge on hover and all the way down on press)
+    if (variant === "3d") {
+      return (
+        <button
+          className={cn(
+            "relative inline-flex w-max cursor-pointer rounded-xl border-0 bg-transparent p-0 text-sm font-semibold text-primary-foreground group focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 focus-visible:ring-offset-background disabled:opacity-50 disabled:pointer-events-none",
+            size === "sm" ? "h-10 rounded-lg text-xs" : size === "lg" ? "h-14 text-base" : "h-12",
+            className,
+          )}
+          disabled={loading}
+          ref={ref}
+          {...props}
+        >
+          {/* Ground shadow - spreads as the face lifts, tightens as it presses */}
+          <span
+            aria-hidden
+            className="absolute inset-0 translate-y-1.5 rounded-[inherit] bg-black/30 blur-[2px] transition-transform duration-200 ease-out group-hover:translate-y-1 group-active:translate-y-0.5"
+          />
+          {/* Edge - the same primary, darkened, sitting where the face rests */}
+          <span
+            aria-hidden
+            className="absolute inset-0 rounded-[inherit] bg-primary brightness-[.55]"
+          />
+          {/* Face */}
+          <span
+            className={cn(
+              "relative flex h-full items-center justify-center gap-2 rounded-[inherit] bg-primary shadow-[inset_0_1px_0_rgba(255,255,255,0.25)] transition-transform duration-200 ease-out -translate-y-1.5 group-hover:-translate-y-1 group-active:-translate-y-px",
+              size === "sm" ? "px-4" : size === "lg" ? "px-8" : "px-6",
+            )}
+          >
+            {loading && <Loader2 className="h-4 w-4" />}
+            {!loading && iconLeft && <span>{iconLeft}</span>}
+            {children}
+            {!loading && iconRight && <span>{iconRight}</span>}
+          </span>
+        </button>
+      );
+    }
+
     if (variant === "3d-press") {
       return (
         <button
           className={cn(
             baseClasses,
             sizeClasses[size],
-            "relative z-10 w-max px-5 py-2.5 bg-primary text-primary-foreground border-b-4 border-blue-700 active:border-b-0 active:translate-y-1 transition-all duration-100",
+            "relative z-10 w-max px-5 py-2.5 bg-primary text-primary-foreground border-b-4 border-[color:color-mix(in_oklab,var(--primary)_70%,black)] active:border-b-0 active:translate-y-1 transition-all duration-100",
             className,
           )}
           onClick={createRipple}
@@ -1427,7 +2719,7 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
           className={cn(
             baseClasses,
             sizeClasses[size],
-            "relative z-10 w-max px-5 py-2.5 bg-yellow-400 text-black font-bold shadow-[0_0_20px_#facc15] animate-[pulse_1s_infinite]",
+            "relative z-10 w-max px-5 py-2.5 bg-yellow-400 text-black font-semibold shadow-[0_0_20px_#facc15] animate-[pulse_1s_infinite]",
             className,
           )}
           onClick={createRipple}
@@ -1435,7 +2727,7 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
           ref={ref}
           {...props}
         >
-          <span className="relative z-10 flex items-center justify-center gap-2 font-bold">
+          <span className="relative z-10 flex items-center justify-center gap-2 font-semibold">
             {loading && <Loader2 className="h-4 w-4" />}
             {!loading && iconLeft && <span>{iconLeft}</span>}
             {children}
@@ -1460,7 +2752,7 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
           ref={ref}
           {...props}
         >
-          <span className="relative z-10 flex items-center justify-center gap-2 font-bold tracking-wider">
+          <span className="relative z-10 flex items-center justify-center gap-2 font-semibold tracking-wider">
             {loading && <Loader2 className="h-4 w-4" />}
             {!loading && iconLeft && <span>{iconLeft}</span>}
             {children}
@@ -1486,7 +2778,7 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
           {...props}
         >
           {/* Sliding Left Icon on Hover */}
-          <span className="absolute left-3.5 top-1/2 -translate-y-1/2 flex items-center justify-center h-7 w-7 rounded-full bg-white text-black shadow-xs -translate-x-10 opacity-0 group-hover:translate-x-0 group-hover:opacity-100 transition-all duration-300 ease-out z-20">
+          <span className="absolute left-3.5 top-1/2 -translate-y-1/2 flex items-center justify-center h-7 w-7 rounded-full bg-primary-foreground text-primary shadow-xs -translate-x-10 opacity-0 group-hover:translate-x-0 group-hover:opacity-100 transition-all duration-300 ease-out z-20">
             {activeIcon}
           </span>
 
@@ -1498,6 +2790,70 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
           {/* Initial Right Icon (slides out to right on hover) */}
           <span className="relative z-10 flex items-center justify-center h-7 w-7 rounded-full bg-muted text-foreground group-hover:translate-x-10 group-hover:opacity-0 transition-all duration-300 ease-out">
             {loading ? <Loader2 className="h-4 w-4" /> : activeIcon}
+          </span>
+
+          {!loading && (
+            <div className="absolute inset-0 z-0 pointer-events-none overflow-hidden rounded-xl">
+              {ripples.map((ripple) => (
+                <span
+                  key={ripple.id}
+                  className={cn(
+                    "absolute rounded-full animate-ripple",
+                    rippleColor,
+                  )}
+                  style={{
+                    left: ripple.x,
+                    top: ripple.y,
+                    width: ripple.size,
+                    height: ripple.size,
+                  }}
+                />
+              ))}
+            </div>
+          )}
+        </button>
+      );
+    }
+
+    // Variant: Slide Icon Loop (same rounded icon as slide-icon, but the arrow
+    // never rests: it travels out of the circle to the right and re-enters
+    // from the left, on a loop. The circle clips it, so only the pass shows.)
+    if (variant === "slide-icon-loop") {
+      return (
+        <button
+          className={cn(
+            baseClasses,
+            sizeClasses[size],
+            "relative z-10 w-max pl-4 pr-3.5 gap-3",
+            className,
+          )}
+          onClick={createRipple}
+          disabled={loading}
+          ref={ref}
+          {...props}
+        >
+          {/* Plain <style> rather than styled-jsx — see shine-sweep. */}
+          <style
+            dangerouslySetInnerHTML={{
+              __html: `@keyframes slide-icon-loop {
+  0%   { transform: translateX(-100%); animation-timing-function: ease-out; }
+  50%  { transform: translateX(0);     animation-timing-function: ease-in; }
+  100% { transform: translateX(100%); }
+}`,
+            }}
+          />
+
+          <span className="relative z-10 font-semibold">{children}</span>
+
+          {/* Looping Right Icon (circle clips the arrow as it wraps around) */}
+          <span className="relative z-10 flex items-center justify-center h-7 w-7 rounded-full bg-muted text-foreground overflow-hidden transition-colors duration-300 group-hover:bg-primary-foreground group-hover:text-primary">
+            {loading ? (
+              <Loader2 className="h-4 w-4" />
+            ) : (
+              <span className="flex items-center justify-center animate-[slide-icon-loop_1.4s_linear_infinite] motion-reduce:animate-none">
+                {activeIcon}
+              </span>
+            )}
           </span>
 
           {!loading && (
@@ -1605,7 +2961,7 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
           className={cn(
             baseClasses,
             sizeClasses[size],
-            "relative z-10 w-max px-6 py-2.5 border-2 border-primary animate-[pulse_2s_infinite] shadow-[0_0_15px_var(--primary,#3b82f6)]",
+            "relative z-10 w-max px-6 py-2.5 border-2 border-primary/30 animate-[pulse_2s_infinite] shadow-[0_0_15px_var(--primary,#3b82f6)]",
             className,
           )}
           onClick={createRipple}
@@ -1705,7 +3061,7 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
           className={cn(
             baseClasses,
             sizeClasses[size],
-            "relative z-10 w-max px-6 py-2.5 border border-primary/40 before:absolute before:top-0 before:left-0 before:w-3 before:h-3 before:border-t-2 before:border-l-2 before:border-primary before:animate-pulse after:absolute after:bottom-0 after:right-0 after:w-3 after:h-3 after:border-b-2 after:border-r-2 after:border-primary after:animate-pulse",
+            "relative z-10 w-max px-6 py-2.5 border border-primary/40 before:absolute before:top-0 before:left-0 before:w-3 before:h-3 before:border-t-2 before:border-l-2 before:border-primary/30 before:animate-pulse after:absolute after:bottom-0 after:right-0 after:w-3 after:h-3 after:border-b-2 after:border-r-2 after:border-primary/30 after:animate-pulse",
             className,
           )}
           onClick={createRipple}
@@ -1866,6 +3222,17 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
           ref={ref}
           {...props}
         >
+          {/* Keyframes travel with the variant so the animation survives a copy
+              into a project whose globals.css never defined `gradient`. */}
+          <style
+            dangerouslySetInnerHTML={{
+              __html: `@keyframes gradient {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}`,
+            }}
+          />
           <span className="relative z-10 flex items-center justify-center gap-2 font-semibold">
             {loading && <Loader2 className="h-4 w-4" />}
             {!loading && iconLeft && <span>{iconLeft}</span>}
@@ -1936,7 +3303,7 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
           className={cn(
             baseClasses,
             sizeClasses[size],
-            "relative z-10 w-max px-6 py-2.5 border-2 border-primary animate-pulse shadow-[0_0_15px_var(--primary,#3b82f6)]",
+            "relative z-10 w-max px-6 py-2.5 border-2 border-primary/30 animate-pulse shadow-[0_0_15px_var(--primary,#3b82f6)]",
             className,
           )}
           onClick={createRipple}
@@ -2083,7 +3450,7 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
       return (
         <div className="relative inline-flex items-center justify-center group rounded-xl isolation-auto">
           {/* Ring 1: Fast Sharp Border Line */}
-          <span className="absolute inset-0 rounded-xl border border-primary animate-[ping_1.8s_cubic-bezier(0,0,0.2,1)_infinite] pointer-events-none -z-10" />
+          <span className="absolute inset-0 rounded-xl border border-primary/30 animate-[ping_1.8s_cubic-bezier(0,0,0.2,1)_infinite] pointer-events-none -z-10" />
           {/* Ring 2: Slow Offset Outer Border Line */}
           <span className="absolute inset-0 rounded-xl border border-primary/60 animate-[ping_1.8s_cubic-bezier(0,0,0.2,1)_infinite] [animation-delay:0.9s] pointer-events-none -z-10" />
 
@@ -2123,10 +3490,10 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
     if (variant === "corner-dash-pulse") {
       return (
         <div className="relative inline-flex items-center justify-center group p-1 rounded-xl isolation-auto">
-          <span className="absolute -top-1.5 -left-1.5 w-3.5 h-3.5 border-t-2 border-l-2 border-primary rounded-tl-md animate-[ping_2s_infinite] pointer-events-none" />
-          <span className="absolute -top-1.5 -right-1.5 w-3.5 h-3.5 border-t-2 border-r-2 border-primary rounded-tr-md animate-[ping_2s_infinite] pointer-events-none" />
-          <span className="absolute -bottom-1.5 -left-1.5 w-3.5 h-3.5 border-b-2 border-l-2 border-primary rounded-bl-md animate-[ping_2s_infinite] pointer-events-none" />
-          <span className="absolute -bottom-1.5 -right-1.5 w-3.5 h-3.5 border-b-2 border-r-2 border-primary rounded-br-md animate-[ping_2s_infinite] pointer-events-none" />
+          <span className="absolute -top-1.5 -left-1.5 w-3.5 h-3.5 border-t-2 border-l-2 border-primary/30 rounded-tl-md animate-[ping_2s_infinite] pointer-events-none" />
+          <span className="absolute -top-1.5 -right-1.5 w-3.5 h-3.5 border-t-2 border-r-2 border-primary/30 rounded-tr-md animate-[ping_2s_infinite] pointer-events-none" />
+          <span className="absolute -bottom-1.5 -left-1.5 w-3.5 h-3.5 border-b-2 border-l-2 border-primary/30 rounded-bl-md animate-[ping_2s_infinite] pointer-events-none" />
+          <span className="absolute -bottom-1.5 -right-1.5 w-3.5 h-3.5 border-b-2 border-r-2 border-primary/30 rounded-br-md animate-[ping_2s_infinite] pointer-events-none" />
 
           <button
             className={cn(

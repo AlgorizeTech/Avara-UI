@@ -3,11 +3,11 @@ import { extractCode } from "@/lib/code";
 
 # Progress Wizard
 
-A "Typeform" style multi-step wizard featuring buttery smooth vertical slide transitions powered by GSAP, native keyboard navigation, and an interactive progress bar.
+A "Typeform" style multi-step wizard featuring buttery smooth vertical slide transitions powered by plain CSS transitions, native keyboard navigation, and an interactive progress bar.
 
 This component relies on the **Compound Component** pattern using React Context. This allows you to place the `WizardProgress` bar independently of the main `WizardContainer`, and nest complex forms inside the `WizardStep` blocks without passing deep props.
 
-Because every piece reads the wizard's state from context, you compose the flow yourself — drop the progress bar wherever you like, or leave it out. Press **Enter** inside any step to advance.
+Because every piece reads the wizard's state from context, you compose the flow yourself — drop the progress bar wherever you like, or leave it out. Press **Enter** inside any step to advance. It includes dynamic theme binding via the `color` prop (`"indigo"`, `"rose"`, `"emerald"`, `"zinc"`, `"blue"`, `"primary"`, or hex) to automatically style the progress bar, input focus rings, and action buttons.
 
 export const wizardSteps = `        <WizardStep index={0}>
           <WizardTitle>1. What's your first name?</WizardTitle>
@@ -40,7 +40,7 @@ export const wizardSteps = `        <WizardStep index={0}>
             </WizardDescription>
             <button
               onClick={() => setRunKey((prev) => prev + 1)}
-              className="mt-8 px-8 py-3.5 rounded-full bg-zinc-900 text-white dark:bg-white dark:text-zinc-900 font-bold hover:scale-105 transition-transform"
+              className="mt-8 px-8 py-3.5 rounded-full bg-primary text-primary-foreground font-semibold hover:scale-105 transition-transform"
             >
               Finish & Restart
             </button>
@@ -79,11 +79,11 @@ export default function OnboardingFlow() {
 ${wizardPreamble}
 
   return (
-    <Wizard key={runKey}>
+    <Wizard key={runKey} color="indigo">
       {/* Top progress bar — reads totalSteps from context */}
       <WizardProgress />
 
-      {/* Overflow-hidden container the GSAP slide happens inside */}
+      {/* Overflow-hidden container the slide happens inside */}
       <WizardContainer>
 ${wizardSteps}
       </WizardContainer>
@@ -115,7 +115,7 @@ ${wizardPreamble}
       {/* Top progress bar — reads totalSteps from context */}
       <WizardProgress />
 
-      {/* Overflow-hidden container the GSAP slide happens inside */}
+      {/* Overflow-hidden container the slide happens inside */}
       <WizardContainer>
 ${wizardSteps}
       </WizardContainer>
@@ -144,7 +144,7 @@ ${wizardPreamble}
     // WizardProgress is an independent child — omit it entirely and the
     // steps still animate and navigate exactly the same.
     <Wizard key={runKey}>
-      {/* Overflow-hidden container the GSAP slide happens inside */}
+      {/* Overflow-hidden container the slide happens inside */}
       <WizardContainer>
 ${wizardSteps}
       </WizardContainer>
@@ -162,6 +162,13 @@ ${wizardSteps}
       subheading: "Compose `WizardProgress`, `WizardContainer` and one `WizardStep` per question — all state lives in context.",
       propNotes: [
         {
+          lead: "Set",
+          prop: "color",
+          value: '"indigo" | "blue" | "rose" | "emerald" | "zinc" | "primary" | "#hex"',
+          effect:
+            "themes the progress bar, active input borders, and primary navigation buttons.",
+        },
+        {
           prop: "index",
           effect:
             "on each `WizardStep` is its 0-based position, and is what the animation uses to compute the Y-offset.",
@@ -172,7 +179,7 @@ ${wizardSteps}
             "fires when Next or Enter is pressed on the final step.",
         },
       ],
-      props: {},
+      props: { color: "indigo" },
       usage: usageDefault,
       code: extractCode("src/components/custom/blocks/WizardBlock.tsx"),
     },
@@ -222,30 +229,30 @@ ${wizardSteps}
 Learn about the Wizard component's multi-step capabilities, providing state management and validation for complex onboarding flows.
 
 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 my-6 not-prose">
-  <div className="p-6 rounded-2xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900">
-    <h3 className="text-lg font-semibold text-zinc-900 dark:text-zinc-50 mb-2">Compound Components</h3>
-    <p className="text-zinc-600 dark:text-zinc-400 text-sm">Uses React Context to share state across child components, preventing messy prop drilling and enabling flexible layouts.</p>
+  <div className="p-6 rounded-2xl border border-border bg-card">
+    <h3 className="text-lg font-semibold text-card-foreground mb-2">Compound Components</h3>
+    <p className="text-muted-foreground text-sm">Uses React Context to share state across child components, preventing messy prop drilling and enabling flexible layouts.</p>
   </div>
-  <div className="p-6 rounded-2xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900">
-    <h3 className="text-lg font-semibold text-zinc-900 dark:text-zinc-50 mb-2">GSAP Animations</h3>
-    <p className="text-zinc-600 dark:text-zinc-400 text-sm">Features premium, buttery smooth vertical sliding transitions engineered with GSAP.</p>
+  <div className="p-6 rounded-2xl border border-border bg-card">
+    <h3 className="text-lg font-semibold text-card-foreground mb-2">Library-free Animations</h3>
+    <p className="text-muted-foreground text-sm">Features premium, buttery smooth vertical sliding transitions built on CSS transitions — no animation library to install.</p>
   </div>
-  <div className="p-6 rounded-2xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900">
-    <h3 className="text-lg font-semibold text-zinc-900 dark:text-zinc-50 mb-2">Keyboard Navigation</h3>
-    <p className="text-zinc-600 dark:text-zinc-400 text-sm">Natively supports "Enter" key progression to submit forms and move to the next step instantly.</p>
+  <div className="p-6 rounded-2xl border border-border bg-card">
+    <h3 className="text-lg font-semibold text-card-foreground mb-2">Keyboard Navigation</h3>
+    <p className="text-muted-foreground text-sm">Natively supports "Enter" key progression to submit forms and move to the next step instantly.</p>
   </div>
-  <div className="p-6 rounded-2xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900">
-    <h3 className="text-lg font-semibold text-zinc-900 dark:text-zinc-50 mb-2">Auto-Progress Bar</h3>
-    <p className="text-zinc-600 dark:text-zinc-400 text-sm">Automatically calculates completion percentage based on the number of active steps rendered.</p>
+  <div className="p-6 rounded-2xl border border-border bg-card">
+    <h3 className="text-lg font-semibold text-card-foreground mb-2">Auto-Progress Bar</h3>
+    <p className="text-muted-foreground text-sm">Automatically calculates completion percentage based on the number of active steps rendered.</p>
   </div>
 </div>
 
 ## Best Practices & Guidelines
 
 <div className="flex flex-col gap-4 my-6 not-prose">
-  <div className="p-5 rounded-xl border border-blue-200 dark:border-blue-900/50 bg-blue-50/50 dark:bg-blue-950/20">
-    <h4 className="text-base font-semibold text-blue-900 dark:text-blue-300 mb-1">State Management</h4>
-    <p className="text-blue-800 dark:text-blue-400/80 text-sm">Since `WizardStep` components act as independent layout blocks, keep your actual form state (e.g., using React Hook Form or standard state) lifted up to the parent component wrapping the `WizardContainer`.</p>
+  <div className="rounded-xl border border-foreground/[0.06] bg-foreground/[0.03] p-4">
+    <h4 className="font-sans text-[14px] font-semibold text-foreground mb-1">State Management</h4>
+    <p className="text-[13px] leading-relaxed text-foreground/50">Since `WizardStep` components act as independent layout blocks, keep your actual form state (e.g., using React Hook Form or standard state) lifted up to the parent component wrapping the `WizardContainer`.</p>
   </div>
 </div>
 
@@ -328,7 +335,7 @@ Learn about the Wizard component's multi-step capabilities, providing state mana
           <strong>Required</strong>
         </td>
         <td>
-          The 0-based index of this specific step. Used by the GSAP animation
+          The 0-based index of this specific step. Used by the animation
           engine to calculate the vertical Y-offset relative to the{" "}
           <code>currentStep</code>.
         </td>

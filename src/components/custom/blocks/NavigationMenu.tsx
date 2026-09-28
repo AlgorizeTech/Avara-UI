@@ -9,77 +9,13 @@ import React, {
   useRef,
   useState,
 } from "react";
+import { getThemeStyles } from "./navigation-menu-theme";
 
 // ==========================================
 // THEME & CONFIGURATION
 // ==========================================
 export type NavColor = "indigo" | "rose" | "emerald" | "zinc" | (string & {});
 export type NavVariant = "default" | "minimal" | "glass";
-
-const colorThemes: Record<string, Record<string, string>> = {
-  primary: {
-    bg: "bg-primary text-primary-foreground",
-    text: "text-primary",
-    bgSoft: "bg-primary/10",
-    border: "border-primary/30",
-  },
-  indigo: {
-    bg: "bg-indigo-600 text-white",
-    text: "text-indigo-600 dark:text-indigo-400",
-    bgSoft: "bg-indigo-50 dark:bg-indigo-500/10",
-    border: "border-indigo-200 dark:border-indigo-800",
-  },
-  rose: {
-    bg: "bg-rose-600 text-white",
-    text: "text-rose-600 dark:text-rose-400",
-    bgSoft: "bg-rose-50 dark:bg-rose-500/10",
-    border: "border-rose-200 dark:border-rose-800",
-  },
-  emerald: {
-    bg: "bg-emerald-600 text-white",
-    text: "text-emerald-600 dark:text-emerald-400",
-    bgSoft: "bg-emerald-50 dark:bg-emerald-500/10",
-    border: "border-emerald-200 dark:border-emerald-800",
-  },
-  zinc: {
-    bg: "bg-zinc-900 text-white dark:bg-zinc-100 dark:text-zinc-900",
-    text: "text-zinc-900 dark:text-zinc-100",
-    bgSoft: "bg-zinc-100 dark:bg-zinc-800/50",
-    border: "border-zinc-200 dark:border-zinc-800",
-  },
-};
-
-const hexToRgb = (hex: string) => {
-  let cleanHex = hex.replace(/^#/, "");
-  if (cleanHex.length === 3)
-    cleanHex = cleanHex
-      .split("")
-      .map((x) => x + x)
-      .join("");
-  const result = /^([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(cleanHex);
-  return result
-    ? `${parseInt(result[1], 16)}, ${parseInt(result[2], 16)}, ${parseInt(result[3], 16)}`
-    : "99, 102, 241";
-};
-
-export const getThemeStyles = (color: string) => {
-  if (color && color.startsWith("#")) {
-    const rgb = hexToRgb(color);
-    return {
-      theme: {
-        bg: "bg-[var(--nav-color)] text-white",
-        text: "text-[var(--nav-color)]",
-        bgSoft: "bg-[rgba(var(--nav-color-rgb),0.1)]",
-        border: "border-[rgba(var(--nav-color-rgb),0.2)]",
-      },
-      style: {
-        "--nav-color": color,
-        "--nav-color-rgb": rgb,
-      } as React.CSSProperties,
-    };
-  }
-  return { theme: colorThemes[color] || colorThemes.primary, style: {} };
-};
 
 // ==========================================
 // CONTEXT
@@ -185,7 +121,7 @@ export const NavigationMenuList = forwardRef<
     default:
       "bg-background border border-border shadow-sm",
     glass:
-      "bg-white/60 dark:bg-black/60 backdrop-blur-xl border border-white/20 dark:border-white/10 shadow-lg",
+      "bg-background/60 backdrop-blur-xl border border-foreground/10 shadow-lg",
     minimal: "bg-transparent border-none",
   };
 
@@ -325,11 +261,11 @@ export const NavigationMenuContent = forwardRef<
 
   const variantStyles = {
     default:
-      "bg-background border border-border shadow-xl",
+      "bg-popover text-popover-foreground border border-border shadow-xl",
     glass:
-      "bg-white/80 dark:bg-black/80 backdrop-blur-2xl border border-white/20 dark:border-white/10 shadow-2xl",
+      "bg-popover/80 text-popover-foreground backdrop-blur-2xl border border-foreground/10 shadow-2xl",
     minimal:
-      "bg-background border border-border shadow-lg",
+      "bg-popover text-popover-foreground border border-border shadow-lg",
   };
 
   return (
@@ -363,14 +299,21 @@ export const NavigationMenuLink = forwardRef<
   HTMLAnchorElement,
   React.AnchorHTMLAttributes<HTMLAnchorElement> & { active?: boolean }
 >(({ children, className, active, ...props }, ref) => {
-  const { theme } = useNavContext();
+  const navCtx = useContext(NavContext);
+  const theme = navCtx?.theme;
+
   return (
     <a
       ref={ref}
+      data-active={active ? "" : undefined}
+      aria-current={active ? "page" : undefined}
       className={cn(
         "block select-none space-y-1 rounded-xl p-2.5 sm:p-3 leading-none no-underline outline-none transition-colors hover:bg-muted cursor-pointer",
-        active && theme.bgSoft,
         className,
+        active &&
+          (theme?.bgSoft
+            ? cn(theme.bgSoft, theme?.text || "text-primary", "font-semibold")
+            : "bg-primary/10 text-primary font-semibold"),
       )}
       {...props}
     >

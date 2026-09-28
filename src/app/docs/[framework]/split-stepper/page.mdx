@@ -3,18 +3,18 @@ import { extractCode } from "@/lib/code";
 
 # Split-Stack Stepper
 
-A high-impact, interactive split-screen layout engineered exclusively with **GSAP**. One side renders a narrative sequence of feature cards with glowing pill badges, while the opposite side maintains a sticky visual showcase container.
+A high-impact, interactive split-screen layout animated with plain **CSS transitions** — no animation library. One side renders a narrative sequence of feature cards with glowing pill badges, while the opposite side maintains a sticky visual showcase container.
 
 Unlike basic tab replacements, this engine applies dynamic mathematical depth tweens via GreenSock to **stack previous visual cards on top of each other in a 3D deck format** as the user progresses through the narrative.
 
-`SplitStepper` orchestrates the responsive grid itself — you supply the narrative sequence and a JSX payload per card, and GSAP handles the stacking. Click any step in the scrolling column to watch the deck restack.
+`SplitStepper` orchestrates the responsive grid itself — you supply the narrative sequence and a JSX payload per card, and CSS transitions handle the stacking. Click any step in the scrolling column to watch the deck restack.
 
 export const splitSteps = `// Card bodies — these are the four screens the preview renders.
 const MockLandingView = () => (
   <div className="w-full h-full flex flex-col gap-3 justify-center">
     <div className="flex items-center gap-2 mb-2">
       <LayoutTemplate className="w-6 h-6 sm:w-8 sm:h-8 text-amber-400" />
-      <span className="text-base sm:text-lg font-bold text-white tracking-tight">
+      <span className="text-base sm:text-lg font-semibold text-white tracking-tight">
         High-Converting UI
       </span>
     </div>
@@ -22,7 +22,7 @@ const MockLandingView = () => (
       <div className="w-2/3 h-2.5 sm:h-3 bg-white/20 rounded-full" />
       <div className="w-1/2 h-2 sm:h-2.5 bg-white/10 rounded-full" />
       <div className="flex gap-2 mt-auto">
-        <div className="h-5 w-16 sm:h-6 sm:w-20 rounded-md bg-amber-400/20 border border-amber-400/40 flex items-center justify-center text-[9px] sm:text-[10px] font-bold text-amber-300">
+        <div className="h-5 w-16 sm:h-6 sm:w-20 rounded-md bg-amber-400/20 border border-amber-400/40 flex items-center justify-center text-[9px] sm:text-[10px] font-semibold text-amber-300">
           CTA Button
         </div>
         <div className="h-5 w-12 sm:h-6 sm:w-16 rounded-md bg-white/10" />
@@ -35,7 +35,7 @@ const MockSaaSView = () => (
   <div className="w-full h-full flex flex-col gap-3 justify-center">
     <div className="flex items-center gap-2 mb-1">
       <BarChart3 className="w-6 h-6 sm:w-8 sm:h-8 text-indigo-400" />
-      <span className="text-base sm:text-lg font-bold text-white tracking-tight">
+      <span className="text-base sm:text-lg font-semibold text-white tracking-tight">
         SaaS Dashboard Architecture
       </span>
     </div>
@@ -44,7 +44,7 @@ const MockSaaSView = () => (
         <span className="text-[9px] sm:text-[10px] text-indigo-300 font-mono uppercase">
           MRR Growth
         </span>
-        <span className="text-lg sm:text-xl font-black text-white">
+        <span className="text-lg sm:text-xl font-bold text-white">
           +148.2%
         </span>
       </div>
@@ -52,7 +52,7 @@ const MockSaaSView = () => (
         <span className="text-[9px] sm:text-[10px] text-white/50 font-mono uppercase">
           Active Users
         </span>
-        <span className="text-lg sm:text-xl font-black text-white">
+        <span className="text-lg sm:text-xl font-bold text-white">
           24,892
         </span>
       </div>
@@ -64,7 +64,7 @@ const MockAIView = () => (
   <div className="w-full h-full flex flex-col gap-3 justify-center">
     <div className="flex items-center gap-2 mb-1">
       <Cpu className="w-6 h-6 sm:w-8 sm:h-8 text-emerald-400" />
-      <span className="text-base sm:text-lg font-bold text-white tracking-tight">
+      <span className="text-base sm:text-lg font-semibold text-white tracking-tight">
         AI & LLM Integration
       </span>
     </div>
@@ -79,7 +79,7 @@ const MockAIView = () => (
       <p className="text-[10px] sm:text-[11px]">
         &gt; Vector embeddings synced (1.2ms)
       </p>
-      <p className="text-white font-bold animate-pulse">
+      <p className="text-white font-semibold animate-pulse">
         &gt; Ready for token streaming_
       </p>
     </div>
@@ -91,7 +91,7 @@ const MockMobileView = () => (
     <div className="flex flex-col justify-center gap-2">
       <div className="flex items-center gap-2">
         <Smartphone className="w-6 h-6 sm:w-8 sm:h-8 text-rose-400" />
-        <span className="text-base sm:text-lg font-bold text-white tracking-tight">
+        <span className="text-base sm:text-lg font-semibold text-white tracking-tight">
           Mobile First
         </span>
       </div>
@@ -111,13 +111,13 @@ const MockMobileView = () => (
 );
 
 
-const steps = [
+const steps: SplitStep[] = [
   {
     id: "landing",
     stepNumber: "01",
     title: "Landing Page Design",
     description:
-      "Most landing pages fail quietly. Traffic comes in, nothing happens. We engineer high-converting layouts with engaging Framer & GSAP animations.",
+      "Most landing pages fail quietly. Traffic comes in, nothing happens. We engineer high-converting layouts with engaging Motion & GSAP animations.",
     tags: ["Conversion Focused", "Figma To Code", "Mobile First"],
     color: "bg-[#0c0c10] border-amber-500/20",
     cardContent: <MockLandingView />,
@@ -162,7 +162,7 @@ const steps = [
   },
 ];`;
 
-export const usageDefault = `import { SplitStepper } from "@/components/custom/blocks/SplitStepperBlock";
+export const usageDefault = `import { SplitStepper, type SplitStep } from "@/components/custom/blocks/SplitStepperBlock";
 import { BarChart3, Cpu, LayoutTemplate, Smartphone, Sparkles } from "lucide-react";
 
 ${splitSteps}
@@ -175,17 +175,17 @@ export default function ServicesSection() {
   );
 }`;
 
-export const usageStickyLeft = `import { SplitStepper } from "@/components/custom/blocks/SplitStepperBlock";
+export const usageStickyLeft = `import { SplitStepper, type SplitStep } from "@/components/custom/blocks/SplitStepperBlock";
 import { BarChart3, Cpu, LayoutTemplate, Smartphone, Sparkles } from "lucide-react";
 
 ${splitSteps}
 
 export default function ServicesSectionMirrored() {
   // stickySide moves the sticky card deck to the other column.
-  return <SplitStepper steps={steps} stickySide="left" color="#FFAB1D" />;
+  return <SplitStepper steps={steps} stickySide="left" />;
 }`;
 
-export const usageDepth = `import { SplitStepper } from "@/components/custom/blocks/SplitStepperBlock";
+export const usageDepth = `import { SplitStepper, type SplitStep } from "@/components/custom/blocks/SplitStepperBlock";
 import { BarChart3, Cpu, LayoutTemplate, Smartphone, Sparkles } from "lucide-react";
 
 ${splitSteps}
@@ -198,7 +198,7 @@ export default function DeepDeck() {
   );
 }`;
 
-export const usageColor = `import { SplitStepper } from "@/components/custom/blocks/SplitStepperBlock";
+export const usageColor = `import { SplitStepper, type SplitStep } from "@/components/custom/blocks/SplitStepperBlock";
 import { BarChart3, Cpu, LayoutTemplate, Smartphone, Sparkles } from "lucide-react";
 
 ${splitSteps}
@@ -377,7 +377,7 @@ export default function BrandedSplitStepper() {
         </td>
         <td>
           The absolute pixel distance applied to the vertical Y-axis translation
-          of stacked background cards via GSAP, creating the staggered deck
+          of stacked background cards, creating the staggered deck
           effect.
         </td>
       </tr>
@@ -392,7 +392,7 @@ export default function BrandedSplitStepper() {
           <code>string</code>
         </td>
         <td>
-          <code>"#FFAB1D"</code>
+          <code>theme primary</code>
         </td>
         <td>
           The global theme color applied to active card borders, step index
@@ -450,8 +450,7 @@ export default function BrandedSplitStepper() {
           <strong>Required</strong>
         </td>
         <td>
-          A unique identifier string required for safe React list rendering and
-          GSAP key mapping.
+          A unique identifier string required for safe React list rendering.
         </td>
       </tr>
       <tr>

@@ -1,6 +1,7 @@
 "use client";
 
 import { CodeRenderer } from "./code-renderer";
+import type { BuiltinLanguage } from "shiki";
 import { useState, useMemo, useRef } from "react";
 import { Check, Copy, ChevronDown, ChevronUp, Loader2 } from "lucide-react";
 /** Initial lines shown before reader asks for more. */
@@ -8,7 +9,14 @@ const INITIAL_LINES = 30;
 /** Additional lines added on each "Show More" click. */
 const STEP_LINES = 30;
 
-export const CodeBlocks = ({ code, language = "tsx" }: any) => {
+export interface CodeBlocksProps {
+  /** The source to render. */
+  code: string;
+  /** Shiki language id; defaults to tsx. */
+  language?: BuiltinLanguage;
+}
+
+export const CodeBlocks = ({ code, language = "tsx" }: CodeBlocksProps) => {
   const [copied, setCopied] = useState(false);
   const [visibleLinesCount, setVisibleLinesCount] = useState(INITIAL_LINES);
   const [isLoadingMore, setIsLoadingMore] = useState(false);
@@ -51,10 +59,10 @@ export const CodeBlocks = ({ code, language = "tsx" }: any) => {
   };
 
   return (
-    <div ref={blockRef} className="relative group w-full bg-muted dark:bg-black border-t border-border transition-all duration-300 ease-in-out">
+    <div ref={blockRef} className="relative group w-full bg-muted/70 dark:bg-background border-t border-border transition-all duration-300 ease-in-out">
       <button
         onClick={handleCopy}
-        className="absolute right-4 top-4 z-10 text-xs bg-white/80 dark:bg-zinc-800/80 hover:bg-muted text-foreground transition-all p-2.5 rounded-lg cursor-pointer opacity-0 group-hover:opacity-100 focus:opacity-100 border border-border backdrop-blur-xs shadow-none"
+        className="absolute right-4 top-4 z-10 text-xs bg-card/80 hover:bg-muted text-foreground transition-all p-2.5 rounded-lg cursor-pointer opacity-0 group-hover:opacity-100 focus:opacity-100 border border-border backdrop-blur-xs shadow-none"
         aria-label="Copy code"
       >
         {copied ? (
@@ -71,7 +79,7 @@ export const CodeBlocks = ({ code, language = "tsx" }: any) => {
       </div>
 
       {totalLines > INITIAL_LINES && (
-        <div className="relative w-full flex items-center justify-center py-4 bg-muted dark:bg-black border-t border-border/50">
+        <div className="relative w-full flex items-center justify-center py-4 bg-muted dark:bg-background border-t border-border/50">
           {visibleLinesCount < totalLines ? (
             <button
               onClick={handleShowMore}

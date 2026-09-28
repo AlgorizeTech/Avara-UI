@@ -4,7 +4,7 @@ Two production-ready authentication blocks: a **Login Form** for returning users
 
 They are separate components on purpose. Sign-in and sign-up are different pages with different fields, different validation rules and different autofill hints — a browser password manager cannot offer to save a new credential on a form it thinks might be a login. Install only the one a given route needs; each has its own install command, and each command sits with the block it installs.
 
-Both share the same `variant` and `color` surface, so a login page and a register page match without any extra work.
+Both share the same `variant` and `color` surface, so a login page and a register page match without any extra work. The fields are the library's Input and the buttons its Button, each handed the same `color`, so the whole form follows one accent and picks up any change you make to those components.
 
 ## Login form
 
@@ -49,6 +49,13 @@ export default function MinimalLoginPage() {
 
 ### Install the login form
 
+Register the @algorize-ui registry once per project, then add the component:
+
+```bash
+npx shadcn@latest registry add @algorize-ui=https://algorize-ui.vercel.app/r/{name}.json
+npx shadcn@latest add @algorize-ui/login-form
+```
+
 ### More login examples
 
 Every example below is the same `LoginForm` you just installed — only the props change.
@@ -68,6 +75,16 @@ export default function RegisterPage() {
         console.log(values);
       }}
     />
+  );
+}`;
+
+export const usageRegisterScenic = `import RegisterForm from "@/components/custom/blocks/RegisterForm";
+
+export default function ScenicRegisterPage() {
+  // "scenic" renders a floating onboarding card over a nature landscape backdrop.
+  // Seamlessly adapts between light mode (frosted card) and dark mode (dark charcoal card).
+  return (
+    
   );
 }`;
 
@@ -96,6 +113,13 @@ export default function MinimalRegisterPage() {
 
 ### Install the register form
 
+Register the @algorize-ui registry once per project, then add the component:
+
+```bash
+npx shadcn@latest registry add @algorize-ui=https://algorize-ui.vercel.app/r/{name}.json
+npx shadcn@latest add @algorize-ui/register-form
+```
+
 ### More register examples
 
 Every example below is the same `RegisterForm` you just installed — only the props change.
@@ -121,13 +145,13 @@ Every example below is the same `RegisterForm` you just installed — only the p
 
           color
 
-          "indigo" | "rose" | "emerald" | "zinc" | string
+          "primary" | "indigo" | "rose" | "emerald" | "zinc" | string
 
-          "indigo"
+          "primary"
 
           Applies global color themes to the primary button, focus rings and the
           remember-me checkbox. Accepts valid hex codes (e.g.{" "}
-          "#00FF00").
+          "#8b5cf6").
 
           signupHref
 
@@ -174,21 +198,69 @@ Every example below is the same `RegisterForm` you just installed — only the p
 
           variant
 
-          "default" | "split" | "glass" | "minimal"
+          "scenic" | "default" | "split" | "glass" | "minimal"
 
           "default"
 
-          Same four layouts as LoginForm, so a matched pair of
-          pages needs no extra styling.
+          Five distinct presentation presets. "scenic" renders a floating onboarding card over a landscape backdrop with interactive welcome and registration steps, adapting smoothly to light and dark modes.
 
           color
 
-          "indigo" | "rose" | "emerald" | "zinc" | string
+          "primary" | "indigo" | "rose" | "emerald" | "zinc" | string
 
-          "indigo"
+          "primary"
 
           Applies global color themes to the primary button, focus rings, the
-          terms checkbox and the policy links. Accepts valid hex codes.
+          terms checkbox and the policy links. Accepts valid hex codes (e.g.{" "}
+          "#8b5cf6").
+
+          brandName
+
+          string
+
+          "Docs UI"
+
+          Brand name text displayed in the header of the scenic variant card.
+
+          title / subtitle
+
+          string
+
+          See defaults
+
+          Customizable headline and description displayed on the scenic onboarding card.
+
+          getStartedLabel
+
+          string
+
+          "Get Started"
+
+          Label on the primary CTA button in the scenic welcome card.
+
+          alreadyAccountLabel
+
+          string
+
+          "I already have an account"
+
+          Label on the secondary action button linking to loginHref.
+
+          bgImage
+
+          string
+
+          Cloudinary landscape
+
+          Custom background image URL for the scenic variant.
+
+          initialStep
+
+          "welcome" | "options" | "email" | "otp" | "onboarding-intro" | "goals" | "finances" | "confidence" | "emergency-fund" | "first-goal" | "summary"
+
+          "welcome"
+
+          Starting view for the scenic variant: "welcome" (intro CTA), "options" (auth methods), "email" (registration form), "otp" (6-digit verification), "onboarding-intro" (picture overview), "goals" (area focus), "finances" (income &amp; expenses), "confidence" (rating scales), "emergency-fund" (preparation status), "first-goal" (target planner), or "summary" (financial overview).
 
           loginHref
 
