@@ -160,6 +160,7 @@
     "src/components/custom/blocks/SupportPage.tsx",
     "src/components/custom/blocks/TableBlock.tsx",
     "src/components/custom/blocks/TableOfContentsBlock.tsx",
+    "src/components/custom/blocks/TechStackBlock.tsx",
     "src/components/custom/blocks/TerminalBlock.tsx",
     "src/components/custom/blocks/TextAnimationBlock.tsx",
     "src/components/custom/blocks/ThemeSwitcherBlock.tsx",

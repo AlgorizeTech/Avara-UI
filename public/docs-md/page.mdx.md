@@ -1,6 +1,6 @@
 # Documentation
 
-Algorize UI is a library of {COMPONENT_COUNT} React components installed straight
+Algorize UI is a library of 176 React components installed straight
 into your project by the shadcn CLI — no wrapper package, no lock-in.
 
     Introduction

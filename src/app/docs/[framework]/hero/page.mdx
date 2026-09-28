@@ -1238,6 +1238,33 @@ export default function Page() {
   );
 }`;
 
+export const usageTypingFixed = `import { HeroBlock } from "@/components/custom/blocks/HeroBlock";
+
+export default function Page() {
+  return (
+    <HeroBlock
+      variant="typing"
+      prefixPosition="fixed"
+      badgeText="Next-Gen React Components"
+      badgeHref="/docs"
+      titlePrefix="Build Interactive "
+      typingWords={[
+        "Interfaces",
+        "Components",
+        "Experiences",
+        "Animations",
+      ]}
+      titleSuffix=""
+      subtitle="A meticulous library of React components & interactive blocks, engineered for seamless performance with Tailwind CSS, TypeScript, GSAP, and Motion."
+      cliCommand="npx shadcn@latest add @algorize-ui/button"
+      primaryActionLabel="Browse Components"
+      primaryActionHref="/docs"
+      secondaryActionLabel="Star on GitHub"
+      secondaryActionHref="https://github.com/AlgorizeTech"
+    />
+  );
+}`;
+
 <ExampleShowcase
   name="homepage-hero-typing"
   colorControl
@@ -1255,6 +1282,20 @@ export default function Page() {
         },
       ],
       usage: usageTyping,
+    },
+    {
+      title: "Typing hero, fixed title",
+      subheading: "The same hero with the title held in place while the word types and deletes.",
+      propNotes: [
+        {
+          lead: "Set",
+          prop: "prefixPosition",
+          value: '"fixed"',
+          effect: "so the text before the word keeps its place instead of re-centring.",
+        },
+      ],
+      props: { prefixPosition: "fixed" },
+      usage: usageTypingFixed,
     },
   ]}
 />
@@ -1521,6 +1562,20 @@ export default function VortexHeroExample() {
         </td>
         <td>
           The rotating words between <code>titlePrefix</code> and <code>titleSuffix</code>.
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <code>prefixPosition</code>
+        </td>
+        <td>
+          <code>"fixed" | "fluid"</code>
+        </td>
+        <td>
+          <code>"fluid"</code> for typing, <code>"fixed"</code> for bounce
+        </td>
+        <td>
+          Whether the title before the rotating word holds still (<code>"fixed"</code>, keeping the longest word's width) or re-centres as the word types, deletes or swaps (<code>"fluid"</code>). The word itself is an <code>AnimatedTypographyBlock</code>.
         </td>
       </tr>
       <tr>

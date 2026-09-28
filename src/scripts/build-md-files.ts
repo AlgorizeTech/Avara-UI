@@ -5,6 +5,10 @@ import { BUILT_FRAMEWORKS } from "../lib/framework";
 import { REGISTRY_ADD_ARGS, REGISTRY_NAMESPACE, addArgsFor, resolveAddArg } from "../lib/registry";
 import { stripUseClient } from "../lib/snippet";
 import registry from "../../registry.json";
+import { countComponents } from "../lib/component-count";
+
+/** The `{COMPONENT_COUNT}` a page prints, resolved from the same registry. */
+const COMPONENT_COUNT = String(countComponents(registry.items as { name: string }[]));
 
 /** Items that ship a Framer Motion twin beside their GSAP default. */
 const MOTION_TWINS = new Set(
@@ -92,8 +96,11 @@ function convertMdxToMd(content: string, componentPath: string): string {
   // Remove JSX component imports that are on separate lines
   mdContent = mdContent.replace(/^import\s+.*?\{[\s\S]*?\}\s+from\s+.*?;?\s*$/gm, '');
   
+  // Resolve the component count the page prints as a JSX expression.
+  mdContent = mdContent.replace(/\{COMPONENT_COUNT\}/g, COMPONENT_COUNT);
+
   // Convert JSX components to markdown equivalents
-  
+
   // Convert <AI dir="left"/> to nothing (remove it)
   mdContent = mdContent.replace(/<AI\s+dir="[^"]*"\s*\/>/g, '');
   

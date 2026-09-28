@@ -2,6 +2,7 @@
 
 import React, { forwardRef, useEffect, useLayoutEffect, useRef, useState } from "react";
 import { cn } from "@/lib/utils";
+import { AnimatedTypographyBlock, type PrefixPosition } from "./AnimatedTypographyBlock";
 import { ArrowRight, ArrowUpRight, Check, Copy, Sparkles, Terminal, Star, Code, Mail, FileText, Heart, ShieldCheck, ShoppingBag, Package } from "lucide-react";
 
 /* ═══════════════════════════════════════════════
@@ -53,6 +54,12 @@ export interface HeroBlockProps extends React.HTMLAttributes<HTMLElement> {
   typingWords?: string[];
   /** Main static title text suffix */
   titleSuffix?: string;
+  /**
+   * Whether the title text before the animated word holds still ("fixed")
+   * or re-centres as the word changes width ("fluid"). Defaults to "fluid"
+   * for the typing variant and "fixed" for bounce.
+   */
+  prefixPosition?: PrefixPosition;
   /** Subtitle / description paragraph */
   subtitle?: string;
   /** CLI copy command */
@@ -173,14 +180,6 @@ const DEFAULT_MAIN_IMAGE =
 
 /** A tween given only a duration eases out: cubic-bezier(0, 0, 0.58, 1). */
 const EASE_OUT = "cubic-bezier(0, 0, 0.58, 1)";
-/** The quick fade used for a word's opacity: 0.3s. */
-const FADE_EASE = "cubic-bezier(0.25, 0.1, 0.35, 1)";
-/** A spring of stiffness 350, damping 25, as a CSS easing; it settles in 558ms. */
-const BOUNCE_SPRING =
-  "linear(0, 0.041, 0.1419, 0.2747, 0.4185, 0.5586, 0.6853, 0.7936, 0.8813, 0.9485, 0.9971, 1.0295, 1.0488, 1.0578, 1.0594, 1.0558, 1.0492, 1.041, 1.0324, 1.0243, 1.017, 1.0108, 1.0059, 1.0022, 0.9996, 0.9979, 0.9969, 0.9965, 0.9965, 0.9968, 0.9972, 0.9977, 0.9982, 0.9987, 1)";
-const BOUNCE_SPRING_MS = 558;
-/** When that spring counts as at rest (within half a pixel), and the next word may come in. */
-const BOUNCE_REST_MS = 450;
 /** The blueprint grid's lines and shape glide between hover zones. */
 const GLIDE = { duration: 900, easing: "cubic-bezier(0.16, 1, 0.3, 1)" };
 
@@ -188,10 +187,6 @@ const HERO_CSS = `
 @keyframes hero-rise-30 { from { opacity: 0; transform: translateY(30px); } }
 @keyframes hero-rise-20 { from { opacity: 0; transform: translateY(20px); } }
 @keyframes hero-grow { from { opacity: 0; transform: scale(0.95); } }
-@keyframes hero-word-in { from { opacity: 0; } }
-@keyframes hero-word-out { to { opacity: 0; } }
-@keyframes hero-char-in { from { opacity: 0; transform: translateY(24px) scale(0.5); } }
-@keyframes hero-char-out { to { opacity: 0; transform: translateY(-24px) scale(0.5); } }
 `;
 
 /** Where the blueprint's four grid lines and the shape sit for each hover zone. */
@@ -207,52 +202,6 @@ const shapeTargets = (zone: ShapeZone): Record<string, string>[] => {
     { left: pick("23%", "29%", "26%"), width: pick("54%", "42%", "48%"), top: pick("26%", "30%", "28%"), height: pick("48%", "40%", "44%") },
   ];
 };
-
-/**
- * The bounce variant's rotating word. The word on screen leaves letter by
- * letter; the next one comes in only once the last letter has settled.
- */
-function BounceWord({ word }: { word: string }) {
-  const [shown, setShown] = useState(word);
-  const latest = useRef(word);
-  latest.current = word;
-  const leaving = shown !== word;
-
-  useEffect(() => {
-    if (!leaving) return;
-    const t = window.setTimeout(
-      () => setShown(latest.current),
-      Math.max(300, (shown.length - 1) * 20 + BOUNCE_REST_MS),
-    );
-    return () => window.clearTimeout(t);
-  }, [leaving, shown]);
-
-  return (
-    <span
-      key={shown}
-      className="text-foreground inline-flex text-left whitespace-nowrap"
-      style={{
-        animation: leaving
-          ? `hero-word-out 0.3s ${FADE_EASE} forwards`
-          : `hero-word-in 0.3s ${FADE_EASE} backwards`,
-      }}
-    >
-      {shown.split("").map((char, index) => (
-        <span
-          key={index}
-          className="inline-block"
-          style={{
-            animation: leaving
-              ? `hero-char-out ${BOUNCE_SPRING_MS}ms ${BOUNCE_SPRING} ${index * 20}ms both`
-              : `hero-char-in ${BOUNCE_SPRING_MS}ms ${BOUNCE_SPRING} ${index * 40}ms backwards`,
-          }}
-        >
-          {char}
-        </span>
-      ))}
-    </span>
-  );
-}
 
 /* ═══════════════════════════════════════════════
    VORTEX RADAR CYCLONE DEFAULTS & EXACT RADAR CANVAS
@@ -511,6 +460,7 @@ export const HeroBlock = forwardRef<HTMLElement, HeroBlockProps>(
         "Dashboards",
       ],
       titleSuffix = "",
+      prefixPosition,
       subtitle = "A meticulous library of React components & interactive blocks, engineered for seamless performance with Tailwind CSS, TypeScript, GSAP, and Motion.",
       cliCommand = "npx shadcn@latest add @algorize-ui/button",
       primaryActionLabel = "Browse Components",
@@ -537,48 +487,8 @@ export const HeroBlock = forwardRef<HTMLElement, HeroBlockProps>(
     ref,
   ) => {
     const [copied, setCopied] = useState(false);
-    const [currentWordIndex, setCurrentWordIndex] = useState(0);
-
     // Shape hover zone state (used when variant === "facility" || variant === "geometric")
     const [shapeHoverZone, setShapeHoverZone] = useState<ShapeZone>("idle");
-
-    // Typing effect state (used when variant === "typing")
-    const [currentText, setCurrentText] = useState("");
-    const [isDeleting, setIsDeleting] = useState(false);
-
-    // Word bounce effect interval (used when variant === "bounce")
-    useEffect(() => {
-      if (variant !== "bounce" || !typingWords || typingWords.length === 0) return;
-      const interval = setInterval(() => {
-        setCurrentWordIndex((prev) => (prev + 1) % typingWords.length);
-      }, 2400);
-
-      return () => clearInterval(interval);
-    }, [typingWords, variant]);
-
-    // Character typewriter effect interval (used when variant === "typing")
-    useEffect(() => {
-      if (variant !== "typing" || !typingWords || typingWords.length === 0) return;
-      const targetWord = typingWords[currentWordIndex];
-      const typingSpeed = isDeleting ? 60 : 100;
-
-      const timer = setTimeout(() => {
-        if (!isDeleting) {
-          setCurrentText(targetWord.slice(0, currentText.length + 1));
-          if (currentText.length + 1 === targetWord.length) {
-            setTimeout(() => setIsDeleting(true), 1800);
-          }
-        } else {
-          setCurrentText(targetWord.slice(0, currentText.length - 1));
-          if (currentText.length - 1 === 0) {
-            setIsDeleting(false);
-            setCurrentWordIndex((prev) => (prev + 1) % typingWords.length);
-          }
-        }
-      }, typingSpeed);
-
-      return () => clearTimeout(timer);
-    }, [currentText, isDeleting, currentWordIndex, typingWords, variant]);
 
     // Blueprint grid (used when variant === "facility" || "geometric"): the
     // lines and the shape render at their zone's place; on a zone change each
@@ -647,8 +557,6 @@ export const HeroBlock = forwardRef<HTMLElement, HeroBlockProps>(
           }
         : {}),
     } as React.CSSProperties;
-
-    const currentWord = typingWords?.[currentWordIndex] || "";
 
     /* ═══════════════════════════════════════════════
        VARIANT 4: MODERN PET SHOP & ANIMAL CARE HERO (MINIMAL, NO SHADOWS & NO PET ICONS)
@@ -1690,20 +1598,15 @@ export const HeroBlock = forwardRef<HTMLElement, HeroBlockProps>(
                 </span>
               </span>
 
-              {variant === "typing" ? (
-                <span className="inline-flex items-center">
-                  <span className="text-foreground">
-                    {currentText}
-                  </span>
-                  <span className="text-[var(--hero-accent-text)] animate-pulse font-mono font-light ml-[1px] mr-0">
-                    |
-                  </span>
-                </span>
-              ) : (
-                <span className="relative inline-flex items-center justify-start overflow-hidden py-0.5 h-[1.3em] w-[140px] xs:w-[165px] sm:w-[170px] md:w-[210px] lg:w-[270px] xl:w-[330px] shrink-0">
-                  <BounceWord word={currentWord} />
-                </span>
-              )}
+              <AnimatedTypographyBlock
+                as="span"
+                bare
+                variant={variant === "typing" ? "typewriter" : "letter-bounce"}
+                words={typingWords}
+                prefixPosition={prefixPosition}
+                className="shrink-0 text-foreground"
+                style={{ "--typo-caret": "var(--hero-accent-text)" } as React.CSSProperties}
+              />
 
               {titleSuffix && <span className="shrink-0">{titleSuffix}</span>}
             </h1>

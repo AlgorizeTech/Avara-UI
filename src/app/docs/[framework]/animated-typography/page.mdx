@@ -66,14 +66,14 @@ export default function ElasticSpringShowcase() {
   columns={1}
   examples={[
     {
-      title: "Matrix Scramble Decryption",
-      subheading: "Cyberpunk symbol scrambling effect resolving to crisp text.",
+      title: "Typewriter",
+      subheading: "Types each word, holds it, deletes it and moves on behind a blinking caret, as in the Hero's typing title. The prefix re-centres as the word changes, just like the hero.",
       propNotes: [
-        { prop: "variant", value: '"matrix-scramble"', effect: "scrambles text through glyphs before resolving." },
-        { prop: "align", value: '"center"', effect: "centers the text aligned to the middle." },
+        { prop: "variant", value: '"typewriter"', effect: "types and deletes each word in turn." },
+        { prop: "prefixPosition", value: '"fluid"', effect: "the default here: the text before the word re-centres as it types and deletes." },
       ],
-      props: { singleVariant: "matrix-scramble" },
-      usage: usageMatrix,
+      props: { singleVariant: "typewriter", titlePrefix: "Build ", customText: "Interfaces", words: ["Interfaces", "Components", "Experiences"] },
+      usage: usageTypewriter,
       code: extractCode("src/components/custom/blocks/AnimatedTypographyBlock.tsx"),
     },
   ]}
@@ -133,12 +133,166 @@ export default function ColorRevealShowcase() {
   );
 }`;
 
+export const usageLetterBounce = `import { AnimatedTypographyBlock } from "@/components/custom/blocks/AnimatedTypographyBlock";
+
+const words = ["Interfaces", "Components", "Experiences"];
+
+export default function LetterBounceShowcase() {
+  return (
+    <div className="flex flex-col gap-6 items-center text-center">
+      <AnimatedTypographyBlock as="h3" variant="letter-bounce" align="center" titlePrefix="Build " text="Interfaces" words={words} />
+      <AnimatedTypographyBlock as="h4" variant="letter-bounce" align="center" titlePrefix="Build " text="Interfaces" words={words} />
+      <AnimatedTypographyBlock as="p" variant="letter-bounce" align="center" titlePrefix="Build " text="Interfaces" words={words} />
+    </div>
+  );
+}`;
+
+export const usageTypewriter = `import { AnimatedTypographyBlock } from "@/components/custom/blocks/AnimatedTypographyBlock";
+
+const words = ["Interfaces", "Components", "Experiences"];
+
+export default function TypewriterShowcase() {
+  return (
+    <div className="flex flex-col gap-6 items-center text-center">
+      <AnimatedTypographyBlock as="h3" variant="typewriter" align="center" titlePrefix="Build " text="Interfaces" words={words} />
+      <AnimatedTypographyBlock as="h4" variant="typewriter" align="center" titlePrefix="Build " text="Interfaces" words={words} />
+      <AnimatedTypographyBlock as="p" variant="typewriter" align="center" titlePrefix="Build " text="Interfaces" words={words} />
+    </div>
+  );
+}`;
+
+export const usageTypewriterFixed = `import { AnimatedTypographyBlock } from "@/components/custom/blocks/AnimatedTypographyBlock";
+
+const words = ["Interfaces", "Components", "Experiences"];
+
+export default function TypewriterFixedShowcase() {
+  return (
+    <div className="flex flex-col gap-6 items-center text-center">
+      <AnimatedTypographyBlock as="h3" variant="typewriter" prefixPosition="fixed" align="center" titlePrefix="Build " text="Interfaces" words={words} />
+      <AnimatedTypographyBlock as="h4" variant="typewriter" prefixPosition="fixed" align="center" titlePrefix="Build " text="Interfaces" words={words} />
+      <AnimatedTypographyBlock as="p" variant="typewriter" prefixPosition="fixed" align="center" titlePrefix="Build " text="Interfaces" words={words} />
+    </div>
+  );
+}`;
+
+export const usageWordFlip = `import { AnimatedTypographyBlock } from "@/components/custom/blocks/AnimatedTypographyBlock";
+
+const words = ["Interfaces", "Components", "Experiences"];
+
+export default function WordFlipShowcase() {
+  return (
+    <div className="flex flex-col gap-6 items-center text-center">
+      <AnimatedTypographyBlock as="h3" variant="word-flip" align="center" titlePrefix="Build " text="Interfaces" words={words} />
+      <AnimatedTypographyBlock as="h4" variant="word-flip" align="center" titlePrefix="Build " text="Interfaces" words={words} />
+      <AnimatedTypographyBlock as="p" variant="word-flip" align="center" titlePrefix="Build " text="Interfaces" words={words} />
+    </div>
+  );
+}`;
+
+export const usageBlurSwap = `import { AnimatedTypographyBlock } from "@/components/custom/blocks/AnimatedTypographyBlock";
+
+const words = ["Interfaces", "Components", "Experiences"];
+
+export default function BlurSwapShowcase() {
+  return (
+    <div className="flex flex-col gap-6 items-center text-center">
+      <AnimatedTypographyBlock as="h3" variant="blur-swap" align="center" titlePrefix="Build " text="Interfaces" words={words} />
+      <AnimatedTypographyBlock as="h4" variant="blur-swap" align="center" titlePrefix="Build " text="Interfaces" words={words} />
+      <AnimatedTypographyBlock as="p" variant="blur-swap" align="center" titlePrefix="Build " text="Interfaces" words={words} />
+    </div>
+  );
+}`;
+
+export const usageBlurRise = `import { AnimatedTypographyBlock } from "@/components/custom/blocks/AnimatedTypographyBlock";
+
+export default function BlurRiseShowcase() {
+  return (
+    <div className="flex flex-col gap-6 items-center text-center">
+      <AnimatedTypographyBlock as="h3" variant="blur-rise" align="center" text="The quick brown fox jumps over the lazy dog." />
+      <AnimatedTypographyBlock as="h4" variant="blur-rise" align="center" text="The quick brown fox jumps over the lazy dog." />
+      <AnimatedTypographyBlock as="p" variant="blur-rise" align="center" text="The quick brown fox jumps over the lazy dog." />
+    </div>
+  );
+}`;
+
+export const usageColorWipe = `import { AnimatedTypographyBlock } from "@/components/custom/blocks/AnimatedTypographyBlock";
+
+export default function ColorWipeShowcase() {
+  return (
+    <div className="flex flex-col gap-6 items-center text-center">
+      <AnimatedTypographyBlock as="h3" variant="color-wipe" align="center" text="The quick brown fox jumps over the lazy dog." />
+      <AnimatedTypographyBlock as="h4" variant="color-wipe" align="center" text="The quick brown fox jumps over the lazy dog." />
+      <AnimatedTypographyBlock as="p" variant="color-wipe" align="center" text="The quick brown fox jumps over the lazy dog." />
+    </div>
+  );
+}`;
+
 <ExampleShowcase
   name="animated-typography"
   colorControl
   colorLabel="Text Color"
   columns={1}
   examples={[
+    {
+      title: "Typewriter, Fixed Prefix",
+      subheading: "The same typewriter with the prefix held in place: the line keeps the longest word's width, so only the typed word moves.",
+      propNotes: [
+        { prop: "prefixPosition", value: '"fixed"', effect: "reserves the longest word's width, so the text before it never moves." },
+        { prop: "variant", value: '"typewriter"', effect: "types and deletes each word in turn." },
+      ],
+      props: { singleVariant: "typewriter", titlePrefix: "Build ", customText: "Interfaces", words: ["Interfaces", "Components", "Experiences"], prefixPosition: "fixed" },
+      usage: usageTypewriterFixed,
+    },
+    {
+      title: "Letter Bounce Word Rotator",
+      subheading: "The word leaves letter by letter; the next springs in one letter at a time, as in the Hero's bounce title.",
+      propNotes: [
+        { prop: "variant", value: '"letter-bounce"', effect: "rotates words, each letter springing in and out." },
+        { prop: "words", value: '["Interfaces", …]', effect: "the words to cycle through after titlePrefix." },
+      ],
+      props: { singleVariant: "letter-bounce", titlePrefix: "Build ", customText: "Interfaces", words: ["Interfaces", "Components", "Experiences"] },
+      usage: usageLetterBounce,
+    },
+    {
+      title: "Word Flip",
+      subheading: "The word slides up and out, then the next slides up in from below, as in the homepage hero.",
+      propNotes: [
+        { prop: "variant", value: '"word-flip"', effect: "slides words vertically through a clipped slot." },
+        { prop: "interval", value: "2400", effect: "milliseconds each word stays." },
+      ],
+      props: { singleVariant: "word-flip", titlePrefix: "Build ", customText: "Interfaces", words: ["Interfaces", "Components", "Experiences"] },
+      usage: usageWordFlip,
+    },
+    {
+      title: "Blur Swap",
+      subheading: "The outgoing word lifts away into a blur as the next sharpens out of one, as in the Hero Carousel headline.",
+      propNotes: [
+        { prop: "variant", value: '"blur-swap"', effect: "cross-fades words through a blur." },
+        { prop: "words", value: '["Interfaces", …]', effect: "the words to cycle through after titlePrefix." },
+      ],
+      props: { singleVariant: "blur-swap", titlePrefix: "Build ", customText: "Interfaces", words: ["Interfaces", "Components", "Experiences"] },
+      usage: usageBlurSwap,
+    },
+    {
+      title: "Blur Rise",
+      subheading: "The whole line rises out of a soft blur, as the Collage Hero heading does.",
+      propNotes: [
+        { prop: "variant", value: '"blur-rise"', effect: "lifts the line in while it comes into focus." },
+        { prop: "align", value: '"center"', effect: "centers the text aligned to the middle." },
+      ],
+      props: { singleVariant: "blur-rise" },
+      usage: usageBlurRise,
+    },
+    {
+      title: "Color Wipe",
+      subheading: "An accent copy of the text is unclipped left to right over the foreground, the technique behind the Honeycomb Hero title.",
+      propNotes: [
+        { prop: "variant", value: '"color-wipe"', effect: "sweeps the text color from foreground to the accent." },
+        { prop: "color", value: '"primary"', effect: "the color the wipe ends in." },
+      ],
+      props: { singleVariant: "color-wipe" },
+      usage: usageColorWipe,
+    },
     {
       title: "Color Reveal Staggered Sweep",
       subheading: "Characters start in muted gray and transition left-to-right into active theme color.",
@@ -209,6 +363,16 @@ export default function ColorRevealShowcase() {
       props: { singleVariant: "underline-draw", customText: "Creative Typography Design" },
       usage: usageUnderline,
     },
+    {
+      title: "Matrix Scramble Decryption",
+      subheading: "Cyberpunk symbol scrambling effect resolving to crisp text.",
+      propNotes: [
+        { prop: "variant", value: '"matrix-scramble"', effect: "scrambles text through glyphs before resolving." },
+        { prop: "align", value: '"center"', effect: "centers the text aligned to the middle." },
+      ],
+      props: { singleVariant: "matrix-scramble" },
+      usage: usageMatrix,
+    },
   ]}
 />
 
@@ -217,8 +381,8 @@ Discover the key capabilities that make this component an excellent choice for m
 
 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 my-6 not-prose">
   <div className="p-6 rounded-2xl border border-border bg-card">
-    <h3 className="text-lg font-semibold text-card-foreground mb-2">7 Modern Patterns</h3>
-    <p className="text-muted-foreground text-sm">Features 7 distinct, non-generic typography animation patterns from Matrix decryption to liquid underlines.</p>
+    <h3 className="text-lg font-semibold text-card-foreground mb-2">14 Animation Patterns</h3>
+    <p className="text-muted-foreground text-sm">From Matrix decryption to liquid underlines, plus every hero title effect — letter bounce, typewriter, word flip, blur swap, blur rise and color wipe.</p>
   </div>
   <div className="p-6 rounded-2xl border border-border bg-card">
     <h3 className="text-lg font-semibold text-card-foreground mb-2">Highly Accessible</h3>
@@ -258,11 +422,9 @@ Discover the key capabilities that make this component an excellent choice for m
         <td>
           <code>string</code>
         </td>
+        <td>—</td>
         <td>
-          <strong>Required</strong>
-        </td>
-        <td>
-          The text content to render. Staggered variants split this string to animate word-by-word or character-by-character.
+          The text content to render, and what screen readers announce. Staggered variants split this string to animate word-by-word or character-by-character.
         </td>
       </tr>
       <tr>
@@ -296,13 +458,149 @@ Discover the key capabilities that make this component an excellent choice for m
           <code>
             "matrix-scramble" | "color-reveal" | "wavy-float" |
             "3d-perspective-flip" | "elastic-spring" | "spotlight-reveal" |
-            "split-stagger" | "underline-draw"
+            "split-stagger" | "underline-draw" | "letter-bounce" |
+            "typewriter" | "word-flip" | "blur-swap" | "blur-rise" |
+            "color-wipe"
           </code>
         </td>
         <td>
           <code>"matrix-scramble"</code>
         </td>
-        <td>The 8 distinct animation patterns applied to the text.</td>
+        <td>The 14 animation patterns applied to the text. <code>letter-bounce</code>, <code>typewriter</code>, <code>word-flip</code> and <code>blur-swap</code> rotate through <code>words</code>.</td>
+      </tr>
+      <tr>
+        <td>
+          <code>AnimatedTypographyBlock</code>
+        </td>
+        <td>
+          <code>words</code>
+        </td>
+        <td>
+          <code>ReactNode[]</code>
+        </td>
+        <td>
+          <code>[text]</code>
+        </td>
+        <td>
+          The words the rotating variants cycle through. Plain strings animate letter by letter; other nodes move whole. <code>text</code> is still what screen readers announce, so set it to the first word.
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <code>AnimatedTypographyBlock</code>
+        </td>
+        <td>
+          <code>interval</code>
+        </td>
+        <td>
+          <code>number</code>
+        </td>
+        <td>
+          <code>2400</code>
+        </td>
+        <td>
+          Milliseconds each word stays on the rotating variants. The typewriter holds a finished word this long instead, <code>1800</code> by default.
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <code>AnimatedTypographyBlock</code>
+        </td>
+        <td>
+          <code>prefixPosition</code>
+        </td>
+        <td>
+          <code>"fixed" | "fluid"</code>
+        </td>
+        <td>
+          <code>"fluid"</code> for typewriter, <code>"fixed"</code> otherwise
+        </td>
+        <td>
+          Whether the text before the rotating words holds still. <code>fixed</code> reserves the longest word's width; <code>fluid</code> follows the word on show, so a centred line re-centres as the word types, deletes or swaps.
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <code>AnimatedTypographyBlock</code>
+        </td>
+        <td>
+          <code>index</code>
+        </td>
+        <td>
+          <code>number</code>
+        </td>
+        <td>
+          —
+        </td>
+        <td>
+          Shows <code>words[index]</code> instead of stepping on a timer — for words kept in step with something else, like a carousel's slides. The typewriter keeps its own time.
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <code>AnimatedTypographyBlock</code>
+        </td>
+        <td>
+          <code>children</code>
+        </td>
+        <td>
+          <code>ReactNode</code>
+        </td>
+        <td>
+          —
+        </td>
+        <td>
+          Rich content for <code>blur-rise</code> and <code>color-wipe</code> in place of <code>text</code>, such as a heading with an <code>&lt;em&gt;</code> in it.
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <code>AnimatedTypographyBlock</code>
+        </td>
+        <td>
+          <code>play</code>
+        </td>
+        <td>
+          <code>boolean</code>
+        </td>
+        <td>
+          <code>true</code>
+        </td>
+        <td>
+          <code>false</code> renders the text at rest; the animation starts when it turns <code>true</code>. For reveals that wait on scrolling into view.
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <code>AnimatedTypographyBlock</code>
+        </td>
+        <td>
+          <code>bare</code>
+        </td>
+        <td>
+          <code>boolean</code>
+        </td>
+        <td>
+          <code>false</code>
+        </td>
+        <td>
+          Drops the block's own weight, size, colour, alignment and padding, so <code>className</code> and the parent set the type — for composing it into a section heading.
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <code>AnimatedTypographyBlock</code>
+        </td>
+        <td>
+          <code>titlePrefix</code> / <code>titleSuffix</code>
+        </td>
+        <td>
+          <code>string</code>
+        </td>
+        <td>—</td>
+        <td>
+          Static text either side of the animated part, e.g. <code>titlePrefix="Build "</code> before a rotating word.
+        </td>
       </tr>
       <tr>
         <td>

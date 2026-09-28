@@ -23,5 +23,5 @@
     }
   },
   "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts", "src/app/components/page.mdx", "src/app/docs/decrypting/page.mdx", "src/app/docs/divider/page.mdx"],
-  "exclude": ["node_modules"]
+  "exclude": ["node_modules", "mcp"]
 }

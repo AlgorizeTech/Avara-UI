@@ -3,6 +3,7 @@
 import React, { useEffect, useRef, useState } from "react";
 import { ArrowDown, Play } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { AnimatedTypographyBlock } from "./AnimatedTypographyBlock";
 import Button from "./Button";
 import { CircularText } from "./CircularTextBlock";
 import { Dialog, DialogContent, DialogTrigger } from "./DialogBlock";
@@ -179,7 +180,7 @@ function CollageHeroRoot({
       root
         .querySelectorAll<HTMLElement>(selector)
         .forEach((el, i) => el.style.setProperty("--kg-at", `${start + i * each}s`));
-    stagger("[data-kg-lead]", 0, 0.12);
+    stagger("[data-kg-lead], [data-kg-heading]", 0, 0.12);
     stagger("[data-kg-tag]", 0.35, 0.08);
     stagger("[data-kg-photo]", 0.5, 0.07);
     stagger("[data-kg-foot]", 1.1, 0.1);
@@ -232,12 +233,19 @@ function CollageHeroRoot({
               <path d="M6 6c10 0 30 6 32 20s-16 24-24 14 8-26 30-24 38 22 62 38" />
               <path d="M98 44l10 10-14 3" />
             </svg>
-            <h1
-              data-kg-lead=""
+            {/* Rises out of a blur with the other leads; data-kg-heading keeps
+                its place in their stagger (0.12s) without the lead keyframes. */}
+            <AnimatedTypographyBlock
+              as="h1"
+              bare
+              variant="blur-rise"
+              play={phase === "play"}
+              delay={120}
+              data-kg-heading=""
               className="mx-auto max-w-[19ch] font-serif text-[2.4rem] font-normal leading-[1.08] tracking-[-0.02em] sm:text-[3.3rem] lg:text-[3.7rem] [&_em]:italic [&_em]:text-primary [&_em+em]:text-[var(--kg-highlight)] [&_em:nth-of-type(2)]:text-[var(--kg-highlight)]"
             >
               {heading}
-            </h1>
+            </AnimatedTypographyBlock>
           </div>
 
           <div className="relative hidden min-h-[9rem] lg:block">
