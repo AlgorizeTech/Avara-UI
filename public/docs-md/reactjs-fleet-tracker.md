@@ -143,6 +143,38 @@ Explore the Fleet Tracker map features, including live marker positioning, custo
           Applies global color themes to the active map markers, sidebar icons,
           and focus rings.
 
+          zoom
+
+          number
+
+          15
+
+          Initial zoom level and active vehicle focus zoom level. Defaults to 15 for street/neighborhood detail.
+
+          tileApiKey
+
+          string
+
+          undefined
+
+          Optional CARTO API key if you choose to use CARTO Basemaps. By default, OpenStreetMap tiles are used with zero API key required.
+
+          tileUrl
+
+          string
+
+          OpenStreetMap tile URL
+
+          Custom basemap raster tile URL template for light mode (e.g., https://&#123;s&#125;.tile.openstreetmap.org/&#123;z&#125;/&#123;x&#125;/&#123;y&#125;.png).
+
+          darkTileUrl
+
+          string
+
+          undefined
+
+          Custom raster tile URL template for dark mode. If omitted, standard OpenStreetMap tiles are dynamically dark-graded.
+
 ---
 
 **Component Path:** `[framework]\fleet-tracker\page.mdx`

@@ -1,4 +1,4 @@
-import { SITE_URL } from "@/config/site";
+import { SITE_URL, siteConfig } from "@/config/site";
 // Schema.org structured data for better SEO
 export const organizationSchema = {
   "@context": "https://schema.org",
@@ -6,7 +6,7 @@ export const organizationSchema = {
   "name": "Algorize UI",
   "url": SITE_URL,
   "logo": `${SITE_URL}/logo.svg`,
-  "description": "120+ React components you install into your own codebase.",
+  "description": siteConfig.tagline,
   "foundingDate": "2024",
   "founder": {
     "@type": "Person",
@@ -29,7 +29,7 @@ export const softwareApplicationSchema = {
   "@context": "https://schema.org",
   "@type": "SoftwareApplication",
   "name": "Algorize UI",
-  "description": "120+ React components you install into your own codebase.",
+  "description": siteConfig.tagline,
   "url": SITE_URL,
   "applicationCategory": "DeveloperApplication",
   "operatingSystem": "Web",
@@ -96,7 +96,7 @@ export const websiteSchema = {
   "@type": "WebSite",
   "name": "Algorize UI",
   "url": SITE_URL,
-  "description": "120+ React components you install into your own codebase.",
+  "description": siteConfig.tagline,
   "publisher": {
     "@type": "Organization",
     "name": "Algorize UI"

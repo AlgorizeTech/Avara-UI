@@ -1,6 +1,6 @@
 # Introduction
 
-Algorize UI is a library of **{COMPONENT_COUNT} React components** — from buttons
+Algorize UI is a library of **176 React components** — from buttons
 and inputs to dashboards, carousels and scroll-driven marketing sections. Each
 one is animated, responsive, themeable and typed.
 

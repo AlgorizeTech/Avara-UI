@@ -1,333 +1,145 @@
-# Algorize UI Platform
+<div align="center">
 
-[![Next.js](https://img.shields.io/badge/Next.js-15-black?style=flat&logo=next.js)](https://nextjs.org/)
-[![React](https://img.shields.io/badge/React-19-blue?style=flat&logo=react)](https://reactjs.org/)
-[![TypeScript](https://img.shields.io/badge/TypeScript-5-blue?style=flat&logo=typescript)](https://www.typescriptlang.org/)
-[![Tailwind CSS](https://img.shields.io/badge/Tailwind_CSS-4-38B2AC?style=flat&logo=tailwind-css)](https://tailwindcss.com/)
-[![License](https://img.shields.io/badge/license-MIT-green)](LICENSE)
+<h1>Algorize UI</h1>
 
-**Enterprise-grade Next.js documentation platform with interactive component examples and comprehensive guides.**
+<strong>A shadcn registry of animated React components you install straight into your own codebase.</strong>
+<br />
+<sub><!-- component-count -->176<!-- /component-count --> components and website sections · Next.js and React (Vite) · themed with CSS variables · MIT licensed</sub>
 
----
+<br />
+<br />
 
-## 📋 Executive Summary
+[![Website](https://img.shields.io/badge/Website-algorize--ui.vercel.app-9B8AFB?style=flat-square)](https://algorize-ui.vercel.app)
+[![Docs](https://img.shields.io/badge/Docs-read-9B8AFB?style=flat-square)](https://algorize-ui.vercel.app/docs/nextjs/index)
+[![Registry](https://img.shields.io/badge/shadcn-registry-9B8AFB?style=flat-square)](https://algorize-ui.vercel.app/r/registry.json)
+[![License](https://img.shields.io/badge/License-MIT-9B8AFB?style=flat-square)](LICENSE)
 
-This is a comprehensive Next.js documentation platform built with Next.js 15 and React 19, specifically designed to showcase Next.js features and best practices. This project enables zero-friction Next.js developer onboarding, autonomous feature development, scalable team collaboration, and production-ready deployment confidence.
+[**Browse components →**](https://algorize-ui.vercel.app/docs/nextjs/all-components) · [**Get started →**](https://algorize-ui.vercel.app/docs/nextjs/installation) · [**Build a theme →**](https://algorize-ui.vercel.app/themes)
 
-## 🚀 Key Features
+</div>
 
-- **Interactive Documentation**: Live code examples with preview/code toggle functionality
-- **Complete Next.js Coverage**: All core features including SSR, API routes, data fetching, and more
-- **Modern Tech Stack**: Next.js 15, React 19, TypeScript, Tailwind CSS
-- **Performance Optimized**: Static site generation, image optimization, and bundle analysis
-- **Developer Experience**: Fast refresh, TypeScript support, and ESLint integration
-- **Responsive Design**: Mobile-first approach with dark/light theme support
+<br />
 
-## 🏗️ Architecture Overview
+## Why Algorize UI?
 
-```
-├── public/
-│   ├── docs-md/              # Documentation markdown files
-│   │   └── nextjs/           # Next.js specific documentation
-│   ├── registry/             # Component metadata registry
-│   └── assets/               # Static assets
-├── src/
-│   ├── app/                  # Next.js App Router structure
-│   │   ├── docs/             # Documentation pages
-│   │   │   ├── nextjs/       # Next.js documentation section
-│   │   │   └── layout.tsx    # Documentation layout
-│   │   └── layout.tsx        # Root layout
-│   ├── components/           # Reusable UI components
-│   │   ├── site/             # Site-specific components
-│   │   ├── ui/               # Generic UI components
-│   │   └── performance/      # Performance monitoring components
-│   ├── lib/                  # Business logic and utilities
-│   ├── constants/            # Application constants
-│   ├── contexts/             # React contexts
-│   └── hooks/                # Custom React hooks
-├── scripts/                  # Build and automation scripts
-└── next.config.ts            # Next.js configuration
-```
+Most component libraries hand you a package to depend on. Algorize UI hands you the source. Each component is published as a [shadcn registry](https://ui.shadcn.com/docs/registry) item, so the `shadcn` CLI writes the file into your project, installs whatever npm packages it needs, and steps out of the way. After that it is your code: rename it, restyle it, delete the parts you don't use.
 
-## 🛠️ Technology Stack
+There is no wrapper package to keep up to date and nothing to eject from later.
 
-| Category | Technology | Version |
-|---------|------------|---------|
-| Framework | Next.js | 15.3.2 |
-| UI Library | React | 19.0.0 |
-| Language | TypeScript | 5.x |
-| Styling | Tailwind CSS | 4.x |
-| Documentation | MDX | 3.x |
-| State Management | React Context | Built-in |
-| Animation | Framer Motion | 12.x |
-| Icons | Lucide React | 0.510.0 |
-| Bundler | Webpack/Turbopack | Next.js Built-in |
-| Package Manager | npm/bun | Latest |
+## What you get
 
-## 📚 Documentation Structure
+- **<!-- component-count -->176<!-- /component-count --> components**, from base UI primitives to full page sections. Run `npx shadcn@latest list @algorize-ui` for the live list.
+- **Full website sections as well as primitives.** Heroes, pricing, footers, dashboards, auth forms, carousels, maps, media players and more, in 18 categories.
+- **One source for two frameworks.** No shipped component imports from `next/*`, so the same file compiles in a Next.js App Router project and in a Vite React app. Components that render links or images accept a `linkComponent` / `imageComponent` prop, so Next.js users can pass `next/link` and `next/image`.
+- **Themes as CSS variables.** Colours, radius and fonts come from CSS variables, not hard-coded classes. The [Themes page](https://algorize-ui.vercel.app/themes) has 14 presets and a customiser, and it exports a block you paste into your global stylesheet.
+- **Motion that fits the job.** Fixed animations are plain CSS. Pointer, scroll and drag effects use GSAP, and several of those also ship a Framer Motion build under the same name with a `-framer` suffix.
+- **Open in v0.** Docs examples can be opened in [v0](https://v0.dev) with your chosen theme applied.
+- **Docs as Markdown too.** Every docs page is also published as plain Markdown under `/docs-md/`, which is handy for pasting into an AI assistant.
 
-### Getting Started
-- [Introduction](/docs/nextjs/index)
-- [Installation](/docs/nextjs/installation)
-- [Quick Start](/docs/nextjs/first-app)
+## Quick start
 
-### Core Features
-- [Pages & Routing](/docs/nextjs/routing)
-- [Data Fetching](/docs/nextjs/data-fetching)
-- [API Routes](/docs/nextjs/api-routes)
-- [Image Optimization](/docs/nextjs/image-optimization)
-- [CSS & Styling](/docs/nextjs/styling)
-- [Performance](/docs/nextjs/performance)
-- [SEO & Meta](/docs/nextjs/seo)
-- [Authentication](/docs/nextjs/authentication)
-- [Deployment](/docs/nextjs/deployment)
-- [Middleware](/docs/nextjs/middleware)
-- [TypeScript Support](/docs/nextjs/typescript)
-- [Testing](/docs/nextjs/testing)
+Algorize UI assumes a project that already has Tailwind CSS and a `shadcn` setup. The [installation guide](https://algorize-ui.vercel.app/docs/nextjs/installation) walks through both from scratch.
 
-### Examples
-- [Interactive Counter](/docs/nextjs/examples/counter)
+**1. Initialise shadcn** (once per project). The components are built on Radix, so choose the Radix base:
 
-## ⚙️ Development Workflow
-
-### Prerequisites
-- Node.js 18.x or later
-- npm, yarn, pnpm, or bun
-
-### Installation
 ```bash
-# Clone the repository
-git clone <repository-url>
-cd algorize-ui
+npx shadcn@latest init --base radix --preset nova
+```
 
-# Install dependencies
+**2. Register the Algorize UI registry** (once per project):
+
+```bash
+npx shadcn@latest registry add @algorize-ui=https://algorize-ui.vercel.app/r/{name}.json
+```
+
+That is the same as adding this to `components.json` yourself:
+
+```json
+{
+  "registries": {
+    "@algorize-ui": "https://algorize-ui.vercel.app/r/{name}.json"
+  }
+}
+```
+
+**3. Add components by name:**
+
+```bash
+npx shadcn@latest add @algorize-ui/hero
+npx shadcn@latest add @algorize-ui/hero @algorize-ui/navbar   # several at once
+```
+
+You can skip step 2 and install by full URL instead, e.g. `npx shadcn@latest add https://algorize-ui.vercel.app/r/hero.json`. Every component page on the site shows both forms.
+
+To search the registry from your terminal:
+
+```bash
+npx shadcn@latest search @algorize-ui --query pricing
+```
+
+## Supported frameworks
+
+| Framework | Supported versions | Guide |
+| :-------- | :----------------- | :---- |
+| **Next.js** (App Router) | Next.js 14, 15 and 16 · React 18 and 19 · Tailwind CSS v3.4+ or v4 | [Installation](https://algorize-ui.vercel.app/docs/nextjs/installation) · [Quick start](https://algorize-ui.vercel.app/docs/nextjs/first-app) |
+| **React + Vite** | Vite 5 to 8 · React 18 and 19 · Tailwind CSS v4 | [Installation](https://algorize-ui.vercel.app/docs/reactjs/installation) · [Quick start](https://algorize-ui.vercel.app/docs/reactjs/first-app) |
+
+Both need the `@/*` path alias. TypeScript is recommended, but plain JavaScript projects work too. The components also work in Create React App and React Router projects.
+
+## Categories
+
+| Category | Items | | Category | Items |
+| :------- | ----: |-| :------- | ----: |
+| Marketing | 63 | | Commerce | 11 |
+| Data display | 40 | | Communication | 10 |
+| Layout | 34 | | Actions | 7 |
+| Media | 31 | | Feedback | 7 |
+| Forms | 28 | | Overlays | 7 |
+| Navigation | 19 | | Typography | 6 |
+| Utilities | 19 | | Code | 5 |
+| Scroll | 13 | | Authentication | 4 |
+| Maps | 2 | | Dates | 4 |
+
+Some items belong to more than one category, so the counts add up to more than the item total.
+
+## Running the docs site locally
+
+This repository holds the components and the documentation site that publishes them.
+
+```bash
+git clone https://github.com/AlgorizeTech/Reusable-Component-Documentation.git
+cd Reusable-Component-Documentation
 npm install
+npm run dev      # http://localhost:3000
 ```
 
-### Development
-```bash
-# Start development server
-npm run dev
+The site is a static export (`output: "export"`) built with Next.js 15, React 19, Tailwind CSS 4, TypeScript and MDX. `npm run build` does more than compile the site. It regenerates the Markdown docs, rebuilds the registry, runs the framework and consumer type checks, and only then runs `next build`.
 
-# Visit http://localhost:3000
-```
+The optional `.env` settings (site URL, analytics, verification tokens and so on) are documented in [`.env.example`](.env.example). The site builds without any of them.
 
-### Building
-```bash
-# Build for production
-npm run build
+### Where things live
 
-# Export static site
-npm run export
+| Path | What it is |
+| :--- | :--------- |
+| `src/components/custom/blocks/` | The components and sections the registry ships. |
+| `src/components/custom/ui/`, `src/components/ui/` | Base UI primitives, also shipped. |
+| `src/app/docs/[framework]/` | One MDX docs page per component, shared by the Next.js and React docs. |
+| `src/preview/demos/` | Live demos rendered on the docs pages. |
+| `src/scripts/` | Registry generator, drift checks and Markdown export. |
+| `registry.json`, `public/r/` | The generated registry. Don't edit by hand. |
+| `api/v0.ts` | The site's only serverless function, which serves themed items to v0. |
+| `mcp/` | An MCP server for AI coding agents (standalone package, not yet published). |
 
-# Analyze bundle size
-npm run build:analyze
-```
+## Contributing
 
-### Scripts
-| Script | Description |
-|--------|-------------|
-| `dev` | Start development server with Turbopack |
-| `build` | Build the application for production |
-| `build:analyze` | Analyze bundle size |
-| `start` | Start production server |
-| `lint` | Run ESLint |
-| `export` | Export static site |
-| `build:registry` | Build component registry |
-| `build:md` | Build markdown files |
-| `generate:components` | Generate components |
-| `watch:components` | Watch for component changes |
-| `perf:audit` | Run Lighthouse audit |
-| `perf:bundle` | Analyze bundle |
-| `perf:optimize` | Optimize build |
+Bug fixes, improvements to existing components and docs corrections are all welcome. Please read the [contribution guide](CONTRIBUTING.md) before opening a pull request. It covers the checks every change has to pass.
 
-## 🧱 Component Ecosystem
+## Credits
 
-### Core Components
-- **CodeBlock**: Interactive code editor with syntax highlighting
-- **Tabs**: Tabbed interface for multiple code examples
-- **ComponentRenderer**: Dynamic component rendering
-- **TableOfContents**: Auto-generated navigation
-- **Sidebar**: Hierarchical navigation structure
+A handful of base primitives (accordion, avatar, badge, button, sheet and slider) are derived from [shadcn/ui](https://github.com/shadcn-ui/ui) under its MIT License. [THIRD-PARTY-NOTICES.md](THIRD-PARTY-NOTICES.md) lists exactly which files. Everything else is original AlgorizeTech work.
 
-### UI Components
-- **BorderBeam**: Animated border effect
-- **Card**: Flexible card component
-- **DynamicLoader**: Suspense-based loading
-- **OptimizedImage**: Next.js image optimization
-- **Table**: Data table with sorting
+Runtime libraries the components use, such as Radix UI, Lucide, GSAP and Framer Motion, are installed from npm in your project and keep their own licenses.
 
-### Component Management
-For detailed information on how to add, edit, and delete components, see our [Component Guide](COMPONENTS_GUIDE.md).
+## License
 
-## 🔧 Component Lifecycle Management
-
-### Creation Workflow
-1. Scaffold component structure
-2. Implement component logic
-3. Add TypeScript definitions
-4. Create documentation
-5. Write unit tests
-6. Register in component registry
-
-### Modification Protocols
-1. Assess change impact
-2. Update documentation
-3. Validate with tests
-4. Follow code review process
-5. Optimize performance
-
-### Deprecation Process
-1. Analyze dependencies
-2. Document migration path
-3. Implement deprecation warnings
-4. Provide alternatives
-5. Plan removal timeline
-
-## 📈 Performance Monitoring
-
-### Optimization Strategies
-- Static Site Generation (SSG)
-- Server-Side Rendering (SSR)
-- Incremental Static Regeneration (ISR)
-- Image optimization with `next/image`
-- Code splitting and lazy loading
-- Bundle analysis and optimization
-
-### Monitoring Tools
-- Web Vitals tracking
-- Performance Monitor component
-- Bundle analyzer integration
-- Lighthouse audits
-
-## 🔒 Security & Compliance
-
-### Authentication
-- NextAuth.js integration ready
-- Secure session management
-- Role-based access control
-
-### Data Protection
-- Environment variable encryption
-- Secure API route patterns
-- Content Security Policy (CSP)
-
-### Compliance
-- GDPR-ready architecture
-- Accessibility (WCAG 2.1 AA)
-- SEO best practices
-
-## 🚀 Deployment
-
-### Vercel Deployment (Recommended)
-```bash
-# Install Vercel CLI
-npm install -g vercel
-
-# Deploy
-vercel
-```
-
-### Static Export
-```bash
-# Export static site
-npm run export
-```
-
-### Docker Deployment
-```dockerfile
-FROM node:18-alpine AS deps
-# ... Docker configuration
-
-FROM node:18-alpine AS runner
-# ... Docker configuration
-```
-
-## 🧪 Testing Strategy
-
-### Unit Testing
-- Jest for logic testing
-- React Testing Library for component testing
-
-### Integration Testing
-- End-to-end testing with Cypress
-- API route testing
-
-### Performance Testing
-- Lighthouse CI integration
-- Web Vitals monitoring
-
-## 📖 Knowledge Management
-
-### Documentation Standards
-- MDX for interactive documentation
-- Automated table of contents
-- Code examples with live preview
-- TypeScript/JavaScript toggle
-
-### API Documentation
-- OpenAPI/Swagger integration ready
-- Auto-generated API references
-
-### Troubleshooting
-- Common issues database
-- Debugging procedures
-- Performance optimization guides
-
-## 🤝 Contributing
-
-### Development Process
-1. Fork the repository
-2. Create feature branch
-3. Implement changes
-4. Write tests
-5. Update documentation
-6. Submit pull request
-
-### Code Standards
-- TypeScript for type safety
-- ESLint and Prettier for code formatting
-- Conventional commit messages
-- Semantic versioning
-
-### Review Process
-- Code review by maintainers
-- Automated testing checks
-- Performance benchmarking
-- Security scanning
-
-## 📊 Performance Metrics
-
-### Core Web Vitals
-- **Largest Contentful Paint (LCP)**: < 2.5s
-- **First Input Delay (FID)**: < 100ms
-- **Cumulative Layout Shift (CLS)**: < 0.1
-
-### Bundle Size
-- JavaScript bundle: < 150KB
-- CSS bundle: < 50KB
-- Image optimization: 30% reduction
-
-## 🌐 Internationalization
-
-### Multi-language Support
-- i18n routing ready
-- Translation file structure
-- Language switcher component
-
-
-## 📄 License
-
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
-
-## 🙏 Acknowledgments
-
-- [Next.js](https://nextjs.org/) - React framework
-- [Vercel](https://vercel.com/) - Hosting and deployment
-- [Tailwind CSS](https://tailwindcss.com/) - Utility-first CSS framework
-- [Framer Motion](https://www.framer.com/motion/) - Animation library
-- [Shiki](https://shiki.matsu.io/) - Syntax highlighter
-
----
-
-*Built with ❤️ by Algorize UI Team*
+Algorize UI is free for personal and commercial use under the [MIT License](LICENSE). Copyright © 2025–2026 AlgorizeTech.

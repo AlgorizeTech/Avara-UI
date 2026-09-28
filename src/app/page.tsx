@@ -69,7 +69,7 @@ import {
 	useState,
 	type ReactNode,
 } from "react";
-import { links } from "@/config/site";
+import { COMPONENT_COUNT, links } from "@/config/site";
 
 /* ═══════════════════════════════════════════════
    SAMPLE DATA
@@ -3885,7 +3885,7 @@ function CTASection() {
 							<span>Production-Ready</span>
 						</div>
 						<div className="flex items-center gap-4 text-[11px]">
-							<span>180+ Components</span>
+							<span>{COMPONENT_COUNT} Components</span>
 							<span className="hidden sm:inline text-border">•</span>
 							<span className="hidden sm:inline">MIT License</span>
 							<span className="text-border">•</span>
@@ -3898,7 +3898,7 @@ function CTASection() {
 						{/* Clean Status Pill */}
 						<div className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full border border-border bg-background text-xs font-medium text-foreground mb-8 sm:mb-10">
 							<Sparkles className="size-3.5 text-primary" />
-							<span>Built on shadcn/ui • 180+ Components</span>
+							<span>Built on shadcn/ui • {COMPONENT_COUNT} Components</span>
 						</div>
 
 						{/* Crisp Typography - Top Line in Text Color, Bottom Line in Theme Color */}
@@ -3913,7 +3913,7 @@ function CTASection() {
 
 						{/* Subtitle / Description mentioning shadcn/ui */}
 						<p className="text-[15px] sm:text-[16px] leading-[1.65] text-muted-foreground max-w-2xl mb-8">
-							An open collection of 180+ animated UI components built on top of{" "}
+							An open collection of {COMPONENT_COUNT} animated UI components built on top of{" "}
 							<span className="text-foreground font-semibold">shadcn/ui</span>,
 							Tailwind CSS, and TypeScript. Copy clean, battle-tested code straight
 							into your codebase with zero dependency lock-in and zero runtime bloat.
@@ -3976,7 +3976,7 @@ function CTASection() {
 							<Link
 								href="/docs/nextjs/all-components"
 								className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-7 py-3 rounded-xl bg-foreground text-background hover:bg-foreground/90 font-semibold text-sm transition-colors group">
-								<span>Explore 180+ Components</span>
+								<span>Explore {COMPONENT_COUNT} Components</span>
 								<ArrowRight className="size-4 transition-transform group-hover:translate-x-1" />
 							</Link>
 

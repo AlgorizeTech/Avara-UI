@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { SITE_URL, integrations } from "@/config/site";
+import { SITE_URL, integrations, siteConfig } from "@/config/site";
 
 // Split keywords into chunks for better performance
 const coreKeywords = [
@@ -127,8 +127,7 @@ export const allKeywords = [
 export const metadata: Metadata = {
   title:
     "Algorize UI | React Component Library",
-  description:
-    "A React component library of 120+ animated, accessible components built with Tailwind CSS, TypeScript, GSAP and Motion. Installed by the shadcn CLI straight into your project — no wrapper package, no lock-in.",
+  description: siteConfig.description,
   keywords: allKeywords,
   authors: [{ name: "AlgorizeTech", url: "https://github.com/AlgorizeTech" }],
   creator: "Algorize UI",
@@ -174,8 +173,7 @@ export const metadata: Metadata = {
   openGraph: {
     title:
       "Algorize UI | React Component Library",
-    description:
-      "A React component library of 120+ animated, accessible components built with Tailwind CSS, TypeScript, GSAP and Motion. Installed by the shadcn CLI straight into your project — no wrapper package, no lock-in.",
+    description: siteConfig.description,
     url: SITE_URL,
     siteName: "Algorize UI",
     images: [
@@ -193,8 +191,7 @@ export const metadata: Metadata = {
   twitter: {
     card: "summary_large_image",
     title: "Algorize UI | React Component Library",
-    description:
-      "120+ React components you install into your own codebase.",
+    description: siteConfig.tagline,
     images: [`${SITE_URL}/og-image.png`],
   },
   robots: {

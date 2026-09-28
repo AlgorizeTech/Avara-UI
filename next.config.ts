@@ -1,5 +1,6 @@
 import type { NextConfig } from "next";
 import createMDX from "@next/mdx";
+import { getComponentCount } from "./src/lib/component-count";
 
 // Bundle analyzer for performance monitoring
 const withBundleAnalyzer = require("@next/bundle-analyzer")({
@@ -14,6 +15,9 @@ const nextConfig: NextConfig = {
   // time-limited "New" badges against it so server and client always agree.
   env: {
     NEXT_PUBLIC_BUILD_TIME: new Date().toISOString(),
+    // Counted from registry.json, which `npm run build` regenerates before
+    // `next build`. Read it as COMPONENT_COUNT from src/config/site.ts.
+    NEXT_PUBLIC_REGISTRY_COMPONENT_COUNT: String(getComponentCount()),
   },
   trailingSlash: false,
   reactStrictMode: true,
