@@ -242,6 +242,62 @@ Explore the Fleet Tracker map features, including live marker positioning, custo
           and focus rings.
         </td>
       </tr>
+      <tr>
+        <td>
+          <code>zoom</code>
+        </td>
+        <td>
+          <code>number</code>
+        </td>
+        <td>
+          <code>15</code>
+        </td>
+        <td>
+          Initial zoom level and active vehicle focus zoom level. Defaults to <code>15</code> for street/neighborhood detail.
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <code>tileApiKey</code>
+        </td>
+        <td>
+          <code>string</code>
+        </td>
+        <td>
+          <code>undefined</code>
+        </td>
+        <td>
+          Optional CARTO API key if you choose to use CARTO Basemaps. By default, OpenStreetMap tiles are used with zero API key required.
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <code>tileUrl</code>
+        </td>
+        <td>
+          <code>string</code>
+        </td>
+        <td>
+          <code>OpenStreetMap tile URL</code>
+        </td>
+        <td>
+          Custom basemap raster tile URL template for light mode (e.g., <code>https://&#123;s&#125;.tile.openstreetmap.org/&#123;z&#125;/&#123;x&#125;/&#123;y&#125;.png</code>).
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <code>darkTileUrl</code>
+        </td>
+        <td>
+          <code>string</code>
+        </td>
+        <td>
+          <code>undefined</code>
+        </td>
+        <td>
+          Custom raster tile URL template for dark mode. If omitted, standard OpenStreetMap tiles are dynamically dark-graded.
+        </td>
+      </tr>
     </tbody>
   </table>
 </div>

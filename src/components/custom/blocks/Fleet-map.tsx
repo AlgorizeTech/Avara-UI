@@ -7,7 +7,9 @@ import {
   Map as MapIcon,
   MapPin,
   Menu,
+  Minus,
   Navigation2,
+  Plus,
   Search,
   Truck,
 } from "lucide-react";
@@ -43,6 +45,11 @@ export interface FleetTrackerProps {
   fleetData: Vehicle[];
   variant?: FleetVariant;
   color?: FleetColor;
+  zoom?: number;
+  tileApiKey?: string;
+  tileUrl?: string;
+  darkTileUrl?: string;
+  attribution?: string;
 }
 
 // ==========================================
@@ -150,38 +157,25 @@ const colorThemes: Record<string, Record<string, string>> = {
 // ==========================================
 // TILE SOURCES
 // ==========================================
-// Dark mode pulls the basemap as two layers rather than the combined
-// `dark_all` sheet. Carto renders geometry and labels as separate rasters, and
-// the two need opposite corrections (see MAP_STYLES) -- one flattened sheet
-// cannot be graded so that the ground reads dark and the type reads bright.
+// Uses OpenStreetMap tiles as the reliable, completely free default (no API key required).
+// Users can optionally provide `tileApiKey` (for CARTO basemaps) or custom `tileUrl` / `darkTileUrl`.
 const TILES = {
   light:
-    "https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png",
-  darkBase:
-    "https://{s}.basemaps.cartocdn.com/rastertiles/dark_nolabels/{z}/{x}/{y}{r}.png",
-  darkLabels:
-    "https://{s}.basemaps.cartocdn.com/rastertiles/dark_only_labels/{z}/{x}/{y}{r}.png",
+    "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
+  dark:
+    "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
 } as const;
 
-const TILE_ATTRIBUTION = '&copy; <a href="https://carto.com/">CartoDB</a>';
+const TILE_ATTRIBUTION =
+  '&copy; <a href="https://www.openstreetmap.org/copyright" target="_blank" rel="noopener noreferrer">OpenStreetMap</a> contributors';
 
 // ==========================================
 // DARK MAP GRADING
 // ==========================================
-// Carto's dark basemap is drawn almost entirely between #020202 and #262626:
-// land, water and roads all sit in the bottom 15% of the range, so against a
-// #09090b panel the map reads as an empty box -- land measured 1.31:1 against
-// the shell it sits in. The two rasters are therefore re-graded in the browser,
-// in opposite directions. Geometry is lifted off black and tinted slate
-// (land -> #3e4453, water -> #191b21, so land now separates from the panel at
-// 2.04:1 and from water at 1.77:1); labels are pushed the other way and land at
-// #bcc0cf, 5.37:1 against the ground they sit on, with their dark halo left
-// below the land tone so type keeps its outline.
-//
-// Leaflet's own chrome -- loading backdrop, pin art, popups -- ships light-only
-// and is restyled here as well. Everything is scoped to `.fleet-map-root` and
-// switched by the same `isDarkMode` value that picks the tiles, so the component
-// stays self-contained wherever it is dropped in.
+// When running in dark mode with the default tile provider, a CSS color-inversion
+// and hue-rotation filter transforms standard light tiles into a dark-themed map
+// without requiring specialized dark-tile accounts or paid APIs.
+// Marker layers and popups sit above this tile layer and preserve their true colors.
 const MAP_STYLES = `
 .fleet-map-root .leaflet-container {
   background: #e8eaed;
@@ -191,13 +185,8 @@ const MAP_STYLES = `
   background: #12151b;
 }
 
-.fleet-map-root[data-fleet-theme="dark"] .fleet-tiles-base {
-  filter: brightness(1.28) contrast(0.82) sepia(0.38) hue-rotate(186deg)
-    saturate(2.2);
-}
-.fleet-map-root[data-fleet-theme="dark"] .fleet-tiles-labels {
-  filter: brightness(1.6) contrast(1.1) sepia(0.2) hue-rotate(190deg)
-    saturate(1.3);
+.fleet-map-root[data-fleet-theme="dark"] .fleet-tiles-osm-dark {
+  filter: invert(100%) hue-rotate(180deg) brightness(95%) contrast(90%);
 }
 
 /* The pin art bakes in a black drop shadow that vanishes on a dark ground.
@@ -312,7 +301,13 @@ const getIcon = (
   });
 };
 
-function MapController({ activeVehicle }: { activeVehicle: Vehicle | null }) {
+function MapController({
+  activeVehicle,
+  zoom = 15,
+}: {
+  activeVehicle: Vehicle | null;
+  zoom?: number;
+}) {
   const map = useMap();
   useEffect(() => {
     if (
@@ -331,13 +326,47 @@ function MapController({ activeVehicle }: { activeVehicle: Vehicle | null }) {
     map.invalidateSize({ animate: false, pan: false });
     const size = map.getSize();
     if (!size.x || !size.y) {
-      map.setView(target, 15, { animate: false });
+      map.setView(target, zoom, { animate: false });
       return;
     }
 
-    map.flyTo(target, 15, { duration: 1.5 });
-  }, [activeVehicle, map]);
+    map.flyTo(target, zoom, { duration: 1.5 });
+  }, [activeVehicle, map, zoom]);
   return null;
+}
+
+function ZoomControls() {
+  const map = useMap();
+  return (
+    <div className="leaflet-bottom leaflet-right z-[1000] m-4 flex flex-col gap-1.5 pointer-events-auto">
+      <button
+        type="button"
+        title="Zoom In"
+        aria-label="Zoom in"
+        onClick={(e) => {
+          e.stopPropagation();
+          map.zoomIn();
+        }}
+        onDoubleClick={(e) => e.stopPropagation()}
+        className="w-8 h-8 rounded-lg bg-card/90 hover:bg-card text-foreground border border-border/80 backdrop-blur-md flex items-center justify-center transition-colors shadow-md cursor-pointer"
+      >
+        <Plus className="w-4 h-4" />
+      </button>
+      <button
+        type="button"
+        title="Zoom Out"
+        aria-label="Zoom out"
+        onClick={(e) => {
+          e.stopPropagation();
+          map.zoomOut();
+        }}
+        onDoubleClick={(e) => e.stopPropagation()}
+        className="w-8 h-8 rounded-lg bg-card/90 hover:bg-card text-foreground border border-border/80 backdrop-blur-md flex items-center justify-center transition-colors shadow-md cursor-pointer"
+      >
+        <Minus className="w-4 h-4" />
+      </button>
+    </div>
+  );
 }
 
 // Leaflet only measures its container once; refit whenever the container
@@ -387,7 +416,28 @@ export default function FleetTracker({
   fleetData = [],
   variant = "default",
   color = "primary",
+  zoom = 15,
+  tileApiKey,
+  tileUrl,
+  darkTileUrl,
+  attribution,
 }: FleetTrackerProps) {
+  const isCustomDark = Boolean(darkTileUrl || tileApiKey);
+  const lightTileSource =
+    tileUrl ||
+    (tileApiKey
+      ? `https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png?key=${tileApiKey}`
+      : TILES.light);
+  const darkTileSource =
+    darkTileUrl ||
+    (tileApiKey
+      ? `https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png?key=${tileApiKey}`
+      : TILES.dark);
+  const tileAttribution =
+    attribution ||
+    (tileApiKey
+      ? '&copy; <a href="https://carto.com/">CartoDB</a>'
+      : TILE_ATTRIBUTION);
   // Custom hex injection logic
   const isCustomHex = color?.startsWith("#");
   const customVars = isCustomHex
@@ -672,39 +722,41 @@ export default function FleetTracker({
       >
         {leaflet && rl && icons && (
           <rl.MapContainer
-            center={[40.75, -74.0]}
-            zoom={13}
+            center={
+              activeVehicle
+                ? [activeVehicle.lat, activeVehicle.lng]
+                : fleetData[0]
+                  ? [fleetData[0].lat, fleetData[0].lng]
+                  : [40.7465, -74.0014]
+            }
+            zoom={zoom}
             className="w-full h-full z-0"
             zoomControl={false}
             attributionControl={false}
           >
             {isDarkMode ? (
-              <>
-                <rl.TileLayer
-                  key="dark-base"
-                  className="fleet-tiles-base"
-                  attribution={TILE_ATTRIBUTION}
-                  url={TILES.darkBase}
-                  zIndex={1}
-                />
-                <rl.TileLayer
-                  key="dark-labels"
-                  className="fleet-tiles-labels"
-                  url={TILES.darkLabels}
-                  zIndex={2}
-                />
-              </>
+              <rl.TileLayer
+                key="dark"
+                className={cn(
+                  "fleet-tiles-base",
+                  !isCustomDark && "fleet-tiles-osm-dark",
+                )}
+                attribution={tileAttribution}
+                url={darkTileSource}
+                zIndex={1}
+              />
             ) : (
               <rl.TileLayer
                 key="light"
                 className="fleet-tiles-base"
-                attribution={TILE_ATTRIBUTION}
-                url={TILES.light}
+                attribution={tileAttribution}
+                url={lightTileSource}
                 zIndex={1}
               />
             )}
-            <MapController activeVehicle={activeVehicle} />
+            <MapController activeVehicle={activeVehicle} zoom={zoom} />
             <MapResizeHandler />
+            <ZoomControls />
             {fleetData.map((vehicle) => {
               const isActive = activeVehicle?.id === vehicle.id;
               return (
