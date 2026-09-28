@@ -57,6 +57,12 @@
   },
   "animated-typography": {
     "matrix-scramble-decryption": "Animated Typography — Matrix Scramble Decryption",
+    "letter-bounce-word-rotator": "Animated Typography — Letter Bounce Word Rotator",
+    "typewriter": "Animated Typography — Typewriter",
+    "word-flip": "Animated Typography — Word Flip",
+    "blur-swap": "Animated Typography — Blur Swap",
+    "blur-rise": "Animated Typography — Blur Rise",
+    "color-wipe": "Animated Typography — Color Wipe",
     "color-reveal-staggered-sweep": "Animated Typography — Color Reveal Staggered Sweep",
     "wavy-float-sine-wave": "Animated Typography — Wavy Float Sine Wave",
     "3d-perspective-flip": "Animated Typography — 3D Perspective Flip",

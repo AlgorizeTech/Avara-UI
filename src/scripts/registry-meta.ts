@@ -945,9 +945,9 @@ export const META: Record<string, ItemMeta> = {
   },
   "animated-typography": {
     description:
-      "Headings and paragraphs that animate in with typewriter, glitch, blur and reveal effects. Use it for section titles that should draw the eye once.",
+      "Headings and paragraphs that animate in with scramble, typewriter, rotating-word, blur and reveal effects. Use it for section titles that should draw the eye once.",
     categories: ["typography", "marketing"],
-    docs: "Named exports: AnimatedTypographyBlock, getThemeStyles. `as` picks the tag (h1-h6, p, span, blockquote) so semantics stay correct whatever the effect. No runtime dependencies — CSS and timers only. For per-character motion, use `text-animation`.",
+    docs: "Named exports: AnimatedTypographyBlock, getThemeStyles. `as` picks the tag (h1-h6, p, span, blockquote) so semantics stay correct whatever the effect. The rotating variants (letter-bounce, typewriter, word-flip, blur-swap) cycle `words` between `titlePrefix` and `titleSuffix`, one every `interval` ms; `text` stays what screen readers announce. No runtime dependencies — CSS and timers only. For per-character motion, use `text-animation`.",
   },
   "text-animation": {
     description:

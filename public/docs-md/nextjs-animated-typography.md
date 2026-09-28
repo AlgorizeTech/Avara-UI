@@ -83,11 +83,67 @@ export default function ColorRevealShowcase() {
   );
 }`;
 
+export const usageLetterBounce = `import { AnimatedTypographyBlock } from "@/components/custom/blocks/AnimatedTypographyBlock";
+
+const words = ["Interfaces", "Components", "Experiences"];
+
+export default function LetterBounceShowcase() {
+  return (
+
+  );
+}`;
+
+export const usageTypewriter = `import { AnimatedTypographyBlock } from "@/components/custom/blocks/AnimatedTypographyBlock";
+
+const words = ["Interfaces", "Components", "Experiences"];
+
+export default function TypewriterShowcase() {
+  return (
+
+  );
+}`;
+
+export const usageWordFlip = `import { AnimatedTypographyBlock } from "@/components/custom/blocks/AnimatedTypographyBlock";
+
+const words = ["Interfaces", "Components", "Experiences"];
+
+export default function WordFlipShowcase() {
+  return (
+
+  );
+}`;
+
+export const usageBlurSwap = `import { AnimatedTypographyBlock } from "@/components/custom/blocks/AnimatedTypographyBlock";
+
+const words = ["Interfaces", "Components", "Experiences"];
+
+export default function BlurSwapShowcase() {
+  return (
+
+  );
+}`;
+
+export const usageBlurRise = `import { AnimatedTypographyBlock } from "@/components/custom/blocks/AnimatedTypographyBlock";
+
+export default function BlurRiseShowcase() {
+  return (
+
+  );
+}`;
+
+export const usageColorWipe = `import { AnimatedTypographyBlock } from "@/components/custom/blocks/AnimatedTypographyBlock";
+
+export default function ColorWipeShowcase() {
+  return (
+
+  );
+}`;
+
 ## Features
 Discover the key capabilities that make this component an excellent choice for modern, animated user interfaces.
 
-    7 Modern Patterns
-    Features 7 distinct, non-generic typography animation patterns from Matrix decryption to liquid underlines.
+    14 Animation Patterns
+    From Matrix decryption to liquid underlines, plus every hero title effect — letter bounce, typewriter, word flip, blur swap, blur rise and color wipe.
 
     Highly Accessible
     Automatically renders an sr-only version for screen readers while displaying child visual spans.
@@ -133,11 +189,43 @@ Discover the key capabilities that make this component an excellent choice for m
 
             "matrix-scramble" | "color-reveal" | "wavy-float" |
             "3d-perspective-flip" | "elastic-spring" | "spotlight-reveal" |
-            "split-stagger" | "underline-draw"
+            "split-stagger" | "underline-draw" | "letter-bounce" |
+            "typewriter" | "word-flip" | "blur-swap" | "blur-rise" |
+            "color-wipe"
 
           "matrix-scramble"
         
-        The 8 distinct animation patterns applied to the text.
+        The 14 animation patterns applied to the text. letter-bounce, typewriter, word-flip and blur-swap rotate through words.
+
+          AnimatedTypographyBlock
+
+          words
+
+          string[]
+
+          [text]
+
+          The words the rotating variants cycle through. text is still what screen readers announce, so set it to the first word.
+
+          AnimatedTypographyBlock
+
+          interval
+
+          number
+
+          2400
+
+          Milliseconds each word stays on the rotating variants. The typewriter holds a finished word this long instead, 1800 by default.
+
+          AnimatedTypographyBlock
+
+          titlePrefix / titleSuffix
+
+          string
+        
+        —
+        
+          Static text either side of the animated part, e.g. titlePrefix="Build " before a rotating word.
 
           AnimatedTypographyBlock
 
