@@ -23,7 +23,6 @@ import { CommandSearchBlock } from "@/components/custom/blocks/UtilityBlocks";
 import { AppleSelect } from "@/components/custom/blocks/AppleSelectBlock";
 import { Avatar } from "@/components/custom/blocks/AvatarStackBlock";
 import { ComponentWall } from "@/components/custom/blocks/ComponentWallBlock";
-import { MarqueeBlock } from "@/components/custom/blocks/MarqueeBlock";
 import { AnimatedFAQBlock } from "@/components/custom/blocks/AnimatedFAQBlock";
 import { GitHubIcon } from "@/components/custom/blocks/Icons";
 import { WALL_ITEMS, WallStack } from "@/constants/component-wall";
@@ -63,7 +62,6 @@ import { motion, useInView } from "motion/react";
 import { MotionConfig } from "framer-motion";
 import Link from "next/link";
 import {
-	memo,
 	useLayoutEffect,
 	useRef,
 	useState,
@@ -3286,7 +3284,7 @@ function ComponentPreviewGridSection() {
 }
 
 /* ═══════════════════════════════════════════════
-   SECTION 5.5: ANIMATED FEEDBACK & TESTIMONIALS
+   SECTION 5.5: FEEDBACK & TESTIMONIALS
    ═══════════════════════════════════════════════ */
 
 interface FeedbackItem {
@@ -3301,177 +3299,41 @@ interface FeedbackItem {
 	tag?: string;
 }
 
-const FEEDBACK_ROW_1: FeedbackItem[] = [
-	{
-		id: "fb-1",
-		name: "Tanvir Ahmed",
-		role: "Frontend Engineer",
-		company: "TechVibe",
-		handle: "@tanvir_dev",
-		avatar: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_200,c_limit/v1790150483/photo-1534528741775-53994a69daeb-1790150482280.jpg",
-		content: "Spent 20 minutes playing with the interactive Component Wall and 3D Carousel right on this landing page. The physics, responsiveness, and smoothness are unreal.",
-		rating: 5.0,
-		tag: "Live Previews",
-	},
+/* Three reviews, one per promise the library makes: you own the code, the
+   motion has a purpose, and it takes your theme. */
+const FEEDBACK: FeedbackItem[] = [
 	{
 		id: "fb-2",
-		name: "Sarah Jenkins",
-		role: "Senior React Developer",
-		company: "Stripe",
+		name: "Sadiqur Rahman",
+		role: "Frontend Engineer",
+		company: "Techvence",
 		handle: "@sarah_codes",
-		avatar: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_200,c_limit/v1790158813/photo-1494790108377-be9c29b29330-1790158812212.jpg",
+		avatar: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_200,c_limit/v1790599673/screenshot-2026-09-28-174224-1790599681663.png",
 		content: "Ran the 'npx shadcn@latest add @algorize-ui/...' command in my Next.js 15 app. The code dropped directly into my components folder with zero dependency issues. Pure bliss.",
-		rating: 4.5,
+		rating: 5,
 		tag: "CLI Registry",
 	},
 	{
-		id: "fb-3",
-		name: "Alex Rivera",
-		role: "Full-Stack Engineer",
-		company: "Indie Builder",
-		handle: "@alexrivera_ui",
-		avatar: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_200,c_limit/v1790150480/photo-1507003211169-0a1dd7228f2d-1790150482276.jpg",
-		content: "The macOS Dock and Bento Showcase components on this website look like they were designed by Apple. Pasted them into our client portal and everyone was stunned.",
-		rating: 5.0,
-		tag: "Bento & Dock",
-	},
-	{
-		id: "fb-4",
-		name: "Marcus Vance",
-		role: "Design Engineer",
-		company: "AlgorizeTech",
-		handle: "@marcus_ui",
-		avatar: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_200,c_limit/v1790158814/photo-1500648767791-00dcc994a43e-1790158812212.jpg",
-		content: "Toggled between dark and light themes multiple times — the frosted glass blur, subtle border highlights, and color contrast are tuned to absolute perfection.",
-		rating: 4.0,
-		tag: "Dark Mode",
-	},
-	{
 		id: "fb-5",
-		name: "David Kim",
-		role: "Product Designer",
-		company: "Studio Neo",
+		name: "Abdullah Al Mamun",
+		role: "Full Stack Developer",
+		company: "Helen AI",
 		handle: "@davidkim_design",
-		avatar: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_200,c_limit/v1790158814/photo-1539571696357-5a69c17a67c6-1790158812214.jpg",
+		avatar: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_200,c_limit/v1790599727/screenshot-2026-09-28-184847-1790599737677.png",
 		content: "Finally a component collection where motion design feels purposeful, not distracting. The hover states, button springs, and tabs have so much character.",
-		rating: 4.5,
+		rating: 5,
 		tag: "Micro-Interactions",
-	},
-];
-
-const FEEDBACK_ROW_2: FeedbackItem[] = [
-	{
-		id: "fb-6",
-		name: "Elena Rostova",
-		role: "Lead Systems Architect",
-		company: "Fintech Labs",
-		handle: "@elena_codes",
-		avatar: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_200,c_limit/v1790158814/photo-1573496359142-b8d87734a5a2-1790158812214.jpg",
-		content: "Inspected the component source code in the docs. Clean, fully-typed TypeScript, accessible keyboard handlers, and no redundant abstractions. Exceptional code quality.",
-		rating: 5.0,
-		tag: "Clean TypeScript",
-	},
-	{
-		id: "fb-7",
-		name: "Liam O'Connor",
-		role: "SaaS Founder",
-		company: "LaunchFast",
-		handle: "@liam_builds",
-		avatar: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_200,c_limit/v1790150480/photo-1506794778202-cad84cf45f1d-1790150482275.jpg",
-		content: "Needed a high-converting hero layout and an animated review marquee for our product launch tonight. Found Docs UI, copied the code, and went live in 15 minutes.",
-		rating: 3.5,
-		tag: "Fast Shipping",
-	},
-	{
-		id: "fb-8",
-		name: "Priya Patel",
-		role: "Principal Engineer",
-		company: "CloudScale",
-		handle: "@priya_dev",
-		avatar: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_200,c_limit/v1790166050/photo-1580489944761-15a19d654956-1790166052226.jpg",
-		content: "The keyboard navigation, ⌘K command menu, and ARIA attributes work right out of the box with zero hydration warnings. That's rare for animation-heavy UI.",
-		rating: 5.0,
-		tag: "Accessibility",
-	},
-	{
-		id: "fb-9",
-		name: "Daniel Zhao",
-		role: "Indie Hacker",
-		company: "MetricsHub",
-		handle: "@danielzhao",
-		avatar: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_200,c_limit/v1790158814/photo-1522075469751-3a6694fb2f61-1790158812213.jpg",
-		content: "The interactive chart preview and draggable card widgets look like they belong on Linear or Raycast. It makes our humble SaaS look like a venture-backed tool.",
-		rating: 4.0,
-		tag: "Linear-Grade UI",
-	},
-	{
-		id: "fb-10",
-		name: "Emily Watson",
-		role: "UI/UX Consultant",
-		company: "CreativeFlow",
-		handle: "@emily_ux",
-		avatar: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_200,c_limit/v1790150478/photo-1544005313-94ddf0286df2-1790150482273.jpg",
-		content: "Most UI documentation gives you boring static code. Here you can actually test every component state interactively right inside the page before copying. Phenomenal DX!",
-		rating: 3.5,
-		tag: "Docs Experience",
-	},
-];
-
-const FEEDBACK_ROW_3: FeedbackItem[] = [
-	{
-		id: "fb-11",
-		name: "Lucas Müller",
-		role: "Frontend Engineer",
-		company: "Berlin Devs",
-		handle: "@lucas_m",
-		avatar: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_200,c_limit/v1790150481/photo-1517841905240-472988babdf9-1790150482277.jpg",
-		content: "Browsed the documentation and interactive demos on mobile Safari. Butter-smooth 60fps animations, no weird horizontal scroll bugs, and touch-friendly controls.",
-		rating: 4.0,
-		tag: "Mobile Smooth",
-	},
-	{
-		id: "fb-12",
-		name: "Nabil Hasan",
-		role: "Full-Stack Developer",
-		company: "Dhaka",
-		handle: "@nabilhasan",
-		avatar: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_200,c_limit/v1790166049/photo-1548142813-c348350df52b-1790166052222.jpg",
-		content: "Can't believe this entire library and documentation is free and open-source. The component polish and design engineering easily rival premium $200 UI kits.",
-		rating: 5.0,
-		tag: "100% Free UI",
 	},
 	{
 		id: "fb-13",
-		name: "Chloe Dupont",
-		role: "Staff UI Engineer",
-		company: "Vercel Ecosystem",
+		name: "Shuvo Sarkar",
+		role: "Software Engineer",
+		company: "Victory Vector",
 		handle: "@chloedupont",
-		avatar: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_200,c_limit/v1790158814/photo-1573496359142-b8d87734a5a2-1790158812214.jpg",
+		avatar: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_200,c_limit/v1790601192/screenshot-2026-09-28-191310-1790601200260.png",
 		content: "The way these components leverage Tailwind CSS variables makes theme customization so simple. It matched our existing design tokens in minutes.",
-		rating: 4.5,
+		rating: 5,
 		tag: "Theming",
-	},
-	{
-		id: "fb-14",
-		name: "Arlene McCoy",
-		role: "Co-Founder & CTO",
-		company: "PeakScale",
-		handle: "@arlene_mccoy",
-		avatar: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_200,c_limit/v1790158813/photo-1494790108377-be9c29b29330-1790158812212.jpg",
-		content: "Replacing our previous clunky UI kit with Docs UI reduced our frontend bundle by 40% and improved our Core Web Vitals scores across the board.",
-		rating: 3.0,
-		tag: "Bundle Size",
-	},
-	{
-		id: "fb-15",
-		name: "Siddharth Rao",
-		role: "Senior Software Engineer",
-		company: "Bangalore",
-		handle: "@siddharth_dev",
-		avatar: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_200,c_limit/v1790150480/photo-1507003211169-0a1dd7228f2d-1790150482276.jpg",
-		content: "The copy-paste workflow with zero external heavy npm packages gives us complete ownership of the UI. This is the future of frontend development.",
-		rating: 4.5,
-		tag: "Code Ownership",
 	},
 ];
 
@@ -3516,7 +3378,7 @@ function RatingStars({ rating }: { rating: number }) {
 
 function FeedbackCard({ item }: { item: FeedbackItem }) {
 	return (
-		<div className="group relative w-[320px] sm:w-[380px] shrink-0 p-5 sm:p-6 rounded-2xl bg-card border border-foreground/[0.06] hover:border-primary/40 shadow-2xs hover:shadow-xl hover:shadow-primary/5 transition-colors transition-shadow duration-200 flex flex-col justify-between select-none cursor-default">
+		<div className="group relative w-full p-5 sm:p-6 rounded-2xl bg-card border border-foreground/[0.06] hover:border-primary/40 shadow-2xs hover:shadow-xl hover:shadow-primary/5 transition-colors transition-shadow duration-200 flex flex-col justify-between select-none cursor-default">
 			{/* Subtle top border shimmer on hover */}
 			<div className="absolute inset-x-0 top-0 h-[1.5px] bg-gradient-to-r from-transparent via-primary/40 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 rounded-t-2xl" />
 
@@ -3578,57 +3440,6 @@ function FeedbackCard({ item }: { item: FeedbackItem }) {
 	);
 }
 
-/* The three marquee lanes, memoised: FeedbackSection re-renders when it
-   scrolls into view, and without this every card in every lane (three
-   copies per lane, four tracks per marquee) re-rendered with it. */
-const FeedbackRows = memo(function FeedbackRows() {
-	return (
-		<>
-			{/* Row 1: Leftward scroll (Speed: 250s, continuous running) */}
-			<MarqueeBlock
-				direction="left"
-				speed={250}
-				pauseOnHover={false}
-				gap="1.25rem"
-				className="py-1">
-				{[...FEEDBACK_ROW_1, ...FEEDBACK_ROW_1, ...FEEDBACK_ROW_1].map(
-					(item, idx) => (
-						<FeedbackCard key={`r1-${item.id}-${idx}`} item={item} />
-					),
-				)}
-			</MarqueeBlock>
-
-			{/* Row 2: Rightward scroll (Opposite direction, Speed: 250s, continuous running) */}
-			<MarqueeBlock
-				direction="right"
-				speed={250}
-				pauseOnHover={false}
-				gap="1.25rem"
-				className="py-1">
-				{[...FEEDBACK_ROW_2, ...FEEDBACK_ROW_2, ...FEEDBACK_ROW_2].map(
-					(item, idx) => (
-						<FeedbackCard key={`r2-${item.id}-${idx}`} item={item} />
-					),
-				)}
-			</MarqueeBlock>
-
-			{/* Row 3: Leftward scroll (Speed: 250s, continuous running) */}
-			<MarqueeBlock
-				direction="left"
-				speed={250}
-				pauseOnHover={false}
-				gap="1.25rem"
-				className="py-1">
-				{[...FEEDBACK_ROW_3, ...FEEDBACK_ROW_3, ...FEEDBACK_ROW_3].map(
-					(item, idx) => (
-						<FeedbackCard key={`r3-${item.id}-${idx}`} item={item} />
-					),
-				)}
-			</MarqueeBlock>
-		</>
-	);
-});
-
 function FeedbackSection() {
 	const ref = useRef(null);
 	const isInView = useInView(ref, { once: true, margin: "-40px" });
@@ -3661,17 +3472,15 @@ function FeedbackSection() {
 				</motion.div>
 			</div>
 
-			{/* Animated Marquee Rows (3 Lanes, Slow & Smooth) */}
+			{/* Three fixed reviews */}
 			<motion.div
 				initial={{ opacity: 0 }}
 				animate={isInView ? { opacity: 1 } : {}}
 				transition={{ duration: 0.8, delay: 0.2 }}
-				className="space-y-4 sm:space-y-5 relative">
-				{/* Gradient side masks for ultra-smooth edge blending */}
-				<div className="pointer-events-none absolute inset-y-0 left-0 w-16 sm:w-32 bg-gradient-to-r from-background via-background/80 to-transparent z-10" />
-				<div className="pointer-events-none absolute inset-y-0 right-0 w-16 sm:w-32 bg-gradient-to-l from-background via-background/80 to-transparent z-10" />
-
-				<FeedbackRows />
+				className={cn(SECTION_INNER, "grid grid-cols-1 gap-4 sm:gap-5 md:grid-cols-3")}>
+				{FEEDBACK.map((item) => (
+					<FeedbackCard key={item.id} item={item} />
+				))}
 			</motion.div>
 		</section>
 	);
