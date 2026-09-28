@@ -98,7 +98,7 @@
     "sizes": "Avatar Stack — Sizes"
   },
   "bento-showcase": {
-    "outsourcing-company": "Bento Showcase — Outsourcing company"
+    "managed-call-centre": "Bento Showcase — Managed call centre"
   },
   "book-appointment": {
     "clinic-booking-page": "Book Appointment — Clinic booking page",
@@ -405,16 +405,16 @@
     "wander-the-fjords": "Honeycomb Hero — Wander the fjords"
   },
   "hero-carousel": {
-    "wake-up-above-the-clouds": "Hero Carousel — Wake up above the clouds"
+    "watch-the-dawn-from-the-summit": "Hero Carousel — Watch the dawn from the summit"
   },
   "fashion-hero": {
-    "bold-fashion": "Fashion Hero — Bold fashion"
+    "daring-designs": "Fashion Hero — Daring designs"
   },
   "support-hero": {
     "headline-call-to-action-six-cards": "Support Hero — Headline, call to action, six cards"
   },
   "collage-hero": {
-    "a-happy-space": "Collage Hero — A happy space"
+    "a-bright-place": "Collage Hero — A bright place"
   },
   "homepage-hero": {
     "word-bounce-hero": "Homepage Hero — Word bounce hero"
@@ -557,7 +557,7 @@
     "issues": "Newsletter — Issues"
   },
   "orbit-gallery": {
-    "motion-is-the-first-thing-anyone-reads": "Orbit Gallery — Motion is the first thing anyone reads"
+    "movement-is-what-people-notice-first": "Orbit Gallery — Movement is what people notice first"
   },
   "otp-input": {
     "otp-input": "OTP Input",

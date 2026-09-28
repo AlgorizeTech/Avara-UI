@@ -1,25 +1,13 @@
 import { Cli } from "@/components/site/cli";
 
-# Creating Your First App
+# Quick Start
 
 <OtherFrameworkGuide slug="first-app" label="quick start" />
 
-Two guides in one. The first gets an Algorize UI component rendering in a few
-minutes; the rest is a React + Vite walkthrough for anyone starting from scratch.
+Get an Algorize UI component on screen in a new React + Vite app. For an existing
+project, follow the [Installation guide](/docs/reactjs/installation) instead.
 
-## Prerequisites
-
-Before you start, make sure you have:
-
-- Node.js 18 or later installed
-- A code editor (we recommend Visual Studio Code)
-- A terminal or command prompt
-
-## Quick start: your first component
-
-### 1. Create a Vite app
-
-Skip this if you already have one.
+## 1. Create a Vite app
 
 ```bash
 npm create vite@latest my-app -- --template react-ts
@@ -27,12 +15,7 @@ cd my-app
 npm install
 ```
 
-### 2. Set up Tailwind and the `@/` alias
-
-Both are prerequisites for the CLI, and the alias in particular has to be
-declared twice — once for TypeScript, once for Vite. The
-[Installation guide](/docs/reactjs/installation) covers this in full; the short
-version:
+## 2. Set up Tailwind and the path alias
 
 ```bash
 npm install tailwindcss @tailwindcss/vite
@@ -54,44 +37,40 @@ export default defineConfig({
 ```
 
 ```css
-/* src/index.css */
+/* src/index.css — replace the whole file */
 @import "tailwindcss";
 ```
 
+Add the alias to `compilerOptions` in both `tsconfig.json` and
+`tsconfig.app.json`:
+
 ```json
-// tsconfig.json
 {
   "compilerOptions": {
-    "baseUrl": ".",
     "paths": { "@/*": ["./src/*"] }
   }
 }
 ```
 
-### 3. Initialize shadcn
+## 3. Initialize shadcn
 
-Run once per project. It writes `components.json` and the `cn` helper in
-`src/lib/utils.ts` that every component imports. Answer **no** when it asks
-about React Server Components — a Vite app has none.
+Creates `components.json` and the `cn` helper every component imports.
 
-<Cli command={`init`} />
+<Cli command={`init --base radix --preset nova`} />
 
-### 4. Register the registry
+## 4. Register the registry
 
-Also once per project. It tells the CLI where `@algorize-ui/…` lives:
+Tells the CLI where `@algorize-ui/…` components live.
 
 <Cli command={`registry add @algorize-ui=https://algorize-ui.vercel.app/r/{name}.json`} />
 
-### 5. Add a component
-
-Every component page carries its own command — this one installs the card:
+## 5. Add a component
 
 <Cli command={`add card.json`} />
 
-The CLI writes `src/components/custom/blocks/CardBlock.tsx` and installs whatever
-that component needs.
+This writes `src/components/custom/blocks/CardBlock.tsx` into your project.
 
-### 6. Use it
+## 6. Use it
 
 ```tsx
 // src/App.tsx
@@ -122,249 +101,9 @@ export default function App() {
 }
 ```
 
-Run `npm run dev`, open `http://localhost:5173`, and it is on screen. Every
-component page has a **Usage** tab with a full file you can paste the same way.
+Run `npm run dev` and open `http://localhost:5173`.
 
-## Full walkthrough: React + Vite from scratch
+## Next steps
 
-Everything below is independent of the quick start above and does not use
-Algorize UI. It builds a small React app from an empty directory — start here if
-you are new to Vite, or skip it entirely if you already have an app running.
-
-### Step 1: Create a new Vite app
-
-```bash
-npm create vite@latest my-first-app -- --template react-ts
-cd my-first-app
-npm install
-```
-
-This scaffolds a React application with:
-
-- TypeScript configured
-- Fast HMR through Vite's dev server
-- An ES-module build with no bundling in development
-
-### Step 2: Run the development server
-
-```bash
-npm run dev
-```
-
-Visit `http://localhost:5173` to see your new app. Vite prints the URL on start —
-note that it is **5173**, not 3000.
-
-### Step 3: Explore the project structure
-
-```bash
-my-first-app/
-├── public/              # Static assets served as-is
-├── src/
-│   ├── assets/          # Assets imported by your code
-│   ├── App.tsx          # Root component
-│   ├── App.css          # Component styles
-│   ├── main.tsx         # Entry point — mounts React to the DOM
-│   └── index.css        # Global styles
-├── index.html           # The HTML shell (at the project root, not in public/)
-├── vite.config.ts       # Vite configuration
-└── tsconfig.json        # TypeScript configuration
-```
-
-Two things surprise people coming from Next.js. `index.html` lives at the project
-root and is the real entry point — Vite transforms it. And there is no
-file-system router: `src/main.tsx` mounts a single React tree, and routing is
-something you add.
-
-#### src/main.tsx
-
-```tsx
-import { StrictMode } from "react";
-import { createRoot } from "react-dom/client";
-import App from "./App";
-import "./index.css";
-
-createRoot(document.getElementById("root")!).render(
-  <StrictMode>
-    <App />
-  </StrictMode>,
-);
-```
-
-#### src/App.tsx
-
-```tsx
-export default function App() {
-  return (
-    <main className="min-h-screen flex flex-col items-center justify-center gap-4">
-      <h1 className="text-4xl font-semibold">Welcome</h1>
-      <p className="text-xl">This is my first React app!</p>
-    </main>
-  );
-}
-```
-
-### Step 4: Add routing
-
-Vite has no built-in router. React Router is the usual choice:
-
-```bash
-npm install react-router-dom
-```
-
-```tsx
-// src/main.tsx
-import { StrictMode } from "react";
-import { createRoot } from "react-dom/client";
-import { BrowserRouter, Route, Routes } from "react-router-dom";
-import App from "./App";
-import About from "./routes/About";
-import "./index.css";
-
-createRoot(document.getElementById("root")!).render(
-  <StrictMode>
-    <BrowserRouter>
-      <Routes>
-        <Route path="/" element={<App />} />
-        <Route path="/about" element={<About />} />
-      </Routes>
-    </BrowserRouter>
-  </StrictMode>,
-);
-```
-
-```tsx
-// src/routes/About.tsx
-export default function About() {
-  return (
-    <main className="p-24">
-      <h1 className="text-3xl font-semibold">About</h1>
-    </main>
-  );
-}
-```
-
-### Step 5: Add navigation
-
-```tsx
-import { Link } from "react-router-dom";
-
-export default function Nav() {
-  return (
-    <nav className="flex gap-4 p-4 border-b">
-      <Link to="/" className="hover:underline">
-        Home
-      </Link>
-      <Link to="/about" className="hover:underline">
-        About
-      </Link>
-    </nav>
-  );
-}
-```
-
-This is the substitution to remember when reading a Next.js snippet: `next/link`
-with `href` becomes React Router's `Link` with `to`. If you are not using a
-router at all, a plain `<a href>` is fine.
-
-### Step 6: Create a component
-
-```tsx
-// src/components/Greeting.tsx
-export default function Greeting({ name }: { name: string }) {
-  return <p className="text-lg">Hello, {name}.</p>;
-}
-```
-
-```tsx
-// src/App.tsx
-import Greeting from "./components/Greeting";
-
-export default function App() {
-  return (
-    <main className="p-24">
-      <Greeting name="World" />
-    </main>
-  );
-}
-```
-
-Every component in a Vite app is a client component. There is no server/client
-split to think about, which is why the `"use client"` line at the top of Algorize
-UI components is simply ignored here.
-
-### Step 7: Fetch data
-
-Without server components, data fetching happens in an effect or through a
-library like TanStack Query:
-
-```tsx
-import { useEffect, useState } from "react";
-
-type Post = { id: number; title: string };
-
-export default function Posts() {
-  const [posts, setPosts] = useState<Post[]>([]);
-
-  useEffect(() => {
-    fetch("https://api.example.com/posts")
-      .then((response) => response.json())
-      .then(setPosts)
-      .catch(console.error);
-  }, []);
-
-  return (
-    <ul className="space-y-2">
-      {posts.map((post) => (
-        <li key={post.id}>{post.title}</li>
-      ))}
-    </ul>
-  );
-}
-```
-
-### Step 8: Add styling
-
-With Tailwind installed as shown in Step 2, utility classes work anywhere. For
-component-scoped CSS, Vite supports CSS Modules out of the box:
-
-```css
-/* src/components/Card.module.css */
-.card {
-  border-radius: 0.75rem;
-  padding: 1.5rem;
-}
-```
-
-```tsx
-import styles from "./Card.module.css";
-
-export default function Card() {
-  return <div className={styles.card}>Content</div>;
-}
-```
-
-### Step 9: Build and deploy
-
-```bash
-npm run build
-```
-
-This writes a static bundle to `dist/`, which any static host will serve —
-Netlify, Vercel, Cloudflare Pages, S3, or your own nginx.
-
-One deployment detail matters if you added React Router: the host must rewrite
-unknown paths to `index.html`, or a hard refresh on `/about` will 404. Most
-platforms call this a SPA fallback and it is a single line of configuration.
-
-## Next Steps
-
-1. [Browse the components](/docs/reactjs/all-components) — each page has an install command and a full usage file
-2. [Read the Introduction](/docs/reactjs/index) to see how the registry install model works
-3. [Check the Architecture](/docs/reactjs/architecture) for how components are structured
-
-## Resources
-
-- [Vite documentation](https://vite.dev)
-- [React documentation](https://react.dev)
-- [React Router documentation](https://reactrouter.com)
-- [Tailwind CSS documentation](https://tailwindcss.com)
+- [Pick a theme](/themes) and paste it into `src/index.css`
+- [Browse all components](/docs/reactjs/all-components) — each page has an install command and a usage example

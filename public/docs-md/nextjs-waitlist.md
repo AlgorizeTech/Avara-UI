@@ -17,21 +17,21 @@ const FACES = [
 export default function EarlyAccess() {
   return (
     
-      M
+      T
       
-      Get early access to Meridian
+      Be first in line for Tidewell
       
-        A calmer way to plan the week. The first thousand people on the list get in before anyone else.
+        Planning your week, minus the stress. Our first 1,000 sign-ups get access ahead of everyone.
       
        {
           const res = await fetch("/api/waitlist", { method: "POST", body: JSON.stringify({ email }) });
-          if (!res.ok) throw new Error("That address didn't go through. Try again.");
+          if (!res.ok) throw new Error("We couldn't add that address. Please retry.");
           const { position } = await res.json();
           return position; // shown as "#2,341 in line"
         }}
-        shareUrl="https://meridian.app/?ref=k7x2q"
+        shareUrl="https://tidewell.app/?ref=k7x2q"
       />
-      Joined by 4,120 people so far
+      4,120 people have signed up already
     
   );
 }
@@ -42,10 +42,10 @@ export const usageCard = `"use client";
 export default function JoinCard() {
   return (
     
-      Join the waitlist
-      Be the first to know when we open. One email, no noise.
+      Reserve your spot
+      Hear the moment we launch. A single email, nothing more.
       
-      2,300 people ahead of you
+      2,300 people already queued
     
   );
 }
@@ -56,11 +56,11 @@ export const usageQueue = `"use client";
 export default function GetInLine() {
   return (
     
-      Every launch starts with a list. Get on this one.
+      Great products open to a few first. Be one of them.
       
-        Meridian opens in small groups so every new person gets a proper welcome. Join now and we'll hold your place.
+        Tidewell lets people in a batch at a time, so everyone gets a real onboarding. Sign up today and your place is reserved.
 
-      10,000+ already in line
+      10,000+ people waiting
 
   );
 }
@@ -139,12 +139,12 @@ npx shadcn@latest add @algorize-ui/waitlist
 
         action
         string
-        "Join the waitlist"
+        "Get on the list"
         Button label.
 
         successTitle, successText
         string
-        "You're on the waitlist", "We'll email you the moment your invite is ready."
+        "Your spot is saved", "Expect an email from us as soon as your invite opens up."
         The thank-you.
 
         positionLabel
@@ -159,7 +159,7 @@ npx shadcn@latest add @algorize-ui/waitlist
 
         shareLabel, shareHint
         string
-        "Copy invite link", "Share it to move up the line."
+        "Copy referral link", "Each friend who joins bumps you forward."
         The copy button's label and the line beside it.
 
         note
@@ -182,7 +182,7 @@ npx shadcn@latest add @algorize-ui/waitlist
         Countdown
         label, doneLabel
         string
-        The line over the figures ("Opens in"), and what replaces them once the date has passed ("We're open").
+        The line over the figures ("Launching in"), and what replaces them once the date has passed ("Now live").
 
         Proof
         avatars

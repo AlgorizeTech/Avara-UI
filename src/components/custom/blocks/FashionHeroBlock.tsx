@@ -110,7 +110,7 @@ function FashionHeroRoot({
   video,
   avatars = [],
   avatarsHref,
-  avatarsLabel = "Join the community",
+  avatarsLabel = "Become a member",
   looks,
   cta,
   quote,

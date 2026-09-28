@@ -1,132 +1,66 @@
 # Introduction
 
-Algorize UI is a library of **176 React components** — from buttons
-and inputs to dashboards, carousels and scroll-driven marketing sections. Each
-one is animated, responsive, themeable and typed.
+Algorize UI is a library of **176 animated, responsive React
+components** — from buttons and inputs to dashboards, carousels and full
+marketing sections.
 
 It is not an npm package. Components are published as a
-[shadcn registry](https://ui.shadcn.com/docs/registry), so the CLI copies a
-component's source **into your project**. From that moment the file is yours:
-read it, edit it, delete half of it. There is no library version to track and
-nothing to fight when a design calls for something the props do not cover.
+[shadcn registry](https://ui.shadcn.com/docs/registry), and the CLI copies each
+component's source **into your project**, where you can edit it like any other
+file.
 
 ```bash
 npx shadcn@latest add @algorize-ui/button
 ```
 
-The short `@algorize-ui/…` form needs the registry registered once per project — one
-command, covered in the installation
-guide. Toggle to **URL** above for the form that needs no setup.
+The short `@algorize-ui/…` form needs the registry
+registered once.
+Switch to **URL** above for a command that needs no setup.
 
-## Component Philosophy
+## Why this approach
 
-Build software faster with complete code ownership, no wrapper package, and total styling freedom.
-
-    {/* Glyph stays on one line: MDX parses children of a multi-line JSX element as
-        block content, which would wrap it in the custom  (mb-4) and push it 8px
-        off-centre, since flex centres the margin box. */}
-    ⚡
-    No Wrapper Package
+    You own the code
     
-      There is no library to install and version. The CLI writes each component's source into your codebase, so you own it and there is no lock-in.
+      No wrapper package and no version to track. The source lives in your repo.
 
-    🎨
-    100% Customizability
+    Your theme
     
-      Modify styles, animations, and behaviors directly within your components/custom folder.
+      Components read your Tailwind theme tokens. Preview a palette on the Themes page.
 
-    🧩
-    Dependencies Per Component
+    Only what you use
     
-      Each component declares only what it imports — usually lucide-react, gsap or framer-motion, and often nothing at all. Its page lists them before you install.
+      Each component declares its own dependencies, and the CLI installs them with it.
 
-## What's in the library
-
-    33
-    Marketing sections
-
-    21
-    Data display
-
-    18
-    Forms &amp; inputs
-
-    15
-    Layout
-
-    14
-    Media
-
-    13
-    Navigation
-
-Plus overlays, feedback, scroll effects, commerce, authentication, maps, code
-blocks and typography. [Browse everything](/docs/nextjs/all-components).
-
-## What you need
+## Requirements
 
 {/* Written as JSX, not a markdown table: remarkPlugins is empty in
     next.config.ts, so GFM tables render as literal pipe characters. */}
-
-        Requirement
-        Supported
 
         React
         18 or 19
 
           Next.js
-          14, 15 or 16 — App Router
+          App Router
 
           Vite
-          5 or 6 — also works with CRA and React Router
+          Any recent version
 
         Tailwind CSS
-        v3.4+ or v4
+        v4
 
         TypeScript
-        5+, or plain JavaScript
-
-Every component is plain React — none of them import from `next/*`. The dozen that
-render links or images take a `linkComponent` / `imageComponent` prop instead, so
-pass `next/link` or `next/image` to keep prefetching and image optimisation. Each
-of those pages shows the one line.
-
-Every component is plain React and drops straight into a Vite app — none of them
-
-links or images default to plain `` and ``, and take a `linkComponent` /
-`imageComponent` prop if you would rather supply your own — React Router's `Link`,
-for instance.
-
-## How a component reaches your project
-
-Every component page follows the same two steps:
-
-1. **Install it** — one `shadcn add` command, which also pulls in anything it
-   depends on.
-2. **Install dependencies** — listed explicitly, split between registry
-   components and npm packages, because those need different commands. Many
-   components need no npm packages at all, and the page says so plainly.
-
-Then copy a snippet from the **Usage** tab. Every snippet is a complete file,
-not a fragment.
-
-## Theming
-
-Components read your Tailwind theme tokens, so they inherit your colours and
-radii without configuration. Many accept a `color` prop for a per-instance
-accent, and the [theme customizer](/themes) lets you preview a palette across
-the whole library before committing to it.
+        Optional
 
 ## Where next
 
     Installation
-    Set up the CLI and add your first component.
+    Set up Tailwind, shadcn and the registry.
 
     Quick Start
-    A component on screen in four steps.
+    Get a component on screen in minutes.
 
-    Architecture
-    How the library is structured and why.
+    All components
+    Browse the full library by category.
 
 ---
 

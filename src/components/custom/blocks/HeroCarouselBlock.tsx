@@ -39,7 +39,7 @@ export interface HeroCarouselProps extends Omit<React.HTMLAttributes<HTMLElement
   /** The paragraph in the glass panel. */
   intro?: string;
   avatars?: StackAvatar[];
-  /** Beside the faces, e.g. "50+ people joined". */
+  /** Beside the faces, e.g. "50+ travellers this season". */
   avatarsLabel?: string;
   cta?: { label: string; href: string };
   /** Milliseconds between slides. `0` turns autoplay off. */

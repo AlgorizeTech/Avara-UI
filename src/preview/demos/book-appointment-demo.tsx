@@ -5,41 +5,41 @@ import { type SurfaceVariant } from "@/components/custom/blocks/GlassPanelBlock"
 import { cn } from "@/lib/utils";
 
 const DOCTOR = {
-  name: "Dr. Emily Chen, MD",
-  shortName: "Dr. Chen",
-  specialties: "Internal medicine, Cardiology",
-  practice: "Manhattan Health Associates",
+  name: "Dr. Priya Nair, MD",
+  shortName: "Dr. Nair",
+  specialties: "Cardiology and general internal medicine",
+  practice: "Riverside Heart & Medical Group",
   photo:
     "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_687,c_limit/v1790145142/photo-1638202993928-7267aad84c31-1790145143494.jpg",
-  photoAlt: "Dr. Emily Chen in a white coat with a stethoscope",
+  photoAlt: "Portrait of Dr. Priya Nair wearing a lab coat and stethoscope",
   rating: 4.8,
   reviews: 38,
   summary:
-    "Patients describe Dr. Chen as thorough and easy to talk to. They value her cardiology expertise and clear explanations; a few mention delays getting a callback.",
-  location: "New York, NY, Manhattan Health Associates",
-  phone: "(212) 555-7890",
-  email: "drchen@example.com",
-  languages: "English, Spanish",
+    "Reviewers call Dr. Nair careful and approachable. Her heart-care knowledge and plain-spoken answers stand out; some note slow replies to phone messages.",
+  location: "Brooklyn, NY, Riverside Heart & Medical Group",
+  phone: "(718) 555-0142",
+  email: "drnair@example.com",
+  languages: "English, Hindi",
 };
 
 const SCORES = [
-  { label: "Wait time", value: 4.63 },
-  { label: "Bedside manner", value: 4.19 },
-  { label: "Clear explanations", value: 4.74 },
+  { label: "Punctuality", value: 4.63 },
+  { label: "Warmth and care", value: 4.19 },
+  { label: "Explains things well", value: 4.74 },
 ];
 
 const VISIT_REASONS = [
-  { label: "Hypertension management", value: 35 },
-  { label: "Preventive cardiology", value: 25 },
-  { label: "Heart failure monitoring", value: 22 },
-  { label: "Chest pain evaluation", value: 18 },
+  { label: "Blood pressure care", value: 35 },
+  { label: "Heart health check-ups", value: 25 },
+  { label: "Heart failure follow-up", value: 22 },
+  { label: "Chest pain workup", value: 18 },
 ];
 
 const ACTIVITIES = [
-  { label: "Clinical", value: 47 },
-  { label: "Research", value: 24 },
-  { label: "Teaching", value: 16 },
-  { label: "Admin", value: 10 },
+  { label: "Clinic", value: 47 },
+  { label: "Studies", value: 24 },
+  { label: "Mentoring", value: 16 },
+  { label: "Paperwork", value: 10 },
   { label: "Other", value: 3 },
 ];
 

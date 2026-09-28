@@ -28,22 +28,22 @@ const FACES = [
 export default function EarlyAccess() {
   return (
     <Waitlist variant="launch">
-      <Waitlist.Mark>M</Waitlist.Mark>
+      <Waitlist.Mark>T</Waitlist.Mark>
       <Waitlist.Countdown date="2026-11-01T09:00:00Z" />
-      <Waitlist.Heading>Get early access to Meridian</Waitlist.Heading>
+      <Waitlist.Heading>Be first in line for Tidewell</Waitlist.Heading>
       <Waitlist.Intro>
-        A calmer way to plan the week. The first thousand people on the list get in before anyone else.
+        Planning your week, minus the stress. Our first 1,000 sign-ups get access ahead of everyone.
       </Waitlist.Intro>
       <Waitlist.Form
         onJoin={async (email) => {
           const res = await fetch("/api/waitlist", { method: "POST", body: JSON.stringify({ email }) });
-          if (!res.ok) throw new Error("That address didn't go through. Try again.");
+          if (!res.ok) throw new Error("We couldn't add that address. Please retry.");
           const { position } = await res.json();
           return position; // shown as "#2,341 in line"
         }}
-        shareUrl="https://meridian.app/?ref=k7x2q"
+        shareUrl="https://tidewell.app/?ref=k7x2q"
       />
-      <Waitlist.Proof avatars={FACES}>Joined by 4,120 people so far</Waitlist.Proof>
+      <Waitlist.Proof avatars={FACES}>4,120 people have signed up already</Waitlist.Proof>
     </Waitlist>
   );
 }
@@ -56,14 +56,14 @@ import { Waitlist } from "@/components/custom/blocks/WaitlistBlock";
 export default function JoinCard() {
   return (
     <Waitlist variant="card">
-      <Waitlist.Heading>Join the waitlist</Waitlist.Heading>
-      <Waitlist.Intro>Be the first to know when we open. One email, no noise.</Waitlist.Intro>
+      <Waitlist.Heading>Reserve your spot</Waitlist.Heading>
+      <Waitlist.Intro>Hear the moment we launch. A single email, nothing more.</Waitlist.Intro>
       <Waitlist.Form
-        action="Join waitlist"
+        action="Save my spot"
         onJoin={join}
-        note="By joining you agree to hear from us about the launch."
+        note="Signing up means we may email you about the launch."
       />
-      <Waitlist.Proof avatars={FACES}>2,300 people ahead of you</Waitlist.Proof>
+      <Waitlist.Proof avatars={FACES}>2,300 people already queued</Waitlist.Proof>
     </Waitlist>
   );
 }
@@ -76,12 +76,12 @@ import { Waitlist } from "@/components/custom/blocks/WaitlistBlock";
 export default function GetInLine() {
   return (
     <Waitlist variant="queue">
-      <Waitlist.Heading>Every launch starts with a list. Get on this one.</Waitlist.Heading>
+      <Waitlist.Heading>Great products open to a few first. Be one of them.</Waitlist.Heading>
       <Waitlist.Intro>
-        Meridian opens in small groups so every new person gets a proper welcome. Join now and we'll hold your place.
+        Tidewell lets people in a batch at a time, so everyone gets a real onboarding. Sign up today and your place is reserved.
       </Waitlist.Intro>
-      <Waitlist.Form action="Get notified" onJoin={join} shareUrl="https://meridian.app/?ref=k7x2q" />
-      <Waitlist.Proof avatars={FACES}>10,000+ already in line</Waitlist.Proof>
+      <Waitlist.Form action="Notify me" onJoin={join} shareUrl="https://tidewell.app/?ref=k7x2q" />
+      <Waitlist.Proof avatars={FACES}>10,000+ people waiting</Waitlist.Proof>
       <Waitlist.Spots claimed={1240} total={2000} />
     </Waitlist>
   );
@@ -94,7 +94,7 @@ export default function GetInLine() {
   examples={[
     {
       title: "Launch",
-      subheading: "Your mark, a countdown to the opening date, and the form beside its button on a wide panel. Type an address and press Join — the form becomes your place in line, counting up, with an invite link to copy.",
+      subheading: "Your mark, a countdown to the opening date, and the form beside its button on a wide panel. Type an address and submit — the form becomes your place in line, counting up, with an invite link to copy.",
       propNotes: [
         {
           prop: "Countdown",
@@ -268,13 +268,13 @@ export default function GetInLine() {
       <tr>
         <td><code>action</code></td>
         <td><code>string</code></td>
-        <td><code>"Join the waitlist"</code></td>
+        <td><code>"Get on the list"</code></td>
         <td>Button label.</td>
       </tr>
       <tr>
         <td><code>successTitle</code>, <code>successText</code></td>
         <td><code>string</code></td>
-        <td><code>"You're on the waitlist"</code>, <code>"We'll email you the moment your invite is ready."</code></td>
+        <td><code>"Your spot is saved"</code>, <code>"Expect an email from us as soon as your invite opens up."</code></td>
         <td>The thank-you.</td>
       </tr>
       <tr>
@@ -292,7 +292,7 @@ export default function GetInLine() {
       <tr>
         <td><code>shareLabel</code>, <code>shareHint</code></td>
         <td><code>string</code></td>
-        <td><code>"Copy invite link"</code>, <code>"Share it to move up the line."</code></td>
+        <td><code>"Copy referral link"</code>, <code>"Each friend who joins bumps you forward."</code></td>
         <td>The copy button's label and the line beside it.</td>
       </tr>
       <tr>
@@ -328,7 +328,7 @@ export default function GetInLine() {
         <td><code>Countdown</code></td>
         <td><code>label</code>, <code>doneLabel</code></td>
         <td><code>string</code></td>
-        <td>The line over the figures (<code>"Opens in"</code>), and what replaces them once the date has passed (<code>"We're open"</code>).</td>
+        <td>The line over the figures (<code>"Launching in"</code>), and what replaces them once the date has passed (<code>"Now live"</code>).</td>
       </tr>
       <tr>
         <td><code>Proof</code></td>

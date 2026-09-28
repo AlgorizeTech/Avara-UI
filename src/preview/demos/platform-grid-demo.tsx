@@ -73,84 +73,84 @@ type Cell =
 const t = (label: string, icon: React.ReactNode): Cell => ({ kind: "tile", label, icon });
 
 const CELLS: Cell[] = [
-  t("BuildHub", <Grid2x2 />),
-  t("BuildGuide", <Rocket />),
-  t("BigIdeasDB MCP", <Sparkles />),
-  t("Reddit MCP", <Bot />),
-  t("Database AI Chat", <MessageSquare />),
-  t("TrustMRR", <Star />),
-  t("Stripe Index", <DollarSign />),
-  t("Stripe CRM", <StripeIcon fill="currentColor" />),
-  t("SellSide DB", <Store />),
-  t("Acquire.com Data", <HeartHandshake />),
+  t("Maker Hub", <Grid2x2 />),
+  t("Launch Playbook", <Rocket />),
+  t("Ideas MCP Server", <Sparkles />),
+  t("Reddit Connector", <Bot />),
+  t("Ask the Data", <MessageSquare />),
+  t("Verified Revenue", <Star />),
+  t("Stripe Benchmarks", <DollarSign />),
+  t("Stripe Customers", <StripeIcon fill="currentColor" />),
+  t("Deals for Sale", <Store />),
+  t("Acquire.com Listings", <HeartHandshake />),
   {
     kind: "feature",
-    label: "G2 Analysis",
+    label: "G2 Insights",
     icon: <G2Icon />,
     card: (
       <PlatformGrid.Mock>
         <div className="flex items-center justify-between gap-2">
-          <span className="text-[9px] font-semibold">Email Client</span>
-          <PlatformGrid.Pill>Gap: 8.5</PlatformGrid.Pill>
+          <span className="text-[9px] font-semibold">Inbox App</span>
+          <PlatformGrid.Pill>Score: 8.4</PlatformGrid.Pill>
         </div>
-        <p className="truncate text-[7px] text-foreground/50">Sync failures dominate 1,412 negative reviews</p>
+        <p className="truncate text-[7px] text-foreground/50">Most of 1,380 low ratings blame sync errors</p>
         <div className="flex items-center justify-between pt-0.5">
-          <PlatformGrid.Pill tone="soft">26 companies</PlatformGrid.Pill>
-          <PlatformGrid.Pill tone="accent">↓ Export</PlatformGrid.Pill>
+          <PlatformGrid.Pill tone="soft">24 vendors</PlatformGrid.Pill>
+          <PlatformGrid.Pill tone="accent">↓ Download</PlatformGrid.Pill>
         </div>
       </PlatformGrid.Mock>
     ),
   },
   {
     kind: "feature",
-    label: "Capterra Analysis",
+    label: "Capterra Insights",
     icon: <CapterraIcon />,
     card: (
       <PlatformGrid.Mock>
         <div className="flex items-center justify-between gap-2">
-          <span className="text-[9px] font-semibold">360 Degree Feedback</span>
-          <PlatformGrid.Pill>Gap: 8.0</PlatformGrid.Pill>
+          <span className="text-[9px] font-semibold">Team Review Tool</span>
+          <PlatformGrid.Pill>Score: 7.9</PlatformGrid.Pill>
         </div>
-        <p className="truncate text-[7px] text-foreground/50">Integration issues with meeting link systems</p>
+        <p className="truncate text-[7px] text-foreground/50">Calendar integrations keep breaking</p>
         <div className="flex items-center gap-1 pt-0.5">
-          <PlatformGrid.Pill tone="soft">55 companies</PlatformGrid.Pill>
-          <PlatformGrid.Pill tone="soft">2,761 reviews</PlatformGrid.Pill>
+          <PlatformGrid.Pill tone="soft">52 vendors</PlatformGrid.Pill>
+          <PlatformGrid.Pill tone="soft">2,690 reviews</PlatformGrid.Pill>
         </div>
       </PlatformGrid.Mock>
     ),
   },
-  t("Funded DB", <Landmark />),
-  t("Y Combinator Data", <YCombinatorIcon fill="currentColor" />),
-  t("Claude Skills Packs", <Puzzle />),
-  t("SaaS Boilerplate", <Box />),
-  t("Clipper Extension", <Scissors />),
-  t("LaunchDB", <Zap />),
-  t("SwiperDB", <Copy />),
-  t("Intelligence Report", <FileText />),
+  t("Funding Rounds", <Landmark />),
+  t("YC Startups", <YCombinatorIcon fill="currentColor" />),
+  t("AI Skill Packs", <Puzzle />),
+  t("Starter Kit", <Box />),
+  t("Web Clipper", <Scissors />),
+  t("Launch Tracker", <Zap />),
+  t("Clone Ideas", <Copy />),
+  t("Weekly Brief", <FileText />),
   {
     kind: "feature",
-    label: "Reddit Analysis",
+    label: "Reddit Insights",
     icon: <RedditIcon />,
     card: (
       <PlatformGrid.Mock>
         <p className="text-[8px] italic leading-snug text-foreground/70">
-          &ldquo;Honestly so frustrated with juggling three tools for one client&rdquo;
+          &ldquo;Switching between three apps for every client is wearing me out&rdquo;
         </p>
         <div className="flex flex-wrap gap-1">
-          <PlatformGrid.Pill tone="soft">urgency</PlatformGrid.Pill>
-          <PlatformGrid.Pill tone="soft">owner</PlatformGrid.Pill>
-          <PlatformGrid.Pill tone="soft">churn risk</PlatformGrid.Pill>
+          <PlatformGrid.Pill tone="soft">urgent</PlatformGrid.Pill>
+          <PlatformGrid.Pill tone="soft">founder</PlatformGrid.Pill>
+          <PlatformGrid.Pill tone="soft">may cancel</PlatformGrid.Pill>
         </div>
         <div className="flex items-center justify-between pt-0.5">
-          <PlatformGrid.Pill>Pain point</PlatformGrid.Pill>
-          <PlatformGrid.Pill tone="accent">See pipeline →</PlatformGrid.Pill>
+          <PlatformGrid.Pill>Frustration</PlatformGrid.Pill>
+          <PlatformGrid.Pill tone="accent">Open pipeline →</PlatformGrid.Pill>
         </div>
       </PlatformGrid.Mock>
     ),
   },
   {
     kind: "feature",
-    label: "App Store Analysis",
+    label: "App Store Insights",
     icon: <StoreBadges />,
     card: (
       <PlatformGrid.Mock>
@@ -158,39 +158,39 @@ const CELLS: Cell[] = [
           <span className="grid h-4 w-4 place-items-center rounded-[4px] bg-primary text-primary-foreground">
             <ClipboardList size={9} />
           </span>
-          <span className="text-[9px] font-semibold">MealPrepPro Planner</span>
+          <span className="text-[9px] font-semibold">Weekly Meal Planner</span>
         </div>
         <p className="text-[7px] text-foreground/50">
-          <span className="text-primary">★</span> 4.2 · 15 reviews · Paid
+          <span className="text-primary">★</span> 4.1 · 18 reviews · Paid
         </p>
         <div className="flex items-center justify-between pt-0.5">
-          <PlatformGrid.Pill>UX issues</PlatformGrid.Pill>
-          <PlatformGrid.Pill tone="accent">View analysis</PlatformGrid.Pill>
+          <PlatformGrid.Pill>Usability gaps</PlatformGrid.Pill>
+          <PlatformGrid.Pill tone="accent">Read report</PlatformGrid.Pill>
         </div>
       </PlatformGrid.Mock>
     ),
   },
-  t("CopyCat DB", <LayoutGrid />),
-  t("Problems DB", <Database />),
-  t("Solutions DB", <Lightbulb />),
-  t("Pain Points", <Flame />),
-  t("Complaints DB", <MessagesSquare />),
-  t("Product Hunt DB", <PackageOpen />),
-  t("App Store DB", <StoreBadges />),
-  t("Upwork Analysis", <UpworkIcon />),
-  t("Idea Evaluator", <BadgeDollarSign />),
-  t("Live Data", <Radio />),
-  t("Data Requests", <ClipboardList />),
-  t("Leaderboards", <Trophy />),
-  t("Feature Suggestions", <Tag />),
-  t("App Revenue Calculator", <Calculator />),
-  t("MRR Calculator", <ChartLine />),
-  t("Valuation Calculator", <Calculator />),
-  t("Metrics Dashboard", <BarChart3 />),
-  t("Idea Generator", <ArrowLeftRight />),
-  t("Keyword Generator", <Search />),
-  t("Domain Generator", <Globe />),
-  t("Free Tools", <Wrench />),
+  t("Lookalike Apps", <LayoutGrid />),
+  t("Problem Library", <Database />),
+  t("Solution Library", <Lightbulb />),
+  t("User Frustrations", <Flame />),
+  t("Complaint Archive", <MessagesSquare />),
+  t("Product Hunt Launches", <PackageOpen />),
+  t("App Store Library", <StoreBadges />),
+  t("Upwork Demand", <UpworkIcon />),
+  t("Idea Scorer", <BadgeDollarSign />),
+  t("Live Feed", <Radio />),
+  t("Request a Dataset", <ClipboardList />),
+  t("Rankings", <Trophy />),
+  t("Feature Requests", <Tag />),
+  t("App Income Estimator", <Calculator />),
+  t("MRR Estimator", <ChartLine />),
+  t("Valuation Estimator", <Calculator />),
+  t("Metrics Board", <BarChart3 />),
+  t("Idea Spark", <ArrowLeftRight />),
+  t("Keyword Finder", <Search />),
+  t("Domain Finder", <Globe />),
+  t("Free Utilities", <Wrench />),
   t("Docs", <BookOpen />),
 ];
 
@@ -208,15 +208,15 @@ export default function PlatformGridDemo({
     <PlatformGrid
       reveal={reveal}
       fadeEdges={fadeEdges}
-      eyebrow="The full platform"
+      eyebrow="The complete toolkit"
       heading={
         <>
-          Everything You Need
+          All Your Research
           <br />
-          in One Platform
+          Under One Roof
         </>
       }
-      intro="40+ databases, pipelines, and tools to find, validate, and build your next product."
+      intro="Over 40 datasets, pipelines and utilities to spot, test and ship your next product."
       className={cn("max-w-6xl pb-10", rounded && "overflow-hidden rounded-[28px] border border-border")}
     >
       {CELLS.map((c) =>

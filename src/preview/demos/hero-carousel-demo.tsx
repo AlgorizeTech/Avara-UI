@@ -5,54 +5,54 @@ import { HeroCarousel, type HeroSlide } from "@/components/custom/blocks/HeroCar
 const SLIDES: HeroSlide[] = [
   {
     image: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_1600,c_limit/v1790146210/photo-1506905925346-21bda4d32df4-1790146212208.jpg",
-    alt: "Snow peaks at sunrise above a sea of cloud",
-    title: "Crater rim at first light",
-    description: "Up before dawn and on the rim as the valley fills with colour. Coffee at the top.",
+    alt: "Snowy summits catching dawn light over low cloud",
+    title: "Dawn on the crater's edge",
+    description: "An early start gets you to the edge as colour floods the valley. Hot coffee waits up top.",
     heading: (
       <>
-        Wake up above
+        Watch the dawn
         <br />
-        the clouds
+        from the summit
       </>
     ),
   },
   {
     image: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_1600,c_limit/v1790146209/photo-1470071459604-3b5ec3a7fe05-1790146212205.jpg",
-    alt: "Fog rolling over dark ridges and forest",
-    title: "Ridge walk through the mist",
-    description: "Six kilometres along the spine of the range. Steady ground, no scrambling.",
+    alt: "Mist drifting across dark ridgelines and forest",
+    title: "A misty hike along the crest",
+    description: "A six-kilometre trail along the backbone of the range. Firm footing, no climbing.",
     heading: (
       <>
-        Walk the ridge
+        Hike the crest
         <br />
-        while it is still yours
+        before the crowds arrive
       </>
     ),
   },
   {
     image: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_1600,c_limit/v1790145142/photo-1500530855697-b586d89ba3ee-1790145143493.jpg",
-    alt: "A road running through a red rock canyon towards the mountains",
-    title: "The canyon by 4×4",
-    description: "A jeep run down the canyon road to where the tarmac ends and the trail begins.",
+    alt: "A highway winding between red canyon walls toward distant peaks",
+    title: "Canyon off-road run",
+    description: "Ride an open-top jeep down the gorge until the pavement gives way to dirt track.",
     heading: (
       <>
-        Drive the canyon
+        Follow the gorge
         <br />
-        to the end of the road
+        until the asphalt runs out
       </>
     ),
     position: "center 60%",
   },
   {
     image: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_1600,c_limit/v1790146211/photo-1519681393784-d120267933ba-1790146212210.jpg",
-    alt: "Snowy mountains under a starry night sky",
-    title: "Stars from the hut",
-    description: "The night is the quiet part of the trip. Blankets, a stove, and no light for fifty miles.",
+    alt: "Snow-capped peaks beneath a sky full of stars",
+    title: "Night sky from camp",
+    description: "After dark the whole trip goes still. Warm blankets, a camp stove and no glow for miles.",
     heading: (
       <>
-        Stay for the dark,
+        Wait for nightfall,
         <br />
-        it is worth it
+        you won't regret it
       </>
     ),
   },
@@ -83,19 +83,19 @@ export default function HeroCarouselDemo({
       reveal={reveal}
       interval={interval}
       accent={accent}
-      eyebrow="Guided trips in the high country"
+      eyebrow="Small-group treks in the mountains"
       heading={
         <>
-          Wake up above
+          Watch the dawn
           <br />
-          the clouds
+          from the summit
         </>
       }
       slides={SLIDES}
-      intro="Three days in the high country with a guide who grew up there: sunrise on the rim, a ridge above the weather and a night with no light for fifty miles."
+      intro="Three days in the mountains with a local guide who knows every path: dawn at the crater, a hike along the crest and a night sky with no glow for miles."
       avatars={AVATARS}
-      avatarsLabel="50+ people joined this year"
-      cta={{ label: "Book the trip", href: "#book" }}
+      avatarsLabel="50+ travellers this season"
+      cta={{ label: "Reserve a spot", href: "#book" }}
     />
   );
 }

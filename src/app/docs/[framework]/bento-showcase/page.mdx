@@ -13,79 +13,79 @@ import { BentoShowcase } from "@/components/custom/blocks/BentoShowcaseBlock";
 
 const CASE_STUDIES = [
   {
-    quote: "5% of deal-closing rate and appointments for a solution provider",
-    metrics: [{ value: "+70%", label: "Close rate" }, { value: "$250K", label: "Revenue" }],
+    quote: "More deals closed and more meetings booked for an IT services vendor",
+    metrics: [{ value: "+64%", label: "Win rate" }, { value: "$230K", label: "New revenue" }],
   },
   {
-    quote: "Saving time: 3x appointments booked per week for a SaaS team",
-    metrics: [{ value: "+85%", label: "Bookings" }, { value: "$140K", label: "Pipeline" }],
+    quote: "Hours back: triple the weekly demos on the calendar for a B2B startup",
+    metrics: [{ value: "+80%", label: "Meetings" }, { value: "$150K", label: "New pipeline" }],
   },
   {
-    quote: "Sold-out delivery slots and a reduced late rate for a logistics firm",
-    metrics: [{ value: "+45%", label: "On time" }, { value: "$90K", label: "Saved" }],
+    quote: "Fully booked delivery windows and fewer late drop-offs for a courier",
+    metrics: [{ value: "+40%", label: "Punctual" }, { value: "$95K", label: "Cost cut" }],
   },
 ];
 
 const STATS = [
-  { value: ">30,000", caption: "Leads generated a month, on average", tone: "cream", ornament: "spheres" },
-  { value: "$180M", caption: "Brought to our clients so far", tone: "lilac", ornament: "ring" },
-  { value: "200+", caption: "Sales reps on the floor right now", tone: "ink", ornament: "drops" },
+  { value: ">28,000", caption: "Average prospects sourced each month", tone: "cream", ornament: "spheres" },
+  { value: "$165M", caption: "In revenue won for partners to date", tone: "lilac", ornament: "ring" },
+  { value: "220+", caption: "Reps taking calls for clients today", tone: "ink", ornament: "drops" },
 ];
 
 const PLANS = [
   {
     rank: "#2",
-    name: "Professional",
-    price: "$3,500",
-    note: "7–12 qualified leads a month, guaranteed",
+    name: "Growth",
+    price: "$3,200",
+    note: "A promised 8–12 vetted prospects every month",
     image: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_600,c_limit/v1790148864/photo-1618005182384-a83a8bd57fbe-1790148865111.jpg",
-    benefits: ["Lead qualification", "Calendar booking", "Template A/B testing", "Intelligent research", "Email outreach"],
-    action: "Start now",
+    benefits: ["Prospect vetting", "Meeting scheduling", "Script split-testing", "Account research", "Cold email sequences"],
+    action: "Get started",
   },
-  { rank: "#3", name: "Enterprise", image: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_600,c_limit/v1790145140/photo-1550684848-fac1c5b4e853-1790145143489.jpg" },
+  { rank: "#3", name: "Scale", image: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_600,c_limit/v1790145140/photo-1550684848-fac1c5b4e853-1790145143489.jpg" },
 ];
 
 // Four photos and two figure discs make six cells — an even count keeps the
 // high/low rhythm intact across the loop.
 const TEAM = [
-  { src: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_500,c_limit/v1790166049/pexels-photo-7688336-1790166052227.jpg", alt: "A desk from above" },
-  { src: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_500,c_limit/v1790166049/pexels-photo-8867434-1790166052229.jpg", alt: "Two agents at their desks" },
-  { src: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_500,c_limit/v1790166049/pexels-photo-7658387-1790166052226.jpg", alt: "Maria on a call" },
-  { src: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_500,c_limit/v1790166049/pexels-photo-7709086-1790166052228.jpg", alt: "Alex at his laptop" },
+  { src: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_500,c_limit/v1790166049/pexels-photo-7688336-1790166052227.jpg", alt: "Overhead view of a workspace" },
+  { src: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_500,c_limit/v1790166049/pexels-photo-8867434-1790166052229.jpg", alt: "A pair of reps working side by side" },
+  { src: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_500,c_limit/v1790166049/pexels-photo-7658387-1790166052226.jpg", alt: "Lena on the phone" },
+  { src: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_500,c_limit/v1790166049/pexels-photo-7709086-1790166052228.jpg", alt: "Omar at his laptop" },
 ];
 
 export default function Showcase() {
   return (
     <BentoShowcase className="rounded-[36px]">
       <BentoShowcase.Hero
-        label="Outsourcing company"
+        label="Managed call centre"
         photo={"https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_900,c_limit/v1790145139/pexels-photo-7709208-1790145143489.jpg"}
-        photoAlt="A support agent wearing a headset at her laptop"
+        photoAlt="A call centre rep in a headset, working at a laptop"
         chat={{
-          from: "Maria",
-          fromRole: "Sales rep",
-          message: "Hi! Can you help me cancel my reservation for Pete Mitchell made earlier this week?",
-          as: "AgainAgain",
-          reply: "Sure, I'll cancel that immediately for you!",
+          from: "Lena",
+          fromRole: "Account rep",
+          message: "Hello! Could you drop the booking I made for Sam Ortega a few days ago, please?",
+          as: "Callnest",
+          reply: "Of course, it's cancelled for you right now!",
         }}
         avatars={["https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_120,c_limit/v1790166049/pexels-photo-7658387-1790166052226.jpg", "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_120,c_limit/v1790166049/pexels-photo-8867433-1790166052228.jpg", "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_120,c_limit/v1790166049/pexels-photo-8867434-1790166052229.jpg"]}
       >
-        <em>Trusted by</em> 1000’s of sales reps
+        <em>Chosen by</em> thousands of sales teams
       </BentoShowcase.Hero>
 
       <BentoShowcase.CaseStudies rating={5} reviews={42} items={CASE_STUDIES} />
 
-      <BentoShowcase.Headline label="Customer support" photo={"https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_600,c_limit/v1790166050/pexels-photo-8867482-1790166052229.jpg"} photoAlt="The support team">
-        We handle your
+      <BentoShowcase.Headline label="Call handling" photo={"https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_600,c_limit/v1790166050/pexels-photo-8867482-1790166052229.jpg"} photoAlt="The call team at work">
+        We pick up the
         <br />
-        calls so you <em>run your business</em>
+        phone while you <em>grow the company</em>
       </BentoShowcase.Headline>
 
       <BentoShowcase.Stats items={STATS} />
 
       <BentoShowcase.Phone plans={PLANS} onAction={() => router.push("/pricing")} />
 
-      <BentoShowcase.Team photos={TEAM} stat={{ value: "97%", caption: "AHT (Average Handling Time)" }} />
+      <BentoShowcase.Team photos={TEAM} stat={{ value: "96%", caption: "Calls resolved inside target time" }} />
     </BentoShowcase>
   );
 }
@@ -96,7 +96,7 @@ export default function Showcase() {
   columns={1}
   examples={[
     {
-      title: "Outsourcing company",
+      title: "Managed call centre",
       subheading: "Three columns and three rows at desktop, two columns at tablet, a single stack on phones. The figures scroll up and the team scrolls left; both pause under the pointer and hold still under prefers-reduced-motion.",
       propNotes: [
         {
@@ -272,7 +272,7 @@ The built-in parts carry their own placement (`Hero` is column 1, rows 1–2; `P
       <tr>
         <td><code>chip</code></td>
         <td><code>string</code></td>
-        <td><code>"Assistant"</code></td>
+        <td><code>"Virtual agent"</code></td>
         <td>The yellow chip under the chat.</td>
       </tr>
       <tr>
@@ -284,7 +284,7 @@ The built-in parts carry their own placement (`Hero` is column 1, rows 1–2; `P
       <tr>
         <td><code>label</code></td>
         <td><code>ReactNode</code></td>
-        <td><code>"Outsourcing company"</code></td>
+        <td><code>"Managed call centre"</code></td>
         <td>Top-right caption.</td>
       </tr>
       <tr>
@@ -331,7 +331,7 @@ The built-in parts carry their own placement (`Hero` is column 1, rows 1–2; `P
       <tr>
         <td><code>title</code></td>
         <td><code>string</code></td>
-        <td><code>"Case Studies"</code></td>
+        <td><code>"Client wins"</code></td>
         <td>Heading on the screen; wraps to two lines.</td>
       </tr>
     </tbody>
@@ -360,7 +360,7 @@ The built-in parts carry their own placement (`Hero` is column 1, rows 1–2; `P
       <tr>
         <td><code>label</code></td>
         <td><code>ReactNode</code></td>
-        <td><code>"Customer support"</code></td>
+        <td><code>"Call handling"</code></td>
         <td>Top-right caption.</td>
       </tr>
       <tr>

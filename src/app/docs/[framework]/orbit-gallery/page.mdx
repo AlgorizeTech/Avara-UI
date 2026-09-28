@@ -25,17 +25,17 @@ const IMAGES = [
 export default function Hero() {
   return (
     <OrbitGallery
-      badgeText="Brand & motion studio"
+      badgeText="Identity & animation studio"
       badgeHref="/about"
-      title="Motion is the"
-      titleAccent="first thing anyone reads."
-      subtitle="We build identity systems and the motion that carries them — from the first frame to the shipped product."
-      primaryActionLabel="Start a project"
+      title="Movement is what"
+      titleAccent="people notice first."
+      subtitle="We design brand identities and the animation that brings them to life — from early sketches to the live release."
+      primaryActionLabel="Work with us"
       primaryActionHref="/contact"
-      secondaryActionLabel="See the work"
+      secondaryActionLabel="View projects"
       secondaryActionHref="/work"
       images={IMAGES}
-      highlights={[{ label: "40 shipped identities" }, { label: "Motion first", color: "#10b981" }]}
+      highlights={[{ label: "40 brands launched" }, { label: "Animation-led", color: "#10b981" }]}
       duration={36}
       linkComponent={Link}
     />
@@ -50,7 +50,7 @@ export default function Hero() {
   minHeight={520}
   examples={[
     {
-      title: "Motion is the first thing anyone reads",
+      title: "Movement is what people notice first",
       subheading: "Copy and actions on the left, the revolving ring on the right. Hover the ring to hold it; move the pointer over the section for the trail.",
       propNotes: [
         {
@@ -97,13 +97,13 @@ export default function Hero() {
       <tr>
         <td><code>badgeText</code>, <code>badgeHref</code></td>
         <td><code>string</code></td>
-        <td><code>"Brand & motion studio"</code>, <code>"#"</code></td>
+        <td><code>"Identity & animation studio"</code>, <code>"#"</code></td>
         <td>The tracked line above the headline and where it links.</td>
       </tr>
       <tr>
         <td><code>title</code>, <code>titleAccent</code></td>
         <td><code>string</code></td>
-        <td><code>"Explore the"</code>, <code>"Beauty of Pure Nature."</code></td>
+        <td><code>"Wander through"</code>, <code>"Wild Places, Up Close."</code></td>
         <td>The two lines of the headline; the second is set in the accent.</td>
       </tr>
       <tr>
@@ -115,7 +115,7 @@ export default function Hero() {
       <tr>
         <td><code>primaryActionLabel</code>, <code>primaryActionHref</code></td>
         <td><code>string</code></td>
-        <td><code>"Explore gallery"</code>, <code>"#"</code></td>
+        <td><code>"Browse photos"</code>, <code>"#"</code></td>
         <td>The filled button.</td>
       </tr>
       <tr>

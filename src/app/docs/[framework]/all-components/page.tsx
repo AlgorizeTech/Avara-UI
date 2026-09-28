@@ -2889,9 +2889,9 @@ function MiniatureIllustration({
 								▶
 							</span>
 							<div className="text-center text-[9px] font-bold leading-[9px] tracking-tighter text-foreground uppercase">
-								Wear
+								Look
 								<br />
-								Bold
+								Daring
 							</div>
 							<div className="flex">
 								{["bg-rose-400", "bg-amber-400", "bg-sky-400"].map((c, i) => (
@@ -3227,12 +3227,12 @@ function MiniatureIllustration({
 				{type === "hero-carousel" && (
 					<div className="relative w-full h-full rounded-md overflow-hidden bg-gradient-to-b from-sky-300 via-slate-500 to-slate-800">
 						<span className="absolute left-1/2 top-1 -translate-x-1/2 rounded-full border border-white/40 bg-white/20 px-1 text-[4px] text-white">
-							guided trips
+							mountain treks
 						</span>
 						<div className="absolute left-0 right-0 top-[9px] text-center text-[7px] font-light leading-[8px] text-white">
-							Wake up above
+							Watch the dawn
 							<br />
-							the clouds
+							from the summit
 						</div>
 						<div className="absolute left-1 bottom-1 w-9 h-7 rounded-[3px] border border-white/30 bg-white/20 backdrop-blur-[1px] p-0.5 flex flex-col gap-0.5">
 							<div className="flex -space-x-0.5">
@@ -3289,7 +3289,7 @@ function MiniatureIllustration({
 								<span className="text-amber-500">grow</span>
 							</div>
 							<div className="flex gap-0.5">
-								{["#play", "#learn", "#care"].map((h) => (
+								{["#grow", "#laugh", "#build"].map((h) => (
 									<span
 										key={h}
 										className="px-1 rounded-full border border-border bg-background text-[4.5px] font-semibold text-muted-foreground">

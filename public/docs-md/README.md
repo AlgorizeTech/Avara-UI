@@ -2,8 +2,8 @@
 
 This directory contains auto-generated Markdown versions of all MDX documentation pages.
 
-**Generated at:** 2026-09-28T11:44:10.271Z
-**Total files:** 297
+**Generated at:** 2026-09-28T13:48:28.664Z
+**Total files:** 295
 
 ## Available Files
 
@@ -16,7 +16,6 @@ This directory contains auto-generated Markdown versions of all MDX documentatio
 - [nextjs/animated-typography](/docs/nextjs-animated-typography.md) - Source: `[framework]\animated-typography\page.mdx`
 - [nextjs/api-playground](/docs/nextjs-api-playground.md) - Source: `[framework]\api-playground\page.mdx`
 - [nextjs/apple-select](/docs/nextjs-apple-select.md) - Source: `[framework]\apple-select\page.mdx`
-- [nextjs/architecture](/docs/nextjs-architecture.md) - Source: `[framework]\architecture\page.mdx`
 - [nextjs/audio-player](/docs/nextjs-audio-player.md) - Source: `[framework]\audio-player\page.mdx`
 - [nextjs/avatar-stack](/docs/nextjs-avatar-stack.md) - Source: `[framework]\avatar-stack\page.mdx`
 - [nextjs/bento-showcase](/docs/nextjs-bento-showcase.md) - Source: `[framework]\bento-showcase\page.mdx`
@@ -165,7 +164,6 @@ This directory contains auto-generated Markdown versions of all MDX documentatio
 - [reactjs/animated-typography](/docs/reactjs-animated-typography.md) - Source: `[framework]\animated-typography\page.mdx`
 - [reactjs/api-playground](/docs/reactjs-api-playground.md) - Source: `[framework]\api-playground\page.mdx`
 - [reactjs/apple-select](/docs/reactjs-apple-select.md) - Source: `[framework]\apple-select\page.mdx`
-- [reactjs/architecture](/docs/reactjs-architecture.md) - Source: `[framework]\architecture\page.mdx`
 - [reactjs/audio-player](/docs/reactjs-audio-player.md) - Source: `[framework]\audio-player\page.mdx`
 - [reactjs/avatar-stack](/docs/reactjs-avatar-stack.md) - Source: `[framework]\avatar-stack\page.mdx`
 - [reactjs/bento-showcase](/docs/reactjs-bento-showcase.md) - Source: `[framework]\bento-showcase\page.mdx`

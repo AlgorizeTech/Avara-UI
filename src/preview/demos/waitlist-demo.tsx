@@ -31,14 +31,14 @@ export default function WaitlistDemo({
     return (
       <div className="flex w-full items-center justify-center px-4 py-10">
         <Waitlist variant="launch" reveal={reveal} className="w-full">
-          <Waitlist.Mark>M</Waitlist.Mark>
+          <Waitlist.Mark>T</Waitlist.Mark>
           <Waitlist.Countdown date={OPENS} />
-          <Waitlist.Heading>Get early access to Meridian</Waitlist.Heading>
+          <Waitlist.Heading>Be first in line for Tidewell</Waitlist.Heading>
           <Waitlist.Intro>
-            A calmer way to plan the week. The first thousand people on the list get in before anyone else, at no cost.
+            Planning your week, minus the stress. Our first 1,000 sign-ups get access ahead of everyone, free of charge.
           </Waitlist.Intro>
-          <Waitlist.Form onJoin={join} action="Join the waitlist" shareUrl="https://meridian.app/?ref=k7x2q" />
-          <Waitlist.Proof avatars={FACES}>Joined by 4,120 people so far</Waitlist.Proof>
+          <Waitlist.Form onJoin={join} action="Get on the list" shareUrl="https://tidewell.app/?ref=k7x2q" />
+          <Waitlist.Proof avatars={FACES}>4,120 people have signed up already</Waitlist.Proof>
         </Waitlist>
       </div>
     );
@@ -47,12 +47,12 @@ export default function WaitlistDemo({
   if (variant === "queue") {
     return (
       <Waitlist variant="queue" reveal={reveal} className={cn("mx-auto max-w-5xl", rounded && "rounded-[28px]")}>
-        <Waitlist.Heading>Every launch starts with a list. Get on this one.</Waitlist.Heading>
+        <Waitlist.Heading>Great products open to a few first. Be one of them.</Waitlist.Heading>
         <Waitlist.Intro>
-          Meridian opens in small groups so every new person gets a proper welcome. Join now and we'll hold your place.
+          Tidewell lets people in a batch at a time, so everyone gets a real onboarding. Sign up today and your place is reserved.
         </Waitlist.Intro>
-        <Waitlist.Form onJoin={join} action="Get notified" shareUrl="https://meridian.app/?ref=k7x2q" />
-        <Waitlist.Proof avatars={FACES}>10,000+ already in line</Waitlist.Proof>
+        <Waitlist.Form onJoin={join} action="Notify me" shareUrl="https://tidewell.app/?ref=k7x2q" />
+        <Waitlist.Proof avatars={FACES}>10,000+ people waiting</Waitlist.Proof>
         <Waitlist.Spots claimed={1240} total={2000} />
       </Waitlist>
     );
@@ -61,10 +61,10 @@ export default function WaitlistDemo({
   return (
     <div className="flex w-full items-center justify-center px-4 py-12">
       <Waitlist variant="card" reveal={reveal} className="w-full">
-        <Waitlist.Heading>Join the waitlist</Waitlist.Heading>
-        <Waitlist.Intro>Be the first to know when we open. One email, no noise.</Waitlist.Intro>
-        <Waitlist.Form onJoin={join} action="Join waitlist" note="By joining you agree to hear from us about the launch." />
-        <Waitlist.Proof avatars={FACES}>2,300 people ahead of you</Waitlist.Proof>
+        <Waitlist.Heading>Reserve your spot</Waitlist.Heading>
+        <Waitlist.Intro>Hear the moment we launch. A single email, nothing more.</Waitlist.Intro>
+        <Waitlist.Form onJoin={join} action="Save my spot" note="Signing up means we may email you about the launch." />
+        <Waitlist.Proof avatars={FACES}>2,300 people already queued</Waitlist.Proof>
       </Waitlist>
     </div>
   );

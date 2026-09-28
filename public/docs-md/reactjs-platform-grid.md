@@ -6,30 +6,30 @@ Everything a product offers, as one hairline grid: small tiles with an icon and 
 
 export const usageSection = `export default function Platform() {
   return (
-    Everything You Needin One Platform}
-      intro="40+ databases, pipelines, and tools to find, validate, and build your next product."
+    All Your ResearchUnder One Roof}
+      intro="Over 40 datasets, pipelines and utilities to spot, test and ship your next product."
     >
-      } label="BuildGuide" href="/build" />
-      } label="Problems DB" href="/problems" />
+      } label="Launch Playbook" href="/playbook" />
+      } label="Problem Library" href="/problems" />
 
-      } label="G2 Analysis" href="/g2">
+      } label="G2 Insights" href="/g2">
 
-            Email Client
-            Gap: 8.5
+            Inbox App
+            Score: 8.4
           
-          Sync failures dominate 1,412 negative reviews
+          Most of 1,380 low ratings blame sync errors
           
-            26 companies
-            Export
+            24 vendors
+            Download
 
-      } label="Reddit Analysis" href="/reddit">
+      } label="Reddit Insights" href="/reddit">
         
-          “Honestly so frustrated with juggling three tools for one client”
-          Pain point
+          “Switching between three apps for every client is wearing me out”
+          Frustration
 
-      } label="Solutions DB" href="/solutions" />
-      } label="Pain Points" href="/pain-points" />
-      } label="Keyword Generator" href="/keywords" />
+      } label="Solution Library" href="/solutions" />
+      } label="User Frustrations" href="/frustrations" />
+      } label="Keyword Finder" href="/keywords" />
       } label="Docs" href="/docs" />
     
   );

@@ -110,11 +110,11 @@ export interface BentoHeroProps extends React.HTMLAttributes<HTMLDivElement> {
 }
 
 function Hero({
-  label = "Outsourcing company",
+  label = "Managed call centre",
   photo,
   photoAlt = "",
   chat,
-  chip = "Assistant",
+  chip = "Virtual agent",
   avatars = [],
   className,
   children,
@@ -211,7 +211,7 @@ function Hero({
 
       {/* Headline. */}
       <div className="absolute inset-x-5 bottom-7 text-center">
-        <h3 className="mx-auto max-w-[17rem] font-sans text-[1.7rem] font-semibold leading-[1.02] tracking-[-0.02em] [&_em]:font-serif [&_em]:font-normal [&_em]:italic">
+        <h3 className="mx-auto max-w-[17rem] font-sans text-[1.3rem] lg:text-[1.55rem] font-semibold leading-[1.02] tracking-[-0.02em] [&_em]:font-serif [&_em]:font-normal [&_em]:italic">
           {children}
         </h3>
         {avatars.length > 0 && (
@@ -236,7 +236,7 @@ function Hero({
 // ------------------------------------------
 export interface BentoCaseStudy {
   quote: string;
-  /** Two figures under the quote, e.g. +70% and $250K. */
+  /** Two figures under the quote, e.g. +64% and $230K. */
   metrics: { value: string; label?: string }[];
 }
 
@@ -260,7 +260,7 @@ function DefaultLogo() {
 }
 
 function CaseStudies({
-  title = "Case Studies",
+  title = "Client wins",
   rating = 5,
   reviews,
   logo = <DefaultLogo />,
@@ -342,7 +342,7 @@ export interface BentoHeadlineProps extends React.HTMLAttributes<HTMLDivElement>
 }
 
 function Headline({
-  label = "Customer support",
+  label = "Call handling",
   photo,
   photoAlt = "",
   className,
@@ -359,7 +359,7 @@ function Headline({
       <div className="absolute left-6 top-4 h-[4.25rem] w-[8.5rem] overflow-hidden rounded-full">
         <img src={photo} alt={photoAlt} className="h-full w-full object-cover" />
       </div>
-      <h3 className="absolute inset-x-6 bottom-5 font-sans text-[2.05rem] lg:text-[2.3rem] font-medium leading-[0.98] tracking-[-0.03em] [&_em]:relative [&_em]:block [&_em]:font-serif [&_em]:text-[2.2rem] lg:[&_em]:text-[2.25rem] [&_em]:font-normal [&_em]:italic [&_em]:tracking-normal">
+      <h3 className="absolute inset-x-6 bottom-5 font-sans text-[1.85rem] lg:text-[2.3rem] font-medium leading-[0.98] tracking-[-0.03em] [&_em]:relative [&_em]:block [&_em]:font-serif [&_em]:text-[1.8rem] lg:[&_em]:text-[2rem] [&_em]:font-normal [&_em]:italic [&_em]:tracking-normal">
         {children}
       </h3>
       {/* A looping stroke under the serif line. */}
@@ -537,12 +537,12 @@ function PhoneCard({ plans, onAction, className, ...props }: BentoPhoneProps) {
               {main.price && <p className="text-[2rem] font-semibold leading-none tracking-tight">{main.price}</p>}
               {main.note && <p className="mx-auto mt-2 max-w-[16rem] text-[12px] text-current/60">{main.note}</p>}
               <Button variant="default" size="sm" className="mt-4 h-9 rounded-full px-5 text-[11px]" onClick={onAction}>
-                {main.action ?? "Start now"}
+                {main.action ?? "Get started"}
               </Button>
             </div>
             {main.benefits && main.benefits.length > 0 && (
               <div className="mt-6 text-center">
-                <p className="font-serif text-xl italic leading-none">Benefits</p>
+                <p className="font-serif text-xl italic leading-none">What you get</p>
                 <ul className="mt-2 space-y-0.5 text-[12px] text-current/65">
                   {main.benefits.map((b) => (
                     <li key={b}>{b}</li>

@@ -8,43 +8,43 @@ export const usagePage = `const TIME_ZONE = "Asia/Dhaka";
 const WORKDAY = { start: 10, end: 18 };
 
 const STATS = [
-  { value: "128", label: "Components" },
-  { value: "342", label: "Merged PRs" },
-  { value: "96", label: "Reviews" },
+  { value: "116", label: "Components" },
+  { value: "317", label: "PRs merged" },
+  { value: "88", label: "Code reviews" },
 ];
 
-const SKILLS = ["Design systems", "React", "Motion", "Accessibility", "TypeScript", "Figma"];
+const SKILLS = ["Component APIs", "React", "Animation", "Accessibility", "TypeScript", "Figma"];
 
 const HIGHLIGHTS = [
   {
-    title: "Motion primitives v2",
-    summary: "One easing vocabulary for modals, drawers and toasts.",
+    title: "Animation toolkit 2.0",
+    summary: "A shared set of easings for dialogs, sheets and toasts.",
     status: "In progress",
     progress: 68,
   },
   {
-    title: "Northwind UI 4.0",
-    summary: "128 components, dark mode by default, tokens in CSS.",
-    status: "Shipped June 2026",
+    title: "Brightmoor Kit 4",
+    summary: "116 components, a dark theme out of the box, CSS-variable tokens.",
+    status: "Released June 2026",
   },
   {
-    title: "Contrast audit",
-    summary: "Every text and icon colour checked at 4.5:1 or better.",
-    status: "Shipped February 2026",
+    title: "Colour contrast review",
+    summary: "All text and icons verified against a 4.5:1 minimum ratio.",
+    status: "Released February 2026",
   },
 ];
 
 const TEAMMATES = [
-  { initials: "TL", name: "Tomás Léger", role: "Motion and prototyping", zone: "Lisbon", tint: "bg-sky-500/15 text-sky-800 dark:text-sky-200" },
-  { initials: "WA", name: "Wren Adeyemi", role: "Accessibility", zone: "Lagos", tint: "bg-amber-500/15 text-amber-800 dark:text-amber-200" },
-  { initials: "RS", name: "Rhea Sen", role: "Platform tokens", zone: "Pune", tint: "bg-rose-500/15 text-rose-800 dark:text-rose-200" },
+  { initials: "MD", name: "Mateo Duarte", role: "Prototypes and animation", zone: "Lisbon", tint: "bg-sky-500/15 text-sky-800 dark:text-sky-200" },
+  { initials: "IO", name: "Ifeoma Okafor", role: "Inclusive design", zone: "Lagos", tint: "bg-amber-500/15 text-amber-800 dark:text-amber-200" },
+  { initials: "KI", name: "Kavya Iyer", role: "Design tokens", zone: "Pune", tint: "bg-rose-500/15 text-rose-800 dark:text-rose-200" },
 ];
 
 const ACTIVITY = [
-  { icon: GitMerge, text: "Merged #1287, unify easing curves across overlays", when: "2h ago" },
-  { icon: Eye, text: "Reviewed Tomás's drawer focus-trap fix", when: "Yesterday" },
-  { icon: FileText, text: "Published the Northwind UI 4.0 release notes", when: "3 days ago" },
-  { icon: MessageCircle, text: "Opened an RFC on token naming", when: "Last week" },
+  { icon: GitMerge, text: "Merged #1311, one shared easing for every overlay", when: "2h ago" },
+  { icon: Eye, text: "Reviewed Mateo's sheet focus-trap patch", when: "Yesterday" },
+  { icon: FileText, text: "Posted the changelog for Brightmoor Kit 4", when: "3 days ago" },
+  { icon: MessageCircle, text: "Started an RFC about naming tokens", when: "Last week" },
 ];
 
 const focusRing =
@@ -57,22 +57,22 @@ export default function ProfilePageDemo() {
     
       {/* Hero */}
 
-             People
+             Directory
 
           {/* Squircle avatar — the only shape on the page that isn't a
               rectangle, circle or capsule, so it reads as the person */}
 
-              AK
+              FH
 
-              Ayesha Karim
+              Farah Haque
 
-              Design engineer at Northwind
+              UI engineer at Brightmoor
 
                  Dhaka
 
-                 ayesha@northwind.co
+                 farah@brightmoor.io
 
-                 ayesha.design
+                 farahhaque.dev
 
         {/* Action capsule */}
         
@@ -90,12 +90,12 @@ export default function ProfilePageDemo() {
 
              Message
 
-      {/* Her day */}
+      {/* Her schedule */}
 
-          Her day
+          Her schedule
           UTC+6
 
-          Hover the ring for her hours in your time
+          Point at the ring to see her hours in your zone
 
       {/* Stat discs */}
       
@@ -110,9 +110,9 @@ export default function ProfilePageDemo() {
       
         About
         
-          Builds the component library three product teams ship on. Currently
-          rewriting the motion primitives so a modal, a drawer and a toast all
-          ease the same way. Happiest when a design decision becomes one variable.
+          Maintains the shared UI kit that three product squads build on. Right
+          now reworking the animation toolkit so dialogs, sheets and toasts all
+          move on one curve. Loves turning a design choice into a single token.
 
           {SKILLS.map((skill) => (
             
@@ -136,7 +136,7 @@ export default function ProfilePageDemo() {
 
       {/* Team */}
       
-        Works closely with
+        Frequent collaborators
         
           {TEAMMATES.map((m) => (
 
@@ -168,43 +168,43 @@ export const usagePageSolid = `const TIME_ZONE = "Asia/Dhaka";
 const WORKDAY = { start: 10, end: 18 };
 
 const STATS = [
-  { value: "128", label: "Components" },
-  { value: "342", label: "Merged PRs" },
-  { value: "96", label: "Reviews" },
+  { value: "116", label: "Components" },
+  { value: "317", label: "PRs merged" },
+  { value: "88", label: "Code reviews" },
 ];
 
-const SKILLS = ["Design systems", "React", "Motion", "Accessibility", "TypeScript", "Figma"];
+const SKILLS = ["Component APIs", "React", "Animation", "Accessibility", "TypeScript", "Figma"];
 
 const HIGHLIGHTS = [
   {
-    title: "Motion primitives v2",
-    summary: "One easing vocabulary for modals, drawers and toasts.",
+    title: "Animation toolkit 2.0",
+    summary: "A shared set of easings for dialogs, sheets and toasts.",
     status: "In progress",
     progress: 68,
   },
   {
-    title: "Northwind UI 4.0",
-    summary: "128 components, dark mode by default, tokens in CSS.",
-    status: "Shipped June 2026",
+    title: "Brightmoor Kit 4",
+    summary: "116 components, a dark theme out of the box, CSS-variable tokens.",
+    status: "Released June 2026",
   },
   {
-    title: "Contrast audit",
-    summary: "Every text and icon colour checked at 4.5:1 or better.",
-    status: "Shipped February 2026",
+    title: "Colour contrast review",
+    summary: "All text and icons verified against a 4.5:1 minimum ratio.",
+    status: "Released February 2026",
   },
 ];
 
 const TEAMMATES = [
-  { initials: "TL", name: "Tomás Léger", role: "Motion and prototyping", zone: "Lisbon", tint: "bg-sky-500/15 text-sky-800 dark:text-sky-200" },
-  { initials: "WA", name: "Wren Adeyemi", role: "Accessibility", zone: "Lagos", tint: "bg-amber-500/15 text-amber-800 dark:text-amber-200" },
-  { initials: "RS", name: "Rhea Sen", role: "Platform tokens", zone: "Pune", tint: "bg-rose-500/15 text-rose-800 dark:text-rose-200" },
+  { initials: "MD", name: "Mateo Duarte", role: "Prototypes and animation", zone: "Lisbon", tint: "bg-sky-500/15 text-sky-800 dark:text-sky-200" },
+  { initials: "IO", name: "Ifeoma Okafor", role: "Inclusive design", zone: "Lagos", tint: "bg-amber-500/15 text-amber-800 dark:text-amber-200" },
+  { initials: "KI", name: "Kavya Iyer", role: "Design tokens", zone: "Pune", tint: "bg-rose-500/15 text-rose-800 dark:text-rose-200" },
 ];
 
 const ACTIVITY = [
-  { icon: GitMerge, text: "Merged #1287, unify easing curves across overlays", when: "2h ago" },
-  { icon: Eye, text: "Reviewed Tomás's drawer focus-trap fix", when: "Yesterday" },
-  { icon: FileText, text: "Published the Northwind UI 4.0 release notes", when: "3 days ago" },
-  { icon: MessageCircle, text: "Opened an RFC on token naming", when: "Last week" },
+  { icon: GitMerge, text: "Merged #1311, one shared easing for every overlay", when: "2h ago" },
+  { icon: Eye, text: "Reviewed Mateo's sheet focus-trap patch", when: "Yesterday" },
+  { icon: FileText, text: "Posted the changelog for Brightmoor Kit 4", when: "3 days ago" },
+  { icon: MessageCircle, text: "Started an RFC about naming tokens", when: "Last week" },
 ];
 
 const focusRing =
@@ -217,22 +217,22 @@ export default function ProfilePageDemo() {
     
       {/* Hero */}
 
-             People
+             Directory
 
           {/* Squircle avatar — the only shape on the page that isn't a
               rectangle, circle or capsule, so it reads as the person */}
 
-              AK
+              FH
 
-              Ayesha Karim
+              Farah Haque
 
-              Design engineer at Northwind
+              UI engineer at Brightmoor
 
                  Dhaka
 
-                 ayesha@northwind.co
+                 farah@brightmoor.io
 
-                 ayesha.design
+                 farahhaque.dev
 
         {/* Action capsule */}
         
@@ -250,12 +250,12 @@ export default function ProfilePageDemo() {
 
              Message
 
-      {/* Her day */}
+      {/* Her schedule */}
 
-          Her day
+          Her schedule
           UTC+6
 
-          Hover the ring for her hours in your time
+          Point at the ring to see her hours in your zone
 
       {/* Stat discs */}
       
@@ -270,9 +270,9 @@ export default function ProfilePageDemo() {
       
         About
         
-          Builds the component library three product teams ship on. Currently
-          rewriting the motion primitives so a modal, a drawer and a toast all
-          ease the same way. Happiest when a design decision becomes one variable.
+          Maintains the shared UI kit that three product squads build on. Right
+          now reworking the animation toolkit so dialogs, sheets and toasts all
+          move on one curve. Loves turning a design choice into a single token.
 
           {SKILLS.map((skill) => (
             
@@ -296,7 +296,7 @@ export default function ProfilePageDemo() {
 
       {/* Team */}
       
-        Works closely with
+        Frequent collaborators
         
           {TEAMMATES.map((m) => (
 
@@ -342,10 +342,10 @@ The page above is a composition, not a component with forty props. Start from th
 export default function Minimal() {
   return (
 
-        Ayesha Karim
-        Design engineer at Northwind
+        Farah Haque
+        UI engineer at Brightmoor
 
-        128
+        116
 
   );
 }
@@ -433,7 +433,7 @@ Grid spans are plain Tailwind: the grid is `grid-cols-1 md:grid-cols-6 lg:grid-c
         note
         string
         —
-        One extra line at the bottom of the tooltip, e.g. "Replies within the day".
+        One extra line at the bottom of the tooltip, e.g. "Usually answers the same day".
 
         className
         string

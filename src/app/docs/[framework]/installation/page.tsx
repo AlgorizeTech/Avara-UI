@@ -38,7 +38,7 @@ export async function generateMetadata({
     description:
       framework === "reactjs"
         ? "Install Algorize UI in a React + Vite project — Tailwind setup, path aliases, and the shadcn registry."
-        : "Complete installation guide for Next.js with step-by-step instructions, setup requirements, and configuration options.",
+        : "Install Algorize UI in a Next.js project — Tailwind setup, shadcn init, and the registry.",
     keywords:
       framework === "reactjs"
         ? ["React installation", "Vite setup", "React component library", "shadcn registry Vite", "Tailwind Vite"]

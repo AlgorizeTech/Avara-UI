@@ -100,7 +100,7 @@ export interface WorkdayDialProps {
   place: string;
   /** Person's first name, for the accessible description and the tooltip. */
   name: string;
-  /** One extra line for the tooltip, e.g. "Replies within the day". */
+  /** One extra line for the tooltip, e.g. "Usually answers the same day". */
   note?: string;
   className?: string;
 }
