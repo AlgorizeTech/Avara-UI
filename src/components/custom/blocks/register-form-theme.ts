@@ -1,6 +1,17 @@
 "use client";
 
 const colorThemes: Record<string, Record<string, string>> = {
+  lavender: {
+    bg: "bg-[#9b8afb] hover:bg-[#8b75f8]",
+    text: "text-[#9b8afb]",
+    border: "border-[#9b8afb]",
+    ring: "focus:ring-[#9b8afb]",
+    focusBorder: "focus:border-[#9b8afb] focus-visible:border-[#9b8afb]",
+    focusRing: "focus:ring-2 focus:ring-[#9b8afb]/25 focus-visible:ring-2 focus-visible:ring-[#9b8afb]/25",
+    hoverBorder: "hover:border-[#9b8afb]/60",
+    gradient: "from-[#9b8afb] to-[#7c66f6]",
+    panelFg: "text-white",
+  },
   indigo: {
     bg: "bg-indigo-600 hover:bg-indigo-700",
     text: "text-indigo-600 dark:text-indigo-400",
@@ -82,7 +93,7 @@ export const getThemeStyles = (color: string) => {
           border: "border-[var(--theme-color)]",
           ring: "focus:ring-[var(--theme-color)]",
           focusBorder: "focus:border-[var(--theme-color)] focus-visible:border-[var(--theme-color)]",
-          focusRing: "focus:ring-2 focus:ring-[rgba(var(--theme-color-rgb),0.25)] focus-visible:ring-2 focus-visible:ring-[rgba(var(--theme-color-rgb),0.25)]",
+          focusRing: "focus:ring-2 focus:ring-[var(--theme-color)]/25 focus-visible:ring-2 focus-visible:ring-[var(--theme-color)]/25",
           hoverBorder: "hover:border-[var(--theme-color)]/60",
           gradient:
             "from-[var(--theme-color)] to-[rgba(var(--theme-color-rgb),0.6)]",

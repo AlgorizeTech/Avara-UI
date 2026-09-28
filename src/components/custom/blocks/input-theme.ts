@@ -23,6 +23,15 @@ const PRIMARY: InputTheme = {
 
 const colorThemes: Record<string, InputTheme> = {
   primary: PRIMARY,
+  lavender: {
+    ring: "focus-within:ring-[#9b8afb]/30 focus-within:border-[#9b8afb]",
+    text: "text-[#9b8afb]",
+    bg: "bg-[#9b8afb] text-white",
+    bgSoft:
+      "bg-[#9b8afb]/10 text-[#9b8afb]",
+    glow: "focus-within:shadow-[0_0_20px_rgba(155,138,251,0.4)] focus-within:border-[#9b8afb]",
+    dragActive: "border-[#9b8afb] bg-[#9b8afb]/10",
+  },
   indigo: {
     ring: "focus-within:ring-indigo-500/30 focus-within:border-indigo-500",
     text: "text-indigo-600 dark:text-indigo-400",

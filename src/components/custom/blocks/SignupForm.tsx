@@ -105,39 +105,7 @@ function useLastMessage(message?: string) {
   return message || shown;
 }
 
-// Helper functions for month picker
-const formatMonthValue = (val: string): string => {
-  if (!val) return "";
-  const [year, month] = val.split("-");
-  const monthNames = [
-    "January", "February", "March", "April", "May", "June",
-    "July", "August", "September", "October", "November", "December"
-  ];
-  const mIndex = parseInt(month, 10) - 1;
-  if (mIndex >= 0 && mIndex < 12) {
-    return `${monthNames[mIndex]} ${year}`;
-  }
-  return val;
-};
 
-const getMonthInputValue = (dateStr: string): string => {
-  if (!dateStr) return "";
-  if (/^\d{4}-\d{2}$/.test(dateStr)) return dateStr;
-  const parts = dateStr.trim().split(/\s+/);
-  if (parts.length === 2) {
-    const monthNames: Record<string, string> = {
-      January: "01", February: "02", March: "03", April: "04",
-      May: "05", June: "06", July: "07", August: "08",
-      September: "09", October: "10", November: "11", December: "12",
-    };
-    const mm = monthNames[parts[0]];
-    const yyyy = parts[1];
-    if (mm && /^\d{4}$/.test(yyyy)) {
-      return `${yyyy}-${mm}`;
-    }
-  }
-  return "2027-03";
-};
 
 // ==========================================
 // PREMIUM INPUT COMPONENT
@@ -540,6 +508,7 @@ export const SignupForm = ({
   const { theme, style } = getThemeStyles(color);
   const focusInputClasses = cn(
     "outline-none transition-all duration-200",
+    "focus:bg-white dark:focus:bg-[#18191b]",
     theme.focusBorder,
     theme.focusRing
   );
@@ -548,6 +517,24 @@ export const SignupForm = ({
     theme.focusBorder,
     theme.focusRing
   );
+  const scenicPrimaryButtonClasses = cn(
+    theme.bg,
+    theme.panelFg,
+    focusButtonClasses
+  );
+  const scenicDropdownButtonClasses = (isOpen: boolean) =>
+    cn(
+      "w-full h-11 px-3.5 rounded-xl text-sm font-normal flex items-center justify-between transition-all duration-200 outline-none cursor-pointer",
+      "bg-zinc-100 text-zinc-900 border border-zinc-200/80 hover:border-zinc-300 hover:bg-zinc-200/50",
+      "dark:bg-[#1e1f21] dark:text-white dark:border-white/[0.08] dark:hover:border-white/20 dark:hover:bg-[#25272a]",
+      focusButtonClasses,
+      isOpen && [
+        theme.border,
+        "ring-2",
+        theme.focusRing,
+        "bg-white dark:bg-[#1e1f21]",
+      ]
+    );
   const [scenicStep, setScenicStep] = useState<ScenicSignupStep>(
     initialStep === "form" ? "form" : initialStep || "welcome",
   );
@@ -822,7 +809,10 @@ export const SignupForm = ({
     variant === "landscape"
   ) {
     return (
-      <div className="relative w-full min-h-[580px] sm:min-h-[640px] flex items-center justify-center overflow-hidden rounded-3xl p-4 sm:p-6 md:p-8">
+      <div
+        className="relative w-full min-h-[580px] sm:min-h-[640px] flex items-center justify-center overflow-hidden rounded-3xl p-4 sm:p-6 md:p-8"
+        style={style}
+      >
         <style>{`
           @keyframes scenic-header-zoom {
             0% {
@@ -995,9 +985,7 @@ export const SignupForm = ({
                     onClick={() => setScenicStep("options")}
                     className={cn(
                       "w-full h-12 rounded-xl sm:rounded-2xl font-semibold text-sm sm:text-base transition-all duration-200 active:scale-[0.98] shadow-sm",
-                      "bg-zinc-900 text-white hover:bg-zinc-800",
-                      "dark:bg-white dark:text-zinc-950 dark:hover:bg-zinc-100",
-                      focusButtonClasses
+                      scenicPrimaryButtonClasses
                     )}
                   >
                     {getStartedLabel}
@@ -1277,10 +1265,8 @@ export const SignupForm = ({
                       type="submit"
                       disabled={loading}
                       className={cn(
-                        "w-full h-11 rounded-xl font-semibold text-sm transition-all duration-200 active:scale-[0.98] shadow-sm flex items-center justify-center gap-2 mt-2",
-                        "bg-zinc-900 text-white hover:bg-zinc-800 disabled:opacity-60",
-                        "dark:bg-white dark:text-zinc-950 dark:hover:bg-zinc-100",
-                        focusButtonClasses
+                        "w-full h-11 rounded-xl font-semibold text-sm transition-all duration-200 active:scale-[0.98] shadow-sm flex items-center justify-center gap-2 mt-2 disabled:opacity-60",
+                        scenicPrimaryButtonClasses
                       )}
                     >
                       {loading ? "Processing..." : "Create Account"}
@@ -1402,9 +1388,7 @@ export const SignupForm = ({
                     onClick={() => setScenicStep("onboarding-intro")}
                     className={cn(
                       "w-full h-12 rounded-2xl font-semibold text-sm sm:text-base transition-all duration-200 active:scale-[0.98] shadow-sm flex items-center justify-center",
-                      "bg-zinc-900 text-white hover:bg-zinc-800",
-                      "dark:bg-white dark:text-zinc-950 dark:hover:bg-zinc-100",
-                      focusButtonClasses
+                      scenicPrimaryButtonClasses
                     )}
                   >
                     Verify &amp; Continue
@@ -1517,9 +1501,7 @@ export const SignupForm = ({
                     onClick={() => setScenicStep("goals")}
                     className={cn(
                       "w-full h-12 rounded-2xl font-semibold text-sm sm:text-base transition-all duration-200 active:scale-[0.98] shadow-sm flex items-center justify-center",
-                      "bg-zinc-900 text-white hover:bg-zinc-800",
-                      "dark:bg-white dark:text-zinc-950 dark:hover:bg-zinc-100",
-                      focusButtonClasses
+                      scenicPrimaryButtonClasses
                     )}
                   >
                     Let's start
@@ -1593,8 +1575,9 @@ export const SignupForm = ({
                             "dark:bg-[#1e1f21] dark:text-white/90 dark:border-white/[0.08] dark:hover:bg-[#25272a] dark:hover:border-white/15",
                           ],
                           isSelected && [
-                            "bg-zinc-900 text-white border-zinc-900 shadow-md ring-2 ring-zinc-900/10",
-                            "dark:bg-[#25272a] dark:text-white dark:border-white/50 dark:ring-1 dark:ring-white/30 dark:shadow-[0_0_15px_rgba(255,255,255,0.06)]",
+                            theme.bg,
+                            theme.panelFg,
+                            "border-transparent shadow-md ring-2 ring-black/10 dark:ring-white/20",
                           ]
                         )}
                       >
@@ -1604,9 +1587,9 @@ export const SignupForm = ({
                         <div className="self-end mt-2">
                           <div
                             className={cn(
-                              "w-4 h-4 rounded-full border transition-all flex items-center justify-center",
+                              "w-4 h-4 rounded-md border transition-all flex items-center justify-center",
                               isSelected
-                                ? "bg-white text-zinc-950 border-white dark:bg-white dark:text-zinc-950 dark:border-white"
+                                ? cn("bg-white", theme.text, "border-white shadow-sm")
                                 : "border-zinc-300 dark:border-white/20 bg-transparent"
                             )}
                           >
@@ -1644,9 +1627,7 @@ export const SignupForm = ({
                     onClick={() => setScenicStep("finances")}
                     className={cn(
                       "w-full h-12 rounded-2xl font-semibold text-sm sm:text-base transition-all duration-200 active:scale-[0.98] shadow-sm flex items-center justify-center",
-                      "bg-zinc-900 text-white hover:bg-zinc-800",
-                      "dark:bg-white dark:text-zinc-950 dark:hover:bg-zinc-100",
-                      focusButtonClasses
+                      scenicPrimaryButtonClasses
                     )}
                   >
                     Continue
@@ -1783,15 +1764,12 @@ export const SignupForm = ({
                             ],
                           })
                         }
-                        className={cn(
-                          "w-full h-11 px-3.5 rounded-xl text-sm font-normal flex items-center justify-between transition-colors outline-none cursor-pointer",
-                          "bg-zinc-100 text-zinc-900 border border-zinc-200/80 hover:border-zinc-300",
-                          "dark:bg-[#1e1f21] dark:text-white dark:border-white/[0.08] dark:hover:border-white/20",
-                          focusButtonClasses
+                        className={scenicDropdownButtonClasses(
+                          activeDropdown?.field === "employmentStatus"
                         )}
                       >
                         <span className="truncate">{finances.employmentStatus}</span>
-                        <ChevronDown size={15} className="opacity-50 shrink-0" />
+                        <ChevronDown size={15} className={cn("opacity-70 shrink-0 transition-colors", theme.text)} />
                       </button>
                     </div>
                     <div>
@@ -1807,15 +1785,12 @@ export const SignupForm = ({
                             options: ["Single", "Married", "Partnered", "Family"],
                           })
                         }
-                        className={cn(
-                          "w-full h-11 px-3.5 rounded-xl text-sm font-normal flex items-center justify-between transition-colors outline-none cursor-pointer",
-                          "bg-zinc-100 text-zinc-900 border border-zinc-200/80 hover:border-zinc-300",
-                          "dark:bg-[#1e1f21] dark:text-white dark:border-white/[0.08] dark:hover:border-white/20",
-                          focusButtonClasses
+                        className={scenicDropdownButtonClasses(
+                          activeDropdown?.field === "household"
                         )}
                       >
                         <span className="truncate">{finances.household}</span>
-                        <ChevronDown size={15} className="opacity-50 shrink-0" />
+                        <ChevronDown size={15} className={cn("opacity-70 shrink-0 transition-colors", theme.text)} />
                       </button>
                     </div>
                   </div>
@@ -1839,15 +1814,12 @@ export const SignupForm = ({
                           options: ["0", "1", "2", "3+"],
                         })
                       }
-                      className={cn(
-                        "w-full h-11 px-3.5 rounded-xl text-sm font-normal flex items-center justify-between transition-colors outline-none cursor-pointer",
-                        "bg-zinc-100 text-zinc-900 border border-zinc-200/80 hover:border-zinc-300",
-                        "dark:bg-[#1e1f21] dark:text-white dark:border-white/[0.08] dark:hover:border-white/20",
-                        focusButtonClasses
+                      className={scenicDropdownButtonClasses(
+                        activeDropdown?.field === "dependents"
                       )}
                     >
                       <span className="truncate">{finances.dependents}</span>
-                      <ChevronDown size={15} className="opacity-50 shrink-0" />
+                      <ChevronDown size={15} className={cn("opacity-70 shrink-0 transition-colors", theme.text)} />
                     </button>
                   </div>
                 </div>
@@ -1865,9 +1837,7 @@ export const SignupForm = ({
                     onClick={() => setScenicStep("confidence")}
                     className={cn(
                       "w-full h-12 rounded-2xl font-semibold text-sm sm:text-base transition-all duration-200 active:scale-[0.98] shadow-sm flex items-center justify-center",
-                      "bg-zinc-900 text-white hover:bg-zinc-800",
-                      "dark:bg-white dark:text-zinc-950 dark:hover:bg-zinc-100",
-                      focusButtonClasses
+                      scenicPrimaryButtonClasses
                     )}
                   >
                     Continue
@@ -1956,8 +1926,9 @@ export const SignupForm = ({
                                 "dark:bg-[#1e1f21] dark:text-zinc-300 dark:border-white/[0.08] dark:hover:bg-[#282a2e]",
                               ],
                               isSelected && [
-                                "bg-zinc-900 text-white border-zinc-900 shadow-sm ring-1 ring-zinc-900",
-                                "dark:bg-white dark:text-zinc-950 dark:border-white dark:ring-1 dark:ring-white",
+                                theme.bg,
+                                theme.panelFg,
+                                "border-transparent shadow-sm ring-1 ring-black/10 dark:ring-white/20",
                               ]
                             )}
                           >
@@ -2000,8 +1971,9 @@ export const SignupForm = ({
                                 "dark:bg-[#1e1f21] dark:text-zinc-300 dark:border-white/[0.08] dark:hover:bg-[#282a2e]",
                               ],
                               isSelected && [
-                                "bg-zinc-900 text-white border-zinc-900 shadow-sm ring-1 ring-zinc-900",
-                                "dark:bg-white dark:text-zinc-950 dark:border-white dark:ring-1 dark:ring-white",
+                                theme.bg,
+                                theme.panelFg,
+                                "border-transparent shadow-sm ring-1 ring-black/10 dark:ring-white/20",
                               ]
                             )}
                           >
@@ -2044,8 +2016,9 @@ export const SignupForm = ({
                                 "dark:bg-[#1e1f21] dark:text-zinc-300 dark:border-white/[0.08] dark:hover:bg-[#282a2e]",
                               ],
                               isSelected && [
-                                "bg-zinc-900 text-white border-zinc-900 shadow-sm ring-1 ring-zinc-900",
-                                "dark:bg-white dark:text-zinc-950 dark:border-white dark:ring-1 dark:ring-white",
+                                theme.bg,
+                                theme.panelFg,
+                                "border-transparent shadow-sm ring-1 ring-black/10 dark:ring-white/20",
                               ]
                             )}
                           >
@@ -2070,9 +2043,7 @@ export const SignupForm = ({
                     onClick={() => setScenicStep("emergency-fund")}
                     className={cn(
                       "w-full h-12 rounded-2xl font-semibold text-sm sm:text-base transition-all duration-200 active:scale-[0.98] shadow-sm flex items-center justify-center",
-                      "bg-zinc-900 text-white hover:bg-zinc-800",
-                      "dark:bg-white dark:text-zinc-950 dark:hover:bg-zinc-100",
-                      focusButtonClasses
+                      scenicPrimaryButtonClasses
                     )}
                   >
                     Continue
@@ -2145,8 +2116,9 @@ export const SignupForm = ({
                       focusButtonClasses,
                       emergencyFund.hasFund
                         ? [
-                            "bg-zinc-900 text-white border border-zinc-900 shadow-sm",
-                            "dark:bg-[#25272b] dark:text-white dark:border-white/30 dark:ring-1 dark:ring-white/20",
+                            theme.bg,
+                            theme.panelFg,
+                            "border-transparent shadow-sm ring-1 ring-black/10 dark:ring-white/20",
                           ]
                         : [
                             "bg-zinc-100 text-zinc-700 border border-zinc-200/80 hover:bg-zinc-200/70",
@@ -2157,9 +2129,9 @@ export const SignupForm = ({
                     <span>Yes I have one</span>
                     <div
                       className={cn(
-                        "w-4 h-4 rounded-full flex items-center justify-center transition-all",
+                        "w-4 h-4 rounded-md flex items-center justify-center transition-all",
                         emergencyFund.hasFund
-                          ? "bg-white text-zinc-950 dark:bg-white dark:text-zinc-950"
+                          ? cn("bg-white", theme.text, "border border-white shadow-sm")
                           : "border border-zinc-300 dark:border-white/20 bg-transparent"
                       )}
                     >
@@ -2179,8 +2151,9 @@ export const SignupForm = ({
                       focusButtonClasses,
                       !emergencyFund.hasFund
                         ? [
-                            "bg-zinc-900 text-white border border-zinc-900 shadow-sm",
-                            "dark:bg-[#25272b] dark:text-white dark:border-white/30 dark:ring-1 dark:ring-white/20",
+                            theme.bg,
+                            theme.panelFg,
+                            "border-transparent shadow-sm ring-1 ring-black/10 dark:ring-white/20",
                           ]
                         : [
                             "bg-zinc-100 text-zinc-700 border border-zinc-200/80 hover:bg-zinc-200/70",
@@ -2191,9 +2164,9 @@ export const SignupForm = ({
                     <span>Not Yet</span>
                     <div
                       className={cn(
-                        "w-4 h-4 rounded-full flex items-center justify-center transition-all",
+                        "w-4 h-4 rounded-md flex items-center justify-center transition-all",
                         !emergencyFund.hasFund
-                          ? "bg-white text-zinc-950 dark:bg-white dark:text-zinc-950"
+                          ? cn("bg-white", theme.text, "border border-white shadow-sm")
                           : "border border-zinc-300 dark:border-white/20 bg-transparent"
                       )}
                     >
@@ -2225,9 +2198,9 @@ export const SignupForm = ({
                         }))
                       }
                       className={cn(
-                        "w-full h-11 px-3.5 rounded-xl text-sm font-normal transition-colors",
-                        "bg-zinc-100 text-zinc-900 border border-zinc-200/80",
-                        "dark:bg-[#1e1f21] dark:text-white dark:border-white/[0.08]",
+                        "w-full h-11 px-3.5 rounded-xl text-sm font-normal outline-none transition-all duration-200",
+                        "bg-zinc-100 text-zinc-900 border border-zinc-200/80 hover:border-zinc-300",
+                        "dark:bg-[#1e1f21] dark:text-white dark:border-white/[0.08] dark:hover:border-white/20",
                         focusInputClasses
                       )}
                     />
@@ -2252,9 +2225,9 @@ export const SignupForm = ({
                         }))
                       }
                       className={cn(
-                        "w-full h-11 px-3.5 rounded-xl text-sm font-normal transition-colors",
-                        "bg-zinc-100 text-zinc-900 border border-zinc-200/80",
-                        "dark:bg-[#1e1f21] dark:text-white dark:border-white/[0.08]",
+                        "w-full h-11 px-3.5 rounded-xl text-sm font-normal outline-none transition-all duration-200",
+                        "bg-zinc-100 text-zinc-900 border border-zinc-200/80 hover:border-zinc-300",
+                        "dark:bg-[#1e1f21] dark:text-white dark:border-white/[0.08] dark:hover:border-white/20",
                         focusInputClasses
                       )}
                     />
@@ -2274,9 +2247,7 @@ export const SignupForm = ({
                     onClick={() => setScenicStep("first-goal")}
                     className={cn(
                       "w-full h-12 rounded-2xl font-semibold text-sm sm:text-base transition-all duration-200 active:scale-[0.98] shadow-sm flex items-center justify-center",
-                      "bg-zinc-900 text-white hover:bg-zinc-800",
-                      "dark:bg-white dark:text-zinc-950 dark:hover:bg-zinc-100",
-                      focusButtonClasses
+                      scenicPrimaryButtonClasses
                     )}
                   >
                     Continue
@@ -2357,15 +2328,12 @@ export const SignupForm = ({
                           ],
                         })
                       }
-                      className={cn(
-                        "w-full h-11 px-3.5 rounded-xl text-sm font-normal flex items-center justify-between transition-colors outline-none cursor-pointer",
-                        "bg-zinc-100 text-zinc-900 border border-zinc-200/80 hover:border-zinc-300",
-                        "dark:bg-[#1e1f21] dark:text-white dark:border-white/[0.08] dark:hover:border-white/20",
-                        focusButtonClasses
+                      className={scenicDropdownButtonClasses(
+                        activeDropdown?.field === "goalType"
                       )}
                     >
                       <span className="truncate">{firstGoal.goalType}</span>
-                      <ChevronDown size={15} className="opacity-50 shrink-0" />
+                      <ChevronDown size={15} className={cn("opacity-70 shrink-0 transition-colors", theme.text)} />
                     </button>
                   </div>
 
@@ -2389,9 +2357,9 @@ export const SignupForm = ({
                         }))
                       }
                       className={cn(
-                        "w-full h-11 px-3.5 rounded-xl text-sm font-normal transition-colors",
-                        "bg-zinc-100 text-zinc-900 border border-zinc-200/80",
-                        "dark:bg-[#1e1f21] dark:text-white dark:border-white/[0.08]",
+                        "w-full h-11 px-3.5 rounded-xl text-sm font-normal outline-none transition-all duration-200",
+                        "bg-zinc-100 text-zinc-900 border border-zinc-200/80 hover:border-zinc-300",
+                        "dark:bg-[#1e1f21] dark:text-white dark:border-white/[0.08] dark:hover:border-white/20",
                         focusInputClasses
                       )}
                     />
@@ -2417,9 +2385,9 @@ export const SignupForm = ({
                         }))
                       }
                       className={cn(
-                        "w-full h-11 px-3.5 rounded-xl text-sm font-normal transition-colors",
-                        "bg-zinc-100 text-zinc-900 border border-zinc-200/80",
-                        "dark:bg-[#1e1f21] dark:text-white dark:border-white/[0.08]",
+                        "w-full h-11 px-3.5 rounded-xl text-sm font-normal outline-none transition-all duration-200",
+                        "bg-zinc-100 text-zinc-900 border border-zinc-200/80 hover:border-zinc-300",
+                        "dark:bg-[#1e1f21] dark:text-white dark:border-white/[0.08] dark:hover:border-white/20",
                         focusInputClasses
                       )}
                     />
@@ -2438,18 +2406,13 @@ export const SignupForm = ({
                     <button
                       type="button"
                       onClick={openDatePicker}
-                      className={cn(
-                        "w-full h-11 px-3.5 rounded-xl text-sm font-normal flex items-center justify-between transition-colors outline-none cursor-pointer",
-                        "bg-zinc-100 text-zinc-900 border border-zinc-200/80 hover:border-zinc-300",
-                        "dark:bg-[#1e1f21] dark:text-white dark:border-white/[0.08] dark:hover:border-white/20",
-                        focusButtonClasses
-                      )}
+                      className={scenicDropdownButtonClasses(isDatePickerOpen)}
                     >
                       <span className="flex items-center gap-2 truncate">
                         <span>{firstGoal.targetDate}</span>
-                        <Calendar size={14} className="opacity-70 text-zinc-500 dark:text-zinc-400" />
+                        <Calendar size={14} className={cn("shrink-0 transition-colors", theme.text)} />
                       </span>
-                      <ChevronDown size={15} className="opacity-50 shrink-0" />
+                      <ChevronDown size={15} className={cn("opacity-70 shrink-0 transition-colors", theme.text)} />
                     </button>
                   </div>
 
@@ -2473,9 +2436,9 @@ export const SignupForm = ({
                         }))
                       }
                       className={cn(
-                        "w-full h-11 px-3.5 rounded-xl text-sm font-normal transition-colors",
-                        "bg-zinc-100 text-zinc-900 border border-zinc-200/80",
-                        "dark:bg-[#1e1f21] dark:text-white dark:border-white/[0.08]",
+                        "w-full h-11 px-3.5 rounded-xl text-sm font-normal outline-none transition-all duration-200",
+                        "bg-zinc-100 text-zinc-900 border border-zinc-200/80 hover:border-zinc-300",
+                        "dark:bg-[#1e1f21] dark:text-white dark:border-white/[0.08] dark:hover:border-white/20",
                         focusInputClasses
                       )}
                     />
@@ -2495,9 +2458,7 @@ export const SignupForm = ({
                     onClick={() => setScenicStep("summary")}
                     className={cn(
                       "w-full h-12 rounded-2xl font-semibold text-sm sm:text-base transition-all duration-200 active:scale-[0.98] shadow-sm flex items-center justify-center",
-                      "bg-zinc-900 text-white hover:bg-zinc-800",
-                      "dark:bg-white dark:text-zinc-950 dark:hover:bg-zinc-100",
-                      focusButtonClasses
+                      scenicPrimaryButtonClasses
                     )}
                   >
                     Create Goal
@@ -2660,9 +2621,7 @@ export const SignupForm = ({
                     onClick={() => setScenicStep("completed")}
                     className={cn(
                       "w-full h-12 rounded-2xl font-semibold text-sm sm:text-base transition-all duration-200 active:scale-[0.98] shadow-sm flex items-center justify-center",
-                      "bg-zinc-900 text-white hover:bg-zinc-800",
-                      "dark:bg-white dark:text-zinc-950 dark:hover:bg-zinc-100",
-                      focusButtonClasses
+                      scenicPrimaryButtonClasses
                     )}
                   >
                     Go to Dashboard
@@ -2739,9 +2698,7 @@ export const SignupForm = ({
                     }}
                     className={cn(
                       "w-full h-12 rounded-2xl font-semibold text-sm sm:text-base transition-all duration-200 active:scale-[0.98] shadow-sm flex items-center justify-center",
-                      "bg-zinc-900 text-white hover:bg-zinc-800",
-                      "dark:bg-white dark:text-zinc-950 dark:hover:bg-zinc-100",
-                      focusButtonClasses
+                      scenicPrimaryButtonClasses
                     )}
                   >
                     Restart Demo Flow
@@ -2809,12 +2766,12 @@ export const SignupForm = ({
                         "w-full px-4 py-3 rounded-2xl text-xs sm:text-sm font-medium flex items-center justify-between transition-all duration-150 text-left",
                         focusButtonClasses,
                         isSelected
-                          ? "bg-zinc-900 text-white dark:bg-white dark:text-zinc-950 shadow-sm"
+                          ? cn(theme.bg, theme.panelFg, "shadow-sm")
                           : "bg-zinc-100/80 text-zinc-700 hover:bg-zinc-200/90 dark:bg-white/[0.05] dark:text-zinc-300 dark:hover:bg-white/10"
                       )}
                     >
                       <span>{opt}</span>
-                      {isSelected && <Check size={16} strokeWidth={2.5} />}
+                      {isSelected && <Check size={16} strokeWidth={2.5} className={theme.panelFg} />}
                     </button>
                   );
                 })}
@@ -2849,7 +2806,7 @@ export const SignupForm = ({
                 </div>
                 <button
                   type="button"
-                  onClick={() => setActiveDropdown(null)}
+                  onClick={() => setIsDatePickerOpen(false)}
                   className="w-8 h-8 rounded-full flex items-center justify-center text-zinc-400 hover:text-zinc-900 dark:hover:text-white hover:bg-zinc-100 dark:hover:bg-white/10 transition-colors"
                 >
                   <X size={16} />
@@ -2905,7 +2862,7 @@ export const SignupForm = ({
                         "h-10 rounded-xl text-xs font-medium transition-all duration-150 flex items-center justify-center",
                         focusButtonClasses,
                         isSelected
-                          ? "bg-zinc-900 text-white dark:bg-white dark:text-zinc-950 font-semibold shadow-sm"
+                          ? cn(theme.bg, theme.panelFg, "font-semibold shadow-sm")
                           : "bg-zinc-100/80 text-zinc-700 hover:bg-zinc-200/90 dark:bg-white/[0.05] dark:text-zinc-300 dark:hover:bg-white/10"
                       )}
                     >
@@ -2937,8 +2894,8 @@ export const SignupForm = ({
                     setIsDatePickerOpen(false);
                   }}
                   className={cn(
-                    "flex-1 h-10 rounded-xl text-xs sm:text-sm font-semibold bg-zinc-900 text-white hover:bg-zinc-800 dark:bg-white dark:text-zinc-950 dark:hover:bg-zinc-100 transition-colors shadow-sm",
-                    focusButtonClasses
+                    "flex-1 h-10 rounded-xl text-xs sm:text-sm font-semibold transition-colors shadow-sm",
+                    scenicPrimaryButtonClasses
                   )}
                 >
                   Apply Date
@@ -2952,7 +2909,10 @@ export const SignupForm = ({
   }
 
   return (
-    <div className="max-w-md mx-auto relative overflow-hidden bg-card text-card-foreground rounded-3xl shadow-[0_8px_40px_rgba(0,0,0,0.08)] dark:shadow-[0_8px_40px_rgba(0,0,0,0.4)] border border-border w-full">
+    <div
+      className="max-w-md mx-auto relative overflow-hidden bg-card text-card-foreground rounded-3xl shadow-[0_8px_40px_rgba(0,0,0,0.08)] dark:shadow-[0_8px_40px_rgba(0,0,0,0.4)] border border-border w-full"
+      style={style}
+    >
       {/* Top Completion Progress Bar */}
       <div className="absolute top-0 left-0 right-0 h-1.5 bg-muted">
         <div
