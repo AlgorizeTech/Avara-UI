@@ -1,7 +1,7 @@
 {
   "$schema": "https://ui.shadcn.com/schema/registry-item.json",
   "name": "sticky-scroll-stack-framer",
-  "title": "Sticky Scroll Stack (Framer Motion)",
+  "title": "Sticky Scroll Stack (Motion)",
   "author": "AlgorizeTech",
   "description": "A sticky section whose panels swap content as you scroll, supporting list, image, split and custom layouts. Use it for feature sections with varied content per step.",
   "dependencies": [
@@ -19,7 +19,7 @@
       "target": "components/custom/blocks/StickyScrollStackBlock.tsx"
     }
   ],
-  "docs": "Framer Motion build of `sticky-scroll-stack` — same props, markup and install path; install one or the other. Named export: StickyScrollStack. Each item sets `contentType` (list | image | split | custom) so steps need not share a shape. Uses next/image, so it needs edits outside Next.js.",
+  "docs": "Motion build of `sticky-scroll-stack` — same props, markup and install path; install one or the other. Named export: StickyScrollStack. Each item sets `contentType` (list | image | split | custom) so steps need not share a shape. Uses next/image, so it needs edits outside Next.js.",
   "categories": [
     "scroll",
     "marketing"

@@ -787,6 +787,18 @@ html body[data-scroll-locked] {
     font-family: var(--font-serif);
     font-weight: 400;
   }
+  /* Cooper is the site's face, not the components'. Inside a component preview
+     (the /preview iframe marks its <body> with data-sandbox) headings fall back
+     to preflight's inherit, and `font-serif` resolves to the customizer's
+     selected family — so a previewed component shows exactly what it would in
+     the reader's project. On <body> so portalled dialogs are covered too. */
+  [data-sandbox] {
+    --font-serif: var(--font-sans);
+  }
+  [data-sandbox] :is(h1, h2, h3, h4) {
+    font-family: inherit;
+    font-weight: inherit;
+  }
 }
 
 /* Force zero border radius across all elements while the theme customizer's

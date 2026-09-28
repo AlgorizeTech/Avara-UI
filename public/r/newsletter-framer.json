@@ -1,7 +1,7 @@
 {
   "$schema": "https://ui.shadcn.com/schema/registry-item.json",
   "name": "newsletter-framer",
-  "title": "Newsletter (Framer Motion)",
+  "title": "Newsletter (Motion)",
   "author": "AlgorizeTech",
   "description": "A sign-up section in three layouts: readers' faces drifting around a centred form, a panel with a pointer glow and a ticker of who just joined, or the form beside a fanned stack of recent issues. The form becomes a thank-you when your promise resolves.",
   "dependencies": [
@@ -23,7 +23,7 @@
       "target": "components/custom/blocks/NewsletterBlock.tsx"
     }
   ],
-  "docs": "Framer Motion build of `newsletter` — same props, markup and install path; install one or the other. Named export: Newsletter, with parts Heading, Intro, Form, Proof, Ticker and Issues. Composed from the input, button, marquee and tilted-card items, which install alongside it. `variant` is portraits | spotlight | issues, each styled for light and dark mode; `portraits` takes up to four faces; `Form` takes `onSubscribe(email)` (a promise holds the busy state), `action`, `successTitle`/`successText`; `accent` pins the glow and button colour; `reveal` is in-view or immediate.",
+  "docs": "Motion build of `newsletter` — same props, markup and install path; install one or the other. Named export: Newsletter, with parts Heading, Intro, Form, Proof, Ticker and Issues. Composed from the input, button, marquee and tilted-card items, which install alongside it. `variant` is portraits | spotlight | issues, each styled for light and dark mode; `portraits` takes up to four faces; `Form` takes `onSubscribe(email)` (a promise holds the busy state), `action`, `successTitle`/`successText`; `accent` pins the glow and button colour; `reveal` is in-view or immediate.",
   "categories": [
     "marketing",
     "forms"

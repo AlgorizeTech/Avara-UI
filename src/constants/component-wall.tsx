@@ -1,5 +1,11 @@
-import type { ComponentWallItem, StackTool } from "@/components/custom/blocks/ComponentWallBlock";
-import { FramerIcon, GsapIcon } from "@/components/custom/blocks/Icons";
+import type { ComponentWallItem } from "@/components/custom/blocks/ComponentWallBlock";
+import { MotionIcon, GsapIcon } from "@/components/custom/blocks/Icons";
+import {
+  TechStack,
+  TechStackGroup,
+  TechStackTool,
+  type TechStackProps,
+} from "@/components/custom/blocks/TechStackBlock";
 
 // Screenshots of this library's own sections, captured from their previews
 // into public/assets/wall. The slug is the registry item, so the hero's
@@ -75,12 +81,16 @@ export const WALL_AVATARS = [
 // What the library is built with — front-end only. Ten marks make three
 // batches of seven, each leaving three out and in a different order, so every
 // swap reads as a change; the two animation libraries arrive together. The
-// marks are the images in public/assets/tech-icons, plus GSAP and Framer
-// Motion from Icons (Framer's mark takes the text colour, so it follows the
-// theme); the black Next.js disc and the shadcn slashes invert in dark. shadcn
+// marks are the images in public/assets/tech-icons, plus GSAP and Motion from
+// Icons (Motion's mark takes the text colour, so it follows the theme); the black Next.js disc and the shadcn slashes invert in dark. shadcn
 // is credited because the registry format and the CLI every install runs
 // through are theirs.
-const tool = (name: string, file: string, className?: string): StackTool => ({
+interface Tool {
+  name: string;
+  icon: React.ReactNode;
+}
+
+const tool = (name: string, file: string, className?: string): Tool => ({
   name,
   icon: <img src={`/assets/tech-icons/${file}`} alt="" className={className} />,
 });
@@ -93,11 +103,26 @@ const tailwind = tool("Tailwind CSS", "tailwind.png");
 const css = tool("CSS", "css.png");
 const html = tool("HTML", "HTML.png");
 const shadcn = tool("shadcn/ui", "shadcn.svg", "dark:invert");
-const gsap: StackTool = { name: "GSAP", icon: <GsapIcon /> };
-const framer: StackTool = { name: "Framer Motion", icon: <FramerIcon fill="currentColor" /> };
+const gsap: Tool = { name: "GSAP", icon: <GsapIcon /> };
+const framer: Tool = { name: "Motion", icon: <MotionIcon /> };
 
-export const WALL_STACK: StackTool[][] = [
+const WALL_STACK: Tool[][] = [
   [react, next, shadcn, ts, tailwind, css, html],
   [shadcn, tailwind, framer, gsap, react, ts, css],
   [js, ts, react, next, gsap, framer, html],
 ];
+
+/** The "Built with" strip for the hero's `stack` slot. */
+export function WallStack(props: Omit<TechStackProps, "children">) {
+  return (
+    <TechStack label="Built with" {...props}>
+      {WALL_STACK.map((group, i) => (
+        <TechStackGroup key={i}>
+          {group.map((t) => (
+            <TechStackTool key={t.name} name={t.name} icon={t.icon} />
+          ))}
+        </TechStackGroup>
+      ))}
+    </TechStack>
+  );
+}

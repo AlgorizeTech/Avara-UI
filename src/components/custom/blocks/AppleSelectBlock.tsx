@@ -4,9 +4,15 @@ import { cn } from "@/lib/utils";
 import React from "react";
 
 export interface AppleSelectProps
-  extends Omit<React.HTMLAttributes<HTMLParagraphElement>, "color"> {
+  extends Omit<React.HTMLAttributes<HTMLElement>, "color"> {
   /** The full sentence or paragraph to render. */
   text: string;
+  /**
+   * The element to render. `"span"` sets the selection inline, inside a
+   * paragraph of your own, so only a phrase of running copy needs to go
+   * through the component.
+   */
+  as?: "p" | "span";
   /**
    * Character range to highlight as `[start, end]` — `end` is exclusive, the
    * same way `String.slice` works — or several such ranges for more than one
@@ -23,12 +29,17 @@ export interface AppleSelectProps
 
 // Keyframes ship inline so the component stays self-contained — no plugin,
 // no globals.css entry. Names are prefixed to avoid clashing with app styles.
+// With reduced motion the selection is simply there.
 const KEYFRAMES = `
 @keyframes apple-select-highlight { from { opacity: 0; } to { opacity: 1; } }
 @keyframes apple-select-handle {
   0% { opacity: 0; transform: scale(0.4); }
   70% { opacity: 1; transform: scale(1.15); }
   100% { opacity: 1; transform: scale(1); }
+}
+@media (prefers-reduced-motion: no-preference) {
+  .apple-select-highlight { animation: apple-select-highlight 0.4s ease-out both; }
+  .apple-select-handle { animation: apple-select-handle 0.35s cubic-bezier(0.34,1.56,0.64,1) 0.25s both; }
 }`;
 
 // The handle is a zero-width inline anchor with the bar drawn absolutely, so it
@@ -52,7 +63,7 @@ const Handle = ({
     }}
   >
     <span
-      className="absolute w-[2px]"
+      className={cn("absolute w-[2px]", animate && "apple-select-handle")}
       style={{
         // Centred inside the 4px anchor without a translate, which the
         // entrance animation's scale() transform would otherwise override.
@@ -61,7 +72,6 @@ const Handle = ({
         height: "1.15em",
         backgroundColor: color,
         transformOrigin: edge === "start" ? "top center" : "bottom center",
-        animation: animate ? "apple-select-handle 0.35s cubic-bezier(0.34,1.56,0.64,1) 0.25s both" : undefined,
       }}
     >
       {/* The lollipop: start handle wears its knob on top, end handle underneath. */}
@@ -78,10 +88,11 @@ const Handle = ({
   </span>
 );
 
-export const AppleSelect = React.forwardRef<HTMLParagraphElement, AppleSelectProps>(
+export const AppleSelect = React.forwardRef<HTMLElement, AppleSelectProps>(
   (
     {
       text,
+      as: Tag = "p",
       selection,
       color = "var(--primary)",
       handles = true,
@@ -119,7 +130,7 @@ export const AppleSelect = React.forwardRef<HTMLParagraphElement, AppleSelectPro
         <React.Fragment key={i}>
           {handles && <Handle edge="start" color={color} animate={animate} />}
           <mark
-            className="rounded-[0.15em] px-[0.05em]"
+            className={cn("rounded-[0.15em] px-[0.05em]", animate && "apple-select-highlight")}
             style={{
               // Translucent tint keeps the text colour intact — like a real
               // selection rather than a solid highlighter.
@@ -128,7 +139,6 @@ export const AppleSelect = React.forwardRef<HTMLParagraphElement, AppleSelectPro
               // Wrapped lines each get their own rounded corners.
               WebkitBoxDecorationBreak: "clone",
               boxDecorationBreak: "clone",
-              animation: animate ? "apple-select-highlight 0.4s ease-out both" : undefined,
             }}
           >
             {text.slice(start, end)}
@@ -141,15 +151,17 @@ export const AppleSelect = React.forwardRef<HTMLParagraphElement, AppleSelectPro
     parts.push(text.slice(cursor));
 
     return (
-      <p
-        ref={ref}
-        className={cn("leading-relaxed", className)}
+      <Tag
+        // Either tag takes the HTMLElement ref; TypeScript reads the union as <p>'s.
+        ref={ref as React.Ref<HTMLParagraphElement & HTMLSpanElement>}
+        // Inline, the line height is the surrounding paragraph's.
+        className={cn(Tag === "p" && "leading-relaxed", className)}
         style={style}
         {...props}
       >
         {animate && <style>{KEYFRAMES}</style>}
         {parts}
-      </p>
+      </Tag>
     );
   }
 );

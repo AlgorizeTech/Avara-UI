@@ -149,6 +149,7 @@ export const sandboxNames = [
   "support-hero",
   "table",
   "table-of-contents",
+  "tech-stack",
   "terminal",
   "text-animation",
   "theme-switcher",

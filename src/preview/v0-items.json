@@ -751,6 +751,11 @@
   "table-of-contents": {
     "table-of-contents-left-side-navigation": "Table Of Contents — Table of Contents (Left Side Navigation)"
   },
+  "tech-stack": {
+    "built-with": "Tech Stack — Built with",
+    "compact": "Tech Stack — Compact",
+    "one-group": "Tech Stack — One group"
+  },
   "terminal": {
     "terminal": "Terminal",
     "any-language": "Terminal — Any language",

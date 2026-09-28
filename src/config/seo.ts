@@ -22,7 +22,7 @@ export const seoConfig = {
       'React components',
       'UI library',
       'Tailwind CSS',
-      'Framer Motion',
+      'Motion',
       'TypeScript',
       'Next.js',
       'animated components',

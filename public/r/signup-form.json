@@ -31,7 +31,7 @@
       "target": "components/custom/blocks/register-form-theme.ts"
     }
   ],
-  "docs": "Named export: SignupForm. Uses Framer Motion for field-level error transitions. Validation is client-side presentation only — enforce it again on your server.",
+  "docs": "Named export: SignupForm. Uses Motion for field-level error transitions. Validation is client-side presentation only — enforce it again on your server.",
   "categories": [
     "authentication",
     "forms"

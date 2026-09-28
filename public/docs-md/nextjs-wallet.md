@@ -175,7 +175,27 @@ npx shadcn@latest add @algorize-ui/wallet
         walletColor
         string
         "var(--primary)"
-        Custom color or CSS variable for the wallet sleeve and pocket.
+        Base color or CSS variable. The sleeve and pocket wear a soft tint of it, with text in a deep shade of the same hue.
+
+        hint
+        string
+        "Hover to view cards"
+        Prompt shown above the closed wallet on pointer devices. Pass "" to hide.
+
+        touchHint
+        string
+        "Tap to view cards"
+        The same prompt on touch screens, where the wallet opens on tap.
+
+        openHint
+        string
+        "Click a card to view details"
+        Prompt shown while the cards are out, on pointer devices. Pass "" to hide.
+
+        touchOpenHint
+        string
+        "Tap a card to view details"
+        The open prompt on touch screens.
 
         className
         string

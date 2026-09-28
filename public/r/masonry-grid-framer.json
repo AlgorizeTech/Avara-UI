@@ -1,7 +1,7 @@
 {
   "$schema": "https://ui.shadcn.com/schema/registry-item.json",
   "name": "masonry-grid-framer",
-  "title": "Masonry Grid (Framer Motion)",
+  "title": "Masonry Grid (Motion)",
   "author": "AlgorizeTech",
   "description": "A CSS-column masonry layout with staggered entrance animation. Use it for image galleries and card walls of uneven height.",
   "dependencies": [
@@ -18,7 +18,7 @@
       "target": "components/custom/blocks/MasonryGridBlock.tsx"
     }
   ],
-  "docs": "Framer Motion build of `masonry-grid` — same props, markup and install path; install one or the other. Named export: MasonryGrid. Generic over your item type — pass `items` and a `renderItem` callback. Column count and gaps come from `columnsClassName` and `gapClassName`, so responsive behaviour is plain Tailwind. CSS columns fill top-to-bottom per column, so visual order differs from DOM order.",
+  "docs": "Motion build of `masonry-grid` — same props, markup and install path; install one or the other. Named export: MasonryGrid. Generic over your item type — pass `items` and a `renderItem` callback. Column count and gaps come from `columnsClassName` and `gapClassName`, so responsive behaviour is plain Tailwind. CSS columns fill top-to-bottom per column, so visual order differs from DOM order.",
   "categories": [
     "layout",
     "media"

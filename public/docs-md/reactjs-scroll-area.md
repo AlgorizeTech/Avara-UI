@@ -245,7 +245,7 @@ export const boardSource = `const columns = [
     column: "Under Review",
     tasks: [
       { name: "Scroll Area Both Axes", tag: "UI Block", size: "3.4 MB" },
-      { name: "Framer Motion Physics", tag: "Animation", size: "6.0 MB" },
+      { name: "Motion Physics", tag: "Animation", size: "6.0 MB" },
       { name: "PostgreSQL Migration", tag: "Database", size: "8.2 MB" },
       { name: "S3 Asset Optimizer", tag: "Storage", size: "1.9 MB" },
       { name: "JWT Token Rotation Spec", tag: "Auth", size: "2.2 MB" },

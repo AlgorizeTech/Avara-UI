@@ -148,7 +148,7 @@ function HeroScreen({ homeIndicator = true }: { homeIndicator?: boolean }) {
 
         <p className="text-[10px] leading-snug font-medium text-muted-foreground px-1">
           A meticulous library of React components &amp; interactive blocks,
-          built on Tailwind CSS, TypeScript and Framer Motion.
+          built on Tailwind CSS, TypeScript and Motion.
         </p>
 
         <button

@@ -3,7 +3,7 @@
   "name": "text-animation",
   "title": "Text Animation",
   "author": "AlgorizeTech",
-  "description": "Character and word-level text motion driven by Framer Motion. Use it for hero headlines that need finer control than a whole-block fade.",
+  "description": "Character and word-level text motion driven by Motion. Use it for hero headlines that need finer control than a whole-block fade.",
   "dependencies": [],
   "registryDependencies": [
     "utils"

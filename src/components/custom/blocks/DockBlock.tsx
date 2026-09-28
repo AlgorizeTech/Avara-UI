@@ -72,16 +72,17 @@ export const Dock = React.forwardRef<HTMLDivElement, DockProps>(
       return () => window.removeEventListener("resize", handleResize);
     }, []);
 
-    // Responsive physics sizing fallbacks for mobile viewports
-    const effectiveBaseSize = isMobile ? Math.min(baseSize, 24) : baseSize;
+    // Responsive physics sizing fallbacks for mobile viewports: smaller, but
+    // still thumb-sized (a 36px icon, 52px at full magnification).
+    const effectiveBaseSize = isMobile ? Math.min(baseSize, 36) : baseSize;
     const effectiveMagnification = isMobile
-      ? Math.min(magnification, 44)
+      ? Math.min(magnification, 52)
       : magnification;
-    const effectiveDistance = isMobile ? Math.min(distance, 80) : distance;
-    const effectiveGap = isMobile ? Math.min(gap, 3) : gap;
+    const effectiveDistance = isMobile ? Math.min(distance, 100) : distance;
+    const effectiveGap = isMobile ? Math.min(gap, 6) : gap;
 
     const dynamicHeight = typeof containerHeight === "number"
-      ? `${isMobile ? Math.min(containerHeight, 45) : containerHeight}px`
+      ? `${isMobile ? Math.min(containerHeight, 60) : containerHeight}px`
       : containerHeight;
 
     const publish = (x: number) => {

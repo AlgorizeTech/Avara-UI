@@ -1,7 +1,7 @@
 {
   "$schema": "https://ui.shadcn.com/schema/registry-item.json",
   "name": "carousel-3d-framer",
-  "title": "Carousel 3D (Framer Motion)",
+  "title": "Carousel 3D (Motion)",
   "author": "AlgorizeTech",
   "description": "A perspective carousel where cards rotate through depth, with drag and autoplay. Use it for portfolio and gallery sections that need presence.",
   "dependencies": [
@@ -19,7 +19,7 @@
       "target": "components/custom/blocks/ThreeDCarouselBlock.tsx"
     }
   ],
-  "docs": "Framer Motion build of `carousel-3d` — same props, markup and install path; install one or the other. Named exports: ThreeDCarousel, CarouselItem. `items` take { id, title, category, image, description? }. `autoPlay` with `autoPlayInterval` advances it; dragging pauses. Renders a plain <img>, so it works outside Next.js.",
+  "docs": "Motion build of `carousel-3d` — same props, markup and install path; install one or the other. Named exports: ThreeDCarousel, CarouselItem. `items` take { id, title, category, image, description? }. `autoPlay` with `autoPlayInterval` advances it; dragging pauses. Renders a plain <img>, so it works outside Next.js.",
   "categories": [
     "media",
     "marketing"

@@ -2,7 +2,7 @@
 
 import { ComponentWall } from "@/components/custom/blocks/ComponentWallBlock";
 import { GitHubIcon } from "@/components/custom/blocks/Icons";
-import { WALL_AVATARS, WALL_ITEMS, WALL_STACK } from "@/constants/component-wall";
+import { WALL_AVATARS, WALL_ITEMS, WallStack } from "@/constants/component-wall";
 
 export default function ComponentWallDemo({
   interval = 4500,
@@ -23,13 +23,13 @@ export default function ComponentWallDemo({
         heading="Build interactive {word}."
         headingWords={["interfaces", "components", "experiences", "animations", "dashboards"]}
         accent="interactive"
-        description="A meticulous library of React components and interactive blocks, engineered for seamless performance with Tailwind CSS, TypeScript, GSAP and Framer Motion."
+        description="A meticulous library of React components and interactive blocks, engineered for seamless performance with Tailwind CSS, TypeScript, GSAP and Motion."
         install={{ command: "npx shadcn@latest add @algorize-ui/{item}" }}
         primaryAction={{ label: "Browse components", href: "#" }}
         secondaryAction={{ label: "Star on GitHub", href: "#", icon: <GitHubIcon size={16} /> }}
         trust={{ text: "Loved by developers shipping real products with it", avatars: WALL_AVATARS, rating: 5 }}
         items={WALL_ITEMS}
-        stack={{ label: "Built with", groups: WALL_STACK }}
+        stack={<WallStack variant={layout === "center" ? "compact" : "labelled"} />}
         interval={interval}
         order={order}
         layout={layout}

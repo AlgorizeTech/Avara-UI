@@ -154,6 +154,7 @@ export const sandboxRegistry: Record<string, LazyExoticComponent<ComponentType<a
   "support-hero": lazyRetry(() => import("./demos/support-hero-demo")),
   "table": lazyRetry(() => import("./demos/table-demo")),
   "table-of-contents": lazyRetry(() => import("./demos/table-of-contents-demo")),
+  "tech-stack": lazyRetry(() => import("./demos/tech-stack-demo")),
   "terminal": lazyRetry(() => import("./demos/terminal-demo")),
   "text-animation": lazyRetry(() => import("./demos/text-animation-demo")),
   "theme-switcher": lazyRetry(() => import("./demos/theme-switcher-demo")),

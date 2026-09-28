@@ -56,7 +56,7 @@ export const HomepageHeroBlock = forwardRef<HTMLElement, HomepageHeroBlockProps>
         "Dashboards",
       ],
       titleSuffix = "",
-      subtitle = "A meticulous library of React components & interactive blocks, engineered for seamless performance with Tailwind CSS, TypeScript, GSAP, and Framer Motion.",
+      subtitle = "A meticulous library of React components & interactive blocks, engineered for seamless performance with Tailwind CSS, TypeScript, GSAP, and Motion.",
       cliCommand = "npx shadcn@latest add @algorize-ui/button",
       primaryActionLabel = "Browse Components",
       primaryActionHref = "/docs",

@@ -88,7 +88,7 @@
     {
       "name": "ai-chat-framer",
       "type": "registry:component",
-      "title": "AI Chat (Framer Motion)",
+      "title": "AI Chat (Motion)",
       "author": "AlgorizeTech",
       "description": "An AI assistant interface with thread history sidebar, streaming-style responses and a prompt composer. Use it as the front end for an LLM feature.",
       "categories": [
@@ -108,7 +108,7 @@
           "target": "components/custom/blocks/Ai-chat.tsx"
         }
       ],
-      "docs": "Framer Motion build of `ai-chat` — same props, markup and install path; install one or the other. Named exports: AIChat, plus ChatThread, Message, ChatModel, EffortOption, ComposerTool, SendPayload and UploadHandler types. Responses are mocked — wire `onSend` ({ content, attachments, model, effort, tools }) to your endpoint and `uploadFile` (file, onProgress, signal) to your storage. The composer ships with a + menu (`tools`: one upload row opens the picker, the rest insert @Label mentions), drag-and-drop attachments (rocket progress indicator), a `models` picker, a Faster↔Smarter `efforts` slider that lights the prompt bar at the top level, and mic dictation via getUserMedia + the Web Speech API with graceful fallbacks. Variants: default | minimal | glass | compact (no history sidebar — opens as a hero with `heroTitle` over the prompt bar until the first message; `showSidebar={false}` does the same for any variant)."
+      "docs": "Motion build of `ai-chat` — same props, markup and install path; install one or the other. Named exports: AIChat, plus ChatThread, Message, ChatModel, EffortOption, ComposerTool, SendPayload and UploadHandler types. Responses are mocked — wire `onSend` ({ content, attachments, model, effort, tools }) to your endpoint and `uploadFile` (file, onProgress, signal) to your storage. The composer ships with a + menu (`tools`: one upload row opens the picker, the rest insert @Label mentions), drag-and-drop attachments (rocket progress indicator), a `models` picker, a Faster↔Smarter `efforts` slider that lights the prompt bar at the top level, and mic dictation via getUserMedia + the Web Speech API with graceful fallbacks. Variants: default | minimal | glass | compact (no history sidebar — opens as a hero with `heroTitle` over the prompt bar until the first message; `showSidebar={false}` does the same for any variant)."
     },
     {
       "name": "alert",
@@ -289,7 +289,7 @@
           "target": "components/custom/blocks/AppleSelectBlock.tsx"
         }
       ],
-      "docs": "Named export: AppleSelect. `text` is the full string and `selection` is a `[start, end]` character range (end exclusive, like String.slice) or an array of them for several phrases. The range is fixed by the author, not draggable. `color` takes any CSS colour, `handles={false}` drops the lollipops, and `animate` fades the highlight in on mount. Renders a <p>; other HTML attributes are forwarded to it."
+      "docs": "Named export: AppleSelect. `text` is the full string and `selection` is a `[start, end]` character range (end exclusive, like String.slice) or an array of them for several phrases. The range is fixed by the author, not draggable. `color` takes any CSS colour, `handles={false}` drops the lollipops, and `animate` fades the highlight in on mount. Renders a <p> by default; `as=\"span\"` sets it inline inside your own paragraph. Other HTML attributes are forwarded to it."
     },
     {
       "name": "audio-player",
@@ -647,7 +647,7 @@
     {
       "name": "carousel-3d-framer",
       "type": "registry:component",
-      "title": "Carousel 3D (Framer Motion)",
+      "title": "Carousel 3D (Motion)",
       "author": "AlgorizeTech",
       "description": "A perspective carousel where cards rotate through depth, with drag and autoplay. Use it for portfolio and gallery sections that need presence.",
       "categories": [
@@ -668,7 +668,7 @@
           "target": "components/custom/blocks/ThreeDCarouselBlock.tsx"
         }
       ],
-      "docs": "Framer Motion build of `carousel-3d` — same props, markup and install path; install one or the other. Named exports: ThreeDCarousel, CarouselItem. `items` take { id, title, category, image, description? }. `autoPlay` with `autoPlayInterval` advances it; dragging pauses. Renders a plain <img>, so it works outside Next.js."
+      "docs": "Motion build of `carousel-3d` — same props, markup and install path; install one or the other. Named exports: ThreeDCarousel, CarouselItem. `items` take { id, title, category, image, description? }. `autoPlay` with `autoPlayInterval` advances it; dragging pauses. Renders a plain <img>, so it works outside Next.js."
     },
     {
       "name": "cart",
@@ -909,6 +909,7 @@
         "https://algorize-ui.vercel.app/r/copy-button.json",
         "https://algorize-ui.vercel.app/r/half-stars.json",
         "https://algorize-ui.vercel.app/r/image-wall.json",
+        "https://algorize-ui.vercel.app/r/tech-stack.json",
         "https://algorize-ui.vercel.app/r/text-animation.json",
         "utils"
       ],
@@ -919,7 +920,7 @@
           "target": "components/custom/blocks/ComponentWallBlock.tsx"
         }
       ],
-      "docs": "Named export: ComponentWall (plus the ComponentWallItem and StackTool types). Composed from the image-wall, text-animation, copy-button, avatar-stack and half-stars items, which install alongside it. Pass `badge` ({ label, href? }), `heading` (a string, revealed word by word; write `{word}` where `headingWords` take turns every `wordInterval` ms, and name one word in `accent` for the primary colour), `description`, `install` ({ command } — write `{item}` where the focused card's `slug` goes, e.g. `npx shadcn@latest add @algorize-ui/{item}`), `primaryAction`/`secondaryAction` ({ label, href, icon? }), `trust` ({ text, avatars?, rating? }), `items` ({ title, image, slug? }[] — every screenshot sits in the same 493:332 frame; slug defaults to the title in kebab-case) and `stack` ({ label?, groups: { name, icon }[][], interval? } — the tools over the lower wall on desktop and under the band on phones, one batch of four to eight at a time, an odd batch as three over four; names from xl up). `columns`, `interval` (ms the camera rests; 0 holds still), `order` (serial | shuffle), `zoom`, `intro` (ms the camera drifts with nothing in focus while the copy arrives; default 1800) and `onFocus` pass straight to the wall; `layout` is split (copy left, wall right) or center (copy between two walls — the left camera resting high, the right low, taking turns, the second wall dealing the same items from halfway through; the tools sit under the copy; zoom defaults to 0.9; below lg a single band of every card sits between the copy and the tools); `linkComponent` takes next/link. The headline uses your theme's font-serif, the command font-mono; colours are theme tokens."
+      "docs": "Named export: ComponentWall (plus the ComponentWallItem type). Composed from the image-wall, text-animation, copy-button, avatar-stack and half-stars items, which install alongside it, and takes a tech-stack in its `stack` slot. Pass `badge` ({ label, href? }), `heading` (a string, revealed word by word; write `{word}` where `headingWords` take turns every `wordInterval` ms, and name one word in `accent` for the primary colour), `description` (a string or inline JSX — it renders inside a <p>), `install` ({ command } — write `{item}` where the focused card's `slug` goes, e.g. `npx shadcn@latest add @algorize-ui/{item}`), `primaryAction`/`secondaryAction` ({ label, href, icon? }), `trust` ({ text, avatars?, rating? }), `items` ({ title, image, slug? }[] — every screenshot sits in the same 493:332 frame; slug defaults to the title in kebab-case) and `stack` (a node — a <TechStack> of <TechStackGroup>s of <TechStackTool name icon />: the tools over the lower wall on desktop and under the band on phones; in the centred layout it closes the copy column, where the compact variant fits). `columns`, `interval` (ms the camera rests; 0 holds still), `order` (serial | shuffle), `zoom`, `intro` (ms the camera drifts with nothing in focus while the copy arrives; default 1800) and `onFocus` pass straight to the wall; `layout` is split (copy left, wall right) or center (copy between two walls — the left camera resting high, the right low, taking turns, the second wall dealing the same items from halfway through; the tools sit under the copy; zoom defaults to 0.9; below lg a single band of every card sits between the copy and the tools); `linkComponent` takes next/link. The headline uses your theme's font-serif, the command font-mono; colours are theme tokens."
     },
     {
       "name": "compute",
@@ -1288,7 +1289,7 @@
           "target": "components/custom/blocks/motion-curves.ts"
         }
       ],
-      "docs": "Named export: DesignComponentsFolder. Framer Motion drives the open and card-fan animation; `color` tints the folder. Uses next/image, so it needs edits outside Next.js. For the empty folder shape, use `design-folder-box`."
+      "docs": "Named export: DesignComponentsFolder. Motion drives the open and card-fan animation; `color` tints the folder. Uses next/image, so it needs edits outside Next.js. For the empty folder shape, use `design-folder-box`."
     },
     {
       "name": "design-folder-box",
@@ -1379,7 +1380,7 @@
     {
       "name": "dock-framer",
       "type": "registry:component",
-      "title": "Dock (Framer Motion)",
+      "title": "Dock (Motion)",
       "author": "AlgorizeTech",
       "description": "A macOS-style dock where icons magnify as the pointer approaches. Use it for app launchers and playful navigation bars.",
       "categories": [
@@ -1398,14 +1399,14 @@
           "target": "components/custom/blocks/DockBlock.tsx"
         }
       ],
-      "docs": "Framer Motion build of `dock` — same props, markup and install path; install one or the other. Named exports: Dock, DockItem. `items` take { id, label, icon, onClick?, isActive?, badge? }. `magnification` sets peak scale and `distance` the falloff radius. Pointer-driven — on touch devices it degrades to a plain icon row."
+      "docs": "Motion build of `dock` — same props, markup and install path; install one or the other. Named exports: Dock, DockItem. `items` take { id, label, icon, onClick?, isActive?, badge? }. `magnification` sets peak scale and `distance` the falloff radius. Pointer-driven — on touch devices it degrades to a plain icon row."
     },
     {
       "name": "draggable-card-list",
       "type": "registry:component",
       "title": "Draggable Card List",
       "author": "AlgorizeTech",
-      "description": "An interactive reorderable card list with 60fps Framer Motion spring physics, right-side grip handles, and custom card metadata.",
+      "description": "An interactive reorderable card list with 60fps Motion spring physics, right-side grip handles, and custom card metadata.",
       "categories": [
         "data-display",
         "layout"
@@ -1439,9 +1440,9 @@
     {
       "name": "draggable-card-list-framer",
       "type": "registry:component",
-      "title": "Draggable Card List (Framer Motion)",
+      "title": "Draggable Card List (Motion)",
       "author": "AlgorizeTech",
-      "description": "An interactive reorderable card list with 60fps Framer Motion spring physics, right-side grip handles, and custom card metadata.",
+      "description": "An interactive reorderable card list with 60fps Motion spring physics, right-side grip handles, and custom card metadata.",
       "categories": [
         "data-display",
         "layout"
@@ -1460,7 +1461,7 @@
           "target": "components/custom/draggable-card-list.tsx"
         }
       ],
-      "docs": "Framer Motion build of `draggable-card-list` — same props, markup and install path; install one or the other. Named exports: DraggableCardList, DraggableCardItem. Accepts `items` ({ id, title, description, date, badge, linkText, linkUrl, completed }), `onReorder`, `title`, `dragHandlePosition` ('right' | 'left'), `enableCheckboxes`, and `enableBadges`."
+      "docs": "Motion build of `draggable-card-list` — same props, markup and install path; install one or the other. Named exports: DraggableCardList, DraggableCardItem. Accepts `items` ({ id, title, description, date, badge, linkText, linkUrl, completed }), `onReorder`, `title`, `dragHandlePosition` ('right' | 'left'), `enableCheckboxes`, and `enableBadges`."
     },
     {
       "name": "drawer",
@@ -1748,7 +1749,7 @@
     {
       "name": "folder-framer",
       "type": "registry:component",
-      "title": "Folder (Framer Motion)",
+      "title": "Folder (Motion)",
       "author": "AlgorizeTech",
       "description": "A tactile folder — skeleton cards or your own photos tuck behind a frosted-glass pocket and fan out into an arc on hover. Use it for file groups, galleries and drag-and-drop upload targets.",
       "categories": [
@@ -1769,7 +1770,7 @@
           "target": "components/custom/blocks/FolderBlock.tsx"
         }
       ],
-      "docs": "Framer Motion build of `folder` — same props, markup and install path; install one or the other. Named exports: Folder, SkeletonCard (plus FolderFile / FolderProps types). `files` is { thumb?, name?, progress? }[]; without files, `peek` skeleton cards show. `color` tints body, pocket, icon and cards via OKLCH; `icon` is a lucide component. Hover, tap or focus opens the fan; past five files it pages with arrows or by dragging a card. `interactive` adds drag-and-drop + click-to-browse with `onFiles`, `progress` and `onRemoveFile`. Pulls in `tooltip` for file-name hovers."
+      "docs": "Motion build of `folder` — same props, markup and install path; install one or the other. Named exports: Folder, SkeletonCard (plus FolderFile / FolderProps types). `files` is { thumb?, name?, progress? }[]; without files, `peek` skeleton cards show. `color` tints body, pocket, icon and cards via OKLCH; `icon` is a lucide component. Hover, tap or focus opens the fan; past five files it pages with arrows or by dragging a card. `interactive` adds drag-and-drop + click-to-browse with `onFiles`, `progress` and `onRemoveFile`. Pulls in `tooltip` for file-name hovers."
     },
     {
       "name": "footer",
@@ -2439,7 +2440,7 @@
     {
       "name": "masonry-grid-framer",
       "type": "registry:component",
-      "title": "Masonry Grid (Framer Motion)",
+      "title": "Masonry Grid (Motion)",
       "author": "AlgorizeTech",
       "description": "A CSS-column masonry layout with staggered entrance animation. Use it for image galleries and card walls of uneven height.",
       "categories": [
@@ -2459,7 +2460,7 @@
           "target": "components/custom/blocks/MasonryGridBlock.tsx"
         }
       ],
-      "docs": "Framer Motion build of `masonry-grid` — same props, markup and install path; install one or the other. Named export: MasonryGrid. Generic over your item type — pass `items` and a `renderItem` callback. Column count and gaps come from `columnsClassName` and `gapClassName`, so responsive behaviour is plain Tailwind. CSS columns fill top-to-bottom per column, so visual order differs from DOM order."
+      "docs": "Motion build of `masonry-grid` — same props, markup and install path; install one or the other. Named export: MasonryGrid. Generic over your item type — pass `items` and a `renderItem` callback. Column count and gaps come from `columnsClassName` and `gapClassName`, so responsive behaviour is plain Tailwind. CSS columns fill top-to-bottom per column, so visual order differs from DOM order."
     },
     {
       "name": "memories-card",
@@ -2500,7 +2501,7 @@
     {
       "name": "memories-card-framer",
       "type": "registry:component",
-      "title": "Memories Card (Framer Motion)",
+      "title": "Memories Card (Motion)",
       "author": "AlgorizeTech",
       "description": "A swipeable stack of photo cards with location, date and tag metadata. Use it for travel, gallery and testimonial carousels.",
       "categories": [
@@ -2521,7 +2522,7 @@
           "target": "components/custom/blocks/MemoriesCardBlock.tsx"
         }
       ],
-      "docs": "Framer Motion build of `memories-card` — same props, markup and install path; install one or the other. Named export: MemoriesCard. `items` take { id, title, location, date, image, description?, tag? }; `onCardChange` reports the active index. Drag or click to advance the stack."
+      "docs": "Motion build of `memories-card` — same props, markup and install path; install one or the other. Named export: MemoriesCard. `items` take { id, title, location, date, image, description?, tag? }; `onCardChange` reports the active index. Drag or click to advance the stack."
     },
     {
       "name": "menubar",
@@ -2724,7 +2725,7 @@
     {
       "name": "newsletter-framer",
       "type": "registry:component",
-      "title": "Newsletter (Framer Motion)",
+      "title": "Newsletter (Motion)",
       "author": "AlgorizeTech",
       "description": "A sign-up section in three layouts: readers' faces drifting around a centred form, a panel with a pointer glow and a ticker of who just joined, or the form beside a fanned stack of recent issues. The form becomes a thank-you when your promise resolves.",
       "categories": [
@@ -2749,7 +2750,7 @@
           "target": "components/custom/blocks/NewsletterBlock.tsx"
         }
       ],
-      "docs": "Framer Motion build of `newsletter` — same props, markup and install path; install one or the other. Named export: Newsletter, with parts Heading, Intro, Form, Proof, Ticker and Issues. Composed from the input, button, marquee and tilted-card items, which install alongside it. `variant` is portraits | spotlight | issues, each styled for light and dark mode; `portraits` takes up to four faces; `Form` takes `onSubscribe(email)` (a promise holds the busy state), `action`, `successTitle`/`successText`; `accent` pins the glow and button colour; `reveal` is in-view or immediate."
+      "docs": "Motion build of `newsletter` — same props, markup and install path; install one or the other. Named export: Newsletter, with parts Heading, Intro, Form, Proof, Ticker and Issues. Composed from the input, button, marquee and tilted-card items, which install alongside it. `variant` is portraits | spotlight | issues, each styled for light and dark mode; `portraits` takes up to four faces; `Form` takes `onSubscribe(email)` (a promise holds the busy state), `action`, `successTitle`/`successText`; `accent` pins the glow and button colour; `reveal` is in-view or immediate."
     },
     {
       "name": "orbit-gallery",
@@ -3570,7 +3571,7 @@
           "target": "components/custom/blocks/register-form-theme.ts"
         }
       ],
-      "docs": "Named export: SignupForm. Uses Framer Motion for field-level error transitions. Validation is client-side presentation only — enforce it again on your server."
+      "docs": "Named export: SignupForm. Uses Motion for field-level error transitions. Validation is client-side presentation only — enforce it again on your server."
     },
     {
       "name": "skeleton",
@@ -3803,7 +3804,7 @@
     {
       "name": "sticky-scroll-stack-framer",
       "type": "registry:component",
-      "title": "Sticky Scroll Stack (Framer Motion)",
+      "title": "Sticky Scroll Stack (Motion)",
       "author": "AlgorizeTech",
       "description": "A sticky section whose panels swap content as you scroll, supporting list, image, split and custom layouts. Use it for feature sections with varied content per step.",
       "categories": [
@@ -3824,7 +3825,7 @@
           "target": "components/custom/blocks/StickyScrollStackBlock.tsx"
         }
       ],
-      "docs": "Framer Motion build of `sticky-scroll-stack` — same props, markup and install path; install one or the other. Named export: StickyScrollStack. Each item sets `contentType` (list | image | split | custom) so steps need not share a shape. Uses next/image, so it needs edits outside Next.js."
+      "docs": "Motion build of `sticky-scroll-stack` — same props, markup and install path; install one or the other. Named export: StickyScrollStack. Each item sets `contentType` (list | image | split | custom) so steps need not share a shape. Uses next/image, so it needs edits outside Next.js."
     },
     {
       "name": "support-container",
@@ -3962,7 +3963,7 @@
       "type": "registry:component",
       "title": "Table Of Contents",
       "author": "AlgorizeTech",
-      "description": "An interactive Table of Contents navigation block with sticky right-side positioning, real-time scroll-spy, animated Framer Motion indicators, and section search filtering.",
+      "description": "An interactive Table of Contents navigation block with sticky right-side positioning, real-time scroll-spy, animated Motion indicators, and section search filtering.",
       "categories": [
         "navigation",
         "scroll"
@@ -3987,6 +3988,29 @@
         }
       ],
       "docs": "Named export: TableOfContentsBlock. Accepts `headings` array of ({ id, title, level }) objects, `showProgress`, `showSearch`, and `color` props. Wraps document content on the left while keeping the TOC sticky on the right."
+    },
+    {
+      "name": "tech-stack",
+      "type": "registry:component",
+      "title": "Tech Stack",
+      "author": "AlgorizeTech",
+      "description": "The tools a product is built with: a label, then one group of marks at a time in two rows — an odd group as three over four — each mark blurring out and the next group blurring in. Use it as the \"Built with\" line in a hero or footer.",
+      "categories": [
+        "marketing",
+        "data-display"
+      ],
+      "dependencies": [],
+      "registryDependencies": [
+        "utils"
+      ],
+      "files": [
+        {
+          "path": "src/components/custom/blocks/TechStackBlock.tsx",
+          "type": "registry:component",
+          "target": "components/custom/blocks/TechStackBlock.tsx"
+        }
+      ],
+      "docs": "Named exports: TechStack, TechStackGroup and TechStackTool. Compose it: <TechStack label interval variant> holds <TechStackGroup> children, each holding <TechStackTool name icon /> (icon is any node — an inline SVG or an <img>). One group shows at a time and gives way to the next every `interval` ms (default 3600; 0 holds the first), only while on screen; with prefers-reduced-motion the swap is a cut. `variant` is labelled (label on the left, names beside marks from xl up) or compact (label centred between hairlines, marks only, names as tooltips and screen-reader text). `label` takes any node. Four to eight tools per group read well. Colours are theme tokens."
     },
     {
       "name": "terminal",
@@ -4022,7 +4046,7 @@
       "type": "registry:component",
       "title": "Text Animation",
       "author": "AlgorizeTech",
-      "description": "Character and word-level text motion driven by Framer Motion. Use it for hero headlines that need finer control than a whole-block fade.",
+      "description": "Character and word-level text motion driven by Motion. Use it for hero headlines that need finer control than a whole-block fade.",
       "categories": [
         "typography",
         "marketing"

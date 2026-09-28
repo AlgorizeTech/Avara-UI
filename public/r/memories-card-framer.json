@@ -1,7 +1,7 @@
 {
   "$schema": "https://ui.shadcn.com/schema/registry-item.json",
   "name": "memories-card-framer",
-  "title": "Memories Card (Framer Motion)",
+  "title": "Memories Card (Motion)",
   "author": "AlgorizeTech",
   "description": "A swipeable stack of photo cards with location, date and tag metadata. Use it for travel, gallery and testimonial carousels.",
   "dependencies": [
@@ -19,7 +19,7 @@
       "target": "components/custom/blocks/MemoriesCardBlock.tsx"
     }
   ],
-  "docs": "Framer Motion build of `memories-card` — same props, markup and install path; install one or the other. Named export: MemoriesCard. `items` take { id, title, location, date, image, description?, tag? }; `onCardChange` reports the active index. Drag or click to advance the stack.",
+  "docs": "Motion build of `memories-card` — same props, markup and install path; install one or the other. Named export: MemoriesCard. `items` take { id, title, location, date, image, description?, tag? }; `onCardChange` reports the active index. Drag or click to advance the stack.",
   "categories": [
     "media",
     "marketing"

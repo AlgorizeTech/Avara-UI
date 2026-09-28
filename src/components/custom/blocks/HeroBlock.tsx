@@ -511,7 +511,7 @@ export const HeroBlock = forwardRef<HTMLElement, HeroBlockProps>(
         "Dashboards",
       ],
       titleSuffix = "",
-      subtitle = "A meticulous library of React components & interactive blocks, engineered for seamless performance with Tailwind CSS, TypeScript, GSAP, and Framer Motion.",
+      subtitle = "A meticulous library of React components & interactive blocks, engineered for seamless performance with Tailwind CSS, TypeScript, GSAP, and Motion.",
       cliCommand = "npx shadcn@latest add @algorize-ui/button",
       primaryActionLabel = "Browse Components",
       primaryActionHref = "/docs",
@@ -660,7 +660,7 @@ export const HeroBlock = forwardRef<HTMLElement, HeroBlockProps>(
         titleSuffix || "Delivered To Your Door";
       const petSubtitle =
         subtitle ===
-        "A meticulous library of React components & interactive blocks, engineered for seamless performance with Tailwind CSS, TypeScript, GSAP, and Framer Motion."
+        "A meticulous library of React components & interactive blocks, engineered for seamless performance with Tailwind CSS, TypeScript, GSAP, and Motion."
           ? "Discover nutritionist-crafted organic meals, orthopedic beds, durable interactive toys, and instant 24/7 vet consultations delivered to your door."
           : subtitle;
 
@@ -842,7 +842,7 @@ export const HeroBlock = forwardRef<HTMLElement, HeroBlockProps>(
         titleSuffix || "Real Results";
       const docSubtitle =
         subtitle ===
-        "A meticulous library of React components & interactive blocks, engineered for seamless performance with Tailwind CSS, TypeScript, GSAP, and Framer Motion."
+        "A meticulous library of React components & interactive blocks, engineered for seamless performance with Tailwind CSS, TypeScript, GSAP, and Motion."
           ? "Order medical-grade test kits, return by mail, and get fast, accurate, secure results online — anytime, anywhere, hassle-free."
           : subtitle;
 
@@ -1123,7 +1123,7 @@ export const HeroBlock = forwardRef<HTMLElement, HeroBlockProps>(
           : "Interactive Experiences");
       const sliderSubtitle =
         subtitle ===
-        "A meticulous library of React components & interactive blocks, engineered for seamless performance with Tailwind CSS, TypeScript, GSAP, and Framer Motion."
+        "A meticulous library of React components & interactive blocks, engineered for seamless performance with Tailwind CSS, TypeScript, GSAP, and Motion."
           ? "Full-stack software engineer dedicated to building scalable web applications, modern SaaS platforms, and high-performance digital experiences."
           : subtitle;
       const sliderPrimaryActionLabel =
@@ -1331,7 +1331,7 @@ export const HeroBlock = forwardRef<HTMLElement, HeroBlockProps>(
 
       const facSubtitle =
         subtitle ===
-        "A meticulous library of React components & interactive blocks, engineered for seamless performance with Tailwind CSS, TypeScript, GSAP, and Framer Motion."
+        "A meticulous library of React components & interactive blocks, engineered for seamless performance with Tailwind CSS, TypeScript, GSAP, and Motion."
           ? "Certified, data-driven facility services across mission-critical environments."
           : subtitle;
 
@@ -1504,7 +1504,7 @@ export const HeroBlock = forwardRef<HTMLElement, HeroBlockProps>(
           : titlePrefix + (titleSuffix ? ` ${titleSuffix}` : "");
       const vortexSubtitle =
         subtitle ===
-        "A meticulous library of React components & interactive blocks, engineered for seamless performance with Tailwind CSS, TypeScript, GSAP, and Framer Motion."
+        "A meticulous library of React components & interactive blocks, engineered for seamless performance with Tailwind CSS, TypeScript, GSAP, and Motion."
           ? "Flood, wildfire and wind priced for one\naddress, not the postcode around it"
           : subtitle;
       const vortexPrimaryAction =

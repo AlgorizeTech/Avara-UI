@@ -3,7 +3,7 @@
   "name": "table-of-contents",
   "title": "Table Of Contents",
   "author": "AlgorizeTech",
-  "description": "An interactive Table of Contents navigation block with sticky right-side positioning, real-time scroll-spy, animated Framer Motion indicators, and section search filtering.",
+  "description": "An interactive Table of Contents navigation block with sticky right-side positioning, real-time scroll-spy, animated Motion indicators, and section search filtering.",
   "dependencies": [
     "lucide-react"
   ],

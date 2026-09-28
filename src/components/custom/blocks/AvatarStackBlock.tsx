@@ -47,6 +47,36 @@ const SIZES: Record<AvatarStackSize, { box: string; overlap: string; text: strin
   lg: { box: "size-11", overlap: "-space-x-3", text: "text-xs" },
 };
 
+export interface AvatarProps extends React.HTMLAttributes<HTMLSpanElement> {
+  src: string;
+  alt?: string;
+  size?: AvatarStackSize;
+  /** Colour of the ring around the face — match the surface it sits on. */
+  ringClassName?: string;
+}
+
+/**
+ * One face, the same disc the stack is built from. A span, so it can sit
+ * inline in running text — a byline, a credit, a "made with" line.
+ */
+export const Avatar = React.forwardRef<HTMLSpanElement, AvatarProps>(
+  ({ src, alt = "", size = "md", ringClassName = "ring-background", className, ...props }, ref) => (
+    <span
+      ref={ref}
+      className={cn(
+        "inline-grid shrink-0 place-items-center overflow-hidden rounded-full bg-muted ring-2",
+        SIZES[size].box,
+        ringClassName,
+        className,
+      )}
+      {...props}
+    >
+      <img src={src} alt={alt} className="h-full w-full object-cover" />
+    </span>
+  ),
+);
+Avatar.displayName = "Avatar";
+
 export const AvatarStack = React.forwardRef<HTMLDivElement, AvatarStackProps>(
   (
     {

@@ -259,6 +259,13 @@ const rawNavigation: NavigationItem[] = [
       { label: "Table", slug: "table" },
       { label: "Table of Contents", slug: "table-of-contents", badge: "New", addedOn: "2026-09-07" },
       { label: "Tabs", slug: "vertical-tabs" },
+      {
+        label: "Tech Stack",
+        slug: "tech-stack",
+        badge: "New",
+        addedOn: "2026-09-28",
+        keywords: ["tech stack", "built with", "tools", "logos", "logo strip", "brands", "technologies", "powered by"],
+      },
       { label: "Theme Switcher", slug: "theme-switcher" },
       { label: "Tilted Card", slug: "tilted-card" },
       { label: "Timeline", slug: "timeline" },

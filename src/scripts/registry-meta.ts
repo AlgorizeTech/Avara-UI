@@ -227,7 +227,7 @@ export const META: Record<string, ItemMeta> = {
     description:
       "An iOS-style text selection rendered from a fixed character range — translucent highlight with lollipop handles on either end. Use it in docs, tutorials and marketing copy to point at part of a sentence.",
     categories: ["typography"],
-    docs: "Named export: AppleSelect. `text` is the full string and `selection` is a `[start, end]` character range (end exclusive, like String.slice) or an array of them for several phrases. The range is fixed by the author, not draggable. `color` takes any CSS colour, `handles={false}` drops the lollipops, and `animate` fades the highlight in on mount. Renders a <p>; other HTML attributes are forwarded to it.",
+    docs: "Named export: AppleSelect. `text` is the full string and `selection` is a `[start, end]` character range (end exclusive, like String.slice) or an array of them for several phrases. The range is fixed by the author, not draggable. `color` takes any CSS colour, `handles={false}` drops the lollipops, and `animate` fades the highlight in on mount. Renders a <p> by default; `as=\"span\"` sets it inline inside your own paragraph. Other HTML attributes are forwarded to it.",
   },
   kbd: {
     description:
@@ -356,7 +356,7 @@ export const META: Record<string, ItemMeta> = {
     description:
       "A standalone registration form with inline field validation and animated error states. Use it where sign-up is its own page rather than a tab beside sign-in.",
     categories: ["authentication", "forms"],
-    docs: "Named export: SignupForm. Uses Framer Motion for field-level error transitions. Validation is client-side presentation only — enforce it again on your server.",
+    docs: "Named export: SignupForm. Uses Motion for field-level error transitions. Validation is client-side presentation only — enforce it again on your server.",
   },
   "verify-badge": {
     description:
@@ -601,7 +601,8 @@ export const META: Record<string, ItemMeta> = {
     description:
       "A landing hero for a component library: a headline that blurs in word by word and keeps one word turning, a lead, an install command that names whichever card a camera has just landed on, two actions, a line of trust and the tools it is built with in batches — centred between two walls of screenshots that never end, one camera resting high and the other low, or on the left of a single wall.",
     categories: ["marketing", "layout"],
-    docs: "Named export: ComponentWall (plus the ComponentWallItem and StackTool types). Composed from the image-wall, text-animation, copy-button, avatar-stack and half-stars items, which install alongside it. Pass `badge` ({ label, href? }), `heading` (a string, revealed word by word; write `{word}` where `headingWords` take turns every `wordInterval` ms, and name one word in `accent` for the primary colour), `description`, `install` ({ command } — write `{item}` where the focused card's `slug` goes, e.g. `npx shadcn@latest add @algorize-ui/{item}`), `primaryAction`/`secondaryAction` ({ label, href, icon? }), `trust` ({ text, avatars?, rating? }), `items` ({ title, image, slug? }[] — every screenshot sits in the same 493:332 frame; slug defaults to the title in kebab-case) and `stack` ({ label?, groups: { name, icon }[][], interval? } — the tools over the lower wall on desktop and under the band on phones, one batch of four to eight at a time, an odd batch as three over four; names from xl up). `columns`, `interval` (ms the camera rests; 0 holds still), `order` (serial | shuffle), `zoom`, `intro` (ms the camera drifts with nothing in focus while the copy arrives; default 1800) and `onFocus` pass straight to the wall; `layout` is split (copy left, wall right) or center (copy between two walls — the left camera resting high, the right low, taking turns, the second wall dealing the same items from halfway through; the tools sit under the copy; zoom defaults to 0.9; below lg a single band of every card sits between the copy and the tools); `linkComponent` takes next/link. The headline uses your theme's font-serif, the command font-mono; colours are theme tokens.",
+    usageDependencies: ["tech-stack"],
+    docs: "Named export: ComponentWall (plus the ComponentWallItem type). Composed from the image-wall, text-animation, copy-button, avatar-stack and half-stars items, which install alongside it, and takes a tech-stack in its `stack` slot. Pass `badge` ({ label, href? }), `heading` (a string, revealed word by word; write `{word}` where `headingWords` take turns every `wordInterval` ms, and name one word in `accent` for the primary colour), `description` (a string or inline JSX — it renders inside a <p>), `install` ({ command } — write `{item}` where the focused card's `slug` goes, e.g. `npx shadcn@latest add @algorize-ui/{item}`), `primaryAction`/`secondaryAction` ({ label, href, icon? }), `trust` ({ text, avatars?, rating? }), `items` ({ title, image, slug? }[] — every screenshot sits in the same 493:332 frame; slug defaults to the title in kebab-case) and `stack` (a node — a <TechStack> of <TechStackGroup>s of <TechStackTool name icon />: the tools over the lower wall on desktop and under the band on phones; in the centred layout it closes the copy column, where the compact variant fits). `columns`, `interval` (ms the camera rests; 0 holds still), `order` (serial | shuffle), `zoom`, `intro` (ms the camera drifts with nothing in focus while the copy arrives; default 1800) and `onFocus` pass straight to the wall; `layout` is split (copy left, wall right) or center (copy between two walls — the left camera resting high, the right low, taking turns, the second wall dealing the same items from halfway through; the tools sit under the copy; zoom defaults to 0.9; below lg a single band of every card sits between the copy and the tools); `linkComponent` takes next/link. The headline uses your theme's font-serif, the command font-mono; colours are theme tokens.",
   },
   "collage-hero": {
     description:
@@ -723,9 +724,15 @@ export const META: Record<string, ItemMeta> = {
     categories: ["media"],
     docs: "Named export: ImageCompare. `beforeImage` and `afterImage` take URLs, with `beforeLabel` / `afterLabel` for the badges and `initialPosition` as a 0-100 percentage. Variants: classic-slider | split-handle | glowing-divider | badge-overlay | minimal. Both images should share an aspect ratio or the reveal will misalign.",
   },
+  "tech-stack": {
+    description:
+      "The tools a product is built with: a label, then one group of marks at a time in two rows — an odd group as three over four — each mark blurring out and the next group blurring in. Use it as the \"Built with\" line in a hero or footer.",
+    categories: ["marketing", "data-display"],
+    docs: "Named exports: TechStack, TechStackGroup and TechStackTool. Compose it: <TechStack label interval variant> holds <TechStackGroup> children, each holding <TechStackTool name icon /> (icon is any node — an inline SVG or an <img>). One group shows at a time and gives way to the next every `interval` ms (default 3600; 0 holds the first), only while on screen; with prefers-reduced-motion the swap is a cut. `variant` is labelled (label on the left, names beside marks from xl up) or compact (label centred between hairlines, marks only, names as tooltips and screen-reader text). `label` takes any node. Four to eight tools per group read well. Colours are theme tokens.",
+  },
   "table-of-contents": {
     description:
-      "An interactive Table of Contents navigation block with sticky right-side positioning, real-time scroll-spy, animated Framer Motion indicators, and section search filtering.",
+      "An interactive Table of Contents navigation block with sticky right-side positioning, real-time scroll-spy, animated Motion indicators, and section search filtering.",
     categories: ["navigation", "scroll"],
     docs: "Named export: TableOfContentsBlock. Accepts `headings` array of ({ id, title, level }) objects, `showProgress`, `showSearch`, and `color` props. Wraps document content on the left while keeping the TOC sticky on the right.",
   },
@@ -903,7 +910,7 @@ export const META: Record<string, ItemMeta> = {
     description:
       "An animated folder that opens to fan out component preview cards. Use it on portfolio and feature pages to reveal a collection on interaction.",
     categories: ["media", "marketing"],
-    docs: "Named export: DesignComponentsFolder. Framer Motion drives the open and card-fan animation; `color` tints the folder. Uses next/image, so it needs edits outside Next.js. For the empty folder shape, use `design-folder-box`.",
+    docs: "Named export: DesignComponentsFolder. Motion drives the open and card-fan animation; `color` tints the folder. Uses next/image, so it needs edits outside Next.js. For the empty folder shape, use `design-folder-box`.",
   },
   "memories-card": {
     description:
@@ -944,7 +951,7 @@ export const META: Record<string, ItemMeta> = {
   },
   "text-animation": {
     description:
-      "Character and word-level text motion driven by Framer Motion. Use it for hero headlines that need finer control than a whole-block fade.",
+      "Character and word-level text motion driven by Motion. Use it for hero headlines that need finer control than a whole-block fade.",
     categories: ["typography", "marketing"],
     docs: "Named export: TextAnimation. `text` is a plain string it splits internally; `as` sets the rendered element and `delay` / `duration` control timing; `renderWord(word, index)` swaps what a word renders as on the word-level variants (pop-in, flip, blur-in-up) while keeping its entrance. For dependency-free effects, use `animated-typography`.",
   },
@@ -980,7 +987,7 @@ export const META: Record<string, ItemMeta> = {
   },
   "draggable-card-list": {
     description:
-      "An interactive reorderable card list with 60fps Framer Motion spring physics, right-side grip handles, and custom card metadata.",
+      "An interactive reorderable card list with 60fps Motion spring physics, right-side grip handles, and custom card metadata.",
     categories: ["data-display", "layout"],
     docs: "Named exports: DraggableCardList, DraggableCardItem. Accepts `items` ({ id, title, description, date, badge, linkText, linkUrl, completed }), `onReorder`, `title`, `dragHandlePosition` ('right' | 'left'), `enableCheckboxes`, and `enableBadges`.",
   },

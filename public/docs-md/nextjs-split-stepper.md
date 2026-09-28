@@ -58,7 +58,7 @@ const steps: SplitStep[] = [
     stepNumber: "01",
     title: "Landing Page Design",
     description:
-      "Most landing pages fail quietly. Traffic comes in, nothing happens. We engineer high-converting layouts with engaging Framer & GSAP animations.",
+      "Most landing pages fail quietly. Traffic comes in, nothing happens. We engineer high-converting layouts with engaging Motion & GSAP animations.",
     tags: ["Conversion Focused", "Figma To Code", "Mobile First"],
     color: "bg-[#0c0c10] border-amber-500/20",
     cardContent: ,

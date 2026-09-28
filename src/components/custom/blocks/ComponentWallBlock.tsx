@@ -25,8 +25,8 @@ import { TextAnimation } from "./TextAnimationBlock";
 // left, the copy: a small badge, a headline that blurs in word by word (one
 // word in the primary colour, one that takes turns), a lead, an install
 // command whose component name follows the card the camera is resting on,
-// two actions and a line of trust. The tools it is built with — a few
-// related ones at a time, taking turns — sit over the lower wall on desktop,
+// two actions and a line of trust. The tools it is built with — a
+// TechStack, passed in as `stack` — sit over the lower wall on desktop,
 // where the wall fills the right side and fades under the copy; on the
 // stacked layouts the wall is a band under the copy and the tools follow it.
 // `layout="center"` puts the copy in the middle between two walls — one
@@ -57,7 +57,8 @@ export interface ComponentWallProps
   wordInterval?: number;
   /** A word of the headline set in the primary colour. */
   accent?: string;
-  description?: string;
+  /** The lead under the headline. Rendered inside a `<p>`, so pass phrasing content. */
+  description?: React.ReactNode;
   /**
    * The install line. Put `{item}` where the focused card's `slug` goes:
    * `"npx shadcn@latest add @algorize-ui/{item}"`. The whole resolved
@@ -71,13 +72,11 @@ export interface ComponentWallProps
   /** The cards on the wall, in reading order down the columns. */
   items: ComponentWallItem[];
   /**
-   * The tools the library is built with: the label, then two rows — an odd
-   * batch staggers as three over four. Over the lower wall on desktop, under
-   * the band on smaller screens. `groups` are shown one at a time — put
-   * related tools together, four to eight per batch — each fading in the way
-   * the headline word does. Names show from `xl` up; below that only the marks.
+   * The tools the library is built with — a `TechStack`. Over the lower wall
+   * on desktop, under the band on smaller screens; in the centred layout it
+   * closes the copy column, where `variant="compact"` (marks only) fits.
    */
-  stack?: { label?: string; groups: StackTool[][]; interval?: number };
+  stack?: React.ReactNode;
   /**
    * `split`: the copy on the left, the wall on the right. `center`: the copy
    * in the middle between two walls, the left camera resting high and the
@@ -89,11 +88,6 @@ export interface ComponentWallProps
   layout?: "split" | "center";
   /** Pass `next/link` to keep client-side navigation. */
   linkComponent?: React.ElementType;
-}
-
-export interface StackTool {
-  icon: React.ReactNode;
-  name: string;
 }
 
 const kebab = (s: string) =>
@@ -126,8 +120,6 @@ const STYLES = `
 .cw-word-out { animation: cw-word-out 0.6s cubic-bezier(0, 0, 0.58, 1) forwards; }
 .cw-name-in { animation: cw-name-in 0.45s cubic-bezier(0.22, 1, 0.36, 1) backwards; }
 .cw-name-out { animation: cw-name-out 0.45s cubic-bezier(0.22, 1, 0.36, 1) forwards; }
-.cw-tools-enter > li { animation: cw-word-in 0.6s cubic-bezier(0, 0, 0.58, 1) calc(var(--cw-i) * 0.05s) backwards; }
-.cw-tools-leave > li { animation: cw-word-out 0.4s cubic-bezier(0.42, 0, 1, 1) calc(var(--cw-i) * 0.03s) forwards; }
 `;
 
 // Where each camera rests in the centred layout, from `lg` up: the left one
@@ -306,83 +298,6 @@ function SwapText({
 }
 
 // ------------------------------------------
-// The tools: a label, then one batch in two rows — an odd batch as three over
-// four — each mark blurring in the way the headline word does.
-// ------------------------------------------
-function ToolStrip({
-  label,
-  group,
-  groupIndex,
-  centered,
-  reduceMotion,
-}: {
-  label?: string;
-  group: StackTool[];
-  groupIndex: number;
-  centered?: boolean;
-  reduceMotion: boolean;
-}) {
-  // Each mark leaves 0.03s after the one before it, taking 0.4s.
-  const { layers, drop, register, valueOf } = useSwap(groupIndex, group, reduceMotion, 400 + 30 * group.length);
-  return (
-    <>
-      {label &&
-        (centered ? (
-          <span className="flex w-full items-center gap-4 text-[13px] font-semibold leading-tight text-muted-foreground">
-            <span className="h-px flex-1 bg-gradient-to-r from-transparent to-border" aria-hidden />
-            {label}
-            <span className="h-px flex-1 bg-gradient-to-l from-transparent to-border" aria-hidden />
-          </span>
-        ) : (
-          <span className="text-[13px] font-semibold leading-tight text-muted-foreground">{label}</span>
-        ))}
-      <div className="relative grid w-full min-w-0" aria-live="polite">
-        {layers.map((layer) => {
-          const tools = valueOf(layer);
-          return (
-            <ul
-              key={layer.id}
-              ref={register(layer.id)}
-              // Gone once the last mark has.
-              onAnimationEnd={(e) => {
-                if (layer.leaving && e.target === e.currentTarget.lastElementChild) drop(layer.id);
-              }}
-              // Two rows, two columns per tool. An odd batch puts the smaller
-              // row on top, starting one column in, so it sits between the
-              // tools below (three over four); an even batch lines up.
-              className={cn(
-                "col-start-1 row-start-1 grid gap-x-2 gap-y-[22px] sm:gap-x-3",
-                layer.leaving ? "cw-tools-leave" : layer.enter && "cw-tools-enter",
-              )}
-              style={{ gridTemplateColumns: `repeat(${2 * Math.ceil(tools.length / 2)}, minmax(0, 1fr))`, ...layer.pop }}
-            >
-              {tools.map((tool, i) => (
-                <li
-                  key={tool.name}
-                  title={centered ? tool.name : undefined}
-                  style={{ "--cw-i": i } as React.CSSProperties}
-                  className={cn(
-                    "col-span-2 flex min-w-0 items-center justify-center gap-2.5 text-foreground [&>img]:shrink-0 [&>img]:object-contain [&>svg]:shrink-0",
-                    // The centred column is narrow for names: marks only, a touch larger.
-                    centered
-                      ? "[&>img]:size-7 [&>svg]:size-6"
-                      : "[&>img]:size-8 xl:[&>img]:size-6 [&>svg]:size-7 xl:[&>svg]:size-5",
-                    i === 0 && tools.length % 2 === 1 && "col-start-2",
-                  )}
-                >
-                  {tool.icon}
-                  <span className={cn("truncate text-[13px] font-medium", centered ? "sr-only" : "hidden xl:inline")}>{tool.name}</span>
-                </li>
-              ))}
-            </ul>
-          );
-        })}
-      </div>
-    </>
-  );
-}
-
-// ------------------------------------------
 // Root
 // ------------------------------------------
 export const ComponentWall = forwardRef<HTMLElement, ComponentWallProps>(
@@ -493,17 +408,6 @@ export const ComponentWall = forwardRef<HTMLElement, ComponentWallProps>(
       [handleFocus, shift, items.length],
     );
     const restInterval = interval ?? 4500;
-
-    // ---- The batch of tools showing under the wall.
-    const groupCount = stack?.groups.length ?? 0;
-    const groupInterval = stack?.interval ?? 3600;
-    const [groupIndex, setGroupIndex] = useState(0);
-    useEffect(() => {
-      if (groupCount < 2 || groupInterval <= 0) return;
-      const t = window.setInterval(() => setGroupIndex((i) => (i + 1) % groupCount), groupInterval);
-      return () => window.clearInterval(t);
-    }, [groupCount, groupInterval]);
-    const group = stack?.groups[groupIndex];
 
     // `npx shadcn@latest add @algorize-ui/{item}` splits into what comes before
     // the name and after it; the last word before it (`@algorize-ui/`) stays on
@@ -668,9 +572,9 @@ export const ComponentWall = forwardRef<HTMLElement, ComponentWallProps>(
         )}
 
         {/* ---- Centred: the tools close the column, rising after the trust line ---- */}
-        {centered && stack && group && (
-          <div style={riseAt()} className="cw-rise mt-8 flex w-full max-w-md flex-col items-center gap-5 lg:mt-12">
-            <ToolStrip label={stack.label} group={group} groupIndex={groupIndex} centered reduceMotion={reduceMotion} />
+        {centered && stack && (
+          <div style={riseAt()} className="cw-rise mt-8 w-full max-w-md lg:mt-12">
+            {stack}
           </div>
         )}
       </div>
@@ -744,7 +648,7 @@ export const ComponentWall = forwardRef<HTMLElement, ComponentWallProps>(
           />
 
           {/* ---- The tools, over the lower part of the wall ---- */}
-          {stack && group && (
+          {stack && (
             <div className="pointer-events-none relative z-20 lg:absolute lg:bottom-0 lg:right-0 lg:w-[56%] xl:w-[58%]">
               {/* On desktop the wall blurs and fades out under the tools: a blur that
                   strengthens towards the bottom, under a wash of the background. On
@@ -756,9 +660,9 @@ export const ComponentWall = forwardRef<HTMLElement, ComponentWallProps>(
                   to the wall's height. */}
               <div
                 // Arrives with the last of the copy, so nothing shows ahead of the headline.
-                className="cw-tools-in pointer-events-auto relative flex w-full flex-col items-start justify-center gap-3 py-7 px-6 md:pr-0 md:pl-10 lg:pb-[7%] lg:pl-12 lg:pt-0 xl:pl-24"
+                className="cw-tools-in pointer-events-auto relative w-full py-7 px-6 md:pr-0 md:pl-10 lg:pb-[7%] lg:pl-12 lg:pt-0 xl:pl-24"
               >
-                <ToolStrip label={stack.label} group={group} groupIndex={groupIndex} reduceMotion={reduceMotion} />
+                {stack}
               </div>
             </div>
           )}

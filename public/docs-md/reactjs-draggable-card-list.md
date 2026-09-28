@@ -1,6 +1,6 @@
 # Draggable Card List
 
-An interactive, fluid **Draggable Card List** component featuring spring-driven reordering (in a GSAP build and a Framer Motion build that move identically), right-side grip handles, light pastel badges with borders, left accent bars, and dynamic hover border color shifts.
+An interactive, fluid **Draggable Card List** component featuring spring-driven reordering (in a GSAP build and a Motion build that move identically), right-side grip handles, light pastel badges with borders, left accent bars, and dynamic hover border color shifts.
 
 ## Variations
 
@@ -115,7 +115,7 @@ npx shadcn@latest registry add @algorize-ui=https://algorize-ui.vercel.app/r/{na
 npx shadcn@latest add @algorize-ui/draggable-card-list
 ```
 
-Or the Framer Motion build (same props, same file — install one):
+Or the Motion build (same props, same file — install one):
 
 ```bash
 npx shadcn@latest add @algorize-ui/draggable-card-list-framer
@@ -123,7 +123,7 @@ npx shadcn@latest add @algorize-ui/draggable-card-list-framer
 
 ## Features
 
-- **Butter-Smooth Spring Reordering**: Cards lift, swap and glide into place on springs. Ships as a GSAP build (the default) and a Framer Motion build on its `Reorder` engine — pick either from the Code tab; both reorder on the same rules with the same springs.
+- **Butter-Smooth Spring Reordering**: Cards lift, swap and glide into place on springs. Ships as a GSAP build (the default) and a Motion build on its `Reorder` engine — pick either from the Code tab; both reorder on the same rules with the same springs.
 - **2 Distinct Card Variants**: Supports `"classic"` (clean cards with border hover shift) and `"modern"` (ambient gradient tone with glowing accent strip & separated footer).
 - **Dynamic Hover Border Shift**: Automatically highlights each card's border matching its individual accent color upon hover.
 - **Subtle Pastel Badges**: Lightweight semi-transparent badge backgrounds with subtle borders (`bg-amber-500/10 text-amber-700 border border-amber-500/30`).

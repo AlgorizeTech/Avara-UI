@@ -1,6 +1,6 @@
 {
-  "generatedAt": "2026-09-27T13:49:35.460Z",
-  "totalFiles": 295,
+  "generatedAt": "2026-09-28T06:41:51.466Z",
+  "totalFiles": 297,
   "files": [
     {
       "name": "nextjs/3d-carousel",
@@ -745,6 +745,12 @@
       "path": "/docs/nextjs-table-of-contents.md",
       "url": "/docs/nextjs/table-of-contents",
       "originalMdx": "[framework]\\table-of-contents\\page.mdx"
+    },
+    {
+      "name": "nextjs/tech-stack",
+      "path": "/docs/nextjs-tech-stack.md",
+      "url": "/docs/nextjs/tech-stack",
+      "originalMdx": "[framework]\\tech-stack\\page.mdx"
     },
     {
       "name": "nextjs/terminal",
@@ -1633,6 +1639,12 @@
       "path": "/docs/reactjs-table-of-contents.md",
       "url": "/docs/reactjs/table-of-contents",
       "originalMdx": "[framework]\\table-of-contents\\page.mdx"
+    },
+    {
+      "name": "reactjs/tech-stack",
+      "path": "/docs/reactjs-tech-stack.md",
+      "url": "/docs/reactjs/tech-stack",
+      "originalMdx": "[framework]\\tech-stack\\page.mdx"
     },
     {
       "name": "reactjs/terminal",
