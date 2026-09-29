@@ -24,17 +24,42 @@ import {
 } from "lucide-react";
 import { useEffect, useState } from "react";
 
+const colorMap: Record<string, string> = {
+  indigo: "#4f46e5",
+  rose: "#e11d48",
+  emerald: "#10b981",
+  lavender: "#9b8afb",
+  amber: "#f59e0b",
+  blue: "#3b82f6",
+};
+
+const getThemeColor = (color: string) => {
+  if (color.startsWith("#")) return color;
+  return colorMap[color] || "var(--primary)";
+};
+
 export default function CommandDemo({
   layout = "inline",
   open = false,
   shouldFilter = true,
+  color = "primary",
 }: {
   layout?: "inline" | "dialog" | "simple";
   open?: boolean;
   /** false turns off the built-in filtering (you filter the items yourself). */
   shouldFilter?: boolean;
+  color?: string;
 }) {
   const [isOpen, setIsOpen] = useState(open);
+
+  const themeColor = getThemeColor(color);
+  const containerStyle =
+    color && color !== "primary" && color !== "default"
+      ? ({
+          "--primary": themeColor,
+          "--primary-foreground": "#ffffff",
+        } as React.CSSProperties)
+      : undefined;
 
   // Keyboard shortcut effect for Dialog
   useEffect(() => {
@@ -98,12 +123,12 @@ export default function CommandDemo({
 
         <CommandGroup heading="Danger Zone">
           <CommandItem
-            className="text-red-500 data-[selected=true]:text-red-600 data-[selected=true]:bg-red-50 dark:data-[selected=true]:bg-red-950"
+            className="text-red-500 hover:bg-red-50 hover:text-red-600 dark:hover:bg-red-950/50 data-[selected=true]:text-red-600 data-[selected=true]:bg-red-50 dark:data-[selected=true]:bg-red-950/50"
             onSelect={handleAction}
           >
             <LogOut className="mr-2 h-4 w-4" />
             <span>Log out</span>
-            <CommandShortcut>⇧⌘Q</CommandShortcut>
+            <CommandShortcut className="text-red-400 group-hover/cmd-item:text-red-600 group-data-[selected=true]/cmd-item:text-red-600">⇧⌘Q</CommandShortcut>
           </CommandItem>
         </CommandGroup>
       </CommandList>
@@ -136,16 +161,19 @@ export default function CommandDemo({
   return (
     <>
       <Toaster position="bottom-right" />
-      <div className="w-full flex items-center justify-center min-h-[450px] relative z-10 overflow-hidden">
+      <div
+        style={containerStyle}
+        className="w-full flex items-center justify-center min-h-[450px] relative z-10 overflow-hidden"
+      >
         {layout === "simple" ? (
           <div className="w-full max-w-[450px]">
-            <Command shouldFilter={shouldFilter}>
+            <Command shouldFilter={shouldFilter} style={containerStyle}>
               <SimpleCommandContent />
             </Command>
           </div>
         ) : layout === "inline" ? (
           <div className="w-full max-w-[450px]">
-            <Command shouldFilter={shouldFilter}>
+            <Command shouldFilter={shouldFilter} style={containerStyle}>
               <SharedCommandContent />
             </Command>
           </div>
@@ -167,7 +195,11 @@ export default function CommandDemo({
           </div>
         )}
 
-        <CommandDialog open={isOpen} onOpenChange={setIsOpen}>
+        <CommandDialog
+          open={isOpen}
+          onOpenChange={setIsOpen}
+          style={containerStyle}
+        >
           <SharedCommandContent />
         </CommandDialog>
       </div>

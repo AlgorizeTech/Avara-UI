@@ -16,6 +16,8 @@ const getAccent = (c: string) => {
     rose: "#f43f5e",
     emerald: "#10b981",
     lavender: "#9b8afb",
+    amber: "#f59e0b",
+    blue: "#3b82f6",
   };
   return map[c] || "var(--primary)";
 };
@@ -38,7 +40,7 @@ const CONVERSATION: Array<TimelineCheckpoint & { body: string }> = [
 ];
 
 const ROLE_STYLE: Record<string, string> = {
-  user: "self-end bg-foreground text-background",
+  user: "self-end bg-primary text-primary-foreground",
   assistant: "self-start bg-muted text-foreground",
   system: "self-center bg-transparent text-[11px] font-mono uppercase tracking-wider text-muted-foreground",
 };
@@ -70,8 +72,12 @@ function PairedWithChat({ accent }: { accent: string }) {
               refs.current[m.id] = el;
             }}
             onClick={() => setActiveId(m.id)}
-            className={`max-w-[85%] cursor-pointer rounded-2xl px-3.5 py-2 text-[13px] leading-relaxed transition-shadow ${ROLE_STYLE[m.role ?? "assistant"]}`}
-            style={m.id === activeId && m.role !== "system" ? { boxShadow: `0 0 0 2px ${accent}` } : undefined}
+            className={`max-w-[85%] cursor-pointer rounded-2xl px-3.5 py-2 text-[13px] leading-relaxed transition-all ${ROLE_STYLE[m.role ?? "assistant"]}`}
+            style={
+              m.id === activeId && m.role !== "system"
+                ? { boxShadow: `0 0 0 2px var(--card), 0 0 0 4px ${accent}` }
+                : undefined
+            }
           >
             {m.body}
           </div>
@@ -100,12 +106,19 @@ export default function ConversationTimelineDemo({
   example?: "default" | "left" | "density" | "chat";
 }) {
   const accent = getAccent(color);
+  const containerStyle =
+    color && color !== "primary" && color !== "default"
+      ? ({
+          "--primary": accent,
+          "--primary-foreground": "#ffffff",
+        } as React.CSSProperties)
+      : undefined;
   const [activeId, setActiveId] = useState("2");
   const frame = "w-full flex items-center justify-center min-h-[320px] px-6 py-12 relative z-10";
 
   if (example === "left") {
     return (
-      <div className={frame}>
+      <div className={frame} style={containerStyle}>
         <ConversationTimeline
           checkpoints={CONVERSATION}
           activeId={activeId}
@@ -119,7 +132,7 @@ export default function ConversationTimelineDemo({
 
   if (example === "density") {
     return (
-      <div className={frame}>
+      <div className={frame} style={containerStyle}>
         <ConversationTimeline
           checkpoints={CONVERSATION}
           activeId={activeId}
@@ -137,14 +150,14 @@ export default function ConversationTimelineDemo({
 
   if (example === "chat") {
     return (
-      <div className={frame}>
+      <div className={frame} style={containerStyle}>
         <PairedWithChat accent={accent} />
       </div>
     );
   }
 
   return (
-    <div className={frame}>
+    <div className={frame} style={containerStyle}>
       <ConversationTimeline
         checkpoints={CONVERSATION}
         activeId={activeId}
