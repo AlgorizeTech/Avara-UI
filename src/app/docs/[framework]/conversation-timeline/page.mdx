@@ -82,6 +82,12 @@ const messages = [
   // …
 ] as const;
 
+const roleStyle: Record<string, string> = {
+  user: "self-end bg-primary text-primary-foreground",
+  assistant: "self-start bg-muted text-foreground",
+  system: "self-center bg-transparent text-[11px] font-mono uppercase tracking-wider text-muted-foreground",
+};
+
 // The rail as a minimap: selecting a mark scrolls its message into view.
 export default function ChatWithMinimap() {
   const [activeId, setActiveId] = useState("2");
@@ -102,7 +108,13 @@ export default function ChatWithMinimap() {
       />
       <div className="flex h-72 flex-1 flex-col gap-2 overflow-y-auto">
         {messages.map((m) => (
-          <div key={m.id} ref={(el) => { refs.current[m.id] = el; }} onClick={() => setActiveId(m.id)}>
+          <div
+            key={m.id}
+            ref={(el) => { refs.current[m.id] = el; }}
+            onClick={() => setActiveId(m.id)}
+            className={\`max-w-[85%] cursor-pointer rounded-2xl px-3.5 py-2 text-[13px] leading-relaxed transition-all \${roleStyle[m.role ?? "assistant"]}\`}
+            style={m.id === activeId && m.role !== "system" ? { boxShadow: "0 0 0 2px var(--card), 0 0 0 4px var(--primary)" } : undefined}
+          >
             {m.body}
           </div>
         ))}
