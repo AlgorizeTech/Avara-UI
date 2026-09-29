@@ -4,6 +4,7 @@ import { cn } from "@/lib/utils";
 import { SelectBlock } from "./SelectBlock";
 import {
   Activity,
+  Check,
   CheckCircle2,
   Clock,
   Play,
@@ -18,7 +19,15 @@ import { getThemeStyles } from "./api-playground-theme";
 // ==========================================
 // THEME & CONFIGURATION
 // ==========================================
-export type ApiColor = "indigo" | "rose" | "emerald" | "zinc" | (string & {});
+export type ApiColor =
+  | "primary"
+  | "default"
+  | "lavender"
+  | "indigo"
+  | "rose"
+  | "emerald"
+  | "zinc"
+  | (string & {});
 export type HttpMethod = "GET" | "POST" | "PUT" | "PATCH" | "DELETE";
 
 // Theme colour fed to SelectBlock so the dropdown highlight, ring and chevron
@@ -329,14 +338,31 @@ export const ApiPlaygroundBlock = forwardRef<
             key={item.id}
             className="flex items-center gap-1.5 sm:gap-2 group"
           >
-            <input
-              type="checkbox"
-              checked={item.enabled}
-              onChange={(e) =>
-                handleUpdatePair(setter, item.id, "enabled", e.target.checked)
-              }
-              className="w-4 h-4 rounded border-input text-foreground focus:ring-ring shrink-0 cursor-pointer"
-            />
+            <label className="relative flex items-center justify-center cursor-pointer shrink-0">
+              <input
+                type="checkbox"
+                checked={item.enabled}
+                onChange={(e) =>
+                  handleUpdatePair(setter, item.id, "enabled", e.target.checked)
+                }
+                className="peer sr-only"
+              />
+              <div
+                className={cn(
+                  "w-4 h-4 rounded flex items-center justify-center border transition-all duration-150 peer-focus-visible:ring-2 peer-focus-visible:ring-ring peer-focus-visible:ring-offset-1",
+                  item.enabled
+                    ? cn(theme.bg, theme.checkboxBorder ?? theme.border)
+                    : "border-input bg-background hover:border-foreground/40",
+                )}
+              >
+                <Check
+                  className={cn(
+                    "w-3 h-3 stroke-[3] transition-transform duration-150",
+                    item.enabled ? "scale-100 opacity-100" : "scale-0 opacity-0",
+                  )}
+                />
+              </div>
+            </label>
             <input
               type="text"
               placeholder="Key"
@@ -441,7 +467,7 @@ export const ApiPlaygroundBlock = forwardRef<
                   className={cn(
                     "px-3 sm:px-4 py-2 text-xs font-semibold capitalize transition-all border-b-2 whitespace-nowrap shrink-0 cursor-pointer",
                     activeTab === tab
-                      ? cn("border-[var(--api-color)]", theme.text)
+                      ? cn(theme.tabBorder ?? theme.border ?? "border-primary", theme.text)
                       : "border-transparent text-muted-foreground hover:text-foreground",
                   )}
                 >
