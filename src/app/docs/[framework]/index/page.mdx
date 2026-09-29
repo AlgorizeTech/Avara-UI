@@ -1,138 +1,81 @@
 export const metadata = {
     title: 'Introduction - Algorize UI',
-    description: 'Learn about Next.js features, benefits, performance optimizations, and core capabilities.',
+    description: 'What Algorize UI is, how components are installed into your project, and what your project needs.',
     keywords: [
-        'Next.js introduction',
-        'React framework',
-        'Server-side rendering',
-        'Static site generation',
-        'Next.js features'
+        'Algorize UI',
+        'React component library',
+        'shadcn registry',
+        'Tailwind CSS components',
+        'Next.js components'
     ],
     openGraph: {
         title: 'Introduction - Algorize UI',
-        description: 'Learn about Next.js features, benefits, performance optimizations, and core capabilities.',
+        description: 'What Algorize UI is, how components are installed into your project, and what your project needs.',
         type: 'article',
         url: '/docs/nextjs/index',
     },
     twitter: {
         card: 'summary_large_image',
         title: 'Introduction - Algorize UI',
-        description: 'Learn about Next.js features, benefits, performance optimizations, and core capabilities.',
+        description: 'What Algorize UI is, how components are installed into your project, and what your project needs.',
     },
     alternates: {
         canonical: '/docs/nextjs/index',
     },
 };
 
-import { CodeBlock } from "@/components/site/code-block";
-import { ComponentRenderer } from "@/components/site/component-renderer";
 import { Cli } from "@/components/site/cli";
-import {
-  Tabs,
-  TabsList,
-  TabsTrigger,
-  TabsContent,
-} from "@/components/site/tabs.tsx";
-import { PropsTable } from "@/components/site/props-table.tsx";
-import { MdxTable } from "@/components/site/mdx-table.tsx";
 import { COMPONENT_COUNT } from "@/config/site";
 
 # Introduction
 
-Algorize UI is a library of **{COMPONENT_COUNT} React components** — from buttons
-and inputs to dashboards, carousels and scroll-driven marketing sections. Each
-one is animated, responsive, themeable and typed.
+Algorize UI is a library of **{COMPONENT_COUNT} animated, responsive React
+components** — from buttons and inputs to dashboards, carousels and full
+marketing sections.
 
 It is not an npm package. Components are published as a
-[shadcn registry](https://ui.shadcn.com/docs/registry), so the CLI copies a
-component's source **into your project**. From that moment the file is yours:
-read it, edit it, delete half of it. There is no library version to track and
-nothing to fight when a design calls for something the props do not cover.
+[shadcn registry](https://ui.shadcn.com/docs/registry), and the CLI copies each
+component's source **into your project**, where you can edit it like any other
+file.
 
 <Cli command={`add button.json`} />
 
-The short `@algorize-ui/…` form needs the registry registered once per project — one
-command, covered in the <DocLink to="installation#step-2-register-the-registry">installation
-guide</DocLink>. Toggle to **URL** above for the form that needs no setup.
+The short `@algorize-ui/…` form needs the registry
+<DocLink to="installation#step-2-register-the-registry">registered once</DocLink>.
+Switch to **URL** above for a command that needs no setup.
 
-## Component Philosophy
+## Why this approach
 
-Build software faster with complete code ownership, no wrapper package, and total styling freedom.
-
-<div className="grid grid-cols-1 md:grid-cols-3 gap-5 my-8 not-prose">
-  <div className="p-6 rounded-xl bg-foreground/[0.03] border border-foreground/[0.06] hover:border-primary/30 transition-colors">
-    {/* Glyph stays on one line: MDX parses children of a multi-line JSX element as
-        block content, which would wrap it in the custom <p> (mb-4) and push it 8px
-        off-centre, since flex centres the margin box. */}
-    <div className="w-10 h-10 rounded-xl bg-primary/15 text-primary flex items-center justify-center font-semibold mb-4 leading-none">⚡</div>
-    <h3 className="text-[14px] font-semibold text-foreground mb-2">No Wrapper Package</h3>
+<div className="grid grid-cols-1 md:grid-cols-3 gap-4 my-8 not-prose">
+  <div className="p-5 rounded-xl bg-foreground/[0.03] border border-foreground/[0.06]">
+    <h3 className="text-[14px] font-semibold text-foreground mb-1.5">You own the code</h3>
     <p className="text-[13px] leading-relaxed text-foreground/50">
-      There is no library to install and version. The CLI writes each component's source into your codebase, so you own it and there is no lock-in.
+      No wrapper package and no version to track. The source lives in your repo.
     </p>
   </div>
 
-  <div className="p-6 rounded-xl bg-foreground/[0.03] border border-foreground/[0.06] hover:border-primary/30 transition-colors">
-    <div className="w-10 h-10 rounded-xl bg-primary/15 text-primary flex items-center justify-center font-semibold mb-4 leading-none">🎨</div>
-    <h3 className="text-[14px] font-semibold text-foreground mb-2">100% Customizability</h3>
+  <div className="p-5 rounded-xl bg-foreground/[0.03] border border-foreground/[0.06]">
+    <h3 className="text-[14px] font-semibold text-foreground mb-1.5">Your theme</h3>
     <p className="text-[13px] leading-relaxed text-foreground/50">
-      Modify styles, animations, and behaviors directly within your <code className="font-mono text-[12px] text-foreground/70 bg-foreground/[0.06] px-1.5 py-0.5 rounded">components/custom</code> folder.
+      Components read your Tailwind theme tokens. Preview a palette on the <a href="/themes" className="text-primary hover:underline">Themes page</a>.
     </p>
   </div>
 
-  <div className="p-6 rounded-xl bg-foreground/[0.03] border border-foreground/[0.06] hover:border-primary/30 transition-colors">
-    <div className="w-10 h-10 rounded-xl bg-primary/15 text-primary flex items-center justify-center font-semibold mb-4 leading-none">🧩</div>
-    <h3 className="text-[14px] font-semibold text-foreground mb-2">Dependencies Per Component</h3>
+  <div className="p-5 rounded-xl bg-foreground/[0.03] border border-foreground/[0.06]">
+    <h3 className="text-[14px] font-semibold text-foreground mb-1.5">Only what you use</h3>
     <p className="text-[13px] leading-relaxed text-foreground/50">
-      Each component declares only what it imports — usually <code className="font-mono text-[12px] text-foreground/70 bg-foreground/[0.06] px-1.5 py-0.5 rounded">lucide-react</code>, <code className="font-mono text-[12px] text-foreground/70 bg-foreground/[0.06] px-1.5 py-0.5 rounded">gsap</code> or <code className="font-mono text-[12px] text-foreground/70 bg-foreground/[0.06] px-1.5 py-0.5 rounded">framer-motion</code>, and often nothing at all. Its page lists them before you install.
+      Each component declares its own dependencies, and the CLI installs them with it.
     </p>
   </div>
 </div>
 
-## What's in the library
-
-<div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3 my-8 not-prose">
-  <DocLink to="hero" className="p-4 rounded-xl bg-foreground/[0.03] border border-foreground/[0.06] hover:bg-foreground/[0.05] hover:border-primary/30 transition-colors">
-    <div className="font-serif text-2xl font-normal leading-none text-primary">33</div>
-    <div className="text-[12px] font-medium text-foreground/60 mt-1.5">Marketing sections</div>
-  </DocLink>
-  <DocLink to="data-table" className="p-4 rounded-xl bg-foreground/[0.03] border border-foreground/[0.06] hover:bg-foreground/[0.05] hover:border-primary/30 transition-colors">
-    <div className="font-serif text-2xl font-normal leading-none text-primary">21</div>
-    <div className="text-[12px] font-medium text-foreground/60 mt-1.5">Data display</div>
-  </DocLink>
-  <DocLink to="form" className="p-4 rounded-xl bg-foreground/[0.03] border border-foreground/[0.06] hover:bg-foreground/[0.05] hover:border-primary/30 transition-colors">
-    <div className="font-serif text-2xl font-normal leading-none text-primary">18</div>
-    <div className="text-[12px] font-medium text-foreground/60 mt-1.5">Forms &amp; inputs</div>
-  </DocLink>
-  <DocLink to="card" className="p-4 rounded-xl bg-foreground/[0.03] border border-foreground/[0.06] hover:bg-foreground/[0.05] hover:border-primary/30 transition-colors">
-    <div className="font-serif text-2xl font-normal leading-none text-primary">15</div>
-    <div className="text-[12px] font-medium text-foreground/60 mt-1.5">Layout</div>
-  </DocLink>
-  <DocLink to="carousel" className="p-4 rounded-xl bg-foreground/[0.03] border border-foreground/[0.06] hover:bg-foreground/[0.05] hover:border-primary/30 transition-colors">
-    <div className="font-serif text-2xl font-normal leading-none text-primary">14</div>
-    <div className="text-[12px] font-medium text-foreground/60 mt-1.5">Media</div>
-  </DocLink>
-  <DocLink to="navigation" className="p-4 rounded-xl bg-foreground/[0.03] border border-foreground/[0.06] hover:bg-foreground/[0.05] hover:border-primary/30 transition-colors">
-    <div className="font-serif text-2xl font-normal leading-none text-primary">13</div>
-    <div className="text-[12px] font-medium text-foreground/60 mt-1.5">Navigation</div>
-  </DocLink>
-</div>
-
-Plus overlays, feedback, scroll effects, commerce, authentication, maps, code
-blocks and typography. [Browse everything](/docs/nextjs/all-components).
-
-## What you need
+## Requirements
 
 {/* Written as JSX, not a markdown table: remarkPlugins is empty in
     next.config.ts, so GFM tables render as literal pipe characters. */}
 
 <div className="overflow-x-auto">
   <table>
-    <thead>
-      <tr>
-        <th>Requirement</th>
-        <th>Supported</th>
-      </tr>
-    </thead>
     <tbody>
       <tr>
         <td><strong>React</strong></td>
@@ -141,75 +84,40 @@ blocks and typography. [Browse everything](/docs/nextjs/all-components).
       <ForFramework only="nextjs">
         <tr>
           <td><strong>Next.js</strong></td>
-          <td>14, 15 or 16 — App Router</td>
+          <td>App Router</td>
         </tr>
       </ForFramework>
       <ForFramework only="reactjs">
         <tr>
           <td><strong>Vite</strong></td>
-          <td>5 or 6 — also works with CRA and React Router</td>
+          <td>Any recent version</td>
         </tr>
       </ForFramework>
       <tr>
         <td><strong>Tailwind CSS</strong></td>
-        <td>v3.4+ or v4</td>
+        <td>v4</td>
       </tr>
       <tr>
         <td><strong>TypeScript</strong></td>
-        <td>5+, or plain JavaScript</td>
+        <td>Optional</td>
       </tr>
     </tbody>
   </table>
 </div>
-
-<ForFramework only="nextjs">
-Every component is plain React — none of them import from `next/*`. The dozen that
-render links or images take a `linkComponent` / `imageComponent` prop instead, so
-pass `next/link` or `next/image` to keep prefetching and image optimisation. Each
-of those pages shows the one line.
-</ForFramework>
-
-<ForFramework only="reactjs">
-Every component is plain React and drops straight into a Vite app — none of them
-import from `next/*`, so what the CLI writes compiles as-is. The dozen that render
-links or images default to plain `<a>` and `<img>`, and take a `linkComponent` /
-`imageComponent` prop if you would rather supply your own — React Router's `Link`,
-for instance.
-</ForFramework>
-
-## How a component reaches your project
-
-Every component page follows the same two steps:
-
-1. **Install it** — one `shadcn add` command, which also pulls in anything it
-   depends on.
-2. **Install dependencies** — listed explicitly, split between registry
-   components and npm packages, because those need different commands. Many
-   components need no npm packages at all, and the page says so plainly.
-
-Then copy a snippet from the **Usage** tab. Every snippet is a complete file,
-not a fragment.
-
-## Theming
-
-Components read your Tailwind theme tokens, so they inherit your colours and
-radii without configuration. Many accept a `color` prop for a per-instance
-accent, and the [theme customizer](/themes) lets you preview a palette across
-the whole library before committing to it.
 
 ## Where next
 
 <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 my-8 not-prose">
   <DocLink to="installation" className="block p-5 rounded-xl bg-foreground/[0.03] border border-foreground/[0.06] hover:bg-foreground/[0.05] hover:border-primary/30 transition-colors">
     <h3 className="text-[14px] font-semibold text-foreground mb-1">Installation</h3>
-    <span className="block text-[13px] leading-relaxed text-foreground/50">Set up the CLI and add your first component.</span>
+    <span className="block text-[13px] leading-relaxed text-foreground/50">Set up Tailwind, shadcn and the registry.</span>
   </DocLink>
   <DocLink to="first-app" className="block p-5 rounded-xl bg-foreground/[0.03] border border-foreground/[0.06] hover:bg-foreground/[0.05] hover:border-primary/30 transition-colors">
     <h3 className="text-[14px] font-semibold text-foreground mb-1">Quick Start</h3>
-    <span className="block text-[13px] leading-relaxed text-foreground/50">A component on screen in four steps.</span>
+    <span className="block text-[13px] leading-relaxed text-foreground/50">Get a component on screen in minutes.</span>
   </DocLink>
-  <DocLink to="architecture" className="block p-5 rounded-xl bg-foreground/[0.03] border border-foreground/[0.06] hover:bg-foreground/[0.05] hover:border-primary/30 transition-colors">
-    <h3 className="text-[14px] font-semibold text-foreground mb-1">Architecture</h3>
-    <span className="block text-[13px] leading-relaxed text-foreground/50">How the library is structured and why.</span>
+  <DocLink to="all-components" className="block p-5 rounded-xl bg-foreground/[0.03] border border-foreground/[0.06] hover:bg-foreground/[0.05] hover:border-primary/30 transition-colors">
+    <h3 className="text-[14px] font-semibold text-foreground mb-1">All components</h3>
+    <span className="block text-[13px] leading-relaxed text-foreground/50">Browse the full library by category.</span>
   </DocLink>
 </div>

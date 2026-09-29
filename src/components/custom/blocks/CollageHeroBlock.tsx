@@ -128,7 +128,7 @@ function CollageHeroRoot({
   caption,
   photos,
   quote,
-  scrollLabel = "Scroll down",
+  scrollLabel = "Keep scrolling",
   scrollTo,
   video,
   accent,

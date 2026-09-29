@@ -1,6 +1,6 @@
 {
-  "generatedAt": "2026-09-28T11:44:10.002Z",
-  "totalFiles": 297,
+  "generatedAt": "2026-09-28T13:48:28.626Z",
+  "totalFiles": 295,
   "files": [
     {
       "name": "nextjs/3d-carousel",
@@ -55,12 +55,6 @@
       "path": "/docs/nextjs-apple-select.md",
       "url": "/docs/nextjs/apple-select",
       "originalMdx": "[framework]\\apple-select\\page.mdx"
-    },
-    {
-      "name": "nextjs/architecture",
-      "path": "/docs/nextjs-architecture.md",
-      "url": "/docs/nextjs/architecture",
-      "originalMdx": "[framework]\\architecture\\page.mdx"
     },
     {
       "name": "nextjs/audio-player",
@@ -949,12 +943,6 @@
       "path": "/docs/reactjs-apple-select.md",
       "url": "/docs/reactjs/apple-select",
       "originalMdx": "[framework]\\apple-select\\page.mdx"
-    },
-    {
-      "name": "reactjs/architecture",
-      "path": "/docs/reactjs-architecture.md",
-      "url": "/docs/reactjs/architecture",
-      "originalMdx": "[framework]\\architecture\\page.mdx"
     },
     {
       "name": "reactjs/audio-player",

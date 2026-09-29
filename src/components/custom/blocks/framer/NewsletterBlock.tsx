@@ -114,8 +114,8 @@ function Form({
   placeholder = "name@email.com",
   action = "Subscribe now",
   onSubscribe,
-  successTitle = "You're on the list",
-  successText = "The next issue lands in your inbox.",
+  successTitle = "You're subscribed",
+  successText = "Look out for the next edition in your inbox.",
   className,
   ...props
 }: NewsletterFormProps) {

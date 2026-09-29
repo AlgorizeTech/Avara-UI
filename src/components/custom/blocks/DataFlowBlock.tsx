@@ -138,7 +138,7 @@ function Core({ title, subtitle, className, ...props }: DataFlowCoreProps) {
 // ------------------------------------------
 export interface DataFlowOutputProps extends React.HTMLAttributes<HTMLDivElement> {
   title: string;
-  /** e.g. "3,432 categories" */
+  /** e.g. "3,432 niches" */
   badge?: string;
   children?: React.ReactNode;
 }

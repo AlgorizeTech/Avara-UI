@@ -42,7 +42,7 @@ const docsEntryFor = (pathname: string) =>
  * path list would stop matching the moment a reader is on /docs/reactjs/... and
  * the wrong header item would highlight.
  */
-const GUIDE_SLUGS = new Set(["index", "installation", "first-app", "architecture"]);
+const GUIDE_SLUGS = new Set(["index", "installation", "first-app"]);
 
 /** True on the guide pages; everything else under /docs/ is a component page. */
 const isGuidePath = (pathname: string) =>

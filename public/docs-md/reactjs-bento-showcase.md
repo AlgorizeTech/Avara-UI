@@ -6,55 +6,55 @@ A six-card marketing bento: a hero with a live chat and a headline, a laptop of 
 
 export const usageSection = `const CASE_STUDIES = [
   {
-    quote: "5% of deal-closing rate and appointments for a solution provider",
-    metrics: [{ value: "+70%", label: "Close rate" }, { value: "$250K", label: "Revenue" }],
+    quote: "More deals closed and more meetings booked for an IT services vendor",
+    metrics: [{ value: "+64%", label: "Win rate" }, { value: "$230K", label: "New revenue" }],
   },
   {
-    quote: "Saving time: 3x appointments booked per week for a SaaS team",
-    metrics: [{ value: "+85%", label: "Bookings" }, { value: "$140K", label: "Pipeline" }],
+    quote: "Hours back: triple the weekly demos on the calendar for a B2B startup",
+    metrics: [{ value: "+80%", label: "Meetings" }, { value: "$150K", label: "New pipeline" }],
   },
   {
-    quote: "Sold-out delivery slots and a reduced late rate for a logistics firm",
-    metrics: [{ value: "+45%", label: "On time" }, { value: "$90K", label: "Saved" }],
+    quote: "Fully booked delivery windows and fewer late drop-offs for a courier",
+    metrics: [{ value: "+40%", label: "Punctual" }, { value: "$95K", label: "Cost cut" }],
   },
 ];
 
 const STATS = [
-  { value: ">30,000", caption: "Leads generated a month, on average", tone: "cream", ornament: "spheres" },
-  { value: "$180M", caption: "Brought to our clients so far", tone: "lilac", ornament: "ring" },
-  { value: "200+", caption: "Sales reps on the floor right now", tone: "ink", ornament: "drops" },
+  { value: ">28,000", caption: "Average prospects sourced each month", tone: "cream", ornament: "spheres" },
+  { value: "$165M", caption: "In revenue won for partners to date", tone: "lilac", ornament: "ring" },
+  { value: "220+", caption: "Reps taking calls for clients today", tone: "ink", ornament: "drops" },
 ];
 
 const PLANS = [
   {
     rank: "#2",
-    name: "Professional",
-    price: "$3,500",
-    note: "7–12 qualified leads a month, guaranteed",
+    name: "Growth",
+    price: "$3,200",
+    note: "A promised 8–12 vetted prospects every month",
     image: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_600,c_limit/v1790148864/photo-1618005182384-a83a8bd57fbe-1790148865111.jpg",
-    benefits: ["Lead qualification", "Calendar booking", "Template A/B testing", "Intelligent research", "Email outreach"],
-    action: "Start now",
+    benefits: ["Prospect vetting", "Meeting scheduling", "Script split-testing", "Account research", "Cold email sequences"],
+    action: "Get started",
   },
-  { rank: "#3", name: "Enterprise", image: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_600,c_limit/v1790145140/photo-1550684848-fac1c5b4e853-1790145143489.jpg" },
+  { rank: "#3", name: "Scale", image: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_600,c_limit/v1790145140/photo-1550684848-fac1c5b4e853-1790145143489.jpg" },
 ];
 
 // Four photos and two figure discs make six cells — an even count keeps the
 // high/low rhythm intact across the loop.
 const TEAM = [
-  { src: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_500,c_limit/v1790166049/pexels-photo-7688336-1790166052227.jpg", alt: "A desk from above" },
-  { src: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_500,c_limit/v1790166049/pexels-photo-8867434-1790166052229.jpg", alt: "Two agents at their desks" },
-  { src: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_500,c_limit/v1790166049/pexels-photo-7658387-1790166052226.jpg", alt: "Maria on a call" },
-  { src: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_500,c_limit/v1790166049/pexels-photo-7709086-1790166052228.jpg", alt: "Alex at his laptop" },
+  { src: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_500,c_limit/v1790166049/pexels-photo-7688336-1790166052227.jpg", alt: "Overhead view of a workspace" },
+  { src: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_500,c_limit/v1790166049/pexels-photo-8867434-1790166052229.jpg", alt: "A pair of reps working side by side" },
+  { src: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_500,c_limit/v1790166049/pexels-photo-7658387-1790166052226.jpg", alt: "Lena on the phone" },
+  { src: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_500,c_limit/v1790166049/pexels-photo-7709086-1790166052228.jpg", alt: "Omar at his laptop" },
 ];
 
 export default function Showcase() {
   return (
 
-        Trusted by 1000’s of sales reps
+        Chosen by thousands of sales teams
 
-        We handle your
+        We pick up the
         
-        calls so you run your business
+        phone while you grow the company
 
        router.push("/pricing")} />
 
@@ -194,7 +194,7 @@ The built-in parts carry their own placement (`Hero` is column 1, rows 1–2; `P
 
         chip
         string
-        "Assistant"
+        "Virtual agent"
         The yellow chip under the chat.
 
         avatars
@@ -204,7 +204,7 @@ The built-in parts carry their own placement (`Hero` is column 1, rows 1–2; `P
 
         label
         ReactNode
-        "Outsourcing company"
+        "Managed call centre"
         Top-right caption.
 
         children
@@ -236,7 +236,7 @@ The built-in parts carry their own placement (`Hero` is column 1, rows 1–2; `P
 
         title
         string
-        "Case Studies"
+        "Client wins"
         Heading on the screen; wraps to two lines.
 
 ### BentoShowcase.Headline
@@ -253,7 +253,7 @@ The built-in parts carry their own placement (`Hero` is column 1, rows 1–2; `P
 
         label
         ReactNode
-        "Customer support"
+        "Call handling"
         Top-right caption.
 
         children

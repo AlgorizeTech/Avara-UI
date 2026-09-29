@@ -18,18 +18,18 @@ const REVIEW_SITES = [
 export default function Intelligence() {
   return (
 
-          Maturity: Growing
-          Competition: High
+          Stage: Emerging
+          Saturation: High
         
         } className="h-7 rounded-md px-2.5 text-[10.5px]">
-          Export data
+          Download CSV
 
-          Integration issues with HR systems
-          Gap: 8.0
+          HR software won’t connect cleanly
+          Need: 8.0
 
-              View on G2 
+              Open on G2 
 
-          “No calendar integration at all, so I still live in Outlook…”
+          “Still can’t sync with my calendar, so I’m stuck juggling two apps…”
 
   );
 }
@@ -168,7 +168,7 @@ Each curve is a `FlowConnection` from Flowchart, in the fluid layout this sectio
         badge
         string
         —
-        Pill in the corner, e.g. "200K+ found".
+        Pill in the corner, e.g. "200K+ logged".
 
         children
         ReactNode

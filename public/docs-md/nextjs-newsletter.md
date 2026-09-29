@@ -17,17 +17,17 @@ const FACES = [
 
 export default function Signup() {
   return (
-     ({ src, alt: "A reader" }))}
+     ({ src, alt: "A subscriber" }))}
     >
-      Join 24,000 readers who ship better
+      24,000 makers read this every week
       
-        A short, sharp email every week on product, design and the craft of building. Free, and easy to leave.
+        One concise weekly note on product thinking, design and building with care. Free to read, and one click to leave.
       
        {
           await fetch("/api/subscribe", { method: "POST", body: JSON.stringify({ email }) });
         }}
       />
-      Loved by teams at Linear, Vercel and Notion
+      Read by teams at Fernway, Quillo and Brightpath
     
   );
 }
@@ -36,18 +36,18 @@ export default function Signup() {
 export const usageSpotlight = `"use client";
 
 const JOINED = [
-  { name: "Ana", avatar: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_160,c_limit/v1790158812/pexels-photo-2379004-1790158812208.jpg", when: "just now" },
-  { name: "Tom", avatar: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_160,c_limit/v1790158810/pexels-photo-220453-1790158812206.jpg", when: "2 min ago" },
-  { name: "Noah", when: "15 min ago" },
+  { name: "Iris", avatar: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_160,c_limit/v1790158812/pexels-photo-2379004-1790158812208.jpg", when: "just now" },
+  { name: "Ben", avatar: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_160,c_limit/v1790158810/pexels-photo-220453-1790158812206.jpg", when: "2 min ago" },
+  { name: "Omar", when: "15 min ago" },
 ];
 
 export default function Signup() {
   return (
     
-      Get the good stuff, every Thursday
-      One email a week on building products people keep using. Unsubscribe in one click.
+      Your Thursday read, worth opening
+      A weekly note on making products people stick with. You can opt out anytime.
       
-      Read by 24,000 designers and founders
+      24,000 founders and designers subscribe
 
   );
 }
@@ -57,23 +57,23 @@ export const usageIssues = `"use client";
 
 const ISSUES = [
   {
-    title: "The quiet power of defaults",
+    title: "Defaults do the heavy lifting",
     date: "Issue 42 · This week",
-    excerpt: "Why the choices you never make shape your product more than the ones you agonise over.",
+    excerpt: "The settings nobody touches end up defining your product more than the features you debate for weeks.",
     cover: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_800,c_limit/v1790148864/photo-1618005182384-a83a8bd57fbe-1790148865111.jpg",
     tag: "Design",
   },
-  { title: "Shipping less, on purpose", date: "Issue 41", excerpt: "" },
-  { title: "Notes on onboarding", date: "Issue 40", excerpt: "" },
+  { title: "The case for smaller releases", date: "Issue 41", excerpt: "" },
+  { title: "First-run experiences, revisited", date: "Issue 40", excerpt: "" },
 ];
 
 export default function Signup() {
   return (
     
-      A letter about making things well
-      Essays on product, craft and the small decisions that compound.
+      Notes on building with care
+      Writing on product, craft and the little choices that add up over time.
       
-      Joined by 24,000 readers
+      24,000 readers and counting
 
   );
 }
@@ -168,7 +168,7 @@ npx shadcn@latest add @algorize-ui/newsletter-framer
 
         successTitle, successText
         string
-        "You're on the list", "The next issue lands in your inbox."
+        "You're subscribed", "Look out for the next edition in your inbox."
         The thank-you.
 
 ### Newsletter.Proof, Ticker, Issues

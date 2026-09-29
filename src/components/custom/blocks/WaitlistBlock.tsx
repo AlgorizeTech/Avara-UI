@@ -122,7 +122,7 @@ export interface WaitlistCountdownProps extends React.HTMLAttributes<HTMLDivElem
 }
 
 /** The counter's slide countdown, in the section's own text colour. */
-function Countdown({ date, label = "Opens in", doneLabel = "We're open", className, ...props }: WaitlistCountdownProps) {
+function Countdown({ date, label = "Launching in", doneLabel = "Now live", className, ...props }: WaitlistCountdownProps) {
   return (
     <Reveal className="mb-8">
       <div className={cn("flex flex-col items-center", className)} {...props}>
@@ -215,14 +215,14 @@ function Position({ value, label }: { value: number; label: string }) {
 
 function Form({
   placeholder = "name@email.com",
-  action = "Join the waitlist",
+  action = "Get on the list",
   onJoin,
-  successTitle = "You're on the waitlist",
-  successText = "We'll email you the moment your invite is ready.",
+  successTitle = "Your spot is saved",
+  successText = "Expect an email from us as soon as your invite opens up.",
   positionLabel = "in line",
   shareUrl,
-  shareLabel = "Copy invite link",
-  shareHint = "Share it to move up the line.",
+  shareLabel = "Copy referral link",
+  shareHint = "Each friend who joins bumps you forward.",
   note,
   className,
   ...props
@@ -245,7 +245,7 @@ function Form({
     e.preventDefault();
     if (busy) return;
     if (!email) {
-      setError("Enter your email address to join.");
+      setError("Add your email address first.");
       return;
     }
     setBusy(true);
@@ -254,7 +254,7 @@ function Form({
       const result = await onJoin?.(email);
       setDone({ position: typeof result === "number" ? result : undefined });
     } catch (err) {
-      setError(err instanceof Error && err.message ? err.message : "That didn't go through. Try again.");
+      setError(err instanceof Error && err.message ? err.message : "Something went wrong. Please retry.");
     } finally {
       setBusy(false);
     }
@@ -422,7 +422,7 @@ function Proof({ avatars, className, children, ...props }: WaitlistProofProps) {
 export interface WaitlistSpotsProps extends React.HTMLAttributes<HTMLDivElement> {
   claimed: number;
   total: number;
-  /** The line over the bar. Defaults to "{claimed} of {total} early spots claimed". */
+  /** The line over the bar. Defaults to "{claimed} of {total} early places taken". */
   children?: React.ReactNode;
 }
 
@@ -437,7 +437,7 @@ function Spots({ claimed, total, className, children, ...props }: WaitlistSpotsP
             {children ?? (
               <>
                 <span className="text-[15px] font-semibold">{Math.round(shown).toLocaleString()}</span>
-                <span className="opacity-55"> of {total.toLocaleString()} early spots claimed</span>
+                <span className="opacity-55"> of {total.toLocaleString()} early places taken</span>
               </>
             )}
           </span>
