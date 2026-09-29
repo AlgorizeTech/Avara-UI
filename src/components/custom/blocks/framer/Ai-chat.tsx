@@ -1,7 +1,13 @@
 "use client";
 
 import { cn } from "@/lib/utils";
-import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
+import {
+  AnimatePresence,
+  motion,
+  useReducedMotion,
+  type TargetAndTransition,
+  type Transition,
+} from "framer-motion";
 import {
   Bot,
   Calendar,
@@ -32,6 +38,7 @@ import {
   ThumbsUp,
   Trash2,
   X,
+  Zap,
 } from "lucide-react";
 import {
   useCallback,
@@ -215,15 +222,26 @@ export type ChatModel = {
   id: string;
   name: string;
   description?: string;
-  /** Small tag beside the name, e.g. "Pro" or "New". */
+  /** Small tag beside the name, e.g. "New" or "Beta". */
   badge?: string;
   /**
-   * Marks a paid tier: a gold "Premium" badge follows the name, the picker
-   * pill turns gold while it is chosen, and choosing it plays a one-off
+   * Marks the top paid tier: a gold "Premium" badge follows the name, the
+   * picker pill turns gold while it is chosen, and choosing it plays a one-off
    * flourish on the pill and the prompt bar.
    */
   premium?: boolean;
+  /**
+   * Marks the middle paid tier: an electric-blue "Pro" badge, a blue pill
+   * while chosen, and its own one-off flourish when picked. `premium` wins if
+   * both are set.
+   */
+  pro?: boolean;
 };
+
+type ModelTier = "premium" | "pro";
+
+const modelTier = (model: ChatModel): ModelTier | undefined =>
+  model.premium ? "premium" : model.pro ? "pro" : undefined;
 
 export type EffortLevel = "low" | "medium" | "high" | "max" | (string & {});
 
@@ -279,24 +297,25 @@ type PendingAttachment = MessageAttachment & {
 
 export const defaultModels: ChatModel[] = [
   {
-    id: "nova-ultra",
-    name: "Nova Ultra",
+    id: "lumen-ultra",
+    name: "Lumen Ultra",
     description: "Deepest reasoning for hard problems",
     premium: true,
   },
   {
-    id: "nova-pro",
-    name: "Nova Pro",
+    id: "lumen-plus",
+    name: "Lumen Plus",
     description: "Best for everyday complex work",
+    pro: true,
   },
   {
-    id: "nova-flash",
-    name: "Nova Flash",
+    id: "lumen-flash",
+    name: "Lumen Flash",
     description: "Fast answers at a lower cost",
   },
   {
-    id: "nova-mini",
-    name: "Nova Mini",
+    id: "lumen-mini",
+    name: "Lumen Mini",
     description: "Lightweight, near-instant replies",
   },
 ];
@@ -539,9 +558,9 @@ export default function AIChat({
   const [openMenu, setOpenMenu] = useState<"tools" | "model" | "effort" | null>(
     null,
   );
-  // Counts premium picks while the flourish plays (0 = idle); each new value
+  // Counts tier picks while the flourish plays (0 = idle); each new value
   // remounts the flourish so a quick re-pick replays it from the start.
-  const [premiumFx, setPremiumFx] = useState(0);
+  const [tierFx, setTierFx] = useState(0);
   const reduceMotion = useReducedMotion();
 
   const composerRef = useRef<HTMLFormElement>(null);
@@ -660,8 +679,9 @@ export default function AIChat({
   };
 
   const selectModel = (model: ChatModel) => {
-    if (model.premium && model.id !== selectedModel.id && !reduceMotion)
-      setPremiumFx((n) => n + 1);
+    // A pick outside the tiers cuts a flourish that is still playing short.
+    if (model.id !== selectedModel.id)
+      setTierFx((n) => (modelTier(model) && !reduceMotion ? n + 1 : 0));
     setSelectedModelId(model.id);
     setOpenMenu(null);
     onModelChange?.(model);
@@ -674,6 +694,8 @@ export default function AIChat({
 
   const maxEffortLevel = Math.max(...efforts.map((e) => e.level));
   const isMaxEffort = selectedEffort.level >= maxEffortLevel;
+  const selectedTier = modelTier(selectedModel);
+  const tierLook = selectedTier && TIERS[selectedTier];
 
   useEffect(() => {
     if (chatScrollRef.current) {
@@ -894,8 +916,8 @@ export default function AIChat({
           )}
         >
           <MaxEffortGlow active={isMaxEffort} className={theme.primaryText} />
-          {premiumFx > 0 && (
-            <PremiumSweep key={premiumFx} onDone={() => setPremiumFx(0)} />
+          {tierFx > 0 && tierLook && (
+            <tierLook.Sweep key={tierFx} onDone={() => setTierFx(0)} />
           )}
 
           <input
@@ -1065,19 +1087,15 @@ export default function AIChat({
                 onOpenChange={(open) => setOpenMenu(open ? "model" : null)}
                 theme={theme}
                 icon={
-                  selectedModel.premium ? (
+                  tierLook ? (
                     <motion.span
-                      key={premiumFx}
+                      key={tierFx}
                       className="block"
-                      initial={premiumFx > 0 ? { scale: 0, rotate: -45 } : false}
-                      animate={{ scale: [0, 1.3, 1], rotate: [-45, 12, 0] }}
-                      transition={{
-                        duration: 0.55,
-                        times: [0, 0.6, 1],
-                        ease: "easeOut",
-                      }}
+                      initial={tierFx > 0 ? tierLook.iconPop.initial : false}
+                      animate={tierLook.iconPop.animate}
+                      transition={tierLook.iconPop.transition}
                     >
-                      <Crown className="w-3.5 h-3.5 mb-0.25" />
+                      <tierLook.Icon className="w-3.5 h-3.5 mb-0.25" />
                     </motion.span>
                   ) : (
                     <Cpu className="w-3.5 h-3.5 mb-0.25" />
@@ -1085,13 +1103,16 @@ export default function AIChat({
                 }
                 label={selectedModel.name}
                 heading="Model"
-                highlighted={!!selectedModel.premium}
-                highlightClassName={PREMIUM.pill}
-                flourish={premiumFx > 0 && <PremiumPillFlash key={premiumFx} />}
+                highlighted={!!tierLook}
+                highlightClassName={tierLook ? tierLook.pill : undefined}
+                flourish={
+                  tierFx > 0 && tierLook && <tierLook.PillFlash key={tierFx} />
+                }
                 boundaryRef={composerRef}
               >
                 {models.map((model) => {
                   const active = model.id === selectedModel.id;
+                  const tier = modelTier(model);
                   return (
                     <MenuItem
                       key={model.id}
@@ -1114,7 +1135,7 @@ export default function AIChat({
                               {model.badge}
                             </span>
                           )}
-                          {model.premium && <PremiumBadge />}
+                          {tier && <TierBadge tier={tier} />}
                         </div>
                         {model.description && (
                           <p className="text-xs text-muted-foreground truncate">
@@ -2181,8 +2202,9 @@ function MaxEffortGlow({
 }
 
 /**
- * Premium models wear gold whatever the accent colour, so choosing one reads
- * apart from the accent-tinted Max-effort glow.
+ * Paid tiers wear their own colour whatever the accent — gold for Premium,
+ * electric blue for Pro — so choosing one reads apart from the accent-tinted
+ * Max-effort glow, and the two tiers read apart from each other.
  */
 const PREMIUM = {
   badge:
@@ -2190,6 +2212,67 @@ const PREMIUM = {
   pill: "bg-amber-500/10 text-amber-600 dark:text-amber-300",
   /** `currentColor` for the flourishes. */
   ink: "text-amber-400",
+};
+
+const PRO = {
+  badge:
+    "bg-gradient-to-r from-sky-200 to-cyan-100 text-sky-900 dark:from-sky-400/25 dark:to-cyan-300/15 dark:text-sky-200",
+  pill: "bg-sky-500/10 text-sky-600 dark:text-sky-300",
+  ink: "text-sky-400",
+};
+
+const TIERS: Record<
+  ModelTier,
+  {
+    label: string;
+    Icon: typeof Crown;
+    badge: string;
+    pill: string;
+    /** Entrance for the pill's icon when the tier is picked. */
+    iconPop: {
+      initial: TargetAndTransition;
+      animate: TargetAndTransition;
+      transition: Transition;
+    };
+    Sweep: (props: { onDone: () => void }) => React.ReactNode;
+    PillFlash: () => React.ReactNode;
+  }
+> = {
+  premium: {
+    label: "Premium",
+    Icon: Crown,
+    badge: PREMIUM.badge,
+    pill: PREMIUM.pill,
+    iconPop: {
+      initial: { scale: 0, rotate: -45 },
+      animate: { scale: [0, 1.3, 1], rotate: [-45, 12, 0] },
+      transition: { duration: 0.55, times: [0, 0.6, 1], ease: "easeOut" },
+    },
+    Sweep: PremiumSweep,
+    PillFlash: PremiumPillFlash,
+  },
+  pro: {
+    label: "Pro",
+    Icon: Zap,
+    badge: PRO.badge,
+    pill: PRO.pill,
+    // Strikes down, overshoots and flickers once before it settles.
+    iconPop: {
+      initial: { opacity: 0, y: -8, scale: 0.6 },
+      animate: {
+        opacity: [0, 1, 0.35, 1, 1],
+        y: [-8, 0, 0, 0, 0],
+        scale: [0.6, 1.3, 1.15, 1, 1],
+      },
+      transition: {
+        duration: 0.5,
+        times: [0, 0.35, 0.5, 0.65, 1],
+        ease: "easeOut",
+      },
+    },
+    Sweep: ProSurge,
+    PillFlash: ProPillFlash,
+  },
 };
 
 /** The premium flourish on the prompt bar: one lap of the edge beam. */
@@ -2207,16 +2290,17 @@ const RING_MASK: React.CSSProperties = {
 const BEAM_GRADIENT =
   "conic-gradient(from 0deg, transparent 0deg, currentColor 50deg, transparent 90deg, transparent 180deg, currentColor 230deg, transparent 270deg)";
 
-function PremiumBadge() {
+function TierBadge({ tier }: { tier: ModelTier }) {
+  const { label, Icon, badge } = TIERS[tier];
   return (
     <span
       className={cn(
         "inline-flex items-center gap-0.5 shrink-0 text-[9px] font-semibold uppercase tracking-wide px-1.5 py-px rounded-full",
-        PREMIUM.badge,
+        badge,
       )}
     >
-      <Crown className="w-2.5 h-2.5" strokeWidth={2.5} />
-      Premium
+      <Icon className="w-2.5 h-2.5" strokeWidth={2.5} />
+      {label}
     </span>
   );
 }
@@ -2304,6 +2388,121 @@ function PremiumPillFlash() {
           transition={{ duration: 0.7, delay: 0.1, ease: "easeInOut" }}
         />
       </span>
+    </span>
+  );
+}
+
+/** The Pro flourish on the prompt bar: trace, flicker and fade. */
+const PRO_SURGE_S = 1.3;
+
+/**
+ * The prompt bar's Pro hand-off, played once per pick — a charge rather than
+ * Premium's orbit: the edge draws itself out from the centre, flickers like a
+ * live wire, a scan line rises through the bar and it glows from within. Calls
+ * `onDone` when it ends so the caller can unmount it.
+ */
+function ProSurge({ onDone }: { onDone: () => void }) {
+  return (
+    <motion.div
+      aria-hidden
+      initial={{ opacity: 0 }}
+      animate={{ opacity: [0, 1, 1, 0] }}
+      transition={{
+        duration: PRO_SURGE_S,
+        times: [0, 0.06, 0.72, 1],
+        ease: "linear",
+      }}
+      onAnimationComplete={onDone}
+      className={cn(
+        "pointer-events-none absolute inset-0 rounded-2xl",
+        PRO.ink,
+      )}
+    >
+      <motion.span
+        className="absolute inset-0 rounded-2xl shadow-[inset_0_0_20px_2px_currentColor]"
+        initial={{ opacity: 0 }}
+        animate={{ opacity: [0, 0.55, 0] }}
+        transition={{
+          duration: 0.7,
+          delay: 0.45,
+          times: [0, 0.4, 1],
+          ease: "easeOut",
+        }}
+      />
+      <span className="absolute inset-0 overflow-hidden rounded-2xl">
+        <motion.span
+          className="absolute inset-0 bg-gradient-to-t from-transparent via-current to-transparent opacity-20"
+          initial={{ y: "100%" }}
+          animate={{ y: "-100%" }}
+          transition={{ duration: 0.9, delay: 0.2, ease: "easeInOut" }}
+        />
+      </span>
+      <span
+        className="absolute inset-0 overflow-hidden rounded-2xl p-[2px]"
+        style={RING_MASK}
+      >
+        <motion.span
+          className="absolute inset-0 bg-current"
+          initial={{ clipPath: "inset(0% 50%)", opacity: 1 }}
+          animate={{
+            clipPath: "inset(0% 0%)",
+            opacity: [1, 1, 0.25, 1, 0.45, 1],
+          }}
+          transition={{
+            clipPath: { duration: 0.5, ease: "easeOut" },
+            opacity: {
+              duration: 0.95,
+              times: [0, 0.53, 0.62, 0.72, 0.81, 1],
+              ease: "linear",
+            },
+          }}
+        />
+      </span>
+    </motion.div>
+  );
+}
+
+/** Where the Pro sparks fly, in px from the pill's icon. */
+const PRO_SPARKS = [
+  [14, 0],
+  [7, -12],
+  [-7, -12],
+  [-14, 0],
+  [-7, 12],
+  [7, 12],
+];
+
+/** The model pill's side of the Pro flourish: the pill flickers and sparks burst off the bolt. */
+function ProPillFlash() {
+  return (
+    <span
+      aria-hidden
+      className={cn("pointer-events-none absolute inset-0", PRO.ink)}
+    >
+      <motion.span
+        className="absolute inset-0 rounded-lg bg-current"
+        initial={{ opacity: 0 }}
+        animate={{ opacity: [0, 0.3, 0.05, 0.25, 0] }}
+        transition={{
+          duration: 0.6,
+          times: [0, 0.15, 0.3, 0.45, 1],
+          ease: "linear",
+        }}
+      />
+      {PRO_SPARKS.map(([x, y]) => (
+        <motion.span
+          key={`${x},${y}`}
+          className="absolute left-[13px] sm:left-[15px] top-1/2 size-[3px] -translate-x-1/2 -translate-y-1/2 rounded-full bg-current"
+          initial={{ opacity: 0, x: 0, y: 0, scale: 1 }}
+          animate={{ opacity: [0, 1, 0], x, y, scale: 0.3 }}
+          transition={{
+            duration: 0.5,
+            delay: 0.15,
+            ease: "easeOut",
+            opacity: { duration: 0.5, delay: 0.15, times: [0, 0.1, 1] },
+          }}
+        />
+      ))}
     </span>
   );
 }
