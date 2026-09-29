@@ -1,3 +1,5 @@
+export const metadata = docsPageMetadata("image-wall");
+
 # Image Wall
 
 A wall of screenshots that never ends, and a camera hanging over it. The camera rests zoomed in on one card; every few seconds it pulls back, glides to the next card and settles on it, brightening that card while the rest stay dimmed. Hovering the wall holds the camera where it is.

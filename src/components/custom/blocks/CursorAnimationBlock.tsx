@@ -534,7 +534,7 @@ export function CursorAnimation({
                   top: `${smoothPos.y}px`,
                   width: "56px",
                   height: "56px",
-                  borderColor: `rgba(${activeRgb}, 0.6)`,
+                  borderColor: isPrimary ? "color-mix(in oklab, var(--primary) 60%, transparent)" : `rgba(${activeRgb}, 0.6)`,
                 }}
               />
               <div
@@ -544,7 +544,7 @@ export function CursorAnimation({
                   top: `${smoothPos.y}px`,
                   width: "32px",
                   height: "32px",
-                  borderColor: `rgba(${activeRgb}, 0.4)`,
+                  borderColor: isPrimary ? "color-mix(in oklab, var(--primary) 40%, transparent)" : `rgba(${activeRgb}, 0.4)`,
                 }}
               />
               <div
@@ -606,7 +606,7 @@ export function CursorAnimation({
                   height: "18px",
                   transform: "translate(-50%, -50%)",
                   color: activeColor,
-                  boxShadow: `0 0 10px rgba(${activeRgb}, 0.6)`,
+                  boxShadow: `0 0 10px ${isPrimary ? "color-mix(in oklab, var(--primary) 60%, transparent)" : `rgba(${activeRgb}, 0.6)`}`,
                 }}
               >
                 <div

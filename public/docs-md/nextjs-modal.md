@@ -1,3 +1,5 @@
+export const metadata = docsPageMetadata("modal");
+
 # Modal
 
 A composable overlay. `Modal` owns the hard parts — the portal, the backdrop, the scroll lock, Escape and backdrop dismissal, and the enter/exit transition — and nothing else. There is no preset layout and no `variant`: the panel renders exactly the markup you put inside it.
@@ -138,37 +140,44 @@ export default function SettingsModal() {
       >
         Open Fullscreen Modal
 
-      {/* A height on the panel plus flex inside pins the header and footer. */}
+      {/* max-h, not h: the panel is as tall as its content, up to 90% of
+          the visible screen; past that the body scrolls between the pinned
+          header and footer. */}
        setIsOpen(false)}
-        contentClassName="max-w-5xl h-[90vh] bg-background rounded-2xl shadow-xl border border-border"
+        contentClassName="max-w-5xl max-h-[90dvh] bg-background rounded-2xl shadow-xl border border-border"
       >
+        {/* pr-12 keeps the title clear of the close button. */}
+
+              Project Configuration
+
+              Manage all global settings for your workspace.
+
+        {/* max-h-none drops the body's own cap so the panel's governs. */}
+
+                General
+
+                Security
+
+        {/* One row that wraps: Delete left, Discard + Save right. Phones get
+            the short labels and compact buttons so all three fit a line. */}
         
-          {/* pr-12 keeps the title clear of the close button. */}
-
-                Project Configuration
-
-                Manage all global settings for your workspace.
-
-          {/* max-h-none drops the body's own cap so flex-1 governs the height. */}
-
-                  General
-
-                  Security
+           setIsOpen(false)}
+            aria-label="Delete project"
+            className="px-3 py-2 rounded-lg text-sm font-semibold text-red-500 hover:text-red-600 hover:bg-red-500/10 transition-colors"
+          >
+            Delete Project
 
              setIsOpen(false)}
-              className="py-2 sm:py-0 text-sm font-semibold text-red-500 hover:text-red-600 transition-colors"
+              aria-label="Discard changes"
+              className="px-3 py-2 sm:px-4 rounded-lg text-sm font-medium text-muted-foreground hover:bg-background hover:text-foreground transition-colors"
             >
-              Delete Project
-
-               setIsOpen(false)}
-                className="px-6 py-3 rounded-lg font-medium text-muted-foreground hover:bg-muted transition-colors"
-              >
-                Discard Changes
-              
-               setIsOpen(false)}
-                className="px-6 py-3 rounded-lg font-semibold shadow-md transition-opacity bg-primary hover:bg-primary/90 text-primary-foreground"
-              >
-                Save Configuration
+              Discard Changes
+            
+             setIsOpen(false)}
+              aria-label="Save configuration"
+              className="px-4 py-2 sm:px-5 rounded-lg text-sm font-semibold shadow-sm transition-opacity bg-primary hover:bg-primary/90 text-primary-foreground"
+            >
+              Save Configuration
 
   );
 }`;

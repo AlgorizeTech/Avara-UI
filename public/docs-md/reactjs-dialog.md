@@ -1,3 +1,5 @@
+export const metadata = docsPageMetadata("dialog");
+
 # Dialog (Modal)
 
 A window overlaid on either the primary window or another dialog window, rendering the background content underneath inert.

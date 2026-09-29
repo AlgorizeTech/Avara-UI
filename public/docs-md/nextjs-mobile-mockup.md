@@ -1,3 +1,8 @@
+export const metadata = docsPageMetadata("mobile-mockup", {
+  title: "Mobile Mockups",
+  description: "A sleek, responsive suite of mobile hardware mockup components for Next.js applications."
+});
+
 # Mobile Mockups
 
 A stunning, fully responsive collection of mobile device mockups engineered for Next.js, allowing you to present your app designs, images, or autoplaying videos in gorgeous, high-fidelity hardware frames.

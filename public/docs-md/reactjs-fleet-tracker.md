@@ -1,3 +1,5 @@
+export const metadata = docsPageMetadata("fleet-tracker");
+
 # Fleet Tracker Map
 
 An interactive, responsive fleet management dashboard featuring a synchronized sidebar and live map integration using React Leaflet.

@@ -1,3 +1,5 @@
+export const metadata = docsPageMetadata("split-stepper");
+
 # Split-Stack Stepper
 
 A high-impact, interactive split-screen layout animated with plain **CSS transitions** — no animation library. One side renders a narrative sequence of feature cards with glowing pill badges, while the opposite side maintains a sticky visual showcase container.

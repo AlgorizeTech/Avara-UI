@@ -1,3 +1,5 @@
+export const metadata = docsPageMetadata("cart");
+
 # Shopping Cart
 
 A complete, production-ready Cart component designed for modern e-commerce applications. It comes with built-in item state management (increment, decrement, remove), automatic subtotal calculations, and three distinct structural layouts.

@@ -1,3 +1,8 @@
+export const metadata = docsPageMetadata("third-party/select", {
+  title: "Select",
+  description: "Integrate react-select with Algorize UI — unstyled plus classNames, so a searchable multi-select matches your Input exactly."
+});
+
 # Select
 
 react-select is what people usually mean when they ask for "Select2 in React":

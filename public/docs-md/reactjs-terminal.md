@@ -1,3 +1,5 @@
+export const metadata = docsPageMetadata("terminal");
+
 # Terminal Snippet
 
 A beautiful, dependency-free code display block inspired by Mac OS windows.

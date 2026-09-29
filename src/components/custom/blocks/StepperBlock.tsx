@@ -280,7 +280,10 @@ export const StepperContent = React.forwardRef<
   return (
     <div
       ref={containerRef}
-      className={cn("relative w-full overflow-hidden", className)}
+      // overflow-x-clip, not overflow-hidden: the clip is only there to hide
+      // the 45px sideways slide-in. Hidden on both axes also cropped anything
+      // a step hangs below itself — a select's menu, an autocomplete list.
+      className={cn("relative w-full overflow-x-clip", className)}
       {...props}
     >
       {/* Key change triggers React to swap DOM nodes cleanly for the slide-in */}

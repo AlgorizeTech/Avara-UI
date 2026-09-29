@@ -1,3 +1,5 @@
+export const metadata = docsPageMetadata("email");
+
 # Email Dashboard
 
 A premium, fully interactive email client featuring a modern SaaS aesthetic. It includes out-of-the-box state management for reading, starring, archiving, deleting, and composing emails, alongside a fully responsive mobile drawer sidebar.

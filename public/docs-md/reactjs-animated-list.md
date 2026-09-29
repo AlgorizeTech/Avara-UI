@@ -1,3 +1,5 @@
+export const metadata = docsPageMetadata("animated-list");
+
 # Premium Animated List
 
 A hyper-polished list component that staggers its children into view using 3D perspective transforms (no animation library), complete with a mouse-tracking glassmorphic spotlight hover effect.

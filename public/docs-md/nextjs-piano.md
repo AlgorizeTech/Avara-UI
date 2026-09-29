@@ -1,3 +1,5 @@
+export const metadata = docsPageMetadata("piano");
+
 # Playable Piano
 
 An interactive, responsive **Playable Piano** component featuring synthesized acoustic Web Audio API sounds, physical keyboard keybindings, volume control slider, and toggleable key label indicators.

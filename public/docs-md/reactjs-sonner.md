@@ -1,3 +1,5 @@
+export const metadata = docsPageMetadata("sonner");
+
 # Sonner (Toast Stack)
 
 An opinionated, dependency-free toast component that mimics the famous "Sonner" library aesthetic.

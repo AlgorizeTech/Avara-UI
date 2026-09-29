@@ -164,14 +164,17 @@ const StackCard: React.FC<{
   const opacity = useTransform(scrollYProgress, [0, 1], [1, targetOpacity]);
 
   return (
+    // The wrapper is row-height (see the grid below) and the face fills it,
+    // so every card is as tall as the tallest: the card on top always covers
+    // the ones behind, leaving only their headers peeking out.
     <div
       ref={cardRef}
-      className="sticky w-full flex items-center justify-center"
+      className="sticky w-full flex flex-col"
       style={{ top: `calc(5rem + ${index * stackOffsetStep}px)` }}
     >
       <motion.div
         style={{ scale, opacity }}
-        className="w-full origin-top rounded-2xl md:rounded-3xl bg-card border border-border/80 p-5 sm:p-6 md:p-7 shadow-xl shadow-zinc-200/50 dark:shadow-black/50 transition-colors duration-300 mt-5"
+        className="flex-1 flex flex-col w-full origin-top rounded-2xl md:rounded-3xl bg-card border border-border/80 p-5 sm:p-6 md:p-7 shadow-xl shadow-zinc-200/50 dark:shadow-black/50 transition-colors duration-300 mt-5"
       >
         <div className="flex items-center justify-between gap-3 mb-4 pb-4 border-b border-border">
           <div className="flex items-center gap-3">
@@ -284,8 +287,11 @@ const StackCard: React.FC<{
           </div>
         )}
 
+        {/* Holds the old 24px gap above the button row; mt-auto on the row
+            then pins it to the bottom of a card stretched to the tallest. */}
+        {item.buttonText && <div aria-hidden className="h-6 shrink-0" />}
         {item.buttonText && (
-          <div className="mt-6 pt-4 border-t border-border flex justify-end">
+          <div className="mt-auto pt-4 border-t border-border flex justify-end">
             <button
               onClick={item.onButtonClick}
               type="button"
@@ -393,7 +399,22 @@ export const StickyScrollStack = React.forwardRef<
               )}
           </div>
 
-          <div className="lg:col-span-7 flex flex-col gap-6 pb-[10vh] sm:pb-[20vh]">
+          {/* One 1fr row per card sizes every row to the tallest card, so each
+              sticky wrapper is the same height. A sticky card only stays pinned
+              while its bottom is inside this column — with uneven heights (a card
+              whose image stacks under its text on a phone) the tallest one hit the
+              column's end first and slid out of the stack as the last card
+              landed. Equal wrappers release in order, last card first.
+              The trailing auto row is a real spacer: sticky ignores the column's
+              padding, so the old pb-[20vh] never held the finished stack. */}
+          <div
+            className="lg:col-span-7 grid grid-cols-1 gap-6"
+            style={
+              items && items.length > 0
+                ? { gridTemplateRows: `repeat(${items.length}, 1fr) auto` }
+                : undefined
+            }
+          >
             {items &&
               items.map((item, index) => (
                 <StackCard
@@ -405,6 +426,10 @@ export const StickyScrollStack = React.forwardRef<
                   scaleStep={scaleStep}
                 />
               ))}
+            {/* The auto row: holds the finished stack before it scrolls away. */}
+            {items && items.length > 0 && (
+              <div aria-hidden className="h-[10vh] sm:h-[20vh]" />
+            )}
           </div>
         </div>
       </div>

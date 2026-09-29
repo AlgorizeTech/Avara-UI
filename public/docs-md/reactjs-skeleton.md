@@ -1,3 +1,5 @@
+export const metadata = docsPageMetadata("skeleton");
+
 # Skeleton Loader
 
 A high-performance visual placeholder system used to reduce perceived loading times.

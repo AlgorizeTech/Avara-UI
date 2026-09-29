@@ -259,13 +259,22 @@ export const NavigationMenuContent = forwardRef<
   const { value } = useNavItemContext();
   const isActive = activeValue === value;
 
+  // A plain popover is the same white as most pages, so the panel reads as
+  // part of the page. It wears a whisper of the accent (relative OKLCH, as
+  // Folder does), a tinted edge and a layered drop shadow to lift it off.
+  const tintedPanel =
+    "text-popover-foreground border bg-[oklch(from_var(--nav-accent)_0.978_calc(c*0.1)_h)] border-[oklch(from_var(--nav-accent)_0.9_calc(c*0.22)_h)] dark:bg-[oklch(from_var(--nav-accent)_0.21_calc(c*0.1)_h)] dark:border-foreground/10";
   const variantStyles = {
-    default:
-      "bg-popover text-popover-foreground border border-border shadow-xl",
+    default: cn(
+      tintedPanel,
+      "shadow-[0_2px_4px_rgb(0_0_0/0.04),0_24px_48px_-16px_rgb(0_0_0/0.22)]",
+    ),
     glass:
-      "bg-popover/80 text-popover-foreground backdrop-blur-2xl border border-foreground/10 shadow-2xl",
-    minimal:
-      "bg-popover text-popover-foreground border border-border shadow-lg",
+      "bg-popover/80 text-popover-foreground backdrop-blur-2xl border border-foreground/10 shadow-[0_2px_4px_rgb(0_0_0/0.05),0_28px_56px_-16px_rgb(0_0_0/0.28)]",
+    minimal: cn(
+      tintedPanel,
+      "shadow-[0_1px_2px_rgb(0_0_0/0.04),0_16px_32px_-16px_rgb(0_0_0/0.16)]",
+    ),
   };
 
   return (
@@ -308,7 +317,9 @@ export const NavigationMenuLink = forwardRef<
       data-active={active ? "" : undefined}
       aria-current={active ? "page" : undefined}
       className={cn(
-        "block select-none space-y-1 rounded-xl p-2.5 sm:p-3 leading-none no-underline outline-none transition-colors hover:bg-muted cursor-pointer",
+        // Hover is a faint wash of the accent — grey muted went muddy on the
+        // tinted panel.
+        "block select-none space-y-1 rounded-xl p-2.5 sm:p-3 leading-none no-underline outline-none transition-colors hover:bg-[color-mix(in_oklab,var(--nav-accent)_9%,transparent)] focus-visible:bg-[color-mix(in_oklab,var(--nav-accent)_9%,transparent)] cursor-pointer",
         className,
         active &&
           (theme?.bgSoft

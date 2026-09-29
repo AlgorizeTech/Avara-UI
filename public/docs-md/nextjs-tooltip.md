@@ -1,3 +1,5 @@
+export const metadata = docsPageMetadata("tooltip");
+
 # Tooltip
 
 A context-aware popup that displays information when an element receives keyboard focus or a mouse hover.

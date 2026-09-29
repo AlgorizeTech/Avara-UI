@@ -1,3 +1,5 @@
+export const metadata = docsPageMetadata("platform-grid");
+
 # Platform Grid
 
 Everything a product offers, as one hairline grid: small tiles with an icon and a name, and a few 2×2 features that show a piece of the product on a tilting card. Tiles pack densely, so the features stay square whether the grid has eight columns or two. When the section first scrolls into view the tiles rise in as a wave from the centre; after that a soft spotlight follows the pointer across the grid, and each tile answers hover on its own — the icon lifts and takes the accent, the name darkens, a feature's card straightens and tilts with the cursor.

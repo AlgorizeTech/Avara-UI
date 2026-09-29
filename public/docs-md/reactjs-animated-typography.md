@@ -1,3 +1,5 @@
+export const metadata = docsPageMetadata("animated-typography");
+
 # Animated Typography
 
 A highly accessible, semantic typography engine that supports all standard HTML text tags with advanced, staggered visual effects and deep layout controls.

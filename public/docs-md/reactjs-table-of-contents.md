@@ -1,3 +1,5 @@
+export const metadata = docsPageMetadata("table-of-contents");
+
 # Table of Contents
 
 An interactive, responsive **Table of Contents** navigation block engineered to sit on the left side of long documents, articles, or documentation pages.

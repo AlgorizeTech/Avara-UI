@@ -1,3 +1,5 @@
+export const metadata = docsPageMetadata("tech-stack");
+
 # Tech Stack
 
 The "Built with" line: a label, then the marks of the tools a product is made with, in two rows — an odd group staggers as three over four, so the smaller row sits between the marks below it. Put related tools in a group — the front end, the services, the tooling — and the strip shows one group at a time, every mark blurring out upwards and the next group blurring in, a beat after the one before it.

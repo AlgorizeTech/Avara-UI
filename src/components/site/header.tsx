@@ -271,17 +271,18 @@ const Header = () => {
 
           {/* Right Area: Action Pills (Search, Socials, Theme) */}
           <div className="flex items-center gap-2">
-            {/* Command Palette Omni Button */}
+            {/* Command Palette Omni Button — icon-only below 1240px, where the
+                full pill would run under the centred nav. */}
             <button
               onClick={() => setSearchOpen(true)}
-              className="pointer-events-auto flex items-center gap-2.5 h-10 pl-3.5 pr-5 rounded-full bg-black/[0.03] dark:bg-white/[0.04] backdrop-blur-xl border border-border/40 hover:border-border/70 transition-all text-left cursor-pointer"
+              className="pointer-events-auto flex items-center justify-center gap-2.5 size-10 min-[1240px]:w-auto min-[1240px]:justify-start min-[1240px]:pl-3.5 min-[1240px]:pr-5 rounded-full bg-black/[0.03] dark:bg-white/[0.04] backdrop-blur-xl border border-border/40 text-foreground/80 hover:text-foreground hover:border-border/70 transition-all text-left cursor-pointer"
               aria-label="Open command palette search"
             >
-              <Search className="w-3.5 h-3.5 text-foreground/50 shrink-0" />
-              <span className="hidden md:inline text-[12.5px] text-foreground/50">
+              <Search className="size-4 min-[1240px]:size-3.5 min-[1240px]:text-foreground/50 shrink-0" />
+              <span className="hidden min-[1240px]:inline text-[12.5px] text-foreground/50">
                 Search…
               </span>
-              <div className="hidden md:flex items-center gap-1 shrink-0 select-none ml-2.5">
+              <div className="hidden min-[1240px]:flex items-center gap-1 shrink-0 select-none ml-2.5">
                 <kbd className="size-[19px] flex items-center justify-center rounded-[5px] border border-border/60 text-foreground/40 font-mono text-[10px] leading-none bg-foreground/5">
                   ⌘
                 </kbd>
@@ -307,13 +308,13 @@ const Header = () => {
               href="https://github.com/docs/docs"
               target="_blank"
               rel="noopener noreferrer"
-              className="pointer-events-auto hidden sm:flex items-center gap-2 h-10 px-3.5 rounded-full bg-black/[0.03] dark:bg-white/[0.04] backdrop-blur-xl border border-border/40 text-foreground/80 hover:text-foreground hover:border-border/70 transition-all text-[12.5px] font-medium"
+              className="pointer-events-auto hidden sm:flex items-center justify-center gap-2 size-10 lg:w-auto lg:px-3.5 rounded-full bg-black/[0.03] dark:bg-white/[0.04] backdrop-blur-xl border border-border/40 text-foreground/80 hover:text-foreground hover:border-border/70 transition-all text-[12.5px] font-medium"
               aria-label="View project on GitHub"
             >
               <GitHubIcon className="w-4 h-4 fill-current" />
-              <span className="text-[12px] font-semibold text-foreground">GitHub</span>
-              <span className="w-px h-3.5 bg-border/60 mx-0.5" />
-              <span className="text-[11px] font-semibold text-foreground/50">
+              <span className="hidden lg:inline text-[12px] font-semibold text-foreground">GitHub</span>
+              <span className="hidden lg:block w-px h-3.5 bg-border/60 mx-0.5" />
+              <span className="hidden lg:inline text-[11px] font-semibold text-foreground/50">
                 2.1k
               </span>
             </Link>

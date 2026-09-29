@@ -48,6 +48,16 @@ const hexToRgb = (hex: string) => {
     : "99, 102, 241";
 };
 
+// One CSS colour per theme key, exposed as `--nav-accent` so surfaces can be
+// tinted from it with relative OKLCH / color-mix whatever the colour source.
+const accentColors: Record<string, string> = {
+  primary: "var(--primary)",
+  indigo: "#4f46e5",
+  rose: "#e11d48",
+  emerald: "#059669",
+  zinc: "#52525b",
+};
+
 export const getThemeStyles = (color: string) => {
   if (color && color.startsWith("#")) {
     const rgb = hexToRgb(color);
@@ -61,8 +71,14 @@ export const getThemeStyles = (color: string) => {
       style: {
         "--nav-color": color,
         "--nav-color-rgb": rgb,
+        "--nav-accent": color,
       } as React.CSSProperties,
     };
   }
-  return { theme: colorThemes[color] || colorThemes.primary, style: {} };
+  return {
+    theme: colorThemes[color] || colorThemes.primary,
+    style: {
+      "--nav-accent": accentColors[color] ?? accentColors.primary,
+    } as React.CSSProperties,
+  };
 };

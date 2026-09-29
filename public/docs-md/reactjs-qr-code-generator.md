@@ -1,3 +1,8 @@
+export const metadata = docsPageMetadata("qr-code-generator", {
+  title: "QR Code",
+  description: "A complete QR Code suite allowing you to easily generate high-quality QR codes and seamlessly scan/read uploaded QR code images."
+});
+
 # QR Code Suite
 
 A premium, dual-purpose QR Code component suite built for Next.js applications.

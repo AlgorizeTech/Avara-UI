@@ -1,3 +1,5 @@
+export const metadata = docsPageMetadata("split-flap");
+
 # Split-Flap Display
 
 An authentic, physics-driven **Split-Flap Display** component (Solari board) simulating retro-mechanical flap cards, 3D perspective flips (`rotateX`), horizontal split creases, mechanical hinge notches, and realistic synthesized click sounds.

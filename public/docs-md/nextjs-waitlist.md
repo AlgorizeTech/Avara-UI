@@ -1,3 +1,8 @@
+export const metadata = docsPageMetadata("waitlist", {
+  title: "Waitlist",
+  description: "A pre-launch sign-up section in three layouts — a compact card, a brand mark with a live countdown, or a pill on a soft ground with a bar of spots claimed. The form becomes the reader's place in line when your promise resolves."
+});
+
 # Waitlist
 
 A pre-launch sign-up in three layouts. **Card** is a compact card with the field over the button, for a corner of a page. **Launch** puts your mark and a live countdown to the opening date over the form on a wide panel. **Queue** sets the form as a pill on a soft ground, with the faces of who is already in and a bar of the early spots claimed. Whichever layout, the form becomes the reader's place in line when your promise resolves — a number that counts up, and an invite link to copy to move up. One reveal when the section first appears; after that only the countdown's seconds and the reader's own actions move anything.

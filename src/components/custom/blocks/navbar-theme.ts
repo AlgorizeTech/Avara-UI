@@ -51,6 +51,15 @@ const contrastingForeground = (rgb: string) => {
   return luminance > 0.45 ? "#09090b" : "#ffffff";
 };
 
+// One CSS colour per theme key, exposed as `--navbar-accent` so surfaces (the
+// dropdown panel, hover washes) can be tinted from it whatever the source.
+const accentColors: Record<string, string> = {
+  indigo: "#4f46e5",
+  rose: "#e11d48",
+  emerald: "#059669",
+  zinc: "#52525b",
+};
+
 export const getThemeStyles = (color: string) => {
   if (color === "primary" || color === "default" || !colorThemes[color]) {
     if (color && color.startsWith("#")) {
@@ -66,6 +75,7 @@ export const getThemeStyles = (color: string) => {
           "--theme-color": color,
           "--theme-color-rgb": rgb,
           "--theme-on-color": contrastingForeground(rgb),
+          "--navbar-accent": color,
         } as React.CSSProperties,
       };
     }
@@ -75,8 +85,11 @@ export const getThemeStyles = (color: string) => {
         bg: "bg-primary text-primary-foreground hover:bg-primary/90",
         bgSoft: "bg-primary/10 text-primary",
       },
-      style: {} as React.CSSProperties,
+      style: { "--navbar-accent": "var(--primary)" } as React.CSSProperties,
     };
   }
-  return { theme: colorThemes[color], style: {} };
+  return {
+    theme: colorThemes[color],
+    style: { "--navbar-accent": accentColors[color] } as React.CSSProperties,
+  };
 };

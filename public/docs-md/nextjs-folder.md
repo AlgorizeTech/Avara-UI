@@ -1,3 +1,8 @@
+export const metadata = docsPageMetadata("folder", {
+  title: "Folder",
+  description: "A tactile folder — unified skeleton cards (or your own photos) tuck behind a frosted-glass front pocket, and fan out into an arc on hover."
+});
+
 # Folder
 
 A tactile folder — unified skeleton cards (or your own photos) tuck behind a frosted-glass front pocket.

@@ -1,3 +1,5 @@
+export const metadata = docsPageMetadata("book-appointment");
+
 # Book Appointment
 
 A booking flow for a page that ends in an appointment: a practitioner's portrait and contact details, their scores as stars, two small charts, and a booking panel with a strip of days, time slots in groups, a button that reads back the choice, and a confirmation that draws itself in once the booking is made.

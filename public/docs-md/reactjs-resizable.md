@@ -1,3 +1,5 @@
+export const metadata = docsPageMetadata("resizable");
+
 # Resizable
 
 A high-performance system for building resizable panel layouts, complete with keyboard accessibility and nested group support.

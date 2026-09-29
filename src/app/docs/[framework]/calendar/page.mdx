@@ -56,10 +56,12 @@ const events = {
 };
 
 export default function GlassCalendar() {
-  // "glass" is translucent — intended to sit on a background image or rich pattern.
+  // "glass" is translucent — intended to sit on a background image or rich
+  // pattern. The photo frames it from md up; on phones the card fills the
+  // frame and the photo shows through it instead.
   return (
     <div
-      className="p-8 rounded-2xl bg-cover bg-center"
+      className="overflow-hidden rounded-2xl bg-cover bg-center md:p-8"
       style={{
         backgroundImage:
           "url('https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_1200,c_limit/v1790146209/photo-1470071459604-3b5ec3a7fe05-1790146212205.jpg')",

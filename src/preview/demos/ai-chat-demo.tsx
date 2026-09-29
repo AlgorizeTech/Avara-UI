@@ -66,8 +66,8 @@ export default function AIChatDemo({
         variant={variant}
         color={color}
         defaultEffort={defaultEffort}
-        // Start below the premium tier so picking Nova Ultra shows its flourish.
-        defaultModelId="nova-pro"
+        // Start below the paid tiers so picking Lumen Plus or Lumen Ultra shows its flourish.
+        defaultModelId="lumen-flash"
         // Compact opens on its hero — a title and the prompt bar — so it gets no seed data.
         chatHistory={variant === "compact" ? [] : sampleChatHistory}
         initialMessages={variant === "compact" ? [] : sampleInitialMessages}

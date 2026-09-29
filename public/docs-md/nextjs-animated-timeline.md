@@ -1,3 +1,5 @@
+export const metadata = docsPageMetadata("animated-timeline");
+
 # Animated Timeline
 
 A highly dynamic, scroll-aware timeline engine featuring Intersection Observers and multiple 3D/2D entry animations.

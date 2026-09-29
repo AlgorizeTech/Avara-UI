@@ -1,3 +1,5 @@
+export const metadata = docsPageMetadata("toggle-group");
+
 # Toggle Group
 
 A set of segmented, two-state buttons that can be toggled on or off, perfect for configuration settings and rich text editors.

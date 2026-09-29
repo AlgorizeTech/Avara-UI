@@ -4,7 +4,21 @@ import {
   ConversationTimeline,
   type TimelineCheckpoint,
 } from "@/components/custom/blocks/ConversationTimelineBlock";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState, useSyncExternalStore } from "react";
+
+const WIDE = "(min-width: 640px)";
+const subscribeWide = (onChange: () => void) => {
+  const mq = window.matchMedia(WIDE);
+  mq.addEventListener("change", onChange);
+  return () => mq.removeEventListener("change", onChange);
+};
+/** True from the `sm` breakpoint up; assumes wide while server-rendering. */
+const useIsWide = () =>
+  useSyncExternalStore(
+    subscribeWide,
+    () => window.matchMedia(WIDE).matches,
+    () => true,
+  );
 
 // "Default" on the page's colour picker means the theme's primary.
 const getAccent = (c: string) => {
@@ -48,6 +62,9 @@ const ROLE_STYLE: Record<string, string> = {
 function PairedWithChat({ accent }: { accent: string }) {
   const [activeId, setActiveId] = useState("2");
   const refs = useRef<Record<string, HTMLDivElement | null>>({});
+  // A phone can't fit a 200px label column and the chat side by side, so the
+  // rail drops to marks only there; the chat bubbles carry the text.
+  const isWide = useIsWide();
 
   // Selecting a mark scrolls its message into view and highlights it.
   useEffect(() => {
@@ -55,16 +72,19 @@ function PairedWithChat({ accent }: { accent: string }) {
   }, [activeId]);
 
   return (
-    <div className="flex w-full max-w-2xl items-start gap-6 rounded-2xl border border-border bg-card p-5">
+    <div className="flex w-full max-w-2xl items-start gap-3 rounded-2xl border border-border bg-card p-3 sm:gap-6 sm:p-5">
       <ConversationTimeline
         checkpoints={CONVERSATION}
         activeId={activeId}
         onSelect={setActiveId}
         accent={accent}
         labelWidth={200}
+        showLabels={isWide}
         className="shrink-0"
       />
-      <div className="flex h-72 min-w-0 flex-1 flex-col gap-2 overflow-y-auto pr-1 [scrollbar-width:thin]">
+      {/* p-1.5 leaves room for the active bubble's 4px ring — a scroll
+          container clips anything outside its padding box. */}
+      <div className="flex h-72 min-w-0 flex-1 flex-col gap-2 overflow-y-auto p-1.5 [scrollbar-width:thin]">
         {CONVERSATION.map((m) => (
           <div
             key={m.id}
@@ -72,7 +92,8 @@ function PairedWithChat({ accent }: { accent: string }) {
               refs.current[m.id] = el;
             }}
             onClick={() => setActiveId(m.id)}
-            className={`max-w-[85%] cursor-pointer rounded-2xl px-3.5 py-2 text-[13px] leading-relaxed transition-all ${ROLE_STYLE[m.role ?? "assistant"]}`}
+            // overflow-wrap:anywhere breaks paths and URLs that have no spaces.
+            className={`max-w-[85%] cursor-pointer rounded-2xl px-3.5 py-2 text-[13px] leading-relaxed [overflow-wrap:anywhere] transition-all ${ROLE_STYLE[m.role ?? "assistant"]}`}
             style={
               m.id === activeId && m.role !== "system"
                 ? { boxShadow: `0 0 0 2px var(--card), 0 0 0 4px ${accent}` }

@@ -1,3 +1,5 @@
+export const metadata = docsPageMetadata("floating-contact-button");
+
 # Floating Contact Button
 
 A high-converting, interactive floating support widget that anchors to any screen corner. Clicking the button expands a sleek glassmorphic chat interface animated with plain CSS (no animation library), featuring simulated agent replies, instantaneous `localStorage` theme coloring, and mobile-first responsiveness.
