@@ -1242,7 +1242,6 @@ export default function AIChat({
       className={cn(
         "w-full max-w-full h-[650px] sm:h-[750px] flex overflow-hidden relative font-sans box-border transition-colors duration-300",
         styles.wrapper,
-        showSidebar && isSidebarOpen && "rounded-l-none lg:rounded-2xl",
       )}
     >
       {/* === LEFT SIDEBAR === */}
