@@ -1,10 +1,12 @@
+import { docsPageMetadata } from "@/lib/docs-metadata";
+
 import { ExampleShowcase } from "@/components/site/Sandbox";
 import { extractCode } from "@/lib/code";
 
-export const metadata = {
-  title: "Apple Select - AlgorizeTech UI",
-  description: "An iOS-style text selection rendered from a fixed character range — translucent highlight with lollipop handles on either end.",
-};
+export const metadata = docsPageMetadata("apple-select", {
+  title: "Apple Select",
+  description: "An iOS-style text selection rendered from a fixed character range — translucent highlight with lollipop handles on either end."
+});
 
 # Apple Select
 

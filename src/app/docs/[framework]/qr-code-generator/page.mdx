@@ -1,10 +1,12 @@
+import { docsPageMetadata } from "@/lib/docs-metadata";
+
 import { ExampleShowcase } from "@/components/site/Sandbox";
 import { extractCode } from "@/lib/code";
 
-export const metadata = {
-  title: "QR Code - AlgorizeTech UI",
-  description: "A complete QR Code suite allowing you to easily generate high-quality QR codes and seamlessly scan/read uploaded QR code images.",
-};
+export const metadata = docsPageMetadata("qr-code-generator", {
+  title: "QR Code",
+  description: "A complete QR Code suite allowing you to easily generate high-quality QR codes and seamlessly scan/read uploaded QR code images."
+});
 
 
 <style dangerouslySetInnerHTML={{__html: `

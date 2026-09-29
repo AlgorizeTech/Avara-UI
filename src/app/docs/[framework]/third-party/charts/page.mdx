@@ -1,29 +1,12 @@
+import { docsPageMetadata } from "@/lib/docs-metadata";
+
 import { ExampleShowcase } from "@/components/site/Sandbox";
 import { extractCode } from "@/lib/code";
 
-export const metadata = {
-  title: "Charts - Algorize UI",
-  description: "Integrate Recharts and Chart.js with Algorize UI — design tokens bridged into both, in light and dark themes.",
-  keywords: [
-    "recharts",
-    "chart.js",
-    "react-chartjs-2",
-    "react charts",
-    "chart theming",
-    "dark mode charts",
-  ],
-  openGraph: {
-    title: "Charts - Algorize UI",
-    description: "Integrate Recharts and Chart.js with Algorize UI — design tokens bridged into both, in light and dark themes.",
-    type: "article",
-    url: "/docs/nextjs/third-party/charts",
-  },
-  twitter: {
-    card: "summary_large_image",
-    title: "Charts - Algorize UI",
-    description: "Integrate Recharts and Chart.js with Algorize UI — design tokens bridged into both, in light and dark themes.",
-  },
-};
+export const metadata = docsPageMetadata("third-party/charts", {
+  title: "Charts",
+  description: "Integrate Recharts and Chart.js with Algorize UI — design tokens bridged into both, in light and dark themes."
+});
 
 # Charts
 

@@ -1,10 +1,12 @@
+import { docsPageMetadata } from "@/lib/docs-metadata";
+
 import { ExampleShowcase } from "@/components/site/Sandbox";
 import { extractMotionCode } from "@/lib/code";
 
-export const metadata = {
-  title: "Folder - AlgorizeTech UI",
-  description: "A tactile folder — unified skeleton cards (or your own photos) tuck behind a frosted-glass front pocket, and fan out into an arc on hover.",
-};
+export const metadata = docsPageMetadata("folder", {
+  title: "Folder",
+  description: "A tactile folder — unified skeleton cards (or your own photos) tuck behind a frosted-glass front pocket, and fan out into an arc on hover."
+});
 
 # Folder
 

@@ -1,10 +1,12 @@
+import { docsPageMetadata } from "@/lib/docs-metadata";
+
 import { ExampleShowcase } from "@/components/site/Sandbox";
 import { extractCode } from "@/lib/code";
 
-export const metadata = {
-  title: "Conversation Timeline - AlgorizeTech UI",
-  description: "A dense rail of thin marks, one per message, that expands into a labelled list on hover — a minimap for long chats.",
-};
+export const metadata = docsPageMetadata("conversation-timeline", {
+  title: "Conversation Timeline",
+  description: "A dense rail of thin marks, one per message, that expands into a labelled list on hover — a minimap for long chats."
+});
 
 # Conversation Timeline
 

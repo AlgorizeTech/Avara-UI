@@ -1,29 +1,12 @@
+import { docsPageMetadata } from "@/lib/docs-metadata";
+
 import { ExampleShowcase } from "@/components/site/Sandbox";
 import { extractCode } from "@/lib/code";
 
-export const metadata = {
-  title: "Gallery & Lightbox - Algorize UI",
-  description: "Integrate react-photo-album and yet-another-react-lightbox with Algorize UI — justified rows, masonry columns, captions, thumbnails and zoom inside a Card.",
-  keywords: [
-    "react photo album",
-    "yet another react lightbox",
-    "react lightbox",
-    "image gallery",
-    "masonry gallery",
-    "photoswipe alternative",
-  ],
-  openGraph: {
-    title: "Gallery & Lightbox - Algorize UI",
-    description: "Integrate react-photo-album and yet-another-react-lightbox with Algorize UI — justified rows, masonry columns, captions, thumbnails and zoom inside a Card.",
-    type: "article",
-    url: "/docs/nextjs/third-party/gallery",
-  },
-  twitter: {
-    card: "summary_large_image",
-    title: "Gallery & Lightbox - Algorize UI",
-    description: "Integrate react-photo-album and yet-another-react-lightbox with Algorize UI — justified rows, masonry columns, captions, thumbnails and zoom inside a Card.",
-  },
-};
+export const metadata = docsPageMetadata("third-party/gallery", {
+  title: "Gallery & Lightbox",
+  description: "Integrate react-photo-album and yet-another-react-lightbox with Algorize UI — justified rows, masonry columns, captions, thumbnails and zoom inside a Card."
+});
 
 # Gallery & Lightbox
 

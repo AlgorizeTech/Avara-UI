@@ -1,12 +1,13 @@
+import { docsPageMetadata } from "@/lib/docs-metadata";
+
 import { ExampleShowcase } from "@/components/site/Sandbox";
 import { Installation } from "@/components/site/installation";
 import { extractCode } from "@/lib/code";
 
-export const metadata = {
-  title: "FAQ Section - Algorize UI",
-  description:
-    "An animated, editorial FAQ website section pairing a responsive section header with an interactive nature photography canvas and an expandable question accordion.",
-};
+export const metadata = docsPageMetadata("faq-section", {
+  title: "FAQ Section",
+  description: "An animated, editorial FAQ website section pairing a responsive section header with an interactive nature photography canvas and an expandable question accordion."
+});
 
 # FAQ Section
 

@@ -1,10 +1,12 @@
+import { docsPageMetadata } from "@/lib/docs-metadata";
+
 import { ExampleShowcase } from "@/components/site/Sandbox";
 import { extractCode } from "@/lib/code";
 
-export const metadata = {
-  title: "Copy Button - AlgorizeTech UI",
-  description: "A clipboard button that confirms the copy with an animated check and label swap — plus a read-only Copy Field for links, tokens and commands.",
-};
+export const metadata = docsPageMetadata("copy-button", {
+  title: "Copy Button",
+  description: "A clipboard button that confirms the copy with an animated check and label swap — plus a read-only Copy Field for links, tokens and commands."
+});
 
 # Copy Button
 

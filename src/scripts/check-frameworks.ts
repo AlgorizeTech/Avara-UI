@@ -102,13 +102,13 @@ for (const item of registry.items) {
 }
 
 // ---------------------------------------------------------------------------
-// 2. Every forked slug must actually be forked, and must stay indexable.
+// 2. Every forked slug must actually be forked, and must be self-canonical.
 //
-// `[framework]/layout.tsx` noindexes the non-default framework wholesale, and a
-// layout cannot see which slug is rendering — so a forked guide opts back in via
-// its own `generateMetadata`. Add a slug to FORKED_SLUGS without wiring that up
-// and it gets a sitemap entry and a self-canonical while staying noindexed:
-// advertised and invisible at the same time.
+// Every other docs page names the default framework's URL as canonical (see
+// docsPageMetadata). A forked guide is a different document per framework, so it
+// must name itself instead, via `buildDocsMetadata`. Add a slug to FORKED_SLUGS
+// without wiring that up and it gets a sitemap entry for each framework while
+// telling search engines the React version is a duplicate of the Next.js one.
 // ---------------------------------------------------------------------------
 for (const slug of FORKED_SLUGS) {
   const dir = path.join(DOCS_DIR, slug);
@@ -124,9 +124,9 @@ for (const slug of FORKED_SLUGS) {
 
   if (!read(pageTsx).includes("buildDocsMetadata")) {
     fail(
-      `${slug}/page.tsx does not use buildDocsMetadata, so it inherits the ` +
-        `layout's noindex. It is in the sitemap and self-canonical but will not ` +
-        `be indexed.`,
+      `${slug}/page.tsx does not use buildDocsMetadata, so it is not ` +
+        `self-canonical. Each framework's version is in the sitemap, but search ` +
+        `engines will be told they are duplicates.`,
     );
   }
 
@@ -202,6 +202,24 @@ for (const page of docPages()) {
           `next/*. It was probably copied from the nextjs branch and not edited.`,
       );
     }
+  }
+}
+
+// ---------------------------------------------------------------------------
+// 5. Every docs page declares its own metadata.
+//
+// A page without it inherits the homepage's title, description and social card
+// — so every such page competes in search as a duplicate of the homepage, and
+// shares as one. `docsPageMetadata("<slug>")` reads it all from the page itself.
+// ---------------------------------------------------------------------------
+for (const page of docPages()) {
+  if (!/^export const metadata\b/m.test(read(page))) {
+    const slug = path.relative(DOCS_DIR, path.dirname(page)).replace(/\\/g, "/");
+    fail(
+      `${path.relative(ROOT, page)} has no metadata export. Add ` +
+        `\`export const metadata = docsPageMetadata("${slug}");\` ` +
+        `(import it from "@/lib/docs-metadata").`,
+    );
   }
 }
 

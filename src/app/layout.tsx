@@ -12,7 +12,6 @@ import { ResourcePreloader } from '@/components/performance/resource-preloader';
 import { CriticalCSS } from '@/components/performance/critical-css';
 import { MetaTags } from '@/components/seo/MetaTags';
 import { StructuredData } from '@/components/seo/StructuredData';
-import { LazyOpenGraph } from '@/components/seo/LazyOpenGraph';
 import { GoogleAnalytics } from '@/components/analytics/GoogleAnalytics';
 import { metadata } from '@/lib/metadata';
 import Header from '@/components/site/header';
@@ -35,7 +34,8 @@ export default function RootLayout({
         <ThemeInitScript />
         <MetaTags />
         <CriticalCSS />
-        <ResourcePreloader fonts={[]} images={['/logo.svg', '/og-image.png']} />
+        <ResourcePreloader />
+        <StructuredData />
       </head>
       <body
         className={`${geistMono.variable} antialiased min-h-screen bg-background text-foreground selection:bg-primary/25`}
@@ -56,10 +56,8 @@ export default function RootLayout({
           </ThemeContextProvider>
         </ThemeProvider>
 
-        {/* Load analytics and structured data after initial render */}
+        {/* Load analytics after initial render */}
         <GoogleAnalytics />
-        <StructuredData />
-        <LazyOpenGraph />
       </body>
     </html>
   );
