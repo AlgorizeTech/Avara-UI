@@ -1,29 +1,12 @@
+import { docsPageMetadata } from "@/lib/docs-metadata";
+
 import { ExampleShowcase } from "@/components/site/Sandbox";
 import { extractCode } from "@/lib/code";
 
-export const metadata = {
-  title: "Data Tables - Algorize UI",
-  description: "Integrate TanStack Table and AG Grid with Algorize UI — a headless table rendered with the Table primitives, and a themed grid with React cell renderers.",
-  keywords: [
-    "tanstack table",
-    "react-table v9",
-    "ag grid",
-    "react data grid",
-    "headless table",
-    "sortable table",
-  ],
-  openGraph: {
-    title: "Data Tables - Algorize UI",
-    description: "Integrate TanStack Table and AG Grid with Algorize UI — a headless table rendered with the Table primitives, and a themed grid with React cell renderers.",
-    type: "article",
-    url: "/docs/nextjs/third-party/tables",
-  },
-  twitter: {
-    card: "summary_large_image",
-    title: "Data Tables - Algorize UI",
-    description: "Integrate TanStack Table and AG Grid with Algorize UI — a headless table rendered with the Table primitives, and a themed grid with React cell renderers.",
-  },
-};
+export const metadata = docsPageMetadata("third-party/tables", {
+  title: "Data Tables",
+  description: "Integrate TanStack Table and AG Grid with Algorize UI — a headless table rendered with the Table primitives, and a themed grid with React cell renderers."
+});
 
 # Data Tables
 

@@ -1,9 +1,15 @@
-import fs from "node:fs";
-import path from "node:path";
-
 import { SITE_NAME, SITE_URL, links } from "@/config/site";
 import { navigation } from "@/constants/navigation";
-import { countComponents, isFramerTwin } from "@/lib/component-count";
+import { isFramerTwin } from "@/lib/component-count";
+import {
+  COMPONENT_COUNT,
+  installedItems,
+  itemsByName,
+  pageExists,
+  pageSource,
+  pageSummary,
+  registryItems,
+} from "@/lib/docs-source";
 import {
   BUILT_FRAMEWORKS,
   DEFAULT_FRAMEWORK,
@@ -29,93 +35,6 @@ export const dynamic = "force-static";
  * describe a component that is not there or drift from the one that is.
  */
 
-type RegistryItem = { name: string; description?: string };
-
-const DOCS_DIR = path.join(process.cwd(), "src/app/docs/[framework]");
-
-const registry = JSON.parse(
-  fs.readFileSync(path.join(process.cwd(), "registry.json"), "utf8"),
-) as { items: RegistryItem[] };
-
-const itemsByName = new Map(registry.items.map((item) => [item.name, item]));
-const COMPONENT_COUNT = countComponents(registry.items);
-
-/** Below this, a lead sentence is a teaser rather than a description. */
-const MIN_SUMMARY_LENGTH = 80;
-
-/** The MDX source behind a slug for one framework, if the page is MDX. */
-function pageSource(slug: string, framework: Framework): string | undefined {
-  const candidates = FORKED_SLUGS.includes(slug)
-    ? [path.join(DOCS_DIR, slug, "_content", `${framework}.mdx`)]
-    : [path.join(DOCS_DIR, slug, "page.mdx")];
-  const file = candidates.find((candidate) => fs.existsSync(candidate));
-  return file ? fs.readFileSync(file, "utf8") : undefined;
-}
-
-const pageExists = (slug: string) =>
-  ["page.mdx", "page.tsx"].some((file) =>
-    fs.existsSync(path.join(DOCS_DIR, slug, file)),
-  );
-
-/**
- * The first sentence under the page's H1 — the page's own summary of itself.
- *
- * Only the paragraph directly under the heading counts. If the heading is
- * followed by code or an export block instead, the page has no lead and the
- * caller falls back to the registry description rather than guessing.
- */
-function leadSentence(source: string): string | undefined {
-  const lines = source.split(/\r?\n/);
-  const heading = lines.findIndex((line) => /^# /.test(line));
-  if (heading < 0) return undefined;
-
-  const paragraph: string[] = [];
-  for (const raw of lines.slice(heading + 1)) {
-    const line = raw.trim();
-    if (!line) {
-      if (paragraph.length) break;
-      continue;
-    }
-    if (!paragraph.length) {
-      // A self-closing component on its own line (the framework switch note).
-      if (/^<[A-Z][^>]*\/>$/.test(line)) continue;
-      // Anything but prose under the heading means the page has no lead.
-      if (/^[<{#`|>*-]|^(import|export)\s/.test(line)) break;
-    } else if (/^(```|<|\{)|^(import|export)\s/.test(line)) {
-      break;
-    }
-    paragraph.push(line);
-  }
-  if (!paragraph.length) return undefined;
-
-  const text = paragraph
-    .join(" ")
-    .replace(/\{COMPONENT_COUNT\}/g, String(COMPONENT_COUNT))
-    .replace(/\[([^\]]+)\]\([^)]+\)/g, "$1")
-    .replace(/\*\*([^*]+)\*\*/g, "$1")
-    // JSX goes; a tag quoted in inline code (`<select>`) is prose and stays.
-    .replace(/`[^`]*`|<[^>]+>/g, (match) => (match.startsWith("`") ? match : ""))
-    .replace(/\s+/g, " ")
-    .trim();
-
-  // Whole sentences until the summary says something: a short opener such as
-  // "Two very different answers to the same problem." needs the one after it.
-  let summary = "";
-  for (const sentence of text.split(/(?<=[.!?])\s+(?=[A-Z`])/)) {
-    summary = summary ? `${summary} ${sentence}` : sentence;
-    if (summary.length >= MIN_SUMMARY_LENGTH) break;
-  }
-  return summary;
-}
-
-/** Registry items a page installs, in the order it lists them. */
-function installedItems(source: string): string[] {
-  const names = [...source.matchAll(/<Installation\s+name="([^"]+)"/g)].map(
-    (match) => match[1],
-  );
-  return [...new Set(names)].filter((name) => itemsByName.has(name));
-}
-
 const absolute = (pathname: string) => `${SITE_URL}${pathname}`;
 
 /** The Markdown mirror of a docs page, which build-md-files.ts publishes. */
@@ -130,8 +49,7 @@ function pageLine(label: string, slug: string, framework = DEFAULT_FRAMEWORK) {
     : absolute(docsHref(framework, slug));
 
   const items = source ? installedItems(source) : [];
-  const summary =
-    (source && leadSentence(source)) ?? itemsByName.get(items[0])?.description;
+  const summary = source ? pageSummary(source) : undefined;
 
   const install = items.flatMap((name) =>
     itemsByName.has(`${name}-framer`) ? [name, `${name}-framer`] : [name],
@@ -187,7 +105,7 @@ function gettingStarted(): string[] {
 }
 
 function build(): string {
-  const framerTwins = registry.items.filter((item) => isFramerTwin(item.name));
+  const framerTwins = registryItems.filter((item) => isFramerTwin(item.name));
 
   const header = [
     `# ${SITE_NAME}`,
@@ -225,6 +143,7 @@ function build(): string {
   const optional = [
     "## Optional",
     "",
+    `- [Registry index](${REGISTRY_BASE_URL}/registry.json): Every item in the registry, with its description, dependencies and files.`,
     `- [Registry item JSON](${REGISTRY_BASE_URL}/button.json): Each item is published at \`${REGISTRY_BASE_URL}/<name>.json\`.`,
     `- [shadcn CLI](https://ui.shadcn.com/docs/cli): Reference for \`init\`, \`add\` and \`registry add\`.`,
     `- [GitHub](${links.github}): ${SITE_NAME} on GitHub.`,

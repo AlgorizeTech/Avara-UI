@@ -1,29 +1,12 @@
+import { docsPageMetadata } from "@/lib/docs-metadata";
+
 import { ExampleShowcase } from "@/components/site/Sandbox";
 import { extractCode } from "@/lib/code";
 
-export const metadata = {
-  title: "Carousels - Algorize UI",
-  description: "Integrate Embla Carousel and Swiper with Algorize UI — Card slides, Button controls, and Swiper chrome themed through its own CSS variables.",
-  keywords: [
-    "embla carousel",
-    "swiper",
-    "react carousel",
-    "slider",
-    "coverflow",
-    "touch carousel",
-  ],
-  openGraph: {
-    title: "Carousels - Algorize UI",
-    description: "Integrate Embla Carousel and Swiper with Algorize UI — Card slides, Button controls, and Swiper chrome themed through its own CSS variables.",
-    type: "article",
-    url: "/docs/nextjs/third-party/carousel",
-  },
-  twitter: {
-    card: "summary_large_image",
-    title: "Carousels - Algorize UI",
-    description: "Integrate Embla Carousel and Swiper with Algorize UI — Card slides, Button controls, and Swiper chrome themed through its own CSS variables.",
-  },
-};
+export const metadata = docsPageMetadata("third-party/carousel", {
+  title: "Carousels",
+  description: "Integrate Embla Carousel and Swiper with Algorize UI — Card slides, Button controls, and Swiper chrome themed through its own CSS variables."
+});
 
 # Carousels
 

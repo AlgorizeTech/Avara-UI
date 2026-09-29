@@ -1,10 +1,12 @@
+import { docsPageMetadata } from "@/lib/docs-metadata";
+
 import { ExampleShowcase } from "@/components/site/Sandbox";
 import { extractCode } from "@/lib/code";
 
-export const metadata = {
-  title: "Mobile Mockups - AlgorizeTech UI",
-  description: "A sleek, responsive suite of mobile hardware mockup components for Next.js applications.",
-};
+export const metadata = docsPageMetadata("mobile-mockup", {
+  title: "Mobile Mockups",
+  description: "A sleek, responsive suite of mobile hardware mockup components for Next.js applications."
+});
 
 <style dangerouslySetInnerHTML={{__html: `
   .prose h2 {

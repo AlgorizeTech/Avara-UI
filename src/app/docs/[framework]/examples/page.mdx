@@ -1,28 +1,10 @@
+import { docsPageMetadata } from "@/lib/docs-metadata";
+
 export const metadata = {
-    title: 'Next.js Examples',
-    description: 'Practical examples demonstrating Next.js features and best practices.',
-    keywords: [
-        'Next.js examples',
-        'tutorials',
-        'code examples',
-        'best practices',
-        'interactive demos'
-    ],
-    openGraph: {
-        title: 'Next.js Examples',
-        description: 'Practical examples demonstrating Next.js features and best practices.',
-        type: 'article',
-        url: '/docs/nextjs/examples',
-    },
-    twitter: {
-        card: 'summary_large_image',
-        title: 'Next.js Examples',
-        description: 'Practical examples demonstrating Next.js features and best practices.',
-    },
-    alternates: {
-        canonical: '/docs/nextjs/examples',
-    },
+  ...docsPageMetadata("examples"),
+  robots: { index: false, follow: true },
 };
+
 
 import Link from 'next/link';
 import { CodeBlock } from "@/components/site/code-block";

@@ -1,28 +1,9 @@
-export const metadata = {
-    title: 'Introduction - Algorize UI',
-    description: 'What Algorize UI is, how components are installed into your project, and what your project needs.',
-    keywords: [
-        'Algorize UI',
-        'React component library',
-        'shadcn registry',
-        'Tailwind CSS components',
-        'Next.js components'
-    ],
-    openGraph: {
-        title: 'Introduction - Algorize UI',
-        description: 'What Algorize UI is, how components are installed into your project, and what your project needs.',
-        type: 'article',
-        url: '/docs/nextjs/index',
-    },
-    twitter: {
-        card: 'summary_large_image',
-        title: 'Introduction - Algorize UI',
-        description: 'What Algorize UI is, how components are installed into your project, and what your project needs.',
-    },
-    alternates: {
-        canonical: '/docs/nextjs/index',
-    },
-};
+import { docsPageMetadata } from "@/lib/docs-metadata";
+
+export const metadata = docsPageMetadata("index", {
+  title: "Introduction",
+  description: "What Algorize UI is, how components are installed into your project, and what your project needs."
+});
 
 import { Cli } from "@/components/site/cli";
 import { COMPONENT_COUNT } from "@/config/site";

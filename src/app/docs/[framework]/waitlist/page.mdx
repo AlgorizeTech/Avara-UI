@@ -1,11 +1,12 @@
+import { docsPageMetadata } from "@/lib/docs-metadata";
+
 import { ExampleShowcase } from "@/components/site/Sandbox";
 import { extractCode } from "@/lib/code";
 
-export const metadata = {
-  title: "Waitlist - AlgorizeTech UI",
-  description:
-    "A pre-launch sign-up section in three layouts — a compact card, a brand mark with a live countdown, or a pill on a soft ground with a bar of spots claimed. The form becomes the reader's place in line when your promise resolves.",
-};
+export const metadata = docsPageMetadata("waitlist", {
+  title: "Waitlist",
+  description: "A pre-launch sign-up section in three layouts — a compact card, a brand mark with a live countdown, or a pill on a soft ground with a bar of spots claimed. The form becomes the reader's place in line when your promise resolves."
+});
 
 # Waitlist
 
