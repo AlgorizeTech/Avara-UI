@@ -63,7 +63,10 @@ export default function AnimatedListDemo({
   animationDelay?: number;
 }) {
   return (
-    <div className="w-full flex justify-center items-center bg-background rounded-2xl border border-border py-6 px-4 relative overflow-hidden">
+    // In dark mode the preview surface is --background too, so the tray lifts
+    // by a faint ink wash (between the page and the bg-card toasts) and a
+    // firmer edge; light mode already reads against the white preview.
+    <div className="w-full flex justify-center items-center bg-background dark:bg-foreground/[0.035] rounded-2xl border border-border dark:border-foreground/10 py-6 px-4 relative overflow-hidden">
       {/* Toast Notification Container */}
       <div className="w-full max-w-md relative z-10">
         <AnimatedList
