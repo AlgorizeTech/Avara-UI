@@ -60,7 +60,7 @@ const chatVariants: Record<AIChatVariant, Record<string, string>> = {
     wrapper:
       "bg-background border border-border shadow-none rounded-2xl",
     sidebar:
-      "bg-card/90 backdrop-blur-xl border-r border-border",
+      "bg-card/95 backdrop-blur-xl border-r border-border shadow-2xl lg:shadow-none rounded-r-2xl rounded-l-none lg:rounded-none",
     main: "bg-background",
     header:
       "bg-background/80 border-b border-border backdrop-blur-xl",
@@ -71,7 +71,8 @@ const chatVariants: Record<AIChatVariant, Record<string, string>> = {
   },
   minimal: {
     wrapper: "bg-transparent border-none shadow-none rounded-none",
-    sidebar: "bg-muted/50 rounded-2xl border border-border lg:mr-4",
+    sidebar:
+      "bg-background/95 dark:bg-zinc-900/95 lg:bg-muted/50 backdrop-blur-2xl rounded-r-2xl rounded-l-none lg:rounded-2xl border border-border lg:mr-4 shadow-2xl lg:shadow-none",
     main: "bg-transparent",
     header: "bg-transparent border-b border-border mb-2",
     input: "bg-muted border border-border",
@@ -94,7 +95,7 @@ const chatVariants: Record<AIChatVariant, Record<string, string>> = {
     wrapper:
       "bg-white/40 dark:bg-black/40 backdrop-blur-2xl border border-white/20 dark:border-white/10 shadow-2xl rounded-2xl",
     sidebar:
-      "bg-white/10 dark:bg-black/10 border-r border-white/20 dark:border-white/10",
+      "bg-white/40 dark:bg-zinc-950/60 lg:bg-white/[0.08] lg:dark:bg-white/[0.03] backdrop-blur-3xl backdrop-saturate-150 border-r border-white/25 dark:border-white/10 shadow-2xl lg:shadow-none rounded-r-2xl rounded-l-none lg:rounded-none",
     main: "bg-transparent",
     header:
       "bg-white/10 dark:bg-black/10 border-b border-white/20 dark:border-white/10 backdrop-blur-md",
@@ -1241,22 +1242,46 @@ export default function AIChat({
       className={cn(
         "w-full max-w-full h-[650px] sm:h-[750px] flex overflow-hidden relative font-sans box-border transition-colors duration-300",
         styles.wrapper,
+        showSidebar && isSidebarOpen && "rounded-l-none lg:rounded-2xl",
       )}
     >
       {/* === LEFT SIDEBAR === */}
       {showSidebar && (
         <aside
           className={cn(
-            `absolute lg:relative z-30 w-[280px] shrink-0 h-full flex flex-col transition-transform duration-300 ease-in-out ${isSidebarOpen ? "translate-x-0" : "-translate-x-full lg:translate-x-0"}`,
+            `absolute lg:relative z-30 w-[280px] max-w-[85vw] shrink-0 h-full flex flex-col transition-transform duration-300 ease-in-out ${isSidebarOpen ? "translate-x-0" : "-translate-x-full lg:translate-x-0"}`,
+            "rounded-r-2xl rounded-l-none lg:rounded-none overflow-hidden",
             styles.sidebar,
           )}
         >
-          <div className="p-5 border-b border-border shrink-0">
+          <div
+            className={cn(
+              "p-5 border-b shrink-0",
+              variant === "glass"
+                ? "border-white/20 dark:border-white/10"
+                : "border-border",
+            )}
+          >
             <div className="flex items-center justify-between mb-4 lg:hidden">
-              <h2 className="font-semibold text-foreground">History</h2>
+              <h2
+                className={cn(
+                  "font-semibold",
+                  variant === "glass"
+                    ? "text-zinc-900 dark:text-white"
+                    : "text-foreground",
+                )}
+              >
+                History
+              </h2>
               <button
                 onClick={() => setIsSidebarOpen(false)}
-                className="text-muted-foreground"
+                className={cn(
+                  "p-1 rounded-lg transition-colors cursor-pointer",
+                  variant === "glass"
+                    ? "text-zinc-700 hover:text-zinc-900 hover:bg-white/30 dark:text-zinc-300 dark:hover:text-white dark:hover:bg-white/10"
+                    : "text-muted-foreground hover:text-foreground hover:bg-muted/60",
+                )}
+                aria-label="Close sidebar"
               >
                 <X className="w-5 h-5" />
               </button>
@@ -1280,7 +1305,14 @@ export default function AIChat({
 
               return (
                 <div key={dateGroup} className="mb-6">
-                  <p className="text-[11px] font-semibold text-muted-foreground uppercase tracking-wider mb-2 px-3">
+                  <p
+                    className={cn(
+                      "text-[11px] font-semibold uppercase tracking-wider mb-2 px-3",
+                      variant === "glass"
+                        ? "text-zinc-800 dark:text-zinc-200"
+                        : "text-muted-foreground",
+                    )}
+                  >
                     {dateGroup}
                   </p>
                   <div className="space-y-0.5">
@@ -1292,11 +1324,16 @@ export default function AIChat({
                         <div
                           key={chat.id}
                           onClick={() => handleSelectChat(chat.id)}
-                          className={`flex items-center justify-between px-3 py-2.5 rounded-lg cursor-pointer transition-all text-sm group ${
+                          className={cn(
+                            "flex items-center justify-between px-3 py-2.5 rounded-lg cursor-pointer transition-all text-sm group",
                             isActive
-                              ? cn("font-semibold", theme.lightBg)
-                              : "text-muted-foreground hover:bg-muted font-medium"
-                          }`}
+                              ? variant === "glass"
+                                ? "bg-white/30 dark:bg-white/15 text-zinc-900 dark:text-white font-semibold shadow-sm border border-white/30 dark:border-white/15 backdrop-blur-md"
+                                : cn("font-semibold", theme.lightBg)
+                              : variant === "glass"
+                                ? "text-zinc-800 dark:text-zinc-200 hover:text-zinc-950 dark:hover:text-white hover:bg-white/15 dark:hover:bg-white/10 font-medium"
+                                : "text-muted-foreground hover:bg-muted font-medium hover:text-foreground",
+                          )}
                         >
                           {isEditing ? (
                             <div
@@ -1343,7 +1380,14 @@ export default function AIChat({
                             <>
                               <div className="flex items-center gap-3 truncate pr-2 min-w-0">
                                 <MessageSquare
-                                  className={`w-4 h-4 shrink-0 ${isActive ? theme.primaryText : "text-muted-foreground group-hover:text-foreground"}`}
+                                  className={cn(
+                                    "w-4 h-4 shrink-0",
+                                    isActive
+                                      ? theme.primaryText
+                                      : variant === "glass"
+                                        ? "text-zinc-700 dark:text-zinc-300 group-hover:text-zinc-950 dark:group-hover:text-white"
+                                        : "text-muted-foreground group-hover:text-foreground",
+                                  )}
                                 />
                                 <span className="truncate">{chat.title}</span>
                               </div>
@@ -1351,15 +1395,25 @@ export default function AIChat({
                                 <button
                                   onClick={(e) => startEditingChat(chat, e)}
                                   className={cn(
-                                    "p-1.5 text-muted-foreground rounded-md transition-colors cursor-pointer",
-                                    theme.primaryHover,
+                                    "p-1.5 rounded-md transition-colors cursor-pointer",
+                                    variant === "glass"
+                                      ? "text-zinc-700 hover:text-zinc-950 hover:bg-white/20 dark:text-zinc-300 dark:hover:text-white dark:hover:bg-white/10"
+                                      : cn(
+                                          "text-muted-foreground",
+                                          theme.primaryHover,
+                                        ),
                                   )}
                                 >
                                   <Edit2 className="w-3.5 h-3.5" />
                                 </button>
                                 <button
                                   onClick={(e) => handleDeleteChat(chat.id, e)}
-                                  className="p-1.5 text-muted-foreground hover:text-rose-500 hover:bg-rose-50 dark:hover:bg-rose-500/20 rounded-md transition-colors cursor-pointer"
+                                  className={cn(
+                                    "p-1.5 rounded-md transition-colors cursor-pointer",
+                                    variant === "glass"
+                                      ? "text-zinc-700 hover:text-rose-600 hover:bg-rose-500/10 dark:text-zinc-300 dark:hover:text-rose-400"
+                                      : "text-muted-foreground hover:text-rose-500 hover:bg-rose-50 dark:hover:bg-rose-500/20",
+                                  )}
                                 >
                                   <Trash2 className="w-3.5 h-3.5" />
                                 </button>
@@ -1375,7 +1429,14 @@ export default function AIChat({
             })}
           </div>
 
-          <div className="p-4 border-t border-border shrink-0 flex items-center justify-between cursor-pointer hover:bg-muted transition-colors">
+          <div
+            className={cn(
+              "p-4 border-t shrink-0 flex items-center justify-between cursor-pointer transition-colors",
+              variant === "glass"
+                ? "border-white/20 dark:border-white/10 hover:bg-white/15 dark:hover:bg-white/10"
+                : "border-border hover:bg-muted",
+            )}
+          >
             <div className="flex items-center gap-3">
               <div
                 className={cn(
@@ -1394,16 +1455,37 @@ export default function AIChat({
               >
                 JM
               </div>
-              <span className="text-sm font-semibold text-foreground">Joel M.</span>
+              <span
+                className={cn(
+                  "text-sm font-semibold",
+                  variant === "glass"
+                    ? "text-zinc-900 dark:text-white"
+                    : "text-foreground",
+                )}
+              >
+                Joel M.
+              </span>
             </div>
-            <Settings className="w-4 h-4 text-muted-foreground hover:text-foreground" />
+            <Settings
+              className={cn(
+                "w-4 h-4 transition-colors",
+                variant === "glass"
+                  ? "text-zinc-700 hover:text-zinc-950 dark:text-zinc-300 dark:hover:text-white"
+                  : "text-muted-foreground hover:text-foreground",
+              )}
+            />
           </div>
         </aside>
       )}
 
       {showSidebar && isSidebarOpen && (
         <div
-          className="absolute inset-0 bg-black/40 dark:bg-black/60 backdrop-blur-sm z-20 lg:hidden cursor-pointer"
+          className={cn(
+            "absolute inset-0 z-20 lg:hidden cursor-pointer transition-opacity duration-300",
+            variant === "glass"
+              ? "bg-black/25 dark:bg-black/45 backdrop-blur-[2px]"
+              : "bg-black/50 dark:bg-black/70 backdrop-blur-sm",
+          )}
           onClick={() => setIsSidebarOpen(false)}
         />
       )}
