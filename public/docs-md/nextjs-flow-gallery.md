@@ -1,3 +1,5 @@
+export const metadata = docsPageMetadata("flow-gallery");
+
 # Flow Gallery
 
 Horizontal and diagonal 3D cascading gallery stream with continuous auto-flow motion, drag inertia physics, and isometric perspective options.

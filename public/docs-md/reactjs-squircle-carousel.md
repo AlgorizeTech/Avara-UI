@@ -1,3 +1,5 @@
+export const metadata = docsPageMetadata("squircle-carousel");
+
 # Squircle Carousel
 
 Horizontal flowing carousel where images are masked behind a grid of rounded cubes with snap physics and smooth inertia.

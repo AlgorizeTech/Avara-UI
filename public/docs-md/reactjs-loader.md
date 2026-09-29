@@ -1,3 +1,5 @@
+export const metadata = docsPageMetadata("loader");
+
 # Loader
 
 A premium, dependency-free loading indicator component.

@@ -1,3 +1,8 @@
+export const metadata = docsPageMetadata("apple-select", {
+  title: "Apple Select",
+  description: "An iOS-style text selection rendered from a fixed character range — translucent highlight with lollipop handles on either end."
+});
+
 # Apple Select
 
 Recreates the iOS text-selection look — a translucent highlight with a lollipop handle on either end — over any string you give it.

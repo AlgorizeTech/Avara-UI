@@ -1,3 +1,5 @@
+export const metadata = docsPageMetadata("reviews");
+
 # Review Section
 
 A high-converting Review / Testimonial website section featuring a 3D WebGL rotating background globe marquee or an interactive 3D stacked portrait carousel with smooth rolling motion and arrow navigation.

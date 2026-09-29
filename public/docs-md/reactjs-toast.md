@@ -1,3 +1,5 @@
+export const metadata = docsPageMetadata("toast");
+
 # Toast / Notification
 
 A robust, highly-animated notification system. Popups and alerts are essential for user feedback, but most libraries are heavy, difficult to style, or lack smooth animations.

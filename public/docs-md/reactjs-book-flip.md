@@ -1,3 +1,5 @@
+export const metadata = docsPageMetadata("book-flip");
+
 # Book Flip
 
 An interactive 3D **Book Flip** component simulating realistic book page turns, dynamic spine shifts, center fold shadows, leaf peeking, and bottom icon toolbar controls.

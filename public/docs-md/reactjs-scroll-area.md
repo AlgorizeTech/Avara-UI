@@ -1,3 +1,5 @@
+export const metadata = docsPageMetadata("scroll-area");
+
 # Scroll Area
 
 Augments native scroll functionality for custom, cross-browser styling.

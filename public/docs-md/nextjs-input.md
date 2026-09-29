@@ -1,3 +1,5 @@
+export const metadata = docsPageMetadata("input");
+
 # Input
 
 A multi-purpose Input component with password toggles, autocomplete suggestions, and four layout variants.

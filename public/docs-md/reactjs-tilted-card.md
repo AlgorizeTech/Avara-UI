@@ -1,3 +1,5 @@
+export const metadata = docsPageMetadata("tilted-card");
+
 # Tilted Card
 
 A deeply interactive, parallax-driven 3D tilt component. It calculates the relative pointer coordinates and eases the card toward them through a small spring of its own (no animation library) to rotate it along the X and Y axes, mimicking a physical object held in space.

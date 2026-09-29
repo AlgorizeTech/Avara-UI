@@ -1,3 +1,5 @@
+export const metadata = docsPageMetadata("file-upload");
+
 # UX Engineered Upload Flow
 
 A highly-orchestrated, premium file upload component suite based on modern UX engineering principles. It goes far beyond a native `` by addressing five distinct user feedback signals.

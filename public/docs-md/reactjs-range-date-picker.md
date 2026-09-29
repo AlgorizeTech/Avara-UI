@@ -1,3 +1,5 @@
+export const metadata = docsPageMetadata("range-date-picker");
+
 # Range Date Picker
 
 An interactive **Range Date Picker** component featuring single month, dual-month, and rate-priced calendar layouts for hotel or flight booking applications.

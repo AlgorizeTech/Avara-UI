@@ -1,3 +1,5 @@
+export const metadata = docsPageMetadata("theme-switcher");
+
 # Theme Switcher
 
 A premium, animated dark mode toggle component built specifically for Next.js applications using `next-themes`.

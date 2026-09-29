@@ -1,3 +1,5 @@
+export const metadata = docsPageMetadata("progress");
+
 # Progress
 
 A flexible, smoothly animated progress indicator built to handle loading states, storage meters, or step-by-step wizards. Every form fills from zero when it first appears, and any number it shows counts up alongside the fill.

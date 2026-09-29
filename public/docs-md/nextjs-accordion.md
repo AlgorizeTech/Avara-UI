@@ -1,3 +1,5 @@
+export const metadata = docsPageMetadata("accordion");
+
 # Accordion
 
 A data-driven accordion built on the Radix primitive, with five variants that each look like a different component rather than the same card in five borders. The open panel is the only thing that gets the accent: it lifts out as a card, inverts to your primary color, or grows a rail down its edge, depending on the variant.

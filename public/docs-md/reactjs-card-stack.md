@@ -1,3 +1,5 @@
+export const metadata = docsPageMetadata("card-stack");
+
 # Card Stack
 
 A layered deck of cards featuring fluid drag-to-discard gestures, button-driven directional slide animations, and realistic depth perspective. Users can swipe cards left or right to review and discard them, with the next cards seamlessly stepping forward.

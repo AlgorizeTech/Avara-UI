@@ -1,3 +1,5 @@
+export const metadata = docsPageMetadata("glass-panel");
+
 # Glass Panel
 
 A frosted surface in four shapes, and the aurora ground it sits on. `GlassBackdrop` washes three colours behind a 12-column bento grid and sets the surface for everything inside; `GlassPanel` is one glass recipe — blur, hairline border, inset highlight — whose `shape` encodes hierarchy: a `slab` for the hero, a `tile` for content, a `disc` for a single number, a `capsule` for chips.

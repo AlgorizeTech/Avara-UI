@@ -1,3 +1,5 @@
+export const metadata = docsPageMetadata("hero");
+
 # Hero
 
 Every hero section in the library, on one page. Each is its own registry item with its own preview, install command and props — pick the one that suits the site and install only that. They run from the most opinionated layouts to the general-purpose `HeroBlock` and its five variants at the foot.

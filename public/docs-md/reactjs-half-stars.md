@@ -1,3 +1,5 @@
+export const metadata = docsPageMetadata("half-stars");
+
 # Half Stars Rating
 
 A sleek, customizable star rating component for Next.js applications that supports exact decimal ratings (e.g., 3.7 or 4.5) through SVG clip paths. It also supports interactive mode, allowing users to hover and click to set their own rating.

@@ -1,3 +1,5 @@
+export const metadata = docsPageMetadata("cursor-animation");
+
 # Cursor Animation
 
 An interactive, 100% full-width and responsive custom cursor component with 10 distinct animation variants including fluid physics, particle trails, magnetic targeting, spotlight masking, and precision crosshairs.

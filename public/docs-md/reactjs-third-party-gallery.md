@@ -1,3 +1,8 @@
+export const metadata = docsPageMetadata("third-party/gallery", {
+  title: "Gallery & Lightbox",
+  description: "Integrate react-photo-album and yet-another-react-lightbox with Algorize UI — justified rows, masonry columns, captions, thumbnails and zoom inside a Card."
+});
+
 # Gallery & Lightbox
 
 A photo gallery is really two problems, and they are best solved by two

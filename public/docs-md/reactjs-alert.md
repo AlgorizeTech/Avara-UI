@@ -1,3 +1,5 @@
+export const metadata = docsPageMetadata("alert");
+
 # Alerts
 
 A highly versatile Alert component designed to communicate states and important information to your users.

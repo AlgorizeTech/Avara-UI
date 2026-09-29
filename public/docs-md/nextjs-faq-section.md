@@ -1,3 +1,8 @@
+export const metadata = docsPageMetadata("faq-section", {
+  title: "FAQ Section",
+  description: "An animated, editorial FAQ website section pairing a responsive section header with an interactive nature photography canvas and an expandable question accordion."
+});
+
 # FAQ Section
 
 An animated, editorial FAQ section designed for modern landing pages, SaaS platforms, and digital agencies. Pairs a centered section header with an interactive nature photography canvas that dynamically morphs its height and width and crossfades photos with each active question, alongside a keyboard-accessible, smooth accordion list.

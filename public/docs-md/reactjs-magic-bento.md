@@ -1,3 +1,5 @@
+export const metadata = docsPageMetadata("magic-bento");
+
 # Magic Bento
 
 A premium grid layout system featuring CSS masking, continuously spinning gradient borders, and a real-time mouse-tracking spotlight effect.

@@ -1,3 +1,5 @@
+export const metadata = docsPageMetadata("data-maps");
+
 # Data Maps
 
 {/* A beautiful map component to visualize your geographic data points */}

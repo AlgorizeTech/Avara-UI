@@ -1,3 +1,5 @@
+export const metadata = docsPageMetadata("card");
+
 # Card
 
 A flexible container used to group related information and actions together in a visually distinct box.

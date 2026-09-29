@@ -1,3 +1,8 @@
+export const metadata = docsPageMetadata("index", {
+  title: "Introduction",
+  description: "What Algorize UI is, how components are installed into your project, and what your project needs."
+});
+
 # Introduction
 
 Algorize UI is a library of **176 animated, responsive React

@@ -1,3 +1,5 @@
+export const metadata = docsPageMetadata("data-table");
+
 # Data Table
 
 A powerful, fully-featured data table component built on top of [Table](./table) primitives. It provides built-in state management for **Global Searching, Multi-Column Sorting, Pagination, Row Selection, and Batch Actions** — giving you complete control over your table layout without forcing any data transformation.

@@ -1,3 +1,5 @@
+export const metadata = docsPageMetadata("heart-signal");
+
 # Heart Signal
 
 A slow, ultra-smooth cardiac telemetry and pulse visualization component with 3 distinct animation variants (`ecg-line`, `pulse-heart`, and `cardiac-wave`), live BPM badge, and active theme color integration.

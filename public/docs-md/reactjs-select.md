@@ -1,3 +1,5 @@
+export const metadata = docsPageMetadata("select");
+
 # Select / Dropdown
 
 A completely custom, headless-style dropdown component. Native HTML `` elements are notoriously difficult to style consistently across browsers.

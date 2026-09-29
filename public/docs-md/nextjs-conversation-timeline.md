@@ -1,3 +1,8 @@
+export const metadata = docsPageMetadata("conversation-timeline", {
+  title: "Conversation Timeline",
+  description: "A dense rail of thin marks, one per message, that expands into a labelled list on hover — a minimap for long chats."
+});
+
 # Conversation Timeline
 
 A dense rail of thin marks, one per message, that expands into a labelled list on hover.
@@ -45,6 +50,15 @@ export default function DenseRail({ checkpoints }) {
 
 export const usageChat = `"use client";
 
+const WIDE = "(min-width: 640px)";
+const subscribeWide = (onChange: () => void) => {
+  const mq = window.matchMedia(WIDE);
+  mq.addEventListener("change", onChange);
+  return () => mq.removeEventListener("change", onChange);
+};
+const useIsWide = () =>
+  useSyncExternalStore(subscribeWide, () => window.matchMedia(WIDE).matches, () => true);
+
 const messages = [
   { id: "1", role: "system",    label: "System prompt",            body: "You are a helpful engineering assistant." },
   { id: "2", role: "user",      label: "Can you help me set up auth?", body: "Can you help me set up auth? I'm on Next.js 15." },
@@ -52,10 +66,19 @@ const messages = [
   // …
 ] as const;
 
+const roleStyle: Record = {
+  user: "self-end bg-primary text-primary-foreground",
+  assistant: "self-start bg-muted text-foreground",
+  system: "self-center bg-transparent text-[11px] font-mono uppercase tracking-wider text-muted-foreground",
+};
+
 // The rail as a minimap: selecting a mark scrolls its message into view.
 export default function ChatWithMinimap() {
   const [activeId, setActiveId] = useState("2");
   const refs = useRef>({});
+  // On a phone the label column would crowd out the chat, so the rail drops
+  // to marks only — the bubbles already carry the text.
+  const isWide = useIsWide();
 
   useEffect(() => {
     refs.current[activeId]?.scrollIntoView({ behavior: "smooth", block: "center" });
@@ -63,8 +86,14 @@ export default function ChatWithMinimap() {
 
   return (
 
+      {/* p-1.5 leaves room for the active bubble's ring inside the scroller */}
+      
         {messages.map((m) => (
-           { refs.current[m.id] = el; }} onClick={() => setActiveId(m.id)}>
+           { refs.current[m.id] = el; }}
+            onClick={() => setActiveId(m.id)}
+            className={\`max-w-[85%] cursor-pointer rounded-2xl px-3.5 py-2 text-[13px] leading-relaxed [overflow-wrap:anywhere] transition-all \${roleStyle[m.role ?? "assistant"]}\`}
+            style={m.id === activeId && m.role !== "system" ? { boxShadow: "0 0 0 2px var(--card), 0 0 0 4px var(--primary)" } : undefined}
+          >
             {m.body}
           
         ))}
@@ -154,6 +183,11 @@ Discover the Conversation Timeline's capabilities as a minimap for long conversa
         number
         240
         Fixed label column width in px — labels truncate past it.
+
+        showLabels
+        boolean
+        true
+        Render the label column. Set false where width is tight and the rail becomes a marks-only minimap — each mark keeps its label as its accessible name.
 
         accent
         string

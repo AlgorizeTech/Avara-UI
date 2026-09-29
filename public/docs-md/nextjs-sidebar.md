@@ -1,3 +1,5 @@
+export const metadata = docsPageMetadata("sidebar");
+
 # Sidebar
 
 A powerful, composable sidebar component that automatically manages mobile flyout states and desktop collapse logic.

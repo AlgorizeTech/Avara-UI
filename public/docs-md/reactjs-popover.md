@@ -1,3 +1,5 @@
+export const metadata = docsPageMetadata("popover");
+
 # Popover
 
 Displays rich, interactive content in a portal, triggered by a click.

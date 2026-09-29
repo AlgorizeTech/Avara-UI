@@ -1,3 +1,5 @@
+export const metadata = docsPageMetadata("bento-showcase");
+
 # Bento Showcase
 
 A six-card marketing bento: a hero with a live chat and a headline, a laptop of case studies, one line that says what you do, figures that scroll up, the plans on a phone, and a strip of the team that scrolls left. Flat cards, no borders, no shadows — colour is the only thing separating them. One component, both themes: pastels on white in light mode, the same hues deepened on black in dark mode, switched by the `dark` class like the rest of the library.

@@ -1,3 +1,5 @@
+export const metadata = docsPageMetadata("counter-section");
+
 # Counter Section
 
 A collection of 4 animated high-impact Counter and Stats Sections designed for modern landing pages, SaaS platforms, agency portfolios, and enterprise portals. From high-tech telemetry HUDs to clean agency minimalism with monospace slash labels, architectural halftone strips, and interactive cursor spotlights. All variants are built with viewport-triggered count-up animations, zero shadows, clean flat borders, and full adaptive styling for both Light and Dark modes.

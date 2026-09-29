@@ -1,3 +1,5 @@
+export const metadata = docsPageMetadata("carousel");
+
 # Carousel
 
 A collection of highly interactive carousel components for image galleries, hero sections, and fluid presentations.

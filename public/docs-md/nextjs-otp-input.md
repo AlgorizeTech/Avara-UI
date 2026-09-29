@@ -1,3 +1,5 @@
+export const metadata = docsPageMetadata("otp-input");
+
 # OTP Input
 
 A fully accessible, developer-friendly multi-box input designed for One-Time Passwords and 2FA codes.

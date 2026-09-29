@@ -1,3 +1,8 @@
+export const metadata = docsPageMetadata("copy-button", {
+  title: "Copy Button",
+  description: "A clipboard button that confirms the copy with an animated check and label swap — plus a read-only Copy Field for links, tokens and commands."
+});
+
 # Copy Button
 
 A button that puts text on the clipboard and says so — the icon pops from a clipboard to a check, the label rises from "Copy" to "Copied!", and both settle back after a moment.

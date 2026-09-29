@@ -1,3 +1,5 @@
+export const metadata = docsPageMetadata("pricing");
+
 # Pricing Components
 
 A collection of highly-converting, responsive pricing sections. Whether you need traditional tiered subscription cards, a detailed comparison table, or an interactive quote builder, these components are designed to maximize conversions.

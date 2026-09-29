@@ -1,3 +1,5 @@
+export const metadata = docsPageMetadata("marquee");
+
 # Marquee
 
 An infinite, seamless scrolling container ideal for logos, testimonials, and image galleries.
