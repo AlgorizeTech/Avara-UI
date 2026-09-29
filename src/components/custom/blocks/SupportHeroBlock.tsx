@@ -350,7 +350,7 @@ function SupportHeroRoot({
           as="h1"
           variant="blur-in-up"
           text={heading}
-          className="mx-auto max-w-[22ch] justify-center font-sans text-[2.3rem] font-semibold leading-[1.06] tracking-[-0.035em] sm:max-w-[26ch] sm:text-[3.4rem]"
+          className="mx-auto max-w-[22ch] justify-center font-sans text-[clamp(1.75rem,7.5vw,2.3rem)] font-semibold leading-[1.06] tracking-[-0.035em] sm:max-w-[26ch] sm:text-[3.4rem]"
         />
         {subtitle && (
           <p data-hero-lead="" className="mx-auto mt-5 max-w-[34rem] text-[12.5px] leading-[1.7] text-foreground/55">
