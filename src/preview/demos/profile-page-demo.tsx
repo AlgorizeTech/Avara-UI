@@ -85,7 +85,7 @@ export default function ProfilePageDemo({
       className={cn("max-w-6xl", rounded && "rounded-[36px]")}
     >
       {/* Hero */}
-      <GlassPanel shape="slab" className="flex flex-col gap-6 p-6 sm:p-8 md:col-span-6 lg:col-span-8">
+      <GlassPanel shape="slab" className="flex flex-col gap-6 p-5 sm:p-8 md:col-span-6 lg:col-span-8">
         <div className="flex items-center justify-between">
           <a
             href="#"
@@ -155,24 +155,24 @@ export default function ProfilePageDemo({
             aria-pressed={following}
             onClick={() => setFollowing((v) => !v)}
             className={cn(
-              "inline-flex h-11 items-center gap-2 rounded-full px-5 text-sm font-medium transition-colors",
+              "inline-flex h-9 items-center gap-1.5 rounded-full px-3 text-[13px] font-medium transition-colors sm:h-11 sm:gap-2 sm:px-5 sm:text-sm",
               following
                 ? "border border-foreground/10 bg-foreground/[0.04] text-foreground hover:bg-foreground/[0.08]"
                 : "bg-primary text-primary-foreground hover:bg-primary/90",
               focusRing,
             )}
           >
-            {following ? <Check className="size-4" /> : <UserPlus className="size-4" />}
+            {following ? <Check className="size-3.5 sm:size-4" /> : <UserPlus className="size-3.5 sm:size-4" />}
             {following ? "Following" : "Follow"}
           </button>
           <button
             type="button"
             className={cn(
-              "inline-flex h-11 items-center gap-2 rounded-full border border-foreground/10 bg-foreground/[0.04] px-5 text-sm font-medium transition-colors hover:bg-foreground/[0.08]",
+              "inline-flex h-9 items-center gap-1.5 rounded-full border border-foreground/10 bg-foreground/[0.04] px-3 text-[13px] font-medium transition-colors hover:bg-foreground/[0.08] sm:h-11 sm:gap-2 sm:px-5 sm:text-sm",
               focusRing,
             )}
           >
-            <MessageCircle className="size-4" /> Message
+            <MessageCircle className="size-3.5 sm:size-4" /> Message
           </button>
         </div>
       </GlassPanel>
