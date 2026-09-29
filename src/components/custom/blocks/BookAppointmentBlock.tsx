@@ -15,11 +15,11 @@ import React from "react";
 // stacked bar, and `BookingCard` for the booking itself.
 
 export interface Practitioner {
-  /** Full name as shown in the heading, e.g. "Dr. Emily Chen, MD". */
+  /** Full name as shown in the heading, e.g. "Dr. Priya Nair, MD". */
   name: string;
-  /** How the confirmation refers to them, e.g. "Dr. Chen". Falls back to `name`. */
+  /** How the confirmation refers to them, e.g. "Dr. Nair". Falls back to `name`. */
   shortName?: string;
-  /** One line under the name, e.g. "Internal medicine, Cardiology". */
+  /** One line under the name, e.g. "Cardiology and general internal medicine". */
   specialties: string;
   practice: string;
   photo: string;
@@ -35,7 +35,7 @@ export interface Practitioner {
   languages?: string;
 }
 
-/** A named score out of 5, e.g. "Wait time". */
+/** A named score out of 5, e.g. "Punctuality". */
 export interface PractitionerScore {
   label: string;
   value: number;
@@ -87,7 +87,7 @@ export function BookAppointment({
   slotGroups,
   unavailable,
   onBook,
-  bookingHeading = "Book an appointment",
+  bookingHeading = "Schedule a visit",
   variant = "glass",
   aurora = ["#c4b5fd", "#99f6e4", "#fde68a"],
   className,
@@ -148,7 +148,7 @@ export function BookAppointment({
               </div>
             </div>
             <div className="min-w-0">
-              <p className="text-xs font-medium text-foreground/50">Patients say</p>
+              <p className="text-xs font-medium text-foreground/50">What patients report</p>
               <p className="mt-1 text-sm leading-relaxed text-foreground/70">{practitioner.summary}</p>
             </div>
           </div>
@@ -178,12 +178,12 @@ export function BookAppointment({
 
         {visitReasons && visitReasons.length > 0 && (
           <GlassPanel className="p-6">
-            <h2 className="text-sm font-semibold">Top visit reasons</h2>
+            <h2 className="text-sm font-semibold">Why patients come in</h2>
             <ChartBlock
               type="donut-legend"
               data={visitReasons}
               valueSuffix="%"
-              centerLabel="top reason"
+              centerLabel="most common"
               hoverLabel="of visits"
               className="mt-4"
             />
@@ -192,7 +192,7 @@ export function BookAppointment({
 
         {activities && activities.length > 0 && (
           <GlassPanel className="p-6">
-            <h2 className="text-sm font-semibold">Where the week goes</h2>
+            <h2 className="text-sm font-semibold">How her week splits</h2>
             <ChartBlock type="stacked-bar" data={activities} valueSuffix="%" className="mt-4" />
           </GlassPanel>
         )}

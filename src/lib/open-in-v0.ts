@@ -224,6 +224,20 @@ export function themedItemUrl(origin: string, item: string, theme: V0Theme): str
 }
 
 /**
+ * Longest chat title v0 accepts. Past it v0 rejects the whole open with
+ * "Invalid JSON content" (422), naming the registry item rather than the
+ * title — found by trial: 32 characters open, 33 fail.
+ */
+export const V0_TITLE_MAX = 32;
+
+/** Fits a title into v0's limit, ending on "…" when it had to cut. */
+export function clipV0Title(title: string): string {
+  const chars = [...title];
+  if (chars.length <= V0_TITLE_MAX) return title;
+  return chars.slice(0, V0_TITLE_MAX - 1).join("").trimEnd() + "…";
+}
+
+/**
  * `title` names the new chat — otherwise v0 calls every one "Open in v0". It
  * is not in shadcn's Open-in-v0 docs; Vercel's own registry-starter passes it.
  */
@@ -234,7 +248,7 @@ export function openInV0Url(
   title?: string,
 ): string {
   const params = new URLSearchParams();
-  if (title) params.set("title", title);
+  if (title) params.set("title", clipV0Title(title));
   params.set("url", themedItemUrl(origin, item, theme));
   return `${V0_OPEN_URL}?${params}`;
 }

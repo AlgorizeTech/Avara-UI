@@ -1,133 +1,61 @@
-import { CodeBlock } from "@/components/site/code-block";
-import { ComponentRenderer } from "@/components/site/component-renderer";
 import { Cli } from "@/components/site/cli";
-import {
-  Tabs,
-  TabsList,
-  TabsTrigger,
-  TabsContent,
-} from "@/components/site/tabs.tsx";
-import { PropsTable } from "@/components/site/props-table.tsx";
-import { MdxTable } from "@/components/site/mdx-table.tsx";
 
-# Installation & Setup Guide
+# Installation
 
 <OtherFrameworkGuide slug="installation" label="installation guide" />
 
-Get started with Next.js by creating a new project or adding it to an existing application.
+Set up a Next.js project so you can install Algorize UI components with the
+shadcn CLI.
 
-## System Requirements & Compatibility
-
-Before installing Next.js, ensure your environment meets the following requirements:
-
-<div className="grid grid-cols-1 sm:grid-cols-2 2xl:grid-cols-4 gap-4 my-6 not-prose">
-  <div className="p-4 sm:p-5 rounded-xl bg-foreground/[0.03] border border-foreground/[0.06] flex flex-col justify-between min-w-0">
-    <div>
-      <div className="text-[11px] font-semibold uppercase tracking-[0.08em] text-foreground/35 mb-1">Framework</div>
-      <h4 className="text-[14px] font-semibold text-foreground truncate">Next.js App Router</h4>
-    </div>
-    <p className="text-[13px] leading-relaxed text-foreground/50 mt-2">Next.js 14 / 15 / 16 App Router Architecture</p>
+<div className="grid grid-cols-2 lg:grid-cols-4 gap-3 my-6 not-prose">
+  <div className="p-4 rounded-xl bg-foreground/[0.03] border border-foreground/[0.06] min-w-0">
+    <div className="text-[11px] font-semibold uppercase tracking-[0.08em] text-foreground/35 mb-1">Framework</div>
+    <div className="text-[14px] font-semibold text-foreground">Next.js App Router</div>
   </div>
-
-  <div className="p-4 sm:p-5 rounded-xl bg-foreground/[0.03] border border-foreground/[0.06] flex flex-col justify-between min-w-0">
-    <div>
-      <div className="text-[11px] font-semibold uppercase tracking-[0.08em] text-foreground/35 mb-1">React Version</div>
-      <h4 className="text-[14px] font-semibold text-foreground truncate">React 18 & React 19</h4>
-    </div>
-    <p className="text-[13px] leading-relaxed text-foreground/50 mt-2">Full React Server Component Support</p>
+  <div className="p-4 rounded-xl bg-foreground/[0.03] border border-foreground/[0.06] min-w-0">
+    <div className="text-[11px] font-semibold uppercase tracking-[0.08em] text-foreground/35 mb-1">React</div>
+    <div className="text-[14px] font-semibold text-foreground">18 or 19</div>
   </div>
-
-  <div className="p-4 sm:p-5 rounded-xl bg-foreground/[0.03] border border-foreground/[0.06] flex flex-col justify-between min-w-0">
-    <div>
-      <div className="text-[11px] font-semibold uppercase tracking-[0.08em] text-foreground/35 mb-1">Styling</div>
-      <h4 className="text-[14px] font-semibold text-foreground truncate">Tailwind CSS v3.4+ / v4</h4>
-    </div>
-    <p className="text-[13px] leading-relaxed text-foreground/50 mt-2">Utility-first CSS styling & design tokens</p>
+  <div className="p-4 rounded-xl bg-foreground/[0.03] border border-foreground/[0.06] min-w-0">
+    <div className="text-[11px] font-semibold uppercase tracking-[0.08em] text-foreground/35 mb-1">Styling</div>
+    <div className="text-[14px] font-semibold text-foreground">Tailwind CSS v4</div>
   </div>
-
-  <div className="p-4 sm:p-5 rounded-xl bg-foreground/[0.03] border border-foreground/[0.06] flex flex-col justify-between min-w-0">
-    <div>
-      <div className="text-[11px] font-semibold uppercase tracking-[0.08em] text-foreground/35 mb-1">Language</div>
-      <h4 className="text-[14px] font-semibold text-foreground truncate">TypeScript 5+ & JS</h4>
-    </div>
-    <p className="text-[13px] leading-relaxed text-foreground/50 mt-2">Strict type checking or pure JavaScript</p>
+  <div className="p-4 rounded-xl bg-foreground/[0.03] border border-foreground/[0.06] min-w-0">
+    <div className="text-[11px] font-semibold uppercase tracking-[0.08em] text-foreground/35 mb-1">Language</div>
+    <div className="text-[14px] font-semibold text-foreground">TypeScript or JS</div>
   </div>
 </div>
 
-### Next.js 16
+## Create a project
 
-Every component installs and builds unchanged on Next.js 16. Nothing in the library touches an API that Next.js 16 removed — there is no synchronous `params`, `searchParams`, `cookies()`, `headers()` or `draftMode()` access, no `next/legacy/image`, no legacy `<Image>` props, no `next/amp`, and no runtime config. The components import no Next.js API at all: those that render links or images take a `linkComponent` / `imageComponent` prop instead, and the ones wrapping a browser-only library defer it themselves after mount. Pass `next/link` and `next/image` into those props to keep prefetching and image optimisation — each of their pages shows the line.
-
-<div className="flex flex-col gap-4 my-6 not-prose">
-  <div className="rounded-xl border border-foreground/[0.06] bg-foreground/[0.03] p-4">
-    <h4 className="font-sans text-[14px] font-semibold text-foreground mb-1">What Next.js 16 asks of your project</h4>
-    <p className="text-[13px] leading-relaxed text-foreground/50">Next.js 16 itself raises the floor: <strong>Node.js 20.9+</strong>, <strong>TypeScript 5.1+</strong> and <strong>React 19.2</strong>, with Turbopack as the default bundler for <code>next dev</code> and <code>next build</code>. These are requirements of the framework, not of the components — the library builds cleanly under Turbopack. If your app still has a custom <code>webpack</code> config, either migrate it to <code>turbopack</code> or run <code>next build --webpack</code>.</p>
-  </div>
-</div>
-
-## Creating a New Next.js App
-
-### Using create-next-app
-
-The easiest way to get started is with `create-next-app`, which sets up everything automatically:
+Skip this if you already have a Next.js app with Tailwind CSS v4.
 
 ```bash
-npx create-next-app@latest
+npx create-next-app@latest my-app --typescript --tailwind --app
 ```
 
-For TypeScript support:
-```bash
-npx create-next-app@latest --typescript
-```
+`--tailwind` installs Tailwind and writes `globals.css` for you. Adding Algorize UI
+to an app without Tailwind? [Set it up first](#set-up-tailwind-css).
 
-For the App Router (default in Next.js 13+):
-```bash
-npx create-next-app@latest --app
-```
+## Add components
 
-You can also combine flags:
-```bash
-npx create-next-app@latest my-app --typescript --app
-```
+### Step 1: Initialize shadcn
 
-Answer **yes** to the Tailwind CSS prompt — `create-next-app` then installs it and writes
-`src/app/globals.css` for you, and you can skip the manual Tailwind setup below. If you answered
-**no**, or you are adding Algorize UI to an app that predates the prompt, set Tailwind up by hand.
-
-Every prompt and flag is documented in the
-[Next.js installation guide](https://nextjs.org/docs/app/getting-started/installation).
-
-## Adding components
-
-Components are published as a [shadcn registry](https://ui.shadcn.com/docs/registry), so you install them with the `shadcn` CLI — there is nothing to copy and paste.
-
-Tailwind CSS has to be working before any of this produces a styled component. If
-`create-next-app` did not set it up for you, do
-[Installation & Peer Dependencies Setup](#installation--peer-dependencies-setup) further down
-this page first, then come back here.
-
-### Step 1: Initialize your project
-
-Run this once per project. It creates `components.json`, writes `src/lib/utils.ts` with the
-`cn` helper, and confirms your path aliases.
-
-Algorize UI components are built on Radix primitives, so select the Radix base. Passing it on
-the command line also keeps the command usable in CI:
+Run once per project. It creates `components.json` and `lib/utils.ts` (the `cn`
+helper every component imports).
 
 <Cli command={`init --base radix --preset nova`} />
 
-Running it without flags is fine too — the CLI will ask which component library to use
-(**choose Radix UI**, not the recommended default) and which preset. Any preset works; it only
-sets the starting theme.
+Algorize UI builds on Radix primitives. If you run `init` without flags, choose
+**Radix UI** when asked. Any preset works — it only sets the starting theme.
 
 ### Step 2: Register the registry
 
-Run this once per project. It adds an `@algorize-ui` entry to `components.json`, so every
-component can be installed by name instead of by URL:
+Run once per project. It lets you install components by name:
 
 <Cli command={`registry add @algorize-ui=https://algorize-ui.vercel.app/r/{name}.json`} />
 
-Or write it into `components.json` by hand — the two are equivalent:
+This adds the following to `components.json`, which you can also write by hand:
 
 ```json
 {
@@ -137,154 +65,47 @@ Or write it into `components.json` by hand — the two are equivalent:
 }
 ```
 
-The CLI replaces `{name}` with the item you ask for, so `@algorize-ui/hero` resolves to
-`https://algorize-ui.vercel.app/r/hero.json`. Skipping this step is not fatal either: every
-command on this site has a **URL** toggle that prints the full address, which needs no setup.
-The shadcn MCP server reads the same entry, so AI-assisted installs resolve `@algorize-ui/…` too.
-
 ### Step 3: Pick a theme
 
-Do this before you add anything. Every component reads its colours, radius and fonts from CSS
-variables rather than hard-coded classes, and `shadcn init` only wrote the default set.
-
-Open the [Themes page](/themes), choose a preset or customise one, press **Copy Code**, and paste
-the block into `src/app/globals.css` — underneath the `@import "tailwindcss";` line.
-
-Adding components first is not fatal; they render in the default palette until you paste your
-own variables in. Doing it now just means the first component you install already looks like
-your product.
+Open the [Themes page](/themes), choose a preset, press **Copy Code**, and paste
+it into `globals.css` below `@import "tailwindcss";`. Components pick up the
+colours, radius and fonts from these variables.
 
 ### Step 4: Add a component
 
-Every component page carries its own command. Name the component under the registry you
-registered in step 2:
+Every component page has its own command:
 
 <Cli command={`add hero.json`} />
 
-Several at once work too — `add @algorize-ui/hero @algorize-ui/navbar` — and you can browse
-what is available from the terminal with `npx shadcn@latest list @algorize-ui` or
-`npx shadcn@latest search @algorize-ui --query pricing`.
-
-The CLI writes the source into your project, installs its npm dependencies and pulls in any other registry components it needs. You own the file from that point on — edit it freely.
+The CLI writes the source into your project and installs the component's npm
+packages and any other components it depends on.
 
 ### Where files land
 
-Install targets mirror this repository's layout, so components that import a sibling keep working:
-
 ```bash
-src/
-├── components/
-│   ├── ui/                   # Base primitives (e.g. avatar.tsx, dialog.tsx)
-│   ├── custom/               # Reusable blocks & custom components
-│   │   ├── blocks/           # Hero, Navigation, Cart & Feature blocks
-│   │   └── ui/               # Advanced UI extensions (codeblocks, cards)
-│   └── site/                 # Layout wrappers, headers, & sidebars
-└── lib/
-    ├── utils.ts              # Class merging helper (cn function)
-    └── docs.ts               # Content parsing & utility scripts
+components/
+├── custom/
+│   ├── blocks/     # Most components (Hero, Card, Navbar, …)
+│   └── ui/         # Shared pieces used by several components
+└── ui/             # shadcn primitives
+lib/
+└── utils.ts        # The cn helper
 ```
 
-### TypeScript Path Alias Setup (`tsconfig.json`)
+Components import through the `@/` alias, which `create-next-app` configures for
+you — keep it in `tsconfig.json`.
 
-`create-next-app` already configures this, so there is normally nothing to do — just confirm
-your `tsconfig.json` contains the `paths` entry. **Add** it to the existing `compilerOptions`
-rather than replacing the file; the generated config also carries `strict`, `noEmit`,
-`moduleResolution` and the Next plugin, and losing those breaks the build:
+## Set up Tailwind CSS
 
-```json
-{
-  "compilerOptions": {
-    "paths": {
-      "@/*": ["./src/*"]
-    }
-  }
-}
-```
+Only needed if your project does not have Tailwind CSS v4 yet.
 
-Do not add `baseUrl`. It is deprecated in TypeScript 6 and reported as an error (`TS5101`),
-and `paths` has resolved relative to its own config file since TypeScript 4.4.
-
-The CLI creates these directories as needed, so you do not have to make them yourself. `shadcn init` also writes `/src/lib/utils.ts` with the `cn` helper that every component imports from `@/lib/utils`.
-
-## Installation & Peer Dependencies Setup
-
-Follow this step-by-step guide to install common peer dependencies, configure Tailwind CSS, and set up the class name helper utility (`cn`).
-
-### Step 1: Install Common Peer Dependencies
-
-Install the core peer dependencies used across our UI components for animations, icons and themes.
-`lucide-react` and the `cn` helper below are what every component imports, so no component page
-lists them again — each page's install step names only what that component adds on top:
-
-```bash
-npm install framer-motion lucide-react next-themes clsx tailwind-merge
-```
-
-<div className="grid grid-cols-1 sm:grid-cols-2 2xl:grid-cols-3 gap-4 my-6 not-prose">
-  <div className="p-4 sm:p-5 rounded-xl bg-foreground/[0.03] border border-foreground/[0.06] flex flex-col justify-between min-w-0">
-    <div>
-      <div className="text-[11px] font-semibold uppercase tracking-[0.08em] text-foreground/35 mb-1">Animation Engine</div>
-      <h4 className="text-[14px] font-semibold text-foreground truncate">framer-motion</h4>
-    </div>
-    <p className="text-[13px] leading-relaxed text-foreground/50 mt-2">Physics-based spring animations & 3D drag gestures</p>
-  </div>
-
-  <div className="p-4 sm:p-5 rounded-xl bg-foreground/[0.03] border border-foreground/[0.06] flex flex-col justify-between min-w-0">
-    <div>
-      <div className="text-[11px] font-semibold uppercase tracking-[0.08em] text-foreground/35 mb-1">Icon System</div>
-      <h4 className="text-[14px] font-semibold text-foreground truncate">lucide-react</h4>
-    </div>
-    <p className="text-[13px] leading-relaxed text-foreground/50 mt-2">Clean, responsive SVG icon suite for all components</p>
-  </div>
-
-  <div className="p-4 sm:p-5 rounded-xl bg-foreground/[0.03] border border-foreground/[0.06] flex flex-col justify-between min-w-0">
-    <div>
-      <div className="text-[11px] font-semibold uppercase tracking-[0.08em] text-foreground/35 mb-1">Theme Engine</div>
-      <h4 className="text-[14px] font-semibold text-foreground truncate">next-themes</h4>
-    </div>
-    <p className="text-[13px] leading-relaxed text-foreground/50 mt-2">Seamless Light / Dark mode switching & system sync</p>
-  </div>
-</div>
-
-### Step 2: Verify the `cn` Helper
-
-`shadcn init` already created `src/lib/utils.ts` for you in the previous step. Open it and confirm
-it matches the following — every component imports `cn` from `@/lib/utils`, so this file has to
-exist before any component will compile:
-
-```typescript
-import { clsx, type ClassValue } from "clsx";
-import { twMerge } from "tailwind-merge";
-
-/**
- * Merges Tailwind CSS classes cleanly without class conflicts.
- */
-export function cn(...inputs: ClassValue[]) {
-  return twMerge(clsx(inputs));
-}
-```
-
-### Step 3: Install Tailwind CSS
-
-Skip ahead to Step 4 if `create-next-app` already set Tailwind up for you. Otherwise there are
-three parts, and the last one is the one people miss.
-
-The canonical version of this process is Tailwind's own
-[Next.js installation guide](https://tailwindcss.com/docs/installation/framework-guides/nextjs);
-what follows is that same process with the Algorize UI specifics folded in.
-
-#### 1. Install the packages
-
-Next.js compiles CSS through PostCSS, so v4 goes in as a PostCSS plugin — not the Vite plugin the
-React guide uses:
+**1. Install the packages**
 
 ```bash
 npm install tailwindcss @tailwindcss/postcss postcss
 ```
 
-#### 2. Register the plugin in `postcss.config.mjs`
-
-Create the file in the root of your project:
+**2. Create `postcss.config.mjs`**
 
 ```js
 const config = {
@@ -296,170 +117,44 @@ const config = {
 export default config;
 ```
 
-#### 3. Add the Tailwind import to `src/app/globals.css`
-
-Installing the package does not switch Tailwind on. Nothing generates a single utility class
-until your global stylesheet imports Tailwind, and the failure is silent — the install succeeds,
-`next dev` starts, `next build` passes, and every component renders completely unstyled.
-
-Make `@import "tailwindcss";` the **first line** of `src/app/globals.css` — or `app/globals.css`
-if you skipped the `src/` directory:
+**3. Import Tailwind in `app/globals.css`**
 
 ```css
 @import "tailwindcss";
 ```
 
-<div className="flex flex-col gap-4 my-6 not-prose">
-  <div className="rounded-xl border border-primary/15 bg-primary/5 p-4">
-    <h4 className="font-sans text-[14px] font-semibold text-primary mb-1">Two things that make this line fail quietly</h4>
-    <ul className="text-[13px] leading-relaxed text-foreground/50 list-disc pl-5 space-y-1.5">
-      <li><strong>It has to be the first rule in the file.</strong> CSS requires <code>@import</code> to come before every other rule, so an <code>@import</code> sitting underneath your own styles is discarded by the browser without an error.</li>
-      <li><strong>Your root layout has to import that stylesheet.</strong> <code>create-next-app</code> puts <code>import "./globals.css";</code> at the top of <code>src/app/layout.tsx</code>. If your layout does not have it, Tailwind never reaches the page.</li>
-    </ul>
+<div className="flex gap-3 rounded-xl border border-primary/15 bg-primary/5 p-4 my-6 not-prose">
+  <p className="text-[13px] leading-relaxed text-foreground/60">
+    <span className="font-semibold text-primary">Keep it the first line.</span> An <code>@import</code> below other rules is silently ignored, and your root layout must import <code>globals.css</code> — otherwise every component renders unstyled.
+  </p>
+</div>
+
+Upgrading from Tailwind v3? Run `npx @tailwindcss/upgrade`. Components use
+v4-only syntax.
+
+## Troubleshooting
+
+<div className="flex flex-col gap-3 my-6 not-prose">
+  <div className="p-4 rounded-xl bg-foreground/[0.03] border border-foreground/[0.06]">
+    <h4 className="text-[14px] font-semibold text-foreground mb-1">Components render unstyled</h4>
+    <p className="text-[13px] leading-relaxed text-foreground/50">Check that <code>@import "tailwindcss";</code> is the first line of <code>globals.css</code>, that your root layout imports that file, and that <code>tailwind.css</code> in <code>components.json</code> points at it.</p>
+  </div>
+  <div className="p-4 rounded-xl bg-foreground/[0.03] border border-foreground/[0.06]">
+    <h4 className="text-[14px] font-semibold text-foreground mb-1">Unknown registry "@algorize-ui"</h4>
+    <p className="text-[13px] leading-relaxed text-foreground/50">Run <a href="#step-2-register-the-registry" className="text-primary hover:underline">Step 2</a>, or switch the command to <strong>URL</strong>, which needs no setup.</p>
+  </div>
+  <div className="p-4 rounded-xl bg-foreground/[0.03] border border-foreground/[0.06]">
+    <h4 className="text-[14px] font-semibold text-foreground mb-1">Cannot find module <code>@/lib/utils</code></h4>
+    <p className="text-[13px] leading-relaxed text-foreground/50">Run Step 1, and make sure <code>tsconfig.json</code> has a <code>paths</code> entry for <code>@/*</code>.</p>
   </div>
 </div>
 
-### Step 4: Confirm your Tailwind v4 theme
+## Next steps
 
-Tailwind v4 is CSS-first — there is no `tailwind.config.ts` to create, and `create-next-app` no
-longer emits one. `shadcn init` already wrote the theme tokens into your global stylesheet. Open
-`src/app/globals.css` and confirm it starts with something like:
+- [Quick Start](/docs/nextjs/first-app) — put a component on screen
+- [All components](/docs/nextjs/all-components) — browse the library
 
-```css
-@import "tailwindcss";
-@import "tw-animate-css";
-
-@custom-variant dark (&:is(.dark *));
-```
-
-Content paths are detected automatically, so there is no `content` array to maintain. Container
-queries (`@container`, `@sm:`, `@lg:`) are built into v4 — no plugin required; several components
-use them to respond to their parent's width rather than the viewport.
-
-Migrating an existing v3 config? Run `npx @tailwindcss/upgrade` rather than porting it by hand.
-Do not hand-write a `tailwind.config.ts` with `darkMode: ["class"]` — v4 types that field as
-`"class"` or `["class", string]`, so the mismatch fails `next build` type checking.
-
-<div className="flex flex-col gap-4 my-6 not-prose">
-  <div className="p-5 rounded-xl bg-foreground/[0.03] border border-foreground/[0.06]">
-    <h4 className="text-[14px] font-semibold text-foreground mb-1">Components render completely unstyled</h4>
-    <p className="text-[13px] leading-relaxed text-foreground/50">Almost always the missing <code>@import "tailwindcss";</code>. Check three things, in order: the line is the <em>first</em> rule in <code>src/app/globals.css</code>; your root layout imports that file; and <code>components.json</code> points <code>tailwind.css</code> at that same file. Installing <code>@tailwindcss/postcss</code> on its own generates nothing.</p>
-  </div>
-</div>
-
-## Development Server
-
-Start the development server:
-
-```bash
-npm run dev
-```
-
-Visit `http://localhost:3000` to see your application.
-
-## TypeScript Setup
-
-### New Projects
-
-Create a TypeScript project:
-```bash
-npx create-next-app@latest --typescript
-```
-
-### Existing Projects
-
-Add TypeScript to an existing project:
-
-1. Install TypeScript dependencies:
-```bash
-npm install --save-dev typescript @types/react @types/node @types/react-dom
-```
-
-2. Create a `tsconfig.json` file:
-```bash
-touch tsconfig.json
-```
-
-3. Start the development server:
-```bash
-npm run dev
-```
-
-Next.js will automatically configure TypeScript for you.
-
-## First Steps
-
-After installation, try these first steps:
-
-1. **Edit the home page**:
-   Modify `app/page.js` to change the content
-
-2. **Add a new route**:
-   Create `app/about/page.js`:
-   ```jsx
-   export default function About() {
-     return <h1>About Page</h1>
-   }
-   ```
-
-3. **Add a component**:
-   Create `components/Header.js`:
-   ```jsx
-   export default function Header() {
-     return <header>My Header</header>
-   }
-   ```
-
-4. **Use the component**:
-   Import and use in `app/page.js`:
-   ```jsx
-   import Header from '@/components/Header'
-   
-   export default function Home() {
-     return (
-       <div>
-         <Header />
-         <h1>Hello, Next.js!</h1>
-       </div>
-     )
-   }
-   ```
-
-## Next Steps
-
-After setting up your project, consider:
-
-1. [Adding your first component](/docs/nextjs/first-app) in four steps
-2. [Browsing the component library](/docs/nextjs/all-components)
-3. [Reading the Architecture](/docs/nextjs/architecture) to see how components are structured
-
-### Upstream documentation
-
-This page covers only what Algorize UI needs. For the complete installation process for each tool
-underneath it:
-
-<div className="grid grid-cols-1 sm:grid-cols-2 gap-4 my-6 not-prose">
-  <a href="https://nextjs.org/docs/app/getting-started/installation" target="_blank" rel="noreferrer" className="block p-4 sm:p-5 rounded-xl bg-foreground/[0.03] border border-foreground/[0.06] hover:bg-foreground/[0.05] hover:border-primary/30 transition-colors">
-    <div className="text-[11px] font-semibold uppercase tracking-[0.08em] text-foreground/35 mb-1">Next.js</div>
-    <h4 className="text-[14px] font-semibold text-foreground">Installation</h4>
-    <p className="text-[13px] leading-relaxed text-foreground/50 mt-2">Every <code>create-next-app</code> prompt and flag, plus the manual setup</p>
-  </a>
-
-  <a href="https://tailwindcss.com/docs/installation/framework-guides/nextjs" target="_blank" rel="noreferrer" className="block p-4 sm:p-5 rounded-xl bg-foreground/[0.03] border border-foreground/[0.06] hover:bg-foreground/[0.05] hover:border-primary/30 transition-colors">
-    <div className="text-[11px] font-semibold uppercase tracking-[0.08em] text-foreground/35 mb-1">Tailwind CSS v4</div>
-    <h4 className="text-[14px] font-semibold text-foreground">Install with Next.js</h4>
-    <p className="text-[13px] leading-relaxed text-foreground/50 mt-2">The official steps, including the <code>@import "tailwindcss";</code> line</p>
-  </a>
-
-  <a href="https://nextjs.org/docs" target="_blank" rel="noreferrer" className="block p-4 sm:p-5 rounded-xl bg-foreground/[0.03] border border-foreground/[0.06] hover:bg-foreground/[0.05] hover:border-primary/30 transition-colors">
-    <div className="text-[11px] font-semibold uppercase tracking-[0.08em] text-foreground/35 mb-1">Next.js</div>
-    <h4 className="text-[14px] font-semibold text-foreground">Full documentation</h4>
-    <p className="text-[13px] leading-relaxed text-foreground/50 mt-2">Routing, data fetching, and deployment for the framework itself</p>
-  </a>
-
-  <a href="https://ui.shadcn.com/docs/cli" target="_blank" rel="noreferrer" className="block p-4 sm:p-5 rounded-xl bg-foreground/[0.03] border border-foreground/[0.06] hover:bg-foreground/[0.05] hover:border-primary/30 transition-colors">
-    <div className="text-[11px] font-semibold uppercase tracking-[0.08em] text-foreground/35 mb-1">shadcn</div>
-    <h4 className="text-[14px] font-semibold text-foreground">CLI reference</h4>
-    <p className="text-[13px] leading-relaxed text-foreground/50 mt-2">Every flag on <code>init</code> and <code>add</code>, and the <code>components.json</code> schema</p>
-  </a>
-</div>
+For anything beyond Algorize UI, see the
+[Next.js](https://nextjs.org/docs/app/getting-started/installation),
+[Tailwind CSS](https://tailwindcss.com/docs/installation/framework-guides/nextjs) and
+[shadcn CLI](https://ui.shadcn.com/docs/cli) docs.

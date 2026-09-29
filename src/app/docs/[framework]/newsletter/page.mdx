@@ -24,18 +24,18 @@ export default function Signup() {
   return (
     <Newsletter
       variant="portraits"
-      portraits={FACES.slice(0, 4).map((src) => ({ src, alt: "A reader" }))}
+      portraits={FACES.slice(0, 4).map((src) => ({ src, alt: "A subscriber" }))}
     >
-      <Newsletter.Heading>Join 24,000 readers who ship better</Newsletter.Heading>
+      <Newsletter.Heading>24,000 makers read this every week</Newsletter.Heading>
       <Newsletter.Intro>
-        A short, sharp email every week on product, design and the craft of building. Free, and easy to leave.
+        One concise weekly note on product thinking, design and building with care. Free to read, and one click to leave.
       </Newsletter.Intro>
       <Newsletter.Form
         onSubscribe={async (email) => {
           await fetch("/api/subscribe", { method: "POST", body: JSON.stringify({ email }) });
         }}
       />
-      <Newsletter.Proof avatars={FACES}>Loved by teams at Linear, Vercel and Notion</Newsletter.Proof>
+      <Newsletter.Proof avatars={FACES}>Read by teams at Fernway, Quillo and Brightpath</Newsletter.Proof>
     </Newsletter>
   );
 }
@@ -46,18 +46,18 @@ export const usageSpotlight = `"use client";
 import { Newsletter } from "@/components/custom/blocks/NewsletterBlock";
 
 const JOINED = [
-  { name: "Ana", avatar: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_160,c_limit/v1790158812/pexels-photo-2379004-1790158812208.jpg", when: "just now" },
-  { name: "Tom", avatar: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_160,c_limit/v1790158810/pexels-photo-220453-1790158812206.jpg", when: "2 min ago" },
-  { name: "Noah", when: "15 min ago" },
+  { name: "Iris", avatar: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_160,c_limit/v1790158812/pexels-photo-2379004-1790158812208.jpg", when: "just now" },
+  { name: "Ben", avatar: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_160,c_limit/v1790158810/pexels-photo-220453-1790158812206.jpg", when: "2 min ago" },
+  { name: "Omar", when: "15 min ago" },
 ];
 
 export default function Signup() {
   return (
     <Newsletter variant="spotlight">
-      <Newsletter.Heading>Get the good stuff, every Thursday</Newsletter.Heading>
-      <Newsletter.Intro>One email a week on building products people keep using. Unsubscribe in one click.</Newsletter.Intro>
-      <Newsletter.Form action="Join free" onSubscribe={subscribe} />
-      <Newsletter.Proof avatars={FACES}>Read by 24,000 designers and founders</Newsletter.Proof>
+      <Newsletter.Heading>Your Thursday read, worth opening</Newsletter.Heading>
+      <Newsletter.Intro>A weekly note on making products people stick with. You can opt out anytime.</Newsletter.Intro>
+      <Newsletter.Form action="Sign up free" onSubscribe={subscribe} />
+      <Newsletter.Proof avatars={FACES}>24,000 founders and designers subscribe</Newsletter.Proof>
       <Newsletter.Ticker items={JOINED} />
     </Newsletter>
   );
@@ -70,23 +70,23 @@ import { Newsletter } from "@/components/custom/blocks/NewsletterBlock";
 
 const ISSUES = [
   {
-    title: "The quiet power of defaults",
+    title: "Defaults do the heavy lifting",
     date: "Issue 42 · This week",
-    excerpt: "Why the choices you never make shape your product more than the ones you agonise over.",
+    excerpt: "The settings nobody touches end up defining your product more than the features you debate for weeks.",
     cover: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_800,c_limit/v1790148864/photo-1618005182384-a83a8bd57fbe-1790148865111.jpg",
     tag: "Design",
   },
-  { title: "Shipping less, on purpose", date: "Issue 41", excerpt: "" },
-  { title: "Notes on onboarding", date: "Issue 40", excerpt: "" },
+  { title: "The case for smaller releases", date: "Issue 41", excerpt: "" },
+  { title: "First-run experiences, revisited", date: "Issue 40", excerpt: "" },
 ];
 
 export default function Signup() {
   return (
     <Newsletter variant="issues">
-      <Newsletter.Heading>A letter about making things well</Newsletter.Heading>
-      <Newsletter.Intro>Essays on product, craft and the small decisions that compound.</Newsletter.Intro>
+      <Newsletter.Heading>Notes on building with care</Newsletter.Heading>
+      <Newsletter.Intro>Writing on product, craft and the little choices that add up over time.</Newsletter.Intro>
       <Newsletter.Form action="Subscribe" onSubscribe={subscribe} />
-      <Newsletter.Proof avatars={FACES}>Joined by 24,000 readers</Newsletter.Proof>
+      <Newsletter.Proof avatars={FACES}>24,000 readers and counting</Newsletter.Proof>
       <Newsletter.Issues items={ISSUES} />
     </Newsletter>
   );
@@ -285,7 +285,7 @@ export default function Signup() {
       <tr>
         <td><code>successTitle</code>, <code>successText</code></td>
         <td><code>string</code></td>
-        <td><code>"You're on the list"</code>, <code>"The next issue lands in your inbox."</code></td>
+        <td><code>"You're subscribed"</code>, <code>"Look out for the next edition in your inbox."</code></td>
         <td>The thank-you.</td>
       </tr>
     </tbody>

@@ -91,7 +91,6 @@ const rawNavigation: NavigationItem[] = [
         badge: "Updated",
       },
       { label: "Quick Start", slug: "first-app" },
-      { label: "Architecture", slug: "architecture" },
     ],
   },
   // A "Core Features" group used to sit here, linking to 13 inherited Next.js

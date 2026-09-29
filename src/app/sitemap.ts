@@ -132,7 +132,7 @@ function collectRoutes(): string[] {
 function priorityFor(route: string): number {
   if (route === "/") return 1;
   if (route === "/docs") return 0.9;
-  if (/^\/docs\/[^/]+\/(index|installation|first-app|architecture)$/.test(route))
+  if (/^\/docs\/[^/]+\/(index|installation|first-app)$/.test(route))
     return 0.8;
   if (route.startsWith("/docs/")) return 0.7;
   return 0.5;

@@ -24,43 +24,43 @@ const TIME_ZONE = "Asia/Dhaka";
 const WORKDAY = { start: 10, end: 18 };
 
 const STATS = [
-  { value: "128", label: "Components" },
-  { value: "342", label: "Merged PRs" },
-  { value: "96", label: "Reviews" },
+  { value: "116", label: "Components" },
+  { value: "317", label: "PRs merged" },
+  { value: "88", label: "Code reviews" },
 ];
 
-const SKILLS = ["Design systems", "React", "Motion", "Accessibility", "TypeScript", "Figma"];
+const SKILLS = ["Component APIs", "React", "Animation", "Accessibility", "TypeScript", "Figma"];
 
 const HIGHLIGHTS = [
   {
-    title: "Motion primitives v2",
-    summary: "One easing vocabulary for modals, drawers and toasts.",
+    title: "Animation toolkit 2.0",
+    summary: "A shared set of easings for dialogs, sheets and toasts.",
     status: "In progress",
     progress: 68,
   },
   {
-    title: "Northwind UI 4.0",
-    summary: "128 components, dark mode by default, tokens in CSS.",
-    status: "Shipped June 2026",
+    title: "Brightmoor Kit 4",
+    summary: "116 components, a dark theme out of the box, CSS-variable tokens.",
+    status: "Released June 2026",
   },
   {
-    title: "Contrast audit",
-    summary: "Every text and icon colour checked at 4.5:1 or better.",
-    status: "Shipped February 2026",
+    title: "Colour contrast review",
+    summary: "All text and icons verified against a 4.5:1 minimum ratio.",
+    status: "Released February 2026",
   },
 ];
 
 const TEAMMATES = [
-  { initials: "TL", name: "Tomás Léger", role: "Motion and prototyping", zone: "Lisbon", tint: "bg-sky-500/15 text-sky-800 dark:text-sky-200" },
-  { initials: "WA", name: "Wren Adeyemi", role: "Accessibility", zone: "Lagos", tint: "bg-amber-500/15 text-amber-800 dark:text-amber-200" },
-  { initials: "RS", name: "Rhea Sen", role: "Platform tokens", zone: "Pune", tint: "bg-rose-500/15 text-rose-800 dark:text-rose-200" },
+  { initials: "MD", name: "Mateo Duarte", role: "Prototypes and animation", zone: "Lisbon", tint: "bg-sky-500/15 text-sky-800 dark:text-sky-200" },
+  { initials: "IO", name: "Ifeoma Okafor", role: "Inclusive design", zone: "Lagos", tint: "bg-amber-500/15 text-amber-800 dark:text-amber-200" },
+  { initials: "KI", name: "Kavya Iyer", role: "Design tokens", zone: "Pune", tint: "bg-rose-500/15 text-rose-800 dark:text-rose-200" },
 ];
 
 const ACTIVITY = [
-  { icon: GitMerge, text: "Merged #1287, unify easing curves across overlays", when: "2h ago" },
-  { icon: Eye, text: "Reviewed Tomás's drawer focus-trap fix", when: "Yesterday" },
-  { icon: FileText, text: "Published the Northwind UI 4.0 release notes", when: "3 days ago" },
-  { icon: MessageCircle, text: "Opened an RFC on token naming", when: "Last week" },
+  { icon: GitMerge, text: "Merged #1311, one shared easing for every overlay", when: "2h ago" },
+  { icon: Eye, text: "Reviewed Mateo's sheet focus-trap patch", when: "Yesterday" },
+  { icon: FileText, text: "Posted the changelog for Brightmoor Kit 4", when: "3 days ago" },
+  { icon: MessageCircle, text: "Started an RFC about naming tokens", when: "Last week" },
 ];
 
 const focusRing =
@@ -94,7 +94,7 @@ export default function ProfilePageDemo({
               focusRing,
             )}
           >
-            <ArrowLeft className="size-4" /> People
+            <ArrowLeft className="size-4" /> Directory
           </a>
           <button
             type="button"
@@ -113,26 +113,26 @@ export default function ProfilePageDemo({
               rectangle, circle or capsule, so it reads as the person */}
           <div className="relative shrink-0">
             <span className="grid size-24 place-items-center rounded-[30%] bg-gradient-to-br from-primary to-primary/70 text-3xl font-semibold text-primary-foreground shadow-[0_16px_32px_-16px_var(--primary)] sm:size-28 sm:text-4xl">
-              AK
+              FH
             </span>
           </div>
           <div className="min-w-0">
             <h1 className="flex flex-wrap items-center gap-2.5 text-3xl font-semibold tracking-tight sm:text-[40px] sm:leading-none">
-              Ayesha Karim
+              Farah Haque
               <VerifyBadge size="lg" aria-label="Verified" />
             </h1>
             <p className="mt-2 text-base text-foreground/60">
-              Design engineer at Northwind
+              UI engineer at Brightmoor
             </p>
             <ul className="mt-3 flex flex-wrap gap-x-4 gap-y-1 text-sm text-foreground/60">
               <li className="flex items-center gap-1.5">
                 <MapPin className="size-3.5" /> Dhaka
               </li>
               <li className="flex items-center gap-1.5">
-                <Mail className="size-3.5" /> ayesha@northwind.co
+                <Mail className="size-3.5" /> farah@brightmoor.io
               </li>
               <li className="flex items-center gap-1.5">
-                <Globe className="size-3.5" /> ayesha.design
+                <Globe className="size-3.5" /> farahhaque.dev
               </li>
             </ul>
             <SocialLinks
@@ -140,9 +140,9 @@ export default function ProfilePageDemo({
               variant="ghost"
               className="mt-3 -ml-2 gap-0.5"
               links={[
-                { network: "x", href: "https://x.com", label: "Ayesha on X" },
-                { network: "github", href: "https://github.com", label: "Ayesha on GitHub" },
-                { network: "dribbble", href: "https://dribbble.com", label: "Ayesha on Dribbble" },
+                { network: "x", href: "https://x.com", label: "Farah on X" },
+                { network: "github", href: "https://github.com", label: "Farah on GitHub" },
+                { network: "dribbble", href: "https://dribbble.com", label: "Farah on Dribbble" },
               ]}
             />
           </div>
@@ -177,10 +177,10 @@ export default function ProfilePageDemo({
         </div>
       </GlassPanel>
 
-      {/* Her day */}
+      {/* Her schedule */}
       <GlassPanel shape="slab" className="flex flex-col p-6 md:col-span-6 lg:col-span-4">
         <div className="flex items-baseline justify-between">
-          <h2 className="text-sm font-semibold">Her day</h2>
+          <h2 className="text-sm font-semibold">Her schedule</h2>
           <p className="text-xs text-foreground/50">UTC+6</p>
         </div>
         <div className="my-auto py-4">
@@ -189,12 +189,12 @@ export default function ProfilePageDemo({
             start={WORKDAY.start}
             end={WORKDAY.end}
             place="Dhaka"
-            name="Ayesha"
-            note="Replies within the day"
+            name="Farah"
+            note="Usually answers the same day"
           />
         </div>
         <p className="text-center text-sm text-foreground/60">
-          Hover the ring for her hours in your time
+          Point at the ring to see her hours in your zone
         </p>
       </GlassPanel>
 
@@ -214,9 +214,9 @@ export default function ProfilePageDemo({
       <GlassPanel className="flex flex-col gap-4 p-6 md:col-span-6 lg:col-span-8">
         <h2 className="text-sm font-semibold">About</h2>
         <p className="max-w-prose text-[15px] leading-relaxed text-foreground/70">
-          Builds the component library three product teams ship on. Currently
-          rewriting the motion primitives so a modal, a drawer and a toast all
-          ease the same way. Happiest when a design decision becomes one variable.
+          Maintains the shared UI kit that three product squads build on. Right
+          now reworking the animation toolkit so dialogs, sheets and toasts all
+          move on one curve. Loves turning a design choice into a single token.
         </p>
         <ul className="flex flex-wrap gap-2">
           {SKILLS.map((skill) => (
@@ -269,7 +269,7 @@ export default function ProfilePageDemo({
 
       {/* Team */}
       <GlassPanel className="flex flex-col gap-4 p-6 md:col-span-3 lg:col-span-5">
-        <h2 className="text-sm font-semibold">Works closely with</h2>
+        <h2 className="text-sm font-semibold">Frequent collaborators</h2>
         <ul className="flex flex-col gap-3">
           {TEAMMATES.map((m) => (
             <li key={m.name} className="flex items-center gap-3">

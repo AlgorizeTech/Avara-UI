@@ -4,13 +4,13 @@ import { CollageHero } from "@/components/custom/blocks/CollageHeroBlock";
 import { cn } from "@/lib/utils";
 
 const PHOTOS = [
-  { src: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_800,c_limit/v1790148862/pexels-photo-3661193-1790148865106.jpg", alt: "Wooden dinosaurs standing on a stack of books" },
-  { src: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_800,c_limit/v1790148867/pexels-photo-3661387-1790148865107.jpg", alt: "A child playing with wooden blocks on the floor", position: "center 40%" },
-  { src: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_800,c_limit/v1790148863/pexels-photo-8612967-1790148865108.jpg", alt: "Children painting together at a low table" },
-  { src: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_800,c_limit/v1790148863/pexels-photo-8535214-1790148865108.jpg", alt: "A teacher helping a girl with her painting", position: "40% top" },
-  { src: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_800,c_limit/v1790148863/pexels-photo-3661286-1790148865107.jpg", alt: "A boy holding a wooden dinosaur" },
-  { src: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_800,c_limit/v1790148866/pexels-photo-8613317-1790148865109.jpg", alt: "Children sitting on the grass with their toys" },
-  { src: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_800,c_limit/v1790148862/pexels-photo-8535227-1790148865108.jpg", alt: "A girl smiling beside a paper lion on the wall", position: "center 35%" },
+  { src: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_800,c_limit/v1790148862/pexels-photo-3661193-1790148865106.jpg", alt: "Wooden toy dinosaurs posed atop a pile of books" },
+  { src: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_800,c_limit/v1790148867/pexels-photo-3661387-1790148865107.jpg", alt: "A toddler building with timber blocks on the rug", position: "center 40%" },
+  { src: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_800,c_limit/v1790148863/pexels-photo-8612967-1790148865108.jpg", alt: "Kids painting side by side around a small table" },
+  { src: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_800,c_limit/v1790148863/pexels-photo-8535214-1790148865108.jpg", alt: "An educator guiding a young girl's brushwork", position: "40% top" },
+  { src: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_800,c_limit/v1790148863/pexels-photo-3661286-1790148865107.jpg", alt: "A little boy clutching a toy wooden dinosaur" },
+  { src: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_800,c_limit/v1790148866/pexels-photo-8613317-1790148865109.jpg", alt: "Kids gathered on the lawn with their playthings" },
+  { src: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_800,c_limit/v1790148862/pexels-photo-8535227-1790148865108.jpg", alt: "A grinning girl next to a paper lion pinned to the wall", position: "center 35%" },
 ];
 
 export default function CollageHeroDemo({
@@ -28,24 +28,24 @@ export default function CollageHeroDemo({
     <CollageHero
       reveal={reveal}
       accent={accent}
-      brand="KinderNest"
+      brand="PlayMeadow"
       heading={
         <>
-          A happy space
+          A bright place
           <br />
-          to <em>explore</em> and <em>create</em>
+          to <em>discover</em> and <em>imagine</em>
         </>
       }
-      tags={[{ label: "#learn" }, { label: "#enjoy" }, { label: "#play" }]}
-      caption="Playful and caring for little learners"
+      tags={[{ label: "#grow" }, { label: "#laugh" }, { label: "#build" }]}
+      caption="Gentle, fun care for young explorers"
       photos={PHOTOS}
-      quote="Our kindergarten is a warm and welcoming environment where children feel safe, inspired, and excited to learn every day."
-      scrollLabel="Scroll down"
+      quote="Our preschool is a cosy, friendly place where every child feels secure, curious and eager to discover something new each day."
+      scrollLabel="Keep scrolling"
       video={{
-        eyebrow: "Watch video",
-        text: "Watch how a day unfolds at our friendly kindergarten",
+        eyebrow: "See the film",
+        text: "Follow a typical day at our cheerful little preschool",
         url: "https://www.youtube.com/embed/LXb3EKWsInQ?autoplay=1",
-        title: "A day at KinderNest",
+        title: "Inside PlayMeadow",
       }}
       className={cn("max-w-6xl", rounded && "rounded-[28px] border border-border")}
     />

@@ -127,9 +127,9 @@ const DEFAULT_IMAGES = [
 ];
 
 const DEFAULT_HIGHLIGHTS: OrbitHighlight[] = [
-  { label: "15 curated landscapes" },
-  { label: "360° revolving orbit", color: "#10b981" },
-  { label: "Pauses on hover", color: "#f59e0b" },
+  { label: "15 hand-picked scenes" },
+  { label: "Full-circle rotation", color: "#10b981" },
+  { label: "Holds still on hover", color: "#f59e0b" },
 ];
 
 // ------------------------------------------
@@ -138,12 +138,12 @@ const DEFAULT_HIGHLIGHTS: OrbitHighlight[] = [
 export const OrbitGallery = forwardRef<HTMLElement, OrbitGalleryProps>(
   (
     {
-      badgeText = "Brand & motion studio",
+      badgeText = "Identity & animation studio",
       badgeHref = "#",
-      title = "Explore the",
-      titleAccent = "Beauty of Pure Nature.",
-      subtitle = "Immerse yourself in breathtaking landscapes, untouched wilderness, and timeless natural wonder.",
-      primaryActionLabel = "Explore gallery",
+      title = "Wander through",
+      titleAccent = "Wild Places, Up Close.",
+      subtitle = "Lose yourself in sweeping valleys, quiet forests and remote peaks that feel a world away.",
+      primaryActionLabel = "Browse photos",
       primaryActionHref = "#",
       secondaryActionLabel,
       secondaryActionHref = "#",

@@ -30,7 +30,7 @@ function Card({ heading = "Book an appointment" }: { heading?: string }) {
         <BookingCard.Slots label="Afternoon" slots={AFTERNOON} />
       </div>
       <BookingCard.Submit className="mt-auto" />
-      <BookingCard.Confirmation withName="Dr. Chen" place="Manhattan Health Associates" />
+      <BookingCard.Confirmation withName="Dr. Nair" place="Riverside Heart & Medical Group" />
     </BookingCard>
   );
 }

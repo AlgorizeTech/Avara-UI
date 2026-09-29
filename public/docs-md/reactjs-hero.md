@@ -129,36 +129,36 @@ A full-bleed photo hero for a place worth travelling to: an eyebrow pill, a larg
 export const usageHeroCarousel = `const SLIDES = [
   {
     image: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_1600,c_limit/v1790146210/photo-1506905925346-21bda4d32df4-1790146212208.jpg",
-    alt: "Snow peaks at sunrise above a sea of cloud",
-    title: "Crater rim at first light",
-    description: "Up before dawn and on the rim as the valley fills with colour.",
-    heading: <>Wake up abovethe clouds,
+    alt: "Snowy summits catching dawn light over low cloud",
+    title: "Dawn on the crater's edge",
+    description: "An early start gets you to the edge as colour floods the valley.",
+    heading: <>Watch the dawnfrom the summit,
   },
   {
     image: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_1600,c_limit/v1790146209/photo-1470071459604-3b5ec3a7fe05-1790146212205.jpg",
-    alt: "Fog rolling over dark ridges",
-    title: "Ridge walk through the mist",
-    description: "Six kilometres along the spine of the range. No scrambling.",
-    heading: <>Walk the ridgewhile it is still yours,
+    alt: "Mist drifting across dark ridgelines",
+    title: "A misty hike along the crest",
+    description: "A six-kilometre trail along the backbone of the range. No climbing.",
+    heading: <>Hike the crestbefore the crowds arrive,
   },
   {
     image: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_1600,c_limit/v1790145142/photo-1500530855697-b586d89ba3ee-1790145143493.jpg",
-    alt: "A road through a red rock canyon",
-    title: "The canyon by 4×4",
-    description: "A jeep run down the canyon road to where the tarmac ends.",
-    heading: <>Drive the canyonto the end of the road,
+    alt: "A highway winding between red canyon walls",
+    title: "Canyon off-road run",
+    description: "Ride an open-top jeep down the gorge until the pavement gives way.",
+    heading: <>Follow the gorgeuntil the asphalt runs out,
     position: "center 60%",
   },
 ];
 
 export default function Hero() {
   return (
-    Wake up abovethe clouds}
+    Watch the dawnfrom the summit}
       slides={SLIDES}
-      intro="Three days in the high country with a guide who grew up there."
+      intro="Three days in the mountains with a local guide who knows every path."
       avatars={[{ src: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto/v1790148864/80-1-1790148865111.jpg" }, { src: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto/v1790148864/80-2-1790148865112.jpg" }, { src: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto/v1790148865/80-3-1790148865112.jpg" }, { src: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto/v1790148865/80-4-1790148865113.jpg" }, { src: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto/v1790148865/80-1790148865113.jpg" }]}
-      avatarsLabel="50+ people joined this year"
-      cta={{ label: "Book the trip", href: "/book" }}
+      avatarsLabel="50+ travellers this season"
+      cta={{ label: "Reserve a spot", href: "/book" }}
       linkComponent={Link}
       interval={5000}
     />
@@ -272,13 +272,13 @@ A fashion hero: a bold two-line headline between a turning video badge and a sta
 
 export const usageFashion = `// A person on a plain studio background, multiplied onto a colour that echoes the outfit.
 const LOOKS = [
-  { src: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_700,c_limit/v1790150481/pexels-photo-16944801-1790150482273.jpg", alt: "A woman in a pink shirt and lime trousers, on yellow", tone: "#f0a72f", blend: false },
-  { src: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_500,c_limit/v1790082180/pexels-photo-1520760-1790082180553.jpg", alt: "A woman in a dark top, smiling", tone: "#f7d774" },
-  { src: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_700,c_limit/v1790145139/pexels-photo-1036623-1790145143487.jpg", alt: "A woman in a pale pink dress", tone: "#f4b7c5", blend: false },
-  { src: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_700,c_limit/v1790150484/pexels-photo-1462637-1790150482282.jpg", alt: "A woman in a striped blue shirt", tone: "#8cc4ee" },
-  { src: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_700,c_limit/v1790150480/pexels-photo-9558236-1790150482273.jpg", alt: "A woman in a coral shirt dress", tone: "#f9a875" },
-  { src: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_700,c_limit/v1790150480/pexels-photo-6311613-1790150482272.jpg", alt: "A woman in a grey hoodie, hood up", tone: "#bfe4c6" },
-  { src: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_500,c_limit/v1790145139/pexels-photo-3775534-1790145143488.jpg", alt: "A man in a black leather jacket", tone: "#2e9c82" },
+  { src: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_700,c_limit/v1790150481/pexels-photo-16944801-1790150482273.jpg", alt: "Model in a pink blouse and lime-green pants against yellow", tone: "#f0a72f", blend: false },
+  { src: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_500,c_limit/v1790082180/pexels-photo-1520760-1790082180553.jpg", alt: "Smiling model in a black top", tone: "#f7d774" },
+  { src: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_700,c_limit/v1790145139/pexels-photo-1036623-1790145143487.jpg", alt: "Model in a blush dress", tone: "#f4b7c5", blend: false },
+  { src: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_700,c_limit/v1790150484/pexels-photo-1462637-1790150482282.jpg", alt: "Model in a blue pinstripe shirt", tone: "#8cc4ee" },
+  { src: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_700,c_limit/v1790150480/pexels-photo-9558236-1790150482273.jpg", alt: "Model in a coral shirtdress", tone: "#f9a875" },
+  { src: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_700,c_limit/v1790150480/pexels-photo-6311613-1790150482272.jpg", alt: "Model in a grey hooded top, hood raised", tone: "#bfe4c6" },
+  { src: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_500,c_limit/v1790145139/pexels-photo-3775534-1790145143488.jpg", alt: "Man wearing a dark leather jacket", tone: "#2e9c82" },
 ];
 
 export default function Hero() {
@@ -339,7 +339,7 @@ The reference look is a person cut out on a flat colour. Cut-outs are expensive;
 
         avatars, avatarsHref, avatarsLabel
         &#123; src, alt? &#125;[], string, string
-        —, —, "Join the community"
+        —, —, "Become a member"
         Faces in the top-right stack; the href adds a "+" link after them with that label.
 
         cta
@@ -574,29 +574,29 @@ A hero for a place that is warm and busy — a kindergarten here, but any studio
 `CollageHero` is built from library pieces: the scroll pill is Button, the video opens in a Dialog. The colours come from the theme — the accent is `--primary` (pin it with `accent`) and the second colour is `highlight`.
 
 export const usageCollage = `const PHOTOS = [
-  { src: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_700,c_limit/v1790148862/pexels-photo-3661193-1790148865106.jpg", alt: "Wooden dinosaurs on a stack of books" },
-  { src: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_700,c_limit/v1790148867/pexels-photo-3661387-1790148865107.jpg", alt: "A child playing with wooden blocks" },
-  { src: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_700,c_limit/v1790148863/pexels-photo-8612967-1790148865108.jpg", alt: "Children painting at a low table" },
-  { src: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_700,c_limit/v1790148863/pexels-photo-8535214-1790148865108.jpg", alt: "A teacher helping a girl paint", position: "40% top" },
-  { src: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_700,c_limit/v1790148863/pexels-photo-3661286-1790148865107.jpg", alt: "A boy holding a wooden dinosaur" },
-  { src: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_700,c_limit/v1790148866/pexels-photo-8613317-1790148865109.jpg", alt: "Children on the grass with their toys" },
-  { src: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_700,c_limit/v1790148862/pexels-photo-8535227-1790148865108.jpg", alt: "A girl beside a paper lion", position: "center 35%" },
+  { src: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_700,c_limit/v1790148862/pexels-photo-3661193-1790148865106.jpg", alt: "Wooden toy dinosaurs atop a pile of books" },
+  { src: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_700,c_limit/v1790148867/pexels-photo-3661387-1790148865107.jpg", alt: "A toddler building with timber blocks" },
+  { src: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_700,c_limit/v1790148863/pexels-photo-8612967-1790148865108.jpg", alt: "Kids painting around a small table" },
+  { src: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_700,c_limit/v1790148863/pexels-photo-8535214-1790148865108.jpg", alt: "An educator guiding a girl's brushwork", position: "40% top" },
+  { src: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_700,c_limit/v1790148863/pexels-photo-3661286-1790148865107.jpg", alt: "A little boy clutching a toy wooden dinosaur" },
+  { src: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_700,c_limit/v1790148866/pexels-photo-8613317-1790148865109.jpg", alt: "Kids on the lawn with their playthings" },
+  { src: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_700,c_limit/v1790148862/pexels-photo-8535227-1790148865108.jpg", alt: "A grinning girl next to a paper lion", position: "center 35%" },
 ];
 
 export default function Hero() {
   return (
-    A happy spaceto explore and create}
-      tags={[{ label: "#learn" }, { label: "#enjoy" }, { label: "#play" }]}
-      caption="Playful and caring for little learners"
+    A bright placeto discover and imagine}
+      tags={[{ label: "#grow" }, { label: "#laugh" }, { label: "#build" }]}
+      caption="Gentle, fun care for young explorers"
       photos={PHOTOS}
-      quote="Our kindergarten is a warm and welcoming environment where children feel safe, inspired, and excited to learn every day."
-      scrollLabel="Scroll down"
+      quote="Our preschool is a cosy, friendly place where every child feels secure, curious and eager to discover something new each day."
+      scrollLabel="Keep scrolling"
       scrollTo="#programme"
       video={{
-        eyebrow: "Watch video",
-        text: "Watch how a day unfolds at our friendly kindergarten",
+        eyebrow: "See the film",
+        text: "Follow a typical day at our cheerful little preschool",
         url: "https://www.youtube.com/embed/LXb3EKWsInQ?autoplay=1",
-        title: "A day at KinderNest",
+        title: "Inside PlayMeadow",
       }}
     />
   );
@@ -711,7 +711,7 @@ npx shadcn@latest add @algorize-ui/collage-hero
 
         scrollLabel, scrollTo
         string
-        "Scroll down", next section
+        "Keep scrolling", next section
         The scroll pill and the selector it scrolls to.
 
         video

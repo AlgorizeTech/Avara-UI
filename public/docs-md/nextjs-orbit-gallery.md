@@ -41,12 +41,12 @@ npx shadcn@latest add @algorize-ui/orbit-gallery
 
         badgeText, badgeHref
         string
-        "Brand & motion studio", "#"
+        "Identity & animation studio", "#"
         The tracked line above the headline and where it links.
 
         title, titleAccent
         string
-        "Explore the", "Beauty of Pure Nature."
+        "Wander through", "Wild Places, Up Close."
         The two lines of the headline; the second is set in the accent.
 
         subtitle
@@ -56,7 +56,7 @@ npx shadcn@latest add @algorize-ui/orbit-gallery
 
         primaryActionLabel, primaryActionHref
         string
-        "Explore gallery", "#"
+        "Browse photos", "#"
         The filled button.
 
         secondaryActionLabel, secondaryActionHref

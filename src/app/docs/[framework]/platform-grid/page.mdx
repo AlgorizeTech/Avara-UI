@@ -16,37 +16,37 @@ import { G2Icon, RedditIcon } from "@/components/custom/blocks/Icons";
 export default function Platform() {
   return (
     <PlatformGrid
-      eyebrow="The full platform"
-      heading={<>Everything You Need<br />in One Platform</>}
-      intro="40+ databases, pipelines, and tools to find, validate, and build your next product."
+      eyebrow="The complete toolkit"
+      heading={<>All Your Research<br />Under One Roof</>}
+      intro="Over 40 datasets, pipelines and utilities to spot, test and ship your next product."
     >
-      <PlatformGrid.Tile icon={<Rocket />} label="BuildGuide" href="/build" />
-      <PlatformGrid.Tile icon={<Database />} label="Problems DB" href="/problems" />
+      <PlatformGrid.Tile icon={<Rocket />} label="Launch Playbook" href="/playbook" />
+      <PlatformGrid.Tile icon={<Database />} label="Problem Library" href="/problems" />
 
-      <PlatformGrid.Feature icon={<G2Icon />} label="G2 Analysis" href="/g2">
+      <PlatformGrid.Feature icon={<G2Icon />} label="G2 Insights" href="/g2">
         <PlatformGrid.Mock>
           <div className="flex items-center justify-between">
-            <span className="text-[9px] font-semibold">Email Client</span>
-            <PlatformGrid.Pill>Gap: 8.5</PlatformGrid.Pill>
+            <span className="text-[9px] font-semibold">Inbox App</span>
+            <PlatformGrid.Pill>Score: 8.4</PlatformGrid.Pill>
           </div>
-          <p className="text-[7px] text-foreground/50">Sync failures dominate 1,412 negative reviews</p>
+          <p className="text-[7px] text-foreground/50">Most of 1,380 low ratings blame sync errors</p>
           <div className="flex items-center justify-between">
-            <PlatformGrid.Pill tone="soft">26 companies</PlatformGrid.Pill>
-            <PlatformGrid.Pill tone="accent">Export</PlatformGrid.Pill>
+            <PlatformGrid.Pill tone="soft">24 vendors</PlatformGrid.Pill>
+            <PlatformGrid.Pill tone="accent">Download</PlatformGrid.Pill>
           </div>
         </PlatformGrid.Mock>
       </PlatformGrid.Feature>
 
-      <PlatformGrid.Feature icon={<RedditIcon />} label="Reddit Analysis" href="/reddit">
+      <PlatformGrid.Feature icon={<RedditIcon />} label="Reddit Insights" href="/reddit">
         <PlatformGrid.Mock>
-          <p className="text-[8px] italic">“Honestly so frustrated with juggling three tools for one client”</p>
-          <PlatformGrid.Pill>Pain point</PlatformGrid.Pill>
+          <p className="text-[8px] italic">“Switching between three apps for every client is wearing me out”</p>
+          <PlatformGrid.Pill>Frustration</PlatformGrid.Pill>
         </PlatformGrid.Mock>
       </PlatformGrid.Feature>
 
-      <PlatformGrid.Tile icon={<Lightbulb />} label="Solutions DB" href="/solutions" />
-      <PlatformGrid.Tile icon={<Flame />} label="Pain Points" href="/pain-points" />
-      <PlatformGrid.Tile icon={<Search />} label="Keyword Generator" href="/keywords" />
+      <PlatformGrid.Tile icon={<Lightbulb />} label="Solution Library" href="/solutions" />
+      <PlatformGrid.Tile icon={<Flame />} label="User Frustrations" href="/frustrations" />
+      <PlatformGrid.Tile icon={<Search />} label="Keyword Finder" href="/keywords" />
       <PlatformGrid.Tile icon={<BookOpen />} label="Docs" href="/docs" />
     </PlatformGrid>
   );

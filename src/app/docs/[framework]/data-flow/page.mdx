@@ -29,42 +29,42 @@ const REVIEW_SITES = [
 export default function Intelligence() {
   return (
     <DataFlow
-      eyebrow="Integrated intelligence"
-      heading="From Data to Opportunities"
-      intro="We scraped 10 platforms and analyzed millions of complaints, reviews, and revenue signals to hand you validated startup opportunities."
-      highlights={["10 platforms", "millions of complaints", "validated startup opportunities"]}
+      eyebrow="Connected insight"
+      heading="Turning Signals into Ideas"
+      intro="We monitor 10 sources, comb through a mountain of complaints, reviews and revenue data, and surface startup ideas people already want."
+      highlights={["10 sources", "a mountain of complaints", "startup ideas people already want"]}
     >
-      <DataFlow.Source title="App stores" count="2 sources" items={APP_STORES} />
-      <DataFlow.Source title="Review platforms" count="4 sources" items={REVIEW_SITES} />
+      <DataFlow.Source title="App marketplaces" count="2 sources" items={APP_STORES} />
+      <DataFlow.Source title="Review sites" count="4 sources" items={REVIEW_SITES} />
 
-      <DataFlow.Core title="Deep Analysis" subtitle="AI-powered processing" />
+      <DataFlow.Core title="Signal Engine" subtitle="Machine-learning pipeline" />
 
-      <DataFlow.Output title="Market Analysis Reports" badge="3,432 categories">
+      <DataFlow.Output title="Market Research Briefs" badge="3,432 niches">
         <div className="flex flex-wrap gap-1.5">
-          <DataFlow.Tag>Maturity: Growing</DataFlow.Tag>
-          <DataFlow.Tag>Competition: High</DataFlow.Tag>
+          <DataFlow.Tag>Stage: Emerging</DataFlow.Tag>
+          <DataFlow.Tag>Saturation: High</DataFlow.Tag>
         </div>
         <Button variant="default" size="sm" iconLeft={<Download size={11} />} className="h-7 rounded-md px-2.5 text-[10.5px]">
-          Export data
+          Download CSV
         </Button>
       </DataFlow.Output>
 
-      <DataFlow.Output title="Ranked Pain Points" badge="200K+ found">
+      <DataFlow.Output title="Top User Frustrations" badge="200K+ logged">
         <DataFlow.Row>
-          Integration issues with HR systems
-          <DataFlow.Pill>Gap: 8.0</DataFlow.Pill>
+          HR software won’t connect cleanly
+          <DataFlow.Pill>Need: 8.0</DataFlow.Pill>
         </DataFlow.Row>
       </DataFlow.Output>
 
-      <DataFlow.Output title="Individual Reviews" badge="1M+ analyzed">
+      <DataFlow.Output title="Raw Customer Reviews" badge="1M+ read">
         <DataFlow.Row className="flex-col items-stretch gap-1.5">
           <span className="flex items-center justify-between">
             <HalfStars rating={2} size={10} showText={false} activeColor="text-primary" />
             <a href="/reviews/1" className="inline-flex items-center gap-0.5 text-[10px]">
-              View on G2 <ArrowUpRight size={10} />
+              Open on G2 <ArrowUpRight size={10} />
             </a>
           </span>
-          <span className="italic">“No calendar integration at all, so I still live in Outlook…”</span>
+          <span className="italic">“Still can’t sync with my calendar, so I’m stuck juggling two apps…”</span>
         </DataFlow.Row>
       </DataFlow.Output>
     </DataFlow>
@@ -127,7 +127,7 @@ The section measures its cards after layout and lays a cubic curve from each sou
 Each curve is a `FlowConnection` from <DocLink to="flowchart">Flowchart</DocLink>, in the fluid layout this section added to it: `dashed` gives the resting line its pattern, `flowDash` sets the moving dash, `glow={false}` keeps it flat, and the draw-in on mount is the same one the fixed canvas uses. The moving dash follows the theme's primary colour; pass `accent` to pin it.
 
 ```tsx
-<DataFlow accent="#f26522" heading="From Data to Opportunities">
+<DataFlow accent="#f26522" heading="Turning Signals into Ideas">
   …
 </DataFlow>
 ```
@@ -301,7 +301,7 @@ Each curve is a `FlowConnection` from <DocLink to="flowchart">Flowchart</DocLink
         <td><code>badge</code></td>
         <td><code>string</code></td>
         <td>—</td>
-        <td>Pill in the corner, e.g. <code>"200K+ found"</code>.</td>
+        <td>Pill in the corner, e.g. <code>"200K+ logged"</code>.</td>
       </tr>
       <tr>
         <td><code>children</code></td>

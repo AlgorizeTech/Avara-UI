@@ -291,9 +291,9 @@ function BookingCardSubmit({ children = "Book now", className }: BookingCardSubm
 }
 
 export interface BookingCardConfirmationProps {
-  /** Who the appointment is with, e.g. "Dr. Emily Chen". */
+  /** Who the appointment is with, e.g. "Dr. Priya Nair". */
   withName: string;
-  /** Where, e.g. "Manhattan Health Associates". */
+  /** Where, e.g. "Riverside Heart & Medical Group". */
   place?: string;
   className?: string;
 }
