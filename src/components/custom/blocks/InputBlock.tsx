@@ -61,12 +61,14 @@ export interface InputBlockProps
 
 // Walks up to the first ancestor that clips overflow (a modal, a scroll pane,
 // a card with overflow-hidden). That box, not the viewport, is what would crop
-// the suggestion list, so it decides whether the list opens up or down.
+// the suggestion list, so it decides whether the list opens up or down. Only
+// overflow-y counts — the list grows vertically, and a box clipping just
+// sideways (overflow-x: clip) leaves it free to hang below.
 const getClippingRect = (el: HTMLElement): DOMRect | null => {
   let node = el.parentElement;
   while (node && node !== document.body) {
-    const { overflow, overflowX, overflowY } = window.getComputedStyle(node);
-    if (/(auto|scroll|hidden|clip)/.test(overflow + overflowX + overflowY)) {
+    const { overflowY } = window.getComputedStyle(node);
+    if (/(auto|scroll|hidden|clip)/.test(overflowY)) {
       return node.getBoundingClientRect();
     }
     node = node.parentElement;
