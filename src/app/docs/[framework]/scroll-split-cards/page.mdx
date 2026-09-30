@@ -18,36 +18,45 @@ export default function ScrollSplitCardsExample() {
   return (
     <div className="w-full">
       <ScrollSplitCards
-        headerTitle="Scroll"
-        headerSubtitle="Scroll to see it change"
-        imageUrl="https://images.unsplash.com/photo-1501594907352-04cda38ebc29?q=80&w=2400&auto=format&fit=crop"
+        headerTitle="Explore"
+        headerSubtitle="Scroll down to reveal the alpine lake narrative"
+        imageUrl="https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto/v1790224415/photo-1501785888041-af3ef285b470-1790146212207-1790224416318.jpg"
         cards={[
           {
             number: "01",
-            tag: "PRESIDIO",
-            title: "Fort Point",
+            tag: "SANCTUARY",
+            metric: "1,496 M",
+            metricLabel: "ELEVATION",
+            location: "South Tyrol, Italy",
+            title: "Lago di Braies",
             description:
-              "A Civil War battery under the south tower. The fog hits the brick before it hits the city.",
-            backgroundColor: "#EFE8DC",
-            textColor: "#1c1917",
+              "Glacial emerald waters mirror sheer limestone walls in the silent morning mist before rowers set out.",
+            backgroundColor: "#13352F",
+            textColor: "#E6F4F1",
           },
           {
             number: "02",
-            tag: "1.7 MILES",
-            title: "The Span",
+            tag: "HERITAGE",
+            metric: "100+ YRS",
+            metricLabel: "ROWBOAT CRAFT",
+            location: "Prags Alpine Dock",
+            title: "The Boathouse",
             description:
-              "International Orange, mixed to cut through fog. The deck hangs 220 feet over the strait.",
-            backgroundColor: "#C84B31",
-            textColor: "#ffffff",
+              "Handcrafted wooden larch skiffs moored to stilted pine docks, awaiting the gentle morning row across crystal shallows.",
+            backgroundColor: "#A45229",
+            textColor: "#FFF8F5",
           },
           {
             number: "03",
-            tag: "NORTH TOWER",
-            title: "Marin Head",
+            tag: "UNESCO",
+            metric: "2,810 M",
+            metricLabel: "SUMMIT HEIGHT",
+            location: "Dolomites Park",
+            title: "Seekofel Peak",
             description:
-              "The walk from Battery Spencer. On a thick day the city is only a smear of lights.",
-            backgroundColor: "#282E33",
-            textColor: "#f8fafc",
+              "Towering pale crags catch the first golden alpine glow, standing sentinel over the emerald basin below.",
+            backgroundColor: "#141E2B",
+            textColor: "#ECF3F9",
           },
         ]}
       />
@@ -98,6 +107,7 @@ export default function MinimalistEditorialExample() {
 <ExampleShowcase
   name="scroll-split-cards"
   columns={1}
+  colorControl={false}
   examples={[
     {
       title: "Scroll Split Cards",
@@ -124,8 +134,8 @@ export default function MinimalistEditorialExample() {
         },
       ],
       props: {
-        headerTitle: "Scroll",
-        headerSubtitle: "Scroll to see it change",
+        headerTitle: "Explore",
+        headerSubtitle: "Scroll down to reveal the alpine lake narrative",
       },
       usage: usageDefault,
       code: extractCode("src/components/custom/blocks/ScrollSplitCardsBlock.tsx"),
@@ -159,14 +169,78 @@ export default function MinimalistEditorialExample() {
   </div>
 </div>
 
+## Best Practices & Guidelines
+
+<div className="flex flex-col gap-4 my-6 not-prose">
+  <div className="rounded-xl border border-foreground/[0.06] bg-foreground/[0.03] p-4">
+    <h4 className="font-sans text-[14px] font-semibold text-foreground mb-1">Scroll Choreography & Layout Containment</h4>
+    <p className="text-[13px] leading-relaxed text-foreground/50">Place <code>ScrollSplitCards</code> in a standard vertical flow without conflicting parent <code>overflow-hidden</code> constraints. Both mousewheel scroll and touch drag gestures naturally advance the animation through each stage.</p>
+  </div>
+  <div className="rounded-xl border border-foreground/[0.06] bg-foreground/[0.03] p-4">
+    <h4 className="font-sans text-[14px] font-semibold text-foreground mb-1">Panoramic Image Selection</h4>
+    <p className="text-[13px] leading-relaxed text-foreground/50">For the most dramatic visual impact, use wide landscape photography (recommended aspect ratio 21:9 or ~2.4:1) with a resolution of at least 2400×1000px. High-contrast horizon or architectural imagery splits cleanly across the panels.</p>
+  </div>
+  <div className="rounded-xl border border-foreground/[0.06] bg-foreground/[0.03] p-4">
+    <h4 className="font-sans text-[14px] font-semibold text-foreground mb-1">Editorial Card Content & Legibility</h4>
+    <p className="text-[13px] leading-relaxed text-foreground/50">Keep narrative copy concise: 1–2 sentences per card along with an optional metric callout and kicker. Contrast-tested background colors ensure text remains easily legible on all viewports.</p>
+  </div>
+</div>
+
 ## Props Reference
 
-| Prop | Type | Default | Description |
-| :--- | :--- | :--- | :--- |
-| `imageUrl` | `string` | Golden Gate Bridge | Panoramic image URL sliced across the 3 card faces. |
-| `imageAlt` | `string` | `"Panoramic landscape..."` | Accessibility alt text for image panels. |
-| `headerTitle` | `string` | `"Scroll"` | Main title displayed at the top of the sticky view. |
-| `headerSubtitle` | `string` | `"Scroll to see it change"` | Secondary instructional subtitle. |
-| `cards` | `SplitCardItem[]` | Default 3 cards | Array of card data containing `number`, `tag`, `title`, `description`, and colors. |
-| `containerHeight` | `string` | `"720px"` | Height of the presentation stage. Defaults to a self-contained 720px. |
-| `enableScrollIndicator` | `boolean` | `true` | Shows or hides the minimalist animated mouse pill indicator. |
+<div className="overflow-x-auto mb-8">
+  <table>
+    <thead>
+      <tr>
+        <th>Prop</th>
+        <th>Type</th>
+        <th>Default</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><code>imageUrl</code></td>
+        <td><code>string</code></td>
+        <td><code>DEFAULT_IMAGE</code></td>
+        <td>Panoramic landscape photograph URL that is mathematically sliced across the three card panels. Also accepts <code>imageSrc</code>.</td>
+      </tr>
+      <tr>
+        <td><code>cards</code></td>
+        <td><code>SplitCard[]</code></td>
+        <td><code>DEFAULT_CARDS</code></td>
+        <td>Array of card data objects containing <code>title</code>, <code>description</code>, <code>kicker</code>, <code>metric</code>, <code>metricLabel</code>, <code>location</code>, <code>bgColor</code>, and <code>textColor</code>. Also accepts <code>items</code>.</td>
+      </tr>
+      <tr>
+        <td><code>headerTitle</code></td>
+        <td><code>string</code></td>
+        <td><code>"Explore"</code></td>
+        <td>Primary headline displayed prominently at the top above the split cards stage.</td>
+      </tr>
+      <tr>
+        <td><code>headerSubtitle</code></td>
+        <td><code>string</code></td>
+        <td><code>"Scroll down to reveal..."</code></td>
+        <td>Supporting instructional or narrative subtext displayed beneath the header title.</td>
+      </tr>
+      <tr>
+        <td><code>containerHeight</code></td>
+        <td><code>string</code></td>
+        <td><code>undefined</code></td>
+        <td>Optional height override for the stage container. By default uses responsive heights: <code>460px</code> on mobile, <code>620px</code> on small, <code>650px</code> on medium, and <code>710px</code> on large screens.</td>
+      </tr>
+      <tr>
+        <td><code>enableScrollIndicator</code></td>
+        <td><code>boolean</code></td>
+        <td><code>true</code></td>
+        <td>Controls whether to display the animated mouse scroll indicator pill at the bottom center.</td>
+      </tr>
+      <tr>
+        <td><code>className</code></td>
+        <td><code>string</code></td>
+        <td><code>""</code></td>
+        <td>Additional CSS classes applied to the root outer container.</td>
+      </tr>
+    </tbody>
+  </table>
+</div>

@@ -9,7 +9,7 @@ import {
 export default function ScrollSplitCardsDemo(props: ScrollSplitCardsProps) {
   return (
     <div className="w-full flex items-center justify-center">
-      <ScrollSplitCards containerHeight="720px" {...props} />
+      <ScrollSplitCards {...props} />
     </div>
   );
 }
