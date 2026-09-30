@@ -77,9 +77,16 @@ export const NAME_OVERRIDES: Record<string, string> = {
   "WalletBlock.tsx": "wallet",
   "FAQSectionBlock.tsx": "faq-section",
   "ConfidentialFolderBlock.tsx": "confidential-folder",
+  "ScrollSplitCardsBlock.tsx": "scroll-split-cards",
 };
 
 export const META: Record<string, ItemMeta> = {
+  "scroll-split-cards": {
+    description:
+      "A cinematic scroll-driven storytelling card component that splits a seamless panoramic image into three panels, expands gaps, flips 180° in 3D into editorial narratives, and glides away.",
+    categories: ["scroll", "media", "marketing"],
+    docs: "Named export: ScrollSplitCards.",
+  },
   "confidential-folder": {
     description:
       "An interactive confidential folder sleeve with a card that slides out horizontally on hover and gracefully elevates on click.",

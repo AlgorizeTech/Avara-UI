@@ -1,0 +1,172 @@
+import { docsPageMetadata } from "@/lib/docs-metadata";
+
+export const metadata = docsPageMetadata("scroll-split-cards");
+
+import { ExampleShowcase } from "@/components/site/Sandbox";
+import { Installation } from "@/components/site/installation";
+import { extractCode } from "@/lib/code";
+
+# Scroll Split Cards
+
+A cinematic scroll-driven storytelling component featuring a unified panoramic landscape that splits into three distinct physical card panels upon scrolling. As the user continues downward, the cards separate, execute a perspective-rich 180° 3D flip to reveal curated editorial narratives, and finally float upward away from the viewport.
+
+`ScrollSplitCards` brings tactile visual immersion to brand origin stories, architectural journeys, editorial photography features, and landmark case studies.
+
+export const usageDefault = `import { ScrollSplitCards } from "@/components/custom/blocks/ScrollSplitCardsBlock";
+
+export default function ScrollSplitCardsExample() {
+  return (
+    <div className="w-full">
+      <ScrollSplitCards
+        headerTitle="Scroll"
+        headerSubtitle="Scroll to see it change"
+        imageUrl="https://images.unsplash.com/photo-1501594907352-04cda38ebc29?q=80&w=2400&auto=format&fit=crop"
+        cards={[
+          {
+            number: "01",
+            tag: "PRESIDIO",
+            title: "Fort Point",
+            description:
+              "A Civil War battery under the south tower. The fog hits the brick before it hits the city.",
+            backgroundColor: "#EFE8DC",
+            textColor: "#1c1917",
+          },
+          {
+            number: "02",
+            tag: "1.7 MILES",
+            title: "The Span",
+            description:
+              "International Orange, mixed to cut through fog. The deck hangs 220 feet over the strait.",
+            backgroundColor: "#C84B31",
+            textColor: "#ffffff",
+          },
+          {
+            number: "03",
+            tag: "NORTH TOWER",
+            title: "Marin Head",
+            description:
+              "The walk from Battery Spencer. On a thick day the city is only a smear of lights.",
+            backgroundColor: "#282E33",
+            textColor: "#f8fafc",
+          },
+        ]}
+      />
+    </div>
+  );
+}`;
+
+export const usageCustom = `import { ScrollSplitCards } from "@/components/custom/blocks/ScrollSplitCardsBlock";
+
+export default function MinimalistEditorialExample() {
+  return (
+    <div className="w-full">
+      <ScrollSplitCards
+        headerTitle="The Journey"
+        headerSubtitle="Explore the three foundational acts"
+        imageUrl="https://images.unsplash.com/photo-1470071459604-3b5ec3a7fe05?q=80&w=2400&auto=format&fit=crop"
+        cards={[
+          {
+            number: "01",
+            tag: "ORIGIN",
+            title: "The Valley",
+            description: "Where silent mist gathers before the early dawn.",
+            backgroundColor: "#f5f5f4",
+            textColor: "#1c1917",
+          },
+          {
+            number: "02",
+            tag: "ASCENT",
+            title: "The Ridge",
+            description: "High elevation where crisp timber meets mountain air.",
+            backgroundColor: "#0284c7",
+            textColor: "#ffffff",
+          },
+          {
+            number: "03",
+            tag: "HORIZON",
+            title: "The Summit",
+            description: "Pure sky spanning out across thirty miles of wilderness.",
+            backgroundColor: "#0f172a",
+            textColor: "#f8fafc",
+          },
+        ]}
+      />
+    </div>
+  );
+}`;
+
+<ExampleShowcase
+  name="scroll-split-cards"
+  columns={1}
+  examples={[
+    {
+      title: "Scroll Split Cards",
+      subheading:
+        "Scroll down to see the panoramic image split into three panels, expand outward, rotate and flip in 3D to reveal editorial story cards resting cleanly in place.",
+      propNotes: [
+        {
+          lead: "Seamless Panorama Slicing",
+          prop: "imageUrl",
+          effect:
+            "splits a single wide image into three adjacent panels that appear completely seamless at initial scroll position.",
+        },
+        {
+          lead: "Expanding Gap Choreography",
+          prop: "smoothProgress",
+          effect:
+            "drives outward translation of left and right panels with spring-damped smoothness as scroll progresses.",
+        },
+        {
+          lead: "180° Perspective 3D Flip",
+          prop: "rotateY",
+          effect:
+            "rotates all three panels in 3D space to reveal bespoke back-face editorial narratives with custom color palettes.",
+        },
+      ],
+      props: {
+        headerTitle: "Scroll",
+        headerSubtitle: "Scroll to see it change",
+      },
+      usage: usageDefault,
+      code: extractCode("src/components/custom/blocks/ScrollSplitCardsBlock.tsx"),
+      minHeight: 720,
+    },
+  ]}
+/>
+
+## Installation
+
+<Installation name="scroll-split-cards" />
+
+## Features
+
+<div className="grid grid-cols-1 sm:grid-cols-2 gap-4 my-6 not-prose">
+  <div className="p-6 rounded-2xl border border-border bg-card">
+    <h3 className="text-lg font-semibold text-card-foreground mb-2">Mathematical Panorama Slicing</h3>
+    <p className="text-muted-foreground text-sm">Renders a single high-resolution image across three adjacent overflow-hidden cards using precise percentage offsets, guaranteeing zero seams when closed.</p>
+  </div>
+  <div className="p-6 rounded-2xl border border-border bg-card">
+    <h3 className="text-lg font-semibold text-card-foreground mb-2">Spring-Smoothed Scroll Physics</h3>
+    <p className="text-muted-foreground text-sm">Powered by Framer Motion's <code>useScroll</code> and <code>useSpring</code> to convert native mousewheel and touch scroll inputs into organic physical motion.</p>
+  </div>
+  <div className="p-6 rounded-2xl border border-border bg-card">
+    <h3 className="text-lg font-semibold text-card-foreground mb-2">Dual-Sided 3D Cardstock</h3>
+    <p className="text-muted-foreground text-sm">Each panel has genuine 3D card faces with <code>preserve-3d</code> and <code>backface-visibility</code>, flipping 180° to reveal typographic narratives with individual color schemes.</p>
+  </div>
+  <div className="p-6 rounded-2xl border border-border bg-card">
+    <h3 className="text-lg font-semibold text-card-foreground mb-2">Stable Level Resting State</h3>
+    <p className="text-muted-foreground text-sm">Once the cards flip 180°, they rest cleanly aligned and straight side by side in the center without unwanted vertical drift or exit.</p>
+  </div>
+</div>
+
+## Props Reference
+
+| Prop | Type | Default | Description |
+| :--- | :--- | :--- | :--- |
+| `imageUrl` | `string` | Golden Gate Bridge | Panoramic image URL sliced across the 3 card faces. |
+| `imageAlt` | `string` | `"Panoramic landscape..."` | Accessibility alt text for image panels. |
+| `headerTitle` | `string` | `"Scroll"` | Main title displayed at the top of the sticky view. |
+| `headerSubtitle` | `string` | `"Scroll to see it change"` | Secondary instructional subtitle. |
+| `cards` | `SplitCardItem[]` | Default 3 cards | Array of card data containing `number`, `tag`, `title`, `description`, and colors. |
+| `containerHeight` | `string` | `"720px"` | Height of the presentation stage. Defaults to a self-contained 720px. |
+| `enableScrollIndicator` | `boolean` | `true` | Shows or hides the minimalist animated mouse pill indicator. |

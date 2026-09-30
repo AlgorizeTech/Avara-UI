@@ -653,6 +653,9 @@
     "glass": "Scroll Area — Glass",
     "auto-hide": "Scroll Area — Auto-hide"
   },
+  "scroll-split-cards": {
+    "scroll-split-cards": "Scroll Split Cards"
+  },
   "scroll-stack": {
     "card-gap": "Scroll Stack — Card gap"
   },

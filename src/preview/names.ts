@@ -131,6 +131,7 @@ export const sandboxNames = [
   "reviews",
   "scroll-accordion",
   "scroll-area",
+  "scroll-split-cards",
   "scroll-stack",
   "select",
   "selection-frame",

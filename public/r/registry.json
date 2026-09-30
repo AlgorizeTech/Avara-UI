@@ -3433,6 +3433,32 @@
       "docs": "Named exports: ScrollAreaBlock, getThemeStyles. `orientation` is vertical | horizontal | both; `autoHide` fades the bar when idle and `hideTrack` drops the track entirely. Needs a bounded height to scroll — give it an explicit height or a flex parent."
     },
     {
+      "name": "scroll-split-cards",
+      "type": "registry:component",
+      "title": "Scroll Split Cards",
+      "author": "AlgorizeTech",
+      "description": "A cinematic scroll-driven storytelling card component that splits a seamless panoramic image into three panels, expands gaps, flips 180° in 3D into editorial narratives, and glides away.",
+      "categories": [
+        "scroll",
+        "media",
+        "marketing"
+      ],
+      "dependencies": [
+        "framer-motion"
+      ],
+      "registryDependencies": [
+        "utils"
+      ],
+      "files": [
+        {
+          "path": "src/components/custom/blocks/ScrollSplitCardsBlock.tsx",
+          "type": "registry:component",
+          "target": "components/custom/blocks/ScrollSplitCardsBlock.tsx"
+        }
+      ],
+      "docs": "Named export: ScrollSplitCards."
+    },
+    {
       "name": "scroll-stack",
       "type": "registry:component",
       "title": "Scroll Stack",
