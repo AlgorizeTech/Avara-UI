@@ -1,3 +1,8 @@
+export const metadata = docsPageMetadata("selection-frame", {
+  title: "Selection Frame",
+  description: "That box Figma draws around a selected layer — corner handles and a crisp accent stroke — around any text span or block."
+});
+
 # Selection Frame
 
 That box Figma draws around a selected layer — four corner handles and a crisp accent stroke — wrapped around any text span or block.

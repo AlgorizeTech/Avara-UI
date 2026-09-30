@@ -1,3 +1,5 @@
+export const metadata = docsPageMetadata("memories-card");
+
 # Memories Card
 
 A premium, interactive card stack component featuring real-time 3D tilt physics, a dynamic "fan" background spread, and smooth swipe-to-next gestures. Perfect for showcasing travel memories, feature highlights, or curated photo galleries.

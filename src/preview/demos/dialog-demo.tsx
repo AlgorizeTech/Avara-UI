@@ -500,13 +500,19 @@ function NestedDialogs() {
           </DialogDescription>
         </DialogHeader>
 
-        <div className="grid gap-4 py-2">
-          <div className="grid gap-1.5">
+        {/* grid-cols-1 (minmax(0, 1fr)) on both grids lets the Bill to line
+            shrink and truncate; an auto column would widen to the full
+            name + email and scroll the dialog sideways on a phone. */}
+        <div className="grid grid-cols-1 gap-4 py-2">
+          <div className="grid grid-cols-1 gap-1.5">
             <label className="text-sm font-medium">Bill to</label>
             <div className="flex items-center gap-2">
               <div className="flex-1 min-w-0 h-10 flex items-center rounded-md border border-input px-3 text-sm">
                 {customer ? (
-                  <span className="truncate">
+                  <span
+                    className="min-w-0 truncate"
+                    title={`${customer.name} · ${customer.email}`}
+                  >
                     {customer.name}
                     <span className="text-muted-foreground"> · {customer.email}</span>
                   </span>
@@ -569,7 +575,7 @@ function NestedDialogs() {
             </div>
           </div>
 
-          <div className="grid gap-1.5">
+          <div className="grid grid-cols-1 gap-1.5">
             <label htmlFor="amount" className="text-sm font-medium">
               Amount
             </label>

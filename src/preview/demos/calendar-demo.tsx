@@ -28,9 +28,13 @@ export default function CalendarDemo({
   mockEvents?: Record<string, string[]>;
 }) {
   return (
+    // Glass sits in a photo frame from md up. Below md the frame's padding
+    // goes — it cost a phone 64px of calendar width — and the card fills
+    // edge to edge with the photo showing through it. overflow-hidden clips
+    // the card to the frame's corners.
     <div
       className={`w-full transition-all duration-500 rounded-2xl ${
-        variant === "glass" ? "p-8 bg-cover bg-center" : ""
+        variant === "glass" ? "overflow-hidden bg-cover bg-center md:p-8" : ""
       }`}
       style={
         variant === "glass"

@@ -1,3 +1,5 @@
+export const metadata = docsPageMetadata("kbd");
+
 # Kbd (Keyboard)
 
 A specialized typography component used to display keyboard buttons, shortcuts, and commands.

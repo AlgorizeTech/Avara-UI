@@ -1,3 +1,5 @@
+export const metadata = docsPageMetadata("timeline");
+
 # Advanced Timeline
 
 A robust, multi-layout vertical timeline component for tracking complex events, order statuses, and company histories.

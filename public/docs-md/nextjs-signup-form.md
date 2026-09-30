@@ -1,3 +1,5 @@
+export const metadata = docsPageMetadata("signup-form");
+
 # Authentication Forms
 
 Two production-ready authentication blocks: a **Login Form** for returning users and a **Register Form** for new ones. Both ship comprehensive client-side validation, error state handling, simulated loading states, password visibility toggles and social auth button templates.

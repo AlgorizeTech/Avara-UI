@@ -1,3 +1,5 @@
+export const metadata = docsPageMetadata("orbit-gallery");
+
 # Orbit Gallery
 
 A two-column hero for an agency, studio or gallery: copy and actions on the left, and on the right a ring of photo cards that revolves once every 36 seconds, each card staying upright as it travels. Hovering the ring holds it still; moving the pointer anywhere over the section leaves a short trail of dots in the accent colour.

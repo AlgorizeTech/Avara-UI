@@ -1,3 +1,5 @@
+export const metadata = docsPageMetadata("infrastructure-topology");
+
 # Infrastructure Topology
 
 An interactive, fluid **Infrastructure Topology** component simulating live data flows across microservices, central neural mesh core routers, connected SVG beam pipelines, and real-time telemetry metrics.

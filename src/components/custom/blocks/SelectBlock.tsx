@@ -26,12 +26,14 @@ export interface SelectOption {
 // shell, a scroll pane, a card with overflow-hidden). That element — not the
 // viewport — is what actually crops the dropdown, so it defines the space the
 // menu has to work with. Returns null when nothing clips, meaning the viewport
-// is the only bound.
+// is the only bound. Only overflow-y counts: the menu grows vertically, and a
+// box that clips just sideways (overflow-x: clip, e.g. a slide-in stage) leaves
+// it free to hang below — treating that as a clip flipped the menu up into it.
 const getClippingRect = (el: HTMLElement): DOMRect | null => {
   let node = el.parentElement;
   while (node && node !== document.body) {
-    const { overflow, overflowX, overflowY } = window.getComputedStyle(node);
-    if (/(auto|scroll|hidden|clip)/.test(overflow + overflowX + overflowY)) {
+    const { overflowY } = window.getComputedStyle(node);
+    if (/(auto|scroll|hidden|clip)/.test(overflowY)) {
       return node.getBoundingClientRect();
     }
     node = node.parentElement;

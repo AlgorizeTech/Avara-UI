@@ -608,7 +608,7 @@ const SECTION_EYEBROW =
 const SECTION_H2 =
 	"font-serif font-normal text-[clamp(26px,3.6vw,46px)] leading-[1.15] tracking-[-0.02em] text-foreground mb-3";
 const SECTION_SUB = "text-[15px] leading-[1.65] text-foreground/45 max-w-[490px]";
-const CARD_TITLE = "font-sans text-[14px] font-semibold text-foreground mb-[7px]";
+const CARD_TITLE = " text-[16px] lg:text-[18px] font-semibold text-foreground mb-[7px]";
 const CARD_COPY = "text-[13px] leading-[1.65] text-foreground/45";
 const CARD_SURFACE = "border border-foreground/[0.06] bg-card";
 const EYEBROW_PILL =

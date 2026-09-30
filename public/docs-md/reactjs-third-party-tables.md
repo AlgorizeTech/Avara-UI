@@ -1,3 +1,8 @@
+export const metadata = docsPageMetadata("third-party/tables", {
+  title: "Data Tables",
+  description: "Integrate TanStack Table and AG Grid with Algorize UI — a headless table rendered with the Table primitives, and a themed grid with React cell renderers."
+});
+
 # Data Tables
 
 Two very different answers to the same problem. TanStack Table is headless — it

@@ -1,3 +1,5 @@
+export const metadata = docsPageMetadata("image-compare");
+
 # Image Compare
 
 An interactive, responsive image comparison slider component featuring 10 distinct visual comparison modes, fluid touch/mouse drag physics, custom label badges, and dynamic site theme color binding.

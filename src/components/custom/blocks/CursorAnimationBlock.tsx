@@ -29,16 +29,7 @@ export type CursorVariant =
   | "sonar"
   | "image-trail";
 
-export type CursorColor =
-  | "indigo"
-  | "rose"
-  | "emerald"
-  | "zinc"
-  | "lavender"
-  | "amber"
-  | "blue"
-  | "primary"
-  | (string & {});
+export type CursorColor = "indigo" | "rose" | "emerald" | "zinc" | "primary" | (string & {});
 
 const defaultTrailImages = [
   "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_300,c_limit/v1790146210/photo-1506744038136-46273834b3fb-1790146212208.jpg",
@@ -74,7 +65,7 @@ export function MainContent({ children, className, ...props }: MainContentProps)
 
 const colorThemes: Record<string, { accent: string; rgb: string }> = {
   primary: {
-    accent: "var(--primary)",
+    accent: "#6366f1",
     rgb: "99, 102, 241",
   },
   indigo: {
@@ -92,18 +83,6 @@ const colorThemes: Record<string, { accent: string; rgb: string }> = {
   zinc: {
     accent: "#a1a1aa",
     rgb: "161, 161, 170",
-  },
-  lavender: {
-    accent: "#9b8afb",
-    rgb: "155, 138, 251",
-  },
-  amber: {
-    accent: "#f59e0b",
-    rgb: "245, 158, 11",
-  },
-  blue: {
-    accent: "#3b82f6",
-    rgb: "59, 130, 246",
   },
 };
 
@@ -142,19 +121,6 @@ export function CursorAnimation({
     : color?.startsWith("#")
       ? hexToRgb(color)
       : colorThemes[color]?.rgb || "99, 102, 241";
-
-  const getColorWithAlpha = (alpha: number) => {
-    if (isPrimary || activeColor === "var(--primary)") {
-      return `color-mix(in oklab, var(--primary) ${Math.round(alpha * 100)}%, transparent)`;
-    }
-    if (color?.startsWith("#")) {
-      return `rgba(${hexToRgb(color)}, ${alpha})`;
-    }
-    if (colorThemes[color]?.rgb) {
-      return `rgba(${colorThemes[color].rgb}, ${alpha})`;
-    }
-    return `color-mix(in oklab, ${activeColor} ${Math.round(alpha * 100)}%, transparent)`;
-  };
 
   const containerRef = useRef<HTMLDivElement>(null);
   const targetPosRef = useRef({ x: -100, y: -100 });
@@ -282,10 +248,6 @@ export function CursorAnimation({
         "flex flex-col items-center justify-center p-6 text-center cursor-none",
         className
       )}
-      style={{
-        ...(isPrimary ? {} : ({ "--primary": activeColor } as React.CSSProperties)),
-        ...props.style,
-      }}
       {...props}
     >
       {/* Container Background Grid Pattern */}
@@ -298,8 +260,8 @@ export function CursorAnimation({
             <div
               className="w-14 h-14 rounded-2xl flex items-center justify-center shadow-sm border mx-auto"
               style={{
-                backgroundColor: getColorWithAlpha(0.12),
-                borderColor: getColorWithAlpha(0.3),
+                backgroundColor: isPrimary ? "color-mix(in oklab, var(--primary) 12%, transparent)" : `rgba(${activeRgb}, 0.12)`,
+                borderColor: isPrimary ? "color-mix(in oklab, var(--primary) 30%, transparent)" : `rgba(${activeRgb}, 0.3)`,
                 color: activeColor,
               }}
             >
@@ -341,8 +303,8 @@ export function CursorAnimation({
                   top: `${mousePos.y}px`,
                   width: isClicking ? "24px" : "36px",
                   height: isClicking ? "24px" : "36px",
-                  borderColor: getColorWithAlpha(0.5),
-                  backgroundColor: getColorWithAlpha(0.15),
+                  borderColor: isPrimary ? "color-mix(in oklab, var(--primary) 50%, transparent)" : `rgba(${activeRgb}, 0.5)`,
+                  backgroundColor: isPrimary ? "color-mix(in oklab, var(--primary) 15%, transparent)" : `rgba(${activeRgb}, 0.15)`,
                 }}
               />
               <div
@@ -467,7 +429,7 @@ export function CursorAnimation({
                   width: isClicking ? "64px" : "40px",
                   height: isClicking ? "64px" : "40px",
                   borderColor: activeColor,
-                  backgroundColor: getColorWithAlpha(0.15),
+                  backgroundColor: isPrimary ? "color-mix(in oklab, var(--primary) 15%, transparent)" : `rgba(${activeRgb}, 0.15)`,
                 }}
               />
               <div
@@ -488,14 +450,14 @@ export function CursorAnimation({
                 className="pointer-events-none absolute top-0 bottom-0 w-[1px]"
                 style={{
                   left: `${mousePos.x}px`,
-                  backgroundColor: getColorWithAlpha(0.4),
+                  backgroundColor: isPrimary ? "color-mix(in oklab, var(--primary) 40%, transparent)" : `rgba(${activeRgb}, 0.4)`,
                 }}
               />
               <div
                 className="pointer-events-none absolute left-0 right-0 h-[1px]"
                 style={{
                   top: `${mousePos.y}px`,
-                  backgroundColor: getColorWithAlpha(0.4),
+                  backgroundColor: isPrimary ? "color-mix(in oklab, var(--primary) 40%, transparent)" : `rgba(${activeRgb}, 0.4)`,
                 }}
               />
               <div
@@ -548,7 +510,7 @@ export function CursorAnimation({
                   top: `${mousePos.y}px`,
                   width: "36px",
                   height: "36px",
-                  backgroundColor: getColorWithAlpha(0.25),
+                  backgroundColor: isPrimary ? "color-mix(in oklab, var(--primary) 25%, transparent)" : `rgba(${activeRgb}, 0.25)`,
                 }}
               />
               <div
@@ -566,23 +528,23 @@ export function CursorAnimation({
           {variant === "sonar" && (
             <>
               <div
-                className="pointer-events-none absolute -translate-x-1/2 -translate-y-1/2 rounded-full border-[1.5px]"
+                className="pointer-events-none absolute -translate-x-1/2 -translate-y-1/2 rounded-full border"
                 style={{
                   left: `${smoothPos.x}px`,
                   top: `${smoothPos.y}px`,
                   width: "56px",
                   height: "56px",
-                  borderColor: getColorWithAlpha(0.7),
+                  borderColor: isPrimary ? "color-mix(in oklab, var(--primary) 60%, transparent)" : `rgba(${activeRgb}, 0.6)`,
                 }}
               />
               <div
-                className="pointer-events-none absolute -translate-x-1/2 -translate-y-1/2 rounded-full border-[1.5px]"
+                className="pointer-events-none absolute -translate-x-1/2 -translate-y-1/2 rounded-full border"
                 style={{
                   left: `${smoothPos.x}px`,
                   top: `${smoothPos.y}px`,
                   width: "32px",
                   height: "32px",
-                  borderColor: getColorWithAlpha(0.5),
+                  borderColor: isPrimary ? "color-mix(in oklab, var(--primary) 40%, transparent)" : `rgba(${activeRgb}, 0.4)`,
                 }}
               />
               <div
@@ -644,7 +606,7 @@ export function CursorAnimation({
                   height: "18px",
                   transform: "translate(-50%, -50%)",
                   color: activeColor,
-                  boxShadow: `0 0 10px ${getColorWithAlpha(0.6)}`,
+                  boxShadow: `0 0 10px ${isPrimary ? "color-mix(in oklab, var(--primary) 60%, transparent)" : `rgba(${activeRgb}, 0.6)`}`,
                 }}
               >
                 <div

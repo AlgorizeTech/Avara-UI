@@ -42,6 +42,12 @@ export interface ConversationTimelineProps {
   visibleCount?: number;
   /** Fixed label column width (px) — labels truncate past this. Default 240. */
   labelWidth?: number;
+  /**
+   * Render the label column. Turn it off where width is tight — beside a chat
+   * on a phone — and the rail becomes a marks-only minimap: the messages it
+   * points at already carry the text. Marks keep their `aria-label`. Default true.
+   */
+  showLabels?: boolean;
   /** Accent colour for the active row's line. Defaults to the theme's primary. */
   accent?: string;
   className?: string;
@@ -62,6 +68,7 @@ export function ConversationTimeline({
   collapsedRowHeight = 10,
   visibleCount = 10,
   labelWidth = 240,
+  showLabels = true,
   accent = "var(--primary)",
   className,
 }: ConversationTimelineProps) {
@@ -124,7 +131,7 @@ export function ConversationTimeline({
     : `height ${TRANSITION_MS}ms var(--ease-smooth, cubic-bezier(0.4, 0, 0.2, 1))`;
   // +4px absorbs the hover nudge's translateX so it never clips against the
   // rail's own overflow-x boundary.
-  const railWidth = MARK_WIDTH + GAP + labelWidth + 4;
+  const railWidth = MARK_WIDTH + 4 + (showLabels ? GAP + labelWidth : 0);
   // With the scrollbar hidden there's no native cue that a taller list
   // continues past view — fade the top/bottom edges as the affordance, but
   // only when there's actually more to scroll to.
@@ -215,36 +222,38 @@ export function ConversationTimeline({
                 stays constant (active = medium, rest = normal) so it never
                 changes layout width; hover emphasis is colour + a
                 post-layout transform only, so it can never nudge the marks. */}
-            <span
-              className={cn(
-                "min-w-0 whitespace-nowrap tracking-[-0.01em] truncate",
-                isRight ? "text-left origin-left" : "text-right origin-right",
-                isActive ? "font-medium" : "font-normal",
-                isHovered
-                  ? "text-foreground"
-                  : isActive
-                    ? "text-foreground/90"
-                    : "text-muted-foreground",
-              )}
-              style={{
-                width: labelWidth,
-                fontSize: 13,
-                opacity: expanded ? 1 : 0,
-                // Nudge only — no scale. Scaling a truncated, fixed-width,
-                // edge-clipped label grows its rendered footprint past the
-                // rail's own clip boundary and cuts off the ellipsis itself.
-                transform: `translateX(${isHovered ? (isRight ? 3 : -3) : 0}px)`,
-                // Opacity rides the same pace as the row's expand/collapse
-                // (it's part of that motion); colour and the hover nudge are
-                // a separate, snappier per-row response — one shared
-                // duration for both made the hover feel sluggish.
-                transition: reduce
-                  ? "none"
-                  : `opacity ${TRANSITION_MS}ms var(--ease-smooth, cubic-bezier(0.4, 0, 0.2, 1)), color 150ms ease-out, transform 150ms ease-out`,
-              }}
-            >
-              {cp.label}
-            </span>
+            {showLabels && (
+              <span
+                className={cn(
+                  "min-w-0 whitespace-nowrap tracking-[-0.01em] truncate",
+                  isRight ? "text-left origin-left" : "text-right origin-right",
+                  isActive ? "font-medium" : "font-normal",
+                  isHovered
+                    ? "text-foreground"
+                    : isActive
+                      ? "text-foreground/90"
+                      : "text-muted-foreground",
+                )}
+                style={{
+                  width: labelWidth,
+                  fontSize: 13,
+                  opacity: expanded ? 1 : 0,
+                  // Nudge only — no scale. Scaling a truncated, fixed-width,
+                  // edge-clipped label grows its rendered footprint past the
+                  // rail's own clip boundary and cuts off the ellipsis itself.
+                  transform: `translateX(${isHovered ? (isRight ? 3 : -3) : 0}px)`,
+                  // Opacity rides the same pace as the row's expand/collapse
+                  // (it's part of that motion); colour and the hover nudge are
+                  // a separate, snappier per-row response — one shared
+                  // duration for both made the hover feel sluggish.
+                  transition: reduce
+                    ? "none"
+                    : `opacity ${TRANSITION_MS}ms var(--ease-smooth, cubic-bezier(0.4, 0, 0.2, 1)), color 150ms ease-out, transform 150ms ease-out`,
+                }}
+              >
+                {cp.label}
+              </span>
+            )}
           </button>
         );
       })}

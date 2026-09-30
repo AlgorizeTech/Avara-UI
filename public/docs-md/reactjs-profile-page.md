@@ -1,3 +1,5 @@
+export const metadata = docsPageMetadata("profile-page");
+
 # Profile Page
 
 A person as a page: an aurora backdrop, frosted panels in four shapes, and a 24-hour dial that shows when they are at work — live, in their own time zone.
@@ -78,7 +80,7 @@ export default function ProfilePageDemo() {
         
            setFollowing((v) => !v)}
             className={cn(
-              "inline-flex h-11 items-center gap-2 rounded-full px-5 text-sm font-medium transition-colors",
+              "inline-flex h-9 items-center gap-1.5 rounded-full px-4 text-[13px] font-medium transition-colors sm:h-11 sm:gap-2 sm:px-5 sm:text-sm",
               following
                 ? "border border-foreground/10 bg-foreground/[0.04] text-foreground hover:bg-foreground/[0.08]"
                 : "bg-primary text-primary-foreground hover:bg-primary/90",
@@ -238,7 +240,7 @@ export default function ProfilePageDemo() {
         
            setFollowing((v) => !v)}
             className={cn(
-              "inline-flex h-11 items-center gap-2 rounded-full px-5 text-sm font-medium transition-colors",
+              "inline-flex h-9 items-center gap-1.5 rounded-full px-4 text-[13px] font-medium transition-colors sm:h-11 sm:gap-2 sm:px-5 sm:text-sm",
               following
                 ? "border border-foreground/10 bg-foreground/[0.04] text-foreground hover:bg-foreground/[0.08]"
                 : "bg-primary text-primary-foreground hover:bg-primary/90",

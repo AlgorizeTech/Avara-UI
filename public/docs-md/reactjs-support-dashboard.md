@@ -1,3 +1,5 @@
+export const metadata = docsPageMetadata("support-dashboard");
+
 # Support Dashboard
 
 A complete, production-ready Helpdesk and Support Dashboard interface.

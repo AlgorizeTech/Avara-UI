@@ -1,3 +1,5 @@
+export const metadata = docsPageMetadata("footer");
+
 # Footer
 
 A collection of 4 production-ready, high-capacity, fully responsive Footer components designed for modern web applications, SaaS platforms, e-commerce stores, and enterprise products.

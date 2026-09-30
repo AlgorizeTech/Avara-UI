@@ -253,7 +253,11 @@ export function DialogContent({
           // `size="full"`, or a height passed through className — the default
           // `align-content: stretch` inflates every auto row to fill it, and a
           // footer button stretches along with the row holding it.
-          "relative z-50 w-full grid content-start gap-4 border border-border bg-card text-card-foreground p-6 shadow-lg rounded-xl max-h-[85vh] overflow-y-auto",
+          // `grid-cols-1` is minmax(0, 1fr): an implicit auto column grows to
+          // its widest nowrap child, so a `truncate`d line — a long customer
+          // or file name — pushed the panel wide and scrolled it sideways
+          // instead of ending in an ellipsis.
+          "relative z-50 w-full grid grid-cols-1 content-start gap-4 border border-border bg-card text-card-foreground p-6 shadow-lg rounded-xl max-h-[85vh] overflow-y-auto",
           DIALOG_SIZES[size],
           "animate-in fade-in zoom-in-95 slide-in-from-top-[5%] duration-200",
           className,

@@ -1,3 +1,5 @@
+export const metadata = docsPageMetadata("design-components-folder");
+
 # Components Folder
 
 An interactive multi-tab component folder showcasing live AI Chat, Real-time Analytics, Auth Form, and CLI Terminal components inside a sleek desktop window interface. Built with Tailwind CSS and native CSS transitions — no animation library.

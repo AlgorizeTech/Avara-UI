@@ -1,3 +1,5 @@
+export const metadata = docsPageMetadata("navbar");
+
 # Navbar / Header
 
 A highly responsive, production-ready Navigation Bar. It manages pure CSS dropdowns for complex desktop menus, and uses CSS transitions to smoothly animate a beautiful slide-out drawer on mobile devices.

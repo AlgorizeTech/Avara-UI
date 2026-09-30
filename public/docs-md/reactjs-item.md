@@ -1,3 +1,5 @@
+export const metadata = docsPageMetadata("item");
+
 # Item
 
 A versatile layout component for displaying structured content featuring media, titles, descriptions, and actions.

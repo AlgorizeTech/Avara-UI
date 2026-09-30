@@ -1,3 +1,5 @@
+export const metadata = docsPageMetadata("api-playground");
+
 # API Playground
 
 A highly advanced, interactive split-pane block for testing API requests directly inside documentation.

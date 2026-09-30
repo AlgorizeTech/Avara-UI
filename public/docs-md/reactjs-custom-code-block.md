@@ -1,3 +1,5 @@
+export const metadata = docsPageMetadata("custom-code-block");
+
 # Custom Code Block
 
 A beautiful, robust code block component with manual syntax highlighting, automatic language icons, and clipboard copy functionality.

@@ -137,7 +137,11 @@ export function Modal({
     >
       <div
         className={cn(
-          "relative w-full max-w-lg overflow-hidden rounded-2xl bg-background shadow-xl transition-all duration-300 ease-in-out",
+          // A flex column capped at the overlay's height: the panel sizes to
+          // its content, and once that's taller than the screen the body —
+          // the only overflow-auto section — shrinks and scrolls while the
+          // header and footer stay in view.
+          "relative flex max-h-full w-full max-w-lg flex-col overflow-hidden rounded-2xl bg-background shadow-xl transition-all duration-300 ease-in-out",
           isVisible
             ? "opacity-100 translate-y-0 scale-100"
             : "opacity-0 -translate-y-12 scale-95",
@@ -171,7 +175,9 @@ export function Modal({
             </button>
           ))}
         <ModalLabelContext.Provider value={labelId}>
-          <div>{children}</div>
+          {/* min-h-0 lets this shrink below its content so the body can
+              scroll; flex-1 fills a panel given a fixed height. */}
+          <div className="flex min-h-0 flex-1 flex-col">{children}</div>
         </ModalLabelContext.Provider>
       </div>
     </div>
@@ -198,7 +204,9 @@ export function ModalHeader({
     <div
       id={labelId || undefined}
       className={cn(
-        "px-6 py-4 text-lg font-semibold border-b border-border/50 flex items-center justify-between min-h-[56px]",
+        // shrink-0: in the panel's flex column the explicit min-h would
+        // otherwise let a tall body squeeze a two-line header down to 56px.
+        "shrink-0 px-6 py-4 text-lg font-semibold border-b border-border/50 flex items-center justify-between min-h-[56px]",
         className,
       )}
     >
@@ -216,7 +224,7 @@ export function ModalHeader({
 
 export function ModalFooter({ className, children }: ModalSectionProps) {
   return (
-    <div className={cn("flex justify-end gap-2 p-4", className)}>
+    <div className={cn("flex shrink-0 justify-end gap-2 p-4", className)}>
       {children}
     </div>
   );

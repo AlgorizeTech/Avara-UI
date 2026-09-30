@@ -1,3 +1,5 @@
+export const metadata = docsPageMetadata("context-menu");
+
 # Context Menu
 
 Displays a menu to the user — such as a set of actions or functions — triggered by a right-click.

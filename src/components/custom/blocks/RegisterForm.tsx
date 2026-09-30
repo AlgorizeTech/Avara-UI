@@ -108,7 +108,7 @@ const Checkbox = ({
 }: FieldCheckboxProps) => (
   <div className="flex flex-col gap-1">
     <div className="flex items-start gap-2.5 pt-1">
-      <div className="relative flex items-center mt-0.5">
+      <div className="relative flex items-center">
         <input
           type="checkbox"
           id={id}
@@ -116,7 +116,12 @@ const Checkbox = ({
           onChange={(e) => onCheckedChange(e.target.checked)}
           className={cn(
             "peer h-4 w-4 shrink-0 rounded border-2 appearance-none cursor-pointer transition-colors outline-none",
-            error ? "border-red-500" : "border-border",
+            // --border is tuned for wide input outlines; on a 16px box it all but
+            // disappears, so the unchecked edge uses the stronger muted ink.
+            error
+              ? "border-red-500"
+              : !checked &&
+                  "border-muted-foreground/60 hover:border-muted-foreground",
             checked && !error && theme.bg,
             checked && !error && theme.border,
             theme.ring,

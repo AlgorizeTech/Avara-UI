@@ -1,3 +1,5 @@
+export const metadata = docsPageMetadata("avatar-stack");
+
 # Avatar Stack
 
 A row of overlapping faces — the "people who…" cue under a headline, beside a count, or next to a join button. It shows up to `max` faces, folds the rest into a "+N" disc, and takes an optional trailing `action` that shares the stack's size. On hover the faces fan apart a little, so the row answers the pointer without turning into a carousel.

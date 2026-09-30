@@ -1,3 +1,5 @@
+export const metadata = docsPageMetadata("network-graph");
+
 # Network Graph
 
 A layered orbital avatar visual that spreads items evenly across concentric rings. It works well for community showcases, team maps, social proof sections, and dense relationship-driven hero layouts.

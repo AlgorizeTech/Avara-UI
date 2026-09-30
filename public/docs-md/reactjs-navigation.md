@@ -1,3 +1,5 @@
+export const metadata = docsPageMetadata("navigation");
+
 # Navigation Menu
 
 A highly composable, accessible, and smoothly animated navigation menu built for modern React applications.

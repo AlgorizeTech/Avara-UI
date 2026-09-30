@@ -1,3 +1,5 @@
+export const metadata = docsPageMetadata("chat");
+
 # Chat Application
 
 A fully interactive, encapsulated chat interface. Features include search filtering, simulated typing/replies, dynamic unread badges, auto-scrolling, and a responsive mobile drawer sidebar.

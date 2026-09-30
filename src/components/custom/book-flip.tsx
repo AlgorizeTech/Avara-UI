@@ -422,6 +422,15 @@ export const BookFlip = forwardRef<BookFlipHandle, BookFlipProps>(({
                             leafRotation = -peekAngle;
                         }
 
+                        // One shadow per stack, cast by the leaf at its bottom: the
+                        // last leaf under the unturned stack, the first under the
+                        // turned one. Every leaf casting its own stacked the same
+                        // shadow N times into a dark halo on all sides, and a turned
+                        // leaf's box-shadow isn't hidden by backface-visibility.
+                        const castsShadow =
+                            shadowIntensity > 0 &&
+                            ((index === totalLeaves - 1 && !isTurned) || (index === 0 && isTurned));
+
                         const frontGrad = leaf.frontColor || "from-emerald-500 to-teal-600";
                         const backGrad = leaf.backColor || "from-indigo-500 to-purple-600";
 
@@ -445,10 +454,11 @@ export const BookFlip = forwardRef<BookFlipHandle, BookFlipProps>(({
                                     transform: `rotateY(${leafRotation}deg)`,
                                     zIndex,
                                     borderRadius: parsedRadius,
-                                    boxShadow:
-                                        shadowIntensity > 0
-                                            ? `0 10px 30px rgba(0, 0, 0, ${shadowIntensity})`
-                                            : "none",
+                                    // Negative spread keeps it beneath the book rather
+                                    // than as an even halo round every edge.
+                                    boxShadow: castsShadow
+                                        ? `0 14px 28px -10px rgba(0, 0, 0, ${shadowIntensity})`
+                                        : "none",
                                 }}
                             >
                                 {/* FRONT FACE */}

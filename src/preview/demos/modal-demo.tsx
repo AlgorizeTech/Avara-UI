@@ -255,61 +255,67 @@ function FullscreenModal() {
       <Modal
         isOpen={isOpen}
         onClose={() => setIsOpen(false)}
-        contentClassName="max-w-5xl h-[90vh] bg-background rounded-2xl shadow-xl border border-border"
+        // max-h, not h: the panel is as tall as its content up to 90% of the
+        // visible screen (dvh excludes the phone's browser bars), then the
+        // body scrolls between the pinned header and footer.
+        contentClassName="max-w-5xl max-h-[90dvh] bg-background rounded-2xl shadow-xl border border-border"
       >
-        <div className="flex flex-col h-full">
-          <ModalHeader className="border-b border-border pr-12">
-            <div className="min-w-0">
-              <h2 className="text-xl sm:text-2xl font-bold text-foreground">
-                Project Configuration
-              </h2>
-              <p className="text-sm text-muted-foreground mt-1 font-normal">
-                Manage all global settings for your workspace.
-              </p>
+        <ModalHeader className="border-b border-border pr-12">
+          <div className="min-w-0">
+            <h2 className="text-xl sm:text-2xl font-bold text-foreground">
+              Project Configuration
+            </h2>
+            <p className="text-sm text-muted-foreground mt-1 font-normal">
+              Manage all global settings for your workspace.
+            </p>
+          </div>
+        </ModalHeader>
+        <ModalBody className="max-h-none">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 sm:gap-8 p-2">
+            <div className="space-y-6">
+              <h3 className="text-sm font-semibold uppercase tracking-widest text-muted-foreground">
+                General
+              </h3>
+              <div className="h-12 w-full bg-muted rounded-lg animate-pulse" />
+              <div className="h-24 w-full bg-muted rounded-lg animate-pulse" />
+              <div className="h-12 w-3/4 bg-muted rounded-lg animate-pulse" />
             </div>
-          </ModalHeader>
-          <ModalBody className="flex-1 max-h-none">
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6 sm:gap-8 p-2">
-              <div className="space-y-6">
-                <h3 className="text-sm font-semibold uppercase tracking-widest text-muted-foreground">
-                  General
-                </h3>
-                <div className="h-12 w-full bg-muted rounded-lg animate-pulse" />
-                <div className="h-24 w-full bg-muted rounded-lg animate-pulse" />
-                <div className="h-12 w-3/4 bg-muted rounded-lg animate-pulse" />
-              </div>
-              <div className="space-y-6">
-                <h3 className="text-sm font-semibold uppercase tracking-widest text-muted-foreground">
-                  Security
-                </h3>
-                <div className="h-32 w-full bg-muted rounded-lg animate-pulse" />
-                <div className="h-12 w-full bg-muted rounded-lg animate-pulse" />
-              </div>
+            <div className="space-y-6">
+              <h3 className="text-sm font-semibold uppercase tracking-widest text-muted-foreground">
+                Security
+              </h3>
+              <div className="h-32 w-full bg-muted rounded-lg animate-pulse" />
+              <div className="h-12 w-full bg-muted rounded-lg animate-pulse" />
             </div>
-          </ModalBody>
-          <ModalFooter className="border-t border-border bg-muted flex flex-col-reverse sm:flex-row gap-3 sm:justify-between sm:items-center">
+          </div>
+        </ModalBody>
+        {/* One row that wraps: Delete left, Discard + Save right. Phones get
+            the short labels and compact buttons so all three fit a line. */}
+        <ModalFooter className="border-t border-border bg-muted flex-wrap items-center justify-between gap-2 px-4 py-3 sm:px-6 sm:py-4">
+          <button
+            onClick={() => setIsOpen(false)}
+            aria-label="Delete project"
+            className="px-3 py-2 rounded-lg text-sm font-semibold text-red-500 hover:text-red-600 hover:bg-red-500/10 transition-colors"
+          >
+            Delete<span className="hidden sm:inline"> Project</span>
+          </button>
+          <div className="ml-auto flex flex-wrap items-center justify-end gap-2">
             <button
               onClick={() => setIsOpen(false)}
-              className="py-2 sm:py-0 text-sm font-semibold text-red-500 hover:text-red-600 transition-colors"
+              aria-label="Discard changes"
+              className="px-3 py-2 sm:px-4 rounded-lg text-sm font-medium text-muted-foreground hover:bg-background hover:text-foreground transition-colors"
             >
-              Delete Project
+              Discard<span className="hidden sm:inline"> Changes</span>
             </button>
-            <div className="flex flex-col-reverse sm:flex-row gap-3">
-              <button
-                onClick={() => setIsOpen(false)}
-                className="px-6 py-3 rounded-lg font-medium text-muted-foreground hover:bg-muted transition-colors"
-              >
-                Discard Changes
-              </button>
-              <button
-                onClick={() => setIsOpen(false)}
-                className="px-6 py-3 rounded-lg font-semibold shadow-md transition-opacity bg-primary hover:bg-primary/90 text-primary-foreground"
-              >
-                Save Configuration
-              </button>
-            </div>
-          </ModalFooter>
-        </div>
+            <button
+              onClick={() => setIsOpen(false)}
+              aria-label="Save configuration"
+              className="px-4 py-2 sm:px-5 rounded-lg text-sm font-semibold shadow-sm transition-opacity bg-primary hover:bg-primary/90 text-primary-foreground"
+            >
+              Save<span className="hidden sm:inline"> Configuration</span>
+            </button>
+          </div>
+        </ModalFooter>
       </Modal>
     </>
   );

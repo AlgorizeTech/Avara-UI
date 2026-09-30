@@ -646,7 +646,7 @@ export default function SupportDashboard({
         <div className="absolute inset-0 z-50 flex items-center justify-center p-4 bg-black/40 backdrop-blur-sm animate-in fade-in duration-200">
           <div
             className={cn(
-              "w-full max-w-md p-6 rounded-2xl shadow-2xl flex flex-col gap-4 animate-in zoom-in-95 duration-200",
+              "w-full max-w-md p-5 sm:p-6 rounded-2xl shadow-2xl flex flex-col gap-4 animate-in zoom-in-95 duration-200",
               variant === "glass"
                 ? "bg-card border border-border backdrop-blur-xl"
                 : "bg-background border border-border",
@@ -685,8 +685,10 @@ export default function SupportDashboard({
                   placeholder="E.g. Cannot access account"
                 />
               </div>
-              <div className="flex gap-4">
-                <div className="flex flex-col gap-1.5 flex-1">
+              {/* Stacked on phones — side by side, a name input and the
+                  priority select don't both fit a ~300px modal. */}
+              <div className="flex flex-col sm:flex-row gap-4">
+                <div className="flex flex-col gap-1.5 flex-1 min-w-0">
                   <label className="text-xs font-semibold uppercase text-muted-foreground">
                     Customer Name
                   </label>
@@ -707,7 +709,7 @@ export default function SupportDashboard({
                     placeholder="John Doe"
                   />
                 </div>
-                <div className="flex flex-col gap-1.5 flex-1">
+                <div className="flex flex-col gap-1.5 flex-1 min-w-0">
                   <label className="text-xs font-semibold uppercase text-muted-foreground">
                     Priority
                   </label>

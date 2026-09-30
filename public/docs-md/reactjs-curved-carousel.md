@@ -1,3 +1,5 @@
+export const metadata = docsPageMetadata("curved-carousel");
+
 # Curved Carousel
 
 An interactive, 100% full-width 3D curved arc carousel featuring left-to-right oscillating auto-sway motion, smooth Motion spring physics, perspective depth cards, and dynamic site theme color binding.

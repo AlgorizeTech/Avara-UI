@@ -1,3 +1,5 @@
+export const metadata = docsPageMetadata("invoice");
+
 # Invoice Dashboard
 
 A complete, fully functional, and editable Invoice dashboard component featuring 3 distinct design variants: Default, Corporate Executive, and Neo-Brutalist.

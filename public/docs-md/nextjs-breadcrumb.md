@@ -1,3 +1,5 @@
+export const metadata = docsPageMetadata("breadcrumb");
+
 # Breadcrumb
 
 A navigational aid that helps users understand their current location within a website's hierarchy.

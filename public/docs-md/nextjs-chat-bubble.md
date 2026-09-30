@@ -1,3 +1,5 @@
+export const metadata = docsPageMetadata("chat-bubble");
+
 # Animated Chat Bubble
 
 A complete, CSS-animated compound component system for building highly customized chat interfaces, messengers, and support widgets.

@@ -1,3 +1,8 @@
+export const metadata = docsPageMetadata("third-party/carousel", {
+  title: "Carousels",
+  description: "Integrate Embla Carousel and Swiper with Algorize UI — Card slides, Button controls, and Swiper chrome themed through its own CSS variables."
+});
+
 # Carousels
 
 Algorize UI ships its own Carousel set for the

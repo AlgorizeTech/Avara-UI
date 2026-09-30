@@ -1,3 +1,5 @@
+export const metadata = docsPageMetadata("flowchart");
+
 # Flowchart / Node Builder
 
 A declarative, highly sleek flowchart engine complete with custom responsive column channels, node action anchors, and custom vector streaming lines that draw themselves in with plain CSS animation.

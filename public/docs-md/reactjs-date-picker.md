@@ -1,3 +1,5 @@
+export const metadata = docsPageMetadata("date-picker");
+
 # Date Picker
 
 A completely custom, dependency-free Date Picker component. Native HTML `` elements vary wildly between browsers and operating systems, often breaking the visual consistency of your application.

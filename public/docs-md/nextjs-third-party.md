@@ -1,3 +1,8 @@
+export const metadata = docsPageMetadata("third-party", {
+  title: "Third Party Integration",
+  description: "Worked examples pairing Algorize UI with the most widely used React charting, table, carousel, select and lightbox libraries."
+});
+
 # Third Party Integration
 
 Algorize UI does not try to be every library. Where a problem already has a

@@ -1,3 +1,5 @@
+export const metadata = docsPageMetadata("stepper");
+
 # Stepper
 
 A production-grade, highly animated multi-step wizard component built on plain **CSS transitions and the Web Animations API** — no animation library. It splits the layout into two decoupled blocks: the visual progress tracker and the bidirectional sliding content payload.
@@ -52,7 +54,7 @@ const PRIMARY_ROLE_OPTIONS = [
 ].map((r) => ({ label: r, value: r }));
 
 const BACK_BTN =
-  "flex items-center gap-1.5 px-4 py-2.5 rounded-xl border border-border bg-muted text-foreground font-semibold text-sm disabled:opacity-40 disabled:cursor-not-allowed hover:bg-muted/80 transition-all active:scale-95 cursor-pointer";
+  "flex items-center gap-1.5 px-4 py-2.5 rounded-xl border border-foreground/10 bg-card text-foreground font-semibold text-sm shadow-[0_1px_2px_rgb(0_0_0/0.04)] disabled:opacity-40 disabled:cursor-not-allowed hover:bg-muted transition-all active:scale-95 cursor-pointer";
 const NEXT_BTN =
   "flex items-center gap-1.5 px-6 py-2.5 rounded-xl text-primary-foreground font-semibold text-sm shadow-md transition-all hover:brightness-110 active:scale-95 cursor-pointer bg-primary";
 
@@ -84,11 +86,13 @@ function Field({
          onChange(e.target.value)}
           placeholder={placeholder}
           className={cn(
-            "w-full h-11 bg-background border rounded-xl px-3.5 text-sm text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 transition-all",
+            // Focus is a soft primary glow: the border takes the colour and a
+            // faint 4px halo fades in with it.
+            "w-full h-11 bg-background border rounded-xl px-3.5 text-sm text-foreground placeholder:text-muted-foreground outline-none shadow-[0_1px_2px_rgb(0_0_0/0.04)] transition-[border-color,box-shadow] duration-200 ease-out",
             Icon && "pl-10",
             error
-              ? "border-destructive focus:ring-destructive/20"
-              : "border-input focus:border-ring",
+              ? "border-destructive focus:shadow-[0_0_0_4px_color-mix(in_oklab,var(--destructive)_16%,transparent)]"
+              : "border-input hover:border-foreground/20 focus:border-primary/65 focus:shadow-[0_0_0_4px_color-mix(in_oklab,var(--primary)_16%,transparent)]",
           )}
         />
       
@@ -238,7 +242,7 @@ export default function OnboardingWizard() {
           )}
 
                setSimulateError(e.target.checked)}
-                className="rounded border-input text-primary focus:ring-primary"
+                className="rounded border-input accent-primary"
               />
               Simulate Server Error on Submit
             
@@ -249,6 +253,8 @@ export default function OnboardingWizard() {
   ];
 
   return (
+    // A whisper of the primary on the shell separates it from a white page;
+    // the white step cards float on it.
     
       {/* onStepChange is what makes the circles clickable — gate it on validation */}
        {

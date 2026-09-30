@@ -1,3 +1,5 @@
+export const metadata = docsPageMetadata("social-links");
+
 # Social Links
 
 A row of brand marks that link out. Hand it the networks you have — X, GitHub, LinkedIn, YouTube, Instagram, Facebook, Discord, Dribbble, email — and it draws one tile per link, each with an accessible name, opening off-site links in a new tab.

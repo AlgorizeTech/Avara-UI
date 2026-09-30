@@ -1,3 +1,5 @@
+export const metadata = docsPageMetadata("video-player");
+
 # Video Player
 
 An embeddable, hardware-accelerated video hero for landing pages and high-conversion sections. Features a glassmorphism CTA, automatic dark/light mode responsiveness, and full keyboard accessibility.

@@ -1,3 +1,5 @@
+export const metadata = docsPageMetadata("menubar");
+
 # Menubar
 
 A visually persistent, OS-style menu component that provides quick access to a consistent set of commands.

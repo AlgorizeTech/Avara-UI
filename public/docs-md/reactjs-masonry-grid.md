@@ -1,3 +1,5 @@
+export const metadata = docsPageMetadata("masonry-grid");
+
 # Masonry Grid
 
 A high-performance masonry layout that tightly packs items of varying heights. Rather than relying on heavy JavaScript calculations or absolute positioning frameworks, this component utilizes standard CSS multi-column layout (`columns-N`) to flow items naturally.

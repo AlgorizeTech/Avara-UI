@@ -3,8 +3,10 @@
 import { Palette, Settings, TimerReset } from "lucide-react";
 import { useTheme } from "next-themes";
 import Link from "next/link";
+import { useEffect, useRef, useState } from "react";
 import { useThemeCustomizer } from "@/contexts/theme-customizer-context";
 import { usePathname } from "next/navigation";
+import { cn } from "@/lib/utils";
 
 import {
   Sheet,
@@ -30,12 +32,86 @@ import { FontSizeControl } from "./font-size-control";
 import { ThemePresetSelector } from "./theme-preset-selector";
 import { RadiusPicker } from "./radius-picker";
 
+type TriggerSide = "left" | "right";
+
+const TRIGGER_SIDE_STORAGE_KEY = "themeControlSide";
+const TRIGGER_OFFSET_STORAGE_KEY = "themeControlOffset";
+// Pointer travel before a press counts as a drag rather than a click.
+const DRAG_THRESHOLD = 4;
+// How far one ArrowUp/ArrowDown press moves the tab along its edge.
+const KEYBOARD_OFFSET_STEP = 0.05;
+
+const clamp = (value: number, min: number, max: number) =>
+  Math.min(max, Math.max(min, value));
+
+/**
+ * Where the customizer tab sits: always on the left or right edge, at any
+ * height along it. The reader drags the tab anywhere; on release it snaps to
+ * the nearer side edge and keeps the height it was dropped at. Both are
+ * persisted. Until they pick, it follows the document direction and the
+ * default height as before.
+ */
+function useTriggerPosition(dir: string) {
+  const [storedSide, setStoredSide] = useState<TriggerSide | null>(null);
+  // 0 = top of the viewport, 1 = bottom; null keeps the default height.
+  const [offset, setOffsetState] = useState<number | null>(null);
+
+  // Read after mount so the server render and first client render agree.
+  useEffect(() => {
+    try {
+      const stored = localStorage.getItem(TRIGGER_SIDE_STORAGE_KEY);
+      if (stored === "left" || stored === "right") setStoredSide(stored);
+      const storedOffset = Number.parseFloat(
+        localStorage.getItem(TRIGGER_OFFSET_STORAGE_KEY) ?? "",
+      );
+      if (Number.isFinite(storedOffset)) setOffsetState(clamp(storedOffset, 0, 1));
+    } catch {
+      // Storage blocked: keep the direction-based default
+    }
+  }, []);
+
+  function setSide(next: TriggerSide) {
+    setStoredSide(next);
+    try {
+      localStorage.setItem(TRIGGER_SIDE_STORAGE_KEY, next);
+    } catch {
+      // Storage blocked: the choice lasts for this page view only
+    }
+  }
+
+  function setOffset(next: number) {
+    const value = clamp(next, 0, 1);
+    setOffsetState(value);
+    try {
+      localStorage.setItem(TRIGGER_OFFSET_STORAGE_KEY, String(value));
+    } catch {
+      // Storage blocked: the choice lasts for this page view only
+    }
+  }
+
+  const side: TriggerSide = storedSide ?? (dir === "rtl" ? "left" : "right");
+  return { side, setSide, offset, setOffset };
+}
+
 export function ThemeControl() {
   const { dir, setFontSize, setFontFamily } =
     useThemeContext();
   const { resetToDefaults } = useThemeCustomizer();
   const { setTheme } = useTheme();
   const pathname = usePathname();
+  const { side, setSide, offset, setOffset } = useTriggerPosition(dir);
+  // Offset while the tab is being dragged; 0 when at rest.
+  const [drag, setDrag] = useState({ x: 0, y: 0 });
+  const [isDragging, setIsDragging] = useState(false);
+  const dragStart = useRef<{
+    x: number;
+    y: number;
+    width: number;
+    height: number;
+    top: number;
+  } | null>(null);
+  // Set when a press turned into a drag, so the release doesn't open the sheet.
+  const didDrag = useRef(false);
 
   // The home page keeps its own fixed typography (see .font-site-sans), so the
   // customizer tab is hidden there along with the pages that host their own.
@@ -62,22 +138,130 @@ export function ThemeControl() {
     setTheme("system");
   }
 
+  function handlePointerDown(e: React.PointerEvent<HTMLButtonElement>) {
+    if (e.button !== 0) return;
+    const rect = e.currentTarget.getBoundingClientRect();
+    dragStart.current = {
+      x: e.clientX,
+      y: e.clientY,
+      width: rect.width,
+      height: rect.height,
+      top: rect.top,
+    };
+    didDrag.current = false;
+    e.currentTarget.setPointerCapture(e.pointerId);
+  }
+
+  function handlePointerMove(e: React.PointerEvent<HTMLButtonElement>) {
+    const start = dragStart.current;
+    if (!start) return;
+    const dx = e.clientX - start.x;
+    const dy = e.clientY - start.y;
+    if (!didDrag.current && Math.hypot(dx, dy) < DRAG_THRESHOLD) return;
+    didDrag.current = true;
+    setIsDragging(true);
+    // Keep the tab on screen: sideways it can only travel toward the opposite
+    // edge, and vertically it stops at the top and bottom of the viewport.
+    const travel = window.innerWidth - start.width;
+    setDrag({
+      x: side === "right" ? clamp(dx, -travel, 0) : clamp(dx, 0, travel),
+      y: clamp(dy, -start.top, window.innerHeight - start.height - start.top),
+    });
+  }
+
+  function endDrag() {
+    dragStart.current = null;
+    setIsDragging(false);
+    setDrag({ x: 0, y: 0 });
+  }
+
+  // Snap to whichever half of the viewport the tab was dropped in, keeping
+  // the height it was dropped at.
+  function handlePointerUp(e: React.PointerEvent<HTMLButtonElement>) {
+    const start = dragStart.current;
+    if (!start) return;
+    if (didDrag.current) {
+      setSide(e.clientX < window.innerWidth / 2 ? "left" : "right");
+      const range = window.innerHeight - start.height;
+      const top = clamp(start.top + e.clientY - start.y, 0, range);
+      if (range > 0) setOffset(top / range);
+    }
+    endDrag();
+  }
+
+  // The browser took the gesture over: return the tab to where it was.
+  function handlePointerCancel() {
+    didDrag.current = false;
+    endDrag();
+  }
+
+  // Arrow keys move the tab too, for readers who can't drag: left/right
+  // switch edges, up/down slide it along the edge.
+  function handleKeyDown(e: React.KeyboardEvent<HTMLButtonElement>) {
+    if (e.key === "ArrowLeft" || e.key === "ArrowRight") {
+      e.preventDefault();
+      setSide(e.key === "ArrowLeft" ? "left" : "right");
+    } else if (e.key === "ArrowUp" || e.key === "ArrowDown") {
+      e.preventDefault();
+      const rect = e.currentTarget.getBoundingClientRect();
+      const current =
+        offset ?? rect.top / Math.max(1, window.innerHeight - rect.height);
+      const step = e.key === "ArrowUp" ? -KEYBOARD_OFFSET_STEP : KEYBOARD_OFFSET_STEP;
+      setOffset(current + step);
+    }
+  }
+
   return (
     <div
-      /* bottom-right on phones so it doesn't cover content toolbars; edge tab at top-40 from sm up */
-      className={`fixed bottom-24 top-auto sm:top-40 sm:bottom-auto ${dir === "rtl" ? "left-0" : "right-0"} z-40`}
+      /* Default: bottom edge on phones so it doesn't cover content toolbars;
+         edge tab at top-40 from sm up. Once the reader has moved it, `top` plus
+         a -offset% translate keeps it at that fraction of the viewport, fully
+         on screen at both extremes. Anchored by `left` on both sides so
+         switching edges can transition; the vertical move lives in the
+         untransitioned `translate`, so a drop lands exactly where released. */
+      className={cn(
+        "fixed z-40",
+        offset === null && "bottom-24 top-auto sm:top-40 sm:bottom-auto",
+        !isDragging && "motion-safe:transition-[left,transform] motion-safe:duration-300 motion-safe:ease-out",
+      )}
+      style={{
+        left: side === "left" ? "0%" : "100%",
+        top: offset === null ? undefined : `${offset * 100}dvh`,
+        transform: `translateX(calc(${side === "left" ? "0%" : "-100%"} + ${drag.x}px))`,
+        translate: `0 calc(${offset === null ? 0 : -offset * 100}% + ${drag.y}px)`,
+      }}
     >
       <Sheet>
-        <SheetTrigger asChild>
-          <div
-            className={`bg-primary text-primary-foreground hover:opacity-90 transition-all cursor-pointer rounded ${dir === "rtl" ? "rounded-l-none" : "rounded-r-none"} px-3 py-2 shadow-md`}
+        <SheetTrigger
+          asChild
+          onClick={(e) => {
+            // A drag ends in a click on the same element; don't open for it.
+            if (didDrag.current) {
+              e.preventDefault();
+              didDrag.current = false;
+            }
+          }}
+        >
+          <button
+            type="button"
+            aria-label="Open customization (drag or use arrow keys to move along the left or right edge)"
+            onPointerDown={handlePointerDown}
+            onPointerMove={handlePointerMove}
+            onPointerUp={handlePointerUp}
+            onPointerCancel={handlePointerCancel}
+            onKeyDown={handleKeyDown}
+            className={cn(
+              "bg-primary text-primary-foreground hover:opacity-90 transition-opacity rounded px-3 py-2 shadow-md touch-none select-none",
+              side === "left" ? "rounded-l-none" : "rounded-r-none",
+              isDragging ? "cursor-grabbing" : "cursor-pointer",
+            )}
           >
             <Settings />
-          </div>
+          </button>
         </SheetTrigger>
 
         {/* Added flex flex-col to ensure the footer button can push to the very bottom */}
-        <SheetContent className="hide-scroll z-[101] overflow-y-auto flex flex-col justify-between">
+        <SheetContent side={side} className="hide-scroll z-[101] overflow-y-auto flex flex-col justify-between">
           <div>
             <SheetHeader className="border-b border-foreground/[0.06] pb-4">
               <SheetTitle className="font-serif text-lg font-normal">Customization</SheetTitle>

@@ -1,3 +1,5 @@
+export const metadata = docsPageMetadata("pagination");
+
 # Pagination
 
 A complex navigation component that intelligently handles page rendering, ellipsis calculation, and edge bounds.

@@ -1,3 +1,5 @@
+export const metadata = docsPageMetadata("vertical-tabs");
+
 # Tabs
 
 A sleek, responsive tab navigation component. By default the rail runs across the top as a pill bar, with the active content pane below it — and when the tabs outgrow the width they scroll sideways instead of squashing. Set `orientation="vertical"` and the same rail becomes a sidebar menu beside the pane, stacking above it on narrow screens.

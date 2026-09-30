@@ -1,3 +1,8 @@
+export const metadata = docsPageMetadata("third-party/charts", {
+  title: "Charts",
+  description: "Integrate Recharts and Chart.js with Algorize UI — design tokens bridged into both, in light and dark themes."
+});
+
 # Charts
 
 Recharts and Chart.js are the two React charting libraries most projects

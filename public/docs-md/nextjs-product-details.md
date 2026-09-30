@@ -1,3 +1,5 @@
+export const metadata = docsPageMetadata("product-details");
+
 # Product Details
 
 A collection of 4 production-ready, high-converting, fully responsive E-commerce Product Details components designed with unique layout architectures, glassmorphism cards, bento hero showcases, and colorway image synchronization.

@@ -1,3 +1,5 @@
+export const metadata = docsPageMetadata("drawer");
+
 # Drawer
 
 A highly animated, responsive drawer component. Built entirely from scratch, with plain CSS transitions for butter-smooth entering and exiting animations — no animation library. It supports sliding in from all four screen edges (top, bottom, left, right) and safely locks the background document from scrolling while open.

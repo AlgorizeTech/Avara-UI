@@ -1,3 +1,5 @@
+export const metadata = docsPageMetadata("wizard");
+
 # Progress Wizard
 
 A "Typeform" style multi-step wizard featuring buttery smooth vertical slide transitions powered by plain CSS transitions, native keyboard navigation, and an interactive progress bar.
