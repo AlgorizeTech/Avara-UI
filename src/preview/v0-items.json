@@ -200,6 +200,9 @@
     "build-interactive-interfaces": "Component Wall — Build interactive interfaces",
     "copy-beside-the-wall": "Component Wall — Copy beside the wall"
   },
+  "confidential-folder": {
+    "confidential-folder": "Confidential Folder"
+  },
   "context-menu": {
     "labels-shortcuts-disabled": "Context Menu — Labels, shortcuts & disabled"
   },

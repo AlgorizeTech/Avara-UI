@@ -76,9 +76,16 @@ export const NAME_OVERRIDES: Record<string, string> = {
   "CounterSectionBlock.tsx": "counter-section",
   "WalletBlock.tsx": "wallet",
   "FAQSectionBlock.tsx": "faq-section",
+  "ConfidentialFolderBlock.tsx": "confidential-folder",
 };
 
 export const META: Record<string, ItemMeta> = {
+  "confidential-folder": {
+    description:
+      "An interactive confidential folder sleeve with a card that slides out horizontally on hover and gracefully elevates on click.",
+    categories: ["data-display", "marketing", "actions"],
+    docs: "Named export: ConfidentialFolder, OrbitalSpirograph.",
+  },
   "faq-section": {
     description:
       "A complete animated FAQ website section pairing an editorial header with a dynamic morphing nature photography canvas and an expandable question accordion.",

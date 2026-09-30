@@ -36,6 +36,7 @@ export const sandboxNames = [
   "color-picker",
   "command",
   "component-wall",
+  "confidential-folder",
   "context-menu",
   "conversation-timeline",
   "copy-button",

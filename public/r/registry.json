@@ -947,6 +947,30 @@
       "docs": "Named export: ComputeBlock. A self-contained example with hardcoded values and local state — copy and adapt rather than configuring through props. Depends on `ui-base` for ComponentCard."
     },
     {
+      "name": "confidential-folder",
+      "type": "registry:component",
+      "title": "Confidential Folder",
+      "author": "AlgorizeTech",
+      "description": "An interactive confidential folder sleeve with a card that slides out horizontally on hover and gracefully elevates on click.",
+      "categories": [
+        "data-display",
+        "marketing",
+        "actions"
+      ],
+      "dependencies": [],
+      "registryDependencies": [
+        "utils"
+      ],
+      "files": [
+        {
+          "path": "src/components/custom/blocks/ConfidentialFolderBlock.tsx",
+          "type": "registry:component",
+          "target": "components/custom/blocks/ConfidentialFolderBlock.tsx"
+        }
+      ],
+      "docs": "Named export: ConfidentialFolder, OrbitalSpirograph."
+    },
+    {
       "name": "context-menu",
       "type": "registry:component",
       "title": "Context Menu",
