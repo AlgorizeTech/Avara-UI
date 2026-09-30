@@ -1,6 +1,6 @@
 {
-  "generatedAt": "2026-09-29T14:00:34.340Z",
-  "totalFiles": 295,
+  "generatedAt": "2026-09-30T11:57:33.575Z",
+  "totalFiles": 299,
   "files": [
     {
       "name": "nextjs/3d-carousel",
@@ -181,6 +181,12 @@
       "path": "/docs/nextjs-component-wall.md",
       "url": "/docs/nextjs/component-wall",
       "originalMdx": "[framework]\\component-wall\\page.mdx"
+    },
+    {
+      "name": "nextjs/confidential-folder",
+      "path": "/docs/nextjs-confidential-folder.md",
+      "url": "/docs/nextjs/confidential-folder",
+      "originalMdx": "[framework]\\confidential-folder\\page.mdx"
     },
     {
       "name": "nextjs/context-menu",
@@ -645,6 +651,12 @@
       "originalMdx": "[framework]\\scroll-area\\page.mdx"
     },
     {
+      "name": "nextjs/scroll-split-cards",
+      "path": "/docs/nextjs-scroll-split-cards.md",
+      "url": "/docs/nextjs/scroll-split-cards",
+      "originalMdx": "[framework]\\scroll-split-cards\\page.mdx"
+    },
+    {
       "name": "nextjs/scroll-stack",
       "path": "/docs/nextjs-scroll-stack.md",
       "url": "/docs/nextjs/scroll-stack",
@@ -1069,6 +1081,12 @@
       "path": "/docs/reactjs-component-wall.md",
       "url": "/docs/reactjs/component-wall",
       "originalMdx": "[framework]\\component-wall\\page.mdx"
+    },
+    {
+      "name": "reactjs/confidential-folder",
+      "path": "/docs/reactjs-confidential-folder.md",
+      "url": "/docs/reactjs/confidential-folder",
+      "originalMdx": "[framework]\\confidential-folder\\page.mdx"
     },
     {
       "name": "reactjs/context-menu",
@@ -1531,6 +1549,12 @@
       "path": "/docs/reactjs-scroll-area.md",
       "url": "/docs/reactjs/scroll-area",
       "originalMdx": "[framework]\\scroll-area\\page.mdx"
+    },
+    {
+      "name": "reactjs/scroll-split-cards",
+      "path": "/docs/reactjs-scroll-split-cards.md",
+      "url": "/docs/reactjs/scroll-split-cards",
+      "originalMdx": "[framework]\\scroll-split-cards\\page.mdx"
     },
     {
       "name": "reactjs/scroll-stack",

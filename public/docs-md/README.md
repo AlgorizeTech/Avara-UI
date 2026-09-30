@@ -2,8 +2,8 @@
 
 This directory contains auto-generated Markdown versions of all MDX documentation pages.
 
-**Generated at:** 2026-09-29T14:00:34.397Z
-**Total files:** 295
+**Generated at:** 2026-09-30T11:57:33.676Z
+**Total files:** 299
 
 ## Available Files
 
@@ -37,6 +37,7 @@ This directory contains auto-generated Markdown versions of all MDX documentatio
 - [nextjs/color-picker](/docs/nextjs-color-picker.md) - Source: `[framework]\color-picker\page.mdx`
 - [nextjs/command](/docs/nextjs-command.md) - Source: `[framework]\command\page.mdx`
 - [nextjs/component-wall](/docs/nextjs-component-wall.md) - Source: `[framework]\component-wall\page.mdx`
+- [nextjs/confidential-folder](/docs/nextjs-confidential-folder.md) - Source: `[framework]\confidential-folder\page.mdx`
 - [nextjs/context-menu](/docs/nextjs-context-menu.md) - Source: `[framework]\context-menu\page.mdx`
 - [nextjs/conversation-timeline](/docs/nextjs-conversation-timeline.md) - Source: `[framework]\conversation-timeline\page.mdx`
 - [nextjs/copy-button](/docs/nextjs-copy-button.md) - Source: `[framework]\copy-button\page.mdx`
@@ -114,6 +115,7 @@ This directory contains auto-generated Markdown versions of all MDX documentatio
 - [nextjs/resizable](/docs/nextjs-resizable.md) - Source: `[framework]\resizable\page.mdx`
 - [nextjs/reviews](/docs/nextjs-reviews.md) - Source: `[framework]\reviews\page.mdx`
 - [nextjs/scroll-area](/docs/nextjs-scroll-area.md) - Source: `[framework]\scroll-area\page.mdx`
+- [nextjs/scroll-split-cards](/docs/nextjs-scroll-split-cards.md) - Source: `[framework]\scroll-split-cards\page.mdx`
 - [nextjs/scroll-stack](/docs/nextjs-scroll-stack.md) - Source: `[framework]\scroll-stack\page.mdx`
 - [nextjs/select](/docs/nextjs-select.md) - Source: `[framework]\select\page.mdx`
 - [nextjs/selection-frame](/docs/nextjs-selection-frame.md) - Source: `[framework]\selection-frame\page.mdx`
@@ -185,6 +187,7 @@ This directory contains auto-generated Markdown versions of all MDX documentatio
 - [reactjs/color-picker](/docs/reactjs-color-picker.md) - Source: `[framework]\color-picker\page.mdx`
 - [reactjs/command](/docs/reactjs-command.md) - Source: `[framework]\command\page.mdx`
 - [reactjs/component-wall](/docs/reactjs-component-wall.md) - Source: `[framework]\component-wall\page.mdx`
+- [reactjs/confidential-folder](/docs/reactjs-confidential-folder.md) - Source: `[framework]\confidential-folder\page.mdx`
 - [reactjs/context-menu](/docs/reactjs-context-menu.md) - Source: `[framework]\context-menu\page.mdx`
 - [reactjs/conversation-timeline](/docs/reactjs-conversation-timeline.md) - Source: `[framework]\conversation-timeline\page.mdx`
 - [reactjs/copy-button](/docs/reactjs-copy-button.md) - Source: `[framework]\copy-button\page.mdx`
@@ -262,6 +265,7 @@ This directory contains auto-generated Markdown versions of all MDX documentatio
 - [reactjs/resizable](/docs/reactjs-resizable.md) - Source: `[framework]\resizable\page.mdx`
 - [reactjs/reviews](/docs/reactjs-reviews.md) - Source: `[framework]\reviews\page.mdx`
 - [reactjs/scroll-area](/docs/reactjs-scroll-area.md) - Source: `[framework]\scroll-area\page.mdx`
+- [reactjs/scroll-split-cards](/docs/reactjs-scroll-split-cards.md) - Source: `[framework]\scroll-split-cards\page.mdx`
 - [reactjs/scroll-stack](/docs/reactjs-scroll-stack.md) - Source: `[framework]\scroll-stack\page.mdx`
 - [reactjs/select](/docs/reactjs-select.md) - Source: `[framework]\select\page.mdx`
 - [reactjs/selection-frame](/docs/reactjs-selection-frame.md) - Source: `[framework]\selection-frame\page.mdx`

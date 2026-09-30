@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useEffect, useRef, useState } from "react";
+import React, { useRef, useState } from "react";
 import { cn } from "@/lib/utils";
 
 // ============================================================================
@@ -305,7 +305,6 @@ export function ConfidentialFolder({
 }: ConfidentialFolderProps) {
   const [isOpen, setIsOpen] = useState(defaultOpen);
   const [isHovered, setIsHovered] = useState(false);
-  const [isTransitioning, setIsTransitioning] = useState(false);
 
   // Animation Phase State:
   // "inside"          -> Card resting inside (x: 20 or 65 on hover, rotateY: 0deg)
@@ -335,7 +334,6 @@ export function ConfidentialFolder({
   const handleToggle = () => {
     if (isTransitioningRef.current) return;
     isTransitioningRef.current = true;
-    setIsTransitioning(true);
 
     if (!isOpen) {
       // 1. Slide out fully to the right (behind sleeve, zIndex 10, rotateY 0deg)
@@ -358,7 +356,6 @@ export function ConfidentialFolder({
               setIsOpen(true);
               onOpenChange?.(true);
               isTransitioningRef.current = false;
-              setIsTransitioning(false);
             }, 580);
           }, 500);
         }, 40);
@@ -384,7 +381,6 @@ export function ConfidentialFolder({
               setIsOpen(false);
               onOpenChange?.(false);
               isTransitioningRef.current = false;
-              setIsTransitioning(false);
             }, 450);
           }, 40);
         }, 380);
