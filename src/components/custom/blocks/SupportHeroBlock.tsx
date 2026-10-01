@@ -272,7 +272,7 @@ export interface SupportHeroProps extends React.HTMLAttributes<HTMLDivElement> {
   children: React.ReactNode;
 }
 
-function SupportHeroRoot({
+export function SupportHero({
   heading,
   subtitle,
   cta,
@@ -377,12 +377,10 @@ function SupportHeroRoot({
   );
 }
 
-export const SupportHero = Object.assign(SupportHeroRoot, {
-  Card,
-  Integrations,
-  Stat,
-  Photo,
-  Team,
-});
+SupportHero.Card = Card;
+SupportHero.Integrations = Integrations;
+SupportHero.Stat = Stat;
+SupportHero.Photo = Photo;
+SupportHero.Team = Team;
 
 export default SupportHero;

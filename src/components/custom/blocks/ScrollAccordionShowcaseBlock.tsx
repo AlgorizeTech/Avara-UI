@@ -2,7 +2,7 @@
 
 import { cn } from "@/lib/utils";
 import { ArrowRight, CheckCircle2, Sparkles } from "lucide-react";
-import React, { useEffect, useLayoutEffect, useRef, useState } from "react";
+import React, { useCallback, useEffect, useRef, useState } from "react";
 
 export interface AccordionShowcaseItem {
   id: string;
@@ -42,24 +42,26 @@ type SwapFrom = { opacity: string; scale: string; translate: string };
  * screen plays `exit` from wherever it is, and only once that ends is the
  * latest item rendered (it enters with its own CSS animation). If the key
  * comes back mid-exit, `back` settles the element from where it got to.
+ * `ref` must be attached to the swapped element.
  */
 function useWaitSwap<T, E extends HTMLElement>(
+  ref: React.RefObject<E | null>,
   item: T,
   itemKey: string,
   exit: (el: E, from: SwapFrom) => Animation[],
   back: (el: E, from: SwapFrom) => void,
 ) {
-  const ref = useRef<E>(null);
   const [shownKey, setShownKey] = useState(itemKey);
   const leaving = shownKey !== itemKey;
 
   // The leaving element keeps showing the item it had; otherwise it follows
-  // the current one.
-  const lastShown = useRef(item);
+  // the current one. Held in state (synced during render while not leaving)
+  // so render never reads a ref.
+  const [lastShown, setLastShown] = useState(item);
+  if (!leaving && lastShown !== item) setLastShown(item);
   const latestKey = useRef(itemKey);
   const handlers = useRef({ exit, back });
   useEffect(() => {
-    if (!leaving) lastShown.current = item;
     latestKey.current = itemKey;
     handlers.current = { exit, back };
   });
@@ -86,9 +88,9 @@ function useWaitSwap<T, E extends HTMLElement>(
       animations.forEach((a) => a.cancel());
       handlers.current.back(el, from);
     };
-  }, [leaving]);
+  }, [leaving, ref]);
 
-  return { ref, shown: leaving ? lastShown.current : item, shownKey };
+  return { shown: leaving ? lastShown : item, shownKey };
 }
 
 function readSwapFrom(el: Element): SwapFrom {
@@ -106,23 +108,26 @@ function readSwapFrom(el: Element): SwapFrom {
  * is open on the first render is simply there.
  */
 function usePresence<E extends HTMLElement>(show: boolean, exitMs: number) {
-  const ref = useRef<E>(null);
   const [mounted, setMounted] = useState(show);
   const [open, setOpen] = useState(show);
 
-  useLayoutEffect(() => {
-    if (!show) {
-      setOpen(false);
-      return;
-    }
-    if (!mounted) {
-      setMounted(true);
-      return;
-    }
-    // Resolve the closed styles before opening, or nothing transitions.
-    ref.current?.getBoundingClientRect();
+  // React to `show` flipping during render: close at once, reopen a body
+  // that is still mounted (mid-close), or mount a closed body first.
+  const [prevShow, setPrevShow] = useState(show);
+  if (show !== prevShow) {
+    setPrevShow(show);
+    if (!show) setOpen(false);
+    else if (mounted) setOpen(true);
+    else setMounted(true);
+  }
+
+  // A freshly mounted body commits closed; open it from the commit, before
+  // paint. Resolve the closed styles first, or nothing transitions.
+  const attach = useCallback((el: E | null) => {
+    if (!el) return;
+    el.getBoundingClientRect();
     setOpen(true);
-  }, [show, mounted]);
+  }, []);
 
   useEffect(() => {
     if (show || !mounted) return;
@@ -136,7 +141,7 @@ function usePresence<E extends HTMLElement>(show: boolean, exitMs: number) {
     }
   };
 
-  return { ref, mounted, open, onTransitionEnd };
+  return { attach, mounted, open, onTransitionEnd };
 }
 
 /** An accordion body that opens to its content height and closes to nothing. */
@@ -151,7 +156,7 @@ function AccordionBody({
   if (!presence.mounted) return null;
   return (
     <div
-      ref={presence.ref}
+      ref={presence.attach}
       onTransitionEnd={presence.onTransitionEnd}
       className="overflow-hidden z-10"
       style={{
@@ -446,7 +451,9 @@ export const ScrollAccordionShowcase = React.forwardRef<
 
     // The mockup image and its caption each swap in "wait" order: the old one
     // leaves completely before the new one comes in.
+    const imageRef = useRef<HTMLDivElement>(null);
     const image = useWaitSwap<typeof activeItem, HTMLDivElement>(
+      imageRef,
       activeItem,
       activeItem.id || "default",
       (el, from) => [
@@ -462,7 +469,9 @@ export const ScrollAccordionShowcase = React.forwardRef<
         );
       },
     );
+    const captionRef = useRef<HTMLParagraphElement>(null);
     const caption = useWaitSwap<typeof activeItem, HTMLParagraphElement>(
+      captionRef,
       activeItem,
       activeItem.title || "default-title",
       (el, from) => [
@@ -706,7 +715,7 @@ export const ScrollAccordionShowcase = React.forwardRef<
                 >
                   <div
                     key={image.shownKey}
-                    ref={image.ref}
+                    ref={imageRef}
                     className="absolute inset-0 w-full h-full"
                     style={{
                       animation: `scroll-accordion-image-in 0.4s ${EASE_IN_OUT} backwards`,
@@ -735,7 +744,7 @@ export const ScrollAccordionShowcase = React.forwardRef<
                       </div>
                       <p
                         key={caption.shownKey}
-                        ref={caption.ref}
+                        ref={captionRef}
                         className="text-sm sm:text-lg font-semibold text-foreground tracking-tight leading-snug truncate"
                         style={{
                           animation: `scroll-accordion-title-in 0.2s ${EASE_OUT} backwards`,

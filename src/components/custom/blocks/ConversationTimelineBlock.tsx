@@ -29,7 +29,8 @@ export interface TimelineCheckpoint {
 }
 
 export interface ConversationTimelineProps {
-  checkpoints: TimelineCheckpoint[];
+  /** Read-only, so an `as const` list is accepted as written. */
+  checkpoints: readonly TimelineCheckpoint[];
   activeId?: string;
   onSelect?: (id: string) => void;
   /** Which side the text sits — "right" (default) or "left". */

@@ -3500,9 +3500,7 @@
         "media",
         "marketing"
       ],
-      "dependencies": [
-        "framer-motion"
-      ],
+      "dependencies": [],
       "registryDependencies": [
         "utils"
       ],
@@ -3511,6 +3509,11 @@
           "path": "src/components/custom/blocks/ScrollSplitCardsBlock.tsx",
           "type": "registry:component",
           "target": "components/custom/blocks/ScrollSplitCardsBlock.tsx"
+        },
+        {
+          "path": "src/components/custom/blocks/motion-curves.ts",
+          "type": "registry:component",
+          "target": "components/custom/blocks/motion-curves.ts"
         }
       ],
       "docs": "Named export: ScrollSplitCards."

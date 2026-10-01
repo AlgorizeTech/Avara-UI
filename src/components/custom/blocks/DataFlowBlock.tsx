@@ -185,7 +185,7 @@ function curve(from: Point, to: Point, vertical: boolean) {
   return `M ${from.x} ${from.y} C ${from.x + k} ${from.y}, ${to.x - k} ${to.y}, ${to.x} ${to.y}`;
 }
 
-function DataFlowRoot({
+export function DataFlow({
   eyebrow,
   heading,
   intro,
@@ -413,13 +413,11 @@ function DataFlowRoot({
   );
 }
 
-export const DataFlow = Object.assign(DataFlowRoot, {
-  Source,
-  Core,
-  Output,
-  Pill,
-  Tag,
-  Row,
-});
+DataFlow.Source = Source;
+DataFlow.Core = Core;
+DataFlow.Output = Output;
+DataFlow.Pill = Pill;
+DataFlow.Tag = Tag;
+DataFlow.Row = Row;
 
 export default DataFlow;

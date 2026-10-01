@@ -178,7 +178,7 @@ export interface PlatformGridProps extends React.HTMLAttributes<HTMLElement> {
   children: React.ReactNode;
 }
 
-function PlatformGridRoot({
+export function PlatformGrid({
   eyebrow,
   heading,
   intro,
@@ -295,11 +295,9 @@ function PlatformGridRoot({
   );
 }
 
-export const PlatformGrid = Object.assign(PlatformGridRoot, {
-  Tile,
-  Feature,
-  Mock,
-  Pill,
-});
+PlatformGrid.Tile = Tile;
+PlatformGrid.Feature = Feature;
+PlatformGrid.Mock = Mock;
+PlatformGrid.Pill = Pill;
 
 export default PlatformGrid;

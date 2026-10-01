@@ -459,7 +459,7 @@ export interface WaitlistProps extends React.HTMLAttributes<HTMLElement> {
   children: React.ReactNode;
 }
 
-function WaitlistRoot({
+export function Waitlist({
   variant = "card",
   accent,
   reveal = "in-view",
@@ -532,14 +532,12 @@ function WaitlistRoot({
   );
 }
 
-export const Waitlist = Object.assign(WaitlistRoot, {
-  Mark,
-  Countdown,
-  Heading,
-  Intro,
-  Form,
-  Proof,
-  Spots,
-});
+Waitlist.Mark = Mark;
+Waitlist.Countdown = Countdown;
+Waitlist.Heading = Heading;
+Waitlist.Intro = Intro;
+Waitlist.Form = Form;
+Waitlist.Proof = Proof;
+Waitlist.Spots = Spots;
 
 export default Waitlist;

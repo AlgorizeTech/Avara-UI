@@ -17,28 +17,22 @@ Every example below is live. Click a sortable header, expand a row, or hover the
 <ExampleShowcase
   name="table-soft"
   columns={1}
-  minHeight={600}
   examples={[
     {
       title: "Soft variant",
-      subheading: "The admin-dashboard look on the plain primitives: a heading with the page's action, status tabs with counts, a pill search, sortable columns, rows that open to show a note, round row actions and pill pagination. The demo owns every bit of state.",
+      subheading: "A plain read-only table in the admin-dashboard look — a rounded panel on a hairline ring, a tinted header band, calm dividers and soft row hover. No search, filters or paging: just the rows.",
       propNotes: [
         {
           lead: "Set",
           prop: "variant",
           value: '"soft"',
           effect:
-            "once on `Table`; the heading, toolbar, header band, cells, row actions and footer read it from context.",
+            "once on `Table`; the heading, header band, cells and dividers read it from context. Every tint is mixed from the table colour.",
         },
         {
-          prop: "TableSearch",
+          prop: "TablePerson",
           effect:
-            "and `TablePagination` are controlled — you pass the value and the page and keep the state, as with everything on this page.",
-        },
-        {
-          prop: "sticky",
-          effect:
-            "on the actions head and cells pins that column to the right edge on narrow screens.",
+            "and `TableBadge` draw the avatar-and-email cell and the status pill, in any variant.",
         },
       ],
       usage: extractCode("src/preview/demos/table-soft-demo.tsx"),
@@ -336,6 +330,27 @@ export const usageEmpty = `<TableBody>
       ],
       props: { sortable: false, expandable: false },
       usage: usageActions,
+    },
+  ]}
+/>
+
+<ExampleShowcase
+  name="table-soft-comparison"
+  columns={1}
+  examples={[
+    {
+      title: "Comparison (soft)",
+      subheading: "The same soft table as a plan comparison: features down the side, plans across the top, ticks and limits centred under their headers.",
+      propNotes: [
+        {
+          prop: "align",
+          value: '"center"',
+          effect:
+            "on both `TableHead` and `TableCell` lines the ticks and values up under each plan.",
+        },
+      ],
+      usage: extractCode("src/preview/demos/table-soft-comparison-demo.tsx"),
+      code: extractCode("src/components/custom/blocks/TableBlock.tsx"),
     },
   ]}
 />

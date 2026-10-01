@@ -115,7 +115,7 @@ const PROGRESS_CSS = "@keyframes hc-progress { from { transform: scaleX(0); } to
 // ------------------------------------------
 // Root
 // ------------------------------------------
-function HeroCarouselRoot({
+export function HeroCarousel({
   slides,
   eyebrow,
   heading,
@@ -605,6 +605,6 @@ function HeroCarouselRoot({
   );
 }
 
-export const HeroCarousel = Object.assign(HeroCarouselRoot, { metrics: railMetrics });
+HeroCarousel.metrics = railMetrics;
 
 export default HeroCarousel;

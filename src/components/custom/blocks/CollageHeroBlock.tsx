@@ -120,7 +120,7 @@ function Photo({ photo, className }: { photo: CollagePhoto; className?: string }
   );
 }
 
-function CollageHeroRoot({
+export function CollageHero({
   brand,
   logo,
   heading,
@@ -382,6 +382,7 @@ function CollageHeroRoot({
   );
 }
 
-export const CollageHero = Object.assign(CollageHeroRoot, { Badge, Photo });
+CollageHero.Badge = Badge;
+CollageHero.Photo = Photo;
 
 export default CollageHero;

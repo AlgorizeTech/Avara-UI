@@ -365,6 +365,17 @@ const rawNavigation: NavigationItem[] = [
         keywords: ["hero", "wall", "screenshots", "camera", "zoom", "library", "landing", "showcase", "grid"],
       },
       {
+        label: "Dashboard",
+        slug: "dashboard",
+        badge: "New",
+        addedOn: "2026-10-01",
+        keywords: [
+          "dashboard", "admin", "overview", "analytics", "metrics", "kpi",
+          "chart", "activity", "feed", "traffic", "sources", "countries",
+          "authors", "stats", "greeting", "home",
+        ],
+      },
+      {
         label: "Counter Section",
         slug: "counter-section",
         badge: "New",

@@ -22,13 +22,13 @@ import {
   Clock,
   RotateCcw,
 } from "lucide-react";
+import { TimePicker } from "./blocks/TimePickerBlock";
 import {
   formatTime,
   roundToStep,
   setTime,
   type TimeFormat,
-  TimePicker,
-} from "./blocks/TimePickerBlock";
+} from "./blocks/time-picker-utils";
 import { springLinear } from "./blocks/motion-curves";
 
 export type RangeDatePickerColor =

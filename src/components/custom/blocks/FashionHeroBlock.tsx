@@ -105,7 +105,7 @@ function LookCard({ look, className }: { look: Look; className?: string }) {
 // ------------------------------------------
 // Root
 // ------------------------------------------
-function FashionHeroRoot({
+export function FashionHero({
   heading,
   video,
   avatars = [],
@@ -342,6 +342,6 @@ function FashionHeroRoot({
   );
 }
 
-export const FashionHero = Object.assign(FashionHeroRoot, { Look: LookCard });
+FashionHero.Look = LookCard;
 
 export default FashionHero;
