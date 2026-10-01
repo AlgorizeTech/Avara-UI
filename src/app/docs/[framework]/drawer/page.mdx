@@ -101,7 +101,7 @@ export default function BottomSheet() {
 
 export const usageControlled = `"use client";
 
-import { useEffect, useState } from "react";
+import { useState, useSyncExternalStore } from "react";
 import {
   Button,
   Drawer,
@@ -113,16 +113,20 @@ import {
   DrawerTitle,
 } from "@/components/custom/blocks/Drawer";
 
-export default function OnboardingDrawer() {
-  // Open on mount by initializing state to true
-  const [open, setOpen] = useState(true);
+// Optionally skip visitors who were onboarded before. localStorage is read as
+// an external store: false on the server, the stored value in the browser.
+const subscribeToStorage = (onChange: () => void) => {
+  window.addEventListener("storage", onChange);
+  return () => window.removeEventListener("storage", onChange);
+};
+const readOnboarded = () => localStorage.getItem("onboarded") !== null;
 
-  useEffect(() => {
-    // Optionally check if onboarded in browser
-    if (typeof window !== "undefined" && localStorage.getItem("onboarded")) {
-      setOpen(false);
-    }
-  }, []);
+export default function OnboardingDrawer() {
+  const onboarded = useSyncExternalStore(subscribeToStorage, readOnboarded, () => false);
+  // Null until the visitor opens or closes it. Until then it is open on
+  // mount, so no trigger click is needed.
+  const [choice, setOpen] = useState<boolean | null>(null);
+  const open = choice ?? !onboarded;
 
   return (
     <>

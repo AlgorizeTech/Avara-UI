@@ -229,7 +229,9 @@ function FanNav({
   const Icon = dir === "prev" ? ChevronLeft : ChevronRight;
   const ref = useRef<HTMLButtonElement>(null);
   const leavingRef = useRef(leaving);
-  leavingRef.current = leaving;
+  useLayoutEffect(() => {
+    leavingRef.current = leaving;
+  });
   // Mounts at the entry pose; the folder fades both arrows in from here.
   const [enterStyle] = useState<React.CSSProperties>({ opacity: 0, transform: "scale(0.8)" });
 
@@ -326,7 +328,8 @@ const poseTransform = (p: CardPose) =>
 function FanCard({
   pose,
   enterFrom,
-  delay,
+  delay: baseDelay,
+  batchDelay,
   reduce,
   draggable,
   onDragStart,
@@ -339,6 +342,11 @@ function FanCard({
   /** Mount at this pose and spring into `pose`; `null` mounts in place. */
   enterFrom: CardPose | null;
   delay: number;
+  /**
+   * This card's delay when it commits as part of a fresh batch of cards, else
+   * null (and `delay` applies). Asked at commit time, not during render.
+   */
+  batchDelay: () => number | null;
   reduce: boolean;
   draggable: boolean;
   onDragStart: () => void;
@@ -398,6 +406,7 @@ function FanCard({
     if (!all) return;
     const prev = target.current;
     target.current = pose;
+    const delay = batchDelay() ?? baseDelay;
     for (const key of POSE_KEYS) {
       if (prev[key] === pose[key]) continue;
       if (key === "x" && dragging.current) continue;
@@ -423,7 +432,9 @@ function FanCard({
   // the card where it is, it starts moving once the pointer has travelled
   // 3px, then follows it 1:1 with no constraints or momentum.
   const swipe = useRef({ onDragStart, onSwipe });
-  swipe.current = { onDragStart, onSwipe };
+  useLayoutEffect(() => {
+    swipe.current = { onDragStart, onSwipe };
+  });
   useEffect(() => {
     const el = ref.current;
     if (!draggable || !el) return;
@@ -710,20 +721,25 @@ export function Folder({
   });
   const windowed = slots.map((s) => s.file);
 
-  // Suppresses the enter animation on first paint only.
-  const firstPaint = useRef(true);
-  useEffect(() => {
-    firstPaint.current = false;
-  }, []);
+  // Suppresses the enter animation on first paint only. Cards only mount when
+  // the set of slots changes, so "first paint" lasts until it first does.
+  const slotKeys = slots.map((s) => s.rawKey);
+  const slotSig = slotKeys.join();
+  const [firstSig] = useState(slotSig);
+  const [slotsChanged, setSlotsChanged] = useState(false);
+  if (!slotsChanged && slotSig !== firstSig) setSlotsChanged(true);
+  const firstPaint = !slotsChanged;
 
   // Cards ripple in at 40ms apart the first time a batch appears. Only a real
   // batch staggers: paging brings in a single card, and making that one wait
-  // its index out would read as lag rather than rhythm. Read during render,
-  // committed after paint.
+  // its index out would read as lag rather than rhythm. Each card asks while
+  // committing (its layout effect), against the slots seen by every earlier
+  // commit, which are recorded after paint.
   const seen = useRef<Set<number>>(new Set());
-  const newKeys = slots.map((s) => s.rawKey).filter((k) => !seen.current.has(k));
-  const batchEntry = newKeys.length > 1;
-  const entryDelay = (key: number) => (batchEntry ? newKeys.indexOf(key) * 0.04 : null);
+  const entryDelay = (key: number, keys: number[]) => {
+    const newKeys = keys.filter((k) => !seen.current.has(k));
+    return newKeys.length > 1 ? newKeys.indexOf(key) * 0.04 : null;
+  };
   useEffect(() => {
     slots.forEach((s) => seen.current.add(s.rawKey));
   });
@@ -1112,7 +1128,7 @@ export function Folder({
                   cursor: fanned && canPage ? "grab" : undefined,
                 }}
                 enterFrom={
-                  firstPaint.current
+                  firstPaint
                     ? null
                     : reduce
                       ? { ...at, opacity: 0, scale: 1 }
@@ -1123,7 +1139,8 @@ export function Folder({
                 // a fresh batch ripples in per-item; opening spreads outward
                 // from the middle; a close never waits — dismissal has to
                 // feel immediate
-                delay={entryDelay(rawKey) ?? (fanned ? Math.abs(off) * 0.03 : 0)}
+                delay={fanned ? Math.abs(off) * 0.03 : 0}
+                batchDelay={() => entryDelay(rawKey, slotKeys)}
                 draggable={!reduce && fanned && canPage}
                 onDragStart={() => {
                   draggedRef.current = true;
