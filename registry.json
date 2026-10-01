@@ -155,6 +155,11 @@
           "path": "src/components/custom/blocks/AnimatedFAQBlock.tsx",
           "type": "registry:component",
           "target": "components/custom/blocks/AnimatedFAQBlock.tsx"
+        },
+        {
+          "path": "src/components/custom/blocks/animated-faq-data.ts",
+          "type": "registry:component",
+          "target": "components/custom/blocks/animated-faq-data.ts"
         }
       ],
       "docs": "Named export: AnimatedFAQBlock (also the default export); `FAQ_ITEMS` holds the sample data. All motion is CSS — no animation library."
@@ -1315,6 +1320,11 @@
           "path": "src/components/custom/blocks/motion-curves.ts",
           "type": "registry:component",
           "target": "components/custom/blocks/motion-curves.ts"
+        },
+        {
+          "path": "src/components/custom/blocks/time-picker-utils.ts",
+          "type": "registry:component",
+          "target": "components/custom/blocks/time-picker-utils.ts"
         }
       ],
       "docs": "Named exports: DatePickerBlock, getThemeStyles. Controlled via `value: Date | null` and `onChange`. Shares the variant, color and size vocabulary of the `input` item, so the two line up visually in the same form. For month grids or event display, use `calendar` instead."
@@ -1591,6 +1601,11 @@
           "path": "src/components/custom/blocks/FAQSectionBlock.tsx",
           "type": "registry:component",
           "target": "components/custom/blocks/FAQSectionBlock.tsx"
+        },
+        {
+          "path": "src/components/custom/blocks/faq-section-data.ts",
+          "type": "registry:component",
+          "target": "components/custom/blocks/faq-section-data.ts"
         }
       ],
       "docs": "Named export: FAQSection (also default export); AnimatedFAQBlock and FAQ_ITEMS are also exported."
@@ -3325,6 +3340,11 @@
           "path": "src/components/custom/blocks/motion-curves.ts",
           "type": "registry:component",
           "target": "components/custom/blocks/motion-curves.ts"
+        },
+        {
+          "path": "src/components/custom/blocks/time-picker-utils.ts",
+          "type": "registry:component",
+          "target": "components/custom/blocks/time-picker-utils.ts"
         }
       ],
       "docs": "Named export: RangeDatePicker. Supports variant=('single' | 'dual' | 'priced-single' | 'priced-dual'), getPrice, color, value={from, to}, onChange, disablePast / minDate / maxDate. `showTime` adds Start / End time columns: the card opens as a bare calendar (empty when uncontrolled) and a time rail unfolds beside it on the first pick — under it when narrow — and folds away on Clear; `timeFormat` (12h | 24h) and `minuteStep` tune the columns. Installs time-picker alongside."
@@ -4241,6 +4261,11 @@
           "path": "src/components/custom/blocks/date-picker-theme.ts",
           "type": "registry:component",
           "target": "components/custom/blocks/date-picker-theme.ts"
+        },
+        {
+          "path": "src/components/custom/blocks/time-picker-utils.ts",
+          "type": "registry:component",
+          "target": "components/custom/blocks/time-picker-utils.ts"
         }
       ],
       "docs": "Named exports: TimePicker plus the setTime, roundToStep and formatTime helpers. `value` is a Date whose day is preserved on change; `format` is 12h | 24h, `minuteStep` sets granularity, and `minTime` / `maxTime` disable times outside a window on that day. Used by `date-picker` and `range-date-picker` when `showTime` is on."
