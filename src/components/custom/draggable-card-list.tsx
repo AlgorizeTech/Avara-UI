@@ -1,6 +1,6 @@
 "use client";
 
-import { useCallback, useEffect, useLayoutEffect, useRef, useState } from "react";
+import { Component, useCallback, useEffect, useLayoutEffect, useRef, useState } from "react";
 import { flushSync } from "react-dom";
 import gsap from "gsap";
 import { cn } from "@/lib/utils";
@@ -395,13 +395,13 @@ interface DragSession {
  * the pointer across a swap, the others glide to their new slots, and on
  * release it springs home.
  */
-function createReorderer(refs: {
-    cards: React.MutableRefObject<Map<string, CardMotion>>;
-    drag: React.MutableRefObject<DragSession | null>;
-    list: React.MutableRefObject<DraggableCardItem[]>;
-    reorder: React.MutableRefObject<(items: DraggableCardItem[]) => void>;
-}) {
-    const { cards, drag, list, reorder } = refs;
+function createReorderer() {
+    // The reorderer owns its mutable state, so the component never touches it
+    // during render; the list and callback are synced in after each commit.
+    const cards = { current: new Map<string, CardMotion>() };
+    const drag = { current: null as DragSession | null };
+    const list = { current: [] as DraggableCardItem[] };
+    const reorder = { current: (() => {}) as (items: DraggableCardItem[]) => void };
 
     const goHome = (m: CardMotion) => {
         gsap.killTweensOf(m, "y");
@@ -481,7 +481,51 @@ function createReorderer(refs: {
         goHome(m);
     };
 
-    const reorderer: Reorderer & { destroy: () => void } = {
+    const reorderer: Reorderer & {
+        sync: (items: DraggableCardItem[], onReorder: (items: DraggableCardItem[]) => void) => void;
+        snapshot: () => Map<string, number>;
+        settle: (before: Map<string, number>) => void;
+        destroy: () => void;
+    } = {
+        /** Latest list and reorder callback, for the next pointer move. */
+        sync(items, onReorder) {
+            list.current = items;
+            reorder.current = onReorder;
+        },
+        /** Where each card's layout box sits right now. */
+        snapshot() {
+            return new Map(
+                Array.from(cards.current, ([id, m]) => [id, m.el.offsetTop] as const),
+            );
+        },
+        /** After a commit: animate every card from its `before` slot to its new one. */
+        settle(before) {
+            cards.current.forEach((m, id) => {
+                const was = before.get(id);
+                if (was === undefined) return;
+                const delta = was - m.el.offsetTop;
+                if (!delta) return;
+                const s = drag.current;
+                if (s?.started && s.id === id) {
+                    // The dragged card stays under the pointer: its jump to the
+                    // new slot is folded into the drag offset.
+                    s.origin += delta;
+                    m.y += delta;
+                    paintCard(m);
+                    return;
+                }
+                // Everyone else glides from where they were to their new slot.
+                gsap.killTweensOf(m, "layoutY");
+                m.layoutY += delta;
+                paintCard(m);
+                gsap.to(m, {
+                    layoutY: 0,
+                    duration: LAYOUT.duration,
+                    ease: LAYOUT.ease,
+                    onUpdate: () => paintCard(m),
+                });
+            });
+        },
         register(id, el) {
             const old = cards.current.get(id);
             if (old && old.el === el) return;
@@ -563,49 +607,19 @@ export function DraggableCardList({
     };
 
     // ── Drag-to-reorder ──────────────────────────────────────────────────
-    const cards = useRef(new Map<string, CardMotion>());
-    const drag = useRef<DragSession | null>(null);
-    const listRef = useRef(itemList);
-    listRef.current = itemList;
-    const reorderRef = useRef(handleReorder);
-    reorderRef.current = handleReorder;
-    const [reorder] = useState(() =>
-        createReorderer({ cards, drag, list: listRef, reorder: reorderRef }),
-    );
+    const [reorder] = useState(createReorderer);
     useEffect(() => () => reorder.destroy(), [reorder]);
 
     // Where each card's layout box sat before this render commits — the
-    // snapshot a layout animation starts from.
+    // snapshot a layout animation starts from. Taken by <BeforeCommit> just
+    // before React mutates the DOM.
     const before = useRef(new Map<string, number>());
-    before.current = new Map(
-        Array.from(cards.current, ([id, m]) => [id, m.el.offsetTop] as const),
-    );
+    const captureBefore = () => {
+        before.current = reorder.snapshot();
+    };
     useLayoutEffect(() => {
-        cards.current.forEach((m, id) => {
-            const was = before.current.get(id);
-            if (was === undefined) return;
-            const delta = was - m.el.offsetTop;
-            if (!delta) return;
-            const s = drag.current;
-            if (s?.started && s.id === id) {
-                // The dragged card stays under the pointer: its jump to the
-                // new slot is folded into the drag offset.
-                s.origin += delta;
-                m.y += delta;
-                paintCard(m);
-                return;
-            }
-            // Everyone else glides from where they were to their new slot.
-            gsap.killTweensOf(m, "layoutY");
-            m.layoutY += delta;
-            paintCard(m);
-            gsap.to(m, {
-                layoutY: 0,
-                duration: LAYOUT.duration,
-                ease: LAYOUT.ease,
-                onUpdate: () => paintCard(m),
-            });
-        });
+        reorder.sync(itemList, handleReorder);
+        reorder.settle(before.current);
     });
 
     const handleToggleComplete = (id: string | number) => {
@@ -620,39 +634,63 @@ export function DraggableCardList({
     };
 
     return (
-        <div className={cn("w-full max-w-xl mx-auto space-y-4 py-2 select-none", className)}>
-            {/* Optional Title Header */}
-            {title && (
-                <div className="text-center space-y-1 mb-6">
-                    <h2 className="text-xl sm:text-2xl font-bold tracking-tight text-foreground">
-                        {title}
-                    </h2>
-                    {subtitle && (
-                        <p className="text-xs sm:text-sm font-medium text-muted-foreground">
-                            {subtitle}
-                        </p>
-                    )}
-                </div>
-            )}
+        <BeforeCommit capture={captureBefore}>
+            <div className={cn("w-full max-w-xl mx-auto space-y-4 py-2 select-none", className)}>
+                {/* Optional Title Header */}
+                {title && (
+                    <div className="text-center space-y-1 mb-6">
+                        <h2 className="text-xl sm:text-2xl font-bold tracking-tight text-foreground">
+                            {title}
+                        </h2>
+                        {subtitle && (
+                            <p className="text-xs sm:text-sm font-medium text-muted-foreground">
+                                {subtitle}
+                            </p>
+                        )}
+                    </div>
+                )}
 
-            {/* Reorder Group Container */}
-            <ul className="space-y-3">
-                {itemList.map((item) => (
-                    <SingleCardItem
-                        key={item.id}
-                        reorder={reorder}
-                        item={item}
-                        variant={variant}
-                        dragHandlePosition={dragHandlePosition}
-                        enableCheckboxes={enableCheckboxes}
-                        enableBadges={enableBadges}
-                        cardClassName={cardClassName}
-                        onToggle={handleToggleComplete}
-                    />
-                ))}
-            </ul>
-        </div>
+                {/* Reorder Group Container */}
+                <ul className="space-y-3">
+                    {itemList.map((item) => (
+                        <SingleCardItem
+                            key={item.id}
+                            reorder={reorder}
+                            item={item}
+                            variant={variant}
+                            dragHandlePosition={dragHandlePosition}
+                            enableCheckboxes={enableCheckboxes}
+                            enableBadges={enableBadges}
+                            cardClassName={cardClassName}
+                            onToggle={handleToggleComplete}
+                        />
+                    ))}
+                </ul>
+            </div>
+        </BeforeCommit>
     );
+}
+
+/**
+ * Runs `capture` on every update, just before React touches the DOM (the
+ * commit's before-mutation phase), so the list can record where its cards sat
+ * before the new order lands. Renders nothing of its own.
+ */
+class BeforeCommit extends Component<{
+    capture: () => void;
+    children: React.ReactNode;
+}> {
+    getSnapshotBeforeUpdate() {
+        this.props.capture();
+        return null;
+    }
+
+    // Required alongside getSnapshotBeforeUpdate; the work happens in the list's layout effect.
+    componentDidUpdate() {}
+
+    render() {
+        return this.props.children;
+    }
 }
 
 export default DraggableCardList;
