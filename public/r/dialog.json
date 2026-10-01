@@ -8,6 +8,7 @@
     "lucide-react"
   ],
   "registryDependencies": [
+    "https://algorize-ui.vercel.app/r/copy-button.json",
     "utils"
   ],
   "files": [

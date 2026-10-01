@@ -7,7 +7,10 @@
   "dependencies": [],
   "registryDependencies": [
     "https://algorize-ui.vercel.app/r/apple-select.json",
+    "https://algorize-ui.vercel.app/r/button.json",
     "https://algorize-ui.vercel.app/r/flowchart.json",
+    "https://algorize-ui.vercel.app/r/half-stars.json",
+    "https://algorize-ui.vercel.app/r/icons.json",
     "utils"
   ],
   "files": [

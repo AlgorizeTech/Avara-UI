@@ -7,7 +7,9 @@
   "dependencies": [],
   "registryDependencies": [
     "https://algorize-ui.vercel.app/r/glass-panel.json",
-    "utils"
+    "https://algorize-ui.vercel.app/r/social-links.json",
+    "utils",
+    "https://algorize-ui.vercel.app/r/verify-badge.json"
   ],
   "files": [
     {
