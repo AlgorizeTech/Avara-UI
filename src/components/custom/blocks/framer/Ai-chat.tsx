@@ -295,7 +295,7 @@ type PendingAttachment = MessageAttachment & {
   status: UploadStatus;
 };
 
-export const defaultModels: ChatModel[] = [
+const defaultModels: ChatModel[] = [
   {
     id: "lumen-ultra",
     name: "Lumen Ultra",
@@ -320,7 +320,7 @@ export const defaultModels: ChatModel[] = [
   },
 ];
 
-export const defaultEfforts: EffortOption[] = [
+const defaultEfforts: EffortOption[] = [
   { id: "low", label: "Low", description: "Quickest reply", level: 1 },
   {
     id: "medium",
@@ -337,7 +337,7 @@ export const defaultEfforts: EffortOption[] = [
   { id: "max", label: "Max", description: "Most thorough reasoning", level: 4 },
 ];
 
-export const defaultTools: ComposerTool[] = [
+const defaultTools: ComposerTool[] = [
   {
     id: "files",
     label: "Photos & files",
@@ -659,7 +659,6 @@ export default function AIChat({
     const el = textareaRef.current;
     const value = inputValue;
     const already = value.includes(token);
-    let next = value;
     let caret = value.length;
     if (!already) {
       const start = el?.selectionStart ?? value.length;
@@ -668,7 +667,7 @@ export default function AIChat({
       const after = value.slice(end);
       const lead = before && !/\s$/.test(before) ? " " : "";
       const trail = after && !/^\s/.test(after) ? " " : " ";
-      next = `${before}${lead}${token}${trail}${after}`;
+      const next = `${before}${lead}${token}${trail}${after}`;
       caret = (before + lead + token + trail).length;
       setInputValue(next);
     }

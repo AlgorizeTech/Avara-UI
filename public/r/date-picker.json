@@ -37,7 +37,7 @@
       "target": "components/custom/blocks/time-picker-utils.ts"
     }
   ],
-  "docs": "Named exports: DatePickerBlock, getThemeStyles. Controlled via `value: Date | null` and `onChange`. Shares the variant, color and size vocabulary of the `input` item, so the two line up visually in the same form. For month grids or event display, use `calendar` instead.",
+  "docs": "Named exports: DatePickerBlock, getThemeStyles (from date-picker-theme.ts, which installs alongside). Controlled via `value: Date | null` and `onChange`. Shares the variant, color and size vocabulary of the `input` item, so the two line up visually in the same form. For month grids or event display, use `calendar` instead.",
   "categories": [
     "forms",
     "dates"

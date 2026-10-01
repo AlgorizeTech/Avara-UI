@@ -24,7 +24,7 @@
       "target": "components/custom/blocks/select-theme.ts"
     }
   ],
-  "docs": "Named exports: SelectBlock, getThemeStyles. `options` take { label, value, icon?, group? } — supplying `group` renders grouped headings. `value` accepts a string, or an array when multiple selection is enabled. Several other blocks depend on this one.",
+  "docs": "Named exports: SelectBlock, getThemeStyles (from select-theme.ts, which installs alongside). `options` take { label, value, icon?, group? } — supplying `group` renders grouped headings. `value` accepts a string, or an array when multiple selection is enabled. Several other blocks depend on this one.",
   "categories": [
     "forms"
   ],

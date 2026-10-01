@@ -22,7 +22,7 @@
       "target": "components/custom/blocks/animated-timeline-theme.ts"
     }
   ],
-  "docs": "Named exports: AnimatedTimelineBlock, getThemeStyles. `animation` is fade-up | slide-in | zoom-in | flip-up | blur-in; `layout` is left | right | center. Uses IntersectionObserver rather than a motion library, so it has no runtime dependencies. For status-driven progress, use `timeline`.",
+  "docs": "Named exports: AnimatedTimelineBlock, getThemeStyles (from animated-timeline-theme.ts, which installs alongside). `animation` is fade-up | slide-in | zoom-in | flip-up | blur-in; `layout` is left | right | center. Uses IntersectionObserver rather than a motion library, so it has no runtime dependencies. For status-driven progress, use `timeline`.",
   "categories": [
     "data-display",
     "marketing"

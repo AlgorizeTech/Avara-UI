@@ -22,7 +22,7 @@
       "target": "components/custom/blocks/scroll-area-theme.ts"
     }
   ],
-  "docs": "Named exports: ScrollAreaBlock, getThemeStyles. `orientation` is vertical | horizontal | both; `autoHide` fades the bar when idle and `hideTrack` drops the track entirely. Needs a bounded height to scroll — give it an explicit height or a flex parent.",
+  "docs": "Named exports: ScrollAreaBlock, getThemeStyles (from scroll-area-theme.ts, which installs alongside). `orientation` is vertical | horizontal | both; `autoHide` fades the bar when idle and `hideTrack` drops the track entirely. Needs a bounded height to scroll — give it an explicit height or a flex parent.",
   "categories": [
     "layout",
     "scroll"

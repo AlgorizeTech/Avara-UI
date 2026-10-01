@@ -24,7 +24,7 @@
       "target": "components/custom/blocks/breadcrumb-theme.ts"
     }
   ],
-  "docs": "Named exports: BreadcrumbBlock, getThemeStyles. `items` take { label, href?, icon? }; `maxItems` collapses the middle into an ellipsis past that count. Separator styles: classic | slash | solid | ghost. Renders next/link, so it needs edits outside Next.js.",
+  "docs": "Named exports: BreadcrumbBlock, getThemeStyles (from breadcrumb-theme.ts, which installs alongside). `items` take { label, href?, icon? }; `maxItems` collapses the middle into an ellipsis past that count. Separator styles: classic | slash | solid | ghost. Renders next/link, so it needs edits outside Next.js.",
   "categories": [
     "navigation"
   ],

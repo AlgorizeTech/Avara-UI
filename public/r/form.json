@@ -23,7 +23,7 @@
       "target": "components/custom/blocks/form-theme.ts"
     }
   ],
-  "docs": "Named exports: FormWrapper, FormField, FormError, FormSubmit, getThemeStyles. Layout and styling only — bring your own state, via react-hook-form or otherwise. FormSubmit takes `isSubmitting` to render its pending state.",
+  "docs": "Named exports: FormWrapper, FormField, FormError, FormSubmit, getThemeStyles (from form-theme.ts, which installs alongside). Layout and styling only — bring your own state, via react-hook-form or otherwise. FormSubmit takes `isSubmitting` to render its pending state.",
   "categories": [
     "forms"
   ],

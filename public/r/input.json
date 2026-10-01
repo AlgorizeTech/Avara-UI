@@ -24,7 +24,7 @@
       "target": "components/custom/blocks/input-theme.ts"
     }
   ],
-  "docs": "Named exports: InputBlock, getThemeStyles. Accepts type (text | password | email | number | file), variant (default | filled | underlined | glow), inputSize, and a color token (indigo | rose | emerald | zinc, or your own). Pass `error` to switch it into the invalid state; `helperText` renders below when there is no error.",
+  "docs": "Named exports: InputBlock, getThemeStyles (from input-theme.ts, which installs alongside). Accepts type (text | password | email | number | file), variant (default | filled | underlined | glow), inputSize, and a color token (indigo | rose | emerald | zinc, or your own). Pass `error` to switch it into the invalid state; `helperText` renders below when there is no error.",
   "categories": [
     "forms"
   ],
