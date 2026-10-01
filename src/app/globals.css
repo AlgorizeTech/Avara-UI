@@ -815,6 +815,14 @@ html body[data-scroll-locked] {
   }
 }
 
+/* A demo's outer frame panel inside the preview sandbox, marked by
+   SandboxClient. The panel already stands off the --preview-stage surface, so
+   its border is dropped. Transparent rather than removed, so nothing shifts
+   by a pixel. Unlayered and !important to beat the demo's border utilities. */
+[data-sandbox-frame] {
+  border-color: transparent !important;
+}
+
 /* Force zero border radius across all elements while the theme customizer's
    radius is 0 — it marks <html> with `data-radius-zero`. Elements that must
    stay circular (orbital lines) opt out with `.keep-rounded` and carry their
