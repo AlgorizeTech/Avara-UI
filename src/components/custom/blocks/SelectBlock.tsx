@@ -291,9 +291,9 @@ const SelectBlockImpl = forwardRef<HTMLDivElement, SelectBlockImplProps>(
           return {
             wrapper: cn(
               baseWrapper,
-              "bg-white/20 dark:bg-white/10 backdrop-blur-md border border-white/30 dark:border-white/20 rounded-xl text-white shadow-sm hover:bg-white/30 transition-colors",
+              "min-h-[38px] px-3 py-2 text-sm border-black/15 text-neutral-900 bg-black/5 hover:bg-black/10 focus:bg-white/40 focus:border-black/30 dark:border-white/25 dark:text-white dark:bg-white/10 dark:hover:bg-white/15 dark:focus:bg-white/20 dark:focus:border-white/50 border rounded-md shadow-xs transition-all",
             ),
-            active: "ring-2 ring-white/40 border-white/50 bg-white/30",
+            active: "ring-2 ring-black/10 dark:ring-white/20 border-black/30 dark:border-white/40 bg-black/10 dark:bg-white/15",
           };
         case "default":
         default:
@@ -346,8 +346,8 @@ const SelectBlockImpl = forwardRef<HTMLDivElement, SelectBlockImplProps>(
             "truncate pr-6",
             s.text,
             !singleOption
-              ? variant === "glass" ? "text-white/60" : "text-muted-foreground"
-              : variant === "glass" ? "text-white font-medium" : "text-foreground",
+              ? variant === "glass" ? "text-neutral-500 dark:text-white/60" : "text-muted-foreground"
+              : variant === "glass" ? "text-neutral-900 font-medium dark:text-white" : "text-foreground",
           )}
         >
           {singleOption ? singleOption.label : placeholder}
@@ -403,7 +403,7 @@ const SelectBlockImpl = forwardRef<HTMLDivElement, SelectBlockImplProps>(
             <ChevronDown
               className={cn(
                 s.icon,
-                variant === "glass" ? "text-white/70" : "text-muted-foreground",
+                variant === "glass" ? "text-neutral-700 dark:text-white/70" : "text-muted-foreground",
                 "transition-transform duration-300",
                 isOpen && "rotate-180",
                 isOpen && theme.text,
@@ -418,7 +418,7 @@ const SelectBlockImpl = forwardRef<HTMLDivElement, SelectBlockImplProps>(
           className={cn(
             "absolute left-0 right-0 z-50 overflow-hidden border rounded-xl shadow-2xl transition-all duration-200 ease-out",
             variant === "glass"
-              ? "bg-white/40 dark:bg-black/50 backdrop-blur-2xl border-white/30 text-white shadow-2xl"
+              ? "bg-white/50 dark:bg-black/60 backdrop-blur-3xl border border-white/50 dark:border-white/20 text-neutral-900 dark:text-white shadow-2xl"
               : "bg-popover text-popover-foreground border-border",
             dropUp
               ? cn(
@@ -489,8 +489,8 @@ const SelectBlockImpl = forwardRef<HTMLDivElement, SelectBlockImplProps>(
                           s.option,
                           variant === "glass"
                             ? isSelected
-                              ? cn("bg-white/30 font-semibold shadow-sm", theme.text)
-                              : "text-white/90 hover:bg-white/20"
+                              ? cn("bg-black/10 dark:bg-white/25 font-semibold shadow-xs", theme.text)
+                              : "text-neutral-900 dark:text-white/90 hover:bg-black/10 dark:hover:bg-white/15"
                             : isSelected
                               ? theme.bgSoft
                               : "text-foreground hover:bg-muted",

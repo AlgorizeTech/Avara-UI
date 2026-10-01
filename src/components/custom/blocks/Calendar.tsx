@@ -1,6 +1,7 @@
 "use client";
 
 import {
+  Calendar as CalendarIcon,
   Calendar1,
   CheckSquare,
   ChevronDown,
@@ -9,6 +10,7 @@ import {
   ChevronLeftIcon,
   ChevronRight,
   ChevronRightIcon,
+  Clock,
   Download,
   Edit2,
   Hash,
@@ -21,7 +23,7 @@ import {
   X,
 } from "lucide-react";
 import * as React from "react";
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { DayButton, DayPicker, getDefaultClassNames } from "react-day-picker";
 
 import { cn } from "@/lib/utils";
@@ -123,16 +125,16 @@ const dashboardVariants: Record<CalendarVariant, Record<string, string>> = {
   },
   glass: {
     wrapper:
-      "bg-white/20 dark:bg-black/20 backdrop-blur-xl border border-white/30 dark:border-white/10 shadow-2xl text-white",
+      "bg-white/30 dark:bg-black/25 backdrop-blur-xl border border-white/40 dark:border-white/10 shadow-2xl text-neutral-900 dark:text-white",
     sidebar:
-      "bg-white/10 dark:bg-black/20 border-r border-white/20 dark:border-white/10",
-    header: "bg-transparent border-b border-white/20 dark:border-white/10",
-    gridOuter: "bg-white/10 dark:bg-black/20 p-px",
+      "bg-white/20 dark:bg-black/20 border-r border-white/30 dark:border-white/10",
+    header: "bg-transparent border-b border-white/30 dark:border-white/10",
+    gridOuter: "bg-white/20 dark:bg-black/20 p-px",
     gridGap: "gap-px",
     gridHeader:
-      "bg-white/15 dark:bg-black/30 backdrop-blur-md border-b border-white/20 dark:border-white/10",
+      "bg-white/30 dark:bg-black/30 backdrop-blur-md border-b border-white/30 dark:border-white/10",
     cellBg:
-      "bg-white/20 dark:bg-black/30 hover:bg-white/35 dark:hover:bg-black/50 backdrop-blur-sm",
+      "bg-white/25 dark:bg-black/30 hover:bg-white/40 dark:hover:bg-black/50 backdrop-blur-sm",
   },
 };
 
@@ -430,6 +432,455 @@ function buildEventsFromMock(
   return list;
 }
 
+const formatDisplayDate = (dateStr: string) => {
+  if (!dateStr) return "";
+  const [y, m, d] = dateStr.split("-").map(Number);
+  if (!y || !m || !d) return dateStr;
+  const dt = new Date(y, m - 1, d);
+  const day = String(dt.getDate()).padStart(2, "0");
+  const month = dt.toLocaleString("en-US", { month: "short" });
+  const year = dt.getFullYear();
+  return `${day}-${month}-${year}`;
+};
+
+const formatDisplayTime = (timeStr: string) => {
+  if (!timeStr) return "12:00 PM";
+  const [hStr, mStr] = timeStr.split(":");
+  let h = parseInt(hStr, 10);
+  const m = parseInt(mStr || "0", 10);
+  if (isNaN(h)) return timeStr;
+  const ampm = h >= 12 ? "PM" : "AM";
+  h = h % 12;
+  h = h ? h : 12;
+  return `${String(h).padStart(2, "0")}:${String(m).padStart(2, "0")} ${ampm}`;
+};
+
+function CustomDatePicker({
+  value,
+  onChange,
+  variant,
+  theme,
+}: {
+  value: string;
+  onChange: (val: string) => void;
+  variant?: CalendarVariant;
+  theme: Record<string, string>;
+}) {
+  const [isOpen, setIsOpen] = useState(false);
+  const containerRef = useRef<HTMLDivElement>(null);
+
+  const initialDate = useMemo(() => {
+    if (!value) return new Date();
+    const [y, m, d] = value.split("-").map(Number);
+    if (y && m && d) return new Date(y, m - 1, d);
+    return new Date();
+  }, [value]);
+
+  const [viewDate, setViewDate] = useState<Date>(initialDate);
+
+  useEffect(() => {
+    if (value) {
+      const [y, m, d] = value.split("-").map(Number);
+      if (y && m && d) setViewDate(new Date(y, m - 1, d));
+    }
+  }, [value, isOpen]);
+
+  useEffect(() => {
+    if (!isOpen) return;
+    const handleClickOutside = (e: MouseEvent) => {
+      if (containerRef.current && !containerRef.current.contains(e.target as Node)) {
+        setIsOpen(false);
+      }
+    };
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, [isOpen]);
+
+  const currentYear = viewDate.getFullYear();
+  const currentMonth = viewDate.getMonth();
+
+  const calendarCells = useMemo(() => {
+    const cells: { day: number; isCurrentMonth: boolean; dateKey: string }[] = [];
+    const firstDay = new Date(currentYear, currentMonth, 1).getDay();
+    const startOffset = firstDay === 0 ? 6 : firstDay - 1;
+    const daysInCurrentMonth = new Date(currentYear, currentMonth + 1, 0).getDate();
+    const daysInPrevMonth = new Date(currentYear, currentMonth, 0).getDate();
+
+    for (let i = startOffset - 1; i >= 0; i--) {
+      const d = daysInPrevMonth - i;
+      const prevDate = new Date(currentYear, currentMonth - 1, d);
+      cells.push({
+        day: d,
+        isCurrentMonth: false,
+        dateKey: `${prevDate.getFullYear()}-${String(prevDate.getMonth() + 1).padStart(2, "0")}-${String(d).padStart(2, "0")}`,
+      });
+    }
+
+    for (let i = 1; i <= daysInCurrentMonth; i++) {
+      cells.push({
+        day: i,
+        isCurrentMonth: true,
+        dateKey: `${currentYear}-${String(currentMonth + 1).padStart(2, "0")}-${String(i).padStart(2, "0")}`,
+      });
+    }
+
+    const totalCells = cells.length > 35 ? 42 : 35;
+    const remaining = totalCells - cells.length;
+    for (let i = 1; i <= remaining; i++) {
+      const nextDate = new Date(currentYear, currentMonth + 1, i);
+      cells.push({
+        day: i,
+        isCurrentMonth: false,
+        dateKey: `${nextDate.getFullYear()}-${String(nextDate.getMonth() + 1).padStart(2, "0")}-${String(i).padStart(2, "0")}`,
+      });
+    }
+
+    return cells;
+  }, [currentYear, currentMonth]);
+
+  return (
+    <div ref={containerRef} className="relative">
+      <label className={cn("block text-sm font-medium mb-1", variant === "glass" ? "text-neutral-800 dark:text-white/90" : "text-foreground")}>
+        Date
+      </label>
+      <input type="hidden" name="date" value={value} />
+      <button
+        type="button"
+        onClick={() => setIsOpen(!isOpen)}
+        className={cn(
+          "w-full cursor-pointer flex items-center justify-between border rounded-md px-3 py-2 text-sm bg-transparent transition-all outline-none",
+          variant === "glass"
+            ? "border-black/15 text-neutral-900 bg-black/5 hover:bg-black/10 focus:bg-white/40 focus:border-black/30 dark:border-white/25 dark:text-white dark:bg-white/10 dark:hover:bg-white/15 dark:focus:bg-white/20 dark:focus:border-white/50"
+            : "border-input text-foreground bg-background hover:bg-muted/50",
+          isOpen && (theme.focusRing || "ring-2 ring-primary/20"),
+        )}
+      >
+        <span className="font-medium truncate">{formatDisplayDate(value) || "Pick a date"}</span>
+        <CalendarIcon className={cn("w-4 h-4 shrink-0 opacity-70 cursor-pointer", variant === "glass" ? "text-neutral-700 dark:text-white/80" : "text-muted-foreground")} />
+      </button>
+
+      {isOpen && (
+        <div
+          className={cn(
+            "absolute top-full left-0 mt-2 z-50 w-72 rounded-xl border p-3 shadow-2xl animate-in fade-in zoom-in-95 duration-150 cursor-default",
+            variant === "glass"
+              ? "bg-white/45 dark:bg-black/60 backdrop-blur-3xl border-white/50 dark:border-white/20 text-neutral-900 dark:text-white shadow-2xl"
+              : "bg-popover text-popover-foreground border-border",
+          )}
+          onClick={(e) => e.stopPropagation()}
+        >
+          <div className="flex items-center justify-between mb-2">
+            <span className="text-sm font-semibold">
+              {viewDate.toLocaleString("en-US", { month: "long" })} {currentYear}
+            </span>
+            <div className="flex items-center gap-1">
+              <button
+                type="button"
+                onClick={(e) => {
+                  e.stopPropagation();
+                  setViewDate(new Date(currentYear, currentMonth - 1, 1));
+                }}
+                className={cn(
+                  "p-1 rounded-md transition-colors cursor-pointer",
+                  variant === "glass" ? "hover:bg-black/10 dark:hover:bg-white/15" : "hover:bg-muted"
+                )}
+              >
+                <ChevronLeft className="w-4 h-4 cursor-pointer" />
+              </button>
+              <button
+                type="button"
+                onClick={(e) => {
+                  e.stopPropagation();
+                  setViewDate(new Date(currentYear, currentMonth + 1, 1));
+                }}
+                className={cn(
+                  "p-1 rounded-md transition-colors cursor-pointer",
+                  variant === "glass" ? "hover:bg-black/10 dark:hover:bg-white/15" : "hover:bg-muted"
+                )}
+              >
+                <ChevronRight className="w-4 h-4 cursor-pointer" />
+              </button>
+            </div>
+          </div>
+
+          <div className="grid grid-cols-7 gap-1 text-center mb-1">
+            {["Mo", "Tu", "We", "Th", "Fr", "Sa", "Su"].map((d) => (
+              <span key={d} className="text-[11px] font-medium opacity-60">
+                {d}
+              </span>
+            ))}
+          </div>
+
+          <div className="grid grid-cols-7 gap-1">
+            {calendarCells.map((cell, idx) => {
+              const isSelected = cell.dateKey === value;
+              return (
+                <button
+                  key={idx}
+                  type="button"
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    onChange(cell.dateKey);
+                    setIsOpen(false);
+                  }}
+                  className={cn(
+                    "h-8 w-8 mx-auto flex items-center justify-center rounded-lg text-xs transition-colors cursor-pointer",
+                    !cell.isCurrentMonth && "opacity-35",
+                    isSelected
+                      ? cn(theme.primaryBg, "font-bold text-white shadow-xs")
+                      : variant === "glass"
+                        ? "hover:bg-black/10 dark:hover:bg-white/15 text-neutral-900 dark:text-white"
+                        : "hover:bg-muted text-foreground",
+                  )}
+                >
+                  {cell.day}
+                </button>
+              );
+            })}
+          </div>
+
+          <div className="mt-2 pt-2 border-t border-black/10 dark:border-white/10 flex justify-between items-center text-xs">
+            <button
+              type="button"
+              onClick={(e) => {
+                e.stopPropagation();
+                const today = new Date();
+                const k = `${today.getFullYear()}-${String(today.getMonth() + 1).padStart(2, "0")}-${String(today.getDate()).padStart(2, "0")}`;
+                setViewDate(today);
+                onChange(k);
+                setIsOpen(false);
+              }}
+              className={cn("font-semibold cursor-pointer px-2 py-1 rounded transition-colors", theme.primaryText || "text-primary")}
+            >
+              Today
+            </button>
+            <button
+              type="button"
+              onClick={(e) => {
+                e.stopPropagation();
+                setIsOpen(false);
+              }}
+              className="opacity-70 hover:opacity-100 cursor-pointer px-2 py-1"
+            >
+              Close
+            </button>
+          </div>
+        </div>
+      )}
+    </div>
+  );
+}
+
+function CustomTimePicker({
+  value,
+  onChange,
+  variant,
+  theme,
+}: {
+  value: string;
+  onChange: (val: string) => void;
+  variant?: CalendarVariant;
+  theme: Record<string, string>;
+}) {
+  const [isOpen, setIsOpen] = useState(false);
+  const containerRef = useRef<HTMLDivElement>(null);
+
+  const { hour12, minute, ampm } = useMemo(() => {
+    const [hStr, mStr] = (value || "12:00").split(":");
+    let h = parseInt(hStr, 10);
+    if (isNaN(h)) h = 12;
+    let m = parseInt(mStr || "0", 10);
+    if (isNaN(m)) m = 0;
+    const period: "AM" | "PM" = h >= 12 ? "PM" : "AM";
+    const h12 = h % 12 === 0 ? 12 : h % 12;
+    return { hour12: h12, minute: m, ampm: period };
+  }, [value]);
+
+  const updateTime = (nextH12: number, nextMin: number, nextPeriod: "AM" | "PM") => {
+    let h24 = nextH12 % 12;
+    if (nextPeriod === "PM") h24 += 12;
+    const formatted = `${String(h24).padStart(2, "0")}:${String(nextMin).padStart(2, "0")}`;
+    onChange(formatted);
+  };
+
+  useEffect(() => {
+    if (!isOpen) return;
+    const handleClickOutside = (e: MouseEvent) => {
+      if (containerRef.current && !containerRef.current.contains(e.target as Node)) {
+        setIsOpen(false);
+      }
+    };
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, [isOpen]);
+
+  const hoursList = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12];
+  const minutesList = [0, 5, 10, 15, 20, 25, 30, 35, 40, 45, 50, 55];
+
+  return (
+    <div ref={containerRef} className="relative">
+      <label className={cn("block text-sm font-medium mb-1", variant === "glass" ? "text-neutral-800 dark:text-white/90" : "text-foreground")}>
+        Time
+      </label>
+      <input type="hidden" name="time" value={value} />
+      <button
+        type="button"
+        onClick={() => setIsOpen(!isOpen)}
+        className={cn(
+          "w-full cursor-pointer flex items-center justify-between border rounded-md px-3 py-2 text-sm bg-transparent transition-all outline-none",
+          variant === "glass"
+            ? "border-black/15 text-neutral-900 bg-black/5 hover:bg-black/10 focus:bg-white/40 focus:border-black/30 dark:border-white/25 dark:text-white dark:bg-white/10 dark:hover:bg-white/15 dark:focus:bg-white/20 dark:focus:border-white/50"
+            : "border-input text-foreground bg-background hover:bg-muted/50",
+          isOpen && (theme.focusRing || "ring-2 ring-primary/20"),
+        )}
+      >
+        <span className="font-medium truncate">{formatDisplayTime(value)}</span>
+        <Clock className={cn("w-4 h-4 shrink-0 opacity-70 cursor-pointer", variant === "glass" ? "text-neutral-700 dark:text-white/80" : "text-muted-foreground")} />
+      </button>
+
+      {isOpen && (
+        <div
+          className={cn(
+            "absolute top-full right-0 mt-2 z-50 w-64 rounded-xl border p-3 shadow-2xl animate-in fade-in zoom-in-95 duration-150 cursor-default",
+            variant === "glass"
+              ? "bg-white/45 dark:bg-black/60 backdrop-blur-3xl border-white/50 dark:border-white/20 text-neutral-900 dark:text-white shadow-2xl"
+              : "bg-popover text-popover-foreground border-border",
+          )}
+          onClick={(e) => e.stopPropagation()}
+        >
+          <div className="flex items-center justify-between mb-2 pb-1 border-b border-black/10 dark:border-white/10">
+            <span className="text-xs font-semibold uppercase tracking-wider opacity-70">Pick Time</span>
+            <span className={cn("text-xs font-bold", theme.primaryText || "text-primary")}>
+              {formatDisplayTime(value)}
+            </span>
+          </div>
+
+          <div className="grid grid-cols-3 gap-1 h-44 py-1">
+            {/* Hour Column */}
+            <div className="flex flex-col overflow-y-auto pr-0.5 space-y-1 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
+              <span className="text-[10px] uppercase font-semibold text-center opacity-60 mb-0.5">Hr</span>
+              {hoursList.map((h) => {
+                const isActive = h === hour12;
+                return (
+                  <button
+                    key={h}
+                    type="button"
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      updateTime(h, minute, ampm);
+                    }}
+                    className={cn(
+                      "py-1 text-xs rounded-md transition-colors cursor-pointer font-medium",
+                      isActive
+                        ? cn(theme.primaryBg, "text-white font-bold shadow-xs")
+                        : variant === "glass"
+                          ? "hover:bg-black/10 dark:hover:bg-white/15 text-neutral-800 dark:text-neutral-200"
+                          : "hover:bg-muted text-foreground",
+                    )}
+                  >
+                    {String(h).padStart(2, "0")}
+                  </button>
+                );
+              })}
+            </div>
+
+            {/* Minute Column */}
+            <div className="flex flex-col overflow-y-auto pr-0.5 space-y-1 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
+              <span className="text-[10px] uppercase font-semibold text-center opacity-60 mb-0.5">Min</span>
+              {minutesList.map((m) => {
+                const isActive = Math.abs(m - minute) <= 2;
+                return (
+                  <button
+                    key={m}
+                    type="button"
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      updateTime(hour12, m, ampm);
+                    }}
+                    className={cn(
+                      "py-1 text-xs rounded-md transition-colors cursor-pointer font-medium",
+                      isActive
+                        ? cn(theme.primaryBg, "text-white font-bold shadow-xs")
+                        : variant === "glass"
+                          ? "hover:bg-black/10 dark:hover:bg-white/15 text-neutral-800 dark:text-neutral-200"
+                          : "hover:bg-muted text-foreground",
+                    )}
+                  >
+                    {String(m).padStart(2, "0")}
+                  </button>
+                );
+              })}
+            </div>
+
+            {/* AM/PM Column */}
+            <div className="flex flex-col space-y-1">
+              <span className="text-[10px] uppercase font-semibold text-center opacity-60 mb-0.5">Period</span>
+              {(["AM", "PM"] as const).map((p) => {
+                const isActive = p === ampm;
+                return (
+                  <button
+                    key={p}
+                    type="button"
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      updateTime(hour12, minute, p);
+                    }}
+                    className={cn(
+                      "py-2 text-xs rounded-md transition-colors cursor-pointer font-medium",
+                      isActive
+                        ? cn(theme.primaryBg, "text-white font-bold shadow-xs")
+                        : variant === "glass"
+                          ? "hover:bg-black/10 dark:hover:bg-white/15 text-neutral-800 dark:text-neutral-200"
+                          : "hover:bg-muted text-foreground",
+                    )}
+                  >
+                    {p}
+                  </button>
+                );
+              })}
+            </div>
+          </div>
+
+          <div className="mt-2 pt-2 border-t border-black/10 dark:border-white/10 flex items-center justify-between">
+            <div className="flex gap-1">
+              {["09:00", "12:00", "15:00"].map((slot) => (
+                <button
+                  key={slot}
+                  type="button"
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    onChange(slot);
+                  }}
+                  className={cn(
+                    "text-[10px] px-1.5 py-0.5 rounded font-medium cursor-pointer transition-colors",
+                    value === slot
+                      ? cn(theme.primaryBg, "text-white")
+                      : variant === "glass"
+                        ? "bg-black/5 hover:bg-black/10 dark:bg-white/10 dark:hover:bg-white/20"
+                        : "bg-muted hover:bg-muted/80",
+                  )}
+                >
+                  {formatDisplayTime(slot)}
+                </button>
+              ))}
+            </div>
+            <button
+              type="button"
+              onClick={(e) => {
+                e.stopPropagation();
+                setIsOpen(false);
+              }}
+              className={cn("text-xs font-semibold px-2 py-0.5 rounded cursor-pointer transition-colors", theme.primaryText || "text-primary")}
+            >
+              Done
+            </button>
+          </div>
+        </div>
+      )}
+    </div>
+  );
+}
+
 function CalendarDashboard({
   mockEvents = DEFAULT_MOCK_EVENTS,
   variant = "default",
@@ -485,8 +936,8 @@ function CalendarDashboard({
     null,
   );
   const [isAddModalOpen, setIsAddModalOpen] = useState(false);
-  const [selectedDateKey, setSelectedDateKey] = useState("");
-  const [selectedTime, setSelectedTime] = useState("12:00");
+  const [modalDate, setModalDate] = useState(() => `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, "0")}-${String(now.getDate()).padStart(2, "0")}`);
+  const [modalTime, setModalTime] = useState("12:00");
   const [editingEvent, setEditingEvent] = useState<CalendarEvent | null>(null);
   const [eventType, setEventType] = useState("pentest");
   const [eventPlatform, setEventPlatform] = useState("meet");
@@ -626,14 +1077,14 @@ function CalendarDashboard({
 
     setIsAddModalOpen(false);
     setEditingEvent(null);
-    setSelectedDateKey("");
     setActivePopupEventId(null);
   };
 
   const openAddModalForDate = (dateKey: string, timeStr: string = "12:00") => {
     setEditingEvent(null);
-    setSelectedDateKey(dateKey);
-    setSelectedTime(timeStr);
+    const dFormatted = formatDateForInput(dateKey) || `${year}-${String(month + 1).padStart(2, "0")}-${String(date).padStart(2, "0")}`;
+    setModalDate(dFormatted);
+    setModalTime(timeStr || "12:00");
     setEventType("pentest");
     setEventPlatform("meet");
     setIsAddModalOpen(true);
@@ -641,6 +1092,8 @@ function CalendarDashboard({
 
   const openEditModal = (event: CalendarEvent) => {
     setEditingEvent(event);
+    setModalDate(formatDateForInput(event.date));
+    setModalTime(event.time || "12:00");
     setEventType(event.type ?? "pentest");
     setEventPlatform(event.platform ?? "meet");
     setIsAddModalOpen(true);
@@ -702,132 +1155,168 @@ function CalendarDashboard({
             className={cn(
               "relative w-72 max-w-[80vw] h-full p-5 overflow-y-auto z-10 shadow-2xl flex flex-col justify-between transition-transform duration-300 ease-in-out transform",
               isMobileSidebarOpen ? "translate-x-0" : "-translate-x-full",
-              styles.sidebar,
-              "bg-card text-card-foreground",
+              variant === "glass"
+                ? "bg-white/25 dark:bg-black/50 backdrop-blur-2xl border-r border-white/25 text-white shadow-2xl"
+                : cn(styles.sidebar, "bg-card text-card-foreground"),
             )}
           >
             <div>
               <div className="flex items-center justify-between mb-4">
-                <h2 className="font-semibold text-lg">
+                <h2 className={cn("font-semibold text-lg", variant === "glass" ? "text-white" : "text-foreground")}>
                   {monthName} {year}
                 </h2>
                 <button
                   onClick={() => setIsMobileSidebarOpen(false)}
-                  className="p-1.5 rounded-lg hover:bg-muted text-muted-foreground transition-colors cursor-pointer"
+                  className={cn(
+                    "p-1.5 rounded-lg transition-colors cursor-pointer",
+                    variant === "glass"
+                      ? "hover:bg-white/15 text-white/80 hover:text-white"
+                      : "hover:bg-muted text-muted-foreground",
+                  )}
                   aria-label="Close Sidebar"
                 >
                   <X className="w-5 h-5 cursor-pointer" />
                 </button>
               </div>
 
-                <hr className="border-border my-4" />
+                <hr className={cn("my-4", variant === "glass" ? "border-white/20" : "border-border")} />
 
                 <div className="mb-6">
-                  <div className="flex items-center justify-between text-muted-foreground mb-3 cursor-pointer">
+                  <div className={cn("flex items-center justify-between mb-3 cursor-pointer", variant === "glass" ? "text-white/80" : "text-muted-foreground")}>
                     <h3 className="text-sm font-medium">Events</h3>
                     <ChevronDown className="w-4 h-4 cursor-pointer" />
                   </div>
                   <div className="space-y-2">
                     <div
                       onClick={() => toggleFilter("types", "pentest")}
-                      className="flex items-center justify-between bg-muted/50 p-2.5 rounded-md cursor-pointer hover:bg-muted transition-colors"
+                      className={cn(
+                        "flex items-center justify-between p-2.5 rounded-md cursor-pointer transition-colors",
+                        variant === "glass"
+                          ? "bg-white/10 hover:bg-white/20 border border-white/15 text-white"
+                          : "bg-muted/50 hover:bg-muted text-foreground",
+                      )}
                     >
                       <div className="flex items-center gap-3">
                         <div className="w-1.5 h-4 bg-yellow-400 rounded-full"></div>
-                        <span className="text-sm font-medium">Pentest</span>
+                        <span className={cn("text-sm font-medium", variant === "glass" ? "text-white" : "text-foreground")}>Pentest</span>
                       </div>
                       {filters.types.pentest ? (
                         <CheckSquare
                           className={cn("w-4 h-4 cursor-pointer", theme.primaryText)}
                         />
                       ) : (
-                        <Square className="w-4 h-4 text-muted-foreground cursor-pointer" />
+                        <Square className={cn("w-4 h-4 cursor-pointer", variant === "glass" ? "text-white/50" : "text-muted-foreground")} />
                       )}
                     </div>
                     <div
                       onClick={() => toggleFilter("types", "kickoff")}
-                      className="flex items-center justify-between bg-muted/50 p-2.5 rounded-md cursor-pointer hover:bg-muted transition-colors"
+                      className={cn(
+                        "flex items-center justify-between p-2.5 rounded-md cursor-pointer transition-colors",
+                        variant === "glass"
+                          ? "bg-white/10 hover:bg-white/20 border border-white/15 text-white"
+                          : "bg-muted/50 hover:bg-muted text-foreground",
+                      )}
                     >
                       <div className="flex items-center gap-3">
                         <div className="w-1.5 h-4 bg-emerald-500 rounded-full"></div>
-                        <span className="text-sm font-medium">Kick-Off</span>
+                        <span className={cn("text-sm font-medium", variant === "glass" ? "text-white" : "text-foreground")}>Kick-Off</span>
                       </div>
                       {filters.types.kickoff ? (
                         <CheckSquare
                           className={cn("w-4 h-4 cursor-pointer", theme.primaryText)}
                         />
                       ) : (
-                        <Square className="w-4 h-4 text-muted-foreground cursor-pointer" />
+                        <Square className={cn("w-4 h-4 cursor-pointer", variant === "glass" ? "text-white/50" : "text-muted-foreground")} />
                       )}
                     </div>
                   </div>
                 </div>
 
                 <div>
-                  <div className="flex items-center justify-between text-muted-foreground mb-3 cursor-pointer">
+                  <div className={cn("flex items-center justify-between mb-3 cursor-pointer", variant === "glass" ? "text-white/80" : "text-muted-foreground")}>
                     <h3 className="text-sm font-medium">Platforms</h3>
                     <ChevronDown className="w-4 h-4 cursor-pointer" />
                   </div>
                   <div className="space-y-2">
                     <div
                       onClick={() => toggleFilter("platforms", "meet")}
-                      className="flex items-center justify-between bg-muted/50 p-2.5 rounded-md cursor-pointer hover:bg-muted transition-colors"
+                      className={cn(
+                        "flex items-center justify-between p-2.5 rounded-md cursor-pointer transition-colors",
+                        variant === "glass"
+                          ? "bg-white/10 hover:bg-white/20 border border-white/15 text-white"
+                          : "bg-muted/50 hover:bg-muted text-foreground",
+                      )}
                     >
                       <div className="flex items-center gap-2">
-                        <Video className="w-4 h-4 text-emerald-600 dark:text-emerald-400" />
-                        <span className="text-sm font-medium">Google Meet</span>
+                        <Video className={cn("w-4 h-4", variant === "glass" ? "text-emerald-400" : "text-emerald-600 dark:text-emerald-400")} />
+                        <span className={cn("text-sm font-medium", variant === "glass" ? "text-white" : "text-foreground")}>Google Meet</span>
                       </div>
                       {filters.platforms.meet ? (
                         <CheckSquare
                           className={cn("w-4 h-4 cursor-pointer", theme.primaryText)}
                         />
                       ) : (
-                        <Square className="w-4 h-4 text-muted-foreground cursor-pointer" />
+                        <Square className={cn("w-4 h-4 cursor-pointer", variant === "glass" ? "text-white/50" : "text-muted-foreground")} />
                       )}
                     </div>
                     <div
                       onClick={() => toggleFilter("platforms", "slack")}
-                      className="flex items-center justify-between bg-muted/50 p-2.5 rounded-md cursor-pointer hover:bg-muted transition-colors"
+                      className={cn(
+                        "flex items-center justify-between p-2.5 rounded-md cursor-pointer transition-colors",
+                        variant === "glass"
+                          ? "bg-white/10 hover:bg-white/20 border border-white/15 text-white"
+                          : "bg-muted/50 hover:bg-muted text-foreground",
+                      )}
                     >
                       <div className="flex items-center gap-2">
-                        <Hash className="w-4 h-4 text-sky-500" />
-                        <span className="text-sm font-medium">Slack</span>
+                        <Hash className={cn("w-4 h-4", variant === "glass" ? "text-sky-400" : "text-sky-500")} />
+                        <span className={cn("text-sm font-medium", variant === "glass" ? "text-white" : "text-foreground")}>Slack</span>
                       </div>
                       {filters.platforms.slack ? (
                         <CheckSquare
                           className={cn("w-4 h-4 cursor-pointer", theme.primaryText)}
                         />
                       ) : (
-                        <Square className="w-4 h-4 text-muted-foreground cursor-pointer" />
+                        <Square className={cn("w-4 h-4 cursor-pointer", variant === "glass" ? "text-white/50" : "text-muted-foreground")} />
                       )}
                     </div>
                     <div
                       onClick={() => toggleFilter("platforms", "discord")}
-                      className="flex items-center justify-between bg-muted/50 p-2.5 rounded-md cursor-pointer hover:bg-muted transition-colors"
+                      className={cn(
+                        "flex items-center justify-between p-2.5 rounded-md cursor-pointer transition-colors",
+                        variant === "glass"
+                          ? "bg-white/10 hover:bg-white/20 border border-white/15 text-white"
+                          : "bg-muted/50 hover:bg-muted text-foreground",
+                      )}
                     >
                       <div className="flex items-center gap-2">
-                        <MessageSquare className="w-4 h-4 text-indigo-500" />
-                        <span className="text-sm font-medium">Discord</span>
+                        <MessageSquare className={cn("w-4 h-4", variant === "glass" ? "text-indigo-400" : "text-indigo-500")} />
+                        <span className={cn("text-sm font-medium", variant === "glass" ? "text-white" : "text-foreground")}>Discord</span>
                       </div>
                       {filters.platforms.discord ? (
                         <CheckSquare
                           className={cn("w-4 h-4 cursor-pointer", theme.primaryText)}
                         />
                       ) : (
-                        <Square className="w-4 h-4 text-muted-foreground cursor-pointer" />
+                        <Square className={cn("w-4 h-4 cursor-pointer", variant === "glass" ? "text-white/50" : "text-muted-foreground")} />
                       )}
                     </div>
                   </div>
                 </div>
 
-                <hr className="border-border my-5" />
+                <hr className={cn("my-5", variant === "glass" ? "border-white/20" : "border-border")} />
 
                 <button
                   onClick={() => {
                     handleExportCSV();
                     setIsMobileSidebarOpen(false);
                   }}
-                  className="w-full flex items-center justify-center gap-2 px-4 py-2.5 rounded-md border border-border bg-muted/50 hover:bg-muted text-foreground text-sm font-medium transition-colors cursor-pointer"
+                  className={cn(
+                    "w-full flex items-center justify-center gap-2 px-4 py-2.5 rounded-md text-sm font-medium transition-colors cursor-pointer",
+                    variant === "glass"
+                      ? "border border-white/25 bg-white/15 hover:bg-white/25 text-white backdrop-blur-md shadow-sm"
+                      : "border border-border bg-muted/50 hover:bg-muted text-foreground",
+                  )}
                 >
                   Export CSV <Download className="w-4 h-4" />
                 </button>
@@ -843,120 +1332,151 @@ function CalendarDashboard({
           )}
         >
           <div className="flex items-center justify-between mb-4">
-            <h2 className="font-semibold text-lg">
+            <h2 className={cn("font-semibold text-lg", variant === "glass" ? "text-neutral-900 dark:text-white" : "text-foreground")}>
               {monthName} {year}
             </h2>
-            <div className="flex gap-1 text-muted-foreground">
+            <div className={cn("flex gap-1", variant === "glass" ? "text-neutral-700 dark:text-white/80" : "text-muted-foreground")}>
               <button
                 onClick={prevPeriod}
-                className="p-1 hover:bg-muted/50 rounded transition-colors"
+                className={cn(
+                  "p-1 rounded transition-colors cursor-pointer",
+                  variant === "glass" ? "hover:bg-white/40 hover:text-neutral-900 dark:hover:bg-white/15 dark:hover:text-white" : "hover:bg-muted/50",
+                )}
               >
                 <ChevronLeft className="w-4 h-4 cursor-pointer" />
               </button>
               <button
                 onClick={nextPeriod}
-                className="p-1 hover:bg-muted/50 rounded transition-colors"
+                className={cn(
+                  "p-1 rounded transition-colors cursor-pointer",
+                  variant === "glass" ? "hover:bg-white/40 hover:text-neutral-900 dark:hover:bg-white/15 dark:hover:text-white" : "hover:bg-muted/50",
+                )}
               >
                 <ChevronRight className="w-4 h-4 cursor-pointer" />
               </button>
             </div>
           </div>
 
-          <hr className="border-border my-6" />
+          <hr className={cn("my-6", variant === "glass" ? "border-black/10 dark:border-white/20" : "border-border")} />
 
           <div className="mb-6">
-            <div className="flex items-center justify-between text-muted-foreground mb-3 cursor-pointer">
+            <div className={cn("flex items-center justify-between mb-3 cursor-pointer", variant === "glass" ? "text-neutral-700 dark:text-white/80" : "text-muted-foreground")}>
               <h3 className="text-sm font-medium">Events</h3>
               <ChevronDown className="w-4 h-4 cursor-pointer" />
             </div>
             <div className="space-y-2">
               <div
                 onClick={() => toggleFilter("types", "pentest")}
-                className="flex items-center justify-between bg-muted/50 p-2 rounded-md cursor-pointer hover:bg-muted transition-colors"
+                className={cn(
+                  "flex items-center justify-between p-2 rounded-md cursor-pointer transition-colors",
+                  variant === "glass"
+                    ? "bg-white/40 hover:bg-white/60 border border-white/50 text-neutral-900 dark:bg-white/10 dark:hover:bg-white/20 dark:border-white/15 dark:text-white"
+                    : "bg-muted/50 hover:bg-muted text-foreground",
+                )}
               >
                 <div className="flex items-center gap-3">
                   <div className="w-1 h-4 bg-yellow-400 rounded-full"></div>
-                  <span className="text-sm font-medium">Pentest</span>
+                  <span className={cn("text-sm font-medium", variant === "glass" ? "text-neutral-900 dark:text-white" : "text-foreground")}>Pentest</span>
                 </div>
                 {filters.types.pentest ? (
                   <CheckSquare
                     className={cn("w-4 h-4 cursor-pointer", theme.primaryText)}
                   />
                 ) : (
-                  <Square className="w-4 h-4 text-muted-foreground cursor-pointer" />
+                  <Square className={cn("w-4 h-4 cursor-pointer", variant === "glass" ? "text-neutral-400 dark:text-white/50" : "text-muted-foreground")} />
                 )}
               </div>
               <div
                 onClick={() => toggleFilter("types", "kickoff")}
-                className="flex items-center justify-between bg-muted/50 p-2 rounded-md cursor-pointer hover:bg-muted transition-colors"
+                className={cn(
+                  "flex items-center justify-between p-2 rounded-md cursor-pointer transition-colors",
+                  variant === "glass"
+                    ? "bg-white/40 hover:bg-white/60 border border-white/50 text-neutral-900 dark:bg-white/10 dark:hover:bg-white/20 dark:border-white/15 dark:text-white"
+                    : "bg-muted/50 hover:bg-muted text-foreground",
+                )}
               >
                 <div className="flex items-center gap-3">
                   <div className="w-1 h-4 bg-emerald-500 rounded-full"></div>
-                  <span className="text-sm font-medium">Kick-Off</span>
+                  <span className={cn("text-sm font-medium", variant === "glass" ? "text-neutral-900 dark:text-white" : "text-foreground")}>Kick-Off</span>
                 </div>
                 {filters.types.kickoff ? (
                   <CheckSquare
                     className={cn("w-4 h-4 cursor-pointer", theme.primaryText)}
                   />
                 ) : (
-                  <Square className="w-4 h-4 text-muted-foreground cursor-pointer" />
+                  <Square className={cn("w-4 h-4 cursor-pointer", variant === "glass" ? "text-neutral-400 dark:text-white/50" : "text-muted-foreground")} />
                 )}
               </div>
             </div>
           </div>
 
           <div>
-            <div className="flex items-center justify-between text-muted-foreground mb-3 cursor-pointer">
+            <div className={cn("flex items-center justify-between mb-3 cursor-pointer", variant === "glass" ? "text-neutral-700 dark:text-white/80" : "text-muted-foreground")}>
               <h3 className="text-sm font-medium">Platforms</h3>
               <ChevronDown className="w-4 h-4 cursor-pointer" />
             </div>
             <div className="space-y-2">
               <div
                 onClick={() => toggleFilter("platforms", "meet")}
-                className="flex items-center justify-between bg-muted/50 p-2 rounded-md cursor-pointer hover:bg-muted transition-colors"
+                className={cn(
+                  "flex items-center justify-between p-2 rounded-md cursor-pointer transition-colors",
+                  variant === "glass"
+                    ? "bg-white/40 hover:bg-white/60 border border-white/50 text-neutral-900 dark:bg-white/10 dark:hover:bg-white/20 dark:border-white/15 dark:text-white"
+                    : "bg-muted/50 hover:bg-muted text-foreground",
+                )}
               >
                 <div className="flex items-center gap-2">
-                  <Video className="w-4 h-4 text-emerald-600 dark:text-emerald-400" />
-                  <span className="text-sm font-medium">Google Meet</span>
+                  <Video className={cn("w-4 h-4", variant === "glass" ? "text-emerald-600 dark:text-emerald-400" : "text-emerald-600 dark:text-emerald-400")} />
+                  <span className={cn("text-sm font-medium", variant === "glass" ? "text-neutral-900 dark:text-white" : "text-foreground")}>Google Meet</span>
                 </div>
                 {filters.platforms.meet ? (
                   <CheckSquare
                     className={cn("w-4 h-4 cursor-pointer", theme.primaryText)}
                   />
                 ) : (
-                  <Square className="w-4 h-4 text-muted-foreground cursor-pointer" />
+                  <Square className={cn("w-4 h-4 cursor-pointer", variant === "glass" ? "text-neutral-400 dark:text-white/50" : "text-muted-foreground")} />
                 )}
               </div>
               <div
                 onClick={() => toggleFilter("platforms", "slack")}
-                className="flex items-center justify-between bg-muted/50 p-2 rounded-md cursor-pointer hover:bg-muted transition-colors"
+                className={cn(
+                  "flex items-center justify-between p-2 rounded-md cursor-pointer transition-colors",
+                  variant === "glass"
+                    ? "bg-white/40 hover:bg-white/60 border border-white/50 text-neutral-900 dark:bg-white/10 dark:hover:bg-white/20 dark:border-white/15 dark:text-white"
+                    : "bg-muted/50 hover:bg-muted text-foreground",
+                )}
               >
                 <div className="flex items-center gap-2">
-                  <Hash className="w-4 h-4 text-sky-500" />
-                  <span className="text-sm font-medium">Slack</span>
+                  <Hash className={cn("w-4 h-4", variant === "glass" ? "text-sky-600 dark:text-sky-400" : "text-sky-500")} />
+                  <span className={cn("text-sm font-medium", variant === "glass" ? "text-neutral-900 dark:text-white" : "text-foreground")}>Slack</span>
                 </div>
                 {filters.platforms.slack ? (
                   <CheckSquare
                     className={cn("w-4 h-4 cursor-pointer", theme.primaryText)}
                   />
                 ) : (
-                  <Square className="w-4 h-4 text-muted-foreground cursor-pointer" />
+                  <Square className={cn("w-4 h-4 cursor-pointer", variant === "glass" ? "text-neutral-400 dark:text-white/50" : "text-muted-foreground")} />
                 )}
               </div>
               <div
                 onClick={() => toggleFilter("platforms", "discord")}
-                className="flex items-center justify-between bg-muted/50 p-2 rounded-md cursor-pointer hover:bg-muted transition-colors"
+                className={cn(
+                  "flex items-center justify-between p-2 rounded-md cursor-pointer transition-colors",
+                  variant === "glass"
+                    ? "bg-white/40 hover:bg-white/60 border border-white/50 text-neutral-900 dark:bg-white/10 dark:hover:bg-white/20 dark:border-white/15 dark:text-white"
+                    : "bg-muted/50 hover:bg-muted text-foreground",
+                )}
               >
                 <div className="flex items-center gap-2">
-                  <MessageSquare className="w-4 h-4 text-indigo-500" />
-                  <span className="text-sm font-medium">Discord</span>
+                  <MessageSquare className={cn("w-4 h-4", variant === "glass" ? "text-indigo-600 dark:text-indigo-400" : "text-indigo-500")} />
+                  <span className={cn("text-sm font-medium", variant === "glass" ? "text-neutral-900 dark:text-white" : "text-foreground")}>Discord</span>
                 </div>
                 {filters.platforms.discord ? (
                   <CheckSquare
                     className={cn("w-4 h-4 cursor-pointer", theme.primaryText)}
                   />
                 ) : (
-                  <Square className="w-4 h-4 text-muted-foreground cursor-pointer" />
+                  <Square className={cn("w-4 h-4 cursor-pointer", variant === "glass" ? "text-neutral-400 dark:text-white/50" : "text-muted-foreground")} />
                 )}
               </div>
             </div>
@@ -976,28 +1496,39 @@ function CalendarDashboard({
               <div className="flex items-center gap-2 sm:gap-4 lg:hidden">
                 <button
                   onClick={() => setIsMobileSidebarOpen(true)}
-                  className="p-2 rounded-lg bg-muted/80 hover:bg-muted border border-border text-foreground transition-colors cursor-pointer"
+                  className={cn(
+                    "p-2 rounded-lg transition-colors cursor-pointer",
+                    variant === "glass"
+                      ? "bg-white/40 hover:bg-white/60 border border-white/40 text-neutral-900 dark:bg-white/15 dark:hover:bg-white/25 dark:border-white/20 dark:text-white backdrop-blur-md"
+                      : "bg-muted/80 hover:bg-muted border border-border text-foreground",
+                  )}
                   aria-label="Open Calendar Filters"
                 >
                   <Menu className="w-5 h-5 cursor-pointer" />
                 </button>
-                <div className="flex gap-1 text-muted-foreground">
+                <div className={cn("flex gap-1", variant === "glass" ? "text-neutral-700 dark:text-white/80" : "text-muted-foreground")}>
                   <button
                     onClick={prevPeriod}
-                    className="p-1 hover:bg-muted/50 rounded transition-colors cursor-pointer"
+                    className={cn(
+                      "p-1 rounded transition-colors cursor-pointer",
+                      variant === "glass" ? "hover:bg-white/40 hover:text-neutral-900 dark:hover:bg-white/15 dark:hover:text-white" : "hover:bg-muted/50",
+                    )}
                   >
-                    <ChevronLeft className="w-5 h-5 cursor-pointer" />
+                    <ChevronLeft className="w-4 h-4 cursor-pointer" />
                   </button>
                   <button
                     onClick={nextPeriod}
-                    className="p-1 hover:bg-muted/50 rounded transition-colors cursor-pointer"
+                    className={cn(
+                      "p-1 rounded transition-colors cursor-pointer",
+                      variant === "glass" ? "hover:bg-white/40 hover:text-neutral-900 dark:hover:bg-white/15 dark:hover:text-white" : "hover:bg-muted/50",
+                    )}
                   >
-                    <ChevronRight className="w-5 h-5 cursor-pointer" />
+                    <ChevronRight className="w-4 h-4 cursor-pointer" />
                   </button>
                 </div>
               </div>
 
-              <h1 className="text-base sm:text-2xl font-semibold whitespace-nowrap lg:hidden">
+              <h1 className={cn("text-base sm:text-2xl font-semibold whitespace-nowrap lg:hidden", variant === "glass" ? "text-neutral-900 dark:text-white" : "text-foreground")}>
                 <span className="sm:hidden">
                   {view === "day"
                     ? `${monthShortName} ${date}, ${year}`
@@ -1014,7 +1545,10 @@ function CalendarDashboard({
               <button
                 onClick={() => {
                   setEditingEvent(null);
-                  setSelectedDateKey("");
+                  setModalDate(`${year}-${String(month + 1).padStart(2, "0")}-${String(date).padStart(2, "0")}`);
+                  setModalTime("12:00");
+                  setEventType("pentest");
+                  setEventPlatform("meet");
                   setIsAddModalOpen(true);
                 }}
                 className={cn(
@@ -1028,14 +1562,19 @@ function CalendarDashboard({
 
             {/* Bottom Row: View Selectors + Export Button */}
             <div className="flex items-center w-full lg:w-auto gap-2 sm:gap-4 justify-between lg:justify-end">
-              <div className="flex bg-muted/60 p-1 rounded-lg text-xs sm:text-sm font-medium shrink-0 justify-start">
+              <div className={cn(
+                "flex p-1 rounded-lg text-xs sm:text-sm font-medium shrink-0 justify-start",
+                variant === "glass" ? "bg-white/30 dark:bg-white/10 border border-white/40 dark:border-white/15 backdrop-blur-md" : "bg-muted/60",
+              )}>
                 <button
                   onClick={() => setView("day")}
                   className={cn(
                     "px-3 sm:px-4 py-1.5 cursor-pointer rounded-md shadow-sm transition-colors",
                     view === "day"
                       ? theme.lightBg
-                      : "hover:text-foreground text-muted-foreground",
+                      : variant === "glass"
+                        ? "text-neutral-700 hover:text-neutral-900 dark:text-white/70 dark:hover:text-white"
+                        : "hover:text-foreground text-muted-foreground",
                   )}
                 >
                   Today
@@ -1046,7 +1585,9 @@ function CalendarDashboard({
                     "px-3 sm:px-4 py-1.5 cursor-pointer rounded-md shadow-sm transition-colors",
                     view === "week"
                       ? theme.lightBg
-                      : "hover:text-foreground text-muted-foreground",
+                      : variant === "glass"
+                        ? "text-neutral-700 hover:text-neutral-900 dark:text-white/70 dark:hover:text-white"
+                        : "hover:text-foreground text-muted-foreground",
                   )}
                 >
                   Week
@@ -1057,7 +1598,9 @@ function CalendarDashboard({
                     "px-3 sm:px-4 py-1.5 cursor-pointer rounded-md shadow-sm transition-colors",
                     view === "month"
                       ? theme.lightBg
-                      : "hover:text-foreground text-muted-foreground",
+                      : variant === "glass"
+                        ? "text-neutral-700 hover:text-neutral-900 dark:text-white/70 dark:hover:text-white"
+                        : "hover:text-foreground text-muted-foreground",
                   )}
                 >
                   Month
@@ -1066,7 +1609,12 @@ function CalendarDashboard({
 
               <button
                 onClick={handleExportCSV}
-                className="hidden sm:flex items-center cursor-pointer gap-2 px-3 sm:px-4 py-1.5 sm:py-2 border border-border rounded-md text-xs sm:text-sm font-medium hover:bg-foreground/5 transition-colors"
+                className={cn(
+                  "hidden sm:flex items-center cursor-pointer gap-2 px-3 sm:px-4 py-1.5 sm:py-2 rounded-md text-xs sm:text-sm font-medium transition-colors",
+                  variant === "glass"
+                    ? "border border-white/40 dark:border-white/20 bg-white/30 hover:bg-white/50 text-neutral-900 dark:bg-white/10 dark:hover:bg-white/20 dark:text-white backdrop-blur-md shadow-xs"
+                    : "border border-border hover:bg-foreground/5",
+                )}
               >
                 Export <Download className="w-3.5 h-3.5 sm:w-4 sm:h-4 cursor-pointer" />
               </button>
@@ -1100,9 +1648,10 @@ function CalendarDashboard({
                     <div
                       key={dayName}
                       className={cn(
-                        "py-1.5 sm:py-3 px-1 sm:px-4 text-[11px] sm:text-sm font-medium text-muted-foreground text-center truncate",
+                        "py-1.5 sm:py-3 px-1 sm:px-4 text-[11px] sm:text-sm font-semibold text-center truncate",
+                        variant === "glass" ? "text-neutral-900 dark:text-white/90" : "text-muted-foreground",
                         variant !== "minimal" && idx !== 6
-                          ? "border-r border-border"
+                          ? variant === "glass" ? "border-r border-white/15" : "border-r border-border"
                           : "",
                       )}
                     >
@@ -1138,21 +1687,26 @@ function CalendarDashboard({
                         onClickCell={() => openAddModalForDate(dayObj.dateKey)}
                         cellClass={styles.cellBg}
                         theme={theme}
+                        variant={variant}
                       />
                     );
                   })}
                 </div>
               </div>
             ) : (
-              <div className="w-full min-w-0 flex flex-col bg-card/60">
+              <div className={cn("w-full min-w-0 flex flex-col", variant === "glass" ? "bg-transparent" : "bg-card/60")}>
                 {/* Time Grid Sticky Header Bar */}
                 <div
                   className={cn(
-                    "sticky top-0 z-20 flex border-b border-border transition-colors duration-300 shrink-0",
+                    "sticky top-0 z-20 flex border-b transition-colors duration-300 shrink-0",
+                    variant === "glass" ? "border-white/15" : "border-border",
                     styles.gridHeader,
                   )}
                 >
-                  <div className="w-16 sm:w-20 shrink-0 py-2 px-1 text-center text-xs font-semibold text-muted-foreground border-r border-border/70 flex items-center justify-center bg-muted/20">
+                  <div className={cn(
+                    "w-16 sm:w-20 shrink-0 py-2 px-1 text-center text-xs font-semibold border-r flex items-center justify-center",
+                    variant === "glass" ? "text-neutral-900 font-semibold dark:text-white/80 border-white/15 bg-white/20 dark:bg-white/5" : "text-muted-foreground border-border/70 bg-muted/20",
+                  )}>
                     Time
                   </div>
                   <div
@@ -1177,13 +1731,17 @@ function CalendarDashboard({
                         <div
                           key={dayObj.dateKey}
                           className={cn(
-                            "py-2 px-1 text-center font-medium text-xs sm:text-sm text-foreground truncate flex flex-col items-center justify-center gap-0.5",
+                            "py-2 px-1 text-center font-medium text-xs sm:text-sm truncate flex flex-col items-center justify-center gap-0.5",
+                            variant === "glass" ? "text-neutral-900 dark:text-white" : "text-foreground",
                             idx < calendarDays.length - 1
-                              ? "border-r border-border"
+                              ? variant === "glass" ? "border-r border-white/15" : "border-r border-border"
                               : "",
                           )}
                         >
-                          <span className="text-[10px] sm:text-xs text-muted-foreground uppercase tracking-wider font-semibold">
+                          <span className={cn(
+                            "text-[10px] sm:text-xs uppercase tracking-wider font-semibold",
+                            variant === "glass" ? "text-neutral-700 dark:text-white/70" : "text-muted-foreground",
+                          )}>
                             {view === "day" ? fullDayName : dayName}
                           </span>
                           <span
@@ -1191,7 +1749,9 @@ function CalendarDashboard({
                               "text-xs sm:text-sm font-semibold w-6 h-6 sm:w-7 sm:h-7 flex items-center justify-center rounded-full transition-colors",
                               isToday
                                 ? theme.primaryBg
-                                : "text-foreground hover:bg-muted",
+                                : variant === "glass"
+                                  ? "text-neutral-900 hover:bg-white/30 dark:text-white dark:hover:bg-white/15"
+                                  : "text-foreground hover:bg-muted",
                             )}
                           >
                             {dayObj.day}
@@ -1207,10 +1767,13 @@ function CalendarDashboard({
                   {TIME_SLOTS.map((slot, slotIdx) => (
                     <div
                       key={slot.label}
-                      className="flex min-h-[38px] sm:min-h-[44px] border-b border-border/70"
+                      className={cn("flex min-h-[38px] sm:min-h-[44px] border-b", variant === "glass" ? "border-white/15" : "border-border/70")}
                     >
                       {/* Time Label Column */}
-                      <div className="w-16 sm:w-20 shrink-0 px-1 py-1 flex items-center justify-center text-[10px] sm:text-xs font-semibold text-muted-foreground border-r border-border/70 bg-muted/20 select-none">
+                      <div className={cn(
+                        "w-16 sm:w-20 shrink-0 px-1 py-1 flex items-center justify-center text-[10px] sm:text-xs font-semibold border-r select-none",
+                        variant === "glass" ? "text-neutral-900 font-semibold dark:text-white/80 border-white/15 bg-white/20 dark:bg-white/5" : "text-muted-foreground border-border/70 bg-muted/20",
+                      )}>
                         {slot.label}
                       </div>
 
@@ -1250,10 +1813,11 @@ function CalendarDashboard({
                               cellClass={cn(
                                 styles.cellBg,
                                 dayIdx < calendarDays.length - 1
-                                  ? "border-r border-border/70"
+                                  ? variant === "glass" ? "border-r border-white/15" : "border-r border-border/70"
                                   : "",
                               )}
                               theme={theme}
+                              variant={variant}
                             />
                           );
                         })}
@@ -1270,31 +1834,31 @@ function CalendarDashboard({
       {/* --- ADD / EDIT EVENT MODAL --- */}
       {isAddModalOpen && (
         <div
-          className="fixed inset-0 z-[100] flex items-center justify-center bg-black/60 backdrop-blur-md p-4 cursor-pointer"
+          className="fixed inset-0 z-[100] flex items-center justify-center bg-black/40 dark:bg-black/60 backdrop-blur-md p-4 cursor-pointer"
           onClick={closeModal}
         >
           <div
             className={cn(
-              "w-full max-w-md rounded-xl shadow-2xl overflow-hidden border animate-in fade-in zoom-in duration-200 cursor-default",
+              "w-full max-w-md rounded-xl shadow-2xl border animate-in fade-in zoom-in duration-200 cursor-default",
               variant === "glass"
-                ? "bg-white/30 dark:bg-black/40 backdrop-blur-2xl border-white/30 dark:border-white/10 text-white shadow-2xl"
+                ? "bg-white/50 dark:bg-black/60 backdrop-blur-3xl border-white/50 dark:border-white/20 text-neutral-900 dark:text-white shadow-2xl"
                 : "bg-card border-border",
             )}
             onClick={(e) => e.stopPropagation()}
           >
             <div className={cn(
               "flex items-center justify-between px-6 py-4 border-b",
-              variant === "glass" ? "border-white/20 dark:border-white/10" : "border-border"
+              variant === "glass" ? "border-black/10 dark:border-white/20" : "border-border"
             )}>
-              <h3 className={cn("font-semibold text-lg", variant === "glass" ? "text-white" : "text-foreground")}>
+              <h3 className={cn("font-semibold text-lg", variant === "glass" ? "text-neutral-900 dark:text-white" : "text-foreground")}>
                 {editingEvent ? "Update Event" : "Add New Event"}
               </h3>
               <button
                 onClick={closeModal}
                 className={cn(
-                  "cursor-pointer",
+                  "cursor-pointer p-1 rounded-md transition-colors",
                   variant === "glass"
-                    ? "text-gray-400 hover:text-gray-600 dark:hover:text-gray-200"
+                    ? "text-neutral-600 hover:text-neutral-900 hover:bg-black/5 dark:text-white/70 dark:hover:text-white dark:hover:bg-white/10"
                     : "text-muted-foreground hover:text-foreground",
                 )}
               >
@@ -1303,7 +1867,7 @@ function CalendarDashboard({
             </div>
             <form onSubmit={handleSaveEvent} className="p-6 space-y-4">
               <div>
-                <label className={cn("block text-sm font-medium mb-1", variant === "glass" ? "text-white/90" : "text-foreground")}>
+                <label className={cn("block text-sm font-medium mb-1", variant === "glass" ? "text-neutral-800 dark:text-white/90" : "text-foreground")}>
                   Event Title
                 </label>
                 <input
@@ -1313,60 +1877,31 @@ function CalendarDashboard({
                   defaultValue={editingEvent ? editingEvent.title : ""}
                   placeholder="e.g. Q3 Roadmap Review"
                   className={cn(
-                    "w-full cursor-text border rounded-md px-3 py-2 text-sm bg-transparent focus:ring-2 focus:outline-none transition-shadow",
+                    "w-full cursor-text border rounded-md px-3 py-2 text-sm bg-transparent focus:ring-2 focus:outline-none transition-all",
                     variant === "glass"
-                      ? "border-white/20 text-white placeholder:text-white/50 bg-white/10"
+                      ? "border-black/15 text-neutral-900 placeholder:text-neutral-400 bg-black/5 hover:bg-black/10 focus:bg-white/40 focus:border-black/30 dark:border-white/25 dark:text-white dark:placeholder:text-white/50 dark:bg-white/10 dark:hover:bg-white/15 dark:focus:bg-white/20 dark:focus:border-white/50"
                       : "border-input text-foreground",
                     theme.focusRing,
                   )}
                 />
               </div>
               <div className="grid grid-cols-2 gap-4">
-                <div>
-                  <label className={cn("block text-sm font-medium mb-1", variant === "glass" ? "text-white/90" : "text-foreground")}>
-                    Date
-                  </label>
-                  <input
-                    required
-                    name="date"
-                    type="date"
-                    defaultValue={
-                      editingEvent
-                        ? formatDateForInput(editingEvent.date)
-                        : formatDateForInput(selectedDateKey) ||
-                          `${year}-${String(month + 1).padStart(2, "0")}-01`
-                    }
-                    className={cn(
-                      "w-full cursor-pointer border rounded-md px-3 py-2 text-sm bg-transparent focus:ring-2 focus:outline-none transition-shadow",
-                      variant === "glass"
-                        ? "border-white/20 text-white [color-scheme:dark] bg-white/10"
-                        : "border-input text-foreground [color-scheme:light] dark:[color-scheme:dark]",
-                      theme.focusRing,
-                    )}
-                  />
-                </div>
-                <div>
-                  <label className={cn("block text-sm font-medium mb-1", variant === "glass" ? "text-white/90" : "text-foreground")}>
-                    Time
-                  </label>
-                  <input
-                    required
-                    name="time"
-                    type="time"
-                    defaultValue={editingEvent ? editingEvent.time : selectedTime || "12:00"}
-                    className={cn(
-                      "w-full cursor-pointer border rounded-md px-3 py-2 text-sm bg-transparent focus:ring-2 focus:outline-none transition-shadow",
-                      variant === "glass"
-                        ? "border-white/20 text-white [color-scheme:dark] bg-white/10"
-                        : "border-input text-foreground [color-scheme:light] dark:[color-scheme:dark]",
-                      theme.focusRing,
-                    )}
-                  />
-                </div>
+                <CustomDatePicker
+                  value={modalDate}
+                  onChange={setModalDate}
+                  variant={variant}
+                  theme={theme}
+                />
+                <CustomTimePicker
+                  value={modalTime}
+                  onChange={setModalTime}
+                  variant={variant}
+                  theme={theme}
+                />
               </div>
               <div className="grid grid-cols-2 gap-4">
                 <div>
-                  <label className={cn("block text-sm font-medium mb-1", variant === "glass" ? "text-white/90" : "text-foreground")}>
+                  <label className={cn("block text-sm font-medium mb-1", variant === "glass" ? "text-neutral-800 dark:text-white/90" : "text-foreground")}>
                     Event Type
                   </label>
                   {/* Hidden input keeps this field in the form's FormData,
@@ -1382,7 +1917,7 @@ function CalendarDashboard({
                   />
                 </div>
                 <div>
-                  <label className={cn("block text-sm font-medium mb-1", variant === "glass" ? "text-white/90" : "text-foreground")}>
+                  <label className={cn("block text-sm font-medium mb-1", variant === "glass" ? "text-neutral-800 dark:text-white/90" : "text-foreground")}>
                     Platform
                   </label>
                   <input type="hidden" name="platform" value={eventPlatform} />
@@ -1403,7 +1938,7 @@ function CalendarDashboard({
                   className={cn(
                     "px-4 py-2 text-sm font-medium rounded-md transition-colors cursor-pointer",
                     variant === "glass"
-                      ? "text-white/80 hover:bg-white/10 hover:text-white"
+                      ? "text-neutral-700 hover:bg-black/5 hover:text-neutral-900 dark:text-white/80 dark:hover:bg-white/10 dark:hover:text-white"
                       : "text-foreground hover:bg-muted",
                   )}
                 >
@@ -1440,12 +1975,12 @@ interface CalendarCellBaseProps {
   onClickCell: () => void;
   cellClass?: string;
   theme: Record<string, string>;
+  variant?: CalendarVariant;
 }
 
 interface CalendarCellProps extends CalendarCellBaseProps {
   day: number | string;
   isGray?: boolean;
-  variant?: CalendarVariant;
 }
 
 type TimeGridCellProps = CalendarCellBaseProps;
@@ -1475,7 +2010,11 @@ function CalendarCell({
     <div
       onClick={onClickCell}
       className={cn(
-        `relative flex flex-col p-1.5 sm:p-2 h-full transition-colors cursor-pointer ${isAnyPopupOpen ? "z-30" : "z-10 hover:z-20"} ${isGray ? "text-muted-foreground opacity-60" : "text-foreground"}`,
+        `relative flex flex-col p-1.5 sm:p-2 h-full transition-colors cursor-pointer ${isAnyPopupOpen ? "z-30" : "z-10 hover:z-20"} ${
+          isGray
+            ? variant === "glass" ? "text-neutral-400 dark:text-white/40 opacity-50" : "text-muted-foreground opacity-60"
+            : variant === "glass" ? "text-neutral-900 font-semibold dark:text-white" : "text-foreground"
+        }`,
         cellClass,
       )}
     >
@@ -1490,9 +2029,197 @@ function CalendarCell({
           const isPopupOpen = activePopupEventId === event.id;
           const isPentest = event.type === "pentest";
           const borderClass = isGray
-            ? "border-border bg-muted text-muted-foreground"
+            ? variant === "glass"
+              ? "border-black/10 bg-black/5 text-neutral-500 dark:border-white/10 dark:bg-white/10 dark:text-white/50"
+              : "border-border bg-muted text-muted-foreground"
             : isPentest
-              ? "border-yellow-200 bg-yellow-50 text-yellow-800 dark:border-yellow-800/50 dark:bg-yellow-900/30 dark:text-yellow-400"
+              ? variant === "glass"
+                ? "border-amber-500/50 bg-amber-400/30 text-amber-950 font-medium dark:border-amber-400/40 dark:bg-amber-500/25 dark:text-amber-100 backdrop-blur-sm shadow-xs"
+                : "border-yellow-200 bg-yellow-50 text-yellow-800 dark:border-yellow-800/50 dark:bg-yellow-900/30 dark:text-yellow-400"
+              : variant === "glass"
+                ? "border-emerald-500/50 bg-emerald-400/30 text-emerald-950 font-medium dark:border-emerald-400/40 dark:bg-emerald-500/25 dark:text-emerald-100 backdrop-blur-sm shadow-xs"
+                : "border-green-200 bg-green-50 text-green-800 dark:border-green-800/50 dark:bg-green-900/30 dark:text-green-400";
+          const PlatformIcon =
+            event.platform === "meet"
+              ? Video
+              : event.platform === "slack"
+                ? Hash
+                : MessageSquare;
+          const iconColor =
+            event.platform === "meet"
+              ? "text-green-600"
+              : event.platform === "slack"
+                ? "text-blue-500"
+                : "text-indigo-500";
+
+          return (
+            <div
+              key={event.id}
+              onClick={(e) => {
+                e.stopPropagation();
+                setActivePopupEventId(isPopupOpen ? null : event.id);
+              }}
+              className={`flex items-center justify-between px-1 sm:px-2 py-0.5 text-[10px] sm:text-xs font-medium rounded border cursor-pointer hover:brightness-95 transition-all ${borderClass}`}
+            >
+              <div className="flex items-center gap-1 sm:gap-1.5 min-w-0">
+                <PlatformIcon
+                  className={cn(
+                    "w-2.5 h-2.5 sm:w-3 sm:h-3 shrink-0 cursor-pointer",
+                    variant === "glass" ? "text-current" : iconColor,
+                  )}
+                />
+                <span className="truncate max-w-[35px] min-[400px]:max-w-[60px] sm:max-w-none cursor-pointer">{event.title}</span>
+              </div>
+              <span className={cn("opacity-75 shrink-0 ml-1 hidden sm:inline cursor-pointer", variant === "glass" ? "text-neutral-800 font-medium dark:text-white/80" : "")}>
+                {event.time}
+              </span>
+            </div>
+          );
+        })}
+      </div>
+
+      {events.map((event: CalendarEvent) => {
+        const isPopupOpen = activePopupEventId === event.id;
+        if (!isPopupOpen) return null;
+
+        const PlatformIcon =
+          event.platform === "meet"
+            ? Video
+            : event.platform === "slack"
+              ? Hash
+              : MessageSquare;
+        const iconColor =
+          event.platform === "meet"
+            ? "text-green-600"
+            : event.platform === "slack"
+              ? "text-blue-500"
+              : "text-indigo-500";
+
+        return (
+          <div key={`popup-${event.id}`}>
+            <div
+              className={cn(
+                "fixed inset-0 z-40 sm:bg-transparent cursor-pointer",
+                variant === "glass" ? "bg-black/30 dark:bg-black/60 backdrop-blur-xs" : "bg-black/20 dark:bg-black/60",
+              )}
+              onClick={(e) => {
+                e.stopPropagation();
+                setActivePopupEventId(null);
+              }}
+            />
+            <div
+              className={`fixed sm:absolute z-50 top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[90vw] max-w-[320px] sm:top-auto sm:left-auto sm:translate-x-0 sm:translate-y-0 sm:w-72 ${popupXClass} ${popupYClass} ${
+                variant === "glass"
+                  ? "bg-white/50 dark:bg-black/60 backdrop-blur-3xl border-white/50 dark:border-white/20 text-neutral-900 dark:text-white shadow-2xl"
+                  : "bg-popover text-popover-foreground border-border"
+              } rounded-xl shadow-2xl border p-4 cursor-default animate-in fade-in zoom-in-95 duration-150`}
+              onClick={(e) => e.stopPropagation()}
+            >
+              <div className="flex items-start justify-between mb-4">
+                <h4 className={cn("font-bold text-base truncate pr-4", variant === "glass" ? "text-neutral-900 dark:text-white" : "text-foreground")}>
+                  {event.title}
+                </h4>
+                <div className={cn("flex items-center gap-2 shrink-0", variant === "glass" ? "text-neutral-600 dark:text-white/70" : "text-muted-foreground")}>
+                  <Edit2
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      onEditEvent(event);
+                    }}
+                    className={cn("w-4 h-4 cursor-pointer transition-colors", variant === "glass" ? "hover:text-neutral-900 dark:hover:text-white" : "hover:text-foreground")}
+                  />
+                  <Trash2
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      onDeleteEvent(event.id);
+                    }}
+                    className="w-4 h-4 cursor-pointer hover:text-red-500 transition-colors"
+                  />
+                </div>
+              </div>
+              <div className="flex items-center gap-2 mb-3">
+                <span
+                  className={cn(
+                    "flex items-center gap-1.5 px-2.5 py-1 text-xs font-medium rounded-md",
+                    variant === "glass"
+                      ? "bg-emerald-500/20 text-emerald-800 dark:text-emerald-300 border border-emerald-500/30 backdrop-blur-sm"
+                      : theme.lightBg,
+                  )}
+                >
+                  <div
+                    className={cn(
+                      "w-1.5 h-1.5 rounded-full animate-pulse",
+                      variant === "glass" ? "bg-emerald-500 dark:bg-emerald-400" : theme.pulse,
+                    )}
+                  ></div>{" "}
+                  Pending
+                </span>
+              </div>
+              <div className={cn("flex items-center gap-2 text-sm mb-4 font-medium", variant === "glass" ? "text-neutral-700 dark:text-white/85" : "text-muted-foreground")}>
+                <Calendar1 className={cn("w-4 h-4 shrink-0", variant === "glass" ? "text-neutral-600 dark:text-white/70" : "")} /> {dateStr} at {event.time}
+              </div>
+              <button className={cn(
+                "w-full flex items-center justify-center gap-2 py-2 rounded-lg text-sm font-semibold transition-colors cursor-pointer",
+                variant === "glass"
+                  ? "bg-white/40 hover:bg-white/60 border border-white/50 text-neutral-900 dark:bg-white/15 dark:hover:bg-white/25 dark:border-white/25 dark:text-white backdrop-blur-md shadow-xs"
+                  : "bg-muted hover:bg-muted/80 text-foreground",
+              )}>
+                Join with{" "}
+                {event.platform === "meet"
+                  ? "Google Meet"
+                  : event.platform === "slack"
+                    ? "Slack"
+                    : "Discord"}{" "}
+                <PlatformIcon
+                  className={`w-4 h-4 cursor-pointer ${variant === "glass" ? "text-neutral-800 dark:text-white" : iconColor}`}
+                />
+              </button>
+            </div>
+          </div>
+        );
+      })}
+    </div>
+  );
+}
+
+// === Sub Component: TimeGridCell ===
+function TimeGridCell({
+  events = [],
+  activePopupEventId,
+  setActivePopupEventId,
+  colIndex,
+  rowIndex,
+  dateStr,
+  onDeleteEvent,
+  onEditEvent,
+  onClickCell,
+  cellClass,
+  theme,
+  variant,
+}: TimeGridCellProps) {
+  const popupXClass = colIndex >= 4 ? "sm:right-0" : "sm:left-0";
+  const popupYClass = rowIndex >= 6 ? "sm:bottom-full sm:mb-2" : "sm:top-10";
+  const isAnyPopupOpen = events.some((e: CalendarEvent) => e.id === activePopupEventId);
+
+  return (
+    <div
+      onClick={onClickCell}
+      className={cn(
+        `relative flex flex-col p-1 sm:p-1.5 h-full transition-colors cursor-pointer ${isAnyPopupOpen ? "z-30" : "z-10 hover:z-20"} ${
+          variant === "glass" ? "text-neutral-900 dark:text-white" : "text-foreground"
+        } min-h-[52px]`,
+        cellClass,
+      )}
+    >
+      <div className="flex-1 overflow-y-auto space-y-1 pr-0.5 [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]">
+        {events.map((event: CalendarEvent) => {
+          const isPopupOpen = activePopupEventId === event.id;
+          const isPentest = event.type === "pentest";
+          const borderClass = isPentest
+            ? variant === "glass"
+              ? "border-amber-500/50 bg-amber-400/30 text-amber-950 font-medium dark:border-amber-400/40 dark:bg-amber-500/25 dark:text-amber-100 backdrop-blur-sm shadow-xs"
+              : "border-yellow-200 bg-yellow-50 text-yellow-800 dark:border-yellow-800/50 dark:bg-yellow-900/30 dark:text-yellow-400"
+            : variant === "glass"
+              ? "border-emerald-500/50 bg-emerald-400/30 text-emerald-950 font-medium dark:border-emerald-400/40 dark:bg-emerald-500/25 dark:text-emerald-100 backdrop-blur-sm shadow-xs"
               : "border-green-200 bg-green-50 text-green-800 dark:border-green-800/50 dark:bg-green-900/30 dark:text-green-400";
           const PlatformIcon =
             event.platform === "meet"
@@ -1518,11 +2245,16 @@ function CalendarCell({
             >
               <div className="flex items-center gap-1 sm:gap-1.5 min-w-0">
                 <PlatformIcon
-                  className={`w-2.5 h-2.5 sm:w-3 sm:h-3 shrink-0 cursor-pointer ${iconColor}`}
+                  className={cn(
+                    "w-2.5 h-2.5 sm:w-3 sm:h-3 shrink-0 cursor-pointer",
+                    variant === "glass" ? "text-current" : iconColor,
+                  )}
                 />
-                <span className="truncate max-w-[35px] min-[400px]:max-w-[60px] sm:max-w-none cursor-pointer">{event.title}</span>
+                <span className="truncate max-w-[35px] min-[400px]:max-w-[60px] sm:max-w-none cursor-pointer">
+                  {event.title}
+                </span>
               </div>
-              <span className="opacity-70 shrink-0 ml-1 hidden sm:inline cursor-pointer">
+              <span className={cn("opacity-75 shrink-0 ml-1 hidden sm:inline cursor-pointer", variant === "glass" ? "text-neutral-800 font-medium dark:text-white/80" : "")}>
                 {event.time}
               </span>
             </div>
@@ -1550,7 +2282,10 @@ function CalendarCell({
         return (
           <div key={`popup-${event.id}`}>
             <div
-              className="fixed inset-0 z-40 bg-black/20 dark:bg-black/60 sm:bg-transparent cursor-pointer"
+              className={cn(
+                "fixed inset-0 z-40 sm:bg-transparent cursor-pointer",
+                variant === "glass" ? "bg-black/30 dark:bg-black/60 backdrop-blur-xs" : "bg-black/20 dark:bg-black/60",
+              )}
               onClick={(e) => {
                 e.stopPropagation();
                 setActivePopupEventId(null);
@@ -1559,22 +2294,22 @@ function CalendarCell({
             <div
               className={`fixed sm:absolute z-50 top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[90vw] max-w-[320px] sm:top-auto sm:left-auto sm:translate-x-0 sm:translate-y-0 sm:w-72 ${popupXClass} ${popupYClass} ${
                 variant === "glass"
-                  ? "bg-white/30 dark:bg-black/40 backdrop-blur-2xl border-white/30 dark:border-white/10 text-white shadow-2xl"
+                  ? "bg-white/50 dark:bg-black/60 backdrop-blur-3xl border-white/50 dark:border-white/20 text-neutral-900 dark:text-white shadow-2xl"
                   : "bg-popover text-popover-foreground border-border"
               } rounded-xl shadow-2xl border p-4 cursor-default animate-in fade-in zoom-in-95 duration-150`}
               onClick={(e) => e.stopPropagation()}
             >
               <div className="flex items-start justify-between mb-4">
-                <h4 className={cn("font-semibold text-base truncate pr-4", variant === "glass" ? "text-white" : "text-foreground")}>
+                <h4 className={cn("font-bold text-base truncate pr-4", variant === "glass" ? "text-neutral-900 dark:text-white" : "text-foreground")}>
                   {event.title}
                 </h4>
-                <div className="flex items-center gap-2 text-muted-foreground shrink-0">
+                <div className={cn("flex items-center gap-2 shrink-0", variant === "glass" ? "text-neutral-600 dark:text-white/70" : "text-muted-foreground")}>
                   <Edit2
                     onClick={(e) => {
                       e.stopPropagation();
                       onEditEvent(event);
                     }}
-                    className="w-4 h-4 cursor-pointer hover:text-foreground transition-colors"
+                    className={cn("w-4 h-4 cursor-pointer transition-colors", variant === "glass" ? "hover:text-neutral-900 dark:hover:text-white" : "hover:text-foreground")}
                   />
                   <Trash2
                     onClick={(e) => {
@@ -1589,22 +2324,29 @@ function CalendarCell({
                 <span
                   className={cn(
                     "flex items-center gap-1.5 px-2.5 py-1 text-xs font-medium rounded-md",
-                    theme.lightBg,
+                    variant === "glass"
+                      ? "bg-emerald-500/20 text-emerald-800 dark:text-emerald-300 border border-emerald-500/30 backdrop-blur-sm"
+                      : theme.lightBg,
                   )}
                 >
                   <div
                     className={cn(
                       "w-1.5 h-1.5 rounded-full animate-pulse",
-                      theme.pulse,
+                      variant === "glass" ? "bg-emerald-500 dark:bg-emerald-400" : theme.pulse,
                     )}
                   ></div>{" "}
                   Pending
                 </span>
               </div>
-              <div className="flex items-center gap-2 text-sm text-muted-foreground mb-4">
-                <Calendar1 className="w-4 h-4" /> {dateStr} at {event.time}
+              <div className={cn("flex items-center gap-2 text-sm mb-4 font-medium", variant === "glass" ? "text-neutral-700 dark:text-white/85" : "text-muted-foreground")}>
+                <Calendar1 className={cn("w-4 h-4 shrink-0", variant === "glass" ? "text-neutral-600 dark:text-white/70" : "")} /> {dateStr} at {event.time}
               </div>
-              <button className="w-full flex items-center justify-center gap-2 py-2 bg-muted hover:bg-muted rounded-lg text-sm font-medium transition-colors cursor-pointer">
+              <button className={cn(
+                "w-full flex items-center justify-center gap-2 py-2 rounded-lg text-sm font-semibold transition-colors cursor-pointer",
+                variant === "glass"
+                  ? "bg-white/40 hover:bg-white/60 border border-white/50 text-neutral-900 dark:bg-white/15 dark:hover:bg-white/25 dark:border-white/25 dark:text-white backdrop-blur-md shadow-xs"
+                  : "bg-muted hover:bg-muted/80 text-foreground",
+              )}>
                 Join with{" "}
                 {event.platform === "meet"
                   ? "Google Meet"
@@ -1612,167 +2354,7 @@ function CalendarCell({
                     ? "Slack"
                     : "Discord"}{" "}
                 <PlatformIcon
-                  className={`w-4 h-4 cursor-pointer ${iconColor}`}
-                />
-              </button>
-            </div>
-          </div>
-        );
-      })}
-    </div>
-  );
-}
-
-// === Sub Component: TimeGridCell ===
-function TimeGridCell({
-  events = [],
-  activePopupEventId,
-  setActivePopupEventId,
-  colIndex,
-  rowIndex,
-  dateStr,
-  onDeleteEvent,
-  onEditEvent,
-  onClickCell,
-  cellClass,
-  theme,
-}: TimeGridCellProps) {
-  const popupXClass = colIndex >= 4 ? "sm:right-0" : "sm:left-0";
-  const popupYClass = rowIndex >= 6 ? "sm:bottom-full sm:mb-2" : "sm:top-10";
-  const isAnyPopupOpen = events.some((e: CalendarEvent) => e.id === activePopupEventId);
-
-  return (
-    <div
-      onClick={onClickCell}
-      className={cn(
-        `relative flex flex-col p-1 sm:p-1.5 h-full transition-colors cursor-pointer ${isAnyPopupOpen ? "z-30" : "z-10 hover:z-20"} text-foreground min-h-[52px]`,
-        cellClass,
-      )}
-    >
-      <div className="flex-1 overflow-y-auto space-y-1 pr-0.5 [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]">
-        {events.map((event: CalendarEvent) => {
-          const isPopupOpen = activePopupEventId === event.id;
-          const isPentest = event.type === "pentest";
-          const borderClass = isPentest
-            ? "border-yellow-200 bg-yellow-50 text-yellow-800 dark:border-yellow-800/50 dark:bg-yellow-900/30 dark:text-yellow-400"
-            : "border-green-200 bg-green-50 text-green-800 dark:border-green-800/50 dark:bg-green-900/30 dark:text-green-400";
-          const PlatformIcon =
-            event.platform === "meet"
-              ? Video
-              : event.platform === "slack"
-                ? Hash
-                : MessageSquare;
-          const iconColor =
-            event.platform === "meet"
-              ? "text-green-600"
-              : event.platform === "slack"
-                ? "text-blue-500"
-                : "text-indigo-500";
-
-          return (
-            <div
-              key={event.id}
-              onClick={(e) => {
-                e.stopPropagation();
-                setActivePopupEventId(isPopupOpen ? null : event.id);
-              }}
-              className={`flex items-center justify-between px-1 sm:px-2 py-0.5 text-[10px] sm:text-xs font-medium rounded border cursor-pointer hover:brightness-95 transition-all ${borderClass}`}
-            >
-              <div className="flex items-center gap-1 sm:gap-1.5 min-w-0">
-                <PlatformIcon
-                  className={`w-2.5 h-2.5 sm:w-3 sm:h-3 shrink-0 cursor-pointer ${iconColor}`}
-                />
-                <span className="truncate max-w-[35px] min-[400px]:max-w-[60px] sm:max-w-none cursor-pointer">
-                  {event.title}
-                </span>
-              </div>
-              <span className="opacity-70 shrink-0 ml-1 hidden sm:inline cursor-pointer">
-                {event.time}
-              </span>
-            </div>
-          );
-        })}
-      </div>
-
-      {events.map((event: CalendarEvent) => {
-        const isPopupOpen = activePopupEventId === event.id;
-        if (!isPopupOpen) return null;
-
-        const PlatformIcon =
-          event.platform === "meet"
-            ? Video
-            : event.platform === "slack"
-              ? Hash
-              : MessageSquare;
-        const iconColor =
-          event.platform === "meet"
-            ? "text-green-600"
-            : event.platform === "slack"
-              ? "text-blue-500"
-              : "text-indigo-500";
-
-        return (
-          <div key={`popup-${event.id}`}>
-            <div
-              className="fixed inset-0 z-40 bg-black/20 dark:bg-black/60 sm:bg-transparent cursor-pointer"
-              onClick={(e) => {
-                e.stopPropagation();
-                setActivePopupEventId(null);
-              }}
-            />
-            <div
-              className={`fixed sm:absolute z-50 top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[90vw] max-w-[320px] sm:top-auto sm:left-auto sm:translate-x-0 sm:translate-y-0 sm:w-72 ${popupXClass} ${popupYClass} bg-card rounded-xl shadow-2xl border border-border p-4 cursor-default animate-in fade-in zoom-in-95 duration-150`}
-              onClick={(e) => e.stopPropagation()}
-            >
-              <div className="flex items-start justify-between mb-4">
-                <h4 className="font-semibold text-base text-foreground truncate pr-4">
-                  {event.title}
-                </h4>
-                <div className="flex items-center gap-2 text-muted-foreground shrink-0">
-                  <Edit2
-                    onClick={(e) => {
-                      e.stopPropagation();
-                      onEditEvent(event);
-                    }}
-                    className="w-4 h-4 cursor-pointer hover:text-foreground transition-colors"
-                  />
-                  <Trash2
-                    onClick={(e) => {
-                      e.stopPropagation();
-                      onDeleteEvent(event.id);
-                    }}
-                    className="w-4 h-4 cursor-pointer hover:text-red-500 transition-colors"
-                  />
-                </div>
-              </div>
-              <div className="flex items-center gap-2 mb-3">
-                <span
-                  className={cn(
-                    "flex items-center gap-1.5 px-2.5 py-1 text-xs font-medium rounded-md",
-                    theme.lightBg,
-                  )}
-                >
-                  <div
-                    className={cn(
-                      "w-1.5 h-1.5 rounded-full animate-pulse",
-                      theme.pulse,
-                    )}
-                  ></div>{" "}
-                  Pending
-                </span>
-              </div>
-              <div className="flex items-center gap-2 text-sm text-muted-foreground mb-4">
-                <Calendar1 className="w-4 h-4" /> {dateStr} at {event.time}
-              </div>
-              <button className="w-full flex items-center justify-center gap-2 py-2 bg-muted hover:bg-muted rounded-lg text-sm font-medium transition-colors cursor-pointer">
-                Join with{" "}
-                {event.platform === "meet"
-                  ? "Google Meet"
-                  : event.platform === "slack"
-                    ? "Slack"
-                    : "Discord"}{" "}
-                <PlatformIcon
-                  className={`w-4 h-4 cursor-pointer ${iconColor}`}
+                  className={`w-4 h-4 cursor-pointer ${variant === "glass" ? "text-neutral-800 dark:text-white" : iconColor}`}
                 />
               </button>
             </div>
