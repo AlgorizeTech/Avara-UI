@@ -205,7 +205,6 @@ function StackCardItem({
         ...target,
         duration: EXIT.duration,
         ease: EXIT.ease,
-        snap: "zIndex",
         overwrite: "auto",
         onComplete: () => onExited(id),
       });
@@ -223,7 +222,6 @@ function StackCardItem({
       ...target,
       duration: SETTLE.duration,
       ease: SETTLE.ease,
-      snap: "zIndex",
       overwrite: "auto",
     });
     return () => {

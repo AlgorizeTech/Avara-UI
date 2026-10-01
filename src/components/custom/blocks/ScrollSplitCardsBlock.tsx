@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useEffect, useRef } from "react";
+import React, { useEffect, useLayoutEffect, useRef } from "react";
 import { cn } from "@/lib/utils";
 import { createSpringFollower } from "./motion-curves";
 
@@ -253,6 +253,8 @@ export function ScrollSplitCards({
   const containerRef = useRef<HTMLDivElement>(null);
   const headerRef = useRef<HTMLDivElement>(null);
   const stageRef = useRef<HTMLDivElement>(null);
+  /** Repaints the current progress; set while the scroll loop is running. */
+  const repaint = useRef<(() => void) | null>(null);
 
   // One loop owns the whole choreography: wheel / touch input moves the raw
   // progress, a spring follower smooths it, and every frame paints the stage,
@@ -297,6 +299,7 @@ export function ScrollSplitCards({
     };
 
     const spring = createSpringFollower(0, paint, PROGRESS_SPRING);
+    repaint.current = () => paint(spring.get());
 
     const reducedMotion = () =>
       window.matchMedia?.("(prefers-reduced-motion: reduce)").matches === true;
@@ -355,11 +358,18 @@ export function ScrollSplitCards({
     return () => {
       observer.disconnect();
       spring.destroy();
+      repaint.current = null;
       el.removeEventListener("wheel", handleWheel);
       el.removeEventListener("touchstart", handleTouchStart);
       el.removeEventListener("touchmove", handleTouchMove);
     };
   }, []);
+
+  // A re-render (new cards, say) puts fresh panels on the stage at their
+  // resting style: bring them to the current progress before they paint.
+  useLayoutEffect(() => {
+    repaint.current?.();
+  });
 
   return (
     <div

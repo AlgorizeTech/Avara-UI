@@ -127,7 +127,13 @@ const PremiumInput = React.forwardRef<HTMLInputElement, PremiumInputProps>(
     const isPassword = type === "password";
     const inputType = isPassword ? (showPassword ? "text" : "password") : type;
 
-    const { attach: attachError, ...errorPresence } = usePresence<HTMLDivElement>(!!error, "opacity", 300);
+    // The ref callback is pulled out on its own: left inside the object, the
+    // compiler treats every field read from it as a ref read.
+    const { attach: attachError, ...errorPresence } = usePresence<HTMLDivElement>(
+      !!error,
+      "opacity",
+      300,
+    );
     const errorText = useLastMessage(error);
 
     return (

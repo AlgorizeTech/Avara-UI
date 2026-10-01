@@ -194,6 +194,7 @@
     "src/components/custom/blocks/breadcrumb-theme.ts",
     "src/components/custom/blocks/button-theme.ts",
     "src/components/custom/blocks/cart-theme.ts",
+    "src/components/custom/blocks/copy-button-hooks.ts",
     "src/components/custom/blocks/counter-theme.ts",
     "src/components/custom/blocks/data-grid-theme.ts",
     "src/components/custom/blocks/date-picker-theme.ts",
