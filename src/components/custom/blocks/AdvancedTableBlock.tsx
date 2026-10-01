@@ -51,7 +51,6 @@ export {
   TableRowAction,
   TableRowActions,
   TableSearch,
-  TableToolbar,
 } from "./TableBlock";
 
 export type {
