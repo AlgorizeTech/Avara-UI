@@ -10,6 +10,39 @@ import { extractCode } from "@/lib/code";
 A powerful, fully-featured data table component built on top of [Table](./table) primitives. It provides built-in state management for **Global Searching, Multi-Column Sorting, Pagination, Row Selection, and Batch Actions** — giving you complete control over your table layout without forcing any data transformation.
 
 
+<ExampleShowcase
+  name="data-table-soft"
+  columns={1}
+  minHeight={640}
+  examples={[
+    {
+      title: "Soft variant",
+      subheading: "Switch tabs, pick a role or plan, search, sort, select rows and page through 40 people. Suspend and delete work on a row or on the selection.",
+      propNotes: [
+        {
+          lead: "Set",
+          prop: "variant",
+          value: '"soft"',
+          effect:
+            "once on `DataTable`; every part — search, filters, page size, pagination, checkboxes, the batch bar — reads it from context.",
+        },
+        {
+          prop: "DataTableTabs",
+          effect:
+            "and `DataTableFilter` filter one field each (`by`), so the data keeps its own shape. Tab counts follow the search and the other filters.",
+        },
+        {
+          prop: "sticky",
+          effect:
+            "on a head and its cells pins the actions column to the right edge; it casts a shadow while more table hides under it.",
+        },
+      ],
+      usage: extractCode("src/preview/demos/data-table-soft-demo.tsx"),
+      code: extractCode("src/components/custom/blocks/TableBlock.tsx"),
+    },
+  ]}
+/>
+
 export const usageBasic = `"use client";
 
 import { useState } from "react";
@@ -232,40 +265,8 @@ export default function UserTable() {
 
 ## Soft variant
 
-`variant="soft"` is the admin-dashboard look: a rounded panel on a hairline ring, a tinted header band, pill controls and calm round row actions, every tint mixed from the table colour. Everything below lives inside the panel — status tabs with live counts, select filters, search, a reset, the page's actions, sortable columns with a pinned actions column, a rows-per-page picker, pagination and a floating bar for the selected rows. The Usage tab is the preview's exact source.
+`variant="soft"` is the admin-dashboard look: a rounded panel on a hairline ring, a tinted header band, pill controls and calm round row actions, every tint mixed from the table colour. Everything below lives inside the panel — status tabs with live counts, select filters, search, a reset, the page's actions, sortable columns with a pinned actions column, a rows-per-page picker, pagination and a floating bar for the selected rows. The first example on this page is a soft table — its Usage tab is the preview's exact source.
 
-<ExampleShowcase
-  name="data-table-soft"
-  columns={1}
-  minHeight={640}
-  examples={[
-    {
-      title: "Users",
-      subheading: "Switch tabs, pick a role or plan, search, sort, select rows and page through 40 people. Suspend and delete work on a row or on the selection.",
-      propNotes: [
-        {
-          lead: "Set",
-          prop: "variant",
-          value: '"soft"',
-          effect:
-            "once on `DataTable`; every part — search, filters, page size, pagination, checkboxes, the batch bar — reads it from context.",
-        },
-        {
-          prop: "DataTableTabs",
-          effect:
-            "and `DataTableFilter` filter one field each (`by`), so the data keeps its own shape. Tab counts follow the search and the other filters.",
-        },
-        {
-          prop: "sticky",
-          effect:
-            "on a head and its cells pins the actions column to the right edge; it casts a shadow while more table hides under it.",
-        },
-      ],
-      usage: extractCode("src/preview/demos/data-table-soft-demo.tsx"),
-      code: extractCode("src/components/custom/blocks/TableBlock.tsx"),
-    },
-  ]}
-/>
 
 <div className="flex flex-col gap-4 my-6 not-prose">
   <div className="rounded-xl border border-foreground/[0.06] bg-foreground/[0.03] p-4">
