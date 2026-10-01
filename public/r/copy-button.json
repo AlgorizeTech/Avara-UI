@@ -24,7 +24,7 @@
       "target": "components/custom/blocks/copy-button-hooks.ts"
     }
   ],
-  "docs": "Named exports: CopyButton, CopyField, useCopyToClipboard. `value` is the text copied; `label` / `copiedLabel` / `errorLabel` set the three states, `timeout` how long the confirmation lingers, `iconOnly` drops the label. Variants are solid | soft | outline | ghost, sizes sm | md | lg, `color` a preset or hex. CopyField wraps a read-only input with the button beside it (or `inset` inside it) and forwards `buttonProps`. Falls back to execCommand where the Clipboard API is unavailable.",
+  "docs": "Named exports: CopyButton, CopyField; the useCopyToClipboard hook is exported from copy-button-hooks.ts, which installs alongside. `value` is the text copied; `label` / `copiedLabel` / `errorLabel` set the three states, `timeout` how long the confirmation lingers, `iconOnly` drops the label. Variants are solid | soft | outline | ghost, sizes sm | md | lg, `color` a preset or hex. CopyField wraps a read-only input with the button beside it (or `inset` inside it) and forwards `buttonProps`. Falls back to execCommand where the Clipboard API is unavailable.",
   "categories": [
     "actions",
     "forms"

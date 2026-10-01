@@ -24,7 +24,7 @@
       "target": "components/custom/blocks/navigation-menu-theme.ts"
     }
   ],
-  "docs": "Named exports: NavigationMenu, NavigationMenuList, NavigationMenuItem, NavigationMenuTrigger, NavigationMenuContent, NavigationMenuLink, getThemeStyles. Compose the parts; the root tracks active and hovered state and animates the indicator between triggers. Variants: default | minimal | glass.",
+  "docs": "Named exports: NavigationMenu, NavigationMenuList, NavigationMenuItem, NavigationMenuTrigger, NavigationMenuContent, NavigationMenuLink, getThemeStyles (from navigation-menu-theme.ts, which installs alongside). Compose the parts; the root tracks active and hovered state and animates the indicator between triggers. Variants: default | minimal | glass.",
   "categories": [
     "navigation"
   ],

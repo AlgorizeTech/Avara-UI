@@ -28,7 +28,7 @@
       "target": "components/custom/blocks/time-picker-utils.ts"
     }
   ],
-  "docs": "Named exports: TimePicker plus the setTime, roundToStep and formatTime helpers. `value` is a Date whose day is preserved on change; `format` is 12h | 24h, `minuteStep` sets granularity, and `minTime` / `maxTime` disable times outside a window on that day. Used by `date-picker` and `range-date-picker` when `showTime` is on.",
+  "docs": "Named export: TimePicker. The setTime, roundToStep and formatTime helpers live in time-picker-utils.ts, which installs alongside. `value` is a Date whose day is preserved on change; `format` is 12h | 24h, `minuteStep` sets granularity, and `minTime` / `maxTime` disable times outside a window on that day. Used by `date-picker` and `range-date-picker` when `showTime` is on.",
   "categories": [
     "dates",
     "forms"

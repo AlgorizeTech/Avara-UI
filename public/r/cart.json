@@ -24,7 +24,7 @@
       "target": "components/custom/blocks/cart-theme.ts"
     }
   ],
-  "docs": "Named exports: CartBlock, getThemeStyles, and the CartItem type. Switch presentation with `type` (drawer | modal | popover | page) without changing the item data. Pass the products in from the parent via `initialItems` — the component ships no sample data and renders its empty state without them. Items carry { id, name, price, quantity, gradient, size?, color? }; quantity and removal are handled internally. The trigger animates itself: a periodic tilt-and-ring nudge while the cart has items and has never been opened, a spring on press, and a badge pop whenever the count grows — all skipped under prefers-reduced-motion.",
+  "docs": "Named exports: CartBlock, getThemeStyles (from cart-theme.ts, which installs alongside), and the CartItem type. Switch presentation with `type` (drawer | modal | popover | page) without changing the item data. Pass the products in from the parent via `initialItems` — the component ships no sample data and renders its empty state without them. Items carry { id, name, price, quantity, gradient, size?, color? }; quantity and removal are handled internally. The trigger animates itself: a periodic tilt-and-ring nudge while the cart has items and has never been opened, a spring on press, and a badge pop whenever the count grows — all skipped under prefers-reduced-motion.",
   "categories": [
     "commerce"
   ],

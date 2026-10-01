@@ -25,7 +25,7 @@
       "target": "components/custom/blocks/profile-page-hooks.ts"
     }
   ],
-  "docs": "Named exports: ProfilePage, WorkdayDial, useLocalTime (GlassPanel and useSurface are re-exported from the glass-panel item, which installs alongside). `ProfilePage` is the glass backdrop and 12-column grid; place `GlassPanel`s inside with `shape` and column spans. `WorkdayDial` takes `timeZone`, `start`, `end`, `place`, `name`.",
+  "docs": "Named exports: ProfilePage, WorkdayDial (GlassPanel is re-exported from the glass-panel item, which installs alongside; useSurface comes from its glass-panel-context.ts). useLocalTime is exported from profile-page-hooks.ts, which installs alongside. `ProfilePage` is the glass backdrop and 12-column grid; place `GlassPanel`s inside with `shape` and column spans. `WorkdayDial` takes `timeZone`, `start`, `end`, `place`, `name`.",
   "categories": [
     "layout",
     "marketing"

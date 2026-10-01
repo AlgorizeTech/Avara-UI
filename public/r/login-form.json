@@ -27,7 +27,7 @@
       "target": "components/custom/blocks/login-form-theme.ts"
     }
   ],
-  "docs": "Default export: LoginForm. Also exports getThemeStyles and the LoginFormValues type. Fields and buttons are the library's input and button items, which install alongside it. `variant` is default | split | glass | minimal — split renders a gradient side panel. `onSubmit` receives the validated credentials; without it the form simulates a round trip. `signupHref` points at the matching `register-form` page. Validation is client-side presentation only — enforce it again on your server.",
+  "docs": "Default export: LoginForm. Also exports getThemeStyles (from login-form-theme.ts, which installs alongside) and the LoginFormValues type. Fields and buttons are the library's input and button items, which install alongside it. `variant` is default | split | glass | minimal — split renders a gradient side panel. `onSubmit` receives the validated credentials; without it the form simulates a round trip. `signupHref` points at the matching `register-form` page. Validation is client-side presentation only — enforce it again on your server.",
   "categories": [
     "authentication",
     "forms"

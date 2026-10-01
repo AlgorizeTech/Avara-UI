@@ -24,7 +24,7 @@
       "target": "components/custom/blocks/animated-faq-data.ts"
     }
   ],
-  "docs": "Named export: AnimatedFAQBlock (also the default export); `FAQ_ITEMS` holds the sample data. All motion is CSS — no animation library.",
+  "docs": "Named export: AnimatedFAQBlock (also the default export); the sample data `FAQ_ITEMS` lives in animated-faq-data.ts, which installs alongside. All motion is CSS — no animation library.",
   "categories": [
     "marketing",
     "layout"

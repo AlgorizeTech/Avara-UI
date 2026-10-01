@@ -24,7 +24,7 @@
       "target": "components/custom/blocks/faq-section-data.ts"
     }
   ],
-  "docs": "Named export: FAQSection (also default export); AnimatedFAQBlock and FAQ_ITEMS are also exported.",
+  "docs": "Named export: FAQSection (also default export); AnimatedFAQBlock and the FAQItem type are also exported; the sample data FAQ_ITEMS lives in faq-section-data.ts, which installs alongside.",
   "categories": [
     "marketing",
     "layout"

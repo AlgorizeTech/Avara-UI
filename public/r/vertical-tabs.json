@@ -22,7 +22,7 @@
       "target": "components/custom/blocks/vertical-tabs-theme.ts"
     }
   ],
-  "docs": "Named exports: VerticalTabs, getThemeStyles. `tabs` take { id, label, icon?, content }. `orientation` defaults to horizontal and switches to vertical without changing the API. Variants: default | glass | minimal | bordered | underline | segmented | soft | elevated — every one renders in both orientations. Ships full tablist semantics: arrow keys along the rail, Home/End, and a focus ring drawn in your accent. `underline` and `segmented` move a single measured indicator between tabs; motion is skipped under prefers-reduced-motion.",
+  "docs": "Named exports: VerticalTabs, getThemeStyles (from vertical-tabs-theme.ts, which installs alongside). `tabs` take { id, label, icon?, content }. `orientation` defaults to horizontal and switches to vertical without changing the API. Variants: default | glass | minimal | bordered | underline | segmented | soft | elevated — every one renders in both orientations. Ships full tablist semantics: arrow keys along the rail, Home/End, and a focus ring drawn in your accent. `underline` and `segmented` move a single measured indicator between tabs; motion is skipped under prefers-reduced-motion.",
   "categories": [
     "navigation",
     "layout"

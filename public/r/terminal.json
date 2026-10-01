@@ -24,7 +24,7 @@
       "target": "components/custom/blocks/terminal-theme.ts"
     }
   ],
-  "docs": "Named exports: TerminalBlock, getThemeStyles. `code` is the only required prop; `language` defaults to bash and also understands sh, shell, terminal, html, xml, css and a generic JS/TS fallback. `filename` fills the title bar and `copyable` toggles the copy button. Variants: default | glass | minimal. Highlighting is a built-in regex tokenizer, not Shiki or Prism — good for snippets, not a full editor. For several files behind tabs, use `custom-code-block`.",
+  "docs": "Named exports: TerminalBlock, getThemeStyles (from terminal-theme.ts, which installs alongside). `code` is the only required prop; `language` defaults to bash and also understands sh, shell, terminal, html, xml, css and a generic JS/TS fallback. `filename` fills the title bar and `copyable` toggles the copy button. Variants: default | glass | minimal. Highlighting is a built-in regex tokenizer, not Shiki or Prism — good for snippets, not a full editor. For several files behind tabs, use `custom-code-block`.",
   "categories": [
     "code"
   ],
