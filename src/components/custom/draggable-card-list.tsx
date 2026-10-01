@@ -107,7 +107,7 @@ const RETURN_SPRING = { stiffness: 200, damping: 40 };
 const isPrimaryPointer = (e: PointerEvent) =>
     e.pointerType === "mouse" ? e.button === 0 : e.isPrimary !== false;
 
-/** Pointer velocity (px/s) over the last 100ms, sampled like Framer's pan gesture. */
+/** Pointer velocity (px/s) over the last 100ms, sampled like Motion's pan gesture. */
 function panVelocity(history: { y: number; t: number }[]) {
     if (history.length < 2) return 0;
     const last = history[history.length - 1];
@@ -387,7 +387,7 @@ interface DragSession {
 }
 
 /**
- * Vertical drag-to-reorder, on the rules Framer's Reorder uses: a press stops
+ * Vertical drag-to-reorder, on the rules Motion's Reorder uses: a press stops
  * the card where it is; it starts following the pointer 1:1 once the pointer
  * has moved 3px; while moving down it swaps with the next card as soon as its
  * bottom edge passes that card's middle (moving up: its top edge, the previous
@@ -407,7 +407,7 @@ function createReorderer() {
         gsap.killTweensOf(m, "y");
         const from = m.y;
         if (!from) return;
-        // Settles once within 1px of home, where Framer's release spring stops.
+        // Settles once within 1px of home, where Motion's release spring stops.
         if (Math.abs(from) <= 1) {
             m.y = 0;
             paintCard(m);

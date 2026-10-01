@@ -1,6 +1,6 @@
 {
-  "generatedAt": "2026-09-30T11:57:33.575Z",
-  "totalFiles": 299,
+  "generatedAt": "2026-10-01T13:00:25.437Z",
+  "totalFiles": 301,
   "files": [
     {
       "name": "nextjs/3d-carousel",
@@ -235,6 +235,12 @@
       "path": "/docs/nextjs-custom-code-block.md",
       "url": "/docs/nextjs/custom-code-block",
       "originalMdx": "[framework]\\custom-code-block\\page.mdx"
+    },
+    {
+      "name": "nextjs/dashboard",
+      "path": "/docs/nextjs-dashboard.md",
+      "url": "/docs/nextjs/dashboard",
+      "originalMdx": "[framework]\\dashboard\\page.mdx"
     },
     {
       "name": "nextjs/data-flow",
@@ -1135,6 +1141,12 @@
       "path": "/docs/reactjs-custom-code-block.md",
       "url": "/docs/reactjs/custom-code-block",
       "originalMdx": "[framework]\\custom-code-block\\page.mdx"
+    },
+    {
+      "name": "reactjs/dashboard",
+      "path": "/docs/reactjs-dashboard.md",
+      "url": "/docs/reactjs/dashboard",
+      "originalMdx": "[framework]\\dashboard\\page.mdx"
     },
     {
       "name": "reactjs/data-flow",

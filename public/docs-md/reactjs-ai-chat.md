@@ -147,7 +147,7 @@ npx shadcn@latest add @algorize-ui/ai-chat
 Or the Motion build (same props, same file — install one):
 
 ```bash
-npx shadcn@latest add @algorize-ui/ai-chat-framer
+npx shadcn@latest add @algorize-ui/ai-chat-motion
 ```
 
 ## Examples
@@ -314,7 +314,7 @@ Explore the Ai-Chat interface features, including message streaming, typing indi
 
           ChatModel[]
 
-          defaultModels
+          four sample models
 
           Models offered in the composer's picker: {"{ id, name, description?, badge?, pro?, premium? }"}. pro adds a blue Pro badge and premium a gold Premium one; each plays its own one-off flourish when the model is chosen (premium wins if both are set).
 
@@ -336,7 +336,7 @@ Explore the Ai-Chat interface features, including message streaming, typing indi
 
           EffortOption[]
 
-          defaultEfforts
+          Low, Medium, High, Max
 
           Stops on the effort slider: {"{ id, label, description?, level }"}{" "}
           with level from 1 upward. The highest level lights the
@@ -381,7 +381,7 @@ Explore the Ai-Chat interface features, including message streaming, typing indi
 
           ComposerTool[]
 
-          defaultTools
+          a sample upload row and mentions
 
           Rows of the + menu: {"{ id, label, description?, icon?, action? }"}.
           action: "upload" opens the picker; the default,{" "}

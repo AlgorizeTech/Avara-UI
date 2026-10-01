@@ -59,7 +59,7 @@ are original AlgorizeTech work, licensed under this project's MIT License.
 ## Runtime dependencies
 
 npm packages used by these components (`@radix-ui/*`, `lucide-react`,
-`framer-motion`, `gsap`, `leaflet`, `react-leaflet`, `react-day-picker`,
+`motion`, `gsap`, `leaflet`, `react-leaflet`, `react-day-picker`,
 `class-variance-authority`, `qrcode.react`, `jsqr`, `next-themes`,
-`react-icons`, `motion`) are installed from npm by the consumer and retain
+`react-icons`) are installed from npm by the consumer and retain
 their own licenses. They are not redistributed by this project.

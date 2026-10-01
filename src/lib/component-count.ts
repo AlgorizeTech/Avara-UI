@@ -5,7 +5,7 @@
  * copy, metadata, structured data, the Markdown docs, the README and the web
  * manifest — gets it from here, so no two places can disagree.
  *
- * A component is one registry item. A `-framer` item is the Framer Motion build
+ * A component is one registry item. A `-motion` item is the Motion build
  * of a component that is already counted under its GSAP name, so it is not
  * counted a second time.
  *
@@ -20,12 +20,12 @@ import path from "node:path";
 
 type RegistryItem = { name: string };
 
-/** True for the Framer Motion build of a component, e.g. `dock-framer`. */
-export const isFramerTwin = (name: string) => name.endsWith("-framer");
+/** True for the Motion build of a component, e.g. `dock-motion`. */
+export const isMotionTwin = (name: string) => name.endsWith("-motion");
 
 /** Counts the distinct components in a list of registry items. */
 export function countComponents(items: readonly RegistryItem[]): number {
-  return items.filter((item) => !isFramerTwin(item.name)).length;
+  return items.filter((item) => !isMotionTwin(item.name)).length;
 }
 
 /** Reads registry.json and returns the number of components it ships. */

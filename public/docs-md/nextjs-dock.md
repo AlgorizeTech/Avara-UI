@@ -66,7 +66,7 @@ npx shadcn@latest add @algorize-ui/dock
 Or the Motion build (same props, same file — install one):
 
 ```bash
-npx shadcn@latest add @algorize-ui/dock-framer
+npx shadcn@latest add @algorize-ui/dock-motion
 ```
 
 ## Examples

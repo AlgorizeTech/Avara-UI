@@ -6,8 +6,10 @@ A landing hero for a component library. In the middle, the copy — a small badg
 
 The copy and the walls talk to each other. The install line ends in the name of the card a camera has just landed on, and slides to the next name as the next camera lands — so the hero is always showing something the reader can paste into a terminal. The walls are Image Walls, the headline a Text Animation, the copy control a Copy Button, the faces an Avatar Stack, the stars Half Stars and the tools a Tech Stack, passed in as `stack`. The headline is set in your theme's `font-serif`, the rest in `font-sans`; every colour is a theme token.
 
-export const usage = `// slug is what the install line calls the card; it defaults to the title in kebab-case.
-const ITEMS = [
+{/* Shared by both snippets below, so each one is a whole file you can paste. */}
+
+export const wallData = `// slug is what the install line calls the card; it defaults to the title in kebab-case.
+const ITEMS: ComponentWallItem[] = [
   { slug: "hero", title: "Word bounce hero", image: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto/v1790516057/hero-1790516064495.jpg" },
   { slug: "pricing", title: "Pricing plans", image: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto/v1790516058/pricing-1790516064500.jpg" },
   { slug: "bento-showcase", title: "Bento showcase", image: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto/v1790516057/bento-showcase-1790516064489.jpg" },
@@ -19,55 +21,69 @@ const ITEMS = [
   // … as many as you like; four columns of six reads well
 ];
 
-// Four to eight related tools per group; an odd group sits three over four. Add
+const AVATARS = [{ src: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto/v1790148864/80-1-1790148865111.jpg" }, { src: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto/v1790148864/80-2-1790148865112.jpg" }, { src: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto/v1790148865/80-3-1790148865112.jpg" }, { src: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto/v1790148865/80-4-1790148865113.jpg" }, { src: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto/v1790148865/80-1790148865113.jpg" }];`;
+
+export const wallGroups = `    
+      } />
+      } />
+      } />
+      } />
+      } />
+      } />
+      } />
+    
+`;
+
+{/* One snippet per framework: Next.js passes next/link so the wall's links route client-side; anywhere else the default  is the right thing and needs no import. */}
+
+export const wallUsage = ({ next, layout, comment, stackVariant }) => `"use client";
+
+${next ? 'import Link from "next/link";\n' : ""}import { ComponentWall, type ComponentWallItem } from "@/components/custom/blocks/ComponentWallBlock";
+
+${wallData}
+
+${comment}
+const STACK = (
+  
+${wallGroups}  
+);
+
+export default function Hero() {
+  return (
+     }}
+      trust={{ text: "Loved by developers shipping real products with it", avatars: AVATARS, rating: 5 }}
+      items={ITEMS}
+      stack={STACK}
+      interval={4500}${next ? "\n      linkComponent={Link}" : ""}
+    />
+  );
+}
+`;
+
+export const wallCenter = {
+  layout: "center",
+  stackVariant: ' variant="compact"',
+  comment: `// Four to eight related tools per group; an odd group sits three over four. Add
 // more s and they take turns. Any node works as the icon — an  too.
-// The centred column is narrow, so the compact variant (marks only) fits it.
-const STACK = (
+// The centred column is narrow, so the compact variant (marks only) fits it.`,
+};
 
-      } />
-      } />
-      } />
-      } />
-      } />
-      } />
-      } />
+export const wallSplit = {
+  layout: "split",
+  stackVariant: "",
+  comment: `// Beside the wall there is room for names from xl up, so the labelled
+// (default) TechStack variant fits here.`,
+};
 
-);
+export const usage = {
+  nextjs: wallUsage({ ...wallCenter, next: true }),
+  reactjs: wallUsage({ ...wallCenter, next: false }),
+};
 
-const AVATARS = [{ src: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto/v1790148864/80-1-1790148865111.jpg" }, { src: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto/v1790148864/80-2-1790148865112.jpg" }, { src: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto/v1790148865/80-3-1790148865112.jpg" }, { src: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto/v1790148865/80-4-1790148865113.jpg" }, { src: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto/v1790148865/80-1790148865113.jpg" }];
-
-export default function Hero() {
-  return (
-     }}
-      trust={{ text: "Loved by developers shipping real products with it", avatars: AVATARS, rating: 5 }}
-      items={ITEMS}
-      stack={STACK}
-      interval={4500}
-      linkComponent={Link}
-    />
-  );
-}
-`;
-
-export const usageSplit = `// ITEMS and AVATARS as in the first example; the tool groups too, in a labelled
-// TechStack — beside the wall there is room for names from xl up.
-const STACK = (
-  
-    {/* s as in the first example */}
-  
-);
-export default function Hero() {
-  return (
-     }}
-      trust={{ text: "Loved by developers shipping real products with it", avatars: AVATARS, rating: 5 }}
-      items={ITEMS}
-      stack={STACK}
-      interval={4500}
-      linkComponent={Link}
-    />
-  );
-}
-`;
+export const usageSplit = {
+  nextjs: wallUsage({ ...wallSplit, next: true }),
+  reactjs: wallUsage({ ...wallSplit, next: false }),
+};
 
 ## Installation
 

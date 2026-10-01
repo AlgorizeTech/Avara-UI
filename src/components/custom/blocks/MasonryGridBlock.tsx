@@ -22,11 +22,11 @@ export interface MasonryGridProps<T>
   staggerDelay?: number;
 }
 
-/** The grid itself fades in over 0.3s on Framer's default opacity curve. */
+/** The grid itself fades in over 0.3s on Motion's default opacity curve. */
 const CONTAINER_EASE = bezierEase([0.25, 0.1, 0.35, 1]);
 /** Each tile: one spring for opacity, rise, scale and blur. */
 const ITEM_SPRING = springEase({ stiffness: 200, damping: 20, mass: 1 });
-/** Reflow when items change: Framer's default layout transition. */
+/** Reflow when items change: Motion's default layout transition. */
 const LAYOUT_EASE = bezierEase(LAYOUT_TRANSITION.ease);
 
 const ITEM_HIDDEN: React.CSSProperties = {
@@ -147,7 +147,7 @@ export function MasonryGrid<T extends { id: string | number }>({
         duration: LAYOUT_TRANSITION.duration,
         ease: LAYOUT_EASE,
         scale: true,
-        // Back to no transform at rest, as Framer leaves it.
+        // Back to no transform at rest, as Motion leaves it.
         onComplete: () => {
           gsap.set(moved, { clearProps: "transform" });
         },

@@ -15,7 +15,7 @@ import React, {
   useState,
 } from "react";
 import { bezierEase, gsapTicker, prefersReducedMotion } from "./gsap-motion";
-import { createSpringFollower, FRAMER_EASE, type SpringFollower } from "./motion-curves";
+import { createSpringFollower, MOTION_EASE, type SpringFollower } from "./motion-curves";
 import { Tooltip, TooltipContent, TooltipTrigger } from "./TooltipBlock";
 
 export interface FolderFile {
@@ -94,16 +94,16 @@ const SPRING = { stiffness: 260, damping: 24 } as const;
 const CARD_SPRING = { stiffness: 230, damping: 26, mass: 0.9 } as const;
 /** Paging arrows: in, out and the press, all 0.15s on this curve. */
 const NAV_EASE = bezierEase([0.22, 1, 0.36, 1]);
-/** A bare `{ duration }` transition — Framer runs it on `easeOut`. */
-const EASE_OUT = bezierEase(FRAMER_EASE.easeOut);
+/** A bare `{ duration }` transition — Motion runs it on `easeOut`. */
+const EASE_OUT = bezierEase(MOTION_EASE.easeOut);
 
-/** Framer's drag and press gestures only answer the primary pointer. */
+/** Motion's drag and press gestures only answer the primary pointer. */
 const isPrimaryPointer = (e: PointerEvent) =>
   e.pointerType === "mouse" ? e.button === 0 : e.isPrimary !== false;
 
 /**
  * Pointer velocity (px/s) over the last 100ms of a drag — the same window and
- * sampling Framer's pan gesture reports as `info.velocity`.
+ * sampling Motion's pan gesture reports as `info.velocity`.
  */
 function panVelocity(history: { x: number; t: number }[]) {
   if (history.length < 2) return 0;
@@ -320,7 +320,7 @@ const poseTransform = (p: CardPose) =>
  * the card spring, keeping its velocity when a new target arrives mid-flight
  * (a fast hover in-and-out, paging while the fan is still opening). A target
  * change can wait out a `delay` first, holding the value where it is, as a
- * delayed Framer transition does.
+ * delayed Motion transition does.
  *
  * With `draggable`, the card follows the pointer sideways and reports the
  * swipe; one that doesn't page is sprung back to its slot.
@@ -428,7 +428,7 @@ function FanCard({
     }
   });
 
-  // Sideways drag, on the same terms as Framer's `drag="x"`: pressing stops
+  // Sideways drag, on the same terms as Motion's `drag="x"`: pressing stops
   // the card where it is, it starts moving once the pointer has travelled
   // 3px, then follows it 1:1 with no constraints or momentum.
   const swipe = useRef({ onDragStart, onSwipe });
@@ -524,7 +524,7 @@ function FanCard({
       style={{
         ...style,
         ...mountStyle,
-        // What Framer puts on a `drag="x"` element: no text selection or
+        // What Motion puts on a `drag="x"` element: no text selection or
         // ghost image, and vertical touch pans still scroll the page.
         ...(draggable && {
           userSelect: "none",
@@ -610,7 +610,7 @@ export function Folder({
   // No rate limit. Cards have no exit animation for a fast second page to
   // interrupt, so holding an arrow pages as fast as the springs follow.
   const page = (dir: 1 | -1) => setFanStart((s) => s + dir);
-  // Read once per mount, as Framer's useReducedMotion does.
+  // Read once per mount, as Motion's useReducedMotion does.
   const [reduce] = useState(prefersReducedMotion);
 
   const items: FolderFile[] = files?.length ? files : Array.from({ length: peek }, () => ({}));

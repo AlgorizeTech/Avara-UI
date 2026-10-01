@@ -6,6 +6,15 @@ A two-column hero for an agency, studio or gallery: copy and actions on the left
 
 The ring is pure CSS — one keyframe rotates each card about the centre, pushes it out by a radius that grows with the breakpoint, and counter-rotates it upright — so any number of `images` space themselves evenly and the motion costs nothing on the main thread. Under `prefers-reduced-motion` the ring holds still.
 
+{/* The snippets below pass next/link so links route client-side in Next.js. The React tab is the same file without it: the component's default  needs no import. */}
+
+export const nextAndReact = (code) => ({
+  nextjs: code,
+  reactjs: code
+    .replace(/import Link from "next\/link";\r?\n/, "")
+    .replace(/\r?\n[ \t]*linkComponent=\{Link\}/, ""),
+});
+
 export const usage = `// Landscapes from Unsplash, free to use.
 const IMAGES = [
   "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_600,c_limit/v1790146210/photo-1506744038136-46273834b3fb-1790146212208.jpg",

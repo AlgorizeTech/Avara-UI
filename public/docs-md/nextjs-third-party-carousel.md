@@ -17,7 +17,7 @@ object. The viewport, the track, the arrows and the dots are all yours, which
 means the controls here are ordinary `Button`s and each slide is an ordinary
 `Card`. Nothing is being restyled or overridden.
 
-export const usageEmbla = `import { useCallback, useEffect, useState } from "react";
+export const usageEmbla = `import { useCallback, useSyncExternalStore } from "react";
 
 const products = [
   { name: "Aurora Desk Lamp", price: "$129", tag: "New", image: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_800,c_limit/v1790159966/photo-1507473885765-e6ed057f782c-1790159970112.jpg" },
@@ -35,22 +35,33 @@ const products = [
  */
 export default function EmblaProductCarousel() {
   const [emblaRef, emblaApi] = useEmblaCarousel({ loop: true, align: "start" });
-  const [selected, setSelected] = useState(0);
-  const [snaps, setSnaps] = useState([]);
 
   const scrollTo = useCallback((index: number) => emblaApi?.scrollTo(index), [emblaApi]);
 
-  useEffect(() => {
-    if (!emblaApi) return;
-    const sync = () => setSelected(emblaApi.selectedScrollSnap());
-    // The snap list only exists once embla has measured the slides.
-    setSnaps(emblaApi.scrollSnapList());
-    sync();
-    emblaApi.on("select", sync).on("reInit", sync);
-    return () => {
-      emblaApi.off("select", sync).off("reInit", sync);
-    };
-  }, [emblaApi]);
+  // Embla is an external store: read the active snap and the number of snaps
+  // straight from the API, and re-read them whenever it fires \`select\` or
+  // \`reInit\` (a resize can change how many snaps there are).
+  const subscribe = useCallback(
+    (onChange: () => void) => {
+      if (!emblaApi) return () => {};
+      emblaApi.on("select", onChange).on("reInit", onChange);
+      return () => {
+        emblaApi.off("select", onChange).off("reInit", onChange);
+      };
+    },
+    [emblaApi],
+  );
+  const selected = useSyncExternalStore(
+    subscribe,
+    () => emblaApi?.selectedScrollSnap() ?? 0,
+    () => 0,
+  );
+  // The snap list only exists once embla has measured the slides.
+  const snapCount = useSyncExternalStore(
+    subscribe,
+    () => emblaApi?.scrollSnapList().length ?? 0,
+    () => 0,
+  );
 
   return (
 
@@ -75,7 +86,7 @@ export default function EmblaProductCarousel() {
 
           ))}
 
-        {snaps.map((_, index) => (
+        {Array.from({ length: snapCount }, (_, index) => (
            scrollTo(index)}
             className={cn(
               "h-1.5 rounded-full transition-all",

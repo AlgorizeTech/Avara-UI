@@ -4,7 +4,7 @@ export const metadata = docsPageMetadata("input");
 
 A multi-purpose Input component with password toggles, autocomplete suggestions, and four layout variants.
 
-Pass `suggestions` and the field lists them the way a select menu would — typing narrows the list, and choosing one writes the text straight into the field. The drag-and-drop file mode lives on its own page: see [File upload](/docs/nextjs/file-upload).
+Pass `suggestions` and the field lists them the way a select menu would — typing narrows the list, and choosing one writes the text straight into the field. The drag-and-drop file mode lives on its own page: see File upload.
 
 Explore the different variations of the Input component — each example shows a live preview with the exact code to copy.
 

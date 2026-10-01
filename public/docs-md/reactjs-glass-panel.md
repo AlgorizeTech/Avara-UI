@@ -135,7 +135,7 @@ npx shadcn@latest add @algorize-ui/glass-panel
 
 ### useSurface
 
-Returns the enclosing backdrop's `variant` (`"glass"` by default) so your own components can draw differently on each surface.
+Returns the enclosing backdrop's `variant` (`"glass"` by default) so your own components can draw differently on each surface. It installs with the component in `glass-panel-context.ts`, next to `GlassPanelBlock.tsx`: `import { useSurface } from "@/components/custom/blocks/glass-panel-context";`.
 
 ---
 

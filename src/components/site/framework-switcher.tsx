@@ -1,6 +1,6 @@
 "use client";
 
-import { AnimatePresence, motion } from "framer-motion";
+import { AnimatePresence, motion } from "motion/react";
 import { Atom, Check, ChevronsUpDown, Triangle, type LucideIcon } from "lucide-react";
 import { usePathname, useRouter } from "next/navigation";
 import React, { useCallback, useEffect, useId, useRef, useState } from "react";

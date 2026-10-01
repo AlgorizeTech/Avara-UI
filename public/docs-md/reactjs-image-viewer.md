@@ -108,7 +108,7 @@ Discover the key capabilities of the `ImageViewer` component:
         colors
         ImageViewerColor[]
         DEFAULT_COLORS
-        Optional color swatches with synchronized image mappings.
+        Optional colorways, one per image. Colorway i's bgClass tints the frame and thumbnail behind image i.
 
         badge
         string

@@ -105,7 +105,7 @@ npx shadcn@latest add @algorize-ui/copy-button
 
 ### The hook on its own
 
-`useCopyToClipboard(timeout?)` returns `{ copy, status, copied }`. `copy(text)` resolves to a boolean, and `status` is `"idle" | "copied" | "error"`, resetting itself after `timeout` ms — everything the button does, for your own markup.
+`useCopyToClipboard(timeout?)`, exported from `copy-button-hooks.ts` (installed beside the block), returns `{ copy, status, copied }`. `copy(text)` resolves to a boolean, and `status` is `"idle" | "copied" | "error"`, resetting itself after `timeout` ms — everything the button does, for your own markup.
 
 ```tsx
 "use client";

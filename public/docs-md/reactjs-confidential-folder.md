@@ -148,6 +148,21 @@ npx shadcn@latest add @algorize-ui/confidential-folder
         "INTEGRITY" / "100%"
         Label and value for the third metric pill tile.
 
+        pillar1Title / pillar1Desc
+        string
+        undefined
+        When set, replace metric1Label / metric1Value in the first metric pill tile.
+
+        pillar2Title / pillar2Desc
+        string
+        undefined
+        When set, replace metric2Label / metric2Value in the second metric pill tile.
+
+        statusText
+        string
+        undefined
+        When set, replaces clearanceLevel as the status line in the cover's footer.
+
         authorText
         string
         "STUDIO CORE TEAM"

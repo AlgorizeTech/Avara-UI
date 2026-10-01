@@ -44,7 +44,7 @@ import {
   useState,
 } from "react";
 import { bezierEase } from "./gsap-motion";
-import { FRAMER_EASE, springEase, springLinear } from "./motion-curves";
+import { MOTION_EASE, springEase, springLinear } from "./motion-curves";
 
 // ==========================================
 // VARIANT & COLOR CONFIGURATION
@@ -1813,10 +1813,10 @@ type Theme = Record<string, string>;
 // ==========================================
 // MOTION
 // ==========================================
-/** Framer's named eases, for the tweens below. */
-const EASE_OUT = bezierEase(FRAMER_EASE.easeOut);
-const EASE_IN = bezierEase(FRAMER_EASE.easeIn);
-/** Framer's default fade: 0.3s on cubic-bezier(0.25, 0.1, 0.35, 1). */
+/** Motion's named eases, for the tweens below. */
+const EASE_OUT = bezierEase(MOTION_EASE.easeOut);
+const EASE_IN = bezierEase(MOTION_EASE.easeIn);
+/** Motion's default fade: 0.3s on cubic-bezier(0.25, 0.1, 0.35, 1). */
 const FADE = { duration: 0.3, ease: bezierEase([0.25, 0.1, 0.35, 1]) };
 /** The rocket's launch. */
 const ROCKET_SPRING = springEase({ stiffness: 260, damping: 16 });
@@ -1824,7 +1824,7 @@ const ROCKET_SPRING = springEase({ stiffness: 260, damping: 16 });
 const CHIP_SPRING = springEase({ stiffness: 320, damping: 24 });
 /**
  * When a removed chip is taken out of the tray: the moment its fade-out
- * spring counts as settled (Framer rests an opacity spring once it is within
+ * spring counts as settled (Motion rests an opacity spring once it is within
  * 0.005 and slower than 0.01/s), a little after the motion itself ends.
  */
 const CHIP_EXIT_SETTLE = 0.65;

@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState, useEffect, useRef, useCallback } from "react";
-import { motion, AnimatePresence } from "framer-motion";
+import { motion, AnimatePresence } from "motion/react";
 import { Search, Command, FileText, Home, Settings, Sparkles, User, Bot, X } from "lucide-react";
 import { getAllSearchableItems, searchItems, SearchableItem } from "@/lib/search-registry";
 import { frameworkFromPathname } from "@/lib/framework";

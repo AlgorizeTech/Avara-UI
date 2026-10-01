@@ -58,8 +58,8 @@ import {
 	GalleryVerticalEnd,
 } from "lucide-react";
 import { motion, useInView } from "motion/react";
-// The framer demos (CardStack) read their config from framer-motion's context.
-import { MotionConfig } from "framer-motion";
+// The motion demos (CardStack) read their config from motion's context.
+import { MotionConfig } from "motion/react";
 import Link from "next/link";
 import {
 	useLayoutEffect,
@@ -660,6 +660,7 @@ function HeroSection() {
 			    two walls, one camera resting high and the other low. */}
 			<ComponentWall
 				layout="center"
+				compactWall={false}
 				badge={{ label: "Next-gen React components", href: "/docs/nextjs/index" }}
 				heading="Build interactive {word}."
 				headingWords={["interfaces", "components", "experiences", "animations", "dashboards"]}
@@ -761,7 +762,7 @@ function FitToWidth({
 					transform: `translateX(-50%) scale(${fit.scale})`,
 				}}>
 				{/* Pointer moves are in page pixels but a drag moves the element in
-				    its own, scaled ones: map the pointer into them so framer drags
+				    its own, scaled ones: map the pointer into them so motion drags
 				    (the stack swipe) keep up with the pointer. */}
 				<MotionConfig
 					transformPagePoint={(p) => ({ x: p.x / fit.scale, y: p.y / fit.scale })}>

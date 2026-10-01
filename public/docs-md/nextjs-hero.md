@@ -17,6 +17,15 @@ A travel hero on a dark ground that shifts colour: a light line over a huge whit
 
 The honeycomb is measured from the design and laid out in percentages of a fixed-aspect stage anchored to the right edge, so the composition holds at any size and whatever falls past the edge is clipped, as intended. The letters of the word that cross the photographs turn your theme's `primary`, as do the rule, the arrows and the call-to-action hexagon, whose compass and label take `primary-foreground`. They read the theme wherever the section sits, so switching themes repaints them.
 
+{/* The snippets below pass next/link so links route client-side in Next.js. The React tab is the same file without it: the component's default  needs no import. */}
+
+export const nextAndReact = (code) => ({
+  nextjs: code,
+  reactjs: code
+    .replace(/import Link from "next\/link";\r?\n/, "")
+    .replace(/\r?\n[ \t]*linkComponent=\{Link\}/, ""),
+});
+
 export const usageHoneycomb = `"use client";
 
 // tone is the colour behind everything while that photograph is featured; keep it deep.

@@ -341,7 +341,7 @@ export default function InteractiveChecklistPricing() {
   );
 }`;
 
-export const dotPatternData = `const dotPatternPlans = [
+export const dotPatternData = `const dotPatternPlans: DotPatternPlanItem[] = [
   {
     id: "basic",
     badgeTag: "BASIC",
@@ -377,16 +377,16 @@ export const dotPatternData = `const dotPatternPlans = [
   },
 ];`;
 
-export const usageDotPattern = `import { PricingCards, type PricingData } from "@/components/custom/blocks/Pricing";
+export const usageDotPattern = `import { PricingDotPattern, type DotPatternPlanItem } from "@/components/custom/blocks/Pricing";
 
-${pricingData}
+${dotPatternData}
 
 export default function DotPatternPricing() {
-  // Use variant="dot-pattern" to enable the dot matrix layout
+  // A dot-matrix header and corner brackets on each card; featured adds the glow.
   return ;
 }`;
 
-export const scaleData = `const scalePlansData = {
+export const scaleData = `const scalePlansData: PricingScaleProps["plans"] = {
   monthly: [
     {
       id: "launch",
@@ -467,12 +467,12 @@ export const scaleData = `const scalePlansData = {
   ],
 };`;
 
-export const usageScale = `import { PricingCards, type PricingData } from "@/components/custom/blocks/Pricing";
+export const usageScale = `import { PricingScale, type PricingScaleProps } from "@/components/custom/blocks/Pricing";
 
-${pricingData}
+${scaleData}
 
 export default function ScalablePricing() {
-  // Use variant="scale" to enable the interactive split layout
+  // Two plans side by side, a monthly/annual switch, and a strategy-call footer.
   return ;
 }`;
 

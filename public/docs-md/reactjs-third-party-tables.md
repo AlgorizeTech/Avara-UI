@@ -329,6 +329,11 @@ export default function AgGridInventory() {
 This example also uses these Algorize UI components — install whichever
 your project does not already have:
 
+The grid takes its colours from `useChartTokens`, which is not a registry item:
+create `src/lib/chart-tokens.ts` with the file in this example's Code tab — the
+same file the Charts page sets up, so
+skip this if you already have it.
+
 ## Which one
 
         TanStack Table

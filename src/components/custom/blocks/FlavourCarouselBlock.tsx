@@ -234,7 +234,7 @@ function createPhase(initial: number): Phase {
 
 /**
  * Where a spring released at `from` with `velocity` (units per second)
- * towards `to` is after `t` seconds — the closed form Framer Motion's spring
+ * towards `to` is after `t` seconds — the closed form Motion's spring
  * uses, so a spring picked up mid-flight keeps its speed.
  */
 function springPosition(spring: Spring, from: number, to: number, velocity: number, t: number) {
@@ -306,7 +306,7 @@ function createTileMotion<E extends HTMLElement>(
       if (!c.spring) continue;
       const t = (now - c.start) / 1000;
       const value = at(c, t);
-      // Settled once close and slow enough, by the same thresholds as Framer.
+      // Settled once close and slow enough, by the same thresholds as Motion.
       const granular = Math.abs(c.to - c.from) < 5;
       const restDelta = granular ? 0.005 : 0.5;
       const restSpeed = granular ? 0.01 : 2;

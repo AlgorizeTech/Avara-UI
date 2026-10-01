@@ -6,7 +6,7 @@ import { createSpringFollower } from "./motion-curves";
 
 // Scroll choreography: wheel and touch input move a raw 0 → 1 progress, and
 // the painted progress chases it through this spring (the equation of motion
-// Framer Motion's `useSpring` solves) stepped on requestAnimationFrame. No
+// Motion's `useSpring` solves) stepped on requestAnimationFrame. No
 // animation library: every frame writes the panels' transforms directly.
 const PROGRESS_SPRING = { stiffness: 220, damping: 28, mass: 1, restDelta: 0.001, restSpeed: 0.01 };
 

@@ -2,7 +2,7 @@
 
 import { TOCItem, useTableOfContents } from "@/hooks/use-table-of-contents";
 import { cn } from "@/lib/utils";
-import { AnimatePresence, motion } from "framer-motion";
+import { AnimatePresence, motion } from "motion/react";
 import { ArrowDown, ArrowUp, ExternalLink } from "lucide-react";
 import React, { useEffect, useMemo, useRef, useState } from "react";
 

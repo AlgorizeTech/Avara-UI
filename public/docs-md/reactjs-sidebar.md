@@ -8,11 +8,15 @@ Building a good sidebar is one of the hardest parts of dashboard development. It
 
 Click the collapse trigger in each preview's header to watch the labels hide and the icons centre — hover a collapsed icon and its label appears in a Tooltip. Switch a preview to the phone size and the sidebar becomes a dismissible flyout instead.
 
-export const usageDefault = `export default function AppLayout({ children }: { children: React.ReactNode }) {
+{/* Both examples are the same app shell; only where the rail starts differs. */}
+
+export const sidebarUsage = ({ name, expanded, note }) => `"use client";
+
+export default function ${name}() {
   const [activeRoute, setActiveRoute] = useState("Dashboard");
 
   return (
-    // The provider owns expanded/mobile state for every part below it.
+    // ${note}
 
           }>
             Nexus UI
@@ -31,43 +35,39 @@ export const usageDefault = `export default function AppLayout({ children }: { c
             >
               Customers
             
-            }>Billing
+            }
+              active={activeRoute === "Billing"}
+              onClick={() => setActiveRoute("Billing")}
+            >
+              Billing
 
+            }>Help Center
             }>Settings
 
           }>Log out
 
-          {/* Opens the flyout under md; collapses the rail above it */}
+            {/* Opens the flyout under md; collapses the rail above it */}
 
-          {activeRoute}
+            {activeRoute}
 
-        {children}
+        {/* Your page goes here */}
 
-  );
-}`;
-
-export const usageCollapsed = `import {
-  Sidebar,
-  SidebarContent,
-  SidebarGroup,
-  SidebarItem,
-  SidebarProvider,
-  SidebarTrigger,
-} from "@/components/custom/blocks/SidebarBlock";
-
-export default function RailLayout({ children }: { children: React.ReactNode }) {
-  return (
-    // Start as an icon rail — labels appear as tooltips on hover.
-
-            } active>
-              Dashboard
-            
-            }>Customers
-
-        {children}
+            Main Content Area
 
   );
 }`;
+
+export const usageDefault = sidebarUsage({
+  name: "AppLayout",
+  expanded: true,
+  note: "The provider owns expanded/mobile state for every part below it.",
+});
+
+export const usageCollapsed = sidebarUsage({
+  name: "RailLayout",
+  expanded: false,
+  note: "Start as an icon rail — labels appear as tooltips on hover.",
+});
 
 ## Installation
 

@@ -4,7 +4,7 @@ import { cn } from "@/lib/utils";
 import gsap from "gsap";
 import React, { useEffect, useLayoutEffect, useRef, useState } from "react";
 import { bezierEase, gsapTicker } from "./gsap-motion";
-import { createSpringFollower, FRAMER_EASE, LAYOUT_TRANSITION } from "./motion-curves";
+import { createSpringFollower, MOTION_EASE, LAYOUT_TRANSITION } from "./motion-curves";
 
 export interface DockItem {
   id: string;
@@ -24,14 +24,14 @@ export interface DockProps extends React.HTMLAttributes<HTMLDivElement> {
   gap?: number;
 }
 
-/** Magnification spring — the same constants the Framer Motion build uses. */
+/** Magnification spring — the same constants the Motion build uses. */
 const SIZE_SPRING = { mass: 0.1, stiffness: 150, damping: 12 };
 
 /**
- * Tooltip in/out: 0.15s tweens with no ease given, which Framer resolves to
+ * Tooltip in/out: 0.15s tweens with no ease given, which Motion resolves to
  * `easeOut` for every value (animateMotionValue's default).
  */
-const TOOLTIP_EASE = bezierEase(FRAMER_EASE.easeOut);
+const TOOLTIP_EASE = bezierEase(MOTION_EASE.easeOut);
 const DOT_EASE = bezierEase(LAYOUT_TRANSITION.ease);
 
 /** Pointer position shared by every icon; `Infinity` while the pointer is away. */
@@ -275,7 +275,7 @@ const DockIcon: React.FC<DockIconProps> = ({
 /**
  * The running-app dot. Only the active icon renders one, so when the active
  * app changes the new dot flies in from where the old one sat — the shared
- * layout animation, on Framer's default layout curve (0.45s, [0.4, 0, 0.1, 1]).
+ * layout animation, on Motion's default layout curve (0.45s, [0.4, 0, 0.1, 1]).
  */
 function ActiveDot({ memoryRef }: { memoryRef: Held<DotMemory> }) {
   const ref = useRef<HTMLDivElement>(null);

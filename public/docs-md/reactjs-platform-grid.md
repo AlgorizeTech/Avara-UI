@@ -6,15 +6,37 @@ Everything a product offers, as one hairline grid: small tiles with an icon and 
 
 `PlatformGrid` is built on Tilted Card, which installs alongside and gives the featured cards their tilt and glare; the example's platform marks come from the library's `icons` item (`G2Icon`, `RedditIcon`, `CapterraIcon`, `AppStoreIcon`…). Every cell is a named part — `Tile`, `Feature` — with `Mock` and `Pill` for what goes on a feature's card.
 
-export const usageSection = `export default function Platform() {
+export const usageSection = `// A small mark on a dark tile, the way store badges are drawn.
+const Badge = ({ children }: { children: React.ReactNode }) => (
+  
+    {children}
+  
+);
+
+const StoreBadges = () => (
+
+);
+
+// Tiles and features are written in reading order; at eight columns dense
+// packing tucks each 2×2 feature into the gap the tiles leave for it.
+export default function Platform() {
   return (
     All Your ResearchUnder One Roof}
       intro="Over 40 datasets, pipelines and utilities to spot, test and ship your next product."
+      className="max-w-6xl overflow-hidden rounded-[28px] border border-border pb-10"
     >
-      } label="Launch Playbook" href="/playbook" />
-      } label="Problem Library" href="/problems" />
+      } label="Maker Hub" href="/maker-hub" />
+      } label="Launch Playbook" href="/launch-playbook" />
+      } label="Ideas MCP Server" href="/ideas-mcp-server" />
+      } label="Reddit Connector" href="/reddit-connector" />
+      } label="Ask the Data" href="/ask-the-data" />
+      } label="Verified Revenue" href="/verified-revenue" />
+      } label="Stripe Benchmarks" href="/stripe-benchmarks" />
+      } label="Stripe Customers" href="/stripe-customers" />
+      } label="Deals for Sale" href="/deals-for-sale" />
+      } label="Acquire.com Listings" href="/acquire-com-listings" />
 
-      } label="G2 Insights" href="/g2">
+      } label="G2 Insights" href="/g2-insights">
 
             Inbox App
             Score: 8.4
@@ -22,16 +44,68 @@ export const usageSection = `export default function Platform() {
           Most of 1,380 low ratings blame sync errors
           
             24 vendors
-            Download
+            ↓ Download
 
-      } label="Reddit Insights" href="/reddit">
-        
-          “Switching between three apps for every client is wearing me out”
-          Frustration
+      } label="Capterra Insights" href="/capterra-insights">
 
-      } label="Solution Library" href="/solutions" />
-      } label="User Frustrations" href="/frustrations" />
-      } label="Keyword Finder" href="/keywords" />
+            Team Review Tool
+            Score: 7.9
+          
+          Calendar integrations keep breaking
+          
+            52 vendors
+            2,690 reviews
+
+      } label="Funding Rounds" href="/funding-rounds" />
+      } label="YC Startups" href="/yc-startups" />
+      } label="AI Skill Packs" href="/ai-skill-packs" />
+      } label="Starter Kit" href="/starter-kit" />
+      } label="Web Clipper" href="/web-clipper" />
+      } label="Launch Tracker" href="/launch-tracker" />
+      } label="Clone Ideas" href="/clone-ideas" />
+      } label="Weekly Brief" href="/weekly-brief" />
+
+      } label="Reddit Insights" href="/reddit-insights">
+
+            &ldquo;Switching between three apps for every client is wearing me out&rdquo;
+
+            urgent
+            founder
+            may cancel
+
+            Frustration
+            Open pipeline →
+
+      } label="App Store Insights" href="/app-store-insights">
+
+            Weekly Meal Planner
+
+            ★ 4.1 · 18 reviews · Paid
+
+            Usability gaps
+            Read report
+
+      } label="Lookalike Apps" href="/lookalike-apps" />
+      } label="Problem Library" href="/problem-library" />
+      } label="Solution Library" href="/solution-library" />
+      } label="User Frustrations" href="/user-frustrations" />
+      } label="Complaint Archive" href="/complaint-archive" />
+      } label="Product Hunt Launches" href="/product-hunt-launches" />
+      } label="App Store Library" href="/app-store-library" />
+      } label="Upwork Demand" href="/upwork-demand" />
+      } label="Idea Scorer" href="/idea-scorer" />
+      } label="Live Feed" href="/live-feed" />
+      } label="Request a Dataset" href="/request-a-dataset" />
+      } label="Rankings" href="/rankings" />
+      } label="Feature Requests" href="/feature-requests" />
+      } label="App Income Estimator" href="/app-income-estimator" />
+      } label="MRR Estimator" href="/mrr-estimator" />
+      } label="Valuation Estimator" href="/valuation-estimator" />
+      } label="Metrics Board" href="/metrics-board" />
+      } label="Idea Spark" href="/idea-spark" />
+      } label="Keyword Finder" href="/keyword-finder" />
+      } label="Domain Finder" href="/domain-finder" />
+      } label="Free Utilities" href="/free-utilities" />
       } label="Docs" href="/docs" />
     
   );

@@ -9,15 +9,25 @@ A pre-launch sign-up in three layouts. **Card** is a compact card with the field
 
 `Waitlist` is built from library pieces: the countdown is the Counter's slide variant, the field is Input, the action is Button, the faces are an Avatar Stack, the spots bar is Progress and the invite link is a Copy Button. Every piece of copy is a named part — `Mark`, `Countdown`, `Heading`, `Intro`, `Form`, `Proof`, `Spots` — so the words are yours.
 
-export const usageLaunch = `"use client";
-
-// Faces from Pexels, free to use.
+export const waitlistFaces = `// Faces from Pexels, free to use.
 const FACES = [
   "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_160,c_limit/v1790158812/pexels-photo-2379004-1790158812208.jpg",
   "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_160,c_limit/v1790158810/pexels-photo-220453-1790158812206.jpg",
   "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_160,c_limit/v1790158812/pexels-photo-2381069-1790158812209.jpg",
   "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_160,c_limit/v1790158812/pexels-photo-1130626-1790158812207.jpg",
-];
+];`;
+
+export const waitlistJoin = `// Resolve with a number and it becomes the reader's place in line.
+async function join(email: string): Promise {
+  const res = await fetch("/api/waitlist", { method: "POST", body: JSON.stringify({ email }) });
+  if (!res.ok) throw new Error("We couldn't add that address. Please retry.");
+  const { position } = await res.json();
+  return position; // shown as "#2,341 in line"
+}`;
+
+export const usageLaunch = `"use client";
+
+${waitlistFaces}
 
 export default function EarlyAccess() {
   return (
@@ -44,6 +54,10 @@ export default function EarlyAccess() {
 
 export const usageCard = `"use client";
 
+${waitlistFaces}
+
+${waitlistJoin}
+
 export default function JoinCard() {
   return (
     
@@ -57,6 +71,10 @@ export default function JoinCard() {
 `;
 
 export const usageQueue = `"use client";
+
+${waitlistFaces}
+
+${waitlistJoin}
 
 export default function GetInLine() {
   return (

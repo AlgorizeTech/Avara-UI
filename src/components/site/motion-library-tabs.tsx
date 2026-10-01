@@ -1,7 +1,7 @@
 "use client";
 
 import { useId } from "react";
-import { motion, useReducedMotion } from "framer-motion";
+import { motion, useReducedMotion } from "motion/react";
 import { cn } from "@/lib/utils";
 import { GsapIcon, MotionIcon } from "@/components/custom/blocks/Icons";
 import {
@@ -24,7 +24,7 @@ function LibraryMark({ library, active }: { library: MotionLibrary; active: bool
       size={16}
       className={cn(
         "relative shrink-0 transition-[filter,opacity]",
-        library === "framer" && "text-foreground",
+        library === "motion" && "text-foreground",
         !active && "grayscale opacity-60",
       )}
     />

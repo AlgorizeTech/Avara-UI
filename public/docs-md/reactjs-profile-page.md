@@ -398,7 +398,7 @@ Grid spans are plain Tailwind: the grid is `grid-cols-1 md:grid-cols-6 lg:grid-c
 
 ### GlassPanel
 
-`GlassPanel` (and `useSurface`) come from Glass Panel; its `shape`, `variant` and `interactive` props are documented there. `ProfilePage` is that page's `GlassBackdrop` under the page's own name.
+`GlassPanel` comes from Glass Panel (and so does `useSurface`, imported from `@/components/custom/blocks/glass-panel-context`); its `shape`, `variant` and `interactive` props are documented there. `ProfilePage` is that page's `GlassBackdrop` under the page's own name.
 
 ### WorkdayDial
 
@@ -443,6 +443,8 @@ Grid spans are plain Tailwind: the grid is `grid-cols-1 md:grid-cols-6 lg:grid-c
         Sizing; the dial fills its width up to max-w-[220px].
 
 ### useLocalTime
+
+Installed alongside the page in `profile-page-hooks.ts`: `import { useLocalTime } from "@/components/custom/blocks/profile-page-hooks";`.
 
         Prop
         Type
