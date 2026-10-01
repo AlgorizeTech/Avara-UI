@@ -43,6 +43,9 @@ type PointerBus = {
 /** Where the active dot last sat, so the next one can fly in from there. */
 type DotMemory = { rect: DOMRect | null };
 
+/** A `useRef` box handed to the icons (typed locally so React 18 and 19 types agree). */
+type Held<T> = { readonly current: T };
+
 export const Dock = React.forwardRef<HTMLDivElement, DockProps>(
   (
     {
@@ -119,8 +122,8 @@ export const Dock = React.forwardRef<HTMLDivElement, DockProps>(
           <DockIcon
             key={item.id}
             item={item}
-            bus={bus.current}
-            dot={dot.current}
+            busRef={bus}
+            dotRef={dot}
             baseSize={effectiveBaseSize}
             magnification={effectiveMagnification}
             distance={effectiveDistance}
@@ -135,8 +138,8 @@ Dock.displayName = "Dock";
 
 interface DockIconProps {
   item: DockItem;
-  bus: PointerBus;
-  dot: DotMemory;
+  busRef: Held<PointerBus>;
+  dotRef: Held<DotMemory>;
   baseSize: number;
   magnification: number;
   distance: number;
@@ -144,8 +147,8 @@ interface DockIconProps {
 
 const DockIcon: React.FC<DockIconProps> = ({
   item,
-  bus,
-  dot,
+  busRef,
+  dotRef,
   baseSize,
   magnification,
   distance,
@@ -158,11 +161,15 @@ const DockIcon: React.FC<DockIconProps> = ({
   // distance from the icon's centre maps [-distance, 0, distance] onto
   // [base, magnified, base] (clamped), and the spring chases that target.
   const sizing = useRef({ baseSize, magnification, distance });
-  sizing.current = { baseSize, magnification, distance };
+  // Synced after every commit (before the effects below read it), not in render.
+  useLayoutEffect(() => {
+    sizing.current = { baseSize, magnification, distance };
+  });
   const retarget = useRef<() => void>(() => {});
 
   useLayoutEffect(() => {
     const icon = iconRef.current;
+    const bus = busRef.current;
     if (!icon) return;
 
     const apply = (size: number) => {
@@ -191,7 +198,7 @@ const DockIcon: React.FC<DockIconProps> = ({
       bus.listeners.delete(listener);
       spring.destroy();
     };
-  }, [bus]);
+  }, [busRef]);
 
   // New sizes (the mobile fallbacks kicking in) spring over from where it is.
   useEffect(() => {
@@ -259,7 +266,7 @@ const DockIcon: React.FC<DockIconProps> = ({
 
       {/* Active Dot Indicator */}
       <div className="h-1 sm:h-1.5 w-full flex items-center justify-center mt-1">
-        {item.isActive && <ActiveDot memory={dot} />}
+        {item.isActive && <ActiveDot memoryRef={dotRef} />}
       </div>
     </div>
   );
@@ -270,11 +277,12 @@ const DockIcon: React.FC<DockIconProps> = ({
  * app changes the new dot flies in from where the old one sat — the shared
  * layout animation, on Framer's default layout curve (0.45s, [0.4, 0, 0.1, 1]).
  */
-function ActiveDot({ memory }: { memory: DotMemory }) {
+function ActiveDot({ memoryRef }: { memoryRef: Held<DotMemory> }) {
   const ref = useRef<HTMLDivElement>(null);
 
   useLayoutEffect(() => {
     const el = ref.current;
+    const memory = memoryRef.current;
     if (!el) return;
     const rect = el.getBoundingClientRect();
     const from = memory.rect;
@@ -290,7 +298,7 @@ function ActiveDot({ memory }: { memory: DotMemory }) {
       // Remember where it left from, including mid-flight, for the next dot.
       memory.rect = el.getBoundingClientRect();
     };
-  }, [memory]);
+  }, [memoryRef]);
 
   return (
     <div

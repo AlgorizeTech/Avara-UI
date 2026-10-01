@@ -181,7 +181,10 @@ function CarouselCard({
   const tilt = useRef<{ set: (x: number, y: number) => void } | null>(null);
   const endDrag = useRef<(() => void) | null>(null);
   const dragEnd = useRef(onDragEnd);
-  dragEnd.current = onDragEnd;
+  // Latest callback for the drag release; synced after commit, never in render.
+  useLayoutEffect(() => {
+    dragEnd.current = onDragEnd;
+  });
 
   const renderOuter = () => {
     const { el, slot } = outer.current;
