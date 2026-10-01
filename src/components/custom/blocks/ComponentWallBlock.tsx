@@ -86,6 +86,11 @@ export interface ComponentWallProps
    * between the copy and the tools.
    */
   layout?: "split" | "center";
+  /**
+   * Centred layout only: whether the single wall band shows below `lg`.
+   * `false` leaves just the copy and the tools there; the wall never mounts.
+   */
+  compactWall?: boolean;
   /** Pass `next/link` to keep client-side navigation. */
   linkComponent?: React.ElementType;
 }
@@ -323,6 +328,7 @@ export const ComponentWall = forwardRef<HTMLElement, ComponentWallProps>(
       intro = 1800,
       onFocus,
       layout = "split",
+      compactWall = true,
       linkComponent: Link = "a",
       className,
       ...props
@@ -553,7 +559,7 @@ export const ComponentWall = forwardRef<HTMLElement, ComponentWallProps>(
             copy and the tools. It deals every card, being the only wall. The
             box holds its height from the first paint; the wall mounts once the
             breakpoint is known, so a desktop never loads it. ---- */}
-        {centered && (
+        {centered && compactWall && (
           <div
             className="mt-10 h-64 w-screen max-w-none shrink-0 self-center sm:h-80 lg:hidden"
             aria-hidden={desktop !== false || undefined}

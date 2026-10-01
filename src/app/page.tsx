@@ -660,6 +660,7 @@ function HeroSection() {
 			    two walls, one camera resting high and the other low. */}
 			<ComponentWall
 				layout="center"
+				compactWall={false}
 				badge={{ label: "Next-gen React components", href: "/docs/nextjs/index" }}
 				heading="Build interactive {word}."
 				headingWords={["interfaces", "components", "experiences", "animations", "dashboards"]}
