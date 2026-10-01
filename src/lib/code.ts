@@ -9,7 +9,7 @@ export const extractCode = (filePath: string) => {
 
 /**
  * Both builds of a component that ships a GSAP default and a Motion
- * twin, for a `code` field: the twin is the same basename in the `framer/`
+ * twin, for a `code` field: the twin is the same basename in the `motion/`
  * folder beside it.
  *
  *   code: extractMotionCode("src/components/custom/blocks/DockBlock.tsx")
@@ -18,9 +18,9 @@ export const extractCode = (filePath: string) => {
  * tab that silently shows GSAP under the Motion tab.
  */
 export const extractMotionCode = (filePath: string) => {
-  const twin = path.join(path.dirname(filePath), "framer", path.basename(filePath));
+  const twin = path.join(path.dirname(filePath), "motion", path.basename(filePath));
   if (!fs.existsSync(twin)) {
     throw new Error(`extractMotionCode: no Motion twin at ${twin}`);
   }
-  return { gsap: extractCode(filePath), framer: extractCode(twin) };
+  return { gsap: extractCode(filePath), motion: extractCode(twin) };
 };

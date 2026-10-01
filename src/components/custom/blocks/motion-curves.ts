@@ -6,13 +6,13 @@
  * handed to whichever engine runs them:
  *
  *   - `cubicBezier(x1, y1, x2, y2)` → an easing function (GSAP accepts any
- *     `(progress) => value` as `ease`), exact for Framer's `ease: [..]` arrays
+ *     `(progress) => value` as `ease`), exact for Motion's `ease: [..]` arrays
  *     and for CSS `cubic-bezier()`.
- *   - `spring({ stiffness, damping, mass })` → the analytic solution Framer
+ *   - `spring({ stiffness, damping, mass })` → the analytic solution Motion
  *     Motion uses, as an easing function plus the time it takes to settle, or
  *     as a CSS `linear()` string for a fixed start and end.
  *   - `createSpringFollower` → a value that chases a moving target through the
- *     same spring every frame, like Framer's `useSpring`, for pointer-driven
+ *     same spring every frame, like Motion's `useSpring`, for pointer-driven
  *     motion that no fixed curve can describe.
  */
 
@@ -21,7 +21,7 @@
 // ---------------------------------------------------------------------------
 
 /**
- * The CSS / Framer cubic-bezier as a function of progress. Newton-Raphson
+ * The CSS / Motion cubic-bezier as a function of progress. Newton-Raphson
  * with a bisection fallback, the same solver browsers use.
  */
 export function cubicBezier(x1: number, y1: number, x2: number, y2: number) {
@@ -60,7 +60,7 @@ export function cubicBezier(x1: number, y1: number, x2: number, y2: number) {
 }
 
 /** Motion's named eases, as the cubic-beziers they are. */
-export const FRAMER_EASE = {
+export const MOTION_EASE = {
   linear: [0, 0, 1, 1],
   easeIn: [0.42, 0, 1, 1],
   easeOut: [0, 0, 0.58, 1],
@@ -84,11 +84,11 @@ export const LAYOUT_TRANSITION = { duration: 0.45, ease: [0.4, 0, 0.1, 1] as con
 // ---------------------------------------------------------------------------
 
 export interface SpringOptions {
-  /** Framer default 100. */
+  /** Motion default 100. */
   stiffness?: number;
-  /** Framer default 10. */
+  /** Motion default 10. */
   damping?: number;
-  /** Framer default 1. */
+  /** Motion default 1. */
   mass?: number;
   /** Starting velocity, in units of the whole distance per second. */
   velocity?: number;
@@ -105,7 +105,7 @@ export function springAt(options: SpringOptions = {}) {
   const { stiffness = 100, damping = 10, mass = 1, velocity = 0 } = options;
   const zeta = damping / (2 * Math.sqrt(stiffness * mass));
   const omega0 = Math.sqrt(stiffness / mass);
-  // Framer's convention: distance still to cover, velocity toward it negated.
+  // Motion's convention: distance still to cover, velocity toward it negated.
   const delta = 1;
   const v0 = -velocity;
 
@@ -220,7 +220,7 @@ export interface SpringFollower {
 
 /**
  * A value that follows its target through a spring, integrating the same
- * equation of motion Framer's `useSpring` solves — so a pointer-driven spring
+ * equation of motion Motion's `useSpring` solves — so a pointer-driven spring
  * reads the same in every build. Runs only while moving; `onUpdate` receives
  * each new value.
  */

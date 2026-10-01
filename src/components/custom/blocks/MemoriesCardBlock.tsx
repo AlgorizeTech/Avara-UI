@@ -7,7 +7,7 @@ import React, { useLayoutEffect, useReducer, useRef, useState } from "react";
 import { bezierEase, gsapTicker } from "./gsap-motion";
 import {
   createSpringFollower,
-  FRAMER_EASE,
+  MOTION_EASE,
   springEase,
   type SpringFollower,
 } from "./motion-curves";
@@ -29,10 +29,10 @@ export interface MemoriesCardProps
 }
 
 // ------------------------------------------
-// Motion — the same numbers as the framer/ build
+// Motion — the same numbers as the motion/ build
 // ------------------------------------------
 
-/** Every card's pose, written to the DOM as one transform in Framer's order. */
+/** Every card's pose, written to the DOM as one transform in Motion's order. */
 type Pose = {
   x: number;
   y: number;
@@ -55,10 +55,10 @@ const TILT_SPRING = { stiffness: 300, damping: 25 };
 /** The spring that pulls a released card back inside its 0/0 drag constraints. */
 const BOUNCE_SPRING = { stiffness: 200, damping: 40 };
 const DRAG_ELASTIC = 0.6;
-/** Leaving the deck: a 0.3s tween on Framer's default `easeOut`. */
-const EXIT_EASE = bezierEase(FRAMER_EASE.easeOut);
+/** Leaving the deck: a 0.3s tween on Motion's default `easeOut`. */
+const EXIT_EASE = bezierEase(MOTION_EASE.easeOut);
 
-/** Drag styles Framer puts on an element while `drag="x"` is on. */
+/** Drag styles Motion puts on an element while `drag="x"` is on. */
 const DRAG_STYLE: React.CSSProperties = {
   userSelect: "none",
   WebkitUserSelect: "none",

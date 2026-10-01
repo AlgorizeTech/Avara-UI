@@ -24,7 +24,7 @@ function LibraryMark({ library, active }: { library: MotionLibrary; active: bool
       size={16}
       className={cn(
         "relative shrink-0 transition-[filter,opacity]",
-        library === "framer" && "text-foreground",
+        library === "motion" && "text-foreground",
         !active && "grayscale opacity-60",
       )}
     />

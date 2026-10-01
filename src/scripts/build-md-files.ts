@@ -14,8 +14,8 @@ const COMPONENT_COUNT = String(countComponents(registry.items as { name: string 
 const MOTION_TWINS = new Set(
   (registry.items as { name: string }[])
     .map((item) => item.name)
-    .filter((name) => name.endsWith("-framer"))
-    .map((name) => name.replace(/-framer$/, "")),
+    .filter((name) => name.endsWith("-motion"))
+    .map((name) => name.replace(/-motion$/, "")),
 );
 
 /** The dynamic route segment, as it appears on disk. */
@@ -179,7 +179,7 @@ function convertMdxToMd(content: string, componentPath: string): string {
       (MOTION_TWINS.has(name)
         ? '\n\nOr the Motion build (same props, same file — install one):\n\n' +
           '```bash\n' +
-          `npx shadcn@latest ${addArgsFor(`${name}-framer`)}\n` +
+          `npx shadcn@latest ${addArgsFor(`${name}-motion`)}\n` +
           '```'
         : '')
   );

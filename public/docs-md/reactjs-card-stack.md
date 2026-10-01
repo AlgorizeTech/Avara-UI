@@ -121,7 +121,7 @@ npx shadcn@latest add @algorize-ui/card-stack
 Or the Motion build (same props, same file — install one):
 
 ```bash
-npx shadcn@latest add @algorize-ui/card-stack-framer
+npx shadcn@latest add @algorize-ui/card-stack-motion
 ```
 
 ## Examples

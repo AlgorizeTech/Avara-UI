@@ -95,7 +95,7 @@ npx shadcn@latest add @algorize-ui/folder
 Or the Motion build (same props, same file — install one):
 
 ```bash
-npx shadcn@latest add @algorize-ui/folder-framer
+npx shadcn@latest add @algorize-ui/folder-motion
 ```
 
 ## Examples

@@ -332,7 +332,7 @@ export function PreviewFrame({
         />
       </div>
       {/* Mount children only once the frame is revealed: a hidden (opacity-0)
-          iframe is render-throttled by the browser, which freezes WAAPI/framer
+          iframe is render-throttled by the browser, which freezes WAAPI/motion
           entrance animations at their initial state. */}
       {mountNode && ready ? createPortal(children, mountNode) : null}
     </>

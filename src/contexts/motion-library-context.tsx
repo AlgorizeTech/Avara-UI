@@ -6,29 +6,29 @@ import React, { createContext, useCallback, useContext, useEffect, useMemo, useS
  * The animation library a dual component is shown in.
  *
  * Components whose animation needs a library ship two builds with identical
- * props and markup — GSAP (the default item) and Motion (`<name>-framer`)
+ * props and markup — GSAP (the default item) and Motion (`<name>-motion`)
  * — and the docs show one at a time. This is the reader's pick.
  *
  * Unlike the framework it is not route state: it changes what is SHOWN (the
  * preview, the Code tab, the install command), never what is built, so it lives
  * in a context and localStorage like the package manager rather than the URL.
  */
-export type MotionLibrary = "gsap" | "framer";
+export type MotionLibrary = "gsap" | "motion";
 
-export const MOTION_LIBRARIES: readonly MotionLibrary[] = ["gsap", "framer"];
+export const MOTION_LIBRARIES: readonly MotionLibrary[] = ["gsap", "motion"];
 
 /** GSAP is the default build — the item that keeps the bare name. */
 export const DEFAULT_MOTION_LIBRARY: MotionLibrary = "gsap";
 
 export const MOTION_LIBRARY_LABEL: Record<MotionLibrary, string> = {
   gsap: "GSAP",
-  framer: "Motion",
+  motion: "Motion",
 };
 
 const STORAGE_KEY = "motion-library";
 
 const isMotionLibrary = (value: unknown): value is MotionLibrary =>
-  value === "gsap" || value === "framer";
+  value === "gsap" || value === "motion";
 
 interface MotionLibraryContextValue {
   library: MotionLibrary;
@@ -41,10 +41,12 @@ export function MotionLibraryProvider({ children }: { children: React.ReactNode 
   const [library, setLibraryState] = useState<MotionLibrary>(DEFAULT_MOTION_LIBRARY);
 
   // Read after mount so the server render and first paint always show the
-  // default; a saved Framer pick swaps in on the next frame.
+  // default; a saved Motion pick swaps in on the next frame.
   useEffect(() => {
     try {
-      const saved = localStorage.getItem(STORAGE_KEY);
+      const stored = localStorage.getItem(STORAGE_KEY);
+      // "framer" is what the Motion pick was saved as before the rename.
+      const saved = stored === "framer" ? "motion" : stored;
       if (isMotionLibrary(saved)) setLibraryState(saved);
     } catch {
       // Storage blocked (private mode, sandboxed frame) — keep the default.

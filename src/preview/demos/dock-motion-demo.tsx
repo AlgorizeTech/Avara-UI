@@ -1,6 +1,6 @@
 "use client";
 
-import { Dock, DockItem } from "@/components/custom/blocks/framer/DockBlock";
+import { Dock, DockItem } from "@/components/custom/blocks/motion/DockBlock";
 import {
   Compass,
   FolderGit2,
@@ -13,7 +13,7 @@ import {
 } from "lucide-react";
 import { useState } from "react";
 
-export default function DockFramerDemo({
+export default function DockMotionDemo({
   activeTab = "home",
   baseSize = 46,
   magnification = 84,

@@ -114,8 +114,8 @@ for (const item of registry.items as { name: string; files?: { path: string }[] 
 const DUAL = new Set(
   (registry.items as { name: string }[])
     .map((item) => item.name)
-    .filter((name) => name.endsWith("-framer"))
-    .map((name) => name.replace(/-framer$/, "")),
+    .filter((name) => name.endsWith("-motion"))
+    .map((name) => name.replace(/-motion$/, "")),
 );
 
 /** Package name of a bare import: `@radix-ui/react-x/sub` → `@radix-ui/react-x`. */
@@ -375,8 +375,8 @@ async function main() {
         pageHeading(page) ??
         name;
 
-      for (const library of isDual ? (["gsap", "framer"] as const) : (["gsap"] as const)) {
-        const previewName = library === "framer" ? `${name}-framer` : name;
+      for (const library of isDual ? (["gsap", "motion"] as const) : (["gsap"] as const)) {
+        const previewName = library === "motion" ? `${name}-motion` : name;
         for (const example of examples) {
           const id = example.id ?? slugify(example.title);
           const key = `${previewName}/${id}`;

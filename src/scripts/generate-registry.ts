@@ -22,10 +22,10 @@
  * MOTION-LIBRARY TWINS:
  * A component whose animation needs a library ships two builds — GSAP (the
  * default, in the parent folder) and Motion (same basename, in a
- * `framer/` subfolder). The twin is named `<name>-framer` and installs to the
- * SAME target as the default, with the `framer/` segment removed, so a
+ * `motion/` subfolder). The twin is named `<name>-motion` and installs to the
+ * SAME target as the default, with the `motion/` segment removed, so a
  * consumer picks one build at install time and every usage snippet reads the
- * same for both. A framer file imports sibling twins relatively
+ * same for both. A motion file imports sibling twins relatively
  * ("./TextAnimationBlock") and shared, library-free blocks by alias
  * ("@/components/custom/blocks/HalfStarsBlock"); both forms survive install.
  */
@@ -93,20 +93,20 @@ type Source = {
   name: string;
   /** "block" | "primitive" | "site-ui" */
   kind: "block" | "primitive" | "site-ui" | "custom";
-  /** The Motion twin of another item (lives in a `framer/` folder). */
-  framer: boolean;
+  /** The Motion twin of another item (lives in a `motion/` folder). */
+  motion: boolean;
 };
 
 /** Subfolder that holds the Motion twin of a dual component. */
-const FRAMER_DIR = "framer";
+const MOTION_DIR = "motion";
 
 /** npm packages that carry each motion library. */
 const GSAP_PACKAGES = new Set(["gsap", "@gsap/react"]);
-const FRAMER_PACKAGES = new Set(["framer-motion", "motion"]);
+const MOTION_PACKAGES = new Set(["framer-motion", "motion"]);
 
-/** Drops the `framer/` folder from an install target: both builds share a path. */
-const stripFramerSegment = (target: string) =>
-  target.replace(new RegExp(`/${FRAMER_DIR}/`), "/");
+/** Drops the `motion/` folder from an install target: both builds share a path. */
+const stripMotionSegment = (target: string) =>
+  target.replace(new RegExp(`/${MOTION_DIR}/`), "/");
 
 // ---------------------------------------------------------------------------
 // Name derivation
@@ -126,9 +126,9 @@ function toKebab(input: string): string {
 function deriveName(
   basename: string,
   kind: Source["kind"],
-  framer = false,
+  motion = false,
 ): string {
-  if (framer) return `${deriveName(basename, kind)}-framer`;
+  if (motion) return `${deriveName(basename, kind)}-motion`;
   const override = NAME_OVERRIDES[basename];
   if (override) return override;
 
@@ -238,7 +238,7 @@ function collect(
   dir: string,
   kind: Source["kind"],
   filter?: Set<string>,
-  framer = false,
+  motion = false,
 ): Source[] {
   if (!fs.existsSync(dir)) return [];
   return fs
@@ -249,28 +249,28 @@ function collect(
     .map((basename) => {
       const abs = path.join(dir, basename);
       const rel = path.relative(ROOT, abs).split(path.sep).join("/");
-      const target = stripFramerSegment(rel.replace(/^src\//, ""));
+      const target = stripMotionSegment(rel.replace(/^src\//, ""));
       return {
         abs,
         rel,
         basename,
         target,
-        name: deriveName(basename, kind, framer),
+        name: deriveName(basename, kind, motion),
         kind,
-        framer,
+        motion,
       };
     });
 }
 
 const sources: Source[] = [
   ...collect(BLOCKS_DIR, "block"),
-  ...collect(path.join(BLOCKS_DIR, FRAMER_DIR), "block", undefined, true),
+  ...collect(path.join(BLOCKS_DIR, MOTION_DIR), "block", undefined, true),
   ...collect(PRIMITIVES_DIR, "primitive"),
-  ...collect(path.join(PRIMITIVES_DIR, FRAMER_DIR), "primitive", undefined, true),
+  ...collect(path.join(PRIMITIVES_DIR, MOTION_DIR), "primitive", undefined, true),
   ...collect(SITE_UI_DIR, "site-ui", SITE_UI_ITEMS),
   // Non-recursive, so blocks/ and ui/ underneath are not collected twice.
   ...collect(CUSTOM_DIR, "custom"),
-  ...collect(path.join(CUSTOM_DIR, FRAMER_DIR), "custom", undefined, true),
+  ...collect(path.join(CUSTOM_DIR, MOTION_DIR), "custom", undefined, true),
 ];
 
 /** Resolve an import specifier to another item in this registry, if any. */
@@ -363,12 +363,12 @@ function titleFor(name: string, meta?: ItemMeta): string {
 }
 
 /**
- * A Framer twin borrows its base item's prose unless it has its own entry, so
+ * A Motion twin borrows its base item's prose unless it has its own entry, so
  * adding a twin never needs a registry-meta edit — only its source file.
  */
 function metaFor(s: Source): ItemMeta | undefined {
-  if (META[s.name] || !s.framer) return META[s.name];
-  const baseName = s.name.replace(/-framer$/, "");
+  if (META[s.name] || !s.motion) return META[s.name];
+  const baseName = s.name.replace(/-motion$/, "");
   const base = META[baseName];
   if (!base) return undefined;
   return {
@@ -472,7 +472,7 @@ const items: BuiltItem[] = sources.map((s) => {
         .map((rel) => ({
           path: rel,
           type: fileType,
-          target: stripFramerSegment(rel.replace(/^src\//, "")),
+          target: stripMotionSegment(rel.replace(/^src\//, "")),
         })),
     ],
   };
@@ -510,12 +510,12 @@ const pullsAny = (name: string, set: Set<string>) =>
 
 /**
  * An install must carry ONE animation library. The usual way to break this is
- * a GSAP section composing a Framer block (or the reverse), so the blocks that
+ * a GSAP section composing a Motion block (or the reverse), so the blocks that
  * bring each library in are named — that is where the fix goes.
  */
 const mixedMotion: string[] = [];
 for (const item of items) {
-  if (!pullsAny(item.name, GSAP_PACKAGES) || !pullsAny(item.name, FRAMER_PACKAGES)) continue;
+  if (!pullsAny(item.name, GSAP_PACKAGES) || !pullsAny(item.name, MOTION_PACKAGES)) continue;
   const own = (set: Set<string>) => item.dependencies.some((d) => set.has(d));
   const via = (set: Set<string>) =>
     [
@@ -525,7 +525,7 @@ for (const item of items) {
         .filter((n): n is string => !!n && pullsAny(n, set)),
     ].join(", ");
   mixedMotion.push(
-    `${item.name}: gsap via ${via(GSAP_PACKAGES)}; framer via ${via(FRAMER_PACKAGES)}`,
+    `${item.name}: gsap via ${via(GSAP_PACKAGES)}; motion via ${via(MOTION_PACKAGES)}`,
   );
 }
 

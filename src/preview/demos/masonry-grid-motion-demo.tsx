@@ -1,6 +1,6 @@
 "use client";
 
-import { MasonryGrid } from "@/components/custom/blocks/framer/MasonryGridBlock";
+import { MasonryGrid } from "@/components/custom/blocks/motion/MasonryGridBlock";
 import { cn } from "@/lib/utils";
 import { ArrowUpRight, Cpu, Layers, Sparkles, Wand2 } from "lucide-react";
 import React from "react";
@@ -88,7 +88,7 @@ const getThemeColor = (color: string) => {
   return colorMap[color] || "var(--primary)";
 };
 
-export default function MasonryGridFramerDemo({
+export default function MasonryGridMotionDemo({
   triggerKey = 0,
   columnsClassName = "columns-1 sm:columns-2 lg:columns-3",
   gapClassName = "gap-6",

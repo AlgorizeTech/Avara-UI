@@ -4,7 +4,7 @@ import AIChat, {
   AIChatColor,
   AIChatVariant,
   EffortLevel,
-} from "@/components/custom/blocks/framer/Ai-chat";
+} from "@/components/custom/blocks/motion/Ai-chat";
 
 const sampleChatHistory = [
   { id: 1, title: "Help with React Components", date: "Today" },
@@ -36,7 +36,7 @@ const sampleInitialMessages = [
   },
 ];
 
-export default function AIChatFramerDemo({
+export default function AIChatMotionDemo({
   variant = "default",
   color = "primary",
   defaultEffort = "medium",

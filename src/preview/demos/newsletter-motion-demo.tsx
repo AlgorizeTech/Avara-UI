@@ -1,6 +1,6 @@
 "use client";
 
-import { Newsletter, type NewsletterVariant } from "@/components/custom/blocks/framer/NewsletterBlock";
+import { Newsletter, type NewsletterVariant } from "@/components/custom/blocks/motion/NewsletterBlock";
 import { cn } from "@/lib/utils";
 
 const FACES = [
@@ -39,7 +39,7 @@ const ISSUES = [
   { title: "First-run experiences, revisited", date: "Issue 40", excerpt: "" },
 ];
 
-export default function NewsletterFramerDemo({
+export default function NewsletterMotionDemo({
   variant = "portraits",
   reveal = "immediate",
   rounded = true,

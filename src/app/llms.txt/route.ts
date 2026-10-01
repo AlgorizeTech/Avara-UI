@@ -1,6 +1,6 @@
 import { SITE_NAME, SITE_URL, links } from "@/config/site";
 import { navigation } from "@/constants/navigation";
-import { isFramerTwin } from "@/lib/component-count";
+import { isMotionTwin } from "@/lib/component-count";
 import {
   COMPONENT_COUNT,
   installedItems,
@@ -52,7 +52,7 @@ function pageLine(label: string, slug: string, framework = DEFAULT_FRAMEWORK) {
   const summary = source ? pageSummary(source) : undefined;
 
   const install = items.flatMap((name) =>
-    itemsByName.has(`${name}-framer`) ? [name, `${name}-framer`] : [name],
+    itemsByName.has(`${name}-motion`) ? [name, `${name}-motion`] : [name],
   );
   const installNote = install.length
     ? ` Install: ${install.map((name) => `\`${REGISTRY_NAMESPACE}/${name}\``).join(", ")}.`
@@ -105,7 +105,7 @@ function gettingStarted(): string[] {
 }
 
 function build(): string {
-  const framerTwins = registryItems.filter((item) => isFramerTwin(item.name));
+  const motionTwins = registryItems.filter((item) => isMotionTwin(item.name));
 
   const header = [
     `# ${SITE_NAME}`,
@@ -132,10 +132,10 @@ function build(): string {
     "",
   ];
 
-  if (framerTwins.length) {
+  if (motionTwins.length) {
     header.push(
-      `Animation builds: ${framerTwins.length} components ship a Motion build beside their default GSAP build, ` +
-        "installed as `<name>-framer`. Install one or the other — they write the same file.",
+      `Animation builds: ${motionTwins.length} components ship a Motion build beside their default GSAP build, ` +
+        "installed as `<name>-motion`. Install one or the other — they write the same file.",
       "",
     );
   }

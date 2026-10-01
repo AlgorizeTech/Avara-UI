@@ -120,7 +120,7 @@ npx shadcn@latest add @algorize-ui/draggable-card-list
 Or the Motion build (same props, same file — install one):
 
 ```bash
-npx shadcn@latest add @algorize-ui/draggable-card-list-framer
+npx shadcn@latest add @algorize-ui/draggable-card-list-motion
 ```
 
 ## Features

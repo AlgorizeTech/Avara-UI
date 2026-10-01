@@ -3,7 +3,7 @@
 import {
   ScrollStackItem,
   StickyScrollStack,
-} from "@/components/custom/blocks/framer/StickyScrollStackBlock";
+} from "@/components/custom/blocks/motion/StickyScrollStackBlock";
 import { Palette, Smartphone, Sparkles } from "lucide-react";
 
 const getThemeColorHex = (c: string) => {
@@ -12,7 +12,7 @@ const getThemeColorHex = (c: string) => {
   return map[c] || "var(--primary)";
 };
 
-export default function StickyScrollStackFramerDemo({
+export default function StickyScrollStackMotionDemo({
   enableGlow = false,
   scaleStep = 0.04,
   stackOffsetStep = 16,

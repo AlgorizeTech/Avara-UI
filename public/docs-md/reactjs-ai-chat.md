@@ -147,7 +147,7 @@ npx shadcn@latest add @algorize-ui/ai-chat
 Or the Motion build (same props, same file — install one):
 
 ```bash
-npx shadcn@latest add @algorize-ui/ai-chat-framer
+npx shadcn@latest add @algorize-ui/ai-chat-motion
 ```
 
 ## Examples

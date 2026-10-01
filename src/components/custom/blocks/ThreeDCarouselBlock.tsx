@@ -5,7 +5,7 @@ import gsap from "gsap";
 import { ChevronLeft, ChevronRight, Pause, Play } from "lucide-react";
 import React, { useCallback, useEffect, useLayoutEffect, useRef, useState } from "react";
 import { bezierEase, gsapTicker } from "./gsap-motion";
-import { createSpringFollower, FRAMER_EASE, springEase } from "./motion-curves";
+import { createSpringFollower, MOTION_EASE, springEase } from "./motion-curves";
 
 export interface CarouselItem {
   id: string;
@@ -23,10 +23,10 @@ export interface ThreeDCarouselProps
 }
 
 // ------------------------------------------
-// Motion — the same numbers as the framer/ build
+// Motion — the same numbers as the motion/ build
 // ------------------------------------------
 
-/** Fan slot of the outer card, written as one transform in Framer's order. */
+/** Fan slot of the outer card, written as one transform in Motion's order. */
 type Slot = { x: number; z: number; scale: number; rotateY: number; zIndex: number; opacity: number };
 type SlotKey = keyof Slot;
 
@@ -36,13 +36,13 @@ const SLOT_SPRING = { stiffness: 280, damping: 28 };
 const TILT_SPRING = { stiffness: 300, damping: 25 };
 /** The spring that pulls a released card back inside its 0/0 drag constraints. */
 const BOUNCE_SPRING = { stiffness: 200, damping: 40 };
-/** Framer's default spring for a scale returning to 1 once hover ends. */
+/** Motion's default spring for a scale returning to 1 once hover ends. */
 const HOVER_OUT_SPRING = { stiffness: 550, damping: 30 };
-/** Hover in: a 0.2s tween on Framer's default `easeOut`. */
-const HOVER_EASE = bezierEase(FRAMER_EASE.easeOut);
+/** Hover in: a 0.2s tween on Motion's default `easeOut`. */
+const HOVER_EASE = bezierEase(MOTION_EASE.easeOut);
 const DRAG_ELASTIC = 0.2;
 
-/** Drag styles Framer puts on an element while `drag="x"` is on. */
+/** Drag styles Motion puts on an element while `drag="x"` is on. */
 const DRAG_STYLE = {
   userSelect: "none",
   WebkitUserSelect: "none",
@@ -50,7 +50,7 @@ const DRAG_STYLE = {
   touchAction: "pan-y",
 } as React.CSSProperties;
 
-/** While a card is being dragged, hover starts and ends are ignored (as in Framer). */
+/** While a card is being dragged, hover starts and ends are ignored (as in Motion). */
 let dragActive = false;
 
 interface Run {

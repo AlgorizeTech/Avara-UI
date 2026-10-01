@@ -171,7 +171,7 @@ npx shadcn@latest add @algorize-ui/masonry-grid
 Or the Motion build (same props, same file — install one):
 
 ```bash
-npx shadcn@latest add @algorize-ui/masonry-grid-framer
+npx shadcn@latest add @algorize-ui/masonry-grid-motion
 ```
 
 ## Examples

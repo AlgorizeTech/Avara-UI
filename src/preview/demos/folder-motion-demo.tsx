@@ -1,6 +1,6 @@
 "use client";
 
-import { Folder, type FolderFile } from "@/components/custom/blocks/framer/FolderBlock";
+import { Folder, type FolderFile } from "@/components/custom/blocks/motion/FolderBlock";
 import {
   Camera,
   FileText,
@@ -79,7 +79,7 @@ function IconPicker() {
   );
 }
 
-export default function FolderFramerDemo({
+export default function FolderMotionDemo({
   peek = 3,
   size = 260,
   blur = 10,

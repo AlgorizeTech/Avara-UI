@@ -16,7 +16,7 @@ import { InputBlock } from "./InputBlock";
 import { MarqueeBlock } from "./MarqueeBlock";
 import { TiltedCard } from "./TiltedCardBlock";
 import { bezierEase, gsapTicker } from "./gsap-motion";
-import { createSpringFollower, FRAMER_EASE, springEase } from "./motion-curves";
+import { createSpringFollower, MOTION_EASE, springEase } from "./motion-curves";
 
 // ==========================================
 // NEWSLETTER
@@ -106,12 +106,12 @@ function usePrefersReducedMotion() {
 const RISE_EASE = bezierEase([0.16, 1, 0.3, 1]);
 const RISE_HIDDEN: React.CSSProperties = { opacity: 0, transform: "translateY(18px)" };
 
-/** Form out: 0.2s on Framer's default `easeOut`. */
-const EXIT_EASE = bezierEase(FRAMER_EASE.easeOut);
+/** Form out: 0.2s on Motion's default `easeOut`. */
+const EXIT_EASE = bezierEase(MOTION_EASE.easeOut);
 /** Thank-you in: 0.45s on cubic-bezier(0.16, 1, 0.3, 1); the tick draws on `easeOut`. */
 const DONE_EASE = bezierEase([0.16, 1, 0.3, 1]);
 const DONE_HIDDEN: React.CSSProperties = { opacity: 0, transform: "scale(0.96)" };
-const CHECK_EASE = bezierEase(FRAMER_EASE.easeOut);
+const CHECK_EASE = bezierEase(MOTION_EASE.easeOut);
 
 /** Animates as one child of the section's staggered reveal. */
 function Reveal({ className, children }: { className?: string; children: React.ReactNode }) {

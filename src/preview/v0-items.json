@@ -3,7 +3,7 @@
     "3d-carousel": "Carousel 3D — 3D carousel",
     "shorter-deck": "Carousel 3D — Shorter deck"
   },
-  "carousel-3d-framer": {
+  "carousel-3d-motion": {
     "3d-carousel": "Carousel 3D — 3D carousel",
     "shorter-deck": "Carousel 3D — Shorter deck"
   },
@@ -23,7 +23,7 @@
     "minimal": "AI Chat — Minimal",
     "glass": "AI Chat — Glass"
   },
-  "ai-chat-framer": {
+  "ai-chat-motion": {
     "ai-assistant": "AI Chat — AI assistant",
     "compact": "AI Chat — Compact",
     "wired-to-your-backend": "AI Chat — Wired to your backend",
@@ -146,7 +146,7 @@
     "with-navigation-buttons": "Card Stack — With navigation buttons",
     "left-slide-direction": "Card Stack — Left Slide Direction"
   },
-  "card-stack-framer": {
+  "card-stack-motion": {
     "swipe-to-discard": "Card Stack — Swipe to Discard",
     "infinite-loop": "Card Stack — Infinite Loop",
     "with-navigation-buttons": "Card Stack — With navigation buttons",
@@ -314,7 +314,7 @@
     "dock": "Dock",
     "badges-active-app": "Dock — Badges & active app"
   },
-  "dock-framer": {
+  "dock-motion": {
     "dock": "Dock",
     "badges-active-app": "Dock — Badges & active app"
   },
@@ -322,7 +322,7 @@
     "classic-card-list": "Draggable Card List — Classic Card List",
     "modern-ambient-tint-card-list": "Draggable Card List — Modern Ambient Tint Card List"
   },
-  "draggable-card-list-framer": {
+  "draggable-card-list-motion": {
     "classic-card-list": "Draggable Card List — Classic Card List",
     "modern-ambient-tint-card-list": "Draggable Card List — Modern Ambient Tint Card List"
   },
@@ -384,7 +384,7 @@
     "icon": "Folder — Icon",
     "photos": "Folder — Photos"
   },
-  "folder-framer": {
+  "folder-motion": {
     "folder": "Folder",
     "fan-on-hover": "Folder — Fan on hover",
     "icon": "Folder — Icon",
@@ -517,7 +517,7 @@
     "slower-stagger": "Masonry Grid — Slower stagger",
     "without-the-entrance": "Masonry Grid — Without the entrance"
   },
-  "masonry-grid-framer": {
+  "masonry-grid-motion": {
     "masonry-grid": "Masonry Grid",
     "column-counts": "Masonry Grid — Column counts",
     "custom-gap-spacing": "Masonry Grid — Custom gap spacing",
@@ -527,7 +527,7 @@
   "memories-card": {
     "tracking-the-active-card": "Memories Card — Tracking the active card"
   },
-  "memories-card-framer": {
+  "memories-card-motion": {
     "tracking-the-active-card": "Memories Card — Tracking the active card"
   },
   "menubar": {
@@ -568,7 +568,7 @@
     "spotlight": "Newsletter — Spotlight",
     "issues": "Newsletter — Issues"
   },
-  "newsletter-framer": {
+  "newsletter-motion": {
     "portraits": "Newsletter — Portraits",
     "spotlight": "Newsletter — Spotlight",
     "issues": "Newsletter — Issues"
@@ -677,7 +677,7 @@
     "sticky-stack": "Sticky Scroll Stack — Sticky stack",
     "stack-geometry": "Sticky Scroll Stack — Stack geometry"
   },
-  "sticky-scroll-stack-framer": {
+  "sticky-scroll-stack-motion": {
     "sticky-stack": "Sticky Scroll Stack — Sticky stack",
     "stack-geometry": "Sticky Scroll Stack — Stack geometry"
   },

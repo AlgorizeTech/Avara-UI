@@ -3,7 +3,7 @@
 import {
   CarouselItem,
   ThreeDCarousel,
-} from "@/components/custom/blocks/framer/ThreeDCarouselBlock";
+} from "@/components/custom/blocks/motion/ThreeDCarouselBlock";
 import { accentStyle } from "@/lib/accent";
 
 const sampleItems: CarouselItem[] = [
@@ -54,7 +54,7 @@ const sampleItems: CarouselItem[] = [
   },
 ];
 
-export default function Carousel3DFramerDemo({
+export default function Carousel3DMotionDemo({
   autoPlay = true,
   autoPlayInterval = 4000,
   itemCount,

@@ -13,7 +13,7 @@ import {
 import {
   CardStack,
   type CardStackItem,
-} from "@/components/custom/blocks/framer/CardStackBlock";
+} from "@/components/custom/blocks/motion/CardStackBlock";
 
 // Exact replica of the MakerHunt brand mark from the reference design
 function MakerHuntLogo() {
@@ -131,7 +131,7 @@ const ARRIVALS: CardStackItem[] = [
   },
 ];
 
-export default function CardStackFramerDemo({
+export default function CardStackMotionDemo({
   example = "swipe",
   slideDirection = "right",
   loop = false,

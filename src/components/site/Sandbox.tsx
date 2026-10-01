@@ -865,7 +865,7 @@ export interface ShowcaseExample {
   usage?: ShowcaseSnippet;
   /**
    * Component source — adds a Code tab. Same string-or-map rule; a component
-   * with a Motion twin passes `{ gsap, framer }` (`extractMotionCode`)
+   * with a Motion twin passes `{ gsap, motion }` (`extractMotionCode`)
    * so the tab follows the build switch.
    */
   code?: ShowcaseSnippet;
@@ -1006,11 +1006,11 @@ export default function ${cleanTitle}Demo() {
 }`;
 };
 
-/** Demos that have a Motion twin (`<name>-framer`). */
+/** Demos that have a Motion twin (`<name>-motion`). */
 const DUAL_DEMOS = new Set(
   sandboxNames
-    .filter((demo) => demo.endsWith("-framer"))
-    .map((demo) => demo.replace(/-framer$/, "")),
+    .filter((demo) => demo.endsWith("-motion"))
+    .map((demo) => demo.replace(/-motion$/, "")),
 );
 
 /** Re-exported so docs pages can keep importing it from the showcase module. */
@@ -1058,8 +1058,8 @@ export function ExampleShowcase({
   controls?: SliderControl[];
   /**
    * The component ships a GSAP default and a Motion twin: the previews
-   * get the build switch, and follow it to the `<name>-framer` demo. Detected
-   * from the preview registry when omitted — a `<name>-framer` demo is exactly
+   * get the build switch, and follow it to the `<name>-motion` demo. Detected
+   * from the preview registry when omitted — a `<name>-motion` demo is exactly
    * what makes a component dual.
    */
   motionVariants?: boolean;
@@ -1094,7 +1094,7 @@ export function ExampleShowcase({
   const { library } = useMotionLibrary();
   const isDual = motionVariants ?? DUAL_DEMOS.has(name);
   const activeLibrary = isDual ? library : "gsap";
-  const previewName = isDual && library === "framer" ? `${name}-framer` : name;
+  const previewName = isDual && library === "motion" ? `${name}-motion` : name;
   const pick = (snippet: ShowcaseSnippet | undefined) =>
     resolveMotion(snippet, activeLibrary);
 

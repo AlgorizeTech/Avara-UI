@@ -21,7 +21,7 @@ if (typeof window !== "undefined") {
 
 /**
  * The element's offset from the top of the document, summed up the
- * offsetParent chain — what Framer's `useScroll` measures on every scroll.
+ * offsetParent chain — what Motion's `useScroll` measures on every scroll.
  * A pinned (sticky) element reports where it is stuck, not where it sits.
  */
 function documentOffsetTop(element: HTMLElement) {

@@ -172,32 +172,32 @@ for (const item of items) {
 
 // --- 7. Motion-library twins ------------------------------------------------
 // GSAP is the default build of every animated component; Motion ships
-// only as a `<name>-framer` twin beside it (see animation-library-plan.md).
-// So a twin needs its base, and nothing but a twin may pull Framer in — a
-// Framer-only component would have no GSAP default for the docs to show.
-const FRAMER_PACKAGES = new Set(["framer-motion", "motion"]);
+// only as a `<name>-motion` twin beside it (see animation-library-plan.md).
+// So a twin needs its base, and nothing but a twin may pull Motion in — a
+// Motion-only component would have no GSAP default for the docs to show.
+const MOTION_PACKAGES = new Set(["framer-motion", "motion"]);
 const itemByName = new Map(items.map((i) => [i.name, i]));
 const depsOf = (item: Item) =>
   (item as Item & { dependencies?: string[] }).dependencies ?? [];
 
-function pullsFramer(name: string, seen = new Set<string>()): boolean {
+function pullsMotion(name: string, seen = new Set<string>()): boolean {
   if (seen.has(name)) return false;
   seen.add(name);
   const item = itemByName.get(name);
   if (!item) return false;
-  if (depsOf(item).some((d) => FRAMER_PACKAGES.has(d))) return true;
+  if (depsOf(item).some((d) => MOTION_PACKAGES.has(d))) return true;
   return (item.registryDependencies ?? []).some((ref) => {
     const dep = ref.match(/\/r\/([\w-]+)\.json$/)?.[1];
-    return dep ? pullsFramer(dep, seen) : false;
+    return dep ? pullsMotion(dep, seen) : false;
   });
 }
 
 for (const item of items) {
-  const isTwin = item.name.endsWith("-framer");
+  const isTwin = item.name.endsWith("-motion");
   if (isTwin) {
-    const base = itemByName.get(item.name.replace(/-framer$/, ""));
+    const base = itemByName.get(item.name.replace(/-motion$/, ""));
     if (!base) {
-      fail(`[${item.name}] is a Framer twin with no base (GSAP) item.`);
+      fail(`[${item.name}] is a Motion twin with no base (GSAP) item.`);
     } else if (base.files[0].target !== item.files[0].target) {
       fail(
         `[${item.name}] installs to ${item.files[0].target}, its base to ${base.files[0].target} — twins must share a path.`
@@ -206,10 +206,10 @@ for (const item of items) {
     if (!fs.existsSync(demoFor(item.name))) {
       fail(`[${item.name}] has no demo (${item.name}-demo.tsx) for the docs preview to switch to.`);
     }
-  } else if (pullsFramer(item.name)) {
+  } else if (pullsMotion(item.name)) {
     fail(
-      `[${item.name}] pulls Motion without being a -framer twin. ` +
-        `Convert it to CSS, or port it to GSAP and move the Framer build to a framer/ folder.`
+      `[${item.name}] pulls Motion without being a -motion twin. ` +
+        `Convert it to CSS, or port it to GSAP and move the Motion build to a motion/ folder.`
     );
   }
 }

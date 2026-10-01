@@ -237,7 +237,7 @@ npx shadcn@latest add @algorize-ui/sticky-scroll-stack
 Or the Motion build (same props, same file — install one):
 
 ```bash
-npx shadcn@latest add @algorize-ui/sticky-scroll-stack-framer
+npx shadcn@latest add @algorize-ui/sticky-scroll-stack-motion
 ```
 
 ### More examples

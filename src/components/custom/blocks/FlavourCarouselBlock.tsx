@@ -306,7 +306,7 @@ function createTileMotion<E extends HTMLElement>(
       if (!c.spring) continue;
       const t = (now - c.start) / 1000;
       const value = at(c, t);
-      // Settled once close and slow enough, by the same thresholds as Framer.
+      // Settled once close and slow enough, by the same thresholds as Motion.
       const granular = Math.abs(c.to - c.from) < 5;
       const restDelta = granular ? 0.005 : 0.5;
       const restSpeed = granular ? 0.01 : 2;

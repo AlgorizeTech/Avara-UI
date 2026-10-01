@@ -3,7 +3,7 @@
 import {
   MemoriesCard,
   MemoryItem,
-} from "@/components/custom/blocks/framer/MemoriesCardBlock";
+} from "@/components/custom/blocks/motion/MemoriesCardBlock";
 import { accentStyle } from "@/lib/accent";
 import { useState } from "react";
 
@@ -54,7 +54,7 @@ const sampleMemories: MemoryItem[] = [
   },
 ];
 
-export default function MemoriesCardFramerDemo({
+export default function MemoriesCardMotionDemo({
   itemSet = "full",
   showIndex = false,
   color = "primary",
