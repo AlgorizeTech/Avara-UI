@@ -614,7 +614,7 @@ export function Sandbox({
           ref={areaRef}
           className={cn(
             "flex items-stretch relative justify-start overflow-visible rounded-xl ring-1 ring-foreground/[0.05]",
-            "bg-foreground/[0.015] dark:bg-background",
+            "bg-foreground/[0.015] dark:bg-preview-stage",
             !isPreviewActive && "hidden",
           )}
           style={{
@@ -671,7 +671,7 @@ export function Sandbox({
                     }
               }
               className={cn(
-                "flex justify-center bg-card dark:bg-background",
+                "flex justify-center bg-preview-stage",
                 isFullscreen
                   ? "fixed inset-0 z-[9999] items-stretch"
                   : [
