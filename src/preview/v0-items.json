@@ -146,6 +146,12 @@
     "with-navigation-buttons": "Card Stack — With navigation buttons",
     "left-slide-direction": "Card Stack — Left Slide Direction"
   },
+  "card-stack-framer": {
+    "swipe-to-discard": "Card Stack — Swipe to Discard",
+    "infinite-loop": "Card Stack — Infinite Loop",
+    "with-navigation-buttons": "Card Stack — With navigation buttons",
+    "left-slide-direction": "Card Stack — Left Slide Direction"
+  },
   "carousel": {
     "radial-carousel": "Carousel — Radial carousel",
     "fluid-glass-slider": "Carousel — Fluid glass slider",

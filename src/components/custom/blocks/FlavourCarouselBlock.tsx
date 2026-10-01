@@ -272,10 +272,18 @@ interface Channel {
 /**
  * A tile's five values, each animated by its own spring. Retargeting a value
  * mid-flight starts the new spring from where it is at the speed it has,
- * and a `null` spring jumps. `render` receives every frame.
+ * and a `null` spring jumps. `render` receives every frame, with the element
+ * handed to `attach` (frames before there is one are skipped).
  */
-function createTileMotion(initial: TileValues, render: (values: TileValues) => void) {
+function createTileMotion<E extends HTMLElement>(
+  initial: TileValues,
+  render: (el: E, values: TileValues) => void,
+) {
   const channels = {} as Record<keyof TileValues, Channel>;
+  let element: E | null = null;
+  const draw = () => {
+    if (element) render(element, values());
+  };
   for (const key of TILE_KEYS) {
     const value = initial[key];
     channels[key] = { value, from: value, to: value, velocity: 0, start: 0, spring: null };
@@ -311,12 +319,16 @@ function createTileMotion(initial: TileValues, render: (values: TileValues) => v
         moving = true;
       }
     }
-    render(values());
+    draw();
     if (moving) frame = requestAnimationFrame(tick);
   };
 
   return {
     values,
+    /** The element the frames are written to: a callback ref. */
+    attach(el: E | null) {
+      element = el;
+    },
     to(target: TileValues, spring: Spring | null) {
       const now = performance.now();
       let jumped = false;
@@ -344,7 +356,7 @@ function createTileMotion(initial: TileValues, render: (values: TileValues) => v
         c.spring = spring;
         started = true;
       }
-      if (jumped) render(values());
+      if (jumped) draw();
       if (started && !frame) frame = requestAnimationFrame(tick);
     },
     jump(target: TileValues) {
@@ -354,7 +366,7 @@ function createTileMotion(initial: TileValues, render: (values: TileValues) => v
         c.velocity = 0;
         c.spring = null;
       }
-      render(values());
+      draw();
     },
     stop() {
       cancelAnimationFrame(frame);
@@ -453,24 +465,23 @@ function Tile({
   reduce: boolean;
   onChoose: (index: number) => void;
 }) {
-  const ref = useRef<HTMLButtonElement>(null);
-  const [motion] = useState(() => {
+  const [{ motion, attach, initialStyle }] = useState(() => {
     const start = from ?? slot;
-    return createTileMotion(
+    const tileMotion = createTileMotion<HTMLButtonElement>(
       { x: start.x * width, y: start.y * height, scale: start.scale, rotate: start.rotate, opacity: start.opacity },
-      (v) => {
-        const el = ref.current;
-        if (!el) return;
+      (el, v) => {
         el.style.transform = tileTransform(v);
         el.style.opacity = String(v.opacity);
       },
     );
-  });
-  // Where the tile is drawn before any frame has run; after that the values
-  // are written straight to the element.
-  const [initialStyle] = useState(() => {
-    const v = motion.values();
-    return { transform: tileTransform(v), opacity: v.opacity };
+    // Where the tile is drawn before any frame has run; after that the values
+    // are written straight to the element (the button, via `attach`).
+    const v = tileMotion.values();
+    return {
+      motion: tileMotion,
+      attach: tileMotion.attach,
+      initialStyle: { transform: tileTransform(v), opacity: v.opacity },
+    };
   });
   useEffect(() => () => motion.stop(), [motion]);
 
@@ -518,7 +529,7 @@ function Tile({
 
   return (
     <button
-      ref={ref}
+      ref={attach}
       type="button"
       aria-label={rel === 0 ? `${flavour.name}, in the cup` : `Choose ${flavour.name}`}
       aria-pressed={rel === 0}
@@ -638,10 +649,39 @@ export function FlavourCarousel({
   // Which side of the cup each tile lives on. A tile only ever leaves on its
   // own side; when the ring brings it round to the other side it is remounted
   // at that side's hidden slot (`gen` bumps its key) and springs in from
-  // there, so nothing is ever seen crossing the stage.
-  const sideRef = useRef<number[]>(flavours.map((_, i) => Math.sign(ringDistance(i, active, n)) || 1));
-  const prevActiveRef = useRef(active);
-  const [gen, setGen] = useState<number[]>(() => flavours.map(() => 0));
+  // there, so nothing is ever seen crossing the stage. Settled for each turn
+  // while rendering, against the turn they were last settled for.
+  const [ring, setRing] = useState(() => ({
+    active,
+    side: flavours.map((_, i) => Math.sign(ringDistance(i, active, n)) || 1),
+    gen: flavours.map(() => 0),
+  }));
+  if (ring.active !== active) {
+    const prev = ring.active;
+    const side = [...ring.side];
+    const remount: number[] = [];
+    flavours.forEach((_, i) => {
+      const before = ringDistance(i, prev, n);
+      const after = ringDistance(i, active, n);
+      if (after === 0) return;
+      const sign = Math.sign(after);
+      // Emerging from the cup, or already on this side: nothing to do.
+      if (before === 0 || side[i] === sign) {
+        side[i] = sign;
+        return;
+      }
+      // Bound for the other side. Out of sight there: stay hidden on this side.
+      if (Math.abs(after) >= 3) return;
+      // Coming into view there: switch sides off screen and spring in.
+      side[i] = sign;
+      remount.push(i);
+    });
+    setRing({
+      active,
+      side,
+      gen: remount.length ? ring.gen.map((v, i) => (remount.includes(i) ? v + 1 : v)) : ring.gen,
+    });
+  }
 
   const compact = width > 0 && width < 560;
   // Tile size as a share of the stage: generous on phones, calmer as the ring gets room.
@@ -715,20 +755,16 @@ export function FlavourCarousel({
     return () => window.clearTimeout(t);
   }, [active, n]);
 
-  useEffect(() => {
-    if (visible) setInView(true);
-  }, [visible]);
+  // Once seen, in view for good.
+  if (visible && !inView) setInView(true);
 
   // The entrance spin: one continuous turn of the phase, fast then easing to
   // a stop on `initial`; when it lands the springs take over from exactly
   // where it left the tiles.
+  // Reduced motion skips it: the ring is simply in place.
+  if (intro && inView && reduce) setIntro(false);
   useEffect(() => {
-    if (!intro || !inView) return;
-    if (reduce) {
-      phase.set(initialIndex);
-      setIntro(false);
-      return;
-    }
+    if (!intro || !inView || reduce) return;
     const from = phase.get();
     let frame = 0;
     let startTime = 0;
@@ -749,15 +785,18 @@ export function FlavourCarousel({
     return () => cancelAnimationFrame(frame);
   }, [intro, inView, reduce, phase, initialIndex]);
 
-  // When the cup's flavour changes, bring its picture to the top and fade it
-  // in over the previous one.
-  useEffect(() => {
+  // When the cup's flavour changes, bring its picture to the top (while
+  // rendering, against the flavour last stacked)...
+  const [stacked, setStacked] = useState(shown);
+  if (stacked !== shown) {
+    setStacked(shown);
     setOrder((prev) => [...prev.filter((i) => i !== shown), shown]);
-    if (first.current) {
-      first.current = false;
-      return;
-    }
-    onChange?.(shown, flavours[shown]);
+  }
+  // ...and, before that frame is painted, fade it in over the previous one.
+  const fadedRef = useRef(shown);
+  useLayoutEffect(() => {
+    if (fadedRef.current === shown) return;
+    fadedRef.current = shown;
     const layer = cupRef.current?.querySelector<HTMLElement>(`[data-fc-product="${shown}"]`);
     if (!layer || reduce) return;
     // A fade still running under the new top layer finishes on its own, so
@@ -768,7 +807,21 @@ export function FlavourCarousel({
     fade.onfinish = () => {
       if (fades.current.get(shown) === fade) fades.current.delete(shown);
     };
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [shown, reduce]);
+
+  // Report each change (not the first flavour) to the latest `onChange`.
+  const onChangeRef = useRef(onChange);
+  const flavoursRef = useRef(flavours);
+  useEffect(() => {
+    onChangeRef.current = onChange;
+    flavoursRef.current = flavours;
+  });
+  useEffect(() => {
+    if (first.current) {
+      first.current = false;
+      return;
+    }
+    onChangeRef.current?.(shown, flavoursRef.current[shown]);
   }, [shown]);
 
   useEffect(() => {
@@ -782,6 +835,13 @@ export function FlavourCarousel({
   const pillRefs = useRef(new Map<number, HTMLDivElement>());
   const pillExits = useRef(new Map<number, Animation>());
   const pillShownRef = useRef(shown);
+  // Under reduced motion the price just swaps: done while rendering, against
+  // the flavour the pill last showed.
+  const [pillFor, setPillFor] = useState(shown);
+  if (pillFor !== shown) {
+    setPillFor(shown);
+    if (reduce) setPill([{ key: shown, enter: false, rect: null }]);
+  }
   useLayoutEffect(() => {
     const prev = pillShownRef.current;
     pillShownRef.current = shown;
@@ -790,7 +850,6 @@ export function FlavourCarousel({
     if (reduce) {
       exits.forEach((exit) => exit.cancel());
       exits.clear();
-      setPill([{ key: shown, enter: false, rect: null }]);
       return;
     }
     // Leaving: freeze where it stands and lift it out from wherever it is.
@@ -839,8 +898,12 @@ export function FlavourCarousel({
   // (unless `reveal` is "none" or motion is reduced) and transition in once
   // the section is in view, so the first frame has to be drawn hidden first.
   const [armed, setArmed] = useState(false);
-  useLayoutEffect(() => {
-    stageRef.current?.getBoundingClientRect();
+  // The stage's ref: once it is in the document, force a layout so the
+  // hidden first frame is what the transitions start from, then arm.
+  const attachStage = useCallback((node: HTMLDivElement | null) => {
+    stageRef.current = node;
+    if (!node) return;
+    node.getBoundingClientRect();
     setArmed(true);
   }, []);
   const [startHidden] = useState(() => !(reveal === "none" || reduce));
@@ -871,43 +934,17 @@ export function FlavourCarousel({
     }
   };
 
-  // Before paint: settle which side each tile is on for this turn.
-  useLayoutEffect(() => {
-    const prev = prevActiveRef.current;
-    prevActiveRef.current = active;
-    if (prev === active) return;
-    const side = sideRef.current;
-    const remount: number[] = [];
-    flavours.forEach((_, i) => {
-      const before = ringDistance(i, prev, n);
-      const after = ringDistance(i, active, n);
-      if (after === 0) return;
-      const sign = Math.sign(after);
-      // Emerging from the cup, or already on this side: nothing to do.
-      if (before === 0 || side[i] === sign) {
-        side[i] = sign;
-        return;
-      }
-      // Bound for the other side. Out of sight there: stay hidden on this side.
-      if (Math.abs(after) >= 3) return;
-      // Coming into view there: switch sides off screen and spring in.
-      side[i] = sign;
-      remount.push(i);
-    });
-    if (remount.length) setGen((g) => g.map((v, i) => (remount.includes(i) ? v + 1 : v)));
-  }, [active, flavours, n]);
-
   const tiles = useMemo(
     () =>
       flavours.map((f, i) => {
         const rel = ringDistance(i, active, n);
         // Hidden tiles keep to their own side, whatever the ring says.
-        const side = sideRef.current[i] ?? Math.sign(rel) ?? 1;
+        const side = ring.side[i] ?? Math.sign(rel) ?? 1;
         const slot = slotFor(Math.abs(rel) >= 3 ? 3 * side : rel, compact);
         const from = slotFor(3 * side, compact);
-        return { f, i, rel, slot, from, gen: gen[i] ?? 0 };
+        return { f, i, rel, slot, from, gen: ring.gen[i] ?? 0 };
       }),
-    [flavours, active, n, compact, gen],
+    [flavours, active, n, compact, ring],
   );
 
   const transition = reduce ? null : walking ? QUICK_SPRING : SPRING;
@@ -945,7 +982,7 @@ export function FlavourCarousel({
       )}
 
       <div
-        ref={stageRef}
+        ref={attachStage}
         role="group"
         aria-roledescription="carousel"
         aria-label="Flavours"

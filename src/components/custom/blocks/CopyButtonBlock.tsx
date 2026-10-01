@@ -2,7 +2,10 @@
 
 import { cn } from "@/lib/utils";
 import { Check, Copy, X } from "lucide-react";
-import React, { forwardRef, useCallback, useEffect, useRef, useState } from "react";
+import React, { forwardRef, useState } from "react";
+import { useCopyToClipboard } from "./copy-button-hooks";
+
+export type { CopyStatus } from "./copy-button-hooks";
 
 // ==========================================
 // THEME
@@ -73,64 +76,6 @@ const KEYFRAMES = `
 }`;
 
 // ==========================================
-// HOOK
-// ==========================================
-export type CopyStatus = "idle" | "copied" | "error";
-
-/**
- * Copies text to the clipboard and reports a status that resets itself after
- * `timeout` ms. Falls back to a hidden textarea + execCommand where the async
- * Clipboard API is unavailable (older browsers, non-secure origins).
- */
-export function useCopyToClipboard(timeout = 2000) {
-  const [status, setStatus] = useState<CopyStatus>("idle");
-  const timer = useRef<ReturnType<typeof setTimeout> | null>(null);
-
-  useEffect(
-    () => () => {
-      if (timer.current) clearTimeout(timer.current);
-    },
-    [],
-  );
-
-  const copy = useCallback(
-    async (text: string) => {
-      let ok = false;
-      try {
-        if (typeof navigator !== "undefined" && navigator.clipboard?.writeText) {
-          await navigator.clipboard.writeText(text);
-          ok = true;
-        }
-      } catch {
-        ok = false;
-      }
-      if (!ok && typeof document !== "undefined") {
-        const ta = document.createElement("textarea");
-        ta.value = text;
-        ta.setAttribute("readonly", "");
-        ta.style.position = "fixed";
-        ta.style.opacity = "0";
-        document.body.appendChild(ta);
-        ta.select();
-        try {
-          ok = document.execCommand("copy");
-        } catch {
-          ok = false;
-        }
-        document.body.removeChild(ta);
-      }
-      setStatus(ok ? "copied" : "error");
-      if (timer.current) clearTimeout(timer.current);
-      timer.current = setTimeout(() => setStatus("idle"), timeout);
-      return ok;
-    },
-    [timeout],
-  );
-
-  return { copy, status, copied: status === "copied" };
-}
-
-// ==========================================
 // COPY BUTTON
 // ==========================================
 export interface CopyButtonProps
@@ -178,8 +123,10 @@ export const CopyButton = forwardRef<HTMLButtonElement, CopyButtonProps>(
   ) => {
     const { copy, status } = useCopyToClipboard(timeout);
     const { theme, style: themeStyle } = getTheme(color);
-    // No entrance animation on first paint — the pop is for state changes only.
-    const interacted = useRef(false);
+    // No entrance animation on first paint — the pop is for state changes only,
+    // so it switches on with the first one (and stays on, so idle pops back too).
+    const [interacted, setInteracted] = useState(false);
+    if (!interacted && status !== "idle") setInteracted(true);
 
     const sizes = {
       sm: { btn: "h-8 text-xs gap-1.5 rounded-md", pad: "px-2.5", square: "w-8", icon: "w-3.5 h-3.5" },
@@ -216,7 +163,6 @@ export const CopyButton = forwardRef<HTMLButtonElement, CopyButtonProps>(
         onClick={(e) => {
           onClick?.(e);
           if (e.defaultPrevented) return;
-          interacted.current = true;
           void copy(value).then((ok) => onCopy?.(value, ok));
         }}
         className={cn(
@@ -237,14 +183,14 @@ export const CopyButton = forwardRef<HTMLButtonElement, CopyButtonProps>(
         <Icon
           key={status}
           className={cn(sizes.icon, "shrink-0")}
-          style={interacted.current ? { animation: "copy-btn-pop 0.35s cubic-bezier(0.34,1.56,0.64,1) both" } : undefined}
+          style={interacted ? { animation: "copy-btn-pop 0.35s cubic-bezier(0.34,1.56,0.64,1) both" } : undefined}
           strokeWidth={isCopied ? 3 : 2}
         />
         {!iconOnly && (
           <span
             key={`label-${status}`}
             className="inline-block"
-            style={interacted.current ? { animation: "copy-btn-rise 0.25s ease-out both" } : undefined}
+            style={interacted ? { animation: "copy-btn-rise 0.25s ease-out both" } : undefined}
           >
             {currentLabel}
           </span>

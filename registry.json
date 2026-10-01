@@ -1086,6 +1086,11 @@
           "path": "src/components/custom/blocks/CopyButtonBlock.tsx",
           "type": "registry:component",
           "target": "components/custom/blocks/CopyButtonBlock.tsx"
+        },
+        {
+          "path": "src/components/custom/blocks/copy-button-hooks.ts",
+          "type": "registry:component",
+          "target": "components/custom/blocks/copy-button-hooks.ts"
         }
       ],
       "docs": "Named exports: CopyButton, CopyField, useCopyToClipboard. `value` is the text copied; `label` / `copiedLabel` / `errorLabel` set the three states, `timeout` how long the confirmation lingers, `iconOnly` drops the label. Variants are solid | soft | outline | ghost, sizes sm | md | lg, `color` a preset or hex. CopyField wraps a read-only input with the button beside it (or `inset` inside it) and forwards `buttonProps`. Falls back to execCommand where the Clipboard API is unavailable."

@@ -478,12 +478,16 @@ function CustomDatePicker({
 
   const [viewDate, setViewDate] = useState<Date>(initialDate);
 
-  useEffect(() => {
+  // Opening, closing or a new `value` brings the view back to the selected
+  // month. Adjusted while rendering, when either changes, rather than in an effect.
+  const [prevSync, setPrevSync] = useState({ value, isOpen });
+  if (prevSync.value !== value || prevSync.isOpen !== isOpen) {
+    setPrevSync({ value, isOpen });
     if (value) {
       const [y, m, d] = value.split("-").map(Number);
       if (y && m && d) setViewDate(new Date(y, m - 1, d));
     }
-  }, [value, isOpen]);
+  }
 
   useEffect(() => {
     if (!isOpen) return;
