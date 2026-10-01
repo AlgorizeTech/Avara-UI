@@ -399,24 +399,6 @@ export function Folder({
   });
   const windowed = slots.map((s) => s.file);
 
-  // Suppresses the enter animation on first paint only.
-  const firstPaint = useRef(true);
-  useEffect(() => {
-    firstPaint.current = false;
-  }, []);
-
-  // Cards ripple in at 40ms apart the first time a batch appears. Only a real
-  // batch staggers: paging brings in a single card, and making that one wait
-  // its index out would read as lag rather than rhythm. Read during render,
-  // committed after paint.
-  const seen = useRef<Set<number>>(new Set());
-  const newKeys = slots.map((s) => s.rawKey).filter((k) => !seen.current.has(k));
-  const batchEntry = newKeys.length > 1;
-  const entryDelay = (key: number) => (batchEntry ? newKeys.indexOf(key) * 0.04 : null);
-  useEffect(() => {
-    slots.forEach((s) => seen.current.add(s.rawKey));
-  });
-
   // Arrows show whenever there's something else to bring into view — even a
   // folder with just 2 files benefits from a way to swap which one is front
   // and center.
@@ -447,6 +429,47 @@ export function Folder({
       op: 1,
     };
   };
+
+  // Each card's animate target, by slot.
+  const targetFor = (i: number) => {
+    const c = cardAt(i);
+    return { opacity: c.op, x: c.x, y: topBase + c.y, rotate: c.rot, scale: fanned ? fanScale : 1 };
+  };
+
+  // Cards ripple in at 40ms apart the first time a batch appears. Only a real
+  // batch staggers: paging brings in a single card, and making that one wait
+  // its index out would read as lag rather than rhythm. The cards that are new
+  // are worked out when the set of slots changes, against every slot shown
+  // before; they count as new until the targets next move, since a transition
+  // only applies when its target moves. The first set of slots mounts in place
+  // (no enter animation on first paint).
+  const slotKeys = slots.map((s) => s.rawKey);
+  const slotSig = slotKeys.join();
+  const targetSig = JSON.stringify(slots.map((_, i) => targetFor(i)));
+  const [entry, setEntry] = useState(() => ({
+    seen: new Set(slotKeys) as ReadonlySet<number>,
+    slotSig,
+    targetSig,
+    newKeys: slotKeys,
+    slotsChanged: false,
+  }));
+  let nextEntry = entry;
+  if (slotSig !== entry.slotSig) {
+    nextEntry = {
+      seen: new Set([...entry.seen, ...slotKeys]),
+      slotSig,
+      targetSig,
+      newKeys: slotKeys.filter((k) => !entry.seen.has(k)),
+      slotsChanged: true,
+    };
+  } else if (targetSig !== entry.targetSig) {
+    nextEntry = { ...entry, targetSig, newKeys: [] };
+  }
+  if (nextEntry !== entry) setEntry(nextEntry);
+  const firstPaint = !nextEntry.slotsChanged;
+  const { newKeys } = nextEntry;
+  const batchEntry = newKeys.length > 1;
+  const entryDelay = (key: number) => (batchEntry ? newKeys.indexOf(key) * 0.04 : null);
 
   const handleFiles = useCallback(
     (raw: FileList | null) => {
@@ -716,7 +739,7 @@ export function Folder({
                   cursor: fanned && canPage ? "grab" : undefined,
                 }}
                 initial={
-                  firstPaint.current
+                  firstPaint
                     ? false
                     : reduce
                       ? { opacity: 0, x: c.x, y: topBase + c.y, rotate: c.rot, scale: 1 }
