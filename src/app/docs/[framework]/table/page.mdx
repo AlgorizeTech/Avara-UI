@@ -402,7 +402,7 @@ export const usageEmpty = `<TableBody>
       <tr><th>Prop</th><th>Type</th><th>Default</th><th>Description</th></tr>
     </thead>
     <tbody>
-      <tr><td><code>variant</code></td><td><code>"default" | "minimal" | "glass"</code></td><td><code>"default"</code></td><td>Bordered card, bare table, or frosted glass panel.</td></tr>
+      <tr><td><code>variant</code></td><td><code>"default" | "minimal" | "glass" | "soft"</code></td><td><code>"default"</code></td><td>Bordered card, bare table, frosted glass panel, or the admin-dashboard look (see <DocLink to="data-table">Data Table</DocLink> for the full soft example).</td></tr>
       <tr><td><code>size</code></td><td><code>"sm" | "md" | "lg"</code></td><td><code>"md"</code></td><td>Row density — cell padding and text size.</td></tr>
       <tr><td><code>color</code></td><td><code>"primary" | "indigo" | "rose" | "emerald" | "zinc" | (hex)</code></td><td><code>"primary"</code></td><td>Accent for selected rows and interactive affordances. Any <code>#rrggbb</code> works.</td></tr>
     </tbody>
@@ -454,7 +454,7 @@ export const usageEmpty = `<TableBody>
       <tr><td><code>TableExpandedRow</code></td><td><code>colSpan</code></td><td><code>number</code></td><td><strong>Required.</strong> Must match your column count.</td></tr>
       <tr><td><code>TableEmpty</code></td><td><code>colSpan</code></td><td><code>number</code></td><td><strong>Required.</strong> Defaults its text to &ldquo;No data available.&rdquo;</td></tr>
       <tr><td><code>TableRowActions</code></td><td><code>align</code></td><td><code>"left" | "center" | "right"</code></td><td>Horizontal alignment inside the cell. Defaults to <code>"right"</code>.</td></tr>
-      <tr><td><code>TableRowActions</code></td><td><code>alwaysVisible</code></td><td><code>boolean</code></td><td>Skip the hover reveal and keep the buttons visible.</td></tr>
+      <tr><td><code>TableRowActions</code></td><td><code>alwaysVisible</code></td><td><code>boolean</code></td><td>Skip the hover reveal and keep the buttons visible. Defaults to visible in the <code>soft</code> variant.</td></tr>
     </tbody>
   </table>
 </div>

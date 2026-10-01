@@ -11,15 +11,10 @@ A landing hero for a component library. In the middle, the copy — a small badg
 
 The copy and the walls talk to each other. The install line ends in the name of the card a camera has just landed on, and slides to the next name as the next camera lands — so the hero is always showing something the reader can paste into a terminal. The walls are <DocLink to="image-wall">Image Walls</DocLink>, the headline a <DocLink to="text-animation">Text Animation</DocLink>, the copy control a <DocLink to="copy-button">Copy Button</DocLink>, the faces an <DocLink to="avatar-stack">Avatar Stack</DocLink>, the stars <DocLink to="half-stars">Half Stars</DocLink> and the tools a <DocLink to="tech-stack">Tech Stack</DocLink>, passed in as `stack`. The headline is set in your theme's `font-serif`, the rest in `font-sans`; every colour is a theme token.
 
-export const usage = `"use client";
+{/* Shared by both snippets below, so each one is a whole file you can paste. */}
 
-import Link from "next/link";
-import { ComponentWall } from "@/components/custom/blocks/ComponentWallBlock";
-import { TechStack, TechStackGroup, TechStackTool } from "@/components/custom/blocks/TechStackBlock";
-import { GitHubIcon, ReactIcon, NextjsIcon, TypeScriptIcon, TailwindIcon, MotionIcon, GsapIcon, LucideIcon } from "@/components/custom/blocks/Icons";
-
-// slug is what the install line calls the card; it defaults to the title in kebab-case.
-const ITEMS = [
+export const wallData = `// slug is what the install line calls the card; it defaults to the title in kebab-case.
+const ITEMS: ComponentWallItem[] = [
   { slug: "hero", title: "Word bounce hero", image: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto/v1790516057/hero-1790516064495.jpg" },
   { slug: "pricing", title: "Pricing plans", image: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto/v1790516058/pricing-1790516064500.jpg" },
   { slug: "bento-showcase", title: "Bento showcase", image: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto/v1790516057/bento-showcase-1790516064489.jpg" },
@@ -31,12 +26,9 @@ const ITEMS = [
   // … as many as you like; four columns of six reads well
 ];
 
-// Four to eight related tools per group; an odd group sits three over four. Add
-// more <TechStackGroup>s and they take turns. Any node works as the icon — an <img> too.
-// The centred column is narrow, so the compact variant (marks only) fits it.
-const STACK = (
-  <TechStack label="Built with" variant="compact">
-    <TechStackGroup>
+const AVATARS = [{ src: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto/v1790148864/80-1-1790148865111.jpg" }, { src: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto/v1790148864/80-2-1790148865112.jpg" }, { src: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto/v1790148865/80-3-1790148865112.jpg" }, { src: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto/v1790148865/80-4-1790148865113.jpg" }, { src: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto/v1790148865/80-1790148865113.jpg" }];`;
+
+export const wallGroups = `    <TechStackGroup>
       <TechStackTool name="React" icon={<ReactIcon />} />
       <TechStackTool name="Next.js" icon={<NextjsIcon fill="currentColor" />} />
       <TechStackTool name="TypeScript" icon={<TypeScriptIcon />} />
@@ -45,51 +37,28 @@ const STACK = (
       <TechStackTool name="GSAP" icon={<GsapIcon />} />
       <TechStackTool name="Lucide" icon={<LucideIcon />} />
     </TechStackGroup>
-  </TechStack>
-);
-
-const AVATARS = [{ src: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto/v1790148864/80-1-1790148865111.jpg" }, { src: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto/v1790148864/80-2-1790148865112.jpg" }, { src: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto/v1790148865/80-3-1790148865112.jpg" }, { src: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto/v1790148865/80-4-1790148865113.jpg" }, { src: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto/v1790148865/80-1790148865113.jpg" }];
-
-export default function Hero() {
-  return (
-    <ComponentWall
-      layout="center"
-      badge={{ label: "Next-gen React components", href: "/docs" }}
-      heading="Build interactive {word}."
-      headingWords={["interfaces", "components", "experiences", "animations", "dashboards"]}
-      accent="interactive"
-      description="A meticulous library of React components and interactive blocks, engineered for seamless performance with Tailwind CSS, TypeScript, GSAP and Motion."
-      install={{ command: "npx shadcn@latest add @algorize-ui/{item}" }}
-      primaryAction={{ label: "Browse components", href: "/docs" }}
-      secondaryAction={{ label: "Star on GitHub", href: "https://github.com/AlgorizeTech", icon: <GitHubIcon size={16} /> }}
-      trust={{ text: "Loved by developers shipping real products with it", avatars: AVATARS, rating: 5 }}
-      items={ITEMS}
-      stack={STACK}
-      interval={4500}
-      linkComponent={Link}
-    />
-  );
-}
 `;
 
-export const usageSplit = `"use client";
+{/* One snippet per framework: Next.js passes next/link so the wall's links route client-side; anywhere else the default <a> is the right thing and needs no import. */}
 
-import Link from "next/link";
-import { ComponentWall } from "@/components/custom/blocks/ComponentWallBlock";
-import { TechStack } from "@/components/custom/blocks/TechStackBlock";
-import { GitHubIcon } from "@/components/custom/blocks/Icons";
+export const wallUsage = ({ next, layout, comment, stackVariant }) => `"use client";
 
-// ITEMS and AVATARS as in the first example; the tool groups too, in a labelled
-// TechStack — beside the wall there is room for names from xl up.
+${next ? 'import Link from "next/link";\n' : ""}import { ComponentWall, type ComponentWallItem } from "@/components/custom/blocks/ComponentWallBlock";
+import { TechStack, TechStackGroup, TechStackTool } from "@/components/custom/blocks/TechStackBlock";
+import { GitHubIcon, ReactIcon, NextjsIcon, TypeScriptIcon, TailwindIcon, MotionIcon, GsapIcon, LucideIcon } from "@/components/custom/blocks/Icons";
+
+${wallData}
+
+${comment}
 const STACK = (
-  <TechStack label="Built with">
-    {/* <TechStackGroup>s as in the first example */}
-  </TechStack>
+  <TechStack label="Built with"${stackVariant}>
+${wallGroups}  </TechStack>
 );
+
 export default function Hero() {
   return (
     <ComponentWall
-      layout="split"
+      layout="${layout}"
       badge={{ label: "Next-gen React components", href: "/docs" }}
       heading="Build interactive {word}."
       headingWords={["interfaces", "components", "experiences", "animations", "dashboards"]}
@@ -101,12 +70,36 @@ export default function Hero() {
       trust={{ text: "Loved by developers shipping real products with it", avatars: AVATARS, rating: 5 }}
       items={ITEMS}
       stack={STACK}
-      interval={4500}
-      linkComponent={Link}
+      interval={4500}${next ? "\n      linkComponent={Link}" : ""}
     />
   );
 }
 `;
+
+export const wallCenter = {
+  layout: "center",
+  stackVariant: ' variant="compact"',
+  comment: `// Four to eight related tools per group; an odd group sits three over four. Add
+// more <TechStackGroup>s and they take turns. Any node works as the icon — an <img> too.
+// The centred column is narrow, so the compact variant (marks only) fits it.`,
+};
+
+export const wallSplit = {
+  layout: "split",
+  stackVariant: "",
+  comment: `// Beside the wall there is room for names from xl up, so the labelled
+// (default) TechStack variant fits here.`,
+};
+
+export const usage = {
+  nextjs: wallUsage({ ...wallCenter, next: true }),
+  reactjs: wallUsage({ ...wallCenter, next: false }),
+};
+
+export const usageSplit = {
+  nextjs: wallUsage({ ...wallSplit, next: true }),
+  reactjs: wallUsage({ ...wallSplit, next: false }),
+};
 
 <ExampleShowcase
   name="component-wall"

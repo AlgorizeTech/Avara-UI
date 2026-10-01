@@ -1,0 +1,232 @@
+import { docsPageMetadata } from "@/lib/docs-metadata";
+
+export const metadata = docsPageMetadata("dashboard");
+
+import { ExampleShowcase } from "@/components/site/Sandbox";
+import { Installation } from "@/components/site/installation";
+import { extractCode } from "@/lib/code";
+
+# Dashboard
+
+An admin dashboard home on its own canvas: a greeting with all-time totals, a period switch, an overview chart with a tab per metric, the activity feed, traffic sources, visitors by country and the top authors. Every number arrives through props, so you point it at your API and the layout, the empty states and the narrow-screen stacking take care of themselves.
+
+<ExampleShowcase
+  name="dashboard"
+  columns={1}
+  minHeight={900}
+  examples={[
+    {
+      title: "Admin overview",
+      subheading: "Switch Daily, Weekly and Monthly, open a metric tab, flip the chart between columns and a trend line, filter the activity feed, and hover the gauge, the barcode or a legend row to light up a share.",
+      propNotes: [
+        {
+          lead: "Pass",
+          prop: "metrics",
+          effect:
+            "with one series per period (`day`, `week`, `month`), oldest first — the last point is the current one and wears the accent. Give a metric a `currency` and it formats as money.",
+        },
+        {
+          prop: "sources",
+          effect:
+            ", `countries` and `authors` are keyed by period too; the panels follow the switch. Leave `sources` or `countries` out and the panel says the data is unavailable.",
+        },
+        {
+          prop: "links",
+          effect:
+            "give each panel a round open button. Pass `linkComponent={Link}` from `next/link` in a Next.js app.",
+        },
+      ],
+      usage: extractCode("src/preview/demos/dashboard-demo.tsx"),
+      code: extractCode("src/components/custom/blocks/DashboardBlock.tsx"),
+    },
+  ]}
+/>
+
+## Installation
+
+<Installation name="dashboard" />
+
+## Features
+
+<div className="grid grid-cols-1 sm:grid-cols-2 gap-4 my-6 not-prose">
+  <div className="p-6 rounded-2xl border border-border bg-card">
+    <h3 className="text-lg font-semibold text-card-foreground mb-2">Built from the library</h3>
+    <p className="text-muted-foreground text-sm">The period, chart-style and activity switches are the segmented <DocLink to="toggle-group">Toggle Group</DocLink>, the trend line is the <DocLink to="chart">Chart</DocLink>, and the rate explainer is a <DocLink to="popover">Popover</DocLink> — installing the section pulls those in.</p>
+  </div>
+  <div className="p-6 rounded-2xl border border-border bg-card">
+    <h3 className="text-lg font-semibold text-card-foreground mb-2">Every value is text too</h3>
+    <p className="text-muted-foreground text-sm">The gauge and barcode are backed by legend rows with the number and share, the chart has a screen-reader table, and the arrow keys read each column.</p>
+  </div>
+  <div className="p-6 rounded-2xl border border-border bg-card">
+    <h3 className="text-lg font-semibold text-card-foreground mb-2">Follows your theme</h3>
+    <p className="text-muted-foreground text-sm">The canvas glow, the current column, the tab indicator and the bars are mixed from <code>--primary</code>, so a theme preset repaints the whole section in light and dark.</p>
+  </div>
+  <div className="p-6 rounded-2xl border border-border bg-card">
+    <h3 className="text-lg font-semibold text-card-foreground mb-2">No hydration surprises</h3>
+    <p className="text-muted-foreground text-sm">The greeting, the date and the "4m ago" times read the visitor's clock after mount, so a server-rendered page and the browser agree. Pass <code>now</code> to pin them.</p>
+  </div>
+</div>
+
+## Best Practices & Guidelines
+
+<div className="flex flex-col gap-4 my-6 not-prose">
+  <div className="rounded-xl border border-foreground/[0.06] bg-foreground/[0.03] p-4">
+    <h4 className="font-sans text-[14px] font-semibold text-foreground mb-1">Send the change with the series</h4>
+    <p className="text-[13px] leading-relaxed text-foreground/50">The badges show <code>change[period]</code> as given — compute it on your side the way your business reads it (raw totals, or the current period's pace against the last). Leave it out for a period and the tab shows no badge.</p>
+  </div>
+  <div className="rounded-xl border border-foreground/[0.06] bg-foreground/[0.03] p-4">
+    <h4 className="font-sans text-[14px] font-semibold text-foreground mb-1">Keep the series the same length</h4>
+    <p className="text-[13px] leading-relaxed text-foreground/50">The built-in Export writes one CSV row per point with a column per metric, so give every metric the same buckets for a period. Pass <code>onExport</code> to produce your own report instead.</p>
+  </div>
+  <div className="rounded-xl border border-primary/15 bg-primary/5 p-4">
+    <h4 className="font-sans text-[14px] font-semibold text-primary mb-1">It sizes to its container</h4>
+    <p className="text-[13px] leading-relaxed text-foreground/50">Panels stack on phones, pair up on tablets and settle into the 8 + 4 / 4 + 4 + 4 grid from 1280px. Inside an app shell with a sidebar, give the section the content column and override its radius with <code>className</code> if it should sit flush.</p>
+  </div>
+</div>
+
+## Props Reference
+
+<div className="overflow-x-auto mb-8">
+  <table>
+    <thead>
+      <tr>
+        <th>Prop</th>
+        <th>Type</th>
+        <th>Default</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><code>userName</code></td>
+        <td><code>string</code></td>
+        <td>—</td>
+        <td>The greeting uses the first name: “Good afternoon, Ayesha”.</td>
+      </tr>
+      <tr>
+        <td><code>summary</code></td>
+        <td><code>ReactNode</code></td>
+        <td>built from today</td>
+        <td>The line under the greeting. By default it reads the last <code>day</code> point of each metric: “So far today: 24 new users…”.</td>
+      </tr>
+      <tr>
+        <td><code>totals</code></td>
+        <td><code>DashboardTotal[]</code></td>
+        <td><code>[]</code></td>
+        <td>All-time counts beside the greeting — <code>{`{ label, value, icon? }`}</code>. The period switch never changes them.</td>
+      </tr>
+      <tr>
+        <td><code>metrics</code></td>
+        <td><code>DashboardMetric[]</code></td>
+        <td><code>[]</code></td>
+        <td>The overview tabs. See the shape below.</td>
+      </tr>
+      <tr>
+        <td><code>activity</code></td>
+        <td><code>DashboardActivity[]</code></td>
+        <td><code>[]</code></td>
+        <td>The feed, newest shown first, six per filter — <code>{`{ id, type: "user" | "post" | "payment" | "message", title, subtitle?, status?, date, href? }`}</code>.</td>
+      </tr>
+      <tr>
+        <td><code>sources</code></td>
+        <td><code>{`Partial<Record<DashboardPeriod, DashboardShare[]>>`}</code></td>
+        <td>—</td>
+        <td>Visits by source — <code>{`{ id, label, value }`}</code>. The top three get their own colour; the rest fold into “Other”.</td>
+      </tr>
+      <tr>
+        <td><code>signUps</code></td>
+        <td><code>{`Partial<Record<DashboardPeriod, number>>`}</code></td>
+        <td>—</td>
+        <td>Sign-ups per period, for the visit-to-sign-up rate under the sources. Omit it to hide the rate.</td>
+      </tr>
+      <tr>
+        <td><code>countries</code></td>
+        <td><code>{`Partial<Record<DashboardPeriod, DashboardShare[]>>`}</code></td>
+        <td>—</td>
+        <td>Visits by country; add <code>code</code> (e.g. <code>"US"</code>) for the small badge.</td>
+      </tr>
+      <tr>
+        <td><code>authors</code></td>
+        <td><code>{`Partial<Record<DashboardPeriod, DashboardAuthor[]>>`}</code></td>
+        <td>—</td>
+        <td>Posts per author — <code>{`{ name, posts }`}</code>. The top five are ranked against the leader.</td>
+      </tr>
+      <tr>
+        <td><code>defaultPeriod</code></td>
+        <td><code>"day" | "week" | "month"</code></td>
+        <td><code>"month"</code></td>
+        <td>The period selected on first render.</td>
+      </tr>
+      <tr>
+        <td><code>onExport</code></td>
+        <td><code>(period: DashboardPeriod) =&gt; void</code></td>
+        <td>CSV download</td>
+        <td>Replaces the built-in CSV of the overview series for the selected period.</td>
+      </tr>
+      <tr>
+        <td><code>links</code></td>
+        <td><code>{`{ activity?, traffic?, countries?, authors? }`}</code></td>
+        <td><code>{`{}`}</code></td>
+        <td>Where each panel's round open button goes. A panel without a link shows none.</td>
+      </tr>
+      <tr>
+        <td><code>linkComponent</code></td>
+        <td><code>ElementType</code></td>
+        <td><code>"a"</code></td>
+        <td>Renders the panel links and activity titles — pass <code>next/link</code> in a Next.js app.</td>
+      </tr>
+      <tr>
+        <td><code>now</code></td>
+        <td><code>Date</code></td>
+        <td>the visitor's clock</td>
+        <td>Pins “now” for the greeting, the date and the activity times.</td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+### DashboardMetric
+
+<div className="overflow-x-auto">
+  <table>
+    <thead>
+      <tr>
+        <th>Field</th>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><code>id</code> / <code>label</code></td>
+        <td><code>string</code></td>
+        <td>A stable key and the tab label.</td>
+      </tr>
+      <tr>
+        <td><code>icon</code></td>
+        <td><code>ReactNode</code></td>
+        <td>Shown beside the label from the <code>sm</code> breakpoint.</td>
+      </tr>
+      <tr>
+        <td><code>noun</code></td>
+        <td><code>[string, string]</code></td>
+        <td>Singular and plural for the summary line, e.g. <code>["new user", "new users"]</code>.</td>
+      </tr>
+      <tr>
+        <td><code>currency</code></td>
+        <td><code>string</code></td>
+        <td>An ISO code such as <code>"USD"</code>; the metric then formats as money.</td>
+      </tr>
+      <tr>
+        <td><code>series</code></td>
+        <td><code>{`Record<"day" | "week" | "month", { label, shortLabel?, fullLabel?, value }[]>`}</code></td>
+        <td>Oldest first. <code>shortLabel</code> is used on phones, <code>fullLabel</code> in the tooltip and for screen readers.</td>
+      </tr>
+      <tr>
+        <td><code>change</code></td>
+        <td><code>{`Partial<Record<DashboardPeriod, number | null>>`}</code></td>
+        <td>Percent change of the current point against the one before (<code>12.5</code> is +12.5%).</td>
+      </tr>
+    </tbody>
+  </table>
+</div>
