@@ -50,7 +50,7 @@ const colorThemes: Record<string, { itemHover: string; triggerHover: string }> =
   },
 };
 
-export function getContextMenuTheme(color?: ContextMenuColor) {
+function getContextMenuTheme(color?: ContextMenuColor) {
   const c = color || "primary";
   const isCustomHex = c.startsWith("#") || c.startsWith("rgb") || c.startsWith("hsl");
 

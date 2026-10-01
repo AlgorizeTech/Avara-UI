@@ -1,7 +1,7 @@
 "use client";
 
 import { cn } from "@/lib/utils";
-import { useState } from "react";
+import { useId, useState } from "react";
 
 // ==========================================
 // DYNAMIC THEME ENGINE
@@ -286,7 +286,9 @@ function SmoothLineChart({
 }) {
   const [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
   const maxVal = Math.max(...data.map((d) => d.value), 1);
-  const cleanColorId = color.replace("#", "");
+  // An id that is valid whatever the colour is: `var(--primary)` (the
+  // default) is not a legal fragment for `url(#…)`, which left the area black.
+  const cleanColorId = useId().replace(/[^a-zA-Z0-9_-]/g, "");
 
   // Calculate X/Y percentages for the data
   const points = data.map((d, i) => ({

@@ -270,7 +270,24 @@ const stubPlugin = (imports: Map<string, Set<string>>): Plugin => ({
     pluginBuild.onResolve({ filter: /.*/ }, (args) => {
       if (args.kind === "entry-point") return undefined;
       if (/^react(-dom)?(\/|$)/.test(args.path)) return { path: args.path, external: true };
+      if (args.path === "node:fs") return { path: args.path, external: true };
+      // A usage read from the demo file (`usage: extractCode("src/preview/demos/…")`)
+      // is the only snippet that page has, so `extractCode` really reads it.
+      if (args.path === "@/lib/code") return { path: args.path, namespace: "code" };
       return { path: args.path, namespace: "stub" };
+    });
+    pluginBuild.onLoad({ filter: /.*/, namespace: "code" }, (args) => {
+      const others = [...(imports.get(args.path) ?? [])].filter((name) => name !== "extractCode");
+      return {
+        loader: "js",
+        resolveDir: ROOT,
+        contents: [
+          STUB_SOURCE,
+          'import { readFileSync } from "node:fs";',
+          'export const extractCode = (file) => readFileSync(file, "utf8");',
+          ...others.map((name) => `export const ${name} = stub();`),
+        ].join("\n"),
+      };
     });
     pluginBuild.onLoad({ filter: /.*/, namespace: "stub" }, (args) => {
       const names = [...(imports.get(args.path) ?? [])];

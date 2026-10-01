@@ -68,7 +68,7 @@ interface ThemeConfig {
   defaultAccent: string;
 }
 
-export const SPLIT_FLAP_THEMES: Record<
+const SPLIT_FLAP_THEMES: Record<
   string,
   { light: ThemeConfig; dark: ThemeConfig }
 > = {
@@ -201,7 +201,7 @@ export const SPLIT_FLAP_THEMES: Record<
   },
 };
 
-export function getSplitFlapTheme(
+function getSplitFlapTheme(
   themeKey: string = "ivory",
   isDark: boolean = false
 ): ThemeConfig {
@@ -211,7 +211,7 @@ export function getSplitFlapTheme(
 }
 
 /** Hook to automatically detect system / document dark mode */
-export function useIsDarkMode(): boolean {
+function useIsDarkMode(): boolean {
   const [isDark, setIsDark] = useState<boolean>(false);
 
   useEffect(() => {
@@ -295,7 +295,9 @@ class SplitFlapAudio {
 
       osc.start(now);
       osc.stop(now + 0.04);
-    } catch {}
+    } catch {
+      // The click is a nicety: a blocked or unsupported AudioContext just stays silent.
+    }
   }
 }
 
@@ -321,14 +323,14 @@ function padMessage(msg: string, targetLen: number): string {
 }
 
 // Theme & Color resolution helpers
-export const SPLIT_FLAP_COLOR_PRESETS: Record<string, string> = {
+const SPLIT_FLAP_COLOR_PRESETS: Record<string, string> = {
   lavender: "#9b8afb",
   indigo: "#6366f1",
   rose: "#f43f5e",
   emerald: "#10b981",
 };
 
-export function resolveColor(color?: string): string | null {
+function resolveColor(color?: string): string | null {
   if (!color || color === "default" || color === "primary") return null;
   return SPLIT_FLAP_COLOR_PRESETS[color] ?? color;
 }
@@ -359,7 +361,6 @@ const FlapUnit = forwardRef<FlapUnitHandle, FlapUnitProps>(
     const shadowTopRef = useRef<HTMLDivElement>(null);
     const shadowBottomRef = useRef<HTMLDivElement>(null);
 
-    const currentCharRef = useRef<string>(" ");
     const currentTimeline = useRef<gsap.core.Timeline | null>(null);
 
     const unitHeight = fontSize * 1.6;
@@ -381,9 +382,6 @@ const FlapUnit = forwardRef<FlapUnitHandle, FlapUnitProps>(
       }),
       [fontSize, accentColor, unitHeight, d.fontFamily]
     );
-
-    const themeRef = useRef(d);
-    themeRef.current = d;
 
     // Immediately synchronize color change across all flap DOM nodes
     useEffect(() => {
@@ -421,7 +419,8 @@ const FlapUnit = forwardRef<FlapUnitHandle, FlapUnitProps>(
     ) => {
       if (!targetEl) return;
       const proxy = { p: 0 };
-      const { lightDarkness } = themeRef.current;
+      // The handle is rebuilt every render, so `d` is the committed theme.
+      const { lightDarkness } = d;
 
       timeline.to(
         targetEl,
@@ -517,7 +516,6 @@ const FlapUnit = forwardRef<FlapUnitHandle, FlapUnitProps>(
         }
 
         const duration = Math.max(speed / 1000, 0.08) * 2;
-        currentCharRef.current = newChar;
 
         const tl = gsap.timeline({
           onComplete: () => {
@@ -603,7 +601,8 @@ const FlapUnit = forwardRef<FlapUnitHandle, FlapUnitProps>(
           }}
         />
 
-        {/* 2. Static Top Flap */}
+        {/* 2. Static Top Flap. Its character is written by `open()`; React only
+            renders the blank it starts with, so re-renders never overwrite it. */}
         <div
           style={{
             position: "absolute",
@@ -617,7 +616,7 @@ const FlapUnit = forwardRef<FlapUnitHandle, FlapUnitProps>(
           }}
         >
           <div ref={staticTopRef} style={{ ...fontStyle, top: 0 }}>
-            {currentCharRef.current}
+            {" "}
           </div>
         </div>
 
@@ -635,7 +634,7 @@ const FlapUnit = forwardRef<FlapUnitHandle, FlapUnitProps>(
           }}
         >
           <div ref={staticBottomRef} style={{ ...fontStyle, bottom: 0 }}>
-            {currentCharRef.current}
+            {" "}
           </div>
         </div>
 
@@ -853,15 +852,23 @@ export const SplitFlap: React.FC<SplitFlapProps> = ({
   const unitsRef = useRef<(FlapUnitHandle | null)[]>([]);
   const currentIndexRef = useRef(0);
 
+  // The cycle reads the latest timings on each turn without restarting.
   const speedRef = useRef(speed);
-  speedRef.current = speed;
   const staggerRef = useRef(effectiveStagger);
-  staggerRef.current = effectiveStagger;
   const dwellRef = useRef(effectiveDwell);
-  dwellRef.current = effectiveDwell;
+  useEffect(() => {
+    speedRef.current = speed;
+    staggerRef.current = effectiveStagger;
+    dwellRef.current = effectiveDwell;
+  }, [speed, effectiveStagger, effectiveDwell]);
 
   const getPaddedMessage = (index: number) =>
     padMessage(messageList[index] ?? "", totalColumns);
+
+  // The board turns outside React, so its label follows it the same way.
+  const announce = (message: string | undefined) => {
+    containerRef.current?.setAttribute("aria-label", `Split-flap display: ${message}`);
+  };
 
   // FutureUI GSAP Split-Flap Animation Cycle
   useEffect(() => {
@@ -869,6 +876,7 @@ export const SplitFlap: React.FC<SplitFlapProps> = ({
 
     // Initialize units with first message
     const initialMessage = getPaddedMessage(0);
+    announce(messageList[0]);
     for (let col = 0; col < unitsRef.current.length; col++) {
       const unit = unitsRef.current[col];
       if (!unit) continue;
@@ -922,6 +930,7 @@ export const SplitFlap: React.FC<SplitFlapProps> = ({
         currentIndexRef.current =
           (currentIndexRef.current + 1) % messageList.length;
         const nextMessage = getPaddedMessage(currentIndexRef.current);
+        announce(messageList[currentIndexRef.current]);
 
         // Regenerate random delays for open phase if random mode
         const openDelays: number[] = unitsRef.current.map((_, i) =>
@@ -981,7 +990,7 @@ export const SplitFlap: React.FC<SplitFlapProps> = ({
           maxWidth: "100%",
         }}
         role="status"
-        aria-label={`Split-flap display: ${messageList[currentIndexRef.current]}`}
+        aria-label={`Split-flap display: ${messageList[0]}`}
         aria-live="polite"
       >
         {Array.from({ length: totalColumns }, (_, colIdx) => (

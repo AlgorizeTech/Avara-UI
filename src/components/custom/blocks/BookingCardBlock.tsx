@@ -2,7 +2,14 @@
 
 import { cn } from "@/lib/utils";
 import { ChevronLeft, ChevronRight } from "lucide-react";
-import React, { createContext, useContext, useEffect, useState } from "react";
+import React, {
+  createContext,
+  useContext,
+  useEffect,
+  useMemo,
+  useState,
+  useSyncExternalStore,
+} from "react";
 
 // ==========================================
 // BOOKING CARD — days, slots, confirm
@@ -126,6 +133,15 @@ const daysFromToday = (length: number) => {
   });
 };
 
+/** False on the server and during hydration, true once the client has taken over. */
+const subscribeToNothing = () => () => {};
+const useIsMounted = () =>
+  useSyncExternalStore(
+    subscribeToNothing,
+    () => true,
+    () => false,
+  );
+
 /** "September", or "September – October" when the page straddles a month. */
 const monthRange = (first?: Date, last?: Date) => {
   if (!first) return "";
@@ -137,10 +153,12 @@ const monthRange = (first?: Date, last?: Date) => {
 function BookingCardDays({ days: daysProp, count = 7, horizon = 90, unavailable, className }: BookingCardDaysProps) {
   const { day, setDay } = useBookingCard("Days");
   // Built on the client only — a server render has no idea what "today" is.
-  const [days, setDays] = useState<Date[]>(daysProp ?? []);
-  useEffect(() => {
-    if (!daysProp) setDays(daysFromToday(horizon));
-  }, [daysProp, horizon]);
+  const mounted = useIsMounted();
+  const defaultDays = useMemo(
+    () => (mounted ? daysFromToday(horizon) : []),
+    [mounted, horizon],
+  );
+  const days = daysProp ?? defaultDays;
 
   // The list starts today (or at the first day handed in), so page 0 is the
   // earliest anyone can go — there is no way to page back into the past.

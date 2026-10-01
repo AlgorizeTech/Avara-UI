@@ -35,10 +35,11 @@ import {
   Zap,
 } from "lucide-react";
 import {
+  createRef,
   useCallback,
   useEffect,
   useLayoutEffect,
-  useReducer,
+  useInsertionEffect,
   useRef,
   useState,
 } from "react";
@@ -292,7 +293,7 @@ type PendingAttachment = MessageAttachment & {
   status: UploadStatus;
 };
 
-export const defaultModels: ChatModel[] = [
+const defaultModels: ChatModel[] = [
   {
     id: "lumen-ultra",
     name: "Lumen Ultra",
@@ -317,7 +318,7 @@ export const defaultModels: ChatModel[] = [
   },
 ];
 
-export const defaultEfforts: EffortOption[] = [
+const defaultEfforts: EffortOption[] = [
   { id: "low", label: "Low", description: "Quickest reply", level: 1 },
   {
     id: "medium",
@@ -334,7 +335,7 @@ export const defaultEfforts: EffortOption[] = [
   { id: "max", label: "Max", description: "Most thorough reasoning", level: 4 },
 ];
 
-export const defaultTools: ComposerTool[] = [
+const defaultTools: ComposerTool[] = [
   {
     id: "files",
     label: "Photos & files",
@@ -655,7 +656,6 @@ export default function AIChat({
     const el = textareaRef.current;
     const value = inputValue;
     const already = value.includes(token);
-    let next = value;
     let caret = value.length;
     if (!already) {
       const start = el?.selectionStart ?? value.length;
@@ -664,7 +664,7 @@ export default function AIChat({
       const after = value.slice(end);
       const lead = before && !/\s$/.test(before) ? " " : "";
       const trail = after && !/^\s/.test(after) ? " " : " ";
-      next = `${before}${lead}${token}${trail}${after}`;
+      const next = `${before}${lead}${token}${trail}${after}`;
       caret = (before + lead + token + trail).length;
       setInputValue(next);
     }
@@ -1988,7 +1988,9 @@ function Presence({
     style: React.CSSProperties | undefined,
   ) => React.ReactNode;
 }) {
-  const ref = useRef<HTMLDivElement>(null);
+  // A stable box for the child element, handed to the render function below
+  // (and read only in effects); a state-held RefObject so render can pass it on.
+  const [box] = useState(() => createRef<HTMLDivElement>());
   const [mounted, setMounted] = useState(show);
   if (show && !mounted) setMounted(true);
   // Server render and first frame: the entry pose, when the child enters.
@@ -1998,7 +2000,7 @@ function Presence({
   useLayoutEffect(() => {
     const first = firstRun.current;
     firstRun.current = false;
-    const el = ref.current;
+    const el = box.current;
     if (!el) return;
     const fresh = el !== seen.current;
     seen.current = el;
@@ -2019,9 +2021,13 @@ function Presence({
     [],
   );
 
-  const last = useRef<React.ReactNode>(null);
-  if (show) last.current = children(ref, mountStyle);
-  return mounted ? last.current : null;
+  // While leaving, it keeps rendering what it showed last: the render function
+  // from the last render where it was shown (its closure holds that render's
+  // values).
+  const [lastChildren, setLastChildren] = useState(() => children);
+  if (show && lastChildren !== children) setLastChildren(() => children);
+  const render = show ? children : lastChildren;
+  return mounted ? render(box, mountStyle) : null;
 }
 
 /** A chip's motion: its entry/exit pose and any glide towards its new slot. */
@@ -2056,33 +2062,32 @@ function AttachmentChips({
   onRemove: (id: string) => void;
 }) {
   const chips = useRef(new Map<string, ChipMotion>());
-  const [, rerender] = useReducer((n: number) => n + 1, 0);
-  const firstIds = useRef<Set<string> | null>(null);
-  if (!firstIds.current) firstIds.current = new Set(attachments.map((a) => a.id));
-  // Chips that have finished leaving, and what was on screen last commit.
-  const gone = useRef(new Set<string>());
-  const onScreen = useRef<PendingAttachment[]>(attachments);
+  const [firstIds] = useState(() => new Set(attachments.map((a) => a.id)));
+  // Chips that have finished leaving, and what was on screen last render.
+  const [gone, setGone] = useState<ReadonlySet<string>>(() => new Set());
+  const [onScreen, setOnScreen] = useState<PendingAttachment[]>(attachments);
 
   // Removed chips stay where they were, in their old slot, until they're out.
   const present = new Set(attachments.map((a) => a.id));
   const rendered = [...attachments];
-  onScreen.current.forEach((att, i) => {
-    if (!present.has(att.id) && !gone.current.has(att.id)) rendered.splice(i, 0, att);
+  onScreen.forEach((att, i) => {
+    if (!present.has(att.id) && !gone.has(att.id)) rendered.splice(i, 0, att);
   });
+  if (rendered.length !== onScreen.length || rendered.some((att, i) => att !== onScreen[i])) {
+    setOnScreen(rendered);
+  }
+  // A finished chip only needs remembering while it is still in `onScreen`.
+  if ([...gone].some((id) => !rendered.some((att) => att.id === id))) {
+    setGone(new Set([...gone].filter((id) => rendered.some((att) => att.id === id))));
+  }
 
-  // Where each chip's layout box sat before this render commits.
-  const before = new Map(
-    Array.from(chips.current, ([id, m]) => [id, { x: m.el.offsetLeft, y: m.el.offsetTop }] as const),
-  );
+  // Where each chip's layout box sat before this commit touched the DOM —
+  // measured by <ChipLayoutSnapshot> just ahead of the tray's DOM updates.
+  const beforeRef = useRef(new Map<string, { x: number; y: number }>());
 
   const leaving = useRef(new Map<string, gsap.core.Tween>());
   useLayoutEffect(() => {
-    onScreen.current = rendered;
-    const stillShown = new Set(rendered.map((a) => a.id));
-    gone.current.forEach((id) => {
-      if (!stillShown.has(id)) gone.current.delete(id);
-    });
-
+    const before = beforeRef.current;
     chips.current.forEach((m, id) => {
       // Out: fade and shrink in place, then drop it.
       if (!present.has(id) && !leaving.current.has(id)) {
@@ -2092,8 +2097,7 @@ function AttachmentChips({
           id,
           gsap.delayedCall(CHIP_EXIT_SETTLE, () => {
             leaving.current.delete(id);
-            gone.current.add(id);
-            rerender();
+            setGone((current) => new Set(current).add(id));
           }),
         );
         return;
@@ -2124,40 +2128,51 @@ function AttachmentChips({
     if (!el) return;
     const m: ChipMotion = { el, opacity: 1, scale: 1, y: 0, glideX: 0, glideY: 0 };
     chips.current.set(id, m);
-    if (firstIds.current?.has(id)) return;
+    if (firstIds.has(id)) return;
     // In: springs up from slightly below, small and transparent.
     m.opacity = 0;
     m.scale = 0.85;
     m.y = 6;
     paintChip(m);
     gsap.to(m, { opacity: 1, scale: 1, y: 0, ...CHIP_SPRING, onUpdate: () => paintChip(m) });
-  }, []);
-  const refs = useRef(new Map<string, (el: HTMLDivElement | null) => void>());
-  const refFor = (id: string) => {
-    let ref = refs.current.get(id);
-    if (!ref) {
-      ref = (el) => {
-        register(id, el);
-        if (!el) refs.current.delete(id);
-      };
-      refs.current.set(id, ref);
-    }
-    return ref;
-  };
+  }, [firstIds]);
 
   return (
-    <div className="flex flex-wrap gap-2 px-1 pt-1.5 pb-1">
-      {rendered.map((att) => (
-        <AttachmentChip
-          key={att.id}
-          chipRef={refFor(att.id)}
-          attachment={att}
-          theme={theme}
-          onRemove={() => onRemove(att.id)}
-        />
-      ))}
-    </div>
+    <>
+      <ChipLayoutSnapshot chipsRef={chips} beforeRef={beforeRef} />
+      <div className="flex flex-wrap gap-2 px-1 pt-1.5 pb-1">
+        {rendered.map((att) => (
+          <AttachmentChip
+            key={att.id}
+            register={register}
+            attachment={att}
+            theme={theme}
+            onRemove={() => onRemove(att.id)}
+          />
+        ))}
+      </div>
+    </>
   );
+}
+
+/**
+ * Records where each chip's layout box sits just before a commit changes the
+ * tray. Rendered ahead of the tray, so its insertion effect runs before the
+ * tray's own DOM updates in the same commit; renders nothing.
+ */
+function ChipLayoutSnapshot({
+  chipsRef,
+  beforeRef,
+}: {
+  chipsRef: React.RefObject<Map<string, ChipMotion>>;
+  beforeRef: React.RefObject<Map<string, { x: number; y: number }>>;
+}) {
+  useInsertionEffect(() => {
+    beforeRef.current = new Map(
+      Array.from(chipsRef.current, ([id, m]) => [id, { x: m.el.offsetLeft, y: m.el.offsetTop }] as const),
+    );
+  });
+  return null;
 }
 
 /**
@@ -2185,8 +2200,8 @@ function RocketProgress({
   const [rocketMounted, setRocketMounted] = useState(flying);
   if (flying && !rocketMounted) setRocketMounted(true);
   // While it leaves, it keeps the position it launched from.
-  const launchedFrom = useRef(progress);
-  if (flying) launchedFrom.current = progress;
+  const [launchedFrom, setLaunchedFrom] = useState(progress);
+  if (flying && launchedFrom !== progress) setLaunchedFrom(progress);
   const rocketRef = useRef<HTMLDivElement>(null);
   const craftRef = useRef<HTMLDivElement>(null);
   useLayoutEffect(() => {
@@ -2253,7 +2268,7 @@ function RocketProgress({
         <div
           ref={rocketRef}
           className={cn("absolute top-1/2 z-10", theme.primaryText)}
-          style={{ left: `${flying ? progress : launchedFrom.current}%`, transition: glide }}
+          style={{ left: `${flying ? progress : launchedFrom}%`, transition: glide }}
         >
           <div ref={craftRef} className="relative -translate-x-1/2 -translate-y-1/2">
             {/* Bob while in flight */}
@@ -2288,14 +2303,22 @@ function AttachmentChip({
   attachment,
   theme,
   onRemove,
-  chipRef,
+  register,
 }: {
   attachment: PendingAttachment;
   theme: Theme;
   onRemove: () => void;
-  /** The chip's root element, for the tray to animate. */
-  chipRef?: (el: HTMLDivElement | null) => void;
+  /** Hands the chip's root element to the tray, for it to animate. */
+  register?: (id: string, el: HTMLDivElement | null) => void;
 }) {
+  // One stable callback per chip, so React attaches it once, not every render.
+  const id = attachment.id;
+  const chipRef = useCallback(
+    (el: HTMLDivElement | null) => {
+      register?.(id, el);
+    },
+    [register, id],
+  );
   const isImage = attachment.type.startsWith("image/");
   const statusText =
     attachment.status === "done"

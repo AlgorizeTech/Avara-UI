@@ -542,11 +542,14 @@ export function RadialCarousel({
   const [dragStartX, setDragStartX] = useState(0);
   const [dragOffset, setDragOffset] = useState(0);
   // `autoPlay` sets the starting state; the hub button toggles it from there.
+  // A new `autoPlay` value resets it, adjusted while rendering rather than in
+  // an effect.
   const [isPlaying, setIsPlaying] = useState(autoPlay);
-
-  useEffect(() => {
+  const [prevAutoPlay, setPrevAutoPlay] = useState(autoPlay);
+  if (autoPlay !== prevAutoPlay) {
+    setPrevAutoPlay(autoPlay);
     setIsPlaying(autoPlay);
-  }, [autoPlay]);
+  }
 
   const displayItems = React.useMemo(() => {
     if (!items || !items.length) return [];

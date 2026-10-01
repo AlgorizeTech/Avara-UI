@@ -272,7 +272,7 @@ export interface SupportHeroProps extends React.HTMLAttributes<HTMLDivElement> {
   children: React.ReactNode;
 }
 
-function SupportHeroRoot({
+export function SupportHero({
   heading,
   subtitle,
   cta,
@@ -288,7 +288,6 @@ function SupportHeroRoot({
 }: SupportHeroProps) {
   const rootRef = useRef<HTMLDivElement>(null);
   const [inView, setInView] = useState(reveal === "immediate");
-  const [playing, setPlaying] = useState(false);
 
   useEffect(() => {
     if (inView) return;
@@ -329,7 +328,9 @@ function SupportHeroRoot({
     stagger("[data-hero-lead]", 0.5, 0.12);
     stagger("[data-hero-card]", 0.7, 0.09);
     stagger("[data-hero-avatar]", 1.4, 0.07);
-    setPlaying(true);
+    // Written here rather than rendered, so it lands together with the start
+    // times above and React never has to re-render to start the reveal.
+    root.setAttribute("data-hero-reveal", "");
   }, [inView]);
 
   const onCta = () => {
@@ -338,7 +339,7 @@ function SupportHeroRoot({
   };
 
   return (
-    <div ref={rootRef} data-hero-reveal={playing ? "" : undefined} className={cn("w-full", className)} {...props}>
+    <div ref={rootRef} className={cn("w-full", className)} {...props}>
       <style>{REVEAL_CSS}</style>
       <GlassBackdrop
         aurora={aurora}
@@ -377,12 +378,10 @@ function SupportHeroRoot({
   );
 }
 
-export const SupportHero = Object.assign(SupportHeroRoot, {
-  Card,
-  Integrations,
-  Stat,
-  Photo,
-  Team,
-});
+SupportHero.Card = Card;
+SupportHero.Integrations = Integrations;
+SupportHero.Stat = Stat;
+SupportHero.Photo = Photo;
+SupportHero.Team = Team;
 
 export default SupportHero;

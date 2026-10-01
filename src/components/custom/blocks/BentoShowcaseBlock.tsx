@@ -43,7 +43,7 @@ export interface BentoShowcaseProps extends React.HTMLAttributes<HTMLElement> {
   children: React.ReactNode;
 }
 
-function BentoShowcaseRoot({ className, children, ...props }: BentoShowcaseProps) {
+export function BentoShowcase({ className, children, ...props }: BentoShowcaseProps) {
   return (
     <section className={cn("w-full bg-background p-3", className)} {...props}>
       {/* Three rows of 15rem at lg; the tall cards span two of them. At md the
@@ -623,14 +623,12 @@ function Team({ photos, stat, speed = 36, className, ...props }: BentoTeamProps)
 // ------------------------------------------
 // Export
 // ------------------------------------------
-export const BentoShowcase = Object.assign(BentoShowcaseRoot, {
-  Card,
-  Hero,
-  CaseStudies,
-  Headline,
-  Stats,
-  Phone: PhoneCard,
-  Team,
-});
+BentoShowcase.Card = Card;
+BentoShowcase.Hero = Hero;
+BentoShowcase.CaseStudies = CaseStudies;
+BentoShowcase.Headline = Headline;
+BentoShowcase.Stats = Stats;
+BentoShowcase.Phone = PhoneCard;
+BentoShowcase.Team = Team;
 
 export default BentoShowcase;

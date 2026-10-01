@@ -2,7 +2,7 @@
 
 import { cn } from "@/lib/utils";
 import { Clock, Minus, Plus } from "lucide-react";
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useRef, useState, useSyncExternalStore } from "react";
 import { getThemeStyles, type CounterTheme } from "./counter-theme";
 
 // ==========================================
@@ -35,6 +35,20 @@ const KEYFRAMES = `
 
 /** GSAP's `back.out(2)` — a cubic, so this cubic-bezier is exact. */
 const POP_EASE = "cubic-bezier(0.3333, 1.6667, 0.6667, 1)";
+
+const REDUCED_MOTION = "(prefers-reduced-motion: reduce)";
+const subscribeReducedMotion = (onChange: () => void) => {
+  const mq = window.matchMedia?.(REDUCED_MOTION);
+  mq?.addEventListener("change", onChange);
+  return () => mq?.removeEventListener("change", onChange);
+};
+/** The visitor's reduced-motion setting; false while server-rendering. */
+const useReducedMotion = () =>
+  useSyncExternalStore(
+    subscribeReducedMotion,
+    () => window.matchMedia?.(REDUCED_MOTION).matches ?? false,
+    () => false,
+  );
 
 /** GSAP's `power3.out`. */
 const power3Out = (p: number) => 1 - Math.pow(1 - p, 4);
@@ -325,19 +339,15 @@ const AnimatedCounter = ({
     return () => io.disconnect();
   }, [armed]);
 
+  // Reduced motion skips the tween: once armed, the final figure shows as is.
+  const reduced = useReducedMotion();
   useEffect(() => {
-    if (!armed) return;
-    const reduced =
-      typeof window !== "undefined" &&
-      window.matchMedia?.("(prefers-reduced-motion: reduce)").matches;
-    if (reduced) {
-      setDisplayVal(targetValue);
-      return;
-    }
+    if (!armed || reduced) return;
     return tweenNumber(targetValue, 2000, setDisplayVal);
-  }, [armed, targetValue]);
+  }, [armed, reduced, targetValue]);
 
-  const formatted = displayVal.toLocaleString(undefined, {
+  const shownVal = armed && reduced ? targetValue : displayVal;
+  const formatted = shownVal.toLocaleString(undefined, {
     minimumFractionDigits: decimals,
     maximumFractionDigits: decimals,
   });

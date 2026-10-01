@@ -146,6 +146,12 @@
     "with-navigation-buttons": "Card Stack — With navigation buttons",
     "left-slide-direction": "Card Stack — Left Slide Direction"
   },
+  "card-stack-framer": {
+    "swipe-to-discard": "Card Stack — Swipe to Discard",
+    "infinite-loop": "Card Stack — Infinite Loop",
+    "with-navigation-buttons": "Card Stack — With navigation buttons",
+    "left-slide-direction": "Card Stack — Left Slide Direction"
+  },
   "carousel": {
     "radial-carousel": "Carousel — Radial carousel",
     "fluid-glass-slider": "Carousel — Fluid glass slider",
@@ -261,6 +267,9 @@
     "shell-commands": "Custom Code Block — Shell commands",
     "multiple-files": "Custom Code Block — Multiple files"
   },
+  "dashboard": {
+    "admin-overview": "Dashboard — Admin overview"
+  },
   "data-flow": {
     "sources-core-outputs": "Data Flow — Sources, core, outputs"
   },
@@ -272,6 +281,9 @@
     "filled-regions": "Data Maps — Filled regions",
     "density-dots": "Data Maps — Density dots",
     "zoomable": "Data Maps — Zoomable"
+  },
+  "data-table-soft": {
+    "soft-variant": "Data Table — Soft variant"
   },
   "advanced-table": {
     "searchable-datatable": "Advanced Table — Searchable DataTable"
@@ -460,7 +472,9 @@
     "interactive-thumbnail-strip-gallery-viewer": "Image Viewer — Interactive Thumbnail Strip Gallery Viewer"
   },
   "image-wall": {
-    "a-camera-over-the-wall": "Image Wall — A camera over the wall"
+    "a-camera-over-the-wall": "Image Wall — A camera over the wall",
+    "a-band-shuffled": "Image Wall — A band, shuffled",
+    "held-still": "Image Wall — Held still"
   },
   "infrastructure-topology": {
     "infrastructure-topology-showcase": "Infrastructure Topology — Infrastructure Topology Showcase"
@@ -759,8 +773,14 @@
     "table-view": "Support Dashboard — Table view",
     "glass": "Support Dashboard — Glass"
   },
+  "table-soft": {
+    "soft-variant": "Table — Soft variant"
+  },
   "table": {
     "composable-table": "Table — Composable table"
+  },
+  "table-soft-comparison": {
+    "comparison-soft": "Table — Comparison (soft)"
   },
   "table-of-contents": {
     "table-of-contents-left-side-navigation": "Table Of Contents — Table of Contents (Left Side Navigation)"
@@ -851,6 +871,7 @@
     "toggle-group": "Toggle Group",
     "outline": "Toggle Group — Outline",
     "ghost": "Toggle Group — Ghost",
+    "segmented": "Toggle Group — Segmented",
     "sizes": "Toggle Group — Sizes",
     "multiple-selection": "Toggle Group — Multiple selection",
     "disabled": "Toggle Group — Disabled"

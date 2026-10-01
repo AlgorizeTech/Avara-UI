@@ -16,7 +16,8 @@ import { InputBlock } from "./InputBlock";
 import { AvatarStack } from "./AvatarStackBlock";
 import { CopyButton } from "./CopyButtonBlock";
 import { CounterBlock } from "./CounterBlock";
-import { Progress, useCountUp } from "./ProgressBlock";
+import { Progress } from "./ProgressBlock";
+import { useCountUp } from "./progress-hooks";
 
 // ==========================================
 // WAITLIST
@@ -70,6 +71,16 @@ function useReducedMotion() {
   return useSyncExternalStore(
     subscribeReducedMotion,
     () => window.matchMedia(REDUCED_MOTION).matches,
+    () => false,
+  );
+}
+
+const subscribeNothing = () => () => {};
+/** False in the server render and while hydrating, true from then on. */
+function useHydrated() {
+  return useSyncExternalStore(
+    subscribeNothing,
+    () => true,
     () => false,
   );
 }
@@ -459,7 +470,7 @@ export interface WaitlistProps extends React.HTMLAttributes<HTMLElement> {
   children: React.ReactNode;
 }
 
-function WaitlistRoot({
+export function Waitlist({
   variant = "card",
   accent,
   reveal = "in-view",
@@ -470,6 +481,7 @@ function WaitlistRoot({
 }: WaitlistProps) {
   const reduced = useReducedMotion();
   const containerRef = useRef<HTMLDivElement>(null);
+  const hydrated = useHydrated();
   const [shown, setShown] = useState(false);
 
   // Each Reveal's place in line, in the order they are on the page — the
@@ -480,10 +492,9 @@ function WaitlistRoot({
     });
   });
 
-  // Shown on mount, or the first time 30% of it is in view.
-  useLayoutEffect(() => {
-    if (reveal === "immediate") setShown(true);
-  }, [reveal]);
+  // Shown on mount (never in the server HTML, so the rise still plays), or
+  // the first time 30% of it is in view. Once shown it stays shown.
+  if (reveal === "immediate" && hydrated && !shown) setShown(true);
   useEffect(() => {
     const el = containerRef.current;
     if (reveal === "immediate" || shown || !el) return;
@@ -532,14 +543,12 @@ function WaitlistRoot({
   );
 }
 
-export const Waitlist = Object.assign(WaitlistRoot, {
-  Mark,
-  Countdown,
-  Heading,
-  Intro,
-  Form,
-  Proof,
-  Spots,
-});
+Waitlist.Mark = Mark;
+Waitlist.Countdown = Countdown;
+Waitlist.Heading = Heading;
+Waitlist.Intro = Intro;
+Waitlist.Form = Form;
+Waitlist.Proof = Proof;
+Waitlist.Spots = Spots;
 
 export default Waitlist;

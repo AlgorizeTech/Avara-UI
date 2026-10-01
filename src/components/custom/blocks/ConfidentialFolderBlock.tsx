@@ -237,12 +237,17 @@ export interface ConfidentialFolderProps
   // Fallbacks for any previous props
   cardBadge?: string;
   cardVersion?: string;
+  /** Overrides `metric1Label` (first metric pill on the back face). */
   pillar1Title?: string;
+  /** Overrides `metric1Value` (first metric pill on the back face). */
   pillar1Desc?: string;
+  /** Overrides `metric2Label` (second metric pill on the back face). */
   pillar2Title?: string;
+  /** Overrides `metric2Value` (second metric pill on the back face). */
   pillar2Desc?: string;
   quote?: string;
   quoteAuthor?: string;
+  /** Overrides `clearanceLevel` (status line in the front face footer). */
   statusText?: string;
   sessionLabel?: string;
   sessionNumber?: string;
@@ -608,7 +613,7 @@ export function ConfidentialFolder({
                 style={{ backgroundColor: isAdaptive ? "var(--cf-divider)" : "#e5dfd4" }}
               />
               <div className="flex items-center justify-between font-mono text-[8.5px] sm:text-[9.5px] tracking-wider uppercase opacity-75">
-                <span>{clearanceLevel}</span>
+                <span>{statusText || clearanceLevel}</span>
                 <OrbitalSpirograph
                   size={16}
                   strokeWidth={1.2}
@@ -704,12 +709,12 @@ export function ConfidentialFolder({
                     className="block font-mono text-[7.5px] sm:text-[8.5px] tracking-wider uppercase opacity-60"
                     style={{ color: isAdaptive ? "var(--cf-card-subtext)" : "#78716c" }}
                   >
-                    {metric1Label}
+                    {pillar1Title || metric1Label}
                   </span>
                   <span
                     className="block font-mono text-[9.5px] sm:text-[10.5px] font-bold text-primary mt-0.5"
                   >
-                    {metric1Value}
+                    {pillar1Desc || metric1Value}
                   </span>
                 </div>
 
@@ -724,12 +729,12 @@ export function ConfidentialFolder({
                     className="block font-mono text-[7.5px] sm:text-[8.5px] tracking-wider uppercase opacity-60"
                     style={{ color: isAdaptive ? "var(--cf-card-subtext)" : "#78716c" }}
                   >
-                    {metric2Label}
+                    {pillar2Title || metric2Label}
                   </span>
                   <span
                     className="block font-mono text-[9.5px] sm:text-[10.5px] font-bold text-primary mt-0.5"
                   >
-                    {metric2Value}
+                    {pillar2Desc || metric2Value}
                   </span>
                 </div>
 

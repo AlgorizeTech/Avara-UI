@@ -48,7 +48,7 @@
           "target": "components/custom/blocks/AdvancedTableBlock.tsx"
         }
       ],
-      "docs": "Named exports: DataTable plus DataTableHeading/Content/Header/Body/Row/Head/Cell/Footer/Empty, DataTableSearch, DataTablePageSize, DataTableSelect, DataTableSelectAll, DataTableBatchBar, DataTableInfo, DataTablePagination, DataTableExpandToggle, DataTableExpandedRow, useDataTable, resolveAccessor. `DataTableBody` takes a render function receiving the current page of rows. `getRowId` defaults to id → _id → uuid; `sortBy` accepts a dot path or an accessor function (add `sortId` for functions). Builds on `table` and depends on `select` for the page-size control."
+      "docs": "Named exports: DataTable plus DataTableHeading/Content/Header/Body/Row/Head/Cell/Footer/Empty, DataTableSearch, DataTablePageSize, DataTableSelect, DataTableSelectAll, DataTableBatchBar, DataTableInfo, DataTablePagination, DataTableExpandToggle, DataTableExpandedRow, DataTableTabs, DataTableFilter, DataTableReset, DataTableBatchAction, TableAction, TableRowAction, TableBadge, TablePerson, useDataTable, resolveAccessor. `DataTableTabs` and `DataTableFilter` filter one field each by exact match (`by` is a dot path or accessor); `useDataTable` exposes `filters`, `isFiltered` and `resetAll`. `variant=\"soft\"` gives the admin-dashboard look. `DataTableBody` takes a render function receiving the current page of rows. `getRowId` defaults to id → _id → uuid; `sortBy` accepts a dot path or an accessor function (add `sortId` for functions). Builds on `table` and depends on `select` for the page-size control."
     },
     {
       "name": "ai-chat",
@@ -155,6 +155,11 @@
           "path": "src/components/custom/blocks/AnimatedFAQBlock.tsx",
           "type": "registry:component",
           "target": "components/custom/blocks/AnimatedFAQBlock.tsx"
+        },
+        {
+          "path": "src/components/custom/blocks/animated-faq-data.ts",
+          "type": "registry:component",
+          "target": "components/custom/blocks/animated-faq-data.ts"
         }
       ],
       "docs": "Named export: AnimatedFAQBlock (also the default export); `FAQ_ITEMS` holds the sample data. All motion is CSS — no animation library."
@@ -436,6 +441,7 @@
         "lucide-react"
       ],
       "registryDependencies": [
+        "https://algorize-ui.vercel.app/r/glass-panel.json",
         "utils"
       ],
       "files": [
@@ -496,6 +502,11 @@
           "path": "src/components/custom/blocks/Button.tsx",
           "type": "registry:component",
           "target": "components/custom/blocks/Button.tsx"
+        },
+        {
+          "path": "src/components/custom/blocks/button-theme.ts",
+          "type": "registry:component",
+          "target": "components/custom/blocks/button-theme.ts"
         }
       ],
       "docs": "Default export. Supports variant (default | destructive | outline | secondary | ghost | link), size (sm | lg), and a `loading` prop. Ripple keyframes are injected into document.head on mount, so no Tailwind config or global CSS changes are needed."
@@ -568,7 +579,7 @@
         "actions"
       ],
       "dependencies": [
-        "framer-motion",
+        "gsap",
         "lucide-react"
       ],
       "registryDependencies": [
@@ -579,9 +590,46 @@
           "path": "src/components/custom/blocks/CardStackBlock.tsx",
           "type": "registry:component",
           "target": "components/custom/blocks/CardStackBlock.tsx"
+        },
+        {
+          "path": "src/components/custom/blocks/gsap-motion.ts",
+          "type": "registry:component",
+          "target": "components/custom/blocks/gsap-motion.ts"
+        },
+        {
+          "path": "src/components/custom/blocks/motion-curves.ts",
+          "type": "registry:component",
+          "target": "components/custom/blocks/motion-curves.ts"
         }
       ],
       "docs": "Named export: CardStack (also default). Accepts items, visibleCards, swipeToDismiss, canDismissLastCard, loop, showHeader, and showNavigation."
+    },
+    {
+      "name": "card-stack-framer",
+      "type": "registry:component",
+      "title": "Card Stack (Motion)",
+      "author": "AlgorizeTech",
+      "description": "A layered deck of cards featuring fluid drag-to-discard gestures, button-driven directional slide animations, and realistic depth perspective.",
+      "categories": [
+        "data-display",
+        "marketing",
+        "actions"
+      ],
+      "dependencies": [
+        "framer-motion",
+        "lucide-react"
+      ],
+      "registryDependencies": [
+        "utils"
+      ],
+      "files": [
+        {
+          "path": "src/components/custom/blocks/framer/CardStackBlock.tsx",
+          "type": "registry:component",
+          "target": "components/custom/blocks/CardStackBlock.tsx"
+        }
+      ],
+      "docs": "Motion build of `card-stack` — same props, markup and install path; install one or the other. Named export: CardStack (also default). Accepts items, visibleCards, swipeToDismiss, canDismissLastCard, loop, showHeader, and showNavigation."
     },
     {
       "name": "carousel",
@@ -909,6 +957,7 @@
         "https://algorize-ui.vercel.app/r/avatar-stack.json",
         "https://algorize-ui.vercel.app/r/copy-button.json",
         "https://algorize-ui.vercel.app/r/half-stars.json",
+        "https://algorize-ui.vercel.app/r/icons.json",
         "https://algorize-ui.vercel.app/r/image-wall.json",
         "https://algorize-ui.vercel.app/r/tech-stack.json",
         "https://algorize-ui.vercel.app/r/text-animation.json",
@@ -1037,6 +1086,11 @@
           "path": "src/components/custom/blocks/CopyButtonBlock.tsx",
           "type": "registry:component",
           "target": "components/custom/blocks/CopyButtonBlock.tsx"
+        },
+        {
+          "path": "src/components/custom/blocks/copy-button-hooks.ts",
+          "type": "registry:component",
+          "target": "components/custom/blocks/copy-button-hooks.ts"
         }
       ],
       "docs": "Named exports: CopyButton, CopyField, useCopyToClipboard. `value` is the text copied; `label` / `copiedLabel` / `errorLabel` set the three states, `timeout` how long the confirmation lingers, `iconOnly` drops the label. Variants are solid | soft | outline | ghost, sizes sm | md | lg, `color` a preset or hex. CopyField wraps a read-only input with the button beside it (or `inset` inside it) and forwards `buttonProps`. Falls back to execCommand where the Clipboard API is unavailable."
@@ -1169,6 +1223,34 @@
       "docs": "Named exports: CustomCodeBlock, CodeTab. `tabs` take { code, language, fileName }; a single tab renders without the tab strip. Uses `lucide-react` for file-type icons. Highlighting is a built-in regex tokenizer, not Shiki or Prism — good for snippets, not a full editor."
     },
     {
+      "name": "dashboard",
+      "type": "registry:component",
+      "title": "Dashboard",
+      "author": "AlgorizeTech",
+      "description": "An admin dashboard home: greeting with all-time totals, a period switch, an overview chart with a tab per metric, activity feed, traffic sources, visitors by country and top authors.",
+      "categories": [
+        "data-display",
+        "layout"
+      ],
+      "dependencies": [
+        "lucide-react"
+      ],
+      "registryDependencies": [
+        "https://algorize-ui.vercel.app/r/chart.json",
+        "https://algorize-ui.vercel.app/r/popover.json",
+        "https://algorize-ui.vercel.app/r/toggle-group.json",
+        "utils"
+      ],
+      "files": [
+        {
+          "path": "src/components/custom/blocks/DashboardBlock.tsx",
+          "type": "registry:component",
+          "target": "components/custom/blocks/DashboardBlock.tsx"
+        }
+      ],
+      "docs": "Named exports: Dashboard (also the default) plus the DashboardMetric, DashboardPoint, DashboardTotal, DashboardActivity, DashboardShare, DashboardAuthor, DashboardLinks and DashboardPeriod types. Every number comes from props: `metrics` carry a series per period (day | week | month, oldest first) and an optional `change` per period; `sources`, `countries` and `authors` are keyed by period; `activity` items have a type of user | post | payment | message. Pass `linkComponent` (e.g. next/link) for the panel links and `onExport` to replace the built-in CSV. Composes toggle-group (segmented), chart and popover. Clock-dependent text renders after mount, so server and client markup agree."
+    },
+    {
       "name": "data-flow",
       "type": "registry:component",
       "title": "Data Flow",
@@ -1181,7 +1263,10 @@
       "dependencies": [],
       "registryDependencies": [
         "https://algorize-ui.vercel.app/r/apple-select.json",
+        "https://algorize-ui.vercel.app/r/button.json",
         "https://algorize-ui.vercel.app/r/flowchart.json",
+        "https://algorize-ui.vercel.app/r/half-stars.json",
+        "https://algorize-ui.vercel.app/r/icons.json",
         "utils"
       ],
       "files": [
@@ -1282,6 +1367,11 @@
           "path": "src/components/custom/blocks/motion-curves.ts",
           "type": "registry:component",
           "target": "components/custom/blocks/motion-curves.ts"
+        },
+        {
+          "path": "src/components/custom/blocks/time-picker-utils.ts",
+          "type": "registry:component",
+          "target": "components/custom/blocks/time-picker-utils.ts"
         }
       ],
       "docs": "Named exports: DatePickerBlock, getThemeStyles. Controlled via `value: Date | null` and `onChange`. Shares the variant, color and size vocabulary of the `input` item, so the two line up visually in the same form. For month grids or event display, use `calendar` instead."
@@ -1352,6 +1442,7 @@
         "lucide-react"
       ],
       "registryDependencies": [
+        "https://algorize-ui.vercel.app/r/copy-button.json",
         "utils"
       ],
       "files": [
@@ -1557,6 +1648,11 @@
           "path": "src/components/custom/blocks/FAQSectionBlock.tsx",
           "type": "registry:component",
           "target": "components/custom/blocks/FAQSectionBlock.tsx"
+        },
+        {
+          "path": "src/components/custom/blocks/faq-section-data.ts",
+          "type": "registry:component",
+          "target": "components/custom/blocks/faq-section-data.ts"
         }
       ],
       "docs": "Named export: FAQSection (also default export); AnimatedFAQBlock and FAQ_ITEMS are also exported."
@@ -1870,6 +1966,11 @@
           "path": "src/components/custom/blocks/GlassPanelBlock.tsx",
           "type": "registry:component",
           "target": "components/custom/blocks/GlassPanelBlock.tsx"
+        },
+        {
+          "path": "src/components/custom/blocks/glass-panel-context.ts",
+          "type": "registry:component",
+          "target": "components/custom/blocks/glass-panel-context.ts"
         }
       ],
       "docs": "Named exports: GlassBackdrop, GlassPanel, useSurface (plus SurfaceVariant, GlassShape types). `GlassBackdrop` washes three `aurora` colours behind a 12-column grid (`gridClassName` for row heights and gaps) and sets `variant` (glass | solid) for every `GlassPanel` inside; panels take `shape` (slab, tile, disc, capsule), `interactive`, and Tailwind column spans."
@@ -2942,6 +3043,7 @@
       ],
       "dependencies": [],
       "registryDependencies": [
+        "https://algorize-ui.vercel.app/r/icons.json",
         "https://algorize-ui.vercel.app/r/tilted-card.json",
         "utils"
       ],
@@ -3146,13 +3248,20 @@
       "dependencies": [],
       "registryDependencies": [
         "https://algorize-ui.vercel.app/r/glass-panel.json",
-        "utils"
+        "https://algorize-ui.vercel.app/r/social-links.json",
+        "utils",
+        "https://algorize-ui.vercel.app/r/verify-badge.json"
       ],
       "files": [
         {
           "path": "src/components/custom/blocks/ProfilePageBlock.tsx",
           "type": "registry:component",
           "target": "components/custom/blocks/ProfilePageBlock.tsx"
+        },
+        {
+          "path": "src/components/custom/blocks/profile-page-hooks.ts",
+          "type": "registry:component",
+          "target": "components/custom/blocks/profile-page-hooks.ts"
         }
       ],
       "docs": "Named exports: ProfilePage, WorkdayDial, useLocalTime (GlassPanel and useSurface are re-exported from the glass-panel item, which installs alongside). `ProfilePage` is the glass backdrop and 12-column grid; place `GlassPanel`s inside with `shape` and column spans. `WorkdayDial` takes `timeZone`, `start`, `end`, `place`, `name`."
@@ -3177,6 +3286,11 @@
           "path": "src/components/custom/blocks/ProgressBlock.tsx",
           "type": "registry:component",
           "target": "components/custom/blocks/ProgressBlock.tsx"
+        },
+        {
+          "path": "src/components/custom/blocks/progress-hooks.ts",
+          "type": "registry:component",
+          "target": "components/custom/blocks/progress-hooks.ts"
         },
         {
           "path": "src/components/custom/blocks/progress-theme.ts",
@@ -3288,6 +3402,11 @@
           "path": "src/components/custom/blocks/motion-curves.ts",
           "type": "registry:component",
           "target": "components/custom/blocks/motion-curves.ts"
+        },
+        {
+          "path": "src/components/custom/blocks/time-picker-utils.ts",
+          "type": "registry:component",
+          "target": "components/custom/blocks/time-picker-utils.ts"
         }
       ],
       "docs": "Named export: RangeDatePicker. Supports variant=('single' | 'dual' | 'priced-single' | 'priced-dual'), getPrice, color, value={from, to}, onChange, disablePast / minDate / maxDate. `showTime` adds Start / End time columns: the card opens as a bare calendar (empty when uncontrolled) and a time rail unfolds beside it on the first pick — under it when narrow — and folds away on Clear; `timeFormat` (12h | 24h) and `minuteStep` tune the columns. Installs time-picker alongside."
@@ -3443,9 +3562,7 @@
         "media",
         "marketing"
       ],
-      "dependencies": [
-        "framer-motion"
-      ],
+      "dependencies": [],
       "registryDependencies": [
         "utils"
       ],
@@ -3454,6 +3571,11 @@
           "path": "src/components/custom/blocks/ScrollSplitCardsBlock.tsx",
           "type": "registry:component",
           "target": "components/custom/blocks/ScrollSplitCardsBlock.tsx"
+        },
+        {
+          "path": "src/components/custom/blocks/motion-curves.ts",
+          "type": "registry:component",
+          "target": "components/custom/blocks/motion-curves.ts"
         }
       ],
       "docs": "Named export: ScrollSplitCards."
@@ -3818,6 +3940,7 @@
         "lucide-react"
       ],
       "registryDependencies": [
+        "https://algorize-ui.vercel.app/r/select.json",
         "utils"
       ],
       "files": [
@@ -3996,6 +4119,7 @@
         "lucide-react"
       ],
       "registryDependencies": [
+        "https://algorize-ui.vercel.app/r/toggle-group.json",
         "utils"
       ],
       "files": [
@@ -4010,7 +4134,7 @@
           "target": "components/custom/blocks/table-core.ts"
         }
       ],
-      "docs": "Named exports: Table, TableHeading, TableContent, TableHeader, TableBody, TableRow, TableHead, TableCell, TableFooter, TableEmpty, TableExpandedRow, TableExpandToggle, TableRowActions, useTableStyles, getThemeStyles. Each primitive renders its native element and forwards refs, so `colSpan` and aria attributes pass through. Variant (default | minimal | glass), size (sm | md | lg) and color are set once on `Table` and read from context. Sorting and expansion are controlled props — the component never reorders your data. For search, paging, selection and batch actions wired up for you, use `advanced-table`."
+      "docs": "Named exports: Table, TableHeading, TableContent, TableHeader, TableBody, TableRow, TableHead, TableCell, TableFooter, TableEmpty, TableExpandedRow, TableExpandToggle, TableRowActions, useTableStyles, getThemeStyles. Each primitive renders its native element and forwards refs, so `colSpan` and aria attributes pass through. Variant (default | minimal | glass | soft), size (sm | md | lg) and color are set once on `Table` and read from context; `soft` is the admin-dashboard look (rounded panel, tinted header band, pill controls, round row actions). Also exports the stateful DataTable family — DataTableTabs, DataTableFilter, DataTableReset, DataTableBatchAction — and the cell/toolbar parts TableAction, TableRowAction, TableBadge and TablePerson. `sticky` on TableHead/TableCell pins a column to the right edge. Sorting and expansion are controlled props — the component never reorders your data. For search, paging, selection and batch actions wired up for you, use `advanced-table`."
     },
     {
       "name": "table-of-contents",
@@ -4055,6 +4179,7 @@
       ],
       "dependencies": [],
       "registryDependencies": [
+        "https://algorize-ui.vercel.app/r/icons.json",
         "utils"
       ],
       "files": [
@@ -4201,6 +4326,11 @@
           "path": "src/components/custom/blocks/date-picker-theme.ts",
           "type": "registry:component",
           "target": "components/custom/blocks/date-picker-theme.ts"
+        },
+        {
+          "path": "src/components/custom/blocks/time-picker-utils.ts",
+          "type": "registry:component",
+          "target": "components/custom/blocks/time-picker-utils.ts"
         }
       ],
       "docs": "Named exports: TimePicker plus the setTime, roundToStep and formatTime helpers. `value` is a Date whose day is preserved on change; `format` is 12h | 24h, `minuteStep` sets granularity, and `minTime` / `maxTime` disable times outside a window on that day. Used by `date-picker` and `range-date-picker` when `showTime` is on."
@@ -4311,7 +4441,7 @@
           "target": "components/custom/blocks/toggle-group-theme.ts"
         }
       ],
-      "docs": "Named exports: ToggleGroup, ToggleGroupItem, getThemeStyles. Set `type` to single or multiple — `value` is a string for single, an array for multiple. Compose ToggleGroupItem children; the group passes theme and size down. `color` accepts primary (the theme token), indigo, rose, emerald, zinc or a hex."
+      "docs": "Named exports: ToggleGroup, ToggleGroupItem, getThemeStyles. Set `type` to single or multiple — `value` is a string for single, an array for multiple. Compose ToggleGroupItem children; the group passes theme and size down. `color` accepts primary (the theme token), indigo, rose, emerald, zinc or a hex. `variant=\"segmented\"` is a pill track whose highlight slides to the pressed item; a single segmented group keeps its choice when clicked again and moves it with the arrow keys."
     },
     {
       "name": "tooltip",
@@ -4891,6 +5021,11 @@
           "path": "src/components/custom/blocks/WaitlistBlock.tsx",
           "type": "registry:component",
           "target": "components/custom/blocks/WaitlistBlock.tsx"
+        },
+        {
+          "path": "src/components/custom/blocks/progress-hooks.ts",
+          "type": "registry:component",
+          "target": "components/custom/blocks/progress-hooks.ts"
         }
       ],
       "docs": "Named export: Waitlist, with parts Mark, Countdown, Heading, Intro, Form, Proof and Spots. Composed from the counter, input, button, avatar-stack, progress and copy-button items, which install alongside it. `variant` is card | launch | queue, each styled for light and dark mode; `Countdown` takes a `date` and is the counter's slide countdown; `Form` takes `onJoin(email)` — resolve a number to show it as the place in line, throw an Error to show its message — plus `action`, `shareUrl`, `note` and the success copy; `Spots` takes `claimed` and `total`; `accent` pins the colour; `reveal` is in-view or immediate."
@@ -4922,6 +5057,11 @@
           "path": "src/components/custom/blocks/motion-curves.ts",
           "type": "registry:component",
           "target": "components/custom/blocks/motion-curves.ts"
+        },
+        {
+          "path": "src/components/custom/blocks/wallet-data.ts",
+          "type": "registry:component",
+          "target": "components/custom/blocks/wallet-data.ts"
         }
       ],
       "docs": "Named export: Wallet. Accepts cards array, overallBalance, allowReveal, and autoRevealOnHover."

@@ -376,7 +376,7 @@ export default function InteractiveChecklistPricing() {
   );
 }`;
 
-export const dotPatternData = `const dotPatternPlans = [
+export const dotPatternData = `const dotPatternPlans: DotPatternPlanItem[] = [
   {
     id: "basic",
     badgeTag: "BASIC",
@@ -412,16 +412,16 @@ export const dotPatternData = `const dotPatternPlans = [
   },
 ];`;
 
-export const usageDotPattern = `import { PricingCards, type PricingData } from "@/components/custom/blocks/Pricing";
+export const usageDotPattern = `import { PricingDotPattern, type DotPatternPlanItem } from "@/components/custom/blocks/Pricing";
 
-${pricingData}
+${dotPatternData}
 
 export default function DotPatternPricing() {
-  // Use variant="dot-pattern" to enable the dot matrix layout
-  return <PricingCards data={data} variant="dot-pattern" color="indigo" counting={true} />;
+  // A dot-matrix header and corner brackets on each card; featured adds the glow.
+  return <PricingDotPattern plans={dotPatternPlans} color="indigo" counting={true} />;
 }`;
 
-export const scaleData = `const scalePlansData = {
+export const scaleData = `const scalePlansData: PricingScaleProps["plans"] = {
   monthly: [
     {
       id: "launch",
@@ -502,13 +502,13 @@ export const scaleData = `const scalePlansData = {
   ],
 };`;
 
-export const usageScale = `import { PricingCards, type PricingData } from "@/components/custom/blocks/Pricing";
+export const usageScale = `import { PricingScale, type PricingScaleProps } from "@/components/custom/blocks/Pricing";
 
-${pricingData}
+${scaleData}
 
 export default function ScalablePricing() {
-  // Use variant="scale" to enable the interactive split layout
-  return <PricingCards data={data} variant="scale" color="indigo" counting={true} />;
+  // Two plans side by side, a monthly/annual switch, and a strategy-call footer.
+  return <PricingScale plans={scalePlansData} color="indigo" counting={true} />;
 }`;
 
 <ExampleShowcase
@@ -542,11 +542,10 @@ export default function ScalablePricing() {
       subheading: "Minimalist cards with top dot-matrix pattern, corner frame accents, and featured glow state.",
       propNotes: [
         {
-          lead: "Set",
-          prop: "variant",
-          value: '"dot-pattern"',
+          lead: "Render",
+          prop: "PricingDotPattern",
           effect:
-            "on PricingCards to render minimalist cards with dot-matrix pattern header and corner brackets.",
+            "with `plans` — each a `badgeTag`, `price`, `period`, `description` and `features` under a `featuresTitle`. `featured` gives that card the glow.",
         },
       ],
       props: { layout: "dot-pattern", counting: true },
@@ -558,11 +557,10 @@ export default function ScalablePricing() {
       subheading: "Modern dual-card layout with launch & scale plans, monthly/annual toggle, and bottom strategy call CTA.",
       propNotes: [
         {
-          lead: "Set",
-          prop: "variant",
-          value: '"scale"',
+          lead: "Render",
+          prop: "PricingScale",
           effect:
-            "on PricingCards to render scalable dual-panel cards with monthly/annual toggle.",
+            "with `plans` as `{ monthly, annually }` — two plans each. A plan's `popularBadgeText` and `featuresTitle` label the highlighted card and its list; `footerTitle`, `footerSubtitle` and `footerCtaText` / `footerCtaHref` write the strategy-call strip.",
         },
       ],
       props: { layout: "scale", counting: true },

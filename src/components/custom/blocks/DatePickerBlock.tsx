@@ -10,21 +10,21 @@ import {
 } from "lucide-react";
 import React, {
   forwardRef,
+  useCallback,
   useEffect,
-  useLayoutEffect,
   useRef,
   useState,
   useSyncExternalStore,
 } from "react";
 import { getThemeStyles } from "./date-picker-theme";
 import { springLinear } from "./motion-curves";
+import { TimePicker } from "./TimePickerBlock";
 import {
   formatTime,
   roundToStep,
   setTime,
   type TimeFormat,
-  TimePicker,
-} from "./TimePickerBlock";
+} from "./time-picker-utils";
 
 // ==========================================
 // DYNAMIC THEME ENGINE
@@ -117,22 +117,22 @@ function Fold({
   children: React.ReactNode;
 }) {
   const [phase, setPhase] = useState<FoldPhase>(show ? "open" : "closed");
-  const ref = useRef<HTMLDivElement>(null);
-  const shown = useRef(children);
-  if (show) shown.current = children;
+  // What it last showed, kept so the panel still holds it while it folds.
+  const [shown, setShown] = useState(children);
+  if (show && shown !== children) setShown(children);
 
-  useLayoutEffect(() => {
-    if (show && phase === "closed") setPhase(instant ? "open" : "entering");
-    else if (show && phase === "closing") setPhase("open");
-    else if (!show && (phase === "open" || phase === "entering")) setPhase(instant ? "closed" : "closing");
-  }, [show, phase, instant]);
+  // Follow `show` while rendering, so the new phase is what first commits.
+  if (show && phase === "closed") setPhase(instant ? "open" : "entering");
+  else if (show && phase === "closing") setPhase("open");
+  else if (!show && (phase === "open" || phase === "entering")) setPhase(instant ? "closed" : "closing");
 
-  // Entering: commit the folded look, then transition to the open one.
-  useLayoutEffect(() => {
-    if (phase !== "entering") return;
-    void ref.current?.offsetWidth;
-    setPhase("open");
-  }, [phase]);
+  // Entering: the panel mounts with the folded look; commit it, then
+  // transition to the open one before the first paint.
+  const enter = useCallback((el: HTMLDivElement | null) => {
+    if (!el) return;
+    void el.offsetWidth;
+    setPhase((p) => (p === "entering" ? "open" : p));
+  }, []);
 
   // In case the fold never reports its end (a hidden tab, `display: none`).
   useEffect(() => {
@@ -148,7 +148,7 @@ function Fold({
   const on = phase === "closing" ? settleOn : unfoldOn;
   return (
     <div
-      ref={ref}
+      ref={enter}
       className={className}
       style={{
         ...(axis === "x"
@@ -161,7 +161,7 @@ function Fold({
         if (phase === "closing" && e.target === e.currentTarget && e.propertyName === dimension) setPhase("closed");
       }}
     >
-      {axis === "x" ? shown.current : <div className="min-h-0">{shown.current}</div>}
+      {axis === "x" ? shown : <div className="min-h-0">{shown}</div>}
     </div>
   );
 }
@@ -274,12 +274,14 @@ export const DatePickerBlock = forwardRef<HTMLDivElement, DatePickerBlockProps>(
       return () => doc.removeEventListener("mousedown", handleClickOutside);
     }, []);
 
-    // Sync view date with value when opened
-    useEffect(() => {
-      if (isOpen && value) {
-        setViewDate(value);
-      }
-    }, [isOpen, value]);
+    // Sync view date with value when opened (or when value changes while open).
+    // Tracked while rendering rather than in an effect, so the calendar never
+    // paints a frame on the old month first.
+    const [syncedTo, setSyncedTo] = useState({ isOpen, value });
+    if (syncedTo.isOpen !== isOpen || syncedTo.value !== value) {
+      setSyncedTo({ isOpen, value });
+      if (isOpen && value) setViewDate(value);
+    }
 
     // Measure the room on either side of the trigger whenever the popover opens
     // or the window resizes, and pick the widest layout that fits on-screen.

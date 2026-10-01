@@ -117,6 +117,12 @@ export const META: Record<string, ItemMeta> = {
     categories: ["data-display", "marketing", "actions"],
     docs: "Named export: Wallet. Accepts cards array, overallBalance, allowReveal, and autoRevealOnHover.",
   },
+  dashboard: {
+    description:
+      "An admin dashboard home: greeting with all-time totals, a period switch, an overview chart with a tab per metric, activity feed, traffic sources, visitors by country and top authors.",
+    categories: ["data-display", "layout"],
+    docs: "Named exports: Dashboard (also the default) plus the DashboardMetric, DashboardPoint, DashboardTotal, DashboardActivity, DashboardShare, DashboardAuthor, DashboardLinks and DashboardPeriod types. Every number comes from props: `metrics` carry a series per period (day | week | month, oldest first) and an optional `change` per period; `sources`, `countries` and `authors` are keyed by period; `activity` items have a type of user | post | payment | message. Pass `linkComponent` (e.g. next/link) for the panel links and `onExport` to replace the built-in CSV. Composes toggle-group (segmented), chart and popover. Clock-dependent text renders after mount, so server and client markup agree.",
+  },
   "counter-section": {
     description:
       "A collection of 4 animated high-impact Counter and Stats Sections with viewport-triggered count-up easing, zero shadows, and full adaptive styling.",
@@ -298,7 +304,7 @@ export const META: Record<string, ItemMeta> = {
     description:
       "A set of toggle buttons behaving as either radio group or checkbox group. Use it for view switches and filter bars where all options should stay visible.",
     categories: ["forms", "actions"],
-    docs: "Named exports: ToggleGroup, ToggleGroupItem, getThemeStyles. Set `type` to single or multiple — `value` is a string for single, an array for multiple. Compose ToggleGroupItem children; the group passes theme and size down. `color` accepts primary (the theme token), indigo, rose, emerald, zinc or a hex.",
+    docs: "Named exports: ToggleGroup, ToggleGroupItem, getThemeStyles. Set `type` to single or multiple — `value` is a string for single, an array for multiple. Compose ToggleGroupItem children; the group passes theme and size down. `color` accepts primary (the theme token), indigo, rose, emerald, zinc or a hex. `variant=\"segmented\"` is a pill track whose highlight slides to the pressed item; a single segmented group keeps its choice when clicked again and moves it with the arrow keys.",
   },
   "ui-multi-select": {
     description:
@@ -337,6 +343,7 @@ export const META: Record<string, ItemMeta> = {
     docs: "Named export: FlowGallery. Interactive drag with grab cursor, continuous downward auto-flow, 3D isometric plane, and Next Themes adaptation.",
   },
   stepper: {
+    usageDependencies: ["select"],
     description:
       "A horizontal step indicator with icons and GSAP transitions between steps. Use it to show progress through a known, ordered sequence.",
     categories: ["navigation", "forms"],
@@ -501,13 +508,13 @@ export const META: Record<string, ItemMeta> = {
     description:
       "Composable table primitives — you write the rows, so no column config and no required data shape. Use it for tabular data you want full control over.",
     categories: ["data-display"],
-    docs: "Named exports: Table, TableHeading, TableContent, TableHeader, TableBody, TableRow, TableHead, TableCell, TableFooter, TableEmpty, TableExpandedRow, TableExpandToggle, TableRowActions, useTableStyles, getThemeStyles. Each primitive renders its native element and forwards refs, so `colSpan` and aria attributes pass through. Variant (default | minimal | glass), size (sm | md | lg) and color are set once on `Table` and read from context. Sorting and expansion are controlled props — the component never reorders your data. For search, paging, selection and batch actions wired up for you, use `advanced-table`.",
+    docs: "Named exports: Table, TableHeading, TableContent, TableHeader, TableBody, TableRow, TableHead, TableCell, TableFooter, TableEmpty, TableExpandedRow, TableExpandToggle, TableRowActions, useTableStyles, getThemeStyles. Each primitive renders its native element and forwards refs, so `colSpan` and aria attributes pass through. Variant (default | minimal | glass | soft), size (sm | md | lg) and color are set once on `Table` and read from context; `soft` is the admin-dashboard look (rounded panel, tinted header band, pill controls, round row actions). Also exports the stateful DataTable family — DataTableTabs, DataTableFilter, DataTableReset, DataTableBatchAction — and the cell/toolbar parts TableAction, TableRowAction, TableBadge and TablePerson. `sticky` on TableHead/TableCell pins a column to the right edge. Sorting and expansion are controlled props — the component never reorders your data. For search, paging, selection and batch actions wired up for you, use `advanced-table`.",
   },
   "advanced-table": {
     description:
       "A stateful data table with search, typed sorting, pagination, row selection and batch actions — composed, so your data keeps its own shape.",
     categories: ["data-display"],
-    docs: "Named exports: DataTable plus DataTableHeading/Content/Header/Body/Row/Head/Cell/Footer/Empty, DataTableSearch, DataTablePageSize, DataTableSelect, DataTableSelectAll, DataTableBatchBar, DataTableInfo, DataTablePagination, DataTableExpandToggle, DataTableExpandedRow, useDataTable, resolveAccessor. `DataTableBody` takes a render function receiving the current page of rows. `getRowId` defaults to id → _id → uuid; `sortBy` accepts a dot path or an accessor function (add `sortId` for functions). Builds on `table` and depends on `select` for the page-size control.",
+    docs: "Named exports: DataTable plus DataTableHeading/Content/Header/Body/Row/Head/Cell/Footer/Empty, DataTableSearch, DataTablePageSize, DataTableSelect, DataTableSelectAll, DataTableBatchBar, DataTableInfo, DataTablePagination, DataTableExpandToggle, DataTableExpandedRow, DataTableTabs, DataTableFilter, DataTableReset, DataTableBatchAction, TableAction, TableRowAction, TableBadge, TablePerson, useDataTable, resolveAccessor. `DataTableTabs` and `DataTableFilter` filter one field each by exact match (`by` is a dot path or accessor); `useDataTable` exposes `filters`, `isFiltered` and `resetAll`. `variant=\"soft\"` gives the admin-dashboard look. `DataTableBody` takes a render function receiving the current page of rows. `getRowId` defaults to id → _id → uuid; `sortBy` accepts a dot path or an accessor function (add `sortId` for functions). Builds on `table` and depends on `select` for the page-size control.",
   },
   "data-grid": {
     description:
@@ -558,6 +565,7 @@ export const META: Record<string, ItemMeta> = {
     docs: "Named export: Footer. Accepts `variant` (4 responsive variants: simple-centered, glass-dock, neon-glow-pulse, quantum-particle-beam), `brandName`, `tagline`, `logo`, `socialLinks`, `className`. The social row is the `social-links` item, which installs alongside. All variants adapt across mobile, tablet, and desktop screens.",
   },
   "booking-card": {
+    usageDependencies: ["glass-panel"],
     description:
       "A booking panel for any card: a day strip paged a week at a time, time slots in groups, a button that reads back the choice, and a confirmation that draws itself in. Use it wherever a page ends in an appointment.",
     categories: ["forms", "dates"],
@@ -576,12 +584,14 @@ export const META: Record<string, ItemMeta> = {
     docs: "Named export: BookAppointment. Composed from the booking-card, glass-panel, half-stars and chart items, which install alongside it. Pass `practitioner`, `slotGroups` and `onBook`; `scores`, `visitReasons` and `activities` fill the stars, donut and bar; `variant` switches glass to solid.",
   },
   "data-flow": {
+    usageDependencies: ["button", "half-stars", "icons"],
     description:
       "A sources → core → outputs section: platform cards on the left feed one node in the middle, which fans out to result cards on the right, with curved connectors that draw in on first view and then carry a moving dash. Use it to explain a pipeline, an integration, or where an AI product's data comes from.",
     categories: ["marketing", "data-display"],
     docs: "Named export: DataFlow, with parts Source, Core, Output, Pill, Tag and Row. Composed from the flowchart and apple-select items, which install alongside it (`intro` + `highlights` render through AppleSelect); the docs example also uses half-stars and button inside its output cards. Connectors are measured from the cards at runtime (ResizeObserver), hidden below lg; `reveal` is in-view or immediate; `accent` pins the dash colour, otherwise it follows --primary. Wrap intro phrases in <mark> for black pills.",
   },
   "platform-grid": {
+    usageDependencies: ["icons"],
     description:
       "Everything a product offers as one hairline grid: small icon-and-name tiles and a few 2×2 features that show a piece of the product on a tilting card. Reveals as a wave from the centre, then a spotlight follows the pointer. Use it as the 'full platform' section of a product site.",
     categories: ["marketing", "navigation"],
@@ -615,7 +625,7 @@ export const META: Record<string, ItemMeta> = {
     description:
       "A landing hero for a component library: a headline that blurs in word by word and keeps one word turning, a lead, an install command that names whichever card a camera has just landed on, two actions, a line of trust and the tools it is built with in batches — centred between two walls of screenshots that never end, one camera resting high and the other low, or on the left of a single wall.",
     categories: ["marketing", "layout"],
-    usageDependencies: ["tech-stack"],
+    usageDependencies: ["tech-stack", "icons"],
     docs: "Named export: ComponentWall (plus the ComponentWallItem type). Composed from the image-wall, text-animation, copy-button, avatar-stack and half-stars items, which install alongside it, and takes a tech-stack in its `stack` slot. Pass `badge` ({ label, href? }), `heading` (a string, revealed word by word; write `{word}` where `headingWords` take turns every `wordInterval` ms, and name one word in `accent` for the primary colour), `description` (a string or inline JSX — it renders inside a <p>), `install` ({ command } — write `{item}` where the focused card's `slug` goes, e.g. `npx shadcn@latest add @algorize-ui/{item}`), `primaryAction`/`secondaryAction` ({ label, href, icon? }), `trust` ({ text, avatars?, rating? }), `items` ({ title, image, slug? }[] — every screenshot sits in the same 493:332 frame; slug defaults to the title in kebab-case) and `stack` (a node — a <TechStack> of <TechStackGroup>s of <TechStackTool name icon />: the tools over the lower wall on desktop and under the band on phones; in the centred layout it closes the copy column, where the compact variant fits). `columns`, `interval` (ms the camera rests; 0 holds still), `order` (serial | shuffle), `zoom`, `intro` (ms the camera drifts with nothing in focus while the copy arrives; default 1800) and `onFocus` pass straight to the wall; `layout` is split (copy left, wall right) or center (copy between two walls — the left camera resting high, the right low, taking turns, the second wall dealing the same items from halfway through; the tools sit under the copy; zoom defaults to 0.9; below lg a single band of every card sits between the copy and the tools); `linkComponent` takes next/link. The headline uses your theme's font-serif, the command font-mono; colours are theme tokens.",
   },
   "collage-hero": {
@@ -667,6 +677,9 @@ export const META: Record<string, ItemMeta> = {
     docs: "Named exports: GlassBackdrop, GlassPanel, useSurface (plus SurfaceVariant, GlassShape types). `GlassBackdrop` washes three `aurora` colours behind a 12-column grid (`gridClassName` for row heights and gaps) and sets `variant` (glass | solid) for every `GlassPanel` inside; panels take `shape` (slab, tile, disc, capsule), `interactive`, and Tailwind column spans.",
   },
   "profile-page": {
+    // The documented page puts a Verify Badge beside the name and Social Links
+    // under the contact details; installing profile-page must bring both.
+    usageDependencies: ["verify-badge", "social-links"],
     description:
       "A person's profile as a glass bento page: an aurora backdrop, frosted panels, and a 24-hour dial that shows their working window live. Use it for team directories, member pages and public profiles.",
     categories: ["layout", "marketing"],
@@ -739,6 +752,7 @@ export const META: Record<string, ItemMeta> = {
     docs: "Named export: ImageCompare. `beforeImage` and `afterImage` take URLs, with `beforeLabel` / `afterLabel` for the badges and `initialPosition` as a 0-100 percentage. Variants: classic-slider | split-handle | glowing-divider | badge-overlay | minimal. Both images should share an aspect ratio or the reveal will misalign.",
   },
   "tech-stack": {
+    usageDependencies: ["icons"],
     description:
       "The tools a product is built with: a label, then one group of marks at a time in two rows — an odd group as three over four — each mark blurring out and the next group blurring in. Use it as the \"Built with\" line in a hero or footer.",
     categories: ["marketing", "data-display"],
@@ -753,6 +767,7 @@ export const META: Record<string, ItemMeta> = {
 
   // ---- Phase 4D: overlays, feedback & messaging ----
   dialog: {
+    usageDependencies: ["copy-button"],
     description:
       "A composable modal dialog with focus trapping, overlay and controlled or uncontrolled open state. Use it as the general-purpose dialog primitive.",
     categories: ["overlays"],

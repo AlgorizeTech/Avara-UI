@@ -14,6 +14,33 @@ There is **no column config and no required row shape**. Whatever your API retur
 Every example below is live. Click a sortable header, expand a row, or hover the right edge of a row to reveal its actions.
 
 
+<ExampleShowcase
+  name="table-soft"
+  columns={1}
+  examples={[
+    {
+      title: "Soft variant",
+      subheading: "A plain read-only table in the admin-dashboard look — a rounded panel on a hairline ring, a tinted header band, calm dividers and soft row hover. No search, filters or paging: just the rows.",
+      propNotes: [
+        {
+          lead: "Set",
+          prop: "variant",
+          value: '"soft"',
+          effect:
+            "once on `Table`; the heading, header band, cells and dividers read it from context. Every tint is mixed from the table colour.",
+        },
+        {
+          prop: "TablePerson",
+          effect:
+            "and `TableBadge` draw the avatar-and-email cell and the status pill, in any variant.",
+        },
+      ],
+      usage: extractCode("src/preview/demos/table-soft-demo.tsx"),
+      code: extractCode("src/components/custom/blocks/TableBlock.tsx"),
+    },
+  ]}
+/>
+
 `Table` is the card. `TableContent` renders the scroll container and the `<table>` element. Everything else maps one-to-one onto the HTML table tags, so `colSpan`, `scope` and any other native attribute pass straight through.
 
 export const invoiceType = `type Invoice = {
@@ -307,6 +334,27 @@ export const usageEmpty = `<TableBody>
   ]}
 />
 
+<ExampleShowcase
+  name="table-soft-comparison"
+  columns={1}
+  examples={[
+    {
+      title: "Comparison (soft)",
+      subheading: "The same soft table as a plan comparison: features down the side, plans across the top, ticks and limits centred under their headers.",
+      propNotes: [
+        {
+          prop: "align",
+          value: '"center"',
+          effect:
+            "on both `TableHead` and `TableCell` lines the ticks and values up under each plan.",
+        },
+      ],
+      usage: extractCode("src/preview/demos/table-soft-comparison-demo.tsx"),
+      code: extractCode("src/components/custom/blocks/TableBlock.tsx"),
+    },
+  ]}
+/>
+
 ## Density
 
 <ExampleShowcase
@@ -402,7 +450,7 @@ export const usageEmpty = `<TableBody>
       <tr><th>Prop</th><th>Type</th><th>Default</th><th>Description</th></tr>
     </thead>
     <tbody>
-      <tr><td><code>variant</code></td><td><code>"default" | "minimal" | "glass"</code></td><td><code>"default"</code></td><td>Bordered card, bare table, or frosted glass panel.</td></tr>
+      <tr><td><code>variant</code></td><td><code>"default" | "minimal" | "glass" | "soft"</code></td><td><code>"default"</code></td><td>Bordered card, bare table, frosted glass panel, or the admin-dashboard look (see <DocLink to="data-table">Data Table</DocLink> for the full soft example).</td></tr>
       <tr><td><code>size</code></td><td><code>"sm" | "md" | "lg"</code></td><td><code>"md"</code></td><td>Row density — cell padding and text size.</td></tr>
       <tr><td><code>color</code></td><td><code>"primary" | "indigo" | "rose" | "emerald" | "zinc" | (hex)</code></td><td><code>"primary"</code></td><td>Accent for selected rows and interactive affordances. Any <code>#rrggbb</code> works.</td></tr>
     </tbody>
@@ -454,7 +502,7 @@ export const usageEmpty = `<TableBody>
       <tr><td><code>TableExpandedRow</code></td><td><code>colSpan</code></td><td><code>number</code></td><td><strong>Required.</strong> Must match your column count.</td></tr>
       <tr><td><code>TableEmpty</code></td><td><code>colSpan</code></td><td><code>number</code></td><td><strong>Required.</strong> Defaults its text to &ldquo;No data available.&rdquo;</td></tr>
       <tr><td><code>TableRowActions</code></td><td><code>align</code></td><td><code>"left" | "center" | "right"</code></td><td>Horizontal alignment inside the cell. Defaults to <code>"right"</code>.</td></tr>
-      <tr><td><code>TableRowActions</code></td><td><code>alwaysVisible</code></td><td><code>boolean</code></td><td>Skip the hover reveal and keep the buttons visible.</td></tr>
+      <tr><td><code>TableRowActions</code></td><td><code>alwaysVisible</code></td><td><code>boolean</code></td><td>Skip the hover reveal and keep the buttons visible. Defaults to visible in the <code>soft</code> variant.</td></tr>
     </tbody>
   </table>
 </div>

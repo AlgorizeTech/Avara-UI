@@ -2,7 +2,12 @@
 
 import React, { createContext, useContext } from "react";
 
-export type TableVariant = "default" | "minimal" | "glass";
+/**
+ * `soft` is the admin-dashboard look: a rounded panel with a hairline ring,
+ * a tinted header band, pill controls (search, filters, page size, paging)
+ * and round row actions, all drawn from the theme colour.
+ */
+export type TableVariant = "default" | "minimal" | "glass" | "soft";
 
 export type TableSize = "sm" | "md" | "lg";
 
@@ -95,6 +100,19 @@ export const getThemeStyles = (color: string) => {
   return { theme: colorThemes[color] || colorThemes.primary, style: {} };
 };
 
+const accentHex: Record<string, string> = {
+  indigo: "#4f46e5",
+  rose: "#e11d48",
+  emerald: "#059669",
+  zinc: "#3f3f46",
+};
+
+/** The table colour as a CSS colour, for the tints the `soft` variant mixes from it. */
+export const getAccentColor = (color: string) =>
+  color.startsWith("#") || color.startsWith("var(")
+    ? color
+    : (accentHex[color] ?? "var(--primary)");
+
 export interface TableStyleContext {
   variant: TableVariant;
   size: TableSize;
@@ -135,6 +153,20 @@ export interface DataTableContextValue<T = unknown> {
 
   search: string;
   setSearch: (value: string) => void;
+
+  /** Active filters by id, as set by DataTableFilter and DataTableTabs. */
+  filters: Record<string, string>;
+  /** `null` clears the filter. Rows match when the accessor's value equals `value`. */
+  setFilter: (id: string, accessor: Accessor<T>, value: string | null) => void;
+  /**
+   * How many rows a filter value would leave: search and every other filter
+   * apply, this one is swapped for `value` (`null` for "any").
+   */
+  countFor: (id: string, accessor: Accessor<T>, value: string | null) => number;
+  /** Search or any filter is narrowing the rows. */
+  isFiltered: boolean;
+  /** Clears search, every filter and the sort. */
+  resetAll: () => void;
 
   sort: { id: string; direction: "asc" | "desc" } | null;
   toggleSort: (id: string, accessor: Accessor<T>, type: SortType) => void;

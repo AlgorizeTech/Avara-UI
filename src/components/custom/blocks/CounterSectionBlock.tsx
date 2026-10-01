@@ -68,7 +68,7 @@ export interface CounterSectionProps extends React.HTMLAttributes<HTMLDivElement
 }
 
 // Default presets for the 5 variants
-export const DEFAULT_STATS: Record<CounterSectionVariant, StatItem[]> = {
+const DEFAULT_STATS: Record<CounterSectionVariant, StatItem[]> = {
   "minimal-slash": [
     {
       value: 130,
@@ -215,12 +215,11 @@ export function AnimatedNumber({
   trigger = true,
 }: AnimatedNumberProps) {
   const [current, setCurrent] = useState(0);
+  // Untriggered, the number rests at 0, so the next count starts from there.
+  if (!trigger && current !== 0) setCurrent(0);
 
   useEffect(() => {
-    if (!trigger) {
-      setCurrent(0);
-      return;
-    }
+    if (!trigger) return;
 
     const startTime = performance.now();
     let animId = 0;

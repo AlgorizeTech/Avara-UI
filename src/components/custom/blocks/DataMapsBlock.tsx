@@ -2,6 +2,7 @@
 
 import React, {
   useEffect,
+  useMemo,
   useRef,
   useState,
   useSyncExternalStore,
@@ -94,6 +95,23 @@ function getFlagHtml(alpha3: string) {
   return `<img src="https://flagcdn.com/w40/${alpha2.toLowerCase()}.png" width="20" alt="${alpha2}" class="inline-block object-cover rounded-[2px]" />`;
 }
 
+type DotMarker = { id: string; lat: number; lng: number; color: string };
+
+/** Static centroid coordinates for key ISO-3 countries, used as a fallback. */
+const COUNTRY_CENTROIDS: Record<string, [number, number]> = {
+  CHN: [35.8617, 104.1954],
+  IND: [20.5937, 78.9629],
+  USA: [37.0902, -95.7129],
+  BRA: [-14.2350, -51.9253],
+  GBR: [55.3781, -3.4360],
+  DEU: [51.1657, 10.4515],
+  CAN: [56.1304, -106.3468],
+  AUS: [-25.2744, 133.7751],
+  FRA: [46.2276, 2.2137],
+  JPN: [36.2048, 138.2529],
+  RUS: [61.5240, 105.3188],
+};
+
 /**
  * True only after hydration. useSyncExternalStore reports a different snapshot
  * on the server than on the client, so this needs no state update in an effect.
@@ -138,8 +156,26 @@ export const DataMaps = React.forwardRef<HTMLDivElement, DataMapsProps>(
     const variantRef = useRef(variant);
     const [leafletLib, setLeafletLib] = useState<Leaflet | null>(null);
     const [rl, setRl] = useState<ReactLeaflet | null>(null);
-    const [dotCount, setDotCount] = useState(dataPoints?.length || 0);
-    const [dotMarkers, setDotMarkers] = useState<{ id: string; lat: number; lng: number; color: string }[]>([]);
+    // Dots placed on the drawn country layers. Null until those layers exist
+    // (or whenever they are detached), and then the dots sit on the static
+    // centroids instead.
+    const [layerDots, setLayerDots] = useState<{ markers: DotMarker[]; count: number } | null>(null);
+    const centroidDots = useMemo(
+      () =>
+        (dataPoints ?? []).map((dp) => {
+          const dpId = String(dp.id).toUpperCase();
+          const coords = COUNTRY_CENTROIDS[dpId] || [20, 0];
+          return {
+            id: dpId,
+            lat: coords[0],
+            lng: coords[1],
+            color: dp.color || highlightColor,
+          };
+        }),
+      [dataPoints, highlightColor],
+    );
+    const dotMarkers = layerDots?.markers ?? centroidDots;
+    const dotCount = layerDots?.count ?? (dataPoints?.length || 0);
     const wrapperRef = useRef<HTMLDivElement>(null);
 
     useEffect(() => {
@@ -202,22 +238,7 @@ export const DataMaps = React.forwardRef<HTMLDivElement, DataMapsProps>(
         }
 
         let currentDotCount = 0;
-        const newDotMarkers: { id: string; lat: number; lng: number; color: string }[] = [];
-
-        // Static centroid coordinates for key ISO-3 countries as fallback
-        const COUNTRY_CENTROIDS: Record<string, [number, number]> = {
-          CHN: [35.8617, 104.1954],
-          IND: [20.5937, 78.9629],
-          USA: [37.0902, -95.7129],
-          BRA: [-14.2350, -51.9253],
-          GBR: [55.3781, -3.4360],
-          DEU: [51.1657, 10.4515],
-          CAN: [56.1304, -106.3468],
-          AUS: [-25.2744, 133.7751],
-          FRA: [46.2276, 2.2137],
-          JPN: [36.2048, 138.2529],
-          RUS: [61.5240, 105.3188],
-        };
+        const newDotMarkers: DotMarker[] = [];
 
         geoJsonRef.current.eachLayer((baseLayer) => {
           const layer = baseLayer as FeatureLayer;
@@ -260,35 +281,14 @@ export const DataMaps = React.forwardRef<HTMLDivElement, DataMapsProps>(
           });
         }
         
-        setDotMarkers(newDotMarkers);
-        setDotCount(currentDotCount > 0 ? currentDotCount : dataPoints.length);
-      } else if (variant === "dots") {
-        // Fallback when geoJsonRef is not yet attached
-        const COUNTRY_CENTROIDS: Record<string, [number, number]> = {
-          CHN: [35.8617, 104.1954],
-          IND: [20.5937, 78.9629],
-          USA: [37.0902, -95.7129],
-          BRA: [-14.2350, -51.9253],
-          GBR: [55.3781, -3.4360],
-          DEU: [51.1657, 10.4515],
-          CAN: [56.1304, -106.3468],
-          AUS: [-25.2744, 133.7751],
-          FRA: [46.2276, 2.2137],
-          JPN: [36.2048, 138.2529],
-          RUS: [61.5240, 105.3188],
-        };
-        const initialMarkers = dataPoints.map((dp) => {
-          const dpId = String(dp.id).toUpperCase();
-          const coords = COUNTRY_CENTROIDS[dpId] || [20, 0];
-          return {
-            id: dpId,
-            lat: coords[0],
-            lng: coords[1],
-            color: dp.color || highlightColor,
-          };
+        setLayerDots({
+          markers: newDotMarkers,
+          count: currentDotCount > 0 ? currentDotCount : dataPoints.length,
         });
-        setDotMarkers(initialMarkers);
-        setDotCount(dataPoints.length);
+      } else {
+        // The country layers are not attached yet, so the dots fall back to the
+        // static centroids, which are derived from the props during render.
+        setLayerDots(null);
       }
       
       return () => {

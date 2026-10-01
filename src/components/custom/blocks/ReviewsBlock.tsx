@@ -162,23 +162,25 @@ function fromCurrent(el: Element, to: Record<string, string>) {
  * screen animates out from wherever it is, and only once that ends is the
  * latest item rendered (it comes in with its own CSS animation). If the key
  * comes back mid-exit, the element settles back to rest from where it got to.
+ * `ref` must be attached to the swapped element.
  */
 function useWaitSwap<T, E extends HTMLElement>(
+	ref: React.RefObject<E | null>,
 	item: T,
 	itemKey: string,
 	motion: SwapMotion,
 ) {
-	const ref = useRef<E>(null);
 	const [shownKey, setShownKey] = useState(itemKey);
 	const leaving = shownKey !== itemKey;
 
 	// The leaving element keeps showing the item it had; otherwise it follows
-	// the current one.
-	const lastShown = useRef(item);
+	// the current one. Held in state (synced during render while not leaving)
+	// so render never reads a ref.
+	const [lastShown, setLastShown] = useState(item);
+	if (!leaving && lastShown !== item) setLastShown(item);
 	const latestKey = useRef(itemKey);
 	const motionRef = useRef(motion);
 	useEffect(() => {
-		if (!leaving) lastShown.current = item;
 		latestKey.current = itemKey;
 		motionRef.current = motion;
 	});
@@ -216,9 +218,9 @@ function useWaitSwap<T, E extends HTMLElement>(
 			});
 			animation.cancel();
 		};
-	}, [leaving]);
+	}, [leaving, ref]);
 
-	return { ref, shown: leaving ? lastShown.current : item, shownKey };
+	return { shown: leaving ? lastShown : item, shownKey };
 }
 
 const TEXT_REST = { opacity: "1", translate: "0px 0px", filter: "blur(0px)" };
@@ -314,22 +316,30 @@ function StackedCardsCarousel({
 
 	const activeReview = reviews[activeIndex] || reviews[0];
 
+	const ratingRef = useRef<HTMLDivElement>(null);
 	const rating = useWaitSwap<ReviewItem, HTMLDivElement>(
+		ratingRef,
 		activeReview,
 		activeReview.id + "-rating",
 		RATING_SWAP,
 	);
+	const nameRef = useRef<HTMLHeadingElement>(null);
 	const name = useWaitSwap<ReviewItem, HTMLHeadingElement>(
+		nameRef,
 		activeReview,
 		activeReview.id + "-name",
 		NAME_SWAP,
 	);
+	const roleRef = useRef<HTMLParagraphElement>(null);
 	const role = useWaitSwap<ReviewItem, HTMLParagraphElement>(
+		roleRef,
 		activeReview,
 		activeReview.id + "-role",
 		ROLE_SWAP,
 	);
+	const quoteRef = useRef<HTMLParagraphElement>(null);
 	const quote = useWaitSwap<ReviewItem, HTMLParagraphElement>(
+		quoteRef,
 		activeReview,
 		activeReview.id + "-content",
 		QUOTE_SWAP,
@@ -446,7 +456,7 @@ function StackedCardsCarousel({
 				{/* Rating Stars */}
 				<div
 					key={rating.shownKey}
-					ref={rating.ref}
+					ref={ratingRef}
 					className="flex items-center gap-1.5"
 					style={{ animation: `reviews-rating-in 0.25s ${EASE_OUT} backwards` }}
 				>
@@ -468,7 +478,7 @@ function StackedCardsCarousel({
 				<div className="space-y-0.5 sm:space-y-1">
 					<h3
 						key={name.shownKey}
-						ref={name.ref}
+						ref={nameRef}
 						className="text-xl xs:text-2xl sm:text-3xl md:text-4xl font-extrabold text-foreground tracking-tight"
 						style={{ animation: `reviews-name-in 0.3s ${EASE_OUT} backwards` }}
 					>
@@ -477,7 +487,7 @@ function StackedCardsCarousel({
 
 					<p
 						key={role.shownKey}
-						ref={role.ref}
+						ref={roleRef}
 						className="text-xs sm:text-base font-medium text-muted-foreground"
 						style={{ animation: `reviews-role-in 0.3s ${EASE_OUT} 0.05s backwards` }}
 					>
@@ -488,7 +498,7 @@ function StackedCardsCarousel({
 				{/* Review Quote Text */}
 				<p
 					key={quote.shownKey}
-					ref={quote.ref}
+					ref={quoteRef}
 					className="text-sm xs:text-base sm:text-lg md:text-xl text-foreground/90 leading-relaxed font-normal pt-1 sm:pt-2 pb-2 sm:pb-4 max-w-xl min-h-[90px] sm:min-h-[120px]"
 					style={{ animation: `reviews-quote-in 0.35s ${EASE_OUT} 0.08s backwards` }}
 				>
@@ -720,12 +730,16 @@ function LogoCarouselVariant({
 	const items = reviews.length > 0 ? reviews : DEFAULT_REVIEWS;
 	const activeItem = items[activeIndex] || items[0];
 
+	const quoteRef = useRef<HTMLDivElement>(null);
 	const quote = useWaitSwap<ReviewItem, HTMLDivElement>(
+		quoteRef,
 		activeItem,
 		String(activeItem.id || activeIndex),
 		LOGO_QUOTE_SWAP,
 	);
+	const portraitRef = useRef<HTMLImageElement>(null);
 	const portrait = useWaitSwap<ReviewItem, HTMLImageElement>(
+		portraitRef,
 		activeItem,
 		String(activeItem.id || activeIndex),
 		LOGO_IMAGE_SWAP,
@@ -818,7 +832,7 @@ function LogoCarouselVariant({
 				<div className="md:col-span-7 p-8 sm:p-12 flex flex-col justify-between space-y-6 overflow-hidden">
 					<div
 						key={quote.shownKey}
-						ref={quote.ref}
+						ref={quoteRef}
 						className="space-y-6"
 						style={{ animation: `reviews-logo-quote-in 0.4s ${EXPO_OUT} backwards` }}
 					>
@@ -876,7 +890,7 @@ function LogoCarouselVariant({
 					<div className="relative w-full h-full rounded-xl sm:rounded-2xl overflow-hidden bg-muted/20">
 						<img
 							key={portrait.shownKey}
-							ref={portrait.ref}
+							ref={portraitRef}
 							src={
 								portrait.shown.avatar ||
 								"https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_800,c_limit/v1790150483/photo-1534528741775-53994a69daeb-1790150482280.jpg"

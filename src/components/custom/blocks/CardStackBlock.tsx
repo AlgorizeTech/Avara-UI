@@ -1,9 +1,11 @@
 "use client";
 
-import React, { useState } from "react";
-import { AnimatePresence, motion, useMotionValue, useTransform } from "framer-motion";
+import React, { useCallback, useEffect, useLayoutEffect, useRef, useState } from "react";
+import gsap from "gsap";
 import { ArrowLeft, ArrowRight, ArrowUpRight, RotateCcw } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { bezierEase, prefersReducedMotion } from "./gsap-motion";
+import { springEase } from "./motion-curves";
 
 export interface CardStackItem {
   id: string | number;
@@ -14,7 +16,7 @@ export interface CardStackItem {
   meta?: string;
   icon?: React.ReactNode | string;
   href?: string;
-  [key: string]: any;
+  [key: string]: unknown;
 }
 
 export interface CardStackProps extends React.HTMLAttributes<HTMLDivElement> {
@@ -46,16 +48,104 @@ export interface CardStackProps extends React.HTMLAttributes<HTMLDivElement> {
   canDismissLastCard?: boolean;
 }
 
+// ============================================================================
+// MOTION
+// ============================================================================
+
+/** Cards settle into their slot through this spring (position, tilt, fade). */
+const SETTLE = springEase({ stiffness: 280, damping: 26, mass: 0.8 });
+/** A card leaving the deck flies out over a fixed, fast-out curve. */
+const EXIT = { duration: 0.26, ease: bezierEase([0.25, 1, 0.5, 1]) };
+
+/** The card follows the pointer at 80% (an elastic pull against its slot). */
+const DRAG_ELASTIC = 0.8;
+/** Pointer travel before a press becomes a drag. */
+const DRAG_START_PX = 3;
+/** Release past this distance, or faster than this speed (px/s), to discard. */
+const SWIPE_OFFSET = 80;
+const SWIPE_VELOCITY = 280;
+/** A drag released short of discarding springs back to the slot. */
+const RETURN_SPRING = { stiffness: 200, damping: 40 };
+
+/** Drag tilt: ±18° across ±260px of travel, clamped beyond. */
+const dragTilt = (x: number) => Math.min(Math.max((x / 260) * 18, -18), 18);
+
+interface CardPose {
+  x: number;
+  y: number;
+  rotation: number;
+  opacity: number;
+  scale: number;
+  zIndex: number;
+}
+
+/** Where a card rests at depth `offset` (0 is the front card). */
+const restPose = (offset: number, count: number): CardPose => ({
+  x: offset * 8,
+  y: -offset * 4,
+  rotation: offset * 1.6,
+  opacity: 1,
+  scale: 1,
+  zIndex: count - offset,
+});
+
+/**
+ * Where a card joining the deck starts: going back, the new front card swings
+ * in from the slide side; any other newcomer fades in at its slot.
+ */
+const enterPose = (
+  offset: number,
+  count: number,
+  direction: number,
+  slideMultiplier: number,
+): CardPose =>
+  offset === 0 && direction < 0
+    ? {
+        x: 220 * slideMultiplier,
+        y: -10,
+        rotation: 8 * slideMultiplier,
+        opacity: 0,
+        scale: 0.98,
+        zIndex: count + 2,
+      }
+    : { ...restPose(offset, count), opacity: 0 };
+
+/** The first-paint style for a pose, so server HTML already shows the fan. */
+const poseStyle = (pose: CardPose): React.CSSProperties => ({
+  transform: `translate(${pose.x}px, ${pose.y}px) rotate(${pose.rotation}deg) scale(${pose.scale})`,
+  opacity: pose.opacity,
+  zIndex: pose.zIndex,
+});
+
+/** Pointer speed (px/s) over the last 100ms of samples. */
+function releaseVelocity(history: { x: number; t: number }[]) {
+  if (history.length < 2) return 0;
+  const last = history[history.length - 1];
+  let sample = history[0];
+  for (let i = history.length - 1; i >= 0; i--) {
+    sample = history[i];
+    if (last.t - sample.t > 100) break;
+  }
+  const seconds = (last.t - sample.t) / 1000;
+  return seconds === 0 ? 0 : (last.x - sample.x) / seconds;
+}
+
+// ============================================================================
+// CARD
+// ============================================================================
+
 interface StackCardItemProps {
   item: CardStackItem;
   offset: number;
   isTop: boolean;
   count: number;
-  direction: number;
-  slideMultiplier: number;
-  swipeToDismiss: boolean;
-  canDismiss: boolean;
-  onDismiss: (dir: "left" | "right") => void;
+  /** The pose this card mounts in; read once, on mount. */
+  start: CardPose;
+  /** Set once the card has left the deck: it flies out, then unmounts. */
+  exit: { x: number; rotation: number } | null;
+  isDraggable: boolean;
+  onSwipe: (dir: "left" | "right") => void;
+  onExited: (id: CardStackItem["id"]) => void;
   renderCard?: (item: CardStackItem, index: number, isTop: boolean) => React.ReactNode;
   cardClassName?: string;
 }
@@ -65,94 +155,172 @@ function StackCardItem({
   offset,
   isTop,
   count,
-  direction,
-  slideMultiplier,
-  swipeToDismiss,
-  canDismiss,
-  onDismiss,
+  start,
+  exit,
+  isDraggable,
+  onSwipe,
+  onExited,
   renderCard,
   cardClassName,
 }: StackCardItemProps) {
-  const x = useMotionValue(0);
-  const dragRotate = useTransform(x, [-260, 260], [-18, 18]);
+  const ref = useRef<HTMLDivElement>(null);
+  const [startPose] = useState(start);
+  const [startStyle] = useState(() => poseStyle(start));
+  /** Horizontal drag offset, for telling a drag from a click on the link. */
+  const dragX = useRef(0);
+  const endDrag = useRef<(() => void) | null>(null);
+  const latestSwipe = useRef(onSwipe);
 
-  const rotate = offset * 1.6;
-  const offsetX = offset * 8;
-  const offsetY = -offset * 4;
-  const zIndex = count - offset;
+  useLayoutEffect(() => {
+    latestSwipe.current = onSwipe;
+  });
 
-  const isDraggable = isTop && swipeToDismiss && canDismiss;
+  const rest = restPose(offset, count);
+  const { x, y, rotation, zIndex } = rest;
+  const exiting = exit !== null;
+  const exitX = exit?.x ?? 0;
+  const exitRotation = exit?.rotation ?? 0;
+  const id = item.id;
+
+  // Mount: place the card in its starting pose before the first paint.
+  useLayoutEffect(() => {
+    if (ref.current) gsap.set(ref.current, startPose);
+  }, [startPose]);
+
+  // Settle into the slot, or fly out once the card has left the deck.
+  useLayoutEffect(() => {
+    const el = ref.current;
+    if (!el) return;
+    const reduce = prefersReducedMotion();
+
+    if (exiting) {
+      endDrag.current?.();
+      const target = { x: exitX, y: -10, rotation: exitRotation, opacity: 0, scale: 0.96, zIndex: count + 2 };
+      if (reduce) {
+        gsap.set(el, target);
+        onExited(id);
+        return;
+      }
+      const tween = gsap.to(el, {
+        ...target,
+        duration: EXIT.duration,
+        ease: EXIT.ease,
+        snap: "zIndex",
+        overwrite: "auto",
+        onComplete: () => onExited(id),
+      });
+      return () => {
+        tween.kill();
+      };
+    }
+
+    const target = { x, y, rotation, opacity: 1, scale: 1, zIndex };
+    if (reduce) {
+      gsap.set(el, target);
+      return;
+    }
+    const tween = gsap.to(el, {
+      ...target,
+      duration: SETTLE.duration,
+      ease: SETTLE.ease,
+      snap: "zIndex",
+      overwrite: "auto",
+    });
+    return () => {
+      tween.kill();
+    };
+  }, [x, y, rotation, zIndex, exiting, exitX, exitRotation, count, id, onExited]);
+
+  // Unmount: drop any drag in progress and the drag's return spring.
+  useEffect(() => {
+    const el = ref.current;
+    return () => {
+      endDrag.current?.();
+      if (el) gsap.killTweensOf(el);
+    };
+  }, []);
+
+  const paintDrag = (el: HTMLElement, value: number) => {
+    dragX.current = value;
+    gsap.set(el, { x: value, rotation: dragTilt(value) });
+  };
+
+  const handlePointerDown = (e: React.PointerEvent<HTMLDivElement>) => {
+    const el = ref.current;
+    if (!el || !isDraggable || exiting) return;
+    if (e.pointerType === "mouse" ? e.button !== 0 : e.isPrimary === false) return;
+    endDrag.current?.();
+
+    const pointerId = e.pointerId;
+    const startX = e.pageX;
+    const startY = e.pageY;
+    const origin = Number(gsap.getProperty(el, "x")) || 0;
+    const history = [{ x: e.pageX, t: performance.now() }];
+    let lastX = e.pageX;
+    let dragging = false;
+
+    const move = (ev: PointerEvent) => {
+      if (ev.pointerId !== pointerId) return;
+      lastX = ev.pageX;
+      history.push({ x: ev.pageX, t: performance.now() });
+      const dx = ev.pageX - startX;
+      if (!dragging) {
+        if (Math.hypot(dx, ev.pageY - startY) < DRAG_START_PX) return;
+        dragging = true;
+        gsap.killTweensOf(el, "x,rotation");
+      }
+      paintDrag(el, (origin + dx) * DRAG_ELASTIC);
+    };
+
+    const stop = () => {
+      window.removeEventListener("pointermove", move);
+      window.removeEventListener("pointerup", end);
+      window.removeEventListener("pointercancel", end);
+      endDrag.current = null;
+    };
+
+    const end = (ev: PointerEvent) => {
+      if (ev.pointerId !== pointerId) return;
+      stop();
+      if (!dragging) return;
+      const offsetX = (ev.type === "pointercancel" ? lastX : ev.pageX) - startX;
+      const velocity = releaseVelocity(history);
+      if (offsetX > SWIPE_OFFSET || velocity > SWIPE_VELOCITY) {
+        latestSwipe.current("right");
+      } else if (offsetX < -SWIPE_OFFSET || velocity < -SWIPE_VELOCITY) {
+        latestSwipe.current("left");
+      } else {
+        const from = dragX.current;
+        if (from === 0) return;
+        if (prefersReducedMotion()) {
+          paintDrag(el, 0);
+          return;
+        }
+        const { duration, ease } = springEase({
+          ...RETURN_SPRING,
+          restDelta: Math.min(1, 1 / Math.abs(from)),
+        });
+        gsap.to(el, {
+          x: 0,
+          duration,
+          ease,
+          overwrite: "auto",
+          onUpdate: () => paintDrag(el, Number(gsap.getProperty(el, "x")) || 0),
+        });
+      }
+    };
+
+    window.addEventListener("pointermove", move);
+    window.addEventListener("pointerup", end);
+    window.addEventListener("pointercancel", end);
+    endDrag.current = stop;
+  };
 
   return (
-    <motion.div
-      key={item.id}
-      layout
-      custom={direction}
-      drag={isDraggable ? "x" : false}
-      dragConstraints={{ left: 0, right: 0 }}
-      dragElastic={0.8}
-      onDragEnd={(_, info) => {
-        if (!isDraggable) return;
-        const threshold = 80;
-        const velocityThreshold = 280;
-        if (info.offset.x > threshold || info.velocity.x > velocityThreshold) {
-          onDismiss("right");
-        } else if (info.offset.x < -threshold || info.velocity.x < -velocityThreshold) {
-          onDismiss("left");
-        }
-      }}
-      variants={{
-        initial: (dir: number) =>
-          isTop && dir < 0
-            ? {
-                x: 220 * slideMultiplier,
-                y: -10,
-                rotate: 8 * slideMultiplier,
-                opacity: 0,
-                scale: 0.98,
-                zIndex: count + 2,
-              }
-            : {
-                x: offsetX,
-                y: offsetY,
-                rotate,
-                opacity: 0,
-                zIndex,
-              },
-        animate: {
-          x: offsetX,
-          y: offsetY,
-          rotate,
-          opacity: 1,
-          scale: 1,
-          zIndex,
-        },
-        exit: (dir: number) => ({
-          x: (dir > 0 ? 320 : -320) * (swipeToDismiss ? 1 : slideMultiplier),
-          y: -10,
-          rotate: (dir > 0 ? 14 : -14) * (swipeToDismiss ? 1 : slideMultiplier),
-          opacity: 0,
-          scale: 0.96,
-          zIndex: count + 2,
-          transition: {
-            duration: 0.26,
-            ease: [0.25, 1, 0.5, 1],
-          },
-        }),
-      }}
-      initial="initial"
-      animate="animate"
-      exit="exit"
-      transition={{
-        type: "spring",
-        stiffness: 280,
-        damping: 26,
-        mass: 0.8,
-      }}
-      style={{
-        transformOrigin: "bottom center",
-        ...(isDraggable ? { x, rotate: dragRotate } : {}),
-      }}
+    <div
+      ref={ref}
+      onPointerDown={handlePointerDown}
+      style={{ transformOrigin: "bottom center", ...startStyle }}
       className={cn(
         "absolute inset-x-0 bottom-0 top-0 rounded-[26px] border border-foreground/10 dark:border-foreground/15 bg-card p-6 shadow-[0_10px_25px_-5px_rgba(0,0,0,0.06),0_2px_6px_-2px_rgba(0,0,0,0.04)] dark:shadow-[0_12px_28px_-6px_rgba(0,0,0,0.6),0_2px_6px_-2px_rgba(0,0,0,0.4)] flex flex-col justify-between overflow-hidden",
         isDraggable
@@ -195,7 +363,7 @@ function StackCardItem({
                 aria-label={`Open ${item.title}`}
                 onClick={(e) => {
                   // Prevent navigation if user was dragging
-                  if (Math.abs(x.get()) > 5) {
+                  if (Math.abs(dragX.current) > 5) {
                     e.preventDefault();
                   }
                 }}
@@ -226,9 +394,120 @@ function StackCardItem({
           )}
         </>
       )}
-    </motion.div>
+    </div>
   );
 }
+
+// ============================================================================
+// DECK (keeps leaving cards mounted until they have flown out)
+// ============================================================================
+
+interface DeckEntry {
+  item: CardStackItem;
+  offset: number;
+}
+
+interface ExitingCard extends DeckEntry {
+  exit: { x: number; rotation: number };
+}
+
+const sameDeck = (a: DeckEntry[], b: DeckEntry[]) =>
+  a.length === b.length &&
+  a.every((entry, i) => entry.item.id === b[i].item.id && entry.offset === b[i].offset);
+
+interface CardDeckProps {
+  visible: DeckEntry[];
+  count: number;
+  direction: 1 | -1;
+  slideMultiplier: number;
+  swipeToDismiss: boolean;
+  canDismiss: boolean;
+  onSwipe: (dir: "left" | "right") => void;
+  renderCard?: (item: CardStackItem, index: number, isTop: boolean) => React.ReactNode;
+  cardClassName?: string;
+}
+
+function CardDeck({
+  visible,
+  count,
+  direction,
+  slideMultiplier,
+  swipeToDismiss,
+  canDismiss,
+  onSwipe,
+  renderCard,
+  cardClassName,
+}: CardDeckProps) {
+  const [shown, setShown] = useState(visible);
+  const [exiting, setExiting] = useState<ExitingCard[]>([]);
+  // The cards on screen when the deck mounts appear in place; any card that
+  // joins later animates in.
+  const [animateEntries, setAnimateEntries] = useState(false);
+
+  if (!sameDeck(shown, visible)) {
+    const ids = new Set(visible.map((entry) => entry.item.id));
+    const left = shown.filter((entry) => !ids.has(entry.item.id));
+    const flyX = 320 * (swipeToDismiss ? 1 : slideMultiplier);
+    const flyRotation = 14 * (swipeToDismiss ? 1 : slideMultiplier);
+    setExiting((prev) => [
+      // A card that comes back mid-flight rejoins the deck from where it is.
+      ...prev.filter((entry) => !ids.has(entry.item.id)),
+      ...left.map((entry) => ({
+        ...entry,
+        exit: {
+          x: direction > 0 ? flyX : -flyX,
+          rotation: direction > 0 ? flyRotation : -flyRotation,
+        },
+      })),
+    ]);
+    setShown(visible);
+    setAnimateEntries(true);
+  }
+
+  const handleExited = useCallback((id: CardStackItem["id"]) => {
+    setExiting((prev) => prev.filter((entry) => entry.item.id !== id));
+  }, []);
+
+  const entries = [
+    ...exiting.filter((entry) => !visible.some((v) => v.item.id === entry.item.id)),
+    ...visible
+      .slice()
+      .reverse()
+      .map((entry) => ({ ...entry, exit: null })),
+  ];
+
+  return (
+    <>
+      {entries.map(({ item, offset, exit }) => {
+        const isTop = offset === 0;
+        return (
+          <StackCardItem
+            key={item.id}
+            item={item}
+            offset={offset}
+            isTop={isTop}
+            count={count}
+            start={
+              animateEntries
+                ? enterPose(offset, count, direction, slideMultiplier)
+                : restPose(offset, count)
+            }
+            exit={exit}
+            isDraggable={isTop && swipeToDismiss && canDismiss}
+            onSwipe={onSwipe}
+            onExited={handleExited}
+            renderCard={renderCard}
+            cardClassName={cardClassName}
+          />
+        );
+      })}
+    </>
+  );
+}
+
+// ============================================================================
+// MAIN COMPONENT
+// ============================================================================
 
 export const CardStack = React.forwardRef<HTMLDivElement, CardStackProps>(
   (
@@ -294,7 +573,7 @@ export const CardStack = React.forwardRef<HTMLDivElement, CardStackProps>(
     };
 
     // Calculate visible cards from current index
-    const visibleItems: { item: CardStackItem; offset: number }[] = [];
+    const visibleItems: DeckEntry[] = [];
     const count = Math.min(visibleCards, total);
 
     if (!isCompleted) {
@@ -380,27 +659,17 @@ export const CardStack = React.forwardRef<HTMLDivElement, CardStackProps>(
                 </button>
               </div>
             ) : (
-              <AnimatePresence custom={direction} initial={false}>
-                {visibleItems
-                  .slice()
-                  .reverse()
-                  .map(({ item, offset }) => (
-                    <StackCardItem
-                      key={item.id}
-                      item={item}
-                      offset={offset}
-                      isTop={offset === 0}
-                      count={count}
-                      direction={direction}
-                      slideMultiplier={slideMultiplier}
-                      swipeToDismiss={swipeToDismiss}
-                      canDismiss={canDismiss}
-                      onDismiss={handleDismissCard}
-                      renderCard={renderCard}
-                      cardClassName={cardClassName}
-                    />
-                  ))}
-              </AnimatePresence>
+              <CardDeck
+                visible={visibleItems}
+                count={count}
+                direction={direction}
+                slideMultiplier={slideMultiplier}
+                swipeToDismiss={swipeToDismiss}
+                canDismiss={canDismiss}
+                onSwipe={handleDismissCard}
+                renderCard={renderCard}
+                cardClassName={cardClassName}
+              />
             )}
           </div>
         </div>

@@ -412,7 +412,7 @@ export interface NewsletterProps extends React.HTMLAttributes<HTMLElement> {
 const isPart = (child: React.ReactNode, type: React.ElementType) =>
   React.isValidElement(child) && child.type === type;
 
-function NewsletterRoot({
+export function Newsletter({
   variant = "portraits",
   portraits = [],
   accent,
@@ -516,13 +516,11 @@ function NewsletterRoot({
   );
 }
 
-export const Newsletter = Object.assign(NewsletterRoot, {
-  Heading,
-  Intro,
-  Form,
-  Proof,
-  Ticker,
-  Issues,
-});
+Newsletter.Heading = Heading;
+Newsletter.Intro = Intro;
+Newsletter.Form = Form;
+Newsletter.Proof = Proof;
+Newsletter.Ticker = Ticker;
+Newsletter.Issues = Issues;
 
 export default Newsletter;

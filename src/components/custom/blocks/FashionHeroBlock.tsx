@@ -105,7 +105,7 @@ function LookCard({ look, className }: { look: Look; className?: string }) {
 // ------------------------------------------
 // Root
 // ------------------------------------------
-function FashionHeroRoot({
+export function FashionHero({
   heading,
   video,
   avatars = [],
@@ -124,7 +124,6 @@ function FashionHeroRoot({
 }: FashionHeroProps) {
   const rootRef = useRef<HTMLElement>(null);
   const [inView, setInView] = useState(reveal === "immediate");
-  const [playing, setPlaying] = useState(false);
   const [l0, l1, l2, l3, l4, l5, l6] = looks;
 
   useEffect(() => {
@@ -169,7 +168,9 @@ function FashionHeroRoot({
     });
     root.querySelectorAll<HTMLElement>("[data-lb-cta]").forEach((el) => at(el, 0.95));
     root.querySelectorAll<HTMLElement>("[data-lb-foot]").forEach((el, i) => at(el, 1.05 + i * 0.12));
-    setPlaying(true);
+    // Written here rather than rendered, so it lands together with the start
+    // times above and React never has to re-render to start the reveal.
+    root.setAttribute("data-lb-reveal", "");
   }, [inView]);
 
   const vars = (accent ? { "--primary": accent } : {}) as React.CSSProperties;
@@ -177,7 +178,6 @@ function FashionHeroRoot({
   return (
     <section
       ref={rootRef}
-      data-lb-reveal={playing ? "" : undefined}
       className={cn("relative w-full overflow-hidden bg-background text-foreground", className)}
       style={{ ...vars, ...style }}
       {...props}
@@ -342,6 +342,6 @@ function FashionHeroRoot({
   );
 }
 
-export const FashionHero = Object.assign(FashionHeroRoot, { Look: LookCard });
+FashionHero.Look = LookCard;
 
 export default FashionHero;

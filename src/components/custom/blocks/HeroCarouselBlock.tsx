@@ -115,7 +115,7 @@ const PROGRESS_CSS = "@keyframes hc-progress { from { transform: scaleX(0); } to
 // ------------------------------------------
 // Root
 // ------------------------------------------
-function HeroCarouselRoot({
+export function HeroCarousel({
   slides,
   eyebrow,
   heading,
@@ -155,8 +155,11 @@ function HeroCarouselRoot({
 
   const metrics = railWidth > 0 ? railMetrics(railWidth) : null;
 
+  // The committed index, for `go` — kept current as soon as each change lands.
   const activeRef = useRef(active);
-  activeRef.current = active;
+  useLayoutEffect(() => {
+    activeRef.current = active;
+  }, [active]);
   const go = useCallback(
     (index: number) => {
       if (n === 0) return;
@@ -605,6 +608,6 @@ function HeroCarouselRoot({
   );
 }
 
-export const HeroCarousel = Object.assign(HeroCarouselRoot, { metrics: railMetrics });
+HeroCarousel.metrics = railMetrics;
 
 export default HeroCarousel;
