@@ -86,7 +86,7 @@
       "docs": "Named exports: AIChat, plus ChatThread, Message, ChatModel, EffortOption, ComposerTool, SendPayload and UploadHandler types. Responses are mocked — wire `onSend` ({ content, attachments, model, effort, tools }) to your endpoint and `uploadFile` (file, onProgress, signal) to your storage. The composer ships with a + menu (`tools`: one upload row opens the picker, the rest insert @Label mentions), drag-and-drop attachments (rocket progress indicator), a `models` picker, a Faster↔Smarter `efforts` slider that lights the prompt bar at the top level, and mic dictation via getUserMedia + the Web Speech API with graceful fallbacks. Variants: default | minimal | glass | compact (no history sidebar — opens as a hero with `heroTitle` over the prompt bar until the first message; `showSidebar={false}` does the same for any variant)."
     },
     {
-      "name": "ai-chat-framer",
+      "name": "ai-chat-motion",
       "type": "registry:component",
       "title": "AI Chat (Motion)",
       "author": "AlgorizeTech",
@@ -103,7 +103,7 @@
       ],
       "files": [
         {
-          "path": "src/components/custom/blocks/framer/Ai-chat.tsx",
+          "path": "src/components/custom/blocks/motion/Ai-chat.tsx",
           "type": "registry:component",
           "target": "components/custom/blocks/Ai-chat.tsx"
         }
@@ -605,7 +605,7 @@
       "docs": "Named export: CardStack (also default). Accepts items, visibleCards, swipeToDismiss, canDismissLastCard, loop, showHeader, and showNavigation."
     },
     {
-      "name": "card-stack-framer",
+      "name": "card-stack-motion",
       "type": "registry:component",
       "title": "Card Stack (Motion)",
       "author": "AlgorizeTech",
@@ -624,7 +624,7 @@
       ],
       "files": [
         {
-          "path": "src/components/custom/blocks/framer/CardStackBlock.tsx",
+          "path": "src/components/custom/blocks/motion/CardStackBlock.tsx",
           "type": "registry:component",
           "target": "components/custom/blocks/CardStackBlock.tsx"
         }
@@ -693,7 +693,7 @@
       "docs": "Named exports: ThreeDCarousel, CarouselItem. `items` take { id, title, category, image, description? }. `autoPlay` with `autoPlayInterval` advances it; dragging pauses. Renders a plain <img>, so it works outside Next.js."
     },
     {
-      "name": "carousel-3d-framer",
+      "name": "carousel-3d-motion",
       "type": "registry:component",
       "title": "Carousel 3D (Motion)",
       "author": "AlgorizeTech",
@@ -711,7 +711,7 @@
       ],
       "files": [
         {
-          "path": "src/components/custom/blocks/framer/ThreeDCarouselBlock.tsx",
+          "path": "src/components/custom/blocks/motion/ThreeDCarouselBlock.tsx",
           "type": "registry:component",
           "target": "components/custom/blocks/ThreeDCarouselBlock.tsx"
         }
@@ -1494,7 +1494,7 @@
       "docs": "Named exports: Dock, DockItem. `items` take { id, label, icon, onClick?, isActive?, badge? }. `magnification` sets peak scale and `distance` the falloff radius. Pointer-driven — on touch devices it degrades to a plain icon row."
     },
     {
-      "name": "dock-framer",
+      "name": "dock-motion",
       "type": "registry:component",
       "title": "Dock (Motion)",
       "author": "AlgorizeTech",
@@ -1510,7 +1510,7 @@
       ],
       "files": [
         {
-          "path": "src/components/custom/blocks/framer/DockBlock.tsx",
+          "path": "src/components/custom/blocks/motion/DockBlock.tsx",
           "type": "registry:component",
           "target": "components/custom/blocks/DockBlock.tsx"
         }
@@ -1554,7 +1554,7 @@
       "docs": "Named exports: DraggableCardList, DraggableCardItem. Accepts `items` ({ id, title, description, date, badge, linkText, linkUrl, completed }), `onReorder`, `title`, `dragHandlePosition` ('right' | 'left'), `enableCheckboxes`, and `enableBadges`."
     },
     {
-      "name": "draggable-card-list-framer",
+      "name": "draggable-card-list-motion",
       "type": "registry:component",
       "title": "Draggable Card List (Motion)",
       "author": "AlgorizeTech",
@@ -1572,7 +1572,7 @@
       ],
       "files": [
         {
-          "path": "src/components/custom/framer/draggable-card-list.tsx",
+          "path": "src/components/custom/motion/draggable-card-list.tsx",
           "type": "registry:component",
           "target": "components/custom/draggable-card-list.tsx"
         }
@@ -1868,7 +1868,7 @@
       "docs": "Named exports: Folder, SkeletonCard (plus FolderFile / FolderProps types). `files` is { thumb?, name?, progress? }[]; without files, `peek` skeleton cards show. `color` tints body, pocket, icon and cards via OKLCH; `icon` is a lucide component. Hover, tap or focus opens the fan; past five files it pages with arrows or by dragging a card. `interactive` adds drag-and-drop + click-to-browse with `onFiles`, `progress` and `onRemoveFile`. Pulls in `tooltip` for file-name hovers."
     },
     {
-      "name": "folder-framer",
+      "name": "folder-motion",
       "type": "registry:component",
       "title": "Folder (Motion)",
       "author": "AlgorizeTech",
@@ -1886,7 +1886,7 @@
       ],
       "files": [
         {
-          "path": "src/components/custom/blocks/framer/FolderBlock.tsx",
+          "path": "src/components/custom/blocks/motion/FolderBlock.tsx",
           "type": "registry:component",
           "target": "components/custom/blocks/FolderBlock.tsx"
         }
@@ -2567,7 +2567,7 @@
       "docs": "Named export: MasonryGrid. Generic over your item type — pass `items` and a `renderItem` callback. Column count and gaps come from `columnsClassName` and `gapClassName`, so responsive behaviour is plain Tailwind. CSS columns fill top-to-bottom per column, so visual order differs from DOM order."
     },
     {
-      "name": "masonry-grid-framer",
+      "name": "masonry-grid-motion",
       "type": "registry:component",
       "title": "Masonry Grid (Motion)",
       "author": "AlgorizeTech",
@@ -2584,7 +2584,7 @@
       ],
       "files": [
         {
-          "path": "src/components/custom/blocks/framer/MasonryGridBlock.tsx",
+          "path": "src/components/custom/blocks/motion/MasonryGridBlock.tsx",
           "type": "registry:component",
           "target": "components/custom/blocks/MasonryGridBlock.tsx"
         }
@@ -2628,7 +2628,7 @@
       "docs": "Named export: MemoriesCard. `items` take { id, title, location, date, image, description?, tag? }; `onCardChange` reports the active index. Drag or click to advance the stack."
     },
     {
-      "name": "memories-card-framer",
+      "name": "memories-card-motion",
       "type": "registry:component",
       "title": "Memories Card (Motion)",
       "author": "AlgorizeTech",
@@ -2646,7 +2646,7 @@
       ],
       "files": [
         {
-          "path": "src/components/custom/blocks/framer/MemoriesCardBlock.tsx",
+          "path": "src/components/custom/blocks/motion/MemoriesCardBlock.tsx",
           "type": "registry:component",
           "target": "components/custom/blocks/MemoriesCardBlock.tsx"
         }
@@ -2852,7 +2852,7 @@
       "docs": "Named export: Newsletter, with parts Heading, Intro, Form, Proof, Ticker and Issues. Composed from the input, button, marquee and tilted-card items, which install alongside it. `variant` is portraits | spotlight | issues, each styled for light and dark mode; `portraits` takes up to four faces; `Form` takes `onSubscribe(email)` (a promise holds the busy state), `action`, `successTitle`/`successText`; `accent` pins the glow and button colour; `reveal` is in-view or immediate."
     },
     {
-      "name": "newsletter-framer",
+      "name": "newsletter-motion",
       "type": "registry:component",
       "title": "Newsletter (Motion)",
       "author": "AlgorizeTech",
@@ -2874,7 +2874,7 @@
       ],
       "files": [
         {
-          "path": "src/components/custom/blocks/framer/NewsletterBlock.tsx",
+          "path": "src/components/custom/blocks/motion/NewsletterBlock.tsx",
           "type": "registry:component",
           "target": "components/custom/blocks/NewsletterBlock.tsx"
         }
@@ -3979,7 +3979,7 @@
       "docs": "Named export: StickyScrollStack. Each item sets `contentType` (list | image | split | custom) so steps need not share a shape. Uses next/image, so it needs edits outside Next.js."
     },
     {
-      "name": "sticky-scroll-stack-framer",
+      "name": "sticky-scroll-stack-motion",
       "type": "registry:component",
       "title": "Sticky Scroll Stack (Motion)",
       "author": "AlgorizeTech",
@@ -3997,7 +3997,7 @@
       ],
       "files": [
         {
-          "path": "src/components/custom/blocks/framer/StickyScrollStackBlock.tsx",
+          "path": "src/components/custom/blocks/motion/StickyScrollStackBlock.tsx",
           "type": "registry:component",
           "target": "components/custom/blocks/StickyScrollStackBlock.tsx"
         }
