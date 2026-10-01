@@ -3231,6 +3231,11 @@
           "target": "components/custom/blocks/ProgressBlock.tsx"
         },
         {
+          "path": "src/components/custom/blocks/progress-hooks.ts",
+          "type": "registry:component",
+          "target": "components/custom/blocks/progress-hooks.ts"
+        },
+        {
           "path": "src/components/custom/blocks/progress-theme.ts",
           "type": "registry:component",
           "target": "components/custom/blocks/progress-theme.ts"
@@ -4959,6 +4964,11 @@
           "path": "src/components/custom/blocks/WaitlistBlock.tsx",
           "type": "registry:component",
           "target": "components/custom/blocks/WaitlistBlock.tsx"
+        },
+        {
+          "path": "src/components/custom/blocks/progress-hooks.ts",
+          "type": "registry:component",
+          "target": "components/custom/blocks/progress-hooks.ts"
         }
       ],
       "docs": "Named export: Waitlist, with parts Mark, Countdown, Heading, Intro, Form, Proof and Spots. Composed from the counter, input, button, avatar-stack, progress and copy-button items, which install alongside it. `variant` is card | launch | queue, each styled for light and dark mode; `Countdown` takes a `date` and is the counter's slide countdown; `Form` takes `onJoin(email)` — resolve a number to show it as the place in line, throw an Error to show its message — plus `action`, `shareUrl`, `note` and the success copy; `Spots` takes `claimed` and `total`; `accent` pins the colour; `reveal` is in-view or immediate."

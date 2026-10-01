@@ -149,10 +149,10 @@ const variantClasses: Record<TableVariant, VariantSkin> = {
       "relative w-full rounded-[20px] bg-card text-card-foreground ring-1 ring-foreground/[0.08] shadow-[0_1px_2px_rgb(16_24_40/0.04),0_16px_32px_-20px_rgb(16_24_40/0.14)] dark:shadow-none",
     heading: "border-b border-foreground/[0.08]",
     footer: "border-t border-foreground/[0.08]",
-    // The band is painted on the cells, not the row, so fractional column
-    // widths never show seams in it.
+    // The band is painted on the row and on its cells, so the hairline gaps
+    // fractional column widths leave between cells show the same colour.
     headerRow:
-      "[&>*]:bg-[var(--tbl-well)] [&>*]:border-b [&>*]:border-foreground/[0.08]",
+      "bg-[var(--tbl-well)] [&>*]:bg-[var(--tbl-well)] [&>*]:border-b [&>*]:border-foreground/[0.08]",
     // Dividers sit on top of each row (none on the first), so the last row
     // never doubles the footer's line — even when hidden detail rows follow it.
     row: "group transition-colors duration-150 hover:bg-[var(--tbl-row-hover)] [&>*]:border-t [&>*]:border-foreground/[0.08] [&:first-child>*]:border-t-0",

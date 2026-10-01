@@ -30,6 +30,10 @@ const EASE_IN_OUT = "cubic-bezier(0.42, 0, 0.58, 1)";
 const EASE_OUT = "cubic-bezier(0, 0, 0.58, 1)";
 const BODY_EASE = "cubic-bezier(0.16, 1, 0.3, 1)";
 
+// Stable fallback for an empty `items` list, so `useWaitSwap` sees the same
+// object on every render.
+const NO_ITEM = {} as AccordionShowcaseItem;
+
 const keyframes = `
 @keyframes scroll-accordion-image-in { from { opacity: 0; scale: 1.04; } }
 @keyframes scroll-accordion-title-in { from { opacity: 0; translate: 0 5px; } }
@@ -152,17 +156,18 @@ function AccordionBody({
   isActive: boolean;
   children: React.ReactNode;
 }) {
-  const presence = usePresence<HTMLDivElement>(isActive, 350);
-  if (!presence.mounted) return null;
+  const { attach, mounted, open, onTransitionEnd } =
+    usePresence<HTMLDivElement>(isActive, 350);
+  if (!mounted) return null;
   return (
     <div
-      ref={presence.attach}
-      onTransitionEnd={presence.onTransitionEnd}
+      ref={attach}
+      onTransitionEnd={onTransitionEnd}
       className="overflow-hidden z-10"
       style={{
         display: "grid",
-        gridTemplateRows: presence.open ? "1fr" : "0fr",
-        opacity: presence.open ? 1 : 0,
+        gridTemplateRows: open ? "1fr" : "0fr",
+        opacity: open ? 1 : 0,
         transition: `grid-template-rows 0.35s ${BODY_EASE}, opacity 0.35s ${BODY_EASE}`,
       }}
     >
@@ -447,7 +452,7 @@ export const ScrollAccordionShowcase = React.forwardRef<
       }, 700);
     };
 
-    const activeItem = items[activeIndex] || items[0] || {};
+    const activeItem = items[activeIndex] || items[0] || NO_ITEM;
 
     // The mockup image and its caption each swap in "wait" order: the old one
     // leaves completely before the new one comes in.

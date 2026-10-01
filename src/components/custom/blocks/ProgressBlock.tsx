@@ -2,8 +2,9 @@
 
 import { cn } from "@/lib/utils";
 import { AlertCircle, AlertTriangle, CheckCircle2 } from "lucide-react";
-import React, { forwardRef, useEffect, useRef, useState } from "react";
+import React, { forwardRef } from "react";
 import { getThemeStyles } from "./progress-theme";
+import { useCountUp } from "./progress-hooks";
 
 // ==========================================
 // VARIANT & COLOR CONFIGURATION
@@ -69,15 +70,8 @@ const STATUS_READOUT: Record<
 };
 
 // ==========================================
-// COUNT-UP ANIMATION
+// COUNT-UP ANIMATION (the tween itself, useCountUp, is in progress-hooks.ts)
 // ==========================================
-
-/** One easing for the fill and the readout, so they can never drift apart. */
-const easeOutCubic = (t: number) => 1 - Math.pow(1 - t, 3);
-
-const prefersReducedMotion = () =>
-  typeof window !== "undefined" &&
-  window.matchMedia?.("(prefers-reduced-motion: reduce)").matches === true;
 
 /** Decimal places in `n`, so a tweened value can be shown at the caller's precision. */
 const decimalsOf = (n: number) => {
@@ -91,68 +85,6 @@ const roundTo = (n: number, decimals: number) => {
   const factor = 10 ** decimals;
   return Math.round(n * factor) / factor;
 };
-
-export interface CountUpOptions {
-  /** Length of the first run, from zero, in ms. Default 1200. */
-  duration?: number;
-  /** `false` returns `target` untouched. */
-  enabled?: boolean;
-  /**
-   * The scale later changes are measured against (the bar's `max`). A change
-   * across the whole range takes `duration`; a 1% tick takes a sliver of it.
-   */
-  range?: number;
-}
-
-/**
- * Tweens a number towards `target`. It starts at 0 on mount — so the bar
- * fills and the readout counts up when it first appears — then follows every
- * later change from wherever it currently is, so a stream of small updates
- * never jumps. The mount run always takes the full `duration`; later runs
- * take a slice proportional to how far they travel, floored so a tiny nudge
- * still visibly moves. Under `prefers-reduced-motion` it returns `target`.
- */
-export function useCountUp(
-  target: number,
-  { duration = 1200, enabled = true, range }: CountUpOptions = {},
-): number {
-  const [current, setCurrent] = useState(enabled ? 0 : target);
-  const currentRef = useRef(current);
-  // Flipped by the first frame that actually moves, not by the effect — a
-  // run that is cancelled before it paints (strict mode) is not a mount run.
-  const movedRef = useRef(false);
-
-  useEffect(() => {
-    if (!enabled || prefersReducedMotion()) {
-      currentRef.current = target;
-      setCurrent(target);
-      return;
-    }
-    const from = currentRef.current;
-    const delta = target - from;
-    if (delta === 0) return;
-
-    const scale = Math.max(Math.abs(range ?? target), Math.abs(from), 1);
-    const ms = movedRef.current
-      ? Math.max(160, duration * Math.min(1, Math.abs(delta) / scale))
-      : duration;
-
-    let raf = 0;
-    const start = performance.now();
-    const tick = (now: number) => {
-      const t = Math.min(1, (now - start) / ms);
-      const next = t >= 1 ? target : from + delta * easeOutCubic(t);
-      currentRef.current = next;
-      movedRef.current = true;
-      setCurrent(next);
-      if (t < 1) raf = requestAnimationFrame(tick);
-    };
-    raf = requestAnimationFrame(tick);
-    return () => cancelAnimationFrame(raf);
-  }, [target, duration, enabled, range]);
-
-  return enabled ? current : target;
-}
 
 /** The hover bubble shared by the bar and the ring. Positioned by the caller. */
 function ProgressTooltip({

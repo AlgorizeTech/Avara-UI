@@ -304,24 +304,24 @@ function Fold({
 }) {
   const [phase, setPhase] = useState<FoldPhase>(show ? "open" : "closed");
   const [cameIn, setCameIn] = useState(false);
-  const ref = useRef<HTMLDivElement>(null);
-  const shown = useRef(children);
-  if (show) shown.current = children;
+  // What it last showed, kept so the panel still holds it while it folds.
+  const [shown, setShown] = useState(children);
+  if (show && shown !== children) setShown(children);
 
-  useLayoutEffect(() => {
-    if (show && phase === "closed") {
-      setPhase(instant ? "open" : "entering");
-      setCameIn(!instant);
-    } else if (show && phase === "closing") setPhase("open");
-    else if (!show && (phase === "open" || phase === "entering")) setPhase(instant ? "closed" : "closing");
-  }, [show, phase, instant]);
+  // Follow `show` while rendering, so the new phase is what first commits.
+  if (show && phase === "closed") {
+    setPhase(instant ? "open" : "entering");
+    setCameIn(!instant);
+  } else if (show && phase === "closing") setPhase("open");
+  else if (!show && (phase === "open" || phase === "entering")) setPhase(instant ? "closed" : "closing");
 
-  // Entering: commit the folded look, then transition to the open one.
-  useLayoutEffect(() => {
-    if (phase !== "entering") return;
-    void ref.current?.offsetWidth;
-    setPhase("open");
-  }, [phase]);
+  // Entering: the panel mounts with the folded look; commit it, then
+  // transition to the open one before the first paint.
+  const enter = useCallback((el: HTMLDivElement | null) => {
+    if (!el) return;
+    void el.offsetWidth;
+    setPhase((p) => (p === "entering" ? "open" : p));
+  }, []);
 
   // In case the fold never reports its end (a hidden tab, `display: none`).
   useEffect(() => {
@@ -337,7 +337,7 @@ function Fold({
   const on = phase === "closing" ? settleOn : unfoldOn;
   return (
     <div
-      ref={ref}
+      ref={enter}
       data-fold-in={cameIn || undefined}
       className={className}
       style={{
@@ -351,7 +351,7 @@ function Fold({
         if (phase === "closing" && e.target === e.currentTarget && e.propertyName === dimension) setPhase("closed");
       }}
     >
-      {axis === "x" ? shown.current : <div className="min-h-0">{shown.current}</div>}
+      {axis === "x" ? shown : <div className="min-h-0">{shown}</div>}
     </div>
   );
 }

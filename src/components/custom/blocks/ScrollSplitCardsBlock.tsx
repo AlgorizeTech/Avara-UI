@@ -1,8 +1,14 @@
 "use client";
 
-import React, { useRef, useEffect, useState } from "react";
-import { motion, useSpring, useTransform, useMotionValue, type MotionValue } from "framer-motion";
+import React, { useEffect, useRef } from "react";
 import { cn } from "@/lib/utils";
+import { createSpringFollower } from "./motion-curves";
+
+// Scroll choreography: wheel and touch input move a raw 0 → 1 progress, and
+// the painted progress chases it through this spring (the equation of motion
+// Framer Motion's `useSpring` solves) stepped on requestAnimationFrame. No
+// animation library: every frame writes the panels' transforms directly.
+const PROGRESS_SPRING = { stiffness: 220, damping: 28, mass: 1, restDelta: 0.001, restSpeed: 0.01 };
 
 // ============================================================================
 // TYPES & INTERFACES
@@ -41,7 +47,7 @@ export interface ScrollSplitCardsProps
 export const DEFAULT_IMAGE =
   "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto/v1790224415/photo-1501785888041-af3ef285b470-1790146212207-1790224416318.jpg";
 
-export const DEFAULT_CARDS: SplitCard[] = [
+const DEFAULT_CARDS: SplitCard[] = [
   {
     title: "Lago di Braies",
     kicker: "SANCTUARY",
@@ -80,21 +86,21 @@ export const DEFAULT_CARDS: SplitCard[] = [
 // ============================================================================
 // MATHEMATICAL EASING & CHOREOGRAPHY
 // ============================================================================
-export function clamp01(n: number) {
+function clamp01(n: number) {
   return Math.min(1, Math.max(0, n));
 }
 
-export function remap(progress: number, from: number, to: number) {
+function remap(progress: number, from: number, to: number) {
   if (to === from) return progress >= to ? 1 : 0;
   return clamp01((progress - from) / (to - from));
 }
 
-export function lerp(a: number, b: number, t: number) {
+function lerp(a: number, b: number, t: number) {
   return a + (b - a) * t;
 }
 
 /** Left/right panels shift outward, keeping a smaller peak and restGap on small screens to prevent clipping. */
-export function panelShiftX(progress: number, index: number, isSmall = false) {
+function panelShiftX(progress: number, index: number, isSmall = false) {
   const dir = index === 0 ? -1 : index === 2 ? 1 : 0;
   const out = remap(progress, 0, 0.4);
   const settle = remap(progress, 0.4, 0.8);
@@ -102,16 +108,16 @@ export function panelShiftX(progress: number, index: number, isSmall = false) {
   return dir * lerp(0, peak, out) * (1 - settle * 0.5) || 0;
 }
 
-export function panelRotateY(progress: number) {
+function panelRotateY(progress: number) {
   return lerp(0, 180, remap(progress, 0.4, 0.8));
 }
 
-export function panelScale(progress: number, isSmall = false) {
+function panelScale(progress: number, isSmall = false) {
   const target = isSmall ? 0.88 : 0.94;
   return lerp(1, target, remap(progress, 0, 0.4));
 }
 
-export function panelRadius(progress: number, index: number) {
+function panelRadius(progress: number, index: number) {
   const inner = lerp(0, 16, remap(progress, 0, 0.2));
   if (index === 0) return `16px ${inner}px ${inner}px 16px`;
   if (index === 2) return `${inner}px 16px 16px ${inner}px`;
@@ -124,22 +130,15 @@ export function panelRadius(progress: number, index: number) {
 function Panel({
   card,
   index,
-  progress,
   imageSrc,
-  isSmall = false,
 }: {
   card: SplitCard;
   index: number;
-  progress: MotionValue<number>;
   imageSrc: string;
-  isSmall?: boolean;
 }) {
-  const isSmallRef = useRef(isSmall);
-  isSmallRef.current = isSmall;
-
-  const x = useTransform(progress, (p) => panelShiftX(p, index, isSmallRef.current));
-  const rotateY = useTransform(progress, panelRotateY);
-  const radius = useTransform(progress, (p) => panelRadius(p, index));
+  // The resting (progress 0) radius. The scroll loop rewrites it, along with
+  // the panel's transform, straight on the DOM every frame.
+  const radius = panelRadius(0, index);
 
   const bgColor = card.bgColor || card.backgroundColor || "#13352F";
   const textColor = card.textColor || "#E6F4F1";
@@ -147,15 +146,17 @@ function Panel({
   const num = card.number || String(index + 1).padStart(2, "0");
 
   return (
-    <motion.div
+    <div
+      data-split-panel={index}
       className={cn(
         "relative h-full min-w-0 flex-[1_1_0] [transform-style:preserve-3d]",
         index > 0 ? "-ml-px" : ""
       )}
-      style={{ x, rotateY, zIndex: index }}
+      style={{ zIndex: index }}
     >
       {/* Front Face: 1/3 of the seamless panoramic photograph */}
-      <motion.div
+      <div
+        data-split-face=""
         className="absolute inset-0 overflow-hidden [backface-visibility:hidden]"
         style={{ borderRadius: radius }}
       >
@@ -168,10 +169,11 @@ function Panel({
             backgroundPosition: "center",
           }}
         />
-      </motion.div>
+      </div>
 
       {/* Back Face: Physical card reverse with rich editorial layout */}
-      <motion.div
+      <div
+        data-split-face=""
         className="absolute inset-0 flex flex-col justify-between overflow-hidden p-3 sm:p-5 md:p-7 antialiased [backface-visibility:hidden] select-none border border-white/10"
         style={{
           backgroundColor: bgColor,
@@ -224,8 +226,8 @@ function Panel({
             <span className="text-[10px] sm:text-xs shrink-0">↗</span>
           </div>
         </div>
-      </motion.div>
-    </motion.div>
+      </div>
+    </div>
   );
 }
 
@@ -249,66 +251,85 @@ export function ScrollSplitCards({
   const activeImage = imageSrc || imageUrl || DEFAULT_IMAGE;
 
   const containerRef = useRef<HTMLDivElement>(null);
-  const rawProgress = useMotionValue(0);
+  const headerRef = useRef<HTMLDivElement>(null);
+  const stageRef = useRef<HTMLDivElement>(null);
 
-  const [isSmallScreen, setIsSmallScreen] = useState(false);
-  const isSmallRef = useRef(false);
-
+  // One loop owns the whole choreography: wheel / touch input moves the raw
+  // progress, a spring follower smooths it, and every frame paints the stage,
+  // header and panels from the smoothed value. The small-screen flag lives
+  // here too, so a resize across the breakpoint just repaints.
   useEffect(() => {
     const el = containerRef.current;
     if (!el) return;
 
-    const checkSize = () => {
-      const width = el.clientWidth;
-      const small = width > 0 && width < 640;
-      if (small !== isSmallRef.current) {
-        isSmallRef.current = small;
-        setIsSmallScreen(small);
-        rawProgress.set(rawProgress.get());
+    let isSmall = false;
+    let raw = 0;
+
+    const paint = (p: number) => {
+      const stage = stageRef.current;
+      const header = headerRef.current;
+
+      if (stage) {
+        const scale = panelScale(p, isSmall);
+        stage.style.transform = scale !== 1 ? `scale(${scale})` : "none";
+        stage.querySelectorAll<HTMLElement>("[data-split-panel]").forEach((panel) => {
+          const index = Number(panel.dataset.splitPanel);
+          const x = panelShiftX(p, index, isSmall);
+          const rotateY = panelRotateY(p);
+          const parts: string[] = [];
+          if (x !== 0) parts.push(`translateX(${x}px)`);
+          if (rotateY !== 0) parts.push(`rotateY(${rotateY}deg)`);
+          panel.style.transform = parts.length ? parts.join(" ") : "none";
+          const radius = panelRadius(p, index);
+          panel.querySelectorAll<HTMLElement>(":scope > [data-split-face]").forEach((face) => {
+            face.style.borderRadius = radius;
+          });
+        });
+      }
+
+      if (header) {
+        // Opacity 1 → 0.8 → 0 over [0, 0.15, 0.28]; lift 0 → -18px over [0, 0.28].
+        const opacity = p <= 0.15 ? lerp(1, 0.8, remap(p, 0, 0.15)) : lerp(0.8, 0, remap(p, 0.15, 0.28));
+        const y = lerp(0, -18, remap(p, 0, 0.28));
+        header.style.opacity = String(opacity);
+        header.style.transform = y !== 0 ? `translateY(${y}px)` : "none";
       }
     };
 
-    checkSize();
-    const observer = new ResizeObserver((entries) => {
-      for (const entry of entries) {
-        const width = entry.contentRect.width;
-        const small = width > 0 && width < 640;
-        if (small !== isSmallRef.current) {
-          isSmallRef.current = small;
-          setIsSmallScreen(small);
-          rawProgress.set(rawProgress.get());
-        }
+    const spring = createSpringFollower(0, paint, PROGRESS_SPRING);
+
+    const reducedMotion = () =>
+      window.matchMedia?.("(prefers-reduced-motion: reduce)").matches === true;
+
+    const moveTo = (next: number) => {
+      raw = next;
+      // Reduced motion: the panels track the input directly, with no spring
+      // carrying them on after the wheel or finger stops.
+      if (reducedMotion()) spring.jump(next);
+      else spring.set(next);
+    };
+
+    const checkSize = (width: number) => {
+      const small = width > 0 && width < 640;
+      if (small !== isSmall) {
+        isSmall = small;
+        paint(spring.get());
       }
+    };
+
+    checkSize(el.clientWidth);
+    const observer = new ResizeObserver((entries) => {
+      for (const entry of entries) checkSize(entry.contentRect.width);
     });
-
     observer.observe(el);
-    return () => observer.disconnect();
-  }, [rawProgress]);
 
-  // Organic spring physics for buttery scroll interaction
-  const smoothProgress = useSpring(rawProgress, {
-    stiffness: 220,
-    damping: 28,
-    restDelta: 0.001,
-  });
-
-  // Scale and header opacity mappings
-  const scale = useTransform(smoothProgress, (p) => panelScale(p, isSmallRef.current));
-  const headerOpacity = useTransform(smoothProgress, [0, 0.15, 0.28], [1, 0.8, 0]);
-  const headerY = useTransform(smoothProgress, [0, 0.28], [0, -18]);
-
-  // Capture wheel and touch gestures on container so everything happens in-place
-  useEffect(() => {
-    const el = containerRef.current;
-    if (!el) return;
-
+    // Capture wheel and touch gestures on container so everything happens in-place
     const handleWheel = (e: WheelEvent) => {
-      const current = rawProgress.get();
+      const current = raw;
       if ((e.deltaY > 0 && current < 1) || (e.deltaY < 0 && current > 0)) {
         e.preventDefault();
         const delta = e.deltaY * 0.0018;
-        const next = Math.min(Math.max(current + delta, 0), 1);
-        rawProgress.set(next);
+        moveTo(Math.min(Math.max(current + delta, 0), 1));
       }
     };
 
@@ -320,11 +341,10 @@ export function ScrollSplitCards({
       const currentY = e.touches[0].clientY;
       const deltaY = (touchStartY - currentY) * 1.5;
       touchStartY = currentY;
-      const current = rawProgress.get();
+      const current = raw;
       if ((deltaY > 0 && current < 1) || (deltaY < 0 && current > 0)) {
         if (e.cancelable) e.preventDefault();
-        const next = Math.min(Math.max(current + deltaY * 0.003, 0), 1);
-        rawProgress.set(next);
+        moveTo(Math.min(Math.max(current + deltaY * 0.003, 0), 1));
       }
     };
 
@@ -333,11 +353,13 @@ export function ScrollSplitCards({
     el.addEventListener("touchmove", handleTouchMove, { passive: false });
 
     return () => {
+      observer.disconnect();
+      spring.destroy();
       el.removeEventListener("wheel", handleWheel);
       el.removeEventListener("touchstart", handleTouchStart);
       el.removeEventListener("touchmove", handleTouchMove);
     };
-  }, [rawProgress]);
+  }, []);
 
   return (
     <div
@@ -357,8 +379,8 @@ export function ScrollSplitCards({
       {...props}
     >
       {/* Top Header & Scroll Indicator */}
-      <motion.div
-        style={{ opacity: headerOpacity, y: headerY }}
+      <div
+        ref={headerRef}
         className="pointer-events-none absolute inset-x-0 top-4 sm:top-5 lg:top-6 z-20 flex flex-col items-center gap-1 sm:gap-1.5 px-3 text-center"
       >
         <div className="flex max-w-full flex-col items-center gap-0.5 sm:gap-1 text-center">
@@ -376,25 +398,23 @@ export function ScrollSplitCards({
             <div className="w-px flex-1 bg-gradient-to-b from-neutral-400 dark:from-white/40 to-transparent" />
           </div>
         )}
-      </motion.div>
+      </div>
 
       {/* Presentation Stage: Level, Straight & Top-Calibrated */}
       <div className="relative h-full w-full flex flex-col items-center justify-start overflow-hidden [perspective:1400px] px-3.5 sm:px-6 pt-[106px] sm:pt-[120px] lg:pt-[132px]">
-        <motion.div
+        <div
+          ref={stageRef}
           className="flex h-[310px] sm:h-[430px] md:h-[450px] lg:h-[500px] w-full max-w-5xl px-1 sm:px-4 [transform-style:preserve-3d]"
-          style={{ scale }}
         >
           {cardList.map((card, index) => (
             <Panel
               key={card.title}
               card={card}
               index={index}
-              progress={smoothProgress}
               imageSrc={activeImage}
-              isSmall={isSmallScreen}
             />
           ))}
-        </motion.div>
+        </div>
       </div>
     </div>
   );
