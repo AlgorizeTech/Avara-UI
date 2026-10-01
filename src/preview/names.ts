@@ -23,6 +23,7 @@ export const sandboxNames = [
   "calendar",
   "card",
   "card-stack",
+  "card-stack-framer",
   "carousel-3d",
   "carousel-3d-framer",
   "carousel",

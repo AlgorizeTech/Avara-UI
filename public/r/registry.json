@@ -502,6 +502,11 @@
           "path": "src/components/custom/blocks/Button.tsx",
           "type": "registry:component",
           "target": "components/custom/blocks/Button.tsx"
+        },
+        {
+          "path": "src/components/custom/blocks/button-theme.ts",
+          "type": "registry:component",
+          "target": "components/custom/blocks/button-theme.ts"
         }
       ],
       "docs": "Default export. Supports variant (default | destructive | outline | secondary | ghost | link), size (sm | lg), and a `loading` prop. Ripple keyframes are injected into document.head on mount, so no Tailwind config or global CSS changes are needed."
@@ -574,7 +579,7 @@
         "actions"
       ],
       "dependencies": [
-        "framer-motion",
+        "gsap",
         "lucide-react"
       ],
       "registryDependencies": [
@@ -585,9 +590,46 @@
           "path": "src/components/custom/blocks/CardStackBlock.tsx",
           "type": "registry:component",
           "target": "components/custom/blocks/CardStackBlock.tsx"
+        },
+        {
+          "path": "src/components/custom/blocks/gsap-motion.ts",
+          "type": "registry:component",
+          "target": "components/custom/blocks/gsap-motion.ts"
+        },
+        {
+          "path": "src/components/custom/blocks/motion-curves.ts",
+          "type": "registry:component",
+          "target": "components/custom/blocks/motion-curves.ts"
         }
       ],
       "docs": "Named export: CardStack (also default). Accepts items, visibleCards, swipeToDismiss, canDismissLastCard, loop, showHeader, and showNavigation."
+    },
+    {
+      "name": "card-stack-framer",
+      "type": "registry:component",
+      "title": "Card Stack (Motion)",
+      "author": "AlgorizeTech",
+      "description": "A layered deck of cards featuring fluid drag-to-discard gestures, button-driven directional slide animations, and realistic depth perspective.",
+      "categories": [
+        "data-display",
+        "marketing",
+        "actions"
+      ],
+      "dependencies": [
+        "framer-motion",
+        "lucide-react"
+      ],
+      "registryDependencies": [
+        "utils"
+      ],
+      "files": [
+        {
+          "path": "src/components/custom/blocks/framer/CardStackBlock.tsx",
+          "type": "registry:component",
+          "target": "components/custom/blocks/CardStackBlock.tsx"
+        }
+      ],
+      "docs": "Motion build of `card-stack` — same props, markup and install path; install one or the other. Named export: CardStack (also default). Accepts items, visibleCards, swipeToDismiss, canDismissLastCard, loop, showHeader, and showNavigation."
     },
     {
       "name": "carousel",
@@ -1919,6 +1961,11 @@
           "path": "src/components/custom/blocks/GlassPanelBlock.tsx",
           "type": "registry:component",
           "target": "components/custom/blocks/GlassPanelBlock.tsx"
+        },
+        {
+          "path": "src/components/custom/blocks/glass-panel-context.ts",
+          "type": "registry:component",
+          "target": "components/custom/blocks/glass-panel-context.ts"
         }
       ],
       "docs": "Named exports: GlassBackdrop, GlassPanel, useSurface (plus SurfaceVariant, GlassShape types). `GlassBackdrop` washes three `aurora` colours behind a 12-column grid (`gridClassName` for row heights and gaps) and sets `variant` (glass | solid) for every `GlassPanel` inside; panels take `shape` (slab, tile, disc, capsule), `interactive`, and Tailwind column spans."
@@ -3205,6 +3252,11 @@
           "path": "src/components/custom/blocks/ProfilePageBlock.tsx",
           "type": "registry:component",
           "target": "components/custom/blocks/ProfilePageBlock.tsx"
+        },
+        {
+          "path": "src/components/custom/blocks/profile-page-hooks.ts",
+          "type": "registry:component",
+          "target": "components/custom/blocks/profile-page-hooks.ts"
         }
       ],
       "docs": "Named exports: ProfilePage, WorkdayDial, useLocalTime (GlassPanel and useSurface are re-exported from the glass-panel item, which installs alongside). `ProfilePage` is the glass backdrop and 12-column grid; place `GlassPanel`s inside with `shape` and column spans. `WorkdayDial` takes `timeZone`, `start`, `end`, `place`, `name`."
@@ -5000,6 +5052,11 @@
           "path": "src/components/custom/blocks/motion-curves.ts",
           "type": "registry:component",
           "target": "components/custom/blocks/motion-curves.ts"
+        },
+        {
+          "path": "src/components/custom/blocks/wallet-data.ts",
+          "type": "registry:component",
+          "target": "components/custom/blocks/wallet-data.ts"
         }
       ],
       "docs": "Named export: Wallet. Accepts cards array, overallBalance, allowReveal, and autoRevealOnHover."

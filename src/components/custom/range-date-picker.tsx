@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useLayoutEffect, useRef, useState, useSyncExternalStore } from "react";
+import { useCallback, useEffect, useLayoutEffect, useRef, useState, useSyncExternalStore } from "react";
 
 /**
  * False while server-rendering and during hydration, true afterwards — without
@@ -376,46 +376,51 @@ function WaitSwap({
 }) {
   const [shownKey, setShownKey] = useState(swapKey);
   const [phase, setPhase] = useState<SwapPhase>("shown");
-  const ref = useRef<HTMLDivElement>(null);
-  const shown = useRef(children);
-  if (shownKey === swapKey) shown.current = children;
+  // What the showing one holds, kept so the leaving one still shows it.
+  const [shown, setShown] = useState(children);
+  if (shownKey === swapKey && shown !== children) setShown(children);
   const wanted = useRef(swapKey);
 
   useLayoutEffect(() => {
     wanted.current = swapKey;
-    if (swapKey === shownKey) setPhase((p) => (p === "leaving" ? "shown" : p));
-    else if (instant) {
-      setShownKey(swapKey);
-      setPhase("shown");
-    } else setPhase("leaving");
-  }, [swapKey, shownKey, instant]);
+  }, [swapKey]);
+
+  // Follow `swapKey` while rendering, so the new phase is what first commits.
+  if (swapKey === shownKey) {
+    if (phase === "leaving") setPhase("shown");
+  } else if (instant) {
+    setShownKey(swapKey);
+    setPhase("shown");
+  } else if (phase !== "leaving") setPhase("leaving");
 
   // Coming in: commit the starting look, then transition to the resting one.
-  useLayoutEffect(() => {
-    if (phase !== "from") return;
-    void ref.current?.offsetWidth;
-    setPhase("shown");
-  }, [phase]);
+  const comeIn = useCallback(
+    (el: HTMLDivElement | null) => {
+      if (!el || phase !== "from") return;
+      void el.offsetWidth;
+      setPhase("shown");
+    },
+    [phase],
+  );
 
-  const settle = useRef(() => {});
-  settle.current = () => {
-    if (phase !== "leaving") return;
+  // The leaving one has gone: bring in whatever is wanted now.
+  const settle = useCallback(() => {
     setShownKey(wanted.current);
     setPhase("from");
-  };
+  }, []);
 
   // In case the transition never ends (a hidden tab, `display: none`).
   useEffect(() => {
     if (phase !== "leaving") return;
-    const t = window.setTimeout(() => settle.current(), 400);
+    const t = window.setTimeout(settle, 400);
     return () => window.clearTimeout(t);
-  }, [phase]);
+  }, [phase, settle]);
 
   const y = phase === "from" ? 6 : phase === "leaving" ? -6 : 0;
   return (
     <div
       key={shownKey}
-      ref={ref}
+      ref={comeIn}
       className={classNames?.[shownKey]}
       style={{
         opacity: phase === "shown" ? 1 : 0,
@@ -423,10 +428,10 @@ function WaitSwap({
         transition: phase === "from" || instant ? "none" : `${settleOn("opacity")}, ${settleOn("transform")}`,
       }}
       onTransitionEnd={(e) => {
-        if (e.target === e.currentTarget && e.propertyName === "opacity") settle.current();
+        if (phase === "leaving" && e.target === e.currentTarget && e.propertyName === "opacity") settle();
       }}
     >
-      {shown.current}
+      {shown}
     </div>
   );
 }

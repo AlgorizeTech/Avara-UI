@@ -17,6 +17,20 @@ const useReducedMotion = () =>
     () => false,
   );
 
+const NO_HOVER = "(hover: none)";
+const subscribeNoHover = (onChange: () => void) => {
+  const mq = window.matchMedia(NO_HOVER);
+  mq.addEventListener("change", onChange);
+  return () => mq.removeEventListener("change", onChange);
+};
+/** True on touch-only devices, which have no hover; false while server-rendering. */
+const useNoHover = () =>
+  useSyncExternalStore(
+    subscribeNoHover,
+    () => window.matchMedia(NO_HOVER).matches,
+    () => false,
+  );
+
 const TRANSITION_MS = 300;
 const MARK_WIDTH = 28;
 const GAP = 12;
@@ -74,7 +88,16 @@ export function ConversationTimeline({
   className,
 }: ConversationTimelineProps) {
   const [hoveredId, setHoveredId] = useState<string | null>(null);
-  const [expanded, setExpanded] = useState(false);
+  // Touch has no hover, so stay expanded and keep the labels reachable. The
+  // rail starts expanded there and follows the media query whenever it flips;
+  // adjusted while rendering rather than in an effect.
+  const noHover = useNoHover();
+  const [expanded, setExpanded] = useState(noHover);
+  const [prevNoHover, setPrevNoHover] = useState(noHover);
+  if (noHover !== prevNoHover) {
+    setPrevNoHover(noHover);
+    setExpanded(noHover);
+  }
   const reduce = useReducedMotion();
   const isRight = side === "right";
 
@@ -115,15 +138,6 @@ export function ConversationTimeline({
     return () => cancelAnimationFrame(raf);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [expanded]);
-
-  // Touch has no hover, so stay expanded and keep the labels reachable.
-  useEffect(() => {
-    const mq = window.matchMedia("(hover: none)");
-    setExpanded(mq.matches);
-    const onChange = (e: MediaQueryListEvent) => setExpanded(e.matches);
-    mq.addEventListener("change", onChange);
-    return () => mq.removeEventListener("change", onChange);
-  }, []);
 
   // Height is the only animated dimension. Gap and width stay fixed so the
   // rail never resizes horizontally and only one property drives layout.

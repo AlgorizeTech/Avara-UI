@@ -28,6 +28,7 @@ export const sandboxRegistry: Record<string, LazyExoticComponent<ComponentType<a
   "calendar": lazyRetry(() => import("./demos/calendar-demo")),
   "card": lazyRetry(() => import("./demos/card-demo")),
   "card-stack": lazyRetry(() => import("./demos/card-stack-demo")),
+  "card-stack-framer": lazyRetry(() => import("./demos/card-stack-framer-demo")),
   "carousel-3d": lazyRetry(() => import("./demos/carousel-3d-demo")),
   "carousel-3d-framer": lazyRetry(() => import("./demos/carousel-3d-framer-demo")),
   "carousel": lazyRetry(() => import("./demos/carousel-demo")),

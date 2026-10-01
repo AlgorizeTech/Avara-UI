@@ -193,7 +193,6 @@ export function PlatformGrid({
   const sectionRef = useRef<HTMLElement>(null);
   const gridRef = useRef<HTMLDivElement>(null);
   const [inView, setInView] = useState(reveal === "immediate");
-  const [playing, setPlaying] = useState(false);
 
   useEffect(() => {
     if (inView) return;
@@ -227,7 +226,9 @@ export function PlatformGrid({
     const tiles = Array.from(grid.querySelectorAll<HTMLElement>("[data-tile]"));
     const delays = centreWave(tiles, 0.08);
     tiles.forEach((tile, i) => tile.style.setProperty("--tile-at", `${delays[i]}s`));
-    setPlaying(true);
+    // Written here rather than rendered, so it lands together with the start
+    // times above and React never has to re-render to start the reveal.
+    grid.setAttribute("data-tile-reveal", "");
   }, [inView]);
 
   // The spotlight is driven by CSS variables written straight to the grid, so
@@ -274,7 +275,6 @@ export function PlatformGrid({
         <style>{REVEAL_CSS}</style>
         <div
           ref={gridRef}
-          data-tile-reveal={playing ? "" : undefined}
           onMouseMove={onMove}
           onMouseLeave={onLeave}
           className="relative grid grid-cols-2 border-l border-t border-foreground/[0.08] [grid-auto-flow:dense] sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-8 xl:grid-cols-8"

@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useRef, useState, useSyncExternalStore } from "react";
 import { cn } from "@/lib/utils";
 import { AppleSelect } from "./AppleSelectBlock";
 import { FlowCanvas, Flowchart, FlowConnection } from "./FlowchartBlock";
@@ -15,6 +15,22 @@ import { FlowCanvas, Flowchart, FlowConnection } from "./FlowchartBlock";
 // ==========================================
 
 type Point = { x: number; y: number };
+
+const REDUCED_MOTION = "(prefers-reduced-motion: reduce)";
+const subscribeReducedMotion = (onChange: () => void) => {
+  if (typeof window === "undefined" || !window.matchMedia) return () => {};
+  const mq = window.matchMedia(REDUCED_MOTION);
+  mq.addEventListener?.("change", onChange);
+  return () => mq.removeEventListener?.("change", onChange);
+};
+/** The visitor's reduced-motion setting; false while server-rendering. */
+function usePrefersReducedMotion() {
+  return useSyncExternalStore(
+    subscribeReducedMotion,
+    () => typeof window !== "undefined" && window.matchMedia?.(REDUCED_MOTION).matches === true,
+    () => false,
+  );
+}
 
 // GSAP's power3.out (sampled) and back.out(1.6) (exact), for Web Animations.
 const POWER3_OUT =
@@ -206,6 +222,9 @@ export function DataFlow({
   const boardRef = useRef<HTMLDivElement>(null);
   const [inView, setInView] = useState(reveal === "immediate");
   const [linesReady, setLinesReady] = useState(false);
+  const reducedMotion = usePrefersReducedMotion();
+  // With reduced motion the lines are simply there once the section is in view.
+  const showLines = linesReady || (inView && reducedMotion);
   const [paths, setPaths] = useState<string[]>([]);
   const [size, setSize] = useState<{ w: number; h: number }>({ w: 0, h: 0 });
 
@@ -294,10 +313,7 @@ export function DataFlow({
     const src = board.querySelectorAll<HTMLElement>('[data-flow="source"]');
     const coreEl = board.querySelector<HTMLElement>('[data-flow="core"]');
     const out = board.querySelectorAll<HTMLElement>('[data-flow="output"]');
-    if (reduced) {
-      setLinesReady(true);
-      return;
-    }
+    if (reduced) return;
     // One timeline, as Web Animations sharing a start: each card waits out its
     // delay already at its starting pose (`backwards`), then eases home.
     const animations: Animation[] = [];
@@ -372,7 +388,7 @@ export function DataFlow({
             ref={boardRef}
             className="relative grid grid-cols-1 gap-y-3 lg:grid-cols-[minmax(0,1fr)_13rem_minmax(0,1fr)] lg:gap-x-12 lg:gap-y-0 xl:grid-cols-[minmax(0,1fr)_15.5rem_minmax(0,1fr)] xl:gap-x-24 2xl:gap-x-28"
           >
-            {size.w > 0 && linesReady && (
+            {size.w > 0 && showLines && (
               <FlowCanvas
                 width={size.w}
                 height={size.h}

@@ -184,11 +184,18 @@ export function CollageHero({
     stagger("[data-kg-tag]", 0.35, 0.08);
     stagger("[data-kg-photo]", 0.5, 0.07);
     stagger("[data-kg-foot]", 1.1, 0.1);
-    setPhase("play");
+    // Start on the next frame, once the start times above are in place.
     // Once the footer has landed the keyframes come off, so pills that were
     // display:none below lg do not replay them when the window widens.
-    const t = window.setTimeout(() => setPhase("done"), 2000);
-    return () => window.clearTimeout(t);
+    let t = 0;
+    const raf = window.requestAnimationFrame(() => {
+      setPhase("play");
+      t = window.setTimeout(() => setPhase("done"), 2000);
+    });
+    return () => {
+      window.cancelAnimationFrame(raf);
+      window.clearTimeout(t);
+    };
   }, [inView]);
 
   const onScroll = () => {

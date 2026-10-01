@@ -2,7 +2,14 @@
 
 import { cn } from "@/lib/utils";
 import { X } from "lucide-react";
-import React, { useCallback, useEffect, useMemo, useRef, useState } from "react";
+import React, {
+  useCallback,
+  useEffect,
+  useMemo,
+  useRef,
+  useState,
+  useSyncExternalStore,
+} from "react";
 import { createPortal } from "react-dom";
 import { DialogContext, useDialog } from "./dialog-context";
 
@@ -151,6 +158,15 @@ export type DialogSize = keyof typeof DIALOG_SIZES;
  * reacts, and its position also decides which panel paints above the rest.
  */
 const openDialogs: symbol[] = [];
+// Dialogs subscribe to the stack so each one can read its own position.
+const stackListeners = new Set<() => void>();
+const subscribeToStack = (onChange: () => void) => {
+  stackListeners.add(onChange);
+  return () => {
+    stackListeners.delete(onChange);
+  };
+};
+const notifyStack = () => stackListeners.forEach((listener) => listener());
 
 export interface DialogContentProps
   extends React.HTMLAttributes<HTMLDivElement> {
@@ -171,9 +187,17 @@ export function DialogContent({
   const [portalTarget, setPortalTarget] = useState<HTMLElement | null>(null);
   // Identity for this dialog on the stack above. A symbol rather than a count
   // so a dialog can be removed by value, wherever it sits when it closes.
-  const idRef = useRef<symbol | null>(null);
-  if (idRef.current === null) idRef.current = Symbol("dialog");
-  const [depth, setDepth] = useState(0);
+  const [id] = useState(() => Symbol("dialog"));
+  // Where this dialog sits on the stack once it has claimed a slot; 0 before
+  // that, and while server-rendering.
+  const depth = Math.max(
+    0,
+    useSyncExternalStore(
+      subscribeToStack,
+      () => openDialogs.indexOf(id),
+      () => -1,
+    ),
+  );
 
   // Resolves the document this dialog actually lives in, which is not always
   // the global one — previews portal components into an iframe. Resolving in a
@@ -193,10 +217,8 @@ export function DialogContent({
 
     // Claim a slot on the stack. Whatever opens last is what the user is
     // looking at, so it takes both the Escape key and the highest layer.
-    const id = idRef.current as symbol;
     openDialogs.push(id);
-    // Depth comes from a module-level stack of open dialogs, which only exists once this one has mounted and claimed a slot.
-    setDepth(openDialogs.length - 1);
+    notifyStack();
 
     // Lock body scroll. A nested dialog reads the lock the outer one already
     // applied as its "original", so unwinding in either order is safe.
@@ -214,10 +236,11 @@ export function DialogContent({
     return () => {
       const index = openDialogs.indexOf(id);
       if (index !== -1) openDialogs.splice(index, 1);
+      notifyStack();
       doc.body.style.overflow = originalStyle;
       doc.removeEventListener("keydown", handleEscape);
     };
-  }, [open, setOpen, portalTarget]);
+  }, [open, setOpen, portalTarget, id]);
 
   if (!portalTarget || !open) return <span ref={setAnchor} hidden />;
 

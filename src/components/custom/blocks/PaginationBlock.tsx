@@ -2,7 +2,7 @@
 
 import { cn } from "@/lib/utils";
 import { ChevronDown, ChevronLeft, ChevronRight, MoreHorizontal } from "lucide-react";
-import React, { useEffect, useMemo, useState } from "react";
+import React, { useMemo, useState } from "react";
 
 // ==========================================
 // 1. ROOT CONTEXT & LOGIC
@@ -422,9 +422,12 @@ export function PaginationPageJump({
   const [draft, setDraft] = useState(String(currentPage));
 
   // A page change from elsewhere (number click, prev/next) resets the draft.
-  useEffect(() => {
+  // Adjusted while rendering, when `currentPage` changes, rather than in an effect.
+  const [prevPage, setPrevPage] = useState(currentPage);
+  if (currentPage !== prevPage) {
+    setPrevPage(currentPage);
     setDraft(String(currentPage));
-  }, [currentPage]);
+  }
 
   const commit = () => {
     const parsed = parseInt(draft, 10);

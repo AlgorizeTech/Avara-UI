@@ -155,8 +155,11 @@ export function HeroCarousel({
 
   const metrics = railWidth > 0 ? railMetrics(railWidth) : null;
 
+  // The committed index, for `go` — kept current as soon as each change lands.
   const activeRef = useRef(active);
-  activeRef.current = active;
+  useLayoutEffect(() => {
+    activeRef.current = active;
+  }, [active]);
   const go = useCallback(
     (index: number) => {
       if (n === 0) return;

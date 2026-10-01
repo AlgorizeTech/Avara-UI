@@ -11,10 +11,20 @@ import {
   useId,
   useRef,
   useState,
+  useSyncExternalStore,
 } from "react";
 import { createPortal } from "react-dom";
 
 const ModalLabelContext = createContext<string | null>(null);
+
+/** False on the server and during hydration, true once the client has taken over. */
+const subscribeToNothing = () => () => {};
+const useIsMounted = () =>
+  useSyncExternalStore(
+    subscribeToNothing,
+    () => true,
+    () => false,
+  );
 
 let scrollLockCount = 0;
 let originalBodyOverflow = "";
@@ -79,17 +89,27 @@ export function Modal({
   const [shouldRender, setShouldRender] = useState(false);
   const isClosingRef = useRef(false);
   const labelId = useId();
+  // Nothing renders on the server or during hydration, so an initially open
+  // modal still mounts on the client and then animates in.
+  const mounted = useIsMounted();
+
+  // Opening mounts the panel (hidden); closing starts the exit transition.
+  // Adjusted while rendering, when `isOpen` changes, rather than in an effect.
+  const [prevIsOpen, setPrevIsOpen] = useState(false);
+  if (isOpen !== prevIsOpen) {
+    setPrevIsOpen(isOpen);
+    if (isOpen) setShouldRender(true);
+    else setIsVisible(false);
+  }
 
   useEffect(() => {
     if (isOpen) {
       isClosingRef.current = false;
       // Mount first, then animate: the element has to be in the DOM before
       // the transition can run.
-      setShouldRender(true);
       const timer = setTimeout(() => setIsVisible(true), 10);
       return () => clearTimeout(timer);
     } else {
-      setIsVisible(false);
       const timer = setTimeout(() => setShouldRender(false), 300);
       return () => clearTimeout(timer);
     }
@@ -113,13 +133,14 @@ export function Modal({
     return () => document.removeEventListener("keydown", handleKeyDown);
   }, [isOpen, handleClose]);
 
+  const showPanel = shouldRender && mounted;
   useEffect(() => {
-    if (!shouldRender) return;
+    if (!showPanel) return;
     lockBodyScroll();
     return () => unlockBodyScroll();
-  }, [shouldRender]);
+  }, [showPanel]);
 
-  if (!shouldRender) return null;
+  if (!showPanel) return null;
 
   const ariaProps = ariaLabel
     ? { "aria-label": ariaLabel }

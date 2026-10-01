@@ -1,9 +1,7 @@
 "use client";
 
-import Button, {
-  getButtonThemeStyle,
-  type ShardsEffectMode,
-} from "@/components/custom/blocks/Button";
+import Button, { type ShardsEffectMode } from "@/components/custom/blocks/Button";
+import { getButtonThemeStyle } from "@/components/custom/blocks/button-theme";
 import {
   AppleIcon,
   ArrowRightIcon,

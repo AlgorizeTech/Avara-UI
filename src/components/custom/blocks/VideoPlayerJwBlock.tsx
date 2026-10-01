@@ -308,12 +308,34 @@ export const JwPlayer = React.forwardRef<HTMLDivElement, JwPlayerProps>(
       setupRef.current = { skin: resolvedSkin, options: playerOptions };
     });
 
+    // Every input the player is built from. When any of them changes the
+    // player is rebuilt, so it is loading again and has not been played yet.
+    // Reset while rendering, when the setup changes, rather than in an effect.
+    const setupKey = JSON.stringify([
+      libraryUrl,
+      licenseKey,
+      file,
+      playlistUrl,
+      posterUrl,
+      aspectRatio,
+      autoStart,
+      muted,
+      repeat,
+      controls,
+      containerId,
+      skinKey,
+      optionsKey,
+    ]);
+    const [prevSetupKey, setPrevSetupKey] = useState(setupKey);
+    if (setupKey !== prevSetupKey) {
+      setPrevSetupKey(setupKey);
+      setStatus("loading");
+      setHasPlayed(false);
+    }
+
     useEffect(() => {
       let cancelled = false;
       let player: JwPlayer | null = null;
-      // Marks the start of loading the third-party player script; there is nothing to derive this from during render.
-      setStatus("loading");
-      setHasPlayed(false);
 
       void loadJwLibrary(libraryUrl)
         .then((jwplayer) => {

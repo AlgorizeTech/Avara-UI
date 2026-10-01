@@ -3,7 +3,7 @@ import { docsPageMetadata } from "@/lib/docs-metadata";
 export const metadata = docsPageMetadata("card-stack");
 
 import { ExampleShowcase } from "@/components/site/Sandbox";
-import { extractCode } from "@/lib/code";
+import { extractMotionCode } from "@/lib/code";
 
 # Card Stack
 
@@ -129,9 +129,9 @@ export default function ButtonStackDemo() {
 
 export const usageLeft = `"use client";
 
-import { CardStack } from "@/components/custom/blocks/CardStackBlock";
+import { CardStack, type CardStackItem } from "@/components/custom/blocks/CardStackBlock";
 
-export default function LeftSlideDemo({ items }: { items: any[] }) {
+export default function LeftSlideDemo({ items }: { items: CardStackItem[] }) {
   return (
     <CardStack
       items={items}
@@ -144,9 +144,9 @@ export default function LeftSlideDemo({ items }: { items: any[] }) {
 
 export const usageLoop = `"use client";
 
-import { CardStack } from "@/components/custom/blocks/CardStackBlock";
+import { CardStack, type CardStackItem } from "@/components/custom/blocks/CardStackBlock";
 
-export default function InfiniteLoopDemo({ items }: { items: any[] }) {
+export default function InfiniteLoopDemo({ items }: { items: CardStackItem[] }) {
   return (
     <CardStack
       items={items}
@@ -185,7 +185,7 @@ export default function InfiniteLoopDemo({ items }: { items: any[] }) {
       ],
       props: { example: "swipe", swipeToDismiss: true, showHeader: false },
       usage: usageSwipe,
-      code: extractCode("src/components/custom/blocks/CardStackBlock.tsx"),
+      code: extractMotionCode("src/components/custom/blocks/CardStackBlock.tsx"),
       minHeight: 340,
     },
   ]}

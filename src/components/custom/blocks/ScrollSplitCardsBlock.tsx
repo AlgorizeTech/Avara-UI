@@ -281,7 +281,7 @@ export function ScrollSplitCards({
           if (rotateY !== 0) parts.push(`rotateY(${rotateY}deg)`);
           panel.style.transform = parts.length ? parts.join(" ") : "none";
           const radius = panelRadius(p, index);
-          panel.querySelectorAll<HTMLElement>(":scope > [data-split-face]").forEach((face) => {
+          panel.querySelectorAll<HTMLElement>("[data-split-face]").forEach((face) => {
             face.style.borderRadius = radius;
           });
         });
