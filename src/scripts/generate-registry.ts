@@ -21,7 +21,7 @@
  *
  * MOTION-LIBRARY TWINS:
  * A component whose animation needs a library ships two builds — GSAP (the
- * default, in the parent folder) and Framer Motion (same basename, in a
+ * default, in the parent folder) and Motion (same basename, in a
  * `framer/` subfolder). The twin is named `<name>-framer` and installs to the
  * SAME target as the default, with the `framer/` segment removed, so a
  * consumer picks one build at install time and every usage snippet reads the
@@ -93,11 +93,11 @@ type Source = {
   name: string;
   /** "block" | "primitive" | "site-ui" */
   kind: "block" | "primitive" | "site-ui" | "custom";
-  /** The Framer Motion twin of another item (lives in a `framer/` folder). */
+  /** The Motion twin of another item (lives in a `framer/` folder). */
   framer: boolean;
 };
 
-/** Subfolder that holds the Framer Motion twin of a dual component. */
+/** Subfolder that holds the Motion twin of a dual component. */
 const FRAMER_DIR = "framer";
 
 /** npm packages that carry each motion library. */
@@ -582,7 +582,7 @@ if (unresolvedLocal.length) {
 
 if (mixedMotion.length) {
   console.error(
-    `\nFATAL — items that install both GSAP and Framer Motion (${mixedMotion.length}):`
+    `\nFATAL — items that install both GSAP and Motion (${mixedMotion.length}):`
   );
   for (const m of mixedMotion) console.error(`  ${m}`);
   console.error(

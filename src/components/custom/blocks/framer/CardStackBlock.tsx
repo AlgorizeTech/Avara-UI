@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState } from "react";
-import { AnimatePresence, motion, useMotionValue, useTransform } from "framer-motion";
+import { AnimatePresence, motion, useMotionValue, useTransform } from "motion/react";
 import { ArrowLeft, ArrowRight, ArrowUpRight, RotateCcw } from "lucide-react";
 import { cn } from "@/lib/utils";
 

@@ -8,7 +8,7 @@ import {
   type MotionValue,
   useSpring,
   useTransform,
-} from "framer-motion";
+} from "motion/react";
 import React, { useEffect, useRef, useState } from "react";
 
 export interface DockItem {

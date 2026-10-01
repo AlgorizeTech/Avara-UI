@@ -33,7 +33,17 @@ export default function AuthorCard() {
   );
 }`;
 
-export const usageExpandReveal = `import { SocialLinks } from "@/components/custom/blocks/SocialLinksBlock";
+export const shareLinks = `const links: SocialLink[] = [
+  { network: "x", href: "https://x.com/algorize" },
+  { network: "github", href: "https://github.com/algorize" },
+  { network: "linkedin", href: "https://linkedin.com/company/algorize" },
+  { network: "youtube", href: "https://youtube.com/@algorize" },
+  { network: "instagram", href: "https://instagram.com/algorize" },
+];`;
+
+export const usageExpandReveal = `import { SocialLinks, type SocialLink } from "@/components/custom/blocks/SocialLinksBlock";
+
+${shareLinks}
 
 export default function ExpandShareButton() {
   return (
@@ -49,7 +59,9 @@ export default function ExpandShareButton() {
   );
 }`;
 
-export const usageExpandReplace = `import { SocialLinks } from "@/components/custom/blocks/SocialLinksBlock";
+export const usageExpandReplace = `import { SocialLinks, type SocialLink } from "@/components/custom/blocks/SocialLinksBlock";
+
+${shareLinks}
 
 export default function ExpandReplaceShareButton() {
   return (

@@ -2,8 +2,8 @@
 
 This directory contains auto-generated Markdown versions of all MDX documentation pages.
 
-**Generated at:** 2026-09-30T11:57:33.676Z
-**Total files:** 299
+**Generated at:** 2026-10-01T12:41:09.629Z
+**Total files:** 301
 
 ## Available Files
 
@@ -46,6 +46,7 @@ This directory contains auto-generated Markdown versions of all MDX documentatio
 - [nextjs/cursor-animation](/docs/nextjs-cursor-animation.md) - Source: `[framework]\cursor-animation\page.mdx`
 - [nextjs/curved-carousel](/docs/nextjs-curved-carousel.md) - Source: `[framework]\curved-carousel\page.mdx`
 - [nextjs/custom-code-block](/docs/nextjs-custom-code-block.md) - Source: `[framework]\custom-code-block\page.mdx`
+- [nextjs/dashboard](/docs/nextjs-dashboard.md) - Source: `[framework]\dashboard\page.mdx`
 - [nextjs/data-flow](/docs/nextjs-data-flow.md) - Source: `[framework]\data-flow\page.mdx`
 - [nextjs/data-grid](/docs/nextjs-data-grid.md) - Source: `[framework]\data-grid\page.mdx`
 - [nextjs/data-maps](/docs/nextjs-data-maps.md) - Source: `[framework]\data-maps\page.mdx`
@@ -196,6 +197,7 @@ This directory contains auto-generated Markdown versions of all MDX documentatio
 - [reactjs/cursor-animation](/docs/reactjs-cursor-animation.md) - Source: `[framework]\cursor-animation\page.mdx`
 - [reactjs/curved-carousel](/docs/reactjs-curved-carousel.md) - Source: `[framework]\curved-carousel\page.mdx`
 - [reactjs/custom-code-block](/docs/reactjs-custom-code-block.md) - Source: `[framework]\custom-code-block\page.mdx`
+- [reactjs/dashboard](/docs/reactjs-dashboard.md) - Source: `[framework]\dashboard\page.mdx`
 - [reactjs/data-flow](/docs/reactjs-data-flow.md) - Source: `[framework]\data-flow\page.mdx`
 - [reactjs/data-grid](/docs/reactjs-data-grid.md) - Source: `[framework]\data-grid\page.mdx`
 - [reactjs/data-maps](/docs/reactjs-data-maps.md) - Source: `[framework]\data-maps\page.mdx`

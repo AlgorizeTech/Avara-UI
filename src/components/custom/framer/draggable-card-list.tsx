@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { Reorder, useDragControls } from "framer-motion";
+import { Reorder, useDragControls } from "motion/react";
 import { cn } from "@/lib/utils";
 import { GripVertical, Calendar, ExternalLink, CheckCircle2, Circle } from "lucide-react";
 

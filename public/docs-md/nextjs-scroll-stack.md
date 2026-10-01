@@ -460,6 +460,15 @@ export default function ProcessRailTrack() {
 
 ### More examples
 
+`HorizontalRail` is its own item, so it installs on its own:
+
+Register the @algorize-ui registry once per project, then add the component:
+
+```bash
+npx shadcn@latest registry add @algorize-ui=https://algorize-ui.vercel.app/r/{name}.json
+npx shadcn@latest add @algorize-ui/horizontal-rail
+```
+
 ## Features
 Discover the key capabilities that make this component an excellent choice for modern, animated user interfaces.
 

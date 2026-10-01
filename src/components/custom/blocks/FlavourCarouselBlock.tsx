@@ -234,7 +234,7 @@ function createPhase(initial: number): Phase {
 
 /**
  * Where a spring released at `from` with `velocity` (units per second)
- * towards `to` is after `t` seconds — the closed form Framer Motion's spring
+ * towards `to` is after `t` seconds — the closed form Motion's spring
  * uses, so a spring picked up mid-flight keeps its speed.
  */
 function springPosition(spring: Spring, from: number, to: number, velocity: number, t: number) {

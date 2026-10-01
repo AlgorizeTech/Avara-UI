@@ -223,7 +223,7 @@ export function PreviewFrame({
       bodyObserver.observe(doc.body, { childList: true, subtree: true });
       docCleanups.push(() => bodyObserver.disconnect());
 
-      // Animation libraries running in the parent realm (framer-motion)
+      // Animation libraries running in the parent realm (motion)
       // schedule WAAPI startTimes on the parent page's clock, but the
       // animations run on this document's timeline, which starts at zero when
       // the frame is created. That schedules every entrance animation seconds

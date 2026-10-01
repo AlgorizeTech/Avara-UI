@@ -29,7 +29,7 @@ export interface MemoriesCardProps
 }
 
 // ------------------------------------------
-// Motion — the same numbers as the Framer Motion build
+// Motion — the same numbers as the framer/ build
 // ------------------------------------------
 
 /** Every card's pose, written to the DOM as one transform in Framer's order. */

@@ -30,7 +30,7 @@ Some files are written by hand and some are generated. Only edit the hand-writte
 | Path | Hand-written? | What it is |
 | :--- | :-----------: | :--------- |
 | `src/components/custom/blocks/` | ✅ | Components and website sections. **Shipped to users.** |
-| `src/components/custom/blocks/framer/` | ✅ | Framer Motion builds of GSAP components (see [Animation](#animation)). **Shipped.** |
+| `src/components/custom/blocks/framer/` | ✅ | Motion builds of GSAP components (see [Animation](#animation)). **Shipped.** |
 | `src/components/custom/ui/`, `src/components/ui/` | ✅ | Base primitives. **Shipped.** |
 | `src/components/site/` | ✅ | Docs-site chrome: header, sidebar, code blocks. Never shipped. |
 | `src/app/docs/[framework]/<slug>/page.mdx` | ✅ | One docs page per component, serving both `/docs/nextjs/…` and `/docs/reactjs/…`. |
@@ -65,10 +65,10 @@ Components take their colours, radius and fonts from the theme's CSS variables, 
 
 - **CSS first.** If an animation runs between fixed values (fades, slides, loops), write it in CSS.
 - **GSAP when you need a library.** That's for pointer or scroll-driven motion, drag, or layout reflow.
-- **Framer Motion only as a twin.** If you want a Framer Motion version, put it in `blocks/framer/` with the same filename. It's published as `<name>-framer` and installs to the same path as the GSAP build.
+- **Motion only as a twin.** If you want a Motion version, put it in `blocks/framer/` with the same filename. It's published as `<name>-framer` and installs to the same path as the GSAP build.
 - **Respect reduced motion.** Honour `prefers-reduced-motion`.
 
-`npm run check:registry` fails if an item pulls in Framer Motion without being a `-framer` twin, or if a twin has no GSAP base.
+`npm run check:registry` fails if an item pulls in Motion without being a `-framer` twin, or if a twin has no GSAP base.
 
 ### Credit borrowed code
 
@@ -92,7 +92,7 @@ If a file is derived from another project's code, confirm the licence allows it 
 
    Until you run the first command, the docs page throws a 500 error because its installation block can't find the item.
 
-For a Framer Motion twin, also add `src/preview/demos/<slug>-framer-demo.tsx`. The docs page then shows GSAP and Framer Motion tabs by itself.
+For a Motion twin, also add `src/preview/demos/<slug>-framer-demo.tsx`. The docs page then shows GSAP and Motion tabs by itself.
 
 ## Changing a component
 

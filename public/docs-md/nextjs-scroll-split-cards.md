@@ -37,7 +37,7 @@ npx shadcn@latest add @algorize-ui/scroll-split-cards
     Renders a single high-resolution image across three adjacent overflow-hidden cards using precise percentage offsets, guaranteeing zero seams when closed.
 
     Spring-Smoothed Scroll Physics
-    Powered by Framer Motion's useScroll and useSpring to convert native mousewheel and touch scroll inputs into organic physical motion.
+    A spring follower (the same equation of motion as Motion's useSpring) turns native mousewheel and touch input into organic physical motion, with no animation library to install. Under prefers-reduced-motion the panels track the input directly.
 
     Dual-Sided 3D Cardstock
     Each panel has genuine 3D card faces with preserve-3d and backface-visibility, flipping 180° to reveal typographic narratives with individual color schemes.

@@ -7,7 +7,7 @@ import {
   useReducedMotion,
   type TargetAndTransition,
   type Transition,
-} from "framer-motion";
+} from "motion/react";
 import {
   Bot,
   Calendar,

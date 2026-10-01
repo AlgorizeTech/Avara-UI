@@ -171,7 +171,7 @@ for (const item of items) {
 }
 
 // --- 7. Motion-library twins ------------------------------------------------
-// GSAP is the default build of every animated component; Framer Motion ships
+// GSAP is the default build of every animated component; Motion ships
 // only as a `<name>-framer` twin beside it (see animation-library-plan.md).
 // So a twin needs its base, and nothing but a twin may pull Framer in — a
 // Framer-only component would have no GSAP default for the docs to show.
@@ -208,7 +208,7 @@ for (const item of items) {
     }
   } else if (pullsFramer(item.name)) {
     fail(
-      `[${item.name}] pulls Framer Motion without being a -framer twin. ` +
+      `[${item.name}] pulls Motion without being a -framer twin. ` +
         `Convert it to CSS, or port it to GSAP and move the Framer build to a framer/ folder.`
     );
   }

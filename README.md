@@ -32,7 +32,7 @@ There is no wrapper package to keep up to date and nothing to eject from later.
 - **Full website sections as well as primitives.** Heroes, pricing, footers, dashboards, auth forms, carousels, maps, media players and more, in 18 categories.
 - **One source for two frameworks.** No shipped component imports from `next/*`, so the same file compiles in a Next.js App Router project and in a Vite React app. Components that render links or images accept a `linkComponent` / `imageComponent` prop, so Next.js users can pass `next/link` and `next/image`.
 - **Themes as CSS variables.** Colours, radius and fonts come from CSS variables, not hard-coded classes. The [Themes page](https://algorize-ui.vercel.app/themes) has 14 presets and a customiser, and it exports a block you paste into your global stylesheet.
-- **Motion that fits the job.** Fixed animations are plain CSS. Pointer, scroll and drag effects use GSAP, and several of those also ship a Framer Motion build under the same name with a `-framer` suffix.
+- **Motion that fits the job.** Fixed animations are plain CSS. Pointer, scroll and drag effects use GSAP, and several of those also ship a Motion build under the same name with a `-framer` suffix.
 - **Open in v0.** Docs examples can be opened in [v0](https://v0.dev) with your chosen theme applied.
 - **Docs as Markdown too.** Every docs page is also published as plain Markdown under `/docs-md/`, which is handy for pasting into an AI assistant.
 
@@ -138,7 +138,7 @@ Bug fixes, improvements to existing components and docs corrections are all welc
 
 A handful of base primitives (accordion, avatar, badge, button, sheet and slider) are derived from [shadcn/ui](https://github.com/shadcn-ui/ui) under its MIT License. [THIRD-PARTY-NOTICES.md](THIRD-PARTY-NOTICES.md) lists exactly which files. Everything else is original AlgorizeTech work.
 
-Runtime libraries the components use, such as Radix UI, Lucide, GSAP and Framer Motion, are installed from npm in your project and keep their own licenses.
+Runtime libraries the components use, such as Radix UI, Lucide, GSAP and Motion, are installed from npm in your project and keep their own licenses.
 
 ## License
 

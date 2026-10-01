@@ -1,8 +1,8 @@
 "use client";
 
 import { cn } from "@/lib/utils";
-import { motion } from "framer-motion";
-import type { HTMLMotionProps, Variants } from "framer-motion";
+import { motion } from "motion/react";
+import type { HTMLMotionProps, Variants } from "motion/react";
 import React from "react";
 
 // 1. FIXED TS ERROR: Extend HTMLMotionProps instead of React.HTMLAttributes

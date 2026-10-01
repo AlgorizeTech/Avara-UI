@@ -10,7 +10,7 @@ import {
   useTransform,
   type MotionValue,
   type Variants,
-} from "framer-motion";
+} from "motion/react";
 import { ArrowRight } from "lucide-react";
 import { cn } from "@/lib/utils";
 import Button from "@/components/custom/blocks/Button";

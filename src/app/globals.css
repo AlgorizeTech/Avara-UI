@@ -831,7 +831,7 @@ html body[data-scroll-locked] {
 
    Keyed on a data attribute, never on `[style*=…]`: a selector on the style
    attribute with descendants after it makes every inline-style write on the
-   page (each GSAP / framer-motion frame) restyle that element's whole
+   page (each GSAP / motion frame) restyle that element's whole
    subtree, which made the homepage stutter while anything animated. */
 [data-radius-zero] *:not(.keep-rounded) {
   border-radius: 0 !important;

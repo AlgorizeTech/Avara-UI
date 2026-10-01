@@ -134,7 +134,7 @@ function build(): string {
 
   if (framerTwins.length) {
     header.push(
-      `Animation builds: ${framerTwins.length} components ship a Framer Motion build beside their default GSAP build, ` +
+      `Animation builds: ${framerTwins.length} components ship a Motion build beside their default GSAP build, ` +
         "installed as `<name>-framer`. Install one or the other — they write the same file.",
       "",
     );

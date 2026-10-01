@@ -17,7 +17,7 @@ import {
   CodeBlockClient,
   isTransformable,
 } from "@/components/site/code-block-client";
-import { motion, useReducedMotion } from "framer-motion";
+import { motion, useReducedMotion } from "motion/react";
 import CodeCopy, { type LanguageType } from "@/components/site/code-copy";
 import {
   Code2,
@@ -220,7 +220,7 @@ export function Sandbox({
   minHeight?: number;
   maxHeight?: number;
   /**
-   * Draws the GSAP / Framer Motion switch in the bar, for a component that
+   * Draws the GSAP / Motion switch in the bar, for a component that
    * ships both builds. The caller swaps `name` and the code tabs; the switch
    * only writes the page-wide pick.
    */
@@ -865,7 +865,7 @@ export interface ShowcaseExample {
   usage?: ShowcaseSnippet;
   /**
    * Component source — adds a Code tab. Same string-or-map rule; a component
-   * with a Framer Motion twin passes `{ gsap, framer }` (`extractMotionCode`)
+   * with a Motion twin passes `{ gsap, framer }` (`extractMotionCode`)
    * so the tab follows the build switch.
    */
   code?: ShowcaseSnippet;
@@ -1006,7 +1006,7 @@ export default function ${cleanTitle}Demo() {
 }`;
 };
 
-/** Demos that have a Framer Motion twin (`<name>-framer`). */
+/** Demos that have a Motion twin (`<name>-framer`). */
 const DUAL_DEMOS = new Set(
   sandboxNames
     .filter((demo) => demo.endsWith("-framer"))
@@ -1057,7 +1057,7 @@ export function ExampleShowcase({
   /** Optional numerical range sliders for interactive property tuning. */
   controls?: SliderControl[];
   /**
-   * The component ships a GSAP default and a Framer Motion twin: the previews
+   * The component ships a GSAP default and a Motion twin: the previews
    * get the build switch, and follow it to the `<name>-framer` demo. Detected
    * from the preview registry when omitted — a `<name>-framer` demo is exactly
    * what makes a component dual.
@@ -1211,7 +1211,7 @@ function ExampleCard({
   maxHeight,
 }: {
   name: string;
-  /** Draw the GSAP / Framer Motion switch in the preview bar. */
+  /** Draw the GSAP / Motion switch in the preview bar. */
   motionSwitch?: boolean;
   example: ResolvedShowcaseExample;
   /** The gallery's live-control card, drawn just above this preview. */

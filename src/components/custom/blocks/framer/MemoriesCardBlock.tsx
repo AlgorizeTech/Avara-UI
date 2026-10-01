@@ -7,8 +7,8 @@ import {
   useMotionValue,
   useSpring,
   useTransform,
-} from "framer-motion";
-import type { PanInfo, Variants } from "framer-motion";
+} from "motion/react";
+import type { PanInfo, Variants } from "motion/react";
 import { Calendar, MapPin, RotateCcw, Sparkles } from "lucide-react";
 import React, { useState } from "react";
 

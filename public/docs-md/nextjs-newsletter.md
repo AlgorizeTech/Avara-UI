@@ -6,16 +6,24 @@ A sign-up section in three layouts. **Portraits** puts four readers' faces aroun
 
 `Newsletter` is built from library pieces: the field is Input, the action is Button, the ticker is Marquee and the top issue sits on a Tilted Card. Every piece of copy is a named part — `Heading`, `Intro`, `Form`, `Proof`, `Ticker`, `Issues` — so the words are yours.
 
-export const usagePortraits = `"use client";
-
-// Faces from Pexels, free to use.
+export const newsletterFaces = `// Faces from Pexels, free to use.
 const FACES = [
   "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_160,c_limit/v1790158812/pexels-photo-2379004-1790158812208.jpg",
   "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_160,c_limit/v1790158810/pexels-photo-220453-1790158812206.jpg",
   "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_160,c_limit/v1790158812/pexels-photo-2381069-1790158812209.jpg",
   "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_160,c_limit/v1790158812/pexels-photo-1130626-1790158812207.jpg",
   "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_160,c_limit/v1790158812/pexels-photo-3785079-1790158812209.jpg",
-];
+];`;
+
+export const newsletterSubscribe = `// Resolve to show the thank-you; throw to stay on the form.
+async function subscribe(email: string) {
+  const res = await fetch("/api/subscribe", { method: "POST", body: JSON.stringify({ email }) });
+  if (!res.ok) throw new Error("We couldn't subscribe that address.");
+}`;
+
+export const usagePortraits = `"use client";
+
+${newsletterFaces}
 
 export default function Signup() {
   return (
@@ -43,6 +51,10 @@ const JOINED = [
   { name: "Omar", when: "15 min ago" },
 ];
 
+${newsletterFaces}
+
+${newsletterSubscribe}
+
 export default function Signup() {
   return (
     
@@ -68,6 +80,10 @@ const ISSUES = [
   { title: "The case for smaller releases", date: "Issue 41", excerpt: "" },
   { title: "First-run experiences, revisited", date: "Issue 40", excerpt: "" },
 ];
+
+${newsletterFaces}
+
+${newsletterSubscribe}
 
 export default function Signup() {
   return (

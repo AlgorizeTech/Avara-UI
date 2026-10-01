@@ -58,8 +58,8 @@ import {
 	GalleryVerticalEnd,
 } from "lucide-react";
 import { motion, useInView } from "motion/react";
-// The framer demos (CardStack) read their config from framer-motion's context.
-import { MotionConfig } from "framer-motion";
+// The framer demos (CardStack) read their config from motion's context.
+import { MotionConfig } from "motion/react";
 import Link from "next/link";
 import {
 	useLayoutEffect,

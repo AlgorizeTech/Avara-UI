@@ -319,7 +319,7 @@ export interface BookingCardConfirmationProps {
 // The cover fades in and out over 0.25s. Inside it the ring draws (0.5s), the
 // check follows (0.35s from 0.45s), the details rise 12px (0.35s from 0.7s)
 // and the actions fade in (0.3s from 1s) — all ease-out. The strokes draw the
-// way Framer Motion's `pathLength` does: `pathLength="1"` on the shape and
+// way Motion's `pathLength` does: `pathLength="1"` on the shape and
 // a dash array growing from "0 1" to "1 1".
 const CONFIRMATION_CSS = `
 .booking-card-confirmation { transition: opacity 0.25s cubic-bezier(0, 0, 0.58, 1); }

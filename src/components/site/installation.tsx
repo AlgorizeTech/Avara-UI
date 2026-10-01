@@ -254,8 +254,8 @@ export function Installation({
   name,
   showSetupPath = true,
 }: InstallationProps) {
-  // A component with a Framer Motion twin gets both install sequences behind
-  // the GSAP / Framer Motion switch; GSAP, the default build, shows first.
+  // A component with a Motion twin gets both install sequences behind
+  // the GSAP / Motion switch; GSAP, the default build, shows first.
   const twin = `${name}-framer`;
   const isDual = ITEMS.some((entry) => entry.name === twin);
 

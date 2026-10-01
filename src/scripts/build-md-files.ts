@@ -10,7 +10,7 @@ import { countComponents } from "../lib/component-count";
 /** The `{COMPONENT_COUNT}` a page prints, resolved from the same registry. */
 const COMPONENT_COUNT = String(countComponents(registry.items as { name: string }[]));
 
-/** Items that ship a Framer Motion twin beside their GSAP default. */
+/** Items that ship a Motion twin beside their GSAP default. */
 const MOTION_TWINS = new Set(
   (registry.items as { name: string }[])
     .map((item) => item.name)
@@ -175,7 +175,7 @@ function convertMdxToMd(content: string, componentPath: string): string {
       `npx shadcn@latest ${REGISTRY_ADD_ARGS}\n` +
       `npx shadcn@latest ${addArgsFor(name)}\n` +
       '```' +
-      // Dual components: the same file, built on Framer Motion instead of GSAP.
+      // Dual components: the same file, built on Motion instead of GSAP.
       (MOTION_TWINS.has(name)
         ? '\n\nOr the Motion build (same props, same file — install one):\n\n' +
           '```bash\n' +

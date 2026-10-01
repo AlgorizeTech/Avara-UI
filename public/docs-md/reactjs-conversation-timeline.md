@@ -25,22 +25,45 @@ export default function ChatMinimap() {
   );
 }`;
 
-export const usageLeft = `import { ConversationTimeline } from "@/components/custom/blocks/ConversationTimelineBlock";
+{/* A longer conversation, so the rail has enough rows to show its density and scrolling. Shared by the two snippets below; each one is still a whole file. */}
+
+export const timelineData = `const checkpoints: TimelineCheckpoint[] = [
+  { id: "1", role: "system", label: "System prompt" },
+  { id: "2", role: "user", label: "Can you help me set up auth?" },
+  { id: "3", role: "assistant", label: "Of course - let me walk you through it" },
+  { id: "4", role: "user", label: "Let's go with GitHub OAuth" },
+  { id: "5", role: "assistant", label: "Create the OAuth app callback" },
+  { id: "6", role: "user", label: "Where do the secrets go?" },
+  { id: "7", role: "assistant", label: "Use .env.local for dev, secrets store in prod" },
+  { id: "8", role: "user", label: "How do I protect a route?" },
+  { id: "9", role: "assistant", label: "Add middleware.ts with a matcher" },
+  { id: "10", role: "user", label: "Can I read the session in a server component?" },
+  { id: "11", role: "assistant", label: "Yes - call auth() on the server" },
+  { id: "12", role: "user", label: "What about sign-out?" },
+  { id: "13", role: "assistant", label: "signOut() in a server action" },
+  { id: "14", role: "user", label: "Perfect, thanks!" },
+];`;
+
+export const usageLeft = `${timelineData}
 
 // Flip the labels to the left of the marks and recolour the active line
 // with accent.
-export default function LeftRail({ checkpoints }) {
+export default function LeftRail() {
+  const [activeId, setActiveId] = useState("2");
+
   return (
     
   );
 }`;
 
-export const usageDensity = `import { ConversationTimeline } from "@/components/custom/blocks/ConversationTimelineBlock";
+export const usageDensity = `${timelineData}
 
 // rowHeight / collapsedRowHeight set the expanded and resting row sizes;
 // visibleCount caps how many rows show before the rail scrolls, and
 // labelWidth is the fixed column labels truncate against.
-export default function DenseRail({ checkpoints }) {
+export default function DenseRail() {
+  const [activeId, setActiveId] = useState("2");
+
   return (
     
   );

@@ -24,6 +24,18 @@ export const usageOutline = `export default function OutlineGroup() {
   );
 }`;
 
+export const usageSegmented = `export default function PeriodSwitch() {
+  const [period, setPeriod] = useState("month");
+
+  return (
+    
+      Daily
+      Weekly
+      Monthly
+    
+  );
+}`;
+
 export const usageGhost = `export default function GhostGroup() {
   const [value, setValue] = useState("left");
 
@@ -145,11 +157,11 @@ export default function TextEditor() {
 
           variant
 
-          "default" | "outline" | "ghost"
+          "default" | "outline" | "ghost" | "segmented"
 
           "default"
 
-          The architectural style of the group. The default variant wraps the items in a styled pill container.
+          The architectural style of the group. The default variant wraps the items in a styled pill container; segmented is a pill track whose highlight slides to the pressed item, keeps a single choice pressed, and moves it with the arrow keys.
 
           ToggleGroup
 

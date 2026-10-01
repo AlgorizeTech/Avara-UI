@@ -1,7 +1,7 @@
 /**
  * Motion curves with no animation library behind them.
  *
- * The components here ship as CSS, GSAP or Framer Motion builds that must move
+ * The components here ship as CSS, GSAP or Motion builds that must move
  * identically, so the curves are computed once, from the same numbers, and
  * handed to whichever engine runs them:
  *
@@ -59,7 +59,7 @@ export function cubicBezier(x1: number, y1: number, x2: number, y2: number) {
   return (x: number) => (x <= 0 ? 0 : x >= 1 ? 1 : at(solveX(x), y1, y2));
 }
 
-/** Framer Motion's named eases, as the cubic-beziers they are. */
+/** Motion's named eases, as the cubic-beziers they are. */
 export const FRAMER_EASE = {
   linear: [0, 0, 1, 1],
   easeIn: [0.42, 0, 1, 1],
@@ -74,7 +74,7 @@ export const FRAMER_EASE = {
 } as const;
 
 /**
- * Framer Motion's default layout transition (`layout` / `layoutId`):
+ * Motion's default layout transition (`layout` / `layoutId`):
  * `{ duration: 0.45, ease: [0.4, 0, 0.1, 1] }`.
  */
 export const LAYOUT_TRANSITION = { duration: 0.45, ease: [0.4, 0, 0.1, 1] as const };
@@ -98,7 +98,7 @@ export interface SpringOptions {
 
 /**
  * Normalised position (0 → 1) of a spring released from 0 towards 1, at time
- * `t` seconds. The closed-form solution Framer Motion's `spring()` generator
+ * `t` seconds. The closed-form solution Motion's `spring()` generator
  * uses for the under-, critically and over-damped cases.
  */
 export function springAt(options: SpringOptions = {}) {

@@ -24,7 +24,7 @@ export interface DockProps extends React.HTMLAttributes<HTMLDivElement> {
   gap?: number;
 }
 
-/** Magnification spring — the same constants the Framer Motion build uses. */
+/** Magnification spring — the same constants the Motion build uses. */
 const SIZE_SPRING = { mass: 0.1, stiffness: 150, damping: 12 };
 
 /**

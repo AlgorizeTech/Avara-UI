@@ -23,7 +23,7 @@ export interface ThreeDCarouselProps
 }
 
 // ------------------------------------------
-// Motion — the same numbers as the Framer Motion build
+// Motion — the same numbers as the framer/ build
 // ------------------------------------------
 
 /** Fan slot of the outer card, written as one transform in Framer's order. */

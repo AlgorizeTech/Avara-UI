@@ -95,8 +95,8 @@
         "communication"
       ],
       "dependencies": [
-        "framer-motion",
-        "lucide-react"
+        "lucide-react",
+        "motion"
       ],
       "registryDependencies": [
         "utils"
@@ -616,8 +616,8 @@
         "actions"
       ],
       "dependencies": [
-        "framer-motion",
-        "lucide-react"
+        "lucide-react",
+        "motion"
       ],
       "registryDependencies": [
         "utils"
@@ -703,8 +703,8 @@
         "marketing"
       ],
       "dependencies": [
-        "framer-motion",
-        "lucide-react"
+        "lucide-react",
+        "motion"
       ],
       "registryDependencies": [
         "utils"
@@ -1503,7 +1503,7 @@
         "navigation"
       ],
       "dependencies": [
-        "framer-motion"
+        "motion"
       ],
       "registryDependencies": [
         "utils"
@@ -1564,8 +1564,8 @@
         "layout"
       ],
       "dependencies": [
-        "framer-motion",
-        "lucide-react"
+        "lucide-react",
+        "motion"
       ],
       "registryDependencies": [
         "utils"
@@ -1877,8 +1877,8 @@
         "data-display"
       ],
       "dependencies": [
-        "framer-motion",
-        "lucide-react"
+        "lucide-react",
+        "motion"
       ],
       "registryDependencies": [
         "https://algorize-ui.vercel.app/r/tooltip.json",
@@ -2577,7 +2577,7 @@
         "media"
       ],
       "dependencies": [
-        "framer-motion"
+        "motion"
       ],
       "registryDependencies": [
         "utils"
@@ -2638,8 +2638,8 @@
         "marketing"
       ],
       "dependencies": [
-        "framer-motion",
-        "lucide-react"
+        "lucide-react",
+        "motion"
       ],
       "registryDependencies": [
         "utils"
@@ -2862,8 +2862,8 @@
         "forms"
       ],
       "dependencies": [
-        "framer-motion",
-        "lucide-react"
+        "lucide-react",
+        "motion"
       ],
       "registryDependencies": [
         "https://algorize-ui.vercel.app/r/button.json",
@@ -3989,8 +3989,8 @@
         "marketing"
       ],
       "dependencies": [
-        "framer-motion",
-        "lucide-react"
+        "lucide-react",
+        "motion"
       ],
       "registryDependencies": [
         "utils"

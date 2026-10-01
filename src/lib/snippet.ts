@@ -33,7 +33,7 @@ export type Snippet = string | FrameworkVariants;
 
 /**
  * A code sample for a component that ships two animation builds — the GSAP
- * default and its Framer Motion twin. Each side is an ordinary Snippet, so a
+ * default and its Motion twin. Each side is an ordinary Snippet, so a
  * build can still differ per framework:
  *
  *   code: extractMotionCode("src/components/custom/blocks/DockBlock.tsx")

@@ -6,7 +6,7 @@ A six-card marketing bento: a hero with a live chat and a headline, a laptop of 
 
 `BentoShowcase` is a section built from library pieces. Both moving cards are Marquee (`direction="up"` and `"left"`), the conversation is Chat Bubble, the rating is Half Stars, the device is Mobile Mockup and the call to action is Button. Each card is a named part — `Hero`, `CaseStudies`, `Headline`, `Stats`, `Phone`, `Team` — so a page can leave one out, reorder them, or add its own with `BentoShowcase.Card`.
 
-export const usageSection = `const CASE_STUDIES = [
+export const bentoData = `const CASE_STUDIES = [
   {
     quote: "More deals closed and more meetings booked for an IT services vendor",
     metrics: [{ value: "+64%", label: "Win rate" }, { value: "$230K", label: "New revenue" }],
@@ -21,13 +21,13 @@ export const usageSection = `const CASE_STUDIES = [
   },
 ];
 
-const STATS = [
+const STATS: BentoStat[] = [
   { value: ">28,000", caption: "Average prospects sourced each month", tone: "cream", ornament: "spheres" },
   { value: "$165M", caption: "In revenue won for partners to date", tone: "lilac", ornament: "ring" },
   { value: "220+", caption: "Reps taking calls for clients today", tone: "ink", ornament: "drops" },
 ];
 
-const PLANS = [
+const PLANS: [BentoPlan, BentoPlan?] = [
   {
     rank: "#2",
     name: "Growth",
@@ -47,22 +47,46 @@ const TEAM = [
   { src: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_500,c_limit/v1790166049/pexels-photo-8867434-1790166052229.jpg", alt: "A pair of reps working side by side" },
   { src: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_500,c_limit/v1790166049/pexels-photo-7658387-1790166052226.jpg", alt: "Lena on the phone" },
   { src: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_500,c_limit/v1790166049/pexels-photo-7709086-1790166052228.jpg", alt: "Omar at his laptop" },
-];
+];`;
 
-export default function Showcase() {
-  return (
+{/* The Phone card's button navigates, which is the one line that differs between a Next.js app and a React Router one. */}
 
+export const bentoJsx = (onAction) => `    
+      
         Chosen by thousands of sales teams
 
         We pick up the
         
         phone while you grow the company
 
-       router.push("/pricing")} />
+    `;
 
+export const usageSection = {
+  nextjs: `"use client";
+
+${bentoData}
+
+export default function Showcase() {
+  const router = useRouter();
+
+  return (
+${bentoJsx('() => router.push("/pricing")')}
   );
 }
-`;
+`,
+  reactjs: `import { useNavigate } from "react-router-dom";
+
+${bentoData}
+
+export default function Showcase() {
+  const navigate = useNavigate();
+
+  return (
+${bentoJsx('() => navigate("/pricing")')}
+  );
+}
+`,
+};
 
 ` for the serif italic. `avatars` sit under it as social proof.",
         },

@@ -1,7 +1,7 @@
 "use client";
 
 import { cn } from "@/lib/utils";
-import { AnimatePresence, animate, motion, type PanInfo, useReducedMotion } from "framer-motion";
+import { AnimatePresence, animate, motion, type PanInfo, useReducedMotion } from "motion/react";
 import { ChevronLeft, ChevronRight, type LucideIcon, X } from "lucide-react";
 import React, {
   type ChangeEvent,

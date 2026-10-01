@@ -6,7 +6,7 @@ import React, { createContext, useCallback, useContext, useEffect, useMemo, useS
  * The animation library a dual component is shown in.
  *
  * Components whose animation needs a library ship two builds with identical
- * props and markup — GSAP (the default item) and Framer Motion (`<name>-framer`)
+ * props and markup — GSAP (the default item) and Motion (`<name>-framer`)
  * — and the docs show one at a time. This is the reader's pick.
  *
  * Unlike the framework it is not route state: it changes what is SHOWN (the

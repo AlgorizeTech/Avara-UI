@@ -7,8 +7,8 @@ import {
   useMotionValue,
   useSpring,
   useTransform,
-} from "framer-motion";
-import type { PanInfo } from "framer-motion";
+} from "motion/react";
+import type { PanInfo } from "motion/react";
 import { ChevronLeft, ChevronRight, Pause, Play } from "lucide-react";
 import React, { useCallback, useEffect, useRef, useState } from "react";
 
