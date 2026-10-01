@@ -487,13 +487,14 @@ const SelectBlockImpl = forwardRef<HTMLDivElement, SelectBlockImplProps>(
                         className={cn(
                           "w-full flex items-center justify-between rounded-lg transition-colors font-medium text-left cursor-pointer active:scale-[0.98]",
                           s.option,
-                          variant === "glass"
-                            ? isSelected
-                              ? cn("bg-black/10 dark:bg-white/25 font-semibold shadow-xs", theme.text)
-                              : "text-neutral-900 dark:text-white/90 hover:bg-black/10 dark:hover:bg-white/15"
-                            : isSelected
-                              ? theme.bgSoft
-                              : "text-foreground hover:bg-muted",
+                          isSelected
+                            ? cn(theme.bgSoft, theme.text, "font-semibold shadow-xs")
+                            : cn(
+                                variant === "glass"
+                                  ? "text-neutral-900 dark:text-white/90"
+                                  : "text-foreground",
+                                theme.hoverBg,
+                              ),
                         )}
                       >
                         <div className="flex items-center gap-2">

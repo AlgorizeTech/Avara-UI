@@ -63,6 +63,7 @@ export default function PaginationDemo({
 
   const pagination = (
     <Pagination
+      color={color}
       currentPage={safePage}
       totalPages={derivedTotalPages}
       onPageChange={setCurrentPage}
@@ -80,7 +81,7 @@ export default function PaginationDemo({
   if (example === "bare") {
     return (
       <div
-        className="w-full flex items-center justify-center min-h-[300px] relative z-10 overflow-hidden"
+        className="w-full flex items-center justify-center min-h-[300px] relative z-10"
         style={{ "--theme-color": activeHex } as React.CSSProperties}
       >
         {pagination}
@@ -90,7 +91,7 @@ export default function PaginationDemo({
 
   return (
     <div
-      className="w-full flex flex-col items-center justify-center min-h-[300px] transition-colors duration-300 rounded-2xl border border-border pl-[10px] pr-4 py-4 sm:p-6 relative z-10 overflow-hidden"
+      className="w-full flex flex-col items-center justify-center min-h-[300px] transition-colors duration-300 rounded-2xl border border-border pl-[10px] pr-4 py-4 sm:p-6 relative z-10"
       style={{
         "--theme-color": activeHex,
         backgroundColor: "color-mix(in srgb, var(--theme-color, var(--primary)) 1.5%, transparent)",
