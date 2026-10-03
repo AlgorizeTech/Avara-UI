@@ -17,17 +17,19 @@ export default function CollageHeroDemo({
   reveal = "immediate",
   rounded = true,
   accent,
+  color,
 }: {
   /** In the docs the section is already on screen, so play at once. */
   reveal?: "in-view" | "immediate";
   rounded?: boolean;
   /** Pins the accent (badge, first coloured word, pills); the theme's primary by default. */
   accent?: string;
+  color?: string;
 }) {
   return (
     <CollageHero
       reveal={reveal}
-      accent={accent}
+      accent={accent ?? (color?.startsWith("#") ? color : undefined)}
       brand="PlayMeadow"
       heading={
         <>
