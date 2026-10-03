@@ -3,6 +3,7 @@ import { CodeBlocks } from "@/components/custom/ui/codeblocks";
 import type { BuiltinLanguage } from "shiki";
 
 import CodeCopy, { type LanguageType } from "./code-copy";
+import { useCodeLanguage } from "@/contexts/code-language-context";
 import { ReactIcon } from "@/assets/icons/react";
 import { TypeScriptIcon } from "@/assets/icons/typescript";
 import { JSXIcon } from "@/assets/icons/jsx";
@@ -137,7 +138,8 @@ export const CodeBlockClient = ({
   const isControlled = controlledLanguage !== undefined;
 
   // State for language selection and transformed code
-  const [ownLanguage, setOwnLanguage] = useState<LanguageType>('tsx');
+  // Standalone blocks follow the reader's saved pick, same as the Sandbox.
+  const { language: ownLanguage, setLanguage: setOwnLanguage } = useCodeLanguage();
   const selectedLanguage = controlledLanguage ?? ownLanguage;
 
   const [transformedCode, setTransformedCode] = useState<string>(code);

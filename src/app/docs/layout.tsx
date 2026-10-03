@@ -1,6 +1,7 @@
 import { ReactNode } from "react";
 import { TOCProvider } from "@/contexts/toc-context";
 import { MotionLibraryProvider } from "@/contexts/motion-library-context";
+import { CodeLanguageProvider } from "@/contexts/code-language-context";
 import { DocsLayoutContent } from "@/components/site/docs-layout-content";
 import { ShowcaseColorProvider } from "@/components/site/showcase-color";
 
@@ -12,7 +13,9 @@ export default function DocsLayout({ children }: { children: ReactNode }) {
     <TOCProvider>
       <DocsLayoutContent>
         <MotionLibraryProvider>
-          <ShowcaseColorProvider>{children}</ShowcaseColorProvider>
+          <CodeLanguageProvider>
+            <ShowcaseColorProvider>{children}</ShowcaseColorProvider>
+          </CodeLanguageProvider>
         </MotionLibraryProvider>
       </DocsLayoutContent>
     </TOCProvider>
