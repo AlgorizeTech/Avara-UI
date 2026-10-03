@@ -185,8 +185,7 @@ function SingleCardItem({
             aria-label="Drag to reorder"
             className={cn(
                 // touch-none: the handle's vertical drag must not scroll the page instead.
-                "p-2.5 rounded-2xl text-muted-foreground/60 hover:text-foreground hover:bg-muted/80 cursor-grab active:cursor-grabbing transition-colors shrink-0 group-hover:text-foreground/90 touch-none",
-                variant === "modern" && "bg-muted/60 border border-border/50 hover:bg-primary hover:text-primary-foreground hover:border-primary/30 transition-all duration-200"
+                "p-2.5 rounded-2xl text-muted-foreground/60 cursor-grab active:cursor-grabbing shrink-0 touch-none bg-muted/60 border border-border/50 hover:bg-primary hover:text-primary-foreground hover:border-primary/30 transition-all duration-200"
             )}
         >
             <GripVertical className="w-5 h-5" />

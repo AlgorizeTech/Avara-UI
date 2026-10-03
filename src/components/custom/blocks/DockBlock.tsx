@@ -65,27 +65,71 @@ export const Dock = React.forwardRef<HTMLDivElement, DockProps>(
   ) => {
     const bus = useRef<PointerBus>({ x: Infinity, listeners: new Set() });
     const dot = useRef<DotMemory>({ rect: null });
-    const [isMobile, setIsMobile] = useState(false);
+    const [screenTier, setScreenTier] = useState<"desktop" | "tablet" | "mobile">(() => {
+      if (typeof window === "undefined") return "desktop";
+      const w = window.innerWidth;
+      if (w < 480) return "mobile";
+      if (w < 640) return "tablet";
+      return "desktop";
+    });
 
     // Automatically detect small screens to scale down physics on touch devices
     useEffect(() => {
-      const handleResize = () => setIsMobile(window.innerWidth < 640);
+      const handleResize = () => {
+        const w = window.innerWidth;
+        if (w < 480) {
+          setScreenTier("mobile");
+        } else if (w < 640) {
+          setScreenTier("tablet");
+        } else {
+          setScreenTier("desktop");
+        }
+      };
       handleResize();
       window.addEventListener("resize", handleResize);
       return () => window.removeEventListener("resize", handleResize);
     }, []);
 
-    // Responsive physics sizing fallbacks for mobile viewports: smaller, but
-    // still thumb-sized (a 36px icon, 52px at full magnification).
-    const effectiveBaseSize = isMobile ? Math.min(baseSize, 36) : baseSize;
-    const effectiveMagnification = isMobile
-      ? Math.min(magnification, 52)
+    const isSmallMobile = screenTier === "mobile";
+    const isTablet = screenTier === "tablet";
+    const isMobile = isSmallMobile || isTablet;
+    const isCrowded = items.length >= 7;
+
+    // Responsive physics sizing fallbacks for mobile viewports:
+    // When a large item set (7+ items) is rendered on narrow mobile screens (<480px),
+    // scale resting size down to 28px and gap to 4px so the dock stays neatly within the screen bounds.
+    const effectiveBaseSize = isSmallMobile && isCrowded
+      ? Math.min(baseSize, 28)
+      : isMobile
+      ? Math.min(baseSize, isCrowded ? 34 : 36)
+      : baseSize;
+
+    const effectiveMagnification = isSmallMobile && isCrowded
+      ? Math.min(magnification, 40)
+      : isMobile
+      ? Math.min(magnification, isCrowded ? 48 : 52)
       : magnification;
-    const effectiveDistance = isMobile ? Math.min(distance, 100) : distance;
-    const effectiveGap = isMobile ? Math.min(gap, 6) : gap;
+
+    const effectiveDistance = isSmallMobile && isCrowded
+      ? Math.min(distance, 70)
+      : isMobile
+      ? Math.min(distance, 100)
+      : distance;
+
+    const effectiveGap = isSmallMobile && isCrowded
+      ? Math.min(gap, 4)
+      : isMobile
+      ? Math.min(gap, 6)
+      : gap;
 
     const dynamicHeight = typeof containerHeight === "number"
-      ? `${isMobile ? Math.min(containerHeight, 60) : containerHeight}px`
+      ? `${
+          isSmallMobile && isCrowded
+            ? Math.min(containerHeight, 52)
+            : isMobile
+            ? Math.min(containerHeight, 60)
+            : containerHeight
+        }px`
       : containerHeight;
 
     const publish = (x: number) => {
@@ -110,10 +154,13 @@ export const Dock = React.forwardRef<HTMLDivElement, DockProps>(
           ...style,
         }}
         className={cn(
-          "mx-auto flex items-end justify-center rounded-2xl px-2 sm:px-4 pt-1 sm:pt-2.5 pb-0.5 sm:pb-2.5 shadow-2xl transition-all duration-300",
+          "mx-auto flex items-end justify-center rounded-2xl shadow-2xl transition-all duration-300",
+          isSmallMobile && isCrowded
+            ? "px-1.5 pt-1 pb-0.5"
+            : "px-2 sm:px-4 pt-1 sm:pt-2.5 pb-0.5 sm:pb-2.5",
           "bg-card/70 backdrop-blur-xl border border-border/80",
           "ring-1 ring-foreground/5",
-          "w-fit max-w-[calc(100vw-1.5rem)] overflow-visible",
+          "w-fit max-w-[calc(100%-0.5rem)] sm:max-w-full overflow-visible",
           className,
         )}
         {...props}

@@ -25,14 +25,19 @@ const AVATARS = [
 export default function FashionHeroDemo({
   reveal = "immediate",
   rounded = true,
+  accent,
+  color,
 }: {
   /** In the docs the section is already on screen, so play at once. */
   reveal?: "in-view" | "immediate";
   rounded?: boolean;
+  accent?: string;
+  color?: string;
 }) {
   return (
     <FashionHero
       reveal={reveal}
+      accent={accent ?? (color?.startsWith("#") ? color : undefined)}
       heading="Refresh Your Look With Daring Designs"
       video={{ badge: "Get to know us in this short film", url: "https://www.youtube.com/embed/ysz5S6PUM-U", title: "About Moda Lane" }}
       avatars={AVATARS}

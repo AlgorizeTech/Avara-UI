@@ -1,10 +1,9 @@
 "use client";
 
 import { HeroBlock } from "@/components/custom/blocks/HeroBlock";
-import { toBlockColor } from "@/lib/accent";
 
 export default function HeroVortexDemo({
-  color = "primary",
+  color,
 }: {
   color?: string;
 }) {
@@ -12,7 +11,7 @@ export default function HeroVortexDemo({
     <div className="w-full flex flex-col justify-center items-center rounded-2xl border border-border overflow-hidden bg-background">
       <HeroBlock
         variant="vortex"
-        color={toBlockColor(color)}
+        color={color && color !== "primary" && color !== "default" ? color : "#0052cc"}
         primaryActionHref="#"
         className="w-full"
       />
