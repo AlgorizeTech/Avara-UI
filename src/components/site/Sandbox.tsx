@@ -18,7 +18,8 @@ import {
   isTransformable,
 } from "@/components/site/code-block-client";
 import { motion, useReducedMotion } from "motion/react";
-import CodeCopy, { type LanguageType } from "@/components/site/code-copy";
+import CodeCopy from "@/components/site/code-copy";
+import { useCodeLanguage } from "@/contexts/code-language-context";
 import {
   Code2,
   GripVertical,
@@ -236,9 +237,10 @@ export function Sandbox({
   const previewTab = tabs.find((t) => t.resizable) ?? tabs[0];
   const [activeTab, setActiveTab] = useState<string>(tabs[0]?.id ?? "preview");
 
-  // One selection shared by every code tab, so switching Usage → Code keeps
-  // the reader in the language they picked.
-  const [codeLanguage, setCodeLanguage] = useState<LanguageType>("tsx");
+  // One selection shared by every code tab and every page (persisted), so
+  // switching Usage → Code, or to the next component, keeps the reader in the
+  // language they picked.
+  const { language: codeLanguage, setLanguage: setCodeLanguage } = useCodeLanguage();
 
   // Responsive preview state (same semantics as the classic ComponentPreview)
   // Every preview opens fitted: fluid "100%", filling the card edge to edge.
