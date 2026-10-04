@@ -109,7 +109,15 @@ export default function PhotoAlbumLightbox() {
            * design system is a handful of values rather than a stylesheet.
            */
           styles={{
-            container: { backgroundColor: "rgba(9, 9, 11, 0.94)" },
+            root: {
+              backdropFilter: "blur(24px)",
+              WebkitBackdropFilter: "blur(24px)",
+            },
+            container: {
+              backgroundColor: "transparent",
+              backdropFilter: "blur(24px)",
+              WebkitBackdropFilter: "blur(24px)",
+            },
             thumbnail: { backgroundColor: "transparent", border: "none" },
           }}
         />
@@ -120,6 +128,7 @@ export default function PhotoAlbumLightbox() {
 
 <ExampleShowcase
   name="third-party-gallery-rows"
+  colorControl={false}
   columns={1}
   minHeight={560}
   examples={[
@@ -261,7 +270,17 @@ export default function MasonryLightbox() {
           slides={photos}
           plugins={[Fullscreen, Slideshow, Zoom, Download]}
           slideshow={{ delay: 2500 }}
-          styles={{ container: { backgroundColor: "rgba(9, 9, 11, 0.94)" } }}
+          styles={{
+            root: {
+              backdropFilter: "blur(24px)",
+              WebkitBackdropFilter: "blur(24px)",
+            },
+            container: {
+              backgroundColor: "transparent",
+              backdropFilter: "blur(24px)",
+              WebkitBackdropFilter: "blur(24px)",
+            },
+          }}
         />
       </CardContent>
     </Card>
@@ -270,6 +289,7 @@ export default function MasonryLightbox() {
 
 <ExampleShowcase
   name="third-party-gallery-masonry"
+  colorControl={false}
   columns={1}
   minHeight={620}
   examples={[
@@ -407,10 +427,9 @@ The lightbox is plugin-based, and each plugin is opt-in:
 
 ## Notes
 
-**Theming the viewer.** The lightbox reads its own CSS variables, so matching it
-to the design system is a handful of values passed to `styles` rather than a
-stylesheet. Its backdrop is intentionally near-black in both themes — a viewer
-is one place where a light surface fights the content.
+**Theming the viewer.** The lightbox reads its own CSS variables, adapting
+automatically to light and dark modes with a translucent, blurred frosted-glass
+backdrop (`backdrop-filter: blur(16px)`).
 
 **Server rendering.** The lightbox renders nothing until `open` is true, so it is
 safe anywhere. The album has a dedicated `react-photo-album/ssr` entry point for

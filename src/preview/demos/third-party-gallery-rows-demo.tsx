@@ -91,7 +91,15 @@ export default function PhotoAlbumLightbox() {
            * design system is a handful of values rather than a stylesheet.
            */
           styles={{
-            container: { backgroundColor: "rgba(9, 9, 11, 0.94)" },
+            root: {
+              backdropFilter: "blur(24px)",
+              WebkitBackdropFilter: "blur(24px)",
+            },
+            container: {
+              backgroundColor: "transparent",
+              backdropFilter: "blur(24px)",
+              WebkitBackdropFilter: "blur(24px)",
+            },
             thumbnail: { backgroundColor: "transparent", border: "none" },
           }}
         />
