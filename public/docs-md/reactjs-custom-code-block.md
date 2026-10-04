@@ -1,3 +1,5 @@
+export const metadata = docsPageMetadata("custom-code-block");
+
 # Custom Code Block
 
 A beautiful, robust code block component with manual syntax highlighting, automatic language icons, and clipboard copy functionality.
@@ -116,7 +118,7 @@ npx create-next-app@latest my-app --typescript --tailwind --eslint
 cd my-app
 
 # Install additional UI dependencies and icons
-npm install clsx tailwind-merge framer-motion lucide-react
+npm install clsx tailwind-merge motion lucide-react
 
 # Add Shadcn UI components for faster development
 npx shadcn@latest init

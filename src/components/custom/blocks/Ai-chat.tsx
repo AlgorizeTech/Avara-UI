@@ -32,17 +32,19 @@ import {
   ThumbsUp,
   Trash2,
   X,
+  Zap,
 } from "lucide-react";
 import {
+  createRef,
   useCallback,
   useEffect,
   useLayoutEffect,
-  useReducer,
+  useInsertionEffect,
   useRef,
   useState,
 } from "react";
 import { bezierEase } from "./gsap-motion";
-import { FRAMER_EASE, springEase, springLinear } from "./motion-curves";
+import { MOTION_EASE, springEase, springLinear } from "./motion-curves";
 
 // ==========================================
 // VARIANT & COLOR CONFIGURATION
@@ -63,7 +65,7 @@ const chatVariants: Record<AIChatVariant, Record<string, string>> = {
     wrapper:
       "bg-background border border-border shadow-none rounded-2xl",
     sidebar:
-      "bg-card/90 backdrop-blur-xl border-r border-border",
+      "bg-card/95 backdrop-blur-xl border-r border-border shadow-2xl lg:shadow-none rounded-r-2xl rounded-l-none lg:rounded-none",
     main: "bg-background",
     header:
       "bg-background/80 border-b border-border backdrop-blur-xl",
@@ -74,7 +76,8 @@ const chatVariants: Record<AIChatVariant, Record<string, string>> = {
   },
   minimal: {
     wrapper: "bg-transparent border-none shadow-none rounded-none",
-    sidebar: "bg-muted/50 rounded-2xl border border-border lg:mr-4",
+    sidebar:
+      "bg-background/95 dark:bg-zinc-900/95 lg:bg-muted/50 backdrop-blur-2xl rounded-r-2xl rounded-l-none lg:rounded-2xl border border-border lg:mr-4 shadow-2xl lg:shadow-none",
     main: "bg-transparent",
     header: "bg-transparent border-b border-border mb-2",
     input: "bg-muted border border-border",
@@ -97,7 +100,7 @@ const chatVariants: Record<AIChatVariant, Record<string, string>> = {
     wrapper:
       "bg-white/40 dark:bg-black/40 backdrop-blur-2xl border border-white/20 dark:border-white/10 shadow-2xl rounded-2xl",
     sidebar:
-      "bg-white/10 dark:bg-black/10 border-r border-white/20 dark:border-white/10",
+      "bg-white/40 dark:bg-zinc-950/60 lg:bg-white/[0.08] lg:dark:bg-white/[0.03] backdrop-blur-3xl backdrop-saturate-150 border-r border-white/25 dark:border-white/10 shadow-2xl lg:shadow-none rounded-r-2xl rounded-l-none lg:rounded-none",
     main: "bg-transparent",
     header:
       "bg-white/10 dark:bg-black/10 border-b border-white/20 dark:border-white/10 backdrop-blur-md",
@@ -217,15 +220,26 @@ export type ChatModel = {
   id: string;
   name: string;
   description?: string;
-  /** Small tag beside the name, e.g. "Pro" or "New". */
+  /** Small tag beside the name, e.g. "New" or "Beta". */
   badge?: string;
   /**
-   * Marks a paid tier: a gold "Premium" badge follows the name, the picker
-   * pill turns gold while it is chosen, and choosing it plays a one-off
+   * Marks the top paid tier: a gold "Premium" badge follows the name, the
+   * picker pill turns gold while it is chosen, and choosing it plays a one-off
    * flourish on the pill and the prompt bar.
    */
   premium?: boolean;
+  /**
+   * Marks the middle paid tier: an electric-blue "Pro" badge, a blue pill
+   * while chosen, and its own one-off flourish when picked. `premium` wins if
+   * both are set.
+   */
+  pro?: boolean;
 };
+
+type ModelTier = "premium" | "pro";
+
+const modelTier = (model: ChatModel): ModelTier | undefined =>
+  model.premium ? "premium" : model.pro ? "pro" : undefined;
 
 export type EffortLevel = "low" | "medium" | "high" | "max" | (string & {});
 
@@ -279,31 +293,32 @@ type PendingAttachment = MessageAttachment & {
   status: UploadStatus;
 };
 
-export const defaultModels: ChatModel[] = [
+const defaultModels: ChatModel[] = [
   {
-    id: "nova-ultra",
-    name: "Nova Ultra",
+    id: "lumen-ultra",
+    name: "Lumen Ultra",
     description: "Deepest reasoning for hard problems",
     premium: true,
   },
   {
-    id: "nova-pro",
-    name: "Nova Pro",
+    id: "lumen-plus",
+    name: "Lumen Plus",
     description: "Best for everyday complex work",
+    pro: true,
   },
   {
-    id: "nova-flash",
-    name: "Nova Flash",
+    id: "lumen-flash",
+    name: "Lumen Flash",
     description: "Fast answers at a lower cost",
   },
   {
-    id: "nova-mini",
-    name: "Nova Mini",
+    id: "lumen-mini",
+    name: "Lumen Mini",
     description: "Lightweight, near-instant replies",
   },
 ];
 
-export const defaultEfforts: EffortOption[] = [
+const defaultEfforts: EffortOption[] = [
   { id: "low", label: "Low", description: "Quickest reply", level: 1 },
   {
     id: "medium",
@@ -320,7 +335,7 @@ export const defaultEfforts: EffortOption[] = [
   { id: "max", label: "Max", description: "Most thorough reasoning", level: 4 },
 ];
 
-export const defaultTools: ComposerTool[] = [
+const defaultTools: ComposerTool[] = [
   {
     id: "files",
     label: "Photos & files",
@@ -541,9 +556,9 @@ export default function AIChat({
   const [openMenu, setOpenMenu] = useState<"tools" | "model" | "effort" | null>(
     null,
   );
-  // Counts premium picks while the flourish plays (0 = idle); each new value
+  // Counts tier picks while the flourish plays (0 = idle); each new value
   // remounts the flourish so a quick re-pick replays it from the start.
-  const [premiumFx, setPremiumFx] = useState(0);
+  const [tierFx, setTierFx] = useState(0);
 
   const composerRef = useRef<HTMLFormElement>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
@@ -641,7 +656,6 @@ export default function AIChat({
     const el = textareaRef.current;
     const value = inputValue;
     const already = value.includes(token);
-    let next = value;
     let caret = value.length;
     if (!already) {
       const start = el?.selectionStart ?? value.length;
@@ -650,7 +664,7 @@ export default function AIChat({
       const after = value.slice(end);
       const lead = before && !/\s$/.test(before) ? " " : "";
       const trail = after && !/^\s/.test(after) ? " " : " ";
-      next = `${before}${lead}${token}${trail}${after}`;
+      const next = `${before}${lead}${token}${trail}${after}`;
       caret = (before + lead + token + trail).length;
       setInputValue(next);
     }
@@ -661,12 +675,13 @@ export default function AIChat({
   };
 
   const selectModel = (model: ChatModel) => {
-    const switchedToPremium = model.premium && model.id !== selectedModel.id;
-    if (
-      switchedToPremium &&
-      !window.matchMedia("(prefers-reduced-motion: reduce)").matches
-    )
-      setPremiumFx((n) => n + 1);
+    // A pick outside the tiers cuts a flourish that is still playing short.
+    if (model.id !== selectedModel.id) {
+      const animate =
+        !!modelTier(model) &&
+        !window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+      setTierFx((n) => (animate ? n + 1 : 0));
+    }
     setSelectedModelId(model.id);
     setOpenMenu(null);
     onModelChange?.(model);
@@ -679,6 +694,8 @@ export default function AIChat({
 
   const maxEffortLevel = Math.max(...efforts.map((e) => e.level));
   const isMaxEffort = selectedEffort.level >= maxEffortLevel;
+  const selectedTier = modelTier(selectedModel);
+  const tierLook = selectedTier && TIERS[selectedTier];
 
   useEffect(() => {
     if (chatScrollRef.current) {
@@ -899,8 +916,8 @@ export default function AIChat({
           )}
         >
           <MaxEffortGlow active={isMaxEffort} className={theme.primaryText} />
-          {premiumFx > 0 && (
-            <PremiumSweep key={premiumFx} onDone={() => setPremiumFx(0)} />
+          {tierFx > 0 && tierLook && (
+            <tierLook.Sweep key={tierFx} onDone={() => setTierFx(0)} />
           )}
 
           <input
@@ -1071,12 +1088,12 @@ export default function AIChat({
                 onOpenChange={(open) => setOpenMenu(open ? "model" : null)}
                 theme={theme}
                 icon={
-                  selectedModel.premium ? (
-                    <Crown
-                      key={premiumFx}
+                  tierLook ? (
+                    <tierLook.Icon
+                      key={tierFx}
                       className={cn(
                         "w-3.5 h-3.5 mb-0.25",
-                        premiumFx > 0 && "aichat-crown-pop",
+                        tierFx > 0 && tierLook.iconPop,
                       )}
                     />
                   ) : (
@@ -1085,13 +1102,16 @@ export default function AIChat({
                 }
                 label={selectedModel.name}
                 heading="Model"
-                highlighted={!!selectedModel.premium}
-                highlightClassName={PREMIUM.pill}
-                flourish={premiumFx > 0 && <PremiumPillFlash key={premiumFx} />}
+                highlighted={!!tierLook}
+                highlightClassName={tierLook ? tierLook.pill : undefined}
+                flourish={
+                  tierFx > 0 && tierLook && <tierLook.PillFlash key={tierFx} />
+                }
                 boundaryRef={composerRef}
               >
                 {models.map((model) => {
                   const active = model.id === selectedModel.id;
+                  const tier = modelTier(model);
                   return (
                     <MenuItem
                       key={model.id}
@@ -1114,7 +1134,7 @@ export default function AIChat({
                               {model.badge}
                             </span>
                           )}
-                          {model.premium && <PremiumBadge />}
+                          {tier && <TierBadge tier={tier} />}
                         </div>
                         {model.description && (
                           <p className="text-xs text-muted-foreground truncate">
@@ -1249,16 +1269,39 @@ export default function AIChat({
       {showSidebar && (
         <aside
           className={cn(
-            `absolute lg:relative z-30 w-[280px] shrink-0 h-full flex flex-col transition-transform duration-300 ease-in-out ${isSidebarOpen ? "translate-x-0" : "-translate-x-full lg:translate-x-0"}`,
+            `absolute lg:relative z-30 w-[280px] max-w-[85vw] shrink-0 h-full flex flex-col transition-transform duration-300 ease-in-out ${isSidebarOpen ? "translate-x-0" : "-translate-x-full lg:translate-x-0"}`,
+            "rounded-r-2xl rounded-l-none lg:rounded-none overflow-hidden",
             styles.sidebar,
           )}
         >
-          <div className="p-5 border-b border-border shrink-0">
+          <div
+            className={cn(
+              "p-5 border-b shrink-0",
+              variant === "glass"
+                ? "border-white/20 dark:border-white/10"
+                : "border-border",
+            )}
+          >
             <div className="flex items-center justify-between mb-4 lg:hidden">
-              <h2 className="font-semibold text-foreground">History</h2>
+              <h2
+                className={cn(
+                  "font-semibold",
+                  variant === "glass"
+                    ? "text-zinc-900 dark:text-white"
+                    : "text-foreground",
+                )}
+              >
+                History
+              </h2>
               <button
                 onClick={() => setIsSidebarOpen(false)}
-                className="text-muted-foreground"
+                className={cn(
+                  "p-1 rounded-lg transition-colors cursor-pointer",
+                  variant === "glass"
+                    ? "text-zinc-700 hover:text-zinc-900 hover:bg-white/30 dark:text-zinc-300 dark:hover:text-white dark:hover:bg-white/10"
+                    : "text-muted-foreground hover:text-foreground hover:bg-muted/60",
+                )}
+                aria-label="Close sidebar"
               >
                 <X className="w-5 h-5" />
               </button>
@@ -1282,7 +1325,14 @@ export default function AIChat({
 
               return (
                 <div key={dateGroup} className="mb-6">
-                  <p className="text-[11px] font-semibold text-muted-foreground uppercase tracking-wider mb-2 px-3">
+                  <p
+                    className={cn(
+                      "text-[11px] font-semibold uppercase tracking-wider mb-2 px-3",
+                      variant === "glass"
+                        ? "text-zinc-800 dark:text-zinc-200"
+                        : "text-muted-foreground",
+                    )}
+                  >
                     {dateGroup}
                   </p>
                   <div className="space-y-0.5">
@@ -1294,11 +1344,16 @@ export default function AIChat({
                         <div
                           key={chat.id}
                           onClick={() => handleSelectChat(chat.id)}
-                          className={`flex items-center justify-between px-3 py-2.5 rounded-lg cursor-pointer transition-all text-sm group ${
+                          className={cn(
+                            "flex items-center justify-between px-3 py-2.5 rounded-lg cursor-pointer transition-all text-sm group",
                             isActive
-                              ? cn("font-semibold", theme.lightBg)
-                              : "text-muted-foreground hover:bg-muted font-medium"
-                          }`}
+                              ? variant === "glass"
+                                ? "bg-white/30 dark:bg-white/15 text-zinc-900 dark:text-white font-semibold shadow-sm border border-white/30 dark:border-white/15 backdrop-blur-md"
+                                : cn("font-semibold", theme.lightBg)
+                              : variant === "glass"
+                                ? "text-zinc-800 dark:text-zinc-200 hover:text-zinc-950 dark:hover:text-white hover:bg-white/15 dark:hover:bg-white/10 font-medium"
+                                : "text-muted-foreground hover:bg-muted font-medium hover:text-foreground",
+                          )}
                         >
                           {isEditing ? (
                             <div
@@ -1345,7 +1400,14 @@ export default function AIChat({
                             <>
                               <div className="flex items-center gap-3 truncate pr-2 min-w-0">
                                 <MessageSquare
-                                  className={`w-4 h-4 shrink-0 ${isActive ? theme.primaryText : "text-muted-foreground group-hover:text-foreground"}`}
+                                  className={cn(
+                                    "w-4 h-4 shrink-0",
+                                    isActive
+                                      ? theme.primaryText
+                                      : variant === "glass"
+                                        ? "text-zinc-700 dark:text-zinc-300 group-hover:text-zinc-950 dark:group-hover:text-white"
+                                        : "text-muted-foreground group-hover:text-foreground",
+                                  )}
                                 />
                                 <span className="truncate">{chat.title}</span>
                               </div>
@@ -1353,15 +1415,25 @@ export default function AIChat({
                                 <button
                                   onClick={(e) => startEditingChat(chat, e)}
                                   className={cn(
-                                    "p-1.5 text-muted-foreground rounded-md transition-colors cursor-pointer",
-                                    theme.primaryHover,
+                                    "p-1.5 rounded-md transition-colors cursor-pointer",
+                                    variant === "glass"
+                                      ? "text-zinc-700 hover:text-zinc-950 hover:bg-white/20 dark:text-zinc-300 dark:hover:text-white dark:hover:bg-white/10"
+                                      : cn(
+                                          "text-muted-foreground",
+                                          theme.primaryHover,
+                                        ),
                                   )}
                                 >
                                   <Edit2 className="w-3.5 h-3.5" />
                                 </button>
                                 <button
                                   onClick={(e) => handleDeleteChat(chat.id, e)}
-                                  className="p-1.5 text-muted-foreground hover:text-rose-500 hover:bg-rose-50 dark:hover:bg-rose-500/20 rounded-md transition-colors cursor-pointer"
+                                  className={cn(
+                                    "p-1.5 rounded-md transition-colors cursor-pointer",
+                                    variant === "glass"
+                                      ? "text-zinc-700 hover:text-rose-600 hover:bg-rose-500/10 dark:text-zinc-300 dark:hover:text-rose-400"
+                                      : "text-muted-foreground hover:text-rose-500 hover:bg-rose-50 dark:hover:bg-rose-500/20",
+                                  )}
                                 >
                                   <Trash2 className="w-3.5 h-3.5" />
                                 </button>
@@ -1377,7 +1449,14 @@ export default function AIChat({
             })}
           </div>
 
-          <div className="p-4 border-t border-border shrink-0 flex items-center justify-between cursor-pointer hover:bg-muted transition-colors">
+          <div
+            className={cn(
+              "p-4 border-t shrink-0 flex items-center justify-between cursor-pointer transition-colors",
+              variant === "glass"
+                ? "border-white/20 dark:border-white/10 hover:bg-white/15 dark:hover:bg-white/10"
+                : "border-border hover:bg-muted",
+            )}
+          >
             <div className="flex items-center gap-3">
               <div
                 className={cn(
@@ -1396,16 +1475,37 @@ export default function AIChat({
               >
                 JM
               </div>
-              <span className="text-sm font-semibold text-foreground">Joel M.</span>
+              <span
+                className={cn(
+                  "text-sm font-semibold",
+                  variant === "glass"
+                    ? "text-zinc-900 dark:text-white"
+                    : "text-foreground",
+                )}
+              >
+                Joel M.
+              </span>
             </div>
-            <Settings className="w-4 h-4 text-muted-foreground hover:text-foreground" />
+            <Settings
+              className={cn(
+                "w-4 h-4 transition-colors",
+                variant === "glass"
+                  ? "text-zinc-700 hover:text-zinc-950 dark:text-zinc-300 dark:hover:text-white"
+                  : "text-muted-foreground hover:text-foreground",
+              )}
+            />
           </div>
         </aside>
       )}
 
       {showSidebar && isSidebarOpen && (
         <div
-          className="absolute inset-0 bg-black/40 dark:bg-black/60 backdrop-blur-sm z-20 lg:hidden cursor-pointer"
+          className={cn(
+            "absolute inset-0 z-20 lg:hidden cursor-pointer transition-opacity duration-300",
+            variant === "glass"
+              ? "bg-black/25 dark:bg-black/45 backdrop-blur-[2px]"
+              : "bg-black/50 dark:bg-black/70 backdrop-blur-sm",
+          )}
           onClick={() => setIsSidebarOpen(false)}
         />
       )}
@@ -1713,10 +1813,10 @@ type Theme = Record<string, string>;
 // ==========================================
 // MOTION
 // ==========================================
-/** Framer's named eases, for the tweens below. */
-const EASE_OUT = bezierEase(FRAMER_EASE.easeOut);
-const EASE_IN = bezierEase(FRAMER_EASE.easeIn);
-/** Framer's default fade: 0.3s on cubic-bezier(0.25, 0.1, 0.35, 1). */
+/** Motion's named eases, for the tweens below. */
+const EASE_OUT = bezierEase(MOTION_EASE.easeOut);
+const EASE_IN = bezierEase(MOTION_EASE.easeIn);
+/** Motion's default fade: 0.3s on cubic-bezier(0.25, 0.1, 0.35, 1). */
 const FADE = { duration: 0.3, ease: bezierEase([0.25, 0.1, 0.35, 1]) };
 /** The rocket's launch. */
 const ROCKET_SPRING = springEase({ stiffness: 260, damping: 16 });
@@ -1724,7 +1824,7 @@ const ROCKET_SPRING = springEase({ stiffness: 260, damping: 16 });
 const CHIP_SPRING = springEase({ stiffness: 320, damping: 24 });
 /**
  * When a removed chip is taken out of the tray: the moment its fade-out
- * spring counts as settled (Framer rests an opacity spring once it is within
+ * spring counts as settled (Motion rests an opacity spring once it is within
  * 0.005 and slower than 0.01/s), a little after the motion itself ends.
  */
 const CHIP_EXIT_SETTLE = 0.65;
@@ -1738,6 +1838,8 @@ const EASE_OUT_CSS = "cubic-bezier(0, 0, 0.58, 1)";
 /** The premium flourish on the prompt bar: one lap of the edge beam. */
 const PREMIUM_SWEEP_S = 1.6;
 const PREMIUM_ORBIT_CSS = "cubic-bezier(0.45, 0, 0.2, 1)";
+/** The Pro flourish on the prompt bar: trace, flicker and fade. */
+const PRO_SURGE_S = 1.3;
 
 /**
  * The fixed, self-running animations — entrances that play once on mount and
@@ -1808,6 +1910,39 @@ const MOTION_CSS = `
 }
 .aichat-crown-pop { animation: aichat-crown-pop 0.55s ${EASE_OUT_CSS} both; }
 
+@keyframes aichat-pro-life { 0% { opacity: 0; } 6%, 72% { opacity: 1; } 100% { opacity: 0; } }
+.aichat-pro-life { animation: aichat-pro-life ${PRO_SURGE_S}s linear both; }
+@keyframes aichat-pro-trace { from { clip-path: inset(0 50%); } to { clip-path: inset(0); } }
+@keyframes aichat-pro-flicker {
+  0%, 40%, 80%, 100% { opacity: 1; }
+  20% { opacity: 0.25; }
+  60% { opacity: 0.45; }
+}
+.aichat-pro-trace {
+  animation: aichat-pro-trace 0.5s ${EASE_OUT_CSS} both,
+    aichat-pro-flicker 0.45s linear 0.5s both;
+}
+@keyframes aichat-pro-scan { from { transform: translateY(100%); } to { transform: translateY(-100%); } }
+.aichat-pro-scan { animation: aichat-pro-scan 0.9s ${EASE_IN_OUT_CSS} 0.2s both; }
+@keyframes aichat-pro-charge { 0% { opacity: 0; } 40% { opacity: 0.55; } 100% { opacity: 0; } }
+.aichat-pro-charge { animation: aichat-pro-charge 0.7s ${EASE_OUT_CSS} 0.45s both; }
+@keyframes aichat-pro-flash { 0% { opacity: 0; } 15% { opacity: 0.3; } 30% { opacity: 0.05; } 45% { opacity: 0.25; } 100% { opacity: 0; } }
+.aichat-pro-flash { animation: aichat-pro-flash 0.6s linear both; }
+@keyframes aichat-pro-spark {
+  0% { opacity: 0; transform: translate(-50%, -50%); }
+  10% { opacity: 1; }
+  100% { opacity: 0; transform: translate(calc(-50% + var(--aichat-spark-x)), calc(-50% + var(--aichat-spark-y))) scale(0.3); }
+}
+.aichat-pro-spark { animation: aichat-pro-spark 0.5s ${EASE_OUT_CSS} 0.15s both; }
+@keyframes aichat-zap-strike {
+  0% { opacity: 0; transform: translateY(-8px) scale(0.6); }
+  35% { opacity: 1; transform: translateY(0) scale(1.3); }
+  50% { opacity: 0.35; }
+  65% { opacity: 1; transform: scale(1); }
+  100% { opacity: 1; transform: none; }
+}
+.aichat-zap-strike { animation: aichat-zap-strike 0.5s ${EASE_OUT_CSS} both; }
+
 @keyframes aichat-wave {
   0%, 100% { transform: scaleY(0.15); }
   25% { transform: scaleY(var(--aichat-wave-peak)); }
@@ -1853,7 +1988,9 @@ function Presence({
     style: React.CSSProperties | undefined,
   ) => React.ReactNode;
 }) {
-  const ref = useRef<HTMLDivElement>(null);
+  // A stable box for the child element, handed to the render function below
+  // (and read only in effects); a state-held RefObject so render can pass it on.
+  const [box] = useState(() => createRef<HTMLDivElement>());
   const [mounted, setMounted] = useState(show);
   if (show && !mounted) setMounted(true);
   // Server render and first frame: the entry pose, when the child enters.
@@ -1863,7 +2000,7 @@ function Presence({
   useLayoutEffect(() => {
     const first = firstRun.current;
     firstRun.current = false;
-    const el = ref.current;
+    const el = box.current;
     if (!el) return;
     const fresh = el !== seen.current;
     seen.current = el;
@@ -1884,9 +2021,13 @@ function Presence({
     [],
   );
 
-  const last = useRef<React.ReactNode>(null);
-  if (show) last.current = children(ref, mountStyle);
-  return mounted ? last.current : null;
+  // While leaving, it keeps rendering what it showed last: the render function
+  // from the last render where it was shown (its closure holds that render's
+  // values).
+  const [lastChildren, setLastChildren] = useState(() => children);
+  if (show && lastChildren !== children) setLastChildren(() => children);
+  const render = show ? children : lastChildren;
+  return mounted ? render(box, mountStyle) : null;
 }
 
 /** A chip's motion: its entry/exit pose and any glide towards its new slot. */
@@ -1921,33 +2062,32 @@ function AttachmentChips({
   onRemove: (id: string) => void;
 }) {
   const chips = useRef(new Map<string, ChipMotion>());
-  const [, rerender] = useReducer((n: number) => n + 1, 0);
-  const firstIds = useRef<Set<string> | null>(null);
-  if (!firstIds.current) firstIds.current = new Set(attachments.map((a) => a.id));
-  // Chips that have finished leaving, and what was on screen last commit.
-  const gone = useRef(new Set<string>());
-  const onScreen = useRef<PendingAttachment[]>(attachments);
+  const [firstIds] = useState(() => new Set(attachments.map((a) => a.id)));
+  // Chips that have finished leaving, and what was on screen last render.
+  const [gone, setGone] = useState<ReadonlySet<string>>(() => new Set());
+  const [onScreen, setOnScreen] = useState<PendingAttachment[]>(attachments);
 
   // Removed chips stay where they were, in their old slot, until they're out.
   const present = new Set(attachments.map((a) => a.id));
   const rendered = [...attachments];
-  onScreen.current.forEach((att, i) => {
-    if (!present.has(att.id) && !gone.current.has(att.id)) rendered.splice(i, 0, att);
+  onScreen.forEach((att, i) => {
+    if (!present.has(att.id) && !gone.has(att.id)) rendered.splice(i, 0, att);
   });
+  if (rendered.length !== onScreen.length || rendered.some((att, i) => att !== onScreen[i])) {
+    setOnScreen(rendered);
+  }
+  // A finished chip only needs remembering while it is still in `onScreen`.
+  if ([...gone].some((id) => !rendered.some((att) => att.id === id))) {
+    setGone(new Set([...gone].filter((id) => rendered.some((att) => att.id === id))));
+  }
 
-  // Where each chip's layout box sat before this render commits.
-  const before = new Map(
-    Array.from(chips.current, ([id, m]) => [id, { x: m.el.offsetLeft, y: m.el.offsetTop }] as const),
-  );
+  // Where each chip's layout box sat before this commit touched the DOM —
+  // measured by <ChipLayoutSnapshot> just ahead of the tray's DOM updates.
+  const beforeRef = useRef(new Map<string, { x: number; y: number }>());
 
   const leaving = useRef(new Map<string, gsap.core.Tween>());
   useLayoutEffect(() => {
-    onScreen.current = rendered;
-    const stillShown = new Set(rendered.map((a) => a.id));
-    gone.current.forEach((id) => {
-      if (!stillShown.has(id)) gone.current.delete(id);
-    });
-
+    const before = beforeRef.current;
     chips.current.forEach((m, id) => {
       // Out: fade and shrink in place, then drop it.
       if (!present.has(id) && !leaving.current.has(id)) {
@@ -1957,8 +2097,7 @@ function AttachmentChips({
           id,
           gsap.delayedCall(CHIP_EXIT_SETTLE, () => {
             leaving.current.delete(id);
-            gone.current.add(id);
-            rerender();
+            setGone((current) => new Set(current).add(id));
           }),
         );
         return;
@@ -1989,40 +2128,51 @@ function AttachmentChips({
     if (!el) return;
     const m: ChipMotion = { el, opacity: 1, scale: 1, y: 0, glideX: 0, glideY: 0 };
     chips.current.set(id, m);
-    if (firstIds.current?.has(id)) return;
+    if (firstIds.has(id)) return;
     // In: springs up from slightly below, small and transparent.
     m.opacity = 0;
     m.scale = 0.85;
     m.y = 6;
     paintChip(m);
     gsap.to(m, { opacity: 1, scale: 1, y: 0, ...CHIP_SPRING, onUpdate: () => paintChip(m) });
-  }, []);
-  const refs = useRef(new Map<string, (el: HTMLDivElement | null) => void>());
-  const refFor = (id: string) => {
-    let ref = refs.current.get(id);
-    if (!ref) {
-      ref = (el) => {
-        register(id, el);
-        if (!el) refs.current.delete(id);
-      };
-      refs.current.set(id, ref);
-    }
-    return ref;
-  };
+  }, [firstIds]);
 
   return (
-    <div className="flex flex-wrap gap-2 px-1 pt-1.5 pb-1">
-      {rendered.map((att) => (
-        <AttachmentChip
-          key={att.id}
-          chipRef={refFor(att.id)}
-          attachment={att}
-          theme={theme}
-          onRemove={() => onRemove(att.id)}
-        />
-      ))}
-    </div>
+    <>
+      <ChipLayoutSnapshot chipsRef={chips} beforeRef={beforeRef} />
+      <div className="flex flex-wrap gap-2 px-1 pt-1.5 pb-1">
+        {rendered.map((att) => (
+          <AttachmentChip
+            key={att.id}
+            register={register}
+            attachment={att}
+            theme={theme}
+            onRemove={() => onRemove(att.id)}
+          />
+        ))}
+      </div>
+    </>
   );
+}
+
+/**
+ * Records where each chip's layout box sits just before a commit changes the
+ * tray. Rendered ahead of the tray, so its insertion effect runs before the
+ * tray's own DOM updates in the same commit; renders nothing.
+ */
+function ChipLayoutSnapshot({
+  chipsRef,
+  beforeRef,
+}: {
+  chipsRef: React.RefObject<Map<string, ChipMotion>>;
+  beforeRef: React.RefObject<Map<string, { x: number; y: number }>>;
+}) {
+  useInsertionEffect(() => {
+    beforeRef.current = new Map(
+      Array.from(chipsRef.current, ([id, m]) => [id, { x: m.el.offsetLeft, y: m.el.offsetTop }] as const),
+    );
+  });
+  return null;
 }
 
 /**
@@ -2050,8 +2200,8 @@ function RocketProgress({
   const [rocketMounted, setRocketMounted] = useState(flying);
   if (flying && !rocketMounted) setRocketMounted(true);
   // While it leaves, it keeps the position it launched from.
-  const launchedFrom = useRef(progress);
-  if (flying) launchedFrom.current = progress;
+  const [launchedFrom, setLaunchedFrom] = useState(progress);
+  if (flying && launchedFrom !== progress) setLaunchedFrom(progress);
   const rocketRef = useRef<HTMLDivElement>(null);
   const craftRef = useRef<HTMLDivElement>(null);
   useLayoutEffect(() => {
@@ -2118,7 +2268,7 @@ function RocketProgress({
         <div
           ref={rocketRef}
           className={cn("absolute top-1/2 z-10", theme.primaryText)}
-          style={{ left: `${flying ? progress : launchedFrom.current}%`, transition: glide }}
+          style={{ left: `${flying ? progress : launchedFrom}%`, transition: glide }}
         >
           <div ref={craftRef} className="relative -translate-x-1/2 -translate-y-1/2">
             {/* Bob while in flight */}
@@ -2153,14 +2303,22 @@ function AttachmentChip({
   attachment,
   theme,
   onRemove,
-  chipRef,
+  register,
 }: {
   attachment: PendingAttachment;
   theme: Theme;
   onRemove: () => void;
-  /** The chip's root element, for the tray to animate. */
-  chipRef?: (el: HTMLDivElement | null) => void;
+  /** Hands the chip's root element to the tray, for it to animate. */
+  register?: (id: string, el: HTMLDivElement | null) => void;
 }) {
+  // One stable callback per chip, so React attaches it once, not every render.
+  const id = attachment.id;
+  const chipRef = useCallback(
+    (el: HTMLDivElement | null) => {
+      register?.(id, el);
+    },
+    [register, id],
+  );
   const isImage = attachment.type.startsWith("image/");
   const statusText =
     attachment.status === "done"
@@ -2408,8 +2566,9 @@ function MaxEffortGlow({
 }
 
 /**
- * Premium models wear gold whatever the accent colour, so choosing one reads
- * apart from the accent-tinted Max-effort glow.
+ * Paid tiers wear their own colour whatever the accent — gold for Premium,
+ * electric blue for Pro — so choosing one reads apart from the accent-tinted
+ * Max-effort glow, and the two tiers read apart from each other.
  */
 const PREMIUM = {
   badge:
@@ -2417,6 +2576,46 @@ const PREMIUM = {
   pill: "bg-amber-500/10 text-amber-600 dark:text-amber-300",
   /** `currentColor` for the flourishes. */
   ink: "text-amber-400",
+};
+
+const PRO = {
+  badge:
+    "bg-gradient-to-r from-sky-200 to-cyan-100 text-sky-900 dark:from-sky-400/25 dark:to-cyan-300/15 dark:text-sky-200",
+  pill: "bg-sky-500/10 text-sky-600 dark:text-sky-300",
+  ink: "text-sky-400",
+};
+
+const TIERS: Record<
+  ModelTier,
+  {
+    label: string;
+    Icon: typeof Crown;
+    badge: string;
+    pill: string;
+    /** Entrance for the pill's icon when the tier is picked. */
+    iconPop: string;
+    Sweep: (props: { onDone: () => void }) => React.ReactNode;
+    PillFlash: () => React.ReactNode;
+  }
+> = {
+  premium: {
+    label: "Premium",
+    Icon: Crown,
+    badge: PREMIUM.badge,
+    pill: PREMIUM.pill,
+    iconPop: "aichat-crown-pop",
+    Sweep: PremiumSweep,
+    PillFlash: PremiumPillFlash,
+  },
+  pro: {
+    label: "Pro",
+    Icon: Zap,
+    badge: PRO.badge,
+    pill: PRO.pill,
+    iconPop: "aichat-zap-strike",
+    Sweep: ProSurge,
+    PillFlash: ProPillFlash,
+  },
 };
 
 /** Shows only a 2px ring at the padding edge — the track the beam runs in. */
@@ -2431,16 +2630,17 @@ const RING_MASK: React.CSSProperties = {
 const BEAM_GRADIENT =
   "conic-gradient(from 0deg, transparent 0deg, currentColor 50deg, transparent 90deg, transparent 180deg, currentColor 230deg, transparent 270deg)";
 
-function PremiumBadge() {
+function TierBadge({ tier }: { tier: ModelTier }) {
+  const { label, Icon, badge } = TIERS[tier];
   return (
     <span
       className={cn(
         "inline-flex items-center gap-0.5 shrink-0 text-[9px] font-semibold uppercase tracking-wide px-1.5 py-px rounded-full",
-        PREMIUM.badge,
+        badge,
       )}
     >
-      <Crown className="w-2.5 h-2.5" strokeWidth={2.5} />
-      Premium
+      <Icon className="w-2.5 h-2.5" strokeWidth={2.5} />
+      {label}
     </span>
   );
 }
@@ -2490,6 +2690,72 @@ function PremiumPillFlash() {
       <span className="absolute inset-0 overflow-hidden rounded-lg">
         <span className="aichat-premium-shine absolute inset-y-0 left-0 w-1/3 bg-gradient-to-r from-transparent via-white/80 to-transparent dark:via-white/40" />
       </span>
+    </span>
+  );
+}
+
+/**
+ * The prompt bar's Pro hand-off, played once per pick — a charge rather than
+ * Premium's orbit: the edge draws itself out from the centre, flickers like a
+ * live wire, a scan line rises through the bar and it glows from within. Calls
+ * `onDone` when it ends so the caller can unmount it.
+ */
+function ProSurge({ onDone }: { onDone: () => void }) {
+  return (
+    <div
+      aria-hidden
+      onAnimationEnd={(e) => {
+        if (e.target === e.currentTarget) onDone();
+      }}
+      className={cn(
+        "aichat-pro-life pointer-events-none absolute inset-0 rounded-2xl",
+        PRO.ink,
+      )}
+    >
+      <span className="aichat-pro-charge absolute inset-0 rounded-2xl shadow-[inset_0_0_20px_2px_currentColor]" />
+      <span className="absolute inset-0 overflow-hidden rounded-2xl">
+        <span className="aichat-pro-scan absolute inset-0 bg-gradient-to-t from-transparent via-current to-transparent opacity-20" />
+      </span>
+      <span
+        className="absolute inset-0 overflow-hidden rounded-2xl p-[2px]"
+        style={RING_MASK}
+      >
+        <span className="aichat-pro-trace absolute inset-0 bg-current" />
+      </span>
+    </div>
+  );
+}
+
+/** Where the Pro sparks fly, in px from the pill's icon. */
+const PRO_SPARKS = [
+  [14, 0],
+  [7, -12],
+  [-7, -12],
+  [-14, 0],
+  [-7, 12],
+  [7, 12],
+];
+
+/** The model pill's side of the Pro flourish: the pill flickers and sparks burst off the bolt. */
+function ProPillFlash() {
+  return (
+    <span
+      aria-hidden
+      className={cn("pointer-events-none absolute inset-0", PRO.ink)}
+    >
+      <span className="aichat-pro-flash absolute inset-0 rounded-lg bg-current" />
+      {PRO_SPARKS.map(([x, y]) => (
+        <span
+          key={`${x},${y}`}
+          className="aichat-pro-spark absolute left-[13px] sm:left-[15px] top-1/2 size-[3px] rounded-full bg-current"
+          style={
+            {
+              "--aichat-spark-x": `${x}px`,
+              "--aichat-spark-y": `${y}px`,
+            } as React.CSSProperties
+          }
+        />
+      ))}
     </span>
   );
 }

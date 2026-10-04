@@ -282,12 +282,14 @@ function LetterBounceWords({ words, interval, index, speed, delay, position, ali
   const active = useActiveIndex(words.length, interval, index);
   const [shown, setShown] = useState(active);
   const latest = useRef(active);
-  latest.current = active;
+  useEffect(() => {
+    latest.current = active;
+  });
   const leaving = shown !== active;
   // Only the first word waits for `delay`.
-  const cycled = useRef(false);
-  if (leaving) cycled.current = true;
-  const lead = cycled.current ? 0 : delay;
+  const [cycled, setCycled] = useState(false);
+  if (leaving && !cycled) setCycled(true);
+  const lead = cycled ? 0 : delay;
   const word = words[shown] ?? words[0];
   const text = asString(word);
 
@@ -429,7 +431,9 @@ function WordFlipWords({ words, interval, index, speed, position, align }: Rotat
   const [shown, setShown] = useState(active);
   const [swapped, setSwapped] = useState(false);
   const latest = useRef(active);
-  latest.current = active;
+  useEffect(() => {
+    latest.current = active;
+  });
   const leaving = shown !== active;
   const duration = 0.45 * speed;
   const swapIn = () => {
@@ -858,10 +862,18 @@ export const AnimatedTypographyBlock = forwardRef<
         case "letter-bounce":
           return <LetterBounceWords {...rotator} />;
 
-        case "typewriter": {
-          const { interval: _interval, index: _index, ...rest } = rotator;
-          return <TypewriterWords {...rest} hold={interval ?? TYPEWRITER_HOLD_MS} />;
-        }
+        case "typewriter":
+          // The typewriter paces itself, so it takes neither interval nor index.
+          return (
+            <TypewriterWords
+              words={rotator.words}
+              speed={rotator.speed}
+              delay={rotator.delay}
+              position={rotator.position}
+              align={rotator.align}
+              hold={interval ?? TYPEWRITER_HOLD_MS}
+            />
+          );
 
         case "word-flip":
           return <WordFlipWords {...rotator} />;

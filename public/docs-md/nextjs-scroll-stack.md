@@ -1,3 +1,5 @@
+export const metadata = docsPageMetadata("scroll-stack");
+
 # Scroll Stack
 
 A premium collection of scroll-driven 3D card stacking layouts engineered exclusively with **GSAP's ScrollTrigger plugin**. As users scroll down the page, feature cards stick to the viewport while the next card slides up to cover them, creating a simulated 3D deck with silky 60fps performance across both light and dark modes.
@@ -235,7 +237,7 @@ npx shadcn@latest add @algorize-ui/sticky-scroll-stack
 Or the Motion build (same props, same file — install one):
 
 ```bash
-npx shadcn@latest add @algorize-ui/sticky-scroll-stack-framer
+npx shadcn@latest add @algorize-ui/sticky-scroll-stack-motion
 ```
 
 ### More examples
@@ -457,6 +459,15 @@ export default function ProcessRailTrack() {
 }`;
 
 ### More examples
+
+`HorizontalRail` is its own item, so it installs on its own:
+
+Register the @algorize-ui registry once per project, then add the component:
+
+```bash
+npx shadcn@latest registry add @algorize-ui=https://algorize-ui.vercel.app/r/{name}.json
+npx shadcn@latest add @algorize-ui/horizontal-rail
+```
 
 ## Features
 Discover the key capabilities that make this component an excellent choice for modern, animated user interfaces.

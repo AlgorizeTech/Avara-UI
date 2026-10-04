@@ -1,8 +1,19 @@
+export const metadata = docsPageMetadata("orbit-gallery");
+
 # Orbit Gallery
 
 A two-column hero for an agency, studio or gallery: copy and actions on the left, and on the right a ring of photo cards that revolves once every 36 seconds, each card staying upright as it travels. Hovering the ring holds it still; moving the pointer anywhere over the section leaves a short trail of dots in the accent colour.
 
 The ring is pure CSS — one keyframe rotates each card about the centre, pushes it out by a radius that grows with the breakpoint, and counter-rotates it upright — so any number of `images` space themselves evenly and the motion costs nothing on the main thread. Under `prefers-reduced-motion` the ring holds still.
+
+{/* The snippets below pass next/link so links route client-side in Next.js. The React tab is the same file without it: the component's default  needs no import. */}
+
+export const nextAndReact = (code) => ({
+  nextjs: code,
+  reactjs: code
+    .replace(/import Link from "next\/link";\r?\n/, "")
+    .replace(/\r?\n[ \t]*linkComponent=\{Link\}/, ""),
+});
 
 export const usage = `// Landscapes from Unsplash, free to use.
 const IMAGES = [

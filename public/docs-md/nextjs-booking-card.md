@@ -1,3 +1,5 @@
+export const metadata = docsPageMetadata("booking-card");
+
 # Booking Card
 
 A booking panel that goes inside any card: a strip of days paged a week at a time, time slots in groups, a button that reads the choice back before anyone confirms, and a confirmation that draws itself in over the form once the booking is made.

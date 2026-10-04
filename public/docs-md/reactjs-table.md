@@ -1,3 +1,5 @@
+export const metadata = docsPageMetadata("table");
+
 # Table
 
 A set of composable table primitives. You write the rows; the component supplies the structure, spacing and theming.
@@ -206,13 +208,17 @@ npx shadcn@latest add @algorize-ui/table
       TableEmptytr &gt; tdFull-width empty state row.
       TableExpandedRowtr &gt; tdAnimated detail panel beneath a row.
       TableExpandTogglebuttonRotating chevron for the row above.
-      TableRowActionsdivReveals its buttons on row hover or keyboard focus.
+      TableRowActionsdivReveals its buttons on row hover or keyboard focus (always visible in soft).
+      TableRowActionbuttonRound icon button for a row action; label is required, tone="danger" for deletes.
+      TableActionbuttonToolbar button in the table's look — variant primary, secondary or ghost.
+      TableBadgespanStatus pill with a dot (tone: neutral, success, warning, danger, info), or a tag with dot={"{false}"}.
+      TablePersondivAvatar (photo or initials), a name and a muted second line.
 
 ### `Table`
 
       PropTypeDefaultDescription
 
-      variant"default" | "minimal" | "glass""default"Bordered card, bare table, or frosted glass panel.
+      variant"default" | "minimal" | "glass" | "soft""default"Bordered card, bare table, frosted glass panel, or the admin-dashboard look (see Data Table for the full soft example).
       size"sm" | "md" | "lg""md"Row density — cell padding and text size.
       color"primary" | "indigo" | "rose" | "emerald" | "zinc" | (hex)"primary"Accent for selected rows and interactive affordances. Any #rrggbb works.
 
@@ -243,7 +249,7 @@ npx shadcn@latest add @algorize-ui/table
       TableExpandedRowcolSpannumberRequired. Must match your column count.
       TableEmptycolSpannumberRequired. Defaults its text to &ldquo;No data available.&rdquo;
       TableRowActionsalign"left" | "center" | "right"Horizontal alignment inside the cell. Defaults to "right".
-      TableRowActionsalwaysVisiblebooleanSkip the hover reveal and keep the buttons visible.
+      TableRowActionsalwaysVisiblebooleanSkip the hover reveal and keep the buttons visible. Defaults to visible in the soft variant.
 
 Every primitive also forwards its ref and accepts the native attributes of the element it renders.
 

@@ -1,3 +1,5 @@
+export const metadata = docsPageMetadata("data-grid");
+
 # Data Grid
 
 A high-performance, fully keyboard-navigable data table with Excel-style inline editing.

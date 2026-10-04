@@ -4,7 +4,7 @@ import { cn } from "@/lib/utils";
 import gsap from "gsap";
 import React, { useEffect, useLayoutEffect, useRef, useState } from "react";
 import { bezierEase, gsapTicker } from "./gsap-motion";
-import { createSpringFollower, FRAMER_EASE, LAYOUT_TRANSITION } from "./motion-curves";
+import { createSpringFollower, MOTION_EASE, LAYOUT_TRANSITION } from "./motion-curves";
 
 export interface DockItem {
   id: string;
@@ -24,14 +24,14 @@ export interface DockProps extends React.HTMLAttributes<HTMLDivElement> {
   gap?: number;
 }
 
-/** Magnification spring — the same constants the Framer Motion build uses. */
+/** Magnification spring — the same constants the Motion build uses. */
 const SIZE_SPRING = { mass: 0.1, stiffness: 150, damping: 12 };
 
 /**
- * Tooltip in/out: 0.15s tweens with no ease given, which Framer resolves to
+ * Tooltip in/out: 0.15s tweens with no ease given, which Motion resolves to
  * `easeOut` for every value (animateMotionValue's default).
  */
-const TOOLTIP_EASE = bezierEase(FRAMER_EASE.easeOut);
+const TOOLTIP_EASE = bezierEase(MOTION_EASE.easeOut);
 const DOT_EASE = bezierEase(LAYOUT_TRANSITION.ease);
 
 /** Pointer position shared by every icon; `Infinity` while the pointer is away. */
@@ -42,6 +42,9 @@ type PointerBus = {
 
 /** Where the active dot last sat, so the next one can fly in from there. */
 type DotMemory = { rect: DOMRect | null };
+
+/** A `useRef` box handed to the icons (typed locally so React 18 and 19 types agree). */
+type Held<T> = { readonly current: T };
 
 export const Dock = React.forwardRef<HTMLDivElement, DockProps>(
   (
@@ -62,27 +65,71 @@ export const Dock = React.forwardRef<HTMLDivElement, DockProps>(
   ) => {
     const bus = useRef<PointerBus>({ x: Infinity, listeners: new Set() });
     const dot = useRef<DotMemory>({ rect: null });
-    const [isMobile, setIsMobile] = useState(false);
+    const [screenTier, setScreenTier] = useState<"desktop" | "tablet" | "mobile">(() => {
+      if (typeof window === "undefined") return "desktop";
+      const w = window.innerWidth;
+      if (w < 480) return "mobile";
+      if (w < 640) return "tablet";
+      return "desktop";
+    });
 
     // Automatically detect small screens to scale down physics on touch devices
     useEffect(() => {
-      const handleResize = () => setIsMobile(window.innerWidth < 640);
+      const handleResize = () => {
+        const w = window.innerWidth;
+        if (w < 480) {
+          setScreenTier("mobile");
+        } else if (w < 640) {
+          setScreenTier("tablet");
+        } else {
+          setScreenTier("desktop");
+        }
+      };
       handleResize();
       window.addEventListener("resize", handleResize);
       return () => window.removeEventListener("resize", handleResize);
     }, []);
 
-    // Responsive physics sizing fallbacks for mobile viewports: smaller, but
-    // still thumb-sized (a 36px icon, 52px at full magnification).
-    const effectiveBaseSize = isMobile ? Math.min(baseSize, 36) : baseSize;
-    const effectiveMagnification = isMobile
-      ? Math.min(magnification, 52)
+    const isSmallMobile = screenTier === "mobile";
+    const isTablet = screenTier === "tablet";
+    const isMobile = isSmallMobile || isTablet;
+    const isCrowded = items.length >= 7;
+
+    // Responsive physics sizing fallbacks for mobile viewports:
+    // When a large item set (7+ items) is rendered on narrow mobile screens (<480px),
+    // scale resting size down to 28px and gap to 4px so the dock stays neatly within the screen bounds.
+    const effectiveBaseSize = isSmallMobile && isCrowded
+      ? Math.min(baseSize, 28)
+      : isMobile
+      ? Math.min(baseSize, isCrowded ? 34 : 36)
+      : baseSize;
+
+    const effectiveMagnification = isSmallMobile && isCrowded
+      ? Math.min(magnification, 40)
+      : isMobile
+      ? Math.min(magnification, isCrowded ? 48 : 52)
       : magnification;
-    const effectiveDistance = isMobile ? Math.min(distance, 100) : distance;
-    const effectiveGap = isMobile ? Math.min(gap, 6) : gap;
+
+    const effectiveDistance = isSmallMobile && isCrowded
+      ? Math.min(distance, 70)
+      : isMobile
+      ? Math.min(distance, 100)
+      : distance;
+
+    const effectiveGap = isSmallMobile && isCrowded
+      ? Math.min(gap, 4)
+      : isMobile
+      ? Math.min(gap, 6)
+      : gap;
 
     const dynamicHeight = typeof containerHeight === "number"
-      ? `${isMobile ? Math.min(containerHeight, 60) : containerHeight}px`
+      ? `${
+          isSmallMobile && isCrowded
+            ? Math.min(containerHeight, 52)
+            : isMobile
+            ? Math.min(containerHeight, 60)
+            : containerHeight
+        }px`
       : containerHeight;
 
     const publish = (x: number) => {
@@ -107,10 +154,13 @@ export const Dock = React.forwardRef<HTMLDivElement, DockProps>(
           ...style,
         }}
         className={cn(
-          "mx-auto flex items-end justify-center rounded-2xl px-2 sm:px-4 pt-1 sm:pt-2.5 pb-0.5 sm:pb-2.5 shadow-2xl transition-all duration-300",
+          "mx-auto flex items-end justify-center rounded-2xl shadow-2xl transition-all duration-300",
+          isSmallMobile && isCrowded
+            ? "px-1.5 pt-1 pb-0.5"
+            : "px-2 sm:px-4 pt-1 sm:pt-2.5 pb-0.5 sm:pb-2.5",
           "bg-card/70 backdrop-blur-xl border border-border/80",
           "ring-1 ring-foreground/5",
-          "w-fit max-w-[calc(100vw-1.5rem)] overflow-visible",
+          "w-fit max-w-[calc(100%-0.5rem)] sm:max-w-full overflow-visible",
           className,
         )}
         {...props}
@@ -119,8 +169,8 @@ export const Dock = React.forwardRef<HTMLDivElement, DockProps>(
           <DockIcon
             key={item.id}
             item={item}
-            bus={bus.current}
-            dot={dot.current}
+            busRef={bus}
+            dotRef={dot}
             baseSize={effectiveBaseSize}
             magnification={effectiveMagnification}
             distance={effectiveDistance}
@@ -135,8 +185,8 @@ Dock.displayName = "Dock";
 
 interface DockIconProps {
   item: DockItem;
-  bus: PointerBus;
-  dot: DotMemory;
+  busRef: Held<PointerBus>;
+  dotRef: Held<DotMemory>;
   baseSize: number;
   magnification: number;
   distance: number;
@@ -144,8 +194,8 @@ interface DockIconProps {
 
 const DockIcon: React.FC<DockIconProps> = ({
   item,
-  bus,
-  dot,
+  busRef,
+  dotRef,
   baseSize,
   magnification,
   distance,
@@ -158,11 +208,15 @@ const DockIcon: React.FC<DockIconProps> = ({
   // distance from the icon's centre maps [-distance, 0, distance] onto
   // [base, magnified, base] (clamped), and the spring chases that target.
   const sizing = useRef({ baseSize, magnification, distance });
-  sizing.current = { baseSize, magnification, distance };
+  // Synced after every commit (before the effects below read it), not in render.
+  useLayoutEffect(() => {
+    sizing.current = { baseSize, magnification, distance };
+  });
   const retarget = useRef<() => void>(() => {});
 
   useLayoutEffect(() => {
     const icon = iconRef.current;
+    const bus = busRef.current;
     if (!icon) return;
 
     const apply = (size: number) => {
@@ -191,7 +245,7 @@ const DockIcon: React.FC<DockIconProps> = ({
       bus.listeners.delete(listener);
       spring.destroy();
     };
-  }, [bus]);
+  }, [busRef]);
 
   // New sizes (the mobile fallbacks kicking in) spring over from where it is.
   useEffect(() => {
@@ -259,7 +313,7 @@ const DockIcon: React.FC<DockIconProps> = ({
 
       {/* Active Dot Indicator */}
       <div className="h-1 sm:h-1.5 w-full flex items-center justify-center mt-1">
-        {item.isActive && <ActiveDot memory={dot} />}
+        {item.isActive && <ActiveDot memoryRef={dotRef} />}
       </div>
     </div>
   );
@@ -268,13 +322,14 @@ const DockIcon: React.FC<DockIconProps> = ({
 /**
  * The running-app dot. Only the active icon renders one, so when the active
  * app changes the new dot flies in from where the old one sat — the shared
- * layout animation, on Framer's default layout curve (0.45s, [0.4, 0, 0.1, 1]).
+ * layout animation, on Motion's default layout curve (0.45s, [0.4, 0, 0.1, 1]).
  */
-function ActiveDot({ memory }: { memory: DotMemory }) {
+function ActiveDot({ memoryRef }: { memoryRef: Held<DotMemory> }) {
   const ref = useRef<HTMLDivElement>(null);
 
   useLayoutEffect(() => {
     const el = ref.current;
+    const memory = memoryRef.current;
     if (!el) return;
     const rect = el.getBoundingClientRect();
     const from = memory.rect;
@@ -290,7 +345,7 @@ function ActiveDot({ memory }: { memory: DotMemory }) {
       // Remember where it left from, including mid-flight, for the next dot.
       memory.rect = el.getBoundingClientRect();
     };
-  }, [memory]);
+  }, [memoryRef]);
 
   return (
     <div

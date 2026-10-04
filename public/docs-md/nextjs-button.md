@@ -1,3 +1,5 @@
+export const metadata = docsPageMetadata("button");
+
 # Button
 
 An animated glowing-border Button component engineered with a spinning conic-gradient line tracking the 4 edges of the button, smooth click ripple physics, loading states, and full theme synchronization.

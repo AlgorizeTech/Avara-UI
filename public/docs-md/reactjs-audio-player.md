@@ -1,3 +1,5 @@
+export const metadata = docsPageMetadata("audio-player");
+
 # Audio Player
 
 An audio player with artwork, transport, scrubber and volume — in a hero card, a compact bar, or wrapped around the browser's native controls. Built on a plain `` element with no player library.

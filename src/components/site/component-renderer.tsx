@@ -64,7 +64,7 @@ export function ComponentRenderer({
     <div
       ref={containerRef}
       className={cn(
-        "flex w-full items-center justify-center rounded-lg p-0 relative not-prose grid-bg bg-card dark:bg-background transition-all duration-300",
+        "flex w-full items-center justify-center rounded-lg p-0 relative not-prose grid-bg bg-preview-stage transition-all duration-300",
         // Pushed z-index to 100 to ensure it covers Navbars and other floating elements
         isFullPage
           ? "fixed inset-0 z-[100] min-h-screen rounded-none overflow-auto"

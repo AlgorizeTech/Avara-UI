@@ -1,3 +1,5 @@
+export const metadata = docsPageMetadata("wallet");
+
 # Wallet
 
 An interactive fintech cardholder wallet component featuring 3 serially staggered cards, an authentic physical thumb scoop, a solid enclosed pocket, and privacy balance toggle. When hovered, the 3 cards glide up smoothly in a spring-staggered sequence. Designed with complete dual-theme adaptivity—delivering a clean, crisp, modern light palette in Light Mode and a deep, luxurious violet finish in Dark Mode.

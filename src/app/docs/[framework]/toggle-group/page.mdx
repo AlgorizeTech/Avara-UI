@@ -1,3 +1,7 @@
+import { docsPageMetadata } from "@/lib/docs-metadata";
+
+export const metadata = docsPageMetadata("toggle-group");
+
 import { ExampleShowcase } from "@/components/site/Sandbox";
 import { extractCode } from "@/lib/code";
 
@@ -61,6 +65,32 @@ export default function OutlineGroup() {
       <ToggleGroupItem value="center" aria-label="Toggle align center">
         <AlignCenter className="w-4 h-4" />
       </ToggleGroupItem>
+    </ToggleGroup>
+  );
+}`;
+
+export const usageSegmented = `"use client";
+
+import { useState } from "react";
+import {
+  ToggleGroup,
+  ToggleGroupItem,
+} from "@/components/custom/blocks/ToggleGroupBlock";
+
+export default function PeriodSwitch() {
+  const [period, setPeriod] = useState("month");
+
+  return (
+    <ToggleGroup
+      type="single"
+      variant="segmented"
+      value={period}
+      onValueChange={setPeriod}
+      aria-label="Reporting period"
+    >
+      <ToggleGroupItem value="day">Daily</ToggleGroupItem>
+      <ToggleGroupItem value="week">Weekly</ToggleGroupItem>
+      <ToggleGroupItem value="month">Monthly</ToggleGroupItem>
     </ToggleGroup>
   );
 }`;
@@ -253,6 +283,21 @@ export default function DisabledGroup() {
       usage: usageGhost,
     },
     {
+      title: "Segmented",
+      subheading: "A view switch: one highlight slides to the chosen item, which stays chosen when clicked again. The arrow keys move the choice.",
+      propNotes: [
+        {
+          lead: "Use",
+          prop: "variant",
+          value: '"segmented"',
+          effect:
+            "for a pill track with a sliding highlight. It reads best with text labels and `type=\"single\"`.",
+        },
+      ],
+      props: { example: "segmented" },
+      usage: usageSegmented,
+    },
+    {
       title: "Sizes",
       propNotes: [
         {
@@ -428,13 +473,13 @@ export default function TextEditor() {
           <code>variant</code>
         </td>
         <td>
-          <code>"default" | "outline" | "ghost"</code>
+          <code>"default" | "outline" | "ghost" | "segmented"</code>
         </td>
         <td>
           <code>"default"</code>
         </td>
         <td>
-          The architectural style of the group. The <code>default</code> variant wraps the items in a styled pill container.
+          The architectural style of the group. The <code>default</code> variant wraps the items in a styled pill container; <code>segmented</code> is a pill track whose highlight slides to the pressed item, keeps a single choice pressed, and moves it with the arrow keys.
         </td>
       </tr>
       <tr>

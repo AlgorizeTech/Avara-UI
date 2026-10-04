@@ -1,31 +1,10 @@
-export const metadata = {
+import { pageMetadata } from "@/lib/docs-metadata";
+
+export const metadata = pageMetadata({
   title: 'Documentation - Algorize UI',
-  description: 'Complete documentation for the Algorize UI component library with installation guides, component examples, and API references.',
-  keywords: [
-    'Algorize UI documentation',
-    'React components',
-    'UI library',
-    'component library',
-    'Tailwind CSS',
-    'React hooks',
-    'UI components',
-    'design system'
-  ],
-  openGraph: {
-    title: 'Documentation - Algorize UI',
-    description: 'Complete documentation for the Algorize UI component library with installation guides, component examples, and API references.',
-    type: 'article',
-    url: '/docs',
-  },
-  twitter: {
-    card: 'summary_large_image',
-    title: 'Documentation - Algorize UI',
-    description: 'Complete documentation for the Algorize UI component library with installation guides, component examples, and API references.',
-  },
-  alternates: {
-    canonical: '/docs',
-  },
-};
+  description: 'Documentation for the Algorize UI component library: installation guides, component pages with live previews, and props references.',
+  url: '/docs',
+});
 
 import { CodeBlock } from "@/components/site/code-block";
 import { ComponentRenderer } from "@/components/site/component-renderer";

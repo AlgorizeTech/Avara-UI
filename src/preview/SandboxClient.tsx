@@ -174,6 +174,77 @@ export function SandboxClient({ name }: { name: string }) {
     };
   }, [name]);
 
+  // Most demos frame themselves in a bordered panel that fills the stage. The
+  // panel already reads against the preview stage surface, so its border is
+  // only noise — mark it, and globals.css hides it. Measured rather than
+  // matched by class: the frame is the outermost fully-bordered element that
+  // spans the stage, either the demo root or reached through single-child
+  // wrappers. A bordered component capped narrower than the stage (a card, a
+  // badge) has its own size, and keeps its border.
+  useEffect(() => {
+    const content = contentRef.current;
+    if (!content) return;
+
+    const isFrame = (el: HTMLElement) => {
+      const style = getComputedStyle(el);
+      const bordered = (["Top", "Right", "Bottom", "Left"] as const).every(
+        (side) =>
+          parseFloat(style[`border${side}Width`]) > 0 &&
+          style[`border${side}Style`] !== "none",
+      );
+      if (!bordered) return false;
+      const stage = getComputedStyle(content);
+      const stageWidth =
+        content.clientWidth -
+        parseFloat(stage.paddingLeft) -
+        parseFloat(stage.paddingRight);
+      // "none" parses to NaN — an uncapped element.
+      const maxWidth = parseFloat(style.maxWidth);
+      return (
+        el.offsetWidth >= stageWidth * 0.9 &&
+        (Number.isNaN(maxWidth) || maxWidth >= 1024)
+      );
+    };
+
+    let frame: HTMLElement | null = null;
+    const detect = () => {
+      let next: HTMLElement | null = null;
+      let el = content.firstElementChild as HTMLElement | null;
+      for (let depth = 0; el && depth < 4; depth++) {
+        if (isFrame(el)) {
+          next = el;
+          break;
+        }
+        if (el.children.length !== 1) break;
+        el = el.firstElementChild as HTMLElement | null;
+      }
+      if (next === frame) return;
+      frame?.removeAttribute("data-sandbox-frame");
+      next?.setAttribute("data-sandbox-frame", "");
+      frame = next;
+    };
+
+    let queued = false;
+    const schedule = () => {
+      if (queued) return;
+      queued = true;
+      requestAnimationFrame(() => {
+        queued = false;
+        detect();
+      });
+    };
+    detect();
+    const observer = new ResizeObserver(schedule);
+    observer.observe(content);
+    const mutations = new MutationObserver(schedule);
+    mutations.observe(content, { childList: true, subtree: true });
+    return () => {
+      observer.disconnect();
+      mutations.disconnect();
+      frame?.removeAttribute("data-sandbox-frame");
+    };
+  }, [name]);
+
   if (!Demo) {
     return (
       <div className="p-8 text-sm text-zinc-500">

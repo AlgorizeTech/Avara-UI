@@ -1,3 +1,5 @@
+export const metadata = docsPageMetadata("particle-canvas");
+
 # Particle Canvas
 
 An ultra-responsive, high-performance 2D HTML Canvas component that converts text into thousands of interactive particles with fluid, organic repulsion physics matching your active theme color.

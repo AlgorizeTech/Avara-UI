@@ -1,6 +1,8 @@
+export const metadata = docsPageMetadata("image-viewer");
+
 # Image Viewer
 
-A collection of 4 production-ready, interactive, fully responsive E-commerce Product Image Viewer components featuring inner lens magnifying zoom, 2.8x HD side portal projection, floating arrow carousel sliders, and active thumbnail strips.
+A collection of 4 production-ready, interactive, fully responsive E-commerce Product Image Viewer components featuring inner lens magnifying zoom, 3–10x floating zoom loupe, floating arrow carousel sliders, and active thumbnail strips.
 
 `ImageViewer` isolates the image presentation layer for product showcases, galleries, and e-commerce catalogs with built-in fullscreen lightbox expansion and colorway synchronization.
 
@@ -71,7 +73,7 @@ Discover the key capabilities of the `ImageViewer` component:
     Theme-adaptive frosted glass overlay matching Light and Dark mode with keyboard controls, chevron navigation, and thumbnail strip.
 
     High-Definition Optical Zoom
-    Experience smooth 2.6x inner frame magnification or 2.8x external side portal projection on cursor hover and touch drag.
+    Experience smooth 2.6x inner frame magnification or a 3–10x floating zoom loupe on cursor hover and touch drag.
 
     100% Mobile Responsive
     Fluid aspect ratio framing and touch-friendly controls tested across mobile phones, tablets, and desktop displays.
@@ -106,7 +108,7 @@ Discover the key capabilities of the `ImageViewer` component:
         colors
         ImageViewerColor[]
         DEFAULT_COLORS
-        Optional color swatches with synchronized image mappings.
+        Optional colorways, one per image. Colorway i's bgClass tints the frame and thumbnail behind image i.
 
         badge
         string
@@ -122,6 +124,11 @@ Discover the key capabilities of the `ImageViewer` component:
         boolean
         true
         Whether clicking the hero image triggers the fullscreen modal lightbox (active in slider and thumbnails).
+
+        zoomLevel
+        number
+        3
+        Magnification of the side-zoom loupe over the image as it appears in the frame; 3–10 is the usual e-commerce range. The reticle shrinks to match. Serve images large enough to stay sharp at it — roughly the frame width × 1.4 × zoomLevel.
 
         onImageChange
         (index: number) =&gt; void

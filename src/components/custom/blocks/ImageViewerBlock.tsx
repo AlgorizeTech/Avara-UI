@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useState, useEffect, useCallback, useRef } from "react";
+import { createPortal } from "react-dom";
 import {
   Heart,
   ChevronLeft,
@@ -33,7 +34,7 @@ export interface ImageViewerProps extends React.HTMLAttributes<HTMLDivElement> {
   thumbnailPosition?: ThumbnailPosition;
   /** List of product/gallery image URLs */
   images?: string[];
-  /** Optional colorways with matching images */
+  /** Optional colorways with matching images; colorway `i`'s `bgClass` tints the frame and thumbnail behind image `i` */
   colors?: ImageViewerColor[];
   /** Index of initial active image (0-indexed). Defaults to 3 for 'side-zoom', 1 for 'slider', 2 for 'thumbnails', 0 for others */
   defaultImage?: number;
@@ -43,6 +44,12 @@ export interface ImageViewerProps extends React.HTMLAttributes<HTMLDivElement> {
   showWishlist?: boolean;
   /** Whether clicking the image opens fullscreen lightbox modal */
   enableLightbox?: boolean;
+  /**
+   * Magnification of the side-zoom loupe over the image as shown in the frame.
+   * 3–10 is the usual e-commerce range; serve images large enough to stay
+   * sharp at it. Default: 3
+   */
+  zoomLevel?: number;
   /** Custom callback when active image changes */
   onImageChange?: (index: number) => void;
   className?: string;
@@ -62,6 +69,53 @@ const ITEM_BG_CLASSES = [
   "bg-primary/10 border-primary/20",
 ];
 
+const LOUPE_MAX = 360;
+const SCREEN_MARGIN = 12;
+/** The frame shows its image at scale-140, so the loupe starts from that. */
+const FRAME_SCALE = 1.4;
+
+/** Loupe edge in px: as large as LOUPE_MAX allows without crowding the screen. */
+function loupeSize() {
+  return Math.min(
+    LOUPE_MAX,
+    window.innerWidth - SCREEN_MARGIN * 2,
+    window.innerHeight * 0.5,
+  );
+}
+
+/**
+ * Places the side-zoom loupe just above the pointer, clear of the reticle.
+ * It flips below when there is no room above and is clamped to the viewport
+ * on every edge, so it never leaves the screen at any size.
+ */
+function placeLoupe(cx: number, cy: number, size: number, reticle: number) {
+  const vw = window.innerWidth;
+  const vh = window.innerHeight;
+  const gap = reticle / 2 + 12;
+  const clamp = (v: number, max: number) =>
+    Math.min(Math.max(v, SCREEN_MARGIN), max - SCREEN_MARGIN - size);
+
+  let top = cy - gap - size;
+  if (top < SCREEN_MARGIN) top = cy + gap;
+  return {
+    width: size,
+    height: size,
+    left: clamp(cx - size / 2, vw),
+    top: clamp(top, vh),
+  };
+}
+
+/**
+ * Offset of the zoomed image inside the loupe so the point under the pointer
+ * sits at its centre. `pct` is the pointer's position across the frame and
+ * `full` the zoomed image's edge; clamped so the loupe never shows past the
+ * image's edge.
+ */
+function loupeOffset(pct: number, full: number, size: number) {
+  const along = 0.5 + (pct / 100 - 0.5) / FRAME_SCALE;
+  return Math.min(0, Math.max(size - full, size / 2 - along * full));
+}
+
 const DEFAULT_COLORS: ImageViewerColor[] = [
   { name: "Crimson Red", class: "bg-[#BC2433]", bgClass: ITEM_BG_CLASSES[0], image: DEFAULT_IMAGES[0] },
   { name: "Vibrant Purple", class: "bg-[#4A2C81]", bgClass: ITEM_BG_CLASSES[1], image: DEFAULT_IMAGES[1] },
@@ -73,11 +127,12 @@ export function ImageViewer({
   variant = "inner-zoom",
   thumbnailPosition = "left",
   images = DEFAULT_IMAGES,
-  colors: _colors = DEFAULT_COLORS,
+  colors = DEFAULT_COLORS,
   defaultImage,
   badge = "20% OFF",
   showWishlist = true,
   enableLightbox = true,
+  zoomLevel = 3,
   onImageChange,
   className,
   ...props
@@ -93,13 +148,21 @@ export function ImageViewer({
   const [selectedImage, setSelectedImage] = useState(initialIndex);
   const [liked, setLiked] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [zoomPos, setZoomPos] = useState<{ x: number; y: number; visible: boolean }>({
-    x: 0,
-    y: 0,
-    visible: false,
-  });
+  // x/y: percent within the frame; cx/cy: pointer in viewport px and fw: frame
+  // width in px (side loupe).
+  const [zoomPos, setZoomPos] = useState<{
+    x: number;
+    y: number;
+    cx: number;
+    cy: number;
+    fw: number;
+    visible: boolean;
+  }>({ x: 0, y: 0, cx: 0, cy: 0, fw: 0, visible: false });
 
   const activeImage = images[selectedImage % images.length] || images[0];
+  // The tint behind image `idx`: its colourway's `bgClass` when one is given.
+  const tintFor = (idx: number) =>
+    colors[idx]?.bgClass ?? ITEM_BG_CLASSES[idx % ITEM_BG_CLASSES.length];
 
   const handleSelectImage = useCallback(
     (index: number) => {
@@ -113,23 +176,44 @@ export function ImageViewer({
     const { left, top, width, height } = e.currentTarget.getBoundingClientRect();
     const x = Math.max(0, Math.min(100, ((e.clientX - left) / width) * 100));
     const y = Math.max(0, Math.min(100, ((e.clientY - top) / height) * 100));
-    setZoomPos({ x, y, visible: true });
+    setZoomPos({ x, y, cx: e.clientX, cy: e.clientY, fw: width, visible: true });
   };
 
   const handleMouseLeave = () => {
     setZoomPos((prev) => ({ ...prev, visible: false }));
   };
 
+  // Set while a finger is down on the frame (read by the scroll hide below).
+  const touchingRef = useRef(false);
+
   const handleTouchMove = (e: React.TouchEvent<HTMLDivElement>) => {
     if (!e.touches[0]) return;
     const { left, top, width, height } = e.currentTarget.getBoundingClientRect();
     const touch = e.touches[0];
+    touchingRef.current = true;
     const x = Math.max(0, Math.min(100, ((touch.clientX - left) / width) * 100));
     const y = Math.max(0, Math.min(100, ((touch.clientY - top) / height) * 100));
-    setZoomPos({ x, y, visible: true });
+    setZoomPos({ x, y, cx: touch.clientX, cy: touch.clientY, fw: width, visible: true });
   };
 
+  // The loupe is fixed to the viewport, so a wheel scroll would strand it away
+  // from a still mouse; hide it until the next move instead. Touch is exempt:
+  // a drag scrolls the page too, but every touchmove re-places the loupe.
+  useEffect(() => {
+    if (variant !== "side-zoom" || !zoomPos.visible) return;
+    const hide = () => {
+      if (!touchingRef.current) setZoomPos((prev) => ({ ...prev, visible: false }));
+    };
+    window.addEventListener("scroll", hide, { capture: true, passive: true });
+    window.addEventListener("resize", hide);
+    return () => {
+      window.removeEventListener("scroll", hide, { capture: true });
+      window.removeEventListener("resize", hide);
+    };
+  }, [variant, zoomPos.visible]);
+
   const handleTouchEnd = () => {
+    touchingRef.current = false;
     setZoomPos((prev) => ({ ...prev, visible: false }));
   };
 
@@ -204,7 +288,7 @@ export function ImageViewer({
             }
             className={cn(
               "aspect-square w-full rounded-xl sm:rounded-2xl overflow-hidden border-2 transition-all p-0 flex items-center justify-center cursor-pointer shadow-sm shrink-0",
-              ITEM_BG_CLASSES[idx % ITEM_BG_CLASSES.length],
+              tintFor(idx),
               selectedImage === idx
                 ? "border-primary ring-2 ring-primary/30 scale-105"
                 : "border-border opacity-70 hover:opacity-100 hover:border-primary/50"
@@ -218,14 +302,26 @@ export function ImageViewer({
     );
   };
 
+  // Side-zoom loupe geometry. `full` is the zoomed image's edge: the frame's
+  // on-screen image (frame width × scale-140) times zoomLevel. The reticle
+  // marks the frame area that fills the loupe at that magnification.
+  const loupe =
+    variant === "side-zoom" && zoomPos.visible
+      ? (() => {
+          const size = loupeSize();
+          return {
+            size,
+            full: zoomPos.fw * FRAME_SCALE * zoomLevel,
+            reticle: size / zoomLevel,
+          };
+        })()
+      : null;
+
   return (
     <div
       ref={containerRef}
       className={cn(
-        "relative w-full max-w-2xl select-none",
-        variant === "side-zoom"
-          ? "mr-auto sm:self-start"
-          : "mx-auto",
+        "relative w-full max-w-2xl select-none mx-auto",
         className
       )}
       {...props}
@@ -242,7 +338,7 @@ export function ImageViewer({
             onTouchEnd={handleTouchEnd}
             className={cn(
               "aspect-square w-full rounded-3xl sm:rounded-[2.5rem] overflow-hidden border border-border relative flex items-center justify-center p-0 transition-colors group cursor-crosshair",
-              ITEM_BG_CLASSES[selectedImage % ITEM_BG_CLASSES.length]
+              tintFor(selectedImage)
             )}
           >
             <img
@@ -305,7 +401,7 @@ export function ImageViewer({
               onTouchEnd={handleTouchEnd}
               className={cn(
                 "aspect-square w-full rounded-3xl sm:rounded-[2.5rem] overflow-hidden border border-border relative flex items-center justify-center p-0 transition-colors group cursor-crosshair",
-                ITEM_BG_CLASSES[selectedImage % ITEM_BG_CLASSES.length]
+                tintFor(selectedImage)
               )}
             >
               <img
@@ -314,11 +410,16 @@ export function ImageViewer({
                 className="w-full h-full object-cover scale-140 p-0 transition-all duration-300"
               />
 
-              {/* Reticle Lens Box */}
-              {zoomPos.visible && (
+              {/* Reticle Lens Box — sized to exactly the area the loupe shows */}
+              {loupe && (
                 <div
-                  className="absolute size-24 sm:size-32 md:size-36 rounded-2xl border-2 border-primary/70 bg-primary/10 backdrop-blur-[1px] pointer-events-none -translate-x-1/2 -translate-y-1/2 transition-opacity duration-100 block shadow-lg"
-                  style={{ left: `${zoomPos.x}%`, top: `${zoomPos.y}%` }}
+                  className="absolute rounded-lg border-2 border-primary/70 bg-primary/10 pointer-events-none -translate-x-1/2 -translate-y-1/2 block shadow-lg"
+                  style={{
+                    left: `${zoomPos.x}%`,
+                    top: `${zoomPos.y}%`,
+                    width: loupe.reticle,
+                    height: loupe.reticle,
+                  }}
                 />
               )}
 
@@ -345,22 +446,37 @@ export function ImageViewer({
               )}
             </div>
 
-            {/* Side Projection Portal Lens Window (All Screens) */}
-            {zoomPos.visible && (
-              <div
-                className="block absolute top-0 left-[calc(100%+12px)] sm:left-[calc(100%+20px)] md:left-[calc(100%+24px)] w-[260px] sm:w-[320px] md:w-[380px] lg:w-[400px] aspect-square rounded-2xl sm:rounded-[2rem] overflow-hidden border-2 border-border bg-card z-50 pointer-events-none shadow-2xl"
-                style={{
-                  backgroundImage: `url(${activeImage})`,
-                  backgroundPosition: `${zoomPos.x}% ${zoomPos.y}%`,
-                  backgroundSize: "280%",
-                  backgroundRepeat: "no-repeat",
-                }}
-              >
-                <div className="absolute bottom-3 left-3 sm:bottom-4 sm:left-4 px-2.5 sm:px-3.5 py-1 sm:py-1.5 rounded-full bg-background/90 backdrop-blur-md border border-border text-[10px] sm:text-xs font-bold text-foreground flex items-center gap-1.5 shadow-sm">
-                  <Maximize2 className="size-3 sm:size-3.5 text-primary" /> 2.8x HD Optical Zoom
-                </div>
-              </div>
-            )}
+            {/* Floating Loupe — rendered into <body> with fixed positioning so
+                no clipping ancestor can crop it; placeLoupe keeps it above the
+                pointer and inside the viewport. */}
+            {loupe &&
+              createPortal(
+                <div
+                  className={cn(
+                    "fixed rounded-2xl sm:rounded-[2rem] overflow-hidden border-2 border-border z-[100] pointer-events-none shadow-2xl animate-in fade-in zoom-in-95 duration-150 motion-reduce:animate-none",
+                    tintFor(selectedImage)
+                  )}
+                  style={placeLoupe(zoomPos.cx, zoomPos.cy, loupe.size, loupe.reticle)}
+                >
+                  {/* A square object-cover <img> crops exactly like the frame,
+                      whatever the image's own aspect ratio. */}
+                  <img
+                    src={activeImage}
+                    alt=""
+                    className="absolute max-w-none object-cover"
+                    style={{
+                      width: loupe.full,
+                      height: loupe.full,
+                      left: loupeOffset(zoomPos.x, loupe.full, loupe.size),
+                      top: loupeOffset(zoomPos.y, loupe.full, loupe.size),
+                    }}
+                  />
+                  <div className="absolute bottom-3 left-3 px-2.5 py-1 rounded-full bg-background/90 backdrop-blur-md border border-border text-[10px] sm:text-xs font-bold text-foreground flex items-center gap-1.5 shadow-sm">
+                    <Maximize2 className="size-3 sm:size-3.5 text-primary" /> {zoomLevel}x Zoom
+                  </div>
+                </div>,
+                document.body
+              )}
           </div>
         </div>
       )}
@@ -375,7 +491,7 @@ export function ImageViewer({
             className={cn(
               "aspect-square w-full rounded-3xl sm:rounded-[2.5rem] overflow-hidden border border-border relative flex items-center justify-center p-0 transition-colors group",
               enableLightbox ? "cursor-pointer" : "cursor-default",
-              ITEM_BG_CLASSES[selectedImage % ITEM_BG_CLASSES.length]
+              tintFor(selectedImage)
             )}
           >
             <img
@@ -482,7 +598,7 @@ export function ImageViewer({
               "aspect-square rounded-2xl sm:rounded-3xl overflow-hidden border border-border relative flex items-center justify-center p-0 transition-colors group",
               thumbnailPosition === "bottom" ? "w-full" : "flex-1 min-w-0",
               enableLightbox ? "cursor-pointer" : "cursor-default",
-              ITEM_BG_CLASSES[selectedImage % ITEM_BG_CLASSES.length]
+              tintFor(selectedImage)
             )}
           >
             <img
@@ -558,7 +674,7 @@ export function ImageViewer({
               <div
                 className={cn(
                   "p-0 rounded-3xl border border-border max-w-[80vw] sm:max-w-2xl max-h-[65vh] aspect-square sm:aspect-[4/3] flex items-center justify-center transition-colors overflow-hidden",
-                  ITEM_BG_CLASSES[selectedImage % ITEM_BG_CLASSES.length]
+                  tintFor(selectedImage)
                 )}
               >
                 <img
@@ -596,7 +712,7 @@ export function ImageViewer({
                     onClick={() => handleSelectImage(idx)}
                     className={cn(
                       "size-9 sm:size-12 rounded-lg sm:rounded-xl overflow-hidden border-2 transition-all cursor-pointer p-0 flex items-center justify-center",
-                      ITEM_BG_CLASSES[idx % ITEM_BG_CLASSES.length],
+                      tintFor(idx),
                       selectedImage === idx
                         ? "border-primary ring-2 ring-primary/40 scale-105"
                         : "border-border opacity-70 hover:opacity-100"

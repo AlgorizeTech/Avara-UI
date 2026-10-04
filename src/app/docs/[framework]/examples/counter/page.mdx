@@ -1,28 +1,10 @@
+import { docsPageMetadata } from "@/lib/docs-metadata";
+
 export const metadata = {
-    title: 'Interactive Counter Example - Next.js',
-    description: 'An interactive counter component example demonstrating Next.js features.',
-    keywords: [
-        'Next.js example',
-        'interactive component',
-        'client component',
-        'useState',
-        'useEffect'
-    ],
-    openGraph: {
-        title: 'Interactive Counter Example - Next.js',
-        description: 'An interactive counter component example demonstrating Next.js features.',
-        type: 'article',
-        url: '/docs/nextjs/examples/counter',
-    },
-    twitter: {
-        card: 'summary_large_image',
-        title: 'Interactive Counter Example - Next.js',
-        description: 'An interactive counter component example demonstrating Next.js features.',
-    },
-    alternates: {
-        canonical: '/docs/nextjs/examples/counter',
-    },
+  ...docsPageMetadata("examples/counter"),
+  robots: { index: false, follow: true },
 };
+
 
 import { CodeBlock } from "@/components/site/code-block";
 import { ComponentRenderer } from "@/components/site/component-renderer";

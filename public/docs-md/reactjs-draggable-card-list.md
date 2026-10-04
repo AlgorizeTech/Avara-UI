@@ -1,3 +1,5 @@
+export const metadata = docsPageMetadata("draggable-card-list");
+
 # Draggable Card List
 
 An interactive, fluid **Draggable Card List** component featuring spring-driven reordering (in a GSAP build and a Motion build that move identically), right-side grip handles, light pastel badges with borders, left accent bars, and dynamic hover border color shifts.
@@ -118,7 +120,7 @@ npx shadcn@latest add @algorize-ui/draggable-card-list
 Or the Motion build (same props, same file — install one):
 
 ```bash
-npx shadcn@latest add @algorize-ui/draggable-card-list-framer
+npx shadcn@latest add @algorize-ui/draggable-card-list-motion
 ```
 
 ## Features

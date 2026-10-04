@@ -1,3 +1,8 @@
+export const metadata = docsPageMetadata("folder", {
+  title: "Folder",
+  description: "A tactile folder — unified skeleton cards (or your own photos) tuck behind a frosted-glass front pocket, and fan out into an arc on hover."
+});
+
 # Folder
 
 A tactile folder — unified skeleton cards (or your own photos) tuck behind a frosted-glass front pocket.
@@ -92,7 +97,7 @@ npx shadcn@latest add @algorize-ui/folder
 Or the Motion build (same props, same file — install one):
 
 ```bash
-npx shadcn@latest add @algorize-ui/folder-framer
+npx shadcn@latest add @algorize-ui/folder-motion
 ```
 
 ## Examples

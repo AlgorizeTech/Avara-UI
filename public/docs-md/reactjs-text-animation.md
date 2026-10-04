@@ -1,3 +1,8 @@
+export const metadata = docsPageMetadata("text-animation", {
+  title: "Text Animation",
+  description: "A versatile text animation component built on plain CSS keyframes, featuring typewriter, fade, gradient shine, and blur reveal effects."
+});
+
 # Text Animation
 
 A powerful typography component that breathes life into your text with plain CSS keyframes — no animation library. It supports multiple animation variants like typewriter effects, focus reveals, 3D flips, and more.

@@ -1,3 +1,5 @@
+export const metadata = docsPageMetadata("masonry-grid");
+
 # Masonry Grid
 
 A high-performance masonry layout that tightly packs items of varying heights. Rather than relying on heavy JavaScript calculations or absolute positioning frameworks, this component utilizes standard CSS multi-column layout (`columns-N`) to flow items naturally.
@@ -21,13 +23,6 @@ type GridItem = {
   theme?: "blue" | "purple" | "emerald" | "rose";
 };
 
-const themeColors = {
-  blue: "text-blue-600 dark:text-blue-400 bg-blue-50/50 dark:bg-blue-500/10 border-blue-100 dark:border-blue-500/20",
-  purple: "text-purple-600 dark:text-purple-400 bg-purple-50/50 dark:bg-purple-500/10 border-purple-100 dark:border-purple-500/20",
-  emerald: "text-emerald-600 dark:text-emerald-400 bg-emerald-50/50 dark:bg-emerald-500/10 border-emerald-100 dark:border-emerald-500/20",
-  rose: "text-rose-600 dark:text-rose-400 bg-rose-50/50 dark:bg-rose-500/10 border-rose-100 dark:border-rose-500/20",
-};
-
 // The grid handles the column flow; every tile is yours to render.
 function renderItem(item: GridItem) {
   if (item.type === "image") {
@@ -37,8 +32,6 @@ function renderItem(item: GridItem) {
 
     );
   }
-
-  const accent = themeColors[item.theme ?? "blue"];
 
   if (item.type === "gradient") {
     return (
@@ -178,7 +171,7 @@ npx shadcn@latest add @algorize-ui/masonry-grid
 Or the Motion build (same props, same file — install one):
 
 ```bash
-npx shadcn@latest add @algorize-ui/masonry-grid-framer
+npx shadcn@latest add @algorize-ui/masonry-grid-motion
 ```
 
 ## Examples

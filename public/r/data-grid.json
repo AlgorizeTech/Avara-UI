@@ -22,7 +22,7 @@
       "target": "components/custom/blocks/data-grid-theme.ts"
     }
   ],
-  "docs": "Named exports: DataGridBlock, getThemeStyles. `columns` take { field, headerName, width?, type?, readOnly? } — `type` number constrains input. Editing is local to the component, so persist changes through your own handler. Zero runtime dependencies.",
+  "docs": "Named exports: DataGridBlock, getThemeStyles (from data-grid-theme.ts, which installs alongside). `columns` take { field, headerName, width?, type?, readOnly? } — `type` number constrains input. Editing is local to the component, so persist changes through your own handler. Zero runtime dependencies.",
   "categories": [
     "data-display"
   ],

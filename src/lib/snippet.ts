@@ -33,16 +33,16 @@ export type Snippet = string | FrameworkVariants;
 
 /**
  * A code sample for a component that ships two animation builds — the GSAP
- * default and its Framer Motion twin. Each side is an ordinary Snippet, so a
+ * default and its Motion twin. Each side is an ordinary Snippet, so a
  * build can still differ per framework:
  *
  *   code: extractMotionCode("src/components/custom/blocks/DockBlock.tsx")
- *   code: { gsap: `…`, framer: `…` }
+ *   code: { gsap: `…`, motion: `…` }
  *
  * Resolution order: motion library → framework → TSX/JS toggle. Usage snippets
  * rarely need this — both builds install to the same path with the same props.
  */
-export type MotionVariants = { gsap: Snippet; framer: Snippet };
+export type MotionVariants = { gsap: Snippet; motion: Snippet };
 
 /** Anything a showcase `usage` or `code` field accepts. */
 export type ShowcaseSnippet = Snippet | MotionVariants;
@@ -55,7 +55,7 @@ export const isMotionVariants = (
 /** Picks one build's snippet; plain snippets read the same for both. */
 export function resolveMotion(
   snippet: ShowcaseSnippet | undefined,
-  library: "gsap" | "framer",
+  library: "gsap" | "motion",
 ): Snippet | undefined {
   if (!isMotionVariants(snippet)) return snippet;
   return snippet[library];

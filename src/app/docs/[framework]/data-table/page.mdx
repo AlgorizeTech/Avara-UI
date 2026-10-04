@@ -1,3 +1,7 @@
+import { docsPageMetadata } from "@/lib/docs-metadata";
+
+export const metadata = docsPageMetadata("data-table");
+
 import { ExampleShowcase } from "@/components/site/Sandbox";
 import { extractCode } from "@/lib/code";
 
@@ -5,6 +9,39 @@ import { extractCode } from "@/lib/code";
 
 A powerful, fully-featured data table component built on top of [Table](./table) primitives. It provides built-in state management for **Global Searching, Multi-Column Sorting, Pagination, Row Selection, and Batch Actions** — giving you complete control over your table layout without forcing any data transformation.
 
+
+<ExampleShowcase
+  name="data-table-soft"
+  columns={1}
+  minHeight={640}
+  examples={[
+    {
+      title: "Soft variant",
+      subheading: "Switch tabs, pick a role or plan, search, sort, select rows and page through 40 people. Suspend and delete work on a row or on the selection.",
+      propNotes: [
+        {
+          lead: "Set",
+          prop: "variant",
+          value: '"soft"',
+          effect:
+            "once on `DataTable`; every part — search, filters, page size, pagination, checkboxes, the batch bar — reads it from context.",
+        },
+        {
+          prop: "DataTableTabs",
+          effect:
+            "and `DataTableFilter` filter one field each (`by`), so the data keeps its own shape. Tab counts follow the search and the other filters.",
+        },
+        {
+          prop: "sticky",
+          effect:
+            "on a head and its cells pins the actions column to the right edge; it casts a shadow while more table hides under it.",
+        },
+      ],
+      usage: extractCode("src/preview/demos/data-table-soft-demo.tsx"),
+      code: extractCode("src/components/custom/blocks/TableBlock.tsx"),
+    },
+  ]}
+/>
 
 export const usageBasic = `"use client";
 
@@ -226,6 +263,22 @@ export default function UserTable() {
 
 <Installation name="table" />
 
+## Soft variant
+
+`variant="soft"` is the admin-dashboard look: a rounded panel on a hairline ring, a tinted header band, pill controls and calm round row actions, every tint mixed from the table colour. Everything below lives inside the panel — status tabs with live counts, select filters, search, a reset, the page's actions, sortable columns with a pinned actions column, a rows-per-page picker, pagination and a floating bar for the selected rows. The first example on this page is a soft table — its Usage tab is the preview's exact source.
+
+
+<div className="flex flex-col gap-4 my-6 not-prose">
+  <div className="rounded-xl border border-foreground/[0.06] bg-foreground/[0.03] p-4">
+    <h4 className="font-sans text-[14px] font-semibold text-foreground mb-1">The parts that come with it</h4>
+    <p className="text-[13px] leading-relaxed text-foreground/50"><code>DataTableTabs</code>, <code>DataTableFilter</code> and <code>DataTableReset</code> filter and clear; <code>TableAction</code> is the toolbar button (primary, secondary, ghost); <code>TableRowAction</code> is a round icon button that needs a <code>label</code>; <code>TableBadge</code> is a status pill (<code>tone</code>) or, without its dot, a tag; <code>TablePerson</code> draws an avatar with a name and a second line; <code>DataTableBatchAction</code> goes inside the batch bar. They work in every variant and take the soft look inside a soft table.</p>
+  </div>
+  <div className="rounded-xl border border-foreground/[0.06] bg-foreground/[0.03] p-4">
+    <h4 className="font-sans text-[14px] font-semibold text-foreground mb-1">Empty results explain themselves</h4>
+    <p className="text-[13px] leading-relaxed text-foreground/50">Give <code>DataTableEmpty</code> an <code>icon</code>, <code>title</code>, <code>description</code> and <code>action</code>, and read <code>search</code>, <code>isFiltered</code> and <code>resetAll</code> from <code>useDataTable</code> (in <code>table-core</code>) to say whether nothing matched or nothing exists yet — the example's <code>NoUsers</code> does exactly that.</p>
+  </div>
+</div>
+
 
 ## Features
 
@@ -331,9 +384,9 @@ export default function UserTable() {
       <tr>
         <td><code>DataTable</code></td>
         <td><code>variant</code></td>
-        <td><code>"default" | "minimal" | "glass"</code></td>
+        <td><code>"default" | "minimal" | "glass" | "soft"</code></td>
         <td><code>"default"</code></td>
-        <td>Visual skin variant of the table container and rows.</td>
+        <td>Visual skin of the container, rows and every control. <code>soft</code> is the admin-dashboard look shown above.</td>
       </tr>
       <tr>
         <td><code>DataTable</code></td>
@@ -411,6 +464,181 @@ export default function UserTable() {
         <td><code>string</code></td>
         <td>—</td>
         <td>Row checkbox to select or deselect the specific row.</td>
+      </tr>
+      <tr>
+        <td><code>DataTableSelect</code></td>
+        <td><code>label</code></td>
+        <td><code>string</code></td>
+        <td><code>"Select row"</code></td>
+        <td>Accessible name of the row checkbox, e.g. <code>Select Priya Nair</code>.</td>
+      </tr>
+      <tr>
+        <td><code>DataTableHead</code>, <code>DataTableCell</code></td>
+        <td><code>sticky</code></td>
+        <td><code>boolean</code></td>
+        <td><code>false</code></td>
+        <td>Pins the column to the right edge. Set it on the head and on every cell of the column.</td>
+      </tr>
+      <tr>
+        <td><code>DataTableTabs</code></td>
+        <td><code>by</code></td>
+        <td><code>string | ((row: T) =&gt; unknown)</code></td>
+        <td><strong>Required</strong></td>
+        <td>The field the tabs filter on — a dot path or an accessor function (add <code>filterId</code> for functions).</td>
+      </tr>
+      <tr>
+        <td><code>DataTableTabs</code></td>
+        <td><code>tabs</code></td>
+        <td><code>{`{ value: string; label: ReactNode }[]`}</code></td>
+        <td><strong>Required</strong></td>
+        <td>One tab per value. The tab whose value is <code>allValue</code> shows every row.</td>
+      </tr>
+      <tr>
+        <td><code>DataTableTabs</code></td>
+        <td><code>allValue</code></td>
+        <td><code>string</code></td>
+        <td><code>"all"</code></td>
+        <td>The value of the show-everything tab.</td>
+      </tr>
+      <tr>
+        <td><code>DataTableTabs</code></td>
+        <td><code>showCounts</code></td>
+        <td><code>boolean</code></td>
+        <td><code>true</code></td>
+        <td>Each tab shows how many rows it would leave, counting the search and the other filters.</td>
+      </tr>
+      <tr>
+        <td><code>DataTableFilter</code></td>
+        <td><code>by</code></td>
+        <td><code>string | ((row: T) =&gt; unknown)</code></td>
+        <td><strong>Required</strong></td>
+        <td>The field to match exactly (an array field matches any of its entries). Add <code>filterId</code> for functions.</td>
+      </tr>
+      <tr>
+        <td><code>DataTableFilter</code></td>
+        <td><code>options</code></td>
+        <td><code>{`(string | { label: string; value: string })[]`}</code></td>
+        <td><strong>Required</strong></td>
+        <td>The choices. Use objects when the stored value differs from the label.</td>
+      </tr>
+      <tr>
+        <td><code>DataTableFilter</code></td>
+        <td><code>placeholder</code></td>
+        <td><code>string</code></td>
+        <td><strong>Required</strong></td>
+        <td>Shown while nothing is chosen, e.g. <code>Role</code>. Also names the filter for screen readers unless you pass <code>label</code>.</td>
+      </tr>
+      <tr>
+        <td><code>DataTableFilter</code></td>
+        <td><code>side</code></td>
+        <td><code>"top" | "bottom"</code></td>
+        <td><code>"bottom"</code></td>
+        <td>Which way the menu opens.</td>
+      </tr>
+      <tr>
+        <td><code>DataTableReset</code></td>
+        <td><code>variant</code></td>
+        <td><code>"primary" | "secondary" | "ghost"</code></td>
+        <td><code>"ghost"</code></td>
+        <td>Clears the search, every filter and the sort. Renders only while there is something to clear; takes every <code>TableAction</code> prop.</td>
+      </tr>
+      <tr>
+        <td><code>DataTablePageSize</code></td>
+        <td><code>side</code></td>
+        <td><code>"top" | "bottom"</code></td>
+        <td><code>"top"</code> in soft</td>
+        <td>Which way the menu opens. The soft picker sits in the footer, so it opens upward.</td>
+      </tr>
+      <tr>
+        <td><code>DataTableBatchBar</code></td>
+        <td><code>noun</code></td>
+        <td><code>[string, string]</code></td>
+        <td>—</td>
+        <td>Singular and plural for the count: <code>["user", "users"]</code> reads “3 users selected”.</td>
+      </tr>
+      <tr>
+        <td><code>DataTableBatchAction</code></td>
+        <td><code>tone</code></td>
+        <td><code>"default" | "danger"</code></td>
+        <td><code>"default"</code></td>
+        <td>A button for the batch bar; <code>danger</code> for destructive actions.</td>
+      </tr>
+      <tr>
+        <td><code>DataTableEmpty</code></td>
+        <td><code>icon, title, description, action</code></td>
+        <td><code>ReactNode</code></td>
+        <td>—</td>
+        <td>A full empty state: an icon chip, what is missing, what to do, and a button. Without them it is the one-line message it always was.</td>
+      </tr>
+      <tr>
+        <td><code>TableAction</code></td>
+        <td><code>variant</code></td>
+        <td><code>"primary" | "secondary" | "ghost"</code></td>
+        <td><code>"secondary"</code></td>
+        <td>A toolbar button in the table's look. Icons passed as children are sized for you.</td>
+      </tr>
+      <tr>
+        <td><code>TableAction</code></td>
+        <td><code>size</code></td>
+        <td><code>"sm" | "md"</code></td>
+        <td><code>"md"</code></td>
+        <td>Button height and text size.</td>
+      </tr>
+      <tr>
+        <td><code>TableRowAction</code></td>
+        <td><code>label</code></td>
+        <td><code>string</code></td>
+        <td><strong>Required</strong></td>
+        <td>A round icon button for a row; <code>label</code> is its accessible name and hover title. Group them in <code>TableRowActions</code> (always visible in soft).</td>
+      </tr>
+      <tr>
+        <td><code>TableRowAction</code></td>
+        <td><code>tone</code></td>
+        <td><code>"default" | "danger"</code></td>
+        <td><code>"default"</code></td>
+        <td><code>danger</code> turns red on hover.</td>
+      </tr>
+      <tr>
+        <td><code>TableBadge</code></td>
+        <td><code>tone</code></td>
+        <td><code>"neutral" | "success" | "warning" | "danger" | "info"</code></td>
+        <td><code>"neutral"</code></td>
+        <td>The status colour. The label always shows, so colour is never the only signal.</td>
+      </tr>
+      <tr>
+        <td><code>TableBadge</code></td>
+        <td><code>dot</code></td>
+        <td><code>boolean</code></td>
+        <td><code>true</code></td>
+        <td>Turn it off for a plain tag.</td>
+      </tr>
+      <tr>
+        <td><code>TablePerson</code></td>
+        <td><code>name</code></td>
+        <td><code>string</code></td>
+        <td><strong>Required</strong></td>
+        <td>The name; the initials take a colour kept per name when there is no photo.</td>
+      </tr>
+      <tr>
+        <td><code>TablePerson</code></td>
+        <td><code>description</code></td>
+        <td><code>ReactNode</code></td>
+        <td>—</td>
+        <td>A muted second line, e.g. an email.</td>
+      </tr>
+      <tr>
+        <td><code>TablePerson</code></td>
+        <td><code>src</code></td>
+        <td><code>string</code></td>
+        <td>—</td>
+        <td>A photo. If it fails to load, the initials show.</td>
+      </tr>
+      <tr>
+        <td><code>TablePerson</code></td>
+        <td><code>imageComponent</code></td>
+        <td><code>ElementType</code></td>
+        <td><code>"img"</code></td>
+        <td>Renders the photo — pass <code>next/image</code> in a Next.js app.</td>
       </tr>
     </tbody>
   </table>

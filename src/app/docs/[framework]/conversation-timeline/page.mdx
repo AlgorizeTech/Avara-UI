@@ -1,10 +1,12 @@
+import { docsPageMetadata } from "@/lib/docs-metadata";
+
 import { ExampleShowcase } from "@/components/site/Sandbox";
 import { extractCode } from "@/lib/code";
 
-export const metadata = {
-  title: "Conversation Timeline - AlgorizeTech UI",
-  description: "A dense rail of thin marks, one per message, that expands into a labelled list on hover — a minimap for long chats.",
-};
+export const metadata = docsPageMetadata("conversation-timeline", {
+  title: "Conversation Timeline",
+  description: "A dense rail of thin marks, one per message, that expands into a labelled list on hover — a minimap for long chats."
+});
 
 # Conversation Timeline
 
@@ -37,29 +39,66 @@ export default function ChatMinimap() {
   );
 }`;
 
-export const usageLeft = `import { ConversationTimeline } from "@/components/custom/blocks/ConversationTimelineBlock";
+{/* A longer conversation, so the rail has enough rows to show its density and scrolling. Shared by the two snippets below; each one is still a whole file. */}
+
+export const timelineData = `const checkpoints: TimelineCheckpoint[] = [
+  { id: "1", role: "system", label: "System prompt" },
+  { id: "2", role: "user", label: "Can you help me set up auth?" },
+  { id: "3", role: "assistant", label: "Of course - let me walk you through it" },
+  { id: "4", role: "user", label: "Let's go with GitHub OAuth" },
+  { id: "5", role: "assistant", label: "Create the OAuth app callback" },
+  { id: "6", role: "user", label: "Where do the secrets go?" },
+  { id: "7", role: "assistant", label: "Use .env.local for dev, secrets store in prod" },
+  { id: "8", role: "user", label: "How do I protect a route?" },
+  { id: "9", role: "assistant", label: "Add middleware.ts with a matcher" },
+  { id: "10", role: "user", label: "Can I read the session in a server component?" },
+  { id: "11", role: "assistant", label: "Yes - call auth() on the server" },
+  { id: "12", role: "user", label: "What about sign-out?" },
+  { id: "13", role: "assistant", label: "signOut() in a server action" },
+  { id: "14", role: "user", label: "Perfect, thanks!" },
+];`;
+
+export const usageLeft = `"use client";
+
+import { useState } from "react";
+import { ConversationTimeline, type TimelineCheckpoint } from "@/components/custom/blocks/ConversationTimelineBlock";
+
+${timelineData}
 
 // Flip the labels to the left of the marks and recolour the active line
 // with accent.
-export default function LeftRail({ checkpoints }) {
+export default function LeftRail() {
+  const [activeId, setActiveId] = useState("2");
+
   return (
     <ConversationTimeline
       checkpoints={checkpoints}
+      activeId={activeId}
+      onSelect={setActiveId}
       side="left"
       accent="#8b5cf6"
     />
   );
 }`;
 
-export const usageDensity = `import { ConversationTimeline } from "@/components/custom/blocks/ConversationTimelineBlock";
+export const usageDensity = `"use client";
+
+import { useState } from "react";
+import { ConversationTimeline, type TimelineCheckpoint } from "@/components/custom/blocks/ConversationTimelineBlock";
+
+${timelineData}
 
 // rowHeight / collapsedRowHeight set the expanded and resting row sizes;
 // visibleCount caps how many rows show before the rail scrolls, and
 // labelWidth is the fixed column labels truncate against.
-export default function DenseRail({ checkpoints }) {
+export default function DenseRail() {
+  const [activeId, setActiveId] = useState("2");
+
   return (
     <ConversationTimeline
       checkpoints={checkpoints}
+      activeId={activeId}
+      onSelect={setActiveId}
       rowHeight={28}
       collapsedRowHeight={8}
       visibleCount={8}
@@ -71,7 +110,16 @@ export default function DenseRail({ checkpoints }) {
 export const usageChat = `"use client";
 
 import { ConversationTimeline } from "@/components/custom/blocks/ConversationTimelineBlock";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState, useSyncExternalStore } from "react";
+
+const WIDE = "(min-width: 640px)";
+const subscribeWide = (onChange: () => void) => {
+  const mq = window.matchMedia(WIDE);
+  mq.addEventListener("change", onChange);
+  return () => mq.removeEventListener("change", onChange);
+};
+const useIsWide = () =>
+  useSyncExternalStore(subscribeWide, () => window.matchMedia(WIDE).matches, () => true);
 
 const messages = [
   { id: "1", role: "system",    label: "System prompt",            body: "You are a helpful engineering assistant." },
@@ -80,27 +128,44 @@ const messages = [
   // …
 ] as const;
 
+const roleStyle: Record<string, string> = {
+  user: "self-end bg-primary text-primary-foreground",
+  assistant: "self-start bg-muted text-foreground",
+  system: "self-center bg-transparent text-[11px] font-mono uppercase tracking-wider text-muted-foreground",
+};
+
 // The rail as a minimap: selecting a mark scrolls its message into view.
 export default function ChatWithMinimap() {
   const [activeId, setActiveId] = useState("2");
   const refs = useRef<Record<string, HTMLDivElement | null>>({});
+  // On a phone the label column would crowd out the chat, so the rail drops
+  // to marks only — the bubbles already carry the text.
+  const isWide = useIsWide();
 
   useEffect(() => {
     refs.current[activeId]?.scrollIntoView({ behavior: "smooth", block: "center" });
   }, [activeId]);
 
   return (
-    <div className="flex items-start gap-6">
+    <div className="flex items-start gap-3 sm:gap-6">
       <ConversationTimeline
         checkpoints={messages}
         activeId={activeId}
         onSelect={setActiveId}
         labelWidth={200}
+        showLabels={isWide}
         className="shrink-0"
       />
-      <div className="flex h-72 flex-1 flex-col gap-2 overflow-y-auto">
+      {/* p-1.5 leaves room for the active bubble's ring inside the scroller */}
+      <div className="flex h-72 min-w-0 flex-1 flex-col gap-2 overflow-y-auto p-1.5">
         {messages.map((m) => (
-          <div key={m.id} ref={(el) => { refs.current[m.id] = el; }} onClick={() => setActiveId(m.id)}>
+          <div
+            key={m.id}
+            ref={(el) => { refs.current[m.id] = el; }}
+            onClick={() => setActiveId(m.id)}
+            className={\`max-w-[85%] cursor-pointer rounded-2xl px-3.5 py-2 text-[13px] leading-relaxed [overflow-wrap:anywhere] transition-all \${roleStyle[m.role ?? "assistant"]}\`}
+            style={m.id === activeId && m.role !== "system" ? { boxShadow: "0 0 0 2px var(--card), 0 0 0 4px var(--primary)" } : undefined}
+          >
             {m.body}
           </div>
         ))}
@@ -174,6 +239,13 @@ export default function ChatWithMinimap() {
           prop: "onSelect",
           effect:
             "is where the rail earns its keep: wire it to scroll, highlight or load the message it points at.",
+        },
+        {
+          lead: "Set",
+          prop: "showLabels",
+          value: "{false}",
+          effect:
+            "below the `sm` breakpoint so the rail shrinks to a marks-only minimap and the chat keeps the width. Resize to a phone to see it.",
         },
       ],
       props: { example: "chat" },
@@ -311,6 +383,12 @@ Discover the Conversation Timeline's capabilities as a minimap for long conversa
         <td><code>number</code></td>
         <td><code>240</code></td>
         <td>Fixed label column width in px — labels truncate past it.</td>
+      </tr>
+      <tr>
+        <td><code>showLabels</code></td>
+        <td><code>boolean</code></td>
+        <td><code>true</code></td>
+        <td>Render the label column. Set <code>false</code> where width is tight and the rail becomes a marks-only minimap — each mark keeps its label as its accessible name.</td>
       </tr>
       <tr>
         <td><code>accent</code></td>

@@ -1,3 +1,5 @@
+export const metadata = docsPageMetadata("command");
+
 # Command
 
 A powerful, composable command menu palette for searching data and triggering quick actions.

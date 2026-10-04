@@ -1,3 +1,7 @@
+import { docsPageMetadata } from "@/lib/docs-metadata";
+
+export const metadata = docsPageMetadata("collapsible");
+
 import { ExampleShowcase } from "@/components/site/Sandbox";
 import { extractCode } from "@/lib/code";
 
@@ -16,9 +20,13 @@ export const usageSettings = `import {
   CollapsibleContent,
   CollapsibleTrigger,
 } from "@/components/custom/blocks/CollapsibleBlock";
-import { Bell, Shield } from "lucide-react";
+import { Bell, Check, Shield } from "lucide-react";
+import { useState } from "react";
 
 export default function SettingsPanel() {
+  const [emailAlerts, setEmailAlerts] = useState(true);
+  const [smsAlerts, setSmsAlerts] = useState(false);
+
   return (
     <div className="w-full max-w-lg space-y-4">
       <Collapsible defaultOpen className="bg-card border border-border rounded-xl shadow-sm overflow-hidden">
@@ -48,16 +56,40 @@ export default function SettingsPanel() {
         <CollapsibleContent>
           <div className="p-5 border-t border-border mt-2 space-y-4">
             <div className="flex items-center justify-between">
-              <label className="text-sm text-foreground/80">
+              <label className="text-sm text-foreground/80 cursor-pointer" onClick={() => setEmailAlerts(!emailAlerts)}>
                 Email Alerts
               </label>
-              <input type="checkbox" defaultChecked className="accent-primary w-4 h-4" />
+              <button
+                type="button"
+                role="checkbox"
+                aria-checked={emailAlerts}
+                onClick={() => setEmailAlerts(!emailAlerts)}
+                className={\`w-4 h-4 rounded flex items-center justify-center border transition-all cursor-pointer \${
+                  emailAlerts
+                    ? "bg-primary border-primary text-primary-foreground"
+                    : "border-input bg-background"
+                }\`}
+              >
+                {emailAlerts && <Check className="w-3 h-3 stroke-[3]" />}
+              </button>
             </div>
             <div className="flex items-center justify-between">
-              <label className="text-sm text-foreground/80">
+              <label className="text-sm text-foreground/80 cursor-pointer" onClick={() => setSmsAlerts(!smsAlerts)}>
                 SMS Alerts
               </label>
-              <input type="checkbox" className="accent-primary w-4 h-4" />
+              <button
+                type="button"
+                role="checkbox"
+                aria-checked={smsAlerts}
+                onClick={() => setSmsAlerts(!smsAlerts)}
+                className={\`w-4 h-4 rounded flex items-center justify-center border transition-all cursor-pointer \${
+                  smsAlerts
+                    ? "bg-primary border-primary text-primary-foreground"
+                    : "border-input bg-background"
+                }\`}
+              >
+                {smsAlerts && <Check className="w-3 h-3 stroke-[3]" />}
+              </button>
             </div>
           </div>
         </CollapsibleContent>

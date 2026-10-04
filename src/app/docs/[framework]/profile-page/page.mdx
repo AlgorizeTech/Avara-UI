@@ -1,3 +1,7 @@
+import { docsPageMetadata } from "@/lib/docs-metadata";
+
+export const metadata = docsPageMetadata("profile-page");
+
 import { ExampleShowcase } from "@/components/site/Sandbox";
 import { extractCode } from "@/lib/code";
 
@@ -151,24 +155,24 @@ export default function ProfilePageDemo() {
             aria-pressed={following}
             onClick={() => setFollowing((v) => !v)}
             className={cn(
-              "inline-flex h-11 items-center gap-2 rounded-full px-5 text-sm font-medium transition-colors",
+              "inline-flex h-9 items-center gap-1.5 rounded-full px-4 text-[13px] font-medium transition-colors sm:h-11 sm:gap-2 sm:px-5 sm:text-sm",
               following
                 ? "border border-foreground/10 bg-foreground/[0.04] text-foreground hover:bg-foreground/[0.08]"
                 : "bg-primary text-primary-foreground hover:bg-primary/90",
               focusRing,
             )}
           >
-            {following ? <Check className="size-4" /> : <UserPlus className="size-4" />}
+            {following ? <Check className="size-3.5 sm:size-4" /> : <UserPlus className="size-3.5 sm:size-4" />}
             {following ? "Following" : "Follow"}
           </button>
           <button
             type="button"
             className={cn(
-              "inline-flex h-11 items-center gap-2 rounded-full border border-foreground/10 bg-foreground/[0.04] px-5 text-sm font-medium transition-colors hover:bg-foreground/[0.08]",
+              "inline-flex h-9 items-center gap-1.5 rounded-full border border-foreground/10 bg-foreground/[0.04] px-4 text-[13px] font-medium transition-colors hover:bg-foreground/[0.08] sm:h-11 sm:gap-2 sm:px-5 sm:text-sm",
               focusRing,
             )}
           >
-            <MessageCircle className="size-4" /> Message
+            <MessageCircle className="size-3.5 sm:size-4" /> Message
           </button>
         </div>
       </GlassPanel>
@@ -446,24 +450,24 @@ export default function ProfilePageDemo() {
             aria-pressed={following}
             onClick={() => setFollowing((v) => !v)}
             className={cn(
-              "inline-flex h-11 items-center gap-2 rounded-full px-5 text-sm font-medium transition-colors",
+              "inline-flex h-9 items-center gap-1.5 rounded-full px-4 text-[13px] font-medium transition-colors sm:h-11 sm:gap-2 sm:px-5 sm:text-sm",
               following
                 ? "border border-foreground/10 bg-foreground/[0.04] text-foreground hover:bg-foreground/[0.08]"
                 : "bg-primary text-primary-foreground hover:bg-primary/90",
               focusRing,
             )}
           >
-            {following ? <Check className="size-4" /> : <UserPlus className="size-4" />}
+            {following ? <Check className="size-3.5 sm:size-4" /> : <UserPlus className="size-3.5 sm:size-4" />}
             {following ? "Following" : "Follow"}
           </button>
           <button
             type="button"
             className={cn(
-              "inline-flex h-11 items-center gap-2 rounded-full border border-foreground/10 bg-foreground/[0.04] px-5 text-sm font-medium transition-colors hover:bg-foreground/[0.08]",
+              "inline-flex h-9 items-center gap-1.5 rounded-full border border-foreground/10 bg-foreground/[0.04] px-4 text-[13px] font-medium transition-colors hover:bg-foreground/[0.08] sm:h-11 sm:gap-2 sm:px-5 sm:text-sm",
               focusRing,
             )}
           >
-            <MessageCircle className="size-4" /> Message
+            <MessageCircle className="size-3.5 sm:size-4" /> Message
           </button>
         </div>
       </GlassPanel>
@@ -747,7 +751,7 @@ Grid spans are plain Tailwind: the grid is `grid-cols-1 md:grid-cols-6 lg:grid-c
 
 ### GlassPanel
 
-`GlassPanel` (and `useSurface`) come from <DocLink to="glass-panel">Glass Panel</DocLink>; its `shape`, `variant` and `interactive` props are documented there. `ProfilePage` is that page's `GlassBackdrop` under the page's own name.
+`GlassPanel` comes from <DocLink to="glass-panel">Glass Panel</DocLink> (and so does `useSurface`, imported from `@/components/custom/blocks/glass-panel-context`); its `shape`, `variant` and `interactive` props are documented there. `ProfilePage` is that page's `GlassBackdrop` under the page's own name.
 
 ### WorkdayDial
 
@@ -809,6 +813,8 @@ Grid spans are plain Tailwind: the grid is `grid-cols-1 md:grid-cols-6 lg:grid-c
 </div>
 
 ### useLocalTime
+
+Installed alongside the page in `profile-page-hooks.ts`: `import { useLocalTime } from "@/components/custom/blocks/profile-page-hooks";`.
 
 <div className="overflow-x-auto my-4">
   <table>

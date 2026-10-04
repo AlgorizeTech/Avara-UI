@@ -366,9 +366,9 @@ export function CommandItem({
       onClick={handleSelect}
       onMouseEnter={handleMouseEnter}
       className={cn(
-        "relative flex cursor-pointer select-none items-center rounded-md px-2 py-1.5 text-sm outline-none transition-colors",
-        "data-[selected=true]:bg-muted",
-        "data-[selected=true]:text-foreground",
+        "group/cmd-item relative flex cursor-pointer select-none items-center rounded-md px-2 py-1.5 text-sm outline-none transition-colors",
+        "hover:bg-primary/10 hover:text-primary dark:hover:bg-primary/20",
+        "data-[selected=true]:bg-primary/10 data-[selected=true]:text-primary dark:data-[selected=true]:bg-primary/20",
         "data-[disabled=true]:pointer-events-none data-[disabled=true]:opacity-50",
         className,
       )}
@@ -386,7 +386,7 @@ export function CommandShortcut({
   return (
     <span
       className={cn(
-        "ml-auto text-xs tracking-widest text-muted-foreground",
+        "ml-auto text-xs tracking-widest text-muted-foreground group-hover/cmd-item:text-primary/70 group-data-[selected=true]/cmd-item:text-primary/70",
         className,
       )}
       {...props}

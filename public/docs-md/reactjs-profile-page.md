@@ -1,3 +1,5 @@
+export const metadata = docsPageMetadata("profile-page");
+
 # Profile Page
 
 A person as a page: an aurora backdrop, frosted panels in four shapes, and a 24-hour dial that shows when they are at work — live, in their own time zone.
@@ -78,7 +80,7 @@ export default function ProfilePageDemo() {
         
            setFollowing((v) => !v)}
             className={cn(
-              "inline-flex h-11 items-center gap-2 rounded-full px-5 text-sm font-medium transition-colors",
+              "inline-flex h-9 items-center gap-1.5 rounded-full px-4 text-[13px] font-medium transition-colors sm:h-11 sm:gap-2 sm:px-5 sm:text-sm",
               following
                 ? "border border-foreground/10 bg-foreground/[0.04] text-foreground hover:bg-foreground/[0.08]"
                 : "bg-primary text-primary-foreground hover:bg-primary/90",
@@ -238,7 +240,7 @@ export default function ProfilePageDemo() {
         
            setFollowing((v) => !v)}
             className={cn(
-              "inline-flex h-11 items-center gap-2 rounded-full px-5 text-sm font-medium transition-colors",
+              "inline-flex h-9 items-center gap-1.5 rounded-full px-4 text-[13px] font-medium transition-colors sm:h-11 sm:gap-2 sm:px-5 sm:text-sm",
               following
                 ? "border border-foreground/10 bg-foreground/[0.04] text-foreground hover:bg-foreground/[0.08]"
                 : "bg-primary text-primary-foreground hover:bg-primary/90",
@@ -396,7 +398,7 @@ Grid spans are plain Tailwind: the grid is `grid-cols-1 md:grid-cols-6 lg:grid-c
 
 ### GlassPanel
 
-`GlassPanel` (and `useSurface`) come from Glass Panel; its `shape`, `variant` and `interactive` props are documented there. `ProfilePage` is that page's `GlassBackdrop` under the page's own name.
+`GlassPanel` comes from Glass Panel (and so does `useSurface`, imported from `@/components/custom/blocks/glass-panel-context`); its `shape`, `variant` and `interactive` props are documented there. `ProfilePage` is that page's `GlassBackdrop` under the page's own name.
 
 ### WorkdayDial
 
@@ -441,6 +443,8 @@ Grid spans are plain Tailwind: the grid is `grid-cols-1 md:grid-cols-6 lg:grid-c
         Sizing; the dial fills its width up to max-w-[220px].
 
 ### useLocalTime
+
+Installed alongside the page in `profile-page-hooks.ts`: `import { useLocalTime } from "@/components/custom/blocks/profile-page-hooks";`.
 
         Prop
         Type

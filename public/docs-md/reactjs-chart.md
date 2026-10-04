@@ -1,3 +1,5 @@
+export const metadata = docsPageMetadata("chart");
+
 # Chart
 
 A beautiful, completely custom charting engine built from the ground up for modern React applications.

@@ -156,7 +156,7 @@ export default function CardDemo({
             </CardHeader>
             <CardContent>
               <div className="text-2xl font-semibold">+573</div>
-              <p className="text-xs text-muted-foreground font-medium mt-1">
+              <p className="text-xs text-emerald-500 font-medium mt-1">
                 +201 since last hour
               </p>
             </CardContent>

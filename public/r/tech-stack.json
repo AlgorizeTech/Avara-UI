@@ -6,6 +6,7 @@
   "description": "The tools a product is built with: a label, then one group of marks at a time in two rows — an odd group as three over four — each mark blurring out and the next group blurring in. Use it as the \"Built with\" line in a hero or footer.",
   "dependencies": [],
   "registryDependencies": [
+    "https://algorize-ui.vercel.app/r/icons.json",
     "utils"
   ],
   "files": [

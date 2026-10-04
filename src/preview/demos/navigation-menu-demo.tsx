@@ -54,7 +54,7 @@ export default function NavigationMenuDemo({
                 <li className="hidden lg:block lg:row-span-3">
                   <NavigationMenuLink
                     href="#"
-                    className="flex h-full w-full select-none flex-col justify-end rounded-xl bg-gradient-to-b from-muted/50 to-muted p-3 sm:p-6 no-underline outline-none focus:shadow-md"
+                    className="flex h-full w-full select-none flex-col justify-end rounded-xl bg-gradient-to-b from-[color-mix(in_oklab,var(--nav-accent)_5%,transparent)] to-[color-mix(in_oklab,var(--nav-accent)_16%,transparent)] p-3 sm:p-6 no-underline outline-none focus:shadow-md"
                   >
                     <Zap className="h-4 w-4 sm:h-6 sm:w-6 text-foreground mb-2 sm:mb-4" />
                     <div className="mb-1 sm:mb-2 mt-1 sm:mt-4 text-sm sm:text-lg font-semibold text-foreground">

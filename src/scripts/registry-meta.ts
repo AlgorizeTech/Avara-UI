@@ -76,20 +76,34 @@ export const NAME_OVERRIDES: Record<string, string> = {
   "CounterSectionBlock.tsx": "counter-section",
   "WalletBlock.tsx": "wallet",
   "FAQSectionBlock.tsx": "faq-section",
+  "ConfidentialFolderBlock.tsx": "confidential-folder",
+  "ScrollSplitCardsBlock.tsx": "scroll-split-cards",
 };
 
 export const META: Record<string, ItemMeta> = {
+  "scroll-split-cards": {
+    description:
+      "A cinematic scroll-driven storytelling card component that splits a seamless panoramic image into three panels, expands gaps, flips 180° in 3D into editorial narratives, and glides away.",
+    categories: ["scroll", "media", "marketing"],
+    docs: "Named export: ScrollSplitCards.",
+  },
+  "confidential-folder": {
+    description:
+      "An interactive confidential folder sleeve with a card that slides out horizontally on hover and gracefully elevates on click.",
+    categories: ["data-display", "marketing", "actions"],
+    docs: "Named export: ConfidentialFolder, OrbitalSpirograph.",
+  },
   "faq-section": {
     description:
       "A complete animated FAQ website section pairing an editorial header with a dynamic morphing nature photography canvas and an expandable question accordion.",
     categories: ["marketing", "layout"],
-    docs: "Named export: FAQSection (also default export); AnimatedFAQBlock and FAQ_ITEMS are also exported.",
+    docs: "Named export: FAQSection (also default export); AnimatedFAQBlock and the FAQItem type are also exported; the sample data FAQ_ITEMS lives in faq-section-data.ts, which installs alongside.",
   },
   "animated-faq": {
     description:
       "An FAQ section pairing an accordion of questions with a picture canvas that resizes and crossfades to each open answer. Use it for landing-page FAQs that should feel editorial rather than list-like.",
     categories: ["marketing", "layout"],
-    docs: "Named export: AnimatedFAQBlock (also the default export); `FAQ_ITEMS` holds the sample data. All motion is CSS — no animation library.",
+    docs: "Named export: AnimatedFAQBlock (also the default export); the sample data `FAQ_ITEMS` lives in animated-faq-data.ts, which installs alongside. All motion is CSS — no animation library.",
   },
   "card-stack": {
     description:
@@ -102,6 +116,12 @@ export const META: Record<string, ItemMeta> = {
       "An interactive fintech cardholder wallet component featuring 3 serially staggered cards, curved pocket scoop, bottom thumb cutout, and light/dark mode styling.",
     categories: ["data-display", "marketing", "actions"],
     docs: "Named export: Wallet. Accepts cards array, overallBalance, allowReveal, and autoRevealOnHover.",
+  },
+  dashboard: {
+    description:
+      "An admin dashboard home: greeting with all-time totals, a period switch, an overview chart with a tab per metric, activity feed, traffic sources, visitors by country and top authors.",
+    categories: ["data-display", "layout"],
+    docs: "Named exports: Dashboard (also the default) plus the DashboardMetric, DashboardPoint, DashboardTotal, DashboardActivity, DashboardShare, DashboardAuthor, DashboardLinks and DashboardPeriod types. Every number comes from props: `metrics` carry a series per period (day | week | month, oldest first) and an optional `change` per period; `sources`, `countries` and `authors` are keyed by period; `activity` items have a type of user | post | payment | message. Pass `linkComponent` (e.g. next/link) for the panel links and `onExport` to replace the built-in CSV. Composes toggle-group (segmented), chart and popover. Clock-dependent text renders after mount, so server and client markup agree.",
   },
   "counter-section": {
     description:
@@ -161,7 +181,7 @@ export const META: Record<string, ItemMeta> = {
     description:
       "A themeable progress bar in three forms — a single bar, a multi-segment track, and a ring — with an optional labelled field wrapper. Use it for determinate operations where percentage complete is known.",
     categories: ["feedback"],
-    docs: "Named exports: Progress, ProgressField, MultiProgress, ProgressSegment, CircularProgress, getThemeStyles. Use ProgressField when you need a label and value readout; use Progress bare inside your own layout. MultiProgress holds ProgressSegment children that share its `max`, each with its own `color`, for breakdowns across one track. CircularProgress draws the same value as a ring — `circleSize` is the diameter, `barSize` the stroke, and children replace the centred percentage (a function child receives the counting value). Everything fills from zero on mount and tweens later changes via the exported useCountUp hook; `animate={false}` opts out and `duration` sets the mount run.",
+    docs: "Named exports: Progress, ProgressField, MultiProgress, ProgressSegment, CircularProgress (getThemeStyles lives in progress-theme.ts, useCountUp in progress-hooks.ts; both install alongside). Use ProgressField when you need a label and value readout; use Progress bare inside your own layout. MultiProgress holds ProgressSegment children that share its `max`, each with its own `color`, for breakdowns across one track. CircularProgress draws the same value as a ring — `circleSize` is the diameter, `barSize` the stroke, and children replace the centred percentage (a function child receives the counting value). Everything fills from zero on mount and tweens later changes via the useCountUp hook; `animate={false}` opts out and `duration` sets the mount run.",
   },
   toggle: {
     description:
@@ -209,13 +229,13 @@ export const META: Record<string, ItemMeta> = {
     description:
       "A clipboard button that confirms the copy in place — the icon pops to a check and the label swaps to \"Copied!\" — plus a read-only Copy Field for links, tokens and commands. Use it anywhere a value needs to be copied without a toast.",
     categories: ["actions", "forms"],
-    docs: "Named exports: CopyButton, CopyField, useCopyToClipboard. `value` is the text copied; `label` / `copiedLabel` / `errorLabel` set the three states, `timeout` how long the confirmation lingers, `iconOnly` drops the label. Variants are solid | soft | outline | ghost, sizes sm | md | lg, `color` a preset or hex. CopyField wraps a read-only input with the button beside it (or `inset` inside it) and forwards `buttonProps`. Falls back to execCommand where the Clipboard API is unavailable.",
+    docs: "Named exports: CopyButton, CopyField; the useCopyToClipboard hook is exported from copy-button-hooks.ts, which installs alongside. `value` is the text copied; `label` / `copiedLabel` / `errorLabel` set the three states, `timeout` how long the confirmation lingers, `iconOnly` drops the label. Variants are solid | soft | outline | ghost, sizes sm | md | lg, `color` a preset or hex. CopyField wraps a read-only input with the button beside it (or `inset` inside it) and forwards `buttonProps`. Falls back to execCommand where the Clipboard API is unavailable.",
   },
   "time-picker": {
     description:
       "Scrollable hour / minute / AM-PM columns for choosing a time of day, with themed selection and disabled ranges. The building block behind the date pickers' time mode.",
     categories: ["dates", "forms"],
-    docs: "Named exports: TimePicker plus the setTime, roundToStep and formatTime helpers. `value` is a Date whose day is preserved on change; `format` is 12h | 24h, `minuteStep` sets granularity, and `minTime` / `maxTime` disable times outside a window on that day. Used by `date-picker` and `range-date-picker` when `showTime` is on.",
+    docs: "Named export: TimePicker. The setTime, roundToStep and formatTime helpers live in time-picker-utils.ts, which installs alongside. `value` is a Date whose day is preserved on change; `format` is 12h | 24h, `minuteStep` sets granularity, and `minTime` / `maxTime` disable times outside a window on that day. Used by `date-picker` and `range-date-picker` when `showTime` is on.",
   },
   "selection-frame": {
     description:
@@ -253,26 +273,26 @@ export const META: Record<string, ItemMeta> = {
     description:
       "A text input with label, helper text, error state, icon slots and password reveal. Reach for it as the default field in any form.",
     categories: ["forms"],
-    docs: "Named exports: InputBlock, getThemeStyles. Accepts type (text | password | email | number | file), variant (default | filled | underlined | glow), inputSize, and a color token (indigo | rose | emerald | zinc, or your own). Pass `error` to switch it into the invalid state; `helperText` renders below when there is no error.",
+    docs: "Named exports: InputBlock, getThemeStyles (from input-theme.ts, which installs alongside). Accepts type (text | password | email | number | file), variant (default | filled | underlined | glow), inputSize, and a color token (indigo | rose | emerald | zinc, or your own). Pass `error` to switch it into the invalid state; `helperText` renders below when there is no error.",
   },
   select: {
     description:
       "A searchable select with single or multiple selection, option groups and per-option icons. Use it when a native <select> cannot carry enough structure.",
     categories: ["forms"],
-    docs: "Named exports: SelectBlock, getThemeStyles. `options` take { label, value, icon?, group? } — supplying `group` renders grouped headings. `value` accepts a string, or an array when multiple selection is enabled. Several other blocks depend on this one.",
+    docs: "Named exports: SelectBlock, getThemeStyles (from select-theme.ts, which installs alongside). `options` take { label, value, icon?, group? } — supplying `group` renders grouped headings. `value` accepts a string, or an array when multiple selection is enabled. Several other blocks depend on this one.",
   },
   form: {
     usageDependencies: ["input"],
     description:
       "Form scaffolding — wrapper, field, error and submit — with a shared color theme and a glitch error variant. Use it to keep field spacing and validation styling consistent across a form.",
     categories: ["forms"],
-    docs: "Named exports: FormWrapper, FormField, FormError, FormSubmit, getThemeStyles. Layout and styling only — bring your own state, via react-hook-form or otherwise. FormSubmit takes `isSubmitting` to render its pending state.",
+    docs: "Named exports: FormWrapper, FormField, FormError, FormSubmit, getThemeStyles (from form-theme.ts, which installs alongside). Layout and styling only — bring your own state, via react-hook-form or otherwise. FormSubmit takes `isSubmitting` to render its pending state.",
   },
   "date-picker": {
     description:
       "A single-date field with a popover calendar, typed entry and validation states. Use it for one-off dates such as a deadline or birth date.",
     categories: ["forms", "dates"],
-    docs: "Named exports: DatePickerBlock, getThemeStyles. Controlled via `value: Date | null` and `onChange`. Shares the variant, color and size vocabulary of the `input` item, so the two line up visually in the same form. For month grids or event display, use `calendar` instead.",
+    docs: "Named exports: DatePickerBlock, getThemeStyles (from date-picker-theme.ts, which installs alongside). Controlled via `value: Date | null` and `onChange`. Shares the variant, color and size vocabulary of the `input` item, so the two line up visually in the same form. For month grids or event display, use `calendar` instead.",
   },
   calendar: {
     description:
@@ -284,7 +304,7 @@ export const META: Record<string, ItemMeta> = {
     description:
       "A set of toggle buttons behaving as either radio group or checkbox group. Use it for view switches and filter bars where all options should stay visible.",
     categories: ["forms", "actions"],
-    docs: "Named exports: ToggleGroup, ToggleGroupItem, getThemeStyles. Set `type` to single or multiple — `value` is a string for single, an array for multiple. Compose ToggleGroupItem children; the group passes theme and size down. `color` accepts primary (the theme token), indigo, rose, emerald, zinc or a hex.",
+    docs: "Named exports: ToggleGroup, ToggleGroupItem, getThemeStyles. Set `type` to single or multiple — `value` is a string for single, an array for multiple. Compose ToggleGroupItem children; the group passes theme and size down. `color` accepts primary (the theme token), indigo, rose, emerald, zinc or a hex. `variant=\"segmented\"` is a pill track whose highlight slides to the pressed item; a single segmented group keeps its choice when clicked again and moves it with the arrow keys.",
   },
   "ui-multi-select": {
     description:
@@ -323,6 +343,7 @@ export const META: Record<string, ItemMeta> = {
     docs: "Named export: FlowGallery. Interactive drag with grab cursor, continuous downward auto-flow, 3D isometric plane, and Next Themes adaptation.",
   },
   stepper: {
+    usageDependencies: ["select"],
     description:
       "A horizontal step indicator with icons and GSAP transitions between steps. Use it to show progress through a known, ordered sequence.",
     categories: ["navigation", "forms"],
@@ -344,13 +365,13 @@ export const META: Record<string, ItemMeta> = {
     description:
       "A sign-in form with social buttons, password reveal, remember-me and four layout variants. Use it as the entry point of an authenticated app.",
     categories: ["authentication", "forms"],
-    docs: "Default export: LoginForm. Also exports getThemeStyles and the LoginFormValues type. Fields and buttons are the library's input and button items, which install alongside it. `variant` is default | split | glass | minimal — split renders a gradient side panel. `onSubmit` receives the validated credentials; without it the form simulates a round trip. `signupHref` points at the matching `register-form` page. Validation is client-side presentation only — enforce it again on your server.",
+    docs: "Default export: LoginForm. Also exports getThemeStyles (from login-form-theme.ts, which installs alongside) and the LoginFormValues type. Fields and buttons are the library's input and button items, which install alongside it. `variant` is default | split | glass | minimal — split renders a gradient side panel. `onSubmit` receives the validated credentials; without it the form simulates a round trip. `signupHref` points at the matching `register-form` page. Validation is client-side presentation only — enforce it again on your server.",
   },
   "register-form": {
     description:
       "A sign-up form with paired name fields, password confirmation, a terms checkbox and four layout variants. Use it wherever new accounts are created.",
     categories: ["authentication", "forms"],
-    docs: "Default export: RegisterForm. Also exports getThemeStyles and the RegisterFormValues type. Fields and buttons are the library's input and button items, which install alongside it. `variant` is default | split | glass | minimal — split renders a gradient side panel. `onSubmit` receives the validated fields; without it the form simulates a round trip. `loginHref` points at the matching `login-form` page, and `minPasswordLength` sets the client-side minimum. Validation is client-side presentation only — enforce it again on your server.",
+    docs: "Default export: RegisterForm. Also exports getThemeStyles (from register-form-theme.ts, which installs alongside) and the RegisterFormValues type. Fields and buttons are the library's input and button items, which install alongside it. `variant` is default | split | glass | minimal — split renders a gradient side panel. `onSubmit` receives the validated fields; without it the form simulates a round trip. `loginHref` points at the matching `login-form` page, and `minPasswordLength` sets the client-side minimum. Validation is client-side presentation only — enforce it again on your server.",
   },
   "signup-form": {
     description:
@@ -388,13 +409,13 @@ export const META: Record<string, ItemMeta> = {
     description:
       "A breadcrumb trail with per-item icons and automatic collapsing when the path is long. Use it to show position in a deep hierarchy.",
     categories: ["navigation"],
-    docs: "Named exports: BreadcrumbBlock, getThemeStyles. `items` take { label, href?, icon? }; `maxItems` collapses the middle into an ellipsis past that count. Separator styles: classic | slash | solid | ghost. Renders next/link, so it needs edits outside Next.js.",
+    docs: "Named exports: BreadcrumbBlock, getThemeStyles (from breadcrumb-theme.ts, which installs alongside). `items` take { label, href?, icon? }; `maxItems` collapses the middle into an ellipsis past that count. Separator styles: classic | slash | solid | ghost. Renders next/link, so it needs edits outside Next.js.",
   },
   "navigation-menu": {
     description:
       "A horizontal navigation bar with dropdown panels and a sliding active indicator. Use it for primary site navigation with grouped links.",
     categories: ["navigation"],
-    docs: "Named exports: NavigationMenu, NavigationMenuList, NavigationMenuItem, NavigationMenuTrigger, NavigationMenuContent, NavigationMenuLink, getThemeStyles. Compose the parts; the root tracks active and hovered state and animates the indicator between triggers. Variants: default | minimal | glass.",
+    docs: "Named exports: NavigationMenu, NavigationMenuList, NavigationMenuItem, NavigationMenuTrigger, NavigationMenuContent, NavigationMenuLink, getThemeStyles (from navigation-menu-theme.ts, which installs alongside). Compose the parts; the root tracks active and hovered state and animates the indicator between triggers. Variants: default | minimal | glass.",
   },
   menubar: {
     description:
@@ -406,13 +427,13 @@ export const META: Record<string, ItemMeta> = {
     description:
       "A collapsible application sidebar with grouped items, brand header, footer and a mobile drawer. Use it as the primary shell for a dashboard.",
     categories: ["navigation", "layout"],
-    docs: "Named exports: SidebarProvider, Sidebar, SidebarHeader, SidebarBrand, SidebarContent, SidebarGroup, SidebarFooter, useSidebar. Wrap your app in SidebarProvider; read `expanded` and `isMobileOpen` from useSidebar to drive your own toggle. Variants: attached | floating. Collapsed item labels show in the `tooltip` item, which installs alongside.",
+    docs: "Named exports: SidebarProvider, Sidebar, SidebarHeader, SidebarBrand, SidebarContent, SidebarGroup, SidebarFooter, useSidebar (from sidebar-context.ts, which installs alongside). Wrap your app in SidebarProvider; read `expanded` and `isMobileOpen` from useSidebar to drive your own toggle. Variants: attached | floating. Collapsed item labels show in the `tooltip` item, which installs alongside.",
   },
   navbar: {
     description:
       "A responsive marketing navbar with logo, links, mobile menu and GSAP entrance animation. Use it as the top bar of a landing page.",
     categories: ["navigation", "marketing"],
-    docs: "Named exports: NavbarBlock, getThemeStyles. Variants: default | floating | centered | minimal | glass. Links render through `linkComponent` (a plain `a` by default; pass next/link in Next.js). The mobile menu toggles are the `button` item, which installs alongside. For app chrome with dropdown panels, use `navigation-menu`.",
+    docs: "Named exports: NavbarBlock, getThemeStyles (from navbar-theme.ts, which installs alongside). Variants: default | floating | centered | minimal | glass. Links render through `linkComponent` (a plain `a` by default; pass next/link in Next.js). The mobile menu toggles are the `button` item, which installs alongside. For app chrome with dropdown panels, use `navigation-menu`.",
   },
   command: {
     description:
@@ -454,14 +475,14 @@ export const META: Record<string, ItemMeta> = {
     description:
       "A scroll container with styled, optionally auto-hiding scrollbars in either axis. Use it to keep scrollbar appearance consistent across browsers.",
     categories: ["layout", "scroll"],
-    docs: "Named exports: ScrollAreaBlock, getThemeStyles. `orientation` is vertical | horizontal | both; `autoHide` fades the bar when idle and `hideTrack` drops the track entirely. Needs a bounded height to scroll — give it an explicit height or a flex parent.",
+    docs: "Named exports: ScrollAreaBlock, getThemeStyles (from scroll-area-theme.ts, which installs alongside). `orientation` is vertical | horizontal | both; `autoHide` fades the bar when idle and `hideTrack` drops the track entirely. Needs a bounded height to scroll — give it an explicit height or a flex parent.",
   },
   "vertical-tabs": {
     title: "Tabs",
     description:
       "A tab panel whose rail runs across the top or down the side, with GSAP transitions between panels. Use it for settings and documentation sections with long content.",
     categories: ["navigation", "layout"],
-    docs: "Named exports: VerticalTabs, getThemeStyles. `tabs` take { id, label, icon?, content }. `orientation` defaults to horizontal and switches to vertical without changing the API. Variants: default | glass | minimal | bordered | underline | segmented | soft | elevated — every one renders in both orientations. Ships full tablist semantics: arrow keys along the rail, Home/End, and a focus ring drawn in your accent. `underline` and `segmented` move a single measured indicator between tabs; motion is skipped under prefers-reduced-motion.",
+    docs: "Named exports: VerticalTabs, getThemeStyles (from vertical-tabs-theme.ts, which installs alongside). `tabs` take { id, label, icon?, content }. `orientation` defaults to horizontal and switches to vertical without changing the API. Variants: default | glass | minimal | bordered | underline | segmented | soft | elevated — every one renders in both orientations. Ships full tablist semantics: arrow keys along the rail, Home/End, and a focus ring drawn in your accent. `underline` and `segmented` move a single measured indicator between tabs; motion is skipped under prefers-reduced-motion.",
   },
   item: {
     description:
@@ -487,19 +508,19 @@ export const META: Record<string, ItemMeta> = {
     description:
       "Composable table primitives — you write the rows, so no column config and no required data shape. Use it for tabular data you want full control over.",
     categories: ["data-display"],
-    docs: "Named exports: Table, TableHeading, TableContent, TableHeader, TableBody, TableRow, TableHead, TableCell, TableFooter, TableEmpty, TableExpandedRow, TableExpandToggle, TableRowActions, useTableStyles, getThemeStyles. Each primitive renders its native element and forwards refs, so `colSpan` and aria attributes pass through. Variant (default | minimal | glass), size (sm | md | lg) and color are set once on `Table` and read from context. Sorting and expansion are controlled props — the component never reorders your data. For search, paging, selection and batch actions wired up for you, use `advanced-table`.",
+    docs: "Named exports: Table, TableHeading, TableContent, TableHeader, TableBody, TableRow, TableHead, TableCell, TableFooter, TableEmpty, TableExpandedRow, TableExpandToggle, TableRowActions, useTableStyles, getThemeStyles. Each primitive renders its native element and forwards refs, so `colSpan` and aria attributes pass through. Variant (default | minimal | glass | soft), size (sm | md | lg) and color are set once on `Table` and read from context; `soft` is the admin-dashboard look (rounded panel, tinted header band, pill controls, round row actions). Also exports the stateful DataTable family — DataTableTabs, DataTableFilter, DataTableReset, DataTableBatchAction — and the cell/toolbar parts TableAction, TableRowAction, TableBadge and TablePerson. `sticky` on TableHead/TableCell pins a column to the right edge. Sorting and expansion are controlled props — the component never reorders your data. For search, paging, selection and batch actions wired up for you, use `advanced-table`.",
   },
   "advanced-table": {
     description:
       "A stateful data table with search, typed sorting, pagination, row selection and batch actions — composed, so your data keeps its own shape.",
     categories: ["data-display"],
-    docs: "Named exports: DataTable plus DataTableHeading/Content/Header/Body/Row/Head/Cell/Footer/Empty, DataTableSearch, DataTablePageSize, DataTableSelect, DataTableSelectAll, DataTableBatchBar, DataTableInfo, DataTablePagination, DataTableExpandToggle, DataTableExpandedRow, useDataTable, resolveAccessor. `DataTableBody` takes a render function receiving the current page of rows. `getRowId` defaults to id → _id → uuid; `sortBy` accepts a dot path or an accessor function (add `sortId` for functions). Builds on `table` and depends on `select` for the page-size control.",
+    docs: "Named exports: DataTable plus DataTableHeading/Content/Header/Body/Row/Head/Cell/Footer/Empty, DataTableSearch, DataTablePageSize, DataTableSelect, DataTableSelectAll, DataTableBatchBar, DataTableInfo, DataTablePagination, DataTableExpandToggle, DataTableExpandedRow, DataTableTabs, DataTableFilter, DataTableReset, DataTableBatchAction, TableAction, TableRowAction, TableBadge, TablePerson, useDataTable, resolveAccessor. `DataTableTabs` and `DataTableFilter` filter one field each by exact match (`by` is a dot path or accessor); `useDataTable` exposes `filters`, `isFiltered` and `resetAll`. `variant=\"soft\"` gives the admin-dashboard look. `DataTableBody` takes a render function receiving the current page of rows. `getRowId` defaults to id → _id → uuid; `sortBy` accepts a dot path or an accessor function (add `sortId` for functions). Builds on `table` and depends on `select` for the page-size control.",
   },
   "data-grid": {
     description:
       "An editable spreadsheet-style grid with inline cell editing and keyboard navigation. Use it when users need to change values in place rather than just read them.",
     categories: ["data-display"],
-    docs: "Named exports: DataGridBlock, getThemeStyles. `columns` take { field, headerName, width?, type?, readOnly? } — `type` number constrains input. Editing is local to the component, so persist changes through your own handler. Zero runtime dependencies.",
+    docs: "Named exports: DataGridBlock, getThemeStyles (from data-grid-theme.ts, which installs alongside). `columns` take { field, headerName, width?, type?, readOnly? } — `type` number constrains input. Editing is local to the component, so persist changes through your own handler. Zero runtime dependencies.",
   },
   chart: {
     description:
@@ -511,13 +532,13 @@ export const META: Record<string, ItemMeta> = {
     description:
       "A vertical event timeline with status states, icons and GSAP scroll reveal. Use it for order tracking and process status where each step is done, current or upcoming.",
     categories: ["data-display"],
-    docs: "Named exports: TimelineBlock, getThemeStyles. Items take { id, title, date, description?, icon?, status } where status is completed | current | upcoming and drives the colour. `layout` places entries left | center | right. For entrance animation variety without status semantics, use `animated-timeline`.",
+    docs: "Named exports: TimelineBlock, getThemeStyles (from timeline-theme.ts, which installs alongside). Items take { id, title, date, description?, icon?, status } where status is completed | current | upcoming and drives the colour. `layout` places entries left | center | right. For entrance animation variety without status semantics, use `animated-timeline`.",
   },
   "animated-timeline": {
     description:
       "A timeline whose entries animate in on scroll, with five entrance styles. Use it on marketing pages for company history and roadmap sections.",
     categories: ["data-display", "marketing"],
-    docs: "Named exports: AnimatedTimelineBlock, getThemeStyles. `animation` is fade-up | slide-in | zoom-in | flip-up | blur-in; `layout` is left | right | center. Uses IntersectionObserver rather than a motion library, so it has no runtime dependencies. For status-driven progress, use `timeline`.",
+    docs: "Named exports: AnimatedTimelineBlock, getThemeStyles (from animated-timeline-theme.ts, which installs alongside). `animation` is fade-up | slide-in | zoom-in | flip-up | blur-in; `layout` is left | right | center. Uses IntersectionObserver rather than a motion library, so it has no runtime dependencies. For status-driven progress, use `timeline`.",
   },
   "radial-orbital-timeline": {
     description:
@@ -544,6 +565,7 @@ export const META: Record<string, ItemMeta> = {
     docs: "Named export: Footer. Accepts `variant` (4 responsive variants: simple-centered, glass-dock, neon-glow-pulse, quantum-particle-beam), `brandName`, `tagline`, `logo`, `socialLinks`, `className`. The social row is the `social-links` item, which installs alongside. All variants adapt across mobile, tablet, and desktop screens.",
   },
   "booking-card": {
+    usageDependencies: ["glass-panel"],
     description:
       "A booking panel for any card: a day strip paged a week at a time, time slots in groups, a button that reads back the choice, and a confirmation that draws itself in. Use it wherever a page ends in an appointment.",
     categories: ["forms", "dates"],
@@ -562,12 +584,14 @@ export const META: Record<string, ItemMeta> = {
     docs: "Named export: BookAppointment. Composed from the booking-card, glass-panel, half-stars and chart items, which install alongside it. Pass `practitioner`, `slotGroups` and `onBook`; `scores`, `visitReasons` and `activities` fill the stars, donut and bar; `variant` switches glass to solid.",
   },
   "data-flow": {
+    usageDependencies: ["button", "half-stars", "icons"],
     description:
       "A sources → core → outputs section: platform cards on the left feed one node in the middle, which fans out to result cards on the right, with curved connectors that draw in on first view and then carry a moving dash. Use it to explain a pipeline, an integration, or where an AI product's data comes from.",
     categories: ["marketing", "data-display"],
     docs: "Named export: DataFlow, with parts Source, Core, Output, Pill, Tag and Row. Composed from the flowchart and apple-select items, which install alongside it (`intro` + `highlights` render through AppleSelect); the docs example also uses half-stars and button inside its output cards. Connectors are measured from the cards at runtime (ResizeObserver), hidden below lg; `reveal` is in-view or immediate; `accent` pins the dash colour, otherwise it follows --primary. Wrap intro phrases in <mark> for black pills.",
   },
   "platform-grid": {
+    usageDependencies: ["icons"],
     description:
       "Everything a product offers as one hairline grid: small icon-and-name tiles and a few 2×2 features that show a piece of the product on a tilting card. Reveals as a wave from the centre, then a spotlight follows the pointer. Use it as the 'full platform' section of a product site.",
     categories: ["marketing", "navigation"],
@@ -601,7 +625,7 @@ export const META: Record<string, ItemMeta> = {
     description:
       "A landing hero for a component library: a headline that blurs in word by word and keeps one word turning, a lead, an install command that names whichever card a camera has just landed on, two actions, a line of trust and the tools it is built with in batches — centred between two walls of screenshots that never end, one camera resting high and the other low, or on the left of a single wall.",
     categories: ["marketing", "layout"],
-    usageDependencies: ["tech-stack"],
+    usageDependencies: ["tech-stack", "icons"],
     docs: "Named export: ComponentWall (plus the ComponentWallItem type). Composed from the image-wall, text-animation, copy-button, avatar-stack and half-stars items, which install alongside it, and takes a tech-stack in its `stack` slot. Pass `badge` ({ label, href? }), `heading` (a string, revealed word by word; write `{word}` where `headingWords` take turns every `wordInterval` ms, and name one word in `accent` for the primary colour), `description` (a string or inline JSX — it renders inside a <p>), `install` ({ command } — write `{item}` where the focused card's `slug` goes, e.g. `npx shadcn@latest add @algorize-ui/{item}`), `primaryAction`/`secondaryAction` ({ label, href, icon? }), `trust` ({ text, avatars?, rating? }), `items` ({ title, image, slug? }[] — every screenshot sits in the same 493:332 frame; slug defaults to the title in kebab-case) and `stack` (a node — a <TechStack> of <TechStackGroup>s of <TechStackTool name icon />: the tools over the lower wall on desktop and under the band on phones; in the centred layout it closes the copy column, where the compact variant fits). `columns`, `interval` (ms the camera rests; 0 holds still), `order` (serial | shuffle), `zoom`, `intro` (ms the camera drifts with nothing in focus while the copy arrives; default 1800) and `onFocus` pass straight to the wall; `layout` is split (copy left, wall right) or center (copy between two walls — the left camera resting high, the right low, taking turns, the second wall dealing the same items from halfway through; the tools sit under the copy; zoom defaults to 0.9; below lg a single band of every card sits between the copy and the tools); `linkComponent` takes next/link. The headline uses your theme's font-serif, the command font-mono; colours are theme tokens.",
   },
   "collage-hero": {
@@ -650,13 +674,16 @@ export const META: Record<string, ItemMeta> = {
     description:
       "A frosted surface in four shapes and the aurora ground it sits on. Use it for glass bento layouts, profile and booking pages — or flip it to solid cards with one prop.",
     categories: ["layout"],
-    docs: "Named exports: GlassBackdrop, GlassPanel, useSurface (plus SurfaceVariant, GlassShape types). `GlassBackdrop` washes three `aurora` colours behind a 12-column grid (`gridClassName` for row heights and gaps) and sets `variant` (glass | solid) for every `GlassPanel` inside; panels take `shape` (slab, tile, disc, capsule), `interactive`, and Tailwind column spans.",
+    docs: "Named exports: GlassBackdrop, GlassPanel (plus SurfaceVariant, GlassShape types); useSurface is exported from glass-panel-context.ts, which installs alongside. `GlassBackdrop` washes three `aurora` colours behind a 12-column grid (`gridClassName` for row heights and gaps) and sets `variant` (glass | solid) for every `GlassPanel` inside; panels take `shape` (slab, tile, disc, capsule), `interactive`, and Tailwind column spans.",
   },
   "profile-page": {
+    // The documented page puts a Verify Badge beside the name and Social Links
+    // under the contact details; installing profile-page must bring both.
+    usageDependencies: ["verify-badge", "social-links"],
     description:
       "A person's profile as a glass bento page: an aurora backdrop, frosted panels, and a 24-hour dial that shows their working window live. Use it for team directories, member pages and public profiles.",
     categories: ["layout", "marketing"],
-    docs: "Named exports: ProfilePage, WorkdayDial, useLocalTime (GlassPanel and useSurface are re-exported from the glass-panel item, which installs alongside). `ProfilePage` is the glass backdrop and 12-column grid; place `GlassPanel`s inside with `shape` and column spans. `WorkdayDial` takes `timeZone`, `start`, `end`, `place`, `name`.",
+    docs: "Named exports: ProfilePage, WorkdayDial (GlassPanel is re-exported from the glass-panel item, which installs alongside; useSurface comes from its glass-panel-context.ts). useLocalTime is exported from profile-page-hooks.ts, which installs alongside. `ProfilePage` is the glass backdrop and 12-column grid; place `GlassPanel`s inside with `shape` and column spans. `WorkdayDial` takes `timeZone`, `start`, `end`, `place`, `name`.",
   },
   "product-details": {
     description:
@@ -680,19 +707,19 @@ export const META: Record<string, ItemMeta> = {
     description:
       "A printable invoice with line items, tax and totals, in three presentation styles. Use it for billing summaries and receipt pages.",
     categories: ["commerce", "data-display"],
-    docs: "Named exports: Invoice, getThemeStyles. `InvoiceData` carries invoiceNumber, parties, dates and an `items` array of { item, description?, hours|qty, rate }. Totals are computed for you. Variants: default | minimal | glass.",
+    docs: "Named exports: Invoice, getThemeStyles (from invoice-theme.ts, which installs alongside). `InvoiceData` carries invoiceNumber, parties, dates and an `items` array of { item, description?, hours|qty, rate }. Totals are computed for you. Variants: default | minimal | glass.",
   },
   cart: {
     description:
       "A shopping cart with quantity controls, variant details and totals, rendered as drawer, modal, popover or full page. Use it for the cart step of a storefront.",
     categories: ["commerce"],
-    docs: "Named exports: CartBlock, getThemeStyles, and the CartItem type. Switch presentation with `type` (drawer | modal | popover | page) without changing the item data. Pass the products in from the parent via `initialItems` — the component ships no sample data and renders its empty state without them. Items carry { id, name, price, quantity, gradient, size?, color? }; quantity and removal are handled internally. The trigger animates itself: a periodic tilt-and-ring nudge while the cart has items and has never been opened, a spring on press, and a badge pop whenever the count grows — all skipped under prefers-reduced-motion.",
+    docs: "Named exports: CartBlock, getThemeStyles (from cart-theme.ts, which installs alongside), and the CartItem type. Switch presentation with `type` (drawer | modal | popover | page) without changing the item data. Pass the products in from the parent via `initialItems` — the component ships no sample data and renders its empty state without them. Items carry { id, name, price, quantity, gradient, size?, color? }; quantity and removal are handled internally. The trigger animates itself: a periodic tilt-and-ring nudge while the cart has items and has never been opened, a spring on press, and a badge pop whenever the count grows — all skipped under prefers-reduced-motion.",
   },
   "api-playground": {
     description:
       "An interactive API request builder with method selector, headers, query params and a response viewer. Use it in developer documentation so readers can try endpoints inline.",
     categories: ["code", "data-display"],
-    docs: "Named exports: ApiPlaygroundBlock, getThemeStyles, and the types ApiPlaygroundRequest, ApiMockHandler, ApiResponse. Methods GET | POST | PUT | PATCH | DELETE are colour-coded. Ships a mock response by default — pass a `mockHandler`, or wire it to a real fetch. Depends on `select`. Sending real requests from the browser is subject to CORS.",
+    docs: "Named exports: ApiPlaygroundBlock, getThemeStyles (from api-playground-theme.ts, which installs alongside), and the types ApiPlaygroundRequest, ApiMockHandler, ApiResponse. Methods GET | POST | PUT | PATCH | DELETE are colour-coded. Ships a mock response by default — pass a `mockHandler`, or wire it to a real fetch. Depends on `select`. Sending real requests from the browser is subject to CORS.",
   },
   compute: {
     description:
@@ -725,6 +752,7 @@ export const META: Record<string, ItemMeta> = {
     docs: "Named export: ImageCompare. `beforeImage` and `afterImage` take URLs, with `beforeLabel` / `afterLabel` for the badges and `initialPosition` as a 0-100 percentage. Variants: classic-slider | split-handle | glowing-divider | badge-overlay | minimal. Both images should share an aspect ratio or the reveal will misalign.",
   },
   "tech-stack": {
+    usageDependencies: ["icons"],
     description:
       "The tools a product is built with: a label, then one group of marks at a time in two rows — an odd group as three over four — each mark blurring out and the next group blurring in. Use it as the \"Built with\" line in a hero or footer.",
     categories: ["marketing", "data-display"],
@@ -739,10 +767,11 @@ export const META: Record<string, ItemMeta> = {
 
   // ---- Phase 4D: overlays, feedback & messaging ----
   dialog: {
+    usageDependencies: ["copy-button"],
     description:
       "A composable modal dialog with focus trapping, overlay and controlled or uncontrolled open state. Use it as the general-purpose dialog primitive.",
     categories: ["overlays"],
-    docs: "Named exports: Dialog, DialogTrigger, DialogClose, DialogContent, DialogHeader, DialogFooter, DialogTitle, DialogDescription, useDialog, plus the DialogSize type. Use `defaultOpen` for uncontrolled, or `open` with `onOpenChange` to drive it — `onOpenChange` also fires on Escape and backdrop clicks, which is where you refuse a dismissal while async work is in flight. Size the panel with `size`: sm | md | lg | xl | full, where full fills the viewport and drops the rounding, border and height cap; `className` is merged after it and wins. `hideCloseButton` drops the built-in X. Dialogs nest — render one inside another's content and the inner one portals above its parent, with Escape and backdrop clicks reaching only the topmost. For a controlled overlay you drive entirely from your own state, use `modal`.",
+    docs: "Named exports: Dialog, DialogTrigger, DialogClose, DialogContent, DialogHeader, DialogFooter, DialogTitle, DialogDescription, useDialog (from dialog-context.ts, which installs alongside), plus the DialogSize type. Use `defaultOpen` for uncontrolled, or `open` with `onOpenChange` to drive it — `onOpenChange` also fires on Escape and backdrop clicks, which is where you refuse a dismissal while async work is in flight. Size the panel with `size`: sm | md | lg | xl | full, where full fills the viewport and drops the rounding, border and height cap; `className` is merged after it and wins. `hideCloseButton` drops the built-in X. Dialogs nest — render one inside another's content and the inner one portals above its parent, with Escape and backdrop clicks reaching only the topmost. For a controlled overlay you drive entirely from your own state, use `modal`.",
   },
   modal: {
     description:
@@ -773,7 +802,7 @@ export const META: Record<string, ItemMeta> = {
     description:
       "A provider-based toast system with six screen positions, action buttons and auto-dismiss. Use it for transient confirmations triggered from anywhere in the tree.",
     categories: ["feedback"],
-    docs: "Named exports: ToastProvider, useToast, getThemeStyles. Wrap your app in ToastProvider, then call `toast()` from useToast. Types: success | error | info | warning | default; `variant` is default | glow | glass | minimal. Set `stack` on the provider to pile toasts behind the newest one (hover fans them out). Set `duration` to 0 to require manual dismissal; hovering pauses the timer. `sonner` does the same job with a module-level API and no provider.",
+    docs: "Named exports: ToastProvider (ToastBlock.tsx) and useToast (toast-context.ts, which installs alongside). Wrap your app in ToastProvider, then call `toast()` from useToast. Types: success | error | info | warning | default; `variant` is default | glow | glass | minimal. Set `stack` on the provider to pile toasts behind the newest one (hover fans them out). Set `duration` to 0 to require manual dismissal; hovering pauses the timer. `sonner` does the same job with a module-level API and no provider.",
   },
   sonner: {
     description:
@@ -809,7 +838,7 @@ export const META: Record<string, ItemMeta> = {
     description:
       "A terminal-styled code block with a title bar, window controls and copy button. Use it to present install and CLI commands the way a reader expects to see them.",
     categories: ["code"],
-    docs: "Named exports: TerminalBlock, getThemeStyles. `code` is the only required prop; `language` defaults to bash and also understands sh, shell, terminal, html, xml, css and a generic JS/TS fallback. `filename` fills the title bar and `copyable` toggles the copy button. Variants: default | glass | minimal. Highlighting is a built-in regex tokenizer, not Shiki or Prism — good for snippets, not a full editor. For several files behind tabs, use `custom-code-block`.",
+    docs: "Named exports: TerminalBlock, getThemeStyles (from terminal-theme.ts, which installs alongside). `code` is the only required prop; `language` defaults to bash and also understands sh, shell, terminal, html, xml, css and a generic JS/TS fallback. `filename` fills the title bar and `copyable` toggles the copy button. Variants: default | glass | minimal. Highlighting is a built-in regex tokenizer, not Shiki or Prism — good for snippets, not a full editor. For several files behind tabs, use `custom-code-block`.",
   },
   chat: {
     description:
@@ -947,7 +976,7 @@ export const META: Record<string, ItemMeta> = {
     description:
       "Headings and paragraphs that animate in with scramble, typewriter, rotating-word, blur and reveal effects. Use it for section titles that should draw the eye once.",
     categories: ["typography", "marketing"],
-    docs: "Named exports: AnimatedTypographyBlock, getThemeStyles. `as` picks the tag (h1-h6, p, span, blockquote) so semantics stay correct whatever the effect. The rotating variants (letter-bounce, typewriter, word-flip, blur-swap) cycle `words` between `titlePrefix` and `titleSuffix`, one every `interval` ms (or `index`, when something else keeps time); `text` stays what screen readers announce. `prefixPosition` is fixed (the text before the words holds still) or fluid (it re-centres as the word changes). `bare` hands the type to `className` for composing into a section heading, and `play={false}` holds a reveal until it is wanted. No runtime dependencies — CSS and timers only. For per-character motion, use `text-animation`.",
+    docs: "Named exports: AnimatedTypographyBlock, getThemeStyles (from animated-typography-theme.ts, which installs alongside). `as` picks the tag (h1-h6, p, span, blockquote) so semantics stay correct whatever the effect. The rotating variants (letter-bounce, typewriter, word-flip, blur-swap) cycle `words` between `titlePrefix` and `titleSuffix`, one every `interval` ms (or `index`, when something else keeps time); `text` stays what screen readers announce. `prefixPosition` is fixed (the text before the words holds still) or fluid (it re-centres as the word changes). `bare` hands the type to `className` for composing into a section heading, and `play={false}` holds a reveal until it is wanted. No runtime dependencies — CSS and timers only. For per-character motion, use `text-animation`.",
   },
   "text-animation": {
     description:
@@ -959,7 +988,7 @@ export const META: Record<string, ItemMeta> = {
     description:
       "A number component in four modes — stepper, count-up, circular progress and countdown. Use it for quantity inputs and animated statistics.",
     categories: ["data-display", "forms"],
-    docs: "Named exports: CounterBlock, getThemeStyles. `type` is stepper | animated | circular | countdown — stepper is an input with min/max, the others are display-only. Variants: default | outline | soft | vertical for the stepper; `slide` for the countdown (soft tiles, only the figure that changed slides — the same countdown the waitlist item uses). The countdown takes `targetDate` (Date, ISO string or timestamp) and `doneLabel`. The animated type also takes `bare` (just the figure, no card), `decimals`, `startOnView` (count once visible) and `className`. `color` accepts a theme name, a hex code or `inherit`.",
+    docs: "Named exports: CounterBlock, getThemeStyles (from counter-theme.ts, which installs alongside). `type` is stepper | animated | circular | countdown — stepper is an input with min/max, the others are display-only. Variants: default | outline | soft | vertical for the stepper; `slide` for the countdown (soft tiles, only the figure that changed slides — the same countdown the waitlist item uses). The countdown takes `targetDate` (Date, ISO string or timestamp) and `doneLabel`. The animated type also takes `bare` (just the figure, no card), `decimals`, `startOnView` (count once visible) and `className`. `color` accepts a theme name, a hex code or `inherit`.",
   },
   carousel: {
     description:

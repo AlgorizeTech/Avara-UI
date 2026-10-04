@@ -1,3 +1,7 @@
+import { docsPageMetadata } from "@/lib/docs-metadata";
+
+export const metadata = docsPageMetadata("sidebar");
+
 import { ExampleShowcase } from "@/components/site/Sandbox";
 import { extractCode } from "@/lib/code";
 
@@ -9,7 +13,9 @@ Building a good sidebar is one of the hardest parts of dashboard development. It
 
 Click the collapse trigger in each preview's header to watch the labels hide and the icons centre — hover a collapsed icon and its label appears in a <DocLink to="tooltip">Tooltip</DocLink>. Switch a preview to the phone size and the sidebar becomes a dismissible flyout instead.
 
-export const usageDefault = `"use client";
+{/* Both examples are the same app shell; only where the rail starts differs. */}
+
+export const sidebarUsage = ({ name, expanded, note }) => `"use client";
 
 import {
   MobileSidebarTrigger,
@@ -23,15 +29,15 @@ import {
   SidebarProvider,
   SidebarTrigger,
 } from "@/components/custom/blocks/SidebarBlock";
-import { CreditCard, Hexagon, LayoutDashboard, LogOut, Settings, Users } from "lucide-react";
+import { Bell, CreditCard, HelpCircle, Hexagon, LayoutDashboard, LogOut, Search, Settings, Users } from "lucide-react";
 import { useState } from "react";
 
-export default function AppLayout({ children }: { children: React.ReactNode }) {
+export default function ${name}() {
   const [activeRoute, setActiveRoute] = useState("Dashboard");
 
   return (
-    // The provider owns expanded/mobile state for every part below it.
-    <SidebarProvider defaultExpanded>
+    // ${note}
+    <SidebarProvider defaultExpanded={${expanded}}>
       <Sidebar variant="attached">
         <SidebarHeader>
           <SidebarBrand icon={<Hexagon className="w-6 h-6 text-primary" fill="currentColor" />}>
@@ -56,10 +62,17 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
             >
               Customers
             </SidebarItem>
-            <SidebarItem icon={<CreditCard className="w-5 h-5" />}>Billing</SidebarItem>
+            <SidebarItem
+              icon={<CreditCard className="w-5 h-5" />}
+              active={activeRoute === "Billing"}
+              onClick={() => setActiveRoute("Billing")}
+            >
+              Billing
+            </SidebarItem>
           </SidebarGroup>
 
           <SidebarGroup label="Support">
+            <SidebarItem icon={<HelpCircle className="w-5 h-5" />}>Help Center</SidebarItem>
             <SidebarItem icon={<Settings className="w-5 h-5" />}>Settings</SidebarItem>
           </SidebarGroup>
         </SidebarContent>
@@ -69,54 +82,47 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
         </SidebarFooter>
       </Sidebar>
 
-      <div className="flex-1 flex flex-col min-w-0">
-        <header className="h-16 flex items-center gap-4 px-6 border-b">
-          {/* Opens the flyout under md; collapses the rail above it */}
-          <MobileSidebarTrigger className="md:hidden" />
-          <SidebarTrigger />
-          <h1 className="text-lg font-semibold">{activeRoute}</h1>
+      <div className="flex-1 flex flex-col min-w-0 bg-background">
+        <header className="h-16 flex items-center justify-between px-6 border-b border-border bg-background">
+          <div className="flex items-center gap-4">
+            {/* Opens the flyout under md; collapses the rail above it */}
+            <MobileSidebarTrigger className="md:hidden" />
+            <SidebarTrigger />
+            <h1 className="text-lg font-semibold text-foreground hidden sm:block">{activeRoute}</h1>
+          </div>
+          <div className="flex items-center gap-4">
+            <Search className="w-5 h-5 text-muted-foreground" />
+            <Bell className="w-5 h-5 text-muted-foreground" />
+            <div className="w-8 h-8 rounded-full bg-muted" />
+          </div>
         </header>
 
-        <main className="flex-1 p-6 overflow-y-auto">{children}</main>
+        {/* Your page goes here */}
+        <main className="flex-1 p-6 overflow-y-auto">
+          <div className="w-full h-32 border-2 border-dashed border-border rounded-xl flex items-center justify-center text-muted-foreground">
+            Main Content Area
+          </div>
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mt-4">
+            <div className="w-full h-48 bg-muted rounded-xl" />
+            <div className="w-full h-48 bg-muted rounded-xl" />
+          </div>
+        </main>
       </div>
     </SidebarProvider>
   );
 }`;
 
-export const usageCollapsed = `import {
-  Sidebar,
-  SidebarContent,
-  SidebarGroup,
-  SidebarItem,
-  SidebarProvider,
-  SidebarTrigger,
-} from "@/components/custom/blocks/SidebarBlock";
-import { LayoutDashboard, Users } from "lucide-react";
+export const usageDefault = sidebarUsage({
+  name: "AppLayout",
+  expanded: true,
+  note: "The provider owns expanded/mobile state for every part below it.",
+});
 
-export default function RailLayout({ children }: { children: React.ReactNode }) {
-  return (
-    // Start as an icon rail — labels appear as tooltips on hover.
-    <SidebarProvider defaultExpanded={false}>
-      <Sidebar variant="attached">
-        <SidebarContent>
-          <SidebarGroup label="Platform">
-            <SidebarItem icon={<LayoutDashboard className="w-5 h-5" />} active>
-              Dashboard
-            </SidebarItem>
-            <SidebarItem icon={<Users className="w-5 h-5" />}>Customers</SidebarItem>
-          </SidebarGroup>
-        </SidebarContent>
-      </Sidebar>
-
-      <div className="flex-1 flex flex-col min-w-0">
-        <header className="h-16 flex items-center px-6 border-b">
-          <SidebarTrigger />
-        </header>
-        <main className="flex-1 p-6">{children}</main>
-      </div>
-    </SidebarProvider>
-  );
-}`;
+export const usageCollapsed = sidebarUsage({
+  name: "RailLayout",
+  expanded: false,
+  note: "Start as an icon rail — labels appear as tooltips on hover.",
+});
 
 <ExampleShowcase
   name="sidebar"

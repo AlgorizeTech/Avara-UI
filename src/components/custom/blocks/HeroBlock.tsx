@@ -1342,7 +1342,7 @@ export const HeroBlock = forwardRef<HTMLElement, HeroBlockProps>(
                 ref={(el) => {
                   shapeRefs.current[0] = el;
                 }}
-                className="absolute left-0 right-0 h-px bg-neutral-200/80 dark:bg-neutral-800/80 z-10 pointer-events-none"
+                className="absolute left-0 right-0 h-px bg-primary/20 dark:bg-primary/30 transition-colors duration-300 z-10 pointer-events-none"
                 style={shape[0]}
               />
               {/* Bottom horizontal grid line - moves symmetrically with shape bottom */}
@@ -1350,7 +1350,7 @@ export const HeroBlock = forwardRef<HTMLElement, HeroBlockProps>(
                 ref={(el) => {
                   shapeRefs.current[1] = el;
                 }}
-                className="absolute left-0 right-0 h-px bg-neutral-200/80 dark:bg-neutral-800/80 z-10 pointer-events-none"
+                className="absolute left-0 right-0 h-px bg-primary/20 dark:bg-primary/30 transition-colors duration-300 z-10 pointer-events-none"
                 style={shape[1]}
               />
 
@@ -1359,7 +1359,7 @@ export const HeroBlock = forwardRef<HTMLElement, HeroBlockProps>(
                 ref={(el) => {
                   shapeRefs.current[2] = el;
                 }}
-                className="absolute top-0 bottom-0 w-px bg-neutral-200/80 dark:bg-neutral-800/80 z-10 pointer-events-none"
+                className="absolute top-0 bottom-0 w-px bg-primary/20 dark:bg-primary/30 transition-colors duration-300 z-10 pointer-events-none"
                 style={shape[2]}
               />
 
@@ -1368,7 +1368,7 @@ export const HeroBlock = forwardRef<HTMLElement, HeroBlockProps>(
                 ref={(el) => {
                   shapeRefs.current[3] = el;
                 }}
-                className="absolute top-0 bottom-0 w-px bg-neutral-200/80 dark:bg-neutral-800/80 z-10 pointer-events-none"
+                className="absolute top-0 bottom-0 w-px bg-primary/20 dark:bg-primary/30 transition-colors duration-300 z-10 pointer-events-none"
                 style={shape[3]}
               />
 
@@ -1382,7 +1382,7 @@ export const HeroBlock = forwardRef<HTMLElement, HeroBlockProps>(
               >
                 {/* Geometric chamfered polygon */}
                 <div
-                  className="w-full h-full bg-[#eaedf3] dark:bg-zinc-800/90 transition-colors duration-300 drop-shadow-xs"
+                  className="w-full h-full bg-primary/15 dark:bg-primary/25 transition-colors duration-300 drop-shadow-xs"
                   style={{
                     clipPath:
                       "polygon(clamp(24px, 15%, 52px) 0, 100% 0, 100% calc(100% - clamp(20px, 14%, 44px)), calc(100% - clamp(24px, 15%, 52px)) 100%, 0 100%, 0 clamp(20px, 14%, 44px))",
@@ -1390,10 +1390,10 @@ export const HeroBlock = forwardRef<HTMLElement, HeroBlockProps>(
                 />
 
                 {/* Top-Right Control Anchor Square - exactly on (xRight, top) */}
-                <div className="absolute top-0 right-0 w-2 h-2 sm:w-2.5 sm:h-2.5 bg-neutral-400 dark:bg-neutral-500 translate-x-1/2 -translate-y-1/2 shadow-xs" />
+                <div className="absolute top-0 right-0 w-2 h-2 sm:w-2.5 sm:h-2.5 bg-primary translate-x-1/2 -translate-y-1/2 shadow-xs transition-colors duration-300" />
 
                 {/* Bottom-Left Control Anchor Square - exactly on (24%, bottom) */}
-                <div className="absolute bottom-0 left-0 w-2 h-2 sm:w-2.5 sm:h-2.5 bg-neutral-400 dark:bg-neutral-500 -translate-x-1/2 translate-y-1/2 shadow-xs" />
+                <div className="absolute bottom-0 left-0 w-2 h-2 sm:w-2.5 sm:h-2.5 bg-primary -translate-x-1/2 translate-y-1/2 shadow-xs transition-colors duration-300" />
               </div>
             </div>
           </div>
@@ -1423,7 +1423,7 @@ export const HeroBlock = forwardRef<HTMLElement, HeroBlockProps>(
       const vortexHudTitle = hudTitle || "GUST FIELD";
       const vortexHudTime = hudTime || "T+36:25";
       const activeHudMetrics = hudMetrics || DEFAULT_HUD_METRICS;
-      const vortexBg = resolvedColor || "var(--primary)";
+      const vortexBg = resolvedColor || "#0052cc";
 
       return (
         <section

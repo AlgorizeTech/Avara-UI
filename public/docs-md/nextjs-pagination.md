@@ -1,3 +1,5 @@
+export const metadata = docsPageMetadata("pagination");
+
 # Pagination
 
 A complex navigation component that intelligently handles page rendering, ellipsis calculation, and edge bounds.
@@ -199,6 +201,14 @@ npx shadcn@latest add @algorize-ui/pagination
 
           Fired when the user picks a new rows-per-page value. Recompute{" "}
           totalPages and usually reset currentPage to 1.
+
+          color
+
+          string
+
+          undefined
+
+          Themes the active page, focus rings, hover states, and dropdown selection highlights — supports preset names (e.g. "indigo", "rose", "emerald", "lavender") or a custom hex string.
 
 ---
 

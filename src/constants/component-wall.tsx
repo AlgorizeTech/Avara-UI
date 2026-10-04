@@ -104,12 +104,12 @@ const css = tool("CSS", "css.png");
 const html = tool("HTML", "HTML.png");
 const shadcn = tool("shadcn/ui", "shadcn.svg", "dark:invert");
 const gsap: Tool = { name: "GSAP", icon: <GsapIcon /> };
-const framer: Tool = { name: "Motion", icon: <MotionIcon /> };
+const motion: Tool = { name: "Motion", icon: <MotionIcon /> };
 
 const WALL_STACK: Tool[][] = [
   [react, next, shadcn, ts, tailwind, css, html],
-  [shadcn, tailwind, framer, gsap, react, ts, css],
-  [js, ts, react, next, gsap, framer, html],
+  [shadcn, tailwind, motion, gsap, react, ts, css],
+  [js, ts, react, next, gsap, motion, html],
 ];
 
 /** The "Built with" strip for the hero's `stack` slot. */

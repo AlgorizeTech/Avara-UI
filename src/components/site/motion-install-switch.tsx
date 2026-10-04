@@ -1,7 +1,7 @@
 "use client";
 
 import React from "react";
-import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
+import { AnimatePresence, motion, useReducedMotion } from "motion/react";
 import { useMotionLibrary } from "@/contexts/motion-library-context";
 import { MotionLibraryTabs } from "@/components/site/motion-library-tabs";
 
@@ -13,10 +13,10 @@ import { MotionLibraryTabs } from "@/components/site/motion-library-tabs";
  */
 export function MotionInstallSwitch({
   gsap,
-  framer,
+  motion: motionSteps,
 }: {
   gsap: React.ReactNode;
-  framer: React.ReactNode;
+  motion: React.ReactNode;
 }) {
   const { library } = useMotionLibrary();
   const reduceMotion = useReducedMotion();
@@ -38,7 +38,7 @@ export function MotionInstallSwitch({
           exit={{ opacity: 0, y: reduceMotion ? 0 : -4 }}
           transition={reduceMotion ? { duration: 0 } : { duration: 0.16, ease: [0.22, 1, 0.36, 1] }}
         >
-          {library === "framer" ? framer : gsap}
+          {library === "motion" ? motionSteps : gsap}
         </motion.div>
       </AnimatePresence>
     </div>

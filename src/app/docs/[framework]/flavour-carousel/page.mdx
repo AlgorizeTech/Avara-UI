@@ -1,3 +1,7 @@
+import { docsPageMetadata } from "@/lib/docs-metadata";
+
+export const metadata = docsPageMetadata("flavour-carousel");
+
 import { ExampleShowcase } from "@/components/site/Sandbox";
 import { extractCode } from "@/lib/code";
 
@@ -67,6 +71,7 @@ export default function Flavours() {
 
 <ExampleShowcase
   name="flavour-carousel"
+  colorControl={false}
   columns={1}
   examples={[
     {

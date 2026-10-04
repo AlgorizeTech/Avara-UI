@@ -1,6 +1,12 @@
+export const metadata = pageMetadata({
+  title: 'Documentation - Algorize UI',
+  description: 'Documentation for the Algorize UI component library: installation guides, component pages with live previews, and props references.',
+  url: '/docs',
+});
+
 # Documentation
 
-Algorize UI is a library of 176 React components installed straight
+Algorize UI is a library of 179 React components installed straight
 into your project by the shadcn CLI — no wrapper package, no lock-in.
 
     Introduction

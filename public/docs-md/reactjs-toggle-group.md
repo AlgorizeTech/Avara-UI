@@ -1,3 +1,5 @@
+export const metadata = docsPageMetadata("toggle-group");
+
 # Toggle Group
 
 A set of segmented, two-state buttons that can be toggled on or off, perfect for configuration settings and rich text editors.
@@ -19,6 +21,18 @@ export const usageOutline = `export default function OutlineGroup() {
 
   return (
 
+  );
+}`;
+
+export const usageSegmented = `export default function PeriodSwitch() {
+  const [period, setPeriod] = useState("month");
+
+  return (
+    
+      Daily
+      Weekly
+      Monthly
+    
   );
 }`;
 
@@ -143,11 +157,11 @@ export default function TextEditor() {
 
           variant
 
-          "default" | "outline" | "ghost"
+          "default" | "outline" | "ghost" | "segmented"
 
           "default"
 
-          The architectural style of the group. The default variant wraps the items in a styled pill container.
+          The architectural style of the group. The default variant wraps the items in a styled pill container; segmented is a pill track whose highlight slides to the pressed item, keeps a single choice pressed, and moves it with the arrow keys.
 
           ToggleGroup
 

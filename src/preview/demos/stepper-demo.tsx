@@ -43,6 +43,16 @@ const PRIMARY_ROLE_OPTIONS = [
   "Founder",
 ].map((r) => ({ label: r, value: r }));
 
+// Focus is a soft glow, not a hard ring: the border takes the accent and a
+// 4px halo of it at low strength spreads out and fades in with the border.
+// `--wizard-accent` is set on the demo root so the halo follows the picker.
+const FIELD_BASE =
+  "w-full h-11 bg-background border rounded-xl px-3.5 text-sm text-foreground placeholder:text-muted-foreground outline-none shadow-[0_1px_2px_rgb(0_0_0/0.04)] transition-[border-color,box-shadow] duration-200 ease-out";
+const FIELD_OK =
+  "border-input hover:border-foreground/20 focus:border-[color-mix(in_oklab,var(--wizard-accent)_65%,transparent)] focus:shadow-[0_0_0_4px_color-mix(in_oklab,var(--wizard-accent)_16%,transparent)]";
+const FIELD_ERROR =
+  "border-destructive focus:shadow-[0_0_0_4px_color-mix(in_oklab,var(--destructive)_16%,transparent)]";
+
 // Stable Input Component
 const InputField = ({ label, icon: Icon, error, ...props }: any) => (
   <div className="flex flex-col gap-1.5 w-full">
@@ -56,13 +66,7 @@ const InputField = ({ label, icon: Icon, error, ...props }: any) => (
         </div>
       )}
       <input
-        className={cn(
-          "w-full h-11 bg-background border rounded-xl px-3.5 text-sm text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 transition-all",
-          Icon && "pl-10",
-          error
-            ? "border-destructive focus:ring-destructive/20"
-            : "border-input focus:border-ring",
-        )}
+        className={cn(FIELD_BASE, Icon && "pl-10", error ? FIELD_ERROR : FIELD_OK)}
         {...props}
       />
     </div>
@@ -226,7 +230,7 @@ export default function StepperDemo({
       description: "Personal details",
       icon: User,
       content: (
-        <div className="w-full p-6 sm:p-8 bg-card text-card-foreground rounded-2xl border border-border shadow-sm flex flex-col gap-5">
+        <div className="w-full p-6 sm:p-8 bg-card text-card-foreground rounded-2xl border border-foreground/[0.06] shadow-[0_1px_2px_rgb(0_0_0/0.04),0_8px_24px_-12px_rgb(0_0_0/0.12)] flex flex-col gap-5">
           <div>
             <h3 className="text-lg font-semibold text-foreground">
               Personal Information
@@ -263,7 +267,7 @@ export default function StepperDemo({
       description: "Organization",
       icon: Building2,
       content: (
-        <div className="w-full p-6 sm:p-8 bg-card text-card-foreground rounded-2xl border border-border shadow-sm flex flex-col gap-5">
+        <div className="w-full p-6 sm:p-8 bg-card text-card-foreground rounded-2xl border border-foreground/[0.06] shadow-[0_1px_2px_rgb(0_0_0/0.04),0_8px_24px_-12px_rgb(0_0_0/0.12)] flex flex-col gap-5">
           <div>
             <h3 className="text-lg font-semibold text-foreground">
               Workspace Setup
@@ -289,7 +293,10 @@ export default function StepperDemo({
                 options={PRIMARY_ROLE_OPTIONS}
                 value={formData.role}
                 onChange={(v) => handleChange("role", v)}
-                variant="filled"
+                // Bordered like the text inputs; its open state is the same
+                // soft 4px accent ring.
+                variant="default"
+                color={isDefaultPrimary ? "primary" : color}
                 placeholder="Select your role"
               />
             </div>
@@ -303,7 +310,7 @@ export default function StepperDemo({
       description: "Credentials",
       icon: ShieldCheck,
       content: (
-        <div className="w-full p-6 sm:p-8 bg-card text-card-foreground rounded-2xl border border-border shadow-sm flex flex-col gap-5">
+        <div className="w-full p-6 sm:p-8 bg-card text-card-foreground rounded-2xl border border-foreground/[0.06] shadow-[0_1px_2px_rgb(0_0_0/0.04),0_8px_24px_-12px_rgb(0_0_0/0.12)] flex flex-col gap-5">
           <div>
             <h3 className="text-lg font-semibold text-foreground">
               Security Credentials
@@ -343,7 +350,7 @@ export default function StepperDemo({
       description: "Confirm & Submit",
       icon: CheckCircle2,
       content: (
-        <div className="w-full p-6 sm:p-8 bg-card text-card-foreground rounded-2xl border border-border shadow-sm flex flex-col gap-6">
+        <div className="w-full p-6 sm:p-8 bg-card text-card-foreground rounded-2xl border border-foreground/[0.06] shadow-[0_1px_2px_rgb(0_0_0/0.04),0_8px_24px_-12px_rgb(0_0_0/0.12)] flex flex-col gap-6">
           {submitStatus === "success" ? (
             <div className="py-8 flex flex-col items-center justify-center text-center gap-4">
               <div
@@ -439,7 +446,7 @@ export default function StepperDemo({
                     onChange={(e) =>
                       handleChange("simulateError", e.target.checked)
                     }
-                    className="rounded border-input text-primary focus:ring-primary"
+                    className="rounded border-input accent-[var(--wizard-accent)]"
                   />
                   Simulate Server Error on Submit
                 </label>
@@ -455,9 +462,14 @@ export default function StepperDemo({
   ];
 
   return (
-    <div className="w-full flex justify-center relative overflow-hidden min-h-[600px]">
-      {/* Main Wizard Card Container */}
-      <div className="w-full max-w-3xl flex flex-col gap-8 bg-card text-card-foreground rounded-3xl p-6 sm:p-10 border border-border relative z-10 shadow-sm">
+    <div
+      className="w-full flex justify-center relative min-h-[600px]"
+      style={{ "--wizard-accent": color } as React.CSSProperties}
+    >
+      {/* Main Wizard Card Container. The shell wears a whisper of the accent
+          (relative OKLCH, like Folder's tint) so it separates from the white
+          preview surface, and the white step panels float on it. */}
+      <div className="w-full max-w-3xl flex flex-col gap-8 text-card-foreground rounded-3xl p-6 sm:p-10 relative z-10 border bg-[oklch(from_var(--wizard-accent)_0.975_calc(c*0.12)_h)] border-[oklch(from_var(--wizard-accent)_0.91_calc(c*0.2)_h)] dark:bg-[oklch(from_var(--wizard-accent)_0.21_calc(c*0.1)_h)] dark:border-foreground/10 shadow-[0_1px_2px_rgb(0_0_0/0.04),0_20px_48px_-20px_rgb(0_0_0/0.18)]">
         {/* 1. The GSAP Stepper Navigation (Click circles to jump if valid) */}
         <Stepper
           steps={steps}
@@ -478,7 +490,7 @@ export default function StepperDemo({
               type="button"
               onClick={handlePrev}
               disabled={currentStep === 0 || isSubmitting}
-              className="flex items-center gap-1.5 px-4 py-2.5 rounded-xl border border-border bg-muted text-foreground font-semibold text-sm disabled:opacity-40 disabled:cursor-not-allowed hover:bg-muted/80 transition-all active:scale-95 cursor-pointer"
+              className="flex items-center gap-1.5 px-4 py-2.5 rounded-xl border border-foreground/10 bg-card text-foreground font-semibold text-sm shadow-[0_1px_2px_rgb(0_0_0/0.04)] disabled:opacity-40 disabled:cursor-not-allowed hover:bg-muted transition-all active:scale-95 cursor-pointer"
             >
               <ChevronLeft className="w-4 h-4" />
               Back

@@ -1,3 +1,5 @@
+export const metadata = docsPageMetadata("radial-orbital-timeline");
+
 # Radial Orbital Timeline
 
 A dynamic orbital visualization component that displays nodes in a circular pattern around a central point. Each node represents a data point with title, status, and energy level.

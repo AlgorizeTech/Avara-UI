@@ -32,13 +32,14 @@ export default function ToggleGroupDemo({
   singleValue?: string;
   multipleValue?: string[];
   /** Single-example modes; omitted renders the full two-group demo. */
-  example?: "single" | "multiple" | "sizes" | "disabled";
+  example?: "single" | "multiple" | "sizes" | "disabled" | "segmented";
 }) {
   const color = toBlockColor(pickedColor);
   // States for the interactive previews
   const [singleValue, setSingleValue] = useState(initialSingleValue);
   const [multipleValue, setMultipleValue] =
     useState<string[]>(initialMultipleValue);
+  const [period, setPeriod] = useState("month");
   const [sizeValues, setSizeValues] = useState<Record<string, string>>({
     sm: "center",
     md: "center",
@@ -61,6 +62,25 @@ export default function ToggleGroupDemo({
       </ToggleGroupItem>
     </>
   );
+
+  if (example === "segmented") {
+    return (
+      <div className="w-full flex items-center justify-center min-h-[300px] relative z-10">
+        <ToggleGroup
+          type="single"
+          variant="segmented"
+          size={size}
+          value={period}
+          onValueChange={setPeriod}
+          aria-label="Reporting period"
+        >
+          <ToggleGroupItem value="day">Daily</ToggleGroupItem>
+          <ToggleGroupItem value="week">Weekly</ToggleGroupItem>
+          <ToggleGroupItem value="month">Monthly</ToggleGroupItem>
+        </ToggleGroup>
+      </div>
+    );
+  }
 
   if (example === "single" || example === "disabled") {
     return (

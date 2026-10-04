@@ -1,3 +1,5 @@
+export const metadata = docsPageMetadata("calendar");
+
 # Calendar Dashboard
 
 A comprehensive, interactive calendar dashboard and date-picker system. Includes built-in event management, filtering, dynamic views (Month/Week/Day), and animated popover modals.
@@ -49,7 +51,9 @@ const events = {
 };
 
 export default function GlassCalendar() {
-  // "glass" is translucent — intended to sit on a background image or rich pattern.
+  // "glass" is translucent — intended to sit on a background image or rich
+  // pattern. The photo frames it from md up; on phones the card fills the
+  // frame and the photo shows through it instead.
   return (
 
   );

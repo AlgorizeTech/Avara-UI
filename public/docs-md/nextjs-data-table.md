@@ -1,3 +1,5 @@
+export const metadata = docsPageMetadata("data-table");
+
 # Data Table
 
 A powerful, fully-featured data table component built on top of [Table](./table) primitives. It provides built-in state management for **Global Searching, Multi-Column Sorting, Pagination, Row Selection, and Batch Actions** — giving you complete control over your table layout without forcing any data transformation.
@@ -130,6 +132,16 @@ npx shadcn@latest registry add @algorize-ui=https://algorize-ui.vercel.app/r/{na
 npx shadcn@latest add @algorize-ui/table
 ```
 
+## Soft variant
+
+`variant="soft"` is the admin-dashboard look: a rounded panel on a hairline ring, a tinted header band, pill controls and calm round row actions, every tint mixed from the table colour. Everything below lives inside the panel — status tabs with live counts, select filters, search, a reset, the page's actions, sortable columns with a pinned actions column, a rows-per-page picker, pagination and a floating bar for the selected rows. The first example on this page is a soft table — its Usage tab is the preview's exact source.
+
+    The parts that come with it
+    DataTableTabs, DataTableFilter and DataTableReset filter and clear; TableAction is the toolbar button (primary, secondary, ghost); TableRowAction is a round icon button that needs a label; TableBadge is a status pill (tone) or, without its dot, a tag; TablePerson draws an avatar with a name and a second line; DataTableBatchAction goes inside the batch bar. They work in every variant and take the soft look inside a soft table.
+
+    Empty results explain themselves
+    Give DataTableEmpty an icon, title, description and action, and read search, isFiltered and resetAll from useDataTable (in table-core) to say whether nothing matched or nothing exists yet — the example's NoUsers does exactly that.
+
 ## Features
 
     No data transformation
@@ -207,9 +219,9 @@ npx shadcn@latest add @algorize-ui/table
 
         DataTable
         variant
-        "default" | "minimal" | "glass"
+        "default" | "minimal" | "glass" | "soft"
         "default"
-        Visual skin variant of the table container and rows.
+        Visual skin of the container, rows and every control. soft is the admin-dashboard look shown above.
 
         DataTable
         color
@@ -276,6 +288,156 @@ npx shadcn@latest add @algorize-ui/table
         string
         —
         Row checkbox to select or deselect the specific row.
+
+        DataTableSelect
+        label
+        string
+        "Select row"
+        Accessible name of the row checkbox, e.g. Select Priya Nair.
+
+        DataTableHead, DataTableCell
+        sticky
+        boolean
+        false
+        Pins the column to the right edge. Set it on the head and on every cell of the column.
+
+        DataTableTabs
+        by
+        string | ((row: T) =&gt; unknown)
+        Required
+        The field the tabs filter on — a dot path or an accessor function (add filterId for functions).
+
+        DataTableTabs
+        tabs
+        {`{ value: string; label: ReactNode }[]`}
+        Required
+        One tab per value. The tab whose value is allValue shows every row.
+
+        DataTableTabs
+        allValue
+        string
+        "all"
+        The value of the show-everything tab.
+
+        DataTableTabs
+        showCounts
+        boolean
+        true
+        Each tab shows how many rows it would leave, counting the search and the other filters.
+
+        DataTableFilter
+        by
+        string | ((row: T) =&gt; unknown)
+        Required
+        The field to match exactly (an array field matches any of its entries). Add filterId for functions.
+
+        DataTableFilter
+        options
+        {`(string | { label: string; value: string })[]`}
+        Required
+        The choices. Use objects when the stored value differs from the label.
+
+        DataTableFilter
+        placeholder
+        string
+        Required
+        Shown while nothing is chosen, e.g. Role. Also names the filter for screen readers unless you pass label.
+
+        DataTableFilter
+        side
+        "top" | "bottom"
+        "bottom"
+        Which way the menu opens.
+
+        DataTableReset
+        variant
+        "primary" | "secondary" | "ghost"
+        "ghost"
+        Clears the search, every filter and the sort. Renders only while there is something to clear; takes every TableAction prop.
+
+        DataTablePageSize
+        side
+        "top" | "bottom"
+        "top" in soft
+        Which way the menu opens. The soft picker sits in the footer, so it opens upward.
+
+        DataTableBatchBar
+        noun
+        [string, string]
+        —
+        Singular and plural for the count: ["user", "users"] reads “3 users selected”.
+
+        DataTableBatchAction
+        tone
+        "default" | "danger"
+        "default"
+        A button for the batch bar; danger for destructive actions.
+
+        DataTableEmpty
+        icon, title, description, action
+        ReactNode
+        —
+        A full empty state: an icon chip, what is missing, what to do, and a button. Without them it is the one-line message it always was.
+
+        TableAction
+        variant
+        "primary" | "secondary" | "ghost"
+        "secondary"
+        A toolbar button in the table's look. Icons passed as children are sized for you.
+
+        TableAction
+        size
+        "sm" | "md"
+        "md"
+        Button height and text size.
+
+        TableRowAction
+        label
+        string
+        Required
+        A round icon button for a row; label is its accessible name and hover title. Group them in TableRowActions (always visible in soft).
+
+        TableRowAction
+        tone
+        "default" | "danger"
+        "default"
+        danger turns red on hover.
+
+        TableBadge
+        tone
+        "neutral" | "success" | "warning" | "danger" | "info"
+        "neutral"
+        The status colour. The label always shows, so colour is never the only signal.
+
+        TableBadge
+        dot
+        boolean
+        true
+        Turn it off for a plain tag.
+
+        TablePerson
+        name
+        string
+        Required
+        The name; the initials take a colour kept per name when there is no photo.
+
+        TablePerson
+        description
+        ReactNode
+        —
+        A muted second line, e.g. an email.
+
+        TablePerson
+        src
+        string
+        —
+        A photo. If it fails to load, the initials show.
+
+        TablePerson
+        imageComponent
+        ElementType
+        "img"
+        Renders the photo — pass next/image in a Next.js app.
 
 ---
 

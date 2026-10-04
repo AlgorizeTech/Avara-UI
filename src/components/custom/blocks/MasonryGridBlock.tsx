@@ -22,11 +22,11 @@ export interface MasonryGridProps<T>
   staggerDelay?: number;
 }
 
-/** The grid itself fades in over 0.3s on Framer's default opacity curve. */
+/** The grid itself fades in over 0.3s on Motion's default opacity curve. */
 const CONTAINER_EASE = bezierEase([0.25, 0.1, 0.35, 1]);
 /** Each tile: one spring for opacity, rise, scale and blur. */
 const ITEM_SPRING = springEase({ stiffness: 200, damping: 20, mass: 1 });
-/** Reflow when items change: Framer's default layout transition. */
+/** Reflow when items change: Motion's default layout transition. */
 const LAYOUT_EASE = bezierEase(LAYOUT_TRANSITION.ease);
 
 const ITEM_HIDDEN: React.CSSProperties = {
@@ -56,9 +56,11 @@ export function MasonryGrid<T extends { id: string | number }>({
 
   // Tiles' boxes before this render commits, for the reflow below.
   const before = useRef<Flip.FlipState | null>(null);
-  if (typeof window !== "undefined" && tiles.current.size > 0) {
-    before.current = Flip.getState(Array.from(tiles.current.values()));
-  }
+  const captureBefore = () => {
+    if (tiles.current.size > 0) {
+      before.current = Flip.getState(Array.from(tiles.current.values()));
+    }
+  };
 
   /** Blur-fade a tile in: y 40 → 0, scale 0.95 → 1, opacity and blur on the same spring. */
   const enter = (el: HTMLDivElement, delay: number) => {
@@ -145,7 +147,7 @@ export function MasonryGrid<T extends { id: string | number }>({
         duration: LAYOUT_TRANSITION.duration,
         ease: LAYOUT_EASE,
         scale: true,
-        // Back to no transform at rest, as Framer leaves it.
+        // Back to no transform at rest, as Motion leaves it.
         onComplete: () => {
           gsap.set(moved, { clearProps: "transform" });
         },
@@ -154,29 +156,53 @@ export function MasonryGrid<T extends { id: string | number }>({
   });
 
   return (
-    <div
-      ref={containerRef}
-      className={cn("w-full", columnsClassName, gapClassName, className)}
-      style={animateIn ? { ...style, opacity: 0 } : style}
-      {...props}
-    >
-      {items.map((item, index) => (
-        <div
-          key={item.id}
-          ref={(el) => {
-            if (el) tiles.current.set(item.id, el);
-            else tiles.current.delete(item.id);
-          }}
-          style={animateIn ? ITEM_HIDDEN : undefined}
-          // 2. FIXED GAP ISSUE: Added "inline-block w-full" to prevent margin collapse & awkward breaks
-          className={cn(
-            "break-inside-avoid inline-block w-full",
-            itemSpacingClass,
-          )}
-        >
-          {renderItem(item, index)}
-        </div>
-      ))}
-    </div>
+    <BeforeCommit capture={captureBefore}>
+      <div
+        ref={containerRef}
+        className={cn("w-full", columnsClassName, gapClassName, className)}
+        style={animateIn ? { ...style, opacity: 0 } : style}
+        {...props}
+      >
+        {items.map((item, index) => (
+          <div
+            key={item.id}
+            ref={(el) => {
+              if (el) tiles.current.set(item.id, el);
+              else tiles.current.delete(item.id);
+            }}
+            style={animateIn ? ITEM_HIDDEN : undefined}
+            // 2. FIXED GAP ISSUE: Added "inline-block w-full" to prevent margin collapse & awkward breaks
+            className={cn(
+              "break-inside-avoid inline-block w-full",
+              itemSpacingClass,
+            )}
+          >
+            {renderItem(item, index)}
+          </div>
+        ))}
+      </div>
+    </BeforeCommit>
   );
+}
+
+/**
+ * Runs `capture` on every update, just before React touches the DOM (the
+ * commit's before-mutation phase), so the grid can record where its tiles sat
+ * before the new items/columns land. Renders nothing of its own.
+ */
+class BeforeCommit extends React.Component<{
+  capture: () => void;
+  children: React.ReactNode;
+}> {
+  getSnapshotBeforeUpdate() {
+    this.props.capture();
+    return null;
+  }
+
+  // Required alongside getSnapshotBeforeUpdate; the work happens in the grid's layout effect.
+  componentDidUpdate() {}
+
+  render() {
+    return this.props.children;
+  }
 }

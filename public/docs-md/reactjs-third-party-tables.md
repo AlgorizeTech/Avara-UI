@@ -1,3 +1,8 @@
+export const metadata = docsPageMetadata("third-party/tables", {
+  title: "Data Tables",
+  description: "Integrate TanStack Table and AG Grid with Algorize UI — a headless table rendered with the Table primitives, and a themed grid with React cell renderers."
+});
+
 # Data Tables
 
 Two very different answers to the same problem. TanStack Table is headless — it
@@ -323,6 +328,11 @@ export default function AgGridInventory() {
 
 This example also uses these Algorize UI components — install whichever
 your project does not already have:
+
+The grid takes its colours from `useChartTokens`, which is not a registry item:
+create `src/lib/chart-tokens.ts` with the file in this example's Code tab — the
+same file the Charts page sets up, so
+skip this if you already have it.
 
 ## Which one
 

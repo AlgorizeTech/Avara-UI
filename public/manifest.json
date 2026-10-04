@@ -1,7 +1,7 @@
 {
   "name": "Algorize UI — React Component Library",
   "short_name": "Algorize UI",
-  "description": "A React component library of 176 animated, accessible components installed by the shadcn CLI straight into your project.",
+  "description": "A React component library of 179 animated, accessible components installed by the shadcn CLI straight into your project.",
   "start_url": "/",
   "display": "standalone",
   "background_color": "#ffffff",
@@ -34,22 +34,6 @@
       "purpose": "any"
     }
   ],
-  "screenshots": [
-    {
-      "src": "/screenshot-desktop.png",
-      "sizes": "1280x720",
-      "type": "image/png",
-      "form_factor": "wide",
-      "label": "Algorize UI Desktop View"
-    },
-    {
-      "src": "/screenshot-mobile.png",
-      "sizes": "375x667",
-      "type": "image/png",
-      "form_factor": "narrow",
-      "label": "Algorize UI Mobile View"
-    }
-  ],
   "shortcuts": [
     {
       "name": "Documentation",
@@ -61,13 +45,13 @@
       "name": "Components",
       "short_name": "Components",
       "description": "View all components",
-      "url": "/docs/button"
+      "url": "/docs/nextjs/all-components"
     },
     {
-      "name": "Tools",
-      "short_name": "Tools",
-      "description": "Design tools and utilities",
-      "url": "/tools"
+      "name": "Themes",
+      "short_name": "Themes",
+      "description": "Customise and copy a theme",
+      "url": "/themes"
     }
   ]
 }

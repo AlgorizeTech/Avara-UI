@@ -1,33 +1,10 @@
+import { docsPageMetadata } from "@/lib/docs-metadata";
+
 export const metadata = {
-    title: 'Video Text Component - Algorize UI',
-    description: 'Interactive video text component with video backgrounds, text overlays, and customizable styling. Perfect for hero sections and multimedia content displays.',
-    keywords: [
-        'React video text',
-        'video background text',
-        'text over video',
-        'video overlay',
-        'multimedia component',
-        'video text overlay',
-        'Tailwind CSS video text',
-        'UI video library',
-        'video background',
-        'Algorize UI components'
-    ],
-    openGraph: {
-        title: 'Video Text Component - Algorize UI',
-        description: 'Interactive React video text component with video backgrounds, text overlays, and customizable styling for multimedia content.',
-        type: 'article',
-        url: '/docs/nextjs/examples/video-text',
-    },
-    twitter: {
-        card: 'summary_large_image',
-        title: 'Video Text Component - Algorize UI',
-        description: 'Interactive React video text component with video backgrounds, text overlays, and customizable styling for multimedia content.',
-    },
-    alternates: {
-        canonical: '/docs/nextjs/examples/video-text',
-    },
+  ...docsPageMetadata("examples/video-text"),
+  robots: { index: false, follow: true },
 };
+
 
 import { CodeBlock } from "@/components/site/code-block";
 import { ComponentRenderer } from "@/components/site/component-renderer";

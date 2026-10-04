@@ -1,3 +1,8 @@
+export const metadata = docsPageMetadata("verify-badge", {
+  title: "Verify Badge",
+  description: "A highly customizable verified badge component similar to Twitter/X or premium verified markers, with built-in animation support."
+});
+
 # Verify Badge
 
 A versatile verified badge component that can be customized with various styles (blue, gold, dark, gray), sizes, and an optional subtle pulse animation for premium aesthetics.

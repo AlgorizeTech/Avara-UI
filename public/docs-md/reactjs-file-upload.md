@@ -1,3 +1,5 @@
+export const metadata = docsPageMetadata("file-upload");
+
 # UX Engineered Upload Flow
 
 A highly-orchestrated, premium file upload component suite based on modern UX engineering principles. It goes far beyond a native `` by addressing five distinct user feedback signals.
@@ -200,7 +202,7 @@ npx shadcn@latest add @algorize-ui/folder
 Or the Motion build (same props, same file — install one):
 
 ```bash
-npx shadcn@latest add @algorize-ui/folder-framer
+npx shadcn@latest add @algorize-ui/folder-motion
 ```
 
 ## Features

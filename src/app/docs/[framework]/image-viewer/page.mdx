@@ -1,9 +1,13 @@
+import { docsPageMetadata } from "@/lib/docs-metadata";
+
+export const metadata = docsPageMetadata("image-viewer");
+
 import { ExampleShowcase } from "@/components/site/Sandbox";
 import { extractCode } from "@/lib/code";
 
 # Image Viewer
 
-A collection of 4 production-ready, interactive, fully responsive E-commerce Product Image Viewer components featuring inner lens magnifying zoom, 2.8x HD side portal projection, floating arrow carousel sliders, and active thumbnail strips.
+A collection of 4 production-ready, interactive, fully responsive E-commerce Product Image Viewer components featuring inner lens magnifying zoom, 3–10x floating zoom loupe, floating arrow carousel sliders, and active thumbnail strips.
 
 `ImageViewer` isolates the image presentation layer for product showcases, galleries, and e-commerce catalogs with built-in fullscreen lightbox expansion and colorway synchronization.
 
@@ -90,7 +94,8 @@ export default function ThumbnailViewerDemo() {
     {
       title: "HD Side Portal Lens Zoom Viewer",
       propNotes: [
-        { lead: "Use", prop: "variant", value: '"side-zoom"', effect: "projects an external 2.8x high-definition optical zoom portal window to the right of the hero frame with precision reticle tracking." }
+        { lead: "Use", prop: "variant", value: '"side-zoom"', effect: "floats a 3x zoom loupe just above the hovered or touched point, with a reticle marking exactly the area it shows — it flips below when there is no room above and always stays inside the screen." },
+        { lead: "Tune", prop: "zoomLevel", value: "{6}", effect: "raises the magnification; 3–10 is the usual e-commerce range." }
       ],
       props: { variant: "side-zoom", defaultImage: 3 },
       usage: usageSideZoom,
@@ -134,7 +139,7 @@ Discover the key capabilities of the `ImageViewer` component:
   </div>
   <div className="p-6 rounded-2xl border border-border bg-card">
     <h3 className="text-lg font-semibold text-card-foreground mb-2">High-Definition Optical Zoom</h3>
-    <p className="text-muted-foreground text-sm">Experience smooth 2.6x inner frame magnification or 2.8x external side portal projection on cursor hover and touch drag.</p>
+    <p className="text-muted-foreground text-sm">Experience smooth 2.6x inner frame magnification or a 3–10x floating zoom loupe on cursor hover and touch drag.</p>
   </div>
   <div className="p-6 rounded-2xl border border-border bg-card">
     <h3 className="text-lg font-semibold text-card-foreground mb-2">100% Mobile Responsive</h3>
@@ -183,7 +188,7 @@ Discover the key capabilities of the `ImageViewer` component:
         <td><code>colors</code></td>
         <td><code>ImageViewerColor[]</code></td>
         <td><code>DEFAULT_COLORS</code></td>
-        <td>Optional color swatches with synchronized image mappings.</td>
+        <td>Optional colorways, one per image. Colorway <code>i</code>'s <code>bgClass</code> tints the frame and thumbnail behind image <code>i</code>.</td>
       </tr>
       <tr>
         <td><code>badge</code></td>
@@ -202,6 +207,12 @@ Discover the key capabilities of the `ImageViewer` component:
         <td><code>boolean</code></td>
         <td><code>true</code></td>
         <td>Whether clicking the hero image triggers the fullscreen modal lightbox (active in <code>slider</code> and <code>thumbnails</code>).</td>
+      </tr>
+      <tr>
+        <td><code>zoomLevel</code></td>
+        <td><code>number</code></td>
+        <td><code>3</code></td>
+        <td>Magnification of the <code>side-zoom</code> loupe over the image as it appears in the frame; 3–10 is the usual e-commerce range. The reticle shrinks to match. Serve images large enough to stay sharp at it — roughly the frame width × 1.4 × <code>zoomLevel</code>.</td>
       </tr>
       <tr>
         <td><code>onImageChange</code></td>

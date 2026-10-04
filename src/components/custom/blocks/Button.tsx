@@ -2,6 +2,7 @@
 
 import { cn } from "@/lib/utils";
 import React, { useEffect, useState } from "react";
+import { getButtonThemeStyle } from "./button-theme";
 
 const Loader2: React.FC<{ className?: string }> = ({ className }) => (
   <svg
@@ -132,32 +133,6 @@ const PLAIN_VARIANTS: Record<string, string> = {
   link: "bg-transparent text-primary border-transparent shadow-none underline-offset-4 hover:underline",
 };
 
-export function getButtonThemeStyle(color?: string): React.CSSProperties {
-  if (!color || color === "default" || color === "primary") {
-    return {};
-  }
-
-  let primary = color;
-  let primaryForeground = "#ffffff";
-
-  if (color === "indigo") {
-    primary = "#6366f1";
-  } else if (color === "rose") {
-    primary = "#f43f5e";
-  } else if (color === "emerald") {
-    primary = "#10b981";
-  } else if (color === "zinc") {
-    primary = "#27272a";
-    primaryForeground = "#fafafa";
-  }
-
-  return {
-    "--primary": primary,
-    "--primary-foreground": primaryForeground,
-    "--ring": primary,
-  } as React.CSSProperties;
-}
-
 export interface ButtonProps
   extends React.ButtonHTMLAttributes<HTMLButtonElement> {
   variant?: ButtonVariant;
@@ -277,8 +252,15 @@ const ColorPickerPopover: React.FC<{
   const [isDraggingCanvas, setIsDraggingCanvas] = useState(false);
   const [isDraggingHue, setIsDraggingHue] = useState(false);
 
-  // Sync internal state when external color changes (e.g. swatch click)
-  useEffect(() => {
+  // Sync internal state when external color changes (e.g. swatch click), and
+  // again when a drag ends. Done while rendering, against the last values seen.
+  const [synced, setSynced] = useState({ color, isDraggingCanvas, isDraggingHue });
+  if (
+    synced.color !== color ||
+    synced.isDraggingCanvas !== isDraggingCanvas ||
+    synced.isDraggingHue !== isDraggingHue
+  ) {
+    setSynced({ color, isDraggingCanvas, isDraggingHue });
     if (!isDraggingCanvas && !isDraggingHue) {
       const hsv = hexToHsv(color);
       setSat(hsv.s);
@@ -287,7 +269,7 @@ const ColorPickerPopover: React.FC<{
         setHue(hsv.h);
       }
     }
-  }, [color, isDraggingCanvas, isDraggingHue]);
+  }
 
   const handleCanvasMove = React.useCallback(
     (clientX: number, clientY: number) => {
@@ -744,7 +726,8 @@ const ShardsControlTile = ({
   style,
   forwardedRef,
 }: ShardsControlTileProps) => {
-    const [internalColor, setInternalColor] = useState(colorHex || "#896abd");
+    // `??`, not `||`: a defined `colorHex` (even "") is what the tile shows, as the old mount-time sync made it.
+    const [internalColor, setInternalColor] = useState(colorHex ?? "#896abd");
     const [internalVal, setInternalVal] = useState(value !== undefined ? String(value) : (options[0] || "1"));
     const [internalChecked, setInternalChecked] = useState(Boolean(checked));
     const [colorKey, setColorKey] = useState(0);
@@ -755,6 +738,13 @@ const ShardsControlTile = ({
 
     const containerRef = React.useRef<HTMLDivElement>(null);
     const sliderRef = React.useRef<HTMLDivElement>(null);
+    // The tile's root element (the slider track, or the tile itself) is what
+    // the Button's ref receives. No deps: re-attached on every commit, as the
+    // inline ref callbacks this replaces were.
+    React.useImperativeHandle(
+      forwardedRef,
+      () => (controlType === "slider" ? sliderRef.current : containerRef.current) as unknown as HTMLButtonElement,
+    );
 
     // Outside click listener to dismiss open popovers
     useEffect(() => {
@@ -769,18 +759,15 @@ const ShardsControlTile = ({
       return () => document.removeEventListener("mousedown", handleOutsideClick);
     }, [isSelectOpen, isColorOpen]);
 
-    // Keep internal state updated if props change dynamically
-    useEffect(() => {
-      if (colorHex !== undefined) setInternalColor(colorHex);
-    }, [colorHex]);
-
-    useEffect(() => {
-      if (value !== undefined) setInternalVal(String(value));
-    }, [value]);
-
-    useEffect(() => {
-      if (checked !== undefined) setInternalChecked(Boolean(checked));
-    }, [checked]);
+    // Keep internal state updated if props change dynamically: compared with
+    // the props last seen and adjusted while rendering.
+    const [seenProps, setSeenProps] = useState({ colorHex, value, checked });
+    if (!Object.is(seenProps.colorHex, colorHex) || !Object.is(seenProps.value, value) || !Object.is(seenProps.checked, checked)) {
+      setSeenProps({ colorHex, value, checked });
+      if (!Object.is(seenProps.colorHex, colorHex) && colorHex !== undefined) setInternalColor(colorHex);
+      if (!Object.is(seenProps.value, value) && value !== undefined) setInternalVal(String(value));
+      if (!Object.is(seenProps.checked, checked) && checked !== undefined) setInternalChecked(Boolean(checked));
+    }
 
     const displayLabel = label || children || "Shards";
     const displayColor = internalColor;
@@ -794,7 +781,7 @@ const ShardsControlTile = ({
     };
 
     // Calculate numeric percentage for slider fill (0% to 100%)
-    const numVal = Number(displayValue) !== undefined && !isNaN(Number(displayValue)) ? Number(displayValue) : min;
+    const numVal = !isNaN(Number(displayValue)) ? Number(displayValue) : min;
     const percentage = Math.max(0, Math.min(100, ((numVal - min) / (max - min)) * 100));
 
     // Ref to track if slider was already at 100% so pulse triggers exactly ONCE per 100% arrival
@@ -832,18 +819,22 @@ const ShardsControlTile = ({
     // The running `once` play (0 = idle). A landing while one is still
     // playing is folded into it, so dragging a colour doesn't restart it.
     const [fxPlay, setFxPlay] = useState(0);
-    const fxSeq = React.useRef(0);
+    // Every play gets a fresh key, so a new landing restarts the layer.
+    const [fxSeq, setFxSeq] = useState(0);
     const [hasPicked, setHasPicked] = useState(false);
-    const lastSignal = React.useRef(fxSignal);
-    useEffect(() => {
-      if (lastSignal.current === fxSignal) return;
-      lastSignal.current = fxSignal;
+    // A landing is a change of signal, noticed while rendering.
+    const [lastSignal, setLastSignal] = useState(fxSignal);
+    if (lastSignal !== fxSignal) {
+      setLastSignal(fxSignal);
       // Booleans land on the way up only: filling the slider, switching on.
-      if (fxSignal === false) return;
-      if (typeof fxSignal !== "boolean") setHasPicked(true);
-      if (playable && effectMode === "once" && !reduceMotion)
-        setFxPlay((k) => k || ++fxSeq.current);
-    }, [fxSignal, playable, effectMode, reduceMotion]);
+      if (fxSignal !== false) {
+        if (typeof fxSignal !== "boolean") setHasPicked(true);
+        if (playable && effectMode === "once" && !reduceMotion && fxPlay === 0) {
+          setFxSeq(fxSeq + 1);
+          setFxPlay(fxSeq + 1);
+        }
+      }
+    }
 
     const loopOn =
       Boolean(playable) &&
@@ -1013,14 +1004,7 @@ const ShardsControlTile = ({
           )}
 
           <div
-            ref={(node) => {
-              sliderRef.current = node;
-              if (typeof forwardedRef === "function") {
-                forwardedRef(node as unknown as HTMLButtonElement);
-              } else if (forwardedRef) {
-                (forwardedRef as React.MutableRefObject<HTMLButtonElement | null>).current = node as unknown as HTMLButtonElement;
-              }
-            }}
+            ref={sliderRef}
             onMouseDown={handleMouseDown}
             onTouchStart={handleTouchStart}
             className={cn(
@@ -1059,14 +1043,7 @@ const ShardsControlTile = ({
 
     return (
       <div
-        ref={(node) => {
-          containerRef.current = node;
-          if (typeof forwardedRef === "function") {
-            forwardedRef(node as unknown as HTMLButtonElement);
-          } else if (forwardedRef) {
-            (forwardedRef as React.MutableRefObject<HTMLButtonElement | null>).current = node as unknown as HTMLButtonElement;
-          }
-        }}
+        ref={containerRef}
         onClick={handleTileClick}
         className={cn(
           "relative flex items-center justify-between w-full h-12 px-4 py-2.5 rounded-xl border backdrop-blur-md text-xs font-semibold select-none group cursor-pointer transition-colors duration-200",

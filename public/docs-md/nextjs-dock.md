@@ -1,3 +1,5 @@
+export const metadata = docsPageMetadata("dock");
+
 # Dock
 
 A premium, macOS-inspired navigation dock featuring real-time physics magnification, floating label tooltips, active application indicators, and notification badges. Highly customizable via direct layout and physics props, it adapts seamlessly between desktop floating tooltips and touch-safe mobile layouts.
@@ -64,7 +66,7 @@ npx shadcn@latest add @algorize-ui/dock
 Or the Motion build (same props, same file — install one):
 
 ```bash
-npx shadcn@latest add @algorize-ui/dock-framer
+npx shadcn@latest add @algorize-ui/dock-motion
 ```
 
 ## Examples

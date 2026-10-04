@@ -15,7 +15,7 @@ import React, {
   useState,
 } from "react";
 import { bezierEase, gsapTicker, prefersReducedMotion } from "./gsap-motion";
-import { createSpringFollower, FRAMER_EASE, type SpringFollower } from "./motion-curves";
+import { createSpringFollower, MOTION_EASE, type SpringFollower } from "./motion-curves";
 import { Tooltip, TooltipContent, TooltipTrigger } from "./TooltipBlock";
 
 export interface FolderFile {
@@ -94,16 +94,16 @@ const SPRING = { stiffness: 260, damping: 24 } as const;
 const CARD_SPRING = { stiffness: 230, damping: 26, mass: 0.9 } as const;
 /** Paging arrows: in, out and the press, all 0.15s on this curve. */
 const NAV_EASE = bezierEase([0.22, 1, 0.36, 1]);
-/** A bare `{ duration }` transition — Framer runs it on `easeOut`. */
-const EASE_OUT = bezierEase(FRAMER_EASE.easeOut);
+/** A bare `{ duration }` transition — Motion runs it on `easeOut`. */
+const EASE_OUT = bezierEase(MOTION_EASE.easeOut);
 
-/** Framer's drag and press gestures only answer the primary pointer. */
+/** Motion's drag and press gestures only answer the primary pointer. */
 const isPrimaryPointer = (e: PointerEvent) =>
   e.pointerType === "mouse" ? e.button === 0 : e.isPrimary !== false;
 
 /**
  * Pointer velocity (px/s) over the last 100ms of a drag — the same window and
- * sampling Framer's pan gesture reports as `info.velocity`.
+ * sampling Motion's pan gesture reports as `info.velocity`.
  */
 function panVelocity(history: { x: number; t: number }[]) {
   if (history.length < 2) return 0;
@@ -229,7 +229,9 @@ function FanNav({
   const Icon = dir === "prev" ? ChevronLeft : ChevronRight;
   const ref = useRef<HTMLButtonElement>(null);
   const leavingRef = useRef(leaving);
-  leavingRef.current = leaving;
+  useLayoutEffect(() => {
+    leavingRef.current = leaving;
+  });
   // Mounts at the entry pose; the folder fades both arrows in from here.
   const [enterStyle] = useState<React.CSSProperties>({ opacity: 0, transform: "scale(0.8)" });
 
@@ -318,7 +320,7 @@ const poseTransform = (p: CardPose) =>
  * the card spring, keeping its velocity when a new target arrives mid-flight
  * (a fast hover in-and-out, paging while the fan is still opening). A target
  * change can wait out a `delay` first, holding the value where it is, as a
- * delayed Framer transition does.
+ * delayed Motion transition does.
  *
  * With `draggable`, the card follows the pointer sideways and reports the
  * swipe; one that doesn't page is sprung back to its slot.
@@ -326,7 +328,8 @@ const poseTransform = (p: CardPose) =>
 function FanCard({
   pose,
   enterFrom,
-  delay,
+  delay: baseDelay,
+  batchDelay,
   reduce,
   draggable,
   onDragStart,
@@ -339,6 +342,11 @@ function FanCard({
   /** Mount at this pose and spring into `pose`; `null` mounts in place. */
   enterFrom: CardPose | null;
   delay: number;
+  /**
+   * This card's delay when it commits as part of a fresh batch of cards, else
+   * null (and `delay` applies). Asked at commit time, not during render.
+   */
+  batchDelay: () => number | null;
   reduce: boolean;
   draggable: boolean;
   onDragStart: () => void;
@@ -398,6 +406,7 @@ function FanCard({
     if (!all) return;
     const prev = target.current;
     target.current = pose;
+    const delay = batchDelay() ?? baseDelay;
     for (const key of POSE_KEYS) {
       if (prev[key] === pose[key]) continue;
       if (key === "x" && dragging.current) continue;
@@ -419,11 +428,13 @@ function FanCard({
     }
   });
 
-  // Sideways drag, on the same terms as Framer's `drag="x"`: pressing stops
+  // Sideways drag, on the same terms as Motion's `drag="x"`: pressing stops
   // the card where it is, it starts moving once the pointer has travelled
   // 3px, then follows it 1:1 with no constraints or momentum.
   const swipe = useRef({ onDragStart, onSwipe });
-  swipe.current = { onDragStart, onSwipe };
+  useLayoutEffect(() => {
+    swipe.current = { onDragStart, onSwipe };
+  });
   useEffect(() => {
     const el = ref.current;
     if (!draggable || !el) return;
@@ -513,7 +524,7 @@ function FanCard({
       style={{
         ...style,
         ...mountStyle,
-        // What Framer puts on a `drag="x"` element: no text selection or
+        // What Motion puts on a `drag="x"` element: no text selection or
         // ghost image, and vertical touch pans still scroll the page.
         ...(draggable && {
           userSelect: "none",
@@ -599,7 +610,7 @@ export function Folder({
   // No rate limit. Cards have no exit animation for a fast second page to
   // interrupt, so holding an arrow pages as fast as the springs follow.
   const page = (dir: 1 | -1) => setFanStart((s) => s + dir);
-  // Read once per mount, as Framer's useReducedMotion does.
+  // Read once per mount, as Motion's useReducedMotion does.
   const [reduce] = useState(prefersReducedMotion);
 
   const items: FolderFile[] = files?.length ? files : Array.from({ length: peek }, () => ({}));
@@ -710,20 +721,25 @@ export function Folder({
   });
   const windowed = slots.map((s) => s.file);
 
-  // Suppresses the enter animation on first paint only.
-  const firstPaint = useRef(true);
-  useEffect(() => {
-    firstPaint.current = false;
-  }, []);
+  // Suppresses the enter animation on first paint only. Cards only mount when
+  // the set of slots changes, so "first paint" lasts until it first does.
+  const slotKeys = slots.map((s) => s.rawKey);
+  const slotSig = slotKeys.join();
+  const [firstSig] = useState(slotSig);
+  const [slotsChanged, setSlotsChanged] = useState(false);
+  if (!slotsChanged && slotSig !== firstSig) setSlotsChanged(true);
+  const firstPaint = !slotsChanged;
 
   // Cards ripple in at 40ms apart the first time a batch appears. Only a real
   // batch staggers: paging brings in a single card, and making that one wait
-  // its index out would read as lag rather than rhythm. Read during render,
-  // committed after paint.
+  // its index out would read as lag rather than rhythm. Each card asks while
+  // committing (its layout effect), against the slots seen by every earlier
+  // commit, which are recorded after paint.
   const seen = useRef<Set<number>>(new Set());
-  const newKeys = slots.map((s) => s.rawKey).filter((k) => !seen.current.has(k));
-  const batchEntry = newKeys.length > 1;
-  const entryDelay = (key: number) => (batchEntry ? newKeys.indexOf(key) * 0.04 : null);
+  const entryDelay = (key: number, keys: number[]) => {
+    const newKeys = keys.filter((k) => !seen.current.has(k));
+    return newKeys.length > 1 ? newKeys.indexOf(key) * 0.04 : null;
+  };
   useEffect(() => {
     slots.forEach((s) => seen.current.add(s.rawKey));
   });
@@ -1112,7 +1128,7 @@ export function Folder({
                   cursor: fanned && canPage ? "grab" : undefined,
                 }}
                 enterFrom={
-                  firstPaint.current
+                  firstPaint
                     ? null
                     : reduce
                       ? { ...at, opacity: 0, scale: 1 }
@@ -1123,7 +1139,8 @@ export function Folder({
                 // a fresh batch ripples in per-item; opening spreads outward
                 // from the middle; a close never waits — dismissal has to
                 // feel immediate
-                delay={entryDelay(rawKey) ?? (fanned ? Math.abs(off) * 0.03 : 0)}
+                delay={fanned ? Math.abs(off) * 0.03 : 0}
+                batchDelay={() => entryDelay(rawKey, slotKeys)}
                 draggable={!reduce && fanned && canPage}
                 onDragStart={() => {
                   draggedRef.current = true;

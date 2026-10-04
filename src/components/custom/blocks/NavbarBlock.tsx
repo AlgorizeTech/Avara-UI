@@ -124,7 +124,7 @@ function DesktopLinks({
               "flex items-center gap-1 px-4 py-2 text-sm font-semibold text-muted-foreground hover:text-foreground rounded-full transition-colors",
               isGlass
                 ? "hover:bg-foreground/5"
-                : "hover:bg-muted",
+                : "hover:bg-[color-mix(in_oklab,var(--navbar-accent)_8%,transparent)]",
             )}
           >
             {link.name}
@@ -134,12 +134,15 @@ function DesktopLinks({
           </Link>
           {link.hasDropdown && (
             <div className="absolute top-full left-0 pt-2 opacity-0 translate-y-2 pointer-events-none group-hover:opacity-100 group-hover:translate-y-0 group-hover:pointer-events-auto transition-all duration-200">
+              {/* A plain popover is the same white as the page behind it; the
+                  panel wears a whisper of the accent, a tinted edge and a
+                  layered shadow so it lifts off (glass keeps its blur). */}
               <div
                 className={cn(
-                  "w-48 rounded-xl shadow-xl p-2 flex flex-col gap-1",
+                  "w-48 rounded-xl p-2 flex flex-col gap-1 text-popover-foreground",
                   isGlass
-                    ? "bg-popover/60 text-popover-foreground backdrop-blur-2xl border border-foreground/10"
-                    : "bg-popover text-popover-foreground border border-border",
+                    ? "bg-popover/60 backdrop-blur-2xl border border-foreground/10 shadow-[0_2px_4px_rgb(0_0_0/0.05),0_24px_48px_-16px_rgb(0_0_0/0.28)]"
+                    : "border bg-[oklch(from_var(--navbar-accent)_0.978_calc(c*0.1)_h)] border-[oklch(from_var(--navbar-accent)_0.9_calc(c*0.22)_h)] dark:bg-[oklch(from_var(--navbar-accent)_0.21_calc(c*0.1)_h)] dark:border-foreground/10 shadow-[0_2px_4px_rgb(0_0_0/0.04),0_20px_40px_-14px_rgb(0_0_0/0.22)]",
                 )}
               >
                 {["Overview", "Features", "Integrations"].map((sub) => (
@@ -150,7 +153,7 @@ function DesktopLinks({
                       "px-4 py-2 text-sm font-medium text-muted-foreground hover:text-foreground rounded-lg transition-colors",
                       isGlass
                         ? "hover:bg-foreground/5"
-                        : "hover:bg-muted",
+                        : "hover:bg-[color-mix(in_oklab,var(--navbar-accent)_10%,transparent)]",
                     )}
                   >
                     {sub}
@@ -201,25 +204,29 @@ export function NavbarBlock({
   linkComponent: Link = "a",
 }: NavbarProps) {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
-  const [renderLayer, setRenderLayer] = useState(false);
+  // Keeps the layer mounted for the 0.4s slide-out after closing.
+  const [closing, setClosing] = useState(false);
   const { theme, style } = getThemeStyles(color);
 
   const isGlass = variant === "glass";
 
-  // Opening must show the layer immediately. Adjusting state during render on a
-  // state change is React's documented alternative to an effect here, and avoids
-  // the extra render an effect would cost on every open.
-  const [prevMenuOpen, setPrevMenuOpen] = useState(mobileMenuOpen);
-  if (prevMenuOpen !== mobileMenuOpen) {
-    setPrevMenuOpen(mobileMenuOpen);
-    if (mobileMenuOpen) setRenderLayer(true);
-  }
+  // Visibility is derived, not synced: the layer shows whenever the menu is
+  // open, and `closing` only extends that through the exit animation. It used
+  // to be a separate `renderLayer` flag set during render when `mobileMenuOpen`
+  // flipped — under StrictMode that update was dropped a frame after commit,
+  // so the layer went back to display:none and a tap looked like it did nothing.
+  const showLayer = mobileMenuOpen || closing;
+
+  const closeMenu = () => {
+    setMobileMenuOpen(false);
+    setClosing(true);
+  };
 
   useEffect(() => {
-    if (mobileMenuOpen) return;
-    const t = setTimeout(() => setRenderLayer(false), 400);
+    if (!closing) return;
+    const t = setTimeout(() => setClosing(false), 400);
     return () => clearTimeout(t);
-  }, [mobileMenuOpen]);
+  }, [closing]);
 
   const getContainerStyles = () => {
     switch (variant) {
@@ -292,11 +299,11 @@ export function NavbarBlock({
       <div
         className={cn(
           "fixed inset-0 z-[100] pointer-events-none lg:hidden",
-          !renderLayer && "hidden",
+          !showLayer && "hidden",
         )}
       >
         <div
-          onClick={() => setMobileMenuOpen(false)}
+          onClick={closeMenu}
           data-open={mobileMenuOpen}
           className="navbar-mobile-overlay absolute inset-0 bg-black/40 backdrop-blur-sm pointer-events-auto"
         />
@@ -323,7 +330,7 @@ export function NavbarBlock({
               size="sm"
               aria-label="Close menu"
               iconLeft={<X className="w-5 h-5" />}
-              onClick={() => setMobileMenuOpen(false)}
+              onClick={closeMenu}
               className={cn(
                 "-mr-2 rounded-full text-muted-foreground shadow-none hover:text-foreground",
                 isGlass
@@ -337,6 +344,7 @@ export function NavbarBlock({
               <div key={link.name} className="flex flex-col gap-3">
                 <Link
                   href={link.href}
+                  onClick={closeMenu}
                   className="text-xl font-semibold text-foreground flex items-center justify-between"
                 >
                   {link.name}{" "}
@@ -357,6 +365,7 @@ export function NavbarBlock({
                       <Link
                         key={sub}
                         href="#"
+                        onClick={closeMenu}
                         className="text-base font-medium text-muted-foreground hover:text-foreground transition-colors"
                       >
                         {sub}
@@ -377,6 +386,7 @@ export function NavbarBlock({
           >
             <Link
               href="#"
+              onClick={closeMenu}
               className={cn(
                 "w-full py-3 px-4 text-center font-semibold text-foreground border rounded-xl transition-colors",
                 isGlass
@@ -388,6 +398,7 @@ export function NavbarBlock({
             </Link>
             <Link
               href="#"
+              onClick={closeMenu}
               className={cn(
                 "w-full py-3 px-4 text-center font-semibold rounded-xl transition-transform active:scale-95",
                 theme.bg,

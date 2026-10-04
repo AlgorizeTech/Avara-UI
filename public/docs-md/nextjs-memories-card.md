@@ -1,3 +1,5 @@
+export const metadata = docsPageMetadata("memories-card");
+
 # Memories Card
 
 A premium, interactive card stack component featuring real-time 3D tilt physics, a dynamic "fan" background spread, and smooth swipe-to-next gestures. Perfect for showcasing travel memories, feature highlights, or curated photo galleries.
@@ -79,7 +81,7 @@ npx shadcn@latest add @algorize-ui/memories-card
 Or the Motion build (same props, same file — install one):
 
 ```bash
-npx shadcn@latest add @algorize-ui/memories-card-framer
+npx shadcn@latest add @algorize-ui/memories-card-motion
 ```
 
 ## Features

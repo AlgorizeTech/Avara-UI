@@ -1,3 +1,7 @@
+import { docsPageMetadata } from "@/lib/docs-metadata";
+
+export const metadata = docsPageMetadata("accordion");
+
 import { ExampleShowcase } from "@/components/site/Sandbox";
 import { extractCode } from "@/lib/code";
 
@@ -179,35 +183,35 @@ const faq: AccordionDataItem[] = [
 
 export default function FaqSection() {
   return (
-    <section className="px-6 py-16 sm:px-10 lg:px-14 lg:py-24">
-      <div className="mx-auto grid max-w-6xl gap-12 lg:grid-cols-[minmax(0,5fr)_minmax(0,7fr)] lg:gap-20">
+    <section className="px-4 py-8 sm:px-10 lg:px-14 lg:py-24">
+      <div className="mx-auto grid max-w-6xl gap-8 sm:gap-12 lg:grid-cols-[minmax(0,5fr)_minmax(0,7fr)] lg:gap-20">
         {/* Left column stays put while the answers scroll on large screens. */}
         <div className="lg:sticky lg:top-8 lg:self-start">
-          <h2 className="max-w-md font-serif text-4xl leading-[1.05] tracking-tight text-foreground sm:text-5xl">
+          <h2 className="max-w-md font-serif text-3xl leading-[1.1] tracking-tight text-foreground sm:text-4xl lg:text-5xl">
             Questions people ask before they install.
           </h2>
-          <p className="mt-5 max-w-md text-base leading-relaxed text-muted-foreground">
+          <p className="mt-4 sm:mt-5 max-w-md text-sm sm:text-base leading-relaxed text-muted-foreground">
             Short answers on licensing, theming and where the components run.
             If yours isn't here, we read every message.
           </p>
 
-          <div className="mt-8 flex max-w-md items-center gap-4 rounded-2xl bg-muted/60 p-4">
-            <div className="flex -space-x-2">
+          <div className="mt-6 sm:mt-8 flex flex-col sm:flex-row items-start sm:items-center gap-3 sm:gap-4 rounded-2xl bg-muted/60 p-4 max-w-md">
+            <div className="flex shrink-0 -space-x-2">
               {SUPPORT_TEAM.map((person) => (
                 <img
                   key={person.name}
                   src={person.src}
                   alt={person.name}
-                  className="size-9 rounded-full border-2 border-background object-cover"
+                  className="size-9 shrink-0 rounded-full border-2 border-background object-cover"
                   loading="lazy"
                 />
               ))}
             </div>
-            <div className="min-w-0">
+            <div className="min-w-0 flex-1">
               <p className="text-sm font-medium text-foreground">Still stuck?</p>
               <a
                 href="mailto:hello@example.com"
-                className="text-sm text-muted-foreground underline-offset-4 transition-colors hover:text-primary hover:underline"
+                className="text-sm text-muted-foreground underline-offset-4 transition-colors hover:text-primary hover:underline break-words"
               >
                 Email the team, we reply within a day
               </a>

@@ -1,3 +1,5 @@
+export const metadata = docsPageMetadata("form");
+
 # Form Engine
 
 A high-fidelity Form toolkit engineered for both simple landing pages and complex enterprise dashboards.

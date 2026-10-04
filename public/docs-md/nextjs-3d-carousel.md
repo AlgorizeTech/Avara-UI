@@ -1,3 +1,5 @@
+export const metadata = docsPageMetadata("3d-carousel");
+
 # 3D Carousel
 
 A premium 3D carousel with a fanned layout, smooth interactive animations, and a sleek adaptive aesthetic. It features physics-based touch and mouse drag gestures, keyboard arrow navigation, circular endless fanning, and an auto-play timer that intelligently pauses on hover.
@@ -82,7 +84,7 @@ npx shadcn@latest add @algorize-ui/carousel-3d
 Or the Motion build (same props, same file — install one):
 
 ```bash
-npx shadcn@latest add @algorize-ui/carousel-3d-framer
+npx shadcn@latest add @algorize-ui/carousel-3d-motion
 ```
 
 ## Examples

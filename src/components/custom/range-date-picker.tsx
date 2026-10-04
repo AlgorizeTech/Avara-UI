@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useLayoutEffect, useRef, useState, useSyncExternalStore } from "react";
+import { useCallback, useEffect, useLayoutEffect, useRef, useState, useSyncExternalStore } from "react";
 
 /**
  * False while server-rendering and during hydration, true afterwards — without
@@ -22,13 +22,13 @@ import {
   Clock,
   RotateCcw,
 } from "lucide-react";
+import { TimePicker } from "./blocks/TimePickerBlock";
 import {
   formatTime,
   roundToStep,
   setTime,
   type TimeFormat,
-  TimePicker,
-} from "./blocks/TimePickerBlock";
+} from "./blocks/time-picker-utils";
 import { springLinear } from "./blocks/motion-curves";
 
 export type RangeDatePickerColor =
@@ -304,24 +304,24 @@ function Fold({
 }) {
   const [phase, setPhase] = useState<FoldPhase>(show ? "open" : "closed");
   const [cameIn, setCameIn] = useState(false);
-  const ref = useRef<HTMLDivElement>(null);
-  const shown = useRef(children);
-  if (show) shown.current = children;
+  // What it last showed, kept so the panel still holds it while it folds.
+  const [shown, setShown] = useState(children);
+  if (show && shown !== children) setShown(children);
 
-  useLayoutEffect(() => {
-    if (show && phase === "closed") {
-      setPhase(instant ? "open" : "entering");
-      setCameIn(!instant);
-    } else if (show && phase === "closing") setPhase("open");
-    else if (!show && (phase === "open" || phase === "entering")) setPhase(instant ? "closed" : "closing");
-  }, [show, phase, instant]);
+  // Follow `show` while rendering, so the new phase is what first commits.
+  if (show && phase === "closed") {
+    setPhase(instant ? "open" : "entering");
+    setCameIn(!instant);
+  } else if (show && phase === "closing") setPhase("open");
+  else if (!show && (phase === "open" || phase === "entering")) setPhase(instant ? "closed" : "closing");
 
-  // Entering: commit the folded look, then transition to the open one.
-  useLayoutEffect(() => {
-    if (phase !== "entering") return;
-    void ref.current?.offsetWidth;
-    setPhase("open");
-  }, [phase]);
+  // Entering: the panel mounts with the folded look; commit it, then
+  // transition to the open one before the first paint.
+  const enter = useCallback((el: HTMLDivElement | null) => {
+    if (!el) return;
+    void el.offsetWidth;
+    setPhase((p) => (p === "entering" ? "open" : p));
+  }, []);
 
   // In case the fold never reports its end (a hidden tab, `display: none`).
   useEffect(() => {
@@ -337,7 +337,7 @@ function Fold({
   const on = phase === "closing" ? settleOn : unfoldOn;
   return (
     <div
-      ref={ref}
+      ref={enter}
       data-fold-in={cameIn || undefined}
       className={className}
       style={{
@@ -351,7 +351,7 @@ function Fold({
         if (phase === "closing" && e.target === e.currentTarget && e.propertyName === dimension) setPhase("closed");
       }}
     >
-      {axis === "x" ? shown.current : <div className="min-h-0">{shown.current}</div>}
+      {axis === "x" ? shown : <div className="min-h-0">{shown}</div>}
     </div>
   );
 }
@@ -376,46 +376,51 @@ function WaitSwap({
 }) {
   const [shownKey, setShownKey] = useState(swapKey);
   const [phase, setPhase] = useState<SwapPhase>("shown");
-  const ref = useRef<HTMLDivElement>(null);
-  const shown = useRef(children);
-  if (shownKey === swapKey) shown.current = children;
+  // What the showing one holds, kept so the leaving one still shows it.
+  const [shown, setShown] = useState(children);
+  if (shownKey === swapKey && shown !== children) setShown(children);
   const wanted = useRef(swapKey);
 
   useLayoutEffect(() => {
     wanted.current = swapKey;
-    if (swapKey === shownKey) setPhase((p) => (p === "leaving" ? "shown" : p));
-    else if (instant) {
-      setShownKey(swapKey);
-      setPhase("shown");
-    } else setPhase("leaving");
-  }, [swapKey, shownKey, instant]);
+  }, [swapKey]);
+
+  // Follow `swapKey` while rendering, so the new phase is what first commits.
+  if (swapKey === shownKey) {
+    if (phase === "leaving") setPhase("shown");
+  } else if (instant) {
+    setShownKey(swapKey);
+    setPhase("shown");
+  } else if (phase !== "leaving") setPhase("leaving");
 
   // Coming in: commit the starting look, then transition to the resting one.
-  useLayoutEffect(() => {
-    if (phase !== "from") return;
-    void ref.current?.offsetWidth;
-    setPhase("shown");
-  }, [phase]);
+  const comeIn = useCallback(
+    (el: HTMLDivElement | null) => {
+      if (!el || phase !== "from") return;
+      void el.offsetWidth;
+      setPhase("shown");
+    },
+    [phase],
+  );
 
-  const settle = useRef(() => {});
-  settle.current = () => {
-    if (phase !== "leaving") return;
+  // The leaving one has gone: bring in whatever is wanted now.
+  const settle = useCallback(() => {
     setShownKey(wanted.current);
     setPhase("from");
-  };
+  }, []);
 
   // In case the transition never ends (a hidden tab, `display: none`).
   useEffect(() => {
     if (phase !== "leaving") return;
-    const t = window.setTimeout(() => settle.current(), 400);
+    const t = window.setTimeout(settle, 400);
     return () => window.clearTimeout(t);
-  }, [phase]);
+  }, [phase, settle]);
 
   const y = phase === "from" ? 6 : phase === "leaving" ? -6 : 0;
   return (
     <div
       key={shownKey}
-      ref={ref}
+      ref={comeIn}
       className={classNames?.[shownKey]}
       style={{
         opacity: phase === "shown" ? 1 : 0,
@@ -423,10 +428,10 @@ function WaitSwap({
         transition: phase === "from" || instant ? "none" : `${settleOn("opacity")}, ${settleOn("transform")}`,
       }}
       onTransitionEnd={(e) => {
-        if (e.target === e.currentTarget && e.propertyName === "opacity") settle.current();
+        if (phase === "leaving" && e.target === e.currentTarget && e.propertyName === "opacity") settle();
       }}
     >
-      {shown.current}
+      {shown}
     </div>
   );
 }

@@ -169,7 +169,7 @@ Priority items to verify:
 | `data-maps` | `react-leaflet` and `leaflet`, the latter only dynamically imported |
 | `qr-code-reader` | `jsqr`, camera permission, secure context |
 | `calendar` | `react-day-picker` + two registry deps |
-| `carousel-3d` | `framer-motion` auto-install |
+| `carousel-3d` | `motion` auto-install |
 | `pricing-plan` | 4-item dependency graph |
 | `advanced-table` | relative sibling import, static |
 | `fleet-tracker` | relative sibling import, **dynamic** — `lazy(() => import("./Fleet-map"))` |

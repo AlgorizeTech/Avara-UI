@@ -1,3 +1,5 @@
+export const metadata = docsPageMetadata("card-stack");
+
 # Card Stack
 
 A layered deck of cards featuring fluid drag-to-discard gestures, button-driven directional slide animations, and realistic depth perspective. Users can swipe cards left or right to review and discard them, with the next cards seamlessly stepping forward.
@@ -99,7 +101,7 @@ export default function ButtonStackDemo() {
 
 export const usageLeft = `"use client";
 
-export default function LeftSlideDemo({ items }: { items: any[] }) {
+export default function LeftSlideDemo({ items }: { items: CardStackItem[] }) {
   return (
     
   );
@@ -108,7 +110,7 @@ export default function LeftSlideDemo({ items }: { items: any[] }) {
 
 export const usageLoop = `"use client";
 
-export default function InfiniteLoopDemo({ items }: { items: any[] }) {
+export default function InfiniteLoopDemo({ items }: { items: CardStackItem[] }) {
   return (
     
   );
@@ -122,6 +124,12 @@ Register the @algorize-ui registry once per project, then add the component:
 ```bash
 npx shadcn@latest registry add @algorize-ui=https://algorize-ui.vercel.app/r/{name}.json
 npx shadcn@latest add @algorize-ui/card-stack
+```
+
+Or the Motion build (same props, same file — install one):
+
+```bash
+npx shadcn@latest add @algorize-ui/card-stack-motion
 ```
 
 ## Examples

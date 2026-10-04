@@ -4,6 +4,7 @@ import { cn } from "@/lib/utils";
 import {
   Archive,
   Bold,
+  Check,
   ChevronLeft,
   ChevronRight,
   Edit3,
@@ -14,6 +15,7 @@ import {
   Mail,
   MailOpen,
   Menu,
+  Minus,
   MoreVertical,
   Paperclip,
   RefreshCw,
@@ -31,7 +33,15 @@ import { useMemo, useState } from "react";
 export type EmailVariant = "default" | "minimal" | "glass";
 
 // Added (string & {}) so it accepts arbitrary hex codes without losing IDE autocomplete for the presets
-export type EmailColor = "indigo" | "rose" | "emerald" | "zinc" | (string & {});
+export type EmailColor =
+  | "primary"
+  | "indigo"
+  | "rose"
+  | "emerald"
+  | "lavender"
+  | "blue"
+  | "zinc"
+  | (string & {});
 
 const emailVariants: Record<EmailVariant, Record<string, string>> = {
   default: {
@@ -64,18 +74,18 @@ const emailVariants: Record<EmailVariant, Record<string, string>> = {
   },
   glass: {
     wrapper:
-      "bg-white/40 dark:bg-black/40 backdrop-blur-2xl border border-white/20 dark:border-white/10 shadow-2xl rounded-2xl",
+      "bg-white/70 dark:bg-black/40 backdrop-blur-2xl border border-white/50 dark:border-white/10 shadow-2xl rounded-2xl text-black dark:text-foreground [--foreground:#000000] [--muted-foreground:#18181b] [--color-foreground:#000000] [--color-muted-foreground:#18181b] dark:[--foreground:oklch(1_0_0)] dark:[--muted-foreground:oklch(0.654_0.001_286.359)] dark:[--color-foreground:oklch(1_0_0)] dark:[--color-muted-foreground:oklch(0.654_0.001_286.359)]",
     sidebar:
-      "bg-white/10 dark:bg-black/10 border-r border-white/20 dark:border-white/10",
+      "bg-white/20 dark:bg-black/10 border-r border-black/10 dark:border-white/10",
     main: "bg-transparent",
     header:
-      "bg-white/10 dark:bg-black/10 border-b border-white/20 dark:border-white/10 backdrop-blur-md",
+      "bg-white/20 dark:bg-black/10 border-b border-black/10 dark:border-white/10 backdrop-blur-md",
     searchBg:
-      "bg-white/30 dark:bg-black/30 border border-white/30 dark:border-white/10 backdrop-blur-md",
+      "bg-white/50 dark:bg-black/30 border border-black/10 dark:border-white/10 backdrop-blur-md text-foreground placeholder:text-muted-foreground",
     emailItem:
-      "bg-transparent hover:bg-white/20 dark:hover:bg-white/5 border-b border-white/10 dark:border-white/5 transition-colors",
+      "bg-transparent hover:bg-white/40 dark:hover:bg-white/5 border-b border-black/5 dark:border-white/5 transition-colors",
     composeModal:
-      "bg-white/60 dark:bg-black/60 backdrop-blur-2xl border border-white/30 dark:border-white/10 shadow-2xl",
+      "bg-white/95 dark:bg-black/70 backdrop-blur-2xl border border-black/10 dark:border-white/10 shadow-2xl text-black dark:text-foreground",
   },
 };
 
@@ -88,6 +98,9 @@ const colorThemes: Record<string, Record<string, string>> = {
     focusRing:
       "focus:border-primary/30 focus:ring-primary/10 dark:focus:ring-primary/20",
     dot: "bg-primary",
+    checkboxBg: "bg-primary border-primary",
+    checkboxText: "text-primary-foreground",
+    checkboxFocus: "peer-focus-visible:ring-primary/40",
   },
   indigo: {
     text: "text-indigo-600 dark:text-indigo-400",
@@ -98,6 +111,9 @@ const colorThemes: Record<string, Record<string, string>> = {
     focusRing:
       "focus:border-indigo-500/30 focus:ring-indigo-500/10 dark:focus:ring-indigo-500/20",
     dot: "bg-indigo-500",
+    checkboxBg: "bg-indigo-600 border-indigo-600",
+    checkboxText: "text-white",
+    checkboxFocus: "peer-focus-visible:ring-indigo-500/40",
   },
   rose: {
     text: "text-rose-600 dark:text-rose-400",
@@ -107,6 +123,9 @@ const colorThemes: Record<string, Record<string, string>> = {
     focusRing:
       "focus:border-rose-500/30 focus:ring-rose-500/10 dark:focus:ring-rose-500/20",
     dot: "bg-rose-500",
+    checkboxBg: "bg-rose-600 border-rose-600",
+    checkboxText: "text-white",
+    checkboxFocus: "peer-focus-visible:ring-rose-500/40",
   },
   emerald: {
     text: "text-emerald-600 dark:text-emerald-400",
@@ -117,6 +136,33 @@ const colorThemes: Record<string, Record<string, string>> = {
     focusRing:
       "focus:border-emerald-500/30 focus:ring-emerald-500/10 dark:focus:ring-emerald-500/20",
     dot: "bg-emerald-500",
+    checkboxBg: "bg-emerald-600 border-emerald-600",
+    checkboxText: "text-white",
+    checkboxFocus: "peer-focus-visible:ring-emerald-500/40",
+  },
+  lavender: {
+    text: "text-[#9b8afb]",
+    bg: "bg-[#9b8afb] hover:bg-[#8b79f7] text-white shadow-[#9b8afb]/20",
+    lightBg: "bg-[#9b8afb]/10 text-[#9b8afb]",
+    border: "border-[#9b8afb]",
+    focusRing:
+      "focus:border-[#9b8afb]/30 focus:ring-[#9b8afb]/10 dark:focus:ring-[#9b8afb]/20",
+    dot: "bg-[#9b8afb]",
+    checkboxBg: "bg-[#9b8afb] border-[#9b8afb]",
+    checkboxText: "text-white",
+    checkboxFocus: "peer-focus-visible:ring-[#9b8afb]/40",
+  },
+  blue: {
+    text: "text-blue-600 dark:text-blue-400",
+    bg: "bg-blue-600 hover:bg-blue-700 text-white shadow-blue-600/20",
+    lightBg: "bg-blue-50 dark:bg-blue-500/10 text-blue-700 dark:text-blue-300",
+    border: "border-blue-500",
+    focusRing:
+      "focus:border-blue-500/30 focus:ring-blue-500/10 dark:focus:ring-blue-500/20",
+    dot: "bg-blue-500",
+    checkboxBg: "bg-blue-600 border-blue-600",
+    checkboxText: "text-white",
+    checkboxFocus: "peer-focus-visible:ring-blue-500/40",
   },
   zinc: {
     text: "text-zinc-900 dark:text-zinc-100",
@@ -126,6 +172,9 @@ const colorThemes: Record<string, Record<string, string>> = {
     focusRing:
       "focus:border-zinc-500/30 focus:ring-zinc-500/10 dark:focus:ring-zinc-500/20",
     dot: "bg-zinc-900 dark:bg-zinc-100",
+    checkboxBg: "bg-zinc-900 dark:bg-zinc-100 border-zinc-900 dark:border-zinc-100",
+    checkboxText: "text-white dark:text-zinc-900",
+    checkboxFocus: "peer-focus-visible:ring-zinc-500/40",
   },
 };
 
@@ -227,6 +276,9 @@ export default function EmailApp({
         focusRing:
           "focus:border-[var(--email-custom-50)] focus:ring-2 focus:ring-[var(--email-custom-20)]",
         dot: "bg-[var(--email-custom)]",
+        checkboxBg: "bg-[var(--email-custom)] border-[var(--email-custom)]",
+        checkboxText: "text-white",
+        checkboxFocus: "peer-focus-visible:ring-[var(--email-custom)]/40",
       }
     : colorThemes[color] || colorThemes["primary"];
 
@@ -537,21 +589,47 @@ export default function EmailApp({
               className={cn(
                 "flex items-center justify-between px-4 sm:px-6 py-2.5 shrink-0 transition-colors duration-300 border-l-[3px] border-transparent",
                 variant === "glass"
-                  ? "bg-white/5 dark:bg-black/5 border-b border-white/10"
+                  ? "bg-white/10 dark:bg-black/5 border-b border-black/10 dark:border-white/10"
                   : "border-b border-border bg-muted/50",
               )}
             >
               <div className="flex items-center gap-3 sm:gap-4">
                 <div className="flex items-center gap-2 shrink-0">
-                  <input
-                    type="checkbox"
-                    className="w-4 h-4 rounded border-border text-primary focus:ring-primary cursor-pointer"
-                    checked={
-                      selectedEmails.length > 0 &&
-                      selectedEmails.length === filteredEmails.length
-                    }
-                    onChange={toggleSelectAll}
-                  />
+                  <label className="relative inline-flex items-center justify-center cursor-pointer select-none">
+                    <input
+                      type="checkbox"
+                      className="sr-only peer"
+                      checked={
+                        selectedEmails.length > 0 &&
+                        selectedEmails.length === filteredEmails.length
+                      }
+                      onChange={toggleSelectAll}
+                    />
+                    <div
+                      className={cn(
+                        "w-4 h-4 rounded-[4px] border flex items-center justify-center transition-all duration-150 cursor-pointer shrink-0",
+                        "peer-focus-visible:ring-2 peer-focus-visible:ring-offset-1",
+                        theme.checkboxFocus,
+                        selectedEmails.length > 0
+                          ? cn("shadow-xs", theme.checkboxBg, theme.checkboxText)
+                          : variant === "glass"
+                            ? "border-black/30 dark:border-white/20 bg-white/20 dark:bg-black/20 hover:border-black/50 dark:hover:border-white/60"
+                            : "border-border bg-background hover:border-foreground/30",
+                      )}
+                      style={
+                        selectedEmails.length > 0 && isCustomHex
+                          ? { backgroundColor: color, borderColor: color }
+                          : undefined
+                      }
+                    >
+                      {selectedEmails.length > 0 &&
+                        (selectedEmails.length === filteredEmails.length ? (
+                          <Check className="w-3 h-3 stroke-[3]" />
+                        ) : (
+                          <Minus className="w-3 h-3 stroke-[3]" />
+                        ))}
+                    </div>
+                  </label>
                   <span
                     onClick={toggleSelectAll}
                     className="text-xs font-semibold text-muted-foreground cursor-pointer select-none"
@@ -616,16 +694,39 @@ export default function EmailApp({
                         className="flex items-center gap-3 sm:gap-4 shrink-0"
                         onClick={(e) => e.stopPropagation()}
                       >
-                        <input
-                          type="checkbox"
-                          checked={selectedEmails.includes(email.id)}
-                          onChange={() => toggleSelect(email.id)}
-                          className="w-4 h-4 rounded border-border text-primary focus:ring-primary cursor-pointer shrink-0"
-                        />
+                        <label className="relative inline-flex items-center justify-center cursor-pointer select-none">
+                          <input
+                            type="checkbox"
+                            checked={selectedEmails.includes(email.id)}
+                            onChange={() => toggleSelect(email.id)}
+                            className="sr-only peer"
+                          />
+                          <div
+                            className={cn(
+                              "w-4 h-4 rounded-[4px] border flex items-center justify-center transition-all duration-150 cursor-pointer shrink-0",
+                              "peer-focus-visible:ring-2 peer-focus-visible:ring-offset-1",
+                              theme.checkboxFocus,
+                              selectedEmails.includes(email.id)
+                                ? cn("shadow-xs", theme.checkboxBg, theme.checkboxText)
+                                : variant === "glass"
+                                  ? "border-black/30 dark:border-white/20 bg-white/20 dark:bg-black/20 hover:border-black/50 dark:hover:border-white/60"
+                                  : "border-border bg-background hover:border-foreground/30",
+                            )}
+                            style={
+                              selectedEmails.includes(email.id) && isCustomHex
+                                ? { backgroundColor: color, borderColor: color }
+                                : undefined
+                            }
+                          >
+                            {selectedEmails.includes(email.id) && (
+                              <Check className="w-3 h-3 stroke-[3]" />
+                            )}
+                          </div>
+                        </label>
                         {/* Desktop Star Button */}
                         <button
                           onClick={() => toggleStar(email.id)}
-                          className="hidden sm:block cursor-pointer text-foreground/25 hover:text-amber-400 transition-colors"
+                          className="hidden sm:block cursor-pointer text-foreground/40 hover:text-amber-400 transition-colors"
                         >
                           <Star
                             className={`w-[18px] h-[18px] ${email.isStarred ? "fill-amber-400 text-amber-400" : ""}`}
@@ -644,7 +745,7 @@ export default function EmailApp({
                       <div className="flex-1 min-w-0 flex flex-col sm:flex-row sm:items-center gap-1 sm:gap-4 pr-8 sm:pr-0">
                         <div className="flex items-center justify-between sm:w-48 shrink-0">
                           <span
-                            className={`text-[15px] truncate ${!email.isRead ? "font-semibold text-foreground" : "font-medium text-foreground/80"}`}
+                            className={`text-[15px] truncate ${!email.isRead ? "font-semibold text-foreground" : "font-medium text-foreground/90 dark:text-foreground/80"}`}
                           >
                             {email.sender}
                           </span>
@@ -662,10 +763,10 @@ export default function EmailApp({
                             />
                           )}
                           <span
-                            className={`text-sm truncate ${!email.isRead ? "font-semibold text-foreground" : "text-muted-foreground"}`}
+                            className={`text-sm truncate ${!email.isRead ? "font-semibold text-foreground" : "text-muted-foreground font-medium"}`}
                           >
                             {email.subject}{" "}
-                            <span className="text-muted-foreground/70 font-normal ml-1 hidden lg:inline-block">
+                            <span className="text-muted-foreground/85 dark:text-muted-foreground/70 font-normal ml-1 hidden lg:inline-block">
                               - {email.body.substring(0, 40)}...
                             </span>
                           </span>
@@ -794,7 +895,7 @@ export default function EmailApp({
               className={cn(
                 "flex items-center justify-between px-3 sm:px-6 py-2.5 sm:py-3 shrink-0 text-muted-foreground transition-colors duration-300",
                 variant === "glass"
-                  ? "bg-white/5 dark:bg-black/5 border-b border-white/10"
+                  ? "bg-white/10 dark:bg-black/5 border-b border-black/10 dark:border-white/10"
                   : "border-b border-border bg-muted/50",
               )}
             >
@@ -890,7 +991,7 @@ export default function EmailApp({
                       className={cn(
                         "pt-6",
                         variant === "glass"
-                          ? "border-t border-white/10"
+                          ? "border-t border-black/10 dark:border-white/10"
                           : "border-t border-border",
                       )}
                     >
@@ -904,7 +1005,7 @@ export default function EmailApp({
                             className={cn(
                               "flex items-center gap-3 sm:gap-4 p-3 rounded-xl cursor-pointer transition-all group min-w-0",
                               variant === "glass"
-                                ? "bg-white/5 border border-white/10 hover:bg-white/10"
+                                ? "bg-white/40 dark:bg-white/5 border border-black/10 dark:border-white/10 hover:bg-white/60 dark:hover:bg-white/10"
                                 : "border border-border bg-muted hover:shadow-sm",
                               theme.focusRing,
                             )}
@@ -937,7 +1038,7 @@ export default function EmailApp({
                     className={cn(
                       "flex-1 sm:flex-none cursor-pointer px-5 sm:px-6 py-2.5 font-semibold text-xs sm:text-sm rounded-lg transition-colors shadow-sm text-center justify-center flex items-center",
                       variant === "glass"
-                        ? "bg-white/10 hover:bg-white/20 text-white"
+                        ? "bg-black/5 dark:bg-white/10 hover:bg-black/10 dark:hover:bg-white/20 text-foreground dark:text-white border border-black/10 dark:border-white/10"
                         : "bg-muted hover:bg-muted text-foreground",
                     )}
                   >
@@ -948,7 +1049,7 @@ export default function EmailApp({
                     className={cn(
                       "flex-1 sm:flex-none cursor-pointer px-5 sm:px-6 py-2.5 font-semibold text-xs sm:text-sm rounded-lg transition-colors shadow-sm text-center justify-center flex items-center",
                       variant === "glass"
-                        ? "bg-white/10 hover:bg-white/20 text-white"
+                        ? "bg-black/5 dark:bg-white/10 hover:bg-black/10 dark:hover:bg-white/20 text-foreground dark:text-white border border-black/10 dark:border-white/10"
                         : "bg-muted hover:bg-muted text-foreground",
                     )}
                   >
@@ -978,7 +1079,7 @@ export default function EmailApp({
               className={cn(
                 "flex items-center justify-between px-5 py-3.5 border-b",
                 variant === "glass"
-                  ? "bg-white/10 dark:bg-black/10 border-white/10"
+                  ? "bg-black/5 dark:bg-black/20 border-black/10 dark:border-white/10"
                   : "bg-muted border-border",
               )}
             >
@@ -998,7 +1099,7 @@ export default function EmailApp({
                 className={cn(
                   "px-5 py-3 border-b flex items-center gap-4",
                   variant === "glass"
-                    ? "border-white/10"
+                    ? "border-black/10 dark:border-white/10"
                     : "border-border",
                 )}
               >
@@ -1014,7 +1115,7 @@ export default function EmailApp({
                 className={cn(
                   "px-5 py-3 border-b flex items-center gap-4",
                   variant === "glass"
-                    ? "border-white/10"
+                    ? "border-black/10 dark:border-white/10"
                     : "border-border",
                 )}
               >
@@ -1042,7 +1143,7 @@ export default function EmailApp({
                 className={cn(
                   "px-5 py-3 border-t flex items-center justify-between",
                   variant === "glass"
-                    ? "bg-white/10 dark:bg-black/10 border-white/10"
+                    ? "bg-black/5 dark:bg-black/20 border-black/10 dark:border-white/10"
                     : "bg-muted border-border",
                 )}
               >
@@ -1069,7 +1170,7 @@ export default function EmailApp({
                     className={cn(
                       "w-px h-5 mx-1",
                       variant === "glass"
-                        ? "bg-white/20"
+                        ? "bg-black/15 dark:bg-white/20"
                         : "bg-muted",
                     )}
                   ></div>

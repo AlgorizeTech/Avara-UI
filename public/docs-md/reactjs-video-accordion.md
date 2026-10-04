@@ -1,3 +1,5 @@
+export const metadata = docsPageMetadata("video-accordion");
+
 # Video Accordion
 
 A cinematic, expanding gallery component animated with plain **CSS transitions** — no animation library. It keeps one panel visually dominant and plays its assigned video, while the rest seamlessly compress into an obscured track-rail and pause.

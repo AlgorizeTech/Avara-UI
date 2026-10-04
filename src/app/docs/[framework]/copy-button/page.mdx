@@ -1,10 +1,12 @@
+import { docsPageMetadata } from "@/lib/docs-metadata";
+
 import { ExampleShowcase } from "@/components/site/Sandbox";
 import { extractCode } from "@/lib/code";
 
-export const metadata = {
-  title: "Copy Button - AlgorizeTech UI",
-  description: "A clipboard button that confirms the copy with an animated check and label swap — plus a read-only Copy Field for links, tokens and commands.",
-};
+export const metadata = docsPageMetadata("copy-button", {
+  title: "Copy Button",
+  description: "A clipboard button that confirms the copy with an animated check and label swap — plus a read-only Copy Field for links, tokens and commands."
+});
 
 # Copy Button
 
@@ -270,12 +272,12 @@ export default function CustomLabels() {
 
 ### The hook on its own
 
-`useCopyToClipboard(timeout?)` returns `{ copy, status, copied }`. `copy(text)` resolves to a boolean, and `status` is `"idle" | "copied" | "error"`, resetting itself after `timeout` ms — everything the button does, for your own markup.
+`useCopyToClipboard(timeout?)`, exported from `copy-button-hooks.ts` (installed beside the block), returns `{ copy, status, copied }`. `copy(text)` resolves to a boolean, and `status` is `"idle" | "copied" | "error"`, resetting itself after `timeout` ms — everything the button does, for your own markup.
 
 ```tsx
 "use client";
 
-import { useCopyToClipboard } from "@/components/custom/blocks/CopyButtonBlock";
+import { useCopyToClipboard } from "@/components/custom/blocks/copy-button-hooks";
 
 export default function CopyRow() {
   const { copy, copied } = useCopyToClipboard(1500);

@@ -124,6 +124,13 @@ export const ChatAvatar = forwardRef<HTMLDivElement, ChatAvatarProps>(
   ({ src, fallback, className, ...props }, ref) => {
     const { variant, layout } = useChat();
     const [imgFailed, setImgFailed] = React.useState(false);
+    // A new `src` gets a fresh attempt. Reset while rendering, when `src`
+    // changes, rather than in an effect.
+    const [prevSrc, setPrevSrc] = React.useState(src);
+    if (src !== prevSrc) {
+      setPrevSrc(src);
+      setImgFailed(false);
+    }
     const imgRef = useRef<HTMLImageElement>(null);
 
     // `onError` alone is not enough under SSR: the browser starts loading the
@@ -132,7 +139,6 @@ export const ChatAvatar = forwardRef<HTMLDivElement, ChatAvatarProps>(
     // on mount — a finished load with zero intrinsic width is a failed load.
     React.useEffect(() => {
       // A broken <img> that finished loading before hydration fires no error event, so the element has to be inspected on mount.
-      setImgFailed(false);
       const node = imgRef.current;
       if (node?.complete && node.naturalWidth === 0) setImgFailed(true);
     }, [src]);
@@ -172,7 +178,15 @@ export const ChatAvatar = forwardRef<HTMLDivElement, ChatAvatarProps>(
 ChatAvatar.displayName = "ChatAvatar";
 
 export interface ChatMessageProps extends React.HTMLAttributes<HTMLDivElement> {
-  color?: "primary" | "default" | "blue" | "indigo" | "rose" | "emerald";
+  color?:
+    | "primary"
+    | "default"
+    | "blue"
+    | "indigo"
+    | "rose"
+    | "emerald"
+    | "lavender"
+    | (string & {});
 }
 
 export const ChatMessage = forwardRef<HTMLDivElement, ChatMessageProps>(
@@ -196,9 +210,11 @@ export const ChatMessage = forwardRef<HTMLDivElement, ChatMessageProps>(
       indigo: "bg-indigo-600 text-white",
       rose: "bg-rose-600 text-white",
       emerald: "bg-emerald-600 text-white",
+      lavender: "bg-[#9b8afb] text-white",
     };
 
     const isSent = variant === "sent";
+    const isHex = isSent && color && color.startsWith("#");
 
     // Dynamic border-radius logic based on message grouping
     const getBorderRadius = () => {
@@ -231,10 +247,17 @@ export const ChatMessage = forwardRef<HTMLDivElement, ChatMessageProps>(
             "chat-bubble-message px-4 py-2.5 text-[15px] leading-relaxed shadow-sm",
             getBorderRadius(),
             isSent
-              ? sentColors[color] || sentColors["default"]
+              ? isHex
+                ? "text-white"
+                : sentColors[color] || sentColors["default"]
               : "bg-muted text-foreground border border-border/50",
             className,
           )}
+          style={
+            isHex
+              ? { backgroundColor: color, color: "#ffffff", ...props.style }
+              : props.style
+          }
           {...props}
         >
           {children}
@@ -260,8 +283,10 @@ export const ChatTimestamp = forwardRef<HTMLDivElement, ChatTimestampProps>(
       <div
         ref={ref}
         className={cn(
-          "flex items-center gap-1.5 mt-1 mx-1 text-[11px] font-medium text-muted-foreground select-none",
-          isSent ? "justify-end" : "justify-start",
+          "flex items-center gap-1.5 mt-1 mx-1 text-[11px] font-medium select-none",
+          isSent
+            ? "justify-end text-current/75"
+            : "justify-start text-muted-foreground",
           className,
         )}
         {...props}
@@ -269,10 +294,12 @@ export const ChatTimestamp = forwardRef<HTMLDivElement, ChatTimestampProps>(
         <span>{time}</span>
         {isSent && status && (
           <span className="flex items-center">
-            {status === "sent" && <Check className="w-3.5 h-3.5" />}
-            {status === "delivered" && <CheckCheck className="w-3.5 h-3.5" />}
+            {status === "sent" && <Check className="w-3.5 h-3.5 opacity-80" />}
+            {status === "delivered" && (
+              <CheckCheck className="w-3.5 h-3.5 opacity-80" />
+            )}
             {status === "read" && (
-              <CheckCheck className="w-3.5 h-3.5 text-blue-500 dark:text-blue-400" />
+              <CheckCheck className="w-3.5 h-3.5 text-sky-300 dark:text-sky-300 [div:not(.text-white)_&]:text-sky-500 dark:[div:not(.text-white)_&]:text-sky-400" />
             )}
           </span>
         )}

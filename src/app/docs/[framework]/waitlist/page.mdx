@@ -1,11 +1,12 @@
+import { docsPageMetadata } from "@/lib/docs-metadata";
+
 import { ExampleShowcase } from "@/components/site/Sandbox";
 import { extractCode } from "@/lib/code";
 
-export const metadata = {
-  title: "Waitlist - AlgorizeTech UI",
-  description:
-    "A pre-launch sign-up section in three layouts — a compact card, a brand mark with a live countdown, or a pill on a soft ground with a bar of spots claimed. The form becomes the reader's place in line when your promise resolves.",
-};
+export const metadata = docsPageMetadata("waitlist", {
+  title: "Waitlist",
+  description: "A pre-launch sign-up section in three layouts — a compact card, a brand mark with a live countdown, or a pill on a soft ground with a bar of spots claimed. The form becomes the reader's place in line when your promise resolves."
+});
 
 # Waitlist
 
@@ -13,17 +14,27 @@ A pre-launch sign-up in three layouts. **Card** is a compact card with the field
 
 `Waitlist` is built from library pieces: the countdown is the <DocLink to="counter">Counter</DocLink>'s slide variant, the field is <DocLink to="input">Input</DocLink>, the action is <DocLink to="button">Button</DocLink>, the faces are an <DocLink to="avatar-stack">Avatar Stack</DocLink>, the spots bar is <DocLink to="progress">Progress</DocLink> and the invite link is a <DocLink to="copy-button">Copy Button</DocLink>. Every piece of copy is a named part — `Mark`, `Countdown`, `Heading`, `Intro`, `Form`, `Proof`, `Spots` — so the words are yours.
 
-export const usageLaunch = `"use client";
-
-import { Waitlist } from "@/components/custom/blocks/WaitlistBlock";
-
-// Faces from Pexels, free to use.
+export const waitlistFaces = `// Faces from Pexels, free to use.
 const FACES = [
   "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_160,c_limit/v1790158812/pexels-photo-2379004-1790158812208.jpg",
   "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_160,c_limit/v1790158810/pexels-photo-220453-1790158812206.jpg",
   "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_160,c_limit/v1790158812/pexels-photo-2381069-1790158812209.jpg",
   "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_160,c_limit/v1790158812/pexels-photo-1130626-1790158812207.jpg",
-];
+];`;
+
+export const waitlistJoin = `// Resolve with a number and it becomes the reader's place in line.
+async function join(email: string): Promise<number> {
+  const res = await fetch("/api/waitlist", { method: "POST", body: JSON.stringify({ email }) });
+  if (!res.ok) throw new Error("We couldn't add that address. Please retry.");
+  const { position } = await res.json();
+  return position; // shown as "#2,341 in line"
+}`;
+
+export const usageLaunch = `"use client";
+
+import { Waitlist } from "@/components/custom/blocks/WaitlistBlock";
+
+${waitlistFaces}
 
 export default function EarlyAccess() {
   return (
@@ -53,6 +64,10 @@ export const usageCard = `"use client";
 
 import { Waitlist } from "@/components/custom/blocks/WaitlistBlock";
 
+${waitlistFaces}
+
+${waitlistJoin}
+
 export default function JoinCard() {
   return (
     <Waitlist variant="card">
@@ -72,6 +87,10 @@ export default function JoinCard() {
 export const usageQueue = `"use client";
 
 import { Waitlist } from "@/components/custom/blocks/WaitlistBlock";
+
+${waitlistFaces}
+
+${waitlistJoin}
 
 export default function GetInLine() {
   return (

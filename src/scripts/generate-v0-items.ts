@@ -114,8 +114,8 @@ for (const item of registry.items as { name: string; files?: { path: string }[] 
 const DUAL = new Set(
   (registry.items as { name: string }[])
     .map((item) => item.name)
-    .filter((name) => name.endsWith("-framer"))
-    .map((name) => name.replace(/-framer$/, "")),
+    .filter((name) => name.endsWith("-motion"))
+    .map((name) => name.replace(/-motion$/, "")),
 );
 
 /** Package name of a bare import: `@radix-ui/react-x/sub` → `@radix-ui/react-x`. */
@@ -270,7 +270,24 @@ const stubPlugin = (imports: Map<string, Set<string>>): Plugin => ({
     pluginBuild.onResolve({ filter: /.*/ }, (args) => {
       if (args.kind === "entry-point") return undefined;
       if (/^react(-dom)?(\/|$)/.test(args.path)) return { path: args.path, external: true };
+      if (args.path === "node:fs") return { path: args.path, external: true };
+      // A usage read from the demo file (`usage: extractCode("src/preview/demos/…")`)
+      // is the only snippet that page has, so `extractCode` really reads it.
+      if (args.path === "@/lib/code") return { path: args.path, namespace: "code" };
       return { path: args.path, namespace: "stub" };
+    });
+    pluginBuild.onLoad({ filter: /.*/, namespace: "code" }, (args) => {
+      const others = [...(imports.get(args.path) ?? [])].filter((name) => name !== "extractCode");
+      return {
+        loader: "js",
+        resolveDir: ROOT,
+        contents: [
+          STUB_SOURCE,
+          'import { readFileSync } from "node:fs";',
+          'export const extractCode = (file) => readFileSync(file, "utf8");',
+          ...others.map((name) => `export const ${name} = stub();`),
+        ].join("\n"),
+      };
     });
     pluginBuild.onLoad({ filter: /.*/, namespace: "stub" }, (args) => {
       const names = [...(imports.get(args.path) ?? [])];
@@ -358,8 +375,8 @@ async function main() {
         pageHeading(page) ??
         name;
 
-      for (const library of isDual ? (["gsap", "framer"] as const) : (["gsap"] as const)) {
-        const previewName = library === "framer" ? `${name}-framer` : name;
+      for (const library of isDual ? (["gsap", "motion"] as const) : (["gsap"] as const)) {
+        const previewName = library === "motion" ? `${name}-motion` : name;
         for (const example of examples) {
           const id = example.id ?? slugify(example.title);
           const key = `${previewName}/${id}`;

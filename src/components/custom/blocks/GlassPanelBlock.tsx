@@ -1,23 +1,17 @@
 "use client";
 
 import { cn } from "@/lib/utils";
-import React, { createContext, useContext } from "react";
+import React from "react";
+import { SurfaceContext, useSurface, type SurfaceVariant } from "./glass-panel-context";
+
+// The surface context and its hook, `useSurface`, live in glass-panel-context.ts.
+export type { SurfaceVariant };
 
 // ==========================================
 // 1. GLASS BACKDROP — aurora ground + bento grid
 // ==========================================
 // The surface the panels sit on. Profile Page, Book Appointment and Booking
 // Card all build on this pair; it has no opinion about what the page is.
-/**
- * The page's surface treatment. `glass` is frosted panels over an aurora;
- * `solid` is plain theme cards with an ordinary shadow on a flat ground.
- */
-export type SurfaceVariant = "glass" | "solid";
-
-const SurfaceContext = createContext<SurfaceVariant>("glass");
-
-/** The surface variant of the enclosing `GlassBackdrop`. */
-export const useSurface = () => useContext(SurfaceContext);
 
 export interface GlassBackdropProps extends React.HTMLAttributes<HTMLDivElement> {
   /** Frosted glass over an aurora, or solid cards with a shadow. */

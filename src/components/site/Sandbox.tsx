@@ -17,8 +17,9 @@ import {
   CodeBlockClient,
   isTransformable,
 } from "@/components/site/code-block-client";
-import { motion, useReducedMotion } from "framer-motion";
-import CodeCopy, { type LanguageType } from "@/components/site/code-copy";
+import { motion, useReducedMotion } from "motion/react";
+import CodeCopy from "@/components/site/code-copy";
+import { useCodeLanguage } from "@/contexts/code-language-context";
 import {
   Code2,
   GripVertical,
@@ -220,7 +221,7 @@ export function Sandbox({
   minHeight?: number;
   maxHeight?: number;
   /**
-   * Draws the GSAP / Framer Motion switch in the bar, for a component that
+   * Draws the GSAP / Motion switch in the bar, for a component that
    * ships both builds. The caller swaps `name` and the code tabs; the switch
    * only writes the page-wide pick.
    */
@@ -236,9 +237,10 @@ export function Sandbox({
   const previewTab = tabs.find((t) => t.resizable) ?? tabs[0];
   const [activeTab, setActiveTab] = useState<string>(tabs[0]?.id ?? "preview");
 
-  // One selection shared by every code tab, so switching Usage → Code keeps
-  // the reader in the language they picked.
-  const [codeLanguage, setCodeLanguage] = useState<LanguageType>("tsx");
+  // One selection shared by every code tab and every page (persisted), so
+  // switching Usage → Code, or to the next component, keeps the reader in the
+  // language they picked.
+  const { language: codeLanguage, setLanguage: setCodeLanguage } = useCodeLanguage();
 
   // Responsive preview state (same semantics as the classic ComponentPreview)
   // Every preview opens fitted: fluid "100%", filling the card edge to edge.
@@ -614,7 +616,7 @@ export function Sandbox({
           ref={areaRef}
           className={cn(
             "flex items-stretch relative justify-start overflow-visible rounded-xl ring-1 ring-foreground/[0.05]",
-            "bg-foreground/[0.015] dark:bg-background",
+            "bg-foreground/[0.015] dark:bg-preview-stage",
             !isPreviewActive && "hidden",
           )}
           style={{
@@ -671,7 +673,7 @@ export function Sandbox({
                     }
               }
               className={cn(
-                "flex justify-center bg-card dark:bg-background",
+                "flex justify-center bg-preview-stage",
                 isFullscreen
                   ? "fixed inset-0 z-[9999] items-stretch"
                   : [
@@ -865,7 +867,7 @@ export interface ShowcaseExample {
   usage?: ShowcaseSnippet;
   /**
    * Component source — adds a Code tab. Same string-or-map rule; a component
-   * with a Framer Motion twin passes `{ gsap, framer }` (`extractMotionCode`)
+   * with a Motion twin passes `{ gsap, motion }` (`extractMotionCode`)
    * so the tab follows the build switch.
    */
   code?: ShowcaseSnippet;
@@ -1006,11 +1008,11 @@ export default function ${cleanTitle}Demo() {
 }`;
 };
 
-/** Demos that have a Framer Motion twin (`<name>-framer`). */
+/** Demos that have a Motion twin (`<name>-motion`). */
 const DUAL_DEMOS = new Set(
   sandboxNames
-    .filter((demo) => demo.endsWith("-framer"))
-    .map((demo) => demo.replace(/-framer$/, "")),
+    .filter((demo) => demo.endsWith("-motion"))
+    .map((demo) => demo.replace(/-motion$/, "")),
 );
 
 /** Re-exported so docs pages can keep importing it from the showcase module. */
@@ -1057,9 +1059,9 @@ export function ExampleShowcase({
   /** Optional numerical range sliders for interactive property tuning. */
   controls?: SliderControl[];
   /**
-   * The component ships a GSAP default and a Framer Motion twin: the previews
-   * get the build switch, and follow it to the `<name>-framer` demo. Detected
-   * from the preview registry when omitted — a `<name>-framer` demo is exactly
+   * The component ships a GSAP default and a Motion twin: the previews
+   * get the build switch, and follow it to the `<name>-motion` demo. Detected
+   * from the preview registry when omitted — a `<name>-motion` demo is exactly
    * what makes a component dual.
    */
   motionVariants?: boolean;
@@ -1094,7 +1096,7 @@ export function ExampleShowcase({
   const { library } = useMotionLibrary();
   const isDual = motionVariants ?? DUAL_DEMOS.has(name);
   const activeLibrary = isDual ? library : "gsap";
-  const previewName = isDual && library === "framer" ? `${name}-framer` : name;
+  const previewName = isDual && library === "motion" ? `${name}-motion` : name;
   const pick = (snippet: ShowcaseSnippet | undefined) =>
     resolveMotion(snippet, activeLibrary);
 
@@ -1211,7 +1213,7 @@ function ExampleCard({
   maxHeight,
 }: {
   name: string;
-  /** Draw the GSAP / Framer Motion switch in the preview bar. */
+  /** Draw the GSAP / Motion switch in the preview bar. */
   motionSwitch?: boolean;
   example: ResolvedShowcaseExample;
   /** The gallery's live-control card, drawn just above this preview. */

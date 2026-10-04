@@ -9,7 +9,7 @@ import {
   slugFromPathname,
 } from "@/lib/framework";
 import { cn } from "@/lib/utils";
-import { AnimatePresence, motion } from "framer-motion";
+import { AnimatePresence, motion } from "motion/react";
 import { ChevronDown, ChevronRight, PlayCircle, Search, X } from "lucide-react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";

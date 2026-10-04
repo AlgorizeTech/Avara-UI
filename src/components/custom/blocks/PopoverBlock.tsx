@@ -156,10 +156,13 @@ export function PopoverContent({
   // Forget the last position on close. This component stays mounted while
   // closed, so without this a reopen would paint one frame at the stale
   // coordinates (from before a scroll, or from a different `side`) and then
-  // jump next to the trigger.
-  useEffect(() => {
+  // jump next to the trigger. Adjusted while rendering, when `open` changes,
+  // rather than in an effect.
+  const [prevOpen, setPrevOpen] = useState(open);
+  if (open !== prevOpen) {
+    setPrevOpen(open);
     if (!open) setPlacement(null);
-  }, [open]);
+  }
 
   // Handle Position Updates. A layout effect runs before the browser paints,
   // so the first visible frame is already in the right place — a plain effect

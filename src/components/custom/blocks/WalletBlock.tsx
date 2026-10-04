@@ -1,9 +1,10 @@
 "use client";
 
-import React, { useEffect, useLayoutEffect, useRef, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import { Eye, EyeOff, Nfc } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { springLinear } from "./motion-curves";
+import { DEFAULT_WALLET_CARDS, type WalletCardItem } from "./wallet-data";
 
 // The cards move on a spring (stiffness 280, damping 22, mass 0.8) drawn as a
 // CSS `linear()` curve; the flip and the balance swap are plain eases.
@@ -21,36 +22,36 @@ type BalancePhase = "from" | "shown" | "leaving";
  */
 function useBalanceSwap(masked: boolean) {
   const [shownMasked, setShownMasked] = useState(masked);
-  const [phase, setPhase] = useState<BalancePhase>("from");
-  const ref = useRef<HTMLDivElement>(null);
-  const wanted = useRef(masked);
+  // Whether the shown one is still at its starting look, about to come in.
+  const [entering, setEntering] = useState(true);
+  // The shown one leaves whenever it is not the wanted one; changing back
+  // while it leaves brings it back from where it is.
+  const leaving = masked !== shownMasked;
+  const phase: BalancePhase = leaving ? "leaving" : entering ? "from" : "shown";
 
-  useEffect(() => {
-    wanted.current = masked;
-    if (masked !== shownMasked) setPhase("leaving");
-    else setPhase((p) => (p === "leaving" ? "shown" : p));
-  }, [masked, shownMasked]);
+  // Coming in: each balance mounts afresh (its own key) at the starting
+  // look; once that is committed, transition to the resting one.
+  const enter = useCallback((node: HTMLDivElement | null) => {
+    if (!node) return;
+    void node.offsetWidth;
+    setEntering(false);
+  }, []);
 
-  // Coming in: commit the starting look, then transition to the resting one.
-  useLayoutEffect(() => {
-    if (phase !== "from") return;
-    void ref.current?.offsetWidth;
-    setPhase("shown");
-  }, [phase, shownMasked]);
-
-  const settle = useRef(() => {});
-  settle.current = () => {
-    if (phase !== "leaving") return;
-    setShownMasked(wanted.current);
-    setPhase("from");
+  const settle = () => {
+    if (!leaving) return;
+    setShownMasked(masked);
+    setEntering(true);
   };
 
   // In case the transition never ends (a hidden tab, `display: none`).
   useEffect(() => {
-    if (phase !== "leaving") return;
-    const t = window.setTimeout(() => settle.current(), 250);
+    if (!leaving) return;
+    const t = window.setTimeout(() => {
+      setShownMasked(masked);
+      setEntering(true);
+    }, 250);
     return () => window.clearTimeout(t);
-  }, [phase]);
+  }, [leaving, masked]);
 
   const y = phase === "from" ? 4 : phase === "leaving" ? -4 : 0;
   const style: React.CSSProperties = {
@@ -61,35 +62,16 @@ function useBalanceSwap(masked: boolean) {
     transition: phase === "from" ? "none" : BALANCE_TRANSITION,
   };
   const onTransitionEnd = (e: React.TransitionEvent<HTMLDivElement>) => {
-    if (e.target === e.currentTarget && e.propertyName === "opacity") settle.current();
+    if (e.target === e.currentTarget && e.propertyName === "opacity") settle();
   };
-  return { shownMasked, ref, style, onTransitionEnd };
+  // `enter` is the balance element's callback ref.
+  return { shownMasked, enter, style, onTransitionEnd };
 }
 
 // ==========================================
 // TYPES & DATA STRUCTURES
 // ==========================================
-export interface WalletCardItem {
-  id?: string;
-  name: string;
-  balance: string;
-  currency?: string;
-  gradientLight?: string;
-  gradientDark?: string;
-  textColorLight?: string;
-  textColorDark?: string;
-  subtextColorLight?: string;
-  subtextColorDark?: string;
-  hasChip?: boolean;
-  cardNumber?: string;
-  expiry?: string;
-  cvv?: string;
-  tag?: string;
-  issuer?: string;
-  backSignatureLabel?: string;
-  backSubtitle?: string;
-  backNotice?: string;
-}
+export type { WalletCardItem };
 
 export interface WalletProps extends React.HTMLAttributes<HTMLDivElement> {
   cards?: WalletCardItem[];
@@ -111,62 +93,6 @@ export interface WalletProps extends React.HTMLAttributes<HTMLDivElement> {
   /** The open prompt on touch screens. */
   touchOpenHint?: string;
 }
-
-// 3 authentic cards matching the reference design
-export const DEFAULT_WALLET_CARDS: WalletCardItem[] = [
-  {
-    id: "card-1",
-    name: "Pounds",
-    balance: "€46,000.00",
-    currency: "GBP",
-    gradientLight: "from-amber-400 via-amber-400 to-amber-500",
-    gradientDark: "from-amber-400 via-amber-500 to-amber-600",
-    textColorLight: "text-amber-950",
-    textColorDark: "text-amber-950",
-    subtextColorLight: "text-amber-900/80",
-    subtextColorDark: "text-amber-950/70",
-    cardNumber: "•••• 9142",
-    expiry: "08/29",
-    cvv: "614",
-    tag: "SAVINGS",
-    issuer: "PINSTACK",
-  },
-  {
-    id: "card-2",
-    name: "Pounds",
-    balance: "€46,000.00",
-    currency: "GBP",
-    gradientLight: "from-fuchsia-500 via-purple-500 to-violet-600",
-    gradientDark: "from-fuchsia-600 via-purple-600 to-violet-700",
-    textColorLight: "text-white",
-    textColorDark: "text-white",
-    subtextColorLight: "text-white/80",
-    subtextColorDark: "text-white/70",
-    cardNumber: "•••• 3058",
-    expiry: "11/28",
-    cvv: "832",
-    tag: "CURRENT",
-    issuer: "PINSTACK",
-  },
-  {
-    id: "card-3",
-    name: "Euros",
-    balance: "€46,000.00",
-    currency: "EUR",
-    gradientLight: "from-blue-600 via-indigo-600 to-blue-700",
-    gradientDark: "from-blue-600 via-indigo-600 to-blue-800",
-    textColorLight: "text-white",
-    textColorDark: "text-white",
-    subtextColorLight: "text-blue-100/80",
-    subtextColorDark: "text-blue-200/70",
-    hasChip: true,
-    cardNumber: "•••• 4829",
-    expiry: "09/30",
-    cvv: "429",
-    tag: "PRIMARY",
-    issuer: "PINSTACK",
-  },
-];
 
 // ==========================================
 // SUBCOMPONENT: METALLIC EMV CHIP
@@ -224,7 +150,12 @@ export function Wallet({
   const [isFlipped, setIsFlipped] = useState(false);
 
   const shouldShowBalance = isRevealed || (autoRevealOnHover && isHovered);
-  const balance = useBalanceSwap(!shouldShowBalance);
+  const {
+    shownMasked: balanceMasked,
+    enter: enterBalance,
+    style: balanceStyle,
+    onTransitionEnd: onBalanceTransitionEnd,
+  } = useBalanceSwap(!shouldShowBalance);
 
   // Stagger offsets for the 3 cards when hovered:
   // Card 0 (back, Amber) -> y: -130px
@@ -626,12 +557,12 @@ export function Wallet({
 
             {/* Middle: Masked vs Unmasked Balance */}
             <div className="flex flex-col items-center justify-center my-auto" style={{ color: ink }}>
-              {!balance.shownMasked ? (
+              {!balanceMasked ? (
                 <div
                   key="unmasked"
-                  ref={balance.ref}
-                  style={balance.style}
-                  onTransitionEnd={balance.onTransitionEnd}
+                  ref={enterBalance}
+                  style={balanceStyle}
+                  onTransitionEnd={onBalanceTransitionEnd}
                   className="text-2xl sm:text-3xl font-extrabold tracking-tight font-sans transition-colors"
                 >
                   {overallBalance}
@@ -639,9 +570,9 @@ export function Wallet({
               ) : (
                 <div
                   key="masked"
-                  ref={balance.ref}
-                  style={balance.style}
-                  onTransitionEnd={balance.onTransitionEnd}
+                  ref={enterBalance}
+                  style={balanceStyle}
+                  onTransitionEnd={onBalanceTransitionEnd}
                   className="text-xl sm:text-2xl font-mono font-bold tracking-[0.35em] transition-colors"
                 >
                   {maskedBalance}

@@ -1,5 +1,7 @@
 "use client";
 
+import React, { useState } from "react";
+import { cn } from "@/lib/utils";
 import {
   Collapsible,
   CollapsibleContent,
@@ -7,6 +9,7 @@ import {
 } from "@/components/custom/blocks/CollapsibleBlock";
 import {
   Bell,
+  Check,
   ChevronDown,
   ChevronRight,
   File,
@@ -28,6 +31,36 @@ const getThemeColor = (color: string) => {
   return colorMap[color] || "var(--primary)";
 };
 
+function SettingsCheckbox({
+  defaultChecked = false,
+}: {
+  defaultChecked?: boolean;
+}) {
+  const [checked, setChecked] = useState(defaultChecked);
+
+  return (
+    <button
+      type="button"
+      role="checkbox"
+      aria-checked={checked}
+      onClick={() => setChecked(!checked)}
+      className={cn(
+        "w-4 h-4 rounded flex items-center justify-center border transition-all cursor-pointer outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-1",
+        checked
+          ? "bg-primary border-primary text-primary-foreground"
+          : "border-input bg-background hover:border-foreground/40",
+      )}
+    >
+      <Check
+        className={cn(
+          "w-3 h-3 stroke-[3] transition-transform duration-150",
+          checked ? "scale-100 opacity-100" : "scale-0 opacity-0",
+        )}
+      />
+    </button>
+  );
+}
+
 export default function CollapsibleDemo({
   layout = "basic",
   color = "primary",
@@ -38,7 +71,10 @@ export default function CollapsibleDemo({
   const themeColor = getThemeColor(color);
   const containerStyle =
     color && color !== "primary" && color !== "default"
-      ? ({ "--primary": themeColor } as React.CSSProperties)
+      ? ({
+          "--primary": themeColor,
+          "--primary-foreground": "#ffffff",
+        } as React.CSSProperties)
       : undefined;
 
   return (
@@ -162,23 +198,16 @@ export default function CollapsibleDemo({
             <CollapsibleContent>
               <div className="p-5 border-t border-border mt-2 space-y-4">
                 <div className="flex items-center justify-between">
-                  <label className="text-sm text-foreground/80">
+                  <span className="text-sm text-foreground/80">
                     Email Alerts
-                  </label>
-                  <input
-                    type="checkbox"
-                    defaultChecked
-                    className="accent-primary w-4 h-4"
-                  />
+                  </span>
+                  <SettingsCheckbox defaultChecked />
                 </div>
                 <div className="flex items-center justify-between">
-                  <label className="text-sm text-foreground/80">
+                  <span className="text-sm text-foreground/80">
                     SMS Alerts
-                  </label>
-                  <input
-                    type="checkbox"
-                    className="accent-primary w-4 h-4"
-                  />
+                  </span>
+                  <SettingsCheckbox />
                 </div>
               </div>
             </CollapsibleContent>

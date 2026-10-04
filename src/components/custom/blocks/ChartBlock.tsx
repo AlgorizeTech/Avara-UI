@@ -1,7 +1,7 @@
 "use client";
 
 import { cn } from "@/lib/utils";
-import { useState } from "react";
+import { useId, useState } from "react";
 
 // ==========================================
 // DYNAMIC THEME ENGINE
@@ -119,7 +119,7 @@ export function ChartBlock({
     >
       {/* NATIVE CSS ANIMATIONS */}
       <style>{`
-        @keyframes drawLine { from { stroke-dashoffset: 100; } to { stroke-dashoffset: 0; } }
+        @keyframes drawLine { from { clip-path: inset(-8px 100% -8px -8px); } to { clip-path: inset(-8px -8px -8px -8px); } }
         @keyframes growUp { from { transform: scaleY(0); opacity: 0; } to { transform: scaleY(1); opacity: 1; } }
         @keyframes fadeUp { from { transform: translateY(10px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
         .animate-draw { animation: drawLine 1.5s cubic-bezier(0.22, 1, 0.36, 1) forwards; }
@@ -286,7 +286,9 @@ function SmoothLineChart({
 }) {
   const [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
   const maxVal = Math.max(...data.map((d) => d.value), 1);
-  const cleanColorId = color.replace("#", "");
+  // An id that is valid whatever the colour is: `var(--primary)` (the
+  // default) is not a legal fragment for `url(#…)`, which left the area black.
+  const cleanColorId = useId().replace(/[^a-zA-Z0-9_-]/g, "");
 
   // Calculate X/Y percentages for the data
   const points = data.map((d, i) => ({
@@ -332,11 +334,14 @@ function SmoothLineChart({
         ))}
       </div>
 
-      {/* Vector Graphics */}
+      {/* Vector Graphics. The draw-in is a left-to-right clip reveal rather
+          than a stroke-dasharray sweep: with a non-scaling stroke the dash
+          pattern is measured in screen pixels, not pathLength units, so a
+          dashed draw cut the line into pieces whose count changed with width. */}
       <svg
         viewBox="0 0 100 100"
         preserveAspectRatio="none"
-        className="absolute inset-0 top-6 bottom-8 left-12 right-4 w-[calc(100%-64px)] h-[calc(100%-56px)] overflow-visible z-10"
+        className="absolute inset-0 top-6 bottom-8 left-12 right-4 w-[calc(100%-64px)] h-[calc(100%-56px)] overflow-visible z-10 animate-draw"
       >
         <defs>
           <linearGradient
@@ -368,9 +373,7 @@ function SmoothLineChart({
           strokeWidth="2.5"
           strokeLinecap="round"
           strokeLinejoin="round"
-          pathLength="100"
-          strokeDasharray="100"
-          className="animate-draw vector-non-scaling-stroke drop-shadow-sm"
+          className="drop-shadow-sm"
           style={{ vectorEffect: "non-scaling-stroke" }}
         />
       </svg>

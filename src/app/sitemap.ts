@@ -14,11 +14,22 @@ export const dynamic = "force-static";
 /**
  * Routes that exist but should not be advertised to search engines.
  *
- * Empty today — the one entry, a development QA harness at
- * `/otp-responsive-check`, was deleted rather than merely hidden. Keep the set
- * for any future page that must exist without being indexed.
+ * `/docs/<framework>` only redirects to its `index` page, and a sitemap must
+ * list final URLs, not redirects.
  */
-const EXCLUDED = new Set<string>();
+const EXCLUDED = new Set<string>(
+  BUILT_FRAMEWORKS.map((framework) => `/docs/${framework}`),
+);
+
+/**
+ * Route prefixes kept out for the same reason. The examples pages are inherited
+ * Next.js tutorials, unlinked from the sidebar and marked `noindex`.
+ */
+const EXCLUDED_PREFIXES = [`/docs/${DEFAULT_FRAMEWORK}/examples`];
+
+const isExcluded = (route: string) =>
+  EXCLUDED.has(route) ||
+  EXCLUDED_PREFIXES.some((prefix) => route === prefix || route.startsWith(`${prefix}/`));
 
 /**
  * Dynamic segments the walker knows how to expand into real URLs.
@@ -91,7 +102,7 @@ function collectRoutes(): string[] {
 
         if (hasPage(child)) {
           const route = `/${next.join("/")}`;
-          if (!EXCLUDED.has(route)) routes.push(route);
+          if (!isExcluded(route)) routes.push(route);
         }
         walk(child, next);
       }

@@ -1,3 +1,5 @@
+export const metadata = docsPageMetadata("counter");
+
 # Counter Block
 
 A multi-purpose, highly animated Counter component. Whether you need a user-interactive Stepper for e-commerce, an animated statistics ticker, a circular progress tracker, or a promotional countdown timer, this block handles it all with built-in fluid animations. The countdown comes in two designs: framed figures under a pill, or `slide` — soft tiles where only the figure that changed slides, the same countdown the Waitlist launch panel uses.

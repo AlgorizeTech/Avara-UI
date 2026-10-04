@@ -1,3 +1,5 @@
+export const metadata = docsPageMetadata("split-scroll-stepper");
+
 # Scroll Accordion Showcase
 
 A high-impact, scroll-driven interactive section built with full dark/light mode responsiveness, instantaneous `localStorage` theme coloring, and flexible layout options. As users scroll through a sequence of numbered accordion cards, an `IntersectionObserver` expands the active narrative while cross-fading a sticky showcase mockup on the right.

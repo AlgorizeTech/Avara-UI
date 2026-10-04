@@ -17,7 +17,7 @@ export function MetaTags() {
       {integrations.yandexVerification && (
         <meta name="yandex-verification" content={integrations.yandexVerification} />
       )}
-      <meta name="viewport" content="width=device-width, initial-scale=1" />
+      {/* No viewport tag: Next.js emits one itself, and a second is a duplicate. */}
       <meta name="theme-color" content="#000000" />
 
       {/* PWA Meta Tags */}
@@ -34,15 +34,8 @@ export function MetaTags() {
           duplicates, and the apple-touch-icon pointed at /logo.svg, which does
           not exist in /public. */}
 
-      {/* Preconnect for Performance - Deduplicated */}
-      <link rel="preconnect" href="https://fonts.googleapis.com" />
-      <link
-        rel="preconnect"
-        href="https://fonts.gstatic.com"
-        crossOrigin="anonymous"
-      />
-      <link rel="dns-prefetch" href="//fonts.googleapis.com" />
-      <link rel="dns-prefetch" href="//fonts.gstatic.com" />
+      {/* Google Fonts preconnects live in ResourcePreloader; they were
+          duplicated here. */}
     </>
   );
 }

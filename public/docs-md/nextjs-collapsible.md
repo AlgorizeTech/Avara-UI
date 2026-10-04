@@ -1,3 +1,5 @@
+export const metadata = docsPageMetadata("collapsible");
+
 # Collapsible
 
 An interactive component which expands/collapses a panel.
@@ -15,6 +17,9 @@ export const usageSettings = `import {
 } from "@/components/custom/blocks/CollapsibleBlock";
 
 export default function SettingsPanel() {
+  const [emailAlerts, setEmailAlerts] = useState(true);
+  const [smsAlerts, setSmsAlerts] = useState(false);
+
   return (
 
               Push Notifications
@@ -27,9 +32,29 @@ export default function SettingsPanel() {
 
           Close
 
+               setEmailAlerts(!emailAlerts)}>
                 Email Alerts
+              
+               setEmailAlerts(!emailAlerts)}
+                className={\`w-4 h-4 rounded flex items-center justify-center border transition-all cursor-pointer \${
+                  emailAlerts
+                    ? "bg-primary border-primary text-primary-foreground"
+                    : "border-input bg-background"
+                }\`}
+              >
+                {emailAlerts && }
 
+               setSmsAlerts(!smsAlerts)}>
                 SMS Alerts
+              
+               setSmsAlerts(!smsAlerts)}
+                className={\`w-4 h-4 rounded flex items-center justify-center border transition-all cursor-pointer \${
+                  smsAlerts
+                    ? "bg-primary border-primary text-primary-foreground"
+                    : "border-input bg-background"
+                }\`}
+              >
+                {smsAlerts && }
 
       {/* Second card starts closed — defaultOpen is per-instance. */}
 

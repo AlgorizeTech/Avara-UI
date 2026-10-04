@@ -1,3 +1,7 @@
+import { docsPageMetadata } from "@/lib/docs-metadata";
+
+export const metadata = docsPageMetadata("platform-grid");
+
 import { ExampleShowcase } from "@/components/site/Sandbox";
 import { extractCode } from "@/lib/code";
 
@@ -9,44 +13,183 @@ Everything a product offers, as one hairline grid: small tiles with an icon and 
 
 export const usageSection = `"use client";
 
-import { BookOpen, Database, Flame, Lightbulb, Rocket, Search } from "lucide-react";
+import {
+  ArrowLeftRight,
+  BadgeDollarSign,
+  BarChart3,
+  BookOpen,
+  Bot,
+  Box,
+  Calculator,
+  ChartLine,
+  ClipboardList,
+  Copy,
+  Database,
+  DollarSign,
+  FileText,
+  Flame,
+  Globe,
+  Grid2x2,
+  HeartHandshake,
+  Landmark,
+  LayoutGrid,
+  Lightbulb,
+  MessageSquare,
+  MessagesSquare,
+  PackageOpen,
+  Puzzle,
+  Radio,
+  Rocket,
+  Scissors,
+  Search,
+  Sparkles,
+  Star,
+  Store,
+  Tag,
+  Trophy,
+  Wrench,
+  Zap,
+} from "lucide-react";
 import { PlatformGrid } from "@/components/custom/blocks/PlatformGridBlock";
-import { G2Icon, RedditIcon } from "@/components/custom/blocks/Icons";
+import {
+  AppStoreIcon,
+  CapterraIcon,
+  G2Icon,
+  GooglePlayIcon,
+  RedditIcon,
+  StripeIcon,
+  UpworkIcon,
+  YCombinatorIcon,
+} from "@/components/custom/blocks/Icons";
 
+// A small mark on a dark tile, the way store badges are drawn.
+const Badge = ({ children }: { children: React.ReactNode }) => (
+  <span className="grid h-4 w-4 place-items-center rounded-[4px] bg-foreground text-background">
+    {children}
+  </span>
+);
+
+const StoreBadges = () => (
+  <span className="flex items-center gap-1">
+    <Badge><AppStoreIcon size={10} fill="currentColor" /></Badge>
+    <Badge><GooglePlayIcon size={9} fill="currentColor" /></Badge>
+  </span>
+);
+
+// Tiles and features are written in reading order; at eight columns dense
+// packing tucks each 2×2 feature into the gap the tiles leave for it.
 export default function Platform() {
   return (
     <PlatformGrid
       eyebrow="The complete toolkit"
       heading={<>All Your Research<br />Under One Roof</>}
       intro="Over 40 datasets, pipelines and utilities to spot, test and ship your next product."
+      className="max-w-6xl overflow-hidden rounded-[28px] border border-border pb-10"
     >
-      <PlatformGrid.Tile icon={<Rocket />} label="Launch Playbook" href="/playbook" />
-      <PlatformGrid.Tile icon={<Database />} label="Problem Library" href="/problems" />
+      <PlatformGrid.Tile icon={<Grid2x2 />} label="Maker Hub" href="/maker-hub" />
+      <PlatformGrid.Tile icon={<Rocket />} label="Launch Playbook" href="/launch-playbook" />
+      <PlatformGrid.Tile icon={<Sparkles />} label="Ideas MCP Server" href="/ideas-mcp-server" />
+      <PlatformGrid.Tile icon={<Bot />} label="Reddit Connector" href="/reddit-connector" />
+      <PlatformGrid.Tile icon={<MessageSquare />} label="Ask the Data" href="/ask-the-data" />
+      <PlatformGrid.Tile icon={<Star />} label="Verified Revenue" href="/verified-revenue" />
+      <PlatformGrid.Tile icon={<DollarSign />} label="Stripe Benchmarks" href="/stripe-benchmarks" />
+      <PlatformGrid.Tile icon={<StripeIcon fill="currentColor" />} label="Stripe Customers" href="/stripe-customers" />
+      <PlatformGrid.Tile icon={<Store />} label="Deals for Sale" href="/deals-for-sale" />
+      <PlatformGrid.Tile icon={<HeartHandshake />} label="Acquire.com Listings" href="/acquire-com-listings" />
 
-      <PlatformGrid.Feature icon={<G2Icon />} label="G2 Insights" href="/g2">
+      <PlatformGrid.Feature icon={<G2Icon />} label="G2 Insights" href="/g2-insights">
         <PlatformGrid.Mock>
-          <div className="flex items-center justify-between">
+          <div className="flex items-center justify-between gap-2">
             <span className="text-[9px] font-semibold">Inbox App</span>
             <PlatformGrid.Pill>Score: 8.4</PlatformGrid.Pill>
           </div>
-          <p className="text-[7px] text-foreground/50">Most of 1,380 low ratings blame sync errors</p>
-          <div className="flex items-center justify-between">
+          <p className="truncate text-[7px] text-foreground/50">Most of 1,380 low ratings blame sync errors</p>
+          <div className="flex items-center justify-between pt-0.5">
             <PlatformGrid.Pill tone="soft">24 vendors</PlatformGrid.Pill>
-            <PlatformGrid.Pill tone="accent">Download</PlatformGrid.Pill>
+            <PlatformGrid.Pill tone="accent">↓ Download</PlatformGrid.Pill>
           </div>
         </PlatformGrid.Mock>
       </PlatformGrid.Feature>
 
-      <PlatformGrid.Feature icon={<RedditIcon />} label="Reddit Insights" href="/reddit">
+      <PlatformGrid.Feature icon={<CapterraIcon />} label="Capterra Insights" href="/capterra-insights">
         <PlatformGrid.Mock>
-          <p className="text-[8px] italic">“Switching between three apps for every client is wearing me out”</p>
-          <PlatformGrid.Pill>Frustration</PlatformGrid.Pill>
+          <div className="flex items-center justify-between gap-2">
+            <span className="text-[9px] font-semibold">Team Review Tool</span>
+            <PlatformGrid.Pill>Score: 7.9</PlatformGrid.Pill>
+          </div>
+          <p className="truncate text-[7px] text-foreground/50">Calendar integrations keep breaking</p>
+          <div className="flex items-center gap-1 pt-0.5">
+            <PlatformGrid.Pill tone="soft">52 vendors</PlatformGrid.Pill>
+            <PlatformGrid.Pill tone="soft">2,690 reviews</PlatformGrid.Pill>
+          </div>
         </PlatformGrid.Mock>
       </PlatformGrid.Feature>
 
-      <PlatformGrid.Tile icon={<Lightbulb />} label="Solution Library" href="/solutions" />
-      <PlatformGrid.Tile icon={<Flame />} label="User Frustrations" href="/frustrations" />
-      <PlatformGrid.Tile icon={<Search />} label="Keyword Finder" href="/keywords" />
+      <PlatformGrid.Tile icon={<Landmark />} label="Funding Rounds" href="/funding-rounds" />
+      <PlatformGrid.Tile icon={<YCombinatorIcon fill="currentColor" />} label="YC Startups" href="/yc-startups" />
+      <PlatformGrid.Tile icon={<Puzzle />} label="AI Skill Packs" href="/ai-skill-packs" />
+      <PlatformGrid.Tile icon={<Box />} label="Starter Kit" href="/starter-kit" />
+      <PlatformGrid.Tile icon={<Scissors />} label="Web Clipper" href="/web-clipper" />
+      <PlatformGrid.Tile icon={<Zap />} label="Launch Tracker" href="/launch-tracker" />
+      <PlatformGrid.Tile icon={<Copy />} label="Clone Ideas" href="/clone-ideas" />
+      <PlatformGrid.Tile icon={<FileText />} label="Weekly Brief" href="/weekly-brief" />
+
+      <PlatformGrid.Feature icon={<RedditIcon />} label="Reddit Insights" href="/reddit-insights">
+        <PlatformGrid.Mock>
+          <p className="text-[8px] italic leading-snug text-foreground/70">
+            &ldquo;Switching between three apps for every client is wearing me out&rdquo;
+          </p>
+          <div className="flex flex-wrap gap-1">
+            <PlatformGrid.Pill tone="soft">urgent</PlatformGrid.Pill>
+            <PlatformGrid.Pill tone="soft">founder</PlatformGrid.Pill>
+            <PlatformGrid.Pill tone="soft">may cancel</PlatformGrid.Pill>
+          </div>
+          <div className="flex items-center justify-between pt-0.5">
+            <PlatformGrid.Pill>Frustration</PlatformGrid.Pill>
+            <PlatformGrid.Pill tone="accent">Open pipeline →</PlatformGrid.Pill>
+          </div>
+        </PlatformGrid.Mock>
+      </PlatformGrid.Feature>
+
+      <PlatformGrid.Feature icon={<StoreBadges />} label="App Store Insights" href="/app-store-insights">
+        <PlatformGrid.Mock>
+          <div className="flex items-center gap-1.5">
+            <span className="grid h-4 w-4 place-items-center rounded-[4px] bg-primary text-primary-foreground">
+              <ClipboardList size={9} />
+            </span>
+            <span className="text-[9px] font-semibold">Weekly Meal Planner</span>
+          </div>
+          <p className="text-[7px] text-foreground/50">
+            <span className="text-primary">★</span> 4.1 · 18 reviews · Paid
+          </p>
+          <div className="flex items-center justify-between pt-0.5">
+            <PlatformGrid.Pill>Usability gaps</PlatformGrid.Pill>
+            <PlatformGrid.Pill tone="accent">Read report</PlatformGrid.Pill>
+          </div>
+        </PlatformGrid.Mock>
+      </PlatformGrid.Feature>
+
+      <PlatformGrid.Tile icon={<LayoutGrid />} label="Lookalike Apps" href="/lookalike-apps" />
+      <PlatformGrid.Tile icon={<Database />} label="Problem Library" href="/problem-library" />
+      <PlatformGrid.Tile icon={<Lightbulb />} label="Solution Library" href="/solution-library" />
+      <PlatformGrid.Tile icon={<Flame />} label="User Frustrations" href="/user-frustrations" />
+      <PlatformGrid.Tile icon={<MessagesSquare />} label="Complaint Archive" href="/complaint-archive" />
+      <PlatformGrid.Tile icon={<PackageOpen />} label="Product Hunt Launches" href="/product-hunt-launches" />
+      <PlatformGrid.Tile icon={<StoreBadges />} label="App Store Library" href="/app-store-library" />
+      <PlatformGrid.Tile icon={<UpworkIcon />} label="Upwork Demand" href="/upwork-demand" />
+      <PlatformGrid.Tile icon={<BadgeDollarSign />} label="Idea Scorer" href="/idea-scorer" />
+      <PlatformGrid.Tile icon={<Radio />} label="Live Feed" href="/live-feed" />
+      <PlatformGrid.Tile icon={<ClipboardList />} label="Request a Dataset" href="/request-a-dataset" />
+      <PlatformGrid.Tile icon={<Trophy />} label="Rankings" href="/rankings" />
+      <PlatformGrid.Tile icon={<Tag />} label="Feature Requests" href="/feature-requests" />
+      <PlatformGrid.Tile icon={<Calculator />} label="App Income Estimator" href="/app-income-estimator" />
+      <PlatformGrid.Tile icon={<ChartLine />} label="MRR Estimator" href="/mrr-estimator" />
+      <PlatformGrid.Tile icon={<Calculator />} label="Valuation Estimator" href="/valuation-estimator" />
+      <PlatformGrid.Tile icon={<BarChart3 />} label="Metrics Board" href="/metrics-board" />
+      <PlatformGrid.Tile icon={<ArrowLeftRight />} label="Idea Spark" href="/idea-spark" />
+      <PlatformGrid.Tile icon={<Search />} label="Keyword Finder" href="/keyword-finder" />
+      <PlatformGrid.Tile icon={<Globe />} label="Domain Finder" href="/domain-finder" />
+      <PlatformGrid.Tile icon={<Wrench />} label="Free Utilities" href="/free-utilities" />
       <PlatformGrid.Tile icon={<BookOpen />} label="Docs" href="/docs" />
     </PlatformGrid>
   );

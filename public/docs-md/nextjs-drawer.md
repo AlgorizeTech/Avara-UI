@@ -1,3 +1,5 @@
+export const metadata = docsPageMetadata("drawer");
+
 # Drawer
 
 A highly animated, responsive drawer component. Built entirely from scratch, with plain CSS transitions for butter-smooth entering and exiting animations — no animation library. It supports sliding in from all four screen edges (top, bottom, left, right) and safely locks the background document from scrolling while open.
@@ -49,16 +51,20 @@ export default function BottomSheet() {
 
 export const usageControlled = `"use client";
 
-export default function OnboardingDrawer() {
-  // Open on mount by initializing state to true
-  const [open, setOpen] = useState(true);
+// Optionally skip visitors who were onboarded before. localStorage is read as
+// an external store: false on the server, the stored value in the browser.
+const subscribeToStorage = (onChange: () => void) => {
+  window.addEventListener("storage", onChange);
+  return () => window.removeEventListener("storage", onChange);
+};
+const readOnboarded = () => localStorage.getItem("onboarded") !== null;
 
-  useEffect(() => {
-    // Optionally check if onboarded in browser
-    if (typeof window !== "undefined" && localStorage.getItem("onboarded")) {
-      setOpen(false);
-    }
-  }, []);
+export default function OnboardingDrawer() {
+  const onboarded = useSyncExternalStore(subscribeToStorage, readOnboarded, () => false);
+  // Null until the visitor opens or closes it. Until then it is open on
+  // mount, so no trigger click is needed.
+  const [choice, setOpen] = useState(null);
+  const open = choice ?? !onboarded;
 
   return (
     <>

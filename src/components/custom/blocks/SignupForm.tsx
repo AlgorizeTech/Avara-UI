@@ -17,7 +17,7 @@ import {
   User,
   X,
 } from "lucide-react";
-import React, { useEffect, useLayoutEffect, useRef, useState } from "react";
+import React, { useCallback, useEffect, useRef, useState } from "react";
 import { springLinear } from "./motion-curves";
 import { GoogleIcon } from "./Icons";
 import { getThemeStyles } from "./register-form-theme";
@@ -61,23 +61,25 @@ function usePresence<T extends Element>(
   endProperty: string,
   exitMs: number,
 ) {
-  const ref = useRef<T>(null);
   const [mounted, setMounted] = useState(show);
   const [open, setOpen] = useState(false);
 
-  useLayoutEffect(() => {
-    if (!show) {
-      setOpen(false);
-      return;
-    }
-    if (!mounted) {
-      setMounted(true);
-      return;
-    }
-    // Resolve the closed styles before opening, or nothing transitions.
-    ref.current?.getBoundingClientRect();
-    setOpen(true);
-  }, [show, mounted]);
+  // Follow `show` while rendering, so the change is what first commits.
+  if (!show && open) setOpen(false);
+  if (show && !mounted) setMounted(true);
+
+  // Runs in the commit where the element mounts, and again whenever `show`
+  // changes (a new callback is a new ref), so an element caught mid-exit
+  // opens again too. Resolve the closed styles before opening, or nothing
+  // transitions.
+  const attach = useCallback(
+    (el: T | null) => {
+      if (!el || !show) return;
+      el.getBoundingClientRect();
+      setOpen(true);
+    },
+    [show],
+  );
 
   useEffect(() => {
     if (show || !mounted) return;
@@ -95,7 +97,7 @@ function usePresence<T extends Element>(
     }
   };
 
-  return { ref, mounted, open, onTransitionEnd };
+  return { attach, mounted, open, onTransitionEnd };
 }
 
 /** The last non-empty message, so an error keeps its text while it leaves. */
@@ -125,7 +127,13 @@ const PremiumInput = React.forwardRef<HTMLInputElement, PremiumInputProps>(
     const isPassword = type === "password";
     const inputType = isPassword ? (showPassword ? "text" : "password") : type;
 
-    const errorPresence = usePresence<HTMLDivElement>(!!error, "opacity", 300);
+    // The ref callback is pulled out on its own: left inside the object, the
+    // compiler treats every field read from it as a ref read.
+    const { attach: attachError, ...errorPresence } = usePresence<HTMLDivElement>(
+      !!error,
+      "opacity",
+      300,
+    );
     const errorText = useLastMessage(error);
 
     return (
@@ -203,7 +211,7 @@ const PremiumInput = React.forwardRef<HTMLInputElement, PremiumInputProps>(
         {/* Animated Error Message */}
         {errorPresence.mounted && (
           <div
-            ref={errorPresence.ref}
+            ref={attachError}
             onTransitionEnd={errorPresence.onTransitionEnd}
             className="overflow-hidden"
             style={{
@@ -246,8 +254,8 @@ const PremiumCheckbox = ({
   error,
   required,
 }: PremiumCheckboxProps) => {
-  const tick = usePresence<SVGSVGElement>(checked, "opacity", TICK_DURATION);
-  const errorPresence = usePresence<HTMLParagraphElement>(
+  const { attach: attachTick, ...tick } = usePresence<SVGSVGElement>(checked, "opacity", TICK_DURATION);
+  const { attach: attachError, ...errorPresence } = usePresence<HTMLParagraphElement>(
     !!error,
     "opacity",
     300,
@@ -276,7 +284,7 @@ const PremiumCheckbox = ({
           >
             {tick.mounted && (
               <svg
-                ref={tick.ref}
+                ref={attachTick}
                 onTransitionEnd={tick.onTransitionEnd}
                 style={{
                   opacity: tick.open ? 1 : 0,
@@ -309,7 +317,7 @@ const PremiumCheckbox = ({
       </label>
       {errorPresence.mounted && (
         <p
-          ref={errorPresence.ref}
+          ref={attachError}
           onTransitionEnd={errorPresence.onTransitionEnd}
           className="text-[12px] font-semibold text-rose-500 ml-8 overflow-hidden"
           style={{

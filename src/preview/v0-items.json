@@ -3,7 +3,7 @@
     "3d-carousel": "Carousel 3D — 3D carousel",
     "shorter-deck": "Carousel 3D — Shorter deck"
   },
-  "carousel-3d-framer": {
+  "carousel-3d-motion": {
     "3d-carousel": "Carousel 3D — 3D carousel",
     "shorter-deck": "Carousel 3D — Shorter deck"
   },
@@ -23,7 +23,7 @@
     "minimal": "AI Chat — Minimal",
     "glass": "AI Chat — Glass"
   },
-  "ai-chat-framer": {
+  "ai-chat-motion": {
     "ai-assistant": "AI Chat — AI assistant",
     "compact": "AI Chat — Compact",
     "wired-to-your-backend": "AI Chat — Wired to your backend",
@@ -146,6 +146,12 @@
     "with-navigation-buttons": "Card Stack — With navigation buttons",
     "left-slide-direction": "Card Stack — Left Slide Direction"
   },
+  "card-stack-motion": {
+    "swipe-to-discard": "Card Stack — Swipe to Discard",
+    "infinite-loop": "Card Stack — Infinite Loop",
+    "with-navigation-buttons": "Card Stack — With navigation buttons",
+    "left-slide-direction": "Card Stack — Left Slide Direction"
+  },
   "carousel": {
     "radial-carousel": "Carousel — Radial carousel",
     "fluid-glass-slider": "Carousel — Fluid glass slider",
@@ -199,6 +205,9 @@
   "component-wall": {
     "build-interactive-interfaces": "Component Wall — Build interactive interfaces",
     "copy-beside-the-wall": "Component Wall — Copy beside the wall"
+  },
+  "confidential-folder": {
+    "confidential-folder": "Confidential Folder"
   },
   "context-menu": {
     "labels-shortcuts-disabled": "Context Menu — Labels, shortcuts & disabled"
@@ -258,6 +267,9 @@
     "shell-commands": "Custom Code Block — Shell commands",
     "multiple-files": "Custom Code Block — Multiple files"
   },
+  "dashboard": {
+    "admin-overview": "Dashboard — Admin overview"
+  },
   "data-flow": {
     "sources-core-outputs": "Data Flow — Sources, core, outputs"
   },
@@ -269,6 +281,9 @@
     "filled-regions": "Data Maps — Filled regions",
     "density-dots": "Data Maps — Density dots",
     "zoomable": "Data Maps — Zoomable"
+  },
+  "data-table-soft": {
+    "soft-variant": "Data Table — Soft variant"
   },
   "advanced-table": {
     "searchable-datatable": "Advanced Table — Searchable DataTable"
@@ -299,7 +314,7 @@
     "dock": "Dock",
     "badges-active-app": "Dock — Badges & active app"
   },
-  "dock-framer": {
+  "dock-motion": {
     "dock": "Dock",
     "badges-active-app": "Dock — Badges & active app"
   },
@@ -307,7 +322,7 @@
     "classic-card-list": "Draggable Card List — Classic Card List",
     "modern-ambient-tint-card-list": "Draggable Card List — Modern Ambient Tint Card List"
   },
-  "draggable-card-list-framer": {
+  "draggable-card-list-motion": {
     "classic-card-list": "Draggable Card List — Classic Card List",
     "modern-ambient-tint-card-list": "Draggable Card List — Modern Ambient Tint Card List"
   },
@@ -369,7 +384,7 @@
     "icon": "Folder — Icon",
     "photos": "Folder — Photos"
   },
-  "folder-framer": {
+  "folder-motion": {
     "folder": "Folder",
     "fan-on-hover": "Folder — Fan on hover",
     "icon": "Folder — Icon",
@@ -457,7 +472,9 @@
     "interactive-thumbnail-strip-gallery-viewer": "Image Viewer — Interactive Thumbnail Strip Gallery Viewer"
   },
   "image-wall": {
-    "a-camera-over-the-wall": "Image Wall — A camera over the wall"
+    "a-camera-over-the-wall": "Image Wall — A camera over the wall",
+    "a-band-shuffled": "Image Wall — A band, shuffled",
+    "held-still": "Image Wall — Held still"
   },
   "infrastructure-topology": {
     "infrastructure-topology-showcase": "Infrastructure Topology — Infrastructure Topology Showcase"
@@ -500,7 +517,7 @@
     "slower-stagger": "Masonry Grid — Slower stagger",
     "without-the-entrance": "Masonry Grid — Without the entrance"
   },
-  "masonry-grid-framer": {
+  "masonry-grid-motion": {
     "masonry-grid": "Masonry Grid",
     "column-counts": "Masonry Grid — Column counts",
     "custom-gap-spacing": "Masonry Grid — Custom gap spacing",
@@ -510,7 +527,7 @@
   "memories-card": {
     "tracking-the-active-card": "Memories Card — Tracking the active card"
   },
-  "memories-card-framer": {
+  "memories-card-motion": {
     "tracking-the-active-card": "Memories Card — Tracking the active card"
   },
   "menubar": {
@@ -551,7 +568,7 @@
     "spotlight": "Newsletter — Spotlight",
     "issues": "Newsletter — Issues"
   },
-  "newsletter-framer": {
+  "newsletter-motion": {
     "portraits": "Newsletter — Portraits",
     "spotlight": "Newsletter — Spotlight",
     "issues": "Newsletter — Issues"
@@ -650,6 +667,9 @@
     "glass": "Scroll Area — Glass",
     "auto-hide": "Scroll Area — Auto-hide"
   },
+  "scroll-split-cards": {
+    "scroll-split-cards": "Scroll Split Cards"
+  },
   "scroll-stack": {
     "card-gap": "Scroll Stack — Card gap"
   },
@@ -657,7 +677,7 @@
     "sticky-stack": "Sticky Scroll Stack — Sticky stack",
     "stack-geometry": "Sticky Scroll Stack — Stack geometry"
   },
-  "sticky-scroll-stack-framer": {
+  "sticky-scroll-stack-motion": {
     "sticky-stack": "Sticky Scroll Stack — Sticky stack",
     "stack-geometry": "Sticky Scroll Stack — Stack geometry"
   },
@@ -753,8 +773,14 @@
     "table-view": "Support Dashboard — Table view",
     "glass": "Support Dashboard — Glass"
   },
+  "table-soft": {
+    "soft-variant": "Table — Soft variant"
+  },
   "table": {
     "composable-table": "Table — Composable table"
+  },
+  "table-soft-comparison": {
+    "comparison-soft": "Table — Comparison (soft)"
   },
   "table-of-contents": {
     "table-of-contents-left-side-navigation": "Table Of Contents — Table of Contents (Left Side Navigation)"
@@ -845,6 +871,7 @@
     "toggle-group": "Toggle Group",
     "outline": "Toggle Group — Outline",
     "ghost": "Toggle Group — Ghost",
+    "segmented": "Toggle Group — Segmented",
     "sizes": "Toggle Group — Sizes",
     "multiple-selection": "Toggle Group — Multiple selection",
     "disabled": "Toggle Group — Disabled"
