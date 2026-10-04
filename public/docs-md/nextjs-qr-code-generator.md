@@ -1,55 +1,111 @@
+export const metadata = docsPageMetadata("qr-code-generator", {
+  title: "QR Code",
+  description: "A complete QR Code suite allowing you to easily generate high-quality QR codes and seamlessly scan/read uploaded QR code images."
+});
+
 # QR Code Suite
 
-A premium, dual-purpose QR Code component suite built for Next.js applications. 
+A premium, dual-purpose QR Code component suite built for Next.js applications.
 
 Whether you need to generate high-fidelity, customizable QR codes (with PNG/PDF download support) or allow users to upload and scan QR code images to extract embedded URLs, this suite has you covered.
 
-## Examples
+Everything below runs client-side — type a new value and the SVG regenerates instantly. The generator and the reader are separate components with separate install commands.
 
-Everything below runs client-side — type a new value and the SVG regenerates instantly. The first example's **Code** tab holds the generator source; the reader example's holds the reader source.
+## QR generator
 
-export const usageGenerator = `import { QrCodeGenerator } from "@/components/custom/blocks/QrCodeGeneratorBlock";
+export const usageGenerator = `"use client";
+
+type Level = "L" | "M" | "Q" | "H";
 
 export default function GeneratorExample() {
+  const [value, setValue] = useState("https://algorizetech.com");
+  const [level, setLevel] = useState("L");
+
+  // Only  ships with the component — the controls around it
+  // are ordinary markup wired to your own state.
   return (
-    
+
+          Generate QR codes from text or URLs.
+
+            Value:
+          
+           setValue(e.target.value)}
+            placeholder="https://algorizetech.com"
+            className="w-full px-4 py-3 border border-input rounded-xl bg-muted focus:outline-none focus:ring-2 focus:ring-primary/20 text-sm transition-colors"
+          />
+
+            Correction Level:
+
+            {(["L", "M", "Q", "H"] as const).map((lvl) => (
+               setLevel(lvl)}
+                className={
+                  "flex-1 cursor-pointer px-3 sm:px-4 py-2 text-sm font-medium transition-colors border-r border-border last:border-r-0 text-center " +
+                  (level === lvl
+                    ? "bg-muted text-primary"
+                    : "text-muted-foreground hover:text-foreground hover:bg-muted")
+                }
+              >
+                {lvl}
+              
+            ))}
+
+            Save as PNG
+
+            Save as PDF
+
   );
 }`;
 
 export const usageGallery = `import { QrCodeGenerator } from "@/components/custom/blocks/QrCodeGeneratorBlock";
 
+const swatches = [
+  { size: 96, level: "L" as const },
+  { size: 140, level: "M" as const },
+  { size: 200, level: "H" as const },
+];
+
 export default function QrGallery() {
   return (
+    
+      {swatches.map((s) => (
 
+            size={s.size} · level=&quot;{s.level}&quot;
+
+      ))}
+    
   );
 }`;
 
-export const usageReader = `import { QrCodeReader } from "@/components/custom/blocks/QrCodeReaderBlock";
+export const usageReader = `"use client";
 
 export default function ReaderExample() {
   // Click or drag-and-drop a QR image; \`onRead\` fires with the decoded string.
   return  console.log("Scanned QR:", data)} />;
 }`;
 
-## Installation
+### Installation
 
-### 1. Install Dependencies
-
-The QR Code Generator relies on the lightweight, industry-standard package `qrcode.react` for generating SVG QR Codes.
+Register the @algorize-ui registry once per project, then add the component:
 
 ```bash
-npm install qrcode.react
+npx shadcn@latest registry add @algorize-ui=https://algorize-ui.vercel.app/r/{name}.json
+npx shadcn@latest add @algorize-ui/qr-code-generator
 ```
 
-The QR Code Reader relies on the `jsqr` package for reading and extracting data from uploaded images, and `lucide-react` for the UI icons.
+### More examples
+
+## QR reader
+
+A separate component with its own dependencies — decoding happens entirely in the browser.
+
+### Installation
+
+Register the @algorize-ui registry once per project, then add the component:
 
 ```bash
-npm install jsqr lucide-react
+npx shadcn@latest registry add @algorize-ui=https://algorize-ui.vercel.app/r/{name}.json
+npx shadcn@latest add @algorize-ui/qr-code-reader
 ```
-
-### 2. Copy the Components
-
-Create `components/custom/blocks/QrCodeGeneratorBlock.tsx` and copy the source from the **Code** tab of the first example above. For the scanner, create `components/custom/blocks/QrCodeReaderBlock.tsx` and copy the source from the **Code** tab of the **QR reader** example.
 
 ## Features
 Explore the QR Code Generator's customizable features, allowing for different colors, sizes, and embedded logos within the code.
@@ -129,6 +185,6 @@ Explore the QR Code Generator's customizable features, allowing for different co
 
 ---
 
-**Component Path:** `nextjs\qr-code-generator\page.mdx`
+**Component Path:** `[framework]\qr-code-generator\page.mdx`
 
-**Web Version:** Visit the interactive version at the corresponding URL on the Next.js documentation site for live previews and interactive examples.
+**Web Version:** Visit the corresponding URL on the Algorize UI documentation site for live previews and interactive examples.

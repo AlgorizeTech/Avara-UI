@@ -1,0 +1,27 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "ui-accordion",
+  "title": "UI Accordion",
+  "author": "AlgorizeTech",
+  "description": "The Radix-backed accordion primitive that the higher-level Accordion block composes. Install it only if you want the unstyled base directly.",
+  "dependencies": [
+    "@radix-ui/react-accordion",
+    "lucide-react"
+  ],
+  "registryDependencies": [
+    "utils"
+  ],
+  "files": [
+    {
+      "path": "src/components/custom/ui/accordion.tsx",
+      "content": "\"use client\";\n\nimport * as AccordionPrimitive from \"@radix-ui/react-accordion\";\nimport { ChevronDownIcon } from \"lucide-react\";\nimport * as React from \"react\";\n\nimport { cn } from \"@/lib/utils\";\n\n// ComponentProps, not ComponentPropsWithoutRef: React 19 passes `ref` as an\n// ordinary prop, so blocks can reach the root element (the Accordion block\n// measures it for its stack entrance).\ntype AccordionProps = React.ComponentProps<typeof AccordionPrimitive.Root>;\nfunction Accordion(props: AccordionProps) {\n  return <AccordionPrimitive.Root data-slot=\"accordion\" {...props} />;\n}\n\ntype AccordionItemProps = React.ComponentPropsWithoutRef<\n  typeof AccordionPrimitive.Item\n>;\nfunction AccordionItem({ className, ...props }: AccordionItemProps) {\n  return (\n    <AccordionPrimitive.Item\n      data-slot=\"accordion-item\"\n      className={cn(className)}\n      {...props}\n    />\n  );\n}\n\ntype AccordionTriggerProps = React.ComponentPropsWithoutRef<\n  typeof AccordionPrimitive.Trigger\n> & {\n  expandIcon?: React.ReactNode;\n  expandIconClassName?: string;\n};\nfunction AccordionTrigger({\n  className,\n  children,\n  expandIcon,\n  expandIconClassName,\n  ...props\n}: AccordionTriggerProps) {\n  return (\n    <AccordionPrimitive.Header className=\"flex\">\n      <AccordionPrimitive.Trigger\n        data-slot=\"accordion-trigger\"\n        className={cn(\n          \"focus-visible:border-ring focus-visible:ring-ring/50 flex flex-1 items-start justify-between gap-4 !rounded-none py-4 text-left text-sm font-medium transition-all outline-none text-decoration-none focus-visible:ring-[3px] disabled:pointer-events-none disabled:opacity-50 [&[data-state=open]>svg]:rotate-180\",\n          className,\n          expandIconClassName,\n        )}\n        {...props}\n      >\n        {children}\n        {expandIcon ? (\n          expandIcon\n        ) : (\n          <ChevronDownIcon className=\"text-muted-foreground group-hover:text-primary group-[[data-state=open]]:text-primary pointer-events-none size-4 shrink-0 translate-y-0.5 transition-all duration-200\" />\n        )}\n      </AccordionPrimitive.Trigger>\n    </AccordionPrimitive.Header>\n  );\n}\n\ntype AccordionContentProps = React.ComponentPropsWithoutRef<\n  typeof AccordionPrimitive.Content\n>;\nfunction AccordionContent({\n  className,\n  children,\n  ...props\n}: AccordionContentProps) {\n  return (\n    <AccordionPrimitive.Content\n      data-slot=\"accordion-content\"\n      className=\"data-[state=closed]:animate-accordion-up data-[state=open]:animate-accordion-down overflow-hidden text-sm \"\n      {...props}\n    >\n      <div className={cn(\"pt-0\", className)}>{children}</div>\n    </AccordionPrimitive.Content>\n  );\n}\n\nexport { Accordion, AccordionContent, AccordionItem, AccordionTrigger };\n",
+      "type": "registry:ui",
+      "target": "components/custom/ui/accordion.tsx"
+    }
+  ],
+  "docs": "Named exports: Accordion, AccordionItem, AccordionTrigger, AccordionContent. This is the internal primitive — most projects want the `accordion` item instead. Derived from shadcn/ui (MIT, Copyright (c) 2023 shadcn).",
+  "categories": [
+    "utilities"
+  ],
+  "type": "registry:ui"
+}

@@ -1,12 +1,8 @@
-# Design Components
+export const metadata = docsPageMetadata("design-components-folder");
 
-An interactive multi-tab component folder showcasing live AI Chat, Real-time Analytics, Auth Form, and CLI Terminal components inside a sleek desktop window interface. Built with Framer Motion and Tailwind CSS.
+# Components Folder
 
-## Examples
-
-Two components ship here: `DesignComponentsFolder`, the full hub with animated cards rising out of a frosted folder, and `DesignFolderBox`, the same folder shell with nothing inside it. Each example's **Code** tab contains that component's full source.
-
-### Components hub
+An interactive multi-tab component folder showcasing live AI Chat, Real-time Analytics, Auth Form, and CLI Terminal components inside a sleek desktop window interface. Built with Tailwind CSS and native CSS transitions — no animation library.
 
 export const usageFolder = `import { DesignComponentsFolder } from "@/components/custom/blocks/DesignComponentsFolder";
 
@@ -14,33 +10,31 @@ export default function Showcase() {
   return ;
 }`;
 
-### Standalone folder box
+### Installation
 
-A pure frosted glass folder container without the animated cards inside — useful as a showcase box of your own.
+Register the @algorize-ui registry once per project, then add the component:
 
-export const usageBox = `import { DesignFolderBox } from "@/components/custom/blocks/DesignFolderBox";
+```bash
+npx shadcn@latest registry add @algorize-ui=https://algorize-ui.vercel.app/r/{name}.json
+npx shadcn@latest add @algorize-ui/design-components-folder
+```
 
-export default function Container() {
+export const usageBoxLabels = `import { DesignFolderBox } from "@/components/custom/blocks/DesignFolderBox";
+
+export default function CustomLabelBox() {
+  // \`title\` and \`subtitle\` are the only text in the box — they default to
+  // "Design" / "Components".
   return ;
 }`;
 
-export const usageBoxLabels = `// \`title\` and \`subtitle\` are the only text in the box — they default to
-// "Design" / "Components".
-`;
+### Installation
 
-## Installation
-
-### 1. Install Dependencies
-
-Ensure you have `framer-motion` (or `motion`), `lucide-react`, and `@/lib/utils` installed in your Next.js project.
+Register the @algorize-ui registry once per project, then add the component:
 
 ```bash
-npm install motion lucide-react
+npx shadcn@latest registry add @algorize-ui=https://algorize-ui.vercel.app/r/{name}.json
+npx shadcn@latest add @algorize-ui/design-folder-box
 ```
-
-### 2. Copy the Component
-
-Copy the full Hub source from the **Code** tab of the first example above into `components/custom/blocks/DesignComponentsFolder.tsx`, or the standalone Box from the **Code** tab of the folder-box example into `components/custom/blocks/DesignFolderBox.tsx`. They are independent files — take only the one you need.
 
 ## Props Reference
 
@@ -118,6 +112,6 @@ Copy the full Hub source from the **Code** tab of the first example above into `
 
 ---
 
-**Component Path:** `nextjs\design-components-folder\page.mdx`
+**Component Path:** `[framework]\design-components-folder\page.mdx`
 
-**Web Version:** Visit the interactive version at the corresponding URL on the Next.js documentation site for live previews and interactive examples.
+**Web Version:** Visit the corresponding URL on the Algorize UI documentation site for live previews and interactive examples.

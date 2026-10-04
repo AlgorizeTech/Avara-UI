@@ -1,0 +1,601 @@
+"use client";
+
+import React, { useCallback, useEffect, useState } from "react";
+import { Eye, EyeOff, Nfc } from "lucide-react";
+import { cn } from "@/lib/utils";
+import { springLinear } from "./motion-curves";
+import { DEFAULT_WALLET_CARDS, type WalletCardItem } from "./wallet-data";
+
+// The cards move on a spring (stiffness 280, damping 22, mass 0.8) drawn as a
+// CSS `linear()` curve; the flip and the balance swap are plain eases.
+const CARD_SPRING = springLinear({ stiffness: 280, damping: 22, mass: 0.8 });
+const FLIP_TRANSITION = "transform 0.55s cubic-bezier(0.23, 1, 0.32, 1)";
+const EASE_OUT = "cubic-bezier(0, 0, 0.58, 1)";
+const BALANCE_TRANSITION = `opacity 0.2s ${EASE_OUT}, transform 0.2s ${EASE_OUT}, filter 0.2s ${EASE_OUT}`;
+
+type BalancePhase = "from" | "shown" | "leaving";
+
+/**
+ * The balance swaps one way at a time: the showing one fades out upwards,
+ * then the other comes in from below. The first one comes in on mount.
+ * Changing back while one is leaving brings it back from where it is.
+ */
+function useBalanceSwap(masked: boolean) {
+  const [shownMasked, setShownMasked] = useState(masked);
+  // Whether the shown one is still at its starting look, about to come in.
+  const [entering, setEntering] = useState(true);
+  // The shown one leaves whenever it is not the wanted one; changing back
+  // while it leaves brings it back from where it is.
+  const leaving = masked !== shownMasked;
+  const phase: BalancePhase = leaving ? "leaving" : entering ? "from" : "shown";
+
+  // Coming in: each balance mounts afresh (its own key) at the starting
+  // look; once that is committed, transition to the resting one.
+  const enter = useCallback((node: HTMLDivElement | null) => {
+    if (!node) return;
+    void node.offsetWidth;
+    setEntering(false);
+  }, []);
+
+  const settle = () => {
+    if (!leaving) return;
+    setShownMasked(masked);
+    setEntering(true);
+  };
+
+  // In case the transition never ends (a hidden tab, `display: none`).
+  useEffect(() => {
+    if (!leaving) return;
+    const t = window.setTimeout(() => {
+      setShownMasked(masked);
+      setEntering(true);
+    }, 250);
+    return () => window.clearTimeout(t);
+  }, [leaving, masked]);
+
+  const y = phase === "from" ? 4 : phase === "leaving" ? -4 : 0;
+  const style: React.CSSProperties = {
+    opacity: phase === "shown" ? 1 : 0,
+    transform: y ? `translateY(${y}px)` : "none",
+    // Only the revealed balance blurs.
+    filter: shownMasked ? undefined : `blur(${phase === "shown" ? 0 : 4}px)`,
+    transition: phase === "from" ? "none" : BALANCE_TRANSITION,
+  };
+  const onTransitionEnd = (e: React.TransitionEvent<HTMLDivElement>) => {
+    if (e.target === e.currentTarget && e.propertyName === "opacity") settle();
+  };
+  // `enter` is the balance element's callback ref.
+  return { shownMasked, enter, style, onTransitionEnd };
+}
+
+// ==========================================
+// TYPES & DATA STRUCTURES
+// ==========================================
+export type { WalletCardItem };
+
+export interface WalletProps extends React.HTMLAttributes<HTMLDivElement> {
+  cards?: WalletCardItem[];
+  overallBalance?: string;
+  overallLabel?: string;
+  revealText?: string;
+  concealText?: string;
+  maskedBalance?: string;
+  allowReveal?: boolean;
+  defaultRevealed?: boolean;
+  autoRevealOnHover?: boolean;
+  walletColor?: string;
+  /** Prompt shown above the closed wallet on pointer devices. Pass "" to hide. */
+  hint?: string;
+  /** The same prompt on touch screens, where the wallet opens on tap. */
+  touchHint?: string;
+  /** Prompt shown once the cards are out, on pointer devices. Pass "" to hide. */
+  openHint?: string;
+  /** The open prompt on touch screens. */
+  touchOpenHint?: string;
+}
+
+// ==========================================
+// SUBCOMPONENT: METALLIC EMV CHIP
+// ==========================================
+function EmvChip({ className }: { className?: string }) {
+  return (
+    <div
+      className={cn(
+        "relative w-9 h-7 rounded-md bg-gradient-to-br from-amber-200 via-amber-400 to-amber-500 p-0.5 shadow-sm border border-amber-600/40 overflow-hidden",
+        className
+      )}
+    >
+      <div className="w-full h-full border border-amber-700/30 rounded-[3px] flex items-center justify-center relative bg-gradient-to-b from-amber-300/40 to-transparent">
+        <div className="absolute inset-x-0 h-[1px] bg-amber-700/40 top-1/2 -translate-y-1/2" />
+        <div className="absolute inset-y-0 w-[1px] bg-amber-700/40 left-1/3" />
+        <div className="absolute inset-y-0 w-[1px] bg-amber-700/40 right-1/3" />
+        <div className="w-2.5 h-2.5 rounded-full border border-amber-700/40 bg-amber-200/50" />
+      </div>
+    </div>
+  );
+}
+
+// ==========================================
+// MAIN COMPONENT: WALLET
+// ==========================================
+export function Wallet({
+  cards = DEFAULT_WALLET_CARDS,
+  overallBalance = "$89,000.00",
+  overallLabel = "Overall Balance",
+  revealText = "Reveal balance",
+  concealText = "Conceal balance",
+  maskedBalance = "✱✱✱✱✱✱✱✱",
+  allowReveal = true,
+  defaultRevealed = false,
+  autoRevealOnHover = false,
+  walletColor,
+  hint = "Hover to view cards",
+  touchHint = "Tap to view cards",
+  openHint = "Click a card to view details",
+  touchOpenHint = "Tap a card to view details",
+  className,
+  ...props
+}: WalletProps) {
+  const activeCards = cards.length > 0 ? cards : DEFAULT_WALLET_CARDS;
+  const baseColor = walletColor || "var(--primary, #6366f1)";
+  // The wallet wears a soft tint of the colour rather than the colour itself
+  // (the same OKLCH recipe as Folder), with a deep ink of the same hue on it.
+  const flapColor = `oklch(from ${baseColor} 0.88 calc(c * 0.4) h)`;
+  const plateColor = `oklch(from ${baseColor} 0.8 calc(c * 0.5) h)`;
+  const ink = `oklch(from ${baseColor} 0.32 calc(c * 0.6) h)`;
+  const inkAlpha = (a: number) => `oklch(from ${baseColor} 0.32 calc(c * 0.6) h / ${a})`;
+  const [isHovered, setIsHovered] = useState(false);
+  const [isRevealed, setIsRevealed] = useState(defaultRevealed);
+  const [elevatedCardIdx, setElevatedCardIdx] = useState<number | null>(null);
+  const [isFlipped, setIsFlipped] = useState(false);
+
+  const shouldShowBalance = isRevealed || (autoRevealOnHover && isHovered);
+  const {
+    shownMasked: balanceMasked,
+    enter: enterBalance,
+    style: balanceStyle,
+    onTransitionEnd: onBalanceTransitionEnd,
+  } = useBalanceSwap(!shouldShowBalance);
+
+  // Stagger offsets for the 3 cards when hovered:
+  // Card 0 (back, Amber) -> y: -130px
+  // Card 1 (middle, Fuchsia) -> y: -75px
+  // Card 2 (front, Blue) -> y: -20px
+  const cardStaggers = [
+    { y: -130, scale: 0.96, delay: 0.12, rotate: -1 },
+    { y: -75, scale: 0.98, delay: 0.06, rotate: 0.8 },
+    { y: -20, scale: 1.0, delay: 0.0, rotate: 0 },
+  ];
+
+  // At rest each card peeks the same strip above the one in front of it, so
+  // the closed wallet reads as a stack. The scale shrinks a card from its
+  // bottom edge, so the back cards rise a little further to keep the strips
+  // even (16px each).
+  const restY = [-54, -34, -14];
+
+  const handleCardClick = (idx: number, e: React.MouseEvent) => {
+    e.stopPropagation();
+    if (elevatedCardIdx === idx) {
+      // Card is already elevated: toggle flip front/back!
+      setIsFlipped((prev) => !prev);
+    } else {
+      // Elevate this card and reset flip to front face
+      setElevatedCardIdx(idx);
+      setIsFlipped(false);
+    }
+  };
+
+  return (
+    <div
+      className={cn(
+        "relative flex flex-col items-center justify-center p-4 sm:p-12 w-full select-none",
+        className
+      )}
+      {...props}
+    >
+      {/* Outer interactive wallet frame */}
+      <div
+        className="relative w-full max-w-[380px] h-[470px] flex items-end justify-center cursor-pointer group"
+        onMouseEnter={() => setIsHovered(true)}
+        onMouseLeave={() => {
+          setIsHovered(false);
+          setElevatedCardIdx(null);
+          setIsFlipped(false);
+        }}
+        onClick={() => {
+          // If clicked outside cards while elevated, un-elevate
+          if (elevatedCardIdx !== null) {
+            setElevatedCardIdx(null);
+            setIsFlipped(false);
+          } else {
+            setIsHovered((prev) => !prev);
+          }
+        }}
+      >
+        {/* Prompts in the space the cards rise into: one while closed, one
+            while the cards are out, and none once a card is lifted over it. */}
+        {[
+          { key: "closed", shown: !isHovered && elevatedCardIdx === null, text: hint, touch: touchHint },
+          { key: "open", shown: isHovered && elevatedCardIdx === null, text: openHint, touch: touchOpenHint },
+        ].map(({ key, shown, text, touch }) =>
+          text || touch ? (
+            <p
+              key={key}
+              aria-hidden="true"
+              className="absolute inset-x-0 top-[17%] text-center text-[13px] font-medium text-muted-foreground pointer-events-none transition-[opacity,translate] duration-300"
+              style={{ opacity: shown ? 1 : 0, translate: shown ? "0 0" : "0 -6px" }}
+            >
+              <span className="[@media(hover:none)]:hidden">{text}</span>
+              <span className="hidden [@media(hover:none)]:inline">{touch}</span>
+            </p>
+          ) : null
+        )}
+
+        {/* ========================================================= */}
+        {/* LAYER 1: BACK PLATE (Nicher Pit - Rear Sleeve)            */}
+        {/* Height is 242px with matching 28px rounded corners        */}
+        {/* ========================================================= */}
+        <svg
+          viewBox="0 0 380 242"
+          className="absolute bottom-0 inset-x-0 w-full h-[242px] pointer-events-none drop-shadow-sm"
+          preserveAspectRatio="none"
+        >
+          <path
+            d="
+              M 28 0
+              H 352
+              A 28 28 0 0 1 380 28
+              V 214
+              A 28 28 0 0 1 352 242
+              H 28
+              A 28 28 0 0 1 0 214
+              V 28
+              A 28 28 0 0 1 28 0
+              Z
+            "
+            className="transition-colors duration-300"
+            style={{
+              fill: plateColor,
+              stroke: "rgba(255, 255, 255, 0.2)",
+            }}
+            strokeWidth="1.5"
+          />
+        </svg>
+
+        {/* ========================================================= */}
+        {/* LAYER 2: THE 3 CARDS                                      */}
+        {/* Supports serial hover, elevation on click, and 3D flip    */}
+        {/* ========================================================= */}
+        {activeCards.slice(0, 3).map((card, idx) => {
+          const stagger = cardStaggers[idx] || cardStaggers[0];
+          const isElevated = elevatedCardIdx === idx;
+          const isCardFlippedNow = isElevated && isFlipped;
+
+          // Target Y:
+          // If elevated: rises high up (-230px)
+          // Else if hovered: normal stagger position
+          // Else: tucked inside wallet, peeking as a stack
+          let targetY = restY[idx] ?? 0;
+          if (isElevated) {
+            targetY = -230;
+          } else if (isHovered) {
+            targetY = stagger.y;
+          }
+
+          // Target scale & rotation
+          const targetScale = isElevated ? 1.03 : isHovered ? stagger.scale : 1 - (2 - idx) * 0.02;
+          const targetRotate = isElevated ? 0 : isHovered ? stagger.rotate : 0;
+
+          // Z-index: elevated card has top priority (50), higher than front flap (40)
+          const zIndex = isElevated ? 50 : 10 + idx * 10;
+          const delay = isElevated ? 0 : isHovered ? stagger.delay : (2 - idx) * 0.04;
+
+          return (
+            <div
+              key={card.id || `card-${idx}`}
+              className="absolute bottom-[35px] left-[5%] w-[90%] h-[195px] cursor-pointer"
+              style={{
+                zIndex,
+                perspective: 1200,
+                transformOrigin: "bottom center",
+                translate: `0 ${targetY}px`,
+                scale: targetScale,
+                rotate: `${targetRotate}deg`,
+                transition: ["translate", "scale", "rotate"]
+                  .map((property) => `${property} ${CARD_SPRING.duration}ms ${CARD_SPRING.easing} ${delay}s`)
+                  .join(", "),
+              }}
+              onClick={(e) => handleCardClick(idx, e)}
+            >
+              {/* 3D Rotator for Card Flip */}
+              <div
+                className="w-full h-full relative"
+                style={{
+                  transformStyle: "preserve-3d",
+                  transform: `rotateY(${isCardFlippedNow ? 180 : 0}deg)`,
+                  transition: FLIP_TRANSITION,
+                }}
+              >
+                {/* =================================================== */}
+                {/* FRONT FACE (Ager Pit)                               */}
+                {/* =================================================== */}
+                <div
+                  style={{
+                    backfaceVisibility: "hidden",
+                    WebkitBackfaceVisibility: "hidden",
+                  }}
+                  className={cn(
+                    "absolute inset-0 p-4 flex flex-col justify-between border rounded-[22px] overflow-hidden shadow-lg transition-colors duration-200",
+                    `bg-gradient-to-r ${card.gradientLight || "from-amber-400 to-amber-500"}`,
+                    `dark:bg-gradient-to-r ${card.gradientDark || "from-amber-400 to-amber-600"}`,
+                    "border-black/5 dark:border-white/10"
+                  )}
+                >
+                  {/* Surface specular highlight */}
+                  <div className="absolute inset-0 rounded-[22px] bg-gradient-to-b from-white/20 via-transparent to-black/10 pointer-events-none" />
+
+                  {/* Header: Name & Balance */}
+                  <div className="flex items-center justify-between relative z-10">
+                    <div className="flex items-center gap-2">
+                      <span
+                        className={cn(
+                          "font-bold text-sm sm:text-base tracking-tight",
+                          card.textColorLight || "text-zinc-950",
+                          `dark:${card.textColorDark || "text-white"}`
+                        )}
+                      >
+                        {card.name}
+                      </span>
+                      {card.tag && (
+                        <span
+                          className={cn(
+                            "text-[10px] font-mono uppercase tracking-wider px-1.5 py-0.5 rounded border",
+                            "bg-black/5 dark:bg-white/10 border-black/10 dark:border-white/20",
+                            card.subtextColorLight || "text-zinc-800",
+                            `dark:${card.subtextColorDark || "text-zinc-200"}`
+                          )}
+                        >
+                          {card.tag}
+                        </span>
+                      )}
+                    </div>
+
+                    <span
+                      className={cn(
+                        "font-mono font-semibold text-sm sm:text-base tracking-tight",
+                        card.textColorLight || "text-zinc-950",
+                        `dark:${card.textColorDark || "text-white"}`
+                      )}
+                    >
+                      {card.balance}
+                    </span>
+                  </div>
+
+                  {/* Middle: EMV Chip & NFC */}
+                  <div className="flex items-center justify-between relative z-10 mt-auto mb-2">
+                    {card.hasChip ? (
+                      <EmvChip />
+                    ) : (
+                      <div className="w-9 h-7 rounded-md border border-black/10 dark:border-white/20 flex items-center justify-center bg-black/5 dark:bg-white/5">
+                        <Nfc
+                          className={cn(
+                            "w-4 h-4 opacity-70",
+                            card.textColorLight || "text-zinc-900",
+                            `dark:${card.textColorDark || "text-white"}`
+                          )}
+                        />
+                      </div>
+                    )}
+
+                    <Nfc
+                      className={cn(
+                        "w-5 h-5 opacity-60",
+                        card.textColorLight || "text-zinc-900",
+                        `dark:${card.textColorDark || "text-white"}`
+                      )}
+                    />
+                  </div>
+
+                  {/* Footer: Card Number, Expiry, Issuer */}
+                  <div className="flex items-center justify-between text-xs font-mono relative z-10">
+                    <span
+                      className={cn(
+                        "opacity-90 font-medium tracking-wider",
+                        card.textColorLight || "text-zinc-900",
+                        `dark:${card.textColorDark || "text-white"}`
+                      )}
+                    >
+                      {card.cardNumber || "•••• 4829"}
+                    </span>
+                    <div className="flex items-center gap-3">
+                      <span
+                        className={cn(
+                          "opacity-80 font-medium",
+                          card.subtextColorLight || "text-zinc-800",
+                          `dark:${card.subtextColorDark || "text-zinc-200"}`
+                        )}
+                      >
+                        {card.expiry || "12/29"}
+                      </span>
+                      <span
+                        className={cn(
+                          "font-sans font-bold text-[10px] tracking-wider uppercase opacity-85",
+                          card.textColorLight || "text-zinc-900",
+                          `dark:${card.textColorDark || "text-white"}`
+                        )}
+                      >
+                        {card.issuer || "PINSTACK"}
+                      </span>
+                    </div>
+                  </div>
+                </div>
+
+                {/* =================================================== */}
+                {/* BACK FACE (Ulta Pit - Magnetic Stripe & CVV)        */}
+                {/* =================================================== */}
+                <div
+                  style={{
+                    backfaceVisibility: "hidden",
+                    WebkitBackfaceVisibility: "hidden",
+                    transform: "rotateY(180deg)",
+                  }}
+                  className={cn(
+                    "absolute inset-0 flex flex-col justify-between border rounded-[22px] overflow-hidden shadow-lg transition-colors duration-200",
+                    `bg-gradient-to-r ${card.gradientLight || "from-amber-400 to-amber-500"}`,
+                    `dark:bg-gradient-to-r ${card.gradientDark || "from-amber-400 to-amber-600"}`,
+                    "border-black/5 dark:border-white/10"
+                  )}
+                >
+                  {/* Top: Black Magnetic Stripe */}
+                  <div className="w-full h-8 bg-zinc-950 mt-3 shadow-inner relative">
+                    <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/5 to-transparent" />
+                  </div>
+
+                  {/* Middle: Signature Box with CVV + Shiny Hologram Badge */}
+                  <div className="px-4 flex items-center justify-between gap-3 my-auto">
+                    {/* Signature Box */}
+                    <div className="h-8 bg-white/95 rounded-sm flex items-center justify-between px-3 flex-1 border border-black/10 shadow-inner">
+                      <span className="text-[8px] sm:text-[9px] font-sans font-semibold tracking-wider text-zinc-400 uppercase select-none">
+                        {card.backSignatureLabel || "AUTHORIZED SIGNATURE"}
+                      </span>
+                      <span className="text-xs font-mono font-bold italic text-zinc-900 tracking-wider">
+                        {card.cvv || "832"}
+                      </span>
+                    </div>
+
+                    {/* Shiny Hologram Emblem */}
+                    <div className="w-8 h-8 rounded-lg bg-gradient-to-tr from-amber-400 via-rose-500 to-indigo-500 p-0.5 shadow-sm border border-white/30 flex items-center justify-center shrink-0">
+                      <div className="w-4 h-4 rounded-full border border-white/60 bg-white/15 flex items-center justify-center">
+                        <div className="w-1.5 h-1.5 rounded-full bg-white/80" />
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Footer: Legal Disclaimer & Currency Name */}
+                  <div className="px-4 pb-3 flex items-end justify-between text-white">
+                    <div className="flex flex-col text-left">
+                      <span className="font-bold text-[8.5px] uppercase tracking-wider opacity-90 leading-tight">
+                        {card.backSubtitle || "GLOBAL SECURE ASSET CARD"}
+                      </span>
+                      <span className="text-[7.5px] font-medium tracking-wide opacity-70 leading-tight">
+                        {card.backNotice || `NOT VALID UNLESS SIGNED • ISSUED BY ${card.issuer || "PINSTACK"}`}
+                      </span>
+                    </div>
+
+                    <span className="font-extrabold text-xs tracking-wider uppercase opacity-95">
+                      {card.name.toUpperCase()}
+                    </span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          );
+        })}
+
+        {/* ========================================================= */}
+        {/* LAYER 3: FRONT POCKET FLAP (Uporer Pit)                   */}
+        {/* Full solid theme color: changes when theme switches       */}
+        {/* ========================================================= */}
+        <div
+          className="absolute bottom-0 w-full h-[225px] rounded-b-[28px] pointer-events-none"
+          style={{ zIndex: 40 }}
+        >
+          {/* SVG Shape: Center scoop at top, fully closed at bottom */}
+          <svg
+            viewBox="0 0 380 225"
+            className="absolute inset-0 w-full h-full pointer-events-none"
+            preserveAspectRatio="none"
+          >
+            <path
+              d="
+                M 28 0
+                H 115
+                C 135 0, 150 28, 190 28
+                C 230 28, 245 0, 265 0
+                H 352
+                A 28 28 0 0 1 380 28
+                V 197
+                A 28 28 0 0 1 352 225
+                H 28
+                A 28 28 0 0 1 0 197
+                V 28
+                A 28 28 0 0 1 28 0
+                Z
+              "
+              className="transition-colors duration-300"
+              style={{
+                fill: flapColor,
+                stroke: "rgba(255, 255, 255, 0.55)",
+              }}
+              strokeWidth="1.5"
+            />
+          </svg>
+
+          {/* Front Face Content: Balance, Reveal Button, Subtitle, Bottom Accent */}
+          <div className="absolute inset-0 flex flex-col items-center justify-between py-5 px-6 pointer-events-auto">
+            {/* Top: Reveal / Conceal Balance Toggle */}
+            <div className="mt-4 flex items-center justify-center">
+              {allowReveal && (
+                <button
+                  type="button"
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    setIsRevealed((prev) => !prev);
+                  }}
+                  className="flex items-center gap-1.5 text-xs font-medium px-3 py-1 rounded-full transition-all duration-200 cursor-pointer border bg-white/40 hover:bg-white/60 backdrop-blur-sm"
+                  style={{ color: ink, borderColor: inkAlpha(0.15) }}
+                >
+                  <span>{shouldShowBalance ? concealText : revealText}</span>
+                  {shouldShowBalance ? (
+                    <EyeOff className="w-3.5 h-3.5" />
+                  ) : (
+                    <Eye className="w-3.5 h-3.5" />
+                  )}
+                </button>
+              )}
+            </div>
+
+            {/* Middle: Masked vs Unmasked Balance */}
+            <div className="flex flex-col items-center justify-center my-auto" style={{ color: ink }}>
+              {!balanceMasked ? (
+                <div
+                  key="unmasked"
+                  ref={enterBalance}
+                  style={balanceStyle}
+                  onTransitionEnd={onBalanceTransitionEnd}
+                  className="text-2xl sm:text-3xl font-extrabold tracking-tight font-sans transition-colors"
+                >
+                  {overallBalance}
+                </div>
+              ) : (
+                <div
+                  key="masked"
+                  ref={enterBalance}
+                  style={balanceStyle}
+                  onTransitionEnd={onBalanceTransitionEnd}
+                  className="text-xl sm:text-2xl font-mono font-bold tracking-[0.35em] transition-colors"
+                >
+                  {maskedBalance}
+                </div>
+              )}
+
+              {/* Subtitle */}
+              <span className="text-[11px] sm:text-xs font-semibold tracking-wider mt-1 uppercase transition-colors"
+                style={{ color: inkAlpha(0.7) }}>
+                {overallLabel}
+              </span>
+            </div>
+
+            {/* Bottom: Solid decorative thumb notch accent on full color face */}
+            <div
+              className="w-11 h-4 rounded-t-full transition-colors border-t border-x"
+              style={{ background: inkAlpha(0.14), borderColor: inkAlpha(0.1) }}
+            />
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+export default Wallet;

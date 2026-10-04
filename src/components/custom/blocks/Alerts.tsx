@@ -62,80 +62,80 @@ export const Alert: React.FC<AlertProps> = ({
   const alertTypes: Record<AlertType, Record<AlertVariant, string>> = {
     primary: {
       solid:
-        "bg-blue-50 border-blue-200 text-blue-800 dark:bg-blue-900/20 dark:border-blue-800/50 dark:text-blue-300",
+        "bg-primary border-primary/30 text-primary-foreground",
       outline:
-        "bg-white border-blue-300 text-blue-800 dark:bg-zinc-950 dark:border-blue-800/50 dark:text-blue-400",
+        "bg-background border-2 border-primary/30 text-foreground",
       modern:
-        "bg-white dark:bg-zinc-900 border-0 border-l-4 border-l-blue-500 shadow-xl shadow-blue-500/10 text-zinc-800 dark:text-zinc-200",
+        "bg-card border-0 border-l-4 border-l-primary shadow-xl shadow-primary/10 text-foreground",
       glass:
-        "bg-blue-500/10 dark:bg-blue-500/15 backdrop-blur-xl border border-blue-500/20 text-blue-800 dark:text-blue-300 shadow-lg",
-      glow: "bg-zinc-950 border border-blue-500/50 shadow-[0_0_20px_rgba(59,130,246,0.3)] text-blue-400",
+        "bg-white/20 dark:bg-black/30 backdrop-blur-md border border-white/30 dark:border-white/10 text-white shadow-xl ring-1 ring-white/20",
+      glow: "bg-background border border-primary/40 dark:border-primary/50 shadow-[0_0_20px_var(--primary)] text-primary",
     },
     secondary: {
       solid:
-        "bg-zinc-100 border-zinc-200 text-zinc-800 dark:bg-zinc-900 dark:border-zinc-800 dark:text-zinc-200",
+        "bg-muted border-border text-foreground",
       outline:
-        "bg-white border-zinc-300 text-zinc-800 dark:bg-zinc-950 dark:border-zinc-800 dark:text-zinc-300",
+        "bg-background border-border text-foreground",
       modern:
-        "bg-white dark:bg-zinc-900 border-0 border-l-4 border-l-zinc-500 shadow-xl shadow-zinc-500/10 text-zinc-800 dark:text-zinc-200",
+        "bg-card border-0 border-l-4 border-l-muted-foreground shadow-xl shadow-zinc-500/10 text-foreground",
       glass:
-        "bg-zinc-500/10 dark:bg-zinc-500/15 backdrop-blur-xl border border-zinc-500/20 text-zinc-800 dark:text-zinc-300 shadow-lg",
-      glow: "bg-zinc-950 border border-zinc-500/50 shadow-[0_0_20px_rgba(113,113,122,0.3)] text-zinc-400",
+        "bg-white/20 dark:bg-black/30 backdrop-blur-md border border-white/30 dark:border-white/10 text-white shadow-xl ring-1 ring-white/20",
+      glow: "bg-background border border-muted-foreground/40 shadow-[0_0_20px_rgba(113,113,122,0.15)] dark:shadow-[0_0_20px_rgba(113,113,122,0.3)] text-foreground",
     },
     success: {
       solid:
         "bg-green-50 border-green-200 text-green-800 dark:bg-green-900/20 dark:border-green-800/50 dark:text-green-300",
       outline:
-        "bg-white border-green-300 text-green-800 dark:bg-zinc-950 dark:border-green-800/50 dark:text-green-400",
+        "bg-background border-green-300 text-green-800 dark:border-green-800/50 dark:text-green-400",
       modern:
-        "bg-white dark:bg-zinc-900 border-0 border-l-4 border-l-green-500 shadow-xl shadow-green-500/10 text-zinc-800 dark:text-zinc-200",
+        "bg-card border-0 border-l-4 border-l-green-500 shadow-xl shadow-green-500/10 text-foreground",
       glass:
-        "bg-green-500/10 dark:bg-green-500/15 backdrop-blur-xl border border-green-500/20 text-green-800 dark:text-green-300 shadow-lg",
-      glow: "bg-zinc-950 border border-green-500/50 shadow-[0_0_20px_rgba(34,197,94,0.3)] text-green-400",
+        "bg-emerald-500/20 dark:bg-emerald-500/20 backdrop-blur-md border border-emerald-300/40 text-white shadow-xl ring-1 ring-emerald-400/30",
+      glow: "bg-background border border-green-500/40 dark:border-green-500/50 shadow-[0_0_20px_rgba(34,197,94,0.2)] dark:shadow-[0_0_20px_rgba(34,197,94,0.35)] text-green-900 dark:text-green-400",
     },
     danger: {
       solid:
         "bg-red-50 border-red-200 text-red-800 dark:bg-red-900/20 dark:border-red-800/50 dark:text-red-300",
       outline:
-        "bg-white border-red-300 text-red-800 dark:bg-zinc-950 dark:border-red-800/50 dark:text-red-400",
+        "bg-background border-red-300 text-red-800 dark:border-red-800/50 dark:text-red-400",
       modern:
-        "bg-white dark:bg-zinc-900 border-0 border-l-4 border-l-red-500 shadow-xl shadow-red-500/10 text-zinc-800 dark:text-zinc-200",
+        "bg-card border-0 border-l-4 border-l-red-500 shadow-xl shadow-red-500/10 text-foreground",
       glass:
-        "bg-red-500/10 dark:bg-red-500/15 backdrop-blur-xl border border-red-500/20 text-red-800 dark:text-red-300 shadow-lg",
-      glow: "bg-zinc-950 border border-red-500/50 shadow-[0_0_20px_rgba(239,68,68,0.3)] text-red-400",
+        "bg-rose-500/20 dark:bg-rose-500/20 backdrop-blur-md border border-rose-300/40 text-white shadow-xl ring-1 ring-rose-400/30",
+      glow: "bg-background border border-red-500/40 dark:border-red-500/50 shadow-[0_0_20px_rgba(239,68,68,0.2)] dark:shadow-[0_0_20px_rgba(239,68,68,0.35)] text-red-900 dark:text-red-400",
     },
     warning: {
       solid:
         "bg-yellow-50 border-yellow-200 text-yellow-800 dark:bg-yellow-900/20 dark:border-yellow-800/50 dark:text-yellow-300",
       outline:
-        "bg-white border-yellow-300 text-yellow-800 dark:bg-zinc-950 dark:border-yellow-800/50 dark:text-yellow-400",
+        "bg-background border-yellow-300 text-yellow-800 dark:border-yellow-800/50 dark:text-yellow-400",
       modern:
-        "bg-white dark:bg-zinc-900 border-0 border-l-4 border-l-yellow-500 shadow-xl shadow-yellow-500/10 text-zinc-800 dark:text-zinc-200",
+        "bg-card border-0 border-l-4 border-l-yellow-500 shadow-xl shadow-yellow-500/10 text-foreground",
       glass:
-        "bg-yellow-500/10 dark:bg-yellow-500/15 backdrop-blur-xl border border-yellow-500/20 text-yellow-800 dark:text-yellow-300 shadow-lg",
-      glow: "bg-zinc-950 border border-yellow-500/50 shadow-[0_0_20px_rgba(234,179,8,0.3)] text-yellow-400",
+        "bg-amber-500/20 dark:bg-amber-500/20 backdrop-blur-md border border-amber-300/40 text-white shadow-xl ring-1 ring-amber-400/30",
+      glow: "bg-background border border-yellow-500/50 dark:border-yellow-500/50 shadow-[0_0_20px_rgba(234,179,8,0.2)] dark:shadow-[0_0_20px_rgba(234,179,8,0.35)] text-yellow-950 dark:text-yellow-400",
     },
     info: {
       solid:
         "bg-cyan-50 border-cyan-200 text-cyan-800 dark:bg-cyan-900/20 dark:border-cyan-800/50 dark:text-cyan-300",
       outline:
-        "bg-white border-cyan-300 text-cyan-800 dark:bg-zinc-950 dark:border-cyan-800/50 dark:text-cyan-400",
+        "bg-background border-cyan-300 text-cyan-800 dark:border-cyan-800/50 dark:text-cyan-400",
       modern:
-        "bg-white dark:bg-zinc-900 border-0 border-l-4 border-l-cyan-500 shadow-xl shadow-cyan-500/10 text-zinc-800 dark:text-zinc-200",
+        "bg-card border-0 border-l-4 border-l-cyan-500 shadow-xl shadow-cyan-500/10 text-foreground",
       glass:
-        "bg-cyan-500/10 dark:bg-cyan-500/15 backdrop-blur-xl border border-cyan-500/20 text-cyan-800 dark:text-cyan-300 shadow-lg",
-      glow: "bg-zinc-950 border border-cyan-500/50 shadow-[0_0_20px_rgba(6,182,212,0.3)] text-cyan-400",
+        "bg-sky-500/20 dark:bg-sky-500/20 backdrop-blur-md border border-sky-300/40 text-white shadow-xl ring-1 ring-sky-400/30",
+      glow: "bg-background border border-cyan-500/40 dark:border-cyan-500/50 shadow-[0_0_20px_rgba(6,182,212,0.2)] dark:shadow-[0_0_20px_rgba(6,182,212,0.35)] text-cyan-900 dark:text-cyan-400",
     },
     dark: {
       solid:
         "bg-zinc-800 border-zinc-700 text-zinc-100 dark:bg-zinc-900 dark:border-zinc-700 dark:text-zinc-100",
       outline:
-        "bg-white border-zinc-400 text-zinc-800 dark:bg-zinc-950 dark:border-zinc-700 dark:text-zinc-200",
+        "bg-background border-foreground/30 text-foreground",
       modern:
-        "bg-white dark:bg-zinc-900 border-0 border-l-4 border-l-zinc-800 dark:border-l-zinc-100 shadow-xl shadow-zinc-900/10 text-zinc-800 dark:text-zinc-200",
+        "bg-card border-0 border-l-4 border-l-foreground shadow-xl shadow-zinc-900/10 text-foreground",
       glass:
-        "bg-zinc-800/10 dark:bg-zinc-100/10 backdrop-blur-xl border border-zinc-800/20 dark:border-zinc-100/20 text-zinc-800 dark:text-zinc-300 shadow-lg",
-      glow: "bg-zinc-950 border border-zinc-500/50 shadow-[0_0_20px_rgba(255,255,255,0.1)] text-zinc-300",
+        "bg-black/30 dark:bg-black/40 backdrop-blur-md border border-white/20 text-white shadow-xl ring-1 ring-white/10",
+      glow: "bg-background border border-foreground/40 shadow-[0_0_20px_rgba(0,0,0,0.1)] dark:shadow-[0_0_20px_rgba(255,255,255,0.15)] text-foreground",
     },
   };
 
@@ -172,7 +172,7 @@ export const Alert: React.FC<AlertProps> = ({
   return (
     <div
       className={cn(
-        `relative flex items-start p-4 rounded-xl transition-all duration-300 ease-in-out overflow-hidden`,
+        `relative w-full flex items-start p-4 rounded-xl transition-all duration-300 ease-in-out overflow-hidden`,
         // Default border fallback for old variants
         (variant === "solid" || variant === "outline") && "border shadow-sm",
         // Smooth entrance animation
@@ -210,7 +210,7 @@ export const Alert: React.FC<AlertProps> = ({
         )}
       >
         {title && (
-          <h4 className={cn(`font-bold mb-1 tracking-tight`, titleClassName)}>
+          <h4 className={cn(`font-semibold mb-1 tracking-tight`, titleClassName)}>
             {title}
           </h4>
         )}
@@ -226,7 +226,7 @@ export const Alert: React.FC<AlertProps> = ({
         <button
           onClick={handleDismiss}
           className={cn(
-            `absolute top-3 right-3 p-1 rounded-md cursor-pointer opacity-70 hover:opacity-100 hover:bg-black/5 dark:hover:bg-white/10 transition-all z-10 active:scale-90`,
+            `absolute top-3 right-3 p-1 rounded-md cursor-pointer opacity-70 hover:opacity-100 hover:bg-current/10 transition-all z-10 active:scale-90`,
             dismissIconClassName,
           )}
           aria-label="Dismiss alert"

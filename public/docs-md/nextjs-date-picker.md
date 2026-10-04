@@ -1,12 +1,12 @@
+export const metadata = docsPageMetadata("date-picker");
+
 # Date Picker
 
 A completely custom, dependency-free Date Picker component. Native HTML `` elements vary wildly between browsers and operating systems, often breaking the visual consistency of your application.
 
 This component solves that by using native JavaScript Date math to construct a flawless, customizable calendar dropdown that perfectly matches your UI kit's visual variants.
 
-## Examples
-
-The calendar dropdown highlights today's date subtly and the selected date strongly, and it opens with plain absolute positioning and CSS transitions — no popover library required. The first example's **Code** tab contains the full component source.
+The calendar dropdown highlights today's date subtly and the selected date strongly, and it opens with plain absolute positioning and CSS transitions — no popover library required.
 
 export const usageDefault = `"use client";
 
@@ -15,26 +15,6 @@ export default function LaunchDatePicker() {
 
   return (
     
-  );
-}`;
-
-export const usageVariants = `"use client";
-
-export default function DatePickerVariants() {
-  const [date, setDate] = useState(null);
-
-  return (
-
-  );
-}`;
-
-export const usageSizes = `"use client";
-
-export default function DatePickerSizes() {
-  const [date, setDate] = useState(null);
-
-  return (
-
   );
 }`;
 
@@ -50,9 +30,28 @@ export default function ValidatedDatePicker() {
   );
 }`;
 
-export const usageDisabled = `import { DatePickerBlock } from "@/components/custom/blocks/DatePickerBlock";
+export const usageDisablePast = `"use client";
 
-export default function DisabledDatePicker() {
+export default function FutureOnlyPicker() {
+  const [date, setDate] = useState(null);
+
+  // Every day before today is greyed out and cannot be clicked.
+  // Use minDate / maxDate for an arbitrary window instead.
+  return (
+    
+  );
+}`;
+
+export const usageTime = `"use client";
+
+export default function DateTimePicker() {
+  const [date, setDate] = useState(null);
+
+  // showTime adds hour / minute / AM-PM columns — to the right of the
+  // calendar when the viewport has room, under it otherwise. Picking a
+  // day keeps the popover open until Done, and the Date you receive carries
+  // the time. Pair it with disablePast to also block times that have passed
+  // today.
   return (
     
   );
@@ -60,17 +59,14 @@ export default function DisabledDatePicker() {
 
 ## Installation
 
-### 1. Install Dependencies
-
-This component only requires standard `lucide-react` icons (Calendar, ChevronLeft, ChevronRight, AlertCircle). It does **not** require heavy date libraries like `date-fns` or `moment`.
+Register the @algorize-ui registry once per project, then add the component:
 
 ```bash
-npm install lucide-react
+npx shadcn@latest registry add @algorize-ui=https://algorize-ui.vercel.app/r/{name}.json
+npx shadcn@latest add @algorize-ui/date-picker
 ```
 
-### 2. Copy the Component
-
-Create a new file at `components/custom/blocks/DatePickerBlock.tsx` and copy the engine code from the **Code** tab of the first example above.
+## Examples
 
 ## Features
 Discover the Date Picker's flexible input formatting, popover calendar selection, and range picking capabilities.
@@ -183,8 +179,38 @@ Discover the Date Picker's flexible input formatting, popover calendar selection
         
         Disables interactions and applies a faded, read-only style.
 
+        disablePast
+        boolean
+        false
+        Greys out every day before today so it cannot be picked. With showTime, times already passed today are disabled as well.
+
+        minDate
+        Date
+        undefined
+        Earliest selectable day (inclusive). Combined with disablePast, the later bound wins.
+
+        maxDate
+        Date
+        undefined
+        Latest selectable day (inclusive).
+
+        showTime
+        boolean
+        false
+        Adds hour / minute (and AM-PM) columns — to the right of the calendar when the viewport has room (the popover widens to 30rem), under it otherwise. The popover also flips to hang from the trigger's right edge when that is the side with space. Picking a day keeps the popover open until Done, and value carries the chosen time.
+
+        timeFormat
+        "12h" | "24h"
+        "12h"
+        12-hour clock with an AM / PM column, or a 24-hour one.
+
+        minuteStep
+        number
+        5
+        Minute granularity of the time columns.
+
 ---
 
-**Component Path:** `nextjs\date-picker\page.mdx`
+**Component Path:** `[framework]\date-picker\page.mdx`
 
-**Web Version:** Visit the interactive version at the corresponding URL on the Next.js documentation site for live previews and interactive examples.
+**Web Version:** Visit the corresponding URL on the Algorize UI documentation site for live previews and interactive examples.

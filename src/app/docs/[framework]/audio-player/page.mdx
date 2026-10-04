@@ -1,0 +1,267 @@
+import { docsPageMetadata } from "@/lib/docs-metadata";
+
+export const metadata = docsPageMetadata("audio-player");
+
+import { ExampleShowcase } from "@/components/site/Sandbox";
+import { extractCode } from "@/lib/code";
+
+# Audio Player
+
+An audio player with artwork, transport, scrubber and volume — in a hero card, a compact bar, or wrapped around the browser's native controls. Built on a plain `<audio>` element with no player library.
+
+`AudioPlayer` is a separate component with the same visual language. It wraps a plain `<audio>` element and mirrors that element's events, so the UI stays correct when a media key, the OS, or the native controls change playback.
+
+export const usageAudioHero = `import { AudioPlayer } from "@/components/custom/blocks/AudioPlayerBlock";
+
+export default function PodcastHero() {
+  return (
+    <AudioPlayer
+      badge="Now Playing"
+      title="It All Began With a Burst"
+      subtitle="Kishi Bashi — 151a"
+      audioUrl="https://cdn.plyr.io/static/demo/Kishi_Bashi_-_It_All_Began_With_a_Burst.mp3"
+      artworkUrl="https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_1200,c_limit/v1790145142/photo-1511671782779-c97d3d27a1d4-1790145143493.jpg"
+    />
+  );
+}`;
+
+export const usageAudioBar = `import { AudioPlayer } from "@/components/custom/blocks/AudioPlayerBlock";
+
+export default function EpisodeRow() {
+  return (
+    <AudioPlayer
+      variant="bar"
+      enableGlow={false}
+      badge="Episode 12"
+      title="It All Began With a Burst"
+      subtitle="Kishi Bashi — 151a"
+      audioUrl="https://cdn.plyr.io/static/demo/Kishi_Bashi_-_It_All_Began_With_a_Burst.mp3"
+      artworkUrl="https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_1200,c_limit/v1790145142/photo-1511671782779-c97d3d27a1d4-1790145143493.jpg"
+    />
+  );
+}`;
+
+export const usageAudioNative = `import { AudioPlayer } from "@/components/custom/blocks/AudioPlayerBlock";
+
+export default function NativeAudioHero() {
+  return (
+    <AudioPlayer
+      variant="native"
+      badge="Now Playing"
+      title="It All Began With a Burst"
+      subtitle="Kishi Bashi — 151a"
+      audioUrl="https://cdn.plyr.io/static/demo/Kishi_Bashi_-_It_All_Began_With_a_Burst.mp3"
+      artworkUrl="https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_1200,c_limit/v1790145142/photo-1511671782779-c97d3d27a1d4-1790145143493.jpg"
+    />
+  );
+}`;
+
+<ExampleShowcase
+  name="audio-player"
+  columns={1}
+  minHeight={420}
+  examples={[
+    {
+      title: "Audio hero",
+      subheading:
+        "Artwork, transport, scrubber and volume in a full hero card. Built on a plain `<audio>` element.",
+      propNotes: [
+        {
+          prop: "variant",
+          value: '"hero"',
+          effect:
+            "is the default — artwork beside its own transport. `audioUrl` and `artworkUrl` are the only two props it really needs.",
+        },
+        {
+          prop: "skipSeconds",
+          value: "{10}",
+          effect:
+            "sizes the rewind and forward jumps. Set it to `0` to drop both buttons.",
+        },
+      ],
+      props: { variant: "hero" },
+      usage: usageAudioHero,
+      code: extractCode("src/components/custom/blocks/AudioPlayerBlock.tsx"),
+    },
+    {
+      title: "Compact bar",
+      subheading:
+        "The same player as one row — for a sidebar, an episode list, or a sticky footer.",
+      propNotes: [
+        {
+          prop: "variant",
+          value: '"bar"',
+          effect:
+            "collapses artwork, copy and transport into a single row. The volume slider hides below `sm` where there is no room for it.",
+        },
+      ],
+      props: { variant: "bar", enableGlow: false },
+      usage: usageAudioBar,
+    },
+    {
+      title: "Native controls",
+      subheading:
+        "The browser's own audio controls under the artwork — nothing custom to keep in sync.",
+      propNotes: [
+        {
+          prop: "variant",
+          value: '"native"',
+          effect:
+            "renders `<audio controls>` instead of the custom transport. The most accessible option by default, and the one that inherits platform features like playback speed for free.",
+        },
+      ],
+      props: { variant: "native" },
+      usage: usageAudioNative,
+    },
+  ]}
+/>
+
+## Installation
+
+<Installation name="audio-player" showSetupPath={false} />
+
+## Plyr audio
+
+The <DocLink to="video-player">Plyr player</DocLink> from the Video Player page also has an audio layout: set `mediaType="audio"` and the card drops its video frame and sizes to the control bar. Use it when you want Plyr's control bar for both media types across a site.
+
+export const usagePlyrAudio = `import { PlyrPlayer } from "@/components/custom/blocks/VideoPlayerPlyrBlock";
+
+export default function PlyrAudioHero() {
+  return (
+    <PlyrPlayer
+      mediaType="audio"
+      src="https://cdn.plyr.io/static/demo/Kishi_Bashi_-_It_All_Began_With_a_Burst.mp3"
+      srcType="audio/mpeg"
+      accentColor="#fb923c"
+      title="It All Began With a Burst"
+      subtitle="Kishi Bashi — 151a. The same player in its audio layout."
+    />
+  );
+}`;
+
+<ExampleShowcase
+  name="video-player-plyr"
+  columns={1}
+  examples={[
+    {
+      title: "Plyr — Audio",
+      subheading: "The same component in its audio layout, with no video frame.",
+      propNotes: [
+        {
+          prop: "mediaType",
+          value: '"audio"',
+          effect:
+            "renders an `<audio>` element, so the card drops the aspect ratio and sizes to the control bar.",
+        },
+      ],
+      props: { mediaType: "audio" },
+      minHeight: 320,
+      usage: usagePlyrAudio,
+    },
+  ]}
+/>
+
+### Install the Plyr player
+
+<Installation name="video-player-plyr" showSetupPath={false} />
+
+## Features
+
+<div className="grid grid-cols-1 sm:grid-cols-2 gap-4 my-6 not-prose">
+  <div className="p-6 rounded-2xl border border-border bg-card">
+    <h3 className="text-lg font-semibold text-card-foreground mb-2">Three Layouts</h3>
+    <p className="text-muted-foreground text-sm">A hero card with artwork and glow, a compact bar for lists and footers, or the browser's own controls inside the same shell — one prop.</p>
+  </div>
+  <div className="p-6 rounded-2xl border border-border bg-card">
+    <h3 className="text-lg font-semibold text-card-foreground mb-2">No Player Library</h3>
+    <p className="text-muted-foreground text-sm">Everything sits on a native <code>&lt;audio&gt;</code> element, so the only weight added is the icons.</p>
+  </div>
+  <div className="p-6 rounded-2xl border border-border bg-card">
+    <h3 className="text-lg font-semibold text-card-foreground mb-2">Mirrors the Element</h3>
+    <p className="text-muted-foreground text-sm">Playback state follows the element's own events, so a media key, the OS, or the native controls changing playback never leaves the UI out of sync.</p>
+  </div>
+  <div className="p-6 rounded-2xl border border-border bg-card">
+    <h3 className="text-lg font-semibold text-card-foreground mb-2">Themed Accent</h3>
+    <p className="text-muted-foreground text-sm">The play button and progress fill read <code>--theme-color</code>, falling back to your <code>--primary</code>, so the player matches the rest of the page.</p>
+  </div>
+</div>
+
+## Props Reference
+
+### AudioPlayer
+
+<div className="overflow-x-auto mb-8">
+  <table>
+    <thead>
+      <tr>
+        <th>Prop</th>
+        <th>Type</th>
+        <th>Default</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><code>audioUrl</code></td>
+        <td><code>string</code></td>
+        <td><code>"https://cdn.plyr.io/..."</code></td>
+        <td>Audio file the browser plays natively — mp3, ogg, wav, m4a.</td>
+      </tr>
+      <tr>
+        <td><code>audioType</code></td>
+        <td><code>string</code></td>
+        <td><code>"audio/mpeg"</code></td>
+        <td>MIME type on the <code>&lt;source&gt;</code>, so the browser can skip a format it cannot play.</td>
+      </tr>
+      <tr>
+        <td><code>variant</code></td>
+        <td><code>"hero" | "bar" | "native"</code></td>
+        <td><code>"hero"</code></td>
+        <td>Full artwork card, single compact row, or the browser's own <code>&lt;audio controls&gt;</code> under the artwork.</td>
+      </tr>
+      <tr>
+        <td><code>artworkUrl</code> / <code>artworkAlt</code></td>
+        <td><code>string</code></td>
+        <td><code>"https://images.unsplash..."</code></td>
+        <td>Cover image and its alt text.</td>
+      </tr>
+      <tr>
+        <td><code>badge</code> / <code>title</code> / <code>subtitle</code></td>
+        <td><code>string</code></td>
+        <td><code>"Now Playing"</code> / …</td>
+        <td>Track copy. <code>subtitle</code> is the natural place for the artist or show name.</td>
+      </tr>
+      <tr>
+        <td><code>skipSeconds</code></td>
+        <td><code>number</code></td>
+        <td><code>10</code></td>
+        <td>Seconds the rewind and forward buttons jump. <code>0</code> hides both.</td>
+      </tr>
+      <tr>
+        <td><code>autoPlay</code> / <code>loop</code></td>
+        <td><code>boolean</code></td>
+        <td><code>false</code></td>
+        <td>Passed to the <code>&lt;audio&gt;</code> element. Autoplay is blocked without a prior interaction on most browsers.</td>
+      </tr>
+      <tr>
+        <td><code>preload</code></td>
+        <td><code>"none" | "metadata" | "auto"</code></td>
+        <td><code>"metadata"</code></td>
+        <td>How much the browser fetches up front. <code>metadata</code> is enough to show the duration.</td>
+      </tr>
+      <tr>
+        <td><code>enableGlow</code></td>
+        <td><code>boolean</code></td>
+        <td><code>true</code></td>
+        <td>Ambient blur gradient behind the card.</td>
+      </tr>
+      <tr>
+        <td><code>onPlay</code> / <code>onPause</code> / <code>onEnded</code></td>
+        <td><code>() =&gt; void</code></td>
+        <td><code>undefined</code></td>
+        <td>Playback callbacks for analytics.</td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+

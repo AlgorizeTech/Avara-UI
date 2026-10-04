@@ -1,0 +1,762 @@
+import { docsPageMetadata } from "@/lib/docs-metadata";
+
+export const metadata = docsPageMetadata("modal");
+
+import { ExampleShowcase } from "@/components/site/Sandbox";
+import { Installation } from "@/components/site/installation";
+import { extractCode } from "@/lib/code";
+
+# Modal
+
+A composable overlay. `Modal` owns the hard parts — the portal, the backdrop, the scroll lock, Escape and backdrop dismissal, and the enter/exit transition — and nothing else. There is no preset layout and no `variant`: the panel renders exactly the markup you put inside it.
+
+`ModalHeader`, `ModalBody` and `ModalFooter` are optional slots with sensible padding and dividers. Use them, restyle them through `className`, or skip them entirely and write your own body.
+
+Open state is yours. `Modal` is controlled: you hold `isOpen` and it renders against it, so the same modal can be driven by a button, a route, or the end of an async call.
+
+Every example below is that composition — what the preview renders is exactly what the **Usage** tab hands you. The only things that change between them are the classes on `contentClassName` and the markup inside.
+
+export const usageStandard = `"use client";
+
+import {
+  Modal,
+  ModalBody,
+  ModalFooter,
+  ModalHeader,
+} from "@/components/custom/blocks/ModalBlock";
+import { AlertCircle } from "lucide-react";
+import { useState } from "react";
+
+export default function UpdateModal() {
+  // Modal is controlled — you own isOpen, it renders against it.
+  const [isOpen, setIsOpen] = useState(false);
+
+  return (
+    <>
+      <button
+        onClick={() => setIsOpen(true)}
+        className="px-6 py-3 rounded-lg font-semibold transition-transform active:scale-95 shadow-md bg-primary hover:bg-primary/90 text-primary-foreground"
+      >
+        Open Standard Modal
+      </button>
+
+      <Modal
+        isOpen={isOpen}
+        onClose={() => setIsOpen(false)}
+        contentClassName="max-w-md bg-background rounded-2xl shadow-xl border border-border"
+      >
+        <div className="p-2 sm:p-4">
+          <ModalHeader
+            className="border-none p-4 pb-2 flex items-start justify-between gap-4"
+            title={
+              <div className="flex items-center gap-3">
+                <div className="w-12 h-12 rounded-2xl flex items-center justify-center shrink-0 shadow-sm transition-all border bg-primary/10 text-primary border-primary/30">
+                  <AlertCircle className="w-6 h-6" />
+                </div>
+                <div className="flex flex-col">
+                  <h2 className="text-xl font-semibold tracking-tight text-foreground">
+                    System Update Available
+                  </h2>
+                  <span className="text-xs font-semibold text-emerald-600 dark:text-emerald-400">
+                    v2.4.0 Live
+                  </span>
+                </div>
+              </div>
+            }
+          />
+
+          <ModalBody className="p-4 pt-2 space-y-2">
+            <p className="text-muted-foreground leading-relaxed text-sm sm:text-base font-normal">
+              A new software update is ready to be installed. This update
+              includes new features, performance improvements, and critical
+              security patches.
+            </p>
+          </ModalBody>
+
+          <ModalFooter className="border-none p-4 pt-4 flex flex-col-reverse sm:flex-row gap-2 sm:justify-end">
+            <button
+              onClick={() => setIsOpen(false)}
+              className="px-5 py-2.5 rounded-xl text-sm font-semibold text-muted-foreground hover:bg-muted transition-colors"
+            >
+              Remind Me Later
+            </button>
+            <button
+              onClick={() => setIsOpen(false)}
+              className="px-6 py-2.5 rounded-xl text-sm font-semibold shadow-lg shadow-primary/20 active:scale-95 transition-all bg-primary hover:bg-primary/90 text-primary-foreground"
+            >
+              Install Now
+            </button>
+          </ModalFooter>
+        </div>
+      </Modal>
+    </>
+  );
+}`;
+
+export const usageForm = `"use client";
+
+import {
+  Modal,
+  ModalBody,
+  ModalFooter,
+  ModalHeader,
+} from "@/components/custom/blocks/ModalBlock";
+import { SelectBlock } from "@/components/custom/blocks/SelectBlock";
+import { useState } from "react";
+
+export default function InviteModal() {
+  const [isOpen, setIsOpen] = useState(false);
+  const [inviteRole, setInviteRole] = useState("Viewer");
+
+  return (
+    <>
+      <button
+        onClick={() => setIsOpen(true)}
+        className="px-6 py-3 rounded-lg font-semibold transition-transform active:scale-95 shadow-md bg-primary hover:bg-primary/90 text-primary-foreground"
+      >
+        Open Form Modal
+      </button>
+
+      {/* max-w-lg on contentClassName is the only sizing knob you need. */}
+      <Modal
+        isOpen={isOpen}
+        onClose={() => setIsOpen(false)}
+        contentClassName="max-w-lg bg-background rounded-2xl shadow-xl border border-border"
+      >
+        <ModalHeader className="border-b border-border/60">
+          <h2 className="text-lg font-semibold text-foreground">Invite Team Member</h2>
+        </ModalHeader>
+
+        <ModalBody className="space-y-5">
+          <div className="space-y-1.5">
+            <label className="text-sm font-semibold text-foreground">
+              Email Address
+            </label>
+            <input
+              type="email"
+              placeholder="colleague@company.com"
+              className="w-full h-11 px-3 rounded-lg border bg-background/50 text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 border-border transition-shadow focus:ring-primary"
+            />
+          </div>
+
+          <div className="space-y-1.5">
+            <label className="text-sm font-semibold text-foreground">
+              Role & Permissions
+            </label>
+            {/* Any control drops straight in — this one is the \`select\` block. */}
+            <SelectBlock
+              options={[
+                { label: "Viewer", value: "Viewer" },
+                { label: "Editor", value: "Editor" },
+                { label: "Administrator", value: "Administrator" },
+              ]}
+              value={inviteRole}
+              onChange={setInviteRole}
+              placeholder="Select a role"
+            />
+          </div>
+
+          <div className="space-y-1.5">
+            <label className="text-sm font-semibold text-foreground">
+              Personal Message (Optional)
+            </label>
+            <textarea
+              placeholder="Welcome to the team!"
+              rows={3}
+              className="w-full p-3 rounded-lg border bg-background/50 text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 border-border transition-shadow resize-none focus:ring-primary"
+            />
+          </div>
+        </ModalBody>
+
+        <ModalFooter className="border-t border-border bg-muted/50">
+          <button
+            onClick={() => setIsOpen(false)}
+            className="px-5 py-2.5 rounded-lg font-medium text-muted-foreground hover:bg-muted/50 transition-colors"
+          >
+            Cancel
+          </button>
+          <button
+            onClick={() => setIsOpen(false)}
+            className="px-5 py-2.5 rounded-lg font-semibold shadow-sm transition-opacity bg-primary hover:bg-primary/90 text-primary-foreground"
+          >
+            Send Invite
+          </button>
+        </ModalFooter>
+      </Modal>
+    </>
+  );
+}`;
+
+export const usageConfirmation = `"use client";
+
+import { Modal, ModalBody } from "@/components/custom/blocks/ModalBlock";
+import { AlertCircle } from "lucide-react";
+import { useState } from "react";
+
+export default function ConfirmDeleteModal() {
+  const [isOpen, setIsOpen] = useState(false);
+
+  return (
+    <>
+      <button
+        onClick={() => setIsOpen(true)}
+        className="px-6 py-3 rounded-lg font-semibold transition-transform active:scale-95 shadow-md bg-primary hover:bg-primary/90 text-primary-foreground"
+      >
+        Open Confirmation Modal
+      </button>
+
+      {/* No ModalHeader here, so ariaLabel names the dialog instead. */}
+      <Modal
+        isOpen={isOpen}
+        onClose={() => setIsOpen(false)}
+        contentClassName="max-w-sm bg-background rounded-2xl shadow-xl border border-border"
+        ariaLabel="Delete permanently?"
+      >
+        <ModalBody className="p-6 sm:p-8 text-center flex flex-col items-center">
+          <div className="w-16 h-16 rounded-2xl flex items-center justify-center mb-5 border shadow-sm bg-rose-50 dark:bg-rose-500/10 border-rose-200 dark:border-rose-500/20 text-rose-600 dark:text-rose-400">
+            <AlertCircle className="w-8 h-8" />
+          </div>
+          <h2 className="text-xl font-semibold text-foreground mb-2">
+            Delete permanently?
+          </h2>
+          <p className="text-sm text-foreground font-medium leading-relaxed mb-8">
+            Are you sure you want to delete this item? This action cannot be
+            undone and all data will be lost.
+          </p>
+          <div className="flex gap-3 w-full">
+            <button
+              onClick={() => setIsOpen(false)}
+              className="flex-1 py-2.5 rounded-lg font-medium text-muted-foreground border border-border hover:bg-muted transition-colors"
+            >
+              Cancel
+            </button>
+            <button
+              onClick={() => setIsOpen(false)}
+              className="flex-1 py-2.5 rounded-lg font-semibold bg-red-600 hover:bg-red-700 text-white shadow-sm transition-colors"
+            >
+              Delete
+            </button>
+          </div>
+        </ModalBody>
+      </Modal>
+    </>
+  );
+}`;
+
+export const usageFullscreen = `"use client";
+
+import {
+  Modal,
+  ModalBody,
+  ModalFooter,
+  ModalHeader,
+} from "@/components/custom/blocks/ModalBlock";
+import { useState } from "react";
+
+export default function SettingsModal() {
+  const [isOpen, setIsOpen] = useState(false);
+
+  return (
+    <>
+      <button
+        onClick={() => setIsOpen(true)}
+        className="px-6 py-3 rounded-lg font-semibold transition-transform active:scale-95 shadow-md bg-primary hover:bg-primary/90 text-primary-foreground"
+      >
+        Open Fullscreen Modal
+      </button>
+
+      {/* max-h, not h: the panel is as tall as its content, up to 90% of
+          the visible screen; past that the body scrolls between the pinned
+          header and footer. */}
+      <Modal
+        isOpen={isOpen}
+        onClose={() => setIsOpen(false)}
+        contentClassName="max-w-5xl max-h-[90dvh] bg-background rounded-2xl shadow-xl border border-border"
+      >
+        {/* pr-12 keeps the title clear of the close button. */}
+        <ModalHeader className="border-b border-border pr-12">
+          <div className="min-w-0">
+            <h2 className="text-xl sm:text-2xl font-bold text-foreground">
+              Project Configuration
+            </h2>
+            <p className="text-sm text-muted-foreground mt-1 font-normal">
+              Manage all global settings for your workspace.
+            </p>
+          </div>
+        </ModalHeader>
+
+        {/* max-h-none drops the body's own cap so the panel's governs. */}
+        <ModalBody className="max-h-none">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 sm:gap-8 p-2">
+            <div className="space-y-6">
+              <h3 className="text-sm font-semibold uppercase tracking-widest text-muted-foreground">
+                General
+              </h3>
+              <div className="h-12 w-full bg-muted rounded-lg animate-pulse" />
+              <div className="h-24 w-full bg-muted rounded-lg animate-pulse" />
+              <div className="h-12 w-3/4 bg-muted rounded-lg animate-pulse" />
+            </div>
+            <div className="space-y-6">
+              <h3 className="text-sm font-semibold uppercase tracking-widest text-muted-foreground">
+                Security
+              </h3>
+              <div className="h-32 w-full bg-muted rounded-lg animate-pulse" />
+              <div className="h-12 w-full bg-muted rounded-lg animate-pulse" />
+            </div>
+          </div>
+        </ModalBody>
+
+        {/* One row that wraps: Delete left, Discard + Save right. Phones get
+            the short labels and compact buttons so all three fit a line. */}
+        <ModalFooter className="border-t border-border bg-muted flex-wrap items-center justify-between gap-2 px-4 py-3 sm:px-6 sm:py-4">
+          <button
+            onClick={() => setIsOpen(false)}
+            aria-label="Delete project"
+            className="px-3 py-2 rounded-lg text-sm font-semibold text-red-500 hover:text-red-600 hover:bg-red-500/10 transition-colors"
+          >
+            Delete<span className="hidden sm:inline"> Project</span>
+          </button>
+          <div className="ml-auto flex flex-wrap items-center justify-end gap-2">
+            <button
+              onClick={() => setIsOpen(false)}
+              aria-label="Discard changes"
+              className="px-3 py-2 sm:px-4 rounded-lg text-sm font-medium text-muted-foreground hover:bg-background hover:text-foreground transition-colors"
+            >
+              Discard<span className="hidden sm:inline"> Changes</span>
+            </button>
+            <button
+              onClick={() => setIsOpen(false)}
+              aria-label="Save configuration"
+              className="px-4 py-2 sm:px-5 rounded-lg text-sm font-semibold shadow-sm transition-opacity bg-primary hover:bg-primary/90 text-primary-foreground"
+            >
+              Save<span className="hidden sm:inline"> Configuration</span>
+            </button>
+          </div>
+        </ModalFooter>
+      </Modal>
+    </>
+  );
+}`;
+
+export const usageGlass = `"use client";
+
+import {
+  Modal,
+  ModalBody,
+  ModalFooter,
+  ModalHeader,
+} from "@/components/custom/blocks/ModalBlock";
+import { AlertCircle } from "lucide-react";
+import { useState } from "react";
+
+export default function GlassModal() {
+  const [isOpen, setIsOpen] = useState(false);
+
+  return (
+    <>
+      <button
+        onClick={() => setIsOpen(true)}
+        className="px-6 py-3 rounded-lg font-semibold transition-transform active:scale-95 shadow-md bg-primary hover:bg-primary/90 text-primary-foreground"
+      >
+        Open Glass Modal
+      </button>
+
+      {/* Same markup as the standard modal — only these two class props differ. */}
+      <Modal
+        isOpen={isOpen}
+        onClose={() => setIsOpen(false)}
+        overlayClassName="bg-black/50 backdrop-blur-md"
+        contentClassName="max-w-md bg-card/80 backdrop-blur-2xl backdrop-saturate-200 rounded-3xl shadow-[0_25px_60px_rgba(0,0,0,0.35)] border border-white/60 dark:border-white/20 text-foreground"
+      >
+        <div className="p-2 sm:p-4">
+          <ModalHeader
+            className="border-none p-4 pb-2 flex items-start justify-between gap-4"
+            title={
+              <div className="flex items-center gap-3">
+                <div className="w-12 h-12 rounded-2xl flex items-center justify-center shrink-0 shadow-sm transition-all border bg-white/50 dark:bg-white/10 border-white/40 dark:border-white/20 text-foreground">
+                  <AlertCircle className="w-6 h-6" />
+                </div>
+                <div className="flex flex-col">
+                  <h2 className="text-xl font-semibold tracking-tight text-foreground">
+                    System Update Available
+                  </h2>
+                  <span className="text-xs font-semibold text-emerald-600 dark:text-emerald-400">
+                    v2.4.0 Live
+                  </span>
+                </div>
+              </div>
+            }
+          />
+
+          <ModalBody className="p-4 pt-2 space-y-2">
+            <p className="text-muted-foreground leading-relaxed text-sm sm:text-base font-normal">
+              A new software update is ready to be installed. This update
+              includes new features, performance improvements, and critical
+              security patches.
+            </p>
+          </ModalBody>
+
+          <ModalFooter className="border-none p-4 pt-4 flex flex-col-reverse sm:flex-row gap-2 sm:justify-end">
+            <button
+              onClick={() => setIsOpen(false)}
+              className="px-5 py-2.5 rounded-xl text-sm font-semibold text-muted-foreground hover:bg-muted transition-colors"
+            >
+              Remind Me Later
+            </button>
+            <button
+              onClick={() => setIsOpen(false)}
+              className="px-6 py-2.5 rounded-xl text-sm font-semibold shadow-lg shadow-primary/20 active:scale-95 transition-all bg-primary hover:bg-primary/90 text-primary-foreground"
+            >
+              Install Now
+            </button>
+          </ModalFooter>
+        </div>
+      </Modal>
+    </>
+  );
+}`;
+
+<ExampleShowcase
+  name="modal"
+  columns={1}
+  examples={[
+    {
+      title: "Modal",
+      subheading: "Hold `isOpen` yourself, then compose the header, body and footer slots.",
+      propNotes: [
+        {
+          lead: "Pass",
+          prop: "contentClassName",
+          effect:
+            "to size and skin the panel — everything else is the markup you write inside.",
+        },
+        {
+          prop: "ariaLabel",
+          effect:
+            "names the dialog when its heading is not inside `ModalHeader`, as it is here.",
+        },
+      ],
+      props: { layout: "standard" },
+      usage: usageStandard,
+      code: extractCode("src/components/custom/blocks/ModalBlock.tsx"),
+    },
+  ]}
+/>
+
+## Installation
+
+<Installation name="modal" />
+
+## Examples
+
+<ExampleShowcase
+  name="modal"
+  columns={1}
+  examples={[
+    {
+      title: "Form",
+      subheading: "The body is just your form markup — no `type` switch involved.",
+      propNotes: [
+        {
+          lead: "Widen with",
+          prop: "contentClassName",
+          value: '"max-w-lg"',
+          effect:
+            "so labelled fields get room; the slots keep their own padding.",
+        },
+      ],
+      props: { layout: "form" },
+      usage: usageForm,
+    },
+    {
+      title: "Confirmation",
+      subheading: "A compact are-you-sure shape built from `ModalBody` alone.",
+      propNotes: [
+        {
+          lead: "Drop",
+          prop: "ModalHeader",
+          effect:
+            "entirely when a centred body carries the message — the slots are optional.",
+        },
+        {
+          prop: "hideCloseButton",
+          effect:
+            "is worth adding when the choice has to be made explicitly.",
+        },
+      ],
+      props: { layout: "confirmation" },
+      usage: usageConfirmation,
+    },
+    {
+      title: "Fullscreen",
+      subheading: "A tall panel with the header and footer pinned and the body scrolling.",
+      propNotes: [
+        {
+          lead: "Give",
+          prop: "contentClassName",
+          value: '"max-w-5xl max-h-[90dvh]"',
+          effect:
+            "a max height, not a height: the panel fits its content, and once that runs past the cap the body scrolls while the header and footer stay pinned.",
+        },
+        {
+          prop: "className",
+          value: '"max-h-none"',
+          effect:
+            "on `ModalBody` drops its default height cap so the panel's cap governs it.",
+        },
+      ],
+      props: { layout: "fullscreen" },
+      usage: usageFullscreen,
+    },
+    {
+      title: "Glass",
+      subheading: "Identical markup to the first example — only two class props changed.",
+      propNotes: [
+        {
+          lead: "Pair",
+          prop: "overlayClassName",
+          value: '"bg-black/50 backdrop-blur-md"',
+          effect:
+            "with a translucent `contentClassName` to blur whatever sits behind the modal.",
+        },
+      ],
+      props: { layout: "glass" },
+      usage: usageGlass,
+    },
+  ]}
+/>
+
+## Features
+Discover the Modal's flexible overlay features, designed for important user prompts with accessible focus management and animations.
+
+<div className="grid grid-cols-1 sm:grid-cols-2 gap-4 my-6 not-prose">
+  <div className="p-6 rounded-2xl border border-border bg-card">
+    <h3 className="text-lg font-semibold text-card-foreground mb-2">Customizable</h3>
+    <p className="text-muted-foreground text-sm">Easily adapt the component's styling and behavior to fit your application's unique design system.</p>
+  </div>
+  <div className="p-6 rounded-2xl border border-border bg-card">
+    <h3 className="text-lg font-semibold text-card-foreground mb-2">Accessible</h3>
+    <p className="text-muted-foreground text-sm">Built with accessibility in mind, ensuring all users can interact with your application effectively.</p>
+  </div>
+  <div className="p-6 rounded-2xl border border-border bg-card">
+    <h3 className="text-lg font-semibold text-card-foreground mb-2">Responsive</h3>
+    <p className="text-muted-foreground text-sm">Fully responsive design that looks and works great across desktop, tablet, and mobile devices.</p>
+  </div>
+  <div className="p-6 rounded-2xl border border-border bg-card">
+    <h3 className="text-lg font-semibold text-card-foreground mb-2">Performant</h3>
+    <p className="text-muted-foreground text-sm">Optimized for maximum performance with minimal re-renders and efficient state management.</p>
+  </div>
+</div>
+
+## Best Practices & Guidelines
+
+<div className="flex flex-col gap-4 my-6 not-prose">
+  <div className="rounded-xl border border-foreground/[0.06] bg-foreground/[0.03] p-4">
+    <h4 className="font-sans text-[14px] font-semibold text-foreground mb-1">Usage Guidelines</h4>
+    <p className="text-[13px] leading-relaxed text-foreground/50">Name every modal: put the heading inside <code>ModalHeader</code>, or pass <code>ariaLabel</code> when the heading lives elsewhere. Size the panel on <code>contentClassName</code> rather than wrapping the modal in a sized container — the panel is portalled to <code>document.body</code>, so a wrapper cannot constrain it.</p>
+  </div>
+</div>
+
+## Props Reference
+
+<div className="overflow-x-auto">
+  <table>
+    <thead>
+      <tr>
+        <th>Component</th>
+        <th>Prop</th>
+        <th>Type</th>
+        <th>Default</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>
+          <code>Modal</code>
+        </td>
+        <td>
+          <code>isOpen</code>
+        </td>
+        <td>
+          <code>boolean</code>
+        </td>
+        <td>
+          <em>required</em>
+        </td>
+        <td>
+          The open state. Modal is fully controlled — it never holds this
+          itself, so the same modal can be driven by a button, a route or the
+          end of an async call.
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <code>Modal</code>
+        </td>
+        <td>
+          <code>onClose</code>
+        </td>
+        <td>
+          <code>{`() => void`}</code>
+        </td>
+        <td>
+          <em>required</em>
+        </td>
+        <td>
+          Called once the close transition has finished, whether it was started
+          by the built-in X, the <code>Escape</code> key or a backdrop click.
+          Set <code>isOpen</code> to <code>false</code> here.
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <code>Modal</code>
+        </td>
+        <td>
+          <code>contentClassName</code>
+        </td>
+        <td>
+          <code>string</code>
+        </td>
+        <td>
+          <code>undefined</code>
+        </td>
+        <td>
+          Classes for the panel. This is where the modal is sized and skinned —
+          adjust <code>max-w-*</code>, give it a height, or swap the background
+          and border for a glass treatment.
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <code>Modal</code>
+        </td>
+        <td>
+          <code>overlayClassName</code>
+        </td>
+        <td>
+          <code>string</code>
+        </td>
+        <td>
+          <code>undefined</code>
+        </td>
+        <td>
+          Classes for the backdrop, e.g.{" "}
+          <code>bg-black/50 backdrop-blur-md</code> behind a translucent panel.
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <code>Modal</code>
+        </td>
+        <td>
+          <code>primaryCloseButton</code>
+        </td>
+        <td>
+          <code>boolean</code>
+        </td>
+        <td>
+          <code>false</code>
+        </td>
+        <td>
+          Renders the close button as a tinted primary chip instead of a bare
+          icon, for panels where the plain X gets lost.
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <code>Modal</code>
+        </td>
+        <td>
+          <code>hideCloseButton</code>
+        </td>
+        <td>
+          <code>boolean</code>
+        </td>
+        <td>
+          <code>false</code>
+        </td>
+        <td>
+          Removes the built-in X, for flows where the user has to pick one of
+          your own actions. <code>Escape</code> and the backdrop still dismiss.
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <code>Modal</code>
+        </td>
+        <td>
+          <code>ariaLabel</code>
+        </td>
+        <td>
+          <code>string</code>
+        </td>
+        <td>
+          <code>undefined</code>
+        </td>
+        <td>
+          Labels the dialog directly. Pass it whenever the heading is not inside{" "}
+          <code>ModalHeader</code> — without it the panel points{" "}
+          <code>aria-labelledby</code> at the header.
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <code>ModalHeader</code>
+        </td>
+        <td>
+          <code>title</code>
+        </td>
+        <td>
+          <code>React.ReactNode</code>
+        </td>
+        <td>
+          <code>undefined</code>
+        </td>
+        <td>
+          Shorthand for the header content when you do not need custom markup.{" "}
+          <code>children</code> wins when both are given.
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <strong>All Components</strong>
+        </td>
+        <td>
+          <code>className</code>
+        </td>
+        <td>
+          <code>string</code>
+        </td>
+        <td>
+          <code>undefined</code>
+        </td>
+        <td>
+          Tailwind overrides merged over each slot's defaults — the header's
+          divider and padding, the body's{" "}
+          <code>max-h-[calc(100vh-150px)]</code> cap, the footer's right-aligned
+          row.
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <strong>All Components</strong>
+        </td>
+        <td>
+          <code>children</code>
+        </td>
+        <td>
+          <code>React.ReactNode</code>
+        </td>
+        <td>
+          <code>undefined</code>
+        </td>
+        <td>
+          Whatever you want to render. Every slot is optional — a modal made of
+          nothing but a <code>ModalBody</code> is a perfectly normal modal.
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>

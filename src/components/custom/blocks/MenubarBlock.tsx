@@ -69,7 +69,7 @@ export function Menubar({ className, children, ...props }: MenubarProps) {
         className={cn(
           // min-h rather than a fixed height: a bar with more menus than the
           // container can hold wraps to a second row instead of being cropped.
-          "flex min-h-10 flex-wrap items-center gap-y-1 space-x-1 rounded-md border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-[#050505] p-1 shadow-sm",
+          "flex min-h-10 flex-wrap items-center gap-y-1 space-x-1 rounded-md border border-border bg-card text-card-foreground p-1 shadow-sm",
           className,
         )}
         {...props}
@@ -135,8 +135,8 @@ export function MenubarTrigger({
         // trigger in the bar still reads as one set.
         "flex cursor-default select-none items-center whitespace-nowrap rounded-sm px-2 sm:px-3 py-1.5 text-sm font-medium outline-none transition-colors",
         isOpen
-          ? "bg-zinc-100 dark:bg-zinc-800 text-zinc-900 dark:text-zinc-50"
-          : "text-zinc-700 dark:text-zinc-300 hover:bg-zinc-100 dark:hover:bg-zinc-800/50 hover:text-zinc-900 dark:hover:text-zinc-50",
+          ? "bg-muted text-foreground"
+          : "text-foreground hover:bg-muted hover:text-foreground",
         className,
       )}
       {...props}
@@ -220,7 +220,7 @@ export function MenubarContent({
     <div
       ref={contentRef}
       className={cn(
-        "absolute z-50 mt-1 min-w-[12rem] max-w-[calc(100vw-1rem)] overflow-y-auto overflow-x-hidden rounded-md border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-[#050505] p-1 shadow-md animate-in fade-in zoom-in-95 slide-in-from-top-2 duration-150",
+        "absolute z-50 mt-1 min-w-[12rem] max-w-[calc(100vw-1rem)] overflow-y-auto overflow-x-hidden rounded-md border border-border bg-popover text-popover-foreground p-1 shadow-md animate-in fade-in zoom-in-95 slide-in-from-top-2 duration-150",
         align === "start" && "left-0",
         align === "end" && "right-0",
         align === "center" && "left-1/2 -translate-x-1/2",
@@ -264,7 +264,7 @@ export function MenubarItem({
         inset && "pl-8",
         disabled
           ? "opacity-50 cursor-not-allowed pointer-events-none"
-          : "hover:bg-indigo-50 dark:hover:bg-indigo-500/10 hover:text-indigo-600 dark:hover:text-indigo-400 focus:bg-indigo-50 dark:focus:bg-indigo-500/10",
+          : "hover:bg-primary/10 hover:text-primary focus:bg-primary/10",
         className,
       )}
       {...props}
@@ -280,7 +280,7 @@ export function MenubarItem({
 export function MenubarSeparator({ className }: { className?: string }) {
   return (
     <div
-      className={cn("-mx-1 my-1 h-px bg-zinc-100 dark:bg-zinc-800", className)}
+      className={cn("-mx-1 my-1 h-px bg-muted", className)}
     />
   );
 }
@@ -292,7 +292,7 @@ export function MenubarShortcut({
   return (
     <span
       className={cn(
-        "ml-auto text-xs tracking-widest text-zinc-500 dark:text-zinc-400",
+        "ml-auto text-xs tracking-widest text-muted-foreground",
         className,
       )}
       {...props}
@@ -308,7 +308,7 @@ export function MenubarLabel({
   return (
     <div
       className={cn(
-        "px-2 py-1.5 text-xs font-semibold text-zinc-500 dark:text-zinc-400",
+        "px-2 py-1.5 text-xs font-semibold text-muted-foreground",
         inset && "pl-8",
         className,
       )}

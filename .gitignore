@@ -2,6 +2,9 @@
 
 # dependencies
 /node_modules
+/mcp/node_modules
+/mcp/.mcpize
+/mcp/tests
 /.pnp
 .pnp.*
 .yarn/*

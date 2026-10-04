@@ -1,20 +1,22 @@
+export const metadata = docsPageMetadata("calendar");
+
 # Calendar Dashboard
 
 A comprehensive, interactive calendar dashboard and date-picker system. Includes built-in event management, filtering, dynamic views (Month/Week/Day), and animated popover modals.
 
-## Examples
-
-`CalendarDashboard` is fully encapsulated — modals, event editing, filtering and exporting are all handled internally, so the only thing you pass in is the seed data and the look. The first example's **Code** tab contains the full component source.
+`CalendarDashboard` is fully encapsulated — modals, event editing, filtering and exporting are all handled internally, so the only thing you pass in is the seed data and the look.
 
 export const usageDefault = `import { CalendarDashboard } from "@/components/custom/blocks/Calendar";
 
+const y = new Date().getFullYear();
+const m = new Date().getMonth() + 1;
+
 // Keys are "YYYY-M-D" (no zero padding); values are event types.
 const events = {
-  "2025-8-31": ["pentest", "kickoff", "pentest"],
-  "2025-9-2": ["pentest", "kickoff"],
-  "2025-9-10": ["pentest", "kickoff"],
-  "2025-9-15": ["pentest", "kickoff"],
-  "2025-9-24": ["kickoff", "pentest"],
+  [\`\${y}-\${m}-2\`]: ["pentest", "kickoff"],
+  [\`\${y}-\${m}-10\`]: ["pentest", "kickoff"],
+  [\`\${y}-\${m}-15\`]: ["pentest", "kickoff"],
+  [\`\${y}-\${m}-24\`]: ["kickoff", "pentest"],
 };
 
 export default function TeamCalendar() {
@@ -23,7 +25,14 @@ export default function TeamCalendar() {
 
 export const usageMinimal = `import { CalendarDashboard } from "@/components/custom/blocks/Calendar";
 
-const events = { "2025-9-10": ["pentest", "kickoff"] };
+const y = new Date().getFullYear();
+const m = new Date().getMonth() + 1;
+const events = {
+  [\`\${y}-\${m}-2\`]: ["pentest", "kickoff"],
+  [\`\${y}-\${m}-10\`]: ["pentest", "kickoff"],
+  [\`\${y}-\${m}-15\`]: ["pentest", "kickoff"],
+  [\`\${y}-\${m}-24\`]: ["kickoff", "pentest"],
+};
 
 export default function EmbeddedCalendar() {
   // "minimal" drops the card chrome so the dashboard sits flush inside your page.
@@ -32,37 +41,34 @@ export default function EmbeddedCalendar() {
 
 export const usageGlass = `import { CalendarDashboard } from "@/components/custom/blocks/Calendar";
 
-const events = { "2025-9-10": ["pentest", "kickoff"] };
+const y = new Date().getFullYear();
+const m = new Date().getMonth() + 1;
+const events = {
+  [\`\${y}-\${m}-2\`]: ["pentest", "kickoff"],
+  [\`\${y}-\${m}-10\`]: ["pentest", "kickoff"],
+  [\`\${y}-\${m}-15\`]: ["pentest", "kickoff"],
+  [\`\${y}-\${m}-24\`]: ["kickoff", "pentest"],
+};
 
 export default function GlassCalendar() {
-  // "glass" is translucent — give it a colored surface to sit on.
+  // "glass" is translucent — intended to sit on a background image or rich
+  // pattern. The photo frames it from md up; on phones the card fills the
+  // frame and the photo shows through it instead.
   return (
 
   );
 }`;
 
-export const usageEmpty = `import { CalendarDashboard } from "@/components/custom/blocks/Calendar";
-
-export default function EmptyCalendar() {
-  // mockEvents defaults to {} — the dashboard starts clean and you add
-  // events through its own UI.
-  return ;
-}`;
-
 ## Installation
 
-### 1. Install Dependencies
-
-This component relies heavily on `react-day-picker` and the standard `shadcn/ui` button primitive. Run the following commands:
+Register the @algorize-ui registry once per project, then add the component:
 
 ```bash
-npm install lucide-react date-fns react-day-picker
-npx shadcn-ui@latest add button
+npx shadcn@latest registry add @algorize-ui=https://algorize-ui.vercel.app/r/{name}.json
+npx shadcn@latest add @algorize-ui/calendar
 ```
 
-### 2. Copy the Component
-
-Create a new file at `components/custom/blocks/Calendar.tsx` and copy the engine code from the **Code** tab of the first example above.
+## Examples
 
 ## Features
 Discover the Calendar's date selection capabilities, supporting single dates, date ranges, and localization.
@@ -121,6 +127,6 @@ Discover the Calendar's date selection capabilities, supporting single dates, da
 
 ---
 
-**Component Path:** `nextjs\calendar\page.mdx`
+**Component Path:** `[framework]\calendar\page.mdx`
 
-**Web Version:** Visit the interactive version at the corresponding URL on the Next.js documentation site for live previews and interactive examples.
+**Web Version:** Visit the corresponding URL on the Algorize UI documentation site for live previews and interactive examples.

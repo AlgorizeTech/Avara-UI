@@ -1,107 +1,12 @@
+export const metadata = docsPageMetadata("tooltip");
+
 # Tooltip
 
 A context-aware popup that displays information when an element receives keyboard focus or a mouse hover.
 
 Most lightweight tooltips suffer from a fatal flaw: they get clipped or hidden if they are placed inside a container with `overflow-hidden`. This `TooltipBlock` completely sidesteps that issue natively. It uses React's `createPortal` to render the tooltip bubble directly onto the `document.body` layer, calculating its position dynamically so it is mathematically impossible for it to get clipped by parent components.
 
-## Examples
-
-Hover or tab to each trigger to open its tooltip. The first example's **Code** tab contains the full component source.
-
-export const usageDefault = `import {
-  Tooltip,
-  TooltipContent,
-  TooltipProvider,
-  TooltipTrigger,
-} from "@/components/custom/blocks/TooltipBlock";
-
-export default function TooltipDemo() {
-  return (
-    // Wrap your app (or the nearest parent) once.
-
-          Create new project
-
-  );
-}`;
-
-export const usageSides = `import {
-  Tooltip,
-  TooltipContent,
-  TooltipProvider,
-  TooltipTrigger,
-} from "@/components/custom/blocks/TooltipBlock";
-
-export default function TooltipSides() {
-  return (
-
-              top
-
-          Side: top
-
-              right
-
-          Side: right
-
-              bottom
-
-          Side: bottom
-
-              left
-
-          Side: left
-
-  );
-}`;
-
-export const usageAlign = `import {
-  Tooltip,
-  TooltipContent,
-  TooltipProvider,
-  TooltipTrigger,
-} from "@/components/custom/blocks/TooltipBlock";
-
-export default function TooltipAlign() {
-  return (
-
-              align="start"
-
-            Aligned start
-
-              align="center"
-
-            Aligned center
-
-              align="end"
-
-            Aligned end
-
-  );
-}`;
-
-export const usageDelay = `import {
-  Tooltip,
-  TooltipContent,
-  TooltipProvider,
-  TooltipTrigger,
-} from "@/components/custom/blocks/TooltipBlock";
-
-export default function TooltipDelay() {
-  return (
-
-        {/* Opens the moment the pointer lands */}
-
-              0ms
-
-          Opens instantly
-
-        {/* Waits, so a passing cursor doesn't flash the bubble */}
-
-              700ms
-
-          Waits 700ms
-
-  );
-}`;
+Hover or tab to each trigger to open its tooltip.
 
 export const usageRich = `import {
   Tooltip,
@@ -141,11 +46,14 @@ export default function OffsetTooltip() {
 
 ## Installation
 
-### Copy the Component
+Register the @algorize-ui registry once per project, then add the component:
 
-This suite is **100% dependency-free**. It uses native React Context for state management and `react-dom` for the portal rendering.
+```bash
+npx shadcn@latest registry add @algorize-ui=https://algorize-ui.vercel.app/r/{name}.json
+npx shadcn@latest add @algorize-ui/tooltip
+```
 
-Create a new file at `components/custom/blocks/TooltipBlock.tsx` and copy the engine code from the **Code** tab of the first example above.
+## Examples
 
 ## Props Reference
 
@@ -212,6 +120,6 @@ Create a new file at `components/custom/blocks/TooltipBlock.tsx` and copy the en
 
 ---
 
-**Component Path:** `nextjs\tooltip\page.mdx`
+**Component Path:** `[framework]\tooltip\page.mdx`
 
-**Web Version:** Visit the interactive version at the corresponding URL on the Next.js documentation site for live previews and interactive examples.
+**Web Version:** Visit the corresponding URL on the Algorize UI documentation site for live previews and interactive examples.

@@ -1,0 +1,25 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "utility",
+  "title": "Utility",
+  "author": "AlgorizeTech",
+  "description": "Two small dashboard panels — a team member list and a command search box — built on the shared card shell. Use them as filler panels while assembling a dashboard layout.",
+  "dependencies": [],
+  "registryDependencies": [
+    "https://algorize-ui.vercel.app/r/ui-base.json"
+  ],
+  "files": [
+    {
+      "path": "src/components/custom/blocks/UtilityBlocks.tsx",
+      "content": "\"use client\";\nimport { ComponentCard } from \"../ui/base\";\n\nexport function TeamMembersBlock() {\n  return (\n    <ComponentCard className=\"flex flex-col items-center justify-center text-center p-8 border-dashed border-2\">\n      <div className=\"flex -space-x-3 mb-4\">\n        <div className=\"size-10 rounded-full border-2 border-card bg-muted\"></div>\n        <div className=\"size-10 rounded-full border-2 border-card bg-muted\"></div>\n        <div className=\"size-10 rounded-full border-2 border-card bg-muted-foreground/40\"></div>\n      </div>\n      <h3 className=\"font-semibold text-sm mb-1\">No Team Members</h3>\n      <p className=\"text-xs text-muted-foreground mb-4 max-w-[200px]\">Invite your team to collaborate on this project.</p>\n      <button className=\"cursor-pointer h-8 px-4 inline-flex items-center justify-center rounded-md border border-border bg-background text-xs font-medium shadow-sm hover:bg-muted transition-colors active:scale-95\">\n        + Invite Members\n      </button>\n    </ComponentCard>\n  );\n}\n\nexport function CommandSearchBlock() {\n  return (\n    <ComponentCard>\n      <div className=\"p-2 cursor-text\">\n        <div className=\"flex items-center px-3 py-2 bg-muted rounded-md group focus-within:ring-2 ring-ring transition-shadow\">\n          <svg className=\"size-4 text-muted-foreground mr-2\" fill=\"none\" viewBox=\"0 0 24 24\" stroke=\"currentColor\">\n            <path strokeLinecap=\"round\" strokeLinejoin=\"round\" strokeWidth={2} d=\"M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z\" />\n          </svg>\n          <input className=\"flex-1 bg-transparent text-sm outline-none placeholder:text-muted-foreground cursor-text\" placeholder=\"Search components...\" />\n          <kbd className=\"hidden sm:inline-flex h-5 select-none items-center gap-1 rounded border border-border bg-card px-1.5 font-mono text-[10px] font-medium text-muted-foreground\">ESC</kbd>\n        </div>\n        <div className=\"mt-2 px-2 py-4\">\n          <p className=\"text-xs font-medium text-muted-foreground mb-2 uppercase tracking-wider\">Suggestions</p>\n          <div className=\"space-y-1\">\n            {[\"Calendar\", \"Face Recognition\", \"Billing Settings\"].map((item) => (\n              <div key={item} className=\"flex items-center px-2 py-1.5 text-sm rounded-md hover:bg-muted cursor-pointer transition-colors active:bg-muted\">\n                {item}\n              </div>\n            ))}\n          </div>\n        </div>\n      </div>\n    </ComponentCard>\n  );\n}",
+      "type": "registry:component",
+      "target": "components/custom/blocks/UtilityBlocks.tsx"
+    }
+  ],
+  "docs": "Named exports: TeamMembersBlock, CommandSearchBlock. Self-contained examples with hardcoded content — copy and adapt rather than configuring through props. Depends on `ui-base`.",
+  "categories": [
+    "layout",
+    "utilities"
+  ],
+  "type": "registry:component"
+}

@@ -1,53 +1,14 @@
 "use client";
 
 import { cn } from "@/lib/utils";
-import React, { ReactNode } from "react";
+import React from "react";
+import type { ReactNode } from "react";
+import { getThemeStyles } from "./form-theme";
 
 // ==========================================
 // DYNAMIC THEME ENGINE
 // ==========================================
 export type FormColor = "indigo" | "rose" | "emerald" | "zinc" | string;
-
-const hexToRgb = (hex: string) => {
-  let cleanHex = hex.replace(/^#/, "");
-  if (cleanHex.length === 3)
-    cleanHex = cleanHex
-      .split("")
-      .map((x) => x + x)
-      .join("");
-  const result = /^([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(cleanHex);
-  return result
-    ? `${parseInt(result[1], 16)}, ${parseInt(result[2], 16)}, ${parseInt(result[3], 16)}`
-    : "99, 102, 241";
-};
-
-export const getThemeStyles = (color: string) => {
-  const isHex = color && color.startsWith("#");
-  const rgb = isHex ? hexToRgb(color) : "99, 102, 241"; // Default indigo rgb
-
-  // Map standard colors to tailwind variables if not hex
-  const colorMap: Record<string, string> = {
-    primary: "var(--primary)",
-    indigo: "#4f46e5",
-    rose: "#e11d48",
-    emerald: "#10b981",
-    zinc: "#18181b",
-  };
-
-  const finalColor = isHex ? color : colorMap[color] || colorMap.primary;
-  // "primary" tracks the site theme (can be light or dark), so its
-  // button text must track --primary-foreground instead of a fixed white.
-  const finalForeground =
-    !isHex && color === "primary" ? "var(--primary-foreground)" : "#ffffff";
-
-  return {
-    style: {
-      "--theme-color": finalColor,
-      "--theme-color-rgb": isHex ? rgb : hexToRgb(finalColor),
-      "--theme-color-foreground": finalForeground,
-    } as React.CSSProperties,
-  };
-};
 
 // ==========================================
 // FORM WRAPPER (High-Fidelity UI)
@@ -79,17 +40,17 @@ export function FormWrapper({
       </div>
 
       {/* Inner Container */}
-      <div className="relative bg-white dark:bg-[#050505] border border-zinc-200 dark:border-zinc-800/80 rounded-2xl p-6 sm:p-10 h-full w-full z-10">
+      <div className="relative bg-card text-card-foreground border border-border rounded-2xl p-6 sm:p-10 h-full w-full z-10">
         {/* Header */}
         {(title || description) && (
-          <div className="mb-8 border-b border-zinc-100 dark:border-zinc-800/50 pb-6">
+          <div className="mb-8 border-b border-border pb-6">
             {title && (
-              <h2 className="text-2xl font-black tracking-tight text-zinc-900 dark:text-white">
+              <h2 className="text-2xl font-bold tracking-tight text-foreground">
                 {title}
               </h2>
             )}
             {description && (
-              <p className="text-sm text-zinc-500 dark:text-zinc-400 mt-2">
+              <p className="text-sm text-muted-foreground mt-2">
                 {description}
               </p>
             )}
@@ -125,7 +86,7 @@ export function FormError({
     return (
       <div className="mt-1 flex items-center gap-1.5 overflow-hidden">
         <div className="w-1 h-3 bg-red-500 shrink-0" />
-        <span className="text-red-500 font-bold text-xs tracking-wider uppercase">
+        <span className="text-red-500 font-semibold text-xs tracking-wider uppercase">
           {message}
         </span>
       </div>
@@ -209,8 +170,8 @@ export function FormField({
       {label && (
         <label
           className={cn(
-            "text-sm font-bold",
-            error ? "text-red-500" : "text-zinc-700 dark:text-zinc-300",
+            "text-sm font-semibold",
+            error ? "text-red-500" : "text-foreground",
           )}
         >
           {label}
@@ -236,7 +197,7 @@ export function FormSubmit({
     <button
       type="submit"
       disabled={isSubmitting}
-      className="relative w-full overflow-hidden rounded-xl font-bold text-[var(--theme-color-foreground)] shadow-lg transition-transform active:scale-95 disabled:opacity-70 disabled:cursor-not-allowed group mt-2"
+      className="relative w-full overflow-hidden rounded-xl font-semibold text-[var(--theme-color-foreground)] shadow-lg transition-transform active:scale-95 disabled:opacity-70 disabled:cursor-not-allowed group mt-2"
     >
       <div className="absolute inset-0 bg-[var(--theme-color)] transition-opacity group-hover:opacity-90" />
       <div className="relative px-6 py-3.5 flex items-center justify-center gap-2 w-full h-full">

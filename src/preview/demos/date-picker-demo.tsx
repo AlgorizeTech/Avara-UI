@@ -21,6 +21,9 @@ export default function DatePickerDemo({
   inputSize = "md",
   showError = false,
   isDisabled = false,
+  disablePast = false,
+  showTime = false,
+  timeFormat = "12h",
   color = "primary",
   showAll,
 }: {
@@ -28,6 +31,9 @@ export default function DatePickerDemo({
   inputSize?: DatePickerSize;
   showError?: boolean;
   isDisabled?: boolean;
+  disablePast?: boolean;
+  showTime?: boolean;
+  timeFormat?: "12h" | "24h";
   color?: DatePickerColor | string;
   /** Render-all modes for the docs gallery. Omitted = previous behavior. */
   showAll?: "variants" | "sizes";
@@ -65,20 +71,29 @@ export default function DatePickerDemo({
   }
 
   return (
-    <div className="w-full flex flex-col items-start justify-center min-h-[500px] relative z-10">
+    <div className={`w-full flex flex-col items-start justify-start pt-5 pb-6 relative z-10 ${showTime ? "min-h-[680px]" : "min-h-[450px]"}`}>
       <div className="w-full max-w-sm mx-auto">
         <DatePickerBlock
-          key={`${variant}-${color}-${inputSize}-${showError}-${isDisabled}`}
+          key={`${variant}-${color}-${inputSize}-${showError}-${isDisabled}-${disablePast}-${showTime}-${timeFormat}`}
           value={date}
           onChange={setDate}
           variant={variant}
           color={color}
           inputSize={inputSize}
           disabled={isDisabled}
+          disablePast={disablePast}
+          showTime={showTime}
+          timeFormat={timeFormat}
           label="Launch Date"
-          placeholder="Select a date"
+          placeholder={showTime ? "Select date & time" : "Select a date"}
           helperText={
-            !showError ? "Choose the date for your next launch." : undefined
+            !showError
+              ? disablePast
+                ? "Only today and future dates can be picked."
+                : showTime
+                  ? "Pick a day, then set the time and hit Done."
+                  : "Choose the date for your next launch."
+              : undefined
           }
           error={
             showError ? "Please select a valid date in the future." : undefined

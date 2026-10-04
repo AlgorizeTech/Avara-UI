@@ -1,10 +1,9 @@
 "use client";
 
-import { Suspense, useEffect, useState } from "react";
+import { Suspense, useEffect, useRef, useState } from "react";
+import { accentTokens } from "@/lib/accent";
 import { SandboxErrorBoundary } from "./SandboxErrorBoundary";
 import { sandboxRegistry } from "./registry";
-
-const SANDBOX_MIN_HEIGHT = 0;
 
 /** Mounts together with the lazy demo (same Suspense boundary), so this
  * effect firing means the demo's markup is really in the DOM — the parent
@@ -44,6 +43,33 @@ export function SandboxClient({ name }: { name: string }) {
   const [demoProps, setDemoProps] = useState<Record<string, unknown> | null>(
     null,
   );
+
+  // The docs page's colour picker. Applied as theme tokens on <body> (below),
+  // not handed to the demo: this is what makes `bg-primary` buttons, rings and
+  // the like follow the picker even in demos that never read a `color` prop.
+  const [accent, setAccent] = useState<string | null>(null);
+
+  useEffect(() => {
+    try {
+      const raw = new URLSearchParams(window.location.search).get("accent");
+      if (raw) setAccent(raw);
+    } catch {
+      // Malformed URL — the live sandbox:accent message will set it anyway.
+    }
+  }, []);
+
+  // <body>, not <html>: the theme customizer injects the site palette on <html>
+  // (and re-injects it on every storage event), so a body-level override both
+  // wins the cascade and never gets clobbered — while portals mounted on body
+  // still inherit it. "Default" removes the override so the site theme shows.
+  useEffect(() => {
+    const tokens = accentTokens(accent ?? undefined);
+    const body = document.body;
+    for (const name of ["--primary", "--primary-foreground", "--ring"]) {
+      if (tokens[name]) body.style.setProperty(name, tokens[name]);
+      else body.style.removeProperty(name);
+    }
+  }, [accent]);
 
   useEffect(() => {
     setDemoProps((current) => {
@@ -104,21 +130,34 @@ export function SandboxClient({ name }: { name: string }) {
       if (data && data.type === "sandbox:props" && typeof data.props === "object") {
         setDemoProps(data.props ?? {});
       }
+      if (data && data.type === "sandbox:accent") {
+        setAccent(typeof data.accent === "string" ? data.accent : null);
+      }
     };
     window.addEventListener("message", onMessage);
     return () => window.removeEventListener("message", onMessage);
   }, []);
 
+  // The box the height report measures: the demo plus the stage padding.
+  const contentRef = useRef<HTMLDivElement>(null);
+
   // Report content height to the embedding Sandbox frame.
   useEffect(() => {
     if (window.parent === window) return;
     const report = () => {
-      // body, not documentElement: the latter is never shorter than the iframe
-      // viewport, so a frame that got sized up once could never report its way
-      // back down — it ratchets and the card stays tall. body carries the real
-      // content height (its margin/min-height are neutralized above), and the
-      // embedding frame applies its own min/max clamp.
-      const height = Math.ceil(document.body.scrollHeight);
+      const content = contentRef.current;
+      if (!content) return;
+      // The demo's own wrapper, not body/documentElement: the stage below is
+      // min-h-screen so the demo sits centred in whatever height the frame
+      // gives it, which makes body never shorter than the iframe viewport — a
+      // frame that got sized up once could never report its way back down.
+      // The wrapper holds only the demo, so the report tracks it both ways.
+      // scrollHeight picks up positioned overflow (an open dropdown below its
+      // trigger); the rect picks up transformed demos. The embedding frame
+      // takes the taller of this and its own floor.
+      const height = Math.ceil(
+        Math.max(content.scrollHeight, content.getBoundingClientRect().height),
+      );
       window.parent.postMessage(
         { type: "sandbox:height", name, height },
         window.location.origin,
@@ -126,12 +165,83 @@ export function SandboxClient({ name }: { name: string }) {
     };
     report();
     const observer = new ResizeObserver(report);
-    observer.observe(document.body);
+    if (contentRef.current) observer.observe(contentRef.current);
     const mutations = new MutationObserver(report);
     mutations.observe(document.body, { childList: true, subtree: true });
     return () => {
       observer.disconnect();
       mutations.disconnect();
+    };
+  }, [name]);
+
+  // Most demos frame themselves in a bordered panel that fills the stage. The
+  // panel already reads against the preview stage surface, so its border is
+  // only noise — mark it, and globals.css hides it. Measured rather than
+  // matched by class: the frame is the outermost fully-bordered element that
+  // spans the stage, either the demo root or reached through single-child
+  // wrappers. A bordered component capped narrower than the stage (a card, a
+  // badge) has its own size, and keeps its border.
+  useEffect(() => {
+    const content = contentRef.current;
+    if (!content) return;
+
+    const isFrame = (el: HTMLElement) => {
+      const style = getComputedStyle(el);
+      const bordered = (["Top", "Right", "Bottom", "Left"] as const).every(
+        (side) =>
+          parseFloat(style[`border${side}Width`]) > 0 &&
+          style[`border${side}Style`] !== "none",
+      );
+      if (!bordered) return false;
+      const stage = getComputedStyle(content);
+      const stageWidth =
+        content.clientWidth -
+        parseFloat(stage.paddingLeft) -
+        parseFloat(stage.paddingRight);
+      // "none" parses to NaN — an uncapped element.
+      const maxWidth = parseFloat(style.maxWidth);
+      return (
+        el.offsetWidth >= stageWidth * 0.9 &&
+        (Number.isNaN(maxWidth) || maxWidth >= 1024)
+      );
+    };
+
+    let frame: HTMLElement | null = null;
+    const detect = () => {
+      let next: HTMLElement | null = null;
+      let el = content.firstElementChild as HTMLElement | null;
+      for (let depth = 0; el && depth < 4; depth++) {
+        if (isFrame(el)) {
+          next = el;
+          break;
+        }
+        if (el.children.length !== 1) break;
+        el = el.firstElementChild as HTMLElement | null;
+      }
+      if (next === frame) return;
+      frame?.removeAttribute("data-sandbox-frame");
+      next?.setAttribute("data-sandbox-frame", "");
+      frame = next;
+    };
+
+    let queued = false;
+    const schedule = () => {
+      if (queued) return;
+      queued = true;
+      requestAnimationFrame(() => {
+        queued = false;
+        detect();
+      });
+    };
+    detect();
+    const observer = new ResizeObserver(schedule);
+    observer.observe(content);
+    const mutations = new MutationObserver(schedule);
+    mutations.observe(content, { childList: true, subtree: true });
+    return () => {
+      observer.disconnect();
+      mutations.disconnect();
+      frame?.removeAttribute("data-sandbox-frame");
     };
   }, [name]);
 
@@ -144,21 +254,29 @@ export function SandboxClient({ name }: { name: string }) {
     );
   }
 
+  // The stage fills the iframe viewport — which the embedding frame keeps at
+  // least as tall as the preview card — and centres the demo in it. So a lone
+  // button sits in the exact middle of the card rather than at its top edge,
+  // and fixed overlays the demo opens (a modal, a toast) get the whole card
+  // as their viewport instead of a strip the height of the trigger. Taller
+  // demos push the wrapper past the screen and the frame grows to fit them.
   return (
-    <div
-      className="w-full flex items-center justify-center p-4"
-      style={{ minHeight: SANDBOX_MIN_HEIGHT }}
-    >
-      <SandboxErrorBoundary name={name}>
-        <Suspense fallback={null}>
-          {demoProps !== null && (
-            <>
-              <Demo {...demoProps} />
-              <ReadySignal />
-            </>
-          )}
-        </Suspense>
-      </SandboxErrorBoundary>
+    <div className="w-full min-h-screen flex flex-col items-center justify-center">
+      <div
+        ref={contentRef}
+        className="w-full flex flex-col items-center py-6 px-4"
+      >
+        <SandboxErrorBoundary name={name}>
+          <Suspense fallback={null}>
+            {demoProps !== null && (
+              <>
+                <Demo {...demoProps} />
+                <ReadySignal />
+              </>
+            )}
+          </Suspense>
+        </SandboxErrorBoundary>
+      </div>
     </div>
   );
 }

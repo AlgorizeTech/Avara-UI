@@ -1,3 +1,5 @@
+export const metadata = docsPageMetadata("network-graph");
+
 # Network Graph
 
 A layered orbital avatar visual that spreads items evenly across concentric rings. It works well for community showcases, team maps, social proof sections, and dense relationship-driven hero layouts.
@@ -6,57 +8,62 @@ Unlike static canvases or heavy physics engines, this component dynamically hand
 
 ---
 
-## Examples
+Assign each node a `ring` index and the component spaces that ring evenly across a full 360°. Hover an avatar for its tooltip, or hit the reload button to replay the staggered spring entrance.
 
-Assign each node a `ring` index and the component spaces that ring evenly across a full 360°. Hover an avatar for its tooltip, or hit the reload button to replay the staggered spring entrance. The first example's **Code** tab contains the full component source.
+export const networkNodes = `const users: NetworkNode[] = [
+  // Ring 1 (inner)
+  { id: "1", ring: 1, image: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto/v1790148865/80-1790148865113.jpg", label: "Sarah J." },
+  { id: "2", ring: 1, image: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto/v1790148864/80-1-1790148865111.jpg", label: "David B." },
+  // No image? \`fallback\` renders the initials tile instead.
+  { id: "3", ring: 1, fallback: "JW", label: "James W." },
+  { id: "4", ring: 1, image: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto/v1790148865/80-3-1790148865112.jpg", label: "Lisa M." },
 
-export const usageDefault = `import { NetworkGraph } from "@/components/custom/blocks/NetworkGraphBlock";
+  // Ring 2 (outer)
+  { id: "5", ring: 2, image: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto/v1790148865/80-4-1790148865113.jpg", label: "Emma R." },
+  { id: "6", ring: 2, image: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_160,c_limit/v1790158813/photo-1494790108377-be9c29b29330-1790158812212.jpg", label: "Noah P." },
+  { id: "7", ring: 2, fallback: "MK", label: "Mike K." },
+  { id: "8", ring: 2, image: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto/v1790148864/80-2-1790148865112.jpg", label: "Ava T.", size: "sm" },
+  { id: "9", ring: 2, image: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_160,c_limit/v1790150480/photo-1507003211169-0a1dd7228f2d-1790150482276.jpg", label: "Ethan C." },
+  { id: "10", ring: 2, image: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_160,c_limit/v1790150483/photo-1534528741775-53994a69daeb-1790150482280.jpg", label: "Olivia S.", size: "lg" },
+  { id: "11", ring: 2, image: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_160,c_limit/v1790158814/photo-1500648767791-00dcc994a43e-1790158812212.jpg", label: "Liam H." },
+  { id: "12", ring: 2, fallback: "PL", label: "Priya L.", size: "sm" },
 
-export default function CommunityMap() {
-  const users = [
-    // Inner ring — spaced evenly by count, so 3 nodes sit 120° apart
-    { id: "1", ring: 1, image: "/avatars/user1.jpg", label: "Sarah" },
-    { id: "2", ring: 1, image: "/avatars/user2.jpg", label: "David" },
-    { id: "3", ring: 1, fallback: "JW", label: "James" },
+  // Ring 3 (outer)
+  { id: "13", ring: 3, image: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_160,c_limit/v1790158814/photo-1438761681033-6461ffad8d80-1790158812210.jpg", label: "Chloe D.", size: "sm" },
+  { id: "14", ring: 3, image: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_160,c_limit/v1790158813/photo-1472099645785-5658abf4ff4e-1790158812210.jpg", label: "Marcus V.", size: "sm" },
+  { id: "15", ring: 3, image: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_160,c_limit/v1790159965/photo-1519085360753-af0119f7cbe7-1790159970113.jpg", label: "Zoe N.", size: "md" },
+  { id: "16", ring: 3, fallback: "AJ", label: "Aaron J.", size: "sm" },
+  { id: "17", ring: 3, image: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_160,c_limit/v1790150480/photo-1506794778202-cad84cf45f1d-1790150482275.jpg", label: "Nina F.", size: "sm" },
+  { id: "18", ring: 3, image: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_160,c_limit/v1790150482/photo-1524504388940-b1c1722653e1-1790150482279.jpg", label: "Owen G.", size: "sm" },
+  { id: "19", ring: 3, fallback: "TR", label: "Tara R.", size: "sm" },
+  { id: "20", ring: 3, image: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_160,c_limit/v1790158814/photo-1522075469751-3a6694fb2f61-1790158812213.jpg", label: "Felix Q.", size: "sm" },
+];`;
 
-    // Outer ring
-    { id: "4", ring: 2, image: "/avatars/user4.jpg", size: "sm" },
-    { id: "5", ring: 2, fallback: "MK", size: "sm" },
-    { id: "6", ring: 2, image: "/avatars/user6.jpg", size: "sm" },
-  ];
+export const usageInteractive = `import {
+  NetworkGraph,
+  type NetworkNode,
+} from "@/components/custom/blocks/NetworkGraphBlock";
 
+${networkNodes}
+
+export default function OrbitGraph() {
+  // \`ringCount\` decides how many orbits render; \`baseRadius\` is the first
+  // ring's radius and \`ringGap\` the distance to each next one — both as a
+  // percentage of the square container, so the layout scales on any screen.
+  // \`orbitSpeed\` multiplies the rotation rate.
   return (
     
   );
 }`;
 
-export const usageRings = `// \`ringCount\` decides how many orbits render; \`baseRadius\` is the first
-// ring's radius and \`ringGap\` the distance to each next one — both as a
-// percentage of the square container, so the layout scales on any screen.
-`;
-
-export const usageStatic = `// Rings hold their position — the entrance animation still plays.
-`;
-
-export const usageSpeed = `// Multiplier on the orbit duration: 2 is twice as fast, 0.5 half speed.
-`;
-
-export const usageNoCenter = `// Omit \`centerNode\` and the rings orbit an empty hub.
-`;
-
 ## Installation
 
-### Dependencies
-
-This component uses **Framer Motion** for the staggered spring animations and continuous floating effects.
+Register the @algorize-ui registry once per project, then add the component:
 
 ```bash
-npm install framer-motion
+npx shadcn@latest registry add @algorize-ui=https://algorize-ui.vercel.app/r/{name}.json
+npx shadcn@latest add @algorize-ui/network-graph
 ```
-
-### Copy the Component
-
-Copy the full engine code from the **Code** tab of the first example above into `components/custom/blocks/NetworkGraphBlock.tsx`.
 
 ## Features
 Discover the key capabilities that make this component an excellent choice for modern, animated user interfaces.
@@ -164,6 +171,6 @@ Discover the key capabilities that make this component an excellent choice for m
 
 ---
 
-**Component Path:** `nextjs\network-graph\page.mdx`
+**Component Path:** `[framework]\network-graph\page.mdx`
 
-**Web Version:** Visit the interactive version at the corresponding URL on the Next.js documentation site for live previews and interactive examples.
+**Web Version:** Visit the corresponding URL on the Algorize UI documentation site for live previews and interactive examples.

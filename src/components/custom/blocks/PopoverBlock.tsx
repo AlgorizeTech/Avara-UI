@@ -5,6 +5,7 @@ import React, {
   createContext,
   useContext,
   useEffect,
+  useLayoutEffect,
   useRef,
   useState,
 } from "react";
@@ -16,7 +17,13 @@ import { createPortal } from "react-dom";
 interface PopoverContextType {
   open: boolean;
   setOpen: React.Dispatch<React.SetStateAction<boolean>>;
-  triggerRef: React.RefObject<HTMLDivElement | null>;
+  /**
+   * The trigger node itself, held in state rather than a ref. A ref shared
+   * through context makes every read of this context a ref read during render;
+   * a plain node lets the content position and portal itself without one.
+   */
+  trigger: HTMLDivElement | null;
+  setTrigger: React.Dispatch<React.SetStateAction<HTMLDivElement | null>>;
 }
 const PopoverContext = createContext<PopoverContextType | undefined>(undefined);
 
@@ -29,10 +36,10 @@ export interface PopoverProps {
 
 export function Popover({ children }: PopoverProps) {
   const [open, setOpen] = useState(false);
-  const triggerRef = useRef<HTMLDivElement | null>(null);
+  const [trigger, setTrigger] = useState<HTMLDivElement | null>(null);
 
   return (
-    <PopoverContext.Provider value={{ open, setOpen, triggerRef }}>
+    <PopoverContext.Provider value={{ open, setOpen, trigger, setTrigger }}>
       {children}
     </PopoverContext.Provider>
   );
@@ -54,7 +61,7 @@ export function PopoverTrigger({
   const context = useContext(PopoverContext);
   if (!context) throw new Error("PopoverTrigger must be used within a Popover");
 
-  const { open, setOpen, triggerRef } = context;
+  const { open, setOpen, setTrigger } = context;
 
   const handleClick = (e: React.MouseEvent) => {
     // Prevent event bubbling if placed inside another clickable element
@@ -64,7 +71,7 @@ export function PopoverTrigger({
 
   return (
     <div
-      ref={triggerRef}
+      ref={setTrigger}
       onClick={handleClick}
       className={cn("inline-block", className)}
       role="button"
@@ -114,6 +121,21 @@ const OPPOSITE_SIDE = {
 const clamp = (value: number, min: number, max: number) =>
   Math.max(min, Math.min(value, Math.max(min, max)));
 
+type Side = NonNullable<PopoverContentProps["side"]>;
+
+// Where the panel ended up, in document coordinates. `null` while unmeasured:
+// the panel is mounted invisibly, measured, then shown in the same frame.
+type Placement = { top: number; left: number; side: Side };
+
+// The entrance grows out of the trigger's edge: a panel below the button
+// scales from its own top edge and slides down a touch, and so on.
+const ENTER_FROM_SIDE: Record<Side, string> = {
+  bottom: "origin-top slide-in-from-top-2",
+  top: "origin-bottom slide-in-from-bottom-2",
+  left: "origin-right slide-in-from-right-2",
+  right: "origin-left slide-in-from-left-2",
+};
+
 export function PopoverContent({
   side = "bottom",
   align = "center",
@@ -127,27 +149,33 @@ export function PopoverContent({
   const context = useContext(PopoverContext);
   if (!context) throw new Error("PopoverContent must be used within a Popover");
 
-  const { open, setOpen, triggerRef } = context;
-  const [coords, setCoords] = useState({ top: -9999, left: -9999 });
+  const { open, setOpen, trigger: triggerEl } = context;
+  const [placement, setPlacement] = useState<Placement | null>(null);
   const contentRef = useRef<HTMLDivElement>(null);
-  const [mounted, setMounted] = useState(false);
 
-  // SSR Safety
-  useEffect(() => {
-    setMounted(true);
-  }, []);
+  // Forget the last position on close. This component stays mounted while
+  // closed, so without this a reopen would paint one frame at the stale
+  // coordinates (from before a scroll, or from a different `side`) and then
+  // jump next to the trigger. Adjusted while rendering, when `open` changes,
+  // rather than in an effect.
+  const [prevOpen, setPrevOpen] = useState(open);
+  if (open !== prevOpen) {
+    setPrevOpen(open);
+    if (!open) setPlacement(null);
+  }
 
-  // Handle Position Updates
-  useEffect(() => {
-    if (!open || !triggerRef.current || !contentRef.current) return;
+  // Handle Position Updates. A layout effect runs before the browser paints,
+  // so the first visible frame is already in the right place — a plain effect
+  // would paint first and reposition afterwards, which reads as a jump.
+  useLayoutEffect(() => {
+    if (!open || !triggerEl || !contentRef.current) return;
 
     // Resolve the document/window the trigger actually lives in, so the
     // popover works when rendered inside an iframe (e.g. docs device preview).
-    const doc = triggerRef.current.ownerDocument;
+    const doc = triggerEl.ownerDocument;
     const win = doc.defaultView ?? window;
 
     const updatePosition = () => {
-      const triggerEl = triggerRef.current;
       const contentEl = contentRef.current;
       if (!triggerEl || !contentEl) return;
 
@@ -251,10 +279,13 @@ export function PopoverContent({
 
       const nextTop = top + win.scrollY;
       const nextLeft = left + win.scrollX;
-      setCoords((prev) =>
-        prev.top === nextTop && prev.left === nextLeft
+      setPlacement((prev) =>
+        prev &&
+        prev.top === nextTop &&
+        prev.left === nextLeft &&
+        prev.side === resolvedSide
           ? prev
-          : { top: nextTop, left: nextLeft },
+          : { top: nextTop, left: nextLeft, side: resolvedSide },
       );
     };
 
@@ -272,7 +303,7 @@ export function PopoverContent({
       updatePosition,
     );
     sizeObserver.observe(contentRef.current);
-    sizeObserver.observe(triggerRef.current);
+    sizeObserver.observe(triggerEl);
 
     return () => {
       sizeObserver.disconnect();
@@ -288,7 +319,7 @@ export function PopoverContent({
     sideOffset,
     avoidCollisions,
     collisionPadding,
-    triggerRef,
+    triggerEl,
   ]);
 
   // Handle Click Outside & Escape Key
@@ -299,8 +330,8 @@ export function PopoverContent({
       if (
         contentRef.current &&
         !contentRef.current.contains(e.target as Node) &&
-        triggerRef.current &&
-        !triggerRef.current.contains(e.target as Node)
+        triggerEl &&
+        !triggerEl.contains(e.target as Node)
       ) {
         setOpen(false);
       }
@@ -311,7 +342,7 @@ export function PopoverContent({
     };
 
     // Listen on the document the trigger actually lives in (supports iframe rendering).
-    const doc = triggerRef.current?.ownerDocument ?? document;
+    const doc = contentRef.current?.ownerDocument ?? document;
 
     doc.addEventListener("mousedown", handleInteractOutside);
     doc.addEventListener("touchstart", handleInteractOutside);
@@ -322,12 +353,14 @@ export function PopoverContent({
       doc.removeEventListener("touchstart", handleInteractOutside);
       doc.removeEventListener("keydown", handleEscape);
     };
-  }, [open, setOpen, triggerRef]);
+  }, [open, setOpen, triggerEl]);
 
-  if (!mounted || !open) return null;
+  // triggerEl is null until the trigger commits, which also covers SSR: there
+  // is no document to portal into on the server.
+  if (!triggerEl || !open) return null;
 
   // Portal into the trigger's own document (supports iframe rendering).
-  const portalTarget = triggerRef.current?.ownerDocument.body ?? document.body;
+  const portalTarget = triggerEl.ownerDocument.body;
 
   return createPortal(
     <div
@@ -338,10 +371,26 @@ export function PopoverContent({
         // padding buy back the height that would otherwise have to be scrolled.
         // Width stays a single class so an overriding `className="w-48"` wins at
         // every breakpoint instead of only below lg.
-        "absolute z-[9999] w-72 max-w-[calc(100vw-1rem)] p-3 lg:p-4 text-sm lg:text-base outline-none text-zinc-950 dark:text-zinc-50 bg-white dark:bg-[#050505] border border-zinc-200 dark:border-zinc-800 rounded-xl shadow-lg animate-in fade-in zoom-in-95 duration-200",
+        "absolute z-[9999] w-72 max-w-[calc(100vw-1rem)] p-3 lg:p-4 text-sm lg:text-base outline-none text-popover-foreground bg-popover border border-border rounded-xl shadow-lg",
+        // `duration-200` sets transition-duration as well as the animation
+        // length, and the browser's default transition-property is `all` — so
+        // without `transition-none` the panel would tween its top/left from
+        // wherever it last was, sliding across the screen instead of opening in
+        // place. Radix/shadcn avoid this the same way: the positioned wrapper
+        // never transitions; only the entrance keyframes animate.
+        "transition-none animate-in fade-in zoom-in-95 duration-200",
+        // Animate from whichever side the panel actually landed on; until it
+        // is measured, fall back to the requested side so the classes are stable.
+        ENTER_FROM_SIDE[placement?.side ?? side],
         className,
       )}
-      style={{ top: coords.top, left: coords.left }}
+      style={{
+        top: placement?.top ?? 0,
+        left: placement?.left ?? 0,
+        // Mounted but not yet measured — keep it out of sight rather than
+        // flashing it at 0,0. Cleared in the same frame the layout effect runs.
+        visibility: placement ? undefined : "hidden",
+      }}
       // Stop clicks inside the popover from bubbling up to the document
       onClick={(e) => e.stopPropagation()}
       {...props}

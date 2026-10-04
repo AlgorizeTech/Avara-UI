@@ -1,58 +1,86 @@
+export const metadata = docsPageMetadata("video-accordion");
+
 # Video Accordion
 
-A cinematic, expanding gallery component built with **GSAP**. It keeps one panel visually dominant and plays its assigned video, while the rest seamlessly compress into an obscured track-rail and pause.
+A cinematic, expanding gallery component animated with plain **CSS transitions** — no animation library. It keeps one panel visually dominant and plays its assigned video, while the rest seamlessly compress into an obscured track-rail and pause.
 
 This layout is incredibly useful for portfolio reels, storytelling feature sections, and high-impact editorial landing pages. On mobile viewports, it intelligently re-flows into a vertically expanding stack automatically.
 
-## Examples
+Hover a compressed panel to expand it — a CSS transition interpolates the flex-grow of every sibling and the newly dominant panel starts playing while the others pause.
 
-Hover a compressed panel to expand it — GSAP interpolates the flex-basis of every sibling and the newly dominant panel starts playing while the others pause. The first example's **Code** tab contains the full component source.
-
-export const usageDefault = `import { VideoAccordion } from "@/components/custom/blocks/VideoAccordionBlock";
-
-const panels = [
+export const accordionPanels = `const panels: AccordionPanel[] = [
   {
     id: "ocean",
-    title: "Ocean Life",
-    description: "Dive deep into the abyss and discover the world beneath.",
-    videoSrc: "/videos/sea-turtle.mp4",
-    posterUrl: "/photos/ocean.jpg",
+    title: "Alpine Sanctuary",
+    description:
+      "Explore the tranquil turquoise waters of pristine high-altitude mountain lakes surrounded by majestic peaks.",
+    videoSrc: "https://vjs.zencdn.net/v/oceans.mp4",
+    posterUrl:
+      "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_1200,c_limit/v1790146210/photo-1506744038136-46273834b3fb-1790146212208.jpg",
   },
   {
     id: "wildlife",
-    title: "Majestic Wildlife",
-    description: "The power and scale of untamed nature.",
-    videoSrc: "/videos/elephants.mp4",
-    posterUrl: "/photos/wildlife.jpg",
+    title: "Emerald Rainforest",
+    description:
+      "Venture deep into lush, ancient pine groves and mist-shrouded woodland valleys untouched by time.",
+    videoSrc: "https://interactive-examples.mdn.mozilla.net/media/cc0-videos/flower.mp4",
+    posterUrl:
+      "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_1200,c_limit/v1790159968/photo-1470058869958-2a77ade41c02-1790159970122.jpg",
   },
-];
+  {
+    id: "soaring",
+    title: "Highland Ridge",
+    description:
+      "Soar above golden sunset horizons, jagged rocky cliffs, and sweeping atmospheric cloudscapes.",
+    videoSrc: "https://interactive-examples.mdn.mozilla.net/media/cc0-videos/friday.mp4",
+    posterUrl:
+      "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_1200,c_limit/v1790146209/photo-1470071459604-3b5ec3a7fe05-1790146212205.jpg",
+  },
+  {
+    id: "nature",
+    title: "Cascading Waterfalls",
+    description:
+      "Listen to the peaceful roar of crystal streams flowing through mossy granite boulders in deep wilderness.",
+    videoSrc: "https://www.w3schools.com/html/mov_bbb.mp4",
+    posterUrl:
+      "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_1200,c_limit/v1790159968/photo-1432405972618-c60b0225b8f9-1790159970121.jpg",
+  },
+];`;
 
-export default function FeatureReel() {
-  // Omitting defaultActiveId starts in the resting state: no panel dominant.
-  return ;
+export const usageDefaultActive = `import { VideoAccordion, type AccordionPanel } from "@/components/custom/blocks/VideoAccordionBlock";
+
+${accordionPanels}
+
+export default function OpenedOnLoad() {
+  // Land with one panel already open — good for hero sections where the
+  // first frame should not look inert.
+  return (
+
+  );
 }`;
 
-export const usageDefaultActive = `// Land with one panel already open — good for hero sections where the
-// first frame should not look inert.
-`;
+export const usageShortRail = `import { VideoAccordion, type AccordionPanel } from "@/components/custom/blocks/VideoAccordionBlock";
 
-export const usageShortRail = `// Fewer, wider panels. Each one keeps a legible title strip even when
-// compressed, so two or three read as well as five.
-`;
+${accordionPanels}
+
+export default function ShortReel() {
+  // Fewer, wider panels. Each one keeps a legible title strip even when
+  // compressed, so two or three read as well as five.
+  return (
+
+  );
+}`;
 
 ## Installation
 
-### Dependencies
-
-This component utilizes **GSAP** to handle the heavy mathematical lifting of flex-basis interpolation during the expansion tracking.
+Register the @algorize-ui registry once per project, then add the component:
 
 ```bash
-npm install gsap
+npx shadcn@latest registry add @algorize-ui=https://algorize-ui.vercel.app/r/{name}.json
+npx shadcn@latest add @algorize-ui/video-accordion
 ```
 
-### Copy the Component
-
-Copy the core engine code from the **Code** tab of the first example above into `components/custom/blocks/VideoAccordionBlock.tsx`.
+## Examples
 
 ## Features
 Discover the key capabilities that make this component an excellent choice for modern, animated user interfaces.
@@ -128,7 +156,7 @@ Discover the key capabilities that make this component an excellent choice for m
           Required
 
           A unique identifier string required for safe React list rendering and
-          GSAP state tracking.
+          active-panel tracking.
 
           AccordionPanel
 
@@ -176,6 +204,6 @@ Discover the key capabilities that make this component an excellent choice for m
 
 ---
 
-**Component Path:** `nextjs\video-accordion\page.mdx`
+**Component Path:** `[framework]\video-accordion\page.mdx`
 
-**Web Version:** Visit the interactive version at the corresponding URL on the Next.js documentation site for live previews and interactive examples.
+**Web Version:** Visit the corresponding URL on the Algorize UI documentation site for live previews and interactive examples.

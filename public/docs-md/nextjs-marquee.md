@@ -1,56 +1,168 @@
+export const metadata = docsPageMetadata("marquee");
+
 # Marquee
 
 An infinite, seamless scrolling container ideal for logos, testimonials, and image galleries.
 
 This `MarqueeBlock` is engineered to be **flawless**. By exactly duplicating the content and using a precise CSS calculation (`calc(-100% - gap)`), the animation loops infinitely without any stuttering, lagging, or "snap back" resets that plague older implementations.
 
-## Examples
+You only supply one set of items — the block duplicates them and offsets the copy by `calc(-100% - gap)`, so the loop never snaps.
 
-You only supply one set of items — the block duplicates them and offsets the copy by `calc(-100% - gap)`, so the loop never snaps. The first example's **Code** tab contains the full component source.
+export const marqueeLogos = `import {
+  Box,
+  Boxes,
+  Code2,
+  Command,
+  Hexagon,
+  Layers,
+  Network,
+  Palette,
+  Sparkles,
+  Triangle,
+} from "lucide-react";
+
+const logos = [
+  { icon: Command, name: "Command" },
+  { icon: Palette, name: "Palette" },
+  { icon: Sparkles, name: "Motion" },
+  { icon: Boxes, name: "Packages" },
+  { icon: Network, name: "Network" },
+  { icon: Hexagon, name: "Hexagon" },
+  { icon: Layers, name: "Layers" },
+  { icon: Triangle, name: "Triangle" },
+  { icon: Code2, name: "Code" },
+  { icon: Box, name: "Blocks" },
+];`;
+
+export const marqueeTestimonials = `const testimonials = [
+  {
+    name: "Sarah Connor",
+    role: "Product Manager",
+    text: "This component library has completely transformed our workflow. Everything just works perfectly out of the box.",
+  },
+  {
+    name: "John Wick",
+    role: "Lead Developer",
+    text: "The cleanest, most well-documented React code I have ever seen. Absolutely essential for modern web dev.",
+  },
+  {
+    name: "Ellen Ripley",
+    role: "UX Designer",
+    text: "Beautiful default styles and incredibly smooth animations. It makes prototyping high-fidelity interfaces a breeze.",
+  },
+  {
+    name: "Neo",
+    role: "Software Engineer",
+    text: "Finally, a library that gives me full control over the code without abstracting away all the important details.",
+  },
+];`;
+
+export const marqueeImages = `const images = [
+  "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_800,c_limit/v1790146209/photo-1469474968028-56623f02e42e-1790146212205.jpg",
+  "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_800,c_limit/v1790148863/photo-1447752875215-b2761acb3c5d-1790148865109.jpg",
+  "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_800,c_limit/v1790146210/photo-1507525428034-b723cf961d3e-1790146212208.jpg",
+  "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_800,c_limit/v1790146211/photo-1519681393784-d120267933ba-1790146212210.jpg",
+  "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_800,c_limit/v1790146209/photo-1470071459604-3b5ec3a7fe05-1790146212205.jpg",
+];`;
 
 export const usageDefault = `import { MarqueeBlock } from "@/components/custom/blocks/MarqueeBlock";
 
-const logos = ["Vercel", "Stripe", "Supabase", "Linear", "Figma"];
+${marqueeLogos}
 
 export default function LogoSection() {
   return (
     
       {logos.map((logo) => (
-        
-          {logo}
+
+          {logo.name}
         
       ))}
     
   );
 }`;
 
-export const usageRight = `// Reverses the travel; everything else is identical.
+export const usageRight = `import { MarqueeBlock } from "@/components/custom/blocks/MarqueeBlock";
 
-  {logos.map((logo) => )}
-`;
+${marqueeLogos}
 
-export const usageVertical = `// Vertical marquees need a bounded height on the container.
+export default function ReverseLogoWall() {
+  // Reverses the travel; everything else is identical.
+  return (
+    
+      {logos.map((logo) => (
 
-  {testimonials.map((t) => )}
-`;
+          {logo.name}
+        
+      ))}
+    
+  );
+}`;
 
-export const usageSpeed = `// "slow" | "normal" | "fast", or a raw duration in seconds.
+export const usageVertical = `import { MarqueeBlock } from "@/components/custom/blocks/MarqueeBlock";
 
-  {images.map((src) => )}
-`;
+${marqueeTestimonials}
 
-export const usageBare = `// No edge mask, and the loop keeps running under the cursor.
+export default function TestimonialColumn() {
+  // Vertical travel needs a bounded height on the block itself.
+  return (
+    
+      {testimonials.map((t) => (
 
-  {logos.map((logo) => )}
-`;
+            &quot;{t.text}&quot;
+
+              {t.name.charAt(0)}
+
+                {t.name}
+              
+              {t.role}
+
+      ))}
+    
+  );
+}`;
+
+export const usageSpeed = `import { MarqueeBlock } from "@/components/custom/blocks/MarqueeBlock";
+
+${marqueeImages}
+
+export default function SlowGallery() {
+  // speed takes "slow" | "normal" | "fast".
+  return (
+    
+      {images.map((src) => (
+
+      ))}
+    
+  );
+}`;
+
+export const usageBare = `import { MarqueeBlock } from "@/components/custom/blocks/MarqueeBlock";
+
+${marqueeLogos}
+
+export default function BareLogoWall() {
+  // No fade mask and no hover pause — the plainest marquee there is.
+  return (
+    
+      {logos.map((logo) => (
+
+          {logo.name}
+        
+      ))}
+    
+  );
+}`;
 
 ## Installation
 
-### Copy the Component
+Register the @algorize-ui registry once per project, then add the component:
 
-This component relies entirely on injected `@keyframes` and dynamic CSS variables to function, meaning it is **100% dependency-free**.
+```bash
+npx shadcn@latest registry add @algorize-ui=https://algorize-ui.vercel.app/r/{name}.json
+npx shadcn@latest add @algorize-ui/marquee
+```
 
-Copy the full engine code from the **Code** tab of the first example above into `components/custom/blocks/MarqueeBlock.tsx`.
+## Examples
 
 ## Props Reference
 
@@ -91,6 +203,6 @@ Copy the full engine code from the **Code** tab of the first example above into 
 
 ---
 
-**Component Path:** `nextjs\marquee\page.mdx`
+**Component Path:** `[framework]\marquee\page.mdx`
 
-**Web Version:** Visit the interactive version at the corresponding URL on the Next.js documentation site for live previews and interactive examples.
+**Web Version:** Visit the corresponding URL on the Algorize UI documentation site for live previews and interactive examples.

@@ -6,9 +6,10 @@ import * as React from "react";
 
 import { cn } from "@/lib/utils";
 
-type AccordionProps = React.ComponentPropsWithoutRef<
-  typeof AccordionPrimitive.Root
->;
+// ComponentProps, not ComponentPropsWithoutRef: React 19 passes `ref` as an
+// ordinary prop, so blocks can reach the root element (the Accordion block
+// measures it for its stack entrance).
+type AccordionProps = React.ComponentProps<typeof AccordionPrimitive.Root>;
 function Accordion(props: AccordionProps) {
   return <AccordionPrimitive.Root data-slot="accordion" {...props} />;
 }
@@ -20,10 +21,7 @@ function AccordionItem({ className, ...props }: AccordionItemProps) {
   return (
     <AccordionPrimitive.Item
       data-slot="accordion-item"
-      className={cn(
-        "border-b last:border-b-0 data-[state=open]:bg-gray-100 data-[state=open]:dark:bg-gray-800",
-        className,
-      )}
+      className={cn(className)}
       {...props}
     />
   );
@@ -57,7 +55,7 @@ function AccordionTrigger({
         {expandIcon ? (
           expandIcon
         ) : (
-          <ChevronDownIcon className="text-muted-foreground pointer-events-none size-4 shrink-0 translate-y-0.5 transition-transform duration-200" />
+          <ChevronDownIcon className="text-muted-foreground group-hover:text-primary group-[[data-state=open]]:text-primary pointer-events-none size-4 shrink-0 translate-y-0.5 transition-all duration-200" />
         )}
       </AccordionPrimitive.Trigger>
     </AccordionPrimitive.Header>

@@ -20,10 +20,10 @@ export const Kbd = React.forwardRef<HTMLElement, KbdProps>(
         ref={ref}
         className={cn(
           "pointer-events-none inline-flex select-none items-center gap-1 rounded border font-mono font-medium",
-          // Light mode styling
-          "border-zinc-200 bg-zinc-100 text-zinc-600 shadow-[0_1px_0_rgba(0,0,0,0.05)]",
-          // Dark mode styling
-          "dark:border-zinc-800 dark:bg-zinc-900 dark:text-zinc-400 dark:shadow-[0_1px_0_rgba(255,255,255,0.05)]",
+          // Theme-token surface (both modes)
+          "border-border bg-muted text-muted-foreground shadow-[0_1px_0_rgba(0,0,0,0.05)]",
+          // Dark mode edge highlight
+          "dark:shadow-[0_1px_0_rgba(255,255,255,0.05)]",
           sizeStyles[size],
           className,
         )}

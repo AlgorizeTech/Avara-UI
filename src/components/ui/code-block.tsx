@@ -2,6 +2,8 @@
 
 import { useState, useEffect, isValidElement, ReactElement } from "react";
 import { CodeBlocks } from "@/components/custom/ui/codeblocks";
+import { CodeFrame } from "@/components/site/code-block-client";
+import type { BundledLanguage } from "shiki";
 
 interface CodeBlockProps extends React.HTMLAttributes<HTMLDivElement> {
   children: React.ReactNode;
@@ -131,6 +133,19 @@ export function CodeBlock({ children }: CodeBlockProps) {
 
   if (!rawCode) return null;
 
-  // Direct 100% component reuse of CodeBlocks
-  return <CodeBlocks code={rawCode} language={detectedLanguage} />;
+  // Direct 100% component reuse of CodeBlocks, set in the docs code figure.
+  // Not a registry item (generate-registry ships only site-ui `card`), so the
+  // frame is free to follow the site's look.
+  return (
+    <CodeFrame
+      className="my-6"
+      header={
+        <span className="truncate text-[13px] font-medium text-foreground/60">
+          {detectedLanguage}
+        </span>
+      }
+    >
+      <CodeBlocks code={rawCode} language={detectedLanguage as BundledLanguage} />
+    </CodeFrame>
+  );
 }

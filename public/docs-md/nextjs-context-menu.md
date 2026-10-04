@@ -1,3 +1,5 @@
+export const metadata = docsPageMetadata("context-menu");
+
 # Context Menu
 
 Displays a menu to the user — such as a set of actions or functions — triggered by a right-click.
@@ -6,49 +8,21 @@ Building a Context Menu is difficult because it involves intercepting the browse
 
 This `ContextMenuBlock` is a **100% dependency-free** solution. It uses React's `createPortal` to escape DOM limitations, and includes highly optimized boundary-collision logic to guarantee the menu never opens off the edge of the user's screen.
 
-## Examples
+Right-click (or long-press on touch) inside each dashed box. Try it near the edges — the boundary maths keeps the menu on screen.
 
-Right-click (or long-press on touch) inside each dashed box. Try it near the edges — the boundary maths keeps the menu on screen. The first example's **Code** tab contains the full component source.
-
-export const usageDefault = `import {
-  ContextMenu,
-  ContextMenuContent,
-  ContextMenuItem,
-  ContextMenuTrigger,
-} from "@/components/custom/blocks/ContextMenuBlock";
-
-export default function RightClickArea() {
-  return (
-    
-      {/* This whole element intercepts the right-click */}
-      
-        Right-click anywhere inside this box
-
-      {/* Rendered in a portal at the cursor position */}
-      
-         console.log("Edit")}>Edit File
-         console.log("Duplicate")}>Duplicate
-         console.log("Rename")}>Rename
-
-  );
-}`;
-
-export const usageFull = `import {
-  ContextMenu,
-  ContextMenuContent,
-  ContextMenuItem,
-  ContextMenuLabel,
-  ContextMenuSeparator,
-  ContextMenuShortcut,
-  ContextMenuTrigger,
-} from "@/components/custom/blocks/ContextMenuBlock";
+export const usageFull = `"use client";
 
 export default function DocumentMenu() {
+  // The live preview raises a toast here; this logs instead so the snippet
+  // needs nothing beyond the context menu itself.
   const run = (action: string) => console.log(action);
 
   return (
 
-        Right-click anywhere inside this box
+            Click / Right-Click / Touch Area
+
+            Click or right-click (long-press on mobile) inside this box to open
+            the context menu.
 
         Document Actions
          run("Edit")}>
@@ -78,7 +52,7 @@ export default function DocumentMenu() {
 
         {/* className restyles a single destructive row */}
          run("Delete")}
-          className="text-red-600 focus:bg-red-50 focus:text-red-700"
+          className="text-destructive focus:bg-destructive/10 focus:text-destructive"
         >
           
           Delete
@@ -87,41 +61,14 @@ export default function DocumentMenu() {
   );
 }`;
 
-export const usageInset = `import {
-  ContextMenu,
-  ContextMenuContent,
-  ContextMenuItem,
-  ContextMenuLabel,
-  ContextMenuSeparator,
-  ContextMenuTrigger,
-} from "@/components/custom/blocks/ContextMenuBlock";
-
-export default function ViewMenu() {
-  const run = (action: string) => console.log(action);
-
-  return (
-
-        Right-click anywhere inside this box
-
-        {/* inset pads the left edge so text-only rows line up with icon rows */}
-        View
-         run("List")}>List
-         run("Grid")}>Grid
-
-         run("Download")}>
-          
-          Download PDF
-
-  );
-}`;
-
 ## Installation
 
-### Copy the Component
+Register the @algorize-ui registry once per project, then add the component:
 
-This component is **100% dependency-free**. It uses React's `createPortal` to render the menu above everything else, plus boundary-collision maths so it never opens off screen.
-
-Create a new file at `components/custom/blocks/ContextMenuBlock.tsx` and copy the engine code from the **Code** tab of the first example above.
+```bash
+npx shadcn@latest registry add @algorize-ui=https://algorize-ui.vercel.app/r/{name}.json
+npx shadcn@latest add @algorize-ui/context-menu
+```
 
 ## Features
 Explore the ContextMenu's right-click features, including nested submenus, disabled states, and keyboard navigation.
@@ -150,6 +97,16 @@ Explore the ContextMenu's right-click features, including nested submenus, disab
         Type
         Default
         Description
+
+          ContextMenu
+
+          color
+
+          "primary" | "indigo" | "rose" | "emerald" | "blue" | "zinc" | string
+
+          "primary"
+
+          Applies theme accent color to item hover states and trigger container focus/hover borders. Accepts preset named themes or valid hex strings.
 
           ContextMenuTrigger
 
@@ -230,6 +187,6 @@ Explore the ContextMenu's right-click features, including nested submenus, disab
 
 ---
 
-**Component Path:** `nextjs\context-menu\page.mdx`
+**Component Path:** `[framework]\context-menu\page.mdx`
 
-**Web Version:** Visit the interactive version at the corresponding URL on the Next.js documentation site for live previews and interactive examples.
+**Web Version:** Visit the corresponding URL on the Algorize UI documentation site for live previews and interactive examples.

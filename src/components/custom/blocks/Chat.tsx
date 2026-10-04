@@ -26,34 +26,33 @@ export type ChatColor = "indigo" | "rose" | "emerald" | "zinc" | (string & {});
 const chatVariants: Record<ChatVariant, Record<string, string>> = {
   default: {
     wrapper:
-      "bg-zinc-50 dark:bg-[#09090b] border border-zinc-200 dark:border-zinc-800/80 rounded-2xl",
+      "bg-background border border-border rounded-2xl",
     sidebar:
-      "bg-white/90 dark:bg-[#121217]/90 backdrop-blur-xl border-r border-zinc-200 dark:border-zinc-800/50",
-    main: "bg-white dark:bg-[#09090b]",
+      "bg-card/90 backdrop-blur-xl border-r border-border",
+    main: "bg-background",
     header:
-      "bg-white/80 dark:bg-[#09090b]/80 border-b border-zinc-100 dark:border-zinc-800/80 backdrop-blur-xl",
+      "bg-background/80 border-b border-border backdrop-blur-xl",
     footer:
-      "bg-white/80 dark:bg-[#09090b]/80 border-t border-zinc-100 dark:border-zinc-800/80 backdrop-blur-xl",
-    inputBg: "bg-zinc-100 dark:bg-zinc-900 border border-transparent",
+      "bg-background/80 border-t border-border backdrop-blur-xl",
+    inputBg: "bg-muted border border-transparent",
     msgThem:
-      "bg-white dark:bg-zinc-900 text-zinc-800 dark:text-zinc-100 rounded-2xl rounded-bl-sm border border-zinc-200 dark:border-zinc-800/80 shadow-sm",
-    msgMe:
-      "text-white rounded-2xl rounded-br-sm shadow-sm border border-transparent",
+      "bg-card text-foreground rounded-2xl rounded-bl-sm border border-border shadow-sm",
+    msgMe: "rounded-2xl rounded-br-sm shadow-sm border border-transparent",
+    composer: "",
   },
+  // Two cards, not one: the contact list and the thread are separate
+  // bordered cards with a gap between them, and the wrapper draws nothing —
+  // so the chat sits on the page as two panels rather than one big card.
   minimal: {
-    wrapper: "bg-transparent border-none shadow-none rounded-none",
-    sidebar:
-      "bg-zinc-50/50 dark:bg-zinc-900/30 rounded-2xl border border-zinc-100 dark:border-zinc-800/50 lg:mr-4",
-    main: "bg-transparent",
-    header:
-      "bg-transparent border-b border-zinc-200 dark:border-zinc-800/50 mb-2 pb-4",
-    footer:
-      "bg-transparent border-t border-zinc-200 dark:border-zinc-800/50 mt-2 pt-4",
-    inputBg:
-      "bg-zinc-50 dark:bg-zinc-900/40 border border-zinc-200 dark:border-zinc-800",
-    msgThem:
-      "bg-zinc-50 dark:bg-zinc-900 text-zinc-800 dark:text-zinc-200 rounded-2xl rounded-bl-sm",
-    msgMe: "text-white rounded-2xl rounded-br-sm shadow-sm",
+    wrapper: "bg-transparent border-none shadow-none rounded-none gap-4",
+    sidebar: "bg-card border border-border rounded-2xl shadow-sm overflow-hidden",
+    main: "bg-card border border-border rounded-2xl shadow-sm overflow-hidden",
+    header: "bg-transparent border-b border-border",
+    footer: "bg-transparent border-t border-border",
+    inputBg: "bg-muted border border-transparent",
+    composer: "",
+    msgThem: "bg-muted text-foreground rounded-2xl rounded-bl-sm",
+    msgMe: "rounded-2xl rounded-br-sm shadow-sm",
   },
   glass: {
     wrapper:
@@ -68,8 +67,9 @@ const chatVariants: Record<ChatVariant, Record<string, string>> = {
     inputBg:
       "bg-white/30 dark:bg-black/30 border border-white/30 dark:border-white/10 backdrop-blur-md",
     msgThem:
-      "bg-white/50 dark:bg-black/50 backdrop-blur-md text-zinc-900 dark:text-zinc-100 border border-white/30 dark:border-white/10 rounded-2xl rounded-bl-sm",
-    msgMe: "text-white rounded-2xl rounded-br-sm shadow-lg",
+      "bg-white/50 dark:bg-black/50 backdrop-blur-md text-foreground border border-white/30 dark:border-white/10 rounded-2xl rounded-bl-sm",
+    msgMe: "rounded-2xl rounded-br-sm shadow-lg",
+    composer: "",
   },
 };
 
@@ -123,13 +123,23 @@ const colorThemes: Record<string, Record<string, string>> = {
   },
 };
 
+/** One bubble in a conversation. */
+export type ChatMessage = {
+  id: string | number;
+  text: string;
+  sender: "me" | "them";
+  time: string;
+  /** Only meaningful on your own messages. */
+  status?: "delivered" | "read";
+};
+
 export type Contact = {
   id: string | number;
   name: string;
   message: string;
   date: string;
   unread: number;
-  status: "online" | "offline";
+  status: "online" | "offline" | (string & {});
   avatar?: string;
   initials?: string;
   color?: string;
@@ -137,7 +147,7 @@ export type Contact = {
 
 export type CurrentUser = {
   avatar: string;
-  status: string;
+  status: "online" | "offline" | (string & {});
   name?: string;
 };
 
@@ -147,7 +157,7 @@ const BulletproofAvatar = ({
   color,
   status,
   size = 40,
-  statusBorder = "border-white dark:border-[#09090b]",
+  statusBorder = "border-background",
 }: {
   src?: string;
   initials?: string;
@@ -160,7 +170,7 @@ const BulletproofAvatar = ({
     className="relative shrink-0 flex-none rounded-full"
     style={{ width: size, height: size, minWidth: size, minHeight: size }}
   >
-    <div className="w-full h-full rounded-full overflow-hidden bg-zinc-100 dark:bg-zinc-800 flex items-center justify-center shadow-sm">
+    <div className="w-full h-full rounded-full overflow-hidden bg-muted flex items-center justify-center shadow-sm">
       {src ? (
         <img
           src={src}
@@ -169,7 +179,7 @@ const BulletproofAvatar = ({
         />
       ) : (
         <div
-          className={`w-full h-full flex items-center justify-center font-bold text-sm m-0 p-0 tracking-wider ${color}`}
+          className={`w-full h-full flex items-center justify-center font-semibold text-sm m-0 p-0 tracking-wider ${color}`}
         >
           {initials}
         </div>
@@ -177,7 +187,7 @@ const BulletproofAvatar = ({
     </div>
     {status && (
       <span
-        className={`absolute bottom-0 right-0 w-3 h-3 rounded-full border-2 z-10 m-0 p-0 ${statusBorder} ${status === "online" ? "bg-emerald-500" : status === "offline" ? "bg-zinc-400 dark:bg-zinc-600" : "bg-rose-500"}`}
+        className={`absolute bottom-0 right-0 w-3 h-3 rounded-full border-2 z-10 m-0 p-0 ${statusBorder} ${status === "online" ? "bg-emerald-500" : status === "offline" ? "bg-muted-foreground" : "bg-rose-500"}`}
       />
     )}
   </div>
@@ -219,6 +229,15 @@ export default function ChatApp({
 
   const styles = chatVariants[variant];
 
+  // Text sitting on the accent colour. Read it off `theme.bg` instead of
+  // assuming white: `primary` is near-black in light mode and near-white in
+  // dark, so a hardcoded white disappears on one side or the other.
+  const onAccentText =
+    theme.bg
+      .split(" ")
+      .filter((c) => c.startsWith("text-") || c.startsWith("dark:text-"))
+      .join(" ") || "text-primary-foreground";
+
   const [searchQuery, setSearchQuery] = useState("");
   const [activeContact, setActiveContact] = useState<Contact | null>(null);
   const [isSidebarOpen, setIsSidebarOpen] = useState(true);
@@ -230,9 +249,9 @@ export default function ChatApp({
 
   const chatScrollRef = useRef<HTMLDivElement>(null);
 
-  const [chatHistories, setChatHistories] = useState<Record<string, any[]>>(
+  const [chatHistories, setChatHistories] = useState<Record<string, ChatMessage[]>>(
     () => {
-      const initialChats: Record<string, any[]> = {};
+      const initialChats: Record<string, ChatMessage[]> = {};
       contactsData.forEach((contact) => {
         initialChats[contact.id] = [
           {
@@ -280,7 +299,7 @@ export default function ChatApp({
       hour: "2-digit",
       minute: "2-digit",
     });
-    const newUserMsg = {
+    const newUserMsg: ChatMessage = {
       id: Date.now(),
       text: inputValue,
       sender: "me",
@@ -308,7 +327,7 @@ export default function ChatApp({
         hour: "2-digit",
         minute: "2-digit",
       });
-      const replyMsg = {
+      const replyMsg: ChatMessage = {
         id: Date.now() + 1,
         text: "That sounds perfect! Let's get it done. 🚀",
         sender: "them",
@@ -366,7 +385,7 @@ export default function ChatApp({
       >
         <div className="pt-6 pb-4 px-5 shrink-0 flex-none min-w-0 box-border">
           <div className="flex items-center justify-between mb-6">
-            <h1 className="text-xl font-bold text-zinc-900 dark:text-zinc-100 tracking-tight">
+            <h1 className="text-xl font-semibold text-foreground tracking-tight">
               Messages
             </h1>
             <BulletproofAvatar
@@ -376,20 +395,20 @@ export default function ChatApp({
               statusBorder={
                 variant === "glass"
                   ? "border-transparent"
-                  : "border-white dark:border-[#121217]"
+                  : "border-card"
               }
             />
           </div>
 
           <div className="relative w-full min-w-0 mb-4 group">
-            <Search className="w-4 h-4 text-zinc-400 absolute left-3.5 top-1/2 -translate-y-1/2 shrink-0 group-focus-within:text-zinc-600 dark:group-focus-within:text-zinc-300 transition-colors" />
+            <Search className="w-4 h-4 text-muted-foreground absolute left-3.5 top-1/2 -translate-y-1/2 shrink-0 group-focus-within:text-muted-foreground transition-colors" />
             <input
               type="text"
               placeholder="Search..."
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
               className={cn(
-                "w-full min-w-0 rounded-xl py-2 pl-10 pr-4 text-sm outline-none text-zinc-800 dark:text-zinc-200 transition-all placeholder:text-zinc-500",
+                "w-full min-w-0 rounded-xl py-2 pl-10 pr-4 text-sm outline-none text-foreground transition-all placeholder:text-muted-foreground",
                 styles.inputBg,
                 theme.focusRing,
               )}
@@ -401,18 +420,18 @@ export default function ChatApp({
               "flex gap-1 p-1 rounded-lg",
               variant === "glass"
                 ? "bg-black/20"
-                : "bg-zinc-100/80 dark:bg-zinc-900/80",
+                : "bg-muted/80",
             )}
           >
             <button
               onClick={() => setFilterType("all")}
-              className={`flex-1 py-1.5 text-xs font-semibold rounded-md transition-all ${filterType === "all" ? "bg-white dark:bg-zinc-800 text-zinc-900 dark:text-zinc-100 shadow-sm" : "text-zinc-500 hover:text-zinc-700 dark:hover:text-zinc-300"}`}
+              className={`flex-1 py-1.5 text-xs font-semibold rounded-md transition-all ${filterType === "all" ? "bg-card text-foreground shadow-sm" : "text-muted-foreground hover:text-foreground"}`}
             >
               All
             </button>
             <button
               onClick={() => setFilterType("online")}
-              className={`flex-1 py-1.5 text-xs font-semibold rounded-md transition-all ${filterType === "online" ? "bg-white dark:bg-zinc-800 text-zinc-900 dark:text-zinc-100 shadow-sm" : "text-zinc-500 hover:text-zinc-700 dark:hover:text-zinc-300"}`}
+              className={`flex-1 py-1.5 text-xs font-semibold rounded-md transition-all ${filterType === "online" ? "bg-card text-foreground shadow-sm" : "text-muted-foreground hover:text-foreground"}`}
             >
               Online
             </button>
@@ -428,7 +447,7 @@ export default function ChatApp({
                 className={`px-3 py-2 flex items-center gap-3 cursor-pointer transition-all rounded-xl ${
                   activeContact?.id === contact.id
                     ? theme.lightBg
-                    : "hover:bg-zinc-100/80 dark:hover:bg-zinc-800/50"
+                    : "hover:bg-muted/80"
                 }`}
               >
                 <BulletproofAvatar
@@ -442,32 +461,32 @@ export default function ChatApp({
                       ? "border-transparent"
                       : variant === "glass"
                         ? "border-transparent"
-                        : "border-white dark:border-[#121217]"
+                        : "border-card"
                   }
                 />
                 <div className="flex-1 min-w-0 overflow-hidden flex flex-col justify-center">
                   <div className="flex justify-between items-baseline mb-1 gap-2">
                     <h4
-                      className={`text-sm mb-0 font-semibold truncate ${activeContact?.id === contact.id ? theme.text : "text-zinc-900 dark:text-zinc-100"}`}
+                      className={`text-sm mb-0 font-semibold truncate ${activeContact?.id === contact.id ? theme.text : "text-foreground"}`}
                     >
                       {contact.name}
                     </h4>
                     <span
-                      className={`text-[10px] font-medium shrink-0 ${activeContact?.id === contact.id ? theme.text : "text-zinc-400"}`}
+                      className={`text-[10px] font-medium shrink-0 ${activeContact?.id === contact.id ? theme.text : "text-muted-foreground"}`}
                     >
                       {contact.date}
                     </span>
                   </div>
                   <div className="flex justify-between items-center gap-2">
                     <p
-                      className={`text-xs mt-0 truncate ${activeContact?.id === contact.id ? theme.text : "text-zinc-500 dark:text-zinc-400 opacity-80"}`}
+                      className={`text-xs mt-0 truncate ${activeContact?.id === contact.id ? theme.text : "text-muted-foreground opacity-80"}`}
                     >
                       {contact.message}
                     </p>
                     {contact.unread > 0 && (
                       <span
                         className={cn(
-                          "w-4 h-4 rounded-full text-white flex items-center justify-center text-[9px] font-bold shrink-0 shadow-sm",
+                          "w-4 h-4 rounded-full text-white flex items-center justify-center text-[9px] font-semibold shrink-0 shadow-sm",
                           theme.bg,
                         )}
                       >
@@ -479,7 +498,7 @@ export default function ChatApp({
               </div>
             ))
           ) : (
-            <div className="p-8 text-center text-sm text-zinc-500 flex flex-col items-center gap-2">
+            <div className="p-8 text-center text-sm text-muted-foreground flex flex-col items-center gap-2">
               <MessageCircle className="w-8 h-8 opacity-20" /> No contacts found
             </div>
           )}
@@ -504,17 +523,18 @@ export default function ChatApp({
           <div className="flex-1 flex flex-col items-center justify-center p-6 text-center">
             <div
               className={cn(
-                "w-24 h-24 bg-gradient-to-tr rounded-3xl flex items-center justify-center mb-6 border border-white dark:border-zinc-800 rotate-3 shrink-0 flex-none shadow-xl",
+                "w-24 h-24 bg-gradient-to-tr rounded-3xl flex items-center justify-center mb-6 border border-border rotate-3 shrink-0 flex-none shadow-xl",
                 theme.gradient,
                 theme.shadow,
+                onAccentText,
               )}
             >
-              <MessageCircle className="w-10 h-10 text-white -rotate-3" />
+              <MessageCircle className="w-10 h-10 -rotate-3" />
             </div>
-            <h3 className="text-xl font-bold text-zinc-900 dark:text-zinc-100 mb-2">
+            <h3 className="text-xl font-semibold text-foreground mb-2">
               Your Messages
             </h3>
-            <p className="text-zinc-500 dark:text-zinc-400 text-sm max-w-xs">
+            <p className="text-muted-foreground text-sm max-w-xs">
               Select a conversation from the sidebar or start a new one to begin
               chatting.
             </p>
@@ -539,7 +559,7 @@ export default function ChatApp({
             >
               <div className="flex items-center gap-3 sm:gap-4 min-w-0">
                 <button
-                  className="sm:hidden p-2 -ml-2 text-zinc-600 dark:text-zinc-400 shrink-0 flex-none"
+                  className="sm:hidden p-2 -ml-2 text-muted-foreground shrink-0 flex-none"
                   onClick={() => setIsSidebarOpen(true)}
                 >
                   <Menu className="w-5 h-5" />
@@ -553,18 +573,18 @@ export default function ChatApp({
                   statusBorder={
                     variant === "glass"
                       ? "border-transparent"
-                      : "border-white dark:border-[#09090b]"
+                      : "border-background"
                   }
                 />
                 <div className="min-w-0 flex-1">
-                  <h2 className="text-base font-bold text-zinc-900 dark:text-zinc-100 leading-tight truncate">
+                  <h2 className="text-base font-semibold text-foreground leading-tight truncate">
                     {activeContact.name}
                   </h2>
                   <div className="flex items-center gap-1.5 mt-0.5">
                     <span
-                      className={`w-1.5 h-1.5 rounded-full ${activeContact.status === "online" ? "bg-emerald-500" : "bg-zinc-400"}`}
+                      className={`w-1.5 h-1.5 rounded-full ${activeContact.status === "online" ? "bg-emerald-500" : "bg-muted-foreground"}`}
                     />
-                    <p className="text-xs font-medium text-zinc-500 dark:text-zinc-400 capitalize truncate">
+                    <p className="text-xs font-medium text-muted-foreground capitalize truncate">
                       {isTyping === activeContact.id ? (
                         <span className={cn("animate-pulse", theme.text)}>
                           Typing...
@@ -576,14 +596,14 @@ export default function ChatApp({
                   </div>
                 </div>
               </div>
-              <div className="flex items-center gap-1 sm:gap-2 text-zinc-500 dark:text-zinc-400 shrink-0 flex-none ml-2">
-                <button className="p-2 hover:bg-zinc-100 dark:hover:bg-zinc-800 rounded-full transition-colors hidden sm:block">
+              <div className="flex items-center gap-1 sm:gap-2 text-muted-foreground shrink-0 flex-none ml-2">
+                <button className="p-2 hover:bg-muted rounded-full transition-colors hidden sm:block">
                   <Phone className="w-4 h-4" />
                 </button>
-                <button className="p-2 hover:bg-zinc-100 dark:hover:bg-zinc-800 rounded-full transition-colors hidden sm:block">
+                <button className="p-2 hover:bg-muted rounded-full transition-colors hidden sm:block">
                   <Video className="w-4 h-4" />
                 </button>
-                <button className="p-2 hover:bg-zinc-100 dark:hover:bg-zinc-800 rounded-full transition-colors">
+                <button className="p-2 hover:bg-muted rounded-full transition-colors">
                   <MoreVertical className="w-4 h-4" />
                 </button>
               </div>
@@ -616,7 +636,12 @@ export default function ChatApp({
                           className={cn(
                             "px-4 py-2.5",
                             isMe
-                              ? cn(styles.msgMe, theme.gradient)
+                              ? cn(
+                                  styles.msgMe,
+                                  "bg-gradient-to-br",
+                                  theme.gradient,
+                                  onAccentText,
+                                )
                               : styles.msgThem,
                           )}
                         >
@@ -627,7 +652,7 @@ export default function ChatApp({
                         <div
                           className={`flex items-center gap-1.5 px-1 ${isMe ? "flex-row-reverse" : "flex-row"}`}
                         >
-                          <span className="text-[10px] font-medium text-zinc-400 dark:text-zinc-500">
+                          <span className="text-[10px] font-medium text-muted-foreground">
                             {msg.time}
                           </span>
                           {isMe && (
@@ -636,7 +661,7 @@ export default function ChatApp({
                                 "w-3.5 h-3.5",
                                 msg.status === "read"
                                   ? theme.text
-                                  : "text-zinc-300 dark:text-zinc-600",
+                                  : "text-muted-foreground/50",
                               )}
                             />
                           )}
@@ -660,9 +685,9 @@ export default function ChatApp({
                         styles.msgThem,
                       )}
                     >
-                      <span className="w-1.5 h-1.5 bg-zinc-400 dark:bg-zinc-500 rounded-full animate-bounce [animation-delay:-0.3s]" />
-                      <span className="w-1.5 h-1.5 bg-zinc-400 dark:bg-zinc-500 rounded-full animate-bounce [animation-delay:-0.15s]" />
-                      <span className="w-1.5 h-1.5 bg-zinc-400 dark:bg-zinc-500 rounded-full animate-bounce" />
+                      <span className="w-1.5 h-1.5 bg-muted-foreground rounded-full animate-bounce [animation-delay:-0.3s]" />
+                      <span className="w-1.5 h-1.5 bg-muted-foreground rounded-full animate-bounce [animation-delay:-0.15s]" />
+                      <span className="w-1.5 h-1.5 bg-muted-foreground rounded-full animate-bounce" />
                     </div>
                   </div>
                 )}
@@ -680,12 +705,13 @@ export default function ChatApp({
                 className={cn(
                   "flex items-center gap-2 sm:gap-3 w-full rounded-full transition-all px-4 py-1.5",
                   styles.inputBg,
+                  styles.composer,
                   theme.focusRing,
                 )}
               >
                 <button
                   type="button"
-                  className="p-1.5 -ml-1.5 text-zinc-400 hover:text-zinc-600 dark:hover:text-zinc-300 transition-colors shrink-0"
+                  className="p-1.5 -ml-1.5 text-muted-foreground hover:text-muted-foreground transition-colors shrink-0"
                 >
                   <Paperclip className="w-5 h-5" />
                 </button>
@@ -695,11 +721,11 @@ export default function ChatApp({
                   value={inputValue}
                   onChange={(e) => setInputValue(e.target.value)}
                   onKeyDown={handleKeyDown}
-                  className="flex-1 min-w-0 w-full bg-transparent border-none focus:outline-none text-[15px] text-zinc-800 dark:text-zinc-100 placeholder:text-zinc-500 py-1.5"
+                  className="flex-1 min-w-0 w-full bg-transparent border-none focus:outline-none text-[15px] text-foreground placeholder:text-muted-foreground py-1.5"
                 />
                 <button
                   type="button"
-                  className="p-1.5 text-zinc-400 hover:text-zinc-600 dark:hover:text-zinc-300 transition-colors shrink-0 mr-1"
+                  className="p-1.5 text-muted-foreground hover:text-muted-foreground transition-colors shrink-0 mr-1"
                 >
                   <Mic className="w-4 h-4" />
                 </button>

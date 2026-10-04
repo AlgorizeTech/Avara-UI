@@ -1,0 +1,426 @@
+import { docsPageMetadata } from "@/lib/docs-metadata";
+
+export const metadata = docsPageMetadata("flowchart");
+
+import { ExampleShowcase } from "@/components/site/Sandbox";
+import { extractCode } from "@/lib/code";
+
+# Flowchart / Node Builder
+
+A declarative, highly sleek flowchart engine complete with custom responsive column channels, node action anchors, and custom vector streaming lines that draw themselves in with plain CSS animation.
+
+This engine separates data flow layout orchestration from canvas tracking. By combining declarative standard layout structures with pre-set micro connection vectors, pipelines render cross-device flawlessly without heavy calculations crashing client frame updates.
+
+Click any node that sits on a route to make that route the active one — the moving stream switches to that SVG path.
+
+export const pipelineNodes = `function PipelineNodes() {
+  return (
+    <>
+      {/* Routes first: plain SVG path data, M/L for right angles, C for curves */}
+      <FlowCanvas>
+        <FlowConnection id="success-path" path="M 280 200 L 310 200 L 310 114 L 340 114" />
+        <FlowConnection id="success-path" path="M 580 114 L 640 114" />
+        <FlowConnection id="fail-path" path="M 280 200 L 310 200 L 310 284 L 340 284" />
+        <FlowConnection id="fail-path" path="M 580 284 L 640 284" />
+      </FlowCanvas>
+
+      {/* Nodes are absolutely positioned, so the ports line up with the paths */}
+      <FlowNode
+        id="webhook"
+        title="Webhook Trigger"
+        description="Inbound secure POST"
+        icon={Webhook}
+        connectedPaths={["success-path", "fail-path"]}
+        className="left-[40px] top-[166px]"
+      />
+      <FlowNode
+        id="transform"
+        title="Transform Payload"
+        description="Normalizing JSON data"
+        icon={Cpu}
+        connectedPaths={["success-path"]}
+        className="left-[340px] top-[80px]"
+      />
+      <FlowNode
+        id="error"
+        title="Validation Check"
+        description="Checking metadata schema"
+        icon={Terminal}
+        connectedPaths={["fail-path"]}
+        className="left-[340px] top-[250px]"
+      />
+      <FlowNode
+        id="success"
+        title="Sync Database"
+        description="Committed to cluster"
+        icon={CheckCircle2}
+        connectedPaths={["success-path"]}
+        className="left-[640px] top-[80px]"
+      />
+      <FlowNode
+        id="fail"
+        title="Dead Letter Queue"
+        description="Retrying delivery pool"
+        icon={AlertCircle}
+        connectedPaths={["fail-path"]}
+        className="left-[640px] top-[250px]"
+      />
+    </>
+  );
+}`;
+
+export const usageDefault = `import {
+  FlowCanvas,
+  Flowchart,
+  FlowConnection,
+  FlowNode,
+} from "@/components/custom/blocks/FlowchartBlock";
+import { AlertCircle, CheckCircle2, Cpu, Terminal, Webhook } from "lucide-react";
+
+export default function AutomationMap() {
+  return (
+    <Flowchart initialActivePath="success-path">
+      {/* Routes first: plain SVG path data, M/L for right angles, C for curves */}
+      <FlowCanvas>
+        <FlowConnection id="success-path" path="M 280 200 L 310 200 L 310 114 L 340 114" />
+        <FlowConnection id="success-path" path="M 580 114 L 640 114" />
+        <FlowConnection id="fail-path" path="M 280 200 L 310 200 L 310 284 L 340 284" />
+        <FlowConnection id="fail-path" path="M 580 284 L 640 284" />
+      </FlowCanvas>
+
+      {/* Nodes are absolutely positioned, so the ports line up with the paths */}
+      <FlowNode
+        id="webhook"
+        title="Webhook Trigger"
+        description="Inbound secure POST"
+        icon={Webhook}
+        connectedPaths={["success-path", "fail-path"]}
+        className="left-[40px] top-[166px]"
+      />
+      <FlowNode
+        id="transform"
+        title="Transform Payload"
+        description="Normalizing JSON data"
+        icon={Cpu}
+        connectedPaths={["success-path"]}
+        className="left-[340px] top-[80px]"
+      />
+      <FlowNode
+        id="error"
+        title="Validation Check"
+        description="Checking metadata schema"
+        icon={Terminal}
+        connectedPaths={["fail-path"]}
+        className="left-[340px] top-[250px]"
+      />
+      <FlowNode
+        id="success"
+        title="Sync Database"
+        description="Committed to cluster"
+        icon={CheckCircle2}
+        connectedPaths={["success-path"]}
+        className="left-[640px] top-[80px]"
+      />
+      <FlowNode
+        id="fail"
+        title="Dead Letter Queue"
+        description="Retrying delivery pool"
+        icon={AlertCircle}
+        connectedPaths={["fail-path"]}
+        className="left-[640px] top-[250px]"
+      />
+    </Flowchart>
+  );
+}`;
+
+export const usageLinear = `import {
+  Flowchart,
+  FlowCanvas,
+  FlowConnection,
+  FlowNode,
+} from "@/components/custom/blocks/FlowchartBlock";
+import { CheckCircle2, Cpu, Webhook } from "lucide-react";
+
+export default function LinearPipeline() {
+  // The smallest useful chart: one route, three nodes on it.
+  return (
+    <Flowchart initialActivePath="main-route">
+      <FlowCanvas>
+        <FlowConnection id="main-route" path="M 280 200 L 340 200" />
+        <FlowConnection id="main-route" path="M 580 200 L 640 200" />
+      </FlowCanvas>
+
+      <FlowNode
+        id="trigger"
+        title="Webhook Trigger"
+        description="Inbound secure POST"
+        icon={Webhook}
+        connectedPaths={["main-route"]}
+        className="left-[40px] top-[166px]"
+      />
+      <FlowNode
+        id="compute"
+        title="Compute Cluster"
+        description="Normalizing JSON data"
+        icon={Cpu}
+        connectedPaths={["main-route"]}
+        className="left-[340px] top-[166px]"
+      />
+      <FlowNode
+        id="commit"
+        title="Sync Database"
+        description="Committed to cluster"
+        icon={CheckCircle2}
+        connectedPaths={["main-route"]}
+        className="left-[640px] top-[166px]"
+      />
+    </Flowchart>
+  );
+}`;
+
+export const usageIdle = `import {
+  FlowCanvas,
+  Flowchart,
+  FlowConnection,
+  FlowNode,
+} from "@/components/custom/blocks/FlowchartBlock";
+import { AlertCircle, CheckCircle2, Cpu, Terminal, Webhook } from "lucide-react";
+
+${pipelineNodes}
+
+export default function IdlePipeline() {
+  // Pass null and nothing streams until the reader picks a node.
+  return (
+    <Flowchart initialActivePath={null}>
+      <PipelineNodes />
+    </Flowchart>
+  );
+}`;
+
+export const usageColor = `import {
+  FlowCanvas,
+  Flowchart,
+  FlowConnection,
+  FlowNode,
+} from "@/components/custom/blocks/FlowchartBlock";
+import { AlertCircle, CheckCircle2, Cpu, Terminal, Webhook } from "lucide-react";
+
+${pipelineNodes}
+
+export default function AccentedPipeline() {
+  // One of "blue" | "indigo" | "rose" | "emerald" | "zinc" — it tints the
+  // active stream, the node ports and the focus ring together.
+  return (
+    <Flowchart initialActivePath="success-path" color="emerald">
+      <PipelineNodes />
+    </Flowchart>
+  );
+}`;
+
+<ExampleShowcase
+  name="flowchart"
+  columns={1}
+  examples={[
+    {
+      title: "Flowchart",
+      subheading: "`FlowCanvas` holds the SVG routes; `FlowNode`s are positioned over it.",
+      propNotes: [
+        {
+          prop: "connectedPaths",
+          effect:
+            "on a `FlowNode` lists the route ids it sits on. Clicking activates the first; a node on two routes becomes a branch point.",
+        },
+        {
+          prop: "path",
+          effect:
+            "on `FlowConnection` is raw SVG path data — M/L for right angles, C for curves. Several segments may share one `id`.",
+        },
+      ],
+      props: { example: "branching" },
+      usage: usageDefault,
+      code: extractCode("src/components/custom/blocks/FlowchartBlock.tsx"),
+    },
+  ]}
+/>
+
+## Installation
+
+<Installation name="flowchart" />
+
+## Examples
+
+<ExampleShowcase
+  name="flowchart"
+  columns={1}
+  examples={[
+    {
+      title: "Linear pipeline",
+      propNotes: [
+        {
+          prop: "initialActivePath",
+          value: '"main-route"',
+          effect:
+            "streams that route on mount — the minimum composition is one route threaded through three nodes.",
+        },
+      ],
+      props: { example: "linear" },
+      usage: usageLinear,
+    },
+    {
+      title: "No active route",
+      propNotes: [
+        {
+          lead: "Set",
+          prop: "initialActivePath",
+          value: '{null}',
+          effect:
+            "to start every route idle and let the reader activate a branch by clicking a node.",
+        },
+      ],
+      props: { example: "branching", initialActivePath: null },
+      usage: usageIdle,
+    },
+    {
+      title: "Accent color",
+      propNotes: [
+        {
+          prop: "color",
+          value: '"emerald"',
+          effect:
+            "tints the active stream, the node ports and the focus ring together. One of `blue`, `indigo`, `rose`, `emerald`, `zinc`.",
+        },
+      ],
+      props: { example: "branching", color: "emerald" },
+      usage: usageColor,
+    },
+  ]}
+/>
+
+## Best Practices & Guidelines
+
+<div className="flex flex-col gap-4 my-6 not-prose">
+  <div className="rounded-xl border border-foreground/[0.06] bg-foreground/[0.03] p-4">
+    <h4 className="font-sans text-[14px] font-semibold text-foreground mb-1">Keep ports and paths in sync</h4>
+    <p className="text-[13px] leading-relaxed text-foreground/50">Node positions come from Tailwind <code>left-[…]</code> / <code>top-[…]</code> classes and the routes are raw SVG coordinates, so the two are only aligned because you made them align. When you move a node, move the matching <code>M</code>/<code>L</code> coordinates with it.</p>
+  </div>
+  <div className="rounded-xl border border-primary/15 bg-primary/5 p-4">
+    <h4 className="font-sans text-[14px] font-semibold text-primary mb-1">Split long routes into segments</h4>
+    <p className="text-[13px] leading-relaxed text-foreground/50">Several <code>FlowConnection</code>s can share the same <code>id</code>. Splitting a branch into per-hop segments lets the stream animation restart at each node instead of sweeping the whole diagram at once.</p>
+  </div>
+</div>
+
+## Props Reference
+
+<div className="overflow-x-auto mb-8">
+  <table>
+    <thead>
+      <tr>
+        <th>Component</th>
+        <th>Prop</th>
+        <th>Type</th>
+        <th>Default</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><code>Flowchart</code></td>
+        <td><code>initialActivePath</code></td>
+        <td><code>string | null</code></td>
+        <td><code>null</code></td>
+        <td>The route id that streams on mount. <code>null</code> starts every route idle.</td>
+      </tr>
+      <tr>
+        <td><code>Flowchart</code></td>
+        <td><code>color</code></td>
+        <td><code>"primary" | "blue" | "indigo" | "rose" | "emerald" | "zinc"</code></td>
+        <td><code>"primary"</code></td>
+        <td>Accent applied to the active stream, node ports and focus rings.</td>
+      </tr>
+      <tr>
+        <td><code>Flowchart</code></td>
+        <td><code>layout</code></td>
+        <td><code>"fixed" | "fluid"</code></td>
+        <td><code>"fixed"</code></td>
+        <td><code>fixed</code> is the 900×400 blueprint canvas. <code>fluid</code> is only the context and a positioned box, for connectors drawn over ordinary layout — give <code>FlowCanvas</code> its own <code>viewBox</code>. This is how <DocLink to="data-flow">Data Flow</DocLink> draws its curves.</td>
+      </tr>
+      <tr>
+        <td><code>FlowNode</code></td>
+        <td><code>id</code></td>
+        <td><code>string</code></td>
+        <td><strong>Required</strong></td>
+        <td>Unique identifier for the node.</td>
+      </tr>
+      <tr>
+        <td><code>FlowNode</code></td>
+        <td><code>title</code></td>
+        <td><code>string</code></td>
+        <td><strong>Required</strong></td>
+        <td>Primary label on the node card.</td>
+      </tr>
+      <tr>
+        <td><code>FlowNode</code></td>
+        <td><code>description</code></td>
+        <td><code>string</code></td>
+        <td><code>undefined</code></td>
+        <td>Secondary line under the title.</td>
+      </tr>
+      <tr>
+        <td><code>FlowNode</code></td>
+        <td><code>icon</code></td>
+        <td><code>React.ComponentType</code></td>
+        <td><code>undefined</code></td>
+        <td>Icon rendered in the node's leading slot — any lucide icon works.</td>
+      </tr>
+      <tr>
+        <td><code>FlowNode</code></td>
+        <td><code>connectedPaths</code></td>
+        <td><code>string[]</code></td>
+        <td><code>[]</code></td>
+        <td>Route ids this node sits on. Clicking the node activates the first of them; a node on two routes acts as a branch point.</td>
+      </tr>
+      <tr>
+        <td><code>FlowConnection</code></td>
+        <td><code>id</code></td>
+        <td><code>string</code></td>
+        <td><strong>Required</strong></td>
+        <td>Route this segment belongs to. Multiple segments may share one id.</td>
+      </tr>
+      <tr>
+        <td><code>FlowConnection</code></td>
+        <td><code>path</code></td>
+        <td><code>string</code></td>
+        <td><strong>Required</strong></td>
+        <td>SVG path data — <code>M</code>/<code>L</code> for right angles, <code>C</code> for curves.</td>
+      </tr>
+      <tr>
+        <td><code>FlowConnection</code></td>
+        <td><code>dashed</code></td>
+        <td><code>boolean | string</code></td>
+        <td><code>false</code></td>
+        <td>Draw the resting line dashed — <code>true</code> for <code>"4 6"</code>, or your own pattern. Applied once the draw-in finishes.</td>
+      </tr>
+      <tr>
+        <td><code>FlowConnection</code></td>
+        <td><code>flowDash</code></td>
+        <td><code>string</code></td>
+        <td><code>"6 10"</code></td>
+        <td>Dash pattern of the moving stream while the route is active. The loop length is one dash plus one gap, so any pattern cycles cleanly.</td>
+      </tr>
+      <tr>
+        <td><code>FlowConnection</code></td>
+        <td><code>glow</code></td>
+        <td><code>boolean</code></td>
+        <td><code>true</code></td>
+        <td>The soft blurred halo under the active stream.</td>
+      </tr>
+      <tr>
+        <td><code>FlowConnection</code></td>
+        <td><code>drawDuration</code></td>
+        <td><code>number</code></td>
+        <td><code>1.2</code></td>
+        <td>Seconds the draw-in takes on mount. The stream only starts once the line is drawn; under prefers-reduced-motion both are skipped.</td>
+      </tr>
+    </tbody>
+  </table>
+</div>

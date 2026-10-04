@@ -1,0 +1,71 @@
+import { Cli } from "@/components/site/cli";
+
+# Quick Start
+
+<OtherFrameworkGuide slug="first-app" label="quick start" />
+
+Get an Algorize UI component on screen in a new Next.js app. For an existing
+project, follow the [Installation guide](/docs/nextjs/installation) instead.
+
+## 1. Create a Next.js app
+
+```bash
+npx create-next-app@latest my-app --typescript --tailwind --app
+cd my-app
+```
+
+## 2. Initialize shadcn
+
+Creates `components.json` and the `cn` helper every component imports.
+
+<Cli command={`init --base radix --preset nova`} />
+
+## 3. Register the registry
+
+Tells the CLI where `@algorize-ui/…` components live.
+
+<Cli command={`registry add @algorize-ui=https://algorize-ui.vercel.app/r/{name}.json`} />
+
+## 4. Add a component
+
+<Cli command={`add card.json`} />
+
+This writes `components/custom/blocks/CardBlock.tsx` into your project.
+
+## 5. Use it
+
+```tsx
+// app/page.tsx
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/custom/blocks/CardBlock";
+
+export default function Home() {
+  return (
+    <main className="p-24">
+      <Card variant="bordered" className="w-full max-w-sm">
+        <CardHeader>
+          <CardTitle>Welcome</CardTitle>
+          <CardDescription>Your first Algorize UI component.</CardDescription>
+        </CardHeader>
+        <CardContent>
+          <p className="text-sm">
+            Edit the file the CLI just wrote — it is yours now.
+          </p>
+        </CardContent>
+      </Card>
+    </main>
+  );
+}
+```
+
+Run `npm run dev` and open `http://localhost:3000`.
+
+## Next steps
+
+- [Pick a theme](/themes) and paste it into `globals.css`
+- [Browse all components](/docs/nextjs/all-components) — each page has an install command and a usage example

@@ -3,6 +3,7 @@
 import { cn } from "@/lib/utils";
 import {
   AlertCircle,
+  CornerDownLeft,
   Eye,
   EyeOff,
   FileIcon,
@@ -10,8 +11,16 @@ import {
   UploadCloud,
   X,
 } from "lucide-react";
-import Image from "next/image";
-import React, { forwardRef, useCallback, useRef, useState } from "react";
+import React, {
+  forwardRef,
+  useCallback,
+  useEffect,
+  useId,
+  useLayoutEffect,
+  useRef,
+  useState,
+} from "react";
+import { getThemeStyles } from "./input-theme";
 
 // ==========================================
 // DYNAMIC THEME ENGINE
@@ -19,89 +28,6 @@ import React, { forwardRef, useCallback, useRef, useState } from "react";
 export type InputColor = "indigo" | "rose" | "emerald" | "zinc" | string;
 export type InputVariant = "default" | "filled" | "underlined" | "glow";
 export type InputSize = "sm" | "md" | "lg";
-
-const colorThemes: Record<string, Record<string, string>> = {
-  primary: {
-    ring: "focus-within:ring-primary/30 focus-within:border-primary",
-    text: "text-primary",
-    bg: "bg-primary text-primary-foreground",
-    bgSoft:
-      "bg-primary/10 text-foreground",
-    glow: "focus-within:shadow-[0_0_20px_var(--primary)] focus-within:border-primary",
-    dragActive: "border-primary bg-primary/10",
-  },
-  indigo: {
-    ring: "focus-within:ring-indigo-500/30 focus-within:border-indigo-500",
-    text: "text-indigo-600 dark:text-indigo-400",
-    bg: "bg-indigo-600 text-white",
-    bgSoft:
-      "bg-indigo-50 dark:bg-indigo-500/10 text-indigo-900 dark:text-indigo-100",
-    glow: "focus-within:shadow-[0_0_20px_rgba(99,102,241,0.4)] focus-within:border-indigo-500",
-    dragActive: "border-indigo-500 bg-indigo-50 dark:bg-indigo-500/10",
-  },
-  rose: {
-    ring: "focus-within:ring-rose-500/30 focus-within:border-rose-500",
-    text: "text-rose-600 dark:text-rose-400",
-    bg: "bg-rose-600 text-white",
-    bgSoft: "bg-rose-50 dark:bg-rose-500/10 text-rose-900 dark:text-rose-100",
-    glow: "focus-within:shadow-[0_0_20px_rgba(244,63,94,0.4)] focus-within:border-rose-500",
-    dragActive: "border-rose-500 bg-rose-50 dark:bg-rose-500/10",
-  },
-  emerald: {
-    ring: "focus-within:ring-emerald-500/30 focus-within:border-emerald-500",
-    text: "text-emerald-600 dark:text-emerald-400",
-    bg: "bg-emerald-600 text-white",
-    bgSoft:
-      "bg-emerald-50 dark:bg-emerald-500/10 text-emerald-900 dark:text-emerald-100",
-    glow: "focus-within:shadow-[0_0_20px_rgba(16,185,129,0.4)] focus-within:border-emerald-500",
-    dragActive: "border-emerald-500 bg-emerald-50 dark:bg-emerald-500/10",
-  },
-  zinc: {
-    ring: "focus-within:ring-zinc-500/30 focus-within:border-zinc-500 dark:focus-within:ring-white/20 dark:focus-within:border-white",
-    text: "text-zinc-900 dark:text-zinc-100",
-    bg: "bg-zinc-900 dark:bg-zinc-100 text-white dark:text-zinc-900",
-    bgSoft: "bg-zinc-100 dark:bg-zinc-800/50 text-zinc-900 dark:text-zinc-100",
-    glow: "focus-within:shadow-[0_0_20px_rgba(255,255,255,0.15)] focus-within:border-zinc-900 dark:focus-within:border-white",
-    dragActive:
-      "border-zinc-900 dark:border-zinc-100 bg-zinc-100 dark:bg-zinc-800/50",
-  },
-};
-
-const hexToRgb = (hex: string) => {
-  let cleanHex = hex.replace(/^#/, "");
-  if (cleanHex.length === 3)
-    cleanHex = cleanHex
-      .split("")
-      .map((x) => x + x)
-      .join("");
-  const result = /^([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(cleanHex);
-  return result
-    ? `${parseInt(result[1], 16)}, ${parseInt(result[2], 16)}, ${parseInt(result[3], 16)}`
-    : "99, 102, 241";
-};
-
-export const getThemeStyles = (color: string) => {
-  if (color && color.startsWith("#")) {
-    const rgb = hexToRgb(color);
-    return {
-      theme: {
-        ring: "focus-within:ring-[var(--theme-color)]/30 focus-within:border-[var(--theme-color)]",
-        text: "text-[var(--theme-color)]",
-        bg: "bg-[var(--theme-color)] text-white hover:opacity-90",
-        bgSoft:
-          "bg-[rgba(var(--theme-color-rgb),0.1)] text-[var(--theme-color)]",
-        glow: "focus-within:shadow-[0_0_20px_rgba(var(--theme-color-rgb),0.5)] focus-within:border-[var(--theme-color)]",
-        dragActive:
-          "border-[var(--theme-color)] bg-[rgba(var(--theme-color-rgb),0.05)]",
-      },
-      style: {
-        "--theme-color": color,
-        "--theme-color-rgb": rgb,
-      } as React.CSSProperties,
-    };
-  }
-  return { theme: colorThemes[color] || colorThemes.primary, style: {} };
-};
 
 // ==========================================
 // INPUT COMPONENT
@@ -121,6 +47,70 @@ export interface InputBlockProps
   leftIcon?: React.ReactNode;
   rightIcon?: React.ReactNode;
   onFilesChange?: (files: File[]) => void;
+  /**
+   * Autocomplete. Focusing the field lists these like a select menu, typing
+   * narrows the list, and choosing one writes the text into the field —
+   * your `onChange` fires exactly as if it had been typed.
+   */
+  suggestions?: string[];
+  /** Fired after a suggestion is written into the field. */
+  onSuggestionSelect?: (value: string) => void;
+  /** Cap on rows shown at once (default 8). */
+  maxSuggestions?: number;
+}
+
+// Walks up to the first ancestor that clips overflow (a modal, a scroll pane,
+// a card with overflow-hidden). That box, not the viewport, is what would crop
+// the suggestion list, so it decides whether the list opens up or down. Only
+// overflow-y counts — the list grows vertically, and a box clipping just
+// sideways (overflow-x: clip) leaves it free to hang below.
+const getClippingRect = (el: HTMLElement): DOMRect | null => {
+  let node = el.parentElement;
+  while (node && node !== document.body) {
+    const { overflowY } = window.getComputedStyle(node);
+    if (/(auto|scroll|hidden|clip)/.test(overflowY)) {
+      return node.getBoundingClientRect();
+    }
+    node = node.parentElement;
+  }
+  return null;
+};
+
+// Sets the value the way React expects for both controlled and uncontrolled
+// inputs: through the native setter, then an `input` event so React's own
+// onChange runs. Assigning `input.value` directly would be swallowed by
+// React's value tracker and the consumer would never hear about it.
+const writeInputValue = (input: HTMLInputElement, value: string) => {
+  const setter = Object.getOwnPropertyDescriptor(
+    HTMLInputElement.prototype,
+    "value",
+  )?.set;
+  setter?.call(input, value);
+  input.dispatchEvent(new Event("input", { bubbles: true }));
+};
+
+/** The suggestion with the typed characters picked out. */
+function SuggestionText({
+  text,
+  query,
+  matchClassName,
+}: {
+  text: string;
+  query: string;
+  matchClassName: string;
+}) {
+  const q = query.trim();
+  const at = q ? text.toLowerCase().indexOf(q.toLowerCase()) : -1;
+  if (at < 0) return <>{text}</>;
+  return (
+    <>
+      {text.slice(0, at)}
+      <span className={cn("font-semibold", matchClassName)}>
+        {text.slice(at, at + q.length)}
+      </span>
+      {text.slice(at + q.length)}
+    </>
+  );
 }
 
 export const InputBlock = forwardRef<HTMLInputElement, InputBlockProps>(
@@ -140,6 +130,9 @@ export const InputBlock = forwardRef<HTMLInputElement, InputBlockProps>(
       multiple,
       accept,
       onFilesChange,
+      suggestions,
+      onSuggestionSelect,
+      maxSuggestions = 8,
       ...props
     },
     ref,
@@ -147,6 +140,118 @@ export const InputBlock = forwardRef<HTMLInputElement, InputBlockProps>(
     const [showPassword, setShowPassword] = useState(false);
     const { theme, style } = getThemeStyles(color);
     const hasError = Boolean(error);
+
+    // --- Autocomplete State ---
+    const hasSuggestions =
+      Boolean(suggestions?.length) && type !== "file" && type !== "password";
+    const inputRef = useRef<HTMLInputElement | null>(null);
+    const fieldRef = useRef<HTMLDivElement>(null);
+    const listRef = useRef<HTMLUListElement>(null);
+    const listId = useId();
+    const [listOpen, setListOpen] = useState(false);
+    const [listUp, setListUp] = useState(false);
+    const [activeIndex, setActiveIndex] = useState(-1);
+    // Mirror of what is in the field. For a controlled input this is
+    // `props.value`; otherwise it tracks the native input as the user types.
+    const [typed, setTyped] = useState(String(props.defaultValue ?? ""));
+    const query =
+      props.value !== undefined ? String(props.value) : typed;
+
+    const assignInputRef = (node: HTMLInputElement | null) => {
+      inputRef.current = node;
+      if (typeof ref === "function") ref(node);
+      else if (ref) ref.current = node;
+    };
+
+    const matches = hasSuggestions
+      ? (suggestions as string[])
+          .filter((item) =>
+            item.toLowerCase().includes(query.trim().toLowerCase()),
+          )
+          .slice(0, maxSuggestions)
+      : [];
+
+    const closeList = () => {
+      setListOpen(false);
+      setActiveIndex(-1);
+    };
+
+    const chooseSuggestion = (item: string) => {
+      const input = inputRef.current;
+      if (input) {
+        writeInputValue(input, item);
+        input.focus();
+      }
+      setTyped(item);
+      onSuggestionSelect?.(item);
+      closeList();
+    };
+
+    // Open upward only when the clipping box has no room below and more above.
+    // Measured before paint so the list never appears on the wrong side first.
+    useLayoutEffect(() => {
+      if (!listOpen || !fieldRef.current) return;
+      const trigger = fieldRef.current.getBoundingClientRect();
+      const clip = getClippingRect(fieldRef.current);
+      const listHeight = listRef.current?.offsetHeight ?? 240;
+      const bottomBound = Math.min(
+        window.innerHeight,
+        clip ? clip.bottom : Number.POSITIVE_INFINITY,
+      );
+      const topBound = Math.max(0, clip ? clip.top : 0);
+      const spaceBelow = bottomBound - trigger.bottom - 8;
+      const spaceAbove = trigger.top - topBound - 8;
+      setListUp(spaceBelow < listHeight && spaceAbove > spaceBelow);
+    }, [listOpen, matches.length]);
+
+    // Keep the keyboard-highlighted row in view inside the scrolling list.
+    useEffect(() => {
+      if (activeIndex < 0) return;
+      listRef.current
+        ?.querySelector<HTMLElement>(`[data-index="${activeIndex}"]`)
+        ?.scrollIntoView({ block: "nearest" });
+    }, [activeIndex]);
+
+    // Click outside closes the list.
+    useEffect(() => {
+      if (!listOpen) return;
+      const onPointerDown = (e: MouseEvent) => {
+        if (!fieldRef.current?.contains(e.target as Node)) closeList();
+      };
+      document.addEventListener("mousedown", onPointerDown);
+      return () => document.removeEventListener("mousedown", onPointerDown);
+    }, [listOpen]);
+
+    const handleSuggestionKeyDown = (
+      e: React.KeyboardEvent<HTMLInputElement>,
+    ) => {
+      props.onKeyDown?.(e);
+      if (e.defaultPrevented || !hasSuggestions) return;
+
+      if (e.key === "ArrowDown") {
+        e.preventDefault();
+        if (!listOpen) setListOpen(true);
+        if (matches.length)
+          setActiveIndex((i) => (i + 1) % matches.length);
+      } else if (e.key === "ArrowUp") {
+        e.preventDefault();
+        if (!listOpen) setListOpen(true);
+        if (matches.length)
+          setActiveIndex((i) => (i <= 0 ? matches.length - 1 : i - 1));
+      } else if (e.key === "Enter") {
+        if (listOpen && activeIndex >= 0 && matches[activeIndex]) {
+          e.preventDefault();
+          chooseSuggestion(matches[activeIndex]);
+        }
+      } else if (e.key === "Escape") {
+        if (listOpen) {
+          e.preventDefault();
+          closeList();
+        }
+      } else if (e.key === "Tab") {
+        closeList();
+      }
+    };
 
     // --- File Upload State ---
     const [isDragging, setIsDragging] = useState(false);
@@ -188,7 +293,7 @@ export const InputBlock = forwardRef<HTMLInputElement, InputBlockProps>(
         return {
           wrapper: cn(
             baseWrapper,
-            "opacity-50 cursor-not-allowed border border-zinc-200 dark:border-zinc-800 bg-zinc-50 dark:bg-zinc-900/50",
+            "opacity-50 cursor-not-allowed border border-border bg-muted",
           ),
           active: "",
         };
@@ -196,7 +301,7 @@ export const InputBlock = forwardRef<HTMLInputElement, InputBlockProps>(
         return {
           wrapper: cn(
             baseWrapper,
-            "border border-red-500 bg-white dark:bg-[#09090b]",
+            "border border-red-500 bg-background",
             variant === "underlined" && "border-0 border-b-2 rounded-none",
             variant !== "underlined" && "rounded-xl",
           ),
@@ -208,10 +313,10 @@ export const InputBlock = forwardRef<HTMLInputElement, InputBlockProps>(
           return {
             wrapper: cn(
               baseWrapper,
-              "bg-zinc-100 dark:bg-zinc-900 border border-transparent rounded-xl",
+              "bg-muted border border-transparent rounded-xl",
             ),
             active: cn(
-              "focus-within:bg-white dark:focus-within:bg-zinc-950 focus-within:ring-4",
+              "focus-within:bg-background focus-within:ring-4",
               theme.ring,
             ),
           };
@@ -219,7 +324,7 @@ export const InputBlock = forwardRef<HTMLInputElement, InputBlockProps>(
           return {
             wrapper: cn(
               baseWrapper,
-              "border-b-2 border-zinc-200 dark:border-zinc-800 bg-transparent rounded-none px-0",
+              "border-b-2 border-border bg-transparent rounded-none px-0",
             ),
             active: theme.ring,
           };
@@ -227,7 +332,7 @@ export const InputBlock = forwardRef<HTMLInputElement, InputBlockProps>(
           return {
             wrapper: cn(
               baseWrapper,
-              "bg-white dark:bg-[#09090b] border border-zinc-200 dark:border-zinc-800 rounded-xl shadow-sm",
+              "bg-background border border-border rounded-xl shadow-sm",
             ),
             active: theme.glow,
           };
@@ -236,7 +341,7 @@ export const InputBlock = forwardRef<HTMLInputElement, InputBlockProps>(
           return {
             wrapper: cn(
               baseWrapper,
-              "bg-white dark:bg-[#09090b] border border-zinc-200 dark:border-zinc-800 rounded-xl shadow-sm",
+              "bg-background border border-border rounded-xl shadow-sm",
             ),
             active: cn("focus-within:ring-4", theme.ring),
           };
@@ -257,9 +362,12 @@ export const InputBlock = forwardRef<HTMLInputElement, InputBlockProps>(
 
     const processFiles = useCallback(
       (newFiles: File[]) => {
+        const first = newFiles[0];
         const validFiles = multiple
           ? [...selectedFiles, ...newFiles]
-          : [newFiles[0]];
+          : first
+            ? [first]
+            : [];
         setSelectedFiles(validFiles);
         if (onFilesChange) onFilesChange(validFiles);
 
@@ -325,8 +433,8 @@ export const InputBlock = forwardRef<HTMLInputElement, InputBlockProps>(
           {label && (
             <label
               className={cn(
-                "text-sm font-bold",
-                hasError ? "text-red-500" : "text-zinc-700 dark:text-zinc-300",
+                "text-sm font-semibold",
+                hasError ? "text-red-500" : "text-foreground",
                 disabled && "opacity-50",
               )}
             >
@@ -343,12 +451,12 @@ export const InputBlock = forwardRef<HTMLInputElement, InputBlockProps>(
               "w-full border-2 border-dashed rounded-xl flex flex-col items-center justify-center text-center cursor-pointer transition-all duration-200 ease-in-out group",
               s.dropzone,
               disabled
-                ? "opacity-50 cursor-not-allowed border-zinc-200 dark:border-zinc-800 bg-zinc-50 dark:bg-zinc-900/50"
+                ? "opacity-50 cursor-not-allowed border-border bg-muted"
                 : hasError
                   ? "border-red-400 bg-red-50/50 dark:bg-red-500/5"
                   : isDragging
                     ? theme.dragActive
-                    : "border-zinc-300 dark:border-zinc-700 bg-zinc-50/50 dark:bg-[#09090b] hover:bg-zinc-100 dark:hover:bg-zinc-900/50",
+                    : "border-border bg-muted/50 hover:bg-muted",
             )}
           >
             <input
@@ -366,24 +474,24 @@ export const InputBlock = forwardRef<HTMLInputElement, InputBlockProps>(
                 "p-3 rounded-full mb-3 transition-colors",
                 isDragging
                   ? theme.bg
-                  : "bg-white dark:bg-zinc-800 shadow-sm border border-zinc-200 dark:border-zinc-700 group-hover:scale-105",
+                  : "bg-card shadow-sm border border-border group-hover:scale-105",
               )}
             >
               <UploadCloud
                 className={cn(
                   "w-6 h-6",
-                  isDragging ? "text-white" : theme.text,
+                  !isDragging && theme.text,
                 )}
               />
             </div>
             <p
-              className={cn("font-bold text-zinc-900 dark:text-white", s.text)}
+              className={cn("font-semibold text-foreground", s.text)}
             >
               {isDragging
                 ? "Drop files here"
                 : "Click or drag file to this area"}
             </p>
-            <p className="text-xs text-zinc-500 dark:text-zinc-400 mt-1 max-w-[250px]">
+            <p className="text-xs text-muted-foreground mt-1 max-w-[250px]">
               {accept ? `Supports ${accept}` : "Supports all file types"}{" "}
               {multiple && "• Upload multiple"}
             </p>
@@ -395,16 +503,18 @@ export const InputBlock = forwardRef<HTMLInputElement, InputBlockProps>(
               {selectedFiles.map((file) => (
                 <div
                   key={file.name}
-                  className="flex items-center justify-between p-3 bg-white dark:bg-[#09090b] border border-zinc-200 dark:border-zinc-800 rounded-lg shadow-sm group"
+                  className="flex items-center justify-between p-3 bg-card border border-border rounded-lg shadow-sm group"
                 >
                   <div className="flex items-center gap-3 overflow-hidden">
                     {previews[file.name] ? (
-                      <div className="w-10 h-10 shrink-0 rounded-md overflow-hidden bg-zinc-100 dark:bg-zinc-900 relative border border-zinc-200 dark:border-zinc-800">
-                        <Image
+                      <div className="w-10 h-10 shrink-0 rounded-md overflow-hidden bg-muted relative border border-border">
+                        {/* A FileReader data URL — next/image cannot optimise
+                            it and would need `unoptimized`, so a plain img is
+                            both simpler and framework-neutral. */}
+                        <img
                           src={previews[file.name]}
                           alt="preview"
-                          fill
-                          className="object-cover"
+                          className="absolute inset-0 h-full w-full object-cover"
                         />
                       </div>
                     ) : (
@@ -422,10 +532,10 @@ export const InputBlock = forwardRef<HTMLInputElement, InputBlockProps>(
                       </div>
                     )}
                     <div className="flex flex-col min-w-0">
-                      <span className="text-sm font-bold text-zinc-900 dark:text-white truncate">
+                      <span className="text-sm font-semibold text-foreground truncate">
                         {file.name}
                       </span>
-                      <span className="text-xs text-zinc-500 font-medium">
+                      <span className="text-xs text-muted-foreground font-medium">
                         {formatFileSize(file.size)}
                       </span>
                     </div>
@@ -433,7 +543,7 @@ export const InputBlock = forwardRef<HTMLInputElement, InputBlockProps>(
                   <button
                     type="button"
                     onClick={(e) => removeFile(file.name, e)}
-                    className="p-2 shrink-0 rounded-md text-zinc-400 hover:bg-red-50 hover:text-red-500 dark:hover:bg-red-500/10 transition-colors"
+                    className="p-2 shrink-0 rounded-md text-muted-foreground hover:bg-red-50 hover:text-red-500 dark:hover:bg-red-500/10 transition-colors"
                   >
                     <X className="w-4 h-4" />
                   </button>
@@ -448,7 +558,7 @@ export const InputBlock = forwardRef<HTMLInputElement, InputBlockProps>(
             </p>
           )}
           {helperText && !error && (
-            <p className="text-xs font-medium text-zinc-500 dark:text-zinc-400 mt-0.5">
+            <p className="text-xs font-medium text-muted-foreground mt-0.5">
               {helperText}
             </p>
           )}
@@ -470,8 +580,8 @@ export const InputBlock = forwardRef<HTMLInputElement, InputBlockProps>(
         {label && (
           <label
             className={cn(
-              "text-sm font-bold",
-              hasError ? "text-red-500" : "text-zinc-700 dark:text-zinc-300",
+              "text-sm font-semibold",
+              hasError ? "text-red-500" : "text-foreground",
               disabled && "opacity-50",
             )}
           >
@@ -479,11 +589,15 @@ export const InputBlock = forwardRef<HTMLInputElement, InputBlockProps>(
           </label>
         )}
 
+        <div
+          ref={fieldRef}
+          className={cn("relative", hasSuggestions && "z-10")}
+        >
         <div className={cn(styles.wrapper, styles.active)}>
           {leftIcon && (
             <div
               className={cn(
-                "shrink-0 pl-4 text-zinc-400 dark:text-zinc-500",
+                "shrink-0 pl-4 text-muted-foreground",
                 variant === "underlined" && "pl-0 pr-3",
               )}
             >
@@ -492,17 +606,41 @@ export const InputBlock = forwardRef<HTMLInputElement, InputBlockProps>(
           )}
 
           <input
-            ref={ref}
+            ref={assignInputRef}
             type={inputType}
             disabled={disabled}
             className={cn(
-              "w-full h-full bg-transparent border-none outline-none text-zinc-900 dark:text-white placeholder:text-zinc-400 dark:placeholder:text-zinc-600 transition-colors",
+              "w-full h-full bg-transparent border-none outline-none text-foreground placeholder:text-muted-foreground/70 transition-colors",
               s.text,
               leftIcon && variant !== "underlined" ? "pl-2.5" : "pl-0",
               variant === "underlined" && !leftIcon && "pl-0",
               rightIcon || isPassword ? "pr-2.5" : "pr-0",
             )}
             {...props}
+            {...(hasSuggestions
+              ? {
+              role: "combobox",
+              autoComplete: "off",
+              "aria-autocomplete": "list",
+              "aria-expanded": listOpen && matches.length > 0,
+              "aria-controls": listId,
+              "aria-activedescendant":
+                listOpen && activeIndex >= 0
+                  ? `${listId}-${activeIndex}`
+                  : undefined,
+              onChange: (e: React.ChangeEvent<HTMLInputElement>) => {
+                props.onChange?.(e);
+                setTyped(e.target.value);
+                setActiveIndex(-1);
+                if (!listOpen) setListOpen(true);
+              },
+              onFocus: (e: React.FocusEvent<HTMLInputElement>) => {
+                props.onFocus?.(e);
+                setListOpen(true);
+              },
+              onKeyDown: handleSuggestionKeyDown,
+                }
+              : {})}
           />
 
           {isPassword && (
@@ -511,7 +649,7 @@ export const InputBlock = forwardRef<HTMLInputElement, InputBlockProps>(
               onClick={() => setShowPassword(!showPassword)}
               disabled={disabled}
               className={cn(
-                "shrink-0 pr-4 text-zinc-400 hover:text-zinc-600 dark:hover:text-zinc-300 transition-colors disabled:opacity-50",
+                "shrink-0 pr-4 text-muted-foreground hover:text-muted-foreground transition-colors disabled:opacity-50",
                 variant === "underlined" && "pr-0 pl-3",
               )}
             >
@@ -525,7 +663,7 @@ export const InputBlock = forwardRef<HTMLInputElement, InputBlockProps>(
           {rightIcon && !isPassword && (
             <div
               className={cn(
-                "shrink-0 pr-4 text-zinc-400 dark:text-zinc-500",
+                "shrink-0 pr-4 text-muted-foreground",
                 variant === "underlined" && "pr-0 pl-3",
               )}
             >
@@ -534,13 +672,89 @@ export const InputBlock = forwardRef<HTMLInputElement, InputBlockProps>(
           )}
         </div>
 
+        {/* Suggestion list. Rows are chosen on mousedown so the field keeps
+            focus; the native `input` event then runs the consumer's onChange. */}
+        {hasSuggestions && listOpen && !disabled && (
+          <ul
+            ref={listRef}
+            id={listId}
+            role="listbox"
+            aria-label={label ? `${label} suggestions` : "Suggestions"}
+            className={cn(
+              "absolute left-0 right-0 z-50 max-h-[18.5rem] overflow-y-auto p-1 border border-border bg-popover text-popover-foreground rounded-xl shadow-lg",
+              "animate-in fade-in duration-150",
+              listUp
+                ? cn(
+                    "origin-bottom slide-in-from-bottom-1",
+                    variant === "underlined"
+                      ? "bottom-[100%]"
+                      : "bottom-[calc(100%+6px)]",
+                  )
+                : cn(
+                    "origin-top slide-in-from-top-1",
+                    variant === "underlined"
+                      ? "top-[100%]"
+                      : "top-[calc(100%+6px)]",
+                  ),
+            )}
+          >
+            {matches.length === 0 ? (
+              <li className="px-3 py-2.5 text-xs text-muted-foreground">
+                No matches for{" "}
+                <span className="font-medium text-foreground">
+                  &ldquo;{query.trim()}&rdquo;
+                </span>
+                {" "}— keep typing to use it as-is.
+              </li>
+            ) : (
+              matches.map((item, index) => {
+                const isActive = index === activeIndex;
+                return (
+                  <li
+                    key={item}
+                    id={`${listId}-${index}`}
+                    data-index={index}
+                    role="option"
+                    aria-selected={isActive}
+                    onMouseDown={(e) => {
+                      e.preventDefault();
+                      chooseSuggestion(item);
+                    }}
+                    onMouseEnter={() => setActiveIndex(index)}
+                    className={cn(
+                      "flex items-center justify-between gap-3 px-3 py-2 rounded-lg cursor-pointer text-foreground",
+                      s.text,
+                      isActive ? theme.bgSoft : "hover:bg-muted/60",
+                    )}
+                  >
+                    <span className="truncate">
+                      <SuggestionText
+                        text={item}
+                        query={query}
+                        matchClassName={theme.text}
+                      />
+                    </span>
+                    {isActive && (
+                      <CornerDownLeft
+                        aria-hidden
+                        className={cn("w-3.5 h-3.5 shrink-0", theme.text)}
+                      />
+                    )}
+                  </li>
+                );
+              })
+            )}
+          </ul>
+        )}
+        </div>
+
         {error && (
           <p className="text-xs font-semibold text-red-500 flex items-center gap-1 mt-0.5">
             <AlertCircle className="w-3.5 h-3.5" /> {error}
           </p>
         )}
         {helperText && !error && (
-          <p className="text-xs font-medium text-zinc-500 dark:text-zinc-400 mt-0.5">
+          <p className="text-xs font-medium text-muted-foreground mt-0.5">
             {helperText}
           </p>
         )}

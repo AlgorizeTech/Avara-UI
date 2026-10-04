@@ -1,0 +1,216 @@
+import { docsPageMetadata } from "@/lib/docs-metadata";
+
+export const metadata = docsPageMetadata("invoice");
+
+import { ExampleShowcase } from "@/components/site/Sandbox";
+import { Installation } from "@/components/site/installation";
+import { extractCode } from "@/lib/code";
+
+# Invoice Dashboard
+
+A complete, fully functional, and editable Invoice dashboard component featuring 3 distinct design variants: Default, Corporate Executive, and Neo-Brutalist.
+
+The component is fully encapsulated — hand it an `invoiceData` object and it owns the rest. Click **Edit** in the right sidebar of any preview to add items, change quantities and download the resulting JSON.
+
+export const invoiceSource = `const invoiceData: InvoiceData = {
+  invoiceNumber: "#4987",
+  dateIssued: "13 Mar 2026",
+  dateDue: "23 Mar 2026",
+  invoiceTo: {
+    name: "Jordan Stevenson",
+    company: "Hall-Robbins PLC",
+    address: "7777 Mendez Plains",
+    phone: "(616) 865-4180",
+    email: "don85@johnson.com",
+  },
+  billTo: {
+    totalDue: "$12,110.55",
+    bankName: "American Bank",
+    country: "United States",
+    iban: "ETD95476213874685",
+    swift: "BR91905",
+  },
+  items: [
+    {
+      item: "Premium Branding Package",
+      description: "Branding & Promotion",
+      hours: 48,
+      qty: 1,
+      total: "$32",
+    },
+    {
+      item: "Web Design",
+      description: "Web designing package",
+      hours: 46,
+      qty: 1,
+      total: "$24",
+    },
+  ],
+  subtotal: "$1800",
+  discount: "$28",
+  tax: "21%",
+  grandTotal: "$1690",
+  salesPerson: "Tommy Shelby",
+  note: "Note: It was a pleasure working with you and your team. We hope you will keep us in mind for future freelance projects. Thank You!",
+};`;
+
+export const usageDefault = `import Invoice, { type InvoiceData } from "@/components/custom/blocks/Invoice";
+
+${invoiceSource}
+
+export default function InvoicePage() {
+  return <Invoice invoiceData={invoiceData} />;
+}`;
+
+export const usageCorporate = `import Invoice, { type InvoiceData } from "@/components/custom/blocks/Invoice";
+
+${invoiceSource}
+
+export default function CorporateInvoice() {
+  return <Invoice variant="corporate" invoiceData={invoiceData} />;
+}`;
+
+export const usageBrutalist = `import Invoice, { type InvoiceData } from "@/components/custom/blocks/Invoice";
+
+${invoiceSource}
+
+export default function BrutalistInvoice() {
+  return <Invoice variant="brutalist" invoiceData={invoiceData} />;
+}`;
+
+<ExampleShowcase
+  name="invoice"
+  colorControl
+  columns={1}
+  examples={[
+    {
+      title: "Default Dashboard Invoice",
+      subheading: "Editing, totals, printing and JSON export are all handled internally.",
+      propNotes: [
+        {
+          lead: "Pass one",
+          prop: "invoiceData",
+          effect:
+            "object holding the dates, addresses, billing details, line items, totals and notes.",
+        },
+        {
+          prop: "color",
+          effect:
+            "themes the primary buttons, focus rings and heart icon.",
+        },
+      ],
+      props: { variant: "default" },
+      usage: usageDefault,
+      code: extractCode("src/components/custom/blocks/Invoice.tsx"),
+    },
+  ]}
+/>
+
+## Installation
+
+<Installation name="invoice" />
+
+## Variations
+
+<ExampleShowcase
+  name="invoice"
+  colorControl
+  columns={1}
+  examples={[
+    {
+      title: "Corporate Executive",
+      subheading: "High-contrast solid header banner layout for formal B2B billing and corporate accounts.",
+      props: { variant: "corporate" },
+      usage: usageCorporate,
+    },
+    {
+      title: "Neo-Brutalist",
+      subheading: "Bold 2px hard black borders, offset hard drop shadows, and high-contrast typography.",
+      props: { variant: "brutalist" },
+      usage: usageBrutalist,
+    },
+  ]}
+/>
+
+## Features
+Explore the Invoice component's structured layout for displaying billing information, line items, and dynamic total calculations.
+
+<div className="grid grid-cols-1 sm:grid-cols-2 gap-4 my-6 not-prose">
+  <div className="p-6 rounded-2xl border border-border bg-card">
+    <h3 className="text-lg font-semibold text-card-foreground mb-2">3 Design Variants</h3>
+    <p className="text-muted-foreground text-sm">Choose from Default, Corporate Executive, and Neo-Brutalist layout variants.</p>
+  </div>
+  <div className="p-6 rounded-2xl border border-border bg-card">
+    <h3 className="text-lg font-semibold text-card-foreground mb-2">Interactive Edit & Export</h3>
+    <p className="text-muted-foreground text-sm">Inline editing for item prices, descriptions, quantities, with instant recalculations and JSON export.</p>
+  </div>
+  <div className="p-6 rounded-2xl border border-border bg-card">
+    <h3 className="text-lg font-semibold text-card-foreground mb-2">Print & PDF Ready</h3>
+    <p className="text-muted-foreground text-sm">Built-in browser print triggers that automatically hide control sidebars and format clean PDF pages.</p>
+  </div>
+  <div className="p-6 rounded-2xl border border-border bg-card">
+    <h3 className="text-lg font-semibold text-card-foreground mb-2">Theme Integration</h3>
+    <p className="text-muted-foreground text-sm">Seamless support for custom color themes across primary buttons, focus rings, and badges.</p>
+  </div>
+</div>
+
+## Props Reference
+
+<div className="overflow-x-auto">
+  <table>
+    <thead>
+      <tr>
+        <th>Prop</th>
+        <th>Type</th>
+        <th>Default</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>
+          <code>invoiceData</code>
+        </td>
+        <td>
+          <code>InvoiceData</code>
+        </td>
+        <td>
+          <strong>Required</strong>
+        </td>
+        <td>
+          The core data object containing all fields (dates, addresses, billing
+          details, array of items, totals, and notes).
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <code>variant</code>
+        </td>
+        <td>
+          <code>"default" | "corporate" | "brutalist"</code>
+        </td>
+        <td>
+          <code>"default"</code>
+        </td>
+        <td>
+          Applies overarching structural layouts, including borders, backdrop
+          blurs, and shadows.
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <code>color</code>
+        </td>
+        <td>
+          <code>"primary" | "indigo" | "rose" | "emerald" | "zinc"</code>
+        </td>
+        <td>
+          <code>"primary"</code>
+        </td>
+        <td>
+          Applies global color themes to buttons, focus rings, and highlights.
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>

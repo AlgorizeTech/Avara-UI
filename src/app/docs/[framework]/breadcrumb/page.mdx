@@ -1,0 +1,257 @@
+import { docsPageMetadata } from "@/lib/docs-metadata";
+
+export const metadata = docsPageMetadata("breadcrumb");
+
+import { ExampleShowcase } from "@/components/site/Sandbox";
+import { extractCode } from "@/lib/code";
+
+# Breadcrumb
+
+A navigational aid that helps users understand their current location within a website's hierarchy.
+
+This component features four distinct visual variants, seamless color theming, and **built-in automatic path truncation**. If the user's path is too deep, it automatically collapses the middle items behind a clickable ellipsis (`...`) button.
+
+You describe the trail as an `items` array; the component handles dividers, the active item and truncation.
+
+export const usageDefault = `import { BreadcrumbBlock, type BreadcrumbItem } from "@/components/custom/blocks/BreadcrumbBlock";
+
+const items: BreadcrumbItem[] = [
+  { label: "Docs", href: "/docs" },
+  { label: "Components", href: "/docs/components" },
+  { label: "Breadcrumb", href: "/docs/components/breadcrumb" },
+];
+
+export default function BreadcrumbDemo() {
+  // The last item is rendered as the current page, not a link.
+  return <BreadcrumbBlock items={items} />;
+}`;
+
+export const usageIcons = `import { BreadcrumbBlock, type BreadcrumbItem } from "@/components/custom/blocks/BreadcrumbBlock";
+import { Home, Settings } from "lucide-react";
+
+const items: BreadcrumbItem[] = [
+  // icon takes the Lucide component itself, not a string
+  { label: "Home", href: "/", icon: Home },
+  { label: "Settings", href: "/settings", icon: Settings },
+  { label: "Profile", href: "/settings/profile" },
+];
+
+export default function BreadcrumbWithIcons() {
+  return <BreadcrumbBlock items={items} />;
+}`;
+
+export const usageTruncated = `import { BreadcrumbBlock, type BreadcrumbItem } from "@/components/custom/blocks/BreadcrumbBlock";
+import { FileText, Folder, Home } from "lucide-react";
+
+const deepPath: BreadcrumbItem[] = [
+  { label: "Home", href: "/", icon: Home },
+  { label: "Dashboard", href: "/dashboard" },
+  { label: "Projects", href: "/projects", icon: Folder },
+  { label: "Nexus UI Kit", href: "/projects/nexus" },
+  { label: "Components", href: "/projects/nexus/components" },
+  { label: "Breadcrumb.tsx", href: "#", icon: FileText },
+];
+
+export default function DeepBreadcrumb() {
+  // More items than maxItems? The middle collapses behind a "..." button
+  // that expands the full trail when clicked.
+  return <BreadcrumbBlock items={deepPath} maxItems={4} />;
+}`;
+
+<ExampleShowcase
+  name="breadcrumb"
+  colorControl
+  columns={1}
+  examples={[
+    {
+      title: "Breadcrumb",
+      propNotes: [
+        {
+          lead: "Pass",
+          prop: "items",
+          effect:
+            "as an array of `{ label, href }` — the last entry is treated as the current page and is not linked.",
+        },
+        {
+          prop: "color",
+          effect:
+            "themes the active text and hover states — a named key or a hex string such as `#00FF00`.",
+        },
+        {
+          prop: "linkComponent",
+          effect:
+            "swaps the plain `a` each item renders for your router's link — pass `Link` from `next/link` to keep client-side navigation and prefetching.",
+        },
+      ],
+      props: { variant: "classic", showIcons: false },
+      usage: usageDefault,
+      code: extractCode("src/components/custom/blocks/BreadcrumbBlock.tsx"),
+    },
+  ]}
+/>
+
+## Installation
+
+<Installation name="breadcrumb" />
+
+## Examples
+
+<ExampleShowcase
+  name="breadcrumb"
+  colorControl
+  columns={1}
+  examples={[
+    {
+      title: "With icons",
+      propNotes: [
+        {
+          lead: "Give an item an",
+          prop: "icon",
+          effect:
+            "— the Lucide component itself, not its name — to label it visually beside the text.",
+        },
+      ],
+      props: { variant: "classic", showIcons: true },
+      usage: usageIcons,
+    },
+    {
+      title: "Truncated path",
+      propNotes: [
+        {
+          prop: "maxItems",
+          value: "{4}",
+          effect:
+            "is the default — past that many links the middle collapses behind a `...` the reader can click to expand.",
+        },
+      ],
+      props: { variant: "classic", isLongPath: true, maxItems: 4 },
+      usage: usageTruncated,
+    },
+  ]}
+/>
+
+## Features
+Explore the Breadcrumb navigation features, including collapsible items, custom separators, and SEO-friendly structure.
+
+<div className="grid grid-cols-1 sm:grid-cols-2 gap-4 my-6 not-prose">
+  <div className="p-6 rounded-2xl border border-border bg-card">
+    <h3 className="text-lg font-semibold text-card-foreground mb-2">Customizable</h3>
+    <p className="text-muted-foreground text-sm">Easily adapt the component's styling and behavior to fit your application's unique design system.</p>
+  </div>
+  <div className="p-6 rounded-2xl border border-border bg-card">
+    <h3 className="text-lg font-semibold text-card-foreground mb-2">Accessible</h3>
+    <p className="text-muted-foreground text-sm">Built with accessibility in mind, ensuring all users can interact with your application effectively.</p>
+  </div>
+  <div className="p-6 rounded-2xl border border-border bg-card">
+    <h3 className="text-lg font-semibold text-card-foreground mb-2">Responsive</h3>
+    <p className="text-muted-foreground text-sm">Fully responsive design that looks and works great across desktop, tablet, and mobile devices.</p>
+  </div>
+  <div className="p-6 rounded-2xl border border-border bg-card">
+    <h3 className="text-lg font-semibold text-card-foreground mb-2">Performant</h3>
+    <p className="text-muted-foreground text-sm">Optimized for maximum performance with minimal re-renders and efficient state management.</p>
+  </div>
+</div>
+
+## Best Practices & Guidelines
+
+<div className="flex flex-col gap-4 my-6 not-prose">
+  <div className="rounded-xl border border-foreground/[0.06] bg-foreground/[0.03] p-4">
+    <h4 className="font-sans text-[14px] font-semibold text-foreground mb-1">Usage Guidelines</h4>
+    <p className="text-[13px] leading-relaxed text-foreground/50">Follow standard design principles when implementing this component. Ensure proper contrast, spacing, and context within your layout.</p>
+  </div>
+</div>
+
+## Props Reference
+
+<div className="overflow-x-auto">
+  <table>
+    <thead>
+      <tr>
+        <th>Prop</th>
+        <th>Type</th>
+        <th>Default</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>
+          <code>items</code>
+        </td>
+        <td>
+          <code>BreadcrumbItem[]</code>
+        </td>
+        <td>
+          <strong>Required</strong>
+        </td>
+        <td>
+          An array of objects containing a <code>label</code> (string), optional{" "}
+          <code>href</code> (string), and optional <code>icon</code> (Lucide
+          Component).
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <code>variant</code>
+        </td>
+        <td>
+          <code>"classic" | "slash" | "solid" | "ghost"</code>
+        </td>
+        <td>
+          <code>"classic"</code>
+        </td>
+        <td>
+          Determines the visual styling of the links and the dividers between
+          them.
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <code>color</code>
+        </td>
+        <td>
+          <code>"indigo" | "rose" | "emerald" | "zinc" | string</code>
+        </td>
+        <td>
+          <code>"indigo"</code>
+        </td>
+        <td>
+          Applies global color themes to the active text and hover states.
+          Accepts valid hex codes (e.g. <code>"#00FF00"</code>).
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <code>maxItems</code>
+        </td>
+        <td>
+          <code>number</code>
+        </td>
+        <td>
+          <code>4</code>
+        </td>
+        <td>
+          The maximum number of links to display before automatically truncating
+          the middle of the path.
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <code>linkComponent</code>
+        </td>
+        <td>
+          <code>React.ElementType</code>
+        </td>
+        <td>
+          <code>"a"</code>
+        </td>
+        <td>
+          The element each item renders as. It defaults to a plain{" "}
+          <code>&lt;a&gt;</code> so one source works in any React app — pass{" "}
+          <code>Link</code> from <code>next/link</code> to get client-side
+          navigation and prefetching back.
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>

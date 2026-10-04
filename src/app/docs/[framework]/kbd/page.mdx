@@ -1,0 +1,239 @@
+import { docsPageMetadata } from "@/lib/docs-metadata";
+
+export const metadata = docsPageMetadata("kbd");
+
+import { ExampleShowcase } from "@/components/site/Sandbox";
+import { extractCode } from "@/lib/code";
+
+# Kbd (Keyboard)
+
+A specialized typography component used to display keyboard buttons, shortcuts, and commands.
+
+Displaying keyboard shortcuts to power users is a critical part of modern web design (especially in tools like Command Menus). The `KbdBlock` uses a native `<kbd>` HTML element for strict semantic accuracy, and applies a precise combination of borders, background colors, and inset shadows to simulate a physical, tactile keyboard key.
+
+Explore the different variations of the Kbd component — each example shows a live preview with the exact code to copy.
+
+export const usageDefault = `import { Kbd } from "@/components/custom/blocks/KbdBlock";
+
+export default function BasicKbd() {
+  return <Kbd>⌘</Kbd>;
+}`;
+
+export const usageCombinations = `import { Kbd } from "@/components/custom/blocks/KbdBlock";
+
+export default function ShortcutList() {
+  return (
+    <div className="flex flex-col items-center gap-3">
+      <p className="text-sm font-medium text-muted-foreground mb-2">Common Combinations</p>
+
+      <div className="flex items-center gap-2 text-foreground/80">
+        <span className="text-sm">Save file:</span>
+        <div className="flex items-center gap-1">
+          <Kbd>⌘</Kbd>
+          <Kbd>S</Kbd>
+        </div>
+      </div>
+
+      <div className="flex items-center gap-2 text-foreground/80">
+        <span className="text-sm">Force Reload:</span>
+        <div className="flex items-center gap-1">
+          <Kbd>⇧</Kbd>
+          <Kbd>⌘</Kbd>
+          <Kbd>R</Kbd>
+        </div>
+      </div>
+
+      <div className="flex items-center gap-2 text-foreground/80">
+        <span className="text-sm">Open Terminal:</span>
+        <div className="flex items-center gap-1">
+          <Kbd>Ctrl</Kbd>
+          <span className="text-xs text-muted-foreground">+</span>
+          <Kbd>~</Kbd>
+        </div>
+      </div>
+    </div>
+  );
+}`;
+
+export const usageInline = `import { Kbd } from "@/components/custom/blocks/KbdBlock";
+
+export default function InlineShortcut() {
+  return (
+    <p className="text-sm leading-7">
+      Press <Kbd>⌘</Kbd> <Kbd>K</Kbd> to open the command palette, or{" "}
+      <Kbd>Esc</Kbd> to dismiss it.
+    </p>
+  );
+}`;
+
+<ExampleShowcase
+  name="kbd"
+  colorControl={false}
+  columns={1}
+  examples={[
+    {
+      title: "Kbd",
+      subheading: "A single key, rendered as a semantic `<kbd>` element.",
+      propNotes: [
+        {
+          prop: "children",
+          effect:
+            "is the key glyph — the component adds no label text of its own.",
+        },
+      ],
+      props: { example: "single" },
+      usage: usageDefault,
+      code: extractCode("src/components/custom/blocks/KbdBlock.tsx"),
+    },
+  ]}
+/>
+
+## Installation
+
+<Installation name="kbd" />
+
+## Examples
+
+<ExampleShowcase
+  name="kbd"
+  colorControl={false}
+  columns={1}
+  examples={[
+    {
+      title: "Combinations",
+      propNotes: [
+        {
+          prop: "children",
+          effect:
+            "holds one key each — sequence several `Kbd` elements side by side to spell out a shortcut.",
+        },
+      ],
+      props: {},
+      usage: usageCombinations,
+    },
+    {
+      title: "Inline in text",
+      propNotes: [
+        {
+          prop: "size",
+          value: '"sm"',
+          effect:
+            "keeps keys on the text baseline so they read naturally inside prose.",
+        },
+      ],
+      props: { example: "inline" },
+      usage: usageInline,
+    },
+  ]}
+/>
+
+## Usage
+
+You can use the component independently, or string multiple together to represent complex key combinations.
+
+```tsx
+import { Kbd } from "@/components/custom/blocks/KbdBlock";
+
+export default function ShortcutHint() {
+  return (
+    <div className="flex items-center gap-2 text-sm text-muted-foreground">
+      <span>To open the command palette, press</span>
+      <div className="flex items-center gap-1">
+        <Kbd title="Command">⌘</Kbd>
+        <Kbd title="K">K</Kbd>
+      </div>
+    </div>
+  );
+}
+```
+
+## Features
+Learn about the Kbd component's typography styles for displaying keyboard shortcuts and command instructions consistently.
+
+<div className="grid grid-cols-1 sm:grid-cols-2 gap-4 my-6 not-prose">
+  <div className="p-6 rounded-2xl border border-border bg-card">
+    <h3 className="text-lg font-semibold text-card-foreground mb-2">Customizable</h3>
+    <p className="text-muted-foreground text-sm">Easily adapt the component's styling and behavior to fit your application's unique design system.</p>
+  </div>
+  <div className="p-6 rounded-2xl border border-border bg-card">
+    <h3 className="text-lg font-semibold text-card-foreground mb-2">Accessible</h3>
+    <p className="text-muted-foreground text-sm">Built with accessibility in mind, ensuring all users can interact with your application effectively.</p>
+  </div>
+  <div className="p-6 rounded-2xl border border-border bg-card">
+    <h3 className="text-lg font-semibold text-card-foreground mb-2">Responsive</h3>
+    <p className="text-muted-foreground text-sm">Fully responsive design that looks and works great across desktop, tablet, and mobile devices.</p>
+  </div>
+  <div className="p-6 rounded-2xl border border-border bg-card">
+    <h3 className="text-lg font-semibold text-card-foreground mb-2">Performant</h3>
+    <p className="text-muted-foreground text-sm">Optimized for maximum performance with minimal re-renders and efficient state management.</p>
+  </div>
+</div>
+
+## Best Practices & Guidelines
+
+<div className="flex flex-col gap-4 my-6 not-prose">
+  <div className="rounded-xl border border-foreground/[0.06] bg-foreground/[0.03] p-4">
+    <h4 className="font-sans text-[14px] font-semibold text-foreground mb-1">Usage Guidelines</h4>
+    <p className="text-[13px] leading-relaxed text-foreground/50">Follow standard design principles when implementing this component. Ensure proper contrast, spacing, and context within your layout.</p>
+  </div>
+</div>
+
+## Props Reference
+
+<div className="overflow-x-auto">
+  <table>
+    <thead>
+      <tr>
+        <th>Prop</th>
+        <th>Type</th>
+        <th>Default</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>
+          <code>size</code>
+        </td>
+        <td>
+          <code>"sm" | "md" | "lg"</code>
+        </td>
+        <td>
+          <code>"sm"</code>
+        </td>
+        <td>Controls the height, padding, and font-size of the key element.</td>
+      </tr>
+      <tr>
+        <td>
+          <code>className</code>
+        </td>
+        <td>
+          <code>string</code>
+        </td>
+        <td>
+          <code>undefined</code>
+        </td>
+        <td>
+          Standard Tailwind CSS overrides. Useful for adding specific margin or
+          overriding the shadow if needed.
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <code>...props</code>
+        </td>
+        <td>
+          <code>HTMLAttributes&lt;HTMLElement&gt;</code>
+        </td>
+        <td>
+          <code>{}</code>
+        </td>
+        <td>
+          Accepts all standard HTML attributes for a native{" "}
+          <code>&lt;kbd&gt;</code> element, including <code>title</code> or{" "}
+          <code>aria-label</code> for accessibility.
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>

@@ -55,9 +55,7 @@ export default function InvoiceDemo({
   color?: InvoiceColor | string;
 }) {
   return (
-    <div
-      className={`w-full max-w-full overflow-hidden transition-all duration-500 ${variant === "glass" ? "p-1 sm:p-8 bg-gradient-to-br from-indigo-500/80 via-purple-500/80 to-pink-500/80 rounded-2xl" : "p-0 bg-transparent"}`}
-    >
+    <div className="w-full max-w-full overflow-hidden transition-all duration-500 relative p-0 bg-transparent">
       <Invoice
         key={`${variant}-${color}`} // Force re-render to clear edit state on theme change
         variant={variant}

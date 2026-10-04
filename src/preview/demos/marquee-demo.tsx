@@ -1,25 +1,26 @@
 "use client";
 
+import { cn } from "@/lib/utils";
 import { MarqueeBlock } from "@/components/custom/blocks/MarqueeBlock";
 import {
   Box,
+  Boxes,
   Code2,
   Command,
-  Figma,
-  Framer,
-  Github,
-  Gitlab,
   Hexagon,
   Layers,
+  Network,
+  Palette,
+  Sparkles,
   Triangle,
 } from "lucide-react";
 
 const logos = [
   { icon: Command, name: "Command" },
-  { icon: Figma, name: "Figma" },
-  { icon: Framer, name: "Framer" },
-  { icon: Github, name: "Github" },
-  { icon: Gitlab, name: "Gitlab" },
+  { icon: Palette, name: "Palette" },
+  { icon: Sparkles, name: "Motion" },
+  { icon: Boxes, name: "Packages" },
+  { icon: Network, name: "Network" },
   { icon: Hexagon, name: "Hexagon" },
   { icon: Layers, name: "Layers" },
   { icon: Triangle, name: "Triangle" },
@@ -51,11 +52,11 @@ const testimonials = [
 ];
 
 const images = [
-  "https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?q=80&w=600&auto=format&fit=crop",
-  "https://images.unsplash.com/photo-1557672172-298e090bd0f1?q=80&w=600&auto=format&fit=crop",
-  "https://images.unsplash.com/photo-1557683316-973673baf926?q=80&w=600&auto=format&fit=crop",
-  "https://images.unsplash.com/photo-1620121692029-d088224ddc74?q=80&w=600&auto=format&fit=crop",
-  "https://images.unsplash.com/photo-1550684848-fac1c5b4e853?q=80&w=600&auto=format&fit=crop",
+  "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_800,c_limit/v1790146209/photo-1469474968028-56623f02e42e-1790146212205.jpg", // Mountain sunset
+  "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_800,c_limit/v1790148863/photo-1447752875215-b2761acb3c5d-1790148865109.jpg", // Lush forest trees
+  "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_800,c_limit/v1790146210/photo-1507525428034-b723cf961d3e-1790146212208.jpg", // Tropical beach ocean
+  "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_800,c_limit/v1790146211/photo-1519681393784-d120267933ba-1790146212210.jpg", // Snowy mountain night star sky
+  "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_800,c_limit/v1790146209/photo-1470071459604-3b5ec3a7fe05-1790146212205.jpg", // Foggy green valley mountain
 ];
 
 export default function MarqueeDemo({
@@ -80,7 +81,7 @@ export default function MarqueeDemo({
       return logos.map((logo, i) => (
         <div
           key={i}
-          className="flex items-center gap-2 text-zinc-400 hover:text-zinc-900 dark:hover:text-zinc-100 transition-colors font-bold text-xl"
+          className="flex items-center gap-2 text-muted-foreground hover:text-foreground transition-colors font-semibold text-xl"
         >
           <logo.icon className="w-8 h-8" />
           {logo.name}
@@ -91,20 +92,20 @@ export default function MarqueeDemo({
       return testimonials.map((t, i) => (
         <div
           key={i}
-          className="w-[300px] shrink-0 p-6 rounded-2xl bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 shadow-sm flex flex-col gap-4"
+          className="w-[300px] shrink-0 p-6 rounded-2xl bg-card text-card-foreground border border-border shadow-sm flex flex-col gap-4"
         >
-          <p className="text-sm text-zinc-600 dark:text-zinc-400 leading-relaxed">
+          <p className="text-sm text-muted-foreground leading-relaxed">
             "{t.text}"
           </p>
           <div className="flex items-center gap-3">
-            <div className="w-10 h-10 rounded-full bg-zinc-200 dark:bg-zinc-800 flex items-center justify-center font-bold text-zinc-500">
+            <div className="w-10 h-10 rounded-full bg-muted flex items-center justify-center font-semibold text-muted-foreground">
               {t.name.charAt(0)}
             </div>
             <div>
-              <p className="text-sm font-bold text-zinc-900 dark:text-zinc-100">
+              <p className="text-sm font-semibold text-foreground">
                 {t.name}
               </p>
-              <p className="text-xs text-zinc-500">{t.role}</p>
+              <p className="text-xs text-muted-foreground">{t.role}</p>
             </div>
           </div>
         </div>
@@ -114,16 +115,21 @@ export default function MarqueeDemo({
       return images.map((src, i) => (
         <div
           key={i}
-          className="w-[200px] h-[200px] shrink-0 rounded-2xl overflow-hidden shadow-sm"
+          className="w-[220px] h-[160px] shrink-0 rounded-2xl overflow-hidden shadow-md border border-border"
         >
-          <img src={src} alt="Gallery" className="w-full h-full object-cover" />
+          <img src={src} alt="Nature landscape" className="w-full h-full object-cover" />
         </div>
       ));
     }
   };
 
   return (
-    <div className="w-full flex items-center justify-center relative z-10 overflow-hidden">
+    <div
+      className={cn(
+        "w-full flex flex-col items-center justify-center relative z-10 overflow-hidden py-16 sm:py-24 px-4 my-auto",
+        isVertical ? "min-h-[480px]" : "min-h-[260px]",
+      )}
+    >
       <MarqueeBlock
         key={`${contentType}-${direction}-${speed}-${pauseOnHover}-${fade}`} // Force re-render on drastic changes to ensure clean animation resets
         direction={direction}
@@ -131,7 +137,7 @@ export default function MarqueeDemo({
         pauseOnHover={pauseOnHover}
         fade={fade}
         gap={gap}
-        className={isVertical ? "h-[400px] w-full max-w-[300px]" : "w-full py-4"}
+        className={isVertical ? "h-[380px] w-full max-w-[300px]" : "w-full py-2"}
       >
         {renderContent()}
       </MarqueeBlock>

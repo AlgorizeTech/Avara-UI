@@ -1,3 +1,5 @@
+export const metadata = docsPageMetadata("support-dashboard");
+
 # Support Dashboard
 
 A complete, production-ready Helpdesk and Support Dashboard interface.
@@ -7,15 +9,9 @@ It now features a **dual-layout system**:
 1. **Chat View:** A highly detailed 3-pane layout for resolving individual customer tickets. Features a sortable inbox, a responsive chat thread, and a collapsible metadata pane.
 2. **Table View:** A macro-level Ticket System layout. Automatically calculates top-level metrics (Total, Open, High Priority) based on the exact same data object, and displays an elegant, sortable list view.
 
-## Examples
+Both layouts read the **same** `data` object — swapping `layout` re-presents the identical tickets, so you can route `/inbox` to the table and `/inbox/[id]` to the chat view without duplicating state. Every preview is live: open a ticket, reply to it, or create a new one.
 
-Both layouts read the **same** `data` object — swapping `layout` re-presents the identical tickets, so you can route `/inbox` to the table and `/inbox/[id]` to the chat view without duplicating state. Every preview is live: open a ticket, reply to it, or create a new one. The first example's **Code** tab contains the full component source.
-
-export const usageChat = `import SupportDashboard, {
-  SupportData,
-} from "@/components/custom/blocks/Support-dashboard";
-
-const data: SupportData = {
+export const supportData = `const data: SupportData = {
   header: { title: "Sales Tickets", subtitle: "All Open" },
   filters: [
     { id: "status", label: "Open", count: 99, icon: "Inbox" },
@@ -82,36 +78,53 @@ const data: SupportData = {
       ],
     },
   ],
-};
+};`;
+
+export const usageChat = `import SupportDashboard, {
+  type SupportData,
+} from "@/components/custom/blocks/Support-dashboard";
+
+${supportData}
 
 export default function Helpdesk() {
   return ;
 }`;
 
-export const usageTable = `// Same \`data\`, macro view: the metric cards (Total / Open / High Priority)
-// are derived from \`data.tickets\`, not passed in.
-`;
+export const usageTable = `import SupportDashboard, {
+  type SupportData,
+} from "@/components/custom/blocks/Support-dashboard";
 
-export const usageMinimal = `// Borders and shadows pared back for embedding in an existing admin shell.
-`;
+${supportData}
 
-export const usageGlass = `// \`glass\` is translucent by design — give it a colorful backdrop to sit on.
+export default function TicketTable() {
+  // Same \`data\`, macro view: the metric cards (Total / Open / High Priority)
+  // are derived from \`data.tickets\`, not passed in.
+  return ;
+}`;
 
-`;
+export const usageGlass = `import SupportDashboard, {
+  type SupportData,
+} from "@/components/custom/blocks/Support-dashboard";
+
+${supportData}
+
+export default function GlassDashboard() {
+  return (
+    // \`glass\` is translucent by design — it needs a backdrop to read against.
+
+  );
+}`;
 
 ## Installation
 
-### 1. Install Dependencies
-
-This component relies heavily on `lucide-react` for its standard UI icons.
+Register the @algorize-ui registry once per project, then add the component:
 
 ```bash
-npm install lucide-react
+npx shadcn@latest registry add @algorize-ui=https://algorize-ui.vercel.app/r/{name}.json
+npx shadcn@latest add @algorize-ui/support-dashboard
 ```
 
-### 2. Copy the Component
-
-Create `components/custom/blocks/Support-dashboard.tsx` and copy the source from the **Code** tab of the first example above.
+## Examples
 
 ## Props Reference
 
@@ -161,6 +174,6 @@ Create `components/custom/blocks/Support-dashboard.tsx` and copy the source from
 
 ---
 
-**Component Path:** `nextjs\support-dashboard\page.mdx`
+**Component Path:** `[framework]\support-dashboard\page.mdx`
 
-**Web Version:** Visit the interactive version at the corresponding URL on the Next.js documentation site for live previews and interactive examples.
+**Web Version:** Visit the corresponding URL on the Algorize UI documentation site for live previews and interactive examples.

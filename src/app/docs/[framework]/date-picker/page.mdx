@@ -1,0 +1,419 @@
+import { docsPageMetadata } from "@/lib/docs-metadata";
+
+export const metadata = docsPageMetadata("date-picker");
+
+import { ExampleShowcase } from "@/components/site/Sandbox";
+import { extractCode } from "@/lib/code";
+
+# Date Picker
+
+A completely custom, dependency-free Date Picker component. Native HTML `<input type="date">` elements vary wildly between browsers and operating systems, often breaking the visual consistency of your application.
+
+This component solves that by using native JavaScript Date math to construct a flawless, customizable calendar dropdown that perfectly matches your UI kit's visual variants.
+
+The calendar dropdown highlights today's date subtly and the selected date strongly, and it opens with plain absolute positioning and CSS transitions — no popover library required.
+
+export const usageDefault = `"use client";
+
+import { useState } from "react";
+import { DatePickerBlock } from "@/components/custom/blocks/DatePickerBlock";
+
+export default function LaunchDatePicker() {
+  const [date, setDate] = useState<Date | null>(null);
+
+  return (
+    <DatePickerBlock
+      value={date}
+      onChange={setDate}
+      label="Launch Date"
+      placeholder="Select a date"
+      helperText="Choose the date for your next launch."
+    />
+  );
+}`;
+
+export const usageError = `"use client";
+
+import { useState } from "react";
+import { DatePickerBlock } from "@/components/custom/blocks/DatePickerBlock";
+
+export default function ValidatedDatePicker() {
+  const [date, setDate] = useState<Date | null>(null);
+
+  // Passing \`error\` turns the trigger red, swaps in an alert icon and
+  // replaces the helper text with your message.
+  return (
+    <DatePickerBlock
+      value={date}
+      onChange={setDate}
+      label="Launch Date"
+      placeholder="Select a date"
+      error="Please select a valid date in the future."
+    />
+  );
+}`;
+
+export const usageDisablePast = `"use client";
+
+import { useState } from "react";
+import { DatePickerBlock } from "@/components/custom/blocks/DatePickerBlock";
+
+export default function FutureOnlyPicker() {
+  const [date, setDate] = useState<Date | null>(null);
+
+  // Every day before today is greyed out and cannot be clicked.
+  // Use minDate / maxDate for an arbitrary window instead.
+  return (
+    <DatePickerBlock
+      value={date}
+      onChange={setDate}
+      disablePast
+      label="Launch Date"
+      placeholder="Select a date"
+      helperText="Only today and future dates can be picked."
+    />
+  );
+}`;
+
+export const usageTime = `"use client";
+
+import { useState } from "react";
+import { DatePickerBlock } from "@/components/custom/blocks/DatePickerBlock";
+
+export default function DateTimePicker() {
+  const [date, setDate] = useState<Date | null>(null);
+
+  // showTime adds hour / minute / AM-PM columns — to the right of the
+  // calendar when the viewport has room, under it otherwise. Picking a
+  // day keeps the popover open until Done, and the Date you receive carries
+  // the time. Pair it with disablePast to also block times that have passed
+  // today.
+  return (
+    <DatePickerBlock
+      value={date}
+      onChange={setDate}
+      showTime
+      minuteStep={5}
+      timeFormat="12h"
+      disablePast
+      label="Launch Date"
+      placeholder="Select date & time"
+      helperText="Pick a day, then set the time and hit Done."
+    />
+  );
+}`;
+
+<ExampleShowcase
+  name="date-picker"
+  colorControl
+  columns={1}
+  minHeight={450}
+  examples={[
+    {
+      title: "Date picker",
+      propNotes: [
+        {
+          lead: "Control it with",
+          prop: "value",
+          effect:
+            "and `onChange` — both work with a plain `Date | null`.",
+        },
+        {
+          prop: "placeholder",
+          effect:
+            "is the trigger text while nothing is selected, defaulting to `Pick a date`.",
+        },
+        {
+          prop: "label",
+          effect:
+            "renders a bold label above the input and `helperText` a subtle line below it.",
+        },
+      ],
+      props: { variant: "default", inputSize: "md" },
+      usage: usageDefault,
+      code: extractCode("src/components/custom/blocks/DatePickerBlock.tsx"),
+    },
+  ]}
+/>
+
+## Installation
+
+<Installation name="date-picker" />
+
+## Examples
+
+<ExampleShowcase
+  name="date-picker"
+  colorControl
+  columns={1}
+  minHeight={450}
+  examples={[
+    {
+      title: "Error",
+      propNotes: [
+        {
+          lead: "Pass",
+          prop: "error",
+          effect:
+            "to turn the trigger red, add an alert icon and replace `helperText` with your message.",
+        },
+      ],
+      props: { showError: true },
+      usage: usageError,
+    },
+    {
+      title: "Disable past dates",
+      propNotes: [
+        {
+          lead: "Set",
+          prop: "disablePast",
+          effect:
+            "to grey out every day before today. `minDate` and `maxDate` bound the calendar to any window; when both a lower bound and `disablePast` are given, the later one wins.",
+        },
+      ],
+      props: { disablePast: true },
+      usage: usageDisablePast,
+    },
+    {
+      title: "Date & time",
+      subheading: "Pick a day, then scroll the columns — Done closes the popover. The columns sit to the right of the calendar when the viewport has room, and under it otherwise.",
+      propNotes: [
+        {
+          lead: "Set",
+          prop: "showTime",
+          effect:
+            "to add hour / minute / AM-PM columns under the calendar; the selected `Date` carries the time and the trigger shows it. `timeFormat` switches to a 24-hour clock and `minuteStep` sets the granularity.",
+        },
+        {
+          lead: "With",
+          prop: "disablePast",
+          effect:
+            "as well, times that have already passed today are disabled too, and landing on today snaps the time forward to now.",
+        },
+      ],
+      minHeight: 680,
+      props: { showTime: true, disablePast: true },
+      usage: usageTime,
+    },
+  ]}
+/>
+
+## Features
+Discover the Date Picker's flexible input formatting, popover calendar selection, and range picking capabilities.
+
+<div className="grid grid-cols-1 sm:grid-cols-2 gap-4 my-6 not-prose">
+  <div className="p-6 rounded-2xl border border-border bg-card">
+    <h3 className="text-lg font-semibold text-card-foreground mb-2">Customizable</h3>
+    <p className="text-muted-foreground text-sm">Easily adapt the component's styling and behavior to fit your application's unique design system.</p>
+  </div>
+  <div className="p-6 rounded-2xl border border-border bg-card">
+    <h3 className="text-lg font-semibold text-card-foreground mb-2">Accessible</h3>
+    <p className="text-muted-foreground text-sm">Built with accessibility in mind, ensuring all users can interact with your application effectively.</p>
+  </div>
+  <div className="p-6 rounded-2xl border border-border bg-card">
+    <h3 className="text-lg font-semibold text-card-foreground mb-2">Responsive</h3>
+    <p className="text-muted-foreground text-sm">Fully responsive design that looks and works great across desktop, tablet, and mobile devices.</p>
+  </div>
+  <div className="p-6 rounded-2xl border border-border bg-card">
+    <h3 className="text-lg font-semibold text-card-foreground mb-2">Performant</h3>
+    <p className="text-muted-foreground text-sm">Optimized for maximum performance with minimal re-renders and efficient state management.</p>
+  </div>
+</div>
+
+## Best Practices & Guidelines
+
+<div className="flex flex-col gap-4 my-6 not-prose">
+  <div className="rounded-xl border border-foreground/[0.06] bg-foreground/[0.03] p-4">
+    <h4 className="font-sans text-[14px] font-semibold text-foreground mb-1">Usage Guidelines</h4>
+    <p className="text-[13px] leading-relaxed text-foreground/50">Follow standard design principles when implementing this component. Ensure proper contrast, spacing, and context within your layout.</p>
+  </div>
+</div>
+
+## Props Reference
+
+<div className="overflow-x-auto">
+  <table>
+    <thead>
+      <tr>
+        <th>Prop</th>
+        <th>Type</th>
+        <th>Default</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>
+          <code>value</code>
+        </td>
+        <td>
+          <code>Date | null</code>
+        </td>
+        <td>
+          <code>undefined</code>
+        </td>
+        <td>The currently selected JavaScript Date object.</td>
+      </tr>
+      <tr>
+        <td>
+          <code>onChange</code>
+        </td>
+        <td>
+          <code>(val: Date) =&gt; void</code>
+        </td>
+        <td>
+          <code>undefined</code>
+        </td>
+        <td>
+          Callback function fired when a user selects a date from the calendar.
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <code>placeholder</code>
+        </td>
+        <td>
+          <code>string</code>
+        </td>
+        <td>
+          <code>"Pick a date"</code>
+        </td>
+        <td>
+          Text displayed inside the trigger button when no date is selected.
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <code>inputSize</code>
+        </td>
+        <td>
+          <code>"sm" | "md" | "lg"</code>
+        </td>
+        <td>
+          <code>"md"</code>
+        </td>
+        <td>
+          Uniformly scales the padding, text size, and icon size of the trigger
+          button.
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <code>variant</code>
+        </td>
+        <td>
+          <code>"default" | "filled" | "underlined" | "glow"</code>
+        </td>
+        <td>
+          <code>"default"</code>
+        </td>
+        <td>
+          Determines the visual styling of the borders, background, and focus
+          rings.
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <code>color</code>
+        </td>
+        <td>
+          <code>"primary" | "indigo" | "rose" | "emerald" | "zinc" | string</code>
+        </td>
+        <td>
+          <code>"primary"</code>
+        </td>
+        <td>
+          Applies the global color theme to the focus ring, glow shadow, and the
+          selected date bubble in the calendar. Accepts valid hex codes.
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <code>label</code>
+        </td>
+        <td>
+          <code>string</code>
+        </td>
+        <td>
+          <code>undefined</code>
+        </td>
+        <td>Renders a bold, accessible label directly above the input.</td>
+      </tr>
+      <tr>
+        <td>
+          <code>helperText</code>
+        </td>
+        <td>
+          <code>string</code>
+        </td>
+        <td>
+          <code>undefined</code>
+        </td>
+        <td>Subtle instructional text rendered below the input.</td>
+      </tr>
+      <tr>
+        <td>
+          <code>error</code>
+        </td>
+        <td>
+          <code>string</code>
+        </td>
+        <td>
+          <code>undefined</code>
+        </td>
+        <td>
+          If provided, turns the input red, adds an alert icon, and replaces the
+          helper text with the error message.
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <code>disabled</code>
+        </td>
+        <td>
+          <code>boolean</code>
+        </td>
+        <td>
+          <code>false</code>
+        </td>
+        <td>Disables interactions and applies a faded, read-only style.</td>
+      </tr>
+      <tr>
+        <td><code>disablePast</code></td>
+        <td><code>boolean</code></td>
+        <td><code>false</code></td>
+        <td>Greys out every day before today so it cannot be picked. With <code>showTime</code>, times already passed today are disabled as well.</td>
+      </tr>
+      <tr>
+        <td><code>minDate</code></td>
+        <td><code>Date</code></td>
+        <td><code>undefined</code></td>
+        <td>Earliest selectable day (inclusive). Combined with <code>disablePast</code>, the later bound wins.</td>
+      </tr>
+      <tr>
+        <td><code>maxDate</code></td>
+        <td><code>Date</code></td>
+        <td><code>undefined</code></td>
+        <td>Latest selectable day (inclusive).</td>
+      </tr>
+      <tr>
+        <td><code>showTime</code></td>
+        <td><code>boolean</code></td>
+        <td><code>false</code></td>
+        <td>Adds hour / minute (and AM-PM) columns — to the right of the calendar when the viewport has room (the popover widens to 30rem), under it otherwise. The popover also flips to hang from the trigger's right edge when that is the side with space. Picking a day keeps the popover open until <strong>Done</strong>, and <code>value</code> carries the chosen time.</td>
+      </tr>
+      <tr>
+        <td><code>timeFormat</code></td>
+        <td><code>"12h" | "24h"</code></td>
+        <td><code>"12h"</code></td>
+        <td>12-hour clock with an AM / PM column, or a 24-hour one.</td>
+      </tr>
+      <tr>
+        <td><code>minuteStep</code></td>
+        <td><code>number</code></td>
+        <td><code>5</code></td>
+        <td>Minute granularity of the time columns.</td>
+      </tr>
+    </tbody>
+  </table>
+</div>

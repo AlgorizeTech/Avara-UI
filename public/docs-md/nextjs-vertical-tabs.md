@@ -1,111 +1,107 @@
-# Vertical Tabs
+export const metadata = docsPageMetadata("vertical-tabs");
 
-A sleek, responsive tab navigation component. By default the rail is a sidebar menu on the left (which stacks automatically on smaller screens) with the active content pane on the right. Set `orientation="horizontal"` and the same rail runs across the top as a pill bar instead — every `variant` and `color` works identically in both.
+# Tabs
 
-## Examples
+A sleek, responsive tab navigation component. By default the rail runs across the top as a pill bar, with the active content pane below it — and when the tabs outgrow the width they scroll sideways instead of squashing. Set `orientation="vertical"` and the same rail becomes a sidebar menu beside the pane, stacking above it on narrow screens.
 
-Switch tabs in any preview to see the GSAP crossfade. The first example's **Code** tab contains the full component source.
+Eight `variant` styles ship with it — from a filled pill bar to an underline rail, a segmented control and a stack of cards — and every one of them works in both orientations, in any `color`.
 
-export const usageTabsData = `const tabs = [
+Switch tabs in any preview and the panel slides in from the side you moved toward. Arrow keys walk the rail, `Home` and `End` jump to its ends, and nothing animates on load. The component is exported as `VerticalTabs`, which is the original name and stays the import so existing installs keep working.
+
+export const usageTabsData = `const tabs: TabItem[] = [
   {
     id: "photos",
     label: "Photos",
     icon: Camera, // the Lucide component itself, not a string
-    content: Your photo gallery, albums or image grids go here.,
+    content: (
+      
+        This is the PHOTOS tab content. Here you would display your photo
+        gallery, albums, or image collection grids. The smooth crossfade
+        animation makes navigating between these rich content areas feel
+        native.
+      
+    ),
   },
   {
     id: "music",
     label: "Music",
     icon: Music,
-    content: A playlist, audio controls or your favourite albums.,
+    content: (
+      
+        This is the MUSIC tab content. Imagine a playlist, audio player
+        controls, or your favorite albums rendered perfectly within this
+        dark-mode optimized space.
+      
+    ),
   },
   {
     id: "videos",
     label: "Videos",
     icon: Clapperboard,
-    content: Video players, stream links or watch-later lists.,
+    content: (
+      
+        This is the VIDEOS tab content. Video players, stream links, or
+        watch-later lists belong here. Notice how the active indicator clearly
+        shows your current location in the app structure.
+      
+    ),
   },
   {
     id: "settings",
     label: "Settings",
     icon: Settings,
-    content: Preferences, notifications and privacy controls.,
+    content: (
+      
+        Adjust your preferences, notification settings, and privacy controls
+        here.
+      
+    ),
   },
 ];`;
 
-export const usageDefault = `import { VerticalTabs } from "@/components/custom/blocks/VerticalTabs";
+{/*
+  Every example is the same file with a different prop line, so the snippets
+  are built from one template rather than fifteen near-identical literals.
+  `note` becomes the comment that explains what the props above it change.
+*/}
+
+export const tabsUsage = ({ name, props = "", note }) => `import { VerticalTabs, type TabItem } from "@/components/custom/blocks/VerticalTabs";
 
 ${usageTabsData}
 
-export default function MediaTabs() {
-  // Each tab carries its own content — the block handles the crossfade.
-  return ;
+export default function ${name}() {
+${note ? `  // ${note}\n` : ""}  return ;
 }`;
 
-export const usageHorizontal = `import { VerticalTabs } from "@/components/custom/blocks/VerticalTabs";
+export const glassUsage = ({ name, props = "" }) => `import { VerticalTabs, type TabItem } from "@/components/custom/blocks/VerticalTabs";
 
 ${usageTabsData}
 
-export default function HorizontalTabs() {
-  // Same rail, running across the top. Tabs keep their natural width and
-  // scroll sideways rather than squashing, so a long set stays readable.
-  return ;
-}`;
-
-export const usageHorizontalBordered = `// Every variant works in both orientations — \`bordered\` just moves its
-// divider from the right edge of the rail to the bottom.
-`;
-
-export const usageMinimal = `import { VerticalTabs } from "@/components/custom/blocks/VerticalTabs";
-
-${usageTabsData}
-
-export default function MinimalTabs() {
-  // No card chrome — just the rail and the pane.
-  return ;
-}`;
-
-export const usageBordered = `import { VerticalTabs } from "@/components/custom/blocks/VerticalTabs";
-
-${usageTabsData}
-
-export default function BorderedTabs() {
-  return ;
-}`;
-
-export const usageGlass = `import { VerticalTabs } from "@/components/custom/blocks/VerticalTabs";
-
-${usageTabsData}
-
-export default function GlassTabs() {
+export default function ${name}() {
+  // Glass has nothing to frost on a flat page — give it something to blur.
   return (
-    // Glass needs a rich surface behind it to blur.
 
   );
 }`;
 
-export const usageDefaultActive = `import { VerticalTabs } from "@/components/custom/blocks/VerticalTabs";
-
-${usageTabsData}
-
-export default function SettingsFirst() {
-  // defaultActiveId opens a specific tab instead of the first one.
-  return ;
-}`;
-
 ## Installation
 
-### 1. Install Dependencies
-
-This component uses `gsap` for the smooth opacity and sliding transitions between tab content, and `lucide-react` for the icons.
+Register the @algorize-ui registry once per project, then add the component:
 
 ```bash
-npm install gsap lucide-react
+npx shadcn@latest registry add @algorize-ui=https://algorize-ui.vercel.app/r/{name}.json
+npx shadcn@latest add @algorize-ui/vertical-tabs
 ```
 
-### 2. Copy the Component
+## Vertical layout
 
-Create a new file at `components/custom/blocks/VerticalTabs.tsx` and copy the engine code from the **Code** tab of the first example above.
+## Horizontal styles
+
+Seven ways to dress the top rail. Every one takes the page `color`, so pick the shape here and the accent above.
+
+## Vertical styles
+
+The same seven styles with `orientation="vertical"`. The rail becomes a column, the divider and the travelling indicator move to the edge facing the pane, and the arrow keys switch from left/right to up/down.
 
 ## Props Reference
 
@@ -124,35 +120,44 @@ Create a new file at `components/custom/blocks/VerticalTabs.tsx` and copy the en
           label, optional icon, and the{" "}
           content to render.
 
+          orientation
+
+          "horizontal" | "vertical"
+
+          "horizontal"
+
+          Which way the tab rail runs. horizontal puts it across
+          the top as a bar that scrolls sideways when the tabs outgrow the
+          width; vertical puts it beside the content pane, stacking
+          above it below md.
+
           variant
 
-          "default" | "glass" | "minimal" | "bordered"
+            "default" | "glass" | "minimal" | "bordered" | "underline" |
+            "segmented" | "soft" | "elevated"
 
           "default"
 
-          Applies overarching structural layouts. bordered connects
-          the menu directly to the content, while minimal removes
-          background containers.
-
-          orientation
-
-          "vertical" | "horizontal"
-
-          "vertical"
-
-          Which way the tab rail runs. vertical puts it beside the
-          content pane (stacking above it below md);{" "}
-          horizontal puts it across the top as a pill bar that
-          scrolls sideways when the tabs outgrow the width.
+          The visual treatment, independent of orientation.{" "}
+          default is a filled pill on a card;{" "}
+          underline marks the active tab with an accent bar and no
+          fill; segmented groups the tabs in one recessed track;{" "}
+          soft tints the accent instead of filling with it;{" "}
+          elevated gives every tab its own card;{" "}
+          bordered joins rail and pane inside one outline;{" "}
+          minimal removes every background container; and{" "}
+          glass frosts them.
 
           color
 
-            "indigo" | "rose" | "emerald" | "zinc" | "purple" | string
+            "primary" | "indigo" | "rose" | "emerald" | "purple" | "zinc" |
+            string
 
-          "purple"
+          "primary"
 
           Applies the active state color to the selected tab. Accepts preset
-          names or valid hex codes (e.g. "#FF0055").
+          names or valid hex codes (e.g. "#FF0055") — a hex also
+          derives its own label color, so pale accents stay readable.
 
           defaultActiveId
 
@@ -163,8 +168,24 @@ Create a new file at `components/custom/blocks/VerticalTabs.tsx` and copy the en
           Optionally specify which tab ID should be open when the component
           first mounts.
 
+          className
+
+          string
+
+          —
+
+          Merged onto the outer wrapper, so layout and background belong here.
+
+## Keyboard and motion
+
+The rail is a real `tablist`: each tab is a `tab` that owns the panel through `aria-controls`, and only the selected tab is in the page's tab order. Reaching the rail with Tab lands on the selected tab; from there the arrow keys along the rail's own axis move the selection — left and right when the rail runs across the top, up and down when it runs down the side — and Home and End jump to its ends. Tab again moves into the panel.
+
+Focus is drawn in the current `color` rather than the browser default, so it belongs to the theme.
+
+Two things move, and both only in answer to something you did. The `underline` and `segmented` indicators are single elements that travel between tabs, and the panel enters from the side you moved toward — later tab, enters from the far edge; earlier tab, from the near one. Nothing animates on load, and under `prefers-reduced-motion` the travel is dropped for a plain fade.
+
 ---
 
-**Component Path:** `nextjs\vertical-tabs\page.mdx`
+**Component Path:** `[framework]\vertical-tabs\page.mdx`
 
-**Web Version:** Visit the interactive version at the corresponding URL on the Next.js documentation site for live previews and interactive examples.
+**Web Version:** Visit the corresponding URL on the Algorize UI documentation site for live previews and interactive examples.

@@ -2,6 +2,7 @@
 
 import { cn } from "@/lib/utils";
 import React, { forwardRef } from "react";
+import { getThemeStyles } from "./scroll-area-theme";
 
 // ==========================================
 // VARIANT & COLOR CONFIGURATION
@@ -14,68 +15,6 @@ export type ScrollAreaColor =
   | "zinc"
   | (string & {});
 
-const colorThemes: Record<string, Record<string, string>> = {
-  primary: {
-    thumb: "var(--primary)",
-    thumbHover: "var(--primary)",
-    track: "rgba(var(--primary), 0.1)",
-  },
-  indigo: {
-    thumb: "#4f46e5",
-    thumbHover: "#4338ca",
-    track: "rgba(79, 70, 229, 0.1)",
-  },
-  rose: {
-    thumb: "#e11d48",
-    thumbHover: "#be123c",
-    track: "rgba(225, 29, 72, 0.1)",
-  },
-  emerald: {
-    thumb: "#10b981",
-    thumbHover: "#059669",
-    track: "rgba(16, 185, 129, 0.1)",
-  },
-  zinc: {
-    thumb: "#52525b",
-    thumbHover: "#3f3f46",
-    track: "rgba(113, 113, 122, 0.1)",
-  },
-};
-
-const hexToRgb = (hex: string) => {
-  let cleanHex = hex.replace(/^#/, "");
-  if (cleanHex.length === 3)
-    cleanHex = cleanHex
-      .split("")
-      .map((x) => x + x)
-      .join("");
-  const result = /^([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(cleanHex);
-  return result
-    ? `${parseInt(result[1], 16)}, ${parseInt(result[2], 16)}, ${parseInt(result[3], 16)}`
-    : "99, 102, 241";
-};
-
-export const getThemeStyles = (color: string) => {
-  if (color && color.startsWith("#")) {
-    const rgb = hexToRgb(color);
-    return {
-      style: {
-        "--scroll-thumb": color,
-        "--scroll-thumb-hover": `rgba(${rgb}, 0.8)`,
-        "--scroll-track": `rgba(${rgb}, 0.1)`,
-      } as React.CSSProperties,
-    };
-  }
-  const theme = colorThemes[color] || colorThemes.primary;
-  return {
-    style: {
-      "--scroll-thumb": theme.thumb,
-      "--scroll-thumb-hover": theme.thumbHover,
-      "--scroll-track": theme.track,
-    } as React.CSSProperties,
-  };
-};
-
 // ==========================================
 // SCROLL AREA COMPONENT
 // ==========================================
@@ -86,6 +25,12 @@ export interface ScrollAreaBlockProps
   orientation?: "vertical" | "horizontal" | "both";
   hideTrack?: boolean;
   autoHide?: boolean;
+  /**
+   * Horizontal areas only: a mouse wheel moves the content sideways, so
+   * scrolling up/down pans left/right. The wheel is handed back to the page
+   * once the area reaches either end. Default true.
+   */
+  wheelToHorizontal?: boolean;
 }
 
 export const ScrollAreaBlock = forwardRef<HTMLDivElement, ScrollAreaBlockProps>(
@@ -97,38 +42,88 @@ export const ScrollAreaBlock = forwardRef<HTMLDivElement, ScrollAreaBlockProps>(
       orientation = "vertical",
       hideTrack = false,
       autoHide = false,
+      wheelToHorizontal = true,
       className,
+      onScroll,
       ...props
     },
     ref,
   ) => {
     const { style } = getThemeStyles(color as string);
+    const [isScrolling, setIsScrolling] = React.useState(false);
+    const scrollTimeoutRef = React.useRef<ReturnType<typeof setTimeout> | null>(null);
+    const nodeRef = React.useRef<HTMLDivElement | null>(null);
 
-    // Generate dynamic class name to avoid conflicts if multiple variants exist on one page
-    const uniqueClass = `custom-scroll-${variant}-${orientation}`;
+    const assignRef = (node: HTMLDivElement | null) => {
+      nodeRef.current = node;
+      if (typeof ref === "function") ref(node);
+      else if (ref) ref.current = node;
+    };
+
+    // Wheel → sideways pan. Registered natively with passive:false because
+    // React's onWheel is passive and could not preventDefault the page scroll.
+    React.useEffect(() => {
+      const node = nodeRef.current;
+      if (!node || orientation !== "horizontal" || !wheelToHorizontal) return;
+
+      const onWheel = (e: WheelEvent) => {
+        // A trackpad swipe or shift+wheel already scrolls sideways natively.
+        if (e.shiftKey || Math.abs(e.deltaX) >= Math.abs(e.deltaY)) return;
+        // deltaMode 1 = lines (Firefox); ~16px per line reads like Chrome.
+        const delta = e.deltaMode === 1 ? e.deltaY * 16 : e.deltaY;
+        const max = node.scrollWidth - node.clientWidth;
+        if (max <= 0) return;
+        const atStart = node.scrollLeft <= 0 && delta < 0;
+        const atEnd = node.scrollLeft >= max - 1 && delta > 0;
+        // At an edge, leave the wheel to the page so the user is never trapped.
+        if (atStart || atEnd) return;
+        e.preventDefault();
+        node.scrollLeft += delta;
+      };
+
+      node.addEventListener("wheel", onWheel, { passive: false });
+      return () => node.removeEventListener("wheel", onWheel);
+    }, [orientation, wheelToHorizontal]);
+
+    const instanceId = React.useId().replace(/:/g, "");
+    const uniqueClass = `custom-scroll-${instanceId}`;
+
+    const handleScroll = (e: React.UIEvent<HTMLDivElement>) => {
+      if (autoHide) {
+        setIsScrolling(true);
+        if (scrollTimeoutRef.current) clearTimeout(scrollTimeoutRef.current);
+        scrollTimeoutRef.current = setTimeout(() => {
+          setIsScrolling(false);
+        }, 1000);
+      }
+      onScroll?.(e);
+    };
+
+    React.useEffect(() => {
+      return () => {
+        if (scrollTimeoutRef.current) clearTimeout(scrollTimeoutRef.current);
+      };
+    }, []);
 
     const variantStyles = {
       default: {
-        width: "8px",
-        height: "8px",
-        radius: "8px",
-        border: "2px solid transparent",
+        width: "6px",
+        height: "6px",
+        radius: "9999px",
       },
       minimal: {
         width: "4px",
         height: "4px",
-        radius: "4px",
-        border: "none",
+        radius: "9999px",
       },
       glass: {
-        width: "10px",
-        height: "10px",
-        radius: "10px",
-        border: "2px solid transparent",
+        width: "7px",
+        height: "7px",
+        radius: "9999px",
       },
     };
 
-    const v = variantStyles[variant];
+    const v = variantStyles[variant] || variantStyles.default;
 
     const overflowClass = {
       vertical: "overflow-y-auto overflow-x-hidden",
@@ -138,12 +133,14 @@ export const ScrollAreaBlock = forwardRef<HTMLDivElement, ScrollAreaBlockProps>(
 
     return (
       <div
-        ref={ref}
+        ref={assignRef}
+        onScroll={handleScroll}
         className={cn(
           "relative",
           overflowClass,
           uniqueClass,
           autoHide && "auto-hide-scroll",
+          isScrolling && "is-scrolling",
           className,
         )}
         style={style}
@@ -152,37 +149,67 @@ export const ScrollAreaBlock = forwardRef<HTMLDivElement, ScrollAreaBlockProps>(
         <style>{`
           /* Webkit Browsers (Chrome, Safari, Edge) */
           .${uniqueClass}::-webkit-scrollbar {
-            width: ${v.width};
-            height: ${v.height};
+            width: ${v.width} !important;
+            height: ${v.height} !important;
+            display: block !important;
           }
+
+          /* Light Mode Track & Thumb */
           .${uniqueClass}::-webkit-scrollbar-track {
-            background: ${hideTrack ? "transparent" : variant === "glass" ? "rgba(255,255,255,0.05)" : "var(--scroll-track)"};
+            background-color: ${hideTrack ? "transparent" : variant === "glass" ? "rgba(0, 0, 0, 0.06)" : "var(--scroll-track, rgba(0, 0, 0, 0.05))"} !important;
             border-radius: ${v.radius};
-            backdrop-filter: ${variant === "glass" ? "blur(8px)" : "none"};
+            display: block !important;
+            border: none !important;
+            box-shadow: none !important;
           }
           .${uniqueClass}::-webkit-scrollbar-thumb {
-            background-color: var(--scroll-thumb);
+            background-color: ${variant === "glass" ? "rgba(0, 0, 0, 0.35)" : "var(--scroll-thumb, rgba(0, 0, 0, 0.22))"} !important;
             border-radius: ${v.radius};
-            border: ${v.border};
-            background-clip: padding-box;
+            min-height: 24px !important;
+            min-width: 24px !important;
+            display: block !important;
           }
           .${uniqueClass}::-webkit-scrollbar-thumb:hover {
-            background-color: var(--scroll-thumb-hover);
+            background-color: ${variant === "glass" ? "rgba(0, 0, 0, 0.55)" : "var(--scroll-thumb-hover, rgba(0, 0, 0, 0.4))"} !important;
+          }
+
+          /* Dark Mode Track & Thumb */
+          .dark .${uniqueClass}::-webkit-scrollbar-track,
+          html.dark .${uniqueClass}::-webkit-scrollbar-track,
+          [data-theme="dark"] .${uniqueClass}::-webkit-scrollbar-track {
+            background-color: ${hideTrack ? "transparent" : variant === "glass" ? "rgba(255, 255, 255, 0.12)" : "var(--scroll-track, rgba(255, 255, 255, 0.08))"} !important;
+          }
+          .dark .${uniqueClass}::-webkit-scrollbar-thumb,
+          html.dark .${uniqueClass}::-webkit-scrollbar-thumb,
+          [data-theme="dark"] .${uniqueClass}::-webkit-scrollbar-thumb {
+            background-color: ${variant === "glass" ? "rgba(255, 255, 255, 0.45)" : "var(--scroll-thumb, rgba(255, 255, 255, 0.28))"} !important;
+          }
+          .dark .${uniqueClass}::-webkit-scrollbar-thumb:hover,
+          html.dark .${uniqueClass}::-webkit-scrollbar-thumb:hover,
+          [data-theme="dark"] .${uniqueClass}::-webkit-scrollbar-thumb:hover {
+            background-color: ${variant === "glass" ? "rgba(255, 255, 255, 0.7)" : "var(--scroll-thumb-hover, rgba(255, 255, 255, 0.5))"} !important;
           }
 
           /* Firefox standard */
           .${uniqueClass} {
-            scrollbar-width: ${variant === "minimal" ? "thin" : "auto"};
-            scrollbar-color: var(--scroll-thumb) ${hideTrack ? "transparent" : "var(--scroll-track)"};
+            scrollbar-width: thin !important;
+            scrollbar-color: ${variant === "glass" ? "rgba(0, 0, 0, 0.35)" : "var(--scroll-thumb, rgba(0, 0, 0, 0.22))"} ${hideTrack ? "transparent" : "var(--scroll-track, rgba(0, 0, 0, 0.05))"} !important;
+          }
+          .dark .${uniqueClass},
+          html.dark .${uniqueClass},
+          [data-theme="dark"] .${uniqueClass} {
+            scrollbar-color: ${variant === "glass" ? "rgba(255, 255, 255, 0.45)" : "var(--scroll-thumb, rgba(255, 255, 255, 0.28))"} ${hideTrack ? "transparent" : "var(--scroll-track, rgba(255, 255, 255, 0.08))"} !important;
           }
 
-          /* Auto-Hide Logic for Webkit */
-          .auto-hide-scroll::-webkit-scrollbar-thumb {
-            background-color: transparent;
-            transition: background-color 0.3s;
+          /* Auto-Hide Logic: Hide when idle, show on hover/focus/scroll */
+          .${uniqueClass}.auto-hide-scroll:not(:hover):not(:focus-within):not(.is-scrolling)::-webkit-scrollbar-thumb {
+            background-color: transparent !important;
           }
-          .auto-hide-scroll:hover::-webkit-scrollbar-thumb {
-            background-color: var(--scroll-thumb);
+          .${uniqueClass}.auto-hide-scroll:not(:hover):not(:focus-within):not(.is-scrolling)::-webkit-scrollbar-track {
+            background-color: transparent !important;
+          }
+          .${uniqueClass}.auto-hide-scroll:not(:hover):not(:focus-within):not(.is-scrolling) {
+            scrollbar-color: transparent transparent !important;
           }
         `}</style>
         {children}

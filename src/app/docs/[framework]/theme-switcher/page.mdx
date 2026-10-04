@@ -1,0 +1,296 @@
+import { docsPageMetadata } from "@/lib/docs-metadata";
+
+export const metadata = docsPageMetadata("theme-switcher");
+
+import { ExampleShowcase } from "@/components/site/Sandbox";
+import { extractCode } from "@/lib/code";
+
+# Theme Switcher
+
+A premium, animated dark mode toggle component built specifically for Next.js applications using `next-themes`.
+
+It includes three distinct layout variants (Icon, Pill, and Dropdown) to match different areas of your application, from compact navigation bars to sprawling settings menus. It safely handles React hydration to prevent the dreaded "dark mode flash" on initial load.
+
+Switching runs the same circular reveal as the toggle in this site's header: the new theme grows out of the control as a circle over the page, using the View Transitions API. The CSS that reveal needs is part of the component — it goes into `<head>` the first time a switcher mounts — so an installed copy works without touching `globals.css`. Browsers without View Transitions, and users who prefer reduced motion, get an instant switch.
+
+Each switcher below is live and writes through `next-themes`, so flipping one changes the theme for the whole docs site. The previews run in their own frame, and a View Transition can't cross documents, so here the demo hands the pick to the page through `applyTheme` — what you see is the header's own reveal, starting from the control you clicked. In your app the component does all of that itself.
+
+export const usageIcon = `import { ThemeSwitcher } from "@/components/custom/blocks/ThemeSwitcherBlock";
+
+export default function DashboardHeader() {
+  return (
+    <header className="flex justify-between items-center p-4 border-b">
+      <h1>My App</h1>
+      {/* Compact enough for a navbar */}
+      <ThemeSwitcher variant="icon" />
+    </header>
+  );
+}`;
+
+export const usagePill = `import { ThemeSwitcher } from "@/components/custom/blocks/ThemeSwitcherBlock";
+
+export default function PillSwitcher() {
+  // A segmented control that shows the current mode explicitly — better on a
+  // settings page than in a dense navbar.
+  return <ThemeSwitcher variant="pill" />;
+}`;
+
+export const usageDropdown = `import { ThemeSwitcher } from "@/components/custom/blocks/ThemeSwitcherBlock";
+
+export default function DropdownSwitcher() {
+  // Includes the "system" option, so users can defer to their OS setting.
+  return <ThemeSwitcher variant="dropdown" />;
+}`;
+
+<ExampleShowcase
+  name="theme-switcher"
+  colorControl={false}
+  columns={1}
+  examples={[
+    {
+      title: "Icon",
+      subheading: "One button that flips between light and dark, with a spin micro-interaction on the icon and the circular reveal growing out of it.",
+      propNotes: [
+        {
+          prop: "variant",
+          value: '"icon"',
+          effect:
+            "is the default — the compact choice for a navbar.",
+        },
+      ],
+      props: { variant: "icon" },
+      usage: usageIcon,
+      code: extractCode("src/components/custom/blocks/ThemeSwitcherBlock.tsx"),
+    },
+  ]}
+/>
+
+## Installation
+
+<Installation name="theme-switcher" />
+
+### Configure next-themes
+
+`ThemeSwitcher` reads and writes the theme through `next-themes`, so your app has to be wrapped in its provider once. `suppressHydrationWarning` on `<html>` is required — the theme class is applied before React hydrates.
+
+```tsx
+// app/layout.tsx
+import { ThemeProvider } from "next-themes";
+
+export default function RootLayout({
+  children,
+}: {
+  children: React.ReactNode;
+}) {
+  return (
+    <html lang="en" suppressHydrationWarning>
+      <body>
+        <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
+          {children}
+        </ThemeProvider>
+      </body>
+    </html>
+  );
+}
+```
+
+## Examples
+
+<ExampleShowcase
+  name="theme-switcher"
+  colorControl={false}
+  columns={1}
+  examples={[
+    {
+      title: "Pill",
+      propNotes: [
+        {
+          lead: "Set",
+          prop: "variant",
+          value: '"pill"',
+          effect:
+            "for a segmented control with a sliding indicator. It shows the current mode explicitly, which suits a settings page.",
+        },
+      ],
+      props: { variant: "pill" },
+      usage: usagePill,
+    },
+    {
+      title: "Dropdown",
+      propNotes: [
+        {
+          lead: "Set",
+          prop: "variant",
+          value: '"dropdown"',
+          effect:
+            "for a menu — the **only** variant that exposes the `system` option, so users can defer to their OS setting.",
+        },
+      ],
+      props: { variant: "dropdown" },
+      usage: usageDropdown,
+    },
+  ]}
+/>
+
+## Features
+
+Explore the Theme Switcher's dark mode capabilities, featuring the circular reveal, hydration-safe rendering and smooth layout transitions.
+
+<div className="grid grid-cols-1 sm:grid-cols-2 gap-4 my-6 not-prose">
+  <div className="p-6 rounded-2xl border border-border bg-card">
+    <h3 className="text-lg font-semibold text-card-foreground mb-2">Circular Reveal</h3>
+    <p className="text-muted-foreground text-sm">The new theme sweeps out from whichever control was clicked, via the View Transitions API. The `::view-transition` rules it needs ship inside the component, so nothing has to be added to your global stylesheet. Set <code>reveal={false}</code> for an instant switch.</p>
+  </div>
+  <div className="p-6 rounded-2xl border border-border bg-card">
+    <h3 className="text-lg font-semibold text-card-foreground mb-2">Self-contained</h3>
+    <p className="text-muted-foreground text-sm">Every style the switcher relies on is in <code>ThemeSwitcherBlock.tsx</code>: Tailwind classes for the controls, and the reveal CSS injected once into <code>&lt;head&gt;</code>. Install it and it works; nothing to copy into <code>globals.css</code>.</p>
+  </div>
+  <div className="p-6 rounded-2xl border border-border bg-card">
+    <h3 className="text-lg font-semibold text-card-foreground mb-2">Hydration Safe</h3>
+    <p className="text-muted-foreground text-sm">Safely checks if the component is mounted on the client to completely eliminate the infamous React hydration mismatch errors.</p>
+  </div>
+  <div className="p-6 rounded-2xl border border-border bg-card">
+    <h3 className="text-lg font-semibold text-card-foreground mb-2">No Animation Library</h3>
+    <p className="text-muted-foreground text-sm">The sliding pill, the icon spin and the dropdown run on the browser's built-in Web Animations API, so they feel completely native and add no dependency.</p>
+  </div>
+  <div className="p-6 rounded-2xl border border-border bg-card">
+    <h3 className="text-lg font-semibold text-card-foreground mb-2">3 Layout Variants</h3>
+    <p className="text-muted-foreground text-sm">Ships with a compact Icon toggle, a sliding Pill control, and a classic Dropdown menu to fit any UI design.</p>
+  </div>
+  <div className="p-6 rounded-2xl border border-border bg-card">
+    <h3 className="text-lg font-semibold text-card-foreground mb-2">System Sync</h3>
+    <p className="text-muted-foreground text-sm">Automatically syncs with the user's OS-level dark mode preferences if the "system" theme is selected.</p>
+  </div>
+</div>
+
+## Best Practices & Guidelines
+
+<div className="flex flex-col gap-4 my-6 not-prose">
+  <div className="rounded-xl border border-foreground/[0.06] bg-foreground/[0.03] p-4">
+    <h4 className="font-sans text-[14px] font-semibold text-foreground mb-1">SSR Considerations</h4>
+    <p className="text-[13px] leading-relaxed text-foreground/50">Since `next-themes` relies on `localStorage` which isn't available during Server-Side Rendering, always wrap the component's inner rendering logic in a `mounted` check to prevent hydration mismatch flashes.</p>
+  </div>
+</div>
+
+## Props Reference
+
+<div className="overflow-x-auto mb-8">
+  <table>
+    <thead>
+      <tr>
+        <th>Component</th>
+        <th>Prop</th>
+        <th>Type</th>
+        <th>Default</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>
+          <code>ThemeSwitcher</code>
+        </td>
+        <td>
+          <code>variant</code>
+        </td>
+        <td>
+          <code>"icon" | "pill" | "dropdown"</code>
+        </td>
+        <td>
+          <code>"icon"</code>
+        </td>
+        <td>
+          Determines the structural layout and specific animations applied
+          to the toggler.
+          <ul>
+            <li>
+              <code>icon</code>: A simple, rotating toggle button.
+            </li>
+            <li>
+              <code>pill</code>: A segmented control with a sliding active
+              indicator.
+            </li>
+            <li>
+              <code>dropdown</code>: A click-to-open menu with all theme
+              options.
+            </li>
+          </ul>
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <code>ThemeSwitcher</code>
+        </td>
+        <td>
+          <code>reveal</code>
+        </td>
+        <td>
+          <code>boolean</code>
+        </td>
+        <td>
+          <code>true</code>
+        </td>
+        <td>
+          Grow the new theme out of the clicked control as a circle. Skipped
+          automatically when the browser lacks the View Transitions API, the
+          user prefers reduced motion, or nothing visible would change (for
+          example picking <code>system</code> while it already resolves to the
+          current theme).
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <code>ThemeSwitcher</code>
+        </td>
+        <td>
+          <code>revealDuration</code>
+        </td>
+        <td>
+          <code>number</code>
+        </td>
+        <td>
+          <code>500</code>
+        </td>
+        <td>Length of the reveal, in milliseconds.</td>
+      </tr>
+      <tr>
+        <td>
+          <code>ThemeSwitcher</code>
+        </td>
+        <td>
+          <code>applyTheme</code>
+        </td>
+        <td>
+          <code>(theme: string, origin: Element | null) =&gt; void</code>
+        </td>
+        <td>
+          <code>undefined</code>
+        </td>
+        <td>
+          Replace how a picked theme is applied. By default the switcher reveals
+          and calls <code>setTheme</code>; pass this to do it yourself — persist
+          it first, or hand the switch to a parent document. <code>origin</code>{" "}
+          is the element that was clicked, for positioning your own reveal.
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <code>ThemeSwitcher</code>
+        </td>
+        <td>
+          <code>...props</code>
+        </td>
+        <td>
+          <code>HTMLAttributes&lt;HTMLDivElement&gt;</code>
+        </td>
+        <td>
+          <code>undefined</code>
+        </td>
+        <td>
+          Accepts all native HTML div attributes (e.g., <code>className</code>,{" "}
+          <code>id</code>) which are seamlessly forwarded to the root wrapper.
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>

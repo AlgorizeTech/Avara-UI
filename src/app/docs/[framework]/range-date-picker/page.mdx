@@ -1,0 +1,310 @@
+import { docsPageMetadata } from "@/lib/docs-metadata";
+
+export const metadata = docsPageMetadata("range-date-picker");
+
+import { ExampleShowcase } from "@/components/site/Sandbox";
+import { extractCode } from "@/lib/code";
+
+# Range Date Picker
+
+An interactive **Range Date Picker** component featuring single month, dual-month, and rate-priced calendar layouts for hotel or flight booking applications.
+
+## Variations
+
+export const usageSingle = `import { RangeDatePicker, type DateRange } from "@/components/custom/range-date-picker";
+import { useState } from "react";
+
+export default function SingleRangeDatePickerDemo() {
+  const [range, setRange] = useState<DateRange>({
+    from: new Date(new Date().setDate(new Date().getDate() - 7)),
+    to: new Date(),
+  });
+
+  return (
+    <RangeDatePicker
+      variant="single"
+      value={range}
+      onChange={setRange}
+      color="primary"
+    />
+  );
+}`;
+
+export const usagePricedSingle = `import { RangeDatePicker, type DateRange } from "@/components/custom/range-date-picker";
+import { useState } from "react";
+
+export default function PricedSingleRangeDatePickerDemo() {
+  const [range, setRange] = useState<DateRange>({
+    from: new Date(new Date().setDate(8)),
+    to: new Date(new Date().setDate(18)),
+  });
+
+  return (
+    <RangeDatePicker
+      variant="priced-single"
+      showPrices={true}
+      value={range}
+      onChange={setRange}
+      getPrice={(date) => (date.getDay() === 0 || date.getDay() === 6 ? "$120" : "$100")}
+      color="primary"
+    />
+  );
+}`;
+
+export const usageDual = `import { RangeDatePicker, type DateRange } from "@/components/custom/range-date-picker";
+import { useState } from "react";
+
+export default function DualRangeDatePickerDemo() {
+  const [range, setRange] = useState<DateRange>({
+    from: new Date(new Date().setDate(new Date().getDate() - 14)),
+    to: new Date(),
+  });
+
+  return (
+    <RangeDatePicker
+      variant="dual"
+      value={range}
+      onChange={setRange}
+      color="primary"
+    />
+  );
+}`;
+
+export const usagePricedDual = `import { RangeDatePicker, type DateRange } from "@/components/custom/range-date-picker";
+import { useState } from "react";
+
+export default function PricedDualRangeDatePickerDemo() {
+  const [range, setRange] = useState<DateRange>({
+    from: new Date(new Date().setDate(8)),
+    to: new Date(new Date().setDate(28)),
+  });
+
+  return (
+    <RangeDatePicker
+      variant="priced-dual"
+      showPrices={true}
+      value={range}
+      onChange={setRange}
+      getPrice={(date) => (date.getDay() === 0 || date.getDay() === 6 ? "$120" : "$100")}
+      color="primary"
+    />
+  );
+}`;
+
+export const usageDisablePast = `import { RangeDatePicker, type DateRange } from "@/components/custom/range-date-picker";
+import { useState } from "react";
+
+export default function UpcomingStay() {
+  const [range, setRange] = useState<DateRange>(() => {
+    const from = new Date();
+    const to = new Date();
+    to.setDate(to.getDate() + 5);
+    return { from, to };
+  });
+
+  // Every day before today is greyed out and cannot start or end a range.
+  // minDate / maxDate bound the calendar to any window instead.
+  return <RangeDatePicker variant="single" value={range} onChange={setRange} disablePast />;
+}`;
+
+export const usageTime = `import { RangeDatePicker, type DateRange } from "@/components/custom/range-date-picker";
+import { useState } from "react";
+
+export default function BookingWindow() {
+  // Start empty: the card is just the calendar until a start day is picked.
+  const [range, setRange] = useState<DateRange>({ from: null, to: null });
+
+  // showTime keeps the time columns folded away until the first pick, then
+  // unfolds them beside the calendar (under it when the card is narrow).
+  // Both dates carry a time, and on a same-day range the end can never be
+  // earlier than the start. Clear folds the columns away again.
+  return (
+    <RangeDatePicker
+      variant="single"
+      value={range}
+      onChange={setRange}
+      showTime
+      minuteStep={15}
+      timeFormat="12h"
+      disablePast
+    />
+  );
+}`;
+
+<ExampleShowcase
+  name="range-date-picker"
+  columns={1}
+  examples={[
+    {
+      title: "Single Month Range Date Picker",
+      subheading: "Compact single month view for date range selection.",
+      props: { variant: "single" },
+      usage: usageSingle,
+      code: extractCode("src/components/custom/range-date-picker.tsx"),
+    },
+    {
+      title: "Single Month Priced Range Date Picker",
+      subheading: "Single calendar layout displaying dynamic rate prices ($100, $120) below date numbers.",
+      props: { variant: "priced-single" },
+      usage: usagePricedSingle,
+      code: extractCode("src/components/custom/range-date-picker.tsx"),
+    },
+    {
+      title: "Dual Month Range Date Picker",
+      subheading: "Side-by-side dual calendars (Left Month & Right Month) for continuous range selection.",
+      props: { variant: "dual" },
+      usage: usageDual,
+      code: extractCode("src/components/custom/range-date-picker.tsx"),
+    },
+    {
+      title: "Dual Month Priced Range Date Picker",
+      subheading: "Side-by-side dual calendars displaying dynamic rate prices ($100, $120) below date numbers.",
+      props: { variant: "priced-dual" },
+    },
+    {
+      title: "Disable past dates",
+      propNotes: [
+        {
+          lead: "Set",
+          prop: "disablePast",
+          effect:
+            "to grey out every day before today so it can neither start nor end a range. `minDate` and `maxDate` bound the calendar to any window.",
+        },
+      ],
+      usage: usageDisablePast,
+      props: { variant: "single", disablePast: true },
+    },
+    {
+      title: "Range with times",
+      subheading: "The card opens as a bare calendar. Pick a start day and a time rail unfolds beside it — Start first, then an End column once the end day is chosen. The rail unfolds under the calendar when the card is narrow, and Clear folds it away.",
+      propNotes: [
+        {
+          lead: "Set",
+          prop: "showTime",
+          effect:
+            "to add the Start / End time columns. With no `value` the card starts empty; both `from` and `to` then carry a time and the footer shows it. `timeFormat` switches to 24-hour and `minuteStep` sets the granularity.",
+        },
+      ],
+      usage: usageTime,
+      props: { variant: "single", showTime: true, disablePast: true },
+      usage: usagePricedDual,
+      code: extractCode("src/components/custom/range-date-picker.tsx"),
+    },
+  ]}
+/>
+
+## Installation
+
+<Installation name="range-date-picker" />
+
+## Features
+
+Discover the interactive capabilities of the `RangeDatePicker` component:
+
+- **Single & Dual Priced Calendars (`variant="priced-single" | "priced-dual"`)**: Renders dynamic rate prices (`$100`, `$120`) directly below each date number for hotel room or flight booking workflows in both single and dual month views.
+- **Dual Calendar Layout (`variant="dual"`)**: Displays two side-by-side calendars (Month N on Left, Month N+1 on Right). Select start date from the left calendar and end date on the right calendar.
+- **Single Calendar Layout (`variant="single"`)**: Compact single-month view ideal for smaller screens or compact forms.
+- **Custom Price Formatter (`getPrice`)**: Accepts custom callback functions to supply date-specific rates from API or static pricing rules.
+- **Range Selection Engine**: Click any start date and end date to highlight the span with smooth background effects.
+- **Dynamic Color Themes**: Built-in support for `"primary"`, `"indigo"`, `"rose"`, `"emerald"`, and `"zinc"` color schemes.
+
+## Props Reference: RangeDatePicker
+
+<div className="overflow-x-auto">
+  <table>
+    <thead>
+      <tr>
+        <th>Prop</th>
+        <th>Type</th>
+        <th>Default</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><code>variant</code></td>
+        <td><code>"single" | "dual" | "priced-single" | "priced-dual"</code></td>
+        <td><code>"single"</code></td>
+        <td>Calendar layout variant. <code>"priced-single"</code> & <code>"priced-dual"</code> render price tags below date numbers.</td>
+      </tr>
+      <tr>
+        <td><code>showPrices</code></td>
+        <td><code>boolean</code></td>
+        <td><code>false</code></td>
+        <td>Toggles visibility of price labels underneath dates.</td>
+      </tr>
+      <tr>
+        <td><code>getPrice</code></td>
+        <td><code>{`(date: Date) => string | number | null`}</code></td>
+        <td><code>undefined</code></td>
+        <td>Custom pricing formatter function to return dynamic rates per date.</td>
+      </tr>
+      <tr>
+        <td><code>value</code></td>
+        <td><code>{`{ from: Date | null; to: Date | null }`}</code></td>
+        <td><code>undefined</code></td>
+        <td>Controlled date range value object.</td>
+      </tr>
+      <tr>
+        <td><code>onChange</code></td>
+        <td><code>{`(range: DateRange) => void`}</code></td>
+        <td><code>undefined</code></td>
+        <td>Callback fired when date range is selected or reset.</td>
+      </tr>
+      <tr>
+        <td><code>defaultFrom</code></td>
+        <td><code>Date | null</code></td>
+        <td><code>Last 7 Days</code></td>
+        <td>Initial start date for uncontrolled state.</td>
+      </tr>
+      <tr>
+        <td><code>defaultTo</code></td>
+        <td><code>Date | null</code></td>
+        <td><code>Today</code></td>
+        <td>Initial end date for uncontrolled state.</td>
+      </tr>
+      <tr>
+        <td><code>color</code></td>
+        <td><code>"primary" | "indigo" | "rose" | "emerald" | "zinc"</code></td>
+        <td><code>"primary"</code></td>
+        <td>Theme color variant for highlights and buttons.</td>
+      </tr>
+      <tr>
+        <td><code>disablePast</code></td>
+        <td><code>boolean</code></td>
+        <td><code>false</code></td>
+        <td>Greys out every day before today so it cannot start or end a range. With <code>showTime</code>, times already passed today are disabled too.</td>
+      </tr>
+      <tr>
+        <td><code>minDate</code></td>
+        <td><code>Date</code></td>
+        <td><code>undefined</code></td>
+        <td>Earliest selectable day (inclusive). Combined with <code>disablePast</code>, the later bound wins.</td>
+      </tr>
+      <tr>
+        <td><code>maxDate</code></td>
+        <td><code>Date</code></td>
+        <td><code>undefined</code></td>
+        <td>Latest selectable day (inclusive).</td>
+      </tr>
+      <tr>
+        <td><code>showTime</code></td>
+        <td><code>boolean</code></td>
+        <td><code>false</code></td>
+        <td>Adds Start / End time columns. The card opens with the calendar alone and starts empty when uncontrolled; picking a start day unfolds the columns to the right of a single-month calendar when there is room for the wider card, under it otherwise (dual-month always stacks). Clear folds them away. Both <code>from</code> and <code>to</code> carry a time; on a same-day range the end can never precede the start.</td>
+      </tr>
+      <tr>
+        <td><code>timeFormat</code></td>
+        <td><code>"12h" | "24h"</code></td>
+        <td><code>"12h"</code></td>
+        <td>12-hour clock with an AM / PM column, or a 24-hour one.</td>
+      </tr>
+      <tr>
+        <td><code>minuteStep</code></td>
+        <td><code>number</code></td>
+        <td><code>5</code></td>
+        <td>Minute granularity of the time columns.</td>
+      </tr>
+    </tbody>
+  </table>
+</div>

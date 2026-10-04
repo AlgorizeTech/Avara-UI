@@ -1,0 +1,298 @@
+import { docsPageMetadata } from "@/lib/docs-metadata";
+
+export const metadata = docsPageMetadata("split-flap");
+
+import { ExampleShowcase } from "@/components/site/Sandbox";
+import { Installation } from "@/components/site/installation";
+import { extractCode } from "@/lib/code";
+
+# Split-Flap Display
+
+An authentic, physics-driven **Split-Flap Display** component (Solari board) simulating retro-mechanical flap cards, 3D perspective flips (`rotateX`), horizontal split creases, mechanical hinge notches, and realistic synthesized click sounds.
+
+Ships with **2 distinct handcrafted variants**: vintage ivory electro-mechanical casing (matching retro Solari displays) and minimalist architectural frosted glass.
+
+---
+
+## Variants
+
+export const usageIvory = `import SplitFlap from "@/components/custom/split-flap";
+
+export default function IvorySplitFlapDemo() {
+  return (
+    <SplitFlap
+      variant="ivory"
+      text="SPLIT-FLAP"
+      messages={[
+        "SPLIT-FLAP",
+        "RETRO MECHANICAL",
+        "SOLARI BOARD",
+        "VINTAGE CLOCK"
+      ]}
+      autoPlay={true}
+      interval={3000}
+      sound={false}
+      size="md"
+    />
+  );
+}`;
+
+export const usageMinimalist = `import SplitFlap from "@/components/custom/split-flap";
+
+export default function MinimalistSplitFlapDemo() {
+  return (
+    <SplitFlap
+      variant="minimalist"
+      messages={[
+        "DESIGN SYSTEM",
+        "TIMELESS CRAFT",
+        "SPLIT FLAP 3D",
+        "REUSABLE UI"
+      ]}
+      autoPlay={true}
+      interval={3000}
+      sound={false}
+      size="md"
+    />
+  );
+}`;
+
+<ExampleShowcase
+  name="split-flap"
+  columns={1}
+  examples={[
+    {
+      title: "Split-Flap — Ivory (Classic Mechanical)",
+      id: "split-flap-ivory",
+      subheading:
+        "The iconic embossed cream electro-mechanical display with rust-coral slab-serif typography and tactile 3D perspective flap folds.",
+      propNotes: [
+        {
+          lead: "Set",
+          prop: "variant",
+          value: '"ivory"',
+          effect:
+            "renders an embossed molded bezel casing with warm off-white flap cards and rust-orange typography.",
+        },
+        {
+          prop: "sound",
+          value: "true | false",
+          effect:
+            "synthesizes realistic physical plastic flap clicks via Web Audio API without needing external audio files.",
+        },
+      ],
+      props: {
+        variant: "ivory",
+        text: "SPLIT-FLAP",
+        messages: [
+          "SPLIT-FLAP",
+          "RETRO MECHANICAL",
+          "SOLARI BOARD",
+          "VINTAGE CLOCK",
+        ],
+        autoPlay: true,
+        interval: 3000,
+        sound: false,
+        size: "md",
+      },
+      usage: usageIvory,
+      code: extractCode("src/components/custom/split-flap.tsx"),
+    },
+    {
+      title: "Split-Flap — Minimalist Architectural",
+      id: "split-flap-minimalist",
+      subheading:
+        "Ultra-clean frosted glass chassis with backdrop blur and slate-stone monospace typography that blends with light or dark mode.",
+      propNotes: [
+        {
+          lead: "Set",
+          prop: "variant",
+          value: '"minimalist"',
+          effect:
+            "creates an architectural frosted glass frame with clean backdrop blur.",
+        },
+      ],
+      props: {
+        variant: "minimalist",
+        messages: [
+          "DESIGN SYSTEM",
+          "TIMELESS CRAFT",
+          "SPLIT FLAP 3D",
+          "REUSABLE UI",
+        ],
+        autoPlay: true,
+        interval: 3000,
+        sound: false,
+        size: "md",
+      },
+      usage: usageMinimalist,
+    },
+  ]}
+/>
+
+---
+
+## Installation
+
+<Installation name="split-flap" />
+
+---
+
+## Props Reference
+
+### SplitFlap
+
+<div className="overflow-x-auto mb-8">
+  <table>
+    <thead>
+      <tr>
+        <th>Prop</th>
+        <th>Type</th>
+        <th>Default</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>
+          <code>variant</code>
+        </td>
+        <td>
+          <code>"ivory" | "minimalist"</code>
+        </td>
+        <td>
+          <code>"ivory"</code>
+        </td>
+        <td>
+          Selects between 2 handcrafted visual themes: retro ivory (default) or minimalist architectural frosted glass.
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <code>messages</code>
+        </td>
+        <td>
+          <code>string[]</code>
+        </td>
+        <td>
+          <code>[]</code>
+        </td>
+        <td>
+          Array of text strings to cycle through with cascading flip transitions.
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <code>text</code>
+        </td>
+        <td>
+          <code>string</code>
+        </td>
+        <td>
+          <code>undefined</code>
+        </td>
+        <td>
+          Direct string to display. Can also contain pipe-separated strings (e.g. <code>"HELLO | WORLD"</code>) to cycle through automatically.
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <code>size</code>
+        </td>
+        <td>
+          <code>"sm" | "md" | "lg"</code>
+        </td>
+        <td>
+          <code>"md"</code>
+        </td>
+        <td>
+          Dimension preset for the flap cards.
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <code>columns</code>
+        </td>
+        <td>
+          <code>number</code>
+        </td>
+        <td>
+          <code>auto</code>
+        </td>
+        <td>
+          Total flap character slots. If omitted, automatically fits the longest message.
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <code>autoPlay</code>
+        </td>
+        <td>
+          <code>boolean</code>
+        </td>
+        <td>
+          <code>true</code>
+        </td>
+        <td>
+          Whether to automatically cycle through messages at the specified interval.
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <code>interval</code>
+        </td>
+        <td>
+          <code>number</code>
+        </td>
+        <td>
+          <code>3000</code>
+        </td>
+        <td>
+          Duration in milliseconds the message stays fully visible and stationary before flipping to the next message.
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <code>sound</code>
+        </td>
+        <td>
+          <code>boolean</code>
+        </td>
+        <td>
+          <code>false</code>
+        </td>
+        <td>
+          Whether to play realistic mechanical split-flap click sounds via Web Audio API. Can also be toggled interactively in the toolbar.
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <code>color</code>
+        </td>
+        <td>
+          <code>string</code>
+        </td>
+        <td>
+          <code>theme default</code>
+        </td>
+        <td>
+          Text accent color applied to characters and numbers. Supports preset theme names (<code>"lavender"</code>, <code>"indigo"</code>, <code>"rose"</code>, <code>"emerald"</code>), custom hex codes, or <code>"default"</code> to reset to variant default.
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <code>speed</code>
+        </td>
+        <td>
+          <code>number</code>
+        </td>
+        <td>
+          <code>1</code>
+        </td>
+        <td>
+          Speed multiplier for the flip cascade animation (1 = normal, 1.5 = fast).
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>

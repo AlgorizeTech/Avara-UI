@@ -1,79 +1,36 @@
 "use client";
 
 import { cn } from "@/lib/utils";
-import React, { createContext, forwardRef, useContext } from "react";
+import React, {
+  createContext,
+  forwardRef,
+  useContext,
+  useEffect,
+  useImperativeHandle,
+  useLayoutEffect,
+  useRef,
+  useState,
+} from "react";
+import { getThemeStyles } from "./toggle-group-theme";
 
 // ==========================================
 // THEME & CONFIGURATION
 // ==========================================
 export type ToggleGroupColor =
+  | "primary"
   | "indigo"
   | "rose"
   | "emerald"
   | "zinc"
   | (string & {});
-export type ToggleGroupVariant = "default" | "outline" | "ghost";
+/**
+ * `segmented` is a pill track whose highlight slides to the pressed item —
+ * a view switch (Day / Week / Month). In a single group the pressed item
+ * stays pressed when clicked again, and the arrow keys move the choice.
+ */
+export type ToggleGroupVariant = "default" | "outline" | "ghost" | "segmented";
 export type ToggleGroupSize = "sm" | "md" | "lg";
 export type ToggleGroupType = "single" | "multiple";
-
-const colorThemes: Record<string, Record<string, string>> = {
-  indigo: {
-    bg: "bg-indigo-500 text-white",
-    text: "text-indigo-600 dark:text-indigo-400",
-    border:
-      "border-indigo-500 text-indigo-600 dark:text-indigo-400 bg-indigo-50 dark:bg-indigo-500/10",
-  },
-  rose: {
-    bg: "bg-rose-500 text-white",
-    text: "text-rose-600 dark:text-rose-400",
-    border:
-      "border-rose-500 text-rose-600 dark:text-rose-400 bg-rose-50 dark:bg-rose-500/10",
-  },
-  emerald: {
-    bg: "bg-emerald-500 text-white",
-    text: "text-emerald-600 dark:text-emerald-400",
-    border:
-      "border-emerald-500 text-emerald-600 dark:text-emerald-400 bg-emerald-50 dark:bg-emerald-500/10",
-  },
-  zinc: {
-    bg: "bg-zinc-900 text-white dark:bg-zinc-100 dark:text-zinc-900",
-    text: "text-zinc-900 dark:text-zinc-100",
-    border:
-      "border-zinc-900 dark:border-zinc-100 text-zinc-900 dark:text-zinc-100 bg-zinc-100 dark:bg-zinc-800",
-  },
-};
-
-const hexToRgb = (hex: string) => {
-  let cleanHex = hex.replace(/^#/, "");
-  if (cleanHex.length === 3)
-    cleanHex = cleanHex
-      .split("")
-      .map((x) => x + x)
-      .join("");
-  const result = /^([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(cleanHex);
-  return result
-    ? `${parseInt(result[1], 16)}, ${parseInt(result[2], 16)}, ${parseInt(result[3], 16)}`
-    : "99, 102, 241";
-};
-
-export const getThemeStyles = (color: string) => {
-  if (color && color.startsWith("#")) {
-    const rgb = hexToRgb(color);
-    return {
-      theme: {
-        bg: "bg-[var(--toggle-color)] text-white",
-        text: "text-[var(--toggle-color)]",
-        border:
-          "border-[var(--toggle-color)] text-[var(--toggle-color)] bg-[rgba(var(--toggle-rgb),0.1)]",
-      },
-      style: {
-        "--toggle-color": color,
-        "--toggle-rgb": rgb,
-      } as React.CSSProperties,
-    };
-  }
-  return { theme: colorThemes[color] || colorThemes.zinc, style: {} };
-};
 
 // ==========================================
 // CONTEXT
@@ -87,7 +44,26 @@ interface ToggleGroupContextProps {
   size: ToggleGroupSize;
   disabled: boolean;
   theme: Record<string, string>;
+  /** Segmented only: the sliding highlight has been placed, so items drop their own. */
+  pillReady: boolean;
 }
+
+// The segmented track. Inside a `soft` table it takes the table's own well
+// (`--tbl-well`), so the tabs and the search field share one tint.
+const SEGMENTED_TRACK =
+  "bg-[var(--tbl-well,color-mix(in_oklab,var(--primary)_5%,color-mix(in_oklab,var(--foreground)_5%,var(--card))))]";
+const SEGMENTED_PILL = "bg-card shadow-sm ring-1 ring-foreground/[0.08]";
+
+const segmentedHeights: Record<ToggleGroupSize, string> = {
+  sm: "h-9",
+  md: "h-10",
+  lg: "h-12",
+};
+
+// Layout effects warn during server rendering on older React; the pill is
+// only ever measured in the browser anyway.
+const useIsomorphicLayoutEffect =
+  typeof window !== "undefined" ? useLayoutEffect : useEffect;
 
 const ToggleGroupContext = createContext<ToggleGroupContextProps | null>(null);
 
@@ -102,18 +78,46 @@ function useToggleGroup() {
 // ==========================================
 // GROUP COMPONENT
 // ==========================================
-export interface ToggleGroupProps extends React.HTMLAttributes<HTMLDivElement> {
-  type?: ToggleGroupType;
-  value?: string | string[];
-  defaultValue?: string | string[];
-  onValueChange?: (value: any) => void;
+/** Everything both selection modes share. */
+interface ToggleGroupBaseProps
+  extends Omit<React.HTMLAttributes<HTMLDivElement>, "defaultValue"> {
   variant?: ToggleGroupVariant;
   color?: ToggleGroupColor;
   size?: ToggleGroupSize;
   disabled?: boolean;
 }
 
-export const ToggleGroup = forwardRef<HTMLDivElement, ToggleGroupProps>(
+/** The default: one item pressed at a time, so the value is a string. */
+export interface ToggleGroupSingleProps extends ToggleGroupBaseProps {
+  type?: "single";
+  value?: string;
+  defaultValue?: string;
+  onValueChange?: (value: string) => void;
+}
+
+/** `type="multiple"` — value and callback both deal in arrays. */
+export interface ToggleGroupMultipleProps extends ToggleGroupBaseProps {
+  type: "multiple";
+  value?: string[];
+  defaultValue?: string[];
+  onValueChange?: (value: string[]) => void;
+}
+
+/**
+ * Discriminated on `type`, so a single group hands your callback a `string`
+ * and a multiple group hands it a `string[]`, with no cast either way.
+ */
+export type ToggleGroupProps = ToggleGroupSingleProps | ToggleGroupMultipleProps;
+
+/** The two modes collapsed, which is what the implementation works with. */
+type ToggleGroupImplProps = ToggleGroupBaseProps & {
+  type?: ToggleGroupType;
+  value?: string | string[];
+  defaultValue?: string | string[];
+  onValueChange?: (value: string | string[]) => void;
+};
+
+const ToggleGroupImpl = forwardRef<HTMLDivElement, ToggleGroupImplProps>(
   (
     {
       type = "single",
@@ -121,11 +125,13 @@ export const ToggleGroup = forwardRef<HTMLDivElement, ToggleGroupProps>(
       defaultValue,
       onValueChange,
       variant = "default",
-      color = "zinc",
+      color = "primary",
       size = "md",
       disabled = false,
       className,
       children,
+      onKeyDown,
+      style: styleProp,
       ...props
     },
     ref,
@@ -143,6 +149,89 @@ export const ToggleGroup = forwardRef<HTMLDivElement, ToggleGroupProps>(
       if (onValueChange) onValueChange(newValue);
     };
 
+    const groupRef = useRef<HTMLDivElement>(null);
+    useImperativeHandle(ref, () => groupRef.current as HTMLDivElement);
+
+    // One highlight that slides between items, for a single segmented group.
+    // It is measured from the pressed item, so labels of any width work.
+    const sliding = variant === "segmented" && type === "single";
+    const pillRef = useRef<HTMLSpanElement>(null);
+    const placedRef = useRef(false);
+    const [pillReady, setPillReady] = useState(false);
+    const valueKey = Array.isArray(currentValue)
+      ? currentValue.join("|")
+      : currentValue;
+
+    useIsomorphicLayoutEffect(() => {
+      const group = groupRef.current;
+      const pill = pillRef.current;
+      if (!sliding || !group || !pill) return;
+
+      const place = () => {
+        const active = group.querySelector<HTMLElement>(
+          '[data-toggle-item][data-state="on"]',
+        );
+        if (!active) {
+          pill.style.opacity = "0";
+          return;
+        }
+        const g = group.getBoundingClientRect();
+        const a = active.getBoundingClientRect();
+        // The first placement jumps; every later one slides.
+        if (!placedRef.current) pill.style.transition = "none";
+        pill.style.width = `${a.width}px`;
+        pill.style.height = `${a.height}px`;
+        pill.style.transform = `translate(${a.left - g.left - group.clientLeft + group.scrollLeft}px, ${a.top - g.top - group.clientTop}px)`;
+        pill.style.opacity = "1";
+        if (!placedRef.current) {
+          void pill.offsetWidth;
+          pill.style.transition = "";
+          placedRef.current = true;
+          setPillReady(true);
+        }
+      };
+
+      place();
+      const observer = new ResizeObserver(place);
+      observer.observe(group);
+      group
+        .querySelectorAll<HTMLElement>("[data-toggle-item]")
+        .forEach((item) => observer.observe(item));
+      return () => observer.disconnect();
+    }, [sliding, valueKey]);
+
+    // Segmented single groups behave as a radio group: the arrow keys move
+    // the choice (and focus) to the next enabled item.
+    const handleKeyDown = (event: React.KeyboardEvent<HTMLDivElement>) => {
+      onKeyDown?.(event);
+      if (event.defaultPrevented || !sliding || disabled) return;
+      const keys = ["ArrowRight", "ArrowDown", "ArrowLeft", "ArrowUp", "Home", "End"];
+      if (!keys.includes(event.key)) return;
+      const items = Array.from(
+        groupRef.current?.querySelectorAll<HTMLButtonElement>(
+          "[data-toggle-item]:not(:disabled)",
+        ) ?? [],
+      );
+      if (!items.length) return;
+      const from = items.findIndex((item) => item === document.activeElement);
+      const last = items.length - 1;
+      const forward = event.key === "ArrowRight" || event.key === "ArrowDown";
+      const next =
+        event.key === "Home"
+          ? 0
+          : event.key === "End"
+            ? last
+            : forward
+              ? from >= last ? 0 : from + 1
+              : from <= 0 ? last : from - 1;
+      const target = items[next];
+      if (!target) return;
+      event.preventDefault();
+      target.focus();
+      const nextValue = target.dataset.value;
+      if (nextValue !== undefined) handleValueChange(nextValue);
+    };
+
     return (
       <ToggleGroupContext.Provider
         value={{
@@ -154,27 +243,53 @@ export const ToggleGroup = forwardRef<HTMLDivElement, ToggleGroupProps>(
           size,
           disabled,
           theme,
+          pillReady: sliding && pillReady,
         }}
       >
         <div
-          ref={ref}
-          role="group"
+          ref={groupRef}
+          role={sliding ? "radiogroup" : "group"}
           className={cn(
             "inline-flex flex-wrap items-center gap-1",
             variant === "default" &&
-              "p-1 rounded-xl bg-zinc-100 dark:bg-zinc-900/50 border border-zinc-200/50 dark:border-zinc-800",
+              "p-1 rounded-xl bg-muted border border-border/50",
+            variant === "segmented" &&
+              cn(
+                "relative flex-nowrap gap-0 rounded-full p-1",
+                SEGMENTED_TRACK,
+                segmentedHeights[size],
+              ),
             className,
           )}
-          style={style}
+          style={{ ...style, ...styleProp }}
+          onKeyDown={handleKeyDown}
           {...props}
         >
+          {sliding && (
+            <span
+              ref={pillRef}
+              aria-hidden="true"
+              className={cn(
+                "pointer-events-none absolute left-0 top-0 rounded-full opacity-0 transition-[transform,width,height] duration-300 ease-[cubic-bezier(0.22,1,0.36,1)] motion-reduce:transition-none",
+                SEGMENTED_PILL,
+              )}
+            />
+          )}
           {children}
         </div>
       </ToggleGroupContext.Provider>
     );
   },
 );
-ToggleGroup.displayName = "ToggleGroup";
+ToggleGroupImpl.displayName = "ToggleGroup";
+
+/**
+ * The implementation is written against the collapsed props; this cast is
+ * what hands callers the discriminated pair instead.
+ */
+export const ToggleGroup = ToggleGroupImpl as React.ForwardRefExoticComponent<
+  ToggleGroupProps & React.RefAttributes<HTMLDivElement>
+>;
 
 // ==========================================
 // ITEM COMPONENT
@@ -197,9 +312,12 @@ export const ToggleGroupItem = forwardRef<
     size,
     disabled: groupDisabled,
     theme,
+    pillReady,
   } = context;
 
   const isDisabled = groupDisabled || itemDisabled;
+  const segmented = variant === "segmented";
+  const radio = segmented && type === "single";
 
   // Check if active
   const isActive =
@@ -211,6 +329,11 @@ export const ToggleGroupItem = forwardRef<
     if (isDisabled) return;
 
     if (type === "single") {
+      // A segmented choice is a radio: pressing it again keeps it.
+      if (radio) {
+        if (!isActive) onValueChange(value);
+        return;
+      }
       onValueChange(isActive ? "" : value);
     } else {
       const currentArray = Array.isArray(groupValue) ? groupValue : [];
@@ -228,13 +351,29 @@ export const ToggleGroupItem = forwardRef<
     lg: "h-12 px-5 text-base",
   };
 
+  const segmentedSizes = {
+    sm: "h-full px-3 text-[13px]",
+    md: "h-full px-4 text-sm",
+    lg: "h-full px-5 text-base",
+  };
+
   const getVariantStyles = () => {
+    if (segmented) {
+      return cn(
+        "relative z-[1] whitespace-nowrap rounded-full text-muted-foreground transition-colors hover:text-foreground focus-visible:ring-primary/60 focus-visible:ring-offset-0",
+        segmentedSizes[size],
+        isActive && "text-foreground",
+        // Until the sliding highlight is measured (and in multiple groups,
+        // which have no single highlight) the pressed item paints its own.
+        isActive && !pillReady && SEGMENTED_PILL,
+      );
+    }
     if (isActive) {
       switch (variant) {
         case "outline":
           return cn(theme.border, "shadow-sm");
         case "ghost":
-          return cn(theme.text, "bg-zinc-100 dark:bg-zinc-800");
+          return cn(theme.text, "bg-muted");
         case "default":
         default:
           return cn(theme.bg, "shadow-md");
@@ -244,12 +383,12 @@ export const ToggleGroupItem = forwardRef<
     // Inactive states
     switch (variant) {
       case "outline":
-        return "border border-zinc-200 dark:border-zinc-800 bg-transparent text-zinc-600 dark:text-zinc-400 hover:bg-zinc-100 dark:hover:bg-zinc-800";
+        return "border border-border bg-transparent text-muted-foreground hover:bg-muted";
       case "ghost":
-        return "bg-transparent text-zinc-600 dark:text-zinc-400 hover:bg-zinc-100 dark:hover:bg-zinc-800";
+        return "bg-transparent text-muted-foreground hover:bg-muted";
       case "default":
       default:
-        return "bg-transparent text-zinc-600 dark:text-zinc-400 hover:bg-zinc-200/50 dark:hover:bg-zinc-800";
+        return "bg-transparent text-muted-foreground hover:bg-muted/50";
     }
   };
 
@@ -260,6 +399,11 @@ export const ToggleGroupItem = forwardRef<
       role={type === "single" ? "radio" : "checkbox"}
       aria-checked={isActive}
       disabled={isDisabled}
+      data-toggle-item=""
+      data-state={isActive ? "on" : "off"}
+      data-value={value}
+      // A segmented radio group is one tab stop; the arrow keys move inside it.
+      tabIndex={radio ? (isActive || groupValue === "" ? 0 : -1) : undefined}
       onClick={handleToggle}
       className={cn(
         "inline-flex items-center justify-center gap-2 rounded-lg font-medium transition-all duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-zinc-400 focus-visible:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed",

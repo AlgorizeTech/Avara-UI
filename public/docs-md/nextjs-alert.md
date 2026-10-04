@@ -1,12 +1,12 @@
+export const metadata = docsPageMetadata("alert");
+
 # Alerts
 
 A highly versatile Alert component designed to communicate states and important information to your users.
 
 Along with the classic `solid` and `outline` variations, this component now features three completely modern aesthetics: `modern` (SaaS style), `glass` (glassmorphism), and `glow` (dark mode neon).
 
-## Examples
-
-Each example shows a live preview with the exact code to copy. The first example's **Code** tab contains the full component source.
+Each example shows a live preview with the exact code to copy.
 
 export const usageDefault = `import { Alert } from "@/components/custom/blocks/Alerts";
 
@@ -36,7 +36,7 @@ export const usageGlass = `import { Alert } from "@/components/custom/blocks/Ale
 
 export default function GlassAlert() {
   return (
-    // Glass needs something behind it — put it over an image or gradient.
+    // Glass needs something vibrant behind it — put it over an image or gradient.
 
   );
 }`;
@@ -64,7 +64,7 @@ export default function AlertIcons() {
   );
 }`;
 
-export const usageDismissible = `import { Alert } from "@/components/custom/blocks/Alerts";
+export const usageDismissible = `"use client";
 
 export default function DismissibleAlert() {
   return (
@@ -90,11 +90,14 @@ export default function RichAlert() {
 
 ## Installation
 
-### 1. Copy the Component
+Register the @algorize-ui registry once per project, then add the component:
 
-This component manages its own exit/entrance animations using Tailwind CSS utility classes and basic React state, meaning you don't need any complex external animation libraries to use it.
+```bash
+npx shadcn@latest registry add @algorize-ui=https://algorize-ui.vercel.app/r/{name}.json
+npx shadcn@latest add @algorize-ui/alert
+```
 
-Create a new file at `components/custom/blocks/Alerts.tsx` and copy the engine code from the **Code** tab of the first example above.
+## Examples
 
 ## Features
 Learn about the Alert component's capabilities, including different severity levels, customizable icons, and dismissible actions.
@@ -168,6 +171,6 @@ Learn about the Alert component's capabilities, including different severity lev
 
 ---
 
-**Component Path:** `nextjs\alert\page.mdx`
+**Component Path:** `[framework]\alert\page.mdx`
 
-**Web Version:** Visit the interactive version at the corresponding URL on the Next.js documentation site for live previews and interactive examples.
+**Web Version:** Visit the corresponding URL on the Algorize UI documentation site for live previews and interactive examples.

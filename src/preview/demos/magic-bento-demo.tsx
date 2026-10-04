@@ -23,7 +23,7 @@ const getThemeColorHex = (c: string) => {
     indigo: "#6366f1",
     rose: "#f43f5e",
     emerald: "#10b981",
-    zinc: "#18181b",
+    lavender: "#9b8afb",
   };
   return map[c] || "var(--primary)";
 };
@@ -41,7 +41,7 @@ export default function MagicBentoDemo({
   if (example === "highlight" || example === "spans") {
     return (
       <div
-        className="w-full flex items-center justify-center py-16 px-4 transition-colors duration-300 relative overflow-hidden rounded-2xl border border-zinc-200/80 dark:border-zinc-800/80"
+        className="w-full flex items-center justify-center py-16 px-4 transition-colors duration-300 relative overflow-hidden rounded-2xl border border-border/80"
         style={
           {
             "--theme-color": activeHex,
@@ -63,20 +63,20 @@ export default function MagicBentoDemo({
           {example === "highlight" ? (
             <MagicBento className="lg:grid-cols-2 auto-rows-[240px] max-w-3xl">
               <MagicBentoCard className="flex flex-col justify-between">
-                <div className="flex items-center gap-2 text-zinc-500 dark:text-zinc-400 text-sm font-semibold">
+                <div className="flex items-center gap-2 text-muted-foreground text-sm font-semibold">
                   <Activity className="w-4 h-4" />
                   Default card
                 </div>
-                <p className="text-sm text-zinc-600 dark:text-zinc-400">
+                <p className="text-sm text-muted-foreground">
                   The border track and inner glow follow the cursor.
                 </p>
               </MagicBentoCard>
               <MagicBentoCard highlight className="flex flex-col justify-between">
-                <div className="flex items-center gap-2 text-zinc-500 dark:text-zinc-400 text-sm font-semibold">
+                <div className="flex items-center gap-2 text-muted-foreground text-sm font-semibold">
                   <Sparkles className="w-4 h-4" />
                   highlight
                 </div>
-                <p className="text-sm text-zinc-600 dark:text-zinc-400">
+                <p className="text-sm text-muted-foreground">
                   Adds a conic gradient that keeps spinning behind the mask,
                   cursor or not.
                 </p>
@@ -85,27 +85,27 @@ export default function MagicBentoDemo({
           ) : (
             <MagicBento className="auto-rows-[160px] max-w-4xl">
               <MagicBentoCard className="md:col-span-2 flex items-end">
-                <span className="text-sm font-semibold text-zinc-900 dark:text-white">
+                <span className="text-sm font-semibold text-foreground">
                   md:col-span-2
                 </span>
               </MagicBentoCard>
               <MagicBentoCard className="row-span-2 flex items-end">
-                <span className="text-sm font-semibold text-zinc-900 dark:text-white">
+                <span className="text-sm font-semibold text-foreground">
                   row-span-2
                 </span>
               </MagicBentoCard>
               <MagicBentoCard className="flex items-end">
-                <span className="text-sm font-semibold text-zinc-900 dark:text-white">
+                <span className="text-sm font-semibold text-foreground">
                   1 × 1
                 </span>
               </MagicBentoCard>
               <MagicBentoCard className="md:col-span-2 flex items-end">
-                <span className="text-sm font-semibold text-zinc-900 dark:text-white">
+                <span className="text-sm font-semibold text-foreground">
                   md:col-span-2
                 </span>
               </MagicBentoCard>
               <MagicBentoCard className="flex items-end">
-                <span className="text-sm font-semibold text-zinc-900 dark:text-white">
+                <span className="text-sm font-semibold text-foreground">
                   1 × 1
                 </span>
               </MagicBentoCard>
@@ -118,7 +118,7 @@ export default function MagicBentoDemo({
 
   return (
     <div
-      className="w-full flex items-center justify-center py-16 px-4 transition-colors duration-300 relative overflow-hidden rounded-2xl border border-zinc-200/80 dark:border-zinc-800/80"
+      className="w-full flex items-center justify-center py-16 px-4 transition-colors duration-300 relative overflow-hidden rounded-2xl border border-border/80"
       style={{
         "--theme-color": activeHex,
         backgroundColor: "color-mix(in srgb, var(--theme-color, var(--primary)) 1.5%, transparent)",
@@ -137,15 +137,15 @@ export default function MagicBentoDemo({
         <MagicBento className="auto-rows-[220px]">
           {/* CARD 1: TOP LEFT (1x1) */}
           <MagicBentoCard className="col-span-1 lg:row-span-1 flex flex-col justify-between">
-            <div className="flex items-center gap-2 text-zinc-500 dark:text-zinc-400 text-sm font-semibold">
+            <div className="flex items-center gap-2 text-muted-foreground text-sm font-semibold">
               <Activity className="w-4 h-4" />
               Insights
             </div>
             <div className="mt-auto">
-              <h3 className="text-lg font-bold text-zinc-900 dark:text-white tracking-tight">
+              <h3 className="text-lg font-semibold text-foreground tracking-tight">
                 Analytics
               </h3>
-              <p className="text-sm text-zinc-600 dark:text-zinc-400 mt-1">
+              <p className="text-sm text-muted-foreground mt-1">
                 Track user behavior
               </p>
             </div>
@@ -153,15 +153,15 @@ export default function MagicBentoDemo({
 
           {/* CARD 2: TOP MID-LEFT (1x1) */}
           <MagicBentoCard className="col-span-1 lg:row-span-1 flex flex-col justify-between">
-            <div className="flex items-center gap-2 text-zinc-500 dark:text-zinc-400 text-sm font-semibold">
+            <div className="flex items-center gap-2 text-muted-foreground text-sm font-semibold">
               <Globe2 className="w-4 h-4" />
               Overview
             </div>
             <div className="mt-auto">
-              <h3 className="text-lg font-bold text-zinc-900 dark:text-white tracking-tight">
+              <h3 className="text-lg font-semibold text-foreground tracking-tight">
                 Dashboard
               </h3>
-              <p className="text-sm text-zinc-600 dark:text-zinc-400 mt-1">
+              <p className="text-sm text-muted-foreground mt-1">
                 Centralized data view
               </p>
             </div>
@@ -172,15 +172,15 @@ export default function MagicBentoDemo({
             highlight
             className="col-span-1 row-span-2 md:col-span-2 flex flex-col justify-between relative"
           >
-            <div className="flex items-center gap-2 text-zinc-500 dark:text-zinc-400 text-sm font-semibold relative z-10">
+            <div className="flex items-center gap-2 text-muted-foreground text-sm font-semibold relative z-10">
               <Users className="w-4 h-4" />
               Teamwork
             </div>
 
             <div className="absolute inset-0 flex flex-col items-center justify-center pointer-events-none">
               <div className="relative flex items-center justify-center scale-[0.8] sm:scale-100">
-                <div className="absolute w-40 h-40 border border-zinc-200 dark:border-zinc-800 rounded-full animate-[spin_10s_linear_infinite] border-dashed" />
-                <div className="absolute w-24 h-24 border border-zinc-300 dark:border-zinc-700 rounded-full animate-[spin_6s_linear_infinite_reverse]" />
+                <div className="absolute w-40 h-40 border border-border rounded-full animate-[spin_10s_linear_infinite] border-dashed" />
+                <div className="absolute w-24 h-24 border border-foreground/15 rounded-full animate-[spin_6s_linear_infinite_reverse]" />
                 <div
                   className="w-12 h-12 rounded-xl flex items-center justify-center shadow-lg"
                   style={{
@@ -195,10 +195,10 @@ export default function MagicBentoDemo({
             </div>
 
             <div className="mt-auto relative z-10">
-              <h3 className="text-2xl font-bold text-zinc-900 dark:text-white tracking-tight">
+              <h3 className="text-2xl font-semibold text-foreground tracking-tight">
                 Collaboration
               </h3>
-              <p className="text-base text-zinc-600 dark:text-zinc-400 mt-1">
+              <p className="text-base text-muted-foreground mt-1">
                 Work together seamlessly across the globe
               </p>
             </div>
@@ -206,17 +206,17 @@ export default function MagicBentoDemo({
 
           {/* CARD 4: BOTTOM LEFT (2x2) */}
           <MagicBentoCard className="col-span-1 row-span-2 md:col-span-2 flex flex-col justify-between relative">
-            <div className="flex items-center gap-2 text-zinc-500 dark:text-zinc-400 text-sm font-semibold relative z-10">
+            <div className="flex items-center gap-2 text-muted-foreground text-sm font-semibold relative z-10">
               <Workflow className="w-4 h-4" />
               Efficiency
             </div>
 
             <div className="absolute inset-0 flex items-center justify-center pointer-events-none opacity-50 dark:opacity-100">
               <div className="flex flex-col gap-3 w-full max-w-[200px] sm:max-w-none sm:w-3/4 scale-[0.85] sm:scale-100">
-                <div className="h-8 w-full bg-zinc-200 dark:bg-zinc-800/50 rounded-md border border-zinc-300 dark:border-zinc-700/50" />
+                <div className="h-8 w-full bg-muted rounded-md border border-border" />
                 <div className="flex gap-3">
-                  <div className="h-8 w-1/3 bg-zinc-200 dark:bg-zinc-800/50 rounded-md border border-zinc-300 dark:border-zinc-700/50" />
-                  <div className="h-8 w-2/3 bg-zinc-200 dark:bg-zinc-800/50 rounded-md border border-zinc-300 dark:border-zinc-700/50" />
+                  <div className="h-8 w-1/3 bg-muted rounded-md border border-border" />
+                  <div className="h-8 w-2/3 bg-muted rounded-md border border-border" />
                 </div>
                 <div
                   className="h-8 w-1/2 rounded-md shadow-sm border"
@@ -229,10 +229,10 @@ export default function MagicBentoDemo({
             </div>
 
             <div className="mt-auto relative z-10">
-              <h3 className="text-2xl font-bold text-zinc-900 dark:text-white tracking-tight">
+              <h3 className="text-2xl font-semibold text-foreground tracking-tight">
                 Automation
               </h3>
-              <p className="text-base text-zinc-600 dark:text-zinc-400 mt-1">
+              <p className="text-base text-muted-foreground mt-1">
                 Streamline workflows and save thousands of hours
               </p>
             </div>
@@ -240,15 +240,15 @@ export default function MagicBentoDemo({
 
           {/* CARD 5: BOTTOM MID-RIGHT (1x1) */}
           <MagicBentoCard className="col-span-1 lg:row-span-1 flex flex-col justify-between">
-            <div className="flex items-center gap-2 text-zinc-500 dark:text-zinc-400 text-sm font-semibold">
+            <div className="flex items-center gap-2 text-muted-foreground text-sm font-semibold">
               <Network className="w-4 h-4" />
               Connectivity
             </div>
             <div className="mt-auto">
-              <h3 className="text-lg font-bold text-zinc-900 dark:text-white tracking-tight">
+              <h3 className="text-lg font-semibold text-foreground tracking-tight">
                 Integration
               </h3>
-              <p className="text-sm text-zinc-600 dark:text-zinc-400 mt-1">
+              <p className="text-sm text-muted-foreground mt-1">
                 Connect favorite tools
               </p>
             </div>
@@ -256,15 +256,15 @@ export default function MagicBentoDemo({
 
           {/* CARD 6: BOTTOM RIGHT (1x1) */}
           <MagicBentoCard className="col-span-1 lg:row-span-1 flex flex-col justify-between">
-            <div className="flex items-center gap-2 text-zinc-500 dark:text-zinc-400 text-sm font-semibold">
+            <div className="flex items-center gap-2 text-muted-foreground text-sm font-semibold">
               <LockKeyhole className="w-4 h-4" />
               Protection
             </div>
             <div className="mt-auto">
-              <h3 className="text-lg font-bold text-zinc-900 dark:text-white tracking-tight">
+              <h3 className="text-lg font-semibold text-foreground tracking-tight">
                 Security
               </h3>
-              <p className="text-sm text-zinc-600 dark:text-zinc-400 mt-1">
+              <p className="text-sm text-muted-foreground mt-1">
                 Enterprise-grade protection
               </p>
             </div>

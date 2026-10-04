@@ -9,77 +9,13 @@ import React, {
   useRef,
   useState,
 } from "react";
+import { getThemeStyles } from "./navigation-menu-theme";
 
 // ==========================================
 // THEME & CONFIGURATION
 // ==========================================
 export type NavColor = "indigo" | "rose" | "emerald" | "zinc" | (string & {});
 export type NavVariant = "default" | "minimal" | "glass";
-
-const colorThemes: Record<string, Record<string, string>> = {
-  primary: {
-    bg: "bg-primary text-primary-foreground",
-    text: "text-primary",
-    bgSoft: "bg-primary/10",
-    border: "border-primary/30",
-  },
-  indigo: {
-    bg: "bg-indigo-600 text-white",
-    text: "text-indigo-600 dark:text-indigo-400",
-    bgSoft: "bg-indigo-50 dark:bg-indigo-500/10",
-    border: "border-indigo-200 dark:border-indigo-800",
-  },
-  rose: {
-    bg: "bg-rose-600 text-white",
-    text: "text-rose-600 dark:text-rose-400",
-    bgSoft: "bg-rose-50 dark:bg-rose-500/10",
-    border: "border-rose-200 dark:border-rose-800",
-  },
-  emerald: {
-    bg: "bg-emerald-600 text-white",
-    text: "text-emerald-600 dark:text-emerald-400",
-    bgSoft: "bg-emerald-50 dark:bg-emerald-500/10",
-    border: "border-emerald-200 dark:border-emerald-800",
-  },
-  zinc: {
-    bg: "bg-zinc-900 text-white dark:bg-zinc-100 dark:text-zinc-900",
-    text: "text-zinc-900 dark:text-zinc-100",
-    bgSoft: "bg-zinc-100 dark:bg-zinc-800/50",
-    border: "border-zinc-200 dark:border-zinc-800",
-  },
-};
-
-const hexToRgb = (hex: string) => {
-  let cleanHex = hex.replace(/^#/, "");
-  if (cleanHex.length === 3)
-    cleanHex = cleanHex
-      .split("")
-      .map((x) => x + x)
-      .join("");
-  const result = /^([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(cleanHex);
-  return result
-    ? `${parseInt(result[1], 16)}, ${parseInt(result[2], 16)}, ${parseInt(result[3], 16)}`
-    : "99, 102, 241";
-};
-
-export const getThemeStyles = (color: string) => {
-  if (color && color.startsWith("#")) {
-    const rgb = hexToRgb(color);
-    return {
-      theme: {
-        bg: "bg-[var(--nav-color)] text-white",
-        text: "text-[var(--nav-color)]",
-        bgSoft: "bg-[rgba(var(--nav-color-rgb),0.1)]",
-        border: "border-[rgba(var(--nav-color-rgb),0.2)]",
-      },
-      style: {
-        "--nav-color": color,
-        "--nav-color-rgb": rgb,
-      } as React.CSSProperties,
-    };
-  }
-  return { theme: colorThemes[color] || colorThemes.primary, style: {} };
-};
 
 // ==========================================
 // CONTEXT
@@ -183,9 +119,9 @@ export const NavigationMenuList = forwardRef<
 
   const variantStyles = {
     default:
-      "bg-white dark:bg-zinc-950 border border-zinc-200 dark:border-zinc-800 shadow-sm",
+      "bg-background border border-border shadow-sm",
     glass:
-      "bg-white/60 dark:bg-black/60 backdrop-blur-xl border border-white/20 dark:border-white/10 shadow-lg",
+      "bg-background/60 backdrop-blur-xl border border-foreground/10 shadow-lg",
     minimal: "bg-transparent border-none",
   };
 
@@ -296,8 +232,8 @@ export const NavigationMenuTrigger = forwardRef<
       className={cn(
         "relative z-10 flex items-center justify-center gap-0.5 sm:gap-1.5 rounded-full px-2 sm:px-4 py-1 sm:py-2 text-[11px] sm:text-sm font-semibold transition-colors outline-none cursor-pointer whitespace-nowrap",
         isActive
-          ? "text-zinc-900 dark:text-zinc-50"
-          : "text-zinc-600 dark:text-zinc-400",
+          ? "text-foreground"
+          : "text-muted-foreground",
         className,
       )}
       {...props}
@@ -323,13 +259,22 @@ export const NavigationMenuContent = forwardRef<
   const { value } = useNavItemContext();
   const isActive = activeValue === value;
 
+  // A plain popover is the same white as most pages, so the panel reads as
+  // part of the page. It wears a whisper of the accent (relative OKLCH, as
+  // Folder does), a tinted edge and a layered drop shadow to lift it off.
+  const tintedPanel =
+    "text-popover-foreground border bg-[oklch(from_var(--nav-accent)_0.978_calc(c*0.1)_h)] border-[oklch(from_var(--nav-accent)_0.9_calc(c*0.22)_h)] dark:bg-[oklch(from_var(--nav-accent)_0.21_calc(c*0.1)_h)] dark:border-foreground/10";
   const variantStyles = {
-    default:
-      "bg-white dark:bg-zinc-950 border border-zinc-200 dark:border-zinc-800 shadow-xl",
+    default: cn(
+      tintedPanel,
+      "shadow-[0_2px_4px_rgb(0_0_0/0.04),0_24px_48px_-16px_rgb(0_0_0/0.22)]",
+    ),
     glass:
-      "bg-white/80 dark:bg-black/80 backdrop-blur-2xl border border-white/20 dark:border-white/10 shadow-2xl",
-    minimal:
-      "bg-white dark:bg-zinc-950 border border-zinc-200 dark:border-zinc-800 shadow-lg",
+      "bg-popover/80 text-popover-foreground backdrop-blur-2xl border border-foreground/10 shadow-[0_2px_4px_rgb(0_0_0/0.05),0_28px_56px_-16px_rgb(0_0_0/0.28)]",
+    minimal: cn(
+      tintedPanel,
+      "shadow-[0_1px_2px_rgb(0_0_0/0.04),0_16px_32px_-16px_rgb(0_0_0/0.16)]",
+    ),
   };
 
   return (
@@ -363,14 +308,23 @@ export const NavigationMenuLink = forwardRef<
   HTMLAnchorElement,
   React.AnchorHTMLAttributes<HTMLAnchorElement> & { active?: boolean }
 >(({ children, className, active, ...props }, ref) => {
-  const { theme } = useNavContext();
+  const navCtx = useContext(NavContext);
+  const theme = navCtx?.theme;
+
   return (
     <a
       ref={ref}
+      data-active={active ? "" : undefined}
+      aria-current={active ? "page" : undefined}
       className={cn(
-        "block select-none space-y-1 rounded-xl p-2.5 sm:p-3 leading-none no-underline outline-none transition-colors hover:bg-zinc-100 dark:hover:bg-zinc-800/50 cursor-pointer",
-        active && theme.bgSoft,
+        // Hover is a faint wash of the accent — grey muted went muddy on the
+        // tinted panel.
+        "block select-none space-y-1 rounded-xl p-2.5 sm:p-3 leading-none no-underline outline-none transition-colors hover:bg-[color-mix(in_oklab,var(--nav-accent)_9%,transparent)] focus-visible:bg-[color-mix(in_oklab,var(--nav-accent)_9%,transparent)] cursor-pointer",
         className,
+        active &&
+          (theme?.bgSoft
+            ? cn(theme.bgSoft, theme?.text || "text-primary", "font-semibold")
+            : "bg-primary/10 text-primary font-semibold"),
       )}
       {...props}
     >

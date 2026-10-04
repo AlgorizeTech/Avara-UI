@@ -3,88 +3,14 @@
 import { cn } from "@/lib/utils";
 import { AlertCircle, Check, ChevronDown, Search, X } from "lucide-react";
 import React, { forwardRef, useEffect, useMemo, useRef, useState } from "react";
+import { getThemeStyles } from "./select-theme";
 
 // ==========================================
 // DYNAMIC THEME ENGINE
 // ==========================================
 export type SelectColor = "indigo" | "rose" | "emerald" | "zinc" | string;
-export type SelectVariant = "default" | "filled" | "underlined" | "glow";
+export type SelectVariant = "default" | "filled" | "underlined" | "glow" | "glass";
 export type SelectSize = "sm" | "md" | "lg";
-
-const colorThemes: Record<string, Record<string, string>> = {
-  primary: {
-    ring: "ring-primary/30 border-primary",
-    text: "text-primary",
-    bg: "bg-primary text-primary-foreground",
-    bgSoft:
-      "bg-primary/10 text-foreground",
-    glow: "shadow-[0_0_20px_var(--primary)] border-primary",
-  },
-  indigo: {
-    ring: "ring-indigo-500/30 border-indigo-500",
-    text: "text-indigo-600 dark:text-indigo-400",
-    bg: "bg-indigo-600 text-white",
-    bgSoft:
-      "bg-indigo-50 dark:bg-indigo-500/10 text-indigo-900 dark:text-indigo-100",
-    glow: "shadow-[0_0_20px_rgba(99,102,241,0.4)] border-indigo-500",
-  },
-  rose: {
-    ring: "ring-rose-500/30 border-rose-500",
-    text: "text-rose-600 dark:text-rose-400",
-    bg: "bg-rose-600 text-white",
-    bgSoft: "bg-rose-50 dark:bg-rose-500/10 text-rose-900 dark:text-rose-100",
-    glow: "shadow-[0_0_20px_rgba(244,63,94,0.4)] border-rose-500",
-  },
-  emerald: {
-    ring: "ring-emerald-500/30 border-emerald-500",
-    text: "text-emerald-600 dark:text-emerald-400",
-    bg: "bg-emerald-600 text-white",
-    bgSoft:
-      "bg-emerald-50 dark:bg-emerald-500/10 text-emerald-900 dark:text-emerald-100",
-    glow: "shadow-[0_0_20px_rgba(16,185,129,0.4)] border-emerald-500",
-  },
-  zinc: {
-    ring: "ring-zinc-500/30 border-zinc-500 dark:ring-white/20 dark:border-white",
-    text: "text-zinc-900 dark:text-zinc-100",
-    bg: "bg-zinc-900 dark:bg-zinc-100 text-white dark:text-zinc-900",
-    bgSoft: "bg-zinc-100 dark:bg-zinc-800/50 text-zinc-900 dark:text-zinc-100",
-    glow: "shadow-[0_0_20px_rgba(255,255,255,0.15)] border-zinc-900 dark:border-white",
-  },
-};
-
-const hexToRgb = (hex: string) => {
-  let cleanHex = hex.replace(/^#/, "");
-  if (cleanHex.length === 3)
-    cleanHex = cleanHex
-      .split("")
-      .map((x) => x + x)
-      .join("");
-  const result = /^([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(cleanHex);
-  return result
-    ? `${parseInt(result[1], 16)}, ${parseInt(result[2], 16)}, ${parseInt(result[3], 16)}`
-    : "99, 102, 241";
-};
-
-export const getThemeStyles = (color: string) => {
-  if (color && color.startsWith("#")) {
-    const rgb = hexToRgb(color);
-    return {
-      theme: {
-        ring: "ring-[var(--theme-color)]/30 border-[var(--theme-color)]",
-        text: "text-[var(--theme-color)]",
-        bg: "bg-[var(--theme-color)] text-white",
-        bgSoft:
-          "bg-[rgba(var(--theme-color-rgb),0.1)] text-[var(--theme-color)]",
-        glow: "shadow-[0_0_20px_rgba(var(--theme-color-rgb),0.5)] border-[var(--theme-color)]",
-      },
-      style: {
-        "--theme-color": color,
-        "--theme-color-rgb": rgb,
-      } as React.CSSProperties,
-    };
-  }
-  return { theme: colorThemes[color] || colorThemes.primary, style: {} };
-};
 
 // ==========================================
 // SELECT COMPONENT
@@ -100,12 +26,14 @@ export interface SelectOption {
 // shell, a scroll pane, a card with overflow-hidden). That element — not the
 // viewport — is what actually crops the dropdown, so it defines the space the
 // menu has to work with. Returns null when nothing clips, meaning the viewport
-// is the only bound.
+// is the only bound. Only overflow-y counts: the menu grows vertically, and a
+// box that clips just sideways (overflow-x: clip, e.g. a slide-in stage) leaves
+// it free to hang below — treating that as a clip flipped the menu up into it.
 const getClippingRect = (el: HTMLElement): DOMRect | null => {
   let node = el.parentElement;
   while (node && node !== document.body) {
-    const { overflow, overflowX, overflowY } = window.getComputedStyle(node);
-    if (/(auto|scroll|hidden|clip)/.test(overflow + overflowX + overflowY)) {
+    const { overflowY } = window.getComputedStyle(node);
+    if (/(auto|scroll|hidden|clip)/.test(overflowY)) {
       return node.getBoundingClientRect();
     }
     node = node.parentElement;
@@ -113,10 +41,9 @@ const getClippingRect = (el: HTMLElement): DOMRect | null => {
   return null;
 };
 
-export interface SelectBlockProps {
+/** Everything the two selection modes share. */
+interface SelectBlockBaseProps {
   options: SelectOption[];
-  value?: string | string[]; // Added string[] for MultiSelect
-  onChange?: (value: any) => void;
   placeholder?: string;
   variant?: SelectVariant;
   color?: SelectColor;
@@ -127,11 +54,39 @@ export interface SelectBlockProps {
   icon?: React.ReactNode;
   disabled?: boolean;
   className?: string;
-  multiple?: boolean; // NEW: Toggle MultiSelect
-  searchable?: boolean; // NEW: Toggle Search bar
+  /** Adds a filter box above the options. */
+  searchable?: boolean;
 }
 
-export const SelectBlock = forwardRef<HTMLDivElement, SelectBlockProps>(
+/** The default: one option at a time, so the value is a plain string. */
+export interface SelectBlockSingleProps extends SelectBlockBaseProps {
+  multiple?: false;
+  value?: string;
+  onChange?: (value: string) => void;
+}
+
+/** `multiple` — value and callback both deal in arrays. */
+export interface SelectBlockMultipleProps extends SelectBlockBaseProps {
+  multiple: true;
+  value?: string[];
+  onChange?: (value: string[]) => void;
+}
+
+/**
+ * Discriminated on `multiple`, so a single select hands your callback a
+ * `string` and a multi select hands it a `string[]` — neither needs a cast,
+ * and passing a `setState` straight in just works.
+ */
+export type SelectBlockProps = SelectBlockSingleProps | SelectBlockMultipleProps;
+
+/** The two modes collapsed, which is what the implementation works with. */
+type SelectBlockImplProps = SelectBlockBaseProps & {
+  multiple?: boolean;
+  value?: string | string[];
+  onChange?: (value: string | string[]) => void;
+};
+
+const SelectBlockImpl = forwardRef<HTMLDivElement, SelectBlockImplProps>(
   (
     {
       options = [],
@@ -159,6 +114,10 @@ export const SelectBlock = forwardRef<HTMLDivElement, SelectBlockProps>(
     const dropdownRef = useRef<HTMLDivElement>(null);
     const searchInputRef = useRef<HTMLInputElement>(null);
     const { theme, style } = getThemeStyles(color);
+
+    // selectRef drives the click-outside and drop-direction logic, so the
+    // forwarded ref is mirrored onto it rather than replacing it.
+    React.useImperativeHandle(ref, () => selectRef.current as HTMLDivElement);
 
     const hasError = Boolean(error);
 
@@ -288,7 +247,7 @@ export const SelectBlock = forwardRef<HTMLDivElement, SelectBlockProps>(
         return {
           wrapper: cn(
             baseWrapper,
-            "opacity-50 cursor-not-allowed border border-zinc-200 dark:border-zinc-800 bg-zinc-50 dark:bg-zinc-900/50",
+            "opacity-50 cursor-not-allowed border border-border bg-muted",
           ),
           active: "",
         };
@@ -296,7 +255,7 @@ export const SelectBlock = forwardRef<HTMLDivElement, SelectBlockProps>(
         return {
           wrapper: cn(
             baseWrapper,
-            "border border-red-500 bg-white dark:bg-[#09090b]",
+            "border border-red-500 bg-background",
             variant === "underlined" && "border-0 border-b-2 rounded-none",
             variant !== "underlined" && "rounded-xl",
           ),
@@ -308,15 +267,15 @@ export const SelectBlock = forwardRef<HTMLDivElement, SelectBlockProps>(
           return {
             wrapper: cn(
               baseWrapper,
-              "bg-zinc-100 dark:bg-zinc-900 border border-transparent rounded-xl",
+              "bg-muted border border-transparent rounded-xl",
             ),
-            active: cn("bg-white dark:bg-zinc-950 ring-4", theme.ring),
+            active: cn("bg-background ring-4", theme.ring),
           };
         case "underlined":
           return {
             wrapper: cn(
               baseWrapper,
-              "border-b-2 border-zinc-200 dark:border-zinc-800 bg-transparent rounded-none px-0",
+              "border-b-2 border-border bg-transparent rounded-none px-0",
             ),
             active: theme.ring.split(" ")[1],
           };
@@ -324,16 +283,24 @@ export const SelectBlock = forwardRef<HTMLDivElement, SelectBlockProps>(
           return {
             wrapper: cn(
               baseWrapper,
-              "bg-white dark:bg-[#09090b] border border-zinc-200 dark:border-zinc-800 rounded-xl shadow-sm",
+              "bg-background border border-border rounded-xl shadow-sm",
             ),
             active: theme.glow,
+          };
+        case "glass":
+          return {
+            wrapper: cn(
+              baseWrapper,
+              "min-h-[38px] px-3 py-2 text-sm border-black/15 text-neutral-900 bg-black/5 hover:bg-black/10 focus:bg-white/40 focus:border-black/30 dark:border-white/25 dark:text-white dark:bg-white/10 dark:hover:bg-white/15 dark:focus:bg-white/20 dark:focus:border-white/50 border rounded-md shadow-xs transition-all",
+            ),
+            active: "ring-2 ring-black/10 dark:ring-white/20 border-black/30 dark:border-white/40 bg-black/10 dark:bg-white/15",
           };
         case "default":
         default:
           return {
             wrapper: cn(
               baseWrapper,
-              "bg-white dark:bg-[#09090b] border border-zinc-200 dark:border-zinc-800 rounded-xl shadow-sm",
+              "bg-background border border-border rounded-xl shadow-sm",
             ),
             active: cn("ring-4", theme.ring),
           };
@@ -379,8 +346,8 @@ export const SelectBlock = forwardRef<HTMLDivElement, SelectBlockProps>(
             "truncate pr-6",
             s.text,
             !singleOption
-              ? "text-zinc-400 dark:text-zinc-600"
-              : "text-zinc-900 dark:text-zinc-100",
+              ? variant === "glass" ? "text-neutral-500 dark:text-white/60" : "text-muted-foreground"
+              : variant === "glass" ? "text-neutral-900 font-medium dark:text-white" : "text-foreground",
           )}
         >
           {singleOption ? singleOption.label : placeholder}
@@ -397,8 +364,8 @@ export const SelectBlock = forwardRef<HTMLDivElement, SelectBlockProps>(
         {label && (
           <label
             className={cn(
-              "text-sm font-bold",
-              hasError ? "text-red-500" : "text-zinc-700 dark:text-zinc-300",
+              "text-sm font-semibold",
+              hasError ? "text-red-500" : variant === "glass" ? "text-white/90" : "text-foreground",
               disabled && "opacity-50",
             )}
           >
@@ -421,7 +388,7 @@ export const SelectBlock = forwardRef<HTMLDivElement, SelectBlockProps>(
             {icon && (
               <div
                 className={cn(
-                  "shrink-0 text-zinc-400 dark:text-zinc-500",
+                  "shrink-0 text-muted-foreground",
                   isOpen && theme.text,
                 )}
               >
@@ -436,7 +403,8 @@ export const SelectBlock = forwardRef<HTMLDivElement, SelectBlockProps>(
             <ChevronDown
               className={cn(
                 s.icon,
-                "text-zinc-400 dark:text-zinc-500 transition-transform duration-300",
+                variant === "glass" ? "text-neutral-700 dark:text-white/70" : "text-muted-foreground",
+                "transition-transform duration-300",
                 isOpen && "rotate-180",
                 isOpen && theme.text,
               )}
@@ -448,7 +416,10 @@ export const SelectBlock = forwardRef<HTMLDivElement, SelectBlockProps>(
         <div
           ref={dropdownRef}
           className={cn(
-            "absolute left-0 right-0 z-50 overflow-hidden bg-white dark:bg-zinc-950 border border-zinc-200 dark:border-zinc-800 rounded-xl shadow-xl transition-all duration-200 ease-out",
+            "absolute left-0 right-0 z-50 overflow-hidden border rounded-xl shadow-2xl transition-all duration-200 ease-out",
+            variant === "glass"
+              ? "bg-white/50 dark:bg-black/60 backdrop-blur-3xl border border-white/50 dark:border-white/20 text-neutral-900 dark:text-white shadow-2xl"
+              : "bg-popover text-popover-foreground border-border",
             dropUp
               ? cn(
                   "origin-bottom",
@@ -471,25 +442,25 @@ export const SelectBlock = forwardRef<HTMLDivElement, SelectBlockProps>(
           )}
         >
           {searchable && (
-            <div className="p-2 border-b border-zinc-100 dark:border-zinc-800/50 bg-zinc-50/50 dark:bg-zinc-900/20">
+            <div className="p-2 border-b border-border bg-muted/50">
               <div className="relative">
-                <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-zinc-400" />
+                <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
                 <input
                   ref={searchInputRef}
                   value={searchQuery}
                   onChange={(e) => setSearchQuery(e.target.value)}
                   onClick={(e) => e.stopPropagation()}
                   placeholder="Search options..."
-                  className="w-full pl-9 pr-3 py-2 bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-700 rounded-lg text-sm text-zinc-900 dark:text-zinc-100 outline-none focus:ring-2 focus:border-transparent transition-all"
-                  style={{ "--tw-ring-color": `var(--theme-color)` } as any}
+                  className="w-full pl-9 pr-3 py-2 bg-card border border-border rounded-lg text-sm text-foreground outline-none focus:ring-2 focus:border-transparent transition-all"
+                  style={{ "--tw-ring-color": `var(--theme-color)` } as React.CSSProperties}
                 />
               </div>
             </div>
           )}
 
-          <div className="max-h-60 overflow-y-auto p-1 flex flex-col gap-0.5 scrollbar-thin scrollbar-thumb-zinc-200 dark:scrollbar-thumb-zinc-800">
+          <div className="max-h-60 overflow-y-auto p-1 flex flex-col gap-0.5 scrollbar-thin scrollbar-thumb-border">
             {Object.keys(groupedOptions).length === 0 ? (
-              <div className="px-4 py-3 text-sm text-zinc-500 text-center">
+              <div className="px-4 py-3 text-sm text-muted-foreground text-center">
                 No results found
               </div>
             ) : (
@@ -497,7 +468,7 @@ export const SelectBlock = forwardRef<HTMLDivElement, SelectBlockProps>(
                 <div key={group} className="flex flex-col gap-0.5">
                   {/* Group Header */}
                   {group !== "ungrouped" && (
-                    <div className="px-3 py-2 mt-1 text-[11px] font-bold uppercase tracking-wider text-zinc-400 dark:text-zinc-500">
+                    <div className="px-3 py-2 mt-1 text-[11px] font-semibold uppercase tracking-wider text-muted-foreground">
                       {group}
                     </div>
                   )}
@@ -517,8 +488,13 @@ export const SelectBlock = forwardRef<HTMLDivElement, SelectBlockProps>(
                           "w-full flex items-center justify-between rounded-lg transition-colors font-medium text-left cursor-pointer active:scale-[0.98]",
                           s.option,
                           isSelected
-                            ? theme.bgSoft
-                            : "text-zinc-700 dark:text-zinc-300 hover:bg-zinc-100 dark:hover:bg-zinc-900",
+                            ? cn(theme.bgSoft, theme.text, "font-semibold shadow-xs")
+                            : cn(
+                                variant === "glass"
+                                  ? "text-neutral-900 dark:text-white/90"
+                                  : "text-foreground",
+                                theme.hoverBg,
+                              ),
                         )}
                       >
                         <div className="flex items-center gap-2">
@@ -528,7 +504,7 @@ export const SelectBlock = forwardRef<HTMLDivElement, SelectBlockProps>(
                                 "w-4 h-4 rounded-[4px] border flex items-center justify-center transition-colors",
                                 isSelected
                                   ? cn(theme.bg, "border-transparent")
-                                  : "border-zinc-300 dark:border-zinc-600 bg-white dark:bg-zinc-900",
+                                  : "border-input bg-card",
                               )}
                             >
                               {/* No hardcoded colour: theme.bg already carries the
@@ -565,7 +541,7 @@ export const SelectBlock = forwardRef<HTMLDivElement, SelectBlockProps>(
           </p>
         )}
         {helperText && !error && (
-          <p className="text-xs font-medium text-zinc-500 dark:text-zinc-400 mt-0.5">
+          <p className="text-xs font-medium text-muted-foreground mt-0.5">
             {helperText}
           </p>
         )}
@@ -573,4 +549,12 @@ export const SelectBlock = forwardRef<HTMLDivElement, SelectBlockProps>(
     );
   },
 );
-SelectBlock.displayName = "SelectBlock";
+SelectBlockImpl.displayName = "SelectBlock";
+
+/**
+ * The implementation is written against the collapsed props; this cast is
+ * what hands callers the discriminated pair instead.
+ */
+export const SelectBlock = SelectBlockImpl as React.ForwardRefExoticComponent<
+  SelectBlockProps & React.RefAttributes<HTMLDivElement>
+>;

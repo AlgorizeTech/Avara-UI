@@ -5,7 +5,14 @@ export interface SearchableItem {
   id: string;
   title: string;
   description: string;
-  href: string;
+  /**
+   * Path below the framework segment. Stored rather than a full href so a
+   * result opened from /docs/reactjs/... keeps the reader in reactjs instead of
+   * silently teleporting them into the Next.js tree.
+   */
+  slug?: string;
+  /** Escape hatch for entries that are not framework-scoped docs pages. */
+  href?: string;
   category: string;
   keywords?: string[];
 }
@@ -17,12 +24,17 @@ function getNavigationItems(): SearchableItem[] {
   navigation.forEach((section) => {
     section.children.forEach((child) => {
       items.push({
-        id: `nav-${child.href}`,
+        id: `nav-${child.slug}`,
         title: child.label,
         description: `${section.label} - ${child.label}`,
+        slug: child.slug,
         href: child.href,
         category: section.label,
-        keywords: [child.label.toLowerCase(), section.label.toLowerCase()]
+        keywords: [
+          child.label.toLowerCase(),
+          section.label.toLowerCase(),
+          ...(child.keywords ?? []).map((keyword) => keyword.toLowerCase()),
+        ]
       });
     });
   });

@@ -1,9 +1,9 @@
 "use client";
 
-import Button from "@/components/custom/blocks/Button";
+import Button, { type ShardsEffectMode } from "@/components/custom/blocks/Button";
+import { getButtonThemeStyle } from "@/components/custom/blocks/button-theme";
 import {
   AppleIcon,
-  ArrowLeftIcon,
   ArrowRightIcon,
   BellIcon,
   CheckIcon,
@@ -12,7 +12,6 @@ import {
   FacebookIcon,
   GitHubIcon,
   GoogleIcon,
-  HeartIcon,
   LinkedInIcon,
   MailIcon,
   MicrosoftIcon,
@@ -22,251 +21,253 @@ import {
   SearchIcon,
   SettingsIcon,
   ShareIcon,
-  ShoppingCartIcon,
   SlackIcon,
   StarIcon,
   XIcon,
   XIcon2,
 } from "@/components/custom/blocks/Icons";
+import { useState } from "react";
 
-type LayoutType =
-  | "basic"
-  | "default"
-  | "variants"
-  | "sizes"
-  | "loading"
-  | "with-icon"
-  | "commerce"
-  | "social"
-  | "icon-only"
-  | "right-icon"
-  | "others";
+/** The mode picker's labels, mapped to `effectMode`. */
+const EFFECT_MODES: Record<string, ShardsEffectMode> = {
+  "One time": "once",
+  Continuous: "continuous",
+};
 
 export default function ButtonDemo({
   layout = "basic",
+  color = "primary",
 }: {
-  layout?: LayoutType;
+  layout?: "basic" | "slide-icon" | "slide-text" | "icon-only" | "social" | "shards-panel";
+  color?: string;
 }) {
+  const themeStyle = getButtonThemeStyle(color);
+  const [effectMode, setEffectMode] = useState<ShardsEffectMode>("once");
+
   return (
-    <div className="w-full flex items-center justify-center min-h-[350px]">
-      {layout === "default" && <Button>Button</Button>}
+    <div
+      className="w-full min-h-[460px] h-full flex flex-col items-center justify-center p-4 sm:p-8 m-0"
+      style={themeStyle}
+    >
+      {layout === "shards-panel" && (
+        <div className="w-full max-w-4xl mx-auto grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 font-sans py-4 pb-[200px]">
+          {/* 0. Effect mode picker — drives the four tiles below */}
+          <Button
+            variant="shards-control"
+            controlType="select"
+            label="Animation"
+            value="One time"
+            options={Object.keys(EFFECT_MODES)}
+            onValueChange={(label) => setEffectMode(EFFECT_MODES[label])}
+            className="sm:col-span-2 lg:col-span-1"
+          />
+          <div className="hidden lg:block lg:col-span-3" />
 
-      {/* Every variant in one frame — the visual styles side by side. */}
-      {layout === "variants" && (
-        <div className="flex flex-wrap items-center justify-center gap-4">
-          <Button variant="default">Default</Button>
-          <Button variant="destructive">Destructive</Button>
-          <Button variant="outline">Outline</Button>
-          <Button variant="secondary">Secondary</Button>
-          <Button variant="ghost">Ghost</Button>
-          <Button variant="link">Link</Button>
+          {/* 1. Color Picker Button */}
+          <Button
+            variant="shards-control"
+            controlType="color"
+            label="Shards"
+            colorHex="#a855f7"
+            effect="shimmer"
+            effectMode={effectMode}
+          />
+
+          {/* 2. Dropdown Select Button */}
+          <Button
+            variant="shards-control"
+            controlType="select"
+            label="Placement"
+            value="Full"
+            options={["Full", "Center", "Top", "Bottom"]}
+            effect="orbit"
+            effectMode={effectMode}
+          />
+
+          {/* 3. Range Slider Button */}
+          <Button
+            variant="shards-control"
+            controlType="slider"
+            label="Scale"
+            value={1}
+            min={0}
+            max={3}
+            step={0.1}
+            effect="sparkle"
+            effectMode={effectMode}
+          />
+
+          {/* 4. Toggle Switch Button */}
+          <Button
+            variant="shards-control"
+            controlType="toggle"
+            label="Hold to Gather"
+            checked={true}
+            effect="beacon"
+            effectMode={effectMode}
+          />
         </div>
       )}
-
-      {/* Scalar prop — all steps share a single preview. */}
-      {layout === "sizes" && (
-        <div className="flex flex-wrap items-center justify-center gap-4">
-          <Button size="sm">Small</Button>
-          <Button size="default">Default</Button>
-          <Button size="lg">Large</Button>
-        </div>
-      )}
-
-      {layout === "loading" && (
-        <div className="flex flex-wrap items-center justify-center gap-4">
-          <Button loading>Please wait</Button>
-          <Button variant="outline" loading>
-            Please wait
-          </Button>
-          <Button variant="secondary" loading>
-            Please wait
-          </Button>
-        </div>
-      )}
-
-      {layout === "with-icon" && (
-        <div className="flex flex-wrap items-center justify-center gap-4">
-          <Button iconLeft={<MailIcon />}>Email</Button>
-          <Button variant="outline" iconLeft={<DownloadIcon />}>
-            Download
-          </Button>
-          <Button variant="secondary" iconRight={<ArrowRightIcon />}>
-            Continue
-          </Button>
-          <Button variant="ghost" iconRight={<CheckIcon />}>
-            Confirm
-          </Button>
-        </div>
-      )}
-
       {layout === "basic" && (
-        <div className="flex w-full flex-col items-center justify-center gap-8">
-          <div className="flex flex-col gap-4">
-            <div className="flex flex-wrap items-center justify-center gap-4">
-              <Button variant="default">Default</Button>
-              <Button variant="destructive">Destructive</Button>
-              <Button variant="outline">Outline</Button>
-              <Button variant="secondary">Secondary</Button>
-              <Button variant="ghost">Ghost</Button>
-              <Button variant="link">Link</Button>
-            </div>
-          </div>
-          <div className="flex flex-col gap-4">
-            <div className="flex flex-wrap items-center justify-center gap-4">
-              <Button variant="default" size="sm">
-                Small
-              </Button>
-              <Button variant="default" size="lg">
-                Large
-              </Button>
-              <Button variant="default" loading>
-                Loading
-              </Button>
-              <Button variant="outline" loading>
-                Loading
-              </Button>
-            </div>
-          </div>
+        <div className="w-full h-full flex flex-wrap items-center justify-center gap-8 m-0 py-12">
+          {/* 1. Single Conic Spinning Border */}
+          <Button variant="outline" iconRight={<ArrowRightIcon />}>
+            Spinning Border
+          </Button>
+
+          {/* 2. Smooth Aura Beacon Pulse */}
+          <Button variant="beacon-radar-pulse" iconRight={<DownloadIcon />}>
+            Beacon Pulse
+          </Button>
+
+          {/* 3. Glossy Shine Sweep */}
+          <Button variant="shine-sweep" iconLeft={<BellIcon />}>
+            Shine Sweep
+          </Button>
         </div>
       )}
 
-      {layout === "commerce" && (
-        <div className="flex w-full flex-col items-center justify-center gap-8">
-          <div className="flex flex-col gap-4">
-            <div className="flex flex-wrap items-center justify-center gap-4">
-              <Button variant="default" iconLeft={<ShoppingCartIcon />}>
-                Buy Now
-              </Button>
-              <Button variant="outline" iconLeft={<HeartIcon />}>
-                Save for Later
-              </Button>
-              <Button variant="secondary" iconLeft={<StarIcon />}>
-                Write Review
-              </Button>
-              <Button variant="ghost" iconLeft={<ShareIcon />}>
-                Share Product
-              </Button>
-            </div>
-          </div>
-        </div>
-      )}
+      {layout === "slide-icon" && (
+        <div className="flex flex-wrap items-center justify-center gap-4 max-w-4xl mx-auto py-2">
+          {/* 1. Icon Radial Expand */}
+          <Button variant="expand-icon" iconLeft={<ArrowRightIcon />}>
+            Radial Expand
+          </Button>
 
-      {layout === "social" && (
-        <div className="flex w-full flex-col items-center justify-center gap-8">
-          <div className="flex flex-col gap-4">
-            <div className="flex flex-wrap items-center justify-center gap-4 max-w-2xl">
-              <Button variant="outline" iconLeft={<EmailIcon />}>
-                Login with Email
-              </Button>
-              <Button variant="outline" iconLeft={<GoogleIcon />}>
-                Continue with Google
-              </Button>
-              <Button variant="outline" iconLeft={<GitHubIcon />}>
-                Continue with GitHub
-              </Button>
-              <Button variant="outline" iconLeft={<FacebookIcon />}>
-                Login with Facebook
-              </Button>
-              <Button variant="outline" iconLeft={<XIcon2 />}>
-                Login with X
-              </Button>
-              <Button variant="outline" iconLeft={<AppleIcon />}>
-                Login with Apple
-              </Button>
-              <Button variant="outline" iconLeft={<MicrosoftIcon />}>
-                Login with Microsoft
-              </Button>
-              <Button variant="outline" iconLeft={<SlackIcon />}>
-                Login with Slack
-              </Button>
-              <Button variant="outline" iconLeft={<LinkedInIcon />}>
-                Login with LinkedIn
-              </Button>
-            </div>
-          </div>
+          {/* 2. Sliding Rounded Icon */}
+          <Button variant="slide-icon" iconRight={<ArrowRightIcon />}>
+            Sliding Icon
+          </Button>
+
+          {/* 2b. Looping Rounded Icon */}
+          <Button variant="slide-icon-loop" iconRight={<ArrowRightIcon />}>
+            Looping Icon
+          </Button>
+
+          {/* 2c. Raised 3D face that presses down */}
+          <Button variant="3d" iconRight={<ArrowRightIcon />}>
+            3D Press
+          </Button>
+
+          {/* 3. Horizontal Background Slide */}
+          <Button variant="slide-bg" iconRight={<DownloadIcon />}>
+            Background Wipe
+          </Button>
+
+          {/* 4. Top to Bottom Slide */}
+          <Button variant="slide-bg-top" iconLeft={<MailIcon />}>
+            Slide Top
+          </Button>
+
+          {/* 5. Bottom to Top Slide */}
+          <Button variant="slide-bg-bottom" iconRight={<ArrowRightIcon />}>
+            Slide Bottom
+          </Button>
+
+          {/* 6. Right to Left Slide */}
+          <Button variant="slide-bg-right" iconLeft={<SettingsIcon />}>
+            Slide Right
+          </Button>
+
+          {/* 7. Center Scale Pop */}
+          <Button variant="scale-up" iconRight={<StarIcon />}>
+            Scale Pop
+          </Button>
+
+          {/* 9. Skewed Diagonal Slide */}
+          <Button variant="skew-slide" iconLeft={<PlusIcon />}>
+            Skew Slide
+          </Button>
+
+          {/* 11. Border Ring Expansion */}
+          <Button variant="border-expand" iconRight={<CheckIcon />}>
+            Border Expand
+          </Button>
+
+          {/* 12. Icon Rotate Spin */}
+          <Button variant="icon-rotate" iconLeft={<SettingsIcon />}>
+            Icon Rotate
+          </Button>
+
+          {/* 13. Icon Spring Bounce */}
+          <Button variant="icon-bounce" iconRight={<ArrowRightIcon />}>
+            Icon Bounce
+          </Button>
+
+          {/* 14. Icon Continuous Spin */}
+          <Button variant="icon-spin" iconLeft={<SettingsIcon />}>
+            Icon Spin
+          </Button>
+
+          {/* 15. Vertical Curtain Reveal */}
+          <Button variant="curtain-reveal" iconRight={<ShareIcon />}>
+            Curtain Reveal
+          </Button>
+
+          {/* 17. Spring Bounce Roll */}
+          <Button variant="slide-text-bounce">
+            Spring Bounce
+          </Button>
+
+          {/* 18. Upward Text Roll */}
+          <Button variant="slide-text" iconRight={<ArrowRightIcon />}>
+            Upward Roll
+          </Button>
+
+          {/* 19. Downward Text Roll */}
+          <Button variant="slide-text-down" iconLeft={<MailIcon />}>
+            Downward Roll
+          </Button>
+
+          {/* 20. Liquid Wave Fill */}
+          <Button variant="liquid-fill" iconLeft={<MailIcon />}>
+            Liquid Fill
+          </Button>
         </div>
       )}
 
       {layout === "icon-only" && (
-        <div className="flex w-full flex-col items-center justify-center gap-8">
-          <div className="flex flex-col gap-4">
-            <div className="flex flex-wrap items-center justify-center gap-4">
-              <Button variant="outline" size="sm" iconLeft={<SearchIcon />} />
-              <Button variant="outline" size="sm" iconLeft={<BellIcon />} />
-              <Button variant="outline" size="sm" iconLeft={<MailIcon />} />
-              <Button variant="outline" size="sm" iconLeft={<PhoneIcon />} />
-              <Button variant="outline" size="sm" iconLeft={<SettingsIcon />} />
-              <Button variant="outline" size="sm" iconLeft={<PlusIcon />} />
-              <Button variant="outline" size="sm" iconLeft={<MinusIcon />} />
-              <Button variant="outline" size="sm" iconLeft={<XIcon />} />
-            </div>
-          </div>
+        <div className="flex flex-wrap items-center justify-center gap-3 max-w-4xl mx-auto py-2">
+          <Button variant="default" size="sm" className="bg-background text-foreground border border-border hover:bg-primary/10 hover:border-primary/30 hover:text-primary transition-colors duration-200" iconLeft={<SearchIcon />} />
+          <Button variant="default" size="sm" className="bg-background text-foreground border border-border hover:bg-primary/10 hover:border-primary/30 hover:text-primary transition-colors duration-200" iconLeft={<BellIcon />} />
+          <Button variant="default" size="sm" className="bg-background text-foreground border border-border hover:bg-primary/10 hover:border-primary/30 hover:text-primary transition-colors duration-200" iconLeft={<MailIcon />} />
+          <Button variant="default" size="sm" className="bg-background text-foreground border border-border hover:bg-primary/10 hover:border-primary/30 hover:text-primary transition-colors duration-200" iconLeft={<PhoneIcon />} />
+          <Button variant="default" size="sm" className="bg-background text-foreground border border-border hover:bg-primary/10 hover:border-primary/30 hover:text-primary transition-colors duration-200" iconLeft={<SettingsIcon />} />
+          <Button variant="default" size="sm" className="bg-background text-foreground border border-border hover:bg-primary/10 hover:border-primary/30 hover:text-primary transition-colors duration-200" iconLeft={<PlusIcon />} />
+          <Button variant="default" size="sm" className="bg-background text-foreground border border-border hover:bg-primary/10 hover:border-primary/30 hover:text-primary transition-colors duration-200" iconLeft={<MinusIcon />} />
+          <Button variant="default" size="sm" className="bg-background text-foreground border border-border hover:bg-primary/10 hover:border-primary/30 hover:text-primary transition-colors duration-200" iconLeft={<XIcon />} />
         </div>
       )}
 
-      {layout === "right-icon" && (
-        <div className="flex w-full flex-col items-center justify-center gap-8">
-          <div className="flex flex-col gap-4">
-            <div className="flex flex-wrap items-center justify-center gap-4">
-              <Button variant="default" iconRight={<ArrowRightIcon />}>
-                Next
-              </Button>
-              <Button variant="outline" iconRight={<ArrowRightIcon />}>
-                Continue
-              </Button>
-              <Button variant="secondary" iconRight={<CheckIcon />}>
-                Confirm
-              </Button>
-              <Button variant="ghost" iconRight={<SettingsIcon />}>
-                Settings
-              </Button>
-            </div>
-          </div>
-        </div>
-      )}
-
-      {layout === "others" && (
-        <div className="flex w-full flex-col items-center justify-center gap-8">
-          <div className="flex flex-col gap-4">
-            <div className="flex flex-wrap items-center justify-center gap-4">
-              <Button variant="outline" iconLeft={<ArrowLeftIcon />}>
-                Previous
-              </Button>
-              <Button variant="default" iconRight={<ArrowRightIcon />}>
-                Next
-              </Button>
-              <Button variant="secondary" iconLeft={<ArrowLeftIcon />}>
-                Back
-              </Button>
-              <Button variant="ghost" iconRight={<ArrowRightIcon />}>
-                Forward
-              </Button>
-            </div>
-          </div>
-          <div className="flex flex-col gap-4 mt-4">
-            <div className="flex flex-wrap items-center justify-center gap-4">
-              <Button
-                className="bg-emerald-500 dark:bg-emerald-600 text-white hover:bg-emerald-600 dark:hover:bg-emerald-700"
-                variant="default"
-                iconLeft={<CheckIcon />}
-              >
-                Success
-              </Button>
-              <Button variant="destructive" iconLeft={<XIcon />}>
-                Delete
-              </Button>
-              <Button variant="outline" iconLeft={<CheckIcon />}>
-                Approve
-              </Button>
-              <Button
-                className="bg-red-500 hover:bg-red-600 text-white"
-                variant="secondary"
-                iconLeft={<XIcon />}
-              >
-                Reject
-              </Button>
-            </div>
-          </div>
+      {layout === "social" && (
+        <div className="flex flex-col sm:flex-row sm:flex-wrap items-center justify-center gap-3 w-full max-w-4xl mx-auto py-2">
+          <Button variant="default" className="w-full sm:w-auto justify-center bg-background text-foreground border border-border hover:bg-primary/10 hover:border-primary/30 hover:text-primary transition-colors duration-200" iconLeft={<EmailIcon />}>
+            Login with Email
+          </Button>
+          <Button variant="default" className="w-full sm:w-auto justify-center bg-background text-foreground border border-border hover:bg-primary/10 hover:border-primary/30 hover:text-primary transition-colors duration-200" iconLeft={<GoogleIcon />}>
+            Continue with Google
+          </Button>
+          <Button variant="default" className="w-full sm:w-auto justify-center bg-background text-foreground border border-border hover:bg-primary/10 hover:border-primary/30 hover:text-primary transition-colors duration-200" iconLeft={<GitHubIcon />}>
+            Continue with GitHub
+          </Button>
+          <Button variant="default" className="w-full sm:w-auto justify-center bg-background text-foreground border border-border hover:bg-primary/10 hover:border-primary/30 hover:text-primary transition-colors duration-200" iconLeft={<FacebookIcon />}>
+            Login with Facebook
+          </Button>
+          <Button variant="default" className="w-full sm:w-auto justify-center bg-background text-foreground border border-border hover:bg-primary/10 hover:border-primary/30 hover:text-primary transition-colors duration-200" iconLeft={<XIcon2 />}>
+            Login with X
+          </Button>
+          <Button variant="default" className="w-full sm:w-auto justify-center bg-background text-foreground border border-border hover:bg-primary/10 hover:border-primary/30 hover:text-primary transition-colors duration-200" iconLeft={<AppleIcon />}>
+            Login with Apple
+          </Button>
+          <Button variant="default" className="w-full sm:w-auto justify-center bg-background text-foreground border border-border hover:bg-primary/10 hover:border-primary/30 hover:text-primary transition-colors duration-200" iconLeft={<MicrosoftIcon />}>
+            Login with Microsoft
+          </Button>
+          <Button variant="default" className="w-full sm:w-auto justify-center bg-background text-foreground border border-border hover:bg-primary/10 hover:border-primary/30 hover:text-primary transition-colors duration-200" iconLeft={<SlackIcon />}>
+            Login with Slack
+          </Button>
+          <Button variant="default" className="w-full sm:w-auto justify-center bg-background text-foreground border border-border hover:bg-primary/10 hover:border-primary/30 hover:text-primary transition-colors duration-200" iconLeft={<LinkedInIcon />}>
+            Login with LinkedIn
+          </Button>
         </div>
       )}
     </div>

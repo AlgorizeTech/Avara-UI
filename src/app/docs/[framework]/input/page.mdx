@@ -1,0 +1,430 @@
+import { docsPageMetadata } from "@/lib/docs-metadata";
+
+export const metadata = docsPageMetadata("input");
+
+import { ExampleShowcase } from "@/components/site/Sandbox";
+import { extractCode } from "@/lib/code";
+
+# Input
+
+A multi-purpose Input component with password toggles, autocomplete suggestions, and four layout variants.
+
+Pass `suggestions` and the field lists them the way a select menu would — typing narrows the list, and choosing one writes the text straight into the field. The drag-and-drop file mode lives on its own page: see <DocLink to="file-upload">File upload</DocLink>.
+
+Explore the different variations of the Input component — each example shows a live preview with the exact code to copy.
+
+export const usageDefault = `import { InputBlock } from "@/components/custom/blocks/InputBlock";
+
+export default function BasicInput() {
+  return (
+    <InputBlock
+      type="email"
+      label="Email Address"
+      placeholder="Enter your email..."
+      helperText="We'll never share your data."
+    />
+  );
+}`;
+
+export const usageFilled = `import { InputBlock } from "@/components/custom/blocks/InputBlock";
+
+export default function FilledInput() {
+  return (
+    <InputBlock
+      variant="filled"
+      label="Email Address"
+      placeholder="Enter your email..."
+      helperText="We'll never share your data."
+    />
+  );
+}`;
+
+export const usageUnderlined = `import { InputBlock } from "@/components/custom/blocks/InputBlock";
+
+export default function UnderlinedInput() {
+  return (
+    <InputBlock
+      variant="underlined"
+      label="Email Address"
+      placeholder="Enter your email..."
+      helperText="We'll never share your data."
+    />
+  );
+}`;
+
+export const usagePassword = `import { InputBlock } from "@/components/custom/blocks/InputBlock";
+
+export default function PasswordInput() {
+  return (
+    <InputBlock
+      type="password"
+      label="Password"
+      placeholder="Enter your password..."
+      helperText="We'll never share your data."
+    />
+  );
+}`;
+
+export const usageAutocomplete = `"use client";
+
+import { useState } from "react";
+import { InputBlock } from "@/components/custom/blocks/InputBlock";
+import { MapPin } from "lucide-react";
+
+const CITIES = [
+  "Amsterdam", "Berlin", "Dhaka", "London", "New York",
+  "San Francisco", "Santiago", "Singapore", "Tokyo",
+];
+
+export default function DestinationInput() {
+  const [city, setCity] = useState("");
+
+  // Focus lists every suggestion; typing narrows it. Choosing one writes
+  // the text into the field, so onChange fires exactly as if it were typed.
+  return (
+    <InputBlock
+      label="Destination"
+      placeholder="Type a city…"
+      leftIcon={<MapPin className="w-4 h-4" />}
+      value={city}
+      onChange={(e) => setCity(e.target.value)}
+      suggestions={CITIES}
+      onSuggestionSelect={(value) => console.log("Picked", value)}
+      helperText="Pick a suggestion or type your own."
+    />
+  );
+}`;
+
+<ExampleShowcase
+  name="input"
+  colorControl
+  colorLabel="Active Color"
+  columns={1}
+  examples={[
+    {
+      title: "Input",
+      subheading: "A labelled text field with helper text and a leading icon.",
+      propNotes: [
+        {
+          prop: "label",
+          effect:
+            "sits above the field and `helperText` below it.",
+        },
+        {
+          prop: "variant",
+          value: '"default"',
+          effect:
+            "is the bordered box; see the next three for the alternatives.",
+        },
+      ],
+      props: { inputType: "email" },
+      usage: usageDefault,
+      code: extractCode("src/components/custom/blocks/InputBlock.tsx"),
+    },
+  ]}
+/>
+
+## Installation
+
+<Installation name="input" />
+
+## Examples
+
+<ExampleShowcase
+  name="input"
+  colorControl
+  colorLabel="Active Color"
+  columns={1}
+  examples={[
+    {
+      title: "Filled",
+      propNotes: [
+        {
+          lead: "Use",
+          prop: "variant",
+          value: '"filled"',
+          effect:
+            "for a solid, low-contrast field with no visible border at rest.",
+        },
+      ],
+      props: { variant: "filled" },
+      usage: usageFilled,
+    },
+    {
+      title: "Underlined",
+      propNotes: [
+        {
+          lead: "Use",
+          prop: "variant",
+          value: '"underlined"',
+          effect:
+            "to reduce the chrome to a single baseline rule.",
+        },
+      ],
+      props: { variant: "underlined" },
+      usage: usageUnderlined,
+    },
+    {
+      title: "Password",
+      propNotes: [
+        {
+          lead: "Set",
+          prop: "type",
+          value: '"password"',
+          effect:
+            "and the show/hide toggle is added for you — there is no separate prop for it.",
+        },
+      ],
+      props: { inputType: "password" },
+      usage: usagePassword,
+    },
+    {
+      title: "Autocomplete",
+      subheading: "Suggestions appear like a select menu, but the field stays free text — pick one or keep typing.",
+      propNotes: [
+        {
+          lead: "Pass",
+          prop: "suggestions",
+          effect:
+            "as a `string[]`. Focus shows the list, typing filters it (the matched letters are highlighted), and ↑ ↓ Enter pick from the keyboard.",
+        },
+        {
+          prop: "onSuggestionSelect",
+          effect:
+            "fires after a pick. Your normal `onChange` fires too, so controlled and uncontrolled inputs both just work.",
+        },
+        {
+          prop: "maxSuggestions",
+          value: "{8}",
+          effect:
+            "caps how many rows show at once; the rest scroll.",
+        },
+      ],
+      props: { example: "autocomplete", inputType: "text" },
+      usage: usageAutocomplete,
+      minHeight: 460,
+    },
+  ]}
+/>
+
+## Features
+Learn about the Input component's versatile states, including disabled, error, and focused styles, along with icon support.
+
+<div className="grid grid-cols-1 sm:grid-cols-2 gap-4 my-6 not-prose">
+  <div className="p-6 rounded-2xl border border-border bg-card">
+    <h3 className="text-lg font-semibold text-card-foreground mb-2">Customizable</h3>
+    <p className="text-muted-foreground text-sm">Easily adapt the component's styling and behavior to fit your application's unique design system.</p>
+  </div>
+  <div className="p-6 rounded-2xl border border-border bg-card">
+    <h3 className="text-lg font-semibold text-card-foreground mb-2">Accessible</h3>
+    <p className="text-muted-foreground text-sm">Built with accessibility in mind, ensuring all users can interact with your application effectively.</p>
+  </div>
+  <div className="p-6 rounded-2xl border border-border bg-card">
+    <h3 className="text-lg font-semibold text-card-foreground mb-2">Responsive</h3>
+    <p className="text-muted-foreground text-sm">Fully responsive design that looks and works great across desktop, tablet, and mobile devices.</p>
+  </div>
+  <div className="p-6 rounded-2xl border border-border bg-card">
+    <h3 className="text-lg font-semibold text-card-foreground mb-2">Performant</h3>
+    <p className="text-muted-foreground text-sm">Optimized for maximum performance with minimal re-renders and efficient state management.</p>
+  </div>
+</div>
+
+## Best Practices & Guidelines
+
+<div className="flex flex-col gap-4 my-6 not-prose">
+  <div className="rounded-xl border border-foreground/[0.06] bg-foreground/[0.03] p-4">
+    <h4 className="font-sans text-[14px] font-semibold text-foreground mb-1">Usage Guidelines</h4>
+    <p className="text-[13px] leading-relaxed text-foreground/50">Follow standard design principles when implementing this component. Ensure proper contrast, spacing, and context within your layout.</p>
+  </div>
+</div>
+
+## Props Reference
+
+This component extends `React.InputHTMLAttributes<HTMLInputElement>`, meaning you can pass any standard input prop (like `onChange`, `value`, `name`, `disabled`, etc.).
+
+<div className="overflow-x-auto">
+  <table>
+    <thead>
+      <tr>
+        <th>Prop</th>
+        <th>Type</th>
+        <th>Default</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>
+          <code>type</code>
+        </td>
+        <td>
+          <code>"text" | "password" | "email" | "number" | "file"</code>
+        </td>
+        <td>
+          <code>"text"</code>
+        </td>
+        <td>
+          Determines the behavior. <code>"password"</code> adds a visibility
+          toggle. <code>"file"</code> turns the field into a drag-and-drop
+          zone — documented on the{" "}
+          <DocLink to="file-upload">File upload</DocLink> page.
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <code>suggestions</code>
+        </td>
+        <td>
+          <code>string[]</code>
+        </td>
+        <td>
+          <code>undefined</code>
+        </td>
+        <td>
+          Autocomplete list. Focus shows it, typing filters it
+          (case-insensitive, matched letters highlighted), and a click or
+          Enter writes the suggestion into the field. Ignored for{" "}
+          <code>"password"</code> and <code>"file"</code>.
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <code>onSuggestionSelect</code>
+        </td>
+        <td>
+          <code>(value: string) =&gt; void</code>
+        </td>
+        <td>
+          <code>undefined</code>
+        </td>
+        <td>
+          Fired after a suggestion is written into the field. The regular{" "}
+          <code>onChange</code> fires as well.
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <code>maxSuggestions</code>
+        </td>
+        <td>
+          <code>number</code>
+        </td>
+        <td>
+          <code>8</code>
+        </td>
+        <td>Maximum rows shown at once; further matches scroll.</td>
+      </tr>
+      <tr>
+        <td>
+          <code>inputSize</code>
+        </td>
+        <td>
+          <code>"sm" | "md" | "lg"</code>
+        </td>
+        <td>
+          <code>"md"</code>
+        </td>
+        <td>
+          Uniformly scales the height, padding, text size, and icon size of the
+          input or dropzone.
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <code>variant</code>
+        </td>
+        <td>
+          <code>"default" | "filled" | "underlined" | "glow"</code>
+        </td>
+        <td>
+          <code>"default"</code>
+        </td>
+        <td>
+          Determines the visual styling of the borders, background, and focus
+          rings.
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <code>color</code>
+        </td>
+        <td>
+          <code>"indigo" | "rose" | "emerald" | "zinc" | string</code>
+        </td>
+        <td>
+          <code>"indigo"</code>
+        </td>
+        <td>
+          Applies the global color theme to the focus ring, glow shadow, and
+          drag-active states. Accepts hex codes.
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <code>label</code>
+        </td>
+        <td>
+          <code>string</code>
+        </td>
+        <td>
+          <code>undefined</code>
+        </td>
+        <td>Renders a bold, accessible label directly above the input.</td>
+      </tr>
+      <tr>
+        <td>
+          <code>helperText</code>
+        </td>
+        <td>
+          <code>string</code>
+        </td>
+        <td>
+          <code>undefined</code>
+        </td>
+        <td>Subtle instructional text rendered below the input.</td>
+      </tr>
+      <tr>
+        <td>
+          <code>error</code>
+        </td>
+        <td>
+          <code>string</code>
+        </td>
+        <td>
+          <code>undefined</code>
+        </td>
+        <td>
+          If provided, turns the input red, adds an alert icon, and replaces the
+          helper text with the error message.
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <code>disabled</code>
+        </td>
+        <td>
+          <code>boolean</code>
+        </td>
+        <td>
+          <code>false</code>
+        </td>
+        <td>Disables interactions and applies a faded, read-only style.</td>
+      </tr>
+      <tr>
+        <td>
+          <code>leftIcon / rightIcon</code>
+        </td>
+        <td>
+          <code>ReactNode</code>
+        </td>
+        <td>
+          <code>undefined</code>
+        </td>
+        <td>
+          <strong>Standard Mode Only:</strong> Injects an icon or element into
+          the left or right side of the input field.
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>

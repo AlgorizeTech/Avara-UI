@@ -1,12 +1,12 @@
+export const metadata = docsPageMetadata("skeleton");
+
 # Skeleton Loader
 
 A high-performance visual placeholder system used to reduce perceived loading times.
 
 While standard Tailwind gives you the `animate-pulse` class, modern applications rely on **Shimmer** effects (a sleek gradient sliding across the background). This component injects its own pure CSS `@keyframes` to achieve a gorgeous shimmer. It provides composite templates out of the box (like Cards and Profiles), but also exposes top-level props so you can strictly define custom widths, heights, and border radii.
 
-## Examples
-
-Explore the different variations of the Skeleton component — each example shows a live preview with the exact code to copy. The first example's **Code** tab contains the full component source.
+Explore the different variations of the Skeleton component — each example shows a live preview with the exact code to copy.
 
 export const usageCard = `import { SkeletonBlock } from "@/components/custom/blocks/SkeletonBlock";
 
@@ -14,20 +14,45 @@ export default function CardSkeleton() {
   return ;
 }`;
 
-export const usageProfile = ``;
+export const usageProfile = `import { SkeletonBlock } from "@/components/custom/blocks/SkeletonBlock";
 
-export const usageText = ``;
+export default function ProfileSkeleton() {
+  return ;
+}`;
 
-export const usageRect = ``;
+export const usageText = `import { SkeletonBlock } from "@/components/custom/blocks/SkeletonBlock";
 
-export const usageCircle = ``;
+export default function TextSkeleton() {
+  return ;
+}`;
 
-export const usagePulse = ``;
+export const usageRect = `import { SkeletonBlock } from "@/components/custom/blocks/SkeletonBlock";
 
-export const usageNone = ``;
+export default function RectSkeleton() {
+  return ;
+}`;
+
+export const usageCircle = `import { SkeletonBlock } from "@/components/custom/blocks/SkeletonBlock";
+
+export default function CircleSkeleton() {
+  return ;
+}`;
+
+export const usagePulse = `import { SkeletonBlock } from "@/components/custom/blocks/SkeletonBlock";
+
+export default function PulseSkeleton() {
+  return ;
+}`;
+
+export const usageNone = `import { SkeletonBlock } from "@/components/custom/blocks/SkeletonBlock";
+
+export default function StaticSkeleton() {
+  return ;
+}`;
 
 export const usageCustom = `import { SkeletonBlock } from "@/components/custom/blocks/SkeletonBlock";
 
+// Custom atomic composition with explicit width, height and radius props
 export default function CustomSkeleton() {
   return (
 
@@ -36,43 +61,14 @@ export default function CustomSkeleton() {
 
 ## Installation
 
-### Copy the Component
+Register the @algorize-ui registry once per project, then add the component:
 
-This component is completely dependency-free. It uses standard Tailwind classes and automatically injects the lightweight CSS required for the shimmer effect.
-
-You can copy the full engine code (in either TypeScript or JavaScript) directly from the **Component** tab in the Interactive Showcase above. Place it in `components/custom/blocks/SkeletonBlock.tsx`.
-
----
-
-## Usage
-
-### Composite Use
-
-If you are loading standard layouts like a user profile or a product card, just use the built-in composite variants to save time.
-
-```tsx
-
-export default function FeedLoader() {
-  return (
-
-  );
-}
+```bash
+npx shadcn@latest registry add @algorize-ui=https://algorize-ui.vercel.app/r/{name}.json
+npx shadcn@latest add @algorize-ui/skeleton
 ```
 
-## Custom Skeletons
-
-For everything else, you can leverage explicit props to build perfect placeholder boundaries without wrestling with Tailwind class strings.
-
-```tsx
-
-export default function CustomDashboardLoader() {
-  return (
-    
-      {/* Build any layout using exact width/height/radius props */}
-
-  );
-}
-```
+## Examples
 
 ## Features
 Learn about the Skeleton component's loading placeholder features, featuring a subtle pulsing animation that reduces perceived wait times.
@@ -157,6 +153,6 @@ Learn about the Skeleton component's loading placeholder features, featuring a s
 
 ---
 
-**Component Path:** `nextjs\skeleton\page.mdx`
+**Component Path:** `[framework]\skeleton\page.mdx`
 
-**Web Version:** Visit the interactive version at the corresponding URL on the Next.js documentation site for live previews and interactive examples.
+**Web Version:** Visit the corresponding URL on the Algorize UI documentation site for live previews and interactive examples.

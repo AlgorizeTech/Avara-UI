@@ -1,14 +1,14 @@
+export const metadata = docsPageMetadata("navigation");
+
 # Navigation Menu
 
 A highly composable, accessible, and smoothly animated navigation menu built for modern React applications.
 
 This `NavigationMenu` uses a strict context-driven composition pattern to share state across its sub-components. It features a smoothly sliding background indicator that tracks the active menu item and gracefully handles dropdown positioning.
 
-## Examples
+The menu is context-driven: `NavigationMenu` publishes the open item, `variant` and `color`, and the `Indicator` measures the active trigger and slides to it. That hierarchy — `Menu` > `List` > `Item` > `Trigger` / `Content` — is what makes the animation work, so keep it intact.
 
-The menu is context-driven: `NavigationMenu` publishes the open item, `variant` and `color`, and the `Indicator` measures the active trigger and slides to it. That hierarchy — `Menu` > `List` > `Item` > `Trigger` / `Content` — is what makes the animation work, so keep it intact. The first example's **Code** tab contains the full component source.
-
-export const usageDefault = `import {
+export const usageMinimal = `import {
   NavigationMenu,
   NavigationMenuContent,
   NavigationMenuIndicator,
@@ -18,41 +18,70 @@ export const usageDefault = `import {
   NavigationMenuTrigger,
 } from "@/components/custom/blocks/NavigationMenu";
 
-export default function TopNav() {
+export default function MinimalNav() {
+  // Pill chrome removed; the indicator becomes a thin underline.
   return (
 
           Features
+          
+            {/* ── MOBILE ULTRA-COMPACT GRID WIDTH ── */}
 
-                Security
+                    Lightning Fast
 
-                Developers
+                    Experience uncompromised performance with our edge-first
+                    architecture.
 
+                Advanced encryption protocols.
+
+                APIs & webhooks.
+
+                Tailor experience.
+
+          Resources
+          
+            {/* ── MOBILE ULTRA-COMPACT GRID WIDTH ── */}
+
+                Quick setup guide.
+
+                iOS & Android.
+
+          {/* Standard link wrapped in trigger-like styles without the chevron */}
+          
             Pricing
 
-        {/* Sits last in the list — it measures its siblings. */}
+  );
+}
+
+function ListItem({
+  className,
+  title,
+  children,
+  icon: Icon,
+  ...props
+}: {
+  className?: string;
+  title: string;
+  children: ReactNode;
+  icon?: ElementType;
+} & ComponentPropsWithoutRef) {
+  return (
+
+          {Icon && }
+          {title}
+
+          {children}
 
   );
 }`;
 
-export const usageMinimal = `// Pill chrome removed; the indicator becomes a thin underline.
-
-  {/* … */}
-`;
-
-export const usageGlass = `// Translucent and backdrop-blurred — meant to sit over imagery, so give it
-// something to blur.
-
-    {/* … */}
-  
-`;
-
 ## Installation
 
-### Copy the Component
+Register the @algorize-ui registry once per project, then add the component:
 
-Because this relies on standard React Context and GSAP for the smooth indicator sliding, it fits right into your existing architecture.
-
-Copy the full engine code from the **Code** tab of the first example above into `components/custom/blocks/NavigationMenu.tsx`.
+```bash
+npx shadcn@latest registry add @algorize-ui=https://algorize-ui.vercel.app/r/{name}.json
+npx shadcn@latest add @algorize-ui/navigation-menu
+```
 
 ## Features
 Explore the Navigation menu's accessible dropdown features, including hover-delays, animated viewports, and responsive collapsing.
@@ -130,6 +159,6 @@ Explore the Navigation menu's accessible dropdown features, including hover-dela
 
 ---
 
-**Component Path:** `nextjs\navigation\page.mdx`
+**Component Path:** `[framework]\navigation\page.mdx`
 
-**Web Version:** Visit the interactive version at the corresponding URL on the Next.js documentation site for live previews and interactive examples.
+**Web Version:** Visit the corresponding URL on the Algorize UI documentation site for live previews and interactive examples.

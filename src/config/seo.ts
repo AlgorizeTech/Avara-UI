@@ -1,45 +1,45 @@
-// SEO Configuration for Next.js Documentation
+import { SITE_URL, siteConfig, links, integrations } from "./site";
+// SEO Configuration for Algorize UI. Identity and links come from
+// ./site, which reads them from the environment — change them there.
 export const seoConfig = {
   // Basic site information
-  siteName: 'Next.js Documentation',
-  siteUrl: 'https://seraui.seraprogrammer.com',
-  siteDescription: 'Modern React component library with 50+ animated components built with Tailwind CSS and Framer Motion. Free, open-source, and production-ready for modern web applications.',
+  siteName: siteConfig.name,
+  siteUrl: SITE_URL,
+  siteDescription: siteConfig.description,
   
-  // Social media
+  // Social media. Only GitHub is real — a Twitter handle, Discord invite or npm
+  // package that does not exist is worse than an absent one, so they are left
+  // out until they are.
   social: {
-    twitter: '@sera_ui',
-    github: 'https://github.com/seraprogrammer/sera-ui',
-    discord: 'https://discord.gg/sera-ui',
-    npm: 'https://www.npmjs.com/package/sera-ui'
+    github: links.github,
   },
 
   // Default metadata
   defaultMetadata: {
-    title: 'Next.js Documentation | Comprehensive Guide',
-    description: 'Comprehensive documentation for Next.js, the React framework for production. Free, open-source, and built with modern web technologies.',
+    title: siteConfig.title,
+    description: siteConfig.description,
     keywords: [
       'React components',
       'UI library',
       'Tailwind CSS',
-      'Framer Motion',
+      'Motion',
       'TypeScript',
       'Next.js',
       'animated components',
       'modern UI',
       'open source',
       'free components',
+      'shadcn registry',
       'shadcn alternative',
-      'Bangladesh UI library',
-      'copy paste components',
       'responsive design',
       'accessible components',
       'dark mode',
       'component library',
       'design system'
     ],
-    authors: ['Next.js Documentation Team'],
-    creator: 'Next.js Documentation Team',
-    publisher: 'Next.js Documentation',
+    authors: [siteConfig.author],
+    creator: siteConfig.author,
+    publisher: siteConfig.name,
     category: 'technology'
   },
 
@@ -47,22 +47,21 @@ export const seoConfig = {
   openGraph: {
     type: 'website',
     locale: 'en_US',
-    siteName: 'Next.js Documentation',
+    siteName: siteConfig.name,
     images: [
       {
         url: '/og-image.png',
         width: 1200,
         height: 630,
-        alt: 'Next.js Documentation | Comprehensive Guide'
+        alt: siteConfig.title
       }
     ]
   },
 
-  // Twitter defaults
+  // Twitter defaults. No handle is set: attributing cards to another project's
+  // account is worse than leaving the attribution off.
   twitter: {
     card: 'summary_large_image',
-    site: '@sera_ui',
-    creator: '@sera_ui'
   },
 
   // Robots configuration
@@ -106,11 +105,13 @@ export const seoConfig = {
     }
   },
 
-  // Analytics configuration
+  // Analytics configuration. IDs come from the environment — the values that
+  // used to sit here belonged to the template this site was built from, so any
+  // traffic they captured was reported to a third party. Empty means disabled.
   analytics: {
-    googleAnalytics: 'G-KCJ7NVNQ62',
-    hotjar: '3849284',
-    clarity: 'n8j9k2l3m4'
+    googleAnalytics: integrations.gaId ?? '',
+    hotjar: '',
+    clarity: ''
   },
 
   // Performance thresholds for monitoring
@@ -127,9 +128,9 @@ export const seoConfig = {
     organization: {
       '@context': 'https://schema.org',
       '@type': 'Organization',
-      name: 'Next.js Documentation',
-      url: 'https://seraui.seraprogrammer.com',
-      logo: 'https://seraui.seraprogrammer.com/logo.svg',
+      name: siteConfig.name,
+      url: SITE_URL,
+      logo: `${SITE_URL}/logo.svg`,
       description: 'Modern React component library for developers',
       foundingDate: '2024',
       address: {
@@ -141,7 +142,7 @@ export const seoConfig = {
     softwareApplication: {
       '@context': 'https://schema.org',
       '@type': 'SoftwareApplication',
-      name: 'Next.js Documentation',
+      name: siteConfig.name,
       applicationCategory: 'DeveloperApplication',
       operatingSystem: 'Web',
       offers: {

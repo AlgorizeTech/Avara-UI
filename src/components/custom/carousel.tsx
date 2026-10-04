@@ -1,9 +1,19 @@
-// src/components/custom/carousel.tsx
 "use client";
-import Image, { StaticImageData } from "next/image";
-import React, { useCallback, useEffect, useState } from "react";
 
-type ImgSrc = string | StaticImageData;
+import React, { useCallback, useEffect, useRef, useState } from "react";
+import { ArrowLeft, ArrowRight, Hand, Pause, Play } from "lucide-react";
+import { cn } from "@/lib/utils";
+
+/**
+ * An image source.
+ *
+ * A plain URL string in any React app. Next.js users importing a static asset
+ * get a `StaticImageData` object instead, which `next/image` accepts — hence the
+ * structural second branch rather than a `next/image` type import, which would
+ * make this file Next-only.
+ */
+type StaticImageLike = { src: string; height?: number; width?: number; blurDataURL?: string };
+type ImgSrc = string | StaticImageLike;
 
 type ImageCarouselProps = {
   images?: ImgSrc[];
@@ -22,13 +32,19 @@ type ImageCarouselProps = {
   imageHeight?: number;
   showArrows?: boolean;
   showDots?: boolean;
+  /**
+   * The element used for images. Defaults to a plain `img`, so this component
+   * works in any React app with no adaptation. In Next.js, pass `next/image`
+   * to keep automatic optimisation: `imageComponent={Image}`.
+   */
+  imageComponent?: React.ElementType;
 };
 
 export function ImageCarousel({
   images = [],
-  rootClassName = "relative h-60 w-full min-w-80 overflow-hidden md:h-[470px] lg:h-[540px]",
+  rootClassName = "relative h-60 w-full min-w-80 overflow-hidden rounded-lg md:h-[470px] md:rounded-xl lg:h-[540px]",
   slideClassName = "h-60 min-w-full bg-black/20 object-cover sm:h-96 md:h-[540px]",
-  arrowClassName = "absolute top-1/2 z-50 flex h-6 w-6 items-center justify-center rounded-full bg-white/70 hover:bg-white/90 md:h-8 md:w-8",
+  arrowClassName = "absolute top-1/2 z-50 flex h-7 w-7 items-center justify-center rounded-full bg-card/80 hover:bg-card shadow-md md:h-9 md:w-9 transition-all cursor-pointer",
   dotClassName = "rounded-full bg-white duration-500 h-2",
   activeDotClassName = "w-8",
   prevIcon,
@@ -41,28 +57,16 @@ export function ImageCarousel({
   imageHeight = 540,
   showArrows = true,
   showDots = true,
+  imageComponent: Image = "img",
 }: ImageCarouselProps) {
   const [currentSlider, setCurrentSlider] = useState<number>(0);
 
   const defaultPrevIcon = (
-    <svg
-      xmlns="http://www.w3.org/2000/svg"
-      className="icon h-4 w-4 fill-black/50 md:h-6 md:w-6"
-      viewBox="0 0 1024 1024"
-    >
-      <path d="M685.248 104.704a64 64 0 010 90.496L368.448 512l316.8 316.8a64 64 0 01-90.496 90.496L232.704 557.248a64 64 0 010-90.496l362.048-362.048a64 64 0 0190.496 0z" />
-    </svg>
+    <ArrowLeft className="h-4 w-4 text-foreground md:h-5 md:w-5" />
   );
 
   const defaultNextIcon = (
-    <svg
-      xmlns="http://www.w3.org/2000/svg"
-      className="icon h-4 w-4 fill-black/50 md:h-6 md:w-6"
-      viewBox="0 0 1024 1024"
-      transform="rotate(180)"
-    >
-      <path d="M685.248 104.704a64 64 0 010 90.496L368.448 512l316.8 316.8a64 64 0 01-90.496 90.496L232.704 557.248a64 64 0 010-90.496l362.048-362.048a64 64 0 0190.496 0z" />
-    </svg>
+    <ArrowRight className="h-4 w-4 text-foreground md:h-5 md:w-5" />
   );
 
   const prevSlider = () =>
@@ -129,157 +133,161 @@ export function ImageCarousel({
   );
 }
 
-type HeroSlide = {
+export type HeroSlide = {
   img: ImgSrc;
   title?: string;
   des?: string;
 };
 
-type HeroCarouselProps = {
+export type HeroCarouselProps = {
   slides?: HeroSlide[];
+  className?: string;
   rootClassName?: string;
   textContainerClassName?: string;
   titleClassName?: string;
   descriptionClassName?: string;
-  arrowContainerClassName?: string;
-  arrowClassName?: string;
   slideContainerClassName?: string;
   slideClassName?: string;
   autoPlay?: boolean;
   autoPlayInterval?: number;
   transitionDuration?: number;
   transitionEasing?: string;
-  slideTransform?: number;
   imageWidth?: number;
   imageHeight?: number;
+  /**
+   * The element used for images. Defaults to a plain `img`, so this component
+   * works in any React app with no adaptation. In Next.js, pass `next/image`
+   * to keep automatic optimisation: `imageComponent={Image}`.
+   */
+  imageComponent?: React.ElementType;
 };
 
 export function HeroCarousel({
   slides = [],
-  rootClassName = "relative z-50 flex h-60 w-full transform flex-col items-center justify-center gap-5 overflow-hidden bg-cover duration-1000 ease-linear before:absolute before:inset-0 before:bg-black/50 sm:h-96 md:h-[540px] lg:gap-10 xl:flex-row",
-  textContainerClassName = "absolute left-0 w-1/2 rounded-lg px-4 text-white drop-shadow-lg",
-  titleClassName = "mb-3 lg:text-3xl",
-  descriptionClassName = "text-xs sm:text-sm md:text-base lg:text-lg",
-  arrowContainerClassName = "absolute bottom-1/4 z-50 flex gap-3 px-5",
-  arrowClassName = "flex h-6 w-6 items-center justify-center rounded-full hover:bg-white/30 md:h-8 md:w-8",
-  slideContainerClassName = "absolute -right-5 z-50 ml-auto w-1/2 overflow-hidden px-4 py-10 lg:-right-16",
-  slideClassName = "h-[180px] min-w-[90px] sm:h-[200px] lg:h-[320px] lg:min-w-[184px] z-50 rounded-lg bg-black/50 shadow-lg shadow-black drop-shadow-lg duration-300",
+  rootClassName = "relative z-50 flex h-60 max-lg:h-[360px] w-full transform flex-col items-center justify-center gap-5 overflow-hidden rounded-lg bg-cover duration-1000 ease-linear before:absolute before:inset-0 before:bg-black/50 sm:h-96 md:h-[540px] md:rounded-xl lg:gap-10 xl:flex-row",
+  textContainerClassName = "absolute max-lg:top-12 max-lg:pl-[15px] left-0 w-full lg:w-1/2 rounded-lg px-4 text-white drop-shadow-lg z-40",
+  titleClassName = "mb-3 text-xl font-semibold sm:text-2xl lg:text-3xl",
+  descriptionClassName = "text-xs sm:text-sm md:text-base lg:text-lg max-lg:line-clamp-2",
+  slideContainerClassName = "absolute -right-5 max-lg:translate-y-[80px] z-50 ml-auto w-1/2 overflow-hidden px-4 py-10 lg:-right-16",
+  slideClassName = "h-[180px] min-w-[90px] sm:h-[200px] lg:h-[320px] lg:min-w-[184px] z-50 rounded-lg duration-300",
   autoPlay = false,
   autoPlayInterval = 3000,
   transitionDuration = 1000,
   transitionEasing = "ease-linear",
-  slideTransform = 200,
   imageWidth = 1200,
   imageHeight = 540,
+  imageComponent: Image = "img",
 }: HeroCarouselProps) {
   const [currentSlider, setCurrentSlider] = useState<number>(0);
-
-  const prevSlider = () =>
-    setCurrentSlider((s) => (s === 0 ? slides.length - 1 : s - 1));
+  const [animatingKey, setAnimatingKey] = useState<number>(0);
 
   const nextSlider = useCallback(() => {
-    setCurrentSlider((s) => (s === slides.length - 1 ? 0 : s + 1));
-  }, [slides.length]);
+    setCurrentSlider((s) => s + 1);
+    setAnimatingKey((k) => k + 1);
+  }, []);
 
   useEffect(() => {
     if (autoPlay && slides.length > 1) {
       const interval = setInterval(nextSlider, autoPlayInterval);
       return () => clearInterval(interval);
     }
-  }, [autoPlay, autoPlayInterval, nextSlider, slides.length]);
+  }, [autoPlay, autoPlayInterval, nextSlider, slides.length, currentSlider]);
+
+  const [slideWidth, setSlideWidth] = useState<number>(200);
+  const cardRef = React.useRef<HTMLDivElement>(null);
+
+  // Measures the first preview card so the track can be translated by an exact
+  // pixel amount. Kept above the `slides.length` guard: hooks must run in the
+  // same order on every render, including the one where `slides` is empty.
+  useEffect(() => {
+    const measure = () => {
+      if (cardRef.current) {
+        // 16px is the gap-4 distance between cards
+        setSlideWidth(cardRef.current.offsetWidth + 16);
+      }
+    };
+    measure();
+    window.addEventListener("resize", measure);
+    return () => window.removeEventListener("resize", measure);
+  }, []);
 
   if (!slides.length) return null;
 
-  const currentSlide = slides[currentSlider];
-  const backgroundImage =
-    currentSlider === 0
-      ? slides[slides.length - 1].img
-      : slides[currentSlider - 1].img;
+  // Modulo math that supports negative numbers correctly
+  const positiveModulo = (n: number, m: number) => ((n % m) + m) % m;
+
+  const activeIndex = positiveModulo(currentSlider, slides.length);
+  const currentSlide = slides[activeIndex];
+
+  // Center offset base so negative indexing shifts track seamlessly in both directions
+  const baseOffsetIndex = 100 * slides.length;
+  // Exact offset so the 1st preview card aligns at the left edge of container (showing 2 full cards + 3rd cut off on right)
+  const virtualSliderIndex = baseOffsetIndex + currentSlider;
+
+  // Large infinite repeated slides array centered around base offset
+  const infiniteSlides = Array.from({ length: 200 }, () => slides).flat();
 
   return (
     <div
       className={rootClassName}
       style={{
-        backgroundImage: `url(${String(backgroundImage)})`,
+        backgroundImage: `url(${String(currentSlide.img)})`,
         transitionDuration: `${transitionDuration}ms`,
         transitionTimingFunction: transitionEasing,
       }}
     >
-      <div className={arrowContainerClassName}>
-        <button
-          onClick={prevSlider}
-          className={arrowClassName}
-          aria-label="Previous slide"
-        >
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            viewBox="0 0 1024 1024"
-            className="icon h-4 w-4 md:h-6 md:w-6"
-            fill="#000000"
-          >
-            <path
-              fill="#0095FF"
-              d="M685.248 104.704a64 64 0 010 90.496L368.448 512l316.8 316.8a64 64 0 01-90.496 90.496L232.704 557.248a64 64 0 010-90.496l362.048-362.048a64 64 0 0190.496 0z"
-            />
-          </svg>
-        </button>
-        <button
-          onClick={nextSlider}
-          className={arrowClassName}
-          aria-label="Next slide"
-        >
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            viewBox="0 0 1024 1024"
-            className="icon h-4 w-4 md:h-6 md:w-6"
-            fill="#000000"
-            transform="rotate(180)"
-          >
-            <path
-              fill="#0095FF"
-              d="M685.248 104.704a64 64 0 010 90.496L368.448 512l316.8 316.8a64 64 0 01-90.496 90.496L232.704 557.248a64 64 0 010-90.496l362.048-362.048a64 64 0 0190.496 0z"
-            />
-          </svg>
-        </button>
-      </div>
       <div className={textContainerClassName}>
-        <h1 className={titleClassName}>{currentSlide.title}</h1>
-        <p className={descriptionClassName}>{currentSlide.des}</p>
+        <div key={animatingKey} className="animate-in fade-in slide-in-from-bottom-5 duration-700 fill-mode-forwards">
+          <h1 className={titleClassName}>{currentSlide.title}</h1>
+          <p className={descriptionClassName}>{currentSlide.des}</p>
+        </div>
       </div>
       <div className={slideContainerClassName}>
         <div
-          className="flex items-center gap-4 duration-300 ease-linear"
+          className="flex items-center gap-4 duration-500 ease-in-out transition-transform"
           style={{
-            transform: `translateX(-${currentSlider * slideTransform}px)`,
+            transform: `translateX(-${virtualSliderIndex * slideWidth}px)`,
           }}
         >
-          {slides.map((slide, inx) => (
-            <div
-              key={inx}
-              className={`${slideClassName} ${currentSlider - 1 === inx ? "scale-0" : "scale-100 delay-500"}`}
-            >
-              <Image
-                width={imageWidth}
-                height={imageHeight}
-                src={slide.img}
-                alt={slide.title ?? `slide-${inx}`}
-              />
-            </div>
-          ))}
+          {infiniteSlides.map((slide, inx) => {
+            const slideIndex = positiveModulo(inx, slides.length);
+            return (
+              <div
+                key={inx}
+                ref={inx === 0 ? cardRef : undefined}
+                onClick={() => {
+                  setCurrentSlider(inx - baseOffsetIndex);
+                  setAnimatingKey((k) => k + 1);
+                }}
+                className={`${slideClassName} cursor-pointer transition-transform hover:scale-105 ${
+                  slideIndex === activeIndex ? "ring-2 ring-white/80 shadow-lg scale-102" : "opacity-80 hover:opacity-100"
+                }`}
+              >
+                <Image
+                  width={imageWidth}
+                  height={imageHeight}
+                  src={slide.img}
+                  alt={slide.title ?? `slide-${inx}`}
+                  className="h-full w-full object-cover rounded-lg"
+                />
+              </div>
+            );
+          })}
         </div>
       </div>
     </div>
   );
 }
 
-type CustomItem = {
+export type CustomItem = {
   img: ImgSrc;
   title?: string;
   des?: string;
 };
 
-type CustomCarouselProps = {
+export type CustomCarouselProps = {
   items?: CustomItem[];
+  className?: string;
   rootClassName?: string;
   textClassName?: string;
   titleClassName?: string;
@@ -289,19 +297,26 @@ type CustomCarouselProps = {
   autoPlay?: boolean;
   interval?: number;
   imageButtonPosition?: "bottom" | "left" | "right";
+  /**
+   * The element used for images. Defaults to a plain `img`, so this component
+   * works in any React app with no adaptation. In Next.js, pass `next/image`
+   * to keep automatic optimisation: `imageComponent={Image}`.
+   */
+  imageComponent?: React.ElementType;
 };
 
 export function CustomCarousel({
   items = [],
-  rootClassName = "flex h-60 w-full flex-col items-center justify-center gap-5 bg-cover bg-center sm:h-96 md:h-[540px] lg:gap-10",
+  rootClassName = "flex h-60 w-full flex-col items-center justify-center gap-5 overflow-hidden rounded-lg bg-cover bg-center sm:h-96 md:h-[540px] md:rounded-xl lg:gap-10",
   textClassName = "px-5 text-center text-white drop-shadow-lg duration-300 ease-linear",
   titleClassName = "mb-3 text-xl font-semibold lg:text-3xl",
   descClassName = "text-sm md:text-base lg:text-lg",
-  thumbClassName = "h-6 w-10 bg-black/20 sm:h-8 md:h-12 md:w-20 box-content cursor-pointer rounded-md md:rounded-lg",
-  activeThumbClassName = "border-2 border-black p-px",
+  thumbClassName = "h-6 w-10 shrink-0 overflow-hidden bg-black/20 sm:h-8 md:h-12 md:w-20 cursor-pointer rounded-md md:rounded-lg",
+  activeThumbClassName = "outline-2 outline-offset-2 outline-primary",
   autoPlay = true,
   interval = 5000,
   imageButtonPosition = "bottom",
+  imageComponent: Image = "img",
 }: CustomCarouselProps) {
   const [current, setCurrent] = useState<number>(0);
 
@@ -317,7 +332,7 @@ export function CustomCarousel({
 
   const CarouselContent = (
     <div
-      className={`${rootClassName} relative duration-1000 ease-linear before:absolute before:inset-0 before:bg-black/50`}
+      className={`${rootClassName} relative min-w-0 duration-1000 ease-linear before:absolute before:inset-0 before:bg-black/50`}
       style={{ backgroundImage: `url(${String(items[current].img)})` }}
     >
       <div className={textClassName}>
@@ -329,7 +344,7 @@ export function CustomCarousel({
 
   const Thumbnails = (
     <div
-      className={`${imageButtonPosition === "bottom" ? "flex-row justify-center" : "flex-col justify-center"} flex items-center gap-3 p-2`}
+      className={`${imageButtonPosition === "bottom" ? "w-full flex-row flex-wrap justify-center" : "shrink-0 flex-col justify-center"} flex items-center gap-3 p-2`}
     >
       {items.map((item, index) => (
         <button
@@ -342,6 +357,7 @@ export function CustomCarousel({
             src={item.img}
             width={1200}
             height={540}
+            className="h-full w-full object-cover"
             alt={item.title ?? `thumb-${index}`}
           />
         </button>
@@ -351,22 +367,1019 @@ export function CustomCarousel({
 
   if (imageButtonPosition === "left")
     return (
-      <div className="flex items-center">
+      <div className="flex w-full items-center">
         {Thumbnails}
         {CarouselContent}
       </div>
     );
   if (imageButtonPosition === "right")
     return (
-      <div className="flex items-center">
+      <div className="flex w-full items-center">
         {CarouselContent}
         {Thumbnails}
       </div>
     );
   return (
-    <div>
+    <div className="w-full">
       {CarouselContent}
       {Thumbnails}
     </div>
   );
+}
+
+export type FanCarouselItem = {
+  img: ImgSrc;
+  title: string;
+  price?: string;
+  rating?: number | string;
+  category?: string;
+  des?: string;
+};
+
+export type RadialCarouselItem = FanCarouselItem;
+
+export type FanCarouselProps = {
+  items?: FanCarouselItem[];
+  autoPlay?: boolean;
+  autoPlayInterval?: number;
+  stepAngle?: number;
+  showArrows?: boolean;
+  showDots?: boolean;
+  className?: string;
+  /**
+   * The element used for images. Defaults to a plain `img`, so this component
+   * works in any React app with no adaptation. In Next.js, pass `next/image`
+   * to keep automatic optimisation: `imageComponent={Image}`.
+   */
+  imageComponent?: React.ElementType;
+};
+
+export type RadialCarouselProps = FanCarouselProps;
+
+const defaultRadialItems: FanCarouselItem[] = [
+  {
+    title: "Misty Pine Forest",
+    category: "Nature",
+    rating: "4.9",
+    img: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_1200,c_limit/v1790145141/photo-1448375240586-882707db888b-1790145143491.jpg",
+  },
+  {
+    title: "Lush River Valley",
+    category: "Wilderness",
+    rating: "4.8",
+    img: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_1200,c_limit/v1790145140/photo-1426604966848-d7adac402bff-1790145143490.jpg",
+  },
+  {
+    title: "Autumn Woodland Path",
+    category: "Landscape",
+    rating: "4.9",
+    img: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_1200,c_limit/v1790146211/photo-1441974231531-c6227db76b6e-1790146212212.jpg",
+  },
+  {
+    title: "Cascading Waterfalls",
+    category: "Sanctuary",
+    rating: "4.7",
+    img: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_1200,c_limit/v1790146209/photo-1469474968028-56623f02e42e-1790146212205.jpg",
+  },
+  {
+    title: "Emerald Mountain Peak",
+    category: "Expedition",
+    rating: "5.0",
+    img: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_1200,c_limit/v1790146210/photo-1506744038136-46273834b3fb-1790146212208.jpg",
+  },
+  {
+    title: "Serene Alpine Lake",
+    category: "Reflections",
+    rating: "4.8",
+    img: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_1200,c_limit/v1790146210/photo-1501785888041-af3ef285b470-1790146212207.jpg",
+  },
+  {
+    title: "Sunset Coastal Shore",
+    category: "Ocean",
+    rating: "4.9",
+    img: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_1200,c_limit/v1790146210/photo-1507525428034-b723cf961d3e-1790146212208.jpg",
+  },
+  {
+    title: "Northern Wilderness",
+    category: "Aurora",
+    rating: "4.9",
+    img: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_1200,c_limit/v1790146210/photo-1517411032315-54ef2cb783bb-1790146212209.jpg",
+  },
+  {
+    title: "Golden Desert Dunes",
+    category: "Landscape",
+    rating: "4.6",
+    img: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_1200,c_limit/v1790146210/photo-1509316975850-ff9c5deb0cd9-1790146212209.jpg",
+  },
+  {
+    title: "Grand Canyon River",
+    category: "Sanctuary",
+    rating: "4.8",
+    img: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_1200,c_limit/v1790146210/photo-1472214103451-9374bd1c798e-1790146212205.jpg",
+  },
+  {
+    title: "Alpine Cloud Ridge",
+    category: "Expedition",
+    rating: "4.9",
+    img: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_1200,c_limit/v1790145141/photo-1464822759023-fed622ff2c3b-1790145143491.jpg",
+  },
+  {
+    title: "Tropical Lagoon Bay",
+    category: "Paradise",
+    rating: "5.0",
+    img: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_1200,c_limit/v1790146210/photo-1506905925346-21bda4d32df4-1790146212208.jpg",
+  },
+  {
+    title: "Mist Forest Ridge",
+    category: "Wilderness",
+    rating: "4.9",
+    img: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_1200,c_limit/v1790148863/photo-1542273917363-3b1817f69a2d-1790148865110.jpg",
+  },
+  {
+    title: "Glacial Ice Valley",
+    category: "Arctic",
+    rating: "5.0",
+    img: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_1200,c_limit/v1790146209/photo-1483728642387-6c3bdd6c93e5-1790146212206.jpg",
+  },
+  {
+    title: "Sunlit Birch Grove",
+    category: "Forest",
+    rating: "4.8",
+    img: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_1200,c_limit/v1790145142/photo-1500530855697-b586d89ba3ee-1790145143493.jpg",
+  },
+  {
+    title: "Starlight Mountain Peak",
+    category: "Cosmos",
+    rating: "4.9",
+    img: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_1200,c_limit/v1790146211/photo-1519681393784-d120267933ba-1790146212210.jpg",
+  },
+  {
+    title: "Volcanic Obsidian Coast",
+    category: "Geothermal",
+    rating: "4.7",
+    img: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_1200,c_limit/v1790146209/photo-1500382017468-9049fed747ef-1790146212206.jpg",
+  },
+  {
+    title: "Deep Canyon Oasis",
+    category: "Sanctuary",
+    rating: "4.8",
+    img: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_1200,c_limit/v1790146209/photo-1470071459604-3b5ec3a7fe05-1790146212205.jpg",
+  },
+];
+
+export function RadialCarousel({
+  items = defaultRadialItems,
+  autoPlay = false,
+  autoPlayInterval = 3500,
+  stepAngle,
+  showArrows = false,
+  showDots = false,
+  className = "",
+  imageComponent: Image = "img",
+}: RadialCarouselProps) {
+  const [current, setCurrent] = useState<number>(0);
+  const [isDragging, setIsDragging] = useState(false);
+  const [dragStartX, setDragStartX] = useState(0);
+  const [dragOffset, setDragOffset] = useState(0);
+  // `autoPlay` sets the starting state; the hub button toggles it from there.
+  // A new `autoPlay` value resets it, adjusted while rendering rather than in
+  // an effect.
+  const [isPlaying, setIsPlaying] = useState(autoPlay);
+  const [prevAutoPlay, setPrevAutoPlay] = useState(autoPlay);
+  if (autoPlay !== prevAutoPlay) {
+    setPrevAutoPlay(autoPlay);
+    setIsPlaying(autoPlay);
+  }
+
+  const displayItems = React.useMemo(() => {
+    if (!items || !items.length) return [];
+    if (items.length >= 10) return items;
+    const repeats = Math.ceil(12 / items.length);
+    return Array.from({ length: repeats }, () => items).flat();
+  }, [items]);
+
+  const total = displayItems.length;
+  const angleStep = stepAngle ?? (total > 0 ? 360 / total : 20);
+
+  const prevSlide = useCallback(() => {
+    setCurrent((prev) => prev - 1);
+  }, []);
+
+  const nextSlide = useCallback(() => {
+    setCurrent((prev) => prev + 1);
+  }, []);
+
+  useEffect(() => {
+    if (!isPlaying || total <= 1 || isDragging) return;
+    const interval = setInterval(nextSlide, autoPlayInterval);
+    return () => clearInterval(interval);
+  }, [isPlaying, autoPlayInterval, nextSlide, total, current, isDragging]);
+
+  if (!total) return null;
+
+  const dragAngle = dragOffset / 7; // Sensitivity factor: 7px = 1 degree
+
+  const handleMouseDown = (e: React.MouseEvent | React.TouchEvent, isCardCenter: boolean) => {
+    if (!isCardCenter) return;
+    setIsDragging(true);
+    const clientX = "touches" in e ? e.touches[0].clientX : e.clientX;
+    setDragStartX(clientX);
+    setDragOffset(0);
+  };
+
+  const handleMouseMove = (e: React.MouseEvent | React.TouchEvent) => {
+    if (!isDragging) return;
+    const clientX = "touches" in e ? e.touches[0].clientX : e.clientX;
+    setDragOffset(clientX - dragStartX);
+  };
+
+  const handleMouseUp = () => {
+    if (!isDragging) return;
+    setIsDragging(false);
+    const stepShift = Math.round(dragAngle / angleStep);
+    if (stepShift !== 0) {
+      setCurrent((prev) => prev - stepShift);
+    }
+    setDragOffset(0);
+  };
+
+  const positiveModulo = (n: number, m: number) => ((n % m) + m) % m;
+
+  const wheelRotation = -current * angleStep + dragAngle;
+  const activeIndex = positiveModulo(current, items.length);
+
+  return (
+    <div
+      onMouseMove={handleMouseMove}
+      onMouseUp={handleMouseUp}
+      onMouseLeave={handleMouseUp}
+      onTouchMove={handleMouseMove}
+      onTouchEnd={handleMouseUp}
+      role="region"
+      aria-roledescription="carousel"
+      aria-label="Image carousel"
+      className={`relative w-full max-w-full overflow-hidden py-4 flex flex-col items-center justify-center select-none ${className}`}
+    >
+      <p className="sr-only" aria-live={isPlaying ? "off" : "polite"}>
+        {items[activeIndex]?.title}
+      </p>
+
+      <div className="relative w-full max-w-3xl h-[360px] sm:h-[540px] md:h-[660px]">
+        {/* The axle: a zero-size point every card pivots around. It sits below
+            the stage's middle because the top card is lifted and scaled up
+            while the bottom cards shrink, so the wheel is taller above it. */}
+        <div className="absolute left-1/2 top-[calc(50%+25px)] sm:top-[calc(50%+37px)] md:top-[calc(50%+45px)] w-0 h-0">
+          {displayItems.map((item, index) => {
+            const cardBaseAngle = index * angleStep;
+            const totalAngle = cardBaseAngle + wheelRotation;
+
+            let normAngle = positiveModulo(totalAngle, 360);
+            if (normAngle > 180) normAngle -= 360;
+
+            const distRatio = Math.abs(normAngle) / 180;
+            const isCenter = Math.abs(normAngle) < 1.5;
+
+            const zIndex = Math.round(60 - distRatio * 40);
+            const scale = isCenter ? 1.05 : Math.max(0.8, 1 - distRatio * 0.2);
+            const translateY = isCenter ? -10 : 0;
+            // Cards stay opaque and wash toward the page colour with distance,
+            // so overlapping cards never show through each other.
+            const fade = isCenter ? 0 : Math.min(0.62, 0.12 + distRatio * 0.55);
+            const saturation = isCenter ? 1 : 1 - distRatio * 0.45;
+
+            return (
+              <div
+                key={index}
+                onMouseDown={(e) => handleMouseDown(e, isCenter)}
+                onTouchStart={(e) => handleMouseDown(e, isCenter)}
+                onClick={(e) => {
+                  e.stopPropagation();
+                  if (!isCenter) return; // Clicks on non-active background cards do NOTHING!
+                  if (Math.abs(dragOffset) > 5) return;
+                  nextSlide();
+                }}
+                style={{
+                  top: 0,
+                  left: 0,
+                  // Pivoting 18% of the card height below its bottom edge
+                  // leaves an open ring at the centre for the hub.
+                  transformOrigin: "50% 118%",
+                  transform: `translate(-50%, -118%) rotate(${totalAngle}deg) translateY(${translateY}px) scale(${scale})`,
+                  zIndex,
+                  filter: `saturate(${saturation})`,
+                }}
+                className={`absolute w-[104px] sm:w-[160px] md:w-[200px] h-[140px] sm:h-[216px] md:h-[272px] rounded-[14px] sm:rounded-[18px] md:rounded-[22px] overflow-hidden cursor-grab active:cursor-grabbing ${
+                  isDragging
+                    ? "transition-none"
+                    : "transition-[transform,filter,box-shadow] duration-[850ms] ease-[cubic-bezier(0.16,1,0.3,1)] motion-reduce:transition-none"
+                } ${
+                  isCenter
+                    ? "ring-2 ring-primary ring-offset-2 ring-offset-background shadow-[0_28px_48px_-20px_rgb(0_0_0/0.55)]"
+                    : "ring-1 ring-black/10 dark:ring-white/10 shadow-[0_6px_18px_-10px_rgb(0_0_0/0.35)]"
+                }`}
+              >
+                <div className="relative w-full h-full">
+                  <Image
+                    src={item.img}
+                    alt={item.title}
+                    width={600}
+                    height={800}
+                    className="w-full h-full object-cover pointer-events-none"
+                  />
+
+                  <div
+                    aria-hidden
+                    style={{ opacity: fade }}
+                    className="absolute inset-0 bg-background transition-opacity duration-[850ms] ease-[cubic-bezier(0.16,1,0.3,1)] motion-reduce:transition-none"
+                  />
+
+                  <div
+                    aria-hidden={!isCenter}
+                    className={`absolute inset-0 flex flex-col justify-end p-2.5 sm:p-4 md:p-5 text-white bg-gradient-to-t from-black/80 via-black/25 via-45% to-transparent transition-opacity duration-500 motion-reduce:transition-none ${
+                      isCenter ? "opacity-100" : "opacity-0"
+                    }`}
+                  >
+                    <h3 className="font-serif font-medium text-[13px] sm:text-lg md:text-[22px] leading-[1.1] tracking-[-0.01em] text-balance line-clamp-2 [text-shadow:0_1px_12px_rgb(0_0_0/0.35)]">
+                      {item.title}
+                    </h3>
+
+                    <div className="flex items-center justify-between gap-2 mt-1.5 sm:mt-2 text-[10px] sm:text-xs md:text-[13px] text-white/75">
+                      {item.price ? (
+                        <span className="font-medium text-white/90 tabular-nums">{item.price}</span>
+                      ) : item.category ? (
+                        <span className="truncate">{item.category}</span>
+                      ) : (
+                        <span />
+                      )}
+
+                      {item.rating && (
+                        <span className="flex items-center gap-1 shrink-0 font-medium text-white tabular-nums">
+                          <span aria-hidden className="text-amber-300">★</span>
+                          {item.rating}
+                        </span>
+                      )}
+                    </div>
+                  </div>
+                </div>
+              </div>
+            );
+          })}
+
+          {/* Hub: centred on the axle (the wheel's exact centre); starts and
+              stops autoplay. */}
+          <button
+            type="button"
+            onClick={() => setIsPlaying((p) => !p)}
+            onMouseDown={(e) => e.stopPropagation()}
+            onTouchStart={(e) => e.stopPropagation()}
+            aria-label={isPlaying ? "Pause autoplay" : "Play autoplay"}
+            className="absolute left-0 top-0 z-[70] -translate-x-1/2 -translate-y-1/2 size-11 sm:size-16 md:size-[76px] rounded-full bg-background text-foreground ring-1 ring-black/10 dark:ring-white/15 shadow-[0_10px_30px_-12px_rgb(0_0_0/0.45),inset_0_1px_0_rgb(255_255_255/0.6)] dark:shadow-[0_10px_30px_-12px_rgb(0_0_0/0.8),inset_0_1px_0_rgb(255_255_255/0.08)] grid place-items-center cursor-pointer transition-transform duration-200 hover:scale-105 active:scale-95 motion-reduce:transition-none focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary"
+          >
+            {isPlaying ? (
+              <Pause aria-hidden className="block size-4 sm:size-5 md:size-6" fill="currentColor" strokeWidth={0} />
+            ) : (
+              <Play aria-hidden className="block size-4 sm:size-5 md:size-6" fill="currentColor" strokeWidth={0} />
+            )}
+          </button>
+        </div>
+      </div>
+
+      {(showArrows || showDots) && (
+        <div className="flex items-center gap-4 mt-2 z-10">
+          {showArrows && (
+            <button
+              onClick={prevSlide}
+              className="p-2.5 rounded-full bg-background border border-border text-foreground hover:bg-muted transition-all cursor-pointer shadow-md"
+              aria-label="Previous card"
+            >
+              <ArrowLeft className="w-4 h-4" />
+            </button>
+          )}
+
+          {showDots && (
+            <div className="flex items-center gap-1.5 max-w-[200px] overflow-hidden flex-wrap justify-center">
+              {items.map((_, idx) => (
+                <button
+                  key={idx}
+                  onClick={() => {
+                    const activeIdx = positiveModulo(current, items.length);
+                    let diff = idx - activeIdx;
+                    if (diff > Math.floor(items.length / 2)) diff -= items.length;
+                    if (diff < -Math.floor(items.length / 2)) diff += items.length;
+                    setCurrent((c) => c + diff);
+                  }}
+                  className={`h-2 rounded-full transition-all duration-300 ${
+                    positiveModulo(current, items.length) === idx
+                      ? "w-6 bg-primary"
+                      : "w-2 bg-foreground/20"
+                  }`}
+                  aria-label={`Go to slide ${idx + 1}`}
+                />
+              ))}
+            </div>
+          )}
+
+          {showArrows && (
+            <button
+              onClick={nextSlide}
+              className="p-2.5 rounded-full bg-background border border-border text-foreground hover:bg-muted transition-all cursor-pointer shadow-md"
+              aria-label="Next card"
+            >
+              <ArrowRight className="w-4 h-4" />
+            </button>
+          )}
+        </div>
+      )}
+    </div>
+  );
+}
+
+const defaultFanDeckItems: FanCarouselItem[] = [
+  {
+    title: "FUTURE UI",
+    price: "$145.00",
+    rating: "4.8",
+    img: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_800,c_limit/v1790148864/photo-1618005182384-a83a8bd57fbe-1790148865111.jpg",
+  },
+  {
+    title: "NIKE AIR RETRO",
+    price: "$199.99",
+    rating: "4.9",
+    img: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_800,c_limit/v1790148863/photo-1542291026-7eec264c27ff-1790148865109.jpg",
+  },
+  {
+    title: "RAMEN BOWL",
+    price: "$18.50",
+    rating: "4.7",
+    img: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_800,c_limit/v1790148864/photo-1569718212165-3a8278d5f624-1790148865111.jpg",
+  },
+  {
+    title: "SKATEBOARD PRO",
+    price: "$129.00",
+    rating: "4.6",
+    img: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto/v1790224415/photo-1501785888041-af3ef285b470-1790146212207-1790224416318.jpg",
+  },
+  {
+    title: "CYBER CITY",
+    price: "$210.00",
+    rating: "4.9",
+    img: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_800,c_limit/v1790146211/photo-1518709268805-4e9042af9f23-1790146212209.jpg",
+  },
+  {
+    title: "NEON SOUNDS",
+    price: "$85.00",
+    rating: "4.8",
+    img: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_800,c_limit/v1790146210/photo-1507525428034-b723cf961d3e-1790146212208.jpg",
+  },
+  {
+    title: "PEAK RETREAT",
+    price: "$399.00",
+    rating: "4.9",
+    img: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_800,c_limit/v1790145141/photo-1464822759023-fed622ff2c3b-1790145143491.jpg",
+  },
+];
+
+export function FanCarousel({
+  items = defaultFanDeckItems,
+  autoPlay = false,
+  autoPlayInterval = 3500,
+  stepAngle,
+  showArrows = false,
+  showDots = false,
+  className = "",
+  imageComponent: Image = "img",
+}: FanCarouselProps) {
+  const [current, setCurrent] = useState<number>(0);
+  const [isDragging, setIsDragging] = useState(false);
+  const [dragStartX, setDragStartX] = useState(0);
+  const [dragOffset, setDragOffset] = useState(0);
+
+  const displayItems = React.useMemo(() => {
+    if (!items || !items.length) return [];
+    if (items.length >= 10) return items;
+    const repeats = Math.ceil(12 / items.length);
+    return Array.from({ length: repeats }, () => items).flat();
+  }, [items]);
+
+  const total = displayItems.length;
+  const angleStep = stepAngle ?? (total > 0 ? 360 / total : 20);
+
+  const prevSlide = useCallback(() => {
+    setCurrent((prev) => prev - 1);
+  }, []);
+
+  const nextSlide = useCallback(() => {
+    setCurrent((prev) => prev + 1);
+  }, []);
+
+  useEffect(() => {
+    if (!autoPlay || total <= 1 || isDragging) return;
+    const interval = setInterval(nextSlide, autoPlayInterval);
+    return () => clearInterval(interval);
+  }, [autoPlay, autoPlayInterval, nextSlide, total, current, isDragging]);
+
+  if (!total) return null;
+
+  const dragAngle = dragOffset / 7; // Sensitivity factor: 7px = 1 degree
+
+  const handleMouseDown = (e: React.MouseEvent | React.TouchEvent, isCardCenter: boolean) => {
+    if (!isCardCenter) return;
+    setIsDragging(true);
+    const clientX = "touches" in e ? e.touches[0].clientX : e.clientX;
+    setDragStartX(clientX);
+    setDragOffset(0);
+  };
+
+  const handleMouseMove = (e: React.MouseEvent | React.TouchEvent) => {
+    if (!isDragging) return;
+    const clientX = "touches" in e ? e.touches[0].clientX : e.clientX;
+    setDragOffset(clientX - dragStartX);
+  };
+
+  const handleMouseUp = () => {
+    if (!isDragging) return;
+    setIsDragging(false);
+    const stepShift = Math.round(dragAngle / angleStep);
+    if (stepShift !== 0) {
+      setCurrent((prev) => prev - stepShift);
+    }
+    setDragOffset(0);
+  };
+
+  const positiveModulo = (n: number, m: number) => ((n % m) + m) % m;
+
+  const wheelRotation = -current * angleStep + dragAngle;
+
+  return (
+    <div
+      onMouseMove={handleMouseMove}
+      onMouseUp={handleMouseUp}
+      onMouseLeave={handleMouseUp}
+      onTouchMove={handleMouseMove}
+      onTouchEnd={handleMouseUp}
+      className={`relative w-full max-w-full overflow-hidden py-4 flex flex-col items-center justify-center select-none ${className}`}
+    >
+      {/* Hand Gesture Hint Badge */}
+      <div className="absolute top-2 right-4 z-20 flex items-center gap-1.5 px-3 py-1 rounded-full bg-black/70 backdrop-blur-md text-[11px] font-medium text-white/90 border border-white/10 pointer-events-none shadow-lg">
+        <Hand className="w-3.5 h-3.5 text-amber-400 animate-pulse" />
+        <span>Drag active card</span>
+      </div>
+
+      {/* 360 Degree Fan Wheel Container */}
+      <div className="relative w-full max-w-3xl h-[520px] sm:h-[600px] md:h-[680px] flex items-center justify-center">
+        {displayItems.map((item, index) => {
+          const cardBaseAngle = index * angleStep;
+          const totalAngle = cardBaseAngle + wheelRotation;
+
+          let normAngle = positiveModulo(totalAngle, 360);
+          if (normAngle > 180) normAngle -= 360;
+
+          const distRatio = Math.abs(normAngle) / 180;
+          const isCenter = Math.abs(normAngle) < 1.5;
+
+          const zIndex = Math.round(60 - distRatio * 40);
+          const scale = isCenter ? 1.05 : Math.max(0.72, 1 - distRatio * 0.28);
+          const translateY = isCenter ? -10 : 0;
+          const opacity = isCenter ? 1 : Math.max(0.7, 1 - distRatio * 0.32);
+          const brightness = isCenter ? 1 : Math.max(0.55, 1 - distRatio * 0.42);
+
+          return (
+            <div
+              key={index}
+              onMouseDown={(e) => handleMouseDown(e, isCenter)}
+              onTouchStart={(e) => handleMouseDown(e, isCenter)}
+              onClick={(e) => {
+                e.stopPropagation();
+                if (!isCenter) return; // Clicks on non-active background cards do NOTHING!
+                if (Math.abs(dragOffset) > 5) return;
+                nextSlide();
+              }}
+              style={{
+                top: "50%",
+                left: "50%",
+                transformOrigin: "50% 105%",
+                transform: `translate(-50%, -100%) rotate(${totalAngle}deg) translateY(${translateY}px) scale(${scale})`,
+                zIndex,
+                opacity,
+                filter: `brightness(${brightness})`,
+                transition: isDragging
+                  ? "none"
+                  : "transform 0.85s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.85s cubic-bezier(0.16, 1, 0.3, 1), filter 0.85s cubic-bezier(0.16, 1, 0.3, 1)",
+              }}
+              className={`absolute w-[110px] sm:w-[170px] md:w-[220px] h-[150px] sm:h-[230px] md:h-[300px] rounded-[14px] sm:rounded-[20px] md:rounded-[24px] overflow-hidden border-2 border-black/80 dark:border-black shadow-2xl cursor-grab active:cursor-grabbing ${
+                isCenter
+                  ? "ring-2 ring-primary shadow-black/60 brightness-105"
+                  : "hover:brightness-95"
+              }`}
+            >
+              <div className="relative w-full h-full">
+                <Image
+                  src={item.img}
+                  alt={item.title}
+                  width={600}
+                  height={800}
+                  className="w-full h-full object-cover pointer-events-none"
+                />
+
+                <div className="absolute inset-0 bg-gradient-to-t from-black/95 via-black/40 to-transparent" />
+
+                <div className="absolute inset-x-0 bottom-0 p-2 sm:p-3.5 md:p-5 flex flex-col justify-end text-white">
+                  <h3 className="text-[11px] sm:text-base md:text-lg font-extrabold tracking-wide uppercase drop-shadow-md line-clamp-1">
+                    {item.title}
+                  </h3>
+
+                  <div className="flex items-center justify-between mt-0.5 text-[9px] sm:text-xs md:text-sm">
+                    {item.price ? (
+                      <span className="font-semibold text-zinc-200">{item.price}</span>
+                    ) : item.category ? (
+                      <span className="text-[8px] sm:text-[10px] md:text-xs uppercase font-semibold text-zinc-300 px-1.5 py-0.5 rounded-full bg-white/10 backdrop-blur-sm truncate max-w-[60px] sm:max-w-none">
+                        {item.category}
+                      </span>
+                    ) : null}
+
+                    {item.rating && (
+                      <div className="flex items-center gap-0.5 bg-black/50 backdrop-blur-md px-1 sm:px-1.5 py-0.5 rounded-full text-[9px] sm:text-xs font-semibold text-amber-400 border border-white/10">
+                        <span>★</span>
+                        <span className="text-white">{item.rating}</span>
+                      </div>
+                    )}
+                  </div>
+                </div>
+              </div>
+            </div>
+          );
+        })}
+
+        {/* Center Pivot Hub Pin / Dot Button matching uploaded screenshot */}
+        <div
+          onClick={nextSlide}
+          title="Rotate wheel"
+          className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 z-[70] w-9 h-9 sm:w-11 sm:h-11 rounded-full bg-zinc-950/90 border-2 border-zinc-700 shadow-2xl flex items-center justify-center cursor-pointer hover:scale-110 active:scale-95 transition-transform"
+        >
+          <div className="w-3 h-3 sm:w-4 sm:h-4 rounded-full bg-zinc-400/90 shadow-inner" />
+        </div>
+      </div>
+
+      {showArrows && (
+        <div className="mt-4 flex items-center gap-3">
+          <button
+            type="button"
+            onClick={prevSlide}
+            aria-label="Previous slide"
+            className="p-2.5 rounded-full bg-zinc-950/90 border border-zinc-700 text-white transition-transform hover:scale-110 active:scale-95"
+          >
+            <ArrowLeft className="w-4 h-4" />
+          </button>
+          <button
+            type="button"
+            onClick={nextSlide}
+            aria-label="Next slide"
+            className="p-2.5 rounded-full bg-zinc-950/90 border border-zinc-700 text-white transition-transform hover:scale-110 active:scale-95"
+          >
+            <ArrowRight className="w-4 h-4" />
+          </button>
+        </div>
+      )}
+
+      {showDots && (
+        <div className="mt-3 flex flex-wrap items-center justify-center gap-2">
+          {displayItems.map((_, index) => (
+            <button
+              key={index}
+              type="button"
+              onClick={() => setCurrent(index)}
+              aria-label={`Go to slide ${index + 1}`}
+              aria-current={positiveModulo(current, total) === index}
+              className={cn(
+                "h-2 rounded-full transition-all",
+                positiveModulo(current, total) === index
+                  ? "w-6 bg-primary"
+                  : "w-2 bg-foreground/20",
+              )}
+            />
+          ))}
+        </div>
+      )}
+    </div>
+  );
+}
+
+/* ============================================================================
+   FLUID GLASS SLIDER COMPONENT (Liquid Distortion Slider)
+   ============================================================================ */
+
+// ==========================================
+// MOTION — Web Animations and CSS, no library
+// ==========================================
+// GSAP's power4.inOut (sampled, max error 0.15%), power2.out and power1.out.
+const POWER4_IN_OUT =
+  "linear(0, .0005 12.5%, .0037 18.75%, .008 21.875%, .0156 25%, .0282 28.125%, .0477 31.25%, .0768 34.375%, .0959 35.938%, .1187 37.5%, .1455 39.063%, .177 40.625%, .2138 42.188%, .2565 43.75%, .3056 45.313%, .3621 46.875%, .4266 48.438%, .5 50%, .5734 51.563%, .6379 53.125%, .6944 54.688%, .7435 56.25%, .7862 57.813%, .823 59.375%, .8545 60.938%, .8813 62.5%, .9041 64.063%, .9232 65.625%, .9523 68.75%, .9718 71.875%, .9844 75%, .992 78.125%, .9963 81.25%, .9995 87.5%, 1)";
+const POWER2_OUT = "cubic-bezier(.3333, 1, .6667, 1)";
+const POWER1_OUT = "cubic-bezier(.3333, .6667, .6667, 1)";
+
+const tweens = new WeakMap<HTMLElement, Animation>();
+
+/**
+ * Tween `el` to `to` from wherever it is right now (mid-flight included), so a
+ * new target takes over a running tween with the full duration. The end values
+ * are written inline, so nothing is held by a fill.
+ */
+function tweenTo(el: HTMLElement, to: Record<string, string>, duration: number, easing: string) {
+  const computed = getComputedStyle(el);
+  const from: Record<string, string> = {};
+  for (const key of Object.keys(to)) from[key] = computed.getPropertyValue(key);
+  tweens.get(el)?.cancel();
+  for (const [key, value] of Object.entries(to)) el.style.setProperty(key, value);
+  if (typeof el.animate !== "function") return null;
+  const animation = el.animate([from, to], { duration: duration * 1000, easing });
+  tweens.set(el, animation);
+  return animation;
+}
+
+export type FluidGlassSlide = {
+  id: number;
+  image: string;
+  title: string;
+  subtitle: string;
+};
+
+const DEFAULT_GLASS_SLIDES: FluidGlassSlide[] = [
+  {
+    id: 1,
+    image:
+      "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_2574,c_limit/v1790146210/photo-1506905925346-21bda4d32df4-1790146212208.jpg",
+    title: "Discover pristine tropical beaches and crystal-clear waters",
+    subtitle: "TROPICAL PARADISE",
+  },
+  {
+    id: 2,
+    image:
+      "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_2574,c_limit/v1790146211/photo-1441974231531-c6227db76b6e-1790146212212.jpg",
+    title: "Escape to the serene mountain heights and wilderness trails",
+    subtitle: "MOUNTAIN ADVENTURES",
+  },
+  {
+    id: 3,
+    image:
+      "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_2574,c_limit/v1790145141/photo-1464822759023-fed622ff2c3b-1790145143491.jpg",
+    title: "Surround yourself with majestic peaks and alpine lakes",
+    subtitle: "ALPINE RETREAT",
+  },
+];
+
+export type FluidGlassSliderProps = {
+  slides?: FluidGlassSlide[];
+  className?: string;
+};
+
+export function FluidGlassSlider({ slides, className }: FluidGlassSliderProps) {
+  const slidesData = slides && slides.length > 0 ? slides : DEFAULT_GLASS_SLIDES;
+  const [currentIndex, setCurrentIndex] = useState<number>(0);
+
+  const containerRef = useRef<HTMLDivElement | null>(null);
+  const sliderRef = useRef<HTMLDivElement | null>(null);
+  const progressRef = useRef<HTMLDivElement | null>(null);
+  const cursorRef = useRef<HTMLDivElement | null>(null);
+
+  const isFirstSlide = currentIndex === 0;
+  const isLastSlide = currentIndex === slidesData.length - 1;
+
+  useEffect(() => {
+    if (!sliderRef.current) return;
+
+    // Slide animation
+    const slide = tweenTo(
+      sliderRef.current,
+      { translate: `-${currentIndex * (100 / slidesData.length)}% 0px` },
+      1.2,
+      POWER4_IN_OUT,
+    );
+
+    if (!progressRef.current || typeof progressRef.current.animate !== "function") return;
+
+    // Auto-play progress bar (Infinite Loop)
+    const progress = progressRef.current.animate(
+      [{ width: "0%" }, { width: "100%" }],
+      { duration: 5000, easing: "linear", fill: "forwards" },
+    );
+    progress.onfinish = () => {
+      // Auto-play continues infinitely
+      setCurrentIndex((prev) =>
+        prev < slidesData.length - 1 ? prev + 1 : 0,
+      );
+    };
+
+    // A hidden tab holds both where they are, as it always has: the timer
+    // must not run on and flip slides nobody is watching.
+    const onVisibility = () => {
+      for (const animation of [slide, progress]) {
+        if (!animation || animation.playState === "finished") continue;
+        if (document.hidden) animation.pause();
+        else animation.play();
+      }
+    };
+    document.addEventListener("visibilitychange", onVisibility);
+    onVisibility();
+
+    return () => {
+      document.removeEventListener("visibilitychange", onVisibility);
+      progress.onfinish = null;
+      progress.cancel();
+    };
+  }, [currentIndex, slidesData.length]);
+
+  useEffect(() => {
+    const container = containerRef.current;
+    const cursor = cursorRef.current;
+    if (!container || !cursor) return;
+
+    // Follows the pointer through a 0.1s transition on `translate` (see the
+    // cursor's style).
+    const onMouseMove = (e: MouseEvent) => {
+      if (!cursor) return;
+      cursor.style.translate = `${(e.clientX || 0) + 15}px ${(e.clientY || 0) + 15}px`;
+    };
+
+    container.addEventListener("mousemove", onMouseMove);
+    return () => container.removeEventListener("mousemove", onMouseMove);
+  }, []);
+
+  const nextSlide = () => {
+    if (!isLastSlide) setCurrentIndex((prev) => prev + 1);
+  };
+
+  const prevSlide = () => {
+    if (!isFirstSlide) setCurrentIndex((prev) => prev - 1);
+  };
+
+  const showCursor = () => {
+    if (!cursorRef.current) return;
+    tweenTo(cursorRef.current, { opacity: "1", scale: "1" }, 0.2, POWER1_OUT);
+  };
+  const hideCursor = () => {
+    if (!cursorRef.current) return;
+    tweenTo(cursorRef.current, { opacity: "0", scale: "0.8" }, 0.2, POWER1_OUT);
+  };
+
+  return (
+    <div
+      ref={containerRef}
+      onMouseEnter={showCursor}
+      onMouseLeave={hideCursor}
+      className={cn(
+        "relative w-full h-[500px] md:h-[650px] overflow-hidden bg-[#111] text-white font-sans rounded-2xl shadow-xl",
+        className,
+      )}
+    >
+      <div
+        ref={cursorRef}
+        className="fixed top-0 left-0 px-3 py-1.5 bg-white/20 backdrop-blur-md border border-white/30 text-white text-[10px] font-semibold tracking-widest uppercase flex items-center justify-center opacity-0 z-[100] pointer-events-none scale-80"
+        style={{ transition: `translate 0.1s ${POWER2_OUT}` }}
+      >
+        VIEW
+      </div>
+      <header className="absolute top-0 left-0 w-full z-20 flex justify-between items-center p-6 md:p-8 pointer-events-none">
+        <div className="flex-1 hidden sm:block"></div>
+        <div className="flex-1 text-left sm:text-center">
+          <h1 className="text-xl md:text-2xl font-medium tracking-wide drop-shadow-md pointer-events-auto cursor-pointer hover:opacity-70 transition">
+            Fluid Glass
+          </h1>
+        </div>
+        <div className="flex-1 hidden sm:block"></div>
+      </header>
+      <main
+        ref={sliderRef}
+        className="flex h-full"
+        style={{ width: `${slidesData.length * 100}%` }}
+      >
+        {slidesData.map((slide) => (
+          <section
+            key={slide.id}
+            className="relative flex items-end pb-24 md:pb-32 px-6 md:px-12 bg-cover bg-center h-full"
+            style={{
+              backgroundImage: `url(${slide.image})`,
+              width: `${100 / slidesData.length}%`,
+            }}
+          >
+            <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/30 to-black/40"></div>
+
+            <div className="relative z-10 w-full">
+              <h2 className="text-3xl md:text-5xl lg:text-[4rem] font-semibold leading-[1.1] mb-8 md:mb-14 tracking-tight max-w-4xl drop-shadow-xl">
+                {slide.title}
+              </h2>
+              <p className="text-[10px] md:text-[11px] uppercase tracking-[0.2em] font-semibold text-gray-300 drop-shadow-md">
+                {slide.subtitle}
+              </p>
+            </div>
+          </section>
+        ))}
+      </main>
+      <div className="absolute bottom-0 left-0 w-full pointer-events-none z-20 pb-6 md:pb-10 px-6 md:px-12 flex items-end">
+        <div className="w-full flex flex-col sm:flex-row sm:justify-between items-start sm:items-center gap-6 sm:gap-0">
+          <div className="w-full sm:flex-1 sm:mr-12 h-[2px] bg-gray-600/30 rounded-full overflow-hidden">
+            <div ref={progressRef} className="h-full bg-white w-0" />
+          </div>
+          <div className="flex items-center justify-between w-full sm:w-auto gap-8 pointer-events-auto shrink-0">
+            <div className="flex gap-2">
+              <button
+                onClick={prevSlide}
+                disabled={isFirstSlide}
+                onMouseEnter={hideCursor}
+                onMouseLeave={showCursor}
+                className={`w-10 h-10 md:w-12 md:h-12 rounded-full backdrop-blur-sm border flex items-center justify-center transition-all ${
+                  isFirstSlide
+                    ? "bg-black/20 border-white/10 opacity-30 cursor-not-allowed"
+                    : "bg-black/40 border-white/20 hover:bg-white/20 hover:scale-105 cursor-pointer"
+                }`}
+              >
+                <svg
+                  className="w-5 h-5 text-white"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M15 19l-7-7 7-7"
+                  />
+                </svg>
+              </button>
+
+              <button
+                onClick={nextSlide}
+                disabled={isLastSlide}
+                onMouseEnter={hideCursor}
+                onMouseLeave={showCursor}
+                className={`w-10 h-10 md:w-12 md:h-12 rounded-full backdrop-blur-sm border flex items-center justify-center transition-all ${
+                  isLastSlide
+                    ? "bg-black/20 border-white/10 opacity-30 cursor-not-allowed"
+                    : "bg-black/40 border-white/20 hover:bg-white/20 hover:scale-105 cursor-pointer"
+                }`}
+              >
+                <svg
+                  className="w-5 h-5 text-white"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M9 5l7 7-7 7"
+                  />
+                </svg>
+              </button>
+            </div>
+
+            <div className="text-[11px] md:text-[13px] font-semibold tracking-widest font-mono drop-shadow-md">
+              <span>0{currentIndex + 1}</span> / 0{slidesData.length}
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+/* ============================================================================
+   UNIFIED CAROUSEL DEFAULT EXPORT (Support variant prop)
+   ============================================================================ */
+
+export type CarouselVariant = "image" | "hero" | "thumbnails" | "radial" | "glass" | "fluid";
+
+/**
+ * Discriminated on `variant`, so each one takes exactly the props its
+ * carousel takes. The old shape accepted `any[]` for `slides`/`items` plus a
+ * catch-all index signature, which meant nothing you passed was checked and
+ * a slide array meant for one variant compiled fine against another.
+ */
+export type CarouselComponentProps =
+  | ({ variant?: "image"; className?: string } & Omit<
+      ImageCarouselProps,
+      "rootClassName"
+    >)
+  | ({ variant: "hero" } & HeroCarouselProps)
+  | ({ variant: "thumbnails" } & CustomCarouselProps)
+  | ({ variant: "radial" } & RadialCarouselProps)
+  | ({ variant: "glass" | "fluid" } & FluidGlassSliderProps);
+
+export default function Carousel(props: CarouselComponentProps) {
+  if (props.variant === "glass" || props.variant === "fluid") {
+    return <FluidGlassSlider {...props} />;
+  }
+  if (props.variant === "hero") {
+    return <HeroCarousel {...props} />;
+  }
+  if (props.variant === "thumbnails") {
+    return <CustomCarousel {...props} />;
+  }
+  if (props.variant === "radial") {
+    return <RadialCarousel {...props} />;
+  }
+  return <ImageCarousel {...props} rootClassName={props.className} />;
 }

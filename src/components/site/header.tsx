@@ -3,7 +3,11 @@
 import { GitHubIcon } from "@/assets/icons/github";
 import { cn } from "@/lib/utils";
 import {
-  BarChart3,
+  docsHref,
+  frameworkFromPathname,
+  slugFromPathname,
+} from "@/lib/framework";
+import {
   BookOpen,
   LayoutGrid,
   Linkedin,
@@ -19,6 +23,31 @@ import { SearchModal } from "./search-modal";
 import { SidebarMobile } from "./sidebar-mobile";
 import { ThemeSwitcher } from "./theme";
 
+/**
+ * The guide pages, in sidebar order. "Docs" opens the first of them rather than
+ * the /docs landing page, so clicking it starts the reader at the Introduction
+ * instead of an index they have to click through.
+ */
+/**
+ * The header renders inside the docs as well as outside them, so its docs links
+ * must follow the reader's current framework rather than pin to the default.
+ * `frameworkFromPathname` does both: the active framework within /docs/..., and
+ * the default anywhere else — which is the right answer for a marketing page.
+ */
+const docsEntryFor = (pathname: string) =>
+  docsHref(frameworkFromPathname(pathname), "index");
+
+/**
+ * Matched on slug rather than full path: the framework segment is dynamic, so a
+ * path list would stop matching the moment a reader is on /docs/reactjs/... and
+ * the wrong header item would highlight.
+ */
+const GUIDE_SLUGS = new Set(["index", "installation", "first-app"]);
+
+/** True on the guide pages; everything else under /docs/ is a component page. */
+const isGuidePath = (pathname: string) =>
+  pathname === "/docs" || GUIDE_SLUGS.has(slugFromPathname(pathname));
+
 // ==========================================
 // PREMIUM HEADER COMPONENT
 // ==========================================
@@ -26,16 +55,6 @@ const Header = () => {
   const pathname = usePathname() || "";
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [searchOpen, setSearchOpen] = useState(false);
-  const [isScrolled, setIsScrolled] = useState(false);
-
-  // Monitor scroll for border state transition
-  useEffect(() => {
-    const handleScroll = () => {
-      setIsScrolled(window.scrollY > 15);
-    };
-    window.addEventListener("scroll", handleScroll);
-    return () => window.removeEventListener("scroll", handleScroll);
-  }, []);
 
   // Universal Cmd+K / Ctrl+K Palette Interceptor
   useEffect(() => {
@@ -120,7 +139,7 @@ const Header = () => {
                 />
               </svg>
             </div>
-            <span className="font-bold text-[16px] tracking-tight text-foreground flex items-center gap-1.5">
+            <span className="font-semibold text-[16px] tracking-tight text-foreground flex items-center gap-1.5">
               Docs UI
               <span className="text-[10px] font-semibold px-1.5 py-0.5 rounded-full bg-primary/10 text-primary border border-primary/20 leading-none">v1.0</span>
             </span>
@@ -128,7 +147,7 @@ const Header = () => {
 
           <button
             onClick={() => setSidebarOpen(false)}
-            className="p-1 rounded-md text-muted-foreground hover:bg-muted transition-colors cursor-pointer"
+            className="p-1 rounded-md text-foreground/55 hover:text-foreground hover:bg-muted transition-colors cursor-pointer"
           >
             <X className="size-4" />
           </button>
@@ -136,40 +155,33 @@ const Header = () => {
         <SidebarMobile onClose={() => setSidebarOpen(false)} />
       </motion.div>
 
-      {/* Global Sticky Navigation Shell */}
-      <div
-        className={cn(
-          "w-full sticky top-0 z-50 transition-all duration-300",
-          isScrolled
-            ? "bg-background/80 backdrop-blur-xl border-b border-border/80 shadow-md"
-            : "bg-background/30 backdrop-blur-md border-b border-border/20"
-        )}
-      >
-        <header className="mx-auto max-w-[1536px] h-[54px] px-4 md:px-6 flex items-center justify-between relative">
-          {/* Left Area: Logo & Mobile Trigger */}
-          <div className="flex items-center gap-4">
+      {/* Global Floating Segmented Sticky Navigation Shell */}
+      <div className="w-full sticky top-0 z-50 pointer-events-none py-2 px-3 sm:px-6 md:px-8">
+        <header className="mx-auto max-w-[1536px] h-10 flex items-center justify-between relative">
+          {/* Left Area: Logo & Mobile Trigger Segment */}
+          <div className="pointer-events-auto flex items-center gap-2 sm:gap-2.5 h-10 px-3 sm:px-3.5 rounded-full bg-black/[0.03] dark:bg-white/[0.04] backdrop-blur-xl border border-border/40 transition-all">
             <button
               onClick={() => setSidebarOpen(true)}
-              className="flex flex-col gap-1 md:hidden p-1 hover:bg-muted rounded transition-colors"
+              className="flex flex-col gap-1 md:hidden p-1 hover:bg-foreground/10 rounded-full transition-colors cursor-pointer"
               aria-label="Open navigation menu"
             >
-              <span className="w-5 h-0.5 bg-foreground rounded-full" />
-              <span className="w-3 h-0.5 bg-foreground rounded-full" />
               <span className="w-4 h-0.5 bg-foreground rounded-full" />
+              <span className="w-2.5 h-0.5 bg-foreground rounded-full" />
+              <span className="w-3.5 h-0.5 bg-foreground rounded-full" />
             </button>
 
             <Link
               href="/"
-              className="flex items-center gap-2.5 select-none group"
+              className="flex items-center gap-2 select-none group"
             >
               <div className="relative flex items-center justify-center transition-transform duration-200 group-hover:scale-105">
                 <svg
-                  width="24"
-                  height="24"
+                  width="22"
+                  height="22"
                   viewBox="0 0 24 24"
                   fill="none"
                   xmlns="http://www.w3.org/2000/svg"
-                  className="size-[22px]"
+                  className="size-[20px]"
                 >
                   <rect
                     x="3"
@@ -205,23 +217,25 @@ const Header = () => {
                   />
                 </svg>
               </div>
-            <span className="font-extrabold text-[16px] tracking-tight text-foreground flex items-center gap-1.5">
-              Docs <span className="text-primary font-normal">UI</span>
-              <span className="text-[10px] font-semibold px-1.5 py-0.5 rounded-full bg-primary/10 text-primary border border-primary/20 leading-none">v1.0</span>
-            </span>
-          </Link>
+              <span className="font-extrabold text-[15px] tracking-tight text-foreground flex items-center gap-1.5">
+                Docs <span className="text-primary font-normal">UI</span>
+                <span className="text-[10px] font-semibold px-1.5 py-0.5 rounded-full bg-primary/10 text-primary border border-primary/20 leading-none">
+                  v1.0
+                </span>
+              </span>
+            </Link>
           </div>
 
-          {/* Center Area: Absolute Centered Core Actions */}
-          <nav className="hidden md:flex items-center gap-1.5 absolute left-1/2 -translate-x-1/2 text-[13px] font-semibold text-muted-foreground">
+          {/* Center Area: Absolute Centered Navigation Segment */}
+          <nav className="pointer-events-auto hidden md:flex items-center gap-1 p-1 h-10 rounded-full bg-black/[0.03] dark:bg-white/[0.04] backdrop-blur-xl border border-border/40 absolute left-1/2 -translate-x-1/2 text-[13px] text-foreground transition-all">
             <Link
               className={cn(
-                "flex items-center gap-1.5 px-3.5 py-1.5 rounded-lg transition-all",
-                pathname === "/docs"
-                  ? "text-primary-foreground bg-primary shadow-sm"
-                  : "hover:text-foreground hover:bg-muted/60"
+                "flex items-center gap-1.5 px-3.5 py-1.5 rounded-full transition-all text-[12.5px] hover:bg-foreground/5",
+                isGuidePath(pathname)
+                  ? "font-semibold text-foreground"
+                  : "font-medium text-foreground/80 hover:text-foreground"
               )}
-              href="/docs"
+              href={docsEntryFor(pathname)}
               prefetch={false}
             >
               <BookOpen className="h-3.5 w-3.5" />
@@ -229,12 +243,12 @@ const Header = () => {
             </Link>
             <Link
               className={cn(
-                "flex items-center gap-1.5 px-3.5 py-1.5 rounded-lg transition-all",
-                pathname.startsWith("/docs/")
-                  ? "text-primary-foreground bg-primary shadow-sm"
-                  : "hover:text-foreground hover:bg-muted/60"
+                "flex items-center gap-1.5 px-3.5 py-1.5 rounded-full transition-all text-[12.5px] hover:bg-foreground/5",
+                pathname.startsWith("/docs/") && !isGuidePath(pathname)
+                  ? "font-semibold text-foreground"
+                  : "font-medium text-foreground/80 hover:text-foreground"
               )}
-              href="/docs/nextjs/all-components"
+              href={docsHref(frameworkFromPathname(pathname), "all-components")}
               prefetch={false}
             >
               <LayoutGrid className="h-3.5 w-3.5" />
@@ -242,10 +256,10 @@ const Header = () => {
             </Link>
             <Link
               className={cn(
-                "flex items-center gap-1.5 px-3.5 py-1.5 rounded-lg transition-all",
+                "flex items-center gap-1.5 px-3.5 py-1.5 rounded-full transition-all text-[12.5px] hover:bg-foreground/5",
                 pathname.startsWith("/themes")
-                  ? "text-primary-foreground bg-primary shadow-sm"
-                  : "hover:text-foreground hover:bg-muted/60"
+                  ? "font-semibold text-foreground"
+                  : "font-medium text-foreground/80 hover:text-foreground"
               )}
               href="/themes"
               prefetch={false}
@@ -255,60 +269,60 @@ const Header = () => {
             </Link>
           </nav>
 
-          {/* Right Area: Command Palette Trigger, Socials, Theme */}
+          {/* Right Area: Action Pills (Search, Socials, Theme) */}
           <div className="flex items-center gap-2">
-            {/* Command Palette Omni Button */}
+            {/* Command Palette Omni Button — icon-only below 1240px, where the
+                full pill would run under the centred nav. */}
             <button
               onClick={() => setSearchOpen(true)}
-              className="flex items-center gap-2 px-3 h-8 rounded-lg bg-muted/50 border border-border hover:border-primary/50 hover:bg-muted transition-all text-left max-w-[40px] md:max-w-none md:w-[160px] xl:w-[220px] cursor-pointer"
+              className="pointer-events-auto flex items-center justify-center gap-2.5 size-10 min-[1240px]:w-auto min-[1240px]:justify-start min-[1240px]:pl-3.5 min-[1240px]:pr-5 rounded-full bg-black/[0.03] dark:bg-white/[0.04] backdrop-blur-xl border border-border/40 text-foreground/80 hover:text-foreground hover:border-border/70 transition-all text-left cursor-pointer"
               aria-label="Open command palette search"
             >
-              <Search className="w-3.5 h-3.5 text-muted-foreground shrink-0" />
-              <span className="hidden md:inline text-[12.5px] text-muted-foreground flex-1">
+              <Search className="size-4 min-[1240px]:size-3.5 min-[1240px]:text-foreground/50 shrink-0" />
+              <span className="hidden min-[1240px]:inline text-[12.5px] text-foreground/50">
                 Search…
               </span>
-              <div className="hidden md:flex items-center gap-0.5 shrink-0 select-none">
-                <kbd className="text-[10px] px-1 py-px rounded border border-border text-muted-foreground bg-background font-mono leading-none">
+              <div className="hidden min-[1240px]:flex items-center gap-1 shrink-0 select-none ml-2.5">
+                <kbd className="size-[19px] flex items-center justify-center rounded-[5px] border border-border/60 text-foreground/40 font-mono text-[10px] leading-none bg-foreground/5">
                   ⌘
                 </kbd>
-                <kbd className="text-[10px] px-1 py-px rounded border border-border text-muted-foreground bg-background font-mono leading-none">
+                <kbd className="size-[19px] flex items-center justify-center rounded-[5px] border border-border/60 text-foreground/40 font-mono text-[10px] leading-none bg-foreground/5">
                   K
                 </kbd>
               </div>
             </button>
 
-            <div className="hidden sm:block w-px h-5 bg-border mx-0.5" />
+            {/* LinkedIn Pill */}
+            <Link
+              href="https://www.linkedin.com/company/algorizetech/"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="pointer-events-auto hidden lg:flex items-center justify-center size-10 rounded-full bg-black/[0.03] dark:bg-white/[0.04] backdrop-blur-xl border border-border/40 text-foreground/80 hover:text-foreground hover:border-border/70 transition-all"
+              aria-label="View LinkedIn Profile"
+            >
+              <Linkedin className="w-4 h-4" />
+            </Link>
 
-            {/* Social Links */}
-            <div className="hidden lg:flex items-center gap-1.5">
-              <Link
-                href="https://www.linkedin.com/company/algorizetech/"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="flex items-center justify-center h-8 w-8 rounded-lg border border-border text-muted-foreground hover:text-foreground hover:bg-muted transition-all"
-                aria-label="View LinkedIn Profile"
-              >
-                <Linkedin className="w-[14px] h-[14px]" />
-              </Link>
-
-              <Link
-                href="https://github.com/docs/docs"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="flex items-center gap-1.5 h-8 px-2.5 rounded-lg border border-border text-muted-foreground hover:text-foreground hover:bg-muted transition-all text-[12.5px] font-medium"
-                aria-label="View project on GitHub"
-              >
-                <GitHubIcon className="w-[14px] h-[14px] fill-current" />
-                <span className="text-[11px] font-semibold px-1.5 py-px rounded-full bg-muted text-muted-foreground border border-border">
-                  2.1k
-                </span>
-              </Link>
-            </div>
-
-            <div className="w-px h-5 bg-border mx-0.5" />
+            {/* GitHub Stars Pill */}
+            <Link
+              href="https://github.com/docs/docs"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="pointer-events-auto hidden sm:flex items-center justify-center gap-2 size-10 lg:w-auto lg:px-3.5 rounded-full bg-black/[0.03] dark:bg-white/[0.04] backdrop-blur-xl border border-border/40 text-foreground/80 hover:text-foreground hover:border-border/70 transition-all text-[12.5px] font-medium"
+              aria-label="View project on GitHub"
+            >
+              <GitHubIcon className="w-4 h-4 fill-current" />
+              <span className="hidden lg:inline text-[12px] font-semibold text-foreground">GitHub</span>
+              <span className="hidden lg:block w-px h-3.5 bg-border/60 mx-0.5" />
+              <span className="hidden lg:inline text-[11px] font-semibold text-foreground/50">
+                2.1k
+              </span>
+            </Link>
 
             {/* Dynamic System Theme Core Engine Toggle */}
-            <ThemeSwitcher />
+            <ThemeSwitcher
+              className="pointer-events-auto size-10 rounded-full bg-black/[0.03] dark:bg-white/[0.04] backdrop-blur-xl border border-border/40 hover:border-border/70 text-foreground transition-all"
+            />
           </div>
         </header>
       </div>

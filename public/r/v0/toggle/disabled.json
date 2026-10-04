@@ -1,0 +1,28 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "toggle-disabled",
+  "type": "registry:block",
+  "title": "Toggle — Disabled",
+  "description": "The \"Disabled\" example from the Algorize UI docs.",
+  "dependencies": [
+    "lucide-react",
+    "tw-animate-css"
+  ],
+  "registryDependencies": [
+    "utils"
+  ],
+  "files": [
+    {
+      "path": "app/page.tsx",
+      "type": "registry:page",
+      "target": "app/page.tsx",
+      "content": "import { Toggle } from \"@/components/custom/blocks/ToggleBlock\";\nimport { Bold } from \"lucide-react\";\n\nexport default function DisabledToggle() {\n  return (\n    <Toggle disabled pressed aria-label=\"Toggle bold\">\n      <Bold className=\"w-4 h-4\" />\n    </Toggle>\n  );\n}"
+    },
+    {
+      "path": "components/custom/blocks/ToggleBlock.tsx",
+      "type": "registry:component",
+      "target": "components/custom/blocks/ToggleBlock.tsx",
+      "content": "\"use client\";\n\nimport { cn } from \"@/lib/utils\";\nimport React, { forwardRef, useState } from \"react\";\n\nexport interface ToggleProps\n  extends React.ButtonHTMLAttributes<HTMLButtonElement> {\n  pressed?: boolean;\n  defaultPressed?: boolean;\n  onPressedChange?: (pressed: boolean) => void;\n  variant?: \"default\" | \"outline\" | \"ghost\";\n  size?: \"sm\" | \"md\" | \"lg\";\n}\n\n// Ensure this export keyword is here!\nexport const Toggle = forwardRef<HTMLButtonElement, ToggleProps>(\n  (\n    {\n      className,\n      variant = \"default\",\n      size = \"md\",\n      pressed: controlledPressed,\n      defaultPressed = false,\n      onPressedChange,\n      ...props\n    },\n    ref,\n  ) => {\n    // Manage state internally if not controlled by the parent\n    const isControlled = controlledPressed !== undefined;\n    const [uncontrolledPressed, setUncontrolledPressed] =\n      useState(defaultPressed);\n    const isPressed = isControlled ? controlledPressed : uncontrolledPressed;\n\n    const handleClick = (e: React.MouseEvent<HTMLButtonElement>) => {\n      const newState = !isPressed;\n      if (!isControlled) {\n        setUncontrolledPressed(newState);\n      }\n      onPressedChange?.(newState);\n      props.onClick?.(e);\n    };\n\n    // The pressed state wears the theme colour softly: a low-opacity primary\n    // wash, with the icon/label in an ink of the same hue. Raw --primary as\n    // ink is too light on some presets (lavender on white is under 3:1), so\n    // it's re-derived at a fixed OKLCH lightness — deep in light mode, pale in\n    // dark — and follows whatever primary the theme sets.\n    const onInk =\n      \"data-[state=on]:text-[oklch(from_var(--primary)_0.45_calc(c*0.9)_h)] dark:data-[state=on]:text-[oklch(from_var(--primary)_0.86_calc(c*0.7)_h)]\";\n    const offHover = \"data-[state=off]:hover:text-foreground\";\n\n    const variants = {\n      default: cn(\n        \"bg-transparent text-foreground/80 hover:bg-primary/[0.07] data-[state=on]:bg-primary/[0.13] data-[state=on]:hover:bg-primary/[0.18]\",\n        offHover,\n        onInk,\n      ),\n      outline: cn(\n        \"border border-border bg-transparent text-foreground/80 hover:bg-primary/[0.06] data-[state=on]:border-primary/35 data-[state=on]:bg-primary/[0.1] data-[state=on]:hover:bg-primary/[0.15]\",\n        offHover,\n        onInk,\n      ),\n      ghost: cn(\n        \"bg-transparent text-foreground/80 hover:bg-primary/[0.05] data-[state=on]:bg-primary/[0.08] data-[state=on]:hover:bg-primary/[0.12]\",\n        offHover,\n        onInk,\n      ),\n    };\n\n    const sizes = {\n      sm: \"h-8 px-2.5 text-xs\",\n      md: \"h-9 px-3 text-sm\",\n      lg: \"h-10 px-4 text-sm\",\n    };\n\n    return (\n      <button\n        type=\"button\"\n        ref={ref}\n        aria-pressed={isPressed}\n        data-state={isPressed ? \"on\" : \"off\"}\n        onClick={handleClick}\n        className={cn(\n          \"inline-flex items-center justify-center rounded-md font-medium transition-colors outline-none focus-visible:ring-[3px] focus-visible:ring-primary/35 disabled:pointer-events-none disabled:opacity-50\",\n          variants[variant],\n          sizes[size],\n          className,\n        )}\n        {...props}\n      />\n    );\n  },\n);\nToggle.displayName = \"Toggle\";\n"
+    }
+  ]
+}

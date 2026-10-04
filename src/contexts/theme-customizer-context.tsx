@@ -4,7 +4,8 @@
  * ThemeCustomizerProvider — manages full CSS variable customization.
  *
  * This is a separate context from the existing ThemeContextProvider.
- * It handles all 19 color tokens + border radius + preset management,
+ * It handles all 32 shadcn color tokens (core, chart, sidebar) + border radius
+ * + preset management,
  * persisting to localStorage and injecting CSS variables onto <html>.
  */
 
@@ -24,9 +25,14 @@ import {
   COLOR_TOKENS,
   THEME_PRESETS,
   DEFAULT_PRESET,
+  THEME_CUSTOMIZER_STORAGE_KEY,
+  resolvePresetColors,
 } from "@/lib/theme-presets";
+import { buildThemeCss, type ExportMode } from "@/lib/theme-css";
 
 // ─── Types ───────────────────────────────────────────────────────
+
+export type { ExportMode };
 
 export interface ThemeCustomizerState {
   colors: {
@@ -39,6 +45,7 @@ export interface ThemeCustomizerState {
 
 interface ThemeCustomizerContextValue {
   state: ThemeCustomizerState;
+  hydrated: boolean;
   // Color manipulation
   setColorToken: (
     mode: "light" | "dark",
@@ -53,12 +60,13 @@ interface ThemeCustomizerContextValue {
   activePreset: string;
   // Actions
   resetToDefaults: () => void;
-  generateCSS: () => string;
+  generateCSS: (exportMode?: ExportMode) => string;
   // Current mode awareness
   currentMode: "light" | "dark";
 }
 
-const STORAGE_KEY = "theme-customizer-state";
+// Shared with ThemeInitScript, which reads the same key before first paint.
+const STORAGE_KEY = THEME_CUSTOMIZER_STORAGE_KEY;
 
 // ─── Helpers ─────────────────────────────────────────────────────
 
@@ -68,13 +76,16 @@ function getDefaultPreset(): ThemePreset {
   );
 }
 
-function getInitialState(): ThemeCustomizerState {
-  const preset = getDefaultPreset();
+function presetColors(preset: ThemePreset): ThemeCustomizerState["colors"] {
   return {
-    colors: {
-      light: { ...preset.colors.light },
-      dark: { ...preset.colors.dark },
-    },
+    light: resolvePresetColors(preset.colors.light, "light"),
+    dark: resolvePresetColors(preset.colors.dark, "dark"),
+  };
+}
+
+function getInitialState(): ThemeCustomizerState {
+  return {
+    colors: presetColors(getDefaultPreset()),
     radius: 0.625,
     activePreset: DEFAULT_PRESET,
   };
@@ -87,6 +98,37 @@ function loadState(): ThemeCustomizerState {
     const stored = localStorage.getItem(STORAGE_KEY);
     if (stored) {
       const parsed = JSON.parse(stored) as ThemeCustomizerState;
+      // A named preset is re-resolved from its current definition rather than
+      // trusted from storage: the stored colours are a snapshot from whenever
+      // the reader last visited, and once a preset's palette is edited in code
+      // every returning reader would otherwise be pinned to the old one. Only
+      // "custom" carries colours the reader actually chose. An empty name is
+      // a reader who never picked anything — state used to be saved that way —
+      // so they follow the current default rather than a snapshot of the old.
+      const preset =
+        parsed.activePreset !== "custom"
+          ? THEME_PRESETS.find(
+              (p) => p.name === (parsed.activePreset || DEFAULT_PRESET),
+            )
+          : undefined;
+      if (preset && typeof parsed.radius === "number") {
+        return {
+          radius: parsed.radius,
+          activePreset: preset.name,
+          colors: presetColors(preset),
+        };
+      }
+      // A preset that has since been removed: fall back to the default rather
+      // than keep a snapshot no preset card matches.
+      if (parsed.activePreset !== "custom") {
+        return {
+          ...getInitialState(),
+          radius:
+            typeof parsed.radius === "number"
+              ? parsed.radius
+              : getInitialState().radius,
+        };
+      }
       // Validate that all tokens exist
       const hasAllTokens = COLOR_TOKENS.every(
         (t) => t in parsed.colors.light && t in parsed.colors.dark
@@ -94,11 +136,38 @@ function loadState(): ThemeCustomizerState {
       if (hasAllTokens && typeof parsed.radius === "number") {
         return parsed;
       }
+      // State saved before the chart/sidebar tokens existed: keep the user's
+      // colors and derive the missing tokens from them, rather than throwing
+      // the whole customization away.
+      if (
+        parsed.colors?.light &&
+        parsed.colors?.dark &&
+        typeof parsed.radius === "number"
+      ) {
+        return {
+          ...parsed,
+          colors: {
+            light: resolvePresetColors(parsed.colors.light, "light"),
+            dark: resolvePresetColors(parsed.colors.dark, "dark"),
+          },
+        };
+      }
     }
   } catch {
     // Corrupted data, use defaults
   }
   return getInitialState();
+}
+
+/**
+ * Read the mode ThemeInitScript already committed to <html> rather than
+ * defaulting to "dark". next-themes resolves `resolvedTheme` in its own mount
+ * effect, which runs *after* this provider's — so a light-mode reader would
+ * otherwise get one commit of dark colors injected before the sync catches up.
+ */
+function getInitialMode(): "light" | "dark" {
+  if (typeof document === "undefined") return "dark";
+  return document.documentElement.classList.contains("dark") ? "dark" : "light";
 }
 
 function saveState(state: ThemeCustomizerState) {
@@ -124,8 +193,10 @@ function injectCSSVariables(
     }
   }
 
-  // Inject radius
+  // Inject radius. At 0 the flag also squares every corner (see the
+  // `[data-radius-zero]` rule in globals.css).
   root.style.setProperty("--radius", `${radius}rem`);
+  root.toggleAttribute("data-radius-zero", radius === 0);
 }
 
 function clearInjectedCSS() {
@@ -134,6 +205,7 @@ function clearInjectedCSS() {
     root.style.removeProperty(`--${token}`);
   }
   root.style.removeProperty("--radius");
+  root.removeAttribute("data-radius-zero");
 }
 
 // ─── Context ─────────────────────────────────────────────────────
@@ -148,8 +220,8 @@ export function ThemeCustomizerProvider({
 }) {
   const [state, setState] = useState<ThemeCustomizerState>(getInitialState);
   const [hydrated, setHydrated] = useState(false);
-  const { theme, resolvedTheme } = useTheme();
-  const [activeMode, setActiveMode] = useState<"light" | "dark">("dark");
+  const { resolvedTheme } = useTheme();
+  const [activeMode, setActiveMode] = useState<"light" | "dark">(getInitialMode);
 
   // Keep activeMode strictly synced with resolvedTheme
   useEffect(() => {
@@ -245,10 +317,7 @@ export function ThemeCustomizerProvider({
     const nextState: ThemeCustomizerState = {
       radius: state.radius,
       activePreset: presetName,
-      colors: {
-        light: { ...preset.colors.light },
-        dark: { ...preset.colors.dark },
-      },
+      colors: presetColors(preset),
     };
 
     saveState(nextState);
@@ -262,61 +331,17 @@ export function ThemeCustomizerProvider({
     saveState(initial);
   }, []);
 
-  const generateCSS = useCallback((exportMode: "both" | "light" | "dark" = "both"): string => {
-    const indent = "  ";
-    const lightVars = COLOR_TOKENS.map(
-      (token) => `${indent}--${token}: ${state.colors.light[token]};`
-    ).join("\n");
-
-    const darkVars = COLOR_TOKENS.map(
-      (token) => `${indent}--${token}: ${state.colors.dark[token]};`
-    ).join("\n");
-
-    const themeBlock = `@theme inline {
-  --radius-xs: min(calc(var(--radius) - 6px), var(--radius));
-  --radius-sm: min(calc(var(--radius) - 4px), var(--radius));
-  --radius-md: min(calc(var(--radius) - 2px), var(--radius));
-  --radius-lg: var(--radius);
-  --radius-xl: calc(var(--radius) + 4px);
-  --radius-2xl: calc(var(--radius) * 1.5);
-  --radius-3xl: calc(var(--radius) * 2);
-  --radius: var(--radius);
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --color-card: var(--card);
-  --color-card-foreground: var(--card-foreground);
-  --color-popover: var(--popover);
-  --color-popover-foreground: var(--popover-foreground);
-  --color-primary: var(--primary);
-  --color-primary-foreground: var(--primary-foreground);
-  --color-secondary: var(--secondary);
-  --color-secondary-foreground: var(--secondary-foreground);
-  --color-muted: var(--muted);
-  --color-muted-foreground: var(--muted-foreground);
-  --color-accent: var(--accent);
-  --color-accent-foreground: var(--accent-foreground);
-  --color-destructive: var(--destructive);
-  --color-border: var(--border);
-  --color-input: var(--input);
-  --color-ring: var(--ring);
-}`;
-
-    if (exportMode === "light") {
-      return `@import "tailwindcss";\n\n:root {\n${lightVars}\n${indent}--radius: ${state.radius}rem;\n}\n\n${themeBlock}`;
-    }
-
-    if (exportMode === "dark") {
-      return `@import "tailwindcss";\n\n:root {\n${darkVars}\n${indent}--radius: ${state.radius}rem;\n}\n\n${themeBlock}`;
-    }
-
-    return `@import "tailwindcss";\n\n:root {\n${lightVars}\n${indent}--radius: ${state.radius}rem;\n}\n\n.dark {\n${darkVars}\n${indent}--radius: ${state.radius}rem;\n}\n\n${themeBlock}`;
-  }, [state]);
+  const generateCSS = useCallback(
+    (exportMode: ExportMode = "both"): string => buildThemeCss(state, exportMode),
+    [state],
+  );
 
   // ─── Memoized Value ──────────────────────────────────────────
 
   const value = useMemo<ThemeCustomizerContextValue>(
     () => ({
       state,
+      hydrated,
       setColorToken,
       getColorToken,
       setRadius,
@@ -328,6 +353,7 @@ export function ThemeCustomizerProvider({
     }),
     [
       state,
+      hydrated,
       setColorToken,
       getColorToken,
       setRadius,

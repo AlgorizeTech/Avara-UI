@@ -19,19 +19,19 @@ export function Card({
   ...props
 }: CardProps) {
   const variants = {
-    default: "bg-white dark:bg-[#050505] shadow-sm",
+    default: "bg-card shadow-sm border border-primary/10",
     bordered:
-      "bg-white dark:bg-[#050505] border border-zinc-200 dark:border-zinc-800 shadow-sm",
-    flat: "bg-zinc-50 dark:bg-zinc-900/50 border border-zinc-200 dark:border-zinc-800/50",
+      "bg-card border border-primary/25 shadow-sm",
+    flat: "bg-muted border border-primary/20",
   };
 
   return (
     <div
       className={cn(
-        "rounded-xl text-zinc-950 dark:text-zinc-50 flex flex-col transition-all duration-200",
+        "rounded-xl text-card-foreground flex flex-col transition-all duration-200",
         variants[variant],
         interactive &&
-          "hover:shadow-md hover:-translate-y-0.5 cursor-pointer hover:border-zinc-300 dark:hover:border-zinc-700 active:scale-[0.98]",
+          "hover:shadow-md hover:-translate-y-0.5 cursor-pointer hover:border-primary/50 active:scale-[0.98]",
         className,
       )}
       {...props}
@@ -81,7 +81,7 @@ export function CardDescription({
 }: React.HTMLAttributes<HTMLParagraphElement>) {
   return (
     <p
-      className={cn("text-sm text-zinc-500 dark:text-zinc-400", className)}
+      className={cn("text-sm text-muted-foreground", className)}
       {...props}
     >
       {children}
@@ -121,3 +121,8 @@ export function CardFooter({
     </div>
   );
 }
+
+// Re-export ProductCard for convenient unified importing from CardBlock
+export { ProductCard } from "@/components/custom/blocks/ProductCardBlock";
+export type { ProductCardProps, ProductColorOption } from "@/components/custom/blocks/ProductCardBlock";
+

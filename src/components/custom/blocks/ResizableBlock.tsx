@@ -154,13 +154,14 @@ export function ResizableHandle({
       const deltaPercentage = (deltaPixels / totalPixels) * totalFlex;
 
       let newPrevFlex = prevStartFlex + deltaPercentage;
-      let newNextFlex = nextStartFlex - deltaPercentage;
 
       // Apply constraints
       newPrevFlex = Math.max(prevMin, Math.min(newPrevFlex, prevMax));
       newPrevFlex = Math.max(newPrevFlex, totalFlex - nextMax);
       newPrevFlex = Math.min(newPrevFlex, totalFlex - nextMin);
-      newNextFlex = totalFlex - newPrevFlex;
+
+      // The next pane takes whatever the clamped previous pane leaves.
+      const newNextFlex = totalFlex - newPrevFlex;
 
       // Direct DOM manipulation bypasses React render cycle for zero latency
       prev.style.flex = `${newPrevFlex} ${newPrevFlex} 0%`;

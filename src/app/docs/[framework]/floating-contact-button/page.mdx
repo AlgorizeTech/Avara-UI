@@ -1,0 +1,337 @@
+import { docsPageMetadata } from "@/lib/docs-metadata";
+
+export const metadata = docsPageMetadata("floating-contact-button");
+
+import { ExampleShowcase } from "@/components/site/Sandbox";
+import { extractCode } from "@/lib/code";
+
+# Floating Contact Button
+
+A high-converting, interactive floating support widget that anchors to any screen corner. Clicking the button expands a sleek glassmorphic chat interface animated with plain CSS (no animation library), featuring simulated agent replies, instantaneous `localStorage` theme coloring, and mobile-first responsiveness.
+
+Type a message in any preview and hit Enter to see the typing indicator and simulated reply. The previews use `containerMode="absolute"` so the widget stays inside its frame — in your app you would leave it `fixed`.
+
+export const usageDefault = `"use client";
+
+import { FloatingContactButtonBlock } from "@/components/custom/blocks/FloatingContactButtonBlock";
+
+export default function SupportWidget() {
+  return (
+    <FloatingContactButtonBlock
+      title="Chat with us"
+      subtitle="We typically reply in a few minutes"
+      position="bottom-right"
+      onSendMessage={(message) => console.log("Send to your inbox:", message)}
+    />
+  );
+}`;
+
+export const usageLeft = `import { FloatingContactButtonBlock } from "@/components/custom/blocks/FloatingContactButtonBlock";
+
+export default function LeftAnchoredWidget() {
+  // Anchors to the opposite corner; the popup and its origin flip with it.
+  return <FloatingContactButtonBlock position="bottom-left" />;
+}`;
+
+export const usageClosed = `import { FloatingContactButtonBlock } from "@/components/custom/blocks/FloatingContactButtonBlock";
+
+export default function CollapsedWidget() {
+  // Start collapsed — the usual behaviour on a real page.
+  return <FloatingContactButtonBlock defaultOpen={false} />;
+}`;
+
+export const usageBranding = `import { FloatingContactButtonBlock } from "@/components/custom/blocks/FloatingContactButtonBlock";
+
+export default function BrandedWidget() {
+  // \`title\`, \`subtitle\` and \`avatarUrl\` make up the popup header.
+  return (
+    <FloatingContactButtonBlock
+      title="Nexus Support"
+      subtitle="Online · replies in ~2 min"
+      avatarUrl="https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_250,c_limit/v1790150483/photo-1534528741775-53994a69daeb-1790150482280.jpg"
+    />
+  );
+}`;
+
+export const usageAccent = `import { FloatingContactButtonBlock } from "@/components/custom/blocks/FloatingContactButtonBlock";
+
+export default function AccentedWidget() {
+  // \`defaultAccentColor\` takes a token name or any CSS color. Pass
+  // \`localStorageKey\` and the widget picks up your app's stored brand color.
+  return (
+    <FloatingContactButtonBlock
+      defaultAccentColor="#10b981"
+      localStorageKey="primaryColor"
+    />
+  );
+}`;
+
+<ExampleShowcase
+  name="floating-contact-button"
+  colorControl
+  colorLabel="Accent Color"
+  columns={1}
+  examples={[
+    {
+      title: "Floating contact button",
+      subheading: "A corner-anchored trigger that expands into a glass chat panel.",
+      propNotes: [
+        {
+          prop: "onSendMessage",
+          effect:
+            "is where you forward the typed text — the widget does not send anything itself.",
+        },
+        {
+          prop: "containerMode",
+          value: '"fixed"',
+          effect:
+            "anchors to the viewport for real pages; use `\"absolute\"` to keep it inside a bounded box.",
+        },
+        {
+          prop: "initialMessages",
+          effect:
+            "seeds the thread the reader sees on opening.",
+        },
+      ],
+      props: { position: "bottom-right", defaultOpen: true },
+      usage: usageDefault,
+      code: extractCode("src/components/custom/blocks/FloatingContactButtonBlock.tsx"),
+    },
+  ]}
+/>
+
+## Installation
+
+<Installation name="floating-contact-button" />
+
+## Examples
+
+<ExampleShowcase
+  name="floating-contact-button"
+  colorControl
+  colorLabel="Accent Color"
+  columns={1}
+  examples={[
+    {
+      title: "Bottom left",
+      propNotes: [
+        {
+          lead: "Set",
+          prop: "position",
+          value: '"bottom-left"',
+          effect:
+            "to move the anchor and mirror the popup's transform origin with it.",
+        },
+      ],
+      props: { position: "bottom-left", defaultOpen: true },
+      usage: usageLeft,
+    },
+    {
+      title: "Collapsed",
+      propNotes: [
+        {
+          lead: "Set",
+          prop: "defaultOpen",
+          value: '{false}',
+          effect:
+            "— the default, and what a real page ships: the widget waits as a single button.",
+        },
+      ],
+      props: { position: "bottom-right", defaultOpen: false },
+      usage: usageClosed,
+    },
+    {
+      title: "Branded header",
+      propNotes: [
+        {
+          prop: "title",
+          value: '"Nexus Support"',
+          effect:
+            "is the headline in the panel header, beside the sparkles badge.",
+        },
+        {
+          prop: "subtitle",
+          effect:
+            "is the status line under it, and `avatarUrl` the agent photo with its online dot.",
+        },
+      ],
+      props: {
+        position: "bottom-right",
+        defaultOpen: true,
+        title: "Nexus Support",
+        subtitle: "Online · replies in ~2 min",
+        avatarUrl: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto/v1790148865/80-4-1790148865113.jpg",
+      },
+      usage: usageBranding,
+    },
+  ]}
+/>
+
+## Features
+Discover the key capabilities that make this component an excellent choice for modern, animated user interfaces.
+
+<div className="grid grid-cols-1 sm:grid-cols-2 gap-4 my-6 not-prose">
+  <div className="p-6 rounded-2xl border border-border bg-card">
+    <h3 className="text-lg font-semibold text-card-foreground mb-2">Fluid Animations</h3>
+    <p className="text-muted-foreground text-sm">Hardware-accelerated transitions that ensure smooth 60fps performance across devices.</p>
+  </div>
+  <div className="p-6 rounded-2xl border border-border bg-card">
+    <h3 className="text-lg font-semibold text-card-foreground mb-2">Highly Customizable</h3>
+    <p className="text-muted-foreground text-sm">Exposes intuitive props for tailoring colors, sizes, and animation speeds to fit your brand.</p>
+  </div>
+  <div className="p-6 rounded-2xl border border-border bg-card">
+    <h3 className="text-lg font-semibold text-card-foreground mb-2">Responsive Design</h3>
+    <p className="text-muted-foreground text-sm">Automatically adapts to mobile, tablet, and desktop viewports without horizontal scrolling issues.</p>
+  </div>
+  <div className="p-6 rounded-2xl border border-border bg-card">
+    <h3 className="text-lg font-semibold text-card-foreground mb-2">Accessible</h3>
+    <p className="text-muted-foreground text-sm">Built with semantic HTML and ARIA labels where necessary to support screen readers and keyboard navigation.</p>
+  </div>
+</div>
+
+## Best Practices & Guidelines
+
+<div className="flex flex-col gap-4 my-6 not-prose">
+  <div className="rounded-xl border border-foreground/[0.06] bg-foreground/[0.03] p-4">
+    <h4 className="font-sans text-[14px] font-semibold text-foreground mb-1">Animation Performance</h4>
+    <p className="text-[13px] leading-relaxed text-foreground/50">Avoid placing too many heavy animated components on a single screen to prevent layout thrashing and maintain 60fps performance. Use intersection observers to pause off-screen animations.</p>
+  </div>
+  <div className="rounded-xl border border-primary/15 bg-primary/5 p-4">
+    <h4 className="font-sans text-[14px] font-semibold text-primary mb-1">State Management</h4>
+    <p className="text-[13px] leading-relaxed text-foreground/50">When triggering animations via state changes, ensure you wrap state updates in <code>startTransition</code> or use lightweight stores to prevent React rendering bottlenecks during the animation tick.</p>
+  </div>
+</div>
+
+## Props Reference
+
+<div class="props-reference">
+  <section class="props-section">
+    <h3>FloatingContactButtonBlock Props</h3>
+    <p>
+      Extends <code>React.HTMLAttributes&lt;HTMLDivElement&gt;</code>. Accepts all standard native <code>&lt;div&gt;</code> attributes.
+    </p>
+
+    <div class="table-wrapper">
+      <table>
+        <thead>
+          <tr>
+            <th>Prop</th>
+            <th>Type</th>
+            <th>Default</th>
+            <th>Description</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><code>position</code></td>
+            <td><code>"bottom-right" | "bottom-left"</code></td>
+            <td><code>"bottom-right"</code></td>
+            <td>Determines which viewport or container corner the trigger button and expanded chat modal adhere to.</td>
+          </tr>
+          <tr>
+            <td><code>containerMode</code></td>
+            <td><code>"fixed" | "absolute"</code></td>
+            <td><code>"fixed"</code></td>
+            <td>Layout positioning engine. Use <code>"fixed"</code> for production web pages to anchor to the viewport; use <code>"absolute"</code> inside documentation preview boxes.</td>
+          </tr>
+          <tr>
+            <td><code>title</code></td>
+            <td><code>string</code></td>
+            <td><code>"Chat with us"</code></td>
+            <td>The primary headline string rendered in the chat modal header next to the sparkles badge.</td>
+          </tr>
+          <tr>
+            <td><code>subtitle</code></td>
+            <td><code>string</code></td>
+            <td><code>"We typically reply in a few minutes"</code></td>
+            <td>The secondary status string displayed beneath the title in the header.</td>
+          </tr>
+          <tr>
+            <td><code>avatarUrl</code></td>
+            <td><code>string</code></td>
+            <td><code>"https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto/v1790224285/photo-1469474968028-56623f02e42e-1790146212205-1790224284635.webp"</code></td>
+            <td>Image URL for the support agent avatar rendered in the header with an online status badge.</td>
+          </tr>
+          <tr>
+            <td><code>defaultOpen</code></td>
+            <td><code>boolean</code></td>
+            <td><code>false</code></td>
+            <td>Whether the chat modal should render expanded by default when the component mounts.</td>
+          </tr>
+          <tr>
+            <td><code>localStorageKey</code></td>
+            <td><code>string</code></td>
+            <td><code>"primaryColor"</code></td>
+            <td>The storage key string monitored by the instant detection engine to sync brand colors across tabs.</td>
+          </tr>
+          <tr>
+            <td><code>defaultAccentColor</code></td>
+            <td><code>string</code></td>
+            <td><code>"var(--primary)"</code></td>
+            <td>The fallback hex color applied to the header, user message bubbles, and trigger button if no key is found in storage.</td>
+          </tr>
+          <tr>
+            <td><code>initialMessages</code></td>
+            <td><code>ChatMessage[]</code></td>
+            <td><em>Default greeting array</em></td>
+            <td>An array of message objects populated in the chat thread when the user opens the widget.</td>
+          </tr>
+          <tr>
+            <td><code>onSendMessage</code></td>
+            <td><code>(message: string) =&gt; void</code></td>
+            <td><code>undefined</code></td>
+            <td>Callback function fired whenever the user submits a new text message via the input bar.</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+<hr />
+
+  <section class="props-section">
+    <h3>ChatMessage Interface</h3>
+    <p>
+      Used for structuring items inside the <code>initialMessages</code> array and managing conversation state.
+    </p>
+
+    <div class="table-wrapper">
+      <table>
+        <thead>
+          <tr>
+            <th>Property</th>
+            <th>Type</th>
+            <th>Required</th>
+            <th>Description</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><code>id</code></td>
+            <td><code>string</code></td>
+            <td><strong>Yes</strong></td>
+            <td>A unique string identifier required for React list rendering; each new message animates in once, when it mounts.</td>
+          </tr>
+          <tr>
+            <td><code>text</code></td>
+            <td><code>string</code></td>
+            <td><strong>Yes</strong></td>
+            <td>The text body string rendered inside the message bubble.</td>
+          </tr>
+          <tr>
+            <td><code>sender</code></td>
+            <td><code>"user" | "agent"</code></td>
+            <td><strong>Yes</strong></td>
+            <td>Determines bubble alignment and styling. <code>"user"</code> aligns right with the accent color; <code>"agent"</code> aligns left with neutral styling.</td>
+          </tr>
+          <tr>
+            <td><code>timestamp</code></td>
+            <td><code>string</code></td>
+            <td><strong>Yes</strong></td>
+            <td>Formatted time string (e.g., <code>"2:45 PM"</code> or <code>"Just now"</code>) displayed beneath the message bubble.</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+</div>

@@ -1,20 +1,12 @@
+export const metadata = docsPageMetadata("fleet-tracker");
+
 # Fleet Tracker Map
 
 An interactive, responsive fleet management dashboard featuring a synchronized sidebar and live map integration using React Leaflet.
 
-## Examples
+Every preview is live: click a vehicle in the sidebar to fly the map to its coordinates, or click a map marker to highlight it in the sidebar.
 
-Every preview is live: click a vehicle in the sidebar to fly the map to its coordinates, or click a map marker to highlight it in the sidebar. The first example's **Code** tab contains the full component source.
-
-export const usageDefault = `import dynamic from "next/dynamic";
-
-// Leaflet touches \`window\` on import, so the map must be client-only.
-const FleetTracker = dynamic(
-  () => import("@/components/custom/blocks/Fleet-map"),
-  { ssr: false },
-);
-
-const fleet = [
+export const fleetData = `const fleet: Vehicle[] = [
   {
     id: "VOL-342808",
     location: "Chelsea, NY",
@@ -31,32 +23,69 @@ const fleet = [
     status: "maintenance",
     speed: "0 mph",
   },
-];
+  {
+    id: "VOL-342809",
+    location: "Midtown East, NY",
+    lat: 40.758,
+    lng: -73.973,
+    status: "active",
+    speed: "22 mph",
+  },
+  {
+    id: "VOL-343908",
+    location: "Hoboken, NJ",
+    lat: 40.744,
+    lng: -74.0324,
+    status: "idle",
+    speed: "0 mph",
+  },
+];`;
+
+export const usageDefault = `import FleetTracker, {
+  type Vehicle,
+} from "@/components/custom/blocks/Fleet-map";
+
+// Leaflet touches \`window\` on import, so the map is deferred until after mount
+// — the component handles that itself, in every framework.
+
+${fleetData}
 
 export default function FleetDashboard() {
   return ;
 }`;
 
-export const usageMinimal = `// A floating panel over a light map canvas.
-`;
+export const usageMinimal = `import FleetTracker, {
+  type Vehicle,
+} from "@/components/custom/blocks/Fleet-map";
 
-export const usageModern = `// Backdrop-blurred glass sidebar over a dark map.
-`;
+${fleetData}
+
+export default function MinimalFleet() {
+  // A floating panel over a light map canvas.
+  return ;
+}`;
+
+export const usageModern = `import FleetTracker, {
+  type Vehicle,
+} from "@/components/custom/blocks/Fleet-map";
+
+${fleetData}
+
+export default function ModernFleet() {
+  // Backdrop-blurred glass sidebar over a dark map.
+  return ;
+}`;
 
 ## Installation
 
-### 1. Install Dependencies
-
-This component requires `react-leaflet` to manage the map canvas, and `lucide-react` for the UI icons.
+Register the @algorize-ui registry once per project, then add the component:
 
 ```bash
-npm install leaflet react-leaflet lucide-react
-npm install -D @types/leaflet
+npx shadcn@latest registry add @algorize-ui=https://algorize-ui.vercel.app/r/{name}.json
+npx shadcn@latest add @algorize-ui/fleet-map
 ```
 
-### 2. Copy the Component
-
-Create a new file at `components/custom/blocks/Fleet-map.tsx` and copy the source from the **Code** tab of the first example above. Import it with `next/dynamic` and `ssr: false` — Leaflet needs a real `window`.
+## Examples
 
 ## Features
 Explore the Fleet Tracker map features, including live marker positioning, custom tooltips, and interactive geographic visualization.
@@ -103,8 +132,9 @@ Explore the Fleet Tracker map features, including live marker positioning, custo
 
           "default"
 
-          Applies overarching structural layouts, including floating sidebars
-          versus split-views.
+          default is a split view, minimal floats
+          the list over the map, modern is the glass treatment
+          from Profile Page: an aurora behind, a frosted list, a glass-edged map.
 
           color
 
@@ -115,8 +145,40 @@ Explore the Fleet Tracker map features, including live marker positioning, custo
           Applies global color themes to the active map markers, sidebar icons,
           and focus rings.
 
+          zoom
+
+          number
+
+          15
+
+          Initial zoom level and active vehicle focus zoom level. Defaults to 15 for street/neighborhood detail.
+
+          tileApiKey
+
+          string
+
+          undefined
+
+          Optional CARTO API key if you choose to use CARTO Basemaps. By default, OpenStreetMap tiles are used with zero API key required.
+
+          tileUrl
+
+          string
+
+          OpenStreetMap tile URL
+
+          Custom basemap raster tile URL template for light mode (e.g., https://&#123;s&#125;.tile.openstreetmap.org/&#123;z&#125;/&#123;x&#125;/&#123;y&#125;.png).
+
+          darkTileUrl
+
+          string
+
+          undefined
+
+          Custom raster tile URL template for dark mode. If omitted, standard OpenStreetMap tiles are dynamically dark-graded.
+
 ---
 
-**Component Path:** `nextjs\fleet-tracker\page.mdx`
+**Component Path:** `[framework]\fleet-tracker\page.mdx`
 
-**Web Version:** Visit the interactive version at the corresponding URL on the Next.js documentation site for live previews and interactive examples.
+**Web Version:** Visit the corresponding URL on the Algorize UI documentation site for live previews and interactive examples.

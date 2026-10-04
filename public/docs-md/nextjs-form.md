@@ -1,38 +1,12 @@
+export const metadata = docsPageMetadata("form");
+
 # Form Engine
 
 A high-fidelity Form toolkit engineered for both simple landing pages and complex enterprise dashboards.
 
 This engine decouples layout from state. It provides a stunning visual wrapper with a **slim animated glowing border** that tracks focus, and a custom **glitching error text effect** that draws immediate attention to invalid fields.
 
-## Examples
-
-`FormWrapper` is unopinionated about state — it works with plain `useState` and with `react-hook-form`'s `handleSubmit` alike, because it never clones or intercepts child `ref`s. The first example's **Code** tab contains the full component source.
-
-export const usageNative = `"use client";
-
-export default function NewsletterForm() {
-  const [email, setEmail] = useState("");
-  const [error, setError] = useState("");
-
-  const onSubmit = (e) => {
-    e.preventDefault();
-    if (!email.includes("@")) {
-      setError("Please provide a valid email address.");
-      return;
-    }
-    setError("");
-    // Submit logic...
-  };
-
-  return (
-
-         setEmail(e.target.value)}
-        />
-
-      Subscribe Now
-    
-  );
-}`;
+`FormWrapper` is unopinionated about state — it works with plain `useState` and with `react-hook-form`'s `handleSubmit` alike, because it never clones or intercepts child `ref`s.
 
 export const usageZod = `"use client";
 
@@ -58,28 +32,7 @@ export default function EnterpriseForm() {
   );
 }`;
 
-export const usageErrorStyles = `import {
-  FormField,
-  FormWrapper,
-} from "@/components/custom/blocks/FormBlock";
-
-export default function ErrorStyles() {
-  const message = "Invalid corporate email format detected.";
-
-  return (
-    
-      {/* "glitch" is the default — animated RGB-split text */}
-
-      {/* "default" is the quiet, static variant */}
-
-  );
-}`;
-
-export const usageSubmitting = `import {
-  FormField,
-  FormSubmit,
-  FormWrapper,
-} from "@/components/custom/blocks/FormBlock";
+export const usageSubmitting = `"use client";
 
 export default function SubmittingForm() {
   return (
@@ -92,36 +45,24 @@ export default function SubmittingForm() {
   );
 }`;
 
-export const usageBare = `import {
-  FormField,
-  FormWrapper,
-} from "@/components/custom/blocks/FormBlock";
-
-export default function SettingsPanel() {
-  // No title/description = no header. No onSubmit = a , not a ,
-  // so the wrapper can nest inside a form you already own.
-  return (
-
-  );
-}`;
-
 ## Installation
 
-### 1. Copy the Component
-
-This component exports four modular building blocks: `FormWrapper`, `FormField`, `FormError`, and `FormSubmit`.
-
-The high-fidelity styling (the spinning conic gradient and the CSS glitch animations) are self-contained within this file and require no external animation libraries.
-
-Create a new file at `components/custom/blocks/FormBlock.tsx` and copy the engine code from the **Code** tab of the first example above.
-
-### 2. (Optional) Install React Hook Form & Zod
-
-If you intend to use the advanced enterprise validation shown in the second example, you will need to install the following packages:
+Register the @algorize-ui registry once per project, then add the component:
 
 ```bash
-npm install react-hook-form zod @hookform/resolvers
+npx shadcn@latest registry add @algorize-ui=https://algorize-ui.vercel.app/r/{name}.json
+npx shadcn@latest add @algorize-ui/form
 ```
+
+### Optional — schema validation
+
+The form primitives are unopinionated about validation; the native example uses plain React state. Only add these if you want the schema-driven approach from the second example.
+
+```bash
+npx shadcn@latest install react-hook-form zod @hookform/resolvers
+```
+
+## Examples
 
 ## Features
 Explore the Form component's validation integration, accessible error messages, and loading state management.
@@ -243,6 +184,6 @@ Explore the Form component's validation integration, accessible error messages, 
 
 ---
 
-**Component Path:** `nextjs\form\page.mdx`
+**Component Path:** `[framework]\form\page.mdx`
 
-**Web Version:** Visit the interactive version at the corresponding URL on the Next.js documentation site for live previews and interactive examples.
+**Web Version:** Visit the corresponding URL on the Algorize UI documentation site for live previews and interactive examples.

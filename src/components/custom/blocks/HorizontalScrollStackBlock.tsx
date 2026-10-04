@@ -1,13 +1,14 @@
 "use client";
 
 import { cn } from "@/lib/utils";
-import {
-  motion,
-  MotionValue,
-  useMotionValue,
-  useTransform,
-} from "framer-motion";
 import React, { useEffect, useRef, useState } from "react";
+import { cubicBezier } from "./motion-curves";
+
+// Stack progress (0 → 1) lives in this custom property on the container,
+// written once per frame by the tween below; cards and bars derive from it.
+const PROGRESS_VAR = "--horizontal-scroll-stack-progress";
+const PROGRESS_EASE = cubicBezier(0.25, 1, 0.5, 1);
+const PROGRESS_DURATION = 600;
 
 export type ScrollStackItem = {
   id: string | number;
@@ -24,106 +25,100 @@ export interface HorizontalScrollStackProps
   subtitle?: string;
 }
 
-// --- CHILD COMPONENT: Individual Stacking Card ---
+// --- CHILD COMPONENT: Stacking Card ---
 function StackCard({
   item,
   index,
   total,
-  progress,
   cardWidth,
   gap,
   stackOffset,
-  scrollEndThreshold,
   isMobile = false,
 }: {
   item: ScrollStackItem;
   index: number;
   total: number;
-  progress: MotionValue<number>;
   cardWidth: number;
   gap: number;
   stackOffset: number;
-  scrollEndThreshold: number;
   isMobile?: boolean;
 }) {
-  // Distance each card travels before locking over the previous card (Desktop only)
-  const travelPerCard = cardWidth + gap - stackOffset;
-  const lockDistance = index * travelPerCard;
+  const steps = Math.max(1, total - 1);
+  const stepSize = 1 / steps;
+  const shiftPerStep = cardWidth + gap - stackOffset;
 
-  // Calculate the scroll percentage (0 to scrollEndThreshold) where THIS card locks
-  const lockProgress =
-    total > 1 ? (index / (total - 1)) * scrollEndThreshold : 0;
-  const safeLockProgress = Math.max(0.0001, lockProgress);
+  // Card index `index` reaches its stacked position at progress = index * stepSize
+  const lockProgress = index * stepSize;
+  const finalTranslation = -index * shiftPerStep;
 
-  // Card translates left until it hits lockProgress, then anchors in place while subsequent cards slide over it
-  const x = useTransform(
-    progress,
-    [0, safeLockProgress, 1],
-    [0, -lockDistance, -lockDistance],
-  );
+  // Linear shift from 0 to lockProgress; stays locked at finalTranslation afterwards.
+  // All unstacked cards shift together, keeping equal gap between them to the right.
+  const x =
+    isMobile || index === 0
+      ? undefined
+      : `translateX(calc(min(var(${PROGRESS_VAR}, 0), ${lockProgress}) / ${lockProgress} * ${finalTranslation}px))`;
 
   const displayNum = item.number || `0${index + 1}`;
 
   return (
-    <motion.div
+    <div
       style={{
         width: isMobile ? "100%" : `${cardWidth}px`,
-        x: isMobile || index === 0 ? 0 : x,
+        transform: x,
+        zIndex: index + 1,
       }}
       className={cn(
-        "shrink-0 p-6 sm:p-8 md:p-10 rounded-3xl bg-white/95 dark:bg-zinc-900/95 backdrop-blur-xl border border-slate-200/80 dark:border-zinc-800 shadow-[0_15px_35px_rgba(0,0,0,0.1)] dark:shadow-[0_20px_50px_rgba(0,0,0,0.7)] flex flex-col justify-between group hover:border-[var(--theme-color,var(--primary))] dark:hover:border-[var(--theme-color,var(--primary))] hover:shadow-lg hover:shadow-[var(--theme-color,var(--primary))]/15 transition-all duration-300 relative",
+        "shrink-0 p-6 sm:p-8 md:p-10 rounded-3xl bg-card/95 backdrop-blur-xl border border-border/80 flex flex-col justify-between group hover:border-[var(--theme-color,var(--primary))] transition-all duration-300 relative",
         isMobile ? "w-full" : "",
       )}
     >
       <div>
-        {/* Top Row: Icon & Step Number */}
         <div className="flex items-center justify-between mb-6 sm:mb-8">
-          <div className="w-12 h-12 rounded-2xl flex items-center justify-center border transition-all duration-300 bg-[var(--theme-color,var(--primary))]/10 border-[var(--theme-color,var(--primary))]/20 text-[var(--theme-color,var(--primary))] group-hover:scale-110 group-hover:!bg-[var(--theme-color,var(--primary))] group-hover:!border-[var(--theme-color,var(--primary))] group-hover:!text-white group-hover:[&_svg]:!text-white">
+          <div className="w-12 h-12 rounded-2xl flex items-center justify-center border transition-all duration-300 bg-[var(--theme-color,var(--primary))]/10 border-[var(--theme-color,var(--primary))]/20 text-[var(--theme-color,var(--primary))] group-hover:scale-110 group-hover:!bg-[var(--theme-color,var(--primary))] group-hover:!border-[var(--theme-color,var(--primary))] group-hover:!text-primary-foreground group-hover:[&_svg]:!text-primary-foreground">
             {item.icon}
           </div>
-          <span className="text-4xl sm:text-5xl font-black text-slate-200 dark:text-zinc-800/80 tracking-tighter select-none group-hover:text-[var(--theme-color,var(--primary))]/25 transition-colors duration-300">
+          <span className="text-4xl sm:text-5xl font-bold text-foreground/10 tracking-tighter select-none group-hover:text-[var(--theme-color,var(--primary))]/25 transition-colors duration-300">
             {displayNum}
           </span>
         </div>
 
-        {/* Content */}
-        <h3 className="text-xl sm:text-2xl font-bold tracking-tight text-slate-900 dark:text-white mb-2 sm:mb-3">
+        <h3 className="text-xl sm:text-2xl font-semibold tracking-tight text-foreground mb-2 sm:mb-3">
           {item.title}
         </h3>
-        <p className="text-sm sm:text-base text-slate-600 dark:text-zinc-400 leading-relaxed font-normal">
+        <p className="text-sm sm:text-base text-muted-foreground leading-relaxed font-normal">
           {item.description}
         </p>
       </div>
 
-      {/* Card Bottom Indicator line */}
-      <div className="mt-8 w-full h-1 bg-slate-100 dark:bg-zinc-800 rounded-full overflow-hidden">
+      <div className="mt-8 w-full h-1 bg-muted rounded-full overflow-hidden">
         <div className="h-full bg-[var(--theme-color,var(--primary))] w-0 group-hover:w-full transition-all duration-500 ease-out" />
       </div>
-    </motion.div>
+    </div>
   );
 }
 
-// --- CHILD COMPONENT: Progress Bar Step Indicator ---
+// --- CHILD COMPONENT: Progress Indicator Bar ---
 function ProgressBarItem({
   index,
   total,
-  progress,
-  scrollEndThreshold,
 }: {
   index: number;
   total: number;
-  progress: MotionValue<number>;
-  scrollEndThreshold: number;
 }) {
-  const start = (index / total) * scrollEndThreshold;
-  const end = ((index + 1) / total) * scrollEndThreshold;
-  const scaleX = useTransform(progress, [start, end], [0, 1]);
+  const steps = Math.max(1, total - 1);
+
+  // Bar `index` fills while progress runs from (index - 1) / steps to
+  // index / steps; the first bar is always full.
+  const scaleX =
+    index === 0
+      ? undefined
+      : `scaleX(clamp(0, var(${PROGRESS_VAR}, 0) * ${steps} - ${index - 1}, 1))`;
 
   return (
-    <div className="h-1.5 flex-1 bg-slate-200 dark:bg-zinc-800 rounded-full overflow-hidden">
-      <motion.div
+    <div className="h-2 flex-1 bg-muted rounded-full overflow-hidden relative">
+      <div
         className="h-full bg-[var(--theme-color,var(--primary))]"
-        style={{ scaleX, transformOrigin: "left" }}
+        style={{ transform: scaleX, transformOrigin: "left" }}
       />
     </div>
   );
@@ -132,180 +127,147 @@ function ProgressBarItem({
 // --- MAIN COMPONENT ---
 export function HorizontalScrollStack({
   items,
-  title = "We follow a streamlined design process",
-  subtitle = "from understanding your goals to delivering polished assets.",
+  title,
+  subtitle,
   className,
   style,
   ...props
 }: HorizontalScrollStackProps) {
   const containerRef = useRef<HTMLDivElement>(null);
 
-  // Responsive layout state & mobile detection (< 768px)
+  const [activeStep, setActiveStep] = useState(0);
+  const progressRef = useRef(0);
+  const lastScrollTimeRef = useRef(0);
+
+  const steps = Math.max(1, items.length - 1);
+
+  // Smoothly animate progress whenever activeStep changes, always from where
+  // it is now, so a new step mid-glide picks up without a jump. Written inline
+  // each frame on purpose: the cards' `transition-all` then trails the glide
+  // slightly, which is the look the section has always had.
+  useEffect(() => {
+    const container = containerRef.current;
+    const targetProgress = activeStep / steps;
+    const from = progressRef.current;
+    if (!container || from === targetProgress) return;
+
+    let frame = 0;
+    let startTime = 0;
+    const tick = (now: number) => {
+      if (!startTime) startTime = now;
+      const t = Math.min((now - startTime) / PROGRESS_DURATION, 1);
+      const value = from + (targetProgress - from) * PROGRESS_EASE(t);
+      progressRef.current = value;
+      container.style.setProperty(PROGRESS_VAR, String(value));
+      if (t < 1) frame = requestAnimationFrame(tick);
+    };
+    frame = requestAnimationFrame(tick);
+    return () => cancelAnimationFrame(frame);
+  }, [activeStep, steps]);
+
   const [layout, setLayout] = useState({
     cardWidth: 440,
     gap: 32,
-    stackOffset: 60,
+    stackOffset: 0,
   });
   const [isMobile, setIsMobile] = useState(false);
 
   useEffect(() => {
     if (typeof window === "undefined") return;
-    const container = containerRef.current;
-    if (!container) return;
 
-    // Resolve everything against the document the component actually lives in,
-    // so the effect also works when rendered inside an iframe.
-    const doc = container.ownerDocument;
-    const win = doc.defaultView ?? window;
-
-    // 1. UNIVERSAL STICKY PATCHER: Intercepts & neutralizes ALL CSS traps (auto, scroll, hidden, overlay, contain)
-    const modifiedAncestors: {
-      element: HTMLElement;
-      overflow: string;
-      overflowX: string;
-      overflowY: string;
-      contain: string;
-    }[] = [];
-
-    let parent = container.parentElement;
-    while (parent && parent !== doc.body && parent !== doc.documentElement) {
-      const computed = win.getComputedStyle(parent);
-      const { overflow, overflowX, overflowY, contain } = computed;
-
-      const hasOverflowTrap = ["hidden", "auto", "scroll", "overlay"].some(
-        (val) => val === overflow || val === overflowX || val === overflowY,
-      );
-      const hasContainTrap =
-        contain && contain !== "none" && contain !== "normal";
-
-      if (hasOverflowTrap || hasContainTrap) {
-        modifiedAncestors.push({
-          element: parent,
-          overflow: parent.style.overflow,
-          overflowX: parent.style.overflowX,
-          overflowY: parent.style.overflowY,
-          contain: parent.style.contain,
-        });
-
-        if (["hidden", "auto", "scroll", "overlay"].includes(overflowX))
-          parent.style.overflowX = "clip";
-        if (["hidden", "auto", "scroll", "overlay"].includes(overflowY))
-          parent.style.overflowY = "visible";
-        if (["hidden", "auto", "scroll", "overlay"].includes(overflow))
-          parent.style.overflow = "visible";
-        if (hasContainTrap) parent.style.contain = "none";
-      }
-      parent = parent.parentElement;
-    }
-
-    // 2. Responsive layout sizing & Mobile detection.
-    // Measures the container (not the top window) so it responds to the
-    // actual viewport when rendered inside an iframe device preview.
     const updateLayout = () => {
-      const w = container.clientWidth || win.innerWidth;
-      setIsMobile(w < 768); // Below 768px (md breakpoint) triggers simple vertical stack
+      const w = window.innerWidth;
+      setIsMobile(w < 768);
 
       if (w < 640) {
-        const offset = Math.min(
-          24,
-          Math.max(14, Math.floor((w - 120) / (items.length || 1))),
-        );
-        const cardW = Math.min(300, w - (items.length - 1) * offset - 32);
-        setLayout({
-          cardWidth: Math.max(240, cardW),
-          gap: 16,
-          stackOffset: offset,
-        });
+        setLayout({ cardWidth: Math.max(260, w - 64), gap: 16, stackOffset: 0 });
       } else if (w < 1024) {
-        setLayout({ cardWidth: 360, gap: 24, stackOffset: 44 });
+        setLayout({ cardWidth: 360, gap: 24, stackOffset: 0 });
       } else {
-        setLayout({ cardWidth: 440, gap: 32, stackOffset: 60 });
+        setLayout({ cardWidth: 440, gap: 32, stackOffset: 0 });
       }
     };
 
     updateLayout();
-    // Realm-correct ResizeObserver: a parent-realm observer never fires for
-    // elements living in another document (e.g. inside an iframe).
-    const RO =
-      (win as Window & typeof globalThis).ResizeObserver ?? ResizeObserver;
-    const observer = new RO(updateLayout);
-    observer.observe(container);
-    win.addEventListener("resize", updateLayout);
+    window.addEventListener("resize", updateLayout);
+    return () => window.removeEventListener("resize", updateLayout);
+  }, []);
 
-    return () => {
-      observer.disconnect();
-      win.removeEventListener("resize", updateLayout);
-      modifiedAncestors.forEach(
-        ({ element, overflow, overflowX, overflowY, contain }) => {
-          element.style.overflow = overflow;
-          element.style.overflowX = overflowX;
-          element.style.overflowY = overflowY;
-          element.style.contain = contain;
-        },
-      );
-    };
-  }, [items.length]);
-
-  // Track vertical scroll progress of the tall container.
-  // Manually driven MotionValue instead of useScroll so progress is computed
-  // against the window/document the component actually lives in (works inside
-  // a same-origin iframe device preview, where useScroll would track the
-  // parent page scroll instead). Replicates offset ["start start", "end end"].
-  const scrollYProgress = useMotionValue(0);
+  // Stepped scroll control: Exactly 1 card per scroll action
   useEffect(() => {
-    const el = containerRef.current;
-    if (!el) return;
-    const win = el.ownerDocument.defaultView ?? window;
-    const update = () => {
-      const rect = el.getBoundingClientRect();
-      const total = rect.height - win.innerHeight;
-      scrollYProgress.set(
-        total > 0 ? Math.min(1, Math.max(0, -rect.top / total)) : 0,
-      );
-    };
-    update();
-    win.addEventListener("scroll", update, { passive: true });
-    win.addEventListener("resize", update);
-    return () => {
-      win.removeEventListener("scroll", update);
-      win.removeEventListener("resize", update);
-    };
-  }, [scrollYProgress]);
+    const container = containerRef.current;
+    if (!container) return;
+    const doc = container.ownerDocument;
+    const win = doc.defaultView ?? window;
 
-  const SCROLL_END_THRESHOLD = 0.7;
-  const dynamicHeight = Math.max(400, items.length * 70);
+    const handleWheel = (e: WheelEvent) => {
+      if (isMobile) return;
+      const rect = container.getBoundingClientRect();
+      const isVisibleInViewport =
+        rect.top < win.innerHeight * 0.85 && rect.bottom > win.innerHeight * 0.15;
+
+      if (!isVisibleInViewport) return;
+
+      const now = Date.now();
+      const isCooldown = now - lastScrollTimeRef.current < 550;
+
+      if (e.deltaY > 0) {
+        // Scrolling DOWN
+        if (activeStep < steps) {
+          e.preventDefault();
+          e.stopPropagation();
+          if (!isCooldown) {
+            lastScrollTimeRef.current = now;
+            setActiveStep((prev) => Math.min(steps, prev + 1));
+          }
+        }
+      } else if (e.deltaY < 0) {
+        // Scrolling UP
+        if (activeStep > 0) {
+          e.preventDefault();
+          e.stopPropagation();
+          if (!isCooldown) {
+            lastScrollTimeRef.current = now;
+            setActiveStep((prev) => Math.max(0, prev - 1));
+          }
+        }
+      }
+    };
+
+    win.addEventListener("wheel", handleWheel, { passive: false });
+    return () => win.removeEventListener("wheel", handleWheel);
+  }, [activeStep, steps, isMobile]);
 
   return (
     <div
       ref={containerRef}
       style={{
-        height: isMobile ? "auto" : `${dynamicHeight}vh`,
-        backgroundColor: "color-mix(in srgb, var(--theme-color, var(--primary)) 1.5%, transparent)",
+        height: isMobile ? "auto" : "540px",
         ...style,
       }}
       className={cn(
-        "relative w-full text-slate-900 dark:text-white transition-colors duration-300",
+        "relative w-full text-foreground overflow-hidden [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden",
         isMobile ? "py-12 px-4 sm:px-8" : "",
         className,
       )}
       {...props}
     >
       {isMobile ? (
-        /* =========================================================
-           MOBILE (< 768px): Simple Vertical Scroll Stack Fallback
-           ========================================================= */
         <div className="w-full flex flex-col gap-6">
-          {/* Section Header */}
-          <div className="max-w-3xl mb-4 shrink-0">
-            <h2 className="text-2xl sm:text-3xl font-extrabold tracking-tight leading-tight text-slate-900 dark:text-white">
-              {title}
-            </h2>
-            <p className="text-slate-600 dark:text-zinc-400 text-sm sm:text-base mt-2 font-normal">
-              {subtitle}
-            </p>
-          </div>
-
-          {/* Vertical Stack Track */}
+          {(title || subtitle) && (
+            <div className="max-w-3xl mb-4 shrink-0">
+              {title && (
+                <h2 className="text-2xl sm:text-3xl font-extrabold tracking-tight leading-tight text-foreground">
+                  {title}
+                </h2>
+              )}
+              {subtitle && (
+                <p className="text-muted-foreground text-sm sm:text-base mt-2 font-normal">
+                  {subtitle}
+                </p>
+              )}
+            </div>
+          )}
           <div className="flex flex-col gap-6 w-full mt-2">
             {items.map((item, index) => (
               <StackCard
@@ -313,33 +275,32 @@ export function HorizontalScrollStack({
                 item={item}
                 index={index}
                 total={items.length}
-                progress={scrollYProgress}
                 cardWidth={0}
                 gap={0}
                 stackOffset={0}
-                scrollEndThreshold={SCROLL_END_THRESHOLD}
                 isMobile={true}
               />
             ))}
           </div>
         </div>
       ) : (
-        /* =========================================================
-           DESKTOP (>= 768px): Native GPU Horizontal Sticky Deck
-           ========================================================= */
-        <div className="sticky top-0 h-screen w-full overflow-hidden flex flex-col justify-center px-4 sm:px-12 lg:px-20">
-          {/* Section Header */}
-          <div className="max-w-3xl mb-8 sm:mb-12 shrink-0">
-            <h2 className="text-2xl sm:text-4xl md:text-5xl font-extrabold tracking-tight leading-tight text-slate-900 dark:text-white">
-              {title}
-            </h2>
-            <p className="text-slate-600 dark:text-zinc-400 text-sm sm:text-lg mt-2 sm:mt-3 font-normal">
-              {subtitle}
-            </p>
-          </div>
+        <div className="w-full h-full overflow-hidden flex flex-col justify-between px-4 sm:px-8 lg:px-12 py-6">
+          {(title || subtitle) && (
+            <div className="max-w-3xl shrink-0">
+              {title && (
+                <h2 className="text-xl sm:text-3xl md:text-4xl font-extrabold tracking-tight leading-tight text-foreground">
+                  {title}
+                </h2>
+              )}
+              {subtitle && (
+                <p className="text-muted-foreground text-xs sm:text-base mt-1 font-normal">
+                  {subtitle}
+                </p>
+              )}
+            </div>
+          )}
 
-          {/* Horizontal Stacking Track */}
-          <div className="w-full overflow-visible py-4">
+          <div className="w-full overflow-hidden py-2 my-auto">
             <div
               style={{ gap: `${layout.gap}px` }}
               className="flex w-max items-stretch"
@@ -350,26 +311,21 @@ export function HorizontalScrollStack({
                   item={item}
                   index={index}
                   total={items.length}
-                  progress={scrollYProgress}
                   cardWidth={layout.cardWidth}
                   gap={layout.gap}
                   stackOffset={layout.stackOffset}
-                  scrollEndThreshold={SCROLL_END_THRESHOLD}
                   isMobile={false}
                 />
               ))}
             </div>
           </div>
 
-          {/* Progress Bar Indicators */}
-          <div className="flex items-center gap-2 mt-8 sm:mt-12 max-w-xs w-full shrink-0">
+          <div className="flex items-center gap-2 max-w-xs w-full shrink-0">
             {items.map((_, i) => (
               <ProgressBarItem
                 key={i}
                 index={i}
                 total={items.length}
-                progress={scrollYProgress}
-                scrollEndThreshold={SCROLL_END_THRESHOLD}
               />
             ))}
           </div>

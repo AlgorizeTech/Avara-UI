@@ -2,6 +2,7 @@
 
 import {
   AnimatedTypographyBlock,
+  PrefixPosition,
   TypographyAlign,
   TypographyColor,
   TypographyTag,
@@ -15,7 +16,7 @@ const ALL_SIZES = ["5xl", "24px", "2rem"];
 
 export default function AnimatedTypographyDemo({
   tag = "h1",
-  variant = "flip-up",
+  variant = "matrix-scramble",
   align = "center",
   customSize = "",
   customText = "The quick brown fox jumps over the lazy dog.",
@@ -23,6 +24,10 @@ export default function AnimatedTypographyDemo({
   color = "primary",
   showAll,
   variants,
+  singleVariant,
+  titlePrefix,
+  words,
+  prefixPosition,
 }: {
   tag?: TypographyTag;
   variant?: TypographyVariant;
@@ -31,25 +36,45 @@ export default function AnimatedTypographyDemo({
   customText?: string;
   animationKey?: number;
   color?: TypographyColor | string;
-  /**
-   * Renders every step of one axis in a single frame. `variant` is NOT one of
-   * them — animations are grouped by family instead, via `variants` below.
-   */
   showAll?: "tags" | "align" | "sizes";
-  /**
-   * A small family of related animations to show together (2–5), each labelled
-   * with its variant name. Grouping similar effects keeps them comparable;
-   * dumping all nine in one frame does not (Rule 14).
-   */
   variants?: TypographyVariant[];
+  singleVariant?: TypographyVariant;
+  /** Static text before the animated part — the rotating variants read best with one. */
+  titlePrefix?: string;
+  /** The words the rotating variants cycle through. */
+  words?: string[];
+  /** Whether the prefix holds still or re-centres as the rotating word changes. */
+  prefixPosition?: PrefixPosition;
 }) {
+  if (singleVariant) {
+    const tags: TypographyTag[] = ["h3", "h4", "p"];
+    return (
+      <div className="w-full min-h-[350px] relative z-10 overflow-hidden p-3 sm:p-6 md:p-10 flex flex-col justify-center items-center">
+        <div className="w-full max-w-3xl flex flex-col gap-6 items-center text-center">
+          {tags.map((t) => (
+            <AnimatedTypographyBlock
+              key={`${animationKey}-${singleVariant}-${t}`}
+              as={t}
+              variant={singleVariant}
+              align="center"
+              text={customText}
+              titlePrefix={titlePrefix}
+              words={words}
+              prefixPosition={prefixPosition}
+              color={color}
+            />
+          ))}
+        </div>
+      </div>
+    );
+  }
   if (variants?.length) {
     return (
-      <div className="w-full min-h-[350px] relative z-10 overflow-hidden p-6 sm:p-10">
+      <div className="w-full min-h-[350px] relative z-10 overflow-hidden p-3 sm:p-6 md:p-10">
         <div className="w-full max-w-4xl mx-auto flex flex-col gap-8">
           {variants.map((v) => (
             <div key={v} className="flex flex-col gap-1">
-              <span className="text-[11px] font-bold uppercase tracking-wider text-zinc-500">
+              <span className="text-[11px] font-semibold uppercase tracking-wider text-muted-foreground">
                 variant=&quot;{v}&quot;
               </span>
               <AnimatedTypographyBlock
@@ -76,7 +101,7 @@ export default function AnimatedTypographyDemo({
             node: (
               <AnimatedTypographyBlock
                 as={t}
-                variant="fade-up"
+                variant="matrix-scramble"
                 align="left"
                 text="The quick brown fox."
                 color={color}
@@ -89,7 +114,7 @@ export default function AnimatedTypographyDemo({
               node: (
                 <AnimatedTypographyBlock
                   as="p"
-                  variant="fade-up"
+                  variant="matrix-scramble"
                   align={a}
                   size="lg"
                   text={customText}
@@ -102,7 +127,7 @@ export default function AnimatedTypographyDemo({
               node: (
                 <AnimatedTypographyBlock
                   as="h2"
-                  variant="fade-up"
+                  variant="matrix-scramble"
                   align="left"
                   size={s}
                   text="The quick brown fox."
@@ -112,11 +137,11 @@ export default function AnimatedTypographyDemo({
             }));
 
     return (
-      <div className="w-full min-h-[350px] relative z-10 overflow-hidden p-6 sm:p-10">
+      <div className="w-full min-h-[350px] relative z-10 overflow-hidden p-3 sm:p-6 md:p-10">
         <div className="w-full max-w-4xl mx-auto flex flex-col gap-8">
           {rows.map((row) => (
             <div key={row.label} className="flex flex-col gap-1">
-              <span className="text-[11px] font-bold uppercase tracking-wider text-zinc-500">
+              <span className="text-[11px] font-semibold uppercase tracking-wider text-muted-foreground">
                 {row.label}
               </span>
               {row.node}
@@ -130,7 +155,6 @@ export default function AnimatedTypographyDemo({
   return (
     <div className="w-full flex items-center justify-center min-h-[350px] relative z-10 overflow-hidden">
       <div className="w-full max-w-4xl flex flex-col justify-center">
-        {/* The key prop forces React to remount the component, re-triggering the CSS/JS animations */}
         <AnimatedTypographyBlock
           key={`${animationKey}-${variant}-${tag}-${align}`}
           as={tag}

@@ -1,36 +1,26 @@
 "use client";
 
 import { cn } from "@/lib/utils";
-import gsap from "gsap";
-import React, {
-  createContext,
-  forwardRef,
-  useContext,
-  useEffect,
-  useRef,
-  useState,
-} from "react";
+import React, { forwardRef, useLayoutEffect, useRef, useState } from "react";
+import { FlowchartContext, useFlowchart } from "./flowchart-context";
 
 // ==========================================
-// CONTEXT & TYPES
+// MOTION
 // ==========================================
-interface FlowchartContextType {
-  activePath: string | null;
-  setActivePath: (pathId: string | null) => void;
-  color: string;
-}
+// GSAP's back.out(1.2) and power2.out, exact as cubic-beziers.
+const NODE_IN_EASE = "cubic-bezier(.3333, 1.4, .6667, 1)";
+const DRAW_EASE = "cubic-bezier(.3333, 1, .6667, 1)";
 
-const FlowchartContext = createContext<FlowchartContextType | null>(null);
-
-export function useFlowchart() {
-  const context = useContext(FlowchartContext);
-  if (!context) {
-    throw new Error(
-      "Flowchart sub-components must be used within a Flowchart root.",
-    );
-  }
-  return context;
+const FLOWCHART_CSS = `
+@keyframes flowchart-node-in {
+  from { opacity: 0; transform: translateX(-10px) scale(0.9); }
+  to { opacity: 1; transform: none; }
 }
+@keyframes flowchart-draw {
+  from { stroke-dashoffset: var(--flowchart-len); }
+  to { stroke-dashoffset: 0; }
+}
+`;
 
 // ==========================================
 // COMPONENTS
@@ -38,7 +28,13 @@ export function useFlowchart() {
 
 export interface FlowchartProps extends React.HTMLAttributes<HTMLDivElement> {
   initialActivePath?: string | null;
-  color?: "blue" | "indigo" | "rose" | "emerald" | "zinc";
+  color?: "primary" | "blue" | "indigo" | "rose" | "emerald" | "zinc";
+  /**
+   * `fixed` is the 900×400 blueprint canvas with a grid. `fluid` is just the
+   * context and a positioned box, for connectors drawn between ordinary
+   * layout — size the `FlowCanvas` yourself with `viewBox`.
+   */
+  layout?: "fixed" | "fluid";
 }
 
 export const Flowchart = forwardRef<HTMLDivElement, FlowchartProps>(
@@ -46,7 +42,8 @@ export const Flowchart = forwardRef<HTMLDivElement, FlowchartProps>(
     {
       children,
       initialActivePath = null,
-      color = "indigo",
+      color = "primary",
+      layout = "fixed",
       className,
       ...props
     },
@@ -56,12 +53,22 @@ export const Flowchart = forwardRef<HTMLDivElement, FlowchartProps>(
       initialActivePath,
     );
 
+    if (layout === "fluid") {
+      return (
+        <FlowchartContext.Provider value={{ activePath, setActivePath, color }}>
+          <div ref={ref} className={cn("relative w-full", className)} {...props}>
+            {children}
+          </div>
+        </FlowchartContext.Provider>
+      );
+    }
+
     return (
       <FlowchartContext.Provider value={{ activePath, setActivePath, color }}>
         <div
           ref={ref}
           className={cn(
-            "w-full overflow-x-auto bg-[#fafafa] dark:bg-[#050505] border border-zinc-200/80 dark:border-zinc-900 rounded-2xl select-none shadow-inner custom-scrollbar",
+            "w-full overflow-x-auto bg-background border border-border/80 rounded-2xl select-none shadow-inner custom-scrollbar",
             className,
           )}
           {...props}
@@ -85,19 +92,19 @@ export interface FlowNodeProps extends React.HTMLAttributes<HTMLDivElement> {
   id: string;
   title: string;
   description?: string;
-  icon?: React.ComponentType<any>;
+  icon?: React.ElementType;
   connectedPaths?: string[];
 }
 
 export const FlowNode = forwardRef<HTMLDivElement, FlowNodeProps>(
   (
     {
-      id,
       title,
       description,
       icon: Icon,
       connectedPaths = [],
       className,
+      style,
       ...props
     },
     ref,
@@ -108,16 +115,6 @@ export const FlowNode = forwardRef<HTMLDivElement, FlowNodeProps>(
     React.useImperativeHandle(ref, () => nodeRef.current as HTMLDivElement);
 
     const isActiveNode = connectedPaths.includes(activePath || "");
-
-    useEffect(() => {
-      if (nodeRef.current) {
-        gsap.fromTo(
-          nodeRef.current,
-          { opacity: 0, scale: 0.9, x: -10 },
-          { opacity: 1, scale: 1, x: 0, duration: 0.5, ease: "back.out(1.2)" },
-        );
-      }
-    }, []);
 
     const colorThemes: Record<
       string,
@@ -144,53 +141,70 @@ export const FlowNode = forwardRef<HTMLDivElement, FlowNodeProps>(
         iconBg: "bg-emerald-500 text-white border-emerald-400",
       },
       zinc: {
-        ring: "ring-zinc-900 dark:ring-white",
+        ring: "ring-primary/30",
         glow: "shadow-[0_0_30px_-5px_rgba(0,0,0,0.2)] dark:shadow-[0_0_30px_-5px_rgba(255,255,255,0.15)]",
         iconBg:
-          "bg-zinc-900 text-white dark:bg-white dark:text-zinc-900 border-zinc-700",
+          "bg-primary text-primary-foreground border-zinc-700",
+      },
+      // The default. Unlike the fixed palettes above it follows whatever
+      // --primary the consumer's theme sets, so a flowchart matches the rest of
+      // their app without being told which colour to use.
+      primary: {
+        ring: "ring-primary/80",
+        glow: "shadow-[0_0_30px_-5px_var(--primary)]",
+        iconBg: "bg-primary text-primary-foreground border-primary/30",
       },
     };
 
-    const currentTheme = colorThemes[color] || colorThemes.indigo;
+    const currentTheme = colorThemes[color] ?? colorThemes["primary"] ?? { ring: "", glow: "", iconBg: "" };
 
     return (
       <div
         ref={nodeRef}
-        onClick={() =>
-          connectedPaths.length > 0 && setActivePath(connectedPaths[0])
-        }
+        onClick={() => {
+          const first = connectedPaths[0];
+          if (first) setActivePath(first);
+        }}
         // Enforced strict absolute height & width to secure connection nodes
         className={cn(
-          "absolute w-[240px] h-[68px] p-3 rounded-xl transition-all duration-300 cursor-pointer opacity-0 flex items-center gap-3 backdrop-blur-xl select-none",
+          "absolute w-[240px] h-[68px] p-3 rounded-xl transition-all duration-300 cursor-pointer flex items-center gap-3 backdrop-blur-xl select-none",
           isActiveNode
             ? cn(
-                "bg-white/95 dark:bg-zinc-900/95 scale-[1.02] ring-2 z-30",
+                "bg-card/95 scale-[1.02] ring-2 z-30",
                 currentTheme.ring,
                 currentTheme.glow,
               )
-            : "bg-white/50 dark:bg-zinc-900/40 border border-zinc-200/80 dark:border-zinc-800/80 hover:bg-white/80 dark:hover:bg-zinc-900/80 hover:scale-[1.01] shadow-sm z-20",
+            : "bg-card/50 border border-border/80 hover:bg-card/80 hover:scale-[1.01] shadow-sm z-20",
           className,
         )}
+        // Mount entrance: fades and scales in from the left. `scale: none`
+        // keeps the active / hover scale classes inert, as they have always been.
+        style={{
+          animation: `flowchart-node-in 0.5s ${NODE_IN_EASE} backwards`,
+          scale: "none",
+          ...style,
+        }}
         {...props}
       >
+        <style>{FLOWCHART_CSS}</style>
         {Icon && (
           <div
             className={cn(
               "w-10 h-10 rounded-lg flex-shrink-0 flex items-center justify-center border transition-all duration-300",
               isActiveNode
                 ? currentTheme.iconBg
-                : "bg-zinc-50 dark:bg-zinc-800/50 border-zinc-200 dark:border-zinc-700 text-zinc-400",
+                : "bg-muted border-border text-muted-foreground",
             )}
           >
             <Icon className="w-[18px] h-[18px]" />
           </div>
         )}
         <div className="min-w-0 flex-1">
-          <h4 className="text-[13.5px] font-bold tracking-tight text-zinc-900 dark:text-zinc-100 truncate">
+          <h4 className="text-[13.5px] font-semibold tracking-tight text-foreground truncate">
             {title}
           </h4>
           {description && (
-            <p className="text-[11.5px] font-medium text-zinc-400 dark:text-zinc-500 truncate mt-0.5">
+            <p className="text-[11.5px] font-medium text-muted-foreground truncate mt-0.5">
               {description}
             </p>
           )}
@@ -231,10 +245,21 @@ export interface FlowConnectionProps
   extends React.SVGAttributes<SVGPathElement> {
   id: string;
   path: string;
+  /** Draw the resting line dashed — `true` for "4 6", or your own pattern. */
+  dashed?: boolean | string;
+  /** Dash pattern of the moving overlay while the route is active. */
+  flowDash?: string;
+  /** The soft blurred halo under the active line. */
+  glow?: boolean;
+  /** Seconds the draw-in takes on mount. */
+  drawDuration?: number;
 }
 
 export const FlowConnection = forwardRef<SVGPathElement, FlowConnectionProps>(
-  ({ id, path, className, ...props }, ref) => {
+  (
+    { id, path, dashed = false, flowDash = "6 10", glow = true, drawDuration = 1.2, className, ...props },
+    ref,
+  ) => {
     const { activePath, color } = useFlowchart();
     const staticLineRef = useRef<SVGPathElement>(null);
 
@@ -243,31 +268,75 @@ export const FlowConnection = forwardRef<SVGPathElement, FlowConnectionProps>(
       () => staticLineRef.current as SVGPathElement,
     );
     const isActive = activePath === id;
+    const restingDash = dashed === true ? "4 6" : dashed || null;
+    // The moving overlay waits for the line to finish drawing itself.
+    const [drawn, setDrawn] = useState(false);
 
-    useEffect(() => {
-      if (staticLineRef.current) {
-        const length = staticLineRef.current.getTotalLength();
-        gsap.fromTo(
-          staticLineRef.current,
-          { strokeDasharray: length, strokeDashoffset: length },
-          {
-            strokeDashoffset: 0,
-            duration: 1.2,
-            ease: "power2.out",
-            delay: 0.1,
-          },
-        );
+    useLayoutEffect(() => {
+      const el = staticLineRef.current;
+      if (!el) return;
+      const reduced =
+        typeof window !== "undefined" &&
+        window.matchMedia?.("(prefers-reduced-motion: reduce)").matches;
+      if (reduced) {
+        el.style.strokeDasharray = restingDash ?? "none";
+        el.style.strokeDashoffset = "0";
+        setDrawn(true);
+        return;
       }
+      const length = el.getTotalLength();
+      // Draw-in: one dash as long as the line, its offset run from the full
+      // length down to 0 (held hidden through the delay by `backwards`).
+      el.style.strokeDasharray = `${length}px`;
+      el.style.setProperty("--flowchart-len", `${length}px`);
+      el.style.animation = `flowchart-draw ${drawDuration}s ${DRAW_EASE} 0.1s backwards`;
+
+      let done = false;
+      // Once drawn, hand the line its resting pattern — the draw-in borrowed
+      // the dash array, so a dashed line has to be restored here.
+      const finish = () => {
+        if (done) return;
+        done = true;
+        window.clearTimeout(fallback);
+        el.removeEventListener("animationend", onEnd);
+        el.style.animation = "";
+        el.style.strokeDasharray = restingDash ?? "none";
+        el.style.strokeDashoffset = "0";
+        setDrawn(true);
+      };
+      const onEnd = (e: AnimationEvent) => {
+        if (e.target === el && e.animationName === "flowchart-draw") finish();
+      };
+      el.addEventListener("animationend", onEnd);
+      // A canvas under `display: none` (e.g. `hidden lg:block`) never runs the
+      // animation, so no animationend comes; finish on time regardless.
+      const fallback = window.setTimeout(finish, (0.1 + drawDuration) * 1000 + 100);
+      return () => {
+        window.clearTimeout(fallback);
+        el.removeEventListener("animationend", onEnd);
+      };
+      // Runs once: the draw-in is a mount effect, later `path` changes just move the line.
+      // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
+    // One dash + one gap is the loop length, so the flow never jumps.
+    const flowCycle = flowDash
+      .split(/[\s,]+/)
+      .map(Number)
+      .filter((n) => !Number.isNaN(n))
+      .reduce((a, b) => a + b, 0);
+
     const strokeColors: Record<string, string> = {
+      // A var() rather than a hex: SVG stroke resolves it, so the active
+      // connector tracks the consumer's theme like the nodes do.
+      primary: "var(--primary)",
       indigo: "#6366f1",
       blue: "#3b82f6",
       rose: "#f43f5e",
       emerald: "#10b981",
       zinc: "#71717a",
     };
-    const activeStroke = strokeColors[color] || strokeColors.indigo;
+    const activeStroke = strokeColors[color] ?? strokeColors["primary"] ?? "var(--primary)";
 
     return (
       <>
@@ -278,34 +347,42 @@ export const FlowConnection = forwardRef<SVGPathElement, FlowConnectionProps>(
           fill="none"
           stroke="currentColor"
           strokeWidth="1.5"
-          className="text-zinc-200 dark:text-zinc-800/80 transition-colors duration-500"
+          className={cn(
+            "text-border transition-colors duration-500",
+            className,
+          )}
           {...props}
         />
 
         {/* Active Streaming Overlay Line */}
-        {isActive && (
+        {isActive && drawn && (
           <>
             <path
               d={path}
               fill="none"
               stroke={activeStroke}
               strokeWidth="2"
-              strokeDasharray="6 10"
-              className="animate-[flow-dash_1.2s_linear_infinite]"
+              strokeLinecap="round"
+              strokeDasharray={flowDash}
+              className="animate-[flow-dash_1.2s_linear_infinite] motion-reduce:animate-none"
+              style={{ "--flow-cycle": `${flowCycle || 16}px` } as React.CSSProperties}
             />
-            <path
-              d={path}
-              fill="none"
-              stroke={activeStroke}
-              strokeWidth="5"
-              className="opacity-20 dark:opacity-30 blur-[2px]"
-            />
+            {glow && (
+              <path
+                d={path}
+                fill="none"
+                stroke={activeStroke}
+                strokeWidth="5"
+                className="opacity-20 dark:opacity-30 blur-[2px]"
+              />
+            )}
           </>
         )}
 
+        <style>{FLOWCHART_CSS}</style>
         <style>{`
           @keyframes flow-dash {
-            to { stroke-dashoffset: -16; }
+            to { stroke-dashoffset: calc(-1 * var(--flow-cycle, 16px)); }
           }
         `}</style>
       </>

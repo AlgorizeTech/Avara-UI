@@ -1,9 +1,9 @@
 "use client";
 
 import { cn } from "@/lib/utils";
-import gsap from "gsap";
 import { ChevronDown } from "lucide-react";
 import React, { forwardRef, useEffect, useRef, useState } from "react";
+import { getThemeStyles } from "./timeline-theme";
 
 // ==========================================
 // THEME & CONFIGURATION
@@ -17,110 +17,18 @@ export type TimelineColor =
 export type TimelineVariant = "default" | "glass" | "minimal";
 export type TimelineLayout = "left" | "center" | "right";
 
-// `on` is the foreground for anything painted on top of `bg`. Without it the
-// "current" date pill hardcodes white, which vanishes on a light accent — and
-// `--primary` is near-white in dark mode, so the default theme hit that.
-const colorThemes: Record<string, Record<string, string>> = {
-  primary: {
-    bg: "bg-primary",
-    on: "text-primary-foreground",
-    text: "text-primary",
-    border: "border-primary",
-    glow: "shadow-[0_0_15px_rgba(var(--primary),0.5)]",
-  },
-  indigo: {
-    bg: "bg-indigo-600",
-    on: "text-white",
-    text: "text-indigo-600 dark:text-indigo-400",
-    border: "border-indigo-500",
-    glow: "shadow-[0_0_15px_rgba(99,102,241,0.5)]",
-  },
-  rose: {
-    bg: "bg-rose-600",
-    on: "text-white",
-    text: "text-rose-600 dark:text-rose-400",
-    border: "border-rose-500",
-    glow: "shadow-[0_0_15px_rgba(225,29,72,0.5)]",
-  },
-  emerald: {
-    bg: "bg-emerald-600",
-    on: "text-white",
-    text: "text-emerald-600 dark:text-emerald-400",
-    border: "border-emerald-500",
-    glow: "shadow-[0_0_15px_rgba(16,185,129,0.5)]",
-  },
-  blue: {
-    bg: "bg-blue-600",
-    on: "text-white",
-    text: "text-blue-600 dark:text-blue-400",
-    border: "border-blue-500",
-    glow: "shadow-[0_0_15px_rgba(59,130,246,0.5)]",
-  },
-  violet: {
-    bg: "bg-violet-600",
-    on: "text-white",
-    text: "text-violet-600 dark:text-violet-400",
-    border: "border-violet-500",
-    glow: "shadow-[0_0_15px_rgba(139,92,246,0.5)]",
-  },
-  zinc: {
-    bg: "bg-zinc-900 dark:bg-zinc-100",
-    on: "text-white dark:text-zinc-900",
-    text: "text-zinc-900 dark:text-zinc-100",
-    border: "border-zinc-900 dark:border-zinc-100",
-    glow: "shadow-[0_0_15px_rgba(255,255,255,0.3)] dark:shadow-[0_0_15px_rgba(255,255,255,0.4)]",
-  },
-};
-
-const hexToRgb = (hex: string) => {
-  let cleanHex = hex.replace(/^#/, "");
-  if (cleanHex.length === 3)
-    cleanHex = cleanHex
-      .split("")
-      .map((x) => x + x)
-      .join("");
-  const result = /^([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(cleanHex);
-  return result
-    ? `${parseInt(result[1], 16)}, ${parseInt(result[2], 16)}, ${parseInt(result[3], 16)}`
-    : "99, 102, 241";
-};
-
-// WCAG relative luminance, so a custom hex gets a foreground that is actually
-// legible rather than always-white.
-const relLuminance = (rgb: string) => {
-  const [r, g, b] = rgb.split(",").map((n) => {
-    const v = Number(n.trim()) / 255;
-    return v <= 0.03928 ? v / 12.92 : Math.pow((v + 0.055) / 1.055, 2.4);
-  });
-  return 0.2126 * r + 0.7152 * g + 0.0722 * b;
-};
-
-export const getThemeStyles = (color: string) => {
-  if (color && color.startsWith("#")) {
-    const rgb = hexToRgb(color);
-    return {
-      theme: {
-        bg: "bg-[var(--timeline-color)]",
-        on: "text-[var(--timeline-on-color)]",
-        text: "text-[var(--timeline-color)]",
-        border: "border-[var(--timeline-color)]",
-        glow: "shadow-[0_0_15px_var(--timeline-glow)]",
-      },
-      style: {
-        "--timeline-color": color,
-        "--timeline-on-color":
-          relLuminance(rgb) > 0.45 ? "#09090b" : "#ffffff",
-        "--timeline-glow": `rgba(${rgb}, 0.5)`,
-      } as React.CSSProperties,
-    };
-  }
-  return { theme: colorThemes[color] || colorThemes.primary, style: {} };
-};
+/** GSAP's power3.out, sampled into a CSS `linear()` curve. */
+const EASE_POWER3_OUT =
+  "linear(0, .0963, .1855, .2679, .3439, .4138, .478, .5367, .5904, .6392, .6836, .7237, .7599, .7924, .8215, .8474, .8704, .8907, .9085, .924, .9375, .9491, .959, .9674, .9744, .9802, .985, .9888, .9919, .9943, .9961, .9974, .9984, .9991, .9995, .9998, .9999, 1, 1, 1, 1)";
 
 // ==========================================
 // INTERFACES
 // ==========================================
-export type TimelineStatus = "completed" | "current" | "upcoming";
+export type TimelineStatus =
+  | "completed"
+  | "current"
+  | "upcoming"
+  | (string & {});
 
 export interface TimelineItemType {
   id: string | number;
@@ -162,23 +70,28 @@ export const TimelineBlock = forwardRef<HTMLDivElement, TimelineBlockProps>(
     const containerRef = useRef<HTMLDivElement>(null);
 
     useEffect(() => {
-      if (animate && containerRef.current) {
-        const elements = containerRef.current.querySelectorAll(
-          ".timeline-item-anim",
-        );
-        gsap.fromTo(
-          elements,
-          { opacity: 0, y: 20 },
+      if (!animate || !containerRef.current) return;
+      const elements = containerRef.current.querySelectorAll<HTMLElement>(
+        ".timeline-item-anim",
+      );
+      // Staggered entrance, replayed from the start whenever the deps change.
+      // `backwards` holds each item hidden through its delay; once done the
+      // effect is dropped and the item rests on its own styles.
+      const animations = Array.from(elements, (el, index) =>
+        el.animate(
+          [
+            { opacity: 0, transform: "translateY(20px)" },
+            { opacity: 1, transform: "translateY(0px)" },
+          ],
           {
-            opacity: 1,
-            y: 0,
-            duration: 0.5,
-            stagger: 0.15,
-            ease: "power3.out",
-            clearProps: "all",
+            duration: 500,
+            delay: index * 150,
+            easing: EASE_POWER3_OUT,
+            fill: "backwards",
           },
-        );
-      }
+        ),
+      );
+      return () => animations.forEach((animation) => animation.cancel());
     }, [animate, items, variant, layout, color]);
 
     return (
@@ -268,7 +181,7 @@ function TimelineNode({
             layout === "center" &&
               "@xl/timeline:left-1/2 @xl/timeline:-translate-x-1/2",
             // Colors based on status
-            isGlass ? "bg-white/10" : "bg-zinc-200 dark:bg-zinc-800",
+            isGlass ? "bg-white/10" : "bg-muted",
             isCompleted && theme.bg, // Fill the line if this node is completed
           )}
         />
@@ -287,12 +200,12 @@ function TimelineNode({
           // Styling based on status & variant
           isGlass
             ? "bg-black/50 backdrop-blur-md"
-            : "bg-white dark:bg-[#09090b]",
+            : "bg-background",
           isCompleted || isCurrent
             ? theme.border
             : isGlass
               ? "border-white/20"
-              : "border-zinc-200 dark:border-zinc-800",
+              : "border-border",
           isCurrent && theme.glow,
           // Hover effects
           !isUpcoming && "group-hover:scale-110",
@@ -304,7 +217,7 @@ function TimelineNode({
               "w-4 h-4 transition-colors",
               isCompleted || isCurrent
                 ? theme.text
-                : "text-zinc-400 dark:text-zinc-600",
+                : "text-muted-foreground",
             )}
           />
         ) : (
@@ -313,7 +226,7 @@ function TimelineNode({
               "w-3 h-3 rounded-full transition-colors",
               isCompleted || isCurrent
                 ? theme.bg
-                : "bg-zinc-300 dark:bg-zinc-700",
+                : "bg-muted",
               isCurrent && "animate-pulse",
             )}
           />
@@ -347,7 +260,7 @@ function TimelineNode({
             !isMinimal && "p-5 border shadow-sm",
             !isMinimal &&
               !isGlass &&
-              "bg-white dark:bg-[#09090b] border-zinc-200 dark:border-zinc-800 hover:border-zinc-300 dark:hover:border-zinc-700",
+              "bg-card text-card-foreground border-border",
             isGlass &&
               "bg-white/5 backdrop-blur-xl border-white/10 hover:bg-white/10",
             isMinimal && "p-1 hover:-translate-y-1",
@@ -371,8 +284,8 @@ function TimelineNode({
             <div className="flex flex-col gap-1 min-w-0">
               <h3
                 className={cn(
-                  "text-base font-bold transition-colors",
-                  isGlass ? "text-white" : "text-zinc-900 dark:text-zinc-100",
+                  "text-base font-semibold transition-colors",
+                  isGlass ? "text-white" : "text-foreground",
                   "group-hover:text-[var(--timeline-color)]",
                 )}
               >
@@ -384,7 +297,7 @@ function TimelineNode({
                     "text-sm",
                     isGlass
                       ? "text-zinc-300"
-                      : "text-zinc-500 dark:text-zinc-400",
+                      : "text-muted-foreground",
                   )}
                 >
                   {item.description}
@@ -409,7 +322,7 @@ function TimelineNode({
                     ? theme.bg
                     : isGlass
                       ? "bg-white/10 text-zinc-300"
-                      : "bg-zinc-100 dark:bg-zinc-800 text-zinc-600 dark:text-zinc-300",
+                      : "bg-muted text-muted-foreground",
                   isCurrent && theme.on,
                   isCurrent && "shadow-sm",
                 )}
@@ -422,7 +335,7 @@ function TimelineNode({
                     "p-1.5 rounded-full transition-all",
                     isGlass
                       ? "hover:bg-white/10 text-zinc-300"
-                      : "hover:bg-zinc-100 dark:hover:bg-zinc-800 text-zinc-500",
+                      : "hover:bg-muted text-muted-foreground",
                   )}
                 >
                   <ChevronDown
@@ -464,7 +377,7 @@ function TimelineNode({
                     "pt-4 border-t",
                     isGlass
                       ? "border-white/10"
-                      : "border-zinc-100 dark:border-zinc-800/50",
+                      : "border-border",
                   )}
                 >
                   {item.content}

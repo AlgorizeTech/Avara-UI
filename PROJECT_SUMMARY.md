@@ -1,4 +1,4 @@
-# Next.js Documentation Migration - Project Summary
+# Algorize UI Migration - Project Summary
 
 ## Overview
 This project successfully migrated the documentation to focus on Next.js, creating a comprehensive documentation site for Next.js features and best practices while preserving existing functionality.

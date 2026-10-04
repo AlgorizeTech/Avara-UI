@@ -4,6 +4,7 @@ import { cn } from "@/lib/utils";
 import { Search } from "lucide-react";
 import React, {
   createContext,
+  useCallback,
   useContext,
   useEffect,
   useRef,
@@ -15,9 +16,15 @@ import { createPortal } from "react-dom";
 // 1. CONTEXT
 // ==========================================
 interface CommandContextType {
+  /** When false the caller owns filtering and every item stays visible. */
+  shouldFilter: boolean;
   search: string;
   setSearch: (search: string) => void;
-  commandRef: React.RefObject<HTMLDivElement | null>;
+  /**
+   * The command root node itself, held in state rather than a ref. A ref shared
+   * through context makes every read of this context a ref read during render.
+   */
+  command: HTMLDivElement | null;
 }
 
 const CommandContext = createContext<CommandContextType | undefined>(undefined);
@@ -43,12 +50,12 @@ export function Command({
   ...props
 }: CommandProps) {
   const [search, setSearch] = useState("");
-  const commandRef = useRef<HTMLDivElement>(null);
+  const [command, setCommand] = useState<HTMLDivElement | null>(null);
 
   // High-performance DOM-based keyboard navigation
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
-      const node = commandRef.current;
+      const node = command;
       if (!node) return;
 
       const items = Array.from(
@@ -80,15 +87,14 @@ export function Command({
       }
     };
 
-    const node = commandRef.current;
-    node?.addEventListener("keydown", handleKeyDown);
-    return () => node?.removeEventListener("keydown", handleKeyDown);
-  }, []);
+    command?.addEventListener("keydown", handleKeyDown);
+    return () => command?.removeEventListener("keydown", handleKeyDown);
+  }, [command]);
 
   // Auto-select the first visible item when search changes
   useEffect(() => {
     const timer = setTimeout(() => {
-      const node = commandRef.current;
+      const node = command;
       if (!node) return;
       const items = Array.from(
         node.querySelectorAll('[cmdk-item="true"]:not([hidden])'),
@@ -97,15 +103,15 @@ export function Command({
       if (items.length > 0) items[0].setAttribute("data-selected", "true");
     }, 0);
     return () => clearTimeout(timer);
-  }, [search]);
+  }, [search, command]);
 
   return (
-    <CommandContext.Provider value={{ search, setSearch, commandRef }}>
+    <CommandContext.Provider value={{ search, setSearch, command, shouldFilter }}>
       <div
-        ref={commandRef}
+        ref={setCommand}
         cmdk-root="true"
         className={cn(
-          "flex h-full w-full flex-col overflow-hidden rounded-xl bg-white dark:bg-[#050505] text-zinc-950 dark:text-zinc-50 border border-zinc-200 dark:border-zinc-800 shadow-sm",
+          "flex h-full w-full flex-col overflow-hidden rounded-xl bg-popover text-popover-foreground border border-border shadow-sm",
           className,
         )}
         {...props}
@@ -128,30 +134,33 @@ export function CommandDialog({
   open,
   onOpenChange,
   children,
+  className,
   ...props
 }: CommandDialogProps) {
-  const [mounted, setMounted] = useState(false);
-  const anchorRef = useRef<HTMLSpanElement>(null);
+  const [portalTarget, setPortalTarget] = useState<HTMLElement | null>(null);
+
+  // Resolves the document this dialog actually lives in, which is not always
+  // the global one — previews portal components into an iframe. Resolving in a
+  // callback ref rather than reading a ref during render keeps render pure, and
+  // a null target doubles as the "not mounted yet" signal that guards SSR.
+  const setAnchor = useCallback((node: HTMLSpanElement | null) => {
+    setPortalTarget(node ? node.ownerDocument.body : null);
+  }, []);
 
   useEffect(() => {
-    setMounted(true);
-    // Resolve the document the dialog actually lives in (supports iframe rendering).
-    const doc = anchorRef.current?.ownerDocument ?? document;
+    const doc = portalTarget?.ownerDocument ?? document;
     const handleEscape = (e: KeyboardEvent) => {
       if (e.key === "Escape") onOpenChange(false);
     };
     if (open) doc.addEventListener("keydown", handleEscape);
     return () => doc.removeEventListener("keydown", handleEscape);
-  }, [open, onOpenChange]);
+  }, [open, onOpenChange, portalTarget]);
 
-  if (!mounted || !open) return <span ref={anchorRef} hidden />;
-
-  // Portal into the dialog's own document (supports iframe rendering).
-  const portalTarget = anchorRef.current?.ownerDocument.body ?? document.body;
+  if (!portalTarget || !open) return <span ref={setAnchor} hidden />;
 
   return (
     <>
-      <span ref={anchorRef} hidden />
+      <span ref={setAnchor} hidden />
       {createPortal(
         <div className="fixed inset-0 z-50 flex items-start justify-center pt-[15vh] sm:pt-[20vh] bg-zinc-950/50 dark:bg-zinc-950/80 backdrop-blur-sm">
           <div
@@ -161,7 +170,10 @@ export function CommandDialog({
           />
           <div className="z-50 w-full max-w-xl animate-in fade-in zoom-in-95 slide-in-from-top-[10%] duration-200 px-4 sm:px-0">
             <Command
-              className="shadow-2xl h-[400px] border-none ring-1 ring-zinc-200 dark:ring-zinc-800"
+              className={cn(
+                "shadow-2xl h-auto border-none ring-1 ring-border",
+                className,
+              )}
               {...props}
             >
               {children}
@@ -185,16 +197,16 @@ export function CommandInput({
 
   return (
     <div
-      className="flex items-center border-b border-zinc-200 dark:border-zinc-800 px-3"
+      className="flex items-center border-b border-border px-3"
       cmdk-input-wrapper=""
     >
-      <Search className="mr-2 h-4 w-4 shrink-0 text-zinc-500" />
+      <Search className="mr-2 h-4 w-4 shrink-0 text-muted-foreground" />
       <input
         autoFocus
         value={search}
         onChange={(e) => setSearch(e.target.value)}
         className={cn(
-          "flex h-11 w-full rounded-md bg-transparent py-3 text-sm outline-none placeholder:text-zinc-500 disabled:cursor-not-allowed disabled:opacity-50",
+          "flex h-11 w-full rounded-md bg-transparent py-3 text-sm outline-none placeholder:text-muted-foreground disabled:cursor-not-allowed disabled:opacity-50",
           className,
         )}
         {...props}
@@ -228,26 +240,26 @@ export function CommandEmpty({
   children,
   ...props
 }: React.HTMLAttributes<HTMLDivElement>) {
-  const { search, commandRef } = useCommand();
+  const { search, command } = useCommand();
   const [hasResults, setHasResults] = useState(true);
 
   useEffect(() => {
     // Slight delay to allow items to apply their hidden attributes based on search
     const timer = setTimeout(() => {
-      if (!commandRef.current) return;
-      const visibleItems = commandRef.current.querySelectorAll(
+      if (!command) return;
+      const visibleItems = command.querySelectorAll(
         '[cmdk-item="true"]:not([hidden])',
       );
       setHasResults(visibleItems.length > 0);
     }, 10);
     return () => clearTimeout(timer);
-  }, [search, commandRef]);
+  }, [search, command]);
 
   if (hasResults) return null;
 
   return (
     <div
-      className={cn("py-6 text-center text-sm text-zinc-500", className)}
+      className={cn("py-6 text-center text-sm text-muted-foreground", className)}
       {...props}
     >
       {children}
@@ -265,7 +277,7 @@ export function CommandGroup({
     <div
       cmdk-group="true"
       className={cn(
-        "overflow-hidden p-1 text-zinc-950 dark:text-zinc-50",
+        "overflow-hidden p-1 text-foreground",
         // Magic CSS: Hide group if it contains no visible items
         "hidden [&:has([cmdk-item=true]:not([hidden]))]:block",
         className,
@@ -273,7 +285,7 @@ export function CommandGroup({
       {...props}
     >
       {heading && (
-        <div className="px-2 py-1.5 text-xs font-medium text-zinc-500 dark:text-zinc-400">
+        <div className="px-2 py-1.5 text-xs font-medium text-muted-foreground">
           {heading}
         </div>
       )}
@@ -288,7 +300,7 @@ export function CommandSeparator({
 }: React.HTMLAttributes<HTMLDivElement>) {
   return (
     <div
-      className={cn("-mx-1 h-px bg-zinc-200 dark:bg-zinc-800", className)}
+      className={cn("-mx-1 h-px bg-muted", className)}
       {...props}
     />
   );
@@ -299,6 +311,23 @@ export interface CommandItemProps extends Omit<React.HTMLAttributes<HTMLDivEleme
   onSelect?: (value: string) => void;
 }
 
+/**
+ * Flattens a node tree to its text. Filtering used to read
+ * `itemRef.current.textContent` during render, which is empty on the first pass
+ * — an item could not match a search until something re-rendered it.
+ */
+function textFromChildren(node: React.ReactNode): string {
+  if (node === null || node === undefined || typeof node === "boolean") return "";
+  if (typeof node === "string" || typeof node === "number") return String(node);
+  if (Array.isArray(node)) return node.map(textFromChildren).join("");
+  if (React.isValidElement(node)) {
+    return textFromChildren(
+      (node.props as { children?: React.ReactNode }).children,
+    );
+  }
+  return "";
+}
+
 export function CommandItem({
   className,
   value,
@@ -306,21 +335,25 @@ export function CommandItem({
   children,
   ...props
 }: CommandItemProps) {
-  const { search, commandRef } = useCommand();
+  const { search, command, shouldFilter } = useCommand();
   const itemRef = useRef<HTMLDivElement>(null);
 
   // Extract text content for fuzzy matching if no explicit value is provided
-  const textValue = value || itemRef.current?.textContent || "";
+  const textValue = value || textFromChildren(children);
+  // With `shouldFilter={false}` the caller owns the list and every item
+  // stays visible, however the query reads.
   const isMatch =
-    !search || textValue.toLowerCase().includes(search.toLowerCase());
+    !shouldFilter ||
+    !search ||
+    textValue.toLowerCase().includes(search.toLowerCase());
 
   const handleSelect = () => {
     if (onSelect) onSelect(textValue);
   };
 
   const handleMouseEnter = () => {
-    if (!commandRef.current) return;
-    const items = commandRef.current.querySelectorAll('[cmdk-item="true"]');
+    if (!command) return;
+    const items = command.querySelectorAll('[cmdk-item="true"]');
     items.forEach((i) => i.removeAttribute("data-selected"));
     itemRef.current?.setAttribute("data-selected", "true");
   };
@@ -333,9 +366,9 @@ export function CommandItem({
       onClick={handleSelect}
       onMouseEnter={handleMouseEnter}
       className={cn(
-        "relative flex cursor-pointer select-none items-center rounded-md px-2 py-1.5 text-sm outline-none transition-colors",
-        "data-[selected=true]:bg-zinc-100 dark:data-[selected=true]:bg-zinc-800",
-        "data-[selected=true]:text-zinc-900 dark:data-[selected=true]:text-zinc-50",
+        "group/cmd-item relative flex cursor-pointer select-none items-center rounded-md px-2 py-1.5 text-sm outline-none transition-colors",
+        "hover:bg-primary/10 hover:text-primary dark:hover:bg-primary/20",
+        "data-[selected=true]:bg-primary/10 data-[selected=true]:text-primary dark:data-[selected=true]:bg-primary/20",
         "data-[disabled=true]:pointer-events-none data-[disabled=true]:opacity-50",
         className,
       )}
@@ -353,7 +386,7 @@ export function CommandShortcut({
   return (
     <span
       className={cn(
-        "ml-auto text-xs tracking-widest text-zinc-500 dark:text-zinc-400",
+        "ml-auto text-xs tracking-widest text-muted-foreground group-hover/cmd-item:text-primary/70 group-data-[selected=true]/cmd-item:text-primary/70",
         className,
       )}
       {...props}

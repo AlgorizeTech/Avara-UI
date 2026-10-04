@@ -1,14 +1,14 @@
+export const metadata = docsPageMetadata("magic-bento");
+
 # Magic Bento
 
 A premium grid layout system featuring CSS masking, continuously spinning gradient borders, and a real-time mouse-tracking spotlight effect.
 
-This component uses **Framer Motion**'s `useMotionTemplate` and `useMotionValue`
-to track pointer coordinates without triggering heavy React state re-renders,
-ensuring the volumetric glows remain silky smooth.
+This component writes pointer coordinates straight into CSS variables
+without triggering heavy React state re-renders, ensuring the volumetric
+glows remain silky smooth — no animation library needed.
 
-## Examples
-
-Move your cursor over a card: `MagicBentoCard` tracks the pointer with Framer Motion motion values — not React state — so the 1px border track and inner glow stay smooth. The first example's **Code** tab contains the full component source.
+Move your cursor over a card: `MagicBentoCard` tracks the pointer with CSS variables — not React state — so the 1px border track and inner glow stay smooth.
 
 export const usageDefault = `import {
   MagicBento,
@@ -18,43 +18,89 @@ export const usageDefault = `import {
 export default function FeatureGrid() {
   return (
 
-        Analytics
+          Insights
 
-      {/* highlight adds the continuously spinning conic border */}
+            Analytics
 
-        Collaboration
+            Track user behavior
+
+          Overview
+
+            Dashboard
+
+            Centralized data view
+
+      {/* highlight keeps a conic gradient spinning behind the mask */}
+
+          Teamwork
+
+            Collaboration
+
+            Work together seamlessly across the globe
+
+          Efficiency
+
+            Automation
+
+            Streamline workflows and save thousands of hours
+
+          Connectivity
+
+            Integration
+
+            Connect favorite tools
+
+          Protection
+
+            Security
+
+            Enterprise-grade protection
 
   );
 }`;
 
-export const usageHighlight = `// Without \`highlight\`, the border only lights where the cursor is.
-…
+export const usageHighlight = `import {
+  MagicBento,
+  MagicBentoCard,
+} from "@/components/custom/blocks/MagicBentoBlock";
 
-// With it, a conic gradient spins behind the mask continuously — use it on
-// the one card you want the eye to land on first.
-…`;
+export default function HighlightedBento() {
+  return (
 
-export const usageSpans = `// The grid is plain Tailwind: 4 columns on lg with auto rows. Shape the
-// layout with span utilities on each card.
+          Default card
 
-  …
-  …
-  …
-`;
+          The border track and inner glow follow the cursor.
+
+          highlight
+
+          Adds a conic gradient that keeps spinning behind the mask,
+          cursor or not.
+
+  );
+}`;
 
 ## Installation
 
-### Dependencies
-
-This layout block relies on **Framer Motion** to calculate the radial gradient coordinates dynamically.
+Register the @algorize-ui registry once per project, then add the component:
 
 ```bash
-npm install framer-motion
+npx shadcn@latest registry add @algorize-ui=https://algorize-ui.vercel.app/r/{name}.json
+npx shadcn@latest add @algorize-ui/magic-bento
 ```
 
-### Copy the Component
+## Examples
 
-Copy the full engine code from the **Code** tab of the first example above into `components/custom/blocks/MagicBentoBlock.tsx`.
+## Theming the glow
+
+Every effect — the spinning `highlight` border, the pointer-tracked border and the inner glow — reads one colour. Out of the box it is your shadcn `--primary`, so the component works with no extra setup. To re-tint a whole grid, set the two CSS variables on any ancestor:
+
+```tsx
+
+  …
+
+```
+
+`--magic-glow` is optional — when only `--magic-color` is set, the glow is derived from it at 15% opacity.
 
 ## Features
 Discover the key capabilities that make this component an excellent choice for modern, animated user interfaces.
@@ -144,8 +190,31 @@ Discover the key capabilities that make this component an excellent choice for m
           Used to control the grid spanning and dimensions of the specific card
           (e.g., col-span-1 md:col-span-2 lg:row-span-2).
 
+          CSS variable
+
+          --magic-color
+
+          &lt;color&gt;
+
+          var(--primary)
+
+          Colour of the spinning highlight border and the
+          pointer-tracked border. Set it on any ancestor to re-tint every card
+          below it.
+
+          CSS variable
+
+          --magic-glow
+
+          &lt;color&gt;
+
+          --magic-color at 15%
+
+          Colour of the soft inner glow that follows the cursor. Defaults to a
+          translucent version of --magic-color.
+
 ---
 
-**Component Path:** `nextjs\magic-bento\page.mdx`
+**Component Path:** `[framework]\magic-bento\page.mdx`
 
-**Web Version:** Visit the interactive version at the corresponding URL on the Next.js documentation site for live previews and interactive examples.
+**Web Version:** Visit the corresponding URL on the Algorize UI documentation site for live previews and interactive examples.

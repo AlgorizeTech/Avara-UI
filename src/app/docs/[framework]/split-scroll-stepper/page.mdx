@@ -1,0 +1,477 @@
+import { docsPageMetadata } from "@/lib/docs-metadata";
+
+export const metadata = docsPageMetadata("split-scroll-stepper");
+
+import { ExampleShowcase } from "@/components/site/Sandbox";
+import { extractCode } from "@/lib/code";
+
+# Scroll Accordion Showcase
+
+A high-impact, scroll-driven interactive section built with full dark/light mode responsiveness, instantaneous `localStorage` theme coloring, and flexible layout options. As users scroll through a sequence of numbered accordion cards, an `IntersectionObserver` expands the active narrative while cross-fading a sticky showcase mockup on the right.
+
+Scroll the preview and each row expands as it reaches the reading line, driving the sticky image card beside it. `displayMode` decides which halves of that pairing are rendered.
+
+export const showcaseItems = `const items: AccordionShowcaseItem[] = [
+  {
+    id: "landing-page",
+    stepNumber: "01",
+    title: "Landing Page Design",
+    description:
+      "Most landing pages fail quietly. Traffic comes in, nothing happens, and budgets burn. We engineer high-converting layouts with strategic visual hierarchy and micro-interactions.",
+    tags: [
+      "CONVERSION FOCUSED DESIGN",
+      "FIGMA TO CODE CONVERSION",
+      "MOBILE FIRST RESPONSIVE",
+    ],
+    image: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_1200,c_limit/v1790146209/photo-1460925895917-afdab827c52f-1790146212204.jpg",
+    badgeText: "SELECTED SERVICE",
+  },
+  {
+    id: "saas-dev",
+    stepNumber: "02",
+    title: "SaaS Product Development",
+    description:
+      "Modular, multi-tenant web applications designed to scale from your first 1,000 users to millions of daily requests without refactoring your core backend architecture.",
+    tags: [
+      "MULTI-TENANT ARCHITECTURE",
+      "REAL-TIME SYNC",
+      "EDGE COMPUTED API",
+    ],
+    image: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_1200,c_limit/v1790146211/photo-1551288049-bebda4e38f71-1790146212211.jpg",
+    badgeText: "SELECTED SERVICE",
+  },
+  {
+    id: "ai-product",
+    stepNumber: "03",
+    title: "AI Product Development",
+    description:
+      "Building an AI product is not about plugging in an API and hoping for the best. We build custom retrieval pipelines, fine-tuned models, and intuitive streaming UI interfaces.",
+    tags: [
+      "CUSTOM RAG PIPELINES",
+      "STREAMING RESPONSES",
+      "VECTOR DATABASE SETUP",
+    ],
+    image: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_1200,c_limit/v1790148864/photo-1618005182384-a83a8bd57fbe-1790148865111.jpg",
+    badgeText: "SELECTED SERVICE",
+  },
+  {
+    id: "web-app",
+    stepNumber: "04",
+    title: "Web App Development",
+    description:
+      "There is a massive difference between a static website and a mission-critical web application. We deliver complex dashboards, data tables, and secure portal architectures.",
+    tags: [
+      "SERVER-SIDE RENDERING",
+      "ROLE-BASED ACCESS CONTROL",
+      "REAL-TIME NOTIFICATIONS",
+    ],
+    image: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_1200,c_limit/v1790146210/photo-1504639725590-34d0984388bd-1790146212207.jpg",
+    badgeText: "SELECTED SERVICE",
+  },
+];`;
+
+export const usageDefault = `import { ScrollAccordionShowcase, type AccordionShowcaseItem } from "@/components/custom/blocks/ScrollAccordionShowcaseBlock";
+
+${showcaseItems}
+
+export default function ServicesShowcase() {
+  return (
+    <ScrollAccordionShowcase
+      items={items}
+      displayMode="both"
+      localStorageKey="primaryColor"
+    />
+  );
+}`;
+
+export const usageTextOnly = `import { ScrollAccordionShowcase, type AccordionShowcaseItem } from "@/components/custom/blocks/ScrollAccordionShowcaseBlock";
+
+${showcaseItems}
+
+export default function TextOnlyShowcase() {
+  // "text-only" drops the sticky image column and lets the accordion
+  // run full width — useful for an FAQ or a process list.
+  return <ScrollAccordionShowcase items={items} displayMode="text-only" />;
+}`;
+
+export const usageImageOnly = `import { ScrollAccordionShowcase, type AccordionShowcaseItem } from "@/components/custom/blocks/ScrollAccordionShowcaseBlock";
+
+${showcaseItems}
+
+export default function ImageOnlyShowcase() {
+  // "image-only" keeps the scroll-driven visual and hides the copy.
+  return <ScrollAccordionShowcase items={items} displayMode="image-only" />;
+}`;
+
+export const usageDefaultIndex = `import { ScrollAccordionShowcase, type AccordionShowcaseItem } from "@/components/custom/blocks/ScrollAccordionShowcaseBlock";
+
+${showcaseItems}
+
+export default function ShowcaseStartingOnThird() {
+  // defaultIndex picks which row is open before the user scrolls.
+  return <ScrollAccordionShowcase items={items} defaultIndex={2} />;
+}`;
+
+<ExampleShowcase
+  name="scroll-accordion"
+  columns={1}
+  examples={[
+    {
+      title: "Scroll accordion showcase",
+      subheading: "One row per item; the sticky card follows whichever row is active.",
+      propNotes: [
+        {
+          lead: "Pass",
+          prop: "items",
+          effect:
+            "as `{ id, stepNumber, title, description, image }[]` — `tags` is optional and renders as pill badges when the row expands.",
+        },
+      ],
+      props: { displayMode: "both" },
+      usage: usageDefault,
+      code: extractCode("src/components/custom/blocks/ScrollAccordionShowcaseBlock.tsx"),
+    },
+  ]}
+/>
+
+## Installation
+
+<Installation name="scroll-accordion-showcase" />
+
+### Accent color
+
+The accent is resolved at runtime, so it adopts your site's primary color with no configuration. The component reads a hex from `localStorage` (any key starting with `localStorageKey`), then the `--primary-color` / `--primary` / `--theme-color` CSS variables, and only falls back to `defaultAccentColor` if neither is set.
+
+## Examples
+
+<ExampleShowcase
+  name="scroll-accordion"
+  columns={1}
+  examples={[
+    {
+      title: "Text only",
+      propNotes: [
+        {
+          lead: "Set",
+          prop: "displayMode",
+          value: '"text-only"',
+          effect:
+            "to drop the sticky image column and run the accordion full width.",
+        },
+      ],
+      props: { displayMode: "text-only" },
+      usage: usageTextOnly,
+    },
+    {
+      title: "Image only",
+      propNotes: [
+        {
+          lead: "Set",
+          prop: "displayMode",
+          value: '"image-only"',
+          effect:
+            "to keep the scroll-driven visual and replace the copy with a horizontal step selector.",
+        },
+      ],
+      props: { displayMode: "image-only" },
+      usage: usageImageOnly,
+    },
+    {
+      title: "Starting row",
+      propNotes: [
+        {
+          prop: "defaultIndex",
+          value: '{0}',
+          effect:
+            "is the zero-based row expanded before the reader scrolls.",
+        },
+        {
+          prop: "scrollerRef",
+          effect:
+            "points the internal IntersectionObserver at a custom scroll container instead of the window.",
+        },
+      ],
+      props: { displayMode: "both", defaultIndex: 2 },
+      usage: usageDefaultIndex,
+    },
+  ]}
+/>
+
+## Props Reference
+
+<div className="overflow-x-auto mb-8">
+  <table>
+    <thead>
+      <tr>
+        <th>Component / Interface</th>
+        <th>Prop</th>
+        <th>Type</th>
+        <th>Default</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>
+          <code>ScrollAccordionShowcase</code>
+        </td>
+        <td>
+          <code>items</code>
+        </td>
+        <td>
+          <code>AccordionShowcaseItem[]</code>
+        </td>
+        <td>
+          <strong>Required</strong>
+        </td>
+        <td>
+          An array of data objects defining the numbered step badges, titles,
+          narrative descriptions, interactive tags, and paired visual mockup
+          images.
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <code>ScrollAccordionShowcase</code>
+        </td>
+        <td>
+          <code>displayMode</code>
+        </td>
+        <td>
+          <code>"both" | "text-only" | "image-only"</code>
+        </td>
+        <td>
+          <code>"both"</code>
+        </td>
+        <td>
+          Controls the rendered layout structure. <code>"both"</code> renders
+          the two-column grid with JS-driven sticky tracking;{" "}
+          <code>"text-only"</code> renders isolated accordion cards;{" "}
+          <code>"image-only"</code> renders a horizontal step selector bar above
+          the visual showcase card.
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <code>ScrollAccordionShowcase</code>
+        </td>
+        <td>
+          <code>defaultIndex</code>
+        </td>
+        <td>
+          <code>number</code>
+        </td>
+        <td>
+          <code>0</code>
+        </td>
+        <td>
+          The initial zero-based index of the accordion card that is expanded
+          and highlighted when the component first mounts.
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <code>ScrollAccordionShowcase</code>
+        </td>
+        <td>
+          <code>localStorageKey</code>
+        </td>
+        <td>
+          <code>string</code>
+        </td>
+        <td>
+          <code>"primaryColor"</code>
+        </td>
+        <td>
+          The primary storage key string monitored by the instant multi-layer
+          detection proxy to synchronize theme colors across tabs,{" "}
+          <code>Storage.prototype</code> mutations, and CSS root variables.
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <code>ScrollAccordionShowcase</code>
+        </td>
+        <td>
+          <code>defaultAccentColor</code>
+        </td>
+        <td>
+          <code>string</code>
+        </td>
+        <td>
+          <code>"var(--primary)"</code>
+        </td>
+        <td>
+          The fallback hex color string applied automatically if no valid hex or
+          rgb color value is detected in <code>localStorage</code> or CSS root
+          variables.
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <code>ScrollAccordionShowcase</code>
+        </td>
+        <td>
+          <code>scrollerRef</code>
+        </td>
+        <td>
+          <code>React.RefObject&lt;HTMLElement | null&gt;</code>
+        </td>
+        <td>
+          <code>undefined</code>
+        </td>
+        <td>
+          An optional React ref target passed directly to the internal{" "}
+          <code>IntersectionObserver</code> to track scroll progress within a
+          custom scrollable container instead of the browser window viewport.
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <code>ScrollAccordionShowcase</code>
+        </td>
+        <td>
+          <code>className</code>
+        </td>
+        <td>
+          <code>string</code>
+        </td>
+        <td>
+          <code>undefined</code>
+        </td>
+        <td>
+          Custom Tailwind CSS classes to apply to the outermost section wrapper
+          container.
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <code>AccordionShowcaseItem</code>
+        </td>
+        <td>
+          <code>id</code>
+        </td>
+        <td>
+          <code>string</code>
+        </td>
+        <td>
+          <strong>Required</strong>
+        </td>
+        <td>
+          A unique string identifier required for safe React list rendering and
+          for swapping the showcase image when the active step changes.
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <code>AccordionShowcaseItem</code>
+        </td>
+        <td>
+          <code>stepNumber</code>
+        </td>
+        <td>
+          <code>string</code>
+        </td>
+        <td>
+          <strong>Required</strong>
+        </td>
+        <td>
+          A formatted numerical string (e.g., <code>"01"</code>,{" "}
+          <code>"02"</code>) rendered inside the top badge on the accordion card
+          and horizontal selector bar.
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <code>AccordionShowcaseItem</code>
+        </td>
+        <td>
+          <code>title</code>
+        </td>
+        <td>
+          <code>string</code>
+        </td>
+        <td>
+          <strong>Required</strong>
+        </td>
+        <td>
+          The primary headline text displayed prominently on the accordion card,
+          horizontal selector, and sticky visual showcase badge.
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <code>AccordionShowcaseItem</code>
+        </td>
+        <td>
+          <code>description</code>
+        </td>
+        <td>
+          <code>string</code>
+        </td>
+        <td>
+          <strong>Required</strong>
+        </td>
+        <td>
+          The detailed paragraph text explaining the specific step or service,
+          which smoothly expands when the card becomes active.
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <code>AccordionShowcaseItem</code>
+        </td>
+        <td>
+          <code>tags</code>
+        </td>
+        <td>
+          <code>string[]</code>
+        </td>
+        <td>
+          <code>undefined</code>
+        </td>
+        <td>
+          An optional array of keyword strings rendered as uppercase pill badges
+          with colored checkmark icons beneath the description when the card
+          expands.
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <code>AccordionShowcaseItem</code>
+        </td>
+        <td>
+          <code>image</code>
+        </td>
+        <td>
+          <code>string</code>
+        </td>
+        <td>
+          <strong>Required</strong>
+        </td>
+        <td>
+          The image URL or file path displayed inside the sticky visual mockup
+          card, which smoothly cross-fades when the active step changes.
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <code>AccordionShowcaseItem</code>
+        </td>
+        <td>
+          <code>badgeText</code>
+        </td>
+        <td>
+          <code>string</code>
+        </td>
+        <td>
+          <code>"SELECTED SERVICE"</code>
+        </td>
+        <td>
+          An optional custom uppercase label rendered inside the floating
+          glassmorphic badge at the bottom-left of the sticky visual card.
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>

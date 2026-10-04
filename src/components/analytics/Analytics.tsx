@@ -3,6 +3,15 @@
 import { useEffect } from 'react'
 import { usePathname, useSearchParams } from 'next/navigation'
 
+/**
+ * Google Analytics measurement ID, from `NEXT_PUBLIC_GA_ID`.
+ *
+ * There is no fallback on purpose. This file previously hardcoded a property
+ * belonging to the template this site was built from, so every page view was
+ * reported to a third party. With no ID configured, nothing is sent.
+ */
+const GA_ID = process.env.NEXT_PUBLIC_GA_ID
+
 // Enhanced analytics for better SEO insights
 export function Analytics() {
   const pathname = usePathname()
@@ -10,8 +19,8 @@ export function Analytics() {
 
   useEffect(() => {
     // Track page views
-    if (typeof window !== 'undefined' && window.gtag) {
-      window.gtag('config', 'G-KCJ7NVNQ62', {
+    if (typeof window !== 'undefined' && window.gtag && GA_ID) {
+      window.gtag('config', GA_ID, {
         page_path: pathname,
         custom_map: {
           custom_parameter_1: 'component_category',

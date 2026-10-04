@@ -1,12 +1,19 @@
 "use client";
 
 import { cn } from "@/lib/utils";
-import gsap from "gsap";
 import { ArrowRight, ChevronDown, Command, Menu, X } from "lucide-react";
-import Link from "next/link";
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useState } from "react";
+import Button from "./Button";
+import { getThemeStyles } from "./navbar-theme";
 
-export type NavbarColor = "indigo" | "rose" | "emerald" | "zinc" | string;
+export type NavbarColor =
+  | "primary"
+  | "indigo"
+  | "rose"
+  | "emerald"
+  | "zinc"
+  | (string & {});
+
 export type NavbarVariant =
   | "default"
   | "floating"
@@ -14,89 +21,17 @@ export type NavbarVariant =
   | "minimal"
   | "glass";
 
-const colorThemes: Record<string, Record<string, string>> = {
-  indigo: {
-    text: "text-indigo-600 dark:text-indigo-400",
-    bg: "bg-indigo-600 hover:bg-indigo-700 text-white",
-    bgSoft:
-      "bg-indigo-50 dark:bg-indigo-500/10 text-indigo-600 dark:text-indigo-400",
-  },
-  rose: {
-    text: "text-rose-600 dark:text-rose-400",
-    bg: "bg-rose-600 hover:bg-rose-700 text-white",
-    bgSoft: "bg-rose-50 dark:bg-rose-500/10 text-rose-600 dark:text-rose-400",
-  },
-  emerald: {
-    text: "text-emerald-600 dark:text-emerald-400",
-    bg: "bg-emerald-600 hover:bg-emerald-700 text-white",
-    bgSoft:
-      "bg-emerald-50 dark:bg-emerald-500/10 text-emerald-600 dark:text-emerald-400",
-  },
-  zinc: {
-    text: "text-zinc-900 dark:text-zinc-100",
-    bg: "bg-zinc-900 hover:bg-zinc-800 dark:bg-zinc-100 dark:hover:bg-zinc-200 text-white dark:text-zinc-900",
-    bgSoft: "bg-zinc-100 dark:bg-zinc-800/50 text-zinc-900 dark:text-zinc-100",
-  },
-};
-
-const hexToRgb = (hex: string) => {
-  let cleanHex = hex.replace(/^#/, "");
-  if (cleanHex.length === 3)
-    cleanHex = cleanHex
-      .split("")
-      .map((x) => x + x)
-      .join("");
-  const result = /^([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(cleanHex);
-  return result
-    ? `${parseInt(result[1], 16)}, ${parseInt(result[2], 16)}, ${parseInt(result[3], 16)}`
-    : "99, 102, 241";
-};
-
-/**
- * Foreground that stays legible on top of a filled `--theme-color` swatch.
- * Without this a light pick (white especially) leaves white-on-white content
- * inside the logo tile and the CTA buttons.
- */
-const contrastingForeground = (rgb: string) => {
-  const [r, g, b] = rgb.split(",").map((v) => parseInt(v.trim(), 10));
-  const channel = (v: number) => {
-    const c = v / 255;
-    return c <= 0.03928 ? c / 12.92 : Math.pow((c + 0.055) / 1.055, 2.4);
-  };
-  const luminance =
-    0.2126 * channel(r) + 0.7152 * channel(g) + 0.0722 * channel(b);
-  return luminance > 0.45 ? "#09090b" : "#ffffff";
-};
-
-export const getThemeStyles = (color: string) => {
-  if (color === "primary" || color === "default" || !colorThemes[color]) {
-    if (color && color.startsWith("#")) {
-      const rgb = hexToRgb(color);
-      return {
-        theme: {
-          text: "text-[var(--theme-color)]",
-          bg: "bg-[var(--theme-color)] text-[var(--theme-on-color)] hover:opacity-90",
-          bgSoft:
-            "bg-[rgba(var(--theme-color-rgb),0.1)] text-[var(--theme-color)]",
-        },
-        style: {
-          "--theme-color": color,
-          "--theme-color-rgb": rgb,
-          "--theme-on-color": contrastingForeground(rgb),
-        } as React.CSSProperties,
-      };
-    }
-    return {
-      theme: {
-        text: "text-primary",
-        bg: "bg-primary text-primary-foreground hover:bg-primary/90",
-        bgSoft: "bg-primary/10 text-primary",
-      },
-      style: {} as React.CSSProperties,
-    };
-  }
-  return { theme: colorThemes[color], style: {} };
-};
+export interface NavbarProps {
+  variant?: NavbarVariant;
+  color?: NavbarColor;
+  logoText?: string;
+  /**
+   * The element used for links. Defaults to a plain `a`, so this component works
+   * in any React app with no adaptation. In Next.js, pass `next/link` to keep
+   * client-side navigation and prefetching: `linkComponent={Link}`.
+   */
+  linkComponent?: React.ElementType;
+}
 
 const NAV_LINKS = [
   { name: "Products", href: "#", hasDropdown: true },
@@ -105,97 +40,91 @@ const NAV_LINKS = [
   { name: "Pricing", href: "#", hasDropdown: false },
 ];
 
-export function NavbarBlock({
-  variant = "default",
-  color = "indigo",
-  logoText = "Nexus",
+// Mobile menu motion. Opening fades the overlay in (0.3s power2.out) and
+// slides the menu in from the right (0.4s power3.out); closing reverses both in
+// 0.3s (power2.in / power3.in). A transition takes its timing from the state it
+// is heading to, so each state carries its own; @starting-style is where the
+// layer starts when it stops being display:none.
+const POWER3_OUT =
+  "linear(0, .1268, .2412, .3439, .4358, .5177, .5904, .6545, .7108, .7599, .8025, .8391, .8704, .8969, .9191, .9375, .9526, .9647, .9744, .9819, .9877, .9919, .9949, .997, .9984, .9992, .9997, .9999, 1, 1, 1)";
+const POWER3_IN =
+  "linear(0, 0, 0, .0001, .0003, .0008, .0016, .003, .0051, .0081, .0123, .0181, .0256, .0353, .0474, .0625, .0809, .1031, .1296, .1609, .1975, .2401, .2892, .3455, .4096, .4823, .5642, .6561, .7588, .8732, 1)";
+
+const MOBILE_MENU_CSS = `
+.navbar-mobile-overlay {
+  opacity: 0;
+  transition: opacity 0.3s cubic-bezier(0.3333, 0, 0.6667, 0);
+}
+.navbar-mobile-overlay[data-open="true"] {
+  opacity: 1;
+  transition: opacity 0.3s cubic-bezier(0.3333, 1, 0.6667, 1);
+}
+.navbar-mobile-menu {
+  transform: translateX(100%);
+  transition: transform 0.3s ${POWER3_IN};
+}
+.navbar-mobile-menu[data-open="true"] {
+  transform: none;
+  transition: transform 0.4s ${POWER3_OUT};
+}
+@starting-style {
+  .navbar-mobile-overlay[data-open="true"] { opacity: 0; }
+  .navbar-mobile-menu[data-open="true"] { transform: translateX(100%); }
+}
+`;
+
+/**
+ * These three are defined at module scope on purpose. Declaring them inside
+ * NavbarBlock would make each a new component type on every render, remounting
+ * the header and dropping any open dropdown or focus.
+ */
+function Logo({
+  themeBg,
+  logoText,
+  linkComponent: Link,
 }: {
-  variant?: NavbarVariant;
-  color?: NavbarColor;
-  logoText?: string;
+  themeBg: string;
+  logoText: string;
+  linkComponent: React.ElementType;
 }) {
-  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
-  const [renderLayer, setRenderLayer] = useState(false);
-  const { theme, style } = getThemeStyles(color);
-  const mobileMenuRef = useRef<HTMLDivElement>(null);
-  const overlayRef = useRef<HTMLDivElement>(null);
-
-  const isGlass = variant === "glass";
-
-  useEffect(() => {
-    if (mobileMenuOpen) setRenderLayer(true);
-    else {
-      const t = setTimeout(() => setRenderLayer(false), 400);
-      return () => clearTimeout(t);
-    }
-  }, [mobileMenuOpen]);
-
-  useEffect(() => {
-    if (!renderLayer) return;
-    const menu = mobileMenuRef.current;
-    const overlay = overlayRef.current;
-    if (!menu || !overlay) return;
-    if (mobileMenuOpen) {
-      gsap.fromTo(
-        overlay,
-        { opacity: 0 },
-        { opacity: 1, duration: 0.3, ease: "power2.out" },
-      );
-      gsap.fromTo(
-        menu,
-        { x: "100%" },
-        { x: "0%", duration: 0.4, ease: "power3.out" },
-      );
-    } else {
-      gsap.to(overlay, { opacity: 0, duration: 0.3, ease: "power2.in" });
-      gsap.to(menu, { x: "100%", duration: 0.3, ease: "power3.in" });
-    }
-  }, [mobileMenuOpen, renderLayer]);
-
-  const getContainerStyles = () => {
-    switch (variant) {
-      case "floating":
-        return "max-w-5xl mx-auto top-6 rounded-full bg-white/80 dark:bg-zinc-950/80 backdrop-blur-lg border border-zinc-200 dark:border-zinc-800 shadow-lg px-6";
-      case "glass":
-        return "w-full bg-white/40 dark:bg-black/20 backdrop-blur-xl border-b border-white/20 dark:border-white/10 shadow-sm px-6 lg:px-12";
-      case "minimal":
-        return "w-full bg-transparent px-6 lg:px-12 pt-6";
-      case "centered":
-      case "default":
-      default:
-        return "w-full bg-white dark:bg-zinc-950 border-b border-zinc-200 dark:border-zinc-800 px-6 lg:px-12";
-    }
-  };
-
-  const Logo = () => (
+  return (
     <Link href="#" className="flex items-center gap-2 group">
       <div
         className={cn(
           "w-8 h-8 rounded-lg flex items-center justify-center transition-transform group-hover:scale-105",
-          theme.bg,
+          themeBg,
         )}
       >
         {/* No hardcoded colour: theme.bg above already carries the correct
             contrasting foreground for every theme, including a white pick. */}
         <Command className="w-4 h-4" />
       </div>
-      <span className="font-black text-xl tracking-tight text-zinc-900 dark:text-white">
+      <span className="font-bold text-xl tracking-tight text-foreground">
         {logoText}
       </span>
     </Link>
   );
 
-  const DesktopLinks = () => (
+}
+
+function DesktopLinks({
+  isGlass,
+  linkComponent: Link,
+}: {
+  isGlass: boolean;
+  linkComponent: React.ElementType;
+}) {
+  return (
     <ul className="hidden lg:flex items-center gap-1">
       {NAV_LINKS.map((link) => (
         <li key={link.name} className="relative group">
           <Link
             href={link.href}
             className={cn(
-              "flex items-center gap-1 px-4 py-2 text-sm font-semibold text-zinc-600 dark:text-zinc-300 hover:text-zinc-900 dark:hover:text-white rounded-full transition-colors",
+              "flex items-center gap-1 px-4 py-2 text-sm font-semibold text-muted-foreground hover:text-foreground rounded-full transition-colors",
               isGlass
-                ? "hover:bg-white/20 dark:hover:bg-white/10"
-                : "hover:bg-zinc-100 dark:hover:bg-zinc-800/50",
+                ? "hover:bg-foreground/5"
+                : "hover:bg-[color-mix(in_oklab,var(--navbar-accent)_8%,transparent)]",
             )}
           >
             {link.name}
@@ -205,12 +134,15 @@ export function NavbarBlock({
           </Link>
           {link.hasDropdown && (
             <div className="absolute top-full left-0 pt-2 opacity-0 translate-y-2 pointer-events-none group-hover:opacity-100 group-hover:translate-y-0 group-hover:pointer-events-auto transition-all duration-200">
+              {/* A plain popover is the same white as the page behind it; the
+                  panel wears a whisper of the accent, a tinted edge and a
+                  layered shadow so it lifts off (glass keeps its blur). */}
               <div
                 className={cn(
-                  "w-48 rounded-xl shadow-xl p-2 flex flex-col gap-1",
+                  "w-48 rounded-xl p-2 flex flex-col gap-1 text-popover-foreground",
                   isGlass
-                    ? "bg-white/60 dark:bg-black/40 backdrop-blur-2xl border border-white/20 dark:border-white/10"
-                    : "bg-white dark:bg-zinc-950 border border-zinc-200 dark:border-zinc-800",
+                    ? "bg-popover/60 backdrop-blur-2xl border border-foreground/10 shadow-[0_2px_4px_rgb(0_0_0/0.05),0_24px_48px_-16px_rgb(0_0_0/0.28)]"
+                    : "border bg-[oklch(from_var(--navbar-accent)_0.978_calc(c*0.1)_h)] border-[oklch(from_var(--navbar-accent)_0.9_calc(c*0.22)_h)] dark:bg-[oklch(from_var(--navbar-accent)_0.21_calc(c*0.1)_h)] dark:border-foreground/10 shadow-[0_2px_4px_rgb(0_0_0/0.04),0_20px_40px_-14px_rgb(0_0_0/0.22)]",
                 )}
               >
                 {["Overview", "Features", "Integrations"].map((sub) => (
@@ -218,10 +150,10 @@ export function NavbarBlock({
                     key={sub}
                     href="#"
                     className={cn(
-                      "px-4 py-2 text-sm font-medium text-zinc-600 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-white rounded-lg transition-colors",
+                      "px-4 py-2 text-sm font-medium text-muted-foreground hover:text-foreground rounded-lg transition-colors",
                       isGlass
-                        ? "hover:bg-white/20 dark:hover:bg-white/10"
-                        : "hover:bg-zinc-100 dark:hover:bg-zinc-900",
+                        ? "hover:bg-foreground/5"
+                        : "hover:bg-[color-mix(in_oklab,var(--navbar-accent)_10%,transparent)]",
                     )}
                   >
                     {sub}
@@ -235,28 +167,85 @@ export function NavbarBlock({
     </ul>
   );
 
-  const DesktopActions = () => (
+}
+
+function DesktopActions({
+  themeBg,
+  linkComponent: Link,
+}: {
+  themeBg: string;
+  linkComponent: React.ElementType;
+}) {
+  return (
     <div className="hidden lg:flex items-center gap-3">
       <Link
         href="#"
-        className="px-4 py-2 text-sm font-bold text-zinc-600 dark:text-zinc-300 hover:text-zinc-900 dark:hover:text-white transition-colors"
+        className="px-4 py-2 text-sm font-semibold text-muted-foreground hover:text-foreground transition-colors"
       >
         Sign In
       </Link>
       <Link
         href="#"
         className={cn(
-          "px-5 py-2 text-sm font-bold rounded-full transition-transform active:scale-95 shadow-sm",
-          theme.bg,
+          "px-5 py-2 text-sm font-semibold rounded-full transition-transform active:scale-95 shadow-sm",
+          themeBg,
         )}
       >
         Get Started
       </Link>
     </div>
   );
+}
+
+export function NavbarBlock({
+  variant = "default",
+  color = "primary",
+  logoText = "Nexus",
+  linkComponent: Link = "a",
+}: NavbarProps) {
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  // Keeps the layer mounted for the 0.4s slide-out after closing.
+  const [closing, setClosing] = useState(false);
+  const { theme, style } = getThemeStyles(color);
+
+  const isGlass = variant === "glass";
+
+  // Visibility is derived, not synced: the layer shows whenever the menu is
+  // open, and `closing` only extends that through the exit animation. It used
+  // to be a separate `renderLayer` flag set during render when `mobileMenuOpen`
+  // flipped — under StrictMode that update was dropped a frame after commit,
+  // so the layer went back to display:none and a tap looked like it did nothing.
+  const showLayer = mobileMenuOpen || closing;
+
+  const closeMenu = () => {
+    setMobileMenuOpen(false);
+    setClosing(true);
+  };
+
+  useEffect(() => {
+    if (!closing) return;
+    const t = setTimeout(() => setClosing(false), 400);
+    return () => clearTimeout(t);
+  }, [closing]);
+
+  const getContainerStyles = () => {
+    switch (variant) {
+      case "floating":
+        return "max-w-5xl mx-auto top-6 rounded-full bg-background/80 backdrop-blur-lg border border-border shadow-lg px-6";
+      case "glass":
+        return "w-full bg-background/40 backdrop-blur-xl border-b border-foreground/10 shadow-sm px-6 lg:px-12";
+      case "minimal":
+        return "w-full bg-transparent px-6 lg:px-12 pt-6";
+      case "centered":
+      case "default":
+      default:
+        return "w-full bg-background border-b border-border px-6 lg:px-12";
+    }
+  };
 
   return (
     <div className="relative w-full z-50" style={style}>
+      <style>{MOBILE_MENU_CSS}</style>
       <nav
         className={cn(
           "absolute left-0 right-0 h-16 flex items-center transition-all duration-300",
@@ -270,35 +259,39 @@ export function NavbarBlock({
           // remainder keeps it centred while giving the links real room.
           <div className="w-full grid grid-cols-[1fr_auto_1fr] items-center gap-4">
             <div className="flex justify-start">
-              <DesktopLinks />
+              <DesktopLinks isGlass={isGlass} linkComponent={Link} />
             </div>
             <div className="flex justify-center">
-              <Logo />
+              <Logo themeBg={theme.bg} logoText={logoText} linkComponent={Link} />
             </div>
             <div className="flex justify-end gap-4">
-              <DesktopActions />
-              <button
-                className="lg:hidden"
+              <DesktopActions themeBg={theme.bg} linkComponent={Link} />
+              <Button
+                variant="ghost"
+                size="sm"
+                aria-label="Open menu"
+                iconLeft={<Menu className="w-6 h-6 text-foreground" />}
+                className="lg:hidden shadow-none"
                 onClick={() => setMobileMenuOpen(true)}
-              >
-                <Menu className="w-6 h-6 text-zinc-900 dark:text-white" />
-              </button>
+              />
             </div>
           </div>
         ) : (
           <div className="w-full flex items-center justify-between">
             <div className="flex items-center gap-8">
-              <Logo />
-              <DesktopLinks />
+              <Logo themeBg={theme.bg} logoText={logoText} linkComponent={Link} />
+              <DesktopLinks isGlass={isGlass} linkComponent={Link} />
             </div>
             <div className="flex items-center gap-4">
-              <DesktopActions />
-              <button
-                className="lg:hidden p-2 -mr-2 text-zinc-600 dark:text-zinc-300"
+              <DesktopActions themeBg={theme.bg} linkComponent={Link} />
+              <Button
+                variant="ghost"
+                size="sm"
+                aria-label="Open menu"
+                iconLeft={<Menu className="w-6 h-6" />}
+                className="lg:hidden -mr-2 text-muted-foreground shadow-none"
                 onClick={() => setMobileMenuOpen(true)}
-              >
-                <Menu className="w-6 h-6" />
-              </button>
+              />
             </div>
           </div>
         )}
@@ -306,50 +299,53 @@ export function NavbarBlock({
       <div
         className={cn(
           "fixed inset-0 z-[100] pointer-events-none lg:hidden",
-          !renderLayer && "hidden",
+          !showLayer && "hidden",
         )}
       >
         <div
-          ref={overlayRef}
-          onClick={() => setMobileMenuOpen(false)}
-          className="absolute inset-0 bg-black/40 backdrop-blur-sm pointer-events-auto"
+          onClick={closeMenu}
+          data-open={mobileMenuOpen}
+          className="navbar-mobile-overlay absolute inset-0 bg-black/40 backdrop-blur-sm pointer-events-auto"
         />
         <div
-          ref={mobileMenuRef}
+          data-open={mobileMenuOpen}
           className={cn(
-            "absolute right-0 top-0 bottom-0 w-full max-w-sm shadow-2xl pointer-events-auto flex flex-col",
+            "navbar-mobile-menu absolute right-0 top-0 bottom-0 w-full max-w-sm shadow-2xl pointer-events-auto flex flex-col",
             isGlass
-              ? "bg-white/70 dark:bg-zinc-950/70 backdrop-blur-2xl border-l border-white/20 dark:border-white/10"
-              : "bg-white dark:bg-zinc-950 border-l border-zinc-200 dark:border-zinc-800",
+              ? "bg-background/70 backdrop-blur-2xl border-l border-foreground/10"
+              : "bg-background border-l border-border",
           )}
         >
           <div
             className={cn(
               "flex items-center justify-between p-6 border-b",
               isGlass
-                ? "border-white/10"
-                : "border-zinc-100 dark:border-zinc-800/50",
+                ? "border-foreground/10"
+                : "border-border",
             )}
           >
-            <Logo />
-            <button
-              onClick={() => setMobileMenuOpen(false)}
+            <Logo themeBg={theme.bg} logoText={logoText} linkComponent={Link} />
+            <Button
+              variant="ghost"
+              size="sm"
+              aria-label="Close menu"
+              iconLeft={<X className="w-5 h-5" />}
+              onClick={closeMenu}
               className={cn(
-                "p-2 -mr-2 rounded-full text-zinc-500 hover:text-zinc-900 dark:hover:text-white transition-colors",
+                "-mr-2 rounded-full text-muted-foreground shadow-none hover:text-foreground",
                 isGlass
-                  ? "hover:bg-white/20 dark:hover:bg-white/10"
-                  : "bg-zinc-100 dark:bg-zinc-900",
+                  ? "hover:bg-foreground/5"
+                  : "bg-muted",
               )}
-            >
-              <X className="w-5 h-5" />
-            </button>
+            />
           </div>
           <div className="flex-1 overflow-y-auto p-6 flex flex-col gap-6">
             {NAV_LINKS.map((link) => (
               <div key={link.name} className="flex flex-col gap-3">
                 <Link
                   href={link.href}
-                  className="text-xl font-bold text-zinc-900 dark:text-white flex items-center justify-between"
+                  onClick={closeMenu}
+                  className="text-xl font-semibold text-foreground flex items-center justify-between"
                 >
                   {link.name}{" "}
                   {link.hasDropdown && (
@@ -361,15 +357,16 @@ export function NavbarBlock({
                     className={cn(
                       "flex flex-col gap-3 pl-4 border-l-2",
                       isGlass
-                        ? "border-white/10"
-                        : "border-zinc-100 dark:border-zinc-800",
+                        ? "border-foreground/10"
+                        : "border-border",
                     )}
                   >
                     {["Overview", "Features", "Integrations"].map((sub) => (
                       <Link
                         key={sub}
                         href="#"
-                        className="text-base font-medium text-zinc-500 hover:text-zinc-900 dark:hover:text-white transition-colors"
+                        onClick={closeMenu}
+                        className="text-base font-medium text-muted-foreground hover:text-foreground transition-colors"
                       >
                         {sub}
                       </Link>
@@ -383,25 +380,27 @@ export function NavbarBlock({
             className={cn(
               "p-6 flex flex-col gap-3 border-t",
               isGlass
-                ? "bg-white/10 dark:bg-white/5 border-white/10"
-                : "bg-zinc-50 dark:bg-zinc-900/50 border-zinc-100 dark:border-zinc-800/50",
+                ? "bg-foreground/5 border-foreground/10"
+                : "bg-muted border-border",
             )}
           >
             <Link
               href="#"
+              onClick={closeMenu}
               className={cn(
-                "w-full py-3 px-4 text-center font-bold text-zinc-900 dark:text-white border rounded-xl transition-colors",
+                "w-full py-3 px-4 text-center font-semibold text-foreground border rounded-xl transition-colors",
                 isGlass
-                  ? "border-white/20 dark:border-white/10 hover:bg-white/20 dark:hover:bg-white/10"
-                  : "border-zinc-200 dark:border-zinc-700 hover:bg-zinc-100 dark:hover:bg-zinc-800",
+                  ? "border-foreground/10 hover:bg-foreground/5"
+                  : "border-border hover:bg-muted",
               )}
             >
               Sign In
             </Link>
             <Link
               href="#"
+              onClick={closeMenu}
               className={cn(
-                "w-full py-3 px-4 text-center font-bold rounded-xl transition-transform active:scale-95",
+                "w-full py-3 px-4 text-center font-semibold rounded-xl transition-transform active:scale-95",
                 theme.bg,
               )}
             >

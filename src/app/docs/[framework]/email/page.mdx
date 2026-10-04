@@ -1,0 +1,283 @@
+import { docsPageMetadata } from "@/lib/docs-metadata";
+
+export const metadata = docsPageMetadata("email");
+
+import { ExampleShowcase } from "@/components/site/Sandbox";
+import { extractCode } from "@/lib/code";
+
+# Email Dashboard
+
+A premium, fully interactive email client featuring a modern SaaS aesthetic. It includes out-of-the-box state management for reading, starring, archiving, deleting, and composing emails, alongside a fully responsive mobile drawer sidebar.
+
+The client is fully encapsulated — hand it `initialEmails` and reading, starring, archiving, deleting and composing all work. Try searching for a sender, starring a message to watch it move to the Starred folder, or opening Compose.
+
+export const emailData = `const emails: Email[] = [
+  {
+    id: 1,
+    sender: "Tommy Sicilia",
+    email: "tommy@example.com",
+    subject: "How to Succeed with Your Shopify Store",
+    time: "01:46 PM",
+    fullDate: "Dec 10, 2026, 01:46 PM",
+    isStarred: false,
+    isRead: false,
+    avatar: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto/v1790148864/80-2-1790148865112.jpg",
+    labels: [
+      {
+        color: "bg-rose-500",
+        name: "Private",
+        pill: "bg-rose-100 text-rose-700 dark:bg-rose-500/10 dark:text-rose-400",
+      },
+    ],
+    body: "Hello,\\n\\nI hope you are doing well.\\n\\nHere are some top tips to succeed with your new store. Let me know if you want to schedule a call.",
+    attachments: [],
+    folder: "inbox",
+  },
+  {
+    id: 2,
+    sender: "Tressa Gass",
+    email: "tressag@mail.com",
+    subject: "Please find attached the latest Company Report",
+    time: "01:55 PM",
+    fullDate: "Dec 10, 2026, 01:55 PM",
+    isStarred: true,
+    isRead: true,
+    avatar: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto/v1790148865/80-4-1790148865113.jpg",
+    labels: [
+      {
+        color: "bg-indigo-500",
+        name: "Company",
+        pill: "bg-indigo-100 text-indigo-700 dark:bg-indigo-500/10 dark:text-indigo-400",
+      },
+    ],
+    body: "Hello John,\\n\\nI hope you are doing well.\\n\\nI am sending over a company report for company. It is a PDF file.\\n\\nPlease let me know if you want to schedule a call or any other questions.\\n\\nRegards\\nTressa Gass",
+    attachments: [
+      { name: "Q3-Financial-Report.pdf", type: "pdf", size: "2.4 MB" },
+    ],
+    folder: "inbox",
+  },
+  {
+    id: 3,
+    sender: "Louetta Esses",
+    email: "louetta@mail.com",
+    subject: "Update Can Change Your Personal Life",
+    time: "03:04 PM",
+    fullDate: "Dec 10, 2026, 03:04 PM",
+    isStarred: false,
+    isRead: false,
+    initials: "LE",
+    color: "bg-amber-100 text-amber-700 dark:bg-amber-500/20 dark:text-amber-400",
+    labels: [
+      {
+        color: "bg-amber-500",
+        name: "Important",
+        pill: "bg-amber-100 text-amber-700 dark:bg-amber-500/10 dark:text-amber-400",
+      },
+    ],
+    body: "Hi there,\\n\\nDon't miss out on this life-changing update. Check the link below.",
+    attachments: [],
+    folder: "inbox",
+  },
+];`;
+
+export const usageDefault = `import EmailApp, { type Email } from "@/components/custom/blocks/Email";
+
+${emailData}
+
+export default function Mailbox() {
+  return <EmailApp initialEmails={emails} />;
+}`;
+
+export const usageMinimal = `import EmailApp, { type Email } from "@/components/custom/blocks/Email";
+
+${emailData}
+
+export default function MinimalMailbox() {
+  // Flattens the shell — no elevated card, lighter dividers.
+  return <EmailApp variant="minimal" initialEmails={emails} />;
+}`;
+
+export const usageGlass = `import EmailApp, { type Email } from "@/components/custom/blocks/Email";
+
+${emailData}
+
+export default function GlassMailbox() {
+  return (
+    // Nature wallpaper backdrop for glass refraction
+    <div
+      className="p-8 rounded-2xl bg-cover bg-center relative"
+      style={{
+        backgroundImage:
+          'url("https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_1200,c_limit/v1790146209/photo-1470071459604-3b5ec3a7fe05-1790146212205.jpg")',
+      }}
+    >
+      <div className="absolute inset-0 bg-black/20 rounded-2xl pointer-events-none" />
+      <EmailApp variant="glass" initialEmails={emails} />
+    </div>
+  );
+}`;
+
+<ExampleShowcase
+  name="email"
+  colorControl
+  columns={1}
+  examples={[
+    {
+      title: "Email dashboard",
+      propNotes: [
+        {
+          lead: "Pass",
+          prop: "initialEmails",
+          effect:
+            "as `Email[]` — each carries its own `folder` (`inbox`, `sent`…) plus `isRead` and `isStarred`, and the client owns every interaction from there.",
+        },
+        {
+          prop: "color",
+          effect:
+            "themes the compose button, unread dots and focus rings.",
+        },
+      ],
+      props: { variant: "default" },
+      usage: usageDefault,
+      code: extractCode("src/components/custom/blocks/Email.tsx"),
+    },
+  ]}
+/>
+
+## Installation
+
+<Installation name="email" />
+
+## Examples
+
+<ExampleShowcase
+  name="email"
+  colorControl
+  columns={1}
+  examples={[
+    {
+      title: "Minimal",
+      propNotes: [
+        {
+          lead: "Set",
+          prop: "variant",
+          value: '"minimal"',
+          effect:
+            "to strip the elevated shell for a flatter, denser mailbox.",
+        },
+      ],
+      props: { variant: "minimal" },
+      usage: usageMinimal,
+    },
+    {
+      title: "Glass",
+      propNotes: [
+        {
+          lead: "Set",
+          prop: "variant",
+          value: '"glass"',
+          effect:
+            "to frost the sidebar, list and overlays — the Compose modal included.",
+        },
+      ],
+      props: { variant: "glass" },
+      usage: usageGlass,
+    },
+  ]}
+/>
+
+## Features
+Discover the Email interface component's layout features, including inbox listing, message preview, and responsive split panes.
+
+<div className="grid grid-cols-1 sm:grid-cols-2 gap-4 my-6 not-prose">
+  <div className="p-6 rounded-2xl border border-border bg-card">
+    <h3 className="text-lg font-semibold text-card-foreground mb-2">Customizable</h3>
+    <p className="text-muted-foreground text-sm">Easily adapt the component's styling and behavior to fit your application's unique design system.</p>
+  </div>
+  <div className="p-6 rounded-2xl border border-border bg-card">
+    <h3 className="text-lg font-semibold text-card-foreground mb-2">Accessible</h3>
+    <p className="text-muted-foreground text-sm">Built with accessibility in mind, ensuring all users can interact with your application effectively.</p>
+  </div>
+  <div className="p-6 rounded-2xl border border-border bg-card">
+    <h3 className="text-lg font-semibold text-card-foreground mb-2">Responsive</h3>
+    <p className="text-muted-foreground text-sm">Fully responsive design that looks and works great across desktop, tablet, and mobile devices.</p>
+  </div>
+  <div className="p-6 rounded-2xl border border-border bg-card">
+    <h3 className="text-lg font-semibold text-card-foreground mb-2">Performant</h3>
+    <p className="text-muted-foreground text-sm">Optimized for maximum performance with minimal re-renders and efficient state management.</p>
+  </div>
+</div>
+
+## Best Practices & Guidelines
+
+<div className="flex flex-col gap-4 my-6 not-prose">
+  <div className="rounded-xl border border-foreground/[0.06] bg-foreground/[0.03] p-4">
+    <h4 className="font-sans text-[14px] font-semibold text-foreground mb-1">Usage Guidelines</h4>
+    <p className="text-[13px] leading-relaxed text-foreground/50">Follow standard design principles when implementing this component. Ensure proper contrast, spacing, and context within your layout.</p>
+  </div>
+</div>
+
+## Props Reference
+
+<div className="overflow-x-auto">
+  <table>
+    <thead>
+      <tr>
+        <th>Prop</th>
+        <th>Type</th>
+        <th>Default</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>
+          <code>initialEmails</code>
+        </td>
+        <td>
+          <code>Email[]</code>
+        </td>
+        <td>
+          <strong>Required</strong>
+        </td>
+        <td>
+          Array of email objects to populate the client. Includes routing data
+          like <code>folder</code> ("inbox", "sent", etc.) and state trackers
+          like <code>isRead</code> and <code>isStarred</code>.
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <code>variant</code>
+        </td>
+        <td>
+          <code>"default" | "minimal" | "glass"</code>
+        </td>
+        <td>
+          <code>"default"</code>
+        </td>
+        <td>
+          Applies overarching structural layouts, including borders, backdrop
+          blurs, and shadows.
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <code>color</code>
+        </td>
+        <td>
+          <code>
+            "primary" | "indigo" | "rose" | "emerald" | "zinc" | (hex string)
+          </code>
+        </td>
+        <td>
+          <code>"primary"</code>
+        </td>
+        <td>
+          Applies global color themes to the compose button, unread notification
+          dots, and focus rings.
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>

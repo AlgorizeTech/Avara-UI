@@ -51,8 +51,8 @@ export default function HalfStarsDemo({
           <div className="flex flex-col items-center gap-4 w-full text-center">
             {!hideLabel && (
               <div className="flex flex-col">
-                <h4 className="text-base font-semibold text-slate-800 dark:text-slate-200">Full Stars</h4>
-                <span className="text-xs text-gray-900 dark:text-gray-300">Whole numbers only</span>
+                <h4 className="text-base font-semibold text-foreground">Full Stars</h4>
+                <span className="text-xs text-muted-foreground">Whole numbers only</span>
               </div>
             )}
             <HalfStars
@@ -72,8 +72,8 @@ export default function HalfStarsDemo({
           <div className="flex flex-col items-center gap-4 w-full text-center">
             {!hideLabel && (
               <div className="flex flex-col">
-                <h4 className="text-base font-semibold text-slate-800 dark:text-slate-200">Half Stars</h4>
-                <span className="text-xs text-gray-900 dark:text-gray-300">0.5 precision increments</span>
+                <h4 className="text-base font-semibold text-foreground">Half Stars</h4>
+                <span className="text-xs text-muted-foreground">0.5 precision increments</span>
               </div>
             )}
             <HalfStars
@@ -92,8 +92,8 @@ export default function HalfStarsDemo({
           <div className="flex flex-col items-center gap-4 w-full text-center">
             {!hideLabel && (
               <div className="flex flex-col">
-                <h4 className="text-base font-semibold text-slate-800 dark:text-slate-200">Continuous Fractions</h4>
-                <span className="text-xs text-gray-900 dark:text-gray-300">Fine-grained 0.1 increments (2.3, 4.6, etc)</span>
+                <h4 className="text-base font-semibold text-foreground">Continuous Fractions</h4>
+                <span className="text-xs text-muted-foreground">Fine-grained 0.1 increments (2.3, 4.6, etc)</span>
               </div>
             )}
             <HalfStars
@@ -112,15 +112,15 @@ export default function HalfStarsDemo({
           <div className="flex flex-col items-center gap-4 w-full text-center">
             {!hideLabel && (
               <div className="flex flex-col">
-                <h4 className="text-base font-semibold text-slate-800 dark:text-slate-200">Custom Colors</h4>
-                <span className="text-xs text-gray-900 dark:text-gray-300">10 Stars with custom colors</span>
+                <h4 className="text-base font-semibold text-foreground">Custom Colors</h4>
+                <span className="text-xs text-muted-foreground">10 Stars with custom colors</span>
               </div>
             )}
             <HalfStars
               rating={customRating}
               maxStars={10}
               size={40}
-              activeColor={color !== "primary" ? starActiveColor : "text-red-500"}
+              activeColor={starActiveColor}
               inactiveColor="text-red-200 dark:text-red-900"
               interactive={true}
               allowHalf={true}

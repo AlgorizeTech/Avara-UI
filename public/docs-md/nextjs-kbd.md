@@ -1,12 +1,12 @@
+export const metadata = docsPageMetadata("kbd");
+
 # Kbd (Keyboard)
 
 A specialized typography component used to display keyboard buttons, shortcuts, and commands.
 
 Displaying keyboard shortcuts to power users is a critical part of modern web design (especially in tools like Command Menus). The `KbdBlock` uses a native `` HTML element for strict semantic accuracy, and applies a precise combination of borders, background colors, and inset shadows to simulate a physical, tactile keyboard key.
 
-## Examples
-
-Explore the different variations of the Kbd component — each example shows a live preview with the exact code to copy. The first example's **Code** tab contains the full component source.
+Explore the different variations of the Kbd component — each example shows a live preview with the exact code to copy.
 
 export const usageDefault = `import { Kbd } from "@/components/custom/blocks/KbdBlock";
 
@@ -14,22 +14,29 @@ export default function BasicKbd() {
   return ⌘;
 }`;
 
-export const usageSizes = `
-  ⌘
-  ⌘
-  ⌘
-`;
-
 export const usageCombinations = `import { Kbd } from "@/components/custom/blocks/KbdBlock";
 
 export default function ShortcutList() {
   return (
     
-      Force Reload:
-      
-        ⇧
-        ⌘
-        R
+      Common Combinations
+
+        Save file:
+        
+          ⌘
+          S
+
+        Force Reload:
+        
+          ⇧
+          ⌘
+          R
+
+        Open Terminal:
+        
+          Ctrl
+          +
+          ~
 
   );
 }`;
@@ -46,40 +53,30 @@ export default function InlineShortcut() {
 }`;
 
 ` element.",
+      propNotes: [
+        {
+          prop: "children",
+          effect:
+            "is the key glyph — the component adds no label text of its own.",
+        },
+      ],
       props: { example: "single" },
       usage: usageDefault,
       code: extractCode("src/components/custom/blocks/KbdBlock.tsx"),
-    },
-    {
-      title: "Sizes",
-      subheading: "Use the `size` prop to change the size.",
-      props: { example: "sizes" },
-      usage: usageSizes,
-    },
-    {
-      title: "Combinations",
-      subheading: "Sequence several keys to spell out a shortcut.",
-      props: {},
-      usage: usageCombinations,
-    },
-    {
-      title: "Inline in text",
-      subheading: "Keys sit on the text baseline, so they read naturally in prose.",
-      props: { example: "inline" },
-      usage: usageInline,
     },
   ]}
 />
 
 ## Installation
 
-### Copy the Component
+Register the @algorize-ui registry once per project, then add the component:
 
-This component is **100% dependency-free** and forwards all standard HTML attributes.
+```bash
+npx shadcn@latest registry add @algorize-ui=https://algorize-ui.vercel.app/r/{name}.json
+npx shadcn@latest add @algorize-ui/kbd
+```
 
-You can copy the full engine code (in either TypeScript or JavaScript) directly from the **Code** tab of the first example above. Place it in `components/custom/blocks/KbdBlock.tsx`.
-
----
+## Examples
 
 ## Usage
 
@@ -155,6 +152,6 @@ Learn about the Kbd component's typography styles for displaying keyboard shortc
 
 ---
 
-**Component Path:** `nextjs\kbd\page.mdx`
+**Component Path:** `[framework]\kbd\page.mdx`
 
-**Web Version:** Visit the interactive version at the corresponding URL on the Next.js documentation site for live previews and interactive examples.
+**Web Version:** Visit the corresponding URL on the Algorize UI documentation site for live previews and interactive examples.

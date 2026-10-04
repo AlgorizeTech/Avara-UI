@@ -1,0 +1,25 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "item",
+  "title": "Item",
+  "author": "AlgorizeTech",
+  "description": "A row primitive pairing media, title, description and actions in one aligned layout. Use it to build list rows, notification entries and search results.",
+  "dependencies": [],
+  "registryDependencies": [
+    "utils"
+  ],
+  "files": [
+    {
+      "path": "src/components/custom/blocks/ItemBlock.tsx",
+      "content": "\"use client\";\n\nimport { cn } from \"@/lib/utils\";\nimport React from \"react\";\n\nexport type ItemVariant = \"default\" | \"compact\" | \"card\" | \"bordered\";\n\nexport interface ItemBlockProps extends Omit<React.HTMLAttributes<HTMLElement>, \"title\"> {\n  title: React.ReactNode;\n  description?: React.ReactNode;\n  media?: React.ReactNode;\n  actions?: React.ReactNode;\n  variant?: ItemVariant;\n  onClick?: () => void;\n  className?: string;\n}\n\nexport function ItemBlock({\n  title,\n  description,\n  media,\n  actions,\n  variant = \"default\",\n  onClick,\n  className,\n  ...props\n}: ItemBlockProps) {\n  const isClickable = !!onClick;\n  const isCard = variant === \"card\";\n\n  const baseClasses = cn(\n    \"relative flex transition-all duration-200 text-left w-full\",\n    isClickable &&\n      \"cursor-pointer focus:outline-none focus-visible:ring-2 focus-visible:ring-zinc-400 dark:focus-visible:ring-zinc-600\",\n    isCard ? \"flex-col\" : \"flex-row items-center gap-4\",\n    className,\n  );\n\n  const variantClasses = {\n    default: cn(\n      \"p-4 rounded-xl\",\n      isClickable &&\n        \"hover:bg-muted active:scale-[0.98]\",\n    ),\n    compact: cn(\n      \"p-2.5 rounded-lg gap-3\",\n      isClickable &&\n        \"hover:bg-muted active:scale-[0.98]\",\n    ),\n    bordered: cn(\n      \"p-4 rounded-xl border border-border bg-card text-card-foreground shadow-sm\",\n      isClickable &&\n        \"hover:border-border hover:shadow-md active:scale-[0.98]\",\n    ),\n    card: cn(\n      \"p-5 rounded-2xl border border-border bg-card text-card-foreground shadow-sm gap-4\",\n      isClickable &&\n        \"hover:shadow-md hover:-translate-y-1 hover:border-border\",\n    ),\n  };\n\n  const Component = isClickable ? \"button\" : \"div\";\n\n  return (\n    <Component\n      className={cn(baseClasses, variantClasses[variant])}\n      onClick={onClick}\n      {...(isClickable ? { type: \"button\" } : {})}\n      {...props}\n    >\n      {/* Media Slot */}\n      {media && (\n        <div\n          className={cn(\n            \"shrink-0 flex items-center justify-center\",\n            isCard ? \"mb-2\" : \"\",\n          )}\n        >\n          {media}\n        </div>\n      )}\n\n      {/* Content Slot */}\n      <div className=\"flex flex-col flex-1 min-w-0\">\n        <div\n          className={cn(\n            \"font-semibold text-foreground truncate\",\n            variant === \"compact\" ? \"text-sm\" : \"text-base\",\n            isCard && \"text-lg mb-1 whitespace-normal\",\n          )}\n        >\n          {title}\n        </div>\n        {description && (\n          <div\n            className={cn(\n              \"text-muted-foreground mt-0.5\",\n              variant === \"compact\" ? \"text-xs line-clamp-1\" : \"text-sm\",\n              isCard && \"line-clamp-3 mt-1\",\n            )}\n          >\n            {description}\n          </div>\n        )}\n      </div>\n\n      {/* Actions Slot */}\n      {actions && (\n        <div\n          className={cn(\n            \"shrink-0 flex items-center gap-2\",\n            isCard\n              ? \"w-full pt-4 mt-auto border-t border-border\"\n              : \"ml-4\",\n          )}\n          onClick={(e) => {\n            // Prevent parent button click if clicking an action inside\n            if (isClickable) e.stopPropagation();\n          }}\n        >\n          {actions}\n        </div>\n      )}\n    </Component>\n  );\n}\n",
+      "type": "registry:component",
+      "target": "components/custom/blocks/ItemBlock.tsx"
+    }
+  ],
+  "docs": "Named export: ItemBlock. `media` and `actions` take arbitrary nodes, so an avatar and a button drop straight in. Variants: default | compact | card | bordered. Passing `onClick` makes the whole row interactive.",
+  "categories": [
+    "layout",
+    "data-display"
+  ],
+  "type": "registry:component"
+}

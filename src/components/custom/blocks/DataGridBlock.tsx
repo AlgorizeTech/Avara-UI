@@ -8,6 +8,7 @@ import React, {
   useRef,
   useState,
 } from "react";
+import { getThemeStyles } from "./data-grid-theme";
 
 // ==========================================
 // THEME & CONFIGURATION
@@ -20,70 +21,6 @@ export type GridColor =
   | "zinc"
   | (string & {});
 
-const colorThemes: Record<string, Record<string, string>> = {
-  primary: {
-    outline: "outline-primary",
-    bgActive: "bg-primary/10",
-    handle: "bg-primary",
-  },
-  indigo: {
-    outline: "outline-indigo-500",
-    bgActive: "bg-indigo-50 dark:bg-indigo-500/10",
-    handle: "bg-indigo-500",
-  },
-  rose: {
-    outline: "outline-rose-500",
-    bgActive: "bg-rose-50 dark:bg-rose-500/10",
-    handle: "bg-rose-500",
-  },
-  emerald: {
-    outline: "outline-emerald-500",
-    bgActive: "bg-emerald-50 dark:bg-emerald-500/10",
-    handle: "bg-emerald-500",
-  },
-  blue: {
-    outline: "outline-blue-500",
-    bgActive: "bg-blue-50 dark:bg-blue-500/10",
-    handle: "bg-blue-500",
-  },
-  zinc: {
-    outline: "outline-zinc-900 dark:outline-zinc-100",
-    bgActive: "bg-zinc-100 dark:bg-zinc-800",
-    handle: "bg-zinc-900 dark:bg-zinc-100",
-  },
-};
-
-const hexToRgb = (hex: string) => {
-  let cleanHex = hex.replace(/^#/, "");
-  if (cleanHex.length === 3)
-    cleanHex = cleanHex
-      .split("")
-      .map((x) => x + x)
-      .join("");
-  const result = /^([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(cleanHex);
-  return result
-    ? `${parseInt(result[1], 16)}, ${parseInt(result[2], 16)}, ${parseInt(result[3], 16)}`
-    : "99, 102, 241";
-};
-
-export const getThemeStyles = (color: string) => {
-  if (color && color.startsWith("#")) {
-    const rgb = hexToRgb(color);
-    return {
-      theme: {
-        outline: "outline-[var(--grid-color)]",
-        bgActive: "bg-[rgba(var(--grid-color-rgb),0.1)]",
-        handle: "bg-[var(--grid-color)]",
-      },
-      style: {
-        "--grid-color": color,
-        "--grid-color-rgb": rgb,
-      } as React.CSSProperties,
-    };
-  }
-  return { theme: colorThemes[color] || colorThemes.primary, style: {} };
-};
-
 // ==========================================
 // INTERFACES
 // ==========================================
@@ -91,16 +28,17 @@ export interface GridColumn {
   field: string;
   headerName: string;
   width?: string | number;
-  type?: "text" | "number";
+  type?: "text" | "number" | (string & {});
   readOnly?: boolean;
 }
 
-export interface DataGridBlockProps
-  extends Omit<React.HTMLAttributes<HTMLDivElement>, "onChange"> {
+export interface DataGridBlockProps<
+  T extends object = Record<string, unknown>,
+> extends Omit<React.HTMLAttributes<HTMLDivElement>, "onChange"> {
   columns: GridColumn[];
-  data: Record<string, any>[];
+  data: T[];
   color?: GridColor;
-  onChange?: (newData: Record<string, any>[]) => void;
+  onChange?: (newData: T[]) => void;
   showRowNumbers?: boolean;
   readOnly?: boolean;
 }
@@ -108,7 +46,7 @@ export interface DataGridBlockProps
 // ==========================================
 // COMPONENT
 // ==========================================
-export const DataGridBlock = forwardRef<HTMLDivElement, DataGridBlockProps>(
+const DataGridBlockImpl = forwardRef<HTMLDivElement, DataGridBlockProps>(
   (
     {
       columns,
@@ -125,6 +63,10 @@ export const DataGridBlock = forwardRef<HTMLDivElement, DataGridBlockProps>(
     const { theme, style } = getThemeStyles(color as string);
     const containerRef = useRef<HTMLDivElement>(null);
     const editInputRef = useRef<HTMLInputElement>(null);
+
+    // containerRef drives keyboard navigation, so the forwarded ref is
+    // mirrored onto it rather than replacing it.
+    React.useImperativeHandle(ref, () => containerRef.current as HTMLDivElement);
 
     // State
     const [data, setData] = useState(initialData);
@@ -302,7 +244,7 @@ export const DataGridBlock = forwardRef<HTMLDivElement, DataGridBlockProps>(
     return (
       <div
         className={cn(
-          "w-full overflow-hidden border border-zinc-200 dark:border-zinc-800 rounded-xl bg-white dark:bg-[#09090b]",
+          "w-full overflow-hidden border border-border rounded-xl bg-card text-card-foreground",
           className,
         )}
         style={style}
@@ -316,18 +258,23 @@ export const DataGridBlock = forwardRef<HTMLDivElement, DataGridBlockProps>(
         >
           <table className="w-full border-collapse text-sm text-left whitespace-nowrap select-none">
             {/* HEADERS */}
-            <thead className="sticky top-0 z-20 bg-zinc-50 dark:bg-zinc-900 border-b border-zinc-200 dark:border-zinc-800 shadow-sm">
+            <thead
+              className={cn(
+                "sticky top-0 z-20 border-b border-border shadow-xs backdrop-blur-md transition-colors duration-150",
+                theme.headerBg,
+              )}
+            >
               <tr>
                 {showRowNumbers && (
-                  <th className="w-12 px-4 py-2 border-r border-zinc-200 dark:border-zinc-800 text-center font-medium text-zinc-400 bg-zinc-100/50 dark:bg-zinc-950/50 backdrop-blur-md">
+                  <th className="w-12 px-4 py-2 border-r border-border/60 text-center font-medium opacity-70">
                     #
                   </th>
                 )}
                 {columns.map((col, idx) => (
                   <th
                     key={idx}
-                    className="px-4 py-2 font-semibold text-zinc-600 dark:text-zinc-300 border-r border-zinc-200 dark:border-zinc-800 last:border-r-0 backdrop-blur-md"
-                    style={{ width: col.width, minWidth: col.width || 120 }}
+                    className="px-4 py-2.5 font-semibold border-r border-border/60 last:border-r-0"
+                    style={{ minWidth: col.width || 120 }}
                   >
                     {col.headerName}
                   </th>
@@ -340,10 +287,10 @@ export const DataGridBlock = forwardRef<HTMLDivElement, DataGridBlockProps>(
               {data.map((row, rowIndex) => (
                 <tr
                   key={rowIndex}
-                  className="border-b border-zinc-100 dark:border-zinc-800/50 hover:bg-zinc-50/50 dark:hover:bg-zinc-900/30 transition-colors"
+                  className="border-b border-border hover:bg-muted/50 transition-colors"
                 >
                   {showRowNumbers && (
-                    <td className="w-12 px-4 py-2 text-center text-xs font-mono text-zinc-400 border-r border-zinc-200 dark:border-zinc-800 bg-zinc-50 dark:bg-zinc-950">
+                    <td className="w-12 px-4 py-2 text-center text-xs font-mono text-muted-foreground border-r border-border bg-muted">
                       {rowIndex + 1}
                     </td>
                   )}
@@ -366,14 +313,15 @@ export const DataGridBlock = forwardRef<HTMLDivElement, DataGridBlockProps>(
                           containerRef.current?.focus({ preventScroll: true });
                         }}
                         onDoubleClick={() => startEditing(rowIndex, colIndex)}
+                        style={isActive ? style : undefined}
                         className={cn(
-                          "relative px-4 py-2 border-r border-zinc-200 dark:border-zinc-800 last:border-r-0 h-10 truncate transition-colors duration-75 cursor-cell",
+                          "relative px-4 py-2 border-r border-border last:border-r-0 h-10 truncate transition-colors duration-75 cursor-cell",
                           isActive &&
-                            "outline outline-2 -outline-offset-2 z-10 bg-white dark:bg-zinc-900",
+                            "outline outline-2 -outline-offset-2 z-10 bg-card",
                           isActive && theme.outline,
                           activeCell?.row === rowIndex &&
                             !isActive &&
-                            "bg-zinc-50/80 dark:bg-zinc-900/50",
+                            "bg-muted/80",
                           isEditingThis && "p-0",
                         )}
                       >
@@ -387,7 +335,7 @@ export const DataGridBlock = forwardRef<HTMLDivElement, DataGridBlockProps>(
                             onKeyDown={handleInputKeyDown}
                             onBlur={() => finishEditing(true)}
                             className={cn(
-                              "absolute inset-0 w-full h-full px-4 outline-none bg-white dark:bg-zinc-900 font-sans text-sm m-0 border-none shadow-xl z-20",
+                              "absolute inset-0 w-full h-full px-4 outline-none bg-card font-sans text-sm m-0 border-none shadow-xl z-20",
                               col.type === "number" && "font-mono",
                             )}
                           />
@@ -396,7 +344,7 @@ export const DataGridBlock = forwardRef<HTMLDivElement, DataGridBlockProps>(
                             className={cn(
                               "block w-full overflow-hidden text-ellipsis",
                               col.type === "number" &&
-                                "font-mono text-zinc-600 dark:text-zinc-400",
+                                "font-mono text-muted-foreground",
                               (readOnly || col.readOnly) &&
                                 "opacity-60 cursor-not-allowed",
                             )}
@@ -411,7 +359,7 @@ export const DataGridBlock = forwardRef<HTMLDivElement, DataGridBlockProps>(
                                     "bg-amber-50 dark:bg-amber-500/10 text-amber-600 dark:text-amber-400 border border-amber-200 dark:border-amber-500/20",
                                   val === "Overdue" &&
                                     "bg-rose-50 dark:bg-rose-500/10 text-rose-600 dark:text-rose-400 border border-rose-200 dark:border-rose-500/20",
-                                  val !== "Paid" && val !== "Pending" && val !== "Overdue" && "bg-zinc-100 dark:bg-zinc-800 text-zinc-700 dark:text-zinc-300"
+                                  val !== "Paid" && val !== "Pending" && val !== "Overdue" && "bg-muted text-foreground"
                                 )}
                               >
                                 {String(val || "")}
@@ -425,7 +373,7 @@ export const DataGridBlock = forwardRef<HTMLDivElement, DataGridBlockProps>(
                         {isActive && !isEditingThis && (
                           <div
                             className={cn(
-                              "absolute bottom-[-3px] right-[-3px] w-1.5 h-1.5 z-20 border border-white dark:border-black rounded-[1px]",
+                              "absolute bottom-[-3px] right-[-3px] w-1.5 h-1.5 z-20 border border-card rounded-[1px]",
                               theme.handle,
                             )}
                           />
@@ -439,7 +387,7 @@ export const DataGridBlock = forwardRef<HTMLDivElement, DataGridBlockProps>(
           </table>
 
           {data.length === 0 && (
-            <div className="py-12 text-center text-sm text-zinc-500">
+            <div className="py-12 text-center text-sm text-muted-foreground">
               No data available.
             </div>
           )}
@@ -448,4 +396,17 @@ export const DataGridBlock = forwardRef<HTMLDivElement, DataGridBlockProps>(
     );
   },
 );
-DataGridBlock.displayName = "DataGridBlock";
+DataGridBlockImpl.displayName = "DataGridBlock";
+
+/**
+ * Generic over the row shape, so `data` infers T and `onChange` accepts the
+ * matching setState function without a cast:
+ *
+ *   const [rows, setRows] = useState(ROWS);
+ *   <DataGridBlock columns={COLUMNS} data={rows} onChange={setRows} />
+ */
+export const DataGridBlock = DataGridBlockImpl as <
+  T extends object = Record<string, unknown>,
+>(
+  props: DataGridBlockProps<T> & React.RefAttributes<HTMLDivElement>,
+) => React.ReactElement | null;

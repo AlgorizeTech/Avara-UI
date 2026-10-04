@@ -1,31 +1,10 @@
-export const metadata = {
-  title: 'Documentation - Next.js Documentation Component Library',
-  description: 'Complete documentation for the Next.js Documentation component library with installation guides, component examples, and API references.',
-  keywords: [
-    'Next.js Documentation documentation',
-    'React components',
-    'UI library',
-    'component library',
-    'Tailwind CSS',
-    'React hooks',
-    'UI components',
-    'design system'
-  ],
-  openGraph: {
-    title: 'Documentation - Next.js Documentation',
-    description: 'Complete documentation for the Next.js Documentation component library with installation guides, component examples, and API references.',
-    type: 'article',
-    url: '/docs',
-  },
-  twitter: {
-    card: 'summary_large_image',
-    title: 'Documentation - Next.js Documentation',
-    description: 'Complete documentation for the Next.js Documentation component library with installation guides, component examples, and API references.',
-  },
-  alternates: {
-    canonical: '/docs',
-  },
-};
+import { pageMetadata } from "@/lib/docs-metadata";
+
+export const metadata = pageMetadata({
+  title: 'Documentation - Algorize UI',
+  description: 'Documentation for the Algorize UI component library: installation guides, component pages with live previews, and props references.',
+  url: '/docs',
+});
 
 import { CodeBlock } from "@/components/site/code-block";
 import { ComponentRenderer } from "@/components/site/component-renderer";
@@ -37,48 +16,44 @@ import {
   TabsContent,
 } from "@/components/site/tabs.tsx";
 import Link from 'next/link';
+import { COMPONENT_COUNT, links } from "@/config/site";
 
 # Documentation
 
-Welcome to the Next.js Documentation documentation! This guide will help you get started with our component library and make the most of its features.
+Algorize UI is a library of {COMPONENT_COUNT} React components installed straight
+into your project by the shadcn CLI — no wrapper package, no lock-in.
 
-## Next.js Documentation
+<div className="not-prose grid grid-cols-1 md:grid-cols-2 gap-4 mt-8">
+  <DocLink to="index" className="group block p-5 rounded-xl border border-foreground/[0.06] bg-foreground/[0.03] hover:bg-foreground/[0.07] transition-colors">
+    <h3 className="text-[14px] font-semibold text-foreground group-hover:text-primary transition-colors mb-[7px]">Introduction</h3>
+    <span className="block text-[13px] leading-[1.65] text-foreground/45">
+      What the library is, how the registry install model works, and what ships in it.
+    </span>
+  </DocLink>
 
-We've migrated our documentation to focus on Next.js, the React framework for production. Explore the following sections to learn how to build modern web applications:
+  <DocLink to="installation" className="group block p-5 rounded-xl border border-foreground/[0.06] bg-foreground/[0.03] hover:bg-foreground/[0.07] transition-colors">
+    <h3 className="text-[14px] font-semibold text-foreground group-hover:text-primary transition-colors mb-[7px]">Installation</h3>
+    <span className="block text-[13px] leading-[1.65] text-foreground/45">
+      Requirements, initializing the CLI, and where installed files land.
+    </span>
+  </DocLink>
 
-<div className="grid grid-cols-1 md:grid-cols-2 gap-6 mt-8">
-  <Link href="/docs/nextjs/index" className="block p-6 rounded-lg border border-zinc-200 hover:border-primary hover:shadow-md transition-all dark:border-zinc-800 dark:hover:border-primary">
-    <h3 className="text-xl font-semibold mb-2">Getting Started</h3>
-    <span className="block text-zinc-600 dark:text-zinc-400">
-      Learn the basics of Next.js, including installation, project structure, and creating your first app.
+  <DocLink to="first-app" className="group block p-5 rounded-xl border border-foreground/[0.06] bg-foreground/[0.03] hover:bg-foreground/[0.07] transition-colors">
+    <h3 className="text-[14px] font-semibold text-foreground group-hover:text-primary transition-colors mb-[7px]">Quick Start</h3>
+    <span className="block text-[13px] leading-[1.65] text-foreground/45">
+      Go from an empty project to a rendered component in four steps.
     </span>
-  </Link>
-  
-  <Link href="/docs/nextjs/routing" className="block p-6 rounded-lg border border-zinc-200 hover:border-primary hover:shadow-md transition-all dark:border-zinc-800 dark:hover:border-primary">
-    <h3 className="text-xl font-semibold mb-2">Core Features</h3>
-    <span className="block text-zinc-600 dark:text-zinc-400">
-      Explore Next.js core features like routing, data fetching, API routes, and image optimization.
+  </DocLink>
+
+  <DocLink to="all-components" className="group block p-5 rounded-xl border border-foreground/[0.06] bg-foreground/[0.03] hover:bg-foreground/[0.07] transition-colors">
+    <h3 className="text-[14px] font-semibold text-foreground group-hover:text-primary transition-colors mb-[7px]">Browse Components</h3>
+    <span className="block text-[13px] leading-[1.65] text-foreground/45">
+      All of them, each with live previews, prop notes and an install command.
     </span>
-  </Link>
-  
-  <Link href="/docs/nextjs/styling" className="block p-6 rounded-lg border border-zinc-200 hover:border-primary hover:shadow-md transition-all dark:border-zinc-800 dark:hover:border-primary">
-    <h3 className="text-xl font-semibold mb-2">Styling & Performance</h3>
-    <span className="block text-zinc-600 dark:text-zinc-400">
-      Learn about CSS styling options, performance optimization techniques, and SEO best practices.
-    </span>
-  </Link>
-  
-  <Link href="/docs/nextjs/authentication" className="block p-6 rounded-lg border border-zinc-200 hover:border-primary hover:shadow-md transition-all dark:border-zinc-800 dark:hover:border-primary">
-    <h3 className="text-xl font-semibold mb-2">Advanced Topics</h3>
-    <span className="block text-zinc-600 dark:text-zinc-400">
-      Dive into advanced topics like authentication, middleware, TypeScript, and testing.
-    </span>
-  </Link>
+  </DocLink>
 </div>
 
-## Component Library
-
-While we focus on Next.js documentation, Next.js Documentation still provides a rich set of React components:
+## Popular components
 
 <Tabs defaultValue="components" className="mt-8">
   <TabsList>
@@ -88,48 +63,48 @@ While we focus on Next.js documentation, Next.js Documentation still provides a 
   </TabsList>
   
   <TabsContent value="components">
-    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 mt-4">
-      <Link href="/docs/nextjs/button" className="block p-4 rounded-lg border border-zinc-200 hover:border-primary hover:bg-primary/5 transition-colors dark:border-zinc-800 dark:hover:border-primary dark:hover:bg-primary/10">
-        <h4 className="font-medium">Button</h4>
-        <span className="block text-sm text-zinc-600 dark:text-zinc-400 mt-1">Customizable button with multiple variants</span>
-      </Link>
+    <div className="not-prose grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 mt-4">
+      <DocLink to="button" className="group block p-4 rounded-xl border border-foreground/[0.06] bg-foreground/[0.03] hover:bg-foreground/[0.07] transition-colors">
+        <h4 className="text-[14px] font-semibold text-foreground group-hover:text-primary transition-colors">Button</h4>
+        <span className="block text-[12px] text-foreground/40 mt-1">Customizable button with multiple variants</span>
+      </DocLink>
       
-      <Link href="/docs/nextjs/card" className="block p-4 rounded-lg border border-zinc-200 hover:border-primary hover:bg-primary/5 transition-colors dark:border-zinc-800 dark:hover:border-primary dark:hover:bg-primary/10">
-        <h4 className="font-medium">Card</h4>
-        <span className="block text-sm text-zinc-600 dark:text-zinc-400 mt-1">Flexible container for content</span>
-      </Link>
+      <DocLink to="card" className="group block p-4 rounded-xl border border-foreground/[0.06] bg-foreground/[0.03] hover:bg-foreground/[0.07] transition-colors">
+        <h4 className="text-[14px] font-semibold text-foreground group-hover:text-primary transition-colors">Card</h4>
+        <span className="block text-[12px] text-foreground/40 mt-1">Flexible container for content</span>
+      </DocLink>
       
-      <Link href="/docs/nextjs/vertical-tabs" className="block p-4 rounded-lg border border-zinc-200 hover:border-primary hover:bg-primary/5 transition-colors dark:border-zinc-800 dark:hover:border-primary dark:hover:bg-primary/10">
-        <h4 className="font-medium">Tabs</h4>
-        <span className="block text-sm text-zinc-600 dark:text-zinc-400 mt-1">Accessible tab interface</span>
-      </Link>
+      <DocLink to="vertical-tabs" className="group block p-4 rounded-xl border border-foreground/[0.06] bg-foreground/[0.03] hover:bg-foreground/[0.07] transition-colors">
+        <h4 className="text-[14px] font-semibold text-foreground group-hover:text-primary transition-colors">Tabs</h4>
+        <span className="block text-[12px] text-foreground/40 mt-1">Accessible tab interface</span>
+      </DocLink>
     </div>
   </TabsContent>
   
   <TabsContent value="hooks">
-    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 mt-4">
-      <div className="p-4 rounded-lg border border-gray-200 dark:border-gray-800">
-        <h4 className="font-medium">useToast</h4>
-        <p className="text-sm text-gray-600 dark:text-gray-400 mt-1">Display notifications to users</p>
+    <div className="not-prose grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 mt-4">
+      <div className="p-4 rounded-xl border border-foreground/[0.06] bg-foreground/[0.03]">
+        <h4 className="text-[14px] font-semibold text-foreground group-hover:text-primary transition-colors">useToast</h4>
+        <p className="text-[12px] text-foreground/40 mt-1">Display notifications to users</p>
       </div>
       
-      <div className="p-4 rounded-lg border border-gray-200 dark:border-gray-800">
-        <h4 className="font-medium">useMediaQuery</h4>
-        <p className="text-sm text-gray-600 dark:text-gray-400 mt-1">Responsive design helpers</p>
+      <div className="p-4 rounded-xl border border-foreground/[0.06] bg-foreground/[0.03]">
+        <h4 className="text-[14px] font-semibold text-foreground group-hover:text-primary transition-colors">useMediaQuery</h4>
+        <p className="text-[12px] text-foreground/40 mt-1">Responsive design helpers</p>
       </div>
     </div>
   </TabsContent>
   
   <TabsContent value="utilities">
-    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 mt-4">
-      <div className="p-4 rounded-lg border border-gray-200 dark:border-gray-800">
-        <h4 className="font-medium">cn</h4>
-        <p className="text-sm text-gray-600 dark:text-gray-400 mt-1">Class name merging utility</p>
+    <div className="not-prose grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 mt-4">
+      <div className="p-4 rounded-xl border border-foreground/[0.06] bg-foreground/[0.03]">
+        <h4 className="text-[14px] font-semibold text-foreground group-hover:text-primary transition-colors">cn</h4>
+        <p className="text-[12px] text-foreground/40 mt-1">Class name merging utility</p>
       </div>
       
-      <div className="p-4 rounded-lg border border-gray-200 dark:border-gray-800">
-        <h4 className="font-medium">createSlug</h4>
-        <p className="text-sm text-gray-600 dark:text-gray-400 mt-1">URL-friendly string generator</p>
+      <div className="p-4 rounded-xl border border-foreground/[0.06] bg-foreground/[0.03]">
+        <h4 className="text-[14px] font-semibold text-foreground group-hover:text-primary transition-colors">createSlug</h4>
+        <p className="text-[12px] text-foreground/40 mt-1">URL-friendly string generator</p>
       </div>
     </div>
   </TabsContent>
@@ -137,20 +112,17 @@ While we focus on Next.js documentation, Next.js Documentation still provides a 
 
 ## Getting Help
 
-If you need help with Next.js Documentation or Next.js:
-
-- Check the [Next.js Documentation](https://nextjs.org/docs)
-- Visit our [GitHub Repository](https://github.com/seraprogrammer/seraui)
-- Join our [Discord Community](#)
-- Contact our support team at support@seraui.com
+- Visit our <a href={links.github}>GitHub organisation</a>
+- Browse the [component library](/docs/nextjs/all-components)
+- For the framework itself, see the [Next.js documentation](https://nextjs.org/docs)
 
 ## Contributing
 
-We welcome contributions to Next.js Documentation! If you'd like to contribute:
+We welcome contributions to Algorize UI! If you'd like to contribute:
 
 1. Fork the repository
 2. Create a feature branch
 3. Make your changes
 4. Submit a pull request
 
-See our [Contributing Guide](/docs/contributing) for more details.
+Open an issue or pull request on <a href={links.issues}>GitHub</a> to get started.

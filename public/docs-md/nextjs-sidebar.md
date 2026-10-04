@@ -1,31 +1,22 @@
+export const metadata = docsPageMetadata("sidebar");
+
 # Sidebar
 
 A powerful, composable sidebar component that automatically manages mobile flyout states and desktop collapse logic.
 
 Building a good sidebar is one of the hardest parts of dashboard development. It requires managing state across completely different structural elements, handling viewport resizing, and animating complex CSS properties smoothly. This `SidebarBlock` utilizes React Context to handle all of this internally.
 
-## Examples
+Click the collapse trigger in each preview's header to watch the labels hide and the icons centre — hover a collapsed icon and its label appears in a Tooltip. Switch a preview to the phone size and the sidebar becomes a dismissible flyout instead.
 
-Click the collapse trigger in each preview's header to watch the labels hide and the icons centre — hover a collapsed icon for its native tooltip. Switch a preview to the phone size and the sidebar becomes a dismissible flyout instead. The first example's **Code** tab contains the full component source.
+{/* Both examples are the same app shell; only where the rail starts differs. */}
 
-export const usageDefault = `import {
-  MobileSidebarTrigger,
-  Sidebar,
-  SidebarBrand,
-  SidebarContent,
-  SidebarFooter,
-  SidebarGroup,
-  SidebarHeader,
-  SidebarItem,
-  SidebarProvider,
-  SidebarTrigger,
-} from "@/components/custom/blocks/SidebarBlock";
+export const sidebarUsage = ({ name, expanded, note }) => `"use client";
 
-export default function AppLayout({ children }: { children: React.ReactNode }) {
+export default function ${name}() {
   const [activeRoute, setActiveRoute] = useState("Dashboard");
 
   return (
-    // The provider owns expanded/mobile state for every part below it.
+    // ${note}
 
           }>
             Nexus UI
@@ -44,72 +35,50 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
             >
               Customers
             
-            }>Billing
+            }
+              active={activeRoute === "Billing"}
+              onClick={() => setActiveRoute("Billing")}
+            >
+              Billing
 
+            }>Help Center
             }>Settings
 
           }>Log out
 
-          {/* Opens the flyout under md; collapses the rail above it */}
+            {/* Opens the flyout under md; collapses the rail above it */}
 
-          {activeRoute}
+            {activeRoute}
 
-        {children}
+        {/* Your page goes here */}
 
-  );
-}`;
-
-export const usageFloating = `import {
-  Sidebar,
-  SidebarContent,
-  SidebarGroup,
-  SidebarItem,
-  SidebarProvider,
-} from "@/components/custom/blocks/SidebarBlock";
-
-export default function FloatingLayout({ children }: { children: React.ReactNode }) {
-  return (
-    
-      {/* "floating" detaches the panel from the edge and rounds it */}
-
-            } active>
-              Dashboard
-
-      {children}
-    
-  );
-}`;
-
-export const usageCollapsed = `import {
-  Sidebar,
-  SidebarContent,
-  SidebarGroup,
-  SidebarItem,
-  SidebarProvider,
-  SidebarTrigger,
-} from "@/components/custom/blocks/SidebarBlock";
-
-export default function RailLayout({ children }: { children: React.ReactNode }) {
-  return (
-    // Start as an icon rail — labels appear as tooltips on hover.
-
-            } active>
-              Dashboard
-            
-            }>Customers
-
-        {children}
+            Main Content Area
 
   );
 }`;
+
+export const usageDefault = sidebarUsage({
+  name: "AppLayout",
+  expanded: true,
+  note: "The provider owns expanded/mobile state for every part below it.",
+});
+
+export const usageCollapsed = sidebarUsage({
+  name: "RailLayout",
+  expanded: false,
+  note: "Start as an icon rail — labels appear as tooltips on hover.",
+});
 
 ## Installation
 
-### Copy the Component
+Register the @algorize-ui registry once per project, then add the component:
 
-This suite relies entirely on standard React Context and Tailwind CSS transitions. It has zero external library dependencies (other than Lucide icons used for illustration).
+```bash
+npx shadcn@latest registry add @algorize-ui=https://algorize-ui.vercel.app/r/{name}.json
+npx shadcn@latest add @algorize-ui/sidebar
+```
 
-Create a new file at `components/custom/blocks/SidebarBlock.tsx` and copy the engine code from the **Code** tab of the first example above.
+## Examples
 
 ## Props Reference
 
@@ -191,6 +160,6 @@ Create a new file at `components/custom/blocks/SidebarBlock.tsx` and copy the en
 
 ---
 
-**Component Path:** `nextjs\sidebar\page.mdx`
+**Component Path:** `[framework]\sidebar\page.mdx`
 
-**Web Version:** Visit the interactive version at the corresponding URL on the Next.js documentation site for live previews and interactive examples.
+**Web Version:** Visit the corresponding URL on the Algorize UI documentation site for live previews and interactive examples.

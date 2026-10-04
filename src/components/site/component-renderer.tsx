@@ -64,7 +64,7 @@ export function ComponentRenderer({
     <div
       ref={containerRef}
       className={cn(
-        "flex w-full items-center justify-center rounded-lg p-4 relative not-prose grid-bg bg-white dark:bg-black transition-all duration-300",
+        "flex w-full items-center justify-center rounded-lg p-0 relative not-prose grid-bg bg-preview-stage transition-all duration-300",
         // Pushed z-index to 100 to ensure it covers Navbars and other floating elements
         isFullPage
           ? "fixed inset-0 z-[100] min-h-screen rounded-none overflow-auto"
@@ -75,11 +75,11 @@ export function ComponentRenderer({
       {/* Grouped Action Buttons
         Added a backdrop blur and background so the buttons don't get lost in the component's UI 
       */}
-      <div className="absolute top-3 right-4 z-[110] flex items-center gap-1.5 bg-white/80 dark:bg-zinc-900/80 backdrop-blur-md p-1 rounded-lg border border-zinc-200 dark:border-zinc-800 shadow-sm">
+      <div className="absolute top-3 right-4 z-[110] flex items-center gap-1.5 bg-card/80 dark:bg-foreground/[0.032] backdrop-blur-md p-1 rounded-lg border border-border shadow-sm">
         {reTrigger && (
           <button
             onClick={changeKey}
-            className="p-1.5 rounded-md hover:bg-zinc-200 dark:hover:bg-zinc-800 transition-colors text-zinc-700 dark:text-zinc-300"
+            className="p-1.5 rounded-md hover:bg-foreground/[0.08] transition-colors text-foreground/80"
             aria-label="Retrigger animation"
             title="Retrigger Animation"
             type="button"
@@ -91,7 +91,7 @@ export function ComponentRenderer({
         {componentName && (
           <button
             onClick={handleNewPage}
-            className="p-1.5 rounded-md hover:bg-zinc-200 dark:hover:bg-zinc-800 transition-colors text-zinc-700 dark:text-zinc-300"
+            className="p-1.5 rounded-md hover:bg-foreground/[0.08] transition-colors text-foreground/80"
             aria-label="Open in new page"
             title="Open in new tab"
             type="button"
@@ -102,7 +102,7 @@ export function ComponentRenderer({
 
         <button
           onClick={handleFullPage}
-          className="p-1.5 rounded-md hover:bg-zinc-200 dark:hover:bg-zinc-800 transition-colors text-zinc-700 dark:text-zinc-300"
+          className="p-1.5 rounded-md hover:bg-foreground/[0.08] transition-colors text-foreground/80"
           aria-label={isFullPage ? "Exit full page" : "Toggle full page"}
           title={isFullPage ? "Exit full page" : "Toggle full page"}
           type="button"

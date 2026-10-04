@@ -1,0 +1,359 @@
+import { docsPageMetadata } from "@/lib/docs-metadata";
+
+export const metadata = docsPageMetadata("card-stack");
+
+import { ExampleShowcase } from "@/components/site/Sandbox";
+import { extractMotionCode } from "@/lib/code";
+
+# Card Stack
+
+A layered deck of cards featuring fluid drag-to-discard gestures, button-driven directional slide animations, and realistic depth perspective. Users can swipe cards left or right to review and discard them, with the next cards seamlessly stepping forward.
+
+export const usageSwipe = `"use client";
+
+import { Compass, Palette, Terminal, FileText } from "lucide-react";
+import { CardStack } from "@/components/custom/blocks/CardStackBlock";
+
+const ARRIVALS = [
+  {
+    id: "maker-hunt",
+    title: "MakerHunt",
+    description: "Daily product launches for indie makers.",
+    category: "Productivity",
+    date: "1d ago",
+    href: "https://makerhunt.example.com",
+    icon: (
+      <div className="size-full flex items-center justify-center bg-[#091642] text-white rounded-2xl">
+        <Compass className="size-6" />
+      </div>
+    ),
+  },
+  {
+    id: "design-forge",
+    title: "DesignForge",
+    description: "AI-powered vector generation and canvas tools for modern UI designers.",
+    category: "Design",
+    date: "2d ago",
+    href: "https://designforge.example.com",
+    icon: (
+      <div className="size-full flex items-center justify-center bg-purple-600 text-white rounded-2xl">
+        <Palette className="size-6" />
+      </div>
+    ),
+  },
+  {
+    id: "dev-pulse",
+    title: "DevPulse",
+    description: "Real-time deployment monitors and automated error triage alerts.",
+    category: "Developer Tools",
+    date: "3d ago",
+    href: "https://devpulse.example.com",
+    icon: (
+      <div className="size-full flex items-center justify-center bg-emerald-600 text-white rounded-2xl">
+        <Terminal className="size-6" />
+      </div>
+    ),
+  },
+  {
+    id: "draft-craft",
+    title: "DraftCraft",
+    description: "Collaborative markdown workspace with branch versioning and instant preview.",
+    category: "Writing",
+    date: "4d ago",
+    href: "https://draftcraft.example.com",
+    icon: (
+      <div className="size-full flex items-center justify-center bg-amber-600 text-white rounded-2xl">
+        <FileText className="size-6" />
+      </div>
+    ),
+  },
+];
+
+export default function SwipeToDiscardDemo() {
+  return (
+    <CardStack
+      items={ARRIVALS}
+      swipeToDismiss={true}
+      showHeader={false}
+      onDismiss={(item, direction) => {
+        console.log(\`Dismissed \${item.title} to the \${direction}\`);
+      }}
+    />
+  );
+}
+`;
+
+export const usageButtons = `"use client";
+
+import { Compass, Palette, Terminal } from "lucide-react";
+import { CardStack } from "@/components/custom/blocks/CardStackBlock";
+
+const ARRIVALS = [
+  {
+    id: "maker-hunt",
+    title: "MakerHunt",
+    description: "Daily product launches for indie makers.",
+    category: "Productivity",
+    date: "1d ago",
+    icon: <Compass className="size-6" />,
+  },
+  {
+    id: "design-forge",
+    title: "DesignForge",
+    description: "AI-powered vector generation and canvas tools.",
+    category: "Design",
+    date: "2d ago",
+    icon: <Palette className="size-6" />,
+  },
+  {
+    id: "dev-pulse",
+    title: "DevPulse",
+    description: "Real-time deployment monitors and error alerts.",
+    category: "Developer Tools",
+    date: "3d ago",
+    icon: <Terminal className="size-6" />,
+  },
+];
+
+export default function ButtonStackDemo() {
+  return (
+    <CardStack
+      items={ARRIVALS}
+      swipeToDismiss={false}
+      showNavigation={true}
+      slideDirection="right"
+    />
+  );
+}
+`;
+
+export const usageLeft = `"use client";
+
+import { CardStack, type CardStackItem } from "@/components/custom/blocks/CardStackBlock";
+
+export default function LeftSlideDemo({ items }: { items: CardStackItem[] }) {
+  return (
+    <CardStack
+      items={items}
+      slideDirection="left"
+      showNavigation={true}
+    />
+  );
+}
+`;
+
+export const usageLoop = `"use client";
+
+import { CardStack, type CardStackItem } from "@/components/custom/blocks/CardStackBlock";
+
+export default function InfiniteLoopDemo({ items }: { items: CardStackItem[] }) {
+  return (
+    <CardStack
+      items={items}
+      loop={true}
+      swipeToDismiss={true}
+      showHeader={false}
+    />
+  );
+}
+`;
+
+<ExampleShowcase
+  name="card-stack"
+  colorControl={false}
+  columns={1}
+  examples={[
+    {
+      title: "Swipe to Discard",
+      subheading: "Swipe or drag cards left or right to discard them. Cards behind smoothly step forward without back navigation, and the last card remains pinned in place.",
+      propNotes: [
+        {
+          prop: "swipeToDismiss",
+          value: "true",
+          effect: "enables drag and swipe gestures on the top card to discard it to the left or right.",
+        },
+        {
+          prop: "showHeader",
+          value: "false",
+          effect: "hides the header bar for a clean, pure swipe card deck experience.",
+        },
+        {
+          prop: "visibleCards",
+          value: "3",
+          effect: "keeps at most 3 cards visible in the stack at all times (front card + 2 cards behind).",
+        },
+      ],
+      props: { example: "swipe", swipeToDismiss: true, showHeader: false },
+      usage: usageSwipe,
+      code: extractMotionCode("src/components/custom/blocks/CardStackBlock.tsx"),
+      minHeight: 340,
+    },
+  ]}
+/>
+
+## Installation
+
+<Installation name="card-stack" />
+
+## Examples
+
+<ExampleShowcase
+  name="card-stack"
+  colorControl={false}
+  columns={1}
+  examples={[
+    {
+      title: "Infinite Loop",
+      subheading: "Continuous cyclical navigation where swiping cards seamlessly wraps around to the beginning with no header.",
+      propNotes: [
+        {
+          prop: "loop",
+          value: "true",
+          effect: "keeps the stack cycling forever, repeating the cards cyclically.",
+        },
+        {
+          prop: "showHeader",
+          value: "false",
+          effect: "hides the header bar for a clean, uninterrupted swipe deck loop.",
+        },
+      ],
+      props: { example: "loop", loop: true, showHeader: false },
+      usage: usageLoop,
+      minHeight: 340,
+    },
+    {
+      title: "With navigation buttons",
+      subheading: "Arrow button controls to slide cards forwards and backwards with disabled bounds at the ends.",
+      propNotes: [
+        {
+          prop: "showNavigation",
+          value: "true",
+          effect: "displays previous and next arrow buttons in the header.",
+        },
+        {
+          prop: "slideDirection",
+          value: "right",
+          effect: "controls which direction the top card slides away when clicking next.",
+        },
+      ],
+      props: { example: "buttons", swipeToDismiss: false, showNavigation: true },
+      usage: usageButtons,
+      minHeight: 380,
+    },
+    {
+      title: "Left Slide Direction",
+      subheading: "Slide the top card out toward the left when progressing forward with button controls.",
+      propNotes: [
+        {
+          prop: "slideDirection",
+          value: "left",
+          effect: "animates the card exit towards the left side.",
+        },
+      ],
+      props: { example: "left", showNavigation: true },
+      usage: usageLeft,
+      minHeight: 380,
+    },
+  ]}
+/>
+
+## Props Reference
+
+<div className="overflow-x-auto my-4">
+  <table>
+    <thead>
+      <tr>
+        <th>Prop</th>
+        <th>Type</th>
+        <th>Default</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><code>items</code></td>
+        <td><code>CardStackItem[]</code></td>
+        <td><strong>Required</strong></td>
+        <td>Array of card items to display in the stack.</td>
+      </tr>
+      <tr>
+        <td><code>title</code></td>
+        <td><code>string</code></td>
+        <td>—</td>
+        <td>Optional heading text. If omitted, the counter (e.g. <code>1 of 8</code>) is placed on the left with navigation buttons on the right.</td>
+      </tr>
+      <tr>
+        <td><code>swipeToDismiss</code></td>
+        <td><code>boolean</code></td>
+        <td><code>false</code></td>
+        <td>Whether to enable dragging and swiping the top card left or right to discard.</td>
+      </tr>
+      <tr>
+        <td><code>canDismissLastCard</code></td>
+        <td><code>boolean</code></td>
+        <td><code>false</code></td>
+        <td>Whether the last card in the stack can be swiped away/dismissed. Defaults to <code>false</code> so the final card stays in place.</td>
+      </tr>
+      <tr>
+        <td><code>showHeader</code></td>
+        <td><code>boolean</code></td>
+        <td><code>true</code></td>
+        <td>Whether to render the header bar (title, counter, and navigation). Set to <code>false</code> for a pure card stack.</td>
+      </tr>
+      <tr>
+        <td><code>showNavigation</code></td>
+        <td><code>boolean</code></td>
+        <td><code>true</code></td>
+        <td>Whether to show header navigation arrow buttons. Set to <code>false</code> for pure swipe mode.</td>
+      </tr>
+      <tr>
+        <td><code>visibleCards</code></td>
+        <td><code>number</code></td>
+        <td><code>3</code></td>
+        <td>Maximum number of cards visually stacked (front card + cards behind).</td>
+      </tr>
+      <tr>
+        <td><code>slideDirection</code></td>
+        <td><code>"right" | "left"</code></td>
+        <td><code>"right"</code></td>
+        <td>Direction the front card slides out when advancing forward via buttons.</td>
+      </tr>
+      <tr>
+        <td><code>loop</code></td>
+        <td><code>boolean</code></td>
+        <td><code>false</code></td>
+        <td>Whether navigation wraps around continuously or stops at the ends.</td>
+      </tr>
+      <tr>
+        <td><code>defaultIndex</code></td>
+        <td><code>number</code></td>
+        <td><code>0</code></td>
+        <td>Initial active index of the stack on mount.</td>
+      </tr>
+      <tr>
+        <td><code>onCardChange</code></td>
+        <td><code>(index: number) =&gt; void</code></td>
+        <td>—</td>
+        <td>Callback fired whenever the active card changes.</td>
+      </tr>
+      <tr>
+        <td><code>onDismiss</code></td>
+        <td><code>(item, direction) =&gt; void</code></td>
+        <td>—</td>
+        <td>Callback fired when a card is swiped/dismissed with the item and direction (<code>"left" | "right"</code>).</td>
+      </tr>
+      <tr>
+        <td><code>renderCard</code></td>
+        <td><code>(item, offset, isTop) =&gt; ReactNode</code></td>
+        <td>—</td>
+        <td>Custom render function to replace the default card body.</td>
+      </tr>
+      <tr>
+        <td><code>cardClassName</code></td>
+        <td><code>string</code></td>
+        <td>—</td>
+        <td>Optional custom className applied to each individual card container.</td>
+      </tr>
+    </tbody>
+  </table>
+</div>

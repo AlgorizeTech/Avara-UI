@@ -1,0 +1,264 @@
+import { docsPageMetadata } from "@/lib/docs-metadata";
+
+export const metadata = docsPageMetadata("tech-stack");
+
+import { ExampleShowcase } from "@/components/site/Sandbox";
+import { extractCode } from "@/lib/code";
+
+# Tech Stack
+
+The "Built with" line: a label, then the marks of the tools a product is made with, in two rows — an odd group staggers as three over four, so the smaller row sits between the marks below it. Put related tools in a group — the front end, the services, the tooling — and the strip shows one group at a time, every mark blurring out upwards and the next group blurring in, a beat after the one before it.
+
+It is composed, not configured: a `TechStack` holds `TechStackGroup`s, and each group holds `TechStackTool`s, so your list of tools never has to take a particular shape. <DocLink to="component-wall">Component Wall</DocLink> takes one in its `stack` slot.
+
+export const usageDefault = `import { TechStack, TechStackGroup, TechStackTool } from "@/components/custom/blocks/TechStackBlock";
+import {
+  DiscordIcon, MotionIcon, GitHubIcon, GsapIcon, LucideIcon, NextjsIcon,
+  ReactIcon, SlackIcon, StripeIcon, TailwindIcon, TypeScriptIcon,
+} from "@/components/custom/blocks/Icons";
+
+export default function BuiltWith() {
+  return (
+    <TechStack label="Built with" className="max-w-2xl">
+      <TechStackGroup>
+        <TechStackTool name="React" icon={<ReactIcon />} />
+        <TechStackTool name="Next.js" icon={<NextjsIcon fill="currentColor" />} />
+        <TechStackTool name="TypeScript" icon={<TypeScriptIcon />} />
+        <TechStackTool name="Tailwind CSS" icon={<TailwindIcon />} />
+        <TechStackTool name="Motion" icon={<MotionIcon />} />
+        <TechStackTool name="GSAP" icon={<GsapIcon />} />
+        <TechStackTool name="Lucide" icon={<LucideIcon />} />
+      </TechStackGroup>
+      <TechStackGroup>
+        <TechStackTool name="Stripe" icon={<StripeIcon />} />
+        <TechStackTool name="GitHub" icon={<GitHubIcon />} />
+        <TechStackTool name="Slack" icon={<SlackIcon />} />
+        <TechStackTool name="Discord" icon={<DiscordIcon />} />
+      </TechStackGroup>
+    </TechStack>
+  );
+}`;
+
+export const usageCompact = `import { TechStack, TechStackGroup, TechStackTool } from "@/components/custom/blocks/TechStackBlock";
+
+// Any node works as the icon — an <img> too. Map your own data straight in.
+const TOOLS = [
+  [
+    { name: "React", logo: "/logos/react.svg" },
+    { name: "Next.js", logo: "/logos/nextjs.svg" },
+    { name: "TypeScript", logo: "/logos/typescript.svg" },
+  ],
+  [
+    { name: "Stripe", logo: "/logos/stripe.svg" },
+    { name: "Postgres", logo: "/logos/postgres.svg" },
+  ],
+];
+
+export default function BuiltWith() {
+  return (
+    <TechStack label="Built with" variant="compact" className="max-w-md">
+      {TOOLS.map((group, i) => (
+        <TechStackGroup key={i}>
+          {group.map((tool) => (
+            <TechStackTool key={tool.name} name={tool.name} icon={<img src={tool.logo} alt="" />} />
+          ))}
+        </TechStackGroup>
+      ))}
+    </TechStack>
+  );
+}`;
+
+export const usageSingle = `import { TechStack, TechStackGroup, TechStackTool } from "@/components/custom/blocks/TechStackBlock";
+import { MotionIcon, GsapIcon, LucideIcon, NextjsIcon, ReactIcon, TailwindIcon, TypeScriptIcon } from "@/components/custom/blocks/Icons";
+
+export default function BuiltWith() {
+  return (
+    <TechStack label="Built with">
+      <TechStackGroup>
+        <TechStackTool name="React" icon={<ReactIcon />} />
+        <TechStackTool name="Next.js" icon={<NextjsIcon fill="currentColor" />} />
+        <TechStackTool name="TypeScript" icon={<TypeScriptIcon />} />
+        <TechStackTool name="Tailwind CSS" icon={<TailwindIcon />} />
+        <TechStackTool name="Motion" icon={<MotionIcon />} />
+        <TechStackTool name="GSAP" icon={<GsapIcon />} />
+        <TechStackTool name="Lucide" icon={<LucideIcon />} />
+      </TechStackGroup>
+    </TechStack>
+  );
+}`;
+
+<ExampleShowcase
+  name="tech-stack"
+  colorControl={false}
+  columns={1}
+  examples={[
+    {
+      title: "Built with",
+      subheading: "Two groups taking turns: seven front-end tools, three over four, then four services. Wait a few seconds for the swap. Names sit beside the marks on wide screens.",
+      propNotes: [
+        {
+          prop: "TechStackGroup",
+          effect:
+            "is one batch of tools, shown on its own. Four to eight read well: an odd count puts the smaller row on top, starting half a slot in, so it sits between the marks below; an even count lines up.",
+        },
+        {
+          prop: "interval",
+          value: "3600",
+          effect:
+            "is how many milliseconds each group stays. The strip turns only while it is on screen; `0` holds the first group. Under prefers-reduced-motion the swap is a cut.",
+        },
+        {
+          prop: "variant",
+          value: '"labelled"',
+          effect: "is the default: the label on the left and each name beside its mark from `xl` up; below that the marks show alone, a touch larger.",
+        },
+      ],
+      props: { example: "default", variant: "labelled" },
+      usage: usageDefault,
+      code: extractCode("src/components/custom/blocks/TechStackBlock.tsx"),
+      minHeight: 280,
+    },
+  ]}
+/>
+
+## Installation
+
+<Installation name="tech-stack" />
+
+## Examples
+
+<ExampleShowcase
+  name="tech-stack"
+  colorControl={false}
+  columns={1}
+  examples={[
+    {
+      title: "Compact",
+      subheading: "Marks only, the label centred between two hairlines — for a narrow column, like the centred Component Wall.",
+      propNotes: [
+        {
+          prop: "variant",
+          value: '"compact"',
+          effect: "drops the names from view; each is the mark's tooltip and is still read to screen readers.",
+        },
+        {
+          prop: "icon",
+          effect: "is any node. An `<img>` is sized like an SVG, so map your own data straight into `TechStackTool` — no reshaping.",
+        },
+      ],
+      props: { example: "default", variant: "compact" },
+      usage: usageCompact,
+      minHeight: 260,
+    },
+    {
+      title: "One group",
+      subheading: "A single group holds still — a plain logo strip.",
+      propNotes: [
+        {
+          prop: "TechStackGroup",
+          effect: "used once means there is nothing to turn to, so no timer runs.",
+        },
+      ],
+      props: { example: "single", variant: "labelled" },
+      usage: usageSingle,
+      minHeight: 240,
+    },
+  ]}
+/>
+
+## Features
+
+<div className="grid grid-cols-1 sm:grid-cols-2 gap-4 my-6 not-prose">
+  <div className="p-6 rounded-2xl border border-border bg-card">
+    <h3 className="text-lg font-semibold text-card-foreground mb-2">Composed, not configured</h3>
+    <p className="text-muted-foreground text-sm">Groups and tools are elements, so your data keeps whatever shape it has — map it straight into <code>TechStackTool</code>, or write the marks out by hand.</p>
+  </div>
+  <div className="p-6 rounded-2xl border border-border bg-card">
+    <h3 className="text-lg font-semibold text-card-foreground mb-2">A swap that never jumps</h3>
+    <p className="text-muted-foreground text-sm">The leaving group is lifted out of the flow where it stood and plays its way out on top, so the new one takes its place at once. Each mark goes a beat after the last, the way a headline word blurs in.</p>
+  </div>
+  <div className="p-6 rounded-2xl border border-border bg-card">
+    <h3 className="text-lg font-semibold text-card-foreground mb-2">Idle off screen</h3>
+    <p className="text-muted-foreground text-sm">The groups turn only while the strip is in view, so a footer strip costs nothing until someone scrolls to it. Under prefers-reduced-motion each swap is a cut.</p>
+  </div>
+  <div className="p-6 rounded-2xl border border-border bg-card">
+    <h3 className="text-lg font-semibold text-card-foreground mb-2">Your theme</h3>
+    <p className="text-muted-foreground text-sm">The label, hairlines and names read theme tokens; pass a node as <code>label</code> to set it in your own type.</p>
+  </div>
+</div>
+
+## Props Reference
+
+### TechStack
+
+<div className="overflow-x-auto my-4">
+  <table>
+    <thead>
+      <tr>
+        <th>Prop</th>
+        <th>Type</th>
+        <th>Default</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><code>children</code></td>
+        <td><code>TechStackGroup</code> elements</td>
+        <td><strong>Required</strong></td>
+        <td>The groups, shown one at a time in order.</td>
+      </tr>
+      <tr>
+        <td><code>label</code></td>
+        <td><code>ReactNode</code></td>
+        <td>—</td>
+        <td>The line over the marks.</td>
+      </tr>
+      <tr>
+        <td><code>interval</code></td>
+        <td><code>number</code></td>
+        <td><code>3600</code></td>
+        <td>Milliseconds each group stays, while on screen; <code>0</code> holds the first.</td>
+      </tr>
+      <tr>
+        <td><code>variant</code></td>
+        <td><code>"labelled" | "compact"</code></td>
+        <td><code>"labelled"</code></td>
+        <td>Label on the left and names beside the marks from <code>xl</code> up, or the label between hairlines and marks only.</td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+### TechStackGroup
+
+A `<ul>`; takes `TechStackTool` children and any list attribute.
+
+### TechStackTool
+
+<div className="overflow-x-auto my-4">
+  <table>
+    <thead>
+      <tr>
+        <th>Prop</th>
+        <th>Type</th>
+        <th>Default</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><code>name</code></td>
+        <td><code>string</code></td>
+        <td><strong>Required</strong></td>
+        <td>Shown beside the mark (labelled) or as its tooltip (compact); always read to screen readers.</td>
+      </tr>
+      <tr>
+        <td><code>icon</code></td>
+        <td><code>ReactNode</code></td>
+        <td><strong>Required</strong></td>
+        <td>The mark — an inline SVG or an <code>&lt;img&gt;</code>, sized for you.</td>
+      </tr>
+    </tbody>
+  </table>
+</div>

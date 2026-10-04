@@ -120,30 +120,28 @@ export const ScrollStack = ({
       {items.map((item, index) => (
         <div
           key={item.id}
-          className="flex min-h-screen w-full items-center justify-center sticky -top-25"
-          // style={{
-          //   // Stack offset positioning
-          //   top: `calc(5vh + ${index * cardGap}px)`,
-          //   zIndex: index + 1,
-          // }}
+          className="flex min-h-screen w-full items-center justify-center sticky"
+          // Each card sticks a little lower than the one before, which is
+          // what makes the stack fan out rather than pile up exactly.
+          style={{ top: index * cardGap }}
         >
           <div
             ref={(el) => {
               cardRefs.current[index] = el;
             }}
             className={cn(
-              "relative w-full max-w-4xl h-[60vh] sm:h-[65vh] rounded-[2.5rem] p-8 md:p-12 shadow-xl dark:shadow-2xl origin-top flex flex-col md:flex-row gap-8 overflow-hidden border transition-colors duration-300",
+              "relative w-full max-w-4xl h-[60vh] sm:h-[65vh] rounded-2xl p-8 md:p-12 shadow-xl dark:shadow-2xl origin-top flex flex-col md:flex-row gap-8 overflow-hidden border transition-colors duration-300",
               item.color ||
-                "bg-white dark:bg-zinc-900 border-zinc-200/80 dark:border-white/10 text-zinc-900 dark:text-white",
+                "bg-card border-border text-foreground hover:border-[var(--theme-color,var(--primary))]",
             )}
           >
             {/* Subtle Glass Noise Overlay */}
-            <div className="absolute inset-0 bg-black/[0.02] dark:bg-white/[0.03] pointer-events-none" />
+            <div className="absolute inset-0 bg-foreground/[0.02] pointer-events-none" />
 
             <div className="flex-1 flex flex-col justify-center relative z-10">
               {item.icon && (
-                <div className="w-14 h-14 rounded-2xl bg-zinc-100 dark:bg-white/10 flex items-center justify-center mb-6 shadow-sm dark:shadow-inner border border-zinc-200/80 dark:border-white/20 transition-colors">
-                  <item.icon className="w-7 h-7 text-zinc-800 dark:text-white" />
+                <div className="w-14 h-14 rounded-2xl bg-[var(--theme-color,var(--primary))]/10 border border-[var(--theme-color,var(--primary))]/20 flex items-center justify-center mb-6 shadow-sm text-[var(--theme-color,var(--primary))] transition-colors">
+                  <item.icon className="w-7 h-7 text-[var(--theme-color,var(--primary))]" />
                 </div>
               )}
               <h2 className="text-3xl md:text-4xl lg:text-5xl font-extrabold tracking-tight mb-4 leading-tight">
@@ -154,7 +152,7 @@ export const ScrollStack = ({
                   "text-base sm:text-lg font-medium leading-relaxed max-w-lg transition-colors",
                   item.color
                     ? "text-white/80"
-                    : "text-zinc-600 dark:text-white/70",
+                    : "text-muted-foreground",
                 )}
               >
                 {item.description}
@@ -163,7 +161,7 @@ export const ScrollStack = ({
 
             {/* Right-Side Content Payload */}
             {item.content && (
-              <div className="flex-1 relative z-10 rounded-2xl overflow-hidden bg-zinc-100/80 dark:bg-black/20 border border-zinc-200/80 dark:border-white/10 hidden md:flex items-center justify-center transition-colors">
+              <div className="flex-1 relative z-10 rounded-2xl overflow-hidden bg-muted/80 border border-border/80 hidden md:flex items-center justify-center transition-colors">
                 {item.content}
               </div>
             )}

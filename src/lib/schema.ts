@@ -1,35 +1,36 @@
+import { SITE_URL, siteConfig } from "@/config/site";
 // Schema.org structured data for better SEO
 export const organizationSchema = {
   "@context": "https://schema.org",
   "@type": "Organization",
-  "name": "Next.js Documentation",
-  "url": "https://seraui.seraprogrammer.com",
-  "logo": "https://seraui.seraprogrammer.com/logo.svg",
-  "description": "Modern React component library with 50+ animated components built with Tailwind CSS and Framer Motion",
+  "name": "Algorize UI",
+  "url": SITE_URL,
+  "logo": `${SITE_URL}/logo.svg`,
+  "description": siteConfig.tagline,
   "foundingDate": "2024",
   "founder": {
     "@type": "Person",
-    "name": "Next.js Documentation Team"
+    "name": "AlgorizeTech"
   },
   "sameAs": [
-    "https://github.com/seraprogrammer/sera-ui",
-    "https://twitter.com/sera_ui",
-    "https://discord.gg/sera-ui",
-    "https://www.npmjs.com/package/sera-ui"
+    "https://github.com/AlgorizeTech",
+    "https://github.com/AlgorizeTech",
+
+
   ],
   "contactPoint": {
     "@type": "ContactPoint",
     "contactType": "customer support",
-    "url": "https://github.com/seraprogrammer/sera-ui/issues"
+    "url": "https://github.com/AlgorizeTech"
   }
 }
 
 export const softwareApplicationSchema = {
   "@context": "https://schema.org",
   "@type": "SoftwareApplication",
-  "name": "Next.js Documentation",
-  "description": "Modern React component library with 50+ animated components built with Tailwind CSS and Framer Motion",
-  "url": "https://seraui.seraprogrammer.com",
+  "name": "Algorize UI",
+  "description": siteConfig.tagline,
+  "url": SITE_URL,
   "applicationCategory": "DeveloperApplication",
   "operatingSystem": "Web",
   "browserRequirements": "Requires JavaScript. Requires HTML5.",
@@ -38,19 +39,19 @@ export const softwareApplicationSchema = {
   "dateModified": new Date().toISOString(),
   "author": {
     "@type": "Organization",
-    "name": "Next.js Documentation Team",
-    "url": "https://github.com/sera-ui"
+    "name": "AlgorizeTech",
+    "url": "https://github.com/AlgorizeTech"
   },
   "creator": {
     "@type": "Organization",
-    "name": "Next.js Documentation Team"
+    "name": "AlgorizeTech"
   },
   "publisher": {
     "@type": "Organization",
-    "name": "Next.js Documentation",
+    "name": "Algorize UI",
     "logo": {
       "@type": "ImageObject",
-      "url": "https://seraui.seraprogrammer.com/logo.svg"
+      "url": `${SITE_URL}/logo.svg`
     }
   },
   "offers": {
@@ -59,12 +60,12 @@ export const softwareApplicationSchema = {
     "priceCurrency": "USD",
     "availability": "https://schema.org/InStock"
   },
-  "keywords": "React components, UI library, Tailwind CSS, Framer Motion, TypeScript, animated components, open source, free",
+  "keywords": "React components, UI library, Tailwind CSS, Motion, TypeScript, animated components, open source, free",
   "programmingLanguage": ["TypeScript", "JavaScript", "CSS"],
   "runtimePlatform": "Web Browser",
-  "downloadUrl": "https://github.com/seraprogrammer/sera-ui",
-  "installUrl": "https://www.npmjs.com/package/sera-ui",
-  "codeRepository": "https://github.com/seraprogrammer/sera-ui",
+  "downloadUrl": "https://github.com/AlgorizeTech",
+
+  "codeRepository": "https://github.com/AlgorizeTech",
   "license": "https://opensource.org/licenses/MIT",
   "aggregateRating": {
     "@type": "AggregateRating",
@@ -93,18 +94,18 @@ export const softwareApplicationSchema = {
 export const websiteSchema = {
   "@context": "https://schema.org",
   "@type": "WebSite",
-  "name": "Next.js Documentation",
-  "url": "https://seraui.seraprogrammer.com",
-  "description": "Modern React component library with 50+ animated components",
+  "name": "Algorize UI",
+  "url": SITE_URL,
+  "description": siteConfig.tagline,
   "publisher": {
     "@type": "Organization",
-    "name": "Next.js Documentation"
+    "name": "Algorize UI"
   },
   "potentialAction": {
     "@type": "SearchAction",
     "target": {
       "@type": "EntryPoint",
-      "urlTemplate": "https://seraui.seraprogrammer.com/docs?search={search_term_string}"
+      "urlTemplate": `${SITE_URL}/docs?search={search_term_string}`
     },
     "query-input": "required name=search_term_string"
   },
@@ -123,7 +124,7 @@ export const breadcrumbSchema = (items: Array<{name: string, url: string}>) => (
     "@type": "ListItem",
     "position": index + 1,
     "name": item.name,
-    "item": `https://seraui.seraprogrammer.com${item.url}`
+    "item": `${SITE_URL}${item.url}`
   }))
 })
 
@@ -160,16 +161,16 @@ export const componentSchema = (componentName: string, description: string, cate
   "description": description,
   "programmingLanguage": "TypeScript",
   "runtimePlatform": "React",
-  "codeRepository": "https://github.com/seraprogrammer/sera-ui",
+  "codeRepository": "https://github.com/AlgorizeTech",
   "license": "https://opensource.org/licenses/MIT",
   "author": {
     "@type": "Organization",
-    "name": "Next.js Documentation Team"
+    "name": "AlgorizeTech"
   },
   "isPartOf": {
     "@type": "SoftwareApplication",
-    "name": "Next.js Documentation"
+    "name": "Algorize UI"
   },
   "applicationCategory": category,
-  "keywords": `${componentName}, React component, Tailwind CSS, Framer Motion, UI component`
+  "keywords": `${componentName}, React component, Tailwind CSS, Motion, UI component`
 })

@@ -1,57 +1,291 @@
+export const metadata = docsPageMetadata("stepper");
+
 # Stepper
 
-A production-grade, highly animated multi-step wizard component engineered exclusively with **GSAP**. It splits the layout into two decoupled blocks: the visual progress tracker and the bidirectional sliding content payload.
+A production-grade, highly animated multi-step wizard component built on plain **CSS transitions and the Web Animations API** — no animation library. It splits the layout into two decoupled blocks: the visual progress tracker and the bidirectional sliding content payload.
 
 Unlike basic UI placeholders, this engine is designed to handle **real form state, per-step input validation, and asynchronous API submission handling** (including error states) with silky 60fps transitions.
 
-## Examples
+`Stepper` (the tracker) and `StepperContent` (the sliding payload) are decoupled — they only share the `steps` array and a `currentStep` number that you own, so `Stepper` also works alone as a progress header above content you lay out yourself. Validation, submission and error handling stay in your component.
 
-`Stepper` (the tracker) and `StepperContent` (the sliding payload) are decoupled — they only share the `steps` array and a `currentStep` number that you own, so `Stepper` also works alone as a progress header above content you lay out yourself. Validation, submission and error handling stay in your component. The **Code** tab contains the full component source.
+export const stepperPanels = `// The three step bodies — swap them for your own fields.
+function Field({
+  label,
+  placeholder,
+}: {
+  label: string;
+  placeholder: string;
+}) {
+  return (
+    
+      {label}
+
+  );
+}
+
+function ProfileForm() {
+  return (
+
+  );
+}
+
+function WorkspaceForm() {
+  return (
+
+  );
+}
+
+function ReviewPanel() {
+  return (
+    
+      Everything looks good — hit Submit to finish setting up your workspace.
+    
+  );
+}`;
 
 export const usageFlow = `"use client";
 
+// The Workspace step picks a role with the Select block:
+//   npx shadcn@latest add @algorize-ui/select
+
+const PRIMARY_ROLE_OPTIONS = [
+  "Developer",
+  "Designer",
+  "Product Manager",
+  "Founder",
+].map((r) => ({ label: r, value: r }));
+
+const BACK_BTN =
+  "flex items-center gap-1.5 px-4 py-2.5 rounded-xl border border-foreground/10 bg-card text-foreground font-semibold text-sm shadow-[0_1px_2px_rgb(0_0_0/0.04)] disabled:opacity-40 disabled:cursor-not-allowed hover:bg-muted transition-all active:scale-95 cursor-pointer";
+const NEXT_BTN =
+  "flex items-center gap-1.5 px-6 py-2.5 rounded-xl text-primary-foreground font-semibold text-sm shadow-md transition-all hover:brightness-110 active:scale-95 cursor-pointer bg-primary";
+
+// Controlled field. 'error' is what makes a blocked Next visible to the reader.
+function Field({
+  label,
+  icon: Icon,
+  placeholder,
+  value,
+  onChange,
+  error,
+  type,
+}: {
+  label: string;
+  icon?: LucideIcon;
+  placeholder: string;
+  value: string;
+  onChange: (next: string) => void;
+  error?: string;
+  type?: string;
+}) {
+  return (
+
+        {label} *
+
+        {Icon && (
+
+        )}
+         onChange(e.target.value)}
+          placeholder={placeholder}
+          className={cn(
+            // Focus is a soft primary glow: the border takes the colour and a
+            // faint 4px halo fades in with it.
+            "w-full h-11 bg-background border rounded-xl px-3.5 text-sm text-foreground placeholder:text-muted-foreground outline-none shadow-[0_1px_2px_rgb(0_0_0/0.04)] transition-[border-color,box-shadow] duration-200 ease-out",
+            Icon && "pl-10",
+            error
+              ? "border-destructive focus:shadow-[0_0_0_4px_color-mix(in_oklab,var(--destructive)_16%,transparent)]"
+              : "border-input hover:border-foreground/20 focus:border-primary/65 focus:shadow-[0_0_0_4px_color-mix(in_oklab,var(--primary)_16%,transparent)]",
+          )}
+        />
+      
+      {error && (
+
+          {error}
+        
+      )}
+    
+  );
+}
+
+// Every step body sits on this card — it is what the preview renders.
+function StepCard({
+  title,
+  subtitle,
+  children,
+}: {
+  title: string;
+  subtitle: string;
+  children: React.ReactNode;
+}) {
+  return (
+
+        {title}
+        {subtitle}
+      
+      {children}
+    
+  );
+}
+
+type FormData = {
+  fullName: string;
+  email: string;
+  company: string;
+  role: string;
+  password: string;
+  confirmPassword: string;
+};
+type Errors = Partial>;
+
 export default function OnboardingWizard() {
   const [step, setStep] = useState(0);
-  const [formData, setFormData] = useState({ fullName: "", company: "" });
+  const [formData, setFormData] = useState({
+    fullName: "",
+    email: "",
+    company: "",
+    role: "Developer",
+    password: "",
+    confirmPassword: "",
+  });
   const [errors, setErrors] = useState({});
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [simulateError, setSimulateError] = useState(false);
+  const [submitError, setSubmitError] = useState("");
 
-  const validateStep = (current) => {
-    if (current === 0 && !formData.fullName) {
-      setErrors({ fullName: "Name required" });
-      return false;
-    }
-    return true;
+  const set = (key: keyof FormData) => (next: string) =>
+    setFormData((prev) => ({ ...prev, [key]: next }));
+
+  // Returns false AND records the reason, so the blocked step explains itself.
+  const validateStep = (current: number) => {
+    const next: Errors = {};
+    if (current === 0 && !formData.fullName) next.fullName = "Name required";
+    if (current === 1 && !formData.company) next.company = "Company required";
+    if (current === 2 && !formData.password) next.password = "Password required";
+    setErrors(next);
+    return Object.keys(next).length === 0;
+  };
+
+  const handleNext = () => {
+    if (validateStep(step)) setStep((s) => s + 1);
   };
 
   const handleSubmit = async () => {
     setIsSubmitting(true);
+    setSubmitError("");
     try {
-      await fetch("/api/submit", { method: "POST", body: JSON.stringify(formData) });
+      // simulateError is the preview's DEBUG_MODE switch — it lets you see the
+      // failure branch without breaking the endpoint. Drop it in your own app.
+      if (simulateError) throw new Error("ERR_500: Database insertion failed.");
+      await fetch("/api/submit", {
+        method: "POST",
+        body: JSON.stringify(formData),
+      });
+    } catch (e) {
+      setSubmitError(e instanceof Error ? e.message : "Submission failed");
     } finally {
       setIsSubmitting(false);
     }
   };
 
   const steps = [
-    { id: "profile", title: "Profile", description: "Personal details", icon: User, content:  },
-    { id: "workspace", title: "Workspace", description: "Organization", icon: Building2, content:  },
-    { id: "review", title: "Review", description: "Confirm & Submit", icon: CheckCircle2, content:  },
+    {
+      id: "profile",
+      title: "Profile",
+      description: "Personal details",
+      icon: User,
+      content: (
+
+      ),
+    },
+    {
+      id: "workspace",
+      title: "Workspace",
+      description: "Organization",
+      icon: Building2,
+      content: (
+
+                Primary Role
+
+      ),
+    },
+    {
+      id: "security",
+      title: "Security",
+      description: "Credentials",
+      icon: ShieldCheck,
+      content: (
+
+      ),
+    },
+    {
+      id: "review",
+      title: "Review",
+      description: "Confirm & Submit",
+      icon: CheckCircle2,
+      content: (
+
+              Name:
+              {formData.fullName || "—"}
+
+              Email:
+              {formData.email || "—"}
+
+              Company:
+              {formData.company || "—"}
+
+              Role:
+              {formData.role || "—"}
+
+          {submitError && (
+
+                Submission Failed
+                {submitError}
+
+          )}
+
+               setSimulateError(e.target.checked)}
+                className="rounded border-input accent-primary"
+              />
+              Simulate Server Error on Submit
+            
+            DEBUG_MODE
+
+      ),
+    },
   ];
 
   return (
+    // A whisper of the primary on the shell separates it from a white page;
+    // the white step cards float on it.
     
       {/* onStepChange is what makes the circles clickable — gate it on validation */}
        {
           if (target 
 
-         setStep((s) => s - 1)} disabled={step === 0}>
+         setStep((s) => s - 1)}
+          disabled={step === 0 || isSubmitting}
+          className={BACK_BTN}
+        >
+          
           Back
-        
+
         {step === steps.length - 1 ? (
-          Submit
+          
+            {isSubmitting ? (
+              <>
+                
+                Submitting...
+              
+            ) : (
+              <>
+                Submit Onboarding
+
+            )}
+          
         ) : (
-           validateStep(step) && setStep((s) => s + 1)}>Next
+          
+            Next Step
+
         )}
 
   );
@@ -59,17 +293,12 @@ export default function OnboardingWizard() {
 
 ## Installation
 
-### Dependencies
-
-This component relies exclusively on **GSAP** for all line scaling, icon scaling, ring pulsing, and layout transitions.
+Register the @algorize-ui registry once per project, then add the component:
 
 ```bash
-npm install gsap lucide-react
+npx shadcn@latest registry add @algorize-ui=https://algorize-ui.vercel.app/r/{name}.json
+npx shadcn@latest add @algorize-ui/stepper
 ```
-
-### Copy the Component
-
-Create a new file at `components/custom/blocks/StepperBlock.tsx` and copy the engine code from the **Code** tab of the example above.
 
 ## Features
 Learn about the Stepper component's linear progression features, providing clear visual feedback for multi-step forms and processes.
@@ -93,13 +322,14 @@ Learn about the Stepper component's linear progression features, providing clear
 
 ## Props Reference
 
-        Component / Interface
+### Stepper
+
+The visual navigation header component that renders step indicators and the animated progress fill line.
+
         Prop
         Type
         Default
         Description
-
-          Stepper
 
           steps
 
@@ -107,11 +337,7 @@ Learn about the Stepper component's linear progression features, providing clear
 
           Required
 
-          An array defining the wizard sequence. Each object requires an{" "}
-          id and title. description,{" "}
-          icon, and content are optional.
-
-          Stepper
+          An array of step objects defining the sequence. Each object requires an id and title. description, icon, and content are optional.
 
           currentStep
 
@@ -119,10 +345,7 @@ Learn about the Stepper component's linear progression features, providing clear
 
           Required
 
-          The active zero-indexed step of the sequence. Controls the GSAP
-          progress line fill and active/completed indicator states.
-
-          Stepper
+          The active zero-indexed step of the sequence. Controls the progress line fill and active/completed indicator states.
 
           onStepChange
 
@@ -130,28 +353,15 @@ Learn about the Stepper component's linear progression features, providing clear
 
           undefined
 
-          Callback fired when a user clicks directly on a step circle in the
-          header. If omitted, the steps become static visual indicators. When
-          provided, users can click any step to jump forward or backward freely.
-
-          Stepper
+          Callback fired when a user clicks directly on a step circle in the header. If omitted, the steps become static visual indicators.
 
           color
 
           string
 
-          "#FFAB1D"
+          "var(--primary)"
 
-          The active theme color for the progress line, completed/active
-          circles and the pulse ring. Any CSS color value — hex,{" "}
-          rgb(), hsl(), oklch() or{" "}
-          var(--token) — is applied inline. A Tailwind background
-          class (e.g. "bg-indigo-500") also works for the line and
-          circles, but the pulse ring is skipped: its border color would need a{" "}
-          border-* class built at runtime, which Tailwind's scanner
-          never sees.
-
-          Stepper
+          The active theme color for the progress line, active/completed circles and pulse ring. Supports any CSS color value or Tailwind background class.
 
           className
 
@@ -159,10 +369,16 @@ Learn about the Stepper component's linear progression features, providing clear
 
           undefined
 
-          Custom Tailwind CSS classes to apply to the outermost navigation
-          header wrapper.
+          Custom Tailwind CSS classes to apply to the outermost navigation header wrapper.
 
-          StepperContent
+### StepperContent
+
+The sliding content container component that handles the animated sliding entrance of each step payload.
+
+        Prop
+        Type
+        Default
+        Description
 
           steps
 
@@ -170,11 +386,7 @@ Learn about the Stepper component's linear progression features, providing clear
 
           Required
 
-          The identical array passed to the header component. This engine
-          extracts the active step's content node and animates its
-          entrance/exit via GSAP.
-
-          StepperContent
+          The identical array passed to the header component. Renders the active step's content node.
 
           currentStep
 
@@ -182,11 +394,7 @@ Learn about the Stepper component's linear progression features, providing clear
 
           Required
 
-          The active zero-indexed step used to identify which payload to render
-          and determine the direction (left/right) of the GSAP sliding
-          animation.
-
-          StepperContent
+          The active zero-indexed step used to identify which payload to render and determine the sliding transition direction.
 
           className
 
@@ -194,67 +402,59 @@ Learn about the Stepper component's linear progression features, providing clear
 
           undefined
 
-          Custom Tailwind CSS classes applied to the sliding content wrapper
-          container.
+          Custom Tailwind CSS classes applied to the sliding content wrapper container.
 
-          Step
+### Step (TypeScript Interface)
+
+The TypeScript interface defining the structure of each object in the steps array prop.
+
+        Property
+        Type
+        Required
+        Description
 
           id
 
           string
 
-          Required
+          Yes
 
-          A unique identifier string required for safe React list rendering and
-          GSAP key mapping.
-
-          Step
+          A unique identifier string required for safe React list rendering.
 
           title
 
           string
 
-          Required
+          Yes
 
-          Primary headline text displayed prominently below the step circle
-          indicator.
-
-          Step
+          Primary headline text displayed prominently below the step circle indicator.
 
           description
 
           string
 
-          undefined
+          No
 
-          Optional secondary helper text displayed directly underneath the step
-          title on larger screens.
-
-          Step
+          Optional secondary helper text displayed directly underneath the step title on larger screens.
 
           icon
 
           React.ElementType
 
-          undefined
+          No
 
-          Optional Lucide React icon or custom SVG component rendered inside the
-          step circle indicator instead of a default number.
-
-          Step
+          Optional Lucide React icon or custom SVG component rendered inside the step circle indicator instead of a default number.
 
           content
 
           React.ReactNode
 
-          undefined
+          No
 
-          The actual JSX/UI payload (e.g., input forms, review summaries)
-          rendered inside the StepperContent container when this
-          step is active.
+          The JSX/UI payload (e.g., input forms, review summaries) rendered inside StepperContent when this step is active.
 
 ---
 
-**Component Path:** `nextjs\stepper\page.mdx`
+**Component Path:** `[framework]\stepper\page.mdx`
 
-**Web Version:** Visit the interactive version at the corresponding URL on the Next.js documentation site for live previews and interactive examples.
+**Web Version:** Visit the corresponding URL on the Algorize UI documentation site for live previews and interactive examples.

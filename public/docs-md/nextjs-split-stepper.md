@@ -1,22 +1,66 @@
+export const metadata = docsPageMetadata("split-stepper");
+
 # Split-Stack Stepper
 
-A high-impact, interactive split-screen layout engineered exclusively with **GSAP**. One side renders a narrative sequence of feature cards with glowing pill badges, while the opposite side maintains a sticky visual showcase container.
+A high-impact, interactive split-screen layout animated with plain **CSS transitions** — no animation library. One side renders a narrative sequence of feature cards with glowing pill badges, while the opposite side maintains a sticky visual showcase container.
 
 Unlike basic tab replacements, this engine applies dynamic mathematical depth tweens via GreenSock to **stack previous visual cards on top of each other in a 3D deck format** as the user progresses through the narrative.
 
-## Examples
+`SplitStepper` orchestrates the responsive grid itself — you supply the narrative sequence and a JSX payload per card, and CSS transitions handle the stacking. Click any step in the scrolling column to watch the deck restack.
 
-`SplitStepper` orchestrates the responsive grid itself — you supply the narrative sequence and a JSX payload per card, and GSAP handles the stacking. Click any step in the scrolling column to watch the deck restack. The first example's **Code** tab contains the full component source.
+export const splitSteps = `// Card bodies — these are the four screens the preview renders.
+const MockLandingView = () => (
 
-export const usageDefault = `import { SplitStepper } from "@/components/custom/blocks/SplitStepperBlock";
+        High-Converting UI
 
-const steps = [
+          CTA Button
+
+);
+
+const MockSaaSView = () => (
+
+        SaaS Dashboard Architecture
+
+          MRR Growth
+
+          +148.2%
+
+          Active Users
+
+          24,892
+
+);
+
+const MockAIView = () => (
+
+        AI & LLM Integration
+
+        TERMINAL // AI_ENGINE
+        STATUS: ACTIVE
+
+        &gt; Initializing RAG pipeline...
+
+        &gt; Vector embeddings synced (1.2ms)
+
+        &gt; Ready for token streaming_
+
+);
+
+const MockMobileView = () => (
+
+          Mobile First
+
+        Silky 60fps native performance across iOS and Android ecosystems.
+
+);
+
+const steps: SplitStep[] = [
   {
     id: "landing",
     stepNumber: "01",
     title: "Landing Page Design",
     description:
-      "We engineer high-converting layouts with engaging Framer & GSAP animations.",
+      "Most landing pages fail quietly. Traffic comes in, nothing happens. We engineer high-converting layouts with engaging Motion & GSAP animations.",
     tags: ["Conversion Focused", "Figma To Code", "Mobile First"],
     color: "bg-[#0c0c10] border-amber-500/20",
     cardContent: ,
@@ -26,12 +70,44 @@ const steps = [
     stepNumber: "02",
     title: "SaaS Product Development",
     description:
-      "Modular, multi-tenant web applications designed to scale to millions of requests.",
-    tags: ["Multi-Tenant Architecture", "Stripe Integration"],
+      "Every successful SaaS product starts with a complex problem. We build modular, multi-tenant web applications designed to scale to millions of requests.",
+    tags: [
+      "Multi-Tenant Architecture",
+      "Stripe Integration",
+      "Real-Time Sync",
+    ],
     color: "bg-[#090a14] border-indigo-500/20",
     cardContent: ,
   },
-];
+  {
+    id: "ai",
+    stepNumber: "03",
+    title: "AI Product Development",
+    description:
+      "Building an AI product is not about just plugging in an API. We fine-tune custom LLM models, engineer vector RAG pipelines, and build streaming chat UIs.",
+    tags: [
+      "LLM API Integration",
+      "Vector RAG Setup",
+      "Custom Model Training",
+    ],
+    color: "bg-[#06100c] border-emerald-500/20",
+    cardContent: ,
+  },
+  {
+    id: "mobile",
+    stepNumber: "04",
+    title: "Mobile App Development",
+    description:
+      "Building a mobile app shouldn't mean managing two separate codebases. We deploy unified React Native architectures with native device capabilities.",
+    tags: ["iOS & Android", "Single Codebase Build", "App Store Submission"],
+    color: "bg-[#12080a] border-rose-500/20",
+    cardContent: ,
+  },
+];`;
+
+export const usageDefault = `import { SplitStepper, type SplitStep } from "@/components/custom/blocks/SplitStepperBlock";
+
+${splitSteps}
 
 export default function ServicesSection() {
   return (
@@ -39,14 +115,18 @@ export default function ServicesSection() {
   );
 }`;
 
-export const usageStickyLeft = `import { SplitStepper } from "@/components/custom/blocks/SplitStepperBlock";
+export const usageStickyLeft = `import { SplitStepper, type SplitStep } from "@/components/custom/blocks/SplitStepperBlock";
+
+${splitSteps}
 
 export default function ServicesSectionMirrored() {
   // stickySide moves the sticky card deck to the other column.
   return ;
 }`;
 
-export const usageDepth = `import { SplitStepper } from "@/components/custom/blocks/SplitStepperBlock";
+export const usageDepth = `import { SplitStepper, type SplitStep } from "@/components/custom/blocks/SplitStepperBlock";
+
+${splitSteps}
 
 export default function DeepDeck() {
   // cardOffset is the vertical gap (px) between stacked cards;
@@ -56,7 +136,9 @@ export default function DeepDeck() {
   );
 }`;
 
-export const usageColor = `import { SplitStepper } from "@/components/custom/blocks/SplitStepperBlock";
+export const usageColor = `import { SplitStepper, type SplitStep } from "@/components/custom/blocks/SplitStepperBlock";
+
+${splitSteps}
 
 export default function BrandedSplitStepper() {
   // color drives the active step's rail, number badge, arrow and tint.
@@ -65,17 +147,14 @@ export default function BrandedSplitStepper() {
 
 ## Installation
 
-### Dependencies
-
-This component relies exclusively on **GSAP** for all 3D card depth scaling, stacking translations, and indicator animations.
+Register the @algorize-ui registry once per project, then add the component:
 
 ```bash
-npm install gsap lucide-react
+npx shadcn@latest registry add @algorize-ui=https://algorize-ui.vercel.app/r/{name}.json
+npx shadcn@latest add @algorize-ui/split-stepper
 ```
 
-### Copy the Component
-
-Create a new file at `components/custom/blocks/SplitStepperBlock.tsx` and copy the engine code from the **Code** tab of the first example above.
+## Examples
 
 ## Props Reference
 
@@ -128,7 +207,7 @@ Create a new file at `components/custom/blocks/SplitStepperBlock.tsx` and copy t
           16
 
           The absolute pixel distance applied to the vertical Y-axis translation
-          of stacked background cards via GSAP, creating the staggered deck
+          of stacked background cards, creating the staggered deck
           effect.
 
           SplitStepper
@@ -137,7 +216,7 @@ Create a new file at `components/custom/blocks/SplitStepperBlock.tsx` and copy t
 
           string
 
-          "#FFAB1D"
+          theme primary
 
           The global theme color applied to active card borders, step index
           badges, glowing pill tags, and indicator arrows. Accepts hex codes or
@@ -173,8 +252,7 @@ Create a new file at `components/custom/blocks/SplitStepperBlock.tsx` and copy t
 
           Required
 
-          A unique identifier string required for safe React list rendering and
-          GSAP key mapping.
+          A unique identifier string required for safe React list rendering.
 
           SplitStep
 
@@ -246,6 +324,6 @@ Create a new file at `components/custom/blocks/SplitStepperBlock.tsx` and copy t
 
 ---
 
-**Component Path:** `nextjs\split-stepper\page.mdx`
+**Component Path:** `[framework]\split-stepper\page.mdx`
 
-**Web Version:** Visit the interactive version at the corresponding URL on the Next.js documentation site for live previews and interactive examples.
+**Web Version:** Visit the corresponding URL on the Algorize UI documentation site for live previews and interactive examples.

@@ -1,17 +1,14 @@
+export const metadata = docsPageMetadata("toggle-group");
+
 # Toggle Group
 
 A set of segmented, two-state buttons that can be toggled on or off, perfect for configuration settings and rich text editors.
 
 This component utilizes a React Context Provider to make composition incredibly easy. Instead of passing active states and `onClick` handlers to every single button, you simply wrap your `` components inside the parent `` and it handles all of the logic automatically.
 
-## Examples
+Explore the different variations of the Toggle Group — each example shows a live preview with the exact code to copy.
 
-Explore the different variations of the Toggle Group — each example shows a live preview with the exact code to copy. The first example's **Code** tab contains the full component source.
-
-export const usageSingle = `import {
-  ToggleGroup,
-  ToggleGroupItem,
-} from "@/components/custom/blocks/ToggleGroupBlock";
+export const usageSingle = `"use client";
 
 export default function AlignmentGroup() {
   const [value, setValue] = useState("center");
@@ -21,24 +18,62 @@ export default function AlignmentGroup() {
   );
 }`;
 
-export const usageOutline = `
+export const usageOutline = `"use client";
 
-`;
+export default function OutlineGroup() {
+  const [value, setValue] = useState("left");
 
-export const usageGhost = `
+  return (
 
-`;
+  );
+}`;
 
-export const usageSizes = `
-  {items}
-  {items}
-  {items}
-`;
+export const usageSegmented = `"use client";
 
-export const usageMultiple = `import {
-  ToggleGroup,
-  ToggleGroupItem,
-} from "@/components/custom/blocks/ToggleGroupBlock";
+export default function PeriodSwitch() {
+  const [period, setPeriod] = useState("month");
+
+  return (
+    
+      Daily
+      Weekly
+      Monthly
+    
+  );
+}`;
+
+export const usageGhost = `"use client";
+
+export default function GhostGroup() {
+  const [value, setValue] = useState("left");
+
+  return (
+
+  );
+}`;
+
+export const usageSizes = `"use client";
+
+const items = (
+  <>
+
+);
+
+export default function GroupSizes() {
+  const [value, setValue] = useState("left");
+
+  return (
+
+        {items}
+
+        {items}
+
+        {items}
+
+  );
+}`;
+
+export const usageMultiple = `"use client";
 
 export default function FormattingGroup() {
   const [value, setValue] = useState(["bold"]);
@@ -48,19 +83,26 @@ export default function FormattingGroup() {
   );
 }`;
 
-export const usageDisabled = `
+export const usageDisabled = `"use client";
 
-`;
+export default function DisabledGroup() {
+  const [value, setValue] = useState("left");
+
+  return (
+
+  );
+}`;
 
 ## Installation
 
-### Copy the Component
+Register the @algorize-ui registry once per project, then add the component:
 
-This component manages its own contextual state internally, requiring zero third-party dependencies while natively supporting dynamic color injections.
+```bash
+npx shadcn@latest registry add @algorize-ui=https://algorize-ui.vercel.app/r/{name}.json
+npx shadcn@latest add @algorize-ui/toggle-group
+```
 
-You can copy the full engine code directly from the **Code** tab of the first example above. Place it in `components/custom/blocks/ToggleGroupBlock.tsx`.
-
----
+## Examples
 
 ## Usage
 
@@ -129,21 +171,21 @@ export default function TextEditor() {
 
           variant
 
-          "default" | "outline" | "ghost"
+          "default" | "outline" | "ghost" | "segmented"
 
           "default"
 
-          The architectural style of the group. The default variant wraps the items in a styled pill container.
+          The architectural style of the group. The default variant wraps the items in a styled pill container; segmented is a pill track whose highlight slides to the pressed item, keeps a single choice pressed, and moves it with the arrow keys.
 
           ToggleGroup
 
           color
 
-          "indigo" | "rose" | "emerald" | "zinc" | string
+          "primary" | "indigo" | "rose" | "emerald" | "zinc" | string
 
-          "zinc"
+          "primary"
 
-          The dynamic accent color applied to active items. Fully supports custom hex codes.
+          The dynamic accent color applied to active items. "primary" follows your theme's --primary token; custom hex codes are fully supported.
 
           ToggleGroup
 
@@ -189,6 +231,6 @@ export default function TextEditor() {
 
 ---
 
-**Component Path:** `nextjs\toggle-group\page.mdx`
+**Component Path:** `[framework]\toggle-group\page.mdx`
 
-**Web Version:** Visit the interactive version at the corresponding URL on the Next.js documentation site for live previews and interactive examples.
+**Web Version:** Visit the corresponding URL on the Algorize UI documentation site for live previews and interactive examples.

@@ -1,65 +1,65 @@
+export const metadata = docsPageMetadata("navbar");
+
 # Navbar / Header
 
-A highly responsive, production-ready Navigation Bar. It manages pure CSS dropdowns for complex desktop menus, and uses GSAP to smoothly animate a beautiful slide-out drawer on mobile devices.
+A highly responsive, production-ready Navigation Bar. It manages pure CSS dropdowns for complex desktop menus, and uses CSS transitions to smoothly animate a beautiful slide-out drawer on mobile devices.
 
-## Examples
-
-Switch any preview to a mobile width with the device buttons to see the GSAP hamburger drawer. The first example's **Code** tab contains the full component source.
+Switch any preview to a mobile width with the device buttons to see the hamburger drawer.
 
 export const usageDefault = `import { NavbarBlock } from "@/components/custom/blocks/NavbarBlock";
 
 export default function SiteHeader() {
-  return ;
+  return (
+    
+  );
 }`;
 
 export const usageFloating = `import { NavbarBlock } from "@/components/custom/blocks/NavbarBlock";
 
 export default function LandingHeader() {
   // A pill that floats over the hero — pair it with a colorful background.
-  return ;
+  return (
+    
+  );
 }`;
 
 export const usageCentered = `import { NavbarBlock } from "@/components/custom/blocks/NavbarBlock";
 
 export default function CenteredHeader() {
   // Logo in the middle, links split either side.
-  return ;
+  return (
+    
+  );
 }`;
 
 export const usageMinimal = `import { NavbarBlock } from "@/components/custom/blocks/NavbarBlock";
 
 export default function MinimalHeader() {
   // Borderless and transparent — lets the page behind it show through.
-  return ;
+  return (
+    
+  );
 }`;
 
 export const usageGlass = `import { NavbarBlock } from "@/components/custom/blocks/NavbarBlock";
 
 export default function GlassHeader() {
   // Full-width bar with a backdrop blur, so content scrolls under it.
-  return ;
-}`;
-
-export const usageLogo = `import { NavbarBlock } from "@/components/custom/blocks/NavbarBlock";
-
-export default function BrandedHeader() {
-  // logoText replaces the wordmark without touching the component.
-  return ;
+  return (
+    
+  );
 }`;
 
 ## Installation
 
-### 1. Install Dependencies
-
-This component uses `gsap` for the buttery-smooth mobile menu slide animations, and `lucide-react` for standard UI icons.
+Register the @algorize-ui registry once per project, then add the component:
 
 ```bash
-npm install gsap lucide-react
+npx shadcn@latest registry add @algorize-ui=https://algorize-ui.vercel.app/r/{name}.json
+npx shadcn@latest add @algorize-ui/navbar
 ```
 
-### 2. Copy the Component
-
-Create a new file at `components/custom/blocks/NavbarBlock.tsx` and copy the engine code from the **Code** tab of the first example above.
+## Examples
 
 ## Props Reference
 
@@ -78,13 +78,13 @@ Create a new file at `components/custom/blocks/NavbarBlock.tsx` and copy the eng
 
           color
 
-          "indigo" | "rose" | "emerald" | "zinc" | string
+          "primary" | "indigo" | "rose" | "emerald" | "zinc" | string
 
-          "indigo"
+          "primary"
 
           Applies global color themes to the logo icon and primary
-          Call-to-Action button. Accepts valid hex codes (e.g.{" "}
-          "#00FF00").
+          Call-to-Action button. Accepts named themes or valid hex codes (e.g.{" "}
+          "#8b5cf6").
 
           logoText
 
@@ -94,8 +94,17 @@ Create a new file at `components/custom/blocks/NavbarBlock.tsx` and copy the eng
         
         The text displayed next to the logo mark.
 
+          linkComponent
+
+          React.ElementType
+
+          "a"
+
+          The React component used for internal links. In Next.js, pass{" "}
+          next/link to preserve client-side routing.
+
 ---
 
-**Component Path:** `nextjs\navbar\page.mdx`
+**Component Path:** `[framework]\navbar\page.mdx`
 
-**Web Version:** Visit the interactive version at the corresponding URL on the Next.js documentation site for live previews and interactive examples.
+**Web Version:** Visit the corresponding URL on the Algorize UI documentation site for live previews and interactive examples.

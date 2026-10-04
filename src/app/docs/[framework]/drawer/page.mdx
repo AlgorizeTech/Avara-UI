@@ -1,0 +1,321 @@
+import { docsPageMetadata } from "@/lib/docs-metadata";
+
+export const metadata = docsPageMetadata("drawer");
+
+import { ExampleShowcase } from "@/components/site/Sandbox";
+import { extractCode } from "@/lib/code";
+
+# Drawer
+
+A highly animated, responsive drawer component. Built entirely from scratch, with plain CSS transitions for butter-smooth entering and exiting animations — no animation library. It supports sliding in from all four screen edges (top, bottom, left, right) and safely locks the background document from scrolling while open.
+
+The drawer is always controlled — you own `open` and pass `onOpenChange`.
+
+export const usageDefault = `"use client";
+
+import { useState } from "react";
+import {
+  Button,
+  Drawer,
+  DrawerContent,
+  DrawerDescription,
+  DrawerFooter,
+  DrawerHeader,
+  DrawerOverlay,
+  DrawerTitle,
+} from "@/components/custom/blocks/Drawer";
+
+export default function DrawerDemo() {
+  const [open, setOpen] = useState(false);
+
+  return (
+    <>
+      <Button onClick={() => setOpen(true)}>Open Drawer</Button>
+
+      <Drawer open={open} onOpenChange={setOpen} side="right">
+        <DrawerOverlay />
+        <DrawerContent>
+          <DrawerHeader>
+            <DrawerTitle>Interactive Drawer</DrawerTitle>
+            <DrawerDescription>
+              This drawer slides in from the right. It uses CSS transitions for
+              butter-smooth easing and handles its own unmount lifecycles.
+            </DrawerDescription>
+          </DrawerHeader>
+
+          <div className="p-6 flex-1 overflow-y-auto">
+            {/* Long content scrolls here without pushing the header away */}
+          </div>
+
+          <DrawerFooter>
+            <Button onClick={() => setOpen(false)}>Save changes</Button>
+            <Button variant="outline" onClick={() => setOpen(false)}>
+              Cancel
+            </Button>
+          </DrawerFooter>
+        </DrawerContent>
+      </Drawer>
+    </>
+  );
+}`;
+
+export const usageBottom = `"use client";
+
+import { useState } from "react";
+import {
+  Button,
+  Drawer,
+  DrawerContent,
+  DrawerDescription,
+  DrawerFooter,
+  DrawerHeader,
+  DrawerOverlay,
+  DrawerTitle,
+} from "@/components/custom/blocks/Drawer";
+
+export default function BottomSheet() {
+  const [open, setOpen] = useState(false);
+
+  return (
+    <>
+      <Button onClick={() => setOpen(true)}>Open sheet</Button>
+
+      {/* side="bottom" is the mobile sheet pattern */}
+      <Drawer open={open} onOpenChange={setOpen} side="bottom">
+        <DrawerOverlay />
+        <DrawerContent>
+          <DrawerHeader>
+            <DrawerTitle>Interactive Drawer</DrawerTitle>
+            <DrawerDescription>
+              Anchored to the bottom edge, full width.
+            </DrawerDescription>
+          </DrawerHeader>
+          <DrawerFooter>
+            <Button onClick={() => setOpen(false)}>Save changes</Button>
+          </DrawerFooter>
+        </DrawerContent>
+      </Drawer>
+    </>
+  );
+}`;
+
+export const usageControlled = `"use client";
+
+import { useState, useSyncExternalStore } from "react";
+import {
+  Button,
+  Drawer,
+  DrawerContent,
+  DrawerDescription,
+  DrawerFooter,
+  DrawerHeader,
+  DrawerOverlay,
+  DrawerTitle,
+} from "@/components/custom/blocks/Drawer";
+
+// Optionally skip visitors who were onboarded before. localStorage is read as
+// an external store: false on the server, the stored value in the browser.
+const subscribeToStorage = (onChange: () => void) => {
+  window.addEventListener("storage", onChange);
+  return () => window.removeEventListener("storage", onChange);
+};
+const readOnboarded = () => localStorage.getItem("onboarded") !== null;
+
+export default function OnboardingDrawer() {
+  const onboarded = useSyncExternalStore(subscribeToStorage, readOnboarded, () => false);
+  // Null until the visitor opens or closes it. Until then it is open on
+  // mount, so no trigger click is needed.
+  const [choice, setOpen] = useState<boolean | null>(null);
+  const open = choice ?? !onboarded;
+
+  return (
+    <>
+      <Button onClick={() => setOpen(true)}>Open Drawer (left)</Button>
+
+      <Drawer open={open} onOpenChange={setOpen} side="left">
+        <DrawerOverlay />
+        <DrawerContent>
+          <DrawerHeader>
+            <DrawerTitle>Welcome aboard</DrawerTitle>
+            <DrawerDescription>
+              This drawer opens automatically on mount without needing a trigger click.
+            </DrawerDescription>
+          </DrawerHeader>
+
+          <div className="p-6 flex-1 overflow-y-auto">
+            <p className="text-sm text-muted-foreground">
+              You can use this for onboarding flows, announcements, or cookie consent banners.
+            </p>
+          </div>
+
+          <DrawerFooter>
+            <Button onClick={() => setOpen(false)}>Get Started</Button>
+            <Button variant="outline" onClick={() => setOpen(false)}>
+              Cancel
+            </Button>
+          </DrawerFooter>
+        </DrawerContent>
+      </Drawer>
+    </>
+  );
+}`;
+
+<ExampleShowcase
+  name="drawer"
+  columns={1}
+  minHeight={500}
+  examples={[
+    {
+      title: "Drawer",
+      propNotes: [
+        {
+          prop: "open",
+          effect:
+            "is required — the drawer has no uncontrolled mode.",
+        },
+        {
+          prop: "onOpenChange",
+          effect:
+            "is also required, and fires on the overlay click, Escape and the close button alike.",
+        },
+      ],
+      props: { side: "right" },
+      usage: usageDefault,
+      code: extractCode("src/components/custom/blocks/Drawer.tsx"),
+    },
+  ]}
+/>
+
+## Installation
+
+<Installation name="drawer" />
+
+## Examples
+
+<ExampleShowcase
+  name="drawer"
+  columns={1}
+  minHeight={500}
+  examples={[
+    {
+      title: "Bottom sheet",
+      propNotes: [
+        {
+          lead: "Set",
+          prop: "side",
+          value: '"bottom"',
+          effect:
+            "for the familiar full-width mobile sheet.",
+        },
+      ],
+      props: { side: "bottom" },
+      usage: usageBottom,
+    },
+    {
+      title: "Open on mount",
+      propNotes: [
+        {
+          prop: "open",
+          effect:
+            "being yours means you can start it `true`, or flip it from any effect, with no trigger element at all.",
+        },
+      ],
+      props: { side: "left", open: true },
+      usage: usageControlled,
+    },
+  ]}
+/>
+
+## Features
+Learn about the Drawer component's touch-friendly swiping gestures, snap points, and smooth slide-in animations.
+
+<div className="grid grid-cols-1 sm:grid-cols-2 gap-4 my-6 not-prose">
+  <div className="p-6 rounded-2xl border border-border bg-card">
+    <h3 className="text-lg font-semibold text-card-foreground mb-2">Customizable</h3>
+    <p className="text-muted-foreground text-sm">Easily adapt the component's styling and behavior to fit your application's unique design system.</p>
+  </div>
+  <div className="p-6 rounded-2xl border border-border bg-card">
+    <h3 className="text-lg font-semibold text-card-foreground mb-2">Accessible</h3>
+    <p className="text-muted-foreground text-sm">Built with accessibility in mind, ensuring all users can interact with your application effectively.</p>
+  </div>
+  <div className="p-6 rounded-2xl border border-border bg-card">
+    <h3 className="text-lg font-semibold text-card-foreground mb-2">Responsive</h3>
+    <p className="text-muted-foreground text-sm">Fully responsive design that looks and works great across desktop, tablet, and mobile devices.</p>
+  </div>
+  <div className="p-6 rounded-2xl border border-border bg-card">
+    <h3 className="text-lg font-semibold text-card-foreground mb-2">Performant</h3>
+    <p className="text-muted-foreground text-sm">Optimized for maximum performance with minimal re-renders and efficient state management.</p>
+  </div>
+</div>
+
+## Best Practices & Guidelines
+
+<div className="flex flex-col gap-4 my-6 not-prose">
+  <div className="rounded-xl border border-foreground/[0.06] bg-foreground/[0.03] p-4">
+    <h4 className="font-sans text-[14px] font-semibold text-foreground mb-1">Usage Guidelines</h4>
+    <p className="text-[13px] leading-relaxed text-foreground/50">Follow standard design principles when implementing this component. Ensure proper contrast, spacing, and context within your layout.</p>
+  </div>
+</div>
+
+## Props Reference
+
+<div className="overflow-x-auto">
+  <table>
+    <thead>
+      <tr>
+        <th>Prop</th>
+        <th>Type</th>
+        <th>Default</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>
+          <code>open</code>
+        </td>
+        <td>
+          <code>boolean</code>
+        </td>
+        <td>
+          <strong>Required</strong>
+        </td>
+        <td>
+          Controls the visible state of the drawer. When true, the component
+          mounts via React Portals and a CSS transition slides it into view.
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <code>onOpenChange</code>
+        </td>
+        <td>
+          <code>(open: boolean) => void</code>
+        </td>
+        <td>
+          <strong>Required</strong>
+        </td>
+        <td>
+          Callback function to update the <code>open</code> state. Triggered by
+          clicking the overlay, hitting the Escape key, or using the close
+          button.
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <code>side</code>
+        </td>
+        <td>
+          <code>"top" | "bottom" | "left" | "right"</code>
+        </td>
+        <td>
+          <code>"right"</code>
+        </td>
+        <td>
+          Determines which edge of the screen the drawer slides in from, and
+          applies the corresponding layout dimensions.
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>

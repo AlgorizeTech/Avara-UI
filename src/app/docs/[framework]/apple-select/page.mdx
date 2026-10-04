@@ -1,0 +1,237 @@
+import { docsPageMetadata } from "@/lib/docs-metadata";
+
+import { ExampleShowcase } from "@/components/site/Sandbox";
+import { extractCode } from "@/lib/code";
+
+export const metadata = docsPageMetadata("apple-select", {
+  title: "Apple Select",
+  description: "An iOS-style text selection rendered from a fixed character range — translucent highlight with lollipop handles on either end."
+});
+
+# Apple Select
+
+Recreates the iOS text-selection look — a translucent highlight with a lollipop handle on either end — over any string you give it.
+
+The range is chosen by the author, not the reader: pass the full `text` and a `[start, end]` character range, and the component splits the string around it. That makes it ideal for docs, onboarding tips and marketing copy where you want to point at *part* of a sentence without a screenshot. The handles are purely decorative and are hidden from assistive tech; the text itself stays one uninterrupted string. It renders as a `<p>` — or, with `as="span"`, inline inside a paragraph of your own — and any other HTML attribute (`className`, `style`, `id`…) is forwarded to it.
+
+Explore the different variations of the Apple Select component — each example shows a live preview with the exact code to copy.
+
+export const usageDefault = `import { AppleSelect } from "@/components/custom/blocks/AppleSelectBlock";
+
+// The author picks the highlighted range — it is fixed, not draggable.
+// [43, 60] covers "ability to select" (end is exclusive, like String.slice).
+export default function SelectionDemo() {
+  return (
+    <AppleSelect
+      text="Introduced with iOS 3 in June 2009 was the ability to select, copy and paste text using selection handles displayed on either end of the highlighted range."
+      selection={[43, 60]}
+      className="max-w-lg text-2xl font-medium tracking-tight"
+    />
+  );
+}`;
+
+export const usageHandles = `import { AppleSelect } from "@/components/custom/blocks/AppleSelectBlock";
+
+export default function HighlightOnly() {
+  return (
+    <AppleSelect
+      text="Introduced with iOS 3 in June 2009 was the ability to select, copy and paste text using selection handles displayed on either end of the highlighted range."
+      selection={[43, 60]}
+      handles={false}
+      className="max-w-lg text-2xl font-medium tracking-tight"
+    />
+  );
+}`;
+
+export const usageAnimate = `import { AppleSelect } from "@/components/custom/blocks/AppleSelectBlock";
+
+export default function AnimatedSelection() {
+  return (
+    <AppleSelect
+      text="Introduced with iOS 3 in June 2009 was the ability to select, copy and paste text using selection handles displayed on either end of the highlighted range."
+      selection={[43, 60]}
+      animate
+      className="max-w-lg text-2xl font-medium tracking-tight"
+    />
+  );
+}`;
+
+export const usageMultiline = `import { AppleSelect } from "@/components/custom/blocks/AppleSelectBlock";
+
+// A range that wraps across lines — every line fragment keeps its own
+// rounded corners thanks to box-decoration-break: clone.
+export default function MultilineSelection() {
+  return (
+    <AppleSelect
+      text="Design is not just what it looks like and feels like. Design is how it works. Simplicity is the ultimate sophistication, and it takes a lot of hard work to make something simple."
+      selection={[78, 177]}
+      className="max-w-lg text-2xl font-medium tracking-tight"
+    />
+  );
+}`;
+
+<ExampleShowcase
+  name="apple-select"
+  colorControl
+  columns={1}
+  examples={[
+    {
+      title: "Apple Select",
+      subheading: "Pass the full `text` and the `[start, end]` character range to highlight.",
+      propNotes: [
+        {
+          prop: "selection",
+          effect:
+            "is the character range — `end` is exclusive, exactly like `String.slice`, so `[43, 60]` covers `\"ability to select\"`.",
+        },
+      ],
+      props: { example: "basic" },
+      usage: usageDefault,
+      code: extractCode("src/components/custom/blocks/AppleSelectBlock.tsx"),
+    },
+  ]}
+/>
+
+## Installation
+
+<Installation name="apple-select" />
+
+## Examples
+
+<ExampleShowcase
+  name="apple-select"
+  colorControl
+  columns={1}
+  examples={[
+    {
+      title: "Without handles",
+      propNotes: [
+        {
+          lead: "Set",
+          prop: "handles",
+          value: "{false}",
+          effect:
+            "to keep the translucent highlight and drop the lollipops — closer to a desktop selection.",
+        },
+      ],
+      props: { example: "handles" },
+      usage: usageHandles,
+    },
+    {
+      title: "Animated",
+      subheading: "Hit Reset on the preview to replay the entrance.",
+      propNotes: [
+        {
+          lead: "Set",
+          prop: "animate",
+          effect:
+            "to fade the highlight in and pop the handles on mount — handy when the selection is the point of the slide.",
+        },
+      ],
+      props: { example: "animate" },
+      usage: usageAnimate,
+    },
+    {
+      title: "Across lines",
+      propNotes: [
+        {
+          prop: "selection",
+          effect:
+            "can span as many lines as it needs; each wrapped fragment keeps its own rounded corners and the handles sit at the true start and end.",
+        },
+      ],
+      props: { example: "multiline" },
+      usage: usageMultiline,
+    },
+  ]}
+/>
+
+## Features
+Discover the Apple Select component's capabilities for pointing at part of a sentence with a native-feeling selection.
+
+<div className="grid grid-cols-1 sm:grid-cols-2 gap-4 my-6 not-prose">
+  <div className="p-6 rounded-2xl border border-border bg-card">
+    <h3 className="text-lg font-semibold text-card-foreground mb-2">Author-controlled</h3>
+    <p className="text-muted-foreground text-sm">The range is a pair of numbers in code, so the same selection renders identically for every visitor — no screenshots, no drift.</p>
+  </div>
+  <div className="p-6 rounded-2xl border border-border bg-card">
+    <h3 className="text-lg font-semibold text-card-foreground mb-2">Accessible</h3>
+    <p className="text-muted-foreground text-sm">The handles are hidden from assistive tech and the highlighted span uses a semantic <code>mark</code>, so the sentence reads as one string.</p>
+  </div>
+  <div className="p-6 rounded-2xl border border-border bg-card">
+    <h3 className="text-lg font-semibold text-card-foreground mb-2">Inherits typography</h3>
+    <p className="text-muted-foreground text-sm">Handles and highlight are sized in <code>em</code>, so they scale with whatever font size and weight you apply through <code>className</code>.</p>
+  </div>
+  <div className="p-6 rounded-2xl border border-border bg-card">
+    <h3 className="text-lg font-semibold text-card-foreground mb-2">Zero dependencies</h3>
+    <p className="text-muted-foreground text-sm">Plain React and CSS — the optional entrance animation ships its own keyframes, so there is nothing to add to your global styles.</p>
+  </div>
+</div>
+
+## Best Practices & Guidelines
+
+<div className="flex flex-col gap-4 my-6 not-prose">
+  <div className="rounded-xl border border-foreground/[0.06] bg-foreground/[0.03] p-4">
+    <h4 className="font-sans text-[14px] font-semibold text-foreground mb-1">Land on word boundaries</h4>
+    <p className="text-[13px] leading-relaxed text-foreground/50">Compute <code>selection</code> from the text (for example <code>text.indexOf("ability")</code>) rather than hard-coding magic numbers, so an edit to the copy cannot leave the highlight cutting through a word.</p>
+  </div>
+  <div className="rounded-xl border border-primary/15 bg-primary/5 p-4">
+    <h4 className="font-sans text-[14px] font-semibold text-primary mb-1">It is not a real selection</h4>
+    <p className="text-[13px] leading-relaxed text-foreground/50">The handles do not drag and the range does not copy. Use it to illustrate a selection, not to replace the browser's native one.</p>
+  </div>
+</div>
+
+## Props Reference
+
+### `<AppleSelect>` Props
+
+<div className="overflow-x-auto">
+  <table>
+    <thead>
+      <tr>
+        <th>Prop</th>
+        <th>Type</th>
+        <th>Default</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><code>text</code></td>
+        <td><code>string</code></td>
+        <td><strong>Required</strong></td>
+        <td>The full sentence or paragraph to render.</td>
+      </tr>
+      <tr>
+        <td><code>selection</code></td>
+        <td><code>[number, number] | [number, number][]</code></td>
+        <td><strong>Required</strong></td>
+        <td>Character range to highlight as <code>[start, end]</code>, or several ranges for more than one phrase — each gets its own handles. <code>end</code> is exclusive, like <code>String.slice</code>; out-of-range values are clamped, overlapping ranges merge, and an empty range renders plain text.</td>
+      </tr>
+      <tr>
+        <td><code>color</code></td>
+        <td><code>string</code></td>
+        <td><code>"var(--primary)"</code></td>
+        <td>Accent for the highlight tint and the handles. Accepts any CSS colour, including hex codes.</td>
+      </tr>
+      <tr>
+        <td><code>handles</code></td>
+        <td><code>boolean</code></td>
+        <td><code>true</code></td>
+        <td>Show the iOS-style lollipop handles on either end of the range.</td>
+      </tr>
+      <tr>
+        <td><code>animate</code></td>
+        <td><code>boolean</code></td>
+        <td><code>false</code></td>
+        <td>Fade the highlight in and pop the handles when the component mounts.</td>
+      </tr>
+      <tr>
+        <td><code>as</code></td>
+        <td><code>"p" | "span"</code></td>
+        <td><code>"p"</code></td>
+        <td>The element to render. Use <code>"span"</code> to highlight a phrase inside a paragraph of your own; inline, it takes the surrounding line height.</td>
+      </tr>
+    </tbody>
+  </table>
+</div>

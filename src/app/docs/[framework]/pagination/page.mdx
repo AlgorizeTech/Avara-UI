@@ -1,0 +1,458 @@
+import { docsPageMetadata } from "@/lib/docs-metadata";
+
+export const metadata = docsPageMetadata("pagination");
+
+import { ExampleShowcase } from "@/components/site/Sandbox";
+import { extractCode } from "@/lib/code";
+
+# Pagination
+
+A complex navigation component that intelligently handles page rendering, ellipsis calculation, and edge bounds.
+
+Building pagination logic from scratch is notoriously difficult. If you have 100 pages, you can't render 100 buttons. This `PaginationBlock` automatically calculates the optimal view (e.g., `1, 2, ..., 4, 5, 6, ..., 100`) based on the current active page, the total number of pages, and your specified sibling count. It also seamlessly disables the "Next" and "Previous" controls when you hit the edges.
+
+Click through the page numbers in each preview to watch the ellipses shift.
+
+export const usageDefault = `"use client";
+
+import { useState } from "react";
+import { Pagination } from "@/components/custom/blocks/PaginationBlock";
+
+export default function BasicPagination() {
+  // You own the page state — the component only reports the new number.
+  const [currentPage, setCurrentPage] = useState(1);
+
+  return (
+    <Pagination
+      currentPage={currentPage}
+      totalPages={10}
+      onPageChange={setCurrentPage}
+    />
+  );
+}`;
+
+export const usageSiblingCount = `"use client";
+
+import { useState } from "react";
+import { Pagination } from "@/components/custom/blocks/PaginationBlock";
+
+export default function TightPagination() {
+  const [currentPage, setCurrentPage] = useState(50);
+
+  // siblingCount is how many numbers sit either side of the active page.
+  // 1 keeps the control narrow on mobile; the default is 2.
+  return (
+    <Pagination
+      currentPage={currentPage}
+      totalPages={100}
+      onPageChange={setCurrentPage}
+      siblingCount={1}
+    />
+  );
+}`;
+
+export const usageControls = `"use client";
+
+import { useState } from "react";
+import { Pagination } from "@/components/custom/blocks/PaginationBlock";
+
+export default function ControlledPagination() {
+  const [currentPage, setCurrentPage] = useState(1);
+  const [pageSize, setPageSize] = useState(10);
+  const totalItems = 240;
+  const totalPages = Math.ceil(totalItems / pageSize);
+
+  return (
+    <Pagination
+      currentPage={currentPage}
+      totalPages={totalPages}
+      onPageChange={setCurrentPage}
+      // "Go to page" number input — commits on Enter, blur, or the Go button.
+      showPageJump
+      // "Rows per page" dropdown. Reset to page 1 so the new range is valid.
+      showPageSize
+      pageSize={pageSize}
+      pageSizeOptions={[10, 20, 50, 100]}
+      onPageSizeChange={(size) => {
+        setPageSize(size);
+        setCurrentPage(1);
+      }}
+    />
+  );
+}`;
+
+export const usagePageSelect = `"use client";
+
+import { useState } from "react";
+import { Pagination } from "@/components/custom/blocks/PaginationBlock";
+
+export default function DropdownJump() {
+  const [currentPage, setCurrentPage] = useState(7);
+
+  // Every page is listed in a <select>; best when totalPages stays modest.
+  return (
+    <Pagination
+      currentPage={currentPage}
+      totalPages={24}
+      onPageChange={setCurrentPage}
+      siblingCount={1}
+      showPageJump
+      pageJumpVariant="select"
+    />
+  );
+}`;
+
+export const usageTable = `"use client";
+
+import { useState } from "react";
+import { Pagination } from "@/components/custom/blocks/PaginationBlock";
+
+export default function CustomerDirectory() {
+  const [currentPage, setCurrentPage] = useState(1);
+  const [pageSize, setPageSize] = useState(5);
+  const totalItems = 50;
+  const totalPages = Math.ceil(totalItems / pageSize);
+
+  const start = (currentPage - 1) * pageSize + 1;
+  const end = Math.min(currentPage * pageSize, totalItems);
+
+  return (
+    <div className="border rounded-xl p-6">
+      <div className="flex items-center justify-between mb-8 pb-4 border-b">
+        <div className="flex flex-col gap-1">
+          <h3 className="text-sm font-semibold">Customer Directory</h3>
+          <p className="text-xs text-muted-foreground">
+            Showing {start} to {end} of {totalItems} entries
+          </p>
+        </div>
+      </div>
+
+      <Pagination
+        currentPage={currentPage}
+        totalPages={totalPages}
+        onPageChange={setCurrentPage}
+        showPageJump
+        showPageSize
+        pageSize={pageSize}
+        pageSizeOptions={[5, 10, 25]}
+        onPageSizeChange={(size) => {
+          setPageSize(size);
+          setCurrentPage(1);
+        }}
+      />
+    </div>
+  );
+}`;
+
+<ExampleShowcase
+  name="pagination"
+  colorControl
+  columns={1}
+  examples={[
+    {
+      title: "Pagination",
+      subheading: "Hold `currentPage` yourself and update it from `onPageChange`.",
+      propNotes: [
+        {
+          prop: "currentPage",
+          effect:
+            "and `totalPages` are both required — the component holds no state of its own.",
+        },
+        {
+          prop: "onPageChange",
+          effect:
+            "returns the target page number from a number click or the prev/next buttons.",
+        },
+      ],
+      props: { example: "bare", totalPages: 10, currentPage: 1 },
+      usage: usageDefault,
+      code: extractCode("src/components/custom/blocks/PaginationBlock.tsx"),
+    },
+  ]}
+/>
+
+## Installation
+
+<Installation name="pagination" />
+
+## Examples
+
+<ExampleShowcase
+  name="pagination"
+  colorControl
+  columns={1}
+  examples={[
+    {
+      title: "Sibling count",
+      propNotes: [
+        {
+          prop: "siblingCount",
+          value: '{2}',
+          effect:
+            "is how many numbers flank the active page before an ellipsis. Raise it for wide desktop layouts.",
+        },
+      ],
+      props: { example: "bare", totalPages: 100, currentPage: 50, siblingCount: 1 },
+      usage: usageSiblingCount,
+    },
+    {
+      title: "Jump to page & rows per page",
+      subheading: "Both controls are opt-in booleans; the page-size dropdown reports through `onPageSizeChange`.",
+      propNotes: [
+        {
+          prop: "showPageJump",
+          effect:
+            "adds a number input — type a page and press Enter, tab away, or hit Go. Out-of-range values clamp to the edges.",
+        },
+        {
+          prop: "showPageSize",
+          effect:
+            "adds a rows-per-page dropdown. Pass `pageSize`, `pageSizeOptions` and `onPageSizeChange`, then re-derive `totalPages`.",
+        },
+      ],
+      props: {
+        example: "bare",
+        totalPages: 24,
+        currentPage: 1,
+        siblingCount: 1,
+        showPageJump: true,
+        showPageSize: true,
+        pageSize: 10,
+        pageSizeOptions: [10, 20, 50, 100],
+      },
+      usage: usageControls,
+    },
+    {
+      title: "Dropdown page picker",
+      propNotes: [
+        {
+          prop: "pageJumpVariant",
+          value: '"select"',
+          effect:
+            "swaps the free-typed input for a dropdown that lists every page — handy for smaller page counts.",
+        },
+      ],
+      props: {
+        example: "bare",
+        totalPages: 24,
+        currentPage: 7,
+        siblingCount: 1,
+        showPageJump: true,
+        pageJumpVariant: "select",
+      },
+      usage: usagePageSelect,
+    },
+    {
+      title: "In a data table",
+      propNotes: [
+        {
+          prop: "totalPages",
+          effect:
+            "is yours to derive — `Math.ceil(rows.length / pageSize)` — and pairs naturally with a range readout.",
+        },
+      ],
+      props: {
+        example: "table",
+        totalPages: 10,
+        currentPage: 1,
+        showPageJump: true,
+        showPageSize: true,
+        pageSize: 5,
+        pageSizeOptions: [5, 10, 25],
+      },
+      usage: usageTable,
+    },
+  ]}
+/>
+
+## Props Reference
+
+<div className="overflow-x-auto">
+  <table>
+    <thead>
+      <tr>
+        <th>Prop</th>
+        <th>Type</th>
+        <th>Default</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>
+          <code>currentPage</code>
+        </td>
+        <td>
+          <code>number</code>
+        </td>
+        <td>
+          <strong>Required</strong>
+        </td>
+        <td>
+          The currently active page number. Drives the active state styling and
+          ellipsis calculation.
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <code>totalPages</code>
+        </td>
+        <td>
+          <code>number</code>
+        </td>
+        <td>
+          <strong>Required</strong>
+        </td>
+        <td>The absolute total number of pages available in your dataset.</td>
+      </tr>
+      <tr>
+        <td>
+          <code>onPageChange</code>
+        </td>
+        <td>
+          <code>{`(page: number) => void`}</code>
+        </td>
+        <td>
+          <code>undefined</code>
+        </td>
+        <td>
+          Callback function fired when a user clicks a page number, or the
+          next/previous buttons. It returns the new target page number.
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <code>siblingCount</code>
+        </td>
+        <td>
+          <code>number</code>
+        </td>
+        <td>
+          <code>2</code>
+        </td>
+        <td>
+          Determines how many page buttons to show on either side of the{" "}
+          <code>currentPage</code> before rendering an ellipsis. Increase this
+          for wider desktop screens.
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <code>showEdges</code>
+        </td>
+        <td>
+          <code>boolean</code>
+        </td>
+        <td>
+          <code>true</code>
+        </td>
+        <td>
+          If true, renders the "Previous" and "Next" control buttons on the
+          extreme left and right of the pagination block.
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <code>showPageJump</code>
+        </td>
+        <td>
+          <code>boolean</code>
+        </td>
+        <td>
+          <code>false</code>
+        </td>
+        <td>
+          Shows a "Go to page" control. Values outside{" "}
+          <code>1..totalPages</code> are clamped before{" "}
+          <code>onPageChange</code> fires.
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <code>pageJumpVariant</code>
+        </td>
+        <td>
+          <code>"input" | "select"</code>
+        </td>
+        <td>
+          <code>"input"</code>
+        </td>
+        <td>
+          <code>"input"</code> is a number field with a Go button;{" "}
+          <code>"select"</code> is a dropdown listing every page.
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <code>showPageSize</code>
+        </td>
+        <td>
+          <code>boolean</code>
+        </td>
+        <td>
+          <code>false</code>
+        </td>
+        <td>
+          Shows a "Rows per page" dropdown. Requires <code>pageSize</code> and{" "}
+          <code>onPageSizeChange</code>.
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <code>pageSize</code>
+        </td>
+        <td>
+          <code>number</code>
+        </td>
+        <td>
+          <code>10</code>
+        </td>
+        <td>
+          The currently selected rows-per-page value. If it isn't in{" "}
+          <code>pageSizeOptions</code> it is added to the list.
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <code>pageSizeOptions</code>
+        </td>
+        <td>
+          <code>number[]</code>
+        </td>
+        <td>
+          <code>[10, 20, 50, 100]</code>
+        </td>
+        <td>The choices offered in the rows-per-page dropdown.</td>
+      </tr>
+      <tr>
+        <td>
+          <code>onPageSizeChange</code>
+        </td>
+        <td>
+          <code>{`(pageSize: number) => void`}</code>
+        </td>
+        <td>
+          <code>undefined</code>
+        </td>
+        <td>
+          Fired when the user picks a new rows-per-page value. Recompute{" "}
+          <code>totalPages</code> and usually reset <code>currentPage</code> to 1.
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <code>color</code>
+        </td>
+        <td>
+          <code>string</code>
+        </td>
+        <td>
+          <code>undefined</code>
+        </td>
+        <td>
+          Themes the active page, focus rings, hover states, and dropdown selection highlights — supports preset names (e.g. <code>"indigo"</code>, <code>"rose"</code>, <code>"emerald"</code>, <code>"lavender"</code>) or a custom hex string.
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>

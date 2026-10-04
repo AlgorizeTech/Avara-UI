@@ -1,0 +1,22 @@
+"use client";
+
+import { HeroBlock } from "@/components/custom/blocks/HeroBlock";
+
+export default function HomepageHeroSliderDemo({
+  color = "primary",
+}: {
+  color?: string;
+}) {
+  return (
+    <div className="w-full flex flex-col justify-center items-center rounded-2xl border border-border overflow-hidden bg-background">
+      <HeroBlock
+        variant="slider"
+        color={color}
+        badgeHref="#"
+        primaryActionHref="#"
+        secondaryActionHref="#"
+        className="w-full py-8 sm:py-12"
+      />
+    </div>
+  );
+}

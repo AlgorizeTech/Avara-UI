@@ -39,7 +39,7 @@ export default function SidebarDemo({
   const [activeRoute, setActiveRoute] = useState("Dashboard");
 
   return (
-    <div className="w-full h-[500px] border border-zinc-200 dark:border-zinc-800 rounded-2xl overflow-hidden relative">
+    <div className="w-full h-[500px] border border-border rounded-2xl overflow-hidden relative">
       <SidebarProvider
         key={`${variant}-${themeColor}-${defaultExpanded}`}
         color={themeColor}
@@ -107,29 +107,29 @@ export default function SidebarDemo({
         </Sidebar>
 
         {/* MAIN CONTENT SHELL */}
-        <div className="flex-1 flex flex-col min-w-0 bg-white dark:bg-[#050505]">
-          <header className="h-16 flex items-center justify-between px-6 border-b border-zinc-200 dark:border-zinc-800 bg-white dark:bg-[#050505]">
+        <div className="flex-1 flex flex-col min-w-0 bg-background">
+          <header className="h-16 flex items-center justify-between px-6 border-b border-border bg-background">
             <div className="flex items-center gap-4">
               <MobileSidebarTrigger className="md:hidden" />
               <SidebarTrigger />
-              <h1 className="text-lg font-bold text-zinc-900 dark:text-white hidden sm:block">
+              <h1 className="text-lg font-semibold text-foreground hidden sm:block">
                 {activeRoute}
               </h1>
             </div>
             <div className="flex items-center gap-4">
-              <Search className="w-5 h-5 text-zinc-500" />
-              <Bell className="w-5 h-5 text-zinc-500" />
-              <div className="w-8 h-8 rounded-full bg-zinc-200 dark:bg-zinc-800" />
+              <Search className="w-5 h-5 text-muted-foreground" />
+              <Bell className="w-5 h-5 text-muted-foreground" />
+              <div className="w-8 h-8 rounded-full bg-muted" />
             </div>
           </header>
 
           <main className="flex-1 p-6 overflow-y-auto">
-            <div className="w-full h-32 border-2 border-dashed border-zinc-200 dark:border-zinc-800 rounded-xl flex items-center justify-center text-zinc-500">
+            <div className="w-full h-32 border-2 border-dashed border-border rounded-xl flex items-center justify-center text-muted-foreground">
               Main Content Area
             </div>
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mt-4">
-              <div className="w-full h-48 bg-zinc-50 dark:bg-zinc-900/50 rounded-xl" />
-              <div className="w-full h-48 bg-zinc-50 dark:bg-zinc-900/50 rounded-xl" />
+              <div className="w-full h-48 bg-muted rounded-xl" />
+              <div className="w-full h-48 bg-muted rounded-xl" />
             </div>
           </main>
         </div>

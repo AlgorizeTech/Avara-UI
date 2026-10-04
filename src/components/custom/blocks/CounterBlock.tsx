@@ -1,100 +1,119 @@
 "use client";
 
 import { cn } from "@/lib/utils";
-import gsap from "gsap";
 import { Clock, Minus, Plus } from "lucide-react";
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useRef, useState, useSyncExternalStore } from "react";
+import { getThemeStyles, type CounterTheme } from "./counter-theme";
 
 // ==========================================
 // DYNAMIC THEME ENGINE
 // ==========================================
 export type CounterColor = "indigo" | "rose" | "emerald" | "zinc" | string;
 export type CounterType = "stepper" | "animated" | "circular" | "countdown";
-export type CounterVariant = "default" | "outline" | "soft" | "vertical";
+/**
+ * `outline`, `soft` and `vertical` are stepper layouts; `slide` is the
+ * countdown's tile design, where a figure that changes slides out above as
+ * the new one comes up from below.
+ */
+export type CounterVariant = "default" | "outline" | "soft" | "vertical" | "slide";
 
-const colorThemes: Record<string, Record<string, string>> = {
-  primary: {
-    bg: "bg-primary text-primary-foreground",
-    text: "text-primary",
-    border: "border-primary",
-    ring: "ring-primary/20",
-    fill: "stroke-primary",
-    bgSoft: "bg-primary/10 text-primary",
-  },
-  indigo: {
-    bg: "bg-indigo-600 text-white",
-    text: "text-indigo-600 dark:text-indigo-400",
-    border: "border-indigo-600",
-    ring: "ring-indigo-600/20",
-    fill: "stroke-indigo-600",
-    bgSoft:
-      "bg-indigo-50 dark:bg-indigo-500/10 text-indigo-600 dark:text-indigo-400",
-  },
-  rose: {
-    bg: "bg-rose-600 text-white",
-    text: "text-rose-600 dark:text-rose-400",
-    border: "border-rose-600",
-    ring: "ring-rose-600/20",
-    fill: "stroke-rose-600",
-    bgSoft: "bg-rose-50 dark:bg-rose-500/10 text-rose-600 dark:text-rose-400",
-  },
-  emerald: {
-    bg: "bg-emerald-600 text-white",
-    text: "text-emerald-600 dark:text-emerald-400",
-    border: "border-emerald-600",
-    ring: "ring-emerald-600/20",
-    fill: "stroke-emerald-600",
-    bgSoft:
-      "bg-emerald-50 dark:bg-emerald-500/10 text-emerald-600 dark:text-emerald-400",
-  },
-  zinc: {
-    bg: "bg-zinc-900 text-white dark:bg-zinc-100 dark:text-zinc-900",
-    text: "text-zinc-900 dark:text-zinc-100",
-    border: "border-zinc-900 dark:border-zinc-100",
-    ring: "ring-zinc-900/20 dark:ring-white/10",
-    fill: "stroke-zinc-900 dark:stroke-zinc-100",
-    bgSoft: "bg-zinc-100 dark:bg-zinc-800/50 text-zinc-900 dark:text-zinc-100",
-  },
-};
+// The slide countdown's keyframes ship inline so the block stays
+// self-contained — no plugin, no globals.css entry.
+const KEYFRAMES = `
+@keyframes counter-slide-in {
+  from { transform: translateY(0.7em); opacity: 0; }
+  to { transform: none; opacity: 1; }
+}
+@keyframes counter-slide-out {
+  from { transform: none; opacity: 1; }
+  to { transform: translateY(-0.7em); opacity: 0; }
+}`;
 
-const hexToRgb = (hex: string) => {
-  let cleanHex = hex.replace(/^#/, "");
-  if (cleanHex.length === 3)
-    cleanHex = cleanHex
-      .split("")
-      .map((x) => x + x)
-      .join("");
-  const result = /^([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(cleanHex);
-  return result
-    ? `${parseInt(result[1], 16)}, ${parseInt(result[2], 16)}, ${parseInt(result[3], 16)}`
-    : "99, 102, 241";
-};
+// ==========================================
+// MOTION
+// ==========================================
 
-export const getThemeStyles = (color: string) => {
-  if (color && color.startsWith("#")) {
-    const rgb = hexToRgb(color);
-    return {
-      theme: {
-        bg: "bg-[var(--theme-color)] text-white",
-        text: "text-[var(--theme-color)]",
-        border: "border-[var(--theme-color)]",
-        ring: "ring-[var(--theme-color)]/20",
-        fill: "stroke-[var(--theme-color)]",
-        bgSoft:
-          "bg-[rgba(var(--theme-color-rgb),0.1)] text-[var(--theme-color)]",
-      },
-      style: {
-        "--theme-color": color,
-        "--theme-color-rgb": rgb,
-      } as React.CSSProperties,
-    };
-  }
-  return { theme: colorThemes[color] || colorThemes.primary, style: {} };
+/** GSAP's `back.out(2)` — a cubic, so this cubic-bezier is exact. */
+const POP_EASE = "cubic-bezier(0.3333, 1.6667, 0.6667, 1)";
+
+const REDUCED_MOTION = "(prefers-reduced-motion: reduce)";
+const subscribeReducedMotion = (onChange: () => void) => {
+  const mq = window.matchMedia?.(REDUCED_MOTION);
+  mq?.addEventListener("change", onChange);
+  return () => mq?.removeEventListener("change", onChange);
 };
+/** The visitor's reduced-motion setting; false while server-rendering. */
+const useReducedMotion = () =>
+  useSyncExternalStore(
+    subscribeReducedMotion,
+    () => window.matchMedia?.(REDUCED_MOTION).matches ?? false,
+    () => false,
+  );
+
+/** GSAP's `power3.out`. */
+const power3Out = (p: number) => 1 - Math.pow(1 - p, 4);
+
+/**
+ * Tweens 0 → `to` over `duration` ms on requestAnimationFrame, calling
+ * `onUpdate` every frame with the eased value. Returns a cancel function.
+ */
+function tweenNumber(
+  to: number,
+  duration: number,
+  onUpdate: (value: number) => void,
+) {
+  const start = performance.now();
+  let frame = requestAnimationFrame(function tick(now) {
+    const p = Math.min(Math.max((now - start) / duration, 0), 1);
+    onUpdate(power3Out(p) * to);
+    if (p < 1) frame = requestAnimationFrame(tick);
+  });
+  return () => cancelAnimationFrame(frame);
+}
 
 // ==========================================
 // INTERNAL SUB-COMPONENTS
 // ==========================================
+
+/** What every counter variant needs to paint itself. */
+interface CounterBaseProps {
+  /** A row out of the block’s colour table. */
+  theme: CounterTheme;
+  style?: React.CSSProperties;
+  label?: string;
+}
+
+interface StepperCounterProps extends CounterBaseProps {
+  initialValue: number;
+  min: number;
+  max: number;
+  variant?: CounterVariant;
+}
+
+interface AnimatedCounterProps extends CounterBaseProps {
+  targetValue: number;
+  prefix?: string;
+  suffix?: string;
+  /** Just the figure, no card — it inherits the surrounding type. */
+  bare?: boolean;
+  /** Decimal places to show while counting, e.g. 1 for 5.5. */
+  decimals?: number;
+  /** Wait until the counter is on screen before counting. */
+  startOnView?: boolean;
+  className?: string;
+}
+
+interface CircularCounterProps extends CounterBaseProps {
+  targetValue: number;
+  suffix?: string;
+}
+
+interface CountdownCounterProps extends CounterBaseProps {
+  targetDate?: string | number | Date;
+  /** What the label becomes once the date has passed. */
+  doneLabel?: string;
+  variant?: CounterVariant;
+}
 
 const StepperCounter = ({
   theme,
@@ -104,15 +123,19 @@ const StepperCounter = ({
   min,
   max,
   variant,
-}: any) => {
+}: StepperCounterProps) => {
   const [count, setCount] = useState(initialValue);
   const containerRef = useRef<HTMLDivElement>(null);
+  const popRef = useRef<Animation | null>(null);
 
+  // Each step restarts the pop from 0.95.
   const animatePop = () => {
-    gsap.fromTo(
-      containerRef.current,
-      { scale: 0.95 },
-      { scale: 1, duration: 0.2, ease: "back.out(2)" },
+    const el = containerRef.current;
+    if (!el?.animate) return;
+    popRef.current?.cancel();
+    popRef.current = el.animate(
+      [{ transform: "scale(0.95)" }, { transform: "scale(1)" }],
+      { duration: 200, easing: POP_EASE },
     );
   };
 
@@ -135,7 +158,7 @@ const StepperCounter = ({
         return (
           <div
             ref={containerRef}
-            className="flex items-center rounded-full border-2 border-zinc-200 dark:border-zinc-800 p-1 shadow-sm bg-white dark:bg-zinc-950"
+            className="flex items-center rounded-full border-2 border-border p-1 shadow-sm bg-background"
           >
             <button
               onClick={handleDec}
@@ -147,7 +170,7 @@ const StepperCounter = ({
             >
               <Minus size={18} strokeWidth={2.5} />
             </button>
-            <div className="w-14 text-center text-xl font-bold text-zinc-900 dark:text-white select-none">
+            <div className="w-14 text-center text-xl font-semibold text-foreground select-none">
               {count}
             </div>
             <button
@@ -175,7 +198,7 @@ const StepperCounter = ({
               onClick={handleDec}
               disabled={count <= min}
               className={cn(
-                "w-10 h-10 flex items-center justify-center rounded-xl bg-white dark:bg-zinc-900 shadow-sm hover:scale-105 active:scale-95 transition-all disabled:opacity-50",
+                "w-10 h-10 flex items-center justify-center rounded-xl bg-card shadow-sm hover:scale-105 active:scale-95 transition-all disabled:opacity-50",
                 theme.text,
               )}
             >
@@ -183,7 +206,7 @@ const StepperCounter = ({
             </button>
             <div
               className={cn(
-                "w-16 text-center text-2xl font-black select-none",
+                "w-16 text-center text-2xl font-bold select-none",
                 theme.text,
               )}
             >
@@ -193,7 +216,7 @@ const StepperCounter = ({
               onClick={handleInc}
               disabled={count >= max}
               className={cn(
-                "w-10 h-10 flex items-center justify-center rounded-xl bg-white dark:bg-zinc-900 shadow-sm hover:scale-105 active:scale-95 transition-all disabled:opacity-50",
+                "w-10 h-10 flex items-center justify-center rounded-xl bg-card shadow-sm hover:scale-105 active:scale-95 transition-all disabled:opacity-50",
                 theme.text,
               )}
             >
@@ -205,26 +228,26 @@ const StepperCounter = ({
         return (
           <div
             ref={containerRef}
-            className="flex flex-col items-center bg-zinc-50 dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 rounded-2xl overflow-hidden shadow-sm"
+            className="flex flex-col items-center bg-muted border border-border rounded-2xl overflow-hidden shadow-sm"
           >
             <button
               onClick={handleInc}
               disabled={count >= max}
               className={cn(
-                "w-14 h-12 flex justify-center items-center hover:bg-zinc-200 dark:hover:bg-zinc-800 transition-colors active:bg-zinc-300 dark:active:bg-zinc-700 disabled:opacity-50",
+                "w-14 h-12 flex justify-center items-center hover:bg-muted transition-colors active:bg-muted disabled:opacity-50",
                 theme.text,
               )}
             >
               <Plus size={20} strokeWidth={2.5} />
             </button>
-            <div className="w-14 py-3 text-center font-black text-xl border-y border-zinc-200 dark:border-zinc-800 bg-white dark:bg-black select-none">
+            <div className="w-14 py-3 text-center font-bold text-xl border-y border-border bg-background select-none">
               {count}
             </div>
             <button
               onClick={handleDec}
               disabled={count <= min}
               className={cn(
-                "w-14 h-12 flex justify-center items-center hover:bg-zinc-200 dark:hover:bg-zinc-800 transition-colors active:bg-zinc-300 dark:active:bg-zinc-700 disabled:opacity-50",
+                "w-14 h-12 flex justify-center items-center hover:bg-muted transition-colors active:bg-muted disabled:opacity-50",
                 theme.text,
               )}
             >
@@ -237,26 +260,26 @@ const StepperCounter = ({
         return (
           <div
             ref={containerRef}
-            className="flex items-center bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 rounded-xl shadow-sm overflow-hidden p-1"
+            className="flex items-center bg-card border border-border rounded-xl shadow-sm overflow-hidden p-1"
           >
             <button
               onClick={handleDec}
               disabled={count <= min}
               className={cn(
-                "w-10 h-10 flex items-center justify-center rounded-lg transition-colors active:scale-95 disabled:opacity-50 border border-black/10 dark:border-white/10 shadow-sm",
+                "w-10 h-10 flex items-center justify-center rounded-lg transition-colors active:scale-95 disabled:opacity-50 border border-foreground/10 shadow-sm",
                 theme.bg,
               )}
             >
               <Minus size={18} strokeWidth={2.5} />
             </button>
-            <div className="w-16 text-center text-xl font-bold text-zinc-900 dark:text-white select-none">
+            <div className="w-16 text-center text-xl font-semibold text-foreground select-none">
               {count}
             </div>
             <button
               onClick={handleInc}
               disabled={count >= max}
               className={cn(
-                "w-10 h-10 flex items-center justify-center rounded-lg transition-colors active:scale-95 disabled:opacity-50 border border-black/10 dark:border-white/10 shadow-sm",
+                "w-10 h-10 flex items-center justify-center rounded-lg transition-colors active:scale-95 disabled:opacity-50 border border-foreground/10 shadow-sm",
                 theme.bg,
               )}
             >
@@ -270,7 +293,7 @@ const StepperCounter = ({
   return (
     <div className="flex flex-col items-center gap-3" style={style}>
       {label && (
-        <span className="text-sm font-semibold text-zinc-500 uppercase tracking-widest">
+        <span className="text-sm font-semibold text-muted-foreground uppercase tracking-widest">
           {label}
         </span>
       )}
@@ -286,33 +309,77 @@ const AnimatedCounter = ({
   targetValue,
   prefix,
   suffix,
-}: any) => {
+  bare = false,
+  decimals = 0,
+  startOnView = false,
+  className,
+}: AnimatedCounterProps) => {
   const [displayVal, setDisplayVal] = useState(0);
+  const [armed, setArmed] = useState(!startOnView);
+  const rootRef = useRef<HTMLDivElement | HTMLSpanElement>(null);
 
+  // With `startOnView` the count waits for the element to be visible.
   useEffect(() => {
-    const obj = { val: 0 };
-    gsap.to(obj, {
-      val: targetValue,
-      duration: 2,
-      ease: "power3.out",
-      onUpdate: () => setDisplayVal(Math.floor(obj.val)),
-    });
-  }, [targetValue]);
+    if (armed) return;
+    const el = rootRef.current;
+    if (!el || typeof IntersectionObserver === "undefined") {
+      setArmed(true);
+      return;
+    }
+    const io = new IntersectionObserver(
+      (entries) => {
+        if (entries.some((e) => e.isIntersecting)) {
+          setArmed(true);
+          io.disconnect();
+        }
+      },
+      { threshold: 0.3 },
+    );
+    io.observe(el);
+    return () => io.disconnect();
+  }, [armed]);
+
+  // Reduced motion skips the tween: once armed, the final figure shows as is.
+  const reduced = useReducedMotion();
+  useEffect(() => {
+    if (!armed || reduced) return;
+    return tweenNumber(targetValue, 2000, setDisplayVal);
+  }, [armed, reduced, targetValue]);
+
+  const shownVal = armed && reduced ? targetValue : displayVal;
+  const formatted = shownVal.toLocaleString(undefined, {
+    minimumFractionDigits: decimals,
+    maximumFractionDigits: decimals,
+  });
+
+  if (bare) {
+    return (
+      <span ref={rootRef as React.RefObject<HTMLSpanElement>} className={cn("tabular-nums", className)} style={style}>
+        {prefix}
+        {formatted}
+        {suffix}
+      </span>
+    );
+  }
 
   return (
     <div
-      className="flex flex-col items-center justify-center p-8 bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 rounded-2xl shadow-xl w-full max-w-sm"
+      ref={rootRef as React.RefObject<HTMLDivElement>}
+      className={cn(
+        "flex flex-col items-center justify-center p-8 bg-card border border-border rounded-2xl shadow-xl w-full max-w-sm",
+        className,
+      )}
       style={style}
     >
       <div
-        className={cn("text-6xl font-black tracking-tighter mb-2", theme.text)}
+        className={cn("text-6xl font-bold tracking-tighter mb-2", theme.text)}
       >
         {prefix}
-        {displayVal.toLocaleString()}
+        {formatted}
         {suffix}
       </div>
       {label && (
-        <div className="text-sm font-bold text-zinc-500 uppercase tracking-widest">
+        <div className="text-sm font-semibold text-muted-foreground uppercase tracking-widest">
           {label}
         </div>
       )}
@@ -320,7 +387,13 @@ const AnimatedCounter = ({
   );
 };
 
-const CircularCounter = ({ theme, style, label, targetValue, suffix }: any) => {
+const CircularCounter = ({
+  theme,
+  style,
+  label,
+  targetValue,
+  suffix,
+}: CircularCounterProps) => {
   const [displayVal, setDisplayVal] = useState(0);
   const circleRef = useRef<SVGCircleElement>(null);
   const size = 160;
@@ -329,19 +402,13 @@ const CircularCounter = ({ theme, style, label, targetValue, suffix }: any) => {
   const circumference = radius * 2 * Math.PI;
 
   useEffect(() => {
-    const obj = { val: 0 };
-    gsap.to(obj, {
-      val: targetValue,
-      duration: 2.5,
-      ease: "power3.out",
-      onUpdate: () => {
-        setDisplayVal(Math.floor(obj.val));
-        if (circleRef.current) {
-          const percent = Math.min(100, Math.max(0, obj.val));
-          const offset = circumference - (percent / 100) * circumference;
-          circleRef.current.style.strokeDashoffset = offset.toString();
-        }
-      },
+    return tweenNumber(targetValue, 2500, (val) => {
+      setDisplayVal(Math.floor(val));
+      if (circleRef.current) {
+        const percent = Math.min(100, Math.max(0, val));
+        const offset = circumference - (percent / 100) * circumference;
+        circleRef.current.style.strokeDashoffset = offset.toString();
+      }
     });
   }, [targetValue, circumference]);
 
@@ -360,7 +427,7 @@ const CircularCounter = ({ theme, style, label, targetValue, suffix }: any) => {
             cx={size / 2}
             cy={size / 2}
             r={radius}
-            className="fill-none stroke-zinc-100 dark:stroke-zinc-800"
+            className="fill-none stroke-muted"
             strokeWidth={strokeWidth}
           />
           <circle
@@ -376,14 +443,14 @@ const CircularCounter = ({ theme, style, label, targetValue, suffix }: any) => {
           />
         </svg>
         <div className="absolute flex flex-col items-center justify-center text-center">
-          <span className="text-3xl font-black tracking-tighter text-zinc-900 dark:text-white">
+          <span className="text-3xl font-bold tracking-tighter text-foreground">
             {displayVal}
             {suffix}
           </span>
         </div>
       </div>
       {label && (
-        <span className="text-sm font-bold text-zinc-500 uppercase tracking-widest">
+        <span className="text-sm font-semibold text-muted-foreground uppercase tracking-widest">
           {label}
         </span>
       )}
@@ -391,66 +458,85 @@ const CircularCounter = ({ theme, style, label, targetValue, suffix }: any) => {
   );
 };
 
-const CountdownCounter = ({ theme, style, label, targetDate }: any) => {
-  const [timeLeft, setTimeLeft] = useState({ d: 0, h: 0, m: 0, s: 0 });
+type Remaining = { d: number; h: number; m: number; s: number };
+
+const ZERO: Remaining = { d: 0, h: 0, m: 0, s: 0 };
+
+function remainingUntil(target: number): Remaining | null {
+  const diff = target - Date.now();
+  if (diff <= 0) return null;
+  const total = Math.floor(diff / 1000);
+  return {
+    d: Math.floor(total / 86400),
+    h: Math.floor((total % 86400) / 3600),
+    m: Math.floor((total % 3600) / 60),
+    s: total % 60,
+  };
+}
+
+/**
+ * Ticks once a second. `undefined` until the first client tick, so the server
+ * and the first client paint agree; `null` once the date has passed. With no
+ * date it counts down three days from mount.
+ */
+function useCountdown(targetDate?: string | number | Date) {
+  const target = targetDate === undefined ? undefined : new Date(targetDate).getTime();
+  const [left, setLeft] = useState<Remaining | null | undefined>(undefined);
 
   useEffect(() => {
-    const target = targetDate
-      ? new Date(targetDate).getTime()
-      : new Date().getTime() + 3 * 24 * 60 * 60 * 1000;
+    const at = target ?? Date.now() + 3 * 24 * 60 * 60 * 1000;
+    const tick = () => setLeft(remainingUntil(at));
+    tick();
+    const id = window.setInterval(tick, 1000);
+    return () => window.clearInterval(id);
+  }, [target]);
 
-    const updateTimer = () => {
-      const now = new Date().getTime();
-      const difference = target - now;
+  return left;
+}
 
-      if (difference <= 0) {
-        setTimeLeft({ d: 0, h: 0, m: 0, s: 0 });
-        return;
-      }
+const CountdownCounter = ({
+  theme,
+  style,
+  label,
+  targetDate,
+  doneLabel,
+  variant,
+}: CountdownCounterProps) => {
+  const left = useCountdown(targetDate);
+  const over = left === null;
+  const caption = over ? doneLabel : label;
 
-      setTimeLeft({
-        d: Math.floor(difference / (1000 * 60 * 60 * 24)),
-        h: Math.floor((difference % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60)),
-        m: Math.floor((difference % (1000 * 60 * 60)) / (1000 * 60)),
-        s: Math.floor((difference % (1000 * 60)) / 1000),
-      });
-    };
-
-    updateTimer();
-    const interval = setInterval(updateTimer, 1000);
-    return () => clearInterval(interval);
-  }, [targetDate]);
-
-  const TimeUnit = ({ value, unit }: { value: number; unit: string }) => (
-    <div className="flex flex-col items-center">
-      <div className="w-16 h-16 sm:w-20 sm:h-20 flex items-center justify-center bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 rounded-2xl shadow-lg mb-3">
-        <span
-          className={cn(
-            "text-2xl sm:text-3xl font-black tracking-tighter",
-            theme.text,
-          )}
-        >
-          {value.toString().padStart(2, "0")}
-        </span>
+  if (variant === "slide") {
+    return (
+      <div className="flex flex-col items-center" style={style}>
+        <style>{KEYFRAMES}</style>
+        {caption && <p className="mb-3 text-[13px] font-medium opacity-60">{caption}</p>}
+        {!over && (
+          <div className="flex items-center gap-2" role="timer" aria-live="off">
+            <SlideFigure themeText={theme.text} value={left?.d ?? null} unit="days" />
+            <SlideFigure themeText={theme.text} value={left?.h ?? null} unit="hours" />
+            <SlideFigure themeText={theme.text} value={left?.m ?? null} unit="minutes" />
+            <SlideFigure themeText={theme.text} value={left?.s ?? null} unit="seconds" />
+          </div>
+        )}
       </div>
-      <span className="text-[10px] sm:text-xs font-bold text-zinc-500 uppercase tracking-widest">
-        {unit}
-      </span>
-    </div>
-  );
+    );
+  }
+
+  const timeLeft = left ?? ZERO;
 
   return (
     <div className="flex flex-col items-center gap-8" style={style}>
-      {label && (
-        <div className="flex items-center gap-2 px-4 py-1.5 rounded-full bg-zinc-100 dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 text-sm font-bold text-zinc-600 dark:text-zinc-300">
-          <Clock size={16} className={theme.text} /> {label}
+      {caption && (
+        <div className="flex items-center gap-2 px-4 py-1.5 rounded-full bg-muted border border-border text-sm font-semibold text-muted-foreground">
+          <Clock size={16} className={theme.text} /> {caption}
         </div>
       )}
       <div className="flex gap-3 sm:gap-4">
-        <TimeUnit value={timeLeft.d} unit="Days" />
-        <TimeUnit value={timeLeft.h} unit="Hours" />
-        <TimeUnit value={timeLeft.m} unit="Mins" />
-        <TimeUnit value={timeLeft.s} unit="Secs" />
+        <TimeUnit themeText={theme.text} value={timeLeft.d} unit="Days" />
+        <TimeUnit themeText={theme.text} value={timeLeft.h} unit="Hours" />
+        <TimeUnit themeText={theme.text} value={timeLeft.m} unit="Mins" />
+        <TimeUnit themeText={theme.text} value={timeLeft.s} unit="Secs" />
       </div>
     </div>
   );
@@ -462,7 +548,8 @@ const CountdownCounter = ({ theme, style, label, targetDate }: any) => {
 
 export interface CounterProps {
   type?: CounterType;
-  variant?: CounterVariant; // Specific to Stepper type
+  /** Stepper layouts, plus `slide` for the countdown. */
+  variant?: CounterVariant;
   color?: CounterColor;
   label?: string;
   initialValue?: number;
@@ -471,7 +558,100 @@ export interface CounterProps {
   targetValue?: number;
   prefix?: string;
   suffix?: string;
-  targetDate?: Date;
+  /** Countdown only: when it reaches zero. Defaults to three days from mount. */
+  targetDate?: Date | string | number;
+  /** Countdown only: what the label becomes once the date has passed. */
+  doneLabel?: string;
+  /** Animated only: just the figure, no card — it inherits the surrounding type. */
+  bare?: boolean;
+  /** Animated only: decimal places, e.g. 1 for 5.5. */
+  decimals?: number;
+  /** Animated only: wait until the counter is on screen before counting. */
+  startOnView?: boolean;
+  /** Animated only: classes for the figure (bare) or the card. */
+  className?: string;
+}
+
+/**
+ * Defined at module scope on purpose: declared inside CounterBlock it would be
+ * a new component type on every tick, remounting all four digits each second.
+ */
+function TimeUnit({
+  value,
+  unit,
+  themeText,
+}: {
+  value: number;
+  unit: string;
+  themeText: string;
+}) {
+  return (
+    <div className="flex flex-col items-center">
+      <div className="w-16 h-16 sm:w-20 sm:h-20 flex items-center justify-center bg-card border border-border rounded-2xl shadow-lg mb-3">
+        <span
+          className={cn(
+            "text-2xl sm:text-3xl font-bold tracking-tighter",
+            themeText,
+          )}
+        >
+          {value.toString().padStart(2, "0")}
+        </span>
+      </div>
+      <span className="text-[10px] sm:text-xs font-semibold text-muted-foreground uppercase tracking-widest">
+        {unit}
+      </span>
+    </div>
+  );
+}
+
+/** One tile of the slide countdown. `null` paints "--" before the first tick. */
+function SlideFigure({
+  value,
+  unit,
+  themeText,
+}: {
+  value: number | null;
+  unit: string;
+  themeText: string;
+}) {
+  const text = value === null ? "--" : String(value).padStart(2, "0");
+  // A figure that changes keeps its old text mounted for one pass so it can
+  // slide out above while the new one comes up from below; the others hold
+  // still. Nothing moves on the first paint.
+  const [shown, setShown] = useState({ current: text, previous: null as string | null });
+  if (shown.current !== text) setShown({ current: text, previous: shown.current });
+
+  return (
+    <div className="flex min-w-[3.75rem] flex-col items-center rounded-xl bg-foreground/[0.06] px-3 py-2.5">
+      <span
+        className={cn(
+          "relative block h-[1.75rem] overflow-hidden text-[1.5rem] font-semibold leading-[1.75rem] tabular-nums tracking-[-0.03em]",
+          themeText,
+        )}
+      >
+        {shown.previous !== null && (
+          <span
+            key={`out-${shown.previous}`}
+            aria-hidden
+            className="absolute inset-0 block animate-[counter-slide-out_0.32s_cubic-bezier(0.16,1,0.3,1)_both] motion-reduce:hidden"
+            onAnimationEnd={() => setShown((s) => ({ ...s, previous: null }))}
+          >
+            {shown.previous}
+          </span>
+        )}
+        <span
+          className={cn(
+            "block",
+            shown.previous !== null &&
+              "animate-[counter-slide-in_0.32s_cubic-bezier(0.16,1,0.3,1)_both] motion-reduce:animate-none",
+          )}
+        >
+          {text}
+        </span>
+      </span>
+      <span className="mt-1 text-[11px] font-medium opacity-55">{unit}</span>
+    </div>
+  );
 }
 
 export function CounterBlock({
@@ -486,6 +666,11 @@ export function CounterBlock({
   prefix = "",
   suffix = "",
   targetDate,
+  doneLabel = "Time's up",
+  bare,
+  decimals,
+  startOnView,
+  className,
 }: CounterProps) {
   const { theme, style } = getThemeStyles(color);
 
@@ -510,6 +695,10 @@ export function CounterBlock({
         targetValue={targetValue}
         prefix={prefix}
         suffix={suffix}
+        {...(bare !== undefined ? { bare } : {})}
+        {...(decimals !== undefined ? { decimals } : {})}
+        {...(startOnView !== undefined ? { startOnView } : {})}
+        {...(className !== undefined ? { className } : {})}
       />
     );
   if (type === "circular")
@@ -528,7 +717,9 @@ export function CounterBlock({
         theme={theme}
         style={style}
         label={label}
-        targetDate={targetDate}
+        variant={variant}
+        doneLabel={doneLabel}
+        {...(targetDate !== undefined ? { targetDate } : {})}
       />
     );
 

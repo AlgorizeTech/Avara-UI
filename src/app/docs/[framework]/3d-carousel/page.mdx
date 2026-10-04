@@ -1,0 +1,340 @@
+import { docsPageMetadata } from "@/lib/docs-metadata";
+
+export const metadata = docsPageMetadata("3d-carousel");
+
+import { ExampleShowcase } from "@/components/site/Sandbox";
+import { extractMotionCode } from "@/lib/code";
+
+# 3D Carousel
+
+A premium 3D carousel with a fanned layout, smooth interactive animations, and a sleek adaptive aesthetic. It features physics-based touch and mouse drag gestures, keyboard arrow navigation, circular endless fanning, and an auto-play timer that intelligently pauses on hover.
+
+Drag the center card left or right, use the arrow keys, or click a fanned neighbour to bring it forward. Autoplay pauses while the pointer is over the deck.
+
+export const carouselItems = `const items: CarouselItem[] = [
+  {
+    id: "c1",
+    category: "Nature",
+    title: "Misty Pine Forest",
+    description:
+      "Early morning fog weaving through dense evergreen woodland trees.",
+    image:
+      "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_1200,c_limit/v1790146209/photo-1470071459604-3b5ec3a7fe05-1790146212205.jpg",
+  },
+  {
+    id: "c2",
+    category: "Wilderness",
+    title: "Lush River Valley",
+    description:
+      "Sunbeams streaming through valley clouds onto pristine forest waters.",
+    image:
+      "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_1200,c_limit/v1790145140/photo-1426604966848-d7adac402bff-1790145143490.jpg",
+  },
+  {
+    id: "c3",
+    category: "Landscape",
+    title: "Autumn Woodland Path",
+    description:
+      "Vibrant golden foliage covering quiet forest trails in peak autumn.",
+    image:
+      "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_1200,c_limit/v1790146211/photo-1441974231531-c6227db76b6e-1790146212212.jpg",
+  },
+  {
+    id: "c4",
+    category: "Sanctuary",
+    title: "Cascading Mountain Falls",
+    description:
+      "Fresh mountain spring water cascading through untouched wilderness slopes.",
+    image:
+      "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_1200,c_limit/v1790146209/photo-1469474968028-56623f02e42e-1790146212205.jpg",
+  },
+  {
+    id: "c5",
+    category: "Expedition",
+    title: "Emerald Mountain Peak",
+    description:
+      "Panoramic views of majestic mountain ridges rising into crisp morning skies.",
+    image:
+      "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_1200,c_limit/v1790146210/photo-1506744038136-46273834b3fb-1790146212208.jpg",
+  },
+];`;
+
+export const usageDefault = `import { ThreeDCarousel, type CarouselItem } from "@/components/custom/blocks/ThreeDCarouselBlock";
+
+${carouselItems}
+
+export default function ProductShowcase() {
+  return <ThreeDCarousel items={items} autoPlay autoPlayInterval={4000} />;
+}`;
+
+export const usageShortDeck = `import { ThreeDCarousel, type CarouselItem } from "@/components/custom/blocks/ThreeDCarouselBlock";
+
+${carouselItems}
+
+export default function ShortDeckCarousel() {
+  // The fan tightens automatically as the deck shrinks — the circular
+  // offset is computed from \`items.length\`.
+  return <ThreeDCarousel items={items.slice(0, 3)} autoPlay />;
+}`;
+
+<ExampleShowcase
+  name="carousel-3d"
+  colorControl
+  columns={1}
+  examples={[
+    {
+      title: "3D carousel",
+      propNotes: [
+        {
+          lead: "Pass",
+          prop: "items",
+          effect:
+            "as an array of `{ id, category, title, image }` — `description` is optional and clamps to two lines.",
+        },
+        {
+          prop: "autoPlay",
+          effect: "is on by default and pauses on its own while the pointer is over the deck.",
+        },
+      ],
+      props: {},
+      usage: usageDefault,
+      code: extractMotionCode("src/components/custom/blocks/ThreeDCarouselBlock.tsx"),
+    },
+  ]}
+/>
+
+## Installation
+
+<Installation name="carousel-3d" />
+
+## Examples
+
+<ExampleShowcase
+  name="carousel-3d"
+  colorControl
+  columns={1}
+  examples={[
+    {
+      title: "Shorter deck",
+      propNotes: [
+        {
+          prop: "items",
+          effect:
+            "also drives the fan — the circular offsets are derived from `items.length`, so a shorter array tightens the spread with no other change.",
+        },
+      ],
+      props: { itemCount: 3 },
+      usage: usageShortDeck,
+    },
+  ]}
+/>
+
+## Features
+Discover the key capabilities that make this component an excellent choice for modern, animated user interfaces.
+
+<div className="grid grid-cols-1 sm:grid-cols-2 gap-4 my-6 not-prose">
+  <div className="p-6 rounded-2xl border border-border bg-card">
+    <h3 className="text-lg font-semibold text-card-foreground mb-2">Fluid Animations</h3>
+    <p className="text-muted-foreground text-sm">Hardware-accelerated transitions that ensure smooth 60fps performance across devices.</p>
+  </div>
+  <div className="p-6 rounded-2xl border border-border bg-card">
+    <h3 className="text-lg font-semibold text-card-foreground mb-2">Highly Customizable</h3>
+    <p className="text-muted-foreground text-sm">Exposes intuitive props for tailoring colors, sizes, and animation speeds to fit your brand.</p>
+  </div>
+  <div className="p-6 rounded-2xl border border-border bg-card">
+    <h3 className="text-lg font-semibold text-card-foreground mb-2">Responsive Design</h3>
+    <p className="text-muted-foreground text-sm">Automatically adapts to mobile, tablet, and desktop viewports without horizontal scrolling issues.</p>
+  </div>
+  <div className="p-6 rounded-2xl border border-border bg-card">
+    <h3 className="text-lg font-semibold text-card-foreground mb-2">Accessible</h3>
+    <p className="text-muted-foreground text-sm">Built with semantic HTML and ARIA labels where necessary to support screen readers and keyboard navigation.</p>
+  </div>
+</div>
+
+## Best Practices & Guidelines
+
+<div className="flex flex-col gap-4 my-6 not-prose">
+  <div className="rounded-xl border border-foreground/[0.06] bg-foreground/[0.03] p-4">
+    <h4 className="font-sans text-[14px] font-semibold text-foreground mb-1">Animation Performance</h4>
+    <p className="text-[13px] leading-relaxed text-foreground/50">Avoid placing too many heavy animated components on a single screen to prevent layout thrashing and maintain 60fps performance. Use intersection observers to pause off-screen animations.</p>
+  </div>
+  <div className="rounded-xl border border-primary/15 bg-primary/5 p-4">
+    <h4 className="font-sans text-[14px] font-semibold text-primary mb-1">State Management</h4>
+    <p className="text-[13px] leading-relaxed text-foreground/50">When triggering animations via state changes, ensure you wrap state updates in <code>startTransition</code> or use lightweight stores to prevent React rendering bottlenecks during the animation tick.</p>
+  </div>
+</div>
+
+## Props Reference
+
+<div className="overflow-x-auto mb-8">
+  <table>
+    <thead>
+      <tr>
+        <th>Component / Interface</th>
+        <th>Prop</th>
+        <th>Type</th>
+        <th>Default</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>
+          <code>ThreeDCarousel</code>
+        </td>
+        <td>
+          <code>items</code>
+        </td>
+        <td>
+          <code>CarouselItem[]</code>
+        </td>
+        <td>
+          <strong>Required</strong>
+        </td>
+        <td>
+          An array of data objects defining each slide's category, title,
+          description, and image URL.
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <code>ThreeDCarousel</code>
+        </td>
+        <td>
+          <code>autoPlay</code>
+        </td>
+        <td>
+          <code>boolean</code>
+        </td>
+        <td>
+          <code>true</code>
+        </td>
+        <td>
+          Enables or disables automatic slide advancement. Automatically pauses
+          when a user hovers over the carousel.
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <code>ThreeDCarousel</code>
+        </td>
+        <td>
+          <code>autoPlayInterval</code>
+        </td>
+        <td>
+          <code>number</code>
+        </td>
+        <td>
+          <code>4000</code>
+        </td>
+        <td>
+          The time duration in milliseconds between automatic slide transitions.
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <code>ThreeDCarousel</code>
+        </td>
+        <td>
+          <code>className</code>
+        </td>
+        <td>
+          <code>string</code>
+        </td>
+        <td>
+          <code>undefined</code>
+        </td>
+        <td>
+          Custom Tailwind CSS classes to apply to the outermost responsive flex
+          container.
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <code>CarouselItem</code>
+        </td>
+        <td>
+          <code>id</code>
+        </td>
+        <td>
+          <code>string</code>
+        </td>
+        <td>
+          <strong>Required</strong>
+        </td>
+        <td>
+          A unique identifier string required for safe React list rendering and
+          for tracking each card as the fan turns.
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <code>CarouselItem</code>
+        </td>
+        <td>
+          <code>title</code>
+        </td>
+        <td>
+          <code>string</code>
+        </td>
+        <td>
+          <strong>Required</strong>
+        </td>
+        <td>
+          Primary headline text displayed prominently on the card overlay.
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <code>CarouselItem</code>
+        </td>
+        <td>
+          <code>category</code>
+        </td>
+        <td>
+          <code>string</code>
+        </td>
+        <td>
+          <strong>Required</strong>
+        </td>
+        <td>
+          A short descriptive pill/badge label rendered above the title (e.g.,
+          "Architecture", "Design").
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <code>CarouselItem</code>
+        </td>
+        <td>
+          <code>image</code>
+        </td>
+        <td>
+          <code>string</code>
+        </td>
+        <td>
+          <strong>Required</strong>
+        </td>
+        <td>The URL to the high-resolution background image for the card.</td>
+      </tr>
+      <tr>
+        <td>
+          <code>CarouselItem</code>
+        </td>
+        <td>
+          <code>description</code>
+        </td>
+        <td>
+          <code>string</code>
+        </td>
+        <td>
+          <code>undefined</code>
+        </td>
+        <td>
+          Optional supporting paragraph text displayed below the headline.
+          Automatically clamped to 2 lines.
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>

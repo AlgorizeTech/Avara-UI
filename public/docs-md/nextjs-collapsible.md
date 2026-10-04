@@ -1,3 +1,5 @@
+export const metadata = docsPageMetadata("collapsible");
+
 # Collapsible
 
 An interactive component which expands/collapses a panel.
@@ -6,50 +8,7 @@ Traditional collapsible components rely on Javascript (like `Element.scrollHeigh
 
 The `CollapsibleBlock` is **100% dependency-free** and utilizes a modern CSS grid trick (`grid-template-rows: 0fr` transitioning to `1fr`) to handle dynamic height animations natively in the browser. This guarantees perfect 60fps performance without writing any Javascript measuring logic.
 
-## Examples
-
-From a bare disclosure to a nested file tree — the same three parts every time. The first example's **Code** tab contains the full component source.
-
-export const usageDefault = `import {
-  Collapsible,
-  CollapsibleContent,
-  CollapsibleTrigger,
-} from "@/components/custom/blocks/CollapsibleBlock";
-
-export default function BasicUsage() {
-  return (
-
-        Click to Expand
-
-        This content was hidden!
-
-  );
-}`;
-
-export const usageFaq = `import {
-  Collapsible,
-  CollapsibleContent,
-  CollapsibleTrigger,
-} from "@/components/custom/blocks/CollapsibleBlock";
-
-export default function Faq() {
-  return (
-    
-      {/* defaultOpen renders this one expanded on first paint */}
-      
-        {/* "group" + group-data-[state=open] rotates the chevron for free */}
-        
-          Can I use this UI kit in open source?
-
-            Absolutely! This code is completely dependency-free and yours to own.
-
-          How does the animation work?
-
-            It transitions grid-template-rows from 0fr to 1fr — smooth height
-            animation with no JavaScript measuring.
-
-  );
-}`;
+From a bare disclosure to a nested file tree — the same three parts every time.
 
 export const usageSettings = `import {
   Collapsible,
@@ -58,10 +17,14 @@ export const usageSettings = `import {
 } from "@/components/custom/blocks/CollapsibleBlock";
 
 export default function SettingsPanel() {
+  const [emailAlerts, setEmailAlerts] = useState(true);
+  const [smsAlerts, setSmsAlerts] = useState(false);
+
   return (
 
-            Push Notifications
-            Manage your alert preferences
+              Push Notifications
+
+              Manage your alert preferences
 
         {/* Swap the affordance label using the same data-state hook */}
         
@@ -69,9 +32,45 @@ export default function SettingsPanel() {
 
           Close
 
-            Email Alerts
+               setEmailAlerts(!emailAlerts)}>
+                Email Alerts
+              
+               setEmailAlerts(!emailAlerts)}
+                className={\`w-4 h-4 rounded flex items-center justify-center border transition-all cursor-pointer \${
+                  emailAlerts
+                    ? "bg-primary border-primary text-primary-foreground"
+                    : "border-input bg-background"
+                }\`}
+              >
+                {emailAlerts && }
 
-            SMS Alerts
+               setSmsAlerts(!smsAlerts)}>
+                SMS Alerts
+              
+               setSmsAlerts(!smsAlerts)}
+                className={\`w-4 h-4 rounded flex items-center justify-center border transition-all cursor-pointer \${
+                  smsAlerts
+                    ? "bg-primary border-primary text-primary-foreground"
+                    : "border-input bg-background"
+                }\`}
+              >
+                {smsAlerts && }
+
+      {/* Second card starts closed — defaultOpen is per-instance. */}
+
+              Security & API
+
+              Tokens and authentication
+
+        {/* Swap the affordance label using the same data-state hook */}
+        
+          Configure
+
+          Close
+
+                Production Key
+
+                  Roll
 
   );
 }`;
@@ -84,43 +83,47 @@ export const usageFileTree = `import {
 
 export default function FileTree() {
   return (
-    // Collapsibles nest freely — each level owns its own state.
+    // Collapsibles nest freely — each level owns its own open state.
 
-          src
+        {/* Level 1: src */}
 
-                app
+            src
 
-                     layout.tsx
+            {/* The before: rule draws the vertical guide line for this level. */}
+            
+              {/* Level 2: app — open on first paint */}
 
-                     page.tsx
+                  app
 
-  );
-}`;
+                       layout.tsx
 
-export const usageDisabled = `import {
-  Collapsible,
-  CollapsibleContent,
-  CollapsibleTrigger,
-} from "@/components/custom/blocks/CollapsibleBlock";
+                       page.tsx
 
-export default function LockedSection() {
-  return (
-    // disabled makes the trigger ignore clicks and sets data-disabled.
+              {/* Level 2: components — closed, so no defaultOpen */}
 
-        Billing history (locked on the free plan)
+                  components
 
-          You will never see this — the trigger ignores clicks.
+                       Button.tsx
+
+                       Collapsible.tsx
+
+        {/* A root-level file, indented to line up with the tree's children. */}
+        
+           package.json
 
   );
 }`;
 
 ## Installation
 
-### Copy the Component
+Register the @algorize-ui registry once per project, then add the component:
 
-This component is completely dependency-free.
+```bash
+npx shadcn@latest registry add @algorize-ui=https://algorize-ui.vercel.app/r/{name}.json
+npx shadcn@latest add @algorize-ui/collapsible
+```
 
-Create a new file at `components/custom/blocks/CollapsibleBlock.tsx` and copy the engine code from the **Code** tab of the first example above.
+## Examples
 
 ## Features
 Discover the Collapsible component's accessible disclosure patterns and smooth height transitions for hiding detailed content.
@@ -205,6 +208,6 @@ Discover the Collapsible component's accessible disclosure patterns and smooth h
 
 ---
 
-**Component Path:** `nextjs\collapsible\page.mdx`
+**Component Path:** `[framework]\collapsible\page.mdx`
 
-**Web Version:** Visit the interactive version at the corresponding URL on the Next.js documentation site for live previews and interactive examples.
+**Web Version:** Visit the corresponding URL on the Algorize UI documentation site for live previews and interactive examples.

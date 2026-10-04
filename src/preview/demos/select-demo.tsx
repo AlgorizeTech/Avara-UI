@@ -115,17 +115,25 @@ export default function SelectDemo({
   }
 
   return (
-    <div className="w-full flex flex-col items-start justify-center min-h-[500px] relative z-10">
+      <div className="w-full flex flex-col items-start justify-start pt-6 pb-12 min-h-[450px] relative z-10">
       <div className="w-full max-w-sm mx-auto">
         <SelectBlock
           key={`${variant}-${color}-${inputSize}-${showError}-${isDisabled}-${isMultiple}-${isSearchable}-${isGrouped}`}
           options={isGrouped ? groupedOptions : standardOptions}
-          value={isMultiple ? multiValue : singleValue}
-          onChange={(isMultiple ? setMultiValue : setSingleValue) as any}
+          {...(isMultiple
+            ? ({
+                multiple: true,
+                value: multiValue,
+                onChange: setMultiValue,
+              } as const)
+            : ({
+                multiple: false,
+                value: singleValue,
+                onChange: setSingleValue,
+              } as const))}
           variant={variant}
           color={color}
           inputSize={inputSize}
-          multiple={isMultiple}
           searchable={isSearchable}
           disabled={isDisabled}
           icon={

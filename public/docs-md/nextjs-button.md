@@ -1,224 +1,170 @@
+export const metadata = docsPageMetadata("button");
+
 # Button
 
-A highly customizable, interactive button primitive. Features a built-in radial ripple animation on click, native loading states, custom SVGs for social media integration, and support for leading/trailing icons.
+An animated glowing-border Button component engineered with a spinning conic-gradient line tracking the 4 edges of the button, smooth click ripple physics, loading states, and full theme synchronization.
 
-## Examples
-
-Explore the different variations of the Button component — each example shows a live preview with the exact code to copy. The first example's **Code** tab contains the full component source.
+The glowing border animation continuously spins around the 4 sides of the button matching the form submitting engine animation.
 
 export const usageDefault = `import Button from "@/components/custom/blocks/Button";
 
-export default function ButtonDemo() {
-  return Button;
-}`;
-
-export const usageVariants = `import Button from "@/components/custom/blocks/Button";
-
-export default function ButtonVariants() {
+export default function GlowingBorderButtonDemo() {
   return (
     
-      Default
-      Destructive
-      Outline
-      Secondary
-      Ghost
-      Link
-    
-  );
-}`;
-
-export const usageSizes = `import Button from "@/components/custom/blocks/Button";
-
-export default function ButtonSizes() {
-  return (
-    
-      Small
-      Default
-      Large
-    
-  );
-}`;
-
-export const usageLoading = `import Button from "@/components/custom/blocks/Button";
-
-export default function ButtonLoading() {
-  return Please wait;
-}`;
-
-export const usageWithIcon = `import Button from "@/components/custom/blocks/Button";
-
-export default function ButtonWithIcon() {
-  return (
-    
-      }>Email
+      {/* 1. Continuous 4-Edge Conic Spinning Border Line */}
       }>
-        Continue
+        Spinning Border
+
+      {/* 2. Continuous Radar Ping Waves */}
+      }>
+        Radar Ping
+
+      {/* 3. Continuous Cosmic Orbit Light Ring */}
+      }>
+        Cosmic Orbit
+
+  );
+};`;
+
+export const usageSlideIcon = `import Button from "@/components/custom/blocks/Button";
+
+export default function MotionButtonDemo() {
+  return (
+    
+      {/* 1. Icon Left Radial Expanding Background Fill */}
+      }>
+        Send Message
+
+      {/* 2. Interactive Sliding Rounded Icon Physics */}
+      }>
+        Explore Features
+
+      {/* 3. Looping Rounded Icon (arrow cycles through the circle on its own) */}
+      }>
+        Keep Reading
+
+      {/* 4. Raised 3D face over a darker edge - sinks on hover, presses on click */}
+      }>
+        Get Started
+
+      {/* 5. Horizontal Left to Right Background Wipe */}
+      }>
+        Download Assets
+
+      {/* 6. Spring Bounce Roll (Hero cubic-bezier spring bounce) */}
+      
+        Spring Bounce
+
+      {/* 7. Upward Text Roll */}
+      }>
+        Upward Roll
+
+      {/* 8. Downward Text Roll */}
+      }>
+        Downward Roll
 
   );
 }`;
 
 export const usageIconOnly = `import Button from "@/components/custom/blocks/Button";
 
-export default function ButtonIconOnly() {
-  return } />;
+export default function IconOnlyButtonDemo() {
+  return (
+    
+      } />
+      } />
+      } />
+      } />
+      } />
+      } />
+      } />
+      } />
+    
+  );
 }`;
 
 export const usageSocial = `import Button from "@/components/custom/blocks/Button";
 
-export default function SocialLoginButtons() {
+export default function SocialButtonDemo() {
   return (
     
+      }>
+        Login with Email
+      
       }>
         Continue with Google
       
       }>
         Continue with GitHub
+      
+      }>
+        Login with Facebook
+      
+      }>
+        Login with X
+      
+      }>
+        Login with Apple
+      
+      }>
+        Login with Microsoft
+      
+      }>
+        Login with Slack
+      
+      }>
+        Login with LinkedIn
+
+  );
+}`;
+
+export const usageShardsPanel = `"use client";
+
+const EFFECT_MODES: Record = {
+  "One time": "once",
+  Continuous: "continuous",
+};
+
+export default function ControlButtonsDemo() {
+  const [effectMode, setEffectMode] = useState("once");
+
+  return (
+    
+      {/* 0. Effect mode picker: one-time plays or continuous loops */}
+       setEffectMode(EFFECT_MODES[label])}
+        className="sm:col-span-2 lg:col-span-1"
+      />
+
+      {/* 1. Color Picker Button - shimmer on every pick, tinted with the colour */}
+
+      {/* 2. Dropdown Select Button - beams orbit the edge on a new pick */}
+
+      {/* 3. Range Slider Button - sparkles when dragged to full */}
+
+      {/* 4. Toggle Switch Button - beacon pings when switched on */}
 
   );
 }`;
 
 ## Installation
 
-### 1. Copy the Core Primitive
+Register the @algorize-ui registry once per project, then add the component:
 
-The main button component manages its own `ripple` state and injects the necessary CSS keyframes dynamically on mount.
-
-Create a new file at `components/custom/button.tsx` and copy the engine code from the **Code** tab of the first example above.
-
-### 2. Copy the SVG Icons (Optional)
-
-To use the exact social media and UI icons demonstrated in the showcase, you can copy the full icon set into your project.
-
-Create a new file at `components/custom/icons.tsx` and paste the following code:
-
-```tsx
-
-// Social Media Icons
-export const GoogleIcon = () => (
-
-);
-
-export const GitHubIcon = () => (
-
-);
-
-export const TwitterIcon = () => (
-
-);
-
-export const FacebookIcon = () => (
-
-);
-
-export const EmailIcon = () => (
-
-);
-
-export const XIcon2 = () => (
-
-);
-
-export const AppleIcon = () => (
-
-);
-
-export const MicrosoftIcon = () => (
-
-);
-
-export const SlackIcon = () => (
-
-);
-
-export const LinkedInIcon = () => (
-
-);
-
-// Action Icons
-export const DownloadIcon = () => (
-
-);
-
-export const ShoppingCartIcon = () => (
-
-);
-
-export const HeartIcon = () => (
-
-);
-
-export const StarIcon = () => (
-
-);
-
-export const ShareIcon = () => (
-
-);
-
-export const PlusIcon = () => (
-
-);
-
-export const MinusIcon = () => (
-
-);
-
-export const CheckIcon = () => (
-
-);
-
-export const XIcon = () => (
-
-);
-
-export const ArrowRightIcon = () => (
-
-);
-
-export const ArrowLeftIcon = () => (
-
-);
-
-export const SettingsIcon = () => (
-
-);
-
-export const SearchIcon = () => (
-
-);
-
-export const BellIcon = () => (
-
-);
-
-export const MailIcon = () => (
-
-);
-
-export const PhoneIcon = () => (
-
-);
+```bash
+npx shadcn@latest registry add @algorize-ui=https://algorize-ui.vercel.app/r/{name}.json
+npx shadcn@latest add @algorize-ui/button
 ```
 
 ## Features
-Discover the versatility of Modern Buttons with support for various variants, sizes, loading states, and icons.
 
-    Customizable
-    Easily adapt the component's styling and behavior to fit your application's unique design system.
-
-    Accessible
-    Built with accessibility in mind, ensuring all users can interact with your application effectively.
-
-    Responsive
-    Fully responsive design that looks and works great across desktop, tablet, and mobile devices.
-
-    Performant
-    Optimized for maximum performance with minimal re-renders and efficient state management.
-
-## Best Practices & Guidelines
-
-    Usage Guidelines
-    Follow standard design principles when implementing this component. Ensure proper contrast, spacing, and context within your layout.
+- **4-Side Animated Glowing Border**: Conic-gradient spinning line that continuously sweeps around the 4 edges of the button matching Form Engine submitting buttons.
+- **Interactive Sliding Icon Physics**: `variant="slide-icon"` provides a rounded background icon on the right that slides out to the right on hover, while a new rounded icon slides in smoothly from the left.
+- **Looping Icon Motion**: `variant="slide-icon-loop"` keeps the same rounded icon on the right, but the arrow continuously exits to the right and re-enters from the left inside the circle, without any hover.
+- **3D Press**: `variant="3d"` stacks a raised primary face over a darkened edge and a soft ground shadow. Hover lowers the face a step; pressing seats it on the edge, so the click reads as a real push.
+- **Vertical Text Roll Animation**: `variant="slide-text"` moves the button text smoothly upwards on hover while another text label rolls up smoothly into position from below.
+- **Ripple Click Physics**: Interactive radial ripple expansion on mouse click.
+- **Loading Spinners**: Built-in async state handling with interactive disabled states.
+- **Full Theme Color Syncing**: Automatically inherits site primary CSS variables (`var(--primary)`).
 
 ## Props Reference
 
@@ -229,12 +175,51 @@ Discover the versatility of Modern Buttons with support for various variants, si
 
           variant
 
-            "default" | "destructive" | "outline" | "secondary" | "ghost" |
-            "link"
+          "outline" | "slide-icon" | "slide-icon-loop" | "slide-text" | "3d" | "shards-control"
 
-          "default"
+          "outline"
         
-        The visual style to apply to the button.
+        Choose between 4-side border glow, sliding rounded icon, looping rounded icon, vertical text roll, raised 3D press, or dark glass parameter control tile.
+
+          controlType
+
+          "color" | "select" | "slider" | "toggle"
+
+          "select"
+        
+        Input type for variant="shards-control" (color picker, select dropdown, range slider, or toggle switch).
+
+          label · value · options
+
+          string | number | string[]
+
+          —
+        
+        Label title, active value, and option choices for control tiles.
+
+          effect
+
+          "none" | "sparkle" | "orbit" | "beacon" | "shimmer"
+
+          undefined
+
+          Effect a control tile plays when a slider reaches full, a toggle switches on, or a select / colour pick changes. sparkle is a floor glow with twinkling specks, orbit runs two beams around the edge, beacon pings rings outward, shimmer wipes a bright band across. Unset keeps the built-in feedback (slider beacon at full, colour burst); "none" turns all of it off.
+
+          effectMode
+
+          "once" | "continuous"
+
+          "once"
+
+          once plays a single time per change; continuous loops while the tile is active.
+
+          effectActive
+
+          boolean
+
+          —
+
+          Forces a continuous effect on or off. By default it runs while the slider is full, the toggle is on, or once a select / colour tile has been picked.
 
           size
 
@@ -250,8 +235,7 @@ Discover the versatility of Modern Buttons with support for various variants, si
 
           false
 
-          If true, replaces the leading icon with a spinner and disables user
-          interaction.
+          If true, replaces the leading icon with a spinner and disables user interaction.
 
           iconLeft
 
@@ -271,6 +255,6 @@ Discover the versatility of Modern Buttons with support for various variants, si
 
 ---
 
-**Component Path:** `nextjs\button\page.mdx`
+**Component Path:** `[framework]\button\page.mdx`
 
-**Web Version:** Visit the interactive version at the corresponding URL on the Next.js documentation site for live previews and interactive examples.
+**Web Version:** Visit the corresponding URL on the Algorize UI documentation site for live previews and interactive examples.

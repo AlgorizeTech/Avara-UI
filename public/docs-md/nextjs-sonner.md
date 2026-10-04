@@ -1,43 +1,47 @@
+export const metadata = docsPageMetadata("sonner");
+
 # Sonner (Toast Stack)
 
 An opinionated, dependency-free toast component that mimics the famous "Sonner" library aesthetic.
 
 Traditional toast notifications stack in a massive, screen-blocking vertical list. This `SonnerBlock` stacks new notifications _on top_ of old ones, scaling older toasts down and pushing them backwards in 3D space to keep your UI clean. Hovering over the stack automatically expands it so users can read previous notifications.
 
-## Examples
+Click the trigger buttons to spawn toasts, then hover the floating stack to expand it.
 
-Click the trigger buttons to spawn toasts, then hover the floating stack to expand it. The first example's **Code** tab contains the full component source.
+export const usageDefault = `"use client";
 
-export const usageDefault = `import { toast, Toaster } from "@/components/custom/blocks/SonnerBlock";
+// The trigger styling the preview uses.
+const BTN =
+  "px-4 py-2 rounded-lg font-medium transition-colors bg-primary text-primary-foreground hover:bg-primary/90 shadow-sm cursor-pointer";
 
-// 1. Mount  exactly once, at the root of your app.
-export function RootLayout({ children }: { children: React.ReactNode }) {
-  return (
-    <>
-      {children}
-
-  );
-}
-
-// 2. Fire a toast from anywhere — no provider or hook needed.
+//  belongs once at the root of your app. It is mounted here only so
+// this example runs on its own.
 export default function SaveButton() {
   return (
-    
-        toast("Profile updated successfully", {
-          description: "Your changes have been saved to the database.",
-        })
-      }
-    >
-      Show toast
-    
+    <>
+
+          toast("Profile updated successfully", {
+            description: "Your changes have been saved to the database.",
+          })
+        }
+      >
+        Show toast
+
   );
 }`;
 
-export const usageTypes = `import { toast } from "@/components/custom/blocks/SonnerBlock";
+export const usageTypes = `"use client";
 
+// The trigger styling the preview uses.
+const BTN =
+  "px-4 py-2 rounded-lg font-medium transition-colors bg-primary text-primary-foreground hover:bg-primary/90 shadow-sm cursor-pointer";
+
+//  belongs once at the root of your app. It is mounted here only so
+// this example runs on its own.
 export default function ToastTypes() {
   return (
-    
+    <>
+      
        toast("Profile updated successfully", { description: "Your changes have been saved to the database." })}>
         Default
       
@@ -53,26 +57,39 @@ export default function ToastTypes() {
   );
 }`;
 
-export const usageAction = `import { toast } from "@/components/custom/blocks/SonnerBlock";
+export const usageAction = `"use client";
 
+// The trigger styling the preview uses.
+const BTN =
+  "px-4 py-2 rounded-lg font-medium transition-colors bg-primary text-primary-foreground hover:bg-primary/90 shadow-sm cursor-pointer";
+
+//  belongs once at the root of your app. It is mounted here only so
+// this example runs on its own.
 export default function UndoToast() {
   return (
-    
-        toast("Message deleted", {
-          action: {
-            label: "Undo",
-            onClick: () => alert("Undo clicked!"),
-          },
-        })
-      }
-    >
-      With Action
-    
+    <>
+      
+          toast("Message deleted", {
+            action: {
+              label: "Undo",
+              onClick: () => alert("Undo clicked!"),
+            },
+          })
+        }
+      >
+        With Action
+
   );
 }`;
 
-export const usageStack = `import { toast } from "@/components/custom/blocks/SonnerBlock";
+export const usageStack = `"use client";
 
+// The trigger styling the preview uses.
+const BTN =
+  "px-4 py-2 rounded-lg font-medium transition-colors bg-primary text-primary-foreground hover:bg-primary/90 shadow-sm cursor-pointer";
+
+//  belongs once at the root of your app. It is mounted here only so
+// this example runs on its own.
 export default function StackDemo() {
   // New toasts stack on top; older ones scale down and slide back in 3D.
   // Hover the stack to expand it into a readable list.
@@ -82,25 +99,49 @@ export default function StackDemo() {
     setTimeout(() => toast.success("File uploaded", { description: "notes.md" }), 500);
   };
 
-  return Spawn three toasts;
-}`;
-
-export const usageExpand = `import { Toaster } from "@/components/custom/blocks/SonnerBlock";
-
-export default function RootLayout({ children }: { children: React.ReactNode }) {
-  // expand keeps the stack permanently open instead of collapsing it in 3D.
   return (
     <>
-      {children}
+      
+        Spawn three toasts
 
   );
 }`;
 
-export const usageDuration = `import { toast } from "@/components/custom/blocks/SonnerBlock";
+export const usageExpand = `"use client";
 
+// The trigger styling the preview uses.
+const BTN =
+  "px-4 py-2 rounded-lg font-medium transition-colors bg-primary text-primary-foreground hover:bg-primary/90 shadow-sm cursor-pointer";
+
+export default function ExpandedStack() {
+  // expand keeps the stack permanently open instead of collapsing it in 3D.
+  // Mount  once, at the root of your app.
+  return (
+    <>
+
+       {
+          toast.success("File uploaded", { description: "report-q3.pdf" });
+          setTimeout(() => toast.success("File uploaded", { description: "invoice-114.pdf" }), 250);
+          setTimeout(() => toast.success("File uploaded", { description: "notes.md" }), 500);
+        }}
+      >
+        Spawn three toasts
+
+  );
+}`;
+
+export const usageDuration = `"use client";
+
+// The trigger styling the preview uses.
+const BTN =
+  "px-4 py-2 rounded-lg font-medium transition-colors bg-primary text-primary-foreground hover:bg-primary/90 shadow-sm cursor-pointer";
+
+//  belongs once at the root of your app. It is mounted here only so
+// this example runs on its own.
 export default function ToastDuration() {
   return (
-    
+    <>
+      
       {/* Infinity disables auto-dismiss — the user closes it */}
       
           toast("Syncing your workspace", {
@@ -122,15 +163,15 @@ export default function ToastDuration() {
   );
 }`;
 
-export const usagePosition = `import { useState } from "react";
+export const usagePosition = `"use client";
 
-const POSITIONS: NonNullable[] = [
-  "top-left",
-  "top-center",
-  "top-right",
-  "bottom-left",
-  "bottom-center",
-  "bottom-right",
+const POSITIONS: { value: NonNullable; label: string }[] = [
+  { value: "top-left", label: "Top left" },
+  { value: "top-center", label: "Top center" },
+  { value: "top-right", label: "Top right" },
+  { value: "bottom-left", label: "Bottom left" },
+  { value: "bottom-center", label: "Bottom center" },
+  { value: "bottom-right", label: "Bottom right" },
 ];
 
 export default function PositionDemo() {
@@ -142,11 +183,22 @@ export default function PositionDemo() {
 
         {POSITIONS.map((p) => (
            {
-              setPosition(p);
-              toast(p, { description: \`Stack anchored to "\${p}".\` });
+              // Clear first, then move the stack, so the new toast animates in
+              // at the new anchor instead of sliding across from the old one.
+              toast.clear();
+              setPosition(p.value);
+              setTimeout(() => {
+                toast(p.label, { description: \`Stack anchored to "\${p.value}".\` });
+              }, 50);
             }}
+            className={cn(
+              "px-2 py-2 rounded-lg text-xs sm:text-sm font-medium transition-colors",
+              position === p.value
+                ? "bg-primary/10 text-primary ring-1 ring-primary/30"
+                : "bg-muted text-foreground hover:bg-foreground/10",
+            )}
           >
-            {p}
+            {p.label}
           
         ))}
 
@@ -154,56 +206,30 @@ export default function PositionDemo() {
 }`;
 
 ` once, then call `toast()` from anywhere — no provider needed.",
+      propNotes: [
+        {
+          prop: "children",
+          effect:
+            "of `toast()` is the message; everything else about the toast is optional.",
+        },
+      ],
       props: { example: "basic" },
       usage: usageDefault,
       code: extractCode("src/components/custom/blocks/SonnerBlock.tsx"),
-    },
-    {
-      title: "Types",
-      subheading: "Use `toast.success`, `toast.error` and `toast.info` for the semantic styles.",
-      props: { example: "types" },
-      usage: usageTypes,
-    },
-    {
-      title: "With action",
-      subheading: "Pass `action` to add an inline button — perfect for undo.",
-      props: { example: "action" },
-      usage: usageAction,
-    },
-    {
-      title: "Stacking",
-      subheading: "Fire several toasts: newer ones stack on top, older ones recede. Hover to expand.",
-      props: { example: "stack" },
-      usage: usageStack,
-    },
-    {
-      title: "Always expanded",
-      subheading: "Set `expand` on the Toaster to keep the stack open instead of collapsing it.",
-      props: { example: "stack", expand: true },
-      usage: usageExpand,
-    },
-    {
-      title: "Duration",
-      subheading: "`duration` sets the auto-dismiss delay; `Infinity` keeps the toast up.",
-      props: { example: "duration" },
-      usage: usageDuration,
-    },
-    {
-      title: "Position",
-      subheading: "`position` anchors the stack to any of the six edges — pick one to move the live stack.",
-      props: { example: "position" },
-      usage: usagePosition,
     },
   ]}
 />
 
 ## Installation
 
-### Copy the Component
+Register the @algorize-ui registry once per project, then add the component:
 
-This component is **100% dependency-free**. It doesn't use standard React context; instead, it uses a high-performance custom Observer class. This means you don't have to wrap your app in a bulky context provider just to fire a toast from a random utility file.
+```bash
+npx shadcn@latest registry add @algorize-ui=https://algorize-ui.vercel.app/r/{name}.json
+npx shadcn@latest add @algorize-ui/sonner
+```
 
-Create a new file at `components/custom/blocks/SonnerBlock.tsx` and copy the engine code from the **Code** tab of the first example above.
+## Examples
 
 ## Features
 Explore the Sonner toast notification features, including stacked layouts, swipe-to-dismiss, and promise-based loading states.
@@ -311,6 +337,6 @@ Explore the Sonner toast notification features, including stacked layouts, swipe
 
 ---
 
-**Component Path:** `nextjs\sonner\page.mdx`
+**Component Path:** `[framework]\sonner\page.mdx`
 
-**Web Version:** Visit the interactive version at the corresponding URL on the Next.js documentation site for live previews and interactive examples.
+**Web Version:** Visit the corresponding URL on the Algorize UI documentation site for live previews and interactive examples.

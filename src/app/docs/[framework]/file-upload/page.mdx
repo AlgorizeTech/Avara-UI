@@ -1,0 +1,619 @@
+import { docsPageMetadata } from "@/lib/docs-metadata";
+
+export const metadata = docsPageMetadata("file-upload");
+
+import { ExampleShowcase } from "@/components/site/Sandbox";
+import { extractCode, extractMotionCode } from "@/lib/code";
+
+# UX Engineered Upload Flow
+
+A highly-orchestrated, premium file upload component suite based on modern UX engineering principles. It goes far beyond a native `<input type="file">` by addressing five distinct user feedback signals.
+
+1. **Drag Feedback:** The dropzone reacts physically (glow, border shift, icon scale) to drag events.
+2. **Honest Progress:** Replaces mystery spinners with exact percentage tracking, dynamic time estimations, and file metadata.
+3. **Inline Retry:** Files that fail mid-upload do not reset. They halt their state, turn red, and offer an inline 1-click retry button to resume.
+4. **Upload Preview:** Extracts visual proof (thumbnails) of the file instantly on the client side before upload completes.
+5. **Independent Queue:** Every file gets its own lane and state. One failure never blocks the others.
+
+The suite is two pieces you compose yourself: a `Dropzone` that hands you `File[]`, and an `UploadItem` that renders one entry of your own queue state. Drop real files into the first preview — its simulator randomly fails some at 89% so you can watch the inline retry resume.
+
+Three upload surfaces live on this page, and each installs separately: the `Dropzone` + `UploadItem` suite, the `Input` block's built-in file mode for simple forms, and the `Folder` block as a playful drop target. Each section below ends with its own install.
+
+export const usageDropzone = `"use client";
+
+import {
+  Dropzone,
+  UploadItem,
+  type FileUploadState,
+} from "@/components/custom/blocks/UploadBlock";
+import { useState } from "react";
+
+// Rows fade up in; a removed row fades up out and closes its gap, so the
+// rows under it slide up. \`animationend\` then drops it from state.
+const queueCss = \`
+.upload-row { display: grid; grid-template-rows: 1fr; margin-top: 8px;
+  animation: upload-row-in 0.3s cubic-bezier(0, 0, 0.58, 1) backwards; }
+.upload-row > * { min-height: 0; }
+.upload-row[data-leaving] { animation: upload-row-out 0.3s cubic-bezier(0, 0, 0.58, 1) forwards; }
+@keyframes upload-row-in { from { opacity: 0; transform: translateY(20px); } }
+@keyframes upload-row-out {
+  to { opacity: 0; transform: translateY(-20px); grid-template-rows: 0fr; margin-top: 0; }
+}
+\`;
+
+export default function FileUploader() {
+  const [files, setFiles] = useState<FileUploadState[]>([]);
+  const [leaving, setLeaving] = useState<string[]>([]);
+
+  const handleFilesDrop = (droppedFiles: File[]) => {
+    const newItems: FileUploadState[] = droppedFiles.map((file) => ({
+      id: Math.random().toString(36).substring(7),
+      file,
+      progress: 100,
+      status: "success",
+      previewUrl: file.type.startsWith("image/")
+        ? URL.createObjectURL(file)
+        : undefined,
+    }));
+    setFiles((prev) => [...newItems, ...prev]);
+  };
+
+  const handleRemove = (id: string) => {
+    setLeaving((prev) => [...prev, id]);
+  };
+
+  const handleGone = (id: string) => {
+    setFiles((prev) => prev.filter((f) => f.id !== id));
+    setLeaving((prev) => prev.filter((l) => l !== id));
+  };
+
+  return (
+    <div className="w-full max-w-md flex flex-col gap-6 mx-auto">
+      <Dropzone
+        onFilesDrop={handleFilesDrop}
+        accept="image/*,application/pdf"
+        maxSize={5}
+      />
+
+      {files.length > 0 && (
+        <div className="flex flex-col">
+          <style>{queueCss}</style>
+          <div className="flex items-center justify-between text-xs font-semibold uppercase tracking-wider text-muted-foreground px-1">
+            <span>Uploaded Files ({files.length - leaving.length})</span>
+          </div>
+
+          {files.map((item) => (
+            <div
+              key={item.id}
+              className="upload-row"
+              data-leaving={leaving.includes(item.id) || undefined}
+              onAnimationEnd={(e) => {
+                if (e.target === e.currentTarget && leaving.includes(item.id)) handleGone(item.id);
+              }}
+            >
+              <div>
+                <UploadItem item={item} onRemove={handleRemove} />
+              </div>
+            </div>
+          ))}
+        </div>
+      )}
+    </div>
+  );
+}`;
+
+export const usageStates = `"use client";
+
+import {
+  UploadItem,
+  type FileUploadState,
+} from "@/components/custom/blocks/UploadBlock";
+
+// status is the state machine that drives every colour, icon and action
+// on the row. progress/timeLeft/errorMessage come along for the ride.
+const queue: FileUploadState[] = [
+  {
+    id: "1",
+    file: new File([], "quarterly-report.pdf", { type: "application/pdf" }),
+    progress: 42,
+    status: "uploading",
+    timeLeft: 12,
+  },
+  {
+    id: "2",
+    file: new File([], "product-shot.png", { type: "image/png" }),
+    progress: 66,
+    status: "paused",
+  },
+  {
+    id: "3",
+    file: new File([], "launch-teaser.mp4", { type: "video/mp4" }),
+    progress: 89,
+    status: "error",
+    errorMessage: "Connection lost",
+  },
+  {
+    id: "4",
+    file: new File([], "brand-guidelines.pdf", { type: "application/pdf" }),
+    progress: 100,
+    status: "success",
+    timeLeft: 0,
+  },
+];
+
+export default function UploadStates() {
+  return (
+    <div className="flex flex-col gap-3">
+      {queue.map((item) => (
+        <UploadItem
+          key={item.id}
+          item={item}
+          onRetry={() => {}}
+          onRemove={() => {}}
+        />
+      ))}
+    </div>
+  );
+}`;
+
+## Dropzone and upload queue
+
+The full suite: a `Dropzone` that hands you `File[]`, and an `UploadItem` for each row of your own queue state.
+
+<ExampleShowcase
+  name="upload"
+  colorControl={false}
+  columns={1}
+  examples={[
+    {
+      title: "Dropzone",
+      propNotes: [
+        {
+          lead: "Use",
+          prop: "accept",
+          effect:
+            "with a native input accept string such as `\"image/*,application/pdf\"` to restrict types.",
+        },
+        {
+          prop: "maxSize",
+          value: '{50}',
+          effect:
+            "is the limit in **megabytes**, and is echoed in the helper text automatically.",
+        },
+      ],
+      props: { layout: "dropzone" },
+      usage: usageDropzone,
+      code: extractCode("src/components/custom/blocks/UploadBlock.tsx"),
+    },
+    {
+      title: "Upload states",
+      propNotes: [
+        {
+          prop: "status",
+          effect:
+            "drives the whole row — `idle`, `uploading`, `paused`, `error` and `success` each pick their own colours, icon and messaging.",
+        },
+        {
+          prop: "onRetry",
+          effect:
+            "is what the inline Retry button calls after an `error`; `onRemove` backs the X.",
+        },
+      ],
+      props: { showAll: "states" },
+      usage: usageStates,
+    },
+  ]}
+/>
+
+### Install the upload suite
+
+<Installation name="upload" />
+
+The dropzone example animates its queue with a few lines of CSS in the example itself — no extra package. It is optional; `UploadItem` renders fine without it.
+
+export const usageFileInput = `"use client";
+
+import { InputBlock } from "@/components/custom/blocks/InputBlock";
+
+export default function FileUploadInput() {
+  // type="file" turns the Input block into a drag-and-drop zone with
+  // previews, sizes and remove buttons — no queue state to manage.
+  return (
+    <InputBlock
+      type="file"
+      multiple
+      accept="image/*"
+      label="Upload Portfolio"
+      helperText="Attach your files here."
+      onFilesChange={(files) => console.log("Uploaded files:", files)}
+    />
+  );
+}`;
+
+## Simple file input
+
+For a form that just needs files attached, the `Input` block has a file mode with previews and removal built in. It has no dependency on the upload suite.
+
+<ExampleShowcase
+  name="input"
+  colorControl={false}
+  colorLabel="Active Color"
+  columns={1}
+  examples={[
+    {
+      title: "Simple file input",
+      subheading: "For a form that just needs files attached: the `Input` block in file mode, with previews and removal built in.",
+      propNotes: [
+        {
+          lead: "Set",
+          prop: "type",
+          value: '"file"',
+          effect:
+            "on `InputBlock` to turn the field into a drag-and-drop zone with previews.",
+        },
+        {
+          prop: "onFilesChange",
+          effect:
+            "returns native `File[]` on drop, selection and removal.",
+        },
+        {
+          prop: "multiple",
+          effect:
+            "and `accept` pass through; `accept` takes the standard HTML string such as `\"image/*\"`.",
+        },
+      ],
+      props: { inputType: "file", isMultiple: true, isImageOnly: true },
+      usage: usageFileInput,
+      code: extractCode("src/components/custom/blocks/InputBlock.tsx"),
+      minHeight: 460,
+    },
+  ]}
+/>
+
+### Install the input block
+
+<Installation name="input" />
+
+export const usageFolder = `"use client";
+
+import { Folder, type FolderFile } from "@/components/custom/blocks/FolderBlock";
+import { Image } from "lucide-react";
+import { useState } from "react";
+
+export default function DropZone() {
+  const [files, setFiles] = useState<FolderFile[]>([]);
+  const [progress, setProgress] = useState<number>();
+
+  // Replace the timer with your real upload — set each file's progress and
+  // the overall figure as bytes go out; the bars vanish once they reach 100.
+  const onFiles = (incoming: File[]) => {
+    setFiles((prev) => [
+      ...prev,
+      ...incoming.map((f) => ({
+        name: f.name,
+        progress: 0,
+        thumb: f.type.startsWith("image/") ? URL.createObjectURL(f) : undefined,
+      })),
+    ]);
+    let p = 0;
+    const id = setInterval(() => {
+      p = Math.min(100, p + 4);
+      setProgress(p);
+      setFiles((prev) => prev.map((f) => (f.progress! < 100 ? { ...f, progress: p } : f)));
+      if (p >= 100) clearInterval(id);
+    }, 80);
+  };
+
+  return (
+    // The folder takes a soft tint of the theme colour by default; pass \`color\` to pin one.
+    <Folder
+      interactive
+      peek={0}
+      icon={Image}
+      label="Drop zone"
+      files={files}
+      progress={progress}
+      onFiles={onFiles}
+      onRemoveFile={(i) => setFiles((prev) => prev.filter((_, idx) => idx !== i))}
+      accept="image/*,.pdf"
+    />
+  );
+}`;
+
+## Folder drop target
+
+The `Folder` block as an upload surface — a playful alternative to a dropzone for a handful of files.
+
+<ExampleShowcase
+  name="upload"
+  colorControl={false}
+  columns={1}
+  examples={[
+    {
+      title: "Folder drop target",
+      subheading: "The `Folder` block as an upload surface, tinted with the theme colour: drop files on it or click to browse. It starts empty, each dropped file becomes a card with its own progress bar, the pocket tracks the overall figure, and an × removes a file.",
+      propNotes: [
+        {
+          lead: "Set",
+          prop: "interactive",
+          effect:
+            "to enable drag-and-drop and click-to-browse. `onFiles` receives the dropped or picked `File[]`; `accept` and `multiple` pass through to the input.",
+        },
+        {
+          prop: "peek",
+          value: "{0}",
+          effect:
+            "keeps the folder empty until the first drop — without it the folder shows three placeholder cards peeking out.",
+        },
+        {
+          prop: "progress",
+          effect:
+            "drives the bar across the pocket (0–100); a per-file `progress` draws a bar on that card. `onRemoveFile` adds an × to each fanned card.",
+        },
+        {
+          prop: "color",
+          effect:
+            "defaults to a soft tint of `--primary` (lightness 0.88, chroma at 40%), so the folder — body, pocket, icon and the peeking cards — follows your theme preset and the colour picker above without going heavy. Pass any CSS colour to pin one.",
+        },
+      ],
+      props: { layout: "folder" },
+      usage: usageFolder,
+      code: extractMotionCode("src/components/custom/blocks/FolderBlock.tsx"),
+    },
+  ]}
+/>
+
+### Install the folder block
+
+<Installation name="folder" />
+
+## Features
+Discover the key capabilities that make this component an excellent choice for modern, animated user interfaces.
+
+<div className="grid grid-cols-1 sm:grid-cols-2 gap-4 my-6 not-prose">
+  <div className="p-6 rounded-2xl border border-border bg-card">
+    <h3 className="text-lg font-semibold text-card-foreground mb-2">Fluid Animations</h3>
+    <p className="text-muted-foreground text-sm">Hardware-accelerated transitions that ensure smooth 60fps performance across devices.</p>
+  </div>
+  <div className="p-6 rounded-2xl border border-border bg-card">
+    <h3 className="text-lg font-semibold text-card-foreground mb-2">Highly Customizable</h3>
+    <p className="text-muted-foreground text-sm">Exposes intuitive props for tailoring colors, sizes, and animation speeds to fit your brand.</p>
+  </div>
+  <div className="p-6 rounded-2xl border border-border bg-card">
+    <h3 className="text-lg font-semibold text-card-foreground mb-2">Responsive Design</h3>
+    <p className="text-muted-foreground text-sm">Automatically adapts to mobile, tablet, and desktop viewports without horizontal scrolling issues.</p>
+  </div>
+  <div className="p-6 rounded-2xl border border-border bg-card">
+    <h3 className="text-lg font-semibold text-card-foreground mb-2">Accessible</h3>
+    <p className="text-muted-foreground text-sm">Built with semantic HTML and ARIA labels where necessary to support screen readers and keyboard navigation.</p>
+  </div>
+</div>
+
+## Best Practices & Guidelines
+
+<div className="flex flex-col gap-4 my-6 not-prose">
+  <div className="rounded-xl border border-foreground/[0.06] bg-foreground/[0.03] p-4">
+    <h4 className="font-sans text-[14px] font-semibold text-foreground mb-1">Animation Performance</h4>
+    <p className="text-[13px] leading-relaxed text-foreground/50">Avoid placing too many heavy animated components on a single screen to prevent layout thrashing and maintain 60fps performance. Use intersection observers to pause off-screen animations.</p>
+  </div>
+  <div className="rounded-xl border border-primary/15 bg-primary/5 p-4">
+    <h4 className="font-sans text-[14px] font-semibold text-primary mb-1">State Management</h4>
+    <p className="text-[13px] leading-relaxed text-foreground/50">When triggering animations via state changes, ensure you wrap state updates in <code>startTransition</code> or use lightweight stores to prevent React rendering bottlenecks during the animation tick.</p>
+  </div>
+</div>
+
+## Props Reference
+
+<div className="overflow-x-auto mb-8">
+  <table>
+    <thead>
+      <tr>
+        <th>Component / Interface</th>
+        <th>Prop</th>
+        <th>Type</th>
+        <th>Default</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>
+          <code>Dropzone</code>
+        </td>
+        <td>
+          <code>onFilesDrop</code>
+        </td>
+        <td>
+          <code>(files: File[]) =&gt; void</code>
+        </td>
+        <td>
+          <strong>Required</strong>
+        </td>
+        <td>
+          Callback function triggered when the user successfully drops files
+          into the zone or selects them via the native file browser.
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <code>Dropzone</code>
+        </td>
+        <td>
+          <code>maxSize</code>
+        </td>
+        <td>
+          <code>number</code>
+        </td>
+        <td>
+          <code>50</code>
+        </td>
+        <td>
+          The maximum allowed file size in Megabytes (MB). Displayed dynamically
+          in the helper text.
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <code>Dropzone</code>
+        </td>
+        <td>
+          <code>accept</code>
+        </td>
+        <td>
+          <code>string</code>
+        </td>
+        <td>
+          <code>undefined</code>
+        </td>
+        <td>
+          Native HTML input accept string restricting file types (e.g.,{" "}
+          <code>"image/*,application/pdf"</code>).
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <code>UploadItem</code>
+        </td>
+        <td>
+          <code>item</code>
+        </td>
+        <td>
+          <code>FileUploadState</code>
+        </td>
+        <td>
+          <strong>Required</strong>
+        </td>
+        <td>
+          The data object tracking the specific file's progress, status, and
+          metadata.
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <code>UploadItem</code>
+        </td>
+        <td>
+          <code>onRetry</code>
+        </td>
+        <td>
+          <code>(id: string) =&gt; void</code>
+        </td>
+        <td>
+          <code>undefined</code>
+        </td>
+        <td>
+          Callback fired when the user clicks the inline "Retry" button after a
+          file fails to upload.
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <code>UploadItem</code>
+        </td>
+        <td>
+          <code>onRemove</code>
+        </td>
+        <td>
+          <code>(id: string) =&gt; void</code>
+        </td>
+        <td>
+          <code>undefined</code>
+        </td>
+        <td>
+          Callback fired when the user clicks the "X" button to cancel an upload
+          or clear a completed file from the queue.
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <code>FileUploadState</code>
+        </td>
+        <td>
+          <code>status</code>
+        </td>
+        <td>
+          <code>"idle" | "uploading" | "paused" | "error" | "success"</code>
+        </td>
+        <td>
+          <strong>Required</strong>
+        </td>
+        <td>
+          The core state machine parameter that drives the UI colors, icons, and
+          messaging for the specific upload item.
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <code>InputBlock</code>
+        </td>
+        <td>
+          <code>type</code>
+        </td>
+        <td>
+          <code>"file"</code>
+        </td>
+        <td>
+          <code>"text"</code>
+        </td>
+        <td>
+          Switches the Input block into the drag-and-drop zone shown in the
+          simple file input example.
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <code>InputBlock</code>
+        </td>
+        <td>
+          <code>onFilesChange</code>
+        </td>
+        <td>
+          <code>(files: File[]) =&gt; void</code>
+        </td>
+        <td>
+          <code>undefined</code>
+        </td>
+        <td>
+          Fired when files are dropped, selected, or removed, with the current
+          native <code>File[]</code>.
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <code>InputBlock</code>
+        </td>
+        <td>
+          <code>multiple</code> / <code>accept</code>
+        </td>
+        <td>
+          <code>boolean</code> / <code>string</code>
+        </td>
+        <td>
+          <code>false</code> / <code>undefined</code>
+        </td>
+        <td>
+          Allow several files, and restrict types with the standard HTML accept
+          string (e.g. <code>"image/*"</code>).
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <code>FileUploadState</code>
+        </td>
+        <td>
+          <code>previewUrl</code>
+        </td>
+        <td>
+          <code>string</code>
+        </td>
+        <td>
+          <code>undefined</code>
+        </td>
+        <td>
+          Optional local Blob URL used to render instant client-side image
+          thumbnails before the upload completes.
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>

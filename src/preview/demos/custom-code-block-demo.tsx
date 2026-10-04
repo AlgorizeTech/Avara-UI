@@ -111,11 +111,11 @@ export function SystemStatus({ serverName, defaultStatus }) {
   return (
     <div className="p-6 rounded-2xl bg-white border border-slate-200">
       <div className="flex justify-between items-center mb-6">
-        <h3 className="text-xl font-bold flex items-center gap-2">
+        <h3 className="text-xl font-semibold flex items-center gap-2">
           <Server className="w-5 h-5 text-indigo-500" />
           {serverName}
         </h3>
-        <span className="px-3 py-1 bg-emerald-100 text-emerald-700 rounded-full text-xs font-bold uppercase tracking-wider">
+        <span className="px-3 py-1 bg-emerald-100 text-emerald-700 rounded-full text-xs font-semibold uppercase tracking-wider">
           {status}
         </span>
       </div>
@@ -125,13 +125,13 @@ export function SystemStatus({ serverName, defaultStatus }) {
           <div className="text-slate-500 text-sm mb-1 flex items-center gap-1">
             <Activity className="w-4 h-4"/> Ping
           </div>
-          <div className="text-2xl font-black text-slate-900">{metrics.ping}ms</div>
+          <div className="text-2xl font-bold text-slate-900">{metrics.ping}ms</div>
         </div>
         <div className="p-4 bg-slate-50 rounded-xl">
           <div className="text-slate-500 text-sm mb-1 flex items-center gap-1">
             <Zap className="w-4 h-4"/> Load
           </div>
-          <div className="text-2xl font-black text-slate-900">{metrics.load}%</div>
+          <div className="text-2xl font-bold text-slate-900">{metrics.load}%</div>
         </div>
       </div>
     </div>
@@ -171,29 +171,29 @@ export function SystemStatus({ serverName, defaultStatus }: SystemStatusProps) {
   }, []);
 
   return (
-    <div className="p-6 rounded-2xl bg-white border border-slate-200">
+    <div className="p-6 rounded-2xl bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800">
       <div className="flex justify-between items-center mb-6">
-        <h3 className="text-xl font-bold flex items-center gap-2">
+        <h3 className="text-xl font-semibold flex items-center gap-2 text-zinc-900 dark:text-white">
           <Server className="w-5 h-5 text-indigo-500" />
           {serverName}
         </h3>
-        <span className="px-3 py-1 bg-emerald-100 text-emerald-700 rounded-full text-xs font-bold uppercase tracking-wider">
+        <span className="px-3 py-1 bg-emerald-100 dark:bg-emerald-500/10 text-emerald-700 dark:text-emerald-400 rounded-full text-xs font-semibold uppercase tracking-wider">
           {status}
         </span>
       </div>
 
       <div className="grid grid-cols-2 gap-4">
-        <div className="p-4 bg-slate-50 rounded-xl">
-          <div className="text-slate-500 text-sm mb-1 flex items-center gap-1">
+        <div className="p-4 bg-zinc-50 dark:bg-zinc-800/50 rounded-xl">
+          <div className="text-zinc-500 dark:text-zinc-400 text-sm mb-1 flex items-center gap-1">
             <Activity className="w-4 h-4"/> Ping
           </div>
-          <div className="text-2xl font-black text-slate-900">{metrics.ping}ms</div>
+          <div className="text-2xl font-bold text-zinc-900 dark:text-white">{metrics.ping}ms</div>
         </div>
-        <div className="p-4 bg-slate-50 rounded-xl">
-          <div className="text-slate-500 text-sm mb-1 flex items-center gap-1">
+        <div className="p-4 bg-zinc-50 dark:bg-zinc-800/50 rounded-xl">
+          <div className="text-zinc-500 dark:text-zinc-400 text-sm mb-1 flex items-center gap-1">
             <Zap className="w-4 h-4"/> Load
           </div>
-          <div className="text-2xl font-black text-slate-900">{metrics.load}%</div>
+          <div className="text-2xl font-bold text-zinc-900 dark:text-white">{metrics.load}%</div>
         </div>
       </div>
     </div>
@@ -210,11 +210,12 @@ npx create-next-app@latest my-app --typescript --tailwind --eslint
 cd my-app
 
 # Install additional UI dependencies and icons
-npm install clsx tailwind-merge framer-motion lucide-react
+npm install clsx tailwind-merge motion lucide-react
 
 # Add Shadcn UI components for faster development
-npx shadcn-ui@latest init
-npx shadcn-ui@latest add button card dialog
+npx shadcn@latest init
+npx shadcn@latest registry add @algorize-ui=https://algorize-ui.vercel.app/r/{name}.json
+npx shadcn@latest add @algorize-ui/button @algorize-ui/card @algorize-ui/dialog
 
 # Start the development server on port 3000
 npm run dev

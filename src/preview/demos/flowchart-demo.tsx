@@ -15,26 +15,29 @@ import {
 } from "lucide-react";
 
 export default function FlowchartDemo({
-  color = "indigo",
+  color: pickedColor = "primary",
   replayKey = 0,
   initialActivePath = "success-path",
   example,
 }: {
-  color?: "blue" | "indigo" | "rose" | "emerald" | "zinc";
+  color?: "primary" | "blue" | "indigo" | "rose" | "emerald" | "zinc" | "lavender";
   replayKey?: number;
   /** null leaves every route idle until a node is clicked. */
   initialActivePath?: string | null;
   /** "linear" renders the minimal three-node pipeline. */
   example?: "branching" | "linear";
 }) {
+  // The flowchart has no lavender palette of its own. Its "primary" palette
+  // follows --primary, which the sandbox points at the picked swatch.
+  const color = pickedColor === "lavender" ? "primary" : pickedColor;
   if (example === "linear") {
     return (
-      <div className="w-full flex items-center justify-center transition-colors duration-300 rounded-2xl bg-white dark:bg-[#09090b] overflow-hidden p-4">
+      <div className="w-full flex items-center justify-center transition-colors duration-300 rounded-2xl bg-background overflow-hidden p-4">
         <Flowchart
           key={`${replayKey}-${color}-linear`}
           initialActivePath={initialActivePath === null ? null : "main-route"}
           color={color}
-          className="border-0 shadow-none m-0 rounded-none bg-transparent dark:bg-transparent p-0"
+          className="border-0 shadow-none m-0 rounded-none bg-transparent p-0"
         >
           <FlowCanvas>
             <FlowConnection id="main-route" path="M 280 200 L 340 200" />
@@ -71,12 +74,12 @@ export default function FlowchartDemo({
   }
 
   return (
-    <div className="w-full flex items-center justify-center transition-colors duration-300 rounded-2xl bg-white dark:bg-[#09090b] overflow-hidden p-4">
+    <div className="w-full flex items-center justify-center transition-colors duration-300 rounded-2xl bg-background overflow-hidden p-4">
       <Flowchart
         key={`${replayKey}-${color}-${initialActivePath}`}
         initialActivePath={initialActivePath}
         color={color}
-        className="border-0 shadow-none m-0 rounded-none bg-transparent dark:bg-transparent p-0"
+        className="border-0 shadow-none m-0 rounded-none bg-transparent p-0"
       >
         <FlowCanvas>
           {/* Perfectly mathematically routed right-angle paths matching ports */}

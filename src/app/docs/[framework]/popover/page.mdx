@@ -1,0 +1,327 @@
+import { docsPageMetadata } from "@/lib/docs-metadata";
+
+export const metadata = docsPageMetadata("popover");
+
+import { ExampleShowcase } from "@/components/site/Sandbox";
+import { extractCode } from "@/lib/code";
+
+# Popover
+
+Displays rich, interactive content in a portal, triggered by a click.
+
+While tooltips are meant for small text hints on hover, Popovers are designed to hold rich HTML (like forms, grids, and settings menus) triggered by a click. This `PopoverBlock` solves the biggest problem with complex layouts: clipping. By utilizing React's `createPortal`, the popover content is rendered at the root `document.body` level, meaning it will **never** be hidden or cropped by parent layout constraints like `overflow-hidden`.
+
+The same goes for the screen edge. `side` and `align` are *preferences*: the panel flips to the opposite side when the preferred one has no room, shifts back inside the viewport when it still overhangs, and caps its own width and height to the screen — so a `w-72` panel opened `side="left"` next to a phone-width trigger stays fully readable instead of running off the edge. Pass `avoidCollisions={false}` to opt out.
+
+Click a trigger to open its popover — you can interact with the content inside without it closing. Click outside or press `Escape` to dismiss.
+
+export const usageMenu = `import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from "@/components/custom/blocks/PopoverBlock";
+import { User } from "lucide-react";
+
+export default function AccountMenu() {
+  return (
+    <Popover>
+      <PopoverTrigger>
+        <div className="w-10 h-10 rounded-full bg-primary/10 text-primary flex items-center justify-center cursor-pointer hover:bg-primary/20 transition-colors">
+          <User className="w-5 h-5" />
+        </div>
+      </PopoverTrigger>
+
+      {/* className overrides the default w-72 */}
+      <PopoverContent side="bottom" align="end" className="w-64">
+        <div className="flex flex-col gap-3">
+          <div className="flex items-center gap-3 border-b border-border pb-3">
+            <div className="w-10 h-10 rounded-full bg-primary/20 text-primary flex items-center justify-center font-semibold text-sm shrink-0">
+              AB
+            </div>
+            <div className="flex flex-col">
+              <span className="text-sm font-semibold">Andy Bernard</span>
+              <span className="text-xs text-muted-foreground">andy@dundermifflin.com</span>
+            </div>
+          </div>
+          <button className="text-left text-sm text-muted-foreground hover:text-foreground">
+            View Profile
+          </button>
+          <button className="text-left text-sm text-muted-foreground hover:text-foreground">
+            Billing Settings
+          </button>
+          <button className="text-left text-sm text-rose-600 hover:text-rose-700 mt-2 font-medium">
+            Log out
+          </button>
+        </div>
+      </PopoverContent>
+    </Popover>
+  );
+}`;
+
+export const dimensionsPanel = `// The panel body, lifted out so both examples can render the same content.
+function DimensionsPanel() {
+  return (
+    <div className="flex flex-col gap-3">
+      <div>
+        <h4 className="text-sm font-semibold">Dimensions</h4>
+        <p className="text-xs text-muted-foreground">Set the size of the layer.</p>
+      </div>
+      {[
+        { label: "Width", value: "100%" },
+        { label: "Max width", value: "640px" },
+        { label: "Height", value: "auto" },
+      ].map((row) => (
+        <div key={row.label} className="grid grid-cols-3 items-center gap-3">
+          <label className="text-sm text-muted-foreground">{row.label}</label>
+          <input
+            defaultValue={row.value}
+            className="col-span-2 h-8 rounded-md border border-input bg-transparent px-2 text-sm focus:outline-none focus:ring-2 focus:ring-primary"
+          />
+        </div>
+      ))}
+    </div>
+  );
+}`;
+
+export const usageOffset = `import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from "@/components/custom/blocks/PopoverBlock";
+import { Settings2 } from "lucide-react";
+
+${dimensionsPanel}
+
+export default function OffsetPopover() {
+  return (
+    <Popover>
+      <PopoverTrigger>
+        <div className="flex items-center gap-2 px-4 py-2 border rounded-xl cursor-pointer text-sm font-semibold">
+          <Settings2 className="w-4 h-4" />
+          Configure Settings
+        </div>
+      </PopoverTrigger>
+
+      {/* sideOffset pushes the panel further from the trigger (default 8) */}
+      <PopoverContent side="right" align="start" sideOffset={24}>
+        <DimensionsPanel />
+      </PopoverContent>
+    </Popover>
+  );
+}`;
+
+<ExampleShowcase
+  name="popover"
+  colorControl
+  columns={1}
+  examples={[
+    {
+      title: "Account menu",
+      propNotes: [
+        {
+          prop: "className",
+          effect:
+            "on `PopoverContent` is where the panel width goes — any markup fits inside otherwise.",
+        },
+      ],
+      props: { example: "menu", align: "end" },
+      usage: usageMenu,
+      code: extractCode("src/components/custom/blocks/PopoverBlock.tsx"),
+    },
+  ]}
+/>
+
+## Installation
+
+<Installation name="popover" />
+
+## Examples
+
+<ExampleShowcase
+  name="popover"
+  colorControl
+  columns={1}
+  examples={[
+    {
+      title: "Offset",
+      propNotes: [
+        {
+          prop: "sideOffset",
+          value: '{8}',
+          effect:
+            "is the gap in pixels between trigger and panel.",
+        },
+        {
+          prop: "collisionPadding",
+          value: '{8}',
+          effect:
+            "is the minimum gap kept from the viewport edges while `avoidCollisions` is on.",
+        },
+      ],
+      props: { example: "settings", side: "right", align: "start", sideOffset: 24 },
+      usage: usageOffset,
+    },
+  ]}
+/>
+
+## Features
+Discover the Popover's intelligent positioning engine that prevents collision with screen edges while displaying contextual content.
+
+<div className="grid grid-cols-1 sm:grid-cols-2 gap-4 my-6 not-prose">
+  <div className="p-6 rounded-2xl border border-border bg-card">
+    <h3 className="text-lg font-semibold text-card-foreground mb-2">Customizable</h3>
+    <p className="text-muted-foreground text-sm">Easily adapt the component's styling and behavior to fit your application's unique design system.</p>
+  </div>
+  <div className="p-6 rounded-2xl border border-border bg-card">
+    <h3 className="text-lg font-semibold text-card-foreground mb-2">Accessible</h3>
+    <p className="text-muted-foreground text-sm">Built with accessibility in mind, ensuring all users can interact with your application effectively.</p>
+  </div>
+  <div className="p-6 rounded-2xl border border-border bg-card">
+    <h3 className="text-lg font-semibold text-card-foreground mb-2">Responsive</h3>
+    <p className="text-muted-foreground text-sm">Fully responsive design that looks and works great across desktop, tablet, and mobile devices.</p>
+  </div>
+  <div className="p-6 rounded-2xl border border-border bg-card">
+    <h3 className="text-lg font-semibold text-card-foreground mb-2">Performant</h3>
+    <p className="text-muted-foreground text-sm">Optimized for maximum performance with minimal re-renders and efficient state management.</p>
+  </div>
+</div>
+
+## Best Practices & Guidelines
+
+<div className="flex flex-col gap-4 my-6 not-prose">
+  <div className="rounded-xl border border-foreground/[0.06] bg-foreground/[0.03] p-4">
+    <h4 className="font-sans text-[14px] font-semibold text-foreground mb-1">Usage Guidelines</h4>
+    <p className="text-[13px] leading-relaxed text-foreground/50">Follow standard design principles when implementing this component. Ensure proper contrast, spacing, and context within your layout.</p>
+  </div>
+</div>
+
+## Props Reference
+
+<div className="overflow-x-auto">
+  <table>
+    <thead>
+      <tr>
+        <th>Component</th>
+        <th>Prop</th>
+        <th>Type</th>
+        <th>Default</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>
+          <code>PopoverContent</code>
+        </td>
+        <td>
+          <code>side</code>
+        </td>
+        <td>
+          <code>"top" | "bottom" | "left" | "right"</code>
+        </td>
+        <td>
+          <code>"bottom"</code>
+        </td>
+        <td>
+          The preferred side of the trigger to render the popover content.
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <code>PopoverContent</code>
+        </td>
+        <td>
+          <code>align</code>
+        </td>
+        <td>
+          <code>"start" | "center" | "end"</code>
+        </td>
+        <td>
+          <code>"center"</code>
+        </td>
+        <td>
+          The preferred alignment against the chosen side. For example,{" "}
+          <code>side="bottom" align="start"</code> aligns the left edge of the
+          popover with the left edge of the trigger.
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <code>PopoverContent</code>
+        </td>
+        <td>
+          <code>sideOffset</code>
+        </td>
+        <td>
+          <code>number</code>
+        </td>
+        <td>
+          <code>8</code>
+        </td>
+        <td>
+          The distance (in pixels) to render the popover away from the trigger
+          element.
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <code>PopoverContent</code>
+        </td>
+        <td>
+          <code>avoidCollisions</code>
+        </td>
+        <td>
+          <code>boolean</code>
+        </td>
+        <td>
+          <code>true</code>
+        </td>
+        <td>
+          Flips the panel to the opposite side and shifts it back into view when
+          the preferred placement would overflow the viewport — this is what
+          keeps <code>side="left" / "right"</code> and{" "}
+          <code>align="start" / "end"</code> from being cropped on phones. Set
+          to <code>false</code> to pin the panel to <code>side</code>/
+          <code>align</code> regardless.
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <code>PopoverContent</code>
+        </td>
+        <td>
+          <code>collisionPadding</code>
+        </td>
+        <td>
+          <code>number</code>
+        </td>
+        <td>
+          <code>8</code>
+        </td>
+        <td>
+          Minimum gap (in pixels) kept between the panel and the viewport edges
+          when <code>avoidCollisions</code> is on.
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <strong>All Components</strong>
+        </td>
+        <td>
+          <code>className</code>
+        </td>
+        <td>
+          <code>string</code>
+        </td>
+        <td>
+          <code>undefined</code>
+        </td>
+        <td>
+          Standard Tailwind CSS overrides. By default,{" "}
+          <code>PopoverContent</code> has a fixed width (<code>w-72</code>),
+          which you can easily override here.
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>

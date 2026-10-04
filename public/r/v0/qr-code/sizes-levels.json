@@ -1,0 +1,28 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "qr-code-sizes-levels",
+  "type": "registry:block",
+  "title": "QR Code Suite — Sizes & levels",
+  "description": "The \"Sizes & levels\" example from the Algorize UI docs.",
+  "dependencies": [
+    "qrcode.react",
+    "tw-animate-css"
+  ],
+  "registryDependencies": [
+    "utils"
+  ],
+  "files": [
+    {
+      "path": "app/page.tsx",
+      "type": "registry:page",
+      "target": "app/page.tsx",
+      "content": "import { QrCodeGenerator } from \"@/components/custom/blocks/QrCodeGeneratorBlock\";\n\nconst swatches = [\n  { size: 96, level: \"L\" as const },\n  { size: 140, level: \"M\" as const },\n  { size: 200, level: \"H\" as const },\n];\n\nexport default function QrGallery() {\n  return (\n    <div className=\"flex flex-wrap items-end justify-center gap-10\">\n      {swatches.map((s) => (\n        <div key={s.size} className=\"flex flex-col items-center gap-3\">\n          <QrCodeGenerator\n            value=\"https://algorizetech.com\"\n            size={s.size}\n            level={s.level}\n            bgColor=\"transparent\"\n            // \"currentColor\" lets the pattern inherit any text colour class.\n            fgColor=\"currentColor\"\n            className=\"text-primary\"\n          />\n          <span className=\"text-xs font-semibold text-muted-foreground\">\n            size={s.size} · level=&quot;{s.level}&quot;\n          </span>\n        </div>\n      ))}\n    </div>\n  );\n}"
+    },
+    {
+      "path": "components/custom/blocks/QrCodeGeneratorBlock.tsx",
+      "type": "registry:component",
+      "target": "components/custom/blocks/QrCodeGeneratorBlock.tsx",
+      "content": "\"use client\";\n\nimport React from \"react\";\nimport { QRCodeSVG } from \"qrcode.react\";\nimport { cn } from \"@/lib/utils\";\n\nexport interface QrCodeGeneratorProps extends React.HTMLAttributes<HTMLDivElement> {\n  value: string;\n  size?: number;\n  bgColor?: string;\n  fgColor?: string;\n  level?: \"L\" | \"M\" | \"Q\" | \"H\";\n  includeMargin?: boolean;\n}\n\nexport const QrCodeGenerator = React.forwardRef<HTMLDivElement, QrCodeGeneratorProps>(\n  (\n    {\n      value,\n      size = 128,\n      bgColor = \"#FFFFFF\",\n      fgColor = \"#000000\",\n      level = \"L\",\n      includeMargin = false,\n      className,\n      ...props\n    },\n    ref\n  ) => {\n    if (!value) {\n      return (\n        <div\n          ref={ref}\n          className={cn(\n            \"flex items-center justify-center border-2 border-dashed rounded-md bg-muted/50 text-muted-foreground\",\n            className\n          )}\n          style={{ width: size, height: size }}\n          {...props}\n        >\n          No Value\n        </div>\n      );\n    }\n\n    // Map correction levels to padding so L -> M -> Q -> H progressively increases dot density\n    const getPaddedValue = (val: string, lvl: \"L\" | \"M\" | \"Q\" | \"H\") => {\n      if (lvl === \"L\") return val;\n      if (lvl === \"M\") return `${val}#m1`;\n      if (lvl === \"Q\") return `${val}#q12345`;\n      return `${val}#h12345678901234567890`;\n    };\n\n    const effectiveValue = getPaddedValue(value, level);\n\n    return (\n      <div ref={ref} className={cn(\"inline-block\", className)} {...props}>\n        <QRCodeSVG\n          key={`${level}-${effectiveValue}`}\n          value={effectiveValue}\n          size={size}\n          bgColor={bgColor}\n          fgColor={fgColor}\n          level={level}\n          includeMargin={includeMargin}\n        />\n      </div>\n    );\n  }\n);\n\nQrCodeGenerator.displayName = \"QrCodeGenerator\";\n"
+    }
+  ]
+}

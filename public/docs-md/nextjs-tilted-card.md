@@ -1,52 +1,97 @@
+export const metadata = docsPageMetadata("tilted-card");
+
 # Tilted Card
 
-A deeply interactive, parallax-driven 3D tilt component. It calculates the relative pointer coordinates via Framer Motion's `useMotionValue` to rotate the card along the X and Y axes, mimicking a physical object held in space.
+A deeply interactive, parallax-driven 3D tilt component. It calculates the relative pointer coordinates and eases the card toward them through a small spring of its own (no animation library) to rotate it along the X and Y axes, mimicking a physical object held in space.
 
 It automatically injects a dynamic, radial glare layer over the content that tracks the light source based on your mouse position to complete the tactile illusion.
 
-## Examples
+Hover a card and move the pointer across it — rotation, scale and the radial glare all derive from the cursor's position inside the element.
 
-Hover a card and move the pointer across it — rotation, scale and the radial glare all derive from the cursor's position inside the element. The first example's **Code** tab contains the full component source.
+export const cardSource = `// The card face — anything you render inside TiltedCard tilts with it.
+const accent = "var(--primary)";
+const onAccent = "var(--primary-foreground)";
+
+const card = (
+
+        Access Key
+
+        ID // 0x8F92A
+
+);`;
 
 export const usageDefault = `import { TiltedCard } from "@/components/custom/blocks/TiltedCardBlock";
 
+${cardSource}
+
 export default function AccessKeyCard() {
   return (
-
-          Access Key
-
+    
+      {card}
+    
   );
 }`;
 
-export const usageIntensity = `// Maximum rotation in degrees on each axis. Keep it under ~25 unless the
-// card is small — past that the perspective starts to shear.
-{card}`;
+export const usageIntensity = `import { TiltedCard } from "@/components/custom/blocks/TiltedCardBlock";
 
-export const usageSubtle = `// A restrained tilt for dense layouts where many cards move at once.
-{card}`;
+${cardSource}
 
-export const usageGlare = `// \`glareOpacity\` is the peak alpha of the radial highlight that tracks the
-// pointer. Set it to 0 to drop the reflection entirely.
-{card}`;
+export default function StrongTilt() {
+  // Maximum rotation in degrees on each axis. Keep it under ~25 unless the
+  // card is small — past that the perspective starts to shear.
+  return {card};
+}`;
 
-export const usageNoGlare = `{card}`;
+export const usageSubtle = `import { TiltedCard } from "@/components/custom/blocks/TiltedCardBlock";
 
-export const usageScale = `// How far the card lifts toward the viewer on hover.
-{card}`;
+${cardSource}
+
+export default function SubtleTilt() {
+  // A restrained tilt for dense layouts where many cards move at once.
+  return (
+    
+      {card}
+    
+  );
+}`;
+
+export const usageGlare = `import { TiltedCard } from "@/components/custom/blocks/TiltedCardBlock";
+
+${cardSource}
+
+export default function StrongGlare() {
+  // \`glareOpacity\` is the peak alpha of the radial highlight that tracks the
+  // pointer. Set it to 0 to drop the reflection entirely.
+  return {card};
+}`;
+
+export const usageNoGlare = `import { TiltedCard } from "@/components/custom/blocks/TiltedCardBlock";
+
+${cardSource}
+
+export default function NoGlare() {
+  return {card};
+}`;
+
+export const usageScale = `import { TiltedCard } from "@/components/custom/blocks/TiltedCardBlock";
+
+${cardSource}
+
+export default function LiftOnHover() {
+  // How far the card lifts toward the viewer on hover.
+  return {card};
+}`;
 
 ## Installation
 
-### Dependencies
-
-This component requires **Framer Motion** for its spring physics and `useTransform` logic.
+Register the @algorize-ui registry once per project, then add the component:
 
 ```bash
-npm install framer-motion
+npx shadcn@latest registry add @algorize-ui=https://algorize-ui.vercel.app/r/{name}.json
+npx shadcn@latest add @algorize-ui/tilted-card
 ```
 
-### Copy the Component
-
-Copy the core engine code from the **Code** tab of the first example above into `components/custom/blocks/TiltedCardBlock.tsx`.
+## Examples
 
 ## Features
 Discover the key capabilities that make this component an excellent choice for modern, animated user interfaces.
@@ -136,6 +181,6 @@ Discover the key capabilities that make this component an excellent choice for m
 
 ---
 
-**Component Path:** `nextjs\tilted-card\page.mdx`
+**Component Path:** `[framework]\tilted-card\page.mdx`
 
-**Web Version:** Visit the interactive version at the corresponding URL on the Next.js documentation site for live previews and interactive examples.
+**Web Version:** Visit the corresponding URL on the Algorize UI documentation site for live previews and interactive examples.

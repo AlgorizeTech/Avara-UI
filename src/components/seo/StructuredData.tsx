@@ -1,108 +1,61 @@
-"use client";
+import { SITE_URL, siteConfig, links, socialLinks } from "@/config/site";
 
-import { useEffect } from "react";
+/**
+ * Site-wide JSON-LD, rendered into the HTML.
+ *
+ * Server-rendered on purpose: it used to be injected from a `useEffect`, which
+ * only crawlers that execute JavaScript ever saw, and only after a timer.
+ *
+ * Every field is something the site can stand behind. Dropped from the earlier
+ * version: a SearchAction pointing at `/docs?search=` (nothing handles that
+ * query), a logo URL that 404'd, a `dateModified` of whenever the page was
+ * viewed, and a version, founding date and address nothing else records.
+ */
+const organization = {
+  "@type": "Organization",
+  "@id": `${SITE_URL}/#organization`,
+  name: siteConfig.author,
+  url: links.github,
+  logo: `${SITE_URL}/favicon/android-chrome-512x512.png`,
+  ...(socialLinks.length ? { sameAs: socialLinks } : {}),
+};
 
-// Lazy load structured data after initial render
+const graph = {
+  "@context": "https://schema.org",
+  "@graph": [
+    organization,
+    {
+      "@type": "WebSite",
+      "@id": `${SITE_URL}/#website`,
+      name: siteConfig.name,
+      url: SITE_URL,
+      description: siteConfig.tagline,
+      inLanguage: "en",
+      publisher: { "@id": organization["@id"] },
+    },
+    {
+      "@type": "SoftwareSourceCode",
+      "@id": `${SITE_URL}/#library`,
+      name: siteConfig.name,
+      description: siteConfig.description,
+      url: SITE_URL,
+      codeRepository: links.github,
+      programmingLanguage: ["TypeScript", "React"],
+      license: "https://opensource.org/licenses/MIT",
+      author: { "@id": organization["@id"] },
+    },
+  ],
+};
+
 export function StructuredData() {
-  useEffect(() => {
-    // Only add structured data after component mounts (client-side)
-    const addStructuredData = () => {
-      const scripts = [
-        {
-          id: "software-app-schema",
-          data: {
-            "@context": "https://schema.org",
-            "@type": "SoftwareApplication",
-            name: "Next.js Documentation",
-            description:
-              "Modern React component library with 500+ animated components built with Tailwind CSS and Framer Motion.",
-            url: "https://seraui.seraprogrammer.com",
-            applicationCategory: "DeveloperApplication",
-            operatingSystem: "Web",
-            softwareVersion: "1.0.0",
-            datePublished: "2024-01-01",
-            dateModified: new Date().toISOString(),
-            offers: {
-              "@type": "Offer",
-              price: "0",
-              priceCurrency: "USD",
-              availability: "https://schema.org/InStock",
-            },
-            author: {
-              "@type": "Organization",
-              name: "Next.js Documentation Team",
-              url: "https://github.com/sera-ui",
-            },
-            keywords:
-              "React components, UI library, Tailwind CSS, Framer Motion, TypeScript, Bangladesh",
-            programmingLanguage: ["TypeScript", "JavaScript", "CSS"],
-            downloadUrl: "https://github.com/seraprogrammer/sera-ui",
-            license: "https://opensource.org/licenses/MIT",
-          },
-        },
-        {
-          id: "organization-schema",
-          data: {
-            "@context": "https://schema.org",
-            "@type": "Organization",
-            name: "Next.js Documentation",
-            url: "https://seraui.seraprogrammer.com",
-            logo: "https://seraui.seraprogrammer.com/logo.svg",
-            description:
-              "Modern React component library for developers. First UI library from Bangladesh.",
-            foundingDate: "2024",
-            sameAs: [
-              "https://github.com/seraprogrammer/sera-ui",
-              "https://twitter.com/sera_ui",
-              "https://www.npmjs.com/package/sera-ui",
-            ],
-            address: {
-              "@type": "PostalAddress",
-              addressCountry: "BD",
-            },
-          },
-        },
-        {
-          id: "website-schema",
-          data: {
-            "@context": "https://schema.org",
-            "@type": "WebSite",
-            name: "Next.js Documentation",
-            url: "https://seraui.seraprogrammer.com",
-            description:
-              "Modern React component library with 500+ animated components",
-            publisher: {
-              "@type": "Organization",
-              name: "Next.js Documentation",
-            },
-            potentialAction: {
-              "@type": "SearchAction",
-              target: {
-                "@type": "EntryPoint",
-                urlTemplate:
-                  "https://seraui.seraprogrammer.com/docs?search={search_term_string}",
-              },
-              "query-input": "required name=search_term_string",
-            },
-          },
-        },
-      ];
-
-      scripts.forEach(({ id, data }) => {
-        if (!document.getElementById(id)) {
-          const script = document.createElement("script");
-          script.id = id;
-          script.type = "application/ld+json";
-          script.textContent = JSON.stringify(data);
-          document.head.appendChild(script);
-        }
-      });
-    };
-
-    // Add structured data after a small delay to not block initial render
-    const timer = setTimeout(addStructuredData, 100);
-    return () => clearTimeout(timer);
-  }, []);
-
-  return null;
+  return (
+    <script
+      type="application/ld+json"
+      // JSON.stringify output cannot close the script tag except via "</";
+      // escaping "<" keeps any string field from doing so.
+      dangerouslySetInnerHTML={{
+        __html: JSON.stringify(graph).replace(/</g, "\\u003c"),
+      }}
+    />
+  );
 }

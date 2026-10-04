@@ -1,39 +1,17 @@
+export const metadata = docsPageMetadata("item");
+
 # Item
 
 A versatile layout component for displaying structured content featuring media, titles, descriptions, and actions.
 
 Instead of writing complex Flexbox or Grid classes every time you need to build a notification row, a settings item, a user listing, or a simple feature card, `ItemBlock` handles all the responsive alignments and spacing automatically. It dynamically transforms between horizontal rows and vertical cards based on the `variant` prop.
 
-## Examples
-
-`title` is the only required prop — `media`, `description` and `actions` are slots you fill as needed. The first example's **Code** tab contains the full component source.
+`title` is the only required prop — `media`, `description` and `actions` are slots you fill as needed.
 
 export const usageDefault = `import { ItemBlock } from "@/components/custom/blocks/ItemBlock";
 
 export default function SettingsRow() {
   return (
-
-      }
-    />
-  );
-}`;
-
-export const usageVariants = `import { ItemBlock } from "@/components/custom/blocks/ItemBlock";
-
-export default function ItemVariants() {
-  return (
-
-  );
-}`;
-
-export const usageActions = `import { ItemBlock } from "@/components/custom/blocks/ItemBlock";
-
-export default function ActionRow() {
-  return (
-
-      }
-      // actions sit on the trailing edge and never squash the text
-      actions={
 
       }
     />
@@ -57,45 +35,16 @@ export default function FeatureCard() {
   );
 }`;
 
-export const usageClickable = `import { ItemBlock } from "@/components/custom/blocks/ItemBlock";
-
-export default function ClickableRow() {
-  return (
-    // Passing onClick renders a real  and adds hover/active states.
-
-      }
-      onClick={() => console.log("Item clicked")}
-    />
-  );
-}`;
-
-export const usageTitleOnly = `import { ItemBlock } from "@/components/custom/blocks/ItemBlock";
-
-export default function DenseRow() {
-  // Everything but title is optional — compact + title alone is a menu row.
-  return ;
-}`;
-
-`.",
-      props: { variant: "bordered", showMedia: true, showDescription: true, showActions: false, isClickable: true },
-      usage: usageClickable,
-    },
-    {
-      title: "Title only",
-      subheading: "Drop every optional slot for a dense menu or dropdown row.",
-      props: { variant: "compact", showMedia: false, showDescription: false, showActions: false },
-      usage: usageTitleOnly,
-    },
-  ]}
-/>
-
 ## Installation
 
-### Copy the Component
+Register the @algorize-ui registry once per project, then add the component:
 
-This component is dependency-free — it is pure layout logic over Tailwind classes.
+```bash
+npx shadcn@latest registry add @algorize-ui=https://algorize-ui.vercel.app/r/{name}.json
+npx shadcn@latest add @algorize-ui/item
+```
 
-Create a new file at `components/custom/blocks/ItemBlock.tsx` and copy the engine code from the **Code** tab of the first example above.
+## Examples
 
 ## Features
 Discover the Item component's structural layout features, designed for lists, dropdowns, and menus with proper spacing.
@@ -117,8 +66,71 @@ Discover the Item component's structural layout features, designed for lists, dr
     Usage Guidelines
     Follow standard design principles when implementing this component. Ensure proper contrast, spacing, and context within your layout.
 
+## Props Reference
+
+        Prop
+        Type
+        Default
+        Description
+
+          title
+
+          ReactNode
+
+          -
+        
+        The primary title text or element displayed in the item block (required).
+
+          description
+
+          ReactNode
+
+          undefined
+        
+        Secondary description text or content displayed below the title.
+
+          media
+
+          ReactNode
+
+          undefined
+        
+        Visual media element such as an icon, avatar, or thumbnail.
+
+          actions
+
+          ReactNode
+
+          undefined
+        
+        Action elements like buttons or icons placed on the trailing edge or bottom.
+
+          variant
+
+          "default" | "compact" | "card" | "bordered"
+
+          "default"
+        
+        Applies structural layout and visual styling variant.
+
+          onClick
+
+          () => void
+
+          undefined
+        
+        Optional click event handler. Transforms the container into an interactive button.
+
+          className
+
+          string
+
+          undefined
+        
+        Additional CSS class names to apply custom styles.
+
 ---
 
-**Component Path:** `nextjs\item\page.mdx`
+**Component Path:** `[framework]\item\page.mdx`
 
-**Web Version:** Visit the interactive version at the corresponding URL on the Next.js documentation site for live previews and interactive examples.
+**Web Version:** Visit the corresponding URL on the Algorize UI documentation site for live previews and interactive examples.

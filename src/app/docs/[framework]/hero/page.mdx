@@ -1,0 +1,1734 @@
+import { docsPageMetadata } from "@/lib/docs-metadata";
+
+export const metadata = docsPageMetadata("hero");
+
+import { ExampleShowcase } from "@/components/site/Sandbox";
+import { extractCode } from "@/lib/code";
+
+# Hero
+
+Every hero section in the library, on one page. Each is its own registry item with its own preview, install command and props — pick the one that suits the site and install only that. They run from the most opinionated layouts to the general-purpose `HeroBlock` and its five variants at the foot.
+
+<div className="grid grid-cols-1 sm:grid-cols-2 gap-3 my-6 not-prose text-sm">
+  <a href="#honeycomb-hero" className="rounded-xl bg-foreground/[0.03] border border-foreground/[0.06] px-4 py-3 hover:bg-foreground/[0.05] hover:border-primary/30 transition-colors"><strong className="block text-[14px] font-semibold text-foreground">Honeycomb Hero</strong><span className="text-[13px] leading-relaxed text-foreground/50">A turning honeycomb of hexagonal photographs on a ground that changes colour with each slide — travel, nature, tours.</span></a>
+  <a href="#hero-carousel" className="rounded-xl bg-foreground/[0.03] border border-foreground/[0.06] px-4 py-3 hover:bg-foreground/[0.05] hover:border-primary/30 transition-colors"><strong className="block text-[14px] font-semibold text-foreground">Hero Carousel</strong><span className="text-[13px] leading-relaxed text-foreground/50">A full-bleed photo hero with a queue of cards and a glass panel.</span></a>
+  <a href="#fashion-hero" className="rounded-xl bg-foreground/[0.03] border border-foreground/[0.06] px-4 py-3 hover:bg-foreground/[0.05] hover:border-primary/30 transition-colors"><strong className="block text-[14px] font-semibold text-foreground">Fashion Hero</strong><span className="text-[13px] leading-relaxed text-foreground/50">Staggered columns of looks on flat colour — lookbook, store, editorial.</span></a>
+  <a href="#support-hero" className="rounded-xl bg-foreground/[0.03] border border-foreground/[0.06] px-4 py-3 hover:bg-foreground/[0.05] hover:border-primary/30 transition-colors"><strong className="block text-[14px] font-semibold text-foreground">Support Hero</strong><span className="text-[13px] leading-relaxed text-foreground/50">A frosted bento of cards and counting figures — SaaS and AI products.</span></a>
+  <a href="#collage-hero" className="rounded-xl bg-foreground/[0.03] border border-foreground/[0.06] px-4 py-3 hover:bg-foreground/[0.05] hover:border-primary/30 transition-colors"><strong className="block text-[14px] font-semibold text-foreground">Collage Hero</strong><span className="text-[13px] leading-relaxed text-foreground/50">A photo collage under a turning badge — school, studio, workshop.</span></a>
+  <a href="#hero-block" className="rounded-xl bg-foreground/[0.03] border border-foreground/[0.06] px-4 py-3 hover:bg-foreground/[0.05] hover:border-primary/30 transition-colors"><strong className="block text-[14px] font-semibold text-foreground">Hero Block</strong><span className="text-[13px] leading-relaxed text-foreground/50">Comprehensive variants from one component — bounce, typing, slider, pet shop, doctor, facility, and rotating vortex cyclone radar.</span></a>
+</div>
+
+## Honeycomb Hero
+
+
+A travel hero on a dark ground that shifts colour: a light line over a huge white word on the left, and on the right a honeycomb of hexagonal photographs with a primary hexagonal call to action set among them. The large hexagon is the slide on screen — its photograph is also the background behind everything, tinted with that photograph's own tone, so the colour of the whole section changes with the slide — and the smaller ones are the queue. Every four seconds, or on the arrows at the foot, every hexagon moves one step along the honeycomb: the next photograph grows into the feature spot while the feature slides to the back of the queue. The loop never ends, in either direction.
+
+The honeycomb is measured from the design and laid out in percentages of a fixed-aspect stage anchored to the right edge, so the composition holds at any size and whatever falls past the edge is clipped, as intended. The letters of the word that cross the photographs turn your theme's `primary`, as do the rule, the arrows and the call-to-action hexagon, whose compass and label take `primary-foreground`. They read the theme wherever the section sits, so switching themes repaints them.
+
+{/* The snippets below pass next/link so links route client-side in Next.js. The React tab is the same file without it: the component's default <a> needs no import. */}
+
+export const nextAndReact = (code) => ({
+  nextjs: code,
+  reactjs: code
+    .replace(/import Link from "next\/link";\r?\n/, "")
+    .replace(/\r?\n[ \t]*linkComponent=\{Link\}/, ""),
+});
+
+export const usageHoneycomb = `"use client";
+
+import Link from "next/link";
+import { HoneycombHero } from "@/components/custom/blocks/HoneycombHeroBlock";
+
+// tone is the colour behind everything while that photograph is featured; keep it deep.
+const IMAGES = [
+  { src: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_1400,c_limit/v1790158809/photo-1628344253777-f73a64d8f983-1790158812202.jpg", alt: "A waterfall pouring through a green gorge", tone: "#0f2e22" },
+  { src: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_1400,c_limit/v1790158811/photo-1663428520845-056989f8a664-1790158812204.jpg", alt: "Red cabins at Hamnøy under a mountain", tone: "#1f2140" },
+  { src: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_1400,c_limit/v1790158812/photo-1710762634126-4c0e8fba44d8-1790158812206.jpg", alt: "A snowy village below white peaks", tone: "#18233a" },
+  { src: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_1400,c_limit/v1790158815/photo-1593378026483-2a1fd46a35bd-1790158812215.jpg", alt: "Green aurora above snowy mountains", tone: "#0b2a2d" },
+  { src: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_1400,c_limit/v1790158812/photo-1695496896465-9e59091a8ed1-1790158812205.jpg", alt: "Turquoise water between mountain ridges", tone: "#082f3d" },
+  { src: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_1400,c_limit/v1790158812/photo-1721335916916-37c319adce3a-1790158812206.jpg", alt: "A sandy beach beneath a rocky headland", tone: "#1d2b36" },
+  { src: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_1400,c_limit/v1790166049/photo-1527004013197-933c4bb611b3-1790166052225.jpg", alt: "A red cabin on a rocky shore", tone: "#2a1f3d" },
+  { src: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_1400,c_limit/v1790158811/photo-1682952986992-de7082fb213d-1790158812205.jpg", alt: "Waterfalls running down the wall of a fjord", tone: "#132a3b" },
+  { src: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_1400,c_limit/v1790158809/photo-1607888566357-ec0b61abee46-1790158812198.jpg", alt: "A waterfall beside a wooden viewpoint", tone: "#1c2b17" },
+];
+
+export default function Hero() {
+  return (
+    <HoneycombHero
+      title="Wander the"
+      titleAccent="Fjords"
+      subtitle="Waterfalls that drop straight into the sea, red cabins at the water's edge and skies that glow green after dark — small-group journeys through the far north."
+      primaryActionLabel={"Plan\\nyour trip"}
+      primaryActionHref="/tours"
+      images={IMAGES}
+      socialLinks={[
+        { label: "Instagram", href: "#" },
+        { label: "YouTube", href: "#" },
+        { label: "TikTok", href: "#" },
+      ]}
+      interval={4000}
+      linkComponent={Link}
+    />
+  );
+}
+`;
+
+<ExampleShowcase
+  name="honeycomb-hero"
+  columns={1}
+  minHeight={600}
+  examples={[
+    {
+      title: "Wander the fjords",
+      subheading: "Copy on the left, the honeycomb on the right with the primary hexagon set among the photographs. Wait four seconds or use the arrows at the foot: every hexagon moves one step along the ring, and the whole section eases to the new photograph's colour. Pick a colour above to repaint the accent.",
+      propNotes: [
+        {
+          prop: "images",
+          effect:
+            "are the photographs in queue order; the first is featured at the start. Nine cells are visible — fewer photographs are repeated around the ring, more simply wait their turn. Give each a deep `tone` and the background tint, the fade towards the copy and the gaps between hexagons all ease to it while that photograph is featured.",
+        },
+        {
+          prop: "interval",
+          value: "4000",
+          effect:
+            "is the gap between steps in milliseconds. It pauses while the tab is hidden and while the section is off screen; `0` turns autoplay off and leaves the arrows.",
+        },
+        {
+          prop: "primaryActionLabel",
+          effect: "fills the call-to-action hexagon; a `\\n` in the string breaks the line, as in Plan / your trip. A compass sits above it; on hover it turns and the hairline hexagon inside the cell swells, and on keyboard focus the hairline goes solid.",
+        },
+        {
+          prop: "accent",
+          effect: "sets `--primary` for the section: the letters of the word that cross the photographs, the rule, the arrows and the call to action, with its label in `primary-foreground`. Leave it out to follow your theme's primary. `background` is the tone for photographs without one: a deep shade of the primary by default.",
+        },
+      ],
+      usage: nextAndReact(usageHoneycomb),
+      code: extractCode("src/components/custom/blocks/HoneycombHeroBlock.tsx"),
+    },
+  ]}
+/>
+
+### Installation
+
+<Installation name="honeycomb-hero" />
+
+### Features
+
+<div className="grid grid-cols-1 sm:grid-cols-2 gap-4 my-6 not-prose">
+  <div className="p-6 rounded-2xl border border-border bg-card">
+    <h3 className="text-lg font-semibold text-card-foreground mb-2">A honeycomb that turns</h3>
+    <p className="text-muted-foreground text-sm">The nine cells sit on a real hexagonal lattice, and the queue snakes around it so every step is a hop between neighbours. Each cell glides to its next place with a short stagger — the one heading for the feature spot leads, the one leaving it follows last.</p>
+  </div>
+  <div className="p-6 rounded-2xl border border-border bg-card">
+    <h3 className="text-lg font-semibold text-card-foreground mb-2">The feature is the background</h3>
+    <p className="text-muted-foreground text-sm">Whatever photograph is in the large hexagon also fills the section behind everything, tinted with its own tone and darkened towards the copy. Photograph and colour crossfade together as the honeycomb turns — deep green behind the gorge, indigo behind the cabins, night blue behind the snow.</p>
+  </div>
+  <div className="p-6 rounded-2xl border border-border bg-card">
+    <h3 className="text-lg font-semibold text-card-foreground mb-2">Measured, not guessed</h3>
+    <p className="text-muted-foreground text-sm">Every hexagon's position comes from the design in percentages of a fixed-aspect stage, so the composition is the same at 1024 and 1920 — including the cells cut by the right edge and the foot. Below the desktop breakpoint the honeycomb stacks under the copy.</p>
+  </div>
+  <div className="p-6 rounded-2xl border border-border bg-card">
+    <h3 className="text-lg font-semibold text-card-foreground mb-2">Operable</h3>
+    <p className="text-muted-foreground text-sm">Arrows at the foot and the keyboard's arrow keys step the queue either way; a live region names the featured photograph; under prefers-reduced-motion the cells swap places without travelling.</p>
+  </div>
+</div>
+
+### Props Reference
+
+<div className="overflow-x-auto my-4">
+  <table>
+    <thead>
+      <tr>
+        <th>Prop</th>
+        <th>Type</th>
+        <th>Default</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><code>title</code>, <code>titleAccent</code></td>
+        <td><code>string</code></td>
+        <td><code>"Wander the"</code>, <code>"Fjords"</code></td>
+        <td>The light line and the huge accent word.</td>
+      </tr>
+      <tr>
+        <td><code>titleOverlapColor</code></td>
+        <td><code>string</code></td>
+        <td>theme primary</td>
+        <td>The letters of the accent word that cross the photographs.</td>
+      </tr>
+      <tr>
+        <td><code>subtitle</code></td>
+        <td><code>string</code></td>
+        <td>—</td>
+        <td>The paragraph under the headline.</td>
+      </tr>
+      <tr>
+        <td><code>primaryActionLabel</code>, <code>primaryActionHref</code></td>
+        <td><code>string</code></td>
+        <td><code>"Plan\nyour trip"</code>, <code>"#"</code></td>
+        <td>The call-to-action hexagon, in <code>primary</code> with a compass above the label; <code>\n</code> breaks the line.</td>
+      </tr>
+      <tr>
+        <td><code>images</code></td>
+        <td><code>&#123; src: string; alt: string; tone?: string &#125;[]</code></td>
+        <td>nine Lofoten photographs, each with a tone</td>
+        <td>The queue, first featured. <code>tone</code> is the colour behind everything while that photograph is featured; keep it deep, the copy is white.</td>
+      </tr>
+      <tr>
+        <td><code>socialLinks</code></td>
+        <td><code>&#123; label: string; href: string &#125;[]</code></td>
+        <td>four networks, all <code>#</code></td>
+        <td>The links along the foot; <code>[]</code> hides them.</td>
+      </tr>
+      <tr>
+        <td><code>interval</code></td>
+        <td><code>number</code></td>
+        <td><code>4000</code></td>
+        <td>Milliseconds between steps; <code>0</code> turns autoplay off.</td>
+      </tr>
+      <tr>
+        <td><code>onChange</code></td>
+        <td><code>(index: number) =&gt; void</code></td>
+        <td>—</td>
+        <td>Called with the index of the photograph that just became the feature.</td>
+      </tr>
+      <tr>
+        <td><code>accent</code></td>
+        <td><code>string</code></td>
+        <td>theme primary</td>
+        <td>Sets <code>--primary</code> for the section: the word, the rule, the arrows and the call to action.</td>
+      </tr>
+      <tr>
+        <td><code>background</code></td>
+        <td><code>string</code></td>
+        <td>a deep shade of the primary</td>
+        <td>The tone for photographs without their own.</td>
+      </tr>
+      <tr>
+        <td><code>linkComponent</code></td>
+        <td><code>ElementType</code></td>
+        <td><code>"a"</code></td>
+        <td>What renders every link; pass <code>next/link</code> in Next.js.</td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+## Hero Carousel
+
+
+A full-bleed photo hero for a place worth travelling to: an eyebrow pill, a large light headline, a glass panel with the faces of the people who came before you and a call to action, and — the thing that moves — a queue of cards. The front card is the slide on screen; the ones behind it are what comes next. Every five seconds, or when a card is clicked, the queue slides forward, the photograph behind everything crossfades, and the headline and caption follow it.
+
+`HeroCarousel` composes the library: the faces are an <DocLink to="avatar-stack">AvatarStack</DocLink>. The colours come from the photographs; the theme's `--primary` (pin it with `accent`) is used for the eyebrow pip, the arrow on the call to action, the progress line and the focus rings.
+
+export const usageHeroCarousel = `"use client";
+
+import Link from "next/link";
+import { HeroCarousel } from "@/components/custom/blocks/HeroCarouselBlock";
+
+const SLIDES = [
+  {
+    image: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_1600,c_limit/v1790146210/photo-1506905925346-21bda4d32df4-1790146212208.jpg",
+    alt: "Snowy summits catching dawn light over low cloud",
+    title: "Dawn on the crater's edge",
+    description: "An early start gets you to the edge as colour floods the valley.",
+    heading: <>Watch the dawn<br />from the summit</>,
+  },
+  {
+    image: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_1600,c_limit/v1790146209/photo-1470071459604-3b5ec3a7fe05-1790146212205.jpg",
+    alt: "Mist drifting across dark ridgelines",
+    title: "A misty hike along the crest",
+    description: "A six-kilometre trail along the backbone of the range. No climbing.",
+    heading: <>Hike the crest<br />before the crowds arrive</>,
+  },
+  {
+    image: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_1600,c_limit/v1790145142/photo-1500530855697-b586d89ba3ee-1790145143493.jpg",
+    alt: "A highway winding between red canyon walls",
+    title: "Canyon off-road run",
+    description: "Ride an open-top jeep down the gorge until the pavement gives way.",
+    heading: <>Follow the gorge<br />until the asphalt runs out</>,
+    position: "center 60%",
+  },
+];
+
+export default function Hero() {
+  return (
+    <HeroCarousel
+      className="lg:h-svh"
+      eyebrow="Small-group treks in the mountains"
+      heading={<>Watch the dawn<br />from the summit</>}
+      slides={SLIDES}
+      intro="Three days in the mountains with a local guide who knows every path."
+      avatars={[{ src: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto/v1790148864/80-1-1790148865111.jpg" }, { src: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto/v1790148864/80-2-1790148865112.jpg" }, { src: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto/v1790148865/80-3-1790148865112.jpg" }, { src: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto/v1790148865/80-4-1790148865113.jpg" }, { src: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto/v1790148865/80-1790148865113.jpg" }]}
+      avatarsLabel="50+ travellers this season"
+      cta={{ label: "Reserve a spot", href: "/book" }}
+      linkComponent={Link}
+      interval={5000}
+    />
+  );
+}
+`;
+
+<ExampleShowcase
+  name="hero-carousel"
+  columns={1}
+  examples={[
+    {
+      title: "Watch the dawn from the summit",
+      subheading: "Eyebrow and headline across the top; the glass panel and the queue of cards along the foot. The queue moves every five seconds — click any card to bring it forward, use the arrow keys, or swipe on a phone. Hovering the rail holds the clock.",
+      propNotes: [
+        {
+          prop: "slides",
+          effect:
+            "are shown in order: the front card is the current slide, the rest queue up behind it. Each carries its `image` (full-bleed and in its card), a `title` and `description` for the caption, an optional `heading` that replaces the section headline while it is in front, and a `position` for the crop.",
+        },
+        {
+          prop: "interval",
+          value: "5000",
+          effect:
+            "is the gap between slides in milliseconds. It pauses while the pointer or keyboard focus is on the rail, while the tab is hidden and while the section is off screen; `0` turns autoplay off and hides the progress line.",
+        },
+        {
+          prop: "avatars",
+          effect:
+            "and `avatarsLabel` fill the top of the glass panel; `intro` is the paragraph and `cta` the pill. Pass `next/link` as `linkComponent` to keep client-side navigation.",
+        },
+        {
+          prop: "reveal",
+          value: '"in-view"',
+          effect:
+            "(the default) plays the entrance the first time the section is seen; the docs pass `\"immediate\"`. Under prefers-reduced-motion the entrance is skipped and slides swap without the crossfade or drift.",
+        },
+      ],
+      props: { rounded: true },
+      usage: nextAndReact(usageHeroCarousel),
+      code: extractCode("src/components/custom/blocks/HeroCarouselBlock.tsx"),
+      minHeight: 760,
+    },
+  ]}
+/>
+
+### Installation
+
+<Installation name="hero-carousel" showSetupPath={false} />
+
+### Height
+
+The section takes the height its content needs — about 44rem on a desktop — and never uses viewport units of its own, so it behaves inside any container. For a screen-tall hero, size it from outside:
+
+```tsx
+<HeroCarousel className="lg:h-svh" {...props} />
+```
+
+### Features
+
+<div className="grid grid-cols-1 sm:grid-cols-2 gap-4 my-6 not-prose">
+  <div className="p-6 rounded-2xl border border-border bg-card">
+    <h3 className="text-lg font-semibold text-card-foreground mb-2">A queue, not a slider</h3>
+    <p className="text-muted-foreground text-sm">Cards glide between their places in the queue; the one sent to the back appears where it belongs instead of flying across the others. The background crossfades, settles and then drifts slowly until the next slide.</p>
+  </div>
+  <div className="p-6 rounded-2xl border border-border bg-card">
+    <h3 className="text-lg font-semibold text-card-foreground mb-2">The clock is the progress line</h3>
+    <p className="text-muted-foreground text-sm">One CSS animation fills the line under the front card and moves the queue when it completes. Pausing the line pauses the clock, so a hover never throws away the time already spent.</p>
+  </div>
+  <div className="p-6 rounded-2xl border border-border bg-card">
+    <h3 className="text-lg font-semibold text-card-foreground mb-2">Every device</h3>
+    <p className="text-muted-foreground text-sm">The rail measures itself and picks card sizes from its own width, not the viewport. Desktop puts the panel beside the rail; tablets stack them; phones give the front card most of the row and keep the rest of the queue peeking in.</p>
+  </div>
+  <div className="p-6 rounded-2xl border border-border bg-card">
+    <h3 className="text-lg font-semibold text-card-foreground mb-2">Operable and readable</h3>
+    <p className="text-muted-foreground text-sm">Every card is a button with a visible focus ring; arrow keys walk the queue, a swipe moves it on touch, and a live region announces the slide. Reduced motion swaps slides without the crossfade or drift.</p>
+  </div>
+</div>
+
+### Props Reference
+
+<div className="overflow-x-auto my-4">
+  <table>
+    <thead>
+      <tr>
+        <th>Prop</th>
+        <th>Type</th>
+        <th>Default</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><code>slides</code></td>
+        <td><code>&#123; image: string; alt: string; title: string; description?: string; heading?: ReactNode; position?: string &#125;[]</code></td>
+        <td>—</td>
+        <td>The slides, in queue order.</td>
+      </tr>
+      <tr>
+        <td><code>eyebrow</code></td>
+        <td><code>string</code></td>
+        <td>—</td>
+        <td>The pill above the headline.</td>
+      </tr>
+      <tr>
+        <td><code>heading</code></td>
+        <td><code>ReactNode</code></td>
+        <td>—</td>
+        <td>The headline, used whenever the front slide has none of its own.</td>
+      </tr>
+      <tr>
+        <td><code>intro</code></td>
+        <td><code>string</code></td>
+        <td>—</td>
+        <td>The paragraph in the glass panel.</td>
+      </tr>
+      <tr>
+        <td><code>avatars</code>, <code>avatarsLabel</code></td>
+        <td><code>&#123; src: string; alt?: string &#125;[]</code>, <code>string</code></td>
+        <td>—</td>
+        <td>The faces at the top of the panel and the words beside them.</td>
+      </tr>
+      <tr>
+        <td><code>cta</code></td>
+        <td><code>&#123; label: string; href: string &#125;</code></td>
+        <td>—</td>
+        <td>The pill at the foot of the panel.</td>
+      </tr>
+      <tr>
+        <td><code>interval</code></td>
+        <td><code>number</code></td>
+        <td><code>5000</code></td>
+        <td>Milliseconds between slides; <code>0</code> turns autoplay off.</td>
+      </tr>
+      <tr>
+        <td><code>defaultIndex</code></td>
+        <td><code>number</code></td>
+        <td><code>0</code></td>
+        <td>The slide in front at first.</td>
+      </tr>
+      <tr>
+        <td><code>onChange</code></td>
+        <td><code>(index: number) =&gt; void</code></td>
+        <td>—</td>
+        <td>Called with the index of the slide that just came to the front.</td>
+      </tr>
+      <tr>
+        <td><code>accent</code></td>
+        <td><code>string</code></td>
+        <td>theme primary</td>
+        <td>Sets <code>--primary</code> for the section.</td>
+      </tr>
+      <tr>
+        <td><code>reveal</code></td>
+        <td><code>"in-view" | "immediate"</code></td>
+        <td><code>"in-view"</code></td>
+        <td>When the entrance plays.</td>
+      </tr>
+      <tr>
+        <td><code>linkComponent</code></td>
+        <td><code>ElementType</code></td>
+        <td><code>"a"</code></td>
+        <td>What renders the CTA; pass <code>next/link</code> in Next.js.</td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+## Fashion Hero
+
+
+A fashion hero: a bold two-line headline between a turning video badge and a stack of faces, five staggered columns of looks — each a person on a flat colour that tilts and zooms under the pointer — a call to action sitting on the middle look, and a footer with a customer's words on one side and the next story on the other.
+
+`FashionHero` is built from library pieces: the badge is <DocLink to="circular-text">Circular Text</DocLink>, the faces are <DocLink to="avatar-stack">Avatar Stack</DocLink>, the headline is <DocLink to="text-animation">Text Animation</DocLink> (`blur-in-up`, word by word), every look is a <DocLink to="tilted-card">Tilted Card</DocLink>, and the badge opens a <DocLink to="dialog">Dialog</DocLink>. When it first scrolls into view the badge and faces settle in, the looks rise from the middle column outward, the button lands on its look and the footer follows — one reveal, then only the badge keeps turning and the pointer does the rest.
+
+export const usageFashion = `"use client";
+
+import Link from "next/link";
+import { FashionHero } from "@/components/custom/blocks/FashionHeroBlock";
+
+// A person on a plain studio background, multiplied onto a colour that echoes the outfit.
+const LOOKS = [
+  { src: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_700,c_limit/v1790150481/pexels-photo-16944801-1790150482273.jpg", alt: "Model in a pink blouse and lime-green pants against yellow", tone: "#f0a72f", blend: false },
+  { src: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_500,c_limit/v1790082180/pexels-photo-1520760-1790082180553.jpg", alt: "Smiling model in a black top", tone: "#f7d774" },
+  { src: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_700,c_limit/v1790145139/pexels-photo-1036623-1790145143487.jpg", alt: "Model in a blush dress", tone: "#f4b7c5", blend: false },
+  { src: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_700,c_limit/v1790150484/pexels-photo-1462637-1790150482282.jpg", alt: "Model in a blue pinstripe shirt", tone: "#8cc4ee" },
+  { src: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_700,c_limit/v1790150480/pexels-photo-9558236-1790150482273.jpg", alt: "Model in a coral shirtdress", tone: "#f9a875" },
+  { src: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_700,c_limit/v1790150480/pexels-photo-6311613-1790150482272.jpg", alt: "Model in a grey hooded top, hood raised", tone: "#bfe4c6" },
+  { src: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_500,c_limit/v1790145139/pexels-photo-3775534-1790145143488.jpg", alt: "Man wearing a dark leather jacket", tone: "#2e9c82" },
+];
+
+export default function Hero() {
+  return (
+    <FashionHero
+      heading="Refresh Your Look With Daring Designs"
+      video={{ badge: "Get to know us in this short film", url: "https://www.youtube.com/embed/…" }}
+      avatars={[{ src: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_120,c_limit/v1790145139/pexels-photo-1036623-1790145143487.jpg" }, { src: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_120,c_limit/v1790145142/pexels-photo-2043590-1790145143488.jpg" }, { src: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_120,c_limit/v1790145139/pexels-photo-1587009-1790145143488.jpg" }]}
+      avatarsHref="/community"
+      looks={LOOKS}
+      cta={{ label: "Shop new arrivals", href: "/collections" }}
+      quote={{
+        text: "Moda Lane pieces feel modern and confident, just the refresh my closet was missing. Great fabrics, great feel!",
+        author: "Nadia K.",
+      }}
+      teaser={{ index: "01", label: "Journal", title: "Update Your Wardrobe With New-Season Picks", href: "/stories/latest-trends" }}
+      linkComponent={Link}
+    />
+  );
+}
+`;
+
+<ExampleShowcase
+  name="fashion-hero"
+  colorControl
+  columns={1}
+  examples={[
+    {
+      title: "Daring designs",
+      subheading: "Five columns stepping down to the middle at desktop, three on tablets, two on phones with the middle look full width. Hover a look to tilt it; reload the preview to watch the reveal again.",
+      propNotes: [
+        {
+          prop: "looks",
+          effect:
+            "are up to seven `{ src, alt, tone }`, laid out left to right: a tall and a small, a tall, the tall that carries the button, a tall, a tall and a small. `tone` is the flat colour behind the person.",
+        },
+        {
+          prop: "blend",
+          effect:
+            "multiplies the photo onto its tone (on by default), so a plain white studio background takes the colour. Turn it off for a shot that already has a coloured background.",
+        },
+        {
+          prop: "video",
+          effect:
+            "is the phrase on the turning badge and the embed it opens in a Dialog. Leave it out and the badge's space stays empty so the headline keeps its place.",
+        },
+        {
+          prop: "teaser",
+          effect:
+            "is the next story — a number, a category and a title — as one link; the arrow fills and the title underlines on hover.",
+        },
+        {
+          prop: "reveal",
+          value: '"in-view"',
+          effect:
+            "(the default) plays the sequence the first time the section enters the viewport; the docs pass `\"immediate\"`. Under prefers-reduced-motion everything renders finished and the badge holds still.",
+        },
+      ],
+      props: { rounded: true },
+      usage: nextAndReact(usageFashion),
+      code: extractCode("src/components/custom/blocks/FashionHeroBlock.tsx"),
+      minHeight: 860,
+    },
+  ]}
+/>
+
+### Installation
+
+<Installation name="fashion-hero" showSetupPath={false} />
+
+### Photos on colour
+
+The reference look is a person cut out on a flat colour. Cut-outs are expensive; a studio shot on a plain background is not. With `blend` on, the photo is drawn with `mix-blend-mode: multiply` over its `tone`, so white becomes the tone and the person keeps their colours — and the effect is strongest with lighter tones and darker clothes. A shot that already has a coloured background is better left unblended: pass `blend: false` and pick a `tone` that matches its edges.
+
+### Features
+
+<div className="grid grid-cols-1 sm:grid-cols-2 gap-4 my-6 not-prose">
+  <div className="p-6 rounded-2xl border border-border bg-card">
+    <h3 className="text-lg font-semibold text-card-foreground mb-2">Built from the library</h3>
+    <p className="text-muted-foreground text-sm">Circular Text for the badge, Avatar Stack for the faces, Text Animation for the headline, Tilted Card for every look, Dialog for the video. Install this one item and all five come with it.</p>
+  </div>
+  <div className="p-6 rounded-2xl border border-border bg-card">
+    <h3 className="text-lg font-semibold text-card-foreground mb-2">One reveal, then the pointer</h3>
+    <p className="text-muted-foreground text-sm">A single timeline plays on first view: badge and faces, looks from the middle outward, the button, the footer. After that only the badge turns; tilt, zoom, fan-out and arrows all answer the pointer.</p>
+  </div>
+  <div className="p-6 rounded-2xl border border-border bg-card">
+    <h3 className="text-lg font-semibold text-card-foreground mb-2">Responsive to two columns</h3>
+    <p className="text-muted-foreground text-sm">Five staggered columns at lg, three at sm, two on phones with the middle look — and its button — full width. The header folds the badge and faces above the headline.</p>
+  </div>
+  <div className="p-6 rounded-2xl border border-border bg-card">
+    <h3 className="text-lg font-semibold text-card-foreground mb-2">Links are links</h3>
+    <p className="text-muted-foreground text-sm">The call to action, the plus beside the faces and the teaser are anchors — pass your router's Link as linkComponent — and the video badge is a real button with a label for screen readers.</p>
+  </div>
+</div>
+
+### Props Reference
+
+<div className="overflow-x-auto my-4">
+  <table>
+    <thead>
+      <tr>
+        <th>Prop</th>
+        <th>Type</th>
+        <th>Default</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><code>heading</code></td>
+        <td><code>string</code></td>
+        <td><strong>Required</strong></td>
+        <td>The headline, revealed word by word.</td>
+      </tr>
+      <tr>
+        <td><code>looks</code></td>
+        <td><code>Look[]</code></td>
+        <td><strong>Required</strong></td>
+        <td>Up to seven <code>&#123; src, alt, tone, blend?, position? &#125;</code>, in slot order.</td>
+      </tr>
+      <tr>
+        <td><code>video</code></td>
+        <td><code>&#123; badge: string; url: string; title?: string &#125;</code></td>
+        <td>—</td>
+        <td>Words on the turning badge and the embed it opens.</td>
+      </tr>
+      <tr>
+        <td><code>avatars</code>, <code>avatarsHref</code>, <code>avatarsLabel</code></td>
+        <td><code>&#123; src, alt? &#125;[]</code>, <code>string</code>, <code>string</code></td>
+        <td>—, —, <code>"Become a member"</code></td>
+        <td>Faces in the top-right stack; the href adds a "+" link after them with that label.</td>
+      </tr>
+      <tr>
+        <td><code>cta</code></td>
+        <td><code>&#123; label: string; href: string &#125;</code></td>
+        <td>—</td>
+        <td>The pill sitting on the middle look.</td>
+      </tr>
+      <tr>
+        <td><code>quote</code></td>
+        <td><code>&#123; text: string; author: string &#125;</code></td>
+        <td>—</td>
+        <td>A customer's words and their name, set in the serif italic with a highlighter stroke.</td>
+      </tr>
+      <tr>
+        <td><code>teaser</code></td>
+        <td><code>&#123; index, label, title, href &#125;</code></td>
+        <td>—</td>
+        <td>The next story, as one link.</td>
+      </tr>
+      <tr>
+        <td><code>accent</code></td>
+        <td><code>string</code></td>
+        <td>theme primary</td>
+        <td>Sets <code>--primary</code> for the section: the highlighter stroke, focus rings and the mark above the middle look.</td>
+      </tr>
+      <tr>
+        <td><code>reveal</code></td>
+        <td><code>"in-view" | "immediate"</code></td>
+        <td><code>"in-view"</code></td>
+        <td>When the sequence plays.</td>
+      </tr>
+      <tr>
+        <td><code>linkComponent</code></td>
+        <td><code>ElementType</code></td>
+        <td><code>"a"</code></td>
+        <td>Your router's link for every href.</td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+## Support Hero
+
+
+A product hero on a soft grey ground: a headline that rises in word by word, one line under it and one call to action, then a bento of frosted cards — integrations on white tiles, two figures that count up, two portraits and a team card with faces scattered over a field of dots. The cards land in one staggered pass after the headline; after that only the pointer moves anything: cards lift, portraits zoom a touch, the integration tiles rise one after another, the faces drift apart.
+
+`SupportHero` is built from library pieces. The ground and the cards are <DocLink to="glass-panel">Glass Panel</DocLink> (`GlassBackdrop` with a grey aurora, `GlassPanel` tiles), the headline is <DocLink to="text-animation">Text Animation</DocLink>'s `blur-in-up`, the figures are <DocLink to="counter">Counter</DocLink>'s animated type in its new bare form, and the call to action is <DocLink to="button">Button</DocLink>. Every card is a named part — `Integrations`, `Stat`, `Photo`, `Team` — plus a plain `Card` for anything else.
+
+export const usageSupport = `"use client";
+
+import { SupportHero } from "@/components/custom/blocks/SupportHeroBlock";
+import { DiscordIcon, GoogleCalendarIcon, SlackIcon } from "@/components/custom/blocks/Icons";
+
+const AVATARS = [
+  { src: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_120,c_limit/v1790158812/pexels-photo-2379004-1790158812208.jpg", alt: "Ana" },
+  { src: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_120,c_limit/v1790158810/pexels-photo-220453-1790158812206.jpg", alt: "Tom" },
+  { src: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_120,c_limit/v1790158812/pexels-photo-2381069-1790158812209.jpg", alt: "Mei" },
+  { src: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_120,c_limit/v1790158812/pexels-photo-1130626-1790158812207.jpg", alt: "Raj" },
+];
+
+export default function Hero() {
+  return (
+    <SupportHero
+      heading="AI-Driven Support To Boost Your Business Growth"
+      subtitle="A platform that helps customer service leaders provide efficient, high-quality support at scale with an AI agent, improving speed and quality across all channels, 24/7."
+      cta={{ label: "Book a demo", href: "/demo" }}
+    >
+      <SupportHero.Integrations
+        icons={[<DiscordIcon key="d" />, <SlackIcon key="s" />, <GoogleCalendarIcon key="c" />]}
+        title="Integrations"
+        text="Way better at getting things done than human agents"
+      />
+
+      {/* Spans both rows at desktop. */}
+      <SupportHero.Photo src={"https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_700,c_limit/v1790145139/pexels-photo-7709208-1790145143489.jpg"} alt="…" label="Transcript" position="58% center" className="lg:row-span-2 lg:h-auto" />
+
+      <SupportHero.Stat
+        value={83}
+        suffix="%"
+        caption="Up to 83% of conversations autonomously resolved"
+        image="https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_1170,c_limit/v1790159967/photo-1745674684463-62f62cb88d4c-1790159970117.jpg"
+        imageAlt="A laptop showing an AI assistant"
+        imagePosition="70% center"
+      />
+      <SupportHero.Photo src={"https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_700,c_limit/v1790159968/pexels-photo-3184639-1790159970118.jpg"} alt="…" position="center 40%" />
+      <SupportHero.Stat
+        value={5.5}
+        decimals={1}
+        suffix="B"
+        caption="More efficient than human representatives"
+        image="https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_1170,c_limit/v1790159967/photo-1746883741141-04859907ef5f-1790159970117.jpg"
+        imageAlt="A phone with an AI chat open"
+        imagePosition="65% center"
+      />
+
+      <SupportHero.Team
+        title={<>Automated<br />Customer Service<br />Quality</>}
+        avatars={AVATARS}
+      />
+    </SupportHero>
+  );
+}
+`;
+
+<ExampleShowcase
+  name="support-hero"
+  columns={1}
+  examples={[
+    {
+      title: "Headline, call to action, six cards",
+      subheading: "Twelve columns at desktop — 3 / 3 / 3 / 3 on the first row with the portrait spanning both rows, 3 / 6 on the second. Six columns at tablet, one on phones. Hover the cards.",
+      propNotes: [
+        {
+          prop: "heading",
+          effect:
+            "is set by `TextAnimation` in `blur-in-up`: each word rises out of a blur the first time the section is on screen. `subtitle` and the `cta` button fade in behind it.",
+        },
+        {
+          prop: "Stat",
+          effect:
+            "counts up with `CounterBlock` — `value`, `decimals`, `prefix`, `suffix` — starting when the card is on screen. `tone=\"accent\"` is the card in the theme's primary colour. Give it an `image` and the picture fills the card, with only the bottom-left corner under the figure washed in the card colour — the rest shows through, so pick a picture whose subject sits up and to the right.",
+        },
+        {
+          prop: "Photo",
+          effect:
+            "fills its card with a portrait; `position` sets the crop anchor, `label` a word in the corner. Add `lg:row-span-2 lg:h-auto` to make one tall.",
+        },
+        {
+          prop: "Team",
+          effect:
+            "scatters up to six `avatars` over the right half of the card, above a field of dots. They pop in after the cards and drift outward on hover.",
+        },
+        {
+          prop: "reveal",
+          value: '"in-view"',
+          effect:
+            "(the default) plays everything the first time the section enters the viewport; the docs pass `\"immediate\"`. Under prefers-reduced-motion the section renders finished.",
+        },
+      ],
+      props: { rounded: true },
+      usage: usageSupport,
+      code: extractCode("src/components/custom/blocks/SupportHeroBlock.tsx"),
+      minHeight: 980,
+    },
+  ]}
+/>
+
+### Installation
+
+<Installation name="support-hero" showSetupPath={false} />
+
+### Layout
+
+The bento is the `GlassBackdrop` grid — one column on phones, six at `md`, twelve at `lg` — and every part carries a default span (`Integrations`, `Stat` and `Photo` take three columns, `Team` takes six). Cards are a fixed `13rem` tall at `lg`, so a part given `lg:row-span-2 lg:h-auto` is exactly two cards tall. Pass any other span through `className`; the built-in parts are `GlassPanel`s, so `variant="solid"` on a card also works.
+
+The call to action is a `Button`. Give `cta` an `onClick`, or an `href` to navigate to on click — pass a router `push` in `onClick` when you want client-side navigation.
+
+### Features
+
+<div className="grid grid-cols-1 sm:grid-cols-2 gap-4 my-6 not-prose">
+  <div className="p-6 rounded-2xl border border-border bg-card">
+    <h3 className="text-lg font-semibold text-card-foreground mb-2">Built from the library</h3>
+    <p className="text-muted-foreground text-sm">Glass Panel for the ground and the cards, Text Animation for the headline, Counter for the figures, Button for the call to action. Install this one item and all four come with it.</p>
+  </div>
+  <div className="p-6 rounded-2xl border border-border bg-card">
+    <h3 className="text-lg font-semibold text-card-foreground mb-2">One sequence, then the pointer</h3>
+    <p className="text-muted-foreground text-sm">Words, line, button, cards, faces — one timeline the first time the section appears. After that nothing moves unless you hover it. Reduced motion renders the finished state.</p>
+  </div>
+  <div className="p-6 rounded-2xl border border-border bg-card">
+    <h3 className="text-lg font-semibold text-card-foreground mb-2">Figures that count when seen</h3>
+    <p className="text-muted-foreground text-sm">Each Stat waits until its card is on screen before counting, so a hero below the fold does not run its numbers while nobody is looking.</p>
+  </div>
+  <div className="p-6 rounded-2xl border border-border bg-card">
+    <h3 className="text-lg font-semibold text-card-foreground mb-2">Server-safe</h3>
+    <p className="text-muted-foreground text-sm">Cards and faces render opaque in the HTML and only animate once the page is live; nothing depends on JavaScript to be visible.</p>
+  </div>
+</div>
+
+### Props Reference
+
+#### SupportHero
+
+<div className="overflow-x-auto my-4">
+  <table>
+    <thead>
+      <tr>
+        <th>Prop</th>
+        <th>Type</th>
+        <th>Default</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><code>heading</code></td>
+        <td><code>string</code></td>
+        <td>—</td>
+        <td>The headline, animated word by word.</td>
+      </tr>
+      <tr>
+        <td><code>subtitle</code></td>
+        <td><code>ReactNode</code></td>
+        <td>—</td>
+        <td>The line under it.</td>
+      </tr>
+      <tr>
+        <td><code>cta</code></td>
+        <td><code>&#123; label: string; href?: string; onClick?: () =&gt; void &#125;</code></td>
+        <td>—</td>
+        <td>The button. <code>href</code> is navigated to on click.</td>
+      </tr>
+      <tr>
+        <td><code>aurora</code></td>
+        <td><code>[string, string, string]</code></td>
+        <td>three greys</td>
+        <td>Colours washed behind the glass.</td>
+      </tr>
+      <tr>
+        <td><code>reveal</code></td>
+        <td><code>"in-view" | "immediate"</code></td>
+        <td><code>"in-view"</code></td>
+        <td>When the sequence plays.</td>
+      </tr>
+      <tr>
+        <td><code>children</code></td>
+        <td><code>ReactNode</code></td>
+        <td>—</td>
+        <td>The cards, in the order they should fill the grid.</td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+#### SupportHero.Integrations
+
+<div className="overflow-x-auto my-4">
+  <table>
+    <thead>
+      <tr>
+        <th>Prop</th>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><code>icons</code></td>
+        <td><code>ReactNode[]</code></td>
+        <td>Marks shown on white tiles, e.g. from the <code>icons</code> item.</td>
+      </tr>
+      <tr>
+        <td><code>title</code>, <code>text</code></td>
+        <td><code>string</code></td>
+        <td>Heading and the line under it.</td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+#### SupportHero.Stat
+
+<div className="overflow-x-auto my-4">
+  <table>
+    <thead>
+      <tr>
+        <th>Prop</th>
+        <th>Type</th>
+        <th>Default</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><code>value</code></td>
+        <td><code>number</code></td>
+        <td>—</td>
+        <td>The figure counted up to.</td>
+      </tr>
+      <tr>
+        <td><code>decimals</code></td>
+        <td><code>number</code></td>
+        <td><code>0</code></td>
+        <td>Decimal places, e.g. <code>1</code> for 5.5.</td>
+      </tr>
+      <tr>
+        <td><code>prefix</code>, <code>suffix</code></td>
+        <td><code>string</code></td>
+        <td>—</td>
+        <td>Text either side of the figure, e.g. <code>"%"</code>, <code>"B"</code>.</td>
+      </tr>
+      <tr>
+        <td><code>caption</code></td>
+        <td><code>string</code></td>
+        <td>—</td>
+        <td>What the figure means.</td>
+      </tr>
+      <tr>
+        <td><code>tone</code></td>
+        <td><code>"glass" | "accent"</code></td>
+        <td><code>"glass"</code></td>
+        <td>Frosted, or the accent card in the theme's primary colour with its foreground for text.</td>
+      </tr>
+      <tr>
+        <td><code>image</code>, <code>imageAlt</code></td>
+        <td><code>string</code></td>
+        <td>—</td>
+        <td>A picture behind the whole card. Only the bottom-left corner, under the figure, is washed with the card colour; the rest stays clear. Zooms a touch on hover.</td>
+      </tr>
+      <tr>
+        <td><code>imagePosition</code></td>
+        <td><code>string</code></td>
+        <td><code>"center"</code></td>
+        <td>CSS <code>object-position</code> for the crop — e.g. <code>"70% center"</code> to favour a subject on the right.</td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+#### SupportHero.Photo
+
+<div className="overflow-x-auto my-4">
+  <table>
+    <thead>
+      <tr>
+        <th>Prop</th>
+        <th>Type</th>
+        <th>Default</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><code>src</code>, <code>alt</code></td>
+        <td><code>string</code></td>
+        <td>—</td>
+        <td>The portrait.</td>
+      </tr>
+      <tr>
+        <td><code>label</code></td>
+        <td><code>string</code></td>
+        <td>—</td>
+        <td>A word in the top-left corner.</td>
+      </tr>
+      <tr>
+        <td><code>position</code></td>
+        <td><code>string</code></td>
+        <td><code>"center"</code></td>
+        <td>CSS <code>object-position</code> for the crop.</td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+#### SupportHero.Team
+
+<div className="overflow-x-auto my-4">
+  <table>
+    <thead>
+      <tr>
+        <th>Prop</th>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><code>title</code></td>
+        <td><code>ReactNode</code></td>
+        <td>The heading; use <code>&lt;br /&gt;</code> for deliberate breaks.</td>
+      </tr>
+      <tr>
+        <td><code>avatars</code></td>
+        <td><code>&#123; src: string; alt?: string &#125;[]</code></td>
+        <td>Up to six faces, scattered over the right half.</td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+#### SupportHero.Card
+
+A <code>GlassPanel</code> that takes part in the reveal: <code>shape="tile"</code>, <code>interactive</code>, three columns wide and <code>13rem</code> tall at <code>lg</code>. All <code>GlassPanel</code> props apply.
+
+## Collage Hero
+
+
+A hero for a place that is warm and busy — a kindergarten here, but any studio, school or workshop: a badge whose name turns slowly around a mark, a serif headline with two words in colour, three hashtag pills, a collage of seven photographs in five staggered columns, and a footer with a quote, a scroll-down pill and a watch-video trigger. When it first appears the headline rises out of a blur, the pills pop in with a twist and the photographs come up one after another; after that the badge keeps turning and the pointer does the rest — photographs lift and zoom a touch, pills straighten, the arrow nods.
+
+`CollageHero` is built from library pieces: the scroll pill is <DocLink to="button">Button</DocLink>, the video opens in a <DocLink to="dialog">Dialog</DocLink>. The colours come from the theme — the accent is `--primary` (pin it with `accent`) and the second colour is `highlight`.
+
+export const usageCollage = `"use client";
+
+import { CollageHero } from "@/components/custom/blocks/CollageHeroBlock";
+
+const PHOTOS = [
+  { src: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_700,c_limit/v1790148862/pexels-photo-3661193-1790148865106.jpg", alt: "Wooden toy dinosaurs atop a pile of books" },
+  { src: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_700,c_limit/v1790148867/pexels-photo-3661387-1790148865107.jpg", alt: "A toddler building with timber blocks" },
+  { src: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_700,c_limit/v1790148863/pexels-photo-8612967-1790148865108.jpg", alt: "Kids painting around a small table" },
+  { src: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_700,c_limit/v1790148863/pexels-photo-8535214-1790148865108.jpg", alt: "An educator guiding a girl's brushwork", position: "40% top" },
+  { src: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_700,c_limit/v1790148863/pexels-photo-3661286-1790148865107.jpg", alt: "A little boy clutching a toy wooden dinosaur" },
+  { src: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_700,c_limit/v1790148866/pexels-photo-8613317-1790148865109.jpg", alt: "Kids on the lawn with their playthings" },
+  { src: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_700,c_limit/v1790148862/pexels-photo-8535227-1790148865108.jpg", alt: "A grinning girl next to a paper lion", position: "center 35%" },
+];
+
+export default function Hero() {
+  return (
+    <CollageHero
+      brand="PlayMeadow"
+      heading={<>A bright place<br />to <em>discover</em> and <em>imagine</em></>}
+      tags={[{ label: "#grow" }, { label: "#laugh" }, { label: "#build" }]}
+      caption="Gentle, fun care for young explorers"
+      photos={PHOTOS}
+      quote="Our preschool is a cosy, friendly place where every child feels secure, curious and eager to discover something new each day."
+      scrollLabel="Keep scrolling"
+      scrollTo="#programme"
+      video={{
+        eyebrow: "See the film",
+        text: "Follow a typical day at our cheerful little preschool",
+        url: "https://www.youtube.com/embed/LXb3EKWsInQ?autoplay=1",
+        title: "Inside PlayMeadow",
+      }}
+    />
+  );
+}
+`;
+
+<ExampleShowcase
+  name="collage-hero"
+  colorControl
+  columns={1}
+  examples={[
+    {
+      title: "A bright place",
+      subheading: "Badge, headline and pills across the top; five columns of photographs; quote, scroll pill and video trigger along the foot. Three columns at tablet — a portrait, a stack and the tall one, then three landscapes in a row — and two on phones. Hover the photographs and the pills, open the video.",
+      propNotes: [
+        {
+          prop: "heading",
+          effect:
+            "is any node; wrap the words to colour in `<em>` — the first takes the accent, the second the `highlight`. Use `<br />` for a deliberate break.",
+        },
+        {
+          prop: "photos",
+          effect:
+            "are laid out left to right: one under the caption, two stacked, one tall in the middle, two stacked, one on the right. Each takes a `position` for its crop. Fewer than seven is fine; the columns just empty.",
+        },
+        {
+          prop: "tags",
+          effect:
+            "are up to three pills, scattered and tilted at desktop and in a plain row below. `tone` picks soft / highlight / accent; the defaults cycle through them.",
+        },
+        {
+          prop: "video",
+          effect:
+            "renders the play trigger; its `url` is an embed URL shown in a `Dialog` at 16:9. `scrollLabel` is a `Button` that scrolls to `scrollTo`, or the next section.",
+        },
+        {
+          prop: "reveal",
+          value: '"in-view"',
+          effect:
+            "(the default) plays the sequence the first time the section enters the viewport; the docs pass `\"immediate\"`. Under prefers-reduced-motion the badge holds still and the section renders finished.",
+        },
+      ],
+      props: { rounded: true },
+      usage: usageCollage,
+      code: extractCode("src/components/custom/blocks/CollageHeroBlock.tsx"),
+      minHeight: 900,
+    },
+  ]}
+/>
+
+### Installation
+
+<Installation name="collage-hero" showSetupPath={false} />
+
+### The badge
+
+`CollageHero.Badge` is exported on its own: the `brand` text set on an SVG circle with `textPath`, turning once every 22 seconds, around a `logo` — three dots in the accent and highlight by default, or anything you pass. Under `prefers-reduced-motion` it does not turn.
+
+```tsx
+import { Sparkles } from "lucide-react";
+
+<CollageHero.Badge text="PlayMeadow" logo={<Sparkles className="size-10 text-primary" />} />
+```
+
+### Features
+
+<div className="grid grid-cols-1 sm:grid-cols-2 gap-4 my-6 not-prose">
+  <div className="p-6 rounded-2xl border border-border bg-card">
+    <h3 className="text-lg font-semibold text-card-foreground mb-2">Built from the library</h3>
+    <p className="text-muted-foreground text-sm">Button for the scroll pill, Dialog for the video. Both install with this item; the rest is Tailwind and one SVG.</p>
+  </div>
+  <div className="p-6 rounded-2xl border border-border bg-card">
+    <h3 className="text-lg font-semibold text-card-foreground mb-2">One reveal, one thing that keeps moving</h3>
+    <p className="text-muted-foreground text-sm">Headline, pills, photographs, footer — one timeline the first time the section appears. The turning badge is the only ambient motion, and it stops under reduced motion.</p>
+  </div>
+  <div className="p-6 rounded-2xl border border-border bg-card">
+    <h3 className="text-lg font-semibold text-card-foreground mb-2">Two colours, from the theme</h3>
+    <p className="text-muted-foreground text-sm">The accent is your primary colour unless you pin it; the second colour is one prop. Pills, badge, coloured words, play button and scroll pill all follow.</p>
+  </div>
+  <div className="p-6 rounded-2xl border border-border bg-card">
+    <h3 className="text-lg font-semibold text-card-foreground mb-2">Real links and dialogs</h3>
+    <p className="text-muted-foreground text-sm">The video trigger is keyboard-operable and opens a proper dialog with focus handling; every photograph carries its alt text; nothing depends on JavaScript to be visible.</p>
+  </div>
+</div>
+
+### Props Reference
+
+<div className="overflow-x-auto my-4">
+  <table>
+    <thead>
+      <tr>
+        <th>Prop</th>
+        <th>Type</th>
+        <th>Default</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><code>brand</code></td>
+        <td><code>string</code></td>
+        <td>—</td>
+        <td>The words that run around the badge.</td>
+      </tr>
+      <tr>
+        <td><code>logo</code></td>
+        <td><code>ReactNode</code></td>
+        <td>three dots</td>
+        <td>What sits in the middle of the badge.</td>
+      </tr>
+      <tr>
+        <td><code>heading</code></td>
+        <td><code>ReactNode</code></td>
+        <td>—</td>
+        <td>The headline. <code>&lt;em&gt;</code> words take the accent, then the highlight.</td>
+      </tr>
+      <tr>
+        <td><code>tags</code></td>
+        <td><code>&#123; label: string; tone?: "accent" | "highlight" | "soft" &#125;[]</code></td>
+        <td><code>[]</code></td>
+        <td>Up to three pills.</td>
+      </tr>
+      <tr>
+        <td><code>caption</code></td>
+        <td><code>string</code></td>
+        <td>—</td>
+        <td>Tracked caps over the first photograph.</td>
+      </tr>
+      <tr>
+        <td><code>photos</code></td>
+        <td><code>&#123; src: string; alt: string; position?: string &#125;[]</code></td>
+        <td>—</td>
+        <td>Up to seven photographs, in layout order.</td>
+      </tr>
+      <tr>
+        <td><code>quote</code></td>
+        <td><code>string</code></td>
+        <td>—</td>
+        <td>Footer quote, with a large opening mark in the accent.</td>
+      </tr>
+      <tr>
+        <td><code>scrollLabel</code>, <code>scrollTo</code></td>
+        <td><code>string</code></td>
+        <td><code>"Keep scrolling"</code>, next section</td>
+        <td>The scroll pill and the selector it scrolls to.</td>
+      </tr>
+      <tr>
+        <td><code>video</code></td>
+        <td><code>&#123; eyebrow?: string; text: string; url: string; title?: string &#125;</code></td>
+        <td>—</td>
+        <td>The play trigger and the embed it opens.</td>
+      </tr>
+      <tr>
+        <td><code>accent</code></td>
+        <td><code>string</code></td>
+        <td>theme primary</td>
+        <td>Sets <code>--primary</code> for the section.</td>
+      </tr>
+      <tr>
+        <td><code>highlight</code></td>
+        <td><code>string</code></td>
+        <td><code>"#f5c542"</code></td>
+        <td>The second colour.</td>
+      </tr>
+      <tr>
+        <td><code>reveal</code></td>
+        <td><code>"in-view" | "immediate"</code></td>
+        <td><code>"in-view"</code></td>
+        <td>When the sequence plays.</td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+## Hero Block
+
+A collection of modern hero layouts in one component, built with Tailwind CSS and plain CSS animations, no animation library: rotating word spring bounce, character typewriter effect, continuous thumbnail slider marquee, a CLI copy button and call-to-action buttons. One registry item, five variants.
+
+
+export const usageWordBounce = `import { HeroBlock } from "@/components/custom/blocks/HeroBlock";
+
+export default function Page() {
+  return (
+    <HeroBlock
+      variant="bounce"
+      badgeText="Next-Gen React Components"
+      badgeHref="/docs"
+      titlePrefix="Build Interactive "
+      typingWords={["Interfaces", "Components", "Experiences", "Animations"]}
+      subtitle="A meticulous library of React components & interactive blocks, engineered for seamless performance with Tailwind CSS, TypeScript, GSAP, and Motion."
+      cliCommand="npx shadcn@latest add button"
+      primaryActionLabel="Browse Components"
+      primaryActionHref="/docs"
+      secondaryActionLabel="Star on GitHub"
+      secondaryActionHref="https://github.com/AlgorizeTech"
+    />
+  );
+}`;
+
+<ExampleShowcase
+  name="homepage-hero"
+  colorControl
+  columns={1}
+  minHeight={420}
+  examples={[
+    {
+      title: "Word bounce hero",
+      propNotes: [
+        {
+          lead: "Set",
+          prop: "variant",
+          value: '"bounce"',
+          effect: "for a spring word bounce animation loop.",
+        },
+      ],
+      usage: usageWordBounce,
+      code: extractCode("src/components/custom/blocks/HeroBlock.tsx"),
+    },
+  ]}
+/>
+
+export const usageTyping = `import { HeroBlock } from "@/components/custom/blocks/HeroBlock";
+
+export default function Page() {
+  return (
+    <HeroBlock
+      variant="typing"
+      badgeText="Next-Gen React Components"
+      badgeHref="/docs"
+      titlePrefix="Build Interactive "
+      typingWords={[
+        "Interfaces",
+        "Components",
+        "Experiences",
+        "Animations",
+      ]}
+      titleSuffix=""
+      subtitle="A meticulous library of React components & interactive blocks, engineered for seamless performance with Tailwind CSS, TypeScript, GSAP, and Motion."
+      cliCommand="npx shadcn@latest add @algorize-ui/button"
+      primaryActionLabel="Browse Components"
+      primaryActionHref="/docs"
+      secondaryActionLabel="Star on GitHub"
+      secondaryActionHref="https://github.com/AlgorizeTech"
+    />
+  );
+}`;
+
+export const usageTypingFixed = `import { HeroBlock } from "@/components/custom/blocks/HeroBlock";
+
+export default function Page() {
+  return (
+    <HeroBlock
+      variant="typing"
+      prefixPosition="fixed"
+      badgeText="Next-Gen React Components"
+      badgeHref="/docs"
+      titlePrefix="Build Interactive "
+      typingWords={[
+        "Interfaces",
+        "Components",
+        "Experiences",
+        "Animations",
+      ]}
+      titleSuffix=""
+      subtitle="A meticulous library of React components & interactive blocks, engineered for seamless performance with Tailwind CSS, TypeScript, GSAP, and Motion."
+      cliCommand="npx shadcn@latest add @algorize-ui/button"
+      primaryActionLabel="Browse Components"
+      primaryActionHref="/docs"
+      secondaryActionLabel="Star on GitHub"
+      secondaryActionHref="https://github.com/AlgorizeTech"
+    />
+  );
+}`;
+
+<ExampleShowcase
+  name="homepage-hero-typing"
+  colorControl
+  columns={1}
+  minHeight={420}
+  examples={[
+    {
+      title: "Typing hero",
+      propNotes: [
+        {
+          lead: "Set",
+          prop: "variant",
+          value: '"typing"',
+          effect: "for a character-by-character typewriter animation.",
+        },
+      ],
+      usage: usageTyping,
+    },
+    {
+      title: "Typing hero, fixed title",
+      subheading: "The same hero with the title held in place while the word types and deletes.",
+      propNotes: [
+        {
+          lead: "Set",
+          prop: "prefixPosition",
+          value: '"fixed"',
+          effect: "so the text before the word keeps its place instead of re-centring.",
+        },
+      ],
+      props: { prefixPosition: "fixed" },
+      usage: usageTypingFixed,
+    },
+  ]}
+/>
+
+export const usageSlider = `import { HeroBlock } from "@/components/custom/blocks/HeroBlock";
+
+export default function Page() {
+  return (
+    <HeroBlock
+      variant="slider"
+      badgeText="Full-Stack Software Engineer"
+      badgeHref="/docs"
+      titlePrefix="Building & Engineering "
+      titleSuffix="Full-Stack Digital Products"
+      subtitle="Full-stack software engineer dedicated to building scalable web applications, modern SaaS platforms, and high-performance digital experiences."
+      primaryActionLabel="Explore Projects"
+      primaryActionHref="/projects"
+      secondaryActionLabel="Contact Me"
+      secondaryActionHref="#contact"
+      mainImage="https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_800,c_limit/v1790150482/photo-1524504388940-b1c1722653e1-1790150482279.jpg"
+      sliderImages={[
+        "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_600,c_limit/v1790148864/photo-1618005182384-a83a8bd57fbe-1790148865111.jpg",
+        "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_600,c_limit/v1790158810/photo-1634017839464-5c339ebe3cb4-1790158812203.jpg",
+        "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_600,c_limit/v1790158809/photo-1618005198919-d3d4b5a92ead-1790158812198.jpg"
+      ]}
+    />
+  );
+}`;
+
+<ExampleShowcase
+  name="homepage-hero-slider"
+  colorControl
+  columns={1}
+  minHeight={420}
+  examples={[
+    {
+      title: "Split marquee slider hero",
+      propNotes: [
+        {
+          lead: "Set",
+          prop: "variant",
+          value: '"slider"',
+          effect: "for a split 2-column hero featuring a continuous right-to-left thumbnail slider and floating visual cards.",
+        },
+      ],
+      usage: usageSlider,
+    },
+  ]}
+/>
+
+export const usageGlowArc = `import { HeroBlock } from "@/components/custom/blocks/HeroBlock";
+
+export default function Page() {
+  return (
+    <HeroBlock
+      variant="pet-shop"
+      badgeText="Certified Organic & Vet Approved"
+      titlePrefix="All Pet Essentials"
+      titleSuffix="Delivered To Your Door"
+      subtitle="Discover nutritionist-crafted organic meals, orthopedic beds, durable interactive toys, and instant 24/7 vet consultations."
+      categories={["Dry Food", "Toys", "Grooming", "Wellness", "Subscription"]}
+      primaryActionLabel="Shop Dog Supplies"
+      primaryActionHref="/shop/dog"
+      secondaryActionLabel="Shop Cat Care"
+      secondaryActionHref="/shop/cat"
+      petImage="https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_800,c_limit/v1790150479/photo-1543466835-00a7907e9de1-1790150482273.jpg"
+      secondaryPetImage="https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_800,c_limit/v1790150481/photo-1514888286974-6c03e2ca1dba-1790150482276.jpg"
+    />
+  );
+}`;
+
+<ExampleShowcase
+  name="homepage-hero-glow-arc"
+  colorControl
+  columns={1}
+  minHeight={450}
+  examples={[
+    {
+      title: "Pet Shop & Animal Care Hero",
+      propNotes: [
+        {
+          lead: "Set",
+          prop: "variant",
+          value: '"pet-shop"',
+          effect: "for a clean, minimal e-commerce hero layout with circular image showcase and feature badges.",
+        },
+      ],
+      usage: usageGlowArc,
+    },
+  ]}
+/>
+
+export const usageDoctor = `import { HeroBlock } from "@/components/custom/blocks/HeroBlock";
+
+export default function Page() {
+  return (
+    <HeroBlock
+      variant="doctor"
+      titlePrefix="Trusted Kits"
+      titleSuffix="Real Results"
+      subtitle="Order medical-grade test kits, return by mail, and get fast, accurate, secure results online — anytime, anywhere, hassle-free."
+      primaryActionLabel="Order Kit"
+      primaryActionHref="/order"
+      secondaryActionLabel="See How Its Work"
+      secondaryActionHref="/how-it-works"
+      ratingText="100%"
+      featurePillText="98%"
+      badgeTags={["Safe & Private Results", "Satisfaction rate"]}
+      petImage="https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_800,c_limit/v1790158809/photo-1622253692010-333f2da6031d-1790158812201.jpg"
+      secondaryPetImage="https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_800,c_limit/v1790150483/photo-1576091160399-112ba8d25d1d-1790150482281.jpg"
+      mainImage="https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_800,c_limit/v1790150483/photo-1584036561566-baf8f5f1b144-1790150482282.jpg"
+    />
+  );
+}`;
+
+<ExampleShowcase
+  name="hero-doctor"
+  colorControl
+  columns={1}
+  minHeight={480}
+  examples={[
+    {
+      title: "Doctor Portal & Healthcare Hero",
+      propNotes: [
+        {
+          lead: "Set",
+          prop: "variant",
+          value: '"doctor"',
+          effect: "for a clean medical & healthcare hero with specialist doctor showcase and appointment booking CTA.",
+        },
+      ],
+      usage: usageDoctor,
+    },
+  ]}
+/>
+
+export const usageFacility = `import { HeroBlock } from "@/components/custom/blocks/HeroBlock";
+
+export default function Page() {
+  return (
+    <HeroBlock
+      variant="facility"
+      titlePrefix="Precision facility services. Certified. For environments that can't fail."
+      subtitle="Certified, data-driven facility services across mission-critical environments."
+      primaryActionLabel="Request a facility audit"
+      primaryActionHref="#audit"
+    />
+  );
+}`;
+
+<ExampleShowcase
+  name="hero-facility"
+  colorControl
+  columns={1}
+  minHeight={500}
+  examples={[
+    {
+      title: "Precision Facility & CAD Grid Hero",
+      propNotes: [
+        {
+          lead: "Set",
+          prop: "variant",
+          value: '"facility"',
+          effect: "for an architectural CAD blueprint grid hero with interactive morphing shape responding to left and right grid hover zones.",
+        },
+      ],
+      usage: usageFacility,
+    },
+  ]}
+/>
+
+export const usageVortex = `"use client";
+
+import { HeroBlock } from "@/components/custom/blocks/HeroBlock";
+
+export default function VortexHeroExample() {
+  return (
+    <HeroBlock
+      variant="vortex"
+      eyebrow="CLIMATE RISK, PER PARCEL"
+      titlePrefix={"One street,\\none storm,\\ntwo prices"}
+      subtitle={"Flood, wildfire and wind priced for one\\naddress, not the postcode around it"}
+      primaryActionLabel="Score an address"
+      primaryActionHref="#"
+      metrics={[
+        { value: "134M", label: "PARCELS COVERED" },
+        { value: "412K", label: "SCORES A DAY" },
+        { value: "180ms", label: "P95 RESPONSE" },
+      ]}
+      hudTitle="GUST FIELD"
+      hudTime="T+36:30"
+      hudMetrics={[
+        { label: "SUSTAINED", value: "120 kt" },
+        { label: "CENTRAL", value: "961 mb" },
+        { label: "EYE", value: "68 km" },
+        { label: "TRACK", value: "W 271°" },
+        { label: "SWATH Ø", value: "16 km" },
+      ]}
+    />
+  );
+}`;
+
+<ExampleShowcase
+  name="hero-vortex"
+  colorControl={false}
+  columns={1}
+  minHeight={580}
+  examples={[
+    {
+      title: "Atmospheric Cyclone Radar Hero",
+      propNotes: [
+        {
+          lead: "Set",
+          prop: "variant",
+          value: '"vortex"',
+          effect: "for a high-tech climate risk radar hero featuring an animated multi-armed rotating cyclone vortex, HUD telemetry overlay, and parcel metrics.",
+        },
+      ],
+      usage: usageVortex,
+    },
+  ]}
+/>
+
+### Installation
+
+<Installation name="hero" showSetupPath={false} />
+
+### Props Reference
+
+<div className="overflow-x-auto mb-8">
+  <table>
+    <thead>
+      <tr>
+        <th>Prop</th>
+        <th>Type</th>
+        <th>Default</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>
+          <code>variant</code>
+        </td>
+        <td>
+          <code>"bounce" | "typing" | "slider" | "glow-arc" | "pet-shop" | "doctor" | "facility" | "vortex"</code>
+        </td>
+        <td>
+          <code>"bounce"</code>
+        </td>
+        <td>
+          The layout & animation style. <code>"bounce"</code> uses spring word motion; <code>"typing"</code> uses typewriter effect; <code>"slider"</code> renders split 2-column hero with continuous marquee; <code>"glow-arc"</code> / <code>"pet-shop"</code> renders pet care hero; <code>"doctor"</code> renders medical test kits hero; <code>"facility"</code> renders architectural CAD blueprint grid hero with interactive morphing shape; <code>"vortex"</code> renders atmospheric cyclone radar simulation with animated rotating canvas and telemetry HUD.
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <code>typingWords</code>
+        </td>
+        <td>
+          <code>string[]</code>
+        </td>
+        <td>
+          <code>["Interfaces", "Components", …]</code>
+        </td>
+        <td>
+          The rotating words between <code>titlePrefix</code> and <code>titleSuffix</code>.
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <code>prefixPosition</code>
+        </td>
+        <td>
+          <code>"fixed" | "fluid"</code>
+        </td>
+        <td>
+          <code>"fluid"</code> for typing, <code>"fixed"</code> for bounce
+        </td>
+        <td>
+          Whether the title before the rotating word holds still (<code>"fixed"</code>, keeping the longest word's width) or re-centres as the word types, deletes or swaps (<code>"fluid"</code>). The word itself is an <code>AnimatedTypographyBlock</code>.
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <code>petImage</code> · <code>secondaryPetImage</code>
+        </td>
+        <td>
+          <code>string</code>
+        </td>
+        <td>
+          <code>Unsplash URLs</code>
+        </td>
+        <td>
+          Custom image URLs for the main featured pet photo and secondary avatar badge photo (used when <code>variant="pet-shop"</code>).
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <code>sliderImages</code>
+        </td>
+        <td>
+          <code>string[]</code>
+        </td>
+        <td>
+          <code>[…]</code>
+        </td>
+        <td>
+          Array of thumbnail image URLs for the continuous right-to-left marquee slider (used when <code>variant="slider"</code>).
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <code>mainImage</code>
+        </td>
+        <td>
+          <code>string</code>
+        </td>
+        <td>
+          <code>"…"</code>
+        </td>
+        <td>
+          Featured image URL for the right column (used when <code>variant="slider"</code>).
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <code>badgeText</code> · <code>badgeHref</code> · <code>titlePrefix</code> · <code>titleSuffix</code> · <code>subtitle</code> · <code>cliCommand</code>
+        </td>
+        <td>
+          <code>string</code>
+        </td>
+        <td>
+          <code>—</code>
+        </td>
+        <td>
+          Every string in the section is a prop, each with a sensible default. <code>cliCommand</code> feeds the one-click copy button.
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <code>primaryActionLabel</code> · <code>primaryActionHref</code> · <code>secondaryActionLabel</code> · <code>secondaryActionHref</code>
+        </td>
+        <td>
+          <code>string</code>
+        </td>
+        <td>
+          <code>—</code>
+        </td>
+        <td>Label and destination for each of the two call-to-action buttons.</td>
+      </tr>
+      <tr>
+        <td>
+          <code>eyebrow</code>
+        </td>
+        <td>
+          <code>string</code>
+        </td>
+        <td>
+          <code>"CLIMATE RISK, PER PARCEL"</code>
+        </td>
+        <td>
+          Monospace uppercase eyebrow text shown above the main title (used in <code>variant="vortex"</code>).
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <code>metrics</code>
+        </td>
+        <td>
+          <code>{"Array<{ value: string; label: string }>"}</code>
+        </td>
+        <td>
+          <code>134M / 412K / 180ms</code>
+        </td>
+        <td>
+          Array of 3 summary metrics shown at the bottom of the left column (used in <code>variant="vortex"</code>).
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <code>hudTitle</code> · <code>hudTime</code> · <code>hudMetrics</code>
+        </td>
+        <td>
+          <code>string</code> / <code>Array</code>
+        </td>
+        <td>
+          <code>"GUST FIELD" / "T+36:30" / […]</code>
+        </td>
+        <td>
+          Telemetry HUD card header and data points displayed in the bottom-right corner of the radar panel (used in <code>variant="vortex"</code>).
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <code>rotationSpeed</code>
+        </td>
+        <td>
+          <code>number</code>
+        </td>
+        <td>
+          <code>0.0025</code>
+        </td>
+        <td>
+          Angular rotation speed in radians per frame for the animated cyclone vortex canvas (used in <code>variant="vortex"</code>).
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <code>color</code>
+        </td>
+        <td>
+          <code>string</code>
+        </td>
+        <td>
+          <code>undefined</code>
+        </td>
+        <td>
+          Accent color — a preset name or any CSS color. Left unset it inherits your theme.
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>

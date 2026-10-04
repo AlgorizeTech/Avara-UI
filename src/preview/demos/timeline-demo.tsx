@@ -17,7 +17,7 @@ const sampleData: TimelineItemType[] = [
     icon: Package,
     status: "completed",
     action: (
-      <button className="flex items-center gap-2 text-xs font-bold px-3 py-1.5 rounded-lg border border-zinc-200 dark:border-zinc-700 bg-white dark:bg-zinc-800 hover:bg-zinc-50 dark:hover:bg-zinc-700 transition-colors">
+      <button className="flex items-center gap-2 text-xs font-semibold px-3 py-1.5 rounded-lg border border-border bg-card hover:bg-muted transition-colors">
         <Download className="w-3 h-3" />
         Receipt
       </button>
@@ -75,8 +75,21 @@ export default function TimelineDemo({
 }) {
   return (
     <div
-      className={`w-full flex flex-col items-center justify-center min-h-[500px] ${variant === "glass" ? "bg-gradient-to-br from-indigo-500/80 via-purple-500/80 to-pink-500/80 rounded-2xl p-6 sm:p-12" : ""} relative z-10 overflow-hidden`}
+      className={`w-full flex flex-col items-center justify-center min-h-[500px] ${
+        variant === "glass" ? "bg-cover bg-center rounded-2xl p-6 sm:p-12" : ""
+      } relative z-10 overflow-hidden`}
+      style={
+        variant === "glass"
+          ? {
+              backgroundImage:
+                'url("https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_1200,c_limit/v1790146209/photo-1470071459604-3b5ec3a7fe05-1790146212205.jpg")',
+            }
+          : undefined
+      }
     >
+      {variant === "glass" && (
+        <div className="absolute inset-0 bg-black/20 rounded-2xl pointer-events-none" />
+      )}
       <div className="w-full max-w-2xl mx-auto">
         <TimelineBlock
           key={`${variant}-${layout}-${color}-${animate}`} // Force re-mount to show entry animation repeatedly

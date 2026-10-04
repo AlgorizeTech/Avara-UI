@@ -1,6 +1,65 @@
 import fs from "fs";
 import path from "path";
 import { glob } from "glob";
+import { BUILT_FRAMEWORKS } from "../lib/framework";
+import { REGISTRY_ADD_ARGS, REGISTRY_NAMESPACE, addArgsFor, resolveAddArg } from "../lib/registry";
+import { stripUseClient } from "../lib/snippet";
+import registry from "../../registry.json";
+import { countComponents } from "../lib/component-count";
+
+/** The `{COMPONENT_COUNT}` a page prints, resolved from the same registry. */
+const COMPONENT_COUNT = String(countComponents(registry.items as { name: string }[]));
+
+/** Items that ship a Motion twin beside their GSAP default. */
+const MOTION_TWINS = new Set(
+  (registry.items as { name: string }[])
+    .map((item) => item.name)
+    .filter((name) => name.endsWith("-motion"))
+    .map((name) => name.replace(/-motion$/, "")),
+);
+
+/** The dynamic route segment, as it appears on disk. */
+const FRAMEWORK_SEGMENT = "[framework]";
+
+/**
+ * Mirrors `resolveSegments` in components/site/cli.tsx for the `add` case:
+ * `add button.json utils` → `add @algorize-ui/button utils`. Other commands
+ * (`init`, `registry add …`, `install gsap`) pass through untouched.
+ */
+const expandCliShorthand = (command: string) => {
+  const add = command.match(/^add\s+(.+)$/);
+  if (!add) return command;
+  return `add ${add[1].trim().split(/\s+/).map((arg) => resolveAddArg(arg)).join(" ")}`;
+};
+
+/**
+ * Applies the page's React rule to a whole markdown document.
+ *
+ * The mirror is a dump of the MDX source, so a directive shows up as the first
+ * line inside a snippet's template literal — ``usageDefault = `"use client";``.
+ * Only the opening of each literal is handed to the shared stripper, so prose
+ * that merely *mentions* the directive is never touched.
+ */
+const stripUseClientFromSnippets = (md: string) =>
+  md.replace(/(=\s*`)((?:[^\n]*\n){0,2})/g, (_match, opener: string, head: string) =>
+    opener + stripUseClient(head),
+  );
+
+/**
+ * Expands one MDX file into the URL paths it is actually published at.
+ *
+ * The docs tree lives under a dynamic `[framework]` segment, so the on-disk path
+ * is `[framework]/accordion` while the real URLs are `nextjs/accordion` and
+ * `reactjs/accordion`. Without this, the flattening below produced a file named
+ * literally `[framework]-accordion.md` — the right *number* of files, so a count
+ * check passes, but under names no route ever requests.
+ */
+function urlPathsFor(urlPath: string): string[] {
+  if (!urlPath.includes(FRAMEWORK_SEGMENT)) return [urlPath];
+  return BUILT_FRAMEWORKS.map((framework) =>
+    urlPath.replace(FRAMEWORK_SEGMENT, framework),
+  );
+}
 
 const docsPath = path.join(__dirname, "../app/docs");
 const publicPath = path.join(__dirname, "../../public");
@@ -37,8 +96,11 @@ function convertMdxToMd(content: string, componentPath: string): string {
   // Remove JSX component imports that are on separate lines
   mdContent = mdContent.replace(/^import\s+.*?\{[\s\S]*?\}\s+from\s+.*?;?\s*$/gm, '');
   
+  // Resolve the component count the page prints as a JSX expression.
+  mdContent = mdContent.replace(/\{COMPONENT_COUNT\}/g, COMPONENT_COUNT);
+
   // Convert JSX components to markdown equivalents
-  
+
   // Convert <AI dir="left"/> to nothing (remove it)
   mdContent = mdContent.replace(/<AI\s+dir="[^"]*"\s*\/>/g, '');
   
@@ -94,11 +156,35 @@ function convertMdxToMd(content: string, componentPath: string): string {
     }
   );
   
-  // Convert <Cli> component to code block
+  // Convert <Cli> component to code block. The page writes `add foo.json` as
+  // shorthand for one of our items; expand it exactly as <Cli> does on the web,
+  // or the markdown would tell a reader to run a command the CLI rejects.
   mdContent = mdContent.replace(
     /<Cli\s+command=\{`([^`]+)`\}\s*\/>/g,
-    '```bash\nnpx shadcn@latest $1\n```'
+    (_, command: string) => '```bash\nnpx shadcn@latest ' + expandCliShorthand(command) + '\n```'
   );
+
+  // Convert <Installation name="…"> to the command it renders. The web
+  // component also lists dependencies read from registry.json; the CLI
+  // installs those itself, so the command alone is enough here.
+  mdContent = mdContent.replace(
+    /<Installation\s+name="([^"]+)"[^>]*\/>/g,
+    (_, name: string) =>
+      `Register the ${REGISTRY_NAMESPACE} registry once per project, then add the component:\n\n` +
+      '```bash\n' +
+      `npx shadcn@latest ${REGISTRY_ADD_ARGS}\n` +
+      `npx shadcn@latest ${addArgsFor(name)}\n` +
+      '```' +
+      // Dual components: the same file, built on Motion instead of GSAP.
+      (MOTION_TWINS.has(name)
+        ? '\n\nOr the Motion build (same props, same file — install one):\n\n' +
+          '```bash\n' +
+          `npx shadcn@latest ${addArgsFor(`${name}-motion`)}\n` +
+          '```'
+        : '')
+  );
+  // <InstallGroup> only wraps several <Installation>s; drop the wrapper.
+  mdContent = mdContent.replace(/<\/?InstallGroup>/g, '');
   
   // Convert <CodeBlock> to a reference
   mdContent = mdContent.replace(
@@ -120,7 +206,7 @@ function convertMdxToMd(content: string, componentPath: string): string {
   mdContent = mdContent.trim();
   
   // Add component path reference
-  const pathReference = `\n\n---\n\n**Component Path:** \`${componentPath}\`\n\n**Web Version:** Visit the interactive version at the corresponding URL on the Next.js documentation site for live previews and interactive examples.\n`;
+  const pathReference = `\n\n---\n\n**Component Path:** \`${componentPath}\`\n\n**Web Version:** Visit the corresponding URL on the Algorize UI documentation site for live previews and interactive examples.\n`;
   
   return mdContent + pathReference;
 }
@@ -129,15 +215,40 @@ function convertMdxToMd(content: string, componentPath: string): string {
  * Finds all MDX files in the docs directory
  */
 async function findMdxFiles(): Promise<MdxFile[]> {
-  const pattern = path.join(docsPath, "**/page.mdx").replace(/\\/g, '/');
-  const files = await glob(pattern);
-  
-  return files.map(filePath => {
+  // `page.mdx` covers the 99 pages that are a single document. The forked guides
+  // — installation and first-app — instead keep one MDX per framework under a
+  // private `_content/` folder, chosen by a sibling `page.tsx`. Without the
+  // second pattern their markdown mirrors would silently go stale.
+  const patterns = [
+    path.join(docsPath, "**/page.mdx").replace(/\\/g, '/'),
+    path.join(docsPath, "**/_content/*.mdx").replace(/\\/g, '/'),
+  ];
+  const files = (await Promise.all(patterns.map((p) => glob(p)))).flat();
+
+  return files.filter(filePath => {
+    // A forked guide names its framework in the filename, so it must be dropped
+    // when that framework is switched off — otherwise turning React off would
+    // still publish reactjs-installation.md for a URL that now 404s.
+    const forked = filePath.replace(/\\/g, '/').match(/\/_content\/([^/]+)\.mdx$/);
+    return !forked || (BUILT_FRAMEWORKS as readonly string[]).includes(forked[1]);
+  }).map(filePath => {
     const content = fs.readFileSync(filePath, 'utf-8');
     const relativePath = path.relative(docsPath, filePath);
     // Extract component name from path (remove \page.mdx and normalize slashes)
-    const urlPath = relativePath.replace(/\\page\.mdx$/, '').replace(/\/page\.mdx$/, '').replace(/\\/g, '/');
-    
+    let urlPath = relativePath.replace(/\\page\.mdx$/, '').replace(/\/page\.mdx$/, '').replace(/\\/g, '/');
+
+    // `[framework]/installation/_content/reactjs.mdx` publishes at
+    // `reactjs/installation`: the private folder drops out and the filename is
+    // itself the framework, so it replaces the dynamic segment rather than
+    // expanding into every framework the way a shared page does.
+    // The `.mdx` has to be stripped explicitly here: the two replaces above only
+    // strip it as part of `page.mdx`, so a `_content` file keeps its extension
+    // and would flatten into `nextjs.mdx-installation.md`.
+    const forked = urlPath.match(/^(.*)\/_content\/([^/]+)\.mdx$/);
+    if (forked) {
+      urlPath = forked[1].replace(FRAMEWORK_SEGMENT, forked[2]);
+    }
+
     return {
       path: filePath,
       content,
@@ -156,6 +267,16 @@ async function buildMdFiles(): Promise<void> {
   try {
     const mdxFiles = await findMdxFiles();
     console.log(`📁 Found ${mdxFiles.length} MDX files to convert`);
+
+    // Clear previous output first. The script only ever wrote files, never
+    // removed them, so a page that was renamed or a framework that was switched
+    // off left its mirror behind indefinitely — served, stale, and looking
+    // exactly like a current one.
+    if (fs.existsSync(mdOutputPath)) {
+      for (const stale of fs.readdirSync(mdOutputPath)) {
+        if (stale.endsWith('.md')) fs.unlinkSync(path.join(mdOutputPath, stale));
+      }
+    }
     
     // Create index of all generated MD files
     const mdIndex: Array<{
@@ -168,42 +289,66 @@ async function buildMdFiles(): Promise<void> {
     for (const mdxFile of mdxFiles) {
       try {
         const mdContent = convertMdxToMd(mdxFile.content, mdxFile.relativePath);
-        
-        // Create the output path with clean naming that matches the URL structure
-        let cleanName;
-        if (mdxFile.urlPath === '') {
-          cleanName = 'index';
-        } else {
-          // Use the direct component name from URL path, replace slashes with dashes for flat structure
-          cleanName = mdxFile.urlPath.replace(/\//g, '-');
-        }
-        
-        const outputFileName = `${cleanName}.md`;
-        
+
         // Ensure output directory exists
         if (!fs.existsSync(mdOutputPath)) {
           fs.mkdirSync(mdOutputPath, { recursive: true });
         }
-        
-        const outputPath = path.join(mdOutputPath, outputFileName);
-        
-        // Write the MD file
-        fs.writeFileSync(outputPath, mdContent, 'utf-8');
-        
-        // Add to index
-        mdIndex.push({
-          name: mdxFile.urlPath || 'docs',
-          path: `/docs/${outputFileName}`,
-          url: `/docs/${mdxFile.urlPath}`,
-          originalMdx: mdxFile.relativePath
-        });
-        
-        console.log(`✅ Generated: ${outputFileName} (from ${mdxFile.relativePath})`);
+
+        // One source file publishes at one URL per built framework. The content
+        // is identical until snippets resolve per framework; emitting both now
+        // means ai-button — which derives the filename straight from the current
+        // pathname — resolves on either route with no special-casing.
+        for (const urlPath of urlPathsFor(mdxFile.urlPath)) {
+          // Create the output path with clean naming that matches the URL structure
+          const cleanName = urlPath === '' ? 'index' : urlPath.replace(/\//g, '-');
+          const outputFileName = `${cleanName}.md`;
+          const outputPath = path.join(mdOutputPath, outputFileName);
+
+          // The page renders `"use client"` only for Next.js (see resolveUsage
+          // in lib/snippet.ts); the mirror has to make the same edit, or the
+          // React markdown would disagree with the React page it mirrors.
+          const frameworkContent = urlPath.startsWith("nextjs")
+            ? mdContent
+            : stripUseClientFromSnippets(mdContent);
+
+          // Write the MD file
+          fs.writeFileSync(outputPath, frameworkContent, 'utf-8');
+
+          // Add to index
+          mdIndex.push({
+            name: urlPath || 'docs',
+            path: `/docs/${outputFileName}`,
+            url: `/docs/${urlPath}`,
+            originalMdx: mdxFile.relativePath
+          });
+
+          console.log(`✅ Generated: ${outputFileName} (from ${mdxFile.relativePath})`);
+        }
       } catch (error) {
         console.error(`❌ Error processing ${mdxFile.relativePath}:`, error);
       }
     }
     
+    // Both of these are green-build failures otherwise: the per-file catch above
+    // logs and continues, so a docs-tree rename that stops the glob matching, or
+    // a dynamic segment that never got expanded, would leave the script
+    // "succeeding" with nothing usable on disk.
+    if (mdIndex.length === 0) {
+      throw new Error(
+        'build-md-files: produced 0 files — the docs glob matched nothing. Did the ' +
+        'docs tree move?'
+      );
+    }
+
+    const malformed = mdIndex.filter((file) => /[[\]]/.test(file.path));
+    if (malformed.length > 0) {
+      throw new Error(
+        `build-md-files: ${malformed.length} output name(s) contain an unexpanded ` +
+        `dynamic segment, e.g. ${malformed[0].path}. Add it to urlPathsFor().`
+      );
+    }
+
     // Write the index file
     const indexContent = {
       generatedAt: new Date().toISOString(),
@@ -218,7 +363,7 @@ async function buildMdFiles(): Promise<void> {
     );
     
     // Create a README for the MD directory
-    const readmeContent = `# Next.js Documentation - Markdown Files
+    const readmeContent = `# Algorize UI - Markdown Files
 
 This directory contains auto-generated Markdown versions of all MDX documentation pages.
 

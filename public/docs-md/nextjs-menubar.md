@@ -1,20 +1,14 @@
+export const metadata = docsPageMetadata("menubar");
+
 # Menubar
 
 A visually persistent, OS-style menu component that provides quick access to a consistent set of commands.
 
 Native application menus have complex, unwritten interaction rules. If you click to open "File", and then hover your mouse horizontally over "Edit", the "Edit" menu should instantly open while "File" closes. Building this from scratch is notoriously difficult. This `MenubarBlock` solves all of that natively in React using Context, providing a 100% dependency-free implementation.
 
-## Examples
+Click a trigger to open its menu, then hover the neighbours — they swap instantly, exactly like a native app.
 
-Click a trigger to open its menu, then hover the neighbours — they swap instantly, exactly like a native app. The first example's **Code** tab contains the full component source.
-
-export const usageDefault = `import {
-  Menubar,
-  MenubarContent,
-  MenubarItem,
-  MenubarMenu,
-  MenubarTrigger,
-} from "@/components/custom/blocks/MenubarBlock";
+export const usageDefault = `"use client";
 
 export default function TopNav() {
   return (
@@ -23,156 +17,133 @@ export default function TopNav() {
       
         File
         
-           console.log("New Tab")}>New Tab
-          New Window
-          Open File…
+          {/* shrink-0 keeps the icon square when a narrow menu squeezes the row */}
+           console.log("New Tab")}>
+             New Tab
+
+             New Window
+
+             Open File…
 
         Edit
-        
-          Undo
-          Redo
-          Cut
+
+             Undo
+
+             Redo
+
+             Cut
 
   );
 }`;
 
-export const usageShortcuts = `import {
-  Menubar,
-  MenubarContent,
-  MenubarItem,
-  MenubarMenu,
-  MenubarSeparator,
-  MenubarShortcut,
-  MenubarTrigger,
-} from "@/components/custom/blocks/MenubarBlock";
+export const usageApp = `"use client";
 
-export default function EditMenu() {
-  return (
-
-        Edit
-        
-          {/* MenubarShortcut right-aligns itself inside the item */}
-          
-            Undo ⌘Z
-
-            Redo ⇧⌘Z
-
-            Cut ⌘X
-
-            Copy ⌘C
-
-            Paste ⌘V
-
-  );
-}`;
-
-export const usageIcons = `import { useState } from "react";
-
-export default function ViewMenu() {
-  const [theme, setTheme] = useState("System");
-
-  return (
-
-        View
-        
-          {/* inset lines the label up with the icon-bearing items below */}
-          Theme Options
-
-           setTheme("Light")}>
-             Light Mode
-            {theme === "Light" && (
-              Active
-            )}
-          
-           setTheme("Dark")}>
-             Dark Mode
-            {theme === "Dark" && (
-              Active
-            )}
-          
-           setTheme("System")}>
-             System Default
-            {theme === "System" && (
-              Active
-            )}
-
-  );
-}`;
-
-export const usageDisabled = `import {
-  Menubar,
-  MenubarContent,
-  MenubarItem,
-  MenubarMenu,
-  MenubarSeparator,
-  MenubarShortcut,
-  MenubarTrigger,
-} from "@/components/custom/blocks/MenubarBlock";
-
-export default function FileMenu() {
-  return (
-
-        File
-        
-          Save
-
-          {/* disabled dims the row and kills pointer events + onClick */}
-          Save All
-
-          {/* className styles a single destructive row */}
-          
-            Quit Nexus ⌘Q
-
-  );
-}`;
-
-export const usageApp = `import {
-  Menubar,
-  MenubarContent,
-  MenubarItem,
-  MenubarLabel,
-  MenubarMenu,
-  MenubarSeparator,
-  MenubarShortcut,
-  MenubarTrigger,
-} from "@/components/custom/blocks/MenubarBlock";
+/** Every row carries one, so no row needs \`inset\` to fake the gutter. */
+const icon = "w-4 h-4 mr-2 shrink-0";
+/** Marks the active theme; ml-auto keeps it clear of the label. */
+const activeMark = "ml-auto w-4 h-4 shrink-0 text-primary";
 
 export default function AppWindow() {
+  const [theme, setTheme] = useState("System");
+
+  // No overflow-hidden on the frame: it would crop any menu taller or wider
+  // than the window. The header rounds its own top corners instead.
   return (
     
-      {/* Strip the Menubar's own chrome so it reads as part of the title bar */}
+      {/* Native OS-style Application Header */}
 
+          {/* 1. FILE MENU */}
+          
             Nexus UI
-            
-              About Nexus
 
-                Preferences… ⌘,
+                 About Nexus
 
+                 Preferences...{" "}
+                ⌘,
+
+                 Hide Nexus{" "}
+                ⌘H
+
+                 Hide Others{" "}
+                ⇧⌘H
+
+                 Show All
+
+                 Quit Nexus{" "}
+                ⌘Q
+
+          {/* 2. EDIT MENU */}
+          
             Edit
 
-                Undo ⌘Z
+                 Undo{" "}
+                ⌘Z
 
+                 Redo{" "}
+                ⇧⌘Z
+
+                 Cut{" "}
+                ⌘X
+
+                 Copy{" "}
+                ⌘C
+
+                 Paste{" "}
+                ⌘V
+
+          {/* 3. VIEW (THEME) MENU */}
+          
+            View
+            
+              {/* Labels sit flush left; the rows carry the icon gutter. */}
+              Theme Options
+               setTheme("Light")}>
+                 Light Mode
+                {theme === "Light" && }
+              
+               setTheme("Dark")}>
+                 Dark Mode
+                {theme === "Dark" && }
+              
+               setTheme("System")}>
+                 System Default
+                {theme === "System" && }
+
+                 Toggle Fullscreen{" "}
+                F11
+
+          {/* 4. PROFILES MENU */}
+          
             Profiles
-            {/* align anchors the dropdown to the trigger: start | center | end */}
             
               Active Account
               
                  Andy Bernard
 
-              Add Account…
+                 Add Account...
 
-      {/* your app canvas */}
-    
+                 Manage Profiles
+
+      {/* Fake App Body */}
+
+          Application Canvas
+
+          Click the menus at the top to test the interaction states and
+          cross-menu hover switching.
+
   );
 }`;
 
 ## Installation
 
-### Copy the Component
+Register the @algorize-ui registry once per project, then add the component:
 
-This entire suite is completely dependency-free. It uses standard React Context to share state between the triggers and the dropdowns, meaning it adds almost zero weight to your JavaScript bundle compared to heavy external UI libraries.
+```bash
+npx shadcn@latest registry add @algorize-ui=https://algorize-ui.vercel.app/r/{name}.json
+npx shadcn@latest add @algorize-ui/menubar
+```
 
-Create a new file at `components/custom/blocks/MenubarBlock.tsx` and copy the engine code from the **Code** tab of the first example above.
+## Examples
 
 ## Features
 Learn about the Menubar's desktop-style navigation features, supporting complex nested menus, radio groups, and checkboxes.
@@ -266,6 +237,6 @@ Learn about the Menubar's desktop-style navigation features, supporting complex 
 
 ---
 
-**Component Path:** `nextjs\menubar\page.mdx`
+**Component Path:** `[framework]\menubar\page.mdx`
 
-**Web Version:** Visit the interactive version at the corresponding URL on the Next.js documentation site for live previews and interactive examples.
+**Web Version:** Visit the corresponding URL on the Algorize UI documentation site for live previews and interactive examples.

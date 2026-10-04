@@ -1,10 +1,10 @@
+export const metadata = docsPageMetadata("counter");
+
 # Counter Block
 
-A multi-purpose, highly animated Counter component. Whether you need a user-interactive Stepper for e-commerce, an animated statistics ticker, a circular progress tracker, or a promotional countdown timer, this block handles it all with built-in GSAP fluid animations.
+A multi-purpose, highly animated Counter component. Whether you need a user-interactive Stepper for e-commerce, an animated statistics ticker, a circular progress tracker, or a promotional countdown timer, this block handles it all with built-in fluid animations. The countdown comes in two designs: framed figures under a pill, or `slide` — soft tiles where only the figure that changed slides, the same countdown the Waitlist launch panel uses.
 
-## Examples
-
-Explore the different variations of the Counter component — each example shows a live preview with the exact code to copy. The first example's **Code** tab contains the full component source.
+Explore the different variations of the Counter component — each example shows a live preview with the exact code to copy.
 
 export const usageStepper = `import { CounterBlock } from "@/components/custom/blocks/CounterBlock";
 
@@ -14,11 +14,29 @@ export default function QuantityStepper() {
   );
 }`;
 
-export const usageOutline = ``;
+export const usageOutline = `import { CounterBlock } from "@/components/custom/blocks/CounterBlock";
 
-export const usageSoft = ``;
+export default function OutlineStepper() {
+  return (
+    
+  );
+}`;
 
-export const usageVertical = ``;
+export const usageSoft = `import { CounterBlock } from "@/components/custom/blocks/CounterBlock";
+
+export default function SoftStepper() {
+  return (
+    
+  );
+}`;
+
+export const usageVertical = `import { CounterBlock } from "@/components/custom/blocks/CounterBlock";
+
+export default function VerticalStepper() {
+  return (
+    
+  );
+}`;
 
 export const usageAnimated = `import { CounterBlock } from "@/components/custom/blocks/CounterBlock";
 
@@ -42,15 +60,24 @@ export default function LaunchCountdown() {
   return ;
 }`;
 
+export const usageSlide = `import { CounterBlock } from "@/components/custom/blocks/CounterBlock";
+
+export default function OpensIn() {
+  return (
+    
+  );
+}`;
+
 ## Installation
 
-### 1. Install Dependencies
-
-This component relies heavily on `gsap` to handle the rapid number interpolations, bouncy spring animations, and SVG stroke manipulations. It also utilizes `lucide-react` for standard UI icons.
+Register the @algorize-ui registry once per project, then add the component:
 
 ```bash
-npm install gsap lucide-react
+npx shadcn@latest registry add @algorize-ui=https://algorize-ui.vercel.app/r/{name}.json
+npx shadcn@latest add @algorize-ui/counter
 ```
+
+## Examples
 
 ## Features
 Explore the Counter component's number animation features, including customizable easing, duration, and formatting options.
@@ -89,24 +116,21 @@ Explore the Counter component's number animation features, including customizabl
 
           variant
 
-          "default" | "outline" | "soft" | "vertical"
+          "default" | "outline" | "soft" | "vertical" | "slide"
 
           "default"
 
-          Applies unique structural layouts{" "}
-          
-            only to the stepper type
-          
-          .
+          outline, soft and vertical are layouts for the{" "}
+          stepper type; slide is the countdown's tile design, where a figure that changes slides out above as the new one comes up from below.
 
           color
 
-          "indigo" | "rose" | "emerald" | "zinc" | string
+          "primary" | "indigo" | "rose" | "emerald" | "zinc" | "inherit" | string
 
-          "indigo"
+          "primary"
 
           Applies global color themes. Accepts valid hex codes (e.g.{" "}
-          "#00FF00").
+          "#00FF00"). inherit takes the surrounding text colour, for a counter inside a section that sets its own.
 
           label
 
@@ -151,16 +175,56 @@ Explore the Counter component's number animation features, including customizabl
           Strings to append before or after the number (e.g. "$" or{" "}
           "%").
 
+          bare
+
+          boolean
+
+          false
+
+          Animated only: render just the figure as a span, no card — it inherits the surrounding type. For a number inside your own layout.
+
+          decimals
+
+          number
+
+          0
+
+          Animated only: decimal places shown while counting, e.g. 1 for 5.5.
+
+          startOnView
+
+          boolean
+
+          false
+
+          Animated only: wait until the counter is on screen before counting, so a figure below the fold is seen counting. Under prefers-reduced-motion the target is shown at once.
+
+          className
+
+          string
+        
+        —
+        
+          Animated only: classes for the figure (bare) or the card.
+
           targetDate
 
-          Date
+          Date | string | number
 
           3 days from now
 
-          The target expiration date for the countdown timer.
+          Countdown only: when the timer reaches zero — a Date, an ISO string or a timestamp.
+
+          doneLabel
+
+          string
+
+          "Time's up"
+
+          Countdown only: what the label becomes once the date has passed. The slide variant also hides its figures then.
 
 ---
 
-**Component Path:** `nextjs\counter\page.mdx`
+**Component Path:** `[framework]\counter\page.mdx`
 
-**Web Version:** Visit the interactive version at the corresponding URL on the Next.js documentation site for live previews and interactive examples.
+**Web Version:** Visit the corresponding URL on the Algorize UI documentation site for live previews and interactive examples.

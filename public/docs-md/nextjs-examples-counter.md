@@ -10,7 +10,7 @@ Interactive component preview available in the web version.
 
 ## Code
 
-See implementation in: `src/app/docs/nextjs/examples/counter/counter.tsx`
+See implementation in: `src/app/docs/[framework]/examples/counter/counter.tsx`
 
 ## Multi-file Example
 
@@ -22,14 +22,14 @@ Interactive component preview available in the web version.
 
 ## Code
 
-See implementation in: `src/app/docs/nextjs/examples/counter/app-page.tsx`
+See implementation in: `src/app/docs/[framework]/examples/counter/app-page.tsx`
 
 ## Implementation
 
 ### Simple Counter Component
 
 ```tsx
-// src/app/docs/nextjs/examples/counter/counter.tsx
+// src/app/docs/[framework]/examples/counter/counter.tsx
 'use client'
 
 export default function Counter() {
@@ -57,7 +57,7 @@ export default function Counter() {
 #### Main App Page
 
 ```tsx
-// src/app/docs/nextjs/examples/counter/app-page.tsx
+// src/app/docs/[framework]/examples/counter/app-page.tsx
 
 export default function CounterApp() {
   return (
@@ -73,7 +73,7 @@ export default function CounterApp() {
 #### Counter Component
 
 ```tsx
-// src/app/docs/nextjs/examples/counter/counter-component.tsx
+// src/app/docs/[framework]/examples/counter/counter-component.tsx
 'use client'
 
 interface CounterProps {
@@ -98,7 +98,7 @@ export default function Counter({ initialCount = 0 }: CounterProps) {
 #### Button Component
 
 ```tsx
-// src/app/docs/nextjs/examples/counter/button-component.tsx
+// src/app/docs/[framework]/examples/counter/button-component.tsx
 'use client'
 
 interface ButtonProps extends ButtonHTMLAttributes {
@@ -111,12 +111,12 @@ export function Button({
   className,
   ...props
 }: ButtonProps) {
-  const baseClasses = 'px-4 py-2 rounded font-medium transition-colors focus:outline-none focus:ring-2 focus:ring-offset-2 dark:focus:ring-offset-gray-900'
+  const baseClasses = 'px-4 py-2 rounded font-medium transition-colors focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-background'
   
   const variantClasses = {
-    primary: 'bg-blue-600 text-white hover:bg-blue-700 focus:ring-blue-500',
-    secondary: 'bg-gray-600 text-white hover:bg-gray-700 focus:ring-gray-500',
-    outline: 'border border-gray-300 text-gray-700 hover:bg-gray-50 focus:ring-gray-500 dark:border-gray-600 dark:text-gray-300 dark:hover:bg-gray-800'
+    primary: 'bg-primary text-primary-foreground hover:bg-primary/90 focus:ring-ring',
+    secondary: 'bg-muted text-foreground hover:bg-foreground/10 focus:ring-ring',
+    outline: 'border border-input text-foreground hover:bg-muted focus:ring-ring'
   }
   
   return (
@@ -147,6 +147,6 @@ export function Button({
 
 ---
 
-**Component Path:** `nextjs\examples\counter\page.mdx`
+**Component Path:** `[framework]\examples\counter\page.mdx`
 
-**Web Version:** Visit the interactive version at the corresponding URL on the Next.js documentation site for live previews and interactive examples.
+**Web Version:** Visit the corresponding URL on the Algorize UI documentation site for live previews and interactive examples.

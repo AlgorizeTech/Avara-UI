@@ -1,0 +1,380 @@
+import { docsPageMetadata } from "@/lib/docs-metadata";
+
+import { ExampleShowcase } from "@/components/site/Sandbox";
+import { extractMotionCode } from "@/lib/code";
+
+export const metadata = docsPageMetadata("folder", {
+  title: "Folder",
+  description: "A tactile folder — unified skeleton cards (or your own photos) tuck behind a frosted-glass front pocket, and fan out into an arc on hover."
+});
+
+# Folder
+
+A tactile folder — unified skeleton cards (or your own photos) tuck behind a frosted-glass front pocket.
+
+The back panel and its tab are one continuous squircle path, the pocket is frosted glass that tilts open in 3D, and the cards inside lift into a shallow arc on hover, tap or focus. Give it a `color` and the pocket, icon and cards all derive their shades from it in OKLCH. Pass `files` with thumbnails to show real photos, names to get hover tooltips, or switch on `interactive` to make it a drag-and-drop upload target with progress bars — that example lives on the <DocLink to="file-upload">File Upload</DocLink> page.
+
+Explore the different variations of the Folder — each example shows a live preview with the exact code to copy. Hover a folder to open it.
+
+export const usageDefault = `import { Folder } from "@/components/custom/blocks/FolderBlock";
+import { Image } from "lucide-react";
+
+// The folder takes a soft tint of the theme colour by default; pass \`color\` to pin one.
+// peek={0} → an empty folder; peek={3} (default) → filled
+export default function ProductShots() {
+  return (
+    <Folder label="Product shots" count="36 photos" icon={Image} peek={3} />
+  );
+}`;
+
+export const usageFan = `import { Folder } from "@/components/custom/blocks/FolderBlock";
+import { FileText } from "lucide-react";
+
+// Hovering fans the cards out into an arc above the folder — hovering a
+// card shows its name. Past five, arrows page through and wrap around.
+const files = [
+  { name: "Deposition_transcript.pdf" },
+  { name: "Exhibit_A_photos.zip" },
+  { name: "Witness_statement_02.docx" },
+  { name: "Timeline_v3.xlsx" },
+  { name: "Court_filing_draft.pdf" },
+  { name: "Evidence_log.csv" },
+  { name: "Contract_redline.docx" },
+  { name: "Settlement_terms.pdf" },
+];
+
+export default function CaseFiles() {
+  return <Folder files={files} label="Case files" icon={FileText} />;
+}`;
+
+export const usageIcon = `"use client";
+
+import { Folder } from "@/components/custom/blocks/FolderBlock";
+import { Camera, FileText, Image, type LucideIcon, Music, Palette, Video } from "lucide-react";
+import { useState } from "react";
+
+const ICONS: Array<{ id: string; icon: LucideIcon }> = [
+  { id: "palette", icon: Palette },
+  { id: "image", icon: Image },
+  { id: "file", icon: FileText },
+  { id: "camera", icon: Camera },
+  { id: "music", icon: Music },
+  { id: "video", icon: Video },
+];
+
+export default function DesignAssets() {
+  const [iconId, setIconId] = useState("palette");
+  const icon = ICONS.find((i) => i.id === iconId)?.icon ?? Palette;
+
+  return (
+    <div className="flex flex-col items-center gap-8">
+      {/* the icon adopts a darker shade of the folder colour, itself a tint of the theme */}
+      <Folder icon={icon} label="Design assets" count="24 files" />
+
+      <div className="flex items-center gap-1.5 rounded-full border border-border bg-card p-1">
+        {ICONS.map(({ id, icon: I }) => (
+          <button
+            key={id}
+            type="button"
+            aria-label={id}
+            onClick={() => setIconId(id)}
+            className={iconId === id ? "flex size-8 items-center justify-center rounded-full bg-primary text-primary-foreground" : "flex size-8 items-center justify-center rounded-full text-muted-foreground hover:bg-muted"}
+          >
+            <I size={16} strokeWidth={1.8} />
+          </button>
+        ))}
+      </div>
+    </div>
+  );
+}`;
+
+export const usagePhotos = `import { Folder } from "@/components/custom/blocks/FolderBlock";
+import { Camera } from "lucide-react";
+
+// { thumb } turns a card into a photo. Add { name } for a hover tooltip.
+const photos = [
+  { thumb: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_320,c_limit/v1790146209/photo-1470071459604-3b5ec3a7fe05-1790146212205.jpg", name: "IMG_4021.jpg" },
+  { thumb: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_320,c_limit/v1790146210/photo-1506905925346-21bda4d32df4-1790146212208.jpg", name: "IMG_4022.jpg" },
+  { thumb: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_320,c_limit/v1790146211/photo-1441974231531-c6227db76b6e-1790146212212.jpg", name: "IMG_4023.jpg" },
+  { thumb: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_320,c_limit/v1790146210/photo-1472214103451-9374bd1c798e-1790146212205.jpg", name: "IMG_4024.jpg" },
+  { thumb: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_320,c_limit/v1790146210/photo-1501785888041-af3ef285b470-1790146212207.jpg", name: "IMG_4025.jpg" },
+  { thumb: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_320,c_limit/v1790150482/photo-1518837695005-2083093ee35b-1790150482277.jpg", name: "IMG_4026.jpg" },
+];
+
+export default function SummerTrip() {
+  return <Folder files={photos} label="Summer trip" count="6 photos" icon={Camera} />;
+}`;
+
+<ExampleShowcase
+  name="folder"
+  colorControl
+  columns={1}
+  controls={[
+    { name: "peek", label: "Peek (cards)", min: 0, max: 5, step: 1, defaultValue: 3 },
+    { name: "size", label: "Size", min: 160, max: 360, step: 10, defaultValue: 260, unit: "px" },
+    { name: "blur", label: "Pocket blur", min: 0, max: 24, step: 1, defaultValue: 10, unit: "px" },
+  ]}
+  examples={[
+    {
+      title: "Folder",
+      subheading: "Hover, tap or focus the folder to fan the cards out.",
+      propNotes: [
+        {
+          prop: "peek",
+          effect:
+            "is how many skeleton cards to show when no `files` are given — `0` is an empty folder, `3` (default) is filled.",
+        },
+        {
+          prop: "size",
+          effect:
+            "is the folder width in pixels; height, tab, corner radius and card sizes all derive from it.",
+        },
+        {
+          prop: "color",
+          effect:
+            "defaults to a soft tint of `--primary` (lightness 0.88, chroma at 40%), so the folder — body, pocket, icon and the peeking cards — follows your theme preset and the colour picker above without going heavy. Pass any CSS colour to pin one.",
+        },
+      ],
+      props: { example: "showcase" },
+      usage: usageDefault,
+      code: extractMotionCode("src/components/custom/blocks/FolderBlock.tsx"),
+    },
+  ]}
+/>
+
+## Installation
+
+<Installation name="folder" />
+
+## Examples
+
+<ExampleShowcase
+  name="folder"
+  colorControl
+  columns={1}
+  examples={[
+    {
+      title: "Fan on hover",
+      subheading: "Hover a card for its name. Use the arrows — or drag a card sideways — to page through; the window wraps at either end.",
+      propNotes: [
+        {
+          prop: "files",
+          effect:
+            "is the list peeking out. Without `thumb` each one renders as a unified skeleton card; `name` shows in a tooltip while the fan is open. Past five, the fan pages.",
+        },
+      ],
+      props: { example: "fan" },
+      usage: usageFan,
+    },
+    {
+      title: "Icon",
+      subheading: "Pick an icon — it and the pocket take their shades from the theme colour chosen at the top of the page.",
+      propNotes: [
+        {
+          prop: "icon",
+          effect:
+            "is any lucide icon component; it sits centred on the front pocket and is darkened from `color` by a fixed OKLCH amount, so it stays legible on light and dark bodies alike.",
+        },
+      ],
+      props: { example: "icon" },
+      usage: usageIcon,
+    },
+    {
+      title: "Photos",
+      subheading: "Drag a photo sideways — or swipe it with a thumb — to page through; the arrows do the same.",
+      propNotes: [
+        {
+          prop: "files",
+          effect:
+            "entries with a `thumb` URL become photo cards — the picture is clipped to the card's rounded corners and fans out like the rest.",
+        },
+      ],
+      props: { example: "photos" },
+      usage: usagePhotos,
+    },
+  ]}
+/>
+
+## Features
+Discover the Folder's capabilities for presenting a group of files as one tactile object.
+
+<div className="grid grid-cols-1 sm:grid-cols-2 gap-4 my-6 not-prose">
+  <div className="p-6 rounded-2xl border border-border bg-card">
+    <h3 className="text-lg font-semibold text-card-foreground mb-2">One silhouette</h3>
+    <p className="text-muted-foreground text-sm">The tab and body are a single rounded path, so the join never shows a notch and every corner — including the slant — is a true squircle.</p>
+  </div>
+  <div className="p-6 rounded-2xl border border-border bg-card">
+    <h3 className="text-lg font-semibold text-card-foreground mb-2">Colour-derived shades</h3>
+    <p className="text-muted-foreground text-sm">Pocket, icon and skeleton cards are computed from <code>color</code> in OKLCH, so any base colour — near-black included — stays readable.</p>
+  </div>
+  <div className="p-6 rounded-2xl border border-border bg-card">
+    <h3 className="text-lg font-semibold text-card-foreground mb-2">Fits the room</h3>
+    <p className="text-muted-foreground text-sm">The fan measures its nearest clipping ancestor and tightens the gap — then drops a card — rather than overflowing on a narrow screen.</p>
+  </div>
+  <div className="p-6 rounded-2xl border border-border bg-card">
+    <h3 className="text-lg font-semibold text-card-foreground mb-2">Reachable everywhere</h3>
+    <p className="text-muted-foreground text-sm">Hover opens it on desktop; a tap toggles it on touch; focus opens it from the keyboard. Every animation respects <code>prefers-reduced-motion</code>.</p>
+  </div>
+</div>
+
+## Best Practices & Guidelines
+
+<div className="flex flex-col gap-4 my-6 not-prose">
+  <div className="rounded-xl border border-foreground/[0.06] bg-foreground/[0.03] p-4">
+    <h4 className="font-sans text-[14px] font-semibold text-foreground mb-1">Leave headroom above the folder</h4>
+    <p className="text-[13px] leading-relaxed text-foreground/50">The fan lifts cards roughly half the folder's height above it and the arrows sit just outside its width. Give the folder that space, and avoid <code>overflow-hidden</code> on its immediate parent.</p>
+  </div>
+  <div className="rounded-xl border border-primary/15 bg-primary/5 p-4">
+    <h4 className="font-sans text-[14px] font-semibold text-primary mb-1">Do not double up the click</h4>
+    <p className="text-[13px] leading-relaxed text-foreground/50">An <code>interactive</code> folder spends its click on the file picker, so tap-to-toggle is off there. If an ancestor already handles clicks, pass <code>toggleOnClick={false}</code> and <code>focusable</code> so the fan stays keyboard-reachable.</p>
+  </div>
+</div>
+
+## Props Reference
+
+### `<Folder>` Props
+
+<div className="overflow-x-auto">
+  <table>
+    <thead>
+      <tr>
+        <th>Prop</th>
+        <th>Type</th>
+        <th>Default</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><code>label</code></td>
+        <td><code>string</code></td>
+        <td>—</td>
+        <td>Title under the folder.</td>
+      </tr>
+      <tr>
+        <td><code>count</code></td>
+        <td><code>string</code></td>
+        <td>—</td>
+        <td>Count / subtitle line. Falls back to <code>"{"{n}"} items"</code>, or <code>"Drop files or click"</code> when interactive.</td>
+      </tr>
+      <tr>
+        <td><code>color</code></td>
+        <td><code>string</code></td>
+        <td>tint of <code>--primary</code></td>
+        <td>Folder body colour — any CSS colour. By default a pastel of the theme colour (<code>FOLDER_THEME_TINT</code>: lightness 0.88, chroma at 40%). Pocket, icon and skeleton cards derive their shades from it.</td>
+      </tr>
+      <tr>
+        <td><code>icon</code></td>
+        <td><code>LucideIcon</code></td>
+        <td>—</td>
+        <td>A lucide icon component shown on the front pocket.</td>
+      </tr>
+      <tr>
+        <td><code>files</code></td>
+        <td><code>FolderFile[]</code></td>
+        <td>—</td>
+        <td><code>{"{ thumb?, name?, progress? }"}</code> — photo, skeleton card, or both; <code>name</code> shows in a tooltip on hover.</td>
+      </tr>
+      <tr>
+        <td><code>peek</code></td>
+        <td><code>number</code></td>
+        <td><code>3</code></td>
+        <td>Skeleton cards to show when no <code>files</code> are given.</td>
+      </tr>
+      <tr>
+        <td><code>open</code></td>
+        <td><code>boolean</code></td>
+        <td>—</td>
+        <td>Force the fan open or closed. Omit to let hover, tap, focus and drag drive it.</td>
+      </tr>
+      <tr>
+        <td><code>blur</code></td>
+        <td><code>number</code></td>
+        <td><code>10</code></td>
+        <td>Frosted-glass blur on the pocket, in px.</td>
+      </tr>
+      <tr>
+        <td><code>size</code></td>
+        <td><code>number</code></td>
+        <td><code>260</code></td>
+        <td>Folder width in px. Height derives from it.</td>
+      </tr>
+      <tr>
+        <td><code>progress</code></td>
+        <td><code>number</code></td>
+        <td>—</td>
+        <td>Overall upload progress 0–100 — drives the bar across the pocket while below 100.</td>
+      </tr>
+      <tr>
+        <td><code>stickers</code></td>
+        <td><code>ReactNode</code></td>
+        <td>—</td>
+        <td>Extra decoration on the pocket (emoji, etc.) — sits under the icon.</td>
+      </tr>
+      <tr>
+        <td><code>showLabel</code></td>
+        <td><code>boolean</code></td>
+        <td><code>true</code></td>
+        <td>Show the title.</td>
+      </tr>
+      <tr>
+        <td><code>showCount</code></td>
+        <td><code>boolean</code></td>
+        <td><code>true</code></td>
+        <td>Show the count line.</td>
+      </tr>
+      <tr>
+        <td><code>interactive</code></td>
+        <td><code>boolean</code></td>
+        <td><code>false</code></td>
+        <td>Enable drag-and-drop + click-to-browse.</td>
+      </tr>
+      <tr>
+        <td><code>toggleOnClick</code></td>
+        <td><code>boolean</code></td>
+        <td><code>!interactive</code></td>
+        <td>Tap toggles the fan — the touch/keyboard path to the hover reveal. Turn off when an ancestor owns the click.</td>
+      </tr>
+      <tr>
+        <td><code>focusable</code></td>
+        <td><code>boolean</code></td>
+        <td><code>false</code></td>
+        <td>Join the tab order and open the fan on focus without a tap toggling it — for when <code>toggleOnClick</code> is off.</td>
+      </tr>
+      <tr>
+        <td><code>accept</code></td>
+        <td><code>string</code></td>
+        <td>—</td>
+        <td>Passed to the hidden file input.</td>
+      </tr>
+      <tr>
+        <td><code>multiple</code></td>
+        <td><code>boolean</code></td>
+        <td><code>true</code></td>
+        <td>Allow picking several files at once.</td>
+      </tr>
+      <tr>
+        <td><code>onFiles</code></td>
+        <td><code>{"(files: File[]) => void"}</code></td>
+        <td>—</td>
+        <td>Fires with dropped or selected files.</td>
+      </tr>
+      <tr>
+        <td><code>onRemoveFile</code></td>
+        <td><code>{"(index: number) => void"}</code></td>
+        <td>—</td>
+        <td>Shows an × on each fanned card, reporting the file's index within <code>files</code>.</td>
+      </tr>
+      <tr>
+        <td><code>className</code></td>
+        <td><code>string</code></td>
+        <td>—</td>
+        <td>Merged onto the root.</td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+### `SkeletonCard`
+
+Also exported. The placeholder "document" the folder draws for files without a `thumb` — reuse it anywhere you need a pretend file so the language stays consistent.

@@ -1,28 +1,27 @@
+export const metadata = docsPageMetadata("data-maps");
+
 # Data Maps
 
 {/* A beautiful map component to visualize your geographic data points */}
 
-A powerful, highly-customizable React-Leaflet based choropleth map component designed for beautifully visualizing geographic data, user distributions, and global trends without the need for clunky external map tiles. Built with SSR safety in mind, it leverages Next.js dynamic imports to load Leaflet entirely client-side — no hydration mismatches, no broken renders, just a smooth map experience every time.
+A powerful, highly-customizable React-Leaflet based choropleth map component designed for beautifully visualizing geographic data, user distributions, and global trends without the need for clunky external map tiles. Built with SSR safety in mind: the component defers Leaflet until after mount, so it renders correctly whether or not your framework prerenders on a server — no hydration mismatches, no broken renders, and nothing for you to wrap.
 
-It features interactive hover tooltips, multiple visual variants (such as solid region fills or density dots), country flag badges, trend indicators, and seamless theme integration that automatically adapts to your site's dark or light mode. Whether you're showing active users per country, traffic breakdowns, or global feature adoption — this component handles it with elegant simplicity. Perfect for building immersive dashboards, analytics panels, and global demographic visualizations right inside your Next.js application.
+It features interactive hover tooltips, multiple visual variants (such as solid region fills or density dots), country flag badges, trend indicators, and seamless theme integration that automatically adapts to your site's dark or light mode. Whether you're showing active users per country, traffic breakdowns, or global feature adoption — this component handles it with elegant simplicity. Perfect for building immersive dashboards, analytics panels, and global demographic visualizations in any React application.
 
-## Examples
+The map is pure vector — it fetches world GeoJSON and paints country polygons, so there are no raster tiles to load. Hover any highlighted country for its data card.
 
-The map is pure vector — it fetches world GeoJSON and paints country polygons, so there are no raster tiles to load. Hover any highlighted country for its data card. The first example's **Code** tab contains the full component source.
-
-export const usageFill = `import dynamic from "next/dynamic";
-
-// Leaflet touches \`window\` on import, so the map must be client-only.
-const DataMaps = dynamic(
-  () => import("@/components/custom/blocks/DataMapsBlock").then((m) => m.DataMaps),
-  { ssr: false },
-);
-
-const mapData = [
+export const mapDataSource = `const mapData: DataPoint[] = [
   { id: "CHN", name: "China", flag: "🇨🇳", active: 13.7, activeTrend: "up", new: 0.1, newTrend: "down" },
   { id: "IND", name: "India", flag: "🇮🇳", active: 8.4, activeTrend: "up", new: 0.3, newTrend: "up" },
   { id: "USA", name: "United States", flag: "🇺🇸", active: 11.2, activeTrend: "down", new: 0.5, newTrend: "down" },
-];
+];`;
+
+export const usageFill = `import {
+  DataMaps,
+  type DataPoint,
+} from "@/components/custom/blocks/DataMapsBlock";
+
+${mapDataSource}
 
 export default function AnalyticsDashboard() {
   return (
@@ -30,33 +29,63 @@ export default function AnalyticsDashboard() {
   );
 }`;
 
-export const usageDots = `// \`dots\` places a pulsing marker at each country's centroid instead of
-// filling the polygon — better when the regions are small or crowded.
-`;
+export const usageDots = `import {
+  DataMaps,
+  type DataPoint,
+} from "@/components/custom/blocks/DataMapsBlock";
 
-export const usageZoomable = `// Pan and zoom are opt-in. \`zoomable\` adds the controls and drag handling;
-// \`scrollWheelZoom\` also binds the wheel, which you may want off inside a
-// scrolling page.
-`;
+${mapDataSource}
 
-export const usageColors = `// \`highlightColor\` sets the global accent and \`defaultColor\` paints every
-// country without data. A \`color\` on a single data point overrides both.
-`;
+export default function DensityMap() {
+  // \`dots\` places a pulsing marker at each country's centroid instead of
+  // filling the polygon — better when the regions are small or crowded.
+  return ;
+}`;
+
+export const usageZoomable = `import {
+  DataMaps,
+  type DataPoint,
+} from "@/components/custom/blocks/DataMapsBlock";
+
+${mapDataSource}
+
+export default function ZoomableMap() {
+  // Pan and zoom are opt-in. \`zoomable\` adds the controls and drag handling;
+  // \`scrollWheelZoom\` also binds the wheel, which you may want off inside a
+  // scrolling page.
+  return (
+    
+  );
+}`;
+
+export const usageColors = `import {
+  DataMaps,
+  type DataPoint,
+} from "@/components/custom/blocks/DataMapsBlock";
+
+const points: DataPoint[] = [
+  { id: "USA", name: "United States", flag: "🇺🇸", active: 11.2, activeTrend: "down" },
+  { id: "BRA", name: "Brazil", flag: "🇧🇷", active: 5.1, activeTrend: "up", color: "#e11d48" },
+];
+
+export default function ColoredMap() {
+  // \`highlightColor\` sets the global accent and \`defaultColor\` paints every
+  // country without data. A \`color\` on a single data point overrides both.
+  return (
+    
+  );
+}`;
 
 ## Installation
 
-### 1. Install Dependencies
-
-Ensure you have `leaflet` and `react-leaflet` installed. If not, install them using:
+Register the @algorize-ui registry once per project, then add the component:
 
 ```bash
-npm install leaflet react-leaflet
-npm install -D @types/leaflet
+npx shadcn@latest registry add @algorize-ui=https://algorize-ui.vercel.app/r/{name}.json
+npx shadcn@latest add @algorize-ui/data-maps
 ```
 
-### 2. Copy the Component
-
-Create `components/custom/blocks/DataMapsBlock.tsx` and copy the source from the **Code** tab of the first example above. Import it with `next/dynamic` and `ssr: false` — Leaflet needs a real `window`.
+## Examples
 
 ## Features
 Learn about the Data Maps component's geographic visualization features, mapping interactive data points onto vector country paths.
@@ -76,7 +105,7 @@ Learn about the Data Maps component's geographic visualization features, mapping
 ## Best Practices & Guidelines
 
     Dynamic Imports
-    Always ensure that any component relying on react-leaflet is dynamically imported with {"{ ssr: false }"}. Leaflet relies on the browser's window object and will crash your Next.js app if executed on the server.
+    Leaflet reads the browser's window at import time, so the component defers loading it until after mount. That is why any component wrapping react-leaflet must stay off the server — this one already does, so you can render it directly without a {"{ ssr: false }"} wrapper of your own.A Vite SPA has no server render, so there is nothing to opt out of — import and render it directly.
 
     GeoJSON Caching
     By default, the map fetches the world map GeoJSON from a remote CDN. For production environments, it is highly recommended to download the custom.geo.json file and host it locally in your public directory to reduce latency.
@@ -239,6 +268,6 @@ Learn about the Data Maps component's geographic visualization features, mapping
 
 ---
 
-**Component Path:** `nextjs\data-maps\page.mdx`
+**Component Path:** `[framework]\data-maps\page.mdx`
 
-**Web Version:** Visit the interactive version at the corresponding URL on the Next.js documentation site for live previews and interactive examples.
+**Web Version:** Visit the corresponding URL on the Algorize UI documentation site for live previews and interactive examples.

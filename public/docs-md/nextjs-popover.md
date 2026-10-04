@@ -1,85 +1,14 @@
+export const metadata = docsPageMetadata("popover");
+
 # Popover
 
 Displays rich, interactive content in a portal, triggered by a click.
 
 While tooltips are meant for small text hints on hover, Popovers are designed to hold rich HTML (like forms, grids, and settings menus) triggered by a click. This `PopoverBlock` solves the biggest problem with complex layouts: clipping. By utilizing React's `createPortal`, the popover content is rendered at the root `document.body` level, meaning it will **never** be hidden or cropped by parent layout constraints like `overflow-hidden`.
 
-## Examples
+The same goes for the screen edge. `side` and `align` are *preferences*: the panel flips to the opposite side when the preferred one has no room, shifts back inside the viewport when it still overhangs, and caps its own width and height to the screen — so a `w-72` panel opened `side="left"` next to a phone-width trigger stays fully readable instead of running off the edge. Pass `avoidCollisions={false}` to opt out.
 
-Click a trigger to open its popover — you can interact with the content inside without it closing. Click outside or press `Escape` to dismiss. The first example's **Code** tab contains the full component source.
-
-export const usageDefault = `import {
-  Popover,
-  PopoverContent,
-  PopoverTrigger,
-} from "@/components/custom/blocks/PopoverBlock";
-
-export default function PopoverDemo() {
-  return (
-
-          Configure Settings
-
-            Dimensions
-            Set the dimensions for the layer.
-
-              Width
-
-              Height
-
-  );
-}`;
-
-export const usageSides = `import {
-  Popover,
-  PopoverContent,
-  PopoverTrigger,
-} from "@/components/custom/blocks/PopoverBlock";
-
-export default function PopoverSides() {
-  return (
-
-            top
-
-          Rendered on the top side of the trigger.
-
-            right
-
-          Rendered on the right side of the trigger.
-
-            bottom
-
-          Rendered on the bottom side of the trigger.
-
-            left
-
-          Rendered on the left side of the trigger.
-
-  );
-}`;
-
-export const usageAlign = `import {
-  Popover,
-  PopoverContent,
-  PopoverTrigger,
-} from "@/components/custom/blocks/PopoverBlock";
-
-export default function PopoverAlign() {
-  return (
-
-            align="start"
-
-          Aligned to the start edge.
-
-            align="center"
-
-          Aligned to the center edge.
-
-            align="end"
-
-          Aligned to the end edge.
-
-  );
-}`;
+Click a trigger to open its popover — you can interact with the content inside without it closing. Click outside or press `Escape` to dismiss.
 
 export const usageMenu = `import {
   Popover,
@@ -92,13 +21,37 @@ export default function AccountMenu() {
 
       {/* className overrides the default w-72 */}
 
+              AB
+
               Andy Bernard
               andy@dundermifflin.com
 
-          View Profile
-          Billing Settings
-          Log out
+            View Profile
 
+            Billing Settings
+
+            Log out
+
+  );
+}`;
+
+export const dimensionsPanel = `// The panel body, lifted out so both examples can render the same content.
+function DimensionsPanel() {
+  return (
+
+        Dimensions
+        Set the size of the layer.
+      
+      {[
+        { label: "Width", value: "100%" },
+        { label: "Max width", value: "640px" },
+        { label: "Height", value: "auto" },
+      ].map((row) => (
+        
+          {row.label}
+
+      ))}
+    
   );
 }`;
 
@@ -108,25 +61,28 @@ export const usageOffset = `import {
   PopoverTrigger,
 } from "@/components/custom/blocks/PopoverBlock";
 
+${dimensionsPanel}
+
 export default function OffsetPopover() {
   return (
 
           Configure Settings
 
       {/* sideOffset pushes the panel further from the trigger (default 8) */}
-      
-        {/* the same Dimensions panel as the first example */}
 
   );
 }`;
 
 ## Installation
 
-### Copy the Component
+Register the @algorize-ui registry once per project, then add the component:
 
-This component is **100% dependency-free**. It uses native `createPortal` for rendering and highly optimized `getBoundingClientRect` logic to place the portal exactly next to the trigger button.
+```bash
+npx shadcn@latest registry add @algorize-ui=https://algorize-ui.vercel.app/r/{name}.json
+npx shadcn@latest add @algorize-ui/popover
+```
 
-Create a new file at `components/custom/blocks/PopoverBlock.tsx` and copy the engine code from the **Code** tab of the first example above.
+## Examples
 
 ## Features
 Discover the Popover's intelligent positioning engine that prevents collision with screen edges while displaying contextual content.
@@ -189,6 +145,32 @@ Discover the Popover's intelligent positioning engine that prevents collision wi
           The distance (in pixels) to render the popover away from the trigger
           element.
 
+          PopoverContent
+
+          avoidCollisions
+
+          boolean
+
+          true
+
+          Flips the panel to the opposite side and shifts it back into view when
+          the preferred placement would overflow the viewport — this is what
+          keeps side="left" / "right" and{" "}
+          align="start" / "end" from being cropped on phones. Set
+          to false to pin the panel to side/
+          align regardless.
+
+          PopoverContent
+
+          collisionPadding
+
+          number
+
+          8
+
+          Minimum gap (in pixels) kept between the panel and the viewport edges
+          when avoidCollisions is on.
+
           All Components
 
           className
@@ -203,6 +185,6 @@ Discover the Popover's intelligent positioning engine that prevents collision wi
 
 ---
 
-**Component Path:** `nextjs\popover\page.mdx`
+**Component Path:** `[framework]\popover\page.mdx`
 
-**Web Version:** Visit the interactive version at the corresponding URL on the Next.js documentation site for live previews and interactive examples.
+**Web Version:** Visit the corresponding URL on the Algorize UI documentation site for live previews and interactive examples.

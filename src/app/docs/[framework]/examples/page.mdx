@@ -1,0 +1,69 @@
+import { docsPageMetadata } from "@/lib/docs-metadata";
+
+export const metadata = {
+  ...docsPageMetadata("examples"),
+  robots: { index: false, follow: true },
+};
+
+
+import Link from 'next/link';
+import { CodeBlock } from "@/components/site/code-block";
+import { ComponentRenderer } from "@/components/site/component-renderer";
+import {
+  Tabs,
+  TabsList,
+  TabsTrigger,
+  TabsContent,
+} from "@/components/site/tabs.tsx";
+
+# Next.js Examples
+
+Explore practical examples that demonstrate Next.js features and best practices.
+
+## Interactive Examples
+
+<div className="grid grid-cols-1 md:grid-cols-2 gap-6 mt-8">
+  <DocLink to="examples/counter" className="block p-6 rounded-xl bg-foreground/[0.03] border border-foreground/[0.06] hover:bg-foreground/[0.05] hover:border-primary/30 transition-colors">
+    <h3 className="text-[14px] font-semibold text-foreground mb-2">Interactive Counter</h3>
+    <span className="block text-[13px] leading-relaxed text-foreground/50">
+      A simple counter component demonstrating state management with React hooks in Next.js.
+    </span>
+  </DocLink>
+</div>
+
+## Learning Path
+
+These examples are designed to help you learn Next.js concepts progressively:
+
+1. **Basic Components** - Simple UI components with props and state
+2. **Data Fetching** - Different approaches to fetch and display data
+3. **Routing** - Navigation patterns and dynamic routes
+4. **Authentication** - Protecting routes and managing user sessions
+5. **Performance** - Optimization techniques for better user experience
+6. **Deployment** - Preparing your application for production
+
+## Code Structure
+
+Each example follows Next.js best practices:
+
+- **TypeScript** for type safety
+- **Tailwind CSS** for styling
+- **Client Components** only when necessary
+- **Server Components** for data fetching
+- **Proper error handling** and loading states
+
+## Contributing
+
+Have an example you'd like to share? We welcome contributions to our examples collection:
+
+1. Fork the repository
+2. Create a new example directory in `/src/app/docs/[framework]/examples/`
+3. Follow the existing structure and best practices
+4. Submit a pull request with your example
+
+## Resources
+
+- [Next.js Documentation](https://nextjs.org/docs)
+- [React Documentation](https://react.dev)
+- [Tailwind CSS Documentation](https://tailwindcss.com)
+- [TypeScript Documentation](https://www.typescriptlang.org)

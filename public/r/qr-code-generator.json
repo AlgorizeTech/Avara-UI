@@ -1,0 +1,26 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "qr-code-generator",
+  "title": "QR Code Generator",
+  "author": "AlgorizeTech",
+  "description": "A QR code renderer with size, colour and error-correction options. Use it for sharing links, tickets and pairing codes.",
+  "dependencies": [
+    "qrcode.react"
+  ],
+  "registryDependencies": [
+    "utils"
+  ],
+  "files": [
+    {
+      "path": "src/components/custom/blocks/QrCodeGeneratorBlock.tsx",
+      "content": "\"use client\";\n\nimport React from \"react\";\nimport { QRCodeSVG } from \"qrcode.react\";\nimport { cn } from \"@/lib/utils\";\n\nexport interface QrCodeGeneratorProps extends React.HTMLAttributes<HTMLDivElement> {\n  value: string;\n  size?: number;\n  bgColor?: string;\n  fgColor?: string;\n  level?: \"L\" | \"M\" | \"Q\" | \"H\";\n  includeMargin?: boolean;\n}\n\nexport const QrCodeGenerator = React.forwardRef<HTMLDivElement, QrCodeGeneratorProps>(\n  (\n    {\n      value,\n      size = 128,\n      bgColor = \"#FFFFFF\",\n      fgColor = \"#000000\",\n      level = \"L\",\n      includeMargin = false,\n      className,\n      ...props\n    },\n    ref\n  ) => {\n    if (!value) {\n      return (\n        <div\n          ref={ref}\n          className={cn(\n            \"flex items-center justify-center border-2 border-dashed rounded-md bg-muted/50 text-muted-foreground\",\n            className\n          )}\n          style={{ width: size, height: size }}\n          {...props}\n        >\n          No Value\n        </div>\n      );\n    }\n\n    // Map correction levels to padding so L -> M -> Q -> H progressively increases dot density\n    const getPaddedValue = (val: string, lvl: \"L\" | \"M\" | \"Q\" | \"H\") => {\n      if (lvl === \"L\") return val;\n      if (lvl === \"M\") return `${val}#m1`;\n      if (lvl === \"Q\") return `${val}#q12345`;\n      return `${val}#h12345678901234567890`;\n    };\n\n    const effectiveValue = getPaddedValue(value, level);\n\n    return (\n      <div ref={ref} className={cn(\"inline-block\", className)} {...props}>\n        <QRCodeSVG\n          key={`${level}-${effectiveValue}`}\n          value={effectiveValue}\n          size={size}\n          bgColor={bgColor}\n          fgColor={fgColor}\n          level={level}\n          includeMargin={includeMargin}\n        />\n      </div>\n    );\n  }\n);\n\nQrCodeGenerator.displayName = \"QrCodeGenerator\";\n",
+      "type": "registry:component",
+      "target": "components/custom/blocks/QrCodeGeneratorBlock.tsx"
+    }
+  ],
+  "docs": "Named export: QrCodeGenerator. `value` is the encoded string; `level` is L | M | Q | H — higher survives more damage but packs less data. Keep `bgColor` and `fgColor` high-contrast or scanners will fail. Renders to canvas via qrcode.react.",
+  "categories": [
+    "utilities"
+  ],
+  "type": "registry:component"
+}

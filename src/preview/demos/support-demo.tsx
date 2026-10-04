@@ -141,24 +141,39 @@ const sampleData: SupportData = {
 
 export default function SupportDemo({
   variant = "default",
-  color = "primary",
+  color: pickedColor = "primary",
   layout = "chat",
 }: {
   variant?: SupportVariant;
-  color?: SupportColor;
+  color?: SupportColor | "lavender";
   layout?: SupportLayout;
 }) {
+  // The dashboard has no lavender palette and no hex support. Its "primary"
+  // palette follows --primary, which the sandbox points at the picked swatch.
+  const color: SupportColor = pickedColor === "lavender" ? "primary" : pickedColor;
   return (
     <div
-      className={`w-full transition-all duration-500 ${variant === "glass" ? "p-4 sm:p-8 bg-gradient-to-br from-indigo-500/80 via-purple-500/80 to-pink-500/80 rounded-2xl" : ""}`}
+      className={`w-full transition-all duration-500 relative overflow-hidden rounded-2xl ${variant === "glass" ? "p-4 sm:p-8" : ""}`}
     >
-      <SupportDashboard
-        key={`${variant}-${color}-${layout}`}
-        variant={variant}
-        color={color}
-        layout={layout}
-        data={sampleData}
-      />
+      {variant === "glass" && (
+        <div className="absolute inset-0 z-0">
+          <img
+            src="https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_1600,c_limit/v1790146210/photo-1506744038136-46273834b3fb-1790146212208.jpg"
+            alt="Moody nature landscape background"
+            className="w-full h-full object-cover"
+          />
+          <div className="absolute inset-0 bg-black/40 backdrop-blur-[2px]" />
+        </div>
+      )}
+      <div className="relative z-10 w-full">
+        <SupportDashboard
+          key={`${variant}-${color}-${layout}`}
+          variant={variant}
+          color={color}
+          layout={layout}
+          data={sampleData}
+        />
+      </div>
     </div>
   );
 }

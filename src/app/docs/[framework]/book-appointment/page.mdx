@@ -1,0 +1,427 @@
+import { docsPageMetadata } from "@/lib/docs-metadata";
+
+export const metadata = docsPageMetadata("book-appointment");
+
+import { ExampleShowcase } from "@/components/site/Sandbox";
+import { extractCode } from "@/lib/code";
+
+# Book Appointment
+
+A booking flow for a page that ends in an appointment: a practitioner's portrait and contact details, their scores as stars, two small charts, and a booking panel with a strip of days, time slots in groups, a button that reads back the choice, and a confirmation that draws itself in once the booking is made.
+
+`BookAppointment` is a section built from library pieces. The surface is <DocLink to="glass-panel">Glass Panel</DocLink> (`GlassBackdrop` and `GlassPanel`), the scores are <DocLink to="half-stars">Half Stars</DocLink>, and the booking panel is <DocLink to="booking-card">Booking Card</DocLink> — a compound component that can be dropped into any panel on any page. Hand it a `practitioner`, some `slotGroups` and an `onBook`, and it lays the page out.
+
+export const usagePage = `"use client";
+
+import { BookAppointment } from "@/components/custom/blocks/BookAppointmentBlock";
+
+const DOCTOR = {
+  name: "Dr. Priya Nair, MD",
+  shortName: "Dr. Nair",
+  specialties: "Cardiology and general internal medicine",
+  practice: "Riverside Heart & Medical Group",
+  photo:
+    "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_687,c_limit/v1790145142/photo-1638202993928-7267aad84c31-1790145143494.jpg",
+  photoAlt: "Portrait of Dr. Priya Nair wearing a lab coat and stethoscope",
+  rating: 4.8,
+  reviews: 38,
+  summary:
+    "Reviewers call Dr. Nair careful and approachable. Her heart-care knowledge and plain-spoken answers stand out; some note slow replies to phone messages.",
+  location: "Brooklyn, NY, Riverside Heart & Medical Group",
+  phone: "(718) 555-0142",
+  email: "drnair@example.com",
+  languages: "English, Hindi",
+};
+
+const SCORES = [
+  { label: "Punctuality", value: 4.63 },
+  { label: "Warmth and care", value: 4.19 },
+  { label: "Explains things well", value: 4.74 },
+];
+
+const VISIT_REASONS = [
+  { label: "Blood pressure care", value: 35 },
+  { label: "Heart health check-ups", value: 25 },
+  { label: "Heart failure follow-up", value: 22 },
+  { label: "Chest pain workup", value: 18 },
+];
+
+const ACTIVITIES = [
+  { label: "Clinic", value: 47 },
+  { label: "Studies", value: 24 },
+  { label: "Mentoring", value: 16 },
+  { label: "Paperwork", value: 10 },
+  { label: "Other", value: 3 },
+];
+
+const SLOT_GROUPS = [
+  {
+    label: "Morning",
+    slots: [{ label: "9:00 AM" }, { label: "10:00 AM" }, { label: "11:00 AM", taken: true }],
+  },
+  {
+    label: "Afternoon",
+    slots: [{ label: "12:00 PM" }, { label: "1:00 PM" }, { label: "2:00 PM" }, { label: "3:00 PM", taken: true }],
+  },
+];
+
+export default function BookAppointmentPage() {
+  return (
+    <BookAppointment
+      aurora={["#c4b5fd", "#99f6e4", "#fde68a"]}
+      practitioner={DOCTOR}
+      scores={SCORES}
+      visitReasons={VISIT_REASONS}
+      activities={ACTIVITIES}
+      slotGroups={SLOT_GROUPS}
+      unavailable={(d) => d.getDay() === 0}
+      onBook={async ({ day, slot }) => {
+        await fetch("/api/book", { method: "POST", body: JSON.stringify({ day, slot }) });
+      }}
+      className="min-h-dvh"
+    />
+  );
+}
+`;
+
+export const usagePageSolid = `"use client";
+
+import { BookAppointment } from "@/components/custom/blocks/BookAppointmentBlock";
+
+const DOCTOR = {
+  name: "Dr. Priya Nair, MD",
+  shortName: "Dr. Nair",
+  specialties: "Cardiology and general internal medicine",
+  practice: "Riverside Heart & Medical Group",
+  photo:
+    "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_687,c_limit/v1790145142/photo-1638202993928-7267aad84c31-1790145143494.jpg",
+  photoAlt: "Portrait of Dr. Priya Nair wearing a lab coat and stethoscope",
+  rating: 4.8,
+  reviews: 38,
+  summary:
+    "Reviewers call Dr. Nair careful and approachable. Her heart-care knowledge and plain-spoken answers stand out; some note slow replies to phone messages.",
+  location: "Brooklyn, NY, Riverside Heart & Medical Group",
+  phone: "(718) 555-0142",
+  email: "drnair@example.com",
+  languages: "English, Hindi",
+};
+
+const SCORES = [
+  { label: "Punctuality", value: 4.63 },
+  { label: "Warmth and care", value: 4.19 },
+  { label: "Explains things well", value: 4.74 },
+];
+
+const VISIT_REASONS = [
+  { label: "Blood pressure care", value: 35 },
+  { label: "Heart health check-ups", value: 25 },
+  { label: "Heart failure follow-up", value: 22 },
+  { label: "Chest pain workup", value: 18 },
+];
+
+const ACTIVITIES = [
+  { label: "Clinic", value: 47 },
+  { label: "Studies", value: 24 },
+  { label: "Mentoring", value: 16 },
+  { label: "Paperwork", value: 10 },
+  { label: "Other", value: 3 },
+];
+
+const SLOT_GROUPS = [
+  {
+    label: "Morning",
+    slots: [{ label: "9:00 AM" }, { label: "10:00 AM" }, { label: "11:00 AM", taken: true }],
+  },
+  {
+    label: "Afternoon",
+    slots: [{ label: "12:00 PM" }, { label: "1:00 PM" }, { label: "2:00 PM" }, { label: "3:00 PM", taken: true }],
+  },
+];
+
+export default function BookAppointmentPage() {
+  return (
+    <BookAppointment
+      variant="solid"
+      practitioner={DOCTOR}
+      scores={SCORES}
+      visitReasons={VISIT_REASONS}
+      activities={ACTIVITIES}
+      slotGroups={SLOT_GROUPS}
+      unavailable={(d) => d.getDay() === 0}
+      onBook={async ({ day, slot }) => {
+        await fetch("/api/book", { method: "POST", body: JSON.stringify({ day, slot }) });
+      }}
+      className="min-h-dvh"
+    />
+  );
+}
+`;
+
+<ExampleShowcase
+  name="book-appointment"
+  columns={1}
+  examples={[
+    {
+      title: "Clinic booking page",
+      subheading: "Pick a day and a time, press Book — the button stays busy while your onBook promise runs, then the check draws itself and the details rise in.",
+      propNotes: [
+        {
+          prop: "practitioner",
+          effect:
+            "fills the portrait, contact list, name, overall score and summary. `shortName` is how the confirmation refers to them; contact rows are left out when their field is missing.",
+        },
+        {
+          prop: "slotGroups",
+          effect:
+            "are the times on offer, one `BookingCard.Slots` group per entry. Mark a slot `taken` to show it struck through.",
+        },
+        {
+          lead: "Return a promise from",
+          prop: "onBook",
+          effect:
+            "and the button stays busy until it settles — resolve to show the confirmation, throw to drop back to the form.",
+        },
+        {
+          prop: "unavailable",
+          value: "(day) => day.getDay() === 0",
+          effect:
+            "strikes out days with nothing free. Sundays here; feed it your real availability.",
+        },
+        {
+          prop: "scores",
+          effect:
+            "render as `HalfStars` with fractional fill. `visitReasons` and `activities` are `ChartBlock`s — a `donut-legend` and a `stacked-bar`; leave either out and its panel is not drawn.",
+        },
+      ],
+      props: { rounded: true },
+      usage: usagePage,
+      code: extractCode("src/components/custom/blocks/BookAppointmentBlock.tsx"),
+      minHeight: 980,
+    },
+    {
+      title: "Solid",
+      subheading: "No glass: the same booking on white cards with an ordinary shadow. The booker itself is surface-neutral, so nothing inside it changes.",
+      propNotes: [
+        {
+          lead: "Set",
+          prop: "variant",
+          value: '"solid"',
+          effect:
+            "and every panel becomes a solid card; the aurora is not drawn. Days, slots and the confirmation use neutral inks that read on either surface.",
+        },
+      ],
+      props: { rounded: true, variant: "solid" },
+      usage: usagePageSolid,
+      minHeight: 980,
+    },
+  ]}
+/>
+
+## Installation
+
+<Installation name="book-appointment" />
+
+## Just the booking panel
+
+The booking panel is its own component, <DocLink to="booking-card">Booking Card</DocLink>, and works inside any panel — not only this page. Give it the panel's padding so the confirmation reaches the edges.
+
+```tsx
+import { BookingCard } from "@/components/custom/blocks/BookingCardBlock";
+import { GlassBackdrop, GlassPanel } from "@/components/custom/blocks/GlassPanelBlock";
+
+const MORNING = [{ label: "9:00 AM" }, { label: "10:00 AM" }, { label: "11:00 AM", taken: true }];
+const AFTERNOON = [{ label: "1:00 PM" }, { label: "2:00 PM" }, { label: "3:00 PM" }];
+
+export default function Booking() {
+  return (
+    <GlassBackdrop className="rounded-[36px]">
+      <GlassPanel shape="slab" className="lg:col-span-4">
+        <BookingCard
+          className="flex h-full flex-col gap-5 p-6"
+          onBook={async ({ day, slot }) => {
+            await fetch("/api/book", { method: "POST", body: JSON.stringify({ day, slot }) });
+          }}
+        >
+          <h2 className="text-lg font-semibold tracking-tight">Schedule a visit</h2>
+          <BookingCard.Days unavailable={(d) => d.getDay() === 0} />
+          <div className="space-y-4">
+            <p className="text-sm font-semibold">Time</p>
+            <BookingCard.Slots label="Morning" slots={MORNING} />
+            <BookingCard.Slots label="Afternoon" slots={AFTERNOON} />
+          </div>
+          <BookingCard.Submit className="mt-auto" />
+          <BookingCard.Confirmation withName="Dr. Nair" place="Riverside Heart & Medical Group" />
+        </BookingCard>
+      </GlassPanel>
+    </GlassBackdrop>
+  );
+}
+```
+
+Choosing a new day clears the slot, since availability changes with the day. The submit button is disabled until both are chosen, and once they are it reads the choice back — *Book now, Wed 25 at 9:00 AM* — so nobody confirms blind.
+
+## Features
+
+<div className="grid grid-cols-1 sm:grid-cols-2 gap-4 my-6 not-prose">
+  <div className="p-6 rounded-2xl border border-border bg-card">
+    <h3 className="text-lg font-semibold text-card-foreground mb-2">Built from the library</h3>
+    <p className="text-muted-foreground text-sm">Glass Panel for the surface, Half Stars for the scores, Chart for the donut and bar, Booking Card for the booking. Install this one item and all four come with it.</p>
+  </div>
+  <div className="p-6 rounded-2xl border border-border bg-card">
+    <h3 className="text-lg font-semibold text-card-foreground mb-2">A confirmation that shows what happened</h3>
+    <p className="text-muted-foreground text-sm">When onBook resolves, a check draws itself over the form and the day, time and place rise in beneath it. Book another clears it. It holds still under prefers-reduced-motion.</p>
+  </div>
+  <div className="p-6 rounded-2xl border border-border bg-card">
+    <h3 className="text-lg font-semibold text-card-foreground mb-2">Keyboard and screen reader ready</h3>
+    <p className="text-muted-foreground text-sm">Days and slots are radio groups with full date names; taken slots and closed days are disabled, not hidden; the busy button carries aria-busy and the confirmation is a status region.</p>
+  </div>
+  <div className="p-6 rounded-2xl border border-border bg-card">
+    <h3 className="text-lg font-semibold text-card-foreground mb-2">Honest about today</h3>
+    <p className="text-muted-foreground text-sm">The default days are built on the client, so a server render never guesses the visitor's date. They start today and page forward a week at a time — the previous arrow never reaches into the past. Pass your own days array to offer a different range.</p>
+  </div>
+</div>
+
+## Props Reference
+
+### BookAppointment
+
+<div className="overflow-x-auto my-4">
+  <table>
+    <thead>
+      <tr>
+        <th>Prop</th>
+        <th>Type</th>
+        <th>Default</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><code>practitioner</code></td>
+        <td><code>Practitioner</code></td>
+        <td>—</td>
+        <td>Who the page is about. See the shape below.</td>
+      </tr>
+      <tr>
+        <td><code>slotGroups</code></td>
+        <td><code>&#123; label: string; slots: &#123; label: string; taken?: boolean &#125;[] &#125;[]</code></td>
+        <td>—</td>
+        <td>Times on offer, grouped, e.g. Morning and Afternoon.</td>
+      </tr>
+      <tr>
+        <td><code>onBook</code></td>
+        <td><code>(booking: &#123; day: Date; slot: string &#125;) =&gt; void | Promise&lt;void&gt;</code></td>
+        <td>—</td>
+        <td>Called on confirm. Return a promise to hold the busy state; a rejection returns to the form.</td>
+      </tr>
+      <tr>
+        <td><code>unavailable</code></td>
+        <td><code>(day: Date) =&gt; boolean</code></td>
+        <td>—</td>
+        <td>Days with nothing free — struck through, not selectable.</td>
+      </tr>
+      <tr>
+        <td><code>scores</code></td>
+        <td><code>&#123; label: string; value: number &#125;[]</code></td>
+        <td><code>[]</code></td>
+        <td>Named scores out of 5, shown as <code>HalfStars</code> under the summary.</td>
+      </tr>
+      <tr>
+        <td><code>visitReasons</code></td>
+        <td><code>&#123; label: string; value: number &#125;[]</code></td>
+        <td>—</td>
+        <td>Shares in percent for the donut. Omit to leave the panel out.</td>
+      </tr>
+      <tr>
+        <td><code>activities</code></td>
+        <td><code>&#123; label: string; value: number &#125;[]</code></td>
+        <td>—</td>
+        <td>Shares in percent for the stacked bar. Omit to leave the panel out.</td>
+      </tr>
+      <tr>
+        <td><code>bookingHeading</code></td>
+        <td><code>string</code></td>
+        <td><code>&quot;Schedule a visit&quot;</code></td>
+        <td>Heading over the booking panel.</td>
+      </tr>
+      <tr>
+        <td><code>variant</code></td>
+        <td><code>&quot;glass&quot; | &quot;solid&quot;</code></td>
+        <td><code>&quot;glass&quot;</code></td>
+        <td>Frosted panels over an aurora, or solid cards with a shadow.</td>
+      </tr>
+      <tr>
+        <td><code>aurora</code></td>
+        <td><code>[string, string, string]</code></td>
+        <td>violet, teal, amber</td>
+        <td>The three colours washed behind the glass. Ignored by <code>solid</code>.</td>
+      </tr>
+      <tr>
+        <td><code>className</code></td>
+        <td><code>string</code></td>
+        <td>—</td>
+        <td>Applied to the page shell. Any other prop is spread there too.</td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+### Practitioner
+
+<div className="overflow-x-auto my-4">
+  <table>
+    <thead>
+      <tr>
+        <th>Field</th>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><code>name</code></td>
+        <td><code>string</code></td>
+        <td>Full name for the heading, e.g. <code>&quot;Dr. Priya Nair, MD&quot;</code>.</td>
+      </tr>
+      <tr>
+        <td><code>shortName</code></td>
+        <td><code>string</code></td>
+        <td>How the confirmation refers to them, e.g. <code>&quot;Dr. Nair&quot;</code>. Falls back to <code>name</code>.</td>
+      </tr>
+      <tr>
+        <td><code>specialties</code></td>
+        <td><code>string</code></td>
+        <td>One line under the name.</td>
+      </tr>
+      <tr>
+        <td><code>practice</code></td>
+        <td><code>string</code></td>
+        <td>Where they work; appended to the confirmation.</td>
+      </tr>
+      <tr>
+        <td><code>photo</code>, <code>photoAlt</code></td>
+        <td><code>string</code></td>
+        <td>The portrait and its alt text.</td>
+      </tr>
+      <tr>
+        <td><code>rating</code>, <code>reviews</code></td>
+        <td><code>number</code></td>
+        <td>Overall score out of 5 and the number of reviews behind it.</td>
+      </tr>
+      <tr>
+        <td><code>summary</code></td>
+        <td><code>string</code></td>
+        <td>A short read of what patients say.</td>
+      </tr>
+      <tr>
+        <td><code>location</code>, <code>phone</code>, <code>email</code>, <code>languages</code></td>
+        <td><code>string</code></td>
+        <td>Contact rows. Each is optional; a missing one is simply not drawn. Phone and email become links.</td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+### BookingCard
+
+The booking panel's own props — `onBook`, `BookingCard.Days`, `BookingCard.Slots`, `BookingCard.Submit`, `BookingCard.Confirmation` — are documented on the <DocLink to="booking-card">Booking Card</DocLink> page.

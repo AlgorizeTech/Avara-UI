@@ -1,0 +1,412 @@
+import { docsPageMetadata } from "@/lib/docs-metadata";
+
+export const metadata = docsPageMetadata("magic-bento");
+
+import { ExampleShowcase } from "@/components/site/Sandbox";
+import { extractCode } from "@/lib/code";
+
+# Magic Bento
+
+A premium grid layout system featuring CSS masking, continuously spinning gradient borders, and a real-time mouse-tracking spotlight effect.
+
+This component writes pointer coordinates straight into CSS variables
+without triggering heavy React state re-renders, ensuring the volumetric
+glows remain silky smooth — no animation library needed.
+
+Move your cursor over a card: `MagicBentoCard` tracks the pointer with CSS variables — not React state — so the 1px border track and inner glow stay smooth.
+
+export const usageDefault = `import {
+  MagicBento,
+  MagicBentoCard,
+} from "@/components/custom/blocks/MagicBentoBlock";
+import {
+  Activity,
+  Globe2,
+  LockKeyhole,
+  Network,
+  Users,
+  Workflow,
+} from "lucide-react";
+
+export default function FeatureGrid() {
+  return (
+    <MagicBento className="auto-rows-[220px]">
+      <MagicBentoCard className="col-span-1 lg:row-span-1 flex flex-col justify-between">
+        <div className="flex items-center gap-2 text-muted-foreground text-sm font-semibold">
+          <Activity className="w-4 h-4" />
+          Insights
+        </div>
+        <div className="mt-auto">
+          <h3 className="text-lg font-semibold text-foreground tracking-tight">
+            Analytics
+          </h3>
+          <p className="text-sm text-muted-foreground mt-1">
+            Track user behavior
+          </p>
+        </div>
+      </MagicBentoCard>
+
+      <MagicBentoCard className="col-span-1 lg:row-span-1 flex flex-col justify-between">
+        <div className="flex items-center gap-2 text-muted-foreground text-sm font-semibold">
+          <Globe2 className="w-4 h-4" />
+          Overview
+        </div>
+        <div className="mt-auto">
+          <h3 className="text-lg font-semibold text-foreground tracking-tight">
+            Dashboard
+          </h3>
+          <p className="text-sm text-muted-foreground mt-1">
+            Centralized data view
+          </p>
+        </div>
+      </MagicBentoCard>
+
+      {/* highlight keeps a conic gradient spinning behind the mask */}
+      <MagicBentoCard highlight className="col-span-1 row-span-2 md:col-span-2 flex flex-col justify-between">
+        <div className="flex items-center gap-2 text-muted-foreground text-sm font-semibold">
+          <Users className="w-4 h-4" />
+          Teamwork
+        </div>
+        <div className="mt-auto">
+          <h3 className="text-2xl font-semibold text-foreground tracking-tight">
+            Collaboration
+          </h3>
+          <p className="text-base text-muted-foreground mt-1">
+            Work together seamlessly across the globe
+          </p>
+        </div>
+      </MagicBentoCard>
+
+      <MagicBentoCard className="col-span-1 row-span-2 md:col-span-2 flex flex-col justify-between">
+        <div className="flex items-center gap-2 text-muted-foreground text-sm font-semibold">
+          <Workflow className="w-4 h-4" />
+          Efficiency
+        </div>
+        <div className="mt-auto">
+          <h3 className="text-2xl font-semibold text-foreground tracking-tight">
+            Automation
+          </h3>
+          <p className="text-base text-muted-foreground mt-1">
+            Streamline workflows and save thousands of hours
+          </p>
+        </div>
+      </MagicBentoCard>
+
+      <MagicBentoCard className="col-span-1 lg:row-span-1 flex flex-col justify-between">
+        <div className="flex items-center gap-2 text-muted-foreground text-sm font-semibold">
+          <Network className="w-4 h-4" />
+          Connectivity
+        </div>
+        <div className="mt-auto">
+          <h3 className="text-lg font-semibold text-foreground tracking-tight">
+            Integration
+          </h3>
+          <p className="text-sm text-muted-foreground mt-1">
+            Connect favorite tools
+          </p>
+        </div>
+      </MagicBentoCard>
+
+      <MagicBentoCard className="col-span-1 lg:row-span-1 flex flex-col justify-between">
+        <div className="flex items-center gap-2 text-muted-foreground text-sm font-semibold">
+          <LockKeyhole className="w-4 h-4" />
+          Protection
+        </div>
+        <div className="mt-auto">
+          <h3 className="text-lg font-semibold text-foreground tracking-tight">
+            Security
+          </h3>
+          <p className="text-sm text-muted-foreground mt-1">
+            Enterprise-grade protection
+          </p>
+        </div>
+      </MagicBentoCard>
+    </MagicBento>
+  );
+}`;
+
+export const usageHighlight = `import {
+  MagicBento,
+  MagicBentoCard,
+} from "@/components/custom/blocks/MagicBentoBlock";
+import { Activity, Sparkles } from "lucide-react";
+
+export default function HighlightedBento() {
+  return (
+    <MagicBento className="lg:grid-cols-2 auto-rows-[240px] max-w-3xl">
+      <MagicBentoCard className="flex flex-col justify-between">
+        <div className="flex items-center gap-2 text-muted-foreground text-sm font-semibold">
+          <Activity className="w-4 h-4" />
+          Default card
+        </div>
+        <p className="text-sm text-muted-foreground">
+          The border track and inner glow follow the cursor.
+        </p>
+      </MagicBentoCard>
+
+      <MagicBentoCard highlight className="flex flex-col justify-between">
+        <div className="flex items-center gap-2 text-muted-foreground text-sm font-semibold">
+          <Sparkles className="w-4 h-4" />
+          highlight
+        </div>
+        <p className="text-sm text-muted-foreground">
+          Adds a conic gradient that keeps spinning behind the mask,
+          cursor or not.
+        </p>
+      </MagicBentoCard>
+    </MagicBento>
+  );
+}`;
+
+<ExampleShowcase
+  name="magic-bento"
+  colorControl
+  columns={1}
+  examples={[
+    {
+      title: "Glow Spotlight Grid",
+      subheading: "`MagicBento` lays out the grid; each card owns its own pointer-tracked border and glow.",
+      propNotes: [
+        {
+          prop: "children",
+          effect:
+            "of `MagicBento` are the `MagicBentoCard`s — the grid does nothing else.",
+        },
+        {
+          prop: "className",
+          effect:
+            "on the grid is where `auto-rows-*` goes, which sets the baseline track height.",
+        },
+      ],
+      props: { example: "grid" },
+      usage: usageDefault,
+      code: extractCode("src/components/custom/blocks/MagicBentoBlock.tsx"),
+    },
+  ]}
+/>
+
+## Installation
+
+<Installation name="magic-bento" />
+
+## Examples
+
+<ExampleShowcase
+  name="magic-bento"
+  colorControl
+  columns={1}
+  examples={[
+    {
+      title: "Highlight card",
+      propNotes: [
+        {
+          lead: "Add",
+          prop: "highlight",
+          effect:
+            "to spin a conic gradient behind the 1px mask continuously — use it on the one card the eye should land on first. Without it, the border only lights where the cursor is.",
+        },
+      ],
+      props: { example: "highlight" },
+      usage: usageHighlight,
+    },
+  ]}
+/>
+
+## Theming the glow
+
+Every effect — the spinning `highlight` border, the pointer-tracked border and the inner glow — reads one colour. Out of the box it is your shadcn `--primary`, so the component works with no extra setup. To re-tint a whole grid, set the two CSS variables on any ancestor:
+
+```tsx
+<div
+  style={{
+    "--magic-color": "#6366f1",
+    "--magic-glow": "color-mix(in srgb, #6366f1 15%, transparent)",
+  } as React.CSSProperties}
+>
+  <MagicBento>…</MagicBento>
+</div>
+```
+
+`--magic-glow` is optional — when only `--magic-color` is set, the glow is derived from it at 15% opacity.
+
+## Features
+Discover the key capabilities that make this component an excellent choice for modern, animated user interfaces.
+
+<div className="grid grid-cols-1 sm:grid-cols-2 gap-4 my-6 not-prose">
+  <div className="p-6 rounded-2xl border border-border bg-card">
+    <h3 className="text-lg font-semibold text-card-foreground mb-2">Fluid Animations</h3>
+    <p className="text-muted-foreground text-sm">Hardware-accelerated transitions that ensure smooth 60fps performance across devices.</p>
+  </div>
+  <div className="p-6 rounded-2xl border border-border bg-card">
+    <h3 className="text-lg font-semibold text-card-foreground mb-2">Highly Customizable</h3>
+    <p className="text-muted-foreground text-sm">Exposes intuitive props for tailoring colors, sizes, and animation speeds to fit your brand.</p>
+  </div>
+  <div className="p-6 rounded-2xl border border-border bg-card">
+    <h3 className="text-lg font-semibold text-card-foreground mb-2">Responsive Design</h3>
+    <p className="text-muted-foreground text-sm">Automatically adapts to mobile, tablet, and desktop viewports without horizontal scrolling issues.</p>
+  </div>
+  <div className="p-6 rounded-2xl border border-border bg-card">
+    <h3 className="text-lg font-semibold text-card-foreground mb-2">Accessible</h3>
+    <p className="text-muted-foreground text-sm">Built with semantic HTML and ARIA labels where necessary to support screen readers and keyboard navigation.</p>
+  </div>
+</div>
+
+## Best Practices & Guidelines
+
+<div className="flex flex-col gap-4 my-6 not-prose">
+  <div className="rounded-xl border border-foreground/[0.06] bg-foreground/[0.03] p-4">
+    <h4 className="font-sans text-[14px] font-semibold text-foreground mb-1">Animation Performance</h4>
+    <p className="text-[13px] leading-relaxed text-foreground/50">Avoid placing too many heavy animated components on a single screen to prevent layout thrashing and maintain 60fps performance. Use intersection observers to pause off-screen animations.</p>
+  </div>
+  <div className="rounded-xl border border-primary/15 bg-primary/5 p-4">
+    <h4 className="font-sans text-[14px] font-semibold text-primary mb-1">State Management</h4>
+    <p className="text-[13px] leading-relaxed text-foreground/50">When triggering animations via state changes, ensure you wrap state updates in <code>startTransition</code> or use lightweight stores to prevent React rendering bottlenecks during the animation tick.</p>
+  </div>
+</div>
+
+## Props Reference
+
+<div className="overflow-x-auto mb-8">
+  <table>
+    <thead>
+      <tr>
+        <th>Component</th>
+        <th>Prop</th>
+        <th>Type</th>
+        <th>Default</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>
+          <code>MagicBento</code>
+        </td>
+        <td>
+          <code>children</code>
+        </td>
+        <td>
+          <code>ReactNode</code>
+        </td>
+        <td>
+          <strong>Required</strong>
+        </td>
+        <td>
+          The <code>MagicBentoCard</code> components to be rendered inside the
+          grid ecosystem.
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <code>MagicBento</code>
+        </td>
+        <td>
+          <code>className</code>
+        </td>
+        <td>
+          <code>string</code>
+        </td>
+        <td>
+          <code>undefined</code>
+        </td>
+        <td>
+          Custom Tailwind classes to override the default grid layout (e.g.,
+          modifying <code>auto-rows</code> to change the baseline height of the
+          grid tracks).
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <code>MagicBentoCard</code>
+        </td>
+        <td>
+          <code>children</code>
+        </td>
+        <td>
+          <code>ReactNode</code>
+        </td>
+        <td>
+          <strong>Required</strong>
+        </td>
+        <td>
+          The internal content, text, and visual assets of the individual bento
+          card.
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <code>MagicBentoCard</code>
+        </td>
+        <td>
+          <code>highlight</code>
+        </td>
+        <td>
+          <code>boolean</code>
+        </td>
+        <td>
+          <code>false</code>
+        </td>
+        <td>
+          When set to <code>true</code>, activates a continuously spinning conic
+          gradient behind the 1px content mask, creating a glowing animated
+          border for featured cards.
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <code>MagicBentoCard</code>
+        </td>
+        <td>
+          <code>className</code>
+        </td>
+        <td>
+          <code>string</code>
+        </td>
+        <td>
+          <code>undefined</code>
+        </td>
+        <td>
+          Used to control the grid spanning and dimensions of the specific card
+          (e.g., <code>col-span-1 md:col-span-2 lg:row-span-2</code>).
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <em>CSS variable</em>
+        </td>
+        <td>
+          <code>--magic-color</code>
+        </td>
+        <td>
+          <code>&lt;color&gt;</code>
+        </td>
+        <td>
+          <code>var(--primary)</code>
+        </td>
+        <td>
+          Colour of the spinning <code>highlight</code> border and the
+          pointer-tracked border. Set it on any ancestor to re-tint every card
+          below it.
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <em>CSS variable</em>
+        </td>
+        <td>
+          <code>--magic-glow</code>
+        </td>
+        <td>
+          <code>&lt;color&gt;</code>
+        </td>
+        <td>
+          <code>--magic-color</code> at 15%
+        </td>
+        <td>
+          Colour of the soft inner glow that follows the cursor. Defaults to a
+          translucent version of <code>--magic-color</code>.
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>

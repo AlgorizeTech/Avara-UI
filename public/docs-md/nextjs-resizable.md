@@ -1,12 +1,86 @@
+export const metadata = docsPageMetadata("resizable");
+
 # Resizable
 
 A high-performance system for building resizable panel layouts, complete with keyboard accessibility and nested group support.
 
 Most UI frameworks rely on massive, complex external libraries to handle the math of dragging panels. This `ResizableBlock` uses a sophisticated direct-DOM manipulation engine instead. By directly writing to `element.style.flex`, it bypasses the React render cycle during drag operations, resulting in **zero-latency, 60fps butter-smooth resizing** without sacrificing declarative React composition.
 
-## Examples
+Drag any handle to resize. Click a handle to focus it, then use the arrow keys — the engine ships with the ARIA separator semantics and keyboard stepping already wired.
 
-Drag any handle to resize. Click a handle to focus it, then use the arrow keys — the engine ships with the ARIA separator semantics and keyboard stepping already wired. The first example's **Code** tab contains the full component source.
+export const paneHelper = `// Panel bodies — swap these for your own content.
+function Pane({ label }: { label: string }) {
+  return (
+    
+      {label}
+    
+  );
+}`;
+
+export const splitPanes = `${paneHelper}
+
+const PanelOne = () => ;
+const PanelTwo = () => ;`;
+
+export const sidebarPanes = `${paneHelper}
+
+const Sidebar = () => ;
+const Editor = () => ;`;
+
+export const studioPanes = `function Explorer() {
+  return (
+
+        Explorer
+
+  );
+}
+
+function Editor() {
+  return (
+
+        page.tsx
+        
+          Active
+
+          export default function{" "}
+          Page() {"{"}
+        
+        return (
+        
+          &lt;div{" "}
+          className=
+          &quot;flex h-full w-full flex-col p-4&quot;
+          &gt;
+
+          &lt;h2{" "}
+          className=
+          &quot;text-2xl font-semibold&quot;
+          &gt;
+          John Doe
+          &lt;/h2&gt;
+
+          {"{/* Drag handle bars to resize panels live */}"}
+        
+        &lt;/div&gt;
+        );
+        {"}"}
+
+  );
+}
+
+function TerminalPane() {
+  return (
+
+        Terminal
+        bash
+
+        project@app:~${" "}
+        npm run dev
+        
+        ✓ Ready in 850ms
+
+  );
+}`;
 
 export const usageDefault = `import {
   ResizableHandle,
@@ -14,40 +88,86 @@ export const usageDefault = `import {
   ResizablePanelGroup,
 } from "@/components/custom/blocks/ResizableBlock";
 
+${studioPanes}
+
 export default function StudioLayout() {
   return (
-    // The outermost container must have a defined height.
+    // Simulated Studio Window
+    
+      {/* Fake Header Bar */}
 
-          {/* Groups nest freely — this one splits the main area vertically. */}
+            Nexus Studio
+
+          Resizable Layout
+
+      {/* Main Resizable Workspace */}
 
   );
 }`;
 
-export const usageHorizontal = `
+export const usageHorizontal = `import {
+  ResizableHandle,
+  ResizablePanel,
+  ResizablePanelGroup,
+} from "@/components/custom/blocks/ResizableBlock";
 
-`;
+${splitPanes}
 
-export const usageVertical = `// \`direction\` sets the flex axis of the group and the drag axis of every
-// handle inside it.
+export default function HorizontalSplit() {
+  // A panel group is height:100%, so it collapses to nothing unless an ancestor
+  // is sized. Give it a fixed height, or h-screen to fill the viewport.
+  return (
 
-`;
+  );
+}`;
 
-export const usageNoGrip = `// Omit \`withHandle\` for a bare 1px divider — still draggable, still
-// keyboard accessible, just without the visible grip.
-`;
+export const usageVertical = `import {
+  ResizableHandle,
+  ResizablePanel,
+  ResizablePanelGroup,
+} from "@/components/custom/blocks/ResizableBlock";
 
-export const usageConstraints = `// Percentages of the group. The engine clamps the drag so a panel can
-// never escape its bounds.
+${splitPanes}
 
-`;
+export default function VerticalSplit() {
+  // \`direction\` sets the flex axis of the group and the drag axis of every
+  // handle inside it.
+  // A panel group is height:100%, so it collapses to nothing unless an ancestor
+  // is sized. Give it a fixed height, or h-screen to fill the viewport.
+  return (
+
+  );
+}`;
+
+export const usageConstraints = `import {
+  ResizableHandle,
+  ResizablePanel,
+  ResizablePanelGroup,
+} from "@/components/custom/blocks/ResizableBlock";
+
+${sidebarPanes}
+
+export default function ConstrainedSidebar() {
+  // A panel group is height:100%, so it collapses to nothing unless an ancestor
+  // is sized. Give it a fixed height, or h-screen to fill the viewport.
+  return (
+
+        {/* Percentages of the group. The engine clamps the drag so a panel can
+            never escape its bounds. */}
+
+  );
+}`;
 
 ## Installation
 
-### Copy the Component
+Register the @algorize-ui registry once per project, then add the component:
 
-This engine is **100% dependency-free**. It relies entirely on standard React refs and browser DOM APIs for calculations and accessibility attributes.
+```bash
+npx shadcn@latest registry add @algorize-ui=https://algorize-ui.vercel.app/r/{name}.json
+npx shadcn@latest add @algorize-ui/resizable
+```
 
-Copy the full engine code from the **Code** tab of the first example above into `components/custom/blocks/ResizableBlock.tsx`.
+## Examples
 
 ## Features
 Learn about the Resizable component's panel layout capabilities, supporting drag handles, collapsible panes, and nested groups.
@@ -143,6 +263,6 @@ Learn about the Resizable component's panel layout capabilities, supporting drag
 
 ---
 
-**Component Path:** `nextjs\resizable\page.mdx`
+**Component Path:** `[framework]\resizable\page.mdx`
 
-**Web Version:** Visit the interactive version at the corresponding URL on the Next.js documentation site for live previews and interactive examples.
+**Web Version:** Visit the corresponding URL on the Algorize UI documentation site for live previews and interactive examples.

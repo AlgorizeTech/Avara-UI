@@ -1,0 +1,238 @@
+import { docsPageMetadata } from "@/lib/docs-metadata";
+
+export const metadata = docsPageMetadata("navbar");
+
+import { ExampleShowcase } from "@/components/site/Sandbox";
+import { extractCode } from "@/lib/code";
+
+# Navbar / Header
+
+A highly responsive, production-ready Navigation Bar. It manages pure CSS dropdowns for complex desktop menus, and uses CSS transitions to smoothly animate a beautiful slide-out drawer on mobile devices.
+
+Switch any preview to a mobile width with the device buttons to see the hamburger drawer.
+
+export const usageDefault = `import { NavbarBlock } from "@/components/custom/blocks/NavbarBlock";
+
+export default function SiteHeader() {
+  return (
+    <NavbarBlock
+      variant="default"
+      color="indigo"
+      logoText="Nexus"
+    />
+  );
+}`;
+
+export const usageFloating = `import { NavbarBlock } from "@/components/custom/blocks/NavbarBlock";
+
+export default function LandingHeader() {
+  // A pill that floats over the hero — pair it with a colorful background.
+  return (
+    <NavbarBlock
+      variant="floating"
+      logoText="Nexus"
+    />
+  );
+}`;
+
+export const usageCentered = `import { NavbarBlock } from "@/components/custom/blocks/NavbarBlock";
+
+export default function CenteredHeader() {
+  // Logo in the middle, links split either side.
+  return (
+    <NavbarBlock
+      variant="centered"
+      logoText="Nexus"
+    />
+  );
+}`;
+
+export const usageMinimal = `import { NavbarBlock } from "@/components/custom/blocks/NavbarBlock";
+
+export default function MinimalHeader() {
+  // Borderless and transparent — lets the page behind it show through.
+  return (
+    <NavbarBlock
+      variant="minimal"
+      logoText="Nexus"
+    />
+  );
+}`;
+
+export const usageGlass = `import { NavbarBlock } from "@/components/custom/blocks/NavbarBlock";
+
+export default function GlassHeader() {
+  // Full-width bar with a backdrop blur, so content scrolls under it.
+  return (
+    <NavbarBlock
+      variant="glass"
+      logoText="Nexus"
+    />
+  );
+}`;
+
+<ExampleShowcase
+  name="navbar"
+  colorControl
+  columns={1}
+  examples={[
+    {
+      title: "Navbar",
+      subheading: "The default bar: wordmark, desktop links with dropdowns, and a mobile drawer.",
+      propNotes: [
+        {
+          lead: "Set",
+          prop: "color",
+          value: '"indigo" | "rose" | "emerald" | "zinc" | "primary" | "#hex"',
+          effect:
+            "themes the logo mark icon and the primary call-to-action button.",
+        },
+      ],
+      props: { variant: "default", color: "indigo" },
+      usage: usageDefault,
+      code: extractCode("src/components/custom/blocks/NavbarBlock.tsx"),
+    },
+  ]}
+/>
+
+## Installation
+
+<Installation name="navbar" />
+
+## Examples
+
+<ExampleShowcase
+  name="navbar"
+  colorControl
+  columns={1}
+  examples={[
+    {
+      title: "Centered",
+      propNotes: [
+        {
+          lead: "Set",
+          prop: "variant",
+          value: '"centered"',
+          effect:
+            "to balance the logo in the middle with links either side.",
+        },
+      ],
+      props: { variant: "centered" },
+      usage: usageCentered,
+    },
+    {
+      title: "Floating",
+      propNotes: [
+        {
+          lead: "Set",
+          prop: "variant",
+          value: '"floating"',
+          effect:
+            "for a pill-shaped glass bar that hovers over the hero.",
+        },
+      ],
+      props: { variant: "floating" },
+      usage: usageFloating,
+    },
+    {
+      title: "Minimal",
+      propNotes: [
+        {
+          lead: "Set",
+          prop: "variant",
+          value: '"minimal"',
+          effect:
+            "to drop the border and background entirely.",
+        },
+      ],
+      props: { variant: "minimal" },
+      usage: usageMinimal,
+    },
+    {
+      title: "Glass",
+      propNotes: [
+        {
+          lead: "Set",
+          prop: "variant",
+          value: '"glass"',
+          effect:
+            "to keep the full-width bar but blur whatever scrolls beneath it.",
+        },
+      ],
+      props: { variant: "glass" },
+      usage: usageGlass,
+    },
+  ]}
+/>
+
+## Props Reference
+
+<div className="overflow-x-auto">
+  <table>
+    <thead>
+      <tr>
+        <th>Prop</th>
+        <th>Type</th>
+        <th>Default</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>
+          <code>variant</code>
+        </td>
+        <td>
+          <code>"default" | "floating" | "centered" | "minimal" | "glass"</code>
+        </td>
+        <td>
+          <code>"default"</code>
+        </td>
+        <td>Determines the structural layout and positioning of the navbar.</td>
+      </tr>
+      <tr>
+        <td>
+          <code>color</code>
+        </td>
+        <td>
+          <code>"primary" | "indigo" | "rose" | "emerald" | "zinc" | string</code>
+        </td>
+        <td>
+          <code>"primary"</code>
+        </td>
+        <td>
+          Applies global color themes to the logo icon and primary
+          Call-to-Action button. Accepts named themes or valid hex codes (e.g.{" "}
+          <code>"#8b5cf6"</code>).
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <code>logoText</code>
+        </td>
+        <td>
+          <code>string</code>
+        </td>
+        <td>
+          <code>"Nexus"</code>
+        </td>
+        <td>The text displayed next to the logo mark.</td>
+      </tr>
+      <tr>
+        <td>
+          <code>linkComponent</code>
+        </td>
+        <td>
+          <code>React.ElementType</code>
+        </td>
+        <td>
+          <code>"a"</code>
+        </td>
+        <td>
+          The React component used for internal links. In Next.js, pass{" "}
+          <code>next/link</code> to preserve client-side routing.
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>

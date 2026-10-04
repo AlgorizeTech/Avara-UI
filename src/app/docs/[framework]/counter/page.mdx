@@ -1,0 +1,502 @@
+import { docsPageMetadata } from "@/lib/docs-metadata";
+
+export const metadata = docsPageMetadata("counter");
+
+import { ExampleShowcase } from "@/components/site/Sandbox";
+import { extractCode } from "@/lib/code";
+
+# Counter Block
+
+A multi-purpose, highly animated Counter component. Whether you need a user-interactive Stepper for e-commerce, an animated statistics ticker, a circular progress tracker, or a promotional countdown timer, this block handles it all with built-in fluid animations. The countdown comes in two designs: framed figures under a pill, or `slide` — soft tiles where only the figure that changed slides, the same countdown the <DocLink to="waitlist">Waitlist</DocLink> launch panel uses.
+
+Explore the different variations of the Counter component — each example shows a live preview with the exact code to copy.
+
+export const usageStepper = `import { CounterBlock } from "@/components/custom/blocks/CounterBlock";
+
+export default function QuantityStepper() {
+  return (
+    <CounterBlock
+      type="stepper"
+      label="Select Quantity"
+      initialValue={1}
+      min={1}
+      max={10}
+    />
+  );
+}`;
+
+export const usageOutline = `import { CounterBlock } from "@/components/custom/blocks/CounterBlock";
+
+export default function OutlineStepper() {
+  return (
+    <CounterBlock
+      type="stepper"
+      variant="outline"
+      label="Select Quantity"
+      initialValue={1}
+      min={1}
+      max={10}
+    />
+  );
+}`;
+
+export const usageSoft = `import { CounterBlock } from "@/components/custom/blocks/CounterBlock";
+
+export default function SoftStepper() {
+  return (
+    <CounterBlock
+      type="stepper"
+      variant="soft"
+      label="Select Quantity"
+      initialValue={1}
+      min={1}
+      max={10}
+    />
+  );
+}`;
+
+export const usageVertical = `import { CounterBlock } from "@/components/custom/blocks/CounterBlock";
+
+export default function VerticalStepper() {
+  return (
+    <CounterBlock
+      type="stepper"
+      variant="vertical"
+      label="Select Quantity"
+      initialValue={1}
+      min={1}
+      max={10}
+    />
+  );
+}`;
+
+export const usageAnimated = `import { CounterBlock } from "@/components/custom/blocks/CounterBlock";
+
+export default function SubscriberTicker() {
+  return (
+    <CounterBlock
+      type="animated"
+      label="Total Subscribers"
+      targetValue={12500}
+      prefix="+"
+    />
+  );
+}`;
+
+export const usageCircular = `import { CounterBlock } from "@/components/custom/blocks/CounterBlock";
+
+export default function StorageMeter() {
+  return (
+    <CounterBlock
+      type="circular"
+      label="Storage Used"
+      targetValue={78}
+      suffix="%"
+    />
+  );
+}`;
+
+export const usageCountdown = `import { CounterBlock } from "@/components/custom/blocks/CounterBlock";
+
+export default function LaunchCountdown() {
+  return <CounterBlock type="countdown" label="Next Product Launch" />;
+}`;
+
+export const usageSlide = `import { CounterBlock } from "@/components/custom/blocks/CounterBlock";
+
+export default function OpensIn() {
+  return (
+    <CounterBlock
+      type="countdown"
+      variant="slide"
+      label="Launches in"
+      doneLabel="We're live"
+      targetDate="2026-11-01T09:00:00Z"
+    />
+  );
+}`;
+
+<ExampleShowcase
+  name="counter"
+  colorControl
+  columns={1}
+  examples={[
+    {
+      title: "Slide countdown",
+      subheading: "Days, hours, minutes and seconds to a date on soft tiles. Watch the seconds: only the figure that changed slides, the others hold still.",
+      propNotes: [
+        {
+          lead: "Set",
+          prop: "type",
+          value: '"countdown"',
+          effect: "with `variant=\"slide\"` for the tile design. The figures read `--` until the first tick, so server and client paint the same.",
+        },
+        {
+          prop: "targetDate",
+          effect: "is a `Date`, ISO string or timestamp; left out, it counts three days from mount.",
+        },
+        {
+          prop: "doneLabel",
+          effect: "replaces `label` once the date has passed, and the figures go away.",
+        },
+      ],
+      props: { type: "countdown", variant: "slide" },
+      usage: usageSlide,
+      code: extractCode("src/components/custom/blocks/CounterBlock.tsx"),
+    },
+  ]}
+/>
+
+## Installation
+
+<Installation name="counter" />
+
+## Examples
+
+<ExampleShowcase
+  name="counter"
+  colorControl
+  columns={1}
+  examples={[
+    {
+      title: "Stepper",
+      subheading: "An interactive quantity picker.",
+      propNotes: [
+        {
+          prop: "type",
+          value: '"stepper"',
+          effect: "renders the plus/minus quantity control.",
+        },
+        {
+          prop: "min",
+          effect: "and `max` clamp the value — the buttons disable at each end.",
+        },
+        { prop: "initialValue", effect: "is where it starts; state is internal from then on." },
+        { prop: "label", effect: "captions the control above the buttons." },
+      ],
+      props: { type: "stepper" },
+      usage: usageStepper,
+    },
+    {
+      title: "Outline stepper",
+      propNotes: [
+        {
+          lead: "Use",
+          prop: "variant",
+          value: '"outline"',
+          effect: "for a bordered, transparent stepper.",
+        },
+      ],
+      props: { type: "stepper", variant: "outline" },
+      usage: usageOutline,
+    },
+    {
+      title: "Soft stepper",
+      propNotes: [
+        {
+          lead: "Use",
+          prop: "variant",
+          value: '"soft"',
+          effect: "for a tinted, low-contrast stepper.",
+        },
+      ],
+      props: { type: "stepper", variant: "soft" },
+      usage: usageSoft,
+    },
+    {
+      title: "Vertical stepper",
+      propNotes: [
+        {
+          lead: "Use",
+          prop: "variant",
+          value: '"vertical"',
+          effect: "to stack the controls for tight sidebars.",
+        },
+      ],
+      props: { type: "stepper", variant: "vertical" },
+      usage: usageVertical,
+    },
+    {
+      title: "Animated ticker",
+      propNotes: [
+        {
+          lead: "Set",
+          prop: "type",
+          value: '"animated"',
+          effect: "to interpolate from zero up to `targetValue` when it scrolls into view.",
+        },
+      ],
+      props: { type: "animated" },
+      usage: usageAnimated,
+    },
+    {
+      title: "Circular progress",
+      propNotes: [
+        {
+          lead: "Set",
+          prop: "type",
+          value: '"circular"',
+          effect: "to draw the value as an animated SVG ring instead of a number alone.",
+        },
+      ],
+      props: { type: "circular" },
+      usage: usageCircular,
+    },
+    {
+      title: "Countdown",
+      propNotes: [
+        {
+          lead: "Set",
+          prop: "type",
+          value: '"countdown"',
+          effect: "to tick down to a target date rather than counting up. This is the default design — framed figures under a pill with a clock.",
+        },
+      ],
+      props: { type: "countdown" },
+      usage: usageCountdown,
+    },
+  ]}
+/>
+
+## Features
+Explore the Counter component's number animation features, including customizable easing, duration, and formatting options.
+
+<div className="grid grid-cols-1 sm:grid-cols-2 gap-4 my-6 not-prose">
+  <div className="p-6 rounded-2xl border border-border bg-card">
+    <h3 className="text-lg font-semibold text-card-foreground mb-2">Customizable</h3>
+    <p className="text-muted-foreground text-sm">Easily adapt the component's styling and behavior to fit your application's unique design system.</p>
+  </div>
+  <div className="p-6 rounded-2xl border border-border bg-card">
+    <h3 className="text-lg font-semibold text-card-foreground mb-2">Accessible</h3>
+    <p className="text-muted-foreground text-sm">Built with accessibility in mind, ensuring all users can interact with your application effectively.</p>
+  </div>
+  <div className="p-6 rounded-2xl border border-border bg-card">
+    <h3 className="text-lg font-semibold text-card-foreground mb-2">Responsive</h3>
+    <p className="text-muted-foreground text-sm">Fully responsive design that looks and works great across desktop, tablet, and mobile devices.</p>
+  </div>
+  <div className="p-6 rounded-2xl border border-border bg-card">
+    <h3 className="text-lg font-semibold text-card-foreground mb-2">Performant</h3>
+    <p className="text-muted-foreground text-sm">Optimized for maximum performance with minimal re-renders and efficient state management.</p>
+  </div>
+</div>
+
+## Best Practices & Guidelines
+
+<div className="flex flex-col gap-4 my-6 not-prose">
+  <div className="rounded-xl border border-foreground/[0.06] bg-foreground/[0.03] p-4">
+    <h4 className="font-sans text-[14px] font-semibold text-foreground mb-1">Usage Guidelines</h4>
+    <p className="text-[13px] leading-relaxed text-foreground/50">Follow standard design principles when implementing this component. Ensure proper contrast, spacing, and context within your layout.</p>
+  </div>
+</div>
+
+## Props Reference
+
+<div className="overflow-x-auto">
+  <table>
+    <thead>
+      <tr>
+        <th>Prop</th>
+        <th>Type</th>
+        <th>Default</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>
+          <code>type</code>
+        </td>
+        <td>
+          <code>"stepper" | "animated" | "circular" | "countdown"</code>
+        </td>
+        <td>
+          <code>"stepper"</code>
+        </td>
+        <td>Determines the core functionality and layout of the counter.</td>
+      </tr>
+      <tr>
+        <td>
+          <code>variant</code>
+        </td>
+        <td>
+          <code>"default" | "outline" | "soft" | "vertical" | "slide"</code>
+        </td>
+        <td>
+          <code>"default"</code>
+        </td>
+        <td>
+          <code>outline</code>, <code>soft</code> and <code>vertical</code> are layouts for the{" "}
+          <code>stepper</code> type; <code>slide</code> is the <code>countdown</code>'s tile design, where a figure that changes slides out above as the new one comes up from below.
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <code>color</code>
+        </td>
+        <td>
+          <code>"primary" | "indigo" | "rose" | "emerald" | "zinc" | "inherit" | string</code>
+        </td>
+        <td>
+          <code>"primary"</code>
+        </td>
+        <td>
+          Applies global color themes. Accepts valid hex codes (e.g.{" "}
+          <code>"#00FF00"</code>). <code>inherit</code> takes the surrounding text colour, for a counter inside a section that sets its own.
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <code>label</code>
+        </td>
+        <td>
+          <code>string</code>
+        </td>
+        <td>
+          <code>"Counter"</code>
+        </td>
+        <td>The descriptive text rendered alongside the counter value.</td>
+      </tr>
+      <tr>
+        <td>
+          <code>targetValue</code>
+        </td>
+        <td>
+          <code>number</code>
+        </td>
+        <td>
+          <code>100</code>
+        </td>
+        <td>
+          The final number to animate towards (used in <code>animated</code> and{" "}
+          <code>circular</code> types).
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <code>initialValue</code>
+        </td>
+        <td>
+          <code>number</code>
+        </td>
+        <td>
+          <code>1</code>
+        </td>
+        <td>
+          The starting value for the <code>stepper</code> type.
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <code>min</code> / <code>max</code>
+        </td>
+        <td>
+          <code>number</code>
+        </td>
+        <td>
+          <code>0</code> / <code>100</code>
+        </td>
+        <td>
+          Sets the bounds for the <code>stepper</code> type, automatically
+          disabling buttons when limits are reached.
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <code>prefix</code> / <code>suffix</code>
+        </td>
+        <td>
+          <code>string</code>
+        </td>
+        <td>
+          <code>""</code>
+        </td>
+        <td>
+          Strings to append before or after the number (e.g. <code>"$"</code> or{" "}
+          <code>"%"</code>).
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <code>bare</code>
+        </td>
+        <td>
+          <code>boolean</code>
+        </td>
+        <td>
+          <code>false</code>
+        </td>
+        <td>
+          <strong>Animated only:</strong> render just the figure as a <code>span</code>, no card — it inherits the surrounding type. For a number inside your own layout.
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <code>decimals</code>
+        </td>
+        <td>
+          <code>number</code>
+        </td>
+        <td>
+          <code>0</code>
+        </td>
+        <td>
+          <strong>Animated only:</strong> decimal places shown while counting, e.g. <code>1</code> for 5.5.
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <code>startOnView</code>
+        </td>
+        <td>
+          <code>boolean</code>
+        </td>
+        <td>
+          <code>false</code>
+        </td>
+        <td>
+          <strong>Animated only:</strong> wait until the counter is on screen before counting, so a figure below the fold is seen counting. Under prefers-reduced-motion the target is shown at once.
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <code>className</code>
+        </td>
+        <td>
+          <code>string</code>
+        </td>
+        <td>—</td>
+        <td>
+          <strong>Animated only:</strong> classes for the figure (<code>bare</code>) or the card.
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <code>targetDate</code>
+        </td>
+        <td>
+          <code>Date | string | number</code>
+        </td>
+        <td>
+          <code>3 days from now</code>
+        </td>
+        <td>
+          <strong>Countdown only:</strong> when the timer reaches zero — a <code>Date</code>, an ISO string or a timestamp.
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <code>doneLabel</code>
+        </td>
+        <td>
+          <code>string</code>
+        </td>
+        <td>
+          <code>"Time's up"</code>
+        </td>
+        <td>
+          <strong>Countdown only:</strong> what the label becomes once the date has passed. The <code>slide</code> variant also hides its figures then.
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>

@@ -1,0 +1,472 @@
+import { docsPageMetadata } from "@/lib/docs-metadata";
+
+import { ExampleShowcase } from "@/components/site/Sandbox";
+import { extractCode } from "@/lib/code";
+
+export const metadata = docsPageMetadata("copy-button", {
+  title: "Copy Button",
+  description: "A clipboard button that confirms the copy with an animated check and label swap — plus a read-only Copy Field for links, tokens and commands."
+});
+
+# Copy Button
+
+A button that puts text on the clipboard and says so — the icon pops from a clipboard to a check, the label rises from "Copy" to "Copied!", and both settle back after a moment.
+
+It ships in three pieces: `CopyButton` for any surface (toolbars, code blocks, cards), `CopyField` for the classic read-only input with a copy button beside or inside it, and the `useCopyToClipboard` hook when you want the behaviour with your own markup. The write uses the async Clipboard API and falls back to a hidden textarea where that is unavailable, and a failed write shows a brief "Failed" state instead of lying about success.
+
+Explore the different variations of the Copy Button — each example shows a live preview with the exact code to copy. Click a button to see it confirm.
+
+export const usageDefault = `import { CopyButton } from "@/components/custom/blocks/CopyButtonBlock";
+
+export default function CopyLink() {
+  return <CopyButton value="https://nexus.dev/u/johndoe" label="Copy Link" />;
+}`;
+
+export const usageVariants = `import { CopyButton } from "@/components/custom/blocks/CopyButtonBlock";
+
+export default function CopyVariants() {
+  return (
+    <div className="flex flex-wrap items-center gap-4">
+      <CopyButton value="solid" variant="solid" />
+      <CopyButton value="soft" variant="soft" />
+      <CopyButton value="outline" variant="outline" />
+      <CopyButton value="ghost" variant="ghost" />
+    </div>
+  );
+}`;
+
+export const usageSizes = `import { CopyButton } from "@/components/custom/blocks/CopyButtonBlock";
+
+export default function CopySizes() {
+  return (
+    <div className="flex flex-wrap items-end gap-4">
+      <CopyButton value="sm" size="sm" />
+      <CopyButton value="md" size="md" />
+      <CopyButton value="lg" size="lg" />
+    </div>
+  );
+}`;
+
+export const usageIcon = `import { CopyButton } from "@/components/custom/blocks/CopyButtonBlock";
+
+// iconOnly drops the label and renders a square button; the accessible name
+// is still announced, and flips to "Copied" after a successful write.
+export default function IconOnly() {
+  return (
+    <div className="flex items-center gap-4">
+      <CopyButton value="https://nexus.dev/u/johndoe" iconOnly variant="solid" />
+      <CopyButton value="https://nexus.dev/u/johndoe" iconOnly variant="soft" />
+      <CopyButton value="https://nexus.dev/u/johndoe" iconOnly variant="outline" />
+      <CopyButton value="https://nexus.dev/u/johndoe" iconOnly variant="ghost" />
+    </div>
+  );
+}`;
+
+export const usageField = `import { CopyField } from "@/components/custom/blocks/CopyButtonBlock";
+
+// A read-only input with the button beside it. Clicking the field selects
+// the whole value; buttonProps forwards anything CopyButton accepts.
+export default function ProfileLink() {
+  return (
+    <CopyField
+      label="Profile link"
+      value="https://nexus.dev/u/johndoe"
+      buttonProps={{ label: "Copy Link", copiedLabel: "Copied!" }}
+    />
+  );
+}`;
+
+export const usageInset = `import { CopyField } from "@/components/custom/blocks/CopyButtonBlock";
+import { Link2 } from "lucide-react";
+
+// inset tucks an icon-only ghost button inside the field's right edge.
+export default function InviteLink() {
+  return (
+    <CopyField
+      label="Invite link"
+      value="https://nexus.dev/invite/7f3a9c"
+      inset
+      prefix={<Link2 />}
+    />
+  );
+}`;
+
+export const usageCode = `import { CopyButton } from "@/components/custom/blocks/CopyButtonBlock";
+import { Terminal } from "lucide-react";
+
+const SNIPPET = "npx shadcn@latest add @algorize-ui/copy-button";
+
+export default function CommandBlock() {
+  return (
+    <div className="w-full max-w-lg overflow-hidden rounded-xl border border-border bg-muted">
+      <div className="flex items-center justify-between border-b border-border px-4 py-2">
+        <span className="flex items-center gap-2 text-xs font-medium text-muted-foreground">
+          <Terminal className="h-3.5 w-3.5" /> Terminal
+        </span>
+        {/* ghost + a custom className blends it into the toolbar in both themes */}
+        <CopyButton
+          value={SNIPPET}
+          size="sm"
+          variant="ghost"
+          className="text-muted-foreground hover:bg-foreground/10 hover:text-foreground"
+        />
+      </div>
+      <pre className="overflow-auto px-4 py-4 text-[13px] leading-relaxed text-foreground">
+        <code>{SNIPPET}</code>
+      </pre>
+    </div>
+  );
+}`;
+
+export const usageLabels = `import { CopyButton } from "@/components/custom/blocks/CopyButtonBlock";
+
+export default function CustomLabels() {
+  return (
+    <div className="flex flex-wrap items-center gap-4">
+      {/* timeout controls how long the confirmation lingers */}
+      <CopyButton
+        value="SUMMER-2026"
+        label="Copy promo code"
+        copiedLabel="Code copied"
+        timeout={1000}
+      />
+      <CopyButton
+        value="sk_live_51N2…"
+        label="Reveal & copy key"
+        copiedLabel="Key on clipboard"
+        timeout={4000}
+        variant="outline"
+        onCopy={(value, ok) => ok && console.log("copied", value)}
+      />
+    </div>
+  );
+}`;
+
+<ExampleShowcase
+  name="copy-button"
+  colorControl
+  columns={1}
+  examples={[
+    {
+      title: "Copy Button",
+      subheading: "Click it — the icon pops to a check and the label swaps to `Copied!` for two seconds.",
+      propNotes: [
+        {
+          prop: "value",
+          effect: "is the text written to the clipboard.",
+        },
+        {
+          prop: "label",
+          effect:
+            "is the resting text and `copiedLabel` the confirmation — `Copy` and `Copied!` by default.",
+        },
+      ],
+      props: { example: "basic" },
+      usage: usageDefault,
+      code: extractCode("src/components/custom/blocks/CopyButtonBlock.tsx"),
+    },
+  ]}
+/>
+
+## Installation
+
+<Installation name="copy-button" />
+
+## Examples
+
+<ExampleShowcase
+  name="copy-button"
+  colorControl
+  columns={1}
+  examples={[
+    {
+      title: "Variants",
+      propNotes: [
+        {
+          prop: "variant",
+          effect:
+            'is `"solid"` (default), `"soft"`, `"outline"` or `"ghost"`. Every variant flashes the theme colour on success so the confirmation reads even on a quiet button.',
+        },
+      ],
+      props: { example: "variants" },
+      usage: usageVariants,
+    },
+    {
+      title: "Sizes",
+      propNotes: [
+        {
+          prop: "size",
+          effect: 'is `"sm"`, `"md"` (default) or `"lg"` — height, padding and icon scale together.',
+        },
+      ],
+      props: { example: "sizes" },
+      usage: usageSizes,
+    },
+    {
+      title: "Icon only",
+      propNotes: [
+        {
+          lead: "Set",
+          prop: "iconOnly",
+          effect:
+            "for a square button with no label — for toolbars and table rows. It keeps an accessible name that flips to `Copied` after a successful write.",
+        },
+      ],
+      props: { example: "icon" },
+      usage: usageIcon,
+    },
+    {
+      title: "Copy field",
+      subheading: "The share-link pattern: a read-only input with the button beside it.",
+      propNotes: [
+        {
+          lead: "Use",
+          prop: "CopyField",
+          effect:
+            "to render the value in a read-only input with a `CopyButton` next to it. Clicking the input selects everything; `buttonProps` forwards labels, variant and timeout to the button.",
+        },
+      ],
+      props: { example: "field" },
+      usage: usageField,
+    },
+    {
+      title: "Inset button",
+      propNotes: [
+        {
+          lead: "Set",
+          prop: "inset",
+          effect:
+            "on `CopyField` to tuck an icon-only ghost button inside the field's right edge; `prefix` adds an icon on the left.",
+        },
+      ],
+      props: { example: "inset" },
+      usage: usageInset,
+    },
+    {
+      title: "In a code block",
+      propNotes: [
+        {
+          lead: "Combine",
+          prop: 'variant="ghost"',
+          effect:
+            "with a `className` to blend the button into any toolbar — here a terminal header that follows the light and dark theme.",
+        },
+      ],
+      props: { example: "code" },
+      usage: usageCode,
+    },
+    {
+      title: "Custom labels & timing",
+      propNotes: [
+        {
+          prop: "timeout",
+          effect:
+            "is how long the copied state lingers in milliseconds (default `2000`). `onCopy` fires with the value and whether the write succeeded.",
+        },
+      ],
+      props: { example: "labels" },
+      usage: usageLabels,
+    },
+  ]}
+/>
+
+### The hook on its own
+
+`useCopyToClipboard(timeout?)`, exported from `copy-button-hooks.ts` (installed beside the block), returns `{ copy, status, copied }`. `copy(text)` resolves to a boolean, and `status` is `"idle" | "copied" | "error"`, resetting itself after `timeout` ms — everything the button does, for your own markup.
+
+```tsx
+"use client";
+
+import { useCopyToClipboard } from "@/components/custom/blocks/copy-button-hooks";
+
+export default function CopyRow() {
+  const { copy, copied } = useCopyToClipboard(1500);
+
+  return (
+    <button type="button" onClick={() => copy("hello@nexus.dev")}>
+      {copied ? "Email copied" : "hello@nexus.dev"}
+    </button>
+  );
+}
+```
+
+## Features
+Discover the Copy Button's capabilities for confirming a clipboard write without a toast.
+
+<div className="grid grid-cols-1 sm:grid-cols-2 gap-4 my-6 not-prose">
+  <div className="p-6 rounded-2xl border border-border bg-card">
+    <h3 className="text-lg font-semibold text-card-foreground mb-2">Inline confirmation</h3>
+    <p className="text-muted-foreground text-sm">The feedback lives in the button itself — a popping check and a rising label — so nothing else on the page has to move.</p>
+  </div>
+  <div className="p-6 rounded-2xl border border-border bg-card">
+    <h3 className="text-lg font-semibold text-card-foreground mb-2">Honest states</h3>
+    <p className="text-muted-foreground text-sm">A blocked clipboard shows <em>Failed</em> rather than a false success, and <code>onCopy</code> tells you which it was.</p>
+  </div>
+  <div className="p-6 rounded-2xl border border-border bg-card">
+    <h3 className="text-lg font-semibold text-card-foreground mb-2">Works everywhere</h3>
+    <p className="text-muted-foreground text-sm">Uses the async Clipboard API and falls back to a hidden textarea on older browsers and non-secure origins.</p>
+  </div>
+  <div className="p-6 rounded-2xl border border-border bg-card">
+    <h3 className="text-lg font-semibold text-card-foreground mb-2">Accessible</h3>
+    <p className="text-muted-foreground text-sm">A polite live region announces the change; icon-only buttons carry a name that updates to <em>Copied</em>.</p>
+  </div>
+</div>
+
+## Best Practices & Guidelines
+
+<div className="flex flex-col gap-4 my-6 not-prose">
+  <div className="rounded-xl border border-foreground/[0.06] bg-foreground/[0.03] p-4">
+    <h4 className="font-sans text-[14px] font-semibold text-foreground mb-1">Say what was copied</h4>
+    <p className="text-[13px] leading-relaxed text-foreground/50">Prefer specific labels — <em>Copy Link</em>, <em>Code copied</em> — over a bare <em>Copy</em> when more than one thing on the screen could be copied.</p>
+  </div>
+  <div className="rounded-xl border border-primary/15 bg-primary/5 p-4">
+    <h4 className="font-sans text-[14px] font-semibold text-primary mb-1">Don't close the surface on copy</h4>
+    <p className="text-[13px] leading-relaxed text-foreground/50">Let the confirmation play before dismissing a dialog or popover — closing on click hides the only feedback the user gets.</p>
+  </div>
+</div>
+
+## Props Reference
+
+### `<CopyButton>` Props
+
+<div className="overflow-x-auto">
+  <table>
+    <thead>
+      <tr>
+        <th>Prop</th>
+        <th>Type</th>
+        <th>Default</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><code>value</code></td>
+        <td><code>string</code></td>
+        <td><strong>Required</strong></td>
+        <td>The text written to the clipboard.</td>
+      </tr>
+      <tr>
+        <td><code>label</code></td>
+        <td><code>ReactNode</code></td>
+        <td><code>"Copy"</code></td>
+        <td>Resting label.</td>
+      </tr>
+      <tr>
+        <td><code>copiedLabel</code></td>
+        <td><code>ReactNode</code></td>
+        <td><code>"Copied!"</code></td>
+        <td>Label shown after a successful write.</td>
+      </tr>
+      <tr>
+        <td><code>errorLabel</code></td>
+        <td><code>ReactNode</code></td>
+        <td><code>"Failed"</code></td>
+        <td>Label shown when the clipboard write is refused.</td>
+      </tr>
+      <tr>
+        <td><code>iconOnly</code></td>
+        <td><code>boolean</code></td>
+        <td><code>false</code></td>
+        <td>Hide the label and render a square icon button with an accessible name.</td>
+      </tr>
+      <tr>
+        <td><code>timeout</code></td>
+        <td><code>number</code></td>
+        <td><code>2000</code></td>
+        <td>How long the copied / failed state lingers, in ms.</td>
+      </tr>
+      <tr>
+        <td><code>variant</code></td>
+        <td><code>"solid" | "soft" | "outline" | "ghost"</code></td>
+        <td><code>"solid"</code></td>
+        <td>Visual style.</td>
+      </tr>
+      <tr>
+        <td><code>size</code></td>
+        <td><code>"sm" | "md" | "lg"</code></td>
+        <td><code>"md"</code></td>
+        <td>Height, padding and icon size.</td>
+      </tr>
+      <tr>
+        <td><code>color</code></td>
+        <td><code>"primary" | "indigo" | "rose" | "emerald" | "zinc" | string</code></td>
+        <td><code>"primary"</code></td>
+        <td>Theme colour for the solid / soft fills, the success flash and the focus ring. Accepts hex codes.</td>
+      </tr>
+      <tr>
+        <td><code>onCopy</code></td>
+        <td><code>{"(value: string, ok: boolean) => void"}</code></td>
+        <td>—</td>
+        <td>Fires after the write with the value and whether it succeeded.</td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+Every other `<button>` attribute (`className`, `disabled`, `onClick`…) is forwarded. Calling `preventDefault()` in your own `onClick` cancels the copy.
+
+### `<CopyField>` Props
+
+<div className="overflow-x-auto">
+  <table>
+    <thead>
+      <tr>
+        <th>Prop</th>
+        <th>Type</th>
+        <th>Default</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><code>value</code></td>
+        <td><code>string</code></td>
+        <td><strong>Required</strong></td>
+        <td>Shown in the read-only input and copied by the button.</td>
+      </tr>
+      <tr>
+        <td><code>label</code></td>
+        <td><code>string</code></td>
+        <td>—</td>
+        <td>Bold label above the field.</td>
+      </tr>
+      <tr>
+        <td><code>buttonProps</code></td>
+        <td><code>{"Omit<CopyButtonProps, \"value\">"}</code></td>
+        <td>—</td>
+        <td>Forwarded to the embedded button — labels, variant, timeout, <code>onCopy</code>…</td>
+      </tr>
+      <tr>
+        <td><code>inset</code></td>
+        <td><code>boolean</code></td>
+        <td><code>false</code></td>
+        <td>Render an icon-only ghost button inside the field's right edge instead of a full button beside it.</td>
+      </tr>
+      <tr>
+        <td><code>prefix</code></td>
+        <td><code>ReactNode</code></td>
+        <td>—</td>
+        <td>Icon or adornment on the field's left side.</td>
+      </tr>
+      <tr>
+        <td><code>selectOnClick</code></td>
+        <td><code>boolean</code></td>
+        <td><code>true</code></td>
+        <td>Select the whole value when the input is clicked.</td>
+      </tr>
+      <tr>
+        <td><code>size</code></td>
+        <td><code>"sm" | "md" | "lg"</code></td>
+        <td><code>"md"</code></td>
+        <td>Field and button height.</td>
+      </tr>
+      <tr>
+        <td><code>color</code></td>
+        <td><code>string</code></td>
+        <td><code>"primary"</code></td>
+        <td>Theme colour shared by the button and the field's focus ring.</td>
+      </tr>
+    </tbody>
+  </table>
+</div>

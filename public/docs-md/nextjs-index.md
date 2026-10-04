@@ -1,122 +1,74 @@
-# Introduction to Next.js
+export const metadata = docsPageMetadata("index", {
+  title: "Introduction",
+  description: "What Algorize UI is, how components are installed into your project, and what your project needs."
+});
 
-Next.js is a React framework that gives you building blocks to create web applications. By providing structure, features, and optimizations, Next.js helps you build production-ready React applications that scale.
+# Introduction
 
-## Component Philosophy
+Algorize UI is a library of **179 animated, responsive React
+components** — from buttons and inputs to dashboards, carousels and full
+marketing sections.
 
-Build software faster with complete code ownership, zero dependency bloat, and total styling freedom.
-
-      ⚡
-    
-    Zero NPM Bloat
-    
-      You own the code directly inside your codebase. No black-box bundle bloat or dependency lock-ins.
-
-      🎨
-    
-    100% Customizability
-    
-      Modify styles, animations, and behaviors directly within your components/custom folder.
-
-      🧩
-    
-    Minimal Primitives
-    
-      Only lightweight primitives like framer-motion and lucide-react are used.
-
-## What is Next.js?
-
-Next.js is an open-source React framework created by Vercel that enables developers to build production-ready web applications. It provides a powerful set of features out of the box, including:
-
-- **Server-side rendering** for better performance and SEO
-- **Static site generation** for blazing-fast websites
-- **Automatic code splitting** for optimized bundles
-- **File-based routing** for intuitive project structure
-- **API routes** for building backend endpoints
-- **Image optimization** for responsive images
-- **Built-in CSS support** with various styling options
-- **Fast refresh** for instant feedback during development
-
-## Why Use Next.js?
-
-### Performance
-
-Next.js is optimized for performance right out of the box:
-
-- **Automatic Code Splitting**: Only load the code needed for each page
-- **Server-side Rendering**: Pre-render pages on the server for faster initial loads
-- **Static Site Generation**: Generate static HTML files at build time
-- **Image Optimization**: Automatic image optimization with the `next/image` component
-- **Font Optimization**: Built-in font optimization with `next/font`
-
-### Developer Experience
-
-Next.js provides an exceptional developer experience:
-
-- **Fast Refresh**: See changes instantly without losing component state
-- **TypeScript Support**: First-class TypeScript support with zero configuration
-- **ESLint Integration**: Built-in ESLint configuration with Next.js specific rules
-- **Built-in Testing Tools**: Easy testing setup with Jest and React Testing Library
-
-### Scalability
-
-Next.js applications can scale from simple websites to complex enterprise applications:
-
-- **Incremental Static Regeneration**: Update static pages after build time
-- **Middleware**: Run code before the request is completed
-- **Edge Runtime**: Deploy functions closer to users for better performance
-- **Monorepo Support**: Organize large applications with multiple packages
-
-## Core Features
-
-### File-based Routing
-
-Next.js uses a file-system based router where folders are used to define routes:
+It is not an npm package. Components are published as a
+[shadcn registry](https://ui.shadcn.com/docs/registry), and the CLI copies each
+component's source **into your project**, where you can edit it like any other
+file.
 
 ```bash
-app/
-├── page.js        → /
-├── about/
-│   └── page.js    → /about
-└── blog/
-    ├── page.js    → /blog
-    └── [slug]/
-        └── page.js → /blog/:slug
+npx shadcn@latest add @algorize-ui/button
 ```
 
-### Server Components
+The short `@algorize-ui/…` form needs the registry
+registered once.
+Switch to **URL** above for a command that needs no setup.
 
-React Server Components in Next.js allow you to render components on the server, reducing bundle size and improving performance:
+## Why this approach
 
-```tsx
-// This component runs on the server
-async function getData() {
-  const res = await fetch('https://api.example.com/data')
-  return res.json()
-}
+    You own the code
+    
+      No wrapper package and no version to track. The source lives in your repo.
 
-export default async function Page() {
-  const data = await getData()
-  return {data.title}
-}
-```
+    Your theme
+    
+      Components read your Tailwind theme tokens. Preview a palette on the Themes page.
 
-### Data Fetching
+    Only what you use
+    
+      Each component declares its own dependencies, and the CLI installs them with it.
 
-Next.js provides several ways to fetch data:
+## Requirements
 
-```tsx
-// Server-side fetching in Server Components
-async function Page() {
-  const res = await fetch('https://api.example.com/data')
-  const data = await res.json()
-  
-  return {data.title}
-}
-```
+{/* Written as JSX, not a markdown table: remarkPlugins is empty in
+    next.config.ts, so GFM tables render as literal pipe characters. */}
+
+        React
+        18 or 19
+
+          Next.js
+          App Router
+
+          Vite
+          Any recent version
+
+        Tailwind CSS
+        v4
+
+        TypeScript
+        Optional
+
+## Where next
+
+    Installation
+    Set up Tailwind, shadcn and the registry.
+
+    Quick Start
+    Get a component on screen in minutes.
+
+    All components
+    Browse the full library by category.
 
 ---
 
-**Component Path:** `nextjs\index\page.mdx`
+**Component Path:** `[framework]\index\page.mdx`
 
-**Web Version:** Visit the interactive version at the corresponding URL on the Next.js documentation site for live previews and interactive examples.
+**Web Version:** Visit the corresponding URL on the Algorize UI documentation site for live previews and interactive examples.

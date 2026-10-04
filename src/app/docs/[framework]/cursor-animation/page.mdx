@@ -1,0 +1,491 @@
+import { docsPageMetadata } from "@/lib/docs-metadata";
+
+export const metadata = docsPageMetadata("cursor-animation");
+
+import { ExampleShowcase } from "@/components/site/Sandbox";
+import { extractCode } from "@/lib/code";
+
+# Cursor Animation
+
+An interactive, 100% full-width and responsive custom cursor component with 10 distinct animation variants including fluid physics, particle trails, magnetic targeting, spotlight masking, and precision crosshairs.
+
+`CursorAnimation` enhances pointer interactions over designated containers with customizable animations, seamless dark mode support, and fluid responsive physics for all devices.
+
+export const usageGlow = `import { CursorAnimation, MainContent } from "@/components/custom/blocks/CursorAnimationBlock";
+import { Sparkles } from "lucide-react";
+
+export default function GlowCursorDemo() {
+  return (
+    <CursorAnimation variant="glow" color="primary" className="w-full">
+      <MainContent>
+        <div className="flex flex-col items-center gap-4 max-w-md mx-auto text-center">
+          <div className="w-14 h-14 rounded-2xl flex items-center justify-center shadow-sm border border-primary/30 bg-primary/10 text-primary mx-auto">
+            <Sparkles className="w-7 h-7" />
+          </div>
+          <div>
+            <h3 className="text-xl font-semibold text-foreground tracking-tight">Glow Cursor Animation</h3>
+            <p className="text-sm text-muted-foreground mt-1.5 leading-relaxed">Hover and move mouse around to see the soft glow trail</p>
+          </div>
+        </div>
+      </MainContent>
+    </CursorAnimation>
+  );
+}`;
+
+export const usageMagnetic = `import { CursorAnimation, MainContent } from "@/components/custom/blocks/CursorAnimationBlock";
+import { Target } from "lucide-react";
+
+export default function MagneticCursorDemo() {
+  return (
+    <CursorAnimation variant="magnetic" color="primary" className="w-full">
+      <MainContent>
+        <div className="flex flex-col items-center gap-4 max-w-md mx-auto text-center">
+          <div className="w-14 h-14 rounded-2xl flex items-center justify-center shadow-sm border border-primary/30 bg-primary/10 text-primary mx-auto">
+            <Target className="w-7 h-7" />
+          </div>
+          <div>
+            <h3 className="text-xl font-semibold text-foreground tracking-tight">Magnetic Target Cursor</h3>
+            <p className="text-sm text-muted-foreground mt-1.5 leading-relaxed">Interactive target cursor with fluid magnetic physics</p>
+          </div>
+        </div>
+      </MainContent>
+    </CursorAnimation>
+  );
+}`;
+
+export const usageTrail = `import { CursorAnimation, MainContent } from "@/components/custom/blocks/CursorAnimationBlock";
+import { Zap } from "lucide-react";
+
+export default function TrailCursorDemo() {
+  return (
+    <CursorAnimation variant="trail" color="primary" trailCount={8} className="w-full">
+      <MainContent>
+        <div className="flex flex-col items-center gap-4 max-w-md mx-auto text-center">
+          <div className="w-14 h-14 rounded-2xl flex items-center justify-center shadow-sm border border-primary/30 bg-primary/10 text-primary mx-auto">
+            <Zap className="w-7 h-7" />
+          </div>
+          <div>
+            <h3 className="text-xl font-semibold text-foreground tracking-tight">Particle Trail Cursor</h3>
+            <p className="text-sm text-muted-foreground mt-1.5 leading-relaxed">Dense particle stream following pointer motion</p>
+          </div>
+        </div>
+      </MainContent>
+    </CursorAnimation>
+  );
+}`;
+
+export const usageBadge = `import { CursorAnimation, MainContent } from "@/components/custom/blocks/CursorAnimationBlock";
+import { MousePointer } from "lucide-react";
+
+export default function BadgeCursorDemo() {
+  return (
+    <CursorAnimation variant="badge" color="primary" label="View Project" className="w-full">
+      <MainContent>
+        <div className="flex flex-col items-center gap-4 max-w-md mx-auto text-center">
+          <div className="w-14 h-14 rounded-2xl flex items-center justify-center shadow-sm border border-primary/30 bg-primary/10 text-primary mx-auto">
+            <MousePointer className="w-7 h-7" />
+          </div>
+          <div>
+            <h3 className="text-xl font-semibold text-foreground tracking-tight">Floating Pill Badge Cursor</h3>
+            <p className="text-sm text-muted-foreground mt-1.5 leading-relaxed">Interactive floating text badge tracking the pointer</p>
+          </div>
+        </div>
+      </MainContent>
+    </CursorAnimation>
+  );
+}`;
+
+export const usageSpotlight = `import { CursorAnimation, MainContent } from "@/components/custom/blocks/CursorAnimationBlock";
+import { Eye } from "lucide-react";
+
+export default function SpotlightCursorDemo() {
+  return (
+    <CursorAnimation variant="spotlight" color="primary" className="w-full">
+      <MainContent>
+        <div className="flex flex-col items-center gap-4 max-w-md mx-auto text-center">
+          <div className="w-14 h-14 rounded-2xl flex items-center justify-center shadow-sm border border-primary/30 bg-primary/10 text-primary mx-auto">
+            <Eye className="w-7 h-7" />
+          </div>
+          <div>
+            <h3 className="text-xl font-semibold text-foreground tracking-tight">Radial Spotlight Mask Cursor</h3>
+            <p className="text-sm text-muted-foreground mt-1.5 leading-relaxed">Darkens container backdrop outside the cursor focus area</p>
+          </div>
+        </div>
+      </MainContent>
+    </CursorAnimation>
+  );
+}`;
+
+export const usageExpand = `import { CursorAnimation, MainContent } from "@/components/custom/blocks/CursorAnimationBlock";
+import { Maximize2 } from "lucide-react";
+
+export default function ExpandCursorDemo() {
+  return (
+    <CursorAnimation variant="expand" color="primary" className="w-full">
+      <MainContent>
+        <div className="flex flex-col items-center gap-4 max-w-md mx-auto text-center">
+          <div className="w-14 h-14 rounded-2xl flex items-center justify-center shadow-sm border border-primary/30 bg-primary/10 text-primary mx-auto">
+            <Maximize2 className="w-7 h-7" />
+          </div>
+          <div>
+            <h3 className="text-xl font-semibold text-foreground tracking-tight">Inverted Expand Scaling Cursor</h3>
+            <p className="text-sm text-muted-foreground mt-1.5 leading-relaxed">Scales inverted backdrop circle on hover and click</p>
+          </div>
+        </div>
+      </MainContent>
+    </CursorAnimation>
+  );
+}`;
+
+export const usageCrosshair = `import { CursorAnimation, MainContent } from "@/components/custom/blocks/CursorAnimationBlock";
+import { Crosshair } from "lucide-react";
+
+export default function CrosshairCursorDemo() {
+  return (
+    <CursorAnimation variant="crosshair" color="primary" className="w-full">
+      <MainContent>
+        <div className="flex flex-col items-center gap-4 max-w-md mx-auto text-center">
+          <div className="w-14 h-14 rounded-2xl flex items-center justify-center shadow-sm border border-primary/30 bg-primary/10 text-primary mx-auto">
+            <Crosshair className="w-7 h-7" />
+          </div>
+          <div>
+            <h3 className="text-xl font-semibold text-foreground tracking-tight">Precision Crosshair Guide Lines</h3>
+            <p className="text-sm text-muted-foreground mt-1.5 leading-relaxed">Draws full-width and full-height guide lines through pointer</p>
+          </div>
+        </div>
+      </MainContent>
+    </CursorAnimation>
+  );
+}`;
+
+export const usageRing = `import { CursorAnimation, MainContent } from "@/components/custom/blocks/CursorAnimationBlock";
+import { CircleDot } from "lucide-react";
+
+export default function RingCursorDemo() {
+  return (
+    <CursorAnimation variant="ring" color="primary" className="w-full">
+      <MainContent>
+        <div className="flex flex-col items-center gap-4 max-w-md mx-auto text-center">
+          <div className="w-14 h-14 rounded-2xl flex items-center justify-center shadow-sm border border-primary/30 bg-primary/10 text-primary mx-auto">
+            <CircleDot className="w-7 h-7" />
+          </div>
+          <div>
+            <h3 className="text-xl font-semibold text-foreground tracking-tight">Smooth Ring Cursor</h3>
+            <p className="text-sm text-muted-foreground mt-1.5 leading-relaxed">Minimal lerped tracking ring that contracts on click</p>
+          </div>
+        </div>
+      </MainContent>
+    </CursorAnimation>
+  );
+}`;
+
+export const usagePulse = `import { CursorAnimation, MainContent } from "@/components/custom/blocks/CursorAnimationBlock";
+import { Radio } from "lucide-react";
+
+export default function PulseCursorDemo() {
+  return (
+    <CursorAnimation variant="pulse" color="primary" className="w-full">
+      <MainContent>
+        <div className="flex flex-col items-center gap-4 max-w-md mx-auto text-center">
+          <div className="w-14 h-14 rounded-2xl flex items-center justify-center shadow-sm border border-primary/30 bg-primary/10 text-primary mx-auto">
+            <Radio className="w-7 h-7" />
+          </div>
+          <div>
+            <h3 className="text-xl font-semibold text-foreground tracking-tight">Radial Aura Pulse Cursor</h3>
+            <p className="text-sm text-muted-foreground mt-1.5 leading-relaxed">Radial aura that pulses around the pointer</p>
+          </div>
+        </div>
+      </MainContent>
+    </CursorAnimation>
+  );
+}`;
+
+export const usageSonar = `import { CursorAnimation, MainContent } from "@/components/custom/blocks/CursorAnimationBlock";
+import { Minimize2 } from "lucide-react";
+
+export default function SonarCursorDemo() {
+  return (
+    <CursorAnimation variant="sonar" color="primary" className="w-full">
+      <MainContent>
+        <div className="flex flex-col items-center gap-4 max-w-md mx-auto text-center">
+          <div className="w-14 h-14 rounded-2xl flex items-center justify-center shadow-sm border border-primary/30 bg-primary/10 text-primary mx-auto">
+            <Minimize2 className="w-7 h-7" />
+          </div>
+          <div>
+            <h3 className="text-xl font-semibold text-foreground tracking-tight">Sonar Wave Concentric Rings</h3>
+            <p className="text-sm text-muted-foreground mt-1.5 leading-relaxed">Two concentric rings sweeping outward in sync with movement</p>
+          </div>
+        </div>
+      </MainContent>
+    </CursorAnimation>
+  );
+}`;
+
+export const usageImageTrail = `import { CursorAnimation, MainContent } from "@/components/custom/blocks/CursorAnimationBlock";
+import { Image as ImageIcon } from "lucide-react";
+
+const sampleImages = [
+  "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_300,c_limit/v1790146210/photo-1506744038136-46273834b3fb-1790146212208.jpg",
+  "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_300,c_limit/v1790148864/photo-1511884642898-4c92249e20b6-1790148865110.jpg",
+  "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_300,c_limit/v1790146209/photo-1470071459604-3b5ec3a7fe05-1790146212205.jpg",
+  "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_300,c_limit/v1790145140/photo-1426604966848-d7adac402bff-1790145143490.jpg",
+  "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_300,c_limit/v1790146210/photo-1472214103451-9374bd1c798e-1790146212205.jpg",
+];
+
+export default function ImageTrailCursorDemo() {
+  return (
+    <CursorAnimation
+      variant="image-trail"
+      color="primary"
+      images={sampleImages}
+      className="w-full"
+    >
+      <MainContent>
+        <div className="flex flex-col items-center gap-4 max-w-md mx-auto text-center">
+          <div className="w-14 h-14 rounded-2xl flex items-center justify-center shadow-sm border border-primary/30 bg-primary/10 text-primary mx-auto">
+            <ImageIcon className="w-7 h-7" />
+          </div>
+          <div>
+            <h3 className="text-xl font-semibold text-foreground tracking-tight">Custom Image Trail Cursor</h3>
+            <p className="text-sm text-muted-foreground mt-1.5 leading-relaxed">Move pointer around to spawn custom image cards</p>
+          </div>
+        </div>
+      </MainContent>
+    </CursorAnimation>
+  );
+}`;
+
+<ExampleShowcase
+  name="cursor-animation"
+  colorControl
+  columns={1}
+  examples={[
+    {
+      title: "Image Trail Cursor",
+      propNotes: [
+        { lead: "Use", prop: "variant", value: '"image-trail"', effect: "to spawn interactive image cards dynamically centered on pointer movement." },
+        { prop: "color", effect: "themes every variant — a named key (`primary`, `indigo`, `rose`, `emerald`, `zinc`) or a hex string." },
+      ],
+      props: { variant: "image-trail" },
+      usage: usageImageTrail,
+      code: extractCode("src/components/custom/blocks/CursorAnimationBlock.tsx"),
+    },
+  ]}
+/>
+
+## Installation
+
+<Installation name="cursor-animation" />
+
+## Examples
+
+<ExampleShowcase
+  name="cursor-animation"
+  colorControl
+  columns={1}
+  examples={[
+    {
+      title: "Glow Cursor",
+      propNotes: [
+        { lead: "Use", prop: "variant", value: '"glow"', effect: "for a blurred background glow that trails the pointer on smooth physics. It is the default." },
+      ],
+      props: { variant: "glow" },
+      usage: usageGlow,
+    },
+    {
+      title: "Magnetic Target Cursor",
+      propNotes: [
+        { lead: "Use", prop: "variant", value: '"magnetic"', effect: "for a dashed target ring that rotates as the pointer moves." },
+      ],
+      props: { variant: "magnetic" },
+      usage: usageMagnetic,
+    },
+    {
+      title: "Particle Trail Cursor",
+      propNotes: [
+        { lead: "Use", prop: "variant", value: '"trail"', effect: "for a trail of particles that fade out behind the cursor." },
+        { prop: "trailCount", value: "{6}", effect: "sets how many particles trail — only read by this variant." },
+      ],
+      props: { variant: "trail" },
+      usage: usageTrail,
+    },
+    {
+      title: "Badge Label Cursor",
+      propNotes: [
+        { lead: "Use", prop: "variant", value: '"badge"', effect: "to float a pill label beside the pointer." },
+        { prop: "label", value: '"View Project"', effect: "is the pill text, defaulting to `Explore`. Only read by this variant." },
+      ],
+      props: { variant: "badge", label: "View Project" },
+      usage: usageBadge,
+    },
+    {
+      title: "Spotlight Mask Cursor",
+      propNotes: [
+        { lead: "Use", prop: "variant", value: '"spotlight"', effect: "to mask the area in a radial spotlight, darkening everything the cursor is not on." },
+      ],
+      props: { variant: "spotlight" },
+      usage: usageSpotlight,
+    },
+    {
+      title: "Expand Scaling Cursor",
+      propNotes: [
+        { lead: "Use", prop: "variant", value: '"expand"', effect: "for an inverted backdrop circle that scales up on hover and click." },
+      ],
+      props: { variant: "expand" },
+      usage: usageExpand,
+    },
+    {
+      title: "Precision Crosshair Cursor",
+      propNotes: [
+        { lead: "Use", prop: "variant", value: '"crosshair"', effect: "to draw full-width and full-height guide lines through the pointer." },
+      ],
+      props: { variant: "crosshair" },
+      usage: usageCrosshair,
+    },
+    {
+      title: "Smooth Ring Cursor",
+      propNotes: [
+        { lead: "Use", prop: "variant", value: '"ring"', effect: "for a minimal lerped ring that contracts on click." },
+      ],
+      props: { variant: "ring" },
+      usage: usageRing,
+    },
+    {
+      title: "Radial Pulse Cursor",
+      propNotes: [
+        { lead: "Use", prop: "variant", value: '"pulse"', effect: "for a radial aura that pulses around the pointer." },
+      ],
+      props: { variant: "pulse" },
+      usage: usagePulse,
+    },
+    {
+      title: "Sonar Wave Cursor",
+      propNotes: [
+        { lead: "Use", prop: "variant", value: '"sonar"', effect: "for two concentric rings sweeping outward in sync with movement." },
+      ],
+      props: { variant: "sonar" },
+      usage: usageSonar,
+    },
+  ]}
+/>
+
+## Features
+
+Discover the key interactive capabilities of the `CursorAnimation` block:
+
+<div className="grid grid-cols-1 sm:grid-cols-2 gap-4 my-6 not-prose">
+  <div className="p-6 rounded-2xl border border-border bg-card">
+    <h3 className="text-lg font-semibold text-card-foreground mb-2">10 Distinct Variants</h3>
+    <p className="text-muted-foreground text-sm">Choose from glow, magnetic, particle trail, badge label, spotlight, crosshair, and 4 other fluid styles.</p>
+  </div>
+  <div className="p-6 rounded-2xl border border-border bg-card">
+    <h3 className="text-lg font-semibold text-card-foreground mb-2">Fluid Physics & Lerp</h3>
+    <p className="text-muted-foreground text-sm">Smooth linear interpolation (LERP) physics ensures natural inertia and responsive cursor tracking.</p>
+  </div>
+  <div className="p-6 rounded-2xl border border-border bg-card">
+    <h3 className="text-lg font-semibold text-card-foreground mb-2">100% Full-Width Responsive</h3>
+    <p className="text-muted-foreground text-sm">Adapts seamlessly to container boundaries across desktop, tablet, and mobile screens without breaking overflow.</p>
+  </div>
+  <div className="p-6 rounded-2xl border border-border bg-card">
+    <h3 className="text-lg font-semibold text-card-foreground mb-2">Dark Mode Native</h3>
+    <p className="text-muted-foreground text-sm">Pre-configured with zinc dark mode palettes matching site design tokens and contrast guidelines.</p>
+  </div>
+</div>
+
+## Best Practices & Guidelines
+
+<div className="flex flex-col gap-4 my-6 not-prose">
+  <div className="rounded-xl border border-foreground/[0.06] bg-foreground/[0.03] p-4">
+    <h4 className="font-sans text-[14px] font-semibold text-foreground mb-1">Usage Guidelines</h4>
+    <p className="text-[13px] leading-relaxed text-foreground/50">Use <code>CursorAnimation</code> to highlight hero sections, portfolio cards, interactive canvas areas, or custom action areas. Ensure pointer-events are set correctly when layering over interactive text or buttons.</p>
+  </div>
+</div>
+
+## Props Reference
+
+<div className="overflow-x-auto">
+  <table>
+    <thead>
+      <tr>
+        <th>Prop</th>
+        <th>Type</th>
+        <th>Default</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>
+          <code>variant</code>
+        </td>
+        <td>
+          <code>"glow" | "magnetic" | "trail" | "badge" | "spotlight" | "expand" | "crosshair" | "ring" | "pulse" | "sonar"</code>
+        </td>
+        <td>
+          <code>"glow"</code>
+        </td>
+        <td>Selects the active cursor animation style and interaction physics.</td>
+      </tr>
+      <tr>
+        <td>
+          <code>label</code>
+        </td>
+        <td>
+          <code>string</code>
+        </td>
+        <td>
+          <code>"Explore"</code>
+        </td>
+        <td>Text displayed inside the floating badge pill when <code>variant="badge"</code>.</td>
+      </tr>
+      <tr>
+        <td>
+          <code>color</code>
+        </td>
+        <td>
+          <code>CursorColor | string</code>
+        </td>
+        <td>
+          <code>"primary"</code>
+        </td>
+        <td>Applies dynamic theme color palettes (<code>"primary" | "indigo" | "rose" | "emerald" | "zinc"</code> or custom hex).</td>
+      </tr>
+      <tr>
+        <td>
+          <code>trailCount</code>
+        </td>
+        <td>
+          <code>number</code>
+        </td>
+        <td>
+          <code>6</code>
+        </td>
+        <td>Number of trailing particles rendered when <code>variant="trail"</code>.</td>
+      </tr>
+      <tr>
+        <td>
+          <code>className</code>
+        </td>
+        <td>
+          <code>string</code>
+        </td>
+        <td>
+          <code>""</code>
+        </td>
+        <td>Custom Tailwind CSS classes applied to the root container.</td>
+      </tr>
+      <tr>
+        <td>
+          <code>children</code>
+        </td>
+        <td>
+          <code>React.ReactNode</code>
+        </td>
+        <td>
+          <code>undefined</code>
+        </td>
+        <td>Custom interactive element content rendered inside the cursor hover zone.</td>
+      </tr>
+    </tbody>
+  </table>
+</div>

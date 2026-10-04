@@ -1,0 +1,237 @@
+import { docsPageMetadata } from "@/lib/docs-metadata";
+
+export const metadata = docsPageMetadata("calendar");
+
+import { ExampleShowcase } from "@/components/site/Sandbox";
+import { extractCode } from "@/lib/code";
+
+# Calendar Dashboard
+
+A comprehensive, interactive calendar dashboard and date-picker system. Includes built-in event management, filtering, dynamic views (Month/Week/Day), and animated popover modals.
+
+`CalendarDashboard` is fully encapsulated — modals, event editing, filtering and exporting are all handled internally, so the only thing you pass in is the seed data and the look.
+
+export const usageDefault = `import { CalendarDashboard } from "@/components/custom/blocks/Calendar";
+
+const y = new Date().getFullYear();
+const m = new Date().getMonth() + 1;
+
+// Keys are "YYYY-M-D" (no zero padding); values are event types.
+const events = {
+  [\`\${y}-\${m}-2\`]: ["pentest", "kickoff"],
+  [\`\${y}-\${m}-10\`]: ["pentest", "kickoff"],
+  [\`\${y}-\${m}-15\`]: ["pentest", "kickoff"],
+  [\`\${y}-\${m}-24\`]: ["kickoff", "pentest"],
+};
+
+export default function TeamCalendar() {
+  return <CalendarDashboard mockEvents={events} />;
+}`;
+
+export const usageMinimal = `import { CalendarDashboard } from "@/components/custom/blocks/Calendar";
+
+const y = new Date().getFullYear();
+const m = new Date().getMonth() + 1;
+const events = {
+  [\`\${y}-\${m}-2\`]: ["pentest", "kickoff"],
+  [\`\${y}-\${m}-10\`]: ["pentest", "kickoff"],
+  [\`\${y}-\${m}-15\`]: ["pentest", "kickoff"],
+  [\`\${y}-\${m}-24\`]: ["kickoff", "pentest"],
+};
+
+export default function EmbeddedCalendar() {
+  // "minimal" drops the card chrome so the dashboard sits flush inside your page.
+  return <CalendarDashboard variant="minimal" mockEvents={events} />;
+}`;
+
+export const usageGlass = `import { CalendarDashboard } from "@/components/custom/blocks/Calendar";
+
+const y = new Date().getFullYear();
+const m = new Date().getMonth() + 1;
+const events = {
+  [\`\${y}-\${m}-2\`]: ["pentest", "kickoff"],
+  [\`\${y}-\${m}-10\`]: ["pentest", "kickoff"],
+  [\`\${y}-\${m}-15\`]: ["pentest", "kickoff"],
+  [\`\${y}-\${m}-24\`]: ["kickoff", "pentest"],
+};
+
+export default function GlassCalendar() {
+  // "glass" is translucent — intended to sit on a background image or rich
+  // pattern. The photo frames it from md up; on phones the card fills the
+  // frame and the photo shows through it instead.
+  return (
+    <div
+      className="overflow-hidden rounded-2xl bg-cover bg-center md:p-8"
+      style={{
+        backgroundImage:
+          "linear-gradient(rgba(0, 0, 0, 0.48), rgba(0, 0, 0, 0.52)), url('https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_1200,c_limit/v1790146209/photo-1470071459604-3b5ec3a7fe05-1790146212205.jpg')",
+      }}
+    >
+      <CalendarDashboard variant="glass" mockEvents={events} />
+    </div>
+  );
+}`;
+
+<ExampleShowcase
+  name="calendar"
+  colorControl
+  columns={1}
+  examples={[
+    {
+      title: "Calendar dashboard",
+      subheading: "Everything past the initial events is internal state.",
+      propNotes: [
+        {
+          lead: "Seed",
+          prop: "mockEvents",
+          effect:
+            "with a map of `\"YYYY-M-D\"` to an array of event types (`\"pentest\"`, `\"kickoff\"`). Note the un-padded month and day.",
+        },
+        {
+          prop: "color",
+          effect:
+            "themes the active states, primary buttons and focus rings — a named key or a hex string.",
+        },
+      ],
+      props: { variant: "default" },
+      usage: usageDefault,
+      code: extractCode("src/components/custom/blocks/Calendar.tsx"),
+    },
+  ]}
+/>
+
+## Installation
+
+<Installation name="calendar" />
+
+## Examples
+
+<ExampleShowcase
+  name="calendar"
+  colorControl
+  columns={1}
+  examples={[
+    {
+      title: "Minimal",
+      propNotes: [
+        {
+          lead: "Set",
+          prop: "variant",
+          value: '"minimal"',
+          effect:
+            "to drop the card chrome so the dashboard sits flush in your own layout.",
+        },
+      ],
+      props: { variant: "minimal" },
+      usage: usageMinimal,
+    },
+    {
+      title: "Glass",
+      propNotes: [
+        {
+          lead: "Set",
+          prop: "variant",
+          value: '"glass"',
+          effect:
+            "to go translucent — intended to sit on a coloured or photographic surface.",
+        },
+      ],
+      props: { variant: "glass" },
+      usage: usageGlass,
+    },
+  ]}
+/>
+
+## Features
+Discover the Calendar's date selection capabilities, supporting single dates, date ranges, and localization.
+
+<div className="grid grid-cols-1 sm:grid-cols-2 gap-4 my-6 not-prose">
+  <div className="p-6 rounded-2xl border border-border bg-card">
+    <h3 className="text-lg font-semibold text-card-foreground mb-2">Customizable</h3>
+    <p className="text-muted-foreground text-sm">Easily adapt the component's styling and behavior to fit your application's unique design system.</p>
+  </div>
+  <div className="p-6 rounded-2xl border border-border bg-card">
+    <h3 className="text-lg font-semibold text-card-foreground mb-2">Accessible</h3>
+    <p className="text-muted-foreground text-sm">Built with accessibility in mind, ensuring all users can interact with your application effectively.</p>
+  </div>
+  <div className="p-6 rounded-2xl border border-border bg-card">
+    <h3 className="text-lg font-semibold text-card-foreground mb-2">Responsive</h3>
+    <p className="text-muted-foreground text-sm">Fully responsive design that looks and works great across desktop, tablet, and mobile devices.</p>
+  </div>
+  <div className="p-6 rounded-2xl border border-border bg-card">
+    <h3 className="text-lg font-semibold text-card-foreground mb-2">Performant</h3>
+    <p className="text-muted-foreground text-sm">Optimized for maximum performance with minimal re-renders and efficient state management.</p>
+  </div>
+</div>
+
+## Best Practices & Guidelines
+
+<div className="flex flex-col gap-4 my-6 not-prose">
+  <div className="rounded-xl border border-foreground/[0.06] bg-foreground/[0.03] p-4">
+    <h4 className="font-sans text-[14px] font-semibold text-foreground mb-1">Usage Guidelines</h4>
+    <p className="text-[13px] leading-relaxed text-foreground/50">Follow standard design principles when implementing this component. Ensure proper contrast, spacing, and context within your layout.</p>
+  </div>
+</div>
+
+## Props Reference
+
+<div className="overflow-x-auto">
+  <table>
+    <thead>
+      <tr>
+        <th>Prop</th>
+        <th>Type</th>
+        <th>Default</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>
+          <code>mockEvents</code>
+        </td>
+        <td>
+          <code>Record&lt;string, string[]&gt;</code>
+        </td>
+        <td>
+          <code>{"{}"}</code>
+        </td>
+        <td>
+          A dictionary mapping string dates (<code>"YYYY-M-D"</code>) to an
+          array of event types (<code>"pentest"</code> or <code>"kickoff"</code>
+          ).
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <code>variant</code>
+        </td>
+        <td>
+          <code>"default" | "minimal" | "glass"</code>
+        </td>
+        <td>
+          <code>"default"</code>
+        </td>
+        <td>
+          Applies overarching structural layouts, including borders, padding,
+          and grid-gaps.
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <code>color</code>
+        </td>
+        <td>
+          <code>"primary" | "indigo" | "rose" | "emerald" | "blue" | "zinc" | string</code>
+        </td>
+        <td>
+          <code>"primary"</code>
+        </td>
+        <td>
+          Applies global color themes to active states, primary buttons, and
+          focus rings. Accepts valid hex codes.
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>

@@ -15,8 +15,8 @@ const CLONE_MARK = "data-preview-frame-clone";
  */
 export function PreviewFrame({
   children,
-  minHeight = 400,
-  maxHeight = 820,
+  minHeight = 550,
+  maxHeight = 1400,
   className,
   title = "Component preview",
   frameWidth,
@@ -223,7 +223,7 @@ export function PreviewFrame({
       bodyObserver.observe(doc.body, { childList: true, subtree: true });
       docCleanups.push(() => bodyObserver.disconnect());
 
-      // Animation libraries running in the parent realm (framer-motion)
+      // Animation libraries running in the parent realm (motion)
       // schedule WAAPI startTimes on the parent page's clock, but the
       // animations run on this document's timeline, which starts at zero when
       // the frame is created. That schedules every entrance animation seconds
@@ -332,7 +332,7 @@ export function PreviewFrame({
         />
       </div>
       {/* Mount children only once the frame is revealed: a hidden (opacity-0)
-          iframe is render-throttled by the browser, which freezes WAAPI/framer
+          iframe is render-throttled by the browser, which freezes WAAPI/motion
           entrance animations at their initial state. */}
       {mountNode && ready ? createPortal(children, mountNode) : null}
     </>

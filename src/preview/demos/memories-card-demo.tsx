@@ -11,13 +11,13 @@ const sampleMemories: MemoryItem[] = [
   {
     id: "m1",
     tag: "Highlight",
-    title: "Kyoto Lantern Festival",
-    location: "Kyoto, Japan",
+    title: "Alpine Forest Lake",
+    location: "Swiss Alps",
     date: "Oct 2025",
     description:
-      "Walking through thousands of glowing paper lanterns illuminating the historic Gion district at twilight.",
+      "Serene pine forests reflecting over calm turquoise mountain waters at sunrise.",
     image:
-      "https://images.unsplash.com/photo-1493976040374-85c8e12f0c0e?q=80&w=1200&auto=format&fit=crop",
+      "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_1200,c_limit/v1790145141/photo-1448375240586-882707db888b-1790145143491.jpg",
   },
   {
     id: "m2",
@@ -28,29 +28,29 @@ const sampleMemories: MemoryItem[] = [
     description:
       "Reaching the summit just as the morning sun cast jagged shadows across the limestone peaks.",
     image:
-      "https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?q=80&w=1200&auto=format&fit=crop",
+      "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_1200,c_limit/v1790145141/photo-1464822759023-fed622ff2c3b-1790145143491.jpg",
   },
   {
     id: "m3",
     tag: "Sanctuary",
-    title: "Amalfi Coast Drive",
-    location: "Positano, Italy",
+    title: "Emerald Forest Stream",
+    location: "Pacific Northwest",
     date: "Jul 2025",
     description:
-      "Cruising along cliffside roads winding above the turquoise waters of the Mediterranean Sea.",
+      "A tranquil river winding through dense ancient rainforests and mossy rocks.",
     image:
-      "https://images.unsplash.com/photo-1533105079780-92b9be482077?q=80&w=1200&auto=format&fit=crop",
+      "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_1200,c_limit/v1790146210/photo-1506744038136-46273834b3fb-1790146212208.jpg",
   },
   {
     id: "m4",
     tag: "Wilderness",
-    title: "Banff Glacial Lake",
+    title: "Cascading Mountain Falls",
     location: "Alberta, Canada",
     date: "Jun 2025",
     description:
-      "Canoeing across crystal-clear emerald waters fed directly by ancient mountain glaciers.",
+      "Fresh mountain spring water cascading through untouched wilderness slopes.",
     image:
-      "https://images.unsplash.com/photo-1506744038136-46273834b3fb?q=80&w=1200&auto=format&fit=crop",
+      "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_1200,c_limit/v1790146209/photo-1469474968028-56623f02e42e-1790146212205.jpg",
   },
 ];
 
@@ -78,7 +78,7 @@ export default function MemoriesCardDemo({
     // date/location icons, reset button), so repointing the token recolours it.
     <div
       style={accentStyle(color)}
-      className="w-full flex flex-col items-center justify-center bg-zinc-50 dark:bg-[#0a0a0a] py-8 sm:py-12 px-4 md:px-8 relative overflow-hidden min-h-[600px] rounded-3xl border border-zinc-200 dark:border-white/10 transition-colors duration-300"
+      className="w-full flex flex-col items-center justify-center bg-muted/40 py-8 sm:py-12 px-4 md:px-8 relative overflow-hidden min-h-[600px] rounded-3xl border border-border transition-colors duration-300"
     >
       {/* Ambient Radial Backglow */}
       <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-2/3 h-2/3 bg-primary/5 dark:bg-primary/10 blur-[130px] rounded-full pointer-events-none" />
@@ -92,8 +92,8 @@ export default function MemoriesCardDemo({
       </div>
 
       {showIndex && (
-        <p className="relative z-10 mt-6 text-sm font-semibold text-zinc-500 dark:text-zinc-400 tabular-nums">
-          onCardChange → index {activeIndex}
+        <p className="relative z-10 mt-6 text-sm font-semibold text-muted-foreground tabular-nums">
+          onCardChange → index {activeIndex+1}
         </p>
       )}
     </div>

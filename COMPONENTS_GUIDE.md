@@ -1,38 +1,97 @@
-# Next.js Documentation Component System - Professional Guide
+# Algorize UI Component System - Professional Guide
 
-This guide explains the complete component system architecture, including how to add, edit, and delete components in the Next.js Documentation platform.
+This guide explains the complete component system architecture, including how to add, edit, and delete components in the Algorize UI platform.
 
 ## 📁 Component Structure Overview
 
-The Next.js Documentation component system follows a well-defined structure that separates documentation from implementation while maintaining consistency across all components.
+The Algorize UI component system follows a well-defined structure that separates documentation from implementation while maintaining consistency across all components.
 
 ### Directory Structure
 ```
 src/
 ├── app/
-│   ├── docs/                    # Documentation section
-│   │   ├── [component-name]/    # Individual component folders
-│   │   │   ├── page.mdx         # Documentation page
-│   │   │   ├── [component].tsx  # Main component implementation
-│   │   │   └── [variants].tsx   # Component variants
-│   │   └── nextjs/              # Next.js specific documentation
-│   │       └── [feature]/       # Next.js feature documentation
-│   │           └── page.mdx     # Feature documentation
-├── components/                  # Shared components
-│   ├── site/                    # Site-specific components
-│   └── ui/                      # Generic UI components
-├── scripts/                     # Automation scripts
+│   └── docs/
+│       └── [framework]/             # Dynamic segment: "nextjs" | "reactjs"
+│           ├── layout.tsx           # Restricts the segment; noindexes non-default
+│           ├── <component-name>/
+│           │   ├── page.mdx         # Documentation page — one file, both frameworks
+│           │   └── <component>.tsx  # Page-local demo source, if any
+│           └── installation/        # A forked guide: differs throughout
+│               ├── page.tsx         # Picks the content module + metadata
+│               └── _content/
+│                   ├── nextjs.mdx
+│                   └── reactjs.mdx
+├── components/
+│   ├── custom/blocks/               # The shipped library (registry source)
+│   ├── site/                        # Docs-site chrome — never shipped
+│   └── ui/                          # Generic UI primitives
+├── lib/
+│   ├── framework.ts                 # FRAMEWORKS, FORKED_SLUGS, docsHref, guards
+│   └── snippet.ts                   # Snippet variant maps + resolver
+├── scripts/                         # Automation and drift checks
 └── public/
-    ├── docs-md/                 # Markdown documentation
-    └── registry/                # Component registry JSON files
+    ├── docs-md/                     # Markdown mirrors, one per framework
+    └── r/                           # Built registry JSON
 ```
+
+> The `[framework]` folder is a literal directory name, not a placeholder. Quote it
+> in shell commands so the brackets are not treated as a glob.
+
+
+## 🔀 Framework rules (read once, then forget)
+
+The docs serve two frameworks — `/docs/nextjs/…` and `/docs/reactjs/…` — from one
+source tree. Almost nothing you write needs to know that. Three rules keep it that
+way, and `npm run check:frameworks` enforces all three, so a mistake fails the
+build rather than reaching a reader.
+
+**1. Never import from `next/*` in a shipped component.** One source has to compile
+in a Vite app as well as this one. If you need a link or an image, take the element
+as a prop:
+
+```tsx
+export function MyBlock({ linkComponent: Link = "a" }: { linkComponent?: React.ElementType }) {
+  return <Link href="/somewhere">Go</Link>;
+}
+```
+
+Next.js users pass `linkComponent={Link}` to get prefetching back; everyone else
+gets a working `<a>` for free. For a browser-only library, use `React.lazy` behind a
+mounted gate rather than `next/dynamic` — see `DataMapsBlock.tsx`.
+
+**2. Never hardcode `/docs/nextjs/…` in a doc page.** Use `<DocLink to="hero">`,
+which resolves against whichever framework the reader is in. A markdown link like
+`[Hero](/docs/nextjs/hero)` is retargeted automatically, but raw JSX is not.
+
+**3. Default every code snippet to a plain string.** A string means *identical in
+both frameworks*, which is true for almost every page. Only escalate when the code
+genuinely differs:
+
+```ts
+usage: `import { Thing } from "@/components/custom/blocks/Thing";`   // normal
+usage: { nextjs: `…`, reactjs: `…` }                                  // rare
+```
+
+If both branches end up identical, or the `reactjs` branch still imports from
+`next/*`, the check will tell you.
+
+Prose that differs by a sentence uses `<ForFramework only="reactjs">`. A page that
+differs *throughout* — only `installation` and `first-app` today — forks into
+`_content/nextjs.mdx` + `_content/reactjs.mdx` behind a `page.tsx`, and must be
+listed in `FORKED_SLUGS` **and** use `buildDocsMetadata`, or it will be sitemapped
+and noindexed at the same time.
+
+---
 
 ## ➕ Adding New Components
 
 ### 1. Create Component Directory
-Create a new directory in `src/app/docs/` with your component name in kebab-case:
+Create a new directory under the framework segment, named in kebab-case. The
+`[framework]` folder is a real directory — quote the path so your shell does not
+treat the brackets as a glob:
+
 ```bash
-mkdir src/app/docs/new-component
+mkdir "src/app/docs/[framework]/new-component"
 ```
 
 ### 2. Implement Component
@@ -74,7 +133,7 @@ export default NewComponent;
 Create `page.mdx` in your component directory:
 ```mdx
 export const metadata = {
-  title: 'New Component - Next.js Documentation',
+  title: 'New Component - Algorize UI',
   description: 'Description of your new component',
 };
 
@@ -99,7 +158,7 @@ Description of your component and its use cases.
     <ComponentRenderer component={<NewComponent>Content</NewComponent>} />
   </TabsContent>
   <TabsContent value="code">
-    <CodeBlock filePath="src/app/docs/new-component/new-component.tsx" />
+    <CodeBlock filePath="src/app/docs/[framework]/new-component/new-component.tsx" />
   </TabsContent>
 </Tabs>
 
@@ -114,7 +173,7 @@ Description of your component and its use cases.
     <Cli command="add new-component.json" />
   </TabsContent>
   <TabsContent value="manual">
-    <CodeBlock filePath="src/app/docs/new-component/new-component.tsx" />
+    <CodeBlock filePath="src/app/docs/[framework]/new-component/new-component.tsx" />
   </TabsContent>
 </Tabs>
 
@@ -167,7 +226,7 @@ npm run build:registry
 ### 1. Remove Component Directory
 Delete the entire component directory:
 ```bash
-rm -rf src/app/docs/component-to-delete
+rm -rf "src/app/docs/[framework]/component-to-delete"
 ```
 
 ### 2. Remove Registry File
@@ -226,7 +285,7 @@ Each component directory typically contains:
 | `npm run watch:components` | Watch for component changes |
 
 ### Build Process
-1. **Component Discovery**: Script scans `src/app/docs/` directory
+1. **Component Discovery**: Script scans the `src/app/docs/[framework]/` directory
 2. **Registry Generation**: Creates JSON files in `public/registry/`
 3. **Documentation Build**: MDX files are processed by Next.js
 4. **Static Export**: Site is exported as static files
@@ -425,4 +484,4 @@ Deploy the `out` directory to your hosting provider.
 - Update package.json version
 - Create changelog entries
 
-This comprehensive guide provides everything needed to work with the Next.js Documentation component system professionally, from adding new components to maintaining existing ones.
+This comprehensive guide provides everything needed to work with the Algorize UI component system professionally, from adding new components to maintaining existing ones.

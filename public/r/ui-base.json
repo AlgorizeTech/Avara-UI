@@ -1,0 +1,22 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "ui-base",
+  "title": "UI Base",
+  "author": "AlgorizeTech",
+  "description": "Shared layout scaffolding (ComponentCard, ToggleSwitch) used by the settings, payment, compute and utility blocks.",
+  "dependencies": [],
+  "registryDependencies": [],
+  "files": [
+    {
+      "path": "src/components/custom/ui/base.tsx",
+      "content": "\"use client\";\nimport React from \"react\";\n\nexport function ComponentCard({ children, className = \"\" }: { children: React.ReactNode; className?: string }) {\n  return (\n    <div className={`rounded-xl border border-border bg-card text-card-foreground shadow-sm transition-all duration-300 hover:shadow-md hover:border-border overflow-hidden ${className}`}>\n      {children}\n    </div>\n  );\n}\n\nexport function ToggleSwitch({ active, onChange }: { active: boolean; onChange: () => void }) {\n  return (\n    <button\n      type=\"button\"\n      onClick={onChange}\n      className={`w-9 h-5 rounded-full flex items-center p-0.5 cursor-pointer transition-colors duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background ${\n        active ? \"bg-primary\" : \"bg-foreground/15\"\n      }`}\n    >\n      <div className={`size-4 rounded-full bg-background shadow-sm transform transition-transform duration-200 ${active ? \"translate-x-4\" : \"translate-x-0\"}`} />\n    </button>\n  );\n}",
+      "type": "registry:ui",
+      "target": "components/custom/ui/base.tsx"
+    }
+  ],
+  "docs": "Named exports: ComponentCard, ToggleSwitch. Pulled in automatically as a dependency — rarely installed directly.",
+  "categories": [
+    "utilities"
+  ],
+  "type": "registry:ui"
+}

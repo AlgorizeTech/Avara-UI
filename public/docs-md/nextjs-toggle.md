@@ -1,36 +1,22 @@
+export const metadata = docsPageMetadata("toggle");
+
 # Toggle
 
 A two-state button that can be either on or off.
 
 Toggles are primarily used to manage interface states (like text formatting in an editor or muting a track) rather than submitting form data. This `ToggleBlock` automatically manages the `data-state` and `aria-pressed` HTML attributes to ensure visual feedback and screen-reader accessibility are perfectly synced.
 
-## Examples
+Explore the different variations of the Toggle component — each example shows a live preview with the exact code to copy.
 
-Explore the different variations of the Toggle component — each example shows a live preview with the exact code to copy. The first example's **Code** tab contains the full component source.
+export const usageSizes = `import { Toggle } from "@/components/custom/blocks/ToggleBlock";
 
-export const usageDefault = `import { Toggle } from "@/components/custom/blocks/ToggleBlock";
-
-export default function BasicToggle() {
-  const [pressed, setPressed] = useState(false);
-
+export default function ToggleSizes() {
   return (
 
   );
 }`;
 
-export const usageOutline = `
-  
-`;
-
-export const usageGhost = `
-  
-`;
-
-export const usageSizes = `
-
-`;
-
-export const usageText = `import { Toggle } from "@/components/custom/blocks/ToggleBlock";
+export const usageText = `"use client";
 
 export default function MuteToggle() {
   const [muted, setMuted] = useState(false);
@@ -43,7 +29,7 @@ export default function MuteToggle() {
   );
 }`;
 
-export const usageToolbar = `import { Toggle } from "@/components/custom/blocks/ToggleBlock";
+export const usageToolbar = `"use client";
 
 export default function FormattingToolbar() {
   const [format, setFormat] = useState({ bold: false, italic: true, underline: false });
@@ -65,19 +51,24 @@ export default function FormattingToolbar() {
   );
 }`;
 
-export const usageDisabled = `
-  
-`;
+export const usageDisabled = `import { Toggle } from "@/components/custom/blocks/ToggleBlock";
+
+export default function DisabledToggle() {
+  return (
+
+  );
+}`;
 
 ## Installation
 
-### Copy the Component
+Register the @algorize-ui registry once per project, then add the component:
 
-This component is **100% dependency-free**. It forwards standard React refs and button HTML attributes natively.
+```bash
+npx shadcn@latest registry add @algorize-ui=https://algorize-ui.vercel.app/r/{name}.json
+npx shadcn@latest add @algorize-ui/toggle
+```
 
-You can copy the full engine code (in either TypeScript or JavaScript) directly from the **Code** tab of the first example above. Place it in `components/custom/blocks/ToggleBlock.tsx`.
-
----
+## Examples
 
 ## Usage
 
@@ -202,6 +193,6 @@ Explore the Toggle button's simple two-state functionality, perfect for on/off s
 
 ---
 
-**Component Path:** `nextjs\toggle\page.mdx`
+**Component Path:** `[framework]\toggle\page.mdx`
 
-**Web Version:** Visit the interactive version at the corresponding URL on the Next.js documentation site for live previews and interactive examples.
+**Web Version:** Visit the corresponding URL on the Algorize UI documentation site for live previews and interactive examples.

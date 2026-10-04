@@ -1,44 +1,84 @@
+export const metadata = docsPageMetadata("cart");
+
 # Shopping Cart
 
-A complete, production-ready Cart component designed for modern e-commerce applications. It comes with built-in item state management (increment, decrement, remove), automatic subtotal calculations, and four distinct structural layouts.
+A complete, production-ready Cart component designed for modern e-commerce applications. It comes with built-in item state management (increment, decrement, remove), automatic subtotal calculations, and three distinct structural layouts.
 
-## Examples
+One `type` prop switches the whole presentation — the cart state, quantity steppers and subtotal math are identical in all three. Leave the first two previews alone for a moment and the bag trigger tilts and rings to invite the click; press it and it squashes, springs back and pushes a ripple out as the panel arrives. Every one of those tweens is skipped under `prefers-reduced-motion: reduce`.
 
-One `type` prop switches the whole presentation — the cart state, quantity steppers and subtotal math are identical in all four. Click the bag trigger in the first three previews to play the GSAP entrance. The first example's **Code** tab contains the full component source.
+export const cartItems = `const items: CartItem[] = [
+  {
+    id: "1",
+    name: "Signature Heavyweight Tee",
+    price: 45.0,
+    quantity: 1,
+    size: "L",
+    color: "Onyx Black",
+    gradient: "from-zinc-700 to-black",
+  },
+  {
+    id: "2",
+    name: "Everyday Denim Jacket",
+    price: 120.0,
+    quantity: 1,
+    size: "M",
+    color: "Washed Blue",
+    gradient: "from-blue-600 to-indigo-900",
+  },
+  {
+    id: "3",
+    name: "Minimalist Beanie",
+    price: 28.0,
+    quantity: 2,
+    size: "OS",
+    color: "Forest Green",
+    gradient: "from-emerald-500 to-teal-800",
+  },
+];`;
 
-export const usageDrawer = `import { CartBlock } from "@/components/custom/blocks/CartBlock";
+export const usageDrawer = `import {
+  CartBlock,
+  type CartItem,
+} from "@/components/custom/blocks/CartBlock";
 
-export default function Layout() {
-  return (
+${cartItems}
 
-  );
+export default function DrawerCart() {
+  return ;
 }`;
 
-export const usageModal = `// Centred dialog with a blurred backdrop — same trigger, same state.
-`;
+export const usageModal = `import {
+  CartBlock,
+  type CartItem,
+} from "@/components/custom/blocks/CartBlock";
 
-export const usagePopover = `// Anchored under the trigger, scrolls internally past ~300px of items.
-`;
+${cartItems}
 
-export const usagePage = `// Full-width two-column layout for a dedicated /cart route.
-// No trigger button — the cart is the page.
+export default function ModalCart() {
+  return ;
+}`;
+
+export const usagePage = `import {
+  CartBlock,
+  type CartItem,
+} from "@/components/custom/blocks/CartBlock";
+
+${cartItems}
+
 export default function CartPage() {
   return ;
 }`;
 
 ## Installation
 
-### 1. Install Dependencies
-
-This component uses `gsap` for the buttery-smooth slide and scale animations, and `lucide-react` for standard UI icons (Plus, Minus, Trash, ShoppingBag).
+Register the @algorize-ui registry once per project, then add the component:
 
 ```bash
-npm install gsap lucide-react
+npx shadcn@latest registry add @algorize-ui=https://algorize-ui.vercel.app/r/{name}.json
+npx shadcn@latest add @algorize-ui/cart
 ```
 
-### 2. Copy the Component
-
-Create `components/custom/blocks/CartBlock.tsx` and copy the source from the **Code** tab of the first example above.
+## Examples
 
 ## Features
 Learn about the Cart component's e-commerce capabilities, including item quantity adjustments, total calculations, and slide-out panels.
@@ -67,9 +107,22 @@ Learn about the Cart component's e-commerce capabilities, including item quantit
         Default
         Description
 
+          initialItems
+
+          CartItem[]
+
+          []
+
+          The items the cart starts with, supplied by the parent. The installed
+          component contains no sample data, so a CartBlock without
+          this prop renders its empty state. Each item is id,{" "}
+          name, price, quantity,{" "}
+          gradient, and optional size /{" "}
+          color. Quantity and removal are then handled internally.
+
           type
 
-          "drawer" | "modal" | "popover" | "page"
+          "drawer" | "modal" | "page"
 
           "drawer"
 
@@ -82,12 +135,11 @@ Learn about the Cart component's e-commerce capabilities, including item quantit
           "primary"
 
           Applies global color themes to the primary buttons, focus rings,
-          badges, and icons. Accepts valid hex codes (e.g.{" "}
-          "#00FF00"). Any unrecognised name — including the{" "}
-          "primary" default — falls back to the indigo theme.
+          badges, and icons. Accepts preset theme names or valid custom hex codes (e.g.{" "}
+          "#00FF00").
 
 ---
 
-**Component Path:** `nextjs\cart\page.mdx`
+**Component Path:** `[framework]\cart\page.mdx`
 
-**Web Version:** Visit the interactive version at the corresponding URL on the Next.js documentation site for live previews and interactive examples.
+**Web Version:** Visit the corresponding URL on the Algorize UI documentation site for live previews and interactive examples.

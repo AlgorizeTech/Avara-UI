@@ -1,3 +1,5 @@
+export const metadata = docsPageMetadata("dialog");
+
 # Dialog (Modal)
 
 A window overlaid on either the primary window or another dialog window, rendering the background content underneath inert.
@@ -6,19 +8,14 @@ Popovers and Dropdowns are great for quick, non-blocking actions. But when you n
 
 The `DialogBlock` component handles the complex DOM logic required for true accessibility: it automatically renders into a React Portal, locks the `document.body` scrollbar to prevent background scrolling, and actively listens for background clicks or the `Escape` key to dismiss itself smoothly.
 
-## Examples
+Open each dialog from its trigger — the background scrollbar vanishes while it's open and returns exactly as it was on close.
 
-Open each dialog from its trigger — the background scrollbar vanishes while it's open and returns exactly as it was on close. The first example's **Code** tab contains the full component source.
+`DialogContent` sizes itself from a `size` prop: `sm` through `xl` for panels that sit on the page, and `full` for a surface that takes the whole viewport with its content centred in the middle of it. Dialogs also nest — render one inside another's content and the inner window portals above its parent, with `Escape` and backdrop clicks reaching only whichever one is on top.
 
-export const usageDefault = `import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogFooter,
-  DialogHeader,
-  DialogTitle,
-  DialogTrigger,
-} from "@/components/custom/blocks/DialogBlock";
+export const usageDefault = `"use client";
+
+// CopyField ships with the copy-button item:
+// npx shadcn@latest add @algorize-ui/copy-button
 
 export default function ShareDialog() {
   return (
@@ -29,7 +26,8 @@ export default function ShareDialog() {
           
             Anyone who has this link will be able to view this.
 
-            Copy Link
+        {/* CopyField = read-only input + CopyButton. It confirms with an
+            animated "Copied!" and leaves the dialog open so you can see it. */}
 
           Your profile is currently public.
 
@@ -38,6 +36,7 @@ export default function ShareDialog() {
 
 export const usageForm = `import {
   Dialog,
+  DialogClose,
   DialogContent,
   DialogDescription,
   DialogFooter,
@@ -61,20 +60,16 @@ export default function EditProfileDialog() {
 
             Username
 
-            Save changes
+        {/* DialogClose dismisses the modal without wiring up state */}
+
+              Cancel
+
+              Save changes
 
   );
 }`;
 
-export const usageDestructive = `import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogFooter,
-  DialogHeader,
-  DialogTitle,
-  DialogTrigger,
-} from "@/components/custom/blocks/DialogBlock";
+export const usageDestructive = `"use client";
 
 export default function DeleteAccountDialog() {
   return (
@@ -121,11 +116,14 @@ export default function TermsDialog() {
   );
 }`;
 
-export const usageControlled = `import { useState } from "react";
+export const usageControlled = `"use client";
 
 export default function ControlledDialog() {
   const [open, setOpen] = useState(false);
   const [saving, setSaving] = useState(false);
+
+  // Stand-in for your own request.
+  const saveToServer = () => new Promise((r) => setTimeout(r, 800));
 
   const handleSave = async () => {
     setSaving(true);
@@ -147,13 +145,149 @@ export default function ControlledDialog() {
   );
 }`;
 
+export const usageSizes = `import {
+  Dialog,
+  DialogClose,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/custom/blocks/DialogBlock";
+
+const SIZES = ["sm", "md", "lg", "xl", "full"] as const;
+
+export default function DialogSizes() {
+  return (
+    
+      {SIZES.map((size) => (
+
+              {size}
+
+          {/* sm 24rem · md 32rem (default) · lg 42rem · xl 56rem · full viewport, content centred */}
+
+              Size {size}
+              
+                Reach for the smallest size the content actually fits in.
+
+              Close
+
+      ))}
+    
+  );
+}`;
+
+export const usageConfirmDelete = `"use client";
+
+type Project = { id: string; name: string; meta?: string };
+
+export default function ProjectList({
+  projects,
+  onDelete,
+}: {
+  projects: Project[];
+  onDelete: (id: string) => Promise;
+}) {
+  // The row awaiting confirmation — null means the dialog is closed.
+  const [pending, setPending] = useState(null);
+  const [deleting, setDeleting] = useState(false);
+
+  const confirmDelete = async () => {
+    if (!pending) return;
+    setDeleting(true);
+    await onDelete(pending.id);
+    setDeleting(false);
+    setPending(null); // only now is the row really gone
+  };
+
+  return (
+    <>
+      {projects.map((project) => (
+         setPending(project)}
+          aria-label={"Delete " + project.name}
+        >
+
+      ))}
+
+      {/* One dialog for the whole list, not one per row. */}
+       {
+          // Escape and backdrop clicks route through here too — ignore them
+          // while the request is still in flight.
+          if (!open && !deleting) setPending(null);
+        }}
+      >
+
+            Delete “{pending?.name}”?
+            
+              This removes the project and the {pending?.meta ? pending.meta.split(" ")[0] : "selected"} files inside it. You cannot undo this.
+
+               setPending(null)}
+                disabled={deleting}
+                className="px-4 py-2 border text-sm font-medium rounded-md disabled:opacity-60"
+              >
+                Cancel
+
+                {deleting ? "Deleting…" : "Delete project"}
+
+  );
+}`;
+
+export const usageNested = `"use client";
+
+const CUSTOMERS = [
+  { id: "c1", name: "Northwind Traders" },
+  { id: "c2", name: "Acme Robotics" },
+];
+
+export default function NestedDialog() {
+  const [customer, setCustomer] = useState(null);
+  const [pickerOpen, setPickerOpen] = useState(false);
+
+  return (
+
+          New invoice
+
+          New invoice
+          
+            Bill to {customer?.name ?? "nobody yet"}.
+
+        {/* A second Dialog root, rendered inside the first one's content.
+            It portals on top of its parent, and Escape or a backdrop click
+            only reaches the dialog on top of the stack — so the invoice
+            underneath stays exactly where the user left it. */}
+
+              Choose customer
+
+              Select a customer
+
+            {CUSTOMERS.map((option) => (
+               {
+                  setCustomer(option);
+                  setPickerOpen(false); // closes the picker only
+                }}
+                className="w-full px-2 py-2 text-left text-sm rounded-md hover:bg-primary/10"
+              >
+                {option.name}
+              
+            ))}
+
+                Back to invoice
+
+            Create invoice
+
+  );
+}`;
+
 ## Installation
 
-### Copy the Component
+Register the @algorize-ui registry once per project, then add the component:
 
-This component is **100% dependency-free**. It uses native `createPortal` for overlay rendering and manages `document.body.style.overflow` natively.
+```bash
+npx shadcn@latest registry add @algorize-ui=https://algorize-ui.vercel.app/r/{name}.json
+npx shadcn@latest add @algorize-ui/dialog
+```
 
-Create a new file at `components/custom/blocks/DialogBlock.tsx` and copy the engine code from the **Code** tab of the first example above.
+## Examples
 
 ## Features
 Discover the Dialog component's accessible modal features, including focus trapping, outside-click dismissal, and scroll locking.
@@ -226,6 +360,21 @@ Discover the Dialog component's accessible modal features, including focus trapp
           If true, removes the built-in 'X' icon in the top right corner of the
           dialog content box.
 
+          DialogContent
+
+          size
+
+          {`"sm" | "md" | "lg" | "xl" | "full"`}
+
+          "md"
+
+          Panel width: sm ~24rem, md ~32rem,{" "}
+          lg ~42rem, xl ~56rem. full{" "}
+          fills the viewport, drops the rounding, border and{" "}
+          max-height cap the inset sizes use, and centres its
+          content in an md-wide column in the middle of the screen
+          (override with className for an edge-to-edge layout).
+
           All Components
 
           className
@@ -234,12 +383,13 @@ Discover the Dialog component's accessible modal features, including focus trapp
 
           undefined
 
-          Standard Tailwind CSS overrides for customized styling or spacing. For{" "}
-          DialogContent, you can adjust the max-w-*{" "}
-          class here to change the modal width.
+          Standard Tailwind CSS overrides for customized styling or spacing. On{" "}
+          DialogContent it is merged after size, so a{" "}
+          max-w-* class here wins — use it only when no step on the
+          size scale fits.
 
 ---
 
-**Component Path:** `nextjs\dialog\page.mdx`
+**Component Path:** `[framework]\dialog\page.mdx`
 
-**Web Version:** Visit the interactive version at the corresponding URL on the Next.js documentation site for live previews and interactive examples.
+**Web Version:** Visit the corresponding URL on the Algorize UI documentation site for live previews and interactive examples.

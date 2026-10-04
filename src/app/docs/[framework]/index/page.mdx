@@ -1,0 +1,104 @@
+import { docsPageMetadata } from "@/lib/docs-metadata";
+
+export const metadata = docsPageMetadata("index", {
+  title: "Introduction",
+  description: "What Algorize UI is, how components are installed into your project, and what your project needs."
+});
+
+import { Cli } from "@/components/site/cli";
+import { COMPONENT_COUNT } from "@/config/site";
+
+# Introduction
+
+Algorize UI is a library of **{COMPONENT_COUNT} animated, responsive React
+components** — from buttons and inputs to dashboards, carousels and full
+marketing sections.
+
+It is not an npm package. Components are published as a
+[shadcn registry](https://ui.shadcn.com/docs/registry), and the CLI copies each
+component's source **into your project**, where you can edit it like any other
+file.
+
+<Cli command={`add button.json`} />
+
+The short `@algorize-ui/…` form needs the registry
+<DocLink to="installation#step-2-register-the-registry">registered once</DocLink>.
+Switch to **URL** above for a command that needs no setup.
+
+## Why this approach
+
+<div className="grid grid-cols-1 md:grid-cols-3 gap-4 my-8 not-prose">
+  <div className="p-5 rounded-xl bg-foreground/[0.03] border border-foreground/[0.06]">
+    <h3 className="text-[14px] font-semibold text-foreground mb-1.5">You own the code</h3>
+    <p className="text-[13px] leading-relaxed text-foreground/50">
+      No wrapper package and no version to track. The source lives in your repo.
+    </p>
+  </div>
+
+  <div className="p-5 rounded-xl bg-foreground/[0.03] border border-foreground/[0.06]">
+    <h3 className="text-[14px] font-semibold text-foreground mb-1.5">Your theme</h3>
+    <p className="text-[13px] leading-relaxed text-foreground/50">
+      Components read your Tailwind theme tokens. Preview a palette on the <a href="/themes" className="text-primary hover:underline">Themes page</a>.
+    </p>
+  </div>
+
+  <div className="p-5 rounded-xl bg-foreground/[0.03] border border-foreground/[0.06]">
+    <h3 className="text-[14px] font-semibold text-foreground mb-1.5">Only what you use</h3>
+    <p className="text-[13px] leading-relaxed text-foreground/50">
+      Each component declares its own dependencies, and the CLI installs them with it.
+    </p>
+  </div>
+</div>
+
+## Requirements
+
+{/* Written as JSX, not a markdown table: remarkPlugins is empty in
+    next.config.ts, so GFM tables render as literal pipe characters. */}
+
+<div className="overflow-x-auto">
+  <table>
+    <tbody>
+      <tr>
+        <td><strong>React</strong></td>
+        <td>18 or 19</td>
+      </tr>
+      <ForFramework only="nextjs">
+        <tr>
+          <td><strong>Next.js</strong></td>
+          <td>App Router</td>
+        </tr>
+      </ForFramework>
+      <ForFramework only="reactjs">
+        <tr>
+          <td><strong>Vite</strong></td>
+          <td>Any recent version</td>
+        </tr>
+      </ForFramework>
+      <tr>
+        <td><strong>Tailwind CSS</strong></td>
+        <td>v4</td>
+      </tr>
+      <tr>
+        <td><strong>TypeScript</strong></td>
+        <td>Optional</td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+## Where next
+
+<div className="grid grid-cols-1 sm:grid-cols-3 gap-4 my-8 not-prose">
+  <DocLink to="installation" className="block p-5 rounded-xl bg-foreground/[0.03] border border-foreground/[0.06] hover:bg-foreground/[0.05] hover:border-primary/30 transition-colors">
+    <h3 className="text-[14px] font-semibold text-foreground mb-1">Installation</h3>
+    <span className="block text-[13px] leading-relaxed text-foreground/50">Set up Tailwind, shadcn and the registry.</span>
+  </DocLink>
+  <DocLink to="first-app" className="block p-5 rounded-xl bg-foreground/[0.03] border border-foreground/[0.06] hover:bg-foreground/[0.05] hover:border-primary/30 transition-colors">
+    <h3 className="text-[14px] font-semibold text-foreground mb-1">Quick Start</h3>
+    <span className="block text-[13px] leading-relaxed text-foreground/50">Get a component on screen in minutes.</span>
+  </DocLink>
+  <DocLink to="all-components" className="block p-5 rounded-xl bg-foreground/[0.03] border border-foreground/[0.06] hover:bg-foreground/[0.05] hover:border-primary/30 transition-colors">
+    <h3 className="text-[14px] font-semibold text-foreground mb-1">All components</h3>
+    <span className="block text-[13px] leading-relaxed text-foreground/50">Browse the full library by category.</span>
+  </DocLink>
+</div>

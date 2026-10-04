@@ -1,0 +1,244 @@
+import { docsPageMetadata } from "@/lib/docs-metadata";
+
+export const metadata = docsPageMetadata("reviews");
+
+import { ExampleShowcase } from "@/components/site/Sandbox";
+import { Installation } from "@/components/site/installation";
+import { extractCode } from "@/lib/code";
+
+# Review Section
+
+A high-converting Review / Testimonial website section featuring a 3D WebGL rotating background globe marquee or an interactive 3D stacked portrait carousel with smooth rolling motion and arrow navigation.
+
+Designed to showcase client feedback, agency trust signals, and social proof with maximum visual impact and dynamic theme color integration.
+
+export const sampleReviewsData = `const sampleReviews: ReviewItem[] = [
+  {
+    id: "1",
+    name: "Tamar Mendelson",
+    role: "Restaurant Critic",
+    avatar:
+      "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_800,c_limit/v1790150483/photo-1534528741775-53994a69daeb-1790150482280.jpg",
+    rating: 5.0,
+    content:
+      "I was impressed by the food! And I could really tell that they use high-quality ingredients. The staff was friendly and attentive.",
+  },
+  {
+    id: "2",
+    name: "Alice Johnson",
+    role: "Product Director",
+    avatar:
+      "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_800,c_limit/v1790158813/photo-1494790108377-be9c29b29330-1790158812212.jpg",
+    rating: 5.0,
+    content:
+      "The difference between AlgorizeTech and other agencies is their talent pool. Code quality, architecture, and attention to detail are on a completely different level.",
+  },
+  {
+    id: "3",
+    name: "Arlene McCoy",
+    role: "Co-Founder & CEO",
+    avatar:
+      "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_800,c_limit/v1790150480/photo-1507003211169-0a1dd7228f2d-1790150482276.jpg",
+    rating: 5.0,
+    content:
+      "Their 'Quality Obsessed' mantra is apparent in everything they do. Delivered a final product that increased our conversion rate by 40%.",
+  },
+  {
+    id: "4",
+    name: "Sofia Chen",
+    role: "Lead Systems Architect",
+    avatar:
+      "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_800,c_limit/v1790150481/photo-1517841905240-472988babdf9-1790150482277.jpg",
+    rating: 5.0,
+    content:
+      "Integrating their modular UI components shaved weeks off our launch roadmap. Performance optimizations saved us hundreds of hours.",
+  },
+  {
+    id: "5",
+    name: "Mr. Martin",
+    role: "Chief Operating Officer",
+    avatar:
+      "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_800,c_limit/v1790158814/photo-1500648767791-00dcc994a43e-1790158812212.jpg",
+    rating: 5.0,
+    content:
+      "The unlimited revisions gave us creative freedom to experiment without scope creep. AlgorizeTech didn't stop until we were 100% thrilled.",
+  },
+  {
+    id: "6",
+    name: "David Kim",
+    role: "Head of Design",
+    avatar:
+      "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_800,c_limit/v1790158814/photo-1539571696357-5a69c17a67c6-1790158812214.jpg",
+    rating: 5.0,
+    content:
+      "The attention to typography, micro-interactions, and responsive layout scaling surpassed all our expectations.",
+  },
+  {
+    id: "7",
+    name: "Elena Rostova",
+    role: "VP of Engineering",
+    avatar:
+      "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_800,c_limit/v1790158814/photo-1573496359142-b8d87734a5a2-1790158812214.jpg",
+    rating: 5.0,
+    content:
+      "Their components are bulletproof. Seamless dark mode integration and flawless animation physics out of the box.",
+  },
+  {
+    id: "8",
+    name: "Marcus Vance",
+    role: "Tech Lead",
+    avatar:
+      "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_800,c_limit/v1790158814/photo-1522075469751-3a6694fb2f61-1790158812213.jpg",
+    rating: 5.0,
+    content:
+      "Outstanding developer experience. Clean TypeScript types, modular exports, and instant setup across projects.",
+  },
+];`;
+
+export const usageStackedCarousel = `import { ReviewsBlock, type ReviewItem } from "@/components/custom/blocks/ReviewsBlock";
+
+${sampleReviewsData}
+
+export default function StackedCarouselDemo() {
+  return (
+    <ReviewsBlock
+      variant="stacked-carousel"
+      title="Loved by Tech Leaders Worldwide"
+      subtitle="See how fast-growing teams scale products with our senior engineering team."
+      reviews={sampleReviews}
+    />
+  );
+}`;
+
+export const usageVerticalMarquee = `import { ReviewsBlock, type ReviewItem } from "@/components/custom/blocks/ReviewsBlock";
+
+${sampleReviewsData}
+
+export default function VerticalMarqueeDemo() {
+  return (
+    <ReviewsBlock
+      variant="up-down-vertical-marquee"
+      title="Loved by Tech Leaders Worldwide"
+      subtitle="See how fast-growing teams scale products with our senior engineering team."
+      reviews={sampleReviews}
+    />
+  );
+}`;
+
+export const usageLogoCarousel = `import { ReviewsBlock, type ReviewItem } from "@/components/custom/blocks/ReviewsBlock";
+
+${sampleReviewsData}
+
+export default function LogoCarouselDemo() {
+  return (
+    <ReviewsBlock
+      variant="logo-carousel"
+      title="Loved by teams building what's next"
+      subtitle="Hear how founders are using our platform to save time, simplify their workflow, and grow their business."
+      reviews={sampleReviews}
+    />
+  );
+}`;
+
+<ExampleShowcase
+  name="reviews"
+  controls={[
+    { name: "marqueeSpeed", label: "Marquee Duration (Seconds)", min: 40, max: 200, step: 5, defaultValue: 100 },
+  ]}
+  columns={1}
+  examples={[
+    {
+      title: "UpDown Vertical Marquee",
+      propNotes: [{ lead: "Features", prop: "up-down-vertical-marquee", value: "UpDown Vertical Marquee", effect: "renders 4 infinite vertical marquee columns scrolling up and down with hover pause." }],
+      props: { variant: "up-down-vertical-marquee" },
+      usage: usageVerticalMarquee,
+    },
+    {
+      title: "3D Stacked Cards Carousel with Rolling Motion & Arrows",
+      propNotes: [{ lead: "Features", prop: "stacked-carousel", value: "3D Stacked Carousel", effect: "renders 3 stacked portrait cards with smooth rolling rotation motion and arrow navigation." }],
+      props: { variant: "stacked-carousel" },
+      usage: usageStackedCarousel,
+    },
+    {
+      title: "Interactive Brand Logo Carousel",
+      propNotes: [{ lead: "Features", prop: "logo-carousel", value: "Logo Carousel", effect: "renders interactive company logo tabs with split testimonial quote card and author portrait." }],
+      props: { variant: "logo-carousel" },
+      usage: usageLogoCarousel,
+      code: extractCode("src/components/custom/blocks/ReviewsBlock.tsx"),
+    },
+  ]}
+/>
+
+## Installation
+
+<Installation name="reviews" />
+
+## Features
+
+Discover the key capabilities of the `ReviewsBlock` component:
+
+- **UpDown Vertical Marquee**: 4 infinite scrolling columns moving continuously (Column 1 Up, Column 2 Down, Column 3 Up, Column 4 Down) with hover-to-pause interaction.
+- **3D Stacked Portrait Carousel**: Interactive 3-card stacked portrait layout with spring-eased CSS transitions, rolling 3D card rotation, and circular arrow buttons.
+- **Interactive Brand Logo Carousel**: Split card layout with company logo tabs, quote transition animations, author portrait, indicator dots, and round navigation controls.
+- **Modern Review Cards**: Avatar image, name, role, 5-star rating, and clean typography in a modern card container.
+- **Dynamic Site Theme Accent**: Automatically binds to site CSS variables (`var(--primary)`) with live color preset support.
+- **Full Customizability**: Pass custom `variant`, `title`, `subtitle`, `reviews` data array, and `glowColor` accents.
+
+## Props Reference
+
+<div className="overflow-x-auto my-6">
+  <table>
+    <thead>
+      <tr>
+        <th>Prop</th>
+        <th>Type</th>
+        <th>Default</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><code>variant</code></td>
+        <td><code>"up-down-vertical-marquee" | "stacked-carousel" | "logo-carousel"</code></td>
+        <td><code>"up-down-vertical-marquee"</code></td>
+        <td>Determines the visual review layout style (infinite up/down vertical marquee, 3D stacked cards, or brand logo carousel).</td>
+      </tr>
+      <tr>
+        <td><code>title</code></td>
+        <td><code>string</code></td>
+        <td><code>"Loved by Teams Worldwide"</code></td>
+        <td>Main headline text rendered at the top of the reviews section.</td>
+      </tr>
+      <tr>
+        <td><code>subtitle</code></td>
+        <td><code>string</code></td>
+        <td><code>"See what founders, designers, and engineers are saying..."</code></td>
+        <td>Supporting paragraph description displayed below the title.</td>
+      </tr>
+      <tr>
+        <td><code>reviews</code></td>
+        <td><code>ReviewItem[]</code></td>
+        <td><code>DEFAULT_REVIEWS</code></td>
+        <td>Array of review objects with <code>id</code>, <code>name</code>, <code>role</code>, <code>avatar</code>, <code>rating</code>, and <code>content</code>.</td>
+      </tr>
+      <tr>
+        <td><code>autoSlide</code></td>
+        <td><code>boolean</code></td>
+        <td><code>true</code></td>
+        <td>Enables automatic card sliding for stacked carousel variants.</td>
+      </tr>
+      <tr>
+        <td><code>autoSlideInterval</code></td>
+        <td><code>number</code></td>
+        <td><code>5000</code></td>
+        <td>Interval duration in milliseconds for auto-sliding stacked cards.</td>
+      </tr>
+      <tr>
+        <td><code>className</code></td>
+        <td><code>string</code></td>
+        <td><code>undefined</code></td>
+        <td>Additional custom Tailwind CSS class names applied to the container.</td>
+      </tr>
+    </tbody>
+  </table>
+</div>

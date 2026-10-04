@@ -2,82 +2,14 @@
 
 import { cn } from "@/lib/utils";
 import { ChevronRight, MoreHorizontal, Slash } from "lucide-react";
-import Link from "next/link";
 import React, { useState } from "react";
+import { getThemeStyles } from "./breadcrumb-theme";
 
 // ==========================================
 // DYNAMIC THEME ENGINE
 // ==========================================
 export type BreadcrumbColor = "indigo" | "rose" | "emerald" | "zinc" | string;
 export type BreadcrumbVariant = "classic" | "slash" | "solid" | "ghost";
-
-const colorThemes: Record<string, Record<string, string>> = {
-  primary: {
-    text: "text-primary",
-    bg: "bg-primary text-primary-foreground hover:opacity-90",
-    bgSoft: "bg-primary/10 text-primary",
-    hoverText: "hover:text-primary",
-  },
-  indigo: {
-    text: "text-indigo-600 dark:text-indigo-400",
-    bg: "bg-indigo-600 hover:bg-indigo-700 text-white",
-    bgSoft:
-      "bg-indigo-50 dark:bg-indigo-500/10 text-indigo-600 dark:text-indigo-400",
-    hoverText: "hover:text-indigo-600 dark:hover:text-indigo-400",
-  },
-  rose: {
-    text: "text-rose-600 dark:text-rose-400",
-    bg: "bg-rose-600 hover:bg-rose-700 text-white",
-    bgSoft: "bg-rose-50 dark:bg-rose-500/10 text-rose-600 dark:text-rose-400",
-    hoverText: "hover:text-rose-600 dark:hover:text-rose-400",
-  },
-  emerald: {
-    text: "text-emerald-600 dark:text-emerald-400",
-    bg: "bg-emerald-600 hover:bg-emerald-700 text-white",
-    bgSoft:
-      "bg-emerald-50 dark:bg-emerald-500/10 text-emerald-600 dark:text-emerald-400",
-    hoverText: "hover:text-emerald-600 dark:hover:text-emerald-400",
-  },
-  zinc: {
-    text: "text-zinc-900 dark:text-zinc-100",
-    bg: "bg-zinc-900 hover:bg-zinc-800 dark:bg-zinc-100 dark:hover:bg-zinc-200 text-white dark:text-zinc-900",
-    bgSoft: "bg-zinc-100 dark:bg-zinc-800/50 text-zinc-900 dark:text-zinc-100",
-    hoverText: "hover:text-zinc-900 dark:hover:text-white",
-  },
-};
-
-const hexToRgb = (hex: string) => {
-  let cleanHex = hex.replace(/^#/, "");
-  if (cleanHex.length === 3)
-    cleanHex = cleanHex
-      .split("")
-      .map((x) => x + x)
-      .join("");
-  const result = /^([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(cleanHex);
-  return result
-    ? `${parseInt(result[1], 16)}, ${parseInt(result[2], 16)}, ${parseInt(result[3], 16)}`
-    : "99, 102, 241";
-};
-
-export const getThemeStyles = (color: string) => {
-  if (color && color.startsWith("#")) {
-    const rgb = hexToRgb(color);
-    return {
-      theme: {
-        text: "text-[var(--theme-color)]",
-        bg: "bg-[var(--theme-color)] text-white",
-        bgSoft:
-          "bg-[rgba(var(--theme-color-rgb),0.1)] text-[var(--theme-color)]",
-        hoverText: "hover:text-[var(--theme-color)]",
-      },
-      style: {
-        "--theme-color": color,
-        "--theme-color-rgb": rgb,
-      } as React.CSSProperties,
-    };
-  }
-  return { theme: colorThemes[color] || colorThemes.primary, style: {} };
-};
 
 // ==========================================
 // BREADCRUMB COMPONENT
@@ -93,6 +25,15 @@ export interface BreadcrumbProps {
   variant?: BreadcrumbVariant;
   color?: BreadcrumbColor;
   maxItems?: number;
+  /**
+   * The element used for links. Defaults to a plain `a`, so this component works
+   * in any React app with no adaptation. In Next.js, pass `next/link` to keep
+   * client-side navigation and prefetching:
+   *
+   *   import Link from "next/link";
+   *   <BreadcrumbBlock items={items} linkComponent={Link} />
+   */
+  linkComponent?: React.ElementType;
 }
 
 export function BreadcrumbBlock({
@@ -100,6 +41,7 @@ export function BreadcrumbBlock({
   variant = "classic",
   color = "primary",
   maxItems = 4,
+  linkComponent: Link = "a",
 }: BreadcrumbProps) {
   const { theme, style } = getThemeStyles(color);
   const [isExpanded, setIsExpanded] = useState(false);
@@ -120,14 +62,14 @@ export function BreadcrumbBlock({
   const Separator = () => {
     if (variant === "slash")
       return (
-        <Slash className="w-3.5 h-3.5 text-zinc-300 dark:text-zinc-600 shrink-0 -rotate-12 mx-1" />
+        <Slash className="w-3.5 h-3.5 text-muted-foreground/50 shrink-0 -rotate-12 mx-1" />
       );
     if (variant === "solid")
       return (
-        <ChevronRight className="w-4 h-4 text-zinc-300 dark:text-zinc-600 shrink-0 mx-1" />
+        <ChevronRight className="w-4 h-4 text-muted-foreground/50 shrink-0 mx-1" />
       );
     return (
-      <ChevronRight className="w-4 h-4 text-zinc-400 dark:text-zinc-600 shrink-0 mx-1" />
+      <ChevronRight className="w-4 h-4 text-muted-foreground/70 shrink-0 mx-1" />
     );
   };
 
@@ -142,9 +84,9 @@ export function BreadcrumbBlock({
           isActive
             ? cn("shadow-sm", theme.bg)
             : cn(
-                "bg-zinc-100 dark:bg-zinc-800 text-zinc-600 dark:text-zinc-400",
+                "bg-muted text-muted-foreground",
                 !isEllipsis &&
-                  "hover:bg-zinc-200 dark:hover:bg-zinc-700 hover:text-zinc-900 dark:hover:text-white",
+                  "hover:bg-muted hover:text-foreground",
               ),
         );
       case "ghost":
@@ -153,10 +95,10 @@ export function BreadcrumbBlock({
           isActive
             ? cn(theme.bgSoft)
             : cn(
-                "text-zinc-500 dark:text-zinc-400",
+                "text-muted-foreground",
                 !isEllipsis &&
                   cn(
-                    "hover:bg-zinc-100 dark:hover:bg-zinc-800/50",
+                    "hover:bg-muted",
                     theme.hoverText,
                   ),
               ),
@@ -169,7 +111,7 @@ export function BreadcrumbBlock({
           isActive
             ? theme.text
             : cn(
-                "text-zinc-500 dark:text-zinc-400",
+                "text-muted-foreground",
                 !isEllipsis && theme.hoverText,
               ),
         );
@@ -180,9 +122,9 @@ export function BreadcrumbBlock({
     <nav
       aria-label="Breadcrumb"
       style={style}
-      className="flex w-full overflow-x-auto [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden"
+      className="flex w-full justify-center overflow-x-auto [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden"
     >
-      <ol className="flex items-center whitespace-nowrap min-w-max p-1">
+      <ol className="flex items-center justify-center whitespace-nowrap min-w-max p-1">
         {visibleItems.map((item, index) => {
           const isLast = index === visibleItems.length - 1;
           const isEllipsis = "isEllipsis" in item;

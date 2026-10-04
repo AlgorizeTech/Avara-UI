@@ -1,0 +1,336 @@
+import { docsPageMetadata } from "@/lib/docs-metadata";
+
+export const metadata = docsPageMetadata("memories-card");
+
+import { ExampleShowcase } from "@/components/site/Sandbox";
+import { extractMotionCode } from "@/lib/code";
+
+# Memories Card
+
+A premium, interactive card stack component featuring real-time 3D tilt physics, a dynamic "fan" background spread, and smooth swipe-to-next gestures. Perfect for showcasing travel memories, feature highlights, or curated photo galleries.
+
+Hover the front card for interactive 3D tilt physics, or drag/swipe it to send it to the back of the deck. This component supports full card metadata (badges, locations, dates, descriptions), minimalist image-only layouts by omitting optional fields, and real-time active index tracking via `onCardChange` to sync external captions, counters, or analytics.
+
+export const memoriesData = `const memories: MemoryItem[] = [
+  {
+    id: "m1",
+    tag: "Highlight",
+    title: "Alpine Forest Lake",
+    location: "Swiss Alps",
+    date: "Oct 2025",
+    description:
+      "Serene pine forests reflecting over calm turquoise mountain waters at sunrise.",
+    image:
+      "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_1200,c_limit/v1790145141/photo-1448375240586-882707db888b-1790145143491.jpg",
+  },
+  {
+    id: "m2",
+    tag: "Expedition",
+    title: "Dolomites Alpine Ridge",
+    location: "South Tyrol, Italy",
+    date: "Aug 2025",
+    description:
+      "Reaching the summit just as the morning sun cast jagged shadows across the limestone peaks.",
+    image:
+      "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_1200,c_limit/v1790145141/photo-1464822759023-fed622ff2c3b-1790145143491.jpg",
+  },
+  {
+    id: "m3",
+    tag: "Sanctuary",
+    title: "Emerald Forest Stream",
+    location: "Pacific Northwest",
+    date: "Jul 2025",
+    description:
+      "A tranquil river winding through dense ancient rainforests and mossy rocks.",
+    image:
+      "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_1200,c_limit/v1790146210/photo-1506744038136-46273834b3fb-1790146212208.jpg",
+  },
+  {
+    id: "m4",
+    tag: "Wilderness",
+    title: "Cascading Mountain Falls",
+    location: "Alberta, Canada",
+    date: "Jun 2025",
+    description:
+      "Fresh mountain spring water cascading through untouched wilderness slopes.",
+    image:
+      "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_1200,c_limit/v1790146209/photo-1469474968028-56623f02e42e-1790146212205.jpg",
+  },
+];`;
+
+export const usageOnChange = `"use client";
+
+import { useState } from "react";
+import { MemoriesCard, type MemoryItem } from "@/components/custom/blocks/MemoriesCardBlock";
+
+${memoriesData}
+
+export default function TravelDeck() {
+  const [active, setActive] = useState(0);
+
+  // Fires every time a card is sent to the back of the deck.
+  return (
+    <>
+      <MemoriesCard items={memories} onCardChange={setActive} />
+      <p>Showing {memories[active].title}</p>
+    </>
+  );
+}`;
+
+<ExampleShowcase
+  name="memories-card"
+  colorControl
+  columns={1}
+  examples={[
+    {
+      title: "Tracking the active card",
+      propNotes: [
+        {
+          prop: "items",
+          effect:
+            "Array of MemoryItem objects. Each item can take: id (required), title (required), image (required), tag (optional badge), location (optional pin text), date (optional timestamp), and description (optional subtext).",
+        },
+        {
+          prop: "onCardChange",
+          effect:
+            "fires with the new front index (number) on every swipe — wire it to a caption, counter or analytics call.",
+        },
+      ],
+      props: { showIndex: true },
+      usage: usageOnChange,
+      code: extractMotionCode("src/components/custom/blocks/MemoriesCardBlock.tsx"),
+    },
+  ]}
+/>
+
+## Installation
+
+<Installation name="memories-card" />
+
+## Features
+Discover the key capabilities that make this component an excellent choice for modern, animated user interfaces.
+
+<div className="grid grid-cols-1 sm:grid-cols-2 gap-4 my-6 not-prose">
+  <div className="p-6 rounded-2xl border border-border bg-card">
+    <h3 className="text-lg font-semibold text-card-foreground mb-2">Fluid Animations</h3>
+    <p className="text-muted-foreground text-sm">Hardware-accelerated transitions that ensure smooth 60fps performance across devices.</p>
+  </div>
+  <div className="p-6 rounded-2xl border border-border bg-card">
+    <h3 className="text-lg font-semibold text-card-foreground mb-2">Highly Customizable</h3>
+    <p className="text-muted-foreground text-sm">Exposes intuitive props for tailoring colors, sizes, and animation speeds to fit your brand.</p>
+  </div>
+  <div className="p-6 rounded-2xl border border-border bg-card">
+    <h3 className="text-lg font-semibold text-card-foreground mb-2">Responsive Design</h3>
+    <p className="text-muted-foreground text-sm">Automatically adapts to mobile, tablet, and desktop viewports without horizontal scrolling issues.</p>
+  </div>
+  <div className="p-6 rounded-2xl border border-border bg-card">
+    <h3 className="text-lg font-semibold text-card-foreground mb-2">Accessible</h3>
+    <p className="text-muted-foreground text-sm">Built with semantic HTML and ARIA labels where necessary to support screen readers and keyboard navigation.</p>
+  </div>
+</div>
+
+## Best Practices & Guidelines
+
+<div className="flex flex-col gap-4 my-6 not-prose">
+  <div className="rounded-xl border border-foreground/[0.06] bg-foreground/[0.03] p-4">
+    <h4 className="font-sans text-[14px] font-semibold text-foreground mb-1">Animation Performance</h4>
+    <p className="text-[13px] leading-relaxed text-foreground/50">Avoid placing too many heavy animated components on a single screen to prevent layout thrashing and maintain 60fps performance. Use intersection observers to pause off-screen animations.</p>
+  </div>
+  <div className="rounded-xl border border-primary/15 bg-primary/5 p-4">
+    <h4 className="font-sans text-[14px] font-semibold text-primary mb-1">State Management</h4>
+    <p className="text-[13px] leading-relaxed text-foreground/50">When triggering animations via state changes, ensure you wrap state updates in <code>startTransition</code> or use lightweight stores to prevent React rendering bottlenecks during the animation tick.</p>
+  </div>
+</div>
+
+## Props Reference
+
+<div className="overflow-x-auto mb-8">
+  <table>
+    <thead>
+      <tr>
+        <th>Component / Interface</th>
+        <th>Prop</th>
+        <th>Type</th>
+        <th>Default</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>
+          <code>MemoriesCard</code>
+        </td>
+        <td>
+          <code>items</code>
+        </td>
+        <td>
+          <code>MemoryItem[]</code>
+        </td>
+        <td>
+          <strong>Required</strong>
+        </td>
+        <td>
+          An array of data objects defining the images, titles, locations, and
+          badges for the card stack.
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <code>MemoriesCard</code>
+        </td>
+        <td>
+          <code>onCardChange</code>
+        </td>
+        <td>
+          <code>(index: number) =&gt; void</code>
+        </td>
+        <td>
+          <code>undefined</code>
+        </td>
+        <td>
+          Callback function triggered on every card swipe gesture. It receives the new active card index (`number`), allowing you to dynamically sync external captions, counter indicators, or trigger custom analytics events.
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <code>MemoriesCard</code>
+        </td>
+        <td>
+          <code>className</code>
+        </td>
+        <td>
+          <code>string</code>
+        </td>
+        <td>
+          <code>undefined</code>
+        </td>
+        <td>
+          Custom Tailwind CSS classes to apply to the outermost perspective
+          wrapper container.
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <code>MemoryItem</code>
+        </td>
+        <td>
+          <code>id</code>
+        </td>
+        <td>
+          <code>string</code>
+        </td>
+        <td>
+          <strong>Required</strong>
+        </td>
+        <td>
+          A unique identifier string required for safe React list rendering and
+          for tracking each card as the deck reorders.
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <code>MemoryItem</code>
+        </td>
+        <td>
+          <code>title</code>
+        </td>
+        <td>
+          <code>string</code>
+        </td>
+        <td>
+          <strong>Required</strong>
+        </td>
+        <td>
+          Primary headline text prominently displayed at the bottom of the card.
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <code>MemoryItem</code>
+        </td>
+        <td>
+          <code>image</code>
+        </td>
+        <td>
+          <code>string</code>
+        </td>
+        <td>
+          <strong>Required</strong>
+        </td>
+        <td>The URL to the high-resolution background image for the card.</td>
+      </tr>
+      <tr>
+        <td>
+          <code>MemoryItem</code>
+        </td>
+        <td>
+          <code>tag</code>
+        </td>
+        <td>
+          <code>string</code>
+        </td>
+        <td>
+          <code>undefined</code>
+        </td>
+        <td>
+          Optional badge label displayed in the top-left corner (e.g.,
+          "Highlight", "Expedition").
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <code>MemoryItem</code>
+        </td>
+        <td>
+          <code>location</code>
+        </td>
+        <td>
+          <code>string</code>
+        </td>
+        <td>
+          <code>undefined</code>
+        </td>
+        <td>
+          Optional geographical string displayed with a map pin icon above the
+          headline.
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <code>MemoryItem</code>
+        </td>
+        <td>
+          <code>date</code>
+        </td>
+        <td>
+          <code>string</code>
+        </td>
+        <td>
+          <code>undefined</code>
+        </td>
+        <td>
+          Optional date or timestamp string displayed with a calendar icon above
+          the headline.
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <code>MemoryItem</code>
+        </td>
+        <td>
+          <code>description</code>
+        </td>
+        <td>
+          <code>string</code>
+        </td>
+        <td>
+          <code>undefined</code>
+        </td>
+        <td>
+          Optional supporting paragraph text explaining the memory.
+          Automatically clamped to 2 lines.
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>

@@ -1,0 +1,25 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "settings",
+  "title": "Settings",
+  "author": "AlgorizeTech",
+  "description": "Pre-built settings panels for notification and security preferences, laid out as toggle rows. Use them as a starting point for an account settings page.",
+  "dependencies": [],
+  "registryDependencies": [
+    "https://algorize-ui.vercel.app/r/ui-base.json"
+  ],
+  "files": [
+    {
+      "path": "src/components/custom/blocks/SettingsBlock.tsx",
+      "content": "\"use client\";\nimport { useState } from \"react\";\nimport { ComponentCard, ToggleSwitch } from \"../ui/base\";\n\nexport function NotificationsBlock() {\n  const [strictMode, setStrictMode] = useState(false);\n  const [pushNotifications, setPushNotifications] = useState(true);\n\n  return (\n    <ComponentCard>\n      <div className=\"p-6 flex flex-col gap-4\">\n        <div className=\"flex items-center justify-between\">\n          <div className=\"space-y-0.5\">\n            <label className=\"text-sm font-medium cursor-pointer select-none\" onClick={() => setStrictMode(!strictMode)}>Strict Mode</label>\n            <p className=\"text-xs text-muted-foreground\">Enable strict type checking.</p>\n          </div>\n          <ToggleSwitch active={strictMode} onChange={() => setStrictMode(!strictMode)} />\n        </div>\n        <div className=\"flex items-center justify-between\">\n          <div className=\"space-y-0.5\">\n            <label className=\"text-sm font-medium cursor-pointer select-none\" onClick={() => setPushNotifications(!pushNotifications)}>Push Notifications</label>\n            <p className=\"text-xs text-muted-foreground\">Receive alerts on your device.</p>\n          </div>\n          <ToggleSwitch active={pushNotifications} onChange={() => setPushNotifications(!pushNotifications)} />\n        </div>\n      </div>\n    </ComponentCard>\n  );\n}\n\nexport function SecurityBlock() {\n  const [is2FAEnabled, setIs2FAEnabled] = useState(false);\n\n  return (\n    <ComponentCard>\n      <div className=\"p-6 flex items-center justify-between gap-4\">\n        <div>\n          <h3 className=\"font-semibold text-sm\">Two-factor authentication</h3>\n          <p className=\"text-xs text-muted-foreground mt-1\">Verify via email or phone number.</p>\n        </div>\n        <button onClick={() => setIs2FAEnabled(!is2FAEnabled)} className={`cursor-pointer h-8 px-3 inline-flex items-center justify-center rounded-md text-xs font-medium shadow transition-colors active:scale-95 ${is2FAEnabled ? \"bg-red-500/10 text-red-600 dark:text-red-400 hover:bg-red-500/20 border border-red-500/20\" : \"bg-primary text-primary-foreground hover:bg-primary\"}`}>\n          {is2FAEnabled ? \"Disable\" : \"Enable\"}\n        </button>\n      </div>\n    </ComponentCard>\n  );\n}",
+      "type": "registry:component",
+      "target": "components/custom/blocks/SettingsBlock.tsx"
+    }
+  ],
+  "docs": "Named exports: NotificationsBlock, SecurityBlock. These are self-contained example panels with their own local state and hardcoded labels — copy and adapt rather than configuring through props. Depends on `ui-base` for ComponentCard and ToggleSwitch.",
+  "categories": [
+    "forms",
+    "layout"
+  ],
+  "type": "registry:component"
+}

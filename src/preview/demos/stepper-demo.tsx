@@ -24,20 +24,16 @@ import {
 } from "lucide-react";
 import { useState } from "react";
 
-// The Stepper paints the indicator label `text-white`, so the accent has to
-// stay dark enough in both themes — hence the component's own amber default
-// for "primary" rather than the theme-flipping `var(--primary)`.
 const getThemeColorHex = (c: string) => {
-  if (c.startsWith("#")) return c;
+  if (!c || c === "primary" || c === "default") return "var(--primary)";
+  if (c.startsWith("#") || c.startsWith("var(") || c.startsWith("rgb") || c.startsWith("hsl")) return c;
   const map: Record<string, string> = {
-    primary: "#FFAB1D",
-    default: "#FFAB1D",
     indigo: "#6366f1",
     rose: "#f43f5e",
     emerald: "#10b981",
-    zinc: "#18181b",
+    lavender: "#9b8afb",
   };
-  return map[c] || "#FFAB1D";
+  return map[c] || "var(--primary)";
 };
 
 const PRIMARY_ROLE_OPTIONS = [
@@ -47,31 +43,35 @@ const PRIMARY_ROLE_OPTIONS = [
   "Founder",
 ].map((r) => ({ label: r, value: r }));
 
+// Focus is a soft glow, not a hard ring: the border takes the accent and a
+// 4px halo of it at low strength spreads out and fades in with the border.
+// `--wizard-accent` is set on the demo root so the halo follows the picker.
+const FIELD_BASE =
+  "w-full h-11 bg-background border rounded-xl px-3.5 text-sm text-foreground placeholder:text-muted-foreground outline-none shadow-[0_1px_2px_rgb(0_0_0/0.04)] transition-[border-color,box-shadow] duration-200 ease-out";
+const FIELD_OK =
+  "border-input hover:border-foreground/20 focus:border-[color-mix(in_oklab,var(--wizard-accent)_65%,transparent)] focus:shadow-[0_0_0_4px_color-mix(in_oklab,var(--wizard-accent)_16%,transparent)]";
+const FIELD_ERROR =
+  "border-destructive focus:shadow-[0_0_0_4px_color-mix(in_oklab,var(--destructive)_16%,transparent)]";
+
 // Stable Input Component
 const InputField = ({ label, icon: Icon, error, ...props }: any) => (
   <div className="flex flex-col gap-1.5 w-full">
-    <label className="text-xs font-bold text-zinc-700 dark:text-zinc-300 uppercase tracking-wider">
-      {label} <span className="text-rose-500">*</span>
+    <label className="text-xs font-semibold text-foreground uppercase tracking-wider">
+      {label} <span className="text-destructive">*</span>
     </label>
     <div className="relative flex items-center">
       {Icon && (
-        <div className="absolute left-3.5 text-zinc-400 dark:text-zinc-500 pointer-events-none">
+        <div className="absolute left-3.5 text-muted-foreground pointer-events-none">
           <Icon className="w-4 h-4" />
         </div>
       )}
       <input
-        className={cn(
-          "w-full h-11 bg-zinc-50 dark:bg-zinc-900 border rounded-xl px-3.5 text-sm text-zinc-900 dark:text-white placeholder:text-zinc-400 focus:outline-none focus:ring-2 transition-all",
-          Icon && "pl-10",
-          error
-            ? "border-rose-500 focus:ring-rose-500/20"
-            : "border-zinc-200 dark:border-zinc-800 focus:border-zinc-400 dark:focus:border-zinc-600",
-        )}
+        className={cn(FIELD_BASE, Icon && "pl-10", error ? FIELD_ERROR : FIELD_OK)}
         {...props}
       />
     </div>
     {error && (
-      <span className="flex items-center gap-1 text-xs font-semibold text-rose-500 mt-0.5">
+      <span className="flex items-center gap-1 text-xs font-semibold text-destructive mt-0.5">
         <AlertCircle className="w-3.5 h-3.5 flex-shrink-0" />
         {error}
       </span>
@@ -89,6 +89,7 @@ export default function StepperDemo({
   initialStep?: number;
 }) {
   const color = getThemeColorHex(colorToken);
+  const isDefaultPrimary = colorToken === "primary" || colorToken === "default";
   const [currentStep, setCurrentStep] = useState(initialStep);
 
   // Unified Form State
@@ -229,12 +230,12 @@ export default function StepperDemo({
       description: "Personal details",
       icon: User,
       content: (
-        <div className="w-full p-6 sm:p-8 bg-white dark:bg-[#0a0a0a] rounded-2xl border border-zinc-200 dark:border-zinc-800 shadow-sm flex flex-col gap-5">
+        <div className="w-full p-6 sm:p-8 bg-card text-card-foreground rounded-2xl border border-foreground/[0.06] shadow-[0_1px_2px_rgb(0_0_0/0.04),0_8px_24px_-12px_rgb(0_0_0/0.12)] flex flex-col gap-5">
           <div>
-            <h3 className="text-lg font-bold text-zinc-900 dark:text-white">
+            <h3 className="text-lg font-semibold text-foreground">
               Personal Information
             </h3>
-            <p className="text-xs text-zinc-500">
+            <p className="text-xs text-muted-foreground">
               Enter your contact details to begin setting up your account.
             </p>
           </div>
@@ -266,12 +267,12 @@ export default function StepperDemo({
       description: "Organization",
       icon: Building2,
       content: (
-        <div className="w-full p-6 sm:p-8 bg-white dark:bg-[#0a0a0a] rounded-2xl border border-zinc-200 dark:border-zinc-800 shadow-sm flex flex-col gap-5">
+        <div className="w-full p-6 sm:p-8 bg-card text-card-foreground rounded-2xl border border-foreground/[0.06] shadow-[0_1px_2px_rgb(0_0_0/0.04),0_8px_24px_-12px_rgb(0_0_0/0.12)] flex flex-col gap-5">
           <div>
-            <h3 className="text-lg font-bold text-zinc-900 dark:text-white">
+            <h3 className="text-lg font-semibold text-foreground">
               Workspace Setup
             </h3>
-            <p className="text-xs text-zinc-500">
+            <p className="text-xs text-muted-foreground">
               Name your organization and select your primary role.
             </p>
           </div>
@@ -285,14 +286,17 @@ export default function StepperDemo({
               error={errors.company}
             />
             <div className="flex flex-col gap-1.5 w-full">
-              <label className="text-xs font-bold text-zinc-700 dark:text-zinc-300 uppercase tracking-wider">
+              <label className="text-xs font-semibold text-foreground uppercase tracking-wider">
                 Primary Role
               </label>
               <SelectBlock
                 options={PRIMARY_ROLE_OPTIONS}
                 value={formData.role}
                 onChange={(v) => handleChange("role", v)}
-                variant="filled"
+                // Bordered like the text inputs; its open state is the same
+                // soft 4px accent ring.
+                variant="default"
+                color={isDefaultPrimary ? "primary" : color}
                 placeholder="Select your role"
               />
             </div>
@@ -306,12 +310,12 @@ export default function StepperDemo({
       description: "Credentials",
       icon: ShieldCheck,
       content: (
-        <div className="w-full p-6 sm:p-8 bg-white dark:bg-[#0a0a0a] rounded-2xl border border-zinc-200 dark:border-zinc-800 shadow-sm flex flex-col gap-5">
+        <div className="w-full p-6 sm:p-8 bg-card text-card-foreground rounded-2xl border border-foreground/[0.06] shadow-[0_1px_2px_rgb(0_0_0/0.04),0_8px_24px_-12px_rgb(0_0_0/0.12)] flex flex-col gap-5">
           <div>
-            <h3 className="text-lg font-bold text-zinc-900 dark:text-white">
+            <h3 className="text-lg font-semibold text-foreground">
               Security Credentials
             </h3>
-            <p className="text-xs text-zinc-500">
+            <p className="text-xs text-muted-foreground">
               Create a secure password for your workspace access.
             </p>
           </div>
@@ -346,21 +350,20 @@ export default function StepperDemo({
       description: "Confirm & Submit",
       icon: CheckCircle2,
       content: (
-        <div className="w-full p-6 sm:p-8 bg-white dark:bg-[#0a0a0a] rounded-2xl border border-zinc-200 dark:border-zinc-800 shadow-sm flex flex-col gap-6">
+        <div className="w-full p-6 sm:p-8 bg-card text-card-foreground rounded-2xl border border-foreground/[0.06] shadow-[0_1px_2px_rgb(0_0_0/0.04),0_8px_24px_-12px_rgb(0_0_0/0.12)] flex flex-col gap-6">
           {submitStatus === "success" ? (
             <div className="py-8 flex flex-col items-center justify-center text-center gap-4">
               <div
-                className="w-16 h-16 rounded-full flex items-center justify-center mb-1 shadow-inner animate-bounce"
-                style={{ backgroundColor: `${color}20`, color: color }}
+                className="w-16 h-16 rounded-full flex items-center justify-center mb-1 shadow-inner animate-bounce bg-primary/20 text-primary"
               >
                 <CheckCircle2 className="w-8 h-8" />
               </div>
-              <h3 className="text-2xl font-black text-zinc-900 dark:text-white tracking-tight">
+              <h3 className="text-2xl font-bold text-foreground tracking-tight">
                 Onboarding Complete!
               </h3>
-              <p className="text-sm text-zinc-500 max-w-sm">
+              <p className="text-sm text-muted-foreground max-w-sm">
                 Your account for{" "}
-                <strong className="text-zinc-900 dark:text-white">
+                <strong className="text-foreground">
                   {formData.company}
                 </strong>{" "}
                 has been successfully configured and submitted.
@@ -368,7 +371,7 @@ export default function StepperDemo({
               <button
                 type="button"
                 onClick={resetWizard}
-                className="mt-2 flex items-center gap-2 px-6 py-2.5 rounded-xl bg-zinc-100 dark:bg-zinc-900 hover:bg-zinc-200 dark:hover:bg-zinc-800 text-zinc-900 dark:text-white font-bold text-xs uppercase tracking-wider transition-all"
+                className="mt-2 flex items-center gap-2 px-6 py-2.5 rounded-xl bg-muted hover:bg-muted/80 text-foreground font-semibold text-xs uppercase tracking-wider transition-all"
               >
                 <RefreshCw className="w-3.5 h-3.5" /> Reset Demo Wizard
               </button>
@@ -376,46 +379,46 @@ export default function StepperDemo({
           ) : (
             <>
               <div>
-                <h3 className="text-lg font-bold text-zinc-900 dark:text-white">
+                <h3 className="text-lg font-semibold text-foreground">
                   Review Summary
                 </h3>
-                <p className="text-xs text-zinc-500">
+                <p className="text-xs text-muted-foreground">
                   Please verify your details before submitting the onboarding
                   payload.
                 </p>
               </div>
 
               {/* Data Summary Grid */}
-              <div className="grid grid-cols-2 gap-4 bg-zinc-50 dark:bg-zinc-900/50 p-4 rounded-xl border border-zinc-200 dark:border-zinc-800 text-xs">
+              <div className="grid grid-cols-2 gap-4 bg-muted/50 p-4 rounded-xl border border-border text-xs">
                 <div>
-                  <span className="text-zinc-400 block font-semibold">
+                  <span className="text-muted-foreground block font-semibold">
                     Name:
                   </span>
-                  <span className="font-bold text-zinc-900 dark:text-white text-sm">
+                  <span className="font-semibold text-foreground text-sm">
                     {formData.fullName || "—"}
                   </span>
                 </div>
                 <div>
-                  <span className="text-zinc-400 block font-semibold">
+                  <span className="text-muted-foreground block font-semibold">
                     Email:
                   </span>
-                  <span className="font-bold text-zinc-900 dark:text-white text-sm truncate block">
+                  <span className="font-semibold text-foreground text-sm truncate block">
                     {formData.email || "—"}
                   </span>
                 </div>
                 <div>
-                  <span className="text-zinc-400 block font-semibold">
+                  <span className="text-muted-foreground block font-semibold">
                     Company:
                   </span>
-                  <span className="font-bold text-zinc-900 dark:text-white text-sm">
+                  <span className="font-semibold text-foreground text-sm">
                     {formData.company || "—"}
                   </span>
                 </div>
                 <div>
-                  <span className="text-zinc-400 block font-semibold">
+                  <span className="text-muted-foreground block font-semibold">
                     Role:
                   </span>
-                  <span className="font-bold text-zinc-900 dark:text-white text-sm">
+                  <span className="font-semibold text-foreground text-sm">
                     {formData.role}
                   </span>
                 </div>
@@ -423,10 +426,10 @@ export default function StepperDemo({
 
               {/* Error Message Banner */}
               {submitStatus === "error" && (
-                <div className="p-4 bg-rose-500/10 border border-rose-500/30 rounded-xl flex items-start gap-3 text-rose-500">
+                <div className="p-4 bg-destructive/10 border border-destructive/30 rounded-xl flex items-start gap-3 text-destructive">
                   <XCircle className="w-5 h-5 flex-shrink-0 mt-0.5" />
                   <div className="text-xs">
-                    <strong className="font-bold block mb-0.5">
+                    <strong className="font-semibold block mb-0.5">
                       Submission Failed
                     </strong>
                     <span>{errorMessage}</span>
@@ -435,19 +438,19 @@ export default function StepperDemo({
               )}
 
               {/* Interactive Demo Toggle */}
-              <div className="pt-2 border-t border-zinc-100 dark:border-zinc-800/80 flex items-center justify-between">
-                <label className="flex items-center gap-2 cursor-pointer select-none text-xs font-semibold text-zinc-600 dark:text-zinc-400">
+              <div className="pt-2 border-t border-border flex items-center justify-between">
+                <label className="flex items-center gap-2 cursor-pointer select-none text-xs font-semibold text-muted-foreground">
                   <input
                     type="checkbox"
                     checked={formData.simulateError}
                     onChange={(e) =>
                       handleChange("simulateError", e.target.checked)
                     }
-                    className="rounded border-zinc-300 dark:border-zinc-700 text-rose-500 focus:ring-rose-500"
+                    className="rounded border-input accent-[var(--wizard-accent)]"
                   />
                   Simulate Server Error on Submit
                 </label>
-                <span className="text-[10px] text-zinc-400 font-mono">
+                <span className="text-[10px] text-muted-foreground font-mono">
                   DEBUG_MODE
                 </span>
               </div>
@@ -459,9 +462,14 @@ export default function StepperDemo({
   ];
 
   return (
-    <div className="w-full flex justify-center relative overflow-hidden min-h-[600px]">
-      {/* Main Wizard Card Container */}
-      <div className="w-full max-w-3xl flex flex-col gap-8 bg-white dark:bg-zinc-950/80 rounded-3xl p-6 sm:p-10 border border-zinc-200 dark:border-zinc-800/80 relative z-10">
+    <div
+      className="w-full flex justify-center relative min-h-[600px]"
+      style={{ "--wizard-accent": color } as React.CSSProperties}
+    >
+      {/* Main Wizard Card Container. The shell wears a whisper of the accent
+          (relative OKLCH, like Folder's tint) so it separates from the white
+          preview surface, and the white step panels float on it. */}
+      <div className="w-full max-w-3xl flex flex-col gap-8 text-card-foreground rounded-3xl p-6 sm:p-10 relative z-10 border bg-[oklch(from_var(--wizard-accent)_0.975_calc(c*0.12)_h)] border-[oklch(from_var(--wizard-accent)_0.91_calc(c*0.2)_h)] dark:bg-[oklch(from_var(--wizard-accent)_0.21_calc(c*0.1)_h)] dark:border-foreground/10 shadow-[0_1px_2px_rgb(0_0_0/0.04),0_20px_48px_-20px_rgb(0_0_0/0.18)]">
         {/* 1. The GSAP Stepper Navigation (Click circles to jump if valid) */}
         <Stepper
           steps={steps}
@@ -477,12 +485,12 @@ export default function StepperDemo({
 
         {/* 3. Integrated Navigation Footer */}
         {submitStatus !== "success" && (
-          <div className="flex items-center justify-between pt-6 border-t border-zinc-100 dark:border-zinc-900 mt-2">
+          <div className="flex items-center justify-between pt-6 border-t border-border mt-2">
             <button
               type="button"
               onClick={handlePrev}
               disabled={currentStep === 0 || isSubmitting}
-              className="flex items-center gap-1.5 px-4 py-2.5 rounded-xl border border-zinc-200 dark:border-zinc-800 bg-zinc-100 dark:bg-zinc-900 text-zinc-700 dark:text-zinc-300 font-semibold text-sm disabled:opacity-40 disabled:cursor-not-allowed hover:bg-zinc-200/60 dark:hover:bg-zinc-800 transition-all active:scale-95 cursor-pointer"
+              className="flex items-center gap-1.5 px-4 py-2.5 rounded-xl border border-foreground/10 bg-card text-foreground font-semibold text-sm shadow-[0_1px_2px_rgb(0_0_0/0.04)] disabled:opacity-40 disabled:cursor-not-allowed hover:bg-muted transition-all active:scale-95 cursor-pointer"
             >
               <ChevronLeft className="w-4 h-4" />
               Back
@@ -493,8 +501,11 @@ export default function StepperDemo({
                 type="button"
                 onClick={handleSubmit}
                 disabled={isSubmitting}
-                className="flex items-center gap-2 px-7 py-2.5 rounded-xl text-white font-bold text-sm shadow-md transition-all hover:brightness-110 active:scale-95 disabled:opacity-70 cursor-pointer"
-                style={{ backgroundColor: color }}
+                className={cn(
+                  "flex items-center gap-2 px-7 py-2.5 rounded-xl text-primary-foreground font-semibold text-sm shadow-md transition-all hover:brightness-110 active:scale-95 disabled:opacity-70 cursor-pointer",
+                  isDefaultPrimary && "bg-primary"
+                )}
+                style={isDefaultPrimary ? undefined : { backgroundColor: color }}
               >
                 {isSubmitting ? (
                   <>
@@ -512,8 +523,11 @@ export default function StepperDemo({
               <button
                 type="button"
                 onClick={handleNext}
-                className="flex items-center gap-1.5 px-6 py-2.5 rounded-xl text-white font-bold text-sm shadow-md transition-all hover:brightness-110 active:scale-95 cursor-pointer"
-                style={{ backgroundColor: color }}
+                className={cn(
+                  "flex items-center gap-1.5 px-6 py-2.5 rounded-xl text-primary-foreground font-semibold text-sm shadow-md transition-all hover:brightness-110 active:scale-95 cursor-pointer",
+                  isDefaultPrimary && "bg-primary"
+                )}
+                style={isDefaultPrimary ? undefined : { backgroundColor: color }}
               >
                 <span>Next Step</span>
                 <ChevronRight className="w-4 h-4" />

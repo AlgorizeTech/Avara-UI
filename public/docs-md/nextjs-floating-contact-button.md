@@ -1,46 +1,63 @@
+export const metadata = docsPageMetadata("floating-contact-button");
+
 # Floating Contact Button
 
-A high-converting, interactive floating support widget that anchors to any screen corner. Clicking the button expands a sleek glassmorphic chat interface powered by Framer Motion, featuring simulated agent replies, instantaneous `localStorage` theme coloring, and mobile-first responsiveness.
+A high-converting, interactive floating support widget that anchors to any screen corner. Clicking the button expands a sleek glassmorphic chat interface animated with plain CSS (no animation library), featuring simulated agent replies, instantaneous `localStorage` theme coloring, and mobile-first responsiveness.
 
-## Examples
+Type a message in any preview and hit Enter to see the typing indicator and simulated reply. The previews use `containerMode="absolute"` so the widget stays inside its frame — in your app you would leave it `fixed`.
 
-Type a message in any preview and hit Enter to see the typing indicator and simulated reply. The previews use `containerMode="absolute"` so the widget stays inside its frame — in your app you would leave it `fixed`. The first example's **Code** tab contains the full component source.
-
-export const usageDefault = `import { FloatingContactButtonBlock } from "@/components/custom/blocks/FloatingContactButtonBlock";
+export const usageDefault = `"use client";
 
 export default function SupportWidget() {
   return (
-     sendToInbox(message)}
+     console.log("Send to your inbox:", message)}
     />
   );
 }`;
 
-export const usageLeft = `// Anchors to the opposite corner; the popup and its origin flip with it.
-`;
+export const usageLeft = `import { FloatingContactButtonBlock } from "@/components/custom/blocks/FloatingContactButtonBlock";
 
-export const usageClosed = `// Start collapsed — the usual behaviour on a real page.
-`;
+export default function LeftAnchoredWidget() {
+  // Anchors to the opposite corner; the popup and its origin flip with it.
+  return ;
+}`;
 
-export const usageBranding = `// \`title\`, \`subtitle\` and \`avatarUrl\` make up the popup header.
-`;
+export const usageClosed = `import { FloatingContactButtonBlock } from "@/components/custom/blocks/FloatingContactButtonBlock";
 
-export const usageAccent = `// \`defaultAccentColor\` takes a token name or any CSS color. Pass
-// \`localStorageKey\` and the widget picks up your app's stored brand color.
-`;
+export default function CollapsedWidget() {
+  // Start collapsed — the usual behaviour on a real page.
+  return ;
+}`;
+
+export const usageBranding = `import { FloatingContactButtonBlock } from "@/components/custom/blocks/FloatingContactButtonBlock";
+
+export default function BrandedWidget() {
+  // \`title\`, \`subtitle\` and \`avatarUrl\` make up the popup header.
+  return (
+    
+  );
+}`;
+
+export const usageAccent = `import { FloatingContactButtonBlock } from "@/components/custom/blocks/FloatingContactButtonBlock";
+
+export default function AccentedWidget() {
+  // \`defaultAccentColor\` takes a token name or any CSS color. Pass
+  // \`localStorageKey\` and the widget picks up your app's stored brand color.
+  return (
+    
+  );
+}`;
 
 ## Installation
 
-### Dependencies
-
-This component relies on **Framer Motion** for spring-physics popup animations and layout transitions, alongside **Lucide React** for UI icons.
+Register the @algorize-ui registry once per project, then add the component:
 
 ```bash
-npm install framer-motion lucide-react
+npx shadcn@latest registry add @algorize-ui=https://algorize-ui.vercel.app/r/{name}.json
+npx shadcn@latest add @algorize-ui/floating-contact-button
 ```
 
-### Copy the Component
-
-Copy the core engine code from the **Code** tab of the first example above into `components/custom/blocks/FloatingContactButtonBlock.tsx`.
+## Examples
 
 ## Features
 Discover the key capabilities that make this component an excellent choice for modern, animated user interfaces.
@@ -98,7 +115,7 @@ Discover the key capabilities that make this component an excellent choice for m
 
             avatarUrl
             string
-            "https://images.unsplash.com/..."
+            "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto/v1790224285/photo-1469474968028-56623f02e42e-1790146212205-1790224284635.webp"
             Image URL for the support agent avatar rendered in the header with an online status badge.
 
             defaultOpen
@@ -113,7 +130,7 @@ Discover the key capabilities that make this component an excellent choice for m
 
             defaultAccentColor
             string
-            "#6366f1"
+            "var(--primary)"
             The fallback hex color applied to the header, user message bubbles, and trigger button if no key is found in storage.
 
             initialMessages
@@ -138,7 +155,7 @@ Discover the key capabilities that make this component an excellent choice for m
             id
             string
             Yes
-            A unique string identifier required for React list rendering and Framer Motion layout animations.
+            A unique string identifier required for React list rendering; each new message animates in once, when it mounts.
 
             text
             string
@@ -157,6 +174,6 @@ Discover the key capabilities that make this component an excellent choice for m
 
 ---
 
-**Component Path:** `nextjs\floating-contact-button\page.mdx`
+**Component Path:** `[framework]\floating-contact-button\page.mdx`
 
-**Web Version:** Visit the interactive version at the corresponding URL on the Next.js documentation site for live previews and interactive examples.
+**Web Version:** Visit the corresponding URL on the Algorize UI documentation site for live previews and interactive examples.

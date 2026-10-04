@@ -40,8 +40,8 @@ const sampleTabs = [
     content: (
       <p>
         This is the VIDEOS tab content. Video players, stream links, or
-        watch-later lists belong here. Notice how the active dot indicator
-        clearly shows your current location in the app structure.
+        watch-later lists belong here. Notice how the active indicator clearly
+        shows your current location in the app structure.
       </p>
     ),
   },
@@ -58,14 +58,22 @@ const sampleTabs = [
   },
 ];
 
+/**
+ * Canvas behind the block. `elevated` paints its own card, so on a same-coloured
+ * page the lift has nothing to lift off — it gets a tinted stage instead.
+ */
+const CANVAS: Partial<Record<TabsVariant, string>> = {
+  elevated: "bg-muted",
+};
+
 export default function VerticalTabsDemo({
   variant = "default",
-  orientation = "vertical",
+  orientation = "horizontal",
   color = "primary",
   defaultActiveId,
 }: {
   variant?: TabsVariant;
-  /** "horizontal" moves the rail above the content pane. */
+  /** "vertical" moves the rail beside the content pane. */
   orientation?: TabsOrientation;
   color?: string;
   /** Which tab id opens first (defaults to the first tab). */
@@ -73,9 +81,24 @@ export default function VerticalTabsDemo({
 }) {
   return (
     <div
-      className={`w-full flex items-center justify-center min-h-[500px] transition-colors duration-300 ${variant === "glass" ? "p-4 sm:p-8 bg-gradient-to-br from-zinc-800 via-zinc-900 to-black rounded-2xl" : "bg-white dark:bg-black py-12"}`}
+      className={`w-full max-w-full overflow-hidden flex items-center justify-center min-h-[450px] sm:min-h-[500px] transition-colors duration-300 ${
+        variant === "glass"
+          ? "p-3 sm:p-8 bg-cover bg-center rounded-2xl relative"
+          : `${CANVAS[variant] ?? "bg-background"} p-2 sm:p-6`
+      }`}
+      style={
+        variant === "glass"
+          ? {
+              backgroundImage:
+                'url("https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_1200,c_limit/v1790146209/photo-1470071459604-3b5ec3a7fe05-1790146212205.jpg")',
+            }
+          : undefined
+      }
     >
-      <div className="w-full max-w-4xl mx-auto px-4">
+      {variant === "glass" && (
+        <div className="absolute inset-0 bg-black/30 rounded-2xl pointer-events-none" />
+      )}
+      <div className="w-full max-w-4xl min-w-0 mx-auto">
         <VerticalTabs
           key={`${variant}-${orientation}-${color}-${defaultActiveId ?? ""}`}
           tabs={sampleTabs}

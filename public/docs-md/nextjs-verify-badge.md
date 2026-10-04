@@ -1,48 +1,89 @@
+export const metadata = docsPageMetadata("verify-badge", {
+  title: "Verify Badge",
+  description: "A highly customizable verified badge component similar to Twitter/X or premium verified markers, with built-in animation support."
+});
+
 # Verify Badge
 
 A versatile verified badge component that can be customized with various styles (blue, gold, dark, gray), sizes, and an optional subtle pulse animation for premium aesthetics.
 
 It includes distinct customization options to match different areas of your application.
 
-## Examples
-
-Explore the different variations of the Verify Badge — each example shows a live preview with the exact code to copy. Hover a badge to see its shine effect. The first example's **Code** tab contains the full component source.
+Explore the different variations of the Verify Badge — each example shows a live preview with the exact code to copy. Hover a badge to see its shine effect.
 
 export const usageDefault = `import { VerifyBadge } from "@/components/custom/blocks/VerifyBadgeBlock";
 
 export default function ProfileName() {
   return (
-    
-      AlgorizeSystem
+
+        AlgorizeSystem
 
   );
 }`;
 
-export const usageSizes = `
+export const usageSizes = `import { VerifyBadge } from "@/components/custom/blocks/VerifyBadgeBlock";
 
-`;
+export default function BadgeSizes() {
+  return (
 
-export const usageStatic = ``;
+  );
+}`;
+
+export const usageStatic = `import { VerifyBadge } from "@/components/custom/blocks/VerifyBadgeBlock";
+
+export default function StaticBadge() {
+  return (
+
+        AlgorizeSystem
+
+  );
+}`;
 
 export const usageInline = `import { VerifyBadge } from "@/components/custom/blocks/VerifyBadgeBlock";
 
+// The badge is the only piece that ships with the component — everything
+// around it is ordinary markup, shown here so the card matches the preview.
+const accent = "var(--primary)";
+
+function BotAvatar({ className }: { className?: string }) {
+  return (
+
+  );
+}
+
 export default function NotificationCard() {
   return (
-    
-      AlgorizeSystem
-      
-      Today at 2:34 PM
-    
+
+            AlgorizeSystem
+
+            Bot
+
+            Today at 2:34 PM
+
+          Deployment{" "}
+          
+            #421
+          {" "}
+          to production completed successfully.
+
+              Build Passed 🚀
+
+              All 142 tests passed in 12s. The latest preview is now live on
+              Vercel.
+
   );
 }`;
 
 ## Installation
 
-This component uses `lucide-react` for the checkmark icon and standard Tailwind utilities.
+Register the @algorize-ui registry once per project, then add the component:
 
 ```bash
-npm install lucide-react clsx tailwind-merge
+npx shadcn@latest registry add @algorize-ui=https://algorize-ui.vercel.app/r/{name}.json
+npx shadcn@latest add @algorize-ui/verify-badge
 ```
+
+## Examples
 
 ## Features
 Explore the Verify Badge's authentic design features, providing recognizable trust signals with subtle animated glows.
@@ -81,7 +122,7 @@ Explore the Verify Badge's authentic design features, providing recognizable tru
 
           string (hex/css color)
 
-          "#1d9bf0"
+          "var(--primary)"
 
           The theme color of the badge.
 
@@ -118,6 +159,6 @@ Explore the Verify Badge's authentic design features, providing recognizable tru
 
 ---
 
-**Component Path:** `nextjs\verify-badge\page.mdx`
+**Component Path:** `[framework]\verify-badge\page.mdx`
 
-**Web Version:** Visit the interactive version at the corresponding URL on the Next.js documentation site for live previews and interactive examples.
+**Web Version:** Visit the corresponding URL on the Algorize UI documentation site for live previews and interactive examples.

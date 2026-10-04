@@ -1,0 +1,601 @@
+import { docsPageMetadata } from "@/lib/docs-metadata";
+
+export const metadata = docsPageMetadata("vertical-tabs");
+
+import { ExampleShowcase } from "@/components/site/Sandbox";
+import { extractCode } from "@/lib/code";
+
+# Tabs
+
+A sleek, responsive tab navigation component. By default the rail runs across the top as a pill bar, with the active content pane below it — and when the tabs outgrow the width they scroll sideways instead of squashing. Set `orientation="vertical"` and the same rail becomes a sidebar menu beside the pane, stacking above it on narrow screens.
+
+Eight `variant` styles ship with it — from a filled pill bar to an underline rail, a segmented control and a stack of cards — and every one of them works in both orientations, in any `color`.
+
+Switch tabs in any preview and the panel slides in from the side you moved toward. Arrow keys walk the rail, `Home` and `End` jump to its ends, and nothing animates on load. The component is exported as `VerticalTabs`, which is the original name and stays the import so existing installs keep working.
+
+export const usageTabsData = `const tabs: TabItem[] = [
+  {
+    id: "photos",
+    label: "Photos",
+    icon: Camera, // the Lucide component itself, not a string
+    content: (
+      <p>
+        This is the PHOTOS tab content. Here you would display your photo
+        gallery, albums, or image collection grids. The smooth crossfade
+        animation makes navigating between these rich content areas feel
+        native.
+      </p>
+    ),
+  },
+  {
+    id: "music",
+    label: "Music",
+    icon: Music,
+    content: (
+      <p>
+        This is the MUSIC tab content. Imagine a playlist, audio player
+        controls, or your favorite albums rendered perfectly within this
+        dark-mode optimized space.
+      </p>
+    ),
+  },
+  {
+    id: "videos",
+    label: "Videos",
+    icon: Clapperboard,
+    content: (
+      <p>
+        This is the VIDEOS tab content. Video players, stream links, or
+        watch-later lists belong here. Notice how the active indicator clearly
+        shows your current location in the app structure.
+      </p>
+    ),
+  },
+  {
+    id: "settings",
+    label: "Settings",
+    icon: Settings,
+    content: (
+      <p>
+        Adjust your preferences, notification settings, and privacy controls
+        here.
+      </p>
+    ),
+  },
+];`;
+
+{/*
+  Every example is the same file with a different prop line, so the snippets
+  are built from one template rather than fifteen near-identical literals.
+  `note` becomes the comment that explains what the props above it change.
+*/}
+
+export const tabsUsage = ({ name, props = "", note }) => `import { VerticalTabs, type TabItem } from "@/components/custom/blocks/VerticalTabs";
+import { Camera, Clapperboard, Music, Settings } from "lucide-react";
+
+${usageTabsData}
+
+export default function ${name}() {
+${note ? `  // ${note}\n` : ""}  return <VerticalTabs tabs={tabs}${props} />;
+}`;
+
+export const glassUsage = ({ name, props = "" }) => `import { VerticalTabs, type TabItem } from "@/components/custom/blocks/VerticalTabs";
+import { Camera, Clapperboard, Music, Settings } from "lucide-react";
+
+${usageTabsData}
+
+export default function ${name}() {
+  // Glass has nothing to frost on a flat page — give it something to blur.
+  return (
+    <div
+      className="p-8 rounded-2xl bg-cover bg-center relative"
+      style={{
+        backgroundImage:
+          'url("https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_1200,c_limit/v1790146209/photo-1470071459604-3b5ec3a7fe05-1790146212205.jpg")',
+      }}
+    >
+      <div className="absolute inset-0 bg-black/30 rounded-2xl pointer-events-none" />
+      <VerticalTabs tabs={tabs}${props} />
+    </div>
+  );
+}`;
+
+<ExampleShowcase
+  name="vertical-tabs"
+  colorControl
+  columns={1}
+  examples={[
+    {
+      title: "Horizontal tabs",
+      subheading:
+        "The default. The rail runs across the top and scrolls sideways when the tabs outgrow the width.",
+      propNotes: [
+        {
+          lead: "Pass",
+          prop: "tabs",
+          effect:
+            "as `{ id, label, icon, content }[]` — that is the whole API.",
+        },
+        {
+          prop: "orientation",
+          value: '"horizontal"',
+          effect:
+            "is the default, so you never write it; `vertical` moves the rail beside the pane.",
+        },
+        {
+          prop: "defaultActiveId",
+          effect: "picks which tab opens first, defaulting to the first entry.",
+        },
+      ],
+      props: { variant: "default", orientation: "horizontal" },
+      usage: tabsUsage({
+        name: "MediaTabs",
+        note: "Each tab carries its own content — the block handles the crossfade.",
+      }),
+      code: extractCode("src/components/custom/blocks/VerticalTabs.tsx"),
+    },
+  ]}
+/>
+
+## Installation
+
+<Installation name="vertical-tabs" />
+
+## Vertical layout
+
+<ExampleShowcase
+  name="vertical-tabs"
+  colorControl
+  columns={1}
+  examples={[
+    {
+      title: "Vertical tabs",
+      subheading:
+        "One prop moves the rail beside the pane. Nothing else about the API changes.",
+      propNotes: [
+        {
+          lead: "Set",
+          prop: "orientation",
+          value: '"vertical"',
+          effect:
+            "to put the rail in a fixed-width column on the left with the pane filling the rest — and to stack the two below `md`, so a phone still gets a readable list.",
+        },
+        {
+          prop: "variant",
+          effect:
+            "is unchanged by the switch — all eight styles render in either direction.",
+        },
+      ],
+      props: { variant: "default", orientation: "vertical" },
+      usage: tabsUsage({
+        name: "MediaSidebarTabs",
+        props: ' orientation="vertical"',
+        note: "The rail becomes a sidebar; on narrow screens it stacks on top.",
+      }),
+    },
+  ]}
+/>
+
+## Horizontal styles
+
+Seven ways to dress the top rail. Every one takes the page `color`, so pick the shape here and the accent above.
+
+<ExampleShowcase
+  name="vertical-tabs"
+  colorControl
+  columns={1}
+  examples={[
+    {
+      title: "Underline",
+      subheading:
+        "The classic browser-tab set — nothing filled, just an accent bar riding a hairline track.",
+      propNotes: [
+        {
+          lead: "Set",
+          prop: "variant",
+          value: '"underline"',
+          effect:
+            "to drop all chrome; the rail gets a bottom hairline and a single accent bar slides along it between tabs.",
+        },
+        {
+          prop: "color",
+          effect:
+            "tints the bar and the active label — this variant never paints a label on top of the accent, so pale colors stay readable.",
+        },
+      ],
+      props: { variant: "underline", orientation: "horizontal" },
+      usage: tabsUsage({
+        name: "UnderlineTabs",
+        props: ' variant="underline"',
+        note: "One bar, measured and moved — not a bar per tab fading in and out.",
+      }),
+    },
+    {
+      title: "Segmented",
+      subheading:
+        "An iOS-style control: one recessed track, the active tab lifted onto its own surface.",
+      propNotes: [
+        {
+          lead: "Set",
+          prop: "variant",
+          value: '"segmented"',
+          effect:
+            "to group the tabs inside one recessed track; a single raised surface slides between segments.",
+        },
+        {
+          prop: "orientation",
+          value: '"horizontal"',
+          effect:
+            "makes the segments share the width evenly rather than clustering at the start.",
+        },
+      ],
+      props: { variant: "segmented", orientation: "horizontal" },
+      usage: tabsUsage({
+        name: "SegmentedTabs",
+        props: ' variant="segmented"',
+        note: "Best for three or four short labels — it is a control, not a nav.",
+      }),
+    },
+    {
+      title: "Soft",
+      subheading:
+        "The quietest selection state: the accent tinted back to a wash, label kept in the accent.",
+      propNotes: [
+        {
+          lead: "Set",
+          prop: "variant",
+          value: '"soft"',
+          effect:
+            "for full-round pills with a tinted active state instead of a solid fill.",
+        },
+        {
+          prop: "color",
+          effect:
+            "supplies both the wash and the label, so any hex stays legible without a contrast check.",
+        },
+      ],
+      props: { variant: "soft", orientation: "horizontal" },
+      usage: tabsUsage({
+        name: "SoftTabs",
+        props: ' variant="soft"',
+        note: "Pairs well with dense pages — it never competes with the content.",
+      }),
+    },
+    {
+      title: "Elevated",
+      subheading:
+        "Every tab is its own card. The active one takes the accent; the rest stay flat.",
+      propNotes: [
+        {
+          lead: "Set",
+          prop: "variant",
+          value: '"elevated"',
+          effect:
+            "to give each tab its own bordered card; hovering an unselected one tints its border toward the accent.",
+        },
+        {
+          prop: "className",
+          effect:
+            "is worth using here — the cards paint their own surface, so give the block a slightly different background for them to lift off.",
+        },
+      ],
+      props: { variant: "elevated", orientation: "horizontal" },
+      usage: tabsUsage({
+        name: "ElevatedTabs",
+        props: ' variant="elevated"',
+        note: "Put this on a tinted section; matching the card surface leaves nothing to lift off.",
+      }),
+    },
+    {
+      title: "Minimal",
+      subheading: "No card chrome at all — just the rail and the pane.",
+      propNotes: [
+        {
+          lead: "Set",
+          prop: "variant",
+          value: '"minimal"',
+          effect:
+            "when the surrounding layout already supplies the panel and the borders.",
+        },
+      ],
+      props: { variant: "minimal", orientation: "horizontal" },
+      usage: tabsUsage({
+        name: "MinimalTabs",
+        props: ' variant="minimal"',
+        note: "Inherits the page background — nothing is drawn but the tabs.",
+      }),
+    },
+    {
+      title: "Bordered",
+      subheading:
+        "Rail and pane joined inside one outlined card, split by a single divider.",
+      propNotes: [
+        {
+          lead: "Set",
+          prop: "variant",
+          value: '"bordered"',
+          effect:
+            "to wrap both halves in one border; the divider follows the rail to whichever edge it sits on.",
+        },
+      ],
+      props: { variant: "bordered", orientation: "horizontal" },
+      usage: tabsUsage({
+        name: "BorderedTabs",
+        props: ' variant="bordered"',
+        note: "The divider moves to the bottom edge in this orientation, and to the right edge when vertical.",
+      }),
+    },
+    {
+      title: "Glass",
+      subheading: "Frosted panels — needs a rich background to blur.",
+      propNotes: [
+        {
+          lead: "Set",
+          prop: "variant",
+          value: '"glass"',
+          effect: "to frost both the rail and the pane over whatever is behind them.",
+        },
+        {
+          prop: "color",
+          effect:
+            "tints the active tab; it takes preset names or a hex, and defaults to `primary`.",
+        },
+      ],
+      props: { variant: "glass", orientation: "horizontal" },
+      usage: glassUsage({ name: "GlassTabs" }),
+    },
+  ]}
+/>
+
+## Vertical styles
+
+The same seven styles with `orientation="vertical"`. The rail becomes a column, the divider and the travelling indicator move to the edge facing the pane, and the arrow keys switch from left/right to up/down.
+
+<ExampleShowcase
+  name="vertical-tabs"
+  colorControl
+  columns={1}
+  examples={[
+    {
+      title: "Vertical underline",
+      subheading:
+        "The bar rotates onto the leading edge and travels down the rail, with no track line to compete with it.",
+      propNotes: [
+        {
+          lead: "Combine",
+          prop: "variant",
+          value: '"underline"',
+          effect: 'with `orientation="vertical"` for a docs-sidebar rail.',
+        },
+      ],
+      props: { variant: "underline", orientation: "vertical" },
+      usage: tabsUsage({
+        name: "VerticalUnderlineTabs",
+        props: ' variant="underline" orientation="vertical"',
+        note: "The bar rotates onto the leading edge and travels vertically.",
+      }),
+    },
+    {
+      title: "Vertical soft",
+      subheading: "Tinted pills stacked down the side — the lightest sidebar there is.",
+      propNotes: [
+        {
+          lead: "Combine",
+          prop: "variant",
+          value: '"soft"',
+          effect:
+            'with `orientation="vertical"` for a settings menu that stays out of the way.',
+        },
+      ],
+      props: { variant: "soft", orientation: "vertical" },
+      usage: tabsUsage({
+        name: "VerticalSoftTabs",
+        props: ' variant="soft" orientation="vertical"',
+      }),
+    },
+    {
+      title: "Vertical elevated",
+      subheading: "A stack of cards, the active one filled and raised.",
+      propNotes: [
+        {
+          lead: "Combine",
+          prop: "variant",
+          value: '"elevated"',
+          effect:
+            'with `orientation="vertical"` when each tab is a destination worth its own surface.',
+        },
+      ],
+      props: { variant: "elevated", orientation: "vertical" },
+      usage: tabsUsage({
+        name: "VerticalElevatedTabs",
+        props: ' variant="elevated" orientation="vertical"',
+      }),
+    },
+    {
+      title: "Vertical segmented",
+      subheading:
+        "The track turns on its side and the raised surface travels vertically; segments keep their full width rather than sharing it.",
+      propNotes: [
+        {
+          lead: "Combine",
+          prop: "variant",
+          value: '"segmented"',
+          effect:
+            'with `orientation="vertical"` for a compact grouped switcher in a narrow column.',
+        },
+      ],
+      props: { variant: "segmented", orientation: "vertical" },
+      usage: tabsUsage({
+        name: "VerticalSegmentedTabs",
+        props: ' variant="segmented" orientation="vertical"',
+      }),
+    },
+    {
+      title: "Vertical bordered",
+      subheading: "One card around both halves, divided down the middle.",
+      propNotes: [
+        {
+          lead: "Combine",
+          prop: "variant",
+          value: '"bordered"',
+          effect:
+            'with `orientation="vertical"` and the divider moves from the bottom edge to the right edge of the rail.',
+        },
+      ],
+      props: { variant: "bordered", orientation: "vertical" },
+      usage: tabsUsage({
+        name: "VerticalBorderedTabs",
+        props: ' variant="bordered" orientation="vertical"',
+      }),
+    },
+    {
+      title: "Vertical glass",
+      subheading: "Two frosted panels side by side.",
+      propNotes: [
+        {
+          lead: "Combine",
+          prop: "variant",
+          value: '"glass"',
+          effect:
+            'with `orientation="vertical"` over a photo or gradient — it needs something to blur.',
+        },
+      ],
+      props: { variant: "glass", orientation: "vertical" },
+      usage: glassUsage({
+        name: "VerticalGlassTabs",
+        props: ' orientation="vertical"',
+      }),
+    },
+  ]}
+/>
+
+## Props Reference
+
+<div className="overflow-x-auto">
+  <table>
+    <thead>
+      <tr>
+        <th>Prop</th>
+        <th>Type</th>
+        <th>Default</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>
+          <code>tabs</code>
+        </td>
+        <td>
+          <code>TabItem[]</code>
+        </td>
+        <td>
+          <strong>Required</strong>
+        </td>
+        <td>
+          Array of objects containing the tab <code>id</code>,{" "}
+          <code>label</code>, optional <code>icon</code>, and the{" "}
+          <code>content</code> to render.
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <code>orientation</code>
+        </td>
+        <td>
+          <code>"horizontal" | "vertical"</code>
+        </td>
+        <td>
+          <code>"horizontal"</code>
+        </td>
+        <td>
+          Which way the tab rail runs. <code>horizontal</code> puts it across
+          the top as a bar that scrolls sideways when the tabs outgrow the
+          width; <code>vertical</code> puts it beside the content pane, stacking
+          above it below <code>md</code>.
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <code>variant</code>
+        </td>
+        <td>
+          <code>
+            "default" | "glass" | "minimal" | "bordered" | "underline" |
+            "segmented" | "soft" | "elevated"
+          </code>
+        </td>
+        <td>
+          <code>"default"</code>
+        </td>
+        <td>
+          The visual treatment, independent of <code>orientation</code>.{" "}
+          <code>default</code> is a filled pill on a card;{" "}
+          <code>underline</code> marks the active tab with an accent bar and no
+          fill; <code>segmented</code> groups the tabs in one recessed track;{" "}
+          <code>soft</code> tints the accent instead of filling with it;{" "}
+          <code>elevated</code> gives every tab its own card;{" "}
+          <code>bordered</code> joins rail and pane inside one outline;{" "}
+          <code>minimal</code> removes every background container; and{" "}
+          <code>glass</code> frosts them.
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <code>color</code>
+        </td>
+        <td>
+          <code>
+            "primary" | "indigo" | "rose" | "emerald" | "purple" | "zinc" |
+            string
+          </code>
+        </td>
+        <td>
+          <code>"primary"</code>
+        </td>
+        <td>
+          Applies the active state color to the selected tab. Accepts preset
+          names or valid hex codes (e.g. <code>"#FF0055"</code>) — a hex also
+          derives its own label color, so pale accents stay readable.
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <code>defaultActiveId</code>
+        </td>
+        <td>
+          <code>string</code>
+        </td>
+        <td>
+          <code>tabs[0].id</code>
+        </td>
+        <td>
+          Optionally specify which tab ID should be open when the component
+          first mounts.
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <code>className</code>
+        </td>
+        <td>
+          <code>string</code>
+        </td>
+        <td>
+          <code>—</code>
+        </td>
+        <td>
+          Merged onto the outer wrapper, so layout and background belong here.
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+## Keyboard and motion
+
+The rail is a real `tablist`: each tab is a `tab` that owns the panel through `aria-controls`, and only the selected tab is in the page's tab order. Reaching the rail with <kbd>Tab</kbd> lands on the selected tab; from there the arrow keys along the rail's own axis move the selection — left and right when the rail runs across the top, up and down when it runs down the side — and <kbd>Home</kbd> and <kbd>End</kbd> jump to its ends. <kbd>Tab</kbd> again moves into the panel.
+
+Focus is drawn in the current `color` rather than the browser default, so it belongs to the theme.
+
+Two things move, and both only in answer to something you did. The `underline` and `segmented` indicators are single elements that travel between tabs, and the panel enters from the side you moved toward — later tab, enters from the far edge; earlier tab, from the near one. Nothing animates on load, and under `prefers-reduced-motion` the travel is dropped for a plain fade.

@@ -1,0 +1,350 @@
+import { docsPageMetadata } from "@/lib/docs-metadata";
+
+export const metadata = docsPageMetadata("newsletter");
+
+import { ExampleShowcase } from "@/components/site/Sandbox";
+import { extractMotionCode } from "@/lib/code";
+
+# Newsletter
+
+A sign-up section in three layouts. **Portraits** puts four readers' faces around a centred form on a soft panel and lets them drift with the pointer. **Spotlight** is the same form with a glow under the cursor and a ticker of who just joined. Every layout follows your site's colour scheme — soft grounds by day, near-black by night. **Issues** sets the form beside a fanned stack of recent issues, the top one on a tilting card. One reveal when the section first appears; a form that turns into a thank-you when your promise resolves; nothing else moves unless the reader does.
+
+`Newsletter` is built from library pieces: the field is <DocLink to="input">Input</DocLink>, the action is <DocLink to="button">Button</DocLink>, the ticker is <DocLink to="marquee">Marquee</DocLink> and the top issue sits on a <DocLink to="tilted-card">Tilted Card</DocLink>. Every piece of copy is a named part — `Heading`, `Intro`, `Form`, `Proof`, `Ticker`, `Issues` — so the words are yours.
+
+export const newsletterFaces = `// Faces from Pexels, free to use.
+const FACES = [
+  "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_160,c_limit/v1790158812/pexels-photo-2379004-1790158812208.jpg",
+  "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_160,c_limit/v1790158810/pexels-photo-220453-1790158812206.jpg",
+  "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_160,c_limit/v1790158812/pexels-photo-2381069-1790158812209.jpg",
+  "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_160,c_limit/v1790158812/pexels-photo-1130626-1790158812207.jpg",
+  "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_160,c_limit/v1790158812/pexels-photo-3785079-1790158812209.jpg",
+];`;
+
+export const newsletterSubscribe = `// Resolve to show the thank-you; throw to stay on the form.
+async function subscribe(email: string) {
+  const res = await fetch("/api/subscribe", { method: "POST", body: JSON.stringify({ email }) });
+  if (!res.ok) throw new Error("We couldn't subscribe that address.");
+}`;
+
+export const usagePortraits = `"use client";
+
+import { Newsletter } from "@/components/custom/blocks/NewsletterBlock";
+
+${newsletterFaces}
+
+export default function Signup() {
+  return (
+    <Newsletter
+      variant="portraits"
+      portraits={FACES.slice(0, 4).map((src) => ({ src, alt: "A subscriber" }))}
+    >
+      <Newsletter.Heading>24,000 makers read this every week</Newsletter.Heading>
+      <Newsletter.Intro>
+        One concise weekly note on product thinking, design and building with care. Free to read, and one click to leave.
+      </Newsletter.Intro>
+      <Newsletter.Form
+        onSubscribe={async (email) => {
+          await fetch("/api/subscribe", { method: "POST", body: JSON.stringify({ email }) });
+        }}
+      />
+      <Newsletter.Proof avatars={FACES}>Read by teams at Fernway, Quillo and Brightpath</Newsletter.Proof>
+    </Newsletter>
+  );
+}
+`;
+
+export const usageSpotlight = `"use client";
+
+import { Newsletter } from "@/components/custom/blocks/NewsletterBlock";
+
+const JOINED = [
+  { name: "Iris", avatar: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_160,c_limit/v1790158812/pexels-photo-2379004-1790158812208.jpg", when: "just now" },
+  { name: "Ben", avatar: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_160,c_limit/v1790158810/pexels-photo-220453-1790158812206.jpg", when: "2 min ago" },
+  { name: "Omar", when: "15 min ago" },
+];
+
+${newsletterFaces}
+
+${newsletterSubscribe}
+
+export default function Signup() {
+  return (
+    <Newsletter variant="spotlight">
+      <Newsletter.Heading>Your Thursday read, worth opening</Newsletter.Heading>
+      <Newsletter.Intro>A weekly note on making products people stick with. You can opt out anytime.</Newsletter.Intro>
+      <Newsletter.Form action="Sign up free" onSubscribe={subscribe} />
+      <Newsletter.Proof avatars={FACES}>24,000 founders and designers subscribe</Newsletter.Proof>
+      <Newsletter.Ticker items={JOINED} />
+    </Newsletter>
+  );
+}
+`;
+
+export const usageIssues = `"use client";
+
+import { Newsletter } from "@/components/custom/blocks/NewsletterBlock";
+
+const ISSUES = [
+  {
+    title: "Defaults do the heavy lifting",
+    date: "Issue 42 · This week",
+    excerpt: "The settings nobody touches end up defining your product more than the features you debate for weeks.",
+    cover: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_800,c_limit/v1790148864/photo-1618005182384-a83a8bd57fbe-1790148865111.jpg",
+    tag: "Design",
+  },
+  { title: "The case for smaller releases", date: "Issue 41", excerpt: "" },
+  { title: "First-run experiences, revisited", date: "Issue 40", excerpt: "" },
+];
+
+${newsletterFaces}
+
+${newsletterSubscribe}
+
+export default function Signup() {
+  return (
+    <Newsletter variant="issues">
+      <Newsletter.Heading>Notes on building with care</Newsletter.Heading>
+      <Newsletter.Intro>Writing on product, craft and the little choices that add up over time.</Newsletter.Intro>
+      <Newsletter.Form action="Subscribe" onSubscribe={subscribe} />
+      <Newsletter.Proof avatars={FACES}>24,000 readers and counting</Newsletter.Proof>
+      <Newsletter.Issues items={ISSUES} />
+    </Newsletter>
+  );
+}
+`;
+
+<ExampleShowcase
+  name="newsletter"
+  columns={1}
+  examples={[
+    {
+      title: "Portraits",
+      subheading: "Four faces around the form, drifting with the pointer. Type an address and press Subscribe — the pill becomes a thank-you with a check that draws itself.",
+      propNotes: [
+        {
+          prop: "portraits",
+          effect:
+            "are up to four `{ src, alt }` faces placed in the corners at `md` and up, each moving a little with the pointer at its own depth. Below `md` they gather in a row over the heading.",
+        },
+        {
+          lead: "Return a promise from",
+          prop: "onSubscribe",
+          effect:
+            "and the button stays busy until it settles — resolve to show the thank-you, throw to stay on the form so you can show your own error.",
+        },
+        {
+          prop: "Proof",
+          effect:
+            "stacks up to five `avatars` with a plus and takes the line as children.",
+        },
+      ],
+      props: { variant: "portraits", rounded: true },
+      usage: usagePortraits,
+      code: extractMotionCode("src/components/custom/blocks/NewsletterBlock.tsx"),
+      minHeight: 460,
+    },
+  ]}
+/>
+
+## Installation
+
+<Installation name="newsletter" />
+
+## Examples
+
+<ExampleShowcase
+  name="newsletter"
+  columns={1}
+  examples={[
+    {
+      title: "Spotlight",
+      subheading: "A glow in the accent colour follows the pointer, and a ticker of who just joined runs along the foot. Switch the docs to dark mode to see the same panel by night.",
+      propNotes: [
+        {
+          lead: "Set",
+          prop: "variant",
+          value: '"spotlight"',
+          effect:
+            "for the glow and the ticker. The panel, form and proof restyle themselves for light and dark mode; the glow uses `--primary`, so pass `accent` to colour it.",
+        },
+        {
+          prop: "Ticker",
+          effect:
+            "takes `items` of `{ name, avatar?, when }` and runs them left on a `MarqueeBlock` that pauses under the pointer.",
+        },
+      ],
+      props: { variant: "spotlight", rounded: true },
+      usage: usageSpotlight,
+      minHeight: 520,
+    },
+    {
+      title: "Issues",
+      subheading: "Copy and form on the left, the latest three issues fanned on the right. Hover the stack — it spreads, and the top card tilts.",
+      propNotes: [
+        {
+          lead: "Set",
+          prop: "variant",
+          value: '"issues"',
+          effect:
+            "for the two-column layout, left-aligned copy, on a white ground.",
+        },
+        {
+          prop: "Issues",
+          effect:
+            "takes `items` of `{ title, date, excerpt, cover?, tag? }`: the first is the card in front — on a `TiltedCard`, with its cover and tag — and the next two sit behind it, turned.",
+        },
+      ],
+      props: { variant: "issues", rounded: true },
+      usage: usageIssues,
+      minHeight: 560,
+    },
+  ]}
+/>
+
+## Features
+
+<div className="grid grid-cols-1 sm:grid-cols-2 gap-4 my-6 not-prose">
+  <div className="p-6 rounded-2xl border border-border bg-card">
+    <h3 className="text-lg font-semibold text-card-foreground mb-2">Built from the library</h3>
+    <p className="text-muted-foreground text-sm">Input for the field, Button for the action, Marquee for the ticker, Tilted Card for the top issue. Install this one item and all four come with it.</p>
+  </div>
+  <div className="p-6 rounded-2xl border border-border bg-card">
+    <h3 className="text-lg font-semibold text-card-foreground mb-2">A form that says what happened</h3>
+    <p className="text-muted-foreground text-sm">The button stays busy while your promise runs, then the pill becomes a thank-you with a check that draws itself. A rejection returns to the form for your own message.</p>
+  </div>
+  <div className="p-6 rounded-2xl border border-border bg-card">
+    <h3 className="text-lg font-semibold text-card-foreground mb-2">One reveal, then the pointer</h3>
+    <p className="text-muted-foreground text-sm">Heading, intro, form and proof rise in once. After that the faces drift, the glow follows and the stack spreads only when you move. Reduced motion renders the finished state.</p>
+  </div>
+  <div className="p-6 rounded-2xl border border-border bg-card">
+    <h3 className="text-lg font-semibold text-card-foreground mb-2">Accessible by default</h3>
+    <p className="text-muted-foreground text-sm">A real email field with a label, a submit button with a busy state, a status region for the thank-you, and faces that are decorative unless you give them alt text.</p>
+  </div>
+</div>
+
+## Props Reference
+
+### Newsletter
+
+<div className="overflow-x-auto my-4">
+  <table>
+    <thead>
+      <tr>
+        <th>Prop</th>
+        <th>Type</th>
+        <th>Default</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><code>variant</code></td>
+        <td><code>"portraits" | "spotlight" | "issues"</code></td>
+        <td><code>"portraits"</code></td>
+        <td>The layout.</td>
+      </tr>
+      <tr>
+        <td><code>portraits</code></td>
+        <td><code>&#123; src: string; alt?: string &#125;[]</code></td>
+        <td><code>[]</code></td>
+        <td>Up to four faces for the <code>portraits</code> layout.</td>
+      </tr>
+      <tr>
+        <td><code>accent</code></td>
+        <td><code>string</code></td>
+        <td>theme primary</td>
+        <td>Colour of the button, tags and the spotlight glow.</td>
+      </tr>
+      <tr>
+        <td><code>reveal</code></td>
+        <td><code>"in-view" | "immediate"</code></td>
+        <td><code>"in-view"</code></td>
+        <td>When the reveal plays.</td>
+      </tr>
+      <tr>
+        <td><code>children</code></td>
+        <td><code>ReactNode</code></td>
+        <td>—</td>
+        <td>The parts, in reading order.</td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+### Newsletter.Form
+
+<div className="overflow-x-auto my-4">
+  <table>
+    <thead>
+      <tr>
+        <th>Prop</th>
+        <th>Type</th>
+        <th>Default</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><code>onSubscribe</code></td>
+        <td><code>(email: string) =&gt; void | Promise&lt;void&gt;</code></td>
+        <td>—</td>
+        <td>Called on submit. A promise holds the busy state; a rejection stays on the form.</td>
+      </tr>
+      <tr>
+        <td><code>placeholder</code></td>
+        <td><code>string</code></td>
+        <td><code>"name@email.com"</code></td>
+        <td>Field placeholder.</td>
+      </tr>
+      <tr>
+        <td><code>action</code></td>
+        <td><code>string</code></td>
+        <td><code>"Subscribe now"</code></td>
+        <td>Button label.</td>
+      </tr>
+      <tr>
+        <td><code>successTitle</code>, <code>successText</code></td>
+        <td><code>string</code></td>
+        <td><code>"You're subscribed"</code>, <code>"Look out for the next edition in your inbox."</code></td>
+        <td>The thank-you.</td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+### Newsletter.Proof, Ticker, Issues
+
+<div className="overflow-x-auto my-4">
+  <table>
+    <thead>
+      <tr>
+        <th>Part</th>
+        <th>Prop</th>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><code>Proof</code></td>
+        <td><code>avatars</code></td>
+        <td><code>string[]</code></td>
+        <td>Up to five faces, stacked; the line is the children.</td>
+      </tr>
+      <tr>
+        <td><code>Ticker</code></td>
+        <td><code>items</code></td>
+        <td><code>&#123; name: string; avatar?: string; when: string &#125;[]</code></td>
+        <td>Who just joined, run as a marquee (<code>spotlight</code>).</td>
+      </tr>
+      <tr>
+        <td><code>Issues</code></td>
+        <td><code>items</code></td>
+        <td><code>&#123; title: string; date: string; excerpt: string; cover?: string; tag?: string &#125;[]</code></td>
+        <td>The first is the card in front, the next two sit behind (<code>issues</code>).</td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+`Heading` and `Intro` take children and any heading / paragraph props.

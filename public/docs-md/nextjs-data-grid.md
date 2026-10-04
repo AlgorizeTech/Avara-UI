@@ -1,3 +1,5 @@
+export const metadata = docsPageMetadata("data-grid");
+
 # Data Grid
 
 A high-performance, fully keyboard-navigable data table with Excel-style inline editing.
@@ -6,13 +8,11 @@ Building an interactive spreadsheet is notoriously difficult. Most developers gi
 
 This `DataGridBlock` is built **100% dependency-free**. It manages focus through a highly optimized internal roving coordinate state (`{row, col}`) rather than attaching thousands of DOM event listeners. It fully supports `ArrowUp/Down/Left/Right` navigation, `Tab` flow, `Enter` to edit/save, and instantly updates the underlying data array.
 
-## Examples
+Click any cell and drive the grid from the keyboard: arrows to move, `Tab` to flow, `Enter` (or a double-click) to edit, `Enter` again to save and drop to the next row.
 
-Click any cell and drive the grid from the keyboard: arrows to move, `Tab` to flow, `Enter` (or a double-click) to edit, `Enter` again to save and drop to the next row. The first example's **Code** tab contains the full component source.
+export const gridSchema = `import { type GridColumn } from "@/components/custom/blocks/DataGridBlock";
 
-export const usageDefault = `import { useState } from "react";
-
-const COLUMNS = [
+const COLUMNS: GridColumn[] = [
   { field: "id", headerName: "Transaction ID", width: 120, readOnly: true },
   { field: "customer", headerName: "Customer Name", width: 200 },
   { field: "amount", headerName: "Amount ($)", type: "number", width: 120 },
@@ -20,52 +20,62 @@ const COLUMNS = [
   { field: "date", headerName: "Date", width: 140 },
 ];
 
-const INITIAL_DATA = [
+const ROWS = [
   { id: "TX-101", customer: "Acme Corp", amount: 4500.5, status: "Paid", date: "2023-10-12" },
-  { id: "TX-102", customer: "Global Tech", amount: 1200, status: "Pending", date: "2023-10-14" },
-];
+  { id: "TX-102", customer: "Global Tech", amount: 1200.0, status: "Pending", date: "2023-10-14" },
+  { id: "TX-103", customer: "Stark Ind.", amount: 8900.25, status: "Overdue", date: "2023-09-30" },
+  { id: "TX-104", customer: "Wayne Ent.", amount: 15500.0, status: "Paid", date: "2023-10-01" },
+  { id: "TX-105", customer: "Initech", amount: 340.0, status: "Paid", date: "2023-10-15" },
+  { id: "TX-106", customer: "Soylent Corp", amount: 950.75, status: "Pending", date: "2023-10-16" },
+  { id: "TX-107", customer: "Umbrella Corp", amount: 12000.0, status: "Paid", date: "2023-10-10" },
+  { id: "TX-108", customer: "Massive Dynamic", amount: 450.0, status: "Paid", date: "2023-10-05" },
+];`;
+
+export const usageDefault = `"use client";
+
+${gridSchema}
 
 export default function Ledger() {
-  const [data, setData] = useState(INITIAL_DATA);
+  const [data, setData] = useState[]>(ROWS);
 
   return (
-    
+
+            Financial Ledger
+          
+          Double-click any cell or press Enter to edit.
+
+          Export CSV
+
   );
 }`;
 
-export const usageSchema = `import { useState } from "react";
+export const usageReadOnly = `import { DataGridBlock } from "@/components/custom/blocks/DataGridBlock";
 
-// The grid is entirely column-driven: \`type\` picks the editor, \`width\`
-// pins the column, and \`readOnly\` locks it against edits.
-const COLUMNS = [
-  { field: "id", headerName: "User ID", width: 100, readOnly: true },
-  { field: "name", headerName: "Full Name", width: 250 },
-  { field: "score", headerName: "Test Score", type: "number", width: 150 },
-];
+${gridSchema}
 
-const INITIAL_DATA = [
-  { id: "U-01", name: "Alice Smith", score: 95 },
-  { id: "U-02", name: "Bob Jones", score: 82 },
-];
+export default function ReadOnlyGrid() {
+  // Keyboard navigation still works — only editing is disabled.
+  return (
 
-export default function Gradebook() {
-  const [data, setData] = useState(INITIAL_DATA);
+            Financial Ledger
+          
+          View mode only.
 
-  return ;
+          Export CSV
+
+  );
 }`;
-
-export const usageNoRowNumbers = ``;
-
-export const usageReadOnly = `// Keyboard navigation still works — only editing is disabled.
-`;
 
 ## Installation
 
-### Copy the Component
+Register the @algorize-ui registry once per project, then add the component:
 
-This component leverages standard React state to manage the grid coordinates and standard DOM `scrollIntoView` for automatic scrolling during keyboard navigation. It requires zero external packages.
+```bash
+npx shadcn@latest registry add @algorize-ui=https://algorize-ui.vercel.app/r/{name}.json
+npx shadcn@latest add @algorize-ui/data-grid
+```
 
-Copy the full engine code from the **Code** tab of the first example above into `components/custom/blocks/DataGridBlock.tsx`.
+## Examples
 
 ## Features
 Explore the Data Grid's powerful features for displaying complex datasets, including virtualized scrolling, cell editing, and column resizing.
@@ -122,7 +132,7 @@ Explore the Data Grid's powerful features for displaying complex datasets, inclu
 
           onChange
 
-          (newData: Record&lt;string, any&gt;[]) =&gt; void
+          (newData: T[]) =&gt; void
 
           undefined
 
@@ -136,7 +146,7 @@ Explore the Data Grid's powerful features for displaying complex datasets, inclu
 
           "blue" | "indigo" | "emerald" | "rose" | "zinc" | string
 
-          "blue"
+          "primary"
 
           The accent color applied to the active cell's focus ring and the
           interactive drag handle. Fully supports custom hex codes.
@@ -231,6 +241,6 @@ Explore the Data Grid's powerful features for displaying complex datasets, inclu
 
 ---
 
-**Component Path:** `nextjs\data-grid\page.mdx`
+**Component Path:** `[framework]\data-grid\page.mdx`
 
-**Web Version:** Visit the interactive version at the corresponding URL on the Next.js documentation site for live previews and interactive examples.
+**Web Version:** Visit the corresponding URL on the Algorize UI documentation site for live previews and interactive examples.

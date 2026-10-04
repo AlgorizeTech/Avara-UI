@@ -1,0 +1,188 @@
+export const metadata = docsPageMetadata("reviews");
+
+# Review Section
+
+A high-converting Review / Testimonial website section featuring a 3D WebGL rotating background globe marquee or an interactive 3D stacked portrait carousel with smooth rolling motion and arrow navigation.
+
+Designed to showcase client feedback, agency trust signals, and social proof with maximum visual impact and dynamic theme color integration.
+
+export const sampleReviewsData = `const sampleReviews: ReviewItem[] = [
+  {
+    id: "1",
+    name: "Tamar Mendelson",
+    role: "Restaurant Critic",
+    avatar:
+      "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_800,c_limit/v1790150483/photo-1534528741775-53994a69daeb-1790150482280.jpg",
+    rating: 5.0,
+    content:
+      "I was impressed by the food! And I could really tell that they use high-quality ingredients. The staff was friendly and attentive.",
+  },
+  {
+    id: "2",
+    name: "Alice Johnson",
+    role: "Product Director",
+    avatar:
+      "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_800,c_limit/v1790158813/photo-1494790108377-be9c29b29330-1790158812212.jpg",
+    rating: 5.0,
+    content:
+      "The difference between AlgorizeTech and other agencies is their talent pool. Code quality, architecture, and attention to detail are on a completely different level.",
+  },
+  {
+    id: "3",
+    name: "Arlene McCoy",
+    role: "Co-Founder & CEO",
+    avatar:
+      "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_800,c_limit/v1790150480/photo-1507003211169-0a1dd7228f2d-1790150482276.jpg",
+    rating: 5.0,
+    content:
+      "Their 'Quality Obsessed' mantra is apparent in everything they do. Delivered a final product that increased our conversion rate by 40%.",
+  },
+  {
+    id: "4",
+    name: "Sofia Chen",
+    role: "Lead Systems Architect",
+    avatar:
+      "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_800,c_limit/v1790150481/photo-1517841905240-472988babdf9-1790150482277.jpg",
+    rating: 5.0,
+    content:
+      "Integrating their modular UI components shaved weeks off our launch roadmap. Performance optimizations saved us hundreds of hours.",
+  },
+  {
+    id: "5",
+    name: "Mr. Martin",
+    role: "Chief Operating Officer",
+    avatar:
+      "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_800,c_limit/v1790158814/photo-1500648767791-00dcc994a43e-1790158812212.jpg",
+    rating: 5.0,
+    content:
+      "The unlimited revisions gave us creative freedom to experiment without scope creep. AlgorizeTech didn't stop until we were 100% thrilled.",
+  },
+  {
+    id: "6",
+    name: "David Kim",
+    role: "Head of Design",
+    avatar:
+      "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_800,c_limit/v1790158814/photo-1539571696357-5a69c17a67c6-1790158812214.jpg",
+    rating: 5.0,
+    content:
+      "The attention to typography, micro-interactions, and responsive layout scaling surpassed all our expectations.",
+  },
+  {
+    id: "7",
+    name: "Elena Rostova",
+    role: "VP of Engineering",
+    avatar:
+      "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_800,c_limit/v1790158814/photo-1573496359142-b8d87734a5a2-1790158812214.jpg",
+    rating: 5.0,
+    content:
+      "Their components are bulletproof. Seamless dark mode integration and flawless animation physics out of the box.",
+  },
+  {
+    id: "8",
+    name: "Marcus Vance",
+    role: "Tech Lead",
+    avatar:
+      "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_800,c_limit/v1790158814/photo-1522075469751-3a6694fb2f61-1790158812213.jpg",
+    rating: 5.0,
+    content:
+      "Outstanding developer experience. Clean TypeScript types, modular exports, and instant setup across projects.",
+  },
+];`;
+
+export const usageStackedCarousel = `import { ReviewsBlock, type ReviewItem } from "@/components/custom/blocks/ReviewsBlock";
+
+${sampleReviewsData}
+
+export default function StackedCarouselDemo() {
+  return (
+    
+  );
+}`;
+
+export const usageVerticalMarquee = `import { ReviewsBlock, type ReviewItem } from "@/components/custom/blocks/ReviewsBlock";
+
+${sampleReviewsData}
+
+export default function VerticalMarqueeDemo() {
+  return (
+    
+  );
+}`;
+
+export const usageLogoCarousel = `import { ReviewsBlock, type ReviewItem } from "@/components/custom/blocks/ReviewsBlock";
+
+${sampleReviewsData}
+
+export default function LogoCarouselDemo() {
+  return (
+    
+  );
+}`;
+
+## Installation
+
+Register the @algorize-ui registry once per project, then add the component:
+
+```bash
+npx shadcn@latest registry add @algorize-ui=https://algorize-ui.vercel.app/r/{name}.json
+npx shadcn@latest add @algorize-ui/reviews
+```
+
+## Features
+
+Discover the key capabilities of the `ReviewsBlock` component:
+
+- **UpDown Vertical Marquee**: 4 infinite scrolling columns moving continuously (Column 1 Up, Column 2 Down, Column 3 Up, Column 4 Down) with hover-to-pause interaction.
+- **3D Stacked Portrait Carousel**: Interactive 3-card stacked portrait layout with spring-eased CSS transitions, rolling 3D card rotation, and circular arrow buttons.
+- **Interactive Brand Logo Carousel**: Split card layout with company logo tabs, quote transition animations, author portrait, indicator dots, and round navigation controls.
+- **Modern Review Cards**: Avatar image, name, role, 5-star rating, and clean typography in a modern card container.
+- **Dynamic Site Theme Accent**: Automatically binds to site CSS variables (`var(--primary)`) with live color preset support.
+- **Full Customizability**: Pass custom `variant`, `title`, `subtitle`, `reviews` data array, and `glowColor` accents.
+
+## Props Reference
+
+        Prop
+        Type
+        Default
+        Description
+
+        variant
+        "up-down-vertical-marquee" | "stacked-carousel" | "logo-carousel"
+        "up-down-vertical-marquee"
+        Determines the visual review layout style (infinite up/down vertical marquee, 3D stacked cards, or brand logo carousel).
+
+        title
+        string
+        "Loved by Teams Worldwide"
+        Main headline text rendered at the top of the reviews section.
+
+        subtitle
+        string
+        "See what founders, designers, and engineers are saying..."
+        Supporting paragraph description displayed below the title.
+
+        reviews
+        ReviewItem[]
+        DEFAULT_REVIEWS
+        Array of review objects with id, name, role, avatar, rating, and content.
+
+        autoSlide
+        boolean
+        true
+        Enables automatic card sliding for stacked carousel variants.
+
+        autoSlideInterval
+        number
+        5000
+        Interval duration in milliseconds for auto-sliding stacked cards.
+
+        className
+        string
+        undefined
+        Additional custom Tailwind CSS class names applied to the container.
+
+---
+
+**Component Path:** `[framework]\reviews\page.mdx`
+
+**Web Version:** Visit the corresponding URL on the Algorize UI documentation site for live previews and interactive examples.

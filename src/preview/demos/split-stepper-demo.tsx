@@ -17,7 +17,7 @@ const MockLandingView = () => (
   <div className="w-full h-full flex flex-col gap-3 justify-center">
     <div className="flex items-center gap-2 mb-2">
       <LayoutTemplate className="w-6 h-6 sm:w-8 sm:h-8 text-amber-400" />
-      <span className="text-base sm:text-lg font-bold text-white tracking-tight">
+      <span className="text-base sm:text-lg font-semibold text-white tracking-tight">
         High-Converting UI
       </span>
     </div>
@@ -25,7 +25,7 @@ const MockLandingView = () => (
       <div className="w-2/3 h-2.5 sm:h-3 bg-white/20 rounded-full" />
       <div className="w-1/2 h-2 sm:h-2.5 bg-white/10 rounded-full" />
       <div className="flex gap-2 mt-auto">
-        <div className="h-5 w-16 sm:h-6 sm:w-20 rounded-md bg-amber-400/20 border border-amber-400/40 flex items-center justify-center text-[9px] sm:text-[10px] font-bold text-amber-300">
+        <div className="h-5 w-16 sm:h-6 sm:w-20 rounded-md bg-amber-400/20 border border-amber-400/40 flex items-center justify-center text-[9px] sm:text-[10px] font-semibold text-amber-300">
           CTA Button
         </div>
         <div className="h-5 w-12 sm:h-6 sm:w-16 rounded-md bg-white/10" />
@@ -38,7 +38,7 @@ const MockSaaSView = () => (
   <div className="w-full h-full flex flex-col gap-3 justify-center">
     <div className="flex items-center gap-2 mb-1">
       <BarChart3 className="w-6 h-6 sm:w-8 sm:h-8 text-indigo-400" />
-      <span className="text-base sm:text-lg font-bold text-white tracking-tight">
+      <span className="text-base sm:text-lg font-semibold text-white tracking-tight">
         SaaS Dashboard Architecture
       </span>
     </div>
@@ -47,7 +47,7 @@ const MockSaaSView = () => (
         <span className="text-[9px] sm:text-[10px] text-indigo-300 font-mono uppercase">
           MRR Growth
         </span>
-        <span className="text-lg sm:text-xl font-black text-white">
+        <span className="text-lg sm:text-xl font-bold text-white">
           +148.2%
         </span>
       </div>
@@ -55,7 +55,7 @@ const MockSaaSView = () => (
         <span className="text-[9px] sm:text-[10px] text-white/50 font-mono uppercase">
           Active Users
         </span>
-        <span className="text-lg sm:text-xl font-black text-white">
+        <span className="text-lg sm:text-xl font-bold text-white">
           24,892
         </span>
       </div>
@@ -67,7 +67,7 @@ const MockAIView = () => (
   <div className="w-full h-full flex flex-col gap-3 justify-center">
     <div className="flex items-center gap-2 mb-1">
       <Cpu className="w-6 h-6 sm:w-8 sm:h-8 text-emerald-400" />
-      <span className="text-base sm:text-lg font-bold text-white tracking-tight">
+      <span className="text-base sm:text-lg font-semibold text-white tracking-tight">
         AI & LLM Integration
       </span>
     </div>
@@ -82,7 +82,7 @@ const MockAIView = () => (
       <p className="text-[10px] sm:text-[11px]">
         &gt; Vector embeddings synced (1.2ms)
       </p>
-      <p className="text-white font-bold animate-pulse">
+      <p className="text-white font-semibold animate-pulse">
         &gt; Ready for token streaming_
       </p>
     </div>
@@ -94,7 +94,7 @@ const MockMobileView = () => (
     <div className="flex flex-col justify-center gap-2">
       <div className="flex items-center gap-2">
         <Smartphone className="w-6 h-6 sm:w-8 sm:h-8 text-rose-400" />
-        <span className="text-base sm:text-lg font-bold text-white tracking-tight">
+        <span className="text-base sm:text-lg font-semibold text-white tracking-tight">
           Mobile First
         </span>
       </div>
@@ -119,7 +119,7 @@ const steps: SplitStep[] = [
     stepNumber: "01",
     title: "Landing Page Design",
     description:
-      "Most landing pages fail quietly. Traffic comes in, nothing happens. We engineer high-converting layouts with engaging Framer & GSAP animations.",
+      "Most landing pages fail quietly. Traffic comes in, nothing happens. We engineer high-converting layouts with engaging Motion & GSAP animations.",
     tags: ["Conversion Focused", "Figma To Code", "Mobile First"],
     color: "bg-[#0c0c10] border-amber-500/20",
     cardContent: <MockLandingView />,
@@ -168,7 +168,7 @@ export default function SplitStepperDemo({
   stickySide = "right",
   cardDepthScale = 0.06,
   cardOffset = 20,
-  color = "#FFAB1D",
+  color,
 }: {
   stickySide?: "left" | "right";
   cardDepthScale?: number;
@@ -176,7 +176,7 @@ export default function SplitStepperDemo({
   color?: string;
 }) {
   return (
-    <div className="w-full rounded-3xl border border-zinc-200 dark:border-zinc-800/80 bg-zinc-100/50 dark:bg-[#040406] relative overflow-hidden transition-colors">
+    <div className="w-full rounded-3xl border border-border bg-muted/50 relative overflow-hidden transition-colors">
       {/* Internal Scrollable Viewport for easy previewing */}
       <div className="w-full h-[650px] overflow-y-auto overflow-x-hidden custom-scrollbar p-6 sm:p-10 relative">
         <SplitStepper

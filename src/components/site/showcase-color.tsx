@@ -1,7 +1,7 @@
 "use client";
 
 import { usePathname } from "next/navigation";
-import React, { createContext, useCallback, useContext, useMemo, useRef, useState } from "react";
+import React, { createContext, useCallback, useContext, useEffect, useMemo, useRef, useState } from "react";
 
 export const DEFAULT_SHOWCASE_COLOR = "primary";
 
@@ -13,6 +13,12 @@ interface ShowcaseColorContextValue {
    * keeps ownership across re-renders, so React can retry a render freely.
    */
   claimPicker: (id: string) => boolean;
+  /**
+   * Component source shared by every showcase of the same demo on the page:
+   * only one of them passes `code`, and the rest still get a Code tab. Written
+   * during render (top-down, so the showcase that holds it registers first).
+   */
+  sharedCode: Map<string, unknown>;
 }
 
 const ShowcaseColorContext = createContext<ShowcaseColorContextValue | null>(null);
@@ -27,16 +33,18 @@ export function ShowcaseColorProvider({ children }: { children: React.ReactNode 
   const pathname = usePathname();
   const [color, setColor] = useState(DEFAULT_SHOWCASE_COLOR);
   const pickerOwnerRef = useRef<string | null>(null);
-  const pathnameRef = useRef(pathname);
+  const sharedCodeRef = useRef(new Map<string, unknown>());
+  const prevPathname = useRef(pathname);
 
-  // The provider lives in the docs layout, which survives client-side
-  // navigation between pages — reset so the next page starts clean and its own
-  // top showcase claims the picker.
-  if (pathnameRef.current !== pathname) {
-    pathnameRef.current = pathname;
+  if (prevPathname.current !== pathname) {
+    prevPathname.current = pathname;
     pickerOwnerRef.current = null;
-    setColor(DEFAULT_SHOWCASE_COLOR);
+    sharedCodeRef.current = new Map();
   }
+
+  useEffect(() => {
+    setColor(DEFAULT_SHOWCASE_COLOR);
+  }, [pathname]);
 
   const claimPicker = useCallback((id: string) => {
     if (pickerOwnerRef.current === null) pickerOwnerRef.current = id;
@@ -44,8 +52,9 @@ export function ShowcaseColorProvider({ children }: { children: React.ReactNode 
   }, []);
 
   const value = useMemo(
-    () => ({ color, setColor, claimPicker }),
-    [color, claimPicker],
+    () => ({ color, setColor, claimPicker, sharedCode: sharedCodeRef.current }),
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    [color, claimPicker, pathname],
   );
 
   return (

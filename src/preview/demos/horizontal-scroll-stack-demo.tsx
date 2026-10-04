@@ -4,6 +4,7 @@ import {
   HorizontalScrollStack,
   ScrollStackItem,
 } from "@/components/custom/blocks/HorizontalScrollStackBlock";
+import { HorizontalRail } from "@/components/custom/blocks/HorizontalRailBlock";
 import {
   Compass,
   Cpu,
@@ -61,15 +62,25 @@ const demoProcessItems: ScrollStackItem[] = [
   },
 ];
 
+const getThemeColorHex = (c: string) => {
+  if (c.startsWith("#")) return c;
+  const map: Record<string, string> = { primary: "var(--primary)", default: "var(--primary)", indigo: "#6366f1", rose: "#f43f5e", emerald: "#10b981", lavender: "#9b8afb" };
+  return map[c] || "var(--primary)";
+};
+
 export default function HorizontalScrollStackDemo({
   title,
   subtitle,
   itemCount,
+  color = "primary",
+  variant = "stack",
 }: {
   title?: string;
   subtitle?: string;
   /** Trims the rail so the pinned scroll distance shortens. */
   itemCount?: number;
+  color?: string;
+  variant?: "stack" | "rail";
 }) {
   const items = itemCount
     ? demoProcessItems.slice(0, itemCount)
@@ -77,18 +88,24 @@ export default function HorizontalScrollStackDemo({
 
   return (
     <div
-      className="w-full relative rounded-3xl border border-slate-200/80 dark:border-zinc-800"
-      style={{
-        backgroundColor:
-          "color-mix(in srgb, var(--theme-color, var(--primary)) 1.5%, transparent)",
-      }}
+      className="w-full relative"
+      style={{ "--theme-color": getThemeColorHex(color) } as React.CSSProperties}
     >
-      <HorizontalScrollStack
-        key={`${items.length}-${title}-${subtitle}`}
-        items={items}
-        title={title}
-        subtitle={subtitle}
-      />
+      {variant === "rail" ? (
+        <HorizontalRail
+          key={`rail-${items.length}-${title}-${subtitle}`}
+          items={items}
+          title={title}
+          subtitle={subtitle}
+        />
+      ) : (
+        <HorizontalScrollStack
+          key={`stack-${items.length}-${title}-${subtitle}`}
+          items={items}
+          title={title}
+          subtitle={subtitle}
+        />
+      )}
     </div>
   );
 }

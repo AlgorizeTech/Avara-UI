@@ -1,45 +1,89 @@
+export const metadata = docsPageMetadata("user-graph");
+
 # User Graph
 
 An interactive multi-tiered User & AI Agent Hierarchy Network Graph built for Next.js and React. It features an interactive orbiting tool cluster around the main user node, SVG connecting curves, specialized sub-agent team nodes, app integration badges, and full light mode design.
 
-## Examples
+Three tiers stack top to bottom: an orbit of channel nodes around the user, the orchestrator, and the specialist sub-agents with their app badges. Below 640px the SVG hierarchy swaps itself for a vertical timeline — the component measures its own container, so it adapts inside the preview, not just at the window edge.
 
-Three tiers stack top to bottom: an orbit of channel nodes around the user, the orchestrator, and the specialist sub-agents with their app badges. Below 640px the SVG hierarchy swaps itself for a vertical timeline — the component measures its own container, so it adapts inside the preview, not just at the window edge. The first example's **Code** tab contains the full component source.
+export const usageDefault = `import { UserGraph, type OrbitTool, type SubAgent } from "@/components/custom/blocks/UserGraphBlock";
 
-export const usageDefault = `import { UserGraph } from "@/components/custom/blocks/UserGraphBlock";
+// Optional: Customize central orchestrator node
+const orchestrator = {
+  name: "John Doe",
+  role: "Senior Product Designer",
+  avatarUrl: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_300,c_limit/v1790150480/photo-1506794778202-cad84cf45f1d-1790150482275.jpg",
+};
 
-export default function UserGraphPage() {
+// Optional: Customize orbiting tools
+const orbitTools: OrbitTool[] = [
+  { id: "slack", name: "Slack", icon: Share2 },
+  { id: "whatsapp", name: "WhatsApp", icon: MessageSquare },
+  { id: "telegram", name: "Telegram", icon: Send },
+  { id: "email", name: "Email", icon: Mail },
+  { id: "code", name: "Code", icon: Code2 },
+  { id: "workflow", name: "Workflow", icon: Network },
+  { id: "mcp", name: "MCP", icon: Plug },
+  { id: "phone", name: "Phone", icon: Phone },
+];
+
+// Optional: Customize sub-agent team cards & app integrations
+const subAgents: SubAgent[] = [
+  {
+    id: "sales",
+    title: "Sales Lead",
+    role: "Enterprise Conversions",
+    avatarUrl: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_300,c_limit/v1790158814/photo-1500648767791-00dcc994a43e-1790158812212.jpg",
+    status: "online",
+    percentX: 20,
+    svgX: 200,
+    apps: [
+      { id: "hubspot", name: "HubSpot", icon: Globe, bgColor: "bg-teal-50 dark:bg-teal-950/80", textColor: "text-teal-600 dark:text-teal-400", borderColor: "border-teal-300 dark:border-teal-700" },
+      { id: "stripe", name: "Stripe", icon: CreditCard, bgColor: "bg-amber-50 dark:bg-amber-950/80", textColor: "text-amber-600 dark:text-amber-400", borderColor: "border-amber-300 dark:border-amber-700", customText: "S" },
+    ],
+  },
+  {
+    id: "marketing",
+    title: "Marketing Director",
+    role: "Global Campaigns",
+    avatarUrl: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_300,c_limit/v1790150483/photo-1534528741775-53994a69daeb-1790150482280.jpg",
+    status: "online",
+    percentX: 50,
+    svgX: 500,
+    apps: [
+      { id: "web", name: "Website", icon: Globe, bgColor: "bg-muted", textColor: "text-foreground", borderColor: "border-border" },
+      { id: "mailchimp", name: "Mailchimp", icon: Send, bgColor: "bg-purple-50 dark:bg-purple-950/80", textColor: "text-purple-600 dark:text-purple-400", borderColor: "border-purple-300 dark:border-purple-700" },
+    ],
+  },
+  {
+    id: "analyst",
+    title: "Data Engineer",
+    role: "BI & Pipeline Systems",
+    avatarUrl: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_300,c_limit/v1790158814/photo-1522075469751-3a6694fb2f61-1790158812213.jpg",
+    status: "online",
+    percentX: 80,
+    svgX: 800,
+    apps: [
+      { id: "drive", name: "Google Drive", icon: Database, bgColor: "bg-amber-50 dark:bg-amber-950/80", textColor: "text-amber-600 dark:text-amber-400", borderColor: "border-amber-300 dark:border-amber-700" },
+      { id: "sheets", name: "Sheets", icon: BarChart3, bgColor: "bg-emerald-50 dark:bg-emerald-950/80", textColor: "text-emerald-600 dark:text-emerald-400", borderColor: "border-emerald-300 dark:border-emerald-700" },
+    ],
+  },
+];
+
+export default function UserGraphDemo() {
   return (
 
   );
 }`;
 
-export const usageSelected = `// \`defaultSelectedTool\` is the orbit node highlighted on first render —
-// match it to whichever channel the page is about.
-`;
-
-export const usageOrchestrator = `// \`orchestrator\` is the middle-tier node. Every tier takes data the same
-// way, so you can replace one without touching the others.
-`;
-
-export const usageData = `// The full data surface. Each sub-agent carries its own horizontal
-// position: \`percentX\` places the card, \`svgX\` anchors the connector curve
-// in the 1000-wide viewBox — keep the two in step.
-`;
-
 ## Installation
 
-### 1. Install Dependencies
-
-This component uses `lucide-react` for the channel and app icons.
+Register the @algorize-ui registry once per project, then add the component:
 
 ```bash
-npm install lucide-react
+npx shadcn@latest registry add @algorize-ui=https://algorize-ui.vercel.app/r/{name}.json
+npx shadcn@latest add @algorize-ui/user-graph
 ```
-
-### 2. Copy the Component
-
-Create `components/custom/blocks/UserGraphBlock.tsx` and copy the source from the **Code** tab of the first example above. The sample orbit tools, sub-agents and orchestrator ship inside it as defaults — replace them with props rather than editing the file.
 
 ## Features
 
@@ -101,6 +145,6 @@ Discover the key capabilities of the User Graph hierarchy tree:
 
 ---
 
-**Component Path:** `nextjs\user-graph\page.mdx`
+**Component Path:** `[framework]\user-graph\page.mdx`
 
-**Web Version:** Visit the interactive version at the corresponding URL on the Next.js documentation site for live previews and interactive examples.
+**Web Version:** Visit the corresponding URL on the Algorize UI documentation site for live previews and interactive examples.

@@ -1,0 +1,257 @@
+import { docsPageMetadata } from "@/lib/docs-metadata";
+
+export const metadata = docsPageMetadata("image-wall");
+
+import { ExampleShowcase } from "@/components/site/Sandbox";
+import { extractCode } from "@/lib/code";
+
+# Image Wall
+
+A wall of screenshots that never ends, and a camera hanging over it. The camera rests zoomed in on one card; every few seconds it pulls back, glides to the next card and settles on it, brightening that card while the rest stay dimmed. Hovering the wall holds the camera where it is.
+
+The wall is one tile of cards in staggered columns, repeated around itself eight times, so however far the camera travels it never finds an edge. Every image sits in the same 493:332 frame under a small mono caption, and the camera walks the cards in order — each gets its turn before any comes round again. It fills whatever box you give it: a tall window shows one card at a time, a short band eases the zoom down so a few show at once, and on a phone it pulls back further still so the flight between cards is something to watch. <DocLink to="component-wall">Component Wall</DocLink> is this wall beside a column of hero copy.
+
+{/* Every snippet on this page is a whole file, so they share one list. */}
+
+export const wallItems = `const ITEMS: WallItem[] = [
+  { title: "Word bounce hero", image: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto/v1790516057/hero-1790516064495.jpg" },
+  { title: "Pricing plans", image: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto/v1790516058/pricing-1790516064500.jpg" },
+  { title: "Bento showcase", image: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto/v1790516057/bento-showcase-1790516064489.jpg" },
+  { title: "Book appointment", image: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto/v1790516057/book-appointment-1790516064490.jpg" },
+  { title: "Collage hero", image: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto/v1790516057/collage-hero-1790516064493.jpg" },
+  { title: "Fashion hero", image: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto/v1790516058/fashion-hero-1790516064495.jpg" },
+  { title: "Hero carousel", image: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto/v1790516059/hero-carousel-1790516064496.jpg" },
+  { title: "Honeycomb hero", image: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto/v1790516059/honeycomb-hero-1790516064497.jpg" },
+  // … as many as you like; four columns of six reads well
+];`;
+
+export const usage = `"use client";
+
+import { ImageWall, type WallItem } from "@/components/custom/blocks/ImageWallBlock";
+
+${wallItems}
+
+export default function Showcase() {
+  // The wall fills its box — give it a height.
+  return <ImageWall items={ITEMS} interval={4500} className="h-[32rem] rounded-2xl" />;
+}
+`;
+
+export const usageBand = `"use client";
+
+import { ImageWall, type WallItem } from "@/components/custom/blocks/ImageWallBlock";
+
+${wallItems}
+
+export default function Band() {
+  // Under 420px tall the camera eases back so a few cards show at once.
+  return <ImageWall items={ITEMS} order="shuffle" className="h-64" />;
+}
+`;
+
+export const usageStill = `"use client";
+
+import { useState } from "react";
+import { ImageWall, type WallItem } from "@/components/custom/blocks/ImageWallBlock";
+
+${wallItems}
+
+export default function Still() {
+  const [current, setCurrent] = useState(0);
+  // interval={0} holds the camera on the first card; onFocus reports whichever card is in view.
+  return (
+    <>
+      <ImageWall items={ITEMS} interval={0} zoom={1.2} onFocus={setCurrent} className="h-96" />
+      <p className="mt-2 text-sm text-muted-foreground">{ITEMS[current].title}</p>
+    </>
+  );
+}
+`;
+
+<ExampleShowcase
+  name="image-wall"
+  colorControl={false}
+  columns={1}
+  minHeight={560}
+  examples={[
+    {
+      title: "A camera over the wall",
+      subheading: "Wait a few seconds: the camera pulls back, glides to the next card and settles on it. Hover to hold it.",
+      propNotes: [
+        {
+          prop: "items",
+          effect:
+            "are the cards, dealt into `columns` in order. Each has a mono `title` and an `image`, cropped from its top edge into the same 493:332 frame as every other card; odd columns start lower so the rows stagger.",
+        },
+        {
+          prop: "interval",
+          value: "4500",
+          effect:
+            "is how long the camera rests on a card. It holds while the wall is hovered, while the tab is hidden and while the wall is off screen; `0` keeps the camera still on the first card.",
+        },
+        {
+          prop: "zoom",
+          value: "1.35",
+          effect: "is the camera's resting scale. In a box under 420px tall it eases down to 0.72 so a few cards fit; under 640px wide, to 0.5. Mid-flight the camera pulls back to 0.64 of wherever it rests.",
+        },
+        {
+          prop: "className",
+          effect: "sizes the box — the wall has no height of its own beyond a default `h-96`. Round it, mask it, position it; the camera re-aims on every resize.",
+        },
+        {
+          prop: "intro",
+          value: "0",
+          effect:
+            "in milliseconds makes the camera start pulled back and off to one side, drifting towards the first card with nothing in focus, and land on it only when the time is up — room for copy beside the wall to arrive first. The canvas is invisible until the camera has painted once, so the server-rendered wall never flashes unpositioned.",
+        },
+      ],
+      props: { example: "window" },
+      usage,
+      code: extractCode("src/components/custom/blocks/ImageWallBlock.tsx"),
+    },
+  ]}
+/>
+
+## Installation
+
+<Installation name="image-wall" />
+
+## Examples
+
+<ExampleShowcase
+  name="image-wall"
+  colorControl={false}
+  columns={1}
+  examples={[
+    {
+      title: "A band, shuffled",
+      subheading: "A short strip: the camera pulls back so a few cards show, and visits them in a random order.",
+      propNotes: [
+        {
+          prop: "order",
+          value: '"shuffle"',
+          effect:
+            "visits every card once per round in a random order; `\"serial\"` walks them one after another. Either way a card never comes round again before all the others have had a turn.",
+        },
+        {
+          lead: "A box under",
+          prop: "420px",
+          effect: "tall caps the zoom at 0.72 whatever `zoom` says, so the band shows neighbours instead of one card spilling out; a box under 640px wide caps it at 0.5.",
+        },
+      ],
+      props: { example: "band", order: "shuffle" },
+      usage: usageBand,
+      minHeight: 300,
+    },
+    {
+      title: "Held still",
+      subheading: "interval={0} parks the camera on the first card; the wall becomes a framed screenshot with its neighbours dimmed around it.",
+      propNotes: [
+        {
+          prop: "interval",
+          value: "0",
+          effect: "never moves the camera. Pair it with a smaller `zoom` to show more of the wall at rest.",
+        },
+        {
+          prop: "onFocus",
+          effect: "is called with the index of the card the camera has settled on — the first card here — so you can caption or link it outside the wall.",
+        },
+      ],
+      props: { example: "window", interval: 0, zoom: 1.2 },
+      usage: usageStill,
+      minHeight: 560,
+    },
+  ]}
+/>
+
+## Features
+
+<div className="grid grid-cols-1 sm:grid-cols-2 gap-4 my-6 not-prose">
+  <div className="p-6 rounded-2xl border border-border bg-card">
+    <h3 className="text-lg font-semibold text-card-foreground mb-2">A camera, not a slider</h3>
+    <p className="text-muted-foreground text-sm">One animation of the canvas moves the whole wall: it pulls the camera back to 0.64 of its resting scale while gliding to the next card, then settles back in. Nothing inside the wall moves on its own, so it stays cheap however many cards you give it.</p>
+  </div>
+  <div className="p-6 rounded-2xl border border-border bg-card">
+    <h3 className="text-lg font-semibold text-card-foreground mb-2">A wall without edges</h3>
+    <p className="text-muted-foreground text-sm">The tile is drawn nine times — itself and its eight neighbours — so the camera can settle on a card at the very edge and still see cards all around it. The copies are hidden from assistive tech.</p>
+  </div>
+  <div className="p-6 rounded-2xl border border-border bg-card">
+    <h3 className="text-lg font-semibold text-card-foreground mb-2">Any box</h3>
+    <p className="text-muted-foreground text-sm">Size it with a class and it fills the box; a short band eases the zoom down so a few cards fit, and a phone-width box pulls back further so the journey between cards stays visible. The camera re-aims on every resize and holds while hovered, hidden or off screen.</p>
+  </div>
+  <div className="p-6 rounded-2xl border border-border bg-card">
+    <h3 className="text-lg font-semibold text-card-foreground mb-2">Quiet by request</h3>
+    <p className="text-muted-foreground text-sm">Under prefers-reduced-motion the camera cuts between cards instead of flying, and the wall is labelled with the card in view.</p>
+  </div>
+</div>
+
+## Props Reference
+
+<div className="overflow-x-auto my-4">
+  <table>
+    <thead>
+      <tr>
+        <th>Prop</th>
+        <th>Type</th>
+        <th>Default</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><code>items</code></td>
+        <td><code>&#123; title: string; image: string &#125;[]</code></td>
+        <td>—</td>
+        <td>The cards on the wall, each in a 493:332 frame under a mono caption.</td>
+      </tr>
+      <tr>
+        <td><code>columns</code></td>
+        <td><code>number</code></td>
+        <td><code>4</code></td>
+        <td>Columns in one tile.</td>
+      </tr>
+      <tr>
+        <td><code>order</code></td>
+        <td><code>"serial" | "shuffle"</code></td>
+        <td><code>"serial"</code></td>
+        <td>Card by card, or every card once per round in a random order.</td>
+      </tr>
+      <tr>
+        <td><code>interval</code></td>
+        <td><code>number</code></td>
+        <td><code>4500</code></td>
+        <td>Milliseconds the camera rests; <code>0</code> holds still.</td>
+      </tr>
+      <tr>
+        <td><code>zoom</code></td>
+        <td><code>number</code></td>
+        <td><code>1.35</code></td>
+        <td>The camera's resting scale; capped at 0.72 in a box under 420px tall and 0.5 in one under 640px wide.</td>
+      </tr>
+      <tr>
+        <td><code>intro</code></td>
+        <td><code>number</code></td>
+        <td><code>0</code></td>
+        <td>Milliseconds the camera drifts, pulled back with no card in focus, before its first landing.</td>
+      </tr>
+      <tr>
+        <td><code>anchor</code></td>
+        <td><code>&#123; x?: number; y?: number &#125;</code></td>
+        <td><code>&#123; x: 0.5, y: 0.5 &#125;</code></td>
+        <td>Where in the box the resting card sits, as shares of its width and height. Two walls side by side read better with one resting high and the other low.</td>
+      </tr>
+      <tr>
+        <td><code>onFocus</code></td>
+        <td><code>(index: number) =&gt; void</code></td>
+        <td>—</td>
+        <td>Called when the camera settles on a card.</td>
+      </tr>
+      <tr>
+        <td><code>className</code></td>
+        <td><code>string</code></td>
+        <td>—</td>
+        <td>Sizes and shapes the box; the wall fills it. Other <code>div</code> attributes pass through.</td>
+      </tr>
+    </tbody>
+  </table>
+</div>

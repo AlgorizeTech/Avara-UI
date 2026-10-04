@@ -1,0 +1,442 @@
+import { docsPageMetadata } from "@/lib/docs-metadata";
+
+export const metadata = docsPageMetadata("menubar");
+
+import { ExampleShowcase } from "@/components/site/Sandbox";
+import { extractCode } from "@/lib/code";
+
+# Menubar
+
+A visually persistent, OS-style menu component that provides quick access to a consistent set of commands.
+
+Native application menus have complex, unwritten interaction rules. If you click to open "File", and then hover your mouse horizontally over "Edit", the "Edit" menu should instantly open while "File" closes. Building this from scratch is notoriously difficult. This `MenubarBlock` solves all of that natively in React using Context, providing a 100% dependency-free implementation.
+
+Click a trigger to open its menu, then hover the neighbours — they swap instantly, exactly like a native app.
+
+export const usageDefault = `"use client";
+
+import {
+  Menubar,
+  MenubarContent,
+  MenubarItem,
+  MenubarMenu,
+  MenubarTrigger,
+} from "@/components/custom/blocks/MenubarBlock";
+import { AppWindow, FolderOpen, Plus, Redo2, Scissors, Undo2 } from "lucide-react";
+
+export default function TopNav() {
+  return (
+    <Menubar>
+      {/* Every MenubarMenu needs a unique \`value\` — the context tracks it */}
+      <MenubarMenu value="file">
+        <MenubarTrigger>File</MenubarTrigger>
+        <MenubarContent>
+          {/* shrink-0 keeps the icon square when a narrow menu squeezes the row */}
+          <MenubarItem onClick={() => console.log("New Tab")}>
+            <Plus className="w-4 h-4 mr-2 shrink-0" /> New Tab
+          </MenubarItem>
+          <MenubarItem>
+            <AppWindow className="w-4 h-4 mr-2 shrink-0" /> New Window
+          </MenubarItem>
+          <MenubarItem>
+            <FolderOpen className="w-4 h-4 mr-2 shrink-0" /> Open File…
+          </MenubarItem>
+        </MenubarContent>
+      </MenubarMenu>
+
+      <MenubarMenu value="edit">
+        <MenubarTrigger>Edit</MenubarTrigger>
+        <MenubarContent>
+          <MenubarItem>
+            <Undo2 className="w-4 h-4 mr-2 shrink-0" /> Undo
+          </MenubarItem>
+          <MenubarItem>
+            <Redo2 className="w-4 h-4 mr-2 shrink-0" /> Redo
+          </MenubarItem>
+          <MenubarItem>
+            <Scissors className="w-4 h-4 mr-2 shrink-0" /> Cut
+          </MenubarItem>
+        </MenubarContent>
+      </MenubarMenu>
+    </Menubar>
+  );
+}`;
+
+export const usageApp = `"use client";
+
+import {
+  Menubar,
+  MenubarContent,
+  MenubarItem,
+  MenubarLabel,
+  MenubarMenu,
+  MenubarSeparator,
+  MenubarShortcut,
+  MenubarTrigger,
+} from "@/components/custom/blocks/MenubarBlock";
+import {
+  Check,
+  ClipboardPaste,
+  Copy,
+  Eye,
+  EyeOff,
+  Info,
+  Laptop,
+  Maximize,
+  Moon,
+  Power,
+  Redo2,
+  Scissors,
+  Settings,
+  Settings2,
+  Sun,
+  Undo2,
+  User,
+  UserPlus,
+  Users,
+} from "lucide-react";
+import { useState } from "react";
+
+/** Every row carries one, so no row needs \`inset\` to fake the gutter. */
+const icon = "w-4 h-4 mr-2 shrink-0";
+/** Marks the active theme; ml-auto keeps it clear of the label. */
+const activeMark = "ml-auto w-4 h-4 shrink-0 text-primary";
+
+export default function AppWindow() {
+  const [theme, setTheme] = useState("System");
+
+  // No overflow-hidden on the frame: it would crop any menu taller or wider
+  // than the window. The header rounds its own top corners instead.
+  return (
+    <div className="w-full max-w-2xl bg-background border border-border rounded-xl flex flex-col h-[280px]">
+      {/* Native OS-style Application Header */}
+      <div className="w-full border-b border-border bg-muted/50 rounded-t-xl px-2 py-1 flex items-center justify-between">
+        <Menubar className="border-none bg-transparent shadow-none w-full justify-start min-h-8 p-0">
+          {/* 1. FILE MENU */}
+          <MenubarMenu value="file">
+            <MenubarTrigger>Nexus UI</MenubarTrigger>
+            <MenubarContent>
+              <MenubarItem>
+                <Info className={icon} /> About Nexus
+              </MenubarItem>
+              <MenubarSeparator />
+              <MenubarItem>
+                <Settings className={icon} /> Preferences...{" "}
+                <MenubarShortcut>⌘,</MenubarShortcut>
+              </MenubarItem>
+              <MenubarSeparator />
+              <MenubarItem>
+                <EyeOff className={icon} /> Hide Nexus{" "}
+                <MenubarShortcut>⌘H</MenubarShortcut>
+              </MenubarItem>
+              <MenubarItem>
+                <Users className={icon} /> Hide Others{" "}
+                <MenubarShortcut>⇧⌘H</MenubarShortcut>
+              </MenubarItem>
+              <MenubarItem disabled>
+                <Eye className={icon} /> Show All
+              </MenubarItem>
+              <MenubarSeparator />
+              <MenubarItem className="text-red-600 dark:text-red-400 focus:bg-red-50 dark:focus:bg-red-900/20 focus:text-red-600 dark:focus:text-red-400">
+                <Power className={icon} /> Quit Nexus{" "}
+                <MenubarShortcut>⌘Q</MenubarShortcut>
+              </MenubarItem>
+            </MenubarContent>
+          </MenubarMenu>
+
+          {/* 2. EDIT MENU */}
+          <MenubarMenu value="edit">
+            <MenubarTrigger>Edit</MenubarTrigger>
+            <MenubarContent>
+              <MenubarItem>
+                <Undo2 className={icon} /> Undo{" "}
+                <MenubarShortcut>⌘Z</MenubarShortcut>
+              </MenubarItem>
+              <MenubarItem>
+                <Redo2 className={icon} /> Redo{" "}
+                <MenubarShortcut>⇧⌘Z</MenubarShortcut>
+              </MenubarItem>
+              <MenubarSeparator />
+              <MenubarItem>
+                <Scissors className={icon} /> Cut{" "}
+                <MenubarShortcut>⌘X</MenubarShortcut>
+              </MenubarItem>
+              <MenubarItem>
+                <Copy className={icon} /> Copy{" "}
+                <MenubarShortcut>⌘C</MenubarShortcut>
+              </MenubarItem>
+              <MenubarItem>
+                <ClipboardPaste className={icon} /> Paste{" "}
+                <MenubarShortcut>⌘V</MenubarShortcut>
+              </MenubarItem>
+            </MenubarContent>
+          </MenubarMenu>
+
+          {/* 3. VIEW (THEME) MENU */}
+          <MenubarMenu value="view">
+            <MenubarTrigger>View</MenubarTrigger>
+            <MenubarContent>
+              {/* Labels sit flush left; the rows carry the icon gutter. */}
+              <MenubarLabel>Theme Options</MenubarLabel>
+              <MenubarItem onClick={() => setTheme("Light")}>
+                <Sun className={icon} /> Light Mode
+                {theme === "Light" && <Check className={activeMark} />}
+              </MenubarItem>
+              <MenubarItem onClick={() => setTheme("Dark")}>
+                <Moon className={icon} /> Dark Mode
+                {theme === "Dark" && <Check className={activeMark} />}
+              </MenubarItem>
+              <MenubarItem onClick={() => setTheme("System")}>
+                <Laptop className={icon} /> System Default
+                {theme === "System" && <Check className={activeMark} />}
+              </MenubarItem>
+              <MenubarSeparator />
+              <MenubarItem>
+                <Maximize className={icon} /> Toggle Fullscreen{" "}
+                <MenubarShortcut>F11</MenubarShortcut>
+              </MenubarItem>
+            </MenubarContent>
+          </MenubarMenu>
+
+          {/* 4. PROFILES MENU */}
+          <MenubarMenu value="profiles">
+            <MenubarTrigger>Profiles</MenubarTrigger>
+            <MenubarContent align="start">
+              <MenubarLabel>Active Account</MenubarLabel>
+              <MenubarItem>
+                <User className={icon} /> Andy Bernard
+              </MenubarItem>
+              <MenubarSeparator />
+              <MenubarItem>
+                <UserPlus className={icon} /> Add Account...
+              </MenubarItem>
+              <MenubarItem>
+                <Settings2 className={icon} /> Manage Profiles
+              </MenubarItem>
+            </MenubarContent>
+          </MenubarMenu>
+        </Menubar>
+      </div>
+
+      {/* Fake App Body */}
+      <div className="flex-1 flex flex-col items-center justify-center text-center p-6 opacity-50">
+        <div className="w-16 h-16 bg-muted rounded-2xl mb-4 flex items-center justify-center border border-border shadow-sm">
+          <Laptop className="w-8 h-8 text-muted-foreground" />
+        </div>
+        <h4 className="text-sm font-semibold text-foreground">
+          Application Canvas
+        </h4>
+        <p className="text-xs text-muted-foreground mt-1 max-w-[250px]">
+          Click the menus at the top to test the interaction states and
+          cross-menu hover switching.
+        </p>
+      </div>
+    </div>
+  );
+}`;
+
+<ExampleShowcase
+  name="menubar"
+  colorControl={false}
+  columns={1}
+  examples={[
+    {
+      title: "Menubar",
+      subheading: "Nest `MenubarMenu` → `MenubarTrigger` + `MenubarContent`.",
+      propNotes: [
+        {
+          prop: "value",
+          effect:
+            "on each `MenubarMenu` is required — it is how the context tracks which dropdown is open.",
+        },
+        {
+          prop: "align",
+          effect:
+            "on `MenubarContent` anchors the dropdown to its trigger: `start` (the default), `center` or `end`.",
+        },
+      ],
+      props: { example: "basic" },
+      usage: usageDefault,
+      code: extractCode("src/components/custom/blocks/MenubarBlock.tsx"),
+    },
+  ]}
+/>
+
+## Installation
+
+<Installation name="menubar" />
+
+## Examples
+
+<ExampleShowcase
+  name="menubar"
+  colorControl={false}
+  columns={1}
+  examples={[
+    {
+      title: "Application menubar",
+      propNotes: [
+        {
+          prop: "className",
+          effect:
+            "on the bar is how you strip its chrome to fuse it into a window title bar.",
+        },
+      ],
+      props: { example: "app" },
+      usage: usageApp,
+    },
+  ]}
+/>
+
+## Features
+Learn about the Menubar's desktop-style navigation features, supporting complex nested menus, radio groups, and checkboxes.
+
+<div className="grid grid-cols-1 sm:grid-cols-2 gap-4 my-6 not-prose">
+  <div className="p-6 rounded-2xl border border-border bg-card">
+    <h3 className="text-lg font-semibold text-card-foreground mb-2">Customizable</h3>
+    <p className="text-muted-foreground text-sm">Easily adapt the component's styling and behavior to fit your application's unique design system.</p>
+  </div>
+  <div className="p-6 rounded-2xl border border-border bg-card">
+    <h3 className="text-lg font-semibold text-card-foreground mb-2">Accessible</h3>
+    <p className="text-muted-foreground text-sm">Built with accessibility in mind, ensuring all users can interact with your application effectively.</p>
+  </div>
+  <div className="p-6 rounded-2xl border border-border bg-card">
+    <h3 className="text-lg font-semibold text-card-foreground mb-2">Responsive</h3>
+    <p className="text-muted-foreground text-sm">Fully responsive design that looks and works great across desktop, tablet, and mobile devices.</p>
+  </div>
+  <div className="p-6 rounded-2xl border border-border bg-card">
+    <h3 className="text-lg font-semibold text-card-foreground mb-2">Performant</h3>
+    <p className="text-muted-foreground text-sm">Optimized for maximum performance with minimal re-renders and efficient state management.</p>
+  </div>
+</div>
+
+## Best Practices & Guidelines
+
+<div className="flex flex-col gap-4 my-6 not-prose">
+  <div className="rounded-xl border border-foreground/[0.06] bg-foreground/[0.03] p-4">
+    <h4 className="font-sans text-[14px] font-semibold text-foreground mb-1">Usage Guidelines</h4>
+    <p className="text-[13px] leading-relaxed text-foreground/50">Follow standard design principles when implementing this component. Ensure proper contrast, spacing, and context within your layout.</p>
+  </div>
+</div>
+
+## Props Reference
+
+<div className="overflow-x-auto">
+  <table>
+    <thead>
+      <tr>
+        <th>Component</th>
+        <th>Prop</th>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>
+          <code>MenubarMenu</code>
+        </td>
+        <td>
+          <code>value</code>
+        </td>
+        <td>
+          <code>string</code>
+        </td>
+        <td>
+          <strong>Required.</strong> A unique identifier for the menu column
+          (e.g., <code>"file"</code>). Used by the internal state context to
+          track which dropdown is open.
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <code>MenubarContent</code>
+        </td>
+        <td>
+          <code>align</code>
+        </td>
+        <td>
+          <code>"start" | "center" | "end"</code>
+        </td>
+        <td>
+          Determines how the dropdown is anchored relative to its trigger
+          button. Defaults to <code>"start"</code>.
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <code>MenubarItem</code>
+        </td>
+        <td>
+          <code>inset</code>
+        </td>
+        <td>
+          <code>boolean</code>
+        </td>
+        <td>
+          Adds extra left-padding to the item, aligning text cleanly when
+          adjacent items use icons.
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <code>MenubarItem</code>
+        </td>
+        <td>
+          <code>disabled</code>
+        </td>
+        <td>
+          <code>boolean</code>
+        </td>
+        <td>
+          Dims the item, changes the cursor, and completely disables pointer
+          events and click handlers.
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <code>MenubarItem</code>
+        </td>
+        <td>
+          <code>onClick</code>
+        </td>
+        <td>
+          <code>{`() => void`}</code>
+        </td>
+        <td>
+          Fires your custom action. The menu will{" "}
+          <strong>automatically close</strong> after the click.
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <code>MenubarLabel</code>
+        </td>
+        <td>
+          <code>inset</code>
+        </td>
+        <td>
+          <code>boolean</code>
+        </td>
+        <td>
+          Aligns the label text with <code>inset</code> menu items.
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <strong>All Components</strong>
+        </td>
+        <td>
+          <code>className</code>
+        </td>
+        <td>
+          <code>string</code>
+        </td>
+        <td>
+          Every component supports custom Tailwind classes for easy styling
+          overrides.
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>

@@ -1,12 +1,12 @@
+export const metadata = docsPageMetadata("drawer");
+
 # Drawer
 
-A highly animated, responsive drawer component. Built entirely from scratch using `gsap` for butter-smooth entering and exiting animations. It supports sliding in from all four screen edges (top, bottom, left, right) and safely locks the background document from scrolling while open.
+A highly animated, responsive drawer component. Built entirely from scratch, with plain CSS transitions for butter-smooth entering and exiting animations — no animation library. It supports sliding in from all four screen edges (top, bottom, left, right) and safely locks the background document from scrolling while open.
 
-## Examples
+The drawer is always controlled — you own `open` and pass `onOpenChange`.
 
-The drawer is always controlled — you own `open` and pass `onOpenChange`. The first example's **Code** tab contains the full component source.
-
-export const usageDefault = `import { useState } from "react";
+export const usageDefault = `"use client";
 
 export default function DrawerDemo() {
   const [open, setOpen] = useState(false);
@@ -17,7 +17,7 @@ export default function DrawerDemo() {
 
             Interactive Drawer
             
-              This drawer slides in from the right. It uses GSAP for
+              This drawer slides in from the right. It uses CSS transitions for
               butter-smooth easing and handles its own unmount lifecycles.
 
             {/* Long content scrolls here without pushing the header away */}
@@ -29,34 +29,7 @@ export default function DrawerDemo() {
   );
 }`;
 
-export const usageSides = `import { useState } from "react";
-
-type Side = "top" | "bottom" | "left" | "right";
-
-function DrawerTile({ side }: { side: Side }) {
-  const [open, setOpen] = useState(false);
-
-  return (
-    <>
-       setOpen(true)}>
-        {side}
-
-            side="{side}"
-            
-              The drawer slides in from the {side} edge and sizes itself to match.
-
-             setOpen(false)}>Close
-
-  );
-}
-
-export default function DrawerSides() {
-  return (
-
-  );
-}`;
-
-export const usageBottom = `import { useState } from "react";
+export const usageBottom = `"use client";
 
 export default function BottomSheet() {
   const [open, setOpen] = useState(false);
@@ -76,37 +49,50 @@ export default function BottomSheet() {
   );
 }`;
 
-export const usageControlled = `import { useEffect, useState } from "react";
+export const usageControlled = `"use client";
+
+// Optionally skip visitors who were onboarded before. localStorage is read as
+// an external store: false on the server, the stored value in the browser.
+const subscribeToStorage = (onChange: () => void) => {
+  window.addEventListener("storage", onChange);
+  return () => window.removeEventListener("storage", onChange);
+};
+const readOnboarded = () => localStorage.getItem("onboarded") !== null;
 
 export default function OnboardingDrawer() {
-  // Nothing says the state has to come from a button — open it yourself
-  // after a fetch, a route change, or on first mount.
-  const [open, setOpen] = useState(true);
-
-  useEffect(() => {
-    if (localStorage.getItem("onboarded")) setOpen(false);
-  }, []);
+  const onboarded = useSyncExternalStore(subscribeToStorage, readOnboarded, () => false);
+  // Null until the visitor opens or closes it. Until then it is open on
+  // mount, so no trigger click is needed.
+  const [choice, setOpen] = useState(null);
+  const open = choice ?? !onboarded;
 
   return (
+    <>
+       setOpen(true)}>Open Drawer (left)
 
-          Welcome aboard
+            Welcome aboard
+            
+              This drawer opens automatically on mount without needing a trigger click.
+
+              You can use this for onboarding flows, announcements, or cookie consent banners.
+
+             setOpen(false)}>Get Started
+             setOpen(false)}>
+              Cancel
 
   );
 }`;
 
 ## Installation
 
-### 1. Install Dependencies
-
-This component relies on `gsap` to handle the fluid animations and manage the enter/exit lifecycle without relying on complex third-party layout libraries.
+Register the @algorize-ui registry once per project, then add the component:
 
 ```bash
-npm install gsap lucide-react
+npx shadcn@latest registry add @algorize-ui=https://algorize-ui.vercel.app/r/{name}.json
+npx shadcn@latest add @algorize-ui/drawer
 ```
 
-### 2. Copy the Component
-
-Create a new file at `components/custom/blocks/Drawer.tsx` and copy the engine code from the **Code** tab of the first example above.
+## Examples
 
 ## Features
 Learn about the Drawer component's touch-friendly swiping gestures, snap points, and smooth slide-in animations.
@@ -142,7 +128,7 @@ Learn about the Drawer component's touch-friendly swiping gestures, snap points,
           Required
 
           Controls the visible state of the drawer. When true, the component
-          mounts via React Portals and GSAP animates it into view.
+          mounts via React Portals and a CSS transition slides it into view.
 
           onOpenChange
 
@@ -165,6 +151,6 @@ Learn about the Drawer component's touch-friendly swiping gestures, snap points,
 
 ---
 
-**Component Path:** `nextjs\drawer\page.mdx`
+**Component Path:** `[framework]\drawer\page.mdx`
 
-**Web Version:** Visit the interactive version at the corresponding URL on the Next.js documentation site for live previews and interactive examples.
+**Web Version:** Visit the corresponding URL on the Algorize UI documentation site for live previews and interactive examples.

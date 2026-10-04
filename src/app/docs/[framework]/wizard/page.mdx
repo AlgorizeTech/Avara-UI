@@ -1,0 +1,398 @@
+import { docsPageMetadata } from "@/lib/docs-metadata";
+
+export const metadata = docsPageMetadata("wizard");
+
+import { ExampleShowcase } from "@/components/site/Sandbox";
+import { extractCode } from "@/lib/code";
+
+# Progress Wizard
+
+A "Typeform" style multi-step wizard featuring buttery smooth vertical slide transitions powered by plain CSS transitions, native keyboard navigation, and an interactive progress bar.
+
+This component relies on the **Compound Component** pattern using React Context. This allows you to place the `WizardProgress` bar independently of the main `WizardContainer`, and nest complex forms inside the `WizardStep` blocks without passing deep props.
+
+Because every piece reads the wizard's state from context, you compose the flow yourself — drop the progress bar wherever you like, or leave it out. Press **Enter** inside any step to advance. It includes dynamic theme binding via the `color` prop (`"indigo"`, `"rose"`, `"emerald"`, `"zinc"`, `"blue"`, `"primary"`, or hex) to automatically style the progress bar, input focus rings, and action buttons.
+
+export const wizardSteps = `        <WizardStep index={0}>
+          <WizardTitle>1. What's your first name?</WizardTitle>
+          <form onSubmit={submitToNext}>
+            <WizardInput placeholder="Type your answer here..." autoFocus />
+            <WizardNavigation />
+          </form>
+        </WizardStep>
+
+        <WizardStep index={1}>
+          <WizardTitle>2. What is your role?</WizardTitle>
+          <WizardDescription>
+            We will customize your dashboard based on this.
+          </WizardDescription>
+          <form onSubmit={submitToNext}>
+            <WizardInput placeholder="e.g. Frontend Developer" />
+            <WizardNavigation />
+          </form>
+        </WizardStep>
+
+        {/* The closing step is just markup — no input, no navigation. */}
+        <WizardStep index={2}>
+          <div className="flex flex-col items-center text-center animate-in fade-in zoom-in duration-500 delay-300">
+            <div className="w-20 h-20 rounded-full bg-emerald-100 dark:bg-emerald-500/20 text-emerald-600 flex items-center justify-center mb-8">
+              <CheckCircle2 className="w-10 h-10" />
+            </div>
+            <WizardTitle>You're all set!</WizardTitle>
+            <WizardDescription>
+              Your workspace has been successfully configured.
+            </WizardDescription>
+            <button
+              onClick={() => setRunKey((prev) => prev + 1)}
+              className="mt-8 px-8 py-3.5 rounded-full bg-primary text-primary-foreground font-semibold hover:scale-105 transition-transform"
+            >
+              Finish & Restart
+            </button>
+          </div>
+        </WizardStep>`;
+
+export const wizardPreamble = `  // Remounting the Wizard is what resets it back to the first step.
+  const [runKey, setRunKey] = useState(0);
+
+  // Enter submits the step's form; forwarding it to the OK button
+  // is what makes keyboard progression work.
+  const submitToNext = (e: FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    const btn = e.currentTarget.querySelector<HTMLButtonElement>(
+      'button[type="button"]',
+    );
+    if (btn) btn.click();
+  };`;
+
+export const usageDefault = `"use client";
+
+import {
+  Wizard,
+  WizardContainer,
+  WizardDescription,
+  WizardInput,
+  WizardNavigation,
+  WizardProgress,
+  WizardStep,
+  WizardTitle,
+} from "@/components/custom/blocks/WizardBlock";
+import { CheckCircle2 } from "lucide-react";
+import { useState, type FormEvent } from "react";
+
+export default function OnboardingFlow() {
+${wizardPreamble}
+
+  return (
+    <Wizard key={runKey} color="indigo">
+      {/* Top progress bar — reads totalSteps from context */}
+      <WizardProgress />
+
+      {/* Overflow-hidden container the slide happens inside */}
+      <WizardContainer>
+${wizardSteps}
+      </WizardContainer>
+    </Wizard>
+  );
+}`;
+
+export const usageInitialStep = `"use client";
+
+import {
+  Wizard,
+  WizardContainer,
+  WizardDescription,
+  WizardInput,
+  WizardNavigation,
+  WizardProgress,
+  WizardStep,
+  WizardTitle,
+} from "@/components/custom/blocks/WizardBlock";
+import { CheckCircle2 } from "lucide-react";
+import { useState, type FormEvent } from "react";
+
+export default function ResumedOnboarding() {
+${wizardPreamble}
+
+  return (
+    // Open on step 2 — useful when you persist progress between sessions.
+    <Wizard key={runKey} initialStep={1}>
+      {/* Top progress bar — reads totalSteps from context */}
+      <WizardProgress />
+
+      {/* Overflow-hidden container the slide happens inside */}
+      <WizardContainer>
+${wizardSteps}
+      </WizardContainer>
+    </Wizard>
+  );
+}`;
+
+export const usageNoProgress = `"use client";
+
+import {
+  Wizard,
+  WizardContainer,
+  WizardDescription,
+  WizardInput,
+  WizardNavigation,
+  WizardStep,
+  WizardTitle,
+} from "@/components/custom/blocks/WizardBlock";
+import { CheckCircle2 } from "lucide-react";
+import { useState, type FormEvent } from "react";
+
+export default function BareWizard() {
+${wizardPreamble}
+
+  return (
+    // WizardProgress is an independent child — omit it entirely and the
+    // steps still animate and navigate exactly the same.
+    <Wizard key={runKey}>
+      {/* Overflow-hidden container the slide happens inside */}
+      <WizardContainer>
+${wizardSteps}
+      </WizardContainer>
+    </Wizard>
+  );
+}`;
+
+<ExampleShowcase
+  name="wizard"
+  colorControl
+  columns={1}
+  examples={[
+    {
+      title: "Wizard",
+      subheading: "Compose `WizardProgress`, `WizardContainer` and one `WizardStep` per question — all state lives in context.",
+      propNotes: [
+        {
+          lead: "Set",
+          prop: "color",
+          value: '"indigo" | "blue" | "rose" | "emerald" | "zinc" | "primary" | "#hex"',
+          effect:
+            "themes the progress bar, active input borders, and primary navigation buttons.",
+        },
+        {
+          prop: "index",
+          effect:
+            "on each `WizardStep` is its 0-based position, and is what the animation uses to compute the Y-offset.",
+        },
+        {
+          prop: "onComplete",
+          effect:
+            "fires when Next or Enter is pressed on the final step.",
+        },
+      ],
+      props: { color: "indigo" },
+      usage: usageDefault,
+      code: extractCode("src/components/custom/blocks/WizardBlock.tsx"),
+    },
+  ]}
+/>
+
+## Installation
+
+<Installation name="wizard" />
+
+## Examples
+
+<ExampleShowcase
+  name="wizard"
+  colorControl
+  columns={1}
+  examples={[
+    {
+      title: "Starting step",
+      propNotes: [
+        {
+          lead: "Use",
+          prop: "initialStep",
+          effect:
+            "to resume a flow partway through instead of restarting it.",
+        },
+      ],
+      props: { initialStep: 1 },
+      usage: usageInitialStep,
+    },
+    {
+      title: "Without the progress bar",
+      propNotes: [
+        {
+          prop: "children",
+          effect:
+            "can omit `WizardProgress` entirely — it is an independent child, and navigation is unchanged without it.",
+        },
+      ],
+      props: { showProgress: false },
+      usage: usageNoProgress,
+    },
+  ]}
+/>
+
+## Features
+Learn about the Wizard component's multi-step capabilities, providing state management and validation for complex onboarding flows.
+
+<div className="grid grid-cols-1 sm:grid-cols-2 gap-4 my-6 not-prose">
+  <div className="p-6 rounded-2xl border border-border bg-card">
+    <h3 className="text-lg font-semibold text-card-foreground mb-2">Compound Components</h3>
+    <p className="text-muted-foreground text-sm">Uses React Context to share state across child components, preventing messy prop drilling and enabling flexible layouts.</p>
+  </div>
+  <div className="p-6 rounded-2xl border border-border bg-card">
+    <h3 className="text-lg font-semibold text-card-foreground mb-2">Library-free Animations</h3>
+    <p className="text-muted-foreground text-sm">Features premium, buttery smooth vertical sliding transitions built on CSS transitions — no animation library to install.</p>
+  </div>
+  <div className="p-6 rounded-2xl border border-border bg-card">
+    <h3 className="text-lg font-semibold text-card-foreground mb-2">Keyboard Navigation</h3>
+    <p className="text-muted-foreground text-sm">Natively supports "Enter" key progression to submit forms and move to the next step instantly.</p>
+  </div>
+  <div className="p-6 rounded-2xl border border-border bg-card">
+    <h3 className="text-lg font-semibold text-card-foreground mb-2">Auto-Progress Bar</h3>
+    <p className="text-muted-foreground text-sm">Automatically calculates completion percentage based on the number of active steps rendered.</p>
+  </div>
+</div>
+
+## Best Practices & Guidelines
+
+<div className="flex flex-col gap-4 my-6 not-prose">
+  <div className="rounded-xl border border-foreground/[0.06] bg-foreground/[0.03] p-4">
+    <h4 className="font-sans text-[14px] font-semibold text-foreground mb-1">State Management</h4>
+    <p className="text-[13px] leading-relaxed text-foreground/50">Since `WizardStep` components act as independent layout blocks, keep your actual form state (e.g., using React Hook Form or standard state) lifted up to the parent component wrapping the `WizardContainer`.</p>
+  </div>
+</div>
+
+## Props Reference
+
+<div className="overflow-x-auto mb-8">
+  <table>
+    <thead>
+      <tr>
+        <th>Component</th>
+        <th>Prop</th>
+        <th>Type</th>
+        <th>Default</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>
+          <code>Wizard</code>
+        </td>
+        <td>
+          <code>initialStep</code>
+        </td>
+        <td>
+          <code>number</code>
+        </td>
+        <td>
+          <code>0</code>
+        </td>
+        <td>The index of the step to show on the initial render.</td>
+      </tr>
+      <tr>
+        <td>
+          <code>Wizard</code>
+        </td>
+        <td>
+          <code>color</code>
+        </td>
+        <td>
+          <code>"primary" | "indigo" | "blue" | "rose" | "emerald" | "zinc" | string</code>
+        </td>
+        <td>
+          <code>"primary"</code>
+        </td>
+        <td>
+          Controls the theme color for the progress bar, active input borders,
+          and primary navigation buttons. Accepts valid hex codes.
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <code>Wizard</code>
+        </td>
+        <td>
+          <code>onComplete</code>
+        </td>
+        <td>
+          <code>() =&gt; void</code>
+        </td>
+        <td>
+          <code>undefined</code>
+        </td>
+        <td>
+          Callback function fired if the user clicks "Next" or presses "Enter"
+          while currently on the final step.
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <code>WizardStep</code>
+        </td>
+        <td>
+          <code>index</code>
+        </td>
+        <td>
+          <code>number</code>
+        </td>
+        <td>
+          <strong>Required</strong>
+        </td>
+        <td>
+          The 0-based index of this specific step. Used by the animation
+          engine to calculate the vertical Y-offset relative to the{" "}
+          <code>currentStep</code>.
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <code>WizardInput</code>
+        </td>
+        <td>
+          <code>...props</code>
+        </td>
+        <td>
+          <code>InputHTMLAttributes</code>
+        </td>
+        <td>
+          <code>undefined</code>
+        </td>
+        <td>
+          Accepts all native HTML input attributes (e.g.,{" "}
+          <code>placeholder</code>, <code>autoFocus</code>,{" "}
+          <code>onChange</code>, <code>type</code>).
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <code>WizardTitle</code>
+        </td>
+        <td>
+          <code>children</code>
+        </td>
+        <td>
+          <code>ReactNode</code>
+        </td>
+        <td>
+          <strong>Required</strong>
+        </td>
+        <td>The primary heading or question for the current step.</td>
+      </tr>
+      <tr>
+        <td>
+          <code>WizardDescription</code>
+        </td>
+        <td>
+          <code>children</code>
+        </td>
+        <td>
+          <code>ReactNode</code>
+        </td>
+        <td>
+          <strong>Required</strong>
+        </td>
+        <td>Secondary context or helper text displayed below the title.</td>
+      </tr>
+    </tbody>
+  </table>
+</div>

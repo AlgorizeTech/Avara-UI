@@ -1,0 +1,149 @@
+import { docsPageMetadata } from "@/lib/docs-metadata";
+
+export const metadata = docsPageMetadata("footer");
+
+import { ExampleShowcase } from "@/components/site/Sandbox";
+import { extractCode } from "@/lib/code";
+
+# Footer
+
+A collection of 4 production-ready, high-capacity, fully responsive Footer components designed for modern web applications, SaaS platforms, e-commerce stores, and enterprise products.
+
+`Footer` adapts seamlessly across mobile screens, tablets, and desktop viewports, with support for centered layouts, frosted glass docks, cyberpunk neon glow pulses, and quantum particle beams.
+
+export const usageSimple = `import { Footer } from "@/components/custom/blocks/FooterBlock";
+
+export default function SimpleFooterDemo() {
+  return <Footer variant="simple-centered" />;
+}`;
+
+export const usageGlassDock = `import { Footer } from "@/components/custom/blocks/FooterBlock";
+
+export default function GlassDockFooterDemo() {
+  return <Footer variant="glass-dock" />;
+}`;
+
+export const usageNeonGlow = `import { Footer } from "@/components/custom/blocks/FooterBlock";
+
+export default function NeonGlowFooterDemo() {
+  return <Footer variant="neon-glow-pulse" />;
+}`;
+
+export const usageQuantumBeam = `import { Footer } from "@/components/custom/blocks/FooterBlock";
+
+export default function QuantumBeamFooterDemo() {
+  return <Footer variant="quantum-particle-beam" />;
+}`;
+
+<ExampleShowcase
+  name="footer"
+  columns={1}
+  examples={[
+    {
+      title: "Simple Centered Footer",
+      propNotes: [{ lead: "Use", prop: "variant", value: '"simple-centered"', effect: "for clean, spacious centered brand logo and navigation pills." }],
+      props: { variant: "simple-centered" },
+      usage: usageSimple,
+      code: extractCode("src/components/custom/blocks/FooterBlock.tsx"),
+    },
+  ]}
+/>
+
+## Installation
+
+<Installation name="footer" />
+
+## Examples
+
+<ExampleShowcase
+  name="footer"
+  columns={1}
+  examples={[
+    {
+      title: "Glass Dock Footer",
+      propNotes: [{ lead: "Use", prop: "variant", value: '"glass-dock"', effect: "floating glassmorphism bar dock card with backdrop blur." }],
+      props: { variant: "glass-dock" },
+      usage: usageGlassDock,
+    },
+    {
+      title: "Neon Glow Pulse Cyberpunk Footer",
+      propNotes: [{ lead: "Use", prop: "variant", value: '"neon-glow-pulse"', effect: "dark cyberpunk theme with glowing border pulse effect." }],
+      props: { variant: "neon-glow-pulse" },
+      usage: usageNeonGlow,
+    },
+    {
+      title: "Quantum Particle Beam Lines Footer",
+      propNotes: [{ lead: "Use", prop: "variant", value: '"quantum-particle-beam"', effect: "high-energy quantum particle beam lines with glowing neon nodes." }],
+      props: { variant: "quantum-particle-beam" },
+      usage: usageQuantumBeam,
+    },
+  ]}
+/>
+
+## Features
+
+Discover the key capabilities of the `Footer` component:
+
+<div className="grid grid-cols-1 sm:grid-cols-2 gap-4 my-6 not-prose">
+  <div className="p-6 rounded-2xl border border-border bg-card">
+    <h3 className="text-lg font-semibold text-card-foreground mb-2">4 High-Performance Responsive Variants</h3>
+    <p className="text-muted-foreground text-sm">Includes Simple Centered, Glass Dock, Neon Glow Pulse, and Quantum Particle Beam.</p>
+  </div>
+  <div className="p-6 rounded-2xl border border-border bg-card">
+    <h3 className="text-lg font-semibold text-card-foreground mb-2">100% Screen & Device Responsive</h3>
+    <p className="text-muted-foreground text-sm">Fluid Tailwind CSS grid and flex layouts built to adapt from 320px mobile viewports up to 4K ultra-wide screens.</p>
+  </div>
+</div>
+
+## Props Reference
+
+<div className="overflow-x-auto">
+  <table>
+    <thead>
+      <tr>
+        <th>Prop</th>
+        <th>Type</th>
+        <th>Default</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><code>variant</code></td>
+        <td><code>FooterVariant</code></td>
+        <td><code>"simple-centered"</code></td>
+        <td>Selects from the 4 active responsive footer variants (<code>"simple-centered"</code>, <code>"glass-dock"</code>, <code>"neon-glow-pulse"</code>, <code>"quantum-particle-beam"</code>).</td>
+      </tr>
+      <tr>
+        <td><code>brandName</code></td>
+        <td><code>string</code></td>
+        <td><code>"Algorize UI"</code></td>
+        <td>Brand name string displayed in the logo header.</td>
+      </tr>
+      <tr>
+        <td><code>tagline</code></td>
+        <td><code>string</code></td>
+        <td><code>"Elevate your web..."</code></td>
+        <td>Brand vision tagline text.</td>
+      </tr>
+      <tr>
+        <td><code>logo</code></td>
+        <td><code>React.ReactNode</code></td>
+        <td><code>undefined</code></td>
+        <td>Custom logo icon component.</td>
+      </tr>
+      <tr>
+        <td><code>socialLinks</code></td>
+        <td><code>SocialLink[]</code></td>
+        <td>X, GitHub, LinkedIn, YouTube, Instagram</td>
+        <td>The social row, rendered by <DocLink to="social-links">Social Links</DocLink>. Each entry is <code>&#123; network, href, label? &#125;</code>; pass only the networks you have.</td>
+      </tr>
+      <tr>
+        <td><code>className</code></td>
+        <td><code>string</code></td>
+        <td><code>""</code></td>
+        <td>Custom Tailwind CSS class overrides.</td>
+      </tr>
+    </tbody>
+  </table>
+</div>

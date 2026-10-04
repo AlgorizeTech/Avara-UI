@@ -1,0 +1,24 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "advanced-table",
+  "title": "Advanced Table",
+  "author": "AlgorizeTech",
+  "description": "A stateful data table with search, typed sorting, pagination, row selection and batch actions — composed, so your data keeps its own shape.",
+  "dependencies": [],
+  "registryDependencies": [
+    "https://algorize-ui.vercel.app/r/table.json"
+  ],
+  "files": [
+    {
+      "path": "src/components/custom/blocks/AdvancedTableBlock.tsx",
+      "content": "\"use client\";\n\n/**\n * Compatibility shim: the data table lives in TableBlock. Only its components\n * and types are forwarded — the hooks and helpers are in `./table-core`, so\n * this file stays one that exports components and nothing else.\n */\nexport {\n  DataTable,\n  DataTableBatchAction,\n  DataTableBatchBar,\n  DataTableBody,\n  DataTableCell,\n  DataTableContent,\n  DataTableEmpty,\n  DataTableExpandToggle,\n  DataTableExpandedRow,\n  DataTableExport,\n  DataTableFilter,\n  DataTableFooter,\n  DataTableHead,\n  DataTableHeader,\n  DataTableHeading,\n  DataTableInfo,\n  DataTablePageSize,\n  DataTablePagination,\n  DataTableReset,\n  DataTableRow,\n  DataTableSearch,\n  DataTableSelect,\n  DataTableSelectAll,\n  DataTableTabs,\n  DataTableToolbar,\n  Table,\n  TableAction,\n  TableBadge,\n  TableBody,\n  TableCell,\n  TableContent,\n  TableEmpty,\n  TableExpandToggle,\n  TableExpandedRow,\n  TableFooter,\n  TableHead,\n  TableHeader,\n  TableHeading,\n  TableInfo,\n  TablePagination,\n  TablePerson,\n  TableRow,\n  TableRowAction,\n  TableRowActions,\n  TableSearch,\n} from \"./TableBlock\";\n\nexport type {\n  DataTableBatchActionProps,\n  DataTableBatchBarProps,\n  DataTableBodyProps,\n  DataTableExpandedRowProps,\n  DataTableExportProps,\n  DataTableFilterOption,\n  DataTableFilterProps,\n  DataTableHeadProps,\n  DataTablePageSizeProps,\n  DataTableProps,\n  DataTableRowProps,\n  DataTableSearchProps,\n  DataTableTab,\n  DataTableTabsProps,\n  TableActionProps,\n  TableAlign,\n  TableBadgeProps,\n  TableBadgeTone,\n  TableBodyProps,\n  TableCellProps,\n  TableColor,\n  TableEmptyProps,\n  TableExpandToggleProps,\n  TableExpandedRowProps,\n  TableHeadProps,\n  TableHeadingProps,\n  TableInfoProps,\n  TablePaginationProps,\n  TablePersonProps,\n  TableProps,\n  TableRowActionProps,\n  TableRowActionsProps,\n  TableSearchProps,\n  TableRowProps,\n} from \"./TableBlock\";\n",
+      "type": "registry:component",
+      "target": "components/custom/blocks/AdvancedTableBlock.tsx"
+    }
+  ],
+  "docs": "Named exports: DataTable plus DataTableHeading/Content/Header/Body/Row/Head/Cell/Footer/Empty, DataTableSearch, DataTablePageSize, DataTableSelect, DataTableSelectAll, DataTableBatchBar, DataTableInfo, DataTablePagination, DataTableExpandToggle, DataTableExpandedRow, DataTableTabs, DataTableFilter, DataTableReset, DataTableBatchAction, TableAction, TableRowAction, TableBadge, TablePerson, useDataTable, resolveAccessor. `DataTableTabs` and `DataTableFilter` filter one field each by exact match (`by` is a dot path or accessor); `useDataTable` exposes `filters`, `isFiltered` and `resetAll`. `variant=\"soft\"` gives the admin-dashboard look. `DataTableBody` takes a render function receiving the current page of rows. `getRowId` defaults to id → _id → uuid; `sortBy` accepts a dot path or an accessor function (add `sortId` for functions). Builds on `table` and depends on `select` for the page-size control.",
+  "categories": [
+    "data-display"
+  ],
+  "type": "registry:component"
+}

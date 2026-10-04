@@ -1,0 +1,161 @@
+import { docsPageMetadata } from "@/lib/docs-metadata";
+
+export const metadata = docsPageMetadata("particle-canvas");
+
+import { ExampleShowcase } from "@/components/site/Sandbox";
+import { Installation } from "@/components/site/installation";
+import { extractCode } from "@/lib/code";
+
+# Particle Canvas
+
+An ultra-responsive, high-performance 2D HTML Canvas component that converts text into thousands of interactive particles with fluid, organic repulsion physics matching your active theme color.
+
+Move your cursor or touch across the canvas to push particles away; they scatter organically and spring back smoothly to their original text positions when the pointer moves away.
+
+export const usageDefault = `"use client";
+
+import { ParticleCanvas } from "@/components/custom/blocks/ParticleCanvasBlock";
+
+export default function ParticleCanvasDemo() {
+  return (
+    <div className="relative w-full h-[650px] min-h-max bg-background rounded-xl overflow-hidden flex items-center justify-center border border-border">
+      <ParticleCanvas
+        content="AlgorizeTech"
+        particleSize={2.5}
+        particleGap={5}
+        speed={1}
+        className="w-full h-full min-h-[650px]"
+      />
+    </div>
+  );
+}`;
+
+<ExampleShowcase
+  name="particle-canvas"
+  columns={1}
+  examples={[
+    {
+      title: "Text Particle Repel",
+      props: { content: "AlgorizeTech" },
+      usage: usageDefault,
+      code: extractCode("src/components/custom/blocks/ParticleCanvasBlock.tsx"),
+    },
+  ]}
+/>
+
+## Installation
+
+<Installation name="particle-canvas" />
+
+## Features
+
+Discover the key capabilities that make this component an excellent choice for modern interactive user interfaces.
+
+<div className="grid grid-cols-1 sm:grid-cols-2 gap-4 my-6 not-prose">
+  <div className="p-6 rounded-2xl border border-border bg-card">
+    <h3 className="text-lg font-semibold text-card-foreground mb-2">Theme Adaptive</h3>
+    <p className="text-muted-foreground text-sm">Automatically resolves and matches the active navigation item background color (<code>bg-primary</code>) across Light and Dark mode.</p>
+  </div>
+  <div className="p-6 rounded-2xl border border-border bg-card">
+    <h3 className="text-lg font-semibold text-card-foreground mb-2">Organic Physics</h3>
+    <p className="text-muted-foreground text-sm">Cursor repulsion features staggered particle turbulence and spring-damped return physics for a fluid tactile feel.</p>
+  </div>
+  <div className="p-6 rounded-2xl border border-border bg-card">
+    <h3 className="text-lg font-semibold text-card-foreground mb-2">Multi-Device Breakpoints</h3>
+    <p className="text-muted-foreground text-sm">Automatically scales particle parameters across Small (&lt;768px), Medium (768px-1023px), and Large (&ge;1024px) viewports.</p>
+  </div>
+  <div className="p-6 rounded-2xl border border-border bg-card">
+    <h3 className="text-lg font-semibold text-card-foreground mb-2">60 FPS Canvas</h3>
+    <p className="text-muted-foreground text-sm">Built with an offscreen sampling engine and efficient 2D rendering loops for maximum performance.</p>
+  </div>
+</div>
+
+## Best Practices & Guidelines
+
+<div className="flex flex-col gap-4 my-6 not-prose">
+  <div className="rounded-xl border border-foreground/[0.06] bg-foreground/[0.03] p-4">
+    <h4 className="font-sans text-[14px] font-semibold text-foreground mb-1">Canvas Breakpoint Scaling</h4>
+    <p className="text-[13px] leading-relaxed text-foreground/50">Automatically adapts particle parameters based on screen size: <strong>Large (&gt;=1024px)</strong> uses <code>particleGap = 5px, particleSize = 2.5px</code>, <strong>MD (768px-1023px)</strong> uses <code>particleGap = 4px, particleSize = 2px</code>, and <strong>Small (&lt;768px)</strong> uses <code>particleGap = 3px, particleSize = 1.5px</code>.</p>
+  </div>
+  <div className="rounded-xl border border-primary/15 bg-primary/5 p-4">
+    <h4 className="font-sans text-[14px] font-semibold text-primary mb-1">Container Height & Layout</h4>
+    <p className="text-[13px] leading-relaxed text-foreground/50">Wrap the component in a fixed or responsive height container (e.g. <code>h-[650px]</code> or <code>h-screen</code>). The canvas automatically resizes to fill 100% of its parent element.</p>
+  </div>
+</div>
+
+## Props Reference
+
+<div className="overflow-x-auto mb-8">
+  <table>
+    <thead>
+      <tr>
+        <th>Prop</th>
+        <th>Type</th>
+        <th>Default</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><code>content</code></td>
+        <td><code>string</code></td>
+        <td><code>"AlgorizeTech"</code></td>
+        <td>The text string to convert into animated particles.</td>
+      </tr>
+      <tr>
+        <td><code>particleSize</code></td>
+        <td><code>number</code></td>
+        <td><code>2.5</code></td>
+        <td>Radius of each particle dot on Large displays (MD uses 2.0px, Small uses 1.5px).</td>
+      </tr>
+      <tr>
+        <td><code>particleGap</code></td>
+        <td><code>number</code></td>
+        <td><code>5</code></td>
+        <td>Sampling stride gap between dots on Large displays (MD uses 4px, Small uses 3px).</td>
+      </tr>
+      <tr>
+        <td><code>speed</code></td>
+        <td><code>number</code></td>
+        <td><code>1</code></td>
+        <td>Animation speed multiplier for physics updates.</td>
+      </tr>
+      <tr>
+        <td><code>color</code></td>
+        <td><code>string</code></td>
+        <td><code>undefined</code></td>
+        <td>Optional particle color. Accepts a preset accent name (<code>"indigo"</code>, <code>"rose"</code>, <code>"emerald"</code>, <code>"zinc"</code>, <code>"amber"</code>, <code>"blue"</code>) or any CSS color string. When omitted (or set to <code>"primary"</code> / <code>"default"</code>), particles resolve to the active theme's <code>--primary</code> color.</td>
+      </tr>
+      <tr>
+        <td><code>backgroundColor</code></td>
+        <td><code>string</code></td>
+        <td><code>"transparent"</code></td>
+        <td>Canvas container background color.</td>
+      </tr>
+      <tr>
+        <td><code>interactive</code></td>
+        <td><code>boolean</code></td>
+        <td><code>true</code></td>
+        <td>Enables mouse and touch repulsion tracking.</td>
+      </tr>
+      <tr>
+        <td><code>fontSize</code></td>
+        <td><code>number</code></td>
+        <td><code>auto</code></td>
+        <td>Font size (px) used to rasterize <code>content</code> before sampling. When omitted, it is computed from the canvas size and text length so the text fills the container.</td>
+      </tr>
+      <tr>
+        <td><code>fontFamily</code></td>
+        <td><code>string</code></td>
+        <td><code>"system-ui, -apple-system, sans-serif"</code></td>
+        <td>CSS font-family used to render the text that particles are sampled from. The text is always drawn bold.</td>
+      </tr>
+      <tr>
+        <td><code>className</code></td>
+        <td><code>string</code></td>
+        <td><code>undefined</code></td>
+        <td>Extra classes merged onto the wrapper <code>&lt;div&gt;</code> (defaults to <code>relative w-full h-full min-h-[600px]</code>). All other <code>HTMLAttributes&lt;HTMLDivElement&gt;</code> are spread onto the wrapper as well.</td>
+      </tr>
+    </tbody>
+  </table>
+</div>

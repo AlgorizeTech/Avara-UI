@@ -1,74 +1,127 @@
+export const metadata = docsPageMetadata("chat-bubble");
+
 # Animated Chat Bubble
 
-A complete, GSAP-powered compound component system for building highly customized chat interfaces, messengers, and support widgets.
+A complete, CSS-animated compound component system for building highly customized chat interfaces, messengers, and support widgets.
 
-Building a polished chat interface requires handling complex edge cases: **message grouping** (dynamically adjusting border radiuses so stacked messages look connected), **typing indicators**, **read receipts**, and smooth entrance animations. This component abstracts all of that logic using React Context and high-performance GSAP animations.
+Building a polished chat interface requires handling complex edge cases: **message grouping** (dynamically adjusting border radiuses so stacked messages look connected), **typing indicators**, **read receipts**, and smooth entrance animations. This component abstracts all of that logic using React Context and lightweight CSS animations — no animation library.
 
 ---
 
-## Examples
-
-These are compound components: `ChatBubble` is the root and publishes `variant` and `layout` through context, so `ChatAvatar`, `ChatMessage` and `ChatTimestamp` style themselves without being told twice. The first example's **Code** tab contains the full component source.
+These are compound components: `ChatBubble` is the root and publishes `variant` and `layout` through context, so `ChatAvatar`, `ChatMessage` and `ChatTimestamp` style themselves without being told twice.
 
 export const usageConversation = `import {
   ChatAvatar,
   ChatBubble,
   ChatMessage,
   ChatTimestamp,
-  ChatTypingIndicator,
 } from "@/components/custom/blocks/ChatBubbleBlock";
 
 export default function ChatInterface() {
   return (
+    
+      {/* Header — plain markup, not part of the block */}
 
-        Hey! Did you check out the new Docs UI kit?
+            Sarah Jenkins
 
-          It has a really clean compound component pattern.
+            Online
+
+      {/* Messages — \`layout\` is what rounds the stacked corners for you */}
+
+          Hey! Did you check out the new Docs UI kit?
+
+            I heard it has a really clean compound component pattern for
+            chat interfaces.
 
           Yeah, I'm playing with it right now.
+
+            The grouping logic is built right into the context, so the
+            border radius adjusts automatically when messages stack.
+
+      {/* Composer — also plain markup */}
+
+          Type a message...
 
   );
 }`;
 
-export const usageGrouping = `// \`layout\` is the only thing that connects stacked messages — set it per
-// bubble and the radii, spacing and avatar visibility follow.
+export const usageGrouping = `import {
+  ChatAvatar,
+  ChatBubble,
+  ChatMessage,
+} from "@/components/custom/blocks/ChatBubbleBlock";
 
-  Three messages, one sender.
+export default function GroupedMessages() {
+  return (
+    
+      {/* \`layout\` is the only thing that connects stacked messages — set it
+          per bubble and the radii and avatar visibility follow. */}
 
-  The inner corners tighten to 4px…
+        Three messages, one sender.
 
-  …and only the last one keeps the avatar.
-`;
+        The inner corners tighten to 4px…
 
-export const usageReceipts = `// \`status\` is read from the bubble's \`variant\` — it only renders ticks on
-// sent messages, so received bubbles show the time alone.
+        …and only the last one keeps the avatar.
 
-    Sent — a single tick.
+      {/* The same three values mirror for outgoing messages. */}
 
-    Delivered — double tick.
+          The same logic mirrors for sent messages.
 
-    Read — double tick, accented.
+          No manual border-radius maths required.
 
-`;
+  );
+}`;
 
-export const usageTyping = `// Drop the bubble's padding and background so the three dots float on their
-// own while you wait for the reply.
+export const usageReceipts = `import {
+  ChatAvatar,
+  ChatBubble,
+  ChatMessage,
+  ChatTimestamp,
+} from "@/components/custom/blocks/ChatBubbleBlock";
 
-`;
+export default function ReadReceipts() {
+  return (
+    
+      {/* \`status\` is read from the bubble's \`variant\` — ticks render on sent
+          messages only, so a received bubble shows the time alone. */}
+
+          Received bubbles show the time only.
+
+          Sent — a single tick.
+
+          Delivered — double tick.
+
+          Read — double tick, accented.
+
+  );
+}`;
+
+export const usageTyping = `import {
+  ChatAvatar,
+  ChatBubble,
+  ChatMessage,
+  ChatTypingIndicator,
+} from "@/components/custom/blocks/ChatBubbleBlock";
+
+export default function TypingIndicator() {
+  return (
+    
+      {/* Drop the message padding and background so the three dots float on
+          their own while you wait for the reply. */}
+
+  );
+}`;
 
 ## Installation
 
-### Dependencies
-
-This component relies on **GSAP** for the high-performance entrance and typing indicator animations, and **Lucide React** for the read receipt ticks.
+Register the @algorize-ui registry once per project, then add the component:
 
 ```bash
-npm install gsap lucide-react
+npx shadcn@latest registry add @algorize-ui=https://algorize-ui.vercel.app/r/{name}.json
+npx shadcn@latest add @algorize-ui/chat-bubble
 ```
 
-### Copy the Component
-
-Copy the full engine code from the **Code** tab of the first example above into `components/custom/blocks/ChatBubbleBlock.tsx`.
+## Examples
 
 ## Features
 Discover the key capabilities that make this component an excellent choice for modern, animated user interfaces.
@@ -192,6 +245,6 @@ Discover the key capabilities that make this component an excellent choice for m
 
 ---
 
-**Component Path:** `nextjs\chat-bubble\page.mdx`
+**Component Path:** `[framework]\chat-bubble\page.mdx`
 
-**Web Version:** Visit the interactive version at the corresponding URL on the Next.js documentation site for live previews and interactive examples.
+**Web Version:** Visit the corresponding URL on the Algorize UI documentation site for live previews and interactive examples.

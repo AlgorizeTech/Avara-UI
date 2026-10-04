@@ -3,21 +3,40 @@
 import { cn } from "@/lib/utils";
 import React, {
   createContext,
+  useCallback,
   useContext,
   useEffect,
+  useLayoutEffect,
+  useMemo,
   useRef,
   useState,
 } from "react";
 import { createPortal } from "react-dom";
+
+/**
+ * Positioning has to happen before the browser paints, or the tooltip shows up
+ * at its placeholder coordinates for one frame and then jumps into place.
+ * useLayoutEffect warns when it runs on the server, and TooltipContent renders
+ * nothing until the trigger has committed, so falling back to useEffect there
+ * costs nothing.
+ */
+const useIsomorphicLayoutEffect =
+  typeof window !== "undefined" ? useLayoutEffect : useEffect;
 
 // ==========================================
 // 1. CONTEXT
 // ==========================================
 interface TooltipContextType {
   open: boolean;
-  handleOpen: () => void;
-  handleClose: () => void;
-  triggerRef: React.RefObject<HTMLDivElement | null>;
+  setOpen: React.Dispatch<React.SetStateAction<boolean>>;
+  delayDuration: number;
+  /**
+   * The trigger node itself, held in state rather than a ref. A ref shared
+   * through context makes every read of this context a ref read during render;
+   * a plain node lets the content position and portal itself without one.
+   */
+  trigger: HTMLDivElement | null;
+  setTrigger: React.Dispatch<React.SetStateAction<HTMLDivElement | null>>;
 }
 const TooltipContext = createContext<TooltipContextType | undefined>(undefined);
 
@@ -38,23 +57,18 @@ export interface TooltipProps {
 
 export function Tooltip({ children, delayDuration = 200 }: TooltipProps) {
   const [open, setOpen] = useState(false);
-  const triggerRef = useRef<HTMLDivElement | null>(null);
-  const timeoutRef = useRef<NodeJS.Timeout | null>(null);
+  const [trigger, setTrigger] = useState<HTMLDivElement | null>(null);
 
-  const handleOpen = () => {
-    if (timeoutRef.current) clearTimeout(timeoutRef.current);
-    timeoutRef.current = setTimeout(() => setOpen(true), delayDuration);
-  };
-
-  const handleClose = () => {
-    if (timeoutRef.current) clearTimeout(timeoutRef.current);
-    setOpen(false);
-  };
+  // The open/close delay is owned by the trigger, not shared through context:
+  // a timeout ref captured by a context handler would make every read of this
+  // context look like a ref read during render.
+  const value = useMemo(
+    () => ({ open, setOpen, delayDuration, trigger, setTrigger }),
+    [open, delayDuration, trigger],
+  );
 
   return (
-    <TooltipContext.Provider
-      value={{ open, handleOpen, handleClose, triggerRef }}
-    >
+    <TooltipContext.Provider value={value}>
       {children}
     </TooltipContext.Provider>
   );
@@ -76,17 +90,37 @@ export function TooltipTrigger({
   const context = useContext(TooltipContext);
   if (!context) throw new Error("TooltipTrigger must be used within a Tooltip");
 
+  const { open, setOpen, delayDuration, setTrigger } = context;
+  const timeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+
+  const handleOpen = useCallback(() => {
+    if (timeoutRef.current) clearTimeout(timeoutRef.current);
+    timeoutRef.current = setTimeout(() => setOpen(true), delayDuration);
+  }, [setOpen, delayDuration]);
+
+  const handleClose = useCallback(() => {
+    if (timeoutRef.current) clearTimeout(timeoutRef.current);
+    setOpen(false);
+  }, [setOpen]);
+
+  useEffect(
+    () => () => {
+      if (timeoutRef.current) clearTimeout(timeoutRef.current);
+    },
+    [],
+  );
+
   return (
     <div
-      ref={context.triggerRef}
-      onMouseEnter={context.handleOpen}
-      onMouseLeave={context.handleClose}
-      onFocus={context.handleOpen}
-      onBlur={context.handleClose}
+      ref={setTrigger}
+      onMouseEnter={handleOpen}
+      onMouseLeave={handleClose}
+      onFocus={handleOpen}
+      onBlur={handleClose}
       className={cn("inline-block", className)}
       tabIndex={0}
       aria-haspopup="dialog"
-      aria-expanded={context.open}
+      aria-expanded={open}
       {...props}
     >
       {children}
@@ -104,6 +138,15 @@ export interface TooltipContentProps
   sideOffset?: number;
 }
 
+// The entrance grows out of the trigger's edge: a tooltip above the trigger
+// scales from its own bottom edge and slides up a touch, and so on.
+const ENTER_FROM_SIDE: Record<NonNullable<TooltipContentProps["side"]>, string> = {
+  top: "origin-bottom slide-in-from-bottom-1",
+  bottom: "origin-top slide-in-from-top-1",
+  left: "origin-right slide-in-from-right-1",
+  right: "origin-left slide-in-from-left-1",
+};
+
 export function TooltipContent({
   side = "top",
   align = "center",
@@ -115,27 +158,36 @@ export function TooltipContent({
   const context = useContext(TooltipContext);
   if (!context) throw new Error("TooltipContent must be used within a Tooltip");
 
-  const { open, triggerRef } = context;
+  const { open, trigger: triggerEl } = context;
   const [coords, setCoords] = useState({ top: -9999, left: -9999 });
+  // Stale coordinates from the previous open would otherwise paint first.
+  const [positioned, setPositioned] = useState(false);
   const contentRef = useRef<HTMLDivElement>(null);
-  const [mounted, setMounted] = useState(false);
 
-  // SSR safety for Portals
-  useEffect(() => {
-    setMounted(true);
-  }, []);
+  // Forget the measurement on close, so the next open cannot flash at last
+  // time’s coordinates before the layout effect re-measures.
+  const [wasOpen, setWasOpen] = useState(open);
+  if (wasOpen !== open) {
+    setWasOpen(open);
+    if (!open) setPositioned(false);
+  }
 
-  useEffect(() => {
-    if (!open || !triggerRef.current || !contentRef.current) return;
+  useIsomorphicLayoutEffect(() => {
+    if (!open || !triggerEl || !contentRef.current) return;
 
     // Resolve the document/window the trigger actually lives in, so the
     // tooltip works when rendered inside an iframe (e.g. docs device preview).
-    const doc = triggerRef.current.ownerDocument;
+    const doc = triggerEl.ownerDocument;
     const win = doc.defaultView ?? window;
 
     const updatePosition = () => {
-      const trigger = triggerRef.current!.getBoundingClientRect();
-      const content = contentRef.current!.getBoundingClientRect();
+      const trigger = triggerEl.getBoundingClientRect();
+      // offsetWidth/Height are the untransformed layout box; a bounding rect
+      // would report the shrunken size while the zoom-in entrance runs.
+      const content = {
+        width: contentRef.current!.offsetWidth,
+        height: contentRef.current!.offsetHeight,
+      };
       let top = 0;
       let left = 0;
 
@@ -159,6 +211,7 @@ export function TooltipContent({
       }
 
       setCoords({ top: top + win.scrollY, left: left + win.scrollX });
+      setPositioned(true);
     };
 
     updatePosition();
@@ -169,22 +222,34 @@ export function TooltipContent({
       win.removeEventListener("scroll", updatePosition, true);
       win.removeEventListener("resize", updatePosition);
     };
-  }, [open, side, align, sideOffset]);
+  }, [open, side, align, sideOffset, triggerEl]);
 
-  if (!mounted || !open) return null;
+  // triggerEl is null until the trigger commits, which also covers SSR: there
+  // is no document to portal into on the server.
+  if (!triggerEl || !open) return null;
 
   // Portal into the trigger's own document (supports iframe rendering).
-  const portalTarget = triggerRef.current?.ownerDocument.body ?? document.body;
+  const portalTarget = triggerEl.ownerDocument.body;
 
   return createPortal(
     <div
       ref={contentRef}
       role="tooltip"
       className={cn(
-        "absolute z-[9999] px-3 py-1.5 text-xs font-medium text-white dark:text-zinc-900 bg-zinc-900 dark:bg-white rounded-md shadow-md animate-in fade-in zoom-in-95 duration-150 pointer-events-none",
+        "absolute z-[9999] px-3 py-1.5 text-xs font-medium text-primary-foreground bg-primary rounded-md shadow-md pointer-events-none",
+        // `duration-150` sets transition-duration too, and the browser default
+        // transition-property is `all` — without `transition-none` top/left
+        // would tween from the placeholder coordinates, sliding the tooltip
+        // across the screen instead of opening in place.
+        "transition-none animate-in fade-in zoom-in-95 duration-150",
+        ENTER_FROM_SIDE[side],
         className,
       )}
-      style={{ top: coords.top, left: coords.left }}
+      style={{
+        top: coords.top,
+        left: coords.left,
+        visibility: positioned ? "visible" : "hidden",
+      }}
       {...props}
     >
       {children}

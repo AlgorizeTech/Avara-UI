@@ -1,0 +1,938 @@
+{
+  "carousel-3d": {
+    "3d-carousel": "Carousel 3D — 3D carousel",
+    "shorter-deck": "Carousel 3D — Shorter deck"
+  },
+  "carousel-3d-motion": {
+    "3d-carousel": "Carousel 3D — 3D carousel",
+    "shorter-deck": "Carousel 3D — Shorter deck"
+  },
+  "accordion": {
+    "accordion": "Accordion",
+    "faq-section": "Accordion — FAQ section",
+    "multiple-open": "Accordion — Multiple open",
+    "always-one-open": "Accordion — Always one open",
+    "multiple-permanent-open": "Accordion — Multiple permanent open",
+    "stack-entrance": "Accordion — Stack entrance",
+    "all-variants": "Accordion — All variants"
+  },
+  "ai-chat": {
+    "ai-assistant": "AI Chat — AI assistant",
+    "compact": "AI Chat — Compact",
+    "wired-to-your-backend": "AI Chat — Wired to your backend",
+    "minimal": "AI Chat — Minimal",
+    "glass": "AI Chat — Glass"
+  },
+  "ai-chat-motion": {
+    "ai-assistant": "AI Chat — AI assistant",
+    "compact": "AI Chat — Compact",
+    "wired-to-your-backend": "AI Chat — Wired to your backend",
+    "minimal": "AI Chat — Minimal",
+    "glass": "AI Chat — Glass"
+  },
+  "alert": {
+    "alert": "Alert",
+    "semantic-types": "Alert — Semantic types",
+    "variants": "Alert — Variants",
+    "glass": "Alert — Glass",
+    "glow": "Alert — Glow",
+    "icons": "Alert — Icons",
+    "dismissible": "Alert — Dismissible",
+    "rich-content": "Alert — Rich content"
+  },
+  "animated-list": {
+    "animated-list": "Animated List",
+    "flip": "Animated List — Flip",
+    "slide-up": "Animated List — Slide up",
+    "pop": "Animated List — Pop",
+    "timing": "Animated List — Timing"
+  },
+  "animated-timeline": {
+    "animated-timeline": "Animated Timeline",
+    "left-layout": "Animated Timeline — Left layout",
+    "right-layout": "Animated Timeline — Right layout",
+    "fade-up": "Animated Timeline — Fade up",
+    "zoom-in": "Animated Timeline — Zoom in",
+    "blur-in": "Animated Timeline — Blur in"
+  },
+  "animated-typography": {
+    "typewriter": "Animated Typography — Typewriter",
+    "typewriter-fixed-prefix": "Animated Typography — Typewriter, Fixed Prefix",
+    "letter-bounce-word-rotator": "Animated Typography — Letter Bounce Word Rotator",
+    "word-flip": "Animated Typography — Word Flip",
+    "blur-swap": "Animated Typography — Blur Swap",
+    "blur-rise": "Animated Typography — Blur Rise",
+    "color-wipe": "Animated Typography — Color Wipe",
+    "color-reveal-staggered-sweep": "Animated Typography — Color Reveal Staggered Sweep",
+    "wavy-float-sine-wave": "Animated Typography — Wavy Float Sine Wave",
+    "3d-perspective-flip": "Animated Typography — 3D Perspective Flip",
+    "elastic-spring-overshoot": "Animated Typography — Elastic Spring Overshoot",
+    "spotlight-focus-reveal": "Animated Typography — Spotlight Focus Reveal",
+    "split-stagger-entrance": "Animated Typography — Split Stagger Entrance",
+    "underline-stroke-draw": "Animated Typography — Underline Stroke Draw",
+    "matrix-scramble-decryption": "Animated Typography — Matrix Scramble Decryption"
+  },
+  "api-playground": {
+    "api-playground": "API Playground"
+  },
+  "apple-select": {
+    "apple-select": "Apple Select",
+    "without-handles": "Apple Select — Without handles",
+    "animated": "Apple Select — Animated",
+    "across-lines": "Apple Select — Across lines"
+  },
+  "audio-player": {
+    "audio-hero": "Audio Player — Audio hero",
+    "compact-bar": "Audio Player — Compact bar",
+    "native-controls": "Audio Player — Native controls"
+  },
+  "video-player-plyr": {
+    "plyr-audio": "Video Player (Plyr) — Plyr — Audio",
+    "plyr-html5": "Video Player (Plyr) — Plyr — HTML5",
+    "plyr-youtube": "Video Player (Plyr) — Plyr — YouTube"
+  },
+  "avatar-stack": {
+    "without-tooltip": "Avatar Stack — Without tooltip",
+    "with-an-action": "Avatar Stack — With an action",
+    "folded-count": "Avatar Stack — Folded count",
+    "sizes": "Avatar Stack — Sizes"
+  },
+  "bento-showcase": {
+    "managed-call-centre": "Bento Showcase — Managed call centre"
+  },
+  "book-appointment": {
+    "clinic-booking-page": "Book Appointment — Clinic booking page",
+    "solid": "Book Appointment — Solid"
+  },
+  "book-flip": {
+    "book-flip-component": "Book Flip — Book Flip Component"
+  },
+  "booking-card": {
+    "in-a-card": "Booking Card — In a card",
+    "in-a-glass-slab": "Booking Card — In a glass slab"
+  },
+  "breadcrumb": {
+    "breadcrumb": "Breadcrumb",
+    "with-icons": "Breadcrumb — With icons",
+    "truncated-path": "Breadcrumb — Truncated path"
+  },
+  "button": {
+    "4-side-spinning-glowing-line-animated-button": "Button — 4-Side Spinning Glowing Line Animated Button",
+    "dark-glass-parameter-control-panel-tiles": "Button — Dark Glass Parameter Control Panel Tiles",
+    "interactive-sliding-icon-text-motion-variants": "Button — Interactive Sliding Icon & Text Motion Variants",
+    "icon-only": "Button — Icon only",
+    "social-login": "Button — Social login"
+  },
+  "calendar": {
+    "calendar-dashboard": "Calendar — Calendar dashboard",
+    "minimal": "Calendar — Minimal",
+    "glass": "Calendar — Glass"
+  },
+  "card": {
+    "e-commerce-product-cards": "Card — E-commerce Product Cards",
+    "standard-card": "Card — Standard Card",
+    "interactive": "Card — Interactive",
+    "stat-grid": "Card — Stat grid",
+    "blog-showcase": "Card — Blog showcase",
+    "blog-cards": "Card — Blog cards",
+    "profile-card": "Card — Profile card",
+    "shop-tiles": "Card — Shop tiles",
+    "boarding-pass": "Card — Boarding pass",
+    "now-playing": "Card — Now playing"
+  },
+  "card-stack": {
+    "swipe-to-discard": "Card Stack — Swipe to Discard",
+    "infinite-loop": "Card Stack — Infinite Loop",
+    "with-navigation-buttons": "Card Stack — With navigation buttons",
+    "left-slide-direction": "Card Stack — Left Slide Direction"
+  },
+  "card-stack-motion": {
+    "swipe-to-discard": "Card Stack — Swipe to Discard",
+    "infinite-loop": "Card Stack — Infinite Loop",
+    "with-navigation-buttons": "Card Stack — With navigation buttons",
+    "left-slide-direction": "Card Stack — Left Slide Direction"
+  },
+  "carousel": {
+    "radial-carousel": "Carousel — Radial carousel",
+    "fluid-glass-slider": "Carousel — Fluid glass slider",
+    "image-carousel": "Carousel — Image carousel",
+    "hero-carousel": "Carousel — Hero carousel",
+    "thumbnail-rail": "Carousel — Thumbnail rail",
+    "side-thumbnails": "Carousel — Side thumbnails"
+  },
+  "cart": {
+    "drawer": "Cart — Drawer",
+    "modal": "Cart — Modal",
+    "page": "Cart — Page"
+  },
+  "chart": {
+    "bar-chart": "Chart — Bar chart",
+    "line-chart": "Chart — Line chart",
+    "pie-chart": "Chart — Pie chart",
+    "donut-chart": "Chart — Donut chart",
+    "donut-with-legend": "Chart — Donut with legend",
+    "stacked-bar": "Chart — Stacked bar"
+  },
+  "chat": {
+    "chat-application": "Chat — Chat application",
+    "minimal": "Chat — Minimal",
+    "glass": "Chat — Glass"
+  },
+  "chat-bubble": {
+    "conversation": "Chat Bubble — Conversation",
+    "message-grouping": "Chat Bubble — Message grouping",
+    "timestamps-read-receipts": "Chat Bubble — Timestamps & read receipts",
+    "typing-indicator": "Chat Bubble — Typing indicator"
+  },
+  "circular-text": {
+    "video-badge": "Circular Text — Video badge",
+    "stamps": "Circular Text — Stamps",
+    "as-a-link": "Circular Text — As a link"
+  },
+  "collapsible": {
+    "settings-panel": "Collapsible — Settings panel",
+    "file-tree": "Collapsible — File tree"
+  },
+  "color-picker": {
+    "360-color-wheel-studio-with-harmonies-shades": "Color Picker — 360° Color Wheel Studio with Harmonies & Shades",
+    "gradient-studio-css-generator": "Color Picker — Gradient Studio & CSS Generator"
+  },
+  "command": {
+    "groups-separators-shortcuts": "Command — Groups, separators & shortcuts",
+    "command-dialog": "Command — Command dialog",
+    "external-filtering": "Command — External filtering"
+  },
+  "component-wall": {
+    "build-interactive-interfaces": "Component Wall — Build interactive interfaces",
+    "copy-beside-the-wall": "Component Wall — Copy beside the wall"
+  },
+  "confidential-folder": {
+    "confidential-folder": "Confidential Folder"
+  },
+  "context-menu": {
+    "labels-shortcuts-disabled": "Context Menu — Labels, shortcuts & disabled"
+  },
+  "conversation-timeline": {
+    "conversation-timeline": "Conversation Timeline",
+    "left-side": "Conversation Timeline — Left side",
+    "paired-with-a-chat": "Conversation Timeline — Paired with a chat",
+    "density": "Conversation Timeline — Density"
+  },
+  "copy-button": {
+    "copy-button": "Copy Button",
+    "variants": "Copy Button — Variants",
+    "sizes": "Copy Button — Sizes",
+    "icon-only": "Copy Button — Icon only",
+    "copy-field": "Copy Button — Copy field",
+    "inset-button": "Copy Button — Inset button",
+    "in-a-code-block": "Copy Button — In a code block",
+    "custom-labels-timing": "Copy Button — Custom labels & timing"
+  },
+  "counter": {
+    "slide-countdown": "Counter — Slide countdown",
+    "stepper": "Counter — Stepper",
+    "outline-stepper": "Counter — Outline stepper",
+    "soft-stepper": "Counter — Soft stepper",
+    "vertical-stepper": "Counter — Vertical stepper",
+    "animated-ticker": "Counter — Animated ticker",
+    "circular-progress": "Counter — Circular progress",
+    "countdown": "Counter — Countdown"
+  },
+  "counter-section": {
+    "1-cyber-hud-terminal-telemetry": "Counter Section — 1. Cyber HUD (Terminal & Telemetry)",
+    "2-minimal-slash-agency-studio": "Counter Section — 2. Minimal Slash (Agency / Studio)",
+    "3-halftone-cinema-architectural": "Counter Section — 3. Halftone Cinema (Architectural)",
+    "4-spotlight-gradient-interactive-pointer": "Counter Section — 4. Spotlight Gradient (Interactive Pointer)"
+  },
+  "cursor-animation": {
+    "image-trail-cursor": "Cursor Animation — Image Trail Cursor",
+    "glow-cursor": "Cursor Animation — Glow Cursor",
+    "magnetic-target-cursor": "Cursor Animation — Magnetic Target Cursor",
+    "particle-trail-cursor": "Cursor Animation — Particle Trail Cursor",
+    "badge-label-cursor": "Cursor Animation — Badge Label Cursor",
+    "spotlight-mask-cursor": "Cursor Animation — Spotlight Mask Cursor",
+    "expand-scaling-cursor": "Cursor Animation — Expand Scaling Cursor",
+    "precision-crosshair-cursor": "Cursor Animation — Precision Crosshair Cursor",
+    "smooth-ring-cursor": "Cursor Animation — Smooth Ring Cursor",
+    "radial-pulse-cursor": "Cursor Animation — Radial Pulse Cursor",
+    "sonar-wave-cursor": "Cursor Animation — Sonar Wave Cursor"
+  },
+  "curved-carousel": {
+    "3d-curved-arc-sway-deck": "Curved Carousel — 3D Curved Arc Sway Deck",
+    "continuous-3d-concave-arc-marquee": "Curved Carousel — Continuous 3D Concave Arc Marquee"
+  },
+  "custom-code-block": {
+    "code-block": "Custom Code Block — Code block",
+    "typescript": "Custom Code Block — TypeScript",
+    "shell-commands": "Custom Code Block — Shell commands",
+    "multiple-files": "Custom Code Block — Multiple files"
+  },
+  "dashboard": {
+    "admin-overview": "Dashboard — Admin overview"
+  },
+  "data-flow": {
+    "sources-core-outputs": "Data Flow — Sources, core, outputs"
+  },
+  "data-grid": {
+    "data-grid": "Data Grid",
+    "read-only": "Data Grid — Read only"
+  },
+  "data-maps": {
+    "filled-regions": "Data Maps — Filled regions",
+    "density-dots": "Data Maps — Density dots",
+    "zoomable": "Data Maps — Zoomable"
+  },
+  "data-table-soft": {
+    "soft-variant": "Data Table — Soft variant"
+  },
+  "advanced-table": {
+    "searchable-datatable": "Advanced Table — Searchable DataTable"
+  },
+  "date-picker": {
+    "date-picker": "Date Picker",
+    "error": "Date Picker — Error",
+    "disable-past-dates": "Date Picker — Disable past dates",
+    "date-time": "Date Picker — Date & time"
+  },
+  "design-components-folder": {
+    "design-components-folder": "Design Components Folder"
+  },
+  "design-folder-box": {
+    "custom-labels": "Design Folder Box — Custom labels"
+  },
+  "dialog": {
+    "dialog": "Dialog",
+    "form-dialog": "Dialog — Form dialog",
+    "size-variations": "Dialog — Size variations",
+    "destructive-confirm": "Dialog — Destructive confirm",
+    "confirm-before-deleting": "Dialog — Confirm before deleting",
+    "without-close-button": "Dialog — Without close button",
+    "controlled": "Dialog — Controlled",
+    "dialog-inside-a-dialog": "Dialog — Dialog inside a dialog"
+  },
+  "dock": {
+    "dock": "Dock",
+    "badges-active-app": "Dock — Badges & active app"
+  },
+  "dock-motion": {
+    "dock": "Dock",
+    "badges-active-app": "Dock — Badges & active app"
+  },
+  "draggable-card-list": {
+    "classic-card-list": "Draggable Card List — Classic Card List",
+    "modern-ambient-tint-card-list": "Draggable Card List — Modern Ambient Tint Card List"
+  },
+  "draggable-card-list-motion": {
+    "classic-card-list": "Draggable Card List — Classic Card List",
+    "modern-ambient-tint-card-list": "Draggable Card List — Modern Ambient Tint Card List"
+  },
+  "drawer": {
+    "drawer": "Drawer",
+    "bottom-sheet": "Drawer — Bottom sheet",
+    "open-on-mount": "Drawer — Open on mount"
+  },
+  "email": {
+    "email-dashboard": "Email — Email dashboard",
+    "minimal": "Email — Minimal",
+    "glass": "Email — Glass"
+  },
+  "faq-section": {
+    "1-homepage-faq-section": "Faq Section — 1. Homepage FAQ Section"
+  },
+  "upload": {
+    "dropzone": "Upload — Dropzone",
+    "upload-states": "Upload — Upload states",
+    "folder-drop-target": "Upload — Folder drop target"
+  },
+  "input": {
+    "simple-file-input": "Input — Simple file input",
+    "input": "Input",
+    "filled": "Input — Filled",
+    "underlined": "Input — Underlined",
+    "password": "Input — Password",
+    "autocomplete": "Input — Autocomplete"
+  },
+  "flavour-carousel": {
+    "choose-your-matcha-tea": "Flavour Carousel — Choose your matcha tea"
+  },
+  "fleet": {
+    "fleet-tracker": "Fleet Tracker Map — Fleet tracker",
+    "minimal": "Fleet Tracker Map — Minimal",
+    "modern": "Fleet Tracker Map — Modern"
+  },
+  "floating-contact-button": {
+    "floating-contact-button": "Floating Contact Button",
+    "bottom-left": "Floating Contact Button — Bottom left",
+    "collapsed": "Floating Contact Button — Collapsed",
+    "branded-header": "Floating Contact Button — Branded header"
+  },
+  "flow-gallery": {
+    "top-left-to-bottom-right-flow-stream": "Flow Gallery — Top-Left to Bottom-Right Flow Stream",
+    "top-right-to-bottom-left-flow-stream": "Flow Gallery — Top-Right to Bottom-Left Flow Stream",
+    "straight-upward-vertical-stream-bottom-to-top": "Flow Gallery — Straight Upward Vertical Stream (Bottom to Top)",
+    "straight-downward-vertical-stream-top-to-bottom": "Flow Gallery — Straight Downward Vertical Stream (Top to Bottom)"
+  },
+  "flowchart": {
+    "flowchart": "Flowchart",
+    "linear-pipeline": "Flowchart — Linear pipeline",
+    "no-active-route": "Flowchart — No active route",
+    "accent-color": "Flowchart — Accent color"
+  },
+  "folder": {
+    "folder": "Folder",
+    "fan-on-hover": "Folder — Fan on hover",
+    "icon": "Folder — Icon",
+    "photos": "Folder — Photos"
+  },
+  "folder-motion": {
+    "folder": "Folder",
+    "fan-on-hover": "Folder — Fan on hover",
+    "icon": "Folder — Icon",
+    "photos": "Folder — Photos"
+  },
+  "footer": {
+    "simple-centered-footer": "Footer — Simple Centered Footer",
+    "glass-dock-footer": "Footer — Glass Dock Footer",
+    "neon-glow-pulse-cyberpunk-footer": "Footer — Neon Glow Pulse Cyberpunk Footer",
+    "quantum-particle-beam-lines-footer": "Footer — Quantum Particle Beam Lines Footer"
+  },
+  "form": {
+    "react-hook-form-zod": "Form — React Hook Form + Zod",
+    "submitting": "Form — Submitting"
+  },
+  "glass-panel": {
+    "four-shapes": "Glass Panel — Four shapes",
+    "bento-layout": "Glass Panel — Bento layout",
+    "solid": "Glass Panel — Solid"
+  },
+  "half-stars": {
+    "full-stars": "Half Stars — Full stars",
+    "half-stars": "Half Stars",
+    "continuous-fractions": "Half Stars — Continuous fractions",
+    "custom-scale-and-colors": "Half Stars — Custom scale and colors"
+  },
+  "heart-signal": {
+    "real-time-ekg-waveform-monitor": "Heart Signal — Real-time EKG Waveform Monitor",
+    "anatomical-cardiac-heart-sweep": "Heart Signal — Anatomical Cardiac Heart Sweep",
+    "fluid-cardiac-wave-visualizer": "Heart Signal — Fluid Cardiac Wave Visualizer"
+  },
+  "honeycomb-hero": {
+    "wander-the-fjords": "Honeycomb Hero — Wander the fjords"
+  },
+  "hero-carousel": {
+    "watch-the-dawn-from-the-summit": "Hero Carousel — Watch the dawn from the summit"
+  },
+  "fashion-hero": {
+    "daring-designs": "Fashion Hero — Daring designs"
+  },
+  "support-hero": {
+    "headline-call-to-action-six-cards": "Support Hero — Headline, call to action, six cards"
+  },
+  "collage-hero": {
+    "a-bright-place": "Collage Hero — A bright place"
+  },
+  "homepage-hero": {
+    "word-bounce-hero": "Homepage Hero — Word bounce hero"
+  },
+  "homepage-hero-typing": {
+    "typing-hero": "Hero — Typing hero",
+    "typing-hero-fixed-title": "Hero — Typing hero, fixed title"
+  },
+  "homepage-hero-slider": {
+    "split-marquee-slider-hero": "Hero — Split marquee slider hero"
+  },
+  "homepage-hero-glow-arc": {
+    "pet-shop-animal-care-hero": "Hero — Pet Shop & Animal Care Hero"
+  },
+  "hero-doctor": {
+    "doctor-portal-healthcare-hero": "Hero — Doctor Portal & Healthcare Hero"
+  },
+  "hero-facility": {
+    "precision-facility-cad-grid-hero": "Hero — Precision Facility & CAD Grid Hero"
+  },
+  "hero-vortex": {
+    "atmospheric-cyclone-radar-hero": "Hero — Atmospheric Cyclone Radar Hero"
+  },
+  "image-compare": {
+    "classic-slider": "Image Compare — Classic Slider",
+    "split-handle": "Image Compare — Split Handle",
+    "glowing-divider": "Image Compare — Glowing Divider",
+    "badge-overlay-percentage": "Image Compare — Badge Overlay Percentage",
+    "minimalist-thin-line": "Image Compare — Minimalist Thin Line",
+    "hover-pointer-reveal": "Image Compare — Hover Pointer Reveal",
+    "vertical-slide-compare": "Image Compare — Vertical Slide Compare",
+    "circular-magnifier-lens": "Image Compare — Circular Magnifier Lens",
+    "glassmorphic-handle": "Image Compare — Glassmorphic Handle",
+    "diagonal-diamond-split": "Image Compare — Diagonal Diamond Split"
+  },
+  "image-viewer": {
+    "inner-lens-magnifier-zoom-viewer": "Image Viewer — Inner Lens Magnifier Zoom Viewer",
+    "hd-side-portal-lens-zoom-viewer": "Image Viewer — HD Side Portal Lens Zoom Viewer",
+    "floating-arrow-slider-dots-viewer": "Image Viewer — Floating Arrow Slider & Dots Viewer",
+    "interactive-thumbnail-strip-gallery-viewer": "Image Viewer — Interactive Thumbnail Strip Gallery Viewer"
+  },
+  "image-wall": {
+    "a-camera-over-the-wall": "Image Wall — A camera over the wall",
+    "a-band-shuffled": "Image Wall — A band, shuffled",
+    "held-still": "Image Wall — Held still"
+  },
+  "infrastructure-topology": {
+    "infrastructure-topology-showcase": "Infrastructure Topology — Infrastructure Topology Showcase"
+  },
+  "invoice": {
+    "default-dashboard-invoice": "Invoice — Default Dashboard Invoice",
+    "corporate-executive": "Invoice — Corporate Executive",
+    "neo-brutalist": "Invoice — Neo-Brutalist"
+  },
+  "item": {
+    "item": "Item",
+    "card": "Item — Card"
+  },
+  "kbd": {
+    "kbd": "Kbd",
+    "combinations": "Kbd — Combinations",
+    "inline-in-text": "Kbd — Inline in text"
+  },
+  "loader": {
+    "spinner": "Loader — Spinner",
+    "dots": "Loader — Dots",
+    "pulse": "Loader — Pulse",
+    "bar": "Loader — Bar"
+  },
+  "magic-bento": {
+    "glow-spotlight-grid": "Magic Bento — Glow Spotlight Grid",
+    "highlight-card": "Magic Bento — Highlight card"
+  },
+  "marquee": {
+    "marquee": "Marquee",
+    "reverse-direction": "Marquee — Reverse direction",
+    "vertical": "Marquee — Vertical",
+    "speed": "Marquee — Speed",
+    "without-fade-or-pause": "Marquee — Without fade or pause"
+  },
+  "masonry-grid": {
+    "masonry-grid": "Masonry Grid",
+    "column-counts": "Masonry Grid — Column counts",
+    "custom-gap-spacing": "Masonry Grid — Custom gap spacing",
+    "slower-stagger": "Masonry Grid — Slower stagger",
+    "without-the-entrance": "Masonry Grid — Without the entrance"
+  },
+  "masonry-grid-motion": {
+    "masonry-grid": "Masonry Grid",
+    "column-counts": "Masonry Grid — Column counts",
+    "custom-gap-spacing": "Masonry Grid — Custom gap spacing",
+    "slower-stagger": "Masonry Grid — Slower stagger",
+    "without-the-entrance": "Masonry Grid — Without the entrance"
+  },
+  "memories-card": {
+    "tracking-the-active-card": "Memories Card — Tracking the active card"
+  },
+  "memories-card-motion": {
+    "tracking-the-active-card": "Memories Card — Tracking the active card"
+  },
+  "menubar": {
+    "menubar": "Menubar",
+    "application-menubar": "Menubar — Application menubar"
+  },
+  "mobile-mockup": {
+    "iphone-17-pro-max": "Mobile Mockup — iPhone 17 Pro Max",
+    "iphone-14-pro-max": "Mobile Mockup — iPhone 14 Pro Max",
+    "iphone-12-pro-max": "Mobile Mockup — iPhone 12 Pro Max",
+    "iphone-5": "Mobile Mockup — iPhone 5",
+    "samsung-s24-ultra": "Mobile Mockup — Samsung S24 Ultra",
+    "google-pixel-8": "Mobile Mockup — Google Pixel 8",
+    "google-pixel-10": "Mobile Mockup — Google Pixel 10"
+  },
+  "modal": {
+    "modal": "Modal",
+    "form": "Modal — Form",
+    "confirmation": "Modal — Confirmation",
+    "fullscreen": "Modal — Fullscreen",
+    "glass": "Modal — Glass"
+  },
+  "navbar": {
+    "navbar": "Navbar",
+    "centered": "Navbar — Centered",
+    "floating": "Navbar — Floating",
+    "minimal": "Navbar — Minimal",
+    "glass": "Navbar — Glass"
+  },
+  "navigation-menu": {
+    "minimal": "Navigation Menu — Minimal"
+  },
+  "network-graph": {
+    "interactive-rings": "Network Graph — Interactive rings"
+  },
+  "newsletter": {
+    "portraits": "Newsletter — Portraits",
+    "spotlight": "Newsletter — Spotlight",
+    "issues": "Newsletter — Issues"
+  },
+  "newsletter-motion": {
+    "portraits": "Newsletter — Portraits",
+    "spotlight": "Newsletter — Spotlight",
+    "issues": "Newsletter — Issues"
+  },
+  "orbit-gallery": {
+    "movement-is-what-people-notice-first": "Orbit Gallery — Movement is what people notice first"
+  },
+  "otp-input": {
+    "otp-input": "OTP Input",
+    "underlined": "OTP Input — Underlined"
+  },
+  "pagination": {
+    "pagination": "Pagination",
+    "sibling-count": "Pagination — Sibling count",
+    "jump-to-page-rows-per-page": "Pagination — Jump to page & rows per page",
+    "dropdown-page-picker": "Pagination — Dropdown page picker",
+    "in-a-data-table": "Pagination — In a data table"
+  },
+  "particle-canvas": {
+    "text-particle-repel": "Particle Canvas — Text Particle Repel"
+  },
+  "piano": {
+    "playable-synthesizer-piano": "Piano — Playable Synthesizer Piano"
+  },
+  "platform-grid": {
+    "fifty-six-cells-four-features": "Platform Grid — Fifty-six cells, four features"
+  },
+  "popover": {
+    "account-menu": "Popover — Account menu",
+    "offset": "Popover — Offset"
+  },
+  "pricing": {
+    "tiered-cards": "Pricing — Tiered cards",
+    "dot-matrix-cards": "Pricing — Dot matrix cards",
+    "scale-cards": "Pricing — Scale cards",
+    "elegant-cards": "Pricing — Elegant cards",
+    "minimal-cards": "Pricing — Minimal cards",
+    "bordered-cards": "Pricing — Bordered cards",
+    "quote-builder": "Pricing — Quote builder",
+    "comparison-table": "Pricing — Comparison table",
+    "usage-slider": "Pricing — Usage slider",
+    "typographic-menu": "Pricing — Typographic menu",
+    "interactive-service-checklist": "Pricing — Interactive service checklist"
+  },
+  "product-details": {
+    "color-swatch-synced-image-gallery-details": "Product Details — Color Swatch Synced Image Gallery Details",
+    "modern-split-gallery-slider-details": "Product Details — Modern Split Gallery Slider Details",
+    "floating-glassmorphism-card-details": "Product Details — Floating Glassmorphism Card Details",
+    "bento-editorial-showcase-details": "Product Details — Bento Editorial Showcase Details"
+  },
+  "profile-page": {
+    "profile-page": "Profile Page",
+    "solid": "Profile Page — Solid"
+  },
+  "progress": {
+    "progress": "Progress",
+    "circular-progress": "Progress — Circular progress",
+    "circular-with-a-custom-center": "Progress — Circular with a custom center",
+    "statuses": "Progress — Statuses",
+    "indeterminate": "Progress — Indeterminate",
+    "step-indicator": "Progress — Step indicator",
+    "stage-colours": "Progress — Stage colours"
+  },
+  "qr-code": {
+    "qr-generator": "QR Code Suite — QR generator",
+    "sizes-levels": "QR Code Suite — Sizes & levels",
+    "qr-reader": "QR Code Suite — QR reader"
+  },
+  "radial-orbital-timeline": {
+    "dual-orbit-timeline-default": "Radial Orbital Timeline — Dual Orbit Timeline (Default)",
+    "single-orbit-timeline": "Radial Orbital Timeline — Single Orbit Timeline"
+  },
+  "range-date-picker": {
+    "single-month-range-date-picker": "Range Date Picker — Single Month Range Date Picker",
+    "single-month-priced-range-date-picker": "Range Date Picker — Single Month Priced Range Date Picker",
+    "dual-month-range-date-picker": "Range Date Picker — Dual Month Range Date Picker",
+    "disable-past-dates": "Range Date Picker — Disable past dates",
+    "range-with-times": "Range Date Picker — Range with times"
+  },
+  "resizable": {
+    "resizable-layout": "Resizable — Resizable layout",
+    "horizontal-split": "Resizable — Horizontal split",
+    "vertical-split": "Resizable — Vertical split",
+    "size-constraints": "Resizable — Size constraints"
+  },
+  "reviews": {
+    "updown-vertical-marquee": "Reviews — UpDown Vertical Marquee",
+    "3d-stacked-cards-carousel-with-rolling-motion-arrows": "Reviews — 3D Stacked Cards Carousel with Rolling Motion & Arrows",
+    "interactive-brand-logo-carousel": "Reviews — Interactive Brand Logo Carousel"
+  },
+  "scroll-area": {
+    "scroll-area": "Scroll Area",
+    "horizontal": "Scroll Area — Horizontal",
+    "both-axes": "Scroll Area — Both axes",
+    "minimal": "Scroll Area — Minimal",
+    "glass": "Scroll Area — Glass",
+    "auto-hide": "Scroll Area — Auto-hide"
+  },
+  "scroll-split-cards": {
+    "scroll-split-cards": "Scroll Split Cards"
+  },
+  "scroll-stack": {
+    "card-gap": "Scroll Stack — Card gap"
+  },
+  "sticky-scroll-stack": {
+    "sticky-stack": "Sticky Scroll Stack — Sticky stack",
+    "stack-geometry": "Sticky Scroll Stack — Stack geometry"
+  },
+  "sticky-scroll-stack-motion": {
+    "sticky-stack": "Sticky Scroll Stack — Sticky stack",
+    "stack-geometry": "Sticky Scroll Stack — Stack geometry"
+  },
+  "split-scroll-stack": {
+    "pinned-right": "Split Scroll Stack — Pinned right",
+    "pinned-left": "Split Scroll Stack — Pinned left"
+  },
+  "horizontal-scroll-stack": {
+    "horizontal-scroll-stack": "Horizontal Scroll Stack",
+    "horizontal-rail-track": "Horizontal Scroll Stack — Shorter Rail"
+  },
+  "select": {
+    "select": "Select",
+    "underlined": "Select — Underlined",
+    "searchable": "Select — Searchable",
+    "multi-select": "Select — Multi-select"
+  },
+  "selection-frame": {
+    "selection-frame": "Selection Frame",
+    "handles": "Selection Frame — Handles",
+    "lines": "Selection Frame — Lines",
+    "animated": "Selection Frame — Animated",
+    "inline-in-text": "Selection Frame — Inline in text",
+    "block-radius": "Selection Frame — Block & radius"
+  },
+  "sidebar": {
+    "sidebar": "Sidebar",
+    "collapsed-rail": "Sidebar — Collapsed rail"
+  },
+  "login-form": {
+    "login": "Login Form — Login",
+    "login-split": "Login Form — Login — split",
+    "login-glass": "Login Form — Login — glass",
+    "login-minimal": "Login Form — Login — minimal"
+  },
+  "register-form": {
+    "register": "Register Form — Register",
+    "register-scenic": "Register Form — Register — scenic",
+    "register-split": "Register Form — Register — split",
+    "register-glass": "Register Form — Register — glass",
+    "register-minimal": "Register Form — Register — minimal"
+  },
+  "skeleton": {
+    "card": "Skeleton — Card",
+    "profile": "Skeleton — Profile",
+    "text": "Skeleton — Text",
+    "rectangle": "Skeleton — Rectangle",
+    "circle": "Skeleton — Circle",
+    "pulse-animation": "Skeleton — Pulse animation",
+    "no-animation": "Skeleton — No animation",
+    "custom-composition": "Skeleton — Custom composition"
+  },
+  "social-links": {
+    "follow-row": "Social Links — Follow row",
+    "expand-and-replace-share-button-trigger-hides-on-hover": "Social Links — Expand and replace share button (Trigger hides on hover)",
+    "expandable-4-directional-share-buttons": "Social Links — Expandable 4-directional share buttons",
+    "every-network-outlined": "Social Links — Every network, outlined",
+    "author-byline": "Social Links — Author byline"
+  },
+  "sonner": {
+    "sonner": "Sonner",
+    "types": "Sonner — Types",
+    "with-action": "Sonner — With action",
+    "stacking": "Sonner — Stacking",
+    "always-expanded": "Sonner — Always expanded",
+    "duration": "Sonner — Duration",
+    "position": "Sonner — Position"
+  },
+  "split-flap": {
+    "split-flap-ivory": "Split-Flap Display — Split-Flap — Ivory (Classic Mechanical)",
+    "split-flap-minimalist": "Split-Flap Display — Split-Flap — Minimalist Architectural"
+  },
+  "scroll-accordion": {
+    "scroll-accordion-showcase": "Scroll Accordion Showcase",
+    "text-only": "Scroll Accordion Showcase — Text only",
+    "image-only": "Scroll Accordion Showcase — Image only",
+    "starting-row": "Scroll Accordion Showcase — Starting row"
+  },
+  "split-stepper": {
+    "split-stepper": "Split Stepper",
+    "sticky-on-the-left": "Split Stepper — Sticky on the left",
+    "deck-depth": "Split Stepper — Deck depth",
+    "custom-color": "Split Stepper — Custom color"
+  },
+  "squircle-carousel": {
+    "interactive-squircle-grid-carousel": "Squircle Carousel — Interactive Squircle Grid Carousel"
+  },
+  "stepper": {
+    "stepper": "Stepper"
+  },
+  "support": {
+    "ticket-workspace": "Support Dashboard — Ticket workspace",
+    "table-view": "Support Dashboard — Table view",
+    "glass": "Support Dashboard — Glass"
+  },
+  "table-soft": {
+    "soft-variant": "Table — Soft variant"
+  },
+  "table": {
+    "composable-table": "Table — Composable table"
+  },
+  "table-soft-comparison": {
+    "comparison-soft": "Table — Comparison (soft)"
+  },
+  "table-of-contents": {
+    "table-of-contents-left-side-navigation": "Table Of Contents — Table of Contents (Left Side Navigation)"
+  },
+  "tech-stack": {
+    "built-with": "Tech Stack — Built with",
+    "compact": "Tech Stack — Compact",
+    "one-group": "Tech Stack — One group"
+  },
+  "terminal": {
+    "terminal": "Terminal",
+    "any-language": "Terminal — Any language",
+    "glass": "Terminal — Glass",
+    "minimal": "Terminal — Minimal",
+    "without-header-controls": "Terminal — Without header controls"
+  },
+  "text-animation": {
+    "text-animation": "Text Animation",
+    "variants": "Text Animation — Variants",
+    "timing": "Text Animation — Timing",
+    "custom-element-color": "Text Animation — Custom element & color"
+  },
+  "theme-switcher": {
+    "icon": "Theme Switcher — Icon",
+    "pill": "Theme Switcher — Pill",
+    "dropdown": "Theme Switcher — Dropdown"
+  },
+  "third-party-carousel-embla": {
+    "product-carousel-with-card-slides": "Carousels — Product carousel with Card slides"
+  },
+  "third-party-carousel-swiper": {
+    "coverflow-testimonials": "Carousels — Coverflow testimonials"
+  },
+  "third-party-charts-recharts": {
+    "area-chart-in-a-card": "Charts — Area chart in a Card"
+  },
+  "third-party-charts-chartjs": {
+    "bar-and-doughnut": "Charts — Bar and doughnut"
+  },
+  "third-party-gallery-rows": {
+    "justified-rows-with-captions": "Gallery & Lightbox — Justified rows with captions"
+  },
+  "third-party-gallery-masonry": {
+    "masonry-columns-with-a-hover-control": "Gallery & Lightbox — Masonry columns with a hover control"
+  },
+  "third-party-select": {
+    "single-and-multi-on-design-tokens": "Select — Single and multi, on design tokens"
+  },
+  "third-party-table-tanstack": {
+    "sortable-searchable-paged": "Data Tables — Sortable, searchable, paged"
+  },
+  "third-party-table-aggrid": {
+    "themed-grid-with-a-badge-cell": "Data Tables — Themed grid with a Badge cell"
+  },
+  "tilted-card": {
+    "interactive-tilted-card": "Tilted Card — Interactive Tilted Card",
+    "stronger-tilt": "Tilted Card — Stronger tilt",
+    "subtle-tilt": "Tilted Card — Subtle tilt",
+    "stronger-glare": "Tilted Card — Stronger glare",
+    "without-glare": "Tilted Card — Without glare",
+    "lift-on-hover": "Tilted Card — Lift on hover"
+  },
+  "timeline": {
+    "timeline": "Timeline",
+    "center-layout": "Timeline — Center layout",
+    "right-layout": "Timeline — Right layout",
+    "minimal": "Timeline — Minimal",
+    "glass": "Timeline — Glass",
+    "without-the-entrance": "Timeline — Without the entrance"
+  },
+  "toast": {
+    "toast": "Toast",
+    "types": "Toast — Types",
+    "with-action": "Toast — With action",
+    "duration": "Toast — Duration",
+    "glow": "Toast — Glow",
+    "glass": "Toast — Glass",
+    "stacked": "Toast — Stacked",
+    "minimal": "Toast — Minimal"
+  },
+  "toggle": {
+    "sizes": "Toggle — Sizes",
+    "with-text": "Toggle — With text",
+    "toolbar": "Toggle — Toolbar",
+    "disabled": "Toggle — Disabled"
+  },
+  "toggle-group": {
+    "toggle-group": "Toggle Group",
+    "outline": "Toggle Group — Outline",
+    "ghost": "Toggle Group — Ghost",
+    "segmented": "Toggle Group — Segmented",
+    "sizes": "Toggle Group — Sizes",
+    "multiple-selection": "Toggle Group — Multiple selection",
+    "disabled": "Toggle Group — Disabled"
+  },
+  "tooltip": {
+    "rich-content": "Tooltip — Rich content",
+    "offset": "Tooltip — Offset"
+  },
+  "user-graph": {
+    "user-graph": "User Graph"
+  },
+  "verify-badge": {
+    "verify-badge": "Verify Badge",
+    "sizes": "Verify Badge — Sizes",
+    "static": "Verify Badge — Static",
+    "in-context": "Verify Badge — In context"
+  },
+  "vertical-tabs": {
+    "horizontal-tabs": "Tabs — Horizontal tabs",
+    "vertical-tabs": "Tabs — Vertical tabs",
+    "underline": "Tabs — Underline",
+    "segmented": "Tabs — Segmented",
+    "soft": "Tabs — Soft",
+    "elevated": "Tabs — Elevated",
+    "minimal": "Tabs — Minimal",
+    "bordered": "Tabs — Bordered",
+    "glass": "Tabs — Glass",
+    "vertical-underline": "Tabs — Vertical underline",
+    "vertical-soft": "Tabs — Vertical soft",
+    "vertical-elevated": "Tabs — Vertical elevated",
+    "vertical-segmented": "Tabs — Vertical segmented",
+    "vertical-bordered": "Tabs — Vertical bordered",
+    "vertical-glass": "Tabs — Vertical glass"
+  },
+  "video-accordion": {
+    "opened-on-load": "Video Accordion — Opened on load",
+    "fewer-panels": "Video Accordion — Fewer panels"
+  },
+  "video-player": {
+    "modal-player": "Video Player — Modal player",
+    "inline-player": "Video Player — Inline player",
+    "direct-embed": "Video Player — Direct embed",
+    "native-html5-video": "Video Player — Native HTML5 video",
+    "native-video-in-a-modal": "Video Player — Native video in a modal"
+  },
+  "video-player-jw": {
+    "jw-player-default-skin": "Video Player (JW Player) — JW Player — default skin",
+    "jw-player-skinned": "Video Player (JW Player) — JW Player — skinned",
+    "jw-player-custom-palette": "Video Player (JW Player) — JW Player — custom palette"
+  },
+  "waitlist": {
+    "launch": "Waitlist — Launch",
+    "card": "Waitlist — Card",
+    "queue": "Waitlist — Queue"
+  },
+  "wallet": {
+    "interactive-cardholder-wallet": "Wallet — Interactive Cardholder Wallet"
+  },
+  "wizard": {
+    "wizard": "Wizard",
+    "starting-step": "Wizard — Starting step",
+    "without-the-progress-bar": "Wizard — Without the progress bar"
+  }
+}

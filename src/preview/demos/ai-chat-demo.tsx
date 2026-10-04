@@ -3,6 +3,7 @@
 import AIChat, {
   AIChatColor,
   AIChatVariant,
+  EffortLevel,
 } from "@/components/custom/blocks/Ai-chat";
 
 const sampleChatHistory = [
@@ -33,25 +34,43 @@ const sampleInitialMessages = [
       "Absolutely! Tailwind CSS is fantastic for building modern dashboards. I recommend starting with a clean layout: a side navigation bar, a top header for user profile and search, and a main content area with grid-based cards for your widgets.\n\nWould you like me to generate some starter code for a specific component, like a statistics card or a data table?",
     time: "10:02 AM",
   },
-] as any;
+];
 
 export default function AIChatDemo({
   variant = "default",
   color = "primary",
+  defaultEffort = "medium",
 }: {
   variant?: AIChatVariant;
   color?: AIChatColor | string;
+  defaultEffort?: EffortLevel;
 }) {
   return (
     <div
-      className={`w-full transition-all duration-500 py-[12px] ${variant === "glass" ? "p-4 sm:p-8 bg-gradient-to-br from-indigo-500/80 via-purple-500/80 to-pink-500/80 rounded-2xl" : ""}`}
+      className={`w-full transition-all duration-500 py-[12px] ${
+        variant === "glass"
+          ? "p-4 sm:p-8 bg-cover bg-center rounded-2xl relative overflow-hidden"
+          : ""
+      }`}
+      style={
+        variant === "glass"
+          ? {
+              backgroundImage:
+                'url("https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_1600,c_limit/v1790146209/photo-1470071459604-3b5ec3a7fe05-1790146212205.jpg")',
+            }
+          : undefined
+      }
     >
       <AIChat
-        key={`${variant}-${color}`}
+        key={`${variant}-${color}-${defaultEffort}`}
         variant={variant}
         color={color}
-        chatHistory={sampleChatHistory}
-        initialMessages={sampleInitialMessages}
+        defaultEffort={defaultEffort}
+        // Start below the paid tiers so picking Lumen Plus or Lumen Ultra shows its flourish.
+        defaultModelId="lumen-flash"
+        // Compact opens on its hero — a title and the prompt bar — so it gets no seed data.
+        chatHistory={variant === "compact" ? [] : sampleChatHistory}
+        initialMessages={variant === "compact" ? [] : sampleInitialMessages}
       />
     </div>
   );

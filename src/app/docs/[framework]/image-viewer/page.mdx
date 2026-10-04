@@ -1,0 +1,231 @@
+import { docsPageMetadata } from "@/lib/docs-metadata";
+
+export const metadata = docsPageMetadata("image-viewer");
+
+import { ExampleShowcase } from "@/components/site/Sandbox";
+import { extractCode } from "@/lib/code";
+
+# Image Viewer
+
+A collection of 4 production-ready, interactive, fully responsive E-commerce Product Image Viewer components featuring inner lens magnifying zoom, 3–10x floating zoom loupe, floating arrow carousel sliders, and active thumbnail strips.
+
+`ImageViewer` isolates the image presentation layer for product showcases, galleries, and e-commerce catalogs with built-in fullscreen lightbox expansion and colorway synchronization.
+
+export const viewerData = `const images = [
+  "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto/v1790516400/red-shows-1790516403807.jpg",
+  "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto/v1790516403/purple-shows-1790516403806.jpg",
+  "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto/v1790516399/blue-shows-1790516403806.jpg",
+  "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto/v1790516397/baby-pink-shows-1790516403806.jpg",
+];`;
+
+export const usageInnerZoom = `import { ImageViewer } from "@/components/custom/blocks/ImageViewerBlock";
+
+${viewerData}
+
+export default function InnerZoomViewerDemo() {
+  return (
+    <ImageViewer
+      variant="inner-zoom"
+      images={images}
+      badge="20% OFF"
+    />
+  );
+}`;
+
+export const usageSideZoom = `import { ImageViewer } from "@/components/custom/blocks/ImageViewerBlock";
+
+${viewerData}
+
+export default function SideZoomViewerDemo() {
+  return (
+    <ImageViewer
+      variant="side-zoom"
+      defaultImage={3}
+      images={images}
+      badge="20% OFF"
+    />
+  );
+}`;
+
+export const usageSlider = `import { ImageViewer } from "@/components/custom/blocks/ImageViewerBlock";
+
+${viewerData}
+
+export default function SliderViewerDemo() {
+  return (
+    <ImageViewer
+      variant="slider"
+      defaultImage={1}
+      images={images}
+      badge="20% OFF"
+    />
+  );
+}`;
+
+export const usageThumbnails = `import { ImageViewer } from "@/components/custom/blocks/ImageViewerBlock";
+
+${viewerData}
+
+export default function ThumbnailViewerDemo() {
+  return (
+    <ImageViewer
+      variant="thumbnails"
+      thumbnailPosition="left" // Options: "left" | "right" | "bottom"
+      defaultImage={2}
+      images={images}
+      badge="20% OFF"
+    />
+  );
+}`;
+
+<ExampleShowcase
+  name="image-viewer"
+  columns={1}
+  examples={[
+    {
+      title: "Inner Lens Magnifier Zoom Viewer",
+      propNotes: [
+        { lead: "Use", prop: "variant", value: '"inner-zoom"', effect: "magnifies the product image directly within the hero frame upon cursor hover (260% optical scale)." }
+      ],
+      props: { variant: "inner-zoom" },
+      usage: usageInnerZoom,
+      code: extractCode("src/components/custom/blocks/ImageViewerBlock.tsx"),
+    },
+    {
+      title: "HD Side Portal Lens Zoom Viewer",
+      propNotes: [
+        { lead: "Use", prop: "variant", value: '"side-zoom"', effect: "floats a 3x zoom loupe just above the hovered or touched point, with a reticle marking exactly the area it shows — it flips below when there is no room above and always stays inside the screen." },
+        { lead: "Tune", prop: "zoomLevel", value: "{6}", effect: "raises the magnification; 3–10 is the usual e-commerce range." }
+      ],
+      props: { variant: "side-zoom", defaultImage: 3 },
+      usage: usageSideZoom,
+    },
+    {
+      title: "Floating Arrow Slider & Dots Viewer",
+      propNotes: [
+        { lead: "Use", prop: "variant", value: '"slider"', effect: "features floating left and right chevron navigation buttons with backdrop blur, bottom dot indicators, and expandable lightbox." }
+      ],
+      props: { variant: "slider", defaultImage: 1 },
+      usage: usageSlider,
+    },
+    {
+      title: "Interactive Thumbnail Strip Gallery Viewer",
+      propNotes: [
+        { lead: "Use", prop: "variant", value: '"thumbnails"', effect: "displays an active thumbnail preview gallery alongside the main hero image with expandable lightbox." },
+        { lead: "Placement", prop: "thumbnailPosition", value: '"left" | "right" | "bottom"', effect: 'controls the thumbnail strip position ("left" displayed in preview; also supports "right" and "bottom").' }
+      ],
+      props: { variant: "thumbnails", thumbnailPosition: "left", defaultImage: 2 },
+      usage: usageThumbnails,
+    },
+  ]}
+/>
+
+## Installation
+
+<Installation name="image-viewer" />
+
+## Features
+
+Discover the key capabilities of the `ImageViewer` component:
+
+<div className="grid grid-cols-1 sm:grid-cols-2 gap-4 my-6 not-prose">
+  <div className="p-6 rounded-2xl border border-border bg-card">
+    <h3 className="text-lg font-semibold text-card-foreground mb-2">4 Dedicated Viewer Architectures</h3>
+    <p className="text-muted-foreground text-sm">Includes Inner Lens Zoom, Side Portal Zoom Projection, Floating Arrow Slider, and Active Thumbnail Strip Gallery.</p>
+  </div>
+  <div className="p-6 rounded-2xl border border-border bg-card">
+    <h3 className="text-lg font-semibold text-card-foreground mb-2">Integrated Lightbox Modal</h3>
+    <p className="text-muted-foreground text-sm">Theme-adaptive frosted glass overlay matching Light and Dark mode with keyboard controls, chevron navigation, and thumbnail strip.</p>
+  </div>
+  <div className="p-6 rounded-2xl border border-border bg-card">
+    <h3 className="text-lg font-semibold text-card-foreground mb-2">High-Definition Optical Zoom</h3>
+    <p className="text-muted-foreground text-sm">Experience smooth 2.6x inner frame magnification or a 3–10x floating zoom loupe on cursor hover and touch drag.</p>
+  </div>
+  <div className="p-6 rounded-2xl border border-border bg-card">
+    <h3 className="text-lg font-semibold text-card-foreground mb-2">100% Mobile Responsive</h3>
+    <p className="text-muted-foreground text-sm">Fluid aspect ratio framing and touch-friendly controls tested across mobile phones, tablets, and desktop displays.</p>
+  </div>
+</div>
+
+## Props Reference
+
+<div className="overflow-x-auto">
+  <table>
+    <thead>
+      <tr>
+        <th>Prop</th>
+        <th>Type</th>
+        <th>Default</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><code>variant</code></td>
+        <td><code>"inner-zoom" | "side-zoom" | "slider" | "thumbnails"</code></td>
+        <td><code>"inner-zoom"</code></td>
+        <td>Selects the image viewing architecture.</td>
+      </tr>
+      <tr>
+        <td><code>thumbnailPosition</code></td>
+        <td><code>"left" | "right" | "bottom"</code></td>
+        <td><code>"left"</code></td>
+        <td>Position of the thumbnail preview strip when using <code>variant="thumbnails"</code>. Supports vertical <code>"left"</code>, vertical <code>"right"</code>, and horizontal <code>"bottom"</code>.</td>
+      </tr>
+      <tr>
+        <td><code>defaultImage</code></td>
+        <td><code>number</code></td>
+        <td><code>3</code> (side-zoom) / <code>1</code> (slider) / <code>2</code> (thumbnails) / <code>0</code> (others)</td>
+        <td>Initial active image index (0-indexed). Defaults to index 3 (4th image) for <code>side-zoom</code>, index 1 (2nd image) for <code>slider</code>, and index 2 (3rd image) for <code>thumbnails</code>.</td>
+      </tr>
+      <tr>
+        <td><code>images</code></td>
+        <td><code>string[]</code></td>
+        <td><code>DEFAULT_IMAGES</code></td>
+        <td>Array of product or gallery image URLs to display.</td>
+      </tr>
+      <tr>
+        <td><code>colors</code></td>
+        <td><code>ImageViewerColor[]</code></td>
+        <td><code>DEFAULT_COLORS</code></td>
+        <td>Optional colorways, one per image. Colorway <code>i</code>'s <code>bgClass</code> tints the frame and thumbnail behind image <code>i</code>.</td>
+      </tr>
+      <tr>
+        <td><code>badge</code></td>
+        <td><code>string</code></td>
+        <td><code>"20% OFF"</code></td>
+        <td>Text displayed inside the top-left floating promo chip badge.</td>
+      </tr>
+      <tr>
+        <td><code>showWishlist</code></td>
+        <td><code>boolean</code></td>
+        <td><code>true</code></td>
+        <td>Toggles the floating top-right heart wishlist button.</td>
+      </tr>
+      <tr>
+        <td><code>enableLightbox</code></td>
+        <td><code>boolean</code></td>
+        <td><code>true</code></td>
+        <td>Whether clicking the hero image triggers the fullscreen modal lightbox (active in <code>slider</code> and <code>thumbnails</code>).</td>
+      </tr>
+      <tr>
+        <td><code>zoomLevel</code></td>
+        <td><code>number</code></td>
+        <td><code>3</code></td>
+        <td>Magnification of the <code>side-zoom</code> loupe over the image as it appears in the frame; 3–10 is the usual e-commerce range. The reticle shrinks to match. Serve images large enough to stay sharp at it — roughly the frame width × 1.4 × <code>zoomLevel</code>.</td>
+      </tr>
+      <tr>
+        <td><code>onImageChange</code></td>
+        <td><code>(index: number) =&gt; void</code></td>
+        <td><code>undefined</code></td>
+        <td>Callback triggered whenever the user switches the active image.</td>
+      </tr>
+      <tr>
+        <td><code>className</code></td>
+        <td><code>string</code></td>
+        <td><code>undefined</code></td>
+        <td>Additional Tailwind CSS classes applied to the root container.</td>
+      </tr>
+    </tbody>
+  </table>
+</div>

@@ -1,0 +1,160 @@
+import { Cli } from "@/components/site/cli";
+
+# Installation
+
+<OtherFrameworkGuide slug="installation" label="installation guide" />
+
+Set up a Next.js project so you can install Algorize UI components with the
+shadcn CLI.
+
+<div className="grid grid-cols-2 lg:grid-cols-4 gap-3 my-6 not-prose">
+  <div className="p-4 rounded-xl bg-foreground/[0.03] border border-foreground/[0.06] min-w-0">
+    <div className="text-[11px] font-semibold uppercase tracking-[0.08em] text-foreground/35 mb-1">Framework</div>
+    <div className="text-[14px] font-semibold text-foreground">Next.js App Router</div>
+  </div>
+  <div className="p-4 rounded-xl bg-foreground/[0.03] border border-foreground/[0.06] min-w-0">
+    <div className="text-[11px] font-semibold uppercase tracking-[0.08em] text-foreground/35 mb-1">React</div>
+    <div className="text-[14px] font-semibold text-foreground">18 or 19</div>
+  </div>
+  <div className="p-4 rounded-xl bg-foreground/[0.03] border border-foreground/[0.06] min-w-0">
+    <div className="text-[11px] font-semibold uppercase tracking-[0.08em] text-foreground/35 mb-1">Styling</div>
+    <div className="text-[14px] font-semibold text-foreground">Tailwind CSS v4</div>
+  </div>
+  <div className="p-4 rounded-xl bg-foreground/[0.03] border border-foreground/[0.06] min-w-0">
+    <div className="text-[11px] font-semibold uppercase tracking-[0.08em] text-foreground/35 mb-1">Language</div>
+    <div className="text-[14px] font-semibold text-foreground">TypeScript or JS</div>
+  </div>
+</div>
+
+## Create a project
+
+Skip this if you already have a Next.js app with Tailwind CSS v4.
+
+```bash
+npx create-next-app@latest my-app --typescript --tailwind --app
+```
+
+`--tailwind` installs Tailwind and writes `globals.css` for you. Adding Algorize UI
+to an app without Tailwind? [Set it up first](#set-up-tailwind-css).
+
+## Add components
+
+### Step 1: Initialize shadcn
+
+Run once per project. It creates `components.json` and `lib/utils.ts` (the `cn`
+helper every component imports).
+
+<Cli command={`init --base radix --preset nova`} />
+
+Algorize UI builds on Radix primitives. If you run `init` without flags, choose
+**Radix UI** when asked. Any preset works — it only sets the starting theme.
+
+### Step 2: Register the registry
+
+Run once per project. It lets you install components by name:
+
+<Cli command={`registry add @algorize-ui=https://algorize-ui.vercel.app/r/{name}.json`} />
+
+This adds the following to `components.json`, which you can also write by hand:
+
+```json
+{
+  "registries": {
+    "@algorize-ui": "https://algorize-ui.vercel.app/r/{name}.json"
+  }
+}
+```
+
+### Step 3: Pick a theme
+
+Open the [Themes page](/themes), choose a preset, press **Copy Code**, and paste
+it into `globals.css` below `@import "tailwindcss";`. Components pick up the
+colours, radius and fonts from these variables.
+
+### Step 4: Add a component
+
+Every component page has its own command:
+
+<Cli command={`add hero.json`} />
+
+The CLI writes the source into your project and installs the component's npm
+packages and any other components it depends on.
+
+### Where files land
+
+```bash
+components/
+├── custom/
+│   ├── blocks/     # Most components (Hero, Card, Navbar, …)
+│   └── ui/         # Shared pieces used by several components
+└── ui/             # shadcn primitives
+lib/
+└── utils.ts        # The cn helper
+```
+
+Components import through the `@/` alias, which `create-next-app` configures for
+you — keep it in `tsconfig.json`.
+
+## Set up Tailwind CSS
+
+Only needed if your project does not have Tailwind CSS v4 yet.
+
+**1. Install the packages**
+
+```bash
+npm install tailwindcss @tailwindcss/postcss postcss
+```
+
+**2. Create `postcss.config.mjs`**
+
+```js
+const config = {
+  plugins: {
+    "@tailwindcss/postcss": {},
+  },
+};
+
+export default config;
+```
+
+**3. Import Tailwind in `app/globals.css`**
+
+```css
+@import "tailwindcss";
+```
+
+<div className="flex gap-3 rounded-xl border border-primary/15 bg-primary/5 p-4 my-6 not-prose">
+  <p className="text-[13px] leading-relaxed text-foreground/60">
+    <span className="font-semibold text-primary">Keep it the first line.</span> An <code>@import</code> below other rules is silently ignored, and your root layout must import <code>globals.css</code> — otherwise every component renders unstyled.
+  </p>
+</div>
+
+Upgrading from Tailwind v3? Run `npx @tailwindcss/upgrade`. Components use
+v4-only syntax.
+
+## Troubleshooting
+
+<div className="flex flex-col gap-3 my-6 not-prose">
+  <div className="p-4 rounded-xl bg-foreground/[0.03] border border-foreground/[0.06]">
+    <h4 className="text-[14px] font-semibold text-foreground mb-1">Components render unstyled</h4>
+    <p className="text-[13px] leading-relaxed text-foreground/50">Check that <code>@import "tailwindcss";</code> is the first line of <code>globals.css</code>, that your root layout imports that file, and that <code>tailwind.css</code> in <code>components.json</code> points at it.</p>
+  </div>
+  <div className="p-4 rounded-xl bg-foreground/[0.03] border border-foreground/[0.06]">
+    <h4 className="text-[14px] font-semibold text-foreground mb-1">Unknown registry "@algorize-ui"</h4>
+    <p className="text-[13px] leading-relaxed text-foreground/50">Run <a href="#step-2-register-the-registry" className="text-primary hover:underline">Step 2</a>, or switch the command to <strong>URL</strong>, which needs no setup.</p>
+  </div>
+  <div className="p-4 rounded-xl bg-foreground/[0.03] border border-foreground/[0.06]">
+    <h4 className="text-[14px] font-semibold text-foreground mb-1">Cannot find module <code>@/lib/utils</code></h4>
+    <p className="text-[13px] leading-relaxed text-foreground/50">Run Step 1, and make sure <code>tsconfig.json</code> has a <code>paths</code> entry for <code>@/*</code>.</p>
+  </div>
+</div>
+
+## Next steps
+
+- [Quick Start](/docs/nextjs/first-app) — put a component on screen
+- [All components](/docs/nextjs/all-components) — browse the library
+
+For anything beyond Algorize UI, see the
+[Next.js](https://nextjs.org/docs/app/getting-started/installation),
+[Tailwind CSS](https://tailwindcss.com/docs/installation/framework-guides/nextjs) and
+[shadcn CLI](https://ui.shadcn.com/docs/cli) docs.

@@ -1,0 +1,357 @@
+import { docsPageMetadata } from "@/lib/docs-metadata";
+
+export const metadata = docsPageMetadata("social-links");
+
+import { ExampleShowcase } from "@/components/site/Sandbox";
+import { extractCode } from "@/lib/code";
+
+# Social Links
+
+A row of brand marks that link out. Hand it the networks you have — X, GitHub, LinkedIn, YouTube, Instagram, Facebook, Discord, Dribbble, email — and it draws one tile per link, each with an accessible name, opening off-site links in a new tab.
+
+The marks are inline SVG rather than an icon-library import, so the component keeps working whichever icon package (or version of it) a project has installed. It is the social row in every <DocLink to="footer">Footer</DocLink> variant, and fits just as well on a profile card or under an author's name.
+
+export const usageRow = `import { SocialLinks } from "@/components/custom/blocks/SocialLinksBlock";
+
+export default function FollowUs() {
+  return (
+    <SocialLinks
+      links={[
+        { network: "x", href: "https://x.com/algorize" },
+        { network: "github", href: "https://github.com/algorize" },
+        { network: "linkedin", href: "https://linkedin.com/company/algorize" },
+        { network: "youtube", href: "https://youtube.com/@algorize" },
+        { network: "instagram", href: "https://instagram.com/algorize" },
+      ]}
+    />
+  );
+}`;
+
+export const usageAll = `import { SocialLinks } from "@/components/custom/blocks/SocialLinksBlock";
+
+export default function EveryNetwork() {
+  return (
+    <SocialLinks
+      variant="outline"
+      size="lg"
+      links={[
+        { network: "x", href: "https://x.com" },
+        { network: "github", href: "https://github.com" },
+        { network: "linkedin", href: "https://linkedin.com" },
+        { network: "youtube", href: "https://youtube.com" },
+        { network: "instagram", href: "https://instagram.com" },
+        { network: "facebook", href: "https://facebook.com" },
+        { network: "discord", href: "https://discord.gg/algorize" },
+        { network: "dribbble", href: "https://dribbble.com/algorize" },
+        { network: "email", href: "mailto:hello@algorize.dev" },
+      ]}
+    />
+  );
+}`;
+
+export const usageByline = `import { SocialLinks } from "@/components/custom/blocks/SocialLinksBlock";
+
+export default function AuthorCard() {
+  return (
+    <div className="flex max-w-sm items-center gap-4 rounded-2xl border border-border bg-card p-4">
+      <img src="https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_200,c_limit/v1790158813/photo-1494790108377-be9c29b29330-1790158812212.jpg" alt="Ayesha Karim" className="size-14 rounded-full object-cover" />
+      <div className="min-w-0 flex-1">
+        <p className="text-sm font-semibold">Ayesha Karim</p>
+        <p className="text-xs text-muted-foreground">Design engineer, Algorize</p>
+        <SocialLinks
+          size="sm"
+          variant="ghost"
+          className="mt-2 gap-1"
+          links={[
+            { network: "x", href: "https://x.com/ayesha", label: "Ayesha on X" },
+            { network: "github", href: "https://github.com/ayesha", label: "Ayesha on GitHub" },
+            { network: "dribbble", href: "https://dribbble.com/ayesha", label: "Ayesha on Dribbble" },
+          ]}
+        />
+      </div>
+    </div>
+  );
+}`;
+
+export const shareLinks = `const links: SocialLink[] = [
+  { network: "x", href: "https://x.com/algorize" },
+  { network: "github", href: "https://github.com/algorize" },
+  { network: "linkedin", href: "https://linkedin.com/company/algorize" },
+  { network: "youtube", href: "https://youtube.com/@algorize" },
+  { network: "instagram", href: "https://instagram.com/algorize" },
+];`;
+
+export const usageExpandReveal = `import { SocialLinks, type SocialLink } from "@/components/custom/blocks/SocialLinksBlock";
+
+${shareLinks}
+
+export default function ExpandShareButton() {
+  return (
+    <div className="flex gap-8 items-center">
+      {/* Expand Top */}
+      <SocialLinks variant="expand-reveal" expandDirection="top" links={links} />
+
+      {/* Expand Right (Default) */}
+      <SocialLinks variant="expand-reveal" expandDirection="right" links={links} />
+
+      {/* Expand Left */}
+      <SocialLinks variant="expand-reveal" expandDirection="left" links={links} />
+
+      {/* Expand Bottom */}
+      <SocialLinks variant="expand-reveal" expandDirection="bottom" links={links} />
+    </div>
+  );
+}`;
+
+export const usageExpandReplace = `import { SocialLinks, type SocialLink } from "@/components/custom/blocks/SocialLinksBlock";
+
+${shareLinks}
+
+export default function ExpandReplaceShareButton() {
+  return (
+    <div className="flex gap-8 items-center">
+      {/* Expand & Replace Top */}
+      <SocialLinks variant="expand-replace" expandDirection="top" links={links} />
+
+      {/* Expand & Replace Right (Default) */}
+      <SocialLinks variant="expand-replace" expandDirection="right" links={links} />
+
+      {/* Expand & Replace Left */}
+      <SocialLinks variant="expand-replace" expandDirection="left" links={links} />
+
+      {/* Expand & Replace Bottom */}
+      <SocialLinks variant="expand-replace" expandDirection="bottom" links={links} />
+    </div>
+  );
+}`;
+
+<ExampleShowcase
+  name="social-links"
+  colorControl={false}
+  columns={1}
+  examples={[
+    {
+      title: "Follow row",
+      subheading: "The five networks a footer usually carries, as soft tiles that take the primary colour on hover.",
+      propNotes: [
+        {
+          prop: "links",
+          effect:
+            "is the only required prop: `{ network, href, label? }[]`. Order is drawn as given; a network you leave out is simply not there.",
+        },
+        {
+          prop: "external",
+          effect:
+            "is on by default, so every link opens in a new tab with `rel=\"noopener noreferrer\"` — `mailto:` links are left alone. Turn it off for internal hrefs.",
+        },
+      ],
+      props: { example: "row" },
+      usage: usageRow,
+      code: extractCode("src/components/custom/blocks/SocialLinksBlock.tsx"),
+      minHeight: 260,
+    },
+  ]}
+/>
+
+## Installation
+
+<Installation name="social-links" />
+
+## Examples
+
+<ExampleShowcase
+  name="social-links"
+  colorControl={false}
+  columns={1}
+  examples={[
+    {
+      title: "Expand and replace share button (Trigger hides on hover)",
+      subheading: "Share trigger button hides on hover, with social link icons revealing directly from the trigger position in 4 directions.",
+      propNotes: [
+        {
+          prop: "variant",
+          value: '"expand-replace"',
+          effect:
+            "hides the trigger button on hover and expands social link icons starting directly from its exact position.",
+        },
+        {
+          prop: "expandDirection",
+          value: '"top" | "right" | "left" | "bottom"',
+          effect:
+            "controls direction of animated reveal. Defaults to \"right\".",
+        },
+      ],
+      props: { example: "expand-replace", variant: "expand-replace" },
+      usage: usageExpandReplace,
+      minHeight: 720,
+    },
+    {
+      title: "Expandable 4-directional share buttons",
+      subheading: "Icon-only share button trigger that animates social icons expanding smoothly in 4 directions: top, right, left, or bottom.",
+      propNotes: [
+        {
+          prop: "variant",
+          value: '"expand-reveal"',
+          effect:
+            "renders an icon-only Share trigger button that expands social link tiles on mouse hover.",
+        },
+        {
+          prop: "expandDirection",
+          value: '"top" | "right" | "left" | "bottom"',
+          effect:
+            "controls direction of animated reveal. Defaults to \"right\".",
+        },
+      ],
+      props: { example: "expand-reveal", variant: "expand-reveal" },
+      usage: usageExpandReveal,
+      minHeight: 720,
+    },
+    {
+      title: "Every network, outlined",
+      subheading: "All nine networks at the large size on the outline surface.",
+      propNotes: [
+        {
+          prop: "variant",
+          value: '"outline"',
+          effect:
+            "draws a border instead of a fill; `\"ghost\"` draws nothing until hover. `\"tile\"` is the default.",
+        },
+        {
+          prop: "size",
+          value: '"lg"',
+          effect:
+            "sets the tile and mark together: sm is 32px, md 40px, lg 48px.",
+        },
+      ],
+      props: { example: "all", variant: "outline", size: "lg" },
+      usage: usageAll,
+      minHeight: 260,
+    },
+    {
+      title: "Author byline",
+      subheading: "Small ghost tiles under a name, with a label per link so a screen reader says whose profile it is.",
+      propNotes: [
+        {
+          prop: "label",
+          effect:
+            "on a link overrides the accessible name — the default is the network's name, e.g. \"GitHub\".",
+        },
+        {
+          prop: "className",
+          effect:
+            "lands on the row, so `gap-*` and `justify-*` tune spacing and alignment.",
+        },
+      ],
+      props: { example: "byline" },
+      usage: usageByline,
+      minHeight: 260,
+    },
+  ]}
+/>
+
+## Features
+
+<div className="grid grid-cols-1 sm:grid-cols-2 gap-4 my-6 not-prose">
+  <div className="p-6 rounded-2xl border border-border bg-card">
+    <h3 className="text-lg font-semibold text-card-foreground mb-2">No icon package</h3>
+    <p className="text-muted-foreground text-sm">Brand marks are inline SVG. Lucide dropped its brand icons, so this never breaks when an icon library updates.</p>
+  </div>
+  <div className="p-6 rounded-2xl border border-border bg-card">
+    <h3 className="text-lg font-semibold text-card-foreground mb-2">Named for screen readers</h3>
+    <p className="text-muted-foreground text-sm">Every tile carries an aria-label and title — the network's name by default, or whatever label you pass — and a visible focus ring.</p>
+  </div>
+  <div className="p-6 rounded-2xl border border-border bg-card">
+    <h3 className="text-lg font-semibold text-card-foreground mb-2">Safe off-site links</h3>
+    <p className="text-muted-foreground text-sm">External links open in a new tab with noopener noreferrer. Email links stay in place, because a new tab for mailto is just an empty tab.</p>
+  </div>
+  <div className="p-6 rounded-2xl border border-border bg-card">
+    <h3 className="text-lg font-semibold text-card-foreground mb-2">Works with your router</h3>
+    <p className="text-muted-foreground text-sm">Pass linkComponent={"{Link}"} from next/link when some hrefs are internal; a plain anchor is the default so it runs anywhere.</p>
+  </div>
+</div>
+
+## Props Reference
+
+### SocialLinks
+
+<div className="overflow-x-auto my-4">
+  <table>
+    <thead>
+      <tr>
+        <th>Prop</th>
+        <th>Type</th>
+        <th>Default</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><code>links</code></td>
+        <td><code>SocialLink[]</code></td>
+        <td>—</td>
+        <td>The row, in order. See the shape below.</td>
+      </tr>
+      <tr>
+        <td><code>variant</code></td>
+        <td><code>&quot;tile&quot; | &quot;outline&quot; | &quot;ghost&quot;</code></td>
+        <td><code>&quot;tile&quot;</code></td>
+        <td>Soft fill, border, or nothing until hover.</td>
+      </tr>
+      <tr>
+        <td><code>size</code></td>
+        <td><code>&quot;sm&quot; | &quot;md&quot; | &quot;lg&quot;</code></td>
+        <td><code>&quot;md&quot;</code></td>
+        <td>Tile and mark size: 32, 40 or 48px.</td>
+      </tr>
+      <tr>
+        <td><code>external</code></td>
+        <td><code>boolean</code></td>
+        <td><code>true</code></td>
+        <td>Open links in a new tab with <code>rel=&quot;noopener noreferrer&quot;</code>. <code>mailto:</code> hrefs are exempt.</td>
+      </tr>
+      <tr>
+        <td><code>linkComponent</code></td>
+        <td><code>React.ElementType</code></td>
+        <td><code>&quot;a&quot;</code></td>
+        <td>The element used for each link — pass <code>next/link</code> for internal hrefs.</td>
+      </tr>
+      <tr>
+        <td><code>className</code></td>
+        <td><code>string</code></td>
+        <td>—</td>
+        <td>Applied to the row; other props are spread there too.</td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+### SocialLink
+
+<div className="overflow-x-auto my-4">
+  <table>
+    <thead>
+      <tr>
+        <th>Field</th>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><code>network</code></td>
+        <td><code>&quot;x&quot; | &quot;github&quot; | &quot;linkedin&quot; | &quot;youtube&quot; | &quot;instagram&quot; | &quot;facebook&quot; | &quot;discord&quot; | &quot;dribbble&quot; | &quot;email&quot;</code></td>
+        <td>Which mark to draw.</td>
+      </tr>
+      <tr>
+        <td><code>href</code></td>
+        <td><code>string</code></td>
+        <td>Where it goes.</td>
+      </tr>
+      <tr>
+        <td><code>label</code></td>
+        <td><code>string</code></td>
+        <td>Accessible name. Defaults to the network's name.</td>
+      </tr>
+    </tbody>
+  </table>
+</div>

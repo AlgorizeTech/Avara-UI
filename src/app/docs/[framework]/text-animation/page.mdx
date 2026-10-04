@@ -1,0 +1,316 @@
+import { docsPageMetadata } from "@/lib/docs-metadata";
+
+import { ExampleShowcase } from "@/components/site/Sandbox";
+import { extractCode } from "@/lib/code";
+
+export const metadata = docsPageMetadata("text-animation", {
+  title: "Text Animation",
+  description: "A versatile text animation component built on plain CSS keyframes, featuring typewriter, fade, gradient shine, and blur reveal effects."
+});
+
+# Text Animation
+
+A powerful typography component that breathes life into your text with plain CSS keyframes — no animation library. It supports multiple animation variants like typewriter effects, focus reveals, 3D flips, and more.
+
+It is perfect for hero sections, landing page headers, and grabbing user attention.
+
+Each effect fires when it scrolls into view (once, via an `IntersectionObserver`), so scroll a preview back into frame — or hit its reload button — to replay.
+
+export const usageDefault = `import { TextAnimation } from "@/components/custom/blocks/TextAnimationBlock";
+
+export default function HeroSection() {
+  return (
+    <TextAnimation
+      text="Better Experiences"
+      variant="typewriter"
+      className="text-4xl font-extrabold tracking-tight"
+    />
+  );
+}`;
+
+export const usageVariants = `import { TextAnimation } from "@/components/custom/blocks/TextAnimationBlock";
+
+export default function AnimationVariants() {
+  // Seven effects behind one prop.
+  return (
+    <div className="flex flex-col gap-4">
+      <TextAnimation text="Better Experiences" variant="typewriter" />
+      <TextAnimation text="Better Experiences" variant="blur-reveal" />
+      <TextAnimation text="Better Experiences" variant="wave" />
+      <TextAnimation text="Better Experiences" variant="pop-in" />
+      <TextAnimation text="Better Experiences" variant="flip" />
+      <TextAnimation text="Better Experiences" variant="spin-in" />
+      <TextAnimation text="Better Experiences" variant="blur-in-up" />
+    </div>
+  );
+}`;
+
+export const usageTiming = `import { TextAnimation } from "@/components/custom/blocks/TextAnimationBlock";
+
+export default function TimedAnimation() {
+  // \`duration\` stretches each character's transition, \`delay\` holds the whole
+  // sequence back — useful for staging a headline against a subheadline.
+  return (
+    <TextAnimation
+      text="Better Experiences"
+      variant="wave"
+      duration={1.2}
+      delay={0.4}
+    />
+  );
+}`;
+
+export const usageAs = `import { TextAnimation } from "@/components/custom/blocks/TextAnimationBlock";
+
+export default function HeadlineAnimation() {
+  // \`as\` swaps the rendered element so the headline keeps its document
+  // meaning; \`style\` and \`className\` pass straight through.
+  return (
+    <TextAnimation
+      as="h1"
+      text="Better Experiences"
+      variant="blur-in-up"
+      className="text-5xl font-extrabold tracking-tight"
+      style={{ color: "#4f46e5" }}
+    />
+  );
+}`;
+
+<ExampleShowcase
+  name="text-animation"
+  columns={1}
+  examples={[
+    {
+      title: "Text animation",
+      subheading: "The component splits the string and staggers each character with CSS animation delays.",
+      propNotes: [
+        {
+          lead: "Pass",
+          prop: "text",
+          effect:
+            "as a plain string — it is split internally, so children are not read.",
+        },
+      ],
+      props: { variant: "typewriter" },
+      usage: usageDefault,
+      code: extractCode("src/components/custom/blocks/TextAnimationBlock.tsx"),
+    },
+  ]}
+/>
+
+## Installation
+
+<Installation name="text-animation" />
+
+## Examples
+
+<ExampleShowcase
+  name="text-animation"
+  columns={1}
+  examples={[
+    {
+      title: "Variants",
+      propNotes: [
+        {
+          lead: "Use",
+          prop: "variant",
+          effect:
+            "for the effect — `typewriter`, `blur-reveal` (the default), `wave`, `pop-in`, `flip`, `spin-in` or `blur-in-up`.",
+        },
+      ],
+      props: { showAll: "variants" },
+      usage: usageVariants,
+    },
+    {
+      title: "Timing",
+      propNotes: [
+        {
+          prop: "duration",
+          value: '{1.2}',
+          effect:
+            "stretches each character's transition. For `typewriter` it is the total time to type the whole string, not per character.",
+        },
+        {
+          prop: "delay",
+          value: '{0.4}',
+          effect:
+            "holds the whole sequence back — useful for staging a headline against a subheadline.",
+        },
+      ],
+      props: { variant: "wave", duration: 1.2, delay: 0.4 },
+      usage: usageTiming,
+    },
+    {
+      title: "Custom element & color",
+      propNotes: [
+        {
+          prop: "as",
+          value: '"h1"',
+          effect:
+            "picks the rendered tag so the headline keeps its document meaning. Defaults to `p`.",
+        },
+        {
+          prop: "className",
+          effect:
+            "and `style` are forwarded to that element, so colour is yours to set.",
+        },
+      ],
+      props: { as: "h1", variant: "blur-in-up", textColor: "#4f46e5" },
+      usage: usageAs,
+    },
+  ]}
+/>
+
+## Props Reference
+
+<div className="overflow-x-auto mb-8">
+  <table>
+    <thead>
+      <tr>
+        <th>Component</th>
+        <th>Prop</th>
+        <th>Type</th>
+        <th>Default</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>
+          <code>TextAnimation</code>
+        </td>
+        <td>
+          <code>text</code>
+        </td>
+        <td>
+          <code>string</code>
+        </td>
+        <td>
+          <strong>Required</strong>
+        </td>
+        <td>
+          The actual text string you want to animate.
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <code>TextAnimation</code>
+        </td>
+        <td>
+          <code>variant</code>
+        </td>
+        <td>
+          <code>"typewriter" | "blur-reveal" | "wave" | "pop-in" | "flip" | "spin-in" | "blur-in-up"</code>
+        </td>
+        <td>
+          <code>"blur-reveal"</code>
+        </td>
+        <td>
+          The style of the animation.
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <code>TextAnimation</code>
+        </td>
+        <td>
+          <code>duration</code>
+        </td>
+        <td>
+          <code>number</code>
+        </td>
+        <td>
+          <code>0.5</code>
+        </td>
+        <td>
+          The duration of the animation in seconds. Note: For the typewriter effect, this is the total duration to type out the entire string.
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <code>TextAnimation</code>
+        </td>
+        <td>
+          <code>delay</code>
+        </td>
+        <td>
+          <code>number</code>
+        </td>
+        <td>
+          <code>0</code>
+        </td>
+        <td>
+          The delay before the animation starts.
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <code>TextAnimation</code>
+        </td>
+        <td>
+          <code>as</code>
+        </td>
+        <td>
+          <code>React.ElementType</code>
+        </td>
+        <td>
+          <code>"p"</code>
+        </td>
+        <td>
+          The HTML element to render the root wrapper as (e.g., <code>h1</code>, <code>h2</code>, <code>span</code>).
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <code>TextAnimation</code>
+        </td>
+        <td>
+          <code>style / className</code>
+        </td>
+        <td>
+          <code>CSSProperties / string</code>
+        </td>
+        <td>
+          <code>undefined</code>
+        </td>
+        <td>
+          Since the component inherits native HTML attributes, you can easily pass <code>style={`{{ color: "#hex" }}`}</code> or Tailwind text-color utility classes to dynamically change the color of the animated text.
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <code>TextAnimation</code>
+        </td>
+        <td>
+          <code>...props</code>
+        </td>
+        <td>
+          <code>HTMLAttributes&lt;HTMLElement&gt;</code>
+        </td>
+        <td>
+          <code>undefined</code>
+        </td>
+        <td>
+          Accepts all native HTML attributes (e.g., <code>id</code>, <code>onClick</code>) which are seamlessly forwarded to the wrapper element.
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <code>TextAnimation</code>
+        </td>
+        <td>
+          <code>renderWord</code>
+        </td>
+        <td>
+          <code>(word: string, index: number) =&gt; ReactNode</code>
+        </td>
+        <td>
+          —
+        </td>
+        <td>
+          Swap what a word renders as while keeping its entrance — a coloured span, a word that later changes. Word-level variants only: <code>pop-in</code>, <code>flip</code>, <code>blur-in-up</code>. <DocLink to="component-wall">Component Wall</DocLink> uses it for its accent and turning word.
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>

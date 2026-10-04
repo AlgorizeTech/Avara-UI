@@ -1,0 +1,362 @@
+import { docsPageMetadata } from "@/lib/docs-metadata";
+
+import { ExampleShowcase } from "@/components/site/Sandbox";
+import { extractCode } from "@/lib/code";
+
+export const metadata = docsPageMetadata("selection-frame", {
+  title: "Selection Frame",
+  description: "That box Figma draws around a selected layer — corner handles and a crisp accent stroke — around any text span or block."
+});
+
+# Selection Frame
+
+That box Figma draws around a selected layer — four corner handles and a crisp accent stroke — wrapped around any text span or block.
+
+The frame measures its child live with a `ResizeObserver`, so it always fits whatever it wraps, even when the content changes size. Choose square or circle handles, a solid, dashed or long-dash stroke, override the dash pattern directly, and turn on `animated` for marching ants with handles that pop in. Everything respects `prefers-reduced-motion`.
+
+Explore the different variations of the Selection Frame — each example shows a live preview with the exact code to copy.
+
+export const usageDefault = `import { SelectionFrame } from "@/components/custom/blocks/SelectionFrameBlock";
+
+export default function Headline() {
+  return (
+    <SelectionFrame padding={6}>
+      <span className="text-[28px] font-semibold">Consistent by Default</span>
+    </SelectionFrame>
+  );
+}`;
+
+export const usageHandles = `import { SelectionFrame } from "@/components/custom/blocks/SelectionFrameBlock";
+
+export default function HandleShapes() {
+  return (
+    <div className="flex items-center gap-16">
+      {/* square is the default */}
+      <SelectionFrame handles="square" padding={6}>
+        <span className="text-[28px] font-semibold">Handles</span>
+      </SelectionFrame>
+
+      <SelectionFrame handles="circle" padding={6}>
+        <span className="text-[28px] font-semibold">Handles</span>
+      </SelectionFrame>
+    </div>
+  );
+}`;
+
+export const usageLines = `import { SelectionFrame } from "@/components/custom/blocks/SelectionFrameBlock";
+
+export default function LineStyles() {
+  return (
+    <div className="grid grid-cols-2 gap-12">
+      {/* solid is the default */}
+      <SelectionFrame line="solid" padding={6}>
+        <span className="text-[28px] font-semibold">Lines</span>
+      </SelectionFrame>
+
+      {/* dash [4, 4] */}
+      <SelectionFrame line="dashed" padding={6}>
+        <span className="text-[28px] font-semibold">Lines</span>
+      </SelectionFrame>
+
+      {/* dash [10, 6] */}
+      <SelectionFrame line="long" padding={6}>
+        <span className="text-[28px] font-semibold">Lines</span>
+      </SelectionFrame>
+
+      {/* override either preset's dash pattern directly */}
+      <SelectionFrame line="dashed" dash={[1, 3]} padding={6}>
+        <span className="text-[28px] font-semibold">Lines</span>
+      </SelectionFrame>
+    </div>
+  );
+}`;
+
+export const usageAnimated = `import { SelectionFrame } from "@/components/custom/blocks/SelectionFrameBlock";
+
+// dashed / long → marching ants. Corner handles always pop in on mount.
+export default function MarchingAnts() {
+  return (
+    <div className="flex items-center gap-16">
+      <SelectionFrame animated line="dashed" padding={6}>
+        <span className="text-[28px] font-semibold">Marching</span>
+      </SelectionFrame>
+
+      <SelectionFrame animated line="long" color="#e11d48" handles="circle" padding={6}>
+        <span className="text-[28px] font-semibold">Ants</span>
+      </SelectionFrame>
+    </div>
+  );
+}`;
+
+export const usageInline = `import { SelectionFrame } from "@/components/custom/blocks/SelectionFrameBlock";
+
+// inline is the default, so the frame sits in the text flow like any span.
+export default function EmphasisInProse() {
+  return (
+    <span className="text-[42px] font-semibold">
+      Draw attention to what{" "}
+      <SelectionFrame animated line="dashed" padding={4} handles="circle">
+        matters
+      </SelectionFrame>
+    </span>
+  );
+}`;
+
+export const usageBlock = `import { SelectionFrame } from "@/components/custom/blocks/SelectionFrameBlock";
+
+// inline={false} makes the frame block-level so it can wrap a card, image or
+// any other layout element and take its full width.
+export default function FramedCard() {
+  return (
+    <SelectionFrame inline={false} radius={8} padding={8} className="w-full max-w-xs">
+      <div className="rounded-xl border border-border bg-card text-card-foreground p-5 space-y-3">
+        <div className="h-24 rounded-lg bg-gradient-to-br from-sky-400/70 to-indigo-500/70" />
+        <div className="space-y-1.5">
+          <p className="text-sm font-semibold">Hero / Cover</p>
+          <p className="text-xs text-muted-foreground">1440 × 720 · Auto layout</p>
+        </div>
+      </div>
+    </SelectionFrame>
+  );
+}`;
+
+<ExampleShowcase
+  name="selection-frame"
+  colorControl
+  columns={1}
+  examples={[
+    {
+      title: "Selection Frame",
+      subheading: "Wrap any span or block — the frame measures it and fits.",
+      propNotes: [
+        {
+          prop: "padding",
+          effect:
+            "is the gap in pixels between the content and the frame. `6` here; the default is `4`.",
+        },
+      ],
+      props: { example: "default" },
+      usage: usageDefault,
+      code: extractCode("src/components/custom/blocks/SelectionFrameBlock.tsx"),
+    },
+  ]}
+/>
+
+## Installation
+
+<Installation name="selection-frame" />
+
+## Examples
+
+<ExampleShowcase
+  name="selection-frame"
+  colorControl
+  columns={1}
+  examples={[
+    {
+      title: "Handles",
+      propNotes: [
+        {
+          prop: "handles",
+          effect:
+            'picks the corner shape — `"square"` (default, 7px) or `"circle"` (8px). Both fill with the page background so they read as cut-outs on the stroke.',
+        },
+      ],
+      props: { example: "handles" },
+      usage: usageHandles,
+    },
+    {
+      title: "Lines",
+      propNotes: [
+        {
+          prop: "line",
+          effect:
+            'is the stroke style — `"solid"` (default), `"dashed"` (dash `[4, 4]`) or `"long"` (dash `[10, 6]`).',
+        },
+        {
+          prop: "dash",
+          effect:
+            "overrides the `[dash, gap]` pixel pair of either preset — `[1, 3]` in the last frame gives a dotted stroke.",
+        },
+      ],
+      props: { example: "lines" },
+      usage: usageLines,
+    },
+    {
+      title: "Animated",
+      subheading: "Hit Reset on the preview to replay the handle pop-in.",
+      propNotes: [
+        {
+          prop: "animated",
+          effect:
+            "turns a `dashed` or `long` stroke into marching ants and springs the four handles in on mount. A solid stroke only gets the handle animation. Both are skipped under `prefers-reduced-motion`.",
+        },
+        {
+          prop: "color",
+          effect:
+            "is the accent — any CSS colour. The second frame is pinned to `#e11d48` so you can see it override the page colour.",
+        },
+      ],
+      props: { example: "animated" },
+      usage: usageAnimated,
+    },
+    {
+      title: "Inline in text",
+      propNotes: [
+        {
+          prop: "inline",
+          effect:
+            "is `true` by default, so the frame renders as an inline-block and sits inside a sentence like any other word.",
+        },
+      ],
+      props: { example: "usage" },
+      usage: usageInline,
+    },
+  ]}
+/>
+
+<ExampleShowcase
+  name="selection-frame"
+  colorControl
+  columns={1}
+  controls={[
+    { name: "padding", label: "Padding", min: 0, max: 24, step: 1, defaultValue: 8, unit: "px" },
+    { name: "radius", label: "Radius", min: 0, max: 24, step: 1, defaultValue: 8, unit: "px" },
+  ]}
+  examples={[
+    {
+      title: "Block & radius",
+      subheading: "Drag the sliders — the frame re-measures and redraws live.",
+      propNotes: [
+        {
+          lead: "Set",
+          prop: "inline",
+          value: "{false}",
+          effect:
+            "to make the frame block-level so it can wrap a card, image or layout element and take the full width you give it via `className`.",
+        },
+        {
+          prop: "radius",
+          effect:
+            "rounds the frame's corners in pixels. The handles stay pinned to the true corner points.",
+        },
+      ],
+      props: { example: "block" },
+      usage: usageBlock,
+    },
+  ]}
+/>
+
+## Features
+Discover the Selection Frame's capabilities for putting a design-tool spotlight on any element.
+
+<div className="grid grid-cols-1 sm:grid-cols-2 gap-4 my-6 not-prose">
+  <div className="p-6 rounded-2xl border border-border bg-card">
+    <h3 className="text-lg font-semibold text-card-foreground mb-2">Measures live</h3>
+    <p className="text-muted-foreground text-sm">A <code>ResizeObserver</code> tracks the child, so the frame re-fits when text reflows, fonts load or the content changes.</p>
+  </div>
+  <div className="p-6 rounded-2xl border border-border bg-card">
+    <h3 className="text-lg font-semibold text-card-foreground mb-2">Pixel-accurate</h3>
+    <p className="text-muted-foreground text-sm">The stroke is centred on the frame edge and each handle is centred on the true corner point, so nothing sits a fraction of a pixel off.</p>
+  </div>
+  <div className="p-6 rounded-2xl border border-border bg-card">
+    <h3 className="text-lg font-semibold text-card-foreground mb-2">Respects reduced motion</h3>
+    <p className="text-muted-foreground text-sm">Marching ants are an indefinite loop, so both the march and the handle spring are disabled when the visitor prefers reduced motion.</p>
+  </div>
+  <div className="p-6 rounded-2xl border border-border bg-card">
+    <h3 className="text-lg font-semibold text-card-foreground mb-2">Decorative only</h3>
+    <p className="text-muted-foreground text-sm">The SVG and handles are <code>aria-hidden</code> and ignore pointer events — your content stays exactly as readable and clickable as before.</p>
+  </div>
+</div>
+
+## Best Practices & Guidelines
+
+<div className="flex flex-col gap-4 my-6 not-prose">
+  <div className="rounded-xl border border-foreground/[0.06] bg-foreground/[0.03] p-4">
+    <h4 className="font-sans text-[14px] font-semibold text-foreground mb-1">Give the frame room</h4>
+    <p className="text-[13px] leading-relaxed text-foreground/50">The stroke and handles are drawn <em>outside</em> the child by <code>padding</code> pixels (plus half a handle). Leave that much space around the wrapper — an <code>overflow-hidden</code> parent will clip the corners.</p>
+  </div>
+  <div className="rounded-xl border border-primary/15 bg-primary/5 p-4">
+    <h4 className="font-sans text-[14px] font-semibold text-primary mb-1">Use marching ants sparingly</h4>
+    <p className="text-[13px] leading-relaxed text-foreground/50">An endless animation pulls the eye. Reserve <code>animated</code> for the one element on screen you actually want people to look at.</p>
+  </div>
+</div>
+
+## Props Reference
+
+### `<SelectionFrame>` Props
+
+<div className="overflow-x-auto">
+  <table>
+    <thead>
+      <tr>
+        <th>Prop</th>
+        <th>Type</th>
+        <th>Default</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><code>children</code></td>
+        <td><code>React.ReactNode</code></td>
+        <td><strong>Required</strong></td>
+        <td>The content to frame; measured live.</td>
+      </tr>
+      <tr>
+        <td><code>handles</code></td>
+        <td><code>"square" | "circle"</code></td>
+        <td><code>"square"</code></td>
+        <td>Corner handle shape.</td>
+      </tr>
+      <tr>
+        <td><code>line</code></td>
+        <td><code>"solid" | "dashed" | "long"</code></td>
+        <td><code>"solid"</code></td>
+        <td>Stroke style. <code>dashed</code> resolves to dash <code>[4, 4]</code>, <code>long</code> to <code>[10, 6]</code>.</td>
+      </tr>
+      <tr>
+        <td><code>dash</code></td>
+        <td><code>[number, number]</code></td>
+        <td>—</td>
+        <td>Overrides the <code>[dash, gap]</code> px pair for <code>"dashed"</code> / <code>"long"</code>.</td>
+      </tr>
+      <tr>
+        <td><code>animated</code></td>
+        <td><code>boolean</code></td>
+        <td><code>false</code></td>
+        <td>Marching ants for <code>"dashed"</code> / <code>"long"</code>; handles always animate in. Disabled under <code>prefers-reduced-motion</code>.</td>
+      </tr>
+      <tr>
+        <td><code>color</code></td>
+        <td><code>string</code></td>
+        <td><code>"var(--primary)"</code></td>
+        <td>Accent colour. Any CSS colour or theme variable.</td>
+      </tr>
+      <tr>
+        <td><code>radius</code></td>
+        <td><code>number</code></td>
+        <td><code>0</code></td>
+        <td>Frame corner radius in pixels.</td>
+      </tr>
+      <tr>
+        <td><code>padding</code></td>
+        <td><code>number</code></td>
+        <td><code>4</code></td>
+        <td>Gap in pixels between the content and the frame.</td>
+      </tr>
+      <tr>
+        <td><code>inline</code></td>
+        <td><code>boolean</code></td>
+        <td><code>true</code></td>
+        <td>Inline (for text spans) vs block-level.</td>
+      </tr>
+      <tr>
+        <td><code>className</code></td>
+        <td><code>string</code></td>
+        <td>—</td>
+        <td>Extra classes for the outer wrapper — e.g. a width when <code>inline</code> is <code>false</code>.</td>
+      </tr>
+    </tbody>
+  </table>
+</div>

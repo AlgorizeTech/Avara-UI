@@ -4,76 +4,115 @@
 
 @custom-variant dark (&:where(.dark, .dark *));
 
-/* CSS Variables for theming */
+/* CSS Variables for theming — the default "lavender" preset in
+   src/lib/theme-presets.ts (Reicon's palette). Keep the two in step: the
+   pre-paint init script skips injecting the default preset and relies on
+   these. Sidebar tokens mirror card/primary/accent/border as
+   resolvePresetColors derives them. */
 :root {
+  --background: oklch(0.969 0.007 106.522);
+  --foreground: oklch(0.178 0 0);
   --card: oklch(1 0 0);
-  --card-foreground: oklch(0.145 0 0);
+  --card-foreground: oklch(0.178 0 0);
   --popover: oklch(1 0 0);
-  --popover-foreground: oklch(0.145 0 0);
-  --primary: oklch(0.205 0 0);
-  --primary-foreground: oklch(0.985 0 0);
-  --secondary: oklch(0.97 0 0);
-  --secondary-foreground: oklch(0.205 0 0);
-  --muted: oklch(0.97 0 0);
-  --muted-foreground: oklch(0.556 0 0);
-  --accent: oklch(0.97 0 0);
-  --accent-foreground: oklch(0.205 0 0);
+  --popover-foreground: oklch(0.178 0 0);
+  --primary: oklch(0.698 0.162 288.379);
+  --primary-foreground: oklch(1 0 0);
+  --secondary: oklch(0.939 0.007 106.527);
+  --secondary-foreground: oklch(0.178 0 0);
+  --muted: oklch(0.939 0.007 106.527);
+  --muted-foreground: oklch(0.572 0.005 106.542);
+  --accent: oklch(0.939 0.007 106.527);
+  --accent-foreground: oklch(0.178 0 0);
   --destructive: oklch(0.577 0.245 27.325);
-  --destructive-foreground: 210 40% 98%;
-  --border: oklch(0.922 0 0);
-  --input: oklch(0.922 0 0);
-  --ring: oklch(0.708 0 0);
+  --destructive-foreground: oklch(0.985 0 0);
+  --border: oklch(0.909 0.005 106.506);
+  --input: oklch(0.909 0.005 106.506);
+  --ring: oklch(0.698 0.162 288.379);
   --radius: 0.625rem;
-  --background: oklch(1 0 0);
-  --foreground: oklch(0.145 0 0);
   --chart-1: oklch(0.646 0.222 41.116);
   --chart-2: oklch(0.6 0.118 184.704);
   --chart-3: oklch(0.398 0.07 227.392);
   --chart-4: oklch(0.828 0.189 84.429);
   --chart-5: oklch(0.769 0.188 70.08);
-  --sidebar: oklch(0.985 0 0);
-  --sidebar-foreground: oklch(0.145 0 0);
-  --sidebar-primary: oklch(0.205 0 0);
-  --sidebar-primary-foreground: oklch(0.985 0 0);
-  --sidebar-accent: oklch(0.97 0 0);
-  --sidebar-accent-foreground: oklch(0.205 0 0);
-  --sidebar-border: oklch(0.922 0 0);
-  --sidebar-ring: oklch(0.708 0 0);
+  --sidebar: oklch(1 0 0);
+  --sidebar-foreground: oklch(0.178 0 0);
+  --sidebar-primary: oklch(0.698 0.162 288.379);
+  --sidebar-primary-foreground: oklch(1 0 0);
+  --sidebar-accent: oklch(0.939 0.007 106.527);
+  --sidebar-accent-foreground: oklch(0.178 0 0);
+  --sidebar-border: oklch(0.909 0.005 106.506);
+  --sidebar-ring: oklch(0.698 0.162 288.379);
+}
+
+/* The component preview stage (Sandbox, ComponentRenderer). Demos frame
+   themselves in bg-background / bg-card panels, so the stage must differ from
+   both or a panel dissolves into it and only its border shows. Light keeps the
+   card white under off-white panels; dark sinks the stage below the page
+   background — derived from --background so every customizer preset follows. */
+:root {
+  --preview-stage: var(--card);
 }
 
 .dark {
-  --background: oklch(0.145 0 0);
-  --foreground: oklch(0.985 0 0);
-  --card: oklch(0.205 0 0);
-  --card-foreground: oklch(0.985 0 0);
-  --popover: oklch(0.205 0 0);
-  --popover-foreground: oklch(0.985 0 0);
-  --primary: oklch(0.922 0 0);
-  --primary-foreground: oklch(0.205 0 0);
-  --secondary: oklch(0.269 0 0);
-  --secondary-foreground: oklch(0.985 0 0);
-  --muted: oklch(0.269 0 0);
-  --muted-foreground: oklch(0.708 0 0);
-  --accent: oklch(0.269 0 0);
-  --accent-foreground: oklch(0.985 0 0);
+  --preview-stage: color-mix(in oklab, var(--background) 50%, black);
+}
+
+.dark {
+  --background: oklch(0.141 0.004 285.823);
+  --foreground: oklch(1 0 0);
+  --card: oklch(0.183 0.004 285.994);
+  --card-foreground: oklch(1 0 0);
+  --popover: oklch(0.183 0.004 285.994);
+  --popover-foreground: oklch(1 0 0);
+  --primary: oklch(0.698 0.162 288.379);
+  --primary-foreground: oklch(1 0 0);
+  --secondary: oklch(0.232 0.004 286.099);
+  --secondary-foreground: oklch(1 0 0);
+  --muted: oklch(0.232 0.004 286.099);
+  --muted-foreground: oklch(0.654 0.001 286.359);
+  --accent: oklch(0.232 0.004 286.099);
+  --accent-foreground: oklch(1 0 0);
   --destructive: oklch(0.704 0.191 22.216);
-  --destructive-foreground: 210 40% 98%;
-  --border: oklch(1 0 0 / 10%);
-  --input: oklch(1 0 0 / 15%);
-  --ring: oklch(0.556 0 0);
+  --destructive-foreground: oklch(0.985 0 0);
+  --border: oklch(0.232 0.004 286.099);
+  --input: oklch(0.253 0.004 286.13);
+  --ring: oklch(0.698 0.162 288.379);
   --chart-1: oklch(0.488 0.243 264.376);
   --chart-2: oklch(0.696 0.17 162.48);
   --chart-3: oklch(0.769 0.188 70.08);
   --chart-4: oklch(0.627 0.265 303.9);
   --chart-5: oklch(0.645 0.246 16.439);
-  --sidebar: oklch(0.205 0 0);
-  --sidebar-foreground: oklch(0.985 0 0);
-  --sidebar-primary: oklch(0.488 0.243 264.376);
-  --sidebar-primary-foreground: oklch(0.985 0 0);
-  --sidebar-accent: oklch(0.269 0 0);
-  --sidebar-accent-foreground: oklch(0.985 0 0);
-  --sidebar-border: oklch(1 0 0 / 10%);
-  --sidebar-ring: oklch(0.556 0 0);
+  --sidebar: oklch(0.183 0.004 285.994);
+  --sidebar-foreground: oklch(1 0 0);
+  --sidebar-primary: oklch(0.698 0.162 288.379);
+  --sidebar-primary-foreground: oklch(1 0 0);
+  --sidebar-accent: oklch(0.232 0.004 286.099);
+  --sidebar-accent-foreground: oklch(1 0 0);
+  --sidebar-border: oklch(0.232 0.004 286.099);
+  --sidebar-ring: oklch(0.698 0.162 288.379);
+}
+
+/* Circular Reveal View Transition for Theme Switcher */
+::view-transition-old(root),
+::view-transition-new(root) {
+  animation: none;
+  mix-blend-mode: normal;
+}
+
+::view-transition-old(root) {
+  z-index: 1;
+}
+
+::view-transition-new(root) {
+  z-index: 9999;
+}
+
+/* Disable standard CSS transitions during theme transition to avoid double-fading/delayed border transitions */
+html.theme-transitioning *,
+html.theme-transitioning *::before,
+html.theme-transitioning *::after {
+  transition: none !important;
 }
 
 /* Shiki theme switching */
@@ -102,11 +141,12 @@ html.dark .shiki span {
   overflow-x: auto;
   border-radius: 0;
   margin: 0;
-  padding: 1rem;
+  padding: 1rem 1.25rem;
   font-family: 'Fira Code', 'Monaco', 'Cascadia Code', 'Roboto Mono', Consolas, 'Courier New', monospace;
-  font-size: 0.875rem;
-  line-height: 1.5;
-  border: 1px solid hsl(var(--border)) !important;
+  font-size: 13px;
+  line-height: 1.7;
+  border: none !important;
+  box-shadow: none !important;
 }
 
 .shiki code {
@@ -115,6 +155,79 @@ html.dark .shiki span {
   border-radius: 0 !important;
   font-size: inherit !important;
   color: inherit !important;
+  border: none !important;
+}
+
+/* Placeholder painted for the instant before Shiki answers a cold snippet.
+ * It mirrors every metric of `.shiki` above — padding, font, size,
+ * line-height, wrapping — so swapping in the highlighted markup fills in
+ * colour without shifting a single line. It deliberately avoids the `.shiki`
+ * class itself: those rules paint from --shiki-* variables that only exist on
+ * real Shiki output, and an unresolved var() there wins the cascade and then
+ * computes to nothing. */
+.shiki-pending {
+  overflow-x: auto;
+  margin: 0;
+  padding: 1rem 1.25rem;
+  font-family: 'Fira Code', 'Monaco', 'Cascadia Code', 'Roboto Mono', Consolas, 'Courier New', monospace;
+  font-size: 13px;
+  line-height: 1.7;
+  white-space: pre;
+  word-break: normal;
+  background: transparent;
+  border: none;
+  box-shadow: none;
+  /* github-light / github-dark-default plain-text foreground, so the only
+     visible change on swap is keywords and strings gaining colour. */
+  color: #24292e;
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+.dark .shiki-pending {
+  color: #e6edf3;
+}
+
+.shiki-pending code {
+  background: transparent !important;
+  padding: 0 !important;
+  border: none !important;
+  border-radius: 0 !important;
+  box-shadow: none !important;
+  font: inherit !important;
+  color: inherit !important;
+  white-space: pre !important;
+}
+
+.shiki-pending::-webkit-scrollbar {
+  display: none;
+}
+
+/* Global inline code styling.
+ *
+ * `data-badge` opts out. These declarations are !important, so without an
+ * escape hatch they beat any utility class a component puts on a <code> —
+ * which silently flattened the primary-coloured prop and dependency badges
+ * into plain slate chips. Components that style their own <code> mark it
+ * with data-badge rather than escalating to !important themselves. */
+:not(pre) > code:not([data-badge]) {
+  /* Reicon's chip: ink at 70% on an ink-6% tint, no border — 12px inside
+     15px prose, so 0.8em keeps the ratio inside headings too. */
+  border: none !important;
+  background-color: color-mix(in oklab, var(--foreground) 6%, transparent) !important;
+  color: color-mix(in oklab, var(--foreground) 70%, transparent) !important;
+  padding: 0.125rem 0.375rem !important;
+  border-radius: 0.25rem !important;
+  font-size: 0.8em !important;
+  font-weight: 400 !important;
+  box-shadow: none !important;
+  /* A file path or long identifier is one unbreakable word; without this it
+     runs past the content column on phones. `anywhere` also counts towards
+     min-content, so the chip can never widen a flex or grid parent either.
+     Breaks land at spaces first, inside a word only when it cannot fit. */
+  overflow-wrap: anywhere;
+  box-decoration-break: clone;
+  -webkit-box-decoration-break: clone;
 }
 
 /* Scrollbar styling for code blocks */
@@ -165,15 +278,6 @@ html.dark .shiki span {
   box-sizing: border-box;
 }
 
-@layer base {
-  * {
-    @apply border-border;
-  }
-  body {
-    @apply bg-background text-foreground;
-  }
-}
-
 @layer utilities {
   html {
     --scrollbar-color: #00000032;
@@ -187,21 +291,14 @@ html.dark .shiki span {
     --scrollbar-color: #ffffff32;
   }
 
-  .thin-scroll {
-    -webkit-tap-highlight-color: transparent;
-    scrollbar-gutter: stable;
-    scrollbar-color: #ffffff32 transparent;
-    scrollbar-width: thin;
-  }
-
   /* VitePress-style table styling */
   .vitepress-table table {
     @apply w-full border-collapse;
   }
 
   .vitepress-table th {
-    @apply px-4 py-3 text-left text-sm font-semibold text-gray-900 dark:text-gray-100;
-    @apply border-b border-r border-gray-200 dark:border-gray-700;
+    @apply px-4 py-2.5 text-left text-[11px] font-semibold uppercase tracking-[0.06em] text-foreground/60 bg-foreground/[0.07];
+    @apply border-b border-r border-foreground/[0.06];
   }
 
   .vitepress-table th:last-child {
@@ -209,8 +306,8 @@ html.dark .shiki span {
   }
 
   .vitepress-table td {
-    @apply px-4 py-3 text-sm text-gray-700 dark:text-gray-300;
-    @apply border-b border-r border-gray-100 dark:border-gray-800;
+    @apply px-4 py-2.5 text-[13px] text-foreground/55 break-words;
+    @apply border-b border-r border-foreground/[0.06];
   }
 
   .vitepress-table td:last-child {
@@ -218,13 +315,377 @@ html.dark .shiki span {
   }
 
   .vitepress-table tr:hover {
-    @apply bg-gray-50 dark:bg-gray-800/30;
+    @apply bg-foreground/[0.07];
   }
 
   .vitepress-table code {
-    @apply font-mono text-xs bg-gray-100 dark:bg-gray-800 px-2 py-1 rounded text-gray-800 dark:text-gray-200;
+    @apply font-mono text-[12px] bg-transparent border-none p-0 text-foreground;
   }
 
+}
+
+/* Prevent prose & table content from expanding past main container into sidebars */
+.prose {
+  min-width: 0 !important;
+  max-width: 100% !important;
+}
+
+/* The typography plugin's palette, repointed at the ink ladder (Reicon's
+   greys are the ink at an alpha). Covers everything the prose-* modifiers in
+   docs-layout-content.tsx don't name, in both modes and for every preset —
+   so no prose-invert is needed. */
+.prose {
+  --tw-prose-body: color-mix(in oklab, var(--foreground) 60%, transparent);
+  --tw-prose-headings: var(--foreground);
+  --tw-prose-lead: color-mix(in oklab, var(--foreground) 60%, transparent);
+  --tw-prose-links: var(--primary);
+  --tw-prose-bold: var(--foreground);
+  --tw-prose-counters: color-mix(in oklab, var(--foreground) 60%, transparent);
+  --tw-prose-bullets: color-mix(in oklab, var(--foreground) 60%, transparent);
+  --tw-prose-hr: color-mix(in oklab, var(--foreground) 8%, transparent);
+  --tw-prose-quotes: color-mix(in oklab, var(--foreground) 60%, transparent);
+  --tw-prose-quote-borders: color-mix(in oklab, var(--primary) 40%, transparent);
+  --tw-prose-captions: color-mix(in oklab, var(--foreground) 40%, transparent);
+  --tw-prose-kbd: var(--foreground);
+  --tw-prose-kbd-shadows: color-mix(in oklab, var(--foreground) 10%, transparent);
+  --tw-prose-code: color-mix(in oklab, var(--foreground) 70%, transparent);
+  --tw-prose-pre-code: var(--foreground);
+  --tw-prose-pre-bg: color-mix(in oklab, var(--foreground) 3%, transparent);
+  --tw-prose-th-borders: color-mix(in oklab, var(--foreground) 6%, transparent);
+  --tw-prose-td-borders: color-mix(in oklab, var(--foreground) 8%, transparent);
+}
+
+/* Pure Table Grid Layout */
+.prose table {
+  width: 100% !important;
+  max-width: 100% !important;
+  border-collapse: separate !important;
+  border-spacing: 0 !important;
+  border-radius: 0.75rem !important;
+  border: 1px solid color-mix(in oklab, var(--foreground) 6%, transparent) !important;
+  overflow: hidden !important;
+  margin-top: 0 !important;
+  margin-bottom: 0 !important;
+  font-size: 13px !important;
+  text-align: left !important;
+  background-color: color-mix(in oklab, var(--foreground) 4%, transparent) !important;
+}
+
+/* Cells wrap on every device instead of stretching the table onto one line. */
+.prose th,
+.prose td,
+.prose th code,
+.prose td code,
+.prose th a,
+.prose td a {
+  white-space: normal !important;
+  hyphens: none;
+}
+
+/* Component / Prop / Type / Default (every column except the trailing
+   Description): wrap between words, but never split a word or a type token in
+   half. They also hold a readable minimum width so they never collapse to a
+   sliver when the Description column is long. */
+.prose th:not(:last-child),
+.prose td:not(:last-child),
+.prose th:not(:last-child) code,
+.prose td:not(:last-child) code,
+.prose th:not(:last-child) a,
+.prose td:not(:last-child) a {
+  word-break: normal !important;
+  overflow-wrap: normal !important;
+}
+
+.prose th:nth-child(1):not(:last-child),
+.prose td:nth-child(1):not(:last-child),
+.prose th:nth-child(2):not(:last-child),
+.prose td:nth-child(2):not(:last-child) {
+  min-width: 8rem !important;
+}
+
+.prose th:nth-child(3):not(:last-child),
+.prose td:nth-child(3):not(:last-child) {
+  min-width: 6.5rem !important;
+}
+
+.prose th:nth-child(4):not(:last-child),
+.prose td:nth-child(4):not(:last-child) {
+  min-width: 5rem !important;
+}
+
+/* Description (last column) absorbs the remaining space and is the only one
+   allowed to break a long word, so the table can always fit its container.
+   `overflow-wrap: anywhere` (not break-word) is what actually shrinks the
+   cell's min-content width. */
+.prose th:last-child,
+.prose td:last-child,
+.prose th:last-child code,
+.prose td:last-child code,
+.prose th:last-child a,
+.prose td:last-child a {
+  word-break: break-word !important;
+  overflow-wrap: anywhere !important;
+}
+
+/* …but it still needs a floor, otherwise the auto layout squeezes it into a
+   few-characters-per-line sliver and the prose breaks mid-word. Below xl the
+   table is allowed to scroll, so it can afford a generous minimum. */
+.prose th:last-child,
+.prose td:last-child {
+  min-width: 15rem !important;
+}
+
+.prose th code,
+.prose td code {
+  display: inline !important;
+  max-width: 100% !important;
+}
+
+/* Outer scroll wrapper: positions scrollbar directly at bottom border of table */
+.prose div:has(> table),
+.prose .overflow-x-auto,
+.overflow-x-auto {
+  width: 100% !important;
+  max-width: 100% !important;
+  /* overflow-x is set per breakpoint at the end of this table block —
+     declaring it here would override the lg rule (same specificity, later wins). */
+  display: block !important;
+  box-sizing: border-box !important;
+  border-radius: 0.75rem !important;
+  border: none !important;
+  box-shadow: none !important;
+  margin-top: 1.5rem !important;
+  margin-bottom: 1.5rem !important;
+  padding: 0 !important;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: thin !important;
+  scrollbar-color: color-mix(in oklab, var(--foreground) 25%, transparent) transparent !important;
+}
+
+/* Custom WebKit Sleek Pill Scrollbar with Visible Gray Track Background */
+.prose div:has(> table)::-webkit-scrollbar,
+.prose .overflow-x-auto::-webkit-scrollbar,
+.overflow-x-auto::-webkit-scrollbar {
+  height: 8px !important;
+  display: block !important;
+}
+
+/* KILL ALL SCROLLBAR ARROW BUTTONS & ANGLES IN ALL BROWSERS (Windows/Mac/Linux) */
+.prose div:has(> table)::-webkit-scrollbar-button,
+.prose .overflow-x-auto::-webkit-scrollbar-button,
+.overflow-x-auto::-webkit-scrollbar-button,
+.prose div:has(> table)::-webkit-scrollbar-button:single-button,
+.prose .overflow-x-auto::-webkit-scrollbar-button:single-button,
+.overflow-x-auto::-webkit-scrollbar-button:single-button,
+.prose div:has(> table)::-webkit-scrollbar-button:horizontal:decrement,
+.prose .overflow-x-auto::-webkit-scrollbar-button:horizontal:decrement,
+.overflow-x-auto::-webkit-scrollbar-button:horizontal:decrement,
+.prose div:has(> table)::-webkit-scrollbar-button:horizontal:increment,
+.prose .overflow-x-auto::-webkit-scrollbar-button:horizontal:increment,
+.overflow-x-auto::-webkit-scrollbar-button:horizontal:increment,
+.prose div:has(> table)::-webkit-scrollbar-corner,
+.prose .overflow-x-auto::-webkit-scrollbar-corner,
+.overflow-x-auto::-webkit-scrollbar-corner {
+  display: none !important;
+  width: 0 !important;
+  height: 0 !important;
+  opacity: 0 !important;
+  background: transparent !important;
+}
+
+/* Track (where the scrollbar slides) */
+.prose div:has(> table)::-webkit-scrollbar-track,
+.prose .overflow-x-auto::-webkit-scrollbar-track,
+.overflow-x-auto::-webkit-scrollbar-track {
+  background: color-mix(in oklab, var(--foreground) 6%, transparent) !important;
+  border-radius: 0 0 0.5rem 0.5rem !important;
+  margin: 0 !important;
+}
+
+/* Thumb (the draggable bar). The transparent border + padding-box clip
+   insets it from the track without having to know the track's colour. */
+.prose div:has(> table)::-webkit-scrollbar-thumb,
+.prose .overflow-x-auto::-webkit-scrollbar-thumb,
+.overflow-x-auto::-webkit-scrollbar-thumb {
+  background: color-mix(in oklab, var(--foreground) 30%, transparent) !important;
+  background-clip: padding-box !important;
+  border-radius: 9999px !important;
+  border: 1.5px solid transparent !important;
+  transition: background-color 0.2s ease-in-out !important;
+}
+
+.prose div:has(> table)::-webkit-scrollbar-thumb:hover,
+.prose .overflow-x-auto::-webkit-scrollbar-thumb:hover,
+.overflow-x-auto::-webkit-scrollbar-thumb:hover {
+  background: color-mix(in oklab, var(--foreground) 45%, transparent) !important;
+  background-clip: padding-box !important;
+}
+
+/* Reicon's table skin: every line and tint is the ink at a low alpha, so one
+   rule set serves both modes and any customizer preset. */
+.prose thead {
+  background: transparent !important;
+  background-color: transparent !important;
+}
+
+.prose th {
+  padding: 0.625rem 1rem !important;
+  font-weight: 600 !important;
+  font-size: 11px !important;
+  line-height: 1.5 !important;
+  text-transform: uppercase !important;
+  letter-spacing: 0.06em !important;
+  color: color-mix(in oklab, var(--foreground) 60%, transparent) !important;
+  background-color: color-mix(in oklab, var(--foreground) 7%, transparent) !important;
+  border-bottom: 1px solid color-mix(in oklab, var(--foreground) 6%, transparent) !important;
+  border-right: 1px solid color-mix(in oklab, var(--foreground) 6%, transparent) !important;
+}
+
+.prose th:last-child {
+  border-right: none !important;
+}
+
+/* Rows. A <tr> can't draw a border in a border-spacing table, so the row
+   divider sits on its cells. */
+.prose tbody tr {
+  transition: background-color 0.15s ease !important;
+}
+
+.prose tbody tr:not(:last-child) td {
+  border-bottom: 1px solid color-mix(in oklab, var(--foreground) 8%, transparent) !important;
+}
+
+.prose tbody tr:hover {
+  background-color: color-mix(in oklab, var(--foreground) 7%, transparent) !important;
+}
+
+.prose td {
+  padding: 0.625rem 1rem !important;
+  border-right: 1px solid color-mix(in oklab, var(--foreground) 6%, transparent) !important;
+  vertical-align: top !important;
+  font-size: 13px !important;
+  line-height: 1.6 !important;
+  color: color-mix(in oklab, var(--foreground) 55%, transparent) !important;
+}
+
+.prose td:first-child {
+  font-weight: 500 !important;
+  color: var(--foreground) !important;
+}
+
+.prose td:last-child {
+  border-right: none !important;
+  font-size: 12.5px !important;
+}
+
+/* Prop / Type / Default (non-last cells) are plain monospace text, not
+   chips: the name in the first column in the ink, every other value a step
+   lighter. */
+.prose td:not(:last-child) code,
+.prose th:not(:last-child) code,
+.vitepress-table td:not(:last-child) code,
+.vitepress-table th:not(:last-child) code {
+  display: inline !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  border: none !important;
+  border-radius: 0 !important;
+  background: transparent !important;
+  background-color: transparent !important;
+  font-size: 12px !important;
+  line-height: 1.55 !important;
+  font-weight: 400 !important;
+  box-shadow: none !important;
+  outline: none !important;
+  color: color-mix(in oklab, var(--foreground) 70%, transparent) !important;
+}
+
+.prose td:first-child:not(:last-child) code,
+.vitepress-table td:first-child:not(:last-child) code {
+  font-weight: 500 !important;
+  color: var(--foreground) !important;
+}
+
+/* Table Cursor Behavior */
+.prose table,
+.prose table tr,
+.prose table td,
+.prose table th,
+.vitepress-table table,
+.vitepress-table tr,
+.vitepress-table td,
+.vitepress-table th {
+  cursor: pointer !important;
+}
+
+.prose table td p,
+.prose table td span,
+.prose table td code,
+.vitepress-table td p,
+.vitepress-table td span,
+.vitepress-table td code {
+  cursor: text !important;
+}
+
+/* ---------------------------------------------------------------------------
+   Responsive table overflow. Declared last so these win over the base rules
+   above (all are !important with equal specificity, so source order decides).
+   --------------------------------------------------------------------------- */
+
+/* >= 1024px: the table is sized to the container, never to its content. Cells
+   trade horizontal space for extra lines instead of widening the table.
+   Padding is tightened here so the fixed-width columns leave the Description
+   column as much room as possible. */
+@media (min-width: 1024px) {
+  .prose table {
+    width: 100% !important;
+    min-width: 0 !important;
+    max-width: 100% !important;
+    table-layout: auto !important;
+  }
+
+  .prose th,
+  .prose td {
+    padding: 0.75rem !important;
+  }
+
+  /* The no-break columns shrink to exactly their content; the Description
+     column takes everything that is left over, instead of the mono columns
+     hogging the surplus. */
+  .prose th:not(:last-child),
+  .prose td:not(:last-child) {
+    width: 1% !important;
+  }
+
+  .prose th:last-child,
+  .prose td:last-child {
+    width: 99% !important;
+  }
+
+  /* The generous Description floor is a small-screen affordance (there the
+     table scrolls anyway). From lg up the table has to fit the container, so
+     the floor drops to whatever is left after the fixed columns. */
+  .prose th:last-child,
+  .prose td:last-child {
+    min-width: 6rem !important;
+  }
+}
+
+/* Scroll rather than clip, at every width. On a wide screen the table fits, so
+   no scrollbar is drawn; it only appears on the narrow layouts where four
+   no-break columns genuinely cannot fit the content area. */
+.prose div:has(> table),
+.prose .overflow-x-auto,
+.overflow-x-auto {
+  overflow-x: auto !important;
+}
+
+/* < 1024px (md & mobile): keep a readable minimum width and scroll horizontally.
+   Text still wraps inside each column. */
+@media (max-width: 1023px) {
+  .prose table {
+    min-width: 560px !important;
+  }
 }
 
 /* Radix dialogs (theme sheet, modals) scroll-lock <body> while open.
@@ -239,6 +700,13 @@ html body[data-scroll-locked] {
 }
 
 @theme {
+  /* DM Sans for body/UI text, Cooper (self-hosted, see src/assets/fonts) for
+     headings — see the h1–h4 rule in @layer base. Tailwind's preflight puts
+     var(--font-sans) on <html>, so the theme customizer swaps the body family
+     site-wide by setting --font-sans inline on <html>; headings keep Cooper. */
+  --font-sans: var(--font-dm-sans), ui-sans-serif, system-ui, sans-serif,
+    "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+  --font-serif: var(--font-cooper), ui-serif, Georgia, serif;
   --default-mono-font-family: "Geist Mono", ui-monospace, SFMono-Regular,
     Roboto Mono, Menlo, Monaco, Liberation Mono, DejaVu Sans Mono, Courier New,
     monospace;
@@ -246,6 +714,17 @@ html body[data-scroll-locked] {
     Monaco, Liberation Mono, DejaVu Sans Mono, Courier New, monospace;
   --default-mono-font-feature-settings: normal;
   --default-mono-font-variation-settings: normal;
+}
+
+/* Pins the site's default body family regardless of the customizer's font
+   choice. The customizer overrides --font-sans inline on <html>; redeclaring
+   it on this wrapper wins for everything inside, so `font-sans` utilities
+   underneath still resolve to DM Sans. Used by the home page, whose
+   typography is part of the design and shouldn't follow the reader's pick. */
+.font-site-sans {
+  --font-sans: var(--font-dm-sans), ui-sans-serif, system-ui, sans-serif,
+    "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+  font-family: var(--font-sans);
 }
 /* Grid background with light/dark mode and more visible lines */
 .grid-bg {
@@ -259,150 +738,6 @@ html body[data-scroll-locked] {
 }
 .dark .grid-bg {
   --grid-line-color: rgba(229,231,235,0.015);
-}
-
-/* Enhanced grid background for hero sections */
-.grid-bg-hero {
-  background-image:
-    linear-gradient(to right, var(--grid-line-color-hero, rgba(34,34,34,0.04)) 1px, transparent 1px),
-    linear-gradient(to bottom, var(--grid-line-color-hero, rgba(34,34,34,0.04)) 1px, transparent 1px);
-  background-size: 32px 32px;
-}
-.light .grid-bg-hero {
-  --grid-line-color-hero: rgba(34,34,34,0.04);
-}
-.dark .grid-bg-hero {
-  --grid-line-color-hero: rgba(229,231,235,0.025);
-}
-
-/* Custom range input styling for the gradient generator */
-input[type="range"] {
-  -webkit-appearance: none;
-  appearance: none;
-  background: transparent;
-  cursor: pointer;
-}
-
-input[type="range"]::-webkit-slider-track {
-  background: #e5e7eb;
-  height: 8px;
-  border-radius: 4px;
-}
-
-input[type="range"]::-webkit-slider-thumb {
-  -webkit-appearance: none;
-  appearance: none;
-  background: #3b82f6;
-  height: 20px;
-  width: 20px;
-  border-radius: 50%;
-  cursor: pointer;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-}
-
-input[type="range"]::-webkit-slider-thumb:hover {
-  background: #2563eb;
-  transform: scale(1.1);
-}
-
-input[type="range"]::-moz-range-track {
-  background: #e5e7eb;
-  height: 8px;
-  border-radius: 4px;
-  border: none;
-}
-
-input[type="range"]::-moz-range-thumb {
-  background: #3b82f6;
-  height: 20px;
-  width: 20px;
-  border-radius: 50%;
-  cursor: pointer;
-  border: none;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-}
-
-input[type="range"]::-moz-range-thumb:hover {
-  background: #2563eb;
-}
-
-/* Ensure proper focus states */
-input[type="range"]:focus {
-  outline: none;
-}
-
-input[type="range"]:focus::-webkit-slider-thumb {
-  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.3);
-}
-
-input[type="range"]:focus::-moz-range-thumb {
-  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.3);
-}
-
-/* Enhanced slider styles for color palette */
-.slider {
-  -webkit-appearance: none;
-  appearance: none;
-  background: transparent;
-  cursor: pointer;
-}
-
-.slider::-webkit-slider-track {
-  background: linear-gradient(90deg, #3b82f6, #8b5cf6, #ec4899);
-  height: 12px;
-  border-radius: 6px;
-}
-
-.slider::-webkit-slider-thumb {
-  -webkit-appearance: none;
-  appearance: none;
-  height: 24px;
-  width: 24px;
-  border-radius: 50%;
-  background: #ffffff;
-  border: 3px solid #3b82f6;
-  box-shadow: 0 4px 12px rgba(59, 130, 246, 0.3);
-  cursor: pointer;
-  transition: all 0.2s ease;
-}
-
-.slider::-webkit-slider-thumb:hover {
-  transform: scale(1.1);
-  box-shadow: 0 6px 16px rgba(59, 130, 246, 0.4);
-}
-
-.slider::-moz-range-track {
-  background: linear-gradient(90deg, #3b82f6, #8b5cf6, #ec4899);
-  height: 12px;
-  border-radius: 6px;
-  border: none;
-}
-
-.slider::-moz-range-thumb {
-  height: 24px;
-  width: 24px;
-  border-radius: 50%;
-  background: #ffffff;
-  border: 3px solid #3b82f6;
-  box-shadow: 0 4px 12px rgba(59, 130, 246, 0.3);
-  cursor: pointer;
-  transition: all 0.2s ease;
-}
-
-.slider::-moz-range-thumb:hover {
-  transform: scale(1.1);
-  box-shadow: 0 6px 16px rgba(59, 130, 246, 0.4);
-}
-
-/* Dark mode slider adjustments */
-.dark .slider::-webkit-slider-thumb {
-  background: #1f2937;
-  border: 3px solid #60a5fa;
-}
-
-.dark .slider::-moz-range-thumb {
-  background: #1f2937;
-  border: 3px solid #60a5fa;
 }
 
 @theme inline {
@@ -445,6 +780,7 @@ input[type="range"]:focus::-moz-range-thumb {
   --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
   --color-sidebar-border: var(--sidebar-border);
   --color-sidebar-ring: var(--sidebar-ring);
+  --color-preview-stage: var(--preview-stage);
 }
 
 @layer base {
@@ -454,200 +790,77 @@ input[type="range"]:focus::-moz-range-thumb {
   body {
     @apply bg-background text-foreground;
   }
+  /* Headings set in Cooper site-wide, body copy stays in the sans. In the base
+     layer so a `font-sans`/`font-mono` utility on a heading still wins. Cooper
+     is a heavy display face, so headings default to the regular weight and
+     let `font-semibold`/`font-bold` opt up. */
+  h1,
+  h2,
+  h3,
+  h4 {
+    font-family: var(--font-serif);
+    font-weight: 400;
+  }
+  /* Cooper is the site's face, not the components'. Inside a component preview
+     (the /preview iframe marks its <body> with data-sandbox) headings fall back
+     to preflight's inherit, and `font-serif` resolves to the customizer's
+     selected family — so a previewed component shows exactly what it would in
+     the reader's project. On <body> so portalled dialogs are covered too. */
+  [data-sandbox] {
+    --font-serif: var(--font-sans);
+  }
+  [data-sandbox] :is(h1, h2, h3, h4) {
+    font-family: inherit;
+    font-weight: inherit;
+  }
 }
 
-/* Force zero border radius across all elements when --radius is 0rem */
-[style*="--radius: 0rem"] *,
-[style*="--radius:0rem"] * {
+/* A demo's outer frame panel inside the preview sandbox, marked by
+   SandboxClient. The panel already stands off the --preview-stage surface, so
+   its border is dropped. Transparent rather than removed, so nothing shifts
+   by a pixel. Unlayered and !important to beat the demo's border utilities. */
+[data-sandbox-frame] {
+  border-color: transparent !important;
+}
+
+/* Force zero border radius across all elements while the theme customizer's
+   radius is 0 — it marks <html> with `data-radius-zero`. Elements that must
+   stay circular (orbital lines) opt out with `.keep-rounded` and carry their
+   own rounding. The exported theme CSS emits the equivalent rule when radius
+   is 0 — see generateCSS in theme-customizer-context.tsx.
+
+   Keyed on a data attribute, never on `[style*=…]`: a selector on the style
+   attribute with descendants after it makes every inline-style write on the
+   page (each GSAP / motion frame) restyle that element's whole
+   subtree, which made the homepage stutter while anything animated. */
+[data-radius-zero] *:not(.keep-rounded) {
   border-radius: 0 !important;
 }
-
-/* Custom animations for badge components */
-@keyframes gradient {
-  0% {
-    background-position: 0% 50%;
-  }
-  50% {
-    background-position: 100% 50%;
-  }
-  100% {
-    background-position: 0% 50%;
-  }
-}
-
-@keyframes float {
-  0%, 100% {
-    transform: translateY(0px);
-  }
-  50% {
-    transform: translateY(-2px);
-  }
-}
-
-@keyframes glow {
-  0%, 100% {
-    box-shadow: 0 0 5px rgba(59, 130, 246, 0.5);
-  }
-  50% {
-    box-shadow: 0 0 20px rgba(59, 130, 246, 0.8), 0 0 30px rgba(59, 130, 246, 0.6);
-  }
-}
-
-.animate-float {
-  animation: float 3s ease-in-out infinite;
-}
-
-.animate-glow {
-  animation: glow 2s ease-in-out infinite;
-}
-
-
-/* Scroll Stack Dynamic Documentation Styles */
-body:not([data-scroll-stack='Simple']) #stack-docs-Simple { display: none; }
-body:not([data-scroll-stack='Split']) #stack-docs-Split { display: none; }
-body:not([data-scroll-stack='Sticky']) #stack-docs-Sticky { display: none; }
-body:not([data-scroll-stack='Horizontal']) #stack-docs-Horizontal { display: none; }
 
 /* ============================================ */
 /* HOMEPAGE STYLES                              */
 /* ============================================ */
 
-/* 3D Rotating Cube */
-@keyframes cube-spin {
-  from { transform: rotateX(-22deg) rotateY(0deg); }
-  to   { transform: rotateX(-22deg) rotateY(360deg); }
-}
-
-.cube-scene {
-  perspective: 600px;
-}
-
-.cube {
-  width: 200px;
-  height: 200px;
-  position: relative;
-  transform-style: preserve-3d;
-  animation: cube-spin 25s linear infinite;
-}
-
-.cube-face {
-  position: absolute;
-  inset: 0;
-  border: 1px solid rgba(99, 102, 241, 0.1);
-  background:
-    linear-gradient(to right, rgba(99,102,241,0.025) 1px, transparent 1px) 0 0 / 33.33px 33.33px,
-    linear-gradient(to bottom, rgba(99,102,241,0.025) 1px, transparent 1px) 0 0 / 33.33px 33.33px,
-    rgba(99, 102, 241, 0.008);
-}
-
-.cube-face.front  { transform: translateZ(100px); }
-.cube-face.back   { transform: translateZ(-100px) rotateY(180deg); }
-.cube-face.right  { transform: rotateY(90deg) translateZ(100px); }
-.cube-face.left   { transform: rotateY(-90deg) translateZ(100px); }
-.cube-face.top    { transform: rotateX(90deg) translateZ(100px); }
-.cube-face.bottom { transform: rotateX(-90deg) translateZ(100px); }
-
-/* Light mode cube adjustments */
-html:not(.dark) .cube-face {
-  border-color: rgba(99, 102, 241, 0.18);
-  background:
-    linear-gradient(to right, rgba(99,102,241,0.06) 1px, transparent 1px) 0 0 / 33.33px 33.33px,
-    linear-gradient(to bottom, rgba(99,102,241,0.06) 1px, transparent 1px) 0 0 / 33.33px 33.33px,
-    rgba(99, 102, 241, 0.025);
-}
-
-/* Rotating conic border */
-@keyframes border-rotate {
-  from { --border-angle: 0deg; }
-  to   { --border-angle: 360deg; }
-}
-
-@property --border-angle {
-  syntax: "<angle>";
-  initial-value: 0deg;
-  inherits: false;
-}
-
-/* Marquee */
-@keyframes marquee-scroll {
-  from { transform: translateX(0); }
-  to   { transform: translateX(-50%); }
-}
-
-.marquee-track {
-  animation: marquee-scroll 35s linear infinite;
-}
-.marquee-track:hover {
-  animation-play-state: paused;
-}
-
 /* Showcase card hover */
 .showcase-card {
   transition: border-color 0.3s ease, box-shadow 0.3s ease, transform 0.3s ease;
 }
+/* Tints of the theme's ink and accent, so the hover follows the active preset. */
 .showcase-card:hover {
   transform: translateY(-3px);
+  border-color: color-mix(in oklab, var(--foreground) 12%, transparent) !important;
+  box-shadow: 0 8px 30px color-mix(in oklab, var(--foreground) 8%, transparent);
 }
 .dark .showcase-card:hover {
-  border-color: rgba(255,255,255,0.1) !important;
-  box-shadow: 0 8px 40px rgba(0,0,0,0.3), 0 0 20px rgba(99,102,241,0.04);
-}
-html:not(.dark) .showcase-card:hover {
-  border-color: rgba(0,0,0,0.12) !important;
-  box-shadow: 0 8px 30px rgba(0,0,0,0.08);
+  box-shadow: 0 8px 40px rgba(0,0,0,0.3), 0 0 20px color-mix(in oklab, var(--primary) 6%, transparent);
 }
 
-/* Terminal block */
-.terminal-block {
-  background: linear-gradient(135deg, #1a1a2e 0%, #16162a 50%, #0f0f1a 100%);
-  border: 1px solid rgba(255, 255, 255, 0.06);
-  box-shadow:
-    0 0 0 1px rgba(255, 255, 255, 0.03),
-    0 4px 24px rgba(0, 0, 0, 0.25);
-}
-
-html:not(.dark) .terminal-block {
-  background: linear-gradient(135deg, #f8f9fc 0%, #f3f4f8 50%, #eef0f5 100%);
-  border: 1px solid rgba(0, 0, 0, 0.08);
-  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.06);
-}
-
-/* Scrollbar hidden */
-.scrollbar-hide {
-  -ms-overflow-style: none;
-  scrollbar-width: none;
-}
-.scrollbar-hide::-webkit-scrollbar {
-  display: none;
-}
-
-/* Feature card glow on hover */
-.feature-glow {
-  position: relative;
-}
-.feature-glow::before {
-  content: '';
-  position: absolute;
-  inset: -1px;
-  border-radius: inherit;
-  padding: 1px;
-  background: conic-gradient(from var(--border-angle, 0deg), transparent 40%, rgba(99,102,241,0.3) 50%, transparent 60%);
-  -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
-  mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
-  -webkit-mask-composite: xor;
-  mask-composite: exclude;
-  opacity: 0;
-  transition: opacity 0.4s ease;
-  animation: border-rotate 4s linear infinite;
-}
-.feature-glow:hover::before {
-  opacity: 1;
-}
-
-/* Completely hide scrollbars on Code blocks while retaining scrollability */
+/* Completely hide scrollbars on Code blocks while retaining scrollability.
+   `:not(:has(table))` keeps table wrappers out of this — they own their
+   overflow/scrollbar rules in the table block above and must stay unscrolled at lg. */
 .shiki pre,
 pre.shiki,
-.overflow-x-auto,
+.overflow-x-auto:not(:has(table)),
 .overflow-x-auto pre {
   white-space: pre !important;
   word-break: normal !important;
@@ -664,7 +877,7 @@ pre.shiki code {
 
 .shiki pre::-webkit-scrollbar,
 pre.shiki::-webkit-scrollbar,
-.overflow-x-auto::-webkit-scrollbar,
+.overflow-x-auto:not(:has(table))::-webkit-scrollbar,
 .overflow-x-auto pre::-webkit-scrollbar {
   display: none !important;
   width: 0 !important;
@@ -673,4 +886,31 @@ pre.shiki::-webkit-scrollbar,
 
 button {
   cursor: pointer;
+}
+
+/* Global rule: Hide "Features" section in all doc pages without taking any layout space */
+#features,
+#features + p,
+#features + p + .grid,
+#features + .grid {
+  display: none !important;
+}
+
+/* ─────────────────────────────────────────────────────────────────────────
+   All Components catalog page (/docs/[framework]/all-components) only:
+   opt back out of Tailwind Preflight's `* { margin: 0; padding: 0 }` reset
+   so text flows with the browser's default spacing again — a bottom gap
+   under every paragraph and heading, indented/bulleted lists, etc.
+
+   `revert` rolls each property back to the user-agent stylesheet, so the
+   values are literally the browser defaults rather than hand-picked ones.
+   Kept inside `@layer base` so margin utilities written in the markup
+   (mt-2, mb-4, space-y-*) still win — only elements that declare no margin
+   of their own fall back to the default.
+   ───────────────────────────────────────────────────────────────────────── */
+@layer base {
+  .all-components-page :is(p) {
+    margin: revert;
+  }
+
 }

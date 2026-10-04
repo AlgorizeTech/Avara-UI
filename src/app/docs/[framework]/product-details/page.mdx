@@ -1,0 +1,263 @@
+import { docsPageMetadata } from "@/lib/docs-metadata";
+
+export const metadata = docsPageMetadata("product-details");
+
+import { ExampleShowcase } from "@/components/site/Sandbox";
+import { extractCode } from "@/lib/code";
+
+# Product Details
+
+A collection of 4 production-ready, high-converting, fully responsive E-commerce Product Details components designed with unique layout architectures, glassmorphism cards, bento hero showcases, and colorway image synchronization.
+
+`ProductDetails` adapts seamlessly across mobile screens, tablets, and desktop viewports, with support for image slider arrows, color-synced previews, stock urgency bars, specs tabs, and checkout CTAs.
+
+export const productData = `const product = {
+  title: "Nike Air Max Pulse 2026",
+  price: "$189.99",
+  originalPrice: "$240.00",
+  description: "Engineered with reactive Air Cushioning and breathable Flyknit upper for high-performance city workouts and daily street style.",
+  badge: "Special Edition",
+  images: [
+    "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto/v1790516400/red-shows-1790516403807.jpg",
+    "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto/v1790516403/purple-shows-1790516403806.jpg",
+    "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto/v1790516399/blue-shows-1790516403806.jpg",
+    "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto/v1790516397/baby-pink-shows-1790516403806.jpg",
+  ],
+  colors: [
+    { name: "Crimson Red", class: "bg-[#BC2433]", bgClass: "bg-primary/10 border-primary/20", image: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto/v1790516400/red-shows-1790516403807.jpg" },
+    { name: "Vibrant Purple", class: "bg-[#4A2C81]", bgClass: "bg-primary/10 border-primary/20", image: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto/v1790516403/purple-shows-1790516403806.jpg" },
+    { name: "Cobalt Blue", class: "bg-[#0A53B8]", bgClass: "bg-primary/10 border-primary/20", image: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto/v1790516399/blue-shows-1790516403806.jpg" },
+    { name: "Baby Pink", class: "bg-[#E4ADB2]", bgClass: "bg-primary/10 border-primary/20", image: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto/v1790516397/baby-pink-shows-1790516403806.jpg" },
+  ],
+  sizes: ["US 8", "US 9", "US 10", "US 11", "US 12"],
+};`;
+
+export const usage1 = `import { ProductDetails } from "@/components/custom/blocks/ProductDetailsBlock";
+
+${productData}
+
+export default function SplitGalleryDemo() {
+  return (
+    <ProductDetails
+      variant="modern-split-gallery"
+      title={product.title}
+      price={product.price}
+      originalPrice={product.originalPrice}
+      description={product.description}
+      badge={product.badge}
+      images={product.images}
+      colors={product.colors}
+      sizes={product.sizes}
+    />
+  );
+}`;
+
+export const usage2 = `import { ProductDetails } from "@/components/custom/blocks/ProductDetailsBlock";
+
+${productData}
+
+export default function FloatingGlassCardDemo() {
+  return (
+    <ProductDetails
+      variant="floating-card-glass"
+      title={product.title}
+      price={product.price}
+      originalPrice={product.originalPrice}
+      description={product.description}
+      badge={product.badge}
+      images={product.images}
+      colors={product.colors}
+      sizes={product.sizes}
+    />
+  );
+}`;
+
+export const usage3 = `import { ProductDetails } from "@/components/custom/blocks/ProductDetailsBlock";
+
+${productData}
+
+export default function BentoShowcaseDemo() {
+  return (
+    <ProductDetails
+      variant="bento-editorial-showcase"
+      title={product.title}
+      price={product.price}
+      originalPrice={product.originalPrice}
+      description={product.description}
+      badge={product.badge}
+      images={product.images}
+      colors={product.colors}
+      sizes={product.sizes}
+    />
+  );
+}`;
+
+export const usage4 = `import { ProductDetails } from "@/components/custom/blocks/ProductDetailsBlock";
+
+${productData}
+
+export default function ColorSyncDemo() {
+  return (
+    <ProductDetails
+      variant="color-sync-gallery"
+      zoomMode="inner" // Options: "inner" (default image frame zoom) | "side" (right side HD portal zoom)
+      title={product.title}
+      price={product.price}
+      originalPrice={product.originalPrice}
+      description={product.description}
+      badge={product.badge}
+      images={product.images}
+      colors={product.colors}
+      sizes={product.sizes}
+    />
+  );
+}`;
+
+<ExampleShowcase
+  name="product-details"
+  columns={1}
+  examples={[
+    {
+      title: "Color Swatch Synced Image Gallery Details",
+      propNotes: [
+        { lead: "Use", prop: "variant", value: '"color-sync-gallery"', effect: "selecting a colorway swatch dynamically updates the main product image without sliders or thumbnails." },
+        { lead: "Use", prop: "zoomMode", value: '"inner" | "side"', effect: "switch between inside-frame image zoom ('inner') or right-side HD portal zoom ('side')." }
+      ],
+      props: { variant: "color-sync-gallery", zoomMode: "inner" },
+      usage: usage4,
+      code: extractCode("src/components/custom/blocks/ProductDetailsBlock.tsx"),
+    },
+    {
+      title: "Modern Split Gallery Slider Details",
+      propNotes: [{ lead: "Use", prop: "variant", value: '"modern-split-gallery"', effect: "features floating left/right slider arrows over main image, colorways, stock urgency bar, and specs tabs." }],
+      props: { variant: "modern-split-gallery" },
+      usage: usage1,
+    },
+    {
+      title: "Floating Glassmorphism Card Details",
+      propNotes: [{ lead: "Use", prop: "variant", value: '"floating-card-glass"', effect: "clean floating card layout with US shoe size pills and express shipping." }],
+      props: { variant: "floating-card-glass" },
+      usage: usage2,
+    },
+    {
+      title: "Bento Editorial Showcase Details",
+      propNotes: [{ lead: "Use", prop: "variant", value: '"bento-editorial-showcase"', effect: "features a full-bleed dark hero image backdrop with compact buy panel." }],
+      props: { variant: "bento-editorial-showcase" },
+      usage: usage3,
+    },
+  ]}
+/>
+
+## Installation
+
+<Installation name="product-details" />
+
+## Features
+
+Discover the key capabilities of the `ProductDetails` component:
+
+<div className="grid grid-cols-1 sm:grid-cols-2 gap-4 my-6 not-prose">
+  <div className="p-6 rounded-2xl border border-border bg-card">
+    <h3 className="text-lg font-semibold text-card-foreground mb-2">4 Unique Responsive Footwear Layouts</h3>
+    <p className="text-muted-foreground text-sm">Includes Modern Split Gallery Slider, Floating Glass Card, Bento Editorial Showcase, and Color-Synced Swatch Gallery.</p>
+  </div>
+  <div className="p-6 rounded-2xl border border-border bg-card">
+    <h3 className="text-lg font-semibold text-card-foreground mb-2">100% Screen & Device Responsive</h3>
+    <p className="text-muted-foreground text-sm">Fluid Tailwind CSS grid and flex layouts built to adapt from 320px mobile viewports up to 4K ultra-wide screens.</p>
+  </div>
+</div>
+
+## Props Reference
+
+<div className="overflow-x-auto">
+  <table>
+    <thead>
+      <tr>
+        <th>Prop</th>
+        <th>Type</th>
+        <th>Default</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><code>variant</code></td>
+        <td><code>"color-sync-gallery" | "modern-split-gallery" | "floating-card-glass" | "bento-editorial-showcase"</code></td>
+        <td><code>"color-sync-gallery"</code></td>
+        <td>Selects layout architecture from the 4 available variants: <code>"color-sync-gallery"</code>, <code>"modern-split-gallery"</code>, <code>"floating-card-glass"</code>, or <code>"bento-editorial-showcase"</code>.</td>
+      </tr>
+      <tr>
+        <td><code>zoomMode</code></td>
+        <td><code>"inner" | "side"</code></td>
+        <td><code>"inner"</code></td>
+        <td>Controls HD image zoom mode for 1st variant (<code>color-sync-gallery</code>). <code>"inner"</code> magnifies directly within the hero frame; <code>"side"</code> projects a 2.8x HD lens window to the right of the image on hover.</td>
+      </tr>
+      <tr>
+        <td><code>title</code></td>
+        <td><code>string</code></td>
+        <td><code>"Nike Air Max Pulse 2026"</code></td>
+        <td>Main product title heading displayed across all variants.</td>
+      </tr>
+      <tr>
+        <td><code>price</code></td>
+        <td><code>string</code></td>
+        <td><code>"$189.99"</code></td>
+        <td>Current product retail or discounted selling price string.</td>
+      </tr>
+      <tr>
+        <td><code>originalPrice</code></td>
+        <td><code>string</code></td>
+        <td><code>"$240.00"</code></td>
+        <td>Original list price string displayed with line-through styling to show savings.</td>
+      </tr>
+      <tr>
+        <td><code>description</code></td>
+        <td><code>string</code></td>
+        <td><code>"Engineered with reactive Air Cushioning..."</code></td>
+        <td>Short description or marketing bio summary text.</td>
+      </tr>
+      <tr>
+        <td><code>badge</code></td>
+        <td><code>string</code></td>
+        <td><code>"Special Edition"</code></td>
+        <td>Promotional badge label text (e.g. <code>"Special Edition"</code>, <code>"20% OFF"</code>, <code>"Best Seller"</code>).</td>
+      </tr>
+      <tr>
+        <td><code>rating</code></td>
+        <td><code>number</code></td>
+        <td><code>4.9</code></td>
+        <td>Product review score out of 5 stars (renders filled yellow star icons).</td>
+      </tr>
+      <tr>
+        <td><code>reviewsCount</code></td>
+        <td><code>number</code></td>
+        <td><code>284</code></td>
+        <td>Total count of verified customer reviews.</td>
+      </tr>
+      <tr>
+        <td><code>images</code></td>
+        <td><code>string[]</code></td>
+        <td><code>DEFAULT_IMAGES</code></td>
+        <td>Array of high-resolution product image URLs for image slider arrows, thumbnail galleries, and colorway syncing.</td>
+      </tr>
+      <tr>
+        <td><code>colors</code></td>
+        <td><code>ProductColor[]</code></td>
+        <td><code>DEFAULT_COLORS</code></td>
+        <td>Array of colorway objects (containing <code>name</code>, <code>class</code>, <code>bgClass</code>, <code>image</code>). Selecting a color swatch dynamically updates active state and swaps main preview image in <code>"color-sync-gallery"</code>.</td>
+      </tr>
+      <tr>
+        <td><code>sizes</code></td>
+        <td><code>string[]</code></td>
+        <td><code>DEFAULT_SIZES</code></td>
+        <td>Array of shoe or apparel size strings (e.g. <code>["US 8", "US 9", "US 10", "US 11", "US 12"]</code>) for size picker grids.</td>
+      </tr>
+      <tr>
+        <td><code>className</code></td>
+        <td><code>string</code></td>
+        <td><code>""</code></td>
+        <td>Custom Tailwind CSS class overrides applied to wrapper container section.</td>
+      </tr>
+    </tbody>
+  </table>
+</div>

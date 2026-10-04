@@ -1,0 +1,444 @@
+import { docsPageMetadata } from "@/lib/docs-metadata";
+
+export const metadata = docsPageMetadata("animated-list");
+
+import { ExampleShowcase } from "@/components/site/Sandbox";
+import { extractCode } from "@/lib/code";
+
+# Premium Animated List
+
+A hyper-polished list component that staggers its children into view using 3D perspective transforms (no animation library), complete with a mouse-tracking glassmorphic spotlight hover effect.
+
+Standard list animations often feel rigid. By wrapping your notification or activity feeds in the `AnimatedList` container, the engine forces a `perspective` boundary and applies a high-end 3D flip-in sequence (`back.out` easing) to every direct child. Furthermore, the `AnimatedListItem` wrapper brings the component to life _after_ entry by tracking the user's cursor to render a subtle spotlight gradient glow.
+
+Each list plays its entrance once it scrolls into view — use a preview's reload button to replay it. Hover a card afterwards for the cursor-tracking spotlight.
+
+export const listItems = `const notifications = [
+  {
+    id: 1,
+    icon: CreditCard,
+    color: "text-emerald-500",
+    bg: "bg-emerald-50 dark:bg-emerald-500/10 border border-emerald-500/20",
+    title: "Payment Received",
+    desc: "Stripe successfully processed $129.00",
+    time: "2m",
+  },
+  {
+    id: 2,
+    icon: UserPlus,
+    color: "text-blue-500",
+    bg: "bg-blue-50 dark:bg-blue-500/10 border border-blue-500/20",
+    title: "New Signup",
+    desc: "alice@example.com created a Pro account",
+    time: "15m",
+  },
+  {
+    id: 3,
+    icon: CheckCircle2,
+    color: "text-indigo-500",
+    bg: "bg-indigo-50 dark:bg-indigo-500/10 border border-indigo-500/20",
+    title: "Deployment Successful",
+    desc: "Production deployment (v2.4.1) is live",
+    time: "1h",
+  },
+  {
+    id: 4,
+    icon: Zap,
+    color: "text-rose-500",
+    bg: "bg-rose-50 dark:bg-rose-500/10 border border-rose-500/20",
+    title: "Server Scaled",
+    desc: "Auto-scaled cluster to handle traffic spike",
+    time: "3h",
+  },
+];
+
+// One row. The group-hover styles work because AnimatedListItem is the group.
+function NotificationRow({ notif }: { notif: (typeof notifications)[number] }) {
+  return (
+    <div className="flex items-center gap-3 min-w-0">
+      <div
+        className={[
+          "w-9 h-9 sm:w-10 sm:h-10 rounded-[10px] flex items-center justify-center flex-shrink-0 transition-transform duration-300 group-hover:scale-110",
+          notif.bg,
+          notif.color,
+        ].join(" ")}
+      >
+        <notif.icon className="w-4 h-4 sm:w-[18px] sm:h-[18px]" strokeWidth={2.5} />
+      </div>
+
+      <div className="flex-1 min-w-0 flex flex-col justify-center">
+        <div className="flex items-center justify-between gap-2">
+          <h4 className="text-[13px] sm:text-[13.5px] font-semibold text-foreground truncate">
+            {notif.title}
+          </h4>
+          <span className="text-[10px] sm:text-[10.5px] font-semibold text-muted-foreground flex-shrink-0">
+            {notif.time}
+          </span>
+        </div>
+        <p className="text-[11.5px] sm:text-[12px] font-medium text-muted-foreground leading-snug break-words line-clamp-2 mt-[1px]">
+          {notif.desc}
+        </p>
+      </div>
+    </div>
+  );
+}`;
+
+export const usageDefault = `import {
+  AnimatedList,
+  AnimatedListItem,
+} from "@/components/custom/blocks/AnimatedListBlock";
+import { CheckCircle2, CreditCard, UserPlus, Zap } from "lucide-react";
+
+${listItems}
+
+export default function NotificationFeed() {
+  // The wrapper establishes the 3D perspective the children animate inside.
+  return (
+    <AnimatedList staggerDelay={0.15}>
+      {notifications.map((notif) => (
+        <AnimatedListItem key={notif.id} className="p-3.5 sm:p-4">
+          <NotificationRow notif={notif} />
+        </AnimatedListItem>
+      ))}
+    </AnimatedList>
+  );
+}`;
+
+export const usageFlip = `import {
+  AnimatedList,
+  AnimatedListItem,
+} from "@/components/custom/blocks/AnimatedListBlock";
+import { CheckCircle2, CreditCard, UserPlus, Zap } from "lucide-react";
+
+${listItems}
+
+export default function FlipFeed() {
+  return (
+    <AnimatedList variant="flip">
+      {notifications.map((notif) => (
+        <AnimatedListItem key={notif.id} className="p-3.5 sm:p-4">
+          <NotificationRow notif={notif} />
+        </AnimatedListItem>
+      ))}
+    </AnimatedList>
+  );
+}`;
+
+export const usageSlideUp = `import {
+  AnimatedList,
+  AnimatedListItem,
+} from "@/components/custom/blocks/AnimatedListBlock";
+import { CheckCircle2, CreditCard, UserPlus, Zap } from "lucide-react";
+
+${listItems}
+
+export default function SlideUpFeed() {
+  return (
+    <AnimatedList variant="slide-up">
+      {notifications.map((notif) => (
+        <AnimatedListItem key={notif.id} className="p-3.5 sm:p-4">
+          <NotificationRow notif={notif} />
+        </AnimatedListItem>
+      ))}
+    </AnimatedList>
+  );
+}`;
+
+export const usagePop = `import {
+  AnimatedList,
+  AnimatedListItem,
+} from "@/components/custom/blocks/AnimatedListBlock";
+import { CheckCircle2, CreditCard, UserPlus, Zap } from "lucide-react";
+
+${listItems}
+
+export default function PopFeed() {
+  return (
+    <AnimatedList variant="pop">
+      {notifications.map((notif) => (
+        <AnimatedListItem key={notif.id} className="p-3.5 sm:p-4">
+          <NotificationRow notif={notif} />
+        </AnimatedListItem>
+      ))}
+    </AnimatedList>
+  );
+}`;
+
+export const usageTiming = `import {
+  AnimatedList,
+  AnimatedListItem,
+} from "@/components/custom/blocks/AnimatedListBlock";
+import { CheckCircle2, CreditCard, UserPlus, Zap } from "lucide-react";
+
+${listItems}
+
+export default function TimedFeed() {
+  // duration is per item; staggerDelay is the gap between them.
+  return (
+    <AnimatedList duration={0.9} staggerDelay={0.25} animationDelay={0.3}>
+      {notifications.map((notif) => (
+        <AnimatedListItem key={notif.id} className="p-3.5 sm:p-4">
+          <NotificationRow notif={notif} />
+        </AnimatedListItem>
+      ))}
+    </AnimatedList>
+  );
+}`;
+
+<ExampleShowcase
+  name="animated-list"
+  colorControl={false}
+  columns={1}
+  examples={[
+    {
+      title: "Animated list",
+      subheading: "Wrap the feed in `AnimatedList` and each row in `AnimatedListItem` — the stagger, perspective and hover spotlight come with it.",
+      propNotes: [
+        {
+          lead: "Set",
+          prop: "staggerDelay",
+          value: "{0.15}",
+          effect: "to the gap in seconds between one child starting and the next.",
+        },
+      ],
+      props: { variant: "slide-right" },
+      usage: usageDefault,
+      code: extractCode("src/components/custom/blocks/AnimatedListBlock.tsx"),
+    },
+  ]}
+/>
+
+## Installation
+
+<Installation name="animated-list" />
+
+## Examples
+
+<ExampleShowcase
+  name="animated-list"
+  colorControl={false}
+  columns={1}
+  examples={[
+    {
+      title: "Flip",
+      propNotes: [
+        {
+          lead: "Use",
+          prop: "variant",
+          value: '"flip"',
+          effect:
+            "to rotate each row in on the X axis against the container's 3D perspective — the signature entrance.",
+        },
+      ],
+      props: { variant: "flip" },
+      usage: usageFlip,
+    },
+    {
+      title: "Slide up",
+      propNotes: [
+        {
+          lead: "Use",
+          prop: "variant",
+          value: '"slide-up"',
+          effect:
+            "to translate the rows in from an edge instead of rotating. `slide-left` and `slide-right` do the same from the sides.",
+        },
+      ],
+      props: { variant: "slide-up" },
+      usage: usageSlideUp,
+    },
+    {
+      title: "Pop",
+      propNotes: [
+        {
+          lead: "Use",
+          prop: "variant",
+          value: '"pop"',
+          effect: "to scale each row in from small.",
+        },
+        {
+          prop: "ease",
+          value: '"elastic.out(1, 0.5)"',
+          effect: "adds the overshoot that makes the pop bounce.",
+        },
+      ],
+      props: { variant: "pop", ease: "elastic.out(1, 0.5)", staggerDelay: 0.12 },
+      usage: usagePop,
+    },
+    {
+      title: "Timing",
+      propNotes: [
+        {
+          prop: "staggerDelay",
+          value: "{0.35}",
+          effect: "is the gap between children.",
+        },
+        { prop: "duration", value: "{1.1}", effect: "is how long each one takes." },
+        {
+          prop: "animationDelay",
+          value: "{0.3}",
+          effect: "is how long the whole sequence waits before starting.",
+        },
+        {
+          prop: "ease",
+          value: '"power4.out"',
+          effect: "takes any GSAP-style ease name — no GSAP needed.",
+        },
+      ],
+      props: {
+        variant: "slide-right",
+        staggerDelay: 0.35,
+        duration: 1.1,
+        animationDelay: 0.3,
+        ease: "power4.out",
+      },
+      usage: usageTiming,
+    },
+  ]}
+/>
+
+## Features
+Discover the key capabilities that make this component an excellent choice for modern, animated user interfaces.
+
+<div className="grid grid-cols-1 sm:grid-cols-2 gap-4 my-6 not-prose">
+  <div className="p-6 rounded-2xl border border-border bg-card">
+    <h3 className="text-lg font-semibold text-card-foreground mb-2">Fluid Animations</h3>
+    <p className="text-muted-foreground text-sm">Hardware-accelerated transitions that ensure smooth 60fps performance across devices.</p>
+  </div>
+  <div className="p-6 rounded-2xl border border-border bg-card">
+    <h3 className="text-lg font-semibold text-card-foreground mb-2">Highly Customizable</h3>
+    <p className="text-muted-foreground text-sm">Exposes intuitive props for tailoring colors, sizes, and animation speeds to fit your brand.</p>
+  </div>
+  <div className="p-6 rounded-2xl border border-border bg-card">
+    <h3 className="text-lg font-semibold text-card-foreground mb-2">Responsive Design</h3>
+    <p className="text-muted-foreground text-sm">Automatically adapts to mobile, tablet, and desktop viewports without horizontal scrolling issues.</p>
+  </div>
+  <div className="p-6 rounded-2xl border border-border bg-card">
+    <h3 className="text-lg font-semibold text-card-foreground mb-2">Accessible</h3>
+    <p className="text-muted-foreground text-sm">Built with semantic HTML and ARIA labels where necessary to support screen readers and keyboard navigation.</p>
+  </div>
+</div>
+
+## Best Practices & Guidelines
+
+<div className="flex flex-col gap-4 my-6 not-prose">
+  <div className="rounded-xl border border-foreground/[0.06] bg-foreground/[0.03] p-4">
+    <h4 className="font-sans text-[14px] font-semibold text-foreground mb-1">Animation Performance</h4>
+    <p className="text-[13px] leading-relaxed text-foreground/50">Avoid placing too many heavy animated components on a single screen to prevent layout thrashing and maintain 60fps performance. Use intersection observers to pause off-screen animations.</p>
+  </div>
+  <div className="rounded-xl border border-primary/15 bg-primary/5 p-4">
+    <h4 className="font-sans text-[14px] font-semibold text-primary mb-1">State Management</h4>
+    <p className="text-[13px] leading-relaxed text-foreground/50">When triggering animations via state changes, ensure you wrap state updates in <code>startTransition</code> or use lightweight stores to prevent React rendering bottlenecks during the animation tick.</p>
+  </div>
+</div>
+
+## Props Reference
+
+<div className="overflow-x-auto mb-8">
+  <table>
+    <thead>
+      <tr>
+        <th>Component</th>
+        <th>Prop</th>
+        <th>Type</th>
+        <th>Default</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>
+          <code>AnimatedList</code>
+        </td>
+        <td>
+          <code>staggerDelay</code>
+        </td>
+        <td>
+          <code>number</code>
+        </td>
+        <td>
+          <code>0.12</code>
+        </td>
+        <td>
+          The amount of time (in seconds) to wait before animating the next
+          consecutive child element in the list.
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <code>AnimatedList</code>
+        </td>
+        <td>
+          <code>animationDelay</code>
+        </td>
+        <td>
+          <code>number</code>
+        </td>
+        <td>
+          <code>0</code>
+        </td>
+        <td>
+          The total delay (in seconds) before the entire staggered 3D flip-in
+          sequence begins.
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <code>AnimatedList</code>
+        </td>
+        <td>
+          <code>duration</code>
+        </td>
+        <td>
+          <code>number</code>
+        </td>
+        <td>
+          <code>0.8</code>
+        </td>
+        <td>
+          The total duration (in seconds) of the entry animation for a
+          single list item.
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <code>AnimatedList</code>
+        </td>
+        <td>
+          <code>ease</code>
+        </td>
+        <td>
+          <code>string</code>
+        </td>
+        <td>
+          <code>"back.out(1.5)"</code>
+        </td>
+        <td>
+          The easing applied to the entrance animation, named the GSAP way
+          (<code>"power4.out"</code>, <code>"elastic.out(1, 0.5)"</code>) and
+          evaluated without the library; CSS keywords and{" "}
+          <code>cubic-bezier()</code> work too.
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <code>AnimatedListItem</code>
+        </td>
+        <td>
+          <code>...props</code>
+        </td>
+        <td>
+          <code>HTMLAttributes&lt;HTMLDivElement&gt;</code>
+        </td>
+        <td>
+          <code>undefined</code>
+        </td>
+        <td>
+          Accepts all native HTML div attributes. This component automatically
+          handles its own <code>onMouseMove</code> and <code>onMouseLeave</code>{" "}
+          events to drive the glassmorphic spotlight gradient under the hood.
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>

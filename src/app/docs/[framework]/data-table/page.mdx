@@ -1,0 +1,648 @@
+import { docsPageMetadata } from "@/lib/docs-metadata";
+
+export const metadata = docsPageMetadata("data-table");
+
+import { ExampleShowcase } from "@/components/site/Sandbox";
+import { extractCode } from "@/lib/code";
+
+# Data Table
+
+A powerful, fully-featured data table component built on top of [Table](./table) primitives. It provides built-in state management for **Global Searching, Multi-Column Sorting, Pagination, Row Selection, and Batch Actions** — giving you complete control over your table layout without forcing any data transformation.
+
+
+<ExampleShowcase
+  name="data-table-soft"
+  columns={1}
+  minHeight={640}
+  examples={[
+    {
+      title: "Soft variant",
+      subheading: "Switch tabs, pick a role or plan, search, sort, select rows and page through 40 people. Suspend and delete work on a row or on the selection.",
+      propNotes: [
+        {
+          lead: "Set",
+          prop: "variant",
+          value: '"soft"',
+          effect:
+            "once on `DataTable`; every part — search, filters, page size, pagination, checkboxes, the batch bar — reads it from context.",
+        },
+        {
+          prop: "DataTableTabs",
+          effect:
+            "and `DataTableFilter` filter one field each (`by`), so the data keeps its own shape. Tab counts follow the search and the other filters.",
+        },
+        {
+          prop: "sticky",
+          effect:
+            "on a head and its cells pins the actions column to the right edge; it casts a shadow while more table hides under it.",
+        },
+      ],
+      usage: extractCode("src/preview/demos/data-table-soft-demo.tsx"),
+      code: extractCode("src/components/custom/blocks/TableBlock.tsx"),
+    },
+  ]}
+/>
+
+export const usageBasic = `"use client";
+
+import { useState } from "react";
+import {
+  DataTable,
+  DataTableBatchBar,
+  DataTableBody,
+  DataTableCell,
+  DataTableContent,
+  DataTableEmpty,
+  DataTableExport,
+  DataTableFooter,
+  DataTableHead,
+  DataTableHeader,
+  DataTableHeading,
+  DataTableInfo,
+  DataTablePageSize,
+  DataTablePagination,
+  DataTableRow,
+  DataTableSearch,
+  DataTableSelect,
+  DataTableSelectAll,
+} from "@/components/custom/blocks/TableBlock";
+import { Edit2, Trash2 } from "lucide-react";
+
+const now = Date.now();
+const ago = (d: number, h: number = 0) => now - (d * 86400000 + h * 3600000);
+
+interface Employee {
+  id: number;
+  name: string;
+  role: string;
+  status: "Active" | "Inactive" | "Pending" | "Banned";
+  lastActive: string;
+  lastActiveTs: number;
+  sessions: number;
+}
+
+const INITIAL_DATA: Employee[] = [
+  { id: 1, name: "Alice Johnson", role: "Admin", status: "Active", lastActive: "2 minutes ago", lastActiveTs: ago(0, 0), sessions: 142 },
+  { id: 2, name: "Bob Martinez", role: "Editor", status: "Active", lastActive: "1 hour ago", lastActiveTs: ago(0, 1), sessions: 89 },
+  { id: 3, name: "Carol Williams", role: "Viewer", status: "Pending", lastActive: "3 hours ago", lastActiveTs: ago(0, 3), sessions: 12 },
+  { id: 4, name: "David Lee", role: "Manager", status: "Active", lastActive: "Yesterday", lastActiveTs: ago(1), sessions: 201 },
+  { id: 5, name: "Eva Chen", role: "Developer", status: "Inactive", lastActive: "3 days ago", lastActiveTs: ago(3), sessions: 54 },
+  { id: 6, name: "Frank Nguyen", role: "Editor", status: "Active", lastActive: "5 days ago", lastActiveTs: ago(5), sessions: 76 },
+  { id: 7, name: "Grace Park", role: "Viewer", status: "Banned", lastActive: "2 weeks ago", lastActiveTs: ago(14), sessions: 3 },
+  { id: 8, name: "Hank Torres", role: "Admin", status: "Active", lastActive: "30 minutes ago", lastActiveTs: ago(0, 0.5), sessions: 310 },
+  { id: 9, name: "Iris Scott", role: "Manager", status: "Active", lastActive: "4 hours ago", lastActiveTs: ago(0, 4), sessions: 188 },
+  { id: 10, name: "James Kim", role: "Developer", status: "Pending", lastActive: "1 week ago", lastActiveTs: ago(7), sessions: 29 },
+  { id: 11, name: "Karen Brown", role: "Viewer", status: "Active", lastActive: "10 minutes ago", lastActiveTs: ago(0, 0.17), sessions: 67 },
+  { id: 12, name: "Liam Davis", role: "Editor", status: "Inactive", lastActive: "1 month ago", lastActiveTs: ago(30), sessions: 22 },
+  { id: 13, name: "Mia Wilson", role: "Developer", status: "Active", lastActive: "2 days ago", lastActiveTs: ago(2), sessions: 95 },
+  { id: 14, name: "Noah Anderson", role: "Manager", status: "Active", lastActive: "6 hours ago", lastActiveTs: ago(0, 6), sessions: 134 },
+  { id: 15, name: "Olivia Thomas", role: "Viewer", status: "Banned", lastActive: "3 months ago", lastActiveTs: ago(90), sessions: 1 },
+];
+
+const ROLE_STYLES: Record<string, string> = {
+  Admin: "bg-[#ede9fe] text-[#5b21b6] dark:bg-purple-500/10 dark:text-purple-400",
+  Manager: "bg-[#dbeafe] text-[#1e40af] dark:bg-blue-500/10 dark:text-blue-400",
+  Developer: "bg-[#d1fae5] text-[#065f46] dark:bg-emerald-500/10 dark:text-emerald-400",
+  Editor: "bg-[#fef3c7] text-[#92400e] dark:bg-amber-500/10 dark:text-amber-400",
+  Viewer: "bg-muted text-muted-foreground",
+};
+
+const STATUS_STYLES: Record<string, string> = {
+  Active: "bg-[#d1fae5] text-[#065f46] dark:bg-emerald-500/10 dark:text-emerald-400",
+  Pending: "bg-[#fef3c7] text-[#92400e] dark:bg-amber-500/10 dark:text-amber-400",
+  Inactive: "bg-[#dbeafe] text-[#1e40af] dark:bg-blue-500/10 dark:text-blue-400",
+  Banned: "bg-[#fee2e2] text-[#991b1b] dark:bg-red-500/10 dark:text-red-400",
+};
+
+const Pill = ({ styles, children }: { styles: string; children: React.ReactNode }) => (
+  <span className={\`inline-flex items-center px-2 py-0.5 rounded-full text-[11px] font-semibold tracking-[0.02em] \${styles}\`}>
+    {children}
+  </span>
+);
+
+const getDotClass = (ts: number) => {
+  const diff = (now - ts) / 60000;
+  if (diff < 60) return "bg-[#22c55e]";
+  if (diff < 60 * 24) return "bg-[#f59e0b]";
+  if (diff < 60 * 24 * 7) return "bg-[#ef4444]";
+  return "bg-muted-foreground";
+};
+
+export default function UserTable() {
+  const [data, setData] = useState<Employee[]>(INITIAL_DATA);
+
+  const handleBatchDelete = (ids: (string | number)[]) => {
+    if (confirm(\`Are you sure you want to delete \${ids.length} users?\`)) {
+      setData((prev) => prev.filter((d) => !ids.includes(d.id)));
+    }
+  };
+
+  return (
+    <DataTable data={data} getRowId={(row) => row.id}>
+      <DataTableHeading title="Team members">
+        <DataTableSearch placeholder="Search all columns…" />
+        <div className="flex items-center gap-2">
+          <DataTablePageSize />
+          <DataTableExport filename="team-members" />
+        </div>
+      </DataTableHeading>
+
+      <DataTableContent>
+        <DataTableHeader>
+          <DataTableRow isHeader>
+            <DataTableHead className="w-11">
+              <DataTableSelectAll />
+            </DataTableHead>
+            <DataTableHead sortBy="name">Name</DataTableHead>
+            <DataTableHead sortBy="role">Role</DataTableHead>
+            <DataTableHead sortBy="status">Status</DataTableHead>
+            <DataTableHead
+              sortBy={(row: Employee) => row.lastActiveTs}
+              sortId="lastActive"
+              sortType="number"
+            >
+              Last Active
+            </DataTableHead>
+            <DataTableHead sortBy="sessions" sortType="number" align="right">
+              Sessions
+            </DataTableHead>
+          </DataTableRow>
+        </DataTableHeader>
+
+        <DataTableBody<Employee> animate>
+          {(rows) =>
+            rows.length === 0 ? (
+              <DataTableEmpty colSpan={6}>No users match that search.</DataTableEmpty>
+            ) : (
+              rows.map((row) => (
+                <DataTableRow key={row.id} row={row}>
+                  <DataTableCell className="w-11">
+                    <DataTableSelect />
+                  </DataTableCell>
+                  <DataTableCell>
+                    <strong className="font-semibold text-foreground">{row.name}</strong>
+                  </DataTableCell>
+                  <DataTableCell>
+                    <Pill styles={ROLE_STYLES[row.role] || ROLE_STYLES.Viewer}>{row.role}</Pill>
+                  </DataTableCell>
+                  <DataTableCell>
+                    <Pill styles={STATUS_STYLES[row.status] || STATUS_STYLES.Inactive}>{row.status}</Pill>
+                  </DataTableCell>
+                  <DataTableCell>
+                    <div className="flex items-center gap-[5px]">
+                      <span className={\`w-1.5 h-1.5 rounded-full shrink-0 \${getDotClass(row.lastActiveTs)}\`} />
+                      {row.lastActive}
+                    </div>
+                  </DataTableCell>
+                  <DataTableCell align="right">{row.sessions}</DataTableCell>
+                </DataTableRow>
+              ))
+            )
+          }
+        </DataTableBody>
+      </DataTableContent>
+
+      <DataTableFooter>
+        <DataTableInfo />
+        <DataTablePagination />
+      </DataTableFooter>
+
+      <DataTableBatchBar>
+        {({ selectedIds, clearSelection }) => (
+          <div className="flex items-center gap-1">
+            <button
+              onClick={() => alert(\`Edit \${selectedIds.length} items\`)}
+              className="flex items-center gap-1 px-2 py-1 rounded-md text-[11px] sm:text-[12px] font-semibold bg-current/20 hover:bg-current/30 transition-colors cursor-pointer"
+            >
+              <Edit2 className="w-3 h-3" /> <span className="hidden sm:inline">Edit</span>
+            </button>
+            <button
+              onClick={() => {
+                handleBatchDelete(selectedIds);
+                clearSelection();
+              }}
+              className="flex items-center gap-1 px-2 py-1 rounded-md text-[11px] sm:text-[12px] font-semibold bg-black/20 hover:bg-black/30 transition-colors cursor-pointer"
+            >
+              <Trash2 className="w-3 h-3" /> <span className="hidden sm:inline">Delete</span>
+            </button>
+          </div>
+        )}
+      </DataTableBatchBar>
+    </DataTable>
+  );
+}`;
+
+<ExampleShowcase
+  name="advanced-table"
+  colorControl
+  columns={1}
+  examples={[
+    {
+      title: "Searchable DataTable",
+      propNotes: [
+        {
+          lead: "Pass",
+          prop: "data",
+          effect:
+            "and getRowId — everything else is composition. No column config.",
+        },
+        {
+          prop: "sortBy",
+          effect:
+            "takes a dot path or an accessor function, so nested and computed values sort correctly.",
+        },
+      ],
+      props: { searchable: true, selectable: true },
+      usage: usageBasic,
+      code: extractCode("src/components/custom/blocks/TableBlock.tsx"),
+    },
+  ]}
+/>
+
+## Installation
+
+<Installation name="table" />
+
+## Soft variant
+
+`variant="soft"` is the admin-dashboard look: a rounded panel on a hairline ring, a tinted header band, pill controls and calm round row actions, every tint mixed from the table colour. Everything below lives inside the panel — status tabs with live counts, select filters, search, a reset, the page's actions, sortable columns with a pinned actions column, a rows-per-page picker, pagination and a floating bar for the selected rows. The first example on this page is a soft table — its Usage tab is the preview's exact source.
+
+
+<div className="flex flex-col gap-4 my-6 not-prose">
+  <div className="rounded-xl border border-foreground/[0.06] bg-foreground/[0.03] p-4">
+    <h4 className="font-sans text-[14px] font-semibold text-foreground mb-1">The parts that come with it</h4>
+    <p className="text-[13px] leading-relaxed text-foreground/50"><code>DataTableTabs</code>, <code>DataTableFilter</code> and <code>DataTableReset</code> filter and clear; <code>TableAction</code> is the toolbar button (primary, secondary, ghost); <code>TableRowAction</code> is a round icon button that needs a <code>label</code>; <code>TableBadge</code> is a status pill (<code>tone</code>) or, without its dot, a tag; <code>TablePerson</code> draws an avatar with a name and a second line; <code>DataTableBatchAction</code> goes inside the batch bar. They work in every variant and take the soft look inside a soft table.</p>
+  </div>
+  <div className="rounded-xl border border-foreground/[0.06] bg-foreground/[0.03] p-4">
+    <h4 className="font-sans text-[14px] font-semibold text-foreground mb-1">Empty results explain themselves</h4>
+    <p className="text-[13px] leading-relaxed text-foreground/50">Give <code>DataTableEmpty</code> an <code>icon</code>, <code>title</code>, <code>description</code> and <code>action</code>, and read <code>search</code>, <code>isFiltered</code> and <code>resetAll</code> from <code>useDataTable</code> (in <code>table-core</code>) to say whether nothing matched or nothing exists yet — the example's <code>NoUsers</code> does exactly that.</p>
+  </div>
+</div>
+
+
+## Features
+
+<div className="grid grid-cols-1 sm:grid-cols-2 gap-4 my-6 not-prose">
+  <div className="p-6 rounded-2xl border border-border bg-card">
+    <h3 className="text-lg font-semibold text-card-foreground mb-2">No data transformation</h3>
+    <p className="text-muted-foreground text-sm">getRowId resolves id, _id or uuid out of the box, dot paths reach into nested objects, and accessor functions cover anything computed.</p>
+  </div>
+  <div className="p-6 rounded-2xl border border-border bg-card">
+    <h3 className="text-lg font-semibold text-card-foreground mb-2">Opt-in controls</h3>
+    <p className="text-muted-foreground text-sm">Search, page size, pagination and selection are separate components. Leave one out and the feature is simply not there — no boolean flags to manage.</p>
+  </div>
+  <div className="p-6 rounded-2xl border border-border bg-card">
+    <h3 className="text-lg font-semibold text-card-foreground mb-2">Typed sorting</h3>
+    <p className="text-muted-foreground text-sm">Numbers compare numerically by default rather than lexically, and sortType lets you force string, number or date comparison.</p>
+  </div>
+  <div className="p-6 rounded-2xl border border-border bg-card">
+    <h3 className="text-lg font-semibold text-card-foreground mb-2">Escape hatch</h3>
+    <p className="text-muted-foreground text-sm">useDataTable exposes the whole state — rows, search, sort, paging, selection — so you can build your own toolbar or pager on the same provider.</p>
+  </div>
+</div>
+
+## Best Practices & Guidelines
+
+<div className="flex flex-col gap-4 my-6 not-prose">
+  <div className="rounded-xl border border-foreground/[0.06] bg-foreground/[0.03] p-4">
+    <h4 className="font-sans text-[14px] font-semibold text-foreground mb-1">Give rows a stable id</h4>
+    <p className="text-[13px] leading-relaxed text-foreground/50">Selection is tracked by id, not by index, so it survives sorting and paging. If your rows have no natural key, derive one before passing the array in — an array index will unselect the wrong row as soon as the order changes.</p>
+  </div>
+  <div className="rounded-xl border border-primary/15 bg-primary/5 p-4">
+    <h4 className="font-sans text-[14px] font-semibold text-primary mb-1">Client-side by design</h4>
+    <p className="text-[13px] leading-relaxed text-foreground/50">Search, sort and paging all run over the array you pass in. For server-driven datasets, use the plain Table primitives and drive the query yourself — or keep DataTable for the current page only and supply your own footer.</p>
+  </div>
+  <div className="rounded-xl border border-foreground/[0.06] bg-foreground/[0.03] p-4">
+    <h4 className="font-sans text-[14px] font-semibold text-foreground mb-1">Give a function sortBy an id</h4>
+    <p className="text-[13px] leading-relaxed text-foreground/50">A string sortBy doubles as its own identity. When you pass an accessor function, add sortId so the active-sort indicator stays stable across re-renders.</p>
+  </div>
+</div>
+
+## Props Reference
+
+<div className="overflow-x-auto">
+  <table>
+    <thead>
+      <tr>
+        <th>Component</th>
+        <th>Prop</th>
+        <th>Type</th>
+        <th>Default</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><code>DataTable</code></td>
+        <td><code>data</code></td>
+        <td><code>T[]</code></td>
+        <td><strong>Required</strong></td>
+        <td>Your rows, in whatever shape they arrive.</td>
+      </tr>
+      <tr>
+        <td><code>DataTable</code></td>
+        <td><code>getRowId</code></td>
+        <td><code>(row: T) =&gt; string | number</code></td>
+        <td><code>id → _id → uuid</code></td>
+        <td>How a row is identified for selection and expansion.</td>
+      </tr>
+      <tr>
+        <td><code>DataTable</code></td>
+        <td><code>getSearchText</code></td>
+        <td><code>(row: T) =&gt; string</code></td>
+        <td>all values</td>
+        <td>Override what the search box matches against.</td>
+      </tr>
+      <tr>
+        <td><code>DataTable</code></td>
+        <td><code>initialSort</code></td>
+        <td><code>{`{ id, direction?, type? }`}</code></td>
+        <td><code>undefined</code></td>
+        <td>Sort applied on first render.</td>
+      </tr>
+      <tr>
+        <td><code>DataTable</code></td>
+        <td><code>pageSize</code></td>
+        <td><code>number</code></td>
+        <td>2nd option</td>
+        <td>Starting page size.</td>
+      </tr>
+      <tr>
+        <td><code>DataTable</code></td>
+        <td><code>pageSizeOptions</code></td>
+        <td><code>number[]</code></td>
+        <td><code>[5, 10, 25, 50]</code></td>
+        <td>Choices offered by <code>DataTablePageSize</code>.</td>
+      </tr>
+      <tr>
+        <td><code>DataTable</code></td>
+        <td><code>onSelectionChange</code></td>
+        <td><code>(rows: T[]) =&gt; void</code></td>
+        <td>—</td>
+        <td>Fires when the selection changes, with the full row objects.</td>
+      </tr>
+      <tr>
+        <td><code>DataTable</code></td>
+        <td><code>variant</code></td>
+        <td><code>"default" | "minimal" | "glass" | "soft"</code></td>
+        <td><code>"default"</code></td>
+        <td>Visual skin of the container, rows and every control. <code>soft</code> is the admin-dashboard look shown above.</td>
+      </tr>
+      <tr>
+        <td><code>DataTable</code></td>
+        <td><code>color</code></td>
+        <td><code>"primary" | "indigo" | "rose" | "emerald" | "zinc" | string</code></td>
+        <td><code>"primary"</code></td>
+        <td>Accent theme color for active selection, soft borders, hover highlights, and active elements. Accepts preset names or custom hex codes.</td>
+      </tr>
+      <tr>
+        <td><code>DataTable</code></td>
+        <td><code>size</code></td>
+        <td><code>"sm" | "md" | "lg"</code></td>
+        <td><code>"md"</code></td>
+        <td>Density padding and text sizing for table cells and toolbars.</td>
+      </tr>
+      <tr>
+        <td><code>DataTableHead</code></td>
+        <td><code>sortBy</code></td>
+        <td><code>string | ((row: T) =&gt; unknown)</code></td>
+        <td>—</td>
+        <td>A dot path such as <code>"profile.name"</code>, or an accessor function. Its presence makes the header sortable.</td>
+      </tr>
+      <tr>
+        <td><code>DataTableHead</code></td>
+        <td><code>sortId</code></td>
+        <td><code>string</code></td>
+        <td>the path</td>
+        <td>Required only when <code>sortBy</code> is a function.</td>
+      </tr>
+      <tr>
+        <td><code>DataTableHead</code></td>
+        <td><code>sortType</code></td>
+        <td><code>"auto" | "string" | "number" | "date"</code></td>
+        <td><code>"auto"</code></td>
+        <td><code>auto</code> compares numbers numerically and everything else as text.</td>
+      </tr>
+      <tr>
+        <td><code>DataTableHead</code></td>
+        <td><code>align</code></td>
+        <td><code>"left" | "center" | "right"</code></td>
+        <td><code>"left"</code></td>
+        <td>Text alignment.</td>
+      </tr>
+      <tr>
+        <td><code>DataTableBatchBar</code></td>
+        <td><code>children</code></td>
+        <td><code>{`((args: { selectedRows: T[]; selectedIds: (string | number)[]; clearSelection: () => void }) => ReactNode) | ReactNode`}</code></td>
+        <td>—</td>
+        <td>Render function or nodes for the floating batch actions bar.</td>
+      </tr>
+      <tr>
+        <td><code>DataTableBatchBar</code></td>
+        <td><code>floating</code></td>
+        <td><code>boolean</code></td>
+        <td><code>true</code></td>
+        <td>Floats over the bottom center of the table when true; set <code>false</code> for inline rendering.</td>
+      </tr>
+      <tr>
+        <td><code>DataTableSearch</code></td>
+        <td><code>placeholder</code></td>
+        <td><code>string</code></td>
+        <td><code>"Search…"</code></td>
+        <td>Placeholder text for the search input box.</td>
+      </tr>
+      <tr>
+        <td><code>DataTableSelectAll</code></td>
+        <td><code>className</code></td>
+        <td><code>string</code></td>
+        <td>—</td>
+        <td>Header checkbox to select or deselect all rows on the current page.</td>
+      </tr>
+      <tr>
+        <td><code>DataTableSelect</code></td>
+        <td><code>className</code></td>
+        <td><code>string</code></td>
+        <td>—</td>
+        <td>Row checkbox to select or deselect the specific row.</td>
+      </tr>
+      <tr>
+        <td><code>DataTableSelect</code></td>
+        <td><code>label</code></td>
+        <td><code>string</code></td>
+        <td><code>"Select row"</code></td>
+        <td>Accessible name of the row checkbox, e.g. <code>Select Priya Nair</code>.</td>
+      </tr>
+      <tr>
+        <td><code>DataTableHead</code>, <code>DataTableCell</code></td>
+        <td><code>sticky</code></td>
+        <td><code>boolean</code></td>
+        <td><code>false</code></td>
+        <td>Pins the column to the right edge. Set it on the head and on every cell of the column.</td>
+      </tr>
+      <tr>
+        <td><code>DataTableTabs</code></td>
+        <td><code>by</code></td>
+        <td><code>string | ((row: T) =&gt; unknown)</code></td>
+        <td><strong>Required</strong></td>
+        <td>The field the tabs filter on — a dot path or an accessor function (add <code>filterId</code> for functions).</td>
+      </tr>
+      <tr>
+        <td><code>DataTableTabs</code></td>
+        <td><code>tabs</code></td>
+        <td><code>{`{ value: string; label: ReactNode }[]`}</code></td>
+        <td><strong>Required</strong></td>
+        <td>One tab per value. The tab whose value is <code>allValue</code> shows every row.</td>
+      </tr>
+      <tr>
+        <td><code>DataTableTabs</code></td>
+        <td><code>allValue</code></td>
+        <td><code>string</code></td>
+        <td><code>"all"</code></td>
+        <td>The value of the show-everything tab.</td>
+      </tr>
+      <tr>
+        <td><code>DataTableTabs</code></td>
+        <td><code>showCounts</code></td>
+        <td><code>boolean</code></td>
+        <td><code>true</code></td>
+        <td>Each tab shows how many rows it would leave, counting the search and the other filters.</td>
+      </tr>
+      <tr>
+        <td><code>DataTableFilter</code></td>
+        <td><code>by</code></td>
+        <td><code>string | ((row: T) =&gt; unknown)</code></td>
+        <td><strong>Required</strong></td>
+        <td>The field to match exactly (an array field matches any of its entries). Add <code>filterId</code> for functions.</td>
+      </tr>
+      <tr>
+        <td><code>DataTableFilter</code></td>
+        <td><code>options</code></td>
+        <td><code>{`(string | { label: string; value: string })[]`}</code></td>
+        <td><strong>Required</strong></td>
+        <td>The choices. Use objects when the stored value differs from the label.</td>
+      </tr>
+      <tr>
+        <td><code>DataTableFilter</code></td>
+        <td><code>placeholder</code></td>
+        <td><code>string</code></td>
+        <td><strong>Required</strong></td>
+        <td>Shown while nothing is chosen, e.g. <code>Role</code>. Also names the filter for screen readers unless you pass <code>label</code>.</td>
+      </tr>
+      <tr>
+        <td><code>DataTableFilter</code></td>
+        <td><code>side</code></td>
+        <td><code>"top" | "bottom"</code></td>
+        <td><code>"bottom"</code></td>
+        <td>Which way the menu opens.</td>
+      </tr>
+      <tr>
+        <td><code>DataTableReset</code></td>
+        <td><code>variant</code></td>
+        <td><code>"primary" | "secondary" | "ghost"</code></td>
+        <td><code>"ghost"</code></td>
+        <td>Clears the search, every filter and the sort. Renders only while there is something to clear; takes every <code>TableAction</code> prop.</td>
+      </tr>
+      <tr>
+        <td><code>DataTablePageSize</code></td>
+        <td><code>side</code></td>
+        <td><code>"top" | "bottom"</code></td>
+        <td><code>"top"</code> in soft</td>
+        <td>Which way the menu opens. The soft picker sits in the footer, so it opens upward.</td>
+      </tr>
+      <tr>
+        <td><code>DataTableBatchBar</code></td>
+        <td><code>noun</code></td>
+        <td><code>[string, string]</code></td>
+        <td>—</td>
+        <td>Singular and plural for the count: <code>["user", "users"]</code> reads “3 users selected”.</td>
+      </tr>
+      <tr>
+        <td><code>DataTableBatchAction</code></td>
+        <td><code>tone</code></td>
+        <td><code>"default" | "danger"</code></td>
+        <td><code>"default"</code></td>
+        <td>A button for the batch bar; <code>danger</code> for destructive actions.</td>
+      </tr>
+      <tr>
+        <td><code>DataTableEmpty</code></td>
+        <td><code>icon, title, description, action</code></td>
+        <td><code>ReactNode</code></td>
+        <td>—</td>
+        <td>A full empty state: an icon chip, what is missing, what to do, and a button. Without them it is the one-line message it always was.</td>
+      </tr>
+      <tr>
+        <td><code>TableAction</code></td>
+        <td><code>variant</code></td>
+        <td><code>"primary" | "secondary" | "ghost"</code></td>
+        <td><code>"secondary"</code></td>
+        <td>A toolbar button in the table's look. Icons passed as children are sized for you.</td>
+      </tr>
+      <tr>
+        <td><code>TableAction</code></td>
+        <td><code>size</code></td>
+        <td><code>"sm" | "md"</code></td>
+        <td><code>"md"</code></td>
+        <td>Button height and text size.</td>
+      </tr>
+      <tr>
+        <td><code>TableRowAction</code></td>
+        <td><code>label</code></td>
+        <td><code>string</code></td>
+        <td><strong>Required</strong></td>
+        <td>A round icon button for a row; <code>label</code> is its accessible name and hover title. Group them in <code>TableRowActions</code> (always visible in soft).</td>
+      </tr>
+      <tr>
+        <td><code>TableRowAction</code></td>
+        <td><code>tone</code></td>
+        <td><code>"default" | "danger"</code></td>
+        <td><code>"default"</code></td>
+        <td><code>danger</code> turns red on hover.</td>
+      </tr>
+      <tr>
+        <td><code>TableBadge</code></td>
+        <td><code>tone</code></td>
+        <td><code>"neutral" | "success" | "warning" | "danger" | "info"</code></td>
+        <td><code>"neutral"</code></td>
+        <td>The status colour. The label always shows, so colour is never the only signal.</td>
+      </tr>
+      <tr>
+        <td><code>TableBadge</code></td>
+        <td><code>dot</code></td>
+        <td><code>boolean</code></td>
+        <td><code>true</code></td>
+        <td>Turn it off for a plain tag.</td>
+      </tr>
+      <tr>
+        <td><code>TablePerson</code></td>
+        <td><code>name</code></td>
+        <td><code>string</code></td>
+        <td><strong>Required</strong></td>
+        <td>The name; the initials take a colour kept per name when there is no photo.</td>
+      </tr>
+      <tr>
+        <td><code>TablePerson</code></td>
+        <td><code>description</code></td>
+        <td><code>ReactNode</code></td>
+        <td>—</td>
+        <td>A muted second line, e.g. an email.</td>
+      </tr>
+      <tr>
+        <td><code>TablePerson</code></td>
+        <td><code>src</code></td>
+        <td><code>string</code></td>
+        <td>—</td>
+        <td>A photo. If it fails to load, the initials show.</td>
+      </tr>
+      <tr>
+        <td><code>TablePerson</code></td>
+        <td><code>imageComponent</code></td>
+        <td><code>ElementType</code></td>
+        <td><code>"img"</code></td>
+        <td>Renders the photo — pass <code>next/image</code> in a Next.js app.</td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+
+

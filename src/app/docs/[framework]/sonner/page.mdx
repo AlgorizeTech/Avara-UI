@@ -1,0 +1,555 @@
+import { docsPageMetadata } from "@/lib/docs-metadata";
+
+export const metadata = docsPageMetadata("sonner");
+
+import { ExampleShowcase } from "@/components/site/Sandbox";
+import { extractCode } from "@/lib/code";
+
+# Sonner (Toast Stack)
+
+An opinionated, dependency-free toast component that mimics the famous "Sonner" library aesthetic.
+
+Traditional toast notifications stack in a massive, screen-blocking vertical list. This `SonnerBlock` stacks new notifications _on top_ of old ones, scaling older toasts down and pushing them backwards in 3D space to keep your UI clean. Hovering over the stack automatically expands it so users can read previous notifications.
+
+Click the trigger buttons to spawn toasts, then hover the floating stack to expand it.
+
+export const usageDefault = `"use client";
+
+import { Toaster } from "@/components/custom/blocks/SonnerBlock";
+import { toast } from "@/components/custom/blocks/sonner-store";
+
+// The trigger styling the preview uses.
+const BTN =
+  "px-4 py-2 rounded-lg font-medium transition-colors bg-primary text-primary-foreground hover:bg-primary/90 shadow-sm cursor-pointer";
+
+// <Toaster /> belongs once at the root of your app. It is mounted here only so
+// this example runs on its own.
+export default function SaveButton() {
+  return (
+    <>
+      <Toaster position="bottom-right" />
+
+      <button
+        className={BTN}
+        onClick={() =>
+          toast("Profile updated successfully", {
+            description: "Your changes have been saved to the database.",
+          })
+        }
+      >
+        Show toast
+      </button>
+    </>
+  );
+}`;
+
+export const usageTypes = `"use client";
+
+import { Toaster } from "@/components/custom/blocks/SonnerBlock";
+import { toast } from "@/components/custom/blocks/sonner-store";
+
+// The trigger styling the preview uses.
+const BTN =
+  "px-4 py-2 rounded-lg font-medium transition-colors bg-primary text-primary-foreground hover:bg-primary/90 shadow-sm cursor-pointer";
+
+// <Toaster /> belongs once at the root of your app. It is mounted here only so
+// this example runs on its own.
+export default function ToastTypes() {
+  return (
+    <>
+      <div className="flex flex-wrap gap-4">
+      <button
+ className={BTN}
+ onClick={() => toast("Profile updated successfully", { description: "Your changes have been saved to the database." })}>
+        Default
+      </button>
+      <button
+ className={BTN}
+ onClick={() => toast.success("Deployment Complete", { description: "Your site is now live on the production server." })}>
+        Success
+      </button>
+      <button
+ className={BTN}
+ onClick={() => toast.error("Connection Failed", { description: "Could not reach the database. Please try again later." })}>
+        Error
+      </button>
+      <button
+ className={BTN}
+ onClick={() => toast.info("New login detected", { description: "A new device just signed in to your account." })}>
+        Info
+      </button>
+      </div>
+      <Toaster />
+    </>
+  );
+}`;
+
+export const usageAction = `"use client";
+
+import { Toaster } from "@/components/custom/blocks/SonnerBlock";
+import { toast } from "@/components/custom/blocks/sonner-store";
+
+// The trigger styling the preview uses.
+const BTN =
+  "px-4 py-2 rounded-lg font-medium transition-colors bg-primary text-primary-foreground hover:bg-primary/90 shadow-sm cursor-pointer";
+
+// <Toaster /> belongs once at the root of your app. It is mounted here only so
+// this example runs on its own.
+export default function UndoToast() {
+  return (
+    <>
+      <button
+        className={BTN}
+        onClick={() =>
+          toast("Message deleted", {
+            action: {
+              label: "Undo",
+              onClick: () => alert("Undo clicked!"),
+            },
+          })
+        }
+      >
+        With Action
+      </button>
+      <Toaster />
+    </>
+  );
+}`;
+
+export const usageStack = `"use client";
+
+import { Toaster } from "@/components/custom/blocks/SonnerBlock";
+import { toast } from "@/components/custom/blocks/sonner-store";
+
+// The trigger styling the preview uses.
+const BTN =
+  "px-4 py-2 rounded-lg font-medium transition-colors bg-primary text-primary-foreground hover:bg-primary/90 shadow-sm cursor-pointer";
+
+// <Toaster /> belongs once at the root of your app. It is mounted here only so
+// this example runs on its own.
+export default function StackDemo() {
+  // New toasts stack on top; older ones scale down and slide back in 3D.
+  // Hover the stack to expand it into a readable list.
+  const uploadAll = () => {
+    toast.success("File uploaded", { description: "report-q3.pdf" });
+    setTimeout(() => toast.success("File uploaded", { description: "invoice-114.pdf" }), 250);
+    setTimeout(() => toast.success("File uploaded", { description: "notes.md" }), 500);
+  };
+
+  return (
+    <>
+      <button className={BTN} onClick={uploadAll}>
+        Spawn three toasts
+      </button>
+      <Toaster />
+    </>
+  );
+}`;
+
+export const usageExpand = `"use client";
+
+import { Toaster } from "@/components/custom/blocks/SonnerBlock";
+import { toast } from "@/components/custom/blocks/sonner-store";
+
+// The trigger styling the preview uses.
+const BTN =
+  "px-4 py-2 rounded-lg font-medium transition-colors bg-primary text-primary-foreground hover:bg-primary/90 shadow-sm cursor-pointer";
+
+export default function ExpandedStack() {
+  // expand keeps the stack permanently open instead of collapsing it in 3D.
+  // Mount <Toaster /> once, at the root of your app.
+  return (
+    <>
+      <Toaster expand />
+
+      <button
+        className={BTN}
+        onClick={() => {
+          toast.success("File uploaded", { description: "report-q3.pdf" });
+          setTimeout(() => toast.success("File uploaded", { description: "invoice-114.pdf" }), 250);
+          setTimeout(() => toast.success("File uploaded", { description: "notes.md" }), 500);
+        }}
+      >
+        Spawn three toasts
+      </button>
+    </>
+  );
+}`;
+
+export const usageDuration = `"use client";
+
+import { Toaster } from "@/components/custom/blocks/SonnerBlock";
+import { toast } from "@/components/custom/blocks/sonner-store";
+
+// The trigger styling the preview uses.
+const BTN =
+  "px-4 py-2 rounded-lg font-medium transition-colors bg-primary text-primary-foreground hover:bg-primary/90 shadow-sm cursor-pointer";
+
+// <Toaster /> belongs once at the root of your app. It is mounted here only so
+// this example runs on its own.
+export default function ToastDuration() {
+  return (
+    <>
+      <div className="flex flex-wrap gap-4">
+      {/* Infinity disables auto-dismiss — the user closes it */}
+      <button
+        className={BTN}
+        onClick={() =>
+          toast("Syncing your workspace", {
+            description: "This toast stays until you dismiss it.",
+            duration: Infinity,
+          })
+        }
+      >
+        Persistent
+      </button>
+
+      <button
+        className={BTN}
+        onClick={() =>
+          toast.success("Saved", {
+            description: "Gone in 1.5 seconds.",
+            duration: 1500,
+          })
+        }
+      >
+        Quick
+      </button>
+      </div>
+      <Toaster />
+    </>
+  );
+}`;
+
+export const usagePosition = `"use client";
+
+import { useState } from "react";
+import { cn } from "@/lib/utils";
+import { Toaster, type ToasterProps } from "@/components/custom/blocks/SonnerBlock";
+import { toast } from "@/components/custom/blocks/sonner-store";
+
+const POSITIONS: { value: NonNullable<ToasterProps["position"]>; label: string }[] = [
+  { value: "top-left", label: "Top left" },
+  { value: "top-center", label: "Top center" },
+  { value: "top-right", label: "Top right" },
+  { value: "bottom-left", label: "Bottom left" },
+  { value: "bottom-center", label: "Bottom center" },
+  { value: "bottom-right", label: "Bottom right" },
+];
+
+export default function PositionDemo() {
+  const [position, setPosition] = useState<NonNullable<ToasterProps["position"]>>("bottom-right");
+
+  return (
+    <>
+      {/* In a real app you mount <Toaster /> once, at the root, with a fixed position */}
+      <Toaster position={position} />
+
+      <div className="w-full max-w-md grid grid-cols-3 gap-2 sm:gap-3">
+        {POSITIONS.map((p) => (
+          <button
+            key={p.value}
+            onClick={() => {
+              // Clear first, then move the stack, so the new toast animates in
+              // at the new anchor instead of sliding across from the old one.
+              toast.clear();
+              setPosition(p.value);
+              setTimeout(() => {
+                toast(p.label, { description: \`Stack anchored to "\${p.value}".\` });
+              }, 50);
+            }}
+            className={cn(
+              "px-2 py-2 rounded-lg text-xs sm:text-sm font-medium transition-colors",
+              position === p.value
+                ? "bg-primary/10 text-primary ring-1 ring-primary/30"
+                : "bg-muted text-foreground hover:bg-foreground/10",
+            )}
+          >
+            {p.label}
+          </button>
+        ))}
+      </div>
+    </>
+  );
+}`;
+
+<ExampleShowcase
+  name="sonner"
+  colorControl
+  columns={1}
+  examples={[
+    {
+      title: "Sonner",
+      subheading: "Mount `<Toaster />` once, then call `toast()` from anywhere — no provider needed.",
+      propNotes: [
+        {
+          prop: "children",
+          effect:
+            "of `toast()` is the message; everything else about the toast is optional.",
+        },
+      ],
+      props: { example: "basic" },
+      usage: usageDefault,
+      code: extractCode("src/components/custom/blocks/SonnerBlock.tsx"),
+    },
+  ]}
+/>
+
+## Installation
+
+<Installation name="sonner" />
+
+## Examples
+
+<ExampleShowcase
+  name="sonner"
+  colorControl
+  columns={1}
+  examples={[
+    {
+      title: "Types",
+      propNotes: [
+        {
+          lead: "Use",
+          prop: "toast.success",
+          effect:
+            "`toast.error` and `toast.info` for the semantic icon and colour. They take the same arguments as `toast()`.",
+        },
+      ],
+      props: { example: "types" },
+      usage: usageTypes,
+    },
+    {
+      title: "With action",
+      propNotes: [
+        {
+          lead: "Pass",
+          prop: "action",
+          effect:
+            "as `{ label, onClick }` to add an inline button — the usual home for Undo.",
+        },
+      ],
+      props: { example: "action" },
+      usage: usageAction,
+    },
+    {
+      title: "Stacking",
+      propNotes: [
+        {
+          prop: "position",
+          effect:
+            "on the Toaster decides where they pile up; newer toasts sit on top and older ones recede until hovered.",
+        },
+      ],
+      props: { example: "stack" },
+      usage: usageStack,
+    },
+    {
+      title: "Always expanded",
+      propNotes: [
+        {
+          lead: "Set",
+          prop: "expand",
+          effect:
+            "on the Toaster to keep the stack open instead of collapsing it to a pile.",
+        },
+      ],
+      props: { example: "stack", expand: true },
+      usage: usageExpand,
+    },
+    {
+      title: "Duration",
+      propNotes: [
+        {
+          prop: "duration",
+          effect:
+            "is the auto-dismiss delay in milliseconds. Pass `Infinity` and the toast stays up until dismissed.",
+        },
+      ],
+      props: { example: "duration" },
+      usage: usageDuration,
+    },
+    {
+      title: "Position",
+      propNotes: [
+        {
+          prop: "position",
+          effect:
+            "anchors the stack to any of the six edges — `top-left` through `bottom-right`.",
+        },
+      ],
+      props: { example: "position" },
+      usage: usagePosition,
+    },
+  ]}
+/>
+
+## Features
+Explore the Sonner toast notification features, including stacked layouts, swipe-to-dismiss, and promise-based loading states.
+
+<div className="grid grid-cols-1 sm:grid-cols-2 gap-4 my-6 not-prose">
+  <div className="p-6 rounded-2xl border border-border bg-card">
+    <h3 className="text-lg font-semibold text-card-foreground mb-2">Customizable</h3>
+    <p className="text-muted-foreground text-sm">Easily adapt the component's styling and behavior to fit your application's unique design system.</p>
+  </div>
+  <div className="p-6 rounded-2xl border border-border bg-card">
+    <h3 className="text-lg font-semibold text-card-foreground mb-2">Accessible</h3>
+    <p className="text-muted-foreground text-sm">Built with accessibility in mind, ensuring all users can interact with your application effectively.</p>
+  </div>
+  <div className="p-6 rounded-2xl border border-border bg-card">
+    <h3 className="text-lg font-semibold text-card-foreground mb-2">Responsive</h3>
+    <p className="text-muted-foreground text-sm">Fully responsive design that looks and works great across desktop, tablet, and mobile devices.</p>
+  </div>
+  <div className="p-6 rounded-2xl border border-border bg-card">
+    <h3 className="text-lg font-semibold text-card-foreground mb-2">Performant</h3>
+    <p className="text-muted-foreground text-sm">Optimized for maximum performance with minimal re-renders and efficient state management.</p>
+  </div>
+</div>
+
+## Best Practices & Guidelines
+
+<div className="flex flex-col gap-4 my-6 not-prose">
+  <div className="rounded-xl border border-foreground/[0.06] bg-foreground/[0.03] p-4">
+    <h4 className="font-sans text-[14px] font-semibold text-foreground mb-1">Usage Guidelines</h4>
+    <p className="text-[13px] leading-relaxed text-foreground/50">Follow standard design principles when implementing this component. Ensure proper contrast, spacing, and context within your layout.</p>
+  </div>
+</div>
+
+## Props Reference
+
+<div className="overflow-x-auto">
+  <table>
+    <thead>
+      <tr>
+        <th>Target</th>
+        <th>Prop / Argument</th>
+        <th>Type</th>
+        <th>Default</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>
+          <code>&lt;Toaster&gt;</code>
+        </td>
+        <td>
+          <code>position</code>
+        </td>
+        <td>
+          <code>
+            "bottom-right" | "bottom-center" | "bottom-left" | "top-right" |
+            "top-center" | "top-left"
+          </code>
+        </td>
+        <td>
+          <code>"bottom-right"</code>
+        </td>
+        <td>Controls where the stack anchors on the screen.</td>
+      </tr>
+      <tr>
+        <td>
+          <code>&lt;Toaster&gt;</code>
+        </td>
+        <td>
+          <code>expand</code>
+        </td>
+        <td>
+          <code>boolean</code>
+        </td>
+        <td>
+          <code>false</code>
+        </td>
+        <td>
+          If true, the stack is permanently expanded and will not collapse into
+          the 3D view.
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <code>toast()</code>
+        </td>
+        <td>
+          <code>title</code>
+        </td>
+        <td>
+          <code>string</code>
+        </td>
+        <td>
+          <strong>Required</strong>
+        </td>
+        <td>
+          The main, bold text of the notification. Passed as the first argument
+          to the function.
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <code>toast()</code>
+        </td>
+        <td>
+          <code>options.description</code>
+        </td>
+        <td>
+          <code>string</code>
+        </td>
+        <td>
+          <code>undefined</code>
+        </td>
+        <td>Optional secondary text displayed beneath the title.</td>
+      </tr>
+      <tr>
+        <td>
+          <code>toast()</code>
+        </td>
+        <td>
+          <code>options.duration</code>
+        </td>
+        <td>
+          <code>number</code>
+        </td>
+        <td>
+          <code>4000</code>
+        </td>
+        <td>
+          How long (in milliseconds) before the toast auto-dismisses. Pass{" "}
+          <code>Infinity</code> to disable auto-dismiss.
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <code>toast()</code>
+        </td>
+        <td>
+          <code>options.action</code>
+        </td>
+        <td>
+          <code>{`{ label: string, onClick: () => void }`}</code>
+        </td>
+        <td>
+          <code>undefined</code>
+        </td>
+        <td>Provides an actionable button inside the toast.</td>
+      </tr>
+      <tr>
+        <td>
+          <code>toast()</code>
+        </td>
+        <td>
+          <code>options.type</code>
+        </td>
+        <td>
+          <code>"default" | "success" | "error" | "info"</code>
+        </td>
+        <td>
+          <code>"default"</code>
+        </td>
+        <td>
+          Determines the color scheme and accompanying icon. Alternatively, use
+          the shorthand methods: <code>toast.success()</code>,{" "}
+          <code>toast.error()</code>, etc.
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>

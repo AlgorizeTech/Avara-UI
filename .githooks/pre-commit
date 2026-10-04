@@ -1,0 +1,54 @@
+#!/bin/sh
+#
+# Keeps registry.json and public/r/ in step with the sources they are generated
+# from. Without this the two drift apart silently and CI's staleness gate is the
+# first thing to notice — after the push, on someone else's screen.
+#
+# Only runs when a registry input is actually staged, so unrelated commits pay
+# nothing. Set SKIP_REGISTRY_BUILD=1 to bypass it for one commit.
+
+set -e
+
+if [ -n "$SKIP_REGISTRY_BUILD" ]; then
+  echo "pre-commit: SKIP_REGISTRY_BUILD set — not rebuilding the registry."
+  exit 0
+fi
+
+staged=$(git diff --cached --name-only --diff-filter=ACMR)
+[ -z "$staged" ] && exit 0
+
+# The generator reads these: the three scanned component directories plus the
+# scripts that decide what is emitted. Keep in sync with generate-registry.ts.
+inputs=$(printf '%s\n' "$staged" | grep -E \
+  '^src/components/custom/(blocks|ui)/|^src/components/ui/|^src/scripts/(generate-registry|registry-meta)\.ts$' \
+  || true)
+
+[ -z "$inputs" ] && exit 0
+
+# The build reads the WORKING TREE, not the index. If a registry source has
+# unstaged edits, the artifacts would be generated from code this commit does
+# not contain — committing that produces exactly the drift this hook prevents.
+dirty=$(git diff --name-only -- $(printf '%s\n' "$inputs" | tr '\n' ' ') || true)
+if [ -n "$dirty" ]; then
+  echo "pre-commit: registry sources have unstaged changes:"
+  printf '  %s\n' $dirty
+  echo ""
+  echo "The generated artifacts would include them, but this commit would not."
+  echo "Stage or stash those changes first, or commit with SKIP_REGISTRY_BUILD=1"
+  echo "and rebuild separately."
+  exit 1
+fi
+
+echo "pre-commit: registry sources changed — regenerating..."
+if ! npm run build:registry >/dev/null 2>&1; then
+  echo "pre-commit: 'npm run build:registry' failed. Run it directly to see why."
+  exit 1
+fi
+
+git add registry.json public/r
+
+if git diff --cached --quiet -- registry.json public/r; then
+  echo "pre-commit: registry already up to date."
+else
+  echo "pre-commit: regenerated artifacts staged with this commit."
+fi

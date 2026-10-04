@@ -1,0 +1,448 @@
+import { docsPageMetadata } from "@/lib/docs-metadata";
+
+export const metadata = docsPageMetadata("button");
+
+import { ExampleShowcase } from "@/components/site/Sandbox";
+import { extractCode } from "@/lib/code";
+
+# Button
+
+An animated glowing-border Button component engineered with a spinning conic-gradient line tracking the 4 edges of the button, smooth click ripple physics, loading states, and full theme synchronization.
+
+The glowing border animation continuously spins around the 4 sides of the button matching the form submitting engine animation.
+
+export const usageDefault = `import Button from "@/components/custom/blocks/Button";
+import { ArrowRightIcon, SettingsIcon } from "@/components/custom/blocks/Icons";
+
+export default function GlowingBorderButtonDemo() {
+  return (
+    <div className="flex flex-wrap items-center justify-center gap-4">
+      {/* 1. Continuous 4-Edge Conic Spinning Border Line */}
+      <Button variant="outline" iconRight={<ArrowRightIcon />}>
+        Spinning Border
+      </Button>
+
+      {/* 2. Continuous Radar Ping Waves */}
+      <Button variant="radar-ping" iconLeft={<SettingsIcon />}>
+        Radar Ping
+      </Button>
+
+      {/* 3. Continuous Cosmic Orbit Light Ring */}
+      <Button variant="cosmic-orbit" iconLeft={<SettingsIcon />}>
+        Cosmic Orbit
+      </Button>
+    </div>
+  );
+};`;
+
+export const usageSlideIcon = `import Button from "@/components/custom/blocks/Button";
+import { ArrowRightIcon, DownloadIcon, MailIcon } from "@/components/custom/blocks/Icons";
+
+export default function MotionButtonDemo() {
+  return (
+    <div className="flex flex-wrap items-center justify-center gap-4">
+      {/* 1. Icon Left Radial Expanding Background Fill */}
+      <Button variant="expand-icon" iconLeft={<ArrowRightIcon />}>
+        Send Message
+      </Button>
+
+      {/* 2. Interactive Sliding Rounded Icon Physics */}
+      <Button variant="slide-icon" iconRight={<ArrowRightIcon />}>
+        Explore Features
+      </Button>
+
+      {/* 3. Looping Rounded Icon (arrow cycles through the circle on its own) */}
+      <Button variant="slide-icon-loop" iconRight={<ArrowRightIcon />}>
+        Keep Reading
+      </Button>
+
+      {/* 4. Raised 3D face over a darker edge - sinks on hover, presses on click */}
+      <Button variant="3d" iconRight={<ArrowRightIcon />}>
+        Get Started
+      </Button>
+
+      {/* 5. Horizontal Left to Right Background Wipe */}
+      <Button variant="slide-bg" iconRight={<DownloadIcon />}>
+        Download Assets
+      </Button>
+
+      {/* 6. Spring Bounce Roll (Hero cubic-bezier spring bounce) */}
+      <Button variant="slide-text-bounce">
+        Spring Bounce
+      </Button>
+
+      {/* 7. Upward Text Roll */}
+      <Button variant="slide-text" iconRight={<ArrowRightIcon />}>
+        Upward Roll
+      </Button>
+
+      {/* 8. Downward Text Roll */}
+      <Button variant="slide-text-down" iconLeft={<MailIcon />}>
+        Downward Roll
+      </Button>
+    </div>
+  );
+}`;
+
+export const usageIconOnly = `import Button from "@/components/custom/blocks/Button";
+import {
+  SearchIcon,
+  BellIcon,
+  MailIcon,
+  PhoneIcon,
+  SettingsIcon,
+  PlusIcon,
+  MinusIcon,
+  XIcon,
+} from "@/components/custom/blocks/Icons";
+
+export default function IconOnlyButtonDemo() {
+  return (
+    <div className="flex flex-wrap items-center justify-center gap-4">
+      <Button variant="default" size="sm" iconLeft={<SearchIcon />} />
+      <Button variant="default" size="sm" iconLeft={<BellIcon />} />
+      <Button variant="default" size="sm" iconLeft={<MailIcon />} />
+      <Button variant="default" size="sm" iconLeft={<PhoneIcon />} />
+      <Button variant="default" size="sm" iconLeft={<SettingsIcon />} />
+      <Button variant="default" size="sm" iconLeft={<PlusIcon />} />
+      <Button variant="default" size="sm" iconLeft={<MinusIcon />} />
+      <Button variant="default" size="sm" iconLeft={<XIcon />} />
+    </div>
+  );
+}`;
+
+export const usageSocial = `import Button from "@/components/custom/blocks/Button";
+import {
+  EmailIcon,
+  GoogleIcon,
+  GitHubIcon,
+  FacebookIcon,
+  XIcon2,
+  AppleIcon,
+  MicrosoftIcon,
+  SlackIcon,
+  LinkedInIcon,
+} from "@/components/custom/blocks/Icons";
+
+export default function SocialButtonDemo() {
+  return (
+    <div className="flex flex-wrap items-center justify-center gap-4 max-w-2xl mx-auto">
+      <Button variant="default" iconLeft={<EmailIcon />}>
+        Login with Email
+      </Button>
+      <Button variant="default" iconLeft={<GoogleIcon />}>
+        Continue with Google
+      </Button>
+      <Button variant="default" iconLeft={<GitHubIcon />}>
+        Continue with GitHub
+      </Button>
+      <Button variant="default" iconLeft={<FacebookIcon />}>
+        Login with Facebook
+      </Button>
+      <Button variant="default" iconLeft={<XIcon2 />}>
+        Login with X
+      </Button>
+      <Button variant="default" iconLeft={<AppleIcon />}>
+        Login with Apple
+      </Button>
+      <Button variant="default" iconLeft={<MicrosoftIcon />}>
+        Login with Microsoft
+      </Button>
+      <Button variant="default" iconLeft={<SlackIcon />}>
+        Login with Slack
+      </Button>
+      <Button variant="default" iconLeft={<LinkedInIcon />}>
+        Login with LinkedIn
+      </Button>
+    </div>
+  );
+}`;
+
+export const usageShardsPanel = `"use client";
+
+import { useState } from "react";
+import Button, { type ShardsEffectMode } from "@/components/custom/blocks/Button";
+
+const EFFECT_MODES: Record<string, ShardsEffectMode> = {
+  "One time": "once",
+  Continuous: "continuous",
+};
+
+export default function ControlButtonsDemo() {
+  const [effectMode, setEffectMode] = useState<ShardsEffectMode>("once");
+
+  return (
+    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+      {/* 0. Effect mode picker: one-time plays or continuous loops */}
+      <Button
+        variant="shards-control"
+        controlType="select"
+        label="Animation"
+        value="One time"
+        options={Object.keys(EFFECT_MODES)}
+        onValueChange={(label) => setEffectMode(EFFECT_MODES[label])}
+        className="sm:col-span-2 lg:col-span-1"
+      />
+      <div className="hidden lg:block lg:col-span-3" />
+
+      {/* 1. Color Picker Button - shimmer on every pick, tinted with the colour */}
+      <Button
+        variant="shards-control"
+        controlType="color"
+        label="Shards"
+        colorHex="#a855f7"
+        effect="shimmer"
+        effectMode={effectMode}
+      />
+
+      {/* 2. Dropdown Select Button - beams orbit the edge on a new pick */}
+      <Button
+        variant="shards-control"
+        controlType="select"
+        label="Placement"
+        value="Full"
+        options={["Full", "Center", "Top", "Bottom"]}
+        effect="orbit"
+        effectMode={effectMode}
+      />
+
+      {/* 3. Range Slider Button - sparkles when dragged to full */}
+      <Button
+        variant="shards-control"
+        controlType="slider"
+        label="Scale"
+        value={1}
+        min={0}
+        max={3}
+        step={0.1}
+        effect="sparkle"
+        effectMode={effectMode}
+      />
+
+      {/* 4. Toggle Switch Button - beacon pings when switched on */}
+      <Button
+        variant="shards-control"
+        controlType="toggle"
+        label="Hold to Gather"
+        checked={true}
+        effect="beacon"
+        effectMode={effectMode}
+      />
+    </div>
+  );
+}`;
+
+<ExampleShowcase
+  name="button"
+  colorControl
+  columns={1}
+  examples={[
+    {
+      title: "4-Side Spinning Glowing Line Animated Button",
+      propNotes: [{ lead: "Feature", prop: "variant", value: '"outline"', effect: "renders a continuous spinning conic-gradient glowing line with solid white/black bg and hover theme fill." }],
+      props: { layout: "basic" },
+      usage: usageDefault,
+      code: extractCode("src/components/custom/blocks/Button.tsx"),
+    },
+    {
+      title: "Dark Glass Parameter Control Panel Tiles",
+      description: "Interactive dark glass control tiles for parameter panels (Color pickers, dropdown selects, sliders, and toggle switches).",
+      propNotes: [
+        { lead: "Shards Control", prop: "variant", value: '"shards-control"', effect: "renders a dark glass control tile supporting `controlType='color' | 'select' | 'slider' | 'toggle'`." },
+        { lead: "Effect", prop: "effect", value: '"sparkle" | "orbit" | "beacon" | "shimmer"', effect: "plays when the tile lands on something: a slider reaching full, a toggle switching on, or a new select / colour pick. Any tile can take any effect; the colour tile tints its effect with the picked colour." },
+        { lead: "Mode", prop: "effectMode", value: '"once" | "continuous"', effect: "`once` plays a single time per landing; `continuous` loops while the tile stays active and fades out when it no longer is. Override when it counts as active with `effectActive`. Skipped under `prefers-reduced-motion`." },
+      ],
+      props: { layout: "shards-panel" },
+      usage: usageShardsPanel,
+      code: extractCode("src/components/custom/blocks/Button.tsx"),
+    },
+    {
+      title: "Interactive Sliding Icon & Text Motion Variants",
+      propNotes: [
+        { lead: "Icon Expand", prop: "variant", value: '"expand-icon"', effect: "radial color expansion fills button from icon center." },
+        { lead: "Icon Slide", prop: "variant", value: '"slide-icon"', effect: "rounded icon slides out to right while new icon enters from left." },
+        { lead: "Icon Loop", prop: "variant", value: '"slide-icon-loop"', effect: "same rounded icon, but the arrow keeps travelling right and re-entering from the left on its own — no hover needed. Holds still under `prefers-reduced-motion`." },
+        { lead: "3D Press", prop: "variant", value: '"3d"', effect: "a raised face over a darker edge and a ground shadow; the face sinks toward the edge on hover and all the way down on press. Colours come from `--primary`, so it follows the theme." },
+        { lead: "Background Wipe", prop: "variant", value: '"slide-bg"', effect: "background wipes horizontally from left to right." },
+        { lead: "Text Roll Motion", prop: "variant", value: '"slide-text" | "slide-text-down" | "slide-text-bounce"', effect: "vertical text sliding and hero spring character bounce." }
+      ],
+      props: { layout: "slide-icon" },
+      usage: usageSlideIcon,
+      code: extractCode("src/components/custom/blocks/Button.tsx"),
+    },
+    {
+      title: "Icon only",
+      description: "Omit the children and the button collapses to a square icon target.",
+      props: { layout: "icon-only" },
+      usage: usageIconOnly,
+      code: extractCode("src/components/custom/blocks/Button.tsx"),
+    },
+    {
+      title: "Social login",
+      description: "Brand SVGs from the bundled icon set as leading icons.",
+      props: { layout: "social" },
+      usage: usageSocial,
+      code: extractCode("src/components/custom/blocks/Button.tsx"),
+    },
+  ]}
+/>
+
+## Installation
+
+<Installation name="button" />
+
+## Features
+
+- **4-Side Animated Glowing Border**: Conic-gradient spinning line that continuously sweeps around the 4 edges of the button matching Form Engine submitting buttons.
+- **Interactive Sliding Icon Physics**: `variant="slide-icon"` provides a rounded background icon on the right that slides out to the right on hover, while a new rounded icon slides in smoothly from the left.
+- **Looping Icon Motion**: `variant="slide-icon-loop"` keeps the same rounded icon on the right, but the arrow continuously exits to the right and re-enters from the left inside the circle, without any hover.
+- **3D Press**: `variant="3d"` stacks a raised primary face over a darkened edge and a soft ground shadow. Hover lowers the face a step; pressing seats it on the edge, so the click reads as a real push.
+- **Vertical Text Roll Animation**: `variant="slide-text"` moves the button text smoothly upwards on hover while another text label rolls up smoothly into position from below.
+- **Ripple Click Physics**: Interactive radial ripple expansion on mouse click.
+- **Loading Spinners**: Built-in async state handling with interactive disabled states.
+- **Full Theme Color Syncing**: Automatically inherits site primary CSS variables (`var(--primary)`).
+
+## Props Reference
+
+<div className="overflow-x-auto">
+  <table>
+    <thead>
+      <tr>
+        <th>Prop</th>
+        <th>Type</th>
+        <th>Default</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>
+          <code>variant</code>
+        </td>
+        <td>
+          <code>"outline" | "slide-icon" | "slide-icon-loop" | "slide-text" | "3d" | "shards-control"</code>
+        </td>
+        <td>
+          <code>"outline"</code>
+        </td>
+        <td>Choose between 4-side border glow, sliding rounded icon, looping rounded icon, vertical text roll, raised 3D press, or dark glass parameter control tile.</td>
+      </tr>
+      <tr>
+        <td>
+          <code>controlType</code>
+        </td>
+        <td>
+          <code>"color" | "select" | "slider" | "toggle"</code>
+        </td>
+        <td>
+          <code>"select"</code>
+        </td>
+        <td>Input type for <code>variant="shards-control"</code> (color picker, select dropdown, range slider, or toggle switch).</td>
+      </tr>
+      <tr>
+        <td>
+          <code>label</code> · <code>value</code> · <code>options</code>
+        </td>
+        <td>
+          <code>string | number | string[]</code>
+        </td>
+        <td>
+          <code>—</code>
+        </td>
+        <td>Label title, active value, and option choices for control tiles.</td>
+      </tr>
+      <tr>
+        <td>
+          <code>effect</code>
+        </td>
+        <td>
+          <code>"none" | "sparkle" | "orbit" | "beacon" | "shimmer"</code>
+        </td>
+        <td>
+          <code>undefined</code>
+        </td>
+        <td>
+          Effect a control tile plays when a slider reaches full, a toggle switches on, or a select / colour pick changes. <code>sparkle</code> is a floor glow with twinkling specks, <code>orbit</code> runs two beams around the edge, <code>beacon</code> pings rings outward, <code>shimmer</code> wipes a bright band across. Unset keeps the built-in feedback (slider beacon at full, colour burst); <code>"none"</code> turns all of it off.
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <code>effectMode</code>
+        </td>
+        <td>
+          <code>"once" | "continuous"</code>
+        </td>
+        <td>
+          <code>"once"</code>
+        </td>
+        <td>
+          <code>once</code> plays a single time per change; <code>continuous</code> loops while the tile is active.
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <code>effectActive</code>
+        </td>
+        <td>
+          <code>boolean</code>
+        </td>
+        <td>
+          <code>—</code>
+        </td>
+        <td>
+          Forces a <code>continuous</code> effect on or off. By default it runs while the slider is full, the toggle is on, or once a select / colour tile has been picked.
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <code>size</code>
+        </td>
+        <td>
+          <code>"default" | "sm" | "lg"</code>
+        </td>
+        <td>
+          <code>"default"</code>
+        </td>
+        <td>Controls the padding and height of the button.</td>
+      </tr>
+      <tr>
+        <td>
+          <code>loading</code>
+        </td>
+        <td>
+          <code>boolean</code>
+        </td>
+        <td>
+          <code>false</code>
+        </td>
+        <td>
+          If true, replaces the leading icon with a spinner and disables user interaction.
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <code>iconLeft</code>
+        </td>
+        <td>
+          <code>React.ReactNode</code>
+        </td>
+        <td>
+          <code>undefined</code>
+        </td>
+        <td>Renders an icon or element to the left of the text.</td>
+      </tr>
+      <tr>
+        <td>
+          <code>iconRight</code>
+        </td>
+        <td>
+          <code>React.ReactNode</code>
+        </td>
+        <td>
+          <code>undefined</code>
+        </td>
+        <td>Renders an icon or element to the right of the text.</td>
+      </tr>
+    </tbody>
+  </table>
+</div>

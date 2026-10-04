@@ -1,0 +1,316 @@
+import { docsPageMetadata } from "@/lib/docs-metadata";
+
+export const metadata = docsPageMetadata("context-menu");
+
+import { ExampleShowcase } from "@/components/site/Sandbox";
+import { extractCode } from "@/lib/code";
+
+# Context Menu
+
+Displays a menu to the user — such as a set of actions or functions — triggered by a right-click.
+
+Building a Context Menu is difficult because it involves intercepting the browser's native right-click event (`onContextMenu`) and rendering an overlay component precisely at the user's mouse coordinates without it getting clipped by CSS `overflow` properties.
+
+This `ContextMenuBlock` is a **100% dependency-free** solution. It uses React's `createPortal` to escape DOM limitations, and includes highly optimized boundary-collision logic to guarantee the menu never opens off the edge of the user's screen.
+
+Right-click (or long-press on touch) inside each dashed box. Try it near the edges — the boundary maths keeps the menu on screen.
+
+export const usageFull = `"use client";
+
+import {
+  ContextMenu,
+  ContextMenuContent,
+  ContextMenuItem,
+  ContextMenuLabel,
+  ContextMenuSeparator,
+  ContextMenuShortcut,
+  ContextMenuTrigger,
+} from "@/components/custom/blocks/ContextMenuBlock";
+import { Copy, Download, FileEdit, Scissors, Share2, Trash } from "lucide-react";
+
+export default function DocumentMenu() {
+  // The live preview raises a toast here; this logs instead so the snippet
+  // needs nothing beyond the context menu itself.
+  const run = (action: string) => console.log(action);
+
+  return (
+    <ContextMenu>
+      <ContextMenuTrigger className="w-full max-w-[280px] sm:max-w-lg min-h-[160px] sm:min-h-[220px] border-2 border-dashed border-foreground/20 bg-background rounded-2xl flex flex-col items-center justify-center p-5 sm:p-8 text-center transition-colors hover:border-primary/50 cursor-pointer">
+        <div className="flex flex-col items-center justify-center w-full px-4">
+          <h3 className="font-semibold text-xs sm:text-base text-foreground">
+            Click / Right-Click / Touch Area
+          </h3>
+          <p className="text-[11px] sm:text-sm text-muted-foreground mt-1.5 leading-relaxed">
+            Click or right-click (long-press on mobile) inside this box to open
+            the context menu.
+          </p>
+        </div>
+      </ContextMenuTrigger>
+
+      <ContextMenuContent className="w-48 sm:w-64">
+        <ContextMenuLabel>Document Actions</ContextMenuLabel>
+        <ContextMenuItem onClick={() => run("Edit")}>
+          <FileEdit className="w-4 h-4 mr-2" />
+          Edit File
+          <ContextMenuShortcut>⌘E</ContextMenuShortcut>
+        </ContextMenuItem>
+        <ContextMenuItem onClick={() => run("Download")}>
+          <Download className="w-4 h-4 mr-2" />
+          Download PDF
+          <ContextMenuShortcut>⌘S</ContextMenuShortcut>
+        </ContextMenuItem>
+        <ContextMenuItem onClick={() => run("Share")}>
+          <Share2 className="w-4 h-4 mr-2" />
+          Share Link
+        </ContextMenuItem>
+
+        <ContextMenuSeparator />
+
+        <ContextMenuLabel>Clipboard</ContextMenuLabel>
+        <ContextMenuItem onClick={() => run("Copy")}>
+          <Copy className="w-4 h-4 mr-2" />
+          Copy
+          <ContextMenuShortcut>⌘C</ContextMenuShortcut>
+        </ContextMenuItem>
+
+        {/* disabled dims the row and swallows the click */}
+        <ContextMenuItem disabled>
+          <Scissors className="w-4 h-4 mr-2" />
+          Cut
+          <ContextMenuShortcut>⌘X</ContextMenuShortcut>
+        </ContextMenuItem>
+
+        <ContextMenuSeparator />
+
+        {/* className restyles a single destructive row */}
+        <ContextMenuItem
+          onClick={() => run("Delete")}
+          className="text-destructive focus:bg-destructive/10 focus:text-destructive"
+        >
+          <Trash className="w-4 h-4 mr-2" />
+          Delete
+          <ContextMenuShortcut>⌘⌫</ContextMenuShortcut>
+        </ContextMenuItem>
+      </ContextMenuContent>
+    </ContextMenu>
+  );
+}`;
+
+<ExampleShowcase
+  name="context-menu"
+  columns={1}
+  colorControl
+  examples={[
+    {
+      title: "Labels, shortcuts & disabled",
+      subheading: "`ContextMenuLabel` titles a group and `ContextMenuShortcut` right-aligns the hotkey.",
+      propNotes: [
+        {
+          lead: "Set",
+          prop: "disabled",
+          effect:
+            "on an item to fade it, drop its hover state and stop `onClick` firing.",
+        },
+      ],
+      props: { example: "full" },
+      usage: usageFull,
+      code: extractCode("src/components/custom/blocks/ContextMenuBlock.tsx"),
+    },
+  ]}
+/>
+
+## Installation
+
+<Installation name="context-menu" />
+
+## Features
+Explore the ContextMenu's right-click features, including nested submenus, disabled states, and keyboard navigation.
+
+<div className="grid grid-cols-1 sm:grid-cols-2 gap-4 my-6 not-prose">
+  <div className="p-6 rounded-2xl border border-border bg-card">
+    <h3 className="text-lg font-semibold text-card-foreground mb-2">Customizable</h3>
+    <p className="text-muted-foreground text-sm">Easily adapt the component's styling and behavior to fit your application's unique design system.</p>
+  </div>
+  <div className="p-6 rounded-2xl border border-border bg-card">
+    <h3 className="text-lg font-semibold text-card-foreground mb-2">Accessible</h3>
+    <p className="text-muted-foreground text-sm">Built with accessibility in mind, ensuring all users can interact with your application effectively.</p>
+  </div>
+  <div className="p-6 rounded-2xl border border-border bg-card">
+    <h3 className="text-lg font-semibold text-card-foreground mb-2">Responsive</h3>
+    <p className="text-muted-foreground text-sm">Fully responsive design that looks and works great across desktop, tablet, and mobile devices.</p>
+  </div>
+  <div className="p-6 rounded-2xl border border-border bg-card">
+    <h3 className="text-lg font-semibold text-card-foreground mb-2">Performant</h3>
+    <p className="text-muted-foreground text-sm">Optimized for maximum performance with minimal re-renders and efficient state management.</p>
+  </div>
+</div>
+
+## Best Practices & Guidelines
+
+<div className="flex flex-col gap-4 my-6 not-prose">
+  <div className="rounded-xl border border-foreground/[0.06] bg-foreground/[0.03] p-4">
+    <h4 className="font-sans text-[14px] font-semibold text-foreground mb-1">Usage Guidelines</h4>
+    <p className="text-[13px] leading-relaxed text-foreground/50">Follow standard design principles when implementing this component. Ensure proper contrast, spacing, and context within your layout.</p>
+  </div>
+</div>
+
+## Props Reference
+
+<div className="overflow-x-auto">
+  <table>
+    <thead>
+      <tr>
+        <th>Component</th>
+        <th>Prop</th>
+        <th>Type</th>
+        <th>Default</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>
+          <code>ContextMenu</code>
+        </td>
+        <td>
+          <code>color</code>
+        </td>
+        <td>
+          <code>"primary" | "indigo" | "rose" | "emerald" | "blue" | "zinc" | string</code>
+        </td>
+        <td>
+          <code>"primary"</code>
+        </td>
+        <td>
+          Applies theme accent color to item hover states and trigger container focus/hover borders. Accepts preset named themes or valid hex strings.
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <code>ContextMenuTrigger</code>
+        </td>
+        <td>
+          <code>className</code>
+        </td>
+        <td>
+          <code>string</code>
+        </td>
+        <td>
+          <code>undefined</code>
+        </td>
+        <td>
+          Standard Tailwind CSS overrides for the boundary container that
+          intercepts the right-click event.
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <code>ContextMenuContent</code>
+        </td>
+        <td>
+          <code>className</code>
+        </td>
+        <td>
+          <code>string</code>
+        </td>
+        <td>
+          <code>undefined</code>
+        </td>
+        <td>
+          Standard Tailwind CSS overrides for the floating menu card. By
+          default, you usually want to set a width here (e.g., <code>w-64</code>
+          ).
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <code>ContextMenuItem</code>
+        </td>
+        <td>
+          <code>disabled</code>
+        </td>
+        <td>
+          <code>boolean</code>
+        </td>
+        <td>
+          <code>false</code>
+        </td>
+        <td>
+          If true, the item becomes slightly transparent, ignores hover effects,
+          and prevents <code>onClick</code> events from firing.
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <code>ContextMenuItem</code>
+        </td>
+        <td>
+          <code>onClick</code>
+        </td>
+        <td>
+          <code>{`(e: React.MouseEvent) => void`}</code>
+        </td>
+        <td>
+          <code>undefined</code>
+        </td>
+        <td>
+          Event handler fired when the user left-clicks the item. Clicking an
+          item automatically closes the context menu.
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <code>ContextMenuItem</code>
+        </td>
+        <td>
+          <code>inset</code>
+        </td>
+        <td>
+          <code>boolean</code>
+        </td>
+        <td>
+          <code>false</code>
+        </td>
+        <td>
+          If true, adds left padding to the item. This is incredibly useful when
+          aligning text items with other items that have icons.
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <code>ContextMenuLabel</code>
+        </td>
+        <td>
+          <code>inset</code>
+        </td>
+        <td>
+          <code>boolean</code>
+        </td>
+        <td>
+          <code>false</code>
+        </td>
+        <td>
+          If true, adds left padding to match the alignment of inset menu items.
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <strong>All Components</strong>
+        </td>
+        <td>
+          <code>...props</code>
+        </td>
+        <td>
+          <code>HTMLAttributes</code>
+        </td>
+        <td>
+          <code>{}</code>
+        </td>
+        <td>
+          Standard HTML attributes for their respective underlying{" "}
+          <code>&lt;div&gt;</code> elements.
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>

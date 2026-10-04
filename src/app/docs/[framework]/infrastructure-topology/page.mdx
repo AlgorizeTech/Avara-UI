@@ -1,0 +1,199 @@
+import { docsPageMetadata } from "@/lib/docs-metadata";
+
+export const metadata = docsPageMetadata("infrastructure-topology");
+
+import { ExampleShowcase } from "@/components/site/Sandbox";
+import { extractCode } from "@/lib/code";
+
+# Infrastructure Topology
+
+An interactive, fluid **Infrastructure Topology** component simulating live data flows across microservices, central neural mesh core routers, connected SVG beam pipelines, and real-time telemetry metrics.
+
+## Variations
+
+export const usageDefault = `import InfrastructureTopology, { type TopologyNode } from "@/components/custom/infrastructure-topology";
+import { UserCheck, ShieldAlert, Database, Cloud, CreditCard } from "lucide-react";
+
+const customNodes: TopologyNode[] = [
+  {
+    id: "auth",
+    title: "User Auth",
+    subtitle: "OAUTH 2.0",
+    badgeText: "SECURED",
+    badgeVariant: "blue",
+    icon: <UserCheck className="w-4 h-4 md:w-4.5 md:h-4.5 text-blue-500" />,
+    color: "blue",
+    strokeColor: "#3b82f6",
+    position: "top-left",
+  },
+  {
+    id: "waf",
+    title: "WAF Guard",
+    subtitle: "LAYER 7",
+    badgeText: "ONLINE",
+    badgeVariant: "rose",
+    icon: <ShieldAlert className="w-4 h-4 md:w-4.5 md:h-4.5 text-rose-500" />,
+    color: "rose",
+    strokeColor: "#f43f5e",
+    position: "bottom-left",
+  },
+  {
+    id: "db",
+    title: "Postgres",
+    subtitle: "PRIMARY DB",
+    badgeText: "ONLINE",
+    badgeVariant: "purple",
+    icon: <Database className="w-4 h-4 md:w-4.5 md:h-4.5 text-purple-500" />,
+    color: "purple",
+    strokeColor: "#a855f7",
+    position: "top-right",
+  },
+  {
+    id: "aws",
+    title: "AWS Cloud",
+    subtitle: "US-EAST-1",
+    badgeText: "ACTIVE",
+    badgeVariant: "amber",
+    icon: <Cloud className="w-4 h-4 md:w-4.5 md:h-4.5 text-amber-500" />,
+    color: "amber",
+    strokeColor: "#f59e0b",
+    position: "middle-right",
+  },
+  {
+    id: "billing",
+    title: "Billing API",
+    subtitle: "STRIPE V3",
+    badgeText: "ONLINE",
+    badgeVariant: "emerald",
+    icon: <CreditCard className="w-4 h-4 md:w-4.5 md:h-4.5 text-emerald-500" />,
+    color: "emerald",
+    strokeColor: "#10b981",
+    position: "bottom-right",
+  },
+];
+
+export default function InfrastructureTopologyDemo() {
+  return (
+    <InfrastructureTopology
+      headerTitle="Infrastructure Topology"
+      headerSubtitle="LIVE DATA FLOW · 6 SERVICES · 5 ROUTES"
+      statusBadge="ALL SYSTEMS"
+      bandwidthBadge="10 GBPS"
+      centerTitle="NEURAL MESH"
+      centerSubtitle="CORE ROUTER · V4.2"
+      centerColor="cyan"
+      nodes={customNodes}
+      animated={true}
+      interactive={true}
+    />
+  );
+}`;
+
+<ExampleShowcase
+  name="infrastructure-topology"
+  colorControl={false}
+  columns={1}
+  examples={[
+    {
+      title: "Infrastructure Topology Showcase",
+      subheading: "Live animated data flow canvas with pulsing central neural mesh router, peripheral service cards, and telemetry metrics.",
+      usage: usageDefault,
+      code: extractCode("src/components/custom/infrastructure-topology.tsx"),
+    },
+  ]}
+/>
+
+## Installation
+
+<Installation name="infrastructure-topology" />
+
+## Features
+
+- **Central Neural Mesh Hub**: Mode-adaptive pulsing concentric rings with core status & version indicator.
+- **Animated SVG Data Beams**: Real-time laser packet dash animations connecting peripheral service nodes to the central hub.
+- **Interactive Route Highlights**: Hovering over service cards highlights the active connection pipeline with ring glow feedback.
+- **Responsive Dual Layout**: Full 2D graph canvas on desktop/tablet, and clean non-overlapping 2-column grid on mobile screens.
+- **Semantic Theme Adaptation**: Uses Tailwind CSS semantic tokens (`bg-background`, `bg-card`, `text-foreground`, `border-border`) to seamlessly match any site theme.
+
+## Props Reference: InfrastructureTopology
+
+<div className="overflow-x-auto">
+  <table>
+    <thead>
+      <tr>
+        <th>Prop</th>
+        <th>Type</th>
+        <th>Default</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><code>headerTitle</code></td>
+        <td><code>string</code></td>
+        <td><code>"Infrastructure Topology"</code></td>
+        <td>Main headline text in the header bar.</td>
+      </tr>
+      <tr>
+        <td><code>headerSubtitle</code></td>
+        <td><code>string</code></td>
+        <td><code>"LIVE DATA FLOW · 6 SERVICES · 5 ROUTES"</code></td>
+        <td>Monospaced subtitle text in the header bar.</td>
+      </tr>
+      <tr>
+        <td><code>statusBadge</code></td>
+        <td><code>string</code></td>
+        <td><code>"ALL SYSTEMS"</code></td>
+        <td>System status pill badge text.</td>
+      </tr>
+      <tr>
+        <td><code>bandwidthBadge</code></td>
+        <td><code>string</code></td>
+        <td><code>"10 GBPS"</code></td>
+        <td>Bandwidth speed status badge text.</td>
+      </tr>
+      <tr>
+        <td><code>centerTitle</code></td>
+        <td><code>string</code></td>
+        <td><code>"NEURAL MESH"</code></td>
+        <td>Title of the central core router node.</td>
+      </tr>
+      <tr>
+        <td><code>centerSubtitle</code></td>
+        <td><code>string</code></td>
+        <td><code>"CORE ROUTER · V4.2"</code></td>
+        <td>Subtitle of the central core router node.</td>
+      </tr>
+      <tr>
+        <td><code>centerColor</code></td>
+        <td><code>"cyan" | "emerald" | "indigo" | "rose" | "purple"</code></td>
+        <td><code>"cyan"</code></td>
+        <td>Theme color palette of the central core router.</td>
+      </tr>
+      <tr>
+        <td><code>nodes</code></td>
+        <td><code>TopologyNode[]</code></td>
+        <td><code>DEFAULT_NODES</code></td>
+        <td>Array of peripheral service node objects.</td>
+      </tr>
+      <tr>
+        <td><code>metrics</code></td>
+        <td><code>MetricItem[]</code></td>
+        <td><code>DEFAULT_METRICS</code></td>
+        <td>Array of telemetry metric pill objects.</td>
+      </tr>
+      <tr>
+        <td><code>animated</code></td>
+        <td><code>boolean</code></td>
+        <td><code>true</code></td>
+        <td>Toggles SVG connection beam laser animations.</td>
+      </tr>
+      <tr>
+        <td><code>interactive</code></td>
+        <td><code>boolean</code></td>
+        <td><code>true</code></td>
+        <td>Toggles hover route highlighting animations.</td>
+      </tr>
+    </tbody>
+  </table>
+</div>

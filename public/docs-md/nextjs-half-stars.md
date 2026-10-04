@@ -1,12 +1,12 @@
+export const metadata = docsPageMetadata("half-stars");
+
 # Half Stars Rating
 
 A sleek, customizable star rating component for Next.js applications that supports exact decimal ratings (e.g., 3.7 or 4.5) through SVG clip paths. It also supports interactive mode, allowing users to hover and click to set their own rating.
 
 It provides an accurate fractional fill, allowing you to beautifully display user reviews, product ratings, and satisfaction scores without being limited to just full or half stars.
 
-## Examples
-
-Explore the different variations of the Half Stars component — each example shows a live preview with the exact code to copy. Hover and click any preview to set a rating. The first example's **Code** tab contains the full component source.
+Explore the different variations of the Half Stars component — each example shows a live preview with the exact code to copy. Hover and click any preview to set a rating.
 
 export const usageFull = `"use client";
 
@@ -48,6 +48,17 @@ export default function TenStarRating() {
   );
 }`;
 
+## Installation
+
+Register the @algorize-ui registry once per project, then add the component:
+
+```bash
+npx shadcn@latest registry add @algorize-ui=https://algorize-ui.vercel.app/r/{name}.json
+npx shadcn@latest add @algorize-ui/half-stars
+```
+
+## Examples
+
 ## Features
 Discover the Half Stars rating component's precise visual feedback, supporting fractional SVG rendering for accurate reviews.
 
@@ -69,7 +80,7 @@ Discover the Half Stars rating component's precise visual feedback, supporting f
     If you are allowing user input via interactive={true}, it is recommended to set allowHalf={true} (step 0.5) or step={1} for standard reviews. Setting step={0.1} can make it difficult for users to intentionally click a precise score like 4.0 exactly.
 
     Color Contrast
-    Ensure your inactiveColor provides enough contrast against your background so users can clearly see the empty stars. By default, text-slate-200 works well on white backgrounds.
+    Ensure your inactiveColor provides enough contrast against your background so users can clearly see the empty stars. The default, text-foreground/15, follows the theme in light and dark mode.
 
 ## Props Reference
 
@@ -100,13 +111,13 @@ Discover the Half Stars rating component's precise visual feedback, supporting f
         HalfStars
         activeColor
         string
-        "text-yellow-400"
+        "text-primary"
         Tailwind text color class for the filled (active) portion of the stars.
 
         HalfStars
         inactiveColor
         string
-        "text-slate-200 dark:text-slate-700"
+        "text-foreground/15"
         Tailwind text color class for the empty (inactive) portion of the stars.
 
         HalfStars
@@ -173,6 +184,6 @@ interface HalfStarsProps extends Omit, 'onChange'> {
 
 ---
 
-**Component Path:** `nextjs\half-stars\page.mdx`
+**Component Path:** `[framework]\half-stars\page.mdx`
 
-**Web Version:** Visit the interactive version at the corresponding URL on the Next.js documentation site for live previews and interactive examples.
+**Web Version:** Visit the corresponding URL on the Algorize UI documentation site for live previews and interactive examples.

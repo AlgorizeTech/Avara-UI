@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useRef } from "react";
+import React, { useState } from "react";
 import { cn } from "@/lib/utils";
 
 export interface HalfStarsProps extends Omit<React.HTMLAttributes<HTMLDivElement>, 'onChange'> {
@@ -24,7 +24,7 @@ export const HalfStars = React.forwardRef<HTMLDivElement, HalfStarsProps>(
       maxStars = 5,
       size = 24,
       activeColor = "text-primary",
-      inactiveColor = "text-slate-200 dark:text-slate-700",
+      inactiveColor = "text-foreground/15",
       showText = true, // Default to true as per user request
       interactive = false,
       allowHalf = true, // Default to allowing half stars
@@ -131,11 +131,11 @@ export const HalfStars = React.forwardRef<HTMLDivElement, HalfStarsProps>(
           })}
         </div>
         {showText && (
-          <span className="text-xl font-bold text-slate-700 dark:text-slate-200 tabular-nums">
+          <span className="text-xl font-semibold text-foreground tabular-nums">
             <span className="inline-block w-[45px] text-center">
               {Number.isInteger(safeRating) ? safeRating : safeRating.toFixed(1)}
             </span>
-            <span className="text-base text-slate-400 font-normal ml-1">
+            <span className="text-base text-muted-foreground font-normal ml-1">
               / {maxStars}
             </span>
           </span>

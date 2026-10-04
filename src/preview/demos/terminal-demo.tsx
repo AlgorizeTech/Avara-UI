@@ -2,95 +2,114 @@
 
 import {
   TerminalBlock,
-  TerminalVariant,
+  type TerminalColor,
+  type TerminalVariant,
 } from "@/components/custom/blocks/TerminalBlock";
 
-const sampleCodes = {
-  React: {
-    language: "tsx",
-    filename: "Button.tsx",
-    code: `import * as React from "react"
-import { cn } from "@/lib/utils"
+/**
+ * Every branch below renders exactly what the matching usage snippet on
+ * docs/[framework]/terminal/page.mdx prints — same code strings, same props,
+ * same wrapper — so copying the usage reproduces the preview.
+ */
 
-export interface ButtonProps
-  extends React.ButtonHTMLAttributes<HTMLButtonElement> {
-  asChild?: boolean
-}
+const installCommand = `npx create-next-app@latest my-app --typescript --tailwind
+cd my-app
+npm run dev`;
 
-const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
-  ({ className, ...props }, ref) => {
-    return (
-      <button
-        className={cn(
-          "inline-flex items-center justify-center rounded-md text-sm font-medium",
-          "focus-visible:outline-none focus-visible:ring-2",
-          "disabled:pointer-events-none disabled:opacity-50",
-          className
-        )}
-        ref={ref}
-        {...props}
-      />
-    )
-  }
-)
-Button.displayName = "Button"`,
-  },
-  Python: {
-    language: "python",
-    filename: "main.py",
-    code: `def fibonacci(n):
-    """Return a list containing the Fibonacci series up to n."""
-    result = []
-    a, b = 0, 1
-    while a < n:
-        result.append(a)
-        a, b = b, a + b
-    return result
+const pythonSource = `import httpx
+
+def fetch(url: str) -> dict:
+    response = httpx.get(url, timeout=10)
+    response.raise_for_status()
+    return response.json()
 
 if __name__ == "__main__":
-    # Print Fibonacci sequence up to 100
-    print(fibonacci(100))`,
-  },
-  Bash: {
-    language: "bash",
-    filename: "terminal",
-    code: `npx create-next-app@latest my-app --typescript --tailwind --eslint
-cd my-app
-npm install lucide-react clsx tailwind-merge
-npm run dev`,
-  },
-};
+    print(fetch("https://api.example.com/status"))`;
+
+const tsxSource = `import { cn } from "@/lib/utils";
+
+export function Button({ className, ...props }) {
+  return (
+    <button
+      className={cn(
+        "h-10 rounded-lg bg-zinc-900 px-4 text-sm font-medium text-white",
+        className,
+      )}
+      {...props}
+    />
+  );
+}`;
 
 export default function TerminalDemo({
+  activeTab = "Bash",
   variant = "default",
-  activeTab = "React",
-  color = "primary",
   showFilename = true,
   isCopyable = true,
+  color = "primary",
 }: {
+  activeTab?: "Bash" | "Python" | "React";
   variant?: TerminalVariant;
-  activeTab?: keyof typeof sampleCodes;
-  color?: string;
   showFilename?: boolean;
   isCopyable?: boolean;
+  color?: TerminalColor;
 }) {
-  const currentSample = sampleCodes[activeTab] || sampleCodes.React;
+  if (activeTab === "Bash") {
+    return (
+      <TerminalBlock
+        code={installCommand}
+        language="bash"
+        filename="terminal"
+        color={color}
+      />
+    );
+  }
 
-  return (
-    <div
-      className={`w-full flex flex-col items-center justify-center min-h-[450px] ${variant === "glass" ? "bg-gradient-to-br from-indigo-500/80 via-purple-500/80 to-pink-500/80 rounded-2xl p-6 sm:p-12" : ""} relative z-10`}
-    >
-      <div className="w-full max-w-2xl mx-auto">
+  if (activeTab === "Python") {
+    return (
+      <TerminalBlock
+        code={pythonSource}
+        language="python"
+        filename="main.py"
+        color={color}
+      />
+    );
+  }
+
+  if (variant === "glass") {
+    return (
+      // Backdrop-blurred chrome — put it over a gradient.
+      <div className="p-12 bg-gradient-to-br from-indigo-500/80 via-purple-500/80 to-pink-500/80 rounded-2xl">
         <TerminalBlock
-          key={`${variant}-${color}-${activeTab}`}
-          code={currentSample.code}
-          language={currentSample.language}
-          filename={showFilename ? currentSample.filename : undefined}
-          copyable={isCopyable}
-          variant={variant}
+          code={tsxSource}
+          language="tsx"
+          filename="Button.tsx"
+          variant="glass"
           color={color}
         />
       </div>
-    </div>
+    );
+  }
+
+  if (variant === "minimal") {
+    // Drops the window controls and the border for inline snippets.
+    return (
+      <TerminalBlock
+        code={tsxSource}
+        language="tsx"
+        variant="minimal"
+        color={color}
+      />
+    );
+  }
+
+  // No filename header, no copy button — just the code.
+  return (
+    <TerminalBlock
+      code={tsxSource}
+      language="tsx"
+      copyable={isCopyable}
+      filename={showFilename ? "Button.tsx" : undefined}
+      color={color}
+    />
   );
 }

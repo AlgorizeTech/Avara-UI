@@ -1,22 +1,24 @@
+export const metadata = docsPageMetadata("split-scroll-stepper");
+
 # Scroll Accordion Showcase
 
 A high-impact, scroll-driven interactive section built with full dark/light mode responsiveness, instantaneous `localStorage` theme coloring, and flexible layout options. As users scroll through a sequence of numbered accordion cards, an `IntersectionObserver` expands the active narrative while cross-fading a sticky showcase mockup on the right.
 
-## Examples
+Scroll the preview and each row expands as it reaches the reading line, driving the sticky image card beside it. `displayMode` decides which halves of that pairing are rendered.
 
-Scroll the preview and each row expands as it reaches the reading line, driving the sticky image card beside it. `displayMode` decides which halves of that pairing are rendered. The first example's **Code** tab contains the full component source.
-
-export const usageDefault = `import { ScrollAccordionShowcase } from "@/components/custom/blocks/ScrollAccordionShowcaseBlock";
-
-const items = [
+export const showcaseItems = `const items: AccordionShowcaseItem[] = [
   {
     id: "landing-page",
     stepNumber: "01",
     title: "Landing Page Design",
     description:
-      "Most landing pages fail quietly. We engineer high-converting layouts with strategic visual hierarchy and micro-interactions.",
-    tags: ["CONVERSION FOCUSED DESIGN", "FIGMA TO CODE CONVERSION"],
-    image: "https://images.unsplash.com/photo-1460925895917-afdab827c52f?q=80&w=1200",
+      "Most landing pages fail quietly. Traffic comes in, nothing happens, and budgets burn. We engineer high-converting layouts with strategic visual hierarchy and micro-interactions.",
+    tags: [
+      "CONVERSION FOCUSED DESIGN",
+      "FIGMA TO CODE CONVERSION",
+      "MOBILE FIRST RESPONSIVE",
+    ],
+    image: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_1200,c_limit/v1790146209/photo-1460925895917-afdab827c52f-1790146212204.jpg",
     badgeText: "SELECTED SERVICE",
   },
   {
@@ -24,12 +26,48 @@ const items = [
     stepNumber: "02",
     title: "SaaS Product Development",
     description:
-      "Modular, multi-tenant web applications designed to scale from your first 1,000 users to millions of daily requests.",
-    tags: ["MULTI-TENANT ARCHITECTURE", "REAL-TIME SYNC"],
-    image: "https://images.unsplash.com/photo-1551288049-bebda4e38f71?q=80&w=1200",
+      "Modular, multi-tenant web applications designed to scale from your first 1,000 users to millions of daily requests without refactoring your core backend architecture.",
+    tags: [
+      "MULTI-TENANT ARCHITECTURE",
+      "REAL-TIME SYNC",
+      "EDGE COMPUTED API",
+    ],
+    image: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_1200,c_limit/v1790146211/photo-1551288049-bebda4e38f71-1790146212211.jpg",
     badgeText: "SELECTED SERVICE",
   },
-];
+  {
+    id: "ai-product",
+    stepNumber: "03",
+    title: "AI Product Development",
+    description:
+      "Building an AI product is not about plugging in an API and hoping for the best. We build custom retrieval pipelines, fine-tuned models, and intuitive streaming UI interfaces.",
+    tags: [
+      "CUSTOM RAG PIPELINES",
+      "STREAMING RESPONSES",
+      "VECTOR DATABASE SETUP",
+    ],
+    image: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_1200,c_limit/v1790148864/photo-1618005182384-a83a8bd57fbe-1790148865111.jpg",
+    badgeText: "SELECTED SERVICE",
+  },
+  {
+    id: "web-app",
+    stepNumber: "04",
+    title: "Web App Development",
+    description:
+      "There is a massive difference between a static website and a mission-critical web application. We deliver complex dashboards, data tables, and secure portal architectures.",
+    tags: [
+      "SERVER-SIDE RENDERING",
+      "ROLE-BASED ACCESS CONTROL",
+      "REAL-TIME NOTIFICATIONS",
+    ],
+    image: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_1200,c_limit/v1790146210/photo-1504639725590-34d0984388bd-1790146212207.jpg",
+    badgeText: "SELECTED SERVICE",
+  },
+];`;
+
+export const usageDefault = `import { ScrollAccordionShowcase, type AccordionShowcaseItem } from "@/components/custom/blocks/ScrollAccordionShowcaseBlock";
+
+${showcaseItems}
 
 export default function ServicesShowcase() {
   return (
@@ -37,7 +75,9 @@ export default function ServicesShowcase() {
   );
 }`;
 
-export const usageTextOnly = `import { ScrollAccordionShowcase } from "@/components/custom/blocks/ScrollAccordionShowcaseBlock";
+export const usageTextOnly = `import { ScrollAccordionShowcase, type AccordionShowcaseItem } from "@/components/custom/blocks/ScrollAccordionShowcaseBlock";
+
+${showcaseItems}
 
 export default function TextOnlyShowcase() {
   // "text-only" drops the sticky image column and lets the accordion
@@ -45,14 +85,18 @@ export default function TextOnlyShowcase() {
   return ;
 }`;
 
-export const usageImageOnly = `import { ScrollAccordionShowcase } from "@/components/custom/blocks/ScrollAccordionShowcaseBlock";
+export const usageImageOnly = `import { ScrollAccordionShowcase, type AccordionShowcaseItem } from "@/components/custom/blocks/ScrollAccordionShowcaseBlock";
+
+${showcaseItems}
 
 export default function ImageOnlyShowcase() {
   // "image-only" keeps the scroll-driven visual and hides the copy.
   return ;
 }`;
 
-export const usageDefaultIndex = `import { ScrollAccordionShowcase } from "@/components/custom/blocks/ScrollAccordionShowcaseBlock";
+export const usageDefaultIndex = `import { ScrollAccordionShowcase, type AccordionShowcaseItem } from "@/components/custom/blocks/ScrollAccordionShowcaseBlock";
+
+${showcaseItems}
 
 export default function ShowcaseStartingOnThird() {
   // defaultIndex picks which row is open before the user scrolls.
@@ -61,11 +105,18 @@ export default function ShowcaseStartingOnThird() {
 
 ## Installation
 
-### Copy the Component
+Register the @algorize-ui registry once per project, then add the component:
 
-Create a new file at `components/custom/blocks/ScrollAccordionShowcaseBlock.tsx` and copy the engine code from the **Code** tab of the first example above.
+```bash
+npx shadcn@latest registry add @algorize-ui=https://algorize-ui.vercel.app/r/{name}.json
+npx shadcn@latest add @algorize-ui/scroll-accordion-showcase
+```
 
-The accent color is resolved at runtime: the component looks for a hex in `localStorage` (starting with `localStorageKey`), then in the `--primary-color` / `--primary` / `--theme-color` CSS variables, and only falls back to `defaultAccentColor` if neither is found. That is why it adopts your site's primary color automatically.
+### Accent color
+
+The accent is resolved at runtime, so it adopts your site's primary color with no configuration. The component reads a hex from `localStorage` (any key starting with `localStorageKey`), then the `--primary-color` / `--primary` / `--theme-color` CSS variables, and only falls back to `defaultAccentColor` if neither is set.
+
+## Examples
 
 ## Props Reference
 
@@ -130,7 +181,7 @@ The accent color is resolved at runtime: the component looks for a hex in `local
 
           string
 
-          "#FFAB1D"
+          "var(--primary)"
 
           The fallback hex color string applied automatically if no valid hex or
           rgb color value is detected in localStorage or CSS root
@@ -168,7 +219,7 @@ The accent color is resolved at runtime: the component looks for a hex in `local
           Required
 
           A unique string identifier required for safe React list rendering and
-          Framer Motion layout animations.
+          for swapping the showcase image when the active step changes.
 
           AccordionShowcaseItem
 
@@ -202,7 +253,7 @@ The accent color is resolved at runtime: the component looks for a hex in `local
           Required
 
           The detailed paragraph text explaining the specific step or service,
-          which smoothly expands via Framer Motion when the card becomes active.
+          which smoothly expands when the card becomes active.
 
           AccordionShowcaseItem
 
@@ -240,6 +291,6 @@ The accent color is resolved at runtime: the component looks for a hex in `local
 
 ---
 
-**Component Path:** `nextjs\split-scroll-stepper\page.mdx`
+**Component Path:** `[framework]\split-scroll-stepper\page.mdx`
 
-**Web Version:** Visit the interactive version at the corresponding URL on the Next.js documentation site for live previews and interactive examples.
+**Web Version:** Visit the corresponding URL on the Algorize UI documentation site for live previews and interactive examples.

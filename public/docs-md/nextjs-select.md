@@ -1,20 +1,26 @@
+export const metadata = docsPageMetadata("select");
+
 # Select / Dropdown
 
 A completely custom, headless-style dropdown component. Native HTML `` elements are notoriously difficult to style consistently across browsers.
 
 This component solves that by using React state and clever absolute positioning to create a flawless, animated dropdown that perfectly matches the `InputBlock` visual variants. It has been supercharged to support **Multi-Select**, **Live Search Filtering**, and **Categorized Option Groups**.
 
-## Examples
+Explore the different variations of the Select component — each example shows a live preview with the exact code to copy.
 
-Explore the different variations of the Select component — each example shows a live preview with the exact code to copy. The first example's **Code** tab contains the full component source.
+export const selectOptions = `import { Box, Code, Database, Paintbrush } from "lucide-react";
 
-export const usageDefault = `import { SelectBlock } from "@/components/custom/blocks/SelectBlock";
-
-const options = [
-  { label: "Engineering", value: "eng" },
-  { label: "Design", value: "design" },
+const options: SelectOption[] = [
+  { label: "Engineering", value: "eng", icon: Code },
+  { label: "Design", value: "design", icon: Paintbrush },
   { label: "Marketing", value: "mkt" },
-];
+  { label: "Operations", value: "ops", icon: Box },
+  { label: "Data Science", value: "data", icon: Database },
+];`;
+
+export const usageDefault = `"use client";
+
+${selectOptions}
 
 export default function BasicSelect() {
   const [value, setValue] = useState("");
@@ -24,19 +30,33 @@ export default function BasicSelect() {
   );
 }`;
 
-export const usageFilled = ``;
+export const usageUnderlined = `"use client";
 
-export const usageUnderlined = ``;
+${selectOptions}
 
-export const usageGlow = ``;
+export default function UnderlinedSelect() {
+  const [value, setValue] = useState("");
 
-export const usageSizes = `
+  return (
+    
+  );
+}`;
 
-`;
+export const usageSearchable = `"use client";
 
-export const usageSearchable = ``;
+${selectOptions}
 
-export const usageMultiple = `import { SelectBlock } from "@/components/custom/blocks/SelectBlock";
+export default function SearchableSelect() {
+  const [value, setValue] = useState("");
+
+  return (
+    
+  );
+}`;
+
+export const usageMultiple = `"use client";
+
+${selectOptions}
 
 export default function MultiSelect() {
   const [values, setValues] = useState([]);
@@ -46,35 +66,16 @@ export default function MultiSelect() {
   );
 }`;
 
-export const usageGrouped = `import { SelectBlock } from "@/components/custom/blocks/SelectBlock";
-
-const options = [
-  { label: "React", value: "react", icon: Code, group: "Frontend" },
-  { label: "Vue", value: "vue", icon: Code, group: "Frontend" },
-  { label: "Node.js", value: "node", icon: Database, group: "Backend" },
-];
-
-export default function GroupedSelect() {
-  const [value, setValue] = useState("");
-
-  return (
-    
-  );
-}`;
-
-export const usageStates = `
-
-`;
-
 ## Installation
 
-### 1. Install Dependencies
-
-This component relies on `lucide-react` for standard UI icons (ChevronDown, AlertCircle, Check, Search, X).
+Register the @algorize-ui registry once per project, then add the component:
 
 ```bash
-npm install lucide-react
+npx shadcn@latest registry add @algorize-ui=https://algorize-ui.vercel.app/r/{name}.json
+npx shadcn@latest add @algorize-ui/select
 ```
+
+## Examples
 
 ## Features
 Discover the Select component's accessible dropdown features, including keyboard navigation, search filtering, and custom rendering.
@@ -219,6 +220,6 @@ Discover the Select component's accessible dropdown features, including keyboard
 
 ---
 
-**Component Path:** `nextjs\select\page.mdx`
+**Component Path:** `[framework]\select\page.mdx`
 
-**Web Version:** Visit the interactive version at the corresponding URL on the Next.js documentation site for live previews and interactive examples.
+**Web Version:** Visit the corresponding URL on the Algorize UI documentation site for live previews and interactive examples.

@@ -41,13 +41,31 @@ export const Toggle = forwardRef<HTMLButtonElement, ToggleProps>(
       props.onClick?.(e);
     };
 
+    // The pressed state wears the theme colour softly: a low-opacity primary
+    // wash, with the icon/label in an ink of the same hue. Raw --primary as
+    // ink is too light on some presets (lavender on white is under 3:1), so
+    // it's re-derived at a fixed OKLCH lightness — deep in light mode, pale in
+    // dark — and follows whatever primary the theme sets.
+    const onInk =
+      "data-[state=on]:text-[oklch(from_var(--primary)_0.45_calc(c*0.9)_h)] dark:data-[state=on]:text-[oklch(from_var(--primary)_0.86_calc(c*0.7)_h)]";
+    const offHover = "data-[state=off]:hover:text-foreground";
+
     const variants = {
-      default:
-        "bg-transparent hover:bg-zinc-100 dark:hover:bg-zinc-800 text-zinc-700 dark:text-zinc-300 data-[state=on]:bg-zinc-200 dark:data-[state=on]:bg-zinc-700 data-[state=on]:text-zinc-900 dark:data-[state=on]:text-zinc-50",
-      outline:
-        "border border-zinc-200 dark:border-zinc-800 bg-transparent hover:bg-zinc-100 dark:hover:bg-zinc-800 text-zinc-700 dark:text-zinc-300 data-[state=on]:bg-zinc-100 dark:data-[state=on]:bg-zinc-800 data-[state=on]:text-zinc-900 dark:data-[state=on]:text-zinc-50",
-      ghost:
-        "bg-transparent hover:bg-zinc-100/50 dark:hover:bg-zinc-800/50 text-zinc-700 dark:text-zinc-300 data-[state=on]:bg-zinc-100/50 dark:data-[state=on]:bg-zinc-800/50 data-[state=on]:text-zinc-900 dark:data-[state=on]:text-zinc-50",
+      default: cn(
+        "bg-transparent text-foreground/80 hover:bg-primary/[0.07] data-[state=on]:bg-primary/[0.13] data-[state=on]:hover:bg-primary/[0.18]",
+        offHover,
+        onInk,
+      ),
+      outline: cn(
+        "border border-border bg-transparent text-foreground/80 hover:bg-primary/[0.06] data-[state=on]:border-primary/35 data-[state=on]:bg-primary/[0.1] data-[state=on]:hover:bg-primary/[0.15]",
+        offHover,
+        onInk,
+      ),
+      ghost: cn(
+        "bg-transparent text-foreground/80 hover:bg-primary/[0.05] data-[state=on]:bg-primary/[0.08] data-[state=on]:hover:bg-primary/[0.12]",
+        offHover,
+        onInk,
+      ),
     };
 
     const sizes = {
@@ -64,7 +82,7 @@ export const Toggle = forwardRef<HTMLButtonElement, ToggleProps>(
         data-state={isPressed ? "on" : "off"}
         onClick={handleClick}
         className={cn(
-          "inline-flex items-center justify-center rounded-md font-medium transition-colors outline-none focus-visible:ring-2 focus-visible:ring-indigo-500 disabled:pointer-events-none disabled:opacity-50",
+          "inline-flex items-center justify-center rounded-md font-medium transition-colors outline-none focus-visible:ring-[3px] focus-visible:ring-primary/35 disabled:pointer-events-none disabled:opacity-50",
           variants[variant],
           sizes[size],
           className,

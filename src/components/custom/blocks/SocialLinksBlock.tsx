@@ -1,0 +1,352 @@
+"use client";
+
+import { cn } from "@/lib/utils";
+import { Mail } from "lucide-react";
+import React from "react";
+
+// ==========================================
+// SOCIAL LINKS — a row of brand marks that link out
+// ==========================================
+// Footers, profile cards, "follow us" strips, author bylines: anywhere a page
+// points at its social accounts. Pass the networks you have; the row draws
+// one tile per link and nothing for the ones you leave out.
+
+/**
+ * Brand marks as inline SVG.
+ *
+ * lucide dropped its brand icons, so importing them breaks the whole file on
+ * any current version. Inlining the paths keeps this component working
+ * regardless of which icon set — or which version of it — you have installed.
+ */
+type MarkProps = { className?: string };
+
+const X = ({ className }: MarkProps) => (
+  <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden className={className}>
+    <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z" />
+  </svg>
+);
+
+const GitHub = ({ className }: MarkProps) => (
+  <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden className={className}>
+    <path d="M12 .297a12 12 0 0 0-3.794 23.386c.6.111.82-.26.82-.577v-2.234c-3.338.726-4.042-1.61-4.042-1.61-.546-1.387-1.333-1.757-1.333-1.757-1.09-.745.083-.73.083-.73 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.605-2.665-.3-5.467-1.332-5.467-5.93 0-1.31.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23A11.5 11.5 0 0 1 12 5.803c1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.625-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.218.694.825.576A12 12 0 0 0 12 .297" />
+  </svg>
+);
+
+const LinkedIn = ({ className }: MarkProps) => (
+  <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden className={className}>
+    <path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 1 1 0-4.124 2.062 2.062 0 0 1 0 4.124M7.119 20.452H3.555V9h3.564zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0z" />
+  </svg>
+);
+
+const YouTube = ({ className }: MarkProps) => (
+  <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden className={className}>
+    <path d="M23.498 6.186a3.02 3.02 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.02 3.02 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.02 3.02 0 0 0 2.121 2.136c1.872.505 9.377.505 9.377.505s7.505 0 9.377-.505a3.02 3.02 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814M9.545 15.568V8.432L15.818 12z" />
+  </svg>
+);
+
+const Instagram = ({ className }: MarkProps) => (
+  <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden className={className}>
+    <path d="M12 0C8.74 0 8.333.015 7.053.072 5.775.132 4.905.333 4.14.63c-.789.306-1.459.717-2.126 1.384S.935 3.35.63 4.14C.333 4.905.131 5.775.072 7.053.012 8.333 0 8.74 0 12s.015 3.667.072 4.947c.06 1.277.261 2.148.558 2.913a5.9 5.9 0 0 0 1.384 2.126A5.9 5.9 0 0 0 4.14 23.37c.766.296 1.636.499 2.913.558C8.333 23.988 8.74 24 12 24s3.667-.015 4.947-.072c1.277-.06 2.148-.262 2.913-.558a5.9 5.9 0 0 0 2.126-1.384 5.9 5.9 0 0 0 1.384-2.126c.296-.765.499-1.636.558-2.913.06-1.28.072-1.687.072-4.947s-.015-3.667-.072-4.947c-.06-1.277-.262-2.149-.558-2.913a5.9 5.9 0 0 0-1.384-2.126A5.9 5.9 0 0 0 19.86.63c-.765-.297-1.636-.499-2.913-.558C15.667.012 15.26 0 12 0m0 2.16c3.203 0 3.585.016 4.85.071 1.17.055 1.805.249 2.227.415.562.217.96.477 1.382.896.419.42.679.819.896 1.381.164.422.36 1.057.413 2.227.057 1.266.07 1.646.07 4.85s-.015 3.585-.074 4.85c-.061 1.17-.256 1.805-.421 2.227a3.8 3.8 0 0 1-.899 1.382 3.74 3.74 0 0 1-1.38.896c-.42.164-1.065.36-2.235.413-1.274.057-1.649.07-4.859.07s-3.586-.015-4.859-.074c-1.171-.061-1.816-.256-2.236-.421a3.7 3.7 0 0 1-1.379-.899 3.64 3.64 0 0 1-.9-1.38c-.165-.42-.359-1.065-.42-2.235-.045-1.26-.061-1.649-.061-4.844s.016-3.586.061-4.861c.061-1.17.255-1.814.42-2.234.21-.57.479-.96.9-1.381.419-.419.81-.689 1.379-.898.42-.166 1.051-.361 2.221-.421 1.275-.045 1.65-.06 4.859-.06zm0 3.678a6.162 6.162 0 1 0 0 12.324 6.162 6.162 0 0 0 0-12.324M12 16a4 4 0 1 1 0-8 4 4 0 0 1 0 8m7.846-10.405a1.441 1.441 0 0 1-2.88 0 1.44 1.44 0 0 1 2.88 0" />
+  </svg>
+);
+
+const Facebook = ({ className }: MarkProps) => (
+  <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden className={className}>
+    <path d="M24 12.073C24 5.405 18.627 0 12 0S0 5.405 0 12.073C0 18.1 4.388 23.094 10.125 24v-8.437H7.078v-3.49h3.047V9.41c0-3.025 1.792-4.697 4.533-4.697 1.313 0 2.686.236 2.686.236v2.97H15.83c-1.491 0-1.956.93-1.956 1.886v2.267h3.328l-.532 3.49h-2.796V24C19.612 23.094 24 18.1 24 12.073" />
+  </svg>
+);
+
+const Discord = ({ className }: MarkProps) => (
+  <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden className={className}>
+    <path d="M20.317 4.37a19.8 19.8 0 0 0-4.885-1.515.074.074 0 0 0-.079.037c-.21.375-.444.864-.608 1.25a18.3 18.3 0 0 0-5.487 0 12.6 12.6 0 0 0-.617-1.25.077.077 0 0 0-.079-.037A19.7 19.7 0 0 0 3.677 4.37a.07.07 0 0 0-.032.027C.533 9.046-.32 13.58.099 18.057a.08.08 0 0 0 .031.057 19.9 19.9 0 0 0 5.993 3.03.078.078 0 0 0 .084-.028c.462-.63.874-1.295 1.226-1.994a.076.076 0 0 0-.041-.106 13 13 0 0 1-1.872-.892.077.077 0 0 1-.008-.128c.126-.094.252-.192.372-.291a.074.074 0 0 1 .077-.01c3.928 1.793 8.18 1.793 12.062 0a.074.074 0 0 1 .078.009c.12.099.246.198.373.292a.077.077 0 0 1-.006.127 12.3 12.3 0 0 1-1.873.892.077.077 0 0 0-.041.107c.36.698.772 1.362 1.225 1.993a.076.076 0 0 0 .084.028 19.8 19.8 0 0 0 6.002-3.03.077.077 0 0 0 .032-.054c.5-5.177-.838-9.674-3.549-13.66a.06.06 0 0 0-.031-.03M8.02 15.33c-1.182 0-2.157-1.085-2.157-2.419s.955-2.419 2.157-2.419c1.21 0 2.176 1.096 2.157 2.42 0 1.333-.956 2.418-2.157 2.418m7.975 0c-1.183 0-2.157-1.085-2.157-2.419s.955-2.419 2.157-2.419c1.21 0 2.176 1.096 2.157 2.42 0 1.333-.946 2.418-2.157 2.418" />
+  </svg>
+);
+
+const Dribbble = ({ className }: MarkProps) => (
+  <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden className={className}>
+    <path d="M12 24C5.385 24 0 18.615 0 12S5.385 0 12 0s12 5.385 12 12-5.385 12-12 12m10.12-10.358c-.35-.11-3.17-.953-6.384-.438 1.34 3.684 1.887 6.684 1.992 7.308a10.2 10.2 0 0 0 4.392-6.87m-6.115 7.808c-.153-.9-.75-4.032-2.19-7.77l-.066.02c-5.79 2.015-7.86 6.025-8.04 6.4a10.16 10.16 0 0 0 6.29 2.166c1.42 0 2.77-.29 4-.814zm-11.62-2.58c.232-.4 3.045-5.055 8.332-6.765.135-.045.27-.084.405-.12-.26-.585-.54-1.167-.832-1.74C7.17 11.775 2.206 11.71 1.756 11.7l-.004.312c0 2.633.998 5.037 2.634 6.855zm-2.42-8.955c.46.008 4.683.026 9.477-1.248-1.698-3.018-3.53-5.558-3.8-5.928-2.868 1.35-5.01 3.99-5.676 7.17zM9.6 2.052c.282.38 2.145 2.914 3.822 6 3.645-1.365 5.19-3.44 5.373-3.702a10.2 10.2 0 0 0-9.195-2.298m10.335 3.483c-.218.29-1.935 2.493-5.724 4.04.24.49.47.985.68 1.486.08.18.15.36.22.53 3.41-.43 6.8.26 7.14.33-.02-2.42-.88-4.64-2.31-6.38z" />
+  </svg>
+);
+
+export type SocialNetwork =
+  | "x"
+  | "github"
+  | "linkedin"
+  | "youtube"
+  | "instagram"
+  | "facebook"
+  | "discord"
+  | "dribbble"
+  | "email";
+
+const NETWORKS: Record<SocialNetwork, { label: string; Mark: React.ComponentType<MarkProps> }> = {
+  x: { label: "X", Mark: X },
+  github: { label: "GitHub", Mark: GitHub },
+  linkedin: { label: "LinkedIn", Mark: LinkedIn },
+  youtube: { label: "YouTube", Mark: YouTube },
+  instagram: { label: "Instagram", Mark: Instagram },
+  facebook: { label: "Facebook", Mark: Facebook },
+  discord: { label: "Discord", Mark: Discord },
+  dribbble: { label: "Dribbble", Mark: Dribbble },
+  email: { label: "Email", Mark: ({ className }) => <Mail className={className} aria-hidden /> },
+};
+
+export interface SocialLink {
+  network: SocialNetwork;
+  href: string;
+  /** Accessible name. Defaults to the network's name, e.g. "GitHub". */
+  label?: string;
+}
+
+export type SocialLinksVariant = "tile" | "outline" | "ghost" | "expand-reveal" | "expand-replace";
+export type SocialLinksSize = "sm" | "md" | "lg";
+export type SocialLinksExpandDirection = "right" | "left" | "top" | "bottom";
+
+export interface SocialLinksProps extends React.HTMLAttributes<HTMLDivElement> {
+  links: SocialLink[];
+  /** `tile` sits on a soft fill, `outline` on a border, `ghost` on nothing, `expand-reveal` reveals icons beside button on hover, `expand-replace` hides button on hover and reveals icons starting from button position. */
+  variant?: SocialLinksVariant;
+  size?: SocialLinksSize;
+  /** Direction in which social icons reveal in `expand-reveal` and `expand-replace` modes. Defaults to `"right"`. */
+  expandDirection?: SocialLinksExpandDirection;
+  /**
+   * The element used for links. Defaults to a plain `a`. In Next.js, pass
+   * `next/link` to keep client-side navigation for internal hrefs.
+   */
+  linkComponent?: React.ElementType;
+  /** Open every link in a new tab. On by default — these point off-site. */
+  external?: boolean;
+}
+
+const SIZES: Record<SocialLinksSize, { tile: string; mark: string }> = {
+  sm: { tile: "size-8 rounded-lg", mark: "size-3.5" },
+  md: { tile: "size-10 rounded-xl", mark: "size-4" },
+  lg: { tile: "size-12 rounded-2xl", mark: "size-5" },
+};
+
+const VARIANTS: Record<Exclude<SocialLinksVariant, "expand-reveal" | "expand-replace">, string> = {
+  tile: "bg-muted/60 text-muted-foreground hover:bg-primary/10 hover:text-primary",
+  outline: "border border-border text-muted-foreground hover:border-primary/40 hover:bg-primary/10 hover:text-primary",
+  ghost: "text-muted-foreground hover:bg-muted hover:text-foreground",
+};
+
+export const SocialLinks = React.forwardRef<HTMLDivElement, SocialLinksProps>(
+  (
+    {
+      links,
+      variant = "tile",
+      size = "md",
+      expandDirection = "right",
+      linkComponent: Link = "a",
+      external = true,
+      className,
+      ...props
+    },
+    ref,
+  ) => {
+    const s = SIZES[size];
+
+    if (variant === "expand-replace") {
+      const containerPositionStyles: Record<SocialLinksExpandDirection, string> = {
+        right: "left-0 top-1/2 -translate-y-1/2 flex-row max-w-0 group-hover:max-w-[500px]",
+        left: "right-0 top-1/2 -translate-y-1/2 flex-row-reverse max-w-0 group-hover:max-w-[500px]",
+        top: "bottom-0 left-1/2 -translate-x-1/2 flex-col-reverse max-h-0 group-hover:max-h-[500px]",
+        bottom: "top-0 left-1/2 -translate-x-1/2 flex-col max-h-0 group-hover:max-h-[500px]",
+      };
+
+      const itemInitialTranslate: Record<SocialLinksExpandDirection, string> = {
+        right: "scale-0 opacity-0",
+        left: "scale-0 opacity-0",
+        top: "scale-0 opacity-0",
+        bottom: "scale-0 opacity-0",
+      };
+
+      return (
+        <div
+          ref={ref}
+          className={cn("group relative inline-flex items-center justify-center", className)}
+          {...props}
+        >
+          {/* Main Trigger Share Button (Hides on hover with smooth fade & scale down) */}
+          <button
+            type="button"
+            aria-label="Share"
+            className={cn(
+              "relative z-10 inline-flex items-center justify-center font-medium transition-all duration-300 shadow-sm cursor-pointer select-none shrink-0",
+              "group-hover:opacity-0 group-hover:scale-50 group-hover:pointer-events-none",
+              s.tile,
+              "bg-muted/80 text-foreground border border-border/60 hover:shadow-md"
+            )}
+          >
+            <svg
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="2"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              className={s.mark}
+            >
+              <path d="M4 12v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8" />
+              <polyline points="16 6 12 2 8 6" />
+              <line x1="12" y1="2" x2="12" y2="15" />
+            </svg>
+          </button>
+
+          {/* Staggered Expandable Icons Container starting directly from Share button position (Fade & scale pop-in) */}
+          <div
+            className={cn(
+              "absolute flex items-center gap-2.5 opacity-0 pointer-events-none overflow-hidden transition-all duration-500 [transition-timing-function:cubic-bezier(0.34,1.56,0.64,1)] group-hover:opacity-100 group-hover:pointer-events-auto z-20",
+              containerPositionStyles[expandDirection]
+            )}
+          >
+            {links.map(({ network, href, label }, index) => {
+              const { label: name, Mark } = NETWORKS[network];
+              const isMail = href.startsWith("mailto:");
+              return (
+                <Link
+                  key={`${network}-${href}`}
+                  href={href}
+                  aria-label={label ?? name}
+                  title={label ?? name}
+                  {...(external && !isMail ? { target: "_blank", rel: "noopener noreferrer" } : {})}
+                  style={{
+                    transitionDelay: `${index * 60}ms`,
+                  }}
+                  className={cn(
+                    "inline-flex shrink-0 items-center justify-center transition-all duration-300 [transition-timing-function:cubic-bezier(0.34,1.56,0.64,1)]",
+                    itemInitialTranslate[expandDirection],
+                    "group-hover:scale-100 opacity-0 group-hover:opacity-100",
+                    "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background",
+                    s.tile,
+                    "bg-muted/90 text-muted-foreground hover:bg-primary hover:text-primary-foreground hover:scale-110 shadow-md border border-border/40"
+                  )}
+                >
+                  <Mark className={s.mark} />
+                </Link>
+              );
+            })}
+          </div>
+        </div>
+      );
+    }
+
+    if (variant === "expand-reveal") {
+      const containerPositionStyles: Record<SocialLinksExpandDirection, string> = {
+        right: "left-full top-1/2 -translate-y-1/2 ml-3 flex-row max-w-0 group-hover:max-w-[500px]",
+        left: "right-full top-1/2 -translate-y-1/2 mr-3 flex-row-reverse max-w-0 group-hover:max-w-[500px]",
+        top: "bottom-full left-1/2 -translate-x-1/2 mb-3 flex-col-reverse max-h-0 group-hover:max-h-[500px]",
+        bottom: "top-full left-1/2 -translate-x-1/2 mt-3 flex-col max-h-0 group-hover:max-h-[500px]",
+      };
+
+      const itemInitialTranslate: Record<SocialLinksExpandDirection, string> = {
+        right: "-translate-x-6",
+        left: "translate-x-6",
+        top: "translate-y-6",
+        bottom: "-translate-y-6",
+      };
+
+      return (
+        <div
+          ref={ref}
+          className={cn("group relative inline-flex items-center justify-center", className)}
+          {...props}
+        >
+          {/* Icon-Only Share Button Trigger (Position Fixed) */}
+          <button
+            type="button"
+            aria-label="Share"
+            className={cn(
+              "relative z-10 inline-flex items-center justify-center font-medium transition-all duration-300 group-hover:bg-primary group-hover:text-primary-foreground shadow-sm cursor-pointer select-none shrink-0",
+              s.tile,
+              "bg-muted/80 text-foreground border border-border/60 hover:shadow-md"
+            )}
+          >
+            <svg
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="2"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              className={s.mark}
+            >
+              <path d="M4 12v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8" />
+              <polyline points="16 6 12 2 8 6" />
+              <line x1="12" y1="2" x2="12" y2="15" />
+            </svg>
+          </button>
+
+          {/* Staggered Expandable Icons Container */}
+          <div
+            className={cn(
+              "absolute flex items-center gap-2.5 opacity-0 pointer-events-none overflow-hidden transition-all duration-700 [transition-timing-function:cubic-bezier(0.16,1,0.3,1)] group-hover:opacity-100 group-hover:pointer-events-auto",
+              containerPositionStyles[expandDirection]
+            )}
+          >
+            {links.map(({ network, href, label }, index) => {
+              const { label: name, Mark } = NETWORKS[network];
+              const isMail = href.startsWith("mailto:");
+              return (
+                <Link
+                  key={`${network}-${href}`}
+                  href={href}
+                  aria-label={label ?? name}
+                  title={label ?? name}
+                  {...(external && !isMail ? { target: "_blank", rel: "noopener noreferrer" } : {})}
+                  style={{
+                    transitionDelay: `${index * 90}ms`,
+                  }}
+                  className={cn(
+                    "inline-flex shrink-0 items-center justify-center transition-all duration-500 [transition-timing-function:cubic-bezier(0.16,1,0.3,1)]",
+                    itemInitialTranslate[expandDirection],
+                    "group-hover:translate-x-0 group-hover:translate-y-0 scale-50 group-hover:scale-100 opacity-0 group-hover:opacity-100",
+                    "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background",
+                    s.tile,
+                    "bg-muted/90 text-muted-foreground hover:bg-primary hover:text-primary-foreground hover:scale-110 shadow-md border border-border/40"
+                  )}
+                >
+                  <Mark className={s.mark} />
+                </Link>
+              );
+            })}
+          </div>
+        </div>
+      );
+    }
+
+    return (
+      <div
+        ref={ref}
+        className={cn("flex flex-wrap items-center gap-2.5", className)}
+        {...props}
+      >
+        {links.map(({ network, href, label }) => {
+          const { label: name, Mark } = NETWORKS[network];
+          const isMail = href.startsWith("mailto:");
+          return (
+            <Link
+              key={`${network}-${href}`}
+              href={href}
+              aria-label={label ?? name}
+              title={label ?? name}
+              {...(external && !isMail ? { target: "_blank", rel: "noopener noreferrer" } : {})}
+              className={cn(
+                "inline-flex shrink-0 items-center justify-center transition-all hover:scale-105",
+                "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background",
+                s.tile,
+                VARIANTS[variant],
+              )}
+            >
+              <Mark className={s.mark} />
+            </Link>
+          );
+        })}
+      </div>
+    );
+  },
+);
+
+SocialLinks.displayName = "SocialLinks";
+
+export default SocialLinks;

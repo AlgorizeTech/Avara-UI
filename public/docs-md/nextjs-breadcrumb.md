@@ -1,16 +1,16 @@
+export const metadata = docsPageMetadata("breadcrumb");
+
 # Breadcrumb
 
 A navigational aid that helps users understand their current location within a website's hierarchy.
 
 This component features four distinct visual variants, seamless color theming, and **built-in automatic path truncation**. If the user's path is too deep, it automatically collapses the middle items behind a clickable ellipsis (`...`) button.
 
-## Examples
+You describe the trail as an `items` array; the component handles dividers, the active item and truncation.
 
-You describe the trail as an `items` array; the component handles dividers, the active item and truncation. The first example's **Code** tab contains the full component source.
+export const usageDefault = `import { BreadcrumbBlock, type BreadcrumbItem } from "@/components/custom/blocks/BreadcrumbBlock";
 
-export const usageDefault = `import { BreadcrumbBlock } from "@/components/custom/blocks/BreadcrumbBlock";
-
-const items = [
+const items: BreadcrumbItem[] = [
   { label: "Docs", href: "/docs" },
   { label: "Components", href: "/docs/components" },
   { label: "Breadcrumb", href: "/docs/components/breadcrumb" },
@@ -21,9 +21,9 @@ export default function BreadcrumbDemo() {
   return ;
 }`;
 
-export const usageIcons = `import { BreadcrumbBlock } from "@/components/custom/blocks/BreadcrumbBlock";
+export const usageIcons = `import { BreadcrumbBlock, type BreadcrumbItem } from "@/components/custom/blocks/BreadcrumbBlock";
 
-const items = [
+const items: BreadcrumbItem[] = [
   // icon takes the Lucide component itself, not a string
   { label: "Home", href: "/", icon: Home },
   { label: "Settings", href: "/settings", icon: Settings },
@@ -34,23 +34,9 @@ export default function BreadcrumbWithIcons() {
   return ;
 }`;
 
-export const usageVariants = `import { BreadcrumbBlock } from "@/components/custom/blocks/BreadcrumbBlock";
+export const usageTruncated = `import { BreadcrumbBlock, type BreadcrumbItem } from "@/components/custom/blocks/BreadcrumbBlock";
 
-const items = [
-  { label: "Home", href: "/", icon: Home },
-  { label: "Settings", href: "/settings", icon: Settings },
-  { label: "Profile", href: "/settings/profile" },
-];
-
-export default function BreadcrumbVariants() {
-  return (
-
-  );
-}`;
-
-export const usageTruncated = `import { BreadcrumbBlock } from "@/components/custom/blocks/BreadcrumbBlock";
-
-const deepPath = [
+const deepPath: BreadcrumbItem[] = [
   { label: "Home", href: "/", icon: Home },
   { label: "Dashboard", href: "/dashboard" },
   { label: "Projects", href: "/projects", icon: Folder },
@@ -65,35 +51,16 @@ export default function DeepBreadcrumb() {
   return ;
 }`;
 
-export const usageMaxItems = `import { BreadcrumbBlock } from "@/components/custom/blocks/BreadcrumbBlock";
-
-const deepPath = [
-  { label: "Home", href: "/", icon: Home },
-  { label: "Dashboard", href: "/dashboard" },
-  { label: "Projects", href: "/projects", icon: Folder },
-  { label: "Nexus UI Kit", href: "/projects/nexus" },
-  { label: "Components", href: "/projects/nexus/components" },
-  { label: "Breadcrumb.tsx", href: "#", icon: FileText },
-];
-
-export default function WideBreadcrumb() {
-  // Raise maxItems past the item count and nothing collapses.
-  return ;
-}`;
-
 ## Installation
 
-### 1. Install Dependencies
-
-This component utilizes `lucide-react` for standard UI icons like the Home button, Chevron dividers, and the Ellipsis menu.
+Register the @algorize-ui registry once per project, then add the component:
 
 ```bash
-npm install lucide-react
+npx shadcn@latest registry add @algorize-ui=https://algorize-ui.vercel.app/r/{name}.json
+npx shadcn@latest add @algorize-ui/breadcrumb
 ```
 
-### 2. Copy the Component
-
-Create a new file at `components/custom/blocks/BreadcrumbBlock.tsx` and copy the engine code from the **Code** tab of the first example above.
+## Examples
 
 ## Features
 Explore the Breadcrumb navigation features, including collapsible items, custom separators, and SEO-friendly structure.
@@ -159,8 +126,19 @@ Explore the Breadcrumb navigation features, including collapsible items, custom 
           The maximum number of links to display before automatically truncating
           the middle of the path.
 
+          linkComponent
+
+          React.ElementType
+
+          "a"
+
+          The element each item renders as. It defaults to a plain{" "}
+          &lt;a&gt; so one source works in any React app — pass{" "}
+          Link from next/link to get client-side
+          navigation and prefetching back.
+
 ---
 
-**Component Path:** `nextjs\breadcrumb\page.mdx`
+**Component Path:** `[framework]\breadcrumb\page.mdx`
 
-**Web Version:** Visit the interactive version at the corresponding URL on the Next.js documentation site for live previews and interactive examples.
+**Web Version:** Visit the corresponding URL on the Algorize UI documentation site for live previews and interactive examples.

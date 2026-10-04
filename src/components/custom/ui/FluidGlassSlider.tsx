@@ -1,37 +1,73 @@
 "use client";
 
-import gsap from "gsap";
 import { useEffect, useRef, useState } from "react";
 
-type Slide = {
+// ==========================================
+// MOTION — Web Animations and CSS, no library
+// ==========================================
+// GSAP's power4.inOut (sampled, max error 0.15%), power2.out and power1.out.
+const POWER4_IN_OUT =
+  "linear(0, .0005 12.5%, .0037 18.75%, .008 21.875%, .0156 25%, .0282 28.125%, .0477 31.25%, .0768 34.375%, .0959 35.938%, .1187 37.5%, .1455 39.063%, .177 40.625%, .2138 42.188%, .2565 43.75%, .3056 45.313%, .3621 46.875%, .4266 48.438%, .5 50%, .5734 51.563%, .6379 53.125%, .6944 54.688%, .7435 56.25%, .7862 57.813%, .823 59.375%, .8545 60.938%, .8813 62.5%, .9041 64.063%, .9232 65.625%, .9523 68.75%, .9718 71.875%, .9844 75%, .992 78.125%, .9963 81.25%, .9995 87.5%, 1)";
+const POWER2_OUT = "cubic-bezier(.3333, 1, .6667, 1)";
+const POWER1_OUT = "cubic-bezier(.3333, .6667, .6667, 1)";
+
+const tweens = new WeakMap<HTMLElement, Animation>();
+
+/**
+ * Tween `el` to `to` from wherever it is right now (mid-flight included), so a
+ * new target takes over a running tween with the full duration. The end values
+ * are written inline, so nothing is held by a fill.
+ */
+function tweenTo(el: HTMLElement, to: Record<string, string>, duration: number, easing: string) {
+  const computed = getComputedStyle(el);
+  const from: Record<string, string> = {};
+  for (const key of Object.keys(to)) from[key] = computed.getPropertyValue(key);
+  tweens.get(el)?.cancel();
+  for (const [key, value] of Object.entries(to)) el.style.setProperty(key, value);
+  if (typeof el.animate !== "function") return null;
+  const animation = el.animate([from, to], { duration: duration * 1000, easing });
+  tweens.set(el, animation);
+  return animation;
+}
+
+export type Slide = {
   id: number;
   image: string;
   title: string;
   subtitle: string;
 };
 
-const slidesData: Slide[] = [
+const DEFAULT_SLIDES_DATA: Slide[] = [
   {
     id: 1,
     image:
-      "https://images.unsplash.com/photo-1600585154340-be6161a56a0c?q=80&w=2574&auto=format&fit=crop",
-    title: "Set within a peaceful rural garden plot in Braughing",
-    subtitle: "HAY STREET",
+      "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_2574,c_limit/v1790146210/photo-1506905925346-21bda4d32df4-1790146212208.jpg",
+    title: "Discover pristine tropical beaches and crystal-clear waters",
+    subtitle: "TROPICAL PARADISE",
   },
   {
     id: 2,
     image:
-      "https://images.unsplash.com/photo-1600607687920-4e2a09cf159d?q=80&w=2574&auto=format&fit=crop",
-    title: "Rusty House exemplifies the art of transformation",
-    subtitle: "RUSTY HOUSE",
+      "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_2574,c_limit/v1790146211/photo-1441974231531-c6227db76b6e-1790146212212.jpg",
+    title: "Escape to the serene mountain heights and wilderness trails",
+    subtitle: "MOUNTAIN ADVENTURES",
+  },
+  {
+    id: 3,
+    image:
+      "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_2574,c_limit/v1790145141/photo-1464822759023-fed622ff2c3b-1790145143491.jpg",
+    title: "Surround yourself with majestic peaks and alpine lakes",
+    subtitle: "ALPINE RETREAT",
   },
 ];
 
 type Props = {
+  slides?: Slide[];
   className?: string;
 };
 
-export default function FluidGlassSlider({ className }: Props) {
+export default function FluidGlassSlider({ slides, className }: Props) {
+  const slidesData = slides && slides.length > 0 ? slides : DEFAULT_SLIDES_DATA;
   const [currentIndex, setCurrentIndex] = useState<number>(0);
 
   const containerRef = useRef<HTMLDivElement | null>(null);
@@ -46,34 +82,43 @@ export default function FluidGlassSlider({ className }: Props) {
     if (!sliderRef.current) return;
 
     // Slide animation
-    gsap.to(sliderRef.current, {
-      x: `-${currentIndex * (100 / slidesData.length)}%`,
-      duration: 1.2,
-      ease: "power4.inOut",
-    });
-
-    if (!progressRef.current) return;
-
-    // Auto-play progress bar (Infinite Loop)
-    const progressTween: any = gsap.fromTo(
-      progressRef.current,
-      { width: "0%" },
-      {
-        width: "100%",
-        duration: 5,
-        ease: "none",
-        onComplete: () => {
-          // Auto-play continues infinitely
-          setCurrentIndex((prev) =>
-            prev < slidesData.length - 1 ? prev + 1 : 0,
-          );
-        },
-      },
+    const slide = tweenTo(
+      sliderRef.current,
+      { translate: `-${currentIndex * (100 / slidesData.length)}% 0px` },
+      1.2,
+      POWER4_IN_OUT,
     );
 
+    if (!progressRef.current || typeof progressRef.current.animate !== "function") return;
+
+    // Auto-play progress bar (Infinite Loop)
+    const progress = progressRef.current.animate(
+      [{ width: "0%" }, { width: "100%" }],
+      { duration: 5000, easing: "linear", fill: "forwards" },
+    );
+    progress.onfinish = () => {
+      // Auto-play continues infinitely
+      setCurrentIndex((prev) =>
+        prev < slidesData.length - 1 ? prev + 1 : 0,
+      );
+    };
+
+    // A hidden tab holds both where they are, as it always has: the timer
+    // must not run on and flip slides nobody is watching.
+    const onVisibility = () => {
+      for (const animation of [slide, progress]) {
+        if (!animation || animation.playState === "finished") continue;
+        if (document.hidden) animation.pause();
+        else animation.play();
+      }
+    };
+    document.addEventListener("visibilitychange", onVisibility);
+    onVisibility();
+
     return () => {
-      if (progressTween && typeof progressTween.kill === "function")
-        progressTween.kill();
+      document.removeEventListener("visibilitychange", onVisibility);
+      progress.onfinish = null;
+      progress.cancel();
     };
   }, [currentIndex]);
 
@@ -82,14 +127,11 @@ export default function FluidGlassSlider({ className }: Props) {
     const cursor = cursorRef.current;
     if (!container || !cursor) return;
 
+    // Follows the pointer through a 0.1s transition on `translate` (see the
+    // cursor's style).
     const onMouseMove = (e: MouseEvent) => {
       if (!cursor) return;
-      gsap.to(cursor, {
-        x: (e.clientX || 0) + 15,
-        y: (e.clientY || 0) + 15,
-        duration: 0.1,
-        ease: "power2.out",
-      });
+      cursor.style.translate = `${(e.clientX || 0) + 15}px ${(e.clientY || 0) + 15}px`;
     };
 
     container.addEventListener("mousemove", onMouseMove);
@@ -106,11 +148,11 @@ export default function FluidGlassSlider({ className }: Props) {
 
   const showCursor = () => {
     if (!cursorRef.current) return;
-    gsap.to(cursorRef.current, { opacity: 1, duration: 0.2, scale: 1 });
+    tweenTo(cursorRef.current, { opacity: "1", scale: "1" }, 0.2, POWER1_OUT);
   };
   const hideCursor = () => {
     if (!cursorRef.current) return;
-    gsap.to(cursorRef.current, { opacity: 0, duration: 0.2, scale: 0.8 });
+    tweenTo(cursorRef.current, { opacity: "0", scale: "0.8" }, 0.2, POWER1_OUT);
   };
 
   return (
@@ -123,6 +165,7 @@ export default function FluidGlassSlider({ className }: Props) {
       <div
         ref={cursorRef}
         className="fixed top-0 left-0 px-3 py-1.5 bg-white/20 backdrop-blur-md border border-white/30 text-white text-[10px] font-semibold tracking-widest uppercase flex items-center justify-center opacity-0 z-[100] pointer-events-none scale-80"
+        style={{ transition: `translate 0.1s ${POWER2_OUT}` }}
       >
         VIEW
       </div>
@@ -152,7 +195,7 @@ export default function FluidGlassSlider({ className }: Props) {
             <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/30 to-black/40"></div>
 
             <div className="relative z-10 w-full">
-              <h2 className="text-3xl md:text-5xl lg:text-[4rem] font-bold leading-[1.1] mb-8 md:mb-14 tracking-tight max-w-4xl drop-shadow-xl">
+              <h2 className="text-3xl md:text-5xl lg:text-[4rem] font-semibold leading-[1.1] mb-8 md:mb-14 tracking-tight max-w-4xl drop-shadow-xl">
                 {slide.title}
               </h2>
               <p className="text-[10px] md:text-[11px] uppercase tracking-[0.2em] font-semibold text-gray-300 drop-shadow-md">

@@ -1,0 +1,514 @@
+import { docsPageMetadata } from "@/lib/docs-metadata";
+
+export const metadata = docsPageMetadata("table");
+
+import { ExampleShowcase } from "@/components/site/Sandbox";
+import { extractCode } from "@/lib/code";
+
+# Table
+
+A set of composable table primitives. You write the rows; the component supplies the structure, spacing and theming.
+
+There is **no column config and no required row shape**. Whatever your API returns — nested objects, snake_case keys, `_id` instead of `id` — you map it straight into JSX. Nothing has to be flattened or transformed first.
+
+Every example below is live. Click a sortable header, expand a row, or hover the right edge of a row to reveal its actions.
+
+
+<ExampleShowcase
+  name="table-soft"
+  columns={1}
+  examples={[
+    {
+      title: "Soft variant",
+      subheading: "A plain read-only table in the admin-dashboard look — a rounded panel on a hairline ring, a tinted header band, calm dividers and soft row hover. No search, filters or paging: just the rows.",
+      propNotes: [
+        {
+          lead: "Set",
+          prop: "variant",
+          value: '"soft"',
+          effect:
+            "once on `Table`; the heading, header band, cells and dividers read it from context. Every tint is mixed from the table colour.",
+        },
+        {
+          prop: "TablePerson",
+          effect:
+            "and `TableBadge` draw the avatar-and-email cell and the status pill, in any variant.",
+        },
+      ],
+      usage: extractCode("src/preview/demos/table-soft-demo.tsx"),
+      code: extractCode("src/components/custom/blocks/TableBlock.tsx"),
+    },
+  ]}
+/>
+
+`Table` is the card. `TableContent` renders the scroll container and the `<table>` element. Everything else maps one-to-one onto the HTML table tags, so `colSpan`, `scope` and any other native attribute pass straight through.
+
+export const invoiceType = `type Invoice = {
+  reference: string;
+  customer: { name: string; email: string }; // nested — no flattening needed
+  amount: number;
+  status: "completed" | "processing" | "failed";
+  issuedAt: string;
+};`;
+
+export const usageBasic = `"use client";
+
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableContent,
+  TableHead,
+  TableHeader,
+  TableHeading,
+  TableRow,
+} from "@/components/custom/blocks/TableBlock";
+
+${invoiceType}
+
+const sampleInvoices: Invoice[] = [
+  {
+    reference: "INV-3021",
+    customer: { name: "Alice Freeman", email: "alice@example.com" },
+    amount: 3200,
+    status: "completed",
+    issuedAt: "2023-10-24",
+  },
+  {
+    reference: "INV-3022",
+    customer: { name: "Bob Smith", email: "bob@example.com" },
+    amount: 850.5,
+    status: "processing",
+    issuedAt: "2023-10-24",
+  },
+];
+
+export default function InvoiceTable({ invoices = sampleInvoices }: { invoices?: Invoice[] }) {
+  return (
+    <Table>
+      <TableHeading title="Invoices" description="Latest activity" />
+
+      <TableContent>
+        <TableHeader>
+          <TableRow isHeader>
+            <TableHead>Invoice</TableHead>
+            <TableHead>Customer</TableHead>
+            <TableHead align="right">Amount</TableHead>
+          </TableRow>
+        </TableHeader>
+
+        <TableBody>
+          {invoices.map((invoice) => (
+            <TableRow key={invoice.reference}>
+              <TableCell>{invoice.reference}</TableCell>
+
+              {/* Reach as deep into the row as you like */}
+              <TableCell>
+                <div className="flex flex-col">
+                  <span className="font-semibold">{invoice.customer.name}</span>
+                  <span className="text-xs text-muted-foreground">
+                    {invoice.customer.email}
+                  </span>
+                </div>
+              </TableCell>
+
+              <TableCell align="right">\${invoice.amount}</TableCell>
+            </TableRow>
+          ))}
+        </TableBody>
+      </TableContent>
+    </Table>
+  );
+}`;
+
+export const usageMinimal = `<Table variant="minimal">
+  <TableContent>
+    <TableHeader>
+      <TableRow isHeader>
+        <TableHead>Invoice</TableHead>
+      </TableRow>
+    </TableHeader>
+    <TableBody>
+      {invoices.map((invoice) => (
+        <TableRow key={invoice.reference}>
+          <TableCell>{invoice.reference}</TableCell>
+        </TableRow>
+      ))}
+    </TableBody>
+  </TableContent>
+</Table>`;
+
+export const usageSorting = `// Sorting is controlled — the table renders the affordance, you own the state.
+const [sort, setSort] = useState<{ key: string; direction: "asc" | "desc" } | null>(null);
+
+const toggleSort = (key: string) =>
+  setSort((prev) =>
+    prev && prev.key === key
+      ? { key, direction: prev.direction === "asc" ? "desc" : "asc" }
+      : { key, direction: "asc" },
+  );
+
+const sorted = useMemo(() => {
+  if (!sort) return invoices;
+  const factor = sort.direction === "asc" ? 1 : -1;
+  return [...invoices].sort((a, b) =>
+    factor * String(a[sort.key]).localeCompare(String(b[sort.key])),
+  );
+}, [invoices, sort]);
+
+<TableHead
+  sortable
+  sortDirection={sort?.key === "customer" ? sort.direction : null}
+  onSort={() => toggleSort("customer")}
+>
+  Customer
+</TableHead>`;
+
+export const usageExpandable = `const [open, setOpen] = useState<Set<string>>(new Set());
+
+const toggle = (id: string) =>
+  setOpen((prev) => {
+    const next = new Set(prev);
+    next.has(id) ? next.delete(id) : next.add(id);
+    return next;
+  });
+
+<TableBody>
+  {invoices.map((invoice) => (
+    <React.Fragment key={invoice.reference}>
+      <TableRow>
+        <TableCell>
+          <TableExpandToggle
+            open={open.has(invoice.reference)}
+            onClick={() => toggle(invoice.reference)}
+          />
+        </TableCell>
+        <TableCell>{invoice.reference}</TableCell>
+      </TableRow>
+
+      <TableExpandedRow open={open.has(invoice.reference)} colSpan={2}>
+        <p>{invoice.note}</p>
+      </TableExpandedRow>
+    </React.Fragment>
+  ))}
+</TableBody>`;
+
+export const usagePagination = `// The primitives do not paginate for you — slice the array and fill the footer.
+// Want it built in? Use the Data Table component instead.
+const pageSize = 4;
+const [page, setPage] = useState(1);
+const totalPages = Math.max(1, Math.ceil(invoices.length / pageSize));
+const rows = invoices.slice((page - 1) * pageSize, page * pageSize);
+
+<Table>
+  <TableContent>{/* … rows … */}</TableContent>
+
+  <TableFooter>
+    <span>Page {page} of {totalPages}</span>
+    <div className="flex gap-1">
+      <button onClick={() => setPage((p) => Math.max(1, p - 1))}>Prev</button>
+      <button onClick={() => setPage((p) => Math.min(totalPages, p + 1))}>Next</button>
+    </div>
+  </TableFooter>
+</Table>`;
+
+export const usageActions = `// TableRow sets a group class, so TableRowActions can reveal on row hover.
+<TableCell align="right">
+  <TableRowActions>
+    <button onClick={() => edit(invoice)}>Edit</button>
+    <button onClick={() => remove(invoice)}>Delete</button>
+  </TableRowActions>
+</TableCell>`;
+
+export const usageEmpty = `<TableBody>
+  {rows.length === 0 ? (
+    <TableEmpty colSpan={6}>No invoices yet.</TableEmpty>
+  ) : (
+    rows.map((invoice) => <TableRow key={invoice.reference}>{/* … */}</TableRow>)
+  )}
+</TableBody>`;
+
+<ExampleShowcase
+  name="table"
+  colorControl={false}
+  columns={1}
+  examples={[
+    {
+      title: "Composable table",
+      propNotes: [
+        {
+          lead: "Map",
+          prop: "rows",
+          effect:
+            "straight into JSX — nested values like customer.email need no transformation.",
+        },
+      ],
+      props: { sortable: true, expandable: true },
+      usage: usageBasic,
+      code: extractCode("src/components/custom/blocks/TableBlock.tsx"),
+    },
+  ]}
+/>
+
+## Installation
+
+<Installation name="table" />
+
+## Examples
+
+<ExampleShowcase
+  name="table"
+  colorControl={false}
+  columns={1}
+  examples={[
+    {
+      title: "Minimal",
+      propNotes: [
+        {
+          lead: "Set",
+          prop: "variant",
+          value: '"minimal"',
+          effect:
+            "to drop the card wrapper so the table sits directly on the page.",
+        },
+      ],
+      props: { variant: "minimal", expandable: false, sortable: false },
+      usage: usageMinimal,
+    },
+    {
+      title: "Sortable headers",
+      propNotes: [
+        {
+          lead: "Set",
+          prop: "sortable",
+          effect: "on a TableHead to render the sort affordance.",
+        },
+        {
+          prop: "sortDirection",
+          effect:
+            "and onSort keep it fully controlled — the table never reorders your data behind your back.",
+        },
+      ],
+      props: { sortable: true, expandable: false },
+      usage: usageSorting,
+    },
+    {
+      title: "Expandable rows",
+      propNotes: [
+        {
+          lead: "Pair",
+          prop: "TableExpandToggle",
+          effect:
+            "with TableExpandedRow, both driven by your own open state.",
+        },
+      ],
+      props: { expandable: true, sortable: false },
+      usage: usageExpandable,
+    },
+    {
+      title: "Pagination",
+      propNotes: [
+        {
+          lead: "Fill",
+          prop: "TableFooter",
+          effect:
+            "with your own pager. For pagination that is wired for you, use the Data Table.",
+        },
+      ],
+      props: { paginated: true, expandable: false, sortable: false },
+      usage: usagePagination,
+    },
+    {
+      title: "Row actions",
+      propNotes: [
+        {
+          lead: "Wrap",
+          prop: "TableRowActions",
+          effect:
+            "around your buttons to fade them in on row hover and on keyboard focus.",
+        },
+      ],
+      props: { sortable: false, expandable: false },
+      usage: usageActions,
+    },
+  ]}
+/>
+
+<ExampleShowcase
+  name="table-soft-comparison"
+  columns={1}
+  examples={[
+    {
+      title: "Comparison (soft)",
+      subheading: "The same soft table as a plan comparison: features down the side, plans across the top, ticks and limits centred under their headers.",
+      propNotes: [
+        {
+          prop: "align",
+          value: '"center"',
+          effect:
+            "on both `TableHead` and `TableCell` lines the ticks and values up under each plan.",
+        },
+      ],
+      usage: extractCode("src/preview/demos/table-soft-comparison-demo.tsx"),
+      code: extractCode("src/components/custom/blocks/TableBlock.tsx"),
+    },
+  ]}
+/>
+
+## Density
+
+<ExampleShowcase
+  name="table"
+  colorControl={false}
+  columns={1}
+  examples={[
+    {
+      title: "Sizes",
+      propNotes: [
+        {
+          lead: "Set",
+          prop: "size",
+          value: '"sm" | "md" | "lg"',
+          effect:
+            "on Table — every descendant reads it from context, so cells and headers stay in step.",
+        },
+      ],
+      props: { showAll: "sizes" },
+      usage: `<Table size="sm">…</Table>
+<Table size="md">…</Table>
+<Table size="lg">…</Table>`,
+    },
+  ]}
+/>
+
+## Features
+
+<div className="grid grid-cols-1 sm:grid-cols-2 gap-4 my-6 not-prose">
+  <div className="p-6 rounded-2xl border border-border bg-card">
+    <h3 className="text-lg font-semibold text-card-foreground mb-2">Any data shape</h3>
+    <p className="text-muted-foreground text-sm">No column config and no required row shape. Nested objects, unusual key names and computed cells all work without a transformation step.</p>
+  </div>
+  <div className="p-6 rounded-2xl border border-border bg-card">
+    <h3 className="text-lg font-semibold text-card-foreground mb-2">Real table markup</h3>
+    <p className="text-muted-foreground text-sm">Each primitive renders its native element, so colSpan, scope and aria attributes pass straight through and screen readers get a genuine table.</p>
+  </div>
+  <div className="p-6 rounded-2xl border border-border bg-card">
+    <h3 className="text-lg font-semibold text-card-foreground mb-2">Themed by context</h3>
+    <p className="text-muted-foreground text-sm">Variant, size and colour are set once on Table and read by every descendant, so a cell dropped three levels deep still matches.</p>
+  </div>
+  <div className="p-6 rounded-2xl border border-border bg-card">
+    <h3 className="text-lg font-semibold text-card-foreground mb-2">Stateless by default</h3>
+    <p className="text-muted-foreground text-sm">Sorting and expansion are controlled props. The table never reorders or hides your data on its own, so server-side sorting and paging drop in unchanged.</p>
+  </div>
+</div>
+
+## Best Practices & Guidelines
+
+<div className="flex flex-col gap-4 my-6 not-prose">
+  <div className="rounded-xl border border-foreground/[0.06] bg-foreground/[0.03] p-4">
+    <h4 className="font-sans text-[14px] font-semibold text-foreground mb-1">Reach for the Data Table instead</h4>
+    <p className="text-[13px] leading-relaxed text-foreground/50">These primitives are deliberately stateless. If you need search, pagination, row selection and batch actions wired up for you, use the Data Table — it composes the very same primitives and adds a state provider.</p>
+  </div>
+  <div className="rounded-xl border border-primary/15 bg-primary/5 p-4">
+    <h4 className="font-sans text-[14px] font-semibold text-primary mb-1">Keep colSpan honest</h4>
+    <p className="text-[13px] leading-relaxed text-foreground/50">TableEmpty and TableExpandedRow both need a colSpan that matches your real column count. Derive it from a variable rather than hard-coding it, so conditional columns cannot drift out of sync.</p>
+  </div>
+</div>
+
+## Props Reference
+
+### Components
+
+<div className="overflow-x-auto">
+  <table>
+    <thead>
+      <tr><th>Component</th><th>Renders</th><th>Purpose</th></tr>
+    </thead>
+    <tbody>
+      <tr><td><code>Table</code></td><td><code>div</code></td><td>The card wrapper. Provides variant, size and colour by context.</td></tr>
+      <tr><td><code>TableHeading</code></td><td><code>div</code></td><td>Title bar above the table. Children align to the right as an action slot.</td></tr>
+      <tr><td><code>TableContent</code></td><td><code>div &gt; table</code></td><td>Horizontal scroll container plus the table element.</td></tr>
+      <tr><td><code>TableHeader</code></td><td><code>thead</code></td><td>Plain pass-through.</td></tr>
+      <tr><td><code>TableBody</code></td><td><code>tbody</code></td><td>Optional staggered entrance animation.</td></tr>
+      <tr><td><code>TableRow</code></td><td><code>tr</code></td><td>Body row, or a header row with <code>isHeader</code>.</td></tr>
+      <tr><td><code>TableHead</code></td><td><code>th</code></td><td>Header cell, optionally sortable.</td></tr>
+      <tr><td><code>TableCell</code></td><td><code>td</code></td><td>Body cell.</td></tr>
+      <tr><td><code>TableFooter</code></td><td><code>div</code></td><td>Footer bar below the table — pagers, totals, bulk controls.</td></tr>
+      <tr><td><code>TableEmpty</code></td><td><code>tr &gt; td</code></td><td>Full-width empty state row.</td></tr>
+      <tr><td><code>TableExpandedRow</code></td><td><code>tr &gt; td</code></td><td>Animated detail panel beneath a row.</td></tr>
+      <tr><td><code>TableExpandToggle</code></td><td><code>button</code></td><td>Rotating chevron for the row above.</td></tr>
+      <tr><td><code>TableRowActions</code></td><td><code>div</code></td><td>Reveals its buttons on row hover or keyboard focus (always visible in <code>soft</code>).</td></tr>
+      <tr><td><code>TableRowAction</code></td><td><code>button</code></td><td>Round icon button for a row action; <code>label</code> is required, <code>tone="danger"</code> for deletes.</td></tr>
+      <tr><td><code>TableAction</code></td><td><code>button</code></td><td>Toolbar button in the table's look — <code>variant</code> primary, secondary or ghost.</td></tr>
+      <tr><td><code>TableBadge</code></td><td><code>span</code></td><td>Status pill with a dot (<code>tone</code>: neutral, success, warning, danger, info), or a tag with <code>dot={"{false}"}</code>.</td></tr>
+      <tr><td><code>TablePerson</code></td><td><code>div</code></td><td>Avatar (photo or initials), a name and a muted second line.</td></tr>
+    </tbody>
+  </table>
+</div>
+
+### `Table`
+
+<div className="overflow-x-auto">
+  <table>
+    <thead>
+      <tr><th>Prop</th><th>Type</th><th>Default</th><th>Description</th></tr>
+    </thead>
+    <tbody>
+      <tr><td><code>variant</code></td><td><code>"default" | "minimal" | "glass" | "soft"</code></td><td><code>"default"</code></td><td>Bordered card, bare table, frosted glass panel, or the admin-dashboard look (see <DocLink to="data-table">Data Table</DocLink> for the full soft example).</td></tr>
+      <tr><td><code>size</code></td><td><code>"sm" | "md" | "lg"</code></td><td><code>"md"</code></td><td>Row density — cell padding and text size.</td></tr>
+      <tr><td><code>color</code></td><td><code>"primary" | "indigo" | "rose" | "emerald" | "zinc" | (hex)</code></td><td><code>"primary"</code></td><td>Accent for selected rows and interactive affordances. Any <code>#rrggbb</code> works.</td></tr>
+    </tbody>
+  </table>
+</div>
+
+### `TableHead`
+
+<div className="overflow-x-auto">
+  <table>
+    <thead>
+      <tr><th>Prop</th><th>Type</th><th>Default</th><th>Description</th></tr>
+    </thead>
+    <tbody>
+      <tr><td><code>align</code></td><td><code>"left" | "center" | "right"</code></td><td><code>"left"</code></td><td>Text alignment.</td></tr>
+      <tr><td><code>sortable</code></td><td><code>boolean</code></td><td><code>false</code></td><td>Renders the header as a sort button.</td></tr>
+      <tr><td><code>sortDirection</code></td><td><code>"asc" | "desc" | null</code></td><td><code>null</code></td><td>Controlled — drives the chevron and <code>aria-sort</code>.</td></tr>
+      <tr><td><code>onSort</code></td><td><code>() =&gt; void</code></td><td>—</td><td>Fired on click. You reorder the data.</td></tr>
+    </tbody>
+  </table>
+</div>
+
+### `TableRow`, `TableCell`, `TableBody`
+
+<div className="overflow-x-auto">
+  <table>
+    <thead>
+      <tr><th>Component</th><th>Prop</th><th>Type</th><th>Description</th></tr>
+    </thead>
+    <tbody>
+      <tr><td><code>TableRow</code></td><td><code>isHeader</code></td><td><code>boolean</code></td><td>Applies header styling instead of body row styling.</td></tr>
+      <tr><td><code>TableRow</code></td><td><code>selected</code></td><td><code>boolean</code></td><td>Applies the selected background and sets <code>data-selected</code>.</td></tr>
+      <tr><td><code>TableCell</code></td><td><code>align</code></td><td><code>"left" | "center" | "right"</code></td><td>Text alignment.</td></tr>
+      <tr><td><code>TableBody</code></td><td><code>animate</code></td><td><code>boolean</code></td><td>Staggered entrance (Web Animations API) for direct child rows. Off by default.</td></tr>
+      <tr><td><code>TableBody</code></td><td><code>animateKey</code></td><td><code>React.Key</code></td><td>Change it to replay the entrance — e.g. on sort or page change.</td></tr>
+    </tbody>
+  </table>
+</div>
+
+### `TableExpandedRow`, `TableEmpty`, `TableRowActions`
+
+<div className="overflow-x-auto">
+  <table>
+    <thead>
+      <tr><th>Component</th><th>Prop</th><th>Type</th><th>Description</th></tr>
+    </thead>
+    <tbody>
+      <tr><td><code>TableExpandedRow</code></td><td><code>open</code></td><td><code>boolean</code></td><td>Grid-animates the panel open or closed.</td></tr>
+      <tr><td><code>TableExpandedRow</code></td><td><code>colSpan</code></td><td><code>number</code></td><td><strong>Required.</strong> Must match your column count.</td></tr>
+      <tr><td><code>TableEmpty</code></td><td><code>colSpan</code></td><td><code>number</code></td><td><strong>Required.</strong> Defaults its text to &ldquo;No data available.&rdquo;</td></tr>
+      <tr><td><code>TableRowActions</code></td><td><code>align</code></td><td><code>"left" | "center" | "right"</code></td><td>Horizontal alignment inside the cell. Defaults to <code>"right"</code>.</td></tr>
+      <tr><td><code>TableRowActions</code></td><td><code>alwaysVisible</code></td><td><code>boolean</code></td><td>Skip the hover reveal and keep the buttons visible. Defaults to visible in the <code>soft</code> variant.</td></tr>
+    </tbody>
+  </table>
+</div>
+
+Every primitive also forwards its ref and accepts the native attributes of the element it renders.

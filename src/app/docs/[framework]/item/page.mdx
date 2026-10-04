@@ -1,0 +1,240 @@
+import { docsPageMetadata } from "@/lib/docs-metadata";
+
+export const metadata = docsPageMetadata("item");
+
+import { ExampleShowcase } from "@/components/site/Sandbox";
+import { extractCode } from "@/lib/code";
+
+# Item
+
+A versatile layout component for displaying structured content featuring media, titles, descriptions, and actions.
+
+Instead of writing complex Flexbox or Grid classes every time you need to build a notification row, a settings item, a user listing, or a simple feature card, `ItemBlock` handles all the responsive alignments and spacing automatically. It dynamically transforms between horizontal rows and vertical cards based on the `variant` prop.
+
+`title` is the only required prop — `media`, `description` and `actions` are slots you fill as needed.
+
+export const usageDefault = `import { ItemBlock } from "@/components/custom/blocks/ItemBlock";
+import { Settings } from "lucide-react";
+
+export default function SettingsRow() {
+  return (
+    <ItemBlock
+      variant="default"
+      title="System Configuration"
+      description="Manage your environment variables, build settings, and deployment hooks for this specific project instance."
+      media={
+        <div className="w-10 h-10 flex items-center justify-center bg-primary/10 text-primary rounded-full">
+          <Settings className="w-5 h-5" />
+        </div>
+      }
+    />
+  );
+}`;
+
+export const usageCard = `import { ItemBlock } from "@/components/custom/blocks/ItemBlock";
+import { Settings } from "lucide-react";
+
+export default function FeatureCard() {
+  return (
+    // "card" stacks the slots vertically and pins actions to the bottom —
+    // drop it straight into a grid.
+    <ItemBlock
+      variant="card"
+      title="System Configuration"
+      description="Manage your environment variables, build settings, and deployment hooks for this specific project instance."
+      media={
+        <div className="w-14 h-14 flex items-center justify-center bg-primary/10 text-primary rounded-full">
+          <Settings className="w-7 h-7" />
+        </div>
+      }
+      actions={
+        <button className="ml-auto px-4 py-1.5 bg-primary text-primary-foreground text-sm font-medium rounded-lg">
+          Configure
+        </button>
+      }
+    />
+  );
+}`;
+
+<ExampleShowcase
+  name="item"
+  colorControl={false}
+  columns={1}
+  examples={[
+    {
+      title: "Item",
+      propNotes: [
+        {
+          lead: "Pass",
+          prop: "title",
+          effect:
+            "plus an optional `description`, and a `media` slot on the leading edge.",
+        },
+      ],
+      props: { variant: "default", showMedia: true, showDescription: true, showActions: false },
+      usage: usageDefault,
+      code: extractCode("src/components/custom/blocks/ItemBlock.tsx"),
+    },
+  ]}
+/>
+
+## Installation
+
+<Installation name="item" />
+
+## Examples
+
+<ExampleShowcase
+  name="item"
+  colorControl={false}
+  columns={1}
+  examples={[
+    {
+      title: "Card",
+      propNotes: [
+        {
+          lead: "Set",
+          prop: "variant",
+          value: '"card"',
+          effect:
+            "to stack the slots vertically and pin `actions` to the bottom instead of the side.",
+        },
+      ],
+      props: { variant: "card", showMedia: true, showDescription: true, showActions: true },
+      usage: usageCard,
+    },
+  ]}
+/>
+
+## Features
+Discover the Item component's structural layout features, designed for lists, dropdowns, and menus with proper spacing.
+
+<div className="grid grid-cols-1 sm:grid-cols-2 gap-4 my-6 not-prose">
+  <div className="p-6 rounded-2xl border border-border bg-card">
+    <h3 className="text-lg font-semibold text-card-foreground mb-2">Customizable</h3>
+    <p className="text-muted-foreground text-sm">Easily adapt the component's styling and behavior to fit your application's unique design system.</p>
+  </div>
+  <div className="p-6 rounded-2xl border border-border bg-card">
+    <h3 className="text-lg font-semibold text-card-foreground mb-2">Accessible</h3>
+    <p className="text-muted-foreground text-sm">Built with accessibility in mind, ensuring all users can interact with your application effectively.</p>
+  </div>
+  <div className="p-6 rounded-2xl border border-border bg-card">
+    <h3 className="text-lg font-semibold text-card-foreground mb-2">Responsive</h3>
+    <p className="text-muted-foreground text-sm">Fully responsive design that looks and works great across desktop, tablet, and mobile devices.</p>
+  </div>
+  <div className="p-6 rounded-2xl border border-border bg-card">
+    <h3 className="text-lg font-semibold text-card-foreground mb-2">Performant</h3>
+    <p className="text-muted-foreground text-sm">Optimized for maximum performance with minimal re-renders and efficient state management.</p>
+  </div>
+</div>
+
+## Best Practices & Guidelines
+
+<div className="flex flex-col gap-4 my-6 not-prose">
+  <div className="rounded-xl border border-foreground/[0.06] bg-foreground/[0.03] p-4">
+    <h4 className="font-sans text-[14px] font-semibold text-foreground mb-1">Usage Guidelines</h4>
+    <p className="text-[13px] leading-relaxed text-foreground/50">Follow standard design principles when implementing this component. Ensure proper contrast, spacing, and context within your layout.</p>
+  </div>
+</div>
+
+## Props Reference
+
+<div className="overflow-x-auto">
+  <table>
+    <thead>
+      <tr>
+        <th>Prop</th>
+        <th>Type</th>
+        <th>Default</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>
+          <code>title</code>
+        </td>
+        <td>
+          <code>ReactNode</code>
+        </td>
+        <td>
+          <code>-</code>
+        </td>
+        <td>The primary title text or element displayed in the item block (required).</td>
+      </tr>
+      <tr>
+        <td>
+          <code>description</code>
+        </td>
+        <td>
+          <code>ReactNode</code>
+        </td>
+        <td>
+          <code>undefined</code>
+        </td>
+        <td>Secondary description text or content displayed below the title.</td>
+      </tr>
+      <tr>
+        <td>
+          <code>media</code>
+        </td>
+        <td>
+          <code>ReactNode</code>
+        </td>
+        <td>
+          <code>undefined</code>
+        </td>
+        <td>Visual media element such as an icon, avatar, or thumbnail.</td>
+      </tr>
+      <tr>
+        <td>
+          <code>actions</code>
+        </td>
+        <td>
+          <code>ReactNode</code>
+        </td>
+        <td>
+          <code>undefined</code>
+        </td>
+        <td>Action elements like buttons or icons placed on the trailing edge or bottom.</td>
+      </tr>
+      <tr>
+        <td>
+          <code>variant</code>
+        </td>
+        <td>
+          <code>"default" | "compact" | "card" | "bordered"</code>
+        </td>
+        <td>
+          <code>"default"</code>
+        </td>
+        <td>Applies structural layout and visual styling variant.</td>
+      </tr>
+      <tr>
+        <td>
+          <code>onClick</code>
+        </td>
+        <td>
+          <code>() => void</code>
+        </td>
+        <td>
+          <code>undefined</code>
+        </td>
+        <td>Optional click event handler. Transforms the container into an interactive button.</td>
+      </tr>
+      <tr>
+        <td>
+          <code>className</code>
+        </td>
+        <td>
+          <code>string</code>
+        </td>
+        <td>
+          <code>undefined</code>
+        </td>
+        <td>Additional CSS class names to apply custom styles.</td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+

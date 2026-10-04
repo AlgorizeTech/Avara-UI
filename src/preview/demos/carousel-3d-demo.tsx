@@ -9,48 +9,48 @@ import { accentStyle } from "@/lib/accent";
 const sampleItems: CarouselItem[] = [
   {
     id: "c1",
-    category: "Architecture",
-    title: "Futuristic Urban Sanctuary",
+    category: "Nature",
+    title: "Misty Pine Forest",
     description:
-      "Experience next-generation living spaces integrated seamlessly with natural organic flora.",
+      "Early morning fog weaving through dense evergreen woodland trees.",
     image:
-      "https://images.unsplash.com/photo-1600585154340-be6161a56a0c?q=80&w=1200&auto=format&fit=crop",
+      "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_1200,c_limit/v1790146209/photo-1470071459604-3b5ec3a7fe05-1790146212205.jpg",
   },
   {
     id: "c2",
-    category: "Automotive",
-    title: "Cybernetic Grand Tourer",
+    category: "Wilderness",
+    title: "Lush River Valley",
     description:
-      "Pure electric performance meeting aerodynamic excellence and bespoke luxury craftsmanship.",
+      "Sunbeams streaming through valley clouds onto pristine forest waters.",
     image:
-      "https://images.unsplash.com/photo-1617788138017-80ad40651399?q=80&w=1200&auto=format&fit=crop",
+      "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_1200,c_limit/v1790145140/photo-1426604966848-d7adac402bff-1790145143490.jpg",
   },
   {
     id: "c3",
-    category: "Horology",
-    title: "Chronograph Royale",
+    category: "Landscape",
+    title: "Autumn Woodland Path",
     description:
-      "Precision Swiss engineering housed inside a brushed titanium and sapphire crystal case.",
+      "Vibrant golden foliage covering quiet forest trails in peak autumn.",
     image:
-      "https://images.unsplash.com/photo-1522335789203-aabd1fc54bc9?q=80&w=1200&auto=format&fit=crop",
+      "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_1200,c_limit/v1790146211/photo-1441974231531-c6227db76b6e-1790146212212.jpg",
   },
   {
     id: "c4",
-    category: "Expedition",
-    title: "Nordic Glacial Retreat",
+    category: "Sanctuary",
+    title: "Cascading Mountain Falls",
     description:
-      "Isolated tranquility under the mesmerizing lights of the Arctic Aurora Borealis.",
+      "Fresh mountain spring water cascading through untouched wilderness slopes.",
     image:
-      "https://images.unsplash.com/photo-1517411032315-54ef2cb783bb?q=80&w=1200&auto=format&fit=crop",
+      "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_1200,c_limit/v1790146209/photo-1469474968028-56623f02e42e-1790146212205.jpg",
   },
   {
     id: "c5",
-    category: "Acoustics",
-    title: "Obsidian Studio Monitors",
+    category: "Expedition",
+    title: "Emerald Mountain Peak",
     description:
-      "Audiophile-grade acoustic fidelity engineered for high-resolution spatial soundscapes.",
+      "Panoramic views of majestic mountain ridges rising into crisp morning skies.",
     image:
-      "https://images.unsplash.com/photo-1545454675-3531b543be5d?q=80&w=1200&auto=format&fit=crop",
+      "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_1200,c_limit/v1790146210/photo-1506744038136-46273834b3fb-1790146212208.jpg",
   },
 ];
 
@@ -74,7 +74,7 @@ export default function Carousel3DDemo({
     // pill, arrows, dots), so repointing the token here recolours all of it.
     <div
       style={accentStyle(color)}
-      className="w-full flex items-center justify-center bg-zinc-50 dark:bg-[#0a0a0a] py-8 sm:py-12 px-4 md:px-8 relative overflow-hidden min-h-[600px] rounded-3xl border border-zinc-200 dark:border-white/10 transition-colors duration-300"
+      className="w-full flex items-center justify-center bg-muted/40 py-8 sm:py-12 px-4 md:px-8 relative overflow-hidden min-h-[600px] rounded-3xl border border-border transition-colors duration-300"
     >
       {/* Subtle Ambient Backglow */}
       <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-3/4 h-3/4 bg-primary/5 dark:bg-primary/10 blur-[140px] rounded-full pointer-events-none" />

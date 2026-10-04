@@ -15,7 +15,7 @@ const sampleEmails = [
     fullDate: "Dec 10, 2026, 01:46 PM",
     isStarred: false,
     isRead: false,
-    avatar: "https://i.pravatar.cc/150?u=tommy",
+    avatar: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto/v1790148864/80-2-1790148865112.jpg",
     labels: [
       {
         color: "bg-rose-500",
@@ -36,7 +36,7 @@ const sampleEmails = [
     fullDate: "Dec 10, 2026, 01:55 PM",
     isStarred: true,
     isRead: true,
-    avatar: "https://i.pravatar.cc/150?u=tressa",
+    avatar: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto/v1790148865/80-4-1790148865113.jpg",
     labels: [
       {
         color: "bg-indigo-500",
@@ -84,8 +84,23 @@ export default function EmailDemo({
 }) {
   return (
     <div
-      className={`w-full transition-all duration-500 ${variant === "glass" ? "p-4 sm:p-8 bg-gradient-to-br from-indigo-500/80 via-purple-500/80 to-pink-500/80 rounded-2xl" : ""}`}
+      className={`w-full transition-all duration-500 relative overflow-hidden ${
+        variant === "glass"
+          ? "p-4 sm:p-8 rounded-2xl bg-cover bg-center"
+          : ""
+      }`}
+      style={
+        variant === "glass"
+          ? {
+              backgroundImage:
+                'url("https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_1200,c_limit/v1790146209/photo-1470071459604-3b5ec3a7fe05-1790146212205.jpg")',
+            }
+          : undefined
+      }
     >
+      {variant === "glass" && (
+        <div className="absolute inset-0 bg-black/20 rounded-2xl pointer-events-none" />
+      )}
       <EmailApp
         key={`${variant}-${color}`} // Force re-render to reset email states if user is testing heavily
         variant={variant}

@@ -1,0 +1,216 @@
+import { docsPageMetadata } from "@/lib/docs-metadata";
+
+export const metadata = docsPageMetadata("squircle-carousel");
+
+import { ExampleShowcase } from "@/components/site/Sandbox";
+import { Installation } from "@/components/site/installation";
+import { extractCode } from "@/lib/code";
+
+# Squircle Carousel
+
+Horizontal flowing carousel where images are masked behind a grid of rounded cubes with snap physics and smooth inertia.
+
+Drag the stage left or right to explore images seamlessly across squircle tiles.
+
+export const usageCode = `import { SquircleCarousel, type SquircleCarouselItem } from "@/components/custom/squircle-carousel";
+
+const items: SquircleCarouselItem[] = [
+  {
+    id: "1",
+    title: "Misty Pine Forest",
+    imageUrl: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_1200,c_limit/v1790146209/photo-1470071459604-3b5ec3a7fe05-1790146212205.jpg",
+  },
+  {
+    id: "2",
+    title: "Alpine Glacier Lake",
+    imageUrl: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_1200,c_limit/v1790145141/photo-1464822759023-fed622ff2c3b-1790145143491.jpg",
+  },
+  {
+    id: "3",
+    title: "Sunset Mountain Range",
+    imageUrl: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_1200,c_limit/v1790146210/photo-1506744038136-46273834b3fb-1790146212208.jpg",
+  },
+];
+
+export default function SquircleCarouselDemo() {
+  return (
+    <SquircleCarousel
+      items={items}
+      rows={4}
+      gridGap={8}
+      fadeWidthPercent={36}
+    />
+  );
+}`;
+
+<ExampleShowcase
+  name="squircle-carousel"
+  colorControl={false}
+  columns={1}
+  examples={[
+    {
+      title: "Interactive Squircle Grid Carousel",
+      usage: usageCode,
+      code: extractCode("src/components/custom/squircle-carousel.tsx"),
+    },
+  ]}
+/>
+
+## Installation
+
+<Installation name="squircle-carousel" />
+
+## Features
+Discover the key capabilities that make this component an excellent choice for modern, animated user interfaces.
+
+<div className="grid grid-cols-1 sm:grid-cols-2 gap-4 my-6 not-prose">
+  <div className="p-6 rounded-2xl border border-border bg-card">
+    <h3 className="text-lg font-semibold text-card-foreground mb-2">Squircle Grid Masking</h3>
+    <p className="text-muted-foreground text-sm">Images flow seamlessly behind a matrix of rounded squircle tiles for an ultra-modern aesthetic.</p>
+  </div>
+  <div className="p-6 rounded-2xl border border-border bg-card">
+    <h3 className="text-lg font-semibold text-card-foreground mb-2">Drag & Inertia Physics</h3>
+    <p className="text-muted-foreground text-sm">Interactive mouse and touch drag controls with grab cursor and smooth momentum deceleration.</p>
+  </div>
+  <div className="p-6 rounded-2xl border border-border bg-card">
+    <h3 className="text-lg font-semibold text-card-foreground mb-2">Responsive Stage Scaling</h3>
+    <p className="text-muted-foreground text-sm">Automatically adapts height and squircle tile density across mobile, tablet, and desktop viewports.</p>
+  </div>
+  <div className="p-6 rounded-2xl border border-border bg-card">
+    <h3 className="text-lg font-semibold text-card-foreground mb-2">Light & Dark Theme Adaptation</h3>
+    <p className="text-muted-foreground text-sm">Built with Next Themes integration to transition canvas backgrounds and edge gradient overlays dynamically.</p>
+  </div>
+</div>
+
+## Best Practices & Guidelines
+
+<div className="flex flex-col gap-4 my-6 not-prose">
+  <div className="rounded-xl border border-foreground/[0.06] bg-foreground/[0.03] p-4">
+    <h4 className="font-sans text-[14px] font-semibold text-foreground mb-1">Animation Performance</h4>
+    <p className="text-[13px] leading-relaxed text-foreground/50">Use high-resolution landscape images (1200x800 or larger) so that sub-crops render crisp fragments across all squircle columns.</p>
+  </div>
+  <div className="rounded-xl border border-primary/15 bg-primary/5 p-4">
+    <h4 className="font-sans text-[14px] font-semibold text-primary mb-1">State Management</h4>
+    <p className="text-[13px] leading-relaxed text-foreground/50">Images are preloaded asynchronously into HTMLImageElement instances before canvas rendering to prevent flickering during drag gestures.</p>
+  </div>
+</div>
+
+## Props Reference
+
+<div className="overflow-x-auto mb-8">
+  <table>
+    <thead>
+      <tr>
+        <th>Component</th>
+        <th>Prop</th>
+        <th>Type</th>
+        <th>Default</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>
+          <code>SquircleCarousel</code>
+        </td>
+        <td>
+          <code>items</code>
+        </td>
+        <td>
+          <code>SquircleCarouselItem[]</code>
+        </td>
+        <td>
+          <code>DEFAULT_NATURE_ITEMS</code>
+        </td>
+        <td>
+          Array of image items containing <code>{`{ id, title, imageUrl }`}</code> to display in the carousel.
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <code>SquircleCarousel</code>
+        </td>
+        <td>
+          <code>rows</code>
+        </td>
+        <td>
+          <code>number</code>
+        </td>
+        <td>
+          <code>4</code>
+        </td>
+        <td>
+          Number of horizontal rows in the squircle tile matrix.
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <code>SquircleCarousel</code>
+        </td>
+        <td>
+          <code>gridGap</code>
+        </td>
+        <td>
+          <code>number</code>
+        </td>
+        <td>
+          <code>8</code>
+        </td>
+        <td>
+          The gap spacing in pixels between squircle tiles.
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <code>SquircleCarousel</code>
+        </td>
+        <td>
+          <code>fadeWidthPercent</code>
+        </td>
+        <td>
+          <code>number</code>
+        </td>
+        <td>
+          <code>36</code>
+        </td>
+        <td>
+          Edge fade gradient overlay width percentage (0 to 50).
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <code>SquircleCarousel</code>
+        </td>
+        <td>
+          <code>showHeaderShell</code>
+        </td>
+        <td>
+          <code>boolean</code>
+        </td>
+        <td>
+          <code>false</code>
+        </td>
+        <td>
+          When set to true, displays the outer header metadata title, tags, buttons, and footer caption.
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <code>SquircleCarousel</code>
+        </td>
+        <td>
+          <code>className</code>
+        </td>
+        <td>
+          <code>string</code>
+        </td>
+        <td>
+          <code>undefined</code>
+        </td>
+        <td>
+          Custom Tailwind CSS classes to apply to the stage container element.
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>

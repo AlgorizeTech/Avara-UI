@@ -2,73 +2,13 @@
 
 import { cn } from "@/lib/utils";
 import React, { forwardRef, useEffect, useRef, useState } from "react";
+import { getThemeStyles } from "./otp-input-theme";
 
 // ==========================================
 // CONFIGURATION
 // ==========================================
 export type OtpVariant = "default" | "filled" | "underlined";
 export type OtpColor = "indigo" | "rose" | "emerald" | "zinc" | (string & {});
-
-const colorThemes: Record<string, Record<string, string>> = {
-  primary: {
-    focusRing: "focus:ring-primary focus:border-primary",
-    text: "text-primary",
-    border: "border-primary",
-  },
-  indigo: {
-    focusRing: "focus:ring-indigo-500 focus:border-indigo-500",
-    text: "text-indigo-600 dark:text-indigo-400",
-    border: "border-indigo-500",
-  },
-  rose: {
-    focusRing: "focus:ring-rose-500 focus:border-rose-500",
-    text: "text-rose-600 dark:text-rose-400",
-    border: "border-rose-500",
-  },
-  emerald: {
-    focusRing: "focus:ring-emerald-500 focus:border-emerald-500",
-    text: "text-emerald-600 dark:text-emerald-400",
-    border: "border-emerald-500",
-  },
-  zinc: {
-    focusRing:
-      "focus:ring-zinc-900 dark:focus:ring-zinc-100 focus:border-zinc-900 dark:focus:border-zinc-100",
-    text: "text-zinc-900 dark:text-zinc-100",
-    border: "border-zinc-900 dark:border-zinc-100",
-  },
-};
-
-const hexToRgb = (hex: string) => {
-  let cleanHex = hex.replace(/^#/, "");
-  if (cleanHex.length === 3)
-    cleanHex = cleanHex
-      .split("")
-      .map((x) => x + x)
-      .join("");
-  const result = /^([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(cleanHex);
-  return result
-    ? `${parseInt(result[1], 16)}, ${parseInt(result[2], 16)}, ${parseInt(result[3], 16)}`
-    : "99, 102, 241";
-};
-
-export const getThemeStyles = (color: string) => {
-  if (color && color.startsWith("#")) {
-    const rgb = hexToRgb(color);
-    return {
-      theme: {
-        focusRing:
-          "focus:ring-[var(--otp-color)] focus:border-[var(--otp-color)]",
-        text: "text-[var(--otp-color)]",
-        border: "border-[var(--otp-color)]",
-      },
-      style: {
-        "--otp-color": color,
-        "--otp-color-rgb": rgb,
-      } as React.CSSProperties,
-    };
-  }
-  return { theme: colorThemes[color] || colorThemes.primary, style: {} };
-};
 
 // ==========================================
 // COMPONENT
@@ -215,20 +155,20 @@ export const OtpInputBlock = forwardRef<HTMLDivElement, OtpInputProps>(
       // a phone and small boxes don't read as pills. Both cap at the values the
       // 48px box used, leaving 4/6 digits looking exactly as before.
       const base =
-        "min-w-0 flex-1 basis-0 max-w-12 aspect-[5/6] px-0 text-center text-[clamp(0.8125rem,calc(38cqw/var(--otp-len,6)),1.25rem)] rounded-[clamp(0.375rem,calc(20cqw/var(--otp-len,6)),0.75rem)] font-bold transition-all duration-200 outline-none placeholder:text-zinc-300 dark:placeholder:text-zinc-700";
+        "min-w-0 flex-1 basis-0 max-w-12 aspect-[5/6] px-0 text-center text-[clamp(0.8125rem,calc(38cqw/var(--otp-len,6)),1.25rem)] rounded-[clamp(0.375rem,calc(20cqw/var(--otp-len,6)),0.75rem)] font-semibold transition-all duration-200 outline-none placeholder:text-muted-foreground/40";
 
       switch (variant) {
         case "filled":
           return cn(
             base,
-            "border border-transparent bg-zinc-100 dark:bg-zinc-900 hover:bg-zinc-200 dark:hover:bg-zinc-800",
-            "focus:bg-white dark:focus:bg-zinc-950 focus:ring-2",
+            "border border-transparent bg-muted hover:bg-muted",
+            "focus:bg-background focus:ring-2",
             theme.focusRing,
           );
         case "underlined":
           return cn(
             base,
-            "rounded-none border-0 border-b-2 border-zinc-200 dark:border-zinc-800 bg-transparent px-0",
+            "rounded-none border-0 border-b-2 border-border bg-transparent px-0",
             "focus:ring-0",
             theme.border,
           );
@@ -236,7 +176,7 @@ export const OtpInputBlock = forwardRef<HTMLDivElement, OtpInputProps>(
         default:
           return cn(
             base,
-            "border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-[#09090b] shadow-sm",
+            "border border-border bg-background shadow-sm",
             "focus:ring-2",
             theme.focusRing,
           );
@@ -274,7 +214,7 @@ export const OtpInputBlock = forwardRef<HTMLDivElement, OtpInputProps>(
             disabled={disabled}
             className={cn(
               inputClasses,
-              digit ? theme.text : "text-zinc-900 dark:text-zinc-100",
+              digit ? theme.text : "text-foreground",
               disabled && "opacity-50 cursor-not-allowed",
             )}
             aria-label={`Digit ${index + 1} of ${length}`}

@@ -1,7 +1,6 @@
 "use client";
 
 import { cn } from "@/lib/utils";
-import gsap from "gsap";
 import {
   AlertTriangle,
   Check,
@@ -11,6 +10,7 @@ import {
   X,
 } from "lucide-react";
 import React, { forwardRef, useEffect, useRef, useState } from "react";
+import { formatBytes, formatTimeLeft } from "./upload-format";
 
 // ==========================================
 // TYPES, FORMATTERS & THEME ENGINE
@@ -20,7 +20,8 @@ export type UploadStatus =
   | "uploading"
   | "paused"
   | "error"
-  | "success";
+  | "success"
+  | (string & {});
 
 export interface FileUploadState {
   id: string;
@@ -32,67 +33,35 @@ export interface FileUploadState {
   previewUrl?: string;
 }
 
-export function formatBytes(bytes: number, decimals = 2) {
-  if (!+bytes) return "0 Bytes";
-  const k = 1024;
-  const dm = decimals < 0 ? 0 : decimals;
-  const sizes = ["Bytes", "KB", "MB", "GB", "TB"];
-  const i = Math.floor(Math.log(bytes) / Math.log(k));
-  return `${parseFloat((bytes / Math.pow(k, i)).toFixed(dm))} ${sizes[i]}`;
+// ==========================================
+// MOTION (library-free)
+// ==========================================
+// GSAP's back.out(2), power2.out and power1.out as CSS easings.
+const BACK_OUT_2 =
+  "linear(0, .2225, .4153, .5802, .7191, .8341, .9271, 1, 1.0547, 1.0933, 1.1176, 1.1296, 1.1312, 1.1244, 1.1111, 1.0933, 1.0729, 1.0518, 1.0321, 1.0155, 1.0042, 1)";
+const POWER2_OUT = "cubic-bezier(.3333, 1, .6667, 1)";
+const POWER1_OUT = "cubic-bezier(.3333, .6667, .6667, 1)";
+
+const running = new WeakMap<HTMLElement, Animation>();
+
+/**
+ * Tween `el` to `to` from wherever it is right now (mid-flight included), so a
+ * new target takes over a running tween with the full duration and its own
+ * ease. The end values are written inline, so nothing is held by a fill.
+ */
+function tweenTo(el: HTMLElement, to: Record<string, string>, duration: number, easing: string) {
+  const computed = getComputedStyle(el);
+  const from: Record<string, string> = {};
+  for (const key of Object.keys(to)) from[key] = computed.getPropertyValue(key);
+  running.get(el)?.cancel();
+  for (const [key, value] of Object.entries(to)) el.style.setProperty(key, value);
+  if (typeof el.animate !== "function") return;
+  running.set(el, el.animate([from, to], { duration: duration * 1000, easing }));
 }
 
-export function formatTimeLeft(seconds?: number) {
-  if (seconds === undefined || seconds < 0) return "Calculating...";
-  if (seconds === 0) return "Almost done...";
-  if (seconds < 60) return `${seconds}s left`;
-  return `${Math.floor(seconds / 60)}m ${seconds % 60}s left`;
-}
-
-// Hex to RGB converter for GSAP rgba() tweens
-const hexToRgb = (hex: string) => {
-  let cleanHex = hex.replace(/^#/, "");
-  if (cleanHex.length === 3)
-    cleanHex = cleanHex
-      .split("")
-      .map((x) => x + x)
-      .join("");
-  const result = /^([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(cleanHex);
-  return result
-    ? `${parseInt(result[1], 16)}, ${parseInt(result[2], 16)}, ${parseInt(result[3], 16)}`
-    : "99, 102, 241"; // Default indigo RGB
-};
-
-// Hook to seamlessly grab and listen to the primaryColor from localStorage
-function useThemeColor(defaultColor = "#6366f1") {
-  const [color, setColor] = useState(defaultColor);
-
-  useEffect(() => {
-    if (typeof window === "undefined") return;
-
-    const fetchColor = () => {
-      const stored = localStorage.getItem("primaryColor");
-      if (stored && stored !== color) {
-        setColor(stored);
-      }
-    };
-
-    // Initial fetch
-    fetchColor();
-
-    // Listen for cross-tab changes
-    window.addEventListener("storage", fetchColor);
-
-    // Polling interval for same-tab dynamic changes (e.g. from a control panel)
-    const interval = setInterval(fetchColor, 500);
-
-    return () => {
-      window.removeEventListener("storage", fetchColor);
-      clearInterval(interval);
-    };
-  }, [color]);
-
-  return color;
-}
+// Accent colour comes from the `--primary` theme token (`border-primary/30`,
+// `bg-primary`, `text-primary`), so the dropzone and the progress bar follow
+// the site theme and the docs colour picker with no prop and no polling.
 
 // ==========================================
 // 1. DROPZONE (Glitch-Free & Theme Adaptive)
@@ -111,53 +80,25 @@ export const Dropzone = forwardRef<HTMLDivElement, DropzoneProps>(
     const fileInputRef = useRef<HTMLInputElement>(null);
     const [isDragging, setIsDragging] = useState(false);
 
-    // Fetch dynamic theme color
-    const primaryColor = useThemeColor();
-
     // Drag counter prevents bubbling glitches when hovering over children
     const dragCounter = useRef(0);
 
     React.useImperativeHandle(ref, () => internalRef.current as HTMLDivElement);
 
-    // GSAP Reaction on Drag (Injected with Dynamic LocalStorage Theme)
+    // The icon and text lift on drag (Web Animations on `translate`/`scale`);
+    // the colours (border, tint, glow, icon) are Tailwind `data-[dragging]`
+    // classes on the token.
     useEffect(() => {
-      if (!internalRef.current || !iconRef.current || !textRef.current) return;
-
-      const rgbColor = hexToRgb(primaryColor);
+      if (!iconRef.current || !textRef.current) return;
 
       if (isDragging) {
-        gsap.to(internalRef.current, {
-          borderColor: primaryColor,
-          backgroundColor: `rgba(${rgbColor}, 0.05)`,
-          boxShadow: `0 0 30px -5px rgba(${rgbColor}, 0.2)`,
-          duration: 0.3,
-          ease: "power2.out",
-        });
-        gsap.to(iconRef.current, {
-          y: -8,
-          scale: 1.1,
-          color: primaryColor,
-          duration: 0.4,
-          ease: "back.out(2)",
-        });
-        gsap.to(textRef.current, { y: -4, duration: 0.4, ease: "back.out(2)" });
+        tweenTo(iconRef.current, { translate: "0px -8px", scale: "1.1" }, 0.4, BACK_OUT_2);
+        tweenTo(textRef.current, { translate: "0px -4px" }, 0.4, BACK_OUT_2);
       } else {
-        gsap.to(internalRef.current, {
-          borderColor: "rgba(113, 113, 122, 0.4)", // zinc-500/40
-          backgroundColor: "transparent",
-          boxShadow: "0 0 0px rgba(0,0,0,0)",
-          duration: 0.3,
-        });
-        gsap.to(iconRef.current, {
-          y: 0,
-          scale: 1,
-          color: "#71717a",
-          duration: 0.4,
-          ease: "power2.out",
-        });
-        gsap.to(textRef.current, { y: 0, duration: 0.4, ease: "power2.out" });
+        tweenTo(iconRef.current, { translate: "0px 0px", scale: "1" }, 0.4, POWER2_OUT);
+        tweenTo(textRef.current, { translate: "0px 0px" }, 0.4, POWER2_OUT);
       }
-    }, [isDragging, primaryColor]);
+    }, [isDragging]);
 
     const handleDragEnter = (e: React.DragEvent) => {
       e.preventDefault();
@@ -207,8 +148,11 @@ export const Dropzone = forwardRef<HTMLDivElement, DropzoneProps>(
         onDragOver={handleDragOver}
         onDrop={handleDrop}
         onClick={() => fileInputRef.current?.click()}
+        data-dragging={isDragging || undefined}
         className={cn(
-          "relative w-full rounded-2xl border-2 border-dashed border-zinc-300 dark:border-zinc-700/50 flex flex-col items-center justify-center py-12 px-6 cursor-pointer transition-colors overflow-hidden group bg-white/50 dark:bg-transparent",
+          "relative w-full rounded-2xl border-2 border-dashed border-border flex flex-col items-center justify-center py-12 px-6 cursor-pointer overflow-hidden group bg-card/50",
+          "transition-[border-color,background-color,box-shadow] duration-300",
+          "data-[dragging]:border-primary/30 data-[dragging]:bg-primary/5 data-[dragging]:shadow-[0_0_30px_-5px_color-mix(in_oklab,var(--primary)_20%,transparent)]",
           className,
         )}
         {...props}
@@ -225,7 +169,7 @@ export const Dropzone = forwardRef<HTMLDivElement, DropzoneProps>(
         {/* pointer-events-none prevents drag events from bubbling and glitching the hover state */}
         <div
           ref={iconRef}
-          className="text-zinc-400 dark:text-zinc-500 mb-4 transition-colors pointer-events-none"
+          className="text-muted-foreground mb-4 transition-colors duration-300 pointer-events-none group-data-[dragging]:text-primary"
         >
           <UploadCloud className="w-10 h-10" strokeWidth={1.5} />
         </div>
@@ -234,12 +178,12 @@ export const Dropzone = forwardRef<HTMLDivElement, DropzoneProps>(
           ref={textRef}
           className="flex flex-col items-center text-center pointer-events-none"
         >
-          <h3 className="text-base font-semibold text-zinc-900 dark:text-zinc-200">
+          <h3 className="text-base font-semibold text-foreground">
             {isDragging
               ? "Release to upload"
               : "Drop your files here or click to browse"}
           </h3>
-          <p className="text-[13px] text-zinc-500 mt-1">
+          <p className="text-[13px] text-muted-foreground mt-1">
             PNG, JPG, PDF, MP4 — up to {maxSize} MB
           </p>
         </div>
@@ -252,6 +196,13 @@ Dropzone.displayName = "Dropzone";
 // ==========================================
 // 2. UPLOAD ITEM (Notification Style + Spotlight)
 // ==========================================
+// Registered so the spotlight's position and colour interpolate.
+const SPOTLIGHT_CSS = `
+@property --upload-spot-x { syntax: "<length-percentage>"; inherits: false; initial-value: 50%; }
+@property --upload-spot-y { syntax: "<length-percentage>"; inherits: false; initial-value: 50%; }
+@property --upload-spot-color { syntax: "<color>"; inherits: false; initial-value: rgba(0, 0, 0, 0); }
+`;
+
 export interface UploadItemProps {
   item: FileUploadState;
   onRetry?: (id: string) => void;
@@ -266,23 +217,33 @@ export const UploadItem = forwardRef<HTMLDivElement, UploadItemProps>(
     const progressRef = useRef<HTMLDivElement>(null);
     const glowRef = useRef<HTMLDivElement>(null);
 
-    // Fetch dynamic theme color
-    const primaryColor = useThemeColor();
 
     React.useImperativeHandle(ref, () => cardRef.current as HTMLDivElement);
 
     // Smooth Progress Bar Animation
     useEffect(() => {
       if (progressRef.current) {
-        gsap.to(progressRef.current, {
-          width: `${progress}%`,
-          duration: 0.3,
-          ease: "power2.out",
-        });
+        tweenTo(progressRef.current, { width: `${progress}%` }, 0.3, POWER2_OUT);
       }
     }, [progress]);
 
-    // Mouse-tracking Spotlight Effect (Adaptive for Light/Dark Mode)
+    // Mouse-tracking Spotlight Effect (Adaptive for Light/Dark Mode). The
+    // gradient reads registered custom properties (see SPOTLIGHT_CSS), which
+    // CSS can transition where it cannot transition a gradient itself.
+    const moveSpotlight = (x: string, y: string, color: string, duration: number) => {
+      const glow = glowRef.current;
+      if (!glow) return;
+      glow.style.transition = [
+        "opacity 300ms cubic-bezier(0.4, 0, 0.2, 1)",
+        ...["--upload-spot-x", "--upload-spot-y", "--upload-spot-color"].map(
+          (property) => `${property} ${duration}s ${POWER1_OUT}`,
+        ),
+      ].join(", ");
+      glow.style.setProperty("--upload-spot-x", x);
+      glow.style.setProperty("--upload-spot-y", y);
+      glow.style.setProperty("--upload-spot-color", color);
+    };
+
     const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
       if (!cardRef.current || !glowRef.current) return;
       const rect = cardRef.current.getBoundingClientRect();
@@ -294,18 +255,11 @@ export const UploadItem = forwardRef<HTMLDivElement, UploadItemProps>(
         ? "rgba(255,255,255,0.06)"
         : "rgba(0,0,0,0.04)";
 
-      gsap.to(glowRef.current, {
-        background: `radial-gradient(600px circle at ${x}px ${y}px, ${spotlightColor}, transparent 40%)`,
-        duration: 0.1,
-      });
+      moveSpotlight(`${x}px`, `${y}px`, spotlightColor, 0.1);
     };
 
     const handleMouseLeave = () => {
-      if (!glowRef.current) return;
-      gsap.to(glowRef.current, {
-        background: `radial-gradient(600px circle at 50% 50%, rgba(0,0,0,0), transparent 40%)`,
-        duration: 0.5,
-      });
+      moveSpotlight("50%", "50%", "rgba(0,0,0,0)", 0.5);
     };
 
     const isImage = file.type.startsWith("image/");
@@ -318,13 +272,13 @@ export const UploadItem = forwardRef<HTMLDivElement, UploadItemProps>(
       ? "bg-rose-500"
       : isSuccess
         ? "bg-emerald-500"
-        : ""; // We use inline styles for the active upload state
+        : "bg-primary";
 
     const iconColor = isError
       ? "text-rose-500"
       : isSuccess
         ? "text-emerald-500"
-        : "text-zinc-500 dark:text-zinc-400";
+        : "text-muted-foreground";
 
     // Extract file extension for badge
     const fileExtension = file.name.split(".").pop()?.toUpperCase() || "FILE";
@@ -335,25 +289,30 @@ export const UploadItem = forwardRef<HTMLDivElement, UploadItemProps>(
         onMouseMove={handleMouseMove}
         onMouseLeave={handleMouseLeave}
         className={cn(
-          "w-full bg-white dark:bg-[#0d0d12] border rounded-2xl p-4 flex flex-col gap-4 relative overflow-hidden transition-colors duration-300 shadow-[0_2px_12px_rgba(0,0,0,0.03)] dark:shadow-[0_2px_20px_rgba(0,0,0,0.2)] group",
+          "w-full bg-card text-card-foreground border rounded-2xl p-4 flex flex-col gap-4 relative overflow-hidden transition-colors duration-300 shadow-[0_2px_12px_rgba(0,0,0,0.03)] dark:shadow-[0_2px_20px_rgba(0,0,0,0.2)] group",
           isError
             ? "border-rose-200 dark:border-rose-900/50"
             : isSuccess
               ? "border-emerald-200 dark:border-emerald-900/30"
-              : "border-zinc-200 dark:border-zinc-800/80",
+              : "border-border",
         )}
       >
         {/* Spotlight Overlay Layer */}
+        <style>{SPOTLIGHT_CSS}</style>
         <div
           ref={glowRef}
           className="absolute inset-0 z-0 pointer-events-none transition-opacity duration-300 opacity-0 group-hover:opacity-100"
+          style={{
+            background:
+              "radial-gradient(600px circle at var(--upload-spot-x) var(--upload-spot-y), var(--upload-spot-color), transparent 40%)",
+          }}
         />
 
         <div className="flex items-start gap-4 relative z-10">
           {/* Signal 04: Upload Preview */}
           <div
             className={cn(
-              "rounded-xl bg-zinc-50 dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 flex items-center justify-center flex-shrink-0 overflow-hidden relative shadow-sm",
+              "rounded-xl bg-muted border border-border flex items-center justify-center flex-shrink-0 overflow-hidden relative shadow-sm",
               previewUrl && isImage ? "w-14 h-14" : "w-12 h-12",
             )}
           >
@@ -380,27 +339,27 @@ export const UploadItem = forwardRef<HTMLDivElement, UploadItemProps>(
 
           <div className="flex-1 min-w-0 flex flex-col justify-center pt-0.5">
             <div className="flex items-center justify-between gap-4">
-              <h4 className="text-[14px] font-bold text-zinc-900 dark:text-zinc-200 truncate pr-2">
+              <h4 className="text-[14px] font-semibold text-foreground truncate pr-2">
                 {file.name}
               </h4>
-              <span className="text-[13px] font-bold text-zinc-700 dark:text-zinc-100 flex-shrink-0">
+              <span className="text-[13px] font-semibold text-foreground flex-shrink-0">
                 {Math.round(progress)}%
               </span>
             </div>
 
             {/* Badges / File Info */}
             <div className="flex items-center gap-2 mt-1 mb-2">
-              <span className="bg-zinc-100 dark:bg-zinc-800 text-zinc-600 dark:text-zinc-300 px-1.5 py-0.5 rounded text-[10px] font-bold uppercase tracking-wider border border-zinc-200 dark:border-transparent">
+              <span className="bg-muted text-muted-foreground px-1.5 py-0.5 rounded text-[10px] font-semibold uppercase tracking-wider border border-border dark:border-transparent">
                 {fileExtension}
               </span>
-              <span className="text-[11px] font-semibold text-zinc-500">
+              <span className="text-[11px] font-semibold text-muted-foreground">
                 {formatBytes(file.size)}
               </span>
             </div>
 
             {/* Honest Progress & Inline Retry Messaging */}
             <div className="flex items-center justify-between mt-auto h-5">
-              <div className="flex items-center gap-2 text-[12px] font-semibold text-zinc-500 truncate">
+              <div className="flex items-center gap-2 text-[12px] font-semibold text-muted-foreground truncate">
                 {isError ? (
                   <span className="flex items-center text-rose-500 gap-1.5">
                     <AlertTriangle className="w-3.5 h-3.5" />
@@ -421,7 +380,7 @@ export const UploadItem = forwardRef<HTMLDivElement, UploadItemProps>(
                 {(isError || isPaused) && onRetry && (
                   <button
                     onClick={() => onRetry(item.id)}
-                    className="flex items-center gap-1.5 px-2 py-1 rounded-md bg-zinc-100 dark:bg-zinc-800 hover:bg-zinc-200 dark:hover:bg-zinc-700 text-zinc-700 dark:text-zinc-300 text-[11px] font-bold transition-colors border border-zinc-200 dark:border-transparent"
+                    className="flex items-center gap-1.5 px-2 py-1 rounded-md bg-muted hover:bg-muted text-foreground text-[11px] font-semibold transition-colors border border-border dark:border-transparent"
                   >
                     <RefreshCw className="w-3 h-3" /> Retry
                   </button>
@@ -429,7 +388,7 @@ export const UploadItem = forwardRef<HTMLDivElement, UploadItemProps>(
                 {onRemove && (
                   <button
                     onClick={() => onRemove(item.id)}
-                    className="p-1 rounded-md text-zinc-400 hover:text-zinc-900 dark:hover:text-zinc-300 hover:bg-zinc-100 dark:hover:bg-zinc-800 transition-colors"
+                    className="p-1 rounded-md text-muted-foreground hover:text-foreground hover:bg-muted transition-colors"
                   >
                     <X className="w-4 h-4" />
                   </button>
@@ -440,19 +399,14 @@ export const UploadItem = forwardRef<HTMLDivElement, UploadItemProps>(
         </div>
 
         {/* Progress Bar Track */}
-        <div className="w-full h-1.5 bg-zinc-100 dark:bg-zinc-900 rounded-full overflow-hidden relative z-10">
+        <div className="w-full h-1.5 bg-muted rounded-full overflow-hidden relative z-10">
           <div
             ref={progressRef}
             className={cn(
               "absolute top-0 bottom-0 left-0 rounded-full",
               barColorClass,
             )}
-            style={{
-              width: "0%",
-              // Inject custom localStorage theme color ONLY if it's currently uploading
-              backgroundColor:
-                !isError && !isSuccess ? primaryColor : undefined,
-            }}
+            style={{ width: "0%" }}
           />
         </div>
       </div>

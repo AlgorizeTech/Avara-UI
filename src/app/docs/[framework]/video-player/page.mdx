@@ -1,0 +1,839 @@
+import { docsPageMetadata } from "@/lib/docs-metadata";
+
+export const metadata = docsPageMetadata("video-player");
+
+import { ExampleShowcase } from "@/components/site/Sandbox";
+import { extractCode } from "@/lib/code";
+
+# Video Player
+
+An embeddable, hardware-accelerated video hero for landing pages and high-conversion sections. Features a glassmorphism CTA, automatic dark/light mode responsiveness, and full keyboard accessibility.
+
+Three independent components live on this page, and each installs on its own:
+
+- **`VideoPlayer`** — the poster hero. `playbackMode` opens the video in a **modal**, swaps it **inline** into the card, or renders it **directly** on load; `source` puts either a YouTube embed or a native HTML5 `<video>` behind it. No player library.
+- **`PlyrPlayer`** — [Plyr](https://plyr.io) driving HTML5 files, YouTube and Vimeo behind one skinnable control bar.
+- **`JwPlayer`** — [JW Player](https://jwplayer.com) with colour skin presets, for teams already on JW's platform.
+
+Reach for the first unless you need adaptive streaming, DRM or a shared control bar across providers — it adds no player dependency at all. Looking for audio? The <DocLink to="audio-player">Audio Player</DocLink> has its own page.
+
+## YouTube & native video
+
+Click the CTA in any preview to start playback. In `modal` mode `Esc` closes the dialog and focus returns to the play button.
+
+export const usageDefault = `import { VideoPlayer } from "@/components/custom/blocks/VideoPlayerBlock";
+
+export default function HeroSection() {
+  return (
+    <VideoPlayer
+      badge="Nature 4K"
+      title="Wilderness Unbound"
+      subtitle="A cinematic journey through serene mountain vistas and ancient forests."
+      playButtonLabel="Watch Film"
+      videoUrl="https://www.youtube.com/embed/LXb3EKWsInQ"
+      thumbnailUrl="https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_1920,c_limit/v1790146210/photo-1507525428034-b723cf961d3e-1790146212208.jpg"
+    />
+  );
+}`;
+
+export const usageInline = `import { VideoPlayer } from "@/components/custom/blocks/VideoPlayerBlock";
+
+export default function InlineHero() {
+  return (
+    <VideoPlayer
+      playbackMode="inline"
+      badge="Nature 4K"
+      title="Wilderness Unbound"
+      subtitle="The player swaps into the card itself — no overlay, no scroll lock."
+      playButtonLabel="Play Here"
+      videoUrl="https://www.youtube.com/embed/LXb3EKWsInQ"
+      thumbnailUrl="https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_1920,c_limit/v1790146210/photo-1507525428034-b723cf961d3e-1790146212208.jpg"
+    />
+  );
+}`;
+
+export const usageDirect = `import { VideoPlayer } from "@/components/custom/blocks/VideoPlayerBlock";
+
+export default function DirectEmbedHero() {
+  return (
+    <VideoPlayer
+      playbackMode="direct"
+      title="Wilderness Unbound"
+      videoUrl="https://www.youtube.com/embed/LXb3EKWsInQ"
+    />
+  );
+}`;
+
+export const usageNative = `import { VideoPlayer } from "@/components/custom/blocks/VideoPlayerBlock";
+
+export default function NativeVideoHero() {
+  return (
+    <VideoPlayer
+      source="video"
+      videoType="video/mp4"
+      playbackMode="direct"
+      title="View From A Blue Moon"
+      subtitle="A plain video element with the browser's own controls"
+      videoUrl="https://cdn.plyr.io/static/demo/View_From_A_Blue_Moon_Trailer-576p.mp4"
+      thumbnailUrl="https://cdn.plyr.io/static/demo/View_From_A_Blue_Moon_Trailer-HD.jpg"
+    />
+  );
+}`;
+
+export const usageNativeModal = `import { VideoPlayer } from "@/components/custom/blocks/VideoPlayerBlock";
+
+const track = (event: string) => console.log(event);
+
+export default function NativeModalHero() {
+  return (
+    <VideoPlayer
+      source="video"
+      videoType="video/mp4"
+      modalSize="full"
+      aspectRatio="21/9"
+      badge="Self-hosted"
+      title="View From A Blue Moon"
+      subtitle="A self-hosted file behind the poster hero, opening full width."
+      playButtonLabel="Play Trailer"
+      videoUrl="https://cdn.plyr.io/static/demo/View_From_A_Blue_Moon_Trailer-576p.mp4"
+      thumbnailUrl="https://cdn.plyr.io/static/demo/View_From_A_Blue_Moon_Trailer-HD.jpg"
+      onPlay={() => track("hero_video_opened")}
+      onClose={() => track("hero_video_closed")}
+    />
+  );
+}`;
+
+<ExampleShowcase
+  name="video-player"
+  columns={1}
+  examples={[
+    {
+      title: "Modal player",
+      subheading:
+        "The default. A full-width 4K nature preview, glass CTA button and a centered dialog player.",
+      propNotes: [
+        {
+          prop: "playbackMode",
+          value: '"modal"',
+          effect:
+            "opens the video in a centered dialog. `Esc` closes it, the page behind it stops scrolling, and focus returns to the play button.",
+        },
+        {
+          prop: "thumbnailUrl",
+          effect:
+            "is the preview background and `videoUrl` the embed that only loads once the modal opens.",
+        },
+        {
+          prop: "modalSize",
+          effect:
+            "sizes the dialog — md | lg | xl | full. `full` fills the viewport at 90vh.",
+        },
+      ],
+      props: { playbackMode: "modal" },
+      usage: usageDefault,
+      code: extractCode("src/components/custom/blocks/VideoPlayerBlock.tsx"),
+    },
+    {
+      title: "Inline player",
+      subheading:
+        "Same poster hero, but the player swaps into the card instead of opening an overlay.",
+      propNotes: [
+        {
+          prop: "playbackMode",
+          value: '"inline"',
+          effect:
+            "replaces the poster with the player in place. Nothing covers the page and body scrolling is untouched, so it is safe inside a scrolling column or a carousel slide.",
+        },
+        {
+          lead: "The close button restores the poster — use it over",
+          prop: "playbackMode",
+          value: '"modal"',
+          effect: "when the hero sits mid-page rather than above the fold.",
+        },
+      ],
+      props: { playbackMode: "inline" },
+      usage: usageInline,
+    },
+    {
+      title: "Direct embed",
+      subheading:
+        "No poster at all — the embed renders on load and keeps its own title chrome.",
+      propNotes: [
+        {
+          prop: "playbackMode",
+          value: '"direct"',
+          effect:
+            "drops the thumbnail and the CTA, so the embed is the whole component.",
+        },
+        {
+          lead: "No copy is drawn over an embed:",
+          prop: "source",
+          value: '"youtube"',
+          effect:
+            "already renders YouTube's own title bar, and a second one stacked on it is duplicate chrome. `title` still reaches the iframe as its accessible name. The native player below gets the full treatment.",
+        },
+        {
+          prop: "autoPlay",
+          effect:
+            "is only read in this mode — the other two are click-initiated and always start playing. The native player mutes itself when it is set, because browsers block unmuted autoplay.",
+        },
+      ],
+      props: { playbackMode: "direct" },
+      usage: usageDirect,
+    },
+    {
+      title: "Native HTML5 video",
+      subheading:
+        "A self-hosted mp4 with the browser's own controls — no embed, no third-party player.",
+      propNotes: [
+        {
+          prop: "source",
+          value: '"video"',
+          effect:
+            "renders a real `<video>` element instead of an iframe, so `videoUrl` is a media file and `thumbnailUrl` becomes its `poster`.",
+        },
+        {
+          prop: "videoType",
+          value: '"video/mp4"',
+          effect:
+            "goes on the `<source>` so the browser can skip a codec it cannot play. `loop`, `muted` and `controls` pass straight through.",
+        },
+        {
+          lead: "The title sits at the foot of the frame until you press play, then moves to a hover-only top bar the way YouTube does. Set",
+          prop: "showOverlay",
+          value: "{false}",
+          effect: "for a bare player with no copy on it at all.",
+        },
+      ],
+      props: { source: "video", playbackMode: "direct" },
+      usage: usageNative,
+    },
+    {
+      title: "Native video in a modal",
+      subheading:
+        "The same file behind the poster hero, opening ultrawide at full viewport size.",
+      propNotes: [
+        {
+          prop: "source",
+          value: '"video"',
+          effect: "works in every playback mode — the reveal and the player are independent choices.",
+        },
+        {
+          prop: "onPlay",
+          effect:
+            "and `onClose` fire on open and dismiss, which is where analytics goes.",
+        },
+      ],
+      props: {
+        source: "video",
+        playbackMode: "modal",
+        modalSize: "full",
+        aspectRatio: "21/9",
+      },
+      usage: usageNativeModal,
+    },
+  ]}
+/>
+
+### Install the video player
+
+<Installation name="video-player" />
+
+## Plyr player
+
+[Plyr](https://plyr.io) puts one accessible control bar in front of HTML5 files, YouTube and Vimeo, so all three look and behave identically. It installs the `plyr` package and is imported dynamically inside an effect, which keeps the component server-renderable.
+
+export const usagePlyrHtml5 = `import { PlyrPlayer } from "@/components/custom/blocks/VideoPlayerPlyrBlock";
+
+export default function PlyrHero() {
+  return (
+    <PlyrPlayer
+      provider="html5"
+      src="https://cdn.plyr.io/static/demo/View_From_A_Blue_Moon_Trailer-576p.mp4"
+      srcType="video/mp4"
+      posterUrl="https://cdn.plyr.io/static/demo/View_From_A_Blue_Moon_Trailer-HD.jpg"
+      accentColor="#6366f1"
+      title="View From A Blue Moon"
+      subtitle="A native file behind Plyr's accessible, fully keyboard-driven control bar."
+    />
+  );
+}`;
+
+export const usagePlyrYouTube = `import { PlyrPlayer } from "@/components/custom/blocks/VideoPlayerPlyrBlock";
+
+export default function PlyrYouTubeHero() {
+  return (
+    <PlyrPlayer
+      provider="youtube"
+      src="LXb3EKWsInQ"
+      accentColor="#22d3ee"
+      controls={["play-large", "play", "progress", "current-time", "mute", "volume", "fullscreen"]}
+      title="Wilderness Unbound"
+      subtitle="The same control bar in front of a YouTube embed, so both look identical."
+    />
+  );
+}`;
+
+<ExampleShowcase
+  name="video-player-plyr"
+  columns={1}
+  examples={[
+    {
+      title: "Plyr — HTML5",
+      subheading:
+        "A self-hosted mp4 behind Plyr's control bar, skinned with a single CSS variable.",
+      propNotes: [
+        {
+          prop: "provider",
+          value: '"html5"',
+          effect:
+            "plays `src` as a media file. `srcType` goes on the `<source>` and `posterUrl` on the `<video>`.",
+        },
+        {
+          prop: "accentColor",
+          effect:
+            "sets Plyr's `--plyr-color-main`, which is what actually colours the control bar, the progress fill and the focus ring.",
+        },
+      ],
+      props: { provider: "html5", mediaType: "video" },
+      usage: usagePlyrHtml5,
+      code: extractCode(
+        "src/components/custom/blocks/VideoPlayerPlyrBlock.tsx",
+      ),
+    },
+    {
+      title: "Plyr — YouTube",
+      subheading:
+        "A YouTube embed wearing exactly the same controls as the file above.",
+      propNotes: [
+        {
+          prop: "provider",
+          value: '"youtube"',
+          effect:
+            "accepts a watch URL or a bare video id — `src` is normalised to the embed id either way. `vimeo` works the same.",
+        },
+        {
+          prop: "controls",
+          effect:
+            "takes Plyr's control-name array in bar order, so you can drop settings, captions or the volume slider.",
+        },
+      ],
+      props: { provider: "youtube", mediaType: "video" },
+      usage: usagePlyrYouTube,
+    },
+  ]}
+/>
+
+### Install the Plyr player
+
+<Installation name="video-player-plyr" showSetupPath={false} />
+
+## JW Player
+
+[JW Player](https://jwplayer.com) is a licensed, remotely hosted library rather than an npm package, so `JwPlayer` loads it from a `libraryUrl` you supply and falls back to a native `<video>` if it is unavailable. The previews below run on JW's public documentation library — see the setup note under Installation before shipping.
+
+export const usageJwDefault = `import { JwPlayer } from "@/components/custom/blocks/VideoPlayerJwBlock";
+
+export default function JwHero() {
+  return (
+    <JwPlayer
+      libraryUrl="https://cdn.jwplayer.com/libraries/YOUR_PLAYER_ID.js"
+      playlistUrl="https://cdn.jwplayer.com/v2/media/hWF9vG66"
+      posterUrl="https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_1920,c_limit/v1790146210/photo-1506744038136-46273834b3fb-1790146212208.jpg"
+      title="Enterprise-grade video delivery"
+      subtitle="JW's own control bar, untouched."
+    />
+  );
+}`;
+
+export const usageJwSkin = `import { JwPlayer } from "@/components/custom/blocks/VideoPlayerJwBlock";
+
+export default function SkinnedJwHero() {
+  return (
+    <JwPlayer
+      libraryUrl="https://cdn.jwplayer.com/libraries/YOUR_PLAYER_ID.js"
+      skin="midnight"
+      playlistUrl="https://cdn.jwplayer.com/v2/media/hWF9vG66"
+      posterUrl="https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_1920,c_limit/v1790146210/photo-1506744038136-46273834b3fb-1790146212208.jpg"
+      title="Skinned to your brand"
+      subtitle="Control bar, menus, time slider and tooltips, all from one skin config."
+    />
+  );
+}`;
+
+export const usageJwCustom = `import { JwPlayer } from "@/components/custom/blocks/VideoPlayerJwBlock";
+
+export default function BrandedJwHero() {
+  return (
+    <JwPlayer
+      libraryUrl="https://cdn.jwplayer.com/libraries/YOUR_PLAYER_ID.js"
+      file="https://cdn.example.com/media/launch-film.m3u8"
+      posterUrl="https://cdn.example.com/media/launch-film.jpg"
+      skinConfig={{
+        controlbar: { background: "rgba(0,0,0,0)", icons: "#fafafa", iconsActive: "#f43f5e", text: "#fafafa" },
+        timeslider: { progress: "#f43f5e", rail: "rgba(255,255,255,0.25)" },
+      }}
+      playerOptions={{ playbackRateControls: true, stretching: "uniform" }}
+      title="Your palette, JW's pipeline"
+      subtitle="skinConfig takes the raw JW skin object; playerOptions merges into setup()."
+    />
+  );
+}`;
+
+<ExampleShowcase
+  name="video-player-jw"
+  columns={1}
+  examples={[
+    {
+      title: "JW Player — default skin",
+      subheading:
+        "JW's own control bar, untouched, around a JW-hosted playlist.",
+      propNotes: [
+        {
+          prop: "libraryUrl",
+          effect:
+            "is the JW library script. It defaults to JW's public docs library so the component works out of the box — replace it with your own player id before shipping.",
+        },
+        {
+          prop: "playlistUrl",
+          effect:
+            "points at a JW playlist or media endpoint; use `file` instead for a plain mp4 or HLS manifest.",
+        },
+      ],
+      props: { skin: "default" },
+      usage: usageJwDefault,
+      code: extractCode("src/components/custom/blocks/VideoPlayerJwBlock.tsx"),
+    },
+    {
+      title: "JW Player — skinned",
+      subheading:
+        "The same player with a colour preset applied to the control bar, menus, time slider and tooltips.",
+      propNotes: [
+        {
+          prop: "skin",
+          value: '"midnight"',
+          effect:
+            "picks a pre-mixed colour config — default | midnight | neon | sunset | minimal.",
+        },
+        {
+          prop: "skinConfig",
+          effect:
+            "takes the raw JW skin object and wins over `skin`; `skinUrl` and `skinName` point at a custom stylesheet instead.",
+        },
+      ],
+      props: { skin: "midnight" },
+      usage: usageJwSkin,
+    },
+    {
+      title: "JW Player — custom palette",
+      subheading:
+        "A transparent control bar over your own media, with extra JW options merged into setup.",
+      propNotes: [
+        {
+          prop: "skin",
+          value: '"minimal"',
+          effect:
+            "removes the control bar background so it sits directly on the frame.",
+        },
+        {
+          prop: "playerOptions",
+          effect:
+            "is merged last into `jwplayer().setup()` — the escape hatch for anything the props do not cover.",
+        },
+      ],
+      props: { skin: "minimal" },
+      usage: usageJwCustom,
+    },
+  ]}
+/>
+
+### Install the JW player
+
+<Installation name="video-player-jw" showSetupPath={false} />
+
+### JW Player setup
+
+`JwPlayer` has no npm dependency: JW ships a licensed library from its own CDN, and the component loads it at runtime.
+
+1. Create a player in the [JW Dashboard](https://dashboard.jwplayer.com) and copy its cloud-hosted library URL — `https://cdn.jwplayer.com/libraries/<PLAYER_ID>.js`.
+2. Pass it as `libraryUrl`. For a self-hosted build, also pass the `licenseKey` from your player settings.
+3. Leave `libraryUrl` unset only while evaluating. The default is JW's public documentation library, which carries JW's branding and can be rotated or rate-limited without notice.
+
+If the library fails to load, the component renders a native `<video>` with the poster and a visible warning rather than a black box — so a licence problem degrades instead of breaking the page.
+
+## Features
+
+<div className="grid grid-cols-1 sm:grid-cols-2 gap-4 my-6 not-prose">
+  <div className="p-6 rounded-2xl border border-border bg-card">
+    <h3 className="text-lg font-semibold text-card-foreground mb-2">Three Reveal Modes</h3>
+    <p className="text-muted-foreground text-sm">Open in a dialog, swap the player into the card in place, or render it directly on load — one prop, no layout rewrite.</p>
+  </div>
+  <div className="p-6 rounded-2xl border border-border bg-card">
+    <h3 className="text-lg font-semibold text-card-foreground mb-2">Four Player Backends</h3>
+    <p className="text-muted-foreground text-sm">YouTube embeds, native HTML5 video, Plyr and JW Player — sharing one hero card, one title treatment and one glow treatment.</p>
+  </div>
+  <div className="p-6 rounded-2xl border border-border bg-card">
+    <h3 className="text-lg font-semibold text-card-foreground mb-2">Deferred Media Weight</h3>
+    <p className="text-muted-foreground text-sm">In modal and inline mode nothing but the poster loads until a click, so an embed never lands on your Largest Contentful Paint.</p>
+  </div>
+  <div className="p-6 rounded-2xl border border-border bg-card">
+    <h3 className="text-lg font-semibold text-card-foreground mb-2">Responsive Aspect Ratios</h3>
+    <p className="text-muted-foreground text-sm">16:9, ultrawide 21:9, classic 4:3 and square 1:1, forwarded to Plyr and JW in their own ratio formats so the frame never jumps.</p>
+  </div>
+  <div className="p-6 rounded-2xl border border-border bg-card">
+    <h3 className="text-lg font-semibold text-card-foreground mb-2">Keyboard Accessible</h3>
+    <p className="text-muted-foreground text-sm">The play CTA is a real button, the modal is a labelled dialog, <code>Esc</code> closes it, the page behind it stops scrolling, and focus returns to the trigger.</p>
+  </div>
+  <div className="p-6 rounded-2xl border border-border bg-card">
+    <h3 className="text-lg font-semibold text-card-foreground mb-2">Themed Accent</h3>
+    <p className="text-muted-foreground text-sm">Play buttons and progress fills read <code>--theme-color</code>, falling back to your <code>--primary</code>, so the players match the rest of the page.</p>
+  </div>
+</div>
+
+## Best Practices & Guidelines
+
+<div className="flex flex-col gap-4 my-6 not-prose">
+  <div className="rounded-xl border border-foreground/[0.06] bg-foreground/[0.03] p-4">
+    <h4 className="font-sans text-[14px] font-semibold text-foreground mb-1">Picking a playback mode</h4>
+    <p className="text-[13px] leading-relaxed text-foreground/50">Use <code>modal</code> above the fold, where the video is the page's main call to action. Use <code>inline</code> mid-page — an overlay that hijacks the whole viewport from a card the reader scrolled past reads as an interruption. Use <code>direct</code> when the video <em>is</em> the content, such as a documentation walkthrough.</p>
+  </div>
+  <div className="rounded-xl border border-primary/15 bg-primary/5 p-4">
+    <h4 className="font-sans text-[14px] font-semibold text-primary mb-1">Autoplay is a request, not a guarantee</h4>
+    <p className="text-[13px] leading-relaxed text-foreground/50">Browsers block autoplay with sound. <code>autoPlay</code> only applies to <code>playbackMode="direct"</code>, and the native player mutes itself when it is set. In <code>modal</code> and <code>inline</code> the click <em>is</em> the gesture, so playback starts on its own and the component adds <code>autoplay=1</code> to the embed URL for you.</p>
+  </div>
+  <div className="rounded-xl border border-foreground/[0.06] bg-foreground/[0.03] p-4">
+    <h4 className="font-sans text-[14px] font-semibold text-foreground mb-1">Optimizing thumbnails</h4>
+    <p className="text-[13px] leading-relaxed text-foreground/50">Give <code>thumbnailUrl</code> a resolution that matches your <code>aspectRatio</code>. It is the poster, the LCP candidate and — for <code>source="video"</code> — the <code>&lt;video&gt;</code> element's own <code>poster</code>, so a mismatched crop shows up in all three places.</p>
+  </div>
+  <div className="rounded-xl border border-foreground/[0.06] bg-foreground/[0.03] p-4">
+    <h4 className="font-sans text-[14px] font-semibold text-foreground mb-1">The title treatment follows playback</h4>
+    <p className="text-[13px] leading-relaxed text-foreground/50">Before anything has played, the title and subtitle sit at the foot of the frame and stay there — nothing is happening yet, so they are free to introduce the video, and nobody should have to hover to learn what they are about to watch. Once playback starts the picture is the point, so the copy moves to a top bar that only appears on hover, the way YouTube does. It never returns to the bottom, because pausing does not undo having started. This applies to the players we draw the chrome for — the native <code>&lt;video&gt;</code>, Plyr and JW. A YouTube or Vimeo <em>embed</em> already paints its own title bar, so nothing is layered on top of it.</p>
+  </div>
+  <div className="rounded-xl border border-foreground/[0.06] bg-foreground/[0.03] p-4">
+    <h4 className="font-sans text-[14px] font-semibold text-foreground mb-1">Choosing a backend</h4>
+    <p className="text-[13px] leading-relaxed text-foreground/50">Start with <code>VideoPlayer</code> — it ships no player library. Move to Plyr when you need one consistent, skinnable control bar across YouTube, Vimeo and self-hosted files. Move to JW Player when you are already on JW's platform for adaptive streaming, DRM or analytics.</p>
+  </div>
+</div>
+
+## Props Reference
+
+### VideoPlayer
+
+<div className="overflow-x-auto mb-8">
+  <table>
+    <thead>
+      <tr>
+        <th>Prop</th>
+        <th>Type</th>
+        <th>Default</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><code>videoUrl</code></td>
+        <td><code>string</code></td>
+        <td><code>"https://www.youtube..."</code></td>
+        <td>Embed URL for <code>source="youtube"</code>, or a playable media file for <code>source="video"</code>.</td>
+      </tr>
+      <tr>
+        <td><code>playbackMode</code></td>
+        <td><code>"modal" | "inline" | "direct"</code></td>
+        <td><code>"modal"</code></td>
+        <td>How the player is revealed: a centered dialog, an in-place swap inside the card, or immediately on load with the title laid over the frame.</td>
+      </tr>
+      <tr>
+        <td><code>source</code></td>
+        <td><code>"youtube" | "video"</code></td>
+        <td><code>"youtube"</code></td>
+        <td>Renders an iframe embed or a native <code>&lt;video&gt;</code> element. Independent of <code>playbackMode</code>.</td>
+      </tr>
+      <tr>
+        <td><code>videoType</code></td>
+        <td><code>string</code></td>
+        <td><code>undefined</code></td>
+        <td>MIME type on the <code>&lt;source&gt;</code> for <code>source="video"</code>, e.g. <code>video/mp4</code>.</td>
+      </tr>
+      <tr>
+        <td><code>thumbnailUrl</code></td>
+        <td><code>string</code></td>
+        <td><code>"https://images.unsplash..."</code></td>
+        <td>Poster image for the card, and the <code>poster</code> attribute of the native player.</td>
+      </tr>
+      <tr>
+        <td><code>thumbnailAlt</code></td>
+        <td><code>string</code></td>
+        <td><code>"Nature Wilderness..."</code></td>
+        <td>Alt text for the poster image.</td>
+      </tr>
+      <tr>
+        <td><code>badge</code></td>
+        <td><code>string</code></td>
+        <td><code>"Wilderness Exploration"</code></td>
+        <td>Pill badge with an animated icon, top-left over the poster. Poster hero only — <code>direct</code> mode shows just the title and subtitle.</td>
+      </tr>
+      <tr>
+        <td><code>title</code></td>
+        <td><code>string</code></td>
+        <td><code>"Experience Untouched..."</code></td>
+        <td>Headline, and the accessible name of the modal dialog.</td>
+      </tr>
+      <tr>
+        <td><code>subtitle</code></td>
+        <td><code>string</code></td>
+        <td><code>"Embark on an immersive..."</code></td>
+        <td>Secondary paragraph under the title.</td>
+      </tr>
+      <tr>
+        <td><code>playButtonLabel</code></td>
+        <td><code>string</code></td>
+        <td><code>"Watch Nature Documentary"</code></td>
+        <td>Label inside the glassmorphic CTA. Not rendered in <code>direct</code> mode.</td>
+      </tr>
+      <tr>
+        <td><code>aspectRatio</code></td>
+        <td><code>"16/9" | "21/9" | "4/3" | "1/1"</code></td>
+        <td><code>"16/9"</code></td>
+        <td>Aspect ratio of the card and of the modal frame.</td>
+      </tr>
+      <tr>
+        <td><code>modalSize</code></td>
+        <td><code>"md" | "lg" | "xl" | "full"</code></td>
+        <td><code>"lg"</code></td>
+        <td>Width of the dialog. <code>full</code> fills the viewport at 90vh. Only read in <code>modal</code> mode.</td>
+      </tr>
+      <tr>
+        <td><code>autoPlay</code></td>
+        <td><code>boolean</code></td>
+        <td><code>false</code></td>
+        <td>Starts playback on load. Only read in <code>direct</code> mode; the native player mutes itself when it is set.</td>
+      </tr>
+      <tr>
+        <td><code>muted</code> / <code>loop</code> / <code>controls</code></td>
+        <td><code>boolean</code></td>
+        <td><code>false</code> / <code>false</code> / <code>true</code></td>
+        <td>Passed to the native <code>&lt;video&gt;</code>. Ignored for <code>source="youtube"</code>.</td>
+      </tr>
+      <tr>
+        <td><code>showOverlay</code></td>
+        <td><code>boolean</code></td>
+        <td><code>true</code></td>
+        <td>The title treatment in <code>direct</code> mode: at the foot of the frame until the video is first played, then a hover-only bar at the top. <code>source="video"</code> only — an embed keeps its own title chrome.</td>
+      </tr>
+      <tr>
+        <td><code>enableGlow</code></td>
+        <td><code>boolean</code></td>
+        <td><code>true</code></td>
+        <td>Ambient blur gradient behind the card.</td>
+      </tr>
+      <tr>
+        <td><code>onPlay</code> / <code>onClose</code></td>
+        <td><code>() =&gt; void</code></td>
+        <td><code>undefined</code></td>
+        <td>Fire when the player opens and when it is dismissed. Not called in <code>direct</code> mode, which never opens or closes.</td>
+      </tr>
+      <tr>
+        <td><code>className</code></td>
+        <td><code>string</code></td>
+        <td><code>undefined</code></td>
+        <td>Classes on the outer wrapper. All other standard div attributes pass through.</td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+### PlyrPlayer
+
+<div className="overflow-x-auto mb-8">
+  <table>
+    <thead>
+      <tr>
+        <th>Prop</th>
+        <th>Type</th>
+        <th>Default</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><code>src</code></td>
+        <td><code>string</code></td>
+        <td><code>"https://cdn.plyr.io/..."</code></td>
+        <td>A media file for <code>html5</code>; a watch URL or bare video id for <code>youtube</code> and <code>vimeo</code>.</td>
+      </tr>
+      <tr>
+        <td><code>provider</code></td>
+        <td><code>"html5" | "youtube" | "vimeo"</code></td>
+        <td><code>"html5"</code></td>
+        <td>Which backend Plyr wraps. All three get the same control bar and keyboard shortcuts.</td>
+      </tr>
+      <tr>
+        <td><code>mediaType</code></td>
+        <td><code>"video" | "audio"</code></td>
+        <td><code>"video"</code></td>
+        <td>HTML5 only. <code>audio</code> drops the video frame and sizes the card to the control bar.</td>
+      </tr>
+      <tr>
+        <td><code>srcType</code></td>
+        <td><code>string</code></td>
+        <td><code>"video/mp4"</code></td>
+        <td>MIME type on the HTML5 <code>&lt;source&gt;</code>.</td>
+      </tr>
+      <tr>
+        <td><code>posterUrl</code></td>
+        <td><code>string</code></td>
+        <td><code>"https://cdn.plyr.io/..."</code></td>
+        <td>Poster for the HTML5 video. Embeds supply their own.</td>
+      </tr>
+      <tr>
+        <td><code>accentColor</code></td>
+        <td><code>string</code></td>
+        <td><code>undefined</code></td>
+        <td>Sets Plyr's <code>--plyr-color-main</code> on the wrapper — control bar, progress fill and focus ring.</td>
+      </tr>
+      <tr>
+        <td><code>controls</code></td>
+        <td><code>string[]</code></td>
+        <td><code>undefined</code></td>
+        <td>Plyr control names in bar order. Omit for Plyr's default set.</td>
+      </tr>
+      <tr>
+        <td><code>aspectRatio</code></td>
+        <td><code>"16/9" | "21/9" | "4/3" | "1/1"</code></td>
+        <td><code>"16/9"</code></td>
+        <td>Frame ratio, forwarded to Plyr's own <code>ratio</code> option in <code>w:h</code> form.</td>
+      </tr>
+      <tr>
+        <td><code>iconUrl</code></td>
+        <td><code>string</code></td>
+        <td><code>undefined</code></td>
+        <td>Overrides Plyr's CDN icon sprite. Point it at a self-hosted <code>plyr.svg</code> to avoid a third-party request.</td>
+      </tr>
+      <tr>
+        <td><code>autoPlay</code> / <code>muted</code> / <code>loop</code></td>
+        <td><code>boolean</code></td>
+        <td><code>false</code></td>
+        <td>Passed to Plyr. <code>autoPlay</code> forces <code>muted</code>, since browsers block the alternative.</td>
+      </tr>
+      <tr>
+        <td><code>title</code> / <code>subtitle</code></td>
+        <td><code>string</code></td>
+        <td><code>"View From A Blue Moon"</code> / …</td>
+        <td>Laid over the frame: at the foot until the video is first played (clear of the control bar), then a hover-only bar at the top. An audio player has no picture, so its copy sits above the bar in normal flow instead.</td>
+      </tr>
+      <tr>
+        <td><code>showOverlay</code></td>
+        <td><code>boolean</code></td>
+        <td><code>true</code></td>
+        <td>Whether the title/subtitle overlay renders at all.</td>
+      </tr>
+      <tr>
+        <td><code>onReady</code></td>
+        <td><code>() =&gt; void</code></td>
+        <td><code>undefined</code></td>
+        <td>Fires once Plyr has initialised and replaced the raw media element.</td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+### JwPlayer
+
+<div className="overflow-x-auto mb-8">
+  <table>
+    <thead>
+      <tr>
+        <th>Prop</th>
+        <th>Type</th>
+        <th>Default</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><code>libraryUrl</code></td>
+        <td><code>string</code></td>
+        <td><code>JW_DEMO_LIBRARY_URL</code></td>
+        <td>JW library script. Defaults to JW's public documentation library — replace it with your own <code>https://cdn.jwplayer.com/libraries/&lt;PLAYER_ID&gt;.js</code> before shipping.</td>
+      </tr>
+      <tr>
+        <td><code>licenseKey</code></td>
+        <td><code>string</code></td>
+        <td><code>undefined</code></td>
+        <td>Only for a self-hosted library build. Cloud-hosted libraries embed their own licence.</td>
+      </tr>
+      <tr>
+        <td><code>playlistUrl</code></td>
+        <td><code>string</code></td>
+        <td><code>"https://cdn.jwplayer.com/v2/media/hWF9vG66"</code></td>
+        <td>A JW playlist or media endpoint. Takes precedence over <code>file</code>.</td>
+      </tr>
+      <tr>
+        <td><code>file</code></td>
+        <td><code>string</code></td>
+        <td><code>undefined</code></td>
+        <td>A direct mp4 or HLS manifest. Also the source of the native fallback player.</td>
+      </tr>
+      <tr>
+        <td><code>posterUrl</code></td>
+        <td><code>string</code></td>
+        <td><code>"https://images.unsplash..."</code></td>
+        <td>Passed to JW as <code>image</code>, and used as the fallback player's poster.</td>
+      </tr>
+      <tr>
+        <td><code>skin</code></td>
+        <td><code>"default" | "midnight" | "neon" | "sunset" | "minimal"</code></td>
+        <td><code>"default"</code></td>
+        <td>Pre-mixed JW colour config for the control bar, menus, time slider and tooltips.</td>
+      </tr>
+      <tr>
+        <td><code>skinConfig</code></td>
+        <td><code>JwSkinConfig</code></td>
+        <td><code>undefined</code></td>
+        <td>Raw JW <code>skin</code> object. Wins over <code>skin</code> when both are set.</td>
+      </tr>
+      <tr>
+        <td><code>skinUrl</code> / <code>skinName</code></td>
+        <td><code>string</code></td>
+        <td><code>undefined</code></td>
+        <td>An external skin stylesheet and the class name it defines, for a fully custom look.</td>
+      </tr>
+      <tr>
+        <td><code>autoStart</code> / <code>muted</code> / <code>repeat</code> / <code>controls</code></td>
+        <td><code>boolean</code></td>
+        <td><code>false</code> / <code>false</code> / <code>false</code> / <code>true</code></td>
+        <td>JW playback flags. <code>autoStart</code> forces <code>muted</code>.</td>
+      </tr>
+      <tr>
+        <td><code>aspectRatio</code></td>
+        <td><code>"16/9" | "21/9" | "4/3" | "1/1"</code></td>
+        <td><code>"16/9"</code></td>
+        <td>Frame ratio, forwarded to JW's <code>aspectratio</code> in <code>w:h</code> form.</td>
+      </tr>
+      <tr>
+        <td><code>playerOptions</code></td>
+        <td><code>Record&lt;string, unknown&gt;</code></td>
+        <td><code>undefined</code></td>
+        <td>Merged last into <code>jwplayer().setup()</code>. The escape hatch for any JW option the props do not cover.</td>
+      </tr>
+      <tr>
+        <td><code>title</code> / <code>subtitle</code></td>
+        <td><code>string</code></td>
+        <td><code>"Enterprise-grade video delivery"</code> / …</td>
+        <td>Laid over the frame: at the foot until the video is first played (clear of JW's control bar), then a hover-only bar at the top.</td>
+      </tr>
+      <tr>
+        <td><code>showOverlay</code></td>
+        <td><code>boolean</code></td>
+        <td><code>true</code></td>
+        <td>Whether the title/subtitle overlay renders at all.</td>
+      </tr>
+      <tr>
+        <td><code>onReady</code></td>
+        <td><code>() =&gt; void</code></td>
+        <td><code>undefined</code></td>
+        <td>Fires on JW's <code>ready</code> event. A failed load or setup falls back to the native player instead.</td>
+      </tr>
+    </tbody>
+  </table>
+</div>

@@ -1,12 +1,15 @@
+export const metadata = docsPageMetadata("text-animation", {
+  title: "Text Animation",
+  description: "A versatile text animation component built on plain CSS keyframes, featuring typewriter, fade, gradient shine, and blur reveal effects."
+});
+
 # Text Animation
 
-A powerful typography component that breathes life into your text using Framer Motion. It supports multiple animation variants like typewriter effects, focus reveals, 3D flips, and more.
+A powerful typography component that breathes life into your text with plain CSS keyframes — no animation library. It supports multiple animation variants like typewriter effects, focus reveals, 3D flips, and more.
 
 It is perfect for hero sections, landing page headers, and grabbing user attention.
 
-## Examples
-
-Each effect fires when it scrolls into view (`whileInView`, once), so scroll a preview back into frame — or hit its reload button — to replay. The first example's **Code** tab contains the full component source.
+Each effect fires when it scrolls into view (once, via an `IntersectionObserver`), so scroll a preview back into frame — or hit its reload button — to replay.
 
 export const usageDefault = `import { TextAnimation } from "@/components/custom/blocks/TextAnimationBlock";
 
@@ -16,31 +19,45 @@ export default function HeroSection() {
   );
 }`;
 
-export const usageVariants = `// Seven effects behind one prop.
+export const usageVariants = `import { TextAnimation } from "@/components/custom/blocks/TextAnimationBlock";
 
-`;
+export default function AnimationVariants() {
+  // Seven effects behind one prop.
+  return (
 
-export const usageTiming = `// \`duration\` stretches each character's transition, \`delay\` holds the whole
-// sequence back — useful for staging a headline against a subheadline.
-`;
+  );
+}`;
 
-export const usageAs = `// \`as\` swaps the rendered element so the headline keeps its document
-// meaning; \`style\` and \`className\` pass straight through.
-`;
+export const usageTiming = `import { TextAnimation } from "@/components/custom/blocks/TextAnimationBlock";
+
+export default function TimedAnimation() {
+  // \`duration\` stretches each character's transition, \`delay\` holds the whole
+  // sequence back — useful for staging a headline against a subheadline.
+  return (
+    
+  );
+}`;
+
+export const usageAs = `import { TextAnimation } from "@/components/custom/blocks/TextAnimationBlock";
+
+export default function HeadlineAnimation() {
+  // \`as\` swaps the rendered element so the headline keeps its document
+  // meaning; \`style\` and \`className\` pass straight through.
+  return (
+    
+  );
+}`;
 
 ## Installation
 
-### 1. Install Dependencies
-
-This component uses `framer-motion` for smooth animations and standard Tailwind utilities for styling.
+Register the @algorize-ui registry once per project, then add the component:
 
 ```bash
-npm install framer-motion clsx tailwind-merge
+npx shadcn@latest registry add @algorize-ui=https://algorize-ui.vercel.app/r/{name}.json
+npx shadcn@latest add @algorize-ui/text-animation
 ```
 
-### 2. Copy the Component
-
-Copy the full engine code from the **Code** tab of the first example above into `components/custom/blocks/TextAnimationBlock.tsx`.
+## Examples
 
 ## Props Reference
 
@@ -120,8 +137,18 @@ Copy the full engine code from the **Code** tab of the first example above into 
 
           Accepts all native HTML attributes (e.g., id, onClick) which are seamlessly forwarded to the wrapper element.
 
+          TextAnimation
+
+          renderWord
+
+          (word: string, index: number) =&gt; ReactNode
+
+          —
+
+          Swap what a word renders as while keeping its entrance — a coloured span, a word that later changes. Word-level variants only: pop-in, flip, blur-in-up. Component Wall uses it for its accent and turning word.
+
 ---
 
-**Component Path:** `nextjs\text-animation\page.mdx`
+**Component Path:** `[framework]\text-animation\page.mdx`
 
-**Web Version:** Visit the interactive version at the corresponding URL on the Next.js documentation site for live previews and interactive examples.
+**Web Version:** Visit the corresponding URL on the Algorize UI documentation site for live previews and interactive examples.

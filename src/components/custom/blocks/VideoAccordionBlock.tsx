@@ -1,8 +1,11 @@
 "use client";
 
 import { cn } from "@/lib/utils";
-import gsap from "gsap";
 import React, { useEffect, useRef, useState } from "react";
+
+/** GSAP's power3.out, sampled into a CSS `linear()` curve. */
+const EASE_POWER3_OUT =
+  "linear(0, .0963, .1855, .2679, .3439, .4138, .478, .5367, .5904, .6392, .6836, .7237, .7599, .7924, .8215, .8474, .8704, .8907, .9085, .924, .9375, .9491, .959, .9674, .9744, .9802, .985, .9888, .9919, .9943, .9961, .9974, .9984, .9991, .9995, .9998, .9999, 1, 1, 1, 1)";
 
 export interface AccordionPanel {
   id: string;
@@ -30,52 +33,45 @@ export const VideoAccordion = React.forwardRef<
   const containerRef = useRef<HTMLDivElement>(null);
   const panelRefs = useRef<(HTMLDivElement | null)[]>([]);
   const videoRefs = useRef<(HTMLVideoElement | null)[]>([]);
-  const titleRefs = useRef<(HTMLHeadingElement | null)[]>([]);
-  const descRefs = useRef<(HTMLParagraphElement | null)[]>([]);
+  const settled = useRef(false);
 
   React.useImperativeHandle(ref, () => containerRef.current as HTMLDivElement);
 
-  // Core GSAP Layout & Playback Engine
+  // Core Layout & Video Playback Engine
   useEffect(() => {
+    // Settle the painted `flex-1` rest state once, so a default-active panel
+    // still grows open on mount instead of appearing already open.
+    if (!settled.current) {
+      void containerRef.current?.offsetWidth;
+      settled.current = true;
+    }
+
     panels.forEach((panel, index) => {
       const panelEl = panelRefs.current[index];
-      const titleEl = titleRefs.current[index];
-      const descEl = descRefs.current[index];
       const videoEl = videoRefs.current[index];
       const isActive = activeId === panel.id;
 
       // 1. Animate the Flexbox Layout (Expansion)
       if (panelEl) {
-        gsap.to(panelEl, {
-          flexGrow: isActive ? 5 : 1, // 5x wider than inactive rails
-          duration: 0.8,
-          ease: "power3.out",
-          overwrite: "auto",
-        });
+        panelEl.style.transition = `flex-grow 0.8s ${EASE_POWER3_OUT}`;
+        panelEl.style.flexGrow = isActive ? "5" : "1"; // 5x wider than inactive rails
       }
 
-      // 2. Animate Text Visibility (Only show when active)
-      if (titleEl && descEl) {
-        gsap.to([titleEl, descEl], {
-          opacity: isActive ? 1 : 0,
-          y: isActive ? 0 : 20,
-          stagger: 0.05, // Slight delay between title and desc
-          duration: 0.6,
-          ease: "power3.out",
-          overwrite: "auto",
-        });
-      }
-
-      // 3. Manage Video Playback explicitly
+      // 2. Handle Video Playback (Only play active/hovered panel, pause others)
       if (videoEl) {
+        videoEl.muted = true;
         if (isActive) {
-          videoEl.play().catch((err) => {
-            console.warn("Autoplay blocked by browser:", err);
-          });
+          const playPromise = videoEl.play();
+          if (playPromise !== undefined) {
+            playPromise.catch(() => {});
+          }
         } else {
           videoEl.pause();
         }
       }
+
+      // 3. Text visibility is rendered below: the rise transitions, the
+      // opacity switches at once.
     });
   }, [activeId, panels]);
 
@@ -99,11 +95,31 @@ export const VideoAccordion = React.forwardRef<
             ref={(el) => {
               panelRefs.current[index] = el;
             }}
-            onMouseEnter={() => setActiveId(panel.id)}
-            onClick={() => setActiveId(panel.id)} // For mobile tap interaction
+            onMouseEnter={() => {
+              setActiveId(panel.id);
+              const vid = videoRefs.current[index];
+              if (vid) {
+                vid.muted = true;
+                vid.play().catch(() => {});
+              }
+            }}
+            onMouseLeave={() => {
+              const vid = videoRefs.current[index];
+              if (vid) {
+                vid.pause();
+              }
+            }}
+            onClick={() => {
+              setActiveId(panel.id);
+              const vid = videoRefs.current[index];
+              if (vid) {
+                vid.muted = true;
+                vid.play().catch(() => {});
+              }
+            }}
             className="relative overflow-hidden rounded-2xl cursor-pointer group min-h-[60px] md:min-w-[60px] flex-1 basis-0 bg-zinc-900"
           >
-            {/* Background Video Layer */}
+            {/* Background Video Layer with Poster fallback when paused */}
             <video
               ref={(el) => {
                 videoRefs.current[index] = el;
@@ -115,7 +131,7 @@ export const VideoAccordion = React.forwardRef<
               playsInline
               preload="auto"
               className={cn(
-                "absolute inset-0 w-full h-full object-cover transition-transform duration-1000",
+                "absolute inset-0 w-full h-full object-cover transition-transform duration-1000 opacity-100",
                 isActive ? "scale-105" : "scale-100",
               )}
             />
@@ -133,24 +149,21 @@ export const VideoAccordion = React.forwardRef<
             {/* Content Payload (Hidden on inactive via inline styles to prevent First-Paint flicker) */}
             <div className="absolute inset-x-0 bottom-0 p-5 md:p-6 flex flex-col justify-end pointer-events-none">
               <h3
-                ref={(el) => {
-                  titleRefs.current[index] = el;
-                }}
                 style={{
                   opacity: isActive ? 1 : 0,
                   transform: isActive ? "translateY(0)" : "translateY(20px)",
+                  transition: `transform 0.6s ${EASE_POWER3_OUT}`,
                 }}
-                className="text-white font-bold tracking-tight text-xl md:text-3xl mb-2 whitespace-normal leading-tight"
+                className="text-white font-semibold tracking-tight text-xl md:text-3xl mb-2 whitespace-normal leading-tight"
               >
                 {panel.title}
               </h3>
               <p
-                ref={(el) => {
-                  descRefs.current[index] = el;
-                }}
                 style={{
                   opacity: isActive ? 1 : 0,
                   transform: isActive ? "translateY(0)" : "translateY(20px)",
+                  // Slight delay between title and desc
+                  transition: `transform 0.6s ${EASE_POWER3_OUT} 0.05s`,
                 }}
                 className="text-white/80 text-sm md:text-base leading-relaxed max-w-lg whitespace-normal line-clamp-3 md:line-clamp-none"
               >

@@ -1,126 +1,52 @@
 "use client";
 
-import React, { forwardRef, useEffect, useState } from "react";
+import React, { forwardRef, useState } from "react";
 import { cn } from "@/lib/utils";
-import {
-  ArrowRight,
-  Check,
-  Copy,
-  Github,
-  Sparkles,
-  Terminal,
-} from "lucide-react";
-import Link from "next/link";
-import { motion, AnimatePresence } from "motion/react";
+import { AnimatedTypographyBlock, type PrefixPosition } from "./AnimatedTypographyBlock";
+import { ArrowRight, Check, Copy, Sparkles, Terminal } from "lucide-react";
 
-/* ═══════════════════════════════════════════════
-   TYPES & INTERFACES
-   ═══════════════════════════════════════════════ */
+const GitHubIcon = (props: React.SVGProps<SVGSVGElement>) => (
+  <svg
+    viewBox="0 0 24 24"
+    fill="currentColor"
+    aria-hidden="true"
+    {...props}
+  >
+    <path
+      fillRule="evenodd"
+      clipRule="evenodd"
+      d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.53 1.032 1.53 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.019 10.019 0 0022 12.017C22 6.484 17.522 2 12 2z"
+    />
+  </svg>
+);
 
-export interface HomepageHeroBlockProps
-  extends React.HTMLAttributes<HTMLElement> {
-  /** Optional badge text displayed inside the top pill badge */
+export interface HomepageHeroBlockProps extends React.HTMLAttributes<HTMLElement> {
   badgeText?: string;
-  /** Badge link URL */
   badgeHref?: string;
-  /** Main static title text prefix before typing words */
   titlePrefix?: string;
-  /** Words to animate in the bounce effect */
   typingWords?: string[];
-  /** Main static title text suffix after typing words */
   titleSuffix?: string;
-  /** Subtitle / description paragraph */
+  /**
+   * Whether the title text before the flipping word holds still ("fixed",
+   * the default) or re-centres as the word changes width ("fluid").
+   */
+  prefixPosition?: PrefixPosition;
   subtitle?: string;
-  /** CLI copy command */
   cliCommand?: string;
-  /** Primary action button label */
+  linkComponent?: React.ElementType;
   primaryActionLabel?: string;
-  /** Primary action button URL */
   primaryActionHref?: string;
-  /** Secondary action button label */
   secondaryActionLabel?: string;
-  /** Secondary action button URL */
   secondaryActionHref?: string;
-  /** Custom accent color (CSS color or tailwind var) */
-  color?: string;
 }
-
-/* ═══════════════════════════════════════════════
-   ACCENT CONTRAST
-   ═══════════════════════════════════════════════
-
-   The picked accent is injected as --primary on the section, so it also
-   becomes the colour of accent *text* (`text-primary`). A pick that sits
-   close to the page surface — white on the light theme, near-black on the
-   dark theme — renders that text invisible.
-
-   So we publish two extra variables: the accent nudged just far enough to
-   stay legible on a light surface, and the same for a dark surface. Accent
-   text reads them through the `dark:` variant, while --primary itself keeps
-   the exact picked colour for glows, borders and tints. */
-
-type Rgb = [number, number, number];
-
-/** Surface luminances of --background in each theme (white / oklch(0.145)). */
-const LIGHT_SURFACE_LUM = 1;
-const DARK_SURFACE_LUM = 0.003;
-/** WCAG AA for large text. Accent text here is display-sized. */
-const MIN_CONTRAST = 3;
-
-const parseColor = (input: string): Rgb | null => {
-  const hex = input.trim().replace(/^#/, "");
-  if (/^[a-f\d]{3}$/i.test(hex)) {
-    const [r, g, b] = hex.split("");
-    return [
-      parseInt(r + r, 16),
-      parseInt(g + g, 16),
-      parseInt(b + b, 16),
-    ];
-  }
-  if (/^[a-f\d]{6}$/i.test(hex)) {
-    return [
-      parseInt(hex.slice(0, 2), 16),
-      parseInt(hex.slice(2, 4), 16),
-      parseInt(hex.slice(4, 6), 16),
-    ];
-  }
-  const m = input.match(/^rgba?\(\s*([\d.]+)[\s,]+([\d.]+)[\s,]+([\d.]+)/i);
-  return m ? [+m[1], +m[2], +m[3]] : null;
-};
-
-const relLuminance = ([r, g, b]: Rgb) => {
-  const f = (v: number) => {
-    const c = v / 255;
-    return c <= 0.03928 ? c / 12.92 : Math.pow((c + 0.055) / 1.055, 2.4);
-  };
-  return 0.2126 * f(r) + 0.7152 * f(g) + 0.0722 * f(b);
-};
-
-const contrast = (a: number, b: number) =>
-  (Math.max(a, b) + 0.05) / (Math.min(a, b) + 0.05);
-
-/** Steps `rgb` toward `target` (0 = black, 255 = white) until it is legible. */
-const ensureContrast = (rgb: Rgb, surfaceLum: number, target: 0 | 255): Rgb => {
-  let out = rgb;
-  for (let i = 0; i < 16; i++) {
-    if (contrast(relLuminance(out), surfaceLum) >= MIN_CONTRAST) break;
-    out = out.map((v) => Math.round(v + (target - v) * 0.12)) as Rgb;
-  }
-  return out;
-};
-
-const toCss = ([r, g, b]: Rgb) => `rgb(${r}, ${g}, ${b})`;
-
-/* ═══════════════════════════════════════════════
-   MAIN BLOCK COMPONENT
-   ═══════════════════════════════════════════════ */
 
 export const HomepageHeroBlock = forwardRef<HTMLElement, HomepageHeroBlockProps>(
   (
     {
+      linkComponent: Link = "a",
       badgeText = "Next-Gen React Components",
       badgeHref = "/docs",
-      titlePrefix = "Build Interactive ",
+      titlePrefix = "Build ",
       typingWords = [
         "Interfaces",
         "Components",
@@ -129,30 +55,19 @@ export const HomepageHeroBlock = forwardRef<HTMLElement, HomepageHeroBlockProps>
         "Dashboards",
       ],
       titleSuffix = "",
-      subtitle = "A meticulous library of copy-paste React components & interactive blocks, engineered for seamless performance with Tailwind CSS, TypeScript, GSAP, and Framer Motion.",
-      cliCommand = "npx docs-ui@latest init",
+      prefixPosition,
+      subtitle = "A meticulous library of React components & interactive blocks, engineered for seamless performance with Tailwind CSS, TypeScript, GSAP, and Motion.",
+      cliCommand = "npx shadcn@latest add @algorize-ui/button",
       primaryActionLabel = "Browse Components",
       primaryActionHref = "/docs",
       secondaryActionLabel = "Star on GitHub",
       secondaryActionHref = "https://github.com/AlgorizeTech",
-      color,
       className,
       ...props
     },
-    ref
+    ref,
   ) => {
     const [copied, setCopied] = useState(false);
-    const [currentWordIndex, setCurrentWordIndex] = useState(0);
-
-    useEffect(() => {
-      if (!typingWords || typingWords.length === 0) return;
-      const interval = setInterval(() => {
-        setCurrentWordIndex((prev) => (prev + 1) % typingWords.length);
-      }, 2400);
-
-      return () => clearInterval(interval);
-    }, [typingWords]);
-
     const handleCopy = () => {
       if (typeof window !== "undefined" && navigator.clipboard) {
         navigator.clipboard.writeText(cliCommand);
@@ -161,51 +76,12 @@ export const HomepageHeroBlock = forwardRef<HTMLElement, HomepageHeroBlockProps>
       }
     };
 
-    const getAccentColor = (col?: string) => {
-      if (!col || col === "primary" || col === "default") return undefined;
-      const presets: Record<string, string> = {
-        indigo: "#6366f1",
-        rose: "#f43f5e",
-        emerald: "#10b981",
-        zinc: "#18181b",
-      };
-      return presets[col] || col;
-    };
-
-    const resolvedColor = getAccentColor(color);
-    const accentRgb = resolvedColor ? parseColor(resolvedColor) : null;
-
-    const customStyle = {
-      // light-dark() keys off `color-scheme`, not the `.dark` class. That
-      // matters: the docs preview iframe syncs the theme by writing token
-      // styles + `color-scheme` inline on <html> without ever adding `.dark`,
-      // so a `dark:` variant would pick the wrong branch in there.
-      // Falls back to --primary so an unthemed hero behaves exactly as before.
-      "--hero-accent-text": accentRgb
-        ? `light-dark(${toCss(
-            ensureContrast(accentRgb, LIGHT_SURFACE_LUM, 0),
-          )}, ${toCss(ensureContrast(accentRgb, DARK_SURFACE_LUM, 255))})`
-        : "var(--primary)",
-      ...(resolvedColor ? { "--primary": resolvedColor } : {}),
-      ...(accentRgb
-        ? {
-            // Text on a `bg-primary` fill needs the opposite of the accent —
-            // otherwise it keeps the theme's own value and can vanish.
-            "--primary-foreground":
-              relLuminance(accentRgb) > 0.45 ? "#09090b" : "#ffffff",
-          }
-        : {}),
-    } as React.CSSProperties;
-
-    const currentWord = typingWords?.[currentWordIndex] || "";
-
     return (
       <section
         ref={ref}
-        style={customStyle}
         className={cn(
-          "relative w-full flex flex-col justify-center items-center overflow-hidden py-8 sm:py-12 md:py-16",
-          className
+          "relative w-full flex flex-col justify-center items-center py-4 sm:py-8 md:py-12",
+          className,
         )}
         {...props}
       >
@@ -219,57 +95,44 @@ export const HomepageHeroBlock = forwardRef<HTMLElement, HomepageHeroBlockProps>
           }}
         />
         {/* Grid Mask Background */}
-        <div className="absolute inset-0 bg-[linear-gradient(to_right,rgba(0,0,0,0.03)_1px,transparent_1px),linear-gradient(to_bottom,rgba(0,0,0,0.03)_1px,transparent_1px)] dark:bg-[linear-gradient(to_right,rgba(255,255,255,0.025)_1px,transparent_1px),linear-gradient(to_bottom,rgba(255,255,255,0.025)_1px,transparent_1px)] bg-[size:24px_24px] sm:bg-[size:36px_36px] [mask-image:radial-gradient(ellipse_70%_60%_at_50%_40%,black_40%,transparent_100%)]" />
+        <div className="absolute inset-0 bg-[linear-gradient(to_right,color-mix(in_oklab,var(--foreground)_3%,transparent)_1px,transparent_1px),linear-gradient(to_bottom,color-mix(in_oklab,var(--foreground)_3%,transparent)_1px,transparent_1px)] bg-[size:24px_24px] sm:bg-[size:36px_36px] [mask-image:radial-gradient(ellipse_70%_60%_at_50%_40%,black_40%,transparent_100%)]" />
 
-        <div className="relative z-10 max-w-[1320px] mx-auto w-full px-2 sm:px-6 md:px-8 flex flex-col justify-center items-center">
+        <div className="relative z-10 max-w-[1320px] mx-auto w-full px-5 sm:px-6 md:px-8 flex flex-col justify-center items-center">
           <div className="flex flex-col items-center text-center max-w-[1320px] mx-auto space-y-3.5 sm:space-y-6 md:space-y-7 my-auto">
             {/* Top Pill Badge */}
             {badgeText && (
-              <div>
-                <div
-                  className="inline-flex items-center gap-1 sm:gap-2 px-2.5 sm:px-5 py-1 sm:py-2.5 rounded-full bg-primary/10 border border-primary/30 text-[9px] xs:text-[10px] sm:text-base font-bold text-[var(--hero-accent-text)] transition-all duration-300"
-                >
-                  <Sparkles className="size-2.5 xs:size-3 sm:size-4 text-[var(--hero-accent-text)] animate-spin shrink-0" />
-                  <span className="truncate max-w-[140px] xs:max-w-[170px] sm:max-w-none">{badgeText}</span>
+              <Link href={badgeHref} className="inline-block group">
+                <div className="inline-flex items-center gap-1 sm:gap-2 px-2.5 sm:px-3 py-1 sm:py-1.5 rounded-full bg-primary/10 border border-primary/30 text-[9px] xs:text-[10px] sm:text-xs font-semibold text-primary group-hover:bg-primary/20 group-hover:border-primary/50 transition-all duration-300">
+                  <Sparkles className="size-2.5 xs:size-3 sm:size-4 text-primary animate-spin shrink-0" />
+                  <span className="truncate max-w-[140px] xs:max-w-[170px] sm:max-w-none">
+                    {badgeText}
+                  </span>
                 </div>
-              </div>
+              </Link>
             )}
 
-            {/* Dynamic Bouncing Title Word with Locked Left Position (Single Line Guaranteed) */}
-            <div className="w-full flex justify-center items-center overflow-x-auto no-scrollbar">
-              <h1 className="text-sm xs:text-base sm:text-2xl md:text-3xl lg:text-4xl xl:text-5xl font-black tracking-tight leading-tight text-foreground text-center inline-flex items-center justify-center flex-nowrap gap-x-1.5 sm:gap-x-2.5 whitespace-nowrap">
-                <span className="shrink-0">
-                  Build{" "}
-                  <span className="text-[var(--hero-accent-text)]">
-                    Interactive
-                  </span>
-                </span>
-                <span className="relative inline-flex items-center justify-start overflow-hidden py-0.5 h-[1.3em] w-[95px] xs:w-[115px] sm:w-[170px] md:w-[210px] lg:w-[270px] xl:w-[330px] shrink-0">
-                  <AnimatePresence mode="wait">
-                    <motion.span
-                      key={currentWord}
-                      initial={{ y: "100%", opacity: 0, filter: "blur(4px)" }}
-                      animate={{ y: "0%", opacity: 1, filter: "blur(0px)" }}
-                      exit={{ y: "-100%", opacity: 0, filter: "blur(4px)" }}
-                      transition={{
-                        type: "spring",
-                        stiffness: 300,
-                        damping: 24,
-                        mass: 0.8,
-                      }}
-                      className="text-foreground inline-block text-left whitespace-nowrap"
-                    >
-                      {currentWord}
-                    </motion.span>
-                  </AnimatePresence>
-                </span>
-                {titleSuffix && <span className="shrink-0">{titleSuffix}</span>}
-              </h1>
-            </div>
+            {/* Dynamic Animated Title Word (Vertical Text Slide / Word Flip) */}
+            <h1 className="text-xl xs:text-2xl sm:text-2xl md:text-3xl lg:text-5xl xl:text-7xl font-medium tracking-tight leading-tight text-foreground text-center inline-flex items-center justify-center flex-wrap">
+              <span className="shrink-0 mr-2">
+                {titlePrefix}
+                <span className="text-primary">Interactive</span>
+              </span>
+
+              <AnimatedTypographyBlock
+                as="span"
+                bare
+                variant="word-flip"
+                words={typingWords}
+                prefixPosition={prefixPosition}
+                className="shrink-0 text-foreground font-medium"
+              />
+
+              {titleSuffix && <span className="shrink-0">{titleSuffix}</span>}
+            </h1>
 
             {/* Subtitle Paragraph */}
             {subtitle && (
-              <p className="text-[8.5px] xs:text-[9.5px] sm:text-base md:text-lg text-muted-foreground w-full max-w-3xl mx-auto leading-tight sm:leading-relaxed text-center font-medium px-1 sm:px-0">
+              <p className="text-[10px] xs:text-xs sm:text-base md:text-lg text-muted-foreground w-full max-w-3xl mx-auto leading-tight sm:leading-relaxed text-center font-medium px-1 sm:px-0">
                 {subtitle}
               </p>
             )}
@@ -280,13 +143,13 @@ export const HomepageHeroBlock = forwardRef<HTMLElement, HomepageHeroBlockProps>
                 <button
                   type="button"
                   onClick={handleCopy}
-                  className="group flex items-center gap-2 sm:gap-3.5 px-2.5 sm:px-5 h-8 xs:h-9 sm:h-[58px] rounded-lg sm:rounded-2xl border border-border bg-card cursor-pointer w-full max-w-[220px] xs:max-w-[250px] sm:max-w-md hover:border-primary/50 transition-all"
+                  className="group flex items-center gap-2 sm:gap-3.5 px-2.5 sm:px-5 h-8 xs:h-9 sm:h-[58px] rounded-lg sm:rounded-2xl border border-border bg-muted/70 cursor-pointer w-full max-w-[220px] xs:max-w-[250px] sm:max-w-md hover:border-primary/50 transition-all"
                 >
-                  <Terminal className="size-3 xs:size-3.5 sm:size-5 text-[var(--hero-accent-text)] shrink-0" />
-                  <code className="text-[9px] xs:text-[10px] sm:text-sm md:text-base font-mono text-foreground flex-1 text-left font-semibold truncate">
+                  <Terminal className="size-3 xs:size-3.5 sm:size-5 text-primary shrink-0" />
+                  <code className="text-[9px] xs:text-[10px] sm:text-sm md:text-base font-mono text-foreground flex-1 text-left font-semibold truncate !bg-transparent !border-none !outline-none !shadow-none !p-0">
                     {cliCommand}
                   </code>
-                  <div className="pl-1.5 sm:pl-3.5 border-l border-border h-3 sm:h-5 flex items-center shrink-0">
+                  <div className="pl-1.5 sm:pl-3.5 border-l-0 h-3 sm:h-5 flex items-center shrink-0">
                     {copied ? (
                       <Check className="size-3 sm:size-4.5 text-emerald-500" />
                     ) : (
@@ -298,11 +161,11 @@ export const HomepageHeroBlock = forwardRef<HTMLElement, HomepageHeroBlockProps>
             )}
 
             {/* Actions */}
-            <div className="flex flex-col sm:flex-row items-center justify-center gap-2 sm:gap-4 pt-1 sm:pt-2 w-full max-w-3xl mx-auto px-1 sm:px-0">
+            <div className="flex flex-row items-center justify-center gap-1.5 xs:gap-2.5 sm:gap-4 pt-0 sm:pt-2 w-full max-w-3xl mx-auto px-1 sm:px-0">
               {primaryActionLabel && (
                 <Link
                   href={primaryActionHref}
-                  className="px-3 sm:px-9 h-8 xs:h-9 sm:h-[58px] rounded-lg sm:rounded-2xl bg-primary text-primary-foreground text-[10px] xs:text-xs sm:text-base md:text-lg font-bold hover:opacity-90 hover:scale-[1.02] active:scale-[0.98] transition-all flex items-center justify-center gap-1.5 sm:gap-2.5 w-full sm:w-auto sm:flex-initial min-w-0 sm:min-w-[220px]"
+                  className="px-2.5 xs:px-3 sm:px-9 h-8 xs:h-9 sm:h-[58px] rounded-lg sm:rounded-2xl bg-primary text-primary-foreground text-[10px] xs:text-xs sm:text-base md:text-lg font-semibold hover:opacity-90 hover:scale-[1.02] active:scale-[0.98] transition-all flex items-center justify-center gap-1 sm:gap-2.5 flex-1 sm:flex-initial min-w-0 sm:min-w-[220px]"
                 >
                   <span>{primaryActionLabel}</span>
                   <ArrowRight className="size-3 sm:size-5 shrink-0" />
@@ -317,10 +180,10 @@ export const HomepageHeroBlock = forwardRef<HTMLElement, HomepageHeroBlockProps>
                       ? "_blank"
                       : undefined
                   }
-                  className="px-3 sm:px-9 h-8 xs:h-9 sm:h-[58px] rounded-lg sm:rounded-2xl border border-border bg-card text-foreground text-[10px] xs:text-xs sm:text-base md:text-lg font-bold hover:bg-primary/10 hover:border-primary/50 hover:text-[var(--hero-accent-text)] hover:scale-[1.02] active:scale-[0.98] transition-all flex items-center justify-center gap-1.5 sm:gap-2.5 w-full sm:w-auto sm:flex-initial min-w-0 sm:min-w-[220px]"
+                  className="px-2.5 xs:px-3 sm:px-9 h-8 xs:h-9 sm:h-[58px] rounded-lg sm:rounded-2xl border border-border bg-card text-foreground text-[10px] xs:text-xs sm:text-base md:text-lg font-semibold hover:bg-primary/10 hover:border-primary/50 hover:text-primary hover:scale-[1.02] active:scale-[0.98] transition-all flex items-center justify-center gap-1 sm:gap-2.5 flex-1 sm:flex-initial min-w-0 sm:min-w-[220px]"
                 >
-                  <Github className="size-3 sm:size-5 shrink-0" />
                   <span>{secondaryActionLabel}</span>
+                  <GitHubIcon className="size-3 sm:size-5 shrink-0" />
                 </Link>
               )}
             </div>
@@ -328,7 +191,8 @@ export const HomepageHeroBlock = forwardRef<HTMLElement, HomepageHeroBlockProps>
         </div>
       </section>
     );
-  }
+  },
 );
 
 HomepageHeroBlock.displayName = "HomepageHeroBlock";
+export default HomepageHeroBlock;
