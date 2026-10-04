@@ -11,6 +11,7 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/custom/blocks/TableBlock";
+import { accentStyle } from "@/lib/accent";
 
 const PLANS = ["Free", "Pro", "Team"] as const;
 type Plan = (typeof PLANS)[number];
@@ -49,9 +50,10 @@ function PlanValue({ value }: { value: Value }) {
   return <span className="text-foreground">{value}</span>;
 }
 
-export default function PlanComparison() {
+export default function PlanComparison({ color }: { color?: string } = {}) {
   return (
-    <Table variant="soft">
+    <div className="w-full" style={accentStyle(color)}>
+      <Table variant="soft" color={color}>
       <TableContent aria-label="Compare plans">
         <TableHeader>
           <TableRow isHeader>
@@ -84,5 +86,6 @@ export default function PlanComparison() {
         </TableBody>
       </TableContent>
     </Table>
+    </div>
   );
 }

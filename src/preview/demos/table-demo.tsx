@@ -2,6 +2,7 @@
 
 import { Table, TableBody, TableCell, TableContent, TableEmpty, TableExpandToggle, TableExpandedRow, TableFooter, TableHead, TableHeader, TableHeading, TableRow, TableRowActions } from "@/components/custom/blocks/TableBlock";
 import { type TableSize, type TableVariant } from "@/components/custom/blocks/table-core";
+import { accentStyle } from "@/lib/accent";
 import { ChevronLeft, ChevronRight, Edit2, Trash2 } from "lucide-react";
 import React, { useMemo, useState } from "react";
 
@@ -171,7 +172,7 @@ export default function TableDemo({
 
   if (showAll === "sizes") {
     return (
-      <div className="w-full flex flex-col gap-8 p-4 sm:p-6">
+      <div style={accentStyle(color)} className="w-full flex flex-col gap-8 p-4 sm:p-6">
         {TABLE_SIZES.map((each) => (
           <div key={each} className="flex flex-col gap-2">
             <span className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">
@@ -213,6 +214,7 @@ export default function TableDemo({
 
   return (
     <div
+      style={accentStyle(color)}
       className={`w-full p-4 sm:p-6 flex flex-col items-start justify-center ${
         variant === "glass"
           ? "bg-gradient-to-br from-indigo-500/80 via-purple-500/80 to-pink-500/80 rounded-2xl"
@@ -310,14 +312,14 @@ export default function TableDemo({
                           <button
                             onClick={() => console.log("Edit", invoice)}
                             aria-label={`Edit ${invoice.reference}`}
-                            className="p-1.5 rounded-md text-muted-foreground hover:text-foreground hover:bg-primary/10 transition-colors"
+                            className="p-1.5 rounded-md text-muted-foreground hover:text-primary hover:bg-primary/10 transition-colors cursor-pointer"
                           >
                             <Edit2 className="w-4 h-4" />
                           </button>
                           <button
                             onClick={() => console.log("Delete", invoice)}
                             aria-label={`Delete ${invoice.reference}`}
-                            className="p-1.5 rounded-md text-muted-foreground hover:text-red-600 hover:bg-red-50 dark:hover:bg-red-500/10 transition-colors"
+                            className="p-1.5 rounded-md text-muted-foreground hover:text-red-600 hover:bg-red-50 dark:hover:bg-red-500/10 transition-colors cursor-pointer"
                           >
                             <Trash2 className="w-4 h-4" />
                           </button>
@@ -355,7 +357,7 @@ export default function TableDemo({
                   onClick={() => setPage((p) => Math.max(1, p - 1))}
                   disabled={page === 1}
                   aria-label="Previous page"
-                  className="p-1.5 rounded-md border border-border text-muted-foreground hover:bg-muted disabled:opacity-40 disabled:cursor-not-allowed transition-colors"
+                  className="p-1.5 rounded-md border border-border text-muted-foreground hover:border-primary/50 hover:text-primary hover:bg-primary/10 disabled:opacity-40 disabled:cursor-not-allowed transition-colors cursor-pointer"
                 >
                   <ChevronLeft className="w-4 h-4" />
                 </button>
@@ -363,7 +365,7 @@ export default function TableDemo({
                   onClick={() => setPage((p) => Math.min(totalPages, p + 1))}
                   disabled={page === totalPages}
                   aria-label="Next page"
-                  className="p-1.5 rounded-md border border-border text-muted-foreground hover:bg-muted disabled:opacity-40 disabled:cursor-not-allowed transition-colors"
+                  className="p-1.5 rounded-md border border-border text-muted-foreground hover:border-primary/50 hover:text-primary hover:bg-primary/10 disabled:opacity-40 disabled:cursor-not-allowed transition-colors cursor-pointer"
                 >
                   <ChevronRight className="w-4 h-4" />
                 </button>

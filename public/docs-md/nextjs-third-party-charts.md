@@ -45,15 +45,15 @@ const currency = (value: number) => \`$\${(value / 1000).toFixed(1)}k\`;
  * tooltip — is all Algorize UI. That split is the whole integration: the
  * chart library never renders anything the design system already owns.
  */
-export default function RechartsRevenue() {
-  const tokens = useChartTokens();
+export default function RechartsRevenue({ color }: { color?: string } = {}) {
+  const tokens = useChartTokens(color);
 
   return (
 
             Recurring revenue
             Monthly recurring revenue and expansion
-          
-          +18.4%
+
+            +18.4%
 
                currency(Number(value))}
               />
@@ -91,38 +91,46 @@ export type ChartTokens = {
   muted: string;
   border: string;
   card: string;
+  primary: string;
   /** Categorical palette, in the order series should be assigned. */
   series: string[];
 };
 
-/**
- * Series colours are literal hex rather than tokens on purpose: the neutral
- * `--primary` is a greyscale ramp, so a chart drawn from it would be six
- * indistinguishable greys. These six hues hold their separation in both
- * themes — swap them for your brand ramp and every example follows.
- */
-const SERIES = ["#6366f1", "#06b6d4", "#f59e0b", "#ec4899", "#10b981", "#8b5cf6"];
+const DEFAULT_SERIES = ["#6366f1", "#06b6d4", "#f59e0b", "#ec4899", "#10b981", "#8b5cf6"];
 
 const FALLBACK: ChartTokens = {
   foreground: "#18181b",
   muted: "#71717a",
   border: "#e4e4e7",
   card: "#ffffff",
-  series: SERIES,
+  primary: "#6366f1",
+  series: DEFAULT_SERIES,
 };
 
-function readTokens(): ChartTokens {
+function readTokens(color?: string): ChartTokens {
   if (typeof window === "undefined") return FALLBACK;
-  const styles = getComputedStyle(document.documentElement);
+  const bodyStyles = typeof document !== "undefined" && document.body ? getComputedStyle(document.body) : null;
+  const rootStyles = getComputedStyle(document.documentElement);
   const read = (name: string, fallback: string) =>
-    styles.getPropertyValue(name).trim() || fallback;
+    bodyStyles?.getPropertyValue(name).trim() || rootStyles.getPropertyValue(name).trim() || fallback;
+
+  const explicitAccent = !isDefaultAccent(color) ? resolveAccent(color) : null;
+  const primary = explicitAccent || read("--primary", FALLBACK.primary);
 
   return {
     foreground: read("--foreground", FALLBACK.foreground),
     muted: read("--muted-foreground", FALLBACK.muted),
     border: read("--border", FALLBACK.border),
     card: read("--card", FALLBACK.card),
-    series: SERIES,
+    primary,
+    series: [
+      primary,
+      read("--chart-2", DEFAULT_SERIES[1]),
+      read("--chart-3", DEFAULT_SERIES[2]),
+      read("--chart-4", DEFAULT_SERIES[3]),
+      read("--chart-5", DEFAULT_SERIES[4]),
+      read("--chart-1", DEFAULT_SERIES[5]),
+    ],
   };
 }
 
@@ -131,11 +139,11 @@ function readTokens(): ChartTokens {
  * class on ``, so watching that attribute is enough — no context, no
  * provider, and it works the same in a Vite app as in Next.js.
  */
-export function useChartTokens(): ChartTokens {
-  const [tokens, setTokens] = useState(FALLBACK);
+export function useChartTokens(color?: string): ChartTokens {
+  const [tokens, setTokens] = useState(() => readTokens(color));
 
   useEffect(() => {
-    const sync = () => setTokens(readTokens());
+    const sync = () => setTokens(readTokens(color));
     sync();
 
     const observer = new MutationObserver(sync);
@@ -143,8 +151,14 @@ export function useChartTokens(): ChartTokens {
       attributes: true,
       attributeFilter: ["class", "style", "data-theme"],
     });
+    if (typeof document !== "undefined" && document.body) {
+      observer.observe(document.body, {
+        attributes: true,
+        attributeFilter: ["class", "style"],
+      });
+    }
     return () => observer.disconnect();
-  }, []);
+  }, [color]);
 
   return tokens;
 }
@@ -175,8 +189,8 @@ ChartJS.register(CategoryScale, LinearScale, BarElement, ArcElement, Tooltip, Le
 const channels = ["Organic", "Referral", "Social", "Email", "Paid"];
 const sessions = [18400, 9200, 7600, 5400, 4100];
 
-export default function ChartJsTraffic() {
-  const tokens = useChartTokens();
+export default function ChartJsTraffic({ color }: { color?: string } = {}) {
+  const tokens = useChartTokens(color);
 
   /**
    * Options are rebuilt when the tokens change, which is what makes the
@@ -195,20 +209,31 @@ export default function ChartJsTraffic() {
           bodyColor: tokens.muted,
           borderColor: tokens.border,
           borderWidth: 1,
-          padding: 12,
+          padding: 10,
           displayColors: false,
+          titleFont: { size: 12 },
+          bodyFont: { size: 11 },
         },
       },
       scales: {
         x: {
           grid: { display: false },
           border: { color: tokens.border },
-          ticks: { color: tokens.muted, font: { size: 12 } },
+          ticks: {
+            color: tokens.muted,
+            font: { size: 11 },
+            autoSkip: true,
+            maxRotation: 0,
+          },
         },
         y: {
           grid: { color: tokens.border },
           border: { display: false },
-          ticks: { color: tokens.muted, font: { size: 12 } },
+          ticks: {
+            color: tokens.muted,
+            font: { size: 11 },
+            maxTicksLimit: 5,
+          },
         },
       },
     }),
@@ -219,7 +244,7 @@ export default function ChartJsTraffic() {
     () => ({
       responsive: true,
       maintainAspectRatio: false,
-      cutout: "68%",
+      cutout: "65%",
       plugins: {
         legend: {
           position: "bottom",
@@ -227,9 +252,9 @@ export default function ChartJsTraffic() {
             color: tokens.muted,
             usePointStyle: true,
             pointStyle: "circle",
-            boxWidth: 8,
-            padding: 16,
-            font: { size: 12 },
+            boxWidth: 6,
+            padding: 10,
+            font: { size: 11 },
           },
         },
         tooltip: {
@@ -238,7 +263,9 @@ export default function ChartJsTraffic() {
           bodyColor: tokens.muted,
           borderColor: tokens.border,
           borderWidth: 1,
-          padding: 12,
+          padding: 10,
+          titleFont: { size: 12 },
+          bodyFont: { size: 11 },
         },
       },
     }),
