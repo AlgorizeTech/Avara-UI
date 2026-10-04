@@ -4,91 +4,120 @@ import React, { useRef, useState } from "react";
 import { cn } from "@/lib/utils";
 
 // ============================================================================
-// ATOMIC ORBITAL SPIROGRAPH SVG
-// Precise geometric spirograph matching the reference confidential aesthetic
+// CLASSIFIED SECURITY CREST SEAL SVG
+// Geometric security seal emblem for confidential dossiers and classified folders
 // ============================================================================
-export function OrbitalSpirograph({
+export function ClassifiedSeal({
   className,
   style,
   size = 260,
-  dotRadius = 2.2,
   strokeWidth = 1.3,
 }: {
   className?: string;
   style?: React.CSSProperties;
   size?: number | string;
-  dotRadius?: number;
   strokeWidth?: number;
 }) {
-  const angles = [0, 22.5, 45, 67.5, 90, 112.5, 135, 157.5];
-
-  // Specific geometric nodal coordinates for orbital particles
-  const nodes = [
-    { x: 0, y: -33 },
-    { x: 0, y: 33 },
-    { x: -33, y: 0 },
-    { x: 33, y: 0 },
-    { x: 48, y: -22 },
-    { x: -48, y: 22 },
-    { x: 22, y: 48 },
-    { x: -22, y: -48 },
-    { x: 62, y: 12 },
-    { x: -62, y: -12 },
-    { x: 12, y: -62 },
-    { x: -12, y: 62 },
-    { x: 38, y: -38 },
-    { x: -38, y: 38 },
-    { x: -38, y: -38 },
-    { x: 38, y: 38 },
-  ];
-
   return (
     <svg
       viewBox="0 0 200 200"
       width={size}
       height={size}
       style={style}
+      fill="none"
+      xmlns="http://www.w3.org/2000/svg"
       className={cn("pointer-events-none select-none", className)}
     >
       <g transform="translate(100, 100)">
-        {/* Orbital Ellipses */}
-        {angles.map((angle) => (
-          <ellipse
-            key={angle}
-            rx={66}
-            ry={32}
-            transform={`rotate(${angle})`}
-            fill="none"
-            stroke="currentColor"
-            strokeWidth={strokeWidth}
-            className="opacity-55"
-          />
-        ))}
-
-        {/* Inner core circle guide */}
+        {/* Outer Security Orbit / Dashed Perimeter */}
         <circle
-          r={28}
-          fill="none"
+          r={86}
           stroke="currentColor"
-          strokeWidth={strokeWidth * 0.8}
-          className="opacity-25"
+          strokeWidth={strokeWidth}
+          strokeDasharray="4 6"
+          className="opacity-40"
         />
 
-        {/* Orbital Particle Dots */}
-        {nodes.map((node, i) => (
-          <circle
-            key={i}
-            cx={node.x}
-            cy={node.y}
-            r={dotRadius}
-            fill="currentColor"
-            className="opacity-80"
-          />
-        ))}
+        {/* Secondary Precision Ring */}
+        <circle
+          r={78}
+          stroke="currentColor"
+          strokeWidth={strokeWidth * 0.8}
+          className="opacity-55"
+        />
+
+        {/* Cardinal Axis Crosshairs */}
+        <line x1="-92" y1="0" x2="-80" y2="0" stroke="currentColor" strokeWidth={strokeWidth} className="opacity-70" />
+        <line x1="80" y1="0" x2="92" y2="0" stroke="currentColor" strokeWidth={strokeWidth} className="opacity-70" />
+        <line x1="0" y1="-92" x2="0" y2="-80" stroke="currentColor" strokeWidth={strokeWidth} className="opacity-70" />
+        <line x1="0" y1="80" x2="0" y2="92" stroke="currentColor" strokeWidth={strokeWidth} className="opacity-70" />
+
+        {/* 8-Point Octagonal Security Diamond Geometry */}
+        <polygon
+          points="0,-64 45,-45 64,0 45,45 0,64 -45,45 -64,0 -45,-45"
+          stroke="currentColor"
+          strokeWidth={strokeWidth * 0.85}
+          className="opacity-35"
+        />
+        <polygon
+          points="0,-64 45,-45 64,0 45,45 0,64 -45,45 -64,0 -45,-45"
+          stroke="currentColor"
+          strokeWidth={strokeWidth * 0.65}
+          transform="rotate(22.5)"
+          className="opacity-20"
+        />
+
+        {/* Inner Solid Border Ring */}
+        <circle
+          r={48}
+          stroke="currentColor"
+          strokeWidth={strokeWidth}
+          className="opacity-65"
+        />
+        <circle
+          r={44}
+          stroke="currentColor"
+          strokeWidth={strokeWidth * 0.7}
+          strokeDasharray="2 4"
+          className="opacity-45"
+        />
+
+        {/* Four Micro Security Dots */}
+        <circle cx="0" cy="-56" r={1.8} fill="currentColor" className="opacity-60" />
+        <circle cx="56" cy="0" r={1.8} fill="currentColor" className="opacity-60" />
+        <circle cx="0" cy="56" r={1.8} fill="currentColor" className="opacity-60" />
+        <circle cx="-56" cy="0" r={1.8} fill="currentColor" className="opacity-60" />
+
+        {/* Central Classified Security Shield Emblem */}
+        <path
+          d="M 0 -26 L 20 -16 V 3 C 20 16 11 26 0 30 C -11 26 -20 16 -20 3 V -16 Z"
+          stroke="currentColor"
+          strokeWidth={strokeWidth * 1.3}
+          strokeLinejoin="round"
+          className="opacity-85"
+        />
+
+        {/* Security Shield Inner Lock / Keyhole */}
+        <circle
+          cx="0"
+          cy="-2"
+          r="4.5"
+          stroke="currentColor"
+          strokeWidth={strokeWidth * 1.1}
+          className="opacity-90"
+        />
+        <path
+          d="M -2 1.5 L -3.5 13 H 3.5 L 2 1.5 Z"
+          fill="currentColor"
+          className="opacity-80"
+        />
       </g>
     </svg>
   );
 }
+
+// Alias for backward compatibility
+export const OrbitalSpirograph = ClassifiedSeal;
 
 // ============================================================================
 // SLEEVE BACK SHAPE (LAYER 1)
@@ -253,6 +282,7 @@ export interface ConfidentialFolderProps
   sessionNumber?: string;
   subquote?: string;
   // Visual Options
+  centerIcon?: React.ReactNode;
   cardVariant?: "adaptive" | "ivory";
   defaultOpen?: boolean;
   onOpenChange?: (open: boolean) => void;
@@ -262,6 +292,7 @@ export interface ConfidentialFolderProps
 
 export function ConfidentialFolder({
   folderColor,
+  centerIcon,
   sleeveTitle = "Designed to endure",
   sleeveSubtitle = "Crafted for those who value timeless clarity.",
   frontBadge = "INTERNAL DISPATCH",
@@ -404,19 +435,21 @@ export function ConfidentialFolder({
     }
   };
 
+  const isSleeveShifted = animStage === "sliding-out" || animStage === "sliding-out-top";
+
   // Compute Card CSS transform based on animation stage & hover
-  let cardTransform = `translate3d(${initialPeek}px, 0px, 0px) rotateY(0deg)`;
+  let cardTransform = "translate3d(var(--cf-initial-peek, 14px), 0px, 0px) rotateY(0deg)";
   let cardTransition = "transform 0.4s cubic-bezier(0.22, 1, 0.36, 1)";
 
   if (animStage === "inside") {
     // Idle peeking out (initialPeek) or hover peeking out (hoverPeek)
     cardTransform = isHovered
-      ? `translate3d(${hoverPeek}px, 0px, 0px) rotateY(0deg)`
-      : `translate3d(${initialPeek}px, 0px, 0px) rotateY(0deg)`;
+      ? "translate3d(var(--cf-hover-peek, 30px), 0px, 0px) rotateY(0deg)"
+      : "translate3d(var(--cf-initial-peek, 14px), 0px, 0px) rotateY(0deg)";
     cardTransition = "transform 0.3s cubic-bezier(0.16, 1, 0.3, 1)";
   } else if (animStage === "sliding-out") {
     // Clears the sleeve completely to the right across any screen width
-    cardTransform = "translate3d(calc(100% + 24px), 0px, 0px) rotateY(0deg)";
+    cardTransform = "translate3d(calc(100% + 10px), 0px, 0px) rotateY(0deg)";
     cardTransition = "transform 0.38s cubic-bezier(0.25, 1, 0.5, 1)";
   } else if (animStage === "sliding-in-top") {
     // Arrives and settles fully on top of the sleeve — exact position, but NO flip yet!
@@ -435,13 +468,13 @@ export function ConfidentialFolder({
     cardTransition = "transform 0.52s cubic-bezier(0.4, 0, 0.2, 1)";
   } else if (animStage === "sliding-out-top") {
     // Slides out to the right in front of sleeve
-    cardTransform = "translate3d(calc(100% + 24px), 0px, 0px) rotateY(0deg)";
+    cardTransform = "translate3d(calc(100% + 10px), 0px, 0px) rotateY(0deg)";
     cardTransition = "transform 0.38s cubic-bezier(0.25, 1, 0.5, 1)";
   } else if (animStage === "sliding-in-back") {
     // Sliding back into resting/hover position inside sleeve
     cardTransform = isHovered
-      ? `translate3d(${hoverPeek}px, 0px, 0px) rotateY(0deg)`
-      : `translate3d(${initialPeek}px, 0px, 0px) rotateY(0deg)`;
+      ? "translate3d(var(--cf-hover-peek, 30px), 0px, 0px) rotateY(0deg)"
+      : "translate3d(var(--cf-initial-peek, 14px), 0px, 0px) rotateY(0deg)";
     cardTransition = "transform 0.44s cubic-bezier(0.16, 1, 0.3, 1)";
   }
 
@@ -450,7 +483,7 @@ export function ConfidentialFolder({
   return (
     <div
       className={cn(
-        "relative flex items-center justify-center p-2 sm:p-8 select-none cf-theme-scope overflow-x-clip sm:overflow-visible",
+        "relative flex items-center justify-center p-2 sm:p-8 select-none cf-theme-scope overflow-visible",
         className
       )}
       style={{
@@ -461,6 +494,9 @@ export function ConfidentialFolder({
     >
       <style>{`
         .cf-theme-scope {
+          --cf-sleeve-shift: -42%;
+          --cf-initial-peek: ${Math.round(initialPeek * 0.35)}px;
+          --cf-hover-peek: ${Math.round(hoverPeek * 0.35)}px;
           --cf-base: var(--cf-override, var(--primary, #6366f1));
           --cf-flap: oklch(from var(--cf-base) 0.88 calc(c * 0.4) h);
           --cf-plate: oklch(from var(--cf-base) 0.80 calc(c * 0.5) h);
@@ -474,6 +510,13 @@ export function ConfidentialFolder({
           --cf-card-text: oklch(from var(--cf-base) 0.22 calc(c * 0.5) h);
           --cf-card-subtext: oklch(from var(--cf-base) 0.38 calc(c * 0.3) h);
           --cf-divider: oklch(from var(--cf-base) 0.88 calc(c * 0.2) h);
+        }
+        @media (min-width: 640px) {
+          .cf-theme-scope {
+            --cf-sleeve-shift: 0px;
+            --cf-initial-peek: ${initialPeek}px;
+            --cf-hover-peek: ${hoverPeek}px;
+          }
         }
         :is(.dark, .dark *) .cf-theme-scope,
         .cf-theme-scope:is(.dark, .dark *) {
@@ -502,9 +545,13 @@ export function ConfidentialFolder({
         onClick={handleToggle}
         onMouseEnter={() => setIsHovered(true)}
         onMouseLeave={() => setIsHovered(false)}
-        style={{ perspective: 1200 }}
+        style={{
+          perspective: 1200,
+          transform: isSleeveShifted ? "translateX(var(--cf-sleeve-shift, 0px))" : "translateX(0px)",
+          transition: "transform 0.4s cubic-bezier(0.22, 1, 0.36, 1)",
+        }}
         className={cn(
-          "relative w-[285px] sm:w-[360px] h-[340px] sm:h-[480px] cursor-pointer outline-none",
+          "relative w-[160px] min-[400px]:w-[185px] sm:w-[360px] h-[215px] min-[400px]:h-[247px] sm:h-[480px] cursor-pointer outline-none select-none will-change-transform",
           "focus-visible:ring-2 focus-visible:ring-primary/60 focus-visible:ring-offset-4 focus-visible:ring-offset-background",
           sleeveClassName
         )}
@@ -527,7 +574,7 @@ export function ConfidentialFolder({
             transformStyle: "preserve-3d",
           }}
           className={cn(
-            "absolute inset-x-2.5 sm:inset-x-3.5 top-2 sm:top-5 bottom-2 sm:bottom-5 rounded-[16px] sm:rounded-[22px]",
+            "absolute inset-x-1.5 min-[400px]:inset-x-2 sm:inset-x-3.5 top-1 min-[400px]:top-1.5 sm:top-5 bottom-1 min-[400px]:bottom-1.5 sm:bottom-5 rounded-[12px] min-[400px]:rounded-[14px] sm:rounded-[22px]",
             "will-change-transform transform-gpu pointer-events-auto",
             cardClassName
           )}
@@ -545,33 +592,33 @@ export function ConfidentialFolder({
               color: isAdaptive ? "var(--cf-card-text)" : "#1c1b18",
             }}
             className={cn(
-              "absolute inset-0 rounded-[16px] sm:rounded-[22px] border shadow-lg overflow-hidden flex flex-col justify-between p-3 sm:p-6 select-none transition-colors duration-300"
+              "absolute inset-0 rounded-[12px] min-[400px]:rounded-[14px] sm:rounded-[22px] border shadow-lg overflow-hidden flex flex-col justify-between p-2 min-[400px]:p-2.5 sm:p-6 select-none transition-colors duration-300"
             )}
           >
             {/* Header */}
             <div>
-              <div className="flex items-center justify-between font-mono text-[9.5px] sm:text-[11px] font-semibold tracking-wider">
-                <div className="flex items-center gap-1.5 text-primary">
-                  <span className="w-1.5 h-1.5 rounded-full bg-primary animate-pulse" />
+              <div className="flex items-center justify-between font-mono text-[6px] min-[400px]:text-[7.5px] sm:text-[11px] font-semibold tracking-wider">
+                <div className="flex items-center gap-1 sm:gap-1.5 text-primary">
+                  <span className="w-1 h-1 min-[400px]:w-1.5 min-[400px]:h-1.5 rounded-full bg-primary animate-pulse" />
                   <span>{frontBadge}</span>
                 </div>
                 <span className="opacity-75 font-mono">{frontSerial}</span>
               </div>
 
               <div
-                className="w-full h-px my-1.5 sm:my-3 transition-colors duration-300"
+                className="w-full h-px my-0.5 min-[400px]:my-1 sm:my-3 transition-colors duration-300"
                 style={{ backgroundColor: isAdaptive ? "var(--cf-divider)" : "#e5dfd4" }}
               />
 
               <h3
-                className="text-[16px] sm:text-[22px] font-semibold tracking-tight font-sans transition-colors duration-300"
+                className="text-[10.5px] min-[400px]:text-[13px] sm:text-[22px] font-semibold tracking-tight font-sans leading-tight transition-colors duration-300"
                 style={{ color: isAdaptive ? "var(--cf-card-text)" : "#1a1917" }}
               >
                 {frontTitle}
               </h3>
 
               <p
-                className="text-[11px] sm:text-[13px] leading-relaxed mt-0.5 sm:mt-1 transition-colors duration-300"
+                className="text-[7px] min-[400px]:text-[8.5px] sm:text-[13px] leading-tight sm:leading-relaxed mt-0.5 sm:mt-1 transition-colors duration-300 line-clamp-2 sm:line-clamp-none"
                 style={{ color: isAdaptive ? "var(--cf-card-subtext)" : "#475569" }}
               >
                 {frontSubtitle}
@@ -579,10 +626,10 @@ export function ConfidentialFolder({
             </div>
 
             {/* Centerpiece: Authentic Clearance Stamp & Security Barcode */}
-            <div className="my-auto py-1 sm:py-2 flex flex-col items-center justify-center">
+            <div className="my-auto py-0.5 min-[400px]:py-1 sm:py-2 flex flex-col items-center justify-center">
               <div
                 className={cn(
-                  "px-2.5 sm:px-3.5 py-1 sm:py-1.5 rounded-md border-2 border-dashed font-mono font-bold text-[9.5px] sm:text-[12px] tracking-[0.2em] uppercase select-none transform -rotate-2 shadow-sm",
+                  "px-1.5 min-[400px]:px-2 sm:px-3.5 py-0.5 min-[400px]:py-1 sm:py-1.5 rounded-md border-2 border-dashed font-mono font-bold text-[6.5px] min-[400px]:text-[8px] sm:text-[12px] tracking-[0.1em] sm:tracking-[0.2em] uppercase select-none transform -rotate-2 shadow-sm",
                   "border-rose-500/80 text-rose-600 dark:border-rose-400/80 dark:text-rose-400 bg-rose-500/5"
                 )}
               >
@@ -590,8 +637,8 @@ export function ConfidentialFolder({
               </div>
 
               {/* Cryptographic barcode vector */}
-              <div className="mt-2 sm:mt-4 flex flex-col items-center gap-1 opacity-70">
-                <div className="h-4 sm:h-6 flex items-center gap-[3px]">
+              <div className="mt-1 min-[400px]:mt-1.5 sm:mt-4 flex flex-col items-center gap-1 opacity-70">
+                <div className="h-2.5 min-[400px]:h-3.5 sm:h-6 flex items-center gap-[1.5px] sm:gap-[3px]">
                   {[2, 4, 1, 3, 2, 5, 2, 1, 4, 3, 1, 5, 2, 3, 4, 2, 1, 3, 5, 2, 4, 1, 3].map((w, i) => (
                     <div
                       key={i}
@@ -600,25 +647,24 @@ export function ConfidentialFolder({
                     />
                   ))}
                 </div>
-                <span className="font-mono text-[8px] sm:text-[9px] tracking-widest uppercase opacity-75">
+                <span className="font-mono text-[5px] min-[400px]:text-[6.5px] sm:text-[9px] tracking-wider uppercase opacity-75">
                   {barcodeText}
                 </span>
               </div>
             </div>
 
             {/* Footer Bar */}
-            <div className="mt-auto pt-1 sm:pt-2">
+            <div className="mt-auto pt-0.5 min-[400px]:pt-1 sm:pt-2">
               <div
-                className="w-full h-px mb-1.5 sm:mb-3 transition-colors duration-300"
+                className="w-full h-px mb-0.5 min-[400px]:mb-1 sm:mb-3 transition-colors duration-300"
                 style={{ backgroundColor: isAdaptive ? "var(--cf-divider)" : "#e5dfd4" }}
               />
-              <div className="flex items-center justify-between font-mono text-[8.5px] sm:text-[9.5px] tracking-wider uppercase opacity-75">
+              <div className="flex items-center justify-between font-mono text-[5.5px] min-[400px]:text-[7px] sm:text-[9.5px] tracking-wider uppercase opacity-75">
                 <span>{statusText || clearanceLevel}</span>
-                <OrbitalSpirograph
+                <ClassifiedSeal
                   size={16}
                   strokeWidth={1.2}
-                  dotRadius={1.5}
-                  className="w-[16px] h-[16px] sm:w-[22px] sm:h-[22px] opacity-80 text-primary"
+                  className="w-[11px] h-[11px] min-[400px]:w-[14px] min-[400px]:h-[14px] sm:w-[22px] sm:h-[22px] opacity-80 text-primary"
                 />
               </div>
             </div>
@@ -638,32 +684,32 @@ export function ConfidentialFolder({
               color: isAdaptive ? "var(--cf-card-text)" : "#1c1b18",
             }}
             className={cn(
-              "absolute inset-0 rounded-[16px] sm:rounded-[22px] border shadow-lg overflow-hidden flex flex-col justify-between p-3 sm:p-6 select-none transition-colors duration-300"
+              "absolute inset-0 rounded-[12px] min-[400px]:rounded-[14px] sm:rounded-[22px] border shadow-lg overflow-hidden flex flex-col justify-between p-2 min-[400px]:p-2.5 sm:p-6 select-none transition-colors duration-300"
             )}
           >
             {/* Top Section */}
             <div>
               {/* Category & Edition Date */}
-              <div className="flex items-center justify-between font-mono text-[10px] sm:text-[10.5px] font-semibold tracking-wider">
-                <div className="flex items-center gap-1.5 text-primary">
-                  <span className="w-1.5 h-1.5 rounded-full bg-primary" />
+              <div className="flex items-center justify-between font-mono text-[6px] min-[400px]:text-[7.5px] sm:text-[10.5px] font-semibold tracking-wider">
+                <div className="flex items-center gap-1 sm:gap-1.5 text-primary">
+                  <span className="w-1 h-1 min-[400px]:w-1.5 min-[400px]:h-1.5 rounded-full bg-primary" />
                   <span>{sessionLabel || cardBadge || cardCategory}</span>
                 </div>
-                <span className="opacity-60 font-mono text-[9.5px] sm:text-[10px] tracking-wide">
+                <span className="opacity-60 font-mono text-[5.5px] min-[400px]:text-[7px] sm:text-[10px] tracking-wide">
                   {sessionNumber || cardVersion || cardDate}
                 </span>
               </div>
 
               {/* Title & Subtitle */}
-              <div className="mt-2 sm:mt-3">
+              <div className="mt-0.5 min-[400px]:mt-1 sm:mt-3">
                 <h3
-                  className="text-[16px] sm:text-[21px] font-semibold tracking-tight font-sans transition-colors duration-300"
+                  className="text-[10.5px] min-[400px]:text-[13px] sm:text-[21px] font-semibold tracking-tight font-sans leading-tight transition-colors duration-300"
                   style={{ color: isAdaptive ? "var(--cf-card-text)" : "#1a1917" }}
                 >
                   {cardTitle}
                 </h3>
                 <p
-                  className="text-[11px] sm:text-[12.5px] leading-normal mt-0.5 sm:mt-1 transition-colors duration-300"
+                  className="text-[6.5px] min-[400px]:text-[8px] sm:text-[12.5px] leading-tight sm:leading-normal mt-0.5 sm:mt-1 transition-colors duration-300"
                   style={{ color: isAdaptive ? "var(--cf-card-subtext)" : "#57534e" }}
                 >
                   {cardSubtitle}
@@ -672,13 +718,13 @@ export function ConfidentialFolder({
 
               {/* Divider */}
               <div
-                className="w-full h-px my-2 sm:my-3 transition-colors duration-300"
+                className="w-full h-px my-0.5 min-[400px]:my-1 sm:my-3 transition-colors duration-300"
                 style={{ backgroundColor: isAdaptive ? "var(--cf-divider)" : "#e5dfd4" }}
               />
 
               {/* Statement */}
               <p
-                className="text-[10.5px] sm:text-[12.5px] leading-relaxed transition-colors duration-300 line-clamp-2 sm:line-clamp-none"
+                className="text-[6px] min-[400px]:text-[7.5px] sm:text-[12.5px] leading-tight sm:leading-relaxed transition-colors duration-300 line-clamp-2 sm:line-clamp-none"
                 style={{ color: isAdaptive ? "var(--cf-card-subtext)" : "#44403c" }}
               >
                 {quote || statement}
@@ -686,10 +732,10 @@ export function ConfidentialFolder({
 
               {/* Highlight Punchline Box */}
               <div
-                className="mt-2 sm:mt-3 px-2.5 sm:px-3 py-1.5 sm:py-2 rounded-lg border-l-2 border-primary bg-primary/[0.04] transition-colors duration-300"
+                className="mt-0.5 min-[400px]:mt-1 sm:mt-3 px-1.5 min-[400px]:px-2 sm:px-3 py-0.5 min-[400px]:py-1 sm:py-2 rounded-lg border-l-2 border-primary bg-primary/[0.04] transition-colors duration-300"
               >
                 <p
-                  className="italic text-[10.5px] sm:text-[12px] font-medium leading-snug"
+                  className="italic text-[6px] min-[400px]:text-[7.5px] sm:text-[12px] font-medium leading-tight sm:leading-snug line-clamp-2 sm:line-clamp-none"
                   style={{ color: isAdaptive ? "var(--cf-card-text)" : "#1c1917" }}
                 >
                   &ldquo;{subquote || highlightQuote}&rdquo;
@@ -697,62 +743,62 @@ export function ConfidentialFolder({
               </div>
 
               {/* 3 Metric Pills Strip */}
-              <div className="grid grid-cols-3 gap-1.5 sm:gap-2 mt-2 sm:mt-3.5">
+              <div className="grid grid-cols-3 gap-0.5 min-[400px]:gap-1 sm:gap-2 mt-0.5 min-[400px]:mt-1 sm:mt-3.5">
                 <div
-                  className="px-1.5 py-1 sm:px-2 sm:py-1.5 rounded-lg border text-center transition-colors duration-300"
+                  className="px-0.5 py-0.5 min-[400px]:px-1 min-[400px]:py-0.5 sm:px-2 sm:py-1.5 rounded-lg border text-center transition-colors duration-300"
                   style={{
                     backgroundColor: isAdaptive ? "rgba(255, 255, 255, 0.03)" : "#ece6dc",
                     borderColor: isAdaptive ? "var(--cf-divider)" : "#e2dbce",
                   }}
                 >
                   <span
-                    className="block font-mono text-[7.5px] sm:text-[8.5px] tracking-wider uppercase opacity-60"
+                    className="block font-mono text-[5px] min-[400px]:text-[6px] sm:text-[8.5px] tracking-wider uppercase opacity-60"
                     style={{ color: isAdaptive ? "var(--cf-card-subtext)" : "#78716c" }}
                   >
                     {pillar1Title || metric1Label}
                   </span>
                   <span
-                    className="block font-mono text-[9.5px] sm:text-[10.5px] font-bold text-primary mt-0.5"
+                    className="block font-mono text-[6px] min-[400px]:text-[7.5px] sm:text-[10.5px] font-bold text-primary mt-0.5"
                   >
                     {pillar1Desc || metric1Value}
                   </span>
                 </div>
 
                 <div
-                  className="px-1.5 py-1 sm:px-2 sm:py-1.5 rounded-lg border text-center transition-colors duration-300"
+                  className="px-0.5 py-0.5 min-[400px]:px-1 min-[400px]:py-0.5 sm:px-2 sm:py-1.5 rounded-lg border text-center transition-colors duration-300"
                   style={{
                     backgroundColor: isAdaptive ? "rgba(255, 255, 255, 0.03)" : "#ece6dc",
                     borderColor: isAdaptive ? "var(--cf-divider)" : "#e2dbce",
                   }}
                 >
                   <span
-                    className="block font-mono text-[7.5px] sm:text-[8.5px] tracking-wider uppercase opacity-60"
+                    className="block font-mono text-[5px] min-[400px]:text-[6px] sm:text-[8.5px] tracking-wider uppercase opacity-60"
                     style={{ color: isAdaptive ? "var(--cf-card-subtext)" : "#78716c" }}
                   >
                     {pillar2Title || metric2Label}
                   </span>
                   <span
-                    className="block font-mono text-[9.5px] sm:text-[10.5px] font-bold text-primary mt-0.5"
+                    className="block font-mono text-[6px] min-[400px]:text-[7.5px] sm:text-[10.5px] font-bold text-primary mt-0.5"
                   >
                     {pillar2Desc || metric2Value}
                   </span>
                 </div>
 
                 <div
-                  className="px-1.5 py-1 sm:px-2 sm:py-1.5 rounded-lg border text-center transition-colors duration-300"
+                  className="px-0.5 py-0.5 min-[400px]:px-1 min-[400px]:py-0.5 sm:px-2 sm:py-1.5 rounded-lg border text-center transition-colors duration-300"
                   style={{
                     backgroundColor: isAdaptive ? "rgba(255, 255, 255, 0.03)" : "#ece6dc",
                     borderColor: isAdaptive ? "var(--cf-divider)" : "#e2dbce",
                   }}
                 >
                   <span
-                    className="block font-mono text-[7.5px] sm:text-[8.5px] tracking-wider uppercase opacity-60"
+                    className="block font-mono text-[5px] min-[400px]:text-[6px] sm:text-[8.5px] tracking-wider uppercase opacity-60"
                     style={{ color: isAdaptive ? "var(--cf-card-subtext)" : "#78716c" }}
                   >
                     {metric3Label}
                   </span>
                   <span
-                    className="block font-mono text-[9.5px] sm:text-[10.5px] font-bold text-emerald-500 mt-0.5"
+                    className="block font-mono text-[6px] min-[400px]:text-[7.5px] sm:text-[10.5px] font-bold text-emerald-500 mt-0.5"
                   >
                     {metric3Value}
                   </span>
@@ -761,20 +807,19 @@ export function ConfidentialFolder({
             </div>
 
             {/* Bottom Footer Section */}
-            <div className="pt-1.5 sm:pt-2">
+            <div className="pt-0.5 min-[400px]:pt-1 sm:pt-2">
               <div
-                className="w-full h-px mb-1.5 sm:mb-2.5 transition-colors duration-300"
+                className="w-full h-px mb-0.5 min-[400px]:mb-1 sm:mb-2.5 transition-colors duration-300"
                 style={{ backgroundColor: isAdaptive ? "var(--cf-divider)" : "#e5dfd4" }}
               />
-              <div className="flex items-center justify-between font-mono text-[8px] sm:text-[9.5px] tracking-wider uppercase opacity-75">
+              <div className="flex items-center justify-between font-mono text-[5.5px] min-[400px]:text-[6.5px] sm:text-[9.5px] tracking-wider uppercase opacity-75">
                 <span style={{ color: isAdaptive ? "var(--cf-card-subtext)" : "#78716c" }}>
                   ✦ {quoteAuthor || authorText}
                 </span>
-                <OrbitalSpirograph
+                <ClassifiedSeal
                   size={16}
                   strokeWidth={1.2}
-                  dotRadius={1.5}
-                  className="w-[16px] h-[16px] sm:w-[22px] sm:h-[22px] opacity-80 text-primary"
+                  className="w-[11px] h-[11px] min-[400px]:w-[14px] min-[400px]:h-[14px] sm:w-[22px] sm:h-[22px] opacity-80 text-primary"
                 />
               </div>
             </div>
@@ -798,31 +843,36 @@ export function ConfidentialFolder({
           />
 
           {/* Front Sleeve Surface Content */}
-          <div className="relative z-10 w-full h-full flex flex-col justify-between p-3.5 sm:p-8">
+          <div className="relative z-10 w-full h-full flex flex-col justify-between p-2 min-[400px]:p-3 sm:p-8">
             {/* Top Empty Space */}
             <div />
 
-            {/* Center Atomic Orbital Spirograph (Enlarged & Responsive) */}
+            {/* Center Classified Security Crest Seal (Enlarged & Responsive) */}
             <div className="flex items-center justify-center my-auto py-1 sm:py-2">
-              <OrbitalSpirograph
-                size={265}
-                strokeWidth={1.3}
-                dotRadius={2.2}
-                className="w-[140px] h-[140px] sm:w-[265px] sm:h-[265px] transition-colors duration-300"
-                style={{ color: "var(--cf-spiro)" }}
-              />
+              {centerIcon ? (
+                <div className="w-[80px] h-[80px] min-[400px]:w-[105px] min-[400px]:h-[105px] sm:w-[265px] sm:h-[265px] flex items-center justify-center transition-colors duration-300">
+                  {centerIcon}
+                </div>
+              ) : (
+                <ClassifiedSeal
+                  size={265}
+                  strokeWidth={1.3}
+                  className="w-[80px] h-[80px] min-[400px]:w-[105px] min-[400px]:h-[105px] sm:w-[265px] sm:h-[265px] transition-colors duration-300"
+                  style={{ color: "var(--cf-spiro)" }}
+                />
+              )}
             </div>
 
             {/* Bottom Title & Subtitle */}
-            <div className="text-left pr-4 sm:pr-6">
+            <div className="text-left w-full pr-1 sm:pr-4 overflow-hidden">
               <h2
-                className="text-[16px] sm:text-[22px] font-semibold tracking-tight leading-snug transition-colors duration-300"
+                className="text-[10.5px] min-[400px]:text-[13px] sm:text-[22px] font-semibold tracking-tight leading-tight transition-colors duration-300 whitespace-nowrap truncate"
                 style={{ color: "var(--cf-ink)" }}
               >
                 {sleeveTitle}
               </h2>
               <p
-                className="text-[11px] sm:text-[13.5px] font-normal leading-relaxed mt-0.5 sm:mt-1 transition-colors duration-300"
+                className="text-[5.5px] min-[400px]:text-[7px] sm:text-[13.5px] font-normal leading-tight mt-0.5 sm:mt-1 transition-colors duration-300 whitespace-nowrap truncate"
                 style={{ color: "var(--cf-ink-muted)" }}
               >
                 {sleeveSubtitle}
