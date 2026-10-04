@@ -20,6 +20,7 @@ import {
   CardTitle,
 } from "@/components/custom/blocks/CardBlock";
 import { Badge } from "@/components/custom/ui/badge";
+import { accentStyle } from "@/lib/accent";
 import { useChartTokens } from "@/lib/chart-tokens";
 
 const revenue = [
@@ -40,25 +41,27 @@ const currency = (value: number) => `$${(value / 1000).toFixed(1)}k`;
  * tooltip — is all Algorize UI. That split is the whole integration: the
  * chart library never renders anything the design system already owns.
  */
-export default function RechartsRevenue() {
-  const tokens = useChartTokens();
+export default function RechartsRevenue({ color }: { color?: string } = {}) {
+  const tokens = useChartTokens(color);
 
   return (
-    <Card className="w-full max-w-3xl">
-      <CardHeader>
-        <div className="flex items-start justify-between gap-4">
+    <Card className="w-full max-w-3xl min-w-0 overflow-hidden" style={accentStyle(color)}>
+      <CardHeader className="p-4 sm:p-6">
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 sm:gap-4">
           <div>
-            <CardTitle>Recurring revenue</CardTitle>
-            <CardDescription>Monthly recurring revenue and expansion</CardDescription>
+            <CardTitle className="text-base sm:text-lg">Recurring revenue</CardTitle>
+            <CardDescription className="text-xs sm:text-sm">Monthly recurring revenue and expansion</CardDescription>
           </div>
-          <Badge variant="secondary">+18.4%</Badge>
+          <Badge variant="outline" className="w-fit border-primary/25 bg-primary/10 text-primary font-medium text-xs">
+            +18.4%
+          </Badge>
         </div>
       </CardHeader>
 
-      <CardContent>
-        <div className="h-[280px] w-full">
+      <CardContent className="p-4 sm:p-6 pt-0 sm:pt-0">
+        <div className="h-[220px] sm:h-[280px] w-full min-w-0">
           <ResponsiveContainer width="100%" height="100%">
-            <AreaChart data={revenue} margin={{ top: 8, right: 8, bottom: 0, left: -12 }}>
+            <AreaChart data={revenue} margin={{ top: 8, right: 6, bottom: 0, left: -14 }}>
               <defs>
                 <linearGradient id="mrrFill" x1="0" y1="0" x2="0" y2="1">
                   <stop offset="0%" stopColor={tokens.series[0]} stopOpacity={0.35} />
@@ -75,13 +78,16 @@ export default function RechartsRevenue() {
                 dataKey="month"
                 tickLine={false}
                 axisLine={false}
-                tick={{ fill: tokens.muted, fontSize: 12 }}
+                tick={{ fill: tokens.muted, fontSize: 11 }}
+                interval="preserveStartEnd"
+                minTickGap={6}
               />
               <YAxis
                 tickLine={false}
                 axisLine={false}
                 tickFormatter={currency}
-                tick={{ fill: tokens.muted, fontSize: 12 }}
+                tick={{ fill: tokens.muted, fontSize: 11 }}
+                width={38}
               />
               <Tooltip
                 cursor={{ stroke: tokens.border }}
@@ -90,7 +96,8 @@ export default function RechartsRevenue() {
                   border: `1px solid ${tokens.border}`,
                   borderRadius: 12,
                   color: tokens.foreground,
-                  fontSize: 12,
+                  fontSize: 11,
+                  padding: "8px 12px",
                 }}
                 formatter={(value) => currency(Number(value))}
               />

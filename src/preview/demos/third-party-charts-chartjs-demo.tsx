@@ -22,6 +22,7 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/custom/blocks/CardBlock";
+import { accentStyle } from "@/lib/accent";
 import { useChartTokens } from "@/lib/chart-tokens";
 
 /**
@@ -34,8 +35,8 @@ ChartJS.register(CategoryScale, LinearScale, BarElement, ArcElement, Tooltip, Le
 const channels = ["Organic", "Referral", "Social", "Email", "Paid"];
 const sessions = [18400, 9200, 7600, 5400, 4100];
 
-export default function ChartJsTraffic() {
-  const tokens = useChartTokens();
+export default function ChartJsTraffic({ color }: { color?: string } = {}) {
+  const tokens = useChartTokens(color);
 
   /**
    * Options are rebuilt when the tokens change, which is what makes the
@@ -54,20 +55,31 @@ export default function ChartJsTraffic() {
           bodyColor: tokens.muted,
           borderColor: tokens.border,
           borderWidth: 1,
-          padding: 12,
+          padding: 10,
           displayColors: false,
+          titleFont: { size: 12 },
+          bodyFont: { size: 11 },
         },
       },
       scales: {
         x: {
           grid: { display: false },
           border: { color: tokens.border },
-          ticks: { color: tokens.muted, font: { size: 12 } },
+          ticks: {
+            color: tokens.muted,
+            font: { size: 11 },
+            autoSkip: true,
+            maxRotation: 0,
+          },
         },
         y: {
           grid: { color: tokens.border },
           border: { display: false },
-          ticks: { color: tokens.muted, font: { size: 12 } },
+          ticks: {
+            color: tokens.muted,
+            font: { size: 11 },
+            maxTicksLimit: 5,
+          },
         },
       },
     }),
@@ -78,7 +90,7 @@ export default function ChartJsTraffic() {
     () => ({
       responsive: true,
       maintainAspectRatio: false,
-      cutout: "68%",
+      cutout: "65%",
       plugins: {
         legend: {
           position: "bottom",
@@ -86,9 +98,9 @@ export default function ChartJsTraffic() {
             color: tokens.muted,
             usePointStyle: true,
             pointStyle: "circle",
-            boxWidth: 8,
-            padding: 16,
-            font: { size: 12 },
+            boxWidth: 6,
+            padding: 10,
+            font: { size: 11 },
           },
         },
         tooltip: {
@@ -97,7 +109,9 @@ export default function ChartJsTraffic() {
           bodyColor: tokens.muted,
           borderColor: tokens.border,
           borderWidth: 1,
-          padding: 12,
+          padding: 10,
+          titleFont: { size: 12 },
+          bodyFont: { size: 11 },
         },
       },
     }),
@@ -105,14 +119,14 @@ export default function ChartJsTraffic() {
   );
 
   return (
-    <div className="grid w-full max-w-4xl gap-4 md:grid-cols-2">
-      <Card>
-        <CardHeader>
-          <CardTitle>Sessions by channel</CardTitle>
-          <CardDescription>Last 30 days</CardDescription>
+    <div className="grid w-full max-w-4xl gap-4 md:grid-cols-2 min-w-0" style={accentStyle(color)}>
+      <Card className="min-w-0 overflow-hidden">
+        <CardHeader className="p-4 sm:p-6">
+          <CardTitle className="text-base sm:text-lg">Sessions by channel</CardTitle>
+          <CardDescription className="text-xs sm:text-sm">Last 30 days</CardDescription>
         </CardHeader>
-        <CardContent>
-          <div className="h-[260px]">
+        <CardContent className="p-4 sm:p-6 pt-0 sm:pt-0">
+          <div className="relative h-[220px] sm:h-[260px] w-full min-w-0">
             <Bar
               options={barOptions}
               data={{
@@ -124,7 +138,7 @@ export default function ChartJsTraffic() {
                     backgroundColor: tokens.series[0],
                     hoverBackgroundColor: tokens.series[5],
                     borderRadius: 6,
-                    maxBarThickness: 40,
+                    maxBarThickness: 36,
                   },
                 ],
               }}
@@ -133,13 +147,13 @@ export default function ChartJsTraffic() {
         </CardContent>
       </Card>
 
-      <Card>
-        <CardHeader>
-          <CardTitle>Share of traffic</CardTitle>
-          <CardDescription>Same data, proportional view</CardDescription>
+      <Card className="min-w-0 overflow-hidden">
+        <CardHeader className="p-4 sm:p-6">
+          <CardTitle className="text-base sm:text-lg">Share of traffic</CardTitle>
+          <CardDescription className="text-xs sm:text-sm">Same data, proportional view</CardDescription>
         </CardHeader>
-        <CardContent>
-          <div className="h-[260px]">
+        <CardContent className="p-4 sm:p-6 pt-0 sm:pt-0">
+          <div className="relative h-[220px] sm:h-[260px] w-full min-w-0">
             <Doughnut
               options={doughnutOptions}
               data={{
