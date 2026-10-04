@@ -33,6 +33,7 @@ import {
 } from "@/components/custom/blocks/CardBlock";
 import { Badge } from "@/components/custom/ui/badge";
 import Button from "@/components/custom/blocks/Button";
+import { accentStyle } from "@/lib/accent";
 import { cn } from "@/lib/utils";
 
 const products = [
@@ -49,7 +50,7 @@ const products = [
  * That means the controls here are ordinary \`Button\`s and each slide is an
  * ordinary \`Card\` — nothing is being restyled or overridden.
  */
-export default function EmblaProductCarousel() {
+export default function EmblaProductCarousel({ color }: { color?: string } = {}) {
   const [emblaRef, emblaApi] = useEmblaCarousel({ loop: true, align: "start" });
 
   const scrollTo = useCallback((index: number) => emblaApi?.scrollTo(index), [emblaApi]);
@@ -80,7 +81,7 @@ export default function EmblaProductCarousel() {
   );
 
   return (
-    <div className="w-full max-w-4xl">
+    <div className="w-full max-w-4xl" style={accentStyle(color)}>
       <div className="mb-4 flex items-center justify-between">
         <div>
           <h3 className="text-lg font-semibold text-foreground">Featured products</h3>
@@ -90,7 +91,7 @@ export default function EmblaProductCarousel() {
           <Button
             size="sm"
             variant="outline"
-            className="h-9 w-9 justify-center p-0"
+            className="h-9 w-9 justify-center p-0 hover:border-primary/50 hover:text-primary transition-colors cursor-pointer"
             aria-label="Previous slide"
             iconLeft={<ChevronLeft className="h-4 w-4" />}
             onClick={() => emblaApi?.scrollPrev()}
@@ -98,7 +99,7 @@ export default function EmblaProductCarousel() {
           <Button
             size="sm"
             variant="outline"
-            className="h-9 w-9 justify-center p-0"
+            className="h-9 w-9 justify-center p-0 hover:border-primary/50 hover:text-primary transition-colors cursor-pointer"
             aria-label="Next slide"
             iconLeft={<ChevronRight className="h-4 w-4" />}
             onClick={() => emblaApi?.scrollNext()}
@@ -122,7 +123,7 @@ export default function EmblaProductCarousel() {
                   loading="lazy"
                 />
                 <CardContent className="pt-4">
-                  <Badge variant="secondary" className="mb-2">
+                  <Badge variant="outline" className="mb-2 border-primary/25 bg-primary/10 text-primary font-medium">
                     {product.tag}
                   </Badge>
                   <CardTitle className="text-base">{product.name}</CardTitle>
@@ -142,8 +143,8 @@ export default function EmblaProductCarousel() {
             aria-label={\`Go to slide \${index + 1}\`}
             onClick={() => scrollTo(index)}
             className={cn(
-              "h-1.5 rounded-full transition-all",
-              index === selected ? "w-6 bg-foreground" : "w-1.5 bg-border",
+              "h-1.5 rounded-full transition-all cursor-pointer",
+              index === selected ? "w-6 bg-primary" : "w-1.5 bg-border hover:bg-primary/40",
             )}
           />
         ))}
@@ -215,6 +216,7 @@ import {
   CardContent,
 } from "@/components/custom/blocks/CardBlock";
 import { Badge } from "@/components/custom/ui/badge";
+import { accentStyle } from "@/lib/accent";
 
 import "swiper/css";
 import "swiper/css/effect-coverflow";
@@ -235,16 +237,17 @@ const testimonials = [
  * slide. The two CSS variables below re-point Swiper's own chrome — arrows and
  * bullets — at the design tokens instead of its default blue.
  */
-export default function SwiperTestimonials() {
+export default function SwiperTestimonials({ color }: { color?: string } = {}) {
   return (
     <div
+      style={accentStyle(color)}
       /**
        * Swiper reads its own CSS variables for arrows and bullets, so pointing
        * them at the design tokens is a class list rather than a stylesheet.
        * \`items-stretch\` + \`h-auto\` is what makes the cards share one height —
        * without it each slide is only as tall as its own quote.
        */
-      className="w-full max-w-4xl [--swiper-navigation-color:var(--foreground)] [--swiper-navigation-size:24px] [--swiper-pagination-bullet-inactive-color:var(--muted-foreground)] [--swiper-pagination-color:var(--foreground)] [&_.swiper-slide]:h-auto [&_.swiper-wrapper]:items-stretch [&_.swiper-slide]:transition-opacity [&_.swiper-slide:not(.swiper-slide-active)]:opacity-60 [&_.swiper]:px-10 [&_.swiper]:pb-12"
+      className="w-full max-w-4xl [--swiper-navigation-color:var(--primary)] [--swiper-navigation-size:24px] [--swiper-pagination-bullet-inactive-color:var(--muted-foreground)] [--swiper-pagination-color:var(--primary)] [&_.swiper-slide]:h-auto [&_.swiper-wrapper]:items-stretch [&_.swiper-slide]:transition-opacity [&_.swiper-slide:not(.swiper-slide-active)]:opacity-60 [&_.swiper]:px-10 [&_.swiper]:pb-12"
     >
       <Swiper
         modules={[EffectCoverflow, Navigation, Pagination, Autoplay]}
@@ -262,13 +265,13 @@ export default function SwiperTestimonials() {
           <SwiperSlide key={item.name} className="!w-[280px] sm:!w-[340px]">
             <Card className="h-full">
               <CardContent className="flex h-full flex-col gap-4 p-6">
-                <Quote className="h-6 w-6 text-muted-foreground" aria-hidden />
+                <Quote className="h-6 w-6 text-primary" aria-hidden />
                 <p className="flex-1 text-sm leading-6 text-foreground/85">{item.quote}</p>
                 <div>
                   <p className="text-sm font-semibold text-foreground">{item.name}</p>
                   <p className="text-xs text-muted-foreground">{item.role}</p>
                 </div>
-                <Badge variant="secondary" className="w-fit">Verified customer</Badge>
+                <Badge variant="outline" className="w-fit border-primary/25 bg-primary/10 text-primary font-medium">Verified customer</Badge>
               </CardContent>
             </Card>
           </SwiperSlide>

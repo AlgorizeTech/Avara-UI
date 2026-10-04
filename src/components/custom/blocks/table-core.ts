@@ -1,6 +1,7 @@
 "use client";
 
 import React, { createContext, useContext } from "react";
+import { resolveAccent } from "@/lib/accent";
 
 /**
  * `soft` is the admin-dashboard look: a rounded panel with a hairline ring,
@@ -77,22 +78,27 @@ const hexToRgb = (hex: string) => {
     : "99, 102, 241";
 };
 
-export const getThemeStyles = (color: string) => {
-  if (color && color.startsWith("#")) {
-    const rgb = hexToRgb(color);
+export const getThemeStyles = (color?: string) => {
+  if (!color || color === "default" || color === "primary") {
+    return { theme: colorThemes.primary, style: {} };
+  }
+  const resolved = resolveAccent(color);
+  const target = resolved || color;
+  if (target && target.startsWith("#")) {
+    const rgb = hexToRgb(target);
     return {
       theme: {
         bg: "bg-[var(--theme-color)] text-white",
         text: "text-[var(--theme-color)]",
         bgSoft: "bg-[rgba(var(--theme-color-rgb),0.1)]",
         border: "border-[var(--theme-color)]",
-        borderSoft: "border-[rgba(var(--theme-color-rgb),0.12)]",
+        borderSoft: "border-[rgba(var(--theme-color-rgb),0.18)]",
         focusRing: "focus:border-[var(--theme-color)] focus:outline-none",
         hoverBorder: "hover:border-[var(--theme-color)]",
         hoverBgSoft: "hover:bg-[rgba(var(--theme-color-rgb),0.08)]",
       },
       style: {
-        "--theme-color": color,
+        "--theme-color": target,
         "--theme-color-rgb": rgb,
       } as React.CSSProperties,
     };
@@ -101,17 +107,21 @@ export const getThemeStyles = (color: string) => {
 };
 
 const accentHex: Record<string, string> = {
-  indigo: "#4f46e5",
-  rose: "#e11d48",
-  emerald: "#059669",
+  lavender: "#9b8afb",
+  indigo: "#6366f1",
+  rose: "#f43f5e",
+  emerald: "#10b981",
   zinc: "#3f3f46",
 };
 
 /** The table colour as a CSS colour, for the tints the `soft` variant mixes from it. */
-export const getAccentColor = (color: string) =>
-  color.startsWith("#") || color.startsWith("var(")
-    ? color
-    : (accentHex[color] ?? "var(--primary)");
+export const getAccentColor = (color?: string) => {
+  if (!color || color === "default" || color === "primary") return "var(--primary)";
+  const resolved = resolveAccent(color);
+  if (resolved) return resolved;
+  if (color.startsWith("#") || color.startsWith("var(")) return color;
+  return accentHex[color] ?? "var(--primary)";
+};
 
 export interface TableStyleContext {
   variant: TableVariant;

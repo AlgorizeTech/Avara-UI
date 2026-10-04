@@ -912,5 +912,56 @@ button {
   .all-components-page :is(p) {
     margin: revert;
   }
-
 }
+
+/* ─────────────────────────────────────────────────────────────────────────
+   yet-another-react-lightbox overlay theming:
+   Light mode gets a soft, translucent frosted glass backdrop with blur;
+   Dark mode keeps a deep translucent backdrop with blur.
+   ───────────────────────────────────────────────────────────────────────── */
+.yarl__portal_open,
+.yarl__portal.yarl__portal_open {
+  background-color: rgba(255, 255, 255, 0.45) !important;
+  -webkit-backdrop-filter: blur(24px) saturate(180%) !important;
+  backdrop-filter: blur(24px) saturate(180%) !important;
+}
+
+.yarl__container {
+  background-color: transparent !important;
+  -webkit-backdrop-filter: blur(24px) saturate(180%) !important;
+  backdrop-filter: blur(24px) saturate(180%) !important;
+}
+
+.yarl__portal {
+  --yarl__color_backdrop: transparent;
+  --yarl__color_button: rgba(15, 23, 42, 0.85);
+  --yarl__color_button_active: #0f172a;
+  --yarl__button_filter: none;
+  --yarl__counter_filter: none;
+  --yarl__slide_title_color: #0f172a;
+  --yarl__slide_description_color: #334155;
+  --yarl__slide_captions_container_background: rgba(255, 255, 255, 0.65);
+  --yarl__thumbnails_container_background_color: transparent;
+}
+
+.dark .yarl__portal_open,
+.dark .yarl__portal.yarl__portal_open {
+  background-color: rgba(9, 9, 11, 0.65) !important;
+}
+
+.dark .yarl__container {
+  background-color: transparent !important;
+}
+
+.dark .yarl__portal {
+  --yarl__color_backdrop: transparent;
+  --yarl__color_button: hsla(0, 0%, 100%, 0.85);
+  --yarl__color_button_active: #ffffff;
+  --yarl__button_filter: drop-shadow(2px 2px 2px rgba(0, 0, 0, 0.8));
+  --yarl__counter_filter: drop-shadow(2px 2px 2px rgba(0, 0, 0, 0.8));
+  --yarl__slide_title_color: #ffffff;
+  --yarl__slide_description_color: #e2e8f0;
+  --yarl__slide_captions_container_background: rgba(0, 0, 0, 0.5);
+  --yarl__thumbnails_container_background_color: transparent;
+}
+

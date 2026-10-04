@@ -92,7 +92,17 @@ export default function MasonryLightbox() {
           slides={photos}
           plugins={[Fullscreen, Slideshow, Zoom, Download]}
           slideshow={{ delay: 2500 }}
-          styles={{ container: { backgroundColor: "rgba(9, 9, 11, 0.94)" } }}
+          styles={{
+            root: {
+              backdropFilter: "blur(24px)",
+              WebkitBackdropFilter: "blur(24px)",
+            },
+            container: {
+              backgroundColor: "transparent",
+              backdropFilter: "blur(24px)",
+              WebkitBackdropFilter: "blur(24px)",
+            },
+          }}
         />
       </CardContent>
     </Card>

@@ -210,6 +210,11 @@ npx shadcn@latest add @algorize-ui/component-wall
         "split"
         The copy on the left and the wall on the right, or the copy centred between two walls — the left camera resting high, the right one low — with the tools under the copy. Below lg a single band of every card sits between the copy and the tools.
 
+        compactWall
+        boolean
+        true
+        Centred layout only: whether that band shows below lg. With false the copy and the tools stand alone there, and the wall never mounts.
+
         linkComponent
         ElementType
         "a"

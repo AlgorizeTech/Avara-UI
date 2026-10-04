@@ -33,7 +33,7 @@ const products = [
  * That means the controls here are ordinary \`Button\`s and each slide is an
  * ordinary \`Card\` — nothing is being restyled or overridden.
  */
-export default function EmblaProductCarousel() {
+export default function EmblaProductCarousel({ color }: { color?: string } = {}) {
   const [emblaRef, emblaApi] = useEmblaCarousel({ loop: true, align: "start" });
 
   const scrollTo = useCallback((index: number) => emblaApi?.scrollTo(index), [emblaApi]);
@@ -89,8 +89,8 @@ export default function EmblaProductCarousel() {
         {Array.from({ length: snapCount }, (_, index) => (
            scrollTo(index)}
             className={cn(
-              "h-1.5 rounded-full transition-all",
-              index === selected ? "w-6 bg-foreground" : "w-1.5 bg-border",
+              "h-1.5 rounded-full transition-all cursor-pointer",
+              index === selected ? "w-6 bg-primary" : "w-1.5 bg-border hover:bg-primary/40",
             )}
           />
         ))}
@@ -131,7 +131,7 @@ const testimonials = [
  * slide. The two CSS variables below re-point Swiper's own chrome — arrows and
  * bullets — at the design tokens instead of its default blue.
  */
-export default function SwiperTestimonials() {
+export default function SwiperTestimonials({ color }: { color?: string } = {}) {
   return (
 
         {testimonials.map((item) => (

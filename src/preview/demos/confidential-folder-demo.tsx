@@ -37,7 +37,7 @@ export default function ConfidentialFolderDemo({
   return (
     <div
       style={containerStyle}
-      className="w-full flex items-center justify-center min-h-[440px] sm:min-h-[540px] p-2 sm:p-4 py-6 sm:py-8 overflow-x-clip sm:overflow-visible"
+      className="w-full flex items-center justify-center min-h-[250px] min-[400px]:min-h-[280px] sm:min-h-[540px] p-2 sm:p-4 py-3 sm:py-8 overflow-visible"
     >
       <ConfidentialFolder {...props} />
     </div>
