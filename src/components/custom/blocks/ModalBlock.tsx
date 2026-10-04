@@ -11,48 +11,10 @@ import {
   useId,
   useRef,
   useState,
-  useSyncExternalStore,
 } from "react";
 import { createPortal } from "react-dom";
 
 const ModalLabelContext = createContext<string | null>(null);
-
-/** False on the server and during hydration, true once the client has taken over. */
-const subscribeToNothing = () => () => {};
-const useIsMounted = () =>
-  useSyncExternalStore(
-    subscribeToNothing,
-    () => true,
-    () => false,
-  );
-
-let scrollLockCount = 0;
-let originalBodyOverflow = "";
-let originalBodyPaddingRight = "";
-
-function lockBodyScroll() {
-  if (typeof document === "undefined") return;
-  if (scrollLockCount === 0) {
-    const scrollbarWidth =
-      window.innerWidth - document.documentElement.clientWidth;
-    originalBodyOverflow = document.body.style.overflow;
-    originalBodyPaddingRight = document.body.style.paddingRight;
-    document.body.style.overflow = "hidden";
-    if (scrollbarWidth > 0) {
-      document.body.style.paddingRight = `${scrollbarWidth}px`;
-    }
-  }
-  scrollLockCount += 1;
-}
-
-function unlockBodyScroll() {
-  if (typeof document === "undefined") return;
-  scrollLockCount = Math.max(0, scrollLockCount - 1);
-  if (scrollLockCount === 0) {
-    document.body.style.overflow = originalBodyOverflow;
-    document.body.style.paddingRight = originalBodyPaddingRight;
-  }
-}
 
 export type ModalProps = {
   /** Controlled open state — the modal renders against it, it never owns it. */
@@ -85,32 +47,33 @@ export function Modal({
   hideCloseButton = false,
   ariaLabel,
 }: ModalProps) {
+  const [renderLayer, setRenderLayer] = useState(isOpen);
   const [isVisible, setIsVisible] = useState(false);
-  const [shouldRender, setShouldRender] = useState(false);
+  const [portalTarget, setPortalTarget] = useState<HTMLElement | null>(null);
   const isClosingRef = useRef(false);
   const labelId = useId();
-  // Nothing renders on the server or during hydration, so an initially open
-  // modal still mounts on the client and then animates in.
-  const mounted = useIsMounted();
 
-  // Opening mounts the panel (hidden); closing starts the exit transition.
-  // Adjusted while rendering, when `isOpen` changes, rather than in an effect.
-  const [prevIsOpen, setPrevIsOpen] = useState(false);
-  if (isOpen !== prevIsOpen) {
-    setPrevIsOpen(isOpen);
-    if (isOpen) setShouldRender(true);
-    else setIsVisible(false);
-  }
+  // Resolves the document this modal actually lives in (supports iframe rendering in sandbox preview).
+  const setAnchor = useCallback((node: HTMLSpanElement | null) => {
+    setPortalTarget(node ? node.ownerDocument.body : null);
+  }, []);
 
+  // Sync renderLayer and animation state with isOpen
   useEffect(() => {
     if (isOpen) {
       isClosingRef.current = false;
-      // Mount first, then animate: the element has to be in the DOM before
-      // the transition can run.
-      const timer = setTimeout(() => setIsVisible(true), 10);
+      setRenderLayer(true);
+      // Ensure element is in DOM before starting fade-in transition
+      const timer = setTimeout(() => {
+        setIsVisible(true);
+      }, 20);
       return () => clearTimeout(timer);
     } else {
-      const timer = setTimeout(() => setShouldRender(false), 300);
+      setIsVisible(false);
+      // Wait for exit transition (300ms) before unmounting
+      const timer = setTimeout(() => {
+        setRenderLayer(false);
+      }, 300);
       return () => clearTimeout(timer);
     }
   }, [isOpen]);
@@ -124,23 +87,32 @@ export function Modal({
     }, 300);
   }, [onClose]);
 
+  // Handle Escape key
   useEffect(() => {
     if (!isOpen) return;
+    const doc = portalTarget?.ownerDocument ?? document;
     const handleKeyDown = (e: KeyboardEvent) => {
       if (e.key === "Escape") handleClose();
     };
-    document.addEventListener("keydown", handleKeyDown);
-    return () => document.removeEventListener("keydown", handleKeyDown);
-  }, [isOpen, handleClose]);
+    doc.addEventListener("keydown", handleKeyDown);
+    return () => doc.removeEventListener("keydown", handleKeyDown);
+  }, [isOpen, handleClose, portalTarget]);
 
-  const showPanel = shouldRender && mounted;
+  // Handle body scroll locking
   useEffect(() => {
-    if (!showPanel) return;
-    lockBodyScroll();
-    return () => unlockBodyScroll();
-  }, [showPanel]);
+    if (!isOpen || !portalTarget) return;
+    const doc = portalTarget.ownerDocument;
+    const win = doc.defaultView ?? window;
+    const originalOverflow = win.getComputedStyle(doc.body).overflow;
+    doc.body.style.overflow = "hidden";
+    return () => {
+      doc.body.style.overflow = originalOverflow;
+    };
+  }, [isOpen, portalTarget]);
 
-  if (!showPanel) return null;
+  if (!portalTarget || !renderLayer) {
+    return <span ref={setAnchor} hidden aria-hidden="true" />;
+  }
 
   const ariaProps = ariaLabel
     ? { "aria-label": ariaLabel }
@@ -150,7 +122,7 @@ export function Modal({
     <div
       className={cn(
         "fixed inset-0 z-50 flex items-center justify-center p-4 sm:p-6 transition-all duration-300 ease-in-out backdrop-blur-[3px]",
-        isVisible ? "bg-black/50 opacity-100" : "bg-black/0 opacity-0",
+        isVisible ? "bg-black/50 opacity-100" : "bg-black/0 opacity-0 pointer-events-none",
         overlayClassName,
       )}
       onClick={handleClose}
@@ -158,14 +130,10 @@ export function Modal({
     >
       <div
         className={cn(
-          // A flex column capped at the overlay's height: the panel sizes to
-          // its content, and once that's taller than the screen the body —
-          // the only overflow-auto section — shrinks and scrolls while the
-          // header and footer stay in view.
           "relative flex max-h-full w-full max-w-lg flex-col overflow-hidden rounded-2xl bg-background shadow-xl transition-all duration-300 ease-in-out",
           isVisible
             ? "opacity-100 translate-y-0 scale-100"
-            : "opacity-0 -translate-y-12 scale-95",
+            : "opacity-0 -translate-y-8 scale-95",
           contentClassName,
         )}
         onClick={(e) => e.stopPropagation()}
@@ -204,9 +172,12 @@ export function Modal({
     </div>
   );
 
-  return typeof document !== "undefined"
-    ? createPortal(overlay, document.body)
-    : overlay;
+  return (
+    <>
+      <span ref={setAnchor} hidden aria-hidden="true" />
+      {createPortal(overlay, portalTarget)}
+    </>
+  );
 }
 
 export type ModalSectionProps = {

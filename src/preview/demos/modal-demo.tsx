@@ -7,6 +7,7 @@ import {
   ModalHeader,
 } from "@/components/custom/blocks/ModalBlock";
 import { SelectBlock } from "@/components/custom/blocks/SelectBlock";
+import { accentStyle } from "@/lib/accent";
 import { AlertCircle } from "lucide-react";
 import { useState } from "react";
 
@@ -24,22 +25,25 @@ export type ModalLayout =
  */
 export default function ModalDemo({
   layout = "standard",
+  color = "primary",
 }: {
   layout?: ModalLayout;
+  color?: string;
 }) {
   return (
     <div
       className={`relative w-full flex items-center justify-center min-h-[550px] overflow-hidden ${
         layout === "glass" ? "p-4 sm:p-8 bg-cover bg-center" : ""
       }`}
-      style={
-        layout === "glass"
+      style={{
+        ...accentStyle(color),
+        ...(layout === "glass"
           ? {
               backgroundImage:
                 'url("https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_1200,c_limit/v1790146209/photo-1470071459604-3b5ec3a7fe05-1790146212205.jpg")',
             }
-          : undefined
-      }
+          : {}),
+      }}
     >
       {layout === "glass" && (
         <div className="absolute inset-0 bg-black/20 pointer-events-none z-0" />
@@ -55,7 +59,7 @@ export default function ModalDemo({
 }
 
 const triggerClass =
-  "px-6 py-3 rounded-lg font-semibold transition-transform active:scale-95 shadow-md bg-primary hover:bg-primary/90 text-primary-foreground";
+  "px-6 py-3 rounded-lg font-semibold transition-transform active:scale-95 shadow-md bg-primary hover:bg-primary/90 text-primary-foreground cursor-pointer";
 
 /** Icon, headline, body copy and a pair of actions — the everyday shape. */
 function StandardModal() {
@@ -101,13 +105,13 @@ function StandardModal() {
           <ModalFooter className="border-none p-4 pt-4 flex flex-col-reverse sm:flex-row gap-2 sm:justify-end">
             <button
               onClick={() => setIsOpen(false)}
-              className="px-5 py-2.5 rounded-xl text-sm font-semibold text-muted-foreground hover:bg-muted transition-colors"
+              className="px-5 py-2.5 rounded-xl text-sm font-semibold text-muted-foreground hover:bg-muted transition-colors cursor-pointer"
             >
               Remind Me Later
             </button>
             <button
               onClick={() => setIsOpen(false)}
-              className="px-6 py-2.5 rounded-xl text-sm font-semibold shadow-lg shadow-primary/20 active:scale-95 transition-all bg-primary hover:bg-primary/90 text-primary-foreground"
+              className="px-6 py-2.5 rounded-xl text-sm font-semibold shadow-lg shadow-primary/20 active:scale-95 transition-all bg-primary hover:bg-primary/90 text-primary-foreground cursor-pointer"
             >
               Install Now
             </button>
@@ -179,13 +183,13 @@ function FormModal() {
         <ModalFooter className="border-t border-border bg-muted/50">
           <button
             onClick={() => setIsOpen(false)}
-            className="px-5 py-2.5 rounded-lg font-medium text-muted-foreground hover:bg-muted/50 transition-colors"
+            className="px-5 py-2.5 rounded-lg font-medium text-muted-foreground hover:bg-muted/50 transition-colors cursor-pointer"
           >
             Cancel
           </button>
           <button
             onClick={() => setIsOpen(false)}
-            className="px-5 py-2.5 rounded-lg font-semibold shadow-sm transition-opacity bg-primary hover:bg-primary/90 text-primary-foreground"
+            className="px-5 py-2.5 rounded-lg font-semibold shadow-sm transition-opacity bg-primary hover:bg-primary/90 text-primary-foreground cursor-pointer"
           >
             Send Invite
           </button>
@@ -225,13 +229,13 @@ function ConfirmationModal() {
           <div className="flex gap-3 w-full">
             <button
               onClick={() => setIsOpen(false)}
-              className="flex-1 py-2.5 rounded-lg font-medium text-muted-foreground border border-border hover:bg-muted transition-colors"
+              className="flex-1 py-2.5 rounded-lg font-medium text-muted-foreground border border-border hover:bg-muted transition-colors cursor-pointer"
             >
               Cancel
             </button>
             <button
               onClick={() => setIsOpen(false)}
-              className="flex-1 py-2.5 rounded-lg font-semibold bg-red-600 hover:bg-red-700 text-white shadow-sm transition-colors"
+              className="flex-1 py-2.5 rounded-lg font-semibold bg-red-600 hover:bg-red-700 text-white shadow-sm transition-colors cursor-pointer"
             >
               Delete
             </button>
@@ -295,7 +299,7 @@ function FullscreenModal() {
           <button
             onClick={() => setIsOpen(false)}
             aria-label="Delete project"
-            className="px-3 py-2 rounded-lg text-sm font-semibold text-red-500 hover:text-red-600 hover:bg-red-500/10 transition-colors"
+            className="px-3 py-2 rounded-lg text-sm font-semibold text-red-500 hover:text-red-600 hover:bg-red-500/10 transition-colors cursor-pointer"
           >
             Delete<span className="hidden sm:inline"> Project</span>
           </button>
@@ -303,14 +307,14 @@ function FullscreenModal() {
             <button
               onClick={() => setIsOpen(false)}
               aria-label="Discard changes"
-              className="px-3 py-2 sm:px-4 rounded-lg text-sm font-medium text-muted-foreground hover:bg-background hover:text-foreground transition-colors"
+              className="px-3 py-2 sm:px-4 rounded-lg text-sm font-medium text-muted-foreground hover:bg-background hover:text-foreground transition-colors cursor-pointer"
             >
               Discard<span className="hidden sm:inline"> Changes</span>
             </button>
             <button
               onClick={() => setIsOpen(false)}
               aria-label="Save configuration"
-              className="px-4 py-2 sm:px-5 rounded-lg text-sm font-semibold shadow-sm transition-opacity bg-primary hover:bg-primary/90 text-primary-foreground"
+              className="px-4 py-2 sm:px-5 rounded-lg text-sm font-semibold shadow-sm transition-opacity bg-primary hover:bg-primary/90 text-primary-foreground cursor-pointer"
             >
               Save<span className="hidden sm:inline"> Configuration</span>
             </button>
@@ -369,13 +373,13 @@ function GlassModal() {
           <ModalFooter className="border-none p-4 pt-4 flex flex-col-reverse sm:flex-row gap-2 sm:justify-end">
             <button
               onClick={() => setIsOpen(false)}
-              className="px-5 py-2.5 rounded-xl text-sm font-semibold text-muted-foreground hover:bg-muted transition-colors"
+              className="px-5 py-2.5 rounded-xl text-sm font-semibold text-muted-foreground hover:bg-muted transition-colors cursor-pointer"
             >
               Remind Me Later
             </button>
             <button
               onClick={() => setIsOpen(false)}
-              className="px-6 py-2.5 rounded-xl text-sm font-semibold shadow-lg shadow-primary/20 active:scale-95 transition-all bg-primary hover:bg-primary/90 text-primary-foreground"
+              className="px-6 py-2.5 rounded-xl text-sm font-semibold shadow-lg shadow-primary/20 active:scale-95 transition-all bg-primary hover:bg-primary/90 text-primary-foreground cursor-pointer"
             >
               Install Now
             </button>
