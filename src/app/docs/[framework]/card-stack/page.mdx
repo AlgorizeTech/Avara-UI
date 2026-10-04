@@ -12,9 +12,9 @@ A layered deck of cards featuring fluid drag-to-discard gestures, button-driven 
 export const usageSwipe = `"use client";
 
 import { Compass, Palette, Terminal, FileText } from "lucide-react";
-import { CardStack } from "@/components/custom/blocks/CardStackBlock";
+import { CardStack, type CardStackItem } from "@/components/custom/blocks/CardStackBlock";
 
-const ARRIVALS = [
+const ARRIVALS: CardStackItem[] = [
   {
     id: "maker-hunt",
     title: "MakerHunt",
@@ -75,7 +75,7 @@ export default function SwipeToDiscardDemo() {
       items={ARRIVALS}
       swipeToDismiss={true}
       showHeader={false}
-      onDismiss={(item, direction) => {
+      onDismiss={(item: CardStackItem, direction: "left" | "right") => {
         console.log(\`Dismissed \${item.title} to the \${direction}\`);
       }}
     />
@@ -86,9 +86,9 @@ export default function SwipeToDiscardDemo() {
 export const usageButtons = `"use client";
 
 import { Compass, Palette, Terminal } from "lucide-react";
-import { CardStack } from "@/components/custom/blocks/CardStackBlock";
+import { CardStack, type CardStackItem } from "@/components/custom/blocks/CardStackBlock";
 
-const ARRIVALS = [
+const ARRIVALS: CardStackItem[] = [
   {
     id: "maker-hunt",
     title: "MakerHunt",
@@ -130,9 +130,9 @@ export default function ButtonStackDemo() {
 export const usageLeft = `"use client";
 
 import { Compass, Palette, Terminal, FileText } from "lucide-react";
-import { CardStack } from "@/components/custom/blocks/CardStackBlock";
+import { CardStack, type CardStackItem } from "@/components/custom/blocks/CardStackBlock";
 
-const ARRIVALS = [
+const ARRIVALS: CardStackItem[] = [
   {
     id: "maker-hunt",
     title: "MakerHunt",
@@ -203,9 +203,9 @@ export default function LeftSlideDemo() {
 export const usageLoop = `"use client";
 
 import { Compass, Palette, Terminal, FileText } from "lucide-react";
-import { CardStack } from "@/components/custom/blocks/CardStackBlock";
+import { CardStack, type CardStackItem } from "@/components/custom/blocks/CardStackBlock";
 
-const ARRIVALS = [
+const ARRIVALS: CardStackItem[] = [
   {
     id: "maker-hunt",
     title: "MakerHunt",
