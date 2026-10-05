@@ -781,7 +781,13 @@
     "soft-variant": "Table — Soft variant"
   },
   "table": {
-    "composable-table": "Table — Composable table"
+    "composable-table": "Table — Composable table",
+    "minimal": "Table — Minimal",
+    "sortable-headers": "Table — Sortable headers",
+    "expandable-rows": "Table — Expandable rows",
+    "pagination": "Table — Pagination",
+    "row-actions": "Table — Row actions",
+    "sizes": "Table — Sizes"
   },
   "table-soft-comparison": {
     "comparison-soft": "Table — Comparison (soft)"
