@@ -1,10 +1,5 @@
 import { Cli } from "@/components/site/cli";
-import {
-  Tabs,
-  TabsList,
-  TabsTrigger,
-  TabsContent,
-} from "@/components/site/tabs";
+import { McpClientTabs, McpClientPanel } from "@/components/site/mcp-client-tabs";
 
 # MCP Server
 
@@ -40,47 +35,40 @@ This adds the registry to `components.json`, which you can also write by hand:
 Pick your client and run the command in your project. Prefer to do it by hand? See
 [Configuration](#configuration).
 
-<Tabs defaultValue="claude">
-  <TabsList>
-    <TabsTrigger value="claude">Claude Code</TabsTrigger>
-    <TabsTrigger value="cursor">Cursor</TabsTrigger>
-    <TabsTrigger value="vscode">VS Code</TabsTrigger>
-    <TabsTrigger value="codex">Codex</TabsTrigger>
-    <TabsTrigger value="opencode">OpenCode</TabsTrigger>
-  </TabsList>
-  <TabsContent value="claude">
+<McpClientTabs>
+  <McpClientPanel client="claude">
     **Run the following command** in your project:
 
     <Cli command={`mcp init --client claude`} />
 
     Restart Claude Code and run `/mcp` to check the connection.
-  </TabsContent>
-  <TabsContent value="cursor">
+  </McpClientPanel>
+  <McpClientPanel client="cursor">
     **Run the following command** in your project:
 
     <Cli command={`mcp init --client cursor`} />
 
     Open **Cursor Settings** and **Enable** the MCP server for shadcn.
-  </TabsContent>
-  <TabsContent value="vscode">
+  </McpClientPanel>
+  <McpClientPanel client="vscode">
     **Run the following command** in your project:
 
     <Cli command={`mcp init --client vscode`} />
 
     Open `.vscode/mcp.json` and click **Start** beside the shadcn server.
-  </TabsContent>
-  <TabsContent value="codex">
+  </McpClientPanel>
+  <McpClientPanel client="codex">
     Codex has no init command. Add the server by hand to `~/.codex/config.toml`, then
     restart Codex — see [Configuration](#configuration).
-  </TabsContent>
-  <TabsContent value="opencode">
+  </McpClientPanel>
+  <McpClientPanel client="opencode">
     **Run the following command** in your project:
 
     <Cli command={`mcp init --client opencode`} />
 
     Restart OpenCode to load the server.
-  </TabsContent>
-</Tabs>
+  </McpClientPanel>
+</McpClientTabs>
 
 ### Step 3: Try it
 
@@ -101,14 +89,8 @@ Ask your assistant:
 Add the server to your client's MCP config. The command is the same everywhere —
 only the file differs.
 
-<Tabs defaultValue="claude">
-  <TabsList>
-    <TabsTrigger value="claude">Claude Code</TabsTrigger>
-    <TabsTrigger value="cursor">Cursor</TabsTrigger>
-    <TabsTrigger value="vscode">VS Code</TabsTrigger>
-    <TabsTrigger value="codex">Codex</TabsTrigger>
-  </TabsList>
-  <TabsContent value="claude">
+<McpClientTabs>
+  <McpClientPanel client="claude">
     Add to `.mcp.json`, then run `/mcp` to check the connection:
 
     ```json
@@ -121,8 +103,8 @@ only the file differs.
       }
     }
     ```
-  </TabsContent>
-  <TabsContent value="cursor">
+  </McpClientPanel>
+  <McpClientPanel client="cursor">
     Add to `.cursor/mcp.json`, then enable the server in Cursor Settings. A green dot
     means it is connected:
 
@@ -136,8 +118,8 @@ only the file differs.
       }
     }
     ```
-  </TabsContent>
-  <TabsContent value="vscode">
+  </McpClientPanel>
+  <McpClientPanel client="vscode">
     Add to `.vscode/mcp.json`, then click **Start** beside the server. VS Code uses
     `servers` rather than `mcpServers`:
 
@@ -151,8 +133,8 @@ only the file differs.
       }
     }
     ```
-  </TabsContent>
-  <TabsContent value="codex">
+  </McpClientPanel>
+  <McpClientPanel client="codex">
     Add to `~/.codex/config.toml`, then restart Codex:
 
     ```toml
@@ -160,8 +142,8 @@ only the file differs.
     command = "npx"
     args = ["shadcn@latest", "mcp"]
     ```
-  </TabsContent>
-</Tabs>
+  </McpClientPanel>
+</McpClientTabs>
 
 ## Example prompts
 

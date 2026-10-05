@@ -2,6 +2,7 @@ import './globals.css';
 import { ThemeProvider } from 'next-themes';
 import { cooper, dmSans, geistMono } from '@/assets/fonts';
 import { PackageManagerProvider } from '@/contexts/package-manager-context';
+import { McpClientProvider } from '@/contexts/mcp-client-context';
 import { ThemeContextProvider } from '@/contexts/theme-context';
 import { ThemeCustomizerProvider } from '@/contexts/theme-customizer-context';
 import { ThemeControl } from '@/components/theme-control/theme-control';
@@ -44,13 +45,15 @@ export default function RootLayout({
           <ThemeContextProvider>
             <ThemeCustomizerProvider>
               <PackageManagerProvider>
-                <SolidProgressBar />
+                <McpClientProvider>
+                  <SolidProgressBar />
 
-                <Header />
-                {children}
-                <ThemeControl />
-                <PerformanceMonitor />
-                <WebVitals />
+                  <Header />
+                  {children}
+                  <ThemeControl />
+                  <PerformanceMonitor />
+                  <WebVitals />
+                </McpClientProvider>
               </PackageManagerProvider>
             </ThemeCustomizerProvider>
           </ThemeContextProvider>
