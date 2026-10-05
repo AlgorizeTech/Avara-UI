@@ -77,7 +77,7 @@ export const McpClientTabs = ({ children }: { children: React.ReactNode }) => {
                 tabIndex={isActive ? 0 : -1}
                 onClick={() => setClient(name)}
                 className={cn(
-                  "relative flex cursor-pointer items-center rounded-md px-2.5 py-1 text-[12px] font-medium whitespace-nowrap transition-colors duration-150 motion-reduce:transition-none",
+                  "relative flex cursor-pointer items-center rounded-md px-3.5 py-1.5 text-[14px] font-medium whitespace-nowrap transition-colors duration-150 motion-reduce:transition-none",
                   "focus:outline-none focus-visible:ring-2 focus-visible:ring-primary/60",
                   isActive ? "text-primary" : "text-foreground/40 hover:text-foreground/70",
                 )}
