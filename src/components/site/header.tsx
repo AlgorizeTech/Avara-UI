@@ -309,10 +309,10 @@ const Header = () => {
             >
               <GitHubIcon className="w-4 h-4 fill-current" />
               <span className="hidden lg:inline text-[12px] font-semibold text-foreground">GitHub</span>
-              <span className="hidden lg:block w-px h-3.5 bg-border/60 mx-0.5" />
+              {/* <span className="hidden lg:block w-px h-3.5 bg-border/60 mx-0.5" />
               <span className="hidden lg:inline text-[11px] font-semibold text-foreground/50">
                 2.1k
-              </span>
+              </span> */}
             </Link>
 
             {/* Dynamic System Theme Core Engine Toggle */}

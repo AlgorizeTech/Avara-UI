@@ -3837,10 +3837,10 @@ function CTASection() {
 								className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-6 py-3 rounded-xl border border-border bg-background hover:bg-muted text-foreground font-medium text-sm transition-colors">
 								<Github className="size-4" />
 								<span>Star on GitHub</span>
-								<div className="inline-flex items-center gap-1 pl-1 text-xs font-mono text-foreground/70 font-semibold">
+								{/* <div className="inline-flex items-center gap-1 pl-1 text-xs font-mono text-foreground/70 font-semibold">
 									<Star className="size-3 fill-amber-400 text-amber-400" />
 									<span>2.1k</span>
-								</div>
+								</div> */}
 							</Link>
 						</div>
 					</div>
