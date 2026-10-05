@@ -25,6 +25,10 @@ export interface ThreeDCarouselProps
   items: CarouselItem[];
   autoPlay?: boolean;
   autoPlayInterval?: number;
+  /** Renders the previous / next and autoplay pause buttons. Defaults to `true`. */
+  showArrows?: boolean;
+  /** Renders the pagination dots under the deck. Defaults to `true`. */
+  showDots?: boolean;
 }
 
 // Sub-component for individual cards to cleanly manage 3D tilt hooks without loop issues
@@ -167,7 +171,15 @@ export const ThreeDCarousel = React.forwardRef<
   ThreeDCarouselProps
 >(
   (
-    { items, autoPlay = true, autoPlayInterval = 4000, className, ...props },
+    {
+      items,
+      autoPlay = true,
+      autoPlayInterval = 4000,
+      showArrows = true,
+      showDots = true,
+      className,
+      ...props
+    },
     ref,
   ) => {
     const [activeIndex, setActiveIndex] = useState(0);
@@ -246,53 +258,57 @@ export const ThreeDCarousel = React.forwardRef<
         </div>
 
         {/* Navigation Controls Bar */}
-        <div className="flex items-center gap-4 mt-6 z-10">
-          <button
-            onClick={handlePrev}
-            aria-label="Previous Slide"
-            className="p-3 rounded-full bg-background border border-border text-foreground hover:bg-primary hover:text-primary-foreground hover:border-primary/30 hover:scale-105 active:scale-95 transition-all shadow-md"
-          >
-            <ChevronLeft className="w-5 h-5" />
-          </button>
+        {showArrows && (
+          <div className="flex items-center gap-4 mt-6 z-10">
+            <button
+              onClick={handlePrev}
+              aria-label="Previous Slide"
+              className="p-3 rounded-full bg-background border border-border text-foreground hover:bg-primary hover:text-primary-foreground hover:border-primary/30 hover:scale-105 active:scale-95 transition-all shadow-md"
+            >
+              <ChevronLeft className="w-5 h-5" />
+            </button>
 
-          {/* Auto-play Toggle Button */}
-          <button
-            onClick={() => setIsPlaying(!isPlaying)}
-            aria-label={isPlaying ? "Pause Auto-play" : "Start Auto-play"}
-            className="p-3 rounded-full bg-background border border-border text-foreground hover:bg-primary hover:text-primary-foreground hover:border-primary/30 hover:scale-105 active:scale-95 transition-all shadow-md"
-          >
-            {isPlaying ? (
-              <Pause className="w-5 h-5" />
-            ) : (
-              <Play className="w-5 h-5" />
-            )}
-          </button>
+            {/* Auto-play Toggle Button */}
+            <button
+              onClick={() => setIsPlaying(!isPlaying)}
+              aria-label={isPlaying ? "Pause Auto-play" : "Start Auto-play"}
+              className="p-3 rounded-full bg-background border border-border text-foreground hover:bg-primary hover:text-primary-foreground hover:border-primary/30 hover:scale-105 active:scale-95 transition-all shadow-md"
+            >
+              {isPlaying ? (
+                <Pause className="w-5 h-5" />
+              ) : (
+                <Play className="w-5 h-5" />
+              )}
+            </button>
 
-          <button
-            onClick={handleNext}
-            aria-label="Next Slide"
-            className="p-3 rounded-full bg-background border border-border text-foreground hover:bg-primary hover:text-primary-foreground hover:border-primary/30 hover:scale-105 active:scale-95 transition-all shadow-md"
-          >
-            <ChevronRight className="w-5 h-5" />
-          </button>
-        </div>
+            <button
+              onClick={handleNext}
+              aria-label="Next Slide"
+              className="p-3 rounded-full bg-background border border-border text-foreground hover:bg-primary hover:text-primary-foreground hover:border-primary/30 hover:scale-105 active:scale-95 transition-all shadow-md"
+            >
+              <ChevronRight className="w-5 h-5" />
+            </button>
+          </div>
+        )}
 
         {/* Pagination Dots */}
-        <div className="flex items-center gap-2 mt-4 z-10">
-          {items.map((_, idx) => (
-            <button
-              key={idx}
-              onClick={() => setActiveIndex(idx)}
-              aria-label={`Go to slide ${idx + 1}`}
-              className={cn(
-                "h-1.5 rounded-full transition-all duration-300",
-                idx === activeIndex
-                  ? "w-8 bg-primary"
-                  : "w-1.5 bg-muted hover:bg-primary/50",
-              )}
-            />
-          ))}
-        </div>
+        {showDots && (
+          <div className="flex items-center gap-2 mt-4 z-10">
+            {items.map((_, idx) => (
+              <button
+                key={idx}
+                onClick={() => setActiveIndex(idx)}
+                aria-label={`Go to slide ${idx + 1}`}
+                className={cn(
+                  "h-1.5 rounded-full transition-all duration-300",
+                  idx === activeIndex
+                    ? "w-8 bg-primary"
+                    : "w-1.5 bg-muted hover:bg-primary/50",
+                )}
+              />
+            ))}
+          </div>
+        )}
       </div>
     );
   },
