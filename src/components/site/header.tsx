@@ -139,9 +139,8 @@ const Header = () => {
                 />
               </svg>
             </div>
-            <span className="font-semibold text-[16px] tracking-tight text-foreground flex items-center gap-1.5">
+            <span className="font-semibold text-[16px] tracking-tight text-foreground">
               Docs UI
-              <span className="text-[10px] font-semibold px-1.5 py-0.5 rounded-full bg-primary/10 text-primary border border-primary/20 leading-none">v1.0</span>
             </span>
           </Link>
 
@@ -217,11 +216,8 @@ const Header = () => {
                   />
                 </svg>
               </div>
-              <span className="font-extrabold text-[15px] tracking-tight text-foreground flex items-center gap-1.5">
+              <span className="font-extrabold text-[15px] tracking-tight text-foreground">
                 Docs <span className="text-primary font-normal">UI</span>
-                <span className="text-[10px] font-semibold px-1.5 py-0.5 rounded-full bg-primary/10 text-primary border border-primary/20 leading-none">
-                  v1.0
-                </span>
               </span>
             </Link>
           </div>
